@@ -1,106 +1,140 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91E18606A31A
-	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 17:31:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8536606A326
+	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 17:47:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=W9LFoFBs
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=opV9ITIu
 Received: by kanga.kvack.org (Postfix)
-	id 932326B0625; Thu, 29 Oct 2026 13:31:08 -0400 (EDT)
+	id B49D76B05C6; Thu, 29 Oct 2026 13:47:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8E22A6B0626; Thu, 29 Oct 2026 13:31:08 -0400 (EDT)
+	id B20716B05CA; Thu, 29 Oct 2026 13:47:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7D2E86B0627; Thu, 29 Oct 2026 13:31:08 -0400 (EDT)
+	id A0F6F6B05CC; Thu, 29 Oct 2026 13:47:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 43D0F6B0625
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 13:31:08 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id C1075A04BD
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 17:31:07 +0000 (UTC)
-X-FDA: 85376354574.03.2ABA091
-Received: from mta1.migadu.com (out-19.mta1.migadu.com [95.215.58.19])
-	by imf15.hostedemail.com (Postfix) with ESMTP id D8BB1A000D
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 17:31:05 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=W9LFoFBs;
-	spf=pass (imf15.hostedemail.com: domain of dongtai.guo@linux.dev designates 95.215.58.19 as permitted sender) smtp.mailfrom=dongtai.guo@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793295066;
-	b=yMOQ/P4L1hOLC7wHFc3HsUcs9R/0yBdqh+JXCyQR6SaYW4Kaxbs2jUlubh6sbF3ikKS6r5
-	YH9gNuI71c7aUdLvgJKlgY6MV2h9LfaHlTdfludws4jIybpTckfDryLIvve5Y05tuwfRoM
-	BahLp/kw6aCpQx/mHTjd9i6/ajDF3ng=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=W9LFoFBs;
-	spf=pass (imf15.hostedemail.com: domain of dongtai.guo@linux.dev designates 95.215.58.19 as permitted sender) smtp.mailfrom=dongtai.guo@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 71B6B6B05C6
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 13:47:35 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id EEA36C04B6
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 17:47:34 +0000 (UTC)
+X-FDA: 85376396028.04.65C84D4
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 2DFFEC0009
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 17:47:33 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=opV9ITIu;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf28.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793295066;
+	s=arc-20220608; t=1793296053;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hjl3YWLB9mIMK4NxN5xFoTsa4zvmwEeXlgSjnO0OUbA=;
-	b=3PRiO1Yn7r3Zbq6k3LI7W8B3qC9gvB0s8J8O7yMVG58WNseFDE7zeiJzJwdvKd/ovlaM4n
-	DGf+ghia2WejSWyFPRxO0/2Lqf65weSeSJUMQCJwS7Wn9B/aFEvM0VA2TRxDZySHuB8l4I
-	KPx7heDpa2RHxsFFp0uyTrkqco4LBm8=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=GBih4azSAalhMpwQa4vAt/wr7df5ETSpm+lkTN2YYcw=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1793295064; v=1; x=1793899864;
- b=W9LFoFBszpWry1/NSZbVhjNsFbcVuSrt/CoO/JfaLe7WiVW7vFpNJY7uGjKf+aJPQSKJXkIV
- 06V+5qqpODl9AsLap7BQ8oVrkrYL+GpTR9hNsSgs8TMSSct9wgIdgHD1c/40EKKFuVfRSevj1BA
- V7H11bHuwTRyacCfRGC8mjeE=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id d28391d344248cfb;
-	Thu, 29 Oct 2026 17:31:04 +0000
-X-Mizu-Trace-ID: d28391d344248cfb
-X-Migadu-Flow: FLOW_OUT
-From: George Guo <dongtai.guo@linux.dev>
-To: rppt@kernel.org,
-	pasha.tatashin@soleen.com,
-	pratyush@kernel.org,
-	chenhuacai@kernel.org,
-	ardb@kernel.org,
-	shuah@kernel.org
-Cc: ilias.apalodimas@linaro.org,
-	akpm@linux-foundation.org,
-	baoquan.he@linux.dev,
-	ruirui.yang@linux.dev,
-	guodongtai@kylinos.cn,
-	kernel@xen0n.name,
-	graf@amazon.com,
-	liukexin@kylinos.cn,
-	loongarch@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	kexec@lists.infradead.org,
-	linux-mm@kvack.org,
-	linux-kselftest@vger.kernel.org,
-	linux-efi@vger.kernel.org
-Subject: [PATCH v6 8/8] selftests/liveupdate: Add LoongArch vmtest support
-Date: Fri, 30 Oct 2026 02:29:55 +0900
-Message-ID: <20261029172956.20791-9-dongtai.guo@linux.dev>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20261029172956.20791-1-dongtai.guo@linux.dev>
-References: <20261029172956.20791-1-dongtai.guo@linux.dev>
+	bh=Lu9NmCps7cwWhw9kB4kp6caSi9tSD3jrL00zfdQIbj4=;
+	b=FLXrXw3ci5OwXjLyqzt9pVmbchhUE2WA1OKLi666iFZ6TH0Ki/lX22xVNUaH8F11sW1KFS
+	Xw6ErcdbKSOKTNFazFKS0+8oqC7dq1DQiBSXsI2GJmxuOX602RKvhHVrJpcA1F67S7wtRY
+	thaXmr3FGD/FRRWH/gWMxb32HOue3N8=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=opV9ITIu;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf28.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793296053;
+	b=0gCxMZwPvJm9fh1Lmp0EQ6MEH21dIGdLjJcG1VndrvCcR4EYS9FVeVeEmZPSg5y1j6dwc1
+	0QufcixY55gwQ+HEpeGcgGykDSgChjlQQrTXAezqSmaVbbPWa7Br3JqQP14ROWLBZmaS/c
+	iZ4fRDr/1h2Jmx7LW0NFUR4PDtusYGw=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 987E440357;
+	Thu, 29 Oct 2026 17:47:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 580461F031E2;
+	Thu, 29 Oct 2026 17:47:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793296051;
+	bh=Lu9NmCps7cwWhw9kB4kp6caSi9tSD3jrL00zfdQIbj4=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=opV9ITIuvYyN325Vo64Ehi4GBE5Kl15I5XlLgwfsb/0L0RXrVFvX7yax9DaCEFBLI
+	 tCCZeb5nYdYcbsSzz9BBeAsTi8a7mSSLdGIkLYZiIb3PxC/7BG2wMVPQzsbx3D+6X0
+	 TkJX6LVYQhPAle9xIRIBYAa8mY9CjwjuKyiGafn1gJicnr6JSeNdmJWpsN4G3IIl73
+	 Gnm83uHOkjSwpNDtqdgHbsVZ7NNCdlk4mTrO+aitlRqzFId//iFxYcEEFl21sDQfSP
+	 FYIEFnjenNPCVib+NByyKxd2pIsiczeQ3HHgy+icNG3hcxGQ3Z5+KMBqbR5LaYCclf
+	 f+MOnYd8wuLtQ==
+Message-ID: <cd89f6bb-f054-401a-8656-1a8c38bff6ed@kernel.org>
+Date: Thu, 29 Oct 2026 18:47:25 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: ymoiyzbuydxa7qetxkjnnxz4u8q4miyh
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 5/8] mm/page_alloc: retry allocations that raced with a
+ zonelist rebuild
+Content-Language: en-US
+To: "Gregory Price (Meta)" <gourry@gourry.net>, linux-mm@kvack.org
+Cc: linux-kernel@vger.kernel.org, kernel-team@meta.com,
+ muchun.song@linux.dev, osalvador@suse.de, david@kernel.org,
+ akpm@linux-foundation.org, ziy@nvidia.com, joshua.hahnjy@gmail.com,
+ rakie.kim@sk.com, ying.huang@linux.alibaba.com, ljs@kernel.org,
+ liam@infradead.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com,
+ brendan.jackman@linux.dev, hannes@cmpxchg.org, mgorman@techsingularity.net,
+ anshuman.khandual@arm.com, stable@vger.kernel.org
+References: <20261028211930.3504634-1-gourry@gourry.net>
+ <20261028211930.3504634-6-gourry@gourry.net>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Autocrypt: addr=vbabka@kernel.org; keydata=
+ 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
+In-Reply-To: <20261028211930.3504634-6-gourry@gourry.net>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 2DFFEC0009
+X-Stat-Signature: k1zjb7a4po64dy7mwrxtrca3qb1keec5
+X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
 	version=4.0.1
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: D8BB1A000D
 X-Rspam-User: 
-X-HE-Tag: 1793295065-44146
-X-HE-Meta: U2FsdGVkX1867m1cIIyWwiioOUYUOuU7JBznaO9AtsCro6OSZRXmFCAxSUqOhoz806ggVvIVk7T3ygkZ7IRCc7HnuHIwWkEtmbAr36Vo7qgHjcgJDcPpiUp+ESZSPgh31uBhNi4tgxHa8hAAmNtJij/tbb1PP8rZUX1dBeIU7LUA01CyrXoinC8W9ZjaQOjShSGyJ1I5wi4P5OAMXwRm1znRWa6qD0SOywZgFHZ+Z7UKvg/0j1xmOAfO+F8LNJ1IxnXOw71cIu0s/6I2lc83Qe7VUoS2XkLHvuRX1nt5zVpE38rorRwjtjqimbVfbBzszbqE8GH2OhP+fVoSvnmc3nv7pn7Fzxfu+sO1mBWzyFWjC2pZ+qyDa/3Bv7kLHIQVPCBE5XiMDfNFE3InL0LypIA+alX1QGmUC4m/OiJt+MQerxs2Kjhqi/A/GY7MxMFH5E1U9uu3bS9UsERnAkcdWISQO3D1K2zgx0UERp2KsSl3rEO10CpFVZ4fRX6KGd4kwOusMbayd33zRAFth8AAbNuiS2H2HSVUth84Eq2bOumhybMnedQj3PwwLCVDHZWj2A9Dfm8Di2p5P+8XWjJ1nAf4IfcRXVjpygQf4lFwPMOIcZJ7+D23x5X2FzovNUXD+Jtnkcz9DP58lSog2nOm6ECVImBqmGrVb+Ygj9QMfqT0gtDxX4OJLmAyjsDSrRnaukQe2Z8Fq13plz1iQJ7B/Orb+/vWZGMBPm4qQncpXZv6gjT0CkkV9Xw2rUeWCHIjfxEr/2HFzrN9ILvVFzk8q/ox1b4IjOEr6O5+GJpJUcR98zy49Oaeq7Umd822NjFbeWBdy3OveNgwNgn7vahugiKbMye3Ara/Xb+ZBp7IG7Ma+9D0g6H2Bz6mebpY8+piIClhdt/593JueJ/ey29QbZq6l6AutpWqOzxT+0oQcic5PA6e00B7cwW1ayYXbYZq9WYyiXKv5kCoqZFwtwZ
- FlbJdZk2
- 7qW3nMGU5uqsV0uTBJ4VRLaOOioGw5wjrdYU9qz7itkg+KrahMV2u3dpbGZ/746sCuhVIXEEDm0cl8agQwAP/uAUZUeZhPLrCeoVIANBLjISTMjDqwm21gHsjyYqq8y9kQmMbZO39HQkTApvO0Vp9yb4/hmS9B0K+0E5c1IFKjXwgOWblt1bcS82Tgvt4qomUAb80TZaA+cqiY5dWa4saA3kUZUynMri4ITJ5
+X-HE-Tag: 1793296053-662505
+X-HE-Meta: U2FsdGVkX1/75noDN48AmDvWw8PhtdNlyOABdzUOkT8z/dSwLAS/Yy8QbjrLjfGzUhu9FhH+zfpTKlE/EsZpG1bQ3C/aOvvXPf+yV2Lj1rpPXC2cqD6MNDQZ5Wua1e12xbfrNBhTIxErnKbe20yr0SMKBo43XmTKxazbH648e8griVHoc4svHq8sCKdVumdf7PI7/WuhNudhHiZTu+I9GQYb6t749cK4vz9BSD0UuaMdSoRdBHDZw+PzfkI/m5W1gH1aqwUGrcycupe8S2DbjRQ51jhvikEKLiHrasFis/cVTaK3WRvUu1W5Yh6vnqxd0IH0YxfjOagoIbbfj9auE1c8JWY5gitjCQG0g5GnwwLY5y5MfFJJi4K4jRHub+dFL6TiIfMaT6MXIsdscwoRcprfDnWIzs/C3v4tDXVKZtFt8nqDnv+s9GqTy+Eb+qT49ftJvKB450OdZB9o66XOod9AyyEmDcF99qxynCJqc7LlYvXAXJwIssxw73UrxMzvqLU9xgyo2J50/l0bIyuIvMTxr2UP4ApCbrBgYwdcFY3OiETbFXtqeOpuhs75sVCj1j1SbDWLSaDE8rJzLEMir09xbdCdamM5t0COzfTagBsoN3I34LrkLrjCeWLnuVL2ILR0skm88CPkIURI0tViUOTSg7Vm50GdJVrol06yOB+iOFPXd8sv1HGoWAxtM/Ihl5hyStf+UvrbnfJN+uAyyEowvcR/3ChisPedvqNxwRL6Oq2YDEJ6c/vACRmmasKMkbnuu2EY2zJ0AykP/kFuIwHCHnlmV7lCRqzTUqSP/t78bLzb1sVjPiUDzmXnST4Adn0+GL/KBsnY+SuOkvvhWzSbP+IpZXwFTGh6mKnScKZOCegwC5AB06di3FPk2zifuVyIT/QxoDLKxuLoP85A9U/NEKaAQGMyhI1GwEm7Zc3ca9OBxY2q/Roo2sMKjOAz/IL7s4tCyyliL9eoYB2
+ Z7Oe7AEz
+ 0lK+M6i0tPwT0UaEQZblfjwNd0ltIAS3Zf0T7Oe47PMzLvwdZ//qGmNMHACPS6i5Z0Mq1EK5DixyfaXlbfB6rr+DR8JaDM8T1ubCKOmjS/H43NT0HK5A2mFX8ksZccluTEnr6JNsVJyhGsrQapNK9wmOibHQMMp4lrmN83C6ElEWtfozWOSLJZACmN+FmcfBNIofDKfXgI2kBMYWY55rN8lp7X3RAVcLMJ8bptlKkkXapYKKmXPbnFcmuoFABxb7NBWbsGEZIPeZRfJ1/cpNC/j0TpQajYTwmsvM5efeYZiBkr1pglKbwEESJCwU0+PlYGi1WBnzlnwuwXu3vB+CnesRogvxGCIsD0jygWfllXADEUVPRO2L9qyQt+iLZxo7NHtMgKkHuPkIHZWM/oB8WFmbKAyeYE5qBEDrIzqyMn1l5iqLiGnrtHcfrhcNQIKJ/8hc1WQPdwGrm4gJu8ZO1wsRw5Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,109 +143,156 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-From: George Guo <guodongtai@kylinos.cn>
+On 10/28/26 22:19, Gregory Price (Meta) wrote:
+> Onlining the first block of a zone rebuilds every zonelist in place,
+> shifting the slots after the new zone.  The iterator approves a slot,
+> then the allocator loads the zone from it, so a GFP_KERNEL request can
+> land in ZONE_MOVABLE and a nodemask request on a node outside its mask:
+> 
+>   CPU 0                             CPU 1
+>   prepare_alloc_pages()
+>     first_zones_zonelist(nodemask {1})
+>       slot 0 (NORMAL1) approved
+>                                     online_pages()
+>                                       build_all_zonelists()
+>                                         [NORMAL1, NORMAL2, ...]
+>                                         -> [MOVABLE1, NORMAL1, ...]
+>   get_page_from_freelist()
+>     zone = zonelist_zone(slot 0)    /* MOVABLE1 */
+>     allocates from MOVABLE1
+> 
+> zonelist_update_seq detects the rebuild, but only the slowpath's failure
+> exits check it.
+> 
+> Check it whenever an allocation succeeds too, and if it changed, free
+> the page and retry, as the memcg charge failure path does.  Eligible
+> pages are dropped as well: zonelists only change when memory comes or
+> goes, and a retry is simpler than rechecking the page.
+> 
+> Freeing the page does not undo a block the allocation claimed.  A
+> GFP_KERNEL request that lands in a fresh ZONE_MOVABLE converts a free
+> block to MIGRATE_UNMOVABLE, which stays until the zone's movable free
+> list runs out and a movable allocation takes it back.
 
-Add the LoongArch kernel configuration, target and cross-compiler
-detection, and include loongarch64 in the VM test suite.
+Yeah that's fine.
 
-Boot vmlinux.efi through EFI firmware so the EFI stub installs the KHO
-table. Allow the firmware path to be set with QEMU_EFI and skip the test
-if it is unavailable.
+> The fast and bulk paths read the seqlock's raw seqcount without waiting:
+> an ALLOC_NOLOCK caller can be an NMI that interrupted the writer, and on
+> PREEMPT_RT the seqlock accessor takes the spinlock.  A sample taken
+> mid-write costs a retry, or NULL under ALLOC_NOLOCK.
+> check_retry_zonelist() returns 0 when compiled out, so a backport
+> without the hot-add change stays harmless.
 
-Co-developed-by: Kexin Liu <liukexin@kylinos.cn>
-Signed-off-by: Kexin Liu <liukexin@kylinos.cn>
-Signed-off-by: George Guo <guodongtai@kylinos.cn>
----
- .../selftests/liveupdate/config.loongarch64        |  5 +++++
- tools/testing/selftests/liveupdate/run-vmtests.sh  |  4 ++--
- tools/testing/selftests/liveupdate/vmtest.sh       | 14 +++++++++++++-
- 3 files changed, 20 insertions(+), 3 deletions(-)
- create mode 100644 tools/testing/selftests/liveupdate/config.loongarch64
+Hmm wasn't even aware there's waiting possible otherwise for seqcounts.
 
-diff --git a/tools/testing/selftests/liveupdate/config.loongarch64 b/tools/testing/selftests/liveupdate/config.loongarch64
-new file mode 100644
-index 000000000000..264067ef5ab1
---- /dev/null
-+++ b/tools/testing/selftests/liveupdate/config.loongarch64
-@@ -0,0 +1,5 @@
-+CONFIG_ACPI_SPCR_TABLE=y
-+CONFIG_PCI_HOST_GENERIC=y
-+CONFIG_SERIAL_8250=y
-+CONFIG_SERIAL_8250_CONSOLE=y
-+CONFIG_SMP=y
-diff --git a/tools/testing/selftests/liveupdate/run-vmtests.sh b/tools/testing/selftests/liveupdate/run-vmtests.sh
-index d656ce58c5a7..f6cfb76b1dac 100755
---- a/tools/testing/selftests/liveupdate/run-vmtests.sh
-+++ b/tools/testing/selftests/liveupdate/run-vmtests.sh
-@@ -4,7 +4,7 @@
- SCRIPT_DIR=$(dirname "$(realpath "$0")")
- TEST_RUNNER="$SCRIPT_DIR/vmtest.sh"
- 
--TARGETS=("x86_64" "aarch64")
-+TARGETS=("x86_64" "aarch64" "loongarch64")
- 
- GREEN='\033[0;32m'
- RED='\033[0;31m'
-@@ -72,7 +72,7 @@ function main() {
- 		for test_name in "${TEST_NAMES[@]}"; do
- 			log="$output_dir/${arch}_${test_name}.log"
- 
--			printf "  -> %-8s %-24s ... " "$arch" "$test_name"
-+			printf "  -> %-11s %-24s ... " "$arch" "$test_name"
- 
- 			"$TEST_RUNNER" -t "$arch" -T "$test_name" &> "$log"
- 			exit_code=$?
-diff --git a/tools/testing/selftests/liveupdate/vmtest.sh b/tools/testing/selftests/liveupdate/vmtest.sh
-index 69beda6c961d..ffe82512f3e4 100755
---- a/tools/testing/selftests/liveupdate/vmtest.sh
-+++ b/tools/testing/selftests/liveupdate/vmtest.sh
-@@ -21,6 +21,12 @@ function get_arch_conf() {
- 		QEMU_CMD="qemu-system-aarch64 -M virt -cpu max"
- 		KERNEL_IMAGE="Image"
- 		KERNEL_CMDLINE="console=ttyAMA0"
-+	elif [[ "$arch" == "loongarch" ]]; then
-+		local qemu_efi="${QEMU_EFI:-/usr/share/edk2/loongarch64/QEMU_EFI.fd}"
-+		[ -r "$qemu_efi" ] || skip "EFI firmware '$qemu_efi' not found, set QEMU_EFI"
-+		QEMU_CMD="qemu-system-loongarch64 -M virt -cpu la464 -bios $qemu_efi"
-+		KERNEL_IMAGE="vmlinux.efi"
-+		KERNEL_CMDLINE="console=ttyS0 earlycon"
- 	elif [[ "$arch" == "x86" ]]; then
- 		QEMU_CMD="qemu-system-x86_64"
- 		KERNEL_IMAGE="bzImage"
-@@ -37,11 +43,15 @@ $0 [-d build_dir] [-j jobs] [-t target_arch] [-T test_name] [-w workspace_dir] [
- Options:
- 	-d)	path to the kernel build directory (default: .luo_test_build.<arch>)
- 	-j)	number of jobs for compilation
--	-t)	run test for target_arch (aarch64, x86_64)
-+	-t)	run test for target_arch (aarch64, loongarch64, x86_64)
- 	-T)	test name to run (default: luo_kexec_simple)
- 	-w)	custom workspace directory (default: creates temp dir)
- 	-k)	keep workspace directory after successful test
- 	-h)	display this help
-+
-+Environment:
-+	QEMU_EFI	LoongArch EFI firmware path
-+			(default: /usr/share/edk2/loongarch64/QEMU_EFI.fd)
- EOF
- }
- 
-@@ -86,6 +96,7 @@ function detect_cross_compile() {
- 	local candidate=""
- 	case "$target" in
- 		aarch64) candidate="aarch64-linux-gnu-" ;;
-+		loongarch64) candidate="loongarch64-linux-gnu-" ;;
- 		x86_64)  candidate="x86_64-linux-gnu-" ;;
- 		*)       skip "Auto-detection for target '$target' not supported. Please set CROSS_COMPILE manually." ;;
- 	esac
-@@ -193,6 +204,7 @@ function target_to_arch() {
- 	local target=$1
- 	case $target in
- 	     aarch64) echo "arm64" ;;
-+	     loongarch64) echo "loongarch" ;;
- 	     x86_64) echo "x86" ;;
- 	     *) skip "architecture $target is not supported"
- 	esac
--- 
-2.53.0
+> Fixes: 11cd8638c37f ("mm, page_alloc: remove stop_machine from build_all_zonelists")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Gregory Price (Meta) <gourry@gourry.net>
+
+Reviewed-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+
+> ---
+>  mm/page_alloc.c | 34 +++++++++++++++++++++++++++++++++-
+>  1 file changed, 33 insertions(+), 1 deletion(-)
+> 
+> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+> index 24106c881ec2..33aab9deaaa1 100644
+> --- a/mm/page_alloc.c
+> +++ b/mm/page_alloc.c
+> @@ -4419,12 +4419,25 @@ static unsigned int zonelist_iter_begin(void)
+>  	return 0;
+>  }
+>  
+> +/*
+> + * Never wait for the writer, which an ALLOC_NOLOCK caller in NMI may have
+> + * interrupted. Read the raw seqcount: on PREEMPT_RT the seqlock accessor takes
+> + * the spinlock while a write is in progress.
+> + */
+> +static unsigned int zonelist_iter_sample(void)
+> +{
+> +	if (IS_ENABLED(CONFIG_MEMORY_HOTPLUG))
+> +		return raw_seqcount_begin(&zonelist_update_seq.seqcount.seqcount);
+> +
+> +	return 0;
+> +}
+> +
+>  static unsigned int check_retry_zonelist(unsigned int seq)
+>  {
+>  	if (IS_ENABLED(CONFIG_MEMORY_HOTPLUG))
+>  		return read_seqretry(&zonelist_update_seq, seq);
+>  
+> -	return seq;
+> +	return 0;
+>  }
+>  
+>  /* Perform direct synchronous page reclaim */
+> @@ -5115,6 +5128,12 @@ __alloc_pages_slowpath(gfp_t gfp_mask, unsigned int order,
+>  	warn_alloc(gfp_mask, ac->nodemask,
+>  			"page allocation failure: order:%u", order);
+>  got_pg:
+> +	/* A rebuild during the walk may have handed out an ineligible zone. */
+> +	if (page && check_retry_zonelist(zonelist_iter_cookie)) {
+> +		__free_frozen_pages(page, order, FPI_NONE);
+> +		page = NULL;
+> +		goto restart;
+> +	}
+>  	return page;
+>  }
+>  
+> @@ -5199,6 +5218,7 @@ unsigned long alloc_pages_bulk_noprof(gfp_t gfp, int preferred_nid,
+>  	struct list_head *pcp_list;
+>  	struct alloc_context ac;
+>  	unsigned int alloc_flags = ALLOC_WMARK_LOW;
+> +	unsigned int zonelist_iter_cookie;
+>  	int nr_populated = 0, nr_account = 0;
+>  
+>  	/*
+> @@ -5239,6 +5259,7 @@ unsigned long alloc_pages_bulk_noprof(gfp_t gfp, int preferred_nid,
+>  	/* May set ALLOC_NOFRAGMENT, fragmentation will return 1 page. */
+>  	gfp &= gfp_allowed_mask;
+>  	gfp = current_gfp_context(gfp);
+> +	zonelist_iter_cookie = zonelist_iter_sample();
+>  	if (!prepare_alloc_pages(gfp, 0, preferred_nid, nodemask, &ac, &gfp, &alloc_flags))
+>  		goto out;
+>  
+> @@ -5288,6 +5309,10 @@ unsigned long alloc_pages_bulk_noprof(gfp_t gfp, int preferred_nid,
+>  	if (unlikely(!zone))
+>  		goto failed;
+>  
+> +	/* The zone was chosen from a zonelist that a rebuild may have changed. */
+> +	if (unlikely(check_retry_zonelist(zonelist_iter_cookie)))
+> +		goto failed;
+> +
+>  	/* spin_trylock may fail due to a parallel drain or IRQ reentrancy. */
+>  	pcp = pcp_spin_trylock(zone->per_cpu_pageset);
+>  	if (!pcp)
+> @@ -5428,6 +5453,7 @@ struct page *__alloc_frozen_pages_noprof(gfp_t gfp, unsigned int order,
+>  		.alloc_flags = alloc_flags,
+>  	};
+>  	unsigned int fastpath_alloc_flags = alloc_flags;
+> +	unsigned int zonelist_iter_cookie;
+>  
+>  	/* Other flags could be supported later if needed. */
+>  	if (WARN_ON(alloc_flags & ~(ALLOC_NOLOCK | ALLOC_NO_CODETAG)))
+> @@ -5457,6 +5483,7 @@ struct page *__alloc_frozen_pages_noprof(gfp_t gfp, unsigned int order,
+>  	 */
+>  	gfp = current_gfp_context(gfp);
+>  	alloc_gfp = gfp;
+> +	zonelist_iter_cookie = zonelist_iter_sample();
+>  	if (!prepare_alloc_pages(gfp, order, preferred_nid, nodemask, &ac,
+>  			&alloc_gfp, &fastpath_alloc_flags))
+>  		return NULL;
+> @@ -5473,6 +5500,11 @@ struct page *__alloc_frozen_pages_noprof(gfp_t gfp, unsigned int order,
+>  
+>  	/* First allocation attempt (or, for nolock, only attempt) */
+>  	page = get_page_from_freelist(alloc_gfp, order, fastpath_alloc_flags, &ac);
+> +	if (likely(page) && unlikely(check_retry_zonelist(zonelist_iter_cookie))) {
+> +		__free_frozen_pages(page, order,
+> +				    alloc_flags & ALLOC_NOLOCK ? FPI_NOLOCK : 0);
+> +		page = NULL;
+> +	}
+>  	if (likely(page) || (alloc_flags & ALLOC_NOLOCK))
+>  		goto out;
+>  
 
 
