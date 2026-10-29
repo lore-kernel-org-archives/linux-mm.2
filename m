@@ -1,129 +1,98 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85028606A326
-	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 06:09:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69FB5606A323
+	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 06:09:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=chrisdown.name header.i=@chrisdown.name header.a=rsa-sha256 header.s=google header.b=pVMANl8C
+	dkim=pass (1024-bit key, unprotected) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=Dr6JNiY0
 Received: by kanga.kvack.org (Postfix)
-	id A95506B05C0; Thu, 29 Oct 2026 02:09:30 -0400 (EDT)
+	id 9109B6B05C1; Thu, 29 Oct 2026 02:09:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A6C976B05C1; Thu, 29 Oct 2026 02:09:30 -0400 (EDT)
+	id 8E8256B05C2; Thu, 29 Oct 2026 02:09:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 982CF6B05C2; Thu, 29 Oct 2026 02:09:30 -0400 (EDT)
+	id 824906B05C3; Thu, 29 Oct 2026 02:09:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 6EA356B05C0
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 02:09:30 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 02C7C1202A8
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 06:09:29 +0000 (UTC)
-X-FDA: 85374636900.02.A38C198
-Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 32EEB100003
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 06:09:28 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=chrisdown.name header.s=google header.b=pVMANl8C;
-	spf=pass (imf14.hostedemail.com: domain of chris@chrisdown.name designates 209.85.210.172 as permitted sender) smtp.mailfrom=chris@chrisdown.name;
-	dmarc=pass (policy=quarantine) header.from=chrisdown.name
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 5D2676B05C1
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 02:09:57 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id E86BA1C2CC7
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 06:09:56 +0000 (UTC)
+X-FDA: 85374637992.15.D270358
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf20.hostedemail.com (Postfix) with ESMTP id CAFCF1C0009
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 06:09:54 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=Dr6JNiY0;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf20.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793254168;
+	s=arc-20220608; t=1793254195;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kJG/RgFaRLdMkGdKAhf/ALFLkcE1J6knB1UbEQSKpbg=;
-	b=XKWZXNW/9JIf4sm30xk9+S7uP2bSHcvWxeW3cLfQTV0Bqm7va7/bUUOBm3DQnzVQs9LvBu
-	Jag+9XvP1tSMW597Bhk//M0+BoAjPn2mcL5CfgH6yndC6gyRsGfw2jl9bJbd40KpGjVlSG
-	xdxGkCfcMenkyg/AUKu3nS1wq22jeQc=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793254168;
-	b=YCeQ70pYbDFC9hTE9hBCQIIJwVgh4dzf4cLbiHBguB1GBvHAuttbAk90PoSy/R0cXlvw6i
-	2A2OxXTzLu7BnHBHAEF4du+4cm9S+quIJ4hP55Qk2S1fca20H2Tw/t/PyRMXn9R8GMkRGo
-	Q8yppN0932k6VfnmlefyMGNbvF3+WI4=
+	bh=WVY/eOKoLOvVfz1V/TI3JPFuaQycCAalrtqk1hzhIYE=;
+	b=KvHYiL5/+F7G2kZA9b9GqB/iR7KKTWj8i7RgpT852jm3VVMLvL3t8r/G5SiYmwMVlEDKhy
+	pS4n3Xnb2ithDSvY9u7lwycXKxgisdcw+5cWpgq/3W69Wigdh/5q2O7+wBFhpsnxxqDSKs
+	GdHdlbpzJa9um4yMROm1Ldf5228aVfU=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=chrisdown.name header.s=google header.b=pVMANl8C;
-	spf=pass (imf14.hostedemail.com: domain of chris@chrisdown.name designates 209.85.210.172 as permitted sender) smtp.mailfrom=chris@chrisdown.name;
-	dmarc=pass (policy=quarantine) header.from=chrisdown.name
-Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-8a058315c79so894421b3a.3
-        for <linux-mm@kvack.org>; Wed, 28 Oct 2026 23:09:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chrisdown.name; s=google; t=1793254167; x=1793858967; darn=kvack.org;
-        h=user-agent:in-reply-to:content-disposition:content-type
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to:content-type;
-        bh=kJG/RgFaRLdMkGdKAhf/ALFLkcE1J6knB1UbEQSKpbg=;
-        b=pVMANl8CEccF9rEEmVxT1RvB8muPTiW5tavcgvw4ZCPgPEE1Tq5DFjntvssmWNAB5i
-         3l0TxMF4FQesaWC2m4ZH1dF57zbRS8DSVeouUan3X7SITkbWGqAXoMk9xcFzHn1N4Z24
-         u2jMZ5N9PI8PTU4HkcdR/Xz7Qu2AeM5YJVG0s=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793254167; x=1793858967;
-        h=user-agent:in-reply-to:content-disposition:content-type
-         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=kJG/RgFaRLdMkGdKAhf/ALFLkcE1J6knB1UbEQSKpbg=;
-        b=SYFCdAmb7m1Q27+noPqc7toJrrbYsmtjr/3wqbuFCeUcvlp0qBwg2b+Rqb+qLP3gaG
-         jdnlT0yBO2n208bExCUL71R4TSucW5TUrr6hSVZU40h4Rt5OVxp41RTOi7bYbrQ8kmeS
-         Pt7U39FrcyXdkdMeqsX1nfqroOm2QLqQTcC3d4faeQMqYfn4sE80UPYQ9NH4WL5zGWFu
-         0fYOmuZ+FDvcf1Akr+Yd/DMObETFy+9FIQVa5RvOQgMAPEtM+oMwRGg44NvrsxKfBG4a
-         lqQYNTNvxjbXEoPporlaEj2pZUIzvap6z7qAwP8amowtZ7RLy7qljJYbEc+F2arDLZfN
-         EOVw==
-X-Forwarded-Encrypted: i=1; AKwUvBzeKufbnNHDa54FH1OhlpRmMMjz4i1hwOe1qxhkSvDNWpim1Sy3Xg1FTZ8JGqxPj6Tn5gPi35Bm4Q==@kvack.org
-X-Gm-Message-State: AFq9FYISDeQhFM+i2058rSyM8oiABhqDr0nSyIikgeEn3nnKvkwprAFG
-	JI5IUfIKckh9+NCgYeQ1P30nIkjXLyCRBGlV1wT81bg7Q+VRzcUVbavwD0xe/Y8U+oQ=
-X-Gm-Gg: AYBFou2rYe/s/lb7fb/ZlOPd+/ABtHkDgedo8lIDvENn+epJyzYPUdH3wygfVAf5Ozp
-	D6PnAou781wsoh5DINzxLokZUS/mkSUa6lljF7hDpBEtgbdpvP0j7351BjnE6VWjR1idnIRInyk
-	CRuuJYPGtrkAjbQ+peg/2245TxVt0mOkO+LRAF+9Q0CaPGj+vpT2xcrE0qxs16vovgw3u2vsgej
-	g+o8tLUPI8TFJFMWhuOS3aTvEJR2BbZ31sp8m9si4Zqit9U6uNsorM/R1AtTFYMm+7c27QZElf1
-	O925Xnnijg1+IJTfc4DIxUie91D6/YoplK6kDV8WUzYogVpIiG6d8LGbIwoL69FfhOLIupoBVMd
-	PdrXE87YZuFrSED9ZUUGQNDmULyXJCW+41j5+yvMvNJjwVWncto44j3z2HTgJSh4tZrjLO9YYm2
-	gSzxKGqg5i6Eso9Bu/qPOz0ckljG7WkdcrzcuiqduYoRXpsaz07T2ELi2lLsRS8976+bhi3GUWp
-	S9dzxW7ViKOG6byGKETE3huug/j8PxkLISb/RPmaRDdGIFEEnBIphVo1NX7qtYRC+LBvqrzDLwN
-	DLbht4kcYU+E+X0iJUAyx7LhooS/5oqcKF87DS2ENtFT7NQIvhf3dbG5UlguF1o1OwUraBzyUWt
-	FA2K1iG0wceemVr7tvHGJXgnSt244bKp06b1E7edKvk18LIeGMafr2KV34HOPgIprqTREEoGljA
-	YEuf2WjLQtLGZtT2VX/as=
-X-Received: by 2002:a17:90b:4cd2:b0:3ab:884b:659e with SMTP id 98e67ed59e1d1-3ae57f96d53mr3126592a91.9.1793254167010;
-        Wed, 28 Oct 2026 23:09:27 -0700 (PDT)
-Received: from localhost ([116.86.153.182])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3ae6e9bc6f7sm2447023a91.16.2026.10.28.23.09.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 28 Oct 2026 23:09:26 -0700 (PDT)
-Date: Thu, 29 Oct 2026 14:09:21 +0800
-From: Chris Down <chris@chrisdown.name>
-To: Vlastimil Babka <vbabka@kernel.org>, Harry Yoo <harry@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Cc: Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>,
-	David Rientjes <rientjes@google.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Kees Cook <kees@kernel.org>, Marco Elver <elver@google.com>,
-	GONG Ruiqi <gongruiqi@huaweicloud.com>,
-	Jonathan Corbet <corbet@lwn.net>, linux-mm@kvack.org,
-	linux-hardening@vger.kernel.org, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org, kernel-team@meta.com
-Subject: [PATCH v2 6/6] slub_kunit: Add a test for the kmalloc_partition boot
- parameter
-Message-ID: <66f981ce04dfb01d02d1683bb18ba6db1c4eabd1.1793253633.git.chris@chrisdown.name>
-References: <cover.1793253633.git.chris@chrisdown.name>
+	imf20.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=Dr6JNiY0;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf20.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793254195;
+	b=A8L5kIJ1t/4DDmpeJLoYrreXkbGb5dcTvvIW15fhE7bi+Lrgap+LbJxeEGd38MJMp9Y2bF
+	CRPGKIFEqTUhMB3vHJt/SInyixtTwnw0w53OR+HFkABg5nhx7IymgFca5uD/9x9L5juSdo
+	m/WeV/WBwKhXPOpoXTKvRrb1/ym7LTA=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 50C2B1682;
+	Wed, 28 Oct 2026 23:09:50 -0700 (PDT)
+Received: from [10.163.153.30] (unknown [10.163.153.30])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 099DD3F673;
+	Wed, 28 Oct 2026 23:09:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1793254193; bh=WSXlMR0+ChRPUt9nwZ/RQqp4dIjnfS1McvLDqJjqi8I=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=Dr6JNiY08UFcBS5kVUwBuzopXvPmL4cDcAMHfBI5p7QuH7am6Frdk9VpXfYC9B0NU
+	 sM8ZmKpjRAURVdJUGhYJ+wT2l0R86mvW0SEhBVPjMbp2U+CLzN5y58AfPFh06nVoLp
+	 weUC7UJRk3RyF6gLs2hxWC5KbHwpNUarMnh8Yn88=
+Message-ID: <106f7353-05d6-4585-a538-4c0e38e87829@arm.com>
+Date: Thu, 29 Oct 2026 11:39:46 +0530
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <cover.1793253633.git.chris@chrisdown.name>
-User-Agent: Mutt/2.3.3 (9073d26d) (2026-06-12)
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 32EEB100003
-X-Stat-Signature: rff345ojezrko6bqdtdzdjbaumw49mz3
-X-Rspam-User: 
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm/compaction: annotate data race for
+ zone->free_area[order].nr_free
+To: Zi Yan <ziy@nvidia.com>, Hui Zhu <hui.zhu@linux.dev>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Vlastimil Babka <vbabka@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Brendan Jackman <brendan.jackman@linux.dev>,
+ Johannes Weiner <hannes@cmpxchg.org>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+Cc: teawater <zhuhui@kylinos.cn>
+References: <20261028090747.68086-1-hui.zhu@linux.dev>
+ <548d9950-cc77-4c1b-b78a-34e304adb989@arm.com>
+ <DMGIMSCNW6YL.1R45Z2AH6EBKE@nvidia.com>
+Content-Language: en-US
+From: Dev Jain <dev.jain@arm.com>
+In-Reply-To: <DMGIMSCNW6YL.1R45Z2AH6EBKE@nvidia.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: CAFCF1C0009
+X-Stat-Signature: xsa3iyn9ag6xw53die36s51ksgx5gyem
+X-Rspamd-Server: rspam04
 X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
 	version=4.0.1
-X-HE-Tag: 1793254168-567632
-X-HE-Meta: U2FsdGVkX1/LPwpxEZ67wKXn3KJaUkd89DFlzQfpKB8CGYqfTkW4l2rTjDbuIeghkuLLPmIbOw6gpf5u8PhiulXqxn9KoZpsEEqiqZgGisaetQT/HI6+PVZr7gQlCng1t4HiRgxYzG2kVfNp4Y++M9n46oGtCJ4G6Qwhh0MShWI0QIwomlIkeqHlYgSgVleKv0CiIER6D90IRPwAVfJpsK6rDzqVeyQQoXV1Wpll786Rfxn9DhA1Ugk7BeIvNsNZC/OjyLnbFK1OmRVM2w9O1/HpgbGbDyqfDprlt33q0acdh5MQ2dhmRqosUi6r5CDU+W7OQjYsinnG9dWpPCc0UAX9xwAUSpEgmkEVuemL1BwcyE9HxaH/FLrN5oP1i6S+wzXwB6SZDNuX+I1D+gL2nZkMkz6Tezu8TvyVXOUaQhPvf7Ar1uFfx6kAyiJPFXRAiBE8UhC8f0W+3TR6m35bU7uL7q6C0vCU8kika8y550MI5sUL+U97woexfKZ8w9WVb4OquwOf9Ai0XkXsnREN9Rq/eil0lda+QlgRt593p+zMnD03d4ZwLRzUVaU/nDs5otqaxo7eV4RQUboPKG/dTgJqj3VXDd1aDV79ER7PoNzpJdkrTNsi3tEBpmOPbCigqdUVLnDGXyV8SVByr6kzHUzh9jNAetVdF1T432aQx+9tpqUZkDmSERaAuvTWsbY7VeI9V9HpLycwQWKdyqonW6e1iIIM4P03cAfnrUAG5YnQDAP2i3He8Dhu8+AAhhc7Y5gK/Y+qDw+3/90NsPjqnb5yf2P4a3eDWQ6NNFZglcWaQGBraIkgQIJ02pmxDpPOhr8IbP2lTkfVSwAbWaqzViayHfDdBrLba+/1q2hYVYM1xYLDD42OeoAmqGX+d7O5y9xQ5uP1nhwssaLFGlKnmxZuO8KQJi4U3nxnZnHS7P6Wx+++N2dBAgOF17bdfGvkl7D5UPbe0ZEjt2Bz3ao
- aPB085eN
- xZD61w51FAcZGpvE7uARBfGJtAiCwojKcPJHCWZGXVT6eQLr5FcQ9EU9lCf4fdTJj4UyuLdy+z6qP68AxCYYkxxuqrJ/U9jpTTrfGVnMGZlpi9BtUkRKTiCjJSp7crmPnHSA+yVnJIcA4b154mLt7R/Zc0aVG+3u+hrpmcgks5eeQ/MUzm8qissyhL/EFADxEA/ogcsqpBdirko79Ob2dUjhaioAFp6kRs2yogTKigp4PS2rCO4n6L+GgjITAX3drXiM3N8rt6oWWE5cCM452YMNx8oMSSpqi8dJK0bkYfviHI+ioGXUda2tW3lnItV10ykdcfk/13+sEssFFy65I3pDQadyJQ1eAfoi8d48kT16reo21o9WTNRpe/Z1N0qHuUjTLL91nPwv0yjlwiFOHy0CA8XK5mR07T4LP4silnumXe2Rw1Y9v2w2c5eKNwzAXMXke5O54Bg0m/tYEm4vx+kueKFpxjGFjxHHo2dYClbvS7vrZrrC/HICLzOQdC/3P0vU6UmCl+WoUb6w=
+X-Rspam-User: 
+X-HE-Tag: 1793254194-878018
+X-HE-Meta: U2FsdGVkX1/Huks8lPWpxAZ/US7K4xx7M+ps5KF/JmfPjvdqZvw6H0z/rufBBjwZM8iRnBOyHmQ/g5oxBMO1jmQeukuJ4gctY+Sm+siU5gFhJd0nRnpRcqg5FJLCFEd/3ECkOD0I9ZA3CnlIH2K5vvBF6U1hCMQPv9i+o64VdHfxxZYMMwPALqOePEq1O7f5hQzBBEn2PRbpu+yKPMRczUSo/zo9YI2uQTbN+AWFa0p0X92FOMj3K4ishnA7Snbr40FHXJR4SGOOMevjilHf4P/qVjKpE1rNXYHy55poxn7Hlbls0Fc0c2TC+NiJeC1o4h52Jrmo6N91a6gxWzatXxMsDHQEmUvSkl5kPs78kvWyZMJmJ7IVFsWvaD9AbNaHE+7uOkDsMR1rqR+XLHmd9YXZvMoZHC6VVx/PCdxdW4hqVR2/m132MMg1bwnsNDO9Qw/8i3OZylgFhu7LXomWWMKe2dEdy3zRClA6yKWGxSxWM8o2zhrbvChFJ6P91PhrckQ7Z1mEyDJsgMQ02zoiKitO44t6ntC8LREv9O6XM/zKD9Pkplrdx9h1TOmSYq97YbmMfKVDbjc1jOODTS0M7szbR4PkLoj3cHUlT+eCjQq5W/18B9ZXYBMRiaDZWCuj6Y4HpIF53kQS1PL+vYArUkMr6MPXQa7tKRfQj1bYLqlR6s+bDPcwfVus87n9gX909n2ASoatqPnCsmikOHKOOp3b5Gt0yYST9DbHRZ/vDPdCGB1WbRmM9JWUlFSdJAxEGj0g72XZJVYLXz1LN+AgPahqY6H5CSlLG36ECwgToG8GADI2XPFxQVZmPT0NE7s2iIynTUrnErhmOosJgvMI+zROb+GtzxnXrZzH0a4SqoRLroHphAyrYvTnkuWPBeNV4+kRbSSek0lxoDmS4nL3a7MTGzu5Otz63HHjkJl2o4l26p6kcFjAYzDmTEnrxLsbyw3Hpu7YjNSwnJy+Glv
+ Getv8ls3
+ OKb3qSQ+0dytas+cpaPzaW3e71VAl9/ABwMh7+Cr+HTSIzrpMKHtqqA4uUPOw5QUHRLkYoBgmhsbYHacBRm1umLQCGOsqHvMWXb8gZtOy31EkJ1CDxsYHArJqC0XGkBvmJVNyXiRUrp60r3U8DNobjtKeUWsCNTvXCSO5UqdR/BtQjC9vv3ZnLK1W/ko52gupKWOd1hiKdkb2ZDtjIxe8L6gbvukXGSTRAui9AnOGmnojt0cZwjRPJhNcZ1WwLPyDw9PM593Zx5eQifG1UxQucSpw+RezCDxD2ZaV
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -132,111 +101,119 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Check that the kmalloc partitions are separate caches by default, and
-alias the normal kmalloc caches when they're turned off with
-kmalloc_partition=0.
 
-Signed-off-by: Chris Down <chris@chrisdown.name>
----
- lib/tests/slub_kunit.c | 46 ++++++++++++++++++++++++++++++++++++++++++
- mm/slab.h              |  4 ++++
- mm/slab_common.c       |  3 ++-
- 3 files changed, 52 insertions(+), 1 deletion(-)
 
-diff --git a/lib/tests/slub_kunit.c b/lib/tests/slub_kunit.c
-index 670645875b27..e3035864577d 100644
---- a/lib/tests/slub_kunit.c
-+++ b/lib/tests/slub_kunit.c
-@@ -333,6 +333,49 @@ static void test_slab_buckets(struct kunit *test)
- }
- #endif
- 
-+#ifdef CONFIG_KMALLOC_PARTITION_CACHES
-+/*
-+ * Each partition copy is a separate cache, unless the copies were disabled
-+ * with kmalloc_partition=0: then they alias the KMALLOC_NORMAL caches.
-+ */
-+static void test_kmalloc_partition(struct kunit *test)
-+{
-+	enum kmalloc_cache_type type;
-+	struct kmem_cache *s;
-+	unsigned int idx;
-+	bool found;
-+	void *p;
-+
-+	for (type = KMALLOC_PARTITION_START + 1; type <= KMALLOC_PARTITION_END; type++) {
-+		for (idx = 0; idx < ARRAY_SIZE(kmalloc_caches[type]); idx++) {
-+			struct kmem_cache *normal = kmalloc_caches[KMALLOC_NORMAL][idx];
-+			struct kmem_cache *part = kmalloc_caches[type][idx];
-+
-+			if (!kmalloc_partition_enabled) {
-+				KUNIT_EXPECT_PTR_EQ(test, part, normal);
-+			} else if (normal) {
-+				KUNIT_EXPECT_NOT_NULL(test, part);
-+				KUNIT_EXPECT_PTR_NE(test, part, normal);
-+			}
-+		}
-+	}
-+
-+	p = kmalloc(64, GFP_KERNEL);
-+	KUNIT_ASSERT_NOT_NULL(test, p);
-+	s = virt_to_slab(p)->slab_cache;
-+	idx = kmalloc_index(64);
-+	if (!kmalloc_partition_enabled) {
-+		KUNIT_EXPECT_PTR_EQ(test, s, kmalloc_caches[KMALLOC_NORMAL][idx]);
-+	} else {
-+		found = false;
-+		for (type = KMALLOC_PARTITION_START; type <= KMALLOC_PARTITION_END; type++)
-+			found |= s == kmalloc_caches[type][idx];
-+		KUNIT_EXPECT_TRUE_MSG(test, found, "allocated from %s", s->name);
-+	}
-+	kfree(p);
-+}
-+#endif
-+
- #if defined(CONFIG_PERF_EVENTS) || (defined(CONFIG_KPROBES) && defined(CONFIG_SMP))
- #define NR_ITERATIONS 1000
- #define NR_OBJECTS 1000
-@@ -529,6 +572,9 @@ static struct kunit_case test_cases[] = {
- #ifdef CONFIG_SLAB_BUCKETS
- 	KUNIT_CASE(test_slab_buckets),
- #endif
-+#ifdef CONFIG_KMALLOC_PARTITION_CACHES
-+	KUNIT_CASE(test_kmalloc_partition),
-+#endif
- #ifdef CONFIG_PERF_EVENTS
- 	KUNIT_CASE_SLOW(test_kmalloc_nolock_and_friends_perf),
- #endif
-diff --git a/mm/slab.h b/mm/slab.h
-index b5b344d6e402..8e1e5a3f044b 100644
---- a/mm/slab.h
-+++ b/mm/slab.h
-@@ -394,6 +394,10 @@ extern struct kmem_cache *kmem_cache;
- extern bool slab_buckets_enabled;
- #endif
- 
-+#if IS_ENABLED(CONFIG_KUNIT) && defined(CONFIG_KMALLOC_PARTITION_CACHES)
-+extern bool kmalloc_partition_enabled;
-+#endif
-+
- /* A table of kmalloc cache names and sizes */
- extern const struct kmalloc_info_struct {
- 	const char *name[NR_KMALLOC_TYPES];
-diff --git a/mm/slab_common.c b/mm/slab_common.c
-index 5391149a2eed..406e8688ee0e 100644
---- a/mm/slab_common.c
-+++ b/mm/slab_common.c
-@@ -782,7 +782,8 @@ EXPORT_SYMBOL(random_kmalloc_seed);
- #endif
- 
- #ifdef CONFIG_KMALLOC_PARTITION_CACHES
--static bool kmalloc_partition_enabled __ro_after_init = true;
-+VISIBLE_IF_KUNIT bool kmalloc_partition_enabled __ro_after_init = true;
-+EXPORT_SYMBOL_IF_KUNIT(kmalloc_partition_enabled);
- 
- static int __init setup_kmalloc_partition(char *str)
- {
--- 
-2.54.0
+On 28/10/26 7:16 pm, Zi Yan wrote:
+> On Wed Oct 28, 2026 at 6:30 AM EDT, Dev Jain wrote:
+>>
+>>
+>> On 28/10/26 2:37 pm, Hui Zhu wrote:
+>>> From: teawater <zhuhui@kylinos.cn>
+>>>
+>>> KCSAN reports a data-race on nr_free which also exists on mainline:
+>>>
+>>>   BUG: KCSAN: data-race in fast_isolate_freepages+0x284/0x1550 mm/compaction.c:1589
+>>>
+>>>   race at unknown origin, with read to 0xffff9894ff3dcb60 of 8 bytes by task 179078 on cpu 12:
+>>>    fast_isolate_freepages+0x284/0x1550 mm/compaction.c:1589
+>>>    isolate_freepages+0x52/0x650 mm/compaction.c:1722
+>>>    compaction_alloc_noprof+0x36e/0x3e0 mm/compaction.c:1850
+>>>    compaction_alloc+0x21/0x30 mm/compaction.c:1880
+>>>    migrate_folio_unmap+0x7f/0x820 mm/migrate.c:1177
+>>>    migrate_pages_batch+0x37e/0x1200 mm/migrate.c:1762
+>>>    migrate_pages_sync+0xce/0x560 mm/migrate.c:1928
+>>>    migrate_pages+0x8c6/0xc20 mm/migrate.c:2037
+>>>    compact_zone+0x539/0x10b0 mm/compaction.c:2660
+>>>    compact_zone_order+0x1b8/0x230 mm/compaction.c:2795
+>>>    try_to_compact_pages+0x20b/0x630 mm/compaction.c:2851
+>>>    __alloc_pages_direct_compact+0x98/0x2b0 mm/page_alloc.c:3722
+>>>    __alloc_pages_slowpath.constprop.0+0x452/0xdf0 mm/page_alloc.c:4401
+>>>    __alloc_pages_noprof+0x28a/0x2d0 mm/page_alloc.c:4794
+>>>    alloc_pages_mpol_noprof+0x1b1/0x470 mm/mempolicy.c:2270
+>>>    alloc_pages_noprof+0x7a/0xe0 mm/mempolicy.c:2347
+>>>    io_mem_alloc_compound io_uring/io_uring.c:2848 [inline]
+>>>    io_pages_map+0xb9/0x330 io_uring/io_uring.c:2892
+>>>    io_allocate_scq_urings+0x231/0x300 io_uring/io_uring.c:3933
+>>>    io_uring_create+0x29c/0x9c0 io_uring/io_uring.c:4091
+>>>    io_uring_setup+0xb6/0x100 io_uring/io_uring.c:4203
+>>>    __do_sys_io_uring_setup io_uring/io_uring.c:4230 [inline]
+>>>    __se_sys_io_uring_setup io_uring/io_uring.c:4224 [inline]
+>>>    __x64_sys_io_uring_setup+0x66/0xe0 io_uring/io_uring.c:4224
+>>>    x64_sys_call+0x1816/0x1d90 arch/x86/include/generated/asm/syscalls_64.h:426
+>>>    do_syscall_x64 arch/x86/entry/common.c:51 [inline]
+>>>    do_syscall_64+0x70/0x2a0 arch/x86/entry/common.c:81
+>>>    entry_SYSCALL_64_after_hwframe+0x76/0xe0
+>>>
+>>>   value changed: 0x00000000000002f4 -> 0x00000000000002f5
+>>>
+>>> nr_free is only updated with zone->lock held, but fast_isolate_freepages()
+>>> and fast_find_migrateblock() read it locklessly to skip an order that has
+>>> no free pages.  page_alloc.o is excluded from KCSAN, so the writer is not
+>>> instrumented and the report is of unknown origin.
+>>>
+>>> The race is benign: a stale zero only skips the order for this round, and
+>>> a stale non-zero just finds an empty MIGRATE_MOVABLE freelist under the
+>>> lock.  Annotate both reads with data_race(), following commit
+>>> af1c31acc853 ("mm/vmstat: annotate data race for zone->free_area[order].nr_free").
+>>>
+>>> No functional change intended.
+>>>
+>>> Signed-off-by: teawater <zhuhui@kylinos.cn>
+>>
+>> teawater? What?
+>>
+>>
+>>> ---
+>>>  mm/compaction.c | 12 ++++++++++--
+>>>  1 file changed, 10 insertions(+), 2 deletions(-)
+>>>
+>>> diff --git a/mm/compaction.c b/mm/compaction.c
+>>> index f1b2060eb2016..499ec7ceaa3ed 100644
+>>> --- a/mm/compaction.c
+>>> +++ b/mm/compaction.c
+>>> @@ -1601,7 +1601,11 @@ static void fast_isolate_freepages(struct compact_control *cc)
+>>>  		unsigned int order_scanned = 0;
+>>>  		unsigned long high_pfn = 0;
+>>>  
+>>> -		if (!area->nr_free)
+>>> +		/*
+>>> +		 * Access to nr_free is lockless as it is only a hint; a stale
+>>> +		 * value is harmless. Use data_race to avoid KCSAN warning.
+>>> +		 */
+>>
+>> The comment is noise, the reason of using data_race() is a well-known fact.
+> 
+> IIRC, checkpatch.pl requires a comment for each data_race(). The
+> comments need to stay until you send a patch to change checkpatch.pl.
+
+Okay makes sense.
+
+
+> 
+>>
+>> Apart from that, do we have the same problem with zone_watermark_ok? It also
+>> uses area->nr_free without zone lock.
+>>
+>>> +		if (!data_race(area->nr_free))
+>>>  			continue;
+>>>  
+>>>  		spin_lock_irqsave(&cc->zone->lock, flags);
+>>> @@ -2031,7 +2035,11 @@ static unsigned long fast_find_migrateblock(struct compact_control *cc)
+>>>  		unsigned long flags;
+>>>  		struct page *freepage;
+>>>  
+>>> -		if (!area->nr_free)
+>>> +		/*
+>>> +		 * Access to nr_free is lockless as it is only a hint; a stale
+>>> +		 * value is harmless. Use data_race to avoid KCSAN warning.
+>>> +		 */
+>>> +		if (!data_race(area->nr_free))
+>>>  			continue;
+>>>  
+>>>  		spin_lock_irqsave(&cc->zone->lock, flags);
+> 
+> 
+> 
+> 
 
 
