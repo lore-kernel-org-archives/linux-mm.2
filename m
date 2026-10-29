@@ -1,62 +1,62 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12F65606A323
-	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 17:30:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D8BB606A31E
+	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 17:30:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=DlimMrOb
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=HC6izpFB
 Received: by kanga.kvack.org (Postfix)
-	id 33E316B061F; Thu, 29 Oct 2026 13:30:49 -0400 (EDT)
+	id BA2EA6B0620; Thu, 29 Oct 2026 13:30:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2EF256B0620; Thu, 29 Oct 2026 13:30:49 -0400 (EDT)
+	id B532E6B0621; Thu, 29 Oct 2026 13:30:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 22B6F6B0621; Thu, 29 Oct 2026 13:30:49 -0400 (EDT)
+	id A69706B0622; Thu, 29 Oct 2026 13:30:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 00E796B061F
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 13:30:48 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 9229C1A04E8
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 82F456B0620
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 13:30:51 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 0A748804D6
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 17:30:51 +0000 (UTC)
+X-FDA: 85376353902.02.25C3AE1
+Received: from mta0.migadu.com (out-171.mta0.migadu.com [91.218.175.171])
+	by imf03.hostedemail.com (Postfix) with ESMTP id A5E9020012
 	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 17:30:48 +0000 (UTC)
-X-FDA: 85376353776.26.556A686
-Received: from mta1.migadu.com (out-218.mta1.migadu.com [95.215.58.218])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 96A1B40015
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 17:30:46 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=DlimMrOb;
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=HC6izpFB;
 	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf27.hostedemail.com: domain of dongtai.guo@linux.dev designates 95.215.58.218 as permitted sender) smtp.mailfrom=dongtai.guo@linux.dev
+	spf=pass (imf03.hostedemail.com: domain of dongtai.guo@linux.dev designates 91.218.175.171 as permitted sender) smtp.mailfrom=dongtai.guo@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793295046;
+	s=arc-20220608; t=1793295049;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ZMDApzLIDOAKE5Gyc0kBJeDtiPqWtLZVQgfI5VI22BQ=;
-	b=VT2nnyitSAsDahX1cy6zzlmldir8lKoTKK1llhsPPRIAB2oRRlmUS4lXqlzi7YKvm554ox
-	j/0Wr82Isk/WrajKfmJ9WKxyFDHipXRy1HpaCwRpOmqt5KNhOFEBEW3vZM+9rHtCJVZX4r
-	6a8dwYogUkEmMlQ79pjYNjC67FdTmfs=
+	bh=rBVVW3tHabgwrKT2QwycDYkPKCsMYjmGYVvwfvGvrhE=;
+	b=LyqYb7BSpCEk+XNW6VSfmviKQriKcxBTcGkq173zroa+/gZvfLt0a9TtFYxsdIKWwpZt3S
+	bP5fFa9l6+Xkp6HckrHUzLY1V6AOfkJWhno0WQ8VNCirsWBxcuqA0rZH5vcfLfauHmHyHo
+	qSizgQTYqr5HoM1Cz5oIHC6XSZS5q8A=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=DlimMrOb;
+	imf03.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=HC6izpFB;
 	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf27.hostedemail.com: domain of dongtai.guo@linux.dev designates 95.215.58.218 as permitted sender) smtp.mailfrom=dongtai.guo@linux.dev
+	spf=pass (imf03.hostedemail.com: domain of dongtai.guo@linux.dev designates 91.218.175.171 as permitted sender) smtp.mailfrom=dongtai.guo@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793295046;
-	b=yry9YmGrdB4TVwuyHLtlbjkG1cN7eAslS3vVoULQwrLWHCbrwIe+dw7qAmQDjoM8SwAXM+
-	SrzyC9v4vKhOAYQo0fC+w+lSKmu5iiDYyODc+nzDxACYBsp+9C0/SvVEJ9oTzD/z+pdeas
-	fD0PEcd+GK4jzIfcItFv5v4IKefXzuo=
+	t=1793295049;
+	b=mhwszucCFz90q6eEITZZlq1GtDJwjaHIDLla3Q6lfCUWvRGLBKFnug5Xv7qjuEWSNeThVQ
+	6CZ1r5Tz4ZWtSmzg5nVts2PccZFhKOX6cJQiC2gBcxvsjpOeDH+sQbnZp0EiAGGnvpZeWG
+	E8VUhJkUHQyjW+k5NGbltVa2HQAdaYw=
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=LXdJ2wzcp0hoHVE9cbEq+7Hky76xZdetmi2maoCyhPM=;
+DKIM-Signature: a=rsa-sha256; bh=7EdBEd5XL5wRdZvYlylGxvVrrhD/K6K3u333eKYP51c=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1793295045; v=1; x=1793899845;
- b=DlimMrObNqkXb5rzzvGt/o5MlLGzTCnpncP0VUWI1dg2+CfU41UO9p3lvJQnz69v18Cywvrp
- px/On5GsE4FyXiNd8EQRj6TXLEiLlr5Mtt1AVGx+tkk2prfJRp1trLFlgy55E+DuthYgyepjnDS
- Ho07kMcgRMyyjJwh4u4XbJzQ=
+ t=1793295047; v=1; x=1793899847;
+ b=HC6izpFBgx9Os0a9ApbmT2Glk501euie4yvJGNNb7zQBjlxydSGvilwWczTel/QZIX6ywO4n
+ MTUMT5QvMBh0ouFgHp4Nv4X3nrI2oItKbxYRkNG+LllR7xNIV3QSufQWwP14HJ5/bGcN9HFVUX0
+ L2/ocLWMVGp1/+3XWj/tMaXk=
 X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 9eed6b1d4b951111;
-	Thu, 29 Oct 2026 17:30:45 +0000
-X-Mizu-Trace-ID: 9eed6b1d4b951111
+Received: by smtp.migadu.com with ESMTPS id 155dc8602c7bb9c2;
+	Thu, 29 Oct 2026 17:30:46 +0000
+X-Mizu-Trace-ID: 155dc8602c7bb9c2
 X-Migadu-Flow: FLOW_OUT
 From: George Guo <dongtai.guo@linux.dev>
 To: rppt@kernel.org,
@@ -79,27 +79,28 @@ Cc: ilias.apalodimas@linaro.org,
 	linux-mm@kvack.org,
 	linux-kselftest@vger.kernel.org,
 	linux-efi@vger.kernel.org
-Subject: [PATCH v6 3/8] kho: Include linux/mm.h in kho_block.c
-Date: Fri, 30 Oct 2026 02:29:50 +0900
-Message-ID: <20261029172956.20791-4-dongtai.guo@linux.dev>
+Subject: [PATCH v6 4/8] kho: Add kho_disable()
+Date: Fri, 30 Oct 2026 02:29:51 +0900
+Message-ID: <20261029172956.20791-5-dongtai.guo@linux.dev>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20261029172956.20791-1-dongtai.guo@linux.dev>
 References: <20261029172956.20791-1-dongtai.guo@linux.dev>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 96A1B40015
-X-Rspam-User: 
-X-Stat-Signature: 5bji57phgfr5wd9ybdxujh1a6mmcmw1q
+X-Rspamd-Queue-Id: A5E9020012
+X-Stat-Signature: wo6h7wohbauszxetgr3mpxoaxhzsjuwp
+X-Rspamd-Server: rspam04
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1793295046-887535
-X-HE-Meta: U2FsdGVkX19gO6VlTHsQ06fXpdnsE26sr+QH6cbIsejPdINa5lmdrmntNlgC16eQmNv5on9u+8QAdOPdni+hvpJT+LNdVw6zT9ayMOmILa82D+LMiaItOUN9ZWh9CXENtJhoEgQSyJSBOk6bGvYwiA+4ndUycoY6xL5JCndAapKQdut3ukPSmyr4d9dtd+ijYxytFIQ055VBi80rClFWiN4g3SWEEWnRPImLIdVL2+C3tHV1cPUcAlptUr0BNqROhhOf8FsY95GYlmQj8wSCmVQ+mQl9O0i/SEx1SuW4dgpzNHwis9vfv/1Ac3yffpiTrSNAT/YSLtbURDk4qniXhfrYoFCQSpr+ZGVmf1l0x7NnWM864MbmVFP+61qkXfQFGRCiYV3I17ki+iWfSGMAeaMlBGlrZohFDkFaqonD8K8ZX3WGOlbNCpQaRwfIV2XbLX2A9Cd5X0EAI7qWy87WmsvWhIAVr39OpLf0meWN3vl1K9aEhVFobx2PNh1lp5rUEUnH0wAWgXbfNy0C78w4MLO/9X9uk+1Va/udyMQyiQ5XxvpiUjFVsFn8zJ40VLzzm8SgcgMsId4UrCOMgsjygS+D9Xy6cI0TzccqEMB5AfWR0Topn2RCGubeJcOpbAvfyrB9ILWmS/ZU1lPKNx+rg8Nle+N7Ju3tbTYNGkM7xfoqxPopWW5HNNT8PdR/ShD7vhmGqMSWhuoqCDuNxSBWqCgzz2zATs/o6acWj42wzmYMyPwASVJpeGRwetfY+9K41292Lb+zc0Zms3bgML1W0u0CgDIWiMKxkujrJSpKxyg7uTPM5DVgddp29hAjr4TKvgNGGB8p2u3WNuMYD81IoMb7W+Oyjc4M54npCsS1lNrQSsAEF7j9pTPsWI1k809hMPKGvzIMJyTlepK6A/c4u4tCsrJAk7FVEeaWV0gI1fmjjPxxwBowwlNYl/yGonYad60fr0b0Pb0t+t6Vuvu
- bcpD89AA
- SjQu/HFVGsoQi2nDXeYwyB1Nsih3SGOxtYUwyznIXRdjW3kcLIzpJWHDn4mmnKtKrDdNDf9ZRQLEklza4JYDknfK5Fnzn/MWx6oS5q/nXJpUlitSFrjmwBZXDGnlAo525w3hRTpE5kunSGv7hoCmirE5LnYDuv5RDPtJrz27MDGnwE4d1mQgfYdBK+7qx3KT6ojYnWNUe8rJm/ugX5xC1sOvsN791nI7270YREA5bJVDH9RbbVp95fWRdWcbg9ZbaeCXRQvk6wL6uMB6Rg0+nl3dNVqYcOpD4GuIJU7srdrfLf/k=
+	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
+	version=4.0.1
+X-Rspam-User: 
+X-HE-Tag: 1793295048-813033
+X-HE-Meta: U2FsdGVkX18XxfLDfTw7Q9HPg73QzwcFnp0g9IGI6wDmngJ8RT/MiEicahfe6Rqnyi9vTolNcsIVPEszT/QgGZG8pa7jnc0h1sL1YkTfgW4CyC1HHk9Dy6uglDjQyw5c4auXJr2LvRc+frmfee+mDzZ2WV3JKJBRsfddRorgyFpZjEwkSQ3NjAP1N+27QYG6zIUorP7eCpTkgfBIamfuvRpgA0z4B66PXJlEtQd0DuG9M0VHRwLF4Hofxq817NvwfMkGgL6Sx9hufhShdjpSixY71Cc7hVwHivoohvo7zyLd5101T1ugBwhiP2VaTv0UI/nSnh7aGqq+Sc7bT2/zdx2U97KRAsSWICZfXIdU/AKKK2eB1ZnLQRBgucxZVLehB/WnMvZ5m+1BvOaqrBOpCaxvkGPTkJugZCevok8Yf/GkEBaoXOZB8MtD2Dk8kAH3VPDKoDCRbcS6Ddrfgp6+YiD3didrqhthHjmo3scAZ6VVZ3NDT1lKnBA/I4TsUlcEyqt17xArNqJcjodBw1hs/KKlJjxZLKaELGMUGAnwGCXYSi+JDYHRmwbnuWuMHGHaB7a3K9uJyHpIfpXAr+L2Mpq2LQ3uRCyXBka0e+inz2bj5z5XW3t7JUUoOrFNZLux/f1R0CBs0eU6UY6A/fX2k/ogWfTlrn/XxlvlBn+HG8tcTZ+yD9GOPYDCOQt78hHaglTMFJJftmScNT15c+BR7l/URqd8/kGb57f/JGqbLvyvBWyKriuFL4zPF+E3ym9X/dyg8VbjH5ahvMcXMhGVlWktDNgKdnLMEIstfv3o7usWxP7Fo4BcXaU3WEE3yrm6zstcUyAriPQ7CPUSt0Svgkxnx+MBAlUBWqa6uVjJJnheDTxr8hnS4ZLEuTEKc0J3ceHBEjsYqaCpmtntYr2dk3a+E+9aCOhh/edGQyQmjW5BTrKOGqwmmOAHMmngRHkhIUwVSSeOo1JDBh1m++V
+ aQ3Fv1w6
+ kn6jjjTMxkVtzc96tkAmG/wCn9RyIy47239Rl3nnpACVCL77GN65dHwHFlFXNA4IUZqMOQNsnB+1YjKyrk+flfLKEXL/oJ8bNowtqtjTgsbm2Yiny+RlE/J2olk4x6GbsOoUiEfJjhan/wdMca6OH56UB3mp7dUxFMFn/BhBO0096IpAl+Ly1GxCiHNFwTh6yHZMNLn0emAUIQePeVSjBGlTu0EQmPcrnx8HAe9yojnaph8gadP2hyBlSUFPiTuclxbnXhnNE21WYHqNupJLNxSwW9A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,32 +111,65 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 
 From: George Guo <guodongtai@kylinos.cn>
 
-kho_block.c calls virt_to_phys() and phys_to_virt(). With CONFIG_KFENCE=y,
-the LoongArch implementations use offset_in_page() and page_address(),
-which are provided by <linux/mm.h>.
+On LoongArch, KHO state is passed to the next kernel only through an EFI
+configuration table. Only the EFI stub installs this table, during a cold
+boot.
 
-Include <linux/mm.h> explicitly to avoid implicit-declaration build
-errors for these helpers.
+A kernel entered through kexec does not run the EFI stub, so it cannot
+create the table if the previous kernel did not provide one. Without
+the table, it cannot pass KHO state to the next kernel on a subsequent
+kexec.
 
-Co-developed-by: Kexin Liu <liukexin@kylinos.cn>
-Signed-off-by: Kexin Liu <liukexin@kylinos.cn>
+Add kho_disable() so architecture code can turn KHO off when the EFI
+configuration table is missing.
+
 Signed-off-by: George Guo <guodongtai@kylinos.cn>
 ---
- kernel/liveupdate/kho_block.c | 1 +
- 1 file changed, 1 insertion(+)
+ include/linux/kexec_handover.h     | 3 +++
+ kernel/liveupdate/kexec_handover.c | 9 +++++++++
+ 2 files changed, 12 insertions(+)
 
-diff --git a/kernel/liveupdate/kho_block.c b/kernel/liveupdate/kho_block.c
-index 0d2a342ef422..0d56891b2f4c 100644
---- a/kernel/liveupdate/kho_block.c
-+++ b/kernel/liveupdate/kho_block.c
-@@ -25,6 +25,7 @@
- #include <linux/kho/abi/block.h>
- #include <linux/kho_block.h>
- #include <linux/slab.h>
-+#include <linux/mm.h>
+diff --git a/include/linux/kexec_handover.h b/include/linux/kexec_handover.h
+index ef2b188c8ed0..6f80e1b0ccd4 100644
+--- a/include/linux/kexec_handover.h
++++ b/include/linux/kexec_handover.h
+@@ -15,6 +15,7 @@ struct page;
  
- /*
-  * Safeguard limit for the number of serialization blocks. This is used to
+ #ifdef CONFIG_KEXEC_HANDOVER
+ bool kho_is_enabled(void);
++void kho_disable(void);
+ bool is_kho_boot(void);
+ 
+ int kho_preserve_folio(struct folio *folio);
+@@ -54,6 +55,8 @@ static inline bool kho_is_enabled(void)
+ 	return false;
+ }
+ 
++static inline void kho_disable(void) { }
++
+ static inline bool is_kho_boot(void)
+ {
+ 	return false;
+diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
+index 74c4633f5afc..3280533eaebe 100644
+--- a/kernel/liveupdate/kexec_handover.c
++++ b/kernel/liveupdate/kexec_handover.c
+@@ -82,6 +82,15 @@ static int __init kho_parse_enable(char *p)
+ }
+ early_param("kho", kho_parse_enable);
+ 
++/*
++ * For architecture code that finds, after the early parameters are parsed,
++ * that it cannot pass the KHO state to the next kernel.
++ */
++void __init kho_disable(void)
++{
++	kho_enable = false;
++}
++
+ struct kho_out {
+ 	void *fdt;
+ 	struct mutex lock; /* protects KHO FDT */
 -- 
 2.53.0
 
