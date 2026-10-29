@@ -1,66 +1,66 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 580C0606A31C
-	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 00:19:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08752606A31D
+	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 00:26:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ohR3uX7w
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=HIMw+WKY
 Received: by kanga.kvack.org (Postfix)
-	id 19CC46B00EF; Wed, 28 Oct 2026 20:19:31 -0400 (EDT)
+	id EEE486B05B2; Wed, 28 Oct 2026 20:26:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 14E9C6B05B1; Wed, 28 Oct 2026 20:19:31 -0400 (EDT)
+	id E78306B05B3; Wed, 28 Oct 2026 20:26:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 03CAC6B05B2; Wed, 28 Oct 2026 20:19:30 -0400 (EDT)
+	id D42886B05B4; Wed, 28 Oct 2026 20:26:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id D0FCC6B00EF
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 20:19:30 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 5EEF1A7579
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 00:19:30 +0000 (UTC)
-X-FDA: 85373754900.19.7779F9C
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id AAEDC6B05B2
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 20:26:03 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 2B14D1C31D7
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 00:26:03 +0000 (UTC)
+X-FDA: 85373771406.05.3BD9A26
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf24.hostedemail.com (Postfix) with ESMTP id AF00E180003
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 00:19:28 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ohR3uX7w;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf24.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+	by imf21.hostedemail.com (Postfix) with ESMTP id 6D2211C000B
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 00:26:01 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HIMw+WKY;
+	spf=pass (imf21.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793233168;
+	s=arc-20220608; t=1793233561;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=GU7Gb3GLimfKLTFeZUh6Xge/AOYd9HMwRfZdUHSCdUA=;
-	b=351c32paiCMrjIP3UFNP1Dq4t/qOCTUOIW5JRgiwS8apgrfeigb7uZ6LoS69wwwwozT/0T
-	77nqtftxZDB5Df+j7XVwCkapQU5ZOplCDM9f5RyjTN3tdnQeCwGgj0k1d3QSy0Qtl6k95k
-	BHspbZNlRje3fRbSoZ0QML5+w1lmjC0=
+	bh=URGAbIYsZmrO7zoKja8bTGELNEU0ptfP/g/LFZldzT4=;
+	b=zQBd7J+/mrDnfQAxE4ez/KuV+hcLHl/5KATiidwrvNTtBAb3fTQU5LkfO0ml/YAK3lANia
+	LQqJoONaSkrd9jH03upqCPoDkPTQhwodS6+hcE8caATWbGGDpNL6sE5cSbKuMW0BcakRqG
+	cvrb2KoUMUzv439tk0xGXxpjc/EKHQE=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ohR3uX7w;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf24.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HIMw+WKY;
+	spf=pass (imf21.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793233168;
-	b=ZPPLfPPZXvXwb0609EpNDpU7ckjekiet8BU8Jfidrw8GgMXeslP/jZWvOzsV9ztUb/5//x
-	0ogftwBXFv3B84xikGqljO40j+lYYzuAcF0/rnM7wYwM2o5ctzhSChuOr1ODeQznhvUTiY
-	NcrZy3jJdV8eTzbl64xN7hIqMHLF0sE=
+	t=1793233561;
+	b=KyAfMYATffkNslq45sNBPNTGId+74qFGO14t1oilbswBVPSg0ZNgFNuTED3UNaLJE/mZQe
+	yOWOa73jC/7zf4KzW2xQYu868NyboPUZWHpi4OYX/rp2+0+yu4+OSAXKnzHGfyZfU0S3dC
+	dN/jFv6Jo5MNyAFieQBImYuY8Nf7CpY=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 990514071A;
-	Thu, 29 Oct 2026 00:19:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2881E1F01825;
-	Thu, 29 Oct 2026 00:19:27 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 9CF9F4135E;
+	Thu, 29 Oct 2026 00:26:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35A541F01829;
+	Thu, 29 Oct 2026 00:26:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793233167;
-	bh=GU7Gb3GLimfKLTFeZUh6Xge/AOYd9HMwRfZdUHSCdUA=;
+	s=k20260515; t=1793233560;
+	bh=URGAbIYsZmrO7zoKja8bTGELNEU0ptfP/g/LFZldzT4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ohR3uX7weE4E0JafS6YBZO4ZKoCy6PK+GGlCc+DDD1vXXdFOppaZrcuc+Duf1bUUW
-	 G5yCdo83B+NdZ2HDqz/uhRIhXS1SPF3fmOxELysSXn1N3LUl2FMbyslQW8oN8KTPVE
-	 XGsa2KWyu6KZlHdQoc+XIaSHHlO6poF06gOnt9/9057jrug7r8htJAsHmkBQcTd6yV
-	 HKh3hl8A7whynE82pK3aNxX2CSbjcVGyoPIha2pEWWOAbmdVDNvX/zK587kk32/PkY
-	 EecpCI6DuRlQ7PO4+4OUUjsoQ2bwTIIhFVWubQb3wEBk6Nb95N4rV9KLddCRvfvdu5
-	 ppGEL8nR77/4g==
+	b=HIMw+WKYWlwxxKQz7LcDPrgXPqVxDcT/FqKJqvHmk2595MJau/O1w/72iQxQuLlCr
+	 vVafhsd/P8N0KxtKgB44wU7Hwh/N0Ycxa8dNsu9mCmsbc6nK/QgqcS3GMz/iS+AEpF
+	 mMrbVRTyJz7H1Xcbpgs07hkb3LiRWvbTXIWuSJOFJ2fWKy3jZhuTMEgL25j3W87mHG
+	 T6ykjpTgiLgQKP8Amho5YrPl+29fgJjePsxW95Cl24SgHrYrCVWZuO2iR7B4sEs4XR
+	 P8k1V0CCiDf1FiZRQHgTOAKsdsRB46afd+QxyXHuG364RrNn6KZ9vTI4dp0ieKxQqI
+	 37x52cTfuqDIg==
 From: SJ Park <sj@kernel.org>
 To: Manuel Ebner <manuelebnerli@mailbox.org>
 Cc: SJ Park <sj@kernel.org>,
@@ -72,28 +72,28 @@ Cc: SJ Park <sj@kernel.org>,
 	linux-mm@kvack.org,
 	rdunlap@infradead.org,
 	skhan@linuxfoundation.org
-Subject: Re: [PATCH v2 1/2] Docs/admin-guide/mm/damon/reclaim: improve grammar and style
-Date: Wed, 28 Oct 2026 17:19:19 -0700
-Message-ID: <20261029001920.166896-1-sj@kernel.org>
+Subject: Re: [PATCH v2 2/2] Docs/admin-guide/mm/damon/reclaim: rewrite complex parts
+Date: Wed, 28 Oct 2026 17:25:52 -0700
+Message-ID: <20261029002553.167065-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <1303b843e41498612cce4acdbb47941c054bcf7d.camel@mailbox.org>
+In-Reply-To: <e68efe96e67c8b72047f2ab01c874026cecb025b.camel@mailbox.org>
 References: 
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: AF00E180003
-X-Stat-Signature: yqapt4h3yi4gwg7kj96493iawkuoih54
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-HE-Tag: 1793233168-277902
-X-HE-Meta: U2FsdGVkX192E0mMPw+XhbGrV2Xh4wj1bl1xuaoOz71aZ4oDIryv9TEnEy9doOc3MZuzI93W/NetNUuLKpoFCvS/bc5FsZxHqq8ApWnJjgfw+VGNF30KNc5/3VJrjd+LHb8CvJuiXv6Jetnhu9uKtkVOh59uc6c2v8z5Tpg49h9yL9zpfMRj/M9PAUyUO34/mQ5si8iNTX2Bp+aT7EfHba7MK9RVMdZNc2fty/uT2G44J2tiFGiY2WdS/P/06vgUiPGZze923u7LT0UV3bTJPT2mpENLWv6Ic17iT47O7Nruh6H6tvafFiJCB87dWalQ/A+72gAgT4yFIy1oR/rE4k9NU1rUQj5ZQR1jD3GBLQ/TIuYO6nfoz5rXs+QSMbmEHeC2qQHEyrS+wYGpuHGvDG4wVjYoEJRaArdzdtuYJA7CO2VKREA/6pqrmvO3oy5L6aTCcq8CAWaF0dRoA60C8VAqYJXxZLn5KWu9sbPSnKam7yTc/CXikh9ndivkzvUUZQRIUReTzgL2c8TQNZz4cyst2HVNc+56sJiGwYj9HlFWL3qWhZ90/kQVjhY3RrTimh6l38sY6zqlJ327TZKk8l+b+gkETzMPFY5Fyukd6ChTPJl2Q1BpOGkf/gKw0PUmF56ZdQ/hPLr+TTfS5MX9MXJWaOQEeEuXpBRPgMNEzqCR0XTxCGPZK4Ky2PYSP4SaxE11aQq18C67G4OlWZ4MNOkXwU3zIRQUMtk7ODQ1QT/DWBF0zS88A+sQRbCUYMkSa4QVYOUIWjHKX2ljIscinFV2/YSZKNHU8zubhVTqwnij6pqmPsXYZJEErIAnHAqru8rXxSpW2u/EMogWWXL7+AjX9XeY3AzV78OoRCDxDvDbvAXTiL75E8a4FCoo1OV7WsdQU/YYabMXK+wWmFUufHMl1z05Qtjf0lhmEXSlR/0lGx0W3FfHYxnvbi3jByELxc9op1gcif+IPXoqG8X
- KVjyT+ym
- lDaA+PhICmp0PXIBUJ9BtthZwnwIsnqfIRlYWAiF/+J5cZbd5EBsDUwo65AT9qH3JyJgregw0z1cfd/4xnEf1SEfho3BvTThXaptoqt576d7Wms2IHMYRDc4ZPy8UtLP8gjE5Q2mt7Y76L4nrz/0BItqUeVSjbrDVmXsnOq+7Bb9QxHMQ4gtTGhRE+49EPOQ/GaKBxg4NlDneINOeigiEIErj7fobrkZ9HXPqDLpsz+oJAaQYXggcS+NzDPV0LQV2l6Zp3Q4dC1GAZ77NNSqEo7ipc8qRY/hFmyq4qOCxt55+gX90E2mBA/OrUad+//LTSooFcdRa6VxlbJk=
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 6D2211C000B
+X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-Stat-Signature: ou6phg19pagfrf1ybh3aekfatyfdcnft
+X-HE-Tag: 1793233561-49941
+X-HE-Meta: U2FsdGVkX18KxUoTqks6lj1jyRugx1QSH2KZFJRvh/V5L7c+2uPb4P0u+ojFj202m3xU/AQOKxnlmZEFc6kDdbv7Ir9ZXUUsBICFfwczjHEB0OW9lZfD+lPXvpxbcc5T0dqom3WwOe0Fz1f2wAjc/hy6KIaVQN5mXcF5mQoASKElMPrOkpADBujp9oelcBIxqC0kupL/1ZmzO1Xi3ocZFwOhXK0tY4d1qt0Cw0kimuBN1pcwcK1iX/WlkfONFzYFjLHCC6tnVcuJReCCN4NiVds4IiV8/YpW8hJRIqn9f0SwQaEXfI6jEa588PF0OY8pvReD+ymS/ZQnMcyIjtGZOhxhaDrMiUqZApSIAI15P78tLFDrXYUNjppmTexjeJy0Xeh8bukFbKJCsZK5VJrz3V1wEkwUJVY9i6k9Ws6EusZiKQu9zc0lkEqpRpuljj8+hARm6oKYL/TlhCqY9NNosNbcmgqcrnwWJv4zYC8cwkc43qpPhDsElzge+2iWa6qyj73rz+gBL+2Jo1O4yt1ijdOoIc86Kd6WkoC+iPPsgEb7oFd1GhNEQgPrZ0Bvq8gbfhLSXB7B16OB6Wqm0rFI6YXOP+wBOlu59BCW28fRYN5irE+HiJXGTmEUJELy6gRo3nof0AfGsEA2QTQELSbsnm1THlniJN4O8dkGWY1ouH188cvFV2DozpnRqgzfwHRpOn0qEQMgyaG8v5hVmIMBk7mpwdF/7TKlGxREgHwSU0WmlPsM4pixKHms3uYuIJCl0OmjK/JM/+ECr2xFK2qnz3s75fzprgbiBFxHBUuUGbSR6Mrwy/mFqWKoaDb6KkZgYwm6HA/DLuamLlHYWeJgD4i6M9RGUN5jeRykzoIhk+vwvYG2OEk2IeaRJiM720vOiRcOxyjvv679LcLnl6M3Cn5bmaGiA9pvX+VfLmnwY6uFY6QfpGCTaSRek/XJAGu3koHRGBXCyrxM/5gEDmj
+ oX04miYi
+ mAzM0XOIVyDGju13Epbo0GnYbtYvP4WvX9zj9n/VdPx0hEGjk5nNCHg8WWwg92UCnVr5pzQH5sIVpIf8o0Ry9XO4qoiW3ZBXI/aWtPQpC9cNBk6CAJCk8kXG0e4psQojLXKz5lKDqB3pY6G8btI0iv3EGvOdFOj9YS8N0cUgIkTtCEgZXXe7106lyGT+H4rbRVJsFBmNWhZy+KZDQtt8eIJ4tae+v9XoaEDQ8kDfHD8Yy1wxHs8YJHdPFJlrJmA4CH00ikMrbyIBt7u8NyGEkEJqe6TWvCSdsJegJpkxkjaZFOxMIlQnNr8XQsvXtJq/UtgKusA5svvkxTXt5+T9PgBpvx8Uk/2BAwUz1
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,86 +102,83 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Wed, 28 Oct 2026 17:52:01 +0100 Manuel Ebner <manuelebnerli@mailbox.org> wrote:
+On Wed, 28 Oct 2026 17:52:17 +0100 Manuel Ebner <manuelebnerli@mailbox.org> wrote:
 
 > Hi SJ,
 > 
-> On Tue, 2026-10-27 at 17:06 -0700, SJ Park wrote:
-> > On Tue, 27 Oct 2026 20:05:04 +0100 Manuel Ebner <manuelebnerli@mailbox.org> wrote:
+> On Tue, 2026-10-27 at 17:19 -0700, SJ Park wrote:
+> > Hello Manuel,
 > > 
-> > > Fix upper case. Fix tenses. Replace 'set as' with 'set to'. Add space after
-> > > sentence to make it double space.
-> > > 
-> > > Signed-off-by: Manuel Ebner <manuelebnerli@mailbox.org>
-> > > CC: Aveline Noir <jm5905938@gmail.com>
-> > > ---
-> > > @ -113,8 +113,8
-> > > Choose as you wish.
-> 
-> I will refer to this below.
-> 
-> > > 
-> > > @ 20
-> > > should be:
-> > > -Free Pages Reporting [3]_ based
-> > > +Free pages reporting [3]_ based
-> > > or
-> > > +'*Free Pages Reporting'* [3]_ based
-> > > * the right kind of quoting/ kernel-doc highlighting.
-> > > Choose as you wish.
-> > > ---
-> > >  .../admin-guide/mm/damon/reclaim.rst          | 36 +++++++++----------
-> > >  1 file changed, 18 insertions(+), 18 deletions(-)
-> > > 
-> > > diff --git a/Documentation/admin-guide/mm/damon/reclaim.rst b/Documentation/admin-guide/mm/damon/reclaim.rst
-> > > index e4e2ffa52e..0bab2299ea 100644
-> > > --- a/Documentation/admin-guide/mm/damon/reclaim.rst
-> > > +++ b/Documentation/admin-guide/mm/damon/reclaim.rst
-> > [...]
-> > > @@ -30,12 +30,12 @@ guests could mitigate this problem.
-> > >  How It Works?
-> > >  =============
-> > >  
-> > > -DAMON_RECLAIM finds memory regions that didn't accessed for specific time
-> > > +DAMON_RECLAIM finds memory regions that weren't accessed for specific time
-> > >  duration and page out.  To avoid it consuming too much CPU for the paging out
-> > >  operation, a speed limit can be configured.  Under the speed limit, it pages
-> > > -out memory regions that didn't accessed longer time first.  System
-> > > +out memory regions that weren't accessed longer time first.  System
-> > >  administrators can also configure under what situation this scheme should
-> > > -automatically activated and deactivated with three memory pressure watermarks.
-> > > +automatically be activated and deactivated with three memory pressure watermarks.
 > > 
-> > Let's keep 80 columns limit.  Same for below.
-> 
-> Okay.
-> 
-> > [...]
-> > > @@ -113,10 +113,10 @@ quota_sz
-> > >  
-> > >  Limit of size of memory for the reclamation in bytes.
-> > >  
-> > > -DAMON_RECLAIM charges amount of memory which it tried to reclaim within a time
-> > > -window (quota_reset_interval_ms) and makes no more than this limit is tried.
-> > > -This can be used for limiting consumption of CPU and IO.  If this value is
-> > > -zero, the limit is disabled.
-> > > +DAMON_RECLAIM records the amount of memory which it tried to reclaim within a time
+> > On Tue, 27 Oct 2026 22:23:46 +0100 Manuel Ebner <manuelebnerli@mailbox.org> wrote:
 > > 
-> > Didn't we agree to keep use "charge" ?
+> > > Rewrite complex sentences.
+> > 
+> > Any special reason to keep this as a separated one?  I think it is ok to merge
+> > this into the first patch.
 > 
-> I thought we agreed to "records' but I sensed a misunderstanding. That's why I wrote
-> > > @ -113,8 +113,8
-> > > Choose as you wish.
-> above. Should i have been more explicit?
+> In this mail ( https://lore.kernel.org/all/20261016142921.126622-1-sj@kernel.org/ )
+> > Let's do such rewriting with another patch.
+> 
+> I understood this as 'make it two patches'.
 
-Sorry, my bio memory easily be stale.
+Thank you for reminding me the memory.  I now remember I thought it is better
+to be a separate patch.  And now I realize I was wrong.  Now I think realize
+this is small enough change that can be collapsed into one patch.  Sorry for
+changing my words.
 
-Anyway, my impression was that we agreed 'charge' is not really difficult term
-and therefore keep using it.  Maybe you were saying that only for the paragraph
-we discussed about if the term should be explicitly explained.
+[...]
+> > > @@ -125,8 +126,8 @@ quota_reset_interval_ms
+> > >  
+> > >  The time/size quota charge reset interval in milliseconds.
+> > >  
+> > > -The charge reset interval for the quota of time (quota_ms) and size
+> > > -(quota_sz).  That is, DAMON_RECLAIM does not try reclamation for more than
+> > > +The charge reset interval for the quota of time is quota_ms and for the quota of
+> > > +size is quota_sz.  That is, DAMON_RECLAIM does not try reclamation for more than
+> > >  quota_ms milliseconds or quota_sz bytes within quota_reset_interval_ms
+> > >  milliseconds.
+> > 
+> > I think the original sentence was not that confusing.  Also, this changes the
+> > nuance of the sentence?  What the sentence is saying is
+> > "quota_reset_interval_ms is the charge reset interval for ...".  If this was
+> > really confusing, maybe we can add "quota_reset_interval_ms is " part.
+> > 
+> > But, I start feeling we might trying too much polishing...?
+> 
+> I think the verb is missing or can you tell which the verb is? If you can
+> no fix is required.
 
-If you don't mind, I'd prefer keep using 'charge' here for consistency.  What
-do you think?
+I mean, changing only the first sentence, like below:
+
+"quota_reset_interval_ms is the charge reset interval for the quota of time
+(quota_ms) ans size (quota_sz)."
+
+> 
+> > 
+> > >  
+> > > @@ -137,7 +138,7 @@ quota_mem_pressure_us
+> > >  
+> > >  Desired level of memory pressure-stall time in microseconds.
+> > >  
+> > > -While keeping the caps that are set by other quotas, DAMON_RECLAIM automatically
+> > > +While respecting the limits imposed by other quotas, DAMON_RECLAIM automatically
+> > >  increases and decreases the effective level of the quota aiming this level of
+> > >  memory pressure is incurred.  System-wide ``some`` memory PSI in microseconds
+> > >  per quota reset interval (``quota_reset_interval_ms``) is collected and
+> > 
+> > I'm not sure if the original sentence was really difficult to understand.
+> > 
+> > I'd prefer dropping this change.
+> 
+> That's ok.
+
+Thank you for accepting my humble suggestion.
+
+> 
+> Will you handle the final edit or should I send a [v3]?
+
+Could you please send v3?
 
 
 Thanks,
