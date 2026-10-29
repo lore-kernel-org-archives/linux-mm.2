@@ -1,132 +1,124 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFA73606A326
-	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 10:35:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FE78606A31C
+	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 10:43:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=pbM7HBm0
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=h6M7nzpp
 Received: by kanga.kvack.org (Postfix)
-	id F20D66B05B4; Thu, 29 Oct 2026 06:35:32 -0400 (EDT)
+	id B870E6B05B6; Thu, 29 Oct 2026 06:43:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EF8416B05B5; Thu, 29 Oct 2026 06:35:32 -0400 (EDT)
+	id B5EB46B05B7; Thu, 29 Oct 2026 06:43:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E36026B05B6; Thu, 29 Oct 2026 06:35:32 -0400 (EDT)
+	id A74AF6B05B8; Thu, 29 Oct 2026 06:43:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id B8EAC6B05B4
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 06:35:32 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 581F2A0383
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 10:35:32 +0000 (UTC)
-X-FDA: 85375307304.15.0089F10
-Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 8003380002
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 10:35:30 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=pbM7HBm0;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf02.hostedemail.com: domain of azpijr@gmail.com designates 209.85.221.46 as permitted sender) smtp.mailfrom=azpijr@gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 800326B05B6
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 06:43:50 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id E81F680342
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 10:43:49 +0000 (UTC)
+X-FDA: 85375328178.24.89CC3A3
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 38F241A000D
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 10:43:48 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=h6M7nzpp;
+	spf=pass (imf19.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793270628;
+	b=b6lesMUuu2AK8O9PkP3t5TLqlkUWuCIhWe5sEk8/ZDWSgAe4/2y2IkcTEpTnQHwaCRY+LL
+	NnAfxrd7AWUjF1yMy14Cu5Tz1WeGsMIqzpqZRXOi5KTVbhlSnuZcIeEGr0ejmsN+yROIaG
+	0lTsZAiBBGt5mEd1HsUy8l639aC7hp4=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=h6M7nzpp;
+	spf=pass (imf19.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793270130;
+	s=arc-20220608; t=1793270628;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=G+dOdTKmIbVkiM3lsAF+c1rAUHzJmMdTQfVlB9f5eEM=;
-	b=bgRs0oTbGa7zymywlR4ASnArWIyB6ZKTOM+MdRRA1hBuHqpEPjOcBE6IESnngOMARbEOgA
-	k87yy8goUWUXKASPXicgbHeoT/GZGPFI5psIfYC/yleuMoB15R+7qDfcVbtrUQ+VAo+dhY
-	cS5KA9/NbsGOnImdkFUyr/g3H2bk498=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=pbM7HBm0;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf02.hostedemail.com: domain of azpijr@gmail.com designates 209.85.221.46 as permitted sender) smtp.mailfrom=azpijr@gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793270130;
-	b=c1BtpqXV4vcqTb4X9kXGMX0hUGoO7EskDeVTisBHW2dDed0xwAfjSdIC2E33XTQfl0QdZr
-	UzZdgTZ/7SpZKyMH+YXsv0AMWsDpqqkLFlYJlCcAD1K3NcSxrmOi9MAyUXJ32vWIpsgmis
-	dB3QV69cWRWqOsAgK3uwwGjBerk+sII=
-Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-48df0fa43c5so318877f8f.0
-        for <linux-mm@kvack.org>; Thu, 29 Oct 2026 03:35:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793270129; x=1793874929; darn=kvack.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=G+dOdTKmIbVkiM3lsAF+c1rAUHzJmMdTQfVlB9f5eEM=;
-        b=pbM7HBm0Ndiru11DD3yjOMTyyH7sX04bG6ik/4Zbw6u9sosP8a8iYr02nWOG0+2uZy
-         iQItEpB8HV6pDBRacgl9rur0kt+a8SsY7km+haOTiGCJ2qSOUIHfr4k+obZ/G3UdgLoI
-         C1IEogaoRxc1GDpbuYwS4tpuGN93eDHVVd7WAB0uppaYFRvqmbQ6VgML46XZIt8ERemI
-         kp9qqbwoR9ZgyG/YyOz29i88APlVt7ww4CNGGpVgnOZF53K78SV5hjtGt0VEPoE2N7/A
-         0DVO9p/ROGsxgT8q6l23r1AbAAx03pKD7Mhveb2PMqnkdOQQ1gRetCA5oghahx2gS78p
-         nVmQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793270129; x=1793874929;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=G+dOdTKmIbVkiM3lsAF+c1rAUHzJmMdTQfVlB9f5eEM=;
-        b=cZ4OT3lDbvB8OO3LvpLaw1WXVb2O1oN6RTOhc5iWldbP79Zxp8VNukbxRn5rdyT/5P
-         /yGbFBfnLzTy4z5XcenAkLLlf8FhV5R2Vf58irpALw51B9rersWdK3MDYhZB05g+jE6S
-         N99nozuLPZX8Y3pAKH0+Nsrf0UBgDpUKrx9i3HRf2krqX+ppsDQS8i/FHp8cLYTHIHo7
-         oxM88CPyWLGzIQq4a9C2tJkQwAVltn05udy+LLNj3GfDvIkkDvIf4+vbNzssEQm1XZnW
-         48TyHaIQD/vWNS5TmwpaDZ4K39Pzo/OFfTREkyIjKkP8XB7nHSUA0GPCPTlQwFRJbqeo
-         Pdqg==
-X-Gm-Message-State: AFq9FYItNBqaLjByMIrfLmC1spBYL3QijSFPbVlY3b6q+5+Cxtur/gKw
-	DyHLsiF5vcP3csE1sq6OZ2aTaVlhUj8Xp8QHWJFBky1fwvEmZAUt0K3T
-X-Gm-Gg: AYBFou0APuOAEhc1RH559ovUUqVx41ebXbzkptiT3o8LLPRZnALCXT+2y58vYyHmXzA
-	ndiGfNhtnYE+Y2ZSbl9jzlvkTAhTRAJIgFuSsTTismhWfLCIYcDpC43haKjyjNn4+BG8HQUKM3b
-	53O1IrIRfncyQe4zQF7GW01kDhqOMHn3NGj/S/fxZkERdMl5w5IMdLRAjmHliLzmkVdnKxU7/jL
-	H0KK6fn7EibnvEDbvU1TZ04W54ll4hTOsZukihncReoxo+2Ref33qLLK3Kn6BmlcfCETbhjUknX
-	bVY1MSdHdymsa7sLJgX1637CpiznfkDl9+OBYvhS7WwLRof8cmXcO5dR6Eo5h7lgGDEqWU5lJen
-	73LTBAKTayzUlfiIvQ+y4YzGF2RYs3AHr7GREBH1eYk9npCCMRrFTwB93CMq91WGJpOvdz06/6t
-	om3gxG0ooQKayNIORjuljY8I2JFYlz9g1LuunSwRQ3LL8Tj3THg2TFu8TJmEQ/Lc8thqExGhoXL
-	qtCogfz9cr0yLhB7825RxVwEZNC4yZx9AQGSL8nLaCJCUF8EpL2bt4TusBl9AaAXwyW2sLsRj9R
-	SXADcYcUrRY36m/EFNb2ZmJAGqoREWiBqxAp6S9SEk+aiQ==
-X-Received: by 2002:a05:6000:2893:b0:48e:5e63:27fb with SMTP id ffacd0b85a97d-48e649b1219mr5739523f8f.20.1793270128547;
-        Thu, 29 Oct 2026 03:35:28 -0700 (PDT)
-Received: from [192.168.1.22] ([83.231.69.9])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e3ecd8ddasm36580278f8f.48.2026.10.29.03.35.26
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 29 Oct 2026 03:35:27 -0700 (PDT)
-Message-ID: <3b80c557-ea63-4d32-8901-3f7939ff541c@gmail.com>
-Date: Thu, 29 Oct 2026 11:35:26 +0100
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=v7bl5mathvEsQc0NewEfiW9buRzfycGDuVIoRi3XbeE=;
+	b=FhFRdfCOd+J8MADMpD9AjPDwODEIrEMQuycFcHlWES5tDtege4xQBX1YerEksI+Hk+t058
+	fhkG08M0guaK0vyM/S4F5rnUaDo7oWXDFpirnoFKhTvpNcppxs5GfMpf+6gybQ9wZhbVGg
+	pua0LZkAivLt9b+6swDP2W5ByDPiw/I=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 8CCB7600D1;
+	Thu, 29 Oct 2026 10:43:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBFD41F01825;
+	Thu, 29 Oct 2026 10:43:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793270627;
+	bh=v7bl5mathvEsQc0NewEfiW9buRzfycGDuVIoRi3XbeE=;
+	h=From:Subject:Date:To:Cc;
+	b=h6M7nzppxu1MNzAHPW3TFoBhyXbSLLzhmYpxIyCkGQKBFJp/jQiCQVj6ypCqs2jUf
+	 do9Uqc9YlgVQ6ZinxNyg+cRiQAk/D/tbkyY1hYWnQkutwOIaM2Ox6terGh28H0/lbT
+	 h8cqIeuqP5iCMfPYOD+q6wMzbo4FEGewrVGHsEZNoGl4SYrTmOIFvQeKhczP2vaaJ4
+	 DUevwX44epbNvvIl9Pc9YFfHaHzrj2MJWgfPQcW15LGQlyx/Ubsi9scnM5oMfKe4RR
+	 JhPc9ioRgpvSa2YVBOQoQgWeM5PsBmwqL5jjyCaZgxjZGLY+8CUs7MyrnY4jacM2Ik
+	 r3qFz5ix7MkyQ==
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Subject: [PATCH v4 00/15] mm/shmem: various (urgent?) fixes
+Date: Thu, 29 Oct 2026 11:43:21 +0100
+Message-Id: <20261029-fixes_shmem-v4-0-392fc715d8f6@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 2/2] selftests/mm: load xfs before checking for it in
- run_vmtests.sh
-To: Qiliang Yuan <odys.yuan@gmail.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>,
- Zi Yan <ziy@nvidia.com>
-Cc: linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20261029-bug-selftests-mm-run-vmtests-xfs-modprobe-v3-0-16ad772850ee@gmail.com>
- <20261029-bug-selftests-mm-run-vmtests-xfs-modprobe-v3-2-16ad772850ee@gmail.com>
-Content-Language: en-US
-From: "Jose A. Perez de Azpillaga" <azpijr@gmail.com>
-In-Reply-To: <20261029-bug-selftests-mm-run-vmtests-xfs-modprobe-v3-2-16ad772850ee@gmail.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 8003380002
+X-B4-Tracking: v=1; b=H4sIAEoj42oC/2XNTQ6CMBAF4KuQrq2ZTvl15T2MMW0ZoCpgWiUaw
+ 90tGBOIy5d535s38+QsebaL3szRYL3tuxDiTcRMo7qauC1DZgiYCsCEV/ZJ/uSbllqOWY6ZKLS
+ QQCyIm6P5HMDh+M3+oc9k7tPE1Gisv/fuNb8bxNT7Laer5UFw4BlIhLRMKgVmfyHX0XXbu5pN0
+ wMucbbGGHCeKoAiQWV08YflEudrLAOODUmtKix1rFd4HMcPnTe3mDMBAAA=
+X-Change-ID: 20261025-fixes_shmem-2782719b130e
+To: Andrew Morton <akpm@linux-foundation.org>, 
+ Gregory Price <gourry@gourry.net>, Zi Yan <ziy@nvidia.com>, 
+ Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>, 
+ Ying Huang <ying.huang@linux.alibaba.com>, 
+ Johannes Weiner <hannes@cmpxchg.org>, 
+ Vladimir Davydov <vdavydov.dev@gmail.com>, Michal Hocko <mhocko@suse.com>, 
+ Hugh Dickins <hughd@google.com>, 
+ Baolin Wang <baolin.wang@linux.alibaba.com>, 
+ Lukas Czerner <lczerner@redhat.com>, Carlos Maiolino <cmaiolino@redhat.com>, 
+ Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
+ Daniel Verkamp <dverkamp@chromium.org>, Jeff Xu <jeffxu@google.com>, 
+ Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
+ David Stevens <stevensd@chromium.org>, 
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
+ William Kucharski <william.kucharski@oracle.com>, 
+ Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, 
+ Nhat Pham <nphamcs@gmail.com>, Miaohe Lin <linmiaohe@huawei.com>, 
+ Naoya Horiguchi <nao.horiguchi@gmail.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+ "David Hildenbrand (Arm)" <david@kernel.org>, 
+ Chris Mason <mason@kernel.org>, stable@vger.kernel.org, 
+ Pedro Falcato <pfalcato@suse.de>, "Kiryl Shutsemau (Meta)" <kas@kernel.org>, 
+ Balbir Singh <balbirs@nvidia.com>, Josef Bacik <josef@toxicpanda.com>, 
+ "Pratyush Yadav (Google)" <pratyush@kernel.org>, 
+ Eva Kurchatova <eva.kurchatova@virtuozzo.com>
+X-Mailer: b4 0.16.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3095; i=david@kernel.org;
+ h=from:subject:message-id; bh=GpKtRlaQ06LBkExuSjLz4XHKAw3/ZQRf15rGlWX8NMs=;
+ b=owGbwMvMwCF2/OVpCdfQ3ZWMp9WSGLIeK/uv2d2YXLnL7kzy5YiS1ytZdVzuujJ0zZe5Xxib5
+ 2cgeVOso5SFQYyDQVZMkSUo+L7By5fraqvd+Jhh5rAygQxh4OIUgIm0bWZk6PDafmXB4leuGoeW
+ xm4QbkmL151XfTx0so7M1qoZaauDnjP8z5kx5avo28t29nG7uFK219W7KSS+n9V/3+FmW8Vk629
+ SHAA=
+X-Developer-Key: i=david@kernel.org; a=openpgp;
+ fpr=1BD9CAAD735C4C3A460DFCCA4DDE10F700FF835A
 X-Rspam-User: 
-X-Stat-Signature: hhqtg8bmc83fcuha7uy1akawzmx5okzt
-X-Spam-Status: No, score=-14.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
-	autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1793270130-375953
-X-HE-Meta: U2FsdGVkX18JvHhE4wwqxIKo5kS0JE7OsH43Yc2yBgUKHzpbnk1TsJ6u/2JA3wO6Rj10+AWAjVXwzdZh179WnjCSMoOuGTyRVF/2v6C3++rGygqXIbqWBdSzUsV7c6yHMpsRiLTiLrYzyMXKqUrqEYtDveF6f5pjln6WDR3rDP0B2N3WY5hNM8V3vKK9R/vx6pyjNNYJc7k1UBDD9pPieQw2NXNdGgBDxbmNjxXr5M+1PNXranrdkwBK9SMlMlN1dWoQoAYjNLIhofhLECD583+4WYPW7RhAT8atXFa0jEOIszqYSDnMgCe5gnV0LKLydu38lHalQjZGtqoKZIh6ahencFQECgAfothZigWvIzQ3KkrRBbIOsnvoKE/js+No96TAocKDsXSu8/sfNvqXMO8Ur01Wq1r3FqR6aeOiimVCWb5SuOnvG0q/M0vsjrjyx9McblNfVTj8tgBHxs/Z/d2ARJtzupbFdMg/f8m0qK4OGHhztG4pfPfFs573AXIdxXthftqx/Gxx1IHRYqoQU5sc1IJo1DTuwXvZCHES5mGHiG++e/tMHQII1VtURdwdoUevej1HkPW0mxDFS8cmarLhjwLBNo+aPIHPPnkHqJOwpdhskxArNaxfKAytgL1PxTlC2eqg5riNr43uEI4SLxxSo7h6yzmzyJMMFvE+glvzDJ1a1NAU6Wloa/0SO7z7SPHTVSIRIam4PDXzKgjjramG8bVcj0sxzrF7O0qQEmtcpob/07f1YjRVM5HzZGbw9Pe1bEkwtrsDEBNv9DKIGTemMk9vzwwUgZuMnOy5pz0686RYKPbFQ+fQXzLpq37R8QtXdmmIcdpgGUbnslzmdDt79613pad7KHlzMW9pd260HqAhn5/1JRQI2zc1wYmRYZDt+hnGnx8nGfiseBfEO8WgJNHNGBzB73wXx+LLRwBNZBpZpy/hdehTvBztXS30AlL75t8L8j4y2QSxwL5
- 6xq8OpYk
- uzX6BgJ05jAS/UHjkmmxUoL34CCrgEpRa6zX+gq7KFAW483plOm91QCvM7S2Mx9A3SNxDizElo5wqM2LHnFe6oro6qQ2EWahoucFszaXsk7rC3hLPvM8r+ANSnQ7XI2dj9X7IapwZ+ZlwvU+FmzbzBG8jAXmdEmI9db/ir4KW0RuDFFtmdtB9hjCBgHwzOR0XYq+99huMilat4av4RlOfa6iZIWq7RkhhN6vGejIRN4fpO5hTgqeRxtPHBq3SoByfP6VfdzGOd6G1jklDUPNWGBwDU/KtyKyG7iZ4XF4hp6SJd3yzV5XJ5CkXZwnbouSIRN5jFjcI6Ztsxj+vK9uynHg3vKPST/TlBnSXjHuHfH6tLdQIXGGfoF8n9gSXM+8Ji+HY4vu1hw3y9uzffnk3WEU26IjXDWroEbU8Md08iCTE3hlJChEmgt0IChjuUsgw1+PvAor62ZdOKpCxGM99/W0FOG9zMJmiEdoBlOGF0tZgbUHhpY3GJ0KyKIIwy47z+KOE+KFdqrPUDrCkJq+eCO5zD5uiPJRo9MDYp+yWZ7XLtssgtt5VZIxb+tHkyOs37h01VO00obU9+0rg20RKindAXw==
+X-Rspamd-Queue-Id: 38F241A000D
+X-Stat-Signature: khjy8nox97169stb73iddagkqzc8nc49
+X-Rspamd-Server: rspam01
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1793270628-744006
+X-HE-Meta: U2FsdGVkX1+AOu2ahqo7ah74ZLjqcRzlsWDcBNorcF2LUb/XWBEX091uXlSMnR5ghbBqf9f5RMngO6SUXUQK23mCp8MXtA6EV7/7agHgX8bLbi7MYeKauY37cN3rLi0aFl+RvIDEor7mq8dqtoBa9R/u74nEbiTTg+ykyKBnUQHMXPR465A8fIbbOeb1n0p+WpoQwpaqs3dHqwlCcmLn1ax5MbXHm7hzs/f+kiZt9NGY1EODwwG5uW89hnP1A47TKKxVQodcvhfBWOlPmHGqNFNQWH/w5/fIcaJxP5pS6RKJZ5Ui8RHzuV/anrsxU6m4HSeAnGTOvnCFTcYRRlw9CBaUIHtwFVvz3YJDEBy0CUIK6zpbI+VYDwHvgOsKxWUPyS+wreoNMTb/KJB5EmK8dJPw7lOWMuwAsLYlOQYQ/frsNxA9U/CocGHItk1CfUeQvl8SY75UZnteqjGhwlJMPWxa47mvq+KNwK/QX5hZ9Ffk9YVMMZENIv04cApysmIUUOfbjgHk8UCllIg+becj764fJ65FEDTF0b3unwmWo0UK2w6LCdqeDgcU3DiQiiH2J78uhR+iQc8TLbvY+OALRWXnOLtkwAkGQIayxfEeoF2SrGF7MWBEOV3CfxFQobvtyRbPlgSO/Ij9P9NhT63ma6kPgHDwJ1kJXdZA0rZczFIR7KcIcZXR7L0vNO+CmafYvP6CRrZAGpOXTmEK8k21K0FYMIjUH3rwHg+eHD3C2wVJg4A55wl8zBMmbsTEGVavTUItVtndAvp+wLtT+MRfyuax3dM+0W4xHDqEk4uoQwwjm9/Q3lQblHvJWFh7RQhhl/SEFHPelPQgOZkoewuzLzW4ZDbzQ7xobntErwf4xM1dbsYgVIHe52LJ36AC+wxXEJsZTboulsOtyhlPEIfCVXhSip+/E2IBr+aVHaXjOEzIj/B6htiY0gsLdJU94p9eLK27PbSdyJX0AJc/Isv
+ 4ThZnklZ
+ 4Hqoe0c2qe5xyWCTEaaLJz9JGuk8xavtNgA9MiLB95ah37wxPcp3tgyTwOtzS5RPaMFMlsAGISkDsg/0YKvRKGMWIULCcV2LZp8xkdC8Judu5YJi2LEtflP64apJtQKPHqG0LzMWdkrrKcgXyQzvDZ772VhSJYO/j8FVrKr/bNfy7SvfBURi5ffgxuygOCAtT77VgK05Rq2daigvVFaSvmNJOMU9boKBiJfki6+WnNUkShQJI47dsa2YM3nxvknBgxYSzDVbj7Pc65I/yxUyL3OoHpP68bpfqKW7B1+I6121npzjq4dubjj0nRwRpOW4ZbeCon/ni4amlE8IMu5VxTOKNXapMJ/7DrwvJS9usv9kglY33wIppCxtL9lG+PIGJBlnoglRn4vIT4GhfJVtBEqvs+M1p6ozWHK7OjcWs3kArJPL4RLuJZoLD1qtTNHHfVPbq
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -135,60 +127,92 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 10/29/26 7:24 AM, Qiliang Yuan wrote:
-> run_vmtests.sh creates a loop-mounted XFS for "khugepaged all:file" and
-> for the pagecache folio split cases of split_huge_page_test, since
-> tmpfs does not give them large pagecache folios.
-> 
-> It only does so when xfs already shows up in /proc/filesystems. When
-> xfs is built as a module that is not loaded yet, the check fails, no
-> XFS is created, "khugepaged all:file" is reported as skipped and every
-> pagecache folio split case of split_huge_page_test is skipped with "No
-> large pagecache folio generated".
-> 
-> Load xfs with load_module() when it is not registered yet, so that it
-> is unloaded again once the script is done. Match xfs as a whole word,
-> as "selinuxfs" contains it too, as does "vxfs" on kernels before 7.3,
-> and would otherwise skip the load and leave xfs to be loaded by
-> mount(). "run_vmtests.sh -t thp" with xfs built as a module and not
-> loaded:
-> 
->                                         before    after
->   khugepaged all:file                  skipped      run
->   skipped split_huge_page_test cases        43        0
->   xfs loaded after the run                  no       no
->   xfs loaded after the run, with
->   selinuxfs or vxfs registered             yes       no
-> 
-> Fixes: fc4d182316bd ("mm: huge_memory: enable debugfs to split huge pages to any order")
-> Signed-off-by: Qiliang Yuan <odys.yuan@gmail.com>
-> ---
->  tools/testing/selftests/mm/run_vmtests.sh | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/tools/testing/selftests/mm/run_vmtests.sh b/tools/testing/selftests/mm/run_vmtests.sh
-> index e104a9c6fdefb..b422edc2e2664 100755
-> --- a/tools/testing/selftests/mm/run_vmtests.sh
-> +++ b/tools/testing/selftests/mm/run_vmtests.sh
-> @@ -412,7 +412,7 @@ CATEGORY="thp" run_test ./khugepaged -s 4 all:shmem
->  # Try to create XFS if not provided
->  if [ -z "${SPLIT_HUGE_PAGE_TEST_XFS_PATH}" ]; then
->      if test_selected "thp"; then
-> -	if grep xfs /proc/filesystems &>/dev/null; then
-> +	if grep -qw xfs /proc/filesystems || load_module xfs; then
->  	    XFS_IMG=$(mktemp /tmp/xfs_img_XXXXXX)
->  	    XFS_DIR=$(mktemp -d /tmp/xfs_dir_XXXXXX)
->  	    truncate -s 314572800 ${XFS_IMG}
-> 
+Hi,
 
+Thanks everyone for the fast review and tests!
 
-tested it on x86_64 in qemu with lockdep and DEBUG_VM, xfs as a module
-and with SELinux on and off. LGTM so:
+I'm planning on picking these myself and routing them through mm-core.
 
-Reviewed-by: Jose A. Perez de Azpillaga <azpijr@gmail.com>
-Tested-by: Jose A. Perez de Azpillaga <azpijr@gmail.com>
+This is a handful of fixes for shmem/tmpfs. I sneaked in a related
+hugetlb fix that stalled upstream.
 
--- 
-cheers,
-jose a. p-a
+Some of the stuff is more urgent (patch #1, F_SEAL_EXEC, truncation
+hangs), others are less urgent but still rather unpleasant.
+
+The majority are fixes from Anthropic that I cleaned up or reworked.
+While doing that, I found a bunch of other issues and tried to fix them
+somewhat cleanly.
+
+Mote details, including other issues not fixed by this series can be
+found in the cover letter of v1.
+
+Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+---
+Changes in v4:
+- "mm/shmem: honour F_SEAL_EXEC when an ACL is set"
+ - #define shmem_set_acl simple_set_acl
+- Document remaining race in "mm/shmem: hold off eviction in shmem_writeout()"
+- Link to v3: https://patch.msgid.link/20261028-fixes_shmem-v3-0-4ce3baf2db4b@kernel.org
+
+Changes in v3:
+- Rebased on mm-stable
+ - Fixup for shmem_set_acl() no longer required
+- Re-include the commit I dropped by accident
+- Apply tags
+- Link to v2: https://patch.msgid.link/20261027-fixes_shmem-v2-0-86a00952acb9@kernel.org
+
+Changes in v2:
+- Rebased on mm-stable
+ - Fixup shmem_set_acl() compilation issue after rebase
+ - Dropped: "mm/shmem: avoid moving the truncation start backwards"
+ - Fixed up: "mm/shmem: stop retrying folios that cannot be split"
+- In "hugetlbfs: enforce F_SEAL_EXEC in setattr", check for S_ISREG
+- Smaller patch description fixups
+- Picked up tags
+- Link to v1: https://patch.msgid.link/20261026-fixes_shmem-v1-0-703206d5fa0c@kernel.org
+
+---
+
+Chris Mason (4):
+      mm/mempolicy: charge shared policy nodes
+      mm/shmem: honour F_SEAL_EXEC when an ACL is set
+      mm/shmem: stop retrying folios that cannot be split
+      mm/shmem: preserve data in clean folios when splitting fails
+
+David Hildenbrand (Arm) (7):
+      mm/shmem: discard whole new large folios on fallocate rollback
+      mm/shmem: rescan after nonuniform folio splitting
+      mm/shmem: fix truncate hang in large swap entry
+      mm/shmem: preserve allocation errors when swapping in large entries
+      mm/shmem: fix truncate loop after boundary swapin failure
+      mm/shmem: fix accounting of swapin-error markers
+      mm/shmem: fix truncation of files containing only swapin-error markers
+
+Eva Kurchatova (1):
+      hugetlbfs: enforce F_SEAL_EXEC in setattr
+
+Josef Bacik (3):
+      tmpfs: keep the quota soft limits of an unused id
+      tmpfs: preserve explicitly disabled quota limits
+      mm/shmem: hold off eviction in shmem_writeout()
+
+ fs/hugetlbfs/inode.c  |   8 +++
+ include/linux/memfd.h |   9 +++
+ mm/mempolicy.c        |   4 +-
+ mm/shmem.c            | 168 ++++++++++++++++++++++++++++++++++----------------
+ mm/shmem_quota.c      |  28 +++++----
+ 5 files changed, 149 insertions(+), 68 deletions(-)
+
+---
+
+base-commit: 65ba8f34ec886ec72b2c07ddc8cf3d815c32869d
+
+change-id: 20261025-fixes_shmem-2782719b130e
+
+--
+
+Cheers,
+
+David
+
 
