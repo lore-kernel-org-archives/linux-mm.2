@@ -1,80 +1,83 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29949606A322
-	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 10:46:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F1EF606A31C
+	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 10:48:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=OQBViomQ
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=PJtoCHVo
 Received: by kanga.kvack.org (Postfix)
-	id EE82E6B05D2; Thu, 29 Oct 2026 06:46:06 -0400 (EDT)
+	id 9BAA46B05B3; Thu, 29 Oct 2026 06:48:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E700A6B05D1; Thu, 29 Oct 2026 06:46:06 -0400 (EDT)
+	id 96B0D6B05B8; Thu, 29 Oct 2026 06:48:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D874B6B05D2; Thu, 29 Oct 2026 06:46:06 -0400 (EDT)
+	id 880886B05D1; Thu, 29 Oct 2026 06:48:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id AD1086B05D0
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 06:46:06 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 39AEEA7AF8
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 10:46:06 +0000 (UTC)
-X-FDA: 85375333932.21.EBC75FD
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 678DD6B05B3
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 06:48:00 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 0A7BFC0357
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 10:48:00 +0000 (UTC)
+X-FDA: 85375338720.16.8A39187
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 6439F20006
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 10:46:04 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OQBViomQ;
-	spf=pass (imf03.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf19.hostedemail.com (Postfix) with ESMTP id 3AA091A000A
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 10:47:58 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PJtoCHVo;
+	spf=pass (imf19.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793270878;
+	b=dvTasVme1qPe2eGT8U+jAV9DEiL0t/EZbeVqe91/QAWuitDo8msXOt2MoaU96RjqCh/7ZO
+	c0/f2IUU+1WzuNZ+i9c0KyAOWbVoqumsMV1O4x7bBFOT4mjFivMYBTQuTq/HrjjNbkdh/f
+	xA8tIQIL9PWwcvTmFmUKbfia8Gqw8Cc=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PJtoCHVo;
+	spf=pass (imf19.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793270764;
+	s=arc-20220608; t=1793270878;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=RWtxWJ8Mj0Rtl84/opbh6HrMgPdbznSuYDREGzIgtS8=;
-	b=YOmU+Fmj+UyhQERFbZEcYLbp60KscUy223iuPclQqnYmbE3rrysIAYkBVXRJm/O8iBVXaZ
-	VXc/8EKC5Zozw7bA77zp6vOn5e6/n/MCrwCQzBEhAS5DRYD+HRCChZSNi8XPEzS8gLVNHI
-	mfMeVt1ERuho7xCCdtRCZ7UZMazzw9w=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793270764;
-	b=oivlvzDfZ9QgThHq7PiPqmZd4Hlg3xHQQHGQuh/jGyaQFKWm9jT7WAOeXl4w7KAe9bOMHD
-	GqXJ067frGnw8yZHbFHlRpEOg6boviR7ulZRe/MP+IFu62UQCjUvRCKyJ6ybtjGBHTQSfd
-	CbKHCg1xyoe3Q7jkiKvdcCn9lBRdZ8E=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OQBViomQ;
-	spf=pass (imf03.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=TIn/L67Nz8xoFm8DVsefws4Ds0cJslZlv9huIPv9SZI=;
+	b=xd51Yr643uKFMhvJTtwEedb9Pa23gpr1lg5bgo6Fj63gVMFA8TepUqyfuDxnU545AZ7cTE
+	nqqlXNyaTHxzxLWeMGxdZUiF6/B8heSEMvaDB0PLsNAUb2m6iGrfpTC+p+UuU/XAylcKXr
+	3MI37H3jHEof2SILs8GyeJkUHfZxeLA=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id A9F3E43EBA;
-	Thu, 29 Oct 2026 10:46:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A31C1F01828;
-	Thu, 29 Oct 2026 10:46:00 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 6EF2D40A52;
+	Thu, 29 Oct 2026 10:47:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B4821F01825;
+	Thu, 29 Oct 2026 10:47:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793270763;
-	bh=RWtxWJ8Mj0Rtl84/opbh6HrMgPdbznSuYDREGzIgtS8=;
+	s=k20260515; t=1793270877;
+	bh=TIn/L67Nz8xoFm8DVsefws4Ds0cJslZlv9huIPv9SZI=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=OQBViomQbwp7bZgr67nFX4bXyVvdihnfsX4qqLIJhw5cov8NwRlowbCfqCeB8B/TG
-	 vRZdctp8HDzZf5+MMfLQfGaLx8sLKTz+QD97JA9f/3ve2QDgYhC0hLH6dMJLQPhAiB
-	 mpAIGWRyRX/AroWWwl7GdtzWL5pw2DZ1FbKhQM1DCalokfCGrAWcRTTp67JDSuhVxS
-	 AQ4zKkwFJ5SSSBy1TDC7mw2jzppsjjBq202u+cwgkOE+I4z0mm1dat/+NS26OofQzA
-	 iIFxxdkBxEBRu6djTiz9092I9boXtgjVKklvBdRnPHpOicl4m8X4/d0eOZ3LVk21Ob
-	 sxvnPpw0oYzGA==
-Message-ID: <acfd9678-fa48-4610-ba90-278cab92ee9c@kernel.org>
-Date: Thu, 29 Oct 2026 11:45:58 +0100
+	b=PJtoCHVozZ63TA0MuvaqjW2GMc7IggkFNT/08YgIntTpAgmcQ0wDY3WtXONW0hlA+
+	 9l6Q9p3GOpWrURdMUrvLnI0/khdOsXIW+06Jtku7aBFQRIt/q/G6CnUZ42K+XrdT49
+	 CKKYigLnfdKTEur/4bmGnbf+UZGguz8ahNNYjWS5YxEvQ8ywehoUI4oihlWEIbI8cB
+	 0aHXGTpO/MOh6cN1Kt9swieCV+edM2VvJAReg4lSYE0yVeeutsteRZTjbbnLmj3oj0
+	 1jr0oxcwFSXcwr634VwMwzuPySeLdPJm2K8dMb6xEXET+P6mpCNakkg6s6ncyCl5tZ
+	 c5K2aN17zV0Iw==
+Message-ID: <b5dccfe1-3209-471a-a34e-f77fffdee797@kernel.org>
+Date: Thu, 29 Oct 2026 11:47:49 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] hugetlbfs: emit hugetlbfs_free_inode from
- ->destroy_inode()
-To: Joas Antonio dos Santos <joasantonio108@gmail.com>,
- Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Hongbo Li <lihongbo22@huawei.com>,
- syzbot+91e1fc35f51774c479b2@syzkaller.appspotmail.com, linux-mm@kvack.org,
- linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <179324176522.32673.7602596908234555806@gmail.com>
+Subject: Re: [PATCH] mm/huge_memory: use READ_ONCE() when cloning folio flags
+ during split
+To: Barry Song <baohua@kernel.org>, Ye Liu <ye.liu@linux.dev>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Zi Yan <ziy@nvidia.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ "Liam R. Howlett" <liam@infradead.org>, Nico Pache <nico.pache@linux.dev>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>,
+ Kiryl Shutsemau <kas@kernel.org>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, Ye Liu <liuye@kylinos.cn>
+References: <20261029-data_race_huge_mem-v1-1-112e331291c1@linux.dev>
+ <CAGsJ_4wndM+uFwhX+7wdkm2Q8AkgVcw_4wgpObfw0DAZ1w+sVQ@mail.gmail.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -121,22 +124,21 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <179324176522.32673.7602596908234555806@gmail.com>
+In-Reply-To: <CAGsJ_4wndM+uFwhX+7wdkm2Q8AkgVcw_4wgpObfw0DAZ1w+sVQ@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 6439F20006
-X-Stat-Signature: oh1y1n63irt9aoqthdg8g7tywiomf6nh
-X-Rspam-User: 
-X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: rbbuysx5ohhg9941jggnzs6dxamtffxr
+X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
-	version=4.0.1
-X-HE-Tag: 1793270764-222768
-X-HE-Meta: U2FsdGVkX19X7BBtHGmwM8JODb7eHQZ4awWpICBpjDrU1Yi7zwynRhJSVHVZmS7We516IaAxbb4a4SZWW0s+t7fVs06xfV1XbQxiv2wEUl0RlSfphVejtZddgimMmZ+Ftt551zJFBSpsYfwAO3p3UFPORuG4045lHlUuLWmipyCnxBNU/FKXY0qRnpJEgtgadp3rX4lxrltLvDD6VC/y/hXtpFSdn+zyaMcPm+sYTsdeNT9evz8dWXLDJ4acs1giegwYOwBek3B2w2sICnn7m4pkHjP6Yx9Q/JrmXxu0B6lQ5srz8Q0urD7/jkFz8ZU+A6pywXSSugV5HljhxN1w1HBzKOldeBrFM80ev6/5n6UlIHy/5JxAygBUPhkj2Xt0aulzELIEkSkTTdm6SaqPOZjFDpIiT5XbqKOfqyF/W+NsGR/0VMYxc7bCdRcJ1tnS0/7hQC1k5PXGZm92sZHWRrYCXUxEgIdLFG+wQw2H6t5QZmxLZl1B+8JAEaqlVmH6W2MY/BCTI8MuitXS5E+HnXOfdV31sj8EA5da2jyu0YcRHlqVUyf2+06ivnCR4/wFCGhNWguMOYYc6QeCildVlRxhWdVWW2cE3Ub7kMIqr6CFH0BbDejJ4wiFmiSbnQyRD7ZLWle1r4vakW+I98y46yPyVRs6B9nq3gxZ/LYSEBRBuqAsRkdZZfL5AQqkgJK2IDQDOgT4qClKAXok092VLrFh+7uqrOS8v6U+HSq0/nW+84cskvdJVqw2w8OxjWEzCkjMmwXKycfVutdWl3pwGX6qbxRZgEq62DEUKmeasnf2t5JDT3YbnYPfqiJsJg7QvqzzFPztvNDde5UpGPze4RXYV9eGhRl+SK8Z3E0AmbODvIPr8jfhXJc9rSldcJb09Cimy1fjBarkTp8xR3E52q9/HDRCyU/VdPYopF7Q8+gWNwZ/AoLF0QTjfTUCYVATfQrv1GwgFp15mKPiFnt
- WQ4iYDBV
- tmrY/zIE7xHZkQpy8DtHxScBFSix/LQuCfOS/5Lp9vHpxnDVMn2pl45q29enxAA9wq0wclCuqHsCP2Qrh/n5nXMU8b7wAbC3K48GNl2DBmH3Eh+q2PYB3ldBa5c7VtlK5uxOa8RiGLspR1ltIiQSgYACIYu9au5rC9IgaIIl4Gv/MZB6G9G1q+uQZfUlh0/AhtcLUyREjN9SXMpBKg6R6n4qrP3gy4zfGw56tgSi8QWtoMDySQkZjq80dOKBHJnLIBi07FfW0M+2t8zLRc7TNpiSOWgd8FlEklxYMmpxXBRQUfKua70mfYnthiooANtd1R233FF3oLoezXNxCKEWNAmKslgaXjvMk5LhLsNkoTksbK0l40KccDIwt0xoTq60juzyc0snqsnpxpnnNRTN4+JBRV/2UP/pHAdViBYcMeBHv0MsEw3zBlOik/9hSZNkgtTUEwr0lJjz/Ck/DFWGbhwdUpzwAzLAuCtQOrOSwBH0b+skAEyutsA5U3nvYNIp8ZaXqZ/r9rarhm6jX/rol+OALutIZ+ic2jdQOKkP/eXbCNc94dKFCkwwUSQ==
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 3AA091A000A
+X-Rspam-User: 
+X-HE-Tag: 1793270878-454637
+X-HE-Meta: U2FsdGVkX1+qrG+oRyIAjwZT+R7zSKb9BtyFbUpJtmdUlmGYsQ7iT8YPS8jsnScEtZs8y2Eq48iGjYpbORhPxMDm+bhXOjlYRy3rjHq8CxoBnu9TuJ9/6ZcFUGFUtwq2Tl1ljosy2iCIV9XcZCbuazcv+orD2ulOaHub/PTvm8kpgNWHqtOQbfPIZmrivckiUGg0cIV4FzYf+D8PaxYshM71Szh/tM3McO2KQ9VLFHEA0UNMk+tHs+OoSBFjS/CbDQhDPBXZUxTe64B2EkTP1BWn8PSrc1he2kc05Eg9dYF1uFAdElt1Wb+gMbkEInMP72v+TZfk+/LdUzpvTYmmYe66mUx6siIAUGiPOHH5iSj5TRgJCX2PqAESonqqXyNOJ42nngQ8oVUryrWW43yYzahuSkFhEWWRg3vNItTqVV+n8Y1akQmE7VBhEMlV2ypE31plIT1ybPL8db9Cx67hc0ZWxDD17M1WOaYIt4GcTj6sM80gGIIXAQ/rdrJtE+YpW1W4CO5RjjdDsGJIGDg1G0PaIx+4iFTvltwpEdA2PF9T2YYyNU9z0yC5ZmRUZR0hYVwIMWEZ81FaUoGUeIRzNAvRNqP2utH234yxRd/hmFLIgrPUhld4c0lGmkk9ZMtLziU6svY1OpQQ63/oak2IolLF+iwIOjKMyNcXsIoKDqTYcPZtGb9u/TBu3c8/LhPX2jbr5rjJ/lvIUyXG+kkmk0t38GH6pBzz2VWVtAT/dM1J8tjq3FKPpEoS31BleRiStH4t1P/H38DCHwgJ6tjSmHgxf9WsYDCzUa5zqzU0iupqdfNJNgaNZg1bmA+PRYHeO+ufdHunu0PcsEFqDAReggelKtmbjYoKOWZAAcdvK2BNtU+teG3zDP2cldt6eGuSfMMKNzqFoskR78ywwpFBVOiLNK0UfX/Ig5npicbAxASy4GQttnaMSXM0wOvpr6rYWJwNPaFlR3AmGML6ezV
+ J3GLkMBl
+ MhiqC2nhasHff3qLiPs4W7JxflGYVzKJ3GPQbYGmAJMHpwFpkp7g3LD8k2mgpc8i3shKSUoxT3XXx7vS7A9DMsaWMxOgxlLke7T0+KQDBan4wBKhBGM79hH8G3H/gKv6S9TMOiiA+umKnPmy2KW/AGi69RAf6fu+t7aksZtRy8AfBNGKeqYsEUHVenJuo9Cp23LieMpSnqHusCNKpZ7uX4Jv8UfaaQYz0URoj5ohfe94T7tqvHf/ktdYGXVMYimSiq7goTlWZbCHU6VtQUJ4qzg0+Hv3YWkokKi1AFqX4fRosk+zcie34vHn/Sdkll/ytyesh1BWR4VPLebY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,85 +147,24 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 10/29/26 03:42, Joas Antonio dos Santos wrote:
-> hugetlbfs_free_inode() calls trace_hugetlbfs_free_inode(), and the
-> hugetlbfs__inode event class records inode->i_sb->s_dev.  ->free_inode()
-> runs from an RCU callback (destroy_inode() queues i_callback() with
-> call_rcu()), and Documentation/filesystems/porting.rst says that this
-> callback "is *NOT* ordered wrt superblock destruction; as the matter of
-> fact, the superblock and all associated structures might be already
-> gone".  put_super() frees the superblock with call_rcu() followed by a
-> workqueue item (destroy_super_rcu() -> destroy_super_work()).  syzbot
-> hit this with the event enabled:
+On 10/29/26 10:08, Barry Song wrote:
+> On Thu, Oct 29, 2026 at 3:41 PM Ye Liu <ye.liu@linux.dev> wrote:
+>>
+>> From: Ye Liu <liuye@kylinos.cn>
+>>
+>> The head folio's flags are read as a whole word to clone specific bits
+>> into tail folios during a THP split.  This plain read can race with
+>> concurrent atomic flag modifications such as folio_set_waiters()
+>> (PG_waiters), as reported by KCSAN:
+>>
+>>   BUG: KCSAN: data-race in __split_huge_page_tail / migration_entry_wait_on_locked
+>>
+>> Signed-off-by: Ye Liu <liuye@kylinos.cn>
+>> ---
 > 
->   BUG: KASAN: slab-use-after-free in trace_event_raw_event_hugetlbfs__inode+0x45b/0x4c0 include/trace/events/hugetlbfs.h:36
->   Read of size 4 at addr ffff888038850010 by task syz-executor952/6134
->    hugetlbfs_free_inode+0x15e/0x1f0 fs/hugetlbfs/inode.c:1182
->    i_callback+0x46/0x80 fs/inode.c:317
->    rcu_do_batch kernel/rcu/tree.c:2650 [inline]
->    rcu_core+0x5f0/0x1220 kernel/rcu/tree.c:2919
->   Allocated by task 6134:
->    alloc_super fs/super.c:326 [inline]
->    sget_fc+0x1ba/0x1f60 fs/super.c:874
->    hugetlbfs_get_tree+0x1e7/0x2b0 fs/hugetlbfs/inode.c:1431
->   Freed by task 855:
->    kfree+0x22b/0x6d0 mm/slub.c:6923
->    process_one_work+0xac7/0x1b10 kernel/workqueue.c:3495
-> 
-> Emit the event from hugetlbfs_destroy_inode() instead.  destroy_inode()
-> calls ->destroy_inode() synchronously, before it queues the RCU
-> callback, while the superblock is still alive; hugetlbfs_destroy_inode()
-> already dereferences inode->i_sb there.  ->free_inode() is left with
-> only the kmem_cache_free().
-> 
-> Fixes: 014ad7c42a69 ("hugetlbfs: use tracepoints in hugetlbfs functions.")
-> Reported-by: syzbot+91e1fc35f51774c479b2@syzkaller.appspotmail.com
-> Closes: https://lore.kernel.org/all/6ae27525.5451848c.f7707.0001.GAE@google.com/
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Joas Antonio dos Santos <joasantonio108@gmail.com>
-> Assisted-by: Yaga Agent HackerSec Claude:claude-opus-5-5
-> ---
-> Tested on net/main 94cea342e891 (arm64, QEMU, generic KASAN, tracing
-> enabled) with the syzbot C reproducer, which enables
-> events/hugetlbfs/hugetlbfs_free_inode and races hugetlbfs mounts and
-> lazy unmounts with open + unlink.  Without this patch KASAN reports the
-> slab-use-after-free in trace_event_raw_event_hugetlbfs__inode() from
-> hugetlbfs_free_inode() <- i_callback() during the first 10 second run,
-> on 3 of 3 boots.  With it, 12 runs over 2 boots are clean, and the trace
-> buffer still holds the hugetlbfs_free_inode events (about 46k per boot)
-> with valid dev numbers.  fs/hugetlbfs/inode.o builds cleanly with W=1.
-> 
-> The event now fires when the inode is destroyed instead of when its
-> memory goes back to the slab cache, one RCU grace period earlier; the
-> recorded fields are the same.
-> 
->  fs/hugetlbfs/inode.c | 6 +++++-
->  1 file changed, 5 insertions(+), 1 deletion(-)
-> 
-> diff --git a/fs/hugetlbfs/inode.c b/fs/hugetlbfs/inode.c
-> index 6656807..27a3937 100644
-> --- a/fs/hugetlbfs/inode.c
-> +++ b/fs/hugetlbfs/inode.c
-> @@ -1179,12 +1179,16 @@ static struct inode *hugetlbfs_alloc_inode(struct super_block *sb)
->  
->  static void hugetlbfs_free_inode(struct inode *inode)
->  {
-> -	trace_hugetlbfs_free_inode(inode);
->  	kmem_cache_free(hugetlbfs_inode_cachep, HUGETLBFS_I(inode));
->  }
->  
->  static void hugetlbfs_destroy_inode(struct inode *inode)
->  {
-> +	/*
-> +	 * Not in ->free_inode(): that runs from an RCU callback, when the
-> +	 * superblock the event reads may already be freed.
-> +	 */
-> +	trace_hugetlbfs_free_inode(inode);
->  	hugetlbfs_inc_free_inodes(HUGETLBFS_SB(inode->i_sb));
->  }
->  
+> I assume the race is harmless, but silencing KCSAN is still worthwhile.
 
-Should we rename the tracepoint then?
+Isn't there a way we could lose the PG_waiters flag?
 
 -- 
 Cheers,
