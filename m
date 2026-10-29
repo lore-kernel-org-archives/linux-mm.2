@@ -1,111 +1,101 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09E5E606A31A
-	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 02:32:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=I5ymTHUD
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A626606A324
+	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 02:32:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 247496B05BE; Wed, 28 Oct 2026 22:32:44 -0400 (EDT)
+	id 5CA516B05BF; Wed, 28 Oct 2026 22:32:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1D1BB6B05BF; Wed, 28 Oct 2026 22:32:44 -0400 (EDT)
+	id 57AB76B05C0; Wed, 28 Oct 2026 22:32:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 099AD6B05C0; Wed, 28 Oct 2026 22:32:44 -0400 (EDT)
+	id 468FB6B05C1; Wed, 28 Oct 2026 22:32:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id DC64C6B05BE
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 22:32:43 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 638E1C02A4
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 02:32:43 +0000 (UTC)
-X-FDA: 85374090606.20.1DCB66F
-Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com [209.85.216.72])
-	by imf16.hostedemail.com (Postfix) with ESMTP id B1A37180003
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 02:32:41 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b=I5ymTHUD;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf16.hostedemail.com: domain of 3SLDiagYKCJE5F83JF19916z.x97638FI-775Gvx5.9C1@flex--kuniyu.bounces.google.com designates 209.85.216.72 as permitted sender) smtp.mailfrom=3SLDiagYKCJE5F83JF19916z.x97638FI-775Gvx5.9C1@flex--kuniyu.bounces.google.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 18FAA6B05BF
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 22:32:55 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 9B6091602C1
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 02:32:54 +0000 (UTC)
+X-FDA: 85374091068.24.1C86B6E
+Received: from spam01.hygon.cn (unknown [101.204.27.37])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 4A90C100003
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 02:32:52 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=hygon.cn;
+	spf=pass (imf14.hostedemail.com: domain of wujianyong@hygon.cn designates 101.204.27.37 as permitted sender) smtp.mailfrom=wujianyong@hygon.cn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793241161;
+	s=arc-20220608; t=1793241172;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rrsknUuPusVLZmi3TYlB3zEC9aJluMm+Yj7vSmErNwA=;
-	b=p7/p2rRR6pY2CVdfu6xm9pOVfA/6x2eGGe0zXDBAs5xMKEp4VctsXECR4acDlGMzac78D7
-	tHEqDAhMt2pYB4lU4xuVwqKRLxNvQ3xcGC3bVQx74NTugyPYtmo1kAsZUd25V694czSgLO
-	Ff+rbMNX4n185fzJr35hvoe2zbp+10Y=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=YFJjnPZlqVOtgxJxNS0cfG/upG2shMTJq/0GydtZ0b0=;
+	b=r/+IlBat9qnK0gQMSLYS8W+2gYbS2Hvmu9iICff6ubGbIpIdNTYOi40KNSIPUEJIp2PTBE
+	0Qb3cTgA9g0b4/MzxitttcO4TIVYw7oPRt7/gFdW/dvD9otlbH8sOVSYAg56j/P8yuMWbu
+	JYVeXnRkzryNKClTekvOCzDxv5V/+2Q=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b=I5ymTHUD;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf16.hostedemail.com: domain of 3SLDiagYKCJE5F83JF19916z.x97638FI-775Gvx5.9C1@flex--kuniyu.bounces.google.com designates 209.85.216.72 as permitted sender) smtp.mailfrom=3SLDiagYKCJE5F83JF19916z.x97638FI-775Gvx5.9C1@flex--kuniyu.bounces.google.com
+	imf14.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=hygon.cn;
+	spf=pass (imf14.hostedemail.com: domain of wujianyong@hygon.cn designates 101.204.27.37 as permitted sender) smtp.mailfrom=wujianyong@hygon.cn
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793241161;
-	b=wp0MPmhQwIO5U+jI8YwYTPoGjPpc9pFP0Bs/mYbqy4xNiwgCrTI7IC8TFZ9AyELT2Kz/z7
-	zl+XEEhU9jPjZU3OqyDSm6Y8J2iRt5XmJssZOgXtQFormlo8VrB2du7z6haolwi5cNrLOD
-	M9es/X6NT8fK7t4i7KQNwCiZzHcB818=
-Received: by mail-pj1-f72.google.com with SMTP id 98e67ed59e1d1-3ae73921fd1so106563a91.1
-        for <linux-mm@kvack.org>; Wed, 28 Oct 2026 19:32:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1793241160; x=1793845960; darn=kvack.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=rrsknUuPusVLZmi3TYlB3zEC9aJluMm+Yj7vSmErNwA=;
-        b=I5ymTHUD7/NvKKZ81Aw5k3cQO++5w8SyfyVbnHnaOxAHGKG+MlcKizg3F15LzQZMEH
-         RKpuelmxW1ruvqPtXMPBmeCUfM276rr/N1EgszbhE/bFvdnv/PPiqYs7F+kEXJjWEWge
-         pik7qaquwS0Jz16ukqVt5c+Qqo3ruDqtMrsRdwOECh7vVAZYd3PUyxpeDvOb5XWcskmj
-         l4zOa3je9e18Tf+iaXcjv+qzBzZyyQgS5bPXORU3PL+TsJuKmk1pwuQDHog4aOq7SQJv
-         /PupxynERA8TXJOzUTudQm0AukXpIMA1MAGONpQ9w9P3KfMZlMBSCEA+vI+PxcRsQjJP
-         QerA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793241160; x=1793845960;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=rrsknUuPusVLZmi3TYlB3zEC9aJluMm+Yj7vSmErNwA=;
-        b=GpdkNV8tKUlQ0Bh+bq8fuoa1kHU9/6jg8fRcApPUpXYj8L6M2hXlaseFtd2wBWcONk
-         27q5YSMBEzJASqiBTaIH+U26nn5e9yJag7JzrrKLbwaL99NBFOGzQp1zVD06QGNo0888
-         9d3lfhWaClWzn4kYftsm433YunMHNTJVVqUOteVlb/H/ZfElsGSrqAngVbPfPzGUm1lA
-         ZPBuEOMqmfuX/g89jc3icujJynwT4aDNxnaZA/qt40cYPLCXUMaXTqRUlf5e5Iv1zxuV
-         b6R4ewGf3zJ3QczEMt+LbKrwmYzCCBS/lNXejlXjGbIeaffLPWTyu5BxjKnqXDpNTcQU
-         XwkQ==
-X-Forwarded-Encrypted: i=1; AKwUvBxcomci5uQGlqhal0oFm4izAMZS2NfCwAeysUsEV9No1vIQcy9Atu1f8ACr1+inJ3+ig4kq+gfwPg==@kvack.org
-X-Gm-Message-State: AFq9FYKSr2VVM2wtgsPPOSHsqQGlRJM6Z/ytyk+eSi4S/zAbh2yFkq+r
-	CIBLNheCDbTtOf9sBYv0jF3asP87VfkAgpALTEV+pGvzIiHqUf320Qmu068+ezd3rYCThI0h+KA
-	pq7vttQ==
-X-Received: from pgdo3-n2.prod.google.com ([2002:a05:6a02:6203:20b0:cd6:1345:d20b])
- (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90a:e185:b0:3ad:77fd:c3d8
- with SMTP id 98e67ed59e1d1-3ae57e2b5b1mr3164327a91.1.1793241160346; Wed, 28
- Oct 2026 19:32:40 -0700 (PDT)
-Date: Thu, 29 Oct 2026 02:32:39 +0000
-In-Reply-To: <auKcNvAizn-B92xB@google.com>
+	t=1793241172;
+	b=BJsmx7f1Nyp+5RMEs3OPaR3sgn7WALTBXlW86gVnHiIfoU+nZzLVjDAoDrRhqqE4lQBEna
+	OWoqjMQrsg0naCOZWo/Bi9cob672XeMyc7tQ8gH7S6kLnKyCH1fggOrTWkv79wtytPojXD
+	GMBDom202ENTRO502SJyH/fZVVfIpsM=
+Received: from maildlp1.hygon.cn (unknown [127.0.0.1])
+	by spam01.hygon.cn (Postfix) with ESMTP id 4jFSv507l9z171Yh;
+	Thu, 29 Oct 2026 10:32:49 +0800 (CST)
+Received: from maildlp1.hygon.cn (unknown [172.23.18.60])
+	by spam01.hygon.cn (Postfix) with ESMTP id 4jFSv227Y9z171YL;
+	Thu, 29 Oct 2026 10:32:46 +0800 (CST)
+Received: from cncheex04.Hygon.cn (unknown [172.23.18.114])
+	by maildlp1.hygon.cn (Postfix) with ESMTPS id 715005943;
+	Thu, 29 Oct 2026 10:32:38 +0800 (CST)
+Received: from jianyong.hygon.cn (172.19.20.52) by cncheex04.Hygon.cn
+ (172.23.18.114) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.36; Thu, 29 Oct
+ 2026 10:32:43 +0800
+From: Jianyong Wu <wujianyong@hygon.cn>
+To: Ingo Molnar <mingo@redhat.com>, Peter Zijlstra <peterz@infradead.org>,
+	Juri Lelli <juri.lelli@redhat.com>, Vincent Guittot
+	<vincent.guittot@linaro.org>, Chen Yu <yu.c.chen@intel.com>, Tim Chen
+	<tim.c.chen@linux.intel.com>
+CC: Dietmar Eggemann <dietmar.eggemann@arm.com>, Steven Rostedt
+	<rostedt@goodmis.org>, Ben Segall <bsegall@google.com>, Mel Gorman
+	<mgorman@suse.de>, Valentin Schneider <vschneid@redhat.com>, K Prateek Nayak
+	<kprateek.nayak@amd.com>, Shrikanth Hegde <sshegde@linux.ibm.com>, Phil Auld
+	<pauld@redhat.com>, Andrew Morton <akpm@linux-foundation.org>, David
+ Hildenbrand <david@kernel.org>, <maddy@linux.ibm.com>, Michael Ellerman
+	<mpe@ellerman.id.au>, <ljs@kernel.org>, <linux-kernel@vger.kernel.org>,
+	<linux-mm@kvack.org>, <wujianyong@hygon.cn>, <jianyong.wu@outlook.com>,
+	<zhongyuan@hygon.cn>, <huangsj@hygon.cn>, <wangfengyu@hygon.cn>,
+	<yingzhiwei@hygon.cn>
+Subject: [RFC PATCH v3 10/17] sched/cache: Pick the source rq/group with the highest affinity gain
+Date: Thu, 29 Oct 2026 10:20:28 +0800
+Message-ID: <20261029022036.4002331-11-wujianyong@hygon.cn>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20261029022036.4002331-1-wujianyong@hygon.cn>
+References: <20261029022036.4002331-1-wujianyong@hygon.cn>
 X-Archived-By: <archiver.kernel.org>
-Mime-Version: 1.0
-References: <20261028185034.3607746-1-kuniyu@google.com> <auKSeCFvsWzP-XYy@linux.dev>
- <auKYs_ucslI-tdar@linux.dev> <auKcNvAizn-B92xB@google.com>
-Message-ID: <auKvUCpDaGgvJcmQ@google.com>
-Subject: Re: [PATCH v2 0/6] memcg: Batch mod_memcg_state() for MEMCG_SOCK.
-From: Kuniyuki Iwashima <kuniyu@google.com>
-To: Shakeel Butt <shakeel.butt@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Michal Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
-	Muchun Song <muchun.song@linux.dev>, Kuniyuki Iwashima <kuni1840@gmail.com>, linux-mm@kvack.org, 
-	cgroups@vger.kernel.org, yosry@kernel.org, joannelkoong@gmail.com
-Content-Type: text/plain; charset="us-ascii"
-X-Rspamd-Queue-Id: B1A37180003
-X-Stat-Signature: kymrckntaiu5qayr14xj9jh3a71xq7dq
-X-Rspamd-Server: rspam06
-X-Spam-Status: No, score=-13.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_IN_DEF_DKIM_WL
-	autolearn=no autolearn_force=no version=4.0.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: cncheex05.Hygon.cn (172.23.18.115) To cncheex04.Hygon.cn
+ (172.23.18.114)
+X-Rspamd-Queue-Id: 4A90C100003
 X-Rspam-User: 
-X-HE-Tag: 1793241161-637624
-X-HE-Meta: U2FsdGVkX1+kSrKch00w85F6rWhVKEIAFPak4c7sttd+AGd8hT8m4/Nwz8t/P0xtsr5IqO1UaYZTJRjvfYlPWF4x2ZrKep3RFqKySHaEIgWN2o2jmjVzMfNaR8TLw+Chf8mvedENKPChdN5vgOxX7AT86F+ZUQPwSULaaFLd4KirZDlHA2RTb0YIrulLPRwHNETDRVhqhqsIhN+B2aIc+BkIZHnoKV28K0bpWSlm6QoQL8nYSGCk9i+GnP9tiIB/twSCuAO2SBSdZrzD+BPplfA7MC28gRlE9phCDIH89nHs3sI/lR3Ib8XSGtyZfxbavNYdvc3Vu61KKS50v7i3pFltQJ1wOiTQDXLDnHVgkKWWJzCKol1OQ8t4N+0480e8QrAJtN3G6OqyOZ/Gjf3hLA0o7oyUljbqSZntdl1iaJPOSZD4JzBoHLSxDqEYIT/v1Ric5SMmMOrZbrksGsFAzu/eyP2cWWnkZCLAz1J+/GkFQZhvDTF3bHNq1P3lvwe8uQIn4ylesJwUQzzlnauD3igsEKlhZ+BCt64DHXQynnIuAll2vJq0Sz648hEv9/bCt4oOCMbRcoG/xsZVD4dZDDYx5rMIhdcUeMEm+3Dz0UjgXePhtOlU6uty0SCPW15by9fRtw/08m8uy5YI0LqiI13mXvmlDxqNWsqDP31ApbHFm4sUNw803wuCx2suU4ECtBWenQPX+fat7EcGPcA4k134G5WPIAT7f55pad8ZWJPthedrqypq99r4redOqCcXTnx744+f8q9X1hwYnLiZ1CQDovuljw09bkQ/xsrPfwIOGdZmNEQHFANkf1vNQdNE5njadGd2FZCkYcpGWWu9nMlMdRtBWeD0mvEGsYEObf9R/hkjmu2f5+DD7qzwM2GDg96FP31x+dtRSrcHY6WvxOFH1KGNqlf9Sq3zi3YwWMVet2CasntGrcFdSzs3H7DKrTBREldAhrKy6HN3pCa
- bJ4gEiWA
- bMQgIccRE1WO5oiRxaZiOQSFqXaSOPGiMOoGojvoHpTwXooeBsMTg7nrYeK5lCST3NgM4Lc6FJWQZkCNWRXGyGLUhDhzh/If0WwMGY5V5gOehNp4oXqxhMUJ3cygpy6c/eCPS90xGkl2uLWmmNIisSDIsvjOPu4h7xcJW0uhFshH/Xoi7N3BZFJ/NYA/1pRq3vm/D2ACV/R5fjQH3OryJ+uJdQs1nzY2pFmRAv/CTiV1iwufitsmiioN0HHUnmrfJluT4A7fDMjN71GEujCJRaB9qekcqux4JBAI/OZJZrpVJmiJttJrDs299MTwhWTRHY2J3Gx3jNY6QDDD6pEXm7hPY8j5Ef9uqmjZLAGOYHMkEVSkImstM5hESC408nqgzqS7mkSXliJ+l40PdeMY3Ys00iC41JK5Pjld13PDWoqI34TH0WfFwypvftcNF97f8TGhyQCGqofZJ8XlMYpd5AAuC8FRA9X2Pe68TDPOlcY7neJz7ZeQ/IoAfpeYMnSWsWHsAxozZm4L+Awla5irkJPCTV2dtzs81AZH4C8/Fkv4t+qGmGPMrIYzfy2cfBwMdMMcu5cJDAW7PlBoBUXQ4j4Qli4wWzmOD2EKmeZsZ6slzjYhirtXRPAWHhaxQGYTE61IA790s1itIDf/YPQqnmGxWaMbEeKETBjuEf1Z+IVRFwq5IoVscSkMXgg==
+X-Stat-Signature: dxoyt1btn61uizoutc8sc78dnspm9jes
+X-Spam-Status: No, score=-16.8 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
+	autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1793241172-382767
+X-HE-Meta: U2FsdGVkX1+/zphKHSg6WJecornm2euwRYsVeMOnuywyraugjvJG7u/CcwmYaZmQ8+bD3hIU7GYYCYKLV/5bPC2tqls7ZRC+fBqRqowI7EkoTL9YIHz3TovyiPw2QQFJ7iSqkOejyiHoqFpHDFpTN9TTVfJ8pyvO8/zanjDI8HEa5yQcpoVZj21lVaOmjJ+fBfqhW1fGAATrfDyQ1qFxs7/HUG0/rT7IkYnj5yf/9bN8wiHLUTiIZAajBjmQAHORLv8khRNf1f+0lld7htUBTw6HQUw/yqcvnv1JYSzmt582DB2pm+Cfro1bmWF3mE5X/qOWLam6x+U5/+S4TSLo7YAJfgl8EEee6aocMsGQG5xB52qtM/SwF9jSCI2cSF8310QQar1vxdFIL4mLGkqGHzMgs38l73HeYxzFRYXN9doE3y7qRMAdwUjs5XUDEHVPfnhluz6ENc2/hNW5HW+s+Uo2t8pPifyr0e33IIUZLj4VXlOPCOy+mAv3aOaMqeUhCi9n7FmmKvZk1U6wWawK1CcCcTVvonyxOiRc7ZSm/m51FgpwYlid63iQzfA4Vsxlu/Dzza3loP9Ir28Z74If8d3gCyrJ4Yl/mfuGl7r3Pog22gtYcTX31ZHpDPoaGrMi3g5moaYVJY+yMsHa2Ay0rYrK3dtRT2NAKC/UHHAB3XyqKsz2v+8HvLLMDc9Clng3bRYQ3fiNpepUmORdRLE/USyA2aWpFG/XldG6UrXK/J2pXgruP/h/idyPumyxSucn++0tYmXiR6YkaUxeZ891aRB9PapEdJ2JlGex3z5Jot1/umT25bFqYjVaUzaWh2BjzP99eo44g2AlUYxUK+hn6yqdXRnWVnf62+57u7o4FmINrWKA5ergEEmVi4SMRs7oL1pniitA9wR27luoslEeEp805kwJhRPYRTVUquzcHxi6a8P2ROA5t0FIKkSpaPs3s26QKxi6Xyiq3jXntkA
+ AqAqqDHe
+ sF4Fmyf0MEfGJa1q4cnHkbz3pH6UyREi/24jcrmPJsFhDdyYMitKy9eMxbCeB6CPthwQTwv5U/tHrwi/WJOskPs51r37Wjq7jkOOZKAmX1zXci3beo6IBvZb77SGTnBc9OW3uTCQt5M5tERYyjkZf9q1mihK1B3/u+6bq
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -114,113 +104,213 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Thu, 29 Oct 2026 01:35:18 +0000, Kuniyuki Iwashima wrote:
-> On Wed, 28 Oct 2026 17:52:32 -0700, Shakeel Butt wrote:
-> > On Wed, Oct 28, 2026 at 05:41:04PM -0700, Shakeel Butt wrote:
-> > > On Wed, Oct 28, 2026 at 06:50:12PM +0000, Kuniyuki Iwashima wrote:
-> > > > On our production fleet, we saw mem_cgroup_sk_charge() spent over
-> > > > 3x the cycles of try_charge_memcg() although the former should be
-> > > > a thin wrapper of the latter.
-> > > > 
-> > > > Looking at perf during tcp_rr, most of the cycles were spent in
-> > > > mod_memcg_state(MEMCG_SOCK), which incurred two heavy memory stalls
-> > > > due to cache line misses. (see patch 4)
-> > > > 
-> > > > Also, tcp_rr w/ 20000 flows throughput often degrades by ~50% on
-> > > > many core machine. (see patch 5)
-> > > > 
-> > > > This series adds nr_sock[] to struct memcg_stock_pcp to batch
-> > > > mod_memcg_state() for MEMCG_SOCK and move heavy operations to
-> > > > out of local_lock(&memcg_stock.lock).
-> > > > 
-> > > > With this series, tcp_rr w/ 10000 flows achieves 31% more
-> > > > throughput with lower latency on machine w/ AMD EPYC 7B12 64-Core
-> > > > Processor (Zen 2 Rome, 2 sockets, 256 vCPU)
-> > > > 
-> > > >   tcp_rr (10000 flows, 128 threads, 60s, average of 3 runs):
-> > > > 
-> > > >   Metric                     |       Baseline |        Patched |    Diff
-> > > >   ---------------------------+----------------+----------------+--------
-> > > >   Throughput (RPS)           |     20,884,499 |     27,466,490 | +31.52%
-> > > >   Latency Mean (us)          |         478.46 |         363.71 | -23.98%
-> > > >   Latency p50 (us)           |         453.96 |         356.68 | -21.43%
-> > > >   Latency p90 (us)           |         669.00 |         479.56 | -28.32%
-> > > >   Latency p99 (us)           |         969.38 |         617.80 | -36.27%
-> > > > 
-> > > > 
-> > > > Changes:
-> > > >   v2:
-> > > >     * Rebased on mm.git/mm-new
-> > > >     * Add patch 5 for flaky throughput issue
-> > > >     * Patch 4:
-> > > >       * Benchmark again after rebase and update numbers
-> > > >       * Check in_nmi() in __refill_stock()
-> > > > 
-> > > >   v1: https://lore.kernel.org/linux-mm/20261016052811.3085635-1-kuniyu@google.com/
-> > > > 
-> > > > 
-> > > > Kuniyuki Iwashima (6):
-> > > >   memcg: Remove unnecessary READ_ONCE() under memcg_stock.lock.
-> > > >   memcg: Reduce nesting in consume_stock() and refill_stock().
-> > > >   memcg: Annotate slow paths in consume_stock() and refill_stock().
-> > > >   memcg: Batch mod_memcg_state() for MEMCG_SOCK.
-> > > >   memcg: Uncharge pages outside memcg_stock.lock in __refill_stock().
-> > > >   selftests: cgroup: Deflake test_memcg_sock() in test_memcontrol.c.
-> > > 
-> > > Decouple the 4th patch (batch MEMCG_STOCK) from the remaining and send the
-> > > remaining patches separately and upfront.
-> 
-> Sure.
-> 
-> 
-> > > 
-> > > For the 4th patch, I would prefer we first try to move the network sockets
-> > > from memcg to objcg path.
-> 
-> sk_forward_alloc is already batched per page, and I think
-> migrating to objcg would just add an indirect layer and some
-> costs for css_tryget() / css_put(), and still inlining
-> __consume_stock() or batching in memcg_stock would be crucial.
+Current cache-aware source group/rq selection only counts tasks whose
+preferred LLC is the destination LLC. It cannot identify aggregation
+opportunities where the destination LLC is not a task's preferred LLC,
+but moving there would improve affinity according to the LLC or NUMA
+node affinity order.
 
-Interestingly, patch 5 only (without patch 4) gives even more
-throughput gain on the platform mentioned in patch 4.
+Use the affinity gain calculation introduced in the previous commit
+to select the source group and runqueue with the highest affinity
+gain for the given destination.
 
-But as expected, __css_rstat_updated() spends more cycles.
+Enable this calculation only when llc_aggr_tolerance is greater than 1,
+allowing aggregation across multiple LLCs. When the tolerance is 1,
+aggregation is limited to workloads that fit in a single LLC. In that
+case, retain the original selection metric: count tasks whose preferred
+LLC is the destination LLC. This targets aggregation directly toward
+the preferred LLC without encouraging intermediate moves to other LLCs,
+and avoids the additional affinity calculation overhead.
 
-  tcp_rr (10000 flows, 128 threads, 60s, average of 3 runs):
+Signed-off-by: Jianyong Wu <wujianyong@hygon.cn>
+---
+ kernel/sched/fair.c | 82 +++++++++++++++++++++++++++++++++------------
+ 1 file changed, 61 insertions(+), 21 deletions(-)
 
-  Metric                     |       Baseline |   Patched  |    Diff
-  ---------------------------+----------------+---------------------+--------
-  Throughput (RPS)           |     20,884,499 | 28,453,051 | +36.24%
-  Latency Mean (us)          |         478.46 |     351.07 | -26.63%
-  Latency p50 (us)           |         453.96 |     343.04 | -24.43%
-  Latency p90 (us)           |         669.00 |     479.57 | -28.32%
-  Latency p99 (us)           |         969.38 |     593.92 | -38.73%
+diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
+index eb08ae66f465..e9a803433b16 100644
+--- a/kernel/sched/fair.c
++++ b/kernel/sched/fair.c
+@@ -10339,6 +10339,10 @@ struct lb_env {
+ 	enum fbq_type		fbq_type;
+ 	enum migration_type	migration_type;
+ 	struct list_head	tasks;
++#ifdef CONFIG_SCHED_CACHE
++	/* Aggregation tolerance sampled once per balance pass. */
++	unsigned int		tol;
++#endif
+ };
+ 
+ /*
+@@ -10653,7 +10657,7 @@ static bool get_node_stats(int node, unsigned long *util_out,
+ 	return true;
+ }
+ 
+-static enum llc_mig __maybe_unused can_migrate_llcs(int src_cpu, int dst_cpu,
++static enum llc_mig can_migrate_llcs(int src_cpu, int dst_cpu,
+ 				     struct task_struct *p, bool to_pref)
+ {
+ 	unsigned long src_util, src_pre, src_cap, dst_util, dst_cap, dst_pre;
+@@ -11504,7 +11508,7 @@ struct sg_lb_stats {
+ 	unsigned int nr_preferred_running;
+ #endif
+ #ifdef CONFIG_SCHED_CACHE
+-	unsigned int nr_pref_dst_llc;
++	unsigned int affinity_score;	/* Affinity gain toward the destination */
+ #endif
+ };
+ 
+@@ -11962,8 +11966,8 @@ static void record_sg_llc_stats(struct lb_env *env,
+ }
+ 
+ /*
+- * Do LLC balance on sched group that contains LLC, and have tasks preferring
+- * to run on LLC in idle dst_cpu.
++ * Consider cache-aware balancing for a group whose tasks would gain
++ * affinity by moving to the destination.
+  */
+ static inline bool llc_balance(struct lb_env *env, struct sg_lb_stats *sgs,
+ 			       struct sched_group *group)
+@@ -11982,9 +11986,9 @@ static inline bool llc_balance(struct lb_env *env, struct sg_lb_stats *sgs,
+ 	if (env->sd->nr_balance_failed >= env->sd->cache_nice_tries + 1)
+ 		return false;
+ 
+-	if (sgs->nr_pref_dst_llc &&
+-	    can_migrate_llc(cpumask_first(sched_group_span(group)),
+-			    env->dst_cpu, 0, true) == mig_llc)
++	if (sgs->affinity_score &&
++	    can_migrate_llcs(cpumask_first(sched_group_span(group)),
++			     env->dst_cpu, NULL, true) == mig_llc)
+ 		return true;
+ 
+ 	return false;
+@@ -11994,10 +11998,8 @@ static bool update_llc_busiest(struct lb_env *env,
+ 			       struct sg_lb_stats *busiest,
+ 			       struct sg_lb_stats *sgs)
+ {
+-	/*
+-	 * There are more tasks that want to run on dst_cpu's LLC.
+-	 */
+-	return sgs->nr_pref_dst_llc > busiest->nr_pref_dst_llc;
++	/* Prefer the group with the greater affinity gain toward dst_cpu. */
++	return sgs->affinity_score > busiest->affinity_score;
+ }
+ 
+ /*
+@@ -12142,7 +12144,7 @@ static int calc_affinity_llc_score(struct sched_domain *sd, struct sched_domain
+  * this_rq() stays stable for a whole pass, and two CPUs balancing at the same
+  * time each get their own arrays.
+  */
+-static void __maybe_unused lb_affi_scratch(int **ids, int **weights, int *llc_max)
++static void lb_affi_scratch(int **ids, int **weights, int *llc_max)
+ {
+ 	struct sched_domain *sd = rcu_dereference_all(this_rq()->sd);
+ 
+@@ -12194,7 +12196,7 @@ static void __maybe_unused lb_affi_scratch(int **ids, int **weights, int *llc_ma
+  * remain unchanged for the lifetime of the cache. The caller must
+  * initialize *@last_node to -1 and *@num to 0.
+  */
+-static int __maybe_unused
++static int
+ calc_affinity_score(struct sched_domain *sd, struct rq *rq, int src_cpu,
+ 		    int dst_cpu, int *affi_nodes, int *affi, int *last_node,
+ 		    int *num, int llc_max)
+@@ -12248,6 +12250,12 @@ static inline void update_sg_lb_stats(struct lb_env *env,
+ {
+ 	int i, nr_running, local_group, sd_flags = env->sd->flags;
+ 	bool balancing_at_rd = !env->sd->parent;
++#ifdef CONFIG_SCHED_CACHE
++	int last_node = -1, node_num = 0, llc_max;
++	int *cache_data, *affi;
++
++	lb_affi_scratch(&cache_data, &affi, &llc_max);
++#endif
+ 
+ 	memset(sgs, 0, sizeof(*sgs));
+ 
+@@ -12276,8 +12284,22 @@ static inline void update_sg_lb_stats(struct lb_env *env,
+ 			dst_llc = llc_id(env->dst_cpu);
+ 			if (llc_id(i) != dst_llc) {
+ 				sd_tmp = rcu_dereference_all(rq->sd);
+-				if (sd_tmp && (unsigned int)dst_llc < sd_tmp->llc_max)
+-					sgs->nr_pref_dst_llc += sd_tmp->llc_counts[dst_llc];
++				if (sd_tmp && (unsigned int)dst_llc < sd_tmp->llc_max) {
++					/*
++					 * At tolerance 1, aggregation is limited to
++					 * workloads that fit in one LLC. Only count
++					 * tasks preferring dst_llc, rather than scoring
++					 * intermediate moves along the affinity order.
++					 * Migration checks still enforce LLC headroom.
++					 */
++					if (env->tol > 1)
++						sgs->affinity_score +=
++						calc_affinity_score(env->sd, rq, i, env->dst_cpu,
++								    cache_data, affi, &last_node,
++								    &node_num, llc_max);
++					else
++						sgs->affinity_score += sd_tmp->llc_counts[dst_llc];
++				}
+ 			}
+ 		}
+ #endif
+@@ -13373,12 +13395,19 @@ static struct rq *sched_balance_find_src_rq(struct lb_env *env,
+ {
+ 	struct rq *busiest = NULL, *rq;
+ 	unsigned long busiest_util = 0, busiest_load = 0, busiest_capacity = 1;
+-	unsigned int __maybe_unused busiest_pref_llc = 0;
++	unsigned int __maybe_unused busiest_affinity_score = 0;
+ 	struct sched_domain __maybe_unused *sd_tmp;
+ 	unsigned int busiest_nr = 0;
+ 	int __maybe_unused dst_llc;
+ 	int i;
+ 
++#ifdef CONFIG_SCHED_CACHE
++	int last_node = -1, node_num = 0, llc_max;
++	int *cache_data, *affi;
++
++	lb_affi_scratch(&cache_data, &affi, &llc_max);
++#endif
++
+ 	for_each_cpu_and(i, sched_group_span(group), env->cpus) {
+ 		unsigned long capacity, load, util;
+ 		unsigned int nr_running;
+@@ -13510,11 +13539,19 @@ static struct rq *sched_balance_find_src_rq(struct lb_env *env,
+ 			dst_llc = llc_id(env->dst_cpu);
+ 
+ 			if (sd_tmp && (unsigned)dst_llc < sd_tmp->llc_max) {
+-				unsigned int this_pref_llc =
+-					sd_tmp->llc_counts[dst_llc];
+-
+-				if (busiest_pref_llc < this_pref_llc) {
+-					busiest_pref_llc = this_pref_llc;
++				unsigned int affinity_score;
++
++				/* Use the same scoring policy as group selection. */
++				if (env->tol > 1)
++					affinity_score = calc_affinity_score(env->sd, rq,
++							    i, env->dst_cpu, cache_data,
++							    affi, &last_node,
++							    &node_num, llc_max);
++				else
++					affinity_score = sd_tmp->llc_counts[dst_llc];
++
++				if (busiest_affinity_score < affinity_score) {
++					busiest_affinity_score = affinity_score;
+ 					busiest = rq;
+ 				}
+ 			}
+@@ -13732,6 +13769,9 @@ static int sched_balance_rq(int this_cpu, struct rq *this_rq,
+ 		.cpus		= cpus,
+ 		.fbq_type	= all,
+ 		.tasks		= LIST_HEAD_INIT(env.tasks),
++#ifdef CONFIG_SCHED_CACHE
++		.tol		= READ_ONCE(llc_aggr_tolerance),
++#endif
+ 	};
+ 	bool need_unlock = false;
+ 
+-- 
+2.34.1
 
-  perf cycles (10000 flows, 10s, average of 3 runs):
 
-  Server (M cycles / %)      |           Baseline |            Patched |    Diff
-  ---------------------------+--------------------+-----------------------+--------
-  Host Total Cycles          |        4,566,914 M |        4,548,747 M |   -0.4%
-  tcp_rcv_established()      | 158,009 M (3.460%) | 158,773 M (3.490%) |   +0.5%
-  mem_cgroup_sk_charge()     |  18,420 M (0.403%) |  16,211 M (0.356%) |  -12.0%
-  mem_cgroup_sk_uncharge()   |  16,593 M (0.363%) |  12,121 M (0.266%) |  -27.0%
-  __css_rstat_updated()      |   3,502 M (0.077%) |   5,606 M (0.123%) |  +60.0%
-  Memcg Sock Total           |  38,515 M (0.843%) |  33,937 M (0.746%) |  -11.9%
-
-
-> 
-> 
-> > > Then I would prefer we optimize the stats update for
-> > > all stats instead of special casing for MEMCG_STOCK.
-> > > 
-> > 
-> > MEMCG_SOCK instead of MEMCG_STOCK
-> 
-> I guess you mean optimising MEMCG_SOCK along with MEMCG_KMEM (or
-> mod_memcg_state() / memcg_rstat_updated() in general).
-> 
-> I can give it a try, though some stats already have specialised
-> batching (e.g. NR_SLAB_RECLAIMABLE_B in obj_stock and folio stats
-> in uncharge_batch()).
 
