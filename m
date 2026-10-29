@@ -1,188 +1,98 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E77A6606A320
-	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 07:32:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A67D606A31D
+	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 07:41:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=oa9j94Oo;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=eyWwh8pz;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=oa9j94Oo;
-	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=eyWwh8pz
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=gcTtyRVM
 Received: by kanga.kvack.org (Postfix)
-	id 083686B05B2; Thu, 29 Oct 2026 03:32:48 -0400 (EDT)
+	id 5EA866B05B4; Thu, 29 Oct 2026 03:41:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 05A986B05B3; Thu, 29 Oct 2026 03:32:47 -0400 (EDT)
+	id 59B3C6B05B5; Thu, 29 Oct 2026 03:41:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E65206B05B4; Thu, 29 Oct 2026 03:32:47 -0400 (EDT)
+	id 4B20C6B05B6; Thu, 29 Oct 2026 03:41:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id A382D6B05B2
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 03:32:47 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 31F49A7C06
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 07:32:47 +0000 (UTC)
-X-FDA: 85374846774.09.A0A1C8C
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf07.hostedemail.com (Postfix) with ESMTP id EB44140002
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 07:32:44 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=oa9j94Oo;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=eyWwh8pz;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=oa9j94Oo;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=eyWwh8pz;
-	spf=pass (imf07.hostedemail.com: domain of tzimmermann@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=tzimmermann@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 2EB2A6B05B4
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 03:41:31 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id AD6B61C0846
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 07:41:30 +0000 (UTC)
+X-FDA: 85374868740.22.798B74C
+Received: from mta0.migadu.com (out-179.mta0.migadu.com [91.218.175.179])
+	by imf10.hostedemail.com (Postfix) with ESMTP id E674EC0003
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 07:41:27 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=gcTtyRVM;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf10.hostedemail.com: domain of ye.liu@linux.dev designates 91.218.175.179 as permitted sender) smtp.mailfrom=ye.liu@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793259165;
+	s=arc-20220608; t=1793259688;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=U1JEiGypUZqrmUCmocO9jwLOxx5nBN2nK/xOgDHuNzs=;
-	b=cbeLWuMPSX3JkZKYbrtfiePK9OZJ0shc88QwEs2eFysUEw1Gea8Y9S7ch5Kd7DLXLCoLY6
-	9nQr91oAwT0Q8SIJRbvrojXBO6QPfUhawcAapeOLsltWCfanIYOqrdzrH4KiOBFIxUoFEb
-	r+t/sv9kBZpoEnIIFZYXvXeJPUOT8ko=
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=55b5s+R9twQxElwt/hmg6vi8POgmGGaNVzc+dDZF88s=;
+	b=cUw4X9t0/JAofmT6BW0GW1Xpy8OiD7Tw3gngWdrSi2lEMZTi/ubKV4z5VlzE9xrodJoXlT
+	UYg0T3qZ42LwYZuSs83qdClbdPf1+xFpHS+iAzbg4sfMvjUndMb9/Act2LGdwkGzzxmpON
+	0D5FVdOfNoTPTwQjhxTapXyJ8axu/eA=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=oa9j94Oo;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=eyWwh8pz;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=oa9j94Oo;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=eyWwh8pz;
-	spf=pass (imf07.hostedemail.com: domain of tzimmermann@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=tzimmermann@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
+	imf10.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=gcTtyRVM;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf10.hostedemail.com: domain of ye.liu@linux.dev designates 91.218.175.179 as permitted sender) smtp.mailfrom=ye.liu@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793259165;
-	b=wY60tmkKwIuI6SYQOSrcLgPVTpzBucgKd38ady0nd6VkZyPoGC/lijGikbqwJHJFSpNiyR
-	4914YrxeRU1zimLh/BGRmadXDBcktCfcv92HI/Xjr+q5dh2wsEs25xp56fUKZF7YKlSr5x
-	TT8eeLijeQwLzQ4CY4vErZGUSkeUmvw=
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 44C9122124;
-	Thu, 29 Oct 2026 07:32:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1793259163; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=U1JEiGypUZqrmUCmocO9jwLOxx5nBN2nK/xOgDHuNzs=;
-	b=oa9j94OoY2FodzXZwJXPTumJwaR5GxD1p3BmxUZJ2WDa3tjbj0j6NyJ+kQH3VDOhXdopl7
-	nYpG5+qs5269DoHX+wRwChXPKZiYaxEdF4wz9dV1N8SEGMwZJz6bPdghp7tfZEJi7cVwHQ
-	5WpmhbK0tl9xvUTJ4SfGI7jJPTpw1V4=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1793259163;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=U1JEiGypUZqrmUCmocO9jwLOxx5nBN2nK/xOgDHuNzs=;
-	b=eyWwh8pzID12vO1dyJGt/ezwNlDUKwQtxJx4zxJ+5e4h8YO41r46Czm1Z5/6oKOET4y+At
-	ar3Yduv0n1uuw1AQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1793259163; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=U1JEiGypUZqrmUCmocO9jwLOxx5nBN2nK/xOgDHuNzs=;
-	b=oa9j94OoY2FodzXZwJXPTumJwaR5GxD1p3BmxUZJ2WDa3tjbj0j6NyJ+kQH3VDOhXdopl7
-	nYpG5+qs5269DoHX+wRwChXPKZiYaxEdF4wz9dV1N8SEGMwZJz6bPdghp7tfZEJi7cVwHQ
-	5WpmhbK0tl9xvUTJ4SfGI7jJPTpw1V4=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1793259163;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=U1JEiGypUZqrmUCmocO9jwLOxx5nBN2nK/xOgDHuNzs=;
-	b=eyWwh8pzID12vO1dyJGt/ezwNlDUKwQtxJx4zxJ+5e4h8YO41r46Czm1Z5/6oKOET4y+At
-	ar3Yduv0n1uuw1AQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 3724D13419;
-	Thu, 29 Oct 2026 07:32:42 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id weEVNJn24morCgAAD6G6ig
-	(envelope-from <tzimmermann@suse.de>); Thu, 29 Oct 2026 07:32:42 +0000
-Message-ID: <fb3b6a24-74ca-4da8-8593-352afd515313@suse.de>
-Date: Thu, 29 Oct 2026 08:32:41 +0100
+	t=1793259688;
+	b=seUazvl0Racu44pbjNvkp551LXgGlCAgB1nEU0qjardvlmaqitJ87CCY/gUb7XFg2BJDGk
+	lUkdbBwDmmWSK8kSuEIMzmAO3//sV1SjlnoNgE/JlNZQZ+PrzSqJiCCOEceqCUNKGY0m9K
+	0iam0iMBaPxbcMcCgOJdTroR5HW80Wk=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=kqXkXah7tJyY7/8XgkA0XpkEeCII2v4IbMiHYj6hQ9o=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1793259686; v=1; x=1793864486;
+ b=gcTtyRVM6pdvEsNQWrKhRkJzdWMLLeOlqbc7qyRtEG6LQ6/2dJoz7jS4tooOBi3iZ1BJSjNo
+ uNq4NU2/rrnQ7NbbwiLch45wDTmAygvq2KOX9+YtqvvD2Oliq62FyI++T2b3G9SAamLTiKZR5pW
+ Q9Mhv2Rh4E+3nqMuGcXJ4jew=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id 34ecf73c26048443;
+	Thu, 29 Oct 2026 07:41:26 +0000
+X-Mizu-Trace-ID: 34ecf73c26048443
+X-Migadu-Flow: FLOW_OUT
+From: Ye Liu <ye.liu@linux.dev>
+Date: Thu, 29 Oct 2026 15:41:02 +0800
+Subject: [PATCH] mm/huge_memory: use READ_ONCE() when cloning folio flags
+ during split
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 07/10] drm/gem: Switch to __nonnull_args() macro
-To: Dmitry Ilvokhin <d@ilvokhin.com>, Alex Deucher
- <alexander.deucher@amd.com>, =?UTF-8?Q?Christian_K=C3=B6nig?=
- <christian.koenig@amd.com>, David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>, Jani Nikula <jani.nikula@linux.intel.com>,
- Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
- Rodrigo Vivi <rodrigo.vivi@intel.com>, Tvrtko Ursulin
- <tursulin@ursulin.net>, Lee Jones <lee@kernel.org>,
- Pavel Machek <pavel@kernel.org>, Joel Stanley <joel@jms.id.au>,
- Andrew Jeffery <andrew@codeconstruct.com.au>,
- Ryan Chen <ryan_chen@aspeedtech.com>, Billy Tsai
- <billy_tsai@aspeedtech.com>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Kees Cook <kees@kernel.org>,
- Andy Shevchenko <andy@kernel.org>, Matthew Wilcox <willy@infradead.org>,
- Andrew Morton <akpm@linux-foundation.org>, Andy Whitcroft
- <apw@canonical.com>, Joe Perches <joe@perches.com>,
- Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
- Randy Dunlap <rdunlap@infradead.org>
-Cc: amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
- linux-kernel@vger.kernel.org, intel-gfx@lists.freedesktop.org,
- linux-leds@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-aspeed@lists.ozlabs.org, linux-hardening@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
- linux-doc@vger.kernel.org, Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-References: <cover.1793027261.git.d@ilvokhin.com>
- <5bfdc1491d297b5e98cf42322c790f06481c28c7.1793027261.git.d@ilvokhin.com>
-Content-Language: en-US
-From: Thomas Zimmermann <tzimmermann@suse.de>
-Autocrypt: addr=tzimmermann@suse.de; keydata=
- xsBNBFs50uABCADEHPidWt974CaxBVbrIBwqcq/WURinJ3+2WlIrKWspiP83vfZKaXhFYsdg
- XH47fDVbPPj+d6tQrw5lPQCyqjwrCPYnq3WlIBnGPJ4/jreTL6V+qfKRDlGLWFjZcsrPJGE0
- BeB5BbqP5erN1qylK9i3gPoQjXGhpBpQYwRrEyQyjuvk+Ev0K1Jc5tVDeJAuau3TGNgah4Yc
- hdHm3bkPjz9EErV85RwvImQ1dptvx6s7xzwXTgGAsaYZsL8WCwDaTuqFa1d1jjlaxg6+tZsB
- 9GluwvIhSezPgnEmimZDkGnZRRSFiGP8yjqTjjWuf0bSj5rUnTGiyLyRZRNGcXmu6hjlABEB
- AAHNJ1Rob21hcyBaaW1tZXJtYW5uIDx0emltbWVybWFubkBzdXNlLmRlPsLAjgQTAQgAOAIb
- AwULCQgHAgYVCgkICwIEFgIDAQIeAQIXgBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftODH
- AAoJEGgNwR1TC3ojx1wH/0hKGWugiqDgLNXLRD/4TfHBEKmxIrmfu9Z5t7vwUKfwhFL6hqvo
- lXPJJKQpQ2z8+X2vZm/slsLn7J1yjrOsoJhKABDi+3QWWSGkaGwRJAdPVVyJMfJRNNNIKwVb
- U6B1BkX2XDKDGffF4TxlOpSQzdtNI/9gleOoUA8+jy8knnDYzjBNOZqLG2FuTdicBXblz0Mf
- vg41gd9kCwYXDnD91rJU8tzylXv03E75NCaTxTM+FBXPmsAVYQ4GYhhgFt8S2UWMoaaABLDe
- 7l5FdnLdDEcbmd8uLU2CaG4W2cLrUaI4jz2XbkcPQkqTQ3EB67hYkjiEE6Zy3ggOitiQGcqp
- j//OwE0EWznS4AEIAMYmP4M/V+T5RY5at/g7rUdNsLhWv1APYrh9RQefODYHrNRHUE9eosYb
- T6XMryR9hT8XlGOYRwKWwiQBoWSDiTMo/Xi29jUnn4BXfI2px2DTXwc22LKtLAgTRjP+qbU6
- 3Y0xnQN29UGDbYgyyK51DW3H0If2a3JNsheAAK+Xc9baj0LGIc8T9uiEWHBnCH+RdhgATnWW
- GKdDegUR5BkDfDg5O/FISymJBHx2Dyoklv5g4BzkgqTqwmaYzsl8UxZKvbaxq0zbehDda8lv
- hFXodNFMAgTLJlLuDYOGLK2AwbrS3Sp0AEbkpdJBb44qVlGm5bApZouHeJ/+n+7r12+lqdsA
- EQEAAcLAdgQYAQgAIAIbDBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftOH6AAoJEGgNwR1T
- C3ojVSkIALpAPkIJPQoURPb1VWjh34l0HlglmYHvZszJWTXYwavHR8+k6Baa6H7ufXNQtThR
- yIxJrQLW6rV5lm7TjhffEhxVCn37+cg0zZ3j7zIsSS0rx/aMwi6VhFJA5hfn3T0TtrijKP4A
- SAQO9xD1Zk9/61JWk8OysuIh7MXkl0fxbRKWE93XeQBhIJHQfnc+YBLprdnxR446Sh8Wn/2D
- Ya8cavuWf2zrB6cZurs048xe0UbSW5AOSo4V9M0jzYI4nZqTmPxYyXbm30Kvmz0rYVRaitYJ
- 4kyYYMhuULvrJDMjZRvaNe52tkKAvMevcGdt38H4KSVXAylqyQOW5zvPc4/sq9c=
-In-Reply-To: <5bfdc1491d297b5e98cf42322c790f06481c28c7.1793027261.git.d@ilvokhin.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Level: 
-X-Spam-Score: -11.79
-X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: EB44140002
-X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20261029-data_race_huge_mem-v1-1-112e331291c1@linux.dev>
+X-B4-Tracking: v=1; b=H4sIAI344moC/x3MQQqDMBBG4avIrBuI0QrtVUoJY/w1WSQtM7YI4
+ t1Nu/wW7+2kkASle7OT4Js0vUpFe2koRC4LTJqqyVk3tNbdzMQre+EAHz8LfEY2vZs7Hqy9hr6
+ jGr4Fc9r+08ezemSFGYVLiL9VZl0hdBwnD1VtJn0AAAA=
+X-Change-ID: 20261029-data_race_huge_mem-42f3a6005c43
+To: Andrew Morton <akpm@linux-foundation.org>, 
+ David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>, 
+ Baolin Wang <baolin.wang@linux.alibaba.com>, 
+ "Liam R. Howlett" <liam@infradead.org>, Nico Pache <nico.pache@linux.dev>, 
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
+ Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
+ Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+ Ye Liu <liuye@kylinos.cn>
+X-Mailer: b4 0.14.3
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: E674EC0003
+X-Stat-Signature: hnmxxddyq78rbs4qhgom6u16n4nre7kh
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=unavailable autolearn_force=no
-	version=4.0.1
-X-Stat-Signature: 8e9kgsk7tqq5x4rj83xxad7sakwmfrb3
-X-HE-Tag: 1793259164-338539
-X-HE-Meta: U2FsdGVkX196+TSYjKe2+ibj/nNXoXb5uyHV98FOzhSZdUaYxZupaAvZYz5w74pqQYCSza3cAvn9H8tNaoWuv6fzxnZH38D2BxHXs7rXevyFcYWxwV/dIP+/95ncBts/fCBVCJSz7KegNPLsdxl4ZH0BU/2gmGqrJkBm4khuTtabTemfz9RU75zOjHazWiCJwbjB2dfVL33M7ZStsc0NeofQsLdx3OokYuqjWHgkQww3PXoTUFfdzZCLTKPC6NFRmVWUcAhU4U+H8v2Bpm0P7eWJszuAzpcHK0cVnArQVbLMnb/iQuPTpGjhs9QhEjV1q3BK4utwB33SyfnXZv5g/XfaO1D/E/+RONcOeHFJCS8TG1doiPfHs/Agm8sOcCYunqMgpvR8MiPocwqOGesFeRMfR70nW/CUw3OWcCqRHXwis76sgMNDlKS5I6YCSBBUuyTbWcJzGN7WpZzdJjudT5edVxZ7cC8tMMXKwsrHgEpqhNpWk4Yu03sQRcU/15t8EMeJRV7ao38uTGBiKlAm9Gv51nvzwa4qNer+OkzsHNtylaSRdvOMK1f+V8LzhbLNK5v0KLb5b/hb5sZHKb0pRVBudIt7oDNEdZaP9ABtr/kDw53/3lUUsOJEKKXdNdFFmaRPRZtk5TMaT4uYGUjQW1CJDlGZRBUESCshh9E0e27dOXzhEcF8P0w6nf+3a9j+ElxdxxKeT50pzM2T6Lrp2VKNJA6lh2yMfNWOZdcUS7gV87HhiM3IGjpFkURKU4eciM+80eugvsVp2l7i/Se/CmYFZNOcJ6pWLIEL85pi8TC2SP2PxTDNRgmzsaV+wiPqnLJ3RaHuOk2M5vn73Kh0aAGwqMRSE/UEAXjyRibQm0Q/E0nce/4zO1mPEgDhroi7ELtxLGZpvOgKqaBQroIOchv8D0CMxbEVpURZgVZRBNrkBHpd+Xd3JtWlT1mONef2mUZpbZMJ8UAVP3nnIEE
- HHvPkT35
- z/Rss480y9U7kQz4oj8MzURS7tF0LxGxm6hxsY9doIdz0dT6VHVofqbJyQjJi87UWh/jpaTTfpJkHcNt0HsklvfGW5LO/ZD+/gBqlYI7ITvR/9QSQlGR52XGQvx8HLNbL1kxPxKmoFnyvoCKuLIqikVTKZTpRE4Yza3owTrbQbm59kdpjhYm6NuK5Nik74+RZtdg14NYil7ipCYetWjib382nHeUKEGNOLBy/DZfGWUrGdeJRT4cI9EBqJPHQkZnJSDGj4c5aWFmgq5revNGjZ6FkZNENzcpGIU8YY5vfxm34w5fQmDbauE0e457QnPnRRzDKCoujTDj/4vAa9QIZ9kFQAelByJmAdpUbqti6JosZXiTcYxrn9hKGQSH8JswaqDoseSuR5Ft1OVilBIzcmFidv8vQ6DjRlM8EeY0lM1BEyx57mqgi64+M8C97wG6fMeoHhxuQzUFTRd0SWFjP0udaSziH9da+TiVM4qMItVv9lxrLhncNyHaFbk4FQWFX/jQJsBUkYgaZueHLwr4xokBeOsGIy1PchNTtr4flHLLdnHY1L6CVt+n2YD9nphYuc5BwrJScPvdxvXmqQZ5EFbLpQ5iO0Fegti0R
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-Rspam-User: 
+X-HE-Tag: 1793259687-900232
+X-HE-Meta: U2FsdGVkX18o7EGr+tIpYHeY1LVb5QB1chbvtOd5Wp62PAiu8iqp9Gzz1TPd6RVU5h20v1HhmGqXd+Bk2dC2Jf1SOGKkbgtEP3DaVlaueBpQghVxrbGsug28ePFzyiSfKyBkb9q3PZ7z5Ws+iDJ5LMzkcs0sXqntGBe3d0PfEWuiR3cfARFArJ3Oz7yeY5DgjgDGlhfWHcZ1L5DnIm9sVOHgDHZb/OamJa+wotz4bfQbp6++McGJWB+mwLqTwJmmrdfKXJ4LGNA6HTIn6Epg5U3feguVC7jWq5Q0APcgw8G13C5T62OPcnkMog3t30HuDdpFp028l4AzVcTum19Fj9+oVEkJVosOqKNyFI2yH/iHKFoxDLq0aOd7uTquHSl6Tx/aObsng+VkcKFg7UA/T7YKsjOZ+0bY/C1O5y8iXQsOAEdX+4iVcPLnYl44izeUaHoT9cmuHFQ6rvB1PoH90zTFStovU5919ZAnoBANufy5QEgzopQ6SqXcVS2rNzXlJZsIeMAL+Yr4tlEhurxgJNWA1snIaN8TfxPO5rUW05lJtiOXN/dFm5n4ej1Zzz2dCx4YoSccY76DnyQtAP8wpnx7u4p1rakXVHQqaX332k+su0JAd5GMpzZFRrdoTCsMTkb7z5Z39mnm9HQct9tx7QWGtffu5ovTRPU2Ch4H5zEvP7ncuAjSFmBcbcTlcG50P9QV1Yy4uLrW7oyr9iYCgzb/yGovoEJsQ5hWj6ZRMk3v9aGF3neqL6z2lhOCs6AMoA9oa6QAuSGdZbF5bWvzQFm9J8QXbv4pGngApnb4ka3nczvfSXpZI4M10btoW6qV6xddst9Fv5CRRaheoFtF93ShlMRFqwVTXsFIBYiyrZK+t6z/j0Yp9VWfvr/NIzMgYUX6XE5HH+DXHwqeWHSfd5pvJ6OBNogBNpNaWegvkfYSMpk3T6xSlyPjFEsAOrZnb2en7s9O11g55bNTbMC
+ DRgrcjZR
+ oKxFTWr/EkzOSB4jOBbtKZ/vTWSzXM5ZgGu6YBfQ+pglN3iAJ/TVpY4UMlptmFpZs0XTmqiW4iyYBhp0NOWVx8XOcaBvTo9c1CSB0kBHbiYRLXA+TukNaYSsjuhLFTj+AeUqiDW7USMQar0O76S48i5x+DXr2/JJ2QjXwKAeZOm5A/b0iIWWf+K3h4uyJhWvkGvg3b/txWQybM9498/xOgShwMG/ZmVhLCyMO0SQTKDgRQ/R7RQDa9hlNjCCzxixugKclC1dNFRcIxLoVovtLLI0xjaJbRb8r9c3K
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -191,52 +101,40 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Hi
+From: Ye Liu <liuye@kylinos.cn>
 
-Am 28.10.26 um 09:19 schrieb Dmitry Ilvokhin:
-> Commit 22302af28d3f ("cleanup: Annotate guard constructors with
-> nonnull") added the macro __nonnull_args() to wrap raw compiler
-> attribute.
->
-> Replace __attribute__((nonnull)) with __nonnull_args() to standardize
-> nonnull attribute usage across the tree and keep the attribute's quirks
-> in one place rather than open-coded at every call site.
->
-> Suggested-by: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-> Signed-off-by: Dmitry Ilvokhin <d@ilvokhin.com>
+The head folio's flags are read as a whole word to clone specific bits
+into tail folios during a THP split.  This plain read can race with
+concurrent atomic flag modifications such as folio_set_waiters()
+(PG_waiters), as reported by KCSAN:
 
-Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
+  BUG: KCSAN: data-race in __split_huge_page_tail / migration_entry_wait_on_locked
 
-Should gem.h now include <linux/compiler_attributes.h> ?
+Signed-off-by: Ye Liu <liuye@kylinos.cn>
+---
+ mm/huge_memory.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Best regards
-Thomas
+diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+index bd44d58e8684..aac91c972ced 100644
+--- a/mm/huge_memory.c
++++ b/mm/huge_memory.c
+@@ -3731,7 +3731,7 @@ static void __split_folio_to_order(struct folio *folio, int old_order,
+ 		 * PG_anon_exclusive (-> PG_mappedtodisk) for these here.
+ 		 */
+ 		new_folio->flags.f &= ~PAGE_FLAGS_CHECK_AT_PREP;
+-		new_folio->flags.f |= (folio->flags.f &
++		new_folio->flags.f |= (READ_ONCE(folio->flags.f) &
+ 				((1L << PG_referenced) |
+ 				 (1L << PG_swapbacked) |
+ 				 (1L << PG_swapcache) |
 
-> ---
->   include/drm/drm_gem.h | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/include/drm/drm_gem.h b/include/drm/drm_gem.h
-> index ed329408acbe..56dd15921c7a 100644
-> --- a/include/drm/drm_gem.h
-> +++ b/include/drm/drm_gem.h
-> @@ -566,7 +566,7 @@ static inline void drm_gem_object_get(struct drm_gem_object *obj)
->   	kref_get(&obj->refcount);
->   }
->   
-> -__attribute__((nonnull))
-> +__nonnull_args()
->   static inline void
->   __drm_gem_object_put(struct drm_gem_object *obj)
->   {
+---
+base-commit: 6d0933ae9d46674a6ea63a87e9e9ab4e662670c9
+change-id: 20261029-data_race_huge_mem-42f3a6005c43
 
+Best regards,
 -- 
---
-Thomas Zimmermann
-Graphics Driver Developer
-SUSE Software Solutions Germany GmbH
-Frankenstr. 146, 90461 Nürnberg, Germany, www.suse.com
-GF: Stefan Gaiser, Jochen Jaser, Abhinav Puri, (HRB 36809, AG Nürnberg)
-
+Ye Liu <ye.liu@linux.dev>
 
 
