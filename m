@@ -1,74 +1,75 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8686860A2607
-	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 20:34:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D455560A2621
+	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 20:34:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=SjSyyyt2
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=h5YlBqSR
 Received: by kanga.kvack.org (Postfix)
-	id 747E66B05B8; Thu, 29 Oct 2026 16:34:32 -0400 (EDT)
+	id 0920B6B05BA; Thu, 29 Oct 2026 16:34:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6F8536B05B9; Thu, 29 Oct 2026 16:34:32 -0400 (EDT)
+	id 048C46B05BB; Thu, 29 Oct 2026 16:34:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5E7506B05BA; Thu, 29 Oct 2026 16:34:32 -0400 (EDT)
+	id E73A36B05BC; Thu, 29 Oct 2026 16:34:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 33FF66B05B8
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 16:34:32 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id B3D9A16042F
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 20:34:31 +0000 (UTC)
-X-FDA: 85376816742.05.CC3EA37
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id BCA146B05BA
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 16:34:46 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 51CE48043E
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 20:34:46 +0000 (UTC)
+X-FDA: 85376817372.04.FF65CE6
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf11.hostedemail.com (Postfix) with ESMTP id D7F4540006
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 20:34:29 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SjSyyyt2;
-	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793306070;
-	b=oG864Zf6lQ2/p2VsTQO+kcqadDTgNs9o2GjcY+BqVxQScP/kRtvtiAVhxQCAeE7Y+aB96W
-	5/85nQk28FuinGkOBIWfAkbbI6Ba5mX3OD44VI3EwJ/tz5iZywpZI+IGnXbTdavJnQtO/f
-	SUag0DDS6Q/UEgCv2odWYp9bbucYXjY=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SjSyyyt2;
-	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf29.hostedemail.com (Postfix) with ESMTP id 867A7120006
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 20:34:44 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=h5YlBqSR;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793306070;
+	s=arc-20220608; t=1793306084;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=oT+YqEtlQbND2mfRTH9TILHjv0P3Fo80cSp1PCr5wUg=;
-	b=cKCrhbImljw5M7m89bn14vie4oF37qy7c7US9m/oFo1+WJvs6on5jDfm5pVDRgxccLiZPj
-	G9rPyZpX8UZmVwqyEToDxiNF8Czl739j2BOBpb+3Zb8qZ8X8UYEuSZUIPwKjGaTrva9rZo
-	OJs/QD0Pt4IqtjKDVWA3tX7yKwvx5tw=
+	bh=8NeWgKC8rFJYZ7CY//H5MJ8mlDLPVUlB7WRXqG52bhs=;
+	b=tFb35Cba2ZO9SdrPvdhEMSsCtmytYlRqAHJw34Aw0L7N54PeqYSmcwfE6YcobZocq0G+6u
+	PrJCYxWgVWhMlG40CQCWP3oHErNhhh3sCqimjpeanXeT1mU5pIiLPMZmBiefvhIu1DTogo
+	FbbPhGlmVOZHoh31stQELc2kZoAe6rQ=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=h5YlBqSR;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793306084;
+	b=oRV9MQkS174FCCThEjWuPWXPHVERsZz56l0cvKIPubTS/Mc6QLCrFSosvlPqYViJM3QAXK
+	T+zHVtSHM5mgR1GmfPy0JzY49aq1L9PnxXo8WOCbhCEvchsWvNL19za8uHGEfM8pXNbqU9
+	KMg5cpyqjX1RuTa991NFzNIeyJ6sRQU=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 22F8542B79;
+	by sea.source.kernel.org (Postfix) with ESMTP id CC6004190F;
+	Thu, 29 Oct 2026 20:34:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A1371F01825;
 	Thu, 29 Oct 2026 20:34:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 341E61F01816;
-	Thu, 29 Oct 2026 20:34:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793306069;
-	bh=oT+YqEtlQbND2mfRTH9TILHjv0P3Fo80cSp1PCr5wUg=;
+	s=k20260515; t=1793306083;
+	bh=8NeWgKC8rFJYZ7CY//H5MJ8mlDLPVUlB7WRXqG52bhs=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=SjSyyyt23NhzYdLUJQzjyOqLwA8+XnmlLC5njjzlYt6G5ocTnXx44lnZTPI/B7exG
-	 Tpqip0IMnoVAS6p/71GtzFblSHA6svKrTkHsAq9WcnMlGJUdiQBwr4XlMyXh12ZqvM
-	 PMICUX0jeBtzxG34zNZAKpfGD12ftE+vqPHD+fywpcJnjaLgQt+vpN4uGZcLThOK8u
-	 D1jTUIEWcxMJjlyTBTqH9cb9voaIk3GpZ5mh8GmYLQdLgkQJ6rmEWMxh6gdHx15QIA
-	 Ie2Q4Jtu03dezRZ2IiU2gLRK/y+6l0H5VxNnAzVZG2SouSugNYWL5yMEENxKvREYzJ
-	 LvERDYWVFwK4Q==
+	b=h5YlBqSRsRQCrhmhb7220/BdTpbl1XOfJ22+z1dVZFlRKfbL+drAxRpvK5BSKbiqk
+	 z4Yx0Re+/RHynvRBIbM1ppOnJLhfWmgi513P3ua5Wr9IbSLQ8emJZl3Yi/oNEiOcR3
+	 hej0anVMIrPJH6EUcTvHJWuxdJ+OMBQE2DpDrm0QmaVdek3+JEirmytsKmT42UjcWp
+	 Cto2aIPZHz2WPdzD6lBNoM479P0R+mPiBjCn083hWSKlAH1IBn8toFkmcHR4qEDSMq
+	 3x7FIDUx5x9Hf7AdMTO6otEaq/aNaHmVondhDFgT3OpBGeXkzBP5HUf1Z1lrXn1/5Z
+	 r2urf3Jip4tiA==
 From: "David Hildenbrand (Arm)" <david@kernel.org>
-Date: Thu, 29 Oct 2026 21:32:59 +0100
-Subject: [PATCH v2 04/47] mm/memfd: make f_pos accesses atomic
+Date: Thu, 29 Oct 2026 21:33:00 +0100
+Subject: [PATCH v2 05/47] mm/truncate: look again if a folio left the
+ mapping
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261029-fixes_core-v2-4-a64ce7f83abb@kernel.org>
+Message-Id: <20261029-fixes_core-v2-5-a64ce7f83abb@kernel.org>
 References: <20261029-fixes_core-v2-0-a64ce7f83abb@kernel.org>
 In-Reply-To: <20261029-fixes_core-v2-0-a64ce7f83abb@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>, 
@@ -106,30 +107,30 @@ To: Andrew Morton <akpm@linux-foundation.org>,
 Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
  kexec@lists.infradead.org, linux-fsdevel@vger.kernel.org, 
  linux-arch@vger.kernel.org, linux-cxl@vger.kernel.org, 
- Josef Bacik <josef@toxicpanda.com>, stable@vger.kernel.org, 
+ stable@vger.kernel.org, Josef Bacik <josef@toxicpanda.com>, 
  "David Hildenbrand (Arm)" <david@kernel.org>
 X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2770; i=david@kernel.org;
- h=from:subject:message-id; bh=nYtl8pReTocJvpHuEkN/fjyaxBPiNA2Y0oMG8lh8AYY=;
- b=owGbwMvMwCF2/OVpCdfQ3ZWMp9WSGLIer22xkX+5Wkk7rWjRXY2Wt0+XTo3qWFSprqoufvySW
- 8BivVlHOkpZGMQ4GGTFFFmCgu8bvHy5rrbajY8ZZg4rE8gQBi5OAZiI701GhvMcKwXqeEUK1hzV
- juE376/hNWV5cNDRsyVF2ofV0GlGGCPDGvUzvfqV+ta/o6LsdG0TzrptVd5fecV8r1nh2W27GjU
- ZAQ==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3335; i=david@kernel.org;
+ h=from:subject:message-id; bh=8zVtiTIPHUHGhLtYGmDF+TjVfOwqhbOhyrdIJGBJe/g=;
+ b=owGbwMvMwCF2/OVpCdfQ3ZWMp9WSGLIer22p+/bitVtd6s75Z3g2zq/IlNg9X5CvRELkVamsm
+ V7AxoMfOkpZGMQ4GGTFFFmCgu8bvHy5rrbajY8ZZg4rE8gQBi5OAZjI36uMDHfMu/aWOrHVagjM
+ 981Tuuth9qL13rEDrMmT/086Jvnv+ytGhh02l8sV7tQmRFyczcXj1TZlj9uXvw4ej0XnNipX1fN
+ acwIA
 X-Developer-Key: i=david@kernel.org; a=openpgp;
  fpr=1BD9CAAD735C4C3A460DFCCA4DDE10F700FF835A
-X-Stat-Signature: oiuprqzq5a1f5qz35z6sshsi3zzmhwb5
+X-Rspamd-Queue-Id: 867A7120006
+X-Rspam-User: 
+X-Stat-Signature: 5ipw93ff68arzoi6ywh8kujue9e156ne
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
 	version=4.0.1
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: D7F4540006
-X-Rspam-User: 
-X-HE-Tag: 1793306069-470884
-X-HE-Meta: U2FsdGVkX1+/RFhMBjkh/0WCsjPPy3XkNlPv+FRnw2ja3m8C4BK0YaFD6VFvr6CwBHkPdzFormiNbeJMFGuC5HBaDMNyGOFdIypGC5/OQ+vg0soX55qoFQCd/uFgFMsWuTfSkR3qiNTzT2ek9kIA4i/nfL26QOcrYEQxk6dR5dQiGHocY3xABDTbq6ltHkRwnZ+1H0beFE9q7WeEwlGqSy+1jzXvcjfzJ1+kUNadI5+S77oXhp5pl3mRYldeIg8SGJ0InGYuR2RZHgMMSl7PtGjgqHYhOtY8ycFCrxANHUehPtn59RbDR06MOhC9Xv1gcbysI+IysjvJsik3ybwM1lrhakpKiU5kUTIGtVyZD5Ygr/QKRSQL4/4ED9Z0NP50ktxOVL5giV621jAma3SKMXGpejuJbDUWAwEyvjV0Xd4phdYIwICR8sCaaHVY16O9+vLFHPk3RHtyI6WXeeDi6RDLaJdN4wOEVMVISk+49TQlyKuGVW9wNL9SUIlpddGTdEI91HmxlXYtrND7Mg3mvxMFHCqLTYQApvCk+eicd4ZwYdhjBQUOrg/lGQIdVUTnS9rsgTQopFlG3r/k3mwwas6rBQzygZxHMAWymIgK8Fw34jZWEb3G6YWBo7RF/xCnc7furLcxQYsyvt00B9B8Tre47qgEZnpSHGI9cmdBB0emiSOHDPTWzNYjB9i7OIqYtAB5mwbNIEVK5mXPqT6VMI5RVR91JA6TuJ+EbuLQeC+QNx/8g3G40ASQOAgwyAZMs3qs17OEzI5UK4XgkpTJ0cpWdQ1Ke88fyfkGeaR/oGhP+7E5iO7vUcqt/aKkw+CbK7tnA4My2Uyskx2fNt/+BZNaSBp50ojDK786ZJ6ydJpn8R4QqsvmDYj8hAmiYD56Xv+LMzmJ95tRVgvbDT0dAZQ1pCxZVIW1kX3Usp1ZcvUw0PyFzyQ/ql3acSo7mSroCQvf9AySAVyLvtjy3PK
- +UlaXP2Q
- KAtJ0dmyGYJvUoMZvJjF2CMnygHL8jyUa/yM9WLvpm5oCyhvWpf+hC8bTGO9/ysJAxlUsktjmgvRMIVA8iqa+w2DArmI5zXJt8uo/WkncvvLMe10J5m1ac5GQXBUMu7lofHWtLduA2S+AM/Q10AAZiXFJ6ts59h5b2yjbYsO394x6/oHCcmul2TBJ4ERTJeypsQfX7rI/qREnlpk7F/28iR9KUk6dLXGPU+L2NtoAjfb8hHw63BfQIUXzqLsor93zt+i9JG+4v5TNvQZTXNXvJKaJRmlAmnZBmqUS9ry2XIz1ubwOF+NZO9Fg2YNQst71ETaETZSaTlIFQ4GtZw9iU+WGLkxANhIJbqmgZuPK0qPBcYM9DPO18He3rjOA94ZcA1oyEDhMis+23jPKTT3HaSjOW0ApsqJFy0YplsAWC2peACaJ8BvemOfLMx61dxwSL6AiHJO1Xl3NaO79h6wsn4osbqL6w4FVv2DQSKaQfvq4tO54fLYrOtwqh56M1dXkeWy8G5VjSotFCYzJvqLm58MZQWKSAhYxRK/1RohmV1JkHbexrTjptBrqLSXuXdcAeFlW1yMeLTS0nkxoF7UvHEXpRV7RoG+eFZu+
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1793306084-830538
+X-HE-Meta: U2FsdGVkX1+wA4fRWGWAMhald9o+6ESp26c71228DZ75m5bL600ivUzngNYpY42pJRQ7MfHozMhW4+jb3kpabLU2FunGA6Op6ZbTITHKQ/6iG1vntEhxNNIjdDfBec7VuTUcRpdbMlq5kd9gAi6GYH8mJefA7NK1nWBVFMgQuhs7qw0dODo09J1HOtklRmuoop7KxA6U54B2TNeaYt1fG1dZd5FIk+K+eFUKt4AOCzaKuGuPgD/IKiy90pHjXxUY/th3F+JDOgN71nXqc7TjKKaFitbb8quAfyGwc2yRcjziraOPP9/WzXnyHbX6qz0JnFmCTyaNsySKNeIUf06xJW00DHLoMSxZ5j6bC/fnTxMe5kFOUcLMP41ZMNG8NlA3QsF0VChmPWQzQQK7+eq0romg0Vi7cZaFm3Yq/fJ8xu/W4ahUTjKkwQJH2mjP5K4hBiIZSSqleSZ8gwhdtHNR4aRvW3LxOOSGe8P1X+9EkA7c78AtywqwvNolaNAKKxW+jO9X3RmOMpyclvPy/dx4ArwTV0nmZFQzkgCFWsSraCMmEE/GL7f83sHlcXmqhdGAEIhj5PgaL75PUnDZ9O/4zJhHdPYmc3IjZ78DcsjkOD+LN9FhwRdrXK/wQoF0Z09Ao30w+3rc24aYBGaa1/ShNCKvL7n5lFJiVJEYpy9ILjQFrHi8FRXfDT1JQ5Rr4UQZAtWvjfKWdM4g4dZgXxsC4BXlDgEuAiWmVj+8DEo6lXIwKp59Uon6WWBiKt7TUx+iwfX46lIevAHqvSk4lNBaml9v96vGLStPEpPo0gxlWiq6wZNgEQKdUGPPt5VbBIKUK/KF6K5EOsCKIr+ivirxuqyvOffiZ5v/e+GpTbOGT8ihyJnJ4JfUb+z1o+QtR52vc2Fa7jMNd8+x5CakhWJpqO/t40ZmYCsuAyO5mrE1078QZMz2q/ZE/2JvhHJreiy9mCFiXx/14q9M1NHkuo5
+ xHaUYzog
+ oQkhVCQNM8XJ7hRDYHz5YdERSU1PRDXv09ShxYmupmkORBjg/5tLN3UCczihv3jxmL4mVQtnyXuJQR3rAZsWuDIjo8SEJxSS57s70g7jkP2D7SmR8uFwCyJ3LES/SeddlK82oGIC5daKeo+aTFZaygZKeKkUaLhLBDoDdWvj2gzNYOi08ddW3JaucrgUJXjsONKcIvsxTzCMalpUF/IwWgYJoKKorxfrxtXevudqeLR6ErOK/rYaktnM5921GSZ+JPnAnBkACzmpFJI0kJM7BJkftBbSrRCLzkAZHa/34AIOAzz41WqemtUEQI4M8BQlWl1B8R+6xla9RVCyMzVnTblosqHA4nh5VB/nm8/BaOyXHMHIvVqujjQJU8qWzNxEdr1Z30vzY1jtC1aA+L7uNetOTKsmMcdecd897zBzWzkwTOdesrcKTrNSnyBCnH5IiI+nmNgtZOVWc0WgK6D1WBy+IIA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -138,68 +139,91 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-From: Josef Bacik <josef@toxicpanda.com>
+invalidate_inode_pages2_range() skips a folio which no longer belongs to
+the mapping by the time it has got the folio lock, on the assumption
+that somebody else has removed it from the page cache. But the folio may
+have been replaced, and then there is a new folio with the same data at
+that index.
 
-Commit 9c225f2655e3 ("vfs: atomic f_pos accesses as per POSIX") made
-read(), write() and lseek() on a shared open file description of a regular
-file serialize on ->f_pos_lock.  The flag that asks for it,
-FMODE_ATOMIC_POS, is set in do_dentry_open().  A memfd is a regular file
-too, but its struct file comes from alloc_file_pseudo() and never passes
-through do_dentry_open(), so it does not get the flag:
+For most cases, like folio migration, that is impossible. However,
+collapse_file() only checks the refcount of the old folios, under the
+i_pages lock, and relies on their folio locks from there on. That works for
+users which repeat the lookup when they find folio->mapping changed.
+The following scenario is, however, possible:
 
-  CPU0                                CPU1
-  write(memfd, "a", 1)                write(memfd, "b", 1)
-    pos = file->f_pos  (= 0)
-                                        pos = file->f_pos  (= 0)
-    vfs_write(..., &pos)
-                                        vfs_write(..., &pos)
-    file->f_pos = pos  (= 1)
-                                        file->f_pos = pos  (= 1)
+  CPU0 pwrite(O_DIRECT)               CPU1 collapse_file()
+  kiocb_invalidate_pages()
+                                      read the folio (old data), lock it
+                                      refcount check
+  the write completes                 copy to new_folio
+  kiocb_invalidate_post_direct_write()
+    find_get_entries() -> old folio
+                                      xas_store(new_folio)
+                                      folio->mapping = NULL
+                                      folio_unlock(folio)
+    folio_lock()
+    folio->mapping != mapping
+      -> continue
 
-One of the two bytes is overwritten.  Two threads writing 100000 bytes
-each, one at a time, to a memfd end up with a file that is far shorter than
-200000 bytes, while the same program on a tmpfs file never loses a byte.
+In that scenario, the collapsed folio with the data from before the write
+stays in the page cache after the write has returned.
 
-Set the flag when the memfd is created.  As for any other regular file the
-lock is only taken if the file is reachable in more than one way, and
-nothing a memfd does in read or write waits for another operation on the
-same file.  This cannot be done for all alloc_file_pseudo() files: anon
-inode files such as eventfd are S_IFREG as well, and a blocked read holding
-->f_pos_lock would lock out the write that is supposed to wake it.
+This used to be impossible, as khugepaged only collapsed files that nobody
+had open for writing.
 
-Fix generated by an LLM and sent by Josef Bacik in private.
+Restart the lookup at that index, like shmem_undo_range() does. The same
+problem seems to exist in truncate_inode_pages_range() as well when
+truncate_inode_folio() fails, so handle it there as well, but slightly
+differently: simply check once more through find_get_entries().
 
-Fixes: 9183df25fe7b ("shm: add memfd_create() syscall")
+Fixes: 1b6444331beb ("mm/khugepaged: enable clean pagecache folio collapse for writable files")
 Cc: stable@vger.kernel.org
-Signed-off-by: Josef Bacik <josef@toxicpanda.com>
-[ david: minor description tweaks ]
+Reported-by: Josef Bacik <josef@toxicpanda.com>
 Reviewed-by: Rik van Riel <riel@surriel.com>
-Reviewed-by: Gregory Price (Meta) <gourry@gourry.net>
-Tested-by: Gregory Price (Meta) <gourry@gourry.net>
-Signed-off-by: Gregory Price (Meta) <gourry@gourry.net>
-Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-Acked-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-Reviewed-by: Pedro Falcato <pfalcato@suse.de>
-Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
-Reviewed-by: Pasha Tatashin <pasha.tatashin@soleen.com>
 Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 ---
- mm/memfd.c | 2 ++
- 1 file changed, 2 insertions(+)
+ mm/truncate.c | 13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
 
-diff --git a/mm/memfd.c b/mm/memfd.c
-index 507c00ce0fda..131fb772ad65 100644
---- a/mm/memfd.c
-+++ b/mm/memfd.c
-@@ -484,6 +484,8 @@ struct file *memfd_alloc_file(const char *name, unsigned int flags)
+diff --git a/mm/truncate.c b/mm/truncate.c
+index 733d2713a875..9e9bf029635c 100644
+--- a/mm/truncate.c
++++ b/mm/truncate.c
+@@ -475,8 +475,11 @@ void truncate_inode_pages_range(struct address_space *mapping,
+ 		}
  	}
  
- 	file->f_mode |= FMODE_LSEEK | FMODE_PREAD | FMODE_PWRITE;
-+	/* a regular file like any other: POSIX.1-2008/SUSv4 Section XSI 2.9.7 */
-+	file->f_mode |= FMODE_ATOMIC_POS;
- 	file->f_flags |= O_LARGEFILE;
- 
- 	if (flags & MFD_NOEXEC_SEAL) {
++	if (start >= end)
++		return;
++
+ 	index = start;
+-	while (index < end) {
++	while (true) {
+ 		cond_resched();
+ 		if (!find_get_entries(mapping, &index, end - 1, &fbatch,
+ 				indices)) {
+@@ -499,6 +502,7 @@ void truncate_inode_pages_range(struct address_space *mapping,
+ 			folio_lock(folio);
+ 			VM_BUG_ON_FOLIO(!folio_contains(folio, indices[i]), folio);
+ 			folio_wait_writeback(folio);
++			/* Do not handle errors, we'll do another lookup */
+ 			truncate_inode_folio(mapping, folio);
+ 			folio_unlock(folio);
+ 		}
+@@ -760,7 +764,12 @@ int invalidate_inode_pages2_range(struct address_space *mapping,
+ 			folio_lock(folio);
+ 			if (unlikely(folio->mapping != mapping)) {
+ 				folio_unlock(folio);
+-				continue;
++				/*
++				 * Folio might have been replaced: look up
++				 * again.
++				 */
++				index = indices[i];
++				break;
+ 			}
+ 			VM_BUG_ON_FOLIO(!folio_contains(folio, indices[i]), folio);
+ 			folio_wait_writeback(folio);
 
 -- 
 2.43.0
