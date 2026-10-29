@@ -1,140 +1,144 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AF1060A2614
-	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 18:16:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1170606A31A
+	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 18:32:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=SUu3iIQD
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=JIdg0hQl
 Received: by kanga.kvack.org (Postfix)
-	id 9A5DF6B05CA; Thu, 29 Oct 2026 14:16:40 -0400 (EDT)
+	id 15FCF6B05D2; Thu, 29 Oct 2026 14:32:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 97E256B05CC; Thu, 29 Oct 2026 14:16:40 -0400 (EDT)
+	id 111186B05D4; Thu, 29 Oct 2026 14:32:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 893136B05D0; Thu, 29 Oct 2026 14:16:40 -0400 (EDT)
+	id 026346B05D6; Thu, 29 Oct 2026 14:32:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 62E556B05CA
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 14:16:40 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 59851C04A2
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 18:16:38 +0000 (UTC)
-X-FDA: 85376469276.17.D76DBD3
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 909ED8000B
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 18:16:36 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SUu3iIQD;
-	spf=pass (imf02.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id D0E856B05D2
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 14:32:51 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 39EBD1A04EC
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 18:32:51 +0000 (UTC)
+X-FDA: 85376510142.19.AD1D6A2
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 1ED981C0010
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 18:32:49 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JIdg0hQl;
+	arc=pass ("kernel.org:s=arc20260519:i=1");
+	spf=pass (imf21.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793297796;
-	b=HpIbyrh7UJCMnuACSuv/h3Bj/XGWr9NVtLXuxjdxA12Vwfa6mWaLghdHEkVTd7M34nta4H
-	5JAFpeJmRRaK7gwys/LK10uyfz71/k2VJBVdEdKSdTSUd9OT0beZe9OjmL/0tZremm/QyW
-	5BlIwY8elyN9eATCbwsbUS2NBStQbaY=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SUu3iIQD;
-	spf=pass (imf02.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793297796;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1793298769;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jSJmMAizkWIdqx4nOphqKfNzkAOik+SUqa6Brtw33O8=;
-	b=cGnACmalWN85J8AVcfrlxjj1mJLmmBZQgb8pWSG71RFnZfD3RIeVU0ZaIq+Og5yY8D8JQO
-	eNMX40Na5qnGpFVzP3Zrynm8ZN4T2hFSYZQlA2gd26E7fI3tcc0X7jV+xpI9oT9E8Lfu2B
-	OywZiMfue1bfMN/QLHaDZ2KODBq+tg4=
+	bh=fTW5L2TMn8pd/2NUrVoQf+CiJ7CtM3uYVCZgZ5kfQPM=;
+	b=W5ZOPd/bo965Mxj6pHpRXbpY9t3+zS/IBX9ncUk3F/ojy0sEzhWnjG7HWOJCbB4rrO1sl6
+	ORTt9PeOgrdH5Tcts8jFtplr39hpxJk3jO7M7LuUg900Eva7oqHNs/R5aRLPriEA3mY4rO
+	smaw4s/7LTG2fJFKOIQPXFOq5TEeRMU=
+ARC-Authentication-Results: i=2;
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JIdg0hQl;
+	arc=pass ("kernel.org:s=arc20260519:i=1");
+	spf=pass (imf21.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1793298769;
+	b=T0UHCFJhRcOcDz+ADeK8gxir60TEzVn3KYrpA6Pxplc5ptx2a6KFK75APpjfCtg+SWuozU
+	86wlBOZtKDCBqvx0KDu12X8781DpyJ9KFgUEAHIy2CquuM1k2Gk3GDreYX/RWWZffMNnNx
+	5CikxqEBFjsrN3cfhHDBmqNPxd0QZl0=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id C85514183F;
-	Thu, 29 Oct 2026 18:16:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FBA61F01825;
-	Thu, 29 Oct 2026 18:16:31 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 87FF2600C8;
+	Thu, 29 Oct 2026 18:32:48 +0000 (UTC)
+ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
+	t=1793298768;
+	b=VCS+WX98sWbLDXjnowB3xwvbvg7BTJ2AYKGx7EJyfMuM3+Zq2HDAfVc8TmU6KCQ/TnQB
+	 nqvuvExkfBUbW+sOh8gquC3asgid8w8ohzWzrzcVjYgpO2P5sDw0mz8K+5dZAfHfZhtl2
+	 AuwzqNUtNTrtqwrNNn9t5pPINAe7+rtz52hXM8pREi/pQMQITUZPBVrEcw261F/2dIBS0
+	 SBUJR6YkNM+Q29NGRddMlhjRmVAWe3wTa8jYRwSLW74zQUCjArgfqQpReWzQjmPL9YjNN
+	 5Yxq4Lb1W4el4OYOby17CL2WAt7zWiauhU4epGZbY8OC6+hhzZa1v0fepZecpyED5tA==
+ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
+	c=relaxed/relaxed; t=1793298768;
+	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding:Message-Id:References:In-Reply-To:To:Cc:
+	 X-Mailer:X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
+	 X-Original-From:Reply-To;
+	bh=fTW5L2TMn8pd/2NUrVoQf+CiJ7CtM3uYVCZgZ5kfQPM=;
+	b=zY5n2EvZ5AGk6TXqrBfYAqHlZkwWR2s3QfR2rqo4k60Ea0LM4PjAToQNI+2wkuUKG9Fb
+	 F+7LksaFUi+GqgLhAJrA9rj+rUwXD72AwgpPFg4PYfV7ptaA3kiEkRe0xejyG8O3Kl279
+	 1hHul4Gc/Ets1agFHgn0Iuqd1udCwcAnzZbb7YTllLVF/pPZ2aawL/JsaKuvqxaOgJ66L
+	 QIJUOOeriEWhqZ+Z/z3Fh/wLTUJYh0tbMSvpjRWB9YBRs6WUZkBL9Az1tR1z4vaPfgWtt
+	 axyETSbgbNirr410rcahd3LOl4GQwRSaijth7dfb+4cEYPtjXzSdkyxuhZleZjsWnmQ==
+ARC-Authentication-Results: i=1; smtp.kernel.org; 
+	arc=none smtp.remote-ip=100.80.115.77
+Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	(No client certificate requested)
+	by smtp.kernel.org (Postfix) with ESMTPS id A18E61F01825;
+	Thu, 29 Oct 2026 18:32:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793297795;
-	bh=jSJmMAizkWIdqx4nOphqKfNzkAOik+SUqa6Brtw33O8=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=SUu3iIQDUCnlc42uKpYCRIOsyH8pXh8w+YvenkQ54IEJ6U8nRtflcGv55VtktxLNc
-	 xhuIaag7IL4kDbTn1DbdNjxX9Ique0UppYkgZpXJGWw4/uo0rcgkDoZYCy0+7aitNS
-	 VqmSXmqcouYbxmQcYviscgkNEUIgnsRokmpm5rNK4mULBQkjRsd2vvtuYi9pu0fxCh
-	 3XEkxV1EdRwbQuwwu5bQ95mYOcuOdQB0h9gVM6N0epQ6R+njMFav9x8NTsQkwGigDt
-	 G1hR6xcnh/ZzWuAYHp9c3+VDkDH+QGmmswez0IvnMuOS4dEuAE6du04U2iyQEX7qci
-	 h0fBrSWgrSejQ==
-Message-ID: <10a6091e-6cf1-45c3-871f-8786ad1358d9@kernel.org>
-Date: Thu, 29 Oct 2026 19:16:29 +0100
+	s=k20260515; t=1793298768;
+	bh=fTW5L2TMn8pd/2NUrVoQf+CiJ7CtM3uYVCZgZ5kfQPM=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To;
+	b=JIdg0hQlOG9cDOLPeuvIUE4lGI2HJmiiwe9ThDjzRREsD+XV58FFKUvamsAM6A61e
+	 vEce/IzKBgrIiUXLxdgAAsIoxUkwVUPhmCNvaWQ53l+6aaWc6/9mMStV9+LmK5rKs5
+	 ru6y5FCyl2bbRZg0jZY7l8iiIJeAaXBrJ6sQ0QTzAok9TjSkVqL4LdwsgBfbrlyW9Z
+	 nRnBE4fAFts4i4dwU3OhT/gTAHalQb+mtH7+gsvLG5RsBFYpedEQ0xICKzzsqzWq4+
+	 Dyw1yfjAMn/vz1S6tpXSOEvv0zyEhIerBDPlWKBdTUCBoQNJoz9sxxJTmFJrzGdQGd
+	 eFJuq4PgfQvLg==
+Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
+	by lkml.kernel.org (Postfix) with ESMTP id 1A4274595C;
+	Thu, 29 Oct 2026 18:32:47 +0000 (UTC)
+From: Kairui Song via B4 Relay <devnull+kasong.tencent.com@kernel.org>
+Date: Fri, 30 Oct 2026 02:31:42 +0800
+Subject: [PATCH 2/3] mm/swap: account synchronous swap reads as memory
+ stall
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 8/8] mm/mempolicy: read the zoneref slot once in
- mempolicy_slab_node()
-Content-Language: en-US
-To: "Gregory Price (Meta)" <gourry@gourry.net>, linux-mm@kvack.org
-Cc: linux-kernel@vger.kernel.org, kernel-team@meta.com,
- muchun.song@linux.dev, osalvador@suse.de, david@kernel.org,
- akpm@linux-foundation.org, ziy@nvidia.com, joshua.hahnjy@gmail.com,
- rakie.kim@sk.com, ying.huang@linux.alibaba.com, ljs@kernel.org,
- liam@infradead.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com,
- brendan.jackman@linux.dev, hannes@cmpxchg.org, mgorman@techsingularity.net,
- anshuman.khandual@arm.com, stable@vger.kernel.org
-References: <20261028211930.3504634-1-gourry@gourry.net>
- <20261028211930.3504634-9-gourry@gourry.net>
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Autocrypt: addr=vbabka@kernel.org; keydata=
- xsFNBFZdmxYBEADsw/SiUSjB0dM+vSh95UkgcHjzEVBlby/Fg+g42O7LAEkCYXi/vvq31JTB
- KxRWDHX0R2tgpFDXHnzZcQywawu8eSq0LxzxFNYMvtB7sV1pxYwej2qx9B75qW2plBs+7+YB
- 87tMFA+u+L4Z5xAzIimfLD5EKC56kJ1CsXlM8S/LHcmdD9Ctkn3trYDNnat0eoAcfPIP2OZ+
- 9oe9IF/R28zmh0ifLXyJQQz5ofdj4bPf8ecEW0rhcqHfTD8k4yK0xxt3xW+6Exqp9n9bydiy
- tcSAw/TahjW6yrA+6JhSBv1v2tIm+itQc073zjSX8OFL51qQVzRFr7H2UQG33lw2QrvHRXqD
- Ot7ViKam7v0Ho9wEWiQOOZlHItOOXFphWb2yq3nzrKe45oWoSgkxKb97MVsQ+q2SYjJRBBH4
- 8qKhphADYxkIP6yut/eaj9ImvRUZZRi0DTc8xfnvHGTjKbJzC2xpFcY0DQbZzuwsIZ8OPJCc
- LM4S7mT25NE5kUTG/TKQCk922vRdGVMoLA7dIQrgXnRXtyT61sg8PG4wcfOnuWf8577aXP1x
- 6mzw3/jh3F+oSBHb/GcLC7mvWreJifUL2gEdssGfXhGWBo6zLS3qhgtwjay0Jl+kza1lo+Cv
- BB2T79D4WGdDuVa4eOrQ02TxqGN7G0Biz5ZLRSFzQSQwLn8fbwARAQABzSNWbGFzdGltaWwg
- QmFia2EgPHZiYWJrYUBrZXJuZWwub3JnPsLBsAQTAQoAWhYhBKlA1DSZLC6OmRA9UCJPp+fM
- gqZkBQJqFFy6GxSAAAAAAAQADm1hbnUyLDIuNSsxLjEyLDIsMgIbAwUJGtCBUAULCQgHAwUV
- CgkICwUWAgMBAAIeBQIXgAAKCRAiT6fnzIKmZJIUEADFx/tREzUImHrEwVHeSvDFmA7tJysI
- UVrlvrM09E7GIuzphzv7jYmo8n3ANpCczLEVr4G0syYQdTigaZgv3+FQDIIzhKih1IHhu1Ei
- XHlywNWKnQxxQEUNi5Mwx43wQz5XVw9F1A7gtKBKNtfogO511hAbrzagrYajyQacEJ/+sfhZ
- 9Da8ltHIXD8pcYaHUfQgEusCgmEd9+KrUwrTbckFKmYq5chuE6yJ4J0EmWknL096jIE6CnzF
- FRslQ3B1UKDjxVsm1ZHfir5NeWszLkTvGFsddFaWTgh8UycESG6VQzKXjjewXu2pG7YQYRpj
- QKm1W5X2TkwWkXRBZTmfmbhxIUMh3+zf5wQ463rSmDN/8v81tdqBtAW6rH/kzg1GvkaTHXn0
- 507yEHFzBksk2viAuIxxr7km8+/KARYLIdGtx30EG8cKzAUZOK6WqxtNCsXUJNrVE8CWrCaD
- icoNu7Fs1c5hmPHdSTnU48ce67449DdnO4neLSNhRiGlMHJgfJUmgrxu/hcYeOZ3haWmEQ2w
- uW1Mh01OHi8QZHCEyAbABrPs9GUgccc/4eYXX9hIgxfSkYzn8f+8NuIFPWl/0uTvjgqU29FQ
- SbzOLxHq9439Ox40G5mS5eZXRGxITYR+6TXvRGI6P/264jvflnr/pDGUttaikU+0W+1uxgKH
- cmYbEc7ATQRbGTU1AQgAn0H6UrFiWcovkh6EXVcl+SeqyO6JHOPm+e9Wu0Vw+VIUvXZVUVVQ
- La1PQDUi6j00ChlcR66g9/V0sPIcSutacPKfdKYOBvzd4rlhL8rfrdEsQw5ApZxrA8kYZVMh
- FmBRKAa6wos25moTlMKpCWzTH84+WO5+ziCTsTUZASAToz3RdunTD+vQcHj0GqNTPAHK63sf
- bAB2I0BslZkXkY1RLb/YhuA6E7JyEd2pilZOrIuBGl/5q2qSakgnAVFWFBR/DO27JuAksYnq
- +aH8vI0xGvwn75KqSk4UzAkDzWSmO4ZHuahKtQgZNsMYV+PGayRBX9b9zbldzopoLBdqHc4n
- jQARAQABwsF8BBgBCgAmAhsMFiEEqUDUNJksLo6ZED1QIk+n58yCpmQFAmfIHFQFCRYU6J8A
- CgkQIk+n58yCpmS2PA//bqN1LfcotmArgElsa+0EGZSQlYgK48pm8WAeTXTngudP9IJ4SuKY
- HR5RNjHcBeqN+Me0zxRqYzRb8nGanHEkDyf4Im8DQM8d6vbyU+FcPmG4skud4kgS1zMHnlVd
- SXfSIwKC/hKgdHG8aBV7545Lz9X6Iohea+94wneD0aw/hqF+QWewGZhWJriWAZtvEkzNjQOi
- 4U9F/trLten/x7bpphDSnDMKJtITbtzATT1Dq7o7VpIUK1nCTQALMuMjKCdi8OdU/+V+R3O4
- 0PXWvX8qrvqYapVbZ+9KqT74FsuB0Ya9uXwgBF2Q6cRuETZk5vqaqKxzqoQZCO8AOz/58j6O
- 2RHNy/mZEN+7tJ5Tsq42zVJ4jxsT8b9YplavCMsnBgDeRWhcbYhCyttoL7nYISyWg4kQYZ/P
- wIV3OuNv2f8iKYsxNsRuClOAF82+gvqOy1/1pprFjy8uo2pkoOrb63aOP3vO5VHnRKgra6dq
- NcaZ+c6J4H+nEJGi2SkHAUJz5oBzuThvPudLvPA/SK8sKoM01IRxSihev/S/5WLazXB1PGem
- OCbvzC1IjWJJraxiDJ5IygokapUa2RP7+WBR22skQ3SSl6G107QgWKSyTOGWEaRmV53vxQLV
- jXuCmzSSasTL60zq5yGrT4/DYQVSNEUiUbG4pYekxJujNeEDkUlky0Y=
-In-Reply-To: <20261028211930.3504634-9-gourry@gourry.net>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: sbuyzzpa3hjzkxeudit8nhwfi7xmeebx
-X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+Message-Id: <20261030-swap-fixes-v1-2-73f73a59f2fc@tencent.com>
+References: <20261030-swap-fixes-v1-0-73f73a59f2fc@tencent.com>
+In-Reply-To: <20261030-swap-fixes-v1-0-73f73a59f2fc@tencent.com>
+To: linux-mm@kvack.org
+Cc: Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
+ Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, 
+ Baoquan He <baoquan.he@linux.dev>, Barry Song <baohua@kernel.org>, 
+ Youngjun Park <youngjun.park@lge.com>, Yosry Ahmed <yosry@kernel.org>, 
+ Chengming Zhou <chengming.zhou@linux.dev>, 
+ Usama Arif <usamaarif642@gmail.com>, David Hildenbrand <david@kernel.org>, 
+ Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+ Chuanhua Han <hanchuanhua@oppo.com>, Johannes Weiner <hannes@cmpxchg.org>, 
+ Mani Tofigh <mt4022@columbia.edu>, linux-kernel@vger.kernel.org, 
+ Kairui Song <kasong@tencent.com>, Josef Bacik <josef@toxicpanda.com>
+X-Mailer: b4 0.16.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1793298765; l=2231;
+ i=kasong@tencent.com; s=kasong-sign-tencent; h=from:subject:message-id;
+ bh=ETwDBqVe4SkLyOogHeVFo/cI0MLTr36Is6NOTSa3Wuc=;
+ b=14e1RWmqqdS/oQ2hw2zRrMhcmuGgjIHInGUQZIpDIR/X+sjKFVpIO6DQLFbuQBcvUDrWFqXSW
+ 8OcAisTUl37AxasJwEbugtMClEcwe9Gl2by7v6I+nasCvAb37CiLrlT
+X-Developer-Key: i=kasong@tencent.com; a=ed25519;
+ pk=kCdoBuwrYph+KrkJnrr7Sm1pwwhGDdZKcKrqiK8Y1mI=
+X-Endpoint-Received: by B4 Relay for kasong@tencent.com/kasong-sign-tencent
+ with auth_id=562
+X-Original-From: Kairui Song <kasong@tencent.com>
+Reply-To: kasong@tencent.com
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 1ED981C0010
+X-Stat-Signature: u4e5onwcbrt3timzgian5tmt8ri77q4t
+X-Rspam-User: 
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
-	version=4.0.1
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 909ED8000B
-X-Rspam-User: 
-X-HE-Tag: 1793297796-990930
-X-HE-Meta: U2FsdGVkX1+ak3X9nCfgv+xlT/rvQM7nf/noN7OBcXLJfzptYU7luyrDstI2+RIjgqTMGVVVn7wkgJNeCacScliesfppYOql/Gwfu8rmsBb/crf0brSNQCrKqLd16jPH+HJ8EudMO0KUyxsfUqmEWJ7hh7ubrrgw5zHveBWnryhehdYGbSEyuJhq7ReofJ3syXSbDymxhyoASd89B7p3UN+DJSau+4bgM/VLOxdmT7VBWcHYsX/+IHanMXSMIDxR1N5FOC5aWNpR0PjRhNHxZB/sJn64AgyMwqpEmE0NBFEA3ih1o7NC/+46NxtG6hPweodBT9dcSa6d5ojdqBFu4Yy/EXXuYPqCs4NNQ66G+uykVvih6gkMAjI0y8ZJb0I4kHJc7Xo1SBgr9y7lxceiXYfcqc0Yg+4SxqJ6Bmud+6qypktUkAN+LygzGCiu0x5yr5LrWG4XwWk6tkU5Tx8PKVTraVKxdtWC3BlP3oapje0ndsbhigiEuzm8YiP1unGXP+ZIAYrNqXGJi8ogUz7nug7mE7iSL7aO6RsDaDIH35a4skVhl6IGeGXhMLsjYDVTQG7ZKZvdE5kHrjT4LJOS9l+CAN9Dx83qr9sAmOY4dSpddkbnnRfjuGYgMcNJafzAK1LH3fxUqUGMXcC295SM31tqvXLU/J2Gy/6ajRUdHZsKm+85a+q9oAJt8aEVbrEmEENZeyR00swOxJ9/vtcv4HzDqjomXqOSzZzC/IhgmR9k6bU0jQa16VkErTlYCQtBcTz9nQm079Eg/7slvOu5C5uQH9RzSxT6oR2Ut5TcIIfk/k7/jP53Wzl6n4OIYv5/je2e2RVd/sgBljVLjxnK0soaYqqagJ9R9Em7H5s5uLKS4PWwNI8lUeubr0dwj7wmCmQkr4R+4MRtUlj15mzekdxQYznwkonutfqDngSC4Gkph4MQK9eEteNBJgyHRqAi8UWYsFHOcDlUQ5/E5dE
- z95THQKs
- EuE2FOsixKl3nzqJE7+RytsLIuP7yUAgn6qJIp51Njz7jUG+iesJEW43sagHTaPEbDzT+PpA28vTjqH3/3jZT98SYhAckJOnf3XnYDiweUdQPCXgd9iOrqDFAbahqzgQW6VB3fG67e4Lw1aIY/HvuZd2tlsm7/pb9D0v8MAs8QJpgRMp1MATPCoKnVa/IA33tSwlKcMTE70sHvOIqBZtxNVxHWaPEPB694mgWUED39/dssJcb8+aD3173KxvnwovVwFVtHUJTH0eYzitZtjA5+adhI5b84UoP302PYjgPCqXWP34Yoyad8GKETkX00+f7YqqsH9JETQeBpZM/brEEVYqAnWQ1CUUmYAAJG/LtDu4JyqHFvDIxlJILh9PaKG+Up1hJRI7d9ZW2DfTJH0UyEQKJfbF6ZLANnhjBF/ducgdS/bROtfzJZE9skH2uAFS9VggP41Mp3xw2JDuqqeqhR31wOQ==
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1793298768-195802
+X-HE-Meta: U2FsdGVkX18ud1AgJxNkaMHlKcfgjH8Jp+3jvKKa53P//M3N4yjKcR71TCplwPf6CcS0QfsLNNB6HMYopzqlAcm2s00d3R7dd25jr6P8ZHTLV5jy+H59OL+TYOL8dvEdOI0+WSj/B7zRB2svIfApsi8R/5Q3qaMd7iSaGqD7FNv06bDTfCkzRbAbSdIttaDE6ZkSAWQmktm9FcPyAWIMt198Tcsirr3JZp/hKRdn/PDqNIQT1zfXuKdjgMRBe7/LwH0VczD0rRtVfQ1f9chvrVg+wO/WkUnZ+oOWf8QOS7+EPLwJIUHfk6/nl4eAitblMfLMe9NY2ArfxxPB0C9d5XXHhMy4hmn6EZ+6fVze3yPc+LE5jzKpuS47pxNj7/fQGG2zd3rHYp6cuWRTWwh9uxDGfyRceXbfUdTodVBJyGhF1wTd3su+eINqgYdeaaUuMBMbZzRZusISQx+MDrNX5v6gQ5sg/kn4+DryRvR5VhkvptLRx3uS6kuiMk9ddfifOpD9JUxVV7eBmcIunsMuXnFIt4fuzYVaxOH1Klkt3gybOKMQpiYhGkMvYiZE8Nil3r3hFSp1LAZ3QhureCg/oD0o83SXvIMPxwlxLKSUq8CFeXCgoqpWK8R8bUgWR9kYRJphEL391CTddhj5JsukPcnAUZCs2Z1E9LPs+7vE3VUsVHZKsDzH2M16aF9e1ZegOshO6lVUU2pJa+2athWZfoiZ2gMVZY/mMs/Qw10StvhIBxkYmS/09QmlCk3tQhuKXCdVz/SS5YG/MlEhcTASFQlQspqse3uAKHnZGN6aYTDY51STBxvX/jNIIbfV5csI2uQaYF/sHqkQ/9BUA6WUTnKuxX4/zTD68NpeAMubWBg21OEG3KrdVaes4mZB01JacsLsImExZWhpODRqVuMy4GwbDT4hkSFULXNSCFWGChbsof1D4yfyPy+gulGieQpo8B3niGUYHek8mRVrTJk
+ 2fJz4NmC
+ UT7R1XCTVRBAF1S4bEfo4qCfQ/SkGzooYmrgFpz5G3bFYj5Y2aZssYEcuNvmK5lSil95U5dW4CnloPOXH6RhgqDOIbTpLh5jc2uU7ns9QGafewZOS2CIIBHPaJBzMWUAgZGF6tdWBucFMbJBuzln4IpavORUzlbhTY6Ey8/ChPFdrEQHI2wEeix3lg9hfsUQYteKWFvABsRieOtw2TuXcaMub20f1184nzOJQD5H6q7HsOQD6ug/R/NbmUSKsf3m4v63AB2hAZVhjc0xYST0PUv2BviGQv0+lxzDtpYNu+NEih/YJdeD+d8HPnOqw7sR+KXdBRSsMBF1V4Cq9bMeF4xKxv70zC3ChzgER9d1Zpmx+vXkZun9AuDe+h/yx+gLmqBPkFtvWbxxYUHwKkXaKNm8ybTqgcjwfadwp46RaVmR91ipDYIMReXQMyGnv9DF7UHF8RDZRqwAQnBm/lK0T2ASvgE1Eju28SwjVlEFtFV94M0J//OloCnl3OosZmMXzcTQwSb8GDh6X8ge/uStzff57LC4LoEj/DVhN7Dlu1ysFYfo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,69 +147,63 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 10/28/26 22:19, Gregory Price (Meta) wrote:
-> For a bind or preferred-many policy, mempolicy_slab_node() tests the
-> first matching slot's zone for NULL, then reads the slot again to look
-> up the zone's node. Offlining a zone's last block rebuilds the
-> zonelists in place, so the second read can return the terminator:
-> 
->   CPU 0                             CPU 1
->   mempolicy_slab_node()
->     zonelist_zone(slot 4)
->       = node 2 NORMAL
->                                     offline_pages()
->                                       build_all_zonelists()
->                                         slot 4 = NULL
->     zonelist_node_idx(slot 4)
->       zone_to_nid(NULL)
-> 
-> Current GCC merges the two reads, but nothing requires it. With
-> mm/mempolicy.o built with -fno-inline -fno-ipa-sra, holding a bound
-> task's slab_strict_numa allocation between the reads while a movable
-> block earlier in the zonelist goes offline oopses every time:
-> 
->   BUG: kernel NULL pointer dereference, address: 0000000000000060
->   RIP: 0010:zone_to_nid+0x0/0x10
->   Call Trace:
->    kmem_cache_alloc_noprof+0x294/0x610
->    do_getname+0x34/0x230
-> 
-> mempolicy_slab_node() and zonelist_node_idx() are tail calls here, so
-> neither appears in the trace.
-> 
-> Read the slot once and use that zone.
-> 
-> Fixes: 11cd8638c37f ("mm, page_alloc: remove stop_machine from build_all_zonelists")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Gregory Price (Meta) <gourry@gourry.net>
+From: Josef Bacik <josef@toxicpanda.com>
 
-Reviewed-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+Swap-ins from SWP_SYNCHRONOUS_IO devices such as zram are no longer
+counted in PSI memory pressure or in the swapin and thrashing delays of
+delay accounting.  Refaults of the workingset from zram, the main input
+to userspace OOM handlers like lmkd and systemd-oomd on zram systems,
+become invisible in /proc/pressure/memory.
 
-> ---
->  mm/mempolicy.c | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
-> 
-> diff --git a/mm/mempolicy.c b/mm/mempolicy.c
-> index 0884c629670d..cd63c3e2c029 100644
-> --- a/mm/mempolicy.c
-> +++ b/mm/mempolicy.c
-> @@ -2176,6 +2176,7 @@ unsigned int mempolicy_slab_node(void)
->  	case MPOL_PREFERRED_MANY:
->  	{
->  		struct zoneref *z;
-> +		struct zone *zone;
->  
->  		/*
->  		 * Follow bind policy behavior and start allocation at the
-> @@ -2186,7 +2187,8 @@ unsigned int mempolicy_slab_node(void)
->  		zonelist = &NODE_DATA(node)->node_zonelists[ZONELIST_FALLBACK];
->  		z = first_zones_zonelist(zonelist, highest_zoneidx,
->  							&policy->nodes);
-> -		return zonelist_zone(z) ? zonelist_node_idx(z) : node;
-> +		zone = zonelist_zone(z);
-> +		return zone ? zone_to_nid(zone) : node;
->  	}
->  	case MPOL_LOCAL:
->  		return node;
+swap_read_folio() opens the accounting window with
+psi_memstall_enter() and delayacct_swapin_start() and, per its comment,
+means to count the submission time.  For synchronous devices the
+submission is the entire read: swap_bdev_submit_read() does
+submit_bio_wait() and completes the folio.  Since reads are batched in
+a swap_iocb, swap_read_folio() only queues the folio with
+swap_add_folio(), and the bio is submitted later by swap_read_submit()
+in the caller, e.g. swapin_sync(), after the window has been closed.
+By then the folio is uptodate and unlocked, so the fault does not wait
+on the folio lock either and the read time is not counted anywhere.
+
+Found by code inspection; not reproduced.
+
+Fix by submitting synchronous reads from within swap_read_folio(), as
+was done before the batching, rather than from the caller.  This gives
+up batching of readahead for synchronous devices, which do their I/O
+inline anyway, in exchange for keeping the accounting simple and in one
+place.
+
+Fixes: dda8fb68b590 ("mm/swap: also use struct swap_iocb for block I/O")
+Assisted-by: LLM
+Signed-off-by: Josef Bacik <josef@toxicpanda.com>
+Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+Signed-off-by: Kairui Song <kasong@tencent.com>
+---
+ mm/page_io.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
+
+diff --git a/mm/page_io.c b/mm/page_io.c
+index 65681eed9c80..83ed0246ebfc 100644
+--- a/mm/page_io.c
++++ b/mm/page_io.c
+@@ -500,6 +500,13 @@ void swap_read_folio(struct swap_io_ctx *ctx, struct folio *folio)
+ 	zswap_folio_swapin(folio);
+ 	swap_add_folio(ctx, folio, READ);
+ 
++	/*
++	 * Synchronous devices do the whole read at submission time, submit
++	 * it here so that it is accounted as memory stall and delay.
++	 */
++	if (synchronous)
++		swap_read_submit(ctx);
++
+ finish:
+ 	if (workingset) {
+ 		delayacct_thrashing_end(&in_thrashing);
+
+-- 
+2.56.0
+
 
 
