@@ -1,157 +1,99 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B03560A2614
-	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 20:53:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08E24606A31A
+	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 20:59:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=DTKijxHL
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=jmxfRq/W
 Received: by kanga.kvack.org (Postfix)
-	id 60E586B05B1; Thu, 29 Oct 2026 16:53:50 -0400 (EDT)
+	id 2960B6B05B2; Thu, 29 Oct 2026 16:59:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5BF706B05BA; Thu, 29 Oct 2026 16:53:50 -0400 (EDT)
+	id 2466F6B05B4; Thu, 29 Oct 2026 16:59:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 487646B05BB; Thu, 29 Oct 2026 16:53:50 -0400 (EDT)
+	id 183BA6B05B5; Thu, 29 Oct 2026 16:59:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 06FAB6B05B1
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 16:53:49 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 307301204DF
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 20:53:49 +0000 (UTC)
-X-FDA: 85376865378.10.468C142
-Received: from mail-dl1-f41.google.com (mail-dl1-f41.google.com [74.125.82.41])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 4A30C20009
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 20:53:47 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b=DTKijxHL;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf03.hostedemail.com: domain of ackerleytng@google.com designates 74.125.82.41 as permitted sender) smtp.mailfrom=ackerleytng@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793307227;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id EE2516B05B2
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 16:59:08 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 881ED4051C
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 20:59:08 +0000 (UTC)
+X-FDA: 85376878776.13.ACE34B9
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf02.hostedemail.com (Postfix) with ESMTP id D51F58000A
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 20:59:06 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="jmxfRq/W";
+	spf=pass (imf02.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1793307546;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+9X2/iX/Lqo173Vwu0EOcoEv3bNJRFgizimBaD4S5Pk=;
-	b=4rva9B/SRc9Ev8j8/OIV0tuve3/Bg/xMz6DeZTpE41P/W5IOkoZ9hROcte01RQYWvXWmgp
-	gygFGoAIK8sBNtQRdLHhB+ZbLADcKj7ZMziBD0Jkeeh/9xICNtbyV4UH/rBZkmdcR3W82v
-	4qqZmWMlz2J+F6oEZIk/g2Dr112wd3M=
-ARC-Authentication-Results: i=2;
-	imf03.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b=DTKijxHL;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf03.hostedemail.com: domain of ackerleytng@google.com designates 74.125.82.41 as permitted sender) smtp.mailfrom=ackerleytng@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1793307227;
-	b=wQ8kZRQUI5c1YWWp2qjdZ00w8FFPHlt21EQZfa/3lHzBKrGsjQ0dO2xeon3uiMZTzXxr0C
-	iwtv4qWhOFcpDNBadEHqNTpPOkSbDLNaJtBH6mnitaroenobO2TFjATB+95JensHqrRerh
-	wyvpL4opYOVX5oxcuwYUMuDhE1iNygg=
-Received: by mail-dl1-f41.google.com with SMTP id a92af1059eb24-15943c9c005so2235565c88.1
-        for <linux-mm@kvack.org>; Thu, 29 Oct 2026 13:53:47 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1793307226; cv=none;
-        d=google.com; s=arc-20260327;
-        b=CRUFAhKBI6lNMkroFRJTEwmyIEZIaTkLFSAOdtkcT4PjfZ9YlWQXsPW3N6J8tfrsu2
-         p9I/e1aG1JTVBriR1iMPExtTpxnCdzr7YP4VeXE+iGeuNMmOhuN33MV5bTNLdPM2H3F1
-         OcanRMgdIZUkDb58IIqhljupsZVXFClaQaNsu4fSwjVSY4iCol+NRyymS/dOakm2Ty23
-         nJfZCbyY5JNdEiQ8r4GdZ/hMF5hWZ9nCO6OtYmBhYpe05oA+gex4//2MVcHRqt3kpYVn
-         Z5NUzkEdP0p3+uvac/4Fn2n6XuxlIPfyXlKrgsjQ4BkIm0AY7IveR1dxplCJwiRvR1Uv
-         5IQQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:dkim-signature;
-        bh=+9X2/iX/Lqo173Vwu0EOcoEv3bNJRFgizimBaD4S5Pk=;
-        fh=tkhQ6UztH0IBbRBUZ7gmKW14+O7g4m2ZM/sDLFo9Jg4=;
-        b=ASosUfvgX83FM5PaG8oYNTuQuuK9Cg8leViDPjWw/oHq2C52OIuJm4Qw8S0JByrpHf
-         xbFtsNWE0+OXVsRlz6GYai+I73lbpN+nozRys5XsbbGt9RFo69xcBYIXzUYxCZOclhpT
-         Mnj6NOw9Ub+XtxMNDKfM3Rdk6EgfmtCnb9mv7c1r8kQTHbieQpACbnOQz9kFrP0pCjPl
-         nIRXEN3ky52r2yTTMw6r9uA9sCYhQ0NDoVcxX1GvUjmKRWn3QCghQ3eX/2BR8pYQ2D9N
-         YkXkExVwBe5jHheWpHmBS2xQopOO7eie9ZNPlf51wff9dvNJrVz99Ism2QSokf2NTGVE
-         5xhQ==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1793307226; x=1793912026; darn=kvack.org;
-        h=content-type:cc:to:subject:message-id:date:mime-version:references
-         :in-reply-to:from:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=+9X2/iX/Lqo173Vwu0EOcoEv3bNJRFgizimBaD4S5Pk=;
-        b=DTKijxHLD9KyLF4rQ8bAN9R5Dvmxx8yOxc0bA8D31PETWj72/oWwQHnSi6uqWZzHu/
-         8LB6vXMZmYFjAb19IvfEkWdxJfz43k/d0e5ik3ykQ/Em0yDMrxj1wtSNvKsPab+SnXdF
-         i5U0nhW7IyI7q44tSTt7p1RGJE4TAsa6Q8PAHqAKvVl230kgpGER7B5FIFeQbine3JBK
-         K9SyR0dmmh4SWehqGTIOfFSicVsuAJIP/iOJKmOydMviDd9eKh5CUOwni46eZtct6ohn
-         wvrRiCS6LIkRNDfeS3xALZvQG76X8Qi3HUa/BZC08Dp4qM81+y84e01mM6i6hwaRYYMJ
-         oR2A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793307226; x=1793912026;
-        h=content-type:cc:to:subject:message-id:date:mime-version:references
-         :in-reply-to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=+9X2/iX/Lqo173Vwu0EOcoEv3bNJRFgizimBaD4S5Pk=;
-        b=cMfO9zcpGGRYLmg83CoSG659Cy5prfb3zZCWG90s1jBT7+gQ8EhTfIhVnilLEGpfbd
-         UGdw21c7EfVncR3xc3RuB8ei12jW5Z0eZ01hGsmaBORcPbsSb+flctlQvJagVccI9vP1
-         QLADLvGQMcZpoiRXHe+kzociL8ZC02sWjxd9EG2G49SaYsFO/UslEUMD+6LnGrTAzbg/
-         yZfJ22U5wiIhiowOjs4ATU88nU3sRjb6fLpZK9r6s5DE8iy7Y4hjhv9Mz+/uCp8BRB+D
-         FWwjiiob7t6BvlDMuofDFtM65jeO/qXsSkDtwG0JvjiqPbuMwbjdQtocQ7Kr1hVNtq2O
-         ZbsQ==
-X-Gm-Message-State: AFq9FYL1dikmwnU7Ex7hHCJwUh0mldTQbRkDcwVsC8vrWDjbwPWuArhy
-	KWCNxm6qc/h8DuzKYEjhkandOcPe3hrg4qxoh14KHSRxVROXC1B0GSbDLrsgz4JDBALEPbHmNRH
-	aI6557V3PUg+HqCvF82uy1oe1MNUQVvhi8akT87J1
-X-Gm-Gg: AYBFou0nU6N/q41BUyXX2Y+mnWJG3MJw5px3hIfAXV4w4xk4SYUvFx+GgIm1Oqnhba4
-	Dy8/KC3ExrECM+KKEj84v3Dn+qfyv2/72YG6RFhtOo5tbOHELNxixwXxUJxPb+b8rynf107tmuN
-	s0qcMwtlzPF4km92cv32xGrl6556idBovKnVpgPsvsqcFMHmgly4Tf4/UqWX9FvawBVvXY+Pnnu
-	PhKMF8PPCyGp9/vG2NUNkY/631jIj4J+F86mxjLKkhOu7dweNzru8A50OKiaiOg2leWijoWeoEb
-	RyHUdFPh4+105UmN+nTGAxWHIsEhwZmIStqX2xSZuB7oNf7bXwIoq2ZcSBGZLMoiIdfr/oulS/n
-	YbjHNrhpfSGU+qBGCUDVApFzRFjpnwQGC0m2jqynIaFdznW5Hwd5gfHOQojk0xCp1fHgDWpIbGw
-	sERZi2chhWWtJb3b0O53iJfMM=
-X-Received: by 2002:a05:7022:2522:b0:1a9:c9fe:12c7 with SMTP id
- a92af1059eb24-1ac5bbb4b85mr358477c88.9.1793307224406; Thu, 29 Oct 2026
- 13:53:44 -0700 (PDT)
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Thu, 29 Oct 2026 13:53:43 -0700
-From: Ackerley Tng <ackerleytng@google.com>
-In-Reply-To: <20261028-fixes_hugetlb-v1-1-a0a033db180f@kernel.org>
-References: <20261028-fixes_hugetlb-v1-0-a0a033db180f@kernel.org> <20261028-fixes_hugetlb-v1-1-a0a033db180f@kernel.org>
+	bh=Wrz5dmAaDurZZfTeBzHlm9n0015a8frVXDMMr6vuISA=;
+	b=BsuoG5FkwXyRAW2SZsXOLBRO//bjL+LSrO8R4fmN+tOTziZh9ox0Y4Tf85hgzdpFTxgjVX
+	lAqbyf5Tqv937yCQozfmQE1i/r3qofF8Bib/2ZD3UZb17q8otRWwMB62sgV04Xx9ayn2RV
+	PBW7BQUi7vYflG1+177jJOGXimorHXk=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793307546;
+	b=hXbPtndQWwjLBS9BcCbp1T/f2AwSs2oW5PfZMfeAJghnT1YZF8NfS6otcPQhlRxtCjYBFi
+	AoiGGMAv5/XeeWn8UfRkb0Va1BD+/rmruakavntgAIkxAlBdyDeivA2QjPdMxRxTvcTj2W
+	TAz3X6i0E/gqUPTxp5Gdo98rezJa6Cc=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="jmxfRq/W";
+	spf=pass (imf02.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 1179641A69;
+	Thu, 29 Oct 2026 20:59:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08EE91F01816;
+	Thu, 29 Oct 2026 20:59:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793307545;
+	bh=Wrz5dmAaDurZZfTeBzHlm9n0015a8frVXDMMr6vuISA=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=jmxfRq/Www1yiDpn1schwv1eOjCzvV1jdqrAyTBwFUbhooyCD9Hh09WufuAsXVa5w
+	 2gyuAiZnG7ESQFGJzF11UBQMnd8J0p74JWspKeGENsEVpJEX5jetL3DCtMNwdYSVIc
+	 5IdDa+uG2IooRd9FXP+RPZD/d6I9Yfz6raCyjitjjNhnl94fCA1TBdbgYhdHO6d1s4
+	 GyoBJopzSOIUBXoWb60wacVfwCK1V633BD/zZYTQ+Vgz6gpufUsateRPDwcP0KqrSp
+	 RCNNVjSLhTz+zXEcOdqLLB7KtEgqLNrUkvqpYwSRuMnL5ng0GDVbJWK0+tDXqkusrJ
+	 Cm7nwAEAnTynQ==
+From: "Harry Yoo (Meta)" <harry@kernel.org>
+To: Vlastimil Babka <vbabka@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Nickolai Zeldovich <nickolai@csail.mit.edu>
+Cc: kernel-team@meta.com,
+	Hao Li <hao.li@linux.dev>,
+	Christoph Lameter <cl@gentwo.org>,
+	David Rientjes <rientjes@google.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v1] mempool: fix min_nr exceeding the elements array after concurrent resizes
+Date: Thu, 29 Oct 2026 20:59:01 +0000
+Message-ID: <179330739525.606664.13318485044610934477.b4-ty@b4>
+X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20261016132510.789715-1-nickolai@csail.mit.edu>
+References: <20261016132510.789715-1-nickolai@csail.mit.edu>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Date: Thu, 29 Oct 2026 13:53:42 -0700
-X-Gm-Features: AclHuK_vfygndkmig7dtJT75402KjRWCrBeo-qQvow0jlIneeAJCjzWqgPCqOeQ
-Message-ID: <CAEvNRgEY1uNs7F+ZPpcbx4Tgg=9r+f6nYpPsnm7em0+2YMq6cQ@mail.gmail.com>
-Subject: Re: [PATCH 01/15] hugetlbfs: fix integer overflow in fallocate()
-To: "David Hildenbrand (Arm)" <david@kernel.org>, Muchun Song <muchun.song@linux.dev>, 
-	Oscar Salvador <osalvador@suse.de>, Naoya Horiguchi <nao.horiguchi@gmail.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Mel Gorman <mgorman@suse.de>, 
-	Andy Whitcroft <apw@canonical.com>, Miaohe Lin <linmiaohe@huawei.com>, Michal Hocko <mhocko@suse.com>, 
-	Rik van Riel <riel@surriel.com>, Hugh Dickins <hughd@google.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Vivek Kasireddy <vivek.kasireddy@intel.com>, 
-	Dave Airlie <airlied@redhat.com>, Jason Gunthorpe <jgg@ziepe.ca>, Lorenzo Stoakes <ljs@kernel.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Jonathan Corbet <corbet@lwn.net>, 
-	Shuah Khan <skhan@linuxfoundation.org>, Randy Dunlap <rdunlap@infradead.org>, 
-	Peter Xu <peterx@redhat.com>, Breno Leitao <leitao@debian.org>, Will Deacon <will@kernel.org>, 
-	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Nick Piggin <npiggin@gmail.com>, 
-	Peter Zijlstra <peterz@infradead.org>, Heiko Carstens <hca@linux.ibm.com>, 
-	Vasily Gorbik <gor@linux.ibm.com>, Alexander Gordeev <agordeev@linux.ibm.com>, 
-	Christian Borntraeger <borntraeger@linux.ibm.com>, Sven Schnelle <svens@linux.ibm.com>, 
-	Arnd Bergmann <arnd@arndb.de>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	Gerd Hoffmann <kraxel@redhat.com>, linux-doc@vger.kernel.org, linux-arch@vger.kernel.org, 
-	linux-s390@vger.kernel.org, luojiajun <luojiajun3@huawei.com>, 
-	Josef Bacik <josef@toxicpanda.com>, stable@kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: D51F58000A
+X-Stat-Signature: 6adt4yaqixmpb69hj73cfinh1aahofyk
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 4A30C20009
-X-Spam-Status: No, score=-23.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
+X-Spam-Status: No, score=-8.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_IN_DEF_DKIM_WL autolearn=ham autolearn_force=no
-	version=4.0.1
-X-Stat-Signature: gxcs9zfuch17qo785xgjft5pq1hmebfi
-X-HE-Tag: 1793307227-104234
-X-HE-Meta: U2FsdGVkX1+EAr5xDx00cE5CUxsJSBR3jwVpv/l+cVPlrfr/+NQW2WqiJHhbPBClKeaefAs/kC/yNVKAXbaYP2W/xSwi7dzYBZ/K0rmc1PwmEmezw3bTRrD3oNKjsCv2im7He97c3CtN2YItrqnzI+3r8U7OR0v4W9DfyiVCAq0ANzQTNRjaIfarZdpw04O4AIzGZ6I73VUcPPuJ2+VX7A0z730P5Ha44LW2t4uQOF8Ys3++wSV87ljky6tP9LI63uWCla9jJFRtmeP4+V3NX9phWrLwRnLSw/BDr0AQMuqZxFKKz/nf6nC0dEVPveccRxOgkuWNqM8aOZGMJphp1IEXDqQI3HWadA7L33xo2yekgfwTRgfU7/nF4bzVM7bhOWgDNp24W9J7N4tOrzsoV1vH8o9sGALsrFWCdkfV/m7QdHmauUkNo67l3V9r+zOYmWsUCmNL67iUilX8+AyxHviMV+V8lk5XkbwOJrCfEgPmNFEkU5pYyQ0za5mH/YlGtf9YcQDXVZhgCKMqQ3C2KcZGAHmP6MOdAwt4GCqPeiXxQo8/OgK7soaGyQGc+VvrAEVnHk6zjvrCvGjV7qaHhIwCB2OXxtKNPPHROly6URskymAOMk9BXDPKYuEwIXNZjCy7FdfwUlVlbHJQkBgryaNmxc8QdBTkOxWxCrSkzdZToywRlejJlgTKLeoue+SnOCVizSbvzctHguH4pIkwg+ejKXpyCHSd5OCmXFIpTDjJmZxi3oDxwZS3mmc4WO5HD7mEFr8Ax/W9AvpyhRwKwlg5WipKSlDPyWBCAvj7xS+sgWsrxIvxSxa5toZjjw3n8dW+GpC46dK5PVr79hO99UJFc8WZxRrh/k/Kdy6jl7Xf5rF3mQMw9maIazm4RZpMoVz5dhBk+fX434ytorWySrRJy7Z2WjSk1YIZcnNjfCMyi7fCmjO0xSPQWCKVC4+avvVGCO20eA0nTGQ7OIj
- S/jcScBG
- nz28Eqq2VTM7n0A+Tl/OGYEAlvO0P6nL3CTQuOeEzCtoaaje5Ruv1O0KA8nVI80nadO7iQt4VncdnPrywvuyniw0HeMQNRHkyLG7roP1fLB63pAAg6wTGEctjasKyNFz3PX6SYCpwimc21tnsqDgked6iiggX0fqFpo3T2Y2VHzoLsrKd5JcWXhI6euaB3CBNSVAfDjmw518snajDPDD0j4WdNGE2YD9pV55vfIRRWi98k44yRuQ3jw1NgtjPvF9v7+ElfbRu6bfNVc6o6wsEveIobyAth16xZrDBLQUp51vIikSf62hxShuukvkpfGuwRLMf8ymSLPJtdty+Xe7sg/xQEriCfPdpqlvPnVr/NCMmMETdvWGCPaLgAgsuLhqx7k5+orVrE3JNGqa+paivHoLTrrcnABY0UbH3bZhl1unPRyn4PS6Rh1y8Z0HI6qMtOHufkudOhTYkayFrXSv7k4fCsrEZPPMYWIzktn7yYcim5+T5nxMMV9rCuA==
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1793307546-281261
+X-HE-Meta: U2FsdGVkX180tvuX0kslnkB2h609hk2WN7/FvvBf/ghejmRwL1R+j0wMyckFaIs06F5wQ9KyEu3cxhBi5SCxldWy8GQzOYm4LwC3vKswAPSWWt6UbsjIe+apVM6eIdNKzzk3aCotAXPs+ZqXwvtVm+NyfZOVCXEgdHTjAgn0Rg3icNCmveyB1F+E676PmOJ+AOHtoW1aB1QqOIVxyGS7IbQDfxGhwXikYpZztyUgyXoZcrbPxkl0EVRaBJHQv9jb45vGEDSCP+EJzu8vQUVPGH5KlyfJ8+5xb1kRpjGi1DcRXugzBQNbkdCYnbD8ofI7yrWMlRs8kI6iwf/qb1u8qJyLEetERvdw93TmTGWWE1Zh5gtyzcikQhZYvomUeogFACcoms/1U65Elk3dQ5Q3mLN9q1/uBDJxJ9UCBaXE5qmd5RoNlpl4nmDGMaFgTlraE7KCEqnCKsG8dP4DSQk8GSiGcOOzF8DQMwOZfKZbTXcnPQzjWzAjUhiU3rGd+6NrvsX7Aiq9aBP2r4XgixpO+BzbkB6pJUpKgzBU5ZKC+zZNoLR3MSeK932XyEas09ViJnWvaW500++/iV2HBL4NebMogzoqTiqCyx9HqNsqi4Fh62lyAmDhuNqS/mnvTKxkIxWrEOOEjkicaFehXwUGXUEH4o7y0g+kRoW6azNSw2CAwrsOF4JlBzNhhsXvBDuzu/0G6a8ZsIpDR9pe5B0RkScreUukDflnSZqbH/dEJuHdzY0lQVqnvhAhC4tqZmw2FdVrVEqeBEDwTuQvbRuUP+i1ZZqpQiJPZy5S/C3USWjNoEJjHkbLBSk32ck3ZES6dBYFJu9YBcfIJb3fuLp3EaU2h7ztdqnCtyohq8aDxQOmLAsX6E8qRWw9lHXU/XUMwaijZrT8D474NyOVX0FWR+F3BYhBzKENB+93YLk6Zb25U5zgfyBodNaU5CEVUoo8QbWxYn0wjVVmr4VoHdu
+ ywjoFapx
+ sWL8SmXWrsWdY8ZAEYzlmvRGfrdyuvLfzp6teqFzSgH1Y11mWngkndgiMTdUakzRnef5TAh3sSetvsZkPHoqpWhtQ6894ZzWklg/HiGfaOyCHcCRmGKyXX8hki5tBfrwQokhg3+qwDdgo918a4aY0/onZgv4zvrAbUcTyfQ9Z55tbacwjvkEgtEoBJbNAFOdze3QFQKDrl3c0HK33ASAaxt4Cfap81AO4jf7sqJbvlGTcbTLjWiNo46OpKp1Oqm/2V3qxkq66O+x7sRk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -160,63 +102,30 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-"David Hildenbrand (Arm)" <david@kernel.org> writes:
+On Fri, 16 Oct 2026 09:25:10 -0400, Nickolai Zeldovich wrote:
+> mempool_resize() shrinks a pool by dropping pool->lock around every
+> free_fn() call and, once the pool holds no more than new_min_nr
+> elements, stores new_min_nr into pool->min_nr.  new_min_nr was only
+> compared against pool->min_nr before the lock was first dropped, so that
+> store assumes nothing changed meanwhile.  The kernel-doc allows
+> mempool_alloc()/mempool_free() to run while a resize is in progress and
+> the grow path also copes with concurrent resizes ("Raced, other resize
+> will do our work"), but the shrink path does not: while its lock is
+> dropped another resize may shrink the pool below new_min_nr and a third
+> one may grow it again to a size between the two, replacing
+> pool->elements with an array of exactly that size.  Storing the stale
+> new_min_nr afterwards leaves pool->min_nr larger than the elements
+> array.
+> 
+> [...]
 
-> hugetlbfs_fallocate() rounds the range end up by adding hpage_size - 1
-> to offset + len. vfs_fallocate()'s existing overflow check only makes
-> sure that offset + len does not overflow.
->
-> Once we overflow for valid endpoints near LLONG_MAX, we can get a
-> negative temporary result that is then converted to a very large
-> huge page index.
->
-> A one-byte allocation ending at LLONG_MAX can therefore consume all
-> available huge pages. Pages added beyond LLONG_MAX are skipped during
-> inode eviction, leaking them and triggering the BUG_ON() in clear_inode().
->
-> To fix it, calculate the end index in a simpler way that cannot
-> overflow. This also fixes the signed overflow reported by luojiajun in
-> 2019.
->
-> Backporting notes: without commit a08c7193e4f18 ("mm/filemap: remove
-> hugetlb special casing in filemap.c"), remove_inode_hugepages() must
-> include the final huge page during truncate and eviction.
->
-> Reported-by: luojiajun <luojiajun3@huawei.com>
-> Closes: https://lore.kernel.org/all/1554775226-67213-1-git-send-email-luojiajun3@huawei.com/
-> Reported-by: Josef Bacik <josef@toxicpanda.com>
-> Fixes: 70c3547e36f5 ("hugetlbfs: add hugetlbfs_fallocate()")
-> Cc: stable@kernel.org
-> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
-> ---
->  fs/hugetlbfs/inode.c | 8 +++++---
->  1 file changed, 5 insertions(+), 3 deletions(-)
->
-> diff --git a/fs/hugetlbfs/inode.c b/fs/hugetlbfs/inode.c
-> index 01c4d6f44ebe..5592cfc6cc8b 100644
-> --- a/fs/hugetlbfs/inode.c
-> +++ b/fs/hugetlbfs/inode.c
-> @@ -721,11 +721,13 @@ static long hugetlbfs_fallocate(struct file *file, int mode, loff_t offset,
->
->  	/*
->  	 * Default preallocate case.
-> -	 * For this range, start is rounded down and end is rounded up
-> -	 * as well as being converted to page offsets.
-> +	 * vfs_fallocate() guarantees that offset + len is positive and does
-> +	 * not overflow. Avoid overflows when calculating the end huge page
-> +	 * index: set it to one past the index of the huge page containing the
-> +	 * last byte.
->  	 */
->  	start = offset >> hpage_shift;
-> -	end = (offset + len + hpage_size - 1) >> hpage_shift;
-> +	end = ((offset + len - 1) >> hpage_shift) + 1;
+Applied to mm/slab.git slab/for-next-fixes, thanks!
 
-Reviewed-by: Ackerley Tng <ackerleytng@google.com>
+[1/1] mempool: fix min_nr exceeding the elements array after concurrent resizes
+      commit: 8dde7b06d2d819422c736dad7efb9635b6673cc2
 
->
->  	inode_lock(inode);
->
->
-> --
-> 2.43.0
+-- 
+Cheers,
+Harry / Hyeonggon
+
 
