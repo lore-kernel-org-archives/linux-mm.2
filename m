@@ -1,73 +1,73 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB887606A31F
-	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 18:08:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 980E160A260F
+	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 18:10:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=f1Y6buIo
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=VtievZEi
 Received: by kanga.kvack.org (Postfix)
-	id EED7B6B062C; Thu, 29 Oct 2026 14:08:10 -0400 (EDT)
+	id 507A26B05D5; Thu, 29 Oct 2026 14:10:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E9EA16B062E; Thu, 29 Oct 2026 14:08:10 -0400 (EDT)
+	id 4DFDC6B05D6; Thu, 29 Oct 2026 14:10:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D8DCB6B062F; Thu, 29 Oct 2026 14:08:10 -0400 (EDT)
+	id 3F5286B05D7; Thu, 29 Oct 2026 14:10:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id AC1A16B062C
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 14:08:10 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 38EB31604E3
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 18:08:10 +0000 (UTC)
-X-FDA: 85376447940.24.C97EECB
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 711B940002
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 18:08:08 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=f1Y6buIo;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 0A3AD6B05D5
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 14:10:28 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 33676C04C0
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 18:10:28 +0000 (UTC)
+X-FDA: 85376453736.23.8F9F093
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 66801160006
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 18:10:26 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VtievZEi;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf01.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org
+	spf=pass (imf08.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793297288;
+	s=arc-20220608; t=1793297426;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Dzqh+wdXVDD6rZ18+/BTNNGOJs3aTGYsg31/1TNDADw=;
-	b=5v4VYYk+IX6cmdi2FCOBWh2ls3WBoOvGtERWf5Cw6ksHUwcG+D7veE9DKALlUbWM21Rsh7
-	ECfR3AyiC29n9FfX2i8puEGGy5QEvbgw7o4Gc8b9bZJ8lnCnw6b/x9wSJuW00HFZnITHZh
-	vMQ9HTWHNtkOrnBRUHqYRCfMrxnknmY=
+	bh=YhtoC8abtd12mu+rBuvcv/XkTwddyXJZrrtv2/voX0Y=;
+	b=yJoFq4MtxQz5uv6GnawokgfJ0OKFd+t3uTiurlSBl9GWgGbY9oU7+ZW3skIx4hEs+J/6cw
+	byQtlZxxt19rVSsb3Xv1d9Qi0qs+PWCx0WMY8QtqYcqGvRE6wn4pDC8zVYhgrqakM1jrVO
+	jZtsfrIh96Ub04RzBtekDDlGPuplewE=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=f1Y6buIo;
+	imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VtievZEi;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf01.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org
+	spf=pass (imf08.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793297288;
-	b=iNbYkfDrV84E1Suj9FzYXmYNDd93UjI3WWu/UVKa7gtGK0DizfDrKY1XbBHuQoSpoRc/Kx
-	EryceW69WAdqUx0clJr0ZiYzPpAL8NaJBJsyjQcVEQW4yVI/qikI3BDktrVdaHVR9EYKWO
-	xtOO2/n6Pp036sDpqTijdig52VQuayA=
+	t=1793297426;
+	b=t+sWP9HZBlLM11J43ubsXeUcdrRQGisBRj13/e4TQj+JgEJjtAMA9G+22aZxgxW5PpD1Xe
+	OVe7K2yCza4L+9+hN53kvghqA5OiGOLAaQBLisRGTkh7i/bVz2PHGMLEmA3OYZxxqLvG0a
+	ldDx7Thi2eN+5rUFjdZyssfLpOrqvkg=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 5B52E600E4;
-	Thu, 29 Oct 2026 18:08:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02EF91F01816;
-	Thu, 29 Oct 2026 18:08:02 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 9E9EC434CF;
+	Thu, 29 Oct 2026 18:10:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 565281F01176;
+	Thu, 29 Oct 2026 18:10:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793297287;
-	bh=Dzqh+wdXVDD6rZ18+/BTNNGOJs3aTGYsg31/1TNDADw=;
+	s=k20260515; t=1793297425;
+	bh=YhtoC8abtd12mu+rBuvcv/XkTwddyXJZrrtv2/voX0Y=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=f1Y6buIomjd8NiYiwC6+L/N/2gFzxBK/PTis/OryQtGQXon5fydlVHG395evTsZmx
-	 N4jboM2OkA3ya5OrYrllwnpe+kG+jOmUDYRXK+DGcBEX2/nOkOV31x/bMvQpJnopvG
-	 7Z2lG945Ov3nX576VROmqMDKZlqUQsOyo/B/ZYq9LrxDRAW/aKhZxuW9lFRx9c45px
-	 Jwf5vHxk0COCrcMoKMqnZT6qZ/tzhUODUrW0/2m7r3BcT5voMK8LY5N4HrDYwvdg71
-	 kjfdi6qj4h8ApblSoT1kLHdK8Ti//IC5Ulk/kEtn5KhYMcS0OaoA3PtDBj0a38iVEH
-	 buw6b2not2y5Q==
-Message-ID: <fe658b1b-4011-4197-b228-fd4bb6c412bc@kernel.org>
-Date: Thu, 29 Oct 2026 19:08:01 +0100
+	b=VtievZEidSVJKJ8wgbiTyLqG2cFPhE5Pkzw8ITYYjhGHuopw91uKJ9JtJJdRSMp7F
+	 M2UqZkhfBFg1lLeA8FWkN2BhW/bw5tRWjEgKb5mCzZHqQhOKiRyb5dBXGRNKduN/C/
+	 HdJX54ceYFkIb/lIpcSEH7JL9BNLd2+wXtYeqxBfrzz35lBQkZFDs2sMw+rNalIzlZ
+	 H/Yz0Rg0YFmSD1A+4EfXPNMfRbhHRh9eLrQyrr6++JrV5sREhUgg9l3wqbVMCRXPBU
+	 116/V5xj5GH0fxIc/woLjEPZOKHPaBaWmzSg1SSYfwsx5cyHxvemiTdvhRWAnXNXkI
+	 z1GGNTHz/rJGg==
+Message-ID: <7a1807d0-4f3b-4094-b73b-b6950040e3ab@kernel.org>
+Date: Thu, 29 Oct 2026 19:10:19 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 6/8] mm/hugetlb: retry the pool walk when the zonelist
- is rebuilt
+Subject: Re: [PATCH v4 7/8] mm/page_alloc: retry alloc_contig_pages() when the
+ zonelist is rebuilt
 Content-Language: en-US
 To: "Gregory Price (Meta)" <gourry@gourry.net>, linux-mm@kvack.org
 Cc: linux-kernel@vger.kernel.org, kernel-team@meta.com,
@@ -78,7 +78,7 @@ Cc: linux-kernel@vger.kernel.org, kernel-team@meta.com,
  brendan.jackman@linux.dev, hannes@cmpxchg.org, mgorman@techsingularity.net,
  anshuman.khandual@arm.com, stable@vger.kernel.org
 References: <20261028211930.3504634-1-gourry@gourry.net>
- <20261028211930.3504634-7-gourry@gourry.net>
+ <20261028211930.3504634-8-gourry@gourry.net>
 From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
 Autocrypt: addr=vbabka@kernel.org; keydata=
  xsFNBFZdmxYBEADsw/SiUSjB0dM+vSh95UkgcHjzEVBlby/Fg+g42O7LAEkCYXi/vvq31JTB
@@ -119,22 +119,22 @@ Autocrypt: addr=vbabka@kernel.org; keydata=
  NcaZ+c6J4H+nEJGi2SkHAUJz5oBzuThvPudLvPA/SK8sKoM01IRxSihev/S/5WLazXB1PGem
  OCbvzC1IjWJJraxiDJ5IygokapUa2RP7+WBR22skQ3SSl6G107QgWKSyTOGWEaRmV53vxQLV
  jXuCmzSSasTL60zq5yGrT4/DYQVSNEUiUbG4pYekxJujNeEDkUlky0Y=
-In-Reply-To: <20261028211930.3504634-7-gourry@gourry.net>
+In-Reply-To: <20261028211930.3504634-8-gourry@gourry.net>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 711B940002
+X-Rspamd-Queue-Id: 66801160006
 X-Rspam-User: 
-X-Stat-Signature: eksqazombtg6wd5o94xu879ysxf4j56a
+X-Stat-Signature: 15ugcphj3678h9niof9yat91c5zoo9uy
 X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
 	version=4.0.1
 X-Rspamd-Server: rspam03
-X-HE-Tag: 1793297288-589451
-X-HE-Meta: U2FsdGVkX19DVsPYQ3Iy+vVIslf34p0wKqM2QPcEHFxFkG9DbJOV/xezaH3FcJpB4n8qevkhSJVoTuc5RWXAxc+TP9cq+Ez+hkpMFXHZT7RJR2nkc/dR6VhA4L8rMr182xOswF2zfPVCleRXtoF/Lhr+FjcX9FJxZVkXn7Pt83D/HtbTw1pNZ+dvTFuY5i9dICXJTgEkX4iHtxws/IKwvLalw7nFwjuRqLta3DZ6qn6LyF54qD7dYh7CeLaR553SK4X72KCtxH5sEXPbWv9Ze9bfrBcqntAlSOpm/sXqw7bKb8a35EzqmCr2pXveE6yoMk4gRMXZwaOumWMv3e29T/Ud/rIx+Z6ymlZ+c+IpYBFmhixzZw2VCBNE5YMPeHsBjdDUFR9IJzcyGDD31YF+FqwQ+XI8wLhp4qQJ20HCmsT/aU/F9nNJSONYIohob9wXu2VstcBllZESyU1tfMUysnyFZXPC6t9dYZn401DuIcPPVodoapAk9tPgw/DjcKGtrGDH499h70SocqjxbWx+OnSHYCWNp2PmV+GvBOy7oM1kLjCoXB3H8xAvXzMk9wbqKeS91mlKLcSxT0D0FNIwd545voOFjlTj7bmsNZkvozlhJvdrlslUz/5mqSPldftbxVlbfkvaRQ5CVIoT0Tf3FnVmUaTolxzVRnDAT+9iG/Qe7UBRyHFMFLWBUtWAh6LMbkrY9HIZ6Br0g1CNzYMw/nCNn9BE7SS2x+tIr4OtU0jjLxN61mKSdnKuEpdaxkavp8G0d7UTchirNaRfJju9f4V6tfm8GJCIf3+FWxx1tfNZ1z6e1dG86BaFulm9+B7LV298vJDZsFxza0z+h2T48/zkA0B2/dL1YCUjBLUzW7KrUplK88M/v5xwWND3pC4MxJeHcfMY+dH1khxx2RFj1yB9rn9bHmVIE/80X8V1zk72sZ2vao6PXDX9xd68UmAP+xBj+8U2Hx+YuSifUZF
- jHCgq70g
- 39CGx9N0X8c7qKxTKegem7RVsrFRanNPJ6db1HyBmSLAViLuhau429jZhERc7d1uDcV8htr4jziJtiGCyQ88xOhxP7EfEM+rQKmKMr1sPD69bH4QQhWFZcryWfXQWw1M3v2PtpTgVLrn+cS/zRvqUfjernEcIFmFlD6FqOBUdX2yHrynYpK1eI4DXK4sZPvz0az8Y8jaYU1sQhEnrPE6W52JxSp5Bn2GH0gPUqVbGkvzu8kJhzTeoRB0Z/JKSbH5fljZwhV+0G4365rXxzbvrzXH08AjxZ/Vg+LS1vr/UnjoSsprtyN9I2UQ2xM+Bw17YmBF+mDzmRXOdCXXAsKjDSd5tnlAEjzZIA+nCQn4WkK/seIgPqJ+imHAIFyDiZq361uf0fFCaGVF+QCXn/xlKvXStGU/b6mPnzJ27
+X-HE-Tag: 1793297426-270394
+X-HE-Meta: U2FsdGVkX18PdEHd8AsmJ2D7AAf6R/ClPqIt+pBSlG/Rudt+6JEnqWeN1Qicnms+Q/0e04llknx62n0GnmrZUcMX8fiWDY9S4ZU9kgCFMz5XM5jkbpa/aXGt1+APE+7gWJwO5TLs/jE+xwj24DQGVG23vsuq04+lecQj7ygYr4ZOnMWwUX+RUdR90ZY1iRpQ9+yF8Xv8KmJ0ZldlyScQUzwDY6v0KLheblsq8p02v5dZfKmuZSFh6nWrsdMzSMHKD+fdbF3g/gOrqrIt0FYQ/6ILEhZGiXoF9pJDhl2imaI4q/PvspKIqi/S0yndxRpi3gzqaQppCFRzbspbPxail7GAsDMPpCgq3gjK8ACSS+eAGkxuMdZbPqDqZDO4bV5VeX05EIUdNHhHBByPKrxJDynt/m6/6y54Qq65NLRYp9GEr0FJzLykhteUDbx2Ge3/c4tQFxL0G96hO3+5agn2GifNQAcS7fOr2mALvuZOB786kaZS0QI59BHBQpeJckAMgEcfR2ExzWedOzjbhMD213abX0OiYUjdsdlh1zsO2fWDDanDM8kn/6LyPgbzM22d2NTzLf+VtCOB+wrZJBKGMO6HzMDIsf8zK/cc7oD2LCWuFJMmZtsV7emMXiPMzK0CNMla73yxWc5pZQ3/O3DF8fqg39203dQaAfYu6/ncRhvfQgOExtEnhb+Up8grZXkdAbIdymik47B6KEk0vc8Mv79AWkCSipjkrwYu8H8h5TQcSLymAYQq9ibaPajU+M0xQ7PuqMIYcBXWG6TGPm4djE9lKm8oAGWJXeqRvP96TU2sxM4RTD1U5WCWppp1yB5JMB0NbhrL06zpJV2IdH07P8EkublKnP4J8Lk20U0SLokHN2PlxFzs/PlLzFmzQ1KKT9xqgSw651dzU+FPWOgWBppW5DazdlZhfz6FIEVY3IPznS+iUaoGn/qtb0pTxBIh9+XqMKDXMep05W1aO/6
+ mXVFwpS0
+ ZMOrcB+JICPaBmY2F9EkiKQfAcjOoo7gTdPIMFSNgR2WN6BgXJ3V60qjaYArTnz88yZ4D0t+RDi+vlK4KxAB0ZfSqyGxrwzdiCax22wnM7undPPrQbAWmVolW5HXeYRn45Vbmb/X+q3MQ/JAD/wkTABzdct6sj9u0BBvCbRqK9R6OlkS2XovIWlK/NicfDR2dycWTvi8zMsisK6RfKsUS2XJ2BgNUc3wqv6W39/YwES6uInISE5Jv2hbsjzgslFFgLx+VPchLoldcwvn81dFa1G+MkvKYe8SFacnlwr1dvB4Ht+BiQo5ncNjz0g8f4bpBJbogTetNyMgx7QikXtMcPU7D3EvN9hmbQ/hXshRtm13HwmVRSCYa55b6D5xFl9yOJpfszrWhlCg70SctuomnvEp9CyY8YLC0VKQQaYBr3mr5mLymbQ3S0S2d8R57V7llvrfOVE6ICppWdkRL5WWt2+rfNQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,124 +145,81 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 
 On 10/28/26 22:19, Gregory Price (Meta) wrote:
 > Onlining the first block of a zone rebuilds every zonelist in place,
-> shifting the slots after the new zone.  dequeue_hugetlb_folio_nodemask()
-> approves a slot by its node, then loads the zone from it, so a hugetlb
-> fault bound to one node can take a pool page from another:
+> shifting the slots after the new zone.
+> alloc_contig_frozen_pages_noprof() approves a slot by the caller's gfp
+> and nodemask, then loads the zone from it:
 > 
 >   CPU 0                             CPU 1
->   dequeue_hugetlb_folio_nodemask(nodemask {2})
->     slot 3 (NORMAL2) approved
+>   alloc_contig_frozen_pages_noprof(GFP_HIGHUSER | __GFP_THISNODE)
+>     slot 0 (NORMAL1) approved
 >                                     online_pages()
 >                                       build_all_zonelists()
->                                         [.., NORMAL1, NORMAL2]
->                                         -> [.., MOVABLE1, NORMAL1, ...]
->     zone = zonelist_zone(slot 3)    /* NORMAL1 */
->     dequeue_hugetlb_folio_node_exact(h, 1)
+>                                         [NORMAL1]
+>                                         -> [MOVABLE1, NORMAL1]
+>     zone = zonelist_zone(slot 0)    /* MOVABLE1 */
+>     alloc_contig_frozen_range(MOVABLE1 pfns)
 > 
-> Check zonelist_update_seq before using each zone, and on the way out
-> with nothing found, and restart the walk if it changed.  Checking before
-> the dequeue leaves nothing to put back.  Reset the last-tried node on
-> restart, so it is not skipped.
+> A gigantic hugetlb page can then land in ZONE_MOVABLE, and a nodemask
+> caller can get a range from another node.  Gigantic pages are kept out
+> of ZONE_MOVABLE since commit 79b63f12abcb ("mm, hugetlb: do not allocate
+> non-migrateable gigantic pages from movable zones").
 > 
-> With kprobes holding the walk across the online, a fault bound to node 2
-> took a node 1 page in 3 of 3 runs, and a node 2 page in 3 of 3 with this
-> change.
+> Check zonelist_update_seq before using each zone, and restart the walk
+> if it changed, as the hugetlb pool walk does.  Check again before
+> escalating to the pass that may migrate hugetlb pages, so a pass a
+> rebuild cut short is redone rather than escalated.
 > 
-> Fixes: 11cd8638c37f ("mm, page_alloc: remove stop_machine from build_all_zonelists")
+> With kprobes holding the walk across the online, the base kernel put the
+> 1G page in ZONE_MOVABLE in 3 of 3 runs, and this change put it in
+> ZONE_NORMAL in 3 of 3.  Direct GFP_KERNEL calls with nodemask {1} and
+> {2} got a ZONE_MOVABLE range and a node 1 range on base, 3 of 3 each,
+> and neither with this change.
+> 
+> Fixes: 5e27a2df03b8 ("mm/page_alloc: add alloc_contig_pages()")
 > Cc: stable@vger.kernel.org
 > Signed-off-by: Gregory Price (Meta) <gourry@gourry.net>
 
-LGTM, but...
+Reviewed-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
 
 > ---
->  mm/hugetlb.c    | 13 ++++++++++---
->  mm/page_alloc.c |  4 ++--
->  mm/page_alloc.h |  3 +++
->  3 files changed, 15 insertions(+), 5 deletions(-)
+>  mm/page_alloc.c | 9 +++++++++
+>  1 file changed, 9 insertions(+)
 > 
-> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-> index b37d7d0db7fc..8edf323baf0f 100644
-> --- a/mm/hugetlb.c
-> +++ b/mm/hugetlb.c
-> @@ -1293,11 +1293,11 @@ static struct folio *dequeue_hugetlb_folio_node_exact(struct hstate *h,
->  static struct folio *dequeue_hugetlb_folio_nodemask(struct hstate *h, gfp_t gfp_mask,
->  							int nid, nodemask_t *nmask)
+> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+> index 70830689048a..7d06c6c4011a 100644
+> --- a/mm/page_alloc.c
+> +++ b/mm/page_alloc.c
+> @@ -7593,6 +7593,7 @@ struct page *alloc_contig_frozen_pages_noprof(unsigned long nr_pages,
+>  		gfp_t gfp_mask, int nid, nodemask_t *nodemask)
 >  {
-> -	unsigned int cpuset_mems_cookie;
-> +	unsigned int cpuset_mems_cookie, zonelist_cookie;
+>  	unsigned long ret, pfn, flags;
+> +	unsigned int zonelist_cookie;
 >  	struct zonelist *zonelist;
 >  	struct zone *zone;
 >  	struct zoneref *z;
-> -	int node = NUMA_NO_NODE;
-> +	int node;
+> @@ -7601,8 +7602,13 @@ struct page *alloc_contig_frozen_pages_noprof(unsigned long nr_pages,
 >  
->  	/* 'nid' should not be NUMA_NO_NODE. Try to catch any misuse of it and rectifiy. */
->  	if (nid == NUMA_NO_NODE)
-> @@ -1306,10 +1306,16 @@ static struct folio *dequeue_hugetlb_folio_nodemask(struct hstate *h, gfp_t gfp_
+>  retry:
 >  	zonelist = node_zonelist(nid, gfp_mask);
->  
->  retry_cpuset:
-> +	node = NUMA_NO_NODE;
->  	cpuset_mems_cookie = read_mems_allowed_begin();
 > +	zonelist_cookie = zonelist_iter_begin();
->  	for_each_zone_zonelist_nodemask(zone, z, zonelist, gfp_zone(gfp_mask), nmask) {
->  		struct folio *folio;
->  
-> +		/* A rebuild may have shifted a node outside @nmask into this slot. */
+>  	for_each_zone_zonelist_nodemask(zone, z, zonelist,
+>  					gfp_zone(gfp_mask), nodemask) {
+> +		/* A rebuild may have shifted an ineligible zone into this slot. */
 > +		if (unlikely(check_retry_zonelist(zonelist_cookie)))
-> +			goto retry_cpuset;
+> +			goto retry;
 > +
->  		if (!cpuset_zone_allowed(zone, gfp_mask))
->  			continue;
->  		/*
-> @@ -1324,7 +1330,8 @@ static struct folio *dequeue_hugetlb_folio_nodemask(struct hstate *h, gfp_t gfp_
->  		if (folio)
->  			return folio;
->  	}
-> -	if (unlikely(read_mems_allowed_retry(cpuset_mems_cookie)))
-> +	if (unlikely(read_mems_allowed_retry(cpuset_mems_cookie) ||
-> +		     check_retry_zonelist(zonelist_cookie)))
->  		goto retry_cpuset;
+>  		spin_lock_irqsave(&zone->lock, flags);
 >  
->  	return NULL;
-> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-> index 33aab9deaaa1..70830689048a 100644
-> --- a/mm/page_alloc.c
-> +++ b/mm/page_alloc.c
-> @@ -4411,7 +4411,7 @@ EXPORT_SYMBOL_GPL(fs_reclaim_release);
->   */
->  static DEFINE_SEQLOCK(zonelist_update_seq);
->  
-> -static unsigned int zonelist_iter_begin(void)
-> +unsigned int zonelist_iter_begin(void)
->  {
->  	if (IS_ENABLED(CONFIG_MEMORY_HOTPLUG))
->  		return read_seqbegin(&zonelist_update_seq);
-> @@ -4432,7 +4432,7 @@ static unsigned int zonelist_iter_sample(void)
->  	return 0;
->  }
->  
-> -static unsigned int check_retry_zonelist(unsigned int seq)
-> +unsigned int check_retry_zonelist(unsigned int seq)
->  {
->  	if (IS_ENABLED(CONFIG_MEMORY_HOTPLUG))
->  		return read_seqretry(&zonelist_update_seq, seq);
-> diff --git a/mm/page_alloc.h b/mm/page_alloc.h
-> index 2b1017a91928..53df6b8a0c00 100644
-> --- a/mm/page_alloc.h
-> +++ b/mm/page_alloc.h
-> @@ -265,6 +265,9 @@ extern void zone_pcp_disable(struct zone *zone);
->  extern void zone_pcp_enable(struct zone *zone);
->  extern void zone_pcp_init(struct zone *zone);
->  
-> +unsigned int zonelist_iter_begin(void);
-> +unsigned int check_retry_zonelist(unsigned int seq);
-
-... is it possible to inline these here instead?
-
-> +
->  enum fallback_result {
->  	/* Found suitable migratetype, *mt_out is valid. */
->  	FALLBACK_FOUND,
+>  		pfn = ALIGN(zone->zone_start_pfn, nr_pages);
+> @@ -7637,6 +7643,9 @@ struct page *alloc_contig_frozen_pages_noprof(unsigned long nr_pages,
+>  	 * second pass, we will try moving HugeTLB pages when those pages are
+>  	 * smaller than the requested contiguous region size.
+>  	 */
+> +	/* Redo a pass that a rebuild cut short before escalating. */
+> +	if (unlikely(check_retry_zonelist(zonelist_cookie)))
+> +		goto retry;
+>  	if (skip_hugetlb && skipped_hugetlb) {
+>  		skip_hugetlb = false;
+>  		goto retry;
 
 
