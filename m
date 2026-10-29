@@ -1,104 +1,108 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC464606A320
-	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 19:42:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DAAF606A31E
+	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 19:44:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=n039RvLz
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=T4lXIsnx
 Received: by kanga.kvack.org (Postfix)
-	id 0303A6B00EF; Thu, 29 Oct 2026 15:42:42 -0400 (EDT)
+	id E8CD86B05B3; Thu, 29 Oct 2026 15:44:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F23536B05B2; Thu, 29 Oct 2026 15:42:41 -0400 (EDT)
+	id E63FE6B05B4; Thu, 29 Oct 2026 15:44:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E39266B05B3; Thu, 29 Oct 2026 15:42:41 -0400 (EDT)
+	id DA1776B05B5; Thu, 29 Oct 2026 15:44:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id C4BC26B00EF
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 15:42:41 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 59449A053C
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 19:42:41 +0000 (UTC)
-X-FDA: 85376686122.03.0395EBD
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf19.hostedemail.com (Postfix) with ESMTP id AF6011A0007
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 19:42:39 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=n039RvLz;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf19.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 996596B05B3
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 15:44:57 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 0275E80181
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 19:44:56 +0000 (UTC)
+X-FDA: 85376691834.13.68858F7
+Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com [209.85.216.71])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 57A5D12000A
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 19:44:55 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=T4lXIsnx;
+	spf=pass (imf29.hostedemail.com: domain of 3NqLjagYKCGcPZSNdZLTTLQJ.HTRQNSZc-RRPaFHP.TWL@flex--kuniyu.bounces.google.com designates 209.85.216.71 as permitted sender) smtp.mailfrom=3NqLjagYKCGcPZSNdZLTTLQJ.HTRQNSZc-RRPaFHP.TWL@flex--kuniyu.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793303095;
+	b=PxzqQf8P7JRHcq2A63qvEcUH7fk8VDf0xW/qIn7vrQiiba4mj9dIRP8R+4djnMksg9vPx/
+	MqFe4aOM756a1Iim91w4aVcMNH+1EZiv1G9V3k6ilAQD4IE+I1nzY9qL4zVwK2vxT0AMlU
+	cYR+SKuIejvJKMKlqY0/I40WTY4vvl8=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=T4lXIsnx;
+	spf=pass (imf29.hostedemail.com: domain of 3NqLjagYKCGcPZSNdZLTTLQJ.HTRQNSZc-RRPaFHP.TWL@flex--kuniyu.bounces.google.com designates 209.85.216.71 as permitted sender) smtp.mailfrom=3NqLjagYKCGcPZSNdZLTTLQJ.HTRQNSZc-RRPaFHP.TWL@flex--kuniyu.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793302959;
+	s=arc-20220608; t=1793303095;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=M5BOmtE/8D5RrPoWo6N/EKi/wginAI3FukwfrzZJ0T4=;
-	b=gdCyDdVc9Mm0fsgpf5yIJv/T1jeOy+0S48h91kV75TqFwN5nPYR+IfA78K29HpvL+Ec5Zx
-	smzxoNHHl0nrjK7UGkj5fAQFPzGIAbtU9j/RZ1t4194I/1ZmzcaThaxKxEJLhvrQEr4FJV
-	lSWP7lCRVnwYC9xU6ZSc5gmRwMo69Ig=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=n039RvLz;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf19.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793302959;
-	b=RV+ssDiaf32evPRsn29yKGGlRdqyvGRNxUAG0VC97y6O9sZFi7WaVJZkYZXqcOjKTiXyFy
-	P3t/5FrEK0Vt9V19GhzjyYawtq2qfyZdPSiuzmJbrfzRlwURAn8ydzHd7RODfjTEeGHHIU
-	Uzb5uPIPRNd3dQAS8DO+ySBbHS3+t14=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id DDA83407B0;
-	Thu, 29 Oct 2026 19:42:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85BE91F01816;
-	Thu, 29 Oct 2026 19:42:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793302958;
-	bh=M5BOmtE/8D5RrPoWo6N/EKi/wginAI3FukwfrzZJ0T4=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=n039RvLz2MQBp9BfxMGzLnlsnUbqv3QH+HRwNf04y8I98V0PpNABrMhrQJMeaVmvi
-	 3zd85eM31AJtqMMB13jFkSzHv20sMetPAlDdCrnN+gI7jS+LzruLhraQXgfy47gOTT
-	 wpDzerJy0E9A5ce5AyJDoETbe3jRVDdWzHquTqzoqF3fmvcdz0PyWTAygUO988r7Re
-	 Dfc0Ff9jntdVerieMBs8hG4DiJnjUPBGUKeH9lxbkdygoBOOVImf8qmcqQVIOKmaO7
-	 aLxl7AN2nZfGozNkzCESmg2v5yIhJ/KpKEP2Bt8IAMYBLHSy7y/tY1SFFm/cPJ17Yg
-	 pNfHWjm/hb5jw==
-From: Pratyush Yadav <pratyush@kernel.org>
-To: "Ard Biesheuvel" <ardb@kernel.org>
-Cc: "George Guo" <dongtai.guo@linux.dev>,  "Mike Rapoport"
- <rppt@kernel.org>,  "Pasha Tatashin" <pasha.tatashin@soleen.com>,
-  "Pratyush Yadav" <pratyush@kernel.org>,  "Huacai Chen"
- <chenhuacai@kernel.org>,  shuah@kernel.org,  "Ilias Apalodimas"
- <ilias.apalodimas@linaro.org>,  "Andrew Morton"
- <akpm@linux-foundation.org>,  baoquan.he@linux.dev,
-  ruirui.yang@linux.dev,  guodongtai@kylinos.cn,  "WANG Xuerui"
- <kernel@xen0n.name>,  "Alexander Graf" <graf@amazon.com>,
-  liukexin@kylinos.cn,  loongarch@lists.linux.dev,
-  linux-kernel@vger.kernel.org,  kexec@lists.infradead.org,
-  linux-mm@kvack.org,  linux-kselftest@vger.kernel.org,
-  linux-efi@vger.kernel.org
-Subject: Re: [PATCH v6 1/8] efi: Pass KHO state to the next kernel in a
- configuration table
-In-Reply-To: <2382a0ee-cb6d-4572-be6e-ce3cf4d006e5@app.fastmail.com> (Ard
-	Biesheuvel's message of "Thu, 29 Oct 2026 20:28:01 +0100")
-References: <20261029172956.20791-1-dongtai.guo@linux.dev>
-	<20261029172956.20791-2-dongtai.guo@linux.dev>
-	<2382a0ee-cb6d-4572-be6e-ce3cf4d006e5@app.fastmail.com>
-Date: Thu, 29 Oct 2026 20:42:34 +0100
-Message-ID: <2vxzqzh8mgyd.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=xzpdASVHedhqOKgMw1KD3RU+Tfm1fLmwQdc26sVHTJY=;
+	b=C1EcV+Zl2qTzGbhgTEbAXLjj/F/z3NZvkyDCQzzsch3D4SASW/4TJcYgC7zTMoDazmW+Mx
+	10QDnksK3m/8jYPfDf2G3FBCvfPPNY1964OsZf/o7JffSg21i8B/Oue+L9vNqYRI1rJZn3
+	CFoBcb6Cuxlu//EyjKq1wRKIFGWAYLk=
+Received: by mail-pj1-f71.google.com with SMTP id 98e67ed59e1d1-3adeba76cadso1780234a91.1
+        for <linux-mm@kvack.org>; Thu, 29 Oct 2026 12:44:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20260707; t=1793303094; x=1793907894; darn=kvack.org;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=xzpdASVHedhqOKgMw1KD3RU+Tfm1fLmwQdc26sVHTJY=;
+        b=T4lXIsnxlrBYGjFmV8GpPoLGPvAphkHU8GufEQXILQHarGYcZ2CfiQQH4pVpLztMaw
+         PD+SD+QiNjjZ/hSxUGKIHFySdIj6zUAnoMUKjzEJdGqU1Gi6w1M3QkzPC041SWGvbDKF
+         KTH2ml8HCIIKKzwQtlKPyqx/ZfKLDDfO8/m+fU7wmte8TAGOONIIQgpcJupu3o9RVCHe
+         T19rFmIFtQrxrQumZjoYwFfs4kDES3QrzxRmSRzeKZPsO2Ledzxa/H5eSKis2IRINLaK
+         Fa+gJa7LJ6Zdrm8rJiF34qsvaKIGsm9bP3dCJ5UZOlG2I7tNTlIUPVs1pBLga4qVtZMs
+         1TBg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793303094; x=1793907894;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=xzpdASVHedhqOKgMw1KD3RU+Tfm1fLmwQdc26sVHTJY=;
+        b=PhUIWQ6R3lhYITaPRLElFBtIu/UO0FflJtBXwBRkT7fmRPS75gOmB4w8whihEb6p72
+         ykuEACggBK8qq2lz8aPYy0p4GoTTJdeOSepfeoYm43kjqALq+Mt3Ytqf/zoEbGbwABb1
+         5bsGvI7SRyiAhEePJmk/A6e65eeYICE2gIfeQIS6S+0EMtDi1A95PTEOliRaqYLeez6a
+         OBkAK0L3w5Q1unv4JxCxolwhBAAA8mnlvnbR3Axi2M5AXTokKWNkXqtZKVU4rs9kNPab
+         qkwHp/TXpWCGm2bFkFtgb7kMHLlBjC5H0jHndWNA+1YJjuIBapkCtGLhzPGuUOw7dJQ5
+         GBzA==
+X-Forwarded-Encrypted: i=1; AKwUvBwjB05fcvT4tuaNdd9UdViwjwFj/5+a7YLw4zeY6w+wX0tqxDL1tWdKdKtBHFvdwy7XcECKmdVN5w==@kvack.org
+X-Gm-Message-State: AFq9FYLc/EdT5LyTtFjjc0QOzXdSD2D1B2itpEvy73qA1wGAlV6OT0xF
+	gfVhv/N4lXFWI4PcURXu4FJYDnvfY2frZm9/9SL6sWtx3gIb7sN8Z5qd1Ef0NOL3mfSdkULgQI5
+	mPQ1LDg==
+X-Received: from pjl16.prod.google.com ([2002:a17:90b:2f90:b0:3ae:825a:57e3])
+ (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:4e83:b0:3aa:f4af:1e0f
+ with SMTP id 98e67ed59e1d1-3ae89536c2emr24913a91.8.1793303094029; Thu, 29 Oct
+ 2026 12:44:54 -0700 (PDT)
+Date: Thu, 29 Oct 2026 19:44:11 +0000
 X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain
-X-Rspamd-Queue-Id: AF6011A0007
-X-Stat-Signature: smue4t3mbybyirt81bqo5itwczfj41pc
-X-Rspamd-Server: rspam04
-X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.56.0.317.g454f8302e1-goog
+Message-ID: <20261029194452.3189365-1-kuniyu@google.com>
+Subject: [PATCH v3 0/4] memcg: Misc cleanup and perf improvement for TCP.
+From: Kuniyuki Iwashima <kuniyu@google.com>
+To: Andrew Morton <akpm@linux-foundation.org>, Johannes Weiner <hannes@cmpxchg.org>, 
+	Michal Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
+	Shakeel Butt <shakeel.butt@linux.dev>
+Cc: Muchun Song <muchun.song@linux.dev>, Kuniyuki Iwashima <kuniyu@google.com>, 
+	Kuniyuki Iwashima <kuni1840@gmail.com>, linux-mm@kvack.org, cgroups@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Stat-Signature: 7p6byceo6wqiq1b88r349una68myop1b
+X-Spam-Status: No, score=-21.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
-	autolearn=no autolearn_force=no version=4.0.1
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_GIT,USER_IN_DEF_DKIM_WL autolearn=ham autolearn_force=no
+	version=4.0.1
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 57A5D12000A
 X-Rspam-User: 
-X-HE-Tag: 1793302959-775796
-X-HE-Meta: U2FsdGVkX1+8yRk7mMVGJ0VUBuWGWBZx9i7bQpoTpgnaYwDtEjYEFjZJEFYaER1myNUsI5UyMAPDmsEDC0bIWT/0rRCN4k1++SctzTzrCNzdmw5MkIen8Xwfx1Vh9Lw1muTTUdT2lUKPWf3dBlYTJ+5e3q5Hgw/bwOmdqAZ15/GBNMjkB7uhL+sF95AdL3r4ED2WSpLI6toBKuk15G84aBanG68QoF/RwIRnLtitZs0O7caoxxu0xdr05qCOekS14dIBCXDpBdeRLcS5lM3FL0H3HB+kibCHDGo+xyrWmZ2tALJEmjLEwsE1/QU0rTiiMjMhwu2cbENXmI8MDr2ve3pEgdCh74NmBnsFCJPw3h2wZZVT8UYFHuem94b3T2GMbsZ4Yki3owHCUZXNWnSXh16Eakl5mh/eDiD1v6DBIpQBuEyZ42r8Qp0USrvSlzA+VQBL24G3ELWlfi9YenlK1YeW/zutcqvSo9rJibDiF7LdsWc/6bSq31SWUxrL9PIeMXr+ZX1Oco5yrZe12LjNDxJWAW+vs+DUMRoHkKeuRFEQ6JnYIjzgH0qKkvS/PciM/65rhdWGNGqihF71GQgSyjw6GUQgTamasJv2zyTuzc8f9fYI365SMOTLdeEuy2S81o1rip03deGurXkZZIdqIj1AK4JjAy3uhN2UTePShWiNnYgRD0rUpfDc05zfhH63e9TwsSbmlgttFeqbtqeblrboKb/bMFtrHhnq1rghgNhBBpsDPsXfnhTwisT3mwNLOMSJic3Fvz9Ic9xJIADHUxxkcduAhwv2FzqYTr/aor6xWGcC+ApLJ0uMy80ZVOraWgrKwS5D8FvlgVRTrcttfqtY+b1Ik5kbocNqA0GG4nCz+1nb/Yo1CfIRNISN3r+/3dKVXdC4tBH5mMUzCEScVWviunJ0sftzrYgcofT/ulaT9tXWc2PLI3cwIK0ImY1Cwiqk/WlRwQTkBfx0Fwt
- 6PmiBCUg
- HF0CgfSZ2PUAnR5fY04jrYgTYJ73RQfjGytF+EJJvqqLt13HhejkFAu1eGOxOvnHlZkhzIlPwjC1ar7DXj/xbbO3HsWj7ENfIa8dxyjWd11zsAHfwU4HgHJqHPN68u4bZ9UKIAeP2C87h6hDEs88lUDqItev1kqcnF1I4q+Z2CHJeGIF6n14Zjjjhag+eVj4CNvWl3ZopNYk0l+3qYpmaapPXHkZH4Z93k1cl98fqg9RGaFjT24pA01Kprw==
+X-HE-Tag: 1793303095-827571
+X-HE-Meta: U2FsdGVkX18WGXQsB0cadUzOFdgDSL98Me/IidNKt7Z+u7NYIr2AXrnLtHgHU4ahW37OYVstQ/rllC6G9Igy8y2nu6/6/rkU88ob5kfdee6b2eWiiUgi1JgwyQlbGxDRpp4wQ33CtnjCBK7Nal6spYJZvvjk7yZtwdvoXgDvgURSxBfqrJd233wwfUXV92p2ctPQsp4uK17mzqfAhRrEfOlPblb7XqNlfjgKhVcHBMICnNF1no0xm1ZEiEZj57PDeF8qZL2aAPTN2H+/JARqDwv8JhgnLllRWz6Waus4kULp3nC1Dv8KW9wW6jAyqa7G1zu0SKki/6Mb+JuyeHC7Z7d7+QoLCqVj+7jQnf+c2YszN+MLu1ZeryUZgQU5eDsPFOgBm9IMQX4dJuWxFM0U+nKN38Zi8aheNuA1JuU6rBJoW6lhJCkFmXtMWK3A6s8x3x79eLyHAQYakTtUcRrskGcYSbdlfUc1YXNeFoYvl5Bkl776auGQUPzn5gnuhU+BqYvbNx3itzPr10DXF9TnvRAH4VKQrUuo6YYfkdDVyyjKXGBjW19g65Wo+UXUTaKFIl10Eugme4M/KpsJbsXhQ3gggpKuomKosG/ej4QJs6ecVHvO24TUpWf3AJJpBfacZN0gIi9giO+Hg4Cg2AbiEflb9e8gs2LNxDxBXp1aF179eihhovE2LyFYcfhuGAXSUpvgn2L+fimSBX9gcTPflLJy4RC2mU0+wnOqaLXiAmO3ZyqRvGMWym+lKdRQwca4aXPZqt1ypGMWTkWUexlWzI2eBN4BZf4TDyaUPFNYlp9YyVJWijPs7cdMWOcgvdw/OxOt8noQJapdHSiWvfRw+t6qV06WoyoBnE8MHBQ8mrsO1f0HlRIui5XCSB66sjnNE7bwGpmUQso8adWQCPff1MuzT2x+wjermPXPCoOy+tNfY7stSGeZJ4pSsSnLWhZmMSv730dTxgiebf14GYh
+ QhBNnZyh
+ 4P48jODuGXWT9v3Im2Rn39uujwCSD+rzHV1IpGvV3HNaHjbvIrr9+wgI3Noj1KNMUmtW6ZNqcg0HktGCv/NRFrwCb6Ti2M8PetdxOS0QsgJy6mXClKYu9tVvqaf3lmj2aKLeUqAEffCLKIjMuyFRqFaoR548FGV/6T/Pyo/TNApnnJm3VtcNxCv/tweIVTe7LUGO7edMHG6DN3cuSDYO64SwLUdEfgTXrV6w0iMrmayf3oWlzyyWHvRjTPWk0hV68mn2wX3mJetsJT1SUKh9FQGNPn45Qu32U4V7NYz7rCMI4lsd2aj6WJ1F0uAeRssD/+n/vzekYbI7U+qN369em8u12T5Qg0c634v6lq5uUD9PovTF+KhBoHPjuxDfAsaACrqo4QxwrAU4ZOikFnQfZR0qqXcm76p9CGXiSKfW6oP6lrjv9mQgU/5e4IHsNMYpIGB8XZOks5st3W7pn1NzYgnFqeLz+m03sAHTzjVjgeuhJQ9JTdyLQY21Tkw9MwZ/6fTYYt5n+fXXzIv+i0aA6ZfnTEJ0mjC+PaNXebypg6TjFdjXuyrQhJ0mfX5ZRth3qjO9K4CvkYsJmR50IX7u5wj2kkrV0H5chc7+e
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,54 +111,64 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Hi Ard,
+On host w/ AMD EPYC 9B45 128-Core Processor (Zen 5 Turin,
+2 sockets, 512 vCPUs), tcp_rr w/ 20000 flows throughput often
+degrades by ~50%, 32M -> 17M~27M.
 
-On Thu, Oct 29 2026, Ard Biesheuvel wrote:
+In the bad case, the number of involuntary context switches
+was extremely high by 12x (241733 -> 3093367).
 
-> On Thu, 29 Oct 2026, at 18:29, George Guo wrote:
->> From: George Guo <guodongtai@kylinos.cn>
->>
->> KHO has to give the next kernel two addresses: the KHO FDT and the
->> bootmem area list. arm64 and riscv put them under /chosen in the boot
->> FDT. LoongArch systems booting with EFI and ACPI do not require a boot
->> FDT, so KHO needs another way to pass this information.
->>
->> Add a Linux EFI configuration table for them, under
->> LINUX_EFI_KEXEC_HANDOVER_GUID. It points to a struct linux_efi_kho_data.
->>
->>   - On a cold boot, the LoongArch EFI stub installs the table, zeroed.
->>     Each kexec'd kernel is given the same EFI system table, so it finds
->>     the same table.
->>
->>   - In early boot, efi_config_parse_tables() reserves the table so
->>     neither the page allocator nor kexec segments use it, and calls
->>     kho_populate() if the table holds KHO state.
->>
->>   - Provide efi_kho_update() to update the table before kexec. Map the
->>     table during boot so updates do not require allocation or mapping
->>     at panic time.
->>
->>   - efi_kho_table_found() tells architecture code whether the table was
->>     found at boot, so it can turn KHO off when the table is missing.
->>
->> Only the LoongArch stub installs the table, and only with
->> CONFIG_KEXEC_HANDOVER. Elsewhere there is no table and this code does
->> nothing.
->>
->
-> Can we handle this as an arch table then, and handle everything in
-> the LoongArch arch code?
+The root cause was that refill_stock() calls memcg_uncharge()
+or drain_stock() while holding memcg_stock.lock.
 
-I think this is useful for all architectures that use EFI, not only
-Loongarch. Today Loongarch is the only user, but this can very easily be
-used by other architectures.
+Patch 1~3 are misc cleanup for better asm output and patch 4
+moves heavy operations to out of local_lock(&memcg_stock.lock).
 
-For example, I have been considering moving x86 over to this too. Today
-we use setup_data. Once we get EFI support, I would like to get rid of
-that and unify everything under EFI. It is much simpler to have a
-universal way to pass KHO payload over.
+This series removes the flakiness and gives ~3% gain on the
+512 vCPU platform.
+
+In addition, on machine w/ AMD EPYC 7B12 64-Core Processor
+(Zen 2 Rome, 2 sockets, 256 vCPU), tcp_rr w/ 10000 flows achieves
+36% more throughput with lower latency.
+
+  tcp_rr (10000 flows, 128 threads, 60s, average of 3 runs):
+
+  Metric                     |       Baseline |    Patched |    Diff
+  ---------------------------+----------------+------------+--------
+  Throughput (RPS)           |     20,884,499 | 28,453,051 | +36.24%
+  Latency Mean (us)          |         478.46 |     351.07 | -26.63%
+  Latency p50 (us)           |         453.96 |     343.04 | -24.43%
+  Latency p90 (us)           |         669.00 |     479.57 | -28.32%
+  Latency p99 (us)           |         969.38 |     593.92 | -38.73%
+
+
+Changes:
+  v3:
+    * Drop MEMCG_SOCK batching patch
+    * Patch 1: Be more specific in sentence 1
+    * Patch 3: Mention Clang 23 and restore asm output
+    * Patch 4: Add a new benchmark result without batching stats patch.
+
+  v2: https://lore.kernel.org/linux-mm/20261028185034.3607746-1-kuniyu@google.com/
+    * Rebased on mm.git/mm-new
+    * Add patch 5 for flaky throughput issue
+    * Patch 4:
+      * Benchmark again after rebase and update numbers
+      * Check in_nmi() in __refill_stock()
+
+  v1: https://lore.kernel.org/linux-mm/20261016052811.3085635-1-kuniyu@google.com/
+
+
+Kuniyuki Iwashima (4):
+  memcg: Remove unnecessary READ_ONCE() under memcg_stock.lock.
+  memcg: Reduce nesting in consume_stock() and refill_stock().
+  memcg: Annotate slow paths in consume_stock() and refill_stock().
+  memcg: Uncharge pages outside memcg_stock.lock in refill_stock().
+
+ mm/memcontrol.c | 95 +++++++++++++++++++++++++++++--------------------
+ 1 file changed, 57 insertions(+), 38 deletions(-)
 
 -- 
-Regards,
-Pratyush Yadav
+2.56.0.317.g454f8302e1-goog
+
 
