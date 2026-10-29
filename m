@@ -1,95 +1,104 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35EA6606A31F
-	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 09:47:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D37D606A31D
+	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 09:49:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=bytedance.com header.i=@bytedance.com header.a=rsa-sha256 header.s=2212171451 header.b=SKkaSY8C
+	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=aAebMGHm
 Received: by kanga.kvack.org (Postfix)
-	id 5E8886B05B4; Thu, 29 Oct 2026 05:47:15 -0400 (EDT)
+	id 996E16B05B6; Thu, 29 Oct 2026 05:49:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 599806B05B5; Thu, 29 Oct 2026 05:47:15 -0400 (EDT)
+	id 9479B6B05B7; Thu, 29 Oct 2026 05:49:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4AFB46B05B6; Thu, 29 Oct 2026 05:47:15 -0400 (EDT)
+	id 85DE96B05B8; Thu, 29 Oct 2026 05:49:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 285556B05B4
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 05:47:15 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id AA2BDC0339
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 09:47:14 +0000 (UTC)
-X-FDA: 85375185588.09.BEBE776
-Received: from va-1-114.ptr.blmpb.com (va-1-114.ptr.blmpb.com [209.127.230.114])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 1E161C0002
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 09:47:11 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=SKkaSY8C;
-	spf=pass (imf22.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.230.114 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 608836B05B6
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 05:49:47 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id E144D14031E
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 09:49:46 +0000 (UTC)
+X-FDA: 85375191972.19.D11C3BD
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 3CF6340002
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 09:49:44 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=aAebMGHm;
+	spf=pass (imf17.hostedemail.com: domain of lkp@intel.com designates 192.198.163.15 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793267233;
-	b=vPf8ovJzmrrQcRLEF5h+yXq1pCjpPa/9nTGkRuJAo3Op9A8ZeMcobdWUGWIj5LWrCcHZ5g
-	hNoAHzc0tEueHFXsgIR3bJAjKsVnu95L21iIoKg4glx9c91FmiV9XTQ0QK88uhdBPbMDSR
-	hpOvWcPiejCwj+cVkV1e/vCfkXOwqJQ=
+	t=1793267385;
+	b=YVYLzVsE0Wc6M1+usI7A43SVNg9VxEa+2rKy1gsoGn/bCPLDYZIe2rcSNDPbDVUYwnEQQi
+	5AOcM026TbWHmlqsquXXvKjE7CmU9n5dFje1YiWFWFdmNXVu2UmNIXQKxtmmSldlbuGvxb
+	bXjTO8axobtny+E2/1fI534GSZN6Pik=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=SKkaSY8C;
-	spf=pass (imf22.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.230.114 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com
+	imf17.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=aAebMGHm;
+	spf=pass (imf17.hostedemail.com: domain of lkp@intel.com designates 192.198.163.15 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793267233;
+	s=arc-20220608; t=1793267385;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=F4gvnh7LFe+Aif3PBPP0ropSW63VFqrhI2+JK0JsQWE=;
-	b=nnexWYPqOhvjlxxL4C36WANbZAvdbdchRXRXKQfT+CfqvGHs49m098DgzaZi5+YRD7nQ5c
-	RcEn0lf8yHwd990uBjOH3eVng3um62vSFQaGkOzRP6cqLjGmCMppuN0dvGevOczepE/ryt
-	0X/T9EuMeFL7Gx4lvUm4bwj/wd5FQkk=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- s=2212171451; d=bytedance.com; t=1793267226; h=from:subject:
- mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
- mime-version:in-reply-to:message-id;
- bh=F4gvnh7LFe+Aif3PBPP0ropSW63VFqrhI2+JK0JsQWE=;
- b=SKkaSY8Cr57dDZjYFbF5aGDtSPstlNfCSFJedb9DWTWJx/fSKdPW9k+OwI11XLfztD2olT
- arW7Ec64JknSolPL2Kp7kHZSMJ/Lzoz5Pd+Xrj3jUNJmey+MG9INMbMdoKDJ7wWLmkyKWr
- WBC+eGghbzKf6K92PnJjh5LUeYq+4L0D8CbQCwz2T8LTi3FZ4Kc7KfYj6ovYShTrZGfDLT
- caVNuUwcj1pgcN0gcKqm1cmNfTkxww8sHbNAeeJGmVu5krU9afy4gUPXOHxNoojo14ipAF
- DCBsRhXCj68LjFXMk4IijV0ROBYGXaKpcLYTjJoHvRpZGaw7lheGG6ZY0sHhpw==
-X-Lms-Return-Path: <lba+26ae31618+a88bef+kvack.org+lizhe.67@bytedance.com>
-Content-Type: text/plain; charset=UTF-8
-References: <20261028041253.74839-1-lizhe.67@bytedance.com> <20261028041253.74839-2-lizhe.67@bytedance.com> <0676993f-c04c-4e4e-9f8d-1650c8fd6d6e@amd.com>
-In-Reply-To: <0676993f-c04c-4e4e-9f8d-1650c8fd6d6e@amd.com>
-To: "Bharata B Rao" <bharata@amd.com>, <akpm@linux-foundation.org>, 
-	<bsegall@google.com>, <david@kernel.org>, <dietmar.eggemann@arm.com>, 
-	<gourry@gourry.net>, <joshua.hahnjy@gmail.com>, <juri.lelli@redhat.com>, 
-	<kprateek.nayak@amd.com>, <ljs@kernel.org>, <mgorman@suse.de>, 
-	<mingo@redhat.com>, <peterz@infradead.org>, <riel@redhat.com>, 
-	<rostedt@goodmis.org>, <vincent.guittot@linaro.org>, 
-	<vschneid@redhat.com>, <ziy@nvidia.com>
-Cc: <linux-doc@vger.kernel.org>, <linux-kernel@vger.kernel.org>, 
-	<linux-mm@kvack.org>
-Date: Thu, 29 Oct 2026 17:46:40 +0800
-X-Archived-By: <archiver.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-From: "Li Zhe" <lizhe.67@bytedance.com>
-Subject: Re: [PATCH v2 1/3] sched/numa: make free-space tiering promotion bypass configurable
-User-Agent: Mozilla Thunderbird
-Message-Id: <010b2b6c-8f1b-4c3b-913f-cc2e8b957759@bytedance.com>
-X-Original-From: Li Zhe <lizhe.67@bytedance.com>
+	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references:dkim-signature;
+	bh=Ip6OodyYgPxE8i09BPkUuXD8qFekO1thWPUvSkoK3J8=;
+	b=e0oLYfPDEj7830SZx5+LBViI4VINj1T/EU0I1A3YNbu6wfo/58X54GittLee/qK/kZOVP/
+	S3OfO5QY9YOuUGxMbQQKrIdANhGWki8w+BEdI9+CdXU9n9sL5kYr3ceKtwVQ++BsLb3Bcw
+	bJ4cCz6KfcGfE2CTEeQ/IFe1TL74/J8=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1793267385; x=1824803385;
+  h=date:from:to:cc:subject:message-id;
+  bh=Dq9NImGikAuV9Umk8V6qIF4lVM1M/yT467NQ5v6qDPA=;
+  b=aAebMGHmD+OozBWspkZhYSinSCA/W2CG7pMlPJtgA6tx/HVWS+SEntKv
+   oTOnwGteEalqPmfQVFReKxYxb/MzQ1ktey0FlKr79qo95YELMSrYFpR8c
+   MPttnESsueZlOz2vz+ZF4cGjVtiPuygSbluf/5Og19bJjJdybQZosenHF
+   XoYCz1vDuJJJI9+hHXwm5mwfJ9KvPEYUBdBFcNk3uTemsqJVS/rVr+8qy
+   RReYye9HE2RLVYqU80ckZsGPZpJKW/oBqgEYyV6ckvYcJP9Ca/eZx0IyT
+   gTrqSEqPyeZ4Z0MFv89Z9yBW/wr0FheeliAKJv10wm9Nj50MoFiO3Mub0
+   g==;
+X-CSE-ConnectionGUID: PPYMGnaYQsyWtFckCtbyJg==
+X-CSE-MsgGUID: 8FzPGbruR2CkcN06C5RjiQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11949"; a="2008844"
+X-IronPort-AV: E=Sophos;i="6.27,184,1787036400"; 
+   d="scan'208";a="2008844"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Oct 2026 02:49:43 -0700
+X-CSE-ConnectionGUID: S4hyHfXDRx+gLYzdF+BIpQ==
+X-CSE-MsgGUID: pN/2Iq8UQaeYqceB1AlvWg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,184,1787036400"; 
+   d="scan'208";a="4977246"
+Received: from lkp-server01.sh.intel.com (HELO 0caa9d2d175c) ([10.239.97.150])
+  by orviesa007.jf.intel.com with ESMTP; 29 Oct 2026 02:49:40 -0700
+Received: from kbuild by 0caa9d2d175c with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1xMMlO-00000000Zuy-1PSC;
+	Thu, 29 Oct 2026 09:49:38 +0000
+Date: Thu, 29 Oct 2026 17:48:57 +0800
+From: kernel test robot <lkp@intel.com>
+To: Dave Hansen <dave.hansen@linux.intel.com>
+Cc: oe-kbuild-all@lists.linux.dev, linux-kernel@vger.kernel.org,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Linux Memory Management List <linux-mm@kvack.org>,
+ Suren Baghdasaryan <surenb@google.com>,
+ "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Subject: WARNING: modpost: vmlinux: section mismatch in reference:
+ dump_buffer_page.isra.25+0x194 (section: .text.unlikely) ->
+ initcall_level_names (section: .init.data)
+Message-ID: <202610291727.DXytMLtV-lkp@intel.com>
+User-Agent: s-nail v14.9.25
+X-Stat-Signature: dbqqh9wndt5idqudppfrr6pewreyx616
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS
+	autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 3CF6340002
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 1E161C0002
-X-Stat-Signature: 3u4sh8gd3cg39m11sfaa8girgtogufzb
-X-Rspamd-Server: rspam01
-X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
-	autolearn=no autolearn_force=no version=4.0.1
-X-HE-Tag: 1793267231-748689
-X-HE-Meta: U2FsdGVkX1/dPBgMbtXjZvNtkFMeoHWIpK/S3QZYSn+eRmaCSoOQ2Kr8NcKQyuS+zZpku9npqlz1FW4n7qEyPz/6+2+zyNkyrHaBlElEbynEYq7mw86A7YKrgR1URT+8Op2sOahuZRrXrmJ9FCd/WwaeIIOS50lYY8KPHtf+9NTSVb6WouOCrHHD96b3nWlgeAqqvHCnGj6os7kXm8sP6rWpbuR9v030sCM5h1HuAEvgmovTpK309jKad9rCfWzJezotwn2P7vHALlOSmRRN+e4tI0tdu+kt/ZMPJk2ZaRr6pgLvbg5JA0+S5Rspm3NnNIZOU0M9iQ53sTxuijG+ms37KQCHbgitvQGhisyUe+NGSZSKixjPRMma0KRE0iREnibv013d8qOzx5f7glF4kM6NTYfJ/PD4cLZZHU0JnSzxtoFxBRk2OSb7wII81YVkPVbzZdCcOygDu9JTopvuglUmff+SZJn0l6RbEK7DHAbdKseKgIu+w05J0qmZLPDKieXtWVYGkqQILbjhLj79Ylohq1yymoepOzUdo4MmzRjTzfqOw5bBj232YlwIBuVJ/HPGi/W0xRpWUxfJHoH3/snrfDPm0/k+Jf3xL0+FbDGZ4WwscCzc8W+CPANGl4T9guNvNUwnZYJR20g9Ypq2gFe7bNziahn+BVW19XmDAFfQnKYFOMnOG2zRxq/TnhGnF4cmNzICQcidDSJI8NDbFwpKwAtkGfPyTJqX1pXhd0XvxuDkPWfAm0CDaFoIZwpcclLAYssqQyleN7udvlbkY2Y1Q2mMsS76W6dCSDpzZG9vcJtoOFYs5uw40ERKDSGyZEgPneF8LgJ+d010cDDZg6lMHXH+q7Yo7VcCGrDybxjJX7JBBF8mo5VuAp2EGNnva+HBSsrwF3IrqGo6X4auuG4a66nP6goB1P1MzgWihBK840um1US7kB/5cXOnRmmSMLpkH9wdpE5/8ZQzsQ5
- 3JERAiy+
- mFa48d6aYDrHC+uW2iM5xP+dqkVSII4zRqGbjyA0xOX9+snqYx5LPoHP4FGJeUA21q9gq3q40S4HgNRxcH7IjsTCZq1qJWc2Yg4PkniFLduWHOIuTGv0hvTl2fo+jt/XF0Irom9rJnlMKcnh1gVoNDI1DiWACTmR5iBIjTBnKg0n+bTiew6mTHQz86hJFEfXR4jZXXFUZG1ECova8IZ7n8N+Lb5iaJGRaajHFC6W2evlu/nHvpGAn5PPtW07EISY+4IBCk5TGKYMLxblToycGjQCylJXRhZyxhsI442TjOJXlnbPiXhW5sW7UmN7P1Z8d3RecYZULubtIPafEPbstar6JaJFFJQmSlUFV
+X-HE-Tag: 1793267384-4647
+X-HE-Meta: U2FsdGVkX1+WAxmV/IOeiRCSc9Ix3SKZRunZk0yxwBWQwgea5hKEYfZ0ReR0K1TtJR/7wIeNU2hkDG0D01mN3K1QpTQkB3vmuns6VXwz6t0a4A8X2sofZ+KZwhPwkIKhVq39afBCzW36uyUV4kC8Jo8Mq/5CVIzR17wlj+HJEn30oN2NafxnCCNHo8VcEF2o837htOQtzVCUJIfZZ7nm0lzL05vjeWYIuiHch2iemFx+6uux8bRBM/zscqG/msaY6BIuH2KKovGG6/bcmPVmPA86eIj543+2NMNdfB753FKfRQfHJ5QPBmBqz7YJuGkyik/5h6TDNmKISKGSMzvqAjF9PZaoPc3M13Nq/JSQxzACQQeyjoutZK6E6wJyLfNNnIkUTmz51vegH/7RtalqASvASlUd3dbZ+3fhQ75OZv06AWaajAkjg5Z7GGNsCW+nkqSmi6vGcqTZyYG8IBh71kcP6xqbPEI8N3qdrkorrlIo7kyR9+o+oACtE+PwdlpEfINeIXj4Ff8H3KJBM0XrwfXBjnCq+b8SGRMSFLJanqedtDxU9+PlNslMLAvtHkNwLut4Mlm6JRLX2prsGLRbFvLsUPGLle9Xfy1wkl1kCcUz1uUJFbbx1PmnCUaXIf89f0k/DypPqd0+LGEKE2c6JtbKL1Cx6C9VN7ZQI2vjlFeD2MfXQYVPbjpFeUhprrs3kKVADy6fdG3ZWDSXALYUtM10IuePTvBHReLMzcV67+rEyoNSim/nkMALVeAzX8hOEClV7vma6hk9Zec2qt47VC1gsSHh3cTNmbhpuyFXzGth6zBJHwYRrnd8QXH0my3xkRJWIvcNABgqawUX3VurfpUFwd5YK+Dx/QaZItiH0rigol3Vjhsapt2bJ3rcro8KgOsrVbtYfLek+3AK3wdnb662IUURDCWMHsj5MFOcopam4qreI8kRbjhRjJ6vT9nG22BXeQ+vIkf9frnNu+Y
+ NSLaZD69
+ MUCjrbdSG3R2y3pM6KdgYr05XpR844LmWWojHM0bnbsrTNXprmemv6WRVgHpBXe5T6CqkIWwsM8O7TS3LPfwmH43imZLl7et6Cjh6gcqEqNDtKxHM9a+E6C0/bXkpvMQOjEbBIKidrVL7GbtPNKjIcKS06dvWL9DizEpF7D3muqa2fSc1nrMjc2f/a30nvAM6XsySHf/obVQa6byIHKgmlN158RNqPwiOMA0EhZHcKg0h9OwL535/rjbpT5QDDx1sjWwnUfWcDxOIcRrOPcTLdbArShgpYhzaXhDRR0OpB7Pqx6i+BXDeiNpFl+ny/zuHsVoCrtk4w+/bJdQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,63 +106,28 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
+X-Archived-By: <archiver.kernel.org>
 
-On 10/29/26 5:34 PM, Bharata B Rao wrote:
-> On 28-Oct-26 9:42 AM, Li Zhe wrote:
->> Memory tiering normally promotes any recently accessed slow-tier page if
->> the target fast-tier node has enough free space. This preserves the
->> existing policy of filling available fast memory before relying on
->> hotness and rate-limit control.
->>
->> That is not always the desired policy. Some deployments may intentionall=
-y
->> keep part of a workload's memory on CXL-attached memory, for example to
->> preserve a desired DRAM/CXL capacity split or bandwidth distribution. Wi=
-th
->> the free-space bypass, short cold accesses and bursts of hot accesses ca=
-n
->> refill the fast tier and pull the workload away from that distribution
->> whenever DRAM has free space.
->>
->> Redis testing exercises this policy issue. On a CXL system with node0 as
->> DRAM and node3 as slow-tier memory, a Redis test was run with
->> memory-tiering-only mode enabled. The test used a Redis dataset with 12
->> million 4KB values. It reclaimed memory until about 85% of Redis
->> anonymous memory was on node3, used a Redis benchmark configuration with
->> a 10% hot-key working set, and then issued a short 256MB access burst to
->> cold keys outside that working set. The cold-key burst mainly touches
->> memory outside the hot working set, which is expected to remain mostly o=
-n
->> the slow tier.
-> Can you please clarify if 85% of redis memory ended up on lower tier natu=
-rally
-> due to overflow from toptier? I ask this question because, if it is a nat=
-ural
-> overflow/demotion, then it will be hard to find head room in the toptier =
-to
-> allow promotions that bypass hotness or rate limit checks."
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git master
+head:   c339f4010dea8b0d754f84ace70cd1b089878ef8
+commit: 47e725702b0b7c01d4ae4ef231df8f63e5f305d5 mm: make per-VMA locks available universally
+date:   3 weeks ago
+config: xtensa-randconfig-1001-20261029 (https://download.01.org/0day-ci/archive/20261029/202610291727.DXytMLtV-lkp@intel.com/config)
+compiler: xtensa-linux-gcc (GCC) 8.5.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20261029/202610291727.DXytMLtV-lkp@intel.com/reproduce)
 
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Fixes: 47e725702b0b ("mm: make per-VMA locks available universally")
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202610291727.DXytMLtV-lkp@intel.com/
 
-It was not a natural overflow from a full top tier.
+All warnings (new ones prefixed by >>, old ones prefixed by <<):
 
-The test intentionally reclaimed/demoted Redis memory to the lower tier
-to model a deployment that keeps only a limited fraction of the workload
-in DRAM and leaves the rest on CXL memory.=C2=A0 In that setup the top tier=
- can
-still have enough free space, so the current free-space bypass can promote
-short cold accesses back to DRAM.
+WARNING: modpost: vmlinux: section mismatch in reference: trace_initcall_level+0x3c (section: .text.unlikely) -> initcall_level_names (section: .init.data)
+>> WARNING: modpost: vmlinux: section mismatch in reference: dump_buffer_page.isra.25+0x194 (section: .text.unlikely) -> initcall_level_names (section: .init.data)
 
-Those pages are not hot enough to be promoted by the normal
-hotness/rate-limit path, but the free-space bypass can still promote them
-when the top tier has enough free space.
-
-Thanks for pointing this out.=C2=A0 I will clarify this setup in the commit
-message.
-
-Thanks,
-Zhe
-
->
-> Regards,
-> Bharata.
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
