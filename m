@@ -1,98 +1,93 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBC2E606A31E
-	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 18:59:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4FC0606A327
+	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 19:12:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=yandex.com header.i=@yandex.com header.a=rsa-sha256 header.s=mail header.b=l84f8WVn
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Rb3CYL53
 Received: by kanga.kvack.org (Postfix)
-	id DEA606B064C; Thu, 29 Oct 2026 14:59:00 -0400 (EDT)
+	id 06E4B6B00EF; Thu, 29 Oct 2026 15:12:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D9B116B064D; Thu, 29 Oct 2026 14:59:00 -0400 (EDT)
+	id 01E126B05B2; Thu, 29 Oct 2026 15:12:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CB0AA6B064E; Thu, 29 Oct 2026 14:59:00 -0400 (EDT)
+	id E75E66B05B3; Thu, 29 Oct 2026 15:12:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id A17856B064C
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 14:59:00 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 3E9891C3C00
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 18:59:00 +0000 (UTC)
-X-FDA: 85376576040.12.2C230F6
-Received: from forward400d.mail.yandex.net (forward400d.mail.yandex.net [178.154.239.223])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 3D0B91C0004
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 18:58:58 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=yandex.com header.s=mail header.b=l84f8WVn;
-	dmarc=pass (policy=none) header.from=yandex.com;
-	spf=pass (imf18.hostedemail.com: domain of eneshan-karaca@yandex.com designates 178.154.239.223 as permitted sender) smtp.mailfrom=eneshan-karaca@yandex.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id C35AF6B00EF
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 15:12:26 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 36EC41A0498
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 19:12:26 +0000 (UTC)
+X-FDA: 85376609892.14.3857061
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 6DB1540008
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 19:12:24 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Rb3CYL53;
+	spf=pass (imf07.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793300338;
+	s=arc-20220608; t=1793301144;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=UfCr7SMBp2MWLVqMbTLms5eQnif5CMZeedqFoCGKq5U=;
-	b=6GJurAz2iK408yYOdPEpqbh6m8Ae3RbekTzAxoGBJ2oUmU2fMJpcPfVgXyyQKnv8A/x1L+
-	yHeGCOR9tfGp8Eiiv7jQz5wTtkSLXIni//Cbn6ZFtY2kOItBk5JlinnAAMmcPolp3jMkY3
-	mwv1bONk0/MptnhIWEbsXe71rpT8cuU=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=SnGkcBSoxO1qg6e+mIm2ZjnwnYuiHewsm9s9apLqRbE=;
+	b=CUuNN/cpWGnjWnKTE3G7hkZlM53gOJRtmOGGlP6e1tmpzHAEyWy29v0PF3L6a/v6hZWneY
+	jmk6Z7GUq5CueUaIkQpx4eKsW1f8py70Jbyb/jzfT0A/9TV1dHnxd6IakYh3xg8l7stTxa
+	AMPAdMsF6/RqYF5b8NH7sdVQjV4R1+4=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=yandex.com header.s=mail header.b=l84f8WVn;
-	dmarc=pass (policy=none) header.from=yandex.com;
-	spf=pass (imf18.hostedemail.com: domain of eneshan-karaca@yandex.com designates 178.154.239.223 as permitted sender) smtp.mailfrom=eneshan-karaca@yandex.com
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Rb3CYL53;
+	spf=pass (imf07.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793300338;
-	b=lB/Y95CIzApO3u6l2pErrgxcwmORxF7DgGLn70yDzra5Q40fE0FQhsyXNXk+8hoG8qP8ub
-	iuC5gsmfNbC4Lafxevsx1WuEacxiS9YQOvgEKVgpS+sZaUaIIUG4iqF4KvmftOuxHlDrwU
-	nxzhRF9wfA4qgMroYv+ByBW1vTS4AbA=
-Received: from mail-nwsmtp-smtp-production-main-89 (unknown [IPv6:2a02:6b8:c0c:1f29:0:640:95da:0])
-	by forward400d.mail.yandex.net (postfix) with ESMTPS id 3F3DE81375;
-	Thu, 29 Oct 2026 21:58:56 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-89 with ESMTPSA id nwoaPAGntOs0-SbXmwiTF;
-	Thu, 29 Oct 2026 21:58:54 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.com; s=mail;
-	t=1793300334; bh=UfCr7SMBp2MWLVqMbTLms5eQnif5CMZeedqFoCGKq5U=;
-	h=Message-ID:Date:Cc:Subject:To:From;
-	b=l84f8WVnf0WHjjRwv2BsHGMCY32Tq9OY+zOcb7WWDKUREDKTCRetEM9eTAiV5mTi6
-	 y4CEzvWJLMwIbTQH3jg6QlToyw2wtJO9noRgrTD+bLSzO1Bmwp9m8cBzJpa+zdSjqX
-	 KARciJ392A+xPz93jkzx1cwIBtcRQz9IlOo5UBdU=
-From: Eneshan Karaca <Eneshan-Karaca@yandex.com>
-To: brauner@kernel.org,
-	kees@kernel.org,
-	rostedt@goodmis.org
-Cc: viro@zeniv.linux.org.uk,
-	jack@suse.cz,
-	mhiramat@kernel.org,
-	mathieu.desnoyers@efficios.com,
-	jkoolstra@xs4all.nl,
-	farid.m.zakaria@gmail.com,
-	linux-fsdevel@vger.kernel.org,
-	linux-trace-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	bpf@vger.kernel.org
-Subject: [RFC PATCH v2] binfmt_misc: add binfmt_misc_select tracepoint
-Date: Thu, 29 Oct 2026 21:58:49 +0300
-Message-ID: <20261029185849.8016-1-Eneshan-Karaca@yandex.com>
-X-Mailer: git-send-email 2.43.0
+	t=1793301144;
+	b=wOanVBlMTlYo7W51TM71bo5P4wKyEKdY+kpDWjAvTDsjLIF/wCA7lIITeekeeVkYIEz4hE
+	0/7LWgi/bW63t1pQMvPYwXfsnCDevGrV9tPa8azT2/dYCRf/f3/oW30VtO3TQP0AGK79Wz
+	Yh45HNSyncWEDYFaUvCWFpI7lw9LNZw=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 8494D4321D;
+	Thu, 29 Oct 2026 19:12:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDEFE1F01816;
+	Thu, 29 Oct 2026 19:12:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793301143;
+	bh=SnGkcBSoxO1qg6e+mIm2ZjnwnYuiHewsm9s9apLqRbE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=Rb3CYL53RIcciYxSZiawLVDUdyakhf2hNs1VYKt0wlOXoHDN/B4rIwelSImNphBob
+	 7A3ue5eWxrlxNEVWF/dVqlFZh5xIN2dIpM9m+ZKFk0AV5Ts2Y4rre6jTYMr1aXn8Bp
+	 qRi66ltRFii7c8p0ry/J4045S+ndNFOF790670QA9tivmgcUEf601tGUqKgDvQxSke
+	 iKlFGaW3vt1NE4TMe6YzSsC/OWt3kBlnAFazGbwB7gWruDhQiZc6Wk4Cdm/bR4/YXo
+	 JTKhs/274CRnWfrbD706jxcYiuN/BHVR0py0Ku9L1p+WDfkUtqZtO9AR7QnOiZ6da9
+	 yk6odrBEbNVvA==
+Date: Thu, 29 Oct 2026 19:12:21 +0000
+From: Yosry Ahmed <yosry@kernel.org>
+To: "Kanchana P. Sridhar" <kanchanapsridhar2026@gmail.com>
+Cc: hannes@cmpxchg.org, nphamcs@gmail.com, chengming.zhou@linux.dev, 
+	akpm@linux-foundation.org, linux-mm@kvack.org, herbert@gondor.apana.org.au, 
+	davem@davemloft.net, linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	rientjes@google.com, willy@infradead.org, senozhatsky@chromium.org
+Subject: Re: [PATCH v2 0/8] Batched zswap_store() framework with compression
+ batching
+Message-ID: <auOZBtRqQGzFcbAT@google.com>
+References: <20261028030503.17923-1-kanchanapsridhar2026@gmail.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 3D0B91C0004
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261028030503.17923-1-kanchanapsridhar2026@gmail.com>
 X-Rspam-User: 
-X-Stat-Signature: pg66q5d9uth65i73aqe1inysuyw7rfgc
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 6DB1540008
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
 	autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1793300338-412526
-X-HE-Meta: U2FsdGVkX19PdWZuy0gR5LMaIUyn+LZsjoGy6OpQ3E7DJpeaG7VWlDQ1DkkmYSIPDh/Gg9fFSErS+s9KlEI5r7Alztgra2veZ/o+56x6cPFNzBjAbX240RYfRyZzwnXNZHO3jUbVUZU8yxJJu7ZJM/dcUqjQhPBfrOFsjNehj122TueKvJTtHhNWOmQGas34WlYLftpQ9yLEBpFxy2kGuu3BiOdWwu8pSFhhz5ApzFPGgaB/9UhLcAezRPmUTCe8Ts9sSyQva31gsjfmQrMfQX2waLoFSBgEf8no/rmzxouslsJjWV+ni9DqjOn84v6hJh2ZplTLBEAtAQ9+cApoXLq0rcA22xwb+DpLweHySta0lA3mVneUSGVmcSOrSjK53acK6PKap5KsqS55Z10ilXChTVPkK7VkAQ0nkDTmfiyceEE58katIJdm3JIP0GvvklPY3+D/ytP1Bz32080TdvHvxXU6VTdtzSojkjjx8imF5+jBxBpQMW5hdYMi329wMjBmLJgRfL3syq2i4JGRMlSB6C+eMXfAmVHgW+EVtbXL4lOw8ICt1kCGAzsR1q+unV1wgrm6/uFy2vfM7GVP83Jq1aauE1Zzj76hI/8i4yoLRUnwrN8FyXVy9n59Ux+WZ8KMyXXZ0j6z5RrlSw32hdrZPeJ6HK+xn/yOGj9D74d3+4hBRJSv2jvYWfqf6E9zPjaYTzlp6GSOmhgrMsUViSMqn7Ix92YGEDfun+qyvzMa873BZ/f7CcdNgQil7J9rSEy3OmW+QnQwRZFXy7VAMTq7+doxsRb58I84Wu1zPIH6mQx6IvuycpbouoeYmynx26G4x2xoUNZUonMC85jNWjFtpotAB3Dl7V04T/OUp0Tk4B7jO3Xf+nEJQzFviJz83Zi9JbZRKHxhRhjCS4OTHCAT7i5Lq2yXJw6X12IWQGKLPvPRnRnStUTAUzqOOMqfMYh1BJrwwyiPT98IpQS
- prnYlNMm
- VG7WM1Hb+lb4MZLcM5K/n57TdRSSDMdnuZSkH1wX0rrdEK/bQSxVsH4jSw8P7PJO3ct/3cczxL8PzMe5lyKEtP4YGhaXymEI09aQ9oZ41VrJh/W4rqF/mHzxsSDZ+GCgOxNp4uBD4mSkCeK6lvLjY2cNN8eSObTB7vtfBZWgtM8djgYr4CPcGSRtGEl4wbLCtEXualYHQwY6FMQOVyxBbg87FpmOxL6o+9fdESPZ9GDRENrLsRwF4C3yHzukCzxdP4IaQzpqCNZtIxLLJVGNoncuejljIFiIXM4TX69aMSZFaiL9wExfC0wqUk2qsi1MpGoeGmC7MCj0Mpcf56MFPr5PN4WLCPK3ZcZNmaWzny/b7Tmj7RjpZ/W+rbXXMXErROVMl/dCH2SJBfNjqRLFxRyfZMxba4xW6kEYaZVQlJSC6XtiEIAXXT28WC/WcZt4xlgMkD9xnOKpTk2zRjGKBIAboGPRBvrdDpRkZB2dq0iLsu42wQPTVjqpXPCr5+J2OJcpthZaieUT52v7bBAFxrRTSBCH2QfEYaNOt
+X-Stat-Signature: 84n6nyowciieyg73rfizpo3k9nuf7ym6
+X-HE-Tag: 1793301144-750948
+X-HE-Meta: U2FsdGVkX1+sus1hL4KACblqa26VUJ7Aa0lkG74rETrgdNcggKEBAwW/fBAMVG5dj+SNiadptQrK7WgFXWgpHIH0x7MD5hwcKrNAYJGZc/VGrxNgpp/Qx7FBB1xa6tAkTdnJx7uki9Yrl77RflLzaoUVFHWUZuhyc5wBoBwfHWwZnPpYATbr74chualFs1G/3RRa9/+2EBbUT59xz/BwSAZprMq5U/cQTryMOWa644bjwQg6vMt+riN2qEed6avWRZ65cz8Fcwnya1DUzpGyAC147mnM6x2DcjyrfIX1J0/tIERUMjCxIzjlpQiDahmmvFgDvJdmpP+aiZPE/8Z6Iu+yLiPXltBbzn5T5Xw0GU7s831qOqYfG6lpLmgVShnC3diM+UwoZvoJLC4WtYOZMGN6YnEyhKmXfi6CngbfPdv4ZxS9MU4sP8h8n7zDdHxl9p+1T91Wv6JVLgDq0aQe3PiqcF4RctuHEcgXT4gD9MHSSNswUtYupPSl90EeivfiDU5/NFB5aSApqF1KRXJeV2oMnzy2BSJIoO8sghgBqM+wmoTwXfdtJSwz5485WrmvgP8YbYYakla9YLlZwXv4OsR2Dt/l9kNG1w+YKzw2vzBV3Lpun2XcCJmGQVDq9KKgE40HqWXqKadWUeHBF7qHZ8rV7rpmTPdzmz9WjJMNgMvSE5vRZkLhwKgFdBggN/kSFTiILX/aCm17hOHPLp9vH36Yx/J7mnvJxk6Fj+7pE8gyJLLn13wtjb1tvvMvHOSZ3vCM8rDdWs+zyswApmSRdA7Nn9Yrq+ab3ph6gJcJkiRKwH5mw9szEr5VZV/tuR2+AnatDaBE3jo14YHFRokWmwjQ0aFX1tzw7pOuzrTKTu6D+vifHuEDbNGTSxVFXNAxfhgajHKMp5F74Y1DNxYlOfdoF0uVJ73EmcIzRVZYRgP7YrpgZr4lLHRey5BKI4gDa3bzZ8V8tfhCi6jPfm1
+ 0RSqBtn/
+ S4TTIu6FvuDom5VzjMddcH+RP2wzE7bGZwl/rmkBQ2zTqazMuvkdElSRvNvnCLE7WluI/Q7KP0plxumOr6g0GA0QBVWxxfsM3My2rESj7vs4QWRDMciNxBQGBjr6JqDPo+VNEZYK5uFVUIxWDNE21hNL+Z2ZLvfc5Y4zhTHq87ueoqv+s8kb0fmzyreThpe7BD1gMmn8lIn+X3XygYzGpBFDg/Kpe17gXf7JJxKUbR61gjAtFqjECrMLtKuIymZrmKbOGKq3Dk+arTxo8gAil2CigMicKw61TRaycM+j9s11r/lQ4rOJL+09bds+alDqiuIciBlR3Y6lF0gcFHngovR5EPWPmBDv+MrZ8p9Z9K2n4eENJ7ebc3M1yKrRlXfMEV6a/
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,133 +96,238 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-From: Eneshan Erdoğan Karaca <BoxStrikesTeam@proton.me>
+On Tue, Oct 27, 2026 at 08:04:55PM -0700, Kanchana P. Sridhar wrote:
+> 
+> v2: Batched zswap_store() framework with compression batching
+> =============================================================
+> 
+> This series is a spin-off of "v14: zswap compression batching with optimized
+> iaa_crypto driver" [1], and focuses on the generic crypto_acomp and zswap
+> compression batching enablers. Resuming work on this series following a gap
+> since v14 (January 2026). Please note that my email address and affiliation have
+> changed from kanchana.p.sridhar@intel.com to kanchanapsridhar2026@gmail.com. I
+> have retained the original Intel sign-offs on prior patches for historical
+> attribution while signing off v2 of this series with my current address.
+> 
+> The main focus of v2 was to establish a reliable and accurate performance
+> measurement methodology, that addressed the problems with variation in v1. This
+> is accomplished and used to validate v2, by reducing usemem to 2 processes and
+> enabling PMD THP. As the data shows, we get exactly the same "2048kB-zswpout"
+> counts in the baseline and with this series.
+> 
+> To summarize the main contribution of this patch series: Batching is introduced
+> in zswap_store() of large folios: we carve out a large folio into batches of
+> ZSWAP_MAX_BATCH_SIZE (8 pages) for software compressors, and store each
+> batch. Moving the fundamental operations that need to be happen to store a page
+> to now work at the granularity of a batch offers opportunities to optimize them
+> from these perspectives:
+> 
+> 1) Utilize existing kernel API that minimize obtaining locks for bulk
+>    operations, e.g. kmem_cache_alloc_bulk()/kmem_cache_free_bulk().
+> 
+> 2) We keep the working set for each of the core store functionalities
+>    (alloc/initialize zswap entries, compress pages, store pages in zsmalloc,
+>    pool/objcg reference increments, objcg charging) to be focused on a
+>    batch, thereby minimizing cache evictions and benefiting from cache
+>    locality.
+> 
+> 3) Along the lines of (1), the main zswap_compress() batching routine obtains
+>    the comp_ctx mutex lock once per batch, and releases it after it has
+>    processed all pages in that batch.
+> 
+> 4) Any zswap store functionality that works on a batch can potentially be
+>    optimized via bulk-processing/parallelized as a next step, to further improve
+>    performance.
+> 
+> Performance data: usemem with 56% over-commit:
+> ==============================================
+> Validation was done with mm-unstable as of 10-25-2026 (Baseline) and with this
+> patch series. To minimize variation in the data, I made these changes to my
+> performance measurement methodology:
+> 
+> 1) Reduced the number of usemem processes to 2. Each process tried to allocate
+>    2400M, in a 3G cgroup memory.high budget, effectively accomplishing a 56.25%
+>    over-commit.
+> 
+> 2) Increased the runtime of the workload to ~9 minutes by enabling PMD THP,
+>    i.e., 2048kB mTHP folios.
+> 
+> 3) The use of PMD THP forces zswap_store()/zswap_compress() latency to be in the
+>    critical path, and thus enables very reliable measurements with bpftrace.
+> 
+> 4) I used lhist() instead of hist() in bpftrace to gather latencies at a finer
+>    level of granularity and accuracy.
+> 
+> Testing was done on a Chromebook with a QEMU "vng" VM running in Crostini.
+>     
+> Chromebook Diagnostics reports:
+>   Intel(R) Core(TM) Ultra 5 115U (10 CPUs, 4.200GHz)
+>   RAM: 16GB
+> 
+> vng setup:
+>          Memory: 7G
+>            Swap: 3G
+>     Pinned CPUs: 2 (E-Cores: 2,3)
+> 
+> zswap compressor:
+>   ZSTD
+> 
+> mTHP enabled:
+>   2048kB (PMD THP)
+> 
+> I used the help of an LLM to write the bpftrace data post-processing scripts
+> that generate latency percentiles.
+> 
+> vm-scalability/usemem setup:
+> 
+>   cgroup memory.high: 3G
+>   2 usemem processes, each allocates 2400M anonymous memory, reads the
+>   Silesia dataset [2] from a pre-fork-allocated buffer into the 2400M,
+>   writes to each unsigned long in the 2400M, sleeps for 10 sec, then
+>   frees the memory and exits.
+> 
+>     usemem -w --read-silesia -O -b 1 -s 10 -n 2 2400M
+> 
+>  usemem metrics are reported from a single run after starting the QEMU VM.
+>  Further, I have tabulated the bpftrace p50/p95/p99 latencies with these labels:
+> 
+>  "zswap_store_higher_order":
+>     zswap_store() of PMD folios.
+> 
+>  "zswap_store_order_0":
+>     zswap_store() of order-0 folios.
+> 
+>  "zswap_batch_compress_per_page":
+>     zswap_compress() per-page latency of store batches generated from PMD
+>     folios.
+> 
+>  "zswap_single_compress_per_page":
+>     zswap_compress() per-page latency of order-0 folios.
+> 
+>  
+>  ----------------------------------------------------------------------------
+>  usemem                       Baseline      zswap        zswap   Change with
+>  PMD THP                   mm-unstable      store     compress      compress
+>                             10-25-2026   batching     batching      batching
+>                                         (patch 6)    (patch 8)          %
+>  ----------------------------------------------------------------------------
+>  usemem process 1                6,353      7,240        7,428
+>   Throughput (KB/s)
+> 
+>  usemem process 2                6,352      7,236        7,422   
+>   Throughput (KB/s)
+> 
+>  Average Throughput (KB/s)       6,353      7,238        7,425        17%
+>  ----------------------------------------------------------------------------
+>  usemem process 1              484,580    308,903      257,230
+>   Time to free memory (usecs)
+> 
+>  usemem process 2              518,928    438,585      446,958 
+>   Time to free memory (usecs)
+> 
+>  Average Time to               501,754    373,744      352,094       -30%
+>   Free Memory (usecs)
+>  -------------------------------------------------------------------------------
+> 
+>  -------------------------------------------------------------------------------
+>  usemem                          Baseline        zswap        zswap       Change
+>  PMD THP                      mm-unstable        store     compress         with
+>  BPFTRACE                      10-25-2026     batching     batching     compress
+>                                              (patch 6)    (patch 8)     batching
+>                                                                             (ns)
+>  -------------------------------------------------------------------------------
+>  zswap_batch_compress_per_page (ns):            
+>                          p50                                 40,086        1,569
+>                          p95                                 54,689      -64,505
+>                          p99                                 83,248      -88,488
+>  -------------------------------------------------------------------------------
+>  zswap_single_compress_per_page (ns):
+>                          p50       38,517       38,352       36,650       -1,867
+>                          p95      119,194      121,174      133,678       14,484
+>                          p99      171,736      158,601      169,010       -2,726
+>  -------------------------------------------------------------------------------
+>  zswap_store_higher_order (ns):
+>                          p50   21,012,222   21,322,885   20,176,667     -835,556
+>                          p95   25,643,500   26,204,375   24,485,000   -1,158,500
+>                          p99   28,567,400   38,577,750   26,158,000   -2,409,400
+>  -------------------------------------------------------------------------------
+>  zswap_store_order_0 (ns):
+>                          p50       37,601       36,994       37,568          -33
+>                          p95      123,731      137,034      128,366        4,635
+>                          p99      159,965      169,282      175,618       15,653
+>  -------------------------------------------------------------------------------
+>  vmstat summary:
+>  -------------------------------------------------------------------------------
+>  zswpin                         1,104,226      993,412    1,091,146       
+>  zswpout                        1,688,181    1,582,664    1,669,671       
+>  2048kB-alloc                       2,500        2,505        2,500   
+>  2048kB-zswpout                     1,535        1,535        1,535   
+>  2048kB-swpout-fallback               927          929          875     
+>  -------------------------------------------------------------------------------
+> 
+>  Detailed vmstat & zswap stats after workload finishes:
+>  ======================================================
+> 
+>  ------------------------------------------------------
+>  usemem                          Baseline        zswap
+>  PMD THP                      mm-unstable     compress
+>                                10-25-2026     batching
+>                                              (patch 8)
+>                                                       
+>  ------------------------------------------------------
+>  vmstat:
+>  ------------------------------------------------------
+>  pswpin                               0              0
+>  pswpout                              0              0
+>  thp_swpout                           0              0
+>  thp_swpout_fallback                927            875
+>  swpin_zero                           0              0
+>  swpout_zero                          0              0
+>  zswpin                       1,104,226      1,091,146
+>  zswpout                      1,688,181      1,669,671
+>  zswpwb                               0              0
+>  nrswpin                              0              0
+>  nrswpout                             0              0
+>  pgmajfault                     173,554        173,774
+>  nr_free_pages                1,753,879      1,755,195
+>  nr_free_pages_blocks         1,651,712      1,667,072
+>  2048kB-alloc                     2,500          2,500
+>  2048kB-zswpout                   1,535          1,535
+>  2048kB-swpout                        0              0
+>  2048kB-swpout-fallback             927            875
+>  2048kB-swpin                         0              0
+>  memory.current                 352,256        499,712
+>  memory.swap.current                  0              0
+>  ------------------------------------------------------
+>  zswap stats:                                         
+>  ------------------------------------------------------
+>  pool_limit_hit                       0              0
+>  written_back_pages                   0              0
+>  reject_alloc_fail                    0              0
+>  reject_kmemcache_fail                0              0
+>  reject_reclaim_fail                  0              0
+>  reject_compress_fail                 0              0
+>  reject_compress_poor                 0              0
+>  decompress_fail                      0              0
+>  stored_incompressible_pages          0              0
+>  stored_pages                         0              0
+>  pool_total_size                      0              0
+>  ------------------------------------------------------
 
-A binfmt_misc entry can select an interpreter for an exec.  With a BPF
-'B' handler, that selection can be made by a BPF struct_ops program.
-The kernel commits the decision in bprm->interp and bprm->flags, but it
-does not emit an event at the selection point.
+As mentioned in the previous version, I cannot reproduce these results,
+mainly because the noise is too high. Digging a bit deeper, it's because
+the throttling from memory.high varies. Hacking in a change to make
+calculate_high_delay() always return 0 (no memory.high stalls) paints a
+clearer picture about throughput improvements from the series up to
+patch 6 and patch 8. With that, I see 1-2% improvement in throughput
+with patch 6, and almost no improvement with patch 8 on top. Similarly,
+for zswap store latency for high-order folios, I see a slight (~1-2%)
+improvement with patch 6, but almost none with patch 8 on top.
 
-Existing observers have to reconstruct the decision from
-/proc/PID/exe, AT_EXECFD, AT_FLAGS, or /proc/PID/maps.  These sources
-are mode-dependent: a transparent dispatch still reports the original
-binary in /proc/PID/exe, and a short-lived process can exit before the
-observer reads it.  A classic dispatch reports the interpreter, but
-not which handler selected it or which invocation flags were used.
+In order to make meaningful progress, can you send patches 5-6
+separately? I assume that 1-4 are prep for 7-8, so 5-6 are standalone. I
+also think patch 6 will be simplified if we drop the prep work for
+patches 7-8?
 
-Add a tracepoint after the interpreter and the invocation flags are
-selected.  The caller passes the matched entry and the raw flags; the
-trace event resolves the handler name and masks the flags with
-MISC_FMT_INVOCATION_FLAGS.  The event reports the binary filename, the
-selected interpreter, the handler name, the invocation flags, and the
-pid.
-
-The tracepoint is observability only; it does not change exec
-behavior.
-
-Assisted-by: LLM
-Signed-off-by: Eneshan Erdoğan Karaca <BoxStrikesTeam@proton.me>
----
-v2:
- - Pass the matched entry and the raw flags to the tracepoint.
- - Resolve the handler name and mask the flags in the trace event.
-
-Thanks to Steven Rostedt for the review and the claws-mail tip.  The
-PoC and A/B results are available on request.
-
- fs/binfmt_misc.c                   |  9 +++++
- include/trace/events/binfmt_misc.h | 55 ++++++++++++++++++++++++++++++
- 2 files changed, 64 insertions(+)
- create mode 100644 include/trace/events/binfmt_misc.h
-
-diff --git a/fs/binfmt_misc.c b/fs/binfmt_misc.c
-index 620da85..58a8283 100644
---- a/fs/binfmt_misc.c
-+++ b/fs/binfmt_misc.c
-@@ -118,6 +118,13 @@ struct binfmt_misc_entry {
-        char buf[];                     /* register string, fields point in here */
- };
-
-+/*
-+ * The trace event needs struct binfmt_misc_entry and the MISC_FMT_*
-+ * flags, so include it after they are defined.
-+ */
-+#define CREATE_TRACE_POINTS
-+#include <trace/events/binfmt_misc.h>
-+
- /*
-  * Max length of the register string.  Determined by:
-  *  - 7 delimiters
-@@ -644,6 +651,8 @@ static int load_misc_binary(struct linux_binprm *bprm)
-
-        flags = entry_invocation_flags(fmt, bprm);
-
-+       trace_binfmt_misc_select(bprm, fmt, interpreter, flags);
-+
-        /* No argv is built for a staged argument to land in. */
-        if ((flags & (MISC_FMT_LOADER | MISC_FMT_TRANSPARENT)) &&
-            bprm->bpf_interp_arg)
-diff --git a/include/trace/events/binfmt_misc.h b/include/trace/events/binfmt_misc.h
-new file mode 100644
-index 0000000..61a0de0
---- /dev/null
-+++ b/include/trace/events/binfmt_misc.h
-@@ -0,0 +1,55 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+/*
-+ * Tracepoint for binfmt_misc binary type handler dispatch.
-+ *
-+ * Fires once for every exec a binfmt_misc entry matches, after the
-+ * interpreter and the invocation flags have been selected. Unlike
-+ * sched_process_exec (which reports bprm->filename) and /proc/PID/exe
-+ * (which a transparent dispatch sets to the binary), this reports the
-+ * interpreter that actually runs, so observers can see through a
-+ * transparent dispatch.
-+ */
-+#undef TRACE_SYSTEM
-+#define TRACE_SYSTEM binfmt_misc
-+
-+#if !defined(_TRACE_BINFMT_MISC_H) || defined(TRACE_HEADER_MULTI_READ)
-+#define _TRACE_BINFMT_MISC_H
-+
-+#include <linux/tracepoint.h>
-+#include <linux/binfmts.h>
-+#include <linux/binfmt_misc.h>
-+#include <linux/bitops.h>
-+
-+TRACE_EVENT(binfmt_misc_select,
-+
-+       TP_PROTO(struct linux_binprm *bprm, const struct binfmt_misc_entry *fmt,
-+                const char *interp, unsigned long flags),
-+
-+       TP_ARGS(bprm, fmt, interp, flags),
-+
-+       TP_STRUCT__entry(
-+               __string(filename,      bprm->filename)
-+               __string(interp,        interp)
-+               __string(handler,       test_bit(MISC_FMT_BPF_BIT, &fmt->flags) ?
-+                                       fmt->bpf_ops->name : "")
-+               __field(unsigned long,  flags)
-+               __field(pid_t,          pid)
-+       ),
-+
-+       TP_fast_assign(
-+               __assign_str(filename);
-+               __assign_str(interp);
-+               __assign_str(handler);
-+               __entry->flags = flags & MISC_FMT_INVOCATION_FLAGS;
-+               __entry->pid = current->pid;
-+       ),
-+
-+       TP_printk("pid=%d filename=%s interp=%s handler=%s flags=%#lx",
-+                 __entry->pid, __get_str(filename), __get_str(interp),
-+                 __get_str(handler), __entry->flags)
-+);
-+
-+#endif /* _TRACE_BINFMT_MISC_H */
-+
-+/* This part must be outside protection */
-+#include <trace/define_trace.h>
---
-2.53.0
+Also, PTAL at Sashiko reviews before respinning.
 
