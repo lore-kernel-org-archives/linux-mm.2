@@ -1,92 +1,124 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09B25606A322
-	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 06:04:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FBCF606A320
+	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 06:07:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=gQ7SPPtI
+	dkim=pass (1024-bit key, unprotected) header.d=chrisdown.name header.i=@chrisdown.name header.a=rsa-sha256 header.s=google header.b=rXjwRxsk
 Received: by kanga.kvack.org (Postfix)
-	id 229886B05B1; Thu, 29 Oct 2026 02:04:58 -0400 (EDT)
+	id 428086B05B4; Thu, 29 Oct 2026 02:07:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1D96A6B05B2; Thu, 29 Oct 2026 02:04:58 -0400 (EDT)
+	id 3D9186B05B5; Thu, 29 Oct 2026 02:07:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0F1B96B05B4; Thu, 29 Oct 2026 02:04:58 -0400 (EDT)
+	id 2C8066B05B6; Thu, 29 Oct 2026 02:07:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id DC34A6B05B1
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 02:04:57 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 07A316B05B4
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 02:07:15 -0400 (EDT)
 Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 4A1DE1402C8
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 06:04:57 +0000 (UTC)
-X-FDA: 85374625434.08.617C71F
-Received: from out30-131.freemail.mail.aliyun.com (out30-131.freemail.mail.aliyun.com [115.124.30.131])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 38F371C0002
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 06:04:50 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=gQ7SPPtI;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf18.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.131 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 8D285A02ED
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 06:07:15 +0000 (UTC)
+X-FDA: 85374631230.08.835233D
+Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 7A87920003
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 06:07:14 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=chrisdown.name header.s=google header.b=rXjwRxsk;
+	spf=pass (imf31.hostedemail.com: domain of chris@chrisdown.name designates 209.85.214.169 as permitted sender) smtp.mailfrom=chris@chrisdown.name;
+	dmarc=pass (policy=quarantine) header.from=chrisdown.name
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793254033;
+	b=YUu2a4ovmB3HKSuIN7f6jdQzILYmUVGHxzUXJrCRKr7Rx2xW5hwFVj3xSvqvKairxyiBgl
+	Q47tuYez0bfveWrNBqhLp1+VH6wT19f/LD5IYjSHtuTWJ6JRQ0HLfbrEljSnX9x4M312jn
+	+aTl9pF6v+WmEyK+5WRYWeEM/+RwReg=
+ARC-Authentication-Results: i=1;
+	imf31.hostedemail.com;
+	dkim=pass header.d=chrisdown.name header.s=google header.b=rXjwRxsk;
+	spf=pass (imf31.hostedemail.com: domain of chris@chrisdown.name designates 209.85.214.169 as permitted sender) smtp.mailfrom=chris@chrisdown.name;
+	dmarc=pass (policy=quarantine) header.from=chrisdown.name
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793253893;
+	s=arc-20220608; t=1793254033;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=o5W+Zg0rKLU9ViJ7Akn7TYVqUItF04jnCP8SftoaDZs=;
-	b=5s/p9n8ReUKTbt1Zs0hu4WbkOUbgbBQogZhSyF+/5XvbY5/OcMix/ea6uJMP9KKlN68r+7
-	OEGaF4sf1a5Zn+l9XBmjyf+95+6mouHgTu/v1QhG5LvlC0mia9Mylt+Hhta01Out3RKvh0
-	Ig66/XgWVbNariUyBit/VvUjpKplUWI=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=gQ7SPPtI;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf18.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.131 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793253893;
-	b=v57GyUO11OcNnV6Rn99zjrZwFAgcuK4BtKqORnohAnca7+u1Vguh1boMbYUtiAkHdfst/Z
-	2wz2dY/LJ2XhIOZr3+rLTy02zQbboUE+tFv+vc0i8rfZRmDXRKxVgYTY2a4YJomvYBeviv
-	GnGn3yl8wSoi2tmnX3kPBnhmsANuqMs=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1793253887; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=o5W+Zg0rKLU9ViJ7Akn7TYVqUItF04jnCP8SftoaDZs=;
-	b=gQ7SPPtIAo+rqL1sg+dc4Sc5xynleCWDE3Y4KkzUO9cjM64XLdeG8Ea89qh5ubXzE82+ZPIDjvvdAxVn/BFPyKvKOMTUahoQwU9PVLTE2tpqPxtDSFQUkSS0PL4piku80JyQpxAPy4BYPOcZQ1quJJZIFb0JByLw5eVhnQ9SH7E=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R611e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033045098064;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=20;SR=0;TI=SMTPD_---0XDiZY8B_1793253884;
-Received: from 30.74.144.149(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0XDiZY8B_1793253884 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Thu, 29 Oct 2026 14:04:45 +0800
-Message-ID: <6e0968e0-e061-46a4-a7c4-be27aad91827@linux.alibaba.com>
-Date: Thu, 29 Oct 2026 14:04:43 +0800
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=UNSxvxACDv6rV+hh5v7KUi83+vs01nWTUXRQ2PYQNxU=;
+	b=6nNmr4zqZqWJ6DTaiG34dYjyOPmwPHZA4O0GqEp541MvvQvlh4iNWTJ1q76cYdSJoFZQfU
+	U7HbpDkZ/AULPmmNZ2yoYDjIRl6Z0EfSJUkyP+EWz+FQY3oKt4cb7p4BpyDI0Qa3A5A7N9
+	XVjX6/JRL6VdyMGx4bDcElyuhliiIKY=
+Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-2e812e2b31bso10304605ad.3
+        for <linux-mm@kvack.org>; Wed, 28 Oct 2026 23:07:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chrisdown.name; s=google; t=1793254032; x=1793858832; darn=kvack.org;
+        h=user-agent:content-disposition:content-type:mime-version:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=UNSxvxACDv6rV+hh5v7KUi83+vs01nWTUXRQ2PYQNxU=;
+        b=rXjwRxsk8YJkZHAH6//OSLsDf0MDqljp64BoOo5TTgHxDjc3bjzmALLSw1KU5ABMIT
+         eDPwwj8/kq80/plPopaI0ro6mJGqzK/rvKlY+1nRMkiDEL9x4cSAfwjzmO7opQ7oaF97
+         N7tcO2qqqAW7AStpFk1OC3UVOHvJTXJcvf/Xg=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793254032; x=1793858832;
+        h=user-agent:content-disposition:content-type:mime-version:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=UNSxvxACDv6rV+hh5v7KUi83+vs01nWTUXRQ2PYQNxU=;
+        b=L//0hqZqTe/eSO4wQY5F6ZwnCYPyaWmq078TE3eu+EfAMPQ66wQeTtMZk9FlK6VyL0
+         KsnfQH0JsLaHKDM/4Q2NXUdRivDrwwrx0UJGEAo8QnINuO+8PiivqjW+6PQHUGcPWCdi
+         MTGueTihdQItYZUkAtosbbqzvqOhTqFLOyeP2e3bBETJIwbj9Hfg0353M8u6KBAUJW0w
+         BOp5yPQgSkUNAYGJhadsjqSEp6ERSID8st8r59rRHwLAYYRvvgKYB1xzf/5npU4Mri3c
+         OGoXk+hDTm6U7yjSVZRI2LOChaGgUDyW2MLYyKuYqPqTmmj8RaGrd23BO6X2GlMOWur7
+         sC+w==
+X-Forwarded-Encrypted: i=1; AKwUvBx+LmVSMe/yqL2tDEaALeuke6ww3sL/GYlexEQI0Kt5wSAOsNn61LhRbLy3yAxZl8/sLvQSenMYqg==@kvack.org
+X-Gm-Message-State: AFq9FYLc3m11Ckf7UYOayI/lUWENREfPyyrPAC0DCEVl4ehwq/z+QF61
+	G1RPM2ZkNqDfkVRzHi4k+OrtvzGbS2vr/NN5xun99rTnpyYnDVeL5/SE0wSiVbvVkko=
+X-Gm-Gg: AYBFou2BdGpp6WOWf1+5+6e6/RQ+8DDt/UBwAOdTFq+nK7Ff4dCKArad3g2YWtx4sP4
+	78HUU2WZpmGnSqYaw5mh6kBhQ7zhSOUVjvfy81GPV8uec4eKXsMoiwIB3q3K8emdDw32J1QHKV5
+	FJJx9AEzL8BK0moR5gKXNNWPXnW97jlw3PnT4K3b+ht2Nt2+9gWYwWdmzcAIaMhSWsXQVq3i9L+
+	0kO2cRlH0P4A3fswknOb5JeHsDPfQWWMkAtTM+ov52HXmGPRzmr6KvZQCeYA4UB6857lu8iGsQ0
+	HC1z+CswO6H+5Xr07kBTPGuhP/S0EOR7VykWJgUycPvqCOmM2yLOn5zCewSZqj8IqM3vf7u/hSc
+	F9W1d7mAi3C3XEWLvAwA57krjSmCADeb3annj955NqYyi1zjzJy/JPWYJI6vis34jZBDArHPdlk
+	erBu8RLmXwverZqM4QzyCswBRzXIJ7oc0w6B3v3r152WwA6JlZ04z9PWNQYUab2T8vqk1LJYYTR
+	7Qen07nkh0nii8vTPfvx2jLw8yQBbDCGldhL3Sd4AJ1hs2bFeN/9DhDzlJBfyyoCbkJuBQv7AGi
+	1GFBVKQXmqEkZrXR8JU10aAreIRd1yq+Ag9G5UHgendwcEN9/ckrKmWupygziUJBqTR02PGB9dI
+	Yc3nkIghqjIFqfuTy9wfXaLBpjMMQfTtDg7Evnd2D/2IkbDpu7E2rWIQQBWfdsEFGm57OHgV03w
+	==
+X-Received: by 2002:a17:902:fc87:b0:2e2:b7b8:abc5 with SMTP id d9443c01a7336-2eb0038e312mr41423305ad.32.1793254032255;
+        Wed, 28 Oct 2026 23:07:12 -0700 (PDT)
+Received: from localhost ([116.86.153.182])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2eae64549dfsm29271725ad.4.2026.10.28.23.07.11
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 28 Oct 2026 23:07:11 -0700 (PDT)
+Date: Thu, 29 Oct 2026 14:07:06 +0800
+From: Chris Down <chris@chrisdown.name>
+To: Vlastimil Babka <vbabka@kernel.org>, Harry Yoo <harry@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Cc: Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>,
+	David Rientjes <rientjes@google.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Kees Cook <kees@kernel.org>, Marco Elver <elver@google.com>,
+	GONG Ruiqi <gongruiqi@huaweicloud.com>,
+	Jonathan Corbet <corbet@lwn.net>, linux-mm@kvack.org,
+	linux-hardening@vger.kernel.org, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org, kernel-team@meta.com
+Subject: [PATCH v2 0/6] mm/slab: Support selecting slab hardening features at
+ boot
+Message-ID: <cover.1793253633.git.chris@chrisdown.name>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4] khugepaged: fix readahead lock inversion in
- collapse_file()
-To: Lance Yang <lance.yang@linux.dev>, akpm@linux-foundation.org
-Cc: david@kernel.org, ziy@nvidia.com, liam@infradead.org,
- nico.pache@linux.dev, ryan.roberts@arm.com, dev.jain@arm.com,
- baohua@kernel.org, usama.arif@linux.dev, kas@kernel.org, jack@suse.cz,
- djwong@kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- hch@lst.de, pfalcato@suse.de, ngocthang2710.1999@gmail.com,
- syzbot+16bf7cd0ebeb1de93aa5@syzkaller.appspotmail.com, stable@vger.kernel.org
-References: <20261026152013.10511-1-lance.yang@linux.dev>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <20261026152013.10511-1-lance.yang@linux.dev>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 38F371C0002
-X-Stat-Signature: ccj43xb5ghuo71juny7h58xua56ue9bo
-X-Spam-Status: No, score=-19.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	UNPARSEABLE_RELAY,USER_AGENT_SANE_1,USER_IN_DEF_DKIM_WL autolearn=ham
-	autolearn_force=no version=4.0.1
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/2.3.3 (9073d26d) (2026-06-12)
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1793253890-140806
-X-HE-Meta: U2FsdGVkX1+R+jMlET5/iGq5ywHUAzcmoUkC6/mffqP9I0SKaoZ/yAnjsgW6c1oXJmAc8DyJ/Zb5IRRIWvYXlsc3MMKgbPcBDN+6j8b3m1YxydB5j1vvthCQbgssXThJ9iNc5L4Q35yi0icir0/5v0YtKPlf6iwVM6GWU1iTzt5unDMl4aWDb5/vvhjA4NRS9SSKzXZmPtWwvMX+oicj9GHqm/TkTdPlq6jD7o2uQ1SIhO/r4Nu4gDz7dRv505TtWX5kfApMD9jj4Y4aEoBWe9oVuuH20OSyOaS4xvuq7RiXc6V3u3LDnGDHqT1DT3y2vyxc0iVn6B6p/St844bx8TJon34JBOX3Ub0J61V/O0u9vBEdYNaGvzshZFpmnoeDAXyQ5775nlwFQb+aHqk+qk8d7+WaE7GOj+ZacUfN3Y0uq2Mji/R7jzJARCt9hC1efmHyjymcHs39eSeU8icnvCQn6ry5+2+DKnO1UpOa92ASyFJyfBOM6tng7kgtUPwqYx5Kt5/b4sUrYhOZJ/v+5ntxSmp4a7xeKdYPg+38qkYef8BbW2K68xWu6h0zo3FpCVZfmwwLOyxhpLMb6a7vPj8nDryoHF7ebIUJlloqt6oISdjLjcPVzgCFJcHV2rTggYI8Qcxcf9U1kt/GyzhdE14lmrBgpJI2vpamPXX5Oamp4P6Ic0nz1hecgrtbXx/3hf0dTtQCXxxGPRd78Z7KKN0KYmuQNfzaeUXCxkCMO+OyGiNJgvAYmDY4sEqMs6+lyZYXlopCpTPWgeZzhrOH9brCRtrw7Q7+iiWTfuzYG11mi/m9iFET9R6F2h2d7YABABMHH66LREexa98Ytg0C161lyJlbYy5Y56ynamgNEw13w3nHAaAYz9/v0XIR7Kj9lruHKDU2TxAk5Vbfu7eGR2LwIn4k0XyMzCgBri4hJ+rH0QMgYTJnPaUZ4Mc/sjQEDr8EJEGUlWMle4iZinm
- omjjCYFc
- DIv0wFTLZ3JUnNjhPQXvPnufHBgsK0t33DD87byQj0m1UD5RcJlEo+kmLAKtyJLZFq0RohkqizyBaiOSf1qGs+MvmqTB5MP6aRLheA0MruBX0tLT3+n3MjkGmoXfeF6cI2AKaR94pb7QXeIDaYy06B2dftVzAqqWdpNbvdTbCz2DtgHEcu/kyK3MmZN1btxmWE0h6PLrEfP1+0OH3tfB14db4YmekLrtzL4sOlp/TEU3v9GU9nzuoU9pLBFx72PAkMPq+/jWsNpISFtZyTJERPii+ZqTl33RsfuCyI/AK2zSqaQVZsIjXaSHldiVV2XhUh6OMHxh69qopxCyGqW4WwKtsozMqHMnx21CFDW6c7TFo6e9TT1q89B1hyxr+EXfp59aWRATEFkicf8zxtXweEOjOVKxsdpF1Yto7ed4pnDsZa0YxaOHG9JtDJPVORUkA0JmbVBLYlKXc5foU2Oi2e4wvQZJvE6ogxzM3YkwyZi53utXSJfId+8xd/SSfPQlPiw4ky+zJMqz4UUJKHZ+DYHxbfvYSs1dXvNDjJAOzwjO8FEwkLTQR9sFBDsc2hc32ZYPs5WgeyfNt0nk1XkEVaw0sva9fIYw1zS3qagrh77v2P2Lxhb7nxTXZqg==
+X-Rspamd-Queue-Id: 7A87920003
+X-Stat-Signature: 8tf1omprkra5rpoqy7jg5kkkbryryqnz
+X-Rspamd-Server: rspam01
+X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
+	autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1793254034-606452
+X-HE-Meta: U2FsdGVkX1/rE02Nrvbml5eyZ9ApuG04DQye1yawP/p/m0TXSwhw85Rbj4hs7q5Y1s6KBWhAd833waLlMSW8u/y/MwwZQpQabKhWn8L4PdQkdBk4d5ztuVuI0+RQBDdKpp1Lx4nzbfGKMSmnxo2cFIrn7vNc3YP9UF4haTioeFGqvZOC0sV82FZ/JMEX6hjDFwl8d4HMD95EMSRygzOweCZ7YsaVkCjJWVaVbc4WyUiT70XYVgIggpGzcBclq+FWKRSeR20xZFcJSfHTmZCMVWfRaaaxTGHbu6/DNa7XK6uVrXRnRSKqyDXcNTr9vqW2P8zssVxQdOS4FOLXmurjdKRzGRs+CO76iVT8Bd3Zn3p30/YWhF/exBsWggwhFYPYsoefLZBxMutJvebp59amJ/YI6npwnEv7JPUY88ZzLazEZ+pt5NSKvPY7diWCHFbc74h+31DV1hTP0BULnfH/vyuT7NDxC9w7GPz45Hsj8l96bJB5DlGLHLcORmdkWQw9P2thHkaQrpyj0ObJ9XjeW4QZTCJVuoyMr3kzqL01x1DbfXYAqz4dElavrnMOjL1AgBcQfQ3fM+2qGiFFsBz88qyOeZK8/wBvfbNI2og2oSnDO01G0P1H2TFs9+/mWP4bL2Zc81sxLBAkMrTPxxIJYVP1nemJWOh55bU7K3CYfo0Wr9V8WT9Okk2Ri8IFUXs7gqDGHYU0nn1luruMHRbnfOkN9Xgu+TQPGHd/KlG9cLuRXnMlOw5zPQNWVFxPPOXwDsBYeS7Jr2sP11RBoyawkWNuyLOEvvgZNnuo5sxnuNuoTZLrf4b+kMgquh/RdbYXXMRpisBXugDdNF52zFEGP4h0WnVaMEBHe2Bw3foZu2qTtHvQ4w3Uj9eMvpst2LcCjEkRfGp1Th37yu4tD3fiSEPr+bN3ku/stAJyFH2oaRSALS2E1wdgpouE3+IBK2akC1vU/TT+D91k2FX9O1/
+ 42LlRxvC
+ 75eiIT87JSKgTmuQ9De7NJbFRrngQFMxRgbjTM1jZU6623e8Sea3EqI/cgFE/ra4OApRJOsnCc2bw8bmadzJZijbZeD/PjX1Jj4vj9Ll7Njfh42dJoGlGTDzk3krdotC+h8iDddkaEMAnnghID3/aHZS1TsDDsm9SLTcZ3EKN7e1BWkxnHqObIcteiPACuRsOMw1Rpsggqx0YUthU0P7xFPdUEU1pRStyh2hES4tZBHBcuuwmhfteozcqqaKOnkbSarA6Sajr3MinNVdqxu+4Barlz7SitAzCsPNNgDEywVXMrhg2lMkL4L1ZSiPcgM4Q7TH8HTs1lf0HWGai7m2ZeUpZ2fu42Ws53Yut/42Ey+Ag8h1KGf361d/XAhNRBs4Q2lT/IHpbr4OytnKxkF1yDiRAG2QG9bj0IQ3VmuhoOHh2R7emzOGqOLzbYQZSbdIWdvD03amALZxVaXeONE5XuWZ+OM3PrJFCofzE/ntUDdrl8/4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,34 +127,56 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
+Slab hardening settings are currently all build time choices. This means
+that, unfortunately, hosts with different requirements end up needing
+separate kernel images. At Meta, for example, some hosts are built with
+these options and the rest of the fleet isn't, and that's one of the
+things that keeps those kernels apart.
+
+Following the discussion on v1, this series now does two things:
+
+- SLAB_FREELIST_HARDENED and SLAB_FREELIST_RANDOM are cheap enough with
+  sheaves that it makes more sense to just enable them by default than
+  to make them switchable. With both on, system level benchmarks didn't
+  change measurably, only slowpath heavy microbenchmarks did [1].
+
+- SLAB_BUCKETS and KMALLOC_PARTITION_CACHES cost memory (Harry measured
+  about 1 MiB and 18 MiB respectively after boot on a 64 CPU VM [2]), so
+  they get slab_buckets= and kmalloc_partition= boot parameters, which
+  default to on when the option is built in.
+
+Changes in v2:
+- Make SLAB_FREELIST_HARDENED and SLAB_FREELIST_RANDOM default y instead
+  of adding boot parameters for them (Vlastimil).
+- Skip the memdup_user() part of the slab_buckets test on !MMU
+  (Sashiko).
+- Keep slab_buckets= and kmalloc_partition= separate for now. We can
+  discuss whether to merge them into slab_hardening= or similar, as
+  Harry suggested.
+
+v1: https://lore.kernel.org/r/cover.1793086056.git.chris@chrisdown.name
+
+[1] https://lore.kernel.org/r/auITixAJMfLtfa7i@chrisdown.name
+[2] https://lore.kernel.org/r/179312451613.474906.1475329637924619088@kernel.org
+
+Chris Down (6):
+  mm/slab: Enable SLAB_FREELIST_HARDENED by default
+  mm/slab: Enable SLAB_FREELIST_RANDOM by default
+  mm/slab: Support disabling SLAB_BUCKETS at boot
+  slub_kunit: Add a test for the slab_buckets boot parameter
+  mm/slab: Support disabling KMALLOC_PARTITION_CACHES at boot
+  slub_kunit: Add a test for the kmalloc_partition boot parameter
+
+ .../admin-guide/kernel-parameters.txt         | 15 ++++
+ lib/tests/slub_kunit.c                        | 87 +++++++++++++++++++
+ mm/Kconfig                                    | 11 +++
+ mm/slab.h                                     |  8 ++
+ mm/slab_common.c                              | 48 ++++++++--
+ 5 files changed, 163 insertions(+), 6 deletions(-)
 
 
-On 10/26/26 11:20 PM, Lance Yang wrote:
-> collapse_file() can call page_cache_sync_readahead() while still holding
-> source folios locked. If truncate holds mapping->invalidate_lock
-> exclusively and waits for one of those folios, readahead waits for
-> invalidate_lock and neither side can make progress.
-> 
-> We need to release those folio locks before starting readahead. On a page
-> cache miss, roll back first, populate the collapse range, and retry once.
-> Doing readahead after rollback avoids an extra pass when all folios are
-> already present. If another miss occurs on retry, give up rather than keep
-> retrying while truncate or reclaim removes folios.
-> 
-> Keep page_cache_sync_readahead() and wait for read I/O with
-> filemap_lock_folio(), releasing each folio before moving to the next. The
-> existing uptodate check during collapse still handles read errors.
-> 
-> Shmem uses shmem_get_folio() for swapin and fallocated folios without
-> taking mapping->invalidate_lock, so it is unaffected.
-> 
-> Reported-by: syzbot+16bf7cd0ebeb1de93aa5@syzkaller.appspotmail.com
-> Closes: https://syzkaller.appspot.com/bug?extid=16bf7cd0ebeb1de93aa5
-> Fixes: 730633f0b7f9 ("mm: Protect operations adding pages to page cache with invalidate_lock")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Lance Yang <lance.yang@linux.dev>
-> ---
+base-commit: d15d7703166daf7bd62c844a3cb1b3a6279adb4c
+-- 
+2.54.0
 
-Thanks. I'm fine with followups to clean up the code.
-Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
 
