@@ -1,128 +1,139 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E275E606A322
-	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 15:18:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C12CE606A31A
+	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 15:29:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=IDm7FOcC
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=dNBXzeZb
 Received: by kanga.kvack.org (Postfix)
-	id EC1CA6B05C2; Thu, 29 Oct 2026 11:18:13 -0400 (EDT)
+	id DC8036B05B1; Thu, 29 Oct 2026 11:29:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E72636B05C3; Thu, 29 Oct 2026 11:18:13 -0400 (EDT)
+	id D9EEF6B05B4; Thu, 29 Oct 2026 11:29:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D62556B05C4; Thu, 29 Oct 2026 11:18:13 -0400 (EDT)
+	id CB4436B05BB; Thu, 29 Oct 2026 11:29:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id A47096B05C2
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 11:18:13 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 315664048E
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 15:18:13 +0000 (UTC)
-X-FDA: 85376019666.23.7CCBB39
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 5D9722000B
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 15:18:11 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=IDm7FOcC;
-	spf=pass (imf03.hostedemail.com: domain of error27@gmail.com designates 209.85.128.53 as permitted sender) smtp.mailfrom=error27@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id A5A046B05B1
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 11:29:13 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 7F9B9803F4
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 15:21:40 +0000 (UTC)
+X-FDA: 85376028360.01.C512F78
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf05.hostedemail.com (Postfix) with ESMTP id C685D100010
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 15:21:38 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dNBXzeZb;
+	spf=pass (imf05.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793287091;
+	s=arc-20220608; t=1793287298;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XKclWe9kzl34mf7ikCBlpHKdvGAXpEly40KTRKr1ZNY=;
-	b=k/VqCMv8Bp+MQQFt29+V1WzVxX8R2MvjPIb23zo7uij8go7rgiIij8PfI8uW1vN3E4XfZ8
-	yGv2hBQTmJMQgVnvHp8VVVynnaw8XkrsDoIYWDZ6YeW/XRXzv6NscfpKvBkLuc8OTy9Fbg
-	RvdxqL+yOZVLOL1IO9+1OsAbLQvZibA=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793287091;
-	b=Ku//maFi0mk/dePUVyJ9KyO3xycC6qcLHOH3DS3icUrq+uPSFlaYdCWxva1vRXqj+s4a/J
-	QZN6v4Oy+r4r+ENoZZu3rrOeSJMxQUrpfBNJGhn0fVX5W7+VxUcN8xJFJiocoP2kjCy14Y
-	eowGljchc3UHiQJzqVDZKCX+gvojGGM=
+	bh=B+9rlXcZZ8g+5YiYdei6kbu9KZrhPovwLjwJuy+h7zs=;
+	b=gLh9yQy7H4ZhfwTo7QkKevdmUPXjV8Eipxr50ilIm0Z/bgCDKR5VYJ8i3CZwYbOeGEb661
+	OO9hFVjcn+NeZ9QvJUITO1Y1VLcjBbDi6FIQ9KE0vG0Ke06Al9eHJhk4RkiJduDoIWXsnq
+	SmJ2YrqbzX1+9aZjrMOpQzH4KuVGgHc=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=IDm7FOcC;
-	spf=pass (imf03.hostedemail.com: domain of error27@gmail.com designates 209.85.128.53 as permitted sender) smtp.mailfrom=error27@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-4a5177d78c7so22800295e9.2
-        for <linux-mm@kvack.org>; Thu, 29 Oct 2026 08:18:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793287090; x=1793891890; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=XKclWe9kzl34mf7ikCBlpHKdvGAXpEly40KTRKr1ZNY=;
-        b=IDm7FOcCwOyAMe4Z22TT/uRFprFTtXtCIAUPHAfD3LeYavBSAtTr9hy9J8O8UpJax9
-         9cB9DloExf8ksEh/3M3cCjO0Y4tbELFVaevbFanEX8IA3Myycxld5HZcbs69kePUTI1I
-         I3cWtOT79eFsxe+xJlj7S2PfEO7WmtZ0WRSGaksoQFUCSA3VWZ4UrwytUGt1BPJP88ri
-         QFZ/Wdicwo4iGTNxlthFFZeEokPD0fF7ErqJhKwoO26YeGXf2qk74oWJsjHUb/lkRmQ9
-         lr2za2kT8Wh/CXaiSvNi5Bh+K2/X76+Sc1ZzMhqwEhbDx45xyNH5YndVzRtckBFVUNOk
-         CUKg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793287090; x=1793891890;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=XKclWe9kzl34mf7ikCBlpHKdvGAXpEly40KTRKr1ZNY=;
-        b=GWThcutpvrvETz8sVeLoS8LSEO4nhsaIBaW3PMGAt22Mrlt1cpMCi1DNO1Lhrjn7sg
-         tmfYP/5L3WbjF+cxEpHbxuUq202HyMl6gYixSBXXdNBk1a/38NYtiDZqh+SgNGGjOPv3
-         5CRlfbOduxJ3qjCzZsFARAIJShcz2OvKe2bP9VJ84T6nRSaR9Z3+5VerWF9CYz/Qtesz
-         RZyXtMo4sVzbNbQ4II4mC4L7WOUs0EcqwOee+zHYIRjPjW7sBJRcoF40izn3LJvWsbN+
-         cLDeGfPGJbDaUiFUQE7hYEkhd6yRcf8PKOWvSO1naAKGjMHnmJUZCAP8GgO/51JHnxr3
-         3/Fg==
-X-Forwarded-Encrypted: i=1; AKwUvBw/eYxj2IpwkXBf2+bEA7Zt44PDFq3d/oM1UZcJNxOS8lozqjSU1RQ7iKJKpEapFRwtFVwryLWT2A==@kvack.org
-X-Gm-Message-State: AFq9FYKZAYjbAAuof4B6GYzypezhvRfuT/XW6NrwWThrMW0k6Y1p9LeP
-	EdZiMolHmGdniZnjfaFRLveH0L7VMzYMdEOKeOchryvbO/jh3Stm3GH1
-X-Gm-Gg: AYBFou2f3kIYcDM3l+20Yzh16FkEBU65lm6Lzol+VGcOJNLRDCIr9Hp1aKAhbMyuK1Q
-	7PKk/8h8TtyjOeapDotrP7UHKlh3rZWxIMdIqTIdyYKdKjQejDts4JlyTeuqGaZH0zUhk3Z6uJX
-	21fxeYSDq44zRN1lYGWeOFb0OCFg0cV4aH3p7q+Vn0UapDKqbiKZ/q5IZ5+OMMARqEi6A+JSsKS
-	7JPVj2XIeh65KK9IidPuJe/TLERYaDdR7c2CPWjyFJRM4E/wvwgbRlen5vQeNIcN/rTRjrPg4Fe
-	vLwFpOb/PPTkjI3dZ2tCbbGnr6zRURUAWMG92TrEc4Rxu+hGx6xT0S8m+i26PLDn5hraRNpvItg
-	qQ1SdLeTKaryOTWkQi5SZB8ZPu2zgOsg1y0O3udH939VQ8/lkgMPtyhOIOXYtZZJAC/ewbPZVTp
-	FInrIoxeMJpC45ln0amIsMbT7oADjNcYjrbziDSK6YUDHJlSXOMYGt4xsoKga+M2+sEI6MM+wUZ
-	NujIARpJnmnSM933HOwt7OHecPR1W409AnQGXIpk/AA/HUyT6gtYFk6wgBBxclmbj+Gs6f1NZJi
-	9Q7vYC9WxfbWTkx5s7oIUDm4PdRgLv93foBTAqmJhUZg9HyyrlfMM7/hCTtSTQhQXXSEsKKbB+p
-	HZjXSsKpRxvh3SEYfxTdsaixtkhz//5FRV7ZnJ5RDey0keepdtDqmF0kJrgIgEm93exA=
-X-Received: by 2002:a05:600c:4f89:b0:4a1:c6fd:4db0 with SMTP id 5b1f17b1804b1-4a966c41836mr142852995e9.19.1793287089736;
-        Thu, 29 Oct 2026 08:18:09 -0700 (PDT)
-Received: from localhost ([2c0f:3d00:6be:8900:ce5e:9212:ea4b:f30])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a94f05e4e4sm87571055e9.3.2026.10.29.08.18.08
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 29 Oct 2026 08:18:09 -0700 (PDT)
-Date: Thu, 29 Oct 2026 18:18:05 +0300
-From: Dan Carpenter <error27@gmail.com>
-To: SJ Park <sj@kernel.org>
-Cc: Xiaolei Wang <xiaoleiwangxiaolei@gmail.com>, akpm@linux-foundation.org,
-	david@kernel.org, ljs@kernel.org, damon@lists.linux.dev,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Michal Hocko <mhocko@suse.com>, Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Vlastimil Babka <vbabka@kernel.org>, stable@vger.kernel.org
-Subject: Re: [PATCH v2] mm/damon/tests/sysfs-kunit: fix leaked pid reference
- in add_targets test
-Message-ID: <auNjrR4FyTf4WbgI@stanley.mountain>
-References: <20261029075609.35661-1-xiaoleiwangxiaolei@gmail.com>
- <20261029141040.148392-1-sj@kernel.org>
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dNBXzeZb;
+	spf=pass (imf05.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793287298;
+	b=guMVlxcp86QIcvvTaWcph3K5i/r6DGJMC65LlPVbqZ1yySoPztjTbKIv7LKwdjlF0iKi3y
+	ITFcQxtqn4tLpn6mMbppvKc3lX5hspZIkSVDqL4Fel0nxVzPtDw7QBSGoKDNZWQFueltfG
+	ua/I0o6IY+bhXfnYGzXyW7xlJa1VB8g=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 3B403601F8;
+	Thu, 29 Oct 2026 15:21:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C02AB1F01816;
+	Thu, 29 Oct 2026 15:21:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793287297;
+	bh=B+9rlXcZZ8g+5YiYdei6kbu9KZrhPovwLjwJuy+h7zs=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=dNBXzeZbES6os+Zzxui4Zil8McbII2bpInSLLpLPFqT3WfE1SIJWJYlObDU+BBTZK
+	 Gh6iiURODXPC1QRKVZDzmn3d2LU4ytwmxhfM/FyYPCluGvotplbNmJDiavNEB8BxZg
+	 +1SrGz6edGBVHkAxzh1yNgQ7GXB6jzVpbOKR0CruZsbG8blRbZUgNhMuMqVMLZ0upW
+	 4DaKpkJS0gyDiFy/06rFV5JRjs+2lcqXcfUoeBtt+BpZ8bI6wKGaV3VinksrsvCJN3
+	 kfTb1LDe3Ksd2U5r0eca1UJBICmH8/eRDhOGgTcpzj34W5HOSotrHSBF93Iu877Z8i
+	 W2csXA5IB2N2w==
+Message-ID: <de5cfd94-279d-4640-95ab-97f44b6b9841@kernel.org>
+Date: Thu, 29 Oct 2026 16:21:31 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261029141040.148392-1-sj@kernel.org>
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 5D9722000B
-X-Stat-Signature: dicxgf5i3bk6xjz3q483go8zkaqrggjr
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 3/8] mm/page_alloc: snapshot the preferred zone against
+ shrink rebuilds
+Content-Language: en-US
+To: "Gregory Price (Meta)" <gourry@gourry.net>, linux-mm@kvack.org
+Cc: linux-kernel@vger.kernel.org, kernel-team@meta.com,
+ muchun.song@linux.dev, osalvador@suse.de, david@kernel.org,
+ akpm@linux-foundation.org, ziy@nvidia.com, joshua.hahnjy@gmail.com,
+ rakie.kim@sk.com, ying.huang@linux.alibaba.com, ljs@kernel.org,
+ liam@infradead.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com,
+ brendan.jackman@linux.dev, hannes@cmpxchg.org, mgorman@techsingularity.net,
+ anshuman.khandual@arm.com, stable@vger.kernel.org
+References: <20261028211930.3504634-1-gourry@gourry.net>
+ <20261028211930.3504634-4-gourry@gourry.net>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Autocrypt: addr=vbabka@kernel.org; keydata=
+ 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
+In-Reply-To: <20261028211930.3504634-4-gourry@gourry.net>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Spam-Status: No, score=-2.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=no autolearn_force=no version=4.0.1
-X-HE-Tag: 1793287091-325694
-X-HE-Meta: U2FsdGVkX19chI1CUf18peQlK971kSiGpyuu48lR8D2WhT2ZEV8Wj7Ba7Qqivf2tKfXkShBwHsNYVefFkDKh4+E7do2ljxfMBJqsBIvne9u/8AdyVpa4Z56UlSPHCKQkogwkbgkZALJM+64rxNfvuMLlp3YQIuFsH9h8u58TEolTipaYph3c8BaiBpx3q1fcubYv2FCt2jtsnrnz8qj/7aKK1gjFeA+IvaSTJhXcFqraD65/xTed1aHQA1pnPpvr0uMb0XcJP4PPfnNq4R8ELgRvj8LDag9kqJ0YsnlP2prpEekGZ8IfFg9B8vc7NUic+yn0awlG+xIgtwoeaNBhrSLVJ0KrtYWe2L/4S22kTQ5UvBSb0eimLSoP1tTo07ZU3rmMx5Tby3gbwvbSJH9p7itoxApnSKBm1/mRiqq+yaO0X2CKSM7ojXstaJRUyvidIi8omGGdeVfXP35oA1yZMWLbloqoChG0ln9igg7ceiq9G8CrDsDvQabaqQg/ZXA8UJ2MRr20Kinmq17M8BasPCePjzRkjvuVI91mrAGTs5SFZAXub+G+knK0u0k/2BtcVXTGSSccsXx7EwCUTs31EY6pjD+ds8hS+dzhhxvnUcSXT1C5xJOrNg1sfjsIXI/aLQi8fro/zeK/wWX/rOkMJi1rOY/UuMpwVRxEcugXq7vQl771rCgLC2ZSw9SkAXp0V7QSIHMWEin4caN08+d7gdZB6/LEWZ/fQVrxk+rClaVJRrc+ysT3nwcp2VfnfylM03/rHnqfuIu6rF025pkLdP28eMRk+aRKvGUCSb/4h+H0X9P+/EFroziR7t5NkkOewE2wWiaqXYy8g6z2UGHnyfldE99fLO++Xa/Ki9i5gRFAQ8oeF4JyzGvq9a1cgNSHinn0D8gd9EksgGr5L4M1FOd39lzTrlEliNnGfH3cd0HZ2/pV2osDCQ97imGrMGQfbxzv64ZyDWOvbOvZZvr
- 0AIzZyol
- Yx8uoOlyWlnNwGasKZmAS1mgNND8yswfz8KY6NY7F824LQGrqZpIf3VS0acQ8cFaOAavWTBKoHA4wV2srCnj2Uxxv57aXPnloHF0lQnVUF7N8sBOtHIm6rIbmhR5YvYmE68in7QGK72VOllfTaa89upDUdKA3PlYQg+5ib674OBPoUwP7x5R2FnKGPBK7X9vsuK8/2HA33BANLpkrHSWyTT0x7RjlnxcvSfrX+glMD19Y+GilZhcofZjiGEOFmXI/Z0VMYP5UTG2b/KPur+ttIfkjjbXsPg41T3tm0kLO+Zv8SDzHvSaQRUiIOEDIembANzzquNcJcBw2emUPIAxf7hOHl+6keN1Bp38BzlulS6je2G9z0CJzDWuZviZJypqsv9QamNZJ6gL52scqa0a9vIefR12HOL6YbB4sntg9odLW+Gd95XM5Sy906suFon86mlELnIBLJBLXZxoT9seQf3yx+3YCAEgAIhLQK2a0bhsUJ1uIt9l2Ztdu8d5TcPB9QAa59Luv05IYqC0=
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: C685D100010
+X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
+X-Stat-Signature: c1dpikfr5krj6fcfuoin7n1wkkx1ijqy
+X-HE-Tag: 1793287298-876230
+X-HE-Meta: U2FsdGVkX18Lwt1bOLUgdlH1NPKQWaeVVqu1yZxM7JY0xfL6jSpCB1X+z4/Wtc0IofvRQL559tB4ICPMXGof9Gmfb0pjh5tbN2tpcU9lpAbU94bPkorrFE8QfAGDbjHp+Ry55tD1rz93NTEMhJbOJPGRWiVsqiJL/8vsnYCNvNaW7Ct6YTkEkZA5Dlmhna/IWpaNUk7qB7VzSJMQLs7RFQUztOXPzXhSQ3AxFrLmOft5JaaNE9QD8p4BSiREKQFOcgFtdyKCsxz4o1B2dFxYiY3UfB4uGOmj/0Sk9mkYvKFqo5Mrd9LK9IywVh/vLxcu3U956afhPk7OvCOErmAaoTFJtq0VY4cHLGpjpURAT+Mv6U6QR+piA5vCMVuZw2Xagcyw7AXXiqsZ66Q+a4AtpDGb/jaJwlYrftHGzaokrz6ZyHLtlj6gdi8vEQmYfeYKhLtBiyZXvnbKts1Y9EwSt/k3DeKABpMrOPiZ/biizOtFGj1uG/ezwstqnH8jdjqEJBV4+O8DI48PpUOygwhEDX+HZXgi4XuxDuvHaw+LRifHn0vC9VJZZcsJHu+enNyznuknQOYgf0j3B4emWDQ0T9D9d0z3Ka/IUdD00fzo3Vu/Ih8Fc7QqKu3pYCyGrzmSXnPdKT7wiC/bfb9+FwWNLZH99ErSePhko40jIWZC4YW8gxULoTbFlRDksvXEvowuDSzBElNplv90flWRYrTnxReAfybEPEPwnUwxYaYHezbmvlbGooOWINWf7NTYRtu5Z2iqqDqILSFB7Ry34zNPGllcjme/67WxbvLA+MJkdTifLODsq1xnuMW/Bzdat1zY8TtBPxPt3v5GzLOqEMzcTG91qaFbRpY5ByH6gOsN/n7lWotdUCnrriAoWsxjxnFRkeyKL4XNuraJpUFw/6lOICTxOv84M/sSYn9gINxdP8JhKriDyoXFpkBqXSEUt2w+obcPfH0m9dUBnGR2EYS
+ ixjb05dR
+ o2sbImlIl/EdkRslz482eR7SyKRKOMfp7AXezL9cXjU1JeNWX5bH+AeKWmddpUhkKf8uh502ftajfEYIAqjhbGcZIKu2wRm0MPw0fRhZPCldGdYILyWw6SngeATeQ6LkRgQuLDG0CslGBOGmdUXsK9NdV+FhJZ6lXURcZJhqqEEbsXzd/QEktuuWnN4Xa32ixrGQT0Ct+/guzOgu+dqaTydBveDJN2vhOrm8McjuIL8G06uw/hP/X9ayV4Y7IX8WTyuQbrOsbFkcbuB+do+HCi8cnWWhXuAwarfxDtEMevX45luWf4GZzMOy3D9MOKhZnphcJw9xUM0NrlwvHTLuPzoFKi0jAar317ySaGXDtH+ghDGgvczt3vfPPm5ttt3VPHQx9Kg7qKD9C4izMYKsh5Xz8G9K0MlEo7e9Oc2eJFkMpeayDm6eLBevRoC1GrYCbjX3syaaUVvk9unTspj7I8AXAbg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -131,51 +142,34 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Thu, Oct 29, 2026 at 07:10:40AM -0700, SJ Park wrote:
-> Hello Xiaolei,
+On 10/28/26 22:19, Gregory Price (Meta) wrote:
+> get_page_from_freelist() and alloc_pages_bulk_noprof() reread
+> ac->preferred_zoneref->zone at every use. Offlining a zone's last block
+> rebuilds the zonelists in place, and the shrunk list's NULL terminator
+> can land on the preferred slot mid-walk:
 > 
-> On Thu, 29 Oct 2026 15:56:09 +0800 Xiaolei Wang <xiaoleiwangxiaolei@gmail.com> wrote:
+>   CPU 0                             CPU 1
+>   get_page_from_freelist(GFP_KERNEL | __GFP_THISNODE)
+>     zone = NORMAL (slot 1)
+>                                     offline_pages()
+>                                       build_all_zonelists()
+>                                         [MOVABLE, NORMAL, NULL]
+>                                         -> [NORMAL, NULL]
+>     rmqueue(zonelist_zone(slot 1), zone)
+>       zone_statistics(NULL, zone)
 > 
-> > From: Wang Xiaolei <xiaoleiwangxiaolei@gmail.com>
-> > 
-> > damon_sysfs_test_add_targets() creates its monitoring context with
-> > damon_new_ctx(), which leaves ctx->ops zero-initialized.  Since
-> > DAMON_OPS_VADDR is zero, damon_target_has_pid() returns true for the
-> > context, and damon_sysfs_add_targets() therefore calls
-> > damon_set_target_pid() for each target it adds.  That function grabs a
-> > reference to the target's struct pid via find_get_pid().
-> > 
-> > The test then tears the context down with damon_destroy_ctx(), which
-> > releases such a reference from ctx->ops.cleanup_target().  For the vaddr
-> > operations set that callback is damon_va_cleanup_target(), and it is the
-> > only place where the reference is put.  The test never selects an
-> > operations set, though, so cleanup_target is NULL and both references --
-> > one for each of the two damon_sysfs_add_targets() calls -- are leaked on
-> > every run of the test.  Running the test with CONFIG_DEBUG_KMEMLEAK
-> > enabled reports the leaked struct pid objects as unreferenced.
-> > 
-> > Fix this by selecting the vaddr operations set for the context before
-> > adding the targets, mirroring what the sysfs interface does.
-> > damon_select_ops() fails if the vaddr operations set is not registered,
-> > in which case the test cannot exercise the pid handling and skips
-> > itself.
+>   BUG: kernel NULL pointer dereference, address: 0000000000000060
+>   RIP: 0010:get_page_from_freelist+0x6a5/0x15f0
+>   Call Trace:
+>    __alloc_frozen_pages_noprof+0x125/0x330
 > 
-> Makes sense.  Thank you for finding and fixing this.
+> Read the slot once. Zones are never freed, so a stale zone is safe, and
+> a NULL slot fails the same way as walking off the end.
 > 
-> > 
-> > Fixes: b8ee5575f763 ("mm/damon/sysfs-test: add a unit test for damon_sysfs_set_targets()")
-> 
-> The impact is leak.  I think we should add Cc: stable@.
+> Fixes: 11cd8638c37f ("mm, page_alloc: remove stop_machine from build_all_zonelists")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Gregory Price (Meta) <gourry@gourry.net>
 
-I wouldn't bother Cc stable for unit tests.  It's not something
-which affects production or real life at all.
-
-I used to be a be more involved in testing and the rule was that you
-pulled the tests from the latest kernel and ran them against the stable
-kernels.  It feels like that can't make a lot of sense for unit testing
-so maybe for unit testing we didn't do that.  I can't remember...
-
-regards,
-dan carpenter
+Reviewed-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
 
 
