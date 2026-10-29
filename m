@@ -1,177 +1,125 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C09B1606A325
-	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 15:36:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAD07606A31A
+	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 15:39:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=SvnxR1RE
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=KtNbvFH4
 Received: by kanga.kvack.org (Postfix)
-	id BB0EF6B05C3; Thu, 29 Oct 2026 11:36:06 -0400 (EDT)
+	id B68C86B05C5; Thu, 29 Oct 2026 11:39:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B3A226B05C4; Thu, 29 Oct 2026 11:36:06 -0400 (EDT)
+	id B19C66B05C8; Thu, 29 Oct 2026 11:39:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9DB176B05C6; Thu, 29 Oct 2026 11:36:06 -0400 (EDT)
+	id A083D6B05C9; Thu, 29 Oct 2026 11:39:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 752DE6B05C3
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 11:36:06 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 12D83A7D64
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 15:36:06 +0000 (UTC)
-X-FDA: 85376064732.15.1B1A5C8
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 608C36B05C5
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 11:39:13 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id BB2571A01F5
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 15:39:12 +0000 (UTC)
+X-FDA: 85376072544.27.4A1F135
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 53689C0009
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 15:36:04 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SvnxR1RE;
-	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793288164;
-	b=QBIYLUK4uxI4WI2EucoNVZDoSdVLZplBHd+/LH/XMJU5nlhTvuq12pzZlNPWhgAdKwlE1s
-	5Y4x52hRAWTGyt7hcbWj53+WvEw0ThMbxSRVsMUoHeNyxB642hmoU9LRll2/LJ7Mdz//Pt
-	yZFNzaBwUJiMqRj7ZMIamrU/XIVSw84=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SvnxR1RE;
-	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf25.hostedemail.com (Postfix) with ESMTP id D100FA0005
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 15:39:10 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KtNbvFH4;
+	spf=pass (imf25.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793288164;
+	s=arc-20220608; t=1793288350;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0MZ+Cdtu8ZetD6MQAGKoqkVifXgXtqYdnKHo/eTOhbs=;
-	b=d0weok5w/1iUQAg5r5kI1ARuUhvvckM4zZBwFOqeIGp3HLouJwtwwhRPgynwT1CeyqKE4d
-	0UNS1vt6bT5IRkj17SXAP9m+/yfRtKi9Zdj/aSELEJCSlG0muQd3NzpTbFclNEpy6p1doq
-	HNnS3pP1oJrtb/oUApAGXsCm/IiCaUU=
+	bh=+0yjXwf7zZ1/G1ToyAZvwzcg/8Wure4Qebgzn6jDw2o=;
+	b=YYbzAYnpz51IrjjcDOGiUwcRyF16YWRNfttfd3GWq1cl37q3A7pifa49PCnvWPmbWaCWyy
+	1dFLrKedausYWJYjlWCWAB56vFHJY6YdY2Cjhjl0X1OX2syII0RWRV5Oq7N2LRCjo4Rdw4
+	AhoE/AkylZpKLXcnJrDGnqW7Zo5L20k=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KtNbvFH4;
+	spf=pass (imf25.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793288350;
+	b=vProcTwR3IhQre8B3qUl5AVOtYkKl54uz/JdKb0kqGYubZ2jesIRUW2+JBbvUXjsJbLe3O
+	5da2W1cFWTHcfo7r/ulNrbdXZv6sQVNYK9eQkeJRRy9YjPwDH8Z9oOcYd1H1FKbJdi7U0p
+	yJrOl3hFspA5BX1IumTaEDLQwZkl+L0=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id B64FE60267;
-	Thu, 29 Oct 2026 15:36:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBEE31F01824;
-	Thu, 29 Oct 2026 15:35:49 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 5C701600DA;
+	Thu, 29 Oct 2026 15:39:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2BCC1F01824;
+	Thu, 29 Oct 2026 15:39:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793288163;
-	bh=0MZ+Cdtu8ZetD6MQAGKoqkVifXgXtqYdnKHo/eTOhbs=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=SvnxR1REqXjogeGPFsmkj46v0mjpHOkSNLkbtpJLKJnBH2R57tcgmfFBLxg3pg+tc
-	 hyT1sCGbf5V9UaG9pEvhmd/4dZjpLb7ssvKXSN0V7KILMB8LcOXEFLy+Is3AkWvyyS
-	 uSMXMe7F5Ryv+os8+r6jBBYCoI2bgM3QV6MI/39SdvciA0pOCwQNuaL5x92OOIZgkI
-	 jYsv8a3nz9ca+51kEv6QxK7fMZmRnlAZUIelKhdKNS2pI48R9iE46PIH/2UXUpYFFp
-	 b7sZoOi9kvVNaM/xMhYaE69JMYiB1hlPi/NKqIFfmvSD0Fzq0an+EX7an9WJEKizxt
-	 w7qkPA0NsvJBg==
-Message-ID: <957fc9ce-1789-41d7-a4cb-66acdf7fcecb@kernel.org>
-Date: Thu, 29 Oct 2026 16:21:54 +0100
+	s=k20260515; t=1793288350;
+	bh=+0yjXwf7zZ1/G1ToyAZvwzcg/8Wure4Qebgzn6jDw2o=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=KtNbvFH404X0mtuGoj7Vu5oAoA+/JglIBBuLwOsA38IKk/11U2UQxlO+VhuVDTvil
+	 DwVIOuYSUE7qxQt2APGi69YO4D9H6gtXfM0vzIqiU4Mf2dXbPUJPpo5hjySjkuFCPc
+	 /JuJy8ZSIFNcaS+Rs2K5yIGQ/9XytBXIb5MZ+JWgoxK/a4NGGquo8Fro5fEeGdBNuS
+	 yn9dmocZDxQa93o9fgo4T2fcyY9s3j1iWVW/r+aifoWczxhfR3JSKM9qp/yUUIRKFs
+	 ilLOQtctvujtimEXG9Y2hkfGqwOVgLfNOvrFuNYx+yUYb7xHy1tE+fpJbTmyTi0Uep
+	 fAfrEPWbC8jGw==
+Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
+	by mailfauth.ams.internal (Postfix) with ESMTP id 8558C198003A;
+	Thu, 29 Oct 2026 11:39:05 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-04.internal (MEProxy); Thu, 29 Oct 2026 11:39:07 -0400
+X-ME-Sender: <xms:mWjjavqZF8ILa7GFmJFT86blR7k_DlTz9ED8h5mfEBaM3GSziIQipQ>
+    <xme:mWjjaqHyR7KyUAAkhd_S_blWhizqPE63kya9v5qMVUQbFVLEGAh07sK1B4LdqGAaz
+    WLKUsSfmJtwCm6ND2EriXZUffFBQBwkL2rlJUHuBrJJ9RRrtl4hagH3>
+X-ME-Received: <xmr:mWjjaho4yavLEyDGhcv1z7Mg95mxcXyE4Quo-NP5luhgau8BXtLJ-Y3TWEI>
+X-ME-Proxy-Cause: dmFkZTFNlLI1IxnysmwtxDbPBbt2dqnvQhYipohEcx8dPwIJIrBgAtFUMCeSCRLUn7u/FW
+    UJHxDkt0ROnXfFadeQtiCMM/RXRAtrrQVUGl5N58b1fgZRYRaTyROC31lQTfeZ8KbXzn3o
+    1iblUPv5lQsPi35OYZrwn0KFWjWElIqjIL9Q3FpGeATyjJJCw3m52D4TW5EsY55qwO5bwQ
+    L4tJ3d6vs/G6neLrJOfICTE6JsI3AzVh2GvhCHK2ltNKIxcjHCQEoOcYmbZqhhQ3GkH72f
+    H2adk7ABosF30oW/TTEpL65vQG5ZxGrmyE0nmd55Y2l6qH+ynwtzmGxyCXtI0WrAcjz3an
+    Q4xGGzYI/IoTBk/VX9AsQAiiMVBH0c+EfrLUzzx/Abe3/LQ4nGf0hfBf94strHo2SHnGDv
+    AlOBnZXY5b2Qu2gRP73I3htQpOZ1IxTQ1ycrS11vSBwv5A782pALFSZYBhGeMc8g1ZjJYc
+    9Svn6Dgwjqs6YNAmffDusdRny6sr54vrgPHIWYQMEp8V8oHexi7SJCCaJTltC9F0v1LdLg
+    EaTsM0e7JVAMdOyh+f+bkRx4yvtjD6InTFZvLkcgMVymvw6BwaPpheLKCEntVPvCbMop2J
+    hPmtr+CHw4FXrXFxZrPj/8MyZLBO2+D9DxeCxvFuzbQQ9Zcsvl5khQqZbDLw
+X-ME-Proxy: <xmx:mWjjag2WREewV6wSGyONMkVOEjaeWnca5tphcv-FngRdtmveuHhgzA>
+    <xmx:mWjjaisKt4iSOJeJWqljwsoGFLdMnjx7vZlxan5So5qapDzh5jCqeA>
+    <xmx:mWjjapH9fmjjz_dUmQsX_cShxLR_2BSYoF4NB_NvXOUlmeLOq_ZUsQ>
+    <xmx:mWjjah0iUHxiDrcn1Cff4bYXPkduGpXLnqxdVbb_878uGhTIra3Leg>
+    <xmx:mWjjajo7kks2AsRow9vTTyrBXgkIAA2JRqIYIl7zQ-Cl_CKIG0Q5mDQj>
+Feedback-ID: i10464835:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 29 Oct 2026 11:39:04 -0400 (EDT)
+Date: Thu, 29 Oct 2026 15:39:03 +0000
+From: Kiryl Shutsemau <kas@kernel.org>
+To: Mike Rapoport <rppt@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
+	Lorenzo Stoakes <ljs@kernel.org>, Michal Hocko <mhocko@suse.com>, 
+	Suren Baghdasaryan <surenb@google.com>, Vlastimil Babka <vbabka@kernel.org>, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, stable@vger.kernel.org
+Subject: Re: [PATCH 0/2] mm/cma: accept memory of CMA areas reserved with
+ memblock_reserve()
+Message-ID: <auNoZgOgoFElHYUt@thinkstation>
+References: <20261029-cma-multi-v1-0-2cbced8b5cb7@kernel.org>
+ <auM6lKGAeUI26jCj@thinkstation>
+ <auM-tYrdV4TJgJ6K@kernel.org>
+ <auNE2XEGreHRKoPO@thinkstation>
+ <auNgRT19droHmv3Y@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 05/46] mm/truncate: look again if a folio left the mapping
-To: Kiryl Shutsemau <kas@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
- Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
- Lorenzo Stoakes <ljs@kernel.org>, Kairui Song <kasong@tencent.com>,
- Barry Song <baohua@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>,
- Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
- Baoquan He <baoquan.he@linux.dev>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Kees Cook <kees@kernel.org>,
- Peter Zijlstra <peterz@infradead.org>, Jann Horn <jannh@google.com>,
- Pedro Falcato <pfalcato@suse.de>, Hugh Dickins <hughd@google.com>,
- Pasha Tatashin <pasha.tatashin@soleen.com>,
- Pratyush Yadav <pratyush@kernel.org>,
- "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>,
- Zi Yan <ziy@nvidia.com>, Lance Yang <lance.yang@linux.dev>,
- Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>,
- Alistair Popple <apopple@nvidia.com>, Nico Pache <nico.pache@linux.dev>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Usama Arif <usama.arif@linux.dev>, Matthew Brost <matthew.brost@intel.com>,
- John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>,
- Will Deacon <will@kernel.org>, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
- Nick Piggin <npiggin@gmail.com>, Oscar Salvador <osalvador@suse.de>,
- Minchan Kim <minchan@kernel.org>, Muchun Song <muchun.song@linux.dev>,
- Xu Xin <xu.xin@linux.dev>, Chengming Zhou <chengming.zhou@linux.dev>,
- Chris Li <chrisl@kernel.org>, Kemeng Shi <shikemeng@huaweicloud.com>,
- Nhat Pham <nphamcs@gmail.com>, Youngjun Park <youngjun.park@lge.com>,
- Gregory Price <gourry@gourry.net>, Joshua Hahn <joshua.hahnjy@gmail.com>,
- Rakie Kim <rakie.kim@sk.com>, Ying Huang <ying.huang@linux.alibaba.com>,
- Jason Gunthorpe <jgg@ziepe.ca>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, kexec@lists.infradead.org,
- linux-fsdevel@vger.kernel.org, linux-arch@vger.kernel.org,
- linux-cxl@vger.kernel.org, stable@vger.kernel.org,
- Josef Bacik <josef@toxicpanda.com>
-References: <20261027-fixes_core-v1-0-6f74bec9a5bb@kernel.org>
- <20261027-fixes_core-v1-5-6f74bec9a5bb@kernel.org>
- <auIniV8YSpA4_oxg@thinkstation>
- <2f2ef336-2186-4f20-b7f5-565e60471bda@kernel.org>
- <auMvYdTd_e9O9kDj@thinkstation>
- <7fab2115-6c44-43b1-b03b-8ce4a37ffe32@kernel.org>
- <auNaOMYUUpnzCofx@thinkstation>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <auNaOMYUUpnzCofx@thinkstation>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <auNgRT19droHmv3Y@kernel.org>
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 53689C0009
-X-Stat-Signature: r8opju34fgk8dkzqs51awozu7fu7pcu1
-X-Rspamd-Server: rspam01
-X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: D100FA0005
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_SANE_1 autolearn=unavailable autolearn_force=no
-	version=4.0.1
-X-HE-Tag: 1793288164-66757
-X-HE-Meta: U2FsdGVkX188mfBP/ILGUHIykxRqtnyLAkHHbx2W6Slb/ycWf/tAa0xcMW8g3CA26mUdWxAuwym5e3lcJNxyyj2c2i08+ZK3m5FIWnC5lpWltVapHY0GGLXd4XwFkHuyD6PJjqUFGpCEy77l9HW2zJQZiqiCg5FEIDx0CmJyjfGZ7p+qmN0tI9cLpBtRqnvQPza24PiloivolLc/sNqtZhV578eTMheULkNwCyBoCtPFzot7tpCHyFFJb5fmeXADLQT1z4N8iw9PsuLom80nazX765R0uKr8m1vxScZJAEAEa+o79Mkv7ZxQMoEnXPXwc9HrpxbzOAFIglfobs57lWq3QAE1kiPpv9E5VK33Eix5FpgDt8zPj0hiHi4gKlIs7GXek+/2CcyK4S3bBfsemqm/RlnsG4cKN0FNCtIQ7wHn8utZtE6sJvUe5m2TBRzPKRBk7NJSCor1PDQy3X7ewiF9NWrvUhjCf94xEOYeXBpdn3hIxoKPDnDd19nxfEkXLzqNpS2TIpKpE4YnOCYJ8ErHKQ6Cr9w0N/LnC2cfJ8MvxnWt4mJYUfjfv7qDrwulhLuElXM4hLkSgaGizkpEcSEagGTzZZfsJzIrE0FacxpJH4LpxnBPy/PjulSZAyW8GcvWNVveJhpXzZRGknibsbdZBh32bXhvmnJPIuThlCL/NbQcPQ9lJu7vCjWf6ZneXq6voRmqMBxv+EZNwCIPNfov9CR/KeDanDsDEs2i5HUPPVDfqw8dqIF90WksAmvfaLaeNWEMBz9ctzp9K3lg6Q3pnH/j+ZytCXmi1D8nUOqJgDMpgxD7XmO34exdreR1wYCyvxgWNtvM7j1wHCm9uSTwY/rW8sXej2laxSvneBXi+szQu0VOEN4yqnDPNVGo+T43qakG5qYgWou1Ot6xrlnC7RsniITNCBkmwUNP+l/IDSBbKU2PSGqsVQnv29hgYvBfFhX8aS17DmTNEr/
- bl1YJrty
- tDrQGvHcqErYunWyX4MCOh3qpmS9lh7WZEDgD+YIQeuhDmhxEbs+/AugguN6PxOOq+JKYfMoctH/3FZ2cipHUZ7r5llbkF7Pi7fG8CMWeuCA30PAT03qb+RQ5D9DX0eQqqjLVWgDtJuVUWH3+teQMRqCLOB1K1wgCrqYJUkB6xnizH1bkncxMUsJH0ob5gzfD4kvJbnl6/lqoVNZh8SKhgPOOmlXvn7vehNtJdW817vtJjtGFCTdjNr3edq+QNWLCShRlcUZzPQulXUsVT0rVwP4dRY7g/oNHfYZ3AAgvLmsD1RUlGzO7IyTEhPQ26UQbqnzB0gpSiNrX63FlPycT44Mc/Dowck4y+f6Aqjt6TBGR/D4=
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
+	autolearn=ham autolearn_force=no version=4.0.1
+X-Stat-Signature: 4xpuey8ezkf47kbr5cfb84fc9oqsejoc
+X-HE-Tag: 1793288350-731304
+X-HE-Meta: U2FsdGVkX18dZb4+/sCwYpy7b4MlImJfPfRE4wG6aYdqjP5whBvmKOx3/EJm2PwoMhuYWkdVThBq3RiTmN/MkpxtCS1sjIq61HX9dck/G79chldWh4WQCfs7KvPzTpf1FiCcVLHfnq1zfmF1IdnX+eVdO9wQFiztySCbKvoHJu/SxqJOVwjuK1YEZcIHzfDrpCj3xj/eU2U0HRv0TVgrarppBHj5jLISgCe5QOwrSvlFevdrPCMv13U2keFPDAyuERq3P1yDwS3w9ffspCL1kdmaUCXnvq0ocU1GQ7KhmTKcEJxteAzEJdlHyrbu5kDaNhb82cvXI+592MIcf50B/Xr705vTFqQd8tKOGuh4U1vKOJsMzipc8xBChhl4w6xlP3zgvXY26/BF1yM6yZ0qcgkDqgulSmTHUKnd8W/aUX7TSIdpZ7PKuGno61mFrGo3suUJy6gW+DbJqOkZIxBWZisPt1jPCzH8/CgyOKr8JozvHZDbw8El1o32IYdClvcIB+giW0bSM/98qyu7szMBSW3scmdPBCSDFUOXXu0UU6jas/NaLB8hghk/6pn6IebtNwMqExjznAsmNSXEl9K8RRuLeltzXQhAS/Mh2FJCRp71/JBXaUKu22kZG8J0prxJdvINCs8WwCw8Jc0q+VR39UzQ5F9HBQv0A6anv/LoeJtf3wbDh1J1K4pRs6d7yT4kNHd94a2u1hgGmHw/GlwdXuDGnEo8oQktV7cPf4P+jABkAJrySBfthJLPmsIRLJqcAYGkrcggj9cq7qt5Y88DUavCYQG7J9pRbCzj7Du+dmK25zd5wl6mnw3li7PfepD00//gUULcRXe8AwotOM0DnHBuCUWy0F6CQOMeAVGbitwFCaGwwFhxsJGWeCKVGk8vKtXXOxqcb7dFVgxcpxdYrfPlrB0ewEzcnyXigENLFiCBqqyCb1czqu7NJMDfrGbmpvK6+YPRWpyEGzVlvY5
+ 0fAt8uvn
+ ijhzR8tHSJ8YlXArNmMf/GdaMNWTr+wt2m6jme7UnXSM1FVupaBbGf803mLV6r1Gq89F6E9dVere0un+XIFJ98o7/GN9WxC9Jyk/Yq2D/H+P9uJrx/d2QuEsY2f8jzgXsurfy/kCClaRBqWF9LIDW1VtRG49FZ6A16M7ewy1au82sfYbBaPcqOK3H9LE0eYUONSpOl/AGuLL9c1WhEAC3vF4rsBoSX/TU1j0XSiX9O0TnK1MRqH40f39fJClyDiVDAbk8YEPON3pW9dJ+Ik6cwNCFStkyKHwV8l/mLAjzR08CrpP1u1Z8UAm5HPMBx2VzY/nQ7ThjIHTtBQtgsX2LZT6QSnIA2089Bp9I
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -180,108 +128,51 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 10/29/26 15:38, Kiryl Shutsemau wrote:
-> On Thu, Oct 29, 2026 at 03:18:23PM +0100, David Hildenbrand (Arm) wrote:
->> On 10/29/26 12:37, Kiryl Shutsemau wrote:
->>>
->>> Yes, I missed that the loop only goes back to start when a lookup
->>> comes back empty below end. When the last batch reaches end, it exits
->>> without another look. It doesn't need the split either: any punch hole
->>> whose last page is in the page cache gets there.
->>>
->>> That exit looks unintended to me. b9a8a4195c7d ("truncate,shmem: Handle
->>> truncates that split large folios") turned the "if (start >= end) goto
->>> out" early exit into the loop condition. Before it, the loop went back
->>> to start until a lookup from start found nothing; Hugh kept that on
->>> purpose for hole punch in 792ceaefe621 ("mm/fs: fix pessimization in
->>> hole-punching pagecache").
->>>
->>> Restoring it is enough, and makes the "restart to make sure all gone"
->>> comment true again:
->>>
->>> +       if (start >= end)
->>> +               return;
->>> +
->>>         index = start;
->>> -       while (index < end) {
->>> +       for (;;) {
->>>
->>> Then a replaced folio is found on the next round, and truncate needs no
->>> special case for it.
->>>
->>
->> But that's then another lookup even if not really required?
->>
->> Why do you thing that is that better?
->>
->> I agree that the code is simpler, but at least it's consistent with the other
->> handling.
+On Thu, Oct 29, 2026 at 05:03:33PM +0200, Mike Rapoport wrote:
+> On Thu, Oct 29, 2026 at 01:17:06PM +0000, Kiryl Shutsemau wrote:
+> > On Thu, Oct 29, 2026 at 02:40:21PM +0200, Mike Rapoport wrote:
+> > > On Thu, Oct 29, 2026 at 12:27:23PM +0000, Kiryl Shutsemau wrote:
+> > > > On Thu, Oct 29, 2026 at 12:18:36PM +0200, Mike Rapoport (Microsoft) wrote:
+> > > > > Pages of allocated CMA areas are released to the buddy allocator with
+> > > > > __free_pages(), which does not check for unaccepted memory.
+> > > > > 
+> > > > > This usually works because memblock accepts the memory it allocates.
+> > > > > 
+> > > > > However, multi-range CMA areas, used by hugetlb_cma, and fixed CMA areas
+> > > > > requested with cma=<size>@<base> are reserved with memblock_reserve() and
+> > > > > their memory is never accepted.
+> > > > 
+> > > > It feels like memblock_reserve() abuse, no?
+> > > > 
+> > > > crashkernel=size@base already uses memblock_phys_alloc_range() for this.
+> > > > Should the fixed and multi-range CMA paths go through the allocation API
+> > > > as well.
+> > > 
+> > > Fixed path already has the range, why would it use allocation APIs?
+> > 
+> > Having the range doesn't make it a reservation. Both paths take free
+> > memory for the kernel's use, which is an allocation, and an allocation
+> > has to be accepted. memblock_reserve() is for memory that is already in
+> > use: kernel image, initrd, firmware tables. Using it for allocations
+> > leaves acceptance to every caller, and both CMA paths missed it.
 > 
-> The extra lookup only happens when the second loop had work to do.
-> Normally the first pass removes everything, the first lookup from start
-> comes back empty, and both versions stop there. When the second loop did
-> run to end, it costs one more lookup over a range that is now empty.
+> memblock_reserve() predates any allocation APIs and it is used to say "I
+> know this memory is free, I'm taking it". So memory acceptance should have
+> take it into account.
 > 
-> What I like about it is one way to look again instead of two: the loop
-> already goes back to start when the last batch ends below end, and the
-> patch adds a second way for when it ends at end. truncate is not like
-> shmem here: shmem_undo_range() stops after one sweep on hole punch on
-> purpose, so it needs the rewind; truncate was meant to sweep until
-> nothing is left.
+> > If memblock_phys_alloc_range() is the wrong tool, let's add a
+> > memblock_*alloc*() helper that takes the exact range and does the reserve
+> > plus memblock_prep_allocation(), the way memblock_alloc_hugetlb() finishes
+> > its own search. There is no search, so the multi-range path doesn't get
+> > slower, and accept_memory() stays inside memblock.
 > 
-> Your version fixes the bug too, so I'll leave the choice to you.
-> 
+> A new helper that does reserve and accept makes sense, but let's do it on
+> top and also audit other callers of memblock_reserve().
 
-Can we just do:
+Fair enough. Feel free to use for this patchset:
 
-diff --git a/mm/truncate.c b/mm/truncate.c
-index 733d2713a875..9e9bf029635c 100644
---- a/mm/truncate.c
-+++ b/mm/truncate.c
-@@ -475,8 +475,11 @@ void truncate_inode_pages_range(struct address_space *mapping,
- 		}
- 	}
- 
-+	if (start >= end)
-+		return;
-+
- 	index = start;
--	while (index < end) {
-+	while (true) {
- 		cond_resched();
- 		if (!find_get_entries(mapping, &index, end - 1, &fbatch,
- 				indices)) {
-@@ -499,6 +502,7 @@ void truncate_inode_pages_range(struct address_space *mapping,
- 			folio_lock(folio);
- 			VM_BUG_ON_FOLIO(!folio_contains(folio, indices[i]), folio);
- 			folio_wait_writeback(folio);
-+			/* Do not handle errors, we'll do another lookup */
- 			truncate_inode_folio(mapping, folio);
- 			folio_unlock(folio);
- 		}
-@@ -760,7 +764,12 @@ int invalidate_inode_pages2_range(struct address_space *mapping,
- 			folio_lock(folio);
- 			if (unlikely(folio->mapping != mapping)) {
- 				folio_unlock(folio);
--				continue;
-+				/*
-+				 * Folio might have been replaced: look up
-+				 * again.
-+				 */
-+				index = indices[i];
-+				break;
- 			}
- 			VM_BUG_ON_FOLIO(!folio_contains(folio, indices[i]), folio);
- 			folio_wait_writeback(folio);
--- 
-2.43.0
-
-
-That would be easier for me to digest than the index <= end thing.
-
+Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
 
 -- 
-Cheers,
-
-David
+  Kiryl Shutsemau / Kirill A. Shutemov
 
