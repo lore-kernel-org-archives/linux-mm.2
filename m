@@ -1,96 +1,111 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D6A6606A31D
-	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 01:29:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 491DA606A31C
+	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 01:35:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (1024-bit key, unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=qgv4ByLt
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=XLa/rrVV
 Received: by kanga.kvack.org (Postfix)
-	id 52C0E6B00EF; Wed, 28 Oct 2026 21:29:10 -0400 (EDT)
+	id 5AC566B05B2; Wed, 28 Oct 2026 21:35:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4B5D36B05B1; Wed, 28 Oct 2026 21:29:10 -0400 (EDT)
+	id 55D426B05B3; Wed, 28 Oct 2026 21:35:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3A78D6B05B5; Wed, 28 Oct 2026 21:29:10 -0400 (EDT)
+	id 472B96B05B4; Wed, 28 Oct 2026 21:35:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 0FAF36B00EF
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 21:29:10 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 85185160260
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 01:29:09 +0000 (UTC)
-X-FDA: 85373930418.19.0393A2A
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf11.hostedemail.com (Postfix) with ESMTP id B2E2F40002
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 01:29:07 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=qgv4ByLt;
-	spf=pass (imf11.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 1055B6B05B2
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 21:35:23 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 7705A1401FD
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 01:35:22 +0000 (UTC)
+X-FDA: 85373946084.12.9FE0CC1
+Received: from mail-pf1-f200.google.com (mail-pf1-f200.google.com [209.85.210.200])
+	by imf10.hostedemail.com (Postfix) with ESMTP id BC8CFC0002
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 01:35:20 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b="XLa/rrVV";
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf10.hostedemail.com: domain of 31qLiagYKCAUpzsn3zlttlqj.htrqnsz2-rrp0fhp.twl@flex--kuniyu.bounces.google.com designates 209.85.210.200 as permitted sender) smtp.mailfrom=31qLiagYKCAUpzsn3zlttlqj.htrqnsz2-rrp0fhp.twl@flex--kuniyu.bounces.google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793237347;
+	s=arc-20220608; t=1793237720;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8qwyeiOdfw6vGb0L8uIG6+BGz4UgyPwLOvdoFvPupG0=;
-	b=2wL9zI6yf/Y7AFb9f8HfpD+/Z3m5nTBQ5Bn4d8VO/hUTpm/ZyoiQrdf/ClQ0xUQd6GLwzV
-	a7lj4IPMArpEYu3QpoBXpl6nm5zprY7j8OMbeXwixRkHplRoIctDQNVJz7lbUpzTwJRFeF
-	N2pKd/jhVKzkvFxQ/BqgtoNTaE6OKlQ=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793237347;
-	b=O+Wv+kSf+QYsGaauA635J3wot/OFteLzLnJ7yA1rJrPdDGcGl9SuwX1qUf4/XKruVwlVKP
-	QhewDNG3BRMXC9jXJFaeTiS6c5/diyFYckwPL31XX3EA3VXNQq5QI5Hi9vA58gAcGpIBiM
-	t4ZZ1noX9KLQapYi1YitH7IaAE+NUCA=
+	bh=JEH1NfbaYrwZPx3ay7Pd4dSyZn96eHDpie+yn6sEgao=;
+	b=qZOnsddwAM7GfNU97Hw62NHQWcWdEzcc96+sI5LazufedCbYn8ZNimQl+iSGii4Phy0LBn
+	P3praWsi4dbnbX165+GfcfNjgMsBdAvh5jjEjWsTjqZPdNJyCWDArVSKY/Of68qC15uoVP
+	Mg4pLCLUe4FzfF9lIO6KGhYl2iNTv6Y=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=qgv4ByLt;
-	spf=pass (imf11.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 024A2600D1;
-	Thu, 29 Oct 2026 01:29:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65BF61F01825;
-	Thu, 29 Oct 2026 01:29:06 +0000 (UTC)
+	imf10.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b="XLa/rrVV";
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf10.hostedemail.com: domain of 31qLiagYKCAUpzsn3zlttlqj.htrqnsz2-rrp0fhp.twl@flex--kuniyu.bounces.google.com designates 209.85.210.200 as permitted sender) smtp.mailfrom=31qLiagYKCAUpzsn3zlttlqj.htrqnsz2-rrp0fhp.twl@flex--kuniyu.bounces.google.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793237720;
+	b=N8uZx9PLkv+2vfo5KKpoK87C6A/Vga8fQ7mo50JFflZ7unDZ2eBFuoD4Wns+0AwnzOSHJ2
+	F2levZ7kx71iLTVeT10TO6zpX/kvAn1sr/e9+TRxj0OK8KToQoesVsaOtZUM6HWIGYES5o
+	7S3HxVs3TwCsB2ckC/TkNBaDSAo+gZQ=
+Received: by mail-pf1-f200.google.com with SMTP id d2e1a72fcca58-8a08e315b5cso701846b3a.2
+        for <linux-mm@kvack.org>; Wed, 28 Oct 2026 18:35:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1793237346;
-	bh=8qwyeiOdfw6vGb0L8uIG6+BGz4UgyPwLOvdoFvPupG0=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=qgv4ByLtJAZquTR5cCSx5SeRbA+nAU8G5F0i3qyZkYx0ByYKUvvP97WRdju74FR7J
-	 y0Q2vKypJjTmZA0gN92NrcG+ab1nrvBk7oD56b6cigPnqfoZsgf0gbNaCCPrfRSVIC
-	 8D3ptcD2U9O8dmbdC/z0DsqvVqQDD40Qr5+Rbcb0=
-Date: Wed, 28 Oct 2026 18:29:05 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: kernel test robot <lkp@intel.com>
-Cc: Karl Mehltretter <kmehltretter@gmail.com>,
-	oe-kbuild-all@lists.linux.dev, linux-kernel@vger.kernel.org,
-	Linux Memory Management List <linux-mm@kvack.org>,
-	Bradley Morgan <brads@mainlining.org>,
-	Jonas Bonn <jonas@southpole.se>,
-	Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
-	Stafford Horne <shorne@gmail.com>,
-	Cc@kvack.org:Arnd Bergmann <arnd@arndb.de>
-Subject: Re: ERROR: modpost: lib/kunit/kunit-example-test.ko: symbol
- '__mulsi3' undefined!
-Message-Id: <20261028182905.016f44ee406076e80c6e2f5b@linux-foundation.org>
-In-Reply-To: <202610290106.o8Fs3NvO-lkp@intel.com>
-References: <202610290106.o8Fs3NvO-lkp@intel.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+        d=google.com; s=20260707; t=1793237719; x=1793842519; darn=kvack.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=JEH1NfbaYrwZPx3ay7Pd4dSyZn96eHDpie+yn6sEgao=;
+        b=XLa/rrVVVmeiKTZlNyuqTIT/vqhFccEm8SGe89Y6q7Zc4uhT7WmROCOiRksf6qPMZl
+         NDbMng+DAcsqm1JQGosN5zAw9gADSP7m2i0c2l2zRDqBeUYw+mnUEk31dBfVne8uwNcz
+         h3LhzR312cdHil+LamwfrynBptsVOoWw6k4nfnMrTLjQGKhV+mMqfyjr1didJfFrTQwF
+         EFGukPOqK1QxAgm8jmC47prZBozFY//I/wZLNb7ezsmqhQln6j/7E5ieulTktWjfE1as
+         XUXYx2iEh1fY17nykxnO7Ph5lsxUOoI/ota/1M8Z/+7GZ1VghD0e8gUtLPuEzQ65MSZW
+         TNcw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793237719; x=1793842519;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=JEH1NfbaYrwZPx3ay7Pd4dSyZn96eHDpie+yn6sEgao=;
+        b=JuLFZl1zfHrdwWg+s51ZWJ2PuLfBmTa8djBGq9WL6q6DBX/B2lNQ5w4wFOvrN/pcin
+         mmJw0aiqtWl+lAAhWakQK9oHDCu9c0EPaRYAjBMRM8ZUtS9ZEc4tYcWEXgrVxKTXoQhf
+         YEE0qUdz7PC2uyGX0knn+/+Axoj5mVJAOwECXoFvnx+dt621dtBMiBxA3+30v0K6OO5x
+         7Hs+6lZ0k7dRFdOXcv7BJcjia9rpajoFM0guA5c8X5VDNZqRlXnooctlnf7GOrYPaNiX
+         XHxXHhjcM5oXlNstDKI4a+cPTeeCapbne33SL9E2ZYfakkN9LQfG5SS9u5b0uUgXdzmU
+         dmaw==
+X-Forwarded-Encrypted: i=1; AKwUvBwRA9yzE8tUkJ9d4vOVePx7HlRImhDEnsLo4RGVQAigJ4H0DysPj2zo5GTn7vTXxPOcLGLxpF9kDQ==@kvack.org
+X-Gm-Message-State: AFq9FYIhf5LMyGSca+OXN2IZ7K93ryQm8bj2hlxjdGBZr3e0J/vAIKZV
+	7z7StmF7I9/35cfDWuoM/gVAHaLXtorxRz1ZOcE9OBg0d+TZ+kneMM9B2CqcRcl22Bunhm4x+0D
+	fgTbzoQ==
+X-Received: from pfbft10.prod.google.com ([2002:a05:6a00:81ca:b0:887:8dda:c9e4])
+ (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:1d99:b0:89f:fc75:6d99
+ with SMTP id d2e1a72fcca58-8a6e869953emr3363442b3a.60.1793237718994; Wed, 28
+ Oct 2026 18:35:18 -0700 (PDT)
+Date: Thu, 29 Oct 2026 01:35:18 +0000
+In-Reply-To: <auKYs_ucslI-tdar@linux.dev>
 X-Archived-By: <archiver.kernel.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: B2E2F40002
-X-Stat-Signature: g8ycrsepebchoksjbwjzuboqrd8t8ej7
+References: <20261028185034.3607746-1-kuniyu@google.com> <auKSeCFvsWzP-XYy@linux.dev>
+ <auKYs_ucslI-tdar@linux.dev>
+Message-ID: <auKcNvAizn-B92xB@google.com>
+Subject: Re: [PATCH v2 0/6] memcg: Batch mod_memcg_state() for MEMCG_SOCK.
+From: Kuniyuki Iwashima <kuniyu@google.com>
+To: Shakeel Butt <shakeel.butt@linux.dev>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Johannes Weiner <hannes@cmpxchg.org>, 
+	Michal Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
+	Muchun Song <muchun.song@linux.dev>, Kuniyuki Iwashima <kuni1840@gmail.com>, linux-mm@kvack.org, 
+	cgroups@vger.kernel.org, yosry@kernel.org, joannelkoong@gmail.com
+Content-Type: text/plain; charset="us-ascii"
+X-Rspamd-Queue-Id: BC8CFC0002
+X-Stat-Signature: 59uue8pq7rxh769fx11xhaqf9o4ephuw
+X-Spam-Status: No, score=-13.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_IN_DEF_DKIM_WL
+	autolearn=no autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-Spam-Status: No, score=-19.8 required=3.0 tests=BAYES_00,DKIM_INVALID,
-	DKIM_SIGNED,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,NICE_REPLY_A,
-	SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1793237347-78551
-X-HE-Meta: U2FsdGVkX19lJJw+k2RU6q4cKIQo8VCE4kjZXTlOAlQ3Xh6Mgh2UaAVuUPhkuSK3iypUGaQtY+n/NbZTAJo6+mkkcenUN7iWtDn63r28ffRmhrSjJO6g/wCfAFkl2VS5Fr/1x2S9kDtFyL8oilFCXIp0r8eNNQ4UvpeR8qaH3561/gTOwphlO7GEw/f8NLLy2bR++si4NsLmfPNkLzwNf08No954TiblLJKq38qTu1iNMXTgZf0culK7fuwFc4bSHvdeC0kNPC3l1Qj0L9V5Uhiw+H0BbV8FifDke3Wp++OUv21SasZRTFCzuqFofnvb4i3lZ0FSrXB5cV28w7JAxxuRCUu7i5IevlFTW9MiuV08tVkSBwUPus44PXfMuZoq6CgOxPKXb5On2ShV6m/4Pq6n/i43LBM7459ns1RM5tbmpzttgcDkwcZEv4e+PsJ4VRbSaaLiiYTAn0uyeZ0t/5lizN730Y9PnTSwbwp6AkUBIQTQXKa9JA4H7ji2YP5+egc8P2nBSTKza7ocpaADiv7wU38pHVt0EtMoL0J6o7nlnejbZ5Tleb6/AaQiQXLqaGKK3s1Qv888o0D43ruIG7oimtJfOh519G5MQgeNBSqiED0hVZxBXO+sqGKYK9+X5X2teGlX2HHVQYL8CWfpmWylVhMtySS+hNzsUXSWLZm/PWAsfaCGbgr7H4cEP6e2UiWlxytobG+UO7Tl44kGljYYKUKpYeGBFHAZ4sfn3yUulTsJoOEThevVYaRHDZvEfYANIYX/fiUSm+GFuTfxfkTIwJm/nEK1rmRQnVX+6CZ3pw/MEUTUWukaI55MZIeFtkcG4UUdJ1wGGn1SXw4tptSPV5C/aR+i/Zoyy42IyhXMp+gWyhTg79M0DyIkyrZFKzhjcmjasXJrARmZEfMGD/VALvFaykl53PqIhXI4ZN1zKpazSfQaX2SlUvA+JOLg+eO68RN5Nl0A5qy6OfQ
- SpNH3N71
- KCMAXf6PLnc32OWe6EiJpgpe+Vrxp1HUdE5iEPQQluOCViuu5QDO0hHpd5qxtVnAeNO6gGM2xEtRQ5WB8/WM1+0+bi0mFC1VyD17FFj9dWB2gA8tHnekTFhki/N7wVw+lVBKgEUTKP/A/gYXVm/2R9OQREiQTyyqmuc3vpdrGF6NGca5WkCJwSrPLk+h9cOP+GMxezCWFJOYJpt3y0xLBuMgYmHk9ApI216EFkYzPr+HtbCZQVWQaZzlAwGInxntKv+Ae3hItMWq/9f+jSQh3DUvPTzvM+3x1xU2+BabNxfaAr/WsgQ4+/GlP7L8PWsyI1A+Jsl1lVuxJnvfVuQR+8hO6zcJ2zAwqyLYMiYsKudLo4ODZ4n7TU/Vaattc06/iBcfYkToWPm9wLGD2zSGmq++P10kJNOZJiIaawSOHjxfg7Ba7GImFpU/vuVxnRUOsLHqu023+O37R8lQo9CFEk589L7OMk5qI2gz9iv/T0zfIH8cRg9wpzFaFtqwOy1VlSk5uZegnV2JRFhOqU8Wddvy09w==
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1793237720-124444
+X-HE-Meta: U2FsdGVkX18iPV14eoRHmWB9MEOGm2umGZ8o/3U9mioU41bHtMJtuiRu1/ckgpaTzWnE4MJjB7cp8/C2ZJ6cXV6BKtzMclIj8KgWvPLj4nR75b+dGwPxCUR4ugjxOm8bphCm9+9QQGlcG0VAxHNBYlORPaMNx+FpgCTezOCgR2kBUd6jwTxuEhPHfG+LQ4aH0BqCilgSClz1wSRXVflwD8ObT3TzvRBqCrGPlaD4GCfL9vW2T69a+FirmeezQRpPouL6zBcb9wLZZfzFmSv8CRrqHWsHitlZOphnX4z+BQnszZBoy+Kk2iRbJoj7hV8LxzPHcby02Xs5EzspD5jQItnJgiU/r2bK6fci78pE+VT06KAEtpPAdgDqpPpbL57Qm8qXi9sPzf3891UbtTcGgAZDPe6u80W2Snw48nwmcksUlff92Ongc5tL6jm+qiWwSqSXllhM9XQs1Dx+i04gMLaN8orX9X7GfVoNaLiToB4ByFd+OdA8JRa7kuhAsoNOPBnBA5cdpm69LYgvmT2nQ5kWfuejcsGeU8Z9WraVs+KMTQT+BDS92DHU5habIK2pPwdOrQwGZ5JSvKJwvBK5eTbbJOoa3FFepEYZ0HulXNllUoGKyoixnqGOpDJ2bRcxV4mKBHochrXzItS1Tbqgy8BjUUJmvLkCeFQAPBKyddP9Dz5YDiiHQlDsptPaWf2YPSEhJ7DfbYqkGyuVeWrWidjju/qXkWDkduAfnrJrlASCg5JjaHSzZyDMmHSKCfyvHOECKxutid0luPOMKj1NghizIBhW184xWd8jIPO3lyJKId4gwrA0m0QmkvG7pu3/4EJISyY1M3lFPdQNRwiG5CHLEk4cJ12IpHtK9AJCRjBipFN3iF1iKoQwHZgWeFzlHJt4fVUx/V7D5BOFSb3QSFWHQIbpnuCVuOS8zjEi3xiLNNvBlrxiinSvzx7uPhwBM4DNtnmIjy6v4V5EmG7
+ 2r/S4kjg
+ kTwUYqnSd8/83GssK1C8P+fY/NfBSOs1aOtKcOkDxKhoADRIYrqzs75JQq1onLMyE/linDpgYhrmAx7GmV826LeTYhGPZprqXPJm5TIR5lTXMdNxkmGNx7WZcybCwKiel+nYK/NzQD5N2GLWUCzAeLsUhnc5dA7JeyiDulmUA9MmJpNmBEBh+oWyzCydel0TIC+S3+D/ExaFzZ+Bn2Sjv1jvDuUtwvzyHZQMgFONGCKQ+CMrNZ4P+ftcPVw5+wm1eLU7b+1vYsuFUFUHhKMwpphQfT4CbHi+zMh2Q4pjCZ1S1To6j+zprTJ6yCE3nT10OJibveZtrG1dquDQujWRWD5IzbtUTfZOyHhqKn34I3sQsB8eMETZqq6FMsvk+GAxRHWHZBXFOWORsJ1Qg3zEOiUMb3SQcvG24GdL0XOir9RgVir/KmX2AslZiwTHtoKID31reYsYqdhq5t6pMT0qBCFfM9FsJ+5j+Okm90QZTLYwTd/t3RoVAn7x0LKdmDiw5YolQ0maROg4X6Zk+nrepB6lZqdPDE78KKKGyIWC1CfYD3dLz07VeeQliLGQVpd0jDUkBTxfng6MxS3PPtfYhacYQLCK7HDGpwxSzXbcwi51tW3jBRP6CA8Ro2AoosoYhVe/TJNiyRm0W8HID5g2lGd6mv772hOZ6SHSDigvlwPlczphjSAqYXeeZjg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,92 +114,84 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Thu, 29 Oct 2026 01:59:13 +0100 kernel test robot <lkp@intel.com> wrote:
+On Wed, 28 Oct 2026 17:52:32 -0700, Shakeel Butt wrote:
+> On Wed, Oct 28, 2026 at 05:41:04PM -0700, Shakeel Butt wrote:
+> > On Wed, Oct 28, 2026 at 06:50:12PM +0000, Kuniyuki Iwashima wrote:
+> > > On our production fleet, we saw mem_cgroup_sk_charge() spent over
+> > > 3x the cycles of try_charge_memcg() although the former should be
+> > > a thin wrapper of the latter.
+> > > 
+> > > Looking at perf during tcp_rr, most of the cycles were spent in
+> > > mod_memcg_state(MEMCG_SOCK), which incurred two heavy memory stalls
+> > > due to cache line misses. (see patch 4)
+> > > 
+> > > Also, tcp_rr w/ 20000 flows throughput often degrades by ~50% on
+> > > many core machine. (see patch 5)
+> > > 
+> > > This series adds nr_sock[] to struct memcg_stock_pcp to batch
+> > > mod_memcg_state() for MEMCG_SOCK and move heavy operations to
+> > > out of local_lock(&memcg_stock.lock).
+> > > 
+> > > With this series, tcp_rr w/ 10000 flows achieves 31% more
+> > > throughput with lower latency on machine w/ AMD EPYC 7B12 64-Core
+> > > Processor (Zen 2 Rome, 2 sockets, 256 vCPU)
+> > > 
+> > >   tcp_rr (10000 flows, 128 threads, 60s, average of 3 runs):
+> > > 
+> > >   Metric                     |       Baseline |        Patched |    Diff
+> > >   ---------------------------+----------------+----------------+--------
+> > >   Throughput (RPS)           |     20,884,499 |     27,466,490 | +31.52%
+> > >   Latency Mean (us)          |         478.46 |         363.71 | -23.98%
+> > >   Latency p50 (us)           |         453.96 |         356.68 | -21.43%
+> > >   Latency p90 (us)           |         669.00 |         479.56 | -28.32%
+> > >   Latency p99 (us)           |         969.38 |         617.80 | -36.27%
+> > > 
+> > > 
+> > > Changes:
+> > >   v2:
+> > >     * Rebased on mm.git/mm-new
+> > >     * Add patch 5 for flaky throughput issue
+> > >     * Patch 4:
+> > >       * Benchmark again after rebase and update numbers
+> > >       * Check in_nmi() in __refill_stock()
+> > > 
+> > >   v1: https://lore.kernel.org/linux-mm/20261016052811.3085635-1-kuniyu@google.com/
+> > > 
+> > > 
+> > > Kuniyuki Iwashima (6):
+> > >   memcg: Remove unnecessary READ_ONCE() under memcg_stock.lock.
+> > >   memcg: Reduce nesting in consume_stock() and refill_stock().
+> > >   memcg: Annotate slow paths in consume_stock() and refill_stock().
+> > >   memcg: Batch mod_memcg_state() for MEMCG_SOCK.
+> > >   memcg: Uncharge pages outside memcg_stock.lock in __refill_stock().
+> > >   selftests: cgroup: Deflake test_memcg_sock() in test_memcontrol.c.
+> > 
+> > Decouple the 4th patch (batch MEMCG_STOCK) from the remaining and send the
+> > remaining patches separately and upfront.
 
-> Hi Karl,
+Sure.
+
+
+> > 
+> > For the 4th patch, I would prefer we first try to move the network sockets
+> > from memcg to objcg path.
+
+sk_forward_alloc is already batched per page, and I think
+migrating to objcg would just add an indirect layer and some
+costs for css_tryget() / css_put(), and still inlining
+__consume_stock() or batching in memcg_stock would be crucial.
+
+
+> > Then I would prefer we optimize the stats update for
+> > all stats instead of special casing for MEMCG_STOCK.
+> > 
 > 
-> First bad commit (maybe != root cause):
-> 
-> tree:   https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git master
-> head:   c339f4010dea8b0d754f84ace70cd1b089878ef8
-> commit: 7c3f4d699f34535285d0ceb184927d71543d0064 resource, kunit: stop selecting GET_FREE_REGION
-> date:   2 weeks ago
-> config: openrisc-randconfig-r2306-20261028 (https://download.01.org/0day-ci/archive/20261029/202610290106.o8Fs3NvO-lkp@intel.com/config)
-> compiler: or1k-linux-gcc (GCC) 16.2.0
-> sparse: v0.6.5-rc1-1-gc4640450
-> reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20261029/202610290106.o8Fs3NvO-lkp@intel.com/reproduce)
-> 
-> If you fix the issue in a separate patch/commit (i.e. not just a new version of
-> the same patch/commit), kindly add following tags
-> | Fixes: 7c3f4d699f34 ("resource, kunit: stop selecting GET_FREE_REGION")
-> | Reported-by: kernel test robot <lkp@intel.com>
-> | Closes: https://lore.kernel.org/oe-kbuild-all/202610290106.o8Fs3NvO-lkp@intel.com/
-> 
-> All errors (new ones prefixed by >>, old ones prefixed by <<):
-> 
-> ERROR: modpost: kernel/rcu/rcutorture.ko: symbol '__mulsi3' undefined!
-> ERROR: modpost: fs/fuse/virtiofs.ko: symbol '__mulsi3' undefined!
-> ERROR: modpost: fs/pstore/ramoops.ko: symbol '__mulsi3' undefined!
-> ERROR: modpost: fs/ecryptfs/ecryptfs.ko: symbol '__mulsi3' undefined!
-> ERROR: modpost: fs/overlayfs/overlay.ko: symbol '__mulsi3' undefined!
-> ERROR: modpost: crypto/asymmetric_keys/pkcs8_key_parser.ko: symbol '__mulsi3' undefined!
-> ERROR: modpost: crypto/ccm.ko: symbol '__mulsi3' undefined!
-> ERROR: modpost: lib/kunit/kunit.ko: symbol '__mulsi3' undefined!
-> ERROR: modpost: lib/kunit/kunit-test.ko: symbol '__mulsi3' undefined!
-> >> ERROR: modpost: lib/kunit/kunit-example-test.ko: symbol '__mulsi3' undefined!
-> WARNING: modpost: suppressed 1014 unresolved symbol warnings because there were too many)
+> MEMCG_SOCK instead of MEMCG_STOCK
 
-Thanks.
+I guess you mean optimising MEMCG_SOCK along with MEMCG_KMEM (or
+mod_memcg_state() / memcg_rstat_updated() in general).
 
-#syz test
-
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: openrisc: export __mulsi3 for modules
-Date: Wed Oct 28 06:24:22 PM PDT 2026
-
-OpenRISC configurations without hardware multiplication fail to build
-modules which contain compiler-generated calls to __mulsi3.  The failure
-is widespread, affecting filesystems, drivers and KUnit tests at modpost.
-
-When CONFIG_OPENRISC_HAVE_INST_MUL is disabled, the architecture Makefile
-passes -msoft-mul to GCC.  The multiplication helper is supplied by the
-libgcc archive linked into vmlinux, but or32_ksyms.c does not export it. 
-Built-in callers can therefore link while module callers cannot resolve
-the symbol.
-
-Export __mulsi3 alongside the other compiler-generated helpers.
-
-The omission predates 7c3f4d699f34 ("resource, kunit: stop selecting
-GET_FREE_REGION"), which the robot identified when reporting an additional
-failing module.  It was already present in the initial OpenRISC export
-list.
-
-Fixes: 616257669e1a ("OpenRISC: Miscellaneous")
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202610290106.o8Fs3NvO-lkp@intel.com/
-Assisted-by: LLM
-Cc: Jonas Bonn <jonas@southpole.se>
-Cc: Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>
-Cc: Stafford Horne <shorne@gmail.com>
-Cc: Arnd Bergmann <arnd@arndb.de>
-Cc: Karl Mehltretter <kmehltretter@gmail.com>
-Cc: <stable@vger.kernel.org>
----
-
- arch/openrisc/kernel/or32_ksyms.c |    1 +
- 1 file changed, 1 insertion(+)
-
---- a/arch/openrisc/kernel/or32_ksyms.c~openrisc-export-mulsi3
-+++ a/arch/openrisc/kernel/or32_ksyms.c
-@@ -35,6 +35,7 @@ DECLARE_EXPORT(__divsi3);
- DECLARE_EXPORT(__umodsi3);
- DECLARE_EXPORT(__modsi3);
- DECLARE_EXPORT(__muldi3);
-+DECLARE_EXPORT(__mulsi3);
- DECLARE_EXPORT(__ashrdi3);
- DECLARE_EXPORT(__ashldi3);
- DECLARE_EXPORT(__lshrdi3);
-_
-
+I can give it a try, though some stats already have specialised
+batching (e.g. NR_SLAB_RECLAIMABLE_B in obj_stock and folio stats
+in uncharge_batch()).
 
