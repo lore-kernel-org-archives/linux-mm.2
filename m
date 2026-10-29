@@ -1,115 +1,144 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CB69606A31A
-	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 11:40:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E619F606A31C
+	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 11:45:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=icloud.com header.i=@icloud.com header.a=rsa-sha256 header.s=1a1hai header.b=RutNwzDB
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=UBvd+397
 Received: by kanga.kvack.org (Postfix)
-	id 848EA6B05B6; Thu, 29 Oct 2026 07:40:41 -0400 (EDT)
+	id 1EA706B00EF; Thu, 29 Oct 2026 07:45:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7AC056B05B7; Thu, 29 Oct 2026 07:40:41 -0400 (EDT)
+	id 19FB66B05B1; Thu, 29 Oct 2026 07:45:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 64C526B05B8; Thu, 29 Oct 2026 07:40:41 -0400 (EDT)
+	id 08A336B05B4; Thu, 29 Oct 2026 07:45:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 393796B05B6
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 07:40:41 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id BF624140374
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 11:40:40 +0000 (UTC)
-X-FDA: 85375471440.09.6F6D119
-Received: from cu-gy11p00im-quki08141502.gy.silu.net (cu-gy11p00im-quki08141502.gy.silu.net [157.255.1.69])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 4EFA1180008
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 11:40:38 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=icloud.com header.s=1a1hai header.b=RutNwzDB;
-	dmarc=pass (policy=quarantine) header.from=icloud.com;
-	spf=pass (imf24.hostedemail.com: domain of bfguo@icloud.com designates 157.255.1.69 as permitted sender) smtp.mailfrom=bfguo@icloud.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id D6AC76B00EF
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 07:45:52 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 56E1DC0380
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 11:45:52 +0000 (UTC)
+X-FDA: 85375484544.16.D9827A4
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 6C91620009
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 11:45:50 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UBvd+397;
+	spf=pass (imf13.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793274038;
+	s=arc-20220608; t=1793274350;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2KZF1/s0C4sZeNgdAZHGjDdjaxfKkMFHjY6N3yQSkxg=;
-	b=vz5x0keFiu1eWDRLLwT3KO8rSRwqaxFlAfZq2gD9fzENQDhp09UjUKwOQc4OKE31AsDjks
-	pUkBKojKHMIPTojUoxyGpiDtWlo/CP3zevEQj96tnWpzaJrCY9L0Os/MvP3KN5kjmyInX5
-	EEJDj6rJx6z1GZwhOnwJaRmbbYsY5JQ=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=icloud.com header.s=1a1hai header.b=RutNwzDB;
-	dmarc=pass (policy=quarantine) header.from=icloud.com;
-	spf=pass (imf24.hostedemail.com: domain of bfguo@icloud.com designates 157.255.1.69 as permitted sender) smtp.mailfrom=bfguo@icloud.com
+	bh=fsnAuqtxtLr325mSlI6KyfkPKcAjsjpo5pAZm2Ry5UQ=;
+	b=HLojH/BdW3vf0tYlL6HfxZD395qY2ZE7/7GXosUpEpkMe+doEjW2SRHg9wTweuecTjVM2Y
+	xMU4mb1m8T164d6kVworiIXPBGS3CaP6kru2fLaR8Jz2Wo1qx5IL1xyy4O7vYRFrXYafVc
+	qgQUszCWxhb1R9anlwXRYlrMip27g4g=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793274038;
-	b=FOM9lY90C1oWjxGpBDzZqWE61a55D6r3wVpd2FX0RWy0jjm1DYZ84DkEQQnnM7mIm5PClm
-	MVmzZRa37DaSY26CNHiAoxTQDfnSmTRJrHNyr1BAH6Q/HESgOmvWSJAll3LWx/p5CjC8Kd
-	8yytsbNnsT/456K71YxonMEjWOyPi+k=
-Received: from smtpclient.apple (gy11p00im-asmtpcmvip.gy.silu.net [112.19.199.76])
-	by gy11p00im-quki08141502.gy.silu.net (Postfix) with ESMTPSA id 5EBC93520088;
-	Thu, 29 Oct 2026 11:40:22 +0000 (UTC)
-Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=icloud.com; s=1a1hai; t=1793274032; x=1795866032; bh=2KZF1/s0C4sZeNgdAZHGjDdjaxfKkMFHjY6N3yQSkxg=; h=From:Message-Id:Content-Type:Mime-Version:Subject:Date:To:x-icloud-hme; b=RutNwzDBtbRqlJgkxDe6zicuH3qIautgrTYQObme3hY9jY/G6iuVPsodoIyFGqgWFf3HTJsitqanPqmgJbg2b/cM8OcXiNzJkhd8IHeQ1acg22Wzl7VEkrwst3ha4qS9LnI1HM5jzBO2WE/lvceXwY92OG+11enc1VwRk+coSi4KH3lFdANXlieGMLhfTyGiGtQeDUfulRR6qsImLDJYumZFHLVdwh+Hz2AQk6KsAEU9WmasDEYpozEfimqI/X//Heqt7qzBrj6bwbA4MX99s53w9xkvMHoEgtJ9RDf4I3cSNKFwTN2+1i3PegpGlYru+NGgbSDFYZoaqKZL8M+qxA==
-From: Bingfang Guo <bfguo@icloud.com>
-Message-Id: <82AED38D-3084-4B8F-BD86-859FF41D3213@icloud.com>
-Content-Type: multipart/alternative;
-	boundary="Apple-Mail=_3726A5FE-45B5-46FC-9A24-E3F1D05B3923"
+	t=1793274350;
+	b=oqHYbcodMOtUrYfbhUOld++VXNIq/+bYC9dqfv6bBvzIEmvqDa1fiwe3loGrD2N932S1ek
+	FqHaLTASA09zgkE2zLRN4Vm/PnkfwRWiK//e1uQcVH8Vc9P++/BkIQZIA+rSdOlJ03dp9J
+	8NHYECuUcyRfT6l9gto316KEtQtWg8E=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UBvd+397;
+	spf=pass (imf13.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id DB9C8601F8;
+	Thu, 29 Oct 2026 11:45:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A48C1F01828;
+	Thu, 29 Oct 2026 11:45:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793274349;
+	bh=fsnAuqtxtLr325mSlI6KyfkPKcAjsjpo5pAZm2Ry5UQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=UBvd+397fcbsOA3fElwgeb/DTDm3vy/VOW4v7EvO64AzvSzxQr08Z+tU87GZ4kVNQ
+	 nh4uRJAO44vJEjX8clPmkwOZvYiYq9q2Jrb9BvCApRlX8rO+WC/08uEg3zLJtQ9RzN
+	 yodE8S5Bm3xVRMdpnabJYQP7SJPU9E3mSS2kdLVgNJGt8MTDolRN/hHSrW3x3nZJrF
+	 /ZlqlzNqYX8IUFjnzxvpN2M3zu1Tyi/dMlyjBoAHXYnfdQmaPhMakD2VGkcaKUi/bR
+	 eVIJZViSryZOF5LX0prsUsFyFWSLmVamNVquWBJh6ZpaISFtpCMg+XkDR4PdYEfApO
+	 oyM/Xv2/G+vdA==
+Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
+	by mailfauth.ams.internal (Postfix) with ESMTP id 7799F1980050;
+	Thu, 29 Oct 2026 07:45:33 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-03.internal (MEProxy); Thu, 29 Oct 2026 07:45:43 -0400
+X-ME-Sender: <xms:3DHjairuennPQvhjwo3_YPAmukFu5CBTYJVtCw3By7gJ5flYOHlT5w>
+    <xme:3DHjakQea4FFA7_DjkBefq1IYJ3IoZ8tbRUAJFfGUd8nUX90_xR6mBJo34i5-VF56
+    fu_q9PvNAHOkq9z8X63Q6OlwnauiVA8Dx1uZop3DEgo_Rz86ZRW79C6>
+X-ME-Received: <xmr:3DHjaudpUFhx7vg_2m9VdYjKdXNzWumT-isAu-JU_TgSqAgZbdb3lrsMrBI>
+X-ME-Proxy-Cause: dmFkZTFdC3J2hM2mtuuiUkWv9UlgSJMYvAmbEHpjS7/lcF0eeZ0j60Cp90J60IZRmcx8lL
+    PLZLLgyvpra8qBzeYo05eA0QxZ3x2jCz6Gb9lcqoI9ZYyDtpfsk77/KYC7fg0bOW2V6khe
+    SVry6R5jukpqaeN/XKgPBdc/Hevm5XujAyffZc/FYa9tDCLI9VOtsk5ekVOYLimIwkZaCx
+    wQl/7MdAFBJjvst9SLlJcM4Ti5div+EjygRDVQjnnm7dGxa8I9gqYC1WDG4iG79q9DF3Fd
+    otKmdtPPpwpkSbMEfNk0nOiDSMxwiiwyROavlNREce8238nK2ItWRHhGdyNGqrpSoezbWc
+    nOV30O4GmIEdMLlrkRy0R++7wow4/MbSGet4veO9h1iLmc4yjwDn3vj67d/hkN1ejAM7hW
+    3gL5/qyFcGR3sM9iaQPQTKOPK6Qiu/buabpadH2ZB/2wGUAsRiSCgh6kHO1O0dDWQ7hIvN
+    4R8pcREuG38L0xxH6Mo/v2o+amX8bAeuca98DN0oyDFf5HyLBDZbL9lA/O/uNijOVCILFF
+    505LL9fML5cbgV2XjBsUNHdMON6lE28Lq82Q+kFkUvHxhD6Ec/9mG/yLyI7CX2FYhit08I
+    RgSeNdXmyN4YBEBd+mU57gup2cHHhyJ1Koc/0jGrcbpsR0rK+9SpTA8/K8ig
+X-ME-Proxy: <xmx:3DHjam3rTZsBh_e2_zwfN3K42dpDgexgI2_pYHy3j1QVDWxB7e84cA>
+    <xmx:3DHjam3_Qd3-qlMqVEjkKl7toFqJfdoexFJuKGZoEhViyoFE1ZnwHw>
+    <xmx:3DHjavBW8LeD-DaKoSnAo9f9cLFsq42I2Sq-gvAOF-VHEoplQChM2A>
+    <xmx:3DHjat9bZbqruIhj4rdY3dd7aUcgJ17-bVxxD3xFYuFNBc-yr6JrFQ>
+    <xmx:3THjau7Kt31Te8SB122Obd4TYWN2w-2Y_N5NfPn8P5VHANauPC_q9fbu>
+Feedback-ID: i10464835:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 29 Oct 2026 07:45:31 -0400 (EDT)
+Date: Thu, 29 Oct 2026 11:45:30 +0000
+From: Kiryl Shutsemau <kas@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, Qi Zheng <qi.zheng@linux.dev>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>, 
+	Kairui Song <kasong@tencent.com>, Barry Song <baohua@kernel.org>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
+	Baoquan He <baoquan.he@linux.dev>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
+	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, Kees Cook <kees@kernel.org>, 
+	Peter Zijlstra <peterz@infradead.org>, Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
+	Hugh Dickins <hughd@google.com>, Pasha Tatashin <pasha.tatashin@soleen.com>, 
+	Pratyush Yadav <pratyush@kernel.org>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
+	Jan Kara <jack@suse.cz>, Zi Yan <ziy@nvidia.com>, Lance Yang <lance.yang@linux.dev>, 
+	Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>, 
+	Alistair Popple <apopple@nvidia.com>, Nico Pache <nico.pache@linux.dev>, 
+	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Usama Arif <usama.arif@linux.dev>, 
+	Matthew Brost <matthew.brost@intel.com>, John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, 
+	Will Deacon <will@kernel.org>, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, 
+	Nick Piggin <npiggin@gmail.com>, Oscar Salvador <osalvador@suse.de>, 
+	Minchan Kim <minchan@kernel.org>, Muchun Song <muchun.song@linux.dev>, Xu Xin <xu.xin@linux.dev>, 
+	Chengming Zhou <chengming.zhou@linux.dev>, Chris Li <chrisl@kernel.org>, 
+	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, 
+	Youngjun Park <youngjun.park@lge.com>, Gregory Price <gourry@gourry.net>, 
+	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>, 
+	Ying Huang <ying.huang@linux.alibaba.com>, Jason Gunthorpe <jgg@ziepe.ca>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, kexec@lists.infradead.org, linux-fsdevel@vger.kernel.org, 
+	linux-arch@vger.kernel.org, linux-cxl@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH 42/46] mm/huge_memory: split huge PUDs when adjusting VMA
+ boundaries
+Message-ID: <auMxQPze5cOvGbCe@thinkstation>
+References: <20261027-fixes_core-v1-0-6f74bec9a5bb@kernel.org>
+ <20261027-fixes_core-v1-42-6f74bec9a5bb@kernel.org>
 X-Archived-By: <archiver.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.300.41.1.7\))
-Subject: Re: [PATCH] mm/mglru: skip oom killing for high order allocs in
- kswapd
-Date: Thu, 29 Oct 2026 19:40:10 +0800
-In-Reply-To: <CAMgjq7CcSxNMx9UxVjjM=W11fhd8sh3PgkHKt2kvdah3fy6kXg@mail.gmail.com>
-Cc: bingfangguo@tencent.com,
- Andrew Morton <akpm@linux-foundation.org>,
- Qi Zheng <qi.zheng@linux.dev>,
- Shakeel Butt <shakeel.butt@linux.dev>,
- Barry Song <baohua@kernel.org>,
- Axel Rasmussen <axelrasmussen@google.com>,
- Yuanchu Xie <yuanchu@google.com>,
- Wei Xu <weixugc@google.com>,
- Baoquan He <baoquan.he@linux.dev>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- Johannes Weiner <hannes@cmpxchg.org>,
- David Hildenbrand <david@kernel.org>,
- Michal Hocko <mhocko@kernel.org>,
- Lorenzo Stoakes <ljs@kernel.org>,
- Yu Zhao <yuzhao@google.com>,
- Bingfang Guo <bfguo@icloud.com>,
- linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-To: Kairui Song <ryncsn@gmail.com>
-References: <20261027-fix-mglru-kswapd-age-v1-1-b1ffdec4ae52@tencent.com>
- <CAMgjq7CcSxNMx9UxVjjM=W11fhd8sh3PgkHKt2kvdah3fy6kXg@mail.gmail.com>
-X-Mailer: Apple Mail (2.3864.300.41.1.7)
-X-Proofpoint-ORIG-GUID: xAlX13lwV_7G2SoviTYYwgDhIBF53CBJ
-X-Proofpoint-GUID: xAlX13lwV_7G2SoviTYYwgDhIBF53CBJ
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDI5MDA0MyBTYWx0ZWRfX8JcoWYcBuK7a
- GQqFLMkIEAh7Zxd3zjBFL+/zezxEnJ3rBAX8RDQsBEZkE2vsLY9jd8rVLG0LNxMV+POHFT08LDX
- X6FVDP9WcfyujlHnjKNRDk5Axagt5rkZg7G3BnqW5yBa7SWWhZDht/oy7IK5Lhuj1+t4y0mJ/A2
- nt/tnG9jRCxmF5e3ixlr63fXJM29zfdieH0xwPgpMuNxc+q42l8xnLVjb8nk9otFjccFFWEDnAu
- eUhsYrJqBqXTVZe7nSCE8yqy2GgDoIFEK4SA3CeN7ADuickAPzJEfYw8JWnDBIdwxr6A8nnnrtL
- kc+xXkr3mFxvSUGWcGLWo8LWUxddIWSmx5Fa/KGiw==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
- definitions=2026-10-29_02,2026-10-21_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0
- suspectscore=0 malwarescore=0 bulkscore=0 mlxscore=0 adultscore=0
- mlxlogscore=999 lowpriorityscore=0 clxscore=-2147483648 phishscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.22.0-2601150000
- definitions=main-2610290043
-X-Rspamd-Queue-Id: 4EFA1180008
-X-Stat-Signature: eot9ao8t3nbwmbs45ae5c1wee98rumz3
-X-Spam-Status: No, score=-9.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,HTML_MESSAGE,INCLUDES_CR_TRAILER,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261027-fixes_core-v1-42-6f74bec9a5bb@kernel.org>
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 6C91620009
+X-Stat-Signature: nu7ai9r9nx9fzjzm6awgwex8fzuysozq
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1793274038-622894
-X-HE-Meta: U2FsdGVkX1/BnRMlc6Z2zTeMN0jwxw3Q9+iV5hh7kMfjQ4iJdQ8lFPpILZ3ix9DIAQzqP1muP0VcjO2iXwegHPFT/J23QIW2eARAQVw//9XV1eBIF6MoBwdRpPwp6npqBh9toPXifXw7u8d1RF4gEaHWQKqAtZ/Af+s5iHDRpmyBAn0G7fOT2145nwW+/Xo2ZoD0LQ4OI+AU3D7urAO7wLTCpIh+caxFRXf+d/yhna0Stjjjeiix7hS+vql1PccCcBJn9ibj4ZOy7lzcgYvv3Yw7rhKmDnzG4rcBHn7m7VFPlv4PsQSD48yfouje1UTAU+scMysF9kzA31OqqNg7SkCzwjDz5GZaz0bxbX63dHthhztyZxhRemKgJWdkiTrQnPeNL7eVBrTNGlO8rdQgK8pfVAvPxObSjDYWlTFPXpQvSN3w47KSfvE0rd4879OhbRVFM41Q5Ij7VTGZ4fyB0bybAx6BpEUZgUF7YgnkoVpGHe8D9xxdDv1y1ybDUNWtvBavaF6zPB4I601kc/m+Y7GY4qRjFM3fkLOAmRCWhKwVWfEQWvwKnBClBhElOtDZ3qp9EYVlxWc219IsuXD/xBb1+k4dulpNEUzj4jlY/0FnG2/v+okv0OLBE+4muEPJveG2CV23YGt78Ly52bmyLtuJ70MZCSjs67RVRmSgttp87S4vXbd5FIH5DLJSYcuIgctyNqM3ESvQpJs0LaEtMSx/w/UIpaEoxglNtDFUFoTyohFcIu8XULgYvLoTfMvckr5++4YwyQya8pMFw4fjrH4ePNzAxpuc3dB62kpw4862SknoblH/Ohv8rz2LLdnUgRyZ7yWgKuX8IBXHnfnE7nmdMeUGe1f6pY9sRyeTWx2NCYoxT5YHAOjS1hGMIvBermvLpBfNNPsf/5U8MJOgX6KT8JJkk+/AGdmxAxayjc3b+VaE2r5gjPIztTSk0VuxxvVJQSjNwPG3cBTFg9w
- j9qxCvbN
- 1Fw5TSoyvUcLiNFEJK8L+qCyEW0v9yzUktlF2PSpvxgXe74pJzkVw/xROeB2hrdbFY/kWLvoCwCsEEfzbsWo7Bvfq8/zHEdOn7LH4gLRdz4VJKnCbWsV2OKZRJMMbZT4Q/TCp7q+4bmP30gJ3r4PqTZmhyMWNROVxcPD4PoQ8agN6KUA0Vmo1yc9/TSN0TpqE6L+NeRcXtnyGsF56ImDjOAMj090vU9s0LktaIuZO6COU3lSMrQ5pzl0+DEWQpTY7jQLS1aeo93M0DPSJcAb2PsIgdZEiKbhepeCgn+5b7ekYIgn08vV3S07FwA==
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=unavailable autolearn_force=no version=4.0.1
+X-HE-Tag: 1793274350-512578
+X-HE-Meta: U2FsdGVkX18kkoUndnuEc6emyc/QWYiAbBXazgkQ0Q9wiUcIc5nWkt45V+ujF6mEszZlod2NhWiHlnvz5xm0RD+pSm9/uUWXBhacEvcp+ehcuA3D73SdqNtZydxA367xP248nyzp2/JEk7VFUz1SqJx4yuyAMJz/FEnqIMCIPw0BfK8aH3mqIWeJmYMCWqP8++iFw5nAAe6R7AsWrBXWVI34Xo14lmcBjvZMrTQ8f2TekV+CxI0XnsioLwhWvEj0RSZjn29caDo+SkPyUIx2AwCyOxHeTJY54P2whNnIIMh87LCnLRUK+xAkBJonIa5tCFHhVlbCX2e7SszOtZOIxsOl9ad87m8yezd9sEelkmzbCaByYuWiZJo83qtzb6xQaM3r0mdkzmJXwlPHCNrAgLrF8HRGy55DSin/ef73A9VVw4LtpVrMUh1HvhpZbraOTO/w+MKAa1vAHpS1uua6FsebD7NthtcA+m08QsCdieNqtbtbGCqZ2bnvXVypJ2menSQo5NHOFo+f8SKco80JDeOS3Y+IqgrvLHPLpkgt9wqc/uhC265zthstnQWrgeJAhAUk9rqfZxWWaFIK3LdrDHqLv332gSVqm5Dpva3t84on4DU2Q6gD9UKppjsxd8TcdZWbkpQgGwuOclL9XzMT6wgKuJ8X77aes8yYQ4TAcuCC5lNUpTncks1tMNpOaJN0uWsqNC4YpgbRHohwIlrCgJji13Eyi9QrKtde9/2UiYYs77yVCPAlYJUpbqhkXBO/aa9iHF2B35L15pGhRjKWaU5I98WY/IDD3yUZxTwHNEc96nuFrOnZIPg/T3x679P0w9RiOz7weg+nw/DClCfz9ossP58ywhRoJfgEcU2Zw2z2MIDgHzjMiji6cJslXK4JDtDzNV1mGV53qxWRzGuzlcsXw67IeXwkik9Rvgibz3CGAzA1eZdaZjHqwl8vAnx7gFJTyEOtagBBW4bMpjM
+ fGpJl8R2
+ dl17sJXh6Nl1L4PDX43pZSNlyNedzFhuz5chkxWeLVt0PcWxu2cHvaSYlN4wDZrXr/8zSWd5x8uRkUc7kXF9zWMtFCIaqtL9u9dzIm8rlaJWxNOaJ8lYDA2hV5npsHKBP9mE/0qvRgeUMonGZIKNOM5t/OSf7pTQ9zCj1QiAGOPM1I+kbZAX798B5QCEl9cI/ddiayqOi2z0sWh7qqDnYw+oiPYZMPVeJq+RKa6+5aFBxR8hcCaFjw/XoZ4pjn66cRHRBeWXajPnGk5tqJSGmhWF+us2b9FyO9/iTIQ4BhwYN3FHB8hzJ7AbPq6nPjcIWuwx/CkpSplXd5zyMYKLz0MUN9m8eV6QOc0NuKAxIIDtpykazE53DPVb2Do2KrxGFww0VqFWwmhA6ez4C0YpOVr/NCTeSQpkpIV2u9XDamjkF270=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -118,497 +147,111 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
+On Tue, Oct 27, 2026 at 12:18:02AM +0100, David Hildenbrand (Arm) wrote:
+> PFN mappings such as VFIO PCI BAR mappings can use PUD leaves while
+> allowing VMA splits at page granularity. However, vma_adjust_trans_huge()
+> only handles PMDs.
+> 
+> After faulting a writable PUD-sized VFIO BAR mapping, changing its first
+> page to read-only with mprotect() makes the PMD walk treat the PUD leaf
+> as a PMD table. Applying MADV_DONTFORK to the first PMD-sized chunk leaves
+> the PUD spanning two VMAs: the PMD-aligned boundary skips splitting.
+> 
+> Walk the page tables once at each adjusted boundary and split a huge
+> PUD or PMD leaf as needed. Handle PUD leaves even when the boundary is
+> PMD-aligned.
+> 
+> Fixes: f9e54c3a2f5b7 ("vfio/pci: implement huge_fault support")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+> ---
+>  mm/huge_memory.c | 70 ++++++++++++++++++++++++++++++++++++++++++++++++--------
+>  1 file changed, 60 insertions(+), 10 deletions(-)
+> 
+> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+> index 08e58cda7d37d..d090642ac8c2b 100644
+> --- a/mm/huge_memory.c
+> +++ b/mm/huge_memory.c
+> @@ -3503,16 +3503,66 @@ void split_huge_pmd_address(struct vm_area_struct *vma, unsigned long address,
+>  	__split_huge_pmd(vma, pmd, address, freeze);
+>  }
+>  
+> -static inline void split_huge_pmd_if_needed(struct vm_area_struct *vma, unsigned long address)
+> +static bool pud_split_required(const struct vm_area_struct *vma,
+> +		unsigned long address)
+>  {
+> +	if (!IS_ENABLED(CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD))
+> +		return false;
+> +	if (IS_ALIGNED(address, HPAGE_PUD_SIZE))
+> +		return false;
+>  	/*
+> -	 * If the new address isn't hpage aligned and it could previously
+> -	 * contain an hugepage: check if we need to split an huge pmd.
+> +	 * Only selected VMAs support mapping PUDs for now. Lift the
+> +	 * restriction once this changes.
+>  	 */
+> -	if (!IS_ALIGNED(address, HPAGE_PMD_SIZE) &&
+> -	    range_in_vma(vma, ALIGN_DOWN(address, HPAGE_PMD_SIZE),
+> -			 ALIGN(address, HPAGE_PMD_SIZE)))
+> -		split_huge_pmd_address(vma, address, false);
+> +	if (!vma_is_dax(vma) && !vma_test_any(vma, VMA_PFNMAP_BIT, VMA_MIXEDMAP_BIT))
+> +		return false;
+> +	return range_in_vma(vma, ALIGN_DOWN(address, HPAGE_PUD_SIZE),
+> +			    ALIGN(address, HPAGE_PUD_SIZE));
+> +}
+> +
+> +static bool pmd_split_required(const struct vm_area_struct *vma,
+> +		unsigned long address)
+> +{
+> +	if (IS_ALIGNED(address, HPAGE_PMD_SIZE))
+> +		return false;
+> +
+> +	return range_in_vma(vma, ALIGN_DOWN(address, HPAGE_PMD_SIZE),
+> +			    ALIGN(address, HPAGE_PMD_SIZE));
+> +}
+> +
+> +static void split_huge_leaf(struct vm_area_struct *vma,
+> +		unsigned long address)
+> +{
+> +	const bool split_pud = pud_split_required(vma, address);
+> +	const bool split_pmd = pmd_split_required(vma, address);
+> +	pgd_t *pgd;
+> +	p4d_t *p4d;
+> +	pud_t *pud;
+> +	pmd_t *pmd;
+> +
+> +	/*
+> +	 * mmap, VMA and rmap write locks protect the walk; the split helpers
+> +	 * take the page table locks.
+> +	 */
+> +	if (!split_pud && !split_pmd)
+> +		return;
+> +
+> +	pgd = pgd_offset(vma->vm_mm, address);
+> +	if (!pgd_present(*pgd))
+> +		return;
+> +
+> +	p4d = p4d_offset(pgd, address);
+> +	if (!p4d_present(*p4d))
+> +		return;
+> +
+> +	pud = pud_offset(p4d, address);
+> +	if (split_pud && pud_leaf(*pud))
+> +		__split_huge_pud(vma, pud, address);
+> +	if (!split_pmd || !pud_present(*pud))
+> +		return;
 
---Apple-Mail=_3726A5FE-45B5-46FC-9A24-E3F1D05B3923
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain;
-	charset=utf-8
+This looks wrong.
 
-On Wed, Oct 28, 2026 at 09:56:48PM +0800, Kairui Song wrote:
-> On Tue, Oct 27, 2026 at 10:21=E2=80=AFAM Bingfang Guo via B4 Relay
-> <devnull+bingfangguo.tencent.com@kernel.org> wrote:
->>=20
->> From: Bingfang Guo <bingfangguo@tencent.com>
->>=20
->> We observed that when MGLRU min_ttl is set and the system is highly
->> fragmented, high order allocations (e.g. order =3D=3D 9) will fail =
-and wake
->> up kswapd. It can not make any progress, while pushing generations of
->> memcgs so that they all end up younger than min_ttl_ms, repeatedly
->> triggering the OOM killer in lru_gen_age_node(). Then the whole =
-process
->> repeats until all processes are killed and the kernel panics.
->>=20
->> Fix this by skipping OOM killer invocations in lru_gen_age_node() for
->> sc->order > PAGE_ALLOC_COSTLY_ORDER, which is also what the normal
->> allocation path will do, to fail high order allocations without OOM
->> killing.
->>=20
->> =3D=3D=3D=3D Testing =3D=3D=3D=3D
->>=20
->> Tested on a VM with 6 cores and 6GiB of memory, HZ=3D1000, MGLRU =
-enabled,
->> min_ttl_ms set to 1000, and a workload that fragments the memory then
->> allocates 2M pages.
->>=20
->> Without the patch, kswapd kills all processes and panics the system =
-even
->> with plenty of memory available. With the patch, allocations fail but
->> the system remains stable.
->>=20
->> Fixes: 30d77b7eef019 ("mm/mglru: fix ineffective protection =
-calculation")
->> Signed-off-by: Bingfang Guo <bingfangguo@tencent.com>
->> ---
->> mm/vmscan.c | 6 ++++++
->> 1 file changed, 6 insertions(+)
->=20
-> Thanks! Really nice catch.
->=20
+We should bail out here if PUD is was a leaf and wasn't split.
+pmd_offset() below expects page table PUD entry.
 
-Thanks for reviewing, Kairui!
+> +	pmd = pmd_offset(pud, address);
+> +	__split_huge_pmd(vma, pmd, address, false);
+>  }
+>  
+>  void vma_adjust_trans_huge(struct vm_area_struct *vma,
 
->> diff --git a/mm/vmscan.c b/mm/vmscan.c
->> index 9959ca158ce83..b32777468ead8 100644
->> --- a/mm/vmscan.c
->> +++ b/mm/vmscan.c
->> @@ -4407,6 +4407,12 @@ static void lru_gen_age_node(struct =
-pglist_data *pgdat, struct scan_control *sc)
->>                        reclaimable =3D lruvec_is_reclaimable(lruvec, =
-sc, min_ttl);
->>        } while ((memcg =3D mem_cgroup_iter(NULL, memcg, NULL)));
->>=20
->> +       /*
->> +        * OOM killing won't help high order allocations. Skip and =
-let them fail.
->=20
-> A nit pick, OOM definately helps for high order allocations :-D, maybe
-> something like, the OOM kill is to prevent thrashing whtn all memcgs
-> are younger than min_ttl (and maybe merge with the comment & check
-> below?), so OOM for fragmentation is definitely unwanted.
->=20
-
-Right. OOM might help but not in this case. And that sounds make much =
-more
-sense. I'll update it!
-
->> +        */
->> +       if (sc->order > PAGE_ALLOC_COSTLY_ORDER)
->> +               return;
->> +
->>        /*
->>         * The main goal is to OOM kill if every generation from all =
-memcgs is
->>         * younger than min_ttl. However, another possibility is all =
-memcgs are
->=20
-> This patch is good to me on its own with a nit fix above.
->=20
-> And checking commit 30d77b7eef019, you might need a Fixes: or maybe
-> even bring the check back which was removed in that commit?
->=20
-
-And after reading reviews from sashiko, I think I can just restore the =
-original
-check. Use:
-
-   bool reclaimable =3D !min_ttl || sc->order || sc->priority !=3D =
-DEF_PRIORITY;
-
-This prevents unexpected OOMs for 1..3 order allocs in some case as =
-well,
-although they should be rare based on my tests. And this removes =
-redundant check
-runs for every memcg in this case.
-
-> But for long term, and as a follow up, the whole idea of OOM in kswapd
-> seems kind of wrong, maybe at least it need to check the water mark
-> here?
->=20
->=20
-
-Agreed. And as you mentioned above, OOMs are not expected by =
-fragmentation. So
-it's best to have some ways to distinguish very young generations caused =
-by
-thrashing from something else.
-
-
---
-Thanks,
-Bingfang=
-
---Apple-Mail=_3726A5FE-45B5-46FC-9A24-E3F1D05B3923
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/html;
-	charset=utf-8
-
-<html><head><meta charset=3D"UTF-8"><meta http-equiv=3D"content-type" =
-content=3D"text/html; charset=3Dutf-8"></head><body =
-style=3D"overflow-wrap: break-word; -webkit-nbsp-mode: space; =
-line-break: after-white-space;"><span style=3D"caret-color: rgb(0, 0, =
-0); color: rgb(0, 0, 0); font-family: Helvetica; font-size: 12px; =
-font-style: normal; font-variant-caps: normal; font-weight: 400; =
-letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; =
-text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; =
--webkit-text-stroke-width: 0px; text-decoration: none; display: inline =
-!important; float: none;">On Wed, Oct 28, 2026 at 09:56:48PM +0800, =
-Kairui Song wrote:</span><br style=3D"caret-color: rgb(0, 0, 0); color: =
-rgb(0, 0, 0); font-family: Helvetica; font-size: 12px; font-style: =
-normal; font-variant-caps: normal; font-weight: 400; letter-spacing: =
-normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: =
-none; white-space: normal; widows: 2; word-spacing: 0px; =
--webkit-text-stroke-width: 0px; text-decoration-line: none; =
-text-decoration-thickness: auto; text-decoration-style: =
-solid;"><blockquote type=3D"cite" style=3D"font-family: Helvetica; =
-font-size: 12px; font-style: normal; font-variant-caps: normal; =
-font-weight: 400; letter-spacing: normal; orphans: 2; text-align: start; =
-text-indent: 0px; text-transform: none; white-space: normal; widows: 2; =
-word-spacing: 0px; -webkit-text-stroke-width: 0px; text-decoration-line: =
-none; text-decoration-thickness: auto; text-decoration-style: solid;">On =
-Tue, Oct 27, 2026 at 10:21=E2=80=AFAM Bingfang Guo via B4 =
-Relay<br>&lt;devnull+bingfangguo.tencent.com@kernel.org&gt; =
-wrote:<br><blockquote type=3D"cite"><br>From: Bingfang Guo =
-&lt;bingfangguo@tencent.com&gt;<br><br>We observed that when MGLRU =
-min_ttl is set and the system is highly<br>fragmented, high order =
-allocations (e.g. order =3D=3D 9) will fail and wake<br>up kswapd. It =
-can not make any progress, while pushing generations of<br>memcgs so =
-that they all end up younger than min_ttl_ms, repeatedly<br>triggering =
-the OOM killer in lru_gen_age_node(). Then the whole process<br>repeats =
-until all processes are killed and the kernel panics.<br><br>Fix this by =
-skipping OOM killer invocations in lru_gen_age_node() =
-for<br>sc-&gt;order &gt; PAGE_ALLOC_COSTLY_ORDER, which is also what the =
-normal<br>allocation path will do, to fail high order allocations =
-without OOM<br>killing.<br><br>=3D=3D=3D=3D Testing =3D=3D=3D=3D<br><br>Te=
-sted on a VM with 6 cores and 6GiB of memory, HZ=3D1000, MGLRU =
-enabled,<br>min_ttl_ms set to 1000, and a workload that fragments the =
-memory then<br>allocates 2M pages.<br><br>Without the patch, kswapd =
-kills all processes and panics the system even<br>with plenty of memory =
-available. With the patch, allocations fail but<br>the system remains =
-stable.<br><br>Fixes: 30d77b7eef019 ("mm/mglru: fix ineffective =
-protection calculation")<br>Signed-off-by: Bingfang Guo =
-&lt;bingfangguo@tencent.com&gt;<br>---<br>mm/vmscan.c | 6 ++++++<br>1 =
-file changed, 6 insertions(+)<br></blockquote><br>Thanks! Really nice =
-catch.<br><br></blockquote><br style=3D"caret-color: rgb(0, 0, 0); =
-color: rgb(0, 0, 0); font-family: Helvetica; font-size: 12px; =
-font-style: normal; font-variant-caps: normal; font-weight: 400; =
-letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; =
-text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; =
--webkit-text-stroke-width: 0px; text-decoration-line: none; =
-text-decoration-thickness: auto; text-decoration-style: solid;"><span =
-style=3D"caret-color: rgb(0, 0, 0); color: rgb(0, 0, 0); font-family: =
-Helvetica; font-size: 12px; font-style: normal; font-variant-caps: =
-normal; font-weight: 400; letter-spacing: normal; orphans: 2; =
-text-align: start; text-indent: 0px; text-transform: none; white-space: =
-normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; =
-text-decoration: none; display: inline !important; float: none;">Thanks =
-for reviewing, Kairui!</span><br style=3D"caret-color: rgb(0, 0, 0); =
-color: rgb(0, 0, 0); font-family: Helvetica; font-size: 12px; =
-font-style: normal; font-variant-caps: normal; font-weight: 400; =
-letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; =
-text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; =
--webkit-text-stroke-width: 0px; text-decoration-line: none; =
-text-decoration-thickness: auto; text-decoration-style: solid;"><br =
-style=3D"caret-color: rgb(0, 0, 0); color: rgb(0, 0, 0); font-family: =
-Helvetica; font-size: 12px; font-style: normal; font-variant-caps: =
-normal; font-weight: 400; letter-spacing: normal; orphans: 2; =
-text-align: start; text-indent: 0px; text-transform: none; white-space: =
-normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; =
-text-decoration-line: none; text-decoration-thickness: auto; =
-text-decoration-style: solid;"><blockquote type=3D"cite" =
-style=3D"font-family: Helvetica; font-size: 12px; font-style: normal; =
-font-variant-caps: normal; font-weight: 400; letter-spacing: normal; =
-orphans: 2; text-align: start; text-indent: 0px; text-transform: none; =
-white-space: normal; widows: 2; word-spacing: 0px; =
--webkit-text-stroke-width: 0px; text-decoration-line: none; =
-text-decoration-thickness: auto; text-decoration-style: =
-solid;"><blockquote type=3D"cite">diff --git a/mm/vmscan.c =
-b/mm/vmscan.c<br>index 9959ca158ce83..b32777468ead8 100644<br>--- =
-a/mm/vmscan.c<br>+++ b/mm/vmscan.c<br>@@ -4407,6 +4407,12 @@ static void =
-lru_gen_age_node(struct pglist_data *pgdat, struct scan_control =
-*sc)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;re=
-claimable =3D lruvec_is_reclaimable(lruvec, sc, =
-min_ttl);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;} while ((memcg =3D=
- mem_cgroup_iter(NULL, memcg, NULL)));<br><br>+ =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/*<br>+ =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;* OOM killing won't help high =
-order allocations. Skip and let them fail.<br></blockquote><br>A nit =
-pick, OOM definately helps for high order allocations :-D, =
-maybe<br>something like, the OOM kill is to prevent thrashing whtn all =
-memcgs<br>are younger than min_ttl (and maybe merge with the comment =
-&amp; check<br>below?), so OOM for fragmentation is definitely =
-unwanted.<br><br></blockquote><br style=3D"caret-color: rgb(0, 0, 0); =
-color: rgb(0, 0, 0); font-family: Helvetica; font-size: 12px; =
-font-style: normal; font-variant-caps: normal; font-weight: 400; =
-letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; =
-text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; =
--webkit-text-stroke-width: 0px; text-decoration-line: none; =
-text-decoration-thickness: auto; text-decoration-style: solid;"><span =
-style=3D"caret-color: rgb(0, 0, 0); color: rgb(0, 0, 0); font-family: =
-Helvetica; font-size: 12px; font-style: normal; font-variant-caps: =
-normal; font-weight: 400; letter-spacing: normal; orphans: 2; =
-text-align: start; text-indent: 0px; text-transform: none; white-space: =
-normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; =
-text-decoration: none; display: inline !important; float: none;">Right. =
-OOM might help but not in this case. And that sounds make much =
-more</span><br style=3D"caret-color: rgb(0, 0, 0); color: rgb(0, 0, 0); =
-font-family: Helvetica; font-size: 12px; font-style: normal; =
-font-variant-caps: normal; font-weight: 400; letter-spacing: normal; =
-orphans: 2; text-align: start; text-indent: 0px; text-transform: none; =
-white-space: normal; widows: 2; word-spacing: 0px; =
--webkit-text-stroke-width: 0px; text-decoration-line: none; =
-text-decoration-thickness: auto; text-decoration-style: solid;"><span =
-style=3D"caret-color: rgb(0, 0, 0); color: rgb(0, 0, 0); font-family: =
-Helvetica; font-size: 12px; font-style: normal; font-variant-caps: =
-normal; font-weight: 400; letter-spacing: normal; orphans: 2; =
-text-align: start; text-indent: 0px; text-transform: none; white-space: =
-normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; =
-text-decoration: none; display: inline !important; float: none;">sense. =
-I'll update it!</span><br style=3D"caret-color: rgb(0, 0, 0); color: =
-rgb(0, 0, 0); font-family: Helvetica; font-size: 12px; font-style: =
-normal; font-variant-caps: normal; font-weight: 400; letter-spacing: =
-normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: =
-none; white-space: normal; widows: 2; word-spacing: 0px; =
--webkit-text-stroke-width: 0px; text-decoration-line: none; =
-text-decoration-thickness: auto; text-decoration-style: solid;"><br =
-style=3D"caret-color: rgb(0, 0, 0); color: rgb(0, 0, 0); font-family: =
-Helvetica; font-size: 12px; font-style: normal; font-variant-caps: =
-normal; font-weight: 400; letter-spacing: normal; orphans: 2; =
-text-align: start; text-indent: 0px; text-transform: none; white-space: =
-normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; =
-text-decoration-line: none; text-decoration-thickness: auto; =
-text-decoration-style: solid;"><blockquote type=3D"cite" =
-style=3D"font-family: Helvetica; font-size: 12px; font-style: normal; =
-font-variant-caps: normal; font-weight: 400; letter-spacing: normal; =
-orphans: 2; text-align: start; text-indent: 0px; text-transform: none; =
-white-space: normal; widows: 2; word-spacing: 0px; =
--webkit-text-stroke-width: 0px; text-decoration-line: none; =
-text-decoration-thickness: auto; text-decoration-style: =
-solid;"><blockquote type=3D"cite">+ =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*/<br>+ =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if (sc-&gt;order &gt; =
-PAGE_ALLOC_COSTLY_ORDER)<br>+ =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;return;<br>+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/*<br>=
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;* The main goal is to =
-OOM kill if every generation from all memcgs =
-is<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;* younger than =
-min_ttl. However, another possibility is all memcgs =
-are<br></blockquote><br>This patch is good to me on its own with a nit =
-fix above.<br><br>And checking commit 30d77b7eef019, you might need a =
-Fixes: or maybe<br>even bring the check back which was removed in that =
-commit?<br><br></blockquote><br style=3D"caret-color: rgb(0, 0, 0); =
-color: rgb(0, 0, 0); font-family: Helvetica; font-size: 12px; =
-font-style: normal; font-variant-caps: normal; font-weight: 400; =
-letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; =
-text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; =
--webkit-text-stroke-width: 0px; text-decoration-line: none; =
-text-decoration-thickness: auto; text-decoration-style: solid;"><span =
-style=3D"caret-color: rgb(0, 0, 0); color: rgb(0, 0, 0); font-family: =
-Helvetica; font-size: 12px; font-style: normal; font-variant-caps: =
-normal; font-weight: 400; letter-spacing: normal; orphans: 2; =
-text-align: start; text-indent: 0px; text-transform: none; white-space: =
-normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; =
-text-decoration: none; display: inline !important; float: none;">And =
-after reading reviews from sashiko, I think I can just restore the =
-original</span><br style=3D"caret-color: rgb(0, 0, 0); color: rgb(0, 0, =
-0); font-family: Helvetica; font-size: 12px; font-style: normal; =
-font-variant-caps: normal; font-weight: 400; letter-spacing: normal; =
-orphans: 2; text-align: start; text-indent: 0px; text-transform: none; =
-white-space: normal; widows: 2; word-spacing: 0px; =
--webkit-text-stroke-width: 0px; text-decoration-line: none; =
-text-decoration-thickness: auto; text-decoration-style: solid;"><span =
-style=3D"caret-color: rgb(0, 0, 0); color: rgb(0, 0, 0); font-family: =
-Helvetica; font-size: 12px; font-style: normal; font-variant-caps: =
-normal; font-weight: 400; letter-spacing: normal; orphans: 2; =
-text-align: start; text-indent: 0px; text-transform: none; white-space: =
-normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; =
-text-decoration: none; display: inline !important; float: none;">check. =
-Use:</span><br style=3D"caret-color: rgb(0, 0, 0); color: rgb(0, 0, 0); =
-font-family: Helvetica; font-size: 12px; font-style: normal; =
-font-variant-caps: normal; font-weight: 400; letter-spacing: normal; =
-orphans: 2; text-align: start; text-indent: 0px; text-transform: none; =
-white-space: normal; widows: 2; word-spacing: 0px; =
--webkit-text-stroke-width: 0px; text-decoration-line: none; =
-text-decoration-thickness: auto; text-decoration-style: solid;"><br =
-style=3D"caret-color: rgb(0, 0, 0); color: rgb(0, 0, 0); font-family: =
-Helvetica; font-size: 12px; font-style: normal; font-variant-caps: =
-normal; font-weight: 400; letter-spacing: normal; orphans: 2; =
-text-align: start; text-indent: 0px; text-transform: none; white-space: =
-normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; =
-text-decoration-line: none; text-decoration-thickness: auto; =
-text-decoration-style: solid;"><span style=3D"caret-color: rgb(0, 0, 0); =
-color: rgb(0, 0, 0); font-family: Helvetica; font-size: 12px; =
-font-style: normal; font-variant-caps: normal; font-weight: 400; =
-letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; =
-text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; =
--webkit-text-stroke-width: 0px; text-decoration: none; display: inline =
-!important; float: none;">&nbsp;&nbsp;&nbsp;bool reclaimable =3D =
-!min_ttl || sc-&gt;order || sc-&gt;priority !=3D DEF_PRIORITY;</span><br =
-style=3D"caret-color: rgb(0, 0, 0); color: rgb(0, 0, 0); font-family: =
-Helvetica; font-size: 12px; font-style: normal; font-variant-caps: =
-normal; font-weight: 400; letter-spacing: normal; orphans: 2; =
-text-align: start; text-indent: 0px; text-transform: none; white-space: =
-normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; =
-text-decoration-line: none; text-decoration-thickness: auto; =
-text-decoration-style: solid;"><br style=3D"caret-color: rgb(0, 0, 0); =
-color: rgb(0, 0, 0); font-family: Helvetica; font-size: 12px; =
-font-style: normal; font-variant-caps: normal; font-weight: 400; =
-letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; =
-text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; =
--webkit-text-stroke-width: 0px; text-decoration-line: none; =
-text-decoration-thickness: auto; text-decoration-style: solid;"><span =
-style=3D"caret-color: rgb(0, 0, 0); color: rgb(0, 0, 0); font-family: =
-Helvetica; font-size: 12px; font-style: normal; font-variant-caps: =
-normal; font-weight: 400; letter-spacing: normal; orphans: 2; =
-text-align: start; text-indent: 0px; text-transform: none; white-space: =
-normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; =
-text-decoration: none; display: inline !important; float: none;">This =
-prevents unexpected OOMs for 1..3 order allocs in some case as =
-well,</span><br style=3D"caret-color: rgb(0, 0, 0); color: rgb(0, 0, 0); =
-font-family: Helvetica; font-size: 12px; font-style: normal; =
-font-variant-caps: normal; font-weight: 400; letter-spacing: normal; =
-orphans: 2; text-align: start; text-indent: 0px; text-transform: none; =
-white-space: normal; widows: 2; word-spacing: 0px; =
--webkit-text-stroke-width: 0px; text-decoration-line: none; =
-text-decoration-thickness: auto; text-decoration-style: solid;"><span =
-style=3D"caret-color: rgb(0, 0, 0); color: rgb(0, 0, 0); font-family: =
-Helvetica; font-size: 12px; font-style: normal; font-variant-caps: =
-normal; font-weight: 400; letter-spacing: normal; orphans: 2; =
-text-align: start; text-indent: 0px; text-transform: none; white-space: =
-normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; =
-text-decoration: none; display: inline !important; float: =
-none;">although they should be rare based on my tests. And this removes =
-redundant check</span><br style=3D"caret-color: rgb(0, 0, 0); color: =
-rgb(0, 0, 0); font-family: Helvetica; font-size: 12px; font-style: =
-normal; font-variant-caps: normal; font-weight: 400; letter-spacing: =
-normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: =
-none; white-space: normal; widows: 2; word-spacing: 0px; =
--webkit-text-stroke-width: 0px; text-decoration-line: none; =
-text-decoration-thickness: auto; text-decoration-style: solid;"><span =
-style=3D"caret-color: rgb(0, 0, 0); color: rgb(0, 0, 0); font-family: =
-Helvetica; font-size: 12px; font-style: normal; font-variant-caps: =
-normal; font-weight: 400; letter-spacing: normal; orphans: 2; =
-text-align: start; text-indent: 0px; text-transform: none; white-space: =
-normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; =
-text-decoration: none; display: inline !important; float: none;">runs =
-for every memcg in this case.</span><br style=3D"caret-color: rgb(0, 0, =
-0); color: rgb(0, 0, 0); font-family: Helvetica; font-size: 12px; =
-font-style: normal; font-variant-caps: normal; font-weight: 400; =
-letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; =
-text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; =
--webkit-text-stroke-width: 0px; text-decoration-line: none; =
-text-decoration-thickness: auto; text-decoration-style: solid;"><br =
-style=3D"caret-color: rgb(0, 0, 0); color: rgb(0, 0, 0); font-family: =
-Helvetica; font-size: 12px; font-style: normal; font-variant-caps: =
-normal; font-weight: 400; letter-spacing: normal; orphans: 2; =
-text-align: start; text-indent: 0px; text-transform: none; white-space: =
-normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; =
-text-decoration-line: none; text-decoration-thickness: auto; =
-text-decoration-style: solid;"><blockquote type=3D"cite" =
-style=3D"font-family: Helvetica; font-size: 12px; font-style: normal; =
-font-variant-caps: normal; font-weight: 400; letter-spacing: normal; =
-orphans: 2; text-align: start; text-indent: 0px; text-transform: none; =
-white-space: normal; widows: 2; word-spacing: 0px; =
--webkit-text-stroke-width: 0px; text-decoration-line: none; =
-text-decoration-thickness: auto; text-decoration-style: solid;">But for =
-long term, and as a follow up, the whole idea of OOM in kswapd<br>seems =
-kind of wrong, maybe at least it need to check the water =
-mark<br>here?<br><br><br></blockquote><br style=3D"caret-color: rgb(0, =
-0, 0); color: rgb(0, 0, 0); font-family: Helvetica; font-size: 12px; =
-font-style: normal; font-variant-caps: normal; font-weight: 400; =
-letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; =
-text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; =
--webkit-text-stroke-width: 0px; text-decoration-line: none; =
-text-decoration-thickness: auto; text-decoration-style: solid;"><span =
-style=3D"caret-color: rgb(0, 0, 0); color: rgb(0, 0, 0); font-family: =
-Helvetica; font-size: 12px; font-style: normal; font-variant-caps: =
-normal; font-weight: 400; letter-spacing: normal; orphans: 2; =
-text-align: start; text-indent: 0px; text-transform: none; white-space: =
-normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; =
-text-decoration: none; display: inline !important; float: none;">Agreed. =
-And as you mentioned above, OOMs are not expected by fragmentation. =
-So</span><br style=3D"caret-color: rgb(0, 0, 0); color: rgb(0, 0, 0); =
-font-family: Helvetica; font-size: 12px; font-style: normal; =
-font-variant-caps: normal; font-weight: 400; letter-spacing: normal; =
-orphans: 2; text-align: start; text-indent: 0px; text-transform: none; =
-white-space: normal; widows: 2; word-spacing: 0px; =
--webkit-text-stroke-width: 0px; text-decoration-line: none; =
-text-decoration-thickness: auto; text-decoration-style: solid;"><span =
-style=3D"caret-color: rgb(0, 0, 0); color: rgb(0, 0, 0); font-family: =
-Helvetica; font-size: 12px; font-style: normal; font-variant-caps: =
-normal; font-weight: 400; letter-spacing: normal; orphans: 2; =
-text-align: start; text-indent: 0px; text-transform: none; white-space: =
-normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; =
-text-decoration: none; display: inline !important; float: none;">it's =
-best to have some ways to distinguish very young generations caused =
-by</span><br style=3D"caret-color: rgb(0, 0, 0); color: rgb(0, 0, 0); =
-font-family: Helvetica; font-size: 12px; font-style: normal; =
-font-variant-caps: normal; font-weight: 400; letter-spacing: normal; =
-orphans: 2; text-align: start; text-indent: 0px; text-transform: none; =
-white-space: normal; widows: 2; word-spacing: 0px; =
--webkit-text-stroke-width: 0px; text-decoration-line: none; =
-text-decoration-thickness: auto; text-decoration-style: solid;"><span =
-style=3D"caret-color: rgb(0, 0, 0); color: rgb(0, 0, 0); font-family: =
-Helvetica; font-size: 12px; font-style: normal; font-variant-caps: =
-normal; font-weight: 400; letter-spacing: normal; orphans: 2; =
-text-align: start; text-indent: 0px; text-transform: none; white-space: =
-normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; =
-text-decoration: none; display: inline !important; float: =
-none;">thrashing from something else.</span><br style=3D"caret-color: =
-rgb(0, 0, 0); color: rgb(0, 0, 0); font-family: Helvetica; font-size: =
-12px; font-style: normal; font-variant-caps: normal; font-weight: 400; =
-letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; =
-text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; =
--webkit-text-stroke-width: 0px; text-decoration-line: none; =
-text-decoration-thickness: auto; text-decoration-style: solid;"><br =
-style=3D"caret-color: rgb(0, 0, 0); color: rgb(0, 0, 0); font-family: =
-Helvetica; font-size: 12px; font-style: normal; font-variant-caps: =
-normal; font-weight: 400; letter-spacing: normal; orphans: 2; =
-text-align: start; text-indent: 0px; text-transform: none; white-space: =
-normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; =
-text-decoration-line: none; text-decoration-thickness: auto; =
-text-decoration-style: solid;"><br style=3D"caret-color: rgb(0, 0, 0); =
-color: rgb(0, 0, 0); font-family: Helvetica; font-size: 12px; =
-font-style: normal; font-variant-caps: normal; font-weight: 400; =
-letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; =
-text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; =
--webkit-text-stroke-width: 0px; text-decoration-line: none; =
-text-decoration-thickness: auto; text-decoration-style: solid;"><span =
-style=3D"caret-color: rgb(0, 0, 0); color: rgb(0, 0, 0); font-family: =
-Helvetica; font-size: 12px; font-style: normal; font-variant-caps: =
-normal; font-weight: 400; letter-spacing: normal; orphans: 2; =
-text-align: start; text-indent: 0px; text-transform: none; white-space: =
-normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; =
-text-decoration: none; display: inline !important; float: =
-none;">--</span><br style=3D"caret-color: rgb(0, 0, 0); color: rgb(0, 0, =
-0); font-family: Helvetica; font-size: 12px; font-style: normal; =
-font-variant-caps: normal; font-weight: 400; letter-spacing: normal; =
-orphans: 2; text-align: start; text-indent: 0px; text-transform: none; =
-white-space: normal; widows: 2; word-spacing: 0px; =
--webkit-text-stroke-width: 0px; text-decoration-line: none; =
-text-decoration-thickness: auto; text-decoration-style: solid;"><span =
-style=3D"caret-color: rgb(0, 0, 0); color: rgb(0, 0, 0); font-family: =
-Helvetica; font-size: 12px; font-style: normal; font-variant-caps: =
-normal; font-weight: 400; letter-spacing: normal; orphans: 2; =
-text-align: start; text-indent: 0px; text-transform: none; white-space: =
-normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; =
-text-decoration: none; display: inline !important; float: =
-none;">Thanks,</span><br style=3D"caret-color: rgb(0, 0, 0); color: =
-rgb(0, 0, 0); font-family: Helvetica; font-size: 12px; font-style: =
-normal; font-variant-caps: normal; font-weight: 400; letter-spacing: =
-normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: =
-none; white-space: normal; widows: 2; word-spacing: 0px; =
--webkit-text-stroke-width: 0px; text-decoration-line: none; =
-text-decoration-thickness: auto; text-decoration-style: solid;"><span =
-style=3D"caret-color: rgb(0, 0, 0); color: rgb(0, 0, 0); font-family: =
-Helvetica; font-size: 12px; font-style: normal; font-variant-caps: =
-normal; font-weight: 400; letter-spacing: normal; orphans: 2; =
-text-align: start; text-indent: 0px; text-transform: none; white-space: =
-normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; =
-text-decoration: none; display: inline !important; float: =
-none;">Bingfang</span></body></html>=
-
---Apple-Mail=_3726A5FE-45B5-46FC-9A24-E3F1D05B3923--
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
 
