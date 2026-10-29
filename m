@@ -1,159 +1,104 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25D5F606A31A
-	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 22:30:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FAFF606A321
+	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 22:31:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gourry.net header.i=@gourry.net header.a=rsa-sha256 header.s=google header.b=k/rh7lhh
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=NWF/Ngxn
 Received: by kanga.kvack.org (Postfix)
-	id 366B16B00EF; Thu, 29 Oct 2026 18:30:55 -0400 (EDT)
+	id 7AEA56B05B2; Thu, 29 Oct 2026 18:31:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3177E6B05B1; Thu, 29 Oct 2026 18:30:55 -0400 (EDT)
+	id 7852D6B05B3; Thu, 29 Oct 2026 18:31:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 206A86B05B2; Thu, 29 Oct 2026 18:30:55 -0400 (EDT)
+	id 69C6F6B05B4; Thu, 29 Oct 2026 18:31:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id ED5C46B00EF
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 18:30:54 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 6E3F8140577
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 22:30:54 +0000 (UTC)
-X-FDA: 85377110028.26.F78AE0D
-Received: from mail-qv1-f44.google.com (mail-qv1-f44.google.com [209.85.219.44])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 7CAFB12000A
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 22:30:52 +0000 (UTC)
+	by kanga.kvack.org (Postfix) with ESMTP id 4A6E36B05B2
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 18:31:16 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id CFF4C140539
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 22:31:15 +0000 (UTC)
+X-FDA: 85377110910.06.61DA089
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf29.hostedemail.com (Postfix) with ESMTP id EA462120005
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 22:31:13 +0000 (UTC)
 Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b="k/rh7lhh";
-	dmarc=none;
-	spf=pass (imf29.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.44 as permitted sender) smtp.mailfrom=gourry@gourry.net
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="NWF/Ngxn";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf29.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793313052;
+	s=arc-20220608; t=1793313074;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UPY3X5uvq0LQlVSKfRxAerWA4F2Yg0A//1vEESl9I+c=;
-	b=zM59k2SRB9FVn2UrF3KQj5fHzOgM/jgN497x+srAs2GQEbuJkXKbUBZdfYln2dYwAO9teB
-	AEhGrOH6Gi6ptFDBV5SXGiXHX4i1bIy1A+g+mE2DDdD62SeaM4Is9FOmCFX9ojQBgD2YTW
-	1aSP4eKGH8QSHHHrA6b4I9ZL12jHDck=
+	bh=kf6LpxrUPl6mdfAmH/zCqlYs6hvSsVYZyBZpkHm4pBA=;
+	b=A8WokIeOLcQbqpfo6lnU3LVfTvW6fYqXscsZ1WtDTM2ddYcEJrA8tMaqf8pVJaSHhvDDS3
+	vUC5pmKPR6liw1zgokHk/3cwfsqGgDguvCBHSPRN/z0VELzT00ADpxMaQlPPm4spWBANFJ
+	rVfop1Hpiv9QyijMKfh5UltNTGp3Yk4=
 ARC-Authentication-Results: i=1;
 	imf29.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b="k/rh7lhh";
-	dmarc=none;
-	spf=pass (imf29.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.44 as permitted sender) smtp.mailfrom=gourry@gourry.net
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="NWF/Ngxn";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf29.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793313052;
-	b=RmG3EytMksgZ47WJXilNidjz6gbrLpAo7G2UCXULUM9iWls/5q3zqv+RyQMNMZDIFV8iR7
-	NjjFfabwQ3GgG+IXEDHS8Upa+WBxh2UYtHOObbCmvv4uuZiAk/TMkoPaLjfLvzKRdNtdYq
-	ankdnmVYSpHkyXjnW4aZD0YZpoG+l4M=
-Received: by mail-qv1-f44.google.com with SMTP id 6a1803df08f44-917a707f37eso1299836d6.0
-        for <linux-mm@kvack.org>; Thu, 29 Oct 2026 15:30:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1793313051; x=1793917851; darn=kvack.org;
-        h=message-id:date:references:in-reply-to:cc:to:from:subject
-         :content-transfer-encoding:content-type:mime-version:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=UPY3X5uvq0LQlVSKfRxAerWA4F2Yg0A//1vEESl9I+c=;
-        b=k/rh7lhhEfAq5tIQkxWdi1Z4pCHcjoIMs7D0ldABGSktRf3HWBlctjv1t4nk8vyVvP
-         SlaDk4b7RaEbulWZ/rBJFTuuwsHkHCiVSZV2wFmqHmR6rVrkgY65SQlnepaA6ofQx9X/
-         XW8sGgdzf/i4vpWX20xMwIJwKMLQRfZBr1g5tB2BB8tFnKupSW623q6x3rCiiomFr9ZB
-         eocj5yduhBKt0hBYKvNDFPa2R02UnnpnP6lixCgVapWCkW9Iaj88SLLJGfvT4J3LqNU+
-         m0/kb/0S2JKBI5b+JsFgIS5OhD4MOy9g7HJMqKE9JndIQCjRWR202/1sA4t86TrdPRpj
-         O2XQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793313051; x=1793917851;
-        h=message-id:date:references:in-reply-to:cc:to:from:subject
-         :content-transfer-encoding:content-type:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=UPY3X5uvq0LQlVSKfRxAerWA4F2Yg0A//1vEESl9I+c=;
-        b=kzuyOPLiw/fj5bsUIGII0vjT1A7/6/Kcc4kyEdflwZsnbYXCJux4j/qFyBW01CGAsF
-         xf4FjXED5cXgDUEbR7YEHrSTxYD4z7I9vzMlnVC5Elw74Kmsm2Q6fH0O00iy2S4FXtxE
-         Dr63xiSLv0oTbaz0HUHGxVrN/SFI6REmV10aYonrAZ8LGA8jwcCBwkcdF+zQPDGngHwV
-         kpN2E/A0uMjg+3pnCAtvMGbnDKrYGXp/DCpHfVS6B426flLT2tGhZyLJXF1pD1OXigWa
-         +TrJdf+QauVctV41l/b27I8O6PMglyNqzoDvGEoLGRAGPlpquGfsFHBJZTebI77FRXm0
-         QLyA==
-X-Forwarded-Encrypted: i=1; AKwUvBxpuCc2JEOApd58rdVDyO4tXPAyVXzdicgrXmJptf9UBNQYRj5d4s8KIJT2T5CgqEd7havLr5cpGA==@kvack.org
-X-Gm-Message-State: AFq9FYIEgbbDhEozXnHSKAP4fCSuk0WnbX5hM/PXyNSO2q14eNssOAG1
-	hpIQiuSxV6h8u/XBjXbD8LvaNxzTnw3ZQn1vz3/7jGemoJxei/ux9z+s2onCT9DU3do=
-X-Gm-Gg: AYBFou0dVo2KIVbjJDj+N4BNUUOXlOpI2JMg/Ke3TxvDw9rdVkvyazBKzCEnI13DWgG
-	HnqadPCFcttsVqGOZDZyeZkAv8v1LCBmQMN70Jk288jb/5vgrBIS5Khi0NmzUICURic9Ntk75Pj
-	5olVQUnJrynbJG7pB1ETg6SlLdp0U5cwOULiVydsTdxMaxbQVDdVyM/A2gBIlUjMLzp6HyHlHI3
-	GWMtg6J6Ew2HNGaqzI9TBNK0shln4nXd4aNxfRg6857Hm9RcWkWK5/g4XVC2dltjfWLwwIvXSRW
-	twfBlUlajol7IPQnHBP0Md4hTIap7cXkH2/yU/sR7E1kPXUbe1x2By8rzek5uy+OQH/5Qudi1hU
-	lzw4xpS+GsFYZESKETEsVGxxRFbpT6XVLWPackykxkidUPrJXrzDVQey3jWpMKeuX5pW5ecLgiN
-	RaUMTEf1HBy0QReZBoQc1nBnhV3FteiLhAGV1gv5P+jb6auLZ8P8DxqdB4FbA5FmGek3COjxmCD
-	FrJ944tfqMHcV+oEpHX7WndBnD5X6/Lp0j+X9mQ/fIeZCDiKf5rnupyMjzG7rXUj/wNoLibNcQB
-	/yJRwpXLT/86/TR1uvpuEj3UxX4mSa+B6m0izom9Z8vMHjSmkNxGKdvjlA0JWz4Vdt1fYoEdWwF
-	6
-X-Received: by 2002:a05:6214:5f10:b0:91b:8296:3b88 with SMTP id 6a1803df08f44-91ca4ae90b0mr5824286d6.15.1793313051262;
-        Thu, 29 Oct 2026 15:30:51 -0700 (PDT)
-Received: from [192.168.86.58] (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91ca68e5f47sm398016d6.42.2026.10.29.15.30.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 29 Oct 2026 15:30:50 -0700 (PDT)
+	t=1793313074;
+	b=qnn+f//hhXEbF+daWuZPAKC4rnZCM29L4rusiItqFdRFfsO5G61id42abrRAFT5gBkLOIc
+	fBc0fVUsyw5ZLq7KiO8JtvZJHiLB81SaH5XXOq8LybyYIS1fg7ITNIXD0/R+iN9Mljl1kD
+	mmdARgYweL5X2aUULmK8zePnB3RoVf8=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 2419F437EC
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 22:31:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF3301F031E0
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 22:31:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793313073;
+	bh=kf6LpxrUPl6mdfAmH/zCqlYs6hvSsVYZyBZpkHm4pBA=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=NWF/NgxndhhWgfgsP0U/oEp9QD10ogeqKJmKCCc5bEnRQ4BuA2ciqvET5cGeGUKTM
+	 8x1JnNppcLWVGRN9Wzn3Ydq+gjBNIBUfb3jx+nxejwPLLhxKgr2X1UlF3X+Nq0JN6M
+	 3Hphuq4TmioFwEW3UcZktZnL2+txazpoFpv8S55ZP/UXBt0Ima93n2lVIkIqI3ORxU
+	 exL3w/hyYkxMcu50mgIGi64UyExj+I/ztIt1nuz34TpDyaJltHiUNprZlGGFJ3rDSa
+	 Qd5vDxMxnF5RpjkfLFXNvi7MVz6rN+GVTKGict+aUy6R2DzdBHUWhmDExvhSx7djgO
+	 H4J9cvjGgSiIA==
+Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-c45551fa84eso4841366b.3
+        for <linux-mm@kvack.org>; Thu, 29 Oct 2026 15:31:12 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBycX0/q+mwDn7w06ZXVTWr10kwwKUJjSxE2yLJSSYUqNSpczNKtPfjw1v9Vl8nmAZ7PJ3wltH8vXA==@kvack.org
+X-Gm-Message-State: AFq9FYLcn5Z+cL7mdl8YslZxVdXzA0uHQlnzFGffGDQX5eY40amWbrHb
+	ckFy+z3GkyMxlvJxNPt8ikoS3LX/XaAFRYvudfbIy328vOFilLhEJe8bVN3e1o3AOxdqeXAPbai
+	nbXckQnoqM0Lg7ha3RxH60JJJSs1spm8=
+X-Received: by 2002:a17:907:3f95:b0:c26:1648:a06b with SMTP id
+ a640c23a62f3a-c4ca7a96a37mr36969166b.38.1793313071904; Thu, 29 Oct 2026
+ 15:31:11 -0700 (PDT)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v2 14/47] mm/huge_memory: fix zapping migration entries
- for device-private THPs
-From: "Gregory Price (Meta)" <gourry@gourry.net>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
- Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
- Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
- Lorenzo Stoakes <ljs@kernel.org>, Kairui Song <kasong@tencent.com>, 
- Barry Song <baohua@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>, 
- Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
- Baoquan He <baoquan.he@linux.dev>, 
- Baolin Wang <baolin.wang@linux.alibaba.com>, 
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
- Michal Hocko <mhocko@suse.com>, Kees Cook <kees@kernel.org>, 
- Peter Zijlstra <peterz@infradead.org>, Jann Horn <jannh@google.com>, 
- Pedro Falcato <pfalcato@suse.de>, Hugh Dickins <hughd@google.com>, 
- Pasha Tatashin <pasha.tatashin@soleen.com>, 
- Pratyush Yadav <pratyush@kernel.org>, 
- "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, 
- Zi Yan <ziy@nvidia.com>, Lance Yang <lance.yang@linux.dev>, 
- Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>, 
- Alistair Popple <apopple@nvidia.com>, Nico Pache <nico.pache@linux.dev>, 
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
- Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>, 
- Matthew Brost <matthew.brost@intel.com>, John Hubbard <jhubbard@nvidia.com>, 
- Peter Xu <peterx@redhat.com>, Will Deacon <will@kernel.org>, 
- "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, 
- Nick Piggin <npiggin@gmail.com>, Oscar Salvador <osalvador@suse.de>, 
- Minchan Kim <minchan@kernel.org>, Muchun Song <muchun.song@linux.dev>, 
- Xu Xin <xu.xin@linux.dev>, Chengming Zhou <chengming.zhou@linux.dev>, 
- Chris Li <chrisl@kernel.org>, Kemeng Shi <shikemeng@huaweicloud.com>, 
- Nhat Pham <nphamcs@gmail.com>, Youngjun Park <youngjun.park@lge.com>, 
- Gregory Price <gourry@gourry.net>, Joshua Hahn <joshua.hahnjy@gmail.com>, 
- Rakie Kim <rakie.kim@sk.com>, Ying Huang <ying.huang@linux.alibaba.com>, 
- Jason Gunthorpe <jgg@ziepe.ca>, linux-mm@kvack.org, 
- linux-kernel@vger.kernel.org, kexec@lists.infradead.org, 
- linux-fsdevel@vger.kernel.org, linux-arch@vger.kernel.org, 
- linux-cxl@vger.kernel.org, Chris Mason <mason@kernel.org>, 
- stable@vger.kernel.org
-In-Reply-To: <20261029-fixes_core-v2-14-a64ce7f83abb@kernel.org>
-References: <20261029-fixes_core-v2-0-a64ce7f83abb@kernel.org>
- <20261029-fixes_core-v2-14-a64ce7f83abb@kernel.org>
-Date: Thu, 29 Oct 2026 18:30:48 -0400
-Message-Id: <179331304801.2127828.6570375349219520262.b4-reply@b4>
-X-Mailer: b4 0.17-dev
-X-Rspamd-Queue-Id: 7CAFB12000A
-X-Stat-Signature: n6g16q3b5rfbcx7fdt5qfj1racjhak8q
-X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+References: <20261028030503.17923-1-kanchanapsridhar2026@gmail.com>
+ <auOZBtRqQGzFcbAT@google.com> <CACpmpocqHHa4z9hkZ6YEm-wmzMqSX5WpPLfku7Om=NenRq_05Q@mail.gmail.com>
+In-Reply-To: <CACpmpocqHHa4z9hkZ6YEm-wmzMqSX5WpPLfku7Om=NenRq_05Q@mail.gmail.com>
+From: Yosry Ahmed <yosry@kernel.org>
+Date: Thu, 29 Oct 2026 15:31:00 -0700
+X-Gmail-Original-Message-ID: <CAO9r8zMukKcs8u81O6ibOXd_BzdYKM124=rVyuyp2x9+00EDvA@mail.gmail.com>
+X-Gm-Features: AclHuK9Kyop58VqX76nVFd46J_fFsMna3NEZi8sYQdg_eXsf3y1c_wvVLUO30DM
+Message-ID: <CAO9r8zMukKcs8u81O6ibOXd_BzdYKM124=rVyuyp2x9+00EDvA@mail.gmail.com>
+Subject: Re: [PATCH v2 0/8] Batched zswap_store() framework with compression batching
+To: "Kanchana P. Sridhar" <kanchanapsridhar2026@gmail.com>
+Cc: hannes@cmpxchg.org, nphamcs@gmail.com, chengming.zhou@linux.dev, 
+	akpm@linux-foundation.org, linux-mm@kvack.org, herbert@gondor.apana.org.au, 
+	davem@davemloft.net, linux-crypto@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, rientjes@google.com, willy@infradead.org, 
+	senozhatsky@chromium.org
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Queue-Id: EA462120005
+X-Stat-Signature: g54ejhqfqjffcinhi9rxnbbozuq49jnx
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
+	autolearn_force=no version=4.0.1
 X-Rspam-User: 
 X-Rspamd-Server: rspam09
-X-HE-Tag: 1793313052-748791
-X-HE-Meta: U2FsdGVkX19DR1mXKKyz26QTizzvvAltzunqeivwOkhb9fUlMXnt2BByoHEZw5E8fJK73KSkbkPQiDzMQ7LRwZVL7KYquIlVSmY6NA4dhuyLGM158kVAqEVg4ujaZGNod2f0h9XZotOpPQCA9dUhoAnH60q9qBI+EhstHNc1dNnqR1kCxTF6JFKjEW+mP3+kR5gCyYjlSRYO92kcXWy3Qy2DHpZtbeh/SC/gB1cB/ICAWrFUwhKyuNvyt6XjGBuj2BFuNbpxD3kYbOz9rRcMY3xK7FdB1BnVf3w+2DBro0AKam0WpYY7SyppWNgvdpKq4SF6MMLrV7OgXdwEik9EYBDckuftI8Y+GWJTSf0LO17BRSR3UwgxFxEhec15Oa4/pldDqc4jhRw/eSuFXOT1ihtVqZOiHQVmmVGBS1a+qq/Y5cHTcW7WKykScc0YGlUpffla9p0QQLB16zlbTW4ykm5HV44BU1N2xrXWQhgtFHMT2VxY8S/+zh8adbrqL2ksTAbvQoDzOV/UbxnmYGKHA+e7daUEhWFtYDC6uIY3nXje084hCwCjcf4+7oNBykvAc/b+JhwjfLxV8C7kM22DDyeBU4dXaQY6GZlXfhxHh1Er/Z1k5s0LgDq0SaKyBD3nfxMVitG88Yoo/MbE/u9GD0v/fKX2uUbmyEDh4j/8Gj4O/28ZA+xHKoOPblj6h/a0ShBEuah/QL6yHaEerfj8D8Oi0fBLszqz5yV22omUWQoW/OXmwUtvMKHdsJQjvMWvQw4Ga25rcYSj6Ue949Cwr3OkfOLJ60KoDq3Cm8BtaGHcZM19pA4vsBAqsiZmaSJ15NPe9J4AMOY/UbupsEyCwNEAQUOfmZBp+B8Co2xLkM63MNoxx/mxJe5Axdc+TqgAaGN59+gJO73Wz68CKhHT0yj4LXiPZEvHF30/VYxECzFaWtVGPTI8UP7SZoMdNaSvCWVG/2K9Ne3w+EKNZhJ
- ZLUzAq2P
- SJ/VrxfJvFWhqQvCc5nGdendJZVcWE+1305bli20wdEKQR8FZRPv1SRO92zPzLd98KGJ4/ikNa8BBlfto8o6j1KyF373BqGkrV9/9hALi/adhdZZd1jLGIgVmmM9xtZKobUtAfIWbe4LDu1E5wlIKCfFdYWc5YVM2qzj2+pwxvbnNC2mPTL3UbQlp4R+zovRUv1eT0t5eKHfvuSmnzBJYyMVcHo6AH0LdUa2p7BHzWdBYJHg7BEHcuy2e0rf3S+p/YF5X5L+Zkenu6n23VModIlnBrgAV5kz1HhhEmkOHo/JdL6vySvSjnjgqecx/ia0gqHg6NyZZ4m0+8TyQq1x3e5j2lrya+QVzEvCaoTzdtk0kNrwQpDip5QCbO4abDEsbaQS6LSjcBiw8KkD/Rprk5oowwf67Z/4aeIHPcLLUt88Etq+6dRVO/FODhmeAWJOhJKyyTdjdQY3DNak=
+X-HE-Tag: 1793313073-256716
+X-HE-Meta: U2FsdGVkX1+ActP2pnymGYdCzk47mfb38Ohh81YnyhVik/PPbSDXb3LfhG8ZX1L3yudEXmAZkCaFGl1eLyQgNebLPw8GaZw7R6TL/+xTy3o0VakvLRQVVDHv7LUCl8VTvM18luMImiE50JGzDnuOfA27FDRmbwPehb+1QmLqhsPG76XsjeXWumuqx3oSei0thz0JzhDMGRv03/UU4J5dZhbUO66y/mbb1EB6MXzOVyFeGRJ1l+MLGdIgyiTDgHFkxIzhbWr8XB6PU8JHyJCPbuBsImLQ0W2X6iIyLNKq5zEeBo38LiVYbJwjj7C4P1Wt0OIKcNjPeBPdaKault6eme4StTlPMD2hcQg89M7e/TshYFTddQPEHhVeBKNI6Ikb/KHxG8BTNkEJYKYLORBBFP+Z8Wta1YzZWJ1riPaFLq+q/CQ+JDBBJwYg08NpddB+7cmeKF68ZJNRNvfEs9BruAspIFwehzG6VwNYyXxuFHq6kqrcUpJ31FFnyC5ReDYqg6chPLUDGEmRHh2tddd5quZ+d9cOtuM9f507Iiy0qkMQMop/FDQ8IXHr50dwz9z7GbqEbLzvBLdYS4S9WAflCP8D/SSa0uhwuAlEf97xTdHYtnpCWJgpzQ7w3fS7lFD8IztR3+WI5OHZIrCTP0h4znSY8o86FZOY5dU345z76IT/K4+4BQXJ30uyxAcew4b8Wz0sbhE8gWNxXIgPk9XQ0RvcihSNCuNr+LrCRnaoyFq2q9xFXOFviYbVLwNmLppRRtlfIAPZPHSBQW+Jq7Wk0TmsHXLu1oC6iaiL7EIVIzUxdvSVVeA1YLd3z9ly5J5WqXBX86GVQ3vaA48lNVkX6Qun46S2+GDZEjsfSdsJS0IreUiEPzdg+6QI2aFUrFvYUy5qSS4RsDlBlzUoogkPzharTlfXyDG3ikZNPwEOf/kr+mjet1e1zCBRERI78bxXDwQW8uj+BjD83LlgMEC
+ Zn0kPhiG
+ rWjl0kyCoaA0Vcm4Ho75TBiHSt8cyf0uaslNXPUNbVzXxuejXGo1TY7wKexCROCoVgmW8JUgav9FYuKq0R83mtPj0hju3qHPIQujeJ3mwqIo+Z4HbDUwq+Km+nMLom7x+GaysFkzKpgSxcZzmnBCfdgG/QNlGaDerboQLB/gQb/ImPOSbQte0Zir0LRH4/tzysDAVSK996XmOzDyq4DhFtxoltalI/ramJvVleENTdmLytrZ6sHNdoUSTIxC8Ddmry5vqfE7O2lqo8yVk7jDINkJthh6qAEzoEJdCH6y2T4q54psFpQFy2j4zZtW4UI47mqPW4vlqyQdCpq4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -162,39 +107,41 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 2026-10-29 21:33 +0100, David Hildenbrand (Arm) wrote:
-> From: Chris Mason <mason@kernel.org>
-> 
-> A PMD migration entry can refer to a device-private folio.
-> zap_huge_pmd_folio() checks the folio type instead of the entry type,
-> so it treats such a migration entry as a device-private entry.
-> 
-> Installing the migration entry already removed the reverse mapping and
-> dropped the mapping reference. Zapping it must not repeat those
-> operations. Concurrent MADV_DONTNEED during migration back to system
-> memory can trigger this.
-> 
-> Check the PMD entry type using pmd_is_device_private_entry().
-> 
-> Fix generated by an LLM and sent by Chris Mason in private.
-> 
-> Fixes: 368076f52ebe ("mm/huge_memory: add device-private THP support to PMD operations")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Chris Mason <mason@kernel.org>
-> [ david: simplify description ]
-> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+> > As mentioned in the previous version, I cannot reproduce these results,
+> > mainly because the noise is too high. Digging a bit deeper, it's because
+> > the throttling from memory.high varies. Hacking in a change to make
+> > calculate_high_delay() always return 0 (no memory.high stalls) paints a
+> > clearer picture about throughput improvements from the series up to
+> > patch 6 and patch 8. With that, I see 1-2% improvement in throughput
+> > with patch 6, and almost no improvement with patch 8 on top. Similarly,
+> > for zswap store latency for high-order folios, I see a slight (~1-2%)
+> > improvement with patch 6, but almost none with patch 8 on top.
+>
+> Thanks Yosry, for sharing this. Let me also see if I can replicate
+> this hack on my end, and its impact on latency.
+>
+> >
+> > In order to make meaningful progress, can you send patches 5-6
+> > separately? I assume that 1-4 are prep for 7-8, so 5-6 are standalone. I
+> > also think patch 6 will be simplified if we drop the prep work for
+> > patches 7-8?
+>
+> It shouldn't be a problem to send patches 5-6 separately, but I would
+> like to measure the latency impact with the hack and confirm the
+> latency results in my environment, so we can figure out a plan on how
+> to proceed. Patches 5-6 alone only achieve bulk allocation of
+> zswap_entries. It could be possible to bundle in patch 8, which
+> generalizes the store batching framework, but let's revisit on how
+> best to make meaningful progress.
 
-One note below, but it's not a holdup.
+I am questioning the benefit of the compression batching based on the
+results I am seeing.
 
-Reviewed-by: Gregory Price (Meta) <gourry@gourry.net>
+>
+> Patches 5-6 have a dependency on the batch_size for allocating
+> acomp_ctx resources, which is for the compress batching improvements
+> in patch 7-8.
 
-> +	const bool is_device_private = !is_present && pmd_is_device_private_entry(pmdval);
-
-pmd_is_device_private_entry() already returns false for a present
-pmdval - so !is_present is redundant.  If there was a reason to open
-code this, then keep it, but otherwise you could drop it.
-
--- 
-~Gregory
-
+I assume that this code can be dropped from patch 6 if it will be sent
+with patch 5 as a standalone series.
 
