@@ -1,144 +1,127 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E619F606A31C
-	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 11:45:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 300AA606A31C
+	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 11:57:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=UBvd+397
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=CP6n/5TD
 Received: by kanga.kvack.org (Postfix)
-	id 1EA706B00EF; Thu, 29 Oct 2026 07:45:53 -0400 (EDT)
+	id 5349B6B00EF; Thu, 29 Oct 2026 07:57:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 19FB66B05B1; Thu, 29 Oct 2026 07:45:53 -0400 (EDT)
+	id 4E4B66B05B1; Thu, 29 Oct 2026 07:57:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 08A336B05B4; Thu, 29 Oct 2026 07:45:53 -0400 (EDT)
+	id 3D36E6B05B2; Thu, 29 Oct 2026 07:57:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id D6AC76B00EF
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 07:45:52 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 56E1DC0380
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 11:45:52 +0000 (UTC)
-X-FDA: 85375484544.16.D9827A4
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 6C91620009
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 11:45:50 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UBvd+397;
-	spf=pass (imf13.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 1A9436B00EF
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 07:57:36 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 9A13C1A03BE
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 11:57:34 +0000 (UTC)
+X-FDA: 85375514028.05.7C36756
+Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
+	by imf12.hostedemail.com (Postfix) with ESMTP id BBDD340004
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 11:57:32 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b="CP6n/5TD";
+	spf=pass (imf12.hostedemail.com: domain of azpijr@gmail.com designates 209.85.128.42 as permitted sender) smtp.mailfrom=azpijr@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793275052;
+	b=EfBUtiTN051XyDV1Q8Y3GsTbFwd5PJQZH2sSxA5fDjWv8dCiQd7zWx8R6fjJ6OYXQTHBaB
+	ToxfUyOlXjIEt52uOj2iNwZEJqCKHtjwqUkeh40bXIFb2DUm7uN/j9MPi/R271b8Zn4gPn
+	UjLH14x+BeaPkW9rzmIAv7B9EwUN1kY=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b="CP6n/5TD";
+	spf=pass (imf12.hostedemail.com: domain of azpijr@gmail.com designates 209.85.128.42 as permitted sender) smtp.mailfrom=azpijr@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793274350;
+	s=arc-20220608; t=1793275052;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fsnAuqtxtLr325mSlI6KyfkPKcAjsjpo5pAZm2Ry5UQ=;
-	b=HLojH/BdW3vf0tYlL6HfxZD395qY2ZE7/7GXosUpEpkMe+doEjW2SRHg9wTweuecTjVM2Y
-	xMU4mb1m8T164d6kVworiIXPBGS3CaP6kru2fLaR8Jz2Wo1qx5IL1xyy4O7vYRFrXYafVc
-	qgQUszCWxhb1R9anlwXRYlrMip27g4g=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793274350;
-	b=oqHYbcodMOtUrYfbhUOld++VXNIq/+bYC9dqfv6bBvzIEmvqDa1fiwe3loGrD2N932S1ek
-	FqHaLTASA09zgkE2zLRN4Vm/PnkfwRWiK//e1uQcVH8Vc9P++/BkIQZIA+rSdOlJ03dp9J
-	8NHYECuUcyRfT6l9gto316KEtQtWg8E=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UBvd+397;
-	spf=pass (imf13.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id DB9C8601F8;
-	Thu, 29 Oct 2026 11:45:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A48C1F01828;
-	Thu, 29 Oct 2026 11:45:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793274349;
-	bh=fsnAuqtxtLr325mSlI6KyfkPKcAjsjpo5pAZm2Ry5UQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=UBvd+397fcbsOA3fElwgeb/DTDm3vy/VOW4v7EvO64AzvSzxQr08Z+tU87GZ4kVNQ
-	 nh4uRJAO44vJEjX8clPmkwOZvYiYq9q2Jrb9BvCApRlX8rO+WC/08uEg3zLJtQ9RzN
-	 yodE8S5Bm3xVRMdpnabJYQP7SJPU9E3mSS2kdLVgNJGt8MTDolRN/hHSrW3x3nZJrF
-	 /ZlqlzNqYX8IUFjnzxvpN2M3zu1Tyi/dMlyjBoAHXYnfdQmaPhMakD2VGkcaKUi/bR
-	 eVIJZViSryZOF5LX0prsUsFyFWSLmVamNVquWBJh6ZpaISFtpCMg+XkDR4PdYEfApO
-	 oyM/Xv2/G+vdA==
-Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
-	by mailfauth.ams.internal (Postfix) with ESMTP id 7799F1980050;
-	Thu, 29 Oct 2026 07:45:33 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-03.internal (MEProxy); Thu, 29 Oct 2026 07:45:43 -0400
-X-ME-Sender: <xms:3DHjairuennPQvhjwo3_YPAmukFu5CBTYJVtCw3By7gJ5flYOHlT5w>
-    <xme:3DHjakQea4FFA7_DjkBefq1IYJ3IoZ8tbRUAJFfGUd8nUX90_xR6mBJo34i5-VF56
-    fu_q9PvNAHOkq9z8X63Q6OlwnauiVA8Dx1uZop3DEgo_Rz86ZRW79C6>
-X-ME-Received: <xmr:3DHjaudpUFhx7vg_2m9VdYjKdXNzWumT-isAu-JU_TgSqAgZbdb3lrsMrBI>
-X-ME-Proxy-Cause: dmFkZTFdC3J2hM2mtuuiUkWv9UlgSJMYvAmbEHpjS7/lcF0eeZ0j60Cp90J60IZRmcx8lL
-    PLZLLgyvpra8qBzeYo05eA0QxZ3x2jCz6Gb9lcqoI9ZYyDtpfsk77/KYC7fg0bOW2V6khe
-    SVry6R5jukpqaeN/XKgPBdc/Hevm5XujAyffZc/FYa9tDCLI9VOtsk5ekVOYLimIwkZaCx
-    wQl/7MdAFBJjvst9SLlJcM4Ti5div+EjygRDVQjnnm7dGxa8I9gqYC1WDG4iG79q9DF3Fd
-    otKmdtPPpwpkSbMEfNk0nOiDSMxwiiwyROavlNREce8238nK2ItWRHhGdyNGqrpSoezbWc
-    nOV30O4GmIEdMLlrkRy0R++7wow4/MbSGet4veO9h1iLmc4yjwDn3vj67d/hkN1ejAM7hW
-    3gL5/qyFcGR3sM9iaQPQTKOPK6Qiu/buabpadH2ZB/2wGUAsRiSCgh6kHO1O0dDWQ7hIvN
-    4R8pcREuG38L0xxH6Mo/v2o+amX8bAeuca98DN0oyDFf5HyLBDZbL9lA/O/uNijOVCILFF
-    505LL9fML5cbgV2XjBsUNHdMON6lE28Lq82Q+kFkUvHxhD6Ec/9mG/yLyI7CX2FYhit08I
-    RgSeNdXmyN4YBEBd+mU57gup2cHHhyJ1Koc/0jGrcbpsR0rK+9SpTA8/K8ig
-X-ME-Proxy: <xmx:3DHjam3rTZsBh_e2_zwfN3K42dpDgexgI2_pYHy3j1QVDWxB7e84cA>
-    <xmx:3DHjam3_Qd3-qlMqVEjkKl7toFqJfdoexFJuKGZoEhViyoFE1ZnwHw>
-    <xmx:3DHjavBW8LeD-DaKoSnAo9f9cLFsq42I2Sq-gvAOF-VHEoplQChM2A>
-    <xmx:3DHjat9bZbqruIhj4rdY3dd7aUcgJ17-bVxxD3xFYuFNBc-yr6JrFQ>
-    <xmx:3THjau7Kt31Te8SB122Obd4TYWN2w-2Y_N5NfPn8P5VHANauPC_q9fbu>
-Feedback-ID: i10464835:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 29 Oct 2026 07:45:31 -0400 (EDT)
-Date: Thu, 29 Oct 2026 11:45:30 +0000
-From: Kiryl Shutsemau <kas@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, Qi Zheng <qi.zheng@linux.dev>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>, 
-	Kairui Song <kasong@tencent.com>, Barry Song <baohua@kernel.org>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
-	Baoquan He <baoquan.he@linux.dev>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, Kees Cook <kees@kernel.org>, 
-	Peter Zijlstra <peterz@infradead.org>, Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
-	Hugh Dickins <hughd@google.com>, Pasha Tatashin <pasha.tatashin@soleen.com>, 
-	Pratyush Yadav <pratyush@kernel.org>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
-	Jan Kara <jack@suse.cz>, Zi Yan <ziy@nvidia.com>, Lance Yang <lance.yang@linux.dev>, 
-	Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>, 
-	Alistair Popple <apopple@nvidia.com>, Nico Pache <nico.pache@linux.dev>, 
-	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Usama Arif <usama.arif@linux.dev>, 
-	Matthew Brost <matthew.brost@intel.com>, John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, 
-	Will Deacon <will@kernel.org>, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, 
-	Nick Piggin <npiggin@gmail.com>, Oscar Salvador <osalvador@suse.de>, 
-	Minchan Kim <minchan@kernel.org>, Muchun Song <muchun.song@linux.dev>, Xu Xin <xu.xin@linux.dev>, 
-	Chengming Zhou <chengming.zhou@linux.dev>, Chris Li <chrisl@kernel.org>, 
-	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, 
-	Youngjun Park <youngjun.park@lge.com>, Gregory Price <gourry@gourry.net>, 
-	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>, 
-	Ying Huang <ying.huang@linux.alibaba.com>, Jason Gunthorpe <jgg@ziepe.ca>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, kexec@lists.infradead.org, linux-fsdevel@vger.kernel.org, 
-	linux-arch@vger.kernel.org, linux-cxl@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH 42/46] mm/huge_memory: split huge PUDs when adjusting VMA
- boundaries
-Message-ID: <auMxQPze5cOvGbCe@thinkstation>
-References: <20261027-fixes_core-v1-0-6f74bec9a5bb@kernel.org>
- <20261027-fixes_core-v1-42-6f74bec9a5bb@kernel.org>
+	bh=85WNzndYYnYjdw+c5+YUiQvdyptr/w4CZ44uKXD8zJs=;
+	b=LonpoU7oUGfiRtdEXXphPaz0sNvIviO8P6BJGisNMjiBK38fk00dTUFnR31sM0HFOJFG5F
+	i2Y/WAoT6dRsexb8xe7m0vZQbCAMtBNvHbWEUb8E1giAcgLc8gWF9ETpXsdQjI0g6pU2aH
+	3qnTce2MNbMa5OQgV+3JpF7UvViwSSs=
+Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-4a35d5d4a20so22290605e9.2
+        for <linux-mm@kvack.org>; Thu, 29 Oct 2026 04:57:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1793275051; x=1793879851; darn=kvack.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=85WNzndYYnYjdw+c5+YUiQvdyptr/w4CZ44uKXD8zJs=;
+        b=CP6n/5TDuU5KUGfj/8TJAqqagwkVkDDwasoCI+Jy/4utDWlanIH0i7z+Dfn1Y855Gh
+         TaNtonrvZ+I2x/yGNOWa1DFpxUZHzBM6p1l5yVJH5vNSMaN/1SMFD6S6Y13Mnw60ihQr
+         i17We7uW4xZettrL+igycRwDtBWx2qR6f2yUeBdtoJKHujHtEMph/D2l55ontBp5Rxne
+         8q9SWriCpRxTocyeHPVLE0I97RjhLBMWjfwZqiopiCPznT1d1qcfy6C0EtYv2439fR7r
+         WkLMV73GR3lzHFoEwPhgueXfK8KIi/UklJM02BgbqbFFAN2M/cYlT0OrI0dhdWNf0PW2
+         BE3g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793275051; x=1793879851;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=85WNzndYYnYjdw+c5+YUiQvdyptr/w4CZ44uKXD8zJs=;
+        b=ziIvOZiuOzmKRrTkexGQJggQOTuSA4i/s7QX+Kae/jNJH4WEGrwcsu4qSIGJC6thGN
+         TiaOrYlR3XtVkbpuUNrQRj+J3OqWXMhT1WAzUBkSTQab9GklkYEF2zYtZOs0wKGzAh41
+         HQO6zs8zmIc9aywwhoGsGLcuRoIjc7nqOvVUee8s+OsulSJlpmC7mqIEtWhn5dQUAmGY
+         oQQ5h2l7s5ZvnA1a3uCHTQ2SUNEHswjAZmUWpUqrUJxp/HVv3UHRYmnC5g6OF3ePHh87
+         B8t9a/LcOKqwQ6f2IFFuvzo3uSm909pMQ3fWwTqdsPjh1KuxDYPPW6tItHiiMeZpZ9ld
+         O96g==
+X-Gm-Message-State: AFq9FYJT/oMu8bnn9xkYCOx6MDIZrX9bOoZzBBkLBfYKqv2PeLs4M/LZ
+	r66heGmIN5Wmw9M0YCb7U2gGXOVsXfU2BAS6Dip2qD8CbtHxGP2mxBST
+X-Gm-Gg: AYBFou1U8vb7WxFgHHprd9VhrXuegGH9fKbO8FKFDRAc68yzwwA5dyqbwjM3izTRz91
+	FZP+imJrmZ+oOplyhr3lxIM1ndt/Pl8DZLSXAtQLogpKrQ9uZMnd4MOCRaRr6anOFEW429DS4BQ
+	XhHvFP9TmqWfl3g0dc3Vokcf58q8I0NIyhMJ9pS1a5cRX7l2jdEQvAL0OM555dPoLRhX6nIgSuH
+	5G9w5cQj39BSyEwSF/Vao4ECkNrACJ0lGAzeLx7vhi4w0lRHjTqHVquNtwbSpx+yH6CYCfQOLNh
+	3DOJHgot5Bw4w0JZoqDDM//E+AbhwrbxGOnyhNVi6M7gcAsPiL0eE4oMNL/26RBqJ/oWA0YfQ1x
+	pYtGltWxfF24KUsyGQHk6Sle9lJNOsUk2WxtdBjNVIGWrG4lRlV2ll5PGFLq1Pa4Pvu98UzIHCg
+	wL0XhDzua5JFnSbtau2LqGKSKhV2PfwsU8dDbnA2jWud5gs9kIdDDY5zCLJ2laTv5AdBtNQ+j+p
+	wh1egwzViAjatfqCBCNrOiKvbpyI9tYztunuwe60IYa1ycAh4uYDGsj91UMwIwo3Sh8M3dK0LSW
+	6isQsrRf9Lr7yj7+GWD3OVgnX0IVJIqaMK8pjCfJrBi5xQ==
+X-Received: by 2002:a05:600c:1387:b0:4a4:4d57:8487 with SMTP id 5b1f17b1804b1-4a96667b9f7mr114934065e9.5.1793275050100;
+        Thu, 29 Oct 2026 04:57:30 -0700 (PDT)
+Received: from [192.168.1.22] ([83.231.69.9])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a966a56abesm79733875e9.0.2026.10.29.04.57.29
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 29 Oct 2026 04:57:29 -0700 (PDT)
+Message-ID: <9f0f96ca-86c8-4732-a6bc-a7f955873ec2@gmail.com>
+Date: Thu, 29 Oct 2026 12:57:28 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261027-fixes_core-v1-42-6f74bec9a5bb@kernel.org>
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 6C91620009
-X-Stat-Signature: nu7ai9r9nx9fzjzm6awgwex8fzuysozq
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/2] mm/vmalloc: drop VM_DMA_COHERENT from
+ remap_vmalloc_range_partial
+To: Ye Liu <ye.liu@linux.dev>, Andrew Morton <akpm@linux-foundation.org>,
+ Uladzislau Rezki <urezki@gmail.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ Ye Liu <liuye@kylinos.cn>
+References: <20261029-vmalloc_remap-v2-0-c4705cbf26c2@linux.dev>
+ <20261029-vmalloc_remap-v2-1-c4705cbf26c2@linux.dev>
+Content-Language: en-US
+From: "Jose A. Perez de Azpillaga" <azpijr@gmail.com>
+In-Reply-To: <20261029-vmalloc_remap-v2-1-c4705cbf26c2@linux.dev>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=unavailable autolearn_force=no version=4.0.1
-X-HE-Tag: 1793274350-512578
-X-HE-Meta: U2FsdGVkX18kkoUndnuEc6emyc/QWYiAbBXazgkQ0Q9wiUcIc5nWkt45V+ujF6mEszZlod2NhWiHlnvz5xm0RD+pSm9/uUWXBhacEvcp+ehcuA3D73SdqNtZydxA367xP248nyzp2/JEk7VFUz1SqJx4yuyAMJz/FEnqIMCIPw0BfK8aH3mqIWeJmYMCWqP8++iFw5nAAe6R7AsWrBXWVI34Xo14lmcBjvZMrTQ8f2TekV+CxI0XnsioLwhWvEj0RSZjn29caDo+SkPyUIx2AwCyOxHeTJY54P2whNnIIMh87LCnLRUK+xAkBJonIa5tCFHhVlbCX2e7SszOtZOIxsOl9ad87m8yezd9sEelkmzbCaByYuWiZJo83qtzb6xQaM3r0mdkzmJXwlPHCNrAgLrF8HRGy55DSin/ef73A9VVw4LtpVrMUh1HvhpZbraOTO/w+MKAa1vAHpS1uua6FsebD7NthtcA+m08QsCdieNqtbtbGCqZ2bnvXVypJ2menSQo5NHOFo+f8SKco80JDeOS3Y+IqgrvLHPLpkgt9wqc/uhC265zthstnQWrgeJAhAUk9rqfZxWWaFIK3LdrDHqLv332gSVqm5Dpva3t84on4DU2Q6gD9UKppjsxd8TcdZWbkpQgGwuOclL9XzMT6wgKuJ8X77aes8yYQ4TAcuCC5lNUpTncks1tMNpOaJN0uWsqNC4YpgbRHohwIlrCgJji13Eyi9QrKtde9/2UiYYs77yVCPAlYJUpbqhkXBO/aa9iHF2B35L15pGhRjKWaU5I98WY/IDD3yUZxTwHNEc96nuFrOnZIPg/T3x679P0w9RiOz7weg+nw/DClCfz9ossP58ywhRoJfgEcU2Zw2z2MIDgHzjMiji6cJslXK4JDtDzNV1mGV53qxWRzGuzlcsXw67IeXwkik9Rvgibz3CGAzA1eZdaZjHqwl8vAnx7gFJTyEOtagBBW4bMpjM
- fGpJl8R2
- dl17sJXh6Nl1L4PDX43pZSNlyNedzFhuz5chkxWeLVt0PcWxu2cHvaSYlN4wDZrXr/8zSWd5x8uRkUc7kXF9zWMtFCIaqtL9u9dzIm8rlaJWxNOaJ8lYDA2hV5npsHKBP9mE/0qvRgeUMonGZIKNOM5t/OSf7pTQ9zCj1QiAGOPM1I+kbZAX798B5QCEl9cI/ddiayqOi2z0sWh7qqDnYw+oiPYZMPVeJq+RKa6+5aFBxR8hcCaFjw/XoZ4pjn66cRHRBeWXajPnGk5tqJSGmhWF+us2b9FyO9/iTIQ4BhwYN3FHB8hzJ7AbPq6nPjcIWuwx/CkpSplXd5zyMYKLz0MUN9m8eV6QOc0NuKAxIIDtpykazE53DPVb2Do2KrxGFww0VqFWwmhA6ez4C0YpOVr/NCTeSQpkpIV2u9XDamjkF270=
+X-Rspamd-Queue-Id: BBDD340004
+X-Stat-Signature: 59wobrp7qq8w5pkbnmzbwq9ypnwrrj4x
+X-Rspamd-Server: rspam01
+X-Spam-Status: No, score=-14.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
+	autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1793275052-662400
+X-HE-Meta: U2FsdGVkX1/naLD8vXWrgMK1aQ/vW7pgn+plGBFAhcMB0HKPud/qXLuSUKNUrChII77gbzC2f+IUOAajBQXXozmn3msW8P2wih5ohj4tjMl22aUxlW32Zg6VC2N5LCUYi9iWqbPDrNBBQi4U6LjX//kTdLeWQYSS4S/cVHcivIej5PjeMcTbVyMaXV252Er7PhlCHIhgK1tZtkf+HMi9CwsmBTMZ8x5LudcVOBIqoigFkzW8YsHM2dSPK0vKJO7ixY8OzofnR1aQwq2rLAPnZks/8/ZYIRq9K+qggD5XZfb+pqzMp6kxHTsOVpDm4v6ojbPBGiwL/G5VTqRAGLnq40+PA5qnxL5wl+/j5PYxS/kL8WOl9HRrfcGfyH1JOkBp9Deuh+wnuZnPYDpXziqqBaQHRZgfKVGhEXn65pT5IffI3dIXk6hxcGkkqgtaR6SnFhHXg+uUwuq65XpgIqrl5gj/PF0XNVn5NWssqYVJS02wylHBHkm3KTqEEeqAMDPrO4PHAd5d/oa7DJWTriG4FvqSrO4ECCgesdH7sAEfnl5SmKxLxc/ARWEdVyiGgzBnTiO9XaKTNNCK0vUR9oJVXsky0WdnyxZEHm9gcNOBvxXUvuLIm+k4iNv8htYMytDVLO7177opP6DJMkmW0YG5C0RviYsMqUZxDXiCVMcjlmF7AAnLHphZyIjy5SUBnkgVUu5Re8Z5Web0nN7USBPFhCwXFHyzkSikBTkufSufJUbLD8WkHMtYBaAEGV/Eup8Li31wytegtki3WB/31aPR2iQaG657cJIkf+xg5oykxtdolch1+4Vr8uPtHhrYB5I9bj4J8tZidznB2Sn+dQt540va2ei+qTCcUHHsQ7C0Ip+PuyKPIc4amFvSSJ40asuX3Kuh2j2RrpCEq511bk4hUIcBG1qvlaBgABrnsL5UYcdSPOyeat0BykWAffWXSVWRBYZ8fZu7K2Ma+OmG4Dk
+ XjwGigY2
+ 6gW6t97aLCpQz73U2phxRVIMA4lQAVVbO3uTyUiKx87odSwFH/WAnBg2Fq6l5N8Y2Zb5WpzUHlpUVyQnCUHexFY0Ex+3d8LhxWGIAqdaJO/KWX5NrRW+5OqU42W3STs9nAJAvEnPkZ16ODAuhaVaXq3pnGWWltjrfpOrKdh7FlUcxg9NoAJpn0Qf8OIn8P91xUHWuBObG6PifyOYXBoKtdx1v7cymbH/oZuek04MmQDVschpRLcIkNO0ZnYtjecmHbCvg5ucGkDSWxWwa5SJdYSQriY1OnFkED83/LV9YRatpMXffbSBSAGLNKcM5HKQ4Hfhl/OHc42clkoI8e5hNn79als93cYhv+r4ADKFvMRYSP7MfwSg8cmS5XByoizKhXcrAKyzg2WfsDhVdGJe4d26PL1gACxfaE+q0oL8ypFosguLUiS87Bwxhg0L5O8dgvdYHSNtP/4uWYbb5iCGyDvd2uuroeIAHMgENVf5uNiFuTAqfh8Zy7mhMMV7u4ZPjn7to
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -147,111 +130,43 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Tue, Oct 27, 2026 at 12:18:02AM +0100, David Hildenbrand (Arm) wrote:
-> PFN mappings such as VFIO PCI BAR mappings can use PUD leaves while
-> allowing VMA splits at page granularity. However, vma_adjust_trans_huge()
-> only handles PMDs.
+On 10/29/26 10:19 AM, Ye Liu wrote:
+> From: Ye Liu <liuye@kylinos.cn>
 > 
-> After faulting a writable PUD-sized VFIO BAR mapping, changing its first
-> page to read-only with mprotect() makes the PMD walk treat the PUD leaf
-> as a PMD table. Applying MADV_DONTFORK to the first PMD-sized chunk leaves
-> the PUD spanning two VMAs: the PMD-aligned boundary skips splitting.
+> No caller maps a VM_DMA_COHERENT area through this path: such areas
+> come from dma_alloc_coherent() internals and are freed via vunmap(),
+> never through remap_vmalloc_range[_partial](); all 13 callers pass
+> vmalloc_user()/vmalloc()-backed addresses.
 > 
-> Walk the page tables once at each adjusted boundary and split a huge
-> PUD or PMD leaf as needed. Handle PUD leaves even when the boundary is
-> PMD-aligned.
+> The flag was added in commit fe9041c245196 ("vmalloc: lift the arm
+> flag for coherent mappings to common code") as a mechanical
+> translation of ARM's VM_ARM_DMA_CONSISTENT.
 > 
-> Fixes: f9e54c3a2f5b7 ("vfio/pci: implement huge_fault support")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+> Drop it so DMA-coherent areas can never enter the path.
+> 
+> Signed-off-by: Ye Liu <liuye@kylinos.cn>
 > ---
->  mm/huge_memory.c | 70 ++++++++++++++++++++++++++++++++++++++++++++++++--------
->  1 file changed, 60 insertions(+), 10 deletions(-)
+>  mm/vmalloc.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-> index 08e58cda7d37d..d090642ac8c2b 100644
-> --- a/mm/huge_memory.c
-> +++ b/mm/huge_memory.c
-> @@ -3503,16 +3503,66 @@ void split_huge_pmd_address(struct vm_area_struct *vma, unsigned long address,
->  	__split_huge_pmd(vma, pmd, address, freeze);
->  }
+> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+> index db669103dc66..a888eca016a8 100644
+> --- a/mm/vmalloc.c
+> +++ b/mm/vmalloc.c
+> @@ -4894,7 +4894,7 @@ int remap_vmalloc_range_partial(struct vm_area_struct *vma, unsigned long uaddr,
+>  	if (!area)
+>  		return -EINVAL;
 >  
-> -static inline void split_huge_pmd_if_needed(struct vm_area_struct *vma, unsigned long address)
-> +static bool pud_split_required(const struct vm_area_struct *vma,
-> +		unsigned long address)
->  {
-> +	if (!IS_ENABLED(CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD))
-> +		return false;
-> +	if (IS_ALIGNED(address, HPAGE_PUD_SIZE))
-> +		return false;
->  	/*
-> -	 * If the new address isn't hpage aligned and it could previously
-> -	 * contain an hugepage: check if we need to split an huge pmd.
-> +	 * Only selected VMAs support mapping PUDs for now. Lift the
-> +	 * restriction once this changes.
->  	 */
-> -	if (!IS_ALIGNED(address, HPAGE_PMD_SIZE) &&
-> -	    range_in_vma(vma, ALIGN_DOWN(address, HPAGE_PMD_SIZE),
-> -			 ALIGN(address, HPAGE_PMD_SIZE)))
-> -		split_huge_pmd_address(vma, address, false);
-> +	if (!vma_is_dax(vma) && !vma_test_any(vma, VMA_PFNMAP_BIT, VMA_MIXEDMAP_BIT))
-> +		return false;
-> +	return range_in_vma(vma, ALIGN_DOWN(address, HPAGE_PUD_SIZE),
-> +			    ALIGN(address, HPAGE_PUD_SIZE));
-> +}
-> +
-> +static bool pmd_split_required(const struct vm_area_struct *vma,
-> +		unsigned long address)
-> +{
-> +	if (IS_ALIGNED(address, HPAGE_PMD_SIZE))
-> +		return false;
-> +
-> +	return range_in_vma(vma, ALIGN_DOWN(address, HPAGE_PMD_SIZE),
-> +			    ALIGN(address, HPAGE_PMD_SIZE));
-> +}
-> +
-> +static void split_huge_leaf(struct vm_area_struct *vma,
-> +		unsigned long address)
-> +{
-> +	const bool split_pud = pud_split_required(vma, address);
-> +	const bool split_pmd = pmd_split_required(vma, address);
-> +	pgd_t *pgd;
-> +	p4d_t *p4d;
-> +	pud_t *pud;
-> +	pmd_t *pmd;
-> +
-> +	/*
-> +	 * mmap, VMA and rmap write locks protect the walk; the split helpers
-> +	 * take the page table locks.
-> +	 */
-> +	if (!split_pud && !split_pmd)
-> +		return;
-> +
-> +	pgd = pgd_offset(vma->vm_mm, address);
-> +	if (!pgd_present(*pgd))
-> +		return;
-> +
-> +	p4d = p4d_offset(pgd, address);
-> +	if (!p4d_present(*p4d))
-> +		return;
-> +
-> +	pud = pud_offset(p4d, address);
-> +	if (split_pud && pud_leaf(*pud))
-> +		__split_huge_pud(vma, pud, address);
-> +	if (!split_pmd || !pud_present(*pud))
-> +		return;
-
-This looks wrong.
-
-We should bail out here if PUD is was a leaf and wasn't split.
-pmd_offset() below expects page table PUD entry.
-
-> +	pmd = pmd_offset(pud, address);
-> +	__split_huge_pmd(vma, pmd, address, false);
->  }
+> -	if (!(area->flags & (VM_USERMAP | VM_DMA_COHERENT)))
+> +	if (!(area->flags & VM_USERMAP))
+>  		return -EINVAL;
 >  
->  void vma_adjust_trans_huge(struct vm_area_struct *vma,
+>  	if (check_add_overflow(size, off, &end_index) ||
+> 
+
+Reviewed-by: Jose A. Perez de Azpillaga <azpijr@gmail.com>
 
 -- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+cheers,
+jose a. p-a
 
