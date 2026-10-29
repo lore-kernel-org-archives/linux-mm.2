@@ -1,145 +1,134 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1B1B606A31A
-	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 16:52:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57E64606A31C
+	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 16:55:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=RDyID258
+	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=BIqB4iqJ
 Received: by kanga.kvack.org (Postfix)
-	id C1E826B0610; Thu, 29 Oct 2026 12:52:17 -0400 (EDT)
+	id 399D66B0606; Thu, 29 Oct 2026 12:55:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BD0EA6B0611; Thu, 29 Oct 2026 12:52:17 -0400 (EDT)
+	id 34A116B0607; Thu, 29 Oct 2026 12:55:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ABE796B0612; Thu, 29 Oct 2026 12:52:17 -0400 (EDT)
+	id 2399F6B0612; Thu, 29 Oct 2026 12:55:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 83FD76B0610
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 12:52:17 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id DDDB3C0489
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 16:52:16 +0000 (UTC)
-X-FDA: 85376256672.28.A8D428E
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 570C340008
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 16:52:14 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=RDyID258;
-	dmarc=pass (policy=none) header.from=ibm.com;
-	spf=pass (imf12.hostedemail.com: domain of imbrenda@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=imbrenda@linux.ibm.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id ED7406B0606
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 12:55:36 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 7F915A7FF3
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 16:55:36 +0000 (UTC)
+X-FDA: 85376265072.16.F04C50D
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 0405F1C0010
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 16:55:33 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=BIqB4iqJ;
+	spf=pass (imf21.hostedemail.com: domain of slopezpa@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=slopezpa@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793292934;
+	b=CIz16LO+yz0MsagHuvAprt6YaY5VuBC4E/LT/PUa/DRVvVy6Mxhvu6R/aPlS5LWImGCD/h
+	dPgNOles2sk2ZBHuWWwagDd5sbfWVf21Yoxr3WNRSotkXFgPBvFaR3cdJqYYy1cXYgp/Ku
+	qBbEaOyFaHNd5fC8QUxQqoyI0QZKQac=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=BIqB4iqJ;
+	spf=pass (imf21.hostedemail.com: domain of slopezpa@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=slopezpa@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793292734;
+	s=arc-20220608; t=1793292934;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JooeTFkFeZdEQkl6ND7vys5Grz+V81uWtbjw+kB5qQ8=;
-	b=GIuCS5z5w+dY7RQ46sjccxBYZ1yTU/U8uxiHxuhC0y3FxWdLFbMxgeAstM0kGvfMa1NxC4
-	8KxNgIn4Ff7fNMyrmBXRyQ2JSJuHs9DH5buH4bQmQfDkRG4R/T8knY8DssW0ddlrZtkxiQ
-	bAplXA3psZ3wcmT2IZCtPPfvyRNlsGE=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=RDyID258;
-	dmarc=pass (policy=none) header.from=ibm.com;
-	spf=pass (imf12.hostedemail.com: domain of imbrenda@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=imbrenda@linux.ibm.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793292734;
-	b=un2v0s0++n3XWGzrbiOwczmeC7DBX6yTduZ06zbEDIZqJwnkEfx75yOIqkJ0qM3foqHlMA
-	gBEY2JcOsuVmYG0W/0a5q87D6b9Pa56ldZ/FwkTGl22EPjren8pSNpxXspZLB/t3r3Oewb
-	u4I++ZRFrlZjL+qpNqwxva+f5ZwMzQw=
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 69TGE57P671549;
-	Thu, 29 Oct 2026 16:52:13 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=JooeTF
-	kFeZdEQkl6ND7vys5Grz+V81uWtbjw+kB5qQ8=; b=RDyID258cMyxLC1tKGbIxk
-	NTASEu9fgPKTPLE2ewpsnanMes2HliyTztOFCwFm5iBQiumW8JN7Hfyg/FWy9e8A
-	mPq9l0SF2iMmVI2TlUDmTp+yl6AbGz/BdVLSsupeNii6UfbTRN+kzAfKTYe/2MCA
-	24a8FBsDCHPmfnPYVIaX1cwPu9+VrowNPVYb+1ar0hCL1jSg9+VD3EYKdAve7tnt
-	RPKfUPbXTpceQ5u8/gYjXe15KByL6YXHTyD7zldH/3qoaQ89gyd8NX+yDB8KcON/
-	bJoaptuufUH087LxWIRO/rso3raafTX16MzsIgE3U8/8mJvMpAsi/jA2B9ZNqA9A
-	==
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4hgm64bknt-1
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Thu, 29 Oct 2026 16:52:08 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 69TGJnmE3392668;
-	Thu, 29 Oct 2026 16:52:07 GMT
-Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4hm69e12v5-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 29 Oct 2026 16:52:07 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
-	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 69TGq5qm56492346
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 29 Oct 2026 16:52:05 GMT
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id D26C12004B;
-	Thu, 29 Oct 2026 16:52:05 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id B0E3320043;
-	Thu, 29 Oct 2026 16:52:05 +0000 (GMT)
-Received: from p-imbrenda (unknown [9.68.31.243])
-	by smtpav02.fra02v.mail.ibm.com (Postfix) with SMTP;
-	Thu, 29 Oct 2026 16:52:05 +0000 (GMT)
-Date: Thu, 29 Oct 2026 17:52:03 +0100
-From: Claudio Imbrenda <imbrenda@linux.ibm.com>
-To: Carlos =?UTF-8?B?TMOzcGV6?= <clopez@suse.de>
-Cc: kvm@vger.kernel.org, linux-mm@kvack.org, seanjc@google.com,
-        pbonzini@redhat.com, linux-s390@vger.kernel.org
-Subject: Re: [RFC PATCH 0/4] KVM: x86/mmu: don't zap secondary MMU on
- permission upgrade
-Message-ID: <20261029175203.5bdd51d7@p-imbrenda>
-In-Reply-To: <20261029143336.390231-3-clopez@suse.de>
-References: <20261029143336.390231-3-clopez@suse.de>
-Organization: IBM
-X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-redhat-linux-gnu)
+	bh=TXB64NJFF4WXwJ9sa1LPJLwRXbNGHs0rY5npnlz1t+E=;
+	b=utE1OkofyhHBMj8M4K5j38EcYNB8KOousl1kz37AGLZtfXt4yrJfw4QBctBnGwztCmwzPD
+	5TYoEMt1hJnSmPVSsmDW6IQHZJtasQ9pV2teJ87d9I/64bRa1veF7t7lS5U2ntU4ukfFR6
+	MExGN6aQs7j2xdLyD2MRaTAiCCCb1gQ=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1793292933;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=TXB64NJFF4WXwJ9sa1LPJLwRXbNGHs0rY5npnlz1t+E=;
+	b=BIqB4iqJYB6wXKgk/oL6rLE+sigxUkEmxQwA9AxG+lOF5Plh9uxCiPLcOnACoI1skni45g
+	rckI681IGcgFjmi6Cm6MHdYUNZY6rTe3FcOK+RdWCQ38EjDK8ETT3GciC6TysQyPHS5E9j
+	H0QRwUUUPeHPo+/o9zsR2R72fh/HYsI=
+Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com
+ [209.85.222.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-435-qAshvKzBN1yfi7oAtLEyGA-1; Thu, 29 Oct 2026 12:55:30 -0400
+X-MC-Unique: qAshvKzBN1yfi7oAtLEyGA-1
+X-Mimecast-MFC-AGG-ID: qAshvKzBN1yfi7oAtLEyGA_1793292929
+Received: by mail-qk1-f198.google.com with SMTP id af79cd13be357-93f32050e72so555983585a.1
+        for <linux-mm@kvack.org>; Thu, 29 Oct 2026 09:55:29 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793292929; x=1793897729;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:mime-version:references:in-reply-to:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=TXB64NJFF4WXwJ9sa1LPJLwRXbNGHs0rY5npnlz1t+E=;
+        b=GtHFYMb5FahsRML3sKWTPf5B7N7ME8pmO/d6vFTcYmVmHfmP6p2G8wteetH5lt/gEO
+         t+7Vk7tZ8aMwJ3IWHrPKTDypDy8E1RNZE81joeRd44CIqKansK6vDpciGEGsg+2vZuj8
+         Kuxa+Y5c1wf8PQ4OJq/o8G8je70W27s/yj4uHK9QE9Z0VURRp7VYNKtvtOPo6JQUB7jm
+         rGUPbDKPdo2KB4p9gSFb9zSR7zgIuLQ5eS6V29uVQzEXMLXgRzSVURpuKZKiYJctcAmr
+         sAum+OXgPmodI+XxoKY8rqUs9gwOOCKzn2trmKsEvJBaphjaGipsPAONnX6ZsWzt4V3w
+         QSuQ==
+X-Forwarded-Encrypted: i=1; AKwUvByPdEYCam4L0cOqgxn48gqzjIkiVAtXPDMFG2N/mKBsZtwCcTmXnqMUh4LPfkGgC8yu930R4gcL2Q==@kvack.org
+X-Gm-Message-State: AFq9FYI5ufU537tHydlFKR0+w21rDQX3DLFh7ZQv3zFFAMiuxBwjbd5j
+	kZVAB/YNjU06iHG1ScO6gmzz4blk/dpCNiLgJOXqLj5OM1kFXNNSKeVs5EmVQw5igLYAgwZ271z
+	muCU8+nS6tMQWvd80mMW8R6LgR6vH6+wYdo4IK9Os2li7vHexzIuJ4veNH5nv1kaExQaNvPHga1
+	XbkFQBBom3/pCoxNdKHwBuMk4Rkc4=
+X-Gm-Gg: AYBFou3syclLoRLhbxS9uBHDx3HcSxnBf9O8ZlMbxzCXGjstT1c3JD1KZI2wY5L6n9T
+	mz1Zc0IrNWwJEbuS3Be6m9vMS3po+Z4KMRJ3vgYUD3R4HH1hNV3MvF1Nz2A/LK6CchpFKuUnlZL
+	J/Lz+1t10UuRTRsabxp9V2XAtDcb2lmTkS1ywE8YPU8W7//diAZgzErCE=
+X-Received: by 2002:a05:620a:1a27:b0:93b:ef24:bc8c with SMTP id af79cd13be357-94408cde203mr957070785a.47.1793292929327;
+        Thu, 29 Oct 2026 09:55:29 -0700 (PDT)
+X-Received: by 2002:a05:620a:1a27:b0:93b:ef24:bc8c with SMTP id
+ af79cd13be357-94408cde203mr957065685a.47.1793292928789; Thu, 29 Oct 2026
+ 09:55:28 -0700 (PDT)
+Received: from 753933720722 named unknown by gmailapi.google.com with
+ HTTPREST; Thu, 29 Oct 2026 09:55:28 -0700
+Received: from 753933720722 named unknown by gmailapi.google.com with
+ HTTPREST; Thu, 29 Oct 2026 09:55:28 -0700
+From: Sergio Lopez Pascual <slp@redhat.com>
+In-Reply-To: <18f0bae1-5cdb-460c-a147-33cd1fa2acdf@leemhuis.info>
+References: <20260804140403.16337-1-kfastov@gmail.com> <20260804162924.0268f80a@fedora-21.home>
+ <CABWhNekebS6dt=Ft+74iG4YpCq-5ZcV1EvvERNxT612VUOC9Ww@mail.gmail.com> <18f0bae1-5cdb-460c-a147-33cd1fa2acdf@leemhuis.info>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Date: Thu, 29 Oct 2026 09:55:28 -0700
+X-Gm-Features: AclHuK-xgAN_fR_dbuTYNWejWEVdFE5MAwn_KoUGHzvKxdpt-_9FR1Wg7w13_Us
+Message-ID: <CAAiTLFXd=LK93e=f3PE1f6y5m15yVknqqVNBei5rLz2AnSJ4pQ@mail.gmail.com>
+Subject: Re: [PATCH] drm/gem-shmem: Install writable PTEs for write faults
+To: Thorsten Leemhuis <regressions@leemhuis.info>, Konstantin Fastov <kfastov@gmail.com>, 
+	Boris Brezillon <boris.brezillon@collabora.com>
+Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
+	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
+	dri-devel@lists.freedesktop.org, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, regressions@lists.linux.dev, 
+	stable@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: _RYe7HWbyTMgf5mgb5_Dc8WCm3XAXOdrMpD4bGKOk_k_1793292929
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMDI5MDA2NSBTYWx0ZWRfXx6UdmsdZJ5uq
- 4SBWHjKCj33E/5AWMgEh0WWGowV4uCTCnYMbLs+41hJTD62QDwxEiTmH99XxHhcR7lmLesqH+NG
- cPO9LA5wX9aBsdU7K9FqhzaAc8IaE9U=
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDI5MDA2NSBTYWx0ZWRfX3Op2rO17bqhc
- N3aweLd5V5+ZMeNtlsQNeDD3L8VyTvx9o3+3D9zRmFnCa/c2u1gxWAXB2kj4peUifDA7d2o7I0J
- xvk+ON9ChQRqultX9hFQfI1cQxZjWnFajXwkjiNrnv6YvfMhktdffwQeKKlmHM8/0tKNykc2rdi
- mNFfmMMbUejGR+npYqJUMSdyh+kUhFSvWSD+m7I/qNHW5Zb3QDvquE2lecsxCYPFkwwVAoRWyiv
- PktYORk2ftmckyhkyTHkgJYgF3w4rkvxsxDsl3Q2aTQyoWGltQ59Wyg2vqKpe5gpSMke8U4/O9b
- X5w9po5gnipiCnmITp8Otc+zLWTeDHmfPeAi/eNatmlDfoa0gG73Nn41e/u5TWXtFcgBeTObzu0
- EWel+Pg4cyqgmn46cMMAIf7QMJitnPHGXqM0JnuJI11OI3SNuUSA8STn7phDHWcLrsHJqTDIlbH
- Y6USDixlNawTaWzQ/qw==
-X-Proofpoint-ORIG-GUID: qOGToXewIEgxE8Z0yvQ72HahQG9QDnh5
-X-Authority-Analysis: v=2.4 cv=Uu32pOwB c=1 sm=1 tr=0 ts=6ae379b8 cx=c_pps
- a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
- a=IkcTkHD0fZMA:10 a=660iZSQnnn4A:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=iQ6ETzBq9ecOQQE5vZCe:22 a=VwQbUJbxAAAA:8
- a=Ikd4Dj_1AAAA:8 a=1XWaLZrsAAAA:8 a=OGjWj8McAAAA:8 a=ByQFhZ5OTr0xIyoFu1UA:9
- a=QEXdDO2ut3YA:10 a=UYjydHh6ynBBc6_pBLvz:22
-X-Proofpoint-GUID: uZy4EJwURba9PQ9Xme3MN3woR2o8K-CV
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
- definitions=2026-10-29_05,2026-10-21_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 impostorscore=0 priorityscore=1501 spamscore=0 adultscore=0
- lowpriorityscore=0 malwarescore=0 clxscore=1011 suspectscore=0 phishscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2610190000 definitions=main-2610290065
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 570C340008
-X-Stat-Signature: zf6pne5767tcfa8of4dytsftdiyjsucp
-X-Spam-Status: No, score=-10.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_2
-	autolearn=ham autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-HE-Tag: 1793292734-190645
-X-HE-Meta: U2FsdGVkX1+TKYEx1/ScNkuGmQRePhMtFMFeFzNLIyb9WBYS2Cj5HhtLhDAeV6ju0gE/D6NQS6KeMMNxdaDjG2xzmc8rwkZS67QuQ+tYaycrGtnOQTNXAatFtiv5ePhaplhWEe0xVEBtTuW7n3/BSzmK+m83AsJJrgakYJszVqZePfPW/QOBOOt+7WY/isntHap2uVPo+xNRH+DnccBN7YD51ZnWQdfLH/MftoUft/9CqMRXhR6JTbZx8bM39b3wF4MOK3XA/ZMaWvcMD/yJDrRR/KNmxMmBjxiL+kFrXdLRlbEx/wSENXkaBX95v6bvUVTGKQ8eYd/JXMfPH2CFZlrfh4AR1I+Hl9DvSxTYn2hmXe8jLC4yE/WqLKMJNoG8rEE3wxdzfsWgMZwiR7J+XouI3iGsqD55/gsJ0G8/+AXxboxpr5bO1KDQZMkv6Pv5YCJva8JUdM0wMdBaQNvbs7lf5TAbuIYyAQTqEnZ9GLzVPSXdc7a5N2uaH1qVb51OnZTW4U8e7e8qgses1+U22+OQDC00+DMsbL06MDJI5PE961M+xB8LhpgOO7dhjMy3ilR8ZJdz8YeFo+eZE8G2/aDXxLmVB8X9brNOve7rdBwKs9iic9mCZMDIxWLdu2toNPpNEjpuyWob8pffdIif55Lb5FqTEw6QottNKIkVXhgQkXEgTxl/7SKV4eHS1wKrbu+YlqRXbpX5qWSXT0gKOKGVudknIhJD6llCVqC4exze2ThnDWdjezRwquyeXVPKUpglkEaBl+c+KXlFev1o5hrCDOJVOQAE2AjSgcaMk6jojiThHhm7JSaOkD65AGuTTIu6+Se9uRriGbj1zpT48if4NC6hOaaQaRg8DjXRlfuNNCBuWtNgMloL4P9s/Yi0808N6pkQtN/wdkG03kTLvsZeb27ZGnsDnndabj7nbAm42U/WCS1p+mw0oxvtP1fPO7Z/VrkOaaXJH2KWukO
- yOkUd2Pm
- 3PJnkiCHbErlykiOpv/cS5aH4y+w2nH9cuWl89Kl2WLcUsOX1mKF7EaFqDVXtHmQ69bfuBEGiLLWYwOCvi05VmyY6w9vCwaVUAC5SJlX3LceWh73LGBA8Qq6Cce+AqGzfSO3+yvrIcF1PTCVI5a00x7mM5nAPjxdOD3rCXEHlZRDNn4zexLDY5Eb17pt7OKl9ONloX3aZMVwY4GtgqXLvVVbIvcXoYXWyAUUiYewE7DRdpQvlXnf/PBL4t4Fe7gJaKi3+JTLAbrmv0BXaNEVcJJ6CngQ9uuHCX7dOtcoz6F0xk1HEt6za2/Z5C2F4CvzOWaTs5llXIGhihwlJMMUS68kN4tJXHMFj10SXcQKX+PlWhUcOxVBjTNcgZeIuiYQQxkbnbyg+G13TwxlaHcfMMK7VwnH2d18IWLFAyoCxqdXoNVzRP5l4rdUSOY67dCm7nVu1mkBy6f3d6Av9F+6ynPsqaw==
+X-Rspamd-Queue-Id: 0405F1C0010
+X-Stat-Signature: 8ecmg9z7a4z3whrbwns89sskowatocic
+X-Rspamd-Server: rspam01
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1793292933-470689
+X-HE-Meta: U2FsdGVkX1+y7vjthg5Nq6dTESWWRikA/+yELmyG6hxEbwYaemvodEFhiZYMb3CMEjpMQs6HrdHfHFBqPt2ppQqBfgYobbcjZaf1RBPBf/ibLRepUw8W3sayhyckHTwlnFRRT7vso8nI/PeSB4P9iLp57hwpLbHOsa2FiZjLihiW8xKeYdG2lIVpNujjoVpM0o/lYyGeeUSWrD0N17i7uWC3oRqIPW62nH/k0SlrwlOjtDKc+vQWBCUVP3Wu9J0fS7gYfOKWx56In+Zx6zYl+dm8CZfDLrndnRSJWCYTJlG/63bKqQd1aAnA7xS2+ZnuzIEaVKQB6pdMm7Gr3JRi/sXNnxps9yr0HRxv6q+ZRL4MDX/eK7dUC+RDGXHlgn5Qv371ac7uOsTnkAQaBgXzqj3mpDNJvc+hIxFGBhchlSccpovLb0B8WR3nyR0psQc6XhAUssJ8xQ0d5Tub1Nm31+o7NbtuyviFzewqbbux6xyvdEyBLuSdLXEel8hkb6cRGH6aMr9WPAdGTaSl1dcIUl6RYL7BNXXnmM0QB8NUDW/EaiP7OyaPidgkejXNtUQ1po5w284jtqGrrBdH7MPPXj7XtCoPvgkmlK8Ztz350LFuKXl+1w5E2wbonYZI4PF9qkuJVP+jSJCChNEwSjv881oy6WSmUek+Jbx+py71CUWucEwwabepdjolV40PuwOf4W5ZdAC6RbizczEG7Yk+CFVFxLUIHibviCCBwsdm3gytNq7caYVyk8LA2w168VY7zDeWFLRoR3s4xNcXf/gz6Mnft62He7dq2NIW4BOJJQcwONiOp0IMY3EfuTmifE6Wa4RKV9AupTemL/N6J+L2WsG4jrV81D7ZjLwUrlhnZm+hSSIhdv8JrZMzGsc4FoqeKd0l0MBpTgQd55KNa7c7cPhJeQ9z5+enTPZjMqbU1u0lOBxTRAaU0tTmqYwvR1vxBmuS2yEAMQQaWU6XK8R
+ Rbsk2K/Y
+ 5CgintD26g5HJhN+evCP5MqcWV4KNw/Zw3tCbWl3v3BjQ6ZbCetQ85Y+5Vu9+2s0fXd7Z3aaaVYlR6WALjxHKODDAcugswVNM4TP3NFzQeoVfazsWsHNkPZ9mmY0+tMrOMt5ZSuvsq1TPyeAy83RdqGnHb3LhBUUyBUOgWna6qmQaM4G3J4bBUoV/TYs/oee9dJOeCj9Uduu0ba0wLepafoljPM1798SAoHNKbH4eSidDn+QAq+9gBWh/wNgqn0+dDU+p/4RTF0wXWsBsim07j95sq1lC7/lmfCxViS+Z/lVRx4gXbw/VVjOu0vGKa4MIonPkj93/H5SVus7fcPNj5rjz8jfyBwxTGZTi0Wtd3zxltWCDE8kYtBxFoqZwCGE7pF7/NW+qhNHTFJqipTexftJn1ZXlRnDFe7NAmL0pddqfaQEZKY0TAdKNb4LbVb3J6sDo6EO/ZsgSFT1fqFovXzPeLhYMrF2IAI7krsyyFtXYmrL+uDBKsuZDn7USQZHioQqBxuTsMZp72DI1XA2v4JGgYHUcOfh6TWB9xqrucUfTT3w=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -148,150 +137,60 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Thu, 29 Oct 2026 15:33:33 +0100
-Carlos L=C3=B3pez <clopez@suse.de> wrote:
+Thorsten Leemhuis <regressions@leemhuis.info> writes:
 
-> Prevent x86 KVM from over-zapping its secondary MMU on PTE permission
-> upgrades, which leave the PFNs unchanged and do not revoke access.
-> Permissions for SPTEs that KVM holds are updated on the next fault, so
-> dropping them early gains nothing.
->=20
-> Do this by adding a new MMU notifier flag to signal that a
-> MMU_NOTIFY_PROTECTION_VMA strictly upgrades (loosens) permissions on a
-> particular range.
->=20
-> See below for benchmark results.
->=20
-> Background
-> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
->=20
-> change_protection() pairs every protection change with an
-> MMU_NOTIFY_PROTECTION_VMA invalidation, and KVM zaps its SPTEs in
-> response, as it cannot tell whether permissions widened or narrowed.
-> This is costly e.g. during a QEMU background snapshot, which relies on
-> uffd-wp to write-protect guest RAM and then restore permissions as each
-> page is saved. Without this series, the permission restore causes the
-> guest to re-fault read-only memory needlessly.
->=20
-> Note, the reverse situation is already handled for secondary MMUs
-> that reuse the CPU page tables (e.g. ARM SMMU, IOMMU/ATS). They cannot
-> refault, so they are notified of a permission upgrade on the CPU
-> TLB-flush path [1].
->=20
-> KVM, however, owns separate page tables and faults permissions on demand,
-> so it needs no such notification (as Sean noted when that signalling
-> was first proposed on the fault path [2]). This series applies the same
-> principle to the change_protection() path, signalling the permission
-> upgrade so KVM can avoid the unnecessary zap.
->=20
-> RFC Considerations
-> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
->=20
-> 1. Having the zap skip in KVM's arch-independent code does not seem
->    obviously correct, as s390 caches additional translation state
->    that may not be rebuilt by refaults. Maybe an expert can correct
->    me. The skip could be extended to arm64 and RISC-V, but I have not
->    benchmarked the benefits and I'd like to get feedback first. Hence,
->    x86-only for now.
->=20
-> 2. change_protection() could simply not emit the invalidation at all
->    for a pure permission upgrade (shared-page-table MMUs invalidate
->    on the CPU TLB-flush path, as noted above, so they do not need it).
->    But again, the s390 case could be broken, and even then, that would
->    seem too much intrusion for KVM's benefit.
->=20
-> 3. The flag reaches KVM as a bool on struct kvm_gfn_range.
->    Alternatively, KVM could forward the notifier event, as Claudio
->    Imbrenda suggested at LPC [3] and others have proposed in the past
->    for different purposes [4] [5]. That, along with the event flags,
->    could serve the same purpose. I'd be happy to take that approach if
->    there is agreement that other consumers would want it.
->=20
->    (The LPC talk recording has some audio issues so I am not too sure
->    on what the final agreement was)
+> [CCing Paolo and Sergio]
+>
+> On 8/4/26 16:57, Konstantin Fastov wrote:
+>> =D0=B2=D1=82, 4 =D0=B0=D0=B2=D0=B3. 2026=E2=80=AF=D0=B3. =D0=B2 17:29, B=
+oris Brezillon <boris.brezillon@collabora.com>:
+>>> On Tue,  4 Aug 2026 17:04:03 +0300
+>>> Konstantin Fastov <kfastov@gmail.com> wrote:
+>>>
+>>>> Since the introduction of dirty tracking, drm_gem_shmem_vm_ops has a
+>>>> .pfn_mkwrite handler.  Its presence makes vma_wants_writenotify() true=
+,
+>>>> so vma_set_page_prot() removes the write bit from vm_page_prot of
+>>>> shared mappings, and the vmf_insert_pfn() call in the fault handler no=
+w
+>>>> installs read-only PTEs even when serving a write fault.
+>>>>
+>>>> For regular CPU accesses this is transparent: the retried access fault=
+s
+>>>> again on the present read-only PTE, goes through wp_pfn_shared() into
+>>>> .pfn_mkwrite() and the PTE is upgraded to writable.  But consumers tha=
+t
+>>>> resolve faults through fixup_user_fault() + follow_pfnmap_start()
+>>>> perform no such retry.  In particular KVM's hva_to_pfn_remapped(),
+>>>> after "successfully" handling a write fault, finds a present read-only
+>>>> PTE, treats it as KVM_PFN_ERR_RO_FAULT and fails the vcpu run with
+>>>> EFAULT.  Observed as AsahiLinux/linux#560: muvm/libkrun microVMs
+>>>> mapping virtio-gpu blob resources die with EFAULT on first GPU access.
+>>>> The traced failing sequence: [...]
+>>>
+>>> The same issue is being discussed here [1].
+>>> [...]
+>>> [1]https://lore.kernel.org/dri-devel/20260804120529.1730187-1-pbonzini@=
+redhat.com/
+>>
+>> Thanks, I missed that series, I searched dri-devel but not the kvm list.
+>> Paolo's patches 1-2 are indeed the same fix (down to the same function
+>> name), so please consider my patch superseded by his series. [...]
+> FWIW, it seems that series takes a while to get polished and mainlined:
+> https://lore.kernel.org/all/CABgObfYgZ87%3DW%2B6E%3DN%3DWwTuyYkaoKU3hqd84=
+JDTSAvT3_9dh6w@mail.gmail.com/
+>
+> To quote: "It ballooned a bit and getting acks from everyone involved is
+> hard... Either I or Sergio will get back to it."
+>
+> Is that something you/AsahiLinux/the world can live with?
 
-AFAIR the consensus was:
-- adding the reason to the kvm kvm_gfn_range is fine.
-- having a return value from the notifier to pass information back is
-  _not_ fine; I should add a new callback instead.
+Asahi still ships their own kernel with downstream patches, and have
+backported Paolo's series. But for the rest of the world this is pretty
+bad, as it means anything that requires virtio-gpu with blob mappings
+(venus, native context, etc..) is broken.
 
-regarding this series:
-
-on x86 you don't care what the new permissions are, because you're
-updating when re-faulting (if I understood correctly).
-
-for s390 it might be beneficial to know what the new permissions are;
-of course we could look up the vma and find out, but since you are
-already checking the permissions, maybe you can find a way to also
-convey the new permission bits?
-
-that would make our life on s390 easier :)
-
->=20
-> Benchmarks
-> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
->=20
-> AMD EPYC 9654 96-Core Processor host running a recent Linux kernel
-> (6b4b543fa187), with a 64GB, 64-vCPU guest running stress-ng --vm while
-> the host takes a QEMU background snapshot. All results are aggregated
-> over 5 runs, and compared between the stock kernel and one with this
-> patch series. Guest is rebooted across each individual run, and NUMA
-> balancing is disabled.
->=20
-> pf/s and tlb/s (per-second deltas of KVM's pf_taken and remote_tlb_flush
-> debugfs stats) clearly improve:
->=20
->   guest pattern          baseline                    patched
->   -----------------------------------------------------------------------
->   read64   (read)        pf/s=3D950,015   tlb/s=3D1,440  pf/s=3D2,503 tlb=
-/s=3D0.1
->   rand-set (read+write)  pf/s=3D1,004,353 tlb/s=3D862    pf/s=3D4,073 tlb=
-/s=3D0.3
->   write64  (write)       pf/s=3D968,018   tlb/s=3D94     pf/s=3D2,292 tlb=
-/s=3D0.3
->=20
-> Guest read latency was sampled with a paced probe thread in the
-> guest, reading one byte per page with an idle gap between reads, while
-> stress-ng ran with read64. Each figure is the median across 5 runs, with
-> the run-to-run min and max, in ns:
->=20
->   metric           baseline             patched
->   ------------------------------------------------------
->   p50 (min max)      340     (270 380)   260   (250 260)
->   p99 (min max)    19789 (16885 20200)  5207 (4076 5638)
->   p99.9 (min max)  23445 (22845 24036)  6850 (6259 7110)
->=20
-> The median improves modestly and the refault cost shows in the tail,
-> where p99 drops ~3.8x.
->=20
-> A separate stress-ng run with write64 and --verify showed no data
-> corruption and no livelocks.
->=20
-> References
-> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
->=20
-> [1] https://lore.kernel.org/linux-mm/cover.1eca029b8603ef4eebe5b41eae51fa=
-cfc5920c41.1690292440.git-series.apopple@nvidia.com/
-> [2] https://lore.kernel.org/linux-mm/ZGu1vsbscdO48V6h@google.com/
-> [3] https://lpc.events/event/20/contributions/2552/
-> [4] https://lore.kernel.org/all/20240801183453.57199-1-seanjc@google.com
-> [5] https://lore.kernel.org/all/20231110003734.1014084-1-jackyli@google.c=
-om
->=20
-> Carlos L=C3=B3pez (4):
->   mm/mprotect: add MM_CP_PERM_UPGRADE
->   mm/mmu_notifier: add MMU_NOTIFIER_RANGE_PERM_UPGRADE
->   KVM: plumb MMU_NOTIFIER_RANGE_PERM_UPGRADE into kvm_gfn_range
->   KVM: x86/mmu: don't zap the secondary MMU on permission upgrade
->=20
->  arch/x86/kvm/mmu/mmu.c       |  7 +++++++
->  include/linux/kvm_host.h     |  1 +
->  include/linux/mm.h           |  8 ++++++++
->  include/linux/mmu_notifier.h |  5 +++++
->  mm/hugetlb.c                 |  6 +++++-
->  mm/mprotect.c                | 20 +++++++++++++++++++-
->  virt/kvm/kvm_main.c          |  4 ++++
->  7 files changed, 49 insertions(+), 2 deletions(-)
->=20
+Since the proper fix is going to take a while, I think having some form
+of interim solution could be a good idea.
 
 
