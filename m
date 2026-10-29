@@ -1,62 +1,62 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6965E606A31A
-	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 02:27:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E57C6606A31E
+	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 02:27:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7E2326B05B5; Wed, 28 Oct 2026 22:27:05 -0400 (EDT)
+	id D623A6B05B6; Wed, 28 Oct 2026 22:27:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7B9A16B05B6; Wed, 28 Oct 2026 22:27:05 -0400 (EDT)
+	id D39746B05B7; Wed, 28 Oct 2026 22:27:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6F6F36B05B7; Wed, 28 Oct 2026 22:27:05 -0400 (EDT)
+	id C4FB26B05B8; Wed, 28 Oct 2026 22:27:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 4FC8F6B05B5
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 22:27:05 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id DE5BA160264
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 02:27:04 +0000 (UTC)
-X-FDA: 85374076368.20.31D5C5C
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 98F6C6B05B6
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 22:27:53 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 28DFFA75A0
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 02:27:53 +0000 (UTC)
+X-FDA: 85374078426.26.C729CE3
 Received: from spam01.hygon.cn (unknown [101.204.27.37])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 70F081C0002
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 02:27:00 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
+	by imf15.hostedemail.com (Postfix) with ESMTP id D8175A0002
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 02:27:48 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
 	dkim=none;
-	spf=pass (imf18.hostedemail.com: domain of wujianyong@hygon.cn designates 101.204.27.37 as permitted sender) smtp.mailfrom=wujianyong@hygon.cn;
-	dmarc=pass (policy=none) header.from=hygon.cn
+	dmarc=pass (policy=none) header.from=hygon.cn;
+	spf=pass (imf15.hostedemail.com: domain of wujianyong@hygon.cn designates 101.204.27.37 as permitted sender) smtp.mailfrom=wujianyong@hygon.cn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793240823;
+	s=arc-20220608; t=1793240870;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=d0potvkYEPRlBVs0JY9bGCY/Z9bEA7EZBxzgXkkqzVY=;
-	b=LwMch0ekg0XS3EYRpLrKe5xLgP6PUbowvq0fyUSCYl24raJOBGLbcD85Fcuqa6h0q7gOiX
-	lG9muV+wwRO29vPH5HSUwtnLWMtToIohjVLZEncCf0mfc9BpSgeYHzgLTCqVfLgsUxGjwv
-	kgYe2PkR8nKSDKWk0HPaMTzIFTkBN+s=
+	bh=cIqXubhfvQ0epaWyz6DKO9ldyOApfI9geSDy6/6YGp4=;
+	b=7WyVelAQdB0cqjynBPFJqzWbbCuB104Q0HceK/Cngn+M547U3aFUU1eow8tDqOddQbX8RR
+	nm77YzZuRI8JHcFcfvHzDZ3m/TVkP5VMOZAPWrLJ3tPLV5x2F09Z2ypiWJPPzP7q7P/Sc8
+	xQDQ7u/pI0PrWHDqMlqN1pzrSLN1eFE=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
+	imf15.hostedemail.com;
 	dkim=none;
-	spf=pass (imf18.hostedemail.com: domain of wujianyong@hygon.cn designates 101.204.27.37 as permitted sender) smtp.mailfrom=wujianyong@hygon.cn;
-	dmarc=pass (policy=none) header.from=hygon.cn
+	dmarc=pass (policy=none) header.from=hygon.cn;
+	spf=pass (imf15.hostedemail.com: domain of wujianyong@hygon.cn designates 101.204.27.37 as permitted sender) smtp.mailfrom=wujianyong@hygon.cn
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793240823;
-	b=ppI+gI4m0vShmBFjXu9g9UAzRz8yagV/d2W6OePa4k7aOuza/eY5h3ugi4RJ30mtOzEolb
-	EVUCcAi+Be4/2SajMblycfe//LjKtcQ2F0vhkohsCwMgpD6MY69FFP6ZhATzR3ZKermVFR
-	5uhf8DKizRzj+3P6WYZkLfPTXTmW1e0=
+	t=1793240870;
+	b=1jrxqnFReAxUeGRieSIUpqTtUO0glDemtOiI2XktMG0JJ8BMoAiNMLnUO8tEItdY1kI2BZ
+	pLJZufsV8U0PIh9RYZJhquR5IJ7adsWZddRdYXvQaWW9NXWOhXhK7rl2tqs9mqW2iHdIue
+	m4oQDcJnGaMNtrApVTeNutBuDBzR5go=
 Received: from maildlp2.hygon.cn (unknown [127.0.0.1])
-	by spam01.hygon.cn (Postfix) with ESMTP id 4jFSmJ6wZ1z171YL;
-	Thu, 29 Oct 2026 10:26:56 +0800 (CST)
+	by spam01.hygon.cn (Postfix) with ESMTP id 4jFSn96xhpzwXwL;
+	Thu, 29 Oct 2026 10:27:41 +0800 (CST)
 Received: from maildlp2.hygon.cn (unknown [172.23.18.61])
-	by spam01.hygon.cn (Postfix) with ESMTP id 4jFSmH3wZqz171Yc;
-	Thu, 29 Oct 2026 10:26:55 +0800 (CST)
+	by spam01.hygon.cn (Postfix) with ESMTP id 4jFSn94qcNzwXwL;
+	Thu, 29 Oct 2026 10:27:41 +0800 (CST)
 Received: from cncheex04.Hygon.cn (unknown [172.23.18.114])
-	by maildlp2.hygon.cn (Postfix) with ESMTPS id 38BA2314AC01;
-	Thu, 29 Oct 2026 10:26:32 +0800 (CST)
+	by maildlp2.hygon.cn (Postfix) with ESMTPS id 57329314AC01;
+	Thu, 29 Oct 2026 10:27:18 +0800 (CST)
 Received: from jianyong.hygon.cn (172.19.20.52) by cncheex04.Hygon.cn
  (172.23.18.114) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.36; Thu, 29 Oct
- 2026 10:26:54 +0800
+ 2026 10:27:40 +0800
 From: Jianyong Wu <wujianyong@hygon.cn>
 To: Ingo Molnar <mingo@redhat.com>, Peter Zijlstra <peterz@infradead.org>,
 	Juri Lelli <juri.lelli@redhat.com>, Vincent Guittot
@@ -72,9 +72,9 @@ CC: Dietmar Eggemann <dietmar.eggemann@arm.com>, Steven Rostedt
 	<linux-mm@kvack.org>, <wujianyong@hygon.cn>, <jianyong.wu@outlook.com>,
 	<zhongyuan@hygon.cn>, <huangsj@hygon.cn>, <wangfengyu@hygon.cn>,
 	<yingzhiwei@hygon.cn>
-Subject: [RFC PATCH v3 01/17] sched/topology: Add llc_to_node() to translate LLC ID to NUMA node
-Date: Thu, 29 Oct 2026 10:20:19 +0800
-Message-ID: <20261029022036.4002331-2-wujianyong@hygon.cn>
+Subject: [RFC PATCH v3 02/17] sched/topology: Build NUMA node affinity sequences
+Date: Thu, 29 Oct 2026 10:20:20 +0800
+Message-ID: <20261029022036.4002331-3-wujianyong@hygon.cn>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20261029022036.4002331-1-wujianyong@hygon.cn>
 References: <20261029022036.4002331-1-wujianyong@hygon.cn>
@@ -84,18 +84,18 @@ Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
 X-ClientProxiedBy: cncheex05.Hygon.cn (172.23.18.115) To cncheex04.Hygon.cn
  (172.23.18.114)
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 70F081C0002
-X-Stat-Signature: znx1qgyedidd48z96iwuik6ro3554dxc
+X-Rspamd-Queue-Id: D8175A0002
 X-Rspam-User: 
+X-Stat-Signature: htjx6enfbzg6z67a68e9ww7o7eot6j4o
 X-Spam-Status: No, score=-16.8 required=3.0 tests=BAYES_00,
 	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
 	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
 	autolearn_force=no version=4.0.1
-X-HE-Tag: 1793240820-233548
-X-HE-Meta: U2FsdGVkX1//ZLSCZgasd37B4e1JsYz42UnRVtka3xB/wS/RA/PNhEk6APwH8+wky5+erNuRlCJPPwb84vEbNyly1Mx5YzIHX/0DMtaW9FVOBCwt9KKTer6LE20P0r4sx5Sj0ZB3MANVAslHFF+CP675DjQUD8PaAWPraaEcYI+meBGyfF8ed7Mk3yF/OoBVjdmE5DM6nrWYI/qpo8a8VMEQleH71eDlz+c/wquUBlyMAEkzrLDBkNTXaNKyZGFGazsyVd4X7eAKvfgYD74pm0WkwKzvvw2FCUu7MyIOvpnNA6wLy/iO2oyYlKRFsBS3RNvnpJZ5O7wfMdwm+IeywbiYXBNAyayfb4jzTVFRNJdWBzPVb4bUtU+wX1lA1tl7lPE0LJFeA1PJXTQklQsSOiu7Ju1bXbiqZiBmQRjLPXOcVWetkkSoTB2QYvl2PoRA9PxGg6jJkEunCfRHwfl+AFisCX4z6xv3TtdW89awQZQ7+E5+JpHe3J//ZO42GHmiZvolxEPlMgFtItYO+615UmT8vkMK6XiaV5pdIHdmJqWJV0YY1ep0V8NJNcP90SSaeIeoZOOy1nyxWyv06PRo0amUGRnkkcNcFh19+ycvLgScFbezYXoMmzlpRhrh6c2Ow1iWS2hTEau3rMEDGaSaAbvohn7BI9tgAc55hDSM1TOoPqjaoR9kvuyXyoXhjP0F7KfHUpN9QzrlGYhmJqO2Wkl2ZlXpKr3kOjyWQi/SI1uvsSBSvjvQqHzIBGqoZyZQD0n+zYp8Jz1IdC0EJ+THI87jWHFSl4m+O436FG9VMc2faofI7G6hqIIV2sBNJJHMAx8FG++xQhmebpRugniBM2SbR+ctHuhv+CKYBg4oeEfqaFublgap5/JNNyW6r1zoTrJSaQ2hlhqfCil7e6wkilEAYlrcfG336mwQK8A6munAFi7mOe3iV2DJr+pH2patTNZe67nREGFEFoBjCex
- xk+g5j8D
- ATM+tpYdaI245TriUT2/uDJ8wzopbQtioiwnJg2N0m6GugY7WW8bQHRBMqgStTX8BxE5bFX57diZVKTKkIkfrS3Xva+6r29e3pRUmH0Gls8Bvw+n6XZh+GJrcgS1F24Ol1km9nvgVgmgV+u2Y3fpyQlKCdFDNPtX3gK6VQBdYFW5YF69MgJlmiUVv/uCshxucP/Lm41TnsZqN78k=
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1793240868-243261
+X-HE-Meta: U2FsdGVkX18AzQRu0aFXP2CL1yK5J0hVL2uwZ7b9MPMXayUftrhvxC+BQOITUIidM0aYUR3GRoHuDmiW2nGIkVuZzyf7y6ImaucW+InoeDdwH+l0faH2R1RX3/csY7cf+/BU8AYy23wDocicTg1782TAYlFpB1ZU74Lil5YuqjWXG/91XLbJ+39wyEFnGC0ZBacgYT7c4OpJ4rWM+QjBNgQKiWgZQzI6h6Jc72iXH+uiwVRdXRtyazbi93pZunGd6h0xHP5TT+UlbJ1JoEqHghwdmhyiUZwBo2fiXFeH8gdPQssh7bcgz8ERc8m0+xxMVv5rROPoc1DCYijW80jG98uk4ycyfp0hQ9TuzA4DTIEWrbBTx/mHGmjpylXjOzRFaQYZIYl3jRmSO2QBaLaQ9X+SWoTxQ5RMxC/eRtNvhZq6rTu1uQyWXg+VDCQ/S9bmxpgzRAolKnE364pV+e8Z4MHigu+Jp4ZrFSdQcpFjoSD42sDMvk3NTL71Zh8RcgtfDFilyzW6TDW09S+GcAWDYdDxKo72zl6/7ubsrz+IiwFF5DLWei52qjwSpUh1vTknSRMx+gUq3KhS+P1lKju/iJeMBN8R+C0Ov04A0NU2bkZdjur30CtYeNF8bUZRx2R32ZtGr600mY72t9ey773sCfn8dR70leD6Jk8phBDbsmJQqX/Ck4g1TYj0cO1+F7crXpaCyNueoh+JjDMT3LGT/16DTAIY5v63/TWqGG6NBxSSOIlAuBioWknSOkRhALBzoG8PkShU70D9LOjVPhagNCaXqlh0pcSLW9CFZB/6VB1axKTzC4FLxVOWtZvXyu+sRQXf8Aw7pSwfK7I3ho2IHQmdYOOT/DoQUvDYFvltp81/W7t6XkUODePUhCSpg+IdI9Zd9hpUZ/+bdj7JXzeoOB6z3SkY4TAkIsTv9R1jk4viUKnN7ovUGYk6kBzJ94dhi8hZhm1RqeufpQxcw+x
+ 2KHLYO4z
+ 1uNBg436MhIHWOkGBULrPPGIwprvkitoYTGGulZ6tjX9PwpvgUMEnt9hqJV0HBqvV3GG+QrlSLKOYnDtUHaPNaJ0gUHtFSZBsenbpr0z6JXrUem1qBB3hKgw4JGM4gTmLsGUpOfWtXUVp8b6bk5rcDszU8DDw0kK88OoJ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,180 +104,410 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Building LLC affinity sequences requires knowing which NUMA node each
-LLC belongs to. Add a per-LLC-ID NUMA-node map derived from possible
-CPUs that currently hold an LLC ID, and expose it to the scheduler
-through llc_to_node(). Unassigned IDs return NUMA_NO_NODE.
+Cache-aware scheduling currently aggregates a workload into its preferred
+LLC. To accommodate workloads that need more than one LLC, establish an
+LLC affinity sequence for each preferred LLC. This sequence will guide
+aggregation as the workload expands beyond that LLC.
+
+Since LLCs belong to NUMA nodes, construct the ordering in two levels:
+order the NUMA nodes first, then order the LLCs within each node. Build
+the NUMA node affinity sequences here; subsequent patches handle the
+intra-node LLC ordering.
+
+Call the node containing the preferred LLC the cache-preferred node, to
+distinguish it from the preferred node selected by NUMA balancing.
+
+Raw NUMA distance provides the primary ordering, but multiple nodes may
+have the same distance from the cache-preferred node. Breaking these ties
+by ascending node ID creates a systematic preference for low-ID nodes.
+For example, consider four nodes with the following distance matrix:
+
+       N0   N1   N2   N3
+  N0   10   20   20   20
+  N1   20   10   20   20
+  N2   20   20   10   20
+  N3   20   20   20   10
+
+Using node IDs to break ties gives these sequences:
+
+  N0: N0 -> N1 -> N2 -> N3
+  N1: N1 -> N0 -> N2 -> N3
+  N2: N2 -> N0 -> N1 -> N3
+  N3: N3 -> N0 -> N1 -> N2
+
+Suppose processes A and B have cache-preferred nodes N2 and N3,
+respectively. When both nodes are full and the workloads need to expand,
+both processes first prefer N0. They may therefore compete for resources
+on N0 while N1 remains idle.
+
+Use a triangular-number permutation to distribute tie-breaking positions
+across nodes instead. Let N be the number of possible nodes. Assign them
+consecutive ordinals in ascending node ID order, excluding ID holes, and
+let p be the cache-preferred node's ordinal. Construct the offsets as:
+
+  M = 2^ceil(log2(N))
+  T(i) = i * (i + 1) / 2,             i = 0, ..., M - 1
+  R(i) = T(i) % M
+  offset = [R(i) for i = 0, ..., M - 1 if R(i) < N]
+  sequence[p][j] = (p + offset[j]) % N, j = 0, ..., N - 1
+
+Filtering preserves the original order. The first M triangular numbers
+modulo M form a permutation when M is a power of two, so each retained
+offset appears exactly once. Convert the resulting ordinals back to node
+IDs. Across these cyclically shifted sequences, each node occupies each
+position exactly once.
+
+This sequence defines the tie-breaking order, not the final NUMA
+ordering. Keep the cache-preferred node first, then sort remote nodes by
+raw NUMA distance, using their positions in this sequence to break ties.
+The raw distances are not modified. With unequal remote distances, the
+final sequences need not retain the positional balance of the underlying
+tie-breaking sequences.
+
+For the example above, the offsets are [0, 1, 3, 2], giving:
+
+  N0: N0 -> N1 -> N3 -> N2
+  N1: N1 -> N2 -> N0 -> N3
+  N2: N2 -> N3 -> N1 -> N0
+  N3: N3 -> N0 -> N2 -> N1
+
+If N2 and N3 are full, A skips N3 and expands to N1, while B expands to
+N0. This avoids both processes choosing N0 while N1 remains idle. The
+construction is a deterministic ordering heuristic, not a guarantee of
+minimum contention for every topology or workload.
+
+Build the sequences in sched_init_smp(). powerpc can update its NUMA
+distance table at runtime in update_numa_distance(), so bracket that
+update with sched_cache_numa_distance_update_begin() and
+sched_cache_numa_distance_update_end(), which rebuild the cached
+sequences under a mutex to keep them consistent with the raw distances.
 
 Signed-off-by: Jianyong Wu <wujianyong@hygon.cn>
 ---
- kernel/sched/sched.h    |  1 +
- kernel/sched/topology.c | 93 +++++++++++++++++++++++++++++++++++++++--
- 2 files changed, 91 insertions(+), 3 deletions(-)
+ arch/powerpc/mm/numa.c   |   4 +
+ include/linux/topology.h |  11 +++
+ kernel/sched/core.c      |   1 +
+ kernel/sched/sched.h     |  34 +++++++
+ kernel/sched/topology.c  | 190 +++++++++++++++++++++++++++++++++++++++
+ 5 files changed, 240 insertions(+)
 
-diff --git a/kernel/sched/sched.h b/kernel/sched/sched.h
-index 56acf502ba26..4ee223416012 100644
---- a/kernel/sched/sched.h
-+++ b/kernel/sched/sched.h
-@@ -4107,6 +4107,7 @@ static inline bool sched_cache_enabled(void)
- }
+diff --git a/arch/powerpc/mm/numa.c b/arch/powerpc/mm/numa.c
+index f4cf3ae036de..b2befd6ec448 100644
+--- a/arch/powerpc/mm/numa.c
++++ b/arch/powerpc/mm/numa.c
+@@ -25,6 +25,7 @@
+ #include <linux/seq_file.h>
+ #include <linux/uaccess.h>
+ #include <linux/slab.h>
++#include <linux/topology.h>
+ #include <asm/cputhreads.h>
+ #include <asm/sparsemem.h>
+ #include <asm/smp.h>
+@@ -350,7 +351,10 @@ void update_numa_distance(struct device_node *node)
+ 		if (!associativity)
+ 			return;
  
- extern void sched_cache_active_set(void);
-+extern int llc_to_node(int llc);
++		/* Keep cached node orders consistent with raw distance updates. */
++		sched_cache_numa_distance_update_begin();
+ 		initialize_form1_numa_distance(associativity);
++		sched_cache_numa_distance_update_end(true);
+ 		return;
+ 	}
  
- #endif
+diff --git a/include/linux/topology.h b/include/linux/topology.h
+index 709a2dcf4c73..22bf14aaa543 100644
+--- a/include/linux/topology.h
++++ b/include/linux/topology.h
+@@ -177,6 +177,17 @@ static inline int cpu_to_mem(int cpu)
  
-diff --git a/kernel/sched/topology.c b/kernel/sched/topology.c
-index 622e2e01974c..18171d2338fe 100644
---- a/kernel/sched/topology.c
-+++ b/kernel/sched/topology.c
-@@ -685,6 +685,24 @@ DEFINE_PER_CPU(struct sched_domain __rcu *, sd_asym_cpucapacity);
- DEFINE_STATIC_KEY_FALSE(sched_asym_cpucapacity);
- DEFINE_STATIC_KEY_FALSE(sched_cluster_active);
+ #endif	/* [!]CONFIG_HAVE_MEMORYLESS_NODES */
  
 +#ifdef CONFIG_SCHED_CACHE
-+/*
-+ * LLC id to NUMA node map. The number of entries lives inside the
-+ * RCU-protected allocation so that a reader bound-checks against the
-+ * length of the very map it dereferenced. max_lid is updated by
-+ * __sched_domains_alloc_llc_id() well before rebuild_llc_node_map()
-+ * installs the matching map, so it must not be used as the bound.
-+ */
-+struct llc_node_map {
-+	int nr_llc;
-+	int node[];
-+};
-+
-+static struct llc_node_map __rcu *llc_to_node_map;
-+static void rebuild_llc_node_map(int size);
-+
++void sched_cache_init_node_order(void);
++/* Sleepable pair bracketing runtime changes to raw node_distance() data. */
++void sched_cache_numa_distance_update_begin(void);
++void sched_cache_numa_distance_update_end(bool changed);
++#else
++static inline void sched_cache_init_node_order(void) { }
++static inline void sched_cache_numa_distance_update_begin(void) { }
++static inline void sched_cache_numa_distance_update_end(bool changed) { }
 +#endif
 +
- static void update_top_cache_domain(int cpu)
+ #if defined(topology_die_id) && defined(topology_die_cpumask)
+ #define TOPOLOGY_DIE_SYSFS
+ #endif
+diff --git a/kernel/sched/core.c b/kernel/sched/core.c
+index 96226707c2f6..bcf4026e5bd6 100644
+--- a/kernel/sched/core.c
++++ b/kernel/sched/core.c
+@@ -8860,6 +8860,7 @@ int sched_cpu_dying(unsigned int cpu)
+ void __init sched_init_smp(void)
  {
- 	struct sched_domain_shared *sds = NULL;
-@@ -856,6 +874,64 @@ DEFINE_STATIC_KEY_FALSE(sched_cache_active);
- /* user wants cache aware scheduling [0 or 1] */
- int sysctl_sched_cache_user = 1;
+ 	sched_init_numa(NUMA_NO_NODE);
++	sched_cache_init_node_order();
  
-+int llc_to_node(int llc)
+ 	prandom_init_once(&sched_rnd_state);
+ 
+diff --git a/kernel/sched/sched.h b/kernel/sched/sched.h
+index 4ee223416012..4dba127f1d4f 100644
+--- a/kernel/sched/sched.h
++++ b/kernel/sched/sched.h
+@@ -4109,6 +4109,40 @@ static inline bool sched_cache_enabled(void)
+ extern void sched_cache_active_set(void);
+ extern int llc_to_node(int llc);
+ 
++/*
++ * Lexicographic node affinity key. Keep the raw NUMA distance as the first
++ * component: it identifies the distance level without changing its order.
++ * tie_rank is used for tie-break if level equals.
++ */
++struct sched_cache_numa_key {
++	int level;
++	int tie_rank;
++};
++
++/* Both nodes must be valid */
++static inline struct sched_cache_numa_key
++sched_cache_numa_key(int node0, int node1, int tie_rank)
 +{
-+	struct llc_node_map *map;
-+	int node = -1;
-+
-+	rcu_read_lock();
-+	map = rcu_dereference(llc_to_node_map);
-+	if (map && llc >= 0 && llc < map->nr_llc)
-+		node = map->node[llc];
-+	rcu_read_unlock();
-+
-+	return node;
++	return (struct sched_cache_numa_key) {
++		.level = node_distance(node0, node1),
++		.tie_rank = tie_rank,
++	};
 +}
 +
-+static void rebuild_llc_node_map(int size)
++static inline int
++sched_cache_numa_key_cmp(struct sched_cache_numa_key a,
++			 struct sched_cache_numa_key b)
 +{
-+	struct llc_node_map *new_map, *old_map;
-+	int cpu, llc, node;
++	if (a.level != b.level)
++		return a.level < b.level ? -1 : 1;
++	if (a.tie_rank != b.tie_rank)
++		return a.tie_rank < b.tie_rank ? -1 : 1;
++	return 0;
++}
 +
-+	lockdep_assert_held(&sched_domains_mutex);
-+	if (size <= 0)
-+		goto fail;
++/* Node IDs in, zero-based rank out; -1 if unavailable or invalid. */
++extern int affi_node_rank_of(int prefer_node, int node);
 +
-+	new_map = kzalloc(struct_size(new_map, node, size), GFP_KERNEL);
-+	if (!new_map)
-+		goto fail;
+ #endif
+ 
+ void sched_domains_free_llc_id(int cpu);
+diff --git a/kernel/sched/topology.c b/kernel/sched/topology.c
+index 18171d2338fe..6b7b38eb7cd3 100644
+--- a/kernel/sched/topology.c
++++ b/kernel/sched/topology.c
+@@ -6,6 +6,7 @@
+ #include <linux/sched/isolation.h>
+ #include <linux/sched/clock.h>
+ #include <linux/bsearch.h>
++#include <linux/sort.h>
+ #include "sched.h"
+ 
+ DEFINE_MUTEX(sched_domains_mutex);
+@@ -701,6 +702,18 @@ struct llc_node_map {
+ static struct llc_node_map __rcu *llc_to_node_map;
+ static void rebuild_llc_node_map(int size);
+ 
++struct affi_node_order_topology {
++	struct rcu_head rcu;
++	int size;
++	int nr_nodes;
++	int *rank;
++	int order[];
++};
 +
-+	new_map->nr_llc = size;
-+	for (llc = 0; llc < size; llc++)
-+		new_map->node[llc] = NUMA_NO_NODE;
++static struct affi_node_order_topology __rcu *affi_node_order;
++static DEFINE_MUTEX(affi_node_order_mutex);
++static bool affi_node_order_ready;
 +
-+	/*
-+	 * for_each_possible_cpu() revisits the same LLC non-consecutively
-+	 * under SMT (each node's LLCs are walked once per thread), so
-+	 * dedup by populated node entries, not by comparing against the
-+	 * immediately preceding CPU's llc.
-+	 */
-+	for_each_possible_cpu(cpu) {
-+		llc = per_cpu(sd_llc_id, cpu);
-+		if (llc < 0 || llc >= size || new_map->node[llc] >= 0)
-+			continue;
-+		node = cpu_to_node(cpu);
-+		if (node >= 0 && node < nr_node_ids && node_possible(node))
-+			new_map->node[llc] = node;
+ #endif
+ 
+ static void update_top_cache_domain(int cpu)
+@@ -932,6 +945,183 @@ static void rebuild_llc_node_map(int size)
+ 	goto publish;
+ }
+ 
++struct affi_node_candidate {
++	struct sched_cache_numa_key key;
++	int node;
++};
++
++static int affi_node_candidate_cmp(const void *a, const void *b)
++{
++	const struct affi_node_candidate *ca = a, *cb = b;
++
++	return sched_cache_numa_key_cmp(ca->key, cb->key);
++}
++
++/*
++ * Build a root-relative tie-breaking order for equal-distance NUMA nodes.
++ * Sorting ties by node ID would make different roots consistently prefer
++ * low-ID nodes. Instead, use a permutation of cyclic offsets, shifted by
++ * each root's ordinal among possible nodes.
++ *
++ * Let N = nr_nodes and M be the smallest power of two >= N. Generate:
++ *
++ *   T(i) = i * (i + 1) / 2, i = 0, ..., M - 1
++ *   offset = T(i) % M
++ *
++ * These M residues form a permutation of [0, M). Keep only offsets < N,
++ * preserving their order, to obtain a permutation of [0, N). Using M
++ * rather than N avoids repeated or missing offsets when N is not a
++ * power of two.
++ *
++ * Store the inverse permutation: inverse[offset] is the position of
++ * that offset in the order. For root ordinal p and candidate ordinal q,
++ * the caller uses inverse[(q - p + N) % N] as the tie-breaking rank.
++ * Ordinals are consecutive and exclude holes in the node ID space.
++ *
++ * For N = 4, offsets are [0, 1, 3, 2], giving:
++ *
++ *   root 0: 0, 1, 3, 2
++ *   root 1: 1, 2, 0, 3
++ *   root 2: 2, 3, 1, 0
++ *   root 3: 3, 0, 2, 1
++ *
++ * Each ordinal occupies each position once across these shifted orders.
++ * Raw NUMA distance remains the primary sort key; this rank only breaks
++ * ties. Thus the final distance-sorted rows need not retain that balance.
++ */
++static void build_numa_tie_ranks(int *inverse, unsigned int nr_nodes)
++{
++	unsigned int mod = 1, pos = 0, i, rank = 0;
++
++	while (mod < nr_nodes)
++		mod <<= 1;
++	for (i = 0; i < mod; i++) {
++		if (pos < nr_nodes)
++			inverse[pos] = rank++;
++		pos = (pos + i + 1) & (mod - 1);
 +	}
++}
++
++/* Possible nodes include CPU-less nodes and exclude node ID holes. */
++static void rebuild_node_order(void)
++{
++	struct affi_node_order_topology *topo = NULL, *old;
++	struct affi_node_candidate *cand;
++	int *tie_rank;
++	int size = nr_node_ids, nr_nodes = num_possible_nodes();
++	int root, node, i, k, root_ord = 0, node_ord, delta;
++	size_t order_entries = size_mul(size, nr_nodes);
++	size_t rank_entries = size_mul(size, size);
++	size_t entries = size_add(order_entries, rank_entries);
++
++	lockdep_assert_held(&affi_node_order_mutex);
++	if (!nr_nodes)
++		goto publish;
++
++	cand = kmalloc_array(nr_nodes, sizeof(*cand), GFP_KERNEL);
++	if (!cand)
++		goto publish;
++	tie_rank = kmalloc_array(nr_nodes, sizeof(*tie_rank), GFP_KERNEL);
++	if (!tie_rank) {
++		kfree(cand);
++		goto publish;
++	}
++	topo = kvzalloc(struct_size(topo, order, entries), GFP_KERNEL);
++	if (!topo) {
++		kfree(tie_rank);
++		kfree(cand);
++		goto publish;
++	}
++	build_numa_tie_ranks(tie_rank, nr_nodes);
++	topo->size = size;
++	topo->nr_nodes = nr_nodes;
++	/* Store both directions in one allocation and publish them together. */
++	topo->rank = topo->order + order_entries;
++	memset(topo->rank, -1, rank_entries * sizeof(*topo->rank));
++	for_each_node(root) {
++		int *row = topo->order + (size_t)root * nr_nodes;
++		int *rank = topo->rank + (size_t)root * size;
++
++		k = 0;
++		node_ord = 0;
++		for_each_node(node) {
++			/* Ordinals, rather than IDs, keep holes out of the cycle. */
++			delta = node_ord++ - root_ord;
++			if (delta < 0)
++				delta += nr_nodes;
++			if (node == root)
++				continue;
++			cand[k].node = node;
++			cand[k++].key = sched_cache_numa_key(root, node,
++							 tie_rank[delta]);
++		}
++		sort(cand, k, sizeof(*cand), affi_node_candidate_cmp, NULL);
++		/* Keep the local node first regardless of firmware distances. */
++		row[0] = root;
++		rank[root] = 0;
++		for (i = 0; i < k; i++) {
++			row[i + 1] = cand[i].node;
++			rank[row[i + 1]] = i + 1;
++		}
++		root_ord++;
++	}
++	kfree(tie_rank);
++	kfree(cand);
 +
 +publish:
-+	old_map = rcu_dereference_protected(llc_to_node_map,
-+					    lockdep_is_held(&sched_domains_mutex));
-+	rcu_assign_pointer(llc_to_node_map, new_map);
-+	kfree_rcu_mightsleep(old_map);
-+	return;
++	/* On failure, new readers fall back to the local node, not stale rows. */
++	old = rcu_replace_pointer(affi_node_order, topo,
++				  lockdep_is_held(&affi_node_order_mutex));
++	kvfree_rcu(old, rcu);
++}
 +
-+fail:
-+	new_map = NULL;
-+	goto publish;
++/*
++ * Serialize runtime distance writes with construction of the cached rows.
++ * Architectures must hold this sleepable pair across their raw update.
++ * Readers continue to use an immutable old row until publication completes.
++ */
++void sched_cache_numa_distance_update_begin(void)
++{
++	mutex_lock(&affi_node_order_mutex);
++}
++
++void sched_cache_numa_distance_update_end(bool changed)
++{
++	lockdep_assert_held(&affi_node_order_mutex);
++	if (changed && affi_node_order_ready)
++		rebuild_node_order();
++	mutex_unlock(&affi_node_order_mutex);
++}
++
++void __init sched_cache_init_node_order(void)
++{
++	sched_cache_numa_distance_update_begin();
++	/* Include firmware updates made before scheduler initialization. */
++	affi_node_order_ready = true;
++	sched_cache_numa_distance_update_end(true);
++}
++
++/*
++ * Return @node's zero-based rank in @prefer_node's affinity order, with
++ * @prefer_node itself ranked first. Both arguments are node IDs, not CPUs.
++ * Return -1 for an unknown node or an unavailable ordering. Each query
++ * uses one RCU snapshot; separate queries may observe different versions.
++ */
++int affi_node_rank_of(int prefer_node, int node)
++{
++	struct affi_node_order_topology *topo;
++
++	if (prefer_node < 0 || node < 0)
++		return -1;
++
++	guard(rcu)();
++	topo = rcu_dereference(affi_node_order);
++	if (!topo || prefer_node >= topo->size || node >= topo->size)
++		return -1;
++
++	return topo->rank[(size_t)prefer_node * topo->size + node];
 +}
 +
  /*
   * Get the effective LLC size in bytes that @cpu's bottom sched_domain
   * can use. A CPU within a cpuset partition can only use a proportion
-@@ -3040,7 +3116,8 @@ static int __sched_domains_alloc_llc_id(void)
- 	return lid;
- }
- 
--static void __sched_domains_free_llc_id(int cpu)
-+/* Return true only when the last CPU releases the LLC ID. */
-+static bool __sched_domains_free_llc_id(int cpu)
- {
- 	int i, lid, max;
- 
-@@ -3048,14 +3125,14 @@ static void __sched_domains_free_llc_id(int cpu)
- 
- 	lid = per_cpu(sd_llc_id, cpu);
- 	if (lid == -1 || lid >= nr_cpu_ids)
--		return;
-+		return false;
- 
- 	per_cpu(sd_llc_id, cpu) = -1;
- 
- 	for_each_cpu(i, llc_mask(cpu)) {
- 		/* An online CPU owns the llc_id. */
- 		if (per_cpu(sd_llc_id, i) == lid)
--			return;
-+			return false;
- 	}
- 
- 	__cpumask_clear_cpu(lid, sched_domains_llc_id_allocmask);
-@@ -3064,12 +3141,18 @@ static void __sched_domains_free_llc_id(int cpu)
- 	/* shrink max lid to save memory */
- 	if (max < max_lid)
- 		max_lid = max;
-+	return true;
- }
- 
- void sched_domains_free_llc_id(int cpu)
- {
- 	sched_domains_mutex_lock();
-+#ifdef CONFIG_SCHED_CACHE
-+	if (__sched_domains_free_llc_id(cpu))
-+		rebuild_llc_node_map(max_lid + 1);
-+#else
- 	__sched_domains_free_llc_id(cpu);
-+#endif
- 	sched_domains_mutex_unlock();
- }
- 
-@@ -3139,6 +3222,10 @@ build_sched_domains(const struct cpumask *cpu_map, struct sched_domain_attr *att
- 		}
- 	}
- 
-+#ifdef CONFIG_SCHED_CACHE
-+	/* The map depends on assigned LLC IDs, not on sd_llc allocations. */
-+	rebuild_llc_node_map(max_lid + 1);
-+#endif
- 	if (WARN_ON(!topology_span_sane(cpu_map)))
- 		goto error;
- 
 -- 
 2.34.1
 
