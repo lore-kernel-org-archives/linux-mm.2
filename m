@@ -1,106 +1,132 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16E35606A31D
-	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 03:22:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B787606A320
+	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 03:37:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=XETfCPhB
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=EwhdD0ta
 Received: by kanga.kvack.org (Postfix)
-	id 38D4D6B05B1; Wed, 28 Oct 2026 23:22:12 -0400 (EDT)
+	id 8B31E6B00EF; Wed, 28 Oct 2026 23:37:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 365236B05B2; Wed, 28 Oct 2026 23:22:12 -0400 (EDT)
+	id 83C876B05B1; Wed, 28 Oct 2026 23:37:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 27AF16B05B3; Wed, 28 Oct 2026 23:22:12 -0400 (EDT)
+	id 7041D6B05B2; Wed, 28 Oct 2026 23:37:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id EBC536B05B1
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 23:22:11 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 65476140211
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 03:22:11 +0000 (UTC)
-X-FDA: 85374215262.14.CD0F1A1
-Received: from mta1.migadu.com (out-64.mta1.migadu.com [95.215.58.64])
-	by imf29.hostedemail.com (Postfix) with ESMTP id DB783120006
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 03:22:07 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=XETfCPhB;
-	spf=pass (imf29.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.64 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 49ECD6B00EF
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 23:37:30 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id C47F1C02B6
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 03:37:29 +0000 (UTC)
+X-FDA: 85374253818.16.5B11214
+Received: from mta0.migadu.com (out-18.mta0.migadu.com [91.218.175.18])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 9150F1C0005
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 03:37:27 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=EwhdD0ta;
+	spf=pass (imf18.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.18 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793244129;
+	s=arc-20220608; t=1793245048;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HNguEgLKPRt0ONBwMq+rfgApg7KOxogrMEorbHbFjtw=;
-	b=QD8g3ANjRP99dRBMIHGQnICkhg3dx2DOeoqgD6AJjSVm2+ki+tRoap8t6z5wYGfND5J5LG
-	PR//WrBGkaidIKvlxfqHPyfhxl0prG4BGFUY48zIb/vsjyiKXMxUNaWNKatkeRj16Q71RM
-	AhB4cBcVKagqkgVTDy+CrMg9zM8Yrg0=
+	bh=0TYkcz3oi8Hce4FiXDXGEUsAkrCmcslpFK3fxjBXOUw=;
+	b=uz2fybDkzPJGsK2zfs4mwqsJsqcWxI/rXpFlAQAc+//8e48xHMohFPlGh2Im7M/qfKqJCF
+	ldXNAKBFOyv8TfCc5fnV1BNG9LH9fUbc0w6VyQt9yqw6veqGcpnlqrcrXD+izNkOcT9wEW
+	0GpVddXzKD3CBgW3vH1m/4UZYNGHM90=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793244129;
-	b=VACizbmS4bbeNAGAPDJjpGkFt73fDT4KI1i+Rs+7cg2oLlV1V7B0/ZqaD+v6gNnVStKGrN
-	3bs9u4sXIIaxPjX2TKvXlBhAWDVBPljCdcYlnt2+qiZ36lEnD9/+WtzJaqVgo4/vGLZ6Kc
-	FPU4S48OMP/orMmeuDv0LI6jb4nyonU=
+	t=1793245048;
+	b=E6641JxDEbmR4M/zWUpIXH4hAk2bhn4prq0Nq8C75xKzkoorZLNZ45IrxmQrwzIOrwXGog
+	Jyq7JXyhT8mhtqaJ1oNwBDYaTHgyweP55bCb2/PwDdC9VMYU5XfQpqaFr0zOqy+Rpr3Gep
+	tNIDyMNV6meyCPP9ln5feeIMN09SUN0=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=XETfCPhB;
-	spf=pass (imf29.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.64 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	imf18.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=EwhdD0ta;
+	spf=pass (imf18.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.18 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=HNguEgLKPRt0ONBwMq+rfgApg7KOxogrMEorbHbFjtw=;
+DKIM-Signature: a=rsa-sha256; bh=0TYkcz3oi8Hce4FiXDXGEUsAkrCmcslpFK3fxjBXOUw=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1793244124; v=1; x=1793848924;
- b=XETfCPhBW8ek8/36n08lOqZQDykW9l4t9+o+5T9ihnlqE0ZQ4Rrja6oLZ09/8IU9ee04qmx+
- tmlrgwbGqh8FuZdVHUXvPsX4BOe4pGMOJIfaBtBu+MHAkZj867cX7r/q/VplfKjyK8lvDXoRWlt
- BMYoSoW/G/dY/GpLPwlztW8Q=
+ t=1793245046; v=1; x=1793849846;
+ b=EwhdD0taQspvWOf1jRfVxj3kKfbzBcoW1Zh6PIQfZnIs/iXQRocbPuPpJfyNmtIfGQm3KGHU
+ Oh06JsdTIGrNthlWEpv+6QrXR0Zdq/Zd63qqHMkLytRK+ku2AIn63jTXNRRnmPotzFTLiJNDfR3
+ LZIOVGY4YGYH1FAzvkJnfq8Q=
 X-Envelope-To: linux-mm@kvack.org
-Received: by mta12.migadu.com with ESMTPS id 1231c8beec06274d;
-	Thu, 29 Oct 2026 03:22:03 +0000
-X-Mizu-Trace-ID: 1231c8beec06274d
+Received: by mta12.migadu.com with ESMTPS id b3dc07f6f034e3dc;
+	Thu, 29 Oct 2026 03:37:25 +0000
+X-Mizu-Trace-ID: b3dc07f6f034e3dc
 X-Migadu-Flow: FLOW_OUT
 Content-Type: text/plain;
 	charset=us-ascii
 X-Archived-By: <archiver.kernel.org>
 Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3901.100.1.1.12\))
-Subject: Re: [PATCH 3/3] mm/hugetlb: fix NR_HUGETLB accounting for unused
- surplus folios
+Subject: Re: [PATCH 01/15] hugetlbfs: fix integer overflow in fallocate()
 From: Muchun Song <muchun.song@linux.dev>
-In-Reply-To: <auIORHr432BlmbrD@localhost.localdomain>
-Date: Thu, 29 Oct 2026 11:21:47 +0800
+In-Reply-To: <20261028-fixes_hugetlb-v1-1-a0a033db180f@kernel.org>
+Date: Thu, 29 Oct 2026 11:37:01 +0800
 Cc: Oscar Salvador <osalvador@suse.de>,
- David Hildenbrand <david@kernel.org>,
+ Naoya Horiguchi <nao.horiguchi@gmail.com>,
  Andrew Morton <akpm@linux-foundation.org>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- Mike Kravetz <mike.kravetz@oracle.com>,
- Frank van der Linden <fvdl@google.com>,
+ Mel Gorman <mgorman@suse.de>,
+ Andy Whitcroft <apw@canonical.com>,
+ Miaohe Lin <linmiaohe@huawei.com>,
  Michal Hocko <mhocko@suse.com>,
- Joshua Hahn <joshua.hahnjy@gmail.com>,
- Chris Down <chris@chrisdown.name>,
- Roman Gushchin <roman.gushchin@linux.dev>,
+ Rik van Riel <riel@surriel.com>,
+ Hugh Dickins <hughd@google.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Vivek Kasireddy <vivek.kasireddy@intel.com>,
+ Dave Airlie <airlied@redhat.com>,
+ Jason Gunthorpe <jgg@ziepe.ca>,
+ Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R. Howlett" <liam@infradead.org>,
+ Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>,
+ Jonathan Corbet <corbet@lwn.net>,
+ Shuah Khan <skhan@linuxfoundation.org>,
+ Randy Dunlap <rdunlap@infradead.org>,
+ Peter Xu <peterx@redhat.com>,
+ Breno Leitao <leitao@debian.org>,
+ Will Deacon <will@kernel.org>,
+ "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
+ Nick Piggin <npiggin@gmail.com>,
+ Peter Zijlstra <peterz@infradead.org>,
+ Heiko Carstens <hca@linux.ibm.com>,
+ Vasily Gorbik <gor@linux.ibm.com>,
+ Alexander Gordeev <agordeev@linux.ibm.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Sven Schnelle <svens@linux.ibm.com>,
+ Arnd Bergmann <arnd@arndb.de>,
  linux-mm@kvack.org,
  linux-kernel@vger.kernel.org,
- Kaitao Cheng <chengkaitao@kylinos.cn>
+ Gerd Hoffmann <kraxel@redhat.com>,
+ linux-doc@vger.kernel.org,
+ linux-arch@vger.kernel.org,
+ linux-s390@vger.kernel.org,
+ luojiajun <luojiajun3@huawei.com>,
+ Josef Bacik <josef@toxicpanda.com>,
+ stable@kernel.org
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <87146009-8E2A-467B-AAFF-8F79E9D5E32F@linux.dev>
-References: <20261028113319.38544-1-kaitao.cheng@linux.dev>
- <20261028113319.38544-4-kaitao.cheng@linux.dev>
- <auIORHr432BlmbrD@localhost.localdomain>
-To: "Oscar Salvador (SUSE)" <osalvador@kernel.org>,
- Kaitao Cheng <kaitao.cheng@linux.dev>
+Message-Id: <497E3E4E-B423-46FA-AB00-5D2ABFB833A0@linux.dev>
+References: <20261028-fixes_hugetlb-v1-0-a0a033db180f@kernel.org>
+ <20261028-fixes_hugetlb-v1-1-a0a033db180f@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
 X-Mailer: Apple Mail (2.3901.100.1.1.12)
 X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: DB783120006
-X-Stat-Signature: fd8mdqchkabt19ud78jaojg3h471om1f
+X-Rspamd-Queue-Id: 9150F1C0005
+X-Stat-Signature: ic6huw79we8ydo5p3xdbydkjyed6eq91
 X-Rspam-User: 
 X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
 	autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1793244127-469418
-X-HE-Meta: U2FsdGVkX1+Dorl0nKX6WHskZxnOxtNzA+5XDCfDTyK6Xm1VDcKuWnGovONsVzNK8v3qZEOdCmSjgv+rUSgfu/E8lbPm/LdEOWkAvE8K59Fe02qXvKbHfySqO2FFh5DC/MxPksAd5cGh1215CUgbGeSqR+7brzQQwuvXnq8YwRd/WXUNP5IrmRFYP3ffk1jEdMBxyomesbPOnOAl2U2/+Q1wofqq3RtbLOVxHigz8/DpUEacXn/7IJ+FxkOV9v6Eb66uS0DFctXac3Pn8yWzwGZO2WLt2s581XCF/cudkKwuYCkXGPcNEjE/9HU1pAPzBoTv0M6uc8WNgSv+2jAV1mR6bXHmM+asnfs0vNdAV4G1eN+DzacDknn/AubSOvdt7EC5r/jbjmbSNXrcy+61eklTOTZCpWEgT2MNIrUXX7yln7HH+g1E6vYQIrej+BcA9Fv5EpA30fcm3x4qIfHTx+/3VzCfshAs7C5pb6ZaRrC3+ZSd/iYwKIYS8ukvJD2vYk4yOYVwlbb3pFZ1M43/nAIH3XpQKad06MUF9VpyN5hM7qQEkHZ2v9J+G2N9IqF4rQGbYuu6fKUcAuTRXYds/S+6pRrepJzDXrlG9y8pqyO50Ytdk/i7768CxQiZ1zgFn0JCoPSJ0pjv+G+IJId9Vgp8P8pL47xFs2dnuPDiDn51F8F5tSxfk11zkkL7fD8TJJ+ht3tJjyawteY3ZwY7V3hcBCd5wMVCK8idIRiZEVW3LZdmvAq2L3VW3AMHrSTHYoyB9DKCJUmY07EikNT3ZPqVGp0zFfEh3HCLyERn1uASwIuQMUnFvIMK7cf7ZI6Nwt3DjFEbBIitQ4OwXcAUwdwXNtX1s+H1THBDbsMstyO6zHTapdTeM+87ZDdpU7EcWPtwOxxHw1BVjIOq4mnPpZ3mKhaPVQDSBI5soRiOLsw4tGbTZoqypEshPYHLa1Vi2n98c6j7xl8xeyVtAlu
- 6MTLgaMZ
- Dl3TpcqajbKwzZAAnyUhgw3Nftok+BYLVxReaIfsaSdf2XL5+zi+KIR4QHAF3wztZRVMXkMmD8AuVqHSclKhESat+2FNQw3eP4NBYL3R2NiNLkpEMhj8JBp72qxebt8RAjFt+86DCmPLdnq+vFnLPbDpFA0GdT2lrESI95HOjE8n+U6OPSE7Q4M7Vaw1xOAmdvsz5ui/zpIg28HJyfES/rg6YXvSGrnWGPh6v9ENfXqCSps9xdYeOk52VB7xaLeuXj7gF0pGckbI0uFsFvnkHS1/H0UJJTDp1V5TXZTBACNwpO6U2/h5ATkNS02tjq0hmjQZZXbSmPnNUISASKJIgkxPergHFyWsNgmDJ0If52DBJGD2nSHfsX5VCPsteXGurolosZHi9/VvNV03UnND9PDP7mB7QUOLLGqxXUwDlCEDqUqMQCBe16Htx4oIk7KXm8xwA8xZUY1BtYAugXNXBndFF5Q==
+X-HE-Tag: 1793245047-743526
+X-HE-Meta: U2FsdGVkX1//i0YmR3rFtoKv9nfuZJRV3fJ1XlV4ljm8Xk35dJuBmwAEOvoDd0JZEpr6oYitoep4HiF4zFM0Vjd+qoSIFu+9VetnGWOH+BrEo5HN90T9ZI6r71c/3RXByTIAwSGk+oZxQezK1LD5WnHhLlGSU3bvs3x+zKW84WWDRAsvxy67vGUZExWmxMjit1VUR14IVPHexBiHa9PV1iUSHu8/bWrN4FKmLPHo/8Iccu5aM+AgbyYDHHsah8OZXLUZ/Ql9aVhCchoLXl/rqef07a0PJoOIjT2BW+puF2d2C09rx/mNk6xh2r+cvwdZaxlv3DIYt11A1aVN2kZS5PQ6pQQsuSJg8nTsUiXhjTd1jb1pQ4hpguWRulg6sJFojLnF/cHNWQL+A+U831B0ylaXHUp+LqQJURtqiKmeNZVDhzd9oxjQlXElR1oDqUlEBfoMyKcWQmZvhYAWU3HvkhKzgDLDOEMaF9zGECArsXGC5Luw/vOlIEPc2VdF+uS20E41QUlqyQbAsLwJSv3g5mE+ThONVEMpabN3ErlK1EiXM8YuM5qchBu6naf6mJEIUXNE/TWIvvweLJHVp90yDmPUFL9mbBsAg2eHiVJkf/vOj7uwLv+/ociR4Kn+h2dz0ysTkUTdXYrsvsO8NUEgualLPOkBoeuwtMoJ9rIAhXMDAqWXygGVcWKIy1nDeuv8NIyylcomlG37f7TnE8JLkgEJPy7ns81f3cswZ3n8fjMzGi741ss3uLGBxsQ45BdITKA7f2RZ/KWMCA+b9f3JIAt77gb7CShcgafOPB5rsZ15UaYKZCs3rzmTWLtlWS6Uit8qfhHyyX0VfPFgA2Bh2DWt9oJqHwuJl20ZfWd7l23tCVleGcwzkFhJcJjTG8py0m0V7YS6RYxGiVJGQPVNU1yGmUmSs0slAJnG74iI0V/XksTueJixoTtCrbKCEj70XN2sBxZsR7InUxJQRQr
+ Ej2AiXsr
+ BEEmFcrHGcmdbvebWH1sfMepvoOJutyIhc4S+PJwB4np/Ke2mzfBDWR2DR5TgRb7UaoOAQ/+++h1yO30ebpc+qnNpQ7JrCrh/57TTbsALPWte2oEmINZFB9MBNS4bI6KyRgH7GaGElkHcwWx/poudwl9kdaL22sl/pdelskLJPy6tafcch4mhq7CzCvTiZZCPnpKORicft6L50by+jDZ2o4vbGUIV2DHfCNwiVr3ILaFvEBbOZG8HQ+7k9CwTbRuJekhMMEWzApA7xMaTfn3HewnXENvzsOFo3OCnSmjYrDk3GPWDLh8MLL+YGJ+E02WTgKZ5xbk79GakPGWtSDHZiowQm+pQkIaG4tginPgmPF1b/6cwPODqKXqPFIvjA0xXakF5SD10wv3yHTuNGlbJq1kYTt2LjnNZow59jzsaIeztbL9nKWl/cFkQRB8CAkc6oSSR
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -111,69 +137,46 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 
 
 
-> On Oct 28, 2026, at 23:01, Oscar Salvador (SUSE) =
-<osalvador@kernel.org> wrote:
+> On Oct 29, 2026, at 04:13, David Hildenbrand (Arm) <david@kernel.org> =
+wrote:
 >=20
-> On Wed, Oct 28, 2026 at 07:33:19PM +0800, Kaitao Cheng wrote:
->> From: Kaitao Cheng <chengkaitao@kylinos.cn>
->>=20
->> free_huge_folio() unconditionally decrements NR_HUGETLB, but freshly
->> allocated surplus folios can be freed before the counter has been
->> incremented.
->>=20
->> This happens when alloc_surplus_hugetlb_folio() rejects a fresh folio
->> after its second surplus limit check. It also happens when
->> gather_surplus_pages() frees folios because a reservation cannot be
->> satisfied, or because concurrent pool changes leave excess folios
->> after the reservation succeeds.
->>=20
->> These paths leave unmatched decrements, causing HugeTLB usage to be
->> underreported and potentially underflowing the counter.
->>=20
->> Increment NR_HUGETLB before calling free_huge_folio() in both paths
->> to balance its unconditional decrement.
->>=20
->> Fixes: 05d4532b60e3 ("memcg/hugetlb: add hugeTLB counters to memcg")
->> Closes: =
-https://sashiko.dev/#/bug/linux-860a3b8f-0b07-4cd5-a122-aa2288463bee
->> Signed-off-by: Kaitao Cheng <chengkaitao@kylinos.cn>
+> hugetlbfs_fallocate() rounds the range end up by adding hpage_size - 1
+> to offset + len. vfs_fallocate()'s existing overflow check only makes
+> sure that offset + len does not overflow.
 >=20
-> I feel like the whole hugetlb accounting is a bit of a nightmare.
-
-Can't agree more.
-
-> I wish we could teach free_huge_folio to ignore accounting-wise these =
-pages
-> but not sure if that would be any prettier/easier.
-
-My thinking is that we should not use lruvec_stat_mod_folio(). Instead, =
-we
-should use mod_node_page_state() and mod_memcg_lruvec_state()
-independently. In that case, when a new hugetlb page is allocated, we =
-could
-account for it directly via mod_node_page_state(). The reason is that
-lruvec_stat_mod_folio() also accounts per-memcg NR_HUGETLB; only by
-splitting the two can we minimize the problems introduced by accounting. =
-For
-callers that need to consider memcg, mod_memcg_lruvec_state() can be =
-used.
-
-I expect that after some cleanup, there will be only one place that =
-needs to
-handle per-node NR_HUGETLB.
-
-Thoughts?
-
-Thanks,
-Muchun
-
-
-> I will have another look later on.
+> Once we overflow for valid endpoints near LLONG_MAX, we can get a
+> negative temporary result that is then converted to a very large
+> huge page index.
 >=20
+> A one-byte allocation ending at LLONG_MAX can therefore consume all
+> available huge pages. Pages added beyond LLONG_MAX are skipped during
+> inode eviction, leaking them and triggering the BUG_ON() in =
+clear_inode().
 >=20
+> To fix it, calculate the end index in a simpler way that cannot
+> overflow. This also fixes the signed overflow reported by luojiajun in
+> 2019.
+
+Amazing that you remember something from so long ago!
+
 >=20
-> --=20
-> Oscar Salvador
-> SUSE Labs
+> Backporting notes: without commit a08c7193e4f18 ("mm/filemap: remove
+> hugetlb special casing in filemap.c"), remove_inode_hugepages() must
+> include the final huge page during truncate and eviction.
+>=20
+> Reported-by: luojiajun <luojiajun3@huawei.com>
+> Closes: =
+https://lore.kernel.org/all/1554775226-67213-1-git-send-email-luojiajun3@h=
+uawei.com/
+> Reported-by: Josef Bacik <josef@toxicpanda.com>
+> Fixes: 70c3547e36f5 ("hugetlbfs: add hugetlbfs_fallocate()")
+> Cc: stable@kernel.org
+> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+
+LGTM.
+
+Acked-by: Muchun Song <muchun.song@linux.dev>
+
+Thanks.
 
 
