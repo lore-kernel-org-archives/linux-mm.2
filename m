@@ -1,129 +1,100 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA04E606A31E
-	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 06:08:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E275A606A327
+	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 06:09:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=chrisdown.name header.i=@chrisdown.name header.a=rsa-sha256 header.s=google header.b=kfZFuq0D
+	dkim=pass (1024-bit key, unprotected) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=moeCmSUU
 Received: by kanga.kvack.org (Postfix)
-	id 034D16B05BB; Thu, 29 Oct 2026 02:08:54 -0400 (EDT)
+	id 16DEB6B05BD; Thu, 29 Oct 2026 02:09:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 00BA16B05BC; Thu, 29 Oct 2026 02:08:53 -0400 (EDT)
+	id 0F76D6B05BE; Thu, 29 Oct 2026 02:09:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E63C86B05BD; Thu, 29 Oct 2026 02:08:53 -0400 (EDT)
+	id 034CF6B05BF; Thu, 29 Oct 2026 02:09:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id B22B36B05BB
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 02:08:53 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 104CD1402CE
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 06:08:53 +0000 (UTC)
-X-FDA: 85374635346.25.7393E65
-Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 2D01140004
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 06:08:51 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=chrisdown.name header.s=google header.b=kfZFuq0D;
-	dmarc=pass (policy=quarantine) header.from=chrisdown.name;
-	spf=pass (imf27.hostedemail.com: domain of chris@chrisdown.name designates 209.85.210.177 as permitted sender) smtp.mailfrom=chris@chrisdown.name
+	by kanga.kvack.org (Postfix) with ESMTP id D5D8B6B05BD
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 02:09:15 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 523EBA7C04
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 06:09:15 +0000 (UTC)
+X-FDA: 85374636270.12.A4C473A
+Received: from out30-131.freemail.mail.aliyun.com (out30-131.freemail.mail.aliyun.com [115.124.30.131])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 46EE0100002
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 06:09:11 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=moeCmSUU;
+	spf=pass (imf14.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.131 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793254131;
+	s=arc-20220608; t=1793254153;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fr6lsRVu7pKC2uMXBLAv6yVcpzLAtilFokqfHYV3ttU=;
-	b=KreVsdeQfSEa6zxJblBltwaeRtUX/4RFCvaNejgiA6YecuMJbs3mgmhWVbIKl59jnbisxL
-	CeBPq6kMZMglZv+g7p+Ey149sgRVHMn6bK5WLhWHfapNsEKhLfaSPBGO1bcm0vLmioueOs
-	mjyeRMZbWKddf/syYBkziSse+SqdWBU=
+	bh=WifFjtHgZkJ4eUGZzP2SLgCkpK+TLdKe5MTWOWYju04=;
+	b=hUuqgDa+VEaSBl0QIjxy0T1wySXTidVihk8wp494wSBqh30kv4UxFpNBBBooIYNl0zmsd2
+	tBVRC++J5x5NP59SLJynWYfBkyl5Tc8a/RIZnkKcZUPb/QzPbLjRwi7WYiZLYHi4KdmoKF
+	HYIDqb66PWq1exTr1/llfYu+zn4RjjI=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=chrisdown.name header.s=google header.b=kfZFuq0D;
-	dmarc=pass (policy=quarantine) header.from=chrisdown.name;
-	spf=pass (imf27.hostedemail.com: domain of chris@chrisdown.name designates 209.85.210.177 as permitted sender) smtp.mailfrom=chris@chrisdown.name
+	imf14.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=moeCmSUU;
+	spf=pass (imf14.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.131 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793254131;
-	b=yaXLRZnaW/R4q2iD5ETfC7a+9C1ArVZV5cnhj2O4IdvMYOgoneeTI7VqBGvDuAK85Dqe4a
-	7FOQ02BlvqYv5EbIc4UL7jQ9782JasPjfAPJjHmDlqX2CujxlbGB6CKG0/ZllPPP5NlUtG
-	jIGv9oXUMmn0L7hyM5zifsiwKwjYWQI=
-Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-8a01cac8733so1391947b3a.2
-        for <linux-mm@kvack.org>; Wed, 28 Oct 2026 23:08:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chrisdown.name; s=google; t=1793254130; x=1793858930; darn=kvack.org;
-        h=user-agent:in-reply-to:content-disposition:content-type
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to:content-type;
-        bh=fr6lsRVu7pKC2uMXBLAv6yVcpzLAtilFokqfHYV3ttU=;
-        b=kfZFuq0D+BUMm5ihOMxp7pt3VMtsBBwHQc2FJL1sUTQw3hVWF+bv49U5ZPEAXwFCqo
-         q7X0NFtUgW1Ibfp0vxwo59G8HiQVlHBkXdJTCZcKM4sBZpfom2Hht+PhsMKW2vjPr/R6
-         8ubRZMaaLzduY57DTcE0T5MJmlUdKJRbChsmk=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793254130; x=1793858930;
-        h=user-agent:in-reply-to:content-disposition:content-type
-         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=fr6lsRVu7pKC2uMXBLAv6yVcpzLAtilFokqfHYV3ttU=;
-        b=wAg7yQWe3npq9LSvNuauBRh7twqd+HVR8Ukf0MCEUCAmTbDVMFgtJeTzICDcCdgWnD
-         aRYxtcQuqoERgtH9hva35Lp8zp2XYpi6F9K97+wodBcOyIL3zdJYUryRJEk9qVoW9Rq7
-         Kza+r72Kun5sZRurH9ajOhHsFdOnPkCyQOSX3UvojvSbQDBFTHXafnBAfmfeJrpQVeR4
-         msTODu2pz3UE+FY79LGLf7JhIFrttf1/TQhsDWBGfdZw8SZnVDQevy7bRG9bGv9aTbkX
-         zek98L6PRlsAKYXCijUFaoArlD4/J+LMITFpc5+H7rz3OxCWPLVOsknSbC7UzyZLgVA9
-         tQmQ==
-X-Forwarded-Encrypted: i=1; AKwUvByVkfgPu+aj4ww4/UZMYnn2UfqGkuYFoOmzg/1LGMGkbVs+uIKBfMulJEPd/1K6X+D6DdAVyDq94A==@kvack.org
-X-Gm-Message-State: AFq9FYJNc/NxyuVqgZKa3Bc8XUnw14clb4xlM5BKh0hJGANwnnErjbxi
-	rvijPuZurlUJd2lxryFf1gX+A8fsFjoUvEXYNSmSQLl0x0pG3+9BzExLc9DF4Us988U=
-X-Gm-Gg: AYBFou0bxFIDkcLeoxybMXk0/BHpkSzyCDYhGC8S2AJhIL9U4RjI2ptcgqtNn2xoPSx
-	9T7vrE01VJqC7CK8zP9AU6Ru7auBhMaLlou5Gvi7vIMVe2BvcDRUdTNHN8XTYMmbCWVgGXL5LrJ
-	8WXhmCjfB74VtVqsfbQbAfd9TjmmI8FxA1RPS72fgCGst1nN9d3pMADQzvHkY+HZ7Zejx95b4O0
-	1y85wcxmla1ub4BB1Zq5lqm2rm4ip1dYQ1uAsxfo0qnmGyNr4mbh696sxGynJbWJs6V6i5c64hm
-	c5gmndC1nxsqf0BUQS8VeXigEX8XbO2I9bj4lRFwTZPvnJTwn8FE93UCMHiyQ0ZrkDjMe46P812
-	x7CRqoPIydnHNDHQAC6SDTox97+cA9d7FuAZy+ebbGfljJPm4ZrrPFODzKUDOytFyHykC8UCzIy
-	cXz9RQtKd6OSX2PWY2X53/N5FANmg6d9ASjW4SIiJQQc0VwhBKFAhuIlb3ye1pllbm6pDmk39Yt
-	PSY6dBdmHuyaAQLfxirW7Iqfbzg8/GR2QccWXbn4JzB7sLmLAgKrff6kSd1nytwB/JiCsIE8t/h
-	QYiYaRAb5cHP3TnWUXckOACH8RdghnYd5nn7YbqWL8Lg/+OdgIcnZNTK36HWRsOUoTEme1IYJmp
-	iVbrisCKo1tJ7P8DFfOYuLi/2ukggweV9AodewjYKPju2WfULZwF42o4nkeO6bFN91mHvEzfEGC
-	+Lv3COncRoU3uEj1JjcQ==
-X-Received: by 2002:a05:6a00:4518:b0:89e:37b1:b81e with SMTP id d2e1a72fcca58-8a6e71e1b92mr3812208b3a.31.1793254130054;
-        Wed, 28 Oct 2026 23:08:50 -0700 (PDT)
-Received: from localhost ([116.86.153.182])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8a6a6df0b52sm1840758b3a.43.2026.10.28.23.08.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 28 Oct 2026 23:08:49 -0700 (PDT)
-Date: Thu, 29 Oct 2026 14:08:44 +0800
-From: Chris Down <chris@chrisdown.name>
-To: Vlastimil Babka <vbabka@kernel.org>, Harry Yoo <harry@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Cc: Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>,
-	David Rientjes <rientjes@google.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Kees Cook <kees@kernel.org>, Marco Elver <elver@google.com>,
-	GONG Ruiqi <gongruiqi@huaweicloud.com>,
-	Jonathan Corbet <corbet@lwn.net>, linux-mm@kvack.org,
-	linux-hardening@vger.kernel.org, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org, kernel-team@meta.com
-Subject: [PATCH v2 4/6] slub_kunit: Add a test for the slab_buckets boot
- parameter
-Message-ID: <47c0b11109203640122a9b5b030d3f41bfbac609.1793253633.git.chris@chrisdown.name>
-References: <cover.1793253633.git.chris@chrisdown.name>
+	t=1793254153;
+	b=ueXTYQtlgWQeVZCTOjVmKv8Twb4gEC6kW5pL1YxaxQ4/1DAv4WjGkaOieMd/zbnuKuvl0a
+	Wy7vBLofGjvbnt987WeI16wiuJZHZgbD7s945+l9lzVbnCsyA61TeiLh8b+5BOgmwPv9I4
+	haV25jzaXpT6MQj2ML8xEPwZ2kLdhMo=
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1793254148; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=WifFjtHgZkJ4eUGZzP2SLgCkpK+TLdKe5MTWOWYju04=;
+	b=moeCmSUUz0cGN4SciBL6cdYb8yCl+siZPQuDlFqAWqqsOE5QErRI/FP0iJc/lUZ7Tf5vliSl3AQboiDrZ5MTXI5/LMFynyGQCk86aKVsXoRL74ple/E87KEuKTDVvWb0pLcQBwn4eyDqaQRH4GPN45s2IpvA06D79bxAPE3SMIQ=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R101e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033045133197;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=27;SR=0;TI=SMTPD_---0XDiZZYp_1793254146;
+Received: from 30.74.144.149(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0XDiZZYp_1793254146 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Thu, 29 Oct 2026 14:09:07 +0800
+Message-ID: <62b92624-9d64-49a4-a67a-ad54ca6d9be1@linux.alibaba.com>
+Date: Thu, 29 Oct 2026 14:09:06 +0800
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <cover.1793253633.git.chris@chrisdown.name>
-User-Agent: Mutt/2.3.3 (9073d26d) (2026-06-12)
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 2D01140004
-X-Stat-Signature: qkehp1xkadd1rmimxet37dc567o9bbdz
-X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
-	version=4.0.1
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/2] mm/mglru: stop rotating offlined memcgs to the old
+ generation
+To: "T.J. Mercier" <tjmercier@google.com>, roman.gushchin@linux.dev,
+ muchun.song@linux.dev, Andrew Morton <akpm@linux-foundation.org>,
+ Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>,
+ Shakeel Butt <shakeel.butt@linux.dev>, Barry Song <baohua@kernel.org>,
+ Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
+ Wei Xu <weixugc@google.com>, Baoquan He <baoquan.he@linux.dev>,
+ David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Jonathan Corbet <corbet@lwn.net>,
+ Shuah Khan <skhan@linuxfoundation.org>, Randy Dunlap
+ <rdunlap@infradead.org>, Johannes Weiner <hannes@cmpxchg.org>
+Cc: cgroups@vger.kernel.org, linux-mm@kvack.org, linux-doc@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20261028010611.3929937-1-tjmercier@google.com>
+ <20261028010611.3929937-3-tjmercier@google.com>
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+In-Reply-To: <20261028010611.3929937-3-tjmercier@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 46EE0100002
+X-Stat-Signature: yqa1nay9sm6hj6n775fe4cnetjc3t839
 X-Rspam-User: 
-X-HE-Tag: 1793254131-166932
-X-HE-Meta: U2FsdGVkX1+kITkYEhtw9XzcQEEGKJ875tKCjyS+39N8n4Pi+oCCm7OgbWS6YDxVLWwJatwp87DMybiPfQK6pj+nKbAsIdyW7nxIkb/izJmKfOr0YDF5xxT1kMFpSWad05P2M2166EbTRv74iFh9U+0MY9bDMwwDZPj+/kHP/82uW+AmG+kQq0m1/6uND9jEa/CSD3W4Kuud5pH3gSHNBYz8SJ+U7ag6F4GHRUjuXuX4zK8SZhHev+nBqEDQ7HAEmDtloii66cPN2RV4jc1kti6ZBYP8/fI2U7nbNi+nFe4uSjqW4AJL5hR2LrmsBTWjz2HO+md1ZqbzOHI7aMtBcJ3NmVAMieYRxSzhnoE3WjTheJfZ8MJM56RZn4bMtvxCDB2vHpqm8MTU5XeccaCej8nSAVxUC/tIlyjP9cucEaSHkJoLoXNVVCoo7LwbeEPD8jHRnwxdumdDAZJziPuz/mIPC4D8pkOZAuTt7xB0KQB/JrdDt0RRcFCqZzMGl0LOfdabAIPLr/sxegPIMYH2WTESnWFqPzM4xFrnOUeWdZ0lM7pkbk6+MmbxvJuHCsaAn6FSjHLmYNeKsLazkcdcR4z08fdvd+UMNpAVCjBktbB09/FjoY19pMBlwq5fI9xWrpyrXmwYdYs1CK3Eyw7CJFq5qCxQ7moXHT6RG9+Q5migXByYW3TwfjEqo5627quS+pax63HFdADkrNGAPd5XDukziBFnyj27IES5cVBizzrw2VwqY0wRberc/4/KqV0DKrWimemYAprs2flB3YD8cmqclHrGSuzR1xQgGxt/osaDbeC/j1IMlg5RnGdMJxAfpINVi2kfpa+nHXz6UEA6Kb8111NOhAyWvGoo9rEBd0B3cOiEYwOUA8LfJdIPeNzifwjQlwk6gocRwtALAgqF52tvLv2wNdKDlmTz3XAMTu+ccG+wed6NPv8ujfjpYuNYa4/lRIWUH7UOACxiwXW
- B8DJ6OYw
- W3np9FrWNkBEfDRlVPJdbK6hnix1L781EwZRUiuJJ/qR/TindGwZH5Y66lrGvS/l62snqKsXc48KnZmDTHnrb6hKkykNVE/hnKmmH8i2KXNBayApvq+hiX7W4OuKYYCFc8DUqx1r78MmX3mmhdA8h9FVdWNL6KceWe8+L6GngEqZkzt58w0ceDDAWogyPtXBMGhH+HC0BEJoNpSRmOoEMwDTPHiXQavlIfRtV0r7ZZYpHVx4dPKRFSw2Uc8iZfeFmux+niMCQ2LsdGS+MfwGmMh7Hw1FZrW3f6nJHS5lP7wjloBVQMfrVq4x6l9hYlNDHkbiyyL3TWdeGuhvEQ0f3ztAhJ+WMU1Mkgk0qRaDYvuR/vVl/cmRUu1B1nU91Na4ElsX3iKc5Eu7TecrSNQwOVqqJtBybg0ua4w1jA2tkSXLHEiw6vkSfJEBGiqSQDaJ92ECZn7jQPaRKORofc4BxVUcrhsvfeNp2Y784qGAUj2Ac0OnN3ulV0mHS3eB1mQegrZjiPv9MOS5yt4w=
+X-Spam-Status: No, score=-19.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	UNPARSEABLE_RELAY,USER_AGENT_SANE_1,USER_IN_DEF_DKIM_WL autolearn=ham
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1793254151-238666
+X-HE-Meta: U2FsdGVkX19nJO2Ck5y6Gu6shTjSSWM20BTy1TSbPAAowpLk1x5QmzWb0w4iqxXCOaOTSAB+zBQKqlQY+geeOW4GKfbeq9Bb3mebLhzFaZrXKdmwLviM0ABwH0cmS5XCDWkI6m9x8QLN80pf20R69KNoHvb2JBLQpbIcu19hj5o5ulwDJwAs+Ni/pSGEOHIQsJncvhUP1J+oulqPSLR3UaoKmH8mVSn4MphwP/FViA5aidWzGNiLTCLg3U/3wS/ftSJXEN9//mXHzVjSHoqr3nEZm64iXn986QbsTzOUBXDvUpwR78OjIRLct8CxhQxa3EzFp+ammzgbqOxI1eQTJPGj8jNuoYPzXSgNHDzSi4aj9PqYa9HVRaoii396YMScBf88U6jx04E5PvgkS0FhmhgPqxA0Iqnzu9CYTqgzxJhEQsPmW75owsZlIlQCCQjW4TvT6YAjVLJgANQmNTxuLICRMMQWKjQcmrijJiHXpB6QmQxnIRXv/PaMQZIWTBapj9r8KCl5gegvWZvCuusl+530qOI3B6mXYACooMbODI0nsNenzAHxd+WJZid15bLsgj/ahdmFUa6uWpoAH7JbPQP4DyEOz3o99mbFkKLq4GlRJb/IMP6GTjk1ZHaUMVwOJD4AEzVzQLTugBxiSRjfdJZvH5Y6+6+ZfX2T7RAfMiNsqn0RNi+/WUtqqiU63SJpWdURsgVuujFWXd+TXxgxx1mevhiKsb27+pDrnYPq4cgG1eSEJRGJYkAVQcxAsT8HZsvG4uiUDyRH1KEQihKqj9HMFGtePKV6NmdPx1wjrF4pkAOCq/UCtUOmM+cP8jH/ARuNSdLEJ4CgR+LT0eT/8aav00HDGgMzrHQmdRAQhtSJvMSspDqICvwoGV3P/RMwx4aKyIsK0rrrIQfFcQAZJnSDWoxKh2BflpI5cJs9WA4+T2apa2HmXcgITV4I3SZ8dYrNRmgWgDmDuAWN8VK
+ f1cQb36M
+ Z4TSaUpV6OYY8EqSLxC7Sn5OQxxLrg9vcUk8/bFmI74nDj12XzKzBu6rp+yPnLLDqWiT7N3hWG5L1bbx84T1D6ed5Wxvtyv0ZBXWbk/npPtRWmcg/39R506txZlT1vq2uxfz0YG3V/lR/GxPI6nlsYwRkiHMJhcQitfgZd4muDKx2INc4LS+zhPpaB5PZ5NczfQ8WBFdxuq1EzMQURIZPpTKt8pTPuo1kvUHRzJiMV+zD7oRingZfgsjCnUjJKsldkglA4HpyDn7J5dvyl4qf6gHZB0SE6WbOJOzzwHdr0KjuNg+IlS9U3jvdg+kxsLj07VA55I7An5bNVwQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -132,127 +103,29 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Check that memdup_user() allocates from the memdup_user buckets by
-default, and from the regular kmalloc caches when they're turned off
-with slab_buckets=0.
 
-Signed-off-by: Chris Down <chris@chrisdown.name>
----
- lib/tests/slub_kunit.c | 41 +++++++++++++++++++++++++++++++++++++++++
- mm/slab.h              |  4 ++++
- mm/slab_common.c       |  4 +++-
- 3 files changed, 48 insertions(+), 1 deletion(-)
 
-diff --git a/lib/tests/slub_kunit.c b/lib/tests/slub_kunit.c
-index e3b63f0338d5..670645875b27 100644
---- a/lib/tests/slub_kunit.c
-+++ b/lib/tests/slub_kunit.c
-@@ -9,6 +9,8 @@
- #include <linux/delay.h>
- #include <linux/perf_event.h>
- #include <linux/kprobes.h>
-+#include <linux/mman.h>
-+#include <linux/string.h>
- #include "../mm/slab.h"
- 
- static struct kunit_resource resource;
-@@ -296,6 +298,41 @@ static void test_krealloc_redzone_zeroing(struct kunit *test)
- 	kmem_cache_destroy(s);
- }
- 
-+#ifdef CONFIG_SLAB_BUCKETS
-+static void test_slab_buckets(struct kunit *test)
-+{
-+	unsigned long user_addr;
-+	const char *name;
-+	void *p;
-+
-+	if (!slab_buckets_enabled)
-+		KUNIT_EXPECT_NULL(test, kmem_buckets_create("TestSlub_buckets",
-+							    0, 0, INT_MAX, NULL));
-+
-+	if (!IS_ENABLED(CONFIG_MMU))
-+		kunit_skip(test, "userspace allocation needs an MMU");
-+
-+	user_addr = kunit_vm_mmap(test, NULL, 0, PAGE_SIZE,
-+				  PROT_READ | PROT_WRITE,
-+				  MAP_ANONYMOUS | MAP_PRIVATE, 0);
-+	KUNIT_ASSERT_NE_MSG(test, user_addr, 0, "Could not create userspace mm");
-+	KUNIT_ASSERT_LT_MSG(test, user_addr, (unsigned long)TASK_SIZE,
-+			    "Failed to allocate user memory");
-+
-+	p = memdup_user((void __user *)user_addr, 64);
-+	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, p);
-+
-+	name = virt_to_slab(p)->slab_cache->name;
-+	if (slab_buckets_enabled)
-+		KUNIT_EXPECT_TRUE_MSG(test, strstarts(name, "memdup_user-"),
-+				      "allocated from %s", name);
-+	else
-+		KUNIT_EXPECT_TRUE_MSG(test, strstarts(name, "kmalloc-"),
-+				      "allocated from %s", name);
-+	kfree(p);
-+}
-+#endif
-+
- #if defined(CONFIG_PERF_EVENTS) || (defined(CONFIG_KPROBES) && defined(CONFIG_SMP))
- #define NR_ITERATIONS 1000
- #define NR_OBJECTS 1000
-@@ -489,6 +526,9 @@ static struct kunit_case test_cases[] = {
- 	KUNIT_CASE(test_kfree_rcu_wq_destroy),
- 	KUNIT_CASE(test_leak_destroy),
- 	KUNIT_CASE(test_krealloc_redzone_zeroing),
-+#ifdef CONFIG_SLAB_BUCKETS
-+	KUNIT_CASE(test_slab_buckets),
-+#endif
- #ifdef CONFIG_PERF_EVENTS
- 	KUNIT_CASE_SLOW(test_kmalloc_nolock_and_friends_perf),
- #endif
-@@ -505,5 +545,6 @@ static struct kunit_suite test_suite = {
- };
- kunit_test_suite(test_suite);
- 
-+MODULE_IMPORT_NS("EXPORTED_FOR_KUNIT_TESTING");
- MODULE_DESCRIPTION("Kunit tests for slub allocator");
- MODULE_LICENSE("GPL");
-diff --git a/mm/slab.h b/mm/slab.h
-index e94ac63d10dc..b5b344d6e402 100644
---- a/mm/slab.h
-+++ b/mm/slab.h
-@@ -390,6 +390,10 @@ extern struct list_head slab_caches;
- /* The slab cache that manages slab cache information */
- extern struct kmem_cache *kmem_cache;
- 
-+#if IS_ENABLED(CONFIG_KUNIT)
-+extern bool slab_buckets_enabled;
-+#endif
-+
- /* A table of kmalloc cache names and sizes */
- extern const struct kmalloc_info_struct {
- 	const char *name[NR_KMALLOC_TYPES];
-diff --git a/mm/slab_common.c b/mm/slab_common.c
-index b7a46c368ab1..9fe48da12010 100644
---- a/mm/slab_common.c
-+++ b/mm/slab_common.c
-@@ -29,6 +29,7 @@
- #include <linux/memcontrol.h>
- #include <linux/stackdepot.h>
- #include <trace/events/rcu.h>
-+#include <kunit/visibility.h>
- 
- #include "../kernel/rcu/rcu.h"
- #include "internal.h"
-@@ -410,7 +411,8 @@ EXPORT_SYMBOL(__kmem_cache_create_args);
- 
- static struct kmem_cache *kmem_buckets_cache __ro_after_init;
- 
--static bool slab_buckets_enabled __ro_after_init = IS_ENABLED(CONFIG_SLAB_BUCKETS);
-+VISIBLE_IF_KUNIT bool slab_buckets_enabled __ro_after_init = IS_ENABLED(CONFIG_SLAB_BUCKETS);
-+EXPORT_SYMBOL_IF_KUNIT(slab_buckets_enabled);
- 
- #ifdef CONFIG_SLAB_BUCKETS
- static int __init setup_slab_buckets(char *str)
--- 
-2.54.0
+On 10/28/26 9:06 AM, T.J. Mercier wrote:
+> lru_gen_offline_memcg() moves an offlining memcg to the head of the old
+> generation of the memcg LRU (MEMCG_LRU_OLD), so that global reclaim
+> visits it first and evicts the folios it left behind.
+> 
+> Since commit f1cf8d2f36dc ("mm: memcontrol: eliminate the problem of
+> dying memory cgroup for LRU folios"), those folios are reparented to the
+> parent before lru_gen_offline_memcg() runs, and nothing can be added
+> back to the offlined memcg's lruvec afterwards. Putting an empty
+> offlined memcg at the head of the old generation no longer serves any
+> purpose and only delays reclaim from the memcgs that still have memory
+> due to additional shrink_many() iteration.
+> 
+> Remove lru_gen_offline_memcg(), so that an offlined memcg is rotated
+> like any other memcg below the reclaimable size threshold until
+> lru_gen_release_memcg() takes it off the memcg LRU. MEMCG_LRU_OLD has no
+> other user, so remove the op and update the memcg LRU comment as well.
+> 
+> Signed-off-by: T.J. Mercier <tjmercier@google.com>
+> ---
 
+Thanks for the cleanups. LGTM.
+Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
 
