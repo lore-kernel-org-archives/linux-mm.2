@@ -1,65 +1,65 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52715606A31A
-	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 21:26:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 488E0606A31A
+	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 21:27:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=MI+idkzt
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=B0bqQRVZ
 Received: by kanga.kvack.org (Postfix)
-	id 672DC6B05BC; Thu, 29 Oct 2026 17:26:50 -0400 (EDT)
+	id 4016A6B05BD; Thu, 29 Oct 2026 17:27:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 649B36B05BD; Thu, 29 Oct 2026 17:26:50 -0400 (EDT)
+	id 3B21B6B05BE; Thu, 29 Oct 2026 17:27:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 560636B05BE; Thu, 29 Oct 2026 17:26:50 -0400 (EDT)
+	id 2EEEA6B05BF; Thu, 29 Oct 2026 17:27:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 25FDC6B05BC
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 17:26:50 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id A10F6A8091
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 21:26:49 +0000 (UTC)
-X-FDA: 85376948538.18.485E61D
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id EFE8F6B05BD
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 17:26:59 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 86F78C0539
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 21:26:59 +0000 (UTC)
+X-FDA: 85376948958.03.7793553
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 12390160006
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 21:26:47 +0000 (UTC)
+	by imf08.hostedemail.com (Postfix) with ESMTP id 0156C160006
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 21:26:57 +0000 (UTC)
 Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MI+idkzt;
-	spf=pass (imf08.hostedemail.com: domain of jolsa@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jolsa@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793309208;
-	b=U6xV7AOwg+l6qe2clrW4oYWvFY3qUo1TB/NbLyOC0Zvv4ZZxKzg2Iiv1N4ddb6UfcC4Vtv
-	W1EQWmBTQXD25VKWafjfXtFGdvFd4jaGKsFvajruYbO/z1Rw+pV1HgCbdoON1wkgBadQrS
-	+kn6oqKnt4f/0h0rBmm4KMO8FKPSLeo=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MI+idkzt;
-	spf=pass (imf08.hostedemail.com: domain of jolsa@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jolsa@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=B0bqQRVZ;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf08.hostedemail.com: domain of jolsa@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jolsa@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793309208;
+	s=arc-20220608; t=1793309218;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6GIXnWvCtigyBOTVDy1Tlr37tAPRJsMHaGhKWB8kSsg=;
-	b=Hi6+PpipB03aPzDbQxkDzKGVbzn3Yjky0NNlMCBcuvHibGpijpLdMWWFfCJgJbfcQL5Co1
-	ZM5dMMWt5+Vo4OnvxKtpuMh3VXFrFNEpg3T9wDCpmGdZ+q+A+dEZ7teHkyYDN0LABrtkyp
-	gxcLhfUd/WN+Y+RAgjVMkSYIoo9e2UM=
+	bh=Im/DUAFHfTcolk1PWOGWY3EMUCY+eKD3uAfuaPZ9s4s=;
+	b=FhegrR+nU9sMGI/sFfpYrljqAfdZGxdMXuZoJN0rFquDC23RkHcZekn9BX4yKAn/p+YmqY
+	gFkveo+c/XNVKKJkHOWtTWiY6R9AI92G9xclf28YWHvqeoR3cG5riC7pGsiw6o5mRe9UM6
+	woIn7fmmpDo7uKa+09MQ372Mz0oXb0c=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=B0bqQRVZ;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf08.hostedemail.com: domain of jolsa@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jolsa@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793309218;
+	b=cMgCDKdxOEkAZJx0+9LOckUQ5nPomgNezHU0beCKjms4mgVEDYEwEA351a7+FDFgluZsws
+	VYnBiSv+HYMARLUsyAF6WlRIiQlKd1wLhQhJZr9WFKLjDSCRPtAiaKUUQWdPipZsLnP4NK
+	EVAuSFOWyluhzF88sFm+mTO4XdSHzok=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id A0F57600DA;
-	Thu, 29 Oct 2026 21:26:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CC391F01816;
-	Thu, 29 Oct 2026 21:26:44 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 915476020F;
+	Thu, 29 Oct 2026 21:26:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D50B1F01816;
+	Thu, 29 Oct 2026 21:26:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793309207;
-	bh=6GIXnWvCtigyBOTVDy1Tlr37tAPRJsMHaGhKWB8kSsg=;
+	s=k20260515; t=1793309217;
+	bh=Im/DUAFHfTcolk1PWOGWY3EMUCY+eKD3uAfuaPZ9s4s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=MI+idkztAD8H4pfTpuuHr7kX8q3fLrNvou2lanQJsS5BAm2TIJmH1noglZiCDdZIb
-	 X8IHfo/FOk9qbs3vLl6ZL2wqt0X6nniSUF24yBjItZPI21Sthn27Wb/aAraZSLXudj
-	 DdiSv3FgiOvXj0k01dxw+1sPSa/Xg/hco2AhAnHK1TaFGUEKeDHJBH5GsSiWcgSzwA
-	 yktgJxxkpokqWrzs8brRPniAKrXCpcBznKkcpATtHss6Tv++oT4AAsYWhpwEgPA0Ex
-	 v+Of/IQGHZAYW9ejHFKaZ+auZfxoU+QJ4sebJlopnOsaV0FogWlLTHG1Ag7pBO4QDI
-	 28BF1LnBf5GdQ==
+	b=B0bqQRVZ0IeP7QT7D/+M7E/W66kd49bgd0jEoGVkPlryPNJHhymV1MgIMBE/NaP8I
+	 Irko53Oh5U7wwN5/pz41ArdLKYx7YfXgL7IvuEwrE7KllwyByUsW1xT/0h5peOhNF0
+	 8DP8B55aD83hng51I9KQl0VUFmHnjXcs4Q824PY0v1JxUPZ/sjCri1REHF21jr3pZc
+	 QXWej6n5GLaLGV5swOpBe+VJPvXzWHm1ykpIrjgnPuVoFIiccgO2Hl1+7aw+9ik1xy
+	 FUYGtcLmPNDDmOamyUrhYnDVZcARWU+mcJ0DZ2rN5yb6Mem/VquIe7km2Xv4+f3EVC
+	 /tKoXJcUM49OQ==
 From: Jiri Olsa <jolsa@kernel.org>
 To: Alexei Starovoitov <ast@kernel.org>,
 	Daniel Borkmann <daniel@iogearbox.net>
@@ -71,27 +71,27 @@ Cc: bpf@vger.kernel.org,
 	Lorenzo Stoakes <ljs@kernel.org>,
 	John Fastabend <john.fastabend@gmail.com>,
 	Federico Di Pierro <nierro92@gmail.com>
-Subject: [PATCH bpf-next 5/8] selftests/bpf: Test user memory mmap kfuncs
-Date: Thu, 29 Oct 2026 22:25:48 +0100
-Message-ID: <20261029212551.56964-6-jolsa@kernel.org>
+Subject: [PATCH bpf-next 6/8] selftests/bpf: Test user memory page exec
+Date: Thu, 29 Oct 2026 22:25:49 +0100
+Message-ID: <20261029212551.56964-7-jolsa@kernel.org>
 X-Mailer: git-send-email 2.56.0
 In-Reply-To: <20261029212551.56964-1-jolsa@kernel.org>
 References: <20261029212551.56964-1-jolsa@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: ybc77nwjdjycon4czrfwztbqmox4xcj9
+X-Rspamd-Queue-Id: 0156C160006
+X-Rspam-User: 
+X-Stat-Signature: as68an1muxw87imwpbbrdxzghwm99txg
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 12390160006
-X-Rspam-User: 
-X-HE-Tag: 1793309207-575733
-X-HE-Meta: U2FsdGVkX19BsvbEuWajwXloEzLTFhI2IKrxd/QKtXRq6X4HPDLSPfoCvGYmsgBUkrgJMaQRRGPjAFZXav5bL1B2/SGL6cvE2XnV6iBeZmYiInhw8XUHs9TYnSLNHMpKoqEAhzqG0Q1H+MmRjtVCu/XxyPH+DWHbfvw4lYLYpB2ygErSbnULVGVAvW/fBYjCaoQ/xj7U+QBT9XSTg4UWSsPAthf3LRXtXKTOMyDFf4DGWWCLK/v0jJavwnbJRLJmt1KjxmJl4rPNpitbOkBVtQvvAtybsdzpYvLGVmLcjbe5zYZoxyFLOHBlcfPKA6DRkjDmueRkgL+6Q9R7vtD/nKkpvQuOcDN7Wm776rQm7Y4KHRdiGL8V2FG+dvMFsUUvq15tl6oB6HdQ7/iZ/jY65svAW1olksKb0q11NO+2VFbO/zz8rRcTfZvMQIG0rxp3XqJlXGaKrttST3H1M7iEnSaWubBx4/MY1Q65qzS4FimdzsN0HrC0soTDnfQN2uZ6bfyWkJTovA3QPTbV3eonMRmAZvlVwjQI/FI3G+LwwF+jkZQu4b2zBLkYx7SSBrj9G9hWH4vQIVHc4zv0TZ887mNXSdPMaqbtKUIrqFnr74UppbxaFwQYwBSHg5AfwOx5Idj9P5UF3FAiDhwLSZwnEsMFCy5pVFa4xzdTl1g42hb1fOVTrzs5mTP8rj9gHqy3FCeRWA+Lf8sKgjfaBX07KKUS2XsvOW08bi8MBkhgpeOrmxKQwi6J8DqbiNH7g9rz5wH/sm+voIQKI6yQuHmkRpmT9frlkpcNZpj5MQKgn6Nj3yP+jh4ooa+gAiKdRmfj6v7KUGsEsNujWpAzZRDk+IVcwB44MG3sZcDE+7P95M/09iFWav7iLIzAJJm1niYDq5GUejPOPXE5QNDoGmxh5dW5y04CpDyVszNLo8t+Y9xEfHgaH1GrT0lOh2wVi/n3AUGHN740occ7bAqon+x
- EBmvIy0c
- 1CP59IBDthoYMg9SleA+1xATFYutyc2zTfTj5vu2yWGaZeGASHGOaunG+DPOm3+Dl8Tw+YScNr6hmbmtgc7BrUc5rACaDRIHv1hudYsOuWkq0LhiCvj8wSpsCkXuZkFFuUUukdu4P7fFlEuuM8/sP71bLZ4MTXqtf+4cDchHp1zKbzLxIuTcQOxTuGZSZxd3cUxKDE4cnKBvgs8Tcpd/COPsFlPnwuCAeInIq1siPtG3dUCqZvvqpJ9JiSuHWXkATEn+b7fFwp0hnWULWOFEvk0mZ8KXSVCpDIxKzLjvSRnKWLNZOFmYtg2Gt7XbT/ISZsAPCHVeuc/izf16s2cx7uHfmNQ==
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1793309217-947561
+X-HE-Meta: U2FsdGVkX18ktADBOSPbnBrY9GSUX+QdoTadwE5R7hKIA8jZvfsPL4/z8MqqZ59RLkwuo7Auk6gIJuRVsGum5mygavp42VfcM1QGWp7+6+qMFeE0Z9b8TWjn8YdBPxKZkFgTeT8um6zCHxmmJ4YDA3AEeyWgVi5Ghf1nALSYTcho0A5SLkF7KhL45/SELsqVsNblm/T6j56M9ZzjpQq82uII4yBZb4OBCg8hQMpZTS2SotOKDegzvvWrfr7k3s60HK5aTB2QpPCkw9SWPws1tM0fdsSI8vzDZFK2FMjg2zszZTZdj6eIjpZbKk4LgbYTlYgsGPiJBOM6vYjGUso4n9ofDxoWa79zh6A5pm2ULcgJn3FFU2W56w7odg9WjsS7cowXnUXBFbhAuJR2auMd3oEVPAd943iAQkZ+JaLZ4k66Gj019krbzufGbBMtSGXqktjvobPny9oqyDZ+GwKdhkvrWRBiV2aMkDM3LNp1lKbpIIJEEfSNZCC3d1T+FVLKCTgHaPDiFa352SDYJV/2gq5V+QIxoV3OgZ+G8d3PYUCQDRXs7zpItTafGA3sgJ5IahIrCfkkNlxayxuILnVlEpcTv8DGK02que6vVoJZ7wxXI+jjSw0LLacvmvv9rzRf4h6ULy0BJyA2fVEWP+RMaaofwpzP6N/8uJ1j/8Bd+wCYSRbQD2XTZFGxwxp2qE3sfIiOW1qOV4kuVCj+l4PsFlVq6nosrkZuKsjs63z+eJ8SsxB6H2xPE6x9n+rI6mvCG+PRYTcNvuJfIU6XkigXyoVe1alH32lqYGmu1edgPMTmt3+iKDWx7NnNBRjAlZ7jTL65b+tqnBZhQpL+1ygIozVRAYkLi1VNJ+Nah8MSGNWxQ1YZmVAF4BYex4TZdlpprErcPPo9HQfUnNqf49vigtq0YHYp8rOsMus9Cfi6qV7Tr4AtuYptzkVPNclN1dytZmVNIDtepvG2V8qsTwq
+ BRmBUuUS
+ y1exsi9VMA+rnS9Ha7jw+dRXJOm5Ley1m33OFUDF8vHjafbTOlkPPe2a5h2b384w/a8lO/bc1+Wm8pepEZ/s84tRAWReLwdYg512dSJ1+1p31TUKkb0rnePSz6hvhlAEftoT4RA87yJ0OdSnWDILVG30GuY64F10E4unLu2GG3Evm+fmPFE6ZhXdE/O7cw8Mx8uXjLBhMmcKowtxp5UjNeDC5t10ktT0NZU71Ed9KleBEvpmri7+rXk52V6zW/I1STJ6p9mj7SfD/4mxrXMVtnEDKL5gaD2mkr6vS9Cbv3t26EalhXGCS/BttfjX7p+KE0Z5Vzd9ezhZU32k=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,212 +100,170 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Add BPF selftests for bpf_user_mmap and bpf_user_munmap from a
-sleepable uprobe. Check that created mappings have the requested
-permissions and that unmapped addresses are no longer mapped.
+Use bpf_copy_to_user from a uprobe to write architecture-specific
+instructions into user memory, then execute them on x86-64 and arm64.
+
+Test execution from a mapping created with read and execute permissions,
+and from individual pages made executable with mprotect.
 
 Assisted-by: Codex:GPT-6
 Signed-off-by: Jiri Olsa <jolsa@kernel.org>
 ---
- Documentation/bpf/kfuncs.rst                  |  17 +++
- .../selftests/bpf/prog_tests/user_mem.c       | 112 ++++++++++++++++++
- tools/testing/selftests/bpf/progs/user_mem.c  |  43 +++++++
- 3 files changed, 172 insertions(+)
- create mode 100644 tools/testing/selftests/bpf/prog_tests/user_mem.c
- create mode 100644 tools/testing/selftests/bpf/progs/user_mem.c
+ .../selftests/bpf/prog_tests/user_mem.c       | 75 +++++++++++++++++++
+ tools/testing/selftests/bpf/progs/user_mem.c  | 22 ++++++
+ 2 files changed, 97 insertions(+)
 
-diff --git a/Documentation/bpf/kfuncs.rst b/Documentation/bpf/kfuncs.rst
-index d22b6bb3df2e..0c46c95d4918 100644
---- a/Documentation/bpf/kfuncs.rst
-+++ b/Documentation/bpf/kfuncs.rst
-@@ -989,3 +989,20 @@ the verifier. bpf_cgroup_ancestor() can be used as follows:
- BPF provides a set of kfuncs that can be used to query, allocate, mutate, and
- destroy struct cpumask * objects. Please refer to :ref:`cpumasks-header-label`
- for more details.
-+
-+4.4 User memory kfuncs
-+----------------------
-+
-+The user memory kfuncs operate on the current process's address space.
-+``bpf_copy_to_user()`` writes to this address space, including private mappings
-+that are not writable. A partial copy is not rolled back if it faults.
-+
-+``bpf_user_mmap()`` and ``bpf_user_munmap()`` create and remove mappings by
-+calling the kernel's mapping functions directly rather than issuing
-+``mmap(2)`` or ``munmap(2)`` syscalls. As a result, seccomp filters do not
-+mediate these mapping operations. A seccomp filter can still allow or deny the
-+syscall that triggers a BPF program, but it cannot separately filter the
-+mapping performed by these kfuncs.
-+
-+.. kernel-doc:: kernel/bpf/helpers.c
-+   :identifiers: bpf_copy_to_user bpf_user_mmap bpf_user_munmap
 diff --git a/tools/testing/selftests/bpf/prog_tests/user_mem.c b/tools/testing/selftests/bpf/prog_tests/user_mem.c
-new file mode 100644
-index 000000000000..f301a1843706
---- /dev/null
+index f301a1843706..7fa827298d24 100644
+--- a/tools/testing/selftests/bpf/prog_tests/user_mem.c
 +++ b/tools/testing/selftests/bpf/prog_tests/user_mem.c
-@@ -0,0 +1,112 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+#include <test_progs.h>
-+#include <sys/mman.h>
-+#include <sys/personality.h>
-+#include <unistd.h>
-+
-+#include "user_mem.skel.h"
-+#include "trace_helpers.h"
-+
-+enum {
-+	USER_MEM_MMAP = 1,
-+	USER_MEM_UNMAP,
-+};
-+
-+static noinline void user_mem_trigger(void)
-+{
-+	asm volatile ("" ::: "memory");
-+}
-+
-+static bool check_user_mem_vma(void *addr, unsigned long size, const char *perms)
-+{
-+	size_t start, end;
-+	char vma_perms[5];
-+	int err;
-+
-+	err = get_procmap_info(addr, &start, &end, vma_perms);
-+	if (!ASSERT_OK(err, "user_mem_vma"))
-+		return false;
-+
-+	/* VMA can be merged, so ensure it covers at least the requested range. */
-+	if (!ASSERT_GE(end - (size_t)addr, size, "vma_size"))
-+		return false;
-+
-+	return !perms || ASSERT_STREQ(vma_perms, perms, "vma_perms");
-+}
-+
-+static bool check_user_mem_unmapped(void *addr)
-+{
-+	size_t start, end;
-+	int err;
-+
-+	err = get_procmap_info(addr, &start, &end, NULL);
-+	return ASSERT_EQ(err, -ESRCH, "user_mem_unmapped");
-+}
-+
-+static bool user_mem_mmap(struct user_mem *skel, unsigned long len,
-+			   unsigned long prot, unsigned long *addr)
-+{
-+	skel->bss->map_len = len;
-+	skel->bss->map_prot = prot;
-+	skel->bss->action = USER_MEM_MMAP;
-+	user_mem_trigger();
-+
-+	/* vm_mmap encodes errors in the top MAX_ERRNO unsigned-long values. */
-+	if (!ASSERT_LT(skel->bss->user_addr, -4095UL, "user_addr"))
-+		return false;
-+
-+	*addr = skel->bss->user_addr;
-+	return true;
-+}
-+
-+static bool user_mem_munmap(struct user_mem *skel, unsigned long addr,
-+			   unsigned long len)
+@@ -11,6 +11,7 @@
+ enum {
+ 	USER_MEM_MMAP = 1,
+ 	USER_MEM_UNMAP,
++	USER_MEM_COPY_INSNS,
+ };
+ 
+ static noinline void user_mem_trigger(void)
+@@ -92,6 +93,76 @@ static void test_mapping(struct user_mem *skel)
+ 		munmap((void *)addr, len);
+ }
+ 
++static bool user_mem_copy_insns(struct user_mem *skel, unsigned long addr)
 +{
 +	skel->bss->user_addr = addr;
-+	skel->bss->map_len = len;
-+	skel->bss->action = USER_MEM_UNMAP;
++	skel->bss->action = USER_MEM_COPY_INSNS;
 +	user_mem_trigger();
 +
-+	return ASSERT_OK(skel->bss->ret, "user_munmap");
++	return ASSERT_OK(skel->bss->ret, "user_write");
 +}
 +
-+static void test_mapping(struct user_mem *skel)
++static void test_execute_user_page(struct user_mem *skel)
 +{
 +	long page_size = sysconf(_SC_PAGESIZE);
-+	const unsigned long len = page_size * 3;
 +	unsigned long addr = ~0UL;
 +
-+	if (!user_mem_mmap(skel, len, PROT_READ | PROT_WRITE, &addr))
++#if !defined(__x86_64__) && !defined(__aarch64__)
++	test__skip();
++	return;
++#endif
++
++	if (!user_mem_mmap(skel, page_size, PROT_READ | PROT_EXEC, &addr))
++		return;
++	if (!check_user_mem_vma((void *)addr, page_size, "r-xp"))
 +		goto out;
-+	if (!check_user_mem_vma((void *)addr, len, "rw-p"))
++	if (!user_mem_copy_insns(skel, addr))
 +		goto out;
-+	if (!user_mem_munmap(skel, addr, len))
-+		goto out;
-+	if (!check_user_mem_unmapped((void *)addr))
-+		goto out;
-+	addr = ~0UL;
++
++	/* Execute user page. */
++	ASSERT_EQ(((int (*)(void))addr)(), 42, "execute_user_page");
 +
 +out:
 +	if (addr != ~0UL)
-+		munmap((void *)addr, len);
++		munmap((void *)addr, page_size);
 +}
 +
-+void test_user_mem(void)
++static void test_partial_exec(struct user_mem *skel)
 +{
-+	struct user_mem *skel;
++	long page_size = sysconf(_SC_PAGESIZE);
++	unsigned long addr = ~0UL;
 +
-+	skel = user_mem__open_and_load();
-+	if (!ASSERT_OK_PTR(skel, "open_and_load"))
++#if !defined(__x86_64__) && !defined(__aarch64__)
++	test__skip();
++	return;
++#endif
++
++	if (!user_mem_mmap(skel, page_size * 3, PROT_READ | PROT_WRITE, &addr))
 +		return;
 +
-+	skel->bss->monitored_pid = getpid();
-+	if (!ASSERT_OK(user_mem__attach(skel), "attach"))
++	/* Copy instructions to middle page. */
++	if (!user_mem_copy_insns(skel, addr + page_size))
 +		goto out;
 +
-+	if (test__start_subtest("mapping"))
-+		test_mapping(skel);
++	/* Set +x to middle page. */
++	if (!ASSERT_OK(mprotect((void *)(addr + page_size), page_size,
++				PROT_READ | PROT_EXEC), "middle_page_mprotect"))
++		goto out;
++
++	if (!check_user_mem_vma((void *)addr, page_size, "rw-p") ||
++	    !check_user_mem_vma((void *)(addr + page_size), page_size, "r-xp") ||
++	    !check_user_mem_vma((void *)(addr + 2 * page_size), page_size, "rw-p"))
++		goto out;
++
++	/* Execute middle page. */
++	if (!ASSERT_EQ(((int (*)(void))(addr + page_size))(), 42, "execute_middle_page"))
++		goto out;
 +
 +out:
-+	user_mem__destroy(skel);
++	if (addr != ~0UL)
++		munmap((void *)addr, page_size * 3);
 +}
++
+ void test_user_mem(void)
+ {
+ 	struct user_mem *skel;
+@@ -106,6 +177,10 @@ void test_user_mem(void)
+ 
+ 	if (test__start_subtest("mapping"))
+ 		test_mapping(skel);
++	if (test__start_subtest("execute_user_page"))
++		test_execute_user_page(skel);
++	if (test__start_subtest("partial_exec"))
++		test_partial_exec(skel);
+ 
+ out:
+ 	user_mem__destroy(skel);
 diff --git a/tools/testing/selftests/bpf/progs/user_mem.c b/tools/testing/selftests/bpf/progs/user_mem.c
-new file mode 100644
-index 000000000000..a6b4f922da49
---- /dev/null
+index a6b4f922da49..b477132e3883 100644
+--- a/tools/testing/selftests/bpf/progs/user_mem.c
 +++ b/tools/testing/selftests/bpf/progs/user_mem.c
-@@ -0,0 +1,43 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+#include <vmlinux.h>
-+#include <bpf/bpf_helpers.h>
-+#include <bpf/bpf_tracing.h>
-+
-+#include "bpf_misc.h"
-+
-+char _license[] SEC("license") = "GPL";
-+
-+extern unsigned long bpf_user_mmap(unsigned long len, unsigned long prot) __ksym;
-+extern int bpf_user_munmap(unsigned long addr, unsigned long len) __ksym;
-+
-+enum {
-+	USER_MEM_MMAP = 1,
-+	USER_MEM_UNMAP,
+@@ -10,10 +10,13 @@ char _license[] SEC("license") = "GPL";
+ 
+ extern unsigned long bpf_user_mmap(unsigned long len, unsigned long prot) __ksym;
+ extern int bpf_user_munmap(unsigned long addr, unsigned long len) __ksym;
++extern int bpf_copy_to_user(void *unsafe_ptr__ign, const void *src__srcptr,
++			    u32 src__sz, u64 flags) __ksym;
+ 
+ enum {
+ 	USER_MEM_MMAP = 1,
+ 	USER_MEM_UNMAP,
++	USER_MEM_COPY_INSNS,
+ };
+ 
+ int monitored_pid;
+@@ -24,6 +27,22 @@ unsigned long user_addr;
+ unsigned long map_len;
+ unsigned long map_prot;
+ 
++#if defined(__TARGET_ARCH_x86)
++static const unsigned char insns[] = {
++	0xf3, 0x0f, 0x1e, 0xfa, /* endbr64 */
++	0xb8, 42, 0, 0, 0, 0xc3, /* mov $42, %eax; ret */
 +};
++#elif defined(__TARGET_ARCH_arm64)
++static const unsigned char insns[] = {
++	0x5f, 0x24, 0x03, 0xd5, /* bti c */
++	0x40, 0x05, 0x80, 0x52, /* mov w0, #42 */
++	0xc0, 0x03, 0x5f, 0xd6, /* ret */
++};
++#else
++/* The execute tests are skipped on other architectures. */
++static const unsigned char insns[] = { 0 };
++#endif
 +
-+int monitored_pid;
-+int action;
-+int ret;
-+
-+unsigned long user_addr;
-+unsigned long map_len;
-+unsigned long map_prot;
-+
-+SEC("uprobe.s//proc/self/exe:user_mem_trigger")
-+int user_mem_test(struct pt_regs *ctx)
-+{
-+	if ((bpf_get_current_pid_tgid() >> 32) != monitored_pid)
-+		return 0;
-+
-+	switch (action) {
-+	case USER_MEM_MMAP:
-+		user_addr = bpf_user_mmap(map_len, map_prot);
+ SEC("uprobe.s//proc/self/exe:user_mem_trigger")
+ int user_mem_test(struct pt_regs *ctx)
+ {
+@@ -37,6 +56,9 @@ int user_mem_test(struct pt_regs *ctx)
+ 	case USER_MEM_UNMAP:
+ 		ret = bpf_user_munmap(user_addr, map_len);
+ 		break;
++	case USER_MEM_COPY_INSNS:
++		ret = bpf_copy_to_user((void *)user_addr, insns, sizeof(insns), 0);
 +		break;
-+	case USER_MEM_UNMAP:
-+		ret = bpf_user_munmap(user_addr, map_len);
-+		break;
-+	}
-+
-+	return 0;
-+}
+ 	}
+ 
+ 	return 0;
 -- 
 2.54.0
 
