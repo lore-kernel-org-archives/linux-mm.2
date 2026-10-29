@@ -1,92 +1,94 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1D42606A31E
-	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 19:58:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26A9F606A31A
+	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 20:02:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=hEe2oV5n
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=R5FD+nm+
 Received: by kanga.kvack.org (Postfix)
-	id DBC066B05B4; Thu, 29 Oct 2026 15:58:43 -0400 (EDT)
+	id 33B596B05B1; Thu, 29 Oct 2026 16:02:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D93966B05B5; Thu, 29 Oct 2026 15:58:43 -0400 (EDT)
+	id 312356B05B2; Thu, 29 Oct 2026 16:02:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CD0816B05B6; Thu, 29 Oct 2026 15:58:43 -0400 (EDT)
+	id 24FB56B05B3; Thu, 29 Oct 2026 16:02:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id A6D6E6B05B4
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 15:58:43 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 4137D1A0545
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 19:58:43 +0000 (UTC)
-X-FDA: 85376726526.22.1C5F296
-Received: from mta1.migadu.com (out-190.mta1.migadu.com [95.215.58.190])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 324B980007
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 19:58:40 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=hEe2oV5n;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf30.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.190 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
+	by kanga.kvack.org (Postfix) with ESMTP id 0B1266B05B1
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 16:02:15 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 8521940507
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 20:02:14 +0000 (UTC)
+X-FDA: 85376735388.01.F24DDA0
+Received: from mta1.migadu.com (out-59.mta1.migadu.com [95.215.58.59])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 872651C0009
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 20:02:12 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=R5FD+nm+;
+	spf=pass (imf21.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.59 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793303921;
+	s=arc-20220608; t=1793304132;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=pVeEdJtlXA25iorxAj4BG6N6zIAVHrWYsjlt6JZGNBA=;
-	b=05L0Bptk8R3FxDeWq+7UbGCxTk4M224rkiRsjlLPXgnk27OI0rJQow23Fvs83N4crNrqKJ
-	Z77iJauMGSxOB6/JBTP1+/sbtcAh6zzFwnCsYTZhIqO6ab6n1sbxLCVK8H25DrzCj54Sy0
-	PjcGoqxQA3ULlHOxK8scOd1LjRKD+uU=
+	bh=x7QbBREQ+MMItXZrHv3jRMCCfzMElbblNplhpdNrQEw=;
+	b=cRkxcYiBhqSCLysFLzk0wM2XHF3wY1EgOisnzgY9kmWLMArwurQ8+bUf4TYmn9/x6R0Y+H
+	0btoTgTQxtSVe7ucHYKrjbmVtlwnkw3QkfMeO1YTyr1aQohI8wx5J4XbV5x4Y7wN854Rdv
+	a9nLjLIfOyeNfhMLrFPqowXgo9SuZfY=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=hEe2oV5n;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf30.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.190 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
+	imf21.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=R5FD+nm+;
+	spf=pass (imf21.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.59 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793303921;
-	b=lssAjKMX5Y2LifHu22CIasnScvY37+fyvRSFe98QLZ81Ybt8ei1bMaGUra3xhS7ycFztBo
-	HC99Md8BQn6q43Ity0hyjGY0A1daGfqRgIGh5L8tubmv7OgqXEvBbOW3bn1eFSUbyTtDDU
-	uNlqKid/AQificS0pXykcU6ha1YYWpo=
+	t=1793304132;
+	b=iHOa4P0FWyO2DIiCFrpOsnHL1VZFNQNH9kxnVFXNt7MCixI/1SyUeND77a3Zk9OURs4zhI
+	L/xvkqIjQeRpka0rQLGFoS055kONWOl9lCe9f6/oUGsk6wWsVotYFhaHJ2PFwnR4YWSck9
+	rCn4ZRZcyhGDdqQPRUYgg1vnVHkS/rA=
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=Rv8ify/EDz+JQqoM8pTjIvCmOvRL5bSqPDPKODDV4kg=;
+DKIM-Signature: a=rsa-sha256; bh=ndNJf7YwM/TOx7eJIWnPNAnZdeI6PTLMRtwC3Ga2kgc=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1793303919; v=1; x=1793908719;
- b=hEe2oV5nqrcMnFsNW5746z+Cp1JNiXRXKgKx3cYeiTMjXe5ZYZz33Zj8ppVLV2wud5vTYhAV
- Z0BS+/26uakHvBxM64v4rrsYb55aRJAF/YsiaSbK9kYstKHyX+2LaaauYoVT45C0Jtg800/LAZ4
- Ao5XbzB3bw2hb8IgIjoCKnNI=
+ t=1793304131; v=1; x=1793908931;
+ b=R5FD+nm+ES2GqGAlLDYIr0noOaiHbufDhLblkQV44EE+o8ja81HoIrWU4ks+9oGUijr15gz1
+ PBUbnW4lPU/2YR7GEIPbqSR754lS2Qk4kV9E506Za2bQl05RSWQUkBB6FndvNbiFnSGK5OgNsKH
+ LjZicVPL9z9uz1M0cQshoQhI=
 X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 400292d4dbe12dae;
-	Thu, 29 Oct 2026 19:58:39 +0000
-X-Mizu-Trace-ID: 400292d4dbe12dae
+Received: by smtp.migadu.com with ESMTPS id 1426dea9613e2433;
+	Thu, 29 Oct 2026 20:02:10 +0000
+X-Mizu-Trace-ID: 1426dea9613e2433
 X-Migadu-Flow: FLOW_OUT
-Date: Thu, 29 Oct 2026 12:58:34 -0700
+Date: Thu, 29 Oct 2026 13:02:08 -0700
 From: Shakeel Butt <shakeel.butt@linux.dev>
 To: Kuniyuki Iwashima <kuniyu@google.com>
 Cc: Andrew Morton <akpm@linux-foundation.org>, 
 	Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
 	Roman Gushchin <roman.gushchin@linux.dev>, Muchun Song <muchun.song@linux.dev>, 
-	Kuniyuki Iwashima <kuni1840@gmail.com>, linux-mm@kvack.org, cgroups@vger.kernel.org
-Subject: Re: [PATCH v3 1/4] memcg: Remove unnecessary READ_ONCE() under
- memcg_stock.lock.
-Message-ID: <auOlVi4b4kOGy7qh@linux.dev>
-References: <20261029194452.3189365-1-kuniyu@google.com>
- <20261029194452.3189365-2-kuniyu@google.com>
+	Kuniyuki Iwashima <kuni1840@gmail.com>, linux-mm@kvack.org, cgroups@vger.kernel.org, yosry@kernel.org, 
+	joannelkoong@gmail.com
+Subject: Re: [PATCH v2 0/6] memcg: Batch mod_memcg_state() for MEMCG_SOCK.
+Message-ID: <auOlmxtQ5-EZTj62@linux.dev>
+References: <20261028185034.3607746-1-kuniyu@google.com>
+ <auKSeCFvsWzP-XYy@linux.dev>
+ <auKYs_ucslI-tdar@linux.dev>
+ <auKcNvAizn-B92xB@google.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261029194452.3189365-2-kuniyu@google.com>
-X-Rspamd-Queue-Id: 324B980007
+In-Reply-To: <auKcNvAizn-B92xB@google.com>
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 872651C0009
+X-Stat-Signature: dmyegrtwnhcb9caq3ftme9gzzebumn4w
 X-Rspam-User: 
-X-Stat-Signature: 5r8fosn3joa9jbm6dyxfcxywfwrygs5p
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
-	autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1793303920-634540
-X-HE-Meta: U2FsdGVkX18g4uaNsY8n1bZA/jpOb8ud3HFMT0wg20XYxLR/7rBKBIADiGBNnyzi4aZV7Dt8UjcQzhQ5DF2KP3lzIpiQ/iZV+5jZU2rI6hZsOMiVbeoVtEaZ0FU2RJxZ4dNXQy848Xji3Rw+Aae4K5APTvnh0Z8elkRA6cjF588aX9PM29kIa5628cSiNHwG13ua2KX5b24b7G+2OqEaEAllugYHgSUr/bz8+sxp/KCnm56T37nQL4haDcjO202V0iAaoEf9BCYAKOmHC6kwq/pdTdhmU2gdDrlJO4ImoxPO4kgYay6t2xoCfKocUNVslWJp04cmpJ2YHHyLrU7E8zY/HDwpe3QgIrwVPdIfV8aRWc1ZIsBN7qmaWQTW9Yfd69IXTTiyCBce8kzv1TupRU9BM2llkwqcC6CASASSIaxn/bUw/fPMJs+OucZUXikRqhO43bCrOwGb3PiJ4+cOiz+K9obqm6vxZVyGKxxsKwdFnk4Jn9CDo/z9awOUY0cCqDF+Ab+Hk185JWWE/n095yZ7xFn9xMJzNUknuchyqqPX6VJp0owcjbTaUmFEbOa9NfKw6jH7dKxdWqnpFJhosIB/zFuT0dLhs5d26afgFo3mWEk5t3aTXHqYf1RaZrSqm2KItn+7Sy43EQF55fjxx8Yh73Lz0KyosICZ9x1iLhi4pwY0rz5jBkzvREZFkxOrqP3nmioxkOZijUYgPO2VblrbzU3Mofe4ywGRh5dyh4UEfqi1dTlb6SSWnirwh1cPvXzdnix5MvQiTZUOcxwLKRbEUwreVpcNnk28zoRqe3i88GxHKOlR2t3tD0moGp9a0I9iDyw2/QKdAzmoX2I4KBLDtVhJLP5l+kxX1WAT3uzxoFSmyCFJTTxIfKoxWWWIQeijNHMpdPtCeNEL1Xbr8SBtGFV5Q+EtNieIBLAeBJ6e+H6tYaI7Kts/wrnZ4cAD5dB4Rw8t2xlDOLsdFKl
- Rde5bMFP
- 3SyMXfgkZpr3No+Ei1Vzk/ybncaOixs8XAlSrjVUhmy9HDMpN8nXQsjtdrdCtF8dUlk9PT12+pgbFABdcXnDlfPPpsDeTcu6+Gnt5HBxWm7RP9chDdYC7Eq12mVJfM3SW66uYiqIiB0/nU4qWmPKOuxaV9lPMroj7CgMAr70ztCsDKrXiAt6Mjr/kidSKvlvY68ibw0mXpoKF7napkVXCwwPVio9rv9JLuel0vcOrOlsDV65SK/k4cVZNf5gJxlhFswkYJWBJdANZm7FzPJNNekv67nOC8MGoK6sFBCGDh3IobZzpktaItXXnWsCc90oNxS+iNMAK3vTMa4XjjAECaDyoL6yk4ImGl71Hokdh4ERpVQfjGErybCmYCg==
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1793304132-322638
+X-HE-Meta: U2FsdGVkX1+NIDo/tGAbj3TF7YhGrWH++FYTLVulQVTZ8+tHA0HzLUZ6stRQLYIDuzh1XXKFbSGFTp5EHX82GwBTHnex6p7Vtu4uM8mHor2wIVlE+jv184P7KR2yOhy/NSpMsjdy0jHO7aXjCZX1ClPFMJeTcYnni0eoYqJR26vMW0xbIINSNXiToNvUKpIjgyE1BCayxsPUJ427IsDOpCYcm1umnqiP5Ub3QqGcoHq/IlUOpoacjJD2Zc4xkUFFlxI5Z3EanYsv6iiRnVQXg7V7GRjdvyoDQqv9KgyohxdUVOcqdEb6FjDGOGkr4JKDCQ6UWXE8+8RZ0UyPMMvbZ8zpUASlqSjWm8x9SKMzCsN1At9zXFXgWIjFeVXS+UnXdeuht0IURrfmiserGpV+j3fAei0N5kmfFE3OHoTS4tW7iTzlefznodquDjAGgPLJSfbw861PYeJJCRK6EnF8qcAHnYgv9PMG/TqT7hoR6XMuAqY83BZ4pGzPX9xs7ZVWhsm2BRBHCDdNkOH6VAJ3spvVLLTw2msp5tQWMauq8T390l9gx3uEp65ZwkrGdDsy+D5YfBaTN0WSWDJPSMleq34CO5JmhNv1aa+V3w9q9SDbjk4D4rENjEaTrY9n1rql2ywWJP8MNKNeI9bjA0pNAgsP/HM1Y7BKO0/WDtQNNhgViDOjexyAIvzvUMnavdCRWNRA8gHcIahbqrI8oSjTK3zD3HQk5UfawLCPJQg2pc67bzQmYgXTUwb1N+bak2peYYXNfMialPkdMtNtLeN3BHXEIrXuP2QcSL7ZoYgvPpJUGURIWRjRLRG35/Oih2UI5/guAKBv3JVYLss+RSiXLOq1T8yf6Ojar8h15DZJfWeEBXRWRMZ7cmU5BMluK/1kyN+A5XNKpkN+PGpzUkTf5F6aVuSyt7wtrP/OezBgJVJOpVaeUcKq0docHSL+iHH7oBoeC6qRLZNHh0TFGin
+ BNADQJnz
+ UOJVDbcLG2nxAUhaAD+H4IXVFkoWiqSJWbxxyKwDvGjm2nzoRuB9qMxL7NwFnzOFcg5eOnf0dwYSN+F6hSKhy4PvgvFYDAhuKU5oZeHczkV37yxDlCMhedIuX1O4/oFTeKq+PQ0ZDG6vfjq9ttzelHfTSQJUsmKah3pxbvMQN54phe9Q7g0/rvy+juxTLO9LUUeHaBIJLW4546eZwiCKP0E8/rDVdB+MMIUi0o+60gdOvTOae36EnZcW/UxvwIGfJUvtYHyV24cmySTmN3oNjw8Sy3M6E2i1stdIP6ytdKrEBBO5MJ9A23R5SRwHxgEujEQGt
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,37 +97,21 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Thu, Oct 29, 2026 at 07:44:12PM +0000, Kuniyuki Iwashima wrote:
-> this_cpu_ptr(&memcg_stock)->{cached[],nr_pages[]} are always
-> modified under local_lock(&memcg_stock.lock).
+On Thu, Oct 29, 2026 at 01:35:18AM +0000, Kuniyuki Iwashima wrote:
+> On Wed, 28 Oct 2026 17:52:32 -0700, Shakeel Butt wrote:
+[...]
+> > > 
+> > > For the 4th patch, I would prefer we first try to move the network sockets
+> > > from memcg to objcg path.
 > 
-> Unlike is_memcg_drain_needed() under RCU, consume_stock(),
-> drain_stock(), and refill_stock() do not need READ_ONCE().
+> sk_forward_alloc is already batched per page, and I think
+> migrating to objcg would just add an indirect layer and some
+> costs for css_tryget() / css_put(), and still inlining
+> __consume_stock() or batching in memcg_stock would be crucial.
 > 
-> Especially, in refill_stock(), READ_ONCE() is used twice for
-> stock->cached[i], which forces the compiler to emit two volatile
-> loads from stock->cached[i].
-> 
-> Let's remove the unnecessary READ_ONCE() and eliminate the
-> redundant loads in refill_stock():
-> 
-> Before:
-> 
->   cached = READ_ONCE(stock->cached[i]);
->    4c 8b 80 88 d7 bd 84 	movq	-0x7b422878(%rax), %r8
->   if (memcg == READ_ONCE(stock->cached[i])) {
->    48 3b 98 88 d7 bd 84 	cmpq	-0x7b422878(%rax), %rbx
->    0f 84 86 01 00 00    	je	0xffffffff817d01e0 <refill_stock+0x210>
-> 
-> After:
-> 
->   cached = stock->cached[i];
->    4c 8b 88 88 d7 bd 84 	movq	-0x7b422878(%rax), %r9
->   if (memcg == stock->cached[i]) {
->    4c 39 cb             	cmpq	%r9, %rbx
->    0f 84 7a 01 00 00    	je	0xffffffff817d01d0 <refill_stock+0x200>
-> 
-> Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
 
-Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
+We are over time moving kernel objects holding direct reference to memcg to the
+objcg infra and the reason is such objects can become source of zombie memcgs.
+There is no urgency for the network sockets but eventually it will happen. We
+will see if indirection is really measurable at that time.
 
