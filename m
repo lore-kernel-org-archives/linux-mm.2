@@ -1,112 +1,90 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 866F3606A31C
-	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 12:09:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08F04606A31D
+	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 12:14:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=ilvokhin.com header.i=@ilvokhin.com header.a=rsa-sha256 header.s=mail header.b=WUo05cr+
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=PfLxDmfG
 Received: by kanga.kvack.org (Postfix)
-	id 9DE6D6B05B1; Thu, 29 Oct 2026 08:09:11 -0400 (EDT)
+	id 2BC856B00EF; Thu, 29 Oct 2026 08:14:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 98EBC6B05B2; Thu, 29 Oct 2026 08:09:11 -0400 (EDT)
+	id 26D7A6B05B3; Thu, 29 Oct 2026 08:14:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 87CB96B05B3; Thu, 29 Oct 2026 08:09:11 -0400 (EDT)
+	id 183DE6B05B4; Thu, 29 Oct 2026 08:14:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 67BAC6B05B1
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 08:09:11 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id EA1101C3A64
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 12:09:10 +0000 (UTC)
-X-FDA: 85375543260.25.B07C139
-Received: from mail.ilvokhin.com (mail.ilvokhin.com [178.62.254.231])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 3A5D51C000A
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 12:09:09 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=ilvokhin.com header.s=mail header.b=WUo05cr+;
-	dmarc=pass (policy=reject) header.from=ilvokhin.com;
-	spf=pass (imf20.hostedemail.com: domain of d@ilvokhin.com designates 178.62.254.231 as permitted sender) smtp.mailfrom=d@ilvokhin.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id DFCE36B00EF
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 08:14:44 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 77D04140385
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 12:14:44 +0000 (UTC)
+X-FDA: 85375557288.23.1E2B0BB
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf18.hostedemail.com (Postfix) with ESMTP id C5F441C000C
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 12:14:42 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PfLxDmfG;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf18.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793275749;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	s=arc-20220608; t=1793276082;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=RocjA1LFJ8nCgW+tO2y+Fh4wXXWjfdPFo024IhF5Wq8=;
-	b=K9poo9O5moP7wxu+DcitY/XoL2SSmRle8yXhNU1KINgO91AnTO+CWfzRtMW5wkjmz6xiGQ
-	uuYuQ12y2Yv9jQbLDGFGoFHMK96JK3OpsJ5EOep20euFdU0XofJ6ZKWbk9KI2h0jn0AwH1
-	s0iVwovnUEx6HzHIWGGeCtaKK1h0YhA=
+	bh=YIcLdOKej3afQhUVpy5r17t2QTkOq+NdQUw+DNv5QUg=;
+	b=oSTTs6zGDued13b+8KyPTsjwbdTzI+D1d2QBmEzUFIYtg06eL80vqlFyq5JI5YIvlVZDWp
+	h2R2LYWLts60Fd/CeBnYyEBfGzMVM4YIU4ySbiz3Aiw8hQZGpnIE9jeh8cVL4q483pLRMT
+	6bZLKmApQoH4SqcS/7mBGyDEI3CAdIw=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=ilvokhin.com header.s=mail header.b=WUo05cr+;
-	dmarc=pass (policy=reject) header.from=ilvokhin.com;
-	spf=pass (imf20.hostedemail.com: domain of d@ilvokhin.com designates 178.62.254.231 as permitted sender) smtp.mailfrom=d@ilvokhin.com
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PfLxDmfG;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf18.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793275749;
-	b=3Qh5Dy+YcB2I7tmescNgdZSJrQtTyu2nrbdi+je6dUskAvnNJ3sbSjN54ai7RmqjV/2vry
-	JgJFZ9+wMNa1pQdesKUSyX6dqOcrVEuk5LeNyr8bP01s71e0PCfqQcH6UsEfxfwsbPIoe8
-	/uwt8ZRvx/Oy9rXFzHsAwuvrcAanYWA=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ilvokhin.com;
-	s=mail; t=1793275747;
-	bh=RocjA1LFJ8nCgW+tO2y+Fh4wXXWjfdPFo024IhF5Wq8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=WUo05cr+foO7RPlP7534YSiBgZ8CQPkwQY40XhGkYZY6+6/4j3XkS/IFDfGv+Pkoh
-	 y9zJIn2BFoMmtdWooRjNBcjjjJtArbTwyJLsxt66JLoWE/gVCnnA7sNVi3UolL8xve
-	 VDmnu4pCCOxy8JC/MQlwNqsBS6P1OvE3N85vIIf8=
-Received: from shell.ilvokhin.com (shell.ilvokhin.com [138.68.190.75])
-	(Authenticated sender: d@ilvokhin.com)
-	by mail.ilvokhin.com (Postfix) with ESMTPSA id 2E446101220;
-	Thu, 29 Oct 2026 12:09:07 +0000 (UTC)
-Date: Thu, 29 Oct 2026 12:09:03 +0000
-From: Dmitry Ilvokhin <d@ilvokhin.com>
-To: Randy Dunlap <rdunlap@infradead.org>
-Cc: Alex Deucher <alexander.deucher@amd.com>,
-	Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Jani Nikula <jani.nikula@linux.intel.com>,
-	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Tvrtko Ursulin <tursulin@ursulin.net>, Lee Jones <lee@kernel.org>,
-	Pavel Machek <pavel@kernel.org>, Joel Stanley <joel@jms.id.au>,
-	Andrew Jeffery <andrew@codeconstruct.com.au>,
-	Ryan Chen <ryan_chen@aspeedtech.com>,
-	Billy Tsai <billy_tsai@aspeedtech.com>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Kees Cook <kees@kernel.org>, Andy Shevchenko <andy@kernel.org>,
-	Matthew Wilcox <willy@infradead.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Andy Whitcroft <apw@canonical.com>, Joe Perches <joe@perches.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
-	linux-kernel@vger.kernel.org, intel-gfx@lists.freedesktop.org,
-	linux-leds@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-aspeed@lists.ozlabs.org, linux-hardening@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
-	linux-doc@vger.kernel.org,
-	Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Subject: Re: [PATCH 00/10] treewide: switch to __nonnull_args() macro
-Message-ID: <auM3XwWPnMHcPptM@shell.ilvokhin.com>
-References: <cover.1793027261.git.d@ilvokhin.com>
- <cce30180-c1c4-4b10-b681-8944057bc698@infradead.org>
-X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <cce30180-c1c4-4b10-b681-8944057bc698@infradead.org>
-X-Rspamd-Queue-Id: 3A5D51C000A
+	t=1793276082;
+	b=vSw0S6OtF8JKInPBux9mdwQ6y9VdkwhK1U81JHcqfbroQowgbjhFuJvJhQ6Ox1dVJYyWW7
+	hCwSYm0Z7D68sUvC5kOVDWYoN1xxO0VVvUvCWgO217tyolgkm5wb9ly9HlfjsurupKqmQI
+	8N9ItqjK7bd6Ug2egxqmTwMlJv2KArU=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 1094F60A5F;
+	Thu, 29 Oct 2026 12:14:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30EF71F01825;
+	Thu, 29 Oct 2026 12:14:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793276081;
+	bh=YIcLdOKej3afQhUVpy5r17t2QTkOq+NdQUw+DNv5QUg=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=PfLxDmfGIf5V2QSj1SYS2vGcYcpQ1nr1lP28ZzZERVoxSZGNJseS2qqZK7bEldkQb
+	 YdNHlrJFws+niwNd9HZckBDj9/Bdszo5SYikgbkUpomqiD2WJY0sds1btEBLYETDLo
+	 WGCbIEDQiOWRTn/dTMCbNsbrL+/LP3Z4dAz/yXCOllFJICFMpdFpeX0ZdMkQ6PwMn9
+	 yQFpt2KbpuxRfid5tSRLL7knqsoOMBACF2wPtEEPT6HuYtqRAzuywMk7MypW9uldgw
+	 InCGJ15N1WLafos683OIz5+8GjtEe1xklbyfLussZ5ydF+7srUDmpqSuWsp+Z872SF
+	 50I3lYgY6QurA==
+Message-ID: <sashiko-outbox-189265@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH RESEND 3/3] arm64: Add PUD THP support for DAX and
+ pfnmap
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Jinjiang Tu" <tujinjiang@huawei.com>, akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org, catalin.marinas@arm.com, will@kernel.org, mark.rutland@arm.com, ryan.roberts@arm.com, peterx@redhat.com, dave.jiang@intel.com, linux-mm@kvack.org
+Cc: wangkefeng.wang@huawei.com, sunnanyong@huawei.com
+In-Reply-To: <20261028121404.853944-4-tujinjiang@huawei.com>
+References: <20261028121404.853944-1-tujinjiang@huawei.com>
+ <20261028121404.853944-4-tujinjiang@huawei.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Thu, 29 Oct 2026 12:14:40 +0000
+X-Rspamd-Queue-Id: C5F441C000C
 X-Rspam-User: 
-X-Stat-Signature: 8jo5ykotnr5zjpbqguk3qwt8n7yzhzio
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
+X-Stat-Signature: rr8eit67r15arebb86qr597amqh9ckdh
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
 	autolearn_force=no version=4.0.1
 X-Rspamd-Server: rspam03
-X-HE-Tag: 1793275749-802
-X-HE-Meta: U2FsdGVkX1/3H1xw6bYlKnpNbPn2+sQvzxX0I80bfYksKyyThW2UnfZrgu6hzAmy9q/i1Hverqc6LWxNhE6L0Oa/k/6LhS02jRHu7WcDlLrd8IrRZz4HPkQk39DqiQNKjjRilVx7Z0uWf8OkQTjTul0OVbSYTsFtjBwHtdKw3b97g0+fUbJx8EKxdKyDAfgnp1/flchgXXoBPmtq35joC4v06rMZ2or4B28IiLmHbUY0o6Odtn4OJg4M4hM4/aFLNBRww2RWEi1d6oZaqylCmnn56S+yT9XXxDLgcG0Qa5JwkHKG2Q/uYjsPOc5MREnWOpMtLbUgEC1dshNWgZdSOQ+IEN3jhP0D2F/fYrKoVlPbVWo5NdWT/uTGeHQqPK8OSbf5P+Q+TOCAuxBnRF11vaSgkXawExY7uCUhwCAEchgdnXwgKLLWjagCFu+uq1QWCnhjHLs7BLtVCgfl+4oa1CsC34Fq6ElkB8uLUIBS7Y5k1Ole8zXKaIcjq/+XA588VC9/WABlvuFMUKgQkDbz2GVsnMrUfvMZqS82HgpNt7dD7l5QCjMKFOKSRoOBVsJh41sLqy7SIDtU5sBaDtoqgs3BXAvOTVbZ/c7tHVJ5frHR8QRSabtlXNeeZNPExCGImwXbeBGmX1Y4VqS2yQCcFyXTOgDT+istFbML2N2TrKCEf6SFhr4Ih9qyltR2wIN/kO0cbzDEXZKyRAc4bVtPjlRjdW8gSeAC/QjLYeeM9af4+SCLTzxj6Fo9TUb/5s+K40PA+APQgFRK19JyN0lnxS1cKvVmUb+KfUZZveJ9l8YS33B109A5QhiTbNIyruZg84ooKtLbB6O+Pg9ePoX6zVr0kJzwTLvZ5fSt9hP8imsKsMrCaaRB14W2Q+dZPEyAaeK5cV60be97P5NiJQ5kKwtnXnMc1MlZHh1tN+aSvUw9uv1ZNPYjrFxXGprE8OSIVVZY+m70mx1n6BRb7Yy
- 5x/CEmxC
- SCUrrS6LeEBT7A7J2GcCXcVmMoPcPAH6ddj95SWMbybgiqpPIXA2cFjs1TNYUZmQi+sQSkQLGu9DzqCd/7HcRSZRGb4PIJVOzzO3l02myPAdXPiTTeb9rXN0TUsUufZjYoVMbv9NT5Y04qJ0e+F3ePb9FqXq43kzsdNzg1XCB128jMy/9HM6ornUnNSJ2bUT4S4u79dVWelks6M6wvIKdgXpxyePUgzVOhh2MhY7bKPh4RLRtfznl2SThgHOEbsncTCf+39eIDm5UhzOnsb3Jfr01TFa83T5FNLHikYHO/PrBRRgccoj9y6eoyi//i7MVOREup9uI0bO5oGKvok6A6hn5jV0R1u6WqaAwt52o+lHDD+8=
+X-HE-Tag: 1793276082-471498
+X-HE-Meta: U2FsdGVkX1/N8NfshunttoggaHfAK4AkiA2Di+xW6a4hbgWMYXCuotDHjwX88ikC3KWnnkNJuRA3Pn0SkIyWLpNo305Wlwr30wR6TcHoRoRD2tfITkqmOgwdyw+iRoLQ74ImV8hYmZ9Zwd4fXccSVa2z2l2WXA+dQfpbHjotABHtEBpxWgugWfT97Ot7E2LWvELm4QUglW/+HWzn+fdCczvRePyrgMwEcJTkRUMNEPNEv6NSTN7abC6I6aHyEc4tyU8vz6LOenUgc5WNjYdgYB58JzLYZrVrWq+Ub8L/5N2UDhfcjG4Jeyrrxq1UAYG4yVvQUE3x2wl/PhNrjoHuRvvkk4KQ3GfeMzBItx2r0MpHV6OG8i5tdYqeFlcw/tx5U3SJ5+FgASvHf8dzZzOY2is7mFPTHeSdxm5YDrxe5Mxgy/Sj+l/n9h3+cG6kQsuj5YgULp1NqYEc1nDrYglKolrhTk1R8M5mxqzjLtSEAcgbHtQKJVvEtDdhF8/wuU65fi5Y7jxlxKIuysD4zgM8Q7BBl4G+KyCUphxFxc5QKCuKu52dB2HRbnZVVrIuPc6korQpevLXk41VemBf9Tk/6pJ0dG2nNzThlV8VTRLN9j5NJ1R/chcHOqYV1YLnRwIDIcnZnVfoZigJYFpsw6axC0bicpgJmAbyuCsAHfa2V2QZ8H19Y+tMF0veCjK2TUO8I9zjx4JlCqvHC35AJJcKMUdwOq3VgAkSnlw5fDcKG3XMvu263eh/O2+CbCHxax1TkpMjn2PbKR3obQDEmA+heHRvQdoSTNiwTT46nkobMUsgG1EyRGLP1DMVyBdQO/+QyF5EHjQO1KuSY8Cac7bov0h67WECf0EGGLsM/P7X9+TOj5RtLFKTOBtfctXLOpaLNLW18Pz194FANrvsBKlyvwluwrd/f0GdoRARtqVPdVCRp9QWIwniCeqIreeen0R8ohIT3sJhPZkH0wzD9Gq
+ aSPUU6Su
+ pgODOJbl0Skcdpy51x6dcvi3P4LXVCR+F4CzoR/G6M1p0d1FBTe4x6nlQyjCVlbrpl2eFOs64z3ABMWVCSlPADd2jEL5ijfmafV1b+vnKKKraqgKHbsX4mq34+4V+Gk958AWyW2SqIvl6DRRs6ycmYKJODZ5kZ3Lrv4bYxOv5Z09ZWWbVJ4QJdbLZPRyd5llUrJ8hYo5weWEPUdizz3QyF+UY6J+b5+0HXrSkEVaCvCfswdq7b6MFJLsnf6VCR5EmCn51Dn5JuWkvmh0/kecUM9stIiGUm2ee34Zp6A2kbjAQ+AehWTVI90NPUb8Gf+hg82yMLVDuZsS3k50+79p1rXOTk/pGQkiqr/thhZ0ntpbIAGD0NAkdH0peY3koc/61fGTg4vGjRK7xX2BiIFyo0iH366L4l1SGlef4/BO1BL4sCnPDuMXTbqWTvDPXHnKXo0U3dis9WVlVFm2haLDTeMlaMM2Ur+cC33CrpShvGOETS5bN4kS1j2JxPE0ty38vjrVaXycCvRN4fUjFkDmJIWQWGcMDv4PmUn7RJzkE8Fj8/WL5Clg2nAHy/coG8mNLmmGPrBFNAeHOnUUzmRBXZFe5gJvPa097CGqTG35VUjDom9A=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -114,49 +92,277 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
+X-Archived-By: <archiver.kernel.org>
 
-On Wed, Oct 28, 2026 at 01:44:59PM -0700, Randy Dunlap wrote:
-> 
-> 
-> On 10/28/26 1:19 AM, Dmitry Ilvokhin wrote:
-> > Commit 22302af28d3f ("cleanup: Annotate guard constructors with
-> > nonnull") added the __nonnull_args() macro to wrap the raw compiler
-> > attribute, keeping the attribute's quirks in one place rather than
-> > open-coded at every call site.
-> > 
-> > This series replaces the remaining open-coded __attribute__((nonnull))
-> > users with __nonnull_args() to standardize nonnull attribute usage
-> > across the tree.
-> > 
-> > Each patch can be applied separately by the respective maintainers. The
-> > only dependency is kernel-doc: the string and lib/list_sort patches need
-> > patch 1 ("docs: xforms_lists: support __nonnull_args()") in the same
-> > release, otherwise strends() and list_sort() drop out of the generated
-> > documentation.
-> > 
-> > Latest Sparse release could not properly parse __nonnull_args() without
-> > arguments. Fix was proposed [1] and merged, but until updated version of
-> > Sparse will reach wide masses it might trip on __nonnull_args() without
-> > arguments.
-> > 
-> > There are few more instances of __attribute__((nonnull)) usages left in
-> > the tools subdirectory, they are perf related copied files and can
-> > (should?) be updated separately after this patchset lands.
-> > 
-> > Build-tested allmodconfig with GCC 11.5.0 and clang 22.1.8.
-> 
-> What ARCH(es)?
+Thank you for your contribution! Sashiko AI review found 4 potential issue(=
+s) to consider:
+- [High] arm64: mm: local-only TLB flush in pudp_set_access_flags() causes =
+fault livelock
+- [High] arm64: mm: missing pudp_set_wrprotect() loses HAFDBS dirty bits an=
+d triggers warning
+- [High] arm64: mm: missing pudp_huge_get_and_clear() loses concurrent HAFD=
+BS A/D updates
+- [Low] arm64: mm: redefinition of pud_trans_huge() when CONFIG_TRANSPARENT=
+_HUGEPAGE=3Dn
+--
 
-Fair point, I should have mentioned that I run this on x86_64 and
-aarch64.
+commit 7dc812ccee714c3818da8b998f785b9073deeacd
+Author: Jinjiang Tu <tujinjiang@huawei.com>
 
-> 
-> Did you mean to use such an "old" version of GCC?
+arm64: Add PUD THP support for DAX and pfnmap
 
-There is no grand plan behind that to be honest, I used it, because this
-is a version of GCC that comes with CentOS Stream 9 on the box I tested
-the change.
+This patch adds PUD transparent hugepage page table helpers on arm64 and
+enables HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD for 4KB page size configurations=
+ to
+support PUD THP for DAX and pfnmap mappings.
 
-To be on the safe side, I checked patchset still builds on GCC 16.2.1 on
-allmodconfig x86_64.
+> diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pg=
+table.h
+> index 7de2487e4d353..feca481b20795 100644
+> --- a/arch/arm64/include/asm/pgtable.h
+> +++ b/arch/arm64/include/asm/pgtable.h
+
+[ ... ]
+
+> @@ -826,6 +838,13 @@ static inline bool pud_leaf(pud_t pud)
+>  #define pud_user(pud)		pte_user(pud_pte(pud))
+>  #define pud_user_exec(pud)	pte_user_exec(pud_pte(pud))
+> =20
+> +#ifdef CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD
+> +static inline int pud_trans_huge(pud_t pud)
+> +{
+> +	return pud_present(pud) && !pud_table(__pud(pud_val(pud) | PTE_VALID));
+> +}
+> +#endif
+
+[Severity: Low]
+Will this cause a redefinition error for pud_trans_huge() when building with
+CONFIG_PAGE_SIZE_4KB=3Dy and CONFIG_TRANSPARENT_HUGEPAGE=3Dn (for example,
+allnoconfig or tinyconfig)?
+
+In arch/arm64/Kconfig, config ARM64 selects
+HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD whenever PAGE_SIZE_4KB is enabled, even
+when CONFIG_TRANSPARENT_HUGEPAGE is disabled:
+
+	select HAVE_ARCH_TRANSPARENT_HUGEPAGE
+	select HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD if PAGE_SIZE_4KB
+
+However, include/linux/pgtable.h includes asm/pgtable.h and then provides a
+fallback definition of pud_trans_huge() whenever CONFIG_TRANSPARENT_HUGEPAGE
+is not defined:
+
+#if !defined(CONFIG_TRANSPARENT_HUGEPAGE) || \
+	!defined(CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD)
+static inline int pud_trans_huge(pud_t pud)
+{
+	return 0;
+}
+#endif
+
+Should pud_trans_huge() in arch/arm64/include/asm/pgtable.h also be guarded=
+ by
+CONFIG_TRANSPARENT_HUGEPAGE (matching pmd_trans_huge() in the same file)?
+
+[ ... ]
+
+> @@ -1207,6 +1231,16 @@ static inline int pmdp_set_access_flags(struct vm_=
+area_struct *vma,
+>  }
+>  #endif
+> =20
+> +#ifdef CONFIG_ARCH_SUPPORTS_PUD_PFNMAP
+> +static inline int pudp_set_access_flags(struct vm_area_struct *vma,
+> +					unsigned long address, pud_t *pudp,
+> +					pud_t entry, int dirty)
+> +{
+> +	return __ptep_set_access_flags_anysz(vma, address, (pte_t *)pudp,
+> +					     pud_pte(entry), dirty, PUD_SIZE);
+> +}
+> +#endif
+
+[Severity: High]
+Can delegating pudp_set_access_flags() to __ptep_set_access_flags_anysz() l=
+ead
+to an infinite spurious write page-fault livelock on remote CPUs?
+
+In arch/arm64/mm/fault.c, __ptep_set_access_flags_anysz() only invalidates =
+the
+local CPU's TLB via TLBF_NOBROADCAST when upgrading a read-only entry to
+writable/dirty, relying on remote CPUs to invalidate their stale read-only =
+TLB
+entries on a subsequent permission fault:
+
+	if (pte_same(pte, entry))
+		return 0;
+	...
+	/*
+	 * Invalidate the local stale read-only entry.  Remote stale entries
+	 * may still cause page faults and be invalidated via
+	 * flush_tlb_fix_spurious_fault().
+	 */
+	if (dirty) {
+		...
+		__flush_tlb_range(vma, address, address + pgsize, pgsize, level,
+				  TLBF_NOWALKCACHE | TLBF_NOBROADCAST);
+	}
+
+Suppose two CPUs fault in a shared PUD mapping as hardware read-only
+(PTE_RDONLY=3D1, such as on an initial read fault for fsdax, a PFNMAP/devdax
+mapping on a CPU without hardware DBM, or after copy_huge_pud() write-prote=
+cts
+the PUD), and CPU A then writes to the mapping. CPU A updates *pudp via
+wp_huge_pud() -> insert_pud() -> pudp_set_access_flags() or
+huge_pud_set_accessed() -> touch_pud() -> pudp_set_access_flags(), flushing
+only CPU A's local TLB.
+
+When CPU B subsequently writes to the same PUD range, it takes a permission
+fault from its stale read-only local TLB entry and enters:
+
+__handle_mm_fault()
+  huge_pud_set_accessed()
+    touch_pud()
+      pudp_set_access_flags()
+        __ptep_set_access_flags_anysz()
+
+Because *pudp in memory already matches entry (with PTE_AF, PTE_DIRTY, and
+PTE_WRITE set and PTE_RDONLY cleared), pte_same(pte, entry) is true and
+__ptep_set_access_flags_anysz() returns 0 without flushing CPU B's TLB.
+
+Unlike the PTE and PMD paths, which call flush_tlb_fix_spurious_fault() and
+flush_tlb_fix_spurious_fault_pmd() when ptep_set_access_flags() or
+pmdp_set_access_flags() returns 0, neither touch_pud(),
+huge_pud_set_accessed(), __handle_mm_fault(), nor insert_pud() performs a
+local TLB flush on a spurious PUD fault. Wouldn't CPU B return to userspace
+with the stale read-only PUD TLB entry still in place and fault in an infin=
+ite
+loop?
+
+[ ... ]
+
+> @@ -1281,6 +1315,14 @@ static inline bool pmdp_test_and_clear_young(struc=
+t vm_area_struct *vma,
+>  }
+>  #endif /* CONFIG_TRANSPARENT_HUGEPAGE || CONFIG_ARCH_HAS_NONLEAF_PMD_YOU=
+NG */
+> =20
+> +#ifdef CONFIG_ARCH_SUPPORTS_PUD_PFNMAP
+> +static inline bool pudp_test_and_clear_young(struct vm_area_struct *vma,
+> +		unsigned long address, pud_t *pudp)
+> +{
+> +	return __ptep_test_and_clear_young(vma, address, (pte_t *)pudp);
+> +}
+> +#endif
+> +
+>  static inline pte_t __ptep_get_and_clear_anysz(struct mm_struct *mm,
+>  					       unsigned long address,
+>  					       pte_t *ptep,
+
+[Severity: High]
+Should arm64 also define __HAVE_ARCH_PUDP_HUGE_GET_AND_CLEAR and implement
+pudp_huge_get_and_clear() via __ptep_get_and_clear_anysz(..., PUD_SIZE)?
+
+__ptep_get_and_clear_anysz() in arch/arm64/include/asm/pgtable.h already us=
+es
+an atomic xchg_relaxed() and has a PUD_SIZE case for
+page_table_check_pud_clear(). Without an arch definition of
+pudp_huge_get_and_clear(), arm64 falls back to the generic implementation in
+include/linux/pgtable.h:
+
+#ifndef __HAVE_ARCH_PUDP_HUGE_GET_AND_CLEAR
+static inline pud_t pudp_huge_get_and_clear(struct mm_struct *mm,
+					    unsigned long address,
+					    pud_t *pudp)
+{
+	pud_t pud =3D *pudp;
+
+	pud_clear(pudp);
+	page_table_check_pud_clear(mm, address, pud);
+
+	return pud;
+}
+#endif
+
+When splitting a DAX PUD via split_huge_pud() -> __split_huge_pud_locked() =
+->
+pudp_huge_clear_flush() -> pudp_huge_get_and_clear(), __split_huge_pud_lock=
+ed()
+propagates the dirty and young bits from old_pud to the folio:
+
+	old_pud =3D pudp_huge_clear_flush(vma, haddr, pud);
+
+	if (!vma_is_dax(vma))
+		return;
+
+	page =3D pud_page(old_pud);
+	folio =3D page_folio(page);
+
+	if (!folio_test_dirty(folio) && pud_dirty(old_pud))
+		folio_mark_dirty(folio);
+	if (!folio_test_referenced(folio) && pud_young(old_pud))
+		folio_set_referenced(folio);
+
+On systems with FEAT_HAFDBS, couldn't a concurrent hardware access or dirty
+state update between the non-atomic read of *pudp and pud_clear(pudp) be lo=
+st?
+
+[ ... ]
+
+> @@ -1443,6 +1485,15 @@ static inline pmd_t pmdp_establish(struct vm_area_=
+struct *vma,
+>  }
+>  #endif
+> =20
+> +#ifdef CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD
+> +static inline pud_t pudp_establish(struct vm_area_struct *vma,
+> +		unsigned long address, pud_t *pudp, pud_t pud)
+> +{
+> +	page_table_check_pud_set(vma->vm_mm, address, pudp, pud);
+> +	return __pud(xchg_relaxed(&pud_val(*pudp), pud_val(pud)));
+> +}
+> +#endif
+
+[Severity: High]
+Is __HAVE_ARCH_PUDP_SET_WRPROTECT with pudp_set_wrprotect() also needed her=
+e,
+matching pmdp_set_wrprotect() right above pmdp_establish()?
+
+Without an architecture-specific pudp_set_wrprotect() wrapping
+__ptep_set_wrprotect(), arm64 uses the generic fallback in
+include/linux/pgtable.h:
+
+static inline void pudp_set_wrprotect(struct mm_struct *mm,
+				      unsigned long address, pud_t *pudp)
+{
+	pud_t old_pud =3D *pudp;
+
+	set_pud_at(mm, address, pudp, pud_wrprotect(old_pud));
+}
+
+When fork() copies a COW PUD via copy_page_range() -> copy_p4d_range() ->
+copy_pud_range() -> copy_huge_pud() -> pudp_set_wrprotect():
+
+1. The non-atomic read of *pudp followed by set_pud_at() races with hardware
+   AF/DBM updates (FEAT_HAFDBS), unlike __ptep_set_wrprotect() which uses a
+   cmpxchg_relaxed() loop to atomically transfer hardware dirty state to
+   PTE_DIRTY while setting PTE_RDONLY and clearing PTE_WRITE.
+
+2. Updating a live valid PUD in place via set_pud_at() -> __set_ptes_anysz()
+   calls __check_safe_pte_update() in arch/arm64/mm/mmu.c, which triggers
+   VM_WARN_ONCE() when the entry is old or writable-clean on a live mm:
+
+	VM_WARN_ONCE(!pte_young(pte),
+		     "%s: racy access flag clearing: %s -> %s",
+		     __func__, pte_str_old, pte_str);
+	VM_WARN_ONCE(pte_write(old_pte) && !pte_dirty(pte),
+		     "%s: racy dirty state clearing: %s -> %s",
+		     __func__, pte_str_old, pte_str);
+
+3. set_pud_at() also runs __sync_cache_and_tags() across PUD_SIZE >> PAGE_S=
+HIFT
+   (262,144) pages unnecessarily when only write-protecting an existing ent=
+ry.
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261028121404.8539=
+44-1-tujinjiang@huawei.com?part=3D3
 
