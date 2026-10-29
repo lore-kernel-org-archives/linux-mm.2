@@ -1,75 +1,75 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 920D360A2604
-	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 20:37:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C1F8606A31F
+	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 20:38:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=o2acdNnV
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=FIuxTTI3
 Received: by kanga.kvack.org (Postfix)
-	id AD1656B05CE; Thu, 29 Oct 2026 16:37:58 -0400 (EDT)
+	id 1AA8F6B05CF; Thu, 29 Oct 2026 16:38:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A82BE6B05CF; Thu, 29 Oct 2026 16:37:58 -0400 (EDT)
+	id 182566B05D0; Thu, 29 Oct 2026 16:38:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 998746B05D0; Thu, 29 Oct 2026 16:37:58 -0400 (EDT)
+	id 09B196B05D1; Thu, 29 Oct 2026 16:38:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 7B03B6B05CE
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 16:37:58 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 10E25A808C
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 20:37:58 +0000 (UTC)
-X-FDA: 85376825436.08.290F777
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 59C06140009
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 20:37:56 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=o2acdNnV;
-	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by kanga.kvack.org (Postfix) with ESMTP id D0AE56B05CF
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 16:38:13 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 58981140519
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 20:38:13 +0000 (UTC)
+X-FDA: 85376826066.25.41E6E28
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 8B7E44000A
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 20:38:11 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FIuxTTI3;
+	spf=pass (imf27.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793306276;
+	s=arc-20220608; t=1793306291;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tztEcWM4A0N7b+6teiPYZ27u+mDO7RxR1zwT2bOzVVo=;
-	b=oCh2uJhRRFSuz3ISNtrB/UmfMifIUA0dk/NzHkHnRrBW0oTssXChwcI3qGIMW3AeoVlAjG
-	kbhwY+SCNHRhZr3rC6bv31p3e0j+h1Ciq7TxR8eV/R1f4S+xvJaHPDhExZnW9RO+vMGtey
-	e/TctBAPU3JI25gLVoI6xuKKWPfZlS4=
+	bh=nj1Bf9db8TNcajGSKnb6DbuHi/phVwkCDM1cIZai6DI=;
+	b=lB8lbiOcJ0jyjxEWwBema1U3AF1J/bsXKJZIy2nKt7oiLjtk34kzJla+8aLeuWz08dV2mf
+	KJSIIyZT/XIhydVMulbhskNNP+uRHcCcEbrlUGeYGo2xKLY755ZuD9XMPuoAUyY2EPE/Dw
+	B07ZTkb/nVC1zvS43y27hRon64SbAa8=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=o2acdNnV;
-	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FIuxTTI3;
+	spf=pass (imf27.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793306276;
-	b=CC7N0juJTGlzzjgSL/aS0bV6a0TnMsn2gXja5kJNYjmiXG2H7Gpgw4Lt7zgQxQvlWW78x/
-	mYv3bDMrcYJ8+eSXGrRsas7kSsw/9S92WqK2V5TLbHakp1au1aGxsLbWOBSLZbITdDyo51
-	WJ/cBwjc7FRZ2MkaWeLaiB5Z9+hVfQU=
+	t=1793306291;
+	b=w+gzFIarb6MfTFd8aQylBR+11Nsi/0CzDiSL6cYiYRK+rwSoPxf5bqZVmmcDSHy7JlPNNm
+	Q0VMfoArg0FuY2/9HLceqqpv0MG9sD0T57gwJON2xOK8doujC+d1iGf6Q7nGKPONMwYThy
+	bu2V8d6Es3N8N9wWWXt4zwV/LzCgXrM=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id D05C9605C4;
+	by sea.source.kernel.org (Postfix) with ESMTP id 8A96140F8B;
+	Thu, 29 Oct 2026 20:38:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BE841F01825;
 	Thu, 29 Oct 2026 20:37:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A358F1F01816;
-	Thu, 29 Oct 2026 20:37:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793306275;
-	bh=tztEcWM4A0N7b+6teiPYZ27u+mDO7RxR1zwT2bOzVVo=;
+	s=k20260515; t=1793306290;
+	bh=nj1Bf9db8TNcajGSKnb6DbuHi/phVwkCDM1cIZai6DI=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=o2acdNnV4CkuFKbRpEwNEOnOSL9pTT5uHY41RgahtBUOZ7qn8kMmJu1nKIihtbJfl
-	 GEjozaA3IsN8l1U69dN2g6SsJAMhpcDzsMmD+nQB7WGSqybBiSHBKE005LMdfadMXD
-	 4qAQYfy8Zj/9BXND3KpgaU5qwcaxk+xW7+nuT+B9gVnZpt/ddcdAquZtG3aQaa+Ya/
-	 txypaW4mgwQTIX4XYZJzdsRPgQJEL5Sy3NYTNsfIBeIUA9dtjU1zhIS4E4d186vBWt
-	 JxAe9i3rjiOBhKdz9CYsah0lxU97FDpI/vbqVULgw1QyIFTGx9Gfz1FxZAqmo1wTHB
-	 CaoSm3PuAzuBg==
+	b=FIuxTTI3C9PGyWVFGo4s1b0dkDlzRfab9Rj6I74MTLycqi+2Em6LiHU/uAvrS9N2K
+	 H1lysuB2CyMvu8AUoaV21WSVGPL5xMuFv701vHfyNuvbTOqOVl1Mb27qjgobqyD4Ih
+	 w521JBB1DU2+1WGBmfWNyNI9L0QxayWIoR/35/8S6lbTgqbOOCRUYTrMQVyzhih2Uy
+	 5YOZ+Uv9eZAqw/sFSkR0LDJjCsJd17NT85n8UbO6chx+PkSu1BaBgYlPYiLxlSRP0s
+	 YNrqZmF/rZnmJY1dOZd/zKWR/IT1NfuAz2jIJEzyiNNCuLG/4f2hBHEDIvx0IURMf/
+	 8vhdjMEwBOimg==
 From: "David Hildenbrand (Arm)" <david@kernel.org>
-Date: Thu, 29 Oct 2026 21:33:13 +0100
-Subject: [PATCH v2 18/47] mm/khugepaged: check if PTE table is empty in
- try_collapse_pte_mapped_thp()
+Date: Thu, 29 Oct 2026 21:33:14 +0100
+Subject: [PATCH v2 19/47] mm/gup: recheck the PUD under PTL in
+ follow_pud_mask()
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261029-fixes_core-v2-18-a64ce7f83abb@kernel.org>
+Message-Id: <20261029-fixes_core-v2-19-a64ce7f83abb@kernel.org>
 References: <20261029-fixes_core-v2-0-a64ce7f83abb@kernel.org>
 In-Reply-To: <20261029-fixes_core-v2-0-a64ce7f83abb@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>, 
@@ -107,29 +107,30 @@ To: Andrew Morton <akpm@linux-foundation.org>,
 Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
  kexec@lists.infradead.org, linux-fsdevel@vger.kernel.org, 
  linux-arch@vger.kernel.org, linux-cxl@vger.kernel.org, 
+ stable@vger.kernel.org, Josef Bacik <josef@toxicpanda.com>, 
  "David Hildenbrand (Arm)" <david@kernel.org>
 X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=5636; i=david@kernel.org;
- h=from:subject:message-id; bh=8iTA5/vUtqz9osOYx6RyePWtnzJPnHa6IV6FgiGHX/4=;
- b=owGbwMvMwCF2/OVpCdfQ3ZWMp9WSGLIer20r1Knvm/L+wvJF2cwfNQ1TTWy8j7GUzk/p+BGzr
- MAtdv36jlIWBjEOBlkxRZag4PsGL1+uq61242OGmcPKBDKEgYtTACZSv5fhn9HEh0pTZ83dL7hF
- R5Pp5FSha793iwT1xrY0RdxP0nj7/SrDP10F5TMvHH9cEz/WpeiX/1glmpElL0DWv+5iyMVQh9x
- 3PAA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3795; i=david@kernel.org;
+ h=from:subject:message-id; bh=PWJnBAFtWkzROraFyD6718GFghC4dRBvxtyaTiDuAbI=;
+ b=owGbwMvMwCF2/OVpCdfQ3ZWMp9WSGLIer23rib/wxOTO+QCt1Qe9WZRKlh48bPQzJd5VePoC4
+ U+SnnmGHaUsDGIcDLJiiixBwfcNXr5cV1vtxscMM4eVCWQIAxenAEzEjI2RYcKTwxteKM7pfsr5
+ l+9Y52+mDR9eFry6cu7nmmdGkT3yTnmMDE90/nzPfmm/TfZaV3vaLZ02o7usjFJSH3c4GdrG75m
+ 0hBUA
 X-Developer-Key: i=david@kernel.org; a=openpgp;
  fpr=1BD9CAAD735C4C3A460DFCCA4DDE10F700FF835A
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 59C06140009
-X-Stat-Signature: 48g6wazxqr98guzuugkmyhrwe93udyf1
 X-Rspam-User: 
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 8B7E44000A
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
 	version=4.0.1
-X-HE-Tag: 1793306276-574674
-X-HE-Meta: U2FsdGVkX19yBnz7dIG0NQgn+TEttf9JTHNlWnSJt3RSOT2bPsfputu1BiNJV3mDfezzPLy/FS5VDczDlxxcGGBIiI1gkclsfEDspv5qoaljaaje7aEdHl5tlEcg8w6pr6dpLhtKm0t7VU8ZOf8EItcPPTBBjaybbY08hTYz0X2DPtSR6iRU09hx52k6+iOgKF98cMtd4mN7sGyRBzHSW8LD3tZDQfbpujTS4ugiwqvpOn2uv63nYqAjwqQWjXOi2f64tROaxhYjRffkYKrPIfLCWB1nCnCObGTpirZ6ATQWTlOZ/UOkj/htPg0WakYkM/bjvbd2Sfj7B1VBRzDkQxA3gW6ljUzBY+hbmwfxhT8vRgldYp0TYvEdHu3hLGtHnfgYPbom19+gryDSVaslMSZGuFCCCZlKPveopXrZnOLYH/4+sFIRPPF7OHrx/3feVxnlr7+igUlzoWjlLGwD2pMsNoaMMGDrQ/TXbw9KdWxyCL0D5BTuo9btbU8lH0BkIVkYeWgWvzudH4iIhtAUhtcTj1pr4mQ9xwgk23vAzSxHZj1Jb7J06TBRwEi7uYHy/gruWjJjVfXsXHoNCNZI9Y65LO7sFzIl0CKiTBaES5VoQrWp2fTotH/huEeLpQXZQoxPasaXy5en0bff+Tshukq72E57/tMtKW7ubjrciiObQkjqTrDR2fTEzXYsMZ9DPchHkDZXbBtKjiDi5BZlpZDge7ji84/3JVXcxgH6xQ5/nU50OxX4BhoYsaBr+UgyWmdMTGts1KCrQXQRyXe/oAMxawtazI7HvfcOyvqq/GmcyUxl2ng6vqwWyRYLtkzKGgp27SxZlp8iWZYN38zxRi1szSiaCm47jD6JIE8s2yESI7RfmW7uyWQpLflGmJpHJJ4L1TMeXHAnoW0cmmPDg12WeCQT3NfZDYThxaXTgIMMkKpCQVg361xPIsMSKD8tuUmXhIxW9czT9PAgURD
- XizcwTtr
- 1r19aRODjGwDLRNzMuUIA0kHpqyOdRZIoAUQkvVE9hIPzjNks0GZMRajMEPuePjqRAHxlgUBUeDs57VryFpJPAUm+MzpJOVPhmG+TzdxS0SvczJreoWaiVh7Uwbe4UXIp9ts4g67lEeF/sa5fOznt+rTGrfDb+Tc6XIT4amx08Bz5UniR6Kl9AAm/LgHASzWR27F/FhkRNbkvxQBFzkkQ8ETcdBvmcaAkERLBDOnUkD42dHuVmjTnzI+zzI8hBUgJdqEneataT1Y9Jve2W+7ozgY3e5hyqCl7f8SshP2DAKwRGDkatADA1qEGv/E4zLI82CmJ9En9YJ+YrWtWAGdaOemD5GWu1wvTdsZ0GKfucrFrkPzIXCmOLOm2rQ430xerg7KVOW1EVhi6RIp+6wdToMahtfynxOw+zG1pd7wTeNr+gt4=
+X-Stat-Signature: wbda9c8uti1xz4jq9jpb1csoh44r11pc
+X-HE-Tag: 1793306291-586254
+X-HE-Meta: U2FsdGVkX18bFxb2xk7oRdEV1Arbtc7ALAGAIYmTulwDoiBSR0+3N5rCUEYsu9vtnj+RVPFsWkQn1LVK6xq7Otm0lIHNE7zQn+GjUT3sQAMkzXSQxeisjGzmYkzzfGf4CAd3d1Jne+ZCdKghJrd1Fds5V4IQXGwvom3oAt/+ibNl/ELKj9FMkSUpfYF/VBNGHxtJXfkyuLG5NtkvkwKL7rDIgexCx8DQINRzCJV0mYeohZWZyLaUwZdCNWTmVDFjx5yr9E3TnU0QXpBLKplrZ/WgBr/inJBMnk9g5tpjP6P1N8RexyHeWlBlUKIDcmvcV/muViKuJEhN0YYD1YdPUc3WW9z98CCzzzV9Rl3lUCdRh3vEaZSei6SzpGF3YNtQGkJRaY7y5lRym9KapFURB7Ckxg/dFOolDmcpHW7ZNLU0m1zAD59iKTp3D46eih+9EOMwofzbWFFG2HUuBikHmMEITy3niRD+Tpw3l+KNdiX4/zbdhWmFkdLJOtwcqT9Bx+katGWiC2wbfBhBuzE7TY97+r0vneJWTlaUWjWM9tiZrYvxPcWXtXI68sjPRL++qQeozHWluwLzAf1XGoLMmttJGuUI6ti8jSS67Xp7O1tKU1KFE+yFM/uLm4KMN6bFM3l75KGOUWpCv0LM37EFL0PQWhlRKUksCZQoRyTAYdDv+A/m/QJSAPDuwkheh+VgW9jMqRwMyNqocz/u7qNGhlq96rzePsLfv4sNRUD3MAygrthp5Hp1PBgTzcf3zGInhEqwptgQcuZFhMrm8MIR+OwsS/bgaQqzvWnxXMG69VgyPEXcppQ9M/9xOqIO84u1naNsmGG5ISqACEFd0qXHiu/Q8Eun6MDdnDnU5iyquYFKfnkFk1RfYbMqSaXPn04S9+NhQ/tgMatudySg5N112jbs7mECmmEWOCKUnMFnqnKmjO4FuRk6UKiIn2vfyuXopWy6HVQn+OXK/XdxoqR
+ deUD7ySX
+ nOGfEgriKSBU0Ce2gS3iiV4d34BSTl0eAYni0ccuGgr7CR6tRKaBI82q+1i7OFhY+jw31BfQ2iXK3b+aIB6tviZzmLWF3yNqJd9cVkiwz5zYrIvpxdjx2Amt2z8CKCdF5AfK4KS9ew76Vu+2ZdnQU6R/qTVvbe2UIvGlkb/Ldgbmhi1t/caNOQyAIfQ9xexLP9xntWDDzBHnsC6fMsjjUU4dlDQYUcVfVEu4467iCBrK2RKgCwJtvJ2Wz8SIwBJsdy4Cagm7YFAZJq6pPTgLeYDdXi9jCD3afEYZVSgdqIBtNQ51Ixzmw85+SWFHFsLTK2czg5ss0Bx9WFtEbuoVt7FM9p2shrBY84w6X66SrXSgo+R6p8jTDvwIPF3t26dNoVdkQL+PVPm+nHvjzDtvDmMuGm/bzDQ1K2y2bTFxz/kggCWU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -138,162 +139,116 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-The existing code is rather horrible and already resulted in bugs in the
-past: we special-case UFFD inserting anonymous folios by grabbing the PMD
-lock early, but ignore any other markers (guard, poison through uffd) that
-could have been inserted into the page table in the meantime, effectively
-dropping them.
+follow_pud_mask() reads the PUD without a lock. If it is a leaf, it takes
+the lock and calls follow_huge_pud(), which reads the entry again, but
+only tests whether it is present.
 
-Let's just unify and simplify the locking: try to grab the PMD table
-lock and if that fails, flush the TLB, drop the PTE lock, take PT locks in
-the right order and check if the page table is still empty.
+A leaf can be zapped concurrently and a page fault can fill the empty
+entry with a page table.
 
-We still perform the heavy lifting (zapping the folio ptes) under PTE table
-lock only.
+This currently only applies when device-dax makes use of PUD entries,
+and the fault after e.g., MADV_DONTNEED would find THPs to be disabled.
 
-Include <linux/hugetlb.h> for now, as x86's flush_tlb_range() macro
-depends on hugetlb helpers. This dependency needs a separate cleanup.
+That requires a sequence like
 
-Both issues this fixes are rather corner cases. Let's not CC stable for
-now.
+1) Fault in the PUD
+2) Disable THP
+3) Have GUP race against concurrent MADV_DONTNEED + refault
 
-Fixes: f807123d578d ("mm: allow guard regions in file-backed and read-only mappings")
-Fixes: 1043173eb5eb ("mm/khugepaged: collapse_pte_mapped_thp() with mmap_read_lock()")
-Tested-by: Gregory Price (Meta) <gourry@gourry.net>
-Reviewed-by: Gregory Price (Meta) <gourry@gourry.net>
+Which is rather unlikely to happen in practice, which is why we never
+received a report about such a problem.
+
+Before commit 1b1676180246 ("mm/gup: handle huge pud for
+follow_pud_mask()"), we performed that check in follow_devmap_pud() by
+testing for pud_devmap().
+
+Let's fix it by just structuring follow_pud_mask() similar to
+follow_pmd_mask(), minus protnone stuff that does not apply and minus
+FOLL_SPLIT_PMD handling. That makes it much easier to spot any such
+inconsistencies.
+
+Perform the pud_bad() check early in follow_pmd_mask() and just forward
+the PUD value. We can drop the pud_present() check in follow_huge_pud(),
+just like we have in follow_huge_pmd().
+
+Even though we are performing more changes than strictly necessary, the
+fix should be easy to backport.
+
+Fixes: 1b1676180246 ("mm/gup: handle huge pud for follow_pud_mask()")
+Cc: stable@vger.kernel.org
+Reported-by: Josef Bacik <josef@toxicpanda.com>
 Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 ---
- mm/khugepaged.c | 64 ++++++++++++++++++++++++++++-----------------------------
- 1 file changed, 31 insertions(+), 33 deletions(-)
+ mm/gup.c | 32 ++++++++++++++++++--------------
+ 1 file changed, 18 insertions(+), 14 deletions(-)
 
-diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-index dd17c3dae800..4313abf9cfcb 100644
---- a/mm/khugepaged.c
-+++ b/mm/khugepaged.c
-@@ -10,6 +10,7 @@
- #include <linux/mm_inline.h>
- #include <linux/kthread.h>
- #include <linux/khugepaged.h>
-+#include <linux/hugetlb.h>
- #include <linux/freezer.h>
- #include <linux/mman.h>
- #include <linux/hashtable.h>
-@@ -1832,6 +1833,17 @@ static enum scan_result set_huge_pmd(struct vm_area_struct *vma, unsigned long a
- 	return SCAN_SUCCEED;
+diff --git a/mm/gup.c b/mm/gup.c
+index 7d43ce717b24..f809361227e7 100644
+--- a/mm/gup.c
++++ b/mm/gup.c
+@@ -658,9 +658,6 @@ static struct page *follow_huge_pud(struct vm_area_struct *vma,
+ 
+ 	assert_spin_locked(pud_lockptr(mm, pudp));
+ 
+-	if (!pud_present(pud))
+-		return NULL;
+-
+ 	if ((flags & FOLL_WRITE) &&
+ 	    !can_follow_write_pud(pud, pfn_to_page(pfn), vma, flags))
+ 		return NULL;
+@@ -896,15 +893,17 @@ static struct page *follow_page_pte(struct vm_area_struct *vma,
  }
  
-+static bool pte_table_empty(pte_t *pte)
-+{
-+	int i;
-+
-+	for (i = 0; i < HPAGE_PMD_NR; i++, pte++) {
-+		if (!pte_none(ptep_get(pte)))
-+			return false;
-+	}
-+	return true;
-+}
-+
- static enum scan_result try_collapse_pte_mapped_thp(struct mm_struct *mm, unsigned long addr,
- 		bool install_pmd)
+ static struct page *follow_pmd_mask(struct vm_area_struct *vma,
+-				    unsigned long address, pud_t *pudp,
+-				    unsigned int flags,
+-				    unsigned long *page_mask)
++		unsigned long address, pud_t *pudp, pud_t pud,
++		unsigned int flags, unsigned long *page_mask)
  {
-@@ -1935,33 +1947,14 @@ static enum scan_result try_collapse_pte_mapped_thp(struct mm_struct *mm, unsign
- 	}
+ 	pmd_t *pmd, pmdval;
+ 	spinlock_t *ptl;
+ 	struct page *page;
+ 	struct mm_struct *mm = vma->vm_mm;
  
- 	pte_unmap_unlock(start_pte, ptl);
--	ptl = NULL;
- 	mmu_notifier_range_init(&range, MMU_NOTIFY_CLEAR, 0, mm,
- 				haddr, haddr + HPAGE_PMD_SIZE);
- 	mmu_notifier_invalidate_range_start(&range);
- 	notified = true;
- 
--	/*
--	 * pmd_lock covers a wider range than ptl, and (if split from mm's
--	 * page_table_lock) ptl nests inside pml. The less time we hold pml,
--	 * the better; but userfaultfd's mfill_atomic_pte() on a private VMA
--	 * inserts a valid as-if-COWed PTE without even looking up page cache.
--	 * So page lock of folio does not protect from it, so we must not drop
--	 * ptl before pgt_pmd is removed, so uffd private needs pml taken now.
--	 */
--	if (userfaultfd_armed(vma) && !(vma->vm_flags & VM_SHARED))
--		pml = pmd_lock(mm, pmd);
--
--	start_pte = pte_offset_map_rw_nolock(mm, pmd, haddr, &pgt_pmd, &ptl);
-+	start_pte = pte_offset_map_lock(mm, pmd, haddr, &ptl);
- 	if (!start_pte)
- 		goto abort;
--	if (!pml)
--		spin_lock(ptl);
--	else if (ptl != pml)
--		spin_lock_nested(ptl, SINGLE_DEPTH_NESTING);
--
--	if (unlikely(!pmd_same(pgt_pmd, pmdp_get_lockless(pmd))))
--		goto abort;
- 
- 	/* step 2: clear page table and adjust rmap */
- 	for (i = 0, addr = haddr, pte = start_pte; i < HPAGE_PMD_NR;
-@@ -1992,10 +1985,7 @@ static enum scan_result try_collapse_pte_mapped_thp(struct mm_struct *mm, unsign
- 
- 		nr_batch_ptes = folio_pte_batch(folio, pte, ptent, max_nr_batch_ptes);
- 
--		/*
--		 * Must clear entry, or a racing truncate may re-remove it.
--		 * TLB flush can be left until pmdp_collapse_flush() does it.
--		 */
-+		/* Must clear entry, or a racing truncate may re-remove it. */
- 		ptent = get_and_clear_ptes(mm, addr, pte, nr_batch_ptes);
- 		if (pte_dirty(ptent))
- 			folio_mark_dirty(folio);
-@@ -2003,25 +1993,33 @@ static enum scan_result try_collapse_pte_mapped_thp(struct mm_struct *mm, unsign
- 		nr_mapped_ptes += nr_batch_ptes;
- 	}
- 
--	if (!pml)
--		spin_unlock(ptl);
--
- 	/* step 3: set proper refcount and mm_counters. */
- 	if (nr_mapped_ptes) {
- 		folio_ref_sub(folio, nr_mapped_ptes);
- 		add_mm_counter(mm, mm_counter_file(folio), -nr_mapped_ptes);
- 	}
- 
--	/* step 4: remove empty page table */
--	if (!pml) {
-+	/* step 4: acquire the PMD lock and remove the empty page table */
-+	pml = pmd_lockptr(mm, pmd);
-+	if (ptl != pml && !spin_trylock(pml)) {
-+		/* We must flush before dropping the PTL. */
-+		if (nr_mapped_ptes)
-+			flush_tlb_range(vma, haddr, end);
-+		pte_unmap_unlock(start_pte, ptl);
-+		ptl = NULL;
++	if (unlikely(pud_bad(pud)))
++		return no_page_table(vma, flags, address);
 +
- 		pml = pmd_lock(mm, pmd);
-+		start_pte = pte_offset_map_rw_nolock(mm, pmd, haddr, &pgt_pmd, &ptl);
-+		if (!start_pte)
-+			goto unlock;
- 		if (ptl != pml)
- 			spin_lock_nested(ptl, SINGLE_DEPTH_NESTING);
--		if (unlikely(!pmd_same(pgt_pmd, pmdp_get_lockless(pmd)))) {
--			flush_tlb_mm(mm);
+ 	pmd = pmd_offset(pudp, address);
+ 	pmdval = pmdp_get_lockless(pmd);
+ 	if (pmd_none(pmdval))
+@@ -953,18 +952,23 @@ static struct page *follow_pud_mask(struct vm_area_struct *vma,
+ 	pud = pudp_get(pudp);
+ 	if (!pud_present(pud))
+ 		return no_page_table(vma, flags, address);
+-	if (pud_leaf(pud)) {
+-		ptl = pud_lock(mm, pudp);
+-		page = follow_huge_pud(vma, address, pudp, flags, page_mask);
++	if (!pud_leaf(pud))
++		return follow_pmd_mask(vma, address, pudp, pud, flags, page_mask);
 +
-+		if (!pte_table_empty(start_pte))
- 			goto unlock;
--		}
++	ptl = pud_lock(mm, pudp);
++	pud = *pudp;
++	if (unlikely(!pud_present(pud))) {
+ 		spin_unlock(ptl);
+-		if (page)
+-			return page;
+ 		return no_page_table(vma, flags, address);
  	}
-+
-+	/* This also flushes the zapped folio ptes properly. */
- 	pgt_pmd = pmdp_collapse_flush(vma, haddr, pmd);
- 	pmdp_get_lockless_sync();
- 	pte_unmap_unlock(start_pte, ptl);
-@@ -2042,7 +2040,7 @@ static enum scan_result try_collapse_pte_mapped_thp(struct mm_struct *mm, unsign
- 	goto drop_folio;
- abort:
- 	if (nr_mapped_ptes) {
--		flush_tlb_mm(mm);
-+		flush_tlb_range(vma, haddr, end);
- 		folio_ref_sub(folio, nr_mapped_ptes);
- 		add_mm_counter(mm, mm_counter_file(folio), -nr_mapped_ptes);
- 	}
+-	if (unlikely(pud_bad(pud)))
+-		return no_page_table(vma, flags, address);
++	if (unlikely(!pud_leaf(pud))) {
++		spin_unlock(ptl);
++		return follow_pmd_mask(vma, address, pudp, pud, flags, page_mask);
++	}
+ 
+-	return follow_pmd_mask(vma, address, pudp, flags, page_mask);
++	page = follow_huge_pud(vma, address, pudp, flags, page_mask);
++	spin_unlock(ptl);
++	return page;
+ }
+ 
+ static struct page *follow_p4d_mask(struct vm_area_struct *vma,
 
 -- 
 2.43.0
