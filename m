@@ -1,140 +1,90 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D2F2606A31A
-	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 03:05:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC463606A31A
+	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 03:06:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=LeKkS/k1
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=B1v3ooI7
 Received: by kanga.kvack.org (Postfix)
-	id A25756B05B1; Wed, 28 Oct 2026 23:05:25 -0400 (EDT)
+	id 125426B05B2; Wed, 28 Oct 2026 23:06:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9FCFE6B05B2; Wed, 28 Oct 2026 23:05:25 -0400 (EDT)
+	id 0D5C06B05B4; Wed, 28 Oct 2026 23:06:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8EBCB6B05B4; Wed, 28 Oct 2026 23:05:25 -0400 (EDT)
+	id F2E236B05B5; Wed, 28 Oct 2026 23:06:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 687FA6B05B1
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 23:05:25 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id EF924802AA
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 03:05:24 +0000 (UTC)
-X-FDA: 85374172968.28.86536EE
-Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 1D5BA180002
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 03:05:22 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b="LeKkS/k1";
-	spf=pass (imf16.hostedemail.com: domain of trilith.zheng@gmail.com designates 209.85.216.53 as permitted sender) smtp.mailfrom=trilith.zheng@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793243123;
-	h=from:from:sender:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Qt+rBjELLMxb0qTKo9uNTiwBY/+V4YZH/Ya3Tn3lncw=;
-	b=NK4KbTYKlG8ekYQ7ic05kvVzv6XWNWh2NvBVkL2Q3wMpkViz1ei0IotMF8pMaV83gmU5zV
-	11bAuE3T85ochcw4eH+fskVE0RUASOdcAu1NASKZ92lW4Yw5mkkKhH2UqBbmPWwWmpazK8
-	N14Ph+xqr+eVEhVrMW6Zd+ZIyeBRXbY=
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id C66276B05B2
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 23:06:03 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 583201C2177
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 03:06:03 +0000 (UTC)
+X-FDA: 85374174606.26.2DB6AF0
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf09.hostedemail.com (Postfix) with ESMTP id C9ACB140005
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 03:06:01 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=B1v3ooI7;
+	spf=pass (imf09.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793243123;
-	b=tT1AvcONW6pGFSVEJbLRoPYOYWHMdQrgOPjTHEdGiDMVehyTgWahHdc2f/JF1PuZE1wdnM
-	nxITloB8iKcjo7YtlRYxaAJCz0ZdspQz5z/T2N2pyM6C1cY+wVO01UvcLRkDE7F83qAOBS
-	9TmuMwh3zc/oUq1Ce9AjFKEaUZxCnN8=
+	t=1793243161;
+	b=Jscks36P5KRKIkbHAdgC48w8zEU8FeKmps9HxRIdMrRSkv08HkOeGAQpbsxdiBeLqq4mP0
+	j8sKMWtFGKWJxKvom5Ynjf/ZDgx7o/mwOODHbqObTdU2zsfpQPkExHtdvWt6g+ic9sZjYf
+	FtKYmKdiH52SZpYouT4tQkwJc4o844Y=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b="LeKkS/k1";
-	spf=pass (imf16.hostedemail.com: domain of trilith.zheng@gmail.com designates 209.85.216.53 as permitted sender) smtp.mailfrom=trilith.zheng@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-pj1-f53.google.com with SMTP id 98e67ed59e1d1-3ae702d28c4so145541a91.3
-        for <linux-mm@kvack.org>; Wed, 28 Oct 2026 20:05:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793243122; x=1793847922; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:sender:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=Qt+rBjELLMxb0qTKo9uNTiwBY/+V4YZH/Ya3Tn3lncw=;
-        b=LeKkS/k15lkmLpZiYC3i4N9TPwYHdYePvJQ01rgcKLIFL/eX4EqAKxbbvX/k9ko2lt
-         Rh1tkyXymuw99RkcZZ+NZWUoikRmX/sPrjy14V4eAjTBqftNvgnGlbaftD3B6VO5NmwS
-         loLlYP+Js48hsrh4T5fZMrZVdltVGYg8r1oUjxzScS6gi7JpO3bvZCjMBdsxiwGXiRL7
-         H2UdzbU/UzRN6NhgVHBkd7twOchY/dgwfWS+f+mdwlc3mLes154FiE+yvNj/eObiwBwq
-         dr0tR8BtHWst64hUUU5Oof5BiTQiSrlSHmeDRfOlhCshDcMIjB00E8NWSL25KNMY/Zmw
-         fR6A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793243122; x=1793847922;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:sender:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Qt+rBjELLMxb0qTKo9uNTiwBY/+V4YZH/Ya3Tn3lncw=;
-        b=1eGm7zA6HnQg6U63aV+K0KzwkN/Kn3OSvnWDXsHz4QhI9XnzmXV7Zjsrd00HwmeKFm
-         C/cjJTd2CoXEd2p8o0GXjrU58EZlzJP1L9Q+j2vm953S6A/pw5HgDLV3ZkekTc/JgGgB
-         kyTI+hAdEajfW6I/+zxEYt9V0uBXHffDjivGqXc4ClFMqdl43LReKQMf8fXdAJRV06qP
-         z2xUl7AsQ/Q0/fbHSd/Xjflk9tJy8ZN4JPs6TeLV+LuvWLVxSB7E/ViS2bHNaH/bZFAZ
-         n9JtbuEarfXUWqsOnmk72OUKN6ZdVSnvCTI4v8HFDWtORwmvUdpMRAR1FfKU1fZmt57t
-         BqEw==
-X-Forwarded-Encrypted: i=1; AKwUvBxbsfdyn1BV7Nm9vyD/odupCFXq4Gmgx+y1C2gKdmkyIhPiuKKR5Ednzap+H1ryOcRw92ru/ahhkQ==@kvack.org
-X-Gm-Message-State: AFq9FYKaNfR98NofevOBDANrVjhNCPjC8gNMnOcr4XHj3jdXcD4Aw76L
-	7FrztMpo0DGg7yIjbK65iWSSLihAUm/LxbJ1Qz4BkrEei4Ed2Dk4kOwb
-X-Gm-Gg: AYBFou3aaVVSo/MRnkSr1JPRPM2nqQ5vlObET1UtgnoiwXFE1i13OsJc16CRXsqKNEY
-	QrOxwxcI4cumthk2LZt0V6UahPRck9zX/vRJjac7Kz2//fG6SDAxL6lf5MnbwB8nkA0PFrWVztw
-	hTT6EgwjOJxRPvjuypG++5OkRN2vyCj5GwW5f9/E6ufu9MCjrV40VAYGBqs+eBBV7gcGo1pImdP
-	ZNt5k/+6LKfcTl0v2mOAUW/WLm5FYbFPZkwvnKILvGh41ru+sPth9Q7wCdJIqM57yIYK63rRLEa
-	Ey6/dKJRekU3lUS6DyVkArs0dL/AgBifVccNX72mWsYNfrSgsx5kgxrI+dZ3MnKW6+AToBgcVXQ
-	EbV8vkpX9C2orsVWvXgBk6VdNRJWi75S8ydnjUgZ1ryQGImtbuxPX+UlU+g/1ByzBzkxum1o1dW
-	OlEw8RTIZDoQUo/hoQFM7TgrLzgQYYSt4e2nmyRN2oFSjlnVfrE41UU+w/E4UUH2LlWrhOay/DN
-	/tHpcixVHl974r7cpoKLoApmWQENS/wS9ylbTkjLxlFe9jbCLbnHinTLqj0TO+onOsWTJRt37TG
-	yY6QeiuFykykPA6fxrhgY8bTgcv8Tm9+gabuKvz7QpFavyE5Vtz7sw==
-X-Received: by 2002:a17:90b:3810:b0:3ac:b08a:ed2c with SMTP id 98e67ed59e1d1-3ae5822fb8amr3357641a91.40.1793243121828;
-        Wed, 28 Oct 2026 20:05:21 -0700 (PDT)
-Received: from localhost.localdomain ([101.44.96.6])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3ae6e9583c1sm1932931a91.10.2026.10.28.20.05.16
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Wed, 28 Oct 2026 20:05:21 -0700 (PDT)
-From: Yilei Zheng <trilith.zheng@gmail.com>
-To: Muchun Song <muchun.song@linux.dev>
-Cc: Muchun Song <songmuchun@bytedance.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Dan Williams <djbw@kernel.org>,
-	David Hildenbrand <david@kernel.org>,
-	Oscar Salvador <osalvador@suse.de>,
-	Pankaj Gupta <pankaj.gupta@amd.com>,
-	linux-mm@kvack.org,
-	nvdimm@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org,
-	linux-cxl@vger.kernel.org,
-	Vishal Verma <vishal.l.verma@intel.com>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Alison Schofield <alison.schofield@intel.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Ira Weiny <iweiny@kernel.org>,
-	Jan Kara <jack@suse.cz>,
-	Matthew Wilcox <willy@infradead.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Michal Hocko <mhocko@suse.com>,
-	Qi Zheng <qi.zheng@linux.dev>
-Subject: Re: [PATCH 3/4] mm: add shared read-only vmemmap support for FS-DAX
-Date: Thu, 29 Oct 2026 11:05:11 +0800
-Message-Id: <20261029030511.12004-1-trilith.zheng@gmail.com>
-X-Mailer: git-send-email 2.39.5 (Apple Git-154)
-In-Reply-To: <4c9741cf-ac62-41d4-9c7a-7d5ceea4a8e1@linux.dev>
-References: <20260903122128.12264-1-songmuchun@bytedance.com> <20260903122128.12264-4-songmuchun@bytedance.com> <20261027065723.66564-1-trilith.zheng@gmail.com> <4c9741cf-ac62-41d4-9c7a-7d5ceea4a8e1@linux.dev>
-X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 1D5BA180002
-X-Stat-Signature: psfsdne7tzhum5dioh1ismobj57x6i4m
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=B1v3ooI7;
+	spf=pass (imf09.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1793243161;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=eBnn/OUg7PxXvo8p3nJ/SroKfFD1H0Hr92Nww3NdOjM=;
+	b=iJV0kcSCjKx4KKMNYb4quG5TN//Abg54Tnf7jnbXrs+/J5OSkr8SeTHrwDDWrazoLc33pe
+	goh5HtmFzbf2TsnZzTQiUHRO/5NFzog2pW0GxgapWzSGrCTqVJ+OJupL8oDy83Mfzjh8NB
+	m6DPMqY/CG4fDwGuFCc2jQAhTfv36wc=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 3B02A600DA;
+	Thu, 29 Oct 2026 03:06:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D8141F01825;
+	Thu, 29 Oct 2026 03:06:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793243160;
+	bh=eBnn/OUg7PxXvo8p3nJ/SroKfFD1H0Hr92Nww3NdOjM=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=B1v3ooI7lpqk6Men20s5ikVdhaQOBtMk3DcYDpo1whk+KkTP3E6j+lRTgzxXS2eAC
+	 k0WMhkatNRdifPO2fA8vfanB4te8HhYIK2SkYgcM+i8MoeJiyQqCAlwPyfJ6R9eitt
+	 XJOl1m4HfKsdG9f7r9JrzuFRlTpjlpogx1xwBYQyHWobyob+EOTV4v1Ny7wtbIemkS
+	 +OFP/wU4POmBxBK7OhO7J3GTDl/vTbCmVOw2tQEC+q47TwZToOe7cmuE05a4sIz9Dw
+	 HCxWzcsuhPZL4wGRWyAdjyxiH/Fww6nne+H3+zm92JHSgs7WzX+NXex7i5hk/Scm1H
+	 HnrG3ZT/IIUJw==
+Message-ID: <sashiko-outbox-188655@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v2 3/8] crypto: acomp - Add trivial segmentation
+ wrapper.
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Kanchana P. Sridhar" <kanchanapsridhar2026@gmail.com>, hannes@cmpxchg.org, yosry@kernel.org, nphamcs@gmail.com, chengming.zhou@linux.dev, akpm@linux-foundation.org, linux-mm@kvack.org, herbert@gondor.apana.org.au, davem@davemloft.net, linux-crypto@vger.kernel.org
+Cc: rientjes@google.com, willy@infradead.org, senozhatsky@chromium.org
+In-Reply-To: <20261028030503.17923-4-kanchanapsridhar2026@gmail.com>
+References: <20261028030503.17923-1-kanchanapsridhar2026@gmail.com>
+ <20261028030503.17923-4-kanchanapsridhar2026@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Thu, 29 Oct 2026 03:05:59 +0000
 X-Rspam-User: 
-X-Spam-Status: No, score=-3.5 required=3.0 tests=BAYES_00,DKIM_ADSP_CUSTOM_MED,
-	DKIM_INVALID,DKIM_SIGNED,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=no autolearn_force=no version=4.0.1
-X-HE-Tag: 1793243122-758975
-X-HE-Meta: U2FsdGVkX19sdY3tSroe0qrUWsmnbgo9JM6sP3KcT33Vjz3NCykD+fn7woFaGeuGduqYttbeYDYUlTVtFUJzx7TfgXXZi8j1B/SavaBp/Qca9QHKLE1ICwpCXbMGZubvoTSrNCrv3EntQrYxg4K+9/fXPQ0lz4quki101BXMFrVjjHjyF9k1kR6Vymeo7RDMJoR3TnHyp7xdL97Ox/xY4w4UAJA/4uMHEGeh36WTBb+nliTFRSh82NFvxKCCJ3mEDPsYRD4XaRIoQtJuOGzPmSpi9bHpYanJGdHDXyCw4l3ggLEOg3eJX2G/KQlzmvDr1nf6oLYAkgZGf1k4RXDxlP2aDvT+opfC6YoyGnT0/hfZvbJ2PDXoda51e/fmwfPQcxF/FWTHfsia2qQXt/T0odQ83mG0ZoIomDLVutTaZjoImo3efeAQ9ZrpIwKe6mxVHnWl14FioQ5CwMZDfx3FcWf32/XdL0AzrUvWEAbTfZrcZ5p1+EWqHQARZJm3ESy6hPyHTl6wgSH89I29peNFSHI+u+t1Tqa++kVbnWspncAepMFtBhg/pluMSJ1DAWvvW0I0UXZt86X99awE5qMqX8MogOaUNU1LaLB7y6wIp2Ra1hsNHUHoh2CaSWxFs4ug3PMZquhF7HMP0OpsjqTR1Ti8SvhN2LsftFHL7j1j0bCnv17dr7W9CzzN3pz6ipYGJcaGTmNanj1MWrrt/eMAuE8RljUIrbQSjnZpK3693sCj28uEzXvpbrjcF6mLuETuaMtsS38yE9lk8Kk9V94Dw0S4Bz/kUdoum6zQMAUMRdQRr4nZpOfwOcHHJWj6wnJs/iXLOnQEs+kw9rxBw+jjtQkKyKrH23V9h5qjZWGo18U3AZ2/zFPAfl4I4+7Wpk7LTGPt3uyCpS54nXUmaejPNVXoKbf9+ntFgaoXOHAdPLu7SUbmoG1OWR2IERJ6F8osm9I7Zfp+m5y9cPtIaro
- xCP2GwHn
- ecm2INJwt9DqifDRkCeSs271mfQwFabnLfusN2kTW5Yh2XXJjcS4ORYt5YwKTqntSWPCuTREhZFwK4woE0//ycnlsTSTIJ1o9VFdtPew43ANL6qp1OXA0f31QeSWi/zi87ZApwjbkFctlG/2owg4m2wCZCh22t0T3PaYqNku5GHAypILV45Ry5Dpt05+j5Ki0HHuQsaFMzJIY4Dt0lpiEtkCHruJqcicxsOfrgfFd7WzRa1qRYWT96OArNJQ7Hi6Oo1wOxVtCYR7XSpWU08ffCWP8NwvQMp8vEG51YLTyqs0rI7QiT9XVyRINt3Jc1loS7+JSBvbVVan8pVPetPHGHP3ZUX+yOGb4bymxebXxSjL3wembKVlQD8E8EL8laT1e4Nw9PUBUcMl+SeH2C28uTKUUTmB2fQE+c/yt2bPp9ghWLpo=
+X-Rspamd-Queue-Id: C9ACB140005
+X-Stat-Signature: ujytocof5xt9xnx5cs88csh7ddfuupye
+X-Rspamd-Server: rspam01
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1793243161-859701
+X-HE-Meta: U2FsdGVkX194acfkQt+o9PmwWMV3DO9WXYDE8DYVhXGg/f1IWKBqXcMfxv33BACxlUOehdmzt/Bv9hJqor+2q3bhbL7B3fxUvisZJnlC7i7dW/HO7qOLB3oCYNtLa3iR/kNOKDsJxYyCsGffi3DmazsaI3NrEUw/yVAoozyomwPlheuNr+VqI5DHtHvKZgwWxlZh0idqhHD6nYRtL6pe7PqQeTQrSRq7HDiTvrBn/Dntom/GegJouDRm/BkaUymXa3S6kGLtBYmL7roUqmZbfk9GdXtUYUE/0mSY1uWWl9LCF0JAPGfo4L7XSfOTj8952LfDcRVxCkk2bYErpYQqxTjuC9g35zfKA9/pksHn2zlB84BrZ735/UkCXnmw+3QSK9FzZOoJ4tcZrXNeQ2/V8mv4peLtuCxGuCFFeOzRrC59+a1SOhv9j/Hernp9iHD3TWE6M0ycyozlihLUiIOnEEO+9Grvqq2vSYl5yyPnDi+Ypo9d05lXj3gFVBJMwOMT2rd6MkEsE55MjH/3FGzZLK82SJ5yVPhJDTRaPhQrkKMEx/TDm0bShd/xPLVicNMyk9GAYY7AqYQQOFSGFDOYN7f4goiHYOTkBh9MvANwxeBDtoN4BNMDCFNzqBx+/9b7/bSzcYk/M8EjuOuqE/GZPRWTgXKYCdHQzemZBa8lh7dwp4bEuwphTHBoEKd8hsnOUbZa4hcc/yG6K9aBTFXdHPtllKl4SKJglc5F1v0Z0qI5I6br032IouoKMjyqIpqI6O7fZtfe94skma1giPJfdbxYBbBUoSxbNwarzugE085PfDF8FKMUAbmYiYpjxRIYHAPE8Tw6cGm9T2kMkAvj0o4XpCSh6latp6fUTgj4qjfj568APykLt8UETDoDdb+zQfs0gbiruJRTw2j/e6cJ1PNLxG6ms7AWL4S2kaztD6hkGG5lz+tE5heoUvCGdGj4D8Ss//VvG4cgQp+tfbV
+ 11rX4424
+ +qryg4+EoZv/WpE1k0b7g1SSOFjwIVcta/IogVbbK3Avw8p2b3dMCVQ0/VBQD2j+RPt12jJm+AZfPWD++Z0jZHdpDNvAZPsERuORqX6k5D3SbgLUAJku9iXEYzwg4i7UE5C4drjkT4Z28fdhYGB0hoEVXZGW06OeTYgC5hp7k0W3H1A4PtaOFO92i9xWT1S5W/r41pkbu5FNZqtoXh9IWEs2hXZ6xYSui74nIP4pNTH7jP0+7I4EeFPVkHmQoXV4w+DWEvV2qa1ZjVgJCMYpmLCERy670539K6b91yuJA97TSi+FjrixgQF61Iqt6WJ5DscN4N9zKysX/Rt6i1ajFv5orDoI7L4nGi2MVr9pxer9bkjPq/vtojN4kUcRfFLSKiYBebs1BRiLfQPY9g9rfYt/nVl2UVecUe/lOKDlIrbUIEVq0vZ/S4U5dzC6g4baV3ol2SxdJ2iot63D/1FGVQ+P/g+1cblnzurwmZOK61ZS+3UGM9rfVIirTxIPEJ/fVMQwKVVrKLAAsj211Y8TNkQdW+5w+S73qPn76VrEri3I08KmkWAZzq6BLKUBi7qMj2uCb8rKLKBn9nAwyseo8/ZeYag==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,38 +92,134 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
+X-Archived-By: <archiver.kernel.org>
 
-Hi Muchun,
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+s) to consider:
+- [Critical] crypto: acomp - missing async check in crypto_acomp_compress()=
+ fast path
+- [High] crypto: acomp: uninitialized state->src/dst restore in acomp_reqch=
+ain_virt()
+--
 
-> Thank you very much for the test, so in your scenario, this is also
-> the behavior of your real workload (mainly read/write-based, rather
-> than mmap), right?
+commit 7144b07b2cc5b6704699fb53fac44c4270d31f7b
+Author: Kanchana P. Sridhar <kanchanapsridhar2026@gmail.com>
 
-Yes. We mount read-only rootfs images over virtio-pmem and FS-DAX. Most
-file access goes through normal read/write. mmap is only used for
-loading binaries and shared libraries at startup, which is a small part
-of the image.
+crypto: acomp - Add trivial segmentation wrapper.
 
-> To be fair, it does fix the issue, but it's not very clean. I might
-> do some code cleanup first to solve this more gracefully. I want to
-> move the initialization to where the template page is allocated,
-> similar to what section-based vmemmap optimization does.
+This commit adds a single-segment compression wrapper in crypto/acompress.c
+that stores the compressed length or error code into req->dst->length when
+req->unit_size is set on transforms that do not support segmentation. It al=
+so
+adds an inline fast path in crypto_acomp_compress() for single-segment
+scatterlist requests.
 
-Makes sense. Initializing it at allocation time is cleaner.
+> diff --git a/crypto/acompress.c b/crypto/acompress.c
+> index c8b4b8589769e..c55b0e8eff3d8 100644
+> --- a/crypto/acompress.c
+> +++ b/crypto/acompress.c
+> @@ -166,14 +166,20 @@ static void acomp_save_req(struct acomp_req *req, c=
+rypto_completion_t cplt)
+> =20
+>  	state->compl =3D req->base.complete;
+>  	state->data =3D req->base.data;
+> +	state->unit_size =3D req->unit_size;
+> +	state->flags =3D req->base.flags & (CRYPTO_ACOMP_REQ_SRC_VIRT |
+> +					  CRYPTO_ACOMP_REQ_DST_VIRT);
 
-> Thanks for the analysis and suggestions. However, the reason I
-> haven't sent out v2 yet is that I've been trying to refactor the
-> vmemmap optimization logic to make FS_DAX support cleaner. I think
-> I'll probably do some code refactoring first.
+[Severity: High]
+Can moving the state->flags assignment from acomp_virt_to_sg() into
+acomp_save_req() corrupt req->svirt and req->dvirt when a request is
+configured with acomp_request_set_src_nondma() or
+acomp_request_set_dst_nondma()?
 
-Understood. It would also help if the refactor could support subsection
-(2 MiB) alignment, so any 2 MiB-aligned device can use the optimization
-without padding to a 128 MiB multiple.
+When a caller sets up a non-dma virtual request via
+acomp_request_set_src_nondma() or acomp_request_set_dst_nondma(), both the
+non-dma and virtual request flags are set in req->base.flags. When
+crypto_acomp_compress() or crypto_acomp_decompress() calls
+acomp_do_req_chain(), the call chain is:
 
-> I'cc you next time if you'd like to help me test.
+crypto_acomp_compress()
+  acomp_do_req_chain()
+    acomp_save_req()
+      state->flags =3D req->base.flags & (CRYPTO_ACOMP_REQ_SRC_VIRT |
+                                        CRYPTO_ACOMP_REQ_DST_VIRT);
+    acomp_do_one_req()
+      if (acomp_request_isnondma(req))
+          return acomp_do_nondma(req, comp);
 
-Sounds good. Please Cc me when you post v2 and I'll be glad to test.
+Because acomp_do_one_req() returns early through acomp_do_nondma() without
+calling acomp_virt_to_sg(), state->src and state->dst are never initialized
+from req->svirt and req->dvirt.
 
-Best regards,
-Yilei
+When acomp_reqchain_finish() then calls acomp_reqchain_virt() in
+crypto/acompress.c:
+
+static void acomp_reqchain_virt(struct acomp_req *req)
+{
+	struct acomp_req_chain *state =3D &req->chain;
+	unsigned int slen =3D req->slen;
+	unsigned int dlen =3D req->dlen;
+
+	if (state->flags & CRYPTO_ACOMP_REQ_SRC_VIRT)
+		acomp_request_set_src_dma(req, state->src, slen);
+	if (state->flags & CRYPTO_ACOMP_REQ_DST_VIRT)
+		acomp_request_set_dst_dma(req, state->dst, dlen);
+}
+
+won't acomp_reqchain_virt() see the virtual flags set in state->flags and
+overwrite req->svirt and req->dvirt with the uninitialized state->src and
+state->dst pointers (while also clearing the non-dma flags), causing a null
+or wild pointer dereference if acomp_reqchain_finish() then writes to
+req->dst->length when req->unit_size is non-zero?
+
+[ ... ]
+
+> @@ -279,10 +289,27 @@ int crypto_acomp_compress(struct acomp_req *req)
+>  {
+>  	struct crypto_acomp *tfm =3D crypto_acomp_reqtfm(req);
+> =20
+> +	if (likely((req->unit_size =3D=3D req->slen) && acomp_request_issg(req)=
+ &&
+> +		    !crypto_acomp_req_seg(tfm) && !acomp_req_on_stack(req))) {
+> +		int err =3D tfm->compress(req);
+> +
+> +		req->dst->length =3D unlikely(err) ? err : req->dlen;
+> +		return err;
+> +	}
+
+[Severity: Critical]
+Should this fast path in crypto_acomp_compress() in crypto/acompress.c check
+!acomp_is_async(tfm) instead of !acomp_req_on_stack(req)?
+
+Callers using asynchronous hardware compression transforms (where
+acomp_is_async(tfm) is true, such as qat, hisi_zip, or iaa in async mode)
+allocate requests on the heap with acomp_request_alloc(), so
+!acomp_req_on_stack(req) is true for asynchronous requests.
+
+When zswap_compress() submits a single-segment scatterlist request with
+req->unit_size =3D=3D req->slen to an asynchronous transform that does not
+support segmentation, this fast path will be taken instead of
+acomp_do_req_chain(req, true):
+
+crypto/acompress.c:crypto_acomp_compress() {
+	if (likely((req->unit_size =3D=3D req->slen) && acomp_request_issg(req) &&
+		    !crypto_acomp_req_seg(tfm) && !acomp_req_on_stack(req))) {
+		int err =3D tfm->compress(req);
+
+		req->dst->length =3D unlikely(err) ? err : req->dlen;
+		return err;
+	}
+}
+
+When tfm->compress(req) submits the descriptor to hardware and returns an
+in-progress or busy status, won't this immediately overwrite req->dst->leng=
+th
+with the negative error value while hardware dma is still in flight on
+req->dst, and skip registering acomp_reqchain_done() via acomp_save_req() so
+that req->dst->length is never updated to req->dlen upon async completion?
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261028030503.1792=
+3-1-kanchanapsridhar2026@gmail.com?part=3D3
 
