@@ -1,127 +1,98 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F00C9606A32D
-	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 18:52:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBC2E606A31E
+	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 18:59:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gourry.net header.i=@gourry.net header.a=rsa-sha256 header.s=google header.b=NmKxoPwv
+	dkim=pass (1024-bit key, unprotected) header.d=yandex.com header.i=@yandex.com header.a=rsa-sha256 header.s=mail header.b=l84f8WVn
 Received: by kanga.kvack.org (Postfix)
-	id 1AAA06B05C7; Thu, 29 Oct 2026 14:52:56 -0400 (EDT)
+	id DEA606B064C; Thu, 29 Oct 2026 14:59:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 15C816B05CC; Thu, 29 Oct 2026 14:52:56 -0400 (EDT)
+	id D9B116B064D; Thu, 29 Oct 2026 14:59:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 04A936B05D8; Thu, 29 Oct 2026 14:52:56 -0400 (EDT)
+	id CB0AA6B064E; Thu, 29 Oct 2026 14:59:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id D7EB76B05C7
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 14:52:55 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 6A47D1A051E
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 18:52:55 +0000 (UTC)
-X-FDA: 85376560710.11.6DB30B3
-Received: from mail-qk1-f181.google.com (mail-qk1-f181.google.com [209.85.222.181])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 7BE7E40008
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 18:52:53 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=NmKxoPwv;
-	dmarc=none;
-	spf=pass (imf04.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.181 as permitted sender) smtp.mailfrom=gourry@gourry.net
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id A17856B064C
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 14:59:00 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 3E9891C3C00
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 18:59:00 +0000 (UTC)
+X-FDA: 85376576040.12.2C230F6
+Received: from forward400d.mail.yandex.net (forward400d.mail.yandex.net [178.154.239.223])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 3D0B91C0004
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 18:58:58 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=yandex.com header.s=mail header.b=l84f8WVn;
+	dmarc=pass (policy=none) header.from=yandex.com;
+	spf=pass (imf18.hostedemail.com: domain of eneshan-karaca@yandex.com designates 178.154.239.223 as permitted sender) smtp.mailfrom=eneshan-karaca@yandex.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793299973;
+	s=arc-20220608; t=1793300338;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kPPto5KE/jC+RmkH+6jKlnfiz+VihZ+geh+WGRQD6SI=;
-	b=lSjmH2VNc5QtdmwtjjMNGW+6fd5bfV9dFPlvZFbyttEPwUFNr+azMCpn9p1QmY7duhBvR/
-	x9ZHpzibsj9M5CCTtREDa82b4B/0i8eUS7nWyHE7qvAPY8J3tB3i69lBTv+IYkxNQtS9nJ
-	w8ne97R6MSzHmZ9mkiGPJkXAHLYRfmI=
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=UfCr7SMBp2MWLVqMbTLms5eQnif5CMZeedqFoCGKq5U=;
+	b=6GJurAz2iK408yYOdPEpqbh6m8Ae3RbekTzAxoGBJ2oUmU2fMJpcPfVgXyyQKnv8A/x1L+
+	yHeGCOR9tfGp8Eiiv7jQz5wTtkSLXIni//Cbn6ZFtY2kOItBk5JlinnAAMmcPolp3jMkY3
+	mwv1bONk0/MptnhIWEbsXe71rpT8cuU=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=NmKxoPwv;
-	dmarc=none;
-	spf=pass (imf04.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.181 as permitted sender) smtp.mailfrom=gourry@gourry.net
+	imf18.hostedemail.com;
+	dkim=pass header.d=yandex.com header.s=mail header.b=l84f8WVn;
+	dmarc=pass (policy=none) header.from=yandex.com;
+	spf=pass (imf18.hostedemail.com: domain of eneshan-karaca@yandex.com designates 178.154.239.223 as permitted sender) smtp.mailfrom=eneshan-karaca@yandex.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793299973;
-	b=XDVNKm/afeQCbMIaLCpd/EAQVOTE6BFQN9WKKezNvNLmzANcVxDX9ykfiaEKGkVZrIcKwd
-	9ewFlKm0cccOpyVxPVGKBuMAd5pJ3OCeWeEd0/A8yh1w5q5LVMCyqPReejQreQJX2Q4wIe
-	rs4aX5/DOruXnG8VF9gAlCZKZNOxmWc=
-Received: by mail-qk1-f181.google.com with SMTP id af79cd13be357-93f22a8515eso212007885a.2
-        for <linux-mm@kvack.org>; Thu, 29 Oct 2026 11:52:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1793299972; x=1793904772; darn=kvack.org;
-        h=message-id:date:references:in-reply-to:cc:to:from:subject
-         :content-transfer-encoding:content-type:mime-version:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=kPPto5KE/jC+RmkH+6jKlnfiz+VihZ+geh+WGRQD6SI=;
-        b=NmKxoPwv+3Honwo8t0ABhzZDXR7cunyh1eSxS8qKEnEyPActzExSBYi+7LPItOy/qC
-         6hXrzuRRszaGMISq/0aEgpv1JeKCamcsndybfLc+gO/9n2uOBJzROYljZlskvFfot1tz
-         R0alNuNuIr71QXoTMj5lCNfYpzzlC6eyJdFmkHfADYyN19qlUADleUXW3vFer8cYUliw
-         hzeQsEn0fP370eZeW4FWNGo2U1qGDsF7YhMF6zILNwyN7/xoCKhfgK5PR1PvyZiVNfeZ
-         bvs1DOlnogj3hcgZ+lBbKGrPzQslBpCOQUiguri/4sLbXMu55t+vlVWjuL0QWUWxfgwD
-         D3lg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793299972; x=1793904772;
-        h=message-id:date:references:in-reply-to:cc:to:from:subject
-         :content-transfer-encoding:content-type:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=kPPto5KE/jC+RmkH+6jKlnfiz+VihZ+geh+WGRQD6SI=;
-        b=XVlLp2RTgzHSibDB0Dc+zH027gk+mutKESPpsklVr8CAmkcXthfDNyEcBA5CRDZAha
-         dnzmf1Uoq532k1BxJAq2Ffp/mZ1/a99cUAiLjxTp5TijBb3ylJ7as7ZSHIYjG3Xtdlwz
-         YHZy1IwvQL/nkAx3ZRYgYjCEGjCeC2ybmivuSpYzfAb0j8iJ5Pf4tnPcewMmSrYpPPqx
-         90RouyBgAsZLWpOKQf761alyMCaZw48IVMLe4UK+FDQqgGOy+kd0s4/iK/IJhrfBVwKf
-         of7Ypd2dipOK10uDqxdu6Hpnmm+Qhf6NX4eaf78Yiz9IyZkwmGXETeMLHcPLGaWKnucD
-         YZzQ==
-X-Gm-Message-State: AFq9FYI/mLAdcHZQUhWuBE25kWyejeDyaLjMzEfBBnwLZ453S2Rejdyb
-	OsVAYiooBbzHV/j5Y8KiQ/DVsEEF2EZcZIbrA5mBE5nulveUr+W7vCg6XZIJM03GU8Q=
-X-Gm-Gg: AYBFou397IjX0updAAIWiZ0gUkhYJyx3XXOkwL3QSSEbH/ZeGQeBUI+orfaPIyulT0/
-	rgEnnrypWRLU/h8+Z1wlOpOhC2wxQwTM0X+boCQeh5cvT9cMVuxY3Arc+8bK1cx0Rs/Q1cTw0VT
-	3fUs7dxkV0HjrrBW2DHLpof8CA69Np0NBMCM+WF1bhbETC97SgvJexQWEFisZ45dNw1AjpFdWJl
-	2V7kun2rhrHDkMB1SYpoYCOCCuIEIPsY6Ig+LiQYPZc+JlVg622BqjLtZd7WDNYFxWNhF/vTFBt
-	BllBqqFwo1JbTQjRhd6FnBusfCrGn4HJhCi6X90DdSTgLGtDmt53K0gRkj9ewnm90FtVcxHWbYG
-	te0U+VusdSyHGmhVvq1cnNnt34rYpoCPH3jH//ThG3dphsME2xjJ8WEP/v0csw+baCFoZT0xgwm
-	gr/vQS9ZS0GdSIbxcSjuIux69vQKiR9iiUfZRf0TXnbYmkgwENtNQajPaxYh27zJtONQ45bG+be
-	FkJIxuZSArWlXkwObtkDISKz0Wgyaco7Ggv//euZ1lWXs1p2OAlNLk2ozEwGO6stZT84fZnXi/7
-	1aQGyrX8wNzYdJfGNSBunuUEXIFTur6H2EcBV0FWtk9x/seYtVkuOQ/QFoLIl17sa30qOpRZecW
-	9
-X-Received: by 2002:a05:620a:2686:b0:93f:5f83:2cbb with SMTP id af79cd13be357-94421581847mr21461385a.7.1793299972404;
-        Thu, 29 Oct 2026 11:52:52 -0700 (PDT)
-Received: from [192.168.86.58] (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91ca31581acsm3343856d6.36.2026.10.29.11.52.51
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 29 Oct 2026 11:52:52 -0700 (PDT)
+	t=1793300338;
+	b=lB/Y95CIzApO3u6l2pErrgxcwmORxF7DgGLn70yDzra5Q40fE0FQhsyXNXk+8hoG8qP8ub
+	iuC5gsmfNbC4Lafxevsx1WuEacxiS9YQOvgEKVgpS+sZaUaIIUG4iqF4KvmftOuxHlDrwU
+	nxzhRF9wfA4qgMroYv+ByBW1vTS4AbA=
+Received: from mail-nwsmtp-smtp-production-main-89 (unknown [IPv6:2a02:6b8:c0c:1f29:0:640:95da:0])
+	by forward400d.mail.yandex.net (postfix) with ESMTPS id 3F3DE81375;
+	Thu, 29 Oct 2026 21:58:56 +0300 (MSK)
+Received: by mail-nwsmtp-smtp-production-main-89 with ESMTPSA id nwoaPAGntOs0-SbXmwiTF;
+	Thu, 29 Oct 2026 21:58:54 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.com; s=mail;
+	t=1793300334; bh=UfCr7SMBp2MWLVqMbTLms5eQnif5CMZeedqFoCGKq5U=;
+	h=Message-ID:Date:Cc:Subject:To:From;
+	b=l84f8WVnf0WHjjRwv2BsHGMCY32Tq9OY+zOcb7WWDKUREDKTCRetEM9eTAiV5mTi6
+	 y4CEzvWJLMwIbTQH3jg6QlToyw2wtJO9noRgrTD+bLSzO1Bmwp9m8cBzJpa+zdSjqX
+	 KARciJ392A+xPz93jkzx1cwIBtcRQz9IlOo5UBdU=
+From: Eneshan Karaca <Eneshan-Karaca@yandex.com>
+To: brauner@kernel.org,
+	kees@kernel.org,
+	rostedt@goodmis.org
+Cc: viro@zeniv.linux.org.uk,
+	jack@suse.cz,
+	mhiramat@kernel.org,
+	mathieu.desnoyers@efficios.com,
+	jkoolstra@xs4all.nl,
+	farid.m.zakaria@gmail.com,
+	linux-fsdevel@vger.kernel.org,
+	linux-trace-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	bpf@vger.kernel.org
+Subject: [RFC PATCH v2] binfmt_misc: add binfmt_misc_select tracepoint
+Date: Thu, 29 Oct 2026 21:58:49 +0300
+Message-ID: <20261029185849.8016-1-Eneshan-Karaca@yandex.com>
+X-Mailer: git-send-email 2.43.0
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v4 0/8] mm: fix allocator races with memory hotplug
-From: "Gregory Price (Meta)" <gourry@gourry.net>
-To: "Gregory Price (Meta)" <gourry@gourry.net>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, kernel-team@meta.com, 
- muchun.song@linux.dev, osalvador@suse.de, david@kernel.org, 
- akpm@linux-foundation.org, ziy@nvidia.com, joshua.hahnjy@gmail.com, 
- rakie.kim@sk.com, ying.huang@linux.alibaba.com, ljs@kernel.org, 
- liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, surenb@google.com, 
- mhocko@suse.com, brendan.jackman@linux.dev, hannes@cmpxchg.org, 
- mgorman@techsingularity.net, anshuman.khandual@arm.com
-In-Reply-To: <20261028211930.3504634-1-gourry@gourry.net>
-References: <20261028211930.3504634-1-gourry@gourry.net>
-Date: Thu, 29 Oct 2026 14:52:50 -0400
-Message-Id: <179329997091.2127828.9582419476069377621.b4-reply@b4>
-X-Mailer: b4 0.17-dev
-X-Rspamd-Queue-Id: 7BE7E40008
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 3D0B91C0004
 X-Rspam-User: 
-X-Stat-Signature: c8ntpeqg83xfikmb395u9nputjcew39c
-X-Spam-Status: No, score=-8.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+X-Stat-Signature: pg66q5d9uth65i73aqe1inysuyw7rfgc
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
 	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
 	autolearn_force=no version=4.0.1
 X-Rspamd-Server: rspam03
-X-HE-Tag: 1793299973-856144
-X-HE-Meta: U2FsdGVkX19V0hkxfTNrJRUGySLzI00rysftZJsC3u6xGSxdEiFcdi44KdyZhYg13rzbI5Ygx2+HPo66khSTPc3Q30q22n7952afuJmLKXiIcnjJEhvIGq4v+EyUEZbvakgNS35y7gaBnUUjRayW8qTL51vOVdaD16Y/rKFLfxQcqvqTZNqoo/CZRAzgKKk2TXCZnOTi1ZmfhQcJ+P2QLzmDcptS9d0NcqBgbii5kILdPrQhKuuOeZ0xKAQSy1QcEa+9DVMXe70ujd7wflVvxCllyR0nWLUelLow6wPVQJl9wkEn9WnbU5QR5jWwIKV0n9lTZ1iugZBl7ytcAI/M5uiavLCNN0LbRU/h2CaImvz/4enHA9BGbsJBo4ClFBxpOI6Pn/WVhYtuOwn7FxHf5FzHo6laP/PKoq4XVOliAZI+kilPWDIOBCsr2NRC1C3sEqCkT0dEAQNNdIavB65DgSUkRCs3yUBN8Pis7dvUyaq/22GKsfAwahfIA9Q7uQyPViBT2K81YrNsU14wlJiCXEggHjBRX+AENZWR2lv8ETvI//0CwCYCFnXKVPc544RRTXBPGBDSby6rigR+8yEsBsPEWSTwOofS6C0xuja96VL0HLKiCA0gMR5urIzsMpvQFMG32JA2VgbrXlEhakmYQE4Vwz4dco2JJ00ohZ8W3LiZUUCLkjTlFrawjyjZ027Wwkd1nE5h4sLC2Omz3LnjZ+4k4mRKIVSn/g7e4jcHhMXxsv1J7t3eTc/iEXyPBQr20IW2qNzgWqxfrA2CGL4WuoOFyAl0HvyVKhvi1zMc23hkFDRiwIrarIqiVX82/2t0zN/dIYmNiNBmMDnno1hiivbK6wbkK2oFlE2ACWNM7YkXK3k8ZVX+Z0LJjpLiHpblw9d8W0nMTwK5J5W+DDVawHUgbrl0T6JEQPOSkX8mwhNMOAupEGy1PB8Ie4CacPtK453EQZNUL9Q5l4mKIqY
- xETEXQdo
- iHDfkG9zsBBWBd2xP0VnInu+n/4PNtfafiHkEjh3j/5x9Ray8chZQKLUGfhh7ewWgc4tdfePpjEYUPJZFf6OeazVgYTf0VLbwtouggeAs4ty/2sdngsW91ptoxu93Z9qarRFqdOXOrA0GIPnjGiRu9q7c5aq7xT+94iNqc1bdeR+QFx6NEf/ltuwv1xeoYctc25PA0qIlf/CuJFn1Ut4P2mR+qTyTUxlhJyU9ogEK8T/bmZuxhxoEBEeIl+5on1L7cGy57xFLqkKXrTPDN4l2S9gG6urHQlBm2v8MdMan1JzMqB8jJgzUaHMziMRMXkFyvQ61yKT61Xrg+nhJ3FdrVKGOdvTUGngEF5J34NSnG5VrTeV3Il5uKqr5Kw==
+X-HE-Tag: 1793300338-412526
+X-HE-Meta: U2FsdGVkX19PdWZuy0gR5LMaIUyn+LZsjoGy6OpQ3E7DJpeaG7VWlDQ1DkkmYSIPDh/Gg9fFSErS+s9KlEI5r7Alztgra2veZ/o+56x6cPFNzBjAbX240RYfRyZzwnXNZHO3jUbVUZU8yxJJu7ZJM/dcUqjQhPBfrOFsjNehj122TueKvJTtHhNWOmQGas34WlYLftpQ9yLEBpFxy2kGuu3BiOdWwu8pSFhhz5ApzFPGgaB/9UhLcAezRPmUTCe8Ts9sSyQva31gsjfmQrMfQX2waLoFSBgEf8no/rmzxouslsJjWV+ni9DqjOn84v6hJh2ZplTLBEAtAQ9+cApoXLq0rcA22xwb+DpLweHySta0lA3mVneUSGVmcSOrSjK53acK6PKap5KsqS55Z10ilXChTVPkK7VkAQ0nkDTmfiyceEE58katIJdm3JIP0GvvklPY3+D/ytP1Bz32080TdvHvxXU6VTdtzSojkjjx8imF5+jBxBpQMW5hdYMi329wMjBmLJgRfL3syq2i4JGRMlSB6C+eMXfAmVHgW+EVtbXL4lOw8ICt1kCGAzsR1q+unV1wgrm6/uFy2vfM7GVP83Jq1aauE1Zzj76hI/8i4yoLRUnwrN8FyXVy9n59Ux+WZ8KMyXXZ0j6z5RrlSw32hdrZPeJ6HK+xn/yOGj9D74d3+4hBRJSv2jvYWfqf6E9zPjaYTzlp6GSOmhgrMsUViSMqn7Ix92YGEDfun+qyvzMa873BZ/f7CcdNgQil7J9rSEy3OmW+QnQwRZFXy7VAMTq7+doxsRb58I84Wu1zPIH6mQx6IvuycpbouoeYmynx26G4x2xoUNZUonMC85jNWjFtpotAB3Dl7V04T/OUp0Tk4B7jO3Xf+nEJQzFviJz83Zi9JbZRKHxhRhjCS4OTHCAT7i5Lq2yXJw6X12IWQGKLPvPRnRnStUTAUzqOOMqfMYh1BJrwwyiPT98IpQS
+ prnYlNMm
+ VG7WM1Hb+lb4MZLcM5K/n57TdRSSDMdnuZSkH1wX0rrdEK/bQSxVsH4jSw8P7PJO3ct/3cczxL8PzMe5lyKEtP4YGhaXymEI09aQ9oZ41VrJh/W4rqF/mHzxsSDZ+GCgOxNp4uBD4mSkCeK6lvLjY2cNN8eSObTB7vtfBZWgtM8djgYr4CPcGSRtGEl4wbLCtEXualYHQwY6FMQOVyxBbg87FpmOxL6o+9fdESPZ9GDRENrLsRwF4C3yHzukCzxdP4IaQzpqCNZtIxLLJVGNoncuejljIFiIXM4TX69aMSZFaiL9wExfC0wqUk2qsi1MpGoeGmC7MCj0Mpcf56MFPr5PN4WLCPK3ZcZNmaWzny/b7Tmj7RjpZ/W+rbXXMXErROVMl/dCH2SJBfNjqRLFxRyfZMxba4xW6kEYaZVQlJSC6XtiEIAXXT28WC/WcZt4xlgMkD9xnOKpTk2zRjGKBIAboGPRBvrdDpRkZB2dq0iLsu42wQPTVjqpXPCr5+J2OJcpthZaieUT52v7bBAFxrRTSBCH2QfEYaNOt
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -130,25 +101,133 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 2026-10-28 17:19 -0400, Gregory Price (Meta) wrote:
-> Memory hotplug rebuilds zonelists in place while allocations walk them,
-> and offlining an emptied zone frees pagesets the vmstat worker can still
-> hold.  These eight fixes cover the walkers that crash, fail, or pick the
-> wrong zone or node as a result.
->
+From: Eneshan Erdoğan Karaca <BoxStrikesTeam@proton.me>
 
-Andrew/David - please don't pull this for now.
+A binfmt_misc entry can select an interpreter for an exec.  With a BPF
+'B' handler, that selection can be made by a BPF struct_ops program.
+The kernel commits the decision in bprm->interp and bprm->flags, but it
+does not emit an event at the selection point.
 
-We're solving some cross-over between this series and Vlastimil's
-set of fixes from anthropic:
+Existing observers have to reconstruct the decision from
+/proc/PID/exe, AT_EXECFD, AT_FLAGS, or /proc/PID/maps.  These sources
+are mode-dependent: a transparent dispatch still reports the original
+binary in /proc/PID/exe, and a short-lived process can exit before the
+observer reads it.  A classic dispatch reports the interpreter, but
+not which handler selected it or which invocation flags were used.
 
-https://lore.kernel.org/linux-mm/20261027-pgalloc-ai-hotfixes-v1-0-9c7d1aca801e@kernel.org/
+Add a tracepoint after the interpreter and the invocation flags are
+selected.  The caller passes the matched entry and the raw flags; the
+trace event resolves the handler name and masks the flags with
+MISC_FMT_INVOCATION_FLAGS.  The event reports the binary filename, the
+selected interpreter, the handler name, the invocation flags, and the
+pid.
 
-Have discussed with Vlastimil, and i'm going to pull patches 4/9 and 5/9
-from his series onto this series when i respin this for his updates.
-That should keep the backport issues self-contained on this series.
+The tracepoint is observability only; it does not change exec
+behavior.
 
--- 
-~Gregory
+Assisted-by: LLM
+Signed-off-by: Eneshan Erdoğan Karaca <BoxStrikesTeam@proton.me>
+---
+v2:
+ - Pass the matched entry and the raw flags to the tracepoint.
+ - Resolve the handler name and mask the flags in the trace event.
 
+Thanks to Steven Rostedt for the review and the claws-mail tip.  The
+PoC and A/B results are available on request.
+
+ fs/binfmt_misc.c                   |  9 +++++
+ include/trace/events/binfmt_misc.h | 55 ++++++++++++++++++++++++++++++
+ 2 files changed, 64 insertions(+)
+ create mode 100644 include/trace/events/binfmt_misc.h
+
+diff --git a/fs/binfmt_misc.c b/fs/binfmt_misc.c
+index 620da85..58a8283 100644
+--- a/fs/binfmt_misc.c
++++ b/fs/binfmt_misc.c
+@@ -118,6 +118,13 @@ struct binfmt_misc_entry {
+        char buf[];                     /* register string, fields point in here */
+ };
+
++/*
++ * The trace event needs struct binfmt_misc_entry and the MISC_FMT_*
++ * flags, so include it after they are defined.
++ */
++#define CREATE_TRACE_POINTS
++#include <trace/events/binfmt_misc.h>
++
+ /*
+  * Max length of the register string.  Determined by:
+  *  - 7 delimiters
+@@ -644,6 +651,8 @@ static int load_misc_binary(struct linux_binprm *bprm)
+
+        flags = entry_invocation_flags(fmt, bprm);
+
++       trace_binfmt_misc_select(bprm, fmt, interpreter, flags);
++
+        /* No argv is built for a staged argument to land in. */
+        if ((flags & (MISC_FMT_LOADER | MISC_FMT_TRANSPARENT)) &&
+            bprm->bpf_interp_arg)
+diff --git a/include/trace/events/binfmt_misc.h b/include/trace/events/binfmt_misc.h
+new file mode 100644
+index 0000000..61a0de0
+--- /dev/null
++++ b/include/trace/events/binfmt_misc.h
+@@ -0,0 +1,55 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++/*
++ * Tracepoint for binfmt_misc binary type handler dispatch.
++ *
++ * Fires once for every exec a binfmt_misc entry matches, after the
++ * interpreter and the invocation flags have been selected. Unlike
++ * sched_process_exec (which reports bprm->filename) and /proc/PID/exe
++ * (which a transparent dispatch sets to the binary), this reports the
++ * interpreter that actually runs, so observers can see through a
++ * transparent dispatch.
++ */
++#undef TRACE_SYSTEM
++#define TRACE_SYSTEM binfmt_misc
++
++#if !defined(_TRACE_BINFMT_MISC_H) || defined(TRACE_HEADER_MULTI_READ)
++#define _TRACE_BINFMT_MISC_H
++
++#include <linux/tracepoint.h>
++#include <linux/binfmts.h>
++#include <linux/binfmt_misc.h>
++#include <linux/bitops.h>
++
++TRACE_EVENT(binfmt_misc_select,
++
++       TP_PROTO(struct linux_binprm *bprm, const struct binfmt_misc_entry *fmt,
++                const char *interp, unsigned long flags),
++
++       TP_ARGS(bprm, fmt, interp, flags),
++
++       TP_STRUCT__entry(
++               __string(filename,      bprm->filename)
++               __string(interp,        interp)
++               __string(handler,       test_bit(MISC_FMT_BPF_BIT, &fmt->flags) ?
++                                       fmt->bpf_ops->name : "")
++               __field(unsigned long,  flags)
++               __field(pid_t,          pid)
++       ),
++
++       TP_fast_assign(
++               __assign_str(filename);
++               __assign_str(interp);
++               __assign_str(handler);
++               __entry->flags = flags & MISC_FMT_INVOCATION_FLAGS;
++               __entry->pid = current->pid;
++       ),
++
++       TP_printk("pid=%d filename=%s interp=%s handler=%s flags=%#lx",
++                 __entry->pid, __get_str(filename), __get_str(interp),
++                 __get_str(handler), __entry->flags)
++);
++
++#endif /* _TRACE_BINFMT_MISC_H */
++
++/* This part must be outside protection */
++#include <trace/define_trace.h>
+--
+2.53.0
 
