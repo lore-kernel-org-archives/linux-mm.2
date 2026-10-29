@@ -1,75 +1,75 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03ADB60A2619
-	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 20:37:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E267606A334
+	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 20:37:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=dnPvAICq
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=edeLt9zS
 Received: by kanga.kvack.org (Postfix)
-	id 1A8D76B05CA; Thu, 29 Oct 2026 16:37:15 -0400 (EDT)
+	id 21DF26B05CC; Thu, 29 Oct 2026 16:37:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 180FD6B05CB; Thu, 29 Oct 2026 16:37:15 -0400 (EDT)
+	id 1F54A6B05CD; Thu, 29 Oct 2026 16:37:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 01C696B05CC; Thu, 29 Oct 2026 16:37:14 -0400 (EDT)
+	id 10BF36B05CE; Thu, 29 Oct 2026 16:37:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id D6A236B05CA
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 16:37:14 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 643874050D
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 20:37:14 +0000 (UTC)
-X-FDA: 85376823588.25.AD0CFCA
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 93FDA2000B
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 20:37:12 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dnPvAICq;
+	by kanga.kvack.org (Postfix) with ESMTP id D08816B05CC
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 16:37:29 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 534AA1A04C6
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 20:37:29 +0000 (UTC)
+X-FDA: 85376824218.09.1DFCB01
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 764E8180005
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 20:37:27 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=edeLt9zS;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793306232;
+	s=arc-20220608; t=1793306247;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tNxobpWlUXNjZHphvvtOgvNQKSqjJiSYupG+wXJMVoE=;
-	b=Xl8mjb2pE/+E5IopxampZV3ezlr4o0kZjz8DObnLtEJOqESjGaCY8u0E9MjfxOIaf4tRNP
-	eGMDuLzDD6WA9UemzAvnR2aM+D6tOuWPhcHvNUVKR0XZVDb0h8Ownljsc5uw7NevFyhc2I
-	etq9J6Ryp5U6WhmRIjEi0yRCwMosDaE=
+	bh=234gD00LbP/Qk5j9zzqqy4STm6BqPfRIm1wBmbH9iNI=;
+	b=ncweEh1cdRksdAEQ5Z/GqAS/4GZLuywQheV4Q69ZJsVXttU2iJjjUfAKs9qoasHKJPJZ9B
+	rH5Arn36iOIfsY5Nrgbc8RzLYid/iRKbtHZtW7HVY/OhQbdlFyrgek1+TFwRhrSB/PYIV/
+	YuEDQM2hhTB1mM3pxbUgLD3nGYDt4W0=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dnPvAICq;
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=edeLt9zS;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793306232;
-	b=uK5Vptwr5DhN02bqy373rC7JFQxSqhDTgWRfPyIYJA8V4cuw2q9LmjKCeJACXfPWjfOj0f
-	cIK85n1oBRPiEt9jQB8UVBf+tVT5QHSlwWNVIB5lC42VeWwuJv+NcRRTWhkGGR5ipdLdsi
-	UYvLf+dFUAcVMI3cNzA+oLvHdcOcodc=
+	t=1793306247;
+	b=nX6xbaZ1M6EPwJ9mV1ecOdWs7F1gdxIlbj2cseSFD/Dux2KI1rgQfKI2dtq+6yJyDdkyQ5
+	WydlK3jT9bHhCuKD3ukNQxjYdncV6cb7SmOSxq5ocLDig2xwA0TOXuIKivLyFVpqde9phr
+	gIJq6zPI35W8zcLAyddIAfGs6GhY/W0=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 3597B6020F;
+	by sea.source.kernel.org (Postfix) with ESMTP id C1D5F40C19;
+	Thu, 29 Oct 2026 20:37:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75EB11F01816;
 	Thu, 29 Oct 2026 20:37:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 800E91F01816;
-	Thu, 29 Oct 2026 20:36:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793306231;
-	bh=tNxobpWlUXNjZHphvvtOgvNQKSqjJiSYupG+wXJMVoE=;
+	s=k20260515; t=1793306246;
+	bh=234gD00LbP/Qk5j9zzqqy4STm6BqPfRIm1wBmbH9iNI=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=dnPvAICqs5R8ijwgTMhLfxbmgHzO9ja4TQwnVekFvzI4/Y7pZ5RiY6O6tVJsThGVV
-	 0+fRYRkM1yM1n6cFK+iCf3ZqyzqyhwSxWilIYYeoHZzbo9N29g9v86q9A13gDR/zAg
-	 8DtvbNaMzwDgGrBUQB5UExtEwWaK0Dn9sbaFts/LVGL/R1SW2YpAU0BrON2RUO4yYy
-	 cu/4SgzAJ0FHs5/Ri+ZxG/yPhlMK/kh2s08tuIv4giMR88cv5B14Ge4CBnqQ8xk6oa
-	 1CwTQSEOwzHx7AbzR0KZQSktdzwEh8USZEjLO2tgQvbt5Dkn/jHz3doUQYIsiZKPxC
-	 3UQpIdOeycdlw==
+	b=edeLt9zS7/wt/9hnNB2ETmthM71RS43pg/tv3+Z3wip3JVZEmnW2zTc7BWQycloNy
+	 eiIxLdX2AHK+EIcGUho5VTaK6l3mGn1X0zTJHt1HL5v9rCLaz+t973Eeuf6OOZpwZq
+	 tzpjQ6ahggUdoqQsqXxoW/WHIIkOV547zpUK6vVcyeinMHiK9ttzsEiW87eUaXbGYB
+	 nnyFsqJECi9wQRjroEq+7Q5o/UeBBVUs5gLJ9jm2YeNOiFcd8EkUI59EM8WsoTFPNk
+	 7toOVO78y+mRJVbYNeCeT6CcidBYrIzM+V4Q0SmKtYGNSa+6jYaaKFXHRob2/z8Y/b
+	 AxJkCxCEB1CXw==
 From: "David Hildenbrand (Arm)" <david@kernel.org>
-Date: Thu, 29 Oct 2026 21:33:10 +0100
-Subject: [PATCH v2 15/47] mm/khugepaged: always recheck the pmd in
+Date: Thu, 29 Oct 2026 21:33:11 +0100
+Subject: [PATCH v2 16/47] mm/khugepaged: fix PMD table lock leak in
  try_collapse_pte_mapped_thp()
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261029-fixes_core-v2-15-a64ce7f83abb@kernel.org>
+Message-Id: <20261029-fixes_core-v2-16-a64ce7f83abb@kernel.org>
 References: <20261029-fixes_core-v2-0-a64ce7f83abb@kernel.org>
 In-Reply-To: <20261029-fixes_core-v2-0-a64ce7f83abb@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>, 
@@ -110,27 +110,27 @@ Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
  Josef Bacik <josef@toxicpanda.com>, stable@vger.kernel.org, 
  "David Hildenbrand (Arm)" <david@kernel.org>
 X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1608; i=david@kernel.org;
- h=from:subject:message-id; bh=KkwG8uxQMmQsjX2diZyIiRGRbeEH7cv/itYGtmQ0sPg=;
- b=owGbwMvMwCF2/OVpCdfQ3ZWMp9WSGLIer23LVcs0DZ+Vey1b3SqpnrEvsuh3u9sunSOS0y9ke
- OvO3DSho5SFQYyDQVZMkSUo+L7By5fraqvd+Jhh5rAygQxh4OIUgIl0pTD8Zglw/6lYZenzR8hk
- r8l90wVv172VFuh9dvaBH8e5W5P3izP8DzWJnPD4TI3eYUNe26sd69i/56mUL3HNdaxgFvxTHXi
- AAQA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2386; i=david@kernel.org;
+ h=from:subject:message-id; bh=+GceeJLIEkYM45yBBgdZk6QP/zPFquzOdoh39+pg3EQ=;
+ b=owGbwMvMwCF2/OVpCdfQ3ZWMp9WSGLIer23bNeP0wWvJS/X6pHY8L0u7YrDU4cqVVPcHeybd3
+ /DS7Vcsd0cpC4MYB4OsmCJLUPB9g5cv19VWu/Exw8xhZQIZwsDFKQATuV/CyHAx7CXX1+3Hj39y
+ +TlL3JavOKg2cNKBuSrRv73q1jxe/4yf4a/Uz9D1Sdue6uUISi9b0CaQFe5uEnz6z6rLxwJNO+Y
+ 3svEDAA==
 X-Developer-Key: i=david@kernel.org; a=openpgp;
  fpr=1BD9CAAD735C4C3A460DFCCA4DDE10F700FF835A
-X-Rspamd-Queue-Id: 93FDA2000B
-X-Stat-Signature: 8sdidwnw48pkdp9xjaty59u88rhydaf5
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 764E8180005
+X-Stat-Signature: ngrxht14hkuhmyr7m3nzzr595omez45s
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
 	version=4.0.1
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1793306232-328444
-X-HE-Meta: U2FsdGVkX19pdgAHUFf79CQ56K0i5t2kEqdq2VCyEhXN6l3+jqFV65miDBy3OFoLpm6SJxVwJuV+Vq/pUsJJDE5LlT9zxc57qBOy3nSnShjBRADa+gkjJwmIeaWFGmnSfGPcT7eaXCHsLoaTUv/A7qbhFh3JR0SgoHQ/yr4d9TgPzlLA6hSi9sD2CuVmEV4aiNBzJZUeva4taK+ovDlNHFM7BoqfZH2t+XnfVVREKaS17P34fJigwiyxj9wTK17Eh5jI01a21YxH6EX7mfXhUgMT82M8aBWrXlTB2+H5DhnMMWj0/aMzglDbaqakBA85dW+S7hGv3smQgUsdSAdMUhhnMcCV8uUKovz+llCP06ngVJtkY6tTqoFrNkzOT5DAyGlBLC+YlDEscNjorY5v9rKqxewLXfh8b+xrVbnwQIKeDEj8Bz53cAbpEFeqGULV0xvVVBS5k2kRCoHjaifwqixqRNqa29/NiYHU6T1LX+F39M+iJrL0yuZKFg2uKsTduRUMicUZydwEm9Es4I8PhmM0FbyjgSn7Dy9aTPM6dujxrKIaz5khLf2T7YJTdwsmp4JhdZIFE6uyQIRuBMOtsJ/Ro1dR0SvTNSxEGgZ8ydBtXIOfa3YZliBXezdI1a/ubx3i5SqrnwWKsSHjnNmv3AulWCa6hvf9ZDxjoA56Y+dIN6/CY1DGlpQ9nTCEJ8JrPHNuyrjv6CU5KSRN2f6LYgZ5tI8SdVy3J9PeU/pjrnsVXdVhnwZDJh1wPJmXgaOYHNqjx56F3B7DQDOzoOBoD3PmpJlOgH1prMRx+5ngH1ENN1lAuv6zGTlBQ9JaUoYF9rRUO559K9YYYSsS7mXpl/4wxkJBBHwigqTOKnHLFLFwZbC4jC6chEy+Jh1mQg7CjADUH0SJG5Sbv9At6wSGWTPau+YU0S0+Rl+MnUeVANrQle0Jh8WxeWRQl5/30zH05Rku/sFVVMX52Lh7kmj
- JE1L/7OG
- TbWkWRspvPevHllFjAKXgRiU0EkjnkkOW4Vpd1Xq5JGnDo7Qzszg1yWbyo4x6cfGm3fep8pQP2Y9IThthzpHgwfAyhXxlkvBtLADh45+0h6VWx2HEx4yQ/GzsmS4poZ1biPy4d7KxocxDVMNYWTYqu5f9oucGcLAjF/0FSd1+U05tCw7NroGRDG4kURY1D8y1PQGMbchz3WPzjRWYIAZyJBet0Zy3xNCXnzLF21r3p5QRh0vEz2dgEgoQ42wybty/4GrDPl9jKzxYefsxAGPL6qTHA8fxUR2vzDaaJrDnSslOb+cvFry5vQcP2FYm6OT6jTFyr0xL6lqDxkU9u+W++4qrlNoeGyVeTAHTO8gUlAv6clLiCqDuYfeWt0bnsAmYCgOuFsqwTaIhIZqk3EYbNuc+bR0mGJ8tFHCnOPScTdh7pRd9NkEGAn79hMv5tVdXwLt9N8gVG1qI8GYjia94S3XHuJvzO/kQEwyc
+X-HE-Tag: 1793306247-901932
+X-HE-Meta: U2FsdGVkX19XFJqCYbf544/1MLgwYpJ23O58E5PvKpC4c+pZcJt0+9Q6FrqgfrpgZc9YQ1x4Kn9PP0zPkUv4A8QhooKvO6XDjmbxyTa5j1KjoJSpXtlWBfkqpy08Jh3lePXCIq24ywWDNXLP8FhLlpcpWSna2Kx3CMK+/DtKd6fy+0iY30iMPehBonima5peq1vndravsuo4D5mew5OPr4H6P8M2Ccov1GdvkTtE5bMvJpdj6MHLYpwMIR6tU0r7GvBSVXeXDxs3IraRnMj4u/meaN/s7OTN1lZh1mkb81+PXomPemn9UOPA5OUV7y0bbk5K06ECkf43wkDjUghIZWKpQ4C3u3ki7W99805PDVYp+9wDg5j33J5yHe9FAdN/InPIUi3Yz4PgLAb/kwiMZdOs5hc57RL53BNAdaa9c62DXTA1gsfqOhJYu3zrhSU9FbJjn66ROCiPaRgBmGqTR2qqiPK7aPUrpKr88EblbUrPBac1MY29bUABf8TQOhKr9DWmO02MfIKN6YIfDlq9udiicrKe+wIUsfSIeR7rP0hWsh+HwWtFkSb/rOvuF8cBWFV6XKBGavapxEHYmlxahnp9a0p3S9EbJUbxftviXzbu+ZXijzhDYSL8p05hn4sT04k9LhomrFr1Y7TjdK+VbUOMgJaLuPoltAZCI3YTQJxTFpjssmSoseTN8OK/o5kLfcDqyruG86Kn7P1WGebMjcjShwnwT23bc2gAmzarcZHTMZERBcl6KN8JoOjYJazxFYlHOrFEm6ipF03tm3Vw6HB/EFSI0coLvujJFu5KRPTspREIENp17nHpr1M0zs7fsh6TObHJqcTobal4/6QyvBtWMK9kxPMu+3uMyX8hh0Vyrj3FdgaZjhLAbgKT7yCWpA/G8rM5V25X+d4+Hpbk1X6x8j2Rvnc0FFvmJC4dhQPwSK28NmVTKhqjCgnJkih+TKGwvMFJm/rdqlqqssS
+ eXiNN+ol
+ 4d6y8vhAV0EHmmrFgh8+S0IGOxQ+fbWKCoYTdoSwuUDiqQuFW4eZYVi9OwLlSaEZOdaKwdszTa7lDRFHKJHqNBTgRFf+QyR0IZFy3ZSdR/nFZGJUoqtPWL/R4+CxWaSJt2P2nV6o1085JO0oRFHZVcY9YLDBP0/AfpoDmkHp7utmRcWN98XsGuBdVeayslnpq5f02Ipgv5QMl6/CWv2fe4pgIFjDz/u3z33U4nDchakq8hOt9h/2yg9MSWqPQt6T7T8syUAbJeynATEi4bz2AMQO5Yh8PJeWp3IoV9bsLB8neKLV994dkyPKHIq64zqDQB6210oWJcFF1Om+iG/Xo+7SsxSMBshtB0o9yD5Cz7uU9dk7GLeusOQ+8O/Q9TSaJdp3BEQo2YkNBhJzmPzr2BBXAfr4aRoXAjykl3T9t+jed/K2OcqnnwZMbGvqCXExfLPL/AfyNdcBcwzJ+YM7AdzDUcB2AEGnRi+jIGI5R3Cd5Hpo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,49 +141,62 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 
 From: Josef Bacik <josef@toxicpanda.com>
 
-try_collapse_pte_mapped_thp() drops the PTE lock after it has cleared the
-page table, and takes the PMD lock and the PTE lock to remove it.
+For a private mapping with userfaultfd, try_collapse_pte_mapped_thp()
+takes the PMD table lock before it maps the page table for the second time.
+If that (pte_offset_map_rw_nolock) fails, because the page table vanished
+in the meantime due to concurrent page table reclaim, it leaves through
+the abort label, where the PMD table lock is unlocked if it differs from
+PTE table lock.
 
-In between, MADV_DONTNEED with CONFIG_PT_RECLAIM can reclaim the
-page table. The pmd_same() check is supposed to handle this, but it is
-only done with CONFIG_SPLIT_PTE_PTLOCKS.
+In case the PMD table lock and the PTE table lock match, which is the
+case without CONFIG_SPLIT_PTE_PTLOCKS after pte_offset_map_rw_nolock()
+failed, we miss to unlock the PMD table.
 
-Fix it by performing the check unconditionally.
+To fix it, forget the PTE table lock when we unmap+unlock the PTE table.
 
 Fix generated by an LLM and sent by Josef Bacik in private.
 
 Fixes: 6375e95f381e ("mm: pgtable: reclaim empty PTE page in madvise(MADV_DONTNEED)")
 Cc: stable@vger.kernel.org
 Signed-off-by: Josef Bacik <josef@toxicpanda.com>
-[ david: adjust description ]
+[ david: move the ptl = NULL handling; rewrite description, drop wrong comments ]
 Reviewed-by: Gregory Price (Meta) <gourry@gourry.net>
 Tested-by: Gregory Price (Meta) <gourry@gourry.net>
 Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 ---
- mm/khugepaged.c | 9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+ mm/khugepaged.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
 diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-index 4b71d010b2af..f53c50507c83 100644
+index f53c50507c83..04d9bb21ff52 100644
 --- a/mm/khugepaged.c
 +++ b/mm/khugepaged.c
-@@ -2013,12 +2013,11 @@ static enum scan_result try_collapse_pte_mapped_thp(struct mm_struct *mm, unsign
- 	/* step 4: remove empty page table */
- 	if (!pml) {
- 		pml = pmd_lock(mm, pmd);
--		if (ptl != pml) {
-+		if (ptl != pml)
- 			spin_lock_nested(ptl, SINGLE_DEPTH_NESTING);
--			if (unlikely(!pmd_same(pgt_pmd, pmdp_get_lockless(pmd)))) {
--				flush_tlb_mm(mm);
--				goto unlock;
--			}
-+		if (unlikely(!pmd_same(pgt_pmd, pmdp_get_lockless(pmd)))) {
-+			flush_tlb_mm(mm);
-+			goto unlock;
- 		}
+@@ -1904,7 +1904,7 @@ static enum scan_result try_collapse_pte_mapped_thp(struct mm_struct *mm, unsign
+ 
+ 	result = SCAN_FAIL;
+ 	start_pte = pte_offset_map_lock(mm, pmd, haddr, &ptl);
+-	if (!start_pte)		/* mmap_lock + page lock should prevent this */
++	if (!start_pte)
+ 		goto drop_folio;
+ 
+ 	/* step 1: check all mapped PTEs are to the right huge page */
+@@ -1935,6 +1935,7 @@ static enum scan_result try_collapse_pte_mapped_thp(struct mm_struct *mm, unsign
  	}
- 	pgt_pmd = pmdp_collapse_flush(vma, haddr, pmd);
+ 
+ 	pte_unmap_unlock(start_pte, ptl);
++	ptl = NULL;
+ 	mmu_notifier_range_init(&range, MMU_NOTIFY_CLEAR, 0, mm,
+ 				haddr, haddr + HPAGE_PMD_SIZE);
+ 	mmu_notifier_invalidate_range_start(&range);
+@@ -1952,7 +1953,7 @@ static enum scan_result try_collapse_pte_mapped_thp(struct mm_struct *mm, unsign
+ 		pml = pmd_lock(mm, pmd);
+ 
+ 	start_pte = pte_offset_map_rw_nolock(mm, pmd, haddr, &pgt_pmd, &ptl);
+-	if (!start_pte)		/* mmap_lock + page lock should prevent this */
++	if (!start_pte)
+ 		goto abort;
+ 	if (!pml)
+ 		spin_lock(ptl);
 
 -- 
 2.43.0
