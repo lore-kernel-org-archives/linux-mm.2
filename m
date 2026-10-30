@@ -1,145 +1,128 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9278606A31A
-	for <linux-mm@archiver.kernel.org>; Fri, 30 Oct 2026 20:03:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 768BD606A32C
+	for <linux-mm@archiver.kernel.org>; Fri, 30 Oct 2026 20:22:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=A+ppHjTj
+	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Eo7n+B9e
 Received: by kanga.kvack.org (Postfix)
-	id 89A126B05B2; Fri, 30 Oct 2026 16:03:14 -0400 (EDT)
+	id 897236B00EF; Fri, 30 Oct 2026 16:22:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 84B376B05B3; Fri, 30 Oct 2026 16:03:14 -0400 (EDT)
+	id 86E3D6B05B1; Fri, 30 Oct 2026 16:22:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 715606B05B4; Fri, 30 Oct 2026 16:03:14 -0400 (EDT)
+	id 7AB996B05B2; Fri, 30 Oct 2026 16:22:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 2C44E6B05B2
-	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 16:03:14 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 25552A84AB
-	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 20:03:13 +0000 (UTC)
-X-FDA: 85380366666.19.F7B1BA3
-Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 2DE2214000C
-	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 20:03:11 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=A+ppHjTj;
-	spf=pass (imf09.hostedemail.com: domain of joannelkoong@gmail.com designates 209.85.221.46 as permitted sender) smtp.mailfrom=joannelkoong@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1793390591;
-	b=siQLmbShfoGGJUoq5vkyWKDktMCagOXkcynfTSwAghV4Zv1CWPPZ1c4GXrRUlrAIJZko4n
-	fZvs1l9c5H25qYAtUnhOtT2x8CNAPl/kOvtcSgF0vlUlyK/WVWsPGGSsJMXL+kS+wxMnbb
-	ul3F73PJH+yz8hRgs9FFzhU5hF0hKzU=
-ARC-Authentication-Results: i=2;
-	imf09.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=A+ppHjTj;
-	spf=pass (imf09.hostedemail.com: domain of joannelkoong@gmail.com designates 209.85.221.46 as permitted sender) smtp.mailfrom=joannelkoong@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793390591;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 5180E6B00EF
+	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 16:22:06 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id C2E62120830
+	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 20:22:05 +0000 (UTC)
+X-FDA: 85380414210.30.CCD673F
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 1975620009
+	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 20:22:02 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=Eo7n+B9e;
+	spf=pass (imf13.hostedemail.com: domain of lkp@intel.com designates 198.175.65.21 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1793391723;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hU9U9g2KEC0K+AQ9Kz8ZKPoilLXWoWScRD9pz7n1lhY=;
-	b=D4+Oq1R/njyybwHcj5bgHKTykGytbLiq9AnOmtDi0WULkKaisbPx1/w9jXYK6NHaH4AVgj
-	RQngxGzgpdxK2/gO85mC6ozTpehlnq/2VZdQ+iqRd1npfY8PlKrVofOckO/lEyRsPjEvmI
-	wnmI7c8g8FCjjqN9hsBmqu/s6+CHw/0=
-Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-48c5358fc28so879721f8f.0
-        for <linux-mm@kvack.org>; Fri, 30 Oct 2026 13:03:10 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1793390590; cv=none;
-        d=google.com; s=arc-20260327;
-        b=CvE0S7kPzJVtbUNTDDKrJyr7Q3o8/qq2Iv6F7gL9D56M/ih6Nu+8dDoEgTH+8SWad0
-         fq7VF0fh+sV9Ehfa7Jhvo4HHdgr4tLfPF1shxLS+dZAUeEH+Yr13dhDLqNzrdB/duQtc
-         a/T61sl9AqP/3kN5b+TdDNG0HeJx9kcWDoOeiAN4G4DqT9FUfZ4JwBiyRSBldBTlWa0k
-         zYbrPJIs1x7gh53VIZrYxWHldI88FbMDPPdZVM3r3qk+YAlXJM2QH2AXy+YZQq/gVVxB
-         ZQLUmqWB/et/kxfp6hveRlEU9NlLgSiUh+3doSEQJm7mSKdfxMfJjizUTIboNquXo5/o
-         EfJQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=hU9U9g2KEC0K+AQ9Kz8ZKPoilLXWoWScRD9pz7n1lhY=;
-        fh=zc/OOIXOQpuCDnCawZ572rJ1ufqdBUiMZLWQY8Sq4Dk=;
-        b=NW72Y6Mu2VE24KVaETX6lw8sRGJVSGGZhmmDygVvlO/LQv/gvFDeGAao9G4ZZWaF61
-         O7t9otNNjlRCAquk2K4eb3SyIsMvhg5YjQlZ59HHfZpLutcSh66eG/OILIGrTyg5oKiH
-         9gs3UAONXdOTsMLAx5E7LeA23W1BBdkky0ELKv31G5VFujptRx1r4lAxUcPaxp7SpTrX
-         eJKlW4g9k3U/WcDzqcFd/qeJ5iQtS2W7RTY3IR97MQQZRdf3tFdErOHqkBP/R5cHzDFl
-         bmo0luzpPaIKk8eYsGjr1v1LrKDuTqjasaDBNjXT6LF35UIeICEpLmmRmW33mChT/zQJ
-         KfWQ==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793390590; x=1793995390; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=hU9U9g2KEC0K+AQ9Kz8ZKPoilLXWoWScRD9pz7n1lhY=;
-        b=A+ppHjTjcgP1fiWSlLIjxCbzc8hub7qVSeXhNJgUwfzoSKOm0BkLfcqwbIcD6ZodDp
-         QPj7sPu5wgpzsrSrpjDdnkGy2NZkrNv9lf7btcPq9Inq7ELmSBKLl1g2df+hhkJ+ZXPv
-         OyMTtbK+q921hnzaucWD6aI/xZBVwjJBTF43vbMLfWxw1GcU8kXu5E5LqebB3BADcNdd
-         sgElHriMnVRGfoC75zDpGhNRP2phV6gWTMPSPl6yvXu7vxrh/7lkvfgsv3CCqtxPpTNu
-         H5olb0GtplwEBiKQKMep7rC1Vouqu0cHSHAVR/m8LzpQ0qQCKfrflXCt1wPhpDa6Dv24
-         ddYQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793390590; x=1793995390;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=hU9U9g2KEC0K+AQ9Kz8ZKPoilLXWoWScRD9pz7n1lhY=;
-        b=QMtCHJvhbOO6CkecJa3d1/eEteBSeMN9QoDmBDnW1hhD++l+Wj14BchTGfQDAlJHwc
-         +tc5nSvBmEwi4rd6GnXCg+1XvmxFhrbSTK9NjEY3elAYPuLLRINAqBWe1YIFHx8Yg3ch
-         mQVzdDiwIVtjQGjEgl7vFhbFyZDkuocS88g4cCYK7GNtClXvohSK0+zw5RjFsq+re1by
-         0R75X8TEzYAw9FeaCfH0v2toys4t/wHmUxd5+ezoSoJWHazVlzjUGF2MU+1B+6M7oFu4
-         N30r+E2TCdoFL+fCueIwh4B6vsr44DbL8yfEB9A8FF0gdv9ev2FiP9y9Akbu2gP8WEdC
-         PuGQ==
-X-Forwarded-Encrypted: i=1; AKwUvBwp5PNHZRvHoaP0GZ3st6gqqBH9YRUM3/Q9Oh8LuwfRrknCg07XUKORn8gpfKOhQfYerpLkr6Tn+Q==@kvack.org
-X-Gm-Message-State: AFq9FYLqQWGQQtvZdBdErH97jZvpoxPpySGR1H4bTKVPVPahp0zvDKdP
-	MtZP3jKlRrXWl/9VdKkJ0DgyXGmWlbUtlp0A4xNU9YFxQdplEoHC0RN8Ph1S9Bwnho74IzO0vzj
-	ecIY2AAf6YfHSWERBp08o2kmQCX3nQWE=
-X-Gm-Gg: AYBFou0aQZf3mqNqXVk2AA1vcf+zbcSmD5gduSiCQV9hFTnRI9wPourJL32pc59R2bV
-	FeXKlxLVApZPmCS6mXAeHJRkojRsO+OrvVvLPZU9yWWVkdkkNS3leMgQ4pgv/96P5UdGu0aP4ki
-	4QsAjPgJ4D5UzG42Vk1F8xeVefK+qsFv/Qk6XNY1+avx1XtgJojWTGJWyOWRyUU5ek7yG1ITACc
-	3xlN+vfvu+YnjWAhr9qX2HcLBXPqbludYrLunTKkrxynrFNAdCS1SSZ73Ek+1xTSC+j9UABfvVP
-	9amsAfvdXn9PDy03qeqAVLf8yMI4o5ITlUEhf1Xey3S1+Q0e1i7VxkWCsco5Tc+AiUrvT4S9f3s
-	djAb/uM6sUP2C+RlH87yU/T3fBwA4s+ZOAnzafQQdAfT+J7PBiRrRtlQHyJvWXAHB6Eur0TJikg
-	B1pZhMJ8xNW5tMmU3dqg==
-X-Received: by 2002:a05:6000:2889:b0:48e:f10:ceb8 with SMTP id
- ffacd0b85a97d-48e6e2e769amr7083674f8f.11.1793390589698; Fri, 30 Oct 2026
- 13:03:09 -0700 (PDT)
+	bh=/ZKYNvV99olnOAN3/wz742NSCo6uP+fRvmVfRPXXfag=;
+	b=kdb5lFcR6uDjJ4XpRxtQIRQvrfD61jhGRBTQ9wDOll93jEz82Wm27jJm5MQIwRNlfEh12e
+	+7rdRsS3GqxDiAVB9kCxbFSiD7GnPI7wrpYErkt8vqLzHzSyluIHVWhUz4b89p6jYHX/MB
+	1b5JY81Po5rJBapdsJMlrJATsP7+hg4=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793391723;
+	b=uQesGQenc7tYrm3R5ZL1tSj2htg/bsn9sXn6QO5GBPMJedYlutg+UI1VPz/ULgfSGKXRAQ
+	99Nmils/LkDqP4EtfC3KKtpiMzuHSuQ41PhxI/j/K+/SxwZF3kX62L75X7eLtkXUZYBLgr
+	nydvUfI27zrHVYBEnqApenvf5HKMvYs=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=Eo7n+B9e;
+	spf=pass (imf13.hostedemail.com: domain of lkp@intel.com designates 198.175.65.21 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1793391724; x=1824927724;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=vPSnCcsxmoggsBL8AhqusSxvlXgXWzci4B57bAku3no=;
+  b=Eo7n+B9eN7OuR/VuUsdFLuZUwr4Yh998/azIsQ/vS0/waKX9EM7nLZzh
+   QvmxE4SvjMqtDJiQlTemxGyq5e/jGQ0N9QtBKDR1Ic4QQPHquFsh/lZD/
+   rdKBTO2rM32rVjysppyGELJeRZDRB9/bSKvZmSdmGgwxsPNzEJvqY5xuL
+   +1pD/bhUFrtediyIgP8sH3ZT8R0Ithv90zbS2q77cpsa1wMZmMOjoGaIV
+   WN1XhFAFL+m3uAMlEOf1Re/sWmchvck1Vtb3PYlu4bmQ3nESUBWmQZWfF
+   tIUE5FS0YeroE1sRqAA6SAaVrh8SlDnyCX9xHlUUk1s2c2z/BaTMJgMPo
+   w==;
+X-CSE-ConnectionGUID: CawPj3/yQeOqgVVQJrx34A==
+X-CSE-MsgGUID: NPbcho3rRJCB9yHk2c7xQw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11951"; a="2257866"
+X-IronPort-AV: E=Sophos;i="6.27,186,1787036400"; 
+   d="scan'208";a="2257866"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Oct 2026 13:22:02 -0700
+X-CSE-ConnectionGUID: uq676+OpSbuSH9Qj21B94w==
+X-CSE-MsgGUID: mVKp5fG6TpmsPslS7cKOTg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,186,1787036400"; 
+   d="scan'208";a="6069808"
+Received: from lkp-server01.sh.intel.com (HELO 0caa9d2d175c) ([10.239.97.150])
+  by fmviesa010.fm.intel.com with ESMTP; 30 Oct 2026 13:21:54 -0700
+Received: from kbuild by 0caa9d2d175c with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1xMt6k-00000000cBs-3Ksb;
+	Fri, 30 Oct 2026 20:21:50 +0000
+Date: Sat, 31 Oct 2026 04:21:16 +0800
+From: kernel test robot <lkp@intel.com>
+To: hang.suan.wang@altera.com, Dinh Nguyen <dinguyen@kernel.org>,
+	linux-kernel@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Svyatoslav Ryhel <clamor95@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Ethan Nelson-Moore <enelsonmoore@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>, Jiri Slaby <jirislaby@kernel.org>,
+	Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
+	Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Gabriel Whigham <gabewhigham@gmail.com>,
+	Kiryl Shutsemau <kas@kernel.org>,
+	Douglas Anderson <dianders@chromium.org>,
+	Will Deacon <will@kernel.org>, Huacai Chen <chenhuacai@kernel.org>,
+	Chen-Yu Tsai <wenst@chromium.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>, linux-doc@vger.kernel.org
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	Linux Memory Management List <linux-mm@kvack.org>,
+	muhammad.nazim.amirul.nazle.asmade@altera.com,
+	tze.yee.ng@altera.com, chee.nouk.phoon@altera.com,
+	genevieve.chan@altera.com, adrian.ho.yin.ng@altera.com
+Subject: Re: [PATCH v8 3/3] firmware: socfpga-fcs: add Altera SoCFPGA FCS
+ driver with SDOS feature
+Message-ID: <202610310455.KTHdfiRf-lkp@intel.com>
+References: <d2a662d1b783146e48642dc85c920008a02b433c.1793197438.git.hang.suan.wang@altera.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-References: <sashiko-outbox-183933@kernel.org> <20261027020028.46469-1-lance.yang@linux.dev>
-In-Reply-To: <20261027020028.46469-1-lance.yang@linux.dev>
-From: Joanne Koong <joannelkoong@gmail.com>
-Date: Fri, 30 Oct 2026 13:02:57 -0700
-X-Gm-Features: AclHuK_7IYKLpIDctVlag5Cj_OywTtUkgo4U983VqV13bhHI3MkyW6t772-gCtM
-Message-ID: <CAJnrk1ao-GiMpXbFQcySEpX_XxAuKXPOEqgbq0Oji7Gp1Q8ZnA@mail.gmail.com>
-Subject: Re: [PATCH v3 1/3] mm/huge_memory: scale thp_underused() to the folio size
-To: Lance Yang <lance.yang@linux.dev>
-Cc: sashiko-bot@kernel.org, akpm@linux-foundation.org, david@kernel.org, 
-	ljs@kernel.org, baohua@kernel.org, usama.arif@linux.dev, hannes@cmpxchg.org, 
-	kas@kernel.org, alex@ghiti.fr, ziy@nvidia.com, baolin.wang@linux.alibaba.com, 
-	liam@infradead.org, npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com, 
-	vbabka@kernel.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com, 
-	willy@infradead.org, linux-mm@kvack.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: pesz5bmurqh1escibkxj1pk9b6w4d3oj
-X-Spam-Status: No, score=-7.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,
-	SPF_HELO_PASS,SPF_PASS autolearn=no autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 2DE2214000C
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <d2a662d1b783146e48642dc85c920008a02b433c.1793197438.git.hang.suan.wang@altera.com>
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 1975620009
+X-Stat-Signature: 1cm94yk563f8ebr68wbh95cdcxtp1ws7
 X-Rspam-User: 
-X-HE-Tag: 1793390591-625805
-X-HE-Meta: U2FsdGVkX19weksV/KJD5chGNm+aFhmQH9xLylQuSrdmHFTJfOxSc1ehMXeJ9FkUyfHf8QnbNlFIlnWGfhX6hC5HMau6MnHGellvxNpYbUhsn71TbBEzHu+GJ6OvKiC6kFmdlaZLDWWIkePIRZp46PvHAZs5r28fVsqgvntpRUGeF8aTsuGsyfXc8n15nyVkt6d15DGZE+/p6hKLMFJnM3doU+KLEgXt5bU6UOvZSdKgbfyuCef2W6DC70MYjicAT8eE3gWXO3RpX7e6+a3N4TTOAsvfF7Pk5P4npPV/TaeuknhJGuYtJuMHojwFWF897srSpN7s7AmO/qADLSfY12U++DA4yqNiPCbO5U6Hz8GC9nTQf086bK8xaNRGaObcgcBGAZM6IZEiSbMjfJsvrCpecnBBfZVBu6CxFn4Vo/Ac2M3JzYtl9REb5FRNeZ251fwBph5ukAD39SB9bG7iRd/C5a983pWRPS6gitfi6fTJt+CfI/gN/DoQNkxABY0mdv8TWAVzk/be/Ahq3wiSLb/EIpFqhX6lEJGUkYTSmIY4KG+FvGbfJ0NIATmMwpqEwYkG6XFhiJOeOvdSfBO3Dcd1QWAKLSbuN7W3KbFPTM4wnqrofqZNJqTficcBwDTZVYzFaZ77tFUdUql6EN2nTC8B3EZmAGvYnECDYbdODjHcavv5L9TR3YP5a7r0BhQoe1I0okUJ6+3jEhXa7EcSh2jH+5nFE+J880Nf4gtCc2dOB4jwcJSwdDWAf6RNzs4jImICELCiiQQlYRHx346FUYTbcUrUSxBLEW9Ygl24HdsNxyD0C/elViQt/XwK+mbeu5IQ/AKMRk70ns8m+NaL5/6JmMGs7uWkrL4ke3ggwtpTPT9+87bjB25xMOlR3l9ry9HMM8GrUL1DVdU5gcEHTEjv5kHFJoRq/P6n9rBckAPpio+NaASGMhsRIiSntivI4G1oYsV/lBdsSfykry0
- VGrPGzNL
- uR1Gcv0bTKeIh0KYSOGDk/e8M1SsAmjfVxgbxYtrpT5bTRFDo5L0pQzuxBwPJLTQtzSBu/ZStVk8d7M7RmxszBvU77I9NCmieWvWU0OltnY03y8d5+YR+ZDmFuQ7TV0fLciilVMtzYWMlmcvBx4TmHe0bE9x28mhDu5w67Aeez6QtNbIsqHk6f77ZDj9yIdAzmYVO2YuPRD+ZdiJOXesAFZKNOfPZ0Bw9qH5HX5LplBzpK3wt44eXyPbUPm5wOiW1YdyY0rqo93WDUKrxSZezONDgQM4BxTful07P6I/QbYJOLwy5Lp9/HLWJK+Z5pEVnZDSrDk//5Wn7N1rQNM14pmykwtzyKSOSMTSVh7JJk5uebwd7TnxOnzCNqYtbK4zQgHsWxKoFONA1o2g8nVpgqcewHDBmDJQfGnI89ZUgu/JBQVK44mXr3+jZ7IZI9KJ2aKS+PSH9nURhYoW7J1TiVmC6Bd7nJqc7d/imy918T0veKqWv0ON2eBQFXw==
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS
+	autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1793391722-904594
+X-HE-Meta: U2FsdGVkX1+KZHI3cOiNkeNEth4AFXWvIOxN78hJVK1SIWygxiSUojrPQcKr/10QiPCcBV55hnSuAv9SmtmQt7syH8c0XI5Ikywrqi9ZGHvnmU/B/m2SmWRRvvcPa+fRFDoHrmf0WDypZ8WhT3Ogg3j3DbEfoK32B3ET1myowSdWZlxUQ7GkLKpdW9kW2OoTY/IZ3s//CZwcoXPyD/1avXTiLFIb2RptaQhZ9CfukbcEsL3pj8CRsmqSXhDVih+WF4Y66WHQCAf7dSX36J6GzqBV8Gb/dZ+Ul5/zcZWkFXw3KcmWukH4txk4Z9pWUm31ZbqLhRQTq0i1eRzkCnt7AfFlilqtioP2iVIb/wi6dIDHr5xH5AT14fGY2hB4al+KvB75Nv4SNaWLbxUxc12qEFHGHylPHhZUFtGvcG2ZEIi74YiXAcdcJU1vt9+FOHVIseBwpr+x2EMCzVDGEQ6jJiAmbCf4HEyfSny2FhQyloDcYNmOFzpsOf/t270tr32PU9nmN8wmQVIPVFAq3kKPMzJJ7HxZ20IpSsPkfRWeJ26FV9O6AZHOScqFMjXcNd5TSbL6k2I3VW96jY9Ia/ya3MfBzm+K58L06O8QEW8DxxS1Q9QNChawaMmw9LF+HCV1VKB7Tu8Y7RT6wZLOYN7luz3BnR8wQWauc2Dag6PP4nWig67IFFr9t3ijPOHDuKBDj353hYQVtf2gFg/XSzEaTx7sIKBjZVXPq74uDPpmxdcK4Im/iWLfDvHZHFo4lcyAsRkIT331QoNQRWPsIfVTBzErw92At/keD7CQqA7uqsImzJUpjbCCjRVGLHoPlDIseXOzSdhz/XeRHCheCPieOg11a44skuSvaGP8rdkKfTnrIsiYT+SRzC7kz99BAKAvluMLxOGlMT0ybzu+hdisXw1E5BBCYgNNgGc1zw3o35BmHopgH0isUZ/sFvj8SZ6h5NER4xtVnDgJC+wKI8K
+ zrE5SNOW
+ /VaBM61YTrKxq7zP4cISA3McZmOV+B5LqVffX2H7ClO2vpLpD/30KxiDhjleq58q+MC9myyw5R/MNyBMUbePKy1ybNpGp6tbG8P6hfIGX/QheLVIcxZVSBocm7/FZ9J/scljfju3wLzdZ22aPx6s9tIwj375CLKqnZOgWkfQSVDgvk8N1VeQzWMqKXLQZAf0/biF8wuYJkim021LcS1aCnTKMUrCFJz5KT4IBRcIcXxfjowcIggtKcFp73lM4Vks+MK/bdK4nIOcja02ffEw0neaEbHiax5GF5DNiczxrfg/60TTMWb1jEDYlZeaKA2yVQWfyUc06QYvxOFRdLrsU9FCjjNbdKmDFRlLhHwMkdDuaOdrm1Fi1rVUAea/UXg30biACrDkMhSJHEv4ypXJS6+GzqT14/lONNkA1
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -148,79 +131,61 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Mon, Oct 26, 2026 at 7:00=E2=80=AFPM Lance Yang <lance.yang@linux.dev> w=
-rote:
->
->
-> On Sat, Oct 24, 2026 at 11:01:50PM +0000, sashiko-bot@kernel.org wrote:
-> >Thank you for your contribution! Sashiko AI review found 1 potential iss=
-ue(s) to consider:
-> >- [Medium] mm/huge_memory: wrong rounding in thp_underused() max_ptes_no=
-ne scaling
-> >--
-> >
-> >commit 56eb0cfccba9e5e4276f2a8250815399987bc848
-> >Author: Joanne Koong <joannelkoong@gmail.com>
-> >
-> >mm/huge_memory: scale thp_underused() to the folio size
-> >
-> >This commit updates thp_underused() to scale khugepaged_max_ptes_none
-> >proportionally to the number of pages in the folio rather than assuming
-> >the folio has HPAGE_PMD_NR pages.
-> >
-> >> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-> >> index bd44d58e86845..218259940f24d 100644
-> >> --- a/mm/huge_memory.c
-> >> +++ b/mm/huge_memory.c
-> >> @@ -4613,25 +4613,35 @@ static unsigned long deferred_split_count(stru=
-ct shrinker *shrink,
-> >>
-> >>  static bool thp_underused(struct folio *folio)
-> >>  {
-> >> -    int num_zero_pages =3D 0, num_filled_pages =3D 0;
-> >> -    int i;
-> >> +    const unsigned long nr_pages =3D folio_nr_pages(folio);
-> >> +    unsigned long num_zero_pages =3D 0, num_filled_pages =3D 0;
-> >> +    unsigned long max_ptes_none =3D khugepaged_max_ptes_none;
-> >> +    unsigned long i;
-> >>
-> >> -    if (khugepaged_max_ptes_none =3D=3D HPAGE_PMD_NR - 1)
-> >> +    if (max_ptes_none =3D=3D HPAGE_PMD_NR - 1)
-> >>              return false;
-> >>
-> >>      if (folio_contain_hwpoisoned_page(folio))
-> >>              return false;
-> >>
-> >> -    for (i =3D 0; i < folio_nr_pages(folio); i++) {
-> >> +    /*
-> >> +     * khugepaged_max_ptes_none is a number of pages out of HPAGE_PMD=
-_NR.
-> >> +     * Scale it to this folio's size (rounding up so that the folio i=
-s never
-> >> +     * split when fewer than the configured fraction of its pages are
-> >> +     * zero-filled).
-> >> +     */
-> >> +    max_ptes_none =3D DIV_ROUND_UP(max_ptes_none * nr_pages, HPAGE_PM=
-D_NR);
-> >> +
-> >> +    for (i =3D 0; i < nr_pages; i++) {
-> >>              if (pages_identical(folio_page(folio, i), ZERO_PAGE(0))) =
-{
-> >> -                    if (++num_zero_pages > khugepaged_max_ptes_none)
-> >> +                    if (++num_zero_pages > max_ptes_none)
-> >>                              return true;
-> >
-> >[Severity: Medium]
-> >Should max_ptes_none in thp_underused() be scaled with truncating intege=
-r
-> >division rather than DIV_ROUND_UP()?
->
-> Agreed, we already use a strict > comparison, so truncating division
-> is enough here.
->
+Hi,
 
-Agreed, thanks. I'll switch back to truncating division in v4.
+kernel test robot noticed the following build warnings:
 
-Thanks,
-Joanne
+[auto build test WARNING on akpm-mm/mm-everything]
+[also build test WARNING on linus/master next-20261029]
+[cannot apply to v7.3]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/hang-suan-wang-altera-com/firmware-stratix10-svc-increase-args-array/20261028-221419
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-everything
+patch link:    https://lore.kernel.org/r/d2a662d1b783146e48642dc85c920008a02b433c.1793197438.git.hang.suan.wang%40altera.com
+patch subject: [PATCH v8 3/3] firmware: socfpga-fcs: add Altera SoCFPGA FCS driver with SDOS feature
+config: arm64-allmodconfig (https://download.01.org/0day-ci/archive/20261031/202610310455.KTHdfiRf-lkp@intel.com/config)
+compiler: clang version 24.0.0git (https://github.com/llvm/llvm-project c2ea4440d4b64c148de4fdfca1fc2c437a0701e4)
+rustc: rustc 1.96.0 (ac68faa20 2026-05-25)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20261031/202610310455.KTHdfiRf-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202610310455.KTHdfiRf-lkp@intel.com/
+
+All warnings (new ones prefixed by >>):
+
+>> Warning: drivers/firmware/socfpga-fcs-core.c:74 function parameter 'priv' not described in 'fcs_svc_send_sync'
+>> Warning: drivers/firmware/socfpga-fcs-core.c:112 function parameter 'priv' not described in 'fcs_svc_send_async'
+>> Warning: drivers/firmware/socfpga-fcs-core.c:197 function parameter 'priv' not described in 'fcs_svc_send_request'
+>> Warning: drivers/firmware/socfpga-fcs-core.c:282 function parameter 'priv' not described in 'fcs_open_session_locked'
+>> Warning: drivers/firmware/socfpga-fcs-core.c:282 function parameter 'owner' not described in 'fcs_open_session_locked'
+>> Warning: drivers/firmware/socfpga-fcs-core.c:318 function parameter 'priv' not described in 'fcs_close_session_locked'
+>> Warning: drivers/firmware/socfpga-fcs-core.c:353 function parameter 'priv' not described in 'fcs_ctx_begin'
+>> Warning: drivers/firmware/socfpga-fcs-core.c:384 function parameter 'priv' not described in 'fcs_ctx_end'
+>> Warning: drivers/firmware/socfpga-fcs-core.c:417 function parameter 'priv' not described in 'fcs_get_atf_version'
+>> Warning: drivers/firmware/socfpga-fcs-core.c:465 function parameter 'priv' not described in 'fcs_sdos_crypt'
+>> Warning: drivers/firmware/socfpga-fcs-core.c:612 function parameter 'priv' not described in 'fcs_read_version_from_atf'
+>> Warning: drivers/firmware/socfpga-fcs-core.c:669 bad line: 
+   Warning: drivers/firmware/socfpga-fcs-core.c:709 bad line: 
+>> Warning: drivers/firmware/socfpga-fcs-core.c:74 function parameter 'priv' not described in 'fcs_svc_send_sync'
+>> Warning: drivers/firmware/socfpga-fcs-core.c:112 function parameter 'priv' not described in 'fcs_svc_send_async'
+>> Warning: drivers/firmware/socfpga-fcs-core.c:197 function parameter 'priv' not described in 'fcs_svc_send_request'
+>> Warning: drivers/firmware/socfpga-fcs-core.c:282 function parameter 'priv' not described in 'fcs_open_session_locked'
+>> Warning: drivers/firmware/socfpga-fcs-core.c:282 function parameter 'owner' not described in 'fcs_open_session_locked'
+>> Warning: drivers/firmware/socfpga-fcs-core.c:318 function parameter 'priv' not described in 'fcs_close_session_locked'
+>> Warning: drivers/firmware/socfpga-fcs-core.c:353 function parameter 'priv' not described in 'fcs_ctx_begin'
+>> Warning: drivers/firmware/socfpga-fcs-core.c:384 function parameter 'priv' not described in 'fcs_ctx_end'
+   Warning: drivers/firmware/socfpga-fcs-core.c:417 function parameter 'priv' not described in 'fcs_get_atf_version'
+   Warning: drivers/firmware/socfpga-fcs-core.c:465 function parameter 'priv' not described in 'fcs_sdos_crypt'
+   Warning: drivers/firmware/socfpga-fcs-core.c:612 function parameter 'priv' not described in 'fcs_read_version_from_atf'
+   Warning: drivers/firmware/socfpga-fcs-core.c:669 bad line: 
+   Warning: drivers/firmware/socfpga-fcs-core.c:709 bad line: 
+
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
