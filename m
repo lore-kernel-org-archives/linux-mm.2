@@ -1,130 +1,112 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95BF4606A320
-	for <linux-mm@archiver.kernel.org>; Fri, 30 Oct 2026 17:40:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29912606A31C
+	for <linux-mm@archiver.kernel.org>; Fri, 30 Oct 2026 17:52:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=Xb0kypc/
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=UVWFBB5C
 Received: by kanga.kvack.org (Postfix)
-	id A256E6B00EF; Fri, 30 Oct 2026 13:40:32 -0400 (EDT)
+	id 4BE346B00EF; Fri, 30 Oct 2026 13:52:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9D6736B05B1; Fri, 30 Oct 2026 13:40:32 -0400 (EDT)
+	id 46F2B6B05B1; Fri, 30 Oct 2026 13:52:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8C5A76B05B2; Fri, 30 Oct 2026 13:40:32 -0400 (EDT)
+	id 3858B6B05B2; Fri, 30 Oct 2026 13:52:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 593106B00EF
-	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 13:40:32 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 5EE8D4083A
-	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 17:40:31 +0000 (UTC)
-X-FDA: 85380007062.29.B98DD5A
-Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 95ED44000D
-	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 17:40:29 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b="Xb0kypc/";
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf07.hostedemail.com: domain of skhawaja@google.com designates 209.85.214.170 as permitted sender) smtp.mailfrom=skhawaja@google.com
+	by kanga.kvack.org (Postfix) with ESMTP id 1CE946B00EF
+	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 13:52:31 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 2B2471A07C4
+	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 17:52:29 +0000 (UTC)
+X-FDA: 85380037218.25.ACC58A5
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 69047C000E
+	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 17:52:27 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UVWFBB5C;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf28.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793382029;
+	s=arc-20220608; t=1793382747;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=GHjT9rUZ9mZdmwhmeKnY8H1ENZyPrLJ45wFlFoMuMrE=;
-	b=KoQavqhZ0YeEZS0VpmpFA1PNHh8UPqg7ZzyfZZvXrRnu2/cabSIdmih0XdVArBF/TofXUz
-	bBJLjOM5xEi4bcTlqXDPKfcuNrbVunQQo1bn0wkP+jCHhcJVMvZaU5TcLU2wFvPPgeBuP4
-	ZUm7qd5fscAauyHaX1U2T2D2uP4n384=
+	bh=/yX4qiCWgActF9QSghl2kesacMQRaDgnsGt0G47KLw4=;
+	b=Q/srp6dNuvY3vgZhZ7pTy7vVYbicsvpSmDTVNIIM3wG6Jm+nltSHSKRvnMumtNP9Emp78N
+	zq0s/bI/Lj6apno8IDG8jA5LuXebxnpmJkZD9UWiTxzJD7MeYZ6xaioiwCmJ1MUn1z4UHF
+	NbHwEim1Jhw8ktWB1k5yfjGbBpRbq84=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b="Xb0kypc/";
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf07.hostedemail.com: domain of skhawaja@google.com designates 209.85.214.170 as permitted sender) smtp.mailfrom=skhawaja@google.com
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UVWFBB5C;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf28.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793382029;
-	b=wFEg2HLWEQNyZ8kStq2y1NrpPoQV+mmbqq0H49Ig545U6M4/2ZEJoEHGjh9p/fHfxRlQnr
-	cXGroijMPnPTaZvcA/aCY5owQ6hxTWYMSdTmURd4/+WSJahjMunNluJNVfbsf8cLBBqK41
-	gFOo1sETza8UbwWlIyEqxfzzARP0I60=
-Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-2ea7f9c11e6so3285ad.0
-        for <linux-mm@kvack.org>; Fri, 30 Oct 2026 10:40:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1793382028; x=1793986828; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=GHjT9rUZ9mZdmwhmeKnY8H1ENZyPrLJ45wFlFoMuMrE=;
-        b=Xb0kypc/BChsH5kJTMJc/Rlph3+HO9usrqYhQ2jgHoS5BsmovoiQJEM2nkVUGZ5VWb
-         hkm6y72OMTDLzMZM75SSOgpXdsduHoHfAn+a0h1/37mobk/PMJJQYcbJs9YNNeiSlZsq
-         0smcQN2wtMwBIdmtdVeVge5KCwiiTSZYN92uxzHmWeer6Ak25lwU0f1I6pKqbb5zSHjd
-         3gwNjPr32U/eiL0UxaRXhZqyamzliKvARdMIWE8h0+iZ0eJlk43BWNGltr/uxuyCxY7l
-         6IBPdID0nMgnNWUtYQgjUUuae4mncFDh/TzyM7F+qkrbDo5v6/ljhoVzlgaD13L33RCK
-         rJ3A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793382028; x=1793986828;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=GHjT9rUZ9mZdmwhmeKnY8H1ENZyPrLJ45wFlFoMuMrE=;
-        b=oHxaquW3nJtY+5jMurtQ6OS7u93dVvDAIvzHtmgfiN6AVnkHRXAt+T8CAYDYTYkvW3
-         6Qn7FsQhTuxJwEFEkTD4aW5mBY++dgNsekbDhIduTdAyxHc3XIjkQFSBLDG84N4ZP7Vd
-         EayYkYsPxk8g7Fca8VD8MQuxi5E3DJkyyGdPsPUIeDxVq3p3ozTbvXAsWG31vjdxscb0
-         GJ+PgW32SRbBmyq/7cm1l+mof7cx2degL2FICPYTdswT3vgnN8WlPMpu9EhYWRFF8hB7
-         KIFtbfdTrkWBvfslmH4UQhpmNOz1T4GfU/rDVrSSc4trgylorUPrZPdFkp8gK94XLdvb
-         3BFA==
-X-Forwarded-Encrypted: i=1; AKwUvByY2ThTEl8mIuuWX0JzOoQ5AImv1UE0/G6NBHfeXWC9C6qFkIU/nVrbZKkLkm4IQbAMpjzDUsBXDQ==@kvack.org
-X-Gm-Message-State: AFq9FYKYSJ2dKesainazNghgIM3RSz8jKTqwHVZ36EtKoSNNUrTRTZJ7
-	L6gcEc2U99Whbzb3/5J41h8U3NBQ4sKPu46OXdivRTqPBB9Tjhz/3ApRClzM5bs6Tg==
-X-Gm-Gg: AYBFou0D61/afxJH7FTjFouWAgweF/j9ooFfhnmRuGQkkBaId2LK6T090Pr+p0VV2v4
-	U488TbQnTVPyUqhUw7HloUAwW1+ySjp9lyOOcTzAJIYKqSgwI75pMZhxg3n3CYCn2K8wdJ1JB9S
-	8pfjhTBQ84r2U0NPhInJLgbGl+zPc79t1L/3YEvaxCV+iFruOJE44CBIbhI2kuk0x2JzxVWue2J
-	Jx8aXykknofXOUTfLDJzSjNzVDsEFooQrSdVQUq2nsaKw8p0Fz6teG9K+iGGFS7xTnf921qbG+V
-	gs/dkHtL/Qrz9aRezGdQkF0o2d41kQ+FmVwTRDLlB3XbEXbQppF3iZoAK5sv9TliI73M4L+U8Gj
-	U5GpBDAaGEctyxbamWKNMi33Sad43cLbJQb/UebIjhtuUXCzUug2QGaAv/6Eu1OC7kgV+DxzxGI
-	d5EfjnnDGVCM9zJLRWVZqfBsHWbzeWdkx1udj0z3uV7AolUWDQwrjrcci8gtXOm63BtNIQsCYai
-	A/NvRcD+BM/Q97i+0j1/xglWZ+0B9+j8gPhy49R14rI3I5jScxdT5UPqiz52PcixsAdejlz4OHZ
-	uHjIvQojrwBWwQn+ScggNb+BbANrkm1JW51UIOP1Qagk1TOnHz0QPHRyrcb6gUMD9pUGpWk508n
-	1tfu85x+3FRQdJm+HsAz8Ww==
-X-Received: by 2002:a17:902:dad1:b0:2d5:c090:3810 with SMTP id d9443c01a7336-2eb1b6c6ae5mr11320655ad.2.1793382027347;
-        Fri, 30 Oct 2026 10:40:27 -0700 (PDT)
-Received: from google.com (25.75.145.34.bc.googleusercontent.com. [34.145.75.25])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8aada9aadecsm286624b3a.48.2026.10.30.10.40.26
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 30 Oct 2026 10:40:26 -0700 (PDT)
-Date: Fri, 30 Oct 2026 17:40:22 +0000
-From: Samiullah Khawaja <skhawaja@google.com>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Jason Gunthorpe <jgg@ziepe.ca>, 
-	Andrew Morton <akpm@linux-foundation.org>, Hugh Dickins <hughd@google.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Muchun Song <muchun.song@linux.dev>, 
-	Oscar Salvador <osalvador@suse.de>, Jeff Layton <jlayton@kernel.org>, Chuck Lever <cel@kernel.org>, 
-	Alexander Aring <alex.aring@gmail.com>, Shuah Khan <shuah@kernel.org>, Gerd Hoffmann <kraxel@redhat.com>, 
-	Vivek Kasireddy <vivek.kasireddy@intel.com>, Jeff Xu <jeffxu@google.com>, David Matlack <dmatlack@google.com>, 
-	Pasha Tatashin <tatashin@google.com>, linux-mm@kvack.org, linux-api@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 0/2] mm/memfd: add F_SEAL_PUNCH_HOLE
-Message-ID: <auTR9SnDLsLVmnJ7@google.com>
-References: <20261026220546.3114241-1-skhawaja@google.com>
- <d4891333-43ea-4d74-9fb9-6ad8dac1a446@kernel.org>
- <20261030121113.GB3889730@ziepe.ca>
- <2c7aa5c1-3af3-4654-b244-1257d05c9d45@kernel.org>
+	t=1793382747;
+	b=c5HuPXc9knVhxZ8xTOlHkHjxZDNc6rCxn4Lsh8Tohl8jCLvRfyK6r1CtKS8RBgvG2QfIbX
+	y5hVptCzk8R4YI446CbCZ/S17C4B7wc6WQadoiXJZJFVnVvwIl5Cb/Crphe6GckhCxHQfr
+	jKJhpXBOLtbOo12KhBQvSSeXFQxebGs=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id CA530601EE
+	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 17:52:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80E7A1F0093A
+	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 17:52:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793382746;
+	bh=/yX4qiCWgActF9QSghl2kesacMQRaDgnsGt0G47KLw4=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=UVWFBB5CKi30fxDlUFaYsC8UqEi+uMGiIvRARIYLKI5BQBDBW+WV7GWzN+bEaGg67
+	 mVKNGcHUfB0x68ao0+tXxn5t7NpPpemE9HPaOUrFEVgFXTML22/dGQN0/XYmvUX9rU
+	 9nOuZNw2nLAR5yom4NvefAxXeRwtngrdMNTt1bxUMWlnUsYiPLKocQhGuwCErxwHTT
+	 fmdXgMoS5xRZ3iInX5b+C46Y5k5cO3ZtwgH8uusLQLm8FROG9oYGtFmqWqRYri9xQh
+	 IJzy66GGvJZerDbNqktWyqgLUH+QGZQVFJx+iPKjwmdjDbivpbUxa90EzPQg4nITzt
+	 +uHHSoeaSj8UA==
+Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-c3f8d72d7ceso163712466b.3
+        for <linux-mm@kvack.org>; Fri, 30 Oct 2026 10:52:26 -0700 (PDT)
+X-Gm-Message-State: AFq9FYLnTsdeLg/Cg5UJenIZzRrIwaOosecCAELMeVIlM7WYqI38EmGH
+	wmNCvTN8c+74vjAM1RKfORo2MW4jaBODB0qlOeUHAd+Cj2z869i/k2o6TZpcFEgjDX9Dl/FmTYL
+	kZa98sV+46j4pqDGirC0WmSNQQa0j1IE=
+X-Received: by 2002:a17:907:843:b0:c41:5a0e:3356 with SMTP id
+ a640c23a62f3a-c4ca7ab80a6mr283859166b.41.1793382745473; Fri, 30 Oct 2026
+ 10:52:25 -0700 (PDT)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <2c7aa5c1-3af3-4654-b244-1257d05c9d45@kernel.org>
-X-Rspamd-Queue-Id: 95ED44000D
-X-Stat-Signature: bbgrqnqr187tj6iq6otbuh3zp6rb1b87
-X-Rspamd-Server: rspam06
-X-Spam-Status: No, score=-13.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
+References: <20261030095223.325309-1-jiayuan.chen@linux.dev> <20261030095223.325309-3-jiayuan.chen@linux.dev>
+In-Reply-To: <20261030095223.325309-3-jiayuan.chen@linux.dev>
+From: Yosry Ahmed <yosry@kernel.org>
+Date: Fri, 30 Oct 2026 10:52:14 -0700
+X-Gmail-Original-Message-ID: <CAO9r8zMF-cj4StEz9okWGROGjBhQ1XFVW3H2nJj3b8i5Jj=zAA@mail.gmail.com>
+X-Gm-Features: AclHuK-Xwo9ow1U129u1DE6bxVDM9ppicXKOIUi8wOYOyhyy4kBbPsDwtTVtbqk
+Message-ID: <CAO9r8zMF-cj4StEz9okWGROGjBhQ1XFVW3H2nJj3b8i5Jj=zAA@mail.gmail.com>
+Subject: Re: [PATCH mm-new v1 2/2] mm: vmscan: skip anon folios zswap would
+ refuse when writeback is off
+To: Jiayuan Chen <jiayuan.chen@linux.dev>, Usama Arif <usama.arif@linux.dev>
+Cc: linux-mm@kvack.org, Johannes Weiner <hannes@cmpxchg.org>, 
+	Michal Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>, 
+	Nhat Pham <nphamcs@gmail.com>, Chengming Zhou <chengming.zhou@linux.dev>, 
+	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
+	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Baoquan He <baoquan.he@linux.dev>, Barry Song <baohua@kernel.org>, 
+	Youngjun Park <youngjun.park@lge.com>, David Hildenbrand <david@kernel.org>, Qi Zheng <qi.zheng@linux.dev>, 
+	Lorenzo Stoakes <ljs@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>, 
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, cgroups@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 69047C000E
+X-Stat-Signature: xaqqyw67dx8ooq7tz7ppzwyo317iwux3
+X-Rspamd-Server: rspam04
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_IN_DEF_DKIM_WL
-	autolearn=no autolearn_force=no version=4.0.1
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
+	autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-HE-Tag: 1793382029-497972
-X-HE-Meta: U2FsdGVkX1/momg86U4GfX6rVnEkMi3MRM7jppBd0rgbRofLuYqZYn1lV1e5OF3PKHk+1nBFVMkoF6L/+BxnyGIf/5d8s8Wz0jEyARK690eV2SSdSGJVHcusEfKMjrvGbV0T9Nj1qA8sGdQb6c1GH3UikrqNLhPLFiN2nQeez9236KqaYbPhLshSqkNvkqUbM76DXsStEXdIzNFmo0IJGOWlnGKCqgNldyctUrpYe7KGlESKcseOTwrmHfrH+ZjCbgFQOvL0zrTuv6Zta++9oMqcBXjD4qD8/qsFGVn6gCNLZ8p99SQtsin0wwP3atAoQ41iWu6uOokXucukqFOCC/2Uo1rGmzpCe67OPB8qgVmSIwOcJ3JLWziwI5HrZk0qYHIg40/gctPKNgzEKErQi/a0l1/PXs6TBOkMvbx6AhRmcy40OKDbO8JFMIfrWJ2eD3ofeCK3t6LeYoU3AaEAh3EqC3+QHVCAmur6Hfpa6ALdOZlas9xcWA6R3Iy67EJ0UhjHUXdwqSKfvbpbL5SzTkTh5pbbUjQusQWAYGdwnT4jzl2pUH7NTAmn9TnnY9i/qLFccOjNOLLOd+l2ApCxhsW+t0wfdg4Nr39CMvOfAEwlPyEm5IGsUosNSrN1rvemHd+w3PVD8MeUK5Xf4QDKjpTt6oQOVle5RTzKgZ0BFEPADb7GDsEYQ9MEkSQfx6FVSb70kxzOtfNXrH9LToUoLiIrTfBKj7+YbQt1OMtE7DnEWQwDtM4Di7o8LgopoRnhSZKlwAToakd4bQH2RFhDjiuryJLmXW6Ppf8du7r3o5PlKfrBGm7MDVm9NpFfoyQvzVfNWf+pEksi4mjqOCnFUEWGvbkhXEJRNf/vojmmvVyjKLRPfoEjV1jM7GovV3yBhQX3HrOIo97TDIZmrcGfqmPbVj9BvZhVevVG51P9hQufL9kwvH+3p1FghggGyX4a0KsKvcpZU26gkwupO7q
- bzfHKbe+
- FKAyykpWO3im5rSrud4U6qy5QZyl6bwOkj6GM7wGdirGp8b4pqd0CyhfQjvWh8BwBGvfOnuJWVX2YmEsGqykqAFsCUfc/tM17c36NF71vbL+09/ac0GpMobUVDdXDxCCQrQBYJ5NwbH4LWpAaISf1SwBVOPEPXuLpPgFBW6mHpGx6Oy27SyumwSc8rc7JRWDiFW7RW7GorHCAjD2gg4GZ2UUo8TFLle/G+MT+HOMEIUHAZ/XLAJTJ7vmRcPnIXUGbf1ZJqdvEnJNaTaR05JLl0QOQrczbktqVX7s83Z8PU/OAJk7mLw/U1WavPiLK/j1NaAXA7hM9z/sIM+M544AYY0ujf6UeF/YS/2kjTxcs26q5IsJsiLt1FLx8zT/NmHeX/T7jA0Y/wYXvDy5esHQUW8C8Lq4h84vVIaeYK/WZWRPgJ1NQuTZFZ7sXJq6thEN+afz/GmZfSeB3YyEuVO17DienRZH56ZphHRmp9dmjysz6SAs=
+X-HE-Tag: 1793382747-783582
+X-HE-Meta: U2FsdGVkX18evXk6AXImq0ZQmtmkBpAgRCiEsVbrd3gnk+TVPXsqkYV27C/hLBHhZ1Z/wUjvqLeiEA2NadVHBJIi4hDW+KyiCJXyCPk+qWy8JTAKLWA8Wor+NIW3FED4K9dQwSnFDyZiYkveU+qUZR6kB+s97OIEExiu0/SxhBHVKBw9ncIod4qV3QWxNvP1/KUJIgifAnmNpGQ5gqEzB9Vaf/hg7sHeqsh5J/Jz8nL2X1X3rSsTLh9ZcALwCBbrOUFxAs85/ZdlbuF3C4LEedi0Sj30sn7VpaDOuKFFCz86u/KaUIOkmusJO/tENpCjKSJe+MZZps7A/KheTpRz6y3trF/8AL7xrmVE41pYmGiMiOsOeCo781xmzTnviyCdbUdik2+QqViI7Vc1tr42lv+E/Cu+Dobt9vthb9zXAZg0ASV+RRrZv0KfaHMfu164iimsmtADl7xSI8NPaKy3g74mhw/5q9qVo4kBqZ+eCXOpCj3yP57CorjmUGpnvJUAXCT34edF/STT1DT5HZ4d8j5FwiQ4REHvAmpXaJycNSVOa8g+Reg02Vchv1JypkgfMty11/3oy9wnA2EDe68xw+7X6c16I5sm08SJwcbPB98t8h8+qfWS+nc9wo+slEXVCkx7Cl4M9Mpe+aXJWPqMFd9ytHUamnYXD3zO3jqEK49kth9qVB+U2tiHPnDNIm1tjH2JVC12+XL/UZ/dojeCC+8brcPNhJUVOUMNuevJxNidxJF2oER/+/DFJywuMJvbfVdZo8jqeaT12Lxa6O5w5mdrhkN0dQy61nqBeRDwHjrehivb+GeYuRH4AxXWssPs3dvckOYTQcQeF7QW841ejnDgj4JyNV0bJXcvV6QUMTftLS/T2MNziY7nlxTnosqqPSOOEGvpITuoCu8Xn3lvPGKUxotF8mql3BUbQs+bYZyTXr7mrw+ruurJ7bNReERYeiw5XXr77AZILSDS8lN
+ 548wG+6a
+ TrC6JY50Xr5KxgAjtsldJyUEgzhgysqkptSaz+//VL461h+0utM9umHoVnQ54aDWVrmjSVPuGgkxg1YF9tAccyRal7T+9iIjQB+8t/X5hlZIUsfEcUzWQms2Xfl6HLwFjMP6ecAiHxVn/a2IuE9GR84MVF4ILNyFnbENriCvJBeHmh6wdjYznABCkjGo55l/HO6xAzGVtsCWKQ20EXncFR+jYrlJU791VFqnL9OHKZBnoGAxE987QgioUHhBkwJoDHyGLqgqLLEVjibTlBIW+uOGnBgxOi6CyqgHs
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -133,69 +115,30 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Fri, Oct 30, 2026 at 03:39:40PM +0100, David Hildenbrand (Arm) wrote:
->On 10/30/26 13:11, Jason Gunthorpe wrote:
->> On Fri, Oct 30, 2026 at 11:20:30AM +0100, David Hildenbrand (Arm) wrote:
->>> On 10/26/26 23:05, Samiullah Khawaja wrote:
->>>> This series introduces F_SEAL_PUNCH_HOLE, a new memfd seal that prevents
->>>> holes from being punched into a shmem or hugetlbfs memfd while leaving
->>>> the file fully writable.
->>>>
->>>> Background
->>>> ==========
->>>>
->>>> Drivers such as udmabuf and iommufd (via IOMMU_IOAS_MAP_FILE) use
->>>> memfd_pin_folios() to pin the folios backing a memfd and hand them to a
->>>> device for DMA. Pinning keeps those folios allocated, but it does not
->>>> keep them in the file. If userspace later calls
->>>> fallocate(FALLOC_FL_PUNCH_HOLE) or madvise(MADV_REMOVE) on the range,
->>>> the folios are dropped from the page cache while the device continues
->>>> to use them. The pin holder is never notified, and from that point on
->>>> the device and the file silently diverge.
->>>
->>> We have the exact same situation when userspace maps anonymous folios into vfio
->>> and then desides to MADV_DONTNEED the pages. Or any other memory backend that is
->>> used for such purposes.
->>>
->>> User space must not zap/punch things that might be pinned elsewhere.
->>>
->>> That's not specific to memfd, udmabuf, iommufd or anything else.
->>>
->>> I don't see a reason to make userspace (that should not shoot itself into the
->>> foot) a kernel feature it must activate itself to not shoot itself into the foot.
-
-Agreed, for normal use this is userspace's problem. The seal was meant
-for the kernel to cheaply verify at preserve time that nothing was
-punched.
-
->>
->> The issue is live update doesn't preserve those background punched
->> folios and now we have created an UAF attack on the kernel across
->> kexec if you don't do something about it.
->>
->> There was some notion here that with the right sealing flags we could
->> tell if everything was 'live update compatible' and then know that
->> these attacks are impossible.
->Just remember that there was any hole punch and refuse to live update this instance.
+On Fri, Oct 30, 2026 at 2:53=E2=80=AFAM Jiayuan Chen <jiayuan.chen@linux.de=
+v> wrote:
 >
->We could likely implement "we saw hole punch on a pinned folio" as well, but I
->don't think that's required initially.
-
-If I understand correctly, you mean recording on the memfd that a hole
-punch happened, and refusing the live update if it did? That would work
-and is much cheaper than what we do today, where iommufd walks all the
-mapped pages at preserve time. For truncate, the existing F_SEAL_SHRINK
-is enough or I can record that also on the memfd. I will send patches
-for this.
-
+> A memcg with memory.zswap.writeback=3D0 can only swap into zswap. Once
+> zswap stops taking its pages, because the pool is at its limit or the
+> memcg is at memory.zswap.max, swap_writeout() has nowhere to put a
+> dirty folio and returns AOP_WRITEPAGE_ACTIVATE.
 >
->No need for more shaky seals.
+> shrink_folio_list() only learns that at the very end. Every folio it
+> picks gets a swap slot, is unmapped, fails in swap_writeout() and goes
+> back to the active list, to be aged and tried again. Each round costs
+> a slot, an rmap walk, a TLB flush and a minor fault for the owner, and
+> frees nothing. The folio also stays in the swap cache holding its slot.
 >
->-- 
->Cheers,
->
->David
+> The obvious place for a zswap check is can_reclaim_anon_pages(), but
+> it cannot go there. Zero-filled folios never reach zswap:
+> swap_writeout() marks them in the swap table and returns before
+> zswap_store() is called. They need no pool space, they are common, and
+> a memcg-wide "no anon" decision would keep them in memory for as long
+> as zswap is full. With zswap full they must still be reclaimable.
 
-Thanks for the feedback,
-Sami
+I really wonder if we should revisit not swapping zero-filled pages at
+all, and instead mapping them to the zero page read-only (and whatever
+the equivalent for shmem could be), because yes, the right place is
+can_reclaim_anon_pages(). I don't remember what happened to that
+proposal, Usama do you remember?
 
