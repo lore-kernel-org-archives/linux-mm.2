@@ -1,151 +1,105 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92F90606A31E
-	for <linux-mm@archiver.kernel.org>; Fri, 30 Oct 2026 03:24:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 354E9606A31E
+	for <linux-mm@archiver.kernel.org>; Fri, 30 Oct 2026 03:42:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=sFWn6Osd
+	dkim=pass (1024-bit key, unprotected) header.d=huawei.com header.i=@huawei.com header.a=rsa-sha256 header.s=dkim header.b=6lgTf+Ts
 Received: by kanga.kvack.org (Postfix)
-	id 877766B00EF; Thu, 29 Oct 2026 23:24:39 -0400 (EDT)
+	id 16CA86B00EF; Thu, 29 Oct 2026 23:42:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8288B6B05B1; Thu, 29 Oct 2026 23:24:39 -0400 (EDT)
+	id 11F206B05B1; Thu, 29 Oct 2026 23:42:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6F0206B05B2; Thu, 29 Oct 2026 23:24:39 -0400 (EDT)
+	id 033D06B05B2; Thu, 29 Oct 2026 23:42:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 4F2A26B00EF
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 23:24:39 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 6BD5CA0611
-	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 03:24:38 +0000 (UTC)
-X-FDA: 85377850236.02.D22287C
-Received: from mta0.migadu.com (out-26.mta0.migadu.com [91.218.175.26])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 2B12F180002
-	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 03:24:35 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=sFWn6Osd;
-	spf=pass (imf24.hostedemail.com: domain of xu.xin@linux.dev designates 91.218.175.26 as permitted sender) smtp.mailfrom=xu.xin@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id C4AFA6B00EF
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 23:42:29 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 4CDDEC05CB
+	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 03:42:29 +0000 (UTC)
+X-FDA: 85377895218.04.F463F54
+Received: from canpmsgout01.his.huawei.com (canpmsgout01.his.huawei.com [113.46.200.216])
+	by imf13.hostedemail.com (Postfix) with ESMTP id A035920002
+	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 03:42:25 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=6lgTf+Ts;
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf13.hostedemail.com: domain of chengzhihao1@huawei.com designates 113.46.200.216 as permitted sender) smtp.mailfrom=chengzhihao1@huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793330676;
+	s=arc-20220608; t=1793331747;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=YxF7dRKdKAp6T/NOw/hryWAVYb3GZKlSovGXpa5oCY8=;
-	b=lW8qZ+b8BWQb5cO97JruHQcG+T/RuYW/RRiXwxDtQe3X1l3kRunc9jADczH/p9XwB+Rj29
-	eDJr6cLZvyvqRHDi98Ee6SpN3zeVyFNbgMo73RgLP07XcfZQsBJVatPYk10iiU3oj5YnoW
-	puX7tFRGsDlZuxvyT0sU7J6Wuif4asQ=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793330676;
-	b=jPIawKjCSQWxx2NkEER8Dq1ewVGA5728toSB+HLEuLunNuVdFLVt0AKvyIj36AK2BwnXN0
-	A0zZiXRpieRkEGZwNJeb4s3RKa5ue7e0sAC8zvfkD/fi6tFaT08YOTeHF7St/9zu2eQiDq
-	txUp7guBWMRy5bxdBxPJmk0RZ8YruK8=
+	bh=lyCCkGxsVqCH5Jxp2Gx73Ra2R6gYJ0X0+xLM8KV7Nyw=;
+	b=XqYoPqXku9w6fttJesJsCN58wOmCCI28tXveX6i9KgUI0RaC4PovZh/+eIF4668ZSQxKYk
+	YXHV/i0XhWD4hYTlejJpqvUR20q11+ufXu9re8hH87ZJLhdK5gM0B87wXcqjRnUJDKdO4o
+	wL1UFGh04KQrcAFOKiwVzwBWlyU3O0A=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=sFWn6Osd;
-	spf=pass (imf24.hostedemail.com: domain of xu.xin@linux.dev designates 91.218.175.26 as permitted sender) smtp.mailfrom=xu.xin@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=K9e2xpCltZ0luCSKJ76+rRB5TbBjqG8Rs7tkxWAziAc=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1793330674; v=1; x=1793935474;
- b=sFWn6Osd3p26eREcmcIASru+spScdxjMfW23b0Y2POx0A7cPjdRAZnOrHq+XGzSQm8O8znSL
- GcPW+KYbC/rayHgTcZsEHJo0uyjZtTCnQEGFm/LVMX+PMJM2sOtnbK4b1ngvJXY84rWZ79OpEq2
- myhFIaTzDDfiCZo6MKBT4eIY=
-X-Envelope-To: linux-mm@kvack.org
-Received: by mta10.migadu.com with ESMTPS id 13ff5ce3ac3bfaeb;
-	Fri, 30 Oct 2026 03:24:34 +0000
-X-Mizu-Trace-ID: 13ff5ce3ac3bfaeb
-X-Migadu-Flow: FLOW_OUT
-From: xu.xin@linux.dev
-To: david@kernel.org
-Cc: akpm@linux-foundation.org,
-	aneesh.kumar@kernel.org,
-	apopple@nvidia.com,
-	axelrasmussen@google.com,
-	baohua@kernel.org,
-	baolin.wang@linux.alibaba.com,
-	baoquan.he@linux.dev,
-	chengming.zhou@linux.dev,
-	chrisl@kernel.org,
-	dev.jain@arm.com,
-	gourry@gourry.net,
-	hannes@cmpxchg.org,
-	harry@kernel.org,
-	hughd@google.com,
-	jack@suse.cz,
-	jannh@google.com,
-	jgg@ziepe.ca,
-	jhubbard@nvidia.com,
-	josef@toxicpanda.com,
-	joshua.hahnjy@gmail.com,
-	kas@kernel.org,
-	kasong@tencent.com,
-	kees@kernel.org,
-	kexec@lists.infradead.org,
-	lance.yang@linux.dev,
-	liam@infradead.org,
-	linux-arch@vger.kernel.org,
-	linux-cxl@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	ljs@kernel.org,
-	matthew.brost@intel.com,
-	mhocko@kernel.org,
-	mhocko@suse.com,
-	minchan@kernel.org,
-	muchun.song@linux.dev,
-	nico.pache@linux.dev,
-	nphamcs@gmail.com,
-	npiggin@gmail.com,
-	osalvador@suse.de,
-	pasha.tatashin@soleen.com,
-	peterx@redhat.com,
-	peterz@infradead.org,
-	pfalcato@suse.de,
-	pratyush@kernel.org,
-	qi.zheng@linux.dev,
-	rakie.kim@sk.com,
-	riel@surriel.com,
-	rppt@kernel.org,
-	ryan.roberts@arm.com,
-	shakeel.butt@linux.dev,
-	shikemeng@huaweicloud.com,
-	stable@vger.kernel.org,
-	surenb@google.com,
-	usama.arif@linux.dev,
-	vbabka@kernel.org,
-	weixugc@google.com,
-	will@kernel.org,
-	willy@infradead.org,
-	xu.xin@linux.dev,
-	ying.huang@linux.alibaba.com,
-	youngjun.park@lge.com,
-	yuanchu@google.com,
-	ziy@nvidia.com
-Subject: [PATCH 38/46] mm/ksm: reset the unstable trees of all nodes
-Date: Fri, 30 Oct 2026 11:24:09 +0800
-Message-Id: <20261030032409.127393-1-xu.xin@linux.dev>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20261027-fixes_core-v1-38-6f74bec9a5bb@kernel.org>
-References: <20261027-fixes_core-v1-38-6f74bec9a5bb@kernel.org>
+	imf13.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=6lgTf+Ts;
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf13.hostedemail.com: domain of chengzhihao1@huawei.com designates 113.46.200.216 as permitted sender) smtp.mailfrom=chengzhihao1@huawei.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793331747;
+	b=e7IrsALz7nFRpm4rMKkMU4r9wmlqBbDdynSSqbFGhwSvyy+LCGXpaYjdWz8K3KfkTQJBFs
+	C2kRV10NCzHUFD5Plz9nMbYksJG8/Mm4i/1v8I/HZL3SFZd0m3lyGwYE9RDPORcxlmMrM9
+	2MrpqjttsBjGvPRIvAU0Si3zCVJCSFA=
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=lyCCkGxsVqCH5Jxp2Gx73Ra2R6gYJ0X0+xLM8KV7Nyw=;
+	b=6lgTf+Ts1V+YHSBCrEFvDEXDhiMC9GXMq3b2wsOqtZVSt4aNi9cNouzzS6JDieVJF34tbk3Eh
+	hET2+S5R51zLlg3+fDdAp58YFcw5B6/T2rmuCau0hbz720kofk1l0vMy/ktC5xSYSNUX71IMs/h
+	Me1Uuzuu58wyIDDAb/XNnkQ=
+Received: from mail.maildlp.com (unknown [172.19.162.140])
+	by canpmsgout01.his.huawei.com (SkyGuard) with ESMTPS id 4jG6NZ0f5mz1T4G5;
+	Fri, 30 Oct 2026 11:42:06 +0800 (CST)
+Received: from whupemo200011.china.huawei.com (unknown [7.152.185.179])
+	by mail.maildlp.com (Postfix) with ESMTPS id 483B3202E6;
+	Fri, 30 Oct 2026 11:42:18 +0800 (CST)
+Received: from [10.174.178.46] (10.174.178.46) by
+ whupemo200011.china.huawei.com (7.152.185.179) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.45; Fri, 30 Oct 2026 11:42:16 +0800
+Subject: Re: [PATCH v2 28/34] ubifs: don't set SB_RDONLY after errors
+To: Christian Brauner <brauner@kernel.org>, <linux-fsdevel@vger.kernel.org>,
+	Jan Kara <jack@suse.com>
+CC: Al Viro <viro@zeniv.linux.org.uk>, <ecryptfs@vger.kernel.org>,
+	<linux-ext4@vger.kernel.org>, <jfs-discussion@lists.sourceforge.net>,
+	<linux-nilfs@vger.kernel.org>, <exfat@lists.linux.dev>, <linux-mm@kvack.org>,
+	<ntfs@lists.linux.dev>, <ocfs2-devel@lists.linux.dev>,
+	<linux-btrfs@vger.kernel.org>, <gfs2@lists.linux.dev>,
+	<linux-efi@vger.kernel.org>, <linux-mtd@lists.infradead.org>,
+	<linux-xfs@vger.kernel.org>
+References: <20261029-work-fs-sb_rdonly-v2-0-2f44f64f0b66@kernel.org>
+ <20261029-work-fs-sb_rdonly-v2-28-2f44f64f0b66@kernel.org>
+From: Zhihao Cheng <chengzhihao1@huawei.com>
+Message-ID: <0d472865-6cbb-cbb5-b361-1f2bf71dd528@huawei.com>
+Date: Fri, 30 Oct 2026 11:42:15 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.5.0
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
+In-Reply-To: <20261029-work-fs-sb_rdonly-v2-28-2f44f64f0b66@kernel.org>
+Content-Type: text/plain; charset="gbk"; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 2B12F180002
-X-Stat-Signature: 9aahwrq6g8e3yxhwu7s4ate8xpr7woig
-X-Rspam-User: 
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+X-ClientProxiedBy: kwepems200002.china.huawei.com (7.221.188.68) To
+ whupemo200011.china.huawei.com (7.152.185.179)
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: A035920002
+X-Stat-Signature: kb6ghhw81bmb6uh4fb5fkz56fj7ejrti
+X-Spam-Status: No, score=-18.5 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1793330675-776194
-X-HE-Meta: U2FsdGVkX1/SIw6ERtfuYDYKjKNarXMxEA10O4S6I7V3vIYalbZHJr3B8OvdDuEWtoLsX5O+Rvt0E0WITK+QJdH2ick1EBdkvgITzposUoez6HMQY0ztzJGhKA70yrVKat9hLwiKhjJhRYVcdkV6vg7kCB7u3kbZjuTnW+rajuHslXbwHfFyl7a5rZkNZEaR3oSc4CA2KQfITrg0ZsBDVmN5DNIWDHTkj6lcOqgt3KqeKWJjWVcuu+V1RrtiyTYtr8ywgunz9U80FznI5e5fLlC0QZKcPv8NGBQAS8JMGB/m5UzW3vx+Wncv6U4aeiFNRMNRZ4f2VDp98oJrPvfREEb7qCbmr3HqkO90v0QEeo+D839QNcnB9ayxMeXdYvL563alLBrqtDadClhsT1BQNMEdSIiFQtDqAnMi7JieVq7g/ecVkXhysSXEf7dJCGC22ib41KCxBSGWnsH85cxEiHsVrHz2nW5dnnHXbN47dHrMe0T8jheAWxzTfjKgD9gNKxI+Ebut5bzAEnigiv/pODz3EZuFaeB7JUiRejYuTTUccujUhK9Yexk/xhzb+dRvNy+KUiV5Pk3Dgk8oC/2KNqn7G0g2mNiPDKtw1dZnW+1qDIBMuexdWwY4iD9ccVoIE4RxpNpBs7G9zUiMeshR8zOsd1ddJB2K1TX6/AJWsw401mihQj3fDddRJrOf2hvpM8YbTxc/ZYvLOdkQI+EhKtzn/DKymev+TPHg1xHzTyupzFRRKOjcu+vyGyp3eaHxyAIlW5tUANQv8G4z/DxbzkNArFZwc3wb1iQjLUSo5M68uV/hN4W5iDBgzknsllVckFEimJtA9c366JRd66gdmoqQZ0k+5WEaZIXUjtiwb3SQhk1w/buVst4LFb3tpAvCvGJ9EP5x7vvhzWvkJnK2nOdkKYUcYnmn0P75vqKakjczM7Vz163SadUEVZHi4UyzdmUErKFysTzpR/fOT//
- j0stDc8v
- XAelvl9U0Mc4afE9cf9eZ1pSCL7eysDM4X/gRDzQsV1Jq2+nltBm2ra9XEkIeSNekOo22bkf3SE5XRrfqTcnd4K3kH60EUgyPFmbbGiSP1VMJorEAsPjTg+tW26OoV2k+oNo27p+QF3vQbBRVFvExNn4ijRoalABVeebTz8tJg2H1wuTubbwSgtBGuKzrYdtjFMNqXvAbrheCVzJToLn5hL6FHmGeySeSgQ/iKp8VlUtwQGa/0ZFd+fx+78wda+uR7ytxYCFrL7LtjtPLSdLxghF9t8qfZfLlk3u3dV8rDr6Y17yWX+Y4u6cPSRUBbb8AtxG11pBUNK6/t3M3KfBahAYu7M5YA7ZaNw5jrPktRLHwvWv2q1oZgD+nLvvjlR+uRxmw
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,NICE_REPLY_A,
+	SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1 autolearn=ham
+	autolearn_force=no version=4.0.1
+X-Rspam-User: 
+X-HE-Tag: 1793331745-566238
+X-HE-Meta: U2FsdGVkX18RKqadLEw3XPbrE1qGPoZh3UN4I0j5NbOYcSmHpr188K9JAZou2TvVUot/No/lLfFGNKGLYW6VU1Nis9vYIgpX0Q2kFk95rxIFxhfi2EXcTPoeJ9BeoQVnrw72zTRQfaAVTQHqmyRGVgaP1Bfr0RY/5DFmReWixH48iUUSK3khEsHuJ4ebM5fvsWsYMTVYXOeolktZtWowFxOgy9A9i3TZrtvvLdRAr9Ywn4+SOHFS3wSSJ38Xn+WW5IOv5YO0BOA/8IotojfA2juf1vF2fu8vv5TlFZUHZx6PVVwjlwAWYRO+VtJf1I2f0uDEInSVdqWa9sBj6grrHhRY252st5Co9AS8Eb9IyVE5RoLS5I72YuY9FZFvym+gPMjfSqt6IFfzt6TsHwUlPctzSDO6KhOyr3HiaSHrRnLG8gtS6EM+m/n9FjI2brVwPcmCYha2yhbAH2qFUIjCR0DIjAyqoxzK/ZdpZMwH79ZWxdEV/YJ3kezQfzpzO3tSkSpaekLC4/BW1Lx/iMEgz6DVrXqCQuHX2uEFnr1lBK6x6Ra62akStp0OlEUfP0RRj/k9A4i8uaS8oAyIgoxItj1dewrEJPMjkBJRcXs+F7jraQYUtbIobh3rKDvXYF0/BT6CNIQdOCgzXbjVufnt5bSveqakdUyzuNEk2KkEufiygd3vBOxB2Me7uWjAvqUcNew4+9jSrZlJRh2Iq/SfvvfarrpKlhzvkJeQ+OKI2O7jwN2YKmZRHk4MR7mu1KtKXkYutlVDk0C996RWz/8/GDrAB1gqpRf3aj7LlaTa9HRBXcz+HJbU9yoN9V3ihqaUjEXYaJizpdexxu/2y4Yb3whIq8POe6xyU3zLwgjZ2FMIdPxS/7vx33XYb0VjWrYYEUprZS+oxzSyC7RQsvOBeo+Awvi5z5XvGuFvFoFcoyssp7UQq0n4OyFA7PotmdtTVmapBy3BhZ1IdM3ZFAi
+ N639DFLF
+ f9GClhra+oY07/For9xuUwES4jjiyCIhg3LPtDD1efs2NuFw2lsqKiqSAgcCIMF3TdLkXjXia71E92VBGLrJkt+FlZfPct+o4tr23C9dbDyoiNhL1o87ggvwnSuBYKHIYqLkkDCmZzuqLCIKOsma8dkX3qY+trptdzT0x9l022osjr6SmH9vxjIchqAgisUtXKaAok3yIkjoAfsLDWWqpaXw7aa2WereEBtr+Sua9AOy4Ko3zAzyZH2OU97GuaBM+zGYFXv488w9paLy1pkNfg0PmanKDcwz8ZEjRVn6kaPlGRWUSl+qX5Sje/5h6ajNdjxH7Cr2lcjF3xJINq7YWIzHOoMoQZXsbXdFcx6R405z3YqW17syMFMhac53CzDf1yE/X32yzs2YiGZoQKcY7+ZZTWG/pXU4a2yp1
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -154,69 +108,101 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
+ÔÚ 2026/10/30 0:07, Christian Brauner Ð´µÀ:
+> ubifs_ro_mode() sets c->ro_error and SB_RDONLY from whatever context hit
+> the error, e.g. a failing write, and without holding s_umount. UBIFS
+> can't be frozen but that still races with everyone else changing
+> sb->s_flags. And c->ro_error alone already makes every write fail with
+> EROFS.
 > 
-> Let's fix it by tracking in ksm_nr_node_ids the actual number of
-> allocated tree roots.
+> So only set SB_RDONLY while the filesystem is still being mounted and
+> call sb_set_emergency_ro() after that. The xattr setters check
+> c->ro_error as well because ecryptfs calls them without write access on
+> the lower mount and they change the inode in memory first.
 > 
-> remove_all_stable_nodes() and ksm_check_stable_tree() will now scan
-> more tree roots (skipping the empty ones), which is harmless.
+> So far a remount to read-only after an error was refused and a remount
+> to read-write went through and cleared SB_RDONLY again because
+> c->ro_mount was never set. Now going read-only works and its writes fail
+> with EROFS before any I/O, and going read-write is refused by the VFS.
+> fsync() fails with EROFS instead of taking ubifs_fsync()'s read-only
+> shortcut.
 > 
-> Fixes: ef53d16cded7 ("ksm: allocate roots when needed")
-> Cc: stable@vger.kernel.org
-> Reported-by: Josef Bacik <josef@toxicpanda.com>
-> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+> Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 > ---
->  mm/ksm.c | 6 +++---
->  1 file changed, 3 insertions(+), 3 deletions(-)
+>   fs/ubifs/io.c    | 9 ++++++++-
+>   fs/ubifs/super.c | 5 +----
+>   fs/ubifs/xattr.c | 6 ++++++
+>   3 files changed, 15 insertions(+), 5 deletions(-)
 > 
-> diff --git a/mm/ksm.c b/mm/ksm.c
-> index dbfb8f98b1892..9c51925825cbf 100644
-> --- a/mm/ksm.c
-> +++ b/mm/ksm.c
-> @@ -475,6 +475,7 @@ static void advisor_stop_scan(void)
->  #ifdef CONFIG_NUMA
->  /* Zeroed when merging across nodes is not allowed */
->  static unsigned int ksm_merge_across_nodes = 1;
-> +/* Number of allocated stable and unstable tree roots. */
->  static int ksm_nr_node_ids = 1;
->  #else
->  #define ksm_merge_across_nodes	1U
-> @@ -3636,14 +3637,13 @@ static ssize_t merge_across_nodes_store(struct kobject *kobj,
->  			else {
->  				root_stable_tree = buf;
->  				root_unstable_tree = buf + nr_node_ids;
-> +				ksm_nr_node_ids = nr_node_ids;
->  				/* Stable tree is empty but not the unstable */
->  				root_unstable_tree[0] = one_unstable_tree[0];
->  			}
->  		}
-> -		if (!err) {
-> +		if (!err)
->  			ksm_merge_across_nodes = knob;
-> -			ksm_nr_node_ids = knob ? 1 : nr_node_ids;
+> diff --git a/fs/ubifs/io.c b/fs/ubifs/io.c
+> index 6c6d68242779..7a59aa1ea5ce 100644
+> --- a/fs/ubifs/io.c
+> +++ b/fs/ubifs/io.c
+> @@ -72,7 +72,14 @@ void ubifs_ro_mode(struct ubifs_info *c, int err)
+>   	if (!c->ro_error) {
+>   		c->ro_error = 1;
+>   		c->no_chk_data_crc = 0;
+> -		c->vfs_sb->s_flags |= SB_RDONLY;
+> +		/*
+> +		 * Before SB_BORN the mounter holds s_umount, later see
+> +		 * sb_set_emergency_ro().
+> +		 */
+> +		if (!(c->vfs_sb->s_flags & SB_BORN))
+> +			c->vfs_sb->s_flags |= SB_RDONLY;
+> +		else
+> +			sb_set_emergency_ro(c->vfs_sb);
+>   		ubifs_warn(c, "switched to read-only mode, error %d", err);
+>   		dump_stack();
+>   	}
+> diff --git a/fs/ubifs/super.c b/fs/ubifs/super.c
+> index 38972786817e..ef39da4e780b 100644
+> --- a/fs/ubifs/super.c
+> +++ b/fs/ubifs/super.c
+> @@ -1977,10 +1977,7 @@ static int ubifs_reconfigure(struct fs_context *fc)
+>   		if (err)
+>   			return err;
+>   	} else if (!c->ro_mount && (fc->sb_flags & SB_RDONLY)) {
+> -		if (c->ro_error) {
+> -			ubifs_msg(c, "cannot re-mount R/O due to prior errors");
+> -			return -EROFS;
 > -		}
->  	}
->  	mutex_unlock(&ksm_thread_mutex);
->  
+> +		/* After an error ubifs_remount_ro() can't write but still works. */
+
+Hi, Brauner
+If we remove the c->ro_error check, ubifs_remount_ro->ubifs_wbuf_sync 
+will return EROFS and trigger ubifs_ro_mode() again, I think we can 
+retain the pre-check placement to trigger more error printing.
+BTW, a remount to read-write after an error is refused too.
+>   		ubifs_remount_ro(c);
+>   	}
+>   
+> diff --git a/fs/ubifs/xattr.c b/fs/ubifs/xattr.c
+> index 3b0e8a270f59..572f6f3e52ad 100644
+> --- a/fs/ubifs/xattr.c
+> +++ b/fs/ubifs/xattr.c
+> @@ -260,6 +260,9 @@ int ubifs_xattr_set(struct inode *host, const char *name, const void *value,
+>   	if (check_lock)
+>   		ubifs_assert(c, inode_is_locked(host));
+>   
+> +	if (c->ro_error)
+> +		return -EROFS;
+> +
+>   	if (size > UBIFS_MAX_INO_DATA)
+>   		return -ERANGE;
+>   
+> @@ -564,6 +567,9 @@ static int ubifs_xattr_remove(struct inode *host, const char *name)
+>   
+>   	ubifs_assert(c, inode_is_locked(host));
+>   
+> +	if (c->ro_error)
+> +		return -EROFS;
+> +
+>   	if (fname_len(&nm) > UBIFS_MAX_NLEN)
+>   		return -ENAMETOOLONG;
+>   
 > 
-> -- 
-> 2.43.0
-
-Looks correct as far as it goes, but I think it is not quite sufficient
-on its own.
-
-The documentation requires that merge_across_nodes can only be changed
-when there are no KSM shared pages in the system, but
-merge_across_nodes_store() does not enforce this at the sysfs level.
-
-Should we also reject writes while ksmd is merging? At minimum:
-
-+	if (ksm_run & KSM_RUN_MERGE)
-+		return -EBUSY;
-
-Ideally, we should also check that ksm_pages_shared is zero, since
-KSM_RUN_STOP (0) does not guarantee that all pages have been unmerged.
-
-That would make the interface match the documented sequence and close
-the remaining race window.
+The sb_rdonly won't affect the sync_fs_one_sb() after an error, and 
+sb_emergency_ro check in not added into sync_fs_one_sb, should we add 
+the c->ro_error check in ubifs_sync_fs() to prevent the failure 
+ubifs_wbuf_sync executing?
 
