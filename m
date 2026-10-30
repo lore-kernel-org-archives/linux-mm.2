@@ -1,88 +1,127 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05752606A31A
-	for <linux-mm@archiver.kernel.org>; Fri, 30 Oct 2026 23:02:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF844606A31D
+	for <linux-mm@archiver.kernel.org>; Fri, 30 Oct 2026 23:33:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=clZEhLLH
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=QNRLj4xK
 Received: by kanga.kvack.org (Postfix)
-	id A0D136B00EF; Fri, 30 Oct 2026 19:02:47 -0400 (EDT)
+	id AE1506B00EF; Fri, 30 Oct 2026 19:33:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9E2AB6B05B1; Fri, 30 Oct 2026 19:02:47 -0400 (EDT)
+	id A922A6B05B1; Fri, 30 Oct 2026 19:33:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8F9006B05B2; Fri, 30 Oct 2026 19:02:47 -0400 (EDT)
+	id 984B16B05B2; Fri, 30 Oct 2026 19:33:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 55B266B00EF
-	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 19:02:47 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 20F64408E6
-	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 23:02:46 +0000 (UTC)
-X-FDA: 85380819132.12.85310D6
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 759FAA0003
-	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 23:02:44 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=clZEhLLH;
-	spf=pass (imf15.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 5BF8A6B00EF
+	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 19:33:37 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id C84C780789
+	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 23:33:36 +0000 (UTC)
+X-FDA: 85380896832.01.2FBAADF
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf03.hostedemail.com (Postfix) with ESMTP id DC61920003
+	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 23:33:34 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QNRLj4xK;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf03.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793401364;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
+	s=arc-20220608; t=1793403215;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hzGO9HATSXKPRUeQY3W+HyUl9VCm4oUOm3DYY5spgbs=;
-	b=dvRjqOb+mfnJGQRQVhwNnBAOmWSoV3BO1MY5qbh+2w5bDsTSC7HWa+n3vvjoYKmMgHdb78
-	xfoYJDAnKJGoqBoRTAtHhtsPBlbouQbVCx07TA84FvOg0RSIcCBtLq/sVi1W2wJhv5D3TG
-	n3uYBSFJd/c/nDf+t+t+iGFvJXUscSo=
+	bh=OPRSfo0QZ75Sz+slqG8MrN3zVsMn83dh2upfWeaLirk=;
+	b=lJ/9pAr34P4ImAz/3idM4NgCkChB9XqAB9UiW81OZt1/pQBFIfzkKThh92Su5ogP811Kl8
+	H3vca6DWPz/7sjbJvhde8Z2tHCxzVVSjYTpK5EYSbSfgwKiNpoSqdQiurfj7aTK0RRXigG
+	pOI6Y5VkS0b5zH5y/O8A9Q/IlPvsPHI=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=clZEhLLH;
-	spf=pass (imf15.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QNRLj4xK;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf03.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793401364;
-	b=JM/Oo5wMFUWMVLvbTBkZvt2v8cnYtvZ7eoXkRhPe+eIYDbo9LxaNAgHxPTdGlH5uPpXr3Y
-	zNsGdaltd78bCa9TdkMcNQS8VHmp11u3c/fWo8h2U7ipASBZCpgiIC8KGk0lTvdioDARYE
-	SUbVr90GHpwJgrOoMa8aCW91Z4PJC/8=
+	t=1793403215;
+	b=CKwD1D1aNS6riltn5R4Mh6TDgSHfDyYFAo+/CwddfbLmYHvvVvfBQdjuuy81bjMx0tC0cl
+	NsNHZW4fZViH5eF+oHbJHhkWxZ6XNt4ChwVS4BDkF8hKAbcNfnLYjWJwQ3VUfE+ib4xk2j
+	86SMCwEd181hNDlXyzVm6W/VFvyCa3Q=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id E81C3601EE;
-	Fri, 30 Oct 2026 23:02:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 412201F000C1;
-	Fri, 30 Oct 2026 23:02:43 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id CA2854369E
+	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 23:33:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 777A01F00A1F
+	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 23:33:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793401363;
-	bh=hzGO9HATSXKPRUeQY3W+HyUl9VCm4oUOm3DYY5spgbs=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=clZEhLLH2OjXqKkR9L4IFzmqFQNGskbC06ZaIAomCsLjQ8a8eVmKsW+qLUPXtTbvY
-	 pvUH6L68NKpL59wmZ/w82scLEdHgprCN6oXKzju3cPC2ZDflfKdXHG0abju/6Epw4f
-	 bAR6QYRz7euvc1sjsiLqiiICF6s/swzgDqkUrATMlqqfwqRu99hsPFmnjwp3c2L//F
-	 CBuU9XZAGoV8cwHf/Dhnej+Mv+OhkuGm8YJyJQzcUHZBhfTfxfNs7WJnRsZINSH2ci
-	 uCFrOGDcEalpWcQNFq+mVcx867AtDctp9bCUkIxk9lNZGlq/0ZgbpXZekjuLrn1FhJ
-	 exCDVWe6wyOTA==
-Message-ID: <sashiko-outbox-191613@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH] selftests/mm: handle child status safely in khugepaged
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Muhammad Mahdi Amirpour" <ampr.mhd@gmail.com>, akpm@linux-foundation.org, david@kernel.org, shuah@kernel.org
-Cc: linux-mm@kvack.org, kas@kernel.org, yeoreum.yun@arm.com, ziy@nvidia.com
-In-Reply-To: <20261030215841.229969-1-ampr.mhd@gmail.com>
-References: <20261030215841.229969-1-ampr.mhd@gmail.com>
-Content-Type: text/plain; charset=utf-8
+	s=k20260515; t=1793403213;
+	bh=OPRSfo0QZ75Sz+slqG8MrN3zVsMn83dh2upfWeaLirk=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=QNRLj4xKQ+HaMG4zhZyywH7wyjerFa1yDX73ggPT/ytrytbA//bp87DyAR/59cy61
+	 D88wY8L9NCkzAK0R6IhkT+og8BWvEaGiJ+CR5eeTtPI93LK/lmpXuPvU6jw/skuAqT
+	 NnvVAFZ2rGxOHEw2dtybn3oh/f1li39x9kZrKMcuGEPLrS2XyuHn/NWs8GQ0BlPw8s
+	 ilMte4aTnZU0bU52w8PSwJNNyKzClMP1XKF2CdlPTG+gMPIoRTRlzUh71yzZUA4K7H
+	 GnsehYz4cc7Fy3DTADyMgaXdncaTEyR+LKXuNYGOn6mUA7IgSW5zgwNVI1Q4uMRlRV
+	 axU6xN9FA2FAA==
+Received: by mail-qk1-f173.google.com with SMTP id af79cd13be357-93e7ad9f78dso142286385a.1
+        for <linux-mm@kvack.org>; Fri, 30 Oct 2026 16:33:33 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBxfkf3Gm9U/NpqEvjaPx5KoOKRDmEKR+m7Bb3gi/fD+0EQb1B234mJyKDzfwnQjsNvvXKeM+teAGQ==@kvack.org
+X-Gm-Message-State: AFq9FYL/hjnc0Aalplwvd4NF32fBdrdqo35oVX+R+nIuZJ7796ldQeoa
+	NoIUJ++yuHlqMpUw9TuecJkpAj/+Ome1q+uCPhrc5nEp+FetOfQ4Gzx7NgDGg30g1QZqKG2FrJV
+	IGmqXpYJfPZpTqwJReonWaLOBk37ABf0=
+X-Received: by 2002:a05:620a:6a87:b0:93c:b420:c2b8 with SMTP id
+ af79cd13be357-944217b4dcamr669650885a.61.1793403212815; Fri, 30 Oct 2026
+ 16:33:32 -0700 (PDT)
+X-Archived-By: <archiver.kernel.org>
+MIME-Version: 1.0
+References: <20261030-maintainers-v1-0-97278f8a5f54@kernel.org> <20261030-maintainers-v1-3-97278f8a5f54@kernel.org>
+In-Reply-To: <20261030-maintainers-v1-3-97278f8a5f54@kernel.org>
+From: Barry Song <baohua@kernel.org>
+Date: Sat, 31 Oct 2026 07:33:21 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4x5-01G5dim5OPm0iuw8V2naHwj3qZkOgogPcV6qp+xkg@mail.gmail.com>
+X-Gm-Features: AclHuK_LU5noV4t1G-cnnOf_R0ik1wLzu3ZYmOCyMHU-nWfFHkqwyudGcBvvVho
+Message-ID: <CAGsJ_4x5-01G5dim5OPm0iuw8V2naHwj3qZkOgogPcV6qp+xkg@mail.gmail.com>
+Subject: Re: [PATCH 3/7] MAINTAINERS: add Zi Yan as co-maintainer for MEMORY
+ MANAGEMENT - THP
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Alistair Popple <apopple@nvidia.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
+	Baoquan He <baoquan.he@linux.dev>, Brendan Jackman <brendan.jackman@linux.dev>, 
+	Byungchul Park <byungchul@sk.com>, Chengming Zhou <chengming.zhou@linux.dev>, 
+	Chris Li <chrisl@kernel.org>, Christoph Lameter <cl@gentwo.org>, Dave Chinner <david@fromorbit.com>, 
+	David Rientjes <rientjes@google.com>, Dennis Zhou <dennis@kernel.org>, Dev Jain <dev.jain@arm.com>, 
+	Gregory Price <gourry@gourry.net>, Hao Li <hao.li@linux.dev>, Harry Yoo <harry@kernel.org>, 
+	Hugh Dickins <hughd@google.com>, Jann Horn <jannh@google.com>, 
+	Johannes Weiner <hannes@cmpxchg.org>, John Hubbard <jhubbard@nvidia.com>, 
+	Joshua Hahn <joshua.hahnjy@gmail.com>, Kairui Song <kasong@tencent.com>, 
+	Kemeng Shi <shikemeng@huaweicloud.com>, Kiryl Shutsemau <kas@kernel.org>, 
+	Lance Yang <lance.yang@linux.dev>, "Liam R. Howlett" <liam@infradead.org>, 
+	Lorenzo Stoakes <ljs@kernel.org>, Matthew Brost <matthew.brost@intel.com>, 
+	Miaohe Lin <linmiaohe@huawei.com>, Michal Hocko <mhocko@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>, Muchun Song <muchun.song@linux.dev>, 
+	Naoya Horiguchi <nao.horiguchi@gmail.com>, Nhat Pham <nphamcs@gmail.com>, 
+	Nick Piggin <npiggin@gmail.com>, Nico Pache <nico.pache@linux.dev>, 
+	Oscar Salvador <osalvador@suse.de>, Pedro Falcato <pfalcato@suse.de>, Peter Xu <peterx@redhat.com>, 
+	Peter Zijlstra <peterz@infradead.org>, Qi Zheng <qi.zheng@linux.dev>, Rakie Kim <rakie.kim@sk.com>, 
+	Rik van Riel <riel@surriel.com>, Roman Gushchin <roman.gushchin@linux.dev>, 
+	Ryan Roberts <ryan.roberts@arm.com>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Suren Baghdasaryan <surenb@google.com>, Tejun Heo <tj@kernel.org>, Uladzislau Rezki <urezki@gmail.com>, 
+	Usama Arif <usama.arif@linux.dev>, Vlastimil Babka <vbabka@kernel.org>, Will Deacon <will@kernel.org>, 
+	Xu Xin <xu.xin@linux.dev>, Ying Huang <ying.huang@linux.alibaba.com>, 
+	Youngjun Park <youngjun.park@lge.com>, Zi Yan <ziy@nvidia.com>, Jason Gunthorpe <jgg@ziepe.ca>, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Date: Fri, 30 Oct 2026 23:02:42 +0000
-X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 759FAA0003
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Rspamd-Queue-Id: DC61920003
+X-Stat-Signature: wbqy4oqxkbaub78ja7879fmh4assyhg4
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: 3jdg4rmjunmjnpf35pb6fiy8i4mijkgu
-X-HE-Tag: 1793401364-715957
-X-HE-Meta: U2FsdGVkX1/HWWthmLR1Nd+p2QDVQq3Xbx773Cki/fAGF40qvmDDrHUNqPD/T2jw6l7eJJWYB0l7gaayj4rPuPfq2dshAamPEw/LMPRxoNPGmKj0WGu1XBp+h1pK52snm5oI7n6MjpLiuEXgSx+JBfuWs113BTpJp/3qMNiMUdSrTvGa58ky+dF0uWzU0axWZZ8jobOBGKltzQ9XOp0EzXQr83j8UKVZIPOy4BZQk4MIkrlMIxkU07bE7IWWTOJ6wjssqeEyovStR5wsLgsIOgBCNehPXFljXgsySF+nCP+rvQTsIIShrujQIlOcjfQJmfYLbvETyLhk5V1TvtVJT/NCYYzXABWfepJhq1fgIm5uudUhym3Gi2U3TAnY+Qyd73iB/9hEHarZDWAq/vn7vztXP2SrZ/TVQmlj7z4KID4vcnG6JB8QEFJ7LtPYjcJRx431yiFdjNH5gx4J7zj39IA8T9eedhw8HFaUmQPTNfO5oPXsLihd/SaNQCHTXBF9TYzKNUepP+ajqk7aVgHXJPCfZVnfnm56HKB7Zj5qHJXXENa2zxvhQhEwJoRahldaQeYDpiEtG05JXUxNXlxlLyzvv5GJadgkjqRPN8yjJGjRGgBKgQJygw3fdQezhPHqWO7eD0XMiza6B2PhdUTanbpo8LEEDQE6Vrv4nvsLVsJqDZ9H0fKEpoASzbNjtvg5fswu/B8HaMRaaK3rhs54fb8nh1nfyw/1EILp6kqqHTJmhrwi0V/Oejt3ipVVDfhLDZpzKPJ4t0Hp1CASQsQk/nWAygNQU0XX74vCDZdcX74kqP48XteCCq9mOTSu+PByE0bQBM5ESIPC+R2M5S4QrtuG8ekFafRRV/ZUy4bbKjXjMxE4AJ2jihkXsyQgqUMk8WymbjhgStiWt6x4xS2wvAW4zy20Lr6envd4WR0YE+NXRLrXXOG4ElPY6tbBwjuA0s17m94N6aYaNBLHjdf
- klgnM3dn
- NLs6NrUVWtX67ZDiWXkx5Kb8jXuG78St6UjvzbYSJhx3y23M7A+lHripWYGbhXrx0PSXzsn2xj6TaLzzoFvnERxwlkPpo80Ar+8QZyN+ASnDLrLhRbrgHNmm2wsdS3pl4eSm3FJWicLxIT71id6NU11jMi/rmqJIG/FdzX6vIWFVW0Ww8suSppSepwvAFEdzaN9Mn6DeKrVZXac+GRWwQs2GPpnHYhce71QflSOulOCMjiy/EW6M36/GXNVoWTe4hUwwhyHocmEkdhZzYspomY3Q8PTQMcblR/A0vyAi1kjJGyQWvzWyz5EUcDN2SAhv8X4iEFaO0LV85HpmKcyjZAshia7cFoPWRtjqjCsKdeumn7GldjxWrzqxZQrnPFv74LkEx1YUzdR3iZMsqvpvPBLvy30r/zIbn4s/Rl+Q5qicz/kfOUgSXPrNJemJAzLKOSRh4WEwW/0rEEfLodNDlBxvceoJ8zt/WD3yl7qWXyLkcMiLCZf/ffBc74lhBjbW1KVRE2xGkCH2gadlFMtPmciz4tzuxccN8LE7h3obz/JwVmMdTKE0zeD/3yrHaylH45O70DxYFtejP1dQ/ZlnMqtLrRGh833sTazzInyV2q6XMQIOSBUIAdi5dHFEMuCSmNRbOUuWGncjrL4CGi6U7dzjrR7CQqcCu0eKK
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
+	autolearn=ham autolearn_force=no version=4.0.1
+X-Rspam-User: 
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1793403214-505175
+X-HE-Meta: U2FsdGVkX192gu2hhvutxdmKsx/p6Wvs0qfVS9XZ79wIgz+CJj3wOim1zdwq+Q1oXXTU0T+xaiM/8tf4YiICqeDfQ60YIxeMSj45Q2ka5O11pPQFS1nR7hV/vv3efe4g3Nsk0Q3Ka3lVmOHa6D76yq4qkqv1aKLoFgZnyiqMKZP6PKuXSz8u8yBmx+DnS5VKoXiDOPdZcL7kIcKKbOVj24S4aCNfezYbzw4iQUMRZQgq+N0Z3Ad26b/0SvE1L0QKA39VOG2YbPyFGjy6BGcfwz4kwpYlMmFGc3ZqV0eJcNNXm053L6lYQrfu/atL5GSJLBug7u93E4J5HvINJprJDm1TqtX6AwuWAVCDSTH63Kb9vapBK8EcFkA2sYZLbn2lwXD0qBvsE2qNCb8IihfzZrfLRQ1NR0vpCSFn+EN7HQpg5DqIurEtP8v7vcPnxcBWhK5TxiCPkAV2PXYyMbv8Pk5hGzKAeGLk/JGTEqcbfQSnlgIW2u2y3B/eoRXnVO1cVzU3mV89SXzV8gGkByeG7gDva+v+Fmrxa1gAHFPbLXmNcYzzll2XUC6Stc5ZsNlsdcB14DAR9Evmb7hOCTeavGKh5zQIrFJv2jsIhfxk9kDN9X1MFGYWAGsLRvKnBvVYL1b1iLXoeguFnqP4wSFMxaUatVQc0uqootcA4Ct7xt2M/ufAEhQfIe6IKfWn3d7MqmpnbSD/GqW/kWzZbhLjf0kC816vqVFJVcAX6r2BHwI5t3KkYPNxq2qL0bUUvzLlLU8ztZ+FtswWR6OhDLD17qGK6xZOAc2SVTlz5H44Lg/jjlz41dbYbi8FPaeH1BWH2cPK2IRDazeDVA21XhsxHXA8RGH8s6GITWD1HtwZRxDIvj+EfTorOHahCXb/WSuOcDSDCJZGbT1zW6ElHJpoX/mpHZa5ofJ7mldQ5IWYFl8EuYT30k9a8Rvg5Np2AIiRq5wm0YHHwp0Gi9mGuLn
+ bU1KR+bG
+ Wk9pNF8g7uzGjMMy82lxLhtoVQPoOLy6PGUjgsMdbI8EnZF+0Pjrh27qjVJ64aVfIAV7Za+mn9v1bVeV84EJmHjUZ2FKzzBaf4NDpSF2diBRqcGqi/FGik5b97BAYKRWBnQ1AQ6tPJ92QqUKhqWUJZLu6Ms/WBczdB5tnpwn1Z83tlYpL08w3xgSsK3aOZOhL9P2EkgOxtTL7zu+yGyS1RX9d4vHLHD5CEOxteT8lOhuCn3/e0/Apm0xI50Ms8Xr9ahgiZqxjVs8WmhY61Qrx81G96WyJm2AtuoEdTWDWWQPZCgbrq2f0MovEIBwCnp87b5GWK7azhc3FdImvnu1KOVbLpSRkSTGCaBpuoGV2Yn8qBKfPU8aHGmnJjuj+TV/u3ZQW
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -90,122 +129,28 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
-X-Archived-By: <archiver.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [Medium] selftests/mm: missing fail() on child signal death corrupts TAP =
-output
---
+On Sat, Oct 31, 2026 at 5:35=E2=80=AFAM David Hildenbrand (Arm)
+<david@kernel.org> wrote:
+>
+> Zi has been contributing to THP consistently and reliably over many
+> years and is considered one of our most valuable THP experts. As THP is
 
-commit bd942a41aed26d067e3b1b9aac04d7c243204d0b
-Author: Muhammad Mahdi Amirpour <ampr.mhd@gmail.com>
+Yep, that's true. I've seen Zi putting a lot of effort
+into contributing and reviewing patches.
 
-selftests/mm: handle child status safely in khugepaged
+> an especially active area lately, having a single dedicated THP maintaine=
+r
+> is not sustainable.
+>
+> Fortunately, Zi volunteered to take on more responsibility by stepping
+> up as a THP co-maintainer. So let's do exactly that.
+>
+> His placement in the MAINTAINERS entry is very convenient to perform
+> this change :)
+>
+> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+> ---
 
-This patch updates collapse_fork(), collapse_fork_compound(), and
-collapse_max_ptes_shared() in the khugepaged selftest to check fork() and
-waitpid() return values and verify WIFEXITED(wstatus) before reading
-WEXITSTATUS(wstatus).
-
->     selftests/mm: handle child status safely in khugepaged
->    =20
->     The khugepaged selftest reports child exit status through a shared
->     variable without checking that the child actually ran to completion.
->     When fork() fails or the child is killed by a signal, the status is
->     undefined and the test can report a false pass.
->    =20
->     Capture the waitpid() result and distinguish normal exit, signal
->     death, and fork failure before interpreting the status. Report the
->     child's actual termination cause in the TAP output so failures are
->     visible rather than silently masked.
->    =20
->     Signed-off-by: Muhammad Mahdi Amirpour <ampr.mhd@gmail.com>
-
-> diff --git a/tools/testing/selftests/mm/khugepaged.c b/tools/testing/self=
-tests/mm/khugepaged.c
-> index c81e0a6c6c54e..8de9b1746e632 100644
-> --- a/tools/testing/selftests/mm/khugepaged.c
-> +++ b/tools/testing/selftests/mm/khugepaged.c
-> @@ -1009,6 +1009,7 @@ static void collapse_compound_extreme(struct collap=
-se_context *c, struct mem_ops
->  static void collapse_fork(struct collapse_context *c, struct mem_ops *op=
-s)
->  {
->  	int wstatus;
-> +	pid_t pid;
->  	void *p;
-> =20
->  	p =3D ops->setup_area(1);
-> @@ -1021,7 +1022,8 @@ static void collapse_fork(struct collapse_context *=
-c, struct mem_ops *ops)
->  		fail("Fail");
-> =20
->  	ksft_print_msg("Share small page over fork()...");
-> -	if (!fork()) {
-> +	pid =3D fork();
-> +	if (pid =3D=3D 0) {
->  		/* Do not touch settings on child exit */
->  		if (ops->check_huge(p, hpage_pmd_size, 0, hpage_pmd_size))
->  			success("OK");
-> @@ -1036,9 +1038,20 @@ static void collapse_fork(struct collapse_context =
-*c, struct mem_ops *ops)
->  		ops->cleanup_area(p, hpage_pmd_size);
->  		_exit(exit_status);
->  	}
-> +	if (pid < 0) {
-> +		fail("fork() failed");
-> +		goto out;
-> +	}
-> +
-> +	while (waitpid(pid, &wstatus, 0) =3D=3D -1) {
-> +		if (errno =3D=3D EINTR)
-> +			continue;
-> =20
-> -	wait(&wstatus);
-> -	exit_status =3D WEXITSTATUS(wstatus);
-> +		fail("waitpid() failed");
-> +		goto out;
-> +	}
-> +
-> +	exit_status =3D WIFEXITED(wstatus) ? WEXITSTATUS(wstatus) : KSFT_FAIL;
->  	if (exit_status =3D=3D KSFT_FAIL)
->  		goto out;
-
-[Severity: Medium]
-In tools/testing/selftests/mm/khugepaged.c, stdout is unbuffered and
-ksft_print_msg() prints a comment prefix and message without a trailing
-newline, relying on a subsequent success(), fail(), or skip() call to
-terminate the line.
-
-In collapse_fork() (and identically in collapse_fork_compound() and
-collapse_max_ptes_shared()), when fork() or waitpid() fails, the parent cal=
-ls
-fail() before jumping to out, which closes the open ksft_print_msg() line.
-
-However, if the child is killed by a signal (!WIFEXITED(wstatus)) before
-completing its open ksft_print_msg() step, setting exit_status =3D KSFT_FAI=
-L and
-jumping straight to out without calling fail() leaves that comment line
-unterminated. When ksft_test_result_report() then runs at out:
-
-    # Share small page over fork()...not ok 22 collapse_fork
-
-Doesn't this append the test result line directly onto the unfinished comme=
-nt
-line in the output, causing parsers to treat the result as a comment?
-
-Also, the commit message mentions that the patch distinguishes signal death
-and reports the child's actual termination cause in the output (and states
-that child exit status was previously reported through a shared variable
-rather than wait(&wstatus)), but the code does not check WIFSIGNALED(wstatu=
-s)
-or log the signal termination cause. Could a shared helper be used for the
-fork/waitpid status check across collapse_fork(), collapse_fork_compound(),
-and collapse_max_ptes_shared() that calls fail() when the child terminates
-abnormally?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261030215841.2299=
-69-1-ampr.mhd@gmail.com?part=3D1
+Acked-by: Barry Song <baohua@kernel.org>
 
