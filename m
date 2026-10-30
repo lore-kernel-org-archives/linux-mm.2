@@ -1,101 +1,94 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 809E2606A31D
-	for <linux-mm@archiver.kernel.org>; Fri, 30 Oct 2026 05:32:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3593606A31A
+	for <linux-mm@archiver.kernel.org>; Fri, 30 Oct 2026 05:40:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=vHfRjYMT
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=izesOQcJ
 Received: by kanga.kvack.org (Postfix)
-	id 05C836B00EF; Fri, 30 Oct 2026 01:32:30 -0400 (EDT)
+	id 06B5C6B05B2; Fri, 30 Oct 2026 01:40:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 00D646B05B1; Fri, 30 Oct 2026 01:32:29 -0400 (EDT)
+	id 01C426B05B3; Fri, 30 Oct 2026 01:40:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E65336B05B2; Fri, 30 Oct 2026 01:32:29 -0400 (EDT)
+	id E751A6B05B4; Fri, 30 Oct 2026 01:40:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id B362F6B00EF
-	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 01:32:29 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id E16DC120545
-	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 05:32:28 +0000 (UTC)
-X-FDA: 85378172376.11.945AE0C
-Received: from mta0.migadu.com (out-26.mta0.migadu.com [91.218.175.26])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 2AE2240007
-	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 05:32:24 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=vHfRjYMT;
-	spf=pass (imf27.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.26 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793338347;
-	b=G+8TEgxRJXJGX5rZJcSbMi+GC7YQIt+p7VdyNfZUec/z12PSmC6SeNVSzqG2gPusKhfIW2
-	UNW+UkWqC9rl1x/jonFDadR1K2u0vw1du/8pCNVTxBIvNfXpkVcVVdTnRipiNzzgf0HT+q
-	idyV+qtDCyaoYk49AvWSqKhwJPsRzSc=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=vHfRjYMT;
-	spf=pass (imf27.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.26 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id C132D6B05B2
+	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 01:40:39 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 3568AA822F
+	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 05:40:39 +0000 (UTC)
+X-FDA: 85378192998.07.21B41ED
+Received: from mta1.migadu.com (out-126.mta1.migadu.com [95.215.58.126])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 0516D1A0006
+	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 05:40:36 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=izesOQcJ;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf19.hostedemail.com: domain of cui.tao@linux.dev designates 95.215.58.126 as permitted sender) smtp.mailfrom=cui.tao@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793338347;
+	s=arc-20220608; t=1793338837;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=VTDrdrBuAyTJnkqjgvXYYtVwc9zTl+F88XwMGcc4YDE=;
-	b=2RToVLDpEL579m10saUyZOT5SujOBxK/xDCTSAYwq8nkvvL6VlrploccgWrPQ9bJq70Qe3
-	eLiAs1ToE+EKU1IVcM+1um5vZX8ZwWVF0lwmsSIPQBuc1rpL754JtKKFcFuuBptORmcjra
-	vsJzubMTN+6IEHz+RlltccVyjSFtUR4=
+	bh=CdWUt+AQIcUlWqOchiPx3xLQXUT8mVi20ovrVe6TqxY=;
+	b=IPoMTw8J6YqE3BRSum+YkUgJ70e2xysEnzolRjF7gdnmTk4dFWxni/FsbfjhuAAHn/NbTT
+	DIeIY+gVX0tnFQOQneyTPZEa44CbaspC0WkmwOnvlmUCMagV1fw6IRfYOyv61hGgaHKihY
+	sc2O3zPheSPsHj4+63LcYAxpCX+ILL8=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=izesOQcJ;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf19.hostedemail.com: domain of cui.tao@linux.dev designates 95.215.58.126 as permitted sender) smtp.mailfrom=cui.tao@linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793338837;
+	b=TsDzIlGMsZUOb/QxSfuUPUWlKJX/Kd74ZkhWkaqMmAuwRTQguiimnrSHsyRkTXfToh1CBS
+	t/JTBZcp/fsHN97s+3nhDvWlxwJBcaSESmCm8aaJlGXnZjGxh/seUXdmrxvH/MHQv2IWtz
+	UR+AgbOMoIuO7uA7JDnoojA3EBLb67E=
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=Bf0WWkeJSETIqyNNL0Tk2W1KhY+0SCl/fI1XWH+Qygc=;
+DKIM-Signature: a=rsa-sha256; bh=Fp9j4vIf/d5KUh3gOQVHtCSAX3O/PbmV7P4bWJC36bU=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1793338342; v=1; x=1793943142;
- b=vHfRjYMTLE8GNmV/NQ930J2ywQJhyanjVI75XVY+Rep9T7tsczB1jt3b7nefwWbYQQHhTYpb
- iqzg8eNAu1Xwp0lliVRb1Bc0n0dDbxlw7ENRHSVJ1UOiue1mIXVgC4W1E5mOo6hJME16DhnrQBq
- go8H6oQ4AOnRkh5x1foQvjtU=
+ t=1793338835; v=1; x=1793943635;
+ b=izesOQcJM5E9h+R5MSvYiurMQRyYhpA5Yw54y4gXe71PcPWxt+pobP7pmWLbuSv7crpyjZvb
+ gmsfZBdiWOgHcTLDhs5pdI1aaNzbPDFsT59DzTsd3CZMwfx5nkT5vnJd9Gz8v/gwKfrANhixSro
+ +nxd1ZVhT70aqZwW51TjTAgo=
 X-Envelope-To: linux-mm@kvack.org
-Received: by mta12.migadu.com with ESMTPS id 9f9ebc0d777873bb;
-	Fri, 30 Oct 2026 05:32:22 +0000
-X-Mizu-Trace-ID: 9f9ebc0d777873bb
+Received: by smtp.migadu.com with ESMTPS id 04770debc8262b1a;
+	Fri, 30 Oct 2026 05:40:23 +0000
+X-Mizu-Trace-ID: 04770debc8262b1a
 X-Migadu-Flow: FLOW_OUT
-Content-Type: text/plain;
-	charset=us-ascii
+Message-ID: <b36ab4a7-b692-49e8-92b5-1dc4d76dee00@linux.dev>
+Date: Fri, 30 Oct 2026 13:40:14 +0800
 X-Archived-By: <archiver.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3901.100.1.1.12\))
-Subject: Re: [PATCH] mm/hugetlb_vmemmap: Fix usemap overrun on nodes with
- multiple ranges
-From: Muchun Song <muchun.song@linux.dev>
-In-Reply-To: <20261029212137.3141875-1-tim.c.chen@linux.intel.com>
-Date: Fri, 30 Oct 2026 13:32:06 +0800
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Oscar Salvador <osalvador@suse.de>,
- David Hildenbrand <david@kernel.org>,
- Frank van der Linden <fvdl@google.com>,
- Mike Rapoport <rppt@kernel.org>,
- linux-mm@kvack.org,
- linux-kernel@vger.kernel.org,
- stable@vger.kernel.org,
- Mohini Narkhede <mohini.narkhede@intel.com>,
- Pooja Jain <pooja.jain@intel.com>,
- Doug Nelson <doug.nelson@intel.com>
-Content-Transfer-Encoding: 7bit
-Message-Id: <0611C182-4A76-4751-A04B-0849EC31DAD3@linux.dev>
-References: <20261029212137.3141875-1-tim.c.chen@linux.intel.com>
-To: Tim Chen <tim.c.chen@linux.intel.com>
-X-Mailer: Apple Mail (2.3901.100.1.1.12)
-X-Stat-Signature: yhqagkqoyumfaswp4rw5ifzcmt6yd3hi
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Cc: cui.tao@linux.dev, Shakeel Butt <shakeel.butt@linux.dev>,
+ roman.gushchin@linux.dev, muchun.song@linux.dev, cgroups@vger.kernel.org,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, Tao Cui <cuitao@kylinos.cn>
+Subject: Re: [RFC PATCH 0/3] mm, memcg: isolate deprecated v1 state from
+ struct mem_cgroup
+To: Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@suse.com>
+References: <20260916125737.1095414-1-cui.tao@linux.dev>
+ <aqxMk6yaiFHeeAAg@linux.dev> <aq0HNe5s3zvOnM_I@tiehlicka>
+ <aq1lqJdVZ1stTKCn@cmpxchg.org>
+From: Tao Cui <cui.tao@linux.dev>
+In-Reply-To: <aq1lqJdVZ1stTKCn@cmpxchg.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 0516D1A0006
+X-Stat-Signature: ckphke7r3ha6c46em3dukxt5jzu4p5ex
+X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
-	autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 2AE2240007
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
+	autolearn=no autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-HE-Tag: 1793338344-957322
-X-HE-Meta: U2FsdGVkX19j7WQDeFvegYw1PCCNtfZNxw9kHPLh6iz8QMMfypOkkU/pnUYYjHFh+lax54DYT5He9J6d3QWOnK+c+LzrI04bHlO2jQt3pAVDl9N5bJFNc10YDHuCZZ4EMMDbRLBUYYivXHDdC3N2LopRmO9tNn4LS2UyQchUvXCytVxSe/ljro5qMb58105L0jVOySfb8AJ5egKwiJvjVszMGyuIo3fc/D/YmIGuE9j87aZpmFqNiYDDvoFUlwILka6xcZsBcADD/1Kvm73y/47DHr/KQm1mh6SzIiv7pC/8/4CFoOROVW5ko7fs16f+PW0vpgszEBI2hwgdIUkPyrr+R6X1lkFP7fblQVu1ecgwjqJqw4Zloi2T8WKu1UWMRoE2ou6Er0PCF7vLr8SSrWOqErbfeq2I/2enpyfGfgSKbX/0yqa4w4za5jP5qYFt3r3hwDpkVQpdRDtj99v1dkZsf9kipt17dbng4BQlewpezRfFVuqpJRnEurN0sshzK00HiGNHmG58ETEjed4jL66PGsOpGgHZsnCVVAAx0MmOl7ZeN3duUjjL5RSy8CmEWB+DP9J37h8LZkkzMdRUVT+O+wx6NgAeEs3veIDJ6RGnXlt8XxboI7ro4ennkm7UuOWLAPJ4sfW2sKC2QssCF/l7BVJofwcv8RLweaACfvWgr+MUyPykUdM6fdR6Udu+ojcO6u07gBVysi6Doo7acOfJ8ZZu+y6tzcDp3hQtfkwUP4zPVzfWuArStXUSeGEm5WpEAiZr0dcwOgAD4NOxCx72j2MSnxf5c7LPK2RHF2Xlw7B3n6bTUbO7aeNjvNQH0/VefIXL9UpCarNHLGlRpjP314tSnGaymuRNjzlRAd8pxUg+GyHXgJWZTuDL/oQyyqLzvoqloPpmVH9bW7O6OOXlvlwHypuu/ALMLAqI9c/iLaJhPxZo79J520GHkOk4JaRbFPsr1Wa+C8dL+L8
- lOMPoQDW
- PXR+58Aa+6gWApaBzkHFhWl2sID41RV2e1q5ltOhitOKpCANbzTTDrz7o0teH/apnPQXKCTFgkJMaNdVZvpkZl7jXAuEEf0jKTYQGo4hqN7SRmPUEDs0nkC6Lv8pdFZ/AHFKDfDx0z5iadH/X5gtDq8egepE3IdP5ZgdvgH3KdDyUnOAHf8Lkn1qTGwJ/LAjiD7cZKpS2PDbDDc/Hrl6QYhkCwYb7umV121ZXgEtoEeTnGYxJDfDi66dqDLisK8SyNg8pVv59I9sff6GDJcemOQYNYFWWkqayfMj1SnEYevNenmpfX6B3HMBeO5WID1rJOZ+xACypgO1m+HM=
+X-HE-Tag: 1793338836-191778
+X-HE-Meta: U2FsdGVkX1+W2blO2kFfZ7DCwZRKc5kqy+sFtRMLkkfAVUmirNAhnF1cGAKnvBGTmluZw608mb4AKohyll6CMlud7KzefBoMZWnYv+NUhQVYXhJGDsqITU39MKniA6dAgZJ9KjjBEp3NkjU5nDF5jsYHIC90czTBsvSGiud792qjGOu63Cno1AjzDrf1Va6bAIz2iVCbLNzIphQ13mrE6bxXHt6gL+LO0sDeJCcOEDPXdXcM1xzbr519ZdfAzdiS3fGa92TaB8j9bGaC89IQe1eUW5CG7Fn8LpOYoAXGCoN7ostHAxOANp/CCtnjkkeLdqMUxx0xYXfDSCgSnIkWcyAKmZrclA9ORXisyd89JJCRaN8KiGe0wpSO9BfKI9axH5oPMgOA5JoE4tAheTZsp+CgO4HTVnCwz7XD9aNtC7ljo4KOSbW7aRRB/uH6TkQUnB/n4C3mOJMBEjEEqzLeDSaRmW8PSyioJsLbgshBZfCfZm1yf8N2Su7mWsX+UCuSLIXO69wpiomEP8gvg7WgX+WTdHPheqPLKLmC6xPUH0Ich0PH1TbNqu5ObAP6+1iJ0pcHEKK2gTXRUJ4ya6dI+m4qNT29DY8u3lGNfVX/4RJKPCYZzEZRFXeNCruJOHhL1moBvQ76/kLR92rqdxdsucrinMvPgAvwW7fZfUMvUQPhum7fbsNIBz/LjyElCR9pNifJj1MsFPmJsZkmKCmwPbnC+i0drSMMnSbbsqBe+h9/t0DLFzE/K7dwe7cD28cO07KUtC0+D6GEMCBhgH+PLQZVx3j0umRfeUvKji+sivpJ0AJN3Ahr6PHyfu9Ti22pVl/rO1WeVgzUYLJuFNbtK/umsFrqUJu6pNRX+uvIO6XBU4J9DnfLtF5mRB5lZK8zMqZ0ekl72Snmb9d8pC5Ocrv6OgsnMfGgTLlBEEJBdOuwpzNKAV7sCisP47mTXdbdwnYbdaUKB5eCP9F7fsk
+ pYwi2+54
+ 9gbmTeQ3tLzpveSziYv27VF0vSRdSMTWYLRvWzx7fi/KRI9f15qWPm//N+RUOPTgruh+sVb2ovatwhCSunC3P3KQrKX7CZT0BzGwoRg4N+ATNCHafbFx+ILgwWK10E8H455wN/Yg74xcN4BWKrEgqz7RmJW/6m7oYJVCfX/6t3MccapDSl+D/vGvv5nsyg7kVhxV+fHDVlv6lhAIcaaM4B/x6bm1dd5dVo2LnSm6CqVYxjQSGa5NFjcIzVYrOOwcloGxax+7YcXxhsABN5/Sx+FdWIy6Xr3iuWKWbXGeXzWsuY5Q4x8000Ga/JLVrviHr0Y7OvS1Thy+yYoUSWcqTXxC7578x6BX3Fecm
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,73 +97,64 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
+Hi Johannes, Shakeel, Michal,
+
+在 2026/9/19 00:24, Johannes Weiner 写道:
+> On Fri, Sep 18, 2026 at 11:41:09AM +0200, Michal Hocko wrote:
+>> On Thu 17-09-26 13:26:40, Shakeel Butt wrote:
+>>> On Wed, Sep 16, 2026 at 08:57:34PM +0800, Tao Cui wrote:
+>>>> From: Tao Cui <cuitao@kylinos.cn>
+>>>>
+>>>> The legacy cgroup v1 memory controller has already been moved out of
+>>>> the shared implementation at the file level (mm/memcontrol-v1.c) and at
+>>>> the Kconfig level (CONFIG_MEMCG_V1, default n since 6.11).  Its
+>>>> per-cgroup state, however, still sits as individual members inside
+>>>> struct mem_cgroup, guarded by #ifdefs.
+>>>>
+>>>> This series isolates the deprecated implementation from the shared hot
+>>>> structure: all v1-only members are grouped into a dedicated
+>>>> struct mem_cgroup_v1, and every access goes through memcg->v1.X.
+>>>>
+>>>> With this in place the v1 implementation is self-contained: its
+>>>> interface in mm/memcontrol-v1.c, its state in struct mem_cgroup_v1, and
+>>>> its eventual removal becomes a localized deletion of this struct
+>>>> together with mm/memcontrol-v1.c, instead of unwinding
+>>>> ifdef-scattered members across the shared header.
+>>>
+>>> Sorry I don't see any benefit of this code churn. The code is already behind
+>>> config. What exactly this code churn is giving us?
+>>
+>> The only arguable upside is that this would make it ever so slightly
+>> easier to track v1 specific stuff (once that s@v1@memcg1@ or similar).
+> 
+> I had the same thought. It's kiiind of nice to see which members are
+> completely specific to memcg1.
+> 
+>> I am not convinced this is sufficient to justify the churn either.
+> 
+> IMO it helps that it's mostly in memcontrol-v1.c where the chances of
+> interfering with other work are pretty slim.
+> 
+> The patch 1 + patch 2 split is a bit bothersome: indenting everything
+> into a union, only to then move it out in the next patch.
+> 
+> Tao, if you folded these two patches to make it one clean extraction
+> and changed over the sites at the same time, I would probably lean
+> supportive on this.
+
+Sorry for the late reply.
+
+Thanks for the feedback.  Looking back, I think Johannes' point about
+the patch split is fair.  I split the first two patches to keep the
+initial step semantically neutral, but it also made the series look
+like churn for the sake of churn.
+
+I'll fold the first two patches into a single extraction in the next
+revision.  That should present the change more directly and hopefully
+make it easier to judge whether the resulting boundary is worthwhile.
+
+Thanks,
+Tao
 
 
-> On Oct 30, 2026, at 05:21, Tim Chen <tim.c.chen@linux.intel.com> wrote:
-> 
-> sparse_init_nid() allocates one usemap slot (struct mem_section_usage)
-> per present section in [pnum_begin, pnum_end), and
-> sparse_init_early_section() hands them out in order, with a BUG_ON() when
-> they run out. hugetlb_vmemmap_init_early(nid) however initializes the
-> sections of every bootmem gigantic page on the node, including pages
-> outside the range being initialized. If a node's memory is split into
-> more than one range, sparse_init() calls sparse_init_nid() once per range,
-> and this takes more slots than were allocated. The same happens if a
-> gigantic page straddles a node boundary.
-> 
-> For example, with this SRAT layout every node has a small range below 4G
-> and a large range above 4G:
-> 
->  Node 0 PXM 0 [mem 0x00000000-0x2fffffff]          768 MB  (low)
->  Node 0 PXM 0 [mem 0x100000000-0x80cfffffff]               (high)
->  Node 1 PXM 1 [mem 0x30000000-0x5fffffff]          768 MB  (low)
->  ...
-> 
-> In 128 MB memory sections (x86_64 SECTION_SIZE_BITS = 27), node 0's low
-> range is sections 0x00-0x05 (6 present sections) and its high range is
-> sections 0x20-0x1019. The low ranges of the other nodes are 4 or 6
-> sections, all smaller than the 8 sections of a 1G page.
-> 
-> Node 0's first range has 6 sections, so 6 slots. With "hugepagesz=1G
-> hugepages=400", hugetlb_vmemmap_init_early(0) then initializes node 0's
-> 1G page at 0x67c0000000 (sections 0xcf8-0xcff, in its high range), and
-> the 7th section hits the BUG_ON() (seen on v7.2.6):
-> 
->  kernel BUG at mm/sparse.c:268!
->  RIP: 0010:sparse_init_early_section+0x9f/0xb0
->  RAX: 0000000000200000 RBX: 0000000000000cfe RCX: 0000000000000020
->  RDX: 0000000000000cfe RSI: ffd7e1d09fc00000 RDI: ff252cb28ffb3f50
->  R10: ff252cb28ffb3d40 R13: 0000000000000d00
->  Call Trace:
->   hugetlb_vmemmap_init_early+0xe1/0x140
->   sparse_init_nid+0x56/0x370
->   sparse_init+0x192/0x2b0
->   free_area_init+0x7f/0x690
->   start_kernel+0x64/0x540
-> 
-> Here RDX is the section number, and R10/RDI are 6 slots apart: the start
-> of the usemap buffer and its current position, which is the end.
-
-A detailed analysis.
-
-> 
-> Pass the section range to hugetlb_vmemmap_init_early() and only pre-HVO a
-> page whose sections are all present and within it. Ranges are disjoint,
-> so each page is handled once, in its own range.
-> 
-> Skipped pages are not marked HUGE_BOOTMEM_HVO. Their sections get a
-> regular memmap from sparse_init_nid(), and the pages are optimized later
-> by hugetlb_vmemmap_optimize_bootmem_folios().
-
-Thanks for fixing this.
-
-However, the master branch has already switched to section-based vmemmap
-optimization, it has been already fixed. So this fix should target the
-stable kernels (6.18, 7.2 and 7.3).
-
-The change LGTM. So:
-
-Reviewed-by: Muchun Song <muchun.song@linux.dev>
-
-Thanks.
 
