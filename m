@@ -1,107 +1,103 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BEBA606A31C
-	for <linux-mm@archiver.kernel.org>; Fri, 30 Oct 2026 12:17:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D633606A31E
+	for <linux-mm@archiver.kernel.org>; Fri, 30 Oct 2026 12:19:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=DRqT7/Wj
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Z1GRqgVU
 Received: by kanga.kvack.org (Postfix)
-	id 9C81F6B05B3; Fri, 30 Oct 2026 08:17:28 -0400 (EDT)
+	id 7CF8A6B05B1; Fri, 30 Oct 2026 08:19:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 978776B05B7; Fri, 30 Oct 2026 08:17:28 -0400 (EDT)
+	id 7597D6B05B7; Fri, 30 Oct 2026 08:19:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 88F506B05B8; Fri, 30 Oct 2026 08:17:28 -0400 (EDT)
+	id 6208E6B05B8; Fri, 30 Oct 2026 08:19:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 64B6F6B05B3
-	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 08:17:28 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 70B15C06B8
-	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 12:17:26 +0000 (UTC)
-X-FDA: 85379192892.25.79A5472
-Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com [209.85.216.72])
-	by imf10.hostedemail.com (Postfix) with ESMTP id CA516C000B
-	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 12:17:24 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b="DRqT7/Wj";
-	spf=pass (imf10.hostedemail.com: domain of 304rkagoKCNgD8HB4I6B8HAIIAF8.6IGFCHOR-GGEP46E.ILA@flex--jenhaochen.bounces.google.com designates 209.85.216.72 as permitted sender) smtp.mailfrom=304rkagoKCNgD8HB4I6B8HAIIAF8.6IGFCHOR-GGEP46E.ILA@flex--jenhaochen.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793362644;
-	b=Y/vzFDwdvkMJr1gFqfS6w1d3MMP6CctbttYdj6sm9YApGJ7MNoUof9JhtYJOUFxGwQCDs1
-	eh2hV+ui+dH5X4gq/8xXlkCtFU+LM9O3Rm185LHVEX/xUGQ1hDSwTnwb3IpN+lYc5gh1FT
-	pSr6OA+ua/jvjJcTpYQazoKjiJtuNkU=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b="DRqT7/Wj";
-	spf=pass (imf10.hostedemail.com: domain of 304rkagoKCNgD8HB4I6B8HAIIAF8.6IGFCHOR-GGEP46E.ILA@flex--jenhaochen.bounces.google.com designates 209.85.216.72 as permitted sender) smtp.mailfrom=304rkagoKCNgD8HB4I6B8HAIIAF8.6IGFCHOR-GGEP46E.ILA@flex--jenhaochen.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 38ADA6B05B1
+	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 08:19:32 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id C09CF1A06CF
+	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 12:19:31 +0000 (UTC)
+X-FDA: 85379198142.20.DA36361
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 372FC180005
+	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 12:19:30 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Z1GRqgVU;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf06.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793362644;
+	s=arc-20220608; t=1793362770;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=HpxrkdHX+pHoxS8QiLrmBd8NFzaZIUXGXtbQN2oLq54=;
-	b=Y9MXUgMdXO8I5LSksK/op1uqYKbf5q5BveOVsW3m+qBvsY/WeFAHQC70h0w4PbzamkmT3f
-	McwHlcj6d4VT/Q1JWkA1uErKcUgddyVRqanISvLR/9aMXh/QuqPT/6Hs5IARX9cs9YsbbX
-	FvXsY/yFocn3jmS0LP7ikZKBAVLvF1I=
-Received: by mail-pj1-f72.google.com with SMTP id 98e67ed59e1d1-3ab2395f104so644744a91.2
-        for <linux-mm@kvack.org>; Fri, 30 Oct 2026 05:17:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1793362643; x=1793967443; darn=kvack.org;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=HpxrkdHX+pHoxS8QiLrmBd8NFzaZIUXGXtbQN2oLq54=;
-        b=DRqT7/WjioyK/Xjl+jd+EV7CLKKF7yrTAmxSABeqfMFdJgEArwfd62NIfArKxxQLaj
-         gvKdeq20am0WPXRsyy0zWNKiBfHBU1re6tT/KUYMsEy3KdUHSy7d1pbEvbznIJ4A4Yny
-         Sf+FSALlN8WjVBKzugFFQhlnQ8TGwQQjjYdyv89Qrwd0O5rP92oZfUlWIlAtwwpXoGag
-         lGougV5cpFA4FCtKrVyTwmLvGaEnoZuy0Bv9PmLnbn26PA0zinp+CJHf4JGJTLIqlA94
-         d/K72jaT32bTrQFWNvc77iU0pL7sEvDbiFXFsY2zereMdN0RUr4bjqLbRckXRMzf0rqF
-         raug==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793362643; x=1793967443;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=HpxrkdHX+pHoxS8QiLrmBd8NFzaZIUXGXtbQN2oLq54=;
-        b=0SLplvjpNMl4mJoOGPQiuUggyT3juxblfr6apXybuAsoqp61zegx77CWf/h9VPY2I7
-         BYGXl8VCkEC1MARMKBAxXfzxSpVbEqygkMG+ODnQQLd0J/i4oo4u29Q559pq0PNeKu2L
-         WzHs78MdjBJJjUhKJ2KA9ZcAhsPjxna74mzJWQR82FxtITTGwLJrvbGXuKavgAGogzM9
-         E9yg67U0d8H6CrHoriGkXx/8FpQdwQIOrI54kRYU7+AsclUoxxZq4C4u1H2XiHomOvEe
-         /taiusevfX1VOhuB0Ionkmjde8SLNHr5WzucGs3hJGmCErSumnGocfbhsMzXREnuoUqz
-         +n4A==
-X-Gm-Message-State: AFq9FYL4MFyOlR4u/TYnobUIf51cIqneOlrE4RcLfjdawEtpe5uhKYin
-	5jm9JQKGyomqlyqJxqUYoAtnpAVA5pn/RfthVl1PjX7nLZ54mndpEt0Q6Wns6XohJeI0Pg+pX5T
-	WexlApL3lcih2oxz50R1+eQ==
-X-Received: from pgby23-n1.prod.google.com ([2002:a05:6a02:6517:10b0:cc7:4919:5ed9])
- (user=jenhaochen job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:90b:5106:b0:3ab:e588:c295 with SMTP id 98e67ed59e1d1-3ae8983c798mr1659513a91.42.1793362643165;
- Fri, 30 Oct 2026 05:17:23 -0700 (PDT)
-Date: Fri, 30 Oct 2026 12:17:00 +0000
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=pEOu/AQvgU0OKb5AZqRCUfaOk8gDp8NvYhcCjCvB5JU=;
+	b=01yjLYF8NlTlsxA2u5r43fHuUBQsLQ5NM+JYZ7rS4HMnlGMYjF9z6KCiIXppkaQlchlrep
+	Bq0wYUDzupEtJmFw+UJeY0LfsxJ1ia61V7qzBRB99xGfop/P65VUl2bqMy2SQcL7KFzMcF
+	AZYFRj99lb2diWmOB/V6hOo4jhwY6s0=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Z1GRqgVU;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf06.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793362770;
+	b=QtL8EZAd0vgxArI8USKGx2vhXkwXwosWiOO8vwYZBNF7AugCLeHzaM4jSCf9gkCvKm3Pmq
+	poQ5mQ9H2ucomNtIXxwIJ172DWkwRP9bYyngGddsAn8PBXNq8sK5yctzprdJASlJ43EUw6
+	GlspgZpYBgg9Ih3iubRxHP541LlhcwQ=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 3DDE7601EE;
+	Fri, 30 Oct 2026 12:19:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EBC11F000C1;
+	Fri, 30 Oct 2026 12:19:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793362768;
+	bh=pEOu/AQvgU0OKb5AZqRCUfaOk8gDp8NvYhcCjCvB5JU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=Z1GRqgVU4WIj2ovDw33wHVQ50+wcmPd8/iVAG4of6NAt3Rr/AR7PDuT4d8fAQTMtU
+	 wXSiDpUBRzGwYOqpuW+G8+Owc6KG88nWoM0t0B9s2tP9+OeTyS8Peqtp9md0yYQYvP
+	 d7Q0dFsYSX/Wu1Gd0vyfD8cIc4sNL96m2fr8q7Tr6vc2TlNNvgMPQVwhPnAPZ2qgNy
+	 9GdRSJFsFof5PtAPP8aa93iHTxTmUTpJT5ygcEksnW7AFb+PSD7rnPpu9om4ZLsKKj
+	 bUNOC/W6HS4UoE600ZsgdUDzGm0y+xdV/sXbDBY2EmdQW1XOZ93Cn2O45iEB5tNixz
+	 aN1QY4oHSWwlw==
+Date: Fri, 30 Oct 2026 14:19:20 +0200
+From: Mike Rapoport <rppt@kernel.org>
+To: Muchun Song <songmuchun@bytedance.com>
+Cc: Ritesh Harjani <ritesh.list@gmail.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	David Hildenbrand <david@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <chleroy@kernel.org>,
+	Venkat Rao Bagalkote <venkat88@linux.ibm.com>,
+	Shrikanth Hegde <sshegde@linux.ibm.com>,
+	Pavithra <pavrampu@linux.ibm.com>,
+	"Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>,
+	Muchun Song <muchun.song@linux.dev>, linux-mm@kvack.org,
+	linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v2] powerpc/mm: fix uninitialized ZONE_DEVICE struct
+ pages with PMDs
+Message-ID: <auSLSIwUi2xNIYua@kernel.org>
+References: <20261030115326.1005755-1-songmuchun@bytedance.com>
 X-Archived-By: <archiver.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.56.0.317.g454f8302e1-goog
-Message-ID: <20261030121700.260975-1-jenhaochen@google.com>
-Subject: [PATCH] mm/zsmalloc: inline obj_malloc() and obj_free()
-From: Jenhao Chen <jenhaochen@google.com>
-To: Minchan Kim <minchan@kernel.org>, Sergey Senozhatsky <senozhatsky@chromium.org>, 
-	Andrew Morton <akpm@linux-foundation.org>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, llvm@lists.linux.dev, 
-	minchan@google.com, liumartin@google.com, benwei@google.com, 
-	Jenhao Chen <jenhaochen@google.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Stat-Signature: a5eeqad74hty9atcggwt9m87jyxye4sp
-X-Spam-Status: No, score=-26.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261030115326.1005755-1-songmuchun@bytedance.com>
+X-Rspamd-Queue-Id: 372FC180005
+X-Stat-Signature: ktiy7aswsfzifdtpnw18485ugeikdx7o
+X-Rspamd-Server: rspam04
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT,USER_IN_DEF_DKIM_WL autolearn=ham
-	autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: CA516C000B
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-HE-Tag: 1793362644-129057
-X-HE-Meta: U2FsdGVkX1+l7jsp0/lkkLkZXBtnHkAfqw5DCE6n/7WLu5EabjMbdXPDPDt9AJb7jg5mn6Oc3Xtx4z970C012CTOZh+axcmn6mENoUwg2L4OZLtP09GTl0cEkmfJ3w3BBfcEn8KX6TYKKf+UgaLJyTQamb2cwcSla7HLb2tYNRNGz+qkgwMA1Cv0QCWLpiomXklfslt4CfXJ90W9pXviBKE3GTAOvnx8wjEsKtA1Rl2WtmCC0hGqYVG5P6RqRb3OmtS4CjLOqeMVgYzzaWGN8i+t6ozfOl+sFwPTQtqfKAIw1eaRpsSuLZrinfvWSAfhq4cfz/TELqvUplGv9Gq/eIXPOotoF4smIAa2HUpxZc7Pyh2FfB4Iy/ROpHj3mozbR4gm3g0JUKGt4qGFzEMtz7qDMR+6uWDlT1F1m2tD7o5nbqAF2TPjj03YLtoprTdXESSJcddg2RHgMcvNVfqaKP0Z+JItKwLzz0197Xt9Zy54YSQR9OHJtGdi2lpeJNBozf1Amu7B9t1IsB/WNq5Xu3suvaRbnyQbjVupf7Xn6Z+aZZaG4L1J+yWsES5N4vxXkkh5Y93osTvemdYJutVWQ38fuK6P+3p5RYCVnlYmqUOEAIJa6CgM7AoNXuGGJbzJQMFHv22SxXaFzIgz5hzFP3wmmiX5LtY90yBX9zlvRU8blcuD+SuAn3xezGdvbKsWopZW+RngsMG58Wv1PhgBoUK5kxNdDZHslawNuaW1mkC0qAHYS8+gqdDCls/uEVGqsgOi1g5iApkbomjFXqKs0EEw0kiWs/v9/q1SyEg9uvj3k0ULmpUAwn3uAilobvq27zUAKdPDr2Ef7asxMWlAZjnYMiBvNKHW3eibNehYJA4CAbdrQzzMUbknefIwkF/rilgfG6IOCa/cC/b3YXPJ1JbYG+wwCBI2bxAeXP/5mQov6dL7WHU/EbAImC73eXcA+ifDsb4gBvCrPQpeJbG
- XCBg18mE
- lGfYCfcf1zzBDvbNSuGCrrSdTIij03eim+vGhtLxxLY06qt6epHyC9NEUkei0XA3kFKG4m9yk+nRlgfQoGf6oTxqmSqebUVfQsHCPY1yF3flxnFHFLhFDXIdkWtkfTeeDe3vtPiSNERJvNybHd3mht+KSa3uY0YnbjfysVYNoXk4ZW7c4BOnH6eyO7EMwU9+8jBIiDiH9QCDrENiMBMye3Hn82NGxC4o5zCaRZ+/qNslaM8Rj2XFTTiZfO2su6BoCNCg+guD2UXGw4vXhtjilwu0UvDhwu11nw7OxcmyZtD9b8JwCMr8zWiAD+qYD3YwJ6PmEmDH0zmjDgf6ZXe0YUWz6s3YgiOQK9MQH8bK6fBfyjV8qRjoYlpXlNQdk+A4D6qqq/DVafA3Qvw5W8SNu85ptKBQLSXUCw57HlHI4pvxBdMXFswixlAxbl06p+fzAXiGQxn9YpssF+WaTdV3uje9thMJcwFEDjphSDT12j6AP8Y/ZhCSQFJfFMm7PAbqpYu7XR37XuDyb8eMMnBya3ZVfGQDaRNEd0kIGOZzvz9+YzBBWMsvfloS6Cy+yN8WR8eEU4CHOd7twlPSEggj3+/JOlYq65SOmykjA+Rei5FBOIQjQXhxZR6R2bq8KS0fRlPDuGCpsez9bhdDeZcRZarUS0Q==
+X-HE-Tag: 1793362770-486516
+X-HE-Meta: U2FsdGVkX1/e/Hz82lHKBTGr00ckqPi+y8l+BWj01Wxi3EVRAUw/J/+1sGIKee5cWBndIYuBiSq2X1k9Qe5/DW4hjRggXwtlTeOvRnmwyVHdKAm9k62z4H+0M79l4oyRu/eJF/Kd20Jry4xCAxCjwiO56j3n+GpHHwksLe7A4azRJgs042GgT0Krk8AjXg7wSY+0k5nf9XmzQneB+DP9End1TGDJ35yFwQjs9fmRpnXqTVh5MgZXIYZ++sdR5zgol5bQqrsXRGcnGcGWuZrnjLJQulcLH6vnpWF1EiWrFnms6pQP+f8IpnGp3+gqjUJEpDqCt3pJu/Emr26LuvJly1a4ad31I9GrFA7oZKHKnRSxdM4WhwrnRt7bR3ywIT+u9H2nbq+RbhZFBuWRDX9uJa8GpMWNn17/Geq2qooyqoymQGx6N85La6D4slwvxH1+ypqpGmJD1azW2XIQm9HWmNVMAXeL5iSSOXRejSIu7yJpi9USa6YT+09tENDCLaZENgw01fvdOtbFseGrOPGtrMlNoC7tUcIh4RxOBuyIP5nxFzynXtffBA/qRajUzyhSgIrBhRL8H/zhIHj4t+6WtGmfKZTgN4x2NSk93jPFVGHZ7Gf1BVBOm8N72xntvOwYC49N73r0qqx6T7xAL6pQxBTfs4CwY8AvS267bI6Vr/Ob8r3CgMBIrtoQA8lFKmoxxjHTItS+DfyL9BI0UysMDM50zdipeUmpTyUq7cfZbNkWb4Fb6zY9mrd5Nh4nLiu/FXY7GrjS8jjlBcgY6+XDhgyXXi/6khJhpt/oS8vKwGonC97UIdyozGFbbIC3UgvTBVUBnmV47JuII210yP/1k8PgfPgAppRf67UiTSJ0VucEs8w81sJ8a6S9wqGG3zuQc9TWvRD2Ir1wWezTOY3AtE6BI9Yjc65CZq85FgtaiKWAPLwwJEAb94N8Ps0UAanqgC4WC2Pqxkw9Hgfpg+E
+ bzL4/RWd
+ v1WXopo6gyvH6plX4XLLkXp7cv6u6IsyD7HDqx6pzbFfK6zSQDqqntq26TRUhYAZeyrQ8CrlZXksoz6wmaWu1DHTNKn6v+xusg+u2fVXuEKLNvQStvvspKU/wsP3C8OeGdskwYKFwRTfs5vQwil1DbRcgE7W6IzMzxDXyFC/CJ9quNl9llNnD8EZn1tBtzDo2R3HDono+FOL3W1oS6NPZDwJQ0iPvIocVga2P1pt6YmftjT4gxYFahI+z+HSR/SQsDb9xxs/j76yT1pzTnX6qkKtOJVUUZxNTu4YjMB/3zUMt+CpkF/IfU00Xnqz8MppOVI1qixWMANztX2a6pGlGizMEMfEu9NQ2kWsUpD28icYK4WFeJ6yzk+EFuGEYrN4J+TsDC5SEvB6swZHMvCQS+qVEfU5B+dYM+bamEXOGZU6VDuhUzRcjvhPw3rVmJU0N+xpIKNuglxjdGE4xMsUL2g13fBb+X67YRsvp
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,65 +106,92 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-In zs_malloc(), the fast path (if (likely(zspage))) allocates from an
-existing zspage via obj_malloc(), while the slow path allocates a new
-zspage via alloc_zspage().
+On Fri, Oct 30, 2026 at 07:53:25PM +0800, Muchun Song wrote:
+> PowerPC radix vmemmap population can reuse an existing PMD mapping for
+> a device DAX range marked HVO-enabled. The reused mapping is ordinary:
+> its tail struct pages are not remapped to the shared tail page.
+> 
+> Leaving the section marked HVO-enabled makes memmap_init_zone_device()
+> treat the range as optimized and skip initializing real tail struct pages
+> that remain in use. This first triggers a zone mismatch warning, then
+> faults while initializing the pageblock flags:
+> 
+>   WARNING: mm/mm_init.c:600 at __init_single_page+0xd0/0xf4
+>   Call Trace:
+>     memmap_init_zone_device+0x164/0x430
+>     memremap_pages+0x43c/0x93c
+>     devm_memremap_pages+0x3c/0xa4
+>     dev_dax_probe+0x264/0x3d0
+>     dax_bus_probe+0x140/0x1c8
+> 
+>   BUG: Kernel NULL pointer dereference on read at 0x00001400
+>     __set_pfnblock_flags_mask.constprop.0+0x34/0x160
+>     memmap_init_zone_device+0x358/0x430
+> 
+> Without these diagnostics, the uninitialized metadata remains latent until
+> userspace accesses the device DAX range and triggers a later panic.
+> 
+> Mark the section non-HVO when reusing a PMD mapping so its state matches
+> the actual vmemmap layout and core ZONE_DEVICE code initializes all real
+> struct pages.
+> 
+> The Fixes target predates the section-based vmemmap optimization
+> infrastructure, so this patch cannot be applied directly to some older
+> kernels. Older kernels instead need to pass the vmemmap bounds to a
+> range-aware vmemmap_can_optimize() and reject optimization on PowerPC if
+> a PMD leaf overlaps the range. This reuses the existing mapping normally
+> and makes core ZONE_DEVICE code initialize all real tail entries.
+> 
+> Fixes: f2b79c0d7968 ("powerpc/book3s64/radix: add support for vmemmap optimization for radix")
+> Cc: <stable@vger.kernel.org> # see patch description, needs a different fix for <= 7.3
+> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+> Reported-by: Pavithra <pavrampu@linux.ibm.com>
+> Closes: https://lore.kernel.org/r/97f85592bb78a273be8519e6897e7f9b9bd31469.1793070429.git.ritesh.list@gmail.com
+> Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+> Tested-by: Pavithra Prakash <pavrampu@linux.ibm.com>
 
-Because obj_malloc() has three call sites across zs_malloc() and
-migrate_zspage(), Clang at -O2 leaves obj_malloc() out-of-line, adding a
-function call on every fast-path allocation. Conversely, because the
-362-instruction slow-path alloc_zspage() is static with a single caller,
-single-caller inlining under CONFIG_AUTOFDO_CLANG (e.g. with
-CONFIG_ZSMALLOC=m) inlines alloc_zspage() into zs_malloc(), growing it
-from 254 to 691 instructions.
+Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 
-Mark obj_malloc() and obj_free() __always_inline and mark alloc_zspage()
-noinline to keep the fast path inline and the slow-path page allocation
-out-of-line.
+> ---
+> v2:
+> - Rewrite the commit message.
+> - Describe the range-aware vmemmap_can_optimize() fix for older kernels
+> - Note that kernels through v7.3 require a different stable fix
+>   (suggested by Ritesh Harjani)
+> - Collect Tested-by from Pavithra Prakash
+> ---
+>  arch/powerpc/mm/book3s64/radix_pgtable.c | 11 ++++++++++-
+>  1 file changed, 10 insertions(+), 1 deletion(-)
+> 
+> diff --git a/arch/powerpc/mm/book3s64/radix_pgtable.c b/arch/powerpc/mm/book3s64/radix_pgtable.c
+> index 44868b62b14e..4f75f10ed68f 100644
+> --- a/arch/powerpc/mm/book3s64/radix_pgtable.c
+> +++ b/arch/powerpc/mm/book3s64/radix_pgtable.c
+> @@ -1261,7 +1261,16 @@ int __meminit vmemmap_populate_compound_pages(unsigned long start_pfn,
+>  			return -ENOMEM;
+>  
+>  		if (pmd_leaf(READ_ONCE(*pmd))) {
+> -			/* existing huge mapping. Skip the range */
+> +			unsigned long addr_pfn = page_to_pfn((struct page *)addr);
+> +			struct mem_section *ms = __pfn_to_section(addr_pfn);
+> +
+> +			/*
+> +			 * Existing PMD mappings can cover the edges of a valid
+> +			 * HVO populate range. They are ordinary vmemmap mappings,
+> +			 * so the current section must not be treated as HVO-backed
+> +			 * when its struct pages are initialized later.
+> +			 */
+> +			section_set_compound_order(ms, 0);
+>  			next = pmd_addr_end(addr, end);
+>  			continue;
+>  		}
+> 
+> base-commit: d865f2677c44cb2171b833d6775cf692756fa8be
+> -- 
+> 2.54.0
+> 
 
-Signed-off-by: Jenhao Chen <jenhaochen@google.com>
----
- mm/zsmalloc.c | 13 +++++++------
- 1 file changed, 7 insertions(+), 6 deletions(-)
-
-diff --git a/mm/zsmalloc.c b/mm/zsmalloc.c
-index 6258a4f5e9fce..5d3443f14a48f 100644
---- a/mm/zsmalloc.c
-+++ b/mm/zsmalloc.c
-@@ -960,9 +960,9 @@ static void create_page_chain(struct size_class *class, struct zspage *zspage,
- /*
-  * Allocate a zspage for the given size class
-  */
--static struct zspage *alloc_zspage(struct zs_pool *pool,
--				   struct size_class *class,
--				   gfp_t gfp, const int nid)
-+static noinline struct zspage *alloc_zspage(struct zs_pool *pool,
-+					    struct size_class *class,
-+					    gfp_t gfp, const int nid)
- {
- 	int i;
- 	struct zpdesc *zpdescs[ZS_MAX_PAGES_PER_ZSPAGE];
-@@ -1209,8 +1209,9 @@ size_t zs_huge_class_size(struct zs_pool *pool)
- }
- EXPORT_SYMBOL_GPL(zs_huge_class_size);
- 
--static unsigned long obj_malloc(struct zs_pool *pool,
--				struct zspage *zspage, unsigned long handle)
-+static __always_inline unsigned long obj_malloc(struct zs_pool *pool,
-+						struct zspage *zspage,
-+						unsigned long handle)
- {
- 	int i, nr_zpdesc, offset;
- 	unsigned long obj;
-@@ -1321,7 +1322,7 @@ unsigned long zs_malloc(struct zs_pool *pool, size_t size, gfp_t gfp,
- }
- EXPORT_SYMBOL_GPL(zs_malloc);
- 
--static void obj_free(int class_size, unsigned long obj)
-+static __always_inline void obj_free(int class_size, unsigned long obj)
- {
- 	struct link_free *link;
- 	struct zspage *zspage;
 -- 
-2.56.0.317.g454f8302e1-goog
+Sincerely yours,
+Mike.
 
