@@ -1,70 +1,70 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DCDF606A323
-	for <linux-mm@archiver.kernel.org>; Fri, 30 Oct 2026 07:14:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27C84606A31C
+	for <linux-mm@archiver.kernel.org>; Fri, 30 Oct 2026 07:30:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=P+jtgdTX
+	dkim=pass (1024-bit key, unprotected) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=YcTvULNQ
 Received: by kanga.kvack.org (Postfix)
-	id D0CAC6B00EF; Fri, 30 Oct 2026 03:14:39 -0400 (EDT)
+	id 16B676B00EF; Fri, 30 Oct 2026 03:30:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CBD3C6B05B1; Fri, 30 Oct 2026 03:14:39 -0400 (EDT)
+	id 123F86B05B1; Fri, 30 Oct 2026 03:30:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BD30D6B05B2; Fri, 30 Oct 2026 03:14:39 -0400 (EDT)
+	id 0329A6B05B2; Fri, 30 Oct 2026 03:30:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 9AADB6B00EF
-	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 03:14:39 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 2D8921C3E3B
-	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 07:14:39 +0000 (UTC)
-X-FDA: 85378429878.05.703815A
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id D3F746B00EF
+	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 03:30:05 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id D6A0FA0647
+	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 07:30:03 +0000 (UTC)
+X-FDA: 85378468686.18.1552FE2
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 43B151C0004
-	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 07:14:37 +0000 (UTC)
+	by imf18.hostedemail.com (Postfix) with ESMTP id BD94A1C0005
+	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 07:30:01 +0000 (UTC)
 Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=P+jtgdTX;
-	spf=pass (imf18.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793344477;
-	b=m9ac3V6knTLC5tMBVwPeb1uZCxdVDx6vKlwmsI2n5JK3n/8eIu/WSukJZd3WVGvrfr/Cma
-	i+4mvJepKGc6Gq8iIYSvrFD7lsges6OYeJ/ewFdMeLQCadb0SB6kjb/70KLfG0sTKjSGkC
-	isAKVuufrkyF/JGChJ8mKU8+O4RkAZs=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=P+jtgdTX;
+	dkim=pass header.d=arm.com header.s=foss header.b=YcTvULNQ;
 	spf=pass (imf18.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
 	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793344477;
+	s=arc-20220608; t=1793345402;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=X2nwqEX6uVZ+D8u1+rxu1eIxt49K0H72sg6V9JucXvs=;
-	b=v0vaoH0Lw6mAlOhTIBnDB6Dk61emSaxRTLmmAgJ+4KW4USgaXWihP0yBoSJAXmkIO+Wq12
-	AoTA6Tr3RpfRAfOIA6RzNZhHgdtyqv+Hf2GwwL6km6njY+9MkxSsp377RR7W2aw8IS1D4v
-	+TiGcYQ6YZfQepPnZxoJ1cNVZyjOQDU=
+	bh=oyfKDjJKfboeY0ufdBsjhuOQtM906D+prVVlHL4BJww=;
+	b=G+dvH7fu4Go+N071Bt9huRidycfMayHvPSzpCzZoDHA1iAPTop58vzZtDsFMcEdJlGa8v7
+	3mE0seSWCIj1nXreZ9kUvzZoiMBh/LwkUGq+ORxBJzBQMsS8cpuhCSmSeqmHxtkVblQUSn
+	j2enWiOeKO5uXCgpsh4oxeF6Xfua6fE=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=YcTvULNQ;
+	spf=pass (imf18.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793345402;
+	b=xAt/pFDIegGM9l17piGXMhGwwGjLQ5pbhvfAnqaMQPzMt+VEFcNHk77NVbN08A/Up1seU0
+	45DCJ3Ec/BRSi8d4ynI7EyFKbWiGfIeSmi+uxXCbplg5vGq0g+cZUSyQEDtDLDEP/72d8H
+	sBN+tgkTvUX04XHa7DC5t7xD1GjslIA=
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 1101615A1;
-	Fri, 30 Oct 2026 00:14:33 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 4E19F1682;
+	Fri, 30 Oct 2026 00:29:57 -0700 (PDT)
 Received: from [10.163.152.232] (unknown [10.163.152.232])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 8D0273F7B4;
-	Fri, 30 Oct 2026 00:14:29 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id DA59D3F7B4;
+	Fri, 30 Oct 2026 00:29:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1793344476; bh=Jp/eodRxYkJLNGQk8olzS9xG6qObIMTBg1q6BMVZmBI=;
+	t=1793345400; bh=C0mcHAl4LVJ8G9Pi84zcG+F9QdADyGft2/o2o+f0aCs=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=P+jtgdTX69sEy90NVnhYUwff1Df/OdYgDe+/Oll2oU0iv4SgMtAerOkfvpkn4fqBX
-	 bHrTkw2g7dShto71IFHPDpjzFhRFcDPHxQhkGP7LbYYciMVEjNypabXr9lGoDG0b9P
-	 Dl6AC3L9oAHxYeXPdZCnniBAcCySVpa1QB2Dy4po=
-Message-ID: <99f529e8-06f7-4a20-a60b-0330c5d3d91c@arm.com>
-Date: Fri, 30 Oct 2026 12:44:26 +0530
+	b=YcTvULNQBDbtCwZfjjgbZnJd9x9ynp64awrXns5yOXqR8Z+sGJVfTapd6gvVsFgUJ
+	 57bMm++PQke8e3TIZX02+sOLDz+2oCiQuvUscLQCxTQAkheHl0XTz1g21phraKC/Qz
+	 /l8zfyfjg1A8PATkbHb82RqGtQKE9AHDFttxKiWo=
+Message-ID: <e1cfd568-8fdf-4aa1-a8c5-961bb8d7efba@arm.com>
+Date: Fri, 30 Oct 2026 12:59:50 +0530
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 03/10] mm/vmalloc: clamp an unaligned range in
- vunmap_pte_range()
+Subject: Re: [PATCH v3 04/10] mm/vmalloc: propagate errors in
+ vmap_pages_p*d_range()
 To: Hao Ge <hao.ge@linux.dev>, Madhavan Srinivasan <maddy@linux.ibm.com>,
  Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
  "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
@@ -76,28 +76,27 @@ To: Hao Ge <hao.ge@linux.dev>, Madhavan Srinivasan <maddy@linux.ibm.com>,
  Tejun Heo <tj@kernel.org>, Christoph Lameter <cl@gentwo.org>,
  Uladzislau Rezki <urezki@gmail.com>, Suren Baghdasaryan <surenb@google.com>
 Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
- kasan-dev@googlegroups.com, linux-mm@kvack.org,
- Sashiko <sashiko-bot@kernel.org>
+ kasan-dev@googlegroups.com, linux-mm@kvack.org
 References: <20261026080329.140244-1-hao.ge@linux.dev>
- <20261026080329.140244-4-hao.ge@linux.dev>
+ <20261026080329.140244-5-hao.ge@linux.dev>
 Content-Language: en-US
 From: Dev Jain <dev.jain@arm.com>
-In-Reply-To: <20261026080329.140244-4-hao.ge@linux.dev>
+In-Reply-To: <20261026080329.140244-5-hao.ge@linux.dev>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 43B151C0004
-X-Stat-Signature: g55c7a7a1153gt6axix78wyy3gccbi9r
-X-Rspamd-Server: rspam01
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: BD94A1C0005
 X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
 	version=4.0.1
-X-HE-Tag: 1793344477-462442
-X-HE-Meta: U2FsdGVkX1/3LJnIJSD069fZTgi6CHuHz+9yvo6P8Ixe1gGvwMTGmUgoOBhSAmm8T5U7Fsk5/twzfW5bWUn6l7XHJE6hsEp5KhgR8lA5deepflb6/h/meroxrvDP5DeN23C0ddyvAeolzIiCWws7VSj41F3srifMtRGDy4rPi9cZm5dHkiQGVAMfPrzziN4ZPZmqxm3ZRh+3+vdbgh2SWXHvB5UjeeC3OtMT9Vnv4+XpG65AStCam3iDrAlGaxgzxZTAXMW2xLjlikfs1pyixJsQ4NToN12ze3afxtgJXjWveRH0tZYb75iC4scEJ+7a19/rJW4Z+cu0Wom34RthlowxzWMdokjtwfh8LdOcU3SJRf/DxHPBnc//eyCQYL9GPlEKe1rhbK1Hs7U8fvhetnozL6FumPnwi16oAJKXmnhlKOkfdJZkuvbXNH9cje0R4YkuqowSfEyTLSF4JqizK1MQWl2lopnfYG4E8eWLDlkhG2IN3f/xbYx5EuKmiZX4+njlQcy/RZCwlaWIWoQT3SmjYSimWucNJJQZADYkCZ/tv6vbdtTTMjMMYzxGkTThpoWaxGBLNHerCymW/dzBzHk3yPwMOq6Nth1fyTOoBe+sSPoXG4ih0bsVEIffnzgGRraNWAElKbE0aLnHhYESnyheDG28aaWR/wBG8J0CN2cEHbcTgJW9IYW4F2O3p+I9Y/DfpcHorPYpeczjnJhV8rqpFTsf7lOzxJ89/K131Vc6UD19c32sz04AS6N7FW8Y4Mi1koXSPeGQ+4N97M3oGRmmNzvCn7s1cqCa0Ui0jSUjgSl30xE75kMbPc6wCkn9FhXuicf63+38KrnCXbg3eo7h86955A8QMNFg/LiWYvpBV3FNEttxpSv79ZyrzFwN2qpREqIaSTVpNrRV1pzZNPWLNcO9xVx/adIOh9gWPw92OesuchOZnn9lZmOxAFhqHO7/65P9Md7Ff2grlwx
- UjiZk3fw
- rD4F9R0LtpQcrq/p3rIqQ3P4hHw4pfCOXPTBuhFGtwKdAh8hoAk17UQP33+FOtUNRsDgEa1zpeDjXq8/t138LvCFX6P/HFh3Q1NPB5xUjqXZ7WHPXA+AMUD8/WdPBLKPqnjrUF8Ls0Ac6/dtfZsjYiwydJH8StHObnhMhmQ5XD4TBRgQFDxfoGZ7vGGQQeDAKRpx1CJHSIQoWQwntb5i7V4fqq7hbYDgafmhZ09/0OxKRBkLFVh+3FHCFI7SRNoMcXvGYXcudoAqewud4711EEjk1BuwC4TRCfT7Wx7KSDMxweOOdMU4KPQ9rPChfU4t7wPDfs3bcmfTyzJNouiRp30OasfNpJci9KwlqT+8G8RMWGzU2UPMmQnwZI4eJ/QXoOoEO
+X-Stat-Signature: j1wd7wdsjqijdhiro9umksaty399p4me
+X-HE-Tag: 1793345401-292506
+X-HE-Meta: U2FsdGVkX19XwfdmVynFQtEPLvPyJuOg8/JgXM0GcSxxKpItDU5btybKDjdZgviH+jD9E31wn1RzPnzd71JOnP9anImFKIqyqpsT0A9fqSETsvzUQTQHOnbXlhYKx6SoBpHInz6kZYkHaQ3HIg45fR+b1dC+aSfIUWATuDD5dDwv2ZIPYERkQcIHFl5hHcWwCMsTjsh8BFIu1mxAXniCs56MlKrdKNAYoAEvLjVSZJhGn5uROZwq4fdWbhlu2Y6x/u4mcYz0+LXROT6YBlqV99brvPxy2OHD1lR+oD/ubjOXSnozDvoh/RpWyqbWWEKkLzkHCdXAG7i7mKMm+JMuahURPYjimLM0jsWJxiiT06f31sFGYkGn8Pd6X4pAzyhzGQOthDuJP8nXzvH+WFWs9+Vu0bQ54eExaRxxqt45vJsVVmjEAd73J7RmNskNTSDFhkzIVSXs5aynd85wvgioN08EQC+aTElbSXBelmZJID9aGynC3NLB0BvcJWsQsbsLqkQNRiwTDvd8VumgCT2Zk0V+7FQOdvtNGsjf+pHFzh8DoqWy79c5w2k7VivBFGj1no+UZWdaPSF2BHGNLQFm1912EOFhxBdKC3Wwh3KKkNpOjO/9snJmLw895m1oYY0tu8PjnifoOD4u7ip569foKgZC5Uh80DKkdBQyyIFgs1jMz6R1rIGMdfcCtuUQSyLTshEn/PQjGXy+7RPXmTiE/QmcI7FTdfnrvpheHBFU632WL4vfug4e9cS3GFUyzQ6b8aib6gqnWyxeLf8//4ms1c16yC3b3sHQ1hhYdwcyG1HlRrmgemwr+wTNXH6qUswAd2vCAAvxbDVV4flWZof3cVPfQm+PkxmaTl83JcI5ZeeEd+gu9EI2u+9mm78QL7T7MivHY0aDudzN1u8FhJnXD39FF/AUT2QnSbM2CHJJDPRVkCuU/xWEDX/a4SLOUi1XJUXlofg6ujHOwbuVyVI
+ 4KLhaUb/
+ LbBM3T/Ea34H8WBMwj8tNwbrA6UjfBu9k2U7rvdrGVMuMdwDpuU74LiTPuMb8Kd6qs80F+U9C4BikndtERd8kDyk3NOhutISbT79T3/ijt8v+0x10BM7mTTOnHsnh0Mmflg+K8Ma/5xHFCziZMec06pz+cT1c6iZ31V653oGVN3zf2nwYO4R0zHhzj8rUGFzwJwSCk5U48ZhH8i1UXp563Y9a4DSb98F/BN5cv2PsEXdd4Ea0csWRWzjouY+WKle7mjKignOAhASjZKpoE7p8FQ1Sd5/pD8DpBM1gOADTP+IHAaF8vbRDP8H9lCN3BUoiyOTGSSiSXTKnLpgd+JwVIHYqytybqwP2q/WImH5aQUiUoQQatO+KNMQjAaxvAFypfYiR+dnFP6jKDjCslov2KQM+5sm0kU+ZXpQz
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,53 +108,93 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 
 
 On 26/10/26 1:33 pm, Hao Ge wrote:
-> commit a739e6b557af ("mm: vmalloc: WARN_ON if mapping size is not
-> PAGE_SIZE aligned") made vmap_pte_range() warn and bail out when the
-> size is not a multiple of PAGE_SIZE. That loop steps in page
-
-Why are we checking the alignment so late into vmap_pte_range? Why not
-simply do
-
-if (!IS_ALIGNED(addr, PAGE_SIZE) || !IS_ALIGNED(end, PAGE_SIZE))
-	return; (or return -EINVAL);
-
-at the start of vmap_range_noflush and vunmap_range_noflush?
-
-
-> multiples and stops only at addr == end; with an unaligned size addr
-> never lands on end, so the loop cannot terminate and walks off the
-> end of the page table.
+> vmap_pages_pmd_range(), vmap_pages_pud_range() and
+> vmap_pages_p4d_range() return -ENOMEM whenever the level below them
+> fails.  But vmap_pages_pte_range() can also return -EINVAL for a
+> page without a valid pfn and -EBUSY for a pte that is already
+> mapped.  Pass the error up as-is instead, like the vmap_p*d_range()
+> helpers for vmap_page_range() do.
 > 
-> vunmap_pte_range() has the same loop without any guard, so an
-> unaligned range would clear PTEs past end without ever stopping,
-> walking off the end of the page table.
-> 
-> Add the check there too. The range is clamped down to the last full
-> page rather than dropped, and the loop is skipped when nothing is
-> left, so a buggy caller still gets its PTEs cleared as far as they
-> go.
-> 
-> Reported-by: Sashiko <sashiko-bot@kernel.org>
 > Signed-off-by: Hao Ge <hao.ge@linux.dev>
 > ---
->  mm/vmalloc.c | 5 +++++
->  1 file changed, 5 insertions(+)
+
+Fixes?
+
+Reviewed-by: Dev Jain <dev.jain@arm.com>
+
+
+>  mm/vmalloc.c | 24 +++++++++++++++---------
+>  1 file changed, 15 insertions(+), 9 deletions(-)
 > 
 > diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-> index 44e0eb32708f..7131f60d1a8e 100644
+> index 7131f60d1a8e..d60b99b81ec9 100644
 > --- a/mm/vmalloc.c
 > +++ b/mm/vmalloc.c
-> @@ -393,6 +393,11 @@ static void vunmap_pte_range(pmd_t *pmd, unsigned long addr, unsigned long end,
->  	pte_t ptent;
->  	unsigned long size = PAGE_SIZE;
+> @@ -600,16 +600,18 @@ static int vmap_pages_pmd_range(pud_t *pud, unsigned long addr,
+>  {
+>  	pmd_t *pmd;
+>  	unsigned long next;
+> +	int err = 0;
 >  
-> +	if (WARN_ON_ONCE(!PAGE_ALIGNED(end - addr)))
-> +		end = addr + PAGE_ALIGN_DOWN(end - addr);
-> +	if (end == addr)
-> +		return;
-> +
->  	pte = pte_offset_kernel(pmd, addr);
->  	lazy_mmu_mode_enable();
+>  	pmd = pmd_alloc_track(&init_mm, pud, addr, mask);
+>  	if (!pmd)
+>  		return -ENOMEM;
+>  	do {
+>  		next = pmd_addr_end(addr, end);
+> -		if (vmap_pages_pte_range(pmd, addr, next, prot, pages, nr, mask))
+> -			return -ENOMEM;
+> +		err = vmap_pages_pte_range(pmd, addr, next, prot, pages, nr, mask);
+> +		if (err)
+> +			break;
+>  	} while (pmd++, addr = next, addr != end);
+> -	return 0;
+> +	return err;
+>  }
 >  
+>  static int vmap_pages_pud_range(p4d_t *p4d, unsigned long addr,
+> @@ -618,16 +620,18 @@ static int vmap_pages_pud_range(p4d_t *p4d, unsigned long addr,
+>  {
+>  	pud_t *pud;
+>  	unsigned long next;
+> +	int err = 0;
+>  
+>  	pud = pud_alloc_track(&init_mm, p4d, addr, mask);
+>  	if (!pud)
+>  		return -ENOMEM;
+>  	do {
+>  		next = pud_addr_end(addr, end);
+> -		if (vmap_pages_pmd_range(pud, addr, next, prot, pages, nr, mask))
+> -			return -ENOMEM;
+> +		err = vmap_pages_pmd_range(pud, addr, next, prot, pages, nr, mask);
+> +		if (err)
+> +			break;
+>  	} while (pud++, addr = next, addr != end);
+> -	return 0;
+> +	return err;
+>  }
+>  
+>  static int vmap_pages_p4d_range(pgd_t *pgd, unsigned long addr,
+> @@ -636,16 +640,18 @@ static int vmap_pages_p4d_range(pgd_t *pgd, unsigned long addr,
+>  {
+>  	p4d_t *p4d;
+>  	unsigned long next;
+> +	int err = 0;
+>  
+>  	p4d = p4d_alloc_track(&init_mm, pgd, addr, mask);
+>  	if (!p4d)
+>  		return -ENOMEM;
+>  	do {
+>  		next = p4d_addr_end(addr, end);
+> -		if (vmap_pages_pud_range(p4d, addr, next, prot, pages, nr, mask))
+> -			return -ENOMEM;
+> +		err = vmap_pages_pud_range(p4d, addr, next, prot, pages, nr, mask);
+> +		if (err)
+> +			break;
+>  	} while (p4d++, addr = next, addr != end);
+> -	return 0;
+> +	return err;
+>  }
+>  
+>  static int vmap_small_pages_range_noflush(unsigned long addr, unsigned long end,
 
 
