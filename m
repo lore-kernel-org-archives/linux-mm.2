@@ -1,75 +1,74 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1000606A321
-	for <linux-mm@archiver.kernel.org>; Fri, 30 Oct 2026 16:08:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87089606A31F
+	for <linux-mm@archiver.kernel.org>; Fri, 30 Oct 2026 16:08:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=BhJ2oXyA
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=VQ6E2J5f
 Received: by kanga.kvack.org (Postfix)
-	id 7F23D6B05B1; Fri, 30 Oct 2026 12:08:43 -0400 (EDT)
+	id 5CF116B05B4; Fri, 30 Oct 2026 12:08:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7CA126B05B2; Fri, 30 Oct 2026 12:08:43 -0400 (EDT)
+	id 5A71E6B05B5; Fri, 30 Oct 2026 12:08:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 707476B05B3; Fri, 30 Oct 2026 12:08:43 -0400 (EDT)
+	id 4E45D6B05B6; Fri, 30 Oct 2026 12:08:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 48F656B05B1
-	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 12:08:43 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id BAEAF12069D
-	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 16:08:42 +0000 (UTC)
-X-FDA: 85379775684.18.10A7AD6
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 0EABD180005
-	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 16:08:40 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BhJ2oXyA;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf24.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 0E6226B05B4
+	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 12:08:49 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 81675A07B2
+	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 16:08:49 +0000 (UTC)
+X-FDA: 85379775978.06.02E5421
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf06.hostedemail.com (Postfix) with ESMTP id AAB6E18000D
+	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 16:08:47 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VQ6E2J5f;
+	spf=pass (imf06.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793376521;
+	s=arc-20220608; t=1793376527;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=B7M36fcQ3fgDKhbFyLRo8oIBbRY5mTb+mo+VuAVFbz8=;
-	b=eSbJ6OVz4Mzg6FrcbgkvrHPmmqY53Kao08gbWbDcYjnCfE/LIOY4um7O+axBSKsNSghP9o
-	WzA3mMzmxG3kyYEvYxoT8SGtXD+9kpj7x3A3fqP32G6TH7lDwV9eb1eDjAJ3SFzhLAWscI
-	7sk6Q1R9r6GR1BVG4WU+4Mj82kAfQRw=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BhJ2oXyA;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf24.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org
+	bh=TEoBzydLhAWoxE6JUj9FRAegtYtzr4vhwwBHbq7ZyAE=;
+	b=ikiQLSgEYCr2xjYuTveFHpWiQ8zyrZfQ1jyz4+CQ6Bmlt3Me1KxEW1FGaE/4v77PcAvXX5
+	aZrrgtTZHjXwPn5MEzdXRsbqMv4+Tsom3mwxYxj4td71Jcnw9NKk+h7ucbFt4dXRStv76T
+	0TA8/0prm27gQ8M8viEbIvPEcbFP/oM=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793376521;
-	b=lSDofu5RXddHtqL/wgqnojcIsOKEJgjxzWTBTCoQSTM8DjdTMUs4ACOgkTbA2PPMFdpwiZ
-	ItWB0DGkD5Ffr8BLVflPCIy/82eti9j+5g2WTF9iIg0j2RGa32NHkwTtNlUTjjkKrGrldr
-	5taxNpT4H1tnC8M8e1Yve2R3nrxXvQc=
+	t=1793376527;
+	b=nCYXmMLfoFZVbJbNBi9TDL4LMuZ6ISIiCachJFn0/cjfk/kbJeKh/ddqfuqvWw3sHt6EQk
+	BewGtqow7KHa8eDjOE4b1fkzUzdBX2B8V2MgyHfW7DhbvxTCeJJaCPY3uaJY0ahF8LNyjt
+	tgbDIkpzjpwC9JhWPVq8mf/KLP/8ZHg=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VQ6E2J5f;
+	spf=pass (imf06.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 655FE60252;
+	by sea.source.kernel.org (Postfix) with ESMTP id E6CCD43BF5;
+	Fri, 30 Oct 2026 16:08:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBB351F000C1;
 	Fri, 30 Oct 2026 16:08:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9893F1F00A18;
-	Fri, 30 Oct 2026 16:08:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793376520;
-	bh=B7M36fcQ3fgDKhbFyLRo8oIBbRY5mTb+mo+VuAVFbz8=;
+	s=k20260515; t=1793376526;
+	bh=TEoBzydLhAWoxE6JUj9FRAegtYtzr4vhwwBHbq7ZyAE=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=BhJ2oXyAmZN/AGUg0X8PAjQXM1kXzV9nmSfvwTUVCvH4HygdxUZyqfZ5QqSyFdgrX
-	 OAioE1eCK1onMCQksys6oEUKv47D+fl2re7DFwBy1I7rNgP7gKK1PxqoujBzkY4ftG
-	 z3SOaElVgtJwDbJfuCaBDkE+O8Apabv8tYW3nzok6ERnMeD29cne3NI9d6u7so/nDe
-	 2GzVtJoht/3Gjp63Kvt0ONqj1FA3Rpy9/dqIlbEO42arb+KmsVXPixNWgcjjt5TebY
-	 TgrMI7y2YbyqhVmqv/w1sGfDG+s8OCaAiwDHSIShs24JNsLUEnmoycMRxnmBltrpe7
-	 ikHSA4b7dPQLQ==
+	b=VQ6E2J5fBcqUMJHxr8bO2dxN+Z6ipPSNZ1LTkwq93t2gL6/Ss1zV/pML5gZ1p/xGH
+	 /F71hx+C9CatqSuSX6XljhY149R/J3O3+fxmjH0ofwLm0VShVa//08Vrhm2TIMfyW9
+	 r6Q/g6XeRy5V+Q4sPQfDtoYvZhE494nMf68RYJE2KjDS5SAOG2WD6ozflKRpf4aUBY
+	 GrWAL2xSHifCdxRGRlhiSRKxlBZByNFTMxbtzvgnwqmc79T4gct648fUoxl4D/UGnM
+	 r3YNg1whPEbGuF741QJE20+uYX1tAkd/HcLZYeU5wNZ55DV0gsaQhfmpuvhbAEDqmi
+	 B3QHX2KMmr9cw==
 From: Andreas Hindborg <a.hindborg@kernel.org>
-Date: Fri, 30 Oct 2026 17:08:03 +0100
-Subject: [PATCH v4 1/2] rust: add a wrapper for the `nr_online_nodes` C
- function
+Date: Fri, 30 Oct 2026 17:08:04 +0100
+Subject: [PATCH v4 2/2] rust: alloc: move `NumaNode` to the `numa` module
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261030-cpu-helpers-v4-1-a8d840d34837@kernel.org>
+Message-Id: <20261030-cpu-helpers-v4-2-a8d840d34837@kernel.org>
 References: <20261030-cpu-helpers-v4-0-a8d840d34837@kernel.org>
 In-Reply-To: <20261030-cpu-helpers-v4-0-a8d840d34837@kernel.org>
 To: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
@@ -94,34 +93,34 @@ Cc: Rasmus Villemoes <linux@rasmusvillemoes.dk>,
  linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
  linux-mm@kvack.org
 X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1807; i=a.hindborg@kernel.org;
- h=from:subject:message-id; bh=L2Apa6fRdkKA6Qf4luN+t9ccKqeXT4gN3AhxJlmxkcs=;
- b=owEBbQKS/ZANAwAKAfpQKQiqxb3QAcsmYgBq5MDo3m0VI4RP1vtYFekrfZOq4iBiYZfRxzHra
- 5aocTKkkoKJAjMEAAEKAB0WIQRXitnI2WZ2JirAaob6UCkIqsW90AUCauTA6AAKCRD6UCkIqsW9
- 0P9SD/4qnonfZiKqDZRPZSqqzFuurdhTBxv3lsWOkInLZXTCJmRYuir8wEDDIIY04Job3pyUjcv
- AB9AbRBrEcO4ywwhqzAM0Y9cLmY5yyv2hlnpFPZcOB3QygY9g9MqRuedS3bNMq0VD2O8JfzInVL
- WQcuM4CB5/lhhdEll+EtPbbh1LTUAeQ5El3vcAEzT/AfNBzNSXTNPVFz7zPTJid5NLJQhKhGSwh
- HGNUlA36n04SFMJ1iRRqwj/djo669f5XStQ4L5Z/hQSnE4pUrAoJsNuxgvFbYTdxLAK5/64faYu
- nbPLBvdU4ybr/AQP+qjeiAFYHcYegSYO6XUDyvC30XNbWFdYUv2VzQRlGDMzx838llSs9jRBgLO
- 8n9m9LvvFyPigoRaN2hG1KHqkH3IUgUuIBdrxGVexbiI2r+88ahPHSSynG67JwT3wqithBF3GW5
- iIu3vdvq4aWXjS/+7EA/gI05bCNRFircBGKgvOHh3zGpdqBrRUT1BLPGoxHf0Tx+1nqaTvjhYpl
- RLE6CtE5anMB4hySPbLEBJ+8q+oBzsylXg9x/AHzOjzilPT8M1CbjQO7wCzGENaKsGgeXGq6wmC
- ps9ehWaoCnijv7NCJ092LdRampSS/OgRWJ1s6V625wn0/UyNSE+XpZiMaLfIz0Abaddc3fY7TfW
- lGJBMWpVqIDm32A==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=5583; i=a.hindborg@kernel.org;
+ h=from:subject:message-id; bh=KD3jiA8PB7u+cdp08Fd6vVtn/2TqMtouWbVeRQ7Vg3Q=;
+ b=owEBbQKS/ZANAwAKAfpQKQiqxb3QAcsmYgBq5MDpZs0vTnnYLx/gSJ6gNp2Z5/kihDzco/3AH
+ H7LzPck3/yJAjMEAAEKAB0WIQRXitnI2WZ2JirAaob6UCkIqsW90AUCauTA6QAKCRD6UCkIqsW9
+ 0EAUD/4sMjw4PzHpnAuc4FATQY6yu73zk/YNKMGSTcHPxj7Ig1CgvbIIr/BtJl17FArToJmj0gx
+ RGZ6nQJlLLYAEXnhDsAflpz1uXJVfITVHS9L47v8ZG05FWp7DmmhXhZiCtC2Lq45qLyfV1GvpYs
+ u47MbYRCg+immljxU+oetszPZETxHz+yqB+swIL+uWMqKXW/QRK0/CF1JjENuTs/SC7UvKKdK4l
+ +/7KC40Ay4pL98ZFLVve5Vm8vLMijK/cvGVGAAkdeLZb1l78GlI+JxDV+TIPxy5SghCgch6XWqY
+ 636YxVXAtLs7JopP+TRcVNpAC0bt7nLrLL883RyA/6bhxeoTxbnO5ZGbIqnz1gnjunFYviQXikP
+ CoyZ39qmA9de/hhE3oDHgGmuSv55ehaNQO7XFz7R8Kj8o92aJ7SS8FtHuqgW73mFDWolynKMhm6
+ hXfuHWlv58iyENUujO11gKKp2iGe4CAA2D+77Ny8T7N/85IHHRFfLbqkQ8OXDyVdOwWIMepJtu4
+ DVIBtIuDKahUxCZMhACJ7M38bj5Zj9m2i8gNem9UQJLWxMy+Px3ULOTxrIFOEVnZSeM5R++vvNH
+ 1r86L2nn91tKhIne5ZWFB96ZMRI5DDXIPHX+ACGLp7IoF5R4JeV/OdhcCJEwsoGe1DhqV7a1GFN
+ SFDg///KM0lXZ1A==
 X-Developer-Key: i=a.hindborg@kernel.org; a=openpgp;
  fpr=3108C10F46872E248D1FB221376EB100563EF7A7
-X-Rspamd-Queue-Id: 0EABD180005
-X-Stat-Signature: h3bfga5fdrbo69mmhe31o8tqnb8n48eb
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: AAB6E18000D
+X-Stat-Signature: eq5jmg4wdfopgkpgy1bxzeimrd4iyd5e
+X-Rspam-User: 
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1793376520-391356
-X-HE-Meta: U2FsdGVkX1+heOpQ6FbaAAR4mLCEBXJ3G9zYlKjPlA1obqOg9ZXuSikUI3ug+c51882yuXfstULwOlGASEm3GgJAMXgcis0NmQEUBJArTD3E5fyCdSDfNyou205GxGt2qp9gGIUh5j/OrGg2YC8OI1fBXQVY6yYyJmf+BnVAZXeEflwoIoM7jc+Mw5xe1J7gCR9saltoFBvhnCBLGAF0AHmouPLTvb+omDj2OeKbK/H3Jwv26saTda/hucTNfyooTVfHIFQiugEfVasQfmS572VgxJh5VwJmzHf7CI2KpAfFkrfHStbybcS3m4pgMPRl23bb+WD7Ag1jVNr2uoOJNUwRPpgcZncbFWmeiFdRudf7XQ9pJ7uDdGWmo94pCQ0PXmrRD5Brtx+ScksNSSzFFPNhDx5A7eag0Zyqmrd7d4OGRNzylROJbysDtaqzRb1St2ERU06CZv1bUSzVXTsyiDnGdaG/94qjXbUpcbnOhCRkRESVQeep7O1AJ+dgYsUdvyL+US8e5BGQ5wTLIdh7DNOQgdIqteDHd8VvzXZ57d3fcsYcek5LVx3fKzpwhEqjSkmlM3yJsAcBfmmPHdZMcWgac1YSZP6otcYH3LO0A9DNRfwwDLiVL/r3mTgwj+/Gt5vsiNgz7bkkqu2GISvM5v3O5aIUA1c3R+xyOOhdFuju6k85lWjPJm8CK9O9DrD4+po10SYRQu/+bD1/lwDYyRETtqZ618aM+FOTauk8dbbenKOlcKRkexQw+pLURVEuor1fZtJX5wyCHqc9yKvYSsFsfT0HHJkxxlQN9Ng6AuNOttZN51ets8/my68aGcJuuVwx4dNXprb1CL0XlA5lo6Gg8uM+jRjMsTbEwyiXVrrsYXqReZCfE3PYSZD2p1AXOey5nN6uLY1qnkgmVscXrs6Yg0GFn3RsGdh3XW3CiDEIAoe391wUMELeS9DMhrQecTS+jzX+zQ6e9mGh7+h
- JEBd4rpU
- cBFApUXjtG3+4jv1C+T0YLPWcpA+XBSoZbtCnQjixvnLow1TzYrwiYPElQWsSAzyGuxlYFIdnxs1j9T/B8O3vfuU7/sSX6eQ239gmakS2+NL3UdzBe4uhPpqVyt5j4n7f6zay1rKQS2M/Q74XP9vrmq8ihc6bMNcCjKxnoVOiMxwEJ81zNPfE/RPrMvULQYR0GLXZywEU5v0D2Z9XCijPpQv+oXHzhP1UdCoVcF9xwwT6sdXhbLUSGGzr3nsSqSiIVXUt73/1YwAFXbjzFiKLy7Rw6eIyn9i2PFtnsDY7ICu8xhnB6BU326R9QG6ruWEXivutmt/ENKgwI/0/kn2eXT5pERuG518xL37ihhR8XKd4/NbX2H602AaOwIwd5VJQzT8oheCwVrbYD3u1mzIfsgH6/7byVZaDnlaVOkOmCW22JLtF8BiGLXmopq/xPlGsD3Id
+X-HE-Tag: 1793376527-446935
+X-HE-Meta: U2FsdGVkX18+gun0Y5mIMvT5RgNdkFbSOra481Z3JLa5VHcSKSkzVQF5s/4thgMG6v9xCkfeHE6SbqNyU1UikC9whp0a8Da8z5/NTUal4FZoeA6aR9Q8+/SnaIjGjbkqIaIzcbxHIOqqLp9+vSB5WpTxM0SalmWJaBfWkp9OFt3oo1C6S9nlgEHLvVwD5YIFl7lDmCXnn/V0/Sa2eDGfn64yeupgs5y7xdD8Vb/90GmpImT9a0+u7k6DK6uBTl3+BzNSl8xaaoPv9h0PgvaUPRqX40C0P+XwNhIqhxdN3s+LnSAyHi5raRG6/HzBYCmdiry/dO36dJvKF2L9jVsH5IyIj5xLNIWqkOU8ezHR8KWrv+Hn+qtB/uJn+PfZEbqdGn+SmEcivh+yFSymPTjZYBhDfcWVDBRB2eZDVvGfJ6LIcY7YM+AUCEu37d0xviQej4w+BkoAqLCJNGqZ4wvVEPjKWalRGj5XMduHrNYSh5+4NyedvNjuh+I2zC+DY/GeqCwnrkMViKzIZzjWkftln27Fs6tKu2yvh0n9QVQUbVcbdhdFuu2kg0B11bPCmoyGDDQxohlICvrVTqnIoUVgecHg4fobG197jEfq9buf0g7HrpxepGw85tvK74/TIuyThJIKRpRjaAVbm+Y7rLdvUhrkxXVQBm3E/d+Udf5V/CEWcQDdZ7BGXnx4+puz4sJO3IHO++2ZMbRTrtatw/7atOurO8QEot89AeQdQ4ByUc95p5jCxAw7xyTqNfj+qQofKI+3pMm+ILZ2YK+Pa6WGvef38b3Inzhbxc/kuVwPTYHnLbfQSQ61wYDMhIc4qdjuRL+6VpEfb49H2lieBTj/jL9X3u/nDwXLocjo4l1e6UbTKRKL83qvhyEIkXK8sTt6UMfZ5sTeg+JZfmHEFit8giq8IwwlElIurEYjvxhk7O/8zCD6f0j2KIAwhGewQmkxq0/lPo4pTI4uAguEMcn
+ REXgC00T
+ bzeT0Jqd4iDELJ/NWC31f/YLFpAbhgvhwu5FhVnITkc5FPNeL2pRUWd+oFOZ4ujWRJYpk8EAME7UDSBiP0I9kUQv4bpqS2m2gKArFH1ObNq3bmloVA0ihhEUDrz7KXKExNZW3riH93qimPmcJDo1WpsqJYVrkWYccoXebcPQRZtkkW3nahIvvu2qS14QyTxkHIPQT4FdBTFk4GIXrilEZ3k0yIe1tqyaEmGtMrsP5VxgRNmSp+InmVVjpBlyWG7lVnp10WDCqPrf+fm4FCnnvIsPCKeTEONcLWTQvpE0PGYBYfX93U51AmZTvRttOyVqdICJeFoPMNCxD9NQWoIhuprKGwVBd/L8mJ/bS23MRuIKSH4GUms0pAoS6QA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -130,65 +129,193 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-This function returns the number of online NUMA nodes.
+`NumaNode` identifies a NUMA node and is not specific to the allocator API.
+Move it from the `alloc` module to the `numa` module so that NUMA related
+items live together.
 
-The wrapper is needed by the Rust null block driver.
+No functional change.
 
-Reviewed-by: Gary Guo <gary@garyguo.net>
+Suggested-by: Alice Ryhl <aliceryhl@google.com>
+Link: https://lore.kernel.org/all/aiZvKPFCkqJUsP0a@google.com/
 Reviewed-by: Yury Norov <ynorov@nvidia.com>
 Assisted-by: LLM
 Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
 ---
- rust/kernel/lib.rs  |  1 +
- rust/kernel/numa.rs | 29 +++++++++++++++++++++++++++++
- 2 files changed, 30 insertions(+)
+ rust/kernel/alloc.rs           | 30 ++++--------------------------
+ rust/kernel/alloc/allocator.rs |  6 +++---
+ rust/kernel/alloc/kbox.rs      |  4 ++--
+ rust/kernel/alloc/kvec.rs      |  4 ++--
+ rust/kernel/numa.rs            | 35 ++++++++++++++++++++++++++++++++++-
+ 5 files changed, 45 insertions(+), 34 deletions(-)
 
-diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-index 4d5c96ddc49c..a7b1c9cf454f 100644
---- a/rust/kernel/lib.rs
-+++ b/rust/kernel/lib.rs
-@@ -105,6 +105,7 @@
- #[cfg(CONFIG_NET)]
- pub mod net;
- pub mod num;
-+pub mod numa;
- pub mod of;
- #[cfg(CONFIG_PM_OPP)]
- pub mod opp;
-diff --git a/rust/kernel/numa.rs b/rust/kernel/numa.rs
-new file mode 100644
-index 000000000000..164e622d325f
---- /dev/null
-+++ b/rust/kernel/numa.rs
-@@ -0,0 +1,29 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+//! NUMA topology utilities.
-+//!
-+//! C header: [`include/linux/nodemask.h`](srctree/include/linux/nodemask.h)
-+
-+use crate::bindings;
-+#[cfg(CONFIG_NUMA)]
-+use crate::sync::atomic::{
-+    Atomic,
-+    Relaxed, //
+diff --git a/rust/kernel/alloc.rs b/rust/kernel/alloc.rs
+index 21067bde6860..9daddf540e7d 100644
+--- a/rust/kernel/alloc.rs
++++ b/rust/kernel/alloc.rs
+@@ -22,7 +22,10 @@
+ #[derive(Copy, Clone, PartialEq, Eq, Debug)]
+ pub struct AllocError;
+ 
+-use crate::prelude::*;
++use crate::{
++    numa::NumaNode,
++    prelude::*, //
 +};
+ 
+ use core::{
+     alloc::Layout,
+@@ -114,31 +117,6 @@ pub mod flags {
+     pub const __GFP_NOWARN: Flags = Flags(bindings::__GFP_NOWARN);
+ }
+ 
+-/// Non Uniform Memory Access (NUMA) node identifier.
+-#[derive(Clone, Copy, PartialEq)]
+-pub struct NumaNode(i32);
+-
+-impl NumaNode {
+-    /// Create a new NUMA node identifier (non-negative integer).
+-    ///
+-    /// Returns [`EINVAL`] if a negative id or an id exceeding [`bindings::MAX_NUMNODES`] is
+-    /// specified.
+-    pub fn new(node: i32) -> Result<Self> {
+-        // MAX_NUMNODES never exceeds 2**10 because NODES_SHIFT is 0..10.
+-        if node < 0 || node >= bindings::MAX_NUMNODES as i32 {
+-            return Err(EINVAL);
+-        }
+-        Ok(Self(node))
+-    }
+-}
+-
+-/// Specify necessary constant to pass the information to Allocator that the caller doesn't care
+-/// about the NUMA node to allocate memory from.
+-impl NumaNode {
+-    /// No node preference.
+-    pub const NO_NODE: NumaNode = NumaNode(bindings::NUMA_NO_NODE);
+-}
+-
+ /// The kernel's [`Allocator`] trait.
+ ///
+ /// An implementation of [`Allocator`] can allocate, re-allocate and free memory buffers described
+diff --git a/rust/kernel/alloc/allocator.rs b/rust/kernel/alloc/allocator.rs
+index cd4203f27aed..4af50e20933b 100644
+--- a/rust/kernel/alloc/allocator.rs
++++ b/rust/kernel/alloc/allocator.rs
+@@ -11,12 +11,12 @@
+ use super::{
+     AllocError,
+     Allocator,
+-    Flags,
+-    NumaNode, //
++    Flags, //
+ };
+ 
+ use crate::{
+     bindings,
++    numa::NumaNode,
+     page, //
+ };
+ 
+@@ -122,7 +122,7 @@ unsafe fn call(
+         // - Those functions provide the guarantees of this function.
+         let raw_ptr = unsafe {
+             // If `size == 0` and `ptr != NULL` the memory behind the pointer is freed.
+-            self.0(ptr.cast(), size, layout.align(), flags.0, nid.0).cast()
++            self.0(ptr.cast(), size, layout.align(), flags.0, nid.as_raw()).cast()
+         };
+ 
+         let ptr = if size == 0 {
+diff --git a/rust/kernel/alloc/kbox.rs b/rust/kernel/alloc/kbox.rs
+index c63d6acdbb6f..0fa736c81287 100644
+--- a/rust/kernel/alloc/kbox.rs
++++ b/rust/kernel/alloc/kbox.rs
+@@ -13,12 +13,12 @@
+ use super::{
+     AllocError,
+     Allocator,
+-    Flags,
+-    NumaNode, //
++    Flags, //
+ };
+ 
+ use crate::{
+     fmt,
++    numa::NumaNode,
+     page::AsPageIter,
+     prelude::*,
+     types::ForeignOwnable, //
+diff --git a/rust/kernel/alloc/kvec.rs b/rust/kernel/alloc/kvec.rs
+index c7546b9da4fa..b669ca10b3f7 100644
+--- a/rust/kernel/alloc/kvec.rs
++++ b/rust/kernel/alloc/kvec.rs
+@@ -14,12 +14,12 @@
+     AllocError,
+     Allocator,
+     Box,
+-    Flags,
+-    NumaNode, //
++    Flags, //
+ };
+ 
+ use crate::{
+     fmt,
++    numa::NumaNode,
+     page::{
+         AsPageIter,
+         PAGE_SIZE, //
+diff --git a/rust/kernel/numa.rs b/rust/kernel/numa.rs
+index 164e622d325f..4a3a880308f3 100644
+--- a/rust/kernel/numa.rs
++++ b/rust/kernel/numa.rs
+@@ -4,12 +4,15 @@
+ //!
+ //! C header: [`include/linux/nodemask.h`](srctree/include/linux/nodemask.h)
+ 
+-use crate::bindings;
+ #[cfg(CONFIG_NUMA)]
+ use crate::sync::atomic::{
+     Atomic,
+     Relaxed, //
+ };
++use crate::{
++    bindings,
++    prelude::*, //
++};
+ 
+ /// Returns the number of online NUMA nodes.
+ #[inline]
+@@ -27,3 +30,33 @@ pub fn num_online_nodes() -> u32 {
+         bindings::nr_online_nodes
+     }
+ }
 +
-+/// Returns the number of online NUMA nodes.
-+#[inline]
-+pub fn num_online_nodes() -> u32 {
-+    #[cfg(CONFIG_NUMA)]
-+    {
-+        // SAFETY: `nr_online_nodes` is a global variable that is valid for the lifetime of the
-+        // kernel. The C side updates it with plain writes during node hotplug and reads it with
-+        // plain reads. A relaxed load is the Rust equivalent of `READ_ONCE()`, which is the best
-+        // we can do on the reader side.
-+        unsafe { Atomic::from_ptr(&raw mut bindings::nr_online_nodes) }.load(Relaxed)
++/// Non Uniform Memory Access (NUMA) node identifier.
++#[derive(Clone, Copy, PartialEq)]
++pub struct NumaNode(i32);
++
++impl NumaNode {
++    /// Create a new NUMA node identifier (non-negative integer).
++    ///
++    /// Returns [`EINVAL`] if a negative id or an id exceeding [`bindings::MAX_NUMNODES`] is
++    /// specified.
++    pub fn new(node: i32) -> Result<Self> {
++        // MAX_NUMNODES never exceeds 2**10 because NODES_SHIFT is 0..10.
++        if node < 0 || node >= bindings::MAX_NUMNODES as i32 {
++            return Err(EINVAL);
++        }
++        Ok(Self(node))
 +    }
-+    #[cfg(not(CONFIG_NUMA))]
-+    {
-+        bindings::nr_online_nodes
++
++    /// Get the raw representation of this node identifier.
++    pub(crate) fn as_raw(self) -> i32 {
++        self.0
 +    }
++}
++
++/// Specify necessary constant to pass the information to Allocator that the caller doesn't care
++/// about the NUMA node to allocate memory from.
++impl NumaNode {
++    /// No node preference.
++    pub const NO_NODE: NumaNode = NumaNode(bindings::NUMA_NO_NODE);
 +}
 
 -- 
