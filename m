@@ -1,105 +1,162 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7D0E606A31C
-	for <linux-mm@archiver.kernel.org>; Fri, 30 Oct 2026 06:30:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35100606A31A
+	for <linux-mm@archiver.kernel.org>; Fri, 30 Oct 2026 06:43:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=SF2VKtXy
+	dkim=pass (2048-bit key, unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=sSFuNCOW
 Received: by kanga.kvack.org (Postfix)
-	id AB7756B00EF; Fri, 30 Oct 2026 02:30:41 -0400 (EDT)
+	id 356546B00EF; Fri, 30 Oct 2026 02:43:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A68176B05B1; Fri, 30 Oct 2026 02:30:41 -0400 (EDT)
+	id 2DFEE6B05B1; Fri, 30 Oct 2026 02:43:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 97E1D6B05B2; Fri, 30 Oct 2026 02:30:41 -0400 (EDT)
+	id 180EE6B05B2; Fri, 30 Oct 2026 02:43:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 6789F6B00EF
-	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 02:30:41 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id C883E1605D3
-	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 06:30:40 +0000 (UTC)
-X-FDA: 85378319040.25.DA40D22
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 2892EC0004
-	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 06:30:38 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SF2VKtXy;
-	spf=pass (imf10.hostedemail.com: domain of sumit.garg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sumit.garg@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id D33A06B00EF
+	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 02:43:21 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 8CA52C05D2
+	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 06:43:20 +0000 (UTC)
+X-FDA: 85378350960.17.BAB6078
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 25F40100008
+	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 06:43:17 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=sSFuNCOW;
+	dmarc=pass (policy=none) header.from=ibm.com;
+	spf=pass (imf05.hostedemail.com: domain of pavrampu@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=pavrampu@linux.ibm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793341839;
+	s=arc-20220608; t=1793342598;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jXsG3Bm3ThhpjhFlxafNV8M+YNu9Kp2OePgNmcC2wD4=;
-	b=stTu37RavLej0DDGUHWxgvqD/u2fZStcvFA4WtWVyBRGC07yE1soRyqQ+pp8zzg/heWAOI
-	w0qYNnuHzgQw8FuM4M8F70WOP3CMb3TpPDOZOF195AcjhIJ0oyRIin2ISHOm+fZMi82YVG
-	uW4eaGPOsCKs205OjWJLnnpqee83YZk=
+	bh=hIwzN1VD+MlgWfbSxJH1ZurLgAkXSRL2fnVECdsL6A0=;
+	b=WY/mHvQpA9VpeuD1mJDoZ+CVubhcV0wn8n6FmnBEbWL0qGBmf67fPEFfkgXSs3QBZc0U3K
+	a+kOf0/YvysR6Z7n0sQNR5rPd6whWgflhUptZunSH1cO08oggqt9v1d22FwJEEGnUm2aU0
+	z5juLvHFtXqA8cI2lFQoQtMKkEuYUOU=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SF2VKtXy;
-	spf=pass (imf10.hostedemail.com: domain of sumit.garg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sumit.garg@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf05.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=sSFuNCOW;
+	dmarc=pass (policy=none) header.from=ibm.com;
+	spf=pass (imf05.hostedemail.com: domain of pavrampu@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=pavrampu@linux.ibm.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793341839;
-	b=o1U23Msd4u8d3ifPlABkE6osDC8FBODwPI4eiUmkW+N2Tgn8kS8+avJAil51kVgJbhts9H
-	/tEAQcdnYTlVv8iXVCSWwrYVYcqeTuwpauvhIIA3pcediEQ2upUEeK4IgCcddv9URvQNou
-	Pk5M0Wcl/7cDxFvkfIpQm8nLD0wTGbA=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 129A3601EE;
-	Fri, 30 Oct 2026 06:30:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 930F41F000C1;
-	Fri, 30 Oct 2026 06:30:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793341837;
-	bh=jXsG3Bm3ThhpjhFlxafNV8M+YNu9Kp2OePgNmcC2wD4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=SF2VKtXy3Tcav//c/ZbiM7OBFszrk22o0EfYrTQOXgc3yuzSEPUeMvqpEgyM+6kiu
-	 vkWNPmsnBCiMVDKDhXLQ4FuFBe9DazZdJPo1ZnhamUejtRdhoakYpeqK6gGJp14Ge5
-	 wGUPngb1zKG/kCp9c3MVxPX6skQwFQBNXioGeqguSTfF+7x7tPxJQxMog8AII+uOns
-	 OCcOBwrD1lIPEshFbgi2zObUOUnZtQMauzHpKG5irl2bPydGurZFua+X5r5AfL0qJj
-	 xqeYFe+rnEQYIKF73VtFQ4bIz+2hx5En9sRSkt5azOfeLobIDBjXGwc/LvUrsgY8sA
-	 iIzvAH2F3T8tA==
-Date: Fri, 30 Oct 2026 12:00:28 +0530
-From: Sumit Garg <sumit.garg@kernel.org>
-To: Vincent Donnefort <vdonnefort@google.com>
-Cc: Sumit Garg <sumit.garg@kernel.org>, Will Deacon <will@kernel.org>,
-	brendan.jackman@linux.dev, catalin.marinas@arm.com, rppt@kernel.org,
-	akpm@linux-foundation.org, sudeep.holla@kernel.org,
-	jenswi@kernel.org, robh@kernel.org, mark.rutland@arm.com,
-	ardb@kernel.org, thierry.reding@kernel.org, david@kernel.org,
-	danielmentz@google.com, linux-arm-kernel@lists.infradead.org,
-	linux-mm@kvack.org, op-tee@lists.trustedfirmware.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 0/8] arm64: Unmap FF-A lent memory from direct map
-Message-ID: <auQ5hCdPFz0BmvDG@sumit-xelite>
-References: <arKW_91EeKA-w96m@willie-the-truck>
- <are21BjeS1O3RYE3@sumit-xelite>
- <aruh86rd5FMv2i9G@willie-the-truck>
- <ar5TPvANFUoosxGW@sumit-xelite>
- <asOAYODGZa-7EIV1@google.com>
- <asOD31rTX6dNfD1o@google.com>
- <aszdnInyJxLhSQRp@sumit-xelite>
- <as3798SFCfKFirag@google.com>
- <as4ATqhp0bPI03PA@sumit-xelite>
- <auILvMVSXk9pZh6M@google.com>
+	t=1793342598;
+	b=vqXzDCQHgHHYHvPJpmU5j2bek2KJP2IidM2h/pItpIqSAc81UrZG2E+/K3iwmIUgfsSH38
+	1BZNz88yD+dkL1iqw01kndoxubdQnHt2Wf3Ep2DGkCYImer5ahKnUQEig8UNrsmC3MYnL/
+	WnEnkkB9qwRTpPjjTGKG7qWl8HRsOIM=
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 69U5ES8B2234483;
+	Fri, 30 Oct 2026 06:42:37 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=hIwzN1
+	VD+MlgWfbSxJH1ZurLgAkXSRL2fnVECdsL6A0=; b=sSFuNCOWlQzNQ7eAUWtllA
+	pHK4RSokkSlkektuik/fRwtZtEx/b1KTGn8UQkn4sgyyBeMgri3lFgwzoA4Efdky
+	YzqEqF1xkf+KrtkgkO5yTDC0pbcKaQl9iFXbDXgRQ3o4K88I/iRTaBly0UrVXdS7
+	v74CsQZT3uge8+C7LIBNDxgutvzLbdhtvGBG1X1n1OzIxp/FYkFj23K/jkFIk5aH
+	HgyBHoAHLAQKvsGOcH7kh6uUkXWAvbbzB0vqem6eph8UwFDr/UTNqRR8cgd5Ps3G
+	dcgZ0fapyDmbFLgoDp/yi17NUvPVeK1s9lFcTufVaMZi4YZUoMtg9d9EgYX5iRNg
+	==
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4hmeay1etd-1
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Fri, 30 Oct 2026 06:42:36 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 69U5JtDD104250;
+	Fri, 30 Oct 2026 06:42:35 GMT
+Received: from smtprelay06.wdc07v.mail.ibm.com ([172.16.1.73])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4hm6pbbcb1-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 30 Oct 2026 06:42:35 +0000 (GMT)
+Received: from smtpav02.wdc07v.mail.ibm.com (smtpav02.wdc07v.mail.ibm.com [10.39.53.229])
+	by smtprelay06.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 69U6gX5r26280676
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 30 Oct 2026 06:42:33 GMT
+Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 46A815805C;
+	Fri, 30 Oct 2026 06:42:33 +0000 (GMT)
+Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id B412258058;
+	Fri, 30 Oct 2026 06:42:31 +0000 (GMT)
+Received: from ltc.linux.ibm.com (unknown [9.5.196.140])
+	by smtpav02.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Fri, 30 Oct 2026 06:42:31 +0000 (GMT)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <auILvMVSXk9pZh6M@google.com>
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 2892EC0004
-X-Stat-Signature: zi7ubataoyg115smzzok7x585ot8ixsa
-X-Rspam-User: 
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
+Date: Fri, 30 Oct 2026 12:12:31 +0530
+From: pavrampu <pavrampu@linux.ibm.com>
+To: Muchun Song <songmuchun@bytedance.com>
+Cc: Ritesh Harjani <ritesh.list@gmail.com>,
+        Madhavan Srinivasan
+ <maddy@linux.ibm.com>,
+        Mike Rapoport <rppt@kernel.org>, David Hildenbrand
+ <david@kernel.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Michael
+ Ellerman <mpe@ellerman.id.au>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Christophe Leroy <chleroy@kernel.org>,
+        Venkat Rao Bagalkote
+ <venkat88@linux.ibm.com>,
+        Shrikanth Hegde <sshegde@linux.ibm.com>,
+        "Aneesh
+ Kumar K . V" <aneesh.kumar@linux.ibm.com>,
+        Muchun Song
+ <muchun.song@linux.dev>, linux-mm@kvack.org,
+        linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+        stable@vger.kernel.org
+Subject: Re: [PATCH] powerpc/mm: fix uninitialized ZONE_DEVICE struct pages
+ with PMDs
+In-Reply-To: <20261029063601.1961415-1-songmuchun@bytedance.com>
+References: <20261029063601.1961415-1-songmuchun@bytedance.com>
+Message-ID: <0c6e6f2d4d1ba63d3a2dfe4f6a74f635@linux.ibm.com>
+X-Sender: pavrampu@linux.ibm.com
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDMwMDAyNCBTYWx0ZWRfX3TjynaPh/m1d
+ C5d17a5ldBUW7S8axUgi1YPl2E7U6/Jr8kNreZM4j4MCI2vvOrD49R7rXZjXdVx5ADulbe/rCqQ
+ EYlaX9alN5o2bau92Qk/06yStUlkhm298f6DVBs/uZtTjCGvtoK/hklqv/Y75eWCNfjBsMcy78M
+ KMmMwU/RgJSeyKbdFC+qxEw6VY1MPtXWGfZ0AFsxsX/UXYFL7XhEilYYXecisoWj9VDdCAHOi4J
+ Qh+C8FmSpmPpQElpCqRXlAdbRTJksKHn/QwOaUbTLiLkRYZ+2atP1R4DMsqVZfnbra0n005XeqM
+ FavFvKSohweOr0WLO2edtgdArlz2/1o2lc7J3MZVVO4lbcqNTQ+MjPSTacufu9baMY8QX6MiS05
+ ZkdCD4+zIVlYgqI2tKhilGDfqK88Q5LsorczItDBYmty974D4SnbpqfDlRMJ5RLVH6lHk514ZnE
+ YDHj83hFTfXimxLi0Bg==
+X-Authority-Analysis: v=2.4 cv=WJHqzXsR c=1 sm=1 tr=0 ts=6ae43c5c cx=c_pps
+ a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
+ a=kj9zAlcOel0A:10 a=660iZSQnnn4A:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=iQ6ETzBq9ecOQQE5vZCe:22 a=VwQbUJbxAAAA:8
+ a=pGLkceISAAAA:8 a=VnNF1IyMAAAA:8 a=968KyxNXAAAA:8 a=ip6gSEBRpE_VUvMp_JUA:9
+ a=CjuIK1q_8ugA:10
+X-Proofpoint-ORIG-GUID: AV6LDUAcbGXRLzgtnqeYeg_spQeOoosM
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMDMwMDAyNCBTYWx0ZWRfXzjy3pofCqvwS
+ TA9emy/M+bszomQLhe+va6cJtXc2mdXkV3KD0R1+IsJ+/quDbrzIx+E0LXMO+P+uXioWel8PzfK
+ Xa7+IMUaogtIFx8ziA12ihCBNOqyXZw=
+X-Proofpoint-GUID: xTXGbjELI330Ar8hX1GZpOXE87DcdQr-
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
+ definitions=2026-10-30_02,2026-10-21_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1011 spamscore=0 lowpriorityscore=0 adultscore=0 priorityscore=1501
+ bulkscore=0 impostorscore=0 malwarescore=0 suspectscore=0 phishscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2610190000 definitions=main-2610300024
+X-Rspamd-Queue-Id: 25F40100008
+X-Stat-Signature: dzojn1ndacf5k9gew7eyeb4bzinucsq1
+X-Rspamd-Server: rspam06
+X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
 	autolearn_force=no version=4.0.1
-X-HE-Tag: 1793341838-72840
-X-HE-Meta: U2FsdGVkX18SrX3P1jiCRkXFTCVS3JPM0w94PhEFDyUVzzzDhY8sm5uJeeigQNge04s0R/1jcZigbTHXjf+VarZO0j+iI0gU9D1f+/7FduHALTrwwkUmqBOFEo6EgF9Eu+4UML0GVnp1duWizduped/9O43dFObewdQlMYFVqfwwXHG9ZacLiaUePw8okR68MAN7FiUNnTreUcou22zyu0v1NG7rnjO3F12unxwCDDXnJfJEglFHY6Hh8qrgFQ8yVMuijkUx057OOuWInKHdZ1Hw3U05fCjV3tkgsqeUN2CfSqe8k4tfLdMH4hcT3PspVYXvST0nxNfN4d5TpUvQ/srpensbzoUEjhZorW86uTD/rRPHrmFk/6wMSJYPFX1zUi4BHujadWO70zNXbdbH1tgImRiUKbf1UVkcSwX8JbZ+gQYKDipFU611P8A3uE3wp6Qu64cfck7iMRuk70p0VHZBxCxJg2Z5+BCm2Qs4kwOLC4CHj5VWw8Zo/r/CqAOBX0DDxnF/SmfqwRsveDRsuh8Q6wqMeWeUFGoaIMfK1chFWDndhmreleJhDrrWEC8SwPZqRrjXx3owUFWQi8dZOVXdHeMO3PWp7kNJ1Wr5TL7zqDDeuCJqpAxxMEH6hMBdycGQPpd5z5nxNpt9RpgJJ2Cl7jKRkjL0VKEgHzJQ+nchZWe1q89sRQioYW89yRJXE2aZ8LQpjQbN3sHx59Qe9I3FcECv4Q5Pgcr0e/AIthiE0ZLZj4VRTxNK78FGfAZW3Ym0jclLrSojt4notksx4+fPUGnE1MQ+Zpv4SSz/r9FsC60Q9KGQVzUajs5ETstEfkNaFJ/YFDvG8UqE79S1BrTOCD+pHYSS8FKvNNHLStVmru6xVbozabgrcbvVnV51kojDgwAfwEpGRa2IBTMoqyUBYR8w56tyruJX2UA1n12OJg7B2FZu6+P2YiyYr8ScpE/IY5zU2pvjKy2tKFg
- fs6A86W3
- 3ehDKQ454gnzT60WCKnd2ATm3Kt2ul7dMbxVn8vdxob7kCtysXhVFepxB+BJ5Ab0TCSdyg5GD6vvJDX3T9lRIwjc9EDMQ2yhS1YrTzV8MiTCwGEcbv305l4GC2+BVHItQKA5vkDmzIqTke1oUMi9tF15X/r+7pQ4tJ5de/JagG1feSzCwcJTAFAOGkLs/+fA6K9IcQjqzPrqiIPLHVqPZenQvZHnlAg3cdqTFCQsxIa0Krkv5qBPcdxDmIiMmaH5V8afhU65UNZEY0mdGxpI+ljGelA==
+X-Rspam-User: 
+X-HE-Tag: 1793342597-375085
+X-HE-Meta: U2FsdGVkX1+30TjbAB9X+kPseCgCXg8Eb+MPxJ8/jZIHYgcKOljR017abbMF6aCv+4sKrOjICEuhTGGUMxu26mvr1EnxEbDiE5cksNOYELO/jFNV/6suhTxGggLoLua/EJBcrlyapB4c+U+YGcUnEPhLN2eRkhWuxUwJ4h7JkhthfkphWo7YCPQv3IvTTHLIiEZPuAHJBBSHB9xOEdp3Npck/LP5TCvOlFVgXfdb7ezNFSJqoJK/ug5rt+zChx4zqXtR3lYRqN+ik8WpprKB1aIcTrUOOu3uRaBEgS2bbf5ruZDhefuMIwiIu77rsUTWjyR2tk+w1oirWgbIavb6QkQfgBPXGSjKgJBZrNc4+NYdsA/JRvnDIea4DOiLtkuLUTZEeV/UrPiCM0QKwxSIzv7ezqPoeZmzsRqoov06KSOcRKYihytg/PnTNgy6RR+Sew2a9QllP5lm/o8yUB5n2lS2E8F6jRMJPF+YWbeevNRRTA5iGrE5cp7gYDuntTYkmZLCqUvwZALg2SnXk0bFct6r9yGZ7thHuS+But8QvSwEGAdCKkXbDo0RQr3D03otH4AqRidmxZW2/Vq/HcO0O4N8rRbs4V4s9FRxVP6plX5So9AH4D3vFksH5N/IX4z73Uke71gkSs6btU9QlpFN9UpaC5Gels1bai84JPkbgShMXwzKXuhcLAT1w9p0Z2oqFyYbjOuuGFFEU5ZH+c9UToOhTIrwE4CL2sadqGvI1DUkklMoTzJqCtHknmkx1BqUCOkDFapW1VNc3T7Ynj8CiMTuy/M6AmsDeuUA6g22TZqTRdB5gRiuA9gDeLpCKKMiTpoa1PCR5Cm45ew4Ej+wLIyyMCN/+00bhKEWd3neilf2Db/NDVFWhQhUNSK1iJR5O7+nPRrgDcAaDjDXnvcjhuGZkmxozWEkK4O9DCx+AEtm7BZAX32uCWFBO4JzAPN9bPudTAic3g/wCe965iT
+ buUg7wVO
+ 05vtaL/Z9HSjFmP8HfoX0Uuojle+lsUiUAhMHEy5xastTApqpwH2A3UlEWoVEEWQ9U4SAr3o0ptczJDkcu7/5RVB5hmDMbqZHAvU4bSieWmCCSHmE4kWwklga4WqU2Kvea+xYqYZdg9/Wipxsy42oQ1RcesecyXzzkw5w4RTIZ93onjpEypIuNHYvxcm2FfTbItBDdf6xd2R80DlWdlL4wu8dkYJDhBE2qffkR8iZf9VzNPJj4PTL4OHR3FfzqFVrw//IlozaADVlNBnVtmJYsLG87HH83FuUPUoV4klfnKT6Hy//oEnDBwt0hUclKA6+65mgBawaRyOWxOfFNGz0BR6JkPTaxF5IGIuvdF7/vyoFjBvcxA2LSkc46ihyPH0xgotA7lrZy9GQ2BRgvgqQckvpwDDW3RoGJaXO7BayRgQumHxPo4qKhqjViA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,197 +165,98 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Wed, 28 Oct 2026 at 14:50:36 +0000, Vincent Donnefort wrote:
->On Tue, Oct 13, 2026 at 03:26:30PM +0530, Sumit Garg wrote:
->> On Tue, 13 Oct 2026 at 10:37:59 +0100, Vincent Donnefort wrote:
->> > On Mon, Oct 12, 2026 at 06:46:12PM +0530, Sumit Garg wrote:
->> > > On Mon, 05 Oct 2026 at 12:02:55 +0100, Vincent Donnefort wrote:
->> > > > Sorry, not sure why Sumit's email was dropped...
->> > >
->> > > The problem was with my mutt config, it should be fixed now.
->> > >
->> > > >
->> > > > On Mon, Oct 05, 2026 at 11:48:00AM +0100, Vincent Donnefort wrote:
->> > > > > On Thu, Oct 01, 2026 at 06:04:06PM +0530, Sumit Garg wrote:
->> > > > > > On Tue, 29 Sep 2026 at 12:33:07 +0100, Will Deacon wrote:
->> > > > > > > On Sat, Sep 26, 2026 at 05:43:08PM +0530, Sumit Garg wrote:
->> > > > > > > > Looks like you dropped me from your reply.
->> > > > > > >
->> > > > > > > Huh, that's weird. If I hit reply-all ('g') in mutt, it moves the entire
->> > > > > > > CC list to To: and drops you. I suspect the same thing happened to Thierry
->> > > > > > > when he replied here:
->> > > > > > >
->> > > > > > > https://lore.kernel.org/all/arJcN60nagFKXj2Q@orome/
->> > > > > > >
->> > > > > > > I can't figure out why that's happening :/
->> > > > > > > I manually tried to fix the To: and Cc: lines in this message.
->> > > > > >
->> > > > > > Thanks.
->> > > > > >
->> > > > > > >
->> > > > > > > > On Tue, 22 Sep 2026 at 15:55:59 +0100, Will Deacon wrote:
->> > > > > > > > > I spoke to Brendan at LPC (?) last year but this doesn't really work
->> > > > > > > > > for arm64 because it relies on being able to unmap arbitrary parts of
->> > > > > > > > > the linear map, which isn't generally possible unless you force pte-level
->> > > > > > > > > mappings for everything, which is prohibitive for perf/power.
->> > > > > > > >
->> > > > > > > > As per the cover letter it's about allocating pages that are not present
->> > > > > > > > in the direct map. This essentially fits the protected DMABufs use-case
->> > > > > > > > where we don't want any kernel mapping to exist at any time. Bufers
->> > > > > > > > allocated from protected DMABufs are only meant to be accessed by the
->> > > > > > > > TEE implementation or HW accelerators like in the secure media pipeline.
->> > > > > > >
->> > > > > > > That sounds like it should probably build on top of this series, then.
->> > > > > >
->> > > > > > The main problem I see with this series is it tries to move from the generic
->> > > > > > CMA allocator to a reserved FF-A CMA pool which again comes from the
->> > > > > > DT. We already support reserved pool allocations via "no-map" which are
->> > > > > > discovered dynamically from OP-TEE.
->> > > > >
->> > > > > I can't think of a way around a DT declaration. We need to know what region is
->> > > > > PTE-level before the direct map is installed and of_reserved_mem is very handy
->> > > > > for that purpose. And as this PTE-level mapping is costly we certainly only want
->> > > > > to enable it for platforms that absolutely need it.
->> > > > >
->> > >
->> > > I am rather thinking of a way to turn the default CMA allocator to be
->> > > PTE-level mapped. Since the overall idea for this dynamic protected
->> > > buffers was to reuse memory efficiently, otherwise the reserved buffer
->> > > approach is already there to use as "no-map" via DT.
->> >
->> > When the default CMA allocator is setup, it is already too late
->> > (dma_contiguous_reserve() is called after map_mem()). I am not sure this can be
->> > reordered easily due to the dependency on dma_limits_init().
->>
->> Yeah I saw that constraint too, let's leave it for future extension
->> then although having this reordering dependency fixed will be ideal.
->>
->> >
->> > So the only case it would work would be when a reserved memory has set
->> > "linux,cma-default".
->> >
->>
->> Let's rather just turn DT based default CMA pool to support PTE-level
->> mapping and keep it configurable via Kconfig or cmdline or DT.
->
->If we need a DT declaration anyway, a Kconfig and a cmdline option aren't really
->necessary.
+On 2026-10-29 12:06, Muchun Song wrote:
+> PowerPC radix vmemmap population can reuse an existing PMD mapping 
+> while
+> populating a device DAX range whose section is marked as HVO-enabled. 
+> The
+> reused mapping is an ordinary vmemmap mapping: the redundant tail 
+> struct
+> pages are not remapped to the shared tail page.
+> 
+> Leaving the section marked as HVO-enabled makes later ZONE_DEVICE
+> initialization treat the range as optimized and initialize only the 
+> struct
+> pages that would be backed by a real HVO mapping. The remaining tail 
+> struct
+> pages can then be left uninitialized even though they are still used as
+> metadata for the device DAX compound page.
+> 
+> This first triggers a zone mismatch warning in __init_single_page(), 
+> then
+> faults while initializing the pageblock flags:
+> 
+>   WARNING: mm/mm_init.c:600 at __init_single_page+0xd0/0xf4
+>   Call Trace:
+>     memmap_init_zone_device+0x164/0x430
+>     memremap_pages+0x43c/0x93c
+>     devm_memremap_pages+0x3c/0xa4
+>     dev_dax_probe+0x264/0x3d0
+>     dax_bus_probe+0x140/0x1c8
+> 
+>   BUG: Kernel NULL pointer dereference on read at 0x00001400
+>     __set_pfnblock_flags_mask.constprop.0+0x34/0x160
+>     memmap_init_zone_device+0x358/0x430
+> 
+> On kernels without these initialization-time diagnostics, the
+> uninitialized metadata remains latent. When userspace later maps and
+> accesses the affected device DAX range, the kernel operates on those 
+> struct
+> pages and panics at that point instead of during device initialization.
+> 
+> The Fixes target predates the section-based vmemmap optimization
+> infrastructure, so older kernels do not have section state that can be
+> marked non-HVO. Backports to such kernels need to handle the PMD-reuse 
+> case
+> in powerpc radix code directly, for example by initializing the tail 
+> struct
+> pages that core ZONE_DEVICE initialization would otherwise skip.
+> 
+> Mark the section as non-HVO when reusing an existing PMD mapping, so 
+> the
+> section's HVO state matches the actual vmemmap layout and all required
+> struct pages are initialized.
+> 
+> Fixes: f2b79c0d7968 ("powerpc/book3s64/radix: add support for vmemmap
+> optimization for radix")
+> Cc: stable@vger.kernel.org
+> Reported-by: Pavithra <pavrampu@linux.ibm.com>
+> Closes:
+> https://lore.kernel.org/r/97f85592bb78a273be8519e6897e7f9b9bd31469.1793070429.git.ritesh.list@gmail.com
+> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+> Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+> ---
+>  arch/powerpc/mm/book3s64/radix_pgtable.c | 11 ++++++++++-
+>  1 file changed, 10 insertions(+), 1 deletion(-)
+> 
+> diff --git a/arch/powerpc/mm/book3s64/radix_pgtable.c
+> b/arch/powerpc/mm/book3s64/radix_pgtable.c
+> index 44868b62b14e..4f75f10ed68f 100644
+> --- a/arch/powerpc/mm/book3s64/radix_pgtable.c
+> +++ b/arch/powerpc/mm/book3s64/radix_pgtable.c
+> @@ -1261,7 +1261,16 @@ int __meminit
+> vmemmap_populate_compound_pages(unsigned long start_pfn,
+>  			return -ENOMEM;
+> 
+>  		if (pmd_leaf(READ_ONCE(*pmd))) {
+> -			/* existing huge mapping. Skip the range */
+> +			unsigned long addr_pfn = page_to_pfn((struct page *)addr);
+> +			struct mem_section *ms = __pfn_to_section(addr_pfn);
+> +
+> +			/*
+> +			 * Existing PMD mappings can cover the edges of a valid
+> +			 * HVO populate range. They are ordinary vmemmap mappings,
+> +			 * so the current section must not be treated as HVO-backed
+> +			 * when its struct pages are initialized later.
+> +			 */
+> +			section_set_compound_order(ms, 0);
+>  			next = pmd_addr_end(addr, end);
+>  			continue;
+>  		}
+> 
+> base-commit: d865f2677c44cb2171b833d6775cf692756fa8be
 
-Agree, it rather makes sense for DT independent generic CMA pool.
+Tested on IBM Power10 (ppc64le), kernel v7.3
 
->
->Also, Rob wasn't very keen on having a DT option for the reserved memory and
->suggested to have a compatible string instead [1]. So perhaps we could have a
->a separate driver that handles the unmapping.
->
->	linux,cma {
->		compatible = "shared-dma-pool", "unmap-on-alloc";
->		reusable;
->		linux,cma-default;
->		...
-> 	}
->
->That "unmap-on-alloc" driver sets the memblock flags and register some cma hooks
->(to be defined) for cma_alloc/cma_free where it unmaps/re-maps into the linear
->map.
->
->The nice property is optee won't need to be modified anymore. The downside is
->the entire pool is now mapped at PTE-level.
-
-Sounds reasonable to me. If folks are really worried about performance
-with generic CMA PTE-level map then OP-TEE already supports no-map based
-reserved carveouts for protected DMABufs too.
-
--Sumit
-
->
->[1] http://lore.kernel.org/all/20260902172436.GB1440252-robh@kernel.org/
->
->-- 
->Vincent
->
->>
->> -Sumit
->>
->> > >
->> > > If we can have "cma_unmap" cmdline option alongside "cma" then it can
->> > > turn the existing default CMA allocator to support unmapping buffers.
->> > > Not requiring a DT change at all, although we can have the DT property
->> > > for the default pool too if platforms want to opt for.
->> > >
->> > > > > >
->> > > > > > If we can rather support a generic CMA like allocator for arm64 which
->> > > > > > can support unmapped allocations then I am all for it. These platform
->> > > > > > specific reserved pools isn't a scalable solution.
->> > > > >
->> > > > > What do you mean by generic CMA allocator here? An extension to
->> > > > > shared-dma-pool? Or having the CMA automatically doing the unmap/map on
->> > > > > cma_alloc() cma_release()?
->> > > > >
->> > > > > Right now I have created an API for the unmapping/remapping part. It adds a
->> > > > > burden on the caller, but the alternative solution is introducing post-alloc
->> > > > > pre-dealloc callbacks in the CMA, which looked a bit overkilled to me when
->> > > > > the users of that "ffa-pool" are only optee and the nvidia video dma-buf heap.
->> > > > >
->> > >
->> > > I am not too worried about where the actual implementation lives but
->> > > looks like CMA driver to be the better place. I think use-cases like
->> > > guest_memfd proposed as a user for __GFP_UNMAPPED on arm64 will also be
->> > > looking for this feature.
->> > >
->> > > -Sumit
->> > >
->> > > > >
->> > > > > >
->> > > > > > > You could allocate the DMABufs from a CMA region that has no linear alias.
->> > > > > >
->> > > > > > Allocation from generic CMA pool is already the case here:
->> > > > > >
->> > > > > > tee_shm_alloc_dma_mem() ->
->> > > > > >   dma_alloc_pages()
->> > > > > >
->> > > > > > Do you mean it's just fine to unmap buffers allocated from generic CMA
->> > > > > > region since it doesn't have any linear alias?
->> > > > > >
->> > > > > > >
->> > > > > > > > > Vincent's series tackles that by using a pool so that only that part of
->> > > > > > > > > memory requires the pte-level mappings in the linear map. That's the
->> > > > > > > > > whole point of it, so I don't think it makes sense to drop it in favour
->> > > > > > > > > of Brendan's approach (which doesn't work).
->> > > > > > > > >
->> > > > > > > >
->> > > > > > > > For protected DMABufs, we even don't require any pte-level mappings in
->> > > > > > > > linear map. The whole idea of mapping and unmapping is just a bottleneck
->> > > > > > > > for performance sensitive secure media pipeline use-cases. That's why if
->> > > > > > > > we can support __GFP_UNMAPPED with the memory allocator on arm64 would
->> > > > > > > > be the best fit for this use-case.
->> > > > > > >
->> > > > > > > The point is that you will require pte-level mappings for the linear map
->> > > > > > > if you want to unmap from it at runtime on arm64. If you don't, then you
->> > > > > > > can end up needing to split a block mapping (e.g. pmd-level) when you
->> > > > > > > decide to unmap only part of it and there isn't a safe way to do that on
->> > > > > > > arm64 without transiently unmapping the entire block, which can lead to
->> > > > > > > fatal translation faults during that window.
->> > > > > >
->> > > > > > I agree with you here, what I am rather trying to find if on arm64 there
->> > > > > > is any possibilty to have a generic allocator for unmapped pages. That's
->> > > > > > the use-case here as well as what Brendan't patch-set was trying to address.
->> > > > > >
->> > > > > > >
->> > > > > > > > Now the question is why arm64 can't support __GFP_UNMAPPED similar to
->> > > > > > > > how Brendan is doing it for x86?
->> > > > > > >
->> > > > > > > Because arm64 != x86? Presumably x86 doesn't have the strict
->> > > > > > > break-before-make requirements we have on arm64.
->> > > > > > >
->> > > > > >
->> > > > > > Sure, sounds like you are eluding to that the generic MM flag
->> > > > > > __GFP_UNMAPPED being proposed can't be supported on arm64, right?
->> > > > > >
->> > > > > > -Sumit
->> > > >
->> > > > --
->> > > > Vincent
->> >
->
+Tested-by: Pavithra Prakash <pavrampu@linux.ibm.com>
 
