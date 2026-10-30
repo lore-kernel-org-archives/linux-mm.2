@@ -1,90 +1,95 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 443F8606A324
-	for <linux-mm@archiver.kernel.org>; Fri, 30 Oct 2026 02:40:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75CEA606A322
+	for <linux-mm@archiver.kernel.org>; Fri, 30 Oct 2026 02:55:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=pIoYSvEV
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=ZLPuw5EX
 Received: by kanga.kvack.org (Postfix)
-	id 5B2886B05B1; Thu, 29 Oct 2026 22:40:53 -0400 (EDT)
+	id 8666F6B05B1; Thu, 29 Oct 2026 22:55:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 563E36B05B4; Thu, 29 Oct 2026 22:40:53 -0400 (EDT)
+	id 83DCD6B05B2; Thu, 29 Oct 2026 22:55:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4A0D66B05B6; Thu, 29 Oct 2026 22:40:53 -0400 (EDT)
+	id 77C006B05B3; Thu, 29 Oct 2026 22:55:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 23C906B05B1
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 22:40:53 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id A807E140591
-	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 02:40:52 +0000 (UTC)
-X-FDA: 85377739944.14.663695A
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf07.hostedemail.com (Postfix) with ESMTP id CD9AE40002
-	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 02:40:50 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=pIoYSvEV;
-	spf=pass (imf07.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+	by kanga.kvack.org (Postfix) with ESMTP id 4A32B6B05B1
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 22:55:45 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 3851180352
+	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 02:55:43 +0000 (UTC)
+X-FDA: 85377777366.03.3502061
+Received: from mta1.migadu.com (out-181.mta1.migadu.com [95.215.58.181])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 2BA48A0004
+	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 02:55:40 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=ZLPuw5EX;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf15.hostedemail.com: domain of hui.zhu@linux.dev designates 95.215.58.181 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793328051;
+	s=arc-20220608; t=1793328941;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=VaghlxoTkY6+PDm7BEV7DT23eF5DgKXQ6aJ5vhgJ1Yc=;
-	b=F+pIIxaFli+1hn0D/4Z5RmghhZ5CLkWIPuYHaioNP6bADeOM97o6f++7Bijg1gWnSAms6o
-	ryyZs3o0Ifmyl8sc/WIpYPDr+PJtE1S/cH+Vh7B9bVyF2KtyLmXHPElqfbkJNNF8Z6RO0q
-	pnW/7vT8e9QfM6WdVF3XYg9sVuZrqBs=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=pUCbReckSqEr12tJBWbX35Dm/JKcttu5DEw0fkc69DI=;
+	b=waOvId/Q2YySwBm9ShTXHko0Gsw+mcjz+5CM6JXvYCUhOGBquI3ObI2z1hoRZJQamD1ozt
+	JULGfgV+B0OgEo8JcMtii4gvWSMX0xt8tjyh4XDOqJHONj68kqGeQyNlleMSBlYg8pjCk7
+	enh5ZUsIxN1canPdG4IvAbsWY6qebWc=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=pIoYSvEV;
-	spf=pass (imf07.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+	imf15.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=ZLPuw5EX;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf15.hostedemail.com: domain of hui.zhu@linux.dev designates 95.215.58.181 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793328051;
-	b=TSTXe9W8BQx9hkwX8DzjArCurP8Ynmm6/GJ1B9yh3o7xwjgkp4FJmDhF9m4TlocqiaKueE
-	stZaKstPRg1tyAGQmtl91auEuW6vDgDcWRH/AfoAZPUmu8kKtrx8WzsNZrRQDQqtPHUYdm
-	b9gT1gkYp6svRzT6jgAHVpo6A0RYWMU=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 256FB40A9C;
-	Fri, 30 Oct 2026 02:40:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD72C1F000C1;
-	Fri, 30 Oct 2026 02:40:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1793328049;
-	bh=VaghlxoTkY6+PDm7BEV7DT23eF5DgKXQ6aJ5vhgJ1Yc=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=pIoYSvEVIeOMDbQ4GehnLZvj7LFdvId11l7/cvBaxDFHOF9uXwxpzYqZ8gZbCFmAe
-	 CiqdK53NTq9EHRe2o5AdD+W9XyXYSPfFM/7eJQE4FJHC0vm0UF05cP2LDYnviodZ7+
-	 yPCv9v/jzHz6mALlrO2/R2m4QUdrLu5PFKY7K5BM=
-Date: Thu, 29 Oct 2026 19:40:48 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: "M. Grove" <mgrove@airmail.cc>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, Matthew Wilcox
- <willy@infradead.org>, Jan Kara <jack@suse.cz>
-Subject: Re: [PATCH] mm/filemap: queue non-exclusive folio waiters ahead of
- exclusive
-Message-Id: <20261029194048.5faf664d805bff08d3001e29@linux-foundation.org>
-In-Reply-To: <179296822701.680532.8543194155713536453@airmail.cc>
-References: <179296822701.680532.8543194155713536453@airmail.cc>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	t=1793328941;
+	b=TSc+Ra6E5ydIQKSuo6sdfEbwFeDxudp5Qi/o3knVvUTMew5M6dG3y0D91+/wJi5UoMoHUo
+	bkp1OQPNOj7sbptCJOmiLXR9d8mrP32EXQMC2VHgt2SWjmQX7fLkKHSmLlMkP30SxotgXz
+	rw+MKPoKoXeoQgFHhnwa4JwaGRervKQ=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=sAQYKG0X+cRq7vrg7+ttEQx6a2fpFc91J/Dodm9J4/w=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1793328939; v=1; x=1793933739;
+ b=ZLPuw5EXMctc9GYJweSlQAVVeQcklAr1ydzoP1OgL9PNQ1GMrdrfZh319f8dRhKqxrXYbFmu
+ oG5oSwUsozWbD77rPDJ1+F3Q+Cq16azVhE4HxwZKtGOsrXdIs9A463tt6WRzHC7N1WLSsre3BLj
+ O3TzgJQEXeStP+MhnI3apFGE=
+X-Envelope-To: linux-mm@kvack.org
+Received: by mta12.migadu.com with ESMTPS id 392c1607db233a43;
+	Fri, 30 Oct 2026 02:55:39 +0000
+X-Mizu-Trace-ID: 392c1607db233a43
+X-Migadu-Flow: FLOW_OUT
+From: Hui Zhu <hui.zhu@linux.dev>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Brendan Jackman <brendan.jackman@linux.dev>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Zi Yan <ziy@nvidia.com>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Cc: Hui Zhu <zhuhui@kylinos.cn>,
+	stable+noautosel@kernel.org,
+	Dev Jain <dev.jain@arm.com>
+Subject: [PATCH v2] mm/compaction: annotate data race for zone->free_area[order].nr_free
+Date: Fri, 30 Oct 2026 10:55:07 +0800
+Message-ID: <20261030025507.115248-1-hui.zhu@linux.dev>
+X-Mailer: git-send-email 2.43.0
 X-Archived-By: <archiver.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: CD9AE40002
-X-Stat-Signature: 98881ny6xje4hgs36ucon3uspss6cgt1
-X-Rspam-User: 
-X-Spam-Status: No, score=-17.0 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 2BA48A0004
+X-Stat-Signature: s99gpgxokry4k6513ty4r8hbf7z1jatc
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,NICE_REPLY_A,
-	SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1793328050-919303
-X-HE-Meta: U2FsdGVkX18xbPZaF/WnX7RvXx5l6AETZgozEKCX4RwVF1yvdi3dHm7e9sNh6Bap9D490fCjJT5hJscizg/VuBb34lj6m8GsrEU/31KH/s2gZWjmGAtHrwe4SXXPijdgHIeB9BwNBtMDhjRoP4v2eLK3MSmmL5scAVabUuNiCoNP2LZ00wcQCP3FxQkEw1N2X5KeCGkF2+ni+E1SuvgAptns7+w+b3ILOcIUNoCKAXE39sCRlbLJ99HLwgSRfXwpWSmghmmMbRfLyj+fkwbL7BPZSzHGfXZi6PrITjKladUwQ0asyVYHgH/XtUJ1Y8MhJqgP4XeAr2eHJZ0NACup8Pnl+cGRcGuDzOdVp7+6j0zqcLag3ym6E8irGdzOWX6POI7HhWLxLGP+zth+aFLZ/EAoumlSOIpb6oA207WB44/PR/k4cWfSs1RT06E6bwTml0LioJzCHBW0AfvVcoTFR1h461KsXcQSMvjuKfFD/Jy/t3ZltNW2axMtg8lVg8H9sCTZA6475MrkV4Q/lQBr72E74NVXNbuJYy2/ab6nmRahHJiuR1ShuiSMV5g8rx73ic+4kG7jTRW57xQ7m6Z7qmwxB9x1Fx4P6AOz8ArR9CHcxqFCgiPfb4m5uLrDNEPpOoRXKFV7kNhxbGtDsCbGYzPflTuPKaJM8/SztWyqKpfVjy3BGBgsydjzsCTP2wa63r78IXuJ7N9BjXm48Hza3rrUxKLR4MoeBcJehd+R1DYP+C+rmonUl2CaNd77YrxDqn783OZUHbL0QRIWJWpibiAfvZrt1Fy1vG76P2kHp0reoGWMdmaqjcfDnzVaa8QPAkLT0OnFBuSEbfr0oEzytEbnzQ7yW6QA4Eb8oODK7LE9VIq/PW5bk5v19vGkZRrYertI01/of0HTIY3D2mv75ieYCacq3eV201ZCtkQt4BPLrM5X2mxstxMzd37KoDftZyz7CpVe0i4aiSAJ4Bv
- W1vThXpf
- AuY9yGx7UbKVyhWf6ZDT6WL7VsgtWTpnKlLPKoTH+14/3//MXhKbBZnwDYWWRFmgaK+gdVjY/LFMswLE6JBkB0+nLgbt00kveMKAikSarcyjG7a2Nv0tPRMUmO5zZvND6D1Pi/T/uhjTmQRrwsArLRaLWJGt9Tt/qXlh8IBxdUNTseoiFfVlapvxZcI6CkFY0XSgWYM5eCSf5nmEpXXBQVnrc66bIr/FA2xzm5fBMdpH9cFcNiIlzLPOVby0hX2/xAVW6BEvC13SfoOjEatn6ePWb+/saz5hSm5uvLRTf/nrWoETS4Y5ZFEpgVpr0d4HroPxrbpTdPhe4WGpBo66lku9+cSQxFLRIvgzAWRicTTDhd6uHHG9Lt3Lx/3GglxGjSvWBREDVEhraRIG4QkyzVdE7rfBASg6G8+xIeKa5l4wo8TY=
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-Rspam-User: 
+X-HE-Tag: 1793328940-144516
+X-HE-Meta: U2FsdGVkX1/vmlg+MZYppTudeEOfdDdFkV6a0OC8TL3YHrISBeAd1Wyj0ziCPhmHiM1fqzSEW8FKs/yECeXAG0FDYbPlJJrYpHgfj/w5XH/q6jrW9APfrq2j7EbLTd0S+Ayo7nU40p8TmJXG2LTpOkEqFjW3efPiXmPvbUUyn49ekK063JnQyWFYnR0cmlcniHRNlltEYiCTt+SRh1W09V1/yjN5yExW0RV3UEEjZRyKqIKFWoT8VLy+kbu5ngpY0nwABP40JZzt5BfZDp1UXwUhoLeUFOFYG46KITZV0GsvCAZvztTCCmzM+HpCUy5RBzfUfrfytppPkuBu6l2V4pqNZJ/yMomIhkBIIl/zknNTf+xJoVsW56rdPm9aH3ucbPMkVyejN06WR4rvL/ZLk+00mRb6aUGuXSHoP/PfxYXPkBk5t+YjSJAnXRyMWVJkEPf0sN3e+n4RjFhkcKLmv3sMYCqI2XXSa4mERhd30hmjLf7CtDgUWrs/vZ6oJPglUe9DMCb1XWlfgdebpWB9S7Xxt1SpFr5qICVWuKk3bH6UXv59cx3moMJWjZ+cAyBCCNiTth0r0cQqyGtzehwk5H+9pmvSXhxEiKjIcFCCnPyluBeiCH2F9/3BnNeWCbOWVpLQkisYul7KSFzwQchg6UXW3MWKexlGL9VRVKvnSPMbyP5ut89b3cSXFnysjDRCU8v4ZTlIrixDIQk4ostOqEmzhyLxnSnth/RaGrufW6wVl9dGmhqmidSnLifo6DF9ZGt+QTvbl5tT55q+pxTlg4wyBzApKZLau6TYpgWKXoxO2AFB2I0+bSMEGWcHAy1AWyXHIcxN50T1EVlLtyPn2fd3MPvbK5+M3afutx1JtV86qlWL7SxVR1uiHZbnZ5+HtEo8/V+0fr1o1RRvEDUxA3WUsKHQhk1m/aoHi5SofMtemWLjBC/VeJcEAn9oCKiNu+SfRyU8lt4OePtki5G
+ +fEtJP2T
+ TKFWz1S6VYT/SpV/vfw7c9JXrMwGXXqrXX9ydecXYyGHYDWIcidCK5iInyWW+DUwpt+it+q1Xm6YKrbCMhpp/GTu8QZVxFJ3bANFhxWP4VGcOYBk6yrRabI+04kjj4XwOGl3FLdIH7jU8UR911JINs1w1zFaeJu5TCkAT1MTgUvQi4RniWmVJ8ibGj8+7Psb3igMUVDy76U8eFqUQjMM9I422hxWP6UPDLNrf/SUqeKoTE1+eovX2mH3Cjy2aWiMkgCd4+XUiyZQBB4zeDcWQnLf5omwsat2OL/3WfFNgKyJAeJabxdeQtbEdNbd+O0Eq6274moi+d2M9sz15q2e0ulv4buNz5B/5bP4IUovfyo3ffJncBxYFXUXHIAkLCum0U4RM2LrYa7t9F35UUB3yu12ILMScIY+YGsUDBCoF3/yH/Q/BdpI8mSgRgu9xEvZApEUVecr/+nok2mjk3wppgwkEYyAq3PX2DcDL3m5wGsaZtwDM+7/EtoVzAw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,94 +98,97 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-(cc filemap.c maintainers)
+From: Hui Zhu <zhuhui@kylinos.cn>
 
-On Sun, 25 Oct 2026 22:43:47 -0000 "M. Grove" <mgrove@airmail.cc> wrote:
+KCSAN reports a data-race on nr_free which also exists on mainline:
 
-> A folio waiter queued behind an exclusive folio_lock() waiter on the same
-> folio is skipped by folio_wake_bit()'s nr_exclusive=1 walk: a shared/DROP
-> sleeper (folio_put_wait_locked from do_read_cache_folio) never receives
-> WQ_FLAG_WOKEN even though its wake ran.  Readers then hang D-state in
-> folio_wait_bit_common while fresh reads of the same page answer instantly,
-> and the sleeper wakes only with each later lock/unlock of that address, one
-> page at a time.
-> 
-> Same symptom as syzbot's "INFO: task hung in read_cache_folio (6)"
-> (extid 9db0864859224b833108).
+  BUG: KCSAN: data-race in fast_isolate_freepages+0x284/0x1550 mm/compaction.c:1589
 
-https://syzkaller.appspot.com/bug?extid=9db0864859224b833108
+  race at unknown origin, with read to 0xffff9894ff3dcb60 of 8 bytes by task 179078 on cpu 12:
+   fast_isolate_freepages+0x284/0x1550 mm/compaction.c:1589
+   isolate_freepages+0x52/0x650 mm/compaction.c:1722
+   compaction_alloc_noprof+0x36e/0x3e0 mm/compaction.c:1850
+   compaction_alloc+0x21/0x30 mm/compaction.c:1880
+   migrate_folio_unmap+0x7f/0x820 mm/migrate.c:1177
+   migrate_pages_batch+0x37e/0x1200 mm/migrate.c:1762
+   migrate_pages_sync+0xce/0x560 mm/migrate.c:1928
+   migrate_pages+0x8c6/0xc20 mm/migrate.c:2037
+   compact_zone+0x539/0x10b0 mm/compaction.c:2660
+   compact_zone_order+0x1b8/0x230 mm/compaction.c:2795
+   try_to_compact_pages+0x20b/0x630 mm/compaction.c:2851
+   __alloc_pages_direct_compact+0x98/0x2b0 mm/page_alloc.c:3722
+   __alloc_pages_slowpath.constprop.0+0x452/0xdf0 mm/page_alloc.c:4401
+   __alloc_pages_noprof+0x28a/0x2d0 mm/page_alloc.c:4794
+   alloc_pages_mpol_noprof+0x1b1/0x470 mm/mempolicy.c:2270
+   alloc_pages_noprof+0x7a/0xe0 mm/mempolicy.c:2347
+   io_mem_alloc_compound io_uring/io_uring.c:2848 [inline]
+   io_pages_map+0xb9/0x330 io_uring/io_uring.c:2892
+   io_allocate_scq_urings+0x231/0x300 io_uring/io_uring.c:3933
+   io_uring_create+0x29c/0x9c0 io_uring/io_uring.c:4091
+   io_uring_setup+0xb6/0x100 io_uring/io_uring.c:4203
+   __do_sys_io_uring_setup io_uring/io_uring.c:4230 [inline]
+   __se_sys_io_uring_setup io_uring/io_uring.c:4224 [inline]
+   __x64_sys_io_uring_setup+0x66/0xe0 io_uring/io_uring.c:4224
+   x64_sys_call+0x1816/0x1d90 arch/x86/include/generated/asm/syscalls_64.h:426
+   do_syscall_x64 arch/x86/entry/common.c:51 [inline]
+   do_syscall_64+0x70/0x2a0 arch/x86/entry/common.c:81
+   entry_SYSCALL_64_after_hwframe+0x76/0xe0
 
-So are you saying that this patch will fix that sysbot report?
+  value changed: 0x00000000000002f4 -> 0x00000000000002f5
 
-If so, a Reported-by: and its Closes: would be helpful.
+nr_free is only updated with zone->lock held, but fast_isolate_freepages()
+and fast_find_migrateblock() read it locklessly to skip an order that has
+no free pages.  page_alloc.o is excluded from KCSAN, so the writer is not
+instrumented and the report is of unknown origin.
 
-Some description of *why* that sysbot hang occurred would also be
-helpful.
+The race is benign: a stale zero only skips the order for this round, and
+a stale non-zero just finds an empty MIGRATE_MOVABLE freelist under the
+lock.  Annotate both reads with data_race(), following commit
+af1c31acc853 ("mm/vmstat: annotate data race for zone->free_area[order].nr_free").
 
-You can do an emailed reply "#sys test" to the sysbot report.  Than
-paste in the patch and it'll rerun the test for you, if it has a
-reproducer.
+No functional change intended.
 
-Plese reconcile this with
-https://lists.openwall.net/linux-kernel/2026/10/26/2932?utm_source=chatgpt.com
+Fixes: 70b44595eafe ("mm, compaction: use free lists to quickly locate a migration source")
+Fixes: 5a811889de10 ("mm, compaction: use free lists to quickly locate a migration target")
+Cc: stable+noautosel@kernel.org # KCSAN annotation only, no functional change
+Signed-off-by: Hui Zhu <zhuhui@kylinos.cn>
+Reviewed-by: Dev Jain <dev.jain@arm.com>
+Acked-by: Zi Yan <ziy@nvidia.com>
+---
+ mm/compaction.c | 12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
-Did Josef already fix this?
+diff --git a/mm/compaction.c b/mm/compaction.c
+index f1b2060eb2016..499ec7ceaa3ed 100644
+--- a/mm/compaction.c
++++ b/mm/compaction.c
+@@ -1601,7 +1601,11 @@ static void fast_isolate_freepages(struct compact_control *cc)
+ 		unsigned int order_scanned = 0;
+ 		unsigned long high_pfn = 0;
+ 
+-		if (!area->nr_free)
++		/*
++		 * Access to nr_free is lockless as it is only a hint; a stale
++		 * value is harmless. Use data_race to avoid KCSAN warning.
++		 */
++		if (!data_race(area->nr_free))
+ 			continue;
+ 
+ 		spin_lock_irqsave(&cc->zone->lock, flags);
+@@ -2031,7 +2035,11 @@ static unsigned long fast_find_migrateblock(struct compact_control *cc)
+ 		unsigned long flags;
+ 		struct page *freepage;
+ 
+-		if (!area->nr_free)
++		/*
++		 * Access to nr_free is lockless as it is only a hint; a stale
++		 * value is harmless. Use data_race to avoid KCSAN warning.
++		 */
++		if (!data_race(area->nr_free))
+ 			continue;
+ 
+ 		spin_lock_irqsave(&cc->zone->lock, flags);
+-- 
+2.43.0
 
-> The change only reorders the enqueue side: non-exclusive waiters use wait.h's
-> default head-side insert, exclusive folio_lock waiters keep the tail, so
-> wake-one fairness for lockers is unchanged.  Built on mm-stable
-> 183895979c44; mm/filemap.o also builds on v7.2.6.
-> 
-> Queue-walk instrument (read-only, counts non-exclusive entries left
-> unvisited when folio_wake_bit() returns): 363 skipped waiters per 10-minute
-> run before the change, 1 after the folio_wait_bit_common site, 0 after the
-> softleaf_entry_wait_on_locked site as well.  Reproducer shape: threads pread
-> a file while others block in folio_lock on the same pages (hole punch,
-> truncate or mmap faults) under reclaim churn.  Harness, traces or configs on
-> request.
-
-Sorry, this is all quite unclear (to me, at least).  What is the actual
-bug, how is it triggered and observed, etc.  
-
-> Signed-off-by: M. Grove <mgrove@airmail.cc>
-> ---
->  mm/filemap.c | 16 +++++++++++++---
->  1 file changed, 13 insertions(+), 3 deletions(-)
-> 
-> diff --git a/mm/filemap.c b/mm/filemap.c
-> index b74bc1e5015c..35869d19d17a 100644
-> --- a/mm/filemap.c
-> +++ b/mm/filemap.c
-> @@ -1293,8 +1293,18 @@ static inline int folio_wait_bit_common(struct folio *folio, int bit_nr,
->  	 */
->  	spin_lock_irq(&q->lock);
->  	folio_set_waiters(folio);
-> -	if (!folio_trylock_flag(folio, bit_nr, wait))
-> -		__add_wait_queue_entry_tail(q, wait);
-> +	if (!folio_trylock_flag(folio, bit_nr, wait)) {
-> +		/*
-> +		 * A non-exclusive (shared/DROP) waiter must queue ahead of
-> +		 * exclusive folio_lock waiters: the nr_exclusive=1 wake walk
-> +		 * stops at the first exclusive match, so a non-exclusive
-> +		 * waiter behind one is never visited and never woken.
-> +		 */
-> +		if (behavior == EXCLUSIVE)
-> +			__add_wait_queue_entry_tail(q, wait);
-> +		else
-> +			__add_wait_queue(q, wait);
-> +	}
->  	spin_unlock_irq(&q->lock);
->  
->  	/*
-> @@ -1428,7 +1438,7 @@ void softleaf_entry_wait_on_locked(softleaf_t entry, spinlock_t *ptl)
->  	spin_lock_irq(&q->lock);
->  	folio_set_waiters(folio);
->  	if (!folio_trylock_flag(folio, PG_locked, wait))
-> -		__add_wait_queue_entry_tail(q, wait);
-> +		__add_wait_queue(q, wait);
->  	spin_unlock_irq(&q->lock);
->  
->  	/*
-> -- 
-> 2.56.0
 
