@@ -1,171 +1,114 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59689606A31F
-	for <linux-mm@archiver.kernel.org>; Fri, 30 Oct 2026 10:22:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2958606A31A
+	for <linux-mm@archiver.kernel.org>; Fri, 30 Oct 2026 10:24:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=dwBFosyH
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=VyU931Xt
 Received: by kanga.kvack.org (Postfix)
-	id 79C866B05B9; Fri, 30 Oct 2026 06:22:13 -0400 (EDT)
+	id D46C26B05BA; Fri, 30 Oct 2026 06:24:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 774B36B05BA; Fri, 30 Oct 2026 06:22:13 -0400 (EDT)
+	id CF7E46B05BB; Fri, 30 Oct 2026 06:24:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 68A5F6B05BB; Fri, 30 Oct 2026 06:22:13 -0400 (EDT)
+	id C35216B05BC; Fri, 30 Oct 2026 06:24:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 421536B05B9
-	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 06:22:13 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 40409805BD
-	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 10:22:12 +0000 (UTC)
-X-FDA: 85378902504.25.D681A22
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 82EA3140008
-	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 10:22:10 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dwBFosyH;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793355730;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=o+kaUtC8ovQj6xhHRCbmiOuasEe9YC6Zr5iT5M2eCM0=;
-	b=QnVgsxxMx1lR2K2/S10b0dx1/lgY8Q1CtRgVLUKRVvfqWHNWWhljqnmtYhJ/dDrkNSp/1t
-	IdIfT75UH++BxpIICNLtp5rXrWNT34s/eNmrHR5Hg/MEBanHaRKNFpccUAPPvmZRZHn0I3
-	+mTCl7G2dGKqFPr/zESXcBB7X3F0Ycs=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dwBFosyH;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id A36D66B05BA
+	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 06:24:50 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id A69F3160624
+	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 10:24:49 +0000 (UTC)
+X-FDA: 85378909098.28.742515E
+Received: from mail-dl1-f49.google.com (mail-dl1-f49.google.com [74.125.82.49])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 0548E2000C
+	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 10:24:47 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=VyU931Xt;
+	spf=pass (imf13.hostedemail.com: domain of ritesh.list@gmail.com designates 74.125.82.49 as permitted sender) smtp.mailfrom=ritesh.list@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793355730;
-	b=BDzhXjb+6+oC63XTWcoQrCMw1dDnN7fVO80Hw0TBOniOvgmbFq+LGSSveenrfmGtCHEJ6x
-	018z21cIzenUmRvWCL3DqNL2gN7O7wJYMlVR931bVk/FAe36nN6aG86G6rJLSWlJQuiBCz
-	fIZGrbd/nivcpTYGYodkuO1Gr8EYpAc=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 0B3C560092;
-	Fri, 30 Oct 2026 10:22:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00F301F000C1;
-	Fri, 30 Oct 2026 10:21:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793355729;
-	bh=o+kaUtC8ovQj6xhHRCbmiOuasEe9YC6Zr5iT5M2eCM0=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=dwBFosyHJNEN/VlP9Ae3KU8sfJ1VpcWyMYJG0hYheIRJZb8LD62PaQRkm1G0V2DOU
-	 /thDolVwbKVJ+f+WEKxynk73Tq8txa/etK+tLb/fptp+mzUo+CQq8mvhbO0P5f+/p9
-	 Nq/8/AzFmw5eWg9Jj0YW8MDMjUYo6UKlKavvcEB81ku1e5o7qQqsCBV7gvspaDsMz0
-	 Jz/HAKpj8ZfulPBeQbw9kwQpzl6Et707A+yl1grA0FZJghBafUgkNkE2fQ8DGj/ZPB
-	 gVCz8+83ggGBl0JMUrrgr16/dml/0dpNWJghy7sr9pH48z+QkBdbe20lK5K6Qhd0Y9
-	 WzTTotFpshtjQ==
-Message-ID: <6d679adb-a866-4a76-b9ea-3b8c64171fae@kernel.org>
-Date: Fri, 30 Oct 2026 11:21:50 +0100
-X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 01/47] mm/mglru: don't use stack pointers when walking
- PUD and PMD tables
-To: SJ Park <sj@kernel.org>
-Cc: Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
- Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
- Lorenzo Stoakes <ljs@kernel.org>, Kairui Song <kasong@tencent.com>,
- Barry Song <baohua@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>,
- Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
- Baoquan He <baoquan.he@linux.dev>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Kees Cook <kees@kernel.org>,
- Peter Zijlstra <peterz@infradead.org>, Jann Horn <jannh@google.com>,
- Pedro Falcato <pfalcato@suse.de>, Hugh Dickins <hughd@google.com>,
- Pasha Tatashin <pasha.tatashin@soleen.com>,
- Pratyush Yadav <pratyush@kernel.org>,
- "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>,
- Zi Yan <ziy@nvidia.com>, Lance Yang <lance.yang@linux.dev>,
- Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>,
- Alistair Popple <apopple@nvidia.com>, Nico Pache <nico.pache@linux.dev>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>,
- Matthew Brost <matthew.brost@intel.com>, John Hubbard <jhubbard@nvidia.com>,
- Peter Xu <peterx@redhat.com>, Will Deacon <will@kernel.org>,
- "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Nick Piggin
- <npiggin@gmail.com>, Oscar Salvador <osalvador@suse.de>,
- Minchan Kim <minchan@kernel.org>, Muchun Song <muchun.song@linux.dev>,
- Xu Xin <xu.xin@linux.dev>, Chengming Zhou <chengming.zhou@linux.dev>,
- Chris Li <chrisl@kernel.org>, Kemeng Shi <shikemeng@huaweicloud.com>,
- Nhat Pham <nphamcs@gmail.com>, Youngjun Park <youngjun.park@lge.com>,
- Gregory Price <gourry@gourry.net>, Joshua Hahn <joshua.hahnjy@gmail.com>,
- Rakie Kim <rakie.kim@sk.com>, Ying Huang <ying.huang@linux.alibaba.com>,
- Jason Gunthorpe <jgg@ziepe.ca>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, kexec@lists.infradead.org,
- linux-fsdevel@vger.kernel.org, linux-arch@vger.kernel.org,
- linux-cxl@vger.kernel.org, Josef Bacik <josef@toxicpanda.com>,
- stable@vger.kernel.org, Muhammad Usama Anjum <usama.anjum@arm.com>
-References: <20261030002004.154595-1-sj@kernel.org>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20261030002004.154595-1-sj@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 82EA3140008
-X-Stat-Signature: nd7mmnz1xg8wd7uq4j8mwmo5phgi1d66
-X-Rspamd-Server: rspam04
-X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
-	autolearn=no autolearn_force=no version=4.0.1
+	t=1793355888;
+	b=w5aSlo76hSFWLUDPt4RXsh5xyu0yPh+6GF5pxUCAZICl47DlvKdUbSpc+jzDSlG/CeAaEA
+	EqfDRBclCrdzPn7CaCzi3R4euScfHcwJbexYelxLHkFbfFy5PikqXnlUCeszddhtrWF+CJ
+	nb+jdgiYSkbCCt7eVHQ6JDfE4vVd7TA=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=VyU931Xt;
+	spf=pass (imf13.hostedemail.com: domain of ritesh.list@gmail.com designates 74.125.82.49 as permitted sender) smtp.mailfrom=ritesh.list@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1793355888;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:in-reply-to:
+	 references:references:dkim-signature;
+	bh=CwWE7UOGE7vvkgiGMpiO2wb6+EIxQ8HXhg/iR90K5xU=;
+	b=smVwtP0n7PAeiofEvz95d2wbtDzZPuLlbODAM4+/jYiZEqHjewFSXSdx91yCuRgpTfXamw
+	E8fk9Pxz0WFdC4ThOUTe2gHoXQJdXl0hn0iIqC6Y8K1cqp3nAwwozdW41l5uzhYLHpCfVU
+	mZYi9tpxNpcHKhB0QFF92lO4URADero=
+Received: by mail-dl1-f49.google.com with SMTP id a92af1059eb24-1931ff67a29so1501549c88.1
+        for <linux-mm@kvack.org>; Fri, 30 Oct 2026 03:24:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1793355887; x=1793960687; darn=kvack.org;
+        h=references:message-id:date:in-reply-to:subject:cc:to:from:from:to
+         :cc:subject:date:message-id:reply-to:content-type;
+        bh=CwWE7UOGE7vvkgiGMpiO2wb6+EIxQ8HXhg/iR90K5xU=;
+        b=VyU931XtGxNd/XOf0U1kS6KLFwWIc4CWd7ngxyfqwqcRiBJJxQRl8IdRrSzEQ4H394
+         y5B6RH4IOlTKqI6JyNpRDbJyOzpJo2e97s+igNClXAR+D1FQpICHKDhJWUe55WI2WS6i
+         lPJGucs9HPJdL1gJ5h567JRb9fKJkTd9zWJtpWN+/OPNLsEvRe0q4EZt6kjA/A8yf3n5
+         r70S+Fz/FESyGvdBJNY34zaILEglrUSoI9fR4KX6/Nqr8VRSzf+4yHWAQiJ8ooFAsDnz
+         HB8eL0e/+7xFmpj9LyZU3czmJRUjoP+n7b8bf+XJI4h7mWdy1lILtWBDvPOUp+ixk5yZ
+         mrXA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793355887; x=1793960687;
+        h=references:message-id:date:in-reply-to:subject:cc:to:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=CwWE7UOGE7vvkgiGMpiO2wb6+EIxQ8HXhg/iR90K5xU=;
+        b=g9GL5OQiG4IPo4jL2Aw+eN06+ZXl1RFKnSq4PSJBhwjqF8mh4kaN18V/3jIDDwKVyz
+         LCoz8cJFUZuEXqs1dETIJ8brthQRVhf0fAGSOGGT6ipfNy7ih/K65a3/8CRwz/zxdwFI
+         opzUdW+9RUpFRv2aHKPQtevB00SJYZLSPgQ7BOzVATPFYdk08w/fyZ5U7tlW+eQFsAad
+         myfXSRy2XDvaKGk4+KOMiQ9cNUDf7giOSM3Zj+1LOrBsBXTSL51TSutcNx9d3rIIzynS
+         448q6AnPCSGXdKfxl7ZgL3VR3Cf19V1BLsxUF1IT8fVR27wRkGgdrzzAWJ9znItbyJGc
+         A42A==
+X-Forwarded-Encrypted: i=1; AKwUvBxviWNCnGEgU7bTyp/hVqVpQueoFU6IjE6Fmgon8meomUgX0mrz+MXsWwgDJxw4MgvRkNpEpkKhiA==@kvack.org
+X-Gm-Message-State: AFq9FYL5QowuigSgdJAtUHKLNMdVo9CnJhB8r6tE/uJ4TDXjN0+6cI/Y
+	gs0k1/RSPBnxRqZ6eL1uZ2svKWtLcLaZzeWKDBCy0iksPlQfdAzCwtwb
+X-Gm-Gg: AYBFou1AQM/C7EzbeVBdmMPIJmE6tsqLzBAevdwW4Y8na+VOaBDbX/cT7T3bqDXF6cp
+	2ZB3YS+MJPlOu1C/jKuvadSQO2+AEaCy2PGzM074UI4Q8VR2xBorXh/mJ6iHN6JzIJasIcnUHUu
+	CPUl4wqbxRd1b/cUgMBqltLqO/Xv0aslWhdB8ruQs80EZp63dipfxiojmxb/RGEUqdLCZo9w79j
+	/Cy9EM5AQCOe91XCCDCc/gRBR7G3LMjVr1vtI81qb2jWQ3RCDyoyHHu5HqYgUHDx0eQX7bO0uCP
+	E/QswcKtuxT9DBv2jqTnXRj3WZ6nIl7dTqpWp92gNL2sSJq7gG8Zh2K5ygx8IssaqPcGsFRld4j
+	JqBp1YnltM46TROEeCmphvuRAuUGuHphkZdkdDrcvAuPZIKx8qL4UiTSTcg60S7rxbBK7EogqQI
+	cwCNNxTiJUvFLIRRsOgQFQ+LnvOMJxry8TEQo167cP8/tahEm2yI+YAIhi5M0onuFethtU/fqdq
+	AnN9KvIVLW4uRL7lyOs86I6Uy6sAmC2Yps0+P1TqUXpOF4Qh5QQUI9eAcmN4N4wBWNNIina8n7A
+	A0vvuIrjA38lWFwpgJaSNeJ8lk4=
+X-Received: by 2002:a05:7022:3b87:b0:196:d6e1:108b with SMTP id a92af1059eb24-1ac59fbfd13mr2589413c88.10.1793355886505;
+        Fri, 30 Oct 2026 03:24:46 -0700 (PDT)
+Received: from pve-server ([49.205.216.49])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1ac1b0a628bsm5805067c88.22.2026.10.30.03.24.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 30 Oct 2026 03:24:45 -0700 (PDT)
+From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+To: Muchun Song <muchun.song@linux.dev>
+Cc: Muchun Song <songmuchun@bytedance.com>, Madhavan Srinivasan <maddy@linux.ibm.com>, Mike Rapoport <rppt@kernel.org>, David Hildenbrand <david@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <chleroy@kernel.org>, Venkat Rao Bagalkote <venkat88@linux.ibm.com>, Shrikanth Hegde <sshegde@linux.ibm.com>, Pavithra <pavrampu@linux.ibm.com>, "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>, linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] powerpc/mm: fix uninitialized ZONE_DEVICE struct pages with PMDs
+In-Reply-To: <20FE1232-A48B-4F72-8F18-89EFF70EE0FE@linux.dev>
+Date: Fri, 30 Oct 2026 15:50:40 +0530
+Message-ID: <bj8bwkuf.ritesh.list@gmail.com>
+References: <20261029063601.1961415-1-songmuchun@bytedance.com> <h5i4wlx5.ritesh.list@gmail.com> <20FE1232-A48B-4F72-8F18-89EFF70EE0FE@linux.dev>
+X-Stat-Signature: opxp79qdgh1pco1kkdswkdtzaqf3i9kh
+X-Spam-Status: No, score=-12.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 0548E2000C
 X-Rspam-User: 
-X-HE-Tag: 1793355730-965854
-X-HE-Meta: U2FsdGVkX1/5kQggYAADniIReWXYvLNKX3hWBNvpfdWwjzOGiZKWTM7DZ7l9Dnql2MMOw1vNDHfNi6WEoeBevBmFeXUpwjvtOyW/CIz+5XrIuzKKIwLZDaoN0DIe3r0HKRRHuRk5iHArTb+iqmZ6N+pLJDlk1HaU940eqfNT7V6auW8RNZo4/3oWj2aiS4DbzSaR3xp/+dQB0f+gnnl8pJLejcwJ+QoGjhrgQhURsoAjhM5U8E/fAvcMiFEFFKOM7RdTNe6G5tp8PCitHBEw5cnLXoJ3kdIaQvleF+WI0jogaX4BoRViA+yQZtYtvCZikWBL1MMIzyguReA8se5wY4DMEtabWc+r+p/bGKIJVKr9WAbdVBLeOn6cN0gAPV8v1mnT1xbACCX8Cm0n1SMuoxZK+udcMIhS6z0ztNM1vPhbNhNA7Lcac8VUNJ1SMHr1tNxtlzh4VEUhuQp4sXr5bVO9e1oFn0exA8rRWiBublqrLlbA8KuZ9gcCC6ZTuujhLAXNGwWUDqjpJU6CV1uecAx87xLLdlRi4jhDEjbw+r7hQysptsT1Cwba5xJDTQ9dbWD0tB7SuEMOyp85Dg5yu8tF1fg9Ap3Yckwe/wyfXRLFaTMTWFgbmTMCsZBvaP3ohrqjnAcBAZPnFScAVOVEply3VDQnL4NlnT4/tuLKJc2mzMzJcbZ26e1e00ngup20j0bgr8+ax3oXnB+mowhGokM0VVVn7oeZaapiSPrlcCDLMZQLQAy+bL4FVfIBpgPng6EFSxL2OtB1IRZXsFoN+lyUmavCThmoyKbfiGaEGl9h2QWTbUuXarADlgkwMMwFIcudmjHVCyFSmtbEW71pG8cJ+QUzL6nqaW3BqMbXL3Kb/n2g5cx9o4xnj6tuuiwovLpmmL8sa0RWASB8QQwSM8eLak1BD/ZwDUrGqcgjdVpZhsik81rNzApOl/ri3M40yTB8fS1F7RR0/dB21bi
- D+ObjRVS
- xZQA1qW6AKR98LqfjCvnT9ACFlIRrTW9iP4tDYISql6JvhFtGE+ekqZO3niiJqv8XD8LB13BJK+0n4Fl10f6RXdTPKMs0R0jlMR+/GoCwzMqBqA6HmwNaFLxUOcninFVAWyzreFesme7mBAMW6kj3gSwbiitFXEUsXDbZSBlIGJLG/fNdmXVnIelIm2zmlrao+EpSmtQ2B5iypsjgxqz1IL2kmX0Huj571cGZgIQYyFITaVMWJRC/5B4GZfchgnPuufbBpV+EsIm8yS3GRc7aBdtVWgbNDGkVxMRUA2R0sHqFEMS/Lb41QuYtCCIRrKlQ/hksGO1IN8wnIu8zlUumgz+ZtdPmF5KKTMl5o57kZdpayX5qOGzuYWqDxSGrqzmgdUYmGY7IZxAcuLJNPv1GWQOEXgkCnsbYec8C
+X-HE-Tag: 1793355887-312607
+X-HE-Meta: U2FsdGVkX1+SFt1m1I37VUdQyqMinvBa0DRENJVNsX/Rq3sVMzThtH1QBpykwN4N/4+xMY5uofUnPYhae8t2hXq90kEtvfwSHsshX6cb4gyA0b7NReuHT4vZKFkAd1NVrS+B0cKGvaU4Qbny79LPexuQq5eqqjqa9SZlRLpd9FkxrAfnTPIsdQ19649cPQHhkyalpJ5t4nukKKM3VbwUNeS1bFCu8oZu4fp7+4mk2K59oVrMAwWATWpFAD1Wu0O21l+kNVINeMRwzfm0pCqZ7qR3Wa5qHPXWocjo3S5j0HQaSXk88+4LnOgLmQLs/cRmx6r3kBdJclibZz+uIiVPtl9Hwn0cw6IdCHNzhVU7eS0uZEEyYr6oqqUf+8cMfoInHIsH56rWjQCX2MxmYn6JMF1q8a0ddku8dukFWvonQKURDw1DUbi7ZTauOP4WyOhaDB3s5eEtQKBcSf7ZTIGf94XYR+ZxclEhhUd0EshPU9kH5BsUnWrYlAP7870NfBiHyd5rPgwihwwTaUjCX2fyQKTt/vI0r/3yk4IEZF2v19BUy6IexlMxC8lJOjq9ssLQ7WKzU0mHpPvcde2jmG5cCDMJLh83S38Va93ohSslea/Wys4TItggLcyujXYobEB0Fy11bLU1NILgiNtCvvE/fFvCgyNYcgVOrOBv+UMCI6XQObbkCBHLFSlHrKKMNouwkK79RWYR1pvYmqn3vhWR1i5l59hLgt7ayw82i4JQzYoI2iodYlZvDafILGeMK5SoHViUHxcOAqisDahYlLGVQsDaGAb1XMjUJUWRkYbmPyCeRPSF3F7paT8yKyJLDAuEbBR1pspC+lNCBzaLOhHe+Omy+om4rf2MGgCpYTwEHNwD6f4fGZlXPNDITeEFBdEK8vqmz2FDdYqa4DH+9n+sicINBSjos6XZ13kRVJN8mp5YA1wWsKVM3ZMw25CE42tyiB4Gh2XJGgWAnhq2MjM
+ K1Wzlhzx
+ PY5jlEmb1Fi+rvO+1+nVIKMwg1c/I+w+lB5BXDBlCOPjjIlhl6r8xn2CH2ebHO3C4VzlAvxRLXz0lD/ueaeLm86KNPknrDfyf9gjFSFDzuCltyA9hfEHzHY+ks/uQs0nyncbEPloTN0iR0jGZ+s9/1C83nwDQ55jqCv6rvorzmk3EfqP/Q1NN1DVWj4U3y9kC0YMNCNNg6dRd0W8DBhImH6BNmlQtJQZf3zOwoz/Vvrpslk9Ed91/w/OZK59NgeQ8EaZjnsg/D+JOPc1sdgLkKz8y294l+VB6oA/nkUbvbzESFrUCR8URKyEwJP6wOjXL0VSxYCxmyo2ZZHvkV96tRRs+LiCdshU7/lSv/4DaZ8lw9+BsGWn7NiWMXfbR0ZZ4It5XY2LDXfuq2MtA0uTbzVJxPmyccZO9/a8GgWfA9GD8ADWf8NQGgEYfh5gTrGreyOj8MhXGLZcBvROIazj/+Bmnf9bG8U0iT3CpOaExDbI97L24Rn64misSlvY2g6NyXbPdLZrgHwYQ/FpbXIyNtQscvoOjyf1c3ESqJ+4FsR5eunVGpm/zlySF/PujvlmdLWNsQZmGd3dEzvwtjlaOLlXbNQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -173,27 +116,123 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
+X-Archived-By: <archiver.kernel.org>
 
-On 10/30/26 01:20, SJ Park wrote:
-> 'get_maintainer.pl --nogit --nogit-fallback' suggests adding below recipients.
-> But I can show there are already quite a number of recipients, so I'm just
-> noting here.
-> 
-> - Brian Geffon <bgeffon@google.com>
-> - Oleksandr Natalenko <oleksandr@natalenko.name>
-> - Steven Barrett <steven@liquorix.net>
-> - Yu Zhao <yuzhao@google.com>
+Muchun Song <muchun.song@linux.dev> writes:
 
-The CC list was so long that I limited it to people that area either a reviewer
-or a maintainer of code.
+>> On Oct 29, 2026, at 23:45, Ritesh Harjani (IBM) <ritesh.list@gmail.com> wrote:
+>> 
+>> Muchun Song <songmuchun@bytedance.com> writes:
+>> 
+>> Thanks Muchun,
+>> 
+>>> PowerPC radix vmemmap population can reuse an existing PMD mapping while
+>>> populating a device DAX range whose section is marked as HVO-enabled. The
+>>> reused mapping is an ordinary vmemmap mapping: the redundant tail struct
+>>> pages are not remapped to the shared tail page.
+>>> 
+>>> Leaving the section marked as HVO-enabled makes later ZONE_DEVICE
+>>> initialization treat the range as optimized and initialize only the struct
+>>> pages that would be backed by a real HVO mapping. The remaining tail struct
+>>> pages can then be left uninitialized even though they are still used as
+>>> metadata for the device DAX compound page.
+>>> 
+>>> This first triggers a zone mismatch warning in __init_single_page(), then
+>>> faults while initializing the pageblock flags:
+>>> 
+>>>  WARNING: mm/mm_init.c:600 at __init_single_page+0xd0/0xf4
+>>>  Call Trace:
+>>>    memmap_init_zone_device+0x164/0x430
+>>>    memremap_pages+0x43c/0x93c
+>>>    devm_memremap_pages+0x3c/0xa4
+>>>    dev_dax_probe+0x264/0x3d0
+>>>    dax_bus_probe+0x140/0x1c8
+>>> 
+>>>  BUG: Kernel NULL pointer dereference on read at 0x00001400
+>>>    __set_pfnblock_flags_mask.constprop.0+0x34/0x160
+>>>    memmap_init_zone_device+0x358/0x430
+>>> 
+>>> On kernels without these initialization-time diagnostics, the
+>>> uninitialized metadata remains latent. When userspace later maps and
+>>> accesses the affected device DAX range, the kernel operates on those struct
+>>> pages and panics at that point instead of during device initialization.
+>>> 
+>>> The Fixes target predates the section-based vmemmap optimization
+>>> infrastructure, so older kernels do not have section state that can be
+>>> marked non-HVO. Backports to such kernels need to handle the PMD-reuse case
+>>> in powerpc radix code directly, for example by initializing the tail struct
+>>> pages that core ZONE_DEVICE initialization would otherwise skip.
+>>> 
+>> 
+>> Actually that would be totally new code right? It won't be a straight
+>> forward backport, correct? ... 
+>
+> Right. Because it's impossible to backport the whole section-based vmemmap
+> optimization infrastructure (48 commits).
+>
+>> 
+>>> Mark the section as non-HVO when reusing an existing PMD mapping, so the
+>>> section's HVO state matches the actual vmemmap layout and all required
+>>> struct pages are initialized.
+>>> 
+>>> Fixes: f2b79c0d7968 ("powerpc/book3s64/radix: add support for vmemmap optimization for radix")
+>>> Cc: stable@vger.kernel.org
+>> 
+>> ... then should we mark Cc: stable here with the above mentioned fixes
+>> tag? Because this patch cannot be backported as is to older kernels -
+>> for the reasons you mentioned above.
+>
+> The comment following the trailer is used to guide stable maintainers to
+> backport proper prerequisite commits. It's hard to do that. So I choose to
+> mention the alternative in the commit message. But with the help of LLM,
+> I found the alternative is also not the right solution. The reason is as below.
+>
+> That pmd_leaf() path only creates or reuses the vmemmap mapping. After it
+> returns, sparse_add_section() calls page_init_poison() on the whole memmap,
+> which overwrites any page state initialized there.
+>
+> Therefore, older kernels must pass the PMD-leaf information to
+> memmap_init_zone_device() and let it initialize all real tail struct
+> page entries. Initializing them immediately in the PowerPC pmd_leaf()
+> branch would be too early.
+>
+> Another solution is making vmemmap_can_optimize() range-aware by passing
+> the vmemmap start and end addresses.
+>
+> On PowerPC, reject the optimization when any part of the range is already
+> covered by a PMD leaf. This ensures that an existing PMD mapping is reused
+> normally and that all real tail struct page entries are initialized later
+> by the core code.
+>
+> Maybe it should be a separate patch for old kernels? Thoughts?
+>
 
-MGLRU not having any real maintainer is a big problem; because that maintainer
-would know whom to CC.
+yes, I think we can do a separate patch later for older kernels. I
+will look at your suggestions to see what can be done in that case.
 
-Thanks!
 
--- 
-Cheers,
+>> 
+>>> Reported-by: Pavithra <pavrampu@linux.ibm.com>
+>>> Closes: https://lore.kernel.org/r/97f85592bb78a273be8519e6897e7f9b9bd31469.1793070429.git.ritesh.list@gmail.com
+>>> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+>>> Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+>>> ---
+>>> arch/powerpc/mm/book3s64/radix_pgtable.c | 11 ++++++++++-
+>>> 1 file changed, 10 insertions(+), 1 deletion(-)
+>>> 
+>> 
+>> I think, this patch should go via mm tree, due to all the dependencies
+>> coming from there, right?
+>
+> Better. I hope Andrew will pick it up once I send a v2 version with more
+> proper commit message changed.
+>
 
-David
+I think we can add an explicit comment like this then?
+
+Fixes: f2b79c0d7968 ("powerpc/book3s64/radix: add support for vmemmap optimization for radix")
+Cc: <stable@vger.kernel.org> # see patch description, needs a different fix for <= 7.3
+
+-ritesh
+
 
