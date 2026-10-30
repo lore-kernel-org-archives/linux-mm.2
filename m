@@ -1,105 +1,96 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFE45606A31E
-	for <linux-mm@archiver.kernel.org>; Fri, 30 Oct 2026 22:32:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B05C606A31F
+	for <linux-mm@archiver.kernel.org>; Fri, 30 Oct 2026 22:33:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=mf0H8n6l
+	dkim=pass (1024-bit key, unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=Vk97GFiK
 Received: by kanga.kvack.org (Postfix)
-	id C44F36B05B2; Fri, 30 Oct 2026 18:32:21 -0400 (EDT)
+	id 5DEFA6B05B3; Fri, 30 Oct 2026 18:33:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BCE7C6B05B3; Fri, 30 Oct 2026 18:32:21 -0400 (EDT)
+	id 5B62E6B05B4; Fri, 30 Oct 2026 18:33:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A96416B05B4; Fri, 30 Oct 2026 18:32:21 -0400 (EDT)
+	id 4A6F06B05B5; Fri, 30 Oct 2026 18:33:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 819CC6B05B2
-	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 18:32:21 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id ECBC58081C
-	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 22:32:20 +0000 (UTC)
-X-FDA: 85380742440.13.2D2D832
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 41386120002
-	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 22:32:19 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mf0H8n6l;
-	spf=pass (imf29.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 26BF66B05B3
+	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 18:33:51 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id B91B712086D
+	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 22:33:50 +0000 (UTC)
+X-FDA: 85380746220.28.D04F3D5
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf16.hostedemail.com (Postfix) with ESMTP id F40D5180003
+	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 22:33:48 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=Vk97GFiK;
+	spf=pass (imf16.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793399539;
-	b=3YUovkRL1IsczSLn7/n0vwyCZqYj6jlgd1UjWUsGUPOjHItEydzJARwv+e56mHwAEvNCaQ
-	KAKu68vzgn0DleJeUKHM2PfoLveBER3peJodiOk61B7vmPrlq40Iv3Vjf2i5cPOWoBd5e/
-	wq6Tv15saTV5JTheirnf6O2bveW4gEU=
+	t=1793399629;
+	b=Hy6uRpmnVy1Ew3YOdhvNQflC1YGe8CRscBmr4cm3LK/ebt23kNAPqvi5LR2J/hYVoCmvio
+	Z7f+QglTWTbmQaAYtdflkg9IMx70pDyjNdm4iqNNxJnlnaHLKjUNo47Kpgj9VbRRSXKYh3
+	C4fwzZRdAZfkeTDt/uLBiB9lkBSJQaQ=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mf0H8n6l;
-	spf=pass (imf29.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf16.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=Vk97GFiK;
+	spf=pass (imf16.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793399539;
+	s=arc-20220608; t=1793399629;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=EMD12ToJn0xQB7xf6U5d1DnCbzAwSTm27dnDbxjC75U=;
-	b=c3vXEf8BbBT/GXVLdd0Xwn82SwXI9NtphbKTulOFRE2B7wQzH+ZwrAA6r9pvwZuVCkNNYG
-	0hsYMxtNiOFN14kkO+VfO8hFNyK1qwQq/ZfWF9wmuoK4rpZUndKcHxd7fD6VA+QCgplkhb
-	kMoBY8iGYzA94DSw6pn3qkGbbWBR7ys=
+	bh=ucXB7kIXkR22wptA4ECw1Ukmrn4C7DPZ8GfL9sZbPxg=;
+	b=gZ2a6ev1OeU2gahgNNY5G78TOT2/2Ii2ZxrqxJq9iOq61vrmVWQCxnhdy/rs7alb7gcCcj
+	4FL041lIajYXXJzzMLjc1ISJ//aXogDYvuyPCFAbPiDbxCQrfzMV+TXH+xA4XXca2s2gVZ
+	WH+/RIEjJOIir1Ua26c9gqtWEIuHlvI=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 97E4F41397;
-	Fri, 30 Oct 2026 22:32:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B1E91F000C1;
-	Fri, 30 Oct 2026 22:32:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793399537;
-	bh=EMD12ToJn0xQB7xf6U5d1DnCbzAwSTm27dnDbxjC75U=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=mf0H8n6lDxMhaiGf9PwQ7zbyb01Yn05om7wGAds4CS3+MqKH5s1FEk5dJk3GW1wi5
-	 WNX65VuIQ7KuWO0J8SSqxK5Yw/xsQvLe2CgpLeOB7ViCBRmiipuvudcMkwEhe/4FjR
-	 Km/uK3MjJZ9pp+sni01ojDZVxWlze5nIkLUNl1hg8UilPWNP4L40YnA79WaQwLK67d
-	 yuaSIXfOcXWy/cQC5Ym+7+o3xd8RP+8oasaUPt12k2uF27JYxcyTiG5B8+WOnCrnaL
-	 REmulvJTA0NJ7hD7vJlcPkSjdKprjovBk5S9XenyVRElQ1N8sD71wKwXiPVrMQEZDQ
-	 FO+hK1bDxu94A==
-Date: Fri, 30 Oct 2026 22:32:15 +0000
-From: Yosry Ahmed <yosry@kernel.org>
-To: Barry Song <baohua@kernel.org>
-Cc: Jiayuan Chen <jiayuan.chen@linux.dev>, 
-	Usama Arif <usama.arif@linux.dev>, linux-mm@kvack.org, Johannes Weiner <hannes@cmpxchg.org>, 
-	Michal Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>, 
-	Nhat Pham <nphamcs@gmail.com>, Chengming Zhou <chengming.zhou@linux.dev>, 
-	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, 
-	Kemeng Shi <shikemeng@huaweicloud.com>, Baoquan He <baoquan.he@linux.dev>, 
-	Youngjun Park <youngjun.park@lge.com>, David Hildenbrand <david@kernel.org>, 
-	Qi Zheng <qi.zheng@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, cgroups@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH mm-new v1 2/2] mm: vmscan: skip anon folios zswap would
- refuse when writeback is off
-Message-ID: <auUZPZfxNNBCH5uf@google.com>
-References: <20261030095223.325309-1-jiayuan.chen@linux.dev>
- <20261030095223.325309-3-jiayuan.chen@linux.dev>
- <CAO9r8zMF-cj4StEz9okWGROGjBhQ1XFVW3H2nJj3b8i5Jj=zAA@mail.gmail.com>
- <CAGsJ_4y52-hyd=JrPaX-isNWNFUfX30aLCgbsiCAFjxDzhYs8Q@mail.gmail.com>
+	by tor.source.kernel.org (Postfix) with ESMTP id 7997A60233;
+	Fri, 30 Oct 2026 22:33:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC75A1F000C1;
+	Fri, 30 Oct 2026 22:33:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux-foundation.org; s=korg; t=1793399628;
+	bh=ucXB7kIXkR22wptA4ECw1Ukmrn4C7DPZ8GfL9sZbPxg=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=Vk97GFiKii5heUCxUE0rGgXFrRQo8z7xlej80GQQndc0rTb+p2aICUANyQvibAKyg
+	 3OoZjHTlLmP6Ja46z3aZqb0EUlojQj/Fyg6xq1NJ0wjDXXR4Sfb69m1VHnONpbtdby
+	 0uhiQy7RzXCMegLzFo3y0rRkPyBUmBm9gD1U7PGY=
+Date: Fri, 30 Oct 2026 15:33:47 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Sasha Levin <sashal@kernel.org>
+Cc: Mark Brown <broonie@kernel.org>, Muchun Song <muchun.song@linux.dev>,
+ Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
+ Alexandre Ghiti <alex@ghiti.fr>, David Hildenbrand <david@kernel.org>,
+ Jisheng Zhang <jszhang@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Vlastimil Babka <vbabka@kernel.org>, linux-riscv@lists.infradead.org,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ linux-next@vger.kernel.org
+Subject: Re: [PATCH linux-next] riscv/mm: fix up the mm-fixes merge of
+ free_pmd_table()
+Message-Id: <20261030153347.5641a97e22e18ddff6043416@linux-foundation.org>
+In-Reply-To: <20261030221401.155797-1-sashal@kernel.org>
+References: <as0D2sHzh_UnNF5L@sirena.org.uk>
+	<20261030221401.155797-1-sashal@kernel.org>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAGsJ_4y52-hyd=JrPaX-isNWNFUfX30aLCgbsiCAFjxDzhYs8Q@mail.gmail.com>
-X-Rspam-User: 
-X-Rspamd-Queue-Id: 41386120002
-X-Stat-Signature: ahur4gt4ioco6n1b8x5npudzwi94pbw9
-X-Rspamd-Server: rspam01
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: q7tkbic68e5kej883ihg8m9u44xeeh5j
+X-Spam-Status: No, score=-7.0 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,NICE_REPLY_A,SPF_HELO_PASS,SPF_PASS autolearn=no
 	autolearn_force=no version=4.0.1
-X-HE-Tag: 1793399539-881029
-X-HE-Meta: U2FsdGVkX1/+s1S0O8nC7nBmC2AQ279a+U/es563EpKea0ycOoFCAuBnkuS5z07tVuSjw7RVAYR0ucnZru8xSvpKXTjPMxqcyU7JTlTQnv/y55dHG6QQquy0Np+q2zvr4YQ9Vv5TN9Dzh9nH5kJxJ9GdOv3ZfRT2+rHKsSBj9WmUSwdBcQU/tg2/dwpNbot/XpI5dMNtIhEFwJZ+2T/wLPI0JzrrnuErf9pFEQEgol+nZaeeNwcusMXW4WI+rIp7Tsvwz/zrpbYkQ4JHNuZzRByWQvN9EvS7Ao/oXnW1Ep9CP6QVP7TDgw0MvgChy7OhRVSHHMkUqLYg7XztWQaJo9M9kVdfuGsv9D1fYbCjXnRf40t+BIMC1duaTrBcsVysn6VPsMCN+KFhoWAoTkVfCFYpy7qdyXXFR+wZpgKb/X82/y3xpBV9P5WLomAbP1GE+bgLA4Uo5FrC+H0O1FawDfV8OCLpCZgg9KY/5tjIR87DG8YDAj5FB/CQZiZjfPsECy5CCJw8cMlKa/5m61hJduI5OKflP43j2aEpifoptAk7Spls62+jIRMBgmJiusUD14iV0qyifOMzuVqZA0R1B6RYdsYkY3YF5FOGANfG/fsbpnzp23VsUh231OmLmQvhgiD3/H46naNurqbPvo7m/N1JzATpJ0DXAITgoyu1z479iNlpfquI24LTmSmkLtc3UmHUqrpnUWO+PHNH2Yb9Tye5Gm35xpzz2z4qeiiTCRJaFjbzjzsIzD+Frcdu79Rv5e8Tf8ISo5RRHbFlY/J/CRyTx2GeKLGs819Q8rJXPV0ZaSIMNXa+LKoBzq4CAz/RSVvmePSgE+hg4UgFBCciPhZeGg/SQxdWeHt4Z4f787wfKyR4OyXnPwY/N6X/m5QF5L8cRGH6NbCHuuGRkz0dldkVvWE7rXDT17C/rIWExWA8PdH6IH34jeET0t23AXSrBP1x3zpPkUOYtFiVWdf
- 7iSKCnCU
- XTWUkphb/gnUDhSbNoO/zlWvSl+haOp65U0hvsDDEc5BodxR8c8CcdE0/FSsWi5ehQ93mVY3O6/I6p9ZWZhHBEvY8TyVFbCfIQTVSzvy4VXBKdY2ck7TvSv2KUj7+qPrUGx2+Iblxv5T6PgWfOlbkQe/l/43F6tlBma8Ux6+Qjl1VRxKj3hExmUF4+e4+Y9NqLGbV9++K2kw8IQvUYr9gy0zFNpgRIjjcUyVyz59i3FUV5+wnnB+5wGVQ77baenr2WXObeGmEoGfoz7FOKHCY1cQ7uSOCtgrYa/l2tfgTNUdHHLYOaOpiKvggMkzlOcGVtDXj
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: F40D5180003
+X-Rspam-User: 
+X-HE-Tag: 1793399628-349955
+X-HE-Meta: U2FsdGVkX19V4iWxCPa3k4j6/X63D/rikefAntsp7fgkI11u17unvBTB1rpYVvMLW43ud/VW8duturdm1aFKhinTzPWKH3jYYG4IfPSDVOvvEbXei/FeIFtbzTj2rLWcWy5CRR7BckiZ3iGa6I3UpUp2LNGwjdBFkAPlqndWZKqarDj+9I4hhl7YMTd0InLf4myKHO0RnVfbSme1Zd+DUy/SlEdBdPtas9/SVr24UGpNRxQw0XYbO1J+TF7ZtijbEowdHnI2zdOOjyiqf8aeAPKBQfWtzjL8IP0MFc35HWeMwF0poGFZDvbK06Sv5CtUAsfE5F5pEvFksEsD534FSbQKzeP118kafrkdHNTegrybBb+BsmwxJff1PxrD0/tYLFzStIVAcUBIuEe5vLypHTNZ6Deqc7nsuqi2QMAWKUO8UvGz+nS4xZ4ECrhIMuPPObDDCVqotvlmvdn77fiFAmR0+mxIClYOg6HRBuLc9SvKpGyl+W5e5lmzm772EeoCscApGOdqGwXxIAt4e5Bg5fWcv2PfE6tihv3hzQpWEhcDfgS1Blepm/bfeHIFvw3qcGg1RtjqoZRSpKz9ZRZGKYn2Im2NTgFnMGQoVUZNnh03hvirxjhHMrJDa2mJEny+sEKkCrmLaH0lrhqZGetQ+UVcjbpef/3m3xFaplXgfcGYNfd6GJeA0UDl/BOSM7ghTrSsGtC7YOhVjAGYZeljuyhBuftKPlokwXuAAgShRy75tzpkA/Dp+clvhTWjiymcJX/AiiVe615wOFwHuFwIA54/Ee0JiR2z+emub9OGhSV0N2TfbZNvmIVr8ZvdstjSW4c62kZWQYHwDZ10upECFuVsTrk3KfReo1WCrhjYH1wKtwkXWWgv8ZNXUTy7HUGsE3JHxgS0lyAqsA/axCVY1uw2106R9M9WXS7Olk0ujEOxHH7nwyKbBM1IlMqgBhDmuqnNVSmiv8tNOlu6uE0
+ ToOolIrX
+ boliZZiEqQXQ/6DAo0Du36wwALTU1y+iJshVwXmRYahWcZYe0ojpAwrPKVhQb1mIkrg4XrB2mkP4p6me2iY7nRjGNFkb8yh6w4BTK++Tx/GbvX0tz8i6vGkmyjvkNpLpLnUMKD89zhirfke1n3Bl/ZTFboaykMmY/zuANdeiLOklIOGqAizWhB+8wqXxvcdAsMB5eQINDtJT5j+VEMMSSib+scOKe4zq3PwF5jhPSmZ1b1cUUmK2/JrnAFNqKaJEb8EP5spJwfAv3iJMOdADgt0xgQ/xCl31YZ/vZERbOgzEBomxFS35LSwn1zPz8JKRVpySF
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,46 +99,28 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Sat, Oct 31, 2026 at 03:03:26AM +0800, Barry Song wrote:
-> On Sat, Oct 31, 2026 at 1:52 AM Yosry Ahmed <yosry@kernel.org> wrote:
-> >
-> > On Fri, Oct 30, 2026 at 2:53 AM Jiayuan Chen <jiayuan.chen@linux.dev> wrote:
-> > >
-> > > A memcg with memory.zswap.writeback=0 can only swap into zswap. Once
-> > > zswap stops taking its pages, because the pool is at its limit or the
-> > > memcg is at memory.zswap.max, swap_writeout() has nowhere to put a
-> > > dirty folio and returns AOP_WRITEPAGE_ACTIVATE.
-> > >
-> > > shrink_folio_list() only learns that at the very end. Every folio it
-> > > picks gets a swap slot, is unmapped, fails in swap_writeout() and goes
-> > > back to the active list, to be aged and tried again. Each round costs
-> > > a slot, an rmap walk, a TLB flush and a minor fault for the owner, and
-> > > frees nothing. The folio also stays in the swap cache holding its slot.
-> > >
-> > > The obvious place for a zswap check is can_reclaim_anon_pages(), but
-> > > it cannot go there. Zero-filled folios never reach zswap:
-> > > swap_writeout() marks them in the swap table and returns before
-> > > zswap_store() is called. They need no pool space, they are common, and
-> > > a memcg-wide "no anon" decision would keep them in memory for as long
-> > > as zswap is full. With zswap full they must still be reclaimable.
-> >
-> > I really wonder if we should revisit not swapping zero-filled pages at
-> > all, and instead mapping them to the zero page read-only (and whatever
-> > the equivalent for shmem could be), because yes, the right place is
-> > can_reclaim_anon_pages(). I don't remember what happened to that
-> > proposal, Usama do you remember?
-> 
-> Hi Yosry,
-> 
-> FYI, I recalled that we discussed something similar in this
-> thread too:
-> https://lore.kernel.org/linux-mm/20241212073711.82300-1-21cnbao@gmail.com/
-> 
-> It would be nice to see an implementation that maps
-> zero-filled pages to the shared zero page.
+On Fri, 30 Oct 2026 18:14:01 -0400 Sasha Levin <sashal@kernel.org> wrote:
 
-Yeah I also found Usama's attempt and the complication that were found,
-unfortunately it's not simple:
+> The mm-fixes merge reuses an older resolution of the conflict in
+> remove_pud_mapping() and keeps the free_pmd_table() call that passes
+> is_vmemmap. Commit f998a21c2ba5 ("riscv/mm: fix hotplug page-table
+> destructor handling") in mm-fixes removed that argument, so a riscv
+> build with CONFIG_MEMORY_HOTPLUG fails:
+> 
+>   arch/riscv/mm/init.c:1657:35: error: too many arguments to function call, expected 2, have 3
+> 
+> Drop the argument to match the mm-fixes version of the call.
+> 
+> ---
+> Mark, this applies on top of next-20261030 and is meant to be folded into
+> the mm-fixes merge resolution. Next/merge.log says it was resolved using
+> a previous resolution, I think the one from the risc-v/mm conflict on
+> 2026-10-12, which had the same problem (next-20261012 has it too).
 
-https://lore.kernel.org/linux-mm/20240604105950.1134192-1-usamaarif642@gmail.com/.
+Thanks.  The "mm: Fix page-table teardown during memory hot-remove", v3
+series was problematic, but I now have all four patches lined up in
+Muchun's as-sent order in mm-hotfixes-unstable.  I'll push that in the
+next hour or three.  Then hopefully any -next merge resolution can just
+go away.
+
 
