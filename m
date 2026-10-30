@@ -1,144 +1,125 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7779606A32C
-	for <linux-mm@archiver.kernel.org>; Fri, 30 Oct 2026 13:08:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E3EA606A31D
+	for <linux-mm@archiver.kernel.org>; Fri, 30 Oct 2026 13:08:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=cmpxchg.org header.i=@cmpxchg.org header.a=rsa-sha256 header.s=google header.b=fx24iiid
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=HCocDf7D
 Received: by kanga.kvack.org (Postfix)
-	id CC0A56B05B2; Fri, 30 Oct 2026 09:08:17 -0400 (EDT)
+	id 4CA926B05B3; Fri, 30 Oct 2026 09:08:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C6A436B05B3; Fri, 30 Oct 2026 09:08:17 -0400 (EDT)
+	id 4A27B6B05B4; Fri, 30 Oct 2026 09:08:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B80756B05B4; Fri, 30 Oct 2026 09:08:17 -0400 (EDT)
+	id 3B7E16B05B5; Fri, 30 Oct 2026 09:08:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 886D06B05B2
-	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 09:08:17 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 2FE69A06EA
-	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 13:08:17 +0000 (UTC)
-X-FDA: 85379321034.07.3F5A569
-Received: from mail-yw1-f171.google.com (mail-yw1-f171.google.com [209.85.128.171])
-	by imf28.hostedemail.com (Postfix) with ESMTP id EF823C000E
-	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 13:08:14 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b=fx24iiid;
-	dmarc=pass (policy=none) header.from=cmpxchg.org;
-	spf=pass (imf28.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.128.171 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 0CBAA6B05B3
+	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 09:08:24 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 930C2120686
+	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 13:08:23 +0000 (UTC)
+X-FDA: 85379321286.23.56EB050
+Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
+	by imf15.hostedemail.com (Postfix) with ESMTP id AB5ABA000B
+	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 13:08:21 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=HCocDf7D;
+	spf=pass (imf15.hostedemail.com: domain of olsajiri@gmail.com designates 209.85.128.42 as permitted sender) smtp.mailfrom=olsajiri@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793365701;
+	b=cxSzKAZfXxsIQxepkqSfPHpEVSgSdfA89FwGPou8HiwVfhsuVThrs4UVOfMDu8KKF0kTUk
+	oDk2k7eGBoxhEBarh1/gJNwxVwvJC2oQ4GU7W57BCsCegTG+1wH2PuoIlIxox2bNfH6ODa
+	EwgD8ts/JYF6dvuLqYrDi0wwvb56alM=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=HCocDf7D;
+	spf=pass (imf15.hostedemail.com: domain of olsajiri@gmail.com designates 209.85.128.42 as permitted sender) smtp.mailfrom=olsajiri@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793365695;
+	s=arc-20220608; t=1793365701;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tbKkDfSrsNI3XHQAy/Crl7KwhoEpqjXNtSdtk80lCW8=;
-	b=jhXFvRzdn51hD3z+7OJuSPhsx+/jhHg8qQFtx1D5O9nKCJAsQJW4ZtSRdFOHmL0toL9odl
-	3cFsDk1TGIOozsrDohSlG0RC4NS+dc6aA7TMDARQ9ym5lIrQ+e5O3LW5nBqPSWYnMLAVkl
-	oAMA3XQGjpp2b0WZ8vH/wJtjSGNIWk0=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b=fx24iiid;
-	dmarc=pass (policy=none) header.from=cmpxchg.org;
-	spf=pass (imf28.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.128.171 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793365695;
-	b=Qy7P+9JhRvpQxcipHHgoxW8E+ZFO4F12lit6SYffNke/keTMN2UK7QA8v5kXuFyjM+gtMI
-	fcr2WPOB0YT33Snw2j5PWdB3Oxj/1lQh3EnqrJg8JlgoEKvd1NoLIH7z9QSDOrUsy3J7xi
-	Z1YpOIjjy22dZaL9zg+6ZV3SI4JRyvQ=
-Received: by mail-yw1-f171.google.com with SMTP id 00721157ae682-8b10ac6ab7bso5791467b3.1
-        for <linux-mm@kvack.org>; Fri, 30 Oct 2026 06:08:14 -0700 (PDT)
+	bh=e5G7E6riYr6Xp10O1BH1B3f0Y79ijgGFd9hQYIn0tKA=;
+	b=rXe7K03wr3aN+2gIDd/W7oA+XynqFU824VLG4lOwEOrwRpzsawjzanD+W/uDYqSG4nPl2b
+	k9c7DcOYOpUX0fMR4O6L6nrgGBCHqXiP75gFdwVtQpk+tX+aDbiucBwX0gesGKmOcn/tkp
+	wz3H0tMGPRPDrARHZcmb8W7wQ5sKFGc=
+Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-4a35a60499eso6227945e9.0
+        for <linux-mm@kvack.org>; Fri, 30 Oct 2026 06:08:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cmpxchg.org; s=google; t=1793365694; x=1793970494; darn=kvack.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=tbKkDfSrsNI3XHQAy/Crl7KwhoEpqjXNtSdtk80lCW8=;
-        b=fx24iiidwBVAIEiUGT1yheX7/kVU3fexlipTcT+ilcqsE43J2A3kZtEZqcRAaVV8Wx
-         F5ugqmYBSB3ieAzatO8Dw8u6hRJAwFhz5iuyixDLHu4CounN/QkXsqBLkcWrW0fCCsq6
-         6qHOZl05G0MXqCoUp9ftmJwYp0M9OgzTbCPljdRARiKngyiHu7msEwIxRkUPm25fA80U
-         hoj9F2jBBdRjcB0AMqICXNCgfGN+yJq12shdXAV95Tqw4gKzLOqUYM90Dq7qKh/ZpkGL
-         iSN3dFJhdll6XnAeBJg6KgqNHfOVsDDeAIBNL1l8H1Pka0UTo6MUEKzYozQ1SUUNSGl/
-         I7oA==
+        d=gmail.com; s=20260707; t=1793365700; x=1793970500; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:date:from:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=e5G7E6riYr6Xp10O1BH1B3f0Y79ijgGFd9hQYIn0tKA=;
+        b=HCocDf7DKpcf9bJ6ZjUnK0m6XVXVwT7CcYjFEWst8vE6fd0PuqvqKsnas7Qa6IBtL0
+         IjYkQxMS/WrUAK4dzJu/rGLj3M7gbM94YYfamFlADQ5+/wpAQGC5dsJVlaS0qQQ8fW2A
+         26rWbO6jk3Du0BfNZZTka8vFqQkdtE+MPDeI//TEmdhl2U9SBilAMNCwJ6y00sQdn7NC
+         fjZXxmrUh34Kk6NDqbu7LRoROwj4Gvw6t7UHqyuFBL+jSZcdnhlI28+PTUI06E20MBOL
+         me+YmbcB+vgpPXTzEXSYdsxW7KbFe52JoAJguU2yJ19iml/XTaCo8bnIHU19yqGEV02z
+         8QWw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793365694; x=1793970494;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=tbKkDfSrsNI3XHQAy/Crl7KwhoEpqjXNtSdtk80lCW8=;
-        b=zpcygrYGe368lbbWlAI87s04Dyhvm0Dj7phz7qrLJ8QrJnXmM1xq07vbR8QXEDUSlr
-         dnZZUZUw5b22VfxxsJg/3PyDSNkBrdLhbfMmZNF2pHqoL5TDUD0OtJ4mc86XCgtCS64n
-         3bbeXyr0ayB+QjgE6n9mDRv970W2DdjHPh3k1cPvWxir8KSbwKIHaMVvuTGNJM3scj6H
-         cZRa/Ka6U3tySzsT7wUEj35TJkAKUkg/BYR78yYbiIW9jzzXknehfSoy6k0SvWqbvE1J
-         YQsCEJzEXNkLxK1ebTDnfISnrqj4Egg27XAgYO3Fbv1p5C/zraQ/hm5Lk1vGfEvNedHN
-         u1fw==
-X-Forwarded-Encrypted: i=1; AKwUvBw6ECCEv7BFRZMiL0vCEg0WUSBtjgzNYRW55gJuawRrsTauuDBsLUOY+DsklccMvduPGdlab0/R7Q==@kvack.org
-X-Gm-Message-State: AFq9FYIVa34rN0ybylSGuJfc2HXvUdHtOFcgCCmY2xqIIQvoc5a/xBxX
-	TN3OA84hpDDphgTW+HFiyT3htIHTdPAfeTRfBCPvHGty6+LmG//4yA1+WcY34735jnw=
-X-Gm-Gg: AYBFou12+jW754hWnynQrkLJDhJqOQD6XEmj+sVoW/G2x9jV3b4ApMqEseU/AyyWHuU
-	g+YhbutLrom4GwQ4qZNOat+PwSu3S+w8UYcSZK/oqNCFW9XiczNykssSzd0rejV3CPLL3HtlEWS
-	8hqimd2dYkAFtuSCGrBWSWsLOIE7FQXRGkvXW9Etk9qQV83ANgNmgh8cyRl4AxtFtuV7Njvayzp
-	CulAp4ME0OVwBnolX3PHr2J9sV9lQ0rL3ZVqs+FXNkkUrQaDg7F8vIum5Szyb0mAr1lNdepmkby
-	29bf9s3gNdk10aBn/r61LtixHYSLAkLVP8T6HkLD8IrAy1e+GocLjTRBNOnWzs5DaD8eVjXzxmh
-	aFGXbh5cF80wAu20Xi1nNYtTYIWoxIEAvBSZO8fJd7EIuZFtRUeVZ/2SmT1QX0e6nR/goRVcEDr
-	VE7jBHHgrV2XgWvovmmZKbVHtOHDALxVJSydEjsrioq7YZC8cQTjpGjHoRaQrHcHox764LZn/ix
-	IT2EehcF+weEIKRVtSL29zmwikQ7TYZMG9kqhCpWgZUTJlF9cPyq41R6XC8eamK4NJM+QmkZFRY
-	LLd7jdcNGK/rpDirICSukYF+VYq9GVRN1VwiDaROynxGMVnFoQ==
-X-Received: by 2002:a05:690c:9e:b0:8b0:9e38:f407 with SMTP id 00721157ae682-8b2b672f790mr14821957b3.32.1793365693838;
-        Fri, 30 Oct 2026 06:08:13 -0700 (PDT)
-Received: from localhost ([2605:8600:200:14e3:365a:60ff:fe62:ff29])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-8b2b7198c65sm7731727b3.36.2026.10.30.06.08.11
+        d=1e100.net; s=20260707; t=1793365700; x=1793970500;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:date:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=e5G7E6riYr6Xp10O1BH1B3f0Y79ijgGFd9hQYIn0tKA=;
+        b=BlP+yZ+R3Np+EsyhCLoSf6LsnX7eixrOXbVDFhMvDqgGgTiukXMFZFdxGkbRv+w119
+         NdIeBr1TISMeWhhhSFYEf5R/ttHHE3hTVPfs+7PbKRKVbCJ74Gzq6j8LDaztFV6goUUl
+         t/3SqAgP/5s/WV2bx8xYmrX6WVyFFvs9oNo+5KFO9AhEDboBZSom8XltegiNC6NaKO8G
+         b2QpcCxAscUqwiHc3Kd34rJF9VyZwnEF7k0rvfTapL5x4rcYJmdFjUNTRQkUCFj3d/Zb
+         72mDwaAiD7Zxw9P2RaKUS4jSY7UhN+TIWGemqnJamRFRYAXCV4C1aWyG8YjcW8etPxxS
+         peZQ==
+X-Forwarded-Encrypted: i=1; AKwUvBwKHLDTwdZQglf6dsJiXrgRj+Ee4HpH6k1QAibiURMeWe/kMdMAN+6QO9/ScdEjo1Pu6c09Y4cHPw==@kvack.org
+X-Gm-Message-State: AFq9FYJZM5YEvLI65qk40cfFkkBRNFscABoRAPxO378I7tkMENEkQHKg
+	62V2fS0uKHZ8gYRXzLHsu9WoBtHJioCfk8zvqhoJVun5ANtqV9Wrmdhx
+X-Gm-Gg: AYBFou2yFW8tPosvqvL5+tcSIyDbx/+yHaUGu3ytyBTAuzlEbd6xFJW89sWtErp957F
+	oKIQJqgF9HLmczajfgjMFHw7RDn5P8EtSoNHP41bJYqwsDPL+eERTiAeWePONPbxHoDwkXW8v+5
+	Ni6P7IULyuIepK74vxDTxzB+RVfmXUqW/v9TeFDrZwH25n4GqnGXKcp+MxiSJXdvFwceR8rPUdl
+	k+NKtGFdNiOA32wWZSoDU3IQDiJM8m7llgoSDfG02cZRW5d0NiXN+avJY8/nI8lqrXeGUXMB4Tn
+	rShSov/1F6Van3sAc+XkSyj0gexc+DMhe5Uwlcz4BD3oLG8mYCjZEGYL+YOVsgIa2Jbs7Y6R3jO
+	bnpEryjLINtkY3k6gbSw9PHn15jtL+kZPaJHKkeahzdhRJWVRAddFjUxBBWOgP6sa6vQishDkSO
+	i+msJcZM1pyszgP1G4eZw3yftAB6dDfFR2FMcVTeOPQdkYAwrA/KPdlVKMfxMoBRoUxvhjJ2aie
+	GCCIz4COkT72Gt7J3CgH10aETBRij9QG2g6Z5X7QQ+wTHzOyovxgK7zILxivm5PYT27VI4nKHPQ
+	6Q==
+X-Received: by 2002:a05:600c:6215:b0:4aa:1527:659 with SMTP id 5b1f17b1804b1-4ac17a366c0mr47584675e9.17.1793365700051;
+        Fri, 30 Oct 2026 06:08:20 -0700 (PDT)
+Received: from krava ([2a02:8308:a00c:e200::25dc])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4aa80f04723sm155545595e9.5.2026.10.30.06.08.17
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 30 Oct 2026 06:08:12 -0700 (PDT)
-Date: Fri, 30 Oct 2026 09:08:04 -0400
-From: Johannes Weiner <hannes@cmpxchg.org>
-To: Kairui Song <ryncsn@gmail.com>
-Cc: Christoph Hellwig <hch@lst.de>,
-	Kairui Song via B4 Relay <devnull+kasong.tencent.com@kernel.org>,
-	linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
-	Chris Li <chrisl@kernel.org>,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>,
-	Barry Song <baohua@kernel.org>,
-	Youngjun Park <youngjun.park@lge.com>,
-	Yosry Ahmed <yosry@kernel.org>,
-	Chengming Zhou <chengming.zhou@linux.dev>,
-	Usama Arif <usamaarif642@gmail.com>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, Chuanhua Han <hanchuanhua@oppo.com>,
-	Mani Tofigh <mt4022@columbia.edu>, linux-kernel@vger.kernel.org,
-	Josef Bacik <josef@toxicpanda.com>
-Subject: Re: [PATCH 2/3] mm/swap: account synchronous swap reads as memory
- stall
-Message-ID: <auSWtJzFQ7KdElKL@cmpxchg.org>
-References: <20261030-swap-fixes-v1-0-73f73a59f2fc@tencent.com>
- <20261030-swap-fixes-v1-2-73f73a59f2fc@tencent.com>
- <auOz00OGB_8dgniC@cmpxchg.org>
- <CAMgjq7BYgXLheXDyc=p2mNgxdP3+92v2WHGiXiweDrsiYQ0u2g@mail.gmail.com>
+        Fri, 30 Oct 2026 06:08:18 -0700 (PDT)
+From: Jiri Olsa <olsajiri@gmail.com>
+X-Google-Original-From: Jiri Olsa <jolsa@kernel.org>
+Date: Fri, 30 Oct 2026 14:08:16 +0100
+To: bot+bpf-ci@kernel.org
+Cc: ast@kernel.org, daniel@iogearbox.net, bpf@vger.kernel.org,
+	linux-mm@kvack.org, andrii@kernel.org, eddyz87@gmail.com,
+	memxor@gmail.com, ljs@kernel.org, john.fastabend@gmail.com,
+	nierro92@gmail.com, martin.lau@kernel.org, yonghong.song@linux.dev,
+	mason@kernel.org, ihor.solodrai@linux.dev
+Subject: Re: [PATCH bpf-next 2/8] bpf: Add user memory kfuncs
+Message-ID: <auSWwHhZwhUbSVf1@krava>
+References: <20261029212551.56964-3-jolsa@kernel.org>
+ <571f32a410a85199bc9bcecfe07a9a9b6ef425b2052643e64031dd246c13691e@mail.kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAMgjq7BYgXLheXDyc=p2mNgxdP3+92v2WHGiXiweDrsiYQ0u2g@mail.gmail.com>
-X-Rspamd-Queue-Id: EF823C000E
-X-Stat-Signature: rq8xy763iktdx9ezwi5mfbx48h353c1r
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+In-Reply-To: <571f32a410a85199bc9bcecfe07a9a9b6ef425b2052643e64031dd246c13691e@mail.kernel.org>
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1793365694-835321
-X-HE-Meta: U2FsdGVkX1/ad4W/cJuTn/leNMjr/IRLpmFUQS0Kvlg+wSdQhyX1VaCu6kM0IHjdekZVZVQ83rYDGTxBzHN/+aBk+Q9s9cLAOc7URqFYWaJCljmQzx7lcOtwbZoxSIM3Ti/AeWnwmPqnpVUJjbZQ6rBqyAuhbOL2BFSIhk7ZYMOToR/ujvOLNJMnR8TfkTX5eT84JM3cyuYm5ATUzqrT5uB763DLgSb+hGHZILLW3cdjQQvsZux9e1LxVRsXE19rYXsbBC169BiUpOK1Mql7UiFz1Bp6mv0qWFOwLZfZlQIrKiC4yxWhBLqSoTs3BFLd3x+sViD3fviV/a623Cb2wqyoT9J0CbjX0zKGgo/lmV5CWWrQ8mudIq5/1o8hwZ7VVGfJ+tTJ/AyVJycb6Q68NU9Qa7A2B2SOIRq8uPp3e2cM5kRxz3d1C24RTvUlynzt+VMRJKyWW7f0aXj5WfokdWqeCNfp+a3T8lhOjzAwMtSEPiNpPCyvYNhDR0fi+mfT8ZxJ5bwWvnvxR6b+OWo6Vwm0Mtvmu4oXn/xeSNkjnlgmJZeXS3acxmQPEt87d2vtAum7KY0i4f+mFDgDZHoixA3ojtaMdcwoQ87U/02RAVU3KPAmziCnIzdIHfl/mSFddNIGbvB0QK7MCKKfMF3QHeJYiAorneuFY35oJlt8+i7p9OOvLRb8NJwU97DLaIOAZ16ir1HMYJMSH81+XdtAq8G42mwytV6bV265VGAI1/pBYRqq2kU1Y8MxHUy8ZOWjKF+2VHprQYcDftGAtZCO67ww2WEhM3OuXPlReN9+tb5/T52EIWepTh9Ua6A+DDmWj1tfDHBTlH2hcMBDgZCEwzot7yUtQx5MTGJkn5aN5wrkNOBg/0vw83lsW3gX5d8EZxn08m9/6d3pGt88ZZyTm86xuyKEie7r5gUs0sw0SvX+Tpj/umIgIIw7g5ytrBIhGTOKJWv83ODQs0Y/HRT
- S3FeZ/I3
- 9agmnzuiNuhVE69lKOPalA4Pi71e6M/oXIyW80hOHbggpTRtFKHu4tCTFcBEiGivX7KEJdFGWCCkOnj9zbRveYLQWcPVNNLf2Q5fzxhwCCZaGgkK3MApMSHHxo5e8cZA6cX5SNlq00sncEAWEbxVW2gSWD5Xhvmtm7R3qYsKX27ay375m+EUFRhzD6vk0I1XWZM36eUg3bcDjs9mAcyXPn+HMpKIlw8Puhm9pOTNPsjf1S8CfxnSk/vA+n5aZ7fnqoIZUONmkH1vdkX1CJrrsbv0CiTHxbzeZeKqUDjwD9G16GNzxJL48SR2e/j2tGDuKrdSJdF5WNANnnDVonG2o9mjRk5c65pLR5j9yf88q7TZVrx9GgrsePVBAok2Nh3XklMR2Ha498cf5D48QGopa8GLAyhaVoiXoN5GX/WSonYvmlJqcLompgF+fdv1TdjaVx+zuzHlTi95VRpwKB6fmPRqLwmmE0CuanXvrv83t9gOyBwmR51zBQPASVQYhBH+izQWwYWE5mlnTBqr01H5JQS0ztJhNP6sWy1XoIT7g/tyZFFuPvh8YQuHB8cL/GodMIw4r40llnPT0aRpMvrwwnaYjjXjihsY8cYR4Azb5/PU9e7i1Css1ybo3mODi3NFmr4/05kuavVVhUPgyvYWM04P0nu1P7k7hTt+m/Wes8pbx/vUQCXv6pHZkfGn5FD8iiagA
+X-Rspamd-Queue-Id: AB5ABA000B
+X-Stat-Signature: 9cgujutr71y84f7byws7grcc98ndnwop
+X-Rspamd-Server: rspam01
+X-Spam-Status: No, score=-7.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,
+	SPF_HELO_PASS,SPF_PASS autolearn=no autolearn_force=no version=4.0.1
+X-HE-Tag: 1793365701-188736
+X-HE-Meta: U2FsdGVkX1+osSQwpvPw+HHhSiyr1gD1sQZQLzPrpP81lXTotsOnVL2HsNK23cGxbLPBm6JzHIlr+Yy1Ciim1bikvZ9ik/bJr6eQxYgB/jAy1lDw9JoJpqpuyMSHILoE8qHdZTElTUEpAtOZpnYXmlPQ6ZQ+vBzyCWdzUxVIrCzS5GICHEfg18Lv50OyqKSOciwmk1CSB+Bq/WWLAztdFhE7syHHFiUSetDeIylWDEmCD2h7Ae/qshnN4mWYhD8prrmfmmNPxqvCNXLNyvN6C4LPR4bzuWbTXDq7dL02BoKxoLIfYpIaWdobAOyLqzOvFNlTOArVSmc8moEvVpaAWp1kSemUuqNyclNMbxC1+BfBdYvn/tRVnEKXgo+zpMZt9ACxRz3ESlxB+HFx7kI/9Ed4qKb+krqpgUjDok/fsRm1iaPoXKc2UDWmLGYF2eKQmw1mVqmcKUIIo8KvCoCRbnkbiKfUZXBT80JChkwZckcLfpPgknUrdxT6L3v7VugzuXcXicAsvMmZPcODoTTsWL+2G0XyV0SCgcs2R/foWQ68GnVNeOddpMB42n3ltFryrPqoxJg5B3Ys+F3xU0HDU6dgSeeO4Pyu/It9c/ADiKs9uG8BNcgaO42JTn/JO4Hekq+MDJg4rTTcRjy6yFoMu9LmLTqpO6hMno4QZveWavpG17QKAPoaACSaOmY8SAZhVfFunHigYleoCNLdS4NGeRS8d0fkbXhN0TAXKJoLApcBXRVyMjF5NP/NNOCM4iAlfvhdjl8He0s5BtchU5VT7q9e2936hfiSEPrQ7cHkhMuhBabNhmrEya09kQqpitxaOULC0d6UCbDJ16ipm82Wv/J5b617pn120CSiuPLBBokDBLGsurntl5vk3SWScHhdyIt1Sah0T17rCO5feZGKkroYWy0SJ2ysdurXrOtTEl7jjO6ypiiyNENrAKhOxrGKg5gGUy6iL99rfCsRlu7
+ 27e9EMoa
+ QeNbFdxnig1mlvSdN4K3atswrfSZ73eYYTPg0egEUzz7rbr7j9qG2x9+moWNLiK5RiAIkugNsv0cwNwnK/owCN5WAyJhuD7UG/eN7r3FuFl4JlaSbToeu6hGqn+LrEyN24A4BZgMMGDf1I1p0j2qmdZpI1QKiofAbearOWFjeru7FVf3eiVv9iyNHrYUI47aVc1vZMtwsF/FJWpay/SmTh60bTzJqsd47NW7SJXSG2RUcuZGj4kOmO9XtJaV+GqCM0IwgAM/iaHTqLjoFxg/HmVhBe4mHdqEUqB5Sok818chslr6089YlM9G4CO5Jhg3wG3O44a+iD8iVwwEaO+YVLDiw2fP5zVJtVt46B78WNIKybnbAMPjvdevisdXf0ymNhAUAGShZzDRLfSYhLCrvxOBIN2oSjr+FFCJYsyGw/3P+XemwUzg0x2TLIFa8Rf7DbpZoJT5hdOycI/eFqQh6221/fDjoYIfHZ+z4ym8JUdTMe4s4TyFWIKZxbHf8kARO93bkrw/7XGMQSMauT/H7eFYpgpy0C5EN13NFG6ts/2k/BMsO2C0NaUI8E517O+CJ7Dj1P+uzCutL0bw62sjlqtEke1aMpzCV8mbFxvx883zZosZqZ0GP9dxaAZTXAZyH5CR7PumJdgHkui0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -147,76 +128,130 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Fri, Oct 30, 2026 at 07:16:51PM +0800, Kairui Song wrote:
-> On Fri, Oct 30, 2026 at 5:00 AM Johannes Weiner <hannes@cmpxchg.org> wrote:
-> >
-> > On Fri, Oct 30, 2026 at 02:31:42AM +0800, Kairui Song via B4 Relay wrote:
-> > > From: Josef Bacik <josef@toxicpanda.com>
-> > >
-> > > Swap-ins from SWP_SYNCHRONOUS_IO devices such as zram are no longer
-> > > counted in PSI memory pressure or in the swapin and thrashing delays of
-> > > delay accounting.  Refaults of the workingset from zram, the main input
-> > > to userspace OOM handlers like lmkd and systemd-oomd on zram systems,
-> > > become invisible in /proc/pressure/memory.
-> > >
-> > > swap_read_folio() opens the accounting window with
-> > > psi_memstall_enter() and delayacct_swapin_start() and, per its comment,
-> > > means to count the submission time.  For synchronous devices the
-> > > submission is the entire read: swap_bdev_submit_read() does
-> > > submit_bio_wait() and completes the folio.  Since reads are batched in
-> > > a swap_iocb, swap_read_folio() only queues the folio with
-> > > swap_add_folio(), and the bio is submitted later by swap_read_submit()
-> > > in the caller, e.g. swapin_sync(), after the window has been closed.
-> > > By then the folio is uptodate and unlocked, so the fault does not wait
-> > > on the folio lock either and the read time is not counted anywhere.
-> > >
-> > > Found by code inspection; not reproduced.
-> > >
-> > > Fix by submitting synchronous reads from within swap_read_folio(), as
-> > > was done before the batching, rather than from the caller.  This gives
-> > > up batching of readahead for synchronous devices, which do their I/O
-> > > inline anyway, in exchange for keeping the accounting simple and in one
-> > > place.
-> > >
-> > > Fixes: dda8fb68b590 ("mm/swap: also use struct swap_iocb for block I/O")
-> > > Assisted-by: LLM
-> > > Signed-off-by: Josef Bacik <josef@toxicpanda.com>
-> > > Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
-> > > Signed-off-by: Kairui Song <kasong@tencent.com>
-> >
-> > Hm, this isn't a complete fix to the problem described. IO throttling
-> > happens at submission time, so there can be significant delays on
-> > async devices too that are no longer tracked since the culprit change.
-> 
-> Yeah you are right! Thanks for the heads up, not only a sync isssue
-> indeed, async devices are affected too :(, throttled swap fault also
-> went unaccounted.
-> 
-> > How about keeping the accounting window open across the batch? Opens
-> > on first read, closes on submission. A batch with at least one
-> > workingset folio is "contaminated" and the whole sequence and
-> > submission becomes a stall. Would need to pull the !can_merge flush
-> > out of the batch-add function to get the accounting window right but
-> > that seems reasonable.
-> 
-> Won't this cause an amplified PSI reading if only one folio in a batch
-> is workingset? Maybe not a big issue though.
+On Thu, Oct 29, 2026 at 10:12:12PM +0000, bot+bpf-ci@kernel.org wrote:
 
-Hm, I think the only option to avoid this would be to split the batch
-and flush more frequently, which I'm not sure is worth it. The batch
-size is only 32 folios...
+SNIP
 
-diff --git a/mm/page_io.c b/mm/page_io.c
-index 22e5ac1d298f..806cfe633a95 100644
---- a/mm/page_io.c
-+++ b/mm/page_io.c
-@@ -207,6 +207,8 @@ static bool swap_can_merge(struct swap_io_ctx *ctx, struct folio *folio,
+> > +__bpf_kfunc unsigned long bpf_user_mmap(unsigned long len, unsigned long prot)
+> > +{
+> > +	if (!bpf_user_mm_ok())
+> > +		return -EPERM;
+> > +	return vm_mmap(NULL, 0, len, prot, MAP_PRIVATE | MAP_ANONYMOUS, 0);
+> > +}
+> 
+> Can this vm_mmap() call fail for ia32 tasks, and for 64-bit tasks when
+> CONFIG_X86_X32_ABI=y, because it is not made from a syscall?
+> 
+> On x86_64 the address picked by vm_mmap() depends on the bitness of the
+> current syscall:
+> 
+> vm_mmap()
+>   do_mmap()
+>     __get_unmapped_area()
+>       arch_get_unmapped_area_topdown()
+>           info.high_limit = get_mmap_base(0);
+> 
+> arch/x86/mm/mmap.c:get_mmap_base() {
+>     if (in_32bit_syscall()) {
+>         return is_legacy ? mm->mmap_compat_legacy_base
+>                          : mm->mmap_compat_base;
+>     }
+>     return is_legacy ? mm->mmap_legacy_base : mm->mmap_base;
+> }
+> 
+> The sleepable kprobe programs that can call this kfunc run either from
+> uprobe_notify_resume() -> handle_swbp() -> handler_chain() (or
+> uprobe_prog_run()) on the int3 return-to-user path, or from bpf_task_work
+> callbacks run by task_work_run().  TS_COMPAT is set only in
+> syscall_32_enter() and is cleared on every return to user mode, so it is
+> clear in all of these paths.
+> 
+> For an ia32 task (TIF_ADDR32) on a kernel without CONFIG_X86_X32_ABI, the
+> top-down search therefore runs below the 64-bit mm->mmap_base.  Everything
+> above 4GB is free in such a task, so the search returns an address above 4GB
+> and __get_unmapped_area() rejects it:
+> 
+>     if (addr > TASK_SIZE - len)
+>         return -ENOMEM;
+> 
+> The bottom-up legacy layout fails the same way, because find_start_end() also
+> starts from get_mmap_base(1).  So the kfunc always returns -ENOMEM for ia32
+> processes.
+> 
+> With CONFIG_X86_X32_ABI=y the result is the opposite.  Exception entry
+> stores orig_ax = -1, so in_x32_syscall() is true in the uprobe handler and
+> 64-bit processes get the compat (below 4GB) layout.  A large len then fails
+> with -ENOMEM in the bottom-up fallback (end = task_size_32bit()) even though
+> 64-bit address space is free.
+> 
+> The kernel documents this dependency in __set_personality_x32(): "The x86
+> mmap() code relies on the syscall bitness so set x32 syscall bit right here
+> to make in_32bit_syscall() work during exec()".  The uprobes XOL area avoids
+> the problem by passing an explicit TASK_SIZE - PAGE_SIZE hint.
+> 
+> Neither the kernel-doc ("into the current process") nor the commit message
+> mentions this limitation, and the selftests later in the series only exercise
+> 64-bit binaries.  Should this limitation be handled or documented?
+
+that might be a problem..  we could use similar workaround that's
+used in arch_uprobe_get_xol_area and set TS_COMPAT before we call
+vm_mmap and restore after (like below)
+
+or we can always bail out for compat apps
+
+jirka
+
+
+---
+diff --git a/kernel/bpf/helpers.c b/kernel/bpf/helpers.c
+index 4ca2ac8d372d..c9dbd38ca125 100644
+--- a/kernel/bpf/helpers.c
++++ b/kernel/bpf/helpers.c
+@@ -32,6 +32,9 @@
+ #include <linux/mm.h>
+ #include <linux/mman.h>
+ #include <linux/limits.h>
++#ifdef CONFIG_X86_64
++#include <asm/thread_info.h>
++#endif
  
- 	if (ctx->sis != sis)
- 		return false;
-+	if (rw == READ && ctx->workingset != folio_test_workingset(folio))
-+		return false;
- 	return sis->ops->can_merge(folio, prev_folio, prev_folio_size, rw);
+ #include "../../lib/kstrtox.h"
+ 
+@@ -3781,6 +3784,27 @@ static bool bpf_user_mm_ok(void)
+ 	return current->mm && !(current->flags & (PF_KTHREAD | PF_EXITING));
  }
  
++#ifdef CONFIG_X86_64
++static unsigned long bpf_user_vm_mmap(unsigned long len, unsigned long prot)
++{
++	struct thread_info *ti = current_thread_info();
++	bool compat = test_thread_flag(TIF_ADDR32);
++	unsigned long addr;
++
++	if (compat)
++		ti->status |= TS_COMPAT;
++	addr = vm_mmap(NULL, 0, len, prot, MAP_PRIVATE | MAP_ANONYMOUS, 0);
++	if (compat)
++		ti->status &= ~TS_COMPAT;
++	return addr;
++}
++#else
++static unsigned long bpf_user_vm_mmap(unsigned long len, unsigned long prot)
++{
++	return vm_mmap(NULL, 0, len, prot, MAP_PRIVATE | MAP_ANONYMOUS, 0);
++}
++#endif
++
+ /**
+  * bpf_user_mmap() - Map private anonymous memory into the current process
+  * @len:  Length of the mapping
+@@ -3797,7 +3821,7 @@ __bpf_kfunc unsigned long bpf_user_mmap(unsigned long len, unsigned long prot)
+ {
+ 	if (!bpf_user_mm_ok())
+ 		return -EPERM;
+-	return vm_mmap(NULL, 0, len, prot, MAP_PRIVATE | MAP_ANONYMOUS, 0);
++	return bpf_user_vm_mmap(len, prot);
+ }
+ 
+ /**
 
