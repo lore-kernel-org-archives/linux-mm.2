@@ -1,96 +1,81 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43620606A31D
-	for <linux-mm@archiver.kernel.org>; Fri, 30 Oct 2026 08:55:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEF48606A31A
+	for <linux-mm@archiver.kernel.org>; Fri, 30 Oct 2026 08:58:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=CXll4QP4
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Exq5Sp7z
 Received: by kanga.kvack.org (Postfix)
-	id 1E96A6B05B1; Fri, 30 Oct 2026 04:55:21 -0400 (EDT)
+	id 799F06B05B3; Fri, 30 Oct 2026 04:58:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1C0AF6B05B2; Fri, 30 Oct 2026 04:55:21 -0400 (EDT)
+	id 744E86B05B4; Fri, 30 Oct 2026 04:58:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0D7616B05B3; Fri, 30 Oct 2026 04:55:21 -0400 (EDT)
+	id 633936B05B6; Fri, 30 Oct 2026 04:58:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id CE4506B05B1
-	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 04:55:20 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 50B90C062C
-	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 08:55:20 +0000 (UTC)
-X-FDA: 85378683600.27.FB43152
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 2D8F76B05B3
+	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 04:58:15 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id B2B551A0658
+	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 08:58:14 +0000 (UTC)
+X-FDA: 85378690908.25.7F1E8E4
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 919E840002
-	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 08:55:18 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CXll4QP4;
-	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793350518;
-	b=G2G6RusJONOcUa+hFdPSYzhZhu+jjqMXyEK6t+74Kks9S9N5kbyW/HJJnrcdp0RGAzuG9m
-	sXvaHUy1pLd9IBxTVQdFIvQI1M7FQWJr6d4bgiFcK/Dep5lDYyQzwX/N5ZKy5SHRAQaDGD
-	GKHcLjRl1es0AvQV/Q/V2KNjLkBFFjQ=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CXll4QP4;
-	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf25.hostedemail.com (Postfix) with ESMTP id E9C2BA0003
+	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 08:58:12 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Exq5Sp7z;
+	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793350518;
+	s=arc-20220608; t=1793350692;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2ME/YKcQAmqEKXR0yxRYRyIXblEy16rwwZK5YWNyjhA=;
-	b=eH/Q1bBQZ2qWMkaUwmFPq/rXKMZ8fxpysHBLa0Yz3PiCYAvbjgUtZVl8PKQnbFG79NOuUD
-	tkGcIHoRLwWcDCI/qs3UuHXgpMQOYc3VlH/8mInxHXy8CJIY0zibzpXe3IL/CSNVEI3HL5
-	2wRuILFa/lbktDU1tLvv/U9BXmATTEc=
+	bh=r280hiRf1n6xtUd8PrDvA2MR0wI6dZTEfLDR+8JhqFg=;
+	b=YjvslROMFI9oZl3q45gxYgaa1YpoHpmCw087aAQaEk8npwPKHCvsKQH7cQ7mH3Z1OR9i5S
+	fNhuuB5eUAmyz5OrrUCtqtmZfhwfiilfdYEwX3CrnecCrh5+LHKZTcfthYfAS9AHkXAlph
+	dbmG1PV+pbiVc3LQZaRruaNpsNu1JMk=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793350692;
+	b=Q0LfX1qZU/1s4ZzqQ5DdPIx3/gLRgXS1f36h+FOlX2vC/M25+Xt7TF8GKb7ee60ZKPiM9c
+	AFL4EXZ8afLWE2IdLbLLaig4totQRJs+2/xo0F/rABzrRmUe4H+ZejFXRce+lTk3PTL8iC
+	kmyBjObTnApPVQ6xsz9Y+V598Mqm8/Q=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Exq5Sp7z;
+	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 58B346061C;
-	Fri, 30 Oct 2026 08:55:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D61461F000C1;
-	Fri, 30 Oct 2026 08:55:02 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 776B86062C;
+	Fri, 30 Oct 2026 08:58:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AABA1F00A1B;
+	Fri, 30 Oct 2026 08:58:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793350517;
-	bh=2ME/YKcQAmqEKXR0yxRYRyIXblEy16rwwZK5YWNyjhA=;
+	s=k20260515; t=1793350692;
+	bh=r280hiRf1n6xtUd8PrDvA2MR0wI6dZTEfLDR+8JhqFg=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=CXll4QP4+ROaktyPv7RAJz7f+WPuofJbzyw2m4AACejiGVIILiYZq+PxNbpYDu8vd
-	 2Dm5iuJ/12bzLkrDS1RdE10rGH6i9HYqGkE0UXGfgzXOzXXE6naiSTFXFT7mi2yMsS
-	 a5WNcQ+GTLBcmmRjtarEdx1R8caixrVhQKolICv40IegTz6IRR+SoElmpwOTHyW/q6
-	 7Df3TV3klPlzpPUtvCGhWSAq9qOAqVDLWQWzyNS7wv5Qwyy8WwoASqZBNjn4XEEStK
-	 CMKfPt8dwsnEchT7An+jO6D/nNxutbcvk8hJ6ADyAH3HF0ZZuRBHVTr7HFOcvGhjm2
-	 gDwN1kw1sLmow==
-Message-ID: <1e277f4a-87b7-4f5e-8c87-1b2bf280e859@kernel.org>
-Date: Fri, 30 Oct 2026 09:54:59 +0100
+	b=Exq5Sp7zAbqNuqGv6NplKuvdr/nF4Y3VmHgtgpTLaZbU9Jx+zMmy9hxCvaaN31rRH
+	 OXAH49p1efwmh9zrCzsYf1pFWirOHcKauQ7DZ6dnzldnZcaI9rAnWgsVclPTmFxOIu
+	 wqwyFVvJv6NJhGAUPUhuQGODdeljpPlxdAz0GS6+RF7DFvAR8XjS0lo7BevGFn6/wJ
+	 mz7quZWteNXZVRLTrgNo935jT8qWHudzcdV+n3P8+A+zxNy3fWJsf+evbdLNaUs2HL
+	 QSaYI8xsJc88Guj1G+FbrjZM0Ugyi4eqJFZMlH5Wi31jHqemR78BtdXpdRcXqF0es3
+	 ai1bGZuOgGUDg==
+Message-ID: <6086c386-3903-476f-ba55-bd6c21072f72@kernel.org>
+Date: Fri, 30 Oct 2026 09:58:05 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 38/46] mm/ksm: reset the unstable trees of all nodes
-To: xu.xin@linux.dev
-Cc: akpm@linux-foundation.org, aneesh.kumar@kernel.org, apopple@nvidia.com,
- axelrasmussen@google.com, baohua@kernel.org, baolin.wang@linux.alibaba.com,
- baoquan.he@linux.dev, chengming.zhou@linux.dev, chrisl@kernel.org,
- dev.jain@arm.com, gourry@gourry.net, hannes@cmpxchg.org, harry@kernel.org,
- hughd@google.com, jack@suse.cz, jannh@google.com, jgg@ziepe.ca,
- jhubbard@nvidia.com, josef@toxicpanda.com, joshua.hahnjy@gmail.com,
- kas@kernel.org, kasong@tencent.com, kees@kernel.org,
- kexec@lists.infradead.org, lance.yang@linux.dev, liam@infradead.org,
- linux-arch@vger.kernel.org, linux-cxl@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, ljs@kernel.org, matthew.brost@intel.com,
- mhocko@kernel.org, mhocko@suse.com, minchan@kernel.org,
- muchun.song@linux.dev, nico.pache@linux.dev, nphamcs@gmail.com,
- npiggin@gmail.com, osalvador@suse.de, pasha.tatashin@soleen.com,
- peterx@redhat.com, peterz@infradead.org, pfalcato@suse.de,
- pratyush@kernel.org, qi.zheng@linux.dev, rakie.kim@sk.com, riel@surriel.com,
- rppt@kernel.org, ryan.roberts@arm.com, shakeel.butt@linux.dev,
- shikemeng@huaweicloud.com, stable@vger.kernel.org, surenb@google.com,
- usama.arif@linux.dev, vbabka@kernel.org, weixugc@google.com,
- will@kernel.org, willy@infradead.org, ying.huang@linux.alibaba.com,
- youngjun.park@lge.com, yuanchu@google.com, ziy@nvidia.com
-References: <20261027-fixes_core-v1-38-6f74bec9a5bb@kernel.org>
- <20261030032409.127393-1-xu.xin@linux.dev>
+Subject: Re: [PATCH] mm/hugetlb_vmemmap: Fix usemap overrun on nodes with
+ multiple ranges
+To: Tim Chen <tim.c.chen@linux.intel.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>
+Cc: Frank van der Linden <fvdl@google.com>, Mike Rapoport <rppt@kernel.org>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+ Mohini Narkhede <mohini.narkhede@intel.com>,
+ Pooja Jain <pooja.jain@intel.com>, Doug Nelson <doug.nelson@intel.com>
+References: <20261029212137.3141875-1-tim.c.chen@linux.intel.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -137,22 +122,22 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20261030032409.127393-1-xu.xin@linux.dev>
+In-Reply-To: <20261029212137.3141875-1-tim.c.chen@linux.intel.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: knxpu5i575syyyh334sqfs1bhidyboyd
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: E9C2BA0003
+X-Stat-Signature: mo5kbed5ysqhzt9yc5sxxqkuq95kbsqx
+X-Rspam-User: 
 X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=unavailable autolearn_force=no
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
 	version=4.0.1
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 919E840002
-X-Rspam-User: 
-X-HE-Tag: 1793350518-658039
-X-HE-Meta: U2FsdGVkX1+PBFRdKg2x80vOGov2Oax0+o5WApja2Iwpp0BHTm1T9EZIpPxMm5ezePr6yOt7RaTGUvpOghSDBFkg2bxBNrhje6mVclBypCUiE2zQoSn/lQ92nqnnD89OcOF2OfDqyYHes4aSO3CHHQ/9c7TFKW1rEdvCfEU4BWofgzlLp4+iYZyNQb7ZbbnpHAZajTV5V+SUI2jcCZbaS7aJX18TAWQeTn3RkgOQrKYVUIStv1y66TU0C7q6zc1R11CDOILoRfMdOoom+zpifW0I03yZBJhwlL6Upe0Rk3xwggOAiZKCSAgy2pznp5Q4DHW8rgDjqiRN14hrJWVSjFpXF3n8F3kkWJdSvkGGJI2iObKKK0v/Qmoy3kiwa1Otil2zIZ6tyDslfYNpukVyONefggI/pPIxzkYdySByKanROUbkimRNXwvqkLwCzPQ7vrzZybx4Z15Sw3SEL8N9mOuNBLpmmnPYxZosbPVAQ4ZQl7HjCsWl1cgYI775TC/WTwspa/Z02wAAIvEm8VHOSdYU2BddadscuGB5C//VzBbWEqj6VH94SOMt6uy5aB4ji0grd5G2DXjqANBkfZbkrRxilJCW+XH6JxnM9MWCOOv2dWJd91u+0LVJ0MliO4y8OkpCMw9l6nxvDVlYAyNwXWWZPVi0n8yqSD2o3M6Y9efoWyBJO3J4Nbap6c1c+9ztnKpJ1KzIt2RV5nOoWV7sheP+2SWdmZxoJlcyXK0MYclyPLrlGyyy+dQubhI09NTUUrf2scRwhXFJFqzjKO0ylOGLjnhbad3ojGy7toEirszHGFDnhYxKZhbxCT3tT2d+4v67NEY0VvzJ14g4ZzXzfjWD0S/9AhnzDE2p+iDbMQKaDSE2rBZtXN/NZMZRseHau3GacZHiG0DL4YweJH8FI7k3YxK6Oi2cElrJDbtlUijqpqOfueqsIavszwtttKvmazwP+w01CjYvGqoHTm9
- MexscRov
- T0hjPcC0ufJPwVkzeVRk9JHy5rm1UM8E1DhG2kfvOazDSRIbkgDflElSPZtKNPWPgkXoimYiiBsLEfX3b5AHTw/TxA2GXjMRzuklixpjJx19onYBbqSYlZTGXUozkfcYsj7DlifNqwLpjPv+kTHLItUHPKd7L0F01LLbzM/2Wfh2/UJTlJ3E3NZgu15Y/YyRZr18zg56v/t3AlfwJMwJ+4vtEqMOLypTyqZq2n8rKvzagejb8IcrnGG7KuBGCosa6/lWwwFdLGeaqzy0UvB9kPqtN5TlgIPTqN93OVuCOB35Jpiq5eEm23VoLBm705ZRVne4CqhAMIWt6aoOroByi/ws37pn8EOSnPqYmy3ELbnZ18dHIywmr8pGyxwQDAHtlOjsnHuN/VvJshrEm1Z74P9SUhucnXOBzwGpM
+X-HE-Tag: 1793350692-123161
+X-HE-Meta: U2FsdGVkX1/87XbKq1ymYiyvcRrm3SLuZA5pHAqaUNLc8P6hsZOlV8JGAdN1Tg60UMDT+fMbXxk2h62ql6seS8DoIui/DP+NNjin3FLm6I2JzgtrYHJm4UBJ73nz0tFNgg75t3/4apUdm2d/Kv5XukUhD7zb16Jkd1bA+pnkXTmOoHYJ5Gyek76VI0PVTmtAceHD0smOaYrYz68OPsbNJ2G3fQlzwYdqSfARgu7lIXp7Nu4cAaqhNKyLa9uN8yJK/wf+IiVPhTJofzt1jqPPIlBqRlNHFmJNv2ayFEYl9sY7LbyWQSauoQKzRwFbuvYQtGjpYa7+IPBzNSTDGax+p9VevSqhL1ZLcsJHjTiSv5rRDNgEmZN+Jmm7UTGzrFt1tE0IjD1asHjlOMdTbAvtzqiyKBxzgA0IfAOm0ObyKw3xaeiFqrMBj/hG04yhPp1cwlKtta0fsTkcna8pmfDFd1eNO32dLHrSPCxW9dBs9j7ZQYiBriv1Z2k3vwszxNws9pI0Pjuo7xq4pbskkMv+lut4nw3BVnaZthpPKomvu5sg8wkojZgLxLIeCuoAbM39wAieEb9YeRd+FKOeGnRLlWowdC7ELqu+2VeK7NgeoM3jpFLZuQ0Xn+B+LMW5G9t+T6lc4JceHzCUq1hsAQ941Edc64ba8sB2naBuvaMON7bBwKNVD5c8LoT9s8joao4ajXkOYYcSt2zbOHagzk9eiAnEEycBycX4ELc2KwR3+CuYsWBjFjMWv1ArPFWsrIQtZQCUs6KAQ52UjDk5ShB8TwhchF1jSJZEYOiftnJfX3fsYvVWHZJUbDexE9e7j4ehCImzZCmznR0YY9dvJNgwHs2+bqVh6RSy2/RegkYx9CjeVGPFY/Rqum26Yi0IxuYFGI6628sjpkbe71XUCaPZBv9seS1dddSYQk9NQDaL7dxcv7FyUK387niVCT9Q8nujh3stZTHKeByn3JHDGj3
+ VcS53V7I
+ 9faHZLhYlmynVYKTy/nL5CBBN5BQgxhwiNvsGTJQKYUATrNvUWXPAJluaRnlgh1JqFFTJzPJa+ft0a3MVIMo/CaKqT2kSKSVG4pZWGItGtyNfYT96X1DtIEMGlZLOgKYhvEfeN7izkjXltsX5J16aRr8UyY3cWVnXj8tdsRdiCbC9KoA6t1JfKpMb3+wKACqOlUtngMqNOqgFHiBfJQ3NIiHoKKIo4UJ93XX2/BH6byDI6PcHEk++tnqATVWHh4PE6tSfmYjusMP/EyrUZa2rqZLQ6I0lMnlP5dQVMAXQziOx7guuVQydcT7APChfl7id+S0lBedgWFcHEzeBZlOKo34dVjcCXJ8myy8V
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -161,95 +146,94 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 10/30/26 04:24, xu.xin@linux.dev wrote:
->>
->> Let's fix it by tracking in ksm_nr_node_ids the actual number of
->> allocated tree roots.
->>
->> remove_all_stable_nodes() and ksm_check_stable_tree() will now scan
->> more tree roots (skipping the empty ones), which is harmless.
->>
->> Fixes: ef53d16cded7 ("ksm: allocate roots when needed")
->> Cc: stable@vger.kernel.org
->> Reported-by: Josef Bacik <josef@toxicpanda.com>
->> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
->> ---
->>  mm/ksm.c | 6 +++---
->>  1 file changed, 3 insertions(+), 3 deletions(-)
->>
->> diff --git a/mm/ksm.c b/mm/ksm.c
->> index dbfb8f98b1892..9c51925825cbf 100644
->> --- a/mm/ksm.c
->> +++ b/mm/ksm.c
->> @@ -475,6 +475,7 @@ static void advisor_stop_scan(void)
->>  #ifdef CONFIG_NUMA
->>  /* Zeroed when merging across nodes is not allowed */
->>  static unsigned int ksm_merge_across_nodes = 1;
->> +/* Number of allocated stable and unstable tree roots. */
->>  static int ksm_nr_node_ids = 1;
->>  #else
->>  #define ksm_merge_across_nodes	1U
->> @@ -3636,14 +3637,13 @@ static ssize_t merge_across_nodes_store(struct kobject *kobj,
->>  			else {
->>  				root_stable_tree = buf;
->>  				root_unstable_tree = buf + nr_node_ids;
->> +				ksm_nr_node_ids = nr_node_ids;
->>  				/* Stable tree is empty but not the unstable */
->>  				root_unstable_tree[0] = one_unstable_tree[0];
->>  			}
->>  		}
->> -		if (!err) {
->> +		if (!err)
->>  			ksm_merge_across_nodes = knob;
->> -			ksm_nr_node_ids = knob ? 1 : nr_node_ids;
->> -		}
->>  	}
->>  	mutex_unlock(&ksm_thread_mutex);
->>  
->>
->> -- 
->> 2.43.0
+On 10/29/26 22:21, Tim Chen wrote:
+> sparse_init_nid() allocates one usemap slot (struct mem_section_usage)
+> per present section in [pnum_begin, pnum_end), and
+> sparse_init_early_section() hands them out in order, with a BUG_ON() when
+> they run out. hugetlb_vmemmap_init_early(nid) however initializes the
+> sections of every bootmem gigantic page on the node, including pages
+> outside the range being initialized. If a node's memory is split into
+> more than one range, sparse_init() calls sparse_init_nid() once per range,
+> and this takes more slots than were allocated. The same happens if a
+> gigantic page straddles a node boundary.
 > 
-
-Thanks for the review!
-
-> Looks correct as far as it goes, but I think it is not quite sufficient
-> on its own.
-
-I think this fixes the problem described. What you describe below is a mismatch
-between documentation and the implementation, but I don't think it is
-problematic as in "responsible for BUGS". See below.
-
+> For example, with this SRAT layout every node has a small range below 4G
+> and a large range above 4G:
 > 
-> The documentation requires that merge_across_nodes can only be changed
-> when there are no KSM shared pages in the system, but
-> merge_across_nodes_store() does not enforce this at the sysfs level.
+>   Node 0 PXM 0 [mem 0x00000000-0x2fffffff]          768 MB  (low)
+>   Node 0 PXM 0 [mem 0x100000000-0x80cfffffff]               (high)
+>   Node 1 PXM 1 [mem 0x30000000-0x5fffffff]          768 MB  (low)
+>   ...
 > 
-> Should we also reject writes while ksmd is merging? At minimum:
+> In 128 MB memory sections (x86_64 SECTION_SIZE_BITS = 27), node 0's low
+> range is sections 0x00-0x05 (6 present sections) and its high range is
+> sections 0x20-0x1019. The low ranges of the other nodes are 4 or 6
+> sections, all smaller than the 8 sections of a 1G page.
 > 
-> +	if (ksm_run & KSM_RUN_MERGE)
-> +		return -EBUSY;
+> Node 0's first range has 6 sections, so 6 slots. With "hugepagesz=1G
+> hugepages=400", hugetlb_vmemmap_init_early(0) then initializes node 0's
+> 1G page at 0x67c0000000 (sections 0xcf8-0xcff, in its high range), and
+> the 7th section hits the BUG_ON() (seen on v7.2.6):
 > 
-> Ideally, we should also check that ksm_pages_shared is zero, since
-> KSM_RUN_STOP (0) does not guarantee that all pages have been unmerged.
-
-We do that already in merge_across_nodes_store() I think:
-
-if (ksm_pages_shared || remove_all_stable_nodes())
-	err = -EBUSY;
-
-Which is really required when swapping trees.
-
+>   kernel BUG at mm/sparse.c:268!
+>   RIP: 0010:sparse_init_early_section+0x9f/0xb0
+>   RAX: 0000000000200000 RBX: 0000000000000cfe RCX: 0000000000000020
+>   RDX: 0000000000000cfe RSI: ffd7e1d09fc00000 RDI: ff252cb28ffb3f50
+>   R10: ff252cb28ffb3d40 R13: 0000000000000d00
+>   Call Trace:
+>    hugetlb_vmemmap_init_early+0xe1/0x140
+>    sparse_init_nid+0x56/0x370
+>    sparse_init+0x192/0x2b0
+>    free_area_init+0x7f/0x690
+>    start_kernel+0x64/0x540
 > 
-> That would make the interface match the documented sequence and close
-> the remaining race window.
+> Here RDX is the section number, and R10/RDI are 6 slots apart: the start
+> of the usemap buffer and its current position, which is the end.
+> 
+> Pass the section range to hugetlb_vmemmap_init_early() and only pre-HVO a
+> page whose sections are all present and within it. Ranges are disjoint,
+> so each page is handled once, in its own range.
+> 
+> Skipped pages are not marked HUGE_BOOTMEM_HVO. Their sections get a
+> regular memmap from sparse_init_nid(), and the pages are optimized later
+> by hugetlb_vmemmap_optimize_bootmem_folios().
+> 
+> Fixes: b1222550fbf7 ("mm/hugetlb: do pre-HVO for bootmem allocated pages")
+> Cc: stable@vger.kernel.org
+> Reported-by: Mohini Narkhede <mohini.narkhede@intel.com>
+> Tested-by: Pooja Jain <pooja.jain@intel.com>
+> Signed-off-by: Tim Chen <tim.c.chen@linux.intel.com>
+> ---
+>  include/linux/mmzone.h |  9 ++++++---
+>  mm/hugetlb_vmemmap.c   | 38 ++++++++++++++++++++++++++++++++++----
+>  mm/hugetlb_vmemmap.h   |  7 +++++--
+>  mm/sparse-vmemmap.c    | 16 +++++++++-------
+>  mm/sparse.c            |  2 +-
+>  5 files changed, 55 insertions(+), 17 deletions(-)
+> 
+> diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
+> index 94f9c3ff54160..da17dae8b057b 100644
+> --- a/include/linux/mmzone.h
+> +++ b/include/linux/mmzone.h
+> @@ -2167,13 +2167,16 @@ static inline int preinited_vmemmap_section(const struct mem_section *section)
+>  		(section->section_mem_map & SECTION_IS_VMEMMAP_PREINIT));
+>  }
+>  
+> -void sparse_vmemmap_init_nid_early(int nid);
+> +void sparse_vmemmap_init_nid_early(int nid, unsigned long pnum_begin,
+> +				   unsigned long pnum_end);
+>  #else
+>  static inline int preinited_vmemmap_section(const struct mem_section *section)
+>  {
+>  	return 0;
+>  }
+> -static inline void sparse_vmemmap_init_nid_early(int nid)
+> +static inline void sparse_vmemmap_init_nid_early(int nid,
+> +						 unsigned long pnum_begin,
+> +						 unsigned long pnum_end)
 
-Right, either we should adjust documentation or adjust the implementation. Not
-sure if restricting the interface is really required. Personally, I'd simply
-fixup the documentation (separately) unless there is a real problem with the
-implementation when allowing KSM_RUN_MERGE.
+Two tab indent please in all cases here that you are touching, thanks.
 
-(I think there is no problem as we are synchronized on the mutex).
 
 -- 
 Cheers,
