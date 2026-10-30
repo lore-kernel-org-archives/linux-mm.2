@@ -1,109 +1,172 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC1F0606A31E
-	for <linux-mm@archiver.kernel.org>; Fri, 30 Oct 2026 11:14:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F3A5606A323
+	for <linux-mm@archiver.kernel.org>; Fri, 30 Oct 2026 11:15:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=cmSt9/t2
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=X0Z5bJ43
 Received: by kanga.kvack.org (Postfix)
-	id C1B836B00EF; Fri, 30 Oct 2026 07:14:21 -0400 (EDT)
+	id 391EB6B05B4; Fri, 30 Oct 2026 07:15:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BF2216B05B3; Fri, 30 Oct 2026 07:14:21 -0400 (EDT)
+	id 341A96B05B7; Fri, 30 Oct 2026 07:15:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AE21A6B05B4; Fri, 30 Oct 2026 07:14:21 -0400 (EDT)
+	id 1E3006B05B8; Fri, 30 Oct 2026 07:15:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 873D26B00EF
-	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 07:14:21 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 142CEC0646
-	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 11:14:21 +0000 (UTC)
-X-FDA: 85379033922.17.EAC8309
-Received: from mta1.migadu.com (out-84.mta1.migadu.com [95.215.58.84])
-	by imf01.hostedemail.com (Postfix) with ESMTP id A840F4000A
-	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 11:14:15 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="cmSt9/t2";
-	spf=pass (imf01.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.84 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793358859;
-	b=Bveio4xmM37yHTwWPGD58EmRDoTYILareLjuKlGtprXcSHMkcpiuTpY7L2FqKypgoRwmWp
-	bqbSGvrvV9+bGEGjDcwDqb1vit9BqOMaC9tvYQz7avsgjB9INhbOV1gl3Lw+Eohu+kTDlP
-	5gzfJFcE/B2CQ792INKv6m35yktfVL8=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="cmSt9/t2";
-	spf=pass (imf01.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.84 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id F0BD36B05B4
+	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 07:15:40 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id E340912061B
+	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 11:15:39 +0000 (UTC)
+X-FDA: 85379037198.24.B5CFDB0
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 3214318000E
+	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 11:15:38 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=X0Z5bJ43;
+	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793358859;
+	s=arc-20220608; t=1793358938;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=j0Dpk8F16jUjSTTEQzXZMl1K/eyyCO+RqBTSF8+llHA=;
-	b=ybSvM1EWFf9n/bzhZt9sVB6eR+Mhf/za9+AUgL4kK5PWqly/X0v1f0SYilTVM/d0HiH36n
-	C+3i+i18/uJF80Z2jWmeCmYZLp7LAbDBg/gXEBaX2rNdYciOxKyshyyylykVbD6DEXfpg3
-	de+SclsUacxt0F1c008pNWeem/4+mvE=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=/hkUgSZjp6AaXOgYubi6gjf4bGt54M8qSHBq7xoR5Gg=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1793358854; v=1; x=1793963654;
- b=cmSt9/t2ekgeN+2H/AK/CaONcMFVjcHbkmbY5R6QVwNwIafaZIRdVdxfLYha7wkaiigOJK5t
- 1qvsdzatIi3O/HdgnSUa/XDORt/kanQgoaQgaO10saR7IA2e39I/vUA5wuMoDszngd5t2rPswa6
- FEZeNrh52rNvZCIqLEpd68/o=
-X-Envelope-To: linux-mm@kvack.org
-Received: by mta11.migadu.com with ESMTPS id 419879ff3a6aaf8f;
-	Fri, 30 Oct 2026 11:14:14 +0000
-X-Mizu-Trace-ID: 419879ff3a6aaf8f
-X-Migadu-Flow: FLOW_OUT
-Content-Type: text/plain;
-	charset=us-ascii
+	bh=jcFVnDvIZ8heZvYaiF3eCzfDTR74GY+V/2n+TMcTvAs=;
+	b=CvywTZFyFaryFIC8iF1p2vEyqWRWg1OH06KfsS8Njhpzu+lf348b9gUpjvq2vQ/Kw//dvE
+	5mfAAIx6m7cSGtq/6e2yg1uHrxh9VeXv75UEIZqywsHZ8uJpBenor8+VsS/wRwALfWbKyU
+	0esXA5BUxWWRrhUEDDfPxJnfDSkmthI=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=X0Z5bJ43;
+	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793358938;
+	b=iRikYzZPINjRfkl7yXv0Ncvnku4lZXrTuiSfhPsDColf2pYcc/6RFGMiQT62Nk0bdtv1e3
+	TN0bOWDMuy4JUq2Ke+Yyvf1E3cGiZjEhoWO56F2S+2h90U+9G1euD9fwVx4JGm0tA8UfPW
+	5eWhvCqTxSAsNzwsn+s4WDohB1vVMnM=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 6C028605D0;
+	Fri, 30 Oct 2026 11:15:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9548D1F000C1;
+	Fri, 30 Oct 2026 11:15:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793358937;
+	bh=jcFVnDvIZ8heZvYaiF3eCzfDTR74GY+V/2n+TMcTvAs=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=X0Z5bJ43M9j+dsxw0EOfb2RfVAPvTOOq7wzfRja5C/mo0S5QFye2IEgPAlORI4c3g
+	 ifImjUhJwdI8WKJ5YsmZzwNO9T/m0kviNcNKqqlF1HggGNZPwAWIf5tuKcs2oU5XVz
+	 izKsKdkgcOFL5wt8C5/w8BeHHulb+7ldzTHu+6qfcHg6P136wlJ4Zt/a0lQGMSi3hY
+	 KM0nA2fT0xAsx3g4kOpikLMdyV+GVhDasUmL3YTRLy61zlRQukgrzzF1OnpaAKinvF
+	 CdRbd2dFS6Ly6QcLF/O4Pob9/Zy+lYtZgiUY62l/mQIs9T+8HMZdWboQ0mM+HSpbiP
+	 UY5gtheZjBa1w==
+Message-ID: <48a66134-3522-4b81-adca-4e76d52dc391@kernel.org>
+Date: Fri, 30 Oct 2026 12:15:19 +0100
 X-Archived-By: <archiver.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3901.100.1.1.12\))
-Subject: Re: [PATCH] powerpc/mm: fix uninitialized ZONE_DEVICE struct pages
- with PMDs
-From: Muchun Song <muchun.song@linux.dev>
-In-Reply-To: <bj8bwkuf.ritesh.list@gmail.com>
-Date: Fri, 30 Oct 2026 19:13:53 +0800
-Cc: Muchun Song <songmuchun@bytedance.com>,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
- Mike Rapoport <rppt@kernel.org>,
- David Hildenbrand <david@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- Michael Ellerman <mpe@ellerman.id.au>,
- Nicholas Piggin <npiggin@gmail.com>,
- Christophe Leroy <chleroy@kernel.org>,
- Venkat Rao Bagalkote <venkat88@linux.ibm.com>,
- Shrikanth Hegde <sshegde@linux.ibm.com>,
- Pavithra <pavrampu@linux.ibm.com>,
- "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>,
- linux-mm@kvack.org,
- linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org,
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 27/47] mm/mmu_gather: fix flushing ranges with 4 GiB or
+ larger
+To: SJ Park <sj@kernel.org>
+Cc: Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
+ Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
+ Lorenzo Stoakes <ljs@kernel.org>, Kairui Song <kasong@tencent.com>,
+ Barry Song <baohua@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>,
+ Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
+ Baoquan He <baoquan.he@linux.dev>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Kees Cook <kees@kernel.org>,
+ Peter Zijlstra <peterz@infradead.org>, Jann Horn <jannh@google.com>,
+ Pedro Falcato <pfalcato@suse.de>, Hugh Dickins <hughd@google.com>,
+ Pasha Tatashin <pasha.tatashin@soleen.com>,
+ Pratyush Yadav <pratyush@kernel.org>,
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>,
+ Zi Yan <ziy@nvidia.com>, Lance Yang <lance.yang@linux.dev>,
+ Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>,
+ Alistair Popple <apopple@nvidia.com>, Nico Pache <nico.pache@linux.dev>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>,
+ Matthew Brost <matthew.brost@intel.com>, John Hubbard <jhubbard@nvidia.com>,
+ Peter Xu <peterx@redhat.com>, Will Deacon <will@kernel.org>,
+ "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Nick Piggin
+ <npiggin@gmail.com>, Oscar Salvador <osalvador@suse.de>,
+ Minchan Kim <minchan@kernel.org>, Muchun Song <muchun.song@linux.dev>,
+ Xu Xin <xu.xin@linux.dev>, Chengming Zhou <chengming.zhou@linux.dev>,
+ Chris Li <chrisl@kernel.org>, Kemeng Shi <shikemeng@huaweicloud.com>,
+ Nhat Pham <nphamcs@gmail.com>, Youngjun Park <youngjun.park@lge.com>,
+ Gregory Price <gourry@gourry.net>, Joshua Hahn <joshua.hahnjy@gmail.com>,
+ Rakie Kim <rakie.kim@sk.com>, Ying Huang <ying.huang@linux.alibaba.com>,
+ Jason Gunthorpe <jgg@ziepe.ca>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, kexec@lists.infradead.org,
+ linux-fsdevel@vger.kernel.org, linux-arch@vger.kernel.org,
+ linux-cxl@vger.kernel.org, Josef Bacik <josef@toxicpanda.com>,
  stable@vger.kernel.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <96A93324-9979-45B6-A288-4BCF9E6970BF@linux.dev>
-References: <20261029063601.1961415-1-songmuchun@bytedance.com>
- <h5i4wlx5.ritesh.list@gmail.com>
- <20FE1232-A48B-4F72-8F18-89EFF70EE0FE@linux.dev>
- <bj8bwkuf.ritesh.list@gmail.com>
-To: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
-X-Mailer: Apple Mail (2.3901.100.1.1.12)
-X-Stat-Signature: wbiw4bxo4795yryzskb9pkg9dufkrgq1
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: A840F4000A
+References: <20261030005726.155279-1-sj@kernel.org>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20261030005726.155279-1-sj@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-HE-Tag: 1793358855-526896
-X-HE-Meta: U2FsdGVkX19w3g6MoGHHp2HZA3E3iO/TrKtfnzUySopACkwkH+1ghqG3/PaUOK7BXZWBan4JzPFFd2FQq5iPDiAhOioQcRRjBB/ya9Ikc8zcxD22qR/ZCiHg3i6J+ce9GOhDW5MYKm2QNasw/FdCCQ+vd8nbEaqil7Bi+i+/dcdKkLO/2rC6e6WnX3T0OPP7CMt/PRJTJNe8wi6frNKI+fsZMYplpBQsaUkvvHwhYbogWzwW/nPxKRvILxPFOTkd+enMIxYyeOzUUL4ULJcRoexNV03oRNAHGYulwhyw/0nROrhvGu4QHUeYwZlMlWF2jtejuGRidODu+JjkPcES6JH/+yYvXeDqV961uXsbAYJgq08Zd60iLhBdOwiHwd7oJL/Kqd4bYIv48F0So0Qahpl3hyVc9q1KlsnAUOR1VkFVM+K0EndCBYXlb0/Eqe2xNNfDASkKEG3dZG887SzA+cu2nC8BsX3wAipxXTGDMeJ+Czi9C97iZkGvQdNfpNnvsSaW9F0Q8Y+K2Ttv+KS479RQd+5e8jO+RRGaVo88lqoR74oD9DIfjTBnxOrkZdtFoKbrhhIBVB0r0bYpu6utfT0iC+xuT0yVkKpbe5MBmWZJa7fuRCm3+3F9jer5Lg7u6Q+pu/kDyXVgxlI72MbqP2ub3EadADcCRTA1YmQXFGdPjpC4qPjYRFF6T7ZtHc4qYlZVDmpv7dC/n3HfgKFUJL/DVRzPmYWwTSQjYFfqdU3qBOxsSp4Hiq65O2KM/h/CxklxCSF67ptGpSDDdaxtuWOPa2TkVB0+sHituYHxIWVIaRBLJ9K7kt3ZNhp5/WukMWm7lboOCrNy30c+8k1boWcCNWbG4KpJez1tkqEt2e3sCvusZqc6JGobmrNthg724ghdbQdxktDUPYeWJ0x7daKwNavOV7NSbsWHysC+XG8Svwh222s090VWqXVGf1/zLApcgFTk1aThPH8eZex
- +2fcO7Tk
- HNAkKRWEbxnPJFAAiLM45VK63klPBJ0bQdBno///Iiiiq/E8quk0HI/FAnkocc8cJtym0z1CqY4+TJAOtroKGvD4h5YqsuoHZVu88un9iv1CKGMazFyB1vL6MRFdw8RR6KAjO5kNnpc99ddTWuk/iG4RKVUA9BxaTd3W+h928YhkIBxMxdVJ22qtDfOUf9EvAp9PiTj9sfQvXQXKPPNoUc4Ir9/GvQRFTksXMny5c9UU+WTm/WY5owXc7ZYf7qIoIQ3I3eOQQo9z0QT98HSfwZcGxGo+RAnpTrsUnLqdNudqoy6wx0E/F5he2+UoNGu/FEUEZBQskReotbIBHFsHXIDVr3EA/bBO3bzi2Zkpa8Z2YSGJMqGmm/+WVMpV4GCNYBKyrCowPf53ZGybIPSc4wRh8Q6J6j50JUCZZXA3YJIrV73C0i0+73+Ete0ZVRnL7h0X1RytIEMxQPPRdmNnoq3OHBvAduBSzF5Vv
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 3214318000E
+X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_SANE_1 autolearn=unavailable autolearn_force=no
+	version=4.0.1
+X-Stat-Signature: otx3zfbmxwzdzx36g6o9e8sxhdoh7qru
+X-HE-Tag: 1793358938-98931
+X-HE-Meta: U2FsdGVkX1/goIfja09MfGkibmogTkn4uoBP+sIEW/Tcx3bzW7IBsU/T92zcgqBmT7trlF5BENKfmCZ2ON58fdD7Yux5s29bTZZZaSkV3xzMEN5P9X6zw8/+qoQUsQhTnj5CTktD0B1UgCLek6aOYxrBw4KAIDE4xLGT404H+KNIvimow2Rgq/w6p0SMzB5Q0MXDXOViqoE+veyl55niuKiSG4zucpj+ImDCJFQbX1noOcjH6JH7rksLuZQIxJ9pQBoHi+mGjtg9C7VaRxF1yJcoULhe4SmkzfUABoInzzhiEp1N5GZrlfrI2FHpejohAPFLyP3izDjhKsfLqCQrJ6pnnF5C3BEiPU62Ahy3hTlfwMO51WMgdPQwh/xu160cCODzCFKMwp3qbwlsf/d1Ofvw0nRs+KCrgDuK5yzJtdhzVmt/0cNBFK6BenYGJ2tCxAHo/4J+aPpM0K/PXJHohCkWJjoxPlNrrYUJBMGPLiQKRutZZblI9iGybJrNsNRRibkzXXRNdNdyHU4Ct6QFcPll+ujr7uRyiYpi6MacZaNVDxYvryJhKI8ylwXAo2Dbac1Fk4MR+kSPiBWO2qjccK+bQ6P++j8dDU0UvJ7/mQYOXm0tT/YQsjV1hZpjP8KUptIk91zy7DEkorcsHidz2rlMqzM77+YAncf9avt27/+uQe9XoVAYpLWx9+LrwwqpSl35eD8sOaPMNJw6SPa0lGGzYczRIVTm9TAzMqgmwDLkmm/KMPhyBTiEnF+cqoHlR7ZIhyYaZYwV9LqUt2C3Anl5/xBXnduBH4ZJBB8fgpvREA6Ntp10Vj7TQ2JhsqXeumacuKNISp7JlQ3jWCJrRC87JeO8Kfrsb9wRs6Hr/uRyXEsZId6T2sVElcv9Kh3H3uCQYWRtYiEqHxu0D+GePRVgVde8RCaJxBJykmvR1dEYCcP0SuvZ8C4MViX93Vv1xp5yiGXYUtyvo0WkDVa
+ gBRrrrlf
+ eDmKH3AtOYoTnEUGxuHtDppCQvU9sC1Y1og1mdNvNXtivgwLzxOwvC+1R+6qkXlO/4t7qtTrU8EeYT/6w1j9Nc0JnOOaWHozXcVEqsbMve5LU6L3vrzsT69kw8a0uedM17CetDZm1k9G+EZZcg/6LRj1I8oEP/b1muQj+ei3yq/0ag+OC3Nht7waHVSYPSjJvU1Doaxf9peq6/rrUaOrVBrIEGpYhvHH2mO1i03vMTjJtauCNVGaanYg/ecx+bqsGBAvRKQ60dMnKQz2wXH+Co9iI3lwc9dcMOwfSqHl03EPbkV6qCb1yMLKXAdg3g0qEjHIqVK+n3HCh3tODsA3zgZvcNGALKiPLhJYCs7MXMiNMFFBoKESNmknV/UzaloFnQTiRBPuEZ6+4RL1/SplWnhVZpU2V4ek7kg1ksXyu4+jqrHQOUezyEflH383gUbsAgYoBYfRWu3Io/3AePCuJMqMIeaVXUwXwRerQDVUE3zmu0mbP/VE8Pm71Td3w1JzbdTTYTFTvjvVd7MZsXnlu8hAXc6+dIcWZUHTcgiWqLz4fOHORtaG9x68IfrPMu0FUmBAX+oq/Q8QdRi8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -112,172 +175,59 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
+On 10/30/26 01:57, SJ Park wrote:
+> On Thu, 29 Oct 2026 21:33:22 +0100 "David Hildenbrand (Arm)" <david@kernel.org> wrote:
+> 
+>> From: Josef Bacik <josef@toxicpanda.com>
+>>
+>> __tlb_adjust_range() takes the size of the range which has to be flushed
+>> as an unsigned int. Its callers, tlb_flush_{pte,pmd,pud,p4d}_range(), get
+>> and pass an unsigned long. Consequently, a range that is 4 GiB or larger
+>> gets truncated, possibly to 0.
+>>
+>> On arm64 with hugetlb, a 64k kernel can have 16 GiB hugetlb folios
+>> mapped contiguously at the PMD level and flush them when unmapping, and a
+>> 16k kernel can flush 64 GiB PUDs through tlb_unshare_pmd_ptdesc(). So
+>> at least these two scenarios are affected.
+>>
+>> Fix it by flushing the proper range instead of the truncated one by
+>> properly using "unsigned long" for range_size.
+> 
+> Makes sense to me.
+> 
+>>
+>> Fix generated by an LLM and sent by Josef Bacik in private.
+>>
+>> Fixes: b528e4b6405b ("mm/hugetlb: add tlb_remove_hugetlb_entry for handling hugetlb pages")
+>> Fixes: 8ce720d5bd91 ("mm/hugetlb: fix excessive IPI broadcasts when unsharing PMD tables using mmu_gather")
+>> Cc: stable@vger.kernel.org
+>> Signed-off-by: Josef Bacik <josef@toxicpanda.com>
+>> Acked-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+>> [ david: use two-tab indent, simplify description ]
+> 
+> It seems the convention [1] is to put the above modification note right before
+> the last S-o-b: of David.  Maybe you forgot moving it after adding R-b: and
+> T-b: from great reviewers?
 
+It's "b4 trailers" that apparently messes this up. I don't think it really
+matters (some move it above all trailers), but I'll fix this up when applying.
 
-> On Oct 30, 2026, at 18:20, Ritesh Harjani (IBM) =
-<ritesh.list@gmail.com> wrote:
->=20
-> Muchun Song <muchun.song@linux.dev> writes:
->=20
->>> On Oct 29, 2026, at 23:45, Ritesh Harjani (IBM) =
-<ritesh.list@gmail.com> wrote:
->>>=20
->>> Muchun Song <songmuchun@bytedance.com> writes:
->>>=20
->>> Thanks Muchun,
->>>=20
->>>> PowerPC radix vmemmap population can reuse an existing PMD mapping =
-while
->>>> populating a device DAX range whose section is marked as =
-HVO-enabled. The
->>>> reused mapping is an ordinary vmemmap mapping: the redundant tail =
-struct
->>>> pages are not remapped to the shared tail page.
->>>>=20
->>>> Leaving the section marked as HVO-enabled makes later ZONE_DEVICE
->>>> initialization treat the range as optimized and initialize only the =
-struct
->>>> pages that would be backed by a real HVO mapping. The remaining =
-tail struct
->>>> pages can then be left uninitialized even though they are still =
-used as
->>>> metadata for the device DAX compound page.
->>>>=20
->>>> This first triggers a zone mismatch warning in =
-__init_single_page(), then
->>>> faults while initializing the pageblock flags:
->>>>=20
->>>> WARNING: mm/mm_init.c:600 at __init_single_page+0xd0/0xf4
->>>> Call Trace:
->>>>   memmap_init_zone_device+0x164/0x430
->>>>   memremap_pages+0x43c/0x93c
->>>>   devm_memremap_pages+0x3c/0xa4
->>>>   dev_dax_probe+0x264/0x3d0
->>>>   dax_bus_probe+0x140/0x1c8
->>>>=20
->>>> BUG: Kernel NULL pointer dereference on read at 0x00001400
->>>>   __set_pfnblock_flags_mask.constprop.0+0x34/0x160
->>>>   memmap_init_zone_device+0x358/0x430
->>>>=20
->>>> On kernels without these initialization-time diagnostics, the
->>>> uninitialized metadata remains latent. When userspace later maps =
-and
->>>> accesses the affected device DAX range, the kernel operates on =
-those struct
->>>> pages and panics at that point instead of during device =
-initialization.
->>>>=20
->>>> The Fixes target predates the section-based vmemmap optimization
->>>> infrastructure, so older kernels do not have section state that can =
-be
->>>> marked non-HVO. Backports to such kernels need to handle the =
-PMD-reuse case
->>>> in powerpc radix code directly, for example by initializing the =
-tail struct
->>>> pages that core ZONE_DEVICE initialization would otherwise skip.
->>>>=20
->>>=20
->>> Actually that would be totally new code right? It won't be a =
-straight
->>> forward backport, correct? ...=20
->>=20
->> Right. Because it's impossible to backport the whole section-based =
-vmemmap
->> optimization infrastructure (48 commits).
->>=20
->>>=20
->>>> Mark the section as non-HVO when reusing an existing PMD mapping, =
-so the
->>>> section's HVO state matches the actual vmemmap layout and all =
-required
->>>> struct pages are initialized.
->>>>=20
->>>> Fixes: f2b79c0d7968 ("powerpc/book3s64/radix: add support for =
-vmemmap optimization for radix")
->>>> Cc: stable@vger.kernel.org
->>>=20
->>> ... then should we mark Cc: stable here with the above mentioned =
-fixes
->>> tag? Because this patch cannot be backported as is to older kernels =
--
->>> for the reasons you mentioned above.
->>=20
->> The comment following the trailer is used to guide stable maintainers =
-to
->> backport proper prerequisite commits. It's hard to do that. So I =
-choose to
->> mention the alternative in the commit message. But with the help of =
-LLM,
->> I found the alternative is also not the right solution. The reason is =
-as below.
->>=20
->> That pmd_leaf() path only creates or reuses the vmemmap mapping. =
-After it
->> returns, sparse_add_section() calls page_init_poison() on the whole =
-memmap,
->> which overwrites any page state initialized there.
->>=20
->> Therefore, older kernels must pass the PMD-leaf information to
->> memmap_init_zone_device() and let it initialize all real tail struct
->> page entries. Initializing them immediately in the PowerPC pmd_leaf()
->> branch would be too early.
->>=20
->> Another solution is making vmemmap_can_optimize() range-aware by =
-passing
->> the vmemmap start and end addresses.
->>=20
->> On PowerPC, reject the optimization when any part of the range is =
-already
->> covered by a PMD leaf. This ensures that an existing PMD mapping is =
-reused
->> normally and that all real tail struct page entries are initialized =
-later
->> by the core code.
->>=20
->> Maybe it should be a separate patch for old kernels? Thoughts?
->>=20
->=20
-> yes, I think we can do a separate patch later for older kernels. I
-> will look at your suggestions to see what can be done in that case.
+(++ on all the great people around here)
 
-Thanks.
+> 
+>> Reviewed-by: Qi Zheng <qi.zheng@linux.dev>
+>> Reviewed-by: Gregory Price (Meta) <gourry@gourry.net>
+>> Tested-by: Gregory Price (Meta) <gourry@gourry.net>
+>> Reviewed-by: Dev Jain <dev.jain@arm.com>
+>> Reviewed-by: Muchun Song <muchun.song@linux.dev>
+>> Reviewed-by: Pedro Falcato <pfalcato@suse.de>
+>> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+> 
+> Reviewed-by: SJ Park <sj@kernel.org>
+Thanks!
 
->=20
->=20
->>>=20
->>>> Reported-by: Pavithra <pavrampu@linux.ibm.com>
->>>> Closes: =
-https://lore.kernel.org/r/97f85592bb78a273be8519e6897e7f9b9bd31469.1793070=
-429.git.ritesh.list@gmail.com
->>>> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
->>>> Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
->>>> ---
->>>> arch/powerpc/mm/book3s64/radix_pgtable.c | 11 ++++++++++-
->>>> 1 file changed, 10 insertions(+), 1 deletion(-)
->>>>=20
->>>=20
->>> I think, this patch should go via mm tree, due to all the =
-dependencies
->>> coming from there, right?
->>=20
->> Better. I hope Andrew will pick it up once I send a v2 version with =
-more
->> proper commit message changed.
->>=20
->=20
-> I think we can add an explicit comment like this then?
->=20
-> Fixes: f2b79c0d7968 ("powerpc/book3s64/radix: add support for vmemmap =
-optimization for radix")
-> Cc: <stable@vger.kernel.org> # see patch description, needs a =
-different fix for <=3D 7.3
+-- 
+Cheers,
 
-Oh, yeah, I'll add this in v2. Thanks for your suggestion.
-
-Thanks.
-
->=20
-> -ritesh
-
-
+David
 
