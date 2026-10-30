@@ -1,153 +1,120 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D08F0606A31F
-	for <linux-mm@archiver.kernel.org>; Fri, 30 Oct 2026 03:55:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B79C606A31A
+	for <linux-mm@archiver.kernel.org>; Fri, 30 Oct 2026 04:14:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=JZqpmtFQ
+	dkim=pass (1024-bit key, unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=no64QQxn
 Received: by kanga.kvack.org (Postfix)
-	id F1AB06B05B3; Thu, 29 Oct 2026 23:55:50 -0400 (EDT)
+	id AF5E26B00EF; Fri, 30 Oct 2026 00:14:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E7CFD6B05B4; Thu, 29 Oct 2026 23:55:50 -0400 (EDT)
+	id A7FC96B05B1; Fri, 30 Oct 2026 00:14:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D6B406B05B5; Thu, 29 Oct 2026 23:55:50 -0400 (EDT)
+	id 947726B05B2; Fri, 30 Oct 2026 00:14:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id AA2AA6B05B3
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 23:55:50 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 34921A8201
-	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 03:55:50 +0000 (UTC)
-X-FDA: 85377928860.11.A6AD575
-Received: from mta1.migadu.com (out-212.mta1.migadu.com [95.215.58.212])
-	by imf04.hostedemail.com (Postfix) with ESMTP id EA7BB40003
-	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 03:55:47 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=JZqpmtFQ;
-	spf=pass (imf04.hostedemail.com: domain of xu.xin@linux.dev designates 95.215.58.212 as permitted sender) smtp.mailfrom=xu.xin@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793332548;
-	b=sK/ZklVgvS+egbMuA6oCZRLbjXvPMNbfpm1RYxsGZLbAnsg8m07f2w6HNUPRSYcVo9lD9P
-	CNGkNCX5oc1dYOIVwQA31bTU7HVlRcrhCLZfQblEMYky9rum9GrDGKqzrxYBFSb5hbGbZO
-	vUAJyLVLxv3pJzQoNw3JQzfvHSwLXjA=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=JZqpmtFQ;
-	spf=pass (imf04.hostedemail.com: domain of xu.xin@linux.dev designates 95.215.58.212 as permitted sender) smtp.mailfrom=xu.xin@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	by kanga.kvack.org (Postfix) with ESMTP id 6D72D6B00EF
+	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 00:14:02 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 6036FA8118
+	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 04:14:00 +0000 (UTC)
+X-FDA: 85377974640.26.B440461
+Received: from mail-dy1-f170.google.com (mail-dy1-f170.google.com [74.125.82.170])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 776051C0005
+	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 04:13:58 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=chromium.org header.s=google header.b=no64QQxn;
+	dmarc=pass (policy=none) header.from=chromium.org;
+	spf=pass (imf18.hostedemail.com: domain of senozhatsky@chromium.org designates 74.125.82.170 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793332548;
+	s=arc-20220608; t=1793333638;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ey3vPsJ2dQFhz2BxI4N3mBDHBT7ectNl9BIu9ANR89g=;
-	b=Y8YnXmIUQnEbW/ZopQZvDxTTda9N46Uf6AoWEGKGzb1HltmsL4tKGZ4OvnTP+QHHn9PQ6k
-	iQC9oDC2p4/Y0HYRXvaFcvVmNXPBtuX4uhZZa7Q9G7fQV+Hm090cFNa8KuY8P1KMbpxQZU
-	5KGo/gZj2sy78OoKi/A/UpxhN8GcGYs=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=U6aEVcyx4cbsQT0ReFIAsX7642J2D1rQ7p5hav7hVYg=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1793332545; v=1; x=1793937345;
- b=JZqpmtFQ7Ohd/1LNlZcCz7DJxGmfw1W0QBIwKd81WGlQ+GCSScpslPKi5z61+nW3yuNQ2DfG
- qYpgDNHPL3GYEromeJ9ePTKmdga4oQNe9eAq94ZKZxJjP2u8k8hH0quzBvtjDNrpC+rFPoXIxuw
- UlDm22KbKQ+To97lJYUZVLqY=
-X-Envelope-To: linux-mm@kvack.org
-Received: by mta10.migadu.com with ESMTPS id 29251291072b5e95;
-	Fri, 30 Oct 2026 03:55:20 +0000
-X-Mizu-Trace-ID: 29251291072b5e95
-X-Migadu-Flow: FLOW_OUT
-From: xu.xin@linux.dev
-To: david@kernel.org
-Cc: akpm@linux-foundation.org,
-	aneesh.kumar@kernel.org,
-	apopple@nvidia.com,
-	axelrasmussen@google.com,
-	baohua@kernel.org,
-	baolin.wang@linux.alibaba.com,
-	baoquan.he@linux.dev,
-	chengming.zhou@linux.dev,
-	chrisl@kernel.org,
-	dev.jain@arm.com,
-	gourry@gourry.net,
-	hannes@cmpxchg.org,
-	harry@kernel.org,
-	hughd@google.com,
-	jack@suse.cz,
-	jannh@google.com,
-	jgg@ziepe.ca,
-	jhubbard@nvidia.com,
-	joshua.hahnjy@gmail.com,
-	kas@kernel.org,
-	kasong@tencent.com,
-	kees@kernel.org,
-	kexec@lists.infradead.org,
-	lance.yang@linux.dev,
-	liam@infradead.org,
-	linux-arch@vger.kernel.org,
-	linux-cxl@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	ljs@kernel.org,
-	mason@kernel.org,
-	matthew.brost@intel.com,
-	mhocko@kernel.org,
-	mhocko@suse.com,
-	minchan@kernel.org,
-	muchun.song@linux.dev,
-	nico.pache@linux.dev,
-	nphamcs@gmail.com,
-	npiggin@gmail.com,
-	osalvador@suse.de,
-	pasha.tatashin@soleen.com,
-	peterx@redhat.com,
-	peterz@infradead.org,
-	pfalcato@suse.de,
-	pratyush@kernel.org,
-	qi.zheng@linux.dev,
-	rakie.kim@sk.com,
-	riel@surriel.com,
-	rppt@kernel.org,
-	ryan.roberts@arm.com,
-	shakeel.butt@linux.dev,
-	shikemeng@huaweicloud.com,
-	stable@vger.kernel.org,
-	surenb@google.com,
-	usama.arif@linux.dev,
-	vbabka@kernel.org,
-	weixugc@google.com,
-	will@kernel.org,
-	willy@infradead.org,
-	xu.xin@linux.dev,
-	ying.huang@linux.alibaba.com,
-	youngjun.park@lge.com,
-	yuanchu@google.com,
-	ziy@nvidia.com
-Subject: Re: [PATCH 39/46] mm/ksm: fix use of a freed anon_vma at swap-in
-Date: Fri, 30 Oct 2026 11:54:47 +0800
-Message-Id: <20261030035447.140856-1-xu.xin@linux.dev>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20261027-fixes_core-v1-39-6f74bec9a5bb@kernel.org>
-References: <20261027-fixes_core-v1-39-6f74bec9a5bb@kernel.org>
+	bh=cui/fkfgWpCfLIzu0sMbQtqdSWprMFO0xjMUt+zFXCg=;
+	b=vZ8p0DtKt7ldikJTRgBuEyHyTZ27GIYCfXUHkO90e/Vqb7HGn9DszekmC9eQU1aMWE/O+P
+	EU/67ifTuuT8nNVMH1Zuly3e51l1r7iySNdvdXQNCeEeEfne1OH9fBOtv+G5O9WcEHfI2T
+	Go27p7K09fxl+916bGhRi0EP15RuD/Q=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=chromium.org header.s=google header.b=no64QQxn;
+	dmarc=pass (policy=none) header.from=chromium.org;
+	spf=pass (imf18.hostedemail.com: domain of senozhatsky@chromium.org designates 74.125.82.170 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793333638;
+	b=5Vf2KDa10Zid14X3e+EJ9SqniDdCdwbag/gmvOIc9dYKd7mKSvg/Rwn51SzVpHvy7tpCF1
+	amHLZx3UPL6yK5IxrhGA5bpQ5VIyIJE7FVUfBdUlsoT6PX2eKFjFvKLCrSpxQl7AhC+YeN
+	knxULSQn7Don0L0qL8XVU9paJwyzHaU=
+Received: by mail-dy1-f170.google.com with SMTP id 5a478bee46e88-35829219da8so1701662eec.0
+        for <linux-mm@kvack.org>; Thu, 29 Oct 2026 21:13:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1793333637; x=1793938437; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=cui/fkfgWpCfLIzu0sMbQtqdSWprMFO0xjMUt+zFXCg=;
+        b=no64QQxnhA9u/Ew06599YzyWvkYO6QBGW1SqGRvmv6WrXv6YqKJvjrXc3FMCq89lxd
+         fBobH8am1kjmuWZDfc393Z5EQ6F78MNmamfvH8X7E5uzDdaQcNNyXPHNDLRaTYfQInVb
+         mBnuzEPOVbQ2hoorzLfC2q7eMhIeXEaoSK7ko=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793333637; x=1793938437;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=cui/fkfgWpCfLIzu0sMbQtqdSWprMFO0xjMUt+zFXCg=;
+        b=UX1W0zaLT2iEh3dBOS6zInCJMbwfqKUsjt2qezUEGDhVGdZWSNW1urRAW1GOdCLejZ
+         3uLDGBOSXNZDzIB83qYvYX0goCCPeKDY7Sqdaig991WiuUFAENJL1BpAgPFlKZKwkK25
+         l5j/Cg7QGnfJhY7dNYRyDvBJfJsxXBuVVQilS7Ohf3SvEus26yfspyrMPhclVl1xwRbP
+         PDmL16h1CrQlz6UQsJT8lKl9Eu0TD5n6uAwRVkurvJPXX0wElejCSf6Gjhl8eYKL8LH6
+         5wJZXf3WuGV2tcGuzz/WJ0S+crWuMPylFdUkVSpoOTxd8KOWxG10nAWf7QbCCnsdZZwt
+         h0/Q==
+X-Forwarded-Encrypted: i=1; AKwUvBzLSpGamKzAJfvUmZvN8rUl8Wu9/C2OSNDwcTZEcSodZ2cvf1FMZnjHmJDIM1zqGersdmNfG25CKA==@kvack.org
+X-Gm-Message-State: AFq9FYIwS3HzasM5JlM0nCOUhXjxDgWw72dKkLvVGE6Ekfc9YpB5fkzJ
+	70nZ5cjEcSF1OEyB/7SBF53W7R1sGzNT1b7iQZ12Sym8OUloYLXTdsfo5P01LHNgkg==
+X-Gm-Gg: AYBFou3OKJ4QVxsspb7w0Hh6jVlaWFZMuq3NaVpyM10D5ikPi2TkDMuefaIAOuf+nAd
+	ykIOV5c2LvhOY2S/nh8xvXc4bkzm4UpQDzod758wjWnSUm70OQ2Tm6k1asfYAs5CZyCd5oXdWzz
+	J+kdlzXxeKi3P8XyGNAOBkwMv3nIlI+xkla6+5tiUAS7vuZ2cymCyV/sOPKJAnMgZBGfPTdGcr+
+	7ptG00QOdlJOvSq241Nd/fgDJr+Tn3klFcnKRchNOaQICs2543qP6rzWSbjB2fkJNEmWxGhHqzS
+	nM53dGkLC+JHYnOB10tByMW3AMMF2TR9gmpcwXDns7NMzXK8zRcMARxv+YjSR3NoUHC5kYT/kJO
+	PJpMWLDt1WXWNz2XxNjul7TeHPg6GXQxmbzLCdvd7VVcW7OKCBDGZDBW9Nf9pYrdbej/64lTW/O
+	12F+vHzp+eI29po6sTPhBkkqLSzW1fuNDDyCjuVcCHYmTY5eUJg1BGgxti9DkVLboDGmUr0JUsb
+	uwI7OqMbRVAmDikQYPHVdpgTKHayvBdywDJJIxDE5MtPRL3T1kIfGEmevtJBuDWuf7KkFJrwEPJ
+	9Z0vILg+ndrD8FYH8kHxY0lblFCLZKwhzE+SXrW6RFd2CO2bk50WwphBG/q6nDfcgfrnDw==
+X-Received: by 2002:a05:7022:eb50:10b0:183:942e:8493 with SMTP id a92af1059eb24-1ac5a67f97bmr1611157c88.11.1793333636971;
+        Thu, 29 Oct 2026 21:13:56 -0700 (PDT)
+Received: from google.com ([2a00:79e0:2031:6:7476:5b7a:d979:2d91])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1ac0e738445sm3485807c88.0.2026.10.29.21.13.54
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 29 Oct 2026 21:13:56 -0700 (PDT)
+Date: Fri, 30 Oct 2026 13:13:52 +0900
+From: Sergey Senozhatsky <senozhatsky@chromium.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Sergey Senozhatsky <senozhatsky@chromium.org>, 
+	Brian Geffon <bgeffon@google.com>, Barry Song <baohua@kernel.org>, Bo Zhang <zhangbo0325@gmail.com>, 
+	Minchan Kim <minchan@kernel.org>, Richard Chang <richardycc@google.com>, 
+	linux-kernel@vger.kernel.org, linux-block@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH v7 00/15] zram: redesign zcomp and rework backends
+Message-ID: <auQUjtWYOuhf_M8T@google.com>
+References: <20261025021839.1542805-1-senozhatsky@chromium.org>
+ <20261029200205.ee2a4788b8fdba4a75c2edd9@linux-foundation.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=y
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261029200205.ee2a4788b8fdba4a75c2edd9@linux-foundation.org>
+X-Rspamd-Queue-Id: 776051C0005
+X-Stat-Signature: cs3oma3ddh3rhjqn1zsdim64knhh6zcs
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-Rspamd-Queue-Id: EA7BB40003
-X-Stat-Signature: 5qc4dqowoaqhfcx3dqwdhjwc4icu839x
-X-Rspamd-Server: rspam01
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1793332547-839863
-X-HE-Meta: U2FsdGVkX195Rr6bXMOBg07mSComOxbVm3SJk3JA9/JY4IE7I62M0dDw+s3BpWUyCi2A0WxlurB8RoGveZA/HxXV2UFkVIaY4IXIfL/VWYbRITnpbrknxw/gG5ELUsnkMOjeg5Hayr+con4CvSjL56nx6ZgLVzhs5x5uANjdum5c6OvKE1vWV2gge0VE2zGhHg+8t+7xeMkt9TTMvn1pDeV/qqkNbM1h3wzL1vgWNANkD4jrLBA13mxJrBEHkuuHUMCM+9HthfDuM8ybrgVJGcTVO64ji2lSuMq6O/Sj0/JqCb0fo4iFexPxmiT91w3he8xJKUXH+pnpvjvhos6na6VpFlICK8fXZBn/u6J4vOYRfxhWLfQvYneAV1HLT9eWasEhNV7/rFH/iUPyVLNR0O0JLtaKXOti6w77+f2hVsg9P+o2yspslOlZy0Lly8hzw+XtGl3lEDAWhThF/hupCbPedXMuLQ8kZMF2elNtU0/YQyNjD/Z7S5cjQw3GxFLjMdZ1F4vjLAFEBzMwh6aQZ7oVoD2oe4SG0P85djQQkO8USZpRqlgAA/B98+yLk269KCqW2DDk1wraYZ6EvbG4mL/4y2nK5s9ktJ0rx7aXE4bBkMDAKqzDAx9u57hfr6yvlujatME+UiJBk1wIoDyQ46JSHolNnhwNxwEqipy9+w4LHviEvUsOw5qUQHFJBDhB7rKdxlll1TZgoB3adrYqfmSQ2pg6iv8w4yuA0MmV/iaTVbXcPCMYEetamJZtnjq2InhtS1t+RT2pzZw0xGnaYnBhyCSbRR1/hCIQ19xmeaRCsz2a9N2f8+JQ0aXwm3+N8HM8nz8tVyKnychfo1J42UqfrgkEbkTYzKQp8CUsjMtTALTifzYtOoIw5rroInPpuBX9JuiZ+eyOQvZSndlLOT9/ejBR3Cgmftmaqhdzd4bjSnCmHApv1KaHHnxgM8/eQBMbmss9idLrOTrZqw+
- ZNWjRCe7
- vRfdKRB08sLqqtOT741+pdue6vx8FcJXrR+5oDHNwdnD4/Z0EzTQS38hIdMvJppcoCmO4h4T34ubLkOzhjdLvovaMcfrgCksoRLm6dkXzyyMWMMkwtuhPAkmUJzAMN10DvNqhqu9VquexevXbMOBYtVzXCf4PoYpD3I3BYx5F/4V8kNrw5Y0gVtqyLVTIQSLqTdqO6p42aGlDJvHPxhbsxoY6mEbzQC2fxJRMXFkUP+DwgoZlJjeaybLHJA09jDOzOhMAVSp3qvgt2M9TeMETNFALp9dr0IXpr+M6p/NhJqVmLVXFBpNubGReOTDFzJbkYPRKMb4wlAixWXT2DRDPG72raGpcR/0gV9XmaY4sA7J8GAWLIFWvZUl2oKWUVUju1b3+4gQjRqOSmL/a9J8hfgDlJQ59K/DBGvsLQ7wbEB0wAn1Ggq69Yx0a/Q==
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1793333638-553988
+X-HE-Meta: U2FsdGVkX18sort0vBzjL6egiSGC0nhKko+kvZjD5C5oji0ZQrtKML2j4LthmRnmoEwW/LrIJhKnwDZv0Gqy+N8le5qPqOL10T2iq8vMLyHQ7VlUy4rtoYPSu111a537pkKsELo8j+CnUQjPNu+nQEuTpMD/oKqUbchbGC2IjnsF5n1dGrLG3MtdBs516obgASljkCKYkjacyyU9SMPcFqsV1UOVDqajrQRVXgVKC/8ZYnd1WGN6XNYMOJUvLlO1wdN2J9jxe8lAuDaM8ryGSPUu+o5VvQ2RolxIzoEgq+fzyB/eI10yCaGV/9OuGcEde5x2MjmFXI17nlH/JxkkLY8O9LUfEosgVPkNkak8Ftbemdz8m9F0ptzMW814sTjIij8j/0BHQaA0nXHryCv1jdklsWJBM4W9KdgN/itJkzZT6VS2IZ/iRw/XQJPIXysioUjbruhPv08VjOGg/Ol4V0GenN4QT/AdYiePrL1PAOoFMJaZMYzRhOntDWODboR+q0TiNNDy23NO3oowA/QGCDsyN9RK4hcJMCCRecfdf/LhrLSB5Jyf12cRPUdCcCuCdeOg2yllRL8lA0u8e+rEwpagTb18HCfQyHxoiYgd8R62Ar0G+laLb+kapx2N3tDgvkVNXf9f6wY7pgslWViSKp+GxHRg53BELmK6q6pMRbjtT+Bbd+88ABCcjjuQyWbH5DfIKmhe+rOF4r9u+Jl/2FtLll7AhxaCBLpRrtMqA/W8nrLEF4rcCLWK/A9muSDcMSiHfQoP/H7Fkb5VjeZAEknHQwRHUXPlAkFkv7e7bKOtYaFWNGNGBHovqf2B5UAfE/jr0+gKUfEEBgdvSyCWLhWf1F/MjG4/cwRgZyU6+t+dJFKEmu/9jjI8WWH18BglO6znIzVpn22GsLl96h9yCc4gmi+vR3CuucSxRmZBSIshbbIjG7ULy3C0cR1v80H1gWE8ghGPihjrcvHKXSr
+ iGJgOlIM
+ 3VI3Y+sLdimoT5E8Mzm8JEL1VlplOATsBf2IF/Wqek0Btea0wtnM/1WqLeME0M/YWqW50G2k/NwnKdPKiu1v58KpyW1DLBZp3s/1YdGqJAKjvhd3YuJtyagDtGJgFUeBjaWW1S+yrodBHz8iBxwfiTYvG7+jTV8l9Srito1ZQHEe0MpfnW8FTp6jN/OzU2rgdufEcOLTCDOvQfoJZCboD0kn5wKI+l4Fu8S/RrnM69A7uPXa76n9sCAgEDuBfPl9V0uc1royLhLVm65460XxYKwZ1whQqwXy3+ew91hn3O04QanC5N4OE/TIeM+7rdnD1HpGI5j7n/MMK1FVk5nr+LMIESQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -156,86 +123,33 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-> A folio read from a swap slot previously shared by KSM can remain in the
-> swap cache after the process that first mapped it exits. Its anon_vma
-> can then be freed, so ksm_might_need_to_copy() must not dereference it
-> to compare roots.
+On (26/10/29 20:02), Andrew Morton wrote:
+> On Sun, 25 Oct 2026 11:18:16 +0900 Sergey Senozhatsky <senozhatsky@chromium.org> wrote:
 > 
-> Doing so can result in some false-positives, resulting in the reverse
-> mapping missing the new folio mapping, preventing migration and reclaim.
+> > The series has a number of memory usage optimisations and fixes
+> > that result in savings from double digits KB to triple digits
+> > KB per-context/per-CPU, depending on backend and its configuration.
+> > More details are in the corresponding commit messages.
 > 
-> SLAB_TYPESAFE_BY_RCU allows individual anon_vma objects to be reused
-> immediately after freeing. A stale pointer can then refer to another
-> anon_vma whose root matches, even though the target VMA is not linked
-> to that anon_vma.
+> Thanks, I'll queue this.
 > 
-> Move the anonymous rmap compatibility checks into
-> folio_anon_rmap_compatible(). Keep the page-index check and compare the
-> folio's anon_vma pointer against the VMA's own anon_vma and root first.
+> >  drivers/block/zram/backend_842.c     |   6 +-
+> >  drivers/block/zram/backend_deflate.c |  98 +++++----
+> >  drivers/block/zram/backend_lz4.c     |  85 ++------
+> >  drivers/block/zram/backend_lz4hc.c   | 105 ++++------
+> >  drivers/block/zram/backend_lzo.c     |   6 +-
+> >  drivers/block/zram/backend_lzorle.c  |   6 +-
+> >  drivers/block/zram/backend_zstd.c    | 133 +++++++-----
+> >  drivers/block/zram/zcomp.c           | 298 +++++++++++++++++++++++----
+> >  drivers/block/zram/zcomp.h           |  53 ++++-
+> >  drivers/block/zram/zram_drv.c        |  71 ++++---
+> >  10 files changed, 546 insertions(+), 315 deletions(-)
 > 
-> If neither matches, bite the bullet and walk the VMA's anon_vma_chain.
-> The VMA keeps these anon_vmas alive, and finding a match guarantees that
-> reverse mapping can find the new mapping.
-> 
-> Lorenzo Stoakes says in a private discussion:
-> 
->   "This isn't quite equivalent to the existing check.
-> 
->   Every anon_vma in an anon_vma_chain shares the same root, but if you
->   split a VMA then fork both of them like this:
-> 
->                   VMA A
->                /        \         <split>
->             VMA B      VMA C
->                \        /
->         root <- anon_vma 1
->                ----^ ^----        <fork>
->               /   parent  \
->         anon_vma 2   anon_vma 3
->              |            |
->            VMA D        VMA E
-> 
->   VMA's D and E both get their own new
->   anon_vma's such that:
-> 
->   VMA D: anon_vma 2 -> anon_vma 1 -> root
->   VMA E: anon_vma 3 -> anon_vma 1 -> root
-> 
->   And if you found a folio referencing anon_vma 2, the existing check:
-> 
-> 	anon_vma->root == vma->anon-vma->root
-> 
->   Would be true for VMA's B, C, D & E.
-> 
->   However after your change it'd be true for VMA D only, as it's the only
->   one with anon_vma 2 in its anon_vma_chain.
-> 
->   Whether or not that could actually happen in practice... 🙂 I don't
->   know.
-> 
->   [...] after your change it'd be true for VMA D only, as it's the only
->   one with anon_vma 2 in its anon_vma_chain. [...] I would [...] say that
->   you are making the test stricter but more correct.
-> "
-> 
-> If this affects performance when KSM was never even involved, we could
-> just track whether KSM ever merged anything and just skip these checks.
-> 
-> There isn't really a lot we can do otherwise: for mapped folios we might
-> be able to use folio_get_anon_vma(), but for unmapped folios there really
-> is no easy way to see if the anon_vma is still valid.
-> 
-> Document the (confusing) lifetime requirements of folio_anon_vma().
-> 
-> Fixes: ba6f0ff3981e ("ksm: fix ksm swapin time optimization")
-> Cc: stable@vger.kernel.org
-> Reported-by: Chris Mason <mason@kernel.org>
-> Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
-> ---
->  mm/ksm.c  | 36 +++++++++++++++++++++++++++++++-----
->  mm/util.c | 13 +++++++++++++
->  2 files changed, 44 insertions(+), 5 deletions(-)
+> I've always put zram material into mm.git's mm-unstable/mm-stable branch. 
+> Because "ram", I guess.
+>
+> But it's a blockdev, so I'll henceforth carry it in mm.git's
+> mm-nonmm-unstable/mm-nonmm-stable branches.
 
-Acked-by: Xu Xin <xu.xin@linux.dev>
+Thank you very much, sir.
 
