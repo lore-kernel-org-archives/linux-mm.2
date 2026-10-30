@@ -1,75 +1,74 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CDFA606A31C
-	for <linux-mm@archiver.kernel.org>; Fri, 30 Oct 2026 21:35:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADBC2606A322
+	for <linux-mm@archiver.kernel.org>; Fri, 30 Oct 2026 21:35:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=PJUUy5Wj
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ZoTtl5Wn
 Received: by kanga.kvack.org (Postfix)
-	id 4B17D6B05B2; Fri, 30 Oct 2026 17:35:09 -0400 (EDT)
+	id 9BB606B05B4; Fri, 30 Oct 2026 17:35:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 489516B05B3; Fri, 30 Oct 2026 17:35:09 -0400 (EDT)
+	id 996A76B05B5; Fri, 30 Oct 2026 17:35:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 378336B05B4; Fri, 30 Oct 2026 17:35:09 -0400 (EDT)
+	id 8A92D6B05B6; Fri, 30 Oct 2026 17:35:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 1319A6B05B2
-	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 17:35:09 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id ECD22A85A4
-	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 21:35:07 +0000 (UTC)
-X-FDA: 85380598254.14.50C209B
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 43684100005
-	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 21:35:06 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PJUUy5Wj;
-	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 5BDAD6B05B4
+	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 17:35:22 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id D94521C41C9
+	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 21:35:21 +0000 (UTC)
+X-FDA: 85380598842.20.3F9F3D9
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 0CF5912000A
+	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 21:35:19 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZoTtl5Wn;
+	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793396120;
+	b=zqmMpus9wP1QaH2Qv+fkYGZCrZMG/x9pFwsbHu6QktpnIYIX3pro0eVENBtpZwNS7ZlvAX
+	LIAgljA/PtnXjAteOnF2TgyQN7QVoKmnGuaMOXc2rOLul7n8Zd2ZzWN9XIzqxGcULAhPz+
+	rXybLmhoyFKRgRA6V9PXQYC3KxDIMqU=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZoTtl5Wn;
+	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793396106;
+	s=arc-20220608; t=1793396120;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1+5veRcUECUHly0A5XA/CEflolz9T2ehe39P3T8hUGg=;
-	b=gZ/qbNC3ZS5jPJYiQbH9kH1INKfzA78VmCzf1qTq1lDOyrY6Npp0pVwJUbg3eD9zQBlxpL
-	Dafs47voKXQUje/xO+kUbnRSOh5wkvO4NOejJoPQR/Uvq2ApZaaOU0bMKazAYcnyglSesv
-	U2WkYDDXSPjMfGlM1Jjdcz3fuzBMX7M=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PJUUy5Wj;
-	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793396106;
-	b=5BjOO+5AgA2ZgmTYzLBtTfbydshLyU2u6+qEw9GMkZjUl2Nqm3jZDbIT2simCTcFauEB0k
-	JVLL1fkc9kMpVFAp6F6tYI4zfbqk2/X1ZqW9rBs7DKJz4DGNOTIVqGhqjx2h47efWSZwsN
-	Z1BXZVWWpzu1uMIL7Bm9LRmOPBlIx+s=
+	bh=q0ROzhyVWpaAD+zcRsivDjlq++3aMe3aJhf6SnEDbsg=;
+	b=1k9IT53NaGH1CSefhE0C5dUleFfXqdGdph5EzVFPNGeGijk9kegS/UvX2DuigoqnVjNw6B
+	ON4X3L7DBpLrUSA2W+v//NMN55clBOq60X4LxhpmsWqqfd0Ht6Krod61QF48RE4TgOSbHu
+	BjjnTRVK7hMBDGgkYhMKNca4fQy9tOQ=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id CD2546062E;
+	by sea.source.kernel.org (Postfix) with ESMTP id EBE7C4141D;
+	Fri, 30 Oct 2026 21:35:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F10001F0093A;
 	Fri, 30 Oct 2026 21:35:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3C271F00A17;
-	Fri, 30 Oct 2026 21:34:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793396105;
-	bh=1+5veRcUECUHly0A5XA/CEflolz9T2ehe39P3T8hUGg=;
+	s=k20260515; t=1793396118;
+	bh=q0ROzhyVWpaAD+zcRsivDjlq++3aMe3aJhf6SnEDbsg=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=PJUUy5WjqOFEOxxPslcS9cq4MRpfXs039oRUc7R6QiTbVXF82widIkdQ8Pp4EF62s
-	 3fDDxpyXa4VvrI5WI1oZcH3kM0gxdCtz1/nzGt64w3YVK/DcZn4ePMllnHx5uA7UZD
-	 fVWkW/Pa8lpw8MUnexfi3Lw50bZlecr54soRm4itbXSJPISr/dPv7efWoyWemgNwVu
-	 Qyjd1gzv62LrwQoud9q/diiIdAn8Nygg/Yal9ASP/pHLt3SDon0LS1frQBDdE1Ckl9
-	 uS33/S4QNRkZHcM4Ml6EXoCkQJbTyf729p4IX+pbI7Idfmf7vblYdIsMIilaeu7Vg9
-	 5dNUfZMBkDCEQ==
+	b=ZoTtl5Wn+RQqFla8r3LjDKV+bAtFXOeegK5eNCIUCgycmQVrcSSjkYE9jQ+AC/9v3
+	 xYHrgenAy3jbwXbjPeZiHCVacwTobYW7Di5R/FSNKH7BVJqE+eIkvGpbyT98IFq0Gz
+	 96p6zIwxsTabga3thwvR8w/dl//OuCo6xapDVJacUt/Lk0F2Mf1bBsB2tiVMYo50Sj
+	 8ZLTCgrchSkz4EwF6OPUCgw/8dolpsJFlRT/EauLpyLe+tKnH/AlpMaBfcoC/Deicm
+	 77P0HQAgmAQ69rF6/V2oW8OVFE+dOBK4+Ume4mPw38dvbw4cvMyYcsjPg18plX2CjM
+	 gSBwSyAE4GIoA==
 From: "David Hildenbrand (Arm)" <david@kernel.org>
-Date: Fri, 30 Oct 2026 22:34:25 +0100
-Subject: [PATCH 1/7] MAINTAINERS: mention for-next branch in MEMORY
- MANAGEMENT - MEMORY MAP
+Date: Fri, 30 Oct 2026 22:34:26 +0100
+Subject: [PATCH 2/7] MAINTAINERS: TMPFS (SHMEM FILESYSTEM) updates
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261030-maintainers-v1-1-97278f8a5f54@kernel.org>
+Message-Id: <20261030-maintainers-v1-2-97278f8a5f54@kernel.org>
 References: <20261030-maintainers-v1-0-97278f8a5f54@kernel.org>
 In-Reply-To: <20261030-maintainers-v1-0-97278f8a5f54@kernel.org>
 To: Alistair Popple <apopple@nvidia.com>, 
@@ -108,27 +107,27 @@ To: Alistair Popple <apopple@nvidia.com>,
 Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
  "David Hildenbrand (Arm)" <david@kernel.org>
 X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=987; i=david@kernel.org;
- h=from:subject:message-id; bh=7LhecTsls3AZLNquyQvMAAtG4l+9TG1hurjRyz/UVtU=;
- b=owGbwMvMwCF2/OVpCdfQ3ZWMp9WSGLKe8ub+msSa2L//3hX1pffWrdjklXMk1MiGd+tJyaXWV
- d5ldkU9HaUsDGIcDLJiiixBwfcNXr5cV1vtxscMM4eVCWQIAxenAEzEqZbhr/yM3p1tOh/jhVfG
- 9u3q/LiNq3HPsZfmnpbZMg/1uA54uTH8Zouca3uz/EPdvIWb54h08/Cp/sydcORc3DOBUMsOQY0
- yLgA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2535; i=david@kernel.org;
+ h=from:subject:message-id; bh=YpR5XrhWeYStaaeRtOb6nKhSn1uNGhC94VBBnUzwKd8=;
+ b=owGbwMvMwCF2/OVpCdfQ3ZWMp9WSGLKe8ua9aA2fIvM4ZMvmI2+X/D96bZLdRFajH5NDJz8wa
+ j9xa8mNlo5SFgYxDgZZMUWWoOD7Bi9frqutduNjhpnDygQyhIGLUwAmsqiKkeEaD8Oilid6KywW
+ Zd/2MC+yz/Ioc14i/CBu1sGktzEqMi2MDD2f/rBO3rR0964/H/4+cy+TMVnblruv99eP/J/c+gq
+ q0twA
 X-Developer-Key: i=david@kernel.org; a=openpgp;
  fpr=1BD9CAAD735C4C3A460DFCCA4DDE10F700FF835A
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 43684100005
-X-Stat-Signature: xbi4bwjrys8eek1j9jf1re8rr7qhdow5
 X-Rspam-User: 
+X-Rspamd-Queue-Id: 0CF5912000A
+X-Stat-Signature: rtefzjun7hgxfiwiwqm737fto1kz1np3
+X-Rspamd-Server: rspam01
 X-Spam-Status: No, score=-23.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,
 	MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT
 	autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1793396106-484247
-X-HE-Meta: U2FsdGVkX1/v71ANnN4m1C6UvXrtSNJ3i6Kch9rBtbFSgmI4LCpT+8v3SxLZ0vUT+K7nu1hQltlbZh901LiidDw5/WWRS2ugpdoJoK9LOAXOzXQJql5vAAt71hHARqfXPTz0oZZKcoIi0rskL1E+jLaCHOFXA26bRdfvuViNKdCxjlNmf80EmZ2La7BdDgWlCksCU492Ox9kHsehtsW4zzAYevLIKV81oTbygCf77hmPLK++FZEzM/0jVMrEEqc04zXto81IF0Al4vIpzAsGceZuf4WD6m+LoOaOMFsFjY/EBqg9322gfQ1gGDSgOVpHAubjUIhZCVGrg/qCZrztur9PzyieQHI5P100HNz3BPdJ+fLvmtSYFHLBLw2O6HcjSV5HceakfHGS+2y+TonF6zE77uC1g2Pxk1oYc70ztxMV1ty75FDyIyqoht+WEJC2OQbquTCAGWE+G9FMq7udVo3Z2D1QQZq5vhidaukZqBjgc0v29X3ZY1WctOkSmbiHVKHewNiquUoJXyvVez7DlqxBdj/NN7NMV0y1CGwjW4vin7qTJJzWK2BZjBWKRpHeIXPOjSlt0ZNRbz5sT58YFbyJjL4rsWDHSmKF9hN00JQcswSSxUmdcBCzYXqhVck2bCWW+75VB7GbDab/0J0lEEskYlYJIJP35/5+XZpK3Qh7m1clgoSd+aulQePbsw7tPOMRK3JZTSf86iVrxyB9N085ehU/0M80opTQmVHN4fkUVLMLjIq1xwrFUkte7/XicJEb0KUeBZfMXYxXJNU80RESqKMzcHXIcQoW2mUcvo5Sh/UfPTW7FXxn3xJ93B8++I9p8gtmmpYnv071zP/1dvXBBRncwqJk+BFN/rZsa4kEG++oiQ1Q2kZkwSBfSVzTmjScvDBJ4Qc069B09YSOLAhPMUlptjlGorZZjwjY9icEzT+bhkyDdyW5l8+I02t6w3lJ6F5uNDp0QIaHcCn
- Qobqr32q
- ToVuPw8t1LCd5bRgb96KT2o3a1xu0BHgNejJO3D+u+PiO/NWmhzCiIVISC60kXX/+25wdYkqSf6gaa+DB74EYGIwEd0mEWHmY0KAwl+kanuMpIVUuqrKVjj6Qi9FPpP1iMP8MUevZ15Hh/Xhkeap9/MA6/r7hJOMVidufv/M+gHc5RNRs7qr+ba51sgA3KbAFPHlQa7un3/wgs92hNzCM17tY2UMI/T9EtbvwzswHZXumL+jFLnhSxR2H4vgFfBi1ba9s0v2+NXuFPmmJTTpt1/3yFFmkQvmXkwm3Z1iimoY2LMv0vKNvjw1wTTL/WKO4WZdJyStiMNak7ruizpZtGyqFsbNIve+XS7phdKzNl9/TNXgayend+if6DP29n0hJ78Ep
+X-HE-Tag: 1793396119-761445
+X-HE-Meta: U2FsdGVkX1+yqTGD2hH3sAjyt+QSEVWsGiaG1KlUF32jB7G+hG8q5tkXrThlvxFX/P3TXnl5QSpF8eiqz8Is8IuvnR2i2f6D6PWSnZGmFqrd22fDOZ8vqo/Em5wkZMj/wHJOlgV0mBcVGdWH/EYjBz93i9dBPGYlxpua7pUgG2VSVhnn4IQlyAPdejphtbmthNWI4lJGoD3886gjpsfqn+J2vYmfZgxaxv0qkc4P48Oa9Pgg9j+81Si3NsCW8rfrQVcQxN4YA8jD5Rknvx9MlbB8JjwGdbS+luyy/d9QdAw3weRL45iRQi55sbnqvrEJ/w9PIuS5w7ciZB8/8h5Zpo3m9DSqCDPxGisHwtxyI6IYK6rovl3eAbuCTu4LXZn3eXuhWfxeOcNalRpSN47ue4YHUjBL5oLOF4QP49fEqeYh9XhdXSYg6Ak4+xLtzPqC6uKgXqpzZPBal5xQTLcZzCPuGO52RdPqMIwBo5qH4jPdvbhsPLeZ31Sq6pr/+v6NVUqpOKglpRZ1yX6EeMng6lU6jP6u4hYFBv6IIawFxmkXQNrx5hT9b/THeejJjXf2yilO+oPVplqdOwKnwBcwc5lQQvvcUHTWExSMo7l/xVHAxqNje0hCw8leB/f1xftqitjeAUXH7ZdDGp3p4EtnDycNn0GFvxg3zL6VddfJBnRlMrpiTWZkMNHQ5IkydzhHYs4/HC5NoRt/ofRQlPAED0e77Fjr8n7gn6nQTh74cF7h5Ux4DuxI0fKTL8M7bSy8MdxIiJuNzFMduLJH4W10bKyPvqB/B7uD+/F0TZDZNzhxTYw52s2foB68PRKjHWxl8xO14VQPbbMoD29uC116MmfjCGmNWBYfqeiJG5JDaSKMIZ/O2FdIZYKCOvFmco5CGJk97FPzRcILlKnWwx0Em8zuvkZE1Qjt9vIN3tljJGK7OrkptMYo2vuUQFT/xyaEvej4zAkkiwKvdc0yMKh
+ hPB/V1dP
+ o6a3NbsY9efX3u0SU6jvd7svJpGDrXBWmegueErC3eC6ovjIVDmhnoQDQmBQXQTWLdDrjN98onKXZVQxN7WAJgZ3Z9DGZoBthdBYtaze+HmUKqhxEVExWTqWPQfht2vcfe0rAVhNiYWuk7PUAPyWuWei3OV50T2XgF71hCWJlFeWmjkPHm1VkHp3snXZfYwa90lYaZ+tGPhc0njMLgqa/8Cs35zt8mzsZNka6tL4pUKqrKr1u5gGqhfRbsa3YfFYO8eHEFSuluqj/5arK1bV+YCUPYLg9fxd5QFhF33PW3lDirtvSZbVnD1ob7IbrLV2t2SbAJJNyfsnre2Y/gDkMXGW4AHNmHG81HxwB+E5D9ka92F0/vvyNnEv2y0w59yUukJGIRxEVaFzE/Gjz8H9idYMYuJmGV/5X4guCeNQhObEDhru6vXIJG1HIBRXKvbN9iTv7sw4o7PzGIbwktharqgTUz9hmTPY/xTAMQ5NmYIxZLI0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -137,32 +136,79 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-"memmap" will be used as a prefix for branches, but not as a branch
-itself. "for-next" is the integration for all these things against which
-people should ideally send patches.
+I am not really the best shmem/tmpfs/memfd expert around, but it should
+be good enough to judge when something is ready to be picked up, to then
+pick it up. I'll have to heavily rely on Hugh and Baolin on judgment
+for the more involved and more controversial bits.
 
-Not mentioning a branch makes them assume "master", which is wrong.
+Rename "TMPFS (SHMEM FILESYSTEM)" to "MEMORY MANAGEMENT - SHARED MEMORY
+(SHMEM/TMPFS/MEMFD)" and move it accordingly. Add myself as a MAINTAINER
+so people know whom to CC.
 
-So just mention the right thing, which is "for-next"
+Add mm/core.git as the target git tree. Once shmem becomes a high volume
+component we can dedicate it a separate tree and have dedicated people
+pick it up.
+
+While at it, add some more shmem/tmpfs/memfd related files+directories
+we missed so far.
+
+There is also "kernel/pid_sysctl.h", which includes some of the pid
+namespaced sysctl vm.memfd_noexec. But that's really more of a proc/
+namespace thingy, so it's not a good fit here.
 
 Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 ---
- MAINTAINERS | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ MAINTAINERS | 30 +++++++++++++++++++-----------
+ 1 file changed, 19 insertions(+), 11 deletions(-)
 
 diff --git a/MAINTAINERS b/MAINTAINERS
-index 7a162e9bcab10..dbb5582ec1c74 100644
+index dbb5582ec1c74..0baeb37b0dcdc 100644
 --- a/MAINTAINERS
 +++ b/MAINTAINERS
-@@ -17566,7 +17566,7 @@ M:	Mike Rapoport <rppt@kernel.org>
- M:	David Hildenbrand <david@kernel.org>
- L:	linux-mm@kvack.org
- S:	Maintained
--T:	git git://git.kernel.org/pub/scm/linux/kernel/git/mm/core.git memmap
+@@ -17772,6 +17772,25 @@ S:	Maintained
+ F:	include/linux/secretmem.h
+ F:	mm/secretmem.c
+ 
++MEMORY MANAGEMENT - SHARED MEMORY (SHMEM/TMPFS/MEMFD)
++M:	Hugh Dickins <hughd@google.com>
++M:	David Hildenbrand <david@kernel.org>
++R:	Baolin Wang <baolin.wang@linux.alibaba.com>
++L:	linux-mm@kvack.org
++S:	Maintained
 +T:	git git://git.kernel.org/pub/scm/linux/kernel/git/mm/core.git for-next
- F:	Documentation/mm/memory-model.rst
- F:	arch/*/include/asm/sparsemem.h
- F:	include/asm-generic/memory_model.h
++F:	Documentation/filesystems/tmpfs.rst
++F:	Documentation/mm/shmfs.rst
++F:	Documentation/userspace-api/mfd_noexec.rst
++F:	include/linux/memfd.h
++F:	include/linux/shmem_fs.h
++F:	include/uapi/linux/memfd.h
++F:	mm/memfd.c
++F:	mm/shmem.c
++F:	mm/shmem_quota.c
++F:	tools/testing/selftests/memfd/
++F:	tools/testing/selftests/tmpfs/
++
+ MEMORY MANAGEMENT - SWAP
+ M:	Andrew Morton <akpm@linux-foundation.org>
+ M:	Chris Li <chrisl@kernel.org>
+@@ -28202,17 +28221,6 @@ S:	Maintained
+ F:	Documentation/hwmon/tmp513.rst
+ F:	drivers/hwmon/tmp513.c
+ 
+-TMPFS (SHMEM FILESYSTEM)
+-M:	Hugh Dickins <hughd@google.com>
+-R:	Baolin Wang <baolin.wang@linux.alibaba.com>
+-L:	linux-mm@kvack.org
+-S:	Maintained
+-F:	include/linux/memfd.h
+-F:	include/linux/shmem_fs.h
+-F:	mm/memfd.c
+-F:	mm/shmem.c
+-F:	mm/shmem_quota.c
+-
+ TOMOYO SECURITY MODULE
+ M:	Kentaro Takeda <takedakn@nttdata.co.jp>
+ M:	Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
 
 -- 
 2.43.0
