@@ -1,132 +1,132 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79C7C606A322
-	for <linux-mm@archiver.kernel.org>; Fri, 30 Oct 2026 14:46:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9566F606A321
+	for <linux-mm@archiver.kernel.org>; Fri, 30 Oct 2026 14:46:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=toxicpanda.com header.i=@toxicpanda.com header.a=rsa-sha256 header.s=google header.b=JJHHwj+X
+	dkim=pass (2048-bit key, unprotected) header.d=toxicpanda.com header.i=@toxicpanda.com header.a=rsa-sha256 header.s=google header.b=CNh8Hsdf
 Received: by kanga.kvack.org (Postfix)
-	id 7078C6B05C5; Fri, 30 Oct 2026 10:46:16 -0400 (EDT)
+	id 8DC436B05C6; Fri, 30 Oct 2026 10:46:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6B8756B05C6; Fri, 30 Oct 2026 10:46:16 -0400 (EDT)
+	id 866D96B05C7; Fri, 30 Oct 2026 10:46:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5AB5C6B05C7; Fri, 30 Oct 2026 10:46:16 -0400 (EDT)
+	id 7078D6B05C8; Fri, 30 Oct 2026 10:46:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 2E8BB6B05C5
-	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 10:46:16 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id A7CA21C40B0
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 420CF6B05C6
+	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 10:46:18 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id ADF2F806C0
+	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 14:46:17 +0000 (UTC)
+X-FDA: 85379567994.17.8E03959
+Received: from mail-qk1-f177.google.com (mail-qk1-f177.google.com [209.85.222.177])
+	by imf15.hostedemail.com (Postfix) with ESMTP id BDEDDA000C
 	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 14:46:15 +0000 (UTC)
-X-FDA: 85379567910.12.65EE77E
-Received: from mail-qv1-f54.google.com (mail-qv1-f54.google.com [209.85.219.54])
-	by imf11.hostedemail.com (Postfix) with ESMTP id CA38F4000D
-	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 14:46:13 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=toxicpanda.com header.s=google header.b=JJHHwj+X;
-	spf=pass (imf11.hostedemail.com: domain of josef@toxicpanda.com designates 209.85.219.54 as permitted sender) smtp.mailfrom=josef@toxicpanda.com;
-	dmarc=none
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=toxicpanda.com header.s=google header.b=CNh8Hsdf;
+	dmarc=none;
+	spf=pass (imf15.hostedemail.com: domain of josef@toxicpanda.com designates 209.85.222.177 as permitted sender) smtp.mailfrom=josef@toxicpanda.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793371573;
+	s=arc-20220608; t=1793371575;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=yCMnnIVyw92jHKfgNzcCEWbI9184jZi+CFDafz0WrU0=;
-	b=IypXW1r7wvfGZSmW5tdkhfsRm0gn/UVabUx0yU7uE4bXV/SYfM7rfaJhs5rcQk02K2uBq8
-	I94e26pY3Cov41E/RlRuT3fWN7cjnS9GcePu45B6uWZ7fyxoc6Focr9W+EwnaLKtyWk7rq
-	WbOuWl+I3iTgxAkbuVf0xlGKq06g9+k=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=RclavrmKYR8zYBwA6iFW+yoiLf2sni8q7Y+lTpJV7rY=;
+	b=1/4j/12Obr1F1WcPS+kPTg383nQzCikF/ajJL4hRWngX8Uyda73g1fY5yDDQjTEILAxfl7
+	y6W0SqK0Q5CL2bxTeI7gjidczeaHmikqriQHppZc+WBUriwQTELPlloPURfQmbLytT38Bc
+	rBhpuz8WOXFs0r6JItTeBv9ogkThyTQ=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=toxicpanda.com header.s=google header.b=JJHHwj+X;
-	spf=pass (imf11.hostedemail.com: domain of josef@toxicpanda.com designates 209.85.219.54 as permitted sender) smtp.mailfrom=josef@toxicpanda.com;
-	dmarc=none
+	imf15.hostedemail.com;
+	dkim=pass header.d=toxicpanda.com header.s=google header.b=CNh8Hsdf;
+	dmarc=none;
+	spf=pass (imf15.hostedemail.com: domain of josef@toxicpanda.com designates 209.85.222.177 as permitted sender) smtp.mailfrom=josef@toxicpanda.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793371573;
-	b=gm1aG+tUsdutjgLryB3yJWOaSNsfeuVY3cBie06onJIAGf0q1fglrFS9TE0gfrma62jqVG
-	+mKz5q2KGxgQPJ3HSdBCCyIV0Ruh6WWD5zlbp5gw+mlvn6SKk0fMD1AsZ+65IlV3SAwBYa
-	cVoHSMXLsBvAW8cr8shlOE+gGH8fXQY=
-Received: by mail-qv1-f54.google.com with SMTP id 6a1803df08f44-91c63449320so9943196d6.1
-        for <linux-mm@kvack.org>; Fri, 30 Oct 2026 07:46:13 -0700 (PDT)
+	t=1793371575;
+	b=TERE+9JbN2fmf/RvnCWfnW8R216xRLa7i77n8qHqhB4mH18HTldQQbKGRJ7hTzoM8Js6BI
+	TCOO7a4Iy7QYfTboTWp+G7diavhI84JZiiDvxuLa70oWD5U84ooNlsWFdmIzAU4gpfaXVn
+	RqIcRSwoPH8aB7cj/ivFOZ3BtkwzGig=
+Received: by mail-qk1-f177.google.com with SMTP id af79cd13be357-93f3c8958d5so89991185a.2
+        for <linux-mm@kvack.org>; Fri, 30 Oct 2026 07:46:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=toxicpanda.com; s=google; t=1793371573; x=1793976373; darn=kvack.org;
-        h=cc:to:content-transfer-encoding:content-type:mime-version
-         :message-id:date:subject:from:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=yCMnnIVyw92jHKfgNzcCEWbI9184jZi+CFDafz0WrU0=;
-        b=JJHHwj+XUTSwrBMsN0UDSifRognlwV+Zow775eprfnqhtIGVmT/9v38Nf4xtXv3WER
-         qUg3zohLJETcNr+ok57xJKO7xrqAAoH6tPl28ciIUfbG5r0XkW/B4UH9RBi+uJyVcSib
-         3fQ6N3Gz/4fvMrsZdiBzkXcbTA5pN/rfv2jrfsPpTEfhbmIGkv/pn0oyYP+QIrOE1eEi
-         YpZnktrFNaZNWHltNY0um8x4BwUFW7C92hxbZMmrdshMG+T38YG5NPaNFg2Q2QoKnf+V
-         oT5PGOvvF4xab0Ci8FpuTIEKigraDNrOEVYiHuATCMMX+SQNHpZ+TUrbRlYtyLnq3uWa
-         K0NQ==
+        d=toxicpanda.com; s=google; t=1793371575; x=1793976375; darn=kvack.org;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :content-type:mime-version:subject:date:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=RclavrmKYR8zYBwA6iFW+yoiLf2sni8q7Y+lTpJV7rY=;
+        b=CNh8HsdfmQFzrGGR9MDCFhJBP4AGYDT7H7HoquWeUNmQs+OgbrxtSa0j0fkYIoQttl
+         R8mNvqrxGHjWmhRzqfNCHxlPvtzLX2GXHRe1+6f2IGlc4X67EGNKuphXzRbVJWvA7HV2
+         wKXYD0nJOK28Ee5/OyAynqWIVfexSFT38sZS36pnpTLiC5VMW3U4QsYbu5l4hWjUQfqy
+         mOUNgUEHGWn44Yfd0/4kCMfhvSb+bTCfkB5HUtqvyNis64+KUacPEiY2leGzbdw67maA
+         mnKpMhnzZEaywHHgZBYqwPswmcL3iUYINbxRmJsPpEd4ixgjvaohB2fciGteibaAFZT8
+         7+Ig==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793371573; x=1793976373;
-        h=cc:to:content-transfer-encoding:content-type:mime-version
-         :message-id:date:subject:from:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=yCMnnIVyw92jHKfgNzcCEWbI9184jZi+CFDafz0WrU0=;
-        b=lJdRklFQCOH3VXbt9GfE+fPvFMXOqvvpyboGgzL6z4l1xjdeXUq6Fhy/byL7WFrpWi
-         q9oIfJFY52I8Xy/S23ciIKq0VwvT7vtQCL8PzNSFYyJSEnLOu4/D9dCeZsQXVAkO7vpc
-         Us9WPcD7ErPMCi0aQ3a8shyVNTdk1UXuqHQ487CbuAVFNsZd6mwcBeggw8CPOebq7F34
-         u1wpmg/tcHn+HQdDpksCd22BrvT8sEZSbRk6LOWeXC2EfOcM6v4zf4nXDuELUPCBF3gJ
-         R5UNLhIf8TcLS22qdlUVIghjvdlF75jG7M4MNY7oMiM62QI+pUTurYtOHelyRGaaEAof
-         9oWQ==
-X-Gm-Message-State: AFq9FYIeEDJoLIUhRiVQuIjW1Ys01TCkee2JxQYznh6lzHxBiR35YGRg
-	JNiNRCztvUJko4sRGs6GrMVEF373kJ6vCrgC27p/0vNY9arr8a+qE38lKr0Q7N4sypgo2aKZmsF
-	J7tKi9IU=
-X-Gm-Gg: AYBFou2ISyZEmvejtAalr74Niz28oKjAQTvuEgvdpZ1oChiaQL6o4w4C8eDNPHJTYCM
-	SsYumF54cPqunTUKRMVCs/hxas5FoMCmO2vmOOoFlHNMtOTcrMnFJZzITia2T4RUF4ur84dyIuB
-	VO5X5zJmC7o4SHbm0r00TeC4cUN87qso5FGWZfX9+VfAiUs8IP5+MS17BflHtXQN3kY7VW6m9Cu
-	+UMuwLSLdA/cqGXU/ZeO/2V0pej04a0bAIADhsSkFd3ESjo7qhTPPt0qqiKV9s1v1FCpqmCW/ZR
-	PaDQJVGVLjlnA6rc5wADaNfbZUm74XVHGW7o9qzYF97GAD0oFoG94MaYb6UNv6lgspISRDA2Jph
-	Vmrp0rleQSR8CQ38/HXOGfLoi+/ehLDUB7Tk3/JJt1AiUoF6wTuuhpHalch/P6Iulx4pzfGx9VV
-	KHDKTI7k1jxcfJ+rLxy+xOd9UHQHdYh/oW9rrkqPI+n32CkFxFFLBPPEsf5PKkUHay6aOkQTZfI
-	T7uOBfOnI5w/wUTwI+N7yRcH4mm/fom0VtyFJe5C6rVD7MJPIaGIUQBmkgzopBBeDelmaTQ6qBl
-	h/XIQpC0osVcZJ3XYlEtYpF7bL65pzCroLIdQOjPZK3Q
-X-Received: by 2002:a05:6214:4507:b0:91c:7c3d:715b with SMTP id 6a1803df08f44-91ca4baa257mr36060366d6.55.1793371572909;
-        Fri, 30 Oct 2026 07:46:12 -0700 (PDT)
-Received: from toxicpanda.com ([153.61.196.253])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91ca807047bsm16670696d6.39.2026.10.30.07.46.12
+        d=1e100.net; s=20260707; t=1793371575; x=1793976375;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :content-type:mime-version:subject:date:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=RclavrmKYR8zYBwA6iFW+yoiLf2sni8q7Y+lTpJV7rY=;
+        b=Ov44iWfOMbCSRn9dDM2ur4nlY6WSSlPfEe64pYLbr3NMCTDtIdPukzB+NOtJZNygvZ
+         yM+uKxjRHYAWnPWvcm1cHbkpa3xa//R5D2hjHURCZeGcVVZZOI3DZjg9TiDXDVNlsucr
+         FjLBdTtVVbG1F7QeDpwCzm4VQxwTzNxYW3JT3VRxBeDIYsorhkPKCrwvn8xecsYxvKSA
+         aTGoa9CyoSkbKUUdsbmAjDmFA/7BnJA29IGNE3jSxukf3xcfl7neRmV34ixKXFVNEOSr
+         pXcxgA+M/UFvDg9Psj5Arl3IuRAR50SlLOmOhbmN9YP+A1FjBVDZTlxdNgFQuMRb4Yq9
+         aM6Q==
+X-Gm-Message-State: AFq9FYL4E2l8bNrWF+Jnf3GVp+csdnqksmi8IFOh7PeuM0WO9QglZQ/A
+	xbb4N/srbsobh+5dQZ6zbZp93RZX073co+O9z+mjPGxYpNFSWUU8uGJHVCtPuyu4BbtlvGHEKw7
+	Izlp5n6U=
+X-Gm-Gg: AYBFou3y07n/Grs+664NxupnaKPkmoJR962V2WcW3j6IFKW/2R8HnYpOsuYCydrgc3p
+	NRhL+TXSpXZGbLDrbLCyx2YF7JlH8tpzmMnl+C9CH3cT3aIMEcprhfflUpt9fqVGUmgOk6HfEy+
+	pBB9aFCOUI+IQKawNtiZuDCufM50sFB44buA5XgdFdtaHdpDoxqAZULra6h7mdczd3CVKA7QGBR
+	oFJoEWRMQFCR0bwX3kzI02G93VsAopiXNesOdaKOGqT4An8Cn62p/57K1DUzcuOE7OTPZ2NapKa
+	nqvqhfx82ErW27jGrZVWgIdiTHGWeu1AfLLp7eZkDs+HCYwUgZep7WootqGuSyONKwgRWANAjKU
+	aZ9PLmPWw3tnH9EMHX8RKpsr5I0MtClxpvP2YkOjc/Sj5jyJ06F7AxbeUuMCqrSPALyFh58+JUX
+	avgNmwpPq6RJUV8cocY3THREdRNbFjBePD8x3SLp0YAKhID2bhRO4CKyDrA9wOtgGZa20qKQz/l
+	j91QVaA1NaHmlmBo/cqCgbCIQQO3PZyuayxsEgJekdkdD8tYSeg/JmtMjjzfpgxpFniIzwfswDK
+	gZG4sx/V8qoshvLJHKtZh+09LThHsEujjw+PN1KVaUFcyA==
+X-Received: by 2002:a05:620a:2989:b0:939:de48:e41f with SMTP id af79cd13be357-9442167723amr446697085a.31.1793371574905;
+        Fri, 30 Oct 2026 07:46:14 -0700 (PDT)
+Received: from toxicpanda.com ([153.61.196.249])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-944252e5492sm158644085a.1.2026.10.30.07.46.14
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 30 Oct 2026 07:46:12 -0700 (PDT)
+        Fri, 30 Oct 2026 07:46:14 -0700 (PDT)
 From: Josef Bacik <josef@toxicpanda.com>
-Subject: [PATCH 0/2] binfmt_elf: don't ignore a failed unmap while loading
- an image
-Date: Fri, 30 Oct 2026 14:46:03 +0000
-Message-Id: <20261030-b4-binfmt-elf-trim-v1-0-dbd8683bccf9@toxicpanda.com>
+Date: Fri, 30 Oct 2026 14:46:04 +0000
+Subject: [PATCH 1/2] binfmt_elf: fail the exec if the image can't be
+ trimmed
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAKyt5GoC/1WMQQ7CMAwEv1L5jEVaAge+gjjEiU2NaEBJipCq/
- p2EnjjOaHcWyJyUM5y7BRK/NeszVuh3HfjRxRujhsowmOHUm4NBskgaZSrID8GSdEIKQuYoHCw
- ZqMdXYtHPL3q5bpxnurMvrdQW5DIjJRf92BTZ/Wb+w7CuXxsq7/SgAAAA
-X-Change-ID: 20261030-b4-binfmt-elf-trim-bdfb05fed4b0
+Message-Id: <20261030-b4-binfmt-elf-trim-v1-1-dbd8683bccf9@toxicpanda.com>
+References: <20261030-b4-binfmt-elf-trim-v1-0-dbd8683bccf9@toxicpanda.com>
+In-Reply-To: <20261030-b4-binfmt-elf-trim-v1-0-dbd8683bccf9@toxicpanda.com>
 To: Kees Cook <kees@kernel.org>
 Cc: linux-mm@kvack.org, linux-fsdevel@vger.kernel.org, 
  Josef Bacik <josef@toxicpanda.com>
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=openssh-sha256; t=1793371570; l=1006;
+X-Developer-Signature: v=1; a=openssh-sha256; t=1793371570; l=1902;
  i=josef@toxicpanda.com; h=from:subject:message-id;
- bh=lg/mj6Jw3ZBjdLAYc6y3MhHuv172qISBdY785SlJBPE=;
+ bh=mcWigSZ31aOPfjIvV2ZnPXU0SXI61cAyYzcWE50Squo=;
  b=U1NIU0lHAAAAAQAAADMAAAALc3NoLWVkMjU1MTkAAAAgUBr36M/n0nWN0DNbnxwzIiCZez6MG
  JiruuNaSCI/zXsAAAAGcGF0YXR0AAAAAAAAAAZzaGE1MTIAAABTAAAAC3NzaC1lZDI1NTE5AAAA
- QDzHcdXgLRvL7F9gDO3Le73SlD8R8UEbq0KX7qbr+KM1rRWzz9y1RBSZsofbVeEELhi1tAVcaTS
- liawpc9eNhgc=
+ QBpJcKYFs7IlTwoxGS5PBOmkhtM0PT5KngLR7zx8sX79DnQwktQo+kY6Uvnt8SOiw21Q2Qpyf6p
+ sF8oWWcAvQwM=
 X-Developer-Key: i=josef@toxicpanda.com; a=openssh;
  fpr=SHA256:C8kOX2QUJCMqnCX+KEeoqRAjLo9L+ELOSH2NSAJHqGA
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: CA38F4000D
-X-Stat-Signature: xzftiah5sf3qdp8yrd3o6ohb3z4tosa3
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: BDEDDA000C
+X-Stat-Signature: 6rmasptx1bgah6zw1j6453gcn8fw7hhh
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
-	autolearn_force=no version=4.0.1
-X-HE-Tag: 1793371573-359829
-X-HE-Meta: U2FsdGVkX18jS0OrMIwUYzU34o4ZVcA77ZRg+quy886DC0X6ARHY1IXPVLziiqQi8rXjKIoAZaoyeFEZF7q5PemWRsyQ1M67y0QV+fiKPWekWH9j/mN5Bs2h8H4tvzqGEqxViNCLMkrrUI3k+giUuWWArK4Sf5P84cxfqhuc7UpTIMzOWhyWSRo72nn3u2hqzXObK7YPspt3Jn7rjGw797/6w6/fyejWcehfI43nH/jKzyCaLTsDVIJ93W54AXByPBzbJRwgbEaLomMJG58qk90/mYjldcZPnsLI9LICwOWN9hw7ZODpn8d+w16JhZRLpDVbqAmDrxpy+Aci/Ijg8wOiAlEf3R3fKC2S743oobORs5Ho67XqMVoQdUlV2pWWoE122PfkjvNhxKOVBhSqs7qTYtFczaxtglL1D6qoRHvkpo0NGQxb1MUPGUZFjqCPLsTxX3QueSFaGXiXwBVx+bha2Qh4xbtBlY999TocQJoTAPFVkH7oDFvSodGVasYpOV2E+W0V71bDHaa06IMc8lVGEJ3/yoKJ48brpcylyPQVYk6r1qhWaqRFeup1SEdWMHaIohV/Cm0pEJHoX2rsCjNYBgUOP/ZMkFV0UvIxliE4kIMNljx9VE47BnqxpeXUyPT0NnDf//Wyvv+uLVjavluhiqf7xF7IOETfcZ8A4apvp8/xFTIcPvUu0g/1MZZhS3xGrGwlYyRNDQdwQeNMIkthz0lwqqzpnSDRS9XAcKU8/3ImLuIq2ifC37nlZc4YQ/rCKXjXcQp6VwzluJZxBvBUr3/2tulzb8XxgF4QJfX9yE3qxcYjuqeDf426YUrAN7mSkuMb6TLzQZW9HjnOZuljAzIe2+FuHP2e4Ntq/nwlt7oBqIGUBAubRZd83pUqlgI3buGDeR+c6H9Ef+z+PlnEmj2vsHlBIW/DWiE9hvc90MritJTPea1Q4nR0IW/5SuN3po/LmKRUtxlgkWZ
- RdztMpk9
- AxO2bYmM4Wj6klyivTqRlGKrKxbXdnkKhAEjVLyD04mbr7yKvdiPM+SeXMY44Fv9/7cNUcJ8rdQMq+QSasWId26+IKVrlocwZJ6Hk/H2iC6WSkQQKS8Z5CuRqR1NW4wSP3kFOFp03MdkmHMubj1vR2WsTETlehFUNB6vFVqAQgrxfO/pCGYwM9CjIj0kchkMlSdNLWLAX5A0a5WL3IRm0VLmk68H1Q/pfaULmHX1djgPPDJOwfEHvb2QmMMO9zZZtZT9XIjypGsLwDCMWYGB+ld8I7r5Oy7Sb5Eheo34pHHFbcS+ov00rrABKoNFBb1Urv35/
+X-HE-Tag: 1793371575-445822
+X-HE-Meta: U2FsdGVkX18Sw0Ni3CoKCJjOVjVeHbdN5x/TuWRtyuvA5zI+uXUDFqpTjS7I2lo0k5gK57eN+fm+vq1/3Tfzr/ARjuv+VBRTSYTKVrz8HAfXh9rvG+f/twePEkS2OGF8nslcmmo8+vAApVC/BOJEJ6lQB5yoCy0TZRsaQdVMHVMq2lyZUwHNCDWndBZv/LoIYkSngxSDSMwbjJ7URNERL1X7RknnjAAcL81vzP2fZKQ5A1mv5CwSaupAHSqhfdI5suYPlPShJL9NOv5uhLUcg0CHWWUQn+vpIBNi5AUmSFLPhQuBzYyLHRiAJweX47zG7prIRwGr0QLoOm2pnYV5+cN849wBHa16h1hvEfaz+nknz/Xc8MKQ78IAldfDBBvdthPKq8MmQbQEDITDrqwlgM1TOo7R1uxnpDvHz3DtWxpnrzua/B/OVo+GfES8ruZve4cX4qQcD2i3b8zdqLOhXQnVxoOPTDOQihLBEeBLsDgIJ0ceJcVHUpg1rRBEOREPjkL0r8DUu7ShajRtfKrZajglXKJaRzwTR7bl5q9cHvz2Dfe9mD2810S0wJkN2JMw1fh2SgWsr6QiaDrk4eoM8bp8RX68398OAjtlWydz46wVK+j6DC+7pnaDkpUxwuKJTtNWEmouW01FpqPnuGl2TohxCZETlf+LWhX+xRGMt+/mCjSEMURagPuaQY5grD8L7HxlcZGs+JkEOWec9TmO2XvKIIOq0cTPmU+mzfPT7WPmWvJnlFNVNVTo4lLzg5hVa82w+fcccChtwTd9L3/bP2wjSP9Gi4tKQTz/WV6RkInckjSMXnComqNrYyKQ4tz3xOw2nhoCTRmyx9q61L9ejs5Sg8Cezz0ODWkOld/+5BBz4XSD1wbcn1Q1Y4g9XsBLiWdyjo8h9x4vYmX6e3VSn61cIkCpu3JZXOvFVw5Yxb7sDhVPCSpzdi+I2LU4jyEv626TH+FQBEcuc/RZawQ
+ hiWZPjOE
+ QkW4dQONXVor2A0jyjzEpQDW7zUD3r/4qeNP1CIJl2LvzaKNnx7jLTOMBIek54UeMQSyXZ1Or60GtIc6O0ipAKBakpF+w1UKdUoPKlJdQ2viYCcn3a7nk7E8NWtxfngoCq7CNgoEMth4AgXe6tReMDw0k3cIzBsHUFDbzxYAC1PwMckdDUT1yTjhP5nJUXoczKLICzbrFfKqBPFGfgUVTMmINRq8B0jE0H2zriKsJiBJCKmG5ywpF2lDxRnjaWYWAGcDulMa6kzNCfzTsvtib/ERVv7w7YjnYjZupyJjTMkNiBAeM0k1GmZNOH93MQ1WwBgO0FfHm+gWEyDIYbqBDvKNt22C2dYm4qLQdOoHBDZIWKP46s592qab5dk702vARSBST
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -135,32 +135,52 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Hello,
+An ELF image can be started with the holes between its segments filled by
+file contents, mapped with the protection of its first segment.
 
-I went through everybody who ignores the return value of the munmap
-family to see who can't cope with a VMA split failing, and the ELF
-loader is the one that stood out.  elf_map() maps the whole image and
-trims it down to the first segment, and if the trim fails we carry on
-and run the image with its holes filled in.
+elf_map() maps the first segment with the size of the whole image, to find
+room for all of it, and then unmaps all but the segment itself. That unmap
+splits the VMA, which can fail for lack of memory, and its result is
+dropped. This was reproduced with fault injection, by failing each
+allocation of an execve() of a static PIE with 2 MiB aligned segments in
+turn.
 
-The second patch is the same thing for the mapping we use to probe for
-an aligned address for a static PIE.  That one doesn't need a split, I
-only found it by reading.
+Fix by returning the error of vm_munmap() from elf_map(). All callers are
+past the point of no return, so the task is killed and its mm goes away as
+a whole. A failed trim of the alignment probe for a static PIE was harmless
+so far and fails the exec now as well, which is not worth a special case.
 
-I tested the first one with a loop that fails each allocation inside
-execve() in turn and compares the layout of the new image.  Thanks,
+vm_munmap() returns -EINVAL for a length of 0, which went unnoticed so far.
+Skip the call if the segment ends in the same page as the image.
 
-Josef
-
+Fixes: cc503c1b43e0 ("x86: PIE executable randomization")
+Signed-off-by: Josef Bacik <josef@toxicpanda.com>
 ---
-Josef Bacik (2):
-      binfmt_elf: fail the exec if the image can't be trimmed
-      binfmt_elf: don't leave the alignment probe mapped
+ fs/binfmt_elf.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
- fs/binfmt_elf.c | 13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
----
-base-commit: cd1d0b147afa81f80927f9711e53401703964217
-change-id: 20261030-b4-binfmt-elf-trim-bdfb05fed4b0
+diff --git a/fs/binfmt_elf.c b/fs/binfmt_elf.c
+index bf7f8f47548d..bf0d4df16ae1 100644
+--- a/fs/binfmt_elf.c
++++ b/fs/binfmt_elf.c
+@@ -391,8 +391,13 @@ static unsigned long elf_map(struct file *filep, unsigned long addr,
+ 	if (total_size) {
+ 		total_size = ELF_PAGEALIGN(total_size);
+ 		map_addr = vm_mmap(filep, addr, total_size, prot, type, off);
+-		if (!BAD_ADDR(map_addr))
+-			vm_munmap(map_addr+size, total_size-size);
++		if (!BAD_ADDR(map_addr) && total_size > size) {
++			int err = vm_munmap(map_addr + size, total_size - size);
++
++			/* Don't run an image that has its holes filled. */
++			if (err)
++				map_addr = err;
++		}
+ 	} else
+ 		map_addr = vm_mmap(filep, addr, size, prot, type, off);
+ 
+
+-- 
+2.55.0
 
 
