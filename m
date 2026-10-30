@@ -1,92 +1,158 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C79D606A31F
-	for <linux-mm@archiver.kernel.org>; Fri, 30 Oct 2026 08:44:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43620606A31D
+	for <linux-mm@archiver.kernel.org>; Fri, 30 Oct 2026 08:55:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=W9G715Mv
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=CXll4QP4
 Received: by kanga.kvack.org (Postfix)
-	id 5F46D6B00EF; Fri, 30 Oct 2026 04:44:51 -0400 (EDT)
+	id 1E96A6B05B1; Fri, 30 Oct 2026 04:55:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5A5026B05B1; Fri, 30 Oct 2026 04:44:51 -0400 (EDT)
+	id 1C0AF6B05B2; Fri, 30 Oct 2026 04:55:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 49B506B05B2; Fri, 30 Oct 2026 04:44:51 -0400 (EDT)
+	id 0D7616B05B3; Fri, 30 Oct 2026 04:55:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 28BCF6B00EF
-	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 04:44:51 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 6BEF616060B
-	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 08:44:49 +0000 (UTC)
-X-FDA: 85378657098.20.BD88C99
-Received: from out30-133.freemail.mail.aliyun.com (out30-133.freemail.mail.aliyun.com [115.124.30.133])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 5C91FA0005
-	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 08:44:45 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=W9G715Mv;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf25.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.133 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id CE4506B05B1
+	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 04:55:20 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 50B90C062C
+	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 08:55:20 +0000 (UTC)
+X-FDA: 85378683600.27.FB43152
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 919E840002
+	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 08:55:18 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CXll4QP4;
+	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793350518;
+	b=G2G6RusJONOcUa+hFdPSYzhZhu+jjqMXyEK6t+74Kks9S9N5kbyW/HJJnrcdp0RGAzuG9m
+	sXvaHUy1pLd9IBxTVQdFIvQI1M7FQWJr6d4bgiFcK/Dep5lDYyQzwX/N5ZKy5SHRAQaDGD
+	GKHcLjRl1es0AvQV/Q/V2KNjLkBFFjQ=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CXll4QP4;
+	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793349887;
+	s=arc-20220608; t=1793350518;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FYu/kW3DhjeE7f36QmiPGs1R7yxjR+I5Ium8lq5S9Jc=;
-	b=xkURQbK+0G/feiqpfaICyir1yWQXEKW2p9ykU2nFduD7fEek0xhwlkJ1NRzphImz/Czt7+
-	DCZUCO/VIbt43YqZqcdivMKp1Rvxe9wUpwYdJAeZvb4cjjLcDyEXUnTfY8tz9ClkXrhLBf
-	JSb5bjjbOQLBxicgK7aRDhiyV1vKNps=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=W9G715Mv;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf25.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.133 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793349887;
-	b=yyEeGi4fOkHouEY00fMziKnzJ92ikCOj5Oz31zf3H4IUB1FE0c6RjZzvCFMX6zb/HlZuwN
-	UTQw/Lez283eXGv6J5SFVHKREkSCF1L9Q/riIL0wBjnhVTZByna7+fNDXTiAUR++zX1gl5
-	zG9GGsPPr1J6lCSNbtroxBd6m0wTcJU=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1793349883; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=FYu/kW3DhjeE7f36QmiPGs1R7yxjR+I5Ium8lq5S9Jc=;
-	b=W9G715MvBpAFhQFtxunztd5ZGyM++QavC8YKB/aIpU/oEUDQcllofOAimHnAw73UiteZjBny5Zfq11FqeYan8ecZQxvNdYBPn9ivvmzZk7r30EI/5nKTcuYSgZfe1nRJwu/NlKlj3jQTpgzogSdevF3yx9pZzFPHvYEz1z20gYQ=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R291e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033045098064;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=15;SR=0;TI=SMTPD_---0XDlh9st_1793349880;
-Received: from 30.74.144.137(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0XDlh9st_1793349880 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Fri, 30 Oct 2026 16:44:41 +0800
-Message-ID: <7b8ef469-d593-4d38-89b4-ba397bc3fea0@linux.alibaba.com>
-Date: Fri, 30 Oct 2026 16:44:40 +0800
+	bh=2ME/YKcQAmqEKXR0yxRYRyIXblEy16rwwZK5YWNyjhA=;
+	b=eH/Q1bBQZ2qWMkaUwmFPq/rXKMZ8fxpysHBLa0Yz3PiCYAvbjgUtZVl8PKQnbFG79NOuUD
+	tkGcIHoRLwWcDCI/qs3UuHXgpMQOYc3VlH/8mInxHXy8CJIY0zibzpXe3IL/CSNVEI3HL5
+	2wRuILFa/lbktDU1tLvv/U9BXmATTEc=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 58B346061C;
+	Fri, 30 Oct 2026 08:55:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D61461F000C1;
+	Fri, 30 Oct 2026 08:55:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793350517;
+	bh=2ME/YKcQAmqEKXR0yxRYRyIXblEy16rwwZK5YWNyjhA=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=CXll4QP4+ROaktyPv7RAJz7f+WPuofJbzyw2m4AACejiGVIILiYZq+PxNbpYDu8vd
+	 2Dm5iuJ/12bzLkrDS1RdE10rGH6i9HYqGkE0UXGfgzXOzXXE6naiSTFXFT7mi2yMsS
+	 a5WNcQ+GTLBcmmRjtarEdx1R8caixrVhQKolICv40IegTz6IRR+SoElmpwOTHyW/q6
+	 7Df3TV3klPlzpPUtvCGhWSAq9qOAqVDLWQWzyNS7wv5Qwyy8WwoASqZBNjn4XEEStK
+	 CMKfPt8dwsnEchT7An+jO6D/nNxutbcvk8hJ6ADyAH3HF0ZZuRBHVTr7HFOcvGhjm2
+	 gDwN1kw1sLmow==
+Message-ID: <1e277f4a-87b7-4f5e-8c87-1b2bf280e859@kernel.org>
+Date: Fri, 30 Oct 2026 09:54:59 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/shmem: fix swapin livelock on a mismatched large swap
- cache folio
-To: mt4022@columbia.edu, Hugh Dickins <hughd@google.com>,
- Andrew Morton <akpm@linux-foundation.org>, Kairui Song <kasong@tencent.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, tz2294@columbia.edu,
- Chris Li <chrisl@kernel.org>, Kemeng Shi <shikemeng@huaweicloud.com>,
- Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>,
- Barry Song <baohua@kernel.org>, Youngjun Park <youngjun.park@lge.com>,
- David Hildenbrand <david@kernel.org>, stable@vger.kernel.org
-References: <20261027-shmem-swapin-mismatch-v1-1-84e30aa3b9e5@columbia.edu>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <20261027-shmem-swapin-mismatch-v1-1-84e30aa3b9e5@columbia.edu>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Subject: Re: [PATCH 38/46] mm/ksm: reset the unstable trees of all nodes
+To: xu.xin@linux.dev
+Cc: akpm@linux-foundation.org, aneesh.kumar@kernel.org, apopple@nvidia.com,
+ axelrasmussen@google.com, baohua@kernel.org, baolin.wang@linux.alibaba.com,
+ baoquan.he@linux.dev, chengming.zhou@linux.dev, chrisl@kernel.org,
+ dev.jain@arm.com, gourry@gourry.net, hannes@cmpxchg.org, harry@kernel.org,
+ hughd@google.com, jack@suse.cz, jannh@google.com, jgg@ziepe.ca,
+ jhubbard@nvidia.com, josef@toxicpanda.com, joshua.hahnjy@gmail.com,
+ kas@kernel.org, kasong@tencent.com, kees@kernel.org,
+ kexec@lists.infradead.org, lance.yang@linux.dev, liam@infradead.org,
+ linux-arch@vger.kernel.org, linux-cxl@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, ljs@kernel.org, matthew.brost@intel.com,
+ mhocko@kernel.org, mhocko@suse.com, minchan@kernel.org,
+ muchun.song@linux.dev, nico.pache@linux.dev, nphamcs@gmail.com,
+ npiggin@gmail.com, osalvador@suse.de, pasha.tatashin@soleen.com,
+ peterx@redhat.com, peterz@infradead.org, pfalcato@suse.de,
+ pratyush@kernel.org, qi.zheng@linux.dev, rakie.kim@sk.com, riel@surriel.com,
+ rppt@kernel.org, ryan.roberts@arm.com, shakeel.butt@linux.dev,
+ shikemeng@huaweicloud.com, stable@vger.kernel.org, surenb@google.com,
+ usama.arif@linux.dev, vbabka@kernel.org, weixugc@google.com,
+ will@kernel.org, willy@infradead.org, ying.huang@linux.alibaba.com,
+ youngjun.park@lge.com, yuanchu@google.com, ziy@nvidia.com
+References: <20261027-fixes_core-v1-38-6f74bec9a5bb@kernel.org>
+ <20261030032409.127393-1-xu.xin@linux.dev>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20261030032409.127393-1-xu.xin@linux.dev>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 5C91FA0005
-X-Stat-Signature: 4q44xemo3w456n1i85f48p8rn8fjhafk
-X-Spam-Status: No, score=-24.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,
-	SPF_HELO_PASS,SPF_PASS,UNPARSEABLE_RELAY,USER_AGENT_SANE_1,
-	USER_IN_DEF_DKIM_WL autolearn=ham autolearn_force=no version=4.0.1
+X-Stat-Signature: knxpu5i575syyyh334sqfs1bhidyboyd
+X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=unavailable autolearn_force=no
+	version=4.0.1
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 919E840002
 X-Rspam-User: 
-X-HE-Tag: 1793349885-990792
-X-HE-Meta: U2FsdGVkX1+qdZ8jJ32MvqCuHNgL4E1uY/0pclEvIxSRSqCdzmL3jBqHgK84f74h1zVAn4a9nGerrlEWj3CM2J1d2Kq6BPezEnnkOl9eFMbl3SawGwQT+RMeGSGwP30WT+bIeGJenNiCtRkx6NwBghsg/jSTWbE+/69setJ01hgzaav1HYWUB6thyWIfKgYSiFro0/sFxM1gHonPg5kkWEYZvgZD9ZB5nitiH9WZn59oHcrW3UdNHFfDtmTh4sYQg6utpVXU06Q2RLLrey8742/bJy1+aFE9o3D3knrQ8fEHtN7Mnts56uW9Jo34yZSI1cNTzA9blCOjVrfdPK7AtvzgVagw4tNVMEhaORSMOF66yXBF7kyt5VqB72i86MGEyFa3A4ieHwOClXmLN5E3Az/+DveZWATupOOvMeFK+tw5xuDwRhMjbJS+XW6K77mXM606HXik2OLO1KROj/3/VCxivKd/U8BLeZwTPL5GPcNndhIXNbm4G0+Ux8jaYoPZcrXqB/ba22ZGLz6Ob1pdU5iqNwNqcioj2VrjIS1xoNDjsTNFEYBlMjBn8qtHB/e39JD3Cj2E2yvQqWi/vZrv9XJmyhmkv0ovSWgvpZ/bD8G/6Wt4bYuIoQR2eSin9ryYa6Yj/0xAzwhDedDhVU1jEE7s28KmR3an57Z58sQzfBrnJqOqoot0TzodhmOzE3ovBpw0Tfgp3WecjkXaiDj57FqjVjF89IfORmWMqzcXKRg1Lub2EzVA64lBTLOQkS+LmDQlp8ZeTTo5dAZcGWqdxVT5IEUaKhFsUesEiOsLPYjj6d1r3SC6b4MmbA6UqWrW2oACdvZUWAUucg5BAKO5k1x/ejUOzxyLG4uaWzsAVLQIqtwK7PcN4VVxSaI7uz4gyWfV6vQWYU4JXs7hknUIkKJ8i3iSDIK2u+jGeG2P3K4ejOoN97Y5QNHzYwrVViVDgJjtJC1RMkhOXWlu4Mt
- Fh+1VuXS
- tq/eQ5lbfQ3hjNwRnEQHxA74MlMMBCnTScZR/pzujjJ49bmY9KpY2ZA3xSJOSEqAclyVcw9MbYQJ2jEWbIEuGV0IO49Jw6ziqiKitXjMPi5TDkNNzY8A0YsAyFhIVNHA0cVTjSUjseiKO4wU0+nWDQm7maEeFR/iicwtHG+4vyBWA0d5ESdpO2LViq4P34GlXkGIl0POYvdBWmRbw6eE/76ypBCU2DdBQR4JSljj6sjuR3MV4rPvUDqrVA+/4IEsRru5KlqMuaPGLARqsWaRh/D2jxnbHpbJiQJ7nsAJmjHxA3PUVCKEeZWBmD3ECgVnS9aU1YCssZFN4A/2RouL7NB9/BxPlbEIBuFIkDmWeK6Bpp6px/JPuGdjgl6l0n2+Vlx5T
+X-HE-Tag: 1793350518-658039
+X-HE-Meta: U2FsdGVkX1+PBFRdKg2x80vOGov2Oax0+o5WApja2Iwpp0BHTm1T9EZIpPxMm5ezePr6yOt7RaTGUvpOghSDBFkg2bxBNrhje6mVclBypCUiE2zQoSn/lQ92nqnnD89OcOF2OfDqyYHes4aSO3CHHQ/9c7TFKW1rEdvCfEU4BWofgzlLp4+iYZyNQb7ZbbnpHAZajTV5V+SUI2jcCZbaS7aJX18TAWQeTn3RkgOQrKYVUIStv1y66TU0C7q6zc1R11CDOILoRfMdOoom+zpifW0I03yZBJhwlL6Upe0Rk3xwggOAiZKCSAgy2pznp5Q4DHW8rgDjqiRN14hrJWVSjFpXF3n8F3kkWJdSvkGGJI2iObKKK0v/Qmoy3kiwa1Otil2zIZ6tyDslfYNpukVyONefggI/pPIxzkYdySByKanROUbkimRNXwvqkLwCzPQ7vrzZybx4Z15Sw3SEL8N9mOuNBLpmmnPYxZosbPVAQ4ZQl7HjCsWl1cgYI775TC/WTwspa/Z02wAAIvEm8VHOSdYU2BddadscuGB5C//VzBbWEqj6VH94SOMt6uy5aB4ji0grd5G2DXjqANBkfZbkrRxilJCW+XH6JxnM9MWCOOv2dWJd91u+0LVJ0MliO4y8OkpCMw9l6nxvDVlYAyNwXWWZPVi0n8yqSD2o3M6Y9efoWyBJO3J4Nbap6c1c+9ztnKpJ1KzIt2RV5nOoWV7sheP+2SWdmZxoJlcyXK0MYclyPLrlGyyy+dQubhI09NTUUrf2scRwhXFJFqzjKO0ylOGLjnhbad3ojGy7toEirszHGFDnhYxKZhbxCT3tT2d+4v67NEY0VvzJ14g4ZzXzfjWD0S/9AhnzDE2p+iDbMQKaDSE2rBZtXN/NZMZRseHau3GacZHiG0DL4YweJH8FI7k3YxK6Oi2cElrJDbtlUijqpqOfueqsIavszwtttKvmazwP+w01CjYvGqoHTm9
+ MexscRov
+ T0hjPcC0ufJPwVkzeVRk9JHy5rm1UM8E1DhG2kfvOazDSRIbkgDflElSPZtKNPWPgkXoimYiiBsLEfX3b5AHTw/TxA2GXjMRzuklixpjJx19onYBbqSYlZTGXUozkfcYsj7DlifNqwLpjPv+kTHLItUHPKd7L0F01LLbzM/2Wfh2/UJTlJ3E3NZgu15Y/YyRZr18zg56v/t3AlfwJMwJ+4vtEqMOLypTyqZq2n8rKvzagejb8IcrnGG7KuBGCosa6/lWwwFdLGeaqzy0UvB9kPqtN5TlgIPTqN93OVuCOB35Jpiq5eEm23VoLBm705ZRVne4CqhAMIWt6aoOroByi/ws37pn8EOSnPqYmy3ELbnZ18dHIywmr8pGyxwQDAHtlOjsnHuN/VvJshrEm1Z74P9SUhucnXOBzwGpM
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,84 +161,98 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
+On 10/30/26 04:24, xu.xin@linux.dev wrote:
+>>
+>> Let's fix it by tracking in ksm_nr_node_ids the actual number of
+>> allocated tree roots.
+>>
+>> remove_all_stable_nodes() and ksm_check_stable_tree() will now scan
+>> more tree roots (skipping the empty ones), which is harmless.
+>>
+>> Fixes: ef53d16cded7 ("ksm: allocate roots when needed")
+>> Cc: stable@vger.kernel.org
+>> Reported-by: Josef Bacik <josef@toxicpanda.com>
+>> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+>> ---
+>>  mm/ksm.c | 6 +++---
+>>  1 file changed, 3 insertions(+), 3 deletions(-)
+>>
+>> diff --git a/mm/ksm.c b/mm/ksm.c
+>> index dbfb8f98b1892..9c51925825cbf 100644
+>> --- a/mm/ksm.c
+>> +++ b/mm/ksm.c
+>> @@ -475,6 +475,7 @@ static void advisor_stop_scan(void)
+>>  #ifdef CONFIG_NUMA
+>>  /* Zeroed when merging across nodes is not allowed */
+>>  static unsigned int ksm_merge_across_nodes = 1;
+>> +/* Number of allocated stable and unstable tree roots. */
+>>  static int ksm_nr_node_ids = 1;
+>>  #else
+>>  #define ksm_merge_across_nodes	1U
+>> @@ -3636,14 +3637,13 @@ static ssize_t merge_across_nodes_store(struct kobject *kobj,
+>>  			else {
+>>  				root_stable_tree = buf;
+>>  				root_unstable_tree = buf + nr_node_ids;
+>> +				ksm_nr_node_ids = nr_node_ids;
+>>  				/* Stable tree is empty but not the unstable */
+>>  				root_unstable_tree[0] = one_unstable_tree[0];
+>>  			}
+>>  		}
+>> -		if (!err) {
+>> +		if (!err)
+>>  			ksm_merge_across_nodes = knob;
+>> -			ksm_nr_node_ids = knob ? 1 : nr_node_ids;
+>> -		}
+>>  	}
+>>  	mutex_unlock(&ksm_thread_mutex);
+>>  
+>>
+>> -- 
+>> 2.43.0
+> 
 
+Thanks for the review!
 
-On 10/28/26 4:33 AM, Mani Tofigh via B4 Relay wrote:
-> From: Mani Tofigh <mt4022@columbia.edu>
-> 
-> On a SWP_SYNCHRONOUS_IO swap device, a large shmem folio can be left in
-> the swap cache over swap slots that another file now uses.  Reading
-> that other file then loops forever in shmem_get_folio_gfp():
-> shmem_swapin_folio() finds the large folio, rounds the index and the
-> swap entry down to the folio's size, finds no matching entry in the
-> file and returns -EEXIST, and the retry finds the same folio again.
-> Since the task keeps the mapping locked, a munmap() of the same mapping
-> waits forever.
-> 
-> The folio is left behind when the slots are freed and reused while the
-> swapin is still allocating it:
-> 
->    Task A (reads X)                      Task B
->    ----------------                      ------
->    shmem_swapin_folio()
->      allocate a large folio
->      for X's slots
->                                          punch a hole in X
->                                          /* X's slots freed */
->                                          swap out file Y
->                                          /* Y reuses those slots */
->      add the folio to the swap
->      cache over those slots
->      shmem_confirm_swap() fails
->      /* -EEXIST, the folio stays
->         in the swap cache */
-> 
->    Task C (reads Y)
->    ----------------
->    shmem_swapin_folio()
->      finds the large folio
->      rounds down to its start,
->      where Y has no entry
->      /* -EEXIST, retried forever */
-> 
-> Before commit c246d236b18b ("mm/shmem: never bypass the swap cache for
-> SWP_SYNCHRONOUS_IO"), a direct swapin that failed this way freed its
-> folio instead of leaving it in the swap cache.
-> 
-> do_swap_page() already drops a large swap cache folio that does not
-> fit for anonymous memory.  Do the same in shmem_swapin_folio() and on
-> a -EEXIST, remove a large folio that is not
-> anonymous/dirty/under-writeback from the swap cache so that the retry
-> swaps in a folio that fits.
-> 
-> The reproducer below fills a small brd swap device so that a 64K shmem
-> folio and the 4K pages of another file land in the same slots, and races
-> a read of the first file with a hole punch and a swapout of the second.
-> This bug was identified and confirmed with the help of a deterministic
-> hypervisor currently under development, but the non-deterministic C
-> reproducer can typically trigger it in the 2-4s time range.  With the
-> fix, nothing is triggered after 600 seconds.
-> 
-> Fixes: c246d236b18b ("mm/shmem: never bypass the swap cache for SWP_SYNCHRONOUS_IO")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Mani Tofigh <mt4022@columbia.edu>
-> ---
-> Two patches in David Hildenbrand's v2 shmem fixes series are related
-> to this one.  "mm/shmem: fix truncate hang in large swap entry" [1]
-> makes truncation retry -EEXIST directly, so it can also loop on such a
-> folio.  "mm/shmem: preserve allocation errors when swapping in large
-> entries" [2] fixes a different -EEXIST loop, where a failed allocation
-> is reported as -EEXIST.
-> 
-> [1] https://lore.kernel.org/all/20261027-fixes_shmem-v2-10-86a00952acb9@kernel.org/
-> [2] https://lore.kernel.org/all/20261027-fixes_shmem-v2-11-86a00952acb9@kernel.org/
-> 
-> Reproducer: https://github.com/manitofigh/files/blob/main/linux-repros/shmemloop.c
-> ---
+> Looks correct as far as it goes, but I think it is not quite sufficient
+> on its own.
 
-Thanks for the fix. It's a really complicated race and I spent some time 
-understanding it:) . I tried several different ways to fix it, but your 
-patch looks like the simplest one. So,
+I think this fixes the problem described. What you describe below is a mismatch
+between documentation and the implementation, but I don't think it is
+problematic as in "responsible for BUGS". See below.
 
-Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+> 
+> The documentation requires that merge_across_nodes can only be changed
+> when there are no KSM shared pages in the system, but
+> merge_across_nodes_store() does not enforce this at the sysfs level.
+> 
+> Should we also reject writes while ksmd is merging? At minimum:
+> 
+> +	if (ksm_run & KSM_RUN_MERGE)
+> +		return -EBUSY;
+> 
+> Ideally, we should also check that ksm_pages_shared is zero, since
+> KSM_RUN_STOP (0) does not guarantee that all pages have been unmerged.
+
+We do that already in merge_across_nodes_store() I think:
+
+if (ksm_pages_shared || remove_all_stable_nodes())
+	err = -EBUSY;
+
+Which is really required when swapping trees.
+
+> 
+> That would make the interface match the documented sequence and close
+> the remaining race window.
+
+Right, either we should adjust documentation or adjust the implementation. Not
+sure if restricting the interface is really required. Personally, I'd simply
+fixup the documentation (separately) unless there is a real problem with the
+implementation when allowing KSM_RUN_MERGE.
+
+(I think there is no problem as we are synchronized on the mutex).
+
+-- 
+Cheers,
+
+David
 
