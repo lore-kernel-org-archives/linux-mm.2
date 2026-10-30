@@ -1,88 +1,82 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E523606A32A
-	for <linux-mm@archiver.kernel.org>; Fri, 30 Oct 2026 14:39:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A552A606A31E
+	for <linux-mm@archiver.kernel.org>; Fri, 30 Oct 2026 14:42:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=QlrsuYA6
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=B6zqLY51
 Received: by kanga.kvack.org (Postfix)
-	id 85A776B05B1; Fri, 30 Oct 2026 10:39:53 -0400 (EDT)
+	id C58236B05B2; Fri, 30 Oct 2026 10:42:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 80BF66B05B4; Fri, 30 Oct 2026 10:39:53 -0400 (EDT)
+	id C09276B05B5; Fri, 30 Oct 2026 10:42:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6FB9A6B05B5; Fri, 30 Oct 2026 10:39:53 -0400 (EDT)
+	id AF9446B05B6; Fri, 30 Oct 2026 10:42:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 501986B05B1
-	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 10:39:53 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 4D5031A04A4
-	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 14:39:52 +0000 (UTC)
-X-FDA: 85379551824.26.4A9C6E2
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 8BE4D6B05B2
+	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 10:42:31 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 20B8B1606B3
+	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 14:42:31 +0000 (UTC)
+X-FDA: 85379558502.22.4708AFB
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 87A1B40003
-	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 14:39:50 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QlrsuYA6;
-	spf=pass (imf27.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793371190;
-	b=fNN3uW8+A5JXAdxs1gAuci5IqeKkvheswpazXFwhBLyAO8Qib1aKMIo9JjXbcH4a5k/QFK
-	PC6snpcgz890KdWaFjnPTcRr/HiqYxGu7+ognYFVH9YkjS0hSo735E6Z1ee7F8K3u8O3S5
-	2lXCLfFD7qqFhOG8mICz6mKe8B6rLrM=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QlrsuYA6;
-	spf=pass (imf27.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf30.hostedemail.com (Postfix) with ESMTP id 50C8180007
+	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 14:42:29 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=B6zqLY51;
+	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793371190;
+	s=arc-20220608; t=1793371349;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=oKRevRmUwUIKRTw8Grw6ZvIs0InwSJnYXmbgD1Qkg6c=;
-	b=7fGp7Yzr9qpffsx6SbVRtzy6L3oGtIZHLAGI8gGnT/5BxLvt6PMD1UPlwZn35Mu0cJTolV
-	/Cp68kS891Vfd2c2WYzDAP5icyZdG1qsE8nsdMIYAT7fMVBV5u2qzP51tsfx4AR7Hz8ucd
-	qJYB21EpivqC6E93yWmkCTo76/xdXaI=
+	bh=OU3zDVKepXMBwwR1kv5zeSUQ4EZ22iKhEWe2jjy3QKQ=;
+	b=kduEGO9Lk1QS/vLveoU06QZ/fSu3TL6lPexQ+3x9sArziQP+hKB1Jzxobo7+0sOi3o1iU/
+	QFbur5lj6y04q1rv/kOItKthQiZPk7cmnzaPaF7vDNJMFSTfFgT+iNqqHFDdMA01uucR8y
+	96p8BX2nndyYjjl0IZQaYYaU+G2PaNw=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=B6zqLY51;
+	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793371349;
+	b=yfwyUKRX6ywflBP46/mI/ZbmDWws68APVXaNaQqa6Dhc+UM0ugnm9BPMjuU9QxhlsW+RD4
+	z9NCYQIUGRlhtrrXEHPTg100/BoiGPV67skAw4xyZGYT4qx22bw/OjCwL3/4GbM202p7e/
+	fuFDhbK96AZfDJ7Tv+fgDdCC7LHHNUc=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id B4B4343E05;
-	Fri, 30 Oct 2026 14:39:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B9CF1F000C1;
-	Fri, 30 Oct 2026 14:39:43 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 8F5D643FBA;
+	Fri, 30 Oct 2026 14:42:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0A3A1F000C1;
+	Fri, 30 Oct 2026 14:42:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793371189;
-	bh=oKRevRmUwUIKRTw8Grw6ZvIs0InwSJnYXmbgD1Qkg6c=;
+	s=k20260515; t=1793371348;
+	bh=OU3zDVKepXMBwwR1kv5zeSUQ4EZ22iKhEWe2jjy3QKQ=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=QlrsuYA6mex7jjvoZN82HmAjIvobJ74fu3R5Y8i+QFMLcTfyIePVM7xN1dyaZmXL7
-	 GjfsXTrC2E34yDNgbOosBLx8P1/GWkFdsQisfKlchJofAycGG2qTtm4EUPhnyJFIOI
-	 JBk9cXZ8V6+rN2p4bMymv58olvcDnQUINMSfh8zSONnumclsw57PNhgNGT04t0Hrcg
-	 SBCkVAQskvK73TvZvea/JgHI4FLvM28tAO5Wi0s1EsMv4sL5sTmSK5ZUfy1PvOI5x2
-	 5RpbnlG7PUdvXlVAxc7dECd1qmUxZp3CahSsHL4TIMHfFgNcTZ6cxwUXleTIORKHQk
-	 HPocaXD+1VfSw==
-Message-ID: <2c7aa5c1-3af3-4654-b244-1257d05c9d45@kernel.org>
-Date: Fri, 30 Oct 2026 15:39:40 +0100
+	b=B6zqLY51HL03HAbN7lCtJ3lFh7DfqAs+MNDqt4pDlmekKLANxMB0eErrw8PsTrl/J
+	 bhk9I9VG57rWGojcbjPYDvfXOZwhTgar1YEV5quKfL1b0Pwe/drjQd34EpBd3Y815W
+	 1d9Q5G2Cd5PIPAL+eTV/ecP9RuZBDZ7nl5Bl3mFrSUhrXD4jFsLHyYyYQHsTylLkGn
+	 NlinJiDxut9+mjHqjAAEc2p/loJkudu7r+TscY+B+okD70yxrGultokQdRtQ0P+G3n
+	 9sfhmK4CrBl/FEGq+tDpEnsQ7/pUWjxBP13v0uhwQR2Gi+eXMrx0jHd1x30BELyFhY
+	 i4QHMyc1GAT4g==
+Message-ID: <40eadc1b-5057-4286-9be2-021cb16bc020@kernel.org>
+Date: Fri, 30 Oct 2026 15:42:21 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/2] mm/memfd: add F_SEAL_PUNCH_HOLE
-To: Jason Gunthorpe <jgg@ziepe.ca>
-Cc: Samiullah Khawaja <skhawaja@google.com>,
- Andrew Morton <akpm@linux-foundation.org>, Hugh Dickins <hughd@google.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
- Jeff Layton <jlayton@kernel.org>, Chuck Lever <cel@kernel.org>,
- Alexander Aring <alex.aring@gmail.com>, Shuah Khan <shuah@kernel.org>,
- Gerd Hoffmann <kraxel@redhat.com>,
- Vivek Kasireddy <vivek.kasireddy@intel.com>, Jeff Xu <jeffxu@google.com>,
- David Matlack <dmatlack@google.com>, Pasha Tatashin <tatashin@google.com>,
- linux-mm@kvack.org, linux-api@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, linux-kselftest@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20261026220546.3114241-1-skhawaja@google.com>
- <d4891333-43ea-4d74-9fb9-6ad8dac1a446@kernel.org>
- <20261030121113.GB3889730@ziepe.ca>
+Subject: Re: [PATCH] mm/memory-failure: fix folio refcount leak and
+ min_order_for_split() locking
+To: Tal Zussman <tz2294@columbia.edu>
+Cc: akpm@linux-foundation.org, ljs@kernel.org, ziy@nvidia.com,
+ baolin.wang@linux.alibaba.com, liam@infradead.org, npache@redhat.com,
+ ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org,
+ lance.yang@linux.dev, usama.arif@linux.dev, linmiaohe@huawei.com,
+ nao.horiguchi@gmail.com, richard.weiyang@gmail.com, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, mcgrof@kernel.org, liyouhong@kylinos.cn
+References: <20260806-try_to_split_thp_page-v1-1-a259e3387e38@kernel.org>
+ <20261030105022.903008-1-tz2294@columbia.edu>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -129,21 +123,21 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20261030121113.GB3889730@ziepe.ca>
+In-Reply-To: <20261030105022.903008-1-tz2294@columbia.edu>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: 9ud13exhcqrqgen9zc61f9b51uzfdo7j
+X-Rspam-User: 
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 50C8180007
 X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
 	autolearn=no autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 87A1B40003
-X-Rspam-User: 
-X-HE-Tag: 1793371190-408551
-X-HE-Meta: U2FsdGVkX19upbW8kzKopcGhGkvvyFOujho4VGjmp5GIxwkoyz7mG04jGPouMCEqV313xCv+Y7KNcxpoFGM0eeZWR24LPdWVBfqt/jxpaeT7bzm28sg7sg6IzqtJ9nX1RWDe2BofJy8hVEblJveDLkzMYNEJiZGFgjsvuw8Ok1LXGJwP2dWCNAgMFPVjpU2Czlldl6h+1Px/rUVSdOr30/wDiJZA/L5zIQk92gw3J5EjviTRGxC7Oa6kc2vAi35O1xZ2pCqQ0OZXKINB6zQ2ewOQ0+Mp630RtPVHQ6AwvhJ9PrIpNPPRIcJ7PvI7t+dElfEU7vFOXO7CXCVPewODZnSiLzKOTkgtPz6ZXUEOy+1Hhl/eK7xQTaQ5cbPv0QE/5LxHDReWN1TRvdtKS5eIYki1hkvGPGkJsraLYj6+RA1C+amBmRc+KOPdlJZGLKVbYlgTxgvS0fQjWTYZjVBE3dcscMyAlCSprR3IK7Vw04AVSEkkFCIP7qvs7s4r4g1rjo4VdKtI+KXYLE1lj39pcnF4st0Mxxq7YjiYw1bmkah18TFiVTmL4lc+Y4ktrDkHKVC6Xm7ZFP8MQLgaDlFiZ3FvZmaru12RDk+idzbiU2DCgHXEH5Z4tC7p9brOnmmqI+duJvOPbCxmwwcgs2nkIX7k6FChnzJx9axRpRbQ+nU1AOtpsxa2CpPV9FQ0BoMIt2sHiPir54oGlHM84/wfLoq/tBmalDhB5i0PQsh63EnL86ka3huot7CFZgEB92xPVwOdjvc0RDfmoc2pF85tnJq8BI/0G6I0xWLG+i6jQJC7Vo3n66Cz0ica/eG9uqZYStKkVGVDtqRMh06BU7NVM1xOGWgxZJVyUrI0h2kzr6nir7NSm7xCKNOMQMfnlRc6A9O+FDyKp8raxFqdRK40CmcugIwXCWRToLHyv0UvAj8DZc05Ew7uZpOZOAxv3KnD+4PLD8Rj/fSIjW2C4T3
- mv3bYD+I
- rvVJoZBC8V66RwjVfslUb8UN4MYtjno9SklwTJX7Cyz2XqFUOG2dO5Cm5u4vzZEFfo3BG4QnVXyZF1fhO+hYJnEggBx2TsAuV+QjI/8W+XffrsZPraObrBd7Ui8jJyQ6jddhATS8rpv1nh6g9Q9xDeBoDpy2r459lsoQhnPncPxqD/gFtUnQtCzmQ8Tb49OgbMvnyencu+aInxtO3sAnrxOc8yiNFEm+kZUvNFXp2V5ZIiMn0EP1VhafC0VWi0XgoC7BfoI5lLnnki/uAsb2fs3jGT/aAReg2XgeYx679H63rOI/FbNU6GIWqPt0vaR18AmoD2eXIA3SWHtbbA6IAuSW+K3Q0JY9hGvjVGfvJIJnMG8zs4p+UsXcSkZlOb7gMoQEB
+X-Stat-Signature: c4kki6kh1s37tre6xyrwamn667ha8o9d
+X-HE-Tag: 1793371349-330000
+X-HE-Meta: U2FsdGVkX18azehMh/VBUSgE6UYuUwkdxj+CbfrKVANVBXwZxV7bkKpWWnbFWm6ZadUYQycS1csKxdCwueEMUTjS510h0rJ6Un4FtVev7uwje98TUDwJjTGB0Msy2NYSSB9EbCT4H/2RQWCtHWgeRrkmAA+wbY6i3C78H4rcFVhl9aEylc82YPZ95FSiJ3SEK0RBbpMPcKOQtlxFpdk0olytefebPsIl0ZSmly3RfffF2BnAbKkoUfPmuUuTOjt5VnngJf0dqMRVkam+XswrNECuJsIgLAYVvRG1Zlu8yx3Dia7wHZddFAUtXTZgYF7CEywpdJYQxH/jmYMEduIZrIIGsL776dilbQjWqA8XXMmqNsIY2rF9YAlQVYCsMMsI+ovon3+Q834ZYr9xO4DvPdNte4GPiOpllIAKsHl1+P4AkizDN87RBagB7C0xvP1lUkflSbDMkQowPtZYNGH+viiIthZvrNjE3yAzhHwHtBe1xC/OaaL6wBjaFrbb6wSLGgNkeKfax3kYO7qPPF61oK9KGqoyvDQQyRMPubkFA6pkNHPeQvqnAkEht3MgSkq6Ep32lW8hmAQv7kLAxwHl1s7+u7sbfGGk86eYEZTOe1fjSCOihsI0rlmy61Cr7cQh66gqVETgiDOWG94vAheUld/EJ4EG35kcBSU+dpZxM83oXEe01ynMHIieK1LI294gn7strMTMBXynBgKJIc0DlA1qfFIpetvjrzj0RAgvbmT1ZMieKdR0BRmXbVCdl4ffKqEdrrpEJ03YCgU3Qot8lPegbhfuT8nGD2i5H0TOqoBOJ6dqKmlxEW7q6tGUe5qbd0pbfOfmYKhAdZfoOXs3PhSezeA/3sP0P0aEsAm1CrJOj3s+tM0dzvENOTGN9WnGaEAYUWXDLvNu6zEFeFjOYIC8YxmeTnQh0c5Zjd0dX8Y+ps50Wz3a1sB+Auvmf0eTb7TR4RTi4G1ZKqhx6Al
+ kDUbQpWV
+ YmSF4zrl7yZiVWJJB5BWA8Vr3SANFWXExGy/EGi82K8bQJ0UoHv4FzPEC6e+zbdffKAIX6Bl7FlY0vGyA6bKX0HQNezgHSSnHunRHN1dtbeMbJUUMAa2e/m6ft6PCK/VkgMcQNpJQrphjO1RFj3oL1rF/krudRw/ZRg6LGDWvTdKEm6y2QjV9N1U2FiBss5lSS9XonxOHcbCjvEXsJgxSe8PB75Wj2f7if5O//milkokYUpU5/e/h42niMZxAtOuxiEZhCdZtnHHEZjyG6R75p/Qeo4Q/tpiIBtkstl1NMSiwR/oOfVd7Hqwayoic/cqP3pQTAFLfoQbPoLu2rr+OZNHbQPxnQ7/vmyn4r7/IInnPjmiKY+k899HavtKOBFkEutHSSYVn7dPpSYIJzHZKHsa8nw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -152,49 +146,22 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 10/30/26 13:11, Jason Gunthorpe wrote:
-> On Fri, Oct 30, 2026 at 11:20:30AM +0100, David Hildenbrand (Arm) wrote:
->> On 10/26/26 23:05, Samiullah Khawaja wrote:
->>> This series introduces F_SEAL_PUNCH_HOLE, a new memfd seal that prevents
->>> holes from being punched into a shmem or hugetlbfs memfd while leaving
->>> the file fully writable.
->>>
->>> Background
->>> ==========
->>>
->>> Drivers such as udmabuf and iommufd (via IOMMU_IOAS_MAP_FILE) use
->>> memfd_pin_folios() to pin the folios backing a memfd and hand them to a
->>> device for DMA. Pinning keeps those folios allocated, but it does not
->>> keep them in the file. If userspace later calls
->>> fallocate(FALLOC_FL_PUNCH_HOLE) or madvise(MADV_REMOVE) on the range,
->>> the folios are dropped from the page cache while the device continues
->>> to use them. The pin holder is never notified, and from that point on
->>> the device and the file silently diverge.
->>
->> We have the exact same situation when userspace maps anonymous folios into vfio
->> and then desides to MADV_DONTNEED the pages. Or any other memory backend that is
->> used for such purposes.
->>
->> User space must not zap/punch things that might be pinned elsewhere.
->>
->> That's not specific to memfd, udmabuf, iommufd or anything else.
->>
->> I don't see a reason to make userspace (that should not shoot itself into the
->> foot) a kernel feature it must activate itself to not shoot itself into the foot.
+On 10/30/26 11:50, Tal Zussman wrote:
+> On Thu, Aug 06, 2026 at 01:14:38PM +0200, David Hildenbrand (Arm) wrote:
+>> hwpoison code can end up calling min_order_for_split() without holding
+>> the folio lock. There isn't really something that would prevent
+>> concurrent folio split. Consequently folio->mapping can get set to
+>> NULL after checking for "!folio->mapping", and if the compiler
+>> reloads folio->mapping, mapping_min_folio_order() would try to
+>> dereference NULL.
 > 
-> The issue is live update doesn't preserve those background punched
-> folios and now we have created an UAF attack on the kernel across
-> kexec if you don't do something about it.
+> Hi David,
 > 
-> There was some notion here that with the right sealing flags we could
-> tell if everything was 'live update compatible' and then know that
-> these attacks are impossible.
-Just remember that there was any hole punch and refuse to live update this instance.
+> Did this patch ever make it in?
 
-We could likely implement "we saw hole punch on a pinned folio" as well, but I
-don't think that's required initially.
+If you ask this way ... I guess not? :D
 
-No need for more shaky seals.
+I can see if it still applies and resend + apply.
 
 -- 
 Cheers,
