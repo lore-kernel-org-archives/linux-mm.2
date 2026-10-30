@@ -1,72 +1,70 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB8B5606A31A
-	for <linux-mm@archiver.kernel.org>; Fri, 30 Oct 2026 09:20:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=d87jxZYs
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80A2B606A332
+	for <linux-mm@archiver.kernel.org>; Fri, 30 Oct 2026 09:40:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BB6306B05B3; Fri, 30 Oct 2026 05:20:55 -0400 (EDT)
+	id 830346B00EF; Fri, 30 Oct 2026 05:40:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B93B56B05B4; Fri, 30 Oct 2026 05:20:55 -0400 (EDT)
+	id 808576B05B1; Fri, 30 Oct 2026 05:40:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AA4266B05B5; Fri, 30 Oct 2026 05:20:55 -0400 (EDT)
+	id 71EB36B05B2; Fri, 30 Oct 2026 05:40:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 8E7C96B05B3
-	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 05:20:55 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 87639A057D
-	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 09:20:53 +0000 (UTC)
-X-FDA: 85378747986.08.1621084
-Received: from mta0.migadu.com (out-86.mta0.migadu.com [91.218.175.86])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 632AA40004
-	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 09:20:51 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=d87jxZYs;
-	spf=pass (imf04.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.86 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 567996B00EF
+	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 05:40:07 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id E0ED81C3DB1
+	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 09:40:06 +0000 (UTC)
+X-FDA: 85378796412.18.D6BA5FA
+Received: from mta0.migadu.com (out-164.mta0.migadu.com [91.218.175.164])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 0590940005
+	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 09:40:03 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=qZexjLA3;
+	spf=pass (imf07.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.164 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793352051;
+	s=arc-20220608; t=1793353204;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=DwWDiQU31GhAJkKLOok0q5GmDT5UejWxDA7k4JTVj4M=;
-	b=H2ebVZm1oFkS8950TTMDxLO/1WXFtDgSI2e8c0Co0gEDmnAz8bD6vilefwKdLAAmxWyuko
-	lnCWhAHc6BEjmX3aTL8m8IEpU0/4NQA01qXCEYshCRIh6SQ2TbSrNazm/JSTpfPv0ITofv
-	8mAm0T92/iiFvhRGBYxr2cGrnlaymw4=
+	bh=GjoByvQgZF8hrJ3bMrfVpCnfunVN4IpvJDxs7mkxVe4=;
+	b=qZV9w3M0oO9MCk+hhN3lpE6a6nY45tf8d7JNzwZ8F2PsFuII4mB93hcjpo3FCz8EbCThYz
+	sakHdEnN1ZlMGrTl+/N6Geb0otshH7MVjN3MtjX6R0Cd2jLTG4YyXlzZ8gIpUvUHEjIqyW
+	Bg5NRfBXgDXy6GWK3oPvlprhxSqJBoU=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=d87jxZYs;
-	spf=pass (imf04.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.86 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	imf07.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=qZexjLA3;
+	spf=pass (imf07.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.164 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793352051;
-	b=chZEN7VDABUix2ILOXlX0tz1nnalpoe4AVDB2QMZfMGiOZbMRhFtF+4oqYeAUWHIuSSzby
-	xH5a2jISJT8gGTU9mJ1fRN5wfHgACkr6Q70XLXkb7JyEb1uUhnkiv4NHdmsmO1x+LPrqon
-	JT1+kdQdjv7+l2cjvJONeTKBmkovpFY=
+	t=1793353204;
+	b=l3HWfszRFPEGj1ZG/2KDnZEmeaWioOkDTdszBIdJfzWOmgk9s6Ia3+lFn12vtKxL+qRO8k
+	pVwA3PxJCfKNFAQY8+WwLHPRNJqoD973Zv35tyOmvzT+ay4LD9DdMldsOsOrCLoP1NhmYP
+	LcbJXBBQpkvj4ary84fangrKTuMuT+o=
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=DwWDiQU31GhAJkKLOok0q5GmDT5UejWxDA7k4JTVj4M=;
+DKIM-Signature: a=rsa-sha256; bh=GjoByvQgZF8hrJ3bMrfVpCnfunVN4IpvJDxs7mkxVe4=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1793352050; v=1; x=1793956850;
- b=d87jxZYsXzSYCQ/xHD6fPWdvBbmfDED2jZYdIP/wz0YMDb65qjez3nTkqQ2OiGGUSbvTbfQM
- 4fRPwHh32lyypRcBqLI618nMxfYTKzklpEZuKUGzwqzhkdwzTqJOKu5v5/QYZXXVsjgPD8Ix4e3
- f6sg9vfDv/TQg6Cbx/x5kjZ0=
+ t=1793353201; v=1; x=1793958001;
+ b=qZexjLA3z72ct6BDu7Dc0m9BncpgG3hK4j1b3DwD3NTBjBZ20OkGtqQCD+B6oCyJi38c8XHe
+ 9b2RX+szEZRshADVCh8gg+NONUQycTdJN52pAqQDMvLEgbE702NFZ3cLusXxVA4wy+dTS9SAuUR
+ yzwDlzgYu4KRlYFifvWrzh7g=
 X-Envelope-To: linux-mm@kvack.org
-Received: by mta12.migadu.com with ESMTPS id 222f0c8429a65a02;
-	Fri, 30 Oct 2026 09:20:38 +0000
-X-Mizu-Trace-ID: 222f0c8429a65a02
+Received: by mta10.migadu.com with ESMTPS id 391089da5ea8dc07;
+	Fri, 30 Oct 2026 09:40:00 +0000
+X-Mizu-Trace-ID: 391089da5ea8dc07
 X-Migadu-Flow: FLOW_OUT
 Content-Type: text/plain;
 	charset=us-ascii
 X-Archived-By: <archiver.kernel.org>
 Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3901.100.1.1.12\))
-Subject: Re: [PATCH 06/15] mm/hugetlb: fix mremap() racing with page migration
+Subject: Re: [PATCH 07/15] hugetlbfs: fix unmapping folios from private VMAs
 From: Muchun Song <muchun.song@linux.dev>
-In-Reply-To: <20261028-fixes_hugetlb-v1-6-a0a033db180f@kernel.org>
-Date: Fri, 30 Oct 2026 17:20:12 +0800
+In-Reply-To: <20261028-fixes_hugetlb-v1-7-a0a033db180f@kernel.org>
+Date: Fri, 30 Oct 2026 17:39:38 +0800
 Cc: Oscar Salvador <osalvador@suse.de>,
  Naoya Horiguchi <nao.horiguchi@gmail.com>,
  Andrew Morton <akpm@linux-foundation.org>,
@@ -106,26 +104,27 @@ Cc: Oscar Salvador <osalvador@suse.de>,
  linux-doc@vger.kernel.org,
  linux-arch@vger.kernel.org,
  linux-s390@vger.kernel.org,
+ Josef Bacik <josef@toxicpanda.com>,
  stable@kernel.org,
- Chris Mason <mason@kernel.org>
+ Daehyeon Ko <4ncienth@gmail.com>
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <9FFF0EF2-A99A-4448-9CA3-50E1733D6232@linux.dev>
+Message-Id: <EE1BEB7B-295B-4F93-9876-C397C2FF473B@linux.dev>
 References: <20261028-fixes_hugetlb-v1-0-a0a033db180f@kernel.org>
- <20261028-fixes_hugetlb-v1-6-a0a033db180f@kernel.org>
+ <20261028-fixes_hugetlb-v1-7-a0a033db180f@kernel.org>
 To: "David Hildenbrand (Arm)" <david@kernel.org>
 X-Mailer: Apple Mail (2.3901.100.1.1.12)
 X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 632AA40004
-X-Stat-Signature: t3qfnsintrxmswow9qa49fhp1jedoar9
+X-Rspamd-Queue-Id: 0590940005
+X-Stat-Signature: uhdkmpbqqi3nwqksgorxfg4pckjpu3bq
 X-Rspam-User: 
 X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
 	autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1793352051-501363
-X-HE-Meta: U2FsdGVkX1864F2OGWGHL0gmqDm8hPCjBqHHYS4tfZqpVz9znE0jq77Jru/XY+ispU4nwwmIHuboj50bpUn1y9TnXFc+9bIqTe7MAp6pUHecpN2ccbpuI2x2HUZ7cAc5MOh2UwX1oxBMJQ6/8BL7NYP5ySZjyfEGNUlgCu/9+w/K7Uimxp19PF2W0/fKE6Vx+j/IGPiMdiXotmtffdA0Vzy9DU4PE69tgRAKHUS9sjepnNo9QjXfFOQCmtaoMaJmgdW4btVLtCkrc33BRFY0zlJOPl67X9DIfKqvNK08PEdF+xbADTmtr9r6Qtf+Mj6tid/uf6TiUzstG3DO9sQzGfSkg10gs+HoB8xcoJgJEwmuf5i56Yc65KJOfv6IX5DzXB5HhPJmjQesHgwCAPzPQ4wBt+vmRv2Mk1aY0HJnS7xb7wt7KdGyrorJ+4WODn0gu7Gh2JRKy69KgjC/L1jmY5FqWVKLYeq+NLqw/aMzB2nCDbdER2/gzjck3klSrYHGt5jYVW5HMTHLwTcd1PRRCsI9/VjQLTi0w9QEH+2hpGSUjftwRxyoUpJAoivKqgdhm6abruzkXT1jdETnNvBu7FnP8DKwu5/TrxQphF/BWaVDyvovK5hp8CIE2hBlixN2xKG7Ab2YG3+kkPvZzMV/pWGJdl8PuCNz8Q5o7cysQwlPhAMc3Bus1S32I9Fw1K3SzH7JmbrXn216Mr4twq5bJQjDH0S1F1NXTH6F51268qqBbt9N2ynSVessERdakmurRisQETwujwBvMFWdns6qY4vAQaHyKkxZJv+oZOZeQ7MeVLuPP6Z3FZIKiG0mfYhwZ6sUqlDDupBezPPCd5YY0j4QNTT2nu+lYoonWyFKxII/kQeFUa1cCLD3OhE5KoyoXEON4cWTQtvEtpON60bP6pDH7yh98tA2++8T9FSKzRbAuCDMqaxMVAUNYqfQwnBGoyzfsH89a8XJ/TnDmfG
- sZ2Sq17d
- ymIJCth3ABEoZ73JGNPNCN6sNdTuAi9twSyEGMWTWHRBByebRVvVgZUla1/nfVEM+EhfpSCK53FBdRLnZe5n+up0bkWPCYhl7rZ6+O3BdCZWqFUyVByz7vJGJ8swt4NUFygiormDbhf6CvJSSRipiW0BEGt5J9K/RGsKj9tYR6dcMxwy7SA9tumjOeDM67KIJU36dIT5oup4VSSEhR9VzQZDeNI4pkm41YEtckoE6ssBpe2xmfiwzZiNkCj3D0EFeYy/tSm3yANMSMC3wgsbPCP7aJ0S4p2YboS4PqRVJLVyiWItXWJe/a4KJas3HeEoqFfCp6kYkh4hFkdu4UrhO9RxdperWOtEO7rx92sQln17lxF/o/kMn1mzyOXCBqqQLHBXf3cQ25BNRXgXnhsdS55mJRw==
+X-HE-Tag: 1793353203-827267
+X-HE-Meta: U2FsdGVkX1+k/OwHUUSkvBjlybluzLhTOK9GmfZoHVqswR8Qsj2d0IAof9vYOQIcYMhH2dmIldkugd4pMVjZL+3VzdCVaepM6+pCBCP9Js8geQtZlOfyeAItIS6CgILSqfqMvDaIF/3ZzYxRonUeSV6qGwEW1/i+Ua2eDv/po2/Mg+DhyHZgvXXQii1dwqfVz0IwmAXFW8IooORKGR2HIj7qTRI8ufkRs1PtT462YP/I5eZilyJFSj/Y6QqAbQGXi3fVR4UVNUQ0sdTy+asEjN2Rhu/vBl+PSBuwmuygKHZPA3rvSsAfz51F0DkPmz/oNJydD9XbVf3iNLvBscN6QUwVWonVTFv2eKA0Xzc+d4TIGIs30isjSn84PDN2DqQ6bHOhgESi/zEQfziK/CwKbW7NbHx3LDCpaXHQKXZfpfbW0jYsJDf37LccYVw0VoBsj9qELXi0P7D6Orx4cb3LYQs9J2kMaO2vgHs9B6f50XNilmGLWpHdDxPYAl5YkZuw1c1Cz4cIkSoZzc3p8ipvOvBeZbCXL1lotITLOYZF445hYjcge046+v66LyNXy+jja4YAdB46iTa9abZ9x6ncWG4oObetKLXbCjf+9S7cc3jo92oZFx7BF7U1r11QSekac9VVtU8O2Dw+XxG3xFirriPgTWSacAXs4BcKVS/tStJ+zb6yG6kZuandMsSO2i3j6Z3JK5y5DzykO1C194tDYIIjXEEVFVBl9I9SOqXiO04R2ehmrTGwSNo7It1pBTHGGsgSVn7k0yyvqNEl4Y6LZT13T7dVVWBCQIWgzq1L/WvQSqP7bPDHYWbzN+/5Hq1na3XyWl3I2zZpIafmCUGeF245kPiWcsXZrRx4X4yTSoBc7obbM3I5itgEOrQ9x5SwupNriN9IL0NI+EVINUqb0JEF3wsj+du5+6QRpdOMR3phOiyL0m6NKvRDXP9MKgKTDQGlpzobb4yB8HrNzc7
+ lbfOWcNX
+ OYXzjQo7AQLiS8wYF8bUWrFTihsptIQn4g0EKrEdSDpHPgKhJpKjBMvQW4FlbctjbtWAnq96fTsSxp8FDxtogvsO66ouqn5JTCKsCJhoS3tmW2hRGTIN+Cd/33sBtIbEt5sP17QVeLAI4VQr9J2wNKqM6BgCq6QkHS+1d0dyY5zkkxuSlvCGl30z6rWLs/wVybtqeOBdJQnehv6kosRWCelJkqpoU+k1j6N07hmmKHUKxk2njtH8cs2PvMGRg54To5Du46aMazohXfVANlG/rWbau2gypEEPo+wc5H+WDqmB9A12Q+czASvrKg1X0SuIaGK1fD7KlmHUDV0ERh+f9LuZU0CzVhrQ5Q9+a8Zj5T71tduhnOL1wlOt/FXkSaKlFhKx1msKURd95eMA4Um2UejB8i5vW9/c1TpmAA+GGdfC7MnBp7+loBqSUzTJgVCHf9WRV
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -139,49 +138,28 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 > On Oct 29, 2026, at 04:13, David Hildenbrand (Arm) <david@kernel.org> =
 wrote:
 >=20
-> Migration of anon hugetlb folios walks the anon_vma, so the file's
-> i_mmap_rwsem does not serialize it against move_hugetlb_page_tables().
+> From: Josef Bacik <josef@toxicpanda.com>
 >=20
-> There are various issues with that. Most importantly, move_huge_pte()
-> releases both page table locks before the TLB is flushed. Migration =
-can
-> then find the destination entry and finish migration, reusing the old
-> folio while the TLB still has entries cached.
+> hugetlb_unmap_file_folio() assumes vm_private_data points to a struct
+> hugetlb_vma_lock when hugetlb_vma_trylock_write() fails. Since hugetlb =
+VMA
+> locking was extended to private VMAs, this can also happen when
+> vm_private_data contains a resv_map pointer; treating it as a
+> hugetlb_vma_lock corrupts memory and can cause crashes or hangs.
 >=20
-> Hold the anon_vma write lock across the move and the final TLB flush.
-> This also prevents concurrent rmap walks from missing entries moved
-> during rollback.
+> Only take the VMA lock when a shareable lock exists, as additional =
+locking
+> is only needed for PMD table sharing. The fault mutex and i_mmap_rwsem
+> already provide the required protection for private VMAs.
 >=20
-> When we must allocate a destination page table, flush the TLB before
-> dropping the anon_vma lock, then reacquire it after allocation.
+> Fix generated by an LLM and sent by Josef Bacik in private.
 >=20
-> Dropping the lock only works around lockdep: hugetlb folios are not
-> reclaimed or migrated by allocation compaction, but their anon_vmas
-> share the lock class used by ordinary anonymous memory. Having a
-> separate lock class for hugetlb's anon_vma (like already done for
-> i_mmap_rwsem via hugetlbfs_i_mmap_rwsem_key) requires more thought.
->=20
-> There is a concern that this can block page migration of anonymous
-> folios quite a while ... which is not really different to what happens
-> to page-cache folios today. If ever a problem, we can temporarily
-> release the lock.
->=20
-> So let's keep it simple for now.
-
-Make sense.
-
->=20
-> It is a shame that hugetlb has to implement everything core-mm =
-implements
-> in a different way that just screams for problems.
-
-Yeah, nightmare in MM.
-
->=20
-> Fixes: 550a7d60bd5e ("mm, hugepages: add mremap() support for hugepage =
-backed vma")
+> Fixes: bf4916922c60 ("hugetlbfs: extend hugetlb_vma_lock to private =
+VMAs")
 > Cc: stable@kernel.org
-> Reported-by: Chris Mason <mason@kernel.org>
+> Tested-by: Daehyeon Ko <4ncienth@gmail.com>
+> Signed-off-by: Josef Bacik <josef@toxicpanda.com>
+> [ david: simplify description and comment ]
 > Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 
 Acked-by: Muchun Song <muchun.song@linux.dev>
