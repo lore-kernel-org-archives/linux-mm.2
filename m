@@ -1,172 +1,151 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F3A5606A323
-	for <linux-mm@archiver.kernel.org>; Fri, 30 Oct 2026 11:15:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1FD0606A31E
+	for <linux-mm@archiver.kernel.org>; Fri, 30 Oct 2026 11:17:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=X0Z5bJ43
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=zS7DcJlt
 Received: by kanga.kvack.org (Postfix)
-	id 391EB6B05B4; Fri, 30 Oct 2026 07:15:41 -0400 (EDT)
+	id D5EF66B05B8; Fri, 30 Oct 2026 07:17:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 341A96B05B7; Fri, 30 Oct 2026 07:15:41 -0400 (EDT)
+	id CE21A6B05BA; Fri, 30 Oct 2026 07:17:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1E3006B05B8; Fri, 30 Oct 2026 07:15:41 -0400 (EDT)
+	id B830C6B05BB; Fri, 30 Oct 2026 07:17:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id F0BD36B05B4
-	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 07:15:40 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id E340912061B
-	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 11:15:39 +0000 (UTC)
-X-FDA: 85379037198.24.B5CFDB0
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 3214318000E
-	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 11:15:38 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=X0Z5bJ43;
-	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793358938;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 8FAA46B05B8
+	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 07:17:33 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 8E362A0673
+	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 11:17:32 +0000 (UTC)
+X-FDA: 85379041944.08.2973999
+Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 9F63A1C000D
+	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 11:17:30 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=zS7DcJlt;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf20.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.218.54 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1793359050;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jcFVnDvIZ8heZvYaiF3eCzfDTR74GY+V/2n+TMcTvAs=;
-	b=CvywTZFyFaryFIC8iF1p2vEyqWRWg1OH06KfsS8Njhpzu+lf348b9gUpjvq2vQ/Kw//dvE
-	5mfAAIx6m7cSGtq/6e2yg1uHrxh9VeXv75UEIZqywsHZ8uJpBenor8+VsS/wRwALfWbKyU
-	0esXA5BUxWWRrhUEDDfPxJnfDSkmthI=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=X0Z5bJ43;
-	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793358938;
-	b=iRikYzZPINjRfkl7yXv0Ncvnku4lZXrTuiSfhPsDColf2pYcc/6RFGMiQT62Nk0bdtv1e3
-	TN0bOWDMuy4JUq2Ke+Yyvf1E3cGiZjEhoWO56F2S+2h90U+9G1euD9fwVx4JGm0tA8UfPW
-	5eWhvCqTxSAsNzwsn+s4WDohB1vVMnM=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 6C028605D0;
-	Fri, 30 Oct 2026 11:15:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9548D1F000C1;
-	Fri, 30 Oct 2026 11:15:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793358937;
-	bh=jcFVnDvIZ8heZvYaiF3eCzfDTR74GY+V/2n+TMcTvAs=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=X0Z5bJ43M9j+dsxw0EOfb2RfVAPvTOOq7wzfRja5C/mo0S5QFye2IEgPAlORI4c3g
-	 ifImjUhJwdI8WKJ5YsmZzwNO9T/m0kviNcNKqqlF1HggGNZPwAWIf5tuKcs2oU5XVz
-	 izKsKdkgcOFL5wt8C5/w8BeHHulb+7ldzTHu+6qfcHg6P136wlJ4Zt/a0lQGMSi3hY
-	 KM0nA2fT0xAsx3g4kOpikLMdyV+GVhDasUmL3YTRLy61zlRQukgrzzF1OnpaAKinvF
-	 CdRbd2dFS6Ly6QcLF/O4Pob9/Zy+lYtZgiUY62l/mQIs9T+8HMZdWboQ0mM+HSpbiP
-	 UY5gtheZjBa1w==
-Message-ID: <48a66134-3522-4b81-adca-4e76d52dc391@kernel.org>
-Date: Fri, 30 Oct 2026 12:15:19 +0100
+	bh=nsvpoCq67ikFM43Za6bLeWpM8Cql/+fjWhbCUzkmcmg=;
+	b=UQK6Zkkh//OGzIZhNrfDgazQmCp0xmH2k0yaRH7AF3HxPmM3dDxtsqEsRsKEv/1FzYF9xf
+	Iji2Z5z5TcRUzznFX3OQyxJlvozL0V5PtsAdxXpHZvA81p+xm+x8Jpd4R2rgy73kj6ly0X
+	iBksgrV0DkNlO2rJJBPtB0LoKCfjPtw=
+ARC-Authentication-Results: i=2;
+	imf20.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=zS7DcJlt;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf20.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.218.54 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1793359050;
+	b=0X56aRvAcREUABCzZBt5bgkkwgTKRiWbqS74qFsUvkVnfS9OE60MZAJYAxPLGJhjefCZa+
+	50bF1X92k4QPNcwjN0TdlAFxENLpVuuq6v0bilkSJFJypNJkAqh5mptRc85j7EkFUnYGc2
+	bdCTQ+PIE+nK/ssAC+FJOkdZ5sRYtLk=
+Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-c4caf490606so43330766b.0
+        for <linux-mm@kvack.org>; Fri, 30 Oct 2026 04:17:30 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1793359049; cv=none;
+        d=google.com; s=arc-20260327;
+        b=j1NqBYW0PIrq4at+A/hi0S+DGP46SPoEcSbPDmGRkFfl1rDPTLa1cXGYuy3qsGo+W8
+         cJdA7vxFgsFkZsAfdF6QMjXGoe/whRhhR24MUdtkd3sncmQouJABy1jciScNfIMtx47J
+         oS3uvzVOBgtwUUZXHVnyRMHMkOtV6QXdA0la2uYnFh3BQgkXlkXCHmUZd41Er5/LDfgd
+         KkWaJ/Wqo+CNlYKW6xbww58xZDWjdPj+5ICiDgyeq68j3CfJaEHGNl1beF/LzyYQF30a
+         leIBcBwYI6BGXxDfQ1WguaXl7rfPucvSNrokYmqNiWBPhJQEv4tcfpR9PI9GLfeRnLR5
+         ADpA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=nsvpoCq67ikFM43Za6bLeWpM8Cql/+fjWhbCUzkmcmg=;
+        fh=vtQSii13lEE6aN3TzzcEhV6Uhpfw+Ho0XXBBbxCLyRY=;
+        b=qOp0M3v3IANxEncparHIusOJSkwyVeWSKfsDi6OQME5/T7QlytnfX2mm8Z/yuuYWRR
+         YwRGLNd78Ccn17R1HLG8+w3ps1oGi585mq5iuMgql4aWZixCqOrcIDIFksE/2paMYjaq
+         UAy69Vsd5dqUAy7+NgtXFQ+mDziUuDmBrObCeGIM/8TpITLX2w1mpOVLN39xcgTsNeQM
+         1P76DjfNi+OV9KhOREWu/js2N152yGXoc2uAQ6fohC5XIvSphyeh6RT1Fm0ciBjyDA5Q
+         ffKK5mYoAu5QC5MdiwQ9ogGdm7rzRQVbSFi8zVlozv4sEaWg89CCJXwjeLCCckvW1jrE
+         GuzA==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1793359049; x=1793963849; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=nsvpoCq67ikFM43Za6bLeWpM8Cql/+fjWhbCUzkmcmg=;
+        b=zS7DcJltRinQDXUoe7I5sfVu86PjqCfMZwHUktQ9VJpv9x9WwMUGOFZFByl+A+iJOr
+         68x7oZHUm9rldbx7yOuGrsE99Ew99GM3ncjAB8gNq00G6gx3zKJy1pq2W5ZP2fK9K+F/
+         1+U8x5/Mz2gOjrNi4VthvTK2cwQD/pHRH9lGsS9R3WY9Nr/aAeW10b1cw8pDi5tzKDpL
+         NNaDI3lqwUsAi6lLuWb7rYo6UqaJYwFZRG/hXekmshiySu2RO8L7gDnH2JbxlH+t9l14
+         wLlwKMqO77v9xJmqWzDSS9DrkemeIPT0bgMBy3msH5BbAJMA95zkPP36V0PsnoFf6JOJ
+         yvVw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793359049; x=1793963849;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=nsvpoCq67ikFM43Za6bLeWpM8Cql/+fjWhbCUzkmcmg=;
+        b=dbqkiC8lBlDeuUY+o43BgevQh9XzdCHA3+Ir33iXdzOJSYtKrNU1nNzgSXMblI0TNB
+         fNsWKR7NdS65PCs22KNbgo9kaOL7oN6gUPXWbWtLTyrXTU3X/mMViuqdyCQvpoTa5d/O
+         Ud9wuD7GgCof+Go/EC/YsbeJg4ESdWOEOcm4BsuhBDpAscjcCrTL6IitQ+sbo5GSoGcl
+         Sw2AIaxfGV0CALQawZF9ESN535G4eLZPN0/+Zvt6rql1xQ5IfYsWi10pV5axuXLfp4ni
+         +DrPhV6Bg2cv3Jmpi+n0GITDZc90x8dNsIdgAt5shGCAwN+XtO4MfDAl/nwi6lErb73b
+         GhCw==
+X-Forwarded-Encrypted: i=1; AKwUvBz8Eup1l75M7iOwMmfOlU9t/wpHPcPUU3QB6JXAqZGgLU8t05yNWUCXzz4RMivixTWHJBxagdOyGw==@kvack.org
+X-Gm-Message-State: AFq9FYJo/BTvR1lOvQpeZBHu3firMaAsLQn5964qM7kVjMjfCBFQVhFj
+	tdJeUHo7g9FNNo/t2peg7mUdFJeta3cYMRL6zUi+ZZv+33blQI9XUOyAxITqr4qVnIUM7/wxC3S
+	guROLJ4N0mAEQ5C6+VNdL57JmHAwhcG2mq0wzc5Y=
+X-Gm-Gg: AYBFou2m/W0g7NFOHG0VEnecK8k9dYVX2bFecjFcOtLIhUaamv2ieL3reNqhWLkmmKK
+	L/2RImn+zlwg6xrAXsg7OeXq0FSL4e0o2TJ92TxvY3tvnj76l2ShA8C33oc7JkIFKNbMOcQnMWL
+	XyEls91g1+g24uJRtmvwWAMFcc4iv7e9MOKayx9/5pRzh+NjyS0k+VwtHxgr4GmRnpQIx/dRoLB
+	N/a2aRm1EqhUflQl5LIJzUjwc/C7wS9R68SCwk1P1ydrLg4g/N9MJeeadI1wnF4t3sLTIvo1E34
+	oIWcBImzx4AvjT71JOCSsSYyZDyfgWxhOhRSxp9IFmSX/gk3+ZfIZobRtUvdyhOC/lYxADDxi8E
+	U7eVH640uz2scBNhHVce6wghaBpmK6T8JvIRZDGH+qqub9fjhgvKaV5bQh1NBhvZ44PuOWA==
+X-Received: by 2002:a17:907:94c2:b0:c25:4f7c:8ec5 with SMTP id
+ a640c23a62f3a-c4ca7a84587mr190103666b.23.1793359048873; Fri, 30 Oct 2026
+ 04:17:28 -0700 (PDT)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 27/47] mm/mmu_gather: fix flushing ranges with 4 GiB or
- larger
-To: SJ Park <sj@kernel.org>
-Cc: Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
- Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
- Lorenzo Stoakes <ljs@kernel.org>, Kairui Song <kasong@tencent.com>,
- Barry Song <baohua@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>,
- Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
- Baoquan He <baoquan.he@linux.dev>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Kees Cook <kees@kernel.org>,
- Peter Zijlstra <peterz@infradead.org>, Jann Horn <jannh@google.com>,
- Pedro Falcato <pfalcato@suse.de>, Hugh Dickins <hughd@google.com>,
- Pasha Tatashin <pasha.tatashin@soleen.com>,
- Pratyush Yadav <pratyush@kernel.org>,
- "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>,
- Zi Yan <ziy@nvidia.com>, Lance Yang <lance.yang@linux.dev>,
- Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>,
- Alistair Popple <apopple@nvidia.com>, Nico Pache <nico.pache@linux.dev>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>,
- Matthew Brost <matthew.brost@intel.com>, John Hubbard <jhubbard@nvidia.com>,
- Peter Xu <peterx@redhat.com>, Will Deacon <will@kernel.org>,
- "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Nick Piggin
- <npiggin@gmail.com>, Oscar Salvador <osalvador@suse.de>,
- Minchan Kim <minchan@kernel.org>, Muchun Song <muchun.song@linux.dev>,
- Xu Xin <xu.xin@linux.dev>, Chengming Zhou <chengming.zhou@linux.dev>,
- Chris Li <chrisl@kernel.org>, Kemeng Shi <shikemeng@huaweicloud.com>,
- Nhat Pham <nphamcs@gmail.com>, Youngjun Park <youngjun.park@lge.com>,
- Gregory Price <gourry@gourry.net>, Joshua Hahn <joshua.hahnjy@gmail.com>,
- Rakie Kim <rakie.kim@sk.com>, Ying Huang <ying.huang@linux.alibaba.com>,
- Jason Gunthorpe <jgg@ziepe.ca>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, kexec@lists.infradead.org,
- linux-fsdevel@vger.kernel.org, linux-arch@vger.kernel.org,
- linux-cxl@vger.kernel.org, Josef Bacik <josef@toxicpanda.com>,
- stable@vger.kernel.org
-References: <20261030005726.155279-1-sj@kernel.org>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20261030005726.155279-1-sj@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <20261030-swap-fixes-v1-0-73f73a59f2fc@tencent.com>
+ <20261030-swap-fixes-v1-2-73f73a59f2fc@tencent.com> <auOz00OGB_8dgniC@cmpxchg.org>
+In-Reply-To: <auOz00OGB_8dgniC@cmpxchg.org>
+From: Kairui Song <ryncsn@gmail.com>
+Date: Fri, 30 Oct 2026 19:16:51 +0800
+X-Gm-Features: AclHuK_QtoyukUCJkCFO0WEKLkvtcn1cotvwCTndLO53R98gepDq_gXzXwzOz4k
+Message-ID: <CAMgjq7BYgXLheXDyc=p2mNgxdP3+92v2WHGiXiweDrsiYQ0u2g@mail.gmail.com>
+Subject: Re: [PATCH 2/3] mm/swap: account synchronous swap reads as memory stall
+To: Johannes Weiner <hannes@cmpxchg.org>, Christoph Hellwig <hch@lst.de>
+Cc: Kairui Song via B4 Relay <devnull+kasong.tencent.com@kernel.org>, linux-mm@kvack.org, 
+	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
+	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, 
+	Baoquan He <baoquan.he@linux.dev>, Barry Song <baohua@kernel.org>, 
+	Youngjun Park <youngjun.park@lge.com>, Yosry Ahmed <yosry@kernel.org>, 
+	Chengming Zhou <chengming.zhou@linux.dev>, Usama Arif <usamaarif642@gmail.com>, 
+	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Chuanhua Han <hanchuanhua@oppo.com>, 
+	Mani Tofigh <mt4022@columbia.edu>, linux-kernel@vger.kernel.org, 
+	Josef Bacik <josef@toxicpanda.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
 X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 3214318000E
-X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_SANE_1 autolearn=unavailable autolearn_force=no
-	version=4.0.1
-X-Stat-Signature: otx3zfbmxwzdzx36g6o9e8sxhdoh7qru
-X-HE-Tag: 1793358938-98931
-X-HE-Meta: U2FsdGVkX1/goIfja09MfGkibmogTkn4uoBP+sIEW/Tcx3bzW7IBsU/T92zcgqBmT7trlF5BENKfmCZ2ON58fdD7Yux5s29bTZZZaSkV3xzMEN5P9X6zw8/+qoQUsQhTnj5CTktD0B1UgCLek6aOYxrBw4KAIDE4xLGT404H+KNIvimow2Rgq/w6p0SMzB5Q0MXDXOViqoE+veyl55niuKiSG4zucpj+ImDCJFQbX1noOcjH6JH7rksLuZQIxJ9pQBoHi+mGjtg9C7VaRxF1yJcoULhe4SmkzfUABoInzzhiEp1N5GZrlfrI2FHpejohAPFLyP3izDjhKsfLqCQrJ6pnnF5C3BEiPU62Ahy3hTlfwMO51WMgdPQwh/xu160cCODzCFKMwp3qbwlsf/d1Ofvw0nRs+KCrgDuK5yzJtdhzVmt/0cNBFK6BenYGJ2tCxAHo/4J+aPpM0K/PXJHohCkWJjoxPlNrrYUJBMGPLiQKRutZZblI9iGybJrNsNRRibkzXXRNdNdyHU4Ct6QFcPll+ujr7uRyiYpi6MacZaNVDxYvryJhKI8ylwXAo2Dbac1Fk4MR+kSPiBWO2qjccK+bQ6P++j8dDU0UvJ7/mQYOXm0tT/YQsjV1hZpjP8KUptIk91zy7DEkorcsHidz2rlMqzM77+YAncf9avt27/+uQe9XoVAYpLWx9+LrwwqpSl35eD8sOaPMNJw6SPa0lGGzYczRIVTm9TAzMqgmwDLkmm/KMPhyBTiEnF+cqoHlR7ZIhyYaZYwV9LqUt2C3Anl5/xBXnduBH4ZJBB8fgpvREA6Ntp10Vj7TQ2JhsqXeumacuKNISp7JlQ3jWCJrRC87JeO8Kfrsb9wRs6Hr/uRyXEsZId6T2sVElcv9Kh3H3uCQYWRtYiEqHxu0D+GePRVgVde8RCaJxBJykmvR1dEYCcP0SuvZ8C4MViX93Vv1xp5yiGXYUtyvo0WkDVa
- gBRrrrlf
- eDmKH3AtOYoTnEUGxuHtDppCQvU9sC1Y1og1mdNvNXtivgwLzxOwvC+1R+6qkXlO/4t7qtTrU8EeYT/6w1j9Nc0JnOOaWHozXcVEqsbMve5LU6L3vrzsT69kw8a0uedM17CetDZm1k9G+EZZcg/6LRj1I8oEP/b1muQj+ei3yq/0ag+OC3Nht7waHVSYPSjJvU1Doaxf9peq6/rrUaOrVBrIEGpYhvHH2mO1i03vMTjJtauCNVGaanYg/ecx+bqsGBAvRKQ60dMnKQz2wXH+Co9iI3lwc9dcMOwfSqHl03EPbkV6qCb1yMLKXAdg3g0qEjHIqVK+n3HCh3tODsA3zgZvcNGALKiPLhJYCs7MXMiNMFFBoKESNmknV/UzaloFnQTiRBPuEZ6+4RL1/SplWnhVZpU2V4ek7kg1ksXyu4+jqrHQOUezyEflH383gUbsAgYoBYfRWu3Io/3AePCuJMqMIeaVXUwXwRerQDVUE3zmu0mbP/VE8Pm71Td3w1JzbdTTYTFTvjvVd7MZsXnlu8hAXc6+dIcWZUHTcgiWqLz4fOHORtaG9x68IfrPMu0FUmBAX+oq/Q8QdRi8=
+X-Rspamd-Queue-Id: 9F63A1C000D
+X-Spam-Status: No, score=-12.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
+X-Stat-Signature: uhkex6awzxow6sabhw9grfhw14n74ojk
+X-HE-Tag: 1793359050-993840
+X-HE-Meta: U2FsdGVkX19nr27FS2KWM180aNdKQSZ4eO7D9SRjfO0UdooXo8G6Lqcv9ohda0ed/gg0pFfaNTU1q3JXcRrSgl3Z/+q1TOhzNtX15CDlpJj0sX98BBEB41q7FIk5yiDCHU77WHfQvGqiwEDiDmBk8uMCut8qsZlhV2iJo0oohFRvTB1hjSFVjThfHy2ph/JIgcRGsX+/ZMxkYhlx4oVBuodVbaSCBpEH/4C7po38lmKlqRYOXcSXbugiZAvZMnBveRruWs85biH6lQiEoLVjH1x+mlcbkTfGzhDGecCQfGLLfF8KkCF71xiiw8/Yqq8sfF42Cp4iTl/jfwUnyjNUuyFWeVPZCDbDoDzNbRNYaHEExZP1jE5BBYKDE2Z2Fr32iBVOZ+EmRZTExk0+TEeVhMxVj3NIlO/rl61HtPl4hEgyO7Yt2f8YF0saoNcYYtKU7Gs+9af6+DS/0yPtoDwP+2wMksPxhPccf30P39JsZyn9gbGYyCA4GuvkhhsI2PVbAorSSbs57aJQamJtyLDDNjADAumK/tyWRcWULVQgv8t/OQXpOqsxp/4c1ZJoz4ZAm+7xx9DJMLRfzko5SJgY8TGps9SwRMRhxWfKHJeKW4D+X8XXTDYQe2Zqk7w4MyCZf6oo/KTV4GHeDJnxqv3qMWCfdviaeHf8Jkh2k5mpW3bMHAHmaSGdHoEAbz+Q7ScXDUzOaJ0/BUc2peoMKWeSmaZjZ5V1j0mEZsrHq5HGEtdWzdMMDBY4AA/s/V+itKfGqY3//U0P2hYnX7OWXkP8m8jIEH9W287DOWRiMWBINCJviPGBKnoRJdUxozaOWjCQTVoSmI9X/orutiv1ROuQyP6K3Gk994TSese71QGgyg1fQrLW14IcGr9L/B9LpOBzLCTzkiYI8h85vF/WqqTwqQr+LwF4djjWDw509c503UXHb58o0y8K7Oi8gsWOiF1UeYXVAT3LqS8zYuFRvsH
+ 7pgVB66F
+ pbeXu+32bgBRryyMZZHG13yvqUaUTi2LgkEyylMXc5OOv5jOFpl2T8Ngc+OjLPpaRcoVgKZA9zbITym151t3XjILy73bctPxfwtwYRMvQsqQTos19gsZIEjP5AB1wNdE/XWLHeClm5+lZix2CvHNlzB9YHRkPNwJSwnv1kK32R4N3Fbf+Q6W9HVDhyMD2lIg5B11uUf2x2D6qN/1NTSka6DxhBbO1J/M9yihVwLEb6cBB3Gt7GBwtCp+eON/4kW7osY2KohQE++741C46yp4B3biOwbVpZ496W/gTfJ/6N0yam3qPDl+53xcHM7/Su9g4hZ8xlAi9pKY8CQr2o1/uPwGXGy7B2INXQNzSA75luTXRW9IiVSKpZCi3xRVKsAvfC9rPfHqNaoT7N7T4KoSJjkRqzCqbg+AzAL9k247pmW4Db5ZlKgFz7GDe1+CiPhoXj9G9n96d55V7Kp/kD1+bR1KRIfHnyxx43nmLp3Y+0EGaj70pNV8NZfYaBc60vxPlUDnc0UP0+i153Vt8Xl2fz7cc2+GdKNjt1jWZs3pxGIdgHz+0Kua9MRJSVBl+blbwQIoAYmNxRYyeFpO/ZH4YvE6r05a/JzjdtNE2cnCqNP3G8WOlldJfIzE3A2+jKZ5WQwAgVejULyUkZaKKoo/KL1ukvLdgzrK+uMCeHn0TfXYVu4UGWzz4k+8+t0t2FxsZvU96
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -175,59 +154,258 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 10/30/26 01:57, SJ Park wrote:
-> On Thu, 29 Oct 2026 21:33:22 +0100 "David Hildenbrand (Arm)" <david@kernel.org> wrote:
-> 
->> From: Josef Bacik <josef@toxicpanda.com>
->>
->> __tlb_adjust_range() takes the size of the range which has to be flushed
->> as an unsigned int. Its callers, tlb_flush_{pte,pmd,pud,p4d}_range(), get
->> and pass an unsigned long. Consequently, a range that is 4 GiB or larger
->> gets truncated, possibly to 0.
->>
->> On arm64 with hugetlb, a 64k kernel can have 16 GiB hugetlb folios
->> mapped contiguously at the PMD level and flush them when unmapping, and a
->> 16k kernel can flush 64 GiB PUDs through tlb_unshare_pmd_ptdesc(). So
->> at least these two scenarios are affected.
->>
->> Fix it by flushing the proper range instead of the truncated one by
->> properly using "unsigned long" for range_size.
-> 
-> Makes sense to me.
-> 
->>
->> Fix generated by an LLM and sent by Josef Bacik in private.
->>
->> Fixes: b528e4b6405b ("mm/hugetlb: add tlb_remove_hugetlb_entry for handling hugetlb pages")
->> Fixes: 8ce720d5bd91 ("mm/hugetlb: fix excessive IPI broadcasts when unsharing PMD tables using mmu_gather")
->> Cc: stable@vger.kernel.org
->> Signed-off-by: Josef Bacik <josef@toxicpanda.com>
->> Acked-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
->> [ david: use two-tab indent, simplify description ]
-> 
-> It seems the convention [1] is to put the above modification note right before
-> the last S-o-b: of David.  Maybe you forgot moving it after adding R-b: and
-> T-b: from great reviewers?
+On Fri, Oct 30, 2026 at 5:00=E2=80=AFAM Johannes Weiner <hannes@cmpxchg.org=
+> wrote:
+>
+> On Fri, Oct 30, 2026 at 02:31:42AM +0800, Kairui Song via B4 Relay wrote:
+> > From: Josef Bacik <josef@toxicpanda.com>
+> >
+> > Swap-ins from SWP_SYNCHRONOUS_IO devices such as zram are no longer
+> > counted in PSI memory pressure or in the swapin and thrashing delays of
+> > delay accounting.  Refaults of the workingset from zram, the main input
+> > to userspace OOM handlers like lmkd and systemd-oomd on zram systems,
+> > become invisible in /proc/pressure/memory.
+> >
+> > swap_read_folio() opens the accounting window with
+> > psi_memstall_enter() and delayacct_swapin_start() and, per its comment,
+> > means to count the submission time.  For synchronous devices the
+> > submission is the entire read: swap_bdev_submit_read() does
+> > submit_bio_wait() and completes the folio.  Since reads are batched in
+> > a swap_iocb, swap_read_folio() only queues the folio with
+> > swap_add_folio(), and the bio is submitted later by swap_read_submit()
+> > in the caller, e.g. swapin_sync(), after the window has been closed.
+> > By then the folio is uptodate and unlocked, so the fault does not wait
+> > on the folio lock either and the read time is not counted anywhere.
+> >
+> > Found by code inspection; not reproduced.
+> >
+> > Fix by submitting synchronous reads from within swap_read_folio(), as
+> > was done before the batching, rather than from the caller.  This gives
+> > up batching of readahead for synchronous devices, which do their I/O
+> > inline anyway, in exchange for keeping the accounting simple and in one
+> > place.
+> >
+> > Fixes: dda8fb68b590 ("mm/swap: also use struct swap_iocb for block I/O"=
+)
+> > Assisted-by: LLM
+> > Signed-off-by: Josef Bacik <josef@toxicpanda.com>
+> > Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+> > Signed-off-by: Kairui Song <kasong@tencent.com>
+>
+> Hm, this isn't a complete fix to the problem described. IO throttling
+> happens at submission time, so there can be significant delays on
+> async devices too that are no longer tracked since the culprit change.
 
-It's "b4 trailers" that apparently messes this up. I don't think it really
-matters (some move it above all trailers), but I'll fix this up when applying.
+Yeah you are right! Thanks for the heads up, not only a sync isssue
+indeed, async devices are affected too :(, throttled swap fault also
+went unaccounted.
 
-(++ on all the great people around here)
+> How about keeping the accounting window open across the batch? Opens
+> on first read, closes on submission. A batch with at least one
+> workingset folio is "contaminated" and the whole sequence and
+> submission becomes a stall. Would need to pull the !can_merge flush
+> out of the batch-add function to get the accounting window right but
+> that seems reasonable.
 
-> 
->> Reviewed-by: Qi Zheng <qi.zheng@linux.dev>
->> Reviewed-by: Gregory Price (Meta) <gourry@gourry.net>
->> Tested-by: Gregory Price (Meta) <gourry@gourry.net>
->> Reviewed-by: Dev Jain <dev.jain@arm.com>
->> Reviewed-by: Muchun Song <muchun.song@linux.dev>
->> Reviewed-by: Pedro Falcato <pfalcato@suse.de>
->> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
-> 
-> Reviewed-by: SJ Park <sj@kernel.org>
-Thanks!
+Won't this cause an amplified PSI reading if only one folio in a batch
+is workingset? Maybe not a big issue though.
 
--- 
-Cheers,
+>
+> Something like this:
+>
+> diff --git a/include/linux/swap_ops.h b/include/linux/swap_ops.h
+> index 57ac6c703f68..6e45c9204482 100644
+> --- a/include/linux/swap_ops.h
+> +++ b/include/linux/swap_ops.h
+> @@ -17,6 +17,10 @@ struct swap_iocb {
+>  struct swap_io_ctx {
+>         struct swap_iocb        *sio;
+>         struct swap_info_struct *sis;
+> +       bool                    in_batch;
+> +       bool                    workingset;
+> +       bool                    in_thrashing;
+> +       unsigned long           in_memstall;
+>  };
+>
+>  /*
+> diff --git a/mm/page_io.c b/mm/page_io.c
+> index c6824fcd483e..22e5ac1d298f 100644
+> --- a/mm/page_io.c
+> +++ b/mm/page_io.c
+> @@ -197,6 +197,19 @@ static void swap_zeromap_folio_clear(struct folio *f=
+olio)
+>         swap_cluster_unlock(ci);
+>  }
+>
+> +static bool swap_can_merge(struct swap_io_ctx *ctx, struct folio *folio,
+> +               int rw)
+> +{
+> +       struct swap_info_struct *sis =3D __swap_entry_to_info(folio->swap=
+);
+> +       struct bio_vec *last_bv =3D &ctx->sio->bvecs[ctx->sio->nr_bvecs -=
+ 1];
+> +       struct folio *prev_folio =3D bvec_folio(last_bv);
+> +       size_t prev_folio_size =3D folio_size(prev_folio);
+> +
+> +       if (ctx->sis !=3D sis)
+> +               return false;
+> +       return sis->ops->can_merge(folio, prev_folio, prev_folio_size, rw=
+);
+> +}
+> +
+>  /*
+>   * We may have stale swap cache pages in memory: notice
+>   * them here and get rid of the unnecessary final write.
+> @@ -218,6 +231,13 @@ int swap_writeout(struct swap_io_ctx *ctx, struct fo=
+lio *folio)
+>                 goto out_unlock;
+>         }
+>
+> +       /*
+> +        * Don't hold up a batch this folio can't join for the zero
+> +        * check and possible compression. Submit it now.
+> +        */
+> +       if (ctx->sio && !swap_can_merge(ctx, folio, WRITE))
+> +               swap_write_submit(ctx);
+> +
+>         /*
+>          * Use the swap table zero mark to avoid doing IO for zero-filled
+>          * folios. The zero mark is protected by the cluster lock, which =
+is
+> @@ -322,32 +342,15 @@ int sio_pool_init(void)
+>         return 0;
+>  }
+>
+> -static bool swap_can_merge(struct swap_io_ctx *ctx, struct folio *folio,
+> -               int rw)
+> -{
+> -       struct swap_info_struct *sis =3D __swap_entry_to_info(folio->swap=
+);
+> -       struct bio_vec *last_bv =3D &ctx->sio->bvecs[ctx->sio->nr_bvecs -=
+ 1];
+> -       struct folio *prev_folio =3D bvec_folio(last_bv);
+> -       size_t prev_folio_size =3D folio_size(prev_folio);
+> -
+> -       if (ctx->sis !=3D sis)
+> -               return false;
+> -       return sis->ops->can_merge(folio, prev_folio, prev_folio_size, rw=
+);
+> -}
+> -
+> +/*
+> + * Callers submit a pending batch that @folio can't join before adding
+> + * it, see swap_writeout() and swap_read_folio().
+> + */
+>  static void swap_add_folio(struct swap_io_ctx *ctx, struct folio *folio,=
+ int rw)
+>  {
+>         struct swap_info_struct *sis =3D __swap_entry_to_info(folio->swap=
+);
+>         struct swap_iocb *sio =3D ctx->sio;
+>
+> -       if (sio && !swap_can_merge(ctx, folio, rw)) {
+> -               if (rw =3D=3D WRITE)
+> -                       swap_write_submit(ctx);
+> -               else
+> -                       swap_read_submit(ctx);
+> -               sio =3D ctx->sio;
+> -       }
+> -
+>         if (!sio) {
+>                 ctx->sis =3D sis;
+>                 ctx->sio =3D sio =3D mempool_alloc(sio_pool, GFP_NOIO);
+> @@ -460,42 +463,45 @@ void swap_read_folio(struct swap_io_ctx *ctx, struc=
+t folio *folio)
+>         struct swap_info_struct *sis =3D __swap_entry_to_info(folio->swap=
+);
+>         bool synchronous =3D sis->flags & SWP_SYNCHRONOUS_IO;
+>         bool workingset =3D folio_test_workingset(folio);
+> -       unsigned long pflags;
+> -       bool in_thrashing;
+>
+>         VM_BUG_ON_FOLIO(!folio_test_swapcache(folio) && !synchronous, fol=
+io);
+>         VM_BUG_ON_FOLIO(!folio_test_locked(folio), folio);
+>         VM_BUG_ON_FOLIO(folio_test_uptodate(folio), folio);
+>
+> +       /*
+> +        * Don't hold up a batch this folio can't join for its lookup
+> +        * and possible decompression. Submit it now.
+> +        */
+> +       if (ctx->sio && !swap_can_merge(ctx, folio, READ))
+> +               swap_read_submit(ctx);
+> +
+>         /*
+>          * Count submission time as memory stall and delay. When the devi=
+ce
+>          * is congested, or the submitting cgroup IO-throttled, submissio=
+n
+> -        * can be a significant part of overall IO time.
+> +        * can be a significant part of overall IO time. Reads are batche=
+d
+> +        * and submitted later, so the windows close in swap_read_submit(=
+).
+>          */
+> -       if (workingset) {
+> -               delayacct_thrashing_start(&in_thrashing);
+> -               psi_memstall_enter(&pflags);
+> +       if (!ctx->in_batch) {
+> +               delayacct_swapin_start();
+> +               ctx->in_batch =3D true;
+> +       }
+> +       if (workingset && !ctx->workingset) {
+> +               delayacct_thrashing_start(&ctx->in_thrashing);
+> +               psi_memstall_enter(&ctx->in_memstall);
+> +               ctx->workingset =3D true;
+>         }
+> -       delayacct_swapin_start();
+>
+>         if (swap_read_folio_zeromap(folio)) {
+>                 folio_unlock(folio);
+> -               goto finish;
+> +               return;
+>         }
+>
+>         if (zswap_load(folio) !=3D -ENOENT)
+> -               goto finish;
+> +               return;
+>
+>         /* We have to read from slower devices. Increase zswap protection=
+. */
+>         zswap_folio_swapin(folio);
+>         swap_add_folio(ctx, folio, READ);
+> -
+> -finish:
+> -       if (workingset) {
+> -               delayacct_thrashing_end(&in_thrashing);
+> -               psi_memstall_leave(&pflags);
+> -       }
+> -       delayacct_swapin_end();
+>  }
+>
+>  static void swap_write_end(struct swap_iocb *sio, bool failed)
+> @@ -709,9 +715,19 @@ void swap_write_submit(struct swap_io_ctx *ctx)
+>  void swap_read_submit(struct swap_io_ctx *ctx)
+>  {
+>         if (!ctx->sio)
+> -               return;
+> +               goto out;
+>         count_vm_events(NRSWPIN, 1);
+>         ctx->sis->ops->submit_read(ctx);
+>         ctx->sio =3D NULL;
+>         ctx->sis =3D NULL;
+> +out:
+> +       if (ctx->workingset) {
+> +               delayacct_thrashing_end(&ctx->in_thrashing);
+> +               psi_memstall_leave(&ctx->in_memstall);
+> +               ctx->workingset =3D false;
+> +       }
+> +       if (ctx->in_batch) {
+> +               delayacct_swapin_end();
+> +               ctx->in_batch =3D false;
+> +       }
+>  }
 
-David
+Nice suggestion, and I forgot to Cc Christoph on this though,
+worth getting more attention.
 
