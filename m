@@ -1,181 +1,149 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DEC3606A322
-	for <linux-mm@archiver.kernel.org>; Fri, 30 Oct 2026 02:09:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 324C5606A331
+	for <linux-mm@archiver.kernel.org>; Fri, 30 Oct 2026 02:11:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=DBFdgPnm
+	dkim=pass (2048-bit key, unprotected) header.d=amacapital-net.20260707.gappssmtp.com header.i=@amacapital-net.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b=kzUJv4ff
 Received: by kanga.kvack.org (Postfix)
-	id 6D76B6B05B2; Thu, 29 Oct 2026 22:09:13 -0400 (EDT)
+	id E56316B05B6; Thu, 29 Oct 2026 22:11:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 661BB6B05B5; Thu, 29 Oct 2026 22:09:13 -0400 (EDT)
+	id E083F6B05B7; Thu, 29 Oct 2026 22:11:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5021D6B05B6; Thu, 29 Oct 2026 22:09:13 -0400 (EDT)
+	id CCF8B6B05B8; Thu, 29 Oct 2026 22:11:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 1FDB76B05B2
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 22:09:13 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 7BA59C05CB
-	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 02:09:12 +0000 (UTC)
-X-FDA: 85377660144.02.FB57D56
-Received: from SN4PR0501CU005.outbound.protection.outlook.com (mail-southcentralusazon11011059.outbound.protection.outlook.com [40.93.194.59])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 8E388180002
-	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 02:09:09 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=DBFdgPnm;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	spf=pass (imf24.hostedemail.com: domain of ziy@nvidia.com designates 40.93.194.59 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 953526B05B6
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 22:11:41 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 0C4364061E
+	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 02:11:41 +0000 (UTC)
+X-FDA: 85377666402.11.A8A5466
+Received: from mail-lf1-f54.google.com (mail-lf1-f54.google.com [209.85.167.54])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 097FC80003
+	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 02:11:38 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=amacapital-net.20260707.gappssmtp.com header.s=20260707 header.b=kzUJv4ff;
+	dmarc=none;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf02.hostedemail.com: domain of luto@amacapital.net designates 209.85.167.54 as permitted sender) smtp.mailfrom=luto@amacapital.net
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793326149;
+	s=arc-20220608; t=1793326299;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=Fs5lxatRcHniRo7WEmF0RBJnWapdF99b8ZOlitQHlZM=;
-	b=ie/kM/mGgDTemXdH92+OOkE54azSiIVeEiO2XKmUkAVh9OIKwwgZD/rToZQLO191/PvooV
-	YJTwdXH+ioGYtIhdcQWa+cQwUJW0priBDz6hbek5RXkNmBIhHGCWHOVWq837+Lz9dEubpc
-	lDNssQZ/rHAkH636GPIZHXyGS0VcilA=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=crA/drrVuPBte8rst5YBRjdG8mKRZAGvubjNLACa7Rk=;
+	b=MzwPplvQSdPlkujEo8fXEkMfpqDz/9NyT5sYsPQd7/0OGTBqbFNdJAzX63dBoR0YjvIzS+
+	nDKzEaOKLFanmJZQrUG1C+yP1BuvyVqYIkBk9Y626LGzWbdH8S9S3ZxbsEVIlywwAp6Y+a
+	p2lQFSpka7zlXxkhAN/mIQ3z+DjQQlY=
 ARC-Authentication-Results: i=2;
-	imf24.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=DBFdgPnm;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	spf=pass (imf24.hostedemail.com: domain of ziy@nvidia.com designates 40.93.194.59 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+	imf02.hostedemail.com;
+	dkim=pass header.d=amacapital-net.20260707.gappssmtp.com header.s=20260707 header.b=kzUJv4ff;
+	dmarc=none;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf02.hostedemail.com: domain of luto@amacapital.net designates 209.85.167.54 as permitted sender) smtp.mailfrom=luto@amacapital.net
 ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1793326149;
-	b=froVvv+H+U1FqY0i+fgQsLm542tMi3AlwMaH6BRGOJRYwmjoDKu3ToCi/C0EwFBnlLcsa4
-	Vjy/X1o+USq9INWO8fgAwWPh/BH/DjGcKGWfRKEAk3E5EGQtVROgkW1XmJpw+phcL3R+3X
-	nHfaYnIdd1XSSKCJxuzxfRs/8FCJ5SY=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=GMQ/lVdWAn5TWAvjBhWyAsejuYzVYxnY+qCx1pTxf4F9dzEMokvPJmLl94z0qC0r1cZckiRSRlgJPELEA6nrk2ntTAhkM27DJkTGM4HrrbniQ0L8XDwNNF64KwT0Sh5MG3sI/XVbpLpXZRJ3sV+/JPiE4T5vtmYaRSBAhlZbAIg2ZlFgnUfWdP0iDVULCWvxJRUURzLnprrNiEaWivIm7dM4irR+mnCTAoU5WQMzWcb4AhIATmBU6NuHfahV31kK4+9fr7nOPwC3PTdjFSfQC5LJ71uRfNR5ZeIwSpTXom4wL5WQVl+YTINdf48QGWrvmBMhkQwFUlSJyqK6sr4fbQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Fs5lxatRcHniRo7WEmF0RBJnWapdF99b8ZOlitQHlZM=;
- b=SCu520/StYn8+sEkuOuQtlpGuBXDiznyxOYUD4II+R+08hAYRMsHNrMYwM+VkRv77lMVZFyfH6yjK/yV1Qhyfi9QC1Q/R91X3royqHDheTiOBKs7myPDI0rC0MQFUgZdXsJjtXmVxBcNN2Kq5U9LxqPc0qX6Ialo7SMqYMogsGto0p7uxtWIOnfQofSpZGVoRpgB/yoL86lQFSYnqNCfhUJIrz8YPOenRes+gK0M2g16SM5t9popMqMcen1eWbOUJKTgeC7M8QM1unjqvfjbb8KI540obsLW+mxZhAtXTId0INDhVraz23Ang/FOmL+6rPf8g0X6XZRz9A+VOvu5Gg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Fs5lxatRcHniRo7WEmF0RBJnWapdF99b8ZOlitQHlZM=;
- b=DBFdgPnmUkgjwDrVVXxeYYiRznh3qlJo4ZPSzsEFEBr6RaQPzs4K1LVGoDM84+0vVV5qwxheOH96Fdg10u5Ezq1dOOTn+q5G/E/8uEJ31ipFXWREZVOrnr9mKEA/RJBsw8vM6MK+Nyhj8Y20DxiQxd5Npk0PnKT7AyP38X+2PP0+jYRpU05CwhbNlN8wscWZ9KOtNmMP/eO2xvdIp+bgAzGY+yEc8bKk29/TZVLizgzHThW+gh1NvJ0GRa/q83LBP8fbn/WzGJn+nYTEttEitrnUKohhP/UEIHsHuOKDxnwTHlYBAKQjtfy3GZfCyzqA65t4OjXrhIr+XBiVlDuXeg==
-Received: from IA0PR12MB8374.namprd12.prod.outlook.com (2603:10b6:208:40e::7)
- by CH3PR12MB8727.namprd12.prod.outlook.com (2603:10b6:610:173::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.546.22; Fri, 30 Oct
- 2026 02:09:02 +0000
-Received: from IA0PR12MB8374.namprd12.prod.outlook.com
- ([fe80::d85f:4c87:ae84:3f16]) by IA0PR12MB8374.namprd12.prod.outlook.com
- ([fe80::d85f:4c87:ae84:3f16%6]) with mapi id 15.21.0569.007; Fri, 30 Oct 2026
- 02:09:02 +0000
-From: Zi Yan <ziy@nvidia.com>
-Date: Thu, 29 Oct 2026 22:08:44 -0400
-Subject: [PATCH] mm/huge_memory: prevent losing PG_waiters in
- __split_folio_to_order()
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261029-fix-split_folio_to_order-race-v1-1-a483c7451b0d@nvidia.com>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yXMwQrCMAyA4VcZORvoenDOVxEpXZdqZCwjqSKMv
- fvqPH6H/1/BSJkMrs0KSh82lrmiPTWQnnF+EPJYDd75c+t8j5m/aMvEJWSZWEKRIDqSosZE6C5
- d9LHPQ+4S1MeiVIPjf7v/be/hRan8prBtO14PpjaBAAAA
-X-Change-ID: 20261029-fix-split_folio_to_order-race-087a2a9fbf7c
-To: Andrew Morton <akpm@linux-foundation.org>, 
- David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
- Michal Hocko <mhocko@suse.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
- Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>, 
- Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
- Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>, 
- Kiryl Shutsemau <kas@kernel.org>, 
- Brendan Jackman <brendan.jackman@linux.dev>, 
- Johannes Weiner <hannes@cmpxchg.org>, Ye Liu <ye.liu@linux.dev>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
- Zi Yan <ziy@nvidia.com>, stable@vger.kernel.org
-X-Mailer: b4 0.16.0
-X-ClientProxiedBy: YQZPR01CA0116.CANPRD01.PROD.OUTLOOK.COM
- (2603:10b6:c01:83::9) To IA0PR12MB8374.namprd12.prod.outlook.com
- (2603:10b6:208:40e::7)
+	t=1793326299;
+	b=5Nibap02rDjAdqPG5oMOPqGRuu/L8qzTglLHD0Q3BMaB1caC3GYo0UQVhdf7PNd73szlq4
+	JudXOvNKT8cj0ewtUQPFmqa3UMGJrd1Z77ol2jWgHit2EDHMmP/7TH6Nlsj1j5x5y5mPLu
+	H5DZ0xJegCl4ej4IrbcL1D7i9Lh6qgc=
+Received: by mail-lf1-f54.google.com with SMTP id 2adb3069b0e04-5ba328513b9so270378e87.1
+        for <linux-mm@kvack.org>; Thu, 29 Oct 2026 19:11:38 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1793326297; cv=none;
+        d=google.com; s=arc-20260327;
+        b=nvZf6pzp4nreCg1+q9cUt/J329gLvLV60fudjub/AhD6ihNsPqiyrJLbplE3ZMT3Z0
+         wGWr3eSiNlv7kij8NZ0nrIZdpFelchXjH8l8gSROuj9tgW261rhHA9pal4MToymmsMsP
+         55MAcTIKMYdethxqObNPGfZ20Hffv3soMnWxT1q5ZdqOnQSpI/HV+DHCj0Gr5AXRnC7O
+         tnsy6w2ZUTManzko15rbzlCUXy1S87Vwov55vZC+mopclX4bqOh0ny+jSdTl0+2VyQnU
+         g4RNlxXXVsALe3TkIejU7DjkSkalVP2k9lYT42JCIH1QI384WLijjRxHo1vxPL6Vmqwe
+         bCTQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=crA/drrVuPBte8rst5YBRjdG8mKRZAGvubjNLACa7Rk=;
+        fh=UFwvygy0bYlYj2g7+XqjQV31FzyYxQyRhh5/bJAMRKo=;
+        b=EyfxhEvWEen3twPX+ogZ93f6r13/PC5rTSReSzcN/bxXMaQUkkp2S28oJpgRgxTRh8
+         d2rDvL/FhuOZqrbuECsP3VwBqEph+RHzhV5PloKXXUeNSEOXbtGDKi8mSYNYJEhAcQaf
+         7T4W0XAgvN0pbjnYFZnIEvSL59bHg9B1ues0RAqEMRVvmg0/hKUNeBBMNMzivNqDr0gS
+         jc349bIJ1SpT/tQjRvOLFXBKKTfRMS3cbBNWjyhsoPcg0CQ4FEVr7sQCZ+qB+dvAp/Ax
+         TZIjhM/zTlTGCDLKgUyR6ppDS+jY2w8jI+nF5BnQmdetCkqaLCMbpuSnoiN+tUeGk444
+         P5/g==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=amacapital-net.20260707.gappssmtp.com; s=20260707; t=1793326297; x=1793931097; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=crA/drrVuPBte8rst5YBRjdG8mKRZAGvubjNLACa7Rk=;
+        b=kzUJv4ffXCEEpEUAyxMV1XcbpwWkOZelzhaH/e2oNHwI4ziMewhMnqfODO5jAoSsLU
+         osQci39HpkoPsENZetJwBZlKtt2zCum/2S1+zlNtu8F7fl3Yy/+8l5Xveneu6xsKaUxt
+         F8ydgsi7bIa5tS7aCRdo8CgFvxAf2rcPuO0g/zAx16mojvWHs0gCgwRfFP6mrtF0UXRK
+         37OhO729TfPaqRomWV1/j3dI3gHIIckWv+MNCC5APEOazvqg/9P9jk1TQqjm21cG5cer
+         wYIHs1krx2uN463b3ONFRx3//VyXUie7lJYF3NIiyXBL62WR6yt90318ezJwjDMccnvt
+         szxg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793326297; x=1793931097;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=crA/drrVuPBte8rst5YBRjdG8mKRZAGvubjNLACa7Rk=;
+        b=aPeXY2ewYBWXBMmVz7vHbnT0HMpbSLtwc+sbvZYur/Z4cNCZychPZbbSiNVzpEekh2
+         eCb6eM9+DMJkwkPL3jk9kgs51M41crUfaWOA6xgr73QMMepGhXPlB7P1Hzk+k0I/tBjI
+         PNhHjuXQTRNOC6sb52TzMIqUDscLG+HmwmcqJNILpyW5XfZWSlNREyEm/aUdKe94FeFh
+         JdxYH9EbfD+U3+y2SWC12sQ7cYMzbKWfDGHhqo8lw+7c1N5x8EgeLODdv42BwVmtWIz0
+         DwHad/uRGc42qppGM66eyOSt8ToL4enjlqM9hxZHWZEDII9jb7h9Zemfp+m6CAAE9/gA
+         MvKw==
+X-Forwarded-Encrypted: i=1; AKwUvBzi9EJkVLe2LOGAVa2aK+wPyk/vRKGxPRz5YrB8OJoSgGbKp76WYaHnrX806k37YkmUq4n+4N+CqA==@kvack.org
+X-Gm-Message-State: AFq9FYJHH90bICfu6E+6TS6RzLljJXUeBlpZPrXxft49ewvB6IG6Ujab
+	sR+JonidXzJe9cm2NN03gRjo2PeIlTssvUvNgvWqc7cW7HygluU+3STOioCEBFM08ex0imOil0B
+	6qdfn8SPeWkI1l0EGTs2TibK0rW1NjXhOje6qdtd7
+X-Gm-Gg: AYBFou3NfxNEVVa1djkk/kkyAQ8LxB+bnMsK3omml7M0uLWm6DPF0N1qyqsN6PCKoO6
+	rFGhFZzxPCU+jDZVBzRyOaKLq27r6fPkdLCKywlE11GPigwD/HUCeYHd4JiLRCeQ4IfGgcxVrlY
+	MEtyK4uOK5EnIM+XX+tLow9Z5KozjTyz2QlW+ov/6dJ6J58wFtueMCNt1MCqwDz9kS/+ndsFisK
+	FPJdjNHmO+DfTR3kfQl9CLd76G26lRPq+TT1XXwcXtoV0uqCHdI7b9XtOEM6er/f7VBkv2v/7u+
+	AGWVXBhIsVKQusXmFxfvJqBCMDE/KJgdySm4r4oRYbjYjrJwy7pR/sA2iIOdbkwRIHMD72a5q2U
+	nCQ5tcSWMHzMRzY4TTdxh2f7eQLSRRYvPRw==
+X-Received: by 2002:a05:6512:15a0:b0:5bf:b93d:a75a with SMTP id
+ 2adb3069b0e04-5bfd957985dmr184617e87.12.1793326297270; Thu, 29 Oct 2026
+ 19:11:37 -0700 (PDT)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: IA0PR12MB8374:EE_|CH3PR12MB8727:EE_
-X-MS-Office365-Filtering-Correlation-Id: 5783cb9a-a279-4bdf-6829-08df362ac4a3
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|7416014|23010399003|376014|366016|261026121527099003|18002099003|921020|261021123027099003|261009223027099003|11063799006|10067099003|261021121427099003|56012099006|261022105027099003|261022075727099003|260925021911599003|261028144727099003|260925022911599003|261026140227099003|260925021311599003;
-X-Microsoft-Antispam-Message-Info:
-	f2PAmFrhXZkpVsqXfGs88+3GItkmBJZgMNFVytbGDwnG3nZGQRyqy+mjsrnh3Zj5oVGf64HTnMEz/1JJi+qmdnMIdDaxp7jGEU9hylYAP/4wUeXsR9ceztJ3VXnKDoMlrpQwxKSz22T2MgOiypjU1bLmyjkW3BvgseRb/HHPJWoNFldm+D/HQxgbVBTA0S/oc+MJF6GIUJV8eEf5S6acnHcf2HB55ly7HaViFw33ntF2uV++6hKhGDNGv/N94W67Y5NWz+/NqMXew+CZbbq7d38mDFUQSsau8lZNCvHMCyMvsohMcD17yD6Y79oUTIt/pBan49btayk+2FDn/4GefCLIFjxOYDbIj6J77I6J8+3SyeHT6V4L5484gaHUbY9ZoQdEmOwSmpuQ2YWazICbK3JjsPG+kGj9foH+g3WJa/jEB2fLwCOkaNMq3nROV9dsVQvPtiDweKzmVpIDEbSbCI9YD+7lzO2EeucnxT3C9sg41iGkas/JbXwYsBjM4jPWEA1BkgGLfXADMm5w1zJwJK45KxzhqomE/QyA3AHkWcw67eEpOR5TUNAcGcqYQWq13er1PCngmOu2Iw/TWeMKCGNHr0lU9TtJW9rEycuvOHRbeOBTYWb/+DA/XwzE37+e378yjDJVKM+BZSJMh9HOkjssY0X/nkQlLNy18FKQxKnVwBNdmbHDkuznKsAdzetRWJmlNZjy6npc6GGsNXO9hA==
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA0PR12MB8374.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(23010399003)(376014)(366016)(261026121527099003)(18002099003)(921020)(261021123027099003)(261009223027099003)(11063799006)(10067099003)(261021121427099003)(56012099006)(261022105027099003)(261022075727099003)(260925021911599003)(261028144727099003)(260925022911599003)(261026140227099003)(260925021311599003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?RnIyN3JiSVdGYWxJcGZsdCtEVWFLVENQd1Z3ck5iNEpac2ZGQ3VqTy9nMUZs?=
- =?utf-8?B?Ri9aYThpamcxV1B1MjRSbVdGSzYxM3lId2ZHdzBnZk9yVkQ1QUFBeDl4MkNq?=
- =?utf-8?B?RkxTNXNySFdPWXRETmd3dmlFRkU4NldzdjJCNUE1NVFNdld6T08xYzNyaFdL?=
- =?utf-8?B?THhuakJ3UXdOMFRTQ21HWS9obytBQVdXT3ZwRzI4VlZXMjRTVXJjazNsQk5t?=
- =?utf-8?B?a29zNlI5MHY0K0lrSlVMT0RVck5kWWJWNmREditvbHVhTklKSi81KzB2SGxY?=
- =?utf-8?B?eHdVbGQ4Q1ZSMlVVSVp0NDIyWklSMkpQQ2VINmExdkVpNHNjMkZpV1BOZkVt?=
- =?utf-8?B?WGdjSnRWU1pIWThabHNidXhKeFA1TldRZVBDVjNsV0dJUDIvTU9zbGpUQm82?=
- =?utf-8?B?MHh2cFQzQmlxNEltVmlvcXd1R1NrNDlNRk5Qb1BZaXptZU5qU2tndm1adVc3?=
- =?utf-8?B?ai9UTDR6S3gzTHpWMmR4c2NzYTlKSUhyYSs1SU9VTXFRRmpjUjhOVDg3Nmt6?=
- =?utf-8?B?MVNMMEtXUnR6bmZ4RWVwUWkwS0hCOWdJUlltdklXbW9SSkk1cU1jdWdqdlow?=
- =?utf-8?B?SVZUZzY2YTNqUHh2N2p1ejJrVkV0WVBOdVJDV0dxWkRvcDArZUova3V1VmR3?=
- =?utf-8?B?MDVrQzRDWHMwdk0vcWlOZXpNWmJsdWZlY3QzZFpZWG81cGczTUF2VEhnQVp3?=
- =?utf-8?B?VW5hejlrV3d0NHgzdXpWZHJmSy9mRS9zUWNxQnJzaWlNWTZ2czJwOHYrQTc0?=
- =?utf-8?B?bGpmTXg4TThjL25VSlY4L1JSKzZHVEczU2VFbGNETHdTMHNHVjIyU3NYcHFz?=
- =?utf-8?B?MU1IUm1XdmFXczJOVlp6L2dDS2ROL2pZT2c1U1RIenJBSWxONTV2T1ZVdkt6?=
- =?utf-8?B?dHM3eWxOaTEwRGxGalNTNk1FY21wQUIxTUhPSXdUVHhPV0NBYzZleVV2Ykhs?=
- =?utf-8?B?cEhJVGpPZjc1UlhvNVRQejRZVlZZUnRuaTJKcnlFalNSUGR0ZE5JK2l6SHdx?=
- =?utf-8?B?ZEU5UmwwTXRDSmV0M3dsN0pzVGZtNlhWb20yWDk0Sm01THE5TzJYUFB0cTJ5?=
- =?utf-8?B?QTRSRDdyWTUyVFBwU25EM3VUcExFTEFBbWlrS2EyZEQ5WnZTS21ZYjRGVU9w?=
- =?utf-8?B?MzI3eUpPWnRhZlNWVzRTMTUzVEhTbHdQS0lHMWFwdC9Oc0RuRlZVSVFzU2dU?=
- =?utf-8?B?Y29XRHBrSGhDc0xYbjYzS3N2N0NXQzRNS0lvK2YydytKUWdTK2dkMm1HdjBy?=
- =?utf-8?B?QkVRQlcxTnRadDdQREIwbkpieUluemlzWjNTdTVmTzhIUm9WcmhYejVZaGRj?=
- =?utf-8?B?VE1uNkIyU1RLWW1SR2hsaC8rTjNweG5UaThJeCs0SWk2Vkp4bU4renh3NnRn?=
- =?utf-8?B?Y1JuNFgrUzRQY25oc28vTnRoTlFUN2hYbXhsZVZBRjRxaTZhaFJleFRiMmtK?=
- =?utf-8?B?N3RMM2toNGIxcjArRnBSYWxnRlpKN0Q2TTc0L2t6ZkRFaVFsNkZVVFYyT01Y?=
- =?utf-8?B?RElvQkRDOWxSQmNGR0xHVmM5ZGJaOEpQa0VHNzFOemYzNFFYem00Wnp4M2lz?=
- =?utf-8?B?aFpoaFRVQWRHaVZRVHNUVFN6bGQxOVVmY2o4UzVwS0pYeE9WcERlTmJzMFFH?=
- =?utf-8?B?aXA3a1YrUU1md21YWkxqWnlkRmRXTGVlMUpFMXYwWGYrTWgzNkpmcXhDK0Vk?=
- =?utf-8?B?UjJHMzA5WWc2Q3A0NDlBeHc5V1hNZEEvdmpZVU9PV09kWFNubU96RDNKcS9i?=
- =?utf-8?B?bU10MGQrWCtLckxJZSs1RnA4amhSOUJuM3BqN05sNGNsVDR1SXRhSXh0TzFh?=
- =?utf-8?B?d21hOG1HblkrOW5MSnkzdmhTcTRSZmdrNlFIZjFvVGpVSnNiMzVYZyt0cU84?=
- =?utf-8?B?aSs0bDJBTThiZTFVS2lsYk5zb1U2MFNTQkloaFc0SEprdExGbVh3cDhQQWF1?=
- =?utf-8?B?Ly9KeUJMdlhvcW1VbkNVVXZMbHhGTno2U0x5aXdCVEtEdDZ5TTZRKzdIQnVW?=
- =?utf-8?B?NjVOOGs2V0tQT0pJWFl2QjgyTGQ0UFVmblVFQ25GYmxTVXhHdE9ibURvUmVt?=
- =?utf-8?B?b3BkVHdCTkNVeDgyTmJCR0FIWTh0dGZtbENOT09pTEgrLzQ4YjRTWjNsT0Iw?=
- =?utf-8?B?bWYyMzdSRFMzQUJkUlp1ajlnVjFaOXZLcERkVmVVdjNVb1hySkhsc2ZtYlNE?=
- =?utf-8?B?SEZxemMyK0xwREQ4Y21BV2V0THJaT2dSRi9DTDNUY0hDZHdTTXJCMytwTkx2?=
- =?utf-8?B?RXcvVW91c2ZPQ1Awb2xmYjl1ZW1pRU9zbHpCdytQQWJnK2pXV3Q1bnZYeSt2?=
- =?utf-8?Q?Tq34EuwHbbsGqtALt+?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5783cb9a-a279-4bdf-6829-08df362ac4a3
-X-MS-Exchange-CrossTenant-AuthSource: IA0PR12MB8374.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Oct 2026 02:09:02.6688
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Ue/8C28YJ7sY3YYa5WjfPvsQViTQpOT0ebXH5XaExPlYgNzpKtI97pEg6tEME9uI
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB8727
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 8E388180002
-X-Stat-Signature: 6ekr9g8khk9khrrbxfnu9jn5cyytsjsi
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+References: <20261026220546.3114241-1-skhawaja@google.com> <CALCETrXNEWQNPjtuHnTfVFOafeJ7APXq288Cq16Q5adDNYx9+A@mail.gmail.com>
+ <auEksxfAi9lHFXmT@google.com> <CALCETrXDY2e8x2kdr-FQvFLs-Y7FwNozXGDvqqM6yvVA7QLV3g@mail.gmail.com>
+ <auPKfqh_YjRU9Ui3@google.com> <CALCETrUEyfvaEGxMHo=c0ia3CDgSxg-YW0_=Z7T31Ou+pvicuQ@mail.gmail.com>
+In-Reply-To: <CALCETrUEyfvaEGxMHo=c0ia3CDgSxg-YW0_=Z7T31Ou+pvicuQ@mail.gmail.com>
+From: Andy Lutomirski <luto@amacapital.net>
+Date: Thu, 29 Oct 2026 19:11:25 -0700
+X-Gm-Features: AclHuK_Ui4UCRhuJ1nc0jCjt9G3iqxf-Duoq7MdeFTqjramIg9lV-Tjp2uHPr1Y
+Message-ID: <CALCETrVpEP=HxVqdSP_AgA=U7ignwAgjz5Vi9+Z9dZsX5DXeLw@mail.gmail.com>
+Subject: Re: [PATCH 0/2] mm/memfd: add F_SEAL_PUNCH_HOLE
+To: Samiullah Khawaja <skhawaja@google.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Hugh Dickins <hughd@google.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, David Hildenbrand <david@kernel.org>, 
+	Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
+	Jeff Layton <jlayton@kernel.org>, Chuck Lever <cel@kernel.org>, 
+	Alexander Aring <alex.aring@gmail.com>, Shuah Khan <shuah@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>, 
+	Gerd Hoffmann <kraxel@redhat.com>, Vivek Kasireddy <vivek.kasireddy@intel.com>, 
+	Jeff Xu <jeffxu@google.com>, David Matlack <dmatlack@google.com>, 
+	Pasha Tatashin <tatashin@google.com>, linux-mm@kvack.org, linux-api@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 097FC80003
 X-Rspam-User: 
-X-HE-Tag: 1793326149-931182
-X-HE-Meta: U2FsdGVkX1+LapaAQI++9EosaNmFXglP7GhFAhDFnarAsQGpP/pk2sf3EIDDKFS9fMhFWVGI9bPggEmCv3uAd3SX56e/W+aUrpan/a2aqGin5DGEkaRGpTzZgtxEgCFLygOSzHkEWK8IAg6kiXJYq2pycb/71GAetunq4/gqrY/EvtocfIPkclklwlrEMbcVRWSu/D6yQ3L4P2pR66WtrY1PTE8G2IWpMbwjJzxBPoqcrY7zFPQDrmcNxL4ghWuL9xTvLfETH69Adq3MDFwt13EzmfKf0iDGoN1daefLW91OY0fQ+OSUEfLJMe3g3gAXvbAR3NPnOWqkeDcMTUAsPyqcYLiGy3e9+G//UwTabvZnyJtxKrgDjHBJTKMKlZovGI17C/QnJ9m/mZPVx9lXqyyWvknuj4veY3jXHc1zSJveR6jX5E+IMwLeSBvCxG99/+Q+3qhoMb5Pvge1GVCh8vkrWqdkVQ6ArHYb1H+hTMS7f3E8jQlSJoFiL7+uIIEhwXFzb49DRYF4gfQ81iwB1cbXTstDwOhSX9hCetiNYG/rdh7CR+mcOd+otu6wwQhxprkW2nerKgFszRS0FyUzqUSZHAOrwSALvrU1BXpxTpvl3SLtDGVpDjVf2ZD9QjT0znr7AjNSV51Ldu9NLe8fkZdOMD+W8t5uumX0R0fkH861Dvkqln9UdqeeB3DWsC9lX2DvVJ2+a0J9noUIbWMyOg+lKXx8RRvhYsdtSU3bw4n7y7COcJ9HTl6jqeuEAFV9FhUYWV1LtkE2Hmzv7BwPXJbV99h1i+8Bj+SjfO1hkKlNSnzGxXC1kWujXWCNzPnjcGeyI1Bno9ye/t3+SzP7/Ih/uxU86ESY8BEmYWls7aIi9Xxh0X4f8Lo+8ut+lpiL+LBlYS4YoO1lLm76ZAXmcNcgHcvpS+XMHNAgk7qp2trMVCpD0+gUw4flFPBAOwo2gPSofef/BtviJX8aQJh
- czhlV5TK
- 4xH+u7Y4pzh5ZsvYTNJJRUGHTqZYHgYIxv3xK/YdKST+pSWbjenLeXQQHmpfp2FVWRgJJL1Fgff8LKtgmJZFBu3MJpx/R7gujzb5Z16ASRi0C1QFC3wO/EWpPhf/iV8rcLsaEbVWxy8GfZqmtslWhB4qY0ryNTQavFQt69R3Xg7xwshoNAx6UPrMLyW9m0MRvZoRVLLscj9aq8S/XZB0YE8HYmtH00M0JnzbVXpeNpFj4D0dFIdLX9U8O0e/9AoA+TaNuvtDzhg1U3PSMCcQRiYNmFKmw5JsYrryx7onJOhBsfIXXA0ZqbPYAHXbx5CQKQjmhuUXlsR4qTaFw+LLA0mdukGxc2HxitW3Tb07xGcqry3D2tagmy0H7pqWB++jvuusqAd/CMhfRuuYaCXnDTZchjh95zp7SlMmbv/PgmWWxqk4CymEz5GvlKHAf+D4duArHcg4x/VY02OoHo9OrJYbJEQ==
+X-Stat-Signature: 6fi7znujdfw5fszcpmbhhui8dhewa6fb
+X-Spam-Status: No, score=-3.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
+	SPF_HELO_PASS,SPF_PASS autolearn=no autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1793326298-31706
+X-HE-Meta: U2FsdGVkX1/tHxhTCd+hqHWsD1gv7yfelear4IetCaWMwianhp+H8k8UpKlqqDbVy6TAswUo2cSf5IJYb2vXnoQVUkDp5u5v3ICck9rIUIV+Jbl+bBUCX0K0jQs26jzJVIu2Ve5CusotrBLYJ+GEAnxamVsVPO97FlfbpU+NiTtE9xhcbHVyNZfQkVeceU5B+uzt+i4jloa+ykx9kXGxm1Y3KyCoBOv1iQWb/NpLzAm1+H4WdgCuNBA1k6hMGNTTMS6KQzANMWt43cU2I4hW9QNMgccv5GoPQv1/mEaCFskkXaXKFdXOsUMu0EWgUK1+VjDCT5ftSJAk7qyCg9g5FcL48hkykQzxfMTmdIl8Rad/LqlNJplnoDU/3oqu/ghYw/zG+774AE/JOyWEk0N+QydwvcsThCdrYQ1/dbraCBXykg263nYQcHpKbe0kGFjkEitWA4pHGCkqIxM/9HeoXTUgPDGXcIw89mvAEavHKZJq6VAdoWsFBpQXekTyC4+qaJP2qCPnXDM5Sj8S86kDJSu7iP/15jckghUs1lI3Wm8pdiZUowIqisE3d22rV9jj2uUxkOSO0zDTJX++OwhzfUX+tmX7ADghf/NiY5lnafvV3xj9+sW9FiSlkX8PdR7StC6xcUic07c5wTkc6iw0EbN2+KFsjT73nOvGsyLdf5hUcGQ3BLLXtp3zPzAhaqTmhu/Aa045x2JB//W4i2rOCAXqwSZauIjLm4CbcSKw6xglbryyxk/xguxOXjj8C6Eo0KE2yfGI23ftJMSl78f7NU5ySA3wGSIHdZyntlsfOVHbkiArFBWO2oUnLIYHI4ZNS/IaLy9ZNuRnfLjDRZx02iB4DHLQAxS6cf/n8VBBUwSHRVxXKYil+Q+CujersZBqjsCtJCOrwKUNmmE/QAPcmypMF5BCsdQzMuxU+A1tBK84PI6dPtcQwQ/sy1htQd4jym9ulcwB/oJzHlxxdrS
+ KZIj98mw
+ TRJs+XLqhi0h5r2e12fb5VLcKpXh0M4VGVovTh/wBuvFmqaZ9RMWZY0lsmrnWn8FWFLqmu0r3tfBm49NXF8E6MtXB7YodTa1a2JZNLhrpOgYtR3Ng0CaPxU2p8MjqoLvK4InowAFvZO+9xbnyw64CJNi3Il1qpQghKRm+EV29vAa32UgM3jwbPrTe01AucwrL1blI8mvEGhvO5tHt2nmJXiv8Lc2b1R2QY9sWTNYMHy7jycONpollDW0WLR1zIdEluxe6ATI6iTktn5nka8nXD2RKB6q8a4mrHDHvt/TljZYIDX6ILFW5RTViPbGRaBDOlOx+yzbY5MExUaUomELrF+ZAD/e6ApndMdPUXM8mlNP/ZoWVTJAdEUZmwtQgxHmfRmeCEnpNHyF0iWs9E05UPCjU9URRtiu78EXrMkau/wYag8wKxsvKNWQFHvSCovFKxBRBxSLFuShMZfRQTDqORtmR3tpTvPFrDF9VWDma4IGxdYYespeB2PDxJp7ND4EiuSvJXbXhJedtT8ldM82bQa18nQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -184,162 +152,215 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-__split_folio_to_order() calls prep_compound_page() on each new head page
-to create a compound page after clear_compound_head(). prep_compound_page()
-uses non atomic __SetPageHead(). It is mostly OK, since the folio is locked
-and frozen and no one else is supposed to modify the folio's flags.
+On Thu, Oct 29, 2026 at 5:26=E2=80=AFPM Andy Lutomirski <luto@amacapital.ne=
+t> wrote:
+>
+> On Thu, Oct 29, 2026 at 4:16=E2=80=AFPM Samiullah Khawaja <skhawaja@googl=
+e.com> wrote:
+> >
+> > For live update either approach works. If pinned pages cannot be punche=
+d
+> > or truncated, iommufd can rely on that directly and the seal is not
+> > needed. I went with an opt-in seal only to avoid changing existing
+> > behaviour. If folks are fine with blocking punch hole and truncate on
+> > pinned pages, I can send patches for that instead.
+>
+> That needs opinions from other people :)
+>
+> My two cents are that blocking hole punch (or making hole punch fall
+> back to writing zeros) seems entirely sensible, but I'm less confident
+> I know what to do about truncate.
+>
 
-However, code calling migration_entry_wait() can reach the folio by PFN,
-then access its flags. It is because softleaf_entry_wait_on_locked() used
-by migration_entry_wait() sets PG_waiters concurrently without taking a
-reference and the frozen refcount during split cannot block it. Meanwhile,
-__SetPageHead() does a plain read and write, so PG_waiters atomically set
-by softleaf_entry_wait_on_locked() will be lost if the set happens after
-__SetPageHead()'s read and before its write.
+FWIW, I think a demonstration of weird kernel behavior is clearer than
+musing based on first principles, so I had a friendly coding agent
+write the lovely code at the end of this email. It prints:
 
-One example code interleaving:
+Creating and mmapping memfd and registering it
+memcpy "Hello, world!" to memfd
+MADV_REMOVE the contents
+The memfd now contains NULs!
+memcpy "memcpy was here" to the memfd
+Using io_uring to read the registered buffer
+io_uring says: Hello, world!
+WRITE_FIXED completed: 15 bytes.
 
-CPU0: __split_folio_to_order(new_order>0)  CPU1: do_swap_page()
+IMO this is utterly disgusting.  It makes logical sense based on how
+the kernel works under the hood, but I think it makes no sense at all
+as a matter of actual observable behavior.
 
-1. clear_compound_head(new_head)
-   new_head->compound_info = 0
-   (page_folio(new_head) == new_head now)
+Unsurprisingly, the behavior is identical if MADV_REMOVE is replaced
+with ftruncate(0) + fallocate(size).
 
-                                           2. migration_entry_wait()
-                                             softleaf_to_folio(entry)
-                                             page_folio() -> new_head
-                                             (not the old head any more)
+I can't shake the feeling that the problem here isn't so much that KHO
++ iommofd doesn't like this but that the behavior in question is
+nonsensical.
 
-3. prep_compound_page(new_head, new_order)
-     __SetPageHead(new_head)
-       tmp = new_head->flags.f  <-- load; PG_waiters == 0 in tmp
-
-                                           4. folio_set_waiters(new_head)
-                                             set_bit(PG_waiters, &flags.f)
-                                             enqueue on waitqueue, sleep
-
-5.     new_head->flags.f = tmp | (1UL << PG_head)
-       <-- store; overwrites step 4, PG_waiters == 0 again
-
-Later, folio_unlock(new_folio) sees no PG_waiters, skips folio_wake_bit(),
-and CPU1 can remain blocked indefinitely.
-
-Fix it by adding the atomic version SetPageHead() and
-prep_compound_page_atomic() using it. __split_folio_to_order() uses
-prep_compound_page_atomic() to avoid the issue without adding an atomic ops
-to other prep_compound_page() users.
-
-Reported-by: David Hildenbrand <david@kernel.org>
-Closes: https://lore.kernel.org/all/DMHE8BEEER1H.2BIY52NXATPIA@nvidia.com/
-Fixes: c010d47f107f6 ("mm: thp: split huge page to any lower order pages")
-Signed-off-by: Zi Yan <ziy@nvidia.com>
-Cc: stable@vger.kernel.org
----
-The issue was raised by David when reviewing Ye Liu's "mm/huge_memory: use
-READ_ONCE() when cloning folio flags during split" [1].
-
-[1] https://lore.kernel.org/all/20261029-data_race_huge_mem-v1-1-112e331291c1@linux.dev/
----
- include/linux/page-flags.h |  1 +
- mm/huge_memory.c           | 10 +++++++++-
- mm/internal.h              |  2 ++
- mm/page_alloc.c            | 20 ++++++++++++++++++--
- 4 files changed, 30 insertions(+), 3 deletions(-)
-
-diff --git a/include/linux/page-flags.h b/include/linux/page-flags.h
-index b0ddc652e76cc..08492ab3da895 100644
---- a/include/linux/page-flags.h
-+++ b/include/linux/page-flags.h
-@@ -854,6 +854,7 @@ static __always_inline int PageHead(const struct page *page)
- 	return test_bit(PG_head, &page->flags.f);
- }
- 
-+SETPAGEFLAG(Head, head, PF_ANY)
- __SETPAGEFLAG(Head, head, PF_ANY)
- __CLEARPAGEFLAG(Head, head, PF_ANY)
- CLEARPAGEFLAG(Head, head, PF_ANY)
-diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-index bd44d58e86845..319b038eba89d 100644
---- a/mm/huge_memory.c
-+++ b/mm/huge_memory.c
-@@ -3779,7 +3779,15 @@ static void __split_folio_to_order(struct folio *folio, int old_order,
- 		 */
- 		clear_compound_head(new_head);
- 		if (new_order) {
--			prep_compound_page(new_head, new_order);
-+			/*
-+			 * new_head is recognized as a folio after
-+			 * clear_compound_head().
-+			 * softleaf_entry_wait_on_locked() can set PG_waiters
-+			 * on it without taking a reference, so its frozen state
-+			 * cannot prevent it. Use the atomic version to avoid
-+			 * losing a concurrently set PG_waiters.
-+			 */
-+			prep_compound_page_atomic(new_head, new_order);
- 			folio_set_large_rmappable(new_folio);
- 		}
- 
-diff --git a/mm/internal.h b/mm/internal.h
-index aeebb3e49ed11..9b8864a8540aa 100644
---- a/mm/internal.h
-+++ b/mm/internal.h
-@@ -807,6 +807,8 @@ static inline void prep_compound_tail(struct page *tail,
- 	VM_WARN_ON_ONCE(tail->private);
- }
- 
-+void prep_compound_page_atomic(struct page *page, unsigned int order);
-+
- #if defined CONFIG_COMPACTION || defined CONFIG_CMA
- 
- /*
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index 143776e671abb..ace1359468046 100644
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -682,18 +682,34 @@ static inline bool pcp_allowed_order(unsigned int order)
-  * This usage means that zero-order pages may not be compound.
-  */
- 
--void prep_compound_page(struct page *page, unsigned int order)
-+static void __prep_compound_head_and_tail(struct page *page, unsigned int order)
- {
- 	int i;
- 	int nr_pages = 1 << order;
- 
--	__SetPageHead(page);
- 	for (i = 1; i < nr_pages; i++)
- 		prep_compound_tail(page + i, page, order);
- 
- 	prep_compound_head(page, order);
- }
- 
-+void prep_compound_page(struct page *page, unsigned int order)
-+{
-+	__SetPageHead(page);
-+	__prep_compound_head_and_tail(page, order);
-+}
-+
-+/*
-+ * PG_head is set atomically whereas the other metadata is set with plain stores.
-+ * It should be used when @page's flags can be modified concurrently,
-+ * e.g., in __split_folio_to_order().
-+ */
-+void prep_compound_page_atomic(struct page *page, unsigned int order)
-+{
-+	SetPageHead(page);
-+	__prep_compound_head_and_tail(page, order);
-+}
-+
- static inline void set_buddy_order(struct page *page, unsigned int order)
- {
- 	set_page_private(page, order);
+My system's tmpfs does not appear to support FALLOC_FL_COLLAPSE_RANGE,
+which is probably for the best :)
 
 ---
-base-commit: d865f2677c44cb2171b833d6775cf692756fa8be
-change-id: 20261029-fix-split_folio_to_order-race-087a2a9fbf7c
 
-Best regards,
---  
-Yan, Zi
+#define _GNU_SOURCE 1
+#include <linux/io_uring.h>
+#include <sys/mman.h>
+#include <sys/syscall.h>
+#include <sys/uio.h>
+#include <unistd.h>
+#include <fcntl.h>
+#include <cerrno>
+#include <cstdint>
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
 
+[[noreturn]] static void Fail(const char* operation) {
+    std::perror(operation);
+    std::exit(1);
+}
+
+static void* Map(int fd, size_t size, off_t offset) {
+    void* p =3D mmap(nullptr, size, PROT_READ | PROT_WRITE, MAP_SHARED,
+fd, offset);
+    if (p =3D=3D MAP_FAILED) Fail("mmap");
+    return p;
+}
+
+// Single-threaded, one outstanding request, using the raw Linux io_uring A=
+BI.
+struct Ring {
+    int fd;
+    io_uring_params p{};
+    char* sq;
+    char* cq;
+    io_uring_sqe* sqes;
+    size_t sq_size, cq_size;
+
+    Ring() {
+        fd =3D static_cast<int>(syscall(SYS_io_uring_setup, 2, &p));
+        if (fd < 0) Fail("io_uring_setup");
+        sq_size =3D p.sq_off.array + p.sq_entries * sizeof(unsigned);
+        cq_size =3D p.cq_off.cqes + p.cq_entries * sizeof(io_uring_cqe);
+        if (p.features & IORING_FEAT_SINGLE_MMAP) {
+            if (cq_size > sq_size) sq_size =3D cq_size;
+            cq =3D sq =3D static_cast<char*>(Map(fd, sq_size, IORING_OFF_SQ=
+_RING));
+        } else {
+            sq =3D static_cast<char*>(Map(fd, sq_size, IORING_OFF_SQ_RING))=
+;
+            cq =3D static_cast<char*>(Map(fd, cq_size, IORING_OFF_CQ_RING))=
+;
+        }
+        sqes =3D static_cast<io_uring_sqe*>(Map(fd, p.sq_entries *
+sizeof(*sqes), IORING_OFF_SQES));
+    }
+
+    ~Ring() {
+        munmap(sqes, p.sq_entries * sizeof(*sqes));
+        if (cq !=3D sq) munmap(cq, cq_size);
+        munmap(sq, sq_size);
+        close(fd);
+    }
+
+    int WriteFixed(int output, const char* buffer, unsigned length,
+uint64_t offset) {
+        auto* tail =3D reinterpret_cast<unsigned*>(sq + p.sq_off.tail);
+        const unsigned next =3D *tail;
+        const unsigned slot =3D next & *reinterpret_cast<unsigned*>(sq +
+p.sq_off.ring_mask);
+        io_uring_sqe& entry =3D sqes[slot];
+        entry =3D {};
+        entry.opcode =3D IORING_OP_WRITE_FIXED;
+        entry.fd =3D output;
+        entry.off =3D offset;
+        entry.addr =3D reinterpret_cast<uintptr_t>(buffer);
+        entry.len =3D length;
+        entry.buf_index =3D 0;
+        reinterpret_cast<unsigned*>(sq + p.sq_off.array)[slot] =3D slot;
+        __atomic_store_n(tail, next + 1, __ATOMIC_RELEASE);
+        long submitted;
+        do {
+            submitted =3D syscall(SYS_io_uring_enter, fd, 1, 0, 0, nullptr,=
+ 0);
+        } while (submitted < 0 && errno =3D=3D EINTR);
+        if (submitted !=3D 1) {
+            if (submitted >=3D 0) errno =3D EIO;
+            Fail("io_uring_enter submit");
+        }
+        auto* head =3D reinterpret_cast<unsigned*>(cq + p.cq_off.head);
+        auto* cq_tail =3D reinterpret_cast<unsigned*>(cq + p.cq_off.tail);
+        const unsigned current =3D *head;
+        while (__atomic_load_n(cq_tail, __ATOMIC_ACQUIRE) =3D=3D current) {
+            if (syscall(SYS_io_uring_enter, fd, 0, 1,
+IORING_ENTER_GETEVENTS, nullptr, 0) < 0
+                && errno !=3D EINTR) Fail("io_uring_enter wait");
+        }
+        auto* completions =3D reinterpret_cast<io_uring_cqe*>(cq + p.cq_off=
+.cqes);
+        const int result =3D completions[current &
+*reinterpret_cast<unsigned*>(cq + p.cq_off.ring_mask)].res;
+        __atomic_store_n(head, current + 1, __ATOMIC_RELEASE);
+        return result;
+    }
+};
+
+int main() {
+    printf("Creating and mmapping memfd and registering it\n");
+    constexpr size_t size =3D 16 * 1024;
+    const int fd =3D memfd_create("registered-buffer", MFD_CLOEXEC);
+    if (fd < 0) Fail("memfd_create");
+    if (fallocate(fd, 0, 0, size) < 0) Fail("fallocate");
+    auto* buffer =3D static_cast<char*>(Map(fd, size, 0));
+    Ring ring;
+    iovec iov{buffer, size};
+    if (syscall(SYS_io_uring_register, ring.fd,
+IORING_REGISTER_BUFFERS, &iov, 1) < 0)
+        Fail("IORING_REGISTER_BUFFERS");
+
+    printf("memcpy \"Hello, world!\" to memfd\n");
+    constexpr char hello[] =3D "Hello, world!";
+    std::memcpy(buffer, hello, sizeof(hello));
+
+    printf("MADV_REMOVE the contents\n");
+    // MADV_REMOVE operates on whole pages. Remove the entire 16 KiB mappin=
+g.
+    if (madvise(buffer, size, MADV_REMOVE) < 0) Fail("MADV_REMOVE");
+    for (size_t i =3D 0; i < size; ++i) {
+        if (buffer[i] !=3D '\0') {
+            std::fprintf(stderr, "MADV_REMOVE verification failed at
+byte %zu\n", i);
+            return 1;
+        }
+    }
+    std::fprintf(stderr, "The memfd now contains NULs!\n");
+
+    printf("memcpy \"memcpy was here\" to the memfd\n");
+    constexpr char message[] =3D "memcpy was here";
+    std::memcpy(buffer, message, sizeof(message));
+
+    printf("Using io_uring to read the registered buffer\nio_uring says: ")=
+;
+    fflush(stdout);
+    const unsigned length =3D static_cast<unsigned>(std::strlen(message));
+    int result =3D ring.WriteFixed(STDOUT_FILENO, buffer, length, UINT64_MA=
+X);
+    if (result < 0) {
+        Fail("WRITE_FIXED");
+    }
+    if (result !=3D static_cast<int>(length)) {
+        std::fprintf(stderr, "Short WRITE_FIXED: %d of %u bytes\n",
+result, length);
+        return 1;
+    }
+    std::fprintf(stderr, "\nWRITE_FIXED completed: %d bytes.\n", result);
+    if (syscall(SYS_io_uring_register, ring.fd,
+IORING_UNREGISTER_BUFFERS, nullptr, 0) < 0)
+        Fail("IORING_UNREGISTER_BUFFERS");
+    munmap(buffer, size);
+    close(fd);
+}
+
+--=20
+Andy Lutomirski
+AMA Capital Management, LLC
 
