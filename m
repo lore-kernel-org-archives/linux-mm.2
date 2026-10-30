@@ -1,62 +1,62 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E98B606A31A
-	for <linux-mm@archiver.kernel.org>; Fri, 30 Oct 2026 20:54:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6438606A31D
+	for <linux-mm@archiver.kernel.org>; Fri, 30 Oct 2026 20:54:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=Q0vS3LDe
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=p6NdYS5x
 Received: by kanga.kvack.org (Postfix)
-	id 9988C6B05B3; Fri, 30 Oct 2026 16:54:42 -0400 (EDT)
+	id 48F3A6B05B5; Fri, 30 Oct 2026 16:54:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 970B76B05B4; Fri, 30 Oct 2026 16:54:42 -0400 (EDT)
+	id 467BB6B05B6; Fri, 30 Oct 2026 16:54:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 85F696B05B5; Fri, 30 Oct 2026 16:54:42 -0400 (EDT)
+	id 3A5186B05B7; Fri, 30 Oct 2026 16:54:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 5019A6B05B3
-	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 16:54:42 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 7202AC04EA
-	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 20:54:40 +0000 (UTC)
-X-FDA: 85380496320.08.9C3C96C
-Received: from mta0.migadu.com (out-70.mta0.migadu.com [91.218.175.70])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 7F3A0120005
-	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 20:54:38 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Q0vS3LDe;
-	spf=pass (imf29.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.70 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793393678;
-	b=GA4UU5T2zGLYuHVaf6SLlEREOO0bNopcc8KMnhYt3zwMdG2ZIfDug98cBtEHvzUUUJAwmD
-	iQfQSIuek/n7Y5aG978swTAaW9l0H/uth+71gTX7E74ZkFMKbPqL9VDTcyUm9JXoz+H/sG
-	Je80FuyBmk+FcU0mDDi2qDGLzGznA6Q=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Q0vS3LDe;
-	spf=pass (imf29.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.70 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 00AF76B05B5
+	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 16:54:45 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 66D594011E
+	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 20:54:45 +0000 (UTC)
+X-FDA: 85380496530.13.956FC68
+Received: from mta0.migadu.com (out-73.mta0.migadu.com [91.218.175.73])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 8CE7220006
+	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 20:54:43 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=p6NdYS5x;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf13.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.73 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793393678;
+	s=arc-20220608; t=1793393683;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0hWhsFqL4o7a+PlWoQKkkYolvzPkWBNQ122cMEPY64o=;
-	b=vLDj/z9IZyLyrJ2BwDFXaP5I7Qc61cmpgv2m7u5gMkzAyBibBvC4tuguqLA/DgnyASem6W
-	tS/XtJjbIWpy9FjtGXZoInntdF8RYYahtZYpNwc2mSVjGgIw8dpXyclIGq1fv3sZG8dFB8
-	bPmG37RaEB+c/01fT3NtvNRniMMkSYk=
+	bh=WvB6ePpKWWKwFI9dveLQEwy+mNq3q4b5hvoyCK6cGIg=;
+	b=L6yoD/mgsTti1Yag1NN4YZuaDCnrdc/KSiBKGVs8v2axlSbrtXuYAt9F05ipx3LLPiWjmI
+	5LFx1anplOV+6kBAsXepj/kKYJHe+map5wAbdIGv8lsHFhMHYDNgrxnSI/a2dLGRTErwP0
+	m7e8zYRMY8cgEp0bYwV6U1AgDzy+gQg=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=p6NdYS5x;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf13.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.73 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793393683;
+	b=HtjV4eNOC59JwhzTmWQSKHXiawK3Ilm2wMheVgOlKUGNj+A+W27lRMZ45XwzowmlrTIPMJ
+	/8jlMXpCiQnvDeB+lAGz8VZPtJ9Xj27Wbtm4zv9cNNniA/UnBOLft/x+E5+uWknFvpNcTu
+	p59W/qdl+B0VlXxpJepfYcCOqnSm52o=
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=JhFjjTfFHwS2ETw6CvldSvQqCSIDUPmk8rGckT9Z2J0=;
+DKIM-Signature: a=rsa-sha256; bh=PEe7LP+ea1c/6uQpUdYkMtQm9r7KkVekkLLCHeCHzrQ=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1793393677; v=1; x=1793998477;
- b=Q0vS3LDemhwAC/nakTJrIhZPQlKSALkwEH+DUCftDKTKOX4nMPm89tRkynmybIJc/zTMWBho
- k489W2wRGzfPUSoYmUvYA1CVZYh6SZSEVQHPZmIPwICTzXDokWMtjJ6xsMmr9rdRj6yBjLR9J6M
- 1sH+sn6ug7Lg+3ZbAOVKwGEo=
+ t=1793393682; v=1; x=1793998482;
+ b=p6NdYS5xu4Ofo3c7yLwGkEcBjz1wod2WxK6ICnQ+wq225o/TkjQYwGwM4h2TjCD6+B/KSu0f
+ yWOLwKsoxbx81L8sko6x36MgAhTQ6w1AYPZrZRamW56w9KZfUiGrpM0H7Or/y0iGYj0eQji7C5u
+ aoaw6OL7ZJWIs/pgs8LN/ZHk=
 X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id de517227bb2ad7eb;
-	Fri, 30 Oct 2026 20:54:37 +0000
-X-Mizu-Trace-ID: de517227bb2ad7eb
+Received: by smtp.migadu.com with ESMTPS id 9e68337c290a835a;
+	Fri, 30 Oct 2026 20:54:42 +0000
+X-Mizu-Trace-ID: 9e68337c290a835a
 X-Migadu-Flow: FLOW_OUT
 From: Shakeel Butt <shakeel.butt@linux.dev>
 To: Andrew Morton <akpm@linux-foundation.org>
@@ -71,27 +71,27 @@ Cc: Johannes Weiner <hannes@cmpxchg.org>,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
 	Michal Hocko <mhocko@suse.com>
-Subject: [PATCH v2 2/5] memcg: force charges from reclaim before trying the limits
-Date: Fri, 30 Oct 2026 13:54:13 -0700
-Message-ID: <20261030205418.341214-3-shakeel.butt@linux.dev>
+Subject: [PATCH v2 3/5] memcg: use high_work for kernel threads
+Date: Fri, 30 Oct 2026 13:54:14 -0700
+Message-ID: <20261030205418.341214-4-shakeel.butt@linux.dev>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20261030205418.341214-1-shakeel.butt@linux.dev>
 References: <20261030205418.341214-1-shakeel.butt@linux.dev>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspam-User: 
-X-Rspamd-Queue-Id: 7F3A0120005
-X-Stat-Signature: cg8emcs4ohwfh5c1ohweh58jowryogwd
-X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 8CE7220006
+X-Stat-Signature: eby3dzrnsnxw4c6raxa7mq5eyxmykozb
+X-Rspamd-Server: rspam06
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1793393678-921005
-X-HE-Meta: U2FsdGVkX19IoC+UVFmsqWLk7jKVzhS1wyBHDlrlTDws+Hs/GibC0G41CROV08v3jt25jggdyFwEczHDM6lPyblsTRXjMXdwZqdbDu7CJBHuuuPZ7wC5EsRn6fZ2M9nVph8+h7xnN9Bb7zkBkxEfMGNREnMJWUFH36yx2VnGCInW4ABVt03Dy6UHrsCVhXCgOwceELxUQK2OkrxYV1hvjz6oYh255/0lUQRp1AC9d6JC+ecoaF1f211H834cSJO44eZkFtED2MqhciQvJecJ1z3UDrWMvZnhpLMYV1YAzBLyv0vIatcUCBCWFDQ3RDzAIw27pdky4WfjYkW+2kYhCSeC6z1M2k/azUU1HuBGBNtTuo7QHxfbyhH2Z4llaGKMBKpj31TKZSERGoQkfnHxjen1wMWlOwHaacm7WRZ+sofwh/1bQX8KvuxEZq9bEi3efIkxq1UbmNkt22Cuw278kYdtjaMvMpF9yAxTZWDCOhN6Pvo5an+sIi5Ml88W2gf/vmmbgzgbv5xLTXzazK/jCh4NHuUPiBaIyNGvopPWQevXj3EK/nvKAxFP6bKCclDmutrNGO0SlZbs/BvFJ9pSU6WlG4FWdoLoZuRYtn0Hij9XBJeNJiVXbHKSmHr8P4J6jCqEOKlQ/xgKvo44ALEPxv/A82/72ZWuN2a3c5v6IVTFDjh4HFqwO7LD6hFy4uqvVgSvw3MhJETREb+I8NXAi0nVX+AvC0bmBqyDkYN4qC48vBqgOpqhcGyFBeYDHF+cpGZybZ9uhahuAbcbIaTpHzbSr/vRMzNV7lfWBRprHb/RERewagLnlSjtHKbEcsPxI9OJyKEuFh0RbYL2xJD7yzuN4VjBsQkbN9wHdtLDipy2jRigbco0w5N+5V4UKJfhEF8yo/XnKVXC7uW5AdzIhOZrijvdESaODPTJOj6OlA2CMPxgq2grfGXB+I7y8v18lopP506lUmXNT2sHmKI
- NBcGPFKG
- ee0rcRsAULQHT4rAbSvEHBttPwGLLayNgrPSWxlN0dXBjsN7tc+XLVtdyl7vi9t+OezDl6ma6YmPBK/yGH2blfy3mwnNwomzpM5ASfeUUupwVzLCdImrbUfKgfIvRc0v5g7XMKBZhcr0hEK5TOoHgPBapegkJKvh6oiczgOBEYtDkQpDgwp/pdKEriMbS3RcdNOEnvBtpDupwgA9DfzSXaGEG5gxsPG3LeXjUZP2qhySBBsVnBsy2X/2bHuu8QNqyHPyLdrCbus5IuASdOCyzQZEYhmpKItWEXn5d
+X-Rspam-User: 
+X-HE-Tag: 1793393683-517370
+X-HE-Meta: U2FsdGVkX18gwYziSERR/R6K45SKfCSBhXFiACJ3tHOVT9fXVvJiG9Ns3yjMDu3CtdwzEad/eIPvCM86ijdfojx4kxqNcgD3icU6ifj8auqZJdQ+K0orfBLW6oxAbeqY8Or3WJZm4DM+e7HqR4W0sXi98RD+4S+e4MXLZ5rHfvYhiqdGs1HTrKumDvR9yDCWO9qVGJd7benTFl8GtQ/WtuzpsXur2ja0xmQADpqwhMjLtQNWs8vBVCipP+yXj7gA1CChqaZm2oN39vMgnT0buOzDxMqrr6KXIeLorGC5A/oTsK3rL1enm/zsQExkEQCi9/nZOjTXEGEAwwxIQmmxxAn9coPkia7HK+OUJRQoxrhQU/Gzd+205pu/4Ldl6LKqL/SLoDkGYOscxmmoRBw8WKNk2SIJ/9WoWW4LOUpTAIaZ7GpyRF6UrkrGkFl5/CiDlJjGW1wHU0XU2MQh4CG4hXQJq7hSP/nXLO6GXyioSr65L4yXTD/57GDxqqEvpAFscW1Jh8KL6BZu57E0s2d/osm/t4XAuMRxRtEE99ghMCT2Inhhz8rZKMKAxX6gpFdx5es5EY3HsPmLgytYwEfdhz7Am3oOBNm2XZJ/qj7Z90NI+s8bEzT7xl84UiLWAZLDn3Q60dG+rMaOGCdSHNjwpG9SKG1o9J1clE22GuQeEIvwbG5PGX7azS+MzQ2gwGZzjQhJ/d5VTGLwlwHlHFmPiVMhju/Uk3QOpNItumOBRafk5hHtfZClEl0GMgt7UX+Tvxp6ibhTwaEnaCpIiQMaAhOnjNJsWPP331Te2ndE21kngkI7NQI+xQVLbzmvbFFSCXmAj2olscbT+cusZEJ5SX+C9dh3LD50ZwhFr+u+ZrXvctXaSXKwtvPTfvD6MZMtQAvsjpwsTa+Z6bTRUk1LyT1yKGgVES2Z6SrxPyU1PURBQSY49PhtoIc+g26HwcCplMWjbf0iMvltxzbqYvO
+ VZEoJ2RN
+ BGoxRpwBQR3siYay/j+xf3++/MRAm0z/FCubzLslSX8FbMybm0BaSUo+cjjsbLZLk5k/pmp26LOkYRDHDNBs8jpBU72gkpXUxMcLjW6013mtQjPCVr1ZjIkwHPh7CUKijx3IXW9FsBZSyMQa2dZRY55+55D1+G4Tj23JJI857EP94Ini2G0PmcMmIVxhx2rnLSd0JXIyAVTvMjQMrFT/DPU7w6t986i0U/gA/WGmt4iSJveHu+PkHFTV8rppSLm6A9drBWbrRefn+6I4tJAnND0T4tc4MZ7lWAdPghy9r4TXL5pb7xqbFVA3y4bOxDIbtE1MDJhKQIvl7Z+Knj/2uT51rm2d4JIkKbiNjhupMrokrtN4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,101 +100,68 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Reclaim can charge memory, for example when zswap stores a page.
-try_charge_memcg() forces these PF_MEMALLOC charges, but only after
-they fail at a limit. A charge that fits still has memory.high
-enforced. That can make a task in direct reclaim do more reclaim and
-sleep longer later, and kswapd records overage that it never handles.
+Kernel threads never return to userspace, so deferred memory.high
+reclaim does not run. Reclaim and throttling during a charge can also
+delay work they do for other tasks.
 
-It is also a problem for the next patches, which make kernel threads
-queue high_work. The worker charges memory from its own reclaim, so it
-can queue itself again. With those patches but not this one, the worker
-queued itself in 118 of 284 runs in a VM test with incompressible zswap
-data.
+Treat kernel threads like interrupts. Queue high_work for the first
+cgroup over memory.high and skip reclaim and throttling in the charging
+thread.
 
-Check PF_MEMALLOC before trying the limits. Reclaim charges then skip
-memory.high, as they can already go over memory.max. Drop the
-PF_MEMALLOC check in memcg_enforce_high(), which no longer sees them.
+User workers created by create_io_thread() and vhost_task_create() keep
+their current behavior. Vhost kernel threads use the new path, even when
+they borrow the owner's mm.
 
-Other effects:
-- As before, the check reads current, so it also catches interrupts on
-  a PF_MEMALLOC task such as kswapd. Softirqs set PF_MEMALLOC
-  themselves for swap over network, so the check can't be limited to
-  task context.
-- These charges no longer charge a batch or refill the per-cpu stock.
-- MEMCG_MAX still goes to the first cgroup that the charge puts over
-  its limit. On cgroup v1, memory.failcnt no longer counts them.
-- high_work can still run again and again when there is nothing left
-  to reclaim. This only stops reclaim from queuing more reclaim.
+The worker requests a fixed batch of pages each time. A fast allocator
+can keep usage well above memory.high. Kernel threads also skip
+memory.swap.high throttling and its high-event reporting. The memory.max
+and memory.swap.max checks stay the same.
 
-Suggested-by: Michal Hocko <mhocko@suse.com>
+Suggested-by: Tejun Heo <tj@kernel.org>
 Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
+Acked-by: Michal Hocko <mhocko@suse.com>
 ---
- mm/memcontrol.c | 29 +++++++++++++++++------------
- 1 file changed, 17 insertions(+), 12 deletions(-)
+ mm/memcontrol.c | 13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
 
 diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-index 0e484f7f823a..af95a4574a0f 100644
+index af95a4574a0f..42bdaaacafb7 100644
 --- a/mm/memcontrol.c
 +++ b/mm/memcontrol.c
-@@ -2762,7 +2762,6 @@ static void memcg_enforce_high(struct mem_cgroup *memcg, unsigned int nr_pages,
- 	 * when it rechecks the overage and simply bail out.
- 	 */
- 	if (current->memcg_nr_pages_over_high > MEMCG_CHARGE_BATCH &&
--	    !(current->flags & PF_MEMALLOC) &&
- 	    gfpflags_allow_blocking(gfp_mask))
- 		__mem_cgroup_handle_over_high(gfp_mask);
- }
-@@ -2787,6 +2786,21 @@ static int try_charge_memcg(struct mem_cgroup *memcg, gfp_t gfp_mask,
- 	if (consume_stock(memcg, nr_pages))
- 		return ret;
+@@ -2708,6 +2708,7 @@ static void memcg_enforce_high(struct mem_cgroup *memcg, unsigned int nr_pages,
+ 			       gfp_t gfp_mask)
+ {
+ 	bool allow_spinning = gfpflags_allow_spinning(gfp_mask);
++	bool use_worker = !in_task() || (current->flags & PF_KTHREAD);
  
-+	/*
-+	 * Reclaim may need memory to free memory. Let it go over the
-+	 * limits for a while rather than fail or OOM kill. Doing this
-+	 * before trying the limits also skips memory.high, so the
-+	 * high_work worker can't queue itself from its own reclaim.
-+	 */
-+	if (unlikely(current->flags & PF_MEMALLOC)) {
-+		/* Find the cgroup this charge puts over its limit, if any. */
-+		for (mem_over_limit = memcg; mem_over_limit;
-+		     mem_over_limit = parent_mem_cgroup(mem_over_limit))
-+			if (mem_cgroup_margin(mem_over_limit) < nr_pages)
-+				break;
-+		goto force;
-+	}
-+
- 	if (!allow_spinning)
- 		/* Avoid the refill and flush of the older stock */
- 		batch = nr_pages;
-@@ -2809,15 +2823,6 @@ static int try_charge_memcg(struct mem_cgroup *memcg, gfp_t gfp_mask,
- 		goto retry;
- 	}
- 
--	/*
--	 * Prevent unbounded recursion when reclaim operations need to
--	 * allocate memory. This might exceed the limits temporarily,
--	 * but we prefer facilitating memory reclaim and getting back
--	 * under the limit over triggering OOM kills in these cases.
--	 */
--	if (unlikely(current->flags & PF_MEMALLOC))
--		goto force;
--
- 	if (unlikely(task_in_memcg_oom(current)))
- 		goto nomem;
- 
-@@ -2913,9 +2918,9 @@ static int try_charge_memcg(struct mem_cgroup *memcg, gfp_t gfp_mask,
- out:
  	/*
- 	 * Don't forget to raise a MEMCG_MAX event for forced or rejected
--	 * requests.
-+	 * requests. mem_over_limit is NULL if a PF_MEMALLOC charge fits.
- 	 */
--	if (!raised_max_event)
-+	if (!raised_max_event && mem_over_limit)
- 		__memcg_memory_event(mem_over_limit, MEMCG_MAX, allow_spinning);
+ 	 * If the hierarchy is above the normal consumption range, schedule
+@@ -2726,8 +2727,12 @@ static void memcg_enforce_high(struct mem_cgroup *memcg, unsigned int nr_pages,
+ 		swap_high = page_counter_read(&memcg->swap) >
+ 			READ_ONCE(memcg->swap.high);
  
- 	return ret;
+-		/* Don't bother a random interrupted task */
+-		if (!in_task()) {
++		/*
++		 * Don't make an unrelated interrupted task handle this charge.
++		 * Kernel threads may be working for other tasks, so let a worker
++		 * reclaim instead.
++		 */
++		if (use_worker) {
+ 			if (mem_high) {
+ 				if (allow_spinning)
+ 					schedule_work(&memcg->high_work);
+@@ -2754,6 +2759,10 @@ static void memcg_enforce_high(struct mem_cgroup *memcg, unsigned int nr_pages,
+ 		}
+ 	} while ((memcg = parent_mem_cgroup(memcg)));
+ 
++	/* Interrupts and kernel threads stop here. */
++	if (use_worker)
++		return;
++
+ 	/*
+ 	 * Reclaim is set up above to be called from the userland
+ 	 * return path. But also attempt synchronous reclaim to avoid
 -- 
 2.53.0-Meta
 
