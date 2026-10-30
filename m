@@ -1,81 +1,81 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEF48606A31A
-	for <linux-mm@archiver.kernel.org>; Fri, 30 Oct 2026 08:58:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 088B5606A31A
+	for <linux-mm@archiver.kernel.org>; Fri, 30 Oct 2026 09:01:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Exq5Sp7z
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Z5W7jjZ5
 Received: by kanga.kvack.org (Postfix)
-	id 799F06B05B3; Fri, 30 Oct 2026 04:58:15 -0400 (EDT)
+	id 0BC7E6B00EF; Fri, 30 Oct 2026 05:01:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 744E86B05B4; Fri, 30 Oct 2026 04:58:15 -0400 (EDT)
+	id 093DF6B05B5; Fri, 30 Oct 2026 05:01:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 633936B05B6; Fri, 30 Oct 2026 04:58:15 -0400 (EDT)
+	id EEBBC6B05B6; Fri, 30 Oct 2026 05:01:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 2D8F76B05B3
-	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 04:58:15 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id B2B551A0658
-	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 08:58:14 +0000 (UTC)
-X-FDA: 85378690908.25.7F1E8E4
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf25.hostedemail.com (Postfix) with ESMTP id E9C2BA0003
-	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 08:58:12 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Exq5Sp7z;
-	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by kanga.kvack.org (Postfix) with ESMTP id CEEF76B00EF
+	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 05:01:03 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 793E31A065E
+	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 09:01:03 +0000 (UTC)
+X-FDA: 85378698006.08.542E4A0
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf17.hostedemail.com (Postfix) with ESMTP id AB5C94000B
+	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 09:01:01 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Z5W7jjZ5;
+	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793350692;
+	s=arc-20220608; t=1793350861;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=r280hiRf1n6xtUd8PrDvA2MR0wI6dZTEfLDR+8JhqFg=;
-	b=YjvslROMFI9oZl3q45gxYgaa1YpoHpmCw087aAQaEk8npwPKHCvsKQH7cQ7mH3Z1OR9i5S
-	fNhuuB5eUAmyz5OrrUCtqtmZfhwfiilfdYEwX3CrnecCrh5+LHKZTcfthYfAS9AHkXAlph
-	dbmG1PV+pbiVc3LQZaRruaNpsNu1JMk=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793350692;
-	b=Q0LfX1qZU/1s4ZzqQ5DdPIx3/gLRgXS1f36h+FOlX2vC/M25+Xt7TF8GKb7ee60ZKPiM9c
-	AFL4EXZ8afLWE2IdLbLLaig4totQRJs+2/xo0F/rABzrRmUe4H+ZejFXRce+lTk3PTL8iC
-	kmyBjObTnApPVQ6xsz9Y+V598Mqm8/Q=
+	bh=x9qMcf27LhCCCJBB8Rwt84bdkyoyyl9NUxLsoyq+Ifk=;
+	b=RsXLllroM5vfxNjthmJCRBhKS15iNY0epkdU/glO7xXS+5xn/pKhAntozYTGtxIzp+dMrA
+	kxbkDI9Dc8qN+eCark71Tatvk5UBX/9HmUvRyegNYbIkkZ/Csim7rhC34QDw4+khf1TyoS
+	SYNvsVnfFeBuN8e3OPgy2TAFaKnWtjI=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Exq5Sp7z;
-	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Z5W7jjZ5;
+	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793350861;
+	b=bpOXZLIInOJ8kgkPuLDje2MaJnru9cVTqiv1A8iyUMG3fCn0NZbtELba4uAqNwDH1ywg32
+	u0CpgXPMUwujv686e0+JcAOxrALNyXYURAUQFAEWpo0K6w801jgXP82pSMeU3Mn8SjX3T5
+	uomR0zjEtwNufW24MdRbUpc+/1zHPCI=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 776B86062C;
-	Fri, 30 Oct 2026 08:58:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AABA1F00A1B;
-	Fri, 30 Oct 2026 08:58:08 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 97C3F43D64;
+	Fri, 30 Oct 2026 09:01:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E4161F000C1;
+	Fri, 30 Oct 2026 09:00:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793350692;
-	bh=r280hiRf1n6xtUd8PrDvA2MR0wI6dZTEfLDR+8JhqFg=;
+	s=k20260515; t=1793350860;
+	bh=x9qMcf27LhCCCJBB8Rwt84bdkyoyyl9NUxLsoyq+Ifk=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=Exq5Sp7zAbqNuqGv6NplKuvdr/nF4Y3VmHgtgpTLaZbU9Jx+zMmy9hxCvaaN31rRH
-	 OXAH49p1efwmh9zrCzsYf1pFWirOHcKauQ7DZ6dnzldnZcaI9rAnWgsVclPTmFxOIu
-	 wqwyFVvJv6NJhGAUPUhuQGODdeljpPlxdAz0GS6+RF7DFvAR8XjS0lo7BevGFn6/wJ
-	 mz7quZWteNXZVRLTrgNo935jT8qWHudzcdV+n3P8+A+zxNy3fWJsf+evbdLNaUs2HL
-	 QSaYI8xsJc88Guj1G+FbrjZM0Ugyi4eqJFZMlH5Wi31jHqemR78BtdXpdRcXqF0es3
-	 ai1bGZuOgGUDg==
-Message-ID: <6086c386-3903-476f-ba55-bd6c21072f72@kernel.org>
-Date: Fri, 30 Oct 2026 09:58:05 +0100
+	b=Z5W7jjZ5CHNgkF7jCfE0ZaOHYunaTI4LQaG+EZH2j9fRC+oGHMbSWTcm1ttSiCp1t
+	 SOW1jRzY1mB/gLSmMLe1CR6S8BG2H8gpsbHugwymJqUmLtl3nzZlWxhJKHxsws06Yr
+	 7L4WjrVhRTcytnHcAuH5tC3+lr0RmYWw6sjmPzM1YPgUgIdLotSns9nMblv0aJ62YK
+	 JPsTZ6sjt9UJGMraJzXiOydmkTyx1O6/S0S9WiSUaXrhd1zeaxic7HhFT60Lj1A1TO
+	 S43KTJpl5if86/6JxeCR3njCW4UtLKv0UZ98hYyEhinG1EH90Ay3K5fT9cODSOvOrz
+	 RAmJBry2lrlXQ==
+Message-ID: <19012a9f-7a8d-4eb2-a441-cdb04184890b@kernel.org>
+Date: Fri, 30 Oct 2026 10:00:53 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/hugetlb_vmemmap: Fix usemap overrun on nodes with
- multiple ranges
-To: Tim Chen <tim.c.chen@linux.intel.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>
-Cc: Frank van der Linden <fvdl@google.com>, Mike Rapoport <rppt@kernel.org>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org,
- Mohini Narkhede <mohini.narkhede@intel.com>,
- Pooja Jain <pooja.jain@intel.com>, Doug Nelson <doug.nelson@intel.com>
-References: <20261029212137.3141875-1-tim.c.chen@linux.intel.com>
+Subject: Re: [PATCHv2] mm/huge_memory: set the mmu_gather page size in
+ zap_huge_pud()
+To: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>, linux-mm@kvack.org,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Venkat Rao Bagalkote <venkat88@linux.ibm.com>, linux-kernel@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, Muchun Song <muchun.song@linux.dev>,
+ Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Pavithra <pavrampu@linux.ibm.com>
+References: <8b853e5f9f16145859407b28af654b0f79e12642.1793318297.git.ritesh.list@gmail.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -122,22 +122,22 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20261029212137.3141875-1-tim.c.chen@linux.intel.com>
+In-Reply-To: <8b853e5f9f16145859407b28af654b0f79e12642.1793318297.git.ritesh.list@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: E9C2BA0003
-X-Stat-Signature: mo5kbed5ysqhzt9yc5sxxqkuq95kbsqx
 X-Rspam-User: 
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: AB5C94000B
 X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
 	version=4.0.1
-X-HE-Tag: 1793350692-123161
-X-HE-Meta: U2FsdGVkX1/87XbKq1ymYiyvcRrm3SLuZA5pHAqaUNLc8P6hsZOlV8JGAdN1Tg60UMDT+fMbXxk2h62ql6seS8DoIui/DP+NNjin3FLm6I2JzgtrYHJm4UBJ73nz0tFNgg75t3/4apUdm2d/Kv5XukUhD7zb16Jkd1bA+pnkXTmOoHYJ5Gyek76VI0PVTmtAceHD0smOaYrYz68OPsbNJ2G3fQlzwYdqSfARgu7lIXp7Nu4cAaqhNKyLa9uN8yJK/wf+IiVPhTJofzt1jqPPIlBqRlNHFmJNv2ayFEYl9sY7LbyWQSauoQKzRwFbuvYQtGjpYa7+IPBzNSTDGax+p9VevSqhL1ZLcsJHjTiSv5rRDNgEmZN+Jmm7UTGzrFt1tE0IjD1asHjlOMdTbAvtzqiyKBxzgA0IfAOm0ObyKw3xaeiFqrMBj/hG04yhPp1cwlKtta0fsTkcna8pmfDFd1eNO32dLHrSPCxW9dBs9j7ZQYiBriv1Z2k3vwszxNws9pI0Pjuo7xq4pbskkMv+lut4nw3BVnaZthpPKomvu5sg8wkojZgLxLIeCuoAbM39wAieEb9YeRd+FKOeGnRLlWowdC7ELqu+2VeK7NgeoM3jpFLZuQ0Xn+B+LMW5G9t+T6lc4JceHzCUq1hsAQ941Edc64ba8sB2naBuvaMON7bBwKNVD5c8LoT9s8joao4ajXkOYYcSt2zbOHagzk9eiAnEEycBycX4ELc2KwR3+CuYsWBjFjMWv1ArPFWsrIQtZQCUs6KAQ52UjDk5ShB8TwhchF1jSJZEYOiftnJfX3fsYvVWHZJUbDexE9e7j4ehCImzZCmznR0YY9dvJNgwHs2+bqVh6RSy2/RegkYx9CjeVGPFY/Rqum26Yi0IxuYFGI6628sjpkbe71XUCaPZBv9seS1dddSYQk9NQDaL7dxcv7FyUK387niVCT9Q8nujh3stZTHKeByn3JHDGj3
- VcS53V7I
- 9faHZLhYlmynVYKTy/nL5CBBN5BQgxhwiNvsGTJQKYUATrNvUWXPAJluaRnlgh1JqFFTJzPJa+ft0a3MVIMo/CaKqT2kSKSVG4pZWGItGtyNfYT96X1DtIEMGlZLOgKYhvEfeN7izkjXltsX5J16aRr8UyY3cWVnXj8tdsRdiCbC9KoA6t1JfKpMb3+wKACqOlUtngMqNOqgFHiBfJQ3NIiHoKKIo4UJ93XX2/BH6byDI6PcHEk++tnqATVWHh4PE6tSfmYjusMP/EyrUZa2rqZLQ6I0lMnlP5dQVMAXQziOx7guuVQydcT7APChfl7id+S0lBedgWFcHEzeBZlOKo34dVjcCXJ8myy8V
+X-Stat-Signature: y8tabeam7o75xetkgwu8xqhmem85ywtd
+X-HE-Tag: 1793350861-319564
+X-HE-Meta: U2FsdGVkX1//SFEf4mq0BhNRt/FJv1z3cgI9/DLy0hcZg3vdm2Pe4OGuYhq8XjRWio9tigelHvxaegWv27aPzdQWYRudwaPplYh2qQQpS3ObLZ4dGCNndcBJBiHQ88W9Pm6tzjCa2crS1sxQAG4gtHKrCIXabJknLSMFJnHAiru8OsHyBkQVkhQNM5IafztIxENfZANpI1cYOMXAptJY80QqSRpcVuju33doZ146Xr+tXhIFJYYr4glUxc/iiCDez2K7GFvIjsaZLPE882KC+k4j1iKW6btMzfI6SWmusymFbMhORZAcGLYZ0HHwrWEzsLpcs7zPv5q7a8qEotPqXhIq3pe1hVUua89KCyji5yOh3NHF7ndLqTqeO82xM+6VyF3qx1a3FLQF1luhCTY4c0WZ5Nr4wkaOoaa93FuRm7oHVTQnQGxFXFS4R3kdv7xVCDr4Y3ckvV3ROM2R2du0kCc11HbyjwFDuQYGHZBKLGF87LtUtG5YOu2hpIOQJ40Ks5w1Q57QPkjrD95aGyn0cV5j8DwIRfkHAlKAsp5eO6aT4F6j9+3JhZyBs8b6wOVqw82YyzBmlyphaHBPe9/pDoUVn0d4/rLsywpwk28ReC6wwoCGvAVdeC89WqwCHMY1SJT4UvB/+t7Jr/fj7WceBe5LZVsKDYBiXpaqSLAHDtYf0uLup+Gaa+oZlX6PCATGXkrjuMW15d1DVZJxTNkQDWrHJto2AE+IP3am+M+Xb3uPEWW+fKyJe1bJJIvMl7nrConqUq/1NvUbLXcuQsEOgjtd2Qf2/+YeAUmgPJzXgJwkmbbYKWRFBHpDYauDM8LuTIH3gfFoeufsjU/3L0MA/ffKEvv4c0Dw9KK7LRhgZ7dTdIXKIC3PbIUyLA+ZGJ96Dj02ehQu/ZlO8ARYGkbHGf/5ksPBZKL+KYuXdDxNJy8pCmOFbdUh7dz4m/AMH21QTHBN3j73kfxydehHl9C
+ EgssavT/
+ 089X1mTAunr1kEWr3olFhFvFRG6gsdyGtIVVyNZtei4uBr1X3wEe3cwpFXyFQa1ql5TG21JcnMdro9dbB45fsGlRS//myGkYQ+tBt7huskxJJo+qm4crDar+woduzH9zg4maTk/N9ka3jEu7onuaHNPneVv+mVRoZxO5hLTdc0nFIRxxHk7djsrsQBjVUsUn6YTZu7wghSedEWDbSwhFxFjp73OiesGf24XFvguV2Y+0BcIP9Xr/uWEzc1lZpiY3Tq/OE2pGbN4sjkr4usWIHOwMf6w/9ddDKN1dUWhmO3ntGKSoSHFI9yYxJ3cutbTAOLDXcxUQN5WLUFs/mURJVHd0bVPJmRcbB+vQSgwozMAq5ET0x3bGqFPeF7vhFjayHCOk4M6yob8cNNvvGUWEiVpwZTle8sJXWmiX3Q9m4V50WkHcfJo8x4tY+QT+U6CnsFwuJcA5ut5PQQMYbk5mTWfYythMOXhrRjv8p
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -146,94 +146,79 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 10/29/26 22:21, Tim Chen wrote:
-> sparse_init_nid() allocates one usemap slot (struct mem_section_usage)
-> per present section in [pnum_begin, pnum_end), and
-> sparse_init_early_section() hands them out in order, with a BUG_ON() when
-> they run out. hugetlb_vmemmap_init_early(nid) however initializes the
-> sections of every bootmem gigantic page on the node, including pages
-> outside the range being initialized. If a node's memory is split into
-> more than one range, sparse_init() calls sparse_init_nid() once per range,
-> and this takes more slots than were allocated. The same happens if a
-> gigantic page straddles a node boundary.
+On 10/30/26 01:07, Ritesh Harjani (IBM) wrote:
+> Unmapping a device-dax mapping with 1G alignment on powerpc radix kernel
+> built with CONFIG_DEBUG_VM triggers this warning on every munmap:
 > 
-> For example, with this SRAT layout every node has a small range below 4G
-> and a large range above 4G:
+>     WARNING: mm/mmu_gather.c:176 at __tlb_remove_folio_pages_size+0x38/0x230
+>     NIP [c00000000063d508] __tlb_remove_folio_pages_size+0x38/0x230
+>     LR [c0000000006fb688] zap_huge_pud+0x1b8/0x2d0
+>     Call Trace:
+>      zap_huge_pud+0x170/0x2d0 (unreliable)
+>      __zap_vma_range+0x1604/0x1e20
+>      unmap_vmas+0xa0/0x1f0
+>      unmap_region+0xb0/0x130
+>      vms_complete_munmap_vmas+0x120/0x310
+>      do_vmi_align_munmap+0x1ec/0x240
+>      __vm_munmap+0x148/0x220
+>      sys_munmap+0x28/0x40
 > 
->   Node 0 PXM 0 [mem 0x00000000-0x2fffffff]          768 MB  (low)
->   Node 0 PXM 0 [mem 0x100000000-0x80cfffffff]               (high)
->   Node 1 PXM 1 [mem 0x30000000-0x5fffffff]          768 MB  (low)
->   ...
+> To trigger this - it is enough to mmap() /dev/dax0.0, touch the first
+> byte so that the whole 1G is mapped by a single PUD and then munmap()
+> it.
 > 
-> In 128 MB memory sections (x86_64 SECTION_SIZE_BITS = 27), node 0's low
-> range is sections 0x00-0x05 (6 present sections) and its high range is
-> sections 0x20-0x1019. The low ranges of the other nodes are 4 or 6
-> sections, all smaller than the 8 sections of a 1G page.
+> PowerPC needs MMU_GATHER_PAGE_SIZE in which mmu_gather needs to record
+> the page size for which tlb flush is needed. zap_huge_pmd(),
+> zap_pte_range(), change_huge_pud() etc all do this already. However,
+> since commit:
+>   dbe54153296d ("mm/huge_memory: add vmf_insert_folio_pud()")
 > 
-> Node 0's first range has 6 sections, so 6 slots. With "hugepagesz=1G
-> hugepages=400", hugetlb_vmemmap_init_early(0) then initializes node 0's
-> 1G page at 0x67c0000000 (sections 0xcf8-0xcff, in its high range), and
-> the 7th section hits the BUG_ON() (seen on v7.2.6):
+> a device-dax PUD maps a real folio and zap_huge_pud() now hands it to
+> tlb_remove_page_size(tlb, page, HPAGE_PUD_SIZE). At that point
+> tlb->page_size is still whatever the previous user left behind, which is
+> 0 for the fresh gather set up by munmap() and so the check fires.
 > 
->   kernel BUG at mm/sparse.c:268!
->   RIP: 0010:sparse_init_early_section+0x9f/0xb0
->   RAX: 0000000000200000 RBX: 0000000000000cfe RCX: 0000000000000020
->   RDX: 0000000000000cfe RSI: ffd7e1d09fc00000 RDI: ff252cb28ffb3f50
->   R10: ff252cb28ffb3d40 R13: 0000000000000d00
->   Call Trace:
->    hugetlb_vmemmap_init_early+0xe1/0x140
->    sparse_init_nid+0x56/0x370
->    sparse_init+0x192/0x2b0
->    free_area_init+0x7f/0x690
->    start_kernel+0x64/0x540
+> Fix this in the same way like how other similar paths do.
 > 
-> Here RDX is the section number, and R10/RDI are 6 slots apart: the start
-> of the usemap buffer and its current position, which is the end.
-> 
-> Pass the section range to hugetlb_vmemmap_init_early() and only pre-HVO a
-> page whose sections are all present and within it. Ranges are disjoint,
-> so each page is handled once, in its own range.
-> 
-> Skipped pages are not marked HUGE_BOOTMEM_HVO. Their sections get a
-> regular memmap from sparse_init_nid(), and the pages are optimized later
-> by hugetlb_vmemmap_optimize_bootmem_folios().
-> 
-> Fixes: b1222550fbf7 ("mm/hugetlb: do pre-HVO for bootmem allocated pages")
-> Cc: stable@vger.kernel.org
-> Reported-by: Mohini Narkhede <mohini.narkhede@intel.com>
-> Tested-by: Pooja Jain <pooja.jain@intel.com>
-> Signed-off-by: Tim Chen <tim.c.chen@linux.intel.com>
+> Fixes: dbe54153296d0 ("mm/huge_memory: add vmf_insert_folio_pud()")
+> Reported-by: Pavithra <pavrampu@linux.ibm.com>
+> Signed-off-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
 > ---
->  include/linux/mmzone.h |  9 ++++++---
->  mm/hugetlb_vmemmap.c   | 38 ++++++++++++++++++++++++++++++++++----
->  mm/hugetlb_vmemmap.h   |  7 +++++--
->  mm/sparse-vmemmap.c    | 16 +++++++++-------
->  mm/sparse.c            |  2 +-
->  5 files changed, 55 insertions(+), 17 deletions(-)
+> [v1]->v2:
+> =========
+> - Split the 2 part patch series. Patch-1 is now superseded by a different patch
+>   from Muchun which he already posted [2].
+> - No difference in this patch from v1.
 > 
-> diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
-> index 94f9c3ff54160..da17dae8b057b 100644
-> --- a/include/linux/mmzone.h
-> +++ b/include/linux/mmzone.h
-> @@ -2167,13 +2167,16 @@ static inline int preinited_vmemmap_section(const struct mem_section *section)
->  		(section->section_mem_map & SECTION_IS_VMEMMAP_PREINIT));
->  }
->  
-> -void sparse_vmemmap_init_nid_early(int nid);
-> +void sparse_vmemmap_init_nid_early(int nid, unsigned long pnum_begin,
-> +				   unsigned long pnum_end);
->  #else
->  static inline int preinited_vmemmap_section(const struct mem_section *section)
->  {
->  	return 0;
->  }
-> -static inline void sparse_vmemmap_init_nid_early(int nid)
-> +static inline void sparse_vmemmap_init_nid_early(int nid,
-> +						 unsigned long pnum_begin,
-> +						 unsigned long pnum_end)
+> [v1]: https://lore.kernel.org/all/97f85592bb78a273be8519e6897e7f9b9bd31469.1793070429.git.ritesh.list@gmail.com/
+> [2]: https://lore.kernel.org/all/20261029063601.1961415-1-songmuchun@bytedance.com/
+> 
+>  mm/huge_memory.c | 2 ++
+>  1 file changed, 2 insertions(+)
+> 
+> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+> index bd44d58e8684..7e589a2fb02d 100644
+> --- a/mm/huge_memory.c
+> +++ b/mm/huge_memory.c
+> @@ -3040,6 +3040,8 @@ int zap_huge_pud(struct mmu_gather *tlb, struct vm_area_struct *vma,
+>  	spinlock_t *ptl;
+>  	pud_t orig_pud;
+> 
+> +	tlb_change_page_size(tlb, HPAGE_PUD_SIZE);
+> +
+>  	ptl = __pud_trans_huge_lock(pud, vma);
+>  	if (!ptl)
+>  		return 0;
+> --
+> 2.39.5
+> 
 
-Two tab indent please in all cases here that you are touching, thanks.
 
+Matches zap_huge_pmd().
+
+I will wait a bit  and then queue this shortly.
+
+This sounds like stable material?
 
 -- 
 Cheers,
