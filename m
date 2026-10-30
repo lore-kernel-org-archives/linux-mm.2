@@ -1,91 +1,91 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50559606A327
-	for <linux-mm@archiver.kernel.org>; Fri, 30 Oct 2026 16:10:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6DB2606A31D
+	for <linux-mm@archiver.kernel.org>; Fri, 30 Oct 2026 16:10:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=BAF3VZkc
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=D/AqvhRZ
 Received: by kanga.kvack.org (Postfix)
-	id F212D6B05C0; Fri, 30 Oct 2026 12:10:06 -0400 (EDT)
+	id 81BD96B05C2; Fri, 30 Oct 2026 12:10:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E846B6B05C1; Fri, 30 Oct 2026 12:10:06 -0400 (EDT)
+	id 77F076B05C3; Fri, 30 Oct 2026 12:10:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D71A16B05C2; Fri, 30 Oct 2026 12:10:06 -0400 (EDT)
+	id 646F06B05C4; Fri, 30 Oct 2026 12:10:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 9C4536B05C0
-	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 12:10:06 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id F2E55407DB
-	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 16:10:05 +0000 (UTC)
-X-FDA: 85379779170.27.E7C6950
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 714C1140004
-	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 16:10:04 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 2DE9C6B05C2
+	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 12:10:13 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 9FAD2160453
+	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 16:10:12 +0000 (UTC)
+X-FDA: 85379779464.16.7220151
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 06BEB140011
+	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 16:10:10 +0000 (UTC)
 Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BAF3VZkc;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf23.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="D/AqvhRZ";
+	spf=pass (imf23.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793376611;
+	b=2QNJPlBckzQMxU2unVYCc5akf61mTYcamxPv2kTvg6XjRhDgn+3ZQaHCEouLiiMwFHkZ8T
+	IhsKkH7LyAHnyfs3xZQkPzwIJjKk/X6hudJ2UGQovaAXspaCKS6jvCxulTZV23mVHUsTwx
+	F43SgDbaFkZA2UbDtl2jNhDf8+AWCd8=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="D/AqvhRZ";
+	spf=pass (imf23.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793376604;
+	s=arc-20220608; t=1793376611;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=v6Q73W+VdmnakUy7Y5elmMaCWEDdB23SrYHzIAMDn7g=;
-	b=v+IoP8Q+ERu1/ZEZWCy9Lc2eY82dyB7T7C5PrS7W1Er5hdh6I1e6IPLjMuoNR2EFnTDCVA
-	+Zg+d7NLhqsGSFeHfHAgWUoMu7VK/glZxhAGGEAteKwq9dLRnu/e7ftUeS4n6grlY7qX78
-	H3ypiL+VhaTH091J33j8pBiv2v0LdVw=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BAF3VZkc;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf23.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793376604;
-	b=vjl7wXako9fm4tCBfOkXZM771tAAkGty+UIQctvSu8OgeDSNz77i4Jwidi4g8FoETd78h8
-	LbNqNSDu0zFs1h9Ef/n6Fkq3wA0k4CD012cUCKZsKnKv7ABVGSsce410Y237yTdf4ybM94
-	A0kyRZOPHtolRzdaMtbb31bSx4pfj1Q=
+	bh=BlBJcG/mHzd+bSxyJ7Hr/XNLqvI/KNeShi4TWVGpRMA=;
+	b=tJCgay5aJbok0wdWubpPvjG59LSk+oJ6H7K7QgzR3O8b7kHBjSm9R+mcD0OjzLTG/PzrHU
+	RCOUV4GgZt9Jg/ELUo3a+br0/ShFzu5Ghvr0SIO5fkY37IojjeR2IkR2Gu6OTFPmeAj0kb
+	As0finyfgYKxpz8F1SzDgXDVXYRDeLw=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id F23F8605C6;
-	Fri, 30 Oct 2026 16:10:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B1431F0093A;
-	Fri, 30 Oct 2026 16:10:03 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 548494229B;
+	Fri, 30 Oct 2026 16:10:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 966A51F0093A;
+	Fri, 30 Oct 2026 16:10:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793376603;
-	bh=v6Q73W+VdmnakUy7Y5elmMaCWEDdB23SrYHzIAMDn7g=;
+	s=k20260515; t=1793376610;
+	bh=BlBJcG/mHzd+bSxyJ7Hr/XNLqvI/KNeShi4TWVGpRMA=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=BAF3VZkcESPBHNBLVO+30EPHzGf30kWo2ewHfgcMcy0jZo/r31QELbi3CpNQSemRk
-	 3jFK0IS0u1K8btB8A4IZtH4bxRpuOgmyD/v0pMe1RDMYYMgCeikbG9p5MfYBp+aFIy
-	 q5o2RcOwBTAlx0TKCDeLbm1S1Esxvcy7VxkzcSTuhRDKa2/OWC5ieOSS1A/RNedgjc
-	 lv00s+NpcaSsuscaiBChDBuC3qDMvI+l7HDCHsaqNeum48k/ObujKmh1wZeDbFJ+4a
-	 yiUQ9ThrQ9Ownz28NCXdyTMWXDUd7uT6q8giDsM/ukhvIcLJoyAzUrxqWXsNHtWgkF
-	 vWVomann4IZOA==
-Message-ID: <sashiko-outbox-191236@kernel.org>
+	b=D/AqvhRZy53z7cDhKwZsVvsyi75Y3cw4TMDVGVoQyGakjk6/Hsm81UrhNUKh8lpK8
+	 9OBUprIEhacNJzUARTORbGE8nzZsXavQX5moSmXeTaHTkZg0biGi+Jqq1vzQ8hIp4Q
+	 bZlIsaZimYR4kXUhi/DFZdAeGfQyf7aGvF73AiCDRIfGSsxgPHES329JutGW2yHMQ8
+	 KW1CL+7VGZz7YAhF+HvmS3M2JC3WSkhoL0cTp/XUbv0QHMXiYciLVrdqjqlmmgFBfx
+	 asrcDTboC/2rlsxegb+2YSDO8Mpp5zJoUWSQ9JVOWz/a8Y25DSqzSsW/oCD+/WLFCZ
+	 r5eLPGGx33uZA==
+Message-ID: <sashiko-outbox-191244@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 17/34] ntfs: don't set SB_RDONLY after filesystem
- errors
+Subject: Re: [PATCH v2 25/34] gfs2: wait for a pending withdraw before
+ remounting read-only
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Christian Brauner" <brauner@kernel.org>, "Jan Kara" <jack@suse.com>
 Cc: "Al Viro" <viro@zeniv.linux.org.uk>, linux-ext4@vger.kernel.org, linux-mm@kvack.org, linux-efi@vger.kernel.org, linux-mtd@lists.infradead.org, dsterba@suse.cz, tytso@mit.edu, "Mark
  Fasheh" <mark@fasheh.com>, "Joel Becker" <jlbec@evilplan.org>, "Joseph Qi" <joseph.qi@linux.alibaba.com>
-In-Reply-To: <20261029-work-fs-sb_rdonly-v2-17-2f44f64f0b66@kernel.org>
+In-Reply-To: <20261029-work-fs-sb_rdonly-v2-25-2f44f64f0b66@kernel.org>
 References: <20261029-work-fs-sb_rdonly-v2-0-2f44f64f0b66@kernel.org>
- <20261029-work-fs-sb_rdonly-v2-17-2f44f64f0b66@kernel.org>
+ <20261029-work-fs-sb_rdonly-v2-25-2f44f64f0b66@kernel.org>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Fri, 30 Oct 2026 16:10:02 +0000
-X-Rspamd-Queue-Id: 714C1140004
-X-Stat-Signature: eonxftnm9ce8h68dseus7fhyx5ebktqs
-X-Rspamd-Server: rspam04
+Date: Fri, 30 Oct 2026 16:10:09 +0000
+X-Stat-Signature: h3cmnayxsxf36hrdf97tgfja5owhzxeq
 X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
 	autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 06BEB140011
 X-Rspam-User: 
-X-HE-Tag: 1793376604-469341
-X-HE-Meta: U2FsdGVkX1/cvhqKH9lqiV7OkwOZjF4oUCvEjzaZFUZYCtWvNFAN4uP4UMjhlhJsUdJusnncGzU1on8u67iExQgDani1BQD9O2hHkF4r/JKMCjMPDJY5PQt5oDrPYWaivG1XRUaGY7V5B6iGgpoxZOHmoAeymln+fnHpRLZfJ9fPkTVldQ3yfVm7vvAqTYbwX7ED8pu439nzMJFpax9thxZlniyKipyIcVJydY0QQvLfgaOzmBeurWPpKBcz1H+zx2PCS34k9ZiAHC8ljs4NWU3kJYrxwT7+82v7v1Y3BO3+s3vypNXWhCAjUiDjlUBpl2NGgNZoGDdOx/RX3QZ5rQmpxQJuuxDPCXJauteyYCFcZOcerFnwLR6R4nZI8i5B3XG2yBTkGoMUJvG7xBnMcv0TmKJ/nT/hynxupEtcKO9g9PlqYv6Z/Y2QukEWvkfz3amimfjqWibXQFxLwUy5CUWpaaENcljgIKoD8fjK09McQJ4PzV1Zwtzj7MwNceRLXkCHJzXLLbBCnpBEe4IHZgtnFixobBq2eoBCHFZ834rdjVwAjtX+wMJHPy3rOHeQDFVzQ4rxOlWx6Tz1QyDyBIpnUNCe8xxlD+xvqgOHQQAp+HVrGhslGliTCGUHKDf3QIATAQL9I3etoPOmSVfhfsQ4Au53N/VMfQ+XTRpjVwWQUnIeR295LMkjw6kITOHACecPjYfr5X+4arb5BF3fzELNMLOjZiUEXD27prtKm1mX0YJ2Pp7ovSRLrCD2oQ9FqMXIUqE2ZpBvOSRc4PqLS9pwSVNoZWP1u+OHfdqNCUkD+H6kkahZic3khrFF0IxSFK7UM+4RJh1ykY2Tv5pUhegpHb5BItYyRFzs21VAo0T2lw4KVwATePytggHWLElwm7Yu8US4/gFiGgtwgvMYxXdLnT3sgae3qhsTTe3AkCbMjmL0UBIkzlM0aamjmKZa+rMxmlTanBExkYV6zWR
- VmntM2l9
- 1ddB4T4JuahatVYwhYmSvTXUQ2WT3zc/HOY4ihHA1jYqMQYZbLJtFuSG2hZ4C2yxHfsKmwIZfF6Kf+fcafeAqdLCC7wlKvAthhp4fqGKa5MhNIbjgprxpNJn9PXBdLr7hsixHboBAS+XygljF23XpEotOlOgqLwvZ5E0ponFpEc42xzj0AA54FJLAkFlRdXp7gG8O41g1P0g/+GjFtk4gyf6n2SsWMx1Q+0AwYSIvVu0YRVXd697c+ErGNHbZ3tatji200Fmkb8uw5TI4Lm7R1qblWUr8iFUwywWARhpRRcrIFSsbXULnD+HmvjJn+5L5mYyboHhYrgpS8kiLX3Q0RQlGVVEJ//ykKcn3J6bG1TYoaLU8bDkm+oZflh54w1HuuS+r8uRA2FgYHkFnXkzDmwQEImUnQ2+nZRFjMrAU3hVQYXOFCNxnZqGJv1aqgHdYR83xtiqCd/5IYYa+TrcfpubNkZ1X+eztV3YeLBNn30CG3kNOihgDijdqcbir4ZGJc1bdZ5VZL0vfMalc2lIgRWLJVyCttZN7nZ1zqsgcbQFsg3iXnxBYJ0FfH+6TBEcrzTETUBOTOAyx34BunJlIWDNpA9RH3dPZEF4a/h9VdGOHhSJeLnZE1NQy+L2ZbzyVcC+1
+X-HE-Tag: 1793376610-894553
+X-HE-Meta: U2FsdGVkX19ok/wuowyGFB1P1lNcJvjWpsXqrejrlhhxH+eTf+gHA6abVQZOsR5eO61z2kLJHu8n31AbWaoQt0elcgfjIaGlGsoV3slbfeIhEciC10QwG9eT9bJWdHZVQB5uBQyzn0VquIH8njzs+VlwV1eRqfQZNSipRqzJ1rkA8aGhI+i52IOMh/4BsegkNOSyMkJxJOiHnKpwJxNRBfq8sl1s3Btbj0Sc2Npwfnw9KY6NJ/D1cRg3849fAGQY7a6VmGWgncySxwph77aLkAKT7EWKi2XKhLDmjA0rGnKS/lP1rkqx6nrs4dJCNQ+qfZv2kGZdPdkchv6M2QTUD7G8MRv+kXrs9zwTGVyshM5TEceYtGwPoUHWmNrY7T5sQEWUVEIvrn7JfWDILVRupdN+Itpqux916AOASgzGaHm7WqMDjo6TnF3kSNwNuAIGDM1rFUizy8FjSdv3uSc2Fu8KTeDRsyEH1/8fW+QlKZjHxkVkf9PCp6AUjr6gUnZVizZnlSSmw9Nlf5DX58rC/fe3cKTFR62fPE1rD0BSpFk57ZeNwhtV+dO0Fpc8D+io/FpuRmtjOhITQx0WOLGqA48PQ6Y5rEVkS60XqzO2BaWFSXB5TMAv8SLXVesmPsXBzeJZkOa8TGxBkLh31N3ijBwAnAc80o6nHomvh7ZRP7bnkdbCV3pnhfe5yLMN8xLWQFVif4gnq0DeUrJp8BO8PiHCsLiW5/BI9fCr+pb4UZoilSpD94zYfKIHtLjAbK/qdArDKfpkJSCnGSlmA8dT5YsOM5oQHubbV2n4PyzK+/f+yRuHBVqfX8yRyUcBbpKxIIWsqhDw+su5DPxUn247/PvOnzJMxo9aJlq6dvL+tH2vKA++sYeCdMa8KsodBuNwzbdieBWGbwhmbuI58Nm8/P+skRUrbvmlHoDZYPh/g3WEvGINUvV4lWvY9NK2BUeEOtMuz1BJATehxBeIkE1
+ 5JkIJD1f
+ jSzDWZGKwMO1d2LYnHJauOdWYF5+HBwZFgJ6XtQP58mB5fc5jgE/JmavabppECSJdP0NgQPwMJp1PoVWPF1vOIqJfXDFwYg9RGTPlf35neZcIGTV9F7eGTZBBeUBcygTv9wUfEJHSlfFbStlXorGh2DBIp1vBRNPRa7Buow4R4NRLoMMECWWq/ASMCVNzl/J7C2tj/vViF+Tcd9jPxlroyBaOkCy9YQcQHZ1vmhj9BPghW1oEc5Xf5DPqUOgzKCToXQRReLjVTFgpEye3a4uw3qhBK5MH76QYyVPr8ZKi0U+10aw/u2WrPptWIAmM4XKsjWlrjitPj8UnkbzPz2OFu+eTg06oVB5aKKSxTMsZct0jTZpkSciqBvWkU7aXwp7t8l65WjOrYad3fm2kPNkXD9rJc8n1iyc12KHxrgxS+IyI///rpWMs0jCBapYTBRjrLt4NSRcWoituXCRyNWkuT5CEwLCg0aBMd4ZjVYZ4BHtVtj4g8AS7W/Q44fqS7SM6tE5F+04Lpt2aZTE+Ty1JsVQqIPU1L3QFizow7weqlqR8TFXjWCPgM8GFhiwy5mb5EdC+K+xWHi0nWPO1xOrmtL1Qpg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,124 +95,123 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 X-Archived-By: <archiver.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [Medium] ntfs: missing ntfs_emergency_state() check in ntfs_drop_big_inod=
-e()
-- [Medium] ntfs: ntfs_trim_prealloc() mutates MFT records in emergency RO s=
-tate
+- [High] gfs2: hang in gfs2_make_fs_ro() if withdraw occurs before SB_BORN
 --
 
-commit f2f6f70fa52c8d2d01384c57dde6822ea706a5e3
+commit 4dbc43efc316d1e6209f721b5c7c0e13b2e81f95
 Author: Christian Brauner <brauner@kernel.org>
 
-ntfs: don't set SB_RDONLY after filesystem errors
+gfs2: wait for a pending withdraw before remounting read-only
 
-This commit replaces setting SB_RDONLY on filesystem errors when mounted wi=
-th
-errors=3Dremount-ro with a new NV_EmergencyRO volume flag and an
-ntfs_emergency_state() helper so that freezing and thawing the superblock
-does not leave s_writers locked. It also adds an error_work work item to
-persist the dirty volume flag and updates write paths to check
-ntfs_emergency_state().
+This commit fixes a race between asynchronous filesystem withdraw and
+read-only remount by synchronizing SDF_JOURNAL_LIVE under sd_log_flush_lock=
+ in
+gfs2_make_fs_rw(), waking waiters when do_withdraw() clears SDF_JOURNAL_LIV=
+E,
+and waiting for SDF_JOURNAL_LIVE to clear in gfs2_make_fs_ro() before calli=
+ng
+gfs2_quota_cleanup().
 
-> diff --git a/fs/ntfs/file.c b/fs/ntfs/file.c
-> index b2f5882d9990d..fbfbd94c60924 100644
-> --- a/fs/ntfs/file.c
-> +++ b/fs/ntfs/file.c
-> @@ -55,9 +55,14 @@
->  int ntfs_file_open(struct inode *vi, struct file *filp)
->  {
->  	struct ntfs_inode *ni =3D NTFS_I(vi);
-> +	int err;
+> diff --git a/fs/gfs2/super.c b/fs/gfs2/super.c
+> index 04bb4cf787d4d..f61c309368ef1 100644
+> --- a/fs/gfs2/super.c
+> +++ b/fs/gfs2/super.c
+> @@ -146,12 +146,21 @@ int gfs2_make_fs_rw(struct gfs2_sbd *sdp)
+>  	}
 > =20
-> -	if (NVolShutdown(ni->vol))
-> -		return -EIO;
-> +	if (filp->f_mode & FMODE_WRITE)
-> +		err =3D ntfs_emergency_state(ni->vol);
-> +	else
-> +		err =3D NVolShutdown(ni->vol) ? -EIO : 0;
-> +	if (err)
-> +		return err;
-
-[Severity: Medium]
-Should ntfs_trim_prealloc() (called from ntfs_file_release() and
-ntfs_stream_file_release()) also check ntfs_emergency_state(vol) before
-rolling back preallocated blocks?
-
-When small writes in ntfs_file_write_iter() -> ntfs_expand_for_write() leave
-ni->allocated_size larger than ni->data_size using trailing LCN_HOLE runlist
-entries, and the volume subsequently enters NV_EmergencyRO or NV_Shutdown,
-closing the open file descriptor invokes:
-
-  ntfs_file_release()
-    ntfs_trim_prealloc()
-      ntfs_rl_truncate_nolock()
-      ntfs_attr_update_mapping_pairs_locked()
-
-Because neither function checks ntfs_emergency_state(vol), closing the file
-mutates the runlist and MFT record mapping pairs and dirties the MFT record
-and VFS inode even though __ntfs_write_inode() and ntfs_mft_writepages() now
-refuse writeback with -EROFS or -EIO.
-
-If the trailing hole run spanned an extent MFT record,
-__ntfs_attr_update_mapping_pairs() -> ntfs_attr_record_rm() removes the
-attribute and $ATTRIBUTE_LIST entry and then calls ntfs_mft_record_free(),
-which now fails with -EROFS due to the new ntfs_emergency_state(vol) check,
-leaving the extent partially removed and triggering secondary ntfs_error()
-messages.
-
-[ ... ]
-
-> diff --git a/fs/ntfs/inode.c b/fs/ntfs/inode.c
-> index 206db4e99ef13..6219aed945dfc 100644
-> --- a/fs/ntfs/inode.c
-> +++ b/fs/ntfs/inode.c
-> @@ -2434,7 +2434,11 @@ void ntfs_evict_big_inode(struct inode *vi)
-> =20
->  	truncate_inode_pages_final(&vi->i_data);
-> =20
-> -	if (!vi->i_nlink) {
+>  	error =3D gfs2_quota_init(sdp);
+> -	if (!error && gfs2_withdrawn(sdp)) {
+> -		gfs2_quota_cleanup(sdp);
+> +	if (error)
+> +		return error;
+> +
 > +	/*
-> +	 * After an error the freed mft record would go out right away while
-> +	 * the rest of the deletion can't, leave the inode to chkdsk.
+> +	 * Check for a withdraw under the lock do_withdraw() holds while it
+> +	 * takes a live journal down, so one of them sees the other.
 > +	 */
-> +	if (!vi->i_nlink && !ntfs_emergency_state(ni->vol)) {
->  		if (!NInoAttr(ni)) {
->  			/* Never called with extent inodes */
->  			WARN_ON(ni->nr_extents =3D=3D -1);
+> +	down_write(&sdp->sd_log_flush_lock);
+> +	if (gfs2_withdrawn(sdp))
+>  		error =3D -EIO;
+> -	}
+> -	if (!error)
+> +	else
+>  		set_bit(SDF_JOURNAL_LIVE, &sdp->sd_flags);
+> +	up_write(&sdp->sd_log_flush_lock);
+> +	if (error)
+> +		gfs2_quota_cleanup(sdp);
+>  	return error;
+>  }
+> =20
+> @@ -567,6 +576,9 @@ void gfs2_make_fs_ro(struct gfs2_sbd *sdp)
+>  				   HZ * 5);
+>  		gfs2_assert_warn(sdp, gfs2_log_is_empty(sdp));
+>  	}
+> +	/* A withdraw that do_withdraw() didn't finish yet leaves it live. */
+> +	if (!test_bit(SDF_NORECOVERY, &sdp->sd_flags))
+> +		wait_on_bit(&sdp->sd_flags, SDF_JOURNAL_LIVE, TASK_UNINTERRUPTIBLE);
 
-[Severity: Medium]
-Does ntfs_drop_big_inode() need the same !ntfs_emergency_state(ni->vol) gua=
-rd
-when truncating unlinked inodes with I_SYNC set?
+[Severity: High]
+Can wait_on_bit() in gfs2_make_fs_ro() hang forever in TASK_UNINTERRUPTIBLE
+if a withdraw happens after gfs2_make_fs_rw() sets SDF_JOURNAL_LIVE during
+mount, but before vfs_get_tree() sets SB_BORN?
 
-In fs/ntfs/inode.c:ntfs_drop_big_inode():
+During a read-write mount, vfs_get_tree() calls gfs2_get_tree() ->
+get_tree_bdev_flags() -> gfs2_fill_super() before setting SB_BORN on
+sb->s_flags. Inside gfs2_fill_super(), sysfs and the daemon threads are
+started before gfs2_make_fs_rw() is called:
 
-	if (!inode_unhashed(inode) && inode_state_read_once(inode) & I_SYNC) {
-		if (ni->type =3D=3D AT_DATA || ni->type =3D=3D AT_INDEX_ALLOCATION) {
-			if (!inode->i_nlink) {
-				...
-				truncate_setsize(VFS_I(ni), 0);
-				ntfs_truncate_vfs(VFS_I(ni), 0, 1);
+fs/gfs2/ops_fstype.c:gfs2_fill_super() {
+	...
+	if (!sb_rdonly(sb))
+		error =3D gfs2_make_fs_rw(sdp);
 
-If an unlinked inode is undergoing writeback with I_SYNC set in
-ntfs_writepages() or __ntfs_write_inode() when an error triggers
-ntfs_handle_error() and sets NV_EmergencyRO (or in commit "ntfs: use the
-generic emergency read-only state", SB_STATE_EMERGENCY_RO), dropping the la=
-st
-inode reference via iput() while I_SYNC is still held enters
-ntfs_drop_big_inode().
+	if (error) {
+		gfs2_freeze_unlock(sdp);
+		fs_err(sdp, "can't make FS RW: %d\n", error);
+		goto fail_per_node;
+	}
+	gfs2_glock_dq_uninit(&mount_gh);
+	gfs2_online_uevent(sdp);
+	return 0;
+}
 
-Without checking !ntfs_emergency_state(ni->vol), ntfs_drop_big_inode() still
-calls ntfs_truncate_vfs() -> __ntfs_attr_truncate_vfs() ->
-ntfs_non_resident_attr_shrink() -> ntfs_cluster_free(), which frees clusters
-in $Bitmap, fails partway through extent removal when ntfs_mft_record_free()
-returns -EROFS, and on mounts with NVolDiscard issues blkdev_issue_discard()
-on the file's clusters even though the on-disk MFT record and bitmap updates
-cannot be written back for chkdsk.
+Once gfs2_make_fs_rw() sets SDF_JOURNAL_LIVE under sd_log_flush_lock, there
+is still a window before vfs_get_tree() sets SB_BORN where gfs2_logd,
+gfs2_quotad, glock workqueues, or sysfs can trigger gfs2_withdraw().
+
+In gfs2_withdraw(), SDF_WITHDRAWN is set, and then it returns early without
+queuing sd_withdraw_work because SB_BORN is not yet set:
+
+fs/gfs2/util.c:gfs2_withdraw() {
+	...
+		if (test_and_set_bit(SDF_WITHDRAWN, &sdp->sd_flags))
+			return;
+
+		dump_stack();
+		/*
+		 * There is no need to withdraw when the superblock hasn't been
+		 * fully initialized, yet.
+		 */
+		if (!(sdp->sd_vfs->s_flags & SB_BORN))
+			return;
+		fs_err(sdp, "about to withdraw this file system\n");
+		schedule_work(&sdp->sd_withdraw_work);
+	...
+}
+
+Because SDF_WITHDRAWN is already set, no later gfs2_withdraw() call can
+queue sd_withdraw_work, and gfs2_fill_super() returns 0 with both
+SDF_WITHDRAWN and SDF_JOURNAL_LIVE set while do_withdraw() never runs.
+
+If the filesystem is subsequently remounted read-only via
+gfs2_reconfigure() -> gfs2_make_fs_ro(), gfs2_log_flush() bails out early on
+the withdrawn filesystem without clearing SDF_JOURNAL_LIVE, leaving
+wait_on_bit() in gfs2_make_fs_ro() sleeping forever while holding
+sb->s_umount.
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261029-work-fs-sb=
-_rdonly-v2-0-2f44f64f0b66@kernel.org?part=3D17
+_rdonly-v2-0-2f44f64f0b66@kernel.org?part=3D25
 
