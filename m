@@ -1,163 +1,136 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 466F0606A31F
-	for <linux-mm@archiver.kernel.org>; Fri, 30 Oct 2026 03:45:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93B2C606A31E
+	for <linux-mm@archiver.kernel.org>; Fri, 30 Oct 2026 03:53:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=h9yowQd5
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=DZY6Ki4Z
 Received: by kanga.kvack.org (Postfix)
-	id 6A27C6B05B2; Thu, 29 Oct 2026 23:45:14 -0400 (EDT)
+	id 976FD6B00EF; Thu, 29 Oct 2026 23:53:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 67A826B05B3; Thu, 29 Oct 2026 23:45:14 -0400 (EDT)
+	id 8F8CD6B05B2; Thu, 29 Oct 2026 23:53:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5905C6B05B4; Thu, 29 Oct 2026 23:45:14 -0400 (EDT)
+	id 7C1586B05B4; Thu, 29 Oct 2026 23:53:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 1BD576B05B2
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 23:45:14 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 3AF31160332
-	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 03:45:13 +0000 (UTC)
-X-FDA: 85377902106.15.4BA2C2A
-Received: from CY3PR05CU001.outbound.protection.outlook.com (mail-westcentralusazon11013038.outbound.protection.outlook.com [40.93.201.38])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 08549180002
-	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 03:45:09 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b=h9yowQd5;
-	spf=pass (imf16.hostedemail.com: domain of bharata@amd.com designates 40.93.201.38 as permitted sender) smtp.mailfrom=bharata@amd.com;
-	dmarc=pass (policy=quarantine) header.from=amd.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 4EB376B00EF
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 23:53:02 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 57D461404CA
+	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 03:53:01 +0000 (UTC)
+X-FDA: 85377921762.24.B3A9CE0
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 3AF48140003
+	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 03:52:59 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DZY6Ki4Z;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf23.hostedemail.com: domain of devnull+daejun7.park.samsung.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+daejun7.park.samsung.com@kernel.org;
+	arc=pass ("kernel.org:s=arc20260519:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793331910;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1793332379;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=IikUAO8lSmNSAkvhUkTrh9Ju9HI1G1d2+VF79RdPZh4=;
-	b=aaAo8vPuG5cBTKHnPOm5CU9bbTRJEHr9BePjiCt6e8Q6nidn4Sb2/Jf9jDhUgXQI7QSrMH
-	70oeme8KXeSX8CqfecSkID6Ze58djhpuiMFW5oiDGTtGoNIvauuRbafODy2615mfx8D13q
-	PslkiylrgMHAErXF6Js8LMqIfXPgMVg=
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1793331910;
-	b=VdZ9RH3K44fYHPW4fzbhMdF1I1jyWfaSBiXU7kDh739zoD9+5YBuliywejvIwf5bUGnknP
-	fLAJ8v+SDhQoxopxAOq02i7SW2txlVKR+cp/f/ySWklOfd6iSnobI0n+IXYbQtV6iqvkem
-	YuzUZHStScZNM3CcXQgd3LAGZLmeC/E=
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=5bagKzpGDehBxLfa97XQN1B8UzHzLG4c9sAiEfjTT94=;
+	b=Y/QFplWsyKezfdc7agI9JM3RRzzoTclDA2AuJDHfM8ub03fyUdkWHPzXtzJAWo9xY+pdKu
+	0dUqEZrhIvtims8VpwrAo1LD/yRIpPaNOjywM4fezOGLX9XUp8LPYc8pW9J7YxiVeUY79C
+	H00ejWcL3NGr0NiPROAw1ctzp/ygNoU=
 ARC-Authentication-Results: i=2;
-	imf16.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b=h9yowQd5;
-	spf=pass (imf16.hostedemail.com: domain of bharata@amd.com designates 40.93.201.38 as permitted sender) smtp.mailfrom=bharata@amd.com;
-	dmarc=pass (policy=quarantine) header.from=amd.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=wZC6iE4zn/trnSrz8oDKWUMrNxhkpYVnkJ2IYYclzNUV4WGUUeGzgRF2dP8aXW25RjmhWtjFtIW9aGudSKBgXeNDjoyyElD2937hbe5MQOjkClD/J+NJxfCL0UuxeRd6u82h6u+yJXduVAiclaA0Yx8VdgJEK0jaM2vpYxmjjBMfr61HGXu1p2djc6QduVWpszE49QdMRK33KACl9XssrMrubIRVs9meM1WpgHP3tlXOZllQ8cCMUFFEMlahQaRG40pD78R0Mj2JPkOvaGshGkfq0RjC88n+m9PFbq3EnnUuxzTkEt5spViNGEcUg7K9Js50k0TMFNvjFHiodNfDTw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=IikUAO8lSmNSAkvhUkTrh9Ju9HI1G1d2+VF79RdPZh4=;
- b=ghiRmtpVejJsLUwmoFJiAXlZ09lxRlL6DLlyKlxYDeBqbeopcGZIzwEIg4yYHZVAkpjrT0V3XSw32SSwZB8jLkpOO6BnvTfLytvkUykVYNOFTLZOXO5EJQSiUAIHI5fIPN18mPMDGYcVoTWcnTKEhQ9s7UAD6eV8WsXcd7YOdpZYg27uz0irOoy4RQZR04b+SG+xxrJQkwFiZ0w4knWeiDiy+z1kfHMd7RavGiZDA+4U7AwNAdtMujrv5ybbQX2pz7H9DwUbSX6oGCZ0d7qWrrQ7slclJBBN7v8eSAxru0uLheHCMiWmzrQE42xfa3emhriNQ0FdOoAL+WOzYXT+Dg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=bytedance.com smtp.mailfrom=amd.com;
- dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
- header.from=amd.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=IikUAO8lSmNSAkvhUkTrh9Ju9HI1G1d2+VF79RdPZh4=;
- b=h9yowQd5RFO57r3Y1TK82DNALJkPb+BXstHYz/RhhD97ccO9ktaLFOMukJ3kcAKFRlG53my2TQS9Q/AzC0t8HrIRTCxMZ1c7rUqgOncPk+dH0pU+qKed5aysZeXOWxyjzkwbMh1GlZkaaMhrTwIDgBsEiWkVUfouTvjOEpXFURY=
-Received: from BY5PR04CA0027.namprd04.prod.outlook.com (2603:10b6:a03:1d0::37)
- by BL4PR12MB9507.namprd12.prod.outlook.com (2603:10b6:208:58d::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.569.9; Fri, 30 Oct
- 2026 03:45:05 +0000
-Received: from SJ1PEPF0000231A.namprd03.prod.outlook.com
- (2603:10b6:a03:1d0:cafe::30) by BY5PR04CA0027.outlook.office365.com
- (2603:10b6:a03:1d0::37) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.569.8 via Frontend Transport; Fri, 30
- Oct 2026 03:45:04 +0000
-X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
- is 165.204.84.17) smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb08.amd.com; pr=C
-Received: from satlexmb08.amd.com (165.204.84.17) by
- SJ1PEPF0000231A.mail.protection.outlook.com (10.167.242.231) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.569.4 via Frontend Transport; Fri, 30 Oct 2026 03:45:04 +0000
-Received: from satlexmb10.amd.com (10.181.42.219) by satlexmb08.amd.com
- (10.181.42.217) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.53; Thu, 29 Oct
- 2026 22:45:03 -0500
-Received: from satlexmb08.amd.com (10.181.42.217) by satlexmb10.amd.com
- (10.181.42.219) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.53; Thu, 29 Oct
- 2026 22:45:03 -0500
-Received: from [10.136.40.60] (10.180.168.240) by satlexmb08.amd.com
- (10.181.42.217) with Microsoft SMTP Server id 15.2.2562.53 via Frontend
- Transport; Thu, 29 Oct 2026 22:44:58 -0500
-Message-ID: <c9cf96bf-f3b1-47da-b22a-9600b5fb01be@amd.com>
-Date: Fri, 30 Oct 2026 09:14:57 +0530
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DZY6Ki4Z;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf23.hostedemail.com: domain of devnull+daejun7.park.samsung.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+daejun7.park.samsung.com@kernel.org;
+	arc=pass ("kernel.org:s=arc20260519:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1793332379;
+	b=5slpRIHOy7ec+6C6kl208jWEPSrkakM5DePFwmqwGLEMFRmzVGnGoK79+7p9indemb2ozR
+	gVUXrUkmF+aE0xJpDwucoFLPpkBgSv8wK6fkNs0UcNPDf53jN0CnQtdZQn4iX5O/8AkR7D
+	W3nobgeFg9UwyECgHgZUchWp9mg/kAc=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id AB04341FC1;
+	Fri, 30 Oct 2026 03:52:57 +0000 (UTC)
+ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
+	t=1793332377;
+	b=gOiNJwv7Og6rmhGD0HKrOYrgUOFmX6QSaopL04+Rp4IGn66j2m79ZdP11puVGIETj4uD
+	 LWX6P1Q57mkTqQ4ZwxU63SVqCeEhJGCvxn2BL64JbuEgK1KQEHfaL2UhOqwt4tCXEsdIG
+	 ta8Uk6ZQGNGoGBTHYbCbwhXHV0lkzeyC5mUiSlMO65K1bNEIk+VJG+A6idt4T7Jsv5qoy
+	 BqPR68ozH1vCvVae209NSmeUrgIVpwb2tiUsqt0JOqV6DlFe/juw3yrg711W5JHjpPfK3
+	 +V2fu3zuxOHdRgmpwo6gMPU8ZXwUng2wpJzwNjxWa6UH7b83oQXBAtAI0eQIsFk9aug==
+ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
+	c=relaxed/relaxed; t=1793332377;
+	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
+	 Message-Id:X-B4-Tracking:To:Cc:X-Mailer:X-Developer-Signature:
+	 X-Developer-Key:X-Endpoint-Received:X-Original-From:Reply-To:
+	 Content-Transfer-Encoding;
+	bh=5bagKzpGDehBxLfa97XQN1B8UzHzLG4c9sAiEfjTT94=;
+	b=ybGrV8qddiBMBv2dc1+uNBCNffHvT1kUk9IUh1CEVU81OVGRRMsG/qjTsgF1hRnQkYIn
+	 uxsVjuEk7UgGsMHoQWf2XZuv2XWXilaq6dGor1RAwD+0vw+CCmRQrAzUEfdv4WAfvLGx8
+	 OBHPQupB+uOC268CDPxbEuUa8kia1ItCP9x1uiTX+IUGtCxniIGcHwe6B3fytGCXXuR2Y
+	 Q2Oy07tOg7NYth0s2thvd2QwuI0t6M8nRlUYrGzSzhK0EiWeToetzlBqDIQrfXWMADvPI
+	 132JLkEmbMmongl0wob0T0AdeuqGAUIkElVtScQYHulCbh7i9m1YBejB/mznL4J+aAw==
+ARC-Authentication-Results: i=1; smtp.kernel.org; 
+	arc=none smtp.remote-ip=100.80.115.77
+Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	(No client certificate requested)
+	by smtp.kernel.org (Postfix) with ESMTPS id 28E7C1F000C1;
+	Fri, 30 Oct 2026 03:52:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793332377;
+	bh=5bagKzpGDehBxLfa97XQN1B8UzHzLG4c9sAiEfjTT94=;
+	h=From:Date:Subject:To:Cc:Reply-To;
+	b=DZY6Ki4ZoiC/7TJ4jKqVzEvih70W2MICtGk9hryVMvWSxOv/CspVZUQ4MzMOH57DJ
+	 9lS+pXxC3mO8DDqmJVcqDYqTpcGLH5whhb6PAq73rw357IPCfc8nxcI+8EF1KEgFAz
+	 yrdpueX2cSwTbICwyAdYUz0no6nCo/OtNcZzGte+Bl4BdprTB501yATT42LethgYIQ
+	 MkIvqdUBq8qJGIus70ghpNHcA0ZovKBws3gIpp0ST1RNeHBX74rk2RS6S0Kt7IjTGA
+	 dS1Qr5RdA9KztnsQzA9LrJtEpCSU1HL2SBivl25H+svtCzWrMeStRzhKrgT/d0QrcR
+	 x6WWKKYm8w5zA==
+Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
+	by lkml.kernel.org (Postfix) with ESMTP id AACF7435F8;
+	Fri, 30 Oct 2026 03:52:56 +0000 (UTC)
+From: Daejun Park via B4 Relay <devnull+daejun7.park.samsung.com@kernel.org>
+Date: Fri, 30 Oct 2026 12:52:57 +0900
+Subject: [PATCH] mm/readahead: keep at least half of the async window when
+ aligning it
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/3] sched/numa: make free-space tiering promotion
- bypass configurable
-To: Li Zhe <lizhe.67@bytedance.com>, <akpm@linux-foundation.org>,
-	<bsegall@google.com>, <david@kernel.org>, <dietmar.eggemann@arm.com>,
-	<gourry@gourry.net>, <joshua.hahnjy@gmail.com>, <juri.lelli@redhat.com>,
-	<kprateek.nayak@amd.com>, <ljs@kernel.org>, <mgorman@suse.de>,
-	<mingo@redhat.com>, <peterz@infradead.org>, <rostedt@goodmis.org>,
-	<vincent.guittot@linaro.org>, <vschneid@redhat.com>, <ziy@nvidia.com>
-CC: <linux-doc@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<linux-mm@kvack.org>
-References: <20261028041253.74839-1-lizhe.67@bytedance.com>
- <20261028041253.74839-2-lizhe.67@bytedance.com>
- <0676993f-c04c-4e4e-9f8d-1650c8fd6d6e@amd.com>
- <010b2b6c-8f1b-4c3b-913f-cc2e8b957759@bytedance.com>
- <a6bcd771-fcf7-4fe4-8c21-5e65bd579de7@amd.com>
- <1bab234e-8914-4694-b0aa-f265fa49c6d3@bytedance.com>
-Content-Language: en-US
-From: Bharata B Rao <bharata@amd.com>
-In-Reply-To: <1bab234e-8914-4694-b0aa-f265fa49c6d3@bytedance.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="utf-8"
+Message-Id: <20261030-mm-readahead-async-align-v1-1-109dea6851fc@samsung.com>
+X-B4-Tracking: v=1; b=H4sIAJgU5GoC/x2MQQqAIBAAvxJ7biEthPpKdNh0q4WyUIhC/HvSZ
+ WAOMwkiB+EIQ5Ug8C1RTl9E1RXYjfzKKK446EYb1egejwMDk6OtACm+3iLtsnrkrldz66wyZKD
+ kV+BFnn89Tjl/F5UzkmoAAAA=
+To: Andrew Morton <akpm@linux-foundation.org>, 
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>
+Cc: Ryan Roberts <ryan.roberts@arm.com>, linux-fsdevel@vger.kernel.org, 
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+ Daejun Park <daejun7.park@samsung.com>
+X-Mailer: b4 0.13.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1793332376; l=2790;
+ i=daejun7.park@samsung.com; s=20261006; h=from:subject:message-id;
+ bh=KlGeHCvXeiq1+GF1wuBXkFRE3vYfwUDNHyzWlyHiR68=;
+ b=6sgU0Xgwqz6XOoOauwEV72LBz9kw9m5WlIYb+cqZUpHR8kgYzsAyqdlAug65ocGla5qbp/Hrj
+ bPKuxR/UQasC8l7t1DapqPOFgn9m5GwmI0sdNdV2RMIBMd8du/pBJp+
+X-Developer-Key: i=daejun7.park@samsung.com; a=ed25519;
+ pk=4yUfDqGRZTIj0Ik43z1GoMZRWCNm/rgX6uJuM9dtNIg=
+X-Endpoint-Received: by B4 Relay for daejun7.park@samsung.com/20261006 with
+ auth_id=1122
+X-Original-From: Daejun Park <daejun7.park@samsung.com>
+Reply-To: daejun7.park@samsung.com
 Content-Transfer-Encoding: 7bit
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ1PEPF0000231A:EE_|BL4PR12MB9507:EE_
-X-MS-Office365-Filtering-Correlation-Id: 306498a5-3563-4331-8617-08df36382ee0
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|1800799024|7416014|376014|36860700016|82310400026|921020|4143699003|11063799006|56012099006|261026121527099003|261026140227099003|261028144727099003|261021123027099003|261021121427099003|261022105027099003|10067099003|22082099003|18002099003|3023799007;
-X-Microsoft-Antispam-Message-Info:
-	GdzPgUNKan1dEr+SsMKZvP4L1DAy+brnTdNfyIuXAzv2lMsnjFqInjDQJosTKH7E8dvxaunECqK9AxIJgSbDv7Z60qt296RRYwqBnVh6wsWPLH1sOQqkfR8HjscysamM30mrnXo7gQeRZMctj7XEaHOVk0vqYyY57o3mIuqaF8hHEb7vBpsuqexM4KiYuzLUTXS6H7MFbTskI3kZuOYocHp34r1Fs6HXZw20LpSsEInitFKbqytXFnRghbsVA+wPw0vFO8a7hg0Y0M0EEWoPj0fTFjNAneVcO/M4QWFun+OaXaAC9zqx/9iJo20Lb8hPgXWCjv4hCj86Zy2GPJe1JNTemIobz+VlpnWyKdKUfaF5Li1TGOGLPx2vgzDkOWxJnXE71v9PaWII3hS0zcMOKYcTgNYXSH0eIhOTHdslfiGiS5sn4Ral68w2FRvQZFmnfYujJ8jfGFlPB7w+svXn4uNAXxA0h8OQSG81D16xejYRGEweOKGBxZa3AdEFfi+i2WctkLJ1CMcrt+QKY/WDgtxPXeSeJD7HKJ/OeQNrGYaDGfsGXKR4aknAkUy5oBwwrjeQmmXK+FDwhWCGBxFGFrMWwRJbnG1JjasGIYEuuJyKeNqhLKu3DpCmkLVr2KiiYojGd46FVtaf7oluZDLxn1pbaUsZ74d14vFmREfCjzK0HNHEG3BJtRv496uK6kI0Z4PRleFsD//87zA7uA0yGeC9YCcxanGVnEO0ejOlIZiHzcEJDiqdhZmgky3AtVFo
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb08.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(23010399003)(1800799024)(7416014)(376014)(36860700016)(82310400026)(921020)(4143699003)(11063799006)(56012099006)(261026121527099003)(261026140227099003)(261028144727099003)(261021123027099003)(261021121427099003)(261022105027099003)(10067099003)(22082099003)(18002099003)(3023799007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	iZjg/17YPA5A84SHf7aDRDN2/YVjvn04u2f6PkmtGTyO0QntStciLuNEd/VDlCSVcA4smx2FBh9UabTTYNYYxHsMMzymUOtjaJNp5MFuhpa/FVBgCPPNe3GWdFdFaFjdUYjfw8UdttKZts0kB9nwlpJwksqQNK8jc2wP5SbDrbC6c2BmcnBUDUXv7yegTFvPgHbTjirY1naK3lhR9FRYv4NmOmPQrmtKdKDitRYcA/p6LZV2J06jTT+5vHtPhCqxianwAfXD6mHQx49EldupyQHvNFNYlBsCE6ofhfjZlUeE6JGWJCP7ARLZrpUAizLEBR3nEh+fCo+flfzL4l8Zjuqy9VIWk8aLVLvllTjYYZO+68cYKZh4KbJkOZhshBtqWPS3SwUjyJOl2tvRKqBSAkS8v97kUcRo5F8lczUw/NVpYvw/+MmTs2TPUbYE7eb1
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Oct 2026 03:45:04.1161
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 306498a5-3563-4331-8617-08df36382ee0
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb08.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	SJ1PEPF0000231A.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL4PR12MB9507
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 08549180002
-X-Stat-Signature: g3nms1pr1us771q35oe8fgxywgbd1xnq
-X-Rspam-User: 
-X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Rspamd-Queue-Id: 3AF48140003
+X-Stat-Signature: sksg3ghxxxghw16mbki54esfknjh95kx
+X-Rspamd-Server: rspam06
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
-	autolearn=no autolearn_force=no version=4.0.1
-X-HE-Tag: 1793331909-168879
-X-HE-Meta: U2FsdGVkX19TTtyEUGem9JG5FLvo/ADXfzSAFDXk21DHQvysLuwXKAVZKPlh4o9blTmy4SIlUZ/d2aXiNL0kUl7fqGyTFKAXEPPLnxh55dbA8/Q1iD5A+fDVIe8rBvND41Nz2i8NonX3BrK+wFYPMxcFn/9Ay1KKZftXegQizJC/LZ/Fid1Ggx7vX7oBZKQL5mrUcsn54/PRZn7FGsIPuVvBuSlg6B0fjVkqiOUu5asKLHwSAG1phivbD/uZZ5is1xPwygfRR+PmWW1ByiOVGobbHn0pw0T5cWrN3j+kggrI/s/UA6z5KI0t0mu1FZ3/0/bC+VU7gfUJ0ljhDGz6EmEPQVS4ARn+msoSLdf5XwBsbMfw0KWlU46cgKa/xmQI4PwldzaU21CdnokAnYFsGuHTLWPEcUADcAKdL0eMWiW1Wd5Ur4dVLuOgdU8NAN9Jpe7b8138dQrwfOW2EgAnbsG1qO49Roc9NcxapNSURYZ/UxDBy57qP89K68W+MgkdbrsiTTTNNl4J7fpewj3QjIcnDf5gMUAfi/qmRQ/n6C1PSAsVITNEzYvK2zydL2jorjVHbgPlGLEo1EBUfGauIPY+aEbm+/kW5xp7itrw0O0S7OKO9mtBwYuS/6EIoIH/OL11UzztVW6jPL8H7n2k9sZfEWYfhWtmX9YWhq1Kz7hniNVV4iAUTF2LCCud6AmIMW1ShgER5Ewp0kbWZhGALmWiIpdrHwniBUW2Mp8Y1ENyFG+uzLuRqBtyykINRYWrdJcKijksGuaD7pCcAc8nc3z0trCOaBc9iIDr0xUr9CoprQUB5n4desUSisX3fXdBpSkGLCl9ybzVWHBsNHGg+IUPDJK/eCzoUD+cZn60VbhzBYLfdRjOqnDQIoQzZLbVq4JoGGEocOG/zhZM5DAL3dXHhHx8Egeg+2w5aRdZsjE3jui7bgCNz/oZONpnrGlTMsD2yZKiVVLVNrgBvI4
- 3kB2f/cM
- E1lZ/Daanw6OoKRrLhxBRtVsYtb3izP9GMhAywyzuDYywF/p883P18dvWXv3U6BkYiA0sjbXWD26W7X35/9f2qfsKjcosVcAI+zbzeGuubvZWeGhzQf8YOVbkTzpp8yyC9IK0wOIfJOT9wqEih7zcSEeu3NKwx9xdA096aXYkgxCf8Imj5nFYMFxdWD6SFeWhiA5zVbRL1f3nlK5nuZUdGrTtErOM+Y1hYzKtEWZatmRVHsIcUl9zsIQs1ERlJ0yI0J5+UcGjPMOHHrgjzLEEEmX6rAA9iSy23Wv9yZtCD2GU1fCPeVH8kurgq38A8AKROL0s1KYJJT5FDwh4kRu0lBkrLqTOX74uX3YpWOpNWmqAiK4UQReCa04MSt0r00bT/Gl8NYycVtwhZjznqRVTX/BIEzcevAgYHygCp3z6OvY/+5fD0v76Zs4MSfF5QSV639IUzLnM8PpXj8CR+uy1AJxlSbxSqT4cHh2JtxSuDmr2aFY=
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-Rspam-User: 
+X-HE-Tag: 1793332379-192559
+X-HE-Meta: U2FsdGVkX19X7aUa6m9YRuff8s8OmJqVdocqQ3zpjOOGs7A26tuLhRUlbMhSHzfERW2eNUMnNfcGGu18yAXOtyP69yOnlwy4Iqyt2tMvQVM7BJQKXUZVclaomKxyqXxgo5r0/KePbhXt1JleO9hH2yvdzJZ9/3WzgBQvRnvAmDyLaoWwQpaDcHvvuATeOl/7JdkSVQ1EMjb7cIl6HR2cfaujsR2qrFKBBC5jQqn1Z58pT/gs/Pa4EF7fSP9lZXtMpg8rv3TI6040AD6zPcyxpUpfS015UWzk0eAYQhb5VVZhgZvJh3pky4YrXhBKJ81qf6pjfhMbmX0sfp6xQorvrf0SfhRlTCR+Ml+YQCaMgvHjjNtKkkPzoUb3WPhJq7LrYeiBADvl7zAerypAOCp03veSwS41AOOFk/l5D29Q1Lg8dB34OcubAXybYy5OSO1eMPmRan6gphR4LN3cS61h6hncnCAxQO0bZA6h0Nb+eouwmiFynXYaZtdb5OdcOxG26Qi67RLB36DMUl0JGvU7Z39lg/5tiJHg45ZRcsdYqvGIOExrdfZJUgUBWGGtTXJbv4Qj59EEap+7D3eu52pHl163iYGERo0lxz+9eB8brg88BRq2sNpYvRAaq8hDsNgbPDoIc/EYlDy76p8+tj3V30Agx6tvEVWEr0gJ5CEVpfm8d5wMfG+cnRWPe0a7Mu0bM58tHwmlynSlyXDBNSOX868p4LEzIEueq9lSMM7ea1YCvycwai0ZHS4fUlN/Sv8vATjaZqCnjZNa8pXGIa+qicQQb8XpspHvw26FigZ83iltZa3wcZ2fd9h4699/IfR/Y4sCMjFu6aIkd6DzHN3SkCvyby3eJ+ShCiNYpnwtqcG4/iWf8GhAoEpdLaSTj9X2E08mXVspMdZzbi535f3pe1yqRhmzmhY9UiBDvus7Sj9shGagxR9/89nc68SSw4TYhbOkvrigg6jcc/RsuFo
+ dW2jxJh3
+ Wh7a1GvY6xvqu+x2+FWTs6TxCpsQv3Kn/gJV0xPQi/cPioQxA46JE2Y8WACAkkjEsoa0lZ2BPKxzEACgTTwg8aySpmFrgOjBQN/1dnmqR4+EJW1wETjY359KmXgV67P1+3CuQsVgqJu0sgu0u8nez1Rm4vSSvE4d2vjJ/PDT+pgfaApVotq+G01e9GDWNge1WfwQnJPBE3XioeshSs285Vk3mTyyQcVFytRDaYP8MDTwk+fs3bar3fiwC03a9gBYxVaRLrV76wITMEhjTz0si5/xJENntRZYG63dTBXnb0zoJQa70NwpN7aH5eH8E/0eoomF/8TTNbv8WLPQJ1wr4WIiRCjT77PdPYlAyCCG89vHZRCc9cc8QrhlftEx0d/jFrE+ssMc+luGDSp/SutehVDr8x7tYynVaySW6y3xHXA+eoHuMvs0uhy/Sg+dodP8h16cIcX20aOVUvpAv1ftdCA6bZ17Bv1M05LbV4Xa91YRLWu8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -166,25 +139,78 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 29-Oct-26 5:03 PM, Li Zhe wrote:
-> Yes, the case I am trying to cover is closer to the non-overcommitted
-> case.  We do have deployments where memory is intentionally placed across
-> DRAM and CXL memory, instead of relying only on natural spillover from a
-> full top tier.
-> 
-> For example, the orchestration layer may want a cgroup to use a planned
-> DRAM/CXL ratio, so that DRAM capacity remains available for later
-> placement decisions or other workloads.
-> 
-> In such setups, the top tier can still have free space, but we may not
-> want short cold accesses to refill it simply because the free-space
-> bypass is available.  The intent of this patch is to let those
-> deployments keep using the existing hotness and rate-limit checks even
-> when there is top-tier headroom.
+From: Daejun Park <daejun7.park@samsung.com>
 
-Thanks for this information about the deployment model. This is a useful
-conclusion to reach.
+page_cache_async_ra() trims the end of each new window to a multiple of
+1 << ra->order pages. A window that starts just below such a boundary
+keeps only a few pages. With read_ahead_kb=128 and max_sectors_kb=512,
+1 MiB reads after a 4 KiB read at offset 0 hit this on about one window
+in three. They issue three times as many device reads.
 
-Regards,
-Bharata.
+Halve the alignment until the trim keeps at least half of the window.
+
+Fixes: 18ebe55a9236 ("mm/readahead: terminate async readahead on natural boundary")
+Signed-off-by: Daejun Park <daejun7.park@samsung.com>
+---
+Tested on mm-new in a QEMU guest with XFS on an emulated NVMe,
+read_ahead_kb 128 and a cold cache.
+
+- max_sectors_kb 512, median of 5 runs: reading a 512 MiB file this
+  way takes 0.247 s before and 0.180 s after. The device sees 3329 and
+  1032 reads.
+
+- Other reads with max_sectors_kb 512: without the 4 KiB read, and with
+  64 KiB reads, the times do not change. Random 4 KiB and 64 KiB reads,
+  two interleaved streams on one file, and 2 MiB reads at random
+  offsets also take the same time. They read the same amount from the
+  device, within 0.3%.
+
+With the device's transfer limit at 2 MiB:
+
+- max_sectors_kb 256: 512 KiB reads after the 4 KiB read take 0.626 s
+  before and 0.322 s after. The device sees 6147 and 2056 reads.
+
+- max_sectors_kb 1024 or 2048: 1 MiB reads are not trimmed.
+
+- max_sectors_kb 2048, 3 MiB reads: the device sees 343 instead of 271
+  reads. The time is 0.120 s instead of 0.118 s, the median of 40 runs.
+  The interquartile range is about 0.10 to 0.13 s for both. The window
+  stays at 3/4 of the maximum, off the 2 MiB boundary. mm-new reaches
+  that boundary by trimming deeply.
+---
+ mm/readahead.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
+
+diff --git a/mm/readahead.c b/mm/readahead.c
+index 6e55632902..f4da9b4606 100644
+--- a/mm/readahead.c
++++ b/mm/readahead.c
+@@ -713,6 +713,17 @@ void page_cache_async_ra(struct readahead_control *ractl,
+ 	align = 1UL << min(ra->order, ffs(max_pages) - 1);
+ 	end = ra->start + ra->size;
+ 	aligned_end = round_down(end, align);
++	/*
++	 * Keep at least half of the window when aligning its end. A
++	 * window that starts just below a large boundary would otherwise
++	 * shrink to a few pages and cap the folio order. Use a smaller
++	 * alignment instead.
++	 */
++	while (aligned_end > ra->start &&
++	       2 * (aligned_end - ra->start) < ra->size) {
++		align >>= 1;
++		aligned_end = round_down(end, align);
++	}
+ 	if (aligned_end > ra->start)
+ 		ra->size -= end - aligned_end;
+ 	ra->async_size = ra->size;
+
+---
+base-commit: 9c449f885765cf8d80b2c60b1971e774bba51a3f
+change-id: 20261029-mm-readahead-async-align-e491b3dc16a6
+
+Best regards,
+-- 
+Daejun Park <daejun7.park@samsung.com>
+
+
 
