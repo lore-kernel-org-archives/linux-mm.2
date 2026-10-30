@@ -1,149 +1,113 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E99E5606A31A
-	for <linux-mm@archiver.kernel.org>; Fri, 30 Oct 2026 10:44:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1F06606A32C
+	for <linux-mm@archiver.kernel.org>; Fri, 30 Oct 2026 10:49:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=dss6POhi
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=MduejGOR
 Received: by kanga.kvack.org (Postfix)
-	id 075966B05B1; Fri, 30 Oct 2026 06:44:58 -0400 (EDT)
+	id CB2826B00EF; Fri, 30 Oct 2026 06:49:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 04DCB6B05B3; Fri, 30 Oct 2026 06:44:58 -0400 (EDT)
+	id C63326B05B2; Fri, 30 Oct 2026 06:49:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EA48D6B05B4; Fri, 30 Oct 2026 06:44:57 -0400 (EDT)
+	id B78FA6B05B4; Fri, 30 Oct 2026 06:49:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C28736B05B1
-	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 06:44:57 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id B7A16801B2
-	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 10:44:56 +0000 (UTC)
-X-FDA: 85378959792.04.D1547C0
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 4F8FB20003
-	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 10:44:54 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=dss6POhi;
-	dmarc=pass (policy=none) header.from=ibm.com;
-	spf=pass (imf03.hostedemail.com: domain of pavrampu@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=pavrampu@linux.ibm.com
+	by kanga.kvack.org (Postfix) with ESMTP id 996CE6B00EF
+	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 06:49:43 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id A51FDA82E4
+	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 10:49:41 +0000 (UTC)
+X-FDA: 85378971762.07.369BAB5
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf01.hostedemail.com (Postfix) with ESMTP id BB7E24000E
+	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 10:49:39 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MduejGOR;
+	spf=pass (imf01.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793357094;
+	s=arc-20220608; t=1793357379;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+c1ihJ1Xln4zEcrREqgDAfDTBrnVULNOnFAexlBeung=;
-	b=FQYacGW9/Qo3SaRRpWcfmkvPIM4SjSv5XBPTnoGYtgVC/1yNfZIqmS2XGfwgMv1FyTeaNk
-	Qp2cEMlGUc/bwil8EBeKuqXIX3nAvl7ZJROILsflXiuj7X7c1D+1yVU8MuiQiwhYtRA9wc
-	8YlMMoN8AM49Dxifa17G4pv7OzmO2zk=
+	bh=Ge8hADgfac7MKFfaAfAW05gt3hYkAz9wTRvWiuoBv98=;
+	b=cOTX4bMSN5xkMbvXyUNJqAdSBIXQCkSGlsue8tEuj7b1NEXX9Lhal9vTw+S6hWSXniSkLA
+	VyjC8BRhEWvLcOQn+7Cb37wSIxeZie9ySiW1ewhu/7aIUeg82665t9fME2srhWcjLme8xk
+	tghWY5/s0fKFAwGFzVyE5MyJWfgNfpU=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=dss6POhi;
-	dmarc=pass (policy=none) header.from=ibm.com;
-	spf=pass (imf03.hostedemail.com: domain of pavrampu@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=pavrampu@linux.ibm.com
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MduejGOR;
+	spf=pass (imf01.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793357094;
-	b=lNSer57+hk6S8OWpItu+YKxI+te9gaE+d41yhgDDa44ggbDe0oOobzPv9VT+hOoQyXkMR/
-	Ordtg0Ch/ycUYrww47OuQOjGyf8bCV6puu3IPw3JRWBhvHPaQCLSkgGkDNQKXm+i1PyFi2
-	nUMIv+itLqjCXJUUAlcm/3njanzoCiw=
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 69U8ET8p2376743;
-	Fri, 30 Oct 2026 10:44:24 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=+c1ihJ
-	1Xln4zEcrREqgDAfDTBrnVULNOnFAexlBeung=; b=dss6POhisLc8cfJCKTifeh
-	e+zeaNYuHH/S+VNxv02rsfOpAAnPd4o3EXWVOgIGXK9wUtudQiLRLunlWU3HQbEF
-	S+RaUFDI4QzfXTaudAzQsGpG3ulq9R05Lr8IiUi53XbtCC5IhlRkLd02Jj3UHjEf
-	4BqxYQLvkunC4NMK6BIf1xCGsuPlWAxHVvfNCoeq3IP9B8Dmu/h2XQgk+MADFPuJ
-	SX4qeCc3Gn40ncO7VNprWTsvmwMinfoZaD0Fdjb+T6w4q+QwsicEEUW9BDNaVvkf
-	OJwxYVInsMUKK8S2FTdTdK29t27jsAs5n/zYE/1G643+3AszcO47WJxIxHRkWXVw
-	==
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4hmeay29j6-1
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Fri, 30 Oct 2026 10:44:23 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 69U8Jvbq238919;
-	Fri, 30 Oct 2026 10:44:22 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4hm69e47b2-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 30 Oct 2026 10:44:22 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
-	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 69UAiJoN44892546
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 30 Oct 2026 10:44:19 GMT
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 0651320040;
-	Fri, 30 Oct 2026 10:44:19 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 4028220043;
-	Fri, 30 Oct 2026 10:44:13 +0000 (GMT)
-Received: from li-49acbccc-2994-11b2-a85c-d51b89e344f1.ibm.com.com (unknown [9.43.39.23])
-	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Fri, 30 Oct 2026 10:44:13 +0000 (GMT)
-From: Pavithra <pavrampu@linux.ibm.com>
-To: songmuchun@bytedance.com
-Cc: akpm@linux-foundation.org, chleroy@kernel.org, corbet@lwn.net,
-        david@kernel.org, lance.yang@linux.dev, liam@infradead.org,
-        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org, ljs@kernel.org,
-        maddy@linux.ibm.com, mhocko@suse.com, mpe@ellerman.id.au,
-        muchun.song@linux.dev, npiggin@gmail.com, osalvador@suse.de,
-        qi.zheng@linux.dev, rdunlap@infradead.org, ritesh.list@gmail.com,
-        rppt@kernel.org, skhan@linuxfoundation.org, sshegde@linux.ibm.com,
-        surenb@google.com, pavrampu@linux.ibm.com, vbabka@kernel.org
-Subject: Re: [PATCH 0/4] mm: Enforce read-only shared vmemmap tail mappings
-Date: Fri, 30 Oct 2026 16:14:10 +0530
-Message-ID: <20261030104410.417740-1-pavrampu@linux.ibm.com>
-X-Mailer: git-send-email 2.56.0
-In-Reply-To: <20261019090830.1917657-1-songmuchun@bytedance.com>
-References: <20261019090830.1917657-1-songmuchun@bytedance.com>
+	t=1793357379;
+	b=BmA/6ghHuojUm2xBZgtAvyJbukJDwbhwzkX3if/ATKGagvRoW6BOLsbIVbl09HPs/3Eu9E
+	GNcFL4mUb/oVD8Mf0B3me0AogHdw/gkyH6VLMyDNiS56Z5mXS7qhL2RgXj15Q938hGMlGy
+	9YVVnl/TdNh/Agd3aka1Jq/Y4IavYgA=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 1A61243939
+	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 10:49:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 029491F00A1B
+	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 10:49:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793357378;
+	bh=Ge8hADgfac7MKFfaAfAW05gt3hYkAz9wTRvWiuoBv98=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=MduejGOR49bV/g+WDvkkka5dwZR6dPDtapJ4D0FcpYj0cjsNyTmxIkBQXoxqYj3cL
+	 c2bF4g7TyB/95HyAxCNAZK8coQ6VMrTERDOPIFa1y6G+gI/IWsQWN6Pc5eMAanxVN6
+	 0fn6+Rpd/JHSln8pg4D54Q2x7ar3vbugqQULQLlJ/95VEnqF9T4s187xKSJbcD6ogA
+	 EuhA5qaDz8UJfXtL79EywR7xdfkRHTbB2Bsc3Q10BVe2LPd/kEYh1MyJOGhD5knafj
+	 vQ1sQGVmBn3w1o0af/EswCFiE80uqyuN6clERzHxJQnt992zCmHYDG8C4Z9iC4i4Uz
+	 bdo2mXumBu4Fg==
+Received: by mail-qk1-f181.google.com with SMTP id af79cd13be357-93e63ee7b4cso53579985a.2
+        for <linux-mm@kvack.org>; Fri, 30 Oct 2026 03:49:37 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBzxN4GyMYa2rMP57iBAyPLMCiZVLW5A/FhZGCAJQL5RO5iycFXIPTe6/nm3x+ifrTw/5awal3lLkw==@kvack.org
+X-Gm-Message-State: AFq9FYKkKSPxAVnAYq0vZeWO76d5kTUANLe/y+B1/kxP4LqBh1C3FSgK
+	iTR3NQSTWsWyV4ZAtGwarRP5gfNvccHA+eo4pRMnMcAvs1ZgVSn2YZTfuEf0M/NzFPYdFxEUPVA
+	b3f+sI7burGwtj2zt99VAQHqmWI+awZI=
+X-Received: by 2002:a05:620a:370e:b0:93f:6c67:152d with SMTP id
+ af79cd13be357-9442175069cmr320613985a.38.1793357377323; Fri, 30 Oct 2026
+ 03:49:37 -0700 (PDT)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-GUID: Cq-D5FMcULtYQJqPtFBU-Ss_evhba_3I
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDMwMDA0MiBTYWx0ZWRfXyG+fs1ghDdeu
- MufdeAtSObpnKs0XjFFcDX2NqGMGt7MHQXUNybXyz53Fpx5amXAtuMm34jTk75sa+4qr1stjkxL
- W4mTEW2Wg+tKYnjBZPaniDSxElpoM6rAiJnRlo+5BEcOeBlWQmiSqtSkWZg/0RqOhdewZE5nCHS
- 7F4GF6CU7dxnmGk6bXQZHzXUjhtxmPB8nhEizRkNqNRacXRUjHfBtpcS3vHNNqhbNQdbb2k6SyP
- 4iWd5KSjzbKBagjm3VDXKfdYWa6BxZ71PxnqFHfPoO3orZam21OnNKnNL1mznBWbHnLEZR5yiAF
- nDT181Dq8h0ROzEuGXqsq3AAvYUh50njhXSMNxxLZu3pfolJkFLeftBVau3zEFP28NqImjRMB5V
- GyfgLl3sU7eiZvH4nBoBbVhnvQrP9SSBSXEWVfNTwXvjlfqm88/iv3UwT9mdRlxXt22gSpz+Htf
- OPlw6g22K/JelFWbJxQ==
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMDMwMDA0MiBTYWx0ZWRfX5dC/lVTICYYG
- PJrbr8wpoREtd2C2ydh3d2GuaJgASQ9dZh5g7ZaHXI4cuQzosbh6FtReDhmycaMxMNbqAdhNIgz
- Meh5Gf3IkxQBnIaTiPevwSoYHYeShng=
-X-Authority-Analysis: v=2.4 cv=QbjzLcbv c=1 sm=1 tr=0 ts=6ae47508 cx=c_pps
- a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
- a=660iZSQnnn4A:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
- a=U7nrCbtTmkRpXpFmAIza:22 a=Uv9NjG45AAAA:20 a=VnNF1IyMAAAA:8
- a=8zS9G5xvJLahJeJr1kgA:9 a=zgiPjhLxNE0A:10 a=bA3UWDv6hWIuX7UZL3qL:22
-X-Proofpoint-ORIG-GUID: 8kHx2nZ45Fplgz9D0Wt0xILKkBxGZrzM
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
- definitions=2026-10-30_03,2026-10-21_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 impostorscore=0 phishscore=0 adultscore=0 malwarescore=0
- spamscore=0 suspectscore=0 clxscore=1011 bulkscore=0 lowpriorityscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2610190000 definitions=main-2610300042
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 4F8FB20003
-X-Stat-Signature: khmhstrqer3bkgu9oz3kebbes5nc1pam
-X-Spam-Status: No, score=-16.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
-	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+References: <179248830836.1744016.8424217811286616919.noio-mglru-rfc-v2@bytedance.com>
+ <0cbd219d-f69d-4f72-aec5-43e1f2d978de@linux.alibaba.com> <20261022102726.56682-1-baohua@kernel.org>
+ <fc302ca3-6bf6-4bde-b3e8-8d2e93a4e4ac@linux.alibaba.com> <CAGsJ_4z9GZkpV+mpoGogma4oSX4cHy+2UDzyUQSjjOLOfekEPg@mail.gmail.com>
+ <4e647816-0b8b-4a75-8777-8580a574d752@linux.alibaba.com> <CAGsJ_4xVR53NcKuN3bA6v+O=37PeQ2Vnj-8WHo6ScYH96N4seA@mail.gmail.com>
+ <179307231985.76444.4463824301717648100.noio-rfc-v2-coordination@bytedance.com>
+In-Reply-To: <179307231985.76444.4463824301717648100.noio-rfc-v2-coordination@bytedance.com>
+From: Barry Song <baohua@kernel.org>
+Date: Fri, 30 Oct 2026 18:49:25 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4zvbOW3kGDZF0iXxZyWbv-LJo56W+uMM_Btk-sHRf5aMA@mail.gmail.com>
+X-Gm-Features: AclHuK8XCpEGNqAtN3doj9652by5qHmAXJ7EjWFLqe_stHXIVl1CGsrIrXfddGY
+Message-ID: <CAGsJ_4zvbOW3kGDZF0iXxZyWbv-LJo56W+uMM_Btk-sHRf5aMA@mail.gmail.com>
+Subject: Re: [RFC PATCH v2] mm: vmscan: avoid anon scanning for GFP_NOIO with
+ low swapcache in MGLRU
+To: Xiang Liu <liuxiang.277@bytedance.com>
+Cc: Baolin Wang <baolin.wang@linux.alibaba.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Johannes Weiner <hannes@cmpxchg.org>, 
+	David Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@kernel.org>, Qi Zheng <qi.zheng@linux.dev>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>, 
+	Kairui Song <kasong@tencent.com>, Axel Rasmussen <axelrasmussen@google.com>, 
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
+	Baoquan He <baoquan.he@linux.dev>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	Bo Zhang <zhangbo56@xiaomi.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-HE-Tag: 1793357094-965520
-X-HE-Meta: U2FsdGVkX1/xOt3QCFB8VLokaDPLxxXw2ny94Y6hZBkcp0idzZn1k67ZxHnDPJ2g+7XhZhl/MwMEfWPI27BkmJceK2JgGdrhkmZSeDNj3EfTgpUZXOiZK8pDlpIdyEJEd5cKtBIJ42Y1Jq8oFQs/Aumk0TwulV1QI4DSrgX4xGAG14MneJs+J0A1ZcTDCRJ1s1Cxm1dQZXOyHqHe4I68u3Aje7EbsfhC3zbWjpaBVWDz4JPO1Ci7zenggSXfr02KMhbafyl4qCwmpsLAzut56dKozh4VoZouQhtK7EXPv7td7Dic6fOMEP/upWfoisvPnp2vbyhh2z8gZh4O383jPktccUwAhe+dqQ6NzdmLs961JcxSCIQVXHDpGY5Hb6eVSIumF/vpV5pxcA9ABBXWyS0ARaT3yVnUy6w3sL+DP3mQFPa50N7nfPw4Vtuh8OMNsRxGDCUFiP33FV99rVX12KBZCUwQ5rAH5XLcXc7AkApZuC3mQMQtcUkD1R9UTFHY5XAXKVzXmaEmfjP3PyW5hB5e/ee80r+hE4c4bHGXyQAqH3fEUjst4946gcH5d3MoO0D6Y9fiCAgnfvYhWZrDf1e0tLth8eeCpBv3/VfZ6IECvI0wSpxs2qwxaOfCPtC9wFvrAsQwCnLHzFjfNNd2jRifXUo0ih0RY892ZWDUQyW1JwBq2lR99hKXX6g7NXuzyrh6XqOq2Ngi5uWddVMdXelaqT7V4xRQdxZPdj7PNzEGARCuqc630j6234iCcPM/aDeMKBptYQw5cnr2wlKsdfYJgQePRFPxtLyet6M9LRRiS15Rcn8xcUWaqA4f9WqkYUBmhSFWgfwOTdlNMI9mHRKw1scbfEBGngsty14L+AYWLWSB9o7K1938cAQujkmSzr1gvLQzC6JJx4wG0GC4gxwKQlYCS9gWen8u4ootnzkI7Ku+gF8GImCtIf4t3gvCH2fHzjluF+o9gfEh7HI
- oiLljbVm
- TzHh9KCRfL745dn8orxC4nourGgcpXaJwZRCoL1yurIUZ3E6I1YR2u7XhCAaPmVQuryD9cSEr03svtBCx9XUZLEvtkC3hVRC9NP+bG/l3TEKM/CkW9Y6lz0EK5vH62ZYwhz3jCQfz6VoWEoKxQYDRpCuQ2q5We/eTDrOBWgwp093mB7482/oXWloL+hZgYr/LHVxeXUQBHqpkoPRlynIYmsAqFbjIJWB5byYC2N6IUSTvri7vi+hY2ySrGaUGPXwh0NJBSPTWrHXVh5QEptsRlbkoDIA9jUXirk22D+DXgvoBRqmsqsW+8SCYrPJDTB74l2eeUHWL3RzeOpd7fU8TuDiKpcWD0kdzvEdp6/jQ/hI5wk6M6VNALZPoDjtGLLJGUOb645dcSwH+GWmKydI4FZej58yRAdFPM/KUOJkYieIqhYGz2nsqu9BeUMWKk6jg4WxZSDFeOj+qfyU=
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: BB7E24000E
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
+	autolearn_force=no version=4.0.1
+X-Stat-Signature: crrgtr8hfkmorjzobyjq961et9eik6gw
+X-HE-Tag: 1793357379-734832
+X-HE-Meta: U2FsdGVkX18HWwMWR8nkaBwkTIUhO3nkM5N4GabBq8vRbXVHPe1+zkmlWNiCPlinAdhSUMq5w9z0fPiOg5RAAXc5VJ/hIYfh1BXx8Jb0JT7cjtvklI2E6sEKVO/FT8qK45R+JtzuV5dKyC2blRI5Da9h2EnNHuTKJT3Be8JrWHMgJPdCEbJv4YI7kwtp5XMjDtixcQ39llgy2zIf7VLNAXJ/DzvAkUoILcxcpDNqOAtG3BgFlardBo/5jlZjzK11JnP8NANRByXrgyh4e5kt0GkfNWx6UmPm4l9fCaWMRvM3jpPMVE7+zlFOIGvpwOyBU2Ct0Npao2NUA3cLJADqKsNiV7fcu3WmL3vVMER9dBhpz5Y8kU2QuaMSsz1IFPg/2CLJEm5BrNq8zWfHXIktXBG4efr5NiOHj+l9YZQ1ClIL9rJJx38QZz6Va84g8/WzZ1NMNR8O+VmfZstz8gEYVTMIR5P3HY16ZFdqPEtBpKWtmPYw1StYw6wS+YgnuqL9RWuPIcEHc1JCE0vRh+RkpU9ZLzVpIucwv1QVHHoU78YyP5hRSiouGUQPSdDP9gwUKu82UB2gtNCstLgW33TDXSNTB6XI3UFdDLRUd2Q8xLdcmY6sirsq/JxG3gMue7ip8k0kGhEQyW4TQIf2Tt9Y88O6d3GTbYu7uxvhgGzPBvFQSDF+15AU1OXEnMYdRpivPQDhS+YJWnsAILJz+ofOF3qol84tzLKjXTB2VuRaiiPRqXIK75r0dEF6qcam0YqTZjd+pyi3jQmFTZgH3VQfuKArcV3b8AX6NEtppLw8ii8L/pqgqtAS9zKJHKRn9IhqOOs7A0YRJPLtdU5DuJ2woMsHLgGfzznnrH8nSHdCtTZp+OY1qHfLHWFyQvudp4bEmaaFzQJlzvNCZBBluWzfvadVop7ti7q7V1Czpq9N4VRM7EAmytEUnpje4Od97RJMZ7uPu/1m6fqbVRefc3d
+ LgGAtECJ
+ E8Bo776Pul/MZwEvtaYFOlNfcW2Uoufr1nOV9VxZ8inzQupJJ9Hxi9Edgg176QcMa0JQu7PJAxD9AS5ooYJ2VN0pe30JleCb5kHDkrpSnPytvGDc2DchWf90Dw8O3D+zdArPCngQblXgjrTZLsre6YpILFofMPMJkAGdfJZVk14AVAj/beXzUhVGOhwhFVIQP9S283U/Giqw9LByOGpbVM/7TnurbxAtxa0j2W2MXWQlDk11L3HQ7NcJKApJ2UNmkg+MWd4z9GpG72yhgIEWzScV9mBHuFHz0xdqxw7qf2cLee4piQSbAqDSzDKpkoYX0ShESLQw/Hu4PHEiZKHOq+WHw5EDy8oZWvQWv
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -152,23 +116,71 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Tested on Power10 (ppc64le)
+On Tue, Oct 27, 2026 at 1:15=E2=80=AFPM Xiang Liu <liuxiang.277@bytedance.c=
+om> wrote:
+>
+> Hi Barry, Baolin,
+>
+> Thanks for the review and discussion.
+>
+> I've seen the RFC v5 "mm: mglru: fix swappiness behavior" series, where
+> Bo's patch 14/14 addresses the same GFP_NOIO issue on top of the new
+> scan-budget model.
+>
+> Baolin wrote on Oct 21:
+> > IMO, 'swappiness' and 'scan_swappiness' are really confusing.
+>
+> For a standalone v3, I plan to rename scan_swappiness to
+> evict_swappiness to make its role clearer, keeping the rest of the v2
+> implementation unchanged. The split in v2 preserves the original policy
+> for anon aging, including the page-table walk.
+>
+> Barry wrote on Oct 22:
+> > IMHO, this is confusing but this is a possible way to fix it before we
+> > land something [...]
+>
+> Before preparing a v3, would a standalone fix against the current MGLRU
+> code still be useful as an interim fix before the scan-budget series
+> lands?
 
-Test configurations validated:
-  Page sizes : 4K, 64K, 2MB hugepage, 1GB hugepage
+Hi Xiang,
 
-Test suites run:
-  - libhugetlbfs test suite
-  - LTP hugetlb tests
-  - mm selftests (tools/testing/selftests/mm)
-  - ndctl test suite via avocado (--map=mem and --map=dev,
-    2MB and 1GB alignment)
-    https://github.com/avocado-framework-tests/avocado-misc-tests/blob/master/memory/ndctl.py
-  - HTX mdt.pmem_all
-  - Memory savings validation with 1GB alignment
-  - Hash mode basic pmem tests
+It's a difficult question to answer. In the long term, we
+hope Bo's patch 14/14 will be the final solution, but we're
+not sure when it can land.
 
-No issues observed. Thanks for the patches.
+Your approach is a bit ugly, but it looks like a quick fix. we use
+0 for reclamation to make sure we only reclaim file, but we use
+the original swappiess for aging -  where all files and anons can be
+normally aged.
 
-Tested-by: Pavithra Prakash <pavrampu@linux.ibm.com>
+ I think the real problem is that reclaimable type and swappiness
+are too tightly coupled in MGLRU. In fact, they should be
+orthogonal, except for swappiness=3D0 and swappiness=3D201.
+
+Actually, the current get_swappiness() implementation has some
+bugs. For example, it returns 0 when swap is full or close
+to the cgroup's swap limit. But this is only a temporary
+state: swap usage can drop below the limit again after
+unmapping or killing processes.
+
+However, once get_swappiness() returns 0, anon pages may
+suffer from cold/hot inversion.
+
+That's why I think we should avoid hacking get_swappiness()
+any further.
+
+
+>
+> Or would you prefer to handle this issue through the new series? In that
+> case, I can use my GFP_NOIO workload to help test Bo's patch 14/14.
+>
+
+If possible, do you think you could extract the code from
+patch 14/14, even without the scan-budget-based model?
+This might give us a chance to land it earlier as a
+standalone change?
+
+Best,
+Barry
 
