@@ -1,90 +1,132 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C560606A31A
-	for <linux-mm@archiver.kernel.org>; Fri, 30 Oct 2026 01:26:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21DBF606A31D
+	for <linux-mm@archiver.kernel.org>; Fri, 30 Oct 2026 01:37:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=NTqKdH5F
+	dkim=pass (2048-bit key, unprotected) header.d=gourry.net header.i=@gourry.net header.a=rsa-sha256 header.s=google header.b=oLrkjQz5
 Received: by kanga.kvack.org (Postfix)
-	id 23F6D6B00EF; Thu, 29 Oct 2026 21:26:50 -0400 (EDT)
+	id 030956B00EF; Thu, 29 Oct 2026 21:37:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1CA9E6B05B1; Thu, 29 Oct 2026 21:26:50 -0400 (EDT)
+	id F241B6B05B1; Thu, 29 Oct 2026 21:37:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0B9E16B05B2; Thu, 29 Oct 2026 21:26:50 -0400 (EDT)
+	id E13036B05B2; Thu, 29 Oct 2026 21:37:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id D758B6B00EF
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 21:26:49 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 5A9DEC0502
-	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 01:26:49 +0000 (UTC)
-X-FDA: 85377553338.30.9A49DB9
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 8CF47100008
-	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 01:26:47 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=NTqKdH5F;
-	spf=pass (imf14.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id B9A4C6B00EF
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 21:37:12 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 38CDEA81E8
+	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 01:37:12 +0000 (UTC)
+X-FDA: 85377579504.06.A39A0CF
+Received: from mail-qk1-f180.google.com (mail-qk1-f180.google.com [209.85.222.180])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 458E88000C
+	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 01:37:10 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=oLrkjQz5;
+	spf=pass (imf30.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.180 as permitted sender) smtp.mailfrom=gourry@gourry.net;
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793323607;
+	s=arc-20220608; t=1793324230;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=R+7wMeQRfWueUJAeG/KPsvC6BLbhrIuEh3kJTRzJT8U=;
-	b=cB+5csUc+pQMp5DOlZSYk1mAmjAjHXEdTLUWDJXjtm03ke+XKO/eWte1sYEeoFwRFZQVTG
-	x6koNLM0jaUs5ggtdn97QtR89DaM+weMXiuvqvRz7C8shDiAEb/baInbtQh0AZnzPtV+D5
-	rJa0/lVH2bRKihMDTzw7uFks7tcJJVI=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793323607;
-	b=wD68FD7/p42wEzc0EOHO9riprZRd3gWR/H2BDc+zHH2OHSVuM/pw9v6WhDLy02MZaiCsgZ
-	y9TbMTWPpBAmFYieylNm+SWu7q8tflOPhnQB6yygcnYSSWwhlGrQoquZSjk/E+jC7gF3wH
-	c5l9WaUKcvUeWjucVahYCAv95i545eA=
+	bh=Zcy8/R0qg4/tLGENoHwYrpvlh1ufL01JT/JeD2hu+48=;
+	b=P2Qv8vbu8cceKZk1Inn1HfXCwMnFdIsYCw+VU7TH5WFfcCheaGky3w6KJreTQ0SkvHDRq7
+	T58/zYwj0CT4an4oBUUgtJOrhj+sTV6Ka4bCKce0kvZRUjm3Zin8W1H9Hc6GB8ZZAr4v51
+	/nZUsRspBeTA6VXoJvj53RH036eXKZc=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=NTqKdH5F;
-	spf=pass (imf14.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	imf30.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=oLrkjQz5;
+	spf=pass (imf30.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.180 as permitted sender) smtp.mailfrom=gourry@gourry.net;
 	dmarc=none
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 4401143C8C;
-	Fri, 30 Oct 2026 01:26:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC5401F000C1;
-	Fri, 30 Oct 2026 01:26:45 +0000 (UTC)
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793324230;
+	b=NTolCGj2sL++wrXYmoDp148FtzZlIiEtb/OY0C0uxUlousBQg5YDEI2kazROMLqxCMao+n
+	VlvMUPetedceGTTNDETjzOxz2zDlH0yfJ67Zh2r/0kPf2NfXNbBYgFTrqrCL1+LwaciWLq
+	Ykod75cjakkCBRBvZvhM3IrwbhvK+DU=
+Received: by mail-qk1-f180.google.com with SMTP id af79cd13be357-93f560af6aeso19698985a.0
+        for <linux-mm@kvack.org>; Thu, 29 Oct 2026 18:37:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1793323606;
-	bh=R+7wMeQRfWueUJAeG/KPsvC6BLbhrIuEh3kJTRzJT8U=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=NTqKdH5F/sVmrX83aYf/qMaQtAoYv7RnBq/ETuLKwReNF6mHLjTD4RHExhDGcdlpU
-	 NkLlBhUVc4otfWDMO3hSlUhRf0xcxp9ug/R4Tf8gDvHbfBk6FN9wvZFNYve4Z9otpQ
-	 gyZPKxp+LIi4u6PCi9oc8aB6gOCiYhy2O0rk5zQg=
-Date: Thu, 29 Oct 2026 18:26:45 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Jackie Liu <liu.yun@linux.dev>
-Cc: glider@google.com, dvyukov@google.com, elver@google.com, pjw@kernel.org,
- alex@ghiti.fr, aou@eecs.berkeley.edu, linux-riscv@lists.infradead.org,
- linux-mm@kvack.org, kasan-dev@googlegroups.com, muchun.song@linux.dev
-Subject: Re: [PATCH v2 0/3] kfence: fix pool allocation failure handling
-Message-Id: <20261029182645.d6e7b119a562c973d19cda63@linux-foundation.org>
-In-Reply-To: <cover.1793242457.git.liuyun01@kylinos.cn>
-References: <cover.1793242457.git.liuyun01@kylinos.cn>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+        d=gourry.net; s=google; t=1793324229; x=1793929029; darn=kvack.org;
+        h=message-id:date:references:in-reply-to:cc:to:from:subject
+         :content-transfer-encoding:content-type:mime-version:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=Zcy8/R0qg4/tLGENoHwYrpvlh1ufL01JT/JeD2hu+48=;
+        b=oLrkjQz5JoYvchsWV+96QC3/lGLqSswK0i1t4KVv4h16oQ1I/I5X5MJtNe/ccdjc8H
+         spB/vZUrmXo7WViia1oRPtqds7XaLaFHcbHWoF1fg8tCp7idhYYnUShaw19mxpf9h/+h
+         E6CYgmJ9TKsmYgKASMTu+LnIvAgZoMKswnmjYoJI8TZd5416Cg7JLsd/Tlyar2HhUauT
+         Kz0qesuVsgZaMnnxqfoM6gavSTb8AJ+6txUAJqntu6hCid9I2l/wtu0819NTPDlKmQxr
+         0xJ3CHwApPqR3YpELXzSLuOYo7xcYc2fRvRvkngdTUvCoDXTT+DO+hhg9y0lOCmzx8jC
+         xxOQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793324229; x=1793929029;
+        h=message-id:date:references:in-reply-to:cc:to:from:subject
+         :content-transfer-encoding:content-type:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Zcy8/R0qg4/tLGENoHwYrpvlh1ufL01JT/JeD2hu+48=;
+        b=zUvcXLeMkq9FHY4/saqVXT7VeswzlTR9SDHvNURIlIqfzi14h/Tzsav5y8MXahawyY
+         wrF1yjOtOTwKbngX6M4wyWc9DwVi0H5ExJAwuHuZUKns+aO3OHgRTHBgvW8D141oO0UM
+         d6NzcksbFEslxZnsrJIEfKZFla7UYn6NW7E6Vyyoe2dca64Z6Ljq9lppfpEdrR+HqtwW
+         bvpL6/SJku1rtfDwJbXP58qy+k4pnC8vQkrV7GhAKjIn2YZ7tERpFha43tPB/PgDJryC
+         VuLQnggeV5/DGna2dXgbbEaJL0f00mpm1YwrRBUF+58XhI8qHtk3Px1zGrAMC0HFuOL5
+         bUmw==
+X-Forwarded-Encrypted: i=1; AKwUvBxyoF0MjyUSwlup+pkmbBqbX6pij55ky86ArMy3Xb031L3wuMybHW3mSjQdt8H9CN9dZNisjDe4CA==@kvack.org
+X-Gm-Message-State: AFq9FYJU3CphD0qFDoZA2Y3IBbhTetv0r4EcKr6xVLTbgZEWT/4COV+K
+	HpipF7FDHzh1kG0zQkazXolickyyZ8GuHq97kiVvFMdUlYiOW83marfu0ZPJNE58Jc4=
+X-Gm-Gg: AYBFou10s8Dg3vqxNWfecyo++ov8Jy4KlZMbDRXido8euUatLUJOkKpK7WKdl7WxXtb
+	2DbvyndtfopcS2XW7FHJ1m35gUsORjUUzXOKPv+iy5b6sWZm9C2MzBt5Hmjay2JI3g8j+duq+Bu
+	f2/lF2gHW1KcrL44i7q2GCan5zF9J9pWZLlnw2FVPy8QZSiTzfRqUd5da3282A4Bc8uKEvSlP+m
+	71d76IAEpIuym9GZER8kmx7K10H8+8E/5f1DIMdpiT4dWDQDeiB9PGyrFYseo45bNV6OKDkGGa8
+	V8Rdbo1xrUQE5AvtPt/Xd1vDInXVfLQKKfAL2mKDkqKvuIQ35GAfdZpZCg7oqsx2KAweTGXVpki
+	T2hbsdTi7Tvzbca2BkNzHZyGlArDF7cV8Mt0z9DqsUMO+Yz5bX+rX/dfigGvgug2fZT6zkhEJkU
+	PSw6vUk9GimwH14G3OLc/uSppKShmDTkSsCu93cZWW7MNhyDY3RLzduJ9zvuLQy/pJG5on7u2Cj
+	pOM/ZVsqdbm3yKuO8eSz4YP08HrabXs4E25XZr1DlE7XXJrr5/gFDTlC0XLQIsefygccmJMe9hP
+	EfFQtei7OR0gWikuJDnYcVXx6H3Ro7YZVHrt/rzGjAj9TOsj3TnBBd9WkEPHmUF8VqdYEYmdoL8
+	d
+X-Received: by 2002:a05:620a:800a:b0:93f:43a4:a47e with SMTP id af79cd13be357-94421759f60mr164999285a.43.1793324229423;
+        Thu, 29 Oct 2026 18:37:09 -0700 (PDT)
+Received: from [192.168.86.58] (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91ca806aeeasm1672456d6.35.2026.10.29.18.37.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 29 Oct 2026 18:37:08 -0700 (PDT)
 X-Archived-By: <archiver.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 8CF47100008
-X-Stat-Signature: mtqo5eh1eiitgqj8csd3mtxygs7kunff
+Subject: Re: [PATCH v4 6/8] mm/hugetlb: retry the pool walk when the
+ zonelist is rebuilt
+From: "Gregory Price (Meta)" <gourry@gourry.net>
+To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Cc: "Gregory Price (Meta)" <gourry@gourry.net>, linux-mm@kvack.org, 
+ linux-kernel@vger.kernel.org, kernel-team@meta.com, muchun.song@linux.dev, 
+ osalvador@suse.de, david@kernel.org, akpm@linux-foundation.org, 
+ ziy@nvidia.com, joshua.hahnjy@gmail.com, rakie.kim@sk.com, 
+ ying.huang@linux.alibaba.com, ljs@kernel.org, liam@infradead.org, 
+ rppt@kernel.org, surenb@google.com, mhocko@suse.com, 
+ brendan.jackman@linux.dev, hannes@cmpxchg.org, mgorman@techsingularity.net, 
+ anshuman.khandual@arm.com, stable@vger.kernel.org
+In-Reply-To: <fe658b1b-4011-4197-b228-fd4bb6c412bc@kernel.org>
+References: <20261028211930.3504634-1-gourry@gourry.net>
+ <20261028211930.3504634-7-gourry@gourry.net>
+ <fe658b1b-4011-4197-b228-fd4bb6c412bc@kernel.org>
+Date: Thu, 29 Oct 2026 21:37:07 -0400
+Message-Id: <179332422799.1311000.12794841959006150077.b4-reply@b4>
+X-Mailer: b4 0.17-dev
 X-Rspam-User: 
-X-Spam-Status: No, score=-7.0 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 458E88000C
+X-Spam-Status: No, score=-8.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,NICE_REPLY_A,SPF_HELO_PASS,SPF_PASS autolearn=no
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
 	autolearn_force=no version=4.0.1
-X-HE-Tag: 1793323607-122371
-X-HE-Meta: U2FsdGVkX18K0dgVpEIRb0O3WUrjso9WPGhXiOaOebzL+ZZQk6kqfdXLNG6dSLVPtEZu304yJdLeHz3tBrur+LHGsw1qgg9pC3H1nEf51CstUb739+rhuFmBSYPyA/qMhxQYc931LE+4ey0Wzorfdo7MlWqGJhR/2LmB0GL1y28pi3uRjmfWwH8Fg42jT10ptDWi6pKujX51dQmcPrkCZWSvD4Wj/KFIAaK8GQQvfbQ/14EacjuBpHWgGvA0jhq+1lgBFyaBMeTRZRFx2Q/eT5GWbnwFJ+tIOQNd7LVGpEialop3ttSJvafKD8EvxIaUNb0lP5ahuFlTMTbhdN1IWFHmPaOwDcR4Do/f8OSRxDIqnOhdbri77O+rfyk+ry6mfU5qmiL84Q+YiJE7p0kEhmxq4QjToGnI2iXFr2X7IPVik8gJwH9tmiJebg99FRD3PZL4KOGLvzcbo4B/l+JnZcwDO+4B7G57XJCRNT1vd2H1+6VwhSAwfAtgC6fxktUhw4OaGrvSjKuM+oZpXZQCdzrbQcZA3kwTulqRdrd0gGpqpoSUIgNdeu8WarHn8s7XGTMhYb4jI9ROFUGVhKaWpOPEBQQmQPcdEZOj/b5/Hfy/U7AiN7CwaugXp/hdWqPLvsY9M19x4X79x7a/co5LcztlObHlsNamd8YIj9peOUsn6qH7ij5I4ZDHkAok3zQPjvsAqJSaAXhWNpOmjvNZLc7jM7uyOvevwibQ98sdXeDiX5ujW3xXVyxgB1Xb2+0ZUxgQ548JtNJGa9P7NuxERZzl1jiaqnzq/FexjHvz4xFcLkmjp/EVQrcVLMOc7gzRvu7yLAsxj7GkpFwiBeYGCffpD4UyWjFk7a1z3nCxMch8LxNx5uRBdaCNa+zOGVNWJNK7RCbTdJz8BqwqCMjFvauG6EQqfAZqLf/PTGHg7I9z7nyPHKgc4EPdmQrDxo4eayINkgtvLjCW0ufNJx4
- o33KAET7
- YlsEfn+EpHNBue3/iCQLzM8Jeq9Y9qS4HzVpf/vPng/EwMkypagHyy4FhujiKfBwNchp40KWoCAmZAlfehW7FBTa9/MEQB9BRuezHdaKdY7NwRNIT/moUUWvh4f7/JNolflw/9OxfrlGsakTjD+ltA0F6072oDNVUR++wQu5WVVtknWRw69qGUm/Qoy4J876PmzMMHG61T6tnOProVZE3TvvR5EbHHWksDaRR80Y2CmMkNYNSu+J41kCwy99Jc6zDXVc1
+X-Stat-Signature: 7oajjqddt3ecnooq7rzmdybp5aptecaw
+X-HE-Tag: 1793324230-360858
+X-HE-Meta: U2FsdGVkX18kmaDJUI67vMKWOWmF/8Qic9pM9PelPyBrMjPr4y+rYU2ImVjNWQ1XV1sVi0IB+KXvBMrJ+2Dk+lF7pl9YqWygAkzwiBJ4Zu3l7HlYJt/brs2wQrymS39xEMhMLcUtDBbcSRiv7YoYHt95k4jYWRObPDvS8wIqDWTP9E9+4rSDmj/OKWjfsj9FZhPEoYNLRIjglwI4jmVgt+Trd/eQS44SuNKYzESa5t6aMAYVJkIO610MCXFK7EQBLhV83IHKhkzB1SYDRthRT7FZmRijJLPKPd3ulmtDUqWgUy501SdZ8RS5Sg4uQM7C3gjoTHydmYhf3MvseWLVCNAaZRID402Iv80mhF8/eOFcy01sJhPkKP6WqlbmJAT5BFGOjyYBxFLrkukcBLhBhmKp8LT+97Lx1LhSzaAmzPte59Upby924U5F4byffvaT9C2SmW5PP0Gn7jtF+tL72YZ4PhMJC7quebe5C2pL9IeBvJ5yzur6A75QEGBQs7SV32h5yyTxp8uV3Wa4pmhvSiHiX0cvyVhCf18D1/L1n9UIaV9W7B0ZnEI+m6W+LcExUZaO7GWwfBNm++P1k1eBnrDiPPgayQvZM2137v/0dNDFX64V3FHX/TabSKJPP+srT0QA4G8JGWWKtjLmf7aPmxR1xO0o2qnEzJ27aebo16h7ObOVyk6Np+Z9POOfwHwzUTPXKYDvbuOgiXpWPdpJ0WtDdrBbOs8iAFrYblDdvgWlGgmZLObi2LZIgS12mpaq7WBHk3WAWzDMkynviekcoSs6cLqeuiN3ZEkD/KmmMK6NA+ND8tdipT8HhhlncyyzGw7idbnc14D8gf6Rd1wqZpC6CZNDJo42NGKCaLw906WOenHJugJMA7xX7FxxEasUyt8SBXDUWLiY7n6Iv2oBpuI5QW+PPKEVSPcl5yYWtelqG9CYxh99L95kubS03OGynZulIjGoPt1aQ5uRVar
+ BJyuoqnd
+ hsVvf1Zaicf5uQ4AiOUgjjhE9VSNKOHObIq2qRAzW8y6w05nqo0fGcDloOynnMGZdDuvTblzi3U0JtyU4eE+ScbB387O6DM1SYtdR3vkimFM3JwoPYTG48FGJMK9YPUAFwcuhE0gT9F+rW/TbVEm3xtDlzH9vwFUs3MWa/W60R5w5d2nw7zN6rX9LVUdbAUKsbc5f78OLoWmVaw31wVeJjENf0VZxECHdb+kwg8PjvMnuaws+w6eB313haPD1IwFuZF77Fx9Fj11zzE7gy6zWmPUThhO0st1ijijFsSj8Ssf7pi3hjotSWcMdIzxPuN8ll+APT1kG6HrZ5No=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,28 +135,17 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Thu, 29 Oct 2026 10:57:40 +0800 Jackie Liu <liu.yun@linux.dev> wrote:
-
-> Fix the cleanup address and page reuse window in failed late KFENCE
-> initialization. Also let RISC-V boot if the early pool reservation fails.
+On 2026-10-29 19:08 +0100, Vlastimil Babka (SUSE) wrote:
+> >  
+> > +unsigned int zonelist_iter_begin(void);
+> > +unsigned int check_retry_zonelist(unsigned int seq);
 > 
-> Patch 2 depends on patch 1. Patch 3 can be applied independently.
+> ... is it possible to inline these here instead?
+> 
 
-Thanks.
+Reasonable, let me take a look.
 
-We're all horridly busy with bugfixes at present and the first thing
-recipients think when presented with yet another is "why should I look
-at this".
+-- 
+~Gregory
 
-So it really helps to start out with a succinct and punchy sentence
-which explains that thing.
-
-LLM suggested to me
-
-: KFENCE initialization failures can cause kernel crashes or memory
-: corruption, while a RISC-V failure can prevent the system from booting.
-: These fixes make the failure paths safe and allow systems to continue
-: running with KFENCE disabled.
-
-How does that sound?
 
