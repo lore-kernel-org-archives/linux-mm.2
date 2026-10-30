@@ -1,92 +1,103 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1CE0606A31A
-	for <linux-mm@archiver.kernel.org>; Fri, 30 Oct 2026 06:55:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DCDF606A323
+	for <linux-mm@archiver.kernel.org>; Fri, 30 Oct 2026 07:14:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=xuB89//u
+	dkim=pass (1024-bit key, unprotected) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=P+jtgdTX
 Received: by kanga.kvack.org (Postfix)
-	id C97F76B05B1; Fri, 30 Oct 2026 02:55:34 -0400 (EDT)
+	id D0CAC6B00EF; Fri, 30 Oct 2026 03:14:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C47C96B05B3; Fri, 30 Oct 2026 02:55:34 -0400 (EDT)
+	id CBD3C6B05B1; Fri, 30 Oct 2026 03:14:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B5E856B05B4; Fri, 30 Oct 2026 02:55:34 -0400 (EDT)
+	id BD30D6B05B2; Fri, 30 Oct 2026 03:14:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 8CA766B05B1
-	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 02:55:34 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id DC97A1605CF
-	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 06:55:33 +0000 (UTC)
-X-FDA: 85378381746.25.FBEC56B
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 0D6B040006
-	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 06:55:31 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b="xuB89//u";
-	spf=pass (imf07.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+	by kanga.kvack.org (Postfix) with ESMTP id 9AADB6B00EF
+	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 03:14:39 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 2D8921C3E3B
+	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 07:14:39 +0000 (UTC)
+X-FDA: 85378429878.05.703815A
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 43B151C0004
+	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 07:14:37 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=P+jtgdTX;
+	spf=pass (imf18.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793344477;
+	b=m9ac3V6knTLC5tMBVwPeb1uZCxdVDx6vKlwmsI2n5JK3n/8eIu/WSukJZd3WVGvrfr/Cma
+	i+4mvJepKGc6Gq8iIYSvrFD7lsges6OYeJ/ewFdMeLQCadb0SB6kjb/70KLfG0sTKjSGkC
+	isAKVuufrkyF/JGChJ8mKU8+O4RkAZs=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=P+jtgdTX;
+	spf=pass (imf18.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793343332;
+	s=arc-20220608; t=1793344477;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=OVfOJhiBuJkTiRJC5ASmF34dYnZgJiFJ6DSZ+ArOXlo=;
-	b=nhXB4phvWl1XbwHvDPaW4h+nCZprdatTYOmqVqy3oZgd+4oarZzqvWR93tzy3WNMzNJsjP
-	UL+NGj1qmgNcRv9bW5J5jtQCwc17QOkgamP2Yzo72W6cK5OPKR8Azj47oaFyjI8JRhaBQ5
-	lLWIr6hE1GE0p/GozO77LIcDgk05wa0=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b="xuB89//u";
-	spf=pass (imf07.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793343332;
-	b=U6lyHEMg58w/XAynOW9h59XTl9qXcUvgceEPBbImo5F2l+/aWICWxCA0YO5kupHobCgTeZ
-	cRMXJRRQvai1gOVcab/GlHokmiYQW06/vxQzatImiDVVr214c4eLnazhNS8uk+ufI1pBkH
-	rMpkEv7wlKBnZw+N5NtinwpCauywmiY=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 84AF443DBD;
-	Fri, 30 Oct 2026 06:55:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D3AF1F000C1;
-	Fri, 30 Oct 2026 06:55:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1793343330;
-	bh=OVfOJhiBuJkTiRJC5ASmF34dYnZgJiFJ6DSZ+ArOXlo=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=xuB89//uo1UEibq3QfgB2G6IHiwiq+oF1UwZUei3D4anuztPm9je6n6tMN5ijd0T6
-	 jlZWVbnp2PFF9fW/wRJDHl1jH4E3Qxuu8prQNOVIDjMac7Eiasaiw5jKZBkOCG2v7L
-	 ZMGzCRQ9maTcfufIDB3pRV6Ty3QcYCBh/fXrg3KU=
-Date: Thu, 29 Oct 2026 23:55:29 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: "Jackie Liu" <liu.yun@linux.dev>
-Cc: glider@google.com, dvyukov@google.com, elver@google.com, pjw@kernel.org,
- alex@ghiti.fr, aou@eecs.berkeley.edu, linux-riscv@lists.infradead.org,
- linux-mm@kvack.org, kasan-dev@googlegroups.com, muchun.song@linux.dev
-Subject: Re: [PATCH v2 0/3] kfence: fix pool allocation failure handling
-Message-Id: <20261029235529.0a4a37da0ae150fcfd4ef954@linux-foundation.org>
-In-Reply-To: <67833df2daf24cc413c212c14306b9230dde996f@linux.dev>
-References: <cover.1793242457.git.liuyun01@kylinos.cn>
-	<20261029182645.d6e7b119a562c973d19cda63@linux-foundation.org>
-	<67833df2daf24cc413c212c14306b9230dde996f@linux.dev>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	bh=X2nwqEX6uVZ+D8u1+rxu1eIxt49K0H72sg6V9JucXvs=;
+	b=v0vaoH0Lw6mAlOhTIBnDB6Dk61emSaxRTLmmAgJ+4KW4USgaXWihP0yBoSJAXmkIO+Wq12
+	AoTA6Tr3RpfRAfOIA6RzNZhHgdtyqv+Hf2GwwL6km6njY+9MkxSsp377RR7W2aw8IS1D4v
+	+TiGcYQ6YZfQepPnZxoJ1cNVZyjOQDU=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 1101615A1;
+	Fri, 30 Oct 2026 00:14:33 -0700 (PDT)
+Received: from [10.163.152.232] (unknown [10.163.152.232])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 8D0273F7B4;
+	Fri, 30 Oct 2026 00:14:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1793344476; bh=Jp/eodRxYkJLNGQk8olzS9xG6qObIMTBg1q6BMVZmBI=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=P+jtgdTX69sEy90NVnhYUwff1Df/OdYgDe+/Oll2oU0iv4SgMtAerOkfvpkn4fqBX
+	 bHrTkw2g7dShto71IFHPDpjzFhRFcDPHxQhkGP7LbYYciMVEjNypabXr9lGoDG0b9P
+	 Dl6AC3L9oAHxYeXPdZCnniBAcCySVpa1QB2Dy4po=
+Message-ID: <99f529e8-06f7-4a20-a60b-0330c5d3d91c@arm.com>
+Date: Fri, 30 Oct 2026 12:44:26 +0530
 X-Archived-By: <archiver.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 03/10] mm/vmalloc: clamp an unaligned range in
+ vunmap_pte_range()
+To: Hao Ge <hao.ge@linux.dev>, Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
+ "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+ "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+ Shrikanth Hegde <sshegde@linux.ibm.com>,
+ Alexander Potapenko <glider@google.com>, Marco Elver <elver@google.com>,
+ Dmitry Vyukov <dvyukov@google.com>, Andrew Morton
+ <akpm@linux-foundation.org>, Dennis Zhou <dennis@kernel.org>,
+ Tejun Heo <tj@kernel.org>, Christoph Lameter <cl@gentwo.org>,
+ Uladzislau Rezki <urezki@gmail.com>, Suren Baghdasaryan <surenb@google.com>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+ kasan-dev@googlegroups.com, linux-mm@kvack.org,
+ Sashiko <sashiko-bot@kernel.org>
+References: <20261026080329.140244-1-hao.ge@linux.dev>
+ <20261026080329.140244-4-hao.ge@linux.dev>
+Content-Language: en-US
+From: Dev Jain <dev.jain@arm.com>
+In-Reply-To: <20261026080329.140244-4-hao.ge@linux.dev>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 0D6B040006
-X-Spam-Status: No, score=-7.0 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+X-Rspamd-Queue-Id: 43B151C0004
+X-Stat-Signature: g55c7a7a1153gt6axix78wyy3gccbi9r
+X-Rspamd-Server: rspam01
+X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,NICE_REPLY_A,SPF_HELO_PASS,SPF_PASS autolearn=no
-	autolearn_force=no version=4.0.1
-X-Stat-Signature: huj3eg65znmkurmqm6bnq1pz3j6cduy8
-X-HE-Tag: 1793343331-768282
-X-HE-Meta: U2FsdGVkX19+oU6USQ3pYimUK1PVFahxl8pxDfOLQw+MpjUuVL2o2+QJmLO+vUW5jmsxAcx6hd8Ox/lf6DKcpYhgNJ4FZRsG+Rwf7ztN4hrO3IF7mMIbJLoqxT+sIYqQPsaDNj23ksM52gFDRuCNJhUZT41DmYDFVa42zCdycUP9BvtYDQjVhA/vwBTuSvxSlvAfqC2y+hLpFE63yw7xlo2n6EBzXKaHkm8i+q6CUPgJMuEDvcNik/nOubpXBdPE2fvN9Pf7fTr6qV47e9OVsYA//5PcCZDhWeuHMmELRNtB530YqKOHx0lTe5TDZtWEFuUzcXSJ17uJHlFs5yF39A2CGYyt4e8N2H6GGjHGQUlkDTUySI/6VMpHV2UqW/dzyydCx/dkvkaNZ7NwI9Et0R1VWUn0AqPiksJjcQ+lElF1j8Y8DJp0Au4SYOtKdVFqyUvSU1ZQGTfVw3EtsCjqvvmxYywXuYLo/QwqW+8vllJYlVOKuBSiNCmRmxzEevZt8np4U3p3J0zx5dxUduXHfkIq4WdSqzXQu3twzM0MDJVO7KkcdspDGB4/EtUP3/OK63eg8C3aqTpxFip9Bwuy8zITXMH1Kad6Ba9niVRO6GhWGQzZYQuY6hmS+z9bcN8aflEDba5E+KYsPYQ9dPv/8svv600414qafVOKZHuHqCTj4LzRfDCpKaCWIcF+glsHYVP4hOJQ8cWD02TD4swuC+OkwVaUzAFxc3SknX0IrTETdP+cLC5l/slwxzIJg94cwslSEpiYgeKK5uNGhLw36bsAJG/mj+mrE6Xli9O8slC8GaoH+2xI/CTD7IbJej04grmuBV55PHO23+tVeAOeNfx5qvuyljtVlj3Z+GrM7bO/t3iunOBUhCHzZUqgIuMpxPRW918OqnRKmweqGf0PGvHqR02BUQYVzEiLAvf8GgGybihIbw20bSM+ulvSSanSfz6FJ0BHNq0zwnjMxuY
- 9g+vme0i
- 7RqAWee82HxB8i5vD/Um942s3x5sbihaNhlPGoigV0wNcUK8wMESb6B47CU7FfDij0+TFfTWWyHgW2VbCMGD7+A1Iu5+wYxz+47vYeB5aMh4Kt9kCrxJl2pwUt6d2ZmGnQPp5WhGqsQlGDno7q6RiLq98RCBZK7siOSiQoNe+W8/zmu9bazVQbMHn6/htl6YAusxYe+c2U0rtQz3R1/UofXXQ9Nxjb/xp2y9qMkgdTvca9Ol77U/GJFZtXoC/DKqiymgG
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
+	version=4.0.1
+X-HE-Tag: 1793344477-462442
+X-HE-Meta: U2FsdGVkX1/3LJnIJSD069fZTgi6CHuHz+9yvo6P8Ixe1gGvwMTGmUgoOBhSAmm8T5U7Fsk5/twzfW5bWUn6l7XHJE6hsEp5KhgR8lA5deepflb6/h/meroxrvDP5DeN23C0ddyvAeolzIiCWws7VSj41F3srifMtRGDy4rPi9cZm5dHkiQGVAMfPrzziN4ZPZmqxm3ZRh+3+vdbgh2SWXHvB5UjeeC3OtMT9Vnv4+XpG65AStCam3iDrAlGaxgzxZTAXMW2xLjlikfs1pyixJsQ4NToN12ze3afxtgJXjWveRH0tZYb75iC4scEJ+7a19/rJW4Z+cu0Wom34RthlowxzWMdokjtwfh8LdOcU3SJRf/DxHPBnc//eyCQYL9GPlEKe1rhbK1Hs7U8fvhetnozL6FumPnwi16oAJKXmnhlKOkfdJZkuvbXNH9cje0R4YkuqowSfEyTLSF4JqizK1MQWl2lopnfYG4E8eWLDlkhG2IN3f/xbYx5EuKmiZX4+njlQcy/RZCwlaWIWoQT3SmjYSimWucNJJQZADYkCZ/tv6vbdtTTMjMMYzxGkTThpoWaxGBLNHerCymW/dzBzHk3yPwMOq6Nth1fyTOoBe+sSPoXG4ih0bsVEIffnzgGRraNWAElKbE0aLnHhYESnyheDG28aaWR/wBG8J0CN2cEHbcTgJW9IYW4F2O3p+I9Y/DfpcHorPYpeczjnJhV8rqpFTsf7lOzxJ89/K131Vc6UD19c32sz04AS6N7FW8Y4Mi1koXSPeGQ+4N97M3oGRmmNzvCn7s1cqCa0Ui0jSUjgSl30xE75kMbPc6wCkn9FhXuicf63+38KrnCXbg3eo7h86955A8QMNFg/LiWYvpBV3FNEttxpSv79ZyrzFwN2qpREqIaSTVpNrRV1pzZNPWLNcO9xVx/adIOh9gWPw92OesuchOZnn9lZmOxAFhqHO7/65P9Md7Ff2grlwx
+ UjiZk3fw
+ rD4F9R0LtpQcrq/p3rIqQ3P4hHw4pfCOXPTBuhFGtwKdAh8hoAk17UQP33+FOtUNRsDgEa1zpeDjXq8/t138LvCFX6P/HFh3Q1NPB5xUjqXZ7WHPXA+AMUD8/WdPBLKPqnjrUF8Ls0Ac6/dtfZsjYiwydJH8StHObnhMhmQ5XD4TBRgQFDxfoGZ7vGGQQeDAKRpx1CJHSIQoWQwntb5i7V4fqq7hbYDgafmhZ09/0OxKRBkLFVh+3FHCFI7SRNoMcXvGYXcudoAqewud4711EEjk1BuwC4TRCfT7Wx7KSDMxweOOdMU4KPQ9rPChfU4t7wPDfs3bcmfTyzJNouiRp30OasfNpJci9KwlqT+8G8RMWGzU2UPMmQnwZI4eJ/QXoOoEO
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,16 +106,56 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Fri, 30 Oct 2026 05:55:21 +0000 "Jackie Liu" <liu.yun@linux.dev> wrote:
 
+
+On 26/10/26 1:33 pm, Hao Ge wrote:
+> commit a739e6b557af ("mm: vmalloc: WARN_ON if mapping size is not
+> PAGE_SIZE aligned") made vmap_pte_range() warn and bail out when the
+> size is not a multiple of PAGE_SIZE. That loop steps in page
+
+Why are we checking the alignment so late into vmap_pte_range? Why not
+simply do
+
+if (!IS_ALIGNED(addr, PAGE_SIZE) || !IS_ALIGNED(end, PAGE_SIZE))
+	return; (or return -EINVAL);
+
+at the start of vmap_range_noflush and vunmap_range_noflush?
+
+
+> multiples and stops only at addr == end; with an unaligned size addr
+> never lands on end, so the loop cannot terminate and walks off the
+> end of the page table.
 > 
-> Also, Sashiko has reported an issue with patch 3/3.
+> vunmap_pte_range() has the same loop without any guard, so an
+> unaligned range would clear PTEs past end without ever stopping,
+> walking off the end of the page table.
+> 
+> Add the check there too. The range is clamped down to the last full
+> page rather than dropped, and the loop is skipped when nothing is
+> left, so a buggy caller still gets its PTEs cleared as far as they
+> go.
+> 
+> Reported-by: Sashiko <sashiko-bot@kernel.org>
+> Signed-off-by: Hao Ge <hao.ge@linux.dev>
+> ---
+>  mm/vmalloc.c | 5 +++++
+>  1 file changed, 5 insertions(+)
+> 
+> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+> index 44e0eb32708f..7131f60d1a8e 100644
+> --- a/mm/vmalloc.c
+> +++ b/mm/vmalloc.c
+> @@ -393,6 +393,11 @@ static void vunmap_pte_range(pmd_t *pmd, unsigned long addr, unsigned long end,
+>  	pte_t ptent;
+>  	unsigned long size = PAGE_SIZE;
+>  
+> +	if (WARN_ON_ONCE(!PAGE_ALIGNED(end - addr)))
+> +		end = addr + PAGE_ALIGN_DOWN(end - addr);
+> +	if (end == addr)
+> +		return;
+> +
+>  	pte = pte_offset_kernel(pmd, addr);
+>  	lazy_mmu_mode_enable();
+>  
 
-thanks, I missed that.
-
-> Could you please apply only the first two patches and drop patch 3/3
-> for now? I'll address the reported issue and resend the third patch
-> separately once it's fixed.
-
-Sure.
 
