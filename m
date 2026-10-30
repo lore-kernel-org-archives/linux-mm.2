@@ -1,113 +1,132 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1F06606A32C
-	for <linux-mm@archiver.kernel.org>; Fri, 30 Oct 2026 10:49:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6B6360A263C
+	for <linux-mm@archiver.kernel.org>; Fri, 30 Oct 2026 10:50:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=MduejGOR
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=xQ/T4xw5
 Received: by kanga.kvack.org (Postfix)
-	id CB2826B00EF; Fri, 30 Oct 2026 06:49:43 -0400 (EDT)
+	id 07F1F6B05B2; Fri, 30 Oct 2026 06:50:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C63326B05B2; Fri, 30 Oct 2026 06:49:43 -0400 (EDT)
+	id 02F996B05B4; Fri, 30 Oct 2026 06:50:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B78FA6B05B4; Fri, 30 Oct 2026 06:49:43 -0400 (EDT)
+	id E611B6B05B5; Fri, 30 Oct 2026 06:50:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 996CE6B00EF
-	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 06:49:43 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id A51FDA82E4
-	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 10:49:41 +0000 (UTC)
-X-FDA: 85378971762.07.369BAB5
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf01.hostedemail.com (Postfix) with ESMTP id BB7E24000E
-	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 10:49:39 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MduejGOR;
-	spf=pass (imf01.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id C0C596B05B2
+	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 06:50:37 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id C1C89A0650
+	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 10:50:35 +0000 (UTC)
+X-FDA: 85378974030.26.1B92C66
+Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
+	by imf25.hostedemail.com (Postfix) with ESMTP id D09DFA0007
+	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 10:50:33 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b="xQ/T4xw5";
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf25.hostedemail.com: domain of olsajiri@gmail.com designates 209.85.128.49 as permitted sender) smtp.mailfrom=olsajiri@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793357379;
+	s=arc-20220608; t=1793357433;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Ge8hADgfac7MKFfaAfAW05gt3hYkAz9wTRvWiuoBv98=;
-	b=cOTX4bMSN5xkMbvXyUNJqAdSBIXQCkSGlsue8tEuj7b1NEXX9Lhal9vTw+S6hWSXniSkLA
-	VyjC8BRhEWvLcOQn+7Cb37wSIxeZie9ySiW1ewhu/7aIUeg82665t9fME2srhWcjLme8xk
-	tghWY5/s0fKFAwGFzVyE5MyJWfgNfpU=
+	bh=g0au4KAwJy7gDntm9ACSIbu1AVWLccO3DOOW3yQIu4U=;
+	b=5rB7ckz+7Jy95+2Ce+7zwH/qQPkKHUSIVEpWOr0IklQ+qtg+bXaumPw5+QLoDFAPUKl0z2
+	FuNGDbhQ0eNcB3ClfNg1TTSxNSZ+PhRXm/7LWILjlcOTh638qUwdVGWcqXthgBPUUXBQim
+	z3viLSuHPHsZVOfscMrP3I8rwN6zGmI=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MduejGOR;
-	spf=pass (imf01.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf25.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b="xQ/T4xw5";
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf25.hostedemail.com: domain of olsajiri@gmail.com designates 209.85.128.49 as permitted sender) smtp.mailfrom=olsajiri@gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793357379;
-	b=BmA/6ghHuojUm2xBZgtAvyJbukJDwbhwzkX3if/ATKGagvRoW6BOLsbIVbl09HPs/3Eu9E
-	GNcFL4mUb/oVD8Mf0B3me0AogHdw/gkyH6VLMyDNiS56Z5mXS7qhL2RgXj15Q938hGMlGy
-	9YVVnl/TdNh/Agd3aka1Jq/Y4IavYgA=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 1A61243939
-	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 10:49:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 029491F00A1B
-	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 10:49:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793357378;
-	bh=Ge8hADgfac7MKFfaAfAW05gt3hYkAz9wTRvWiuoBv98=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=MduejGOR49bV/g+WDvkkka5dwZR6dPDtapJ4D0FcpYj0cjsNyTmxIkBQXoxqYj3cL
-	 c2bF4g7TyB/95HyAxCNAZK8coQ6VMrTERDOPIFa1y6G+gI/IWsQWN6Pc5eMAanxVN6
-	 0fn6+Rpd/JHSln8pg4D54Q2x7ar3vbugqQULQLlJ/95VEnqF9T4s187xKSJbcD6ogA
-	 EuhA5qaDz8UJfXtL79EywR7xdfkRHTbB2Bsc3Q10BVe2LPd/kEYh1MyJOGhD5knafj
-	 vQ1sQGVmBn3w1o0af/EswCFiE80uqyuN6clERzHxJQnt992zCmHYDG8C4Z9iC4i4Uz
-	 bdo2mXumBu4Fg==
-Received: by mail-qk1-f181.google.com with SMTP id af79cd13be357-93e63ee7b4cso53579985a.2
-        for <linux-mm@kvack.org>; Fri, 30 Oct 2026 03:49:37 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBzxN4GyMYa2rMP57iBAyPLMCiZVLW5A/FhZGCAJQL5RO5iycFXIPTe6/nm3x+ifrTw/5awal3lLkw==@kvack.org
-X-Gm-Message-State: AFq9FYKkKSPxAVnAYq0vZeWO76d5kTUANLe/y+B1/kxP4LqBh1C3FSgK
-	iTR3NQSTWsWyV4ZAtGwarRP5gfNvccHA+eo4pRMnMcAvs1ZgVSn2YZTfuEf0M/NzFPYdFxEUPVA
-	b3f+sI7burGwtj2zt99VAQHqmWI+awZI=
-X-Received: by 2002:a05:620a:370e:b0:93f:6c67:152d with SMTP id
- af79cd13be357-9442175069cmr320613985a.38.1793357377323; Fri, 30 Oct 2026
- 03:49:37 -0700 (PDT)
+	t=1793357433;
+	b=kQYB2/qz5KPq5r6xxWJovpeg+9vvHJuJIhifdeRT8JT8a99RBKbmSifcgdoifZngOM6pVB
+	M5UN3YwaiLLDpZvWfbzEhfXTNh3y+RpbJCelIiCM6ZMD+lR+/duuHBIwm/YzNiCM26MQfa
+	K+jbpAIyiebVdraOFg2xCg80xdf7+lc=
+Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-4a208d93758so5466995e9.3
+        for <linux-mm@kvack.org>; Fri, 30 Oct 2026 03:50:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1793357432; x=1793962232; darn=kvack.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:date
+         :from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=g0au4KAwJy7gDntm9ACSIbu1AVWLccO3DOOW3yQIu4U=;
+        b=xQ/T4xw51AR6XXWlXYZpN7hsoLMGwJUr8phWC8wi/xZCEdOM2cpbY1YcDfagrRB6Lx
+         LmBuo/mhbEMQQ72WN8W20zUpcEWDDCpMlIg/d8w6UelWYjLrkd8RSShXLUtChHwPVi9E
+         sc+3Z8oCMVGGtuQUVHCcu+MWjEorB8DnPoDzKfiBpH8OxIihgF9CwjYjAuGWYwKzeKpg
+         ga+YPObduTdHy2ysP5rmveuG9hvvr83u+DJkg7KbvQKGE6TW4eGhzH0KL/S7XBG3zU6V
+         FZULqDAS64PacnUXt/GPirT2Cv592TRjc1NoU4kCM5pLfqc9Q84w31I5XJnt3KUDkWoc
+         JKvQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793357432; x=1793962232;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:date
+         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=g0au4KAwJy7gDntm9ACSIbu1AVWLccO3DOOW3yQIu4U=;
+        b=XxiQTmnJwHg2jZimFCHDakvq47O62vRLc+qCuEp+W4pUU09HspdzTsFktbF9efZCl2
+         792c9ziShOS9GSfggelCOJKbjojGZRFVUxPRqZvYI+/VyD6RDJul1RbqTWna0Gq5J15N
+         nL4gkP+AkGnbdN+iq/6ZA7W8Z8Tbf6QSLdqPhZvj8rf8VrXzotUwmXJxjkiY7o9nLetu
+         RX+wd8NU5WRY0x4WBS5w7AjaGjYy58zSxCwGb8Las4CmeV7XJngIrkh7p/DrWeCkqyrI
+         AjA8lWWCBP59KIm3Sy73Qg4n9RdWZP0lrliHJxSrzfJR3mgf3eKFz6dWg+7D9fz9TVnZ
+         MGdg==
+X-Forwarded-Encrypted: i=1; AKwUvBwnekS/LhSxn6ioBvA0Fc3gtPKKBpeMLFqLymmOfjgEp+/84+j9ntkUUFnK6z7hidkHAs8UNk8fYA==@kvack.org
+X-Gm-Message-State: AFq9FYI/bU376SF+Ndn/qSZGQu//RhWbPcJI8IhsxUDnt/j1P2lnXTgM
+	hkJh+BMOhN1baldoAJ4rAV5OiCVrs0ikxWuE+a3j0jhxMH6Ynm94nS7r
+X-Gm-Gg: AYBFou2ezTQ0z1H+cH0ZACKyFQkAQSnBS/Vk5HVxGpToXENuFHdzcFH7hp6fG0RsfmE
+	palWnTfNXs3oTldfcQ/E0q+Es0cWElERWxS3zPwp5DlbmJBTFuEowKoXaEMb7vzk/SP0FqBKiIg
+	bCQ4a6kbj+4Ng4WaCQ2Y4QuSugigMX/0wCq8TAKkQwtG1+muICwzGV1foG6rienBBuupNiaDJpv
+	/meW/wgeww5gRX8TsJi3GSIpD1OeiaLtAQyW6gCq4kdDgy/Ce/nQRvPUAKShJX4fp1RS0VPH5po
+	uwUQtqYtGi6xkcjZ+1HH28CchGfF8oE+GXPsdFjwj/0cLrDhYKggbyF1YT+qCKJkyDTPAkzrKIy
+	4hhbWh60Jwn0L7bM3NjSea4pFCoXqPIUmH3w1UIm/ca5bL43fiqOXsA83g42+2uWR+viztO9Cf+
+	kCO1Qyyp8fY9dwweNB1E8q7BNz1ZIZNrsXZUho3zUS1uLEMvfbUgfJxtmGWRhjeNJvmb/vywXxb
+	F5vvweojCTdM1U3Frq+0xpsbdnngvR6VeDgjVB7T7SDxZOcSxL/t7dWiLwQF9t5xzt2ApaFijTb
+	u6s=
+X-Received: by 2002:a05:600c:8708:b0:4a6:42cc:bf7b with SMTP id 5b1f17b1804b1-4ac150b2176mr43501375e9.3.1793357432164;
+        Fri, 30 Oct 2026 03:50:32 -0700 (PDT)
+Received: from krava ([2a02:8308:a00c:e200::25dc])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4aa81a896fesm143894065e9.10.2026.10.30.03.50.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 30 Oct 2026 03:50:31 -0700 (PDT)
+From: Jiri Olsa <olsajiri@gmail.com>
+X-Google-Original-From: Jiri Olsa <jolsa@kernel.org>
+Date: Fri, 30 Oct 2026 11:50:29 +0100
+To: Andrii Nakryiko <andrii.nakryiko@gmail.com>
+Cc: Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>, bpf@vger.kernel.org,
+	linux-mm@kvack.org, Andrii Nakryiko <andrii@kernel.org>,
+	Eduard Zingerman <eddyz87@gmail.com>,
+	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Federico Di Pierro <nierro92@gmail.com>
+Subject: Re: [PATCH bpf-next 1/8] bpf: Add __srcptr kfunc argument suffix
+Message-ID: <auR2dWsi_K3ut-mK@krava>
+References: <20261029212551.56964-1-jolsa@kernel.org>
+ <20261029212551.56964-2-jolsa@kernel.org>
+ <CAEf4BzbUQpQcdpCJ0o2g0YkaR_Lwe9EOXdj8Fth0UUpAs-LR6w@mail.gmail.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-References: <179248830836.1744016.8424217811286616919.noio-mglru-rfc-v2@bytedance.com>
- <0cbd219d-f69d-4f72-aec5-43e1f2d978de@linux.alibaba.com> <20261022102726.56682-1-baohua@kernel.org>
- <fc302ca3-6bf6-4bde-b3e8-8d2e93a4e4ac@linux.alibaba.com> <CAGsJ_4z9GZkpV+mpoGogma4oSX4cHy+2UDzyUQSjjOLOfekEPg@mail.gmail.com>
- <4e647816-0b8b-4a75-8777-8580a574d752@linux.alibaba.com> <CAGsJ_4xVR53NcKuN3bA6v+O=37PeQ2Vnj-8WHo6ScYH96N4seA@mail.gmail.com>
- <179307231985.76444.4463824301717648100.noio-rfc-v2-coordination@bytedance.com>
-In-Reply-To: <179307231985.76444.4463824301717648100.noio-rfc-v2-coordination@bytedance.com>
-From: Barry Song <baohua@kernel.org>
-Date: Fri, 30 Oct 2026 18:49:25 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4zvbOW3kGDZF0iXxZyWbv-LJo56W+uMM_Btk-sHRf5aMA@mail.gmail.com>
-X-Gm-Features: AclHuK8XCpEGNqAtN3doj9652by5qHmAXJ7EjWFLqe_stHXIVl1CGsrIrXfddGY
-Message-ID: <CAGsJ_4zvbOW3kGDZF0iXxZyWbv-LJo56W+uMM_Btk-sHRf5aMA@mail.gmail.com>
-Subject: Re: [RFC PATCH v2] mm: vmscan: avoid anon scanning for GFP_NOIO with
- low swapcache in MGLRU
-To: Xiang Liu <liuxiang.277@bytedance.com>
-Cc: Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Johannes Weiner <hannes@cmpxchg.org>, 
-	David Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@kernel.org>, Qi Zheng <qi.zheng@linux.dev>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>, 
-	Kairui Song <kasong@tencent.com>, Axel Rasmussen <axelrasmussen@google.com>, 
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
-	Baoquan He <baoquan.he@linux.dev>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	Bo Zhang <zhangbo56@xiaomi.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: BB7E24000E
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAEf4BzbUQpQcdpCJ0o2g0YkaR_Lwe9EOXdj8Fth0UUpAs-LR6w@mail.gmail.com>
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: D09DFA0007
+X-Stat-Signature: p8ngsrg897hftnzffuxniumbwojc6sit
+X-Spam-Status: No, score=-12.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
 	autolearn_force=no version=4.0.1
-X-Stat-Signature: crrgtr8hfkmorjzobyjq961et9eik6gw
-X-HE-Tag: 1793357379-734832
-X-HE-Meta: U2FsdGVkX18HWwMWR8nkaBwkTIUhO3nkM5N4GabBq8vRbXVHPe1+zkmlWNiCPlinAdhSUMq5w9z0fPiOg5RAAXc5VJ/hIYfh1BXx8Jb0JT7cjtvklI2E6sEKVO/FT8qK45R+JtzuV5dKyC2blRI5Da9h2EnNHuTKJT3Be8JrWHMgJPdCEbJv4YI7kwtp5XMjDtixcQ39llgy2zIf7VLNAXJ/DzvAkUoILcxcpDNqOAtG3BgFlardBo/5jlZjzK11JnP8NANRByXrgyh4e5kt0GkfNWx6UmPm4l9fCaWMRvM3jpPMVE7+zlFOIGvpwOyBU2Ct0Npao2NUA3cLJADqKsNiV7fcu3WmL3vVMER9dBhpz5Y8kU2QuaMSsz1IFPg/2CLJEm5BrNq8zWfHXIktXBG4efr5NiOHj+l9YZQ1ClIL9rJJx38QZz6Va84g8/WzZ1NMNR8O+VmfZstz8gEYVTMIR5P3HY16ZFdqPEtBpKWtmPYw1StYw6wS+YgnuqL9RWuPIcEHc1JCE0vRh+RkpU9ZLzVpIucwv1QVHHoU78YyP5hRSiouGUQPSdDP9gwUKu82UB2gtNCstLgW33TDXSNTB6XI3UFdDLRUd2Q8xLdcmY6sirsq/JxG3gMue7ip8k0kGhEQyW4TQIf2Tt9Y88O6d3GTbYu7uxvhgGzPBvFQSDF+15AU1OXEnMYdRpivPQDhS+YJWnsAILJz+ofOF3qol84tzLKjXTB2VuRaiiPRqXIK75r0dEF6qcam0YqTZjd+pyi3jQmFTZgH3VQfuKArcV3b8AX6NEtppLw8ii8L/pqgqtAS9zKJHKRn9IhqOOs7A0YRJPLtdU5DuJ2woMsHLgGfzznnrH8nSHdCtTZp+OY1qHfLHWFyQvudp4bEmaaFzQJlzvNCZBBluWzfvadVop7ti7q7V1Czpq9N4VRM7EAmytEUnpje4Od97RJMZ7uPu/1m6fqbVRefc3d
- LgGAtECJ
- E8Bo776Pul/MZwEvtaYFOlNfcW2Uoufr1nOV9VxZ8inzQupJJ9Hxi9Edgg176QcMa0JQu7PJAxD9AS5ooYJ2VN0pe30JleCb5kHDkrpSnPytvGDc2DchWf90Dw8O3D+zdArPCngQblXgjrTZLsre6YpILFofMPMJkAGdfJZVk14AVAj/beXzUhVGOhwhFVIQP9S283U/Giqw9LByOGpbVM/7TnurbxAtxa0j2W2MXWQlDk11L3HQ7NcJKApJ2UNmkg+MWd4z9GpG72yhgIEWzScV9mBHuFHz0xdqxw7qf2cLee4piQSbAqDSzDKpkoYX0ShESLQw/Hu4PHEiZKHOq+WHw5EDy8oZWvQWv
+X-Rspam-User: 
+X-HE-Tag: 1793357433-479414
+X-HE-Meta: U2FsdGVkX1/WPFjEB3LyVAg2RTwLZL/XBfkwJAyCEfCFf413E3c7yVMCm9rfonE9kGNkTgcPcnrV1TxF+NOaAraK6538LaVypT7mzvZgXHdUrLCFGjbZaEJRmGhAaaLrCPl0y2psyu6vfmXRzzxIJMw+/hdL3AFZon2skC/+RW2ZM7OyUl9sabqdUK8uNqLsN5ZjCZkGPUz04QC1yOjBN0P1I3F1tdPAptRAsTeoNgmbb/4YyRv48cMWP6cV1Bd5LoKfVEUznPWc/+/0AZ67X/dby8BdxAx5fLhkPXr1OxjVXkVdUJbchVjbSISJMT2In7oKj2gux5xlAk1cTyYlYAY4Ne2brIl3k/rq0h28WLCb53PUQBGw2SNKeVhZTW4KPs8a6YZSB54hNFgSPvLlM0KDET31ryAFzhOYloRUKnkV2lwhTriD3RG7jQ0Bs7HFQYSJcp5kFOerVcSca4Huu81FmANwPGbq1Q7Avn9GT9W8aMH8e7FKeS8RA0X+pc8bAce7AXoZfzyLcoZyez5DYQb6gJIGDVZf4jWP1rVXpW/8z24q3SW4ibpiqFzquYUidrIwDCtHeUrL2r+yVIDtG/E8xKfhe1Z9xwMzv0xtXeGpvvc7TrAHkj5Oj0O3gyUioqiE1dzy0q6Z3f9gCPxSBUk94vSddrPIqi2U3RrSoYVgS5rdJKH+8KGQCXwcmYMm7YwmFGrGfqWMQHsdHPAmOVqaZJelX/l8+wBMIJS+k5wM9iq2CmyRgMfZDTxzhrCkyKMGFeuwIRpnMV8htC1tjtfYO54UUjVlXsDbqHNyUQHlaRoKpu5BaDZ2IlkE2diVT0PO4eC5ZEjAu1WbTlrPR/iaiYta/pEiHePF9codF350aX2026SDLffJZskYn7qGvlQYbSZlUFTmH6zHQNvm4vVq+4FMaLie9pyW9H5Up2gurv39eK57JmzwWau4raA3l90medyGWwaPvz8syyW
+ 5nmkTa1f
+ pA27bc04E0aKSHqk6EL5ZTrimhbDiKrJpDHP84co5nj0rQxHtUsn6Q+jt1Y+ZAjWA/yQsp7F7/hKmLCPwX1KkZSzrv+T3mAxsZ5Rbx8Ak7wcPBTAP28KnFBAbqQJ1FLPcZtydzFNfnB3r4KRtnT0CqsfHR/w6YDIb5wB4TDDqiZGko30mOgkmMeS4h7Ug3o7kReTSsf5NnjzYk21Hb/QGpXFc/amy6G4PsLv6wqZeSDTSFEpLZNhEgytJarjkvCmStuN7ZrB141Wrv5uRo6CQ0HZVmA3xG3/iDeg7Mh7svXN63oaZMut8sCZUDDluxJnEiNtSIxzIgs4CEphZ7IAlyeEZaUKP31JLGGYVh49Ef+aZU6ZpnGvSo1zk/HimiodB+1dEHcigC8V9Uuv8+vAQkJVR2N4F2VFbG84hTvAJw8NQhPGB41cNxGS8PhGDYYXztV53YT8KtdRHhg9jk82NxKk3Ey0vqi1lIb7ghkQmeEzw4eb64vfb/E9v2UT/ooGF7h4H0SJj8vQ3AtTi9jsnyfuLInrboan0JSi7Jb5O3bYrb9kVlVRtAY3CmOd1EYmmiyGX9dsN5+jFPbZY8E0X7tosDiX8dNQcHqd+1fA9xlMM6T74tf4XRudp4L4N/fT5/4PqUb5gYPAtAp0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -116,71 +135,42 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Tue, Oct 27, 2026 at 1:15=E2=80=AFPM Xiang Liu <liuxiang.277@bytedance.c=
-om> wrote:
->
-> Hi Barry, Baolin,
->
-> Thanks for the review and discussion.
->
-> I've seen the RFC v5 "mm: mglru: fix swappiness behavior" series, where
-> Bo's patch 14/14 addresses the same GFP_NOIO issue on top of the new
-> scan-budget model.
->
-> Baolin wrote on Oct 21:
-> > IMO, 'swappiness' and 'scan_swappiness' are really confusing.
->
-> For a standalone v3, I plan to rename scan_swappiness to
-> evict_swappiness to make its role clearer, keeping the rest of the v2
-> implementation unchanged. The split in v2 preserves the original policy
-> for anon aging, including the page-table walk.
->
-> Barry wrote on Oct 22:
-> > IMHO, this is confusing but this is a possible way to fix it before we
-> > land something [...]
->
-> Before preparing a v3, would a standalone fix against the current MGLRU
-> code still be useful as an interim fix before the scan-budget series
-> lands?
+On Thu, Oct 29, 2026 at 02:49:22PM -0700, Andrii Nakryiko wrote:
+> On Thu, Oct 29, 2026 at 2:26 PM Jiri Olsa <jolsa@kernel.org> wrote:
+> >
+> > Generic sized pointer arguments are treated as writable memory. This
+> > prevents kfuncs that only read from a source buffer from accepting
+> > read-only BPF memory, such as const data.
+> >
+> > Adding __srcptr to mark pointers the kfunc only reads.
+> 
+> why can't we infer read-only from constness of a pointer? what's the
+> advantage of __srcptr (which, honestly, says absolutely nothing,
+> "__readonly" or "__ro" would probably make more sense if we have to go
+> with suffix)
 
-Hi Xiang,
+the reason was that current pointer arguments are marked as MEM_WRITE,
+so passing readonly pointer to bpf_copy_to_user caused verifier error
 
-It's a difficult question to answer. In the long term, we
-hope Bo's patch 14/14 will be the final solution, but we're
-not sure when it can land.
+but I think we can use const, did not think of that.. will change
 
-Your approach is a bit ugly, but it looks like a quick fix. we use
-0 for reclamation to make sure we only reclaim file, but we use
-the original swappiess for aging -  where all files and anons can be
-normally aged.
-
- I think the real problem is that reclaimable type and swappiness
-are too tightly coupled in MGLRU. In fact, they should be
-orthogonal, except for swappiness=3D0 and swappiness=3D201.
-
-Actually, the current get_swappiness() implementation has some
-bugs. For example, it returns 0 when swap is full or close
-to the cgroup's swap limit. But this is only a temporary
-state: swap usage can drop below the limit again after
-unmapping or killing processes.
-
-However, once get_swappiness() returns 0, anon pages may
-suffer from cold/hot inversion.
-
-That's why I think we should avoid hacking get_swappiness()
-any further.
+thanks,
+jirka
 
 
->
-> Or would you prefer to handle this issue through the new series? In that
-> case, I can use my GFP_NOIO workload to help test Bo's patch 14/14.
->
-
-If possible, do you think you could extract the code from
-patch 14/14, even without the scan-budget-based model?
-This might give us a chance to land it earlier as a
-standalone change?
-
-Best,
-Barry
+> 
+> >
+> > The get_kfunc_arg_type change sets the initial memory access mode
+> > and the resolve_func_arg_type preserves the suffix’s access mode
+> > when it converts a BTF pointer classification into a memory argument.
+> >
+> > Assisted-by: Codex:GPT-6
+> > Signed-off-by: Jiri Olsa <jolsa@kernel.org>
+> > ---
+> >  Documentation/bpf/kfuncs.rst | 24 ++++++++++++++++++++++++
+> >  kernel/bpf/verifier.c        | 20 +++++++++++++++++---
+> >  2 files changed, 41 insertions(+), 3 deletions(-)
+> >
+> 
+> [...]
 
