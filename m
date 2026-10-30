@@ -1,93 +1,149 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 428A3606A31A
-	for <linux-mm@archiver.kernel.org>; Fri, 30 Oct 2026 23:43:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34ED2606A31A
+	for <linux-mm@archiver.kernel.org>; Fri, 30 Oct 2026 23:48:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=fH5pBpFR
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=MT2/EA0e
 Received: by kanga.kvack.org (Postfix)
-	id C2AD66B00EF; Fri, 30 Oct 2026 19:43:07 -0400 (EDT)
+	id 2BFC06B05B4; Fri, 30 Oct 2026 19:48:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BDBB56B05B1; Fri, 30 Oct 2026 19:43:07 -0400 (EDT)
+	id 297606B05B5; Fri, 30 Oct 2026 19:48:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AF1636B05B4; Fri, 30 Oct 2026 19:43:07 -0400 (EDT)
+	id 1AD0F6B05B6; Fri, 30 Oct 2026 19:48:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 7FF636B00EF
-	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 19:43:07 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id DE8251608A9
-	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 23:43:06 +0000 (UTC)
-X-FDA: 85380920772.17.192174C
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 2D748100003
-	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 23:43:05 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=fH5pBpFR;
-	spf=pass (imf14.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id EFFEF6B05B4
+	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 19:48:17 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 80F65120853
+	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 23:48:17 +0000 (UTC)
+X-FDA: 85380933834.10.75406FC
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf23.hostedemail.com (Postfix) with ESMTP id D0C02140002
+	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 23:48:15 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="MT2/EA0e";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf23.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793403785;
+	s=arc-20220608; t=1793404095;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vTsgS75SWh6JODmQ/6GBwZ7Q/loys1DrlZ7GGQLEh8k=;
-	b=GR6b1AQ8QtkNvMX8PUkr0HGhcHjLJBW8S1XDQzzmaDrss0VaEn/EyAcNGjj/cz0hiZT+bO
-	bLbCaaFu6fxRppMZFuPbRteTZ+wuCIBYrVg3wblSQjhpGQyARepvng7TdDuH5qKS+ET7Vu
-	xIktj0XeE4lKU/3lT5lCpa33rhvLG1o=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793403785;
-	b=dmaCykPPr5R71QStAXVtBBbuPR9xCoz+vFTZ2+6rEvBmMzrK2Q+TP3UjSl4DylaV/wqjFI
-	agS4f4fodQBsOg1RpWCk2a0rJIlmWSF/JqhoEU29m+uqC5/o2BUTVzYJhWWX3t44O8U3Sb
-	HYyBwqozYeHEcck3J0S3YuvXBY4SOh4=
+	bh=uQmPF2jG9yjZyMk4TrcEAAEQoxSKIkZQK8ZYddN89K0=;
+	b=MQvt+wKBpCmJ97apkF4ma0xR44S0zgI9GR0LbAS9RtVE1ceB0ilBFxPPZjRkpbVzSdGGqP
+	OS4yPOtAEp4x78IqV9hZceCZd5kZTtT7fNwvHvNOEdSrqJ9y6jL7hZ+BZ4CD8hQPyzH40g
+	OZZPuV1CRxOkkrxUyYVE4ExNxwBvOYM=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=fH5pBpFR;
-	spf=pass (imf14.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="MT2/EA0e";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf23.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793404095;
+	b=rMUKZ2zuqGz03ccNXDJV8ALH1r9oSbU3t1AcBNWzeiblQuN4JaykXkf2oTQRtlhs7s57pj
+	mB/Na6DWt7m3Ld10lII2rXXjJzoQlgHmv6lJjREB3v72hLS/DzYYtEAYDyAHT2j7E+4TCR
+	uK85pe5jp1CMlWAHomVM4yTwiymhJX0=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 446D9601F8;
-	Fri, 30 Oct 2026 23:43:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AFB41F000C1;
-	Fri, 30 Oct 2026 23:43:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1793403784;
-	bh=vTsgS75SWh6JODmQ/6GBwZ7Q/loys1DrlZ7GGQLEh8k=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=fH5pBpFR9FV15LjnYPsaAdIoki8/201ThpJ6320tgeW+DueHIqcMhV621GaCmirKg
-	 tgpsNTuELBVfcDeZisphTB9hGKlh+PDNQKvyoQKsBxh/yN6UuXNy6K5obUFGBpR6Vo
-	 2cfr1QgTiDc2lqLlFyBLxNqZbdO58TpYo6AJiJ1c=
-Date: Fri, 30 Oct 2026 16:43:03 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Joshua Hahn <joshua.hahnjy@gmail.com>
-Cc: "Gregory Price (Meta)" <gourry@gourry.net>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, kernel-team@meta.com, david@kernel.org,
- ziy@nvidia.com, rakie.kim@sk.com, ying.huang@linux.alibaba.com,
- harry@kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v2] mm/mempolicy: recompute automatic interleave weights
- on memory hotplug
-Message-Id: <20261030164303.02c5cce0521c3d6fd4ddf015@linux-foundation.org>
-In-Reply-To: <CAN+CAwN+OPMPpVdBA+XtQvFpDy+EOY2TAiusxMjYR+r0F+MPhw@mail.gmail.com>
-References: <20261030161234.1505367-1-gourry@gourry.net>
-	<CAN+CAwN+OPMPpVdBA+XtQvFpDy+EOY2TAiusxMjYR+r0F+MPhw@mail.gmail.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	by sea.source.kernel.org (Postfix) with ESMTP id B642641339;
+	Fri, 30 Oct 2026 23:48:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85F9F1F00A02;
+	Fri, 30 Oct 2026 23:48:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793404094;
+	bh=uQmPF2jG9yjZyMk4TrcEAAEQoxSKIkZQK8ZYddN89K0=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=MT2/EA0ezaYproGDll3KiLAyVEWSPZoKHiRXDywJ4aHQIzyhxwRWbhglWb3e7dKsz
+	 AEnmNyNX8Rcma59EV7eOcdo43hJV3UWyyp1EEpZA8V53cZzC8ibmhrWsCHhd3ntURg
+	 c5P/CKQqJKTkQLSHunG90TVVjWY3k050fH/bObXqsHH1hydv3QVr/OgYQi355iFOiF
+	 JtArXodjjPIzQ3o0JyTSceeGaK8Vpf4oWVTDg9aqSczBRMGkGDD9LAfK/1mBWdRTX0
+	 vIoNdT2am2JTHVTTgrC8yNDOYEoiKRQXV4BL7VJTm0trkxBMccLX/hXZvuwU8ol1v3
+	 PE2FPFd1CIhgg==
+From: SJ Park <sj@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: SJ Park <sj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Baoquan He <baoquan.he@linux.dev>,
+	Barry Song <baohua@kernel.org>,
+	Brendan Jackman <brendan.jackman@linux.dev>,
+	Byungchul Park <byungchul@sk.com>,
+	Chengming Zhou <chengming.zhou@linux.dev>,
+	Chris Li <chrisl@kernel.org>,
+	Christoph Lameter <cl@gentwo.org>,
+	Dave Chinner <david@fromorbit.com>,
+	David Rientjes <rientjes@google.com>,
+	Dennis Zhou <dennis@kernel.org>,
+	Dev Jain <dev.jain@arm.com>,
+	Gregory Price <gourry@gourry.net>,
+	Hao Li <hao.li@linux.dev>,
+	Harry Yoo <harry@kernel.org>,
+	Hugh Dickins <hughd@google.com>,
+	Jann Horn <jannh@google.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	John Hubbard <jhubbard@nvidia.com>,
+	Joshua Hahn <joshua.hahnjy@gmail.com>,
+	Kairui Song <kasong@tencent.com>,
+	Kemeng Shi <shikemeng@huaweicloud.com>,
+	Kiryl Shutsemau <kas@kernel.org>,
+	Lance Yang <lance.yang@linux.dev>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Miaohe Lin <linmiaohe@huawei.com>,
+	Michal Hocko <mhocko@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Muchun Song <muchun.song@linux.dev>,
+	Naoya Horiguchi <nao.horiguchi@gmail.com>,
+	Nhat Pham <nphamcs@gmail.com>,
+	Nick Piggin <npiggin@gmail.com>,
+	Nico Pache <nico.pache@linux.dev>,
+	Oscar Salvador <osalvador@suse.de>,
+	Pedro Falcato <pfalcato@suse.de>,
+	Peter Xu <peterx@redhat.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Qi Zheng <qi.zheng@linux.dev>,
+	Rakie Kim <rakie.kim@sk.com>,
+	Rik van Riel <riel@surriel.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Tejun Heo <tj@kernel.org>,
+	Uladzislau Rezki <urezki@gmail.com>,
+	Usama Arif <usama.arif@linux.dev>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Will Deacon <will@kernel.org>,
+	Xu Xin <xu.xin@linux.dev>,
+	Ying Huang <ying.huang@linux.alibaba.com>,
+	Youngjun Park <youngjun.park@lge.com>,
+	Zi Yan <ziy@nvidia.com>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: Re: [PATCH 0/7] MAINTAINERS: MM updates
+Date: Fri, 30 Oct 2026 16:48:05 -0700
+Message-ID: <20261030234805.86833-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20261030-maintainers-v1-0-97278f8a5f54@kernel.org>
+References: 
 X-Archived-By: <archiver.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 2D748100003
-X-Stat-Signature: tbp9beswwqugnddpk74tqszozh6w33sk
+X-Rspamd-Queue-Id: D0C02140002
+X-Stat-Signature: jkpusweqwz8xmz385a89b49ej8tw11rb
+X-Rspamd-Server: rspam04
+X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-Spam-Status: No, score=-17.0 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,NICE_REPLY_A,
-	SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1793403785-593357
-X-HE-Meta: U2FsdGVkX1+MoBTL1AoMk7F9v4liXRAFVqvRfDK/BWlGbEfvuEkmZKEs7fy5r0rjEN4nhvmH7DyAV1E/cuyGrji49V25Ge/pmC1sOUXsyTECqPptIgvphNgChBXtLAss4EsmFRaz3QuPtrENeOQA2D+ZnA5RETebDioPkSF2GqImK0wjtLzG98UknMdjD2jahRBGi7Nx2JWLsA9ash72YULtt/AbHg27Vjhe+zKS4e3uNki0OMCpT2FNSpfWkYxpXfMNCVvCNecVC7V+7WZCQdu3oBhcPU7Q6v2clDYRgm9rKMiUi+tPmElcWkRhQQ1Hwxc4l8vLiM+h3OC2ef2QoBAC1sb6PXyn0YkRnc23ONE1jy6ZdiMb59gV9WpG0n1EHgjxdyGzTr5pGl6mr1mFiGnPbkne+moEtASIPYBGzp/pggM0xIEiPw7ivJQ690YQfsiiZyg/jtpKJYxsLKokuey5GCgkNnO+nzCLWpaGgoZ6pILJOWw0+OYfuiEzZD+BcDhd5po7VpvDIvvxPKtF6rv+Atekyi/sKRvM+oN69P15DUvi2HSJMC9n7XfFwABMQuJHCibgWD8kPGD9taqaBdevDVKDPdLljB2L5E6bvCA6DrmfxwTlBXOLDYCnFVlfKQCerioTLzsoSdMHtx7D0mgZN57YFtsZgWhA0FtPnD9VUd69MFCqh5xxojL9Kn33RdVvvE+cJ59ahHyJFaHIRtCcX4jYu8ke8YR+/gZ79XOILl//QMav8lQqjXiw/gNlSM/0ZxUsQnqBYutvRGDGEjS29Bp0x8OGI4J2JYR0B9yawk7lUM+0DPdy3sKBt8EHtlypK29B4tJS/QVOUw9LMPLrS3Ra2X/qC1OpJOsFzVC637W5MDmn6seO4RsE8ui3hBH5LGqrUeRhlD+RmFY52Nf6SZCz3/SuNNzT+X2kzYKjmbHrvgpfWvYh+RAdovMppU1W6yasYHzF8x70XGq
- e42P1CT1
- WFSBbrhnFIs87M8Cyg0x8UANG6otEbX2mL7LOA/ri5GLNIdUO2YF0vJC43BrCib/jJwy/gPDGhHJ+aDqCcDiC3RINdBaXNSCEws9hqR+J91mvugjm5jMjLbIV4nXErgjbgjylxCwkWs6c/szMSDYSfi05txngZ/xpCTgEB0d1MeB6T0FPyjqOATK57H9kVELuUR4/VdsmVYXI6i8/yJ79mPJqeq923Ut7ODPF5CwnRrKxw0/2TV6YALI132+sgJTIpsWsFDTCPbDo5ed4Sh21bIPoNbyiMbtTGTIF+2NrVq9Dch+OtBEIpp7N7ajn+k5hNE9K4YgqQpvTXAfbBEPKlr4jKLGp1dxwb3o9dUO5vQvFPMEedGw5vsD30snC7qPbgXV81yfC45LyUAgwmh9ELv/3fq0FHMCTmVftuxN/bDbt3luRybRH0zXqtg==
+X-HE-Tag: 1793404095-591650
+X-HE-Meta: U2FsdGVkX1+QWMhMzMpnNwAzZxROzzKc0n4Pic6NnHJoTf+xd2If5jf3jyMxg5tFC8d3D/qEoaMRRz97yFUyumZ2xYIPfj5wQ/6zCIvVPXuU+cvV6lillwUxX3OVyORZlug71rbcbs4dy2py1Tjit5/rN0QsC/8TaUwFhVsbsPdg+pbzbZbc5Jav6O/yYNZfnsIsLNlWf+Pp+zp/FHdGgn0Fp1YTJlHa/rUzdwyP4XYfJ+F/N0FLugd4/m+JVpCI8zM++Tz8U2sOx8iVyOV56/dx+XQWZ//t+d26bR3Q3b+mOtSg61mw6uqYG7zQc+OE1H+tdJbzaBOzqP+mlgwiw5KJVlzQgcLT5ca04DB3rCDZVdGK6rMvJ3chgRot1MKXcSOiqFhseYWiDyrGGPCnsVK/JOK6N1bHkuZw+Bu7ogcXXDKpQ51awu0DWOd/GaaX+VIXD1FL//m0hbn2DAyUon5XRnBuHsEssZZYc0yksUiSQNOTaGY+ZIpLPFXh7q3NPw9ZHUX4HxQZWI9HxXPonM9hmqH9EVispDjX2q3vhiTMgQr9psnBUqCrqMFKiVd+mlW4G0Uw1+9dq+bBsayGBMDLVVPXODxuCldlv+mZ4ina+skF/O2FC4UxiCB+4PSKr7ECBflfphBtTpxi9kiFNxO3ekgo5tnBED3LVHvWcLgnWBJNi46e2MWARHVjB0BGDwtDGiDKIag7syfus8AG+pwx1clWmBoQDGMxi18bA/o+1xcgcEjEyXfKSo8XT/dkgkVBFqhTLAedYO7b+z0oo2IKRTdItkryrD5jp1ksFGDSm6r3l22Yft9mgNZY7ZyYzZ8tTLpjoxX1oD1bOZs4JwM4YGqOpquZw3SE9GkYOeAT6XqLSgar7bIL7ygkLtmE+6HVkG5caMn9YvHGgUT2wT7lGOmwPRH0hlKVgRzp0pvrFRPoPbO7HmXVLZJvLW2tjuKaPRugBVxx0e7pPbl
+ s0MkP3qP
+ 6sTGaE3+0KW3a+AYlWxKs2ZdpDS/Hi6rSOaUBW+3jFaGnMEU4P19qOAo8275tr/X1hLYfyBRYZosEkyeGrgV7LxdnK6wd20Ne2DE5+tmOurICTU8OwbJ7DMDoLInh0D2CCMgrzEdBJylFZNg87fydNGcPFrnoCRPpvDJvr8Wvzjcys7xg7aI7U8VgkEY6fSkb+KOH2CFau4q0tuBVvHc++qKJ0uHips+meRtSuQeLwctRWJYrtMh3i1mokU55qWkKRAwP9DgD5ZW1tW50S45ypOB8UnNX9XIR7s6Ch0WBL6qHKDSMElrVaBwicA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,102 +152,60 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Fri, 30 Oct 2026 12:35:38 -0400 Joshua Hahn <joshua.hahnjy@gmail.com> wrote:
+On Fri, 30 Oct 2026 22:34:24 +0100 "David Hildenbrand (Arm)" <david@kernel.org> wrote:
 
-> On Fri, Oct 30, 2026 at 12:12 PM Gregory Price (Meta) <gourry@gourry.net> wrote:
-> >
-> > In auto mode, weighted interleave derives each node's weight from its
-> > bandwidth, reduced over the nodes in N_MEMORY. HMAT and CXL report a
-> > node's bandwidth once, when the node first gains memory, and nothing
-> > else on the hotplug path recomputes the weights.
-> >
-> > This can result in a major skew in distribution and overload tiers
-> > with more data than their respective bandwidth can support, resulting
-> > in a performance regression.
+> Hi,
 > 
-> ...
->
-> I think you may have dropped my review tag from the previous
-> version!!! I believe the only thing that changes is the warn, so
-> please feel free to add:
-> Reviewed-by: Joshua Hahn <joshua.hahnjy@gmail.com>
+> several MM updates:
+> 
+> Make Zi Yan a THP maintainer (thanks for all your hard work over
+> the years and thanks for taking on this responsibility), and perform some
+> MM MAINTAINERS cleanups.
 
-Actually, quite a lot changed, so dropping the v1 tags seems
-appropriate.
+Congrats and thank you for stepping up, Zi!
 
-v1->v2:
+> 
+> Then, start the next step of the transition from Andrew's MM tree to
+> separate component trees that all get integrated into the mm-next
+> integration tree.
+> 
+> Start routing shmem through mm/core.git, adding me as a maintainer
+> primarily to pick patches.
+> 
+> Then, target the following components for the mm/core.git tree that I
+> (co)maintain:
+> 
+>      - MEMORY MANAGEMENT - BALLOON
+>      - MEMORY MANAGEMENT - CORE
+>      - MEMORY MANAGEMENT - GUP (GET USER PAGES)
+>      - MEMORY MANAGEMENT - KSM (Kernel Samepage Merging)
+>      - MEMORY MANAGEMENT - MEMORY HOT(UN)PLUG
+>      - MEMORY MANAGEMENT - MIGRATION
+>      - MEMORY MANAGEMENT - NUMA PLACEMENT
+>      - MEMORY MANAGEMENT - RMAP (REVERSE MAPPING)
+>      - MEMORY MANAGEMENT - THP (TRANSPARENT HUGE PAGE)
+> 
+> More details in the last patch.
+> 
+> In the upcoming cycles we'll then route more of the other MM components
+> through different trees.
+> 
+> Let's see how this goes, in particular with the continuous stream of
+> fixes. But getting these in in a controlled way has highest priority
+> right now wither way.
 
- mm/mempolicy.c |   36 ++++++++++++++++++++++++++++--------
- 1 file changed, 28 insertions(+), 8 deletions(-)
+All makes sense to me.  Thank you for this great work, David.
 
---- a/mm/mempolicy.c~mm-mempolicy-recompute-automatic-interleave-weights-on-memory-hotplug-v2
-+++ a/mm/mempolicy.c
-@@ -261,7 +261,11 @@ static int wi_state_refresh(void)
- 	mutex_lock(&wi_state_lock);
- 	old_wi_state = rcu_dereference_protected(wi_state,
- 					lockdep_is_held(&wi_state_lock));
--	/* NULL wi_state assumes auto=true */
-+	/*
-+	 * Hotplug events can arrive before any node reported its bandwidth,
-+	 * leaving nothing to compute weights from. NULL wi_state assumes
-+	 * auto=true.
-+	 */
- 	if (!node_bw_table || (old_wi_state && !old_wi_state->mode_auto)) {
- 		mutex_unlock(&wi_state_lock);
- 		kfree(new_wi_state);
-@@ -302,6 +306,28 @@ int mempolicy_set_node_perf(unsigned int
- 	return wi_state_refresh();
- }
- 
-+/*
-+ * HMAT and CXL report a node's bandwidth only when it first gains memory, so
-+ * recompute the weights whenever N_MEMORY changes.
-+ */
-+static int wi_state_node_notifier(struct notifier_block *nb,
-+				  unsigned long action, void *data)
-+{
-+	struct node_notify *nn = data;
-+	int err;
-+
-+	if (action != NODE_ADDED_FIRST_MEMORY &&
-+	    action != NODE_REMOVED_LAST_MEMORY)
-+		return NOTIFY_OK;
-+
-+	/* The hotplug is done, failing the notification would not undo it */
-+	err = wi_state_refresh();
-+	if (err)
-+		pr_warn_once("failed to recompute weighted interleave weights for node%d: %d\n",
-+			     nn->nid, err);
-+	return NOTIFY_OK;
-+}
-+
- /**
-  * numa_nearest_node - Find nearest node by state
-  * @node: Node id to start the search
-@@ -3424,6 +3450,7 @@ void __init numa_policy_init(void)
- 	if (do_set_mempolicy(MPOL_INTERLEAVE, 0, &interleave_nodes))
- 		pr_err("%s: interleaving failed\n", __func__);
- 
-+	hotplug_node_notifier(wi_state_node_notifier, DEFAULT_CALLBACK_PRI);
- 	check_numabalancing_enable();
- }
- 
-@@ -3910,15 +3937,8 @@ static int wi_node_notifier(struct notif
- 	case NODE_REMOVED_LAST_MEMORY:
- 		sysfs_wi_node_delete(nid);
- 		break;
--	default:
--		return NOTIFY_OK;
- 	}
- 
--	/*
--	 * HMAT and CXL report a node's bandwidth only when it first gains
--	 * memory, so recompute the weights whenever N_MEMORY changes.
--	 */
--	wi_state_refresh();
- 	return NOTIFY_OK;
- }
- 
-_
+> 
+> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 
+For the entire series,
+
+Acked-by: SJ Park <sj@kernel.org>
+
+
+Thanks,
+SJ
+
+[...]
 
