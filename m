@@ -1,92 +1,91 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 224F060A260A
-	for <linux-mm@archiver.kernel.org>; Fri, 30 Oct 2026 16:10:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C871C606A331
+	for <linux-mm@archiver.kernel.org>; Fri, 30 Oct 2026 16:10:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=IjvECOsR
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Oz9Ftrt2
 Received: by kanga.kvack.org (Postfix)
-	id DC1516B05BD; Fri, 30 Oct 2026 12:10:01 -0400 (EDT)
+	id F21C86B05BE; Fri, 30 Oct 2026 12:10:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D49846B05BE; Fri, 30 Oct 2026 12:10:01 -0400 (EDT)
+	id E827B6B05C0; Fri, 30 Oct 2026 12:10:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B74F76B05BF; Fri, 30 Oct 2026 12:10:01 -0400 (EDT)
+	id D25426B05C1; Fri, 30 Oct 2026 12:10:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 758316B05BD
-	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 12:10:01 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 0395A80719
-	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 16:10:00 +0000 (UTC)
-X-FDA: 85379779002.07.B6A9B1A
+	by kanga.kvack.org (Postfix) with ESMTP id 9E4D26B05BE
+	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 12:10:05 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 2096E140736
+	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 16:10:05 +0000 (UTC)
+X-FDA: 85379779170.24.58F0BF1
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 6428014000A
-	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 16:09:59 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IjvECOsR;
-	spf=pass (imf23.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793376599;
-	b=spqWbj38jRLEDmp53th+B1cX6TprYvOfMeD1Vzo3E31u3HC576WAzD3QsPk/evecrC2dGM
-	B5ls8c+d3ttQFPbG7XewD5RLDrHrKTalQzzwJsIpmz32Mk02XcEGEB/rWVFbHf25IIP7yX
-	fybnUbrsUvO5aN5dUClxrDe3j9FXK2c=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IjvECOsR;
-	spf=pass (imf23.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	by imf04.hostedemail.com (Postfix) with ESMTP id 87DCD40009
+	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 16:10:03 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Oz9Ftrt2;
+	spf=pass (imf04.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793376599;
+	s=arc-20220608; t=1793376603;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4f6c50MfKRylF6izNPl1SWtjUxb1UX+AC8qxKNq77dA=;
-	b=sKHc6df9wLff1bcCm8B0PIGyG7B2Dng0J03wV5JNCzTJvkIGCU8LK0+c65JsYsfn+TSzIy
-	ZFTXJb7ROOpFupmOfYiaUTWOdgELASctyh2MXfkDSzt4E3xOKlwtwwSR3AyVJ/52+gPKIg
-	wLO89gEbEW9b+PaLEmnEkEww3pWAIv4=
+	bh=W80RP8FoHcI+JtK0co8C0FcIxUgtBISIXczR1g6Mk8A=;
+	b=wI9VEnzsZL9QJ1RaJP706WudDgyz/pNN9WOZB6pWmifg/qu6CYD7yYKukKnj6eSDKDnMmQ
+	GtCDRHZSHQRFdd/v/7TP9s/53DSR9QCo/zkItQ5uiH/4uynMi4y3Yz4E1mRAr+wisbABQ0
+	GWs4/29ONxpBCFJuY8d1gJepx0cMZeA=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Oz9Ftrt2;
+	spf=pass (imf04.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793376603;
+	b=3epFcy30NSXw9jnm7Y8l1QTStR7rbRwaajAA2jRrW99kicqeU1DhQOrm64YvPzkywveacN
+	RpnMzZ6IopomDmlHTmoFyqKryCAaIhQulYGhi3ltWYRrdNxaklxXZ40hT5/DoQLxNI10w4
+	IwMcJSyDte6KTs4cRQ2xDaPew/XRnv8=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id E1EDB602CA;
-	Fri, 30 Oct 2026 16:09:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 166301F00A15;
-	Fri, 30 Oct 2026 16:09:58 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 236E2608FB;
+	Fri, 30 Oct 2026 16:10:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AA371F0093A;
+	Fri, 30 Oct 2026 16:10:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793376598;
-	bh=4f6c50MfKRylF6izNPl1SWtjUxb1UX+AC8qxKNq77dA=;
+	s=k20260515; t=1793376602;
+	bh=W80RP8FoHcI+JtK0co8C0FcIxUgtBISIXczR1g6Mk8A=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=IjvECOsR6+cnwW+krKeqX6TWhRgnEw9YrQrOV40dgHGPIARR3NcGCDrCO8QmiyCTp
-	 NU4YH/77lOTvaxi5pAjiJbATh+MA87TeI//mtDuR3M15qQBq6MLFYWpjzkg7cxNo1F
-	 RDP4/uHtg6C/SfjJE5m0lya+LI8G6mipsibVliUbT+rLKJrjEn0q7YFtOAlR/+WNBG
-	 gugCjVV7pCiYzTEAEgZfKDnxClW6QVjCbSHi4iZF/94oRuVLUfJlL+fWm3B7TWhHQN
-	 3zSPIyAuaDdvu2VVfvm2KPlCyUdQxO973uAa2inK4Tl4yKoomQIlqFcssrisdcSKAH
-	 aJMmtl3Xtmedg==
-Message-ID: <sashiko-outbox-191230@kernel.org>
+	b=Oz9Ftrt2DCKtVYEclvb2IsRVsVZY0+KLOxvclWtXQMyQkAc2/gr9d/pToHs7+DGSD
+	 6QaBUMlIR5kFTl7XlSBE0o+nfLKzimy+hsd+qtIDOI3ThoAk0HUt8Cfmofb/3I8cBd
+	 S7bFfYj5Zw6JrrYKw24Sqze4VYer6x/zxNqvyM+9iXMdiX7lC7YYr47CzmRa0ldb0x
+	 NLewi3zJ9/UYqMrg1QDri/X9tBEtDWCxZzMDZVqY+u6+5vV5z8CCgm3DqM2A8OMwHV
+	 nH6lkHTv4tiKlb9q69Y3HR7qFyZJs3b5eL/s+fHMxOiIiLPNmDEamztcGjWBJAjK3u
+	 ic88NhQqJjWdA==
+Message-ID: <sashiko-outbox-191235@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 11/34] hfs: don't set SB_RDONLY after MDB write
+Subject: Re: [PATCH v2 16/34] hpfs: don't set SB_RDONLY after filesystem
  errors
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Christian Brauner" <brauner@kernel.org>, "Jan Kara" <jack@suse.com>
-Cc: "Al Viro" <viro@zeniv.linux.org.uk>, linux-ext4@vger.kernel.org, linux-mm@kvack.org, linux-efi@vger.kernel.org, linux-mtd@lists.infradead.org, "Viacheslav
- Dubeyko" <slava@dubeyko.com>, dsterba@suse.cz, tytso@mit.edu, "Mark Fasheh" <mark@fasheh.com>, "Joel
- Becker" <jlbec@evilplan.org>, "Joseph Qi" <joseph.qi@linux.alibaba.com>
-In-Reply-To: <20261029-work-fs-sb_rdonly-v2-11-2f44f64f0b66@kernel.org>
+Cc: "Al Viro" <viro@zeniv.linux.org.uk>, linux-ext4@vger.kernel.org, linux-mm@kvack.org, linux-efi@vger.kernel.org, linux-mtd@lists.infradead.org, dsterba@suse.cz, tytso@mit.edu, "Mark
+ Fasheh" <mark@fasheh.com>, "Joel Becker" <jlbec@evilplan.org>, "Joseph Qi" <joseph.qi@linux.alibaba.com>
+In-Reply-To: <20261029-work-fs-sb_rdonly-v2-16-2f44f64f0b66@kernel.org>
 References: <20261029-work-fs-sb_rdonly-v2-0-2f44f64f0b66@kernel.org>
- <20261029-work-fs-sb_rdonly-v2-11-2f44f64f0b66@kernel.org>
+ <20261029-work-fs-sb_rdonly-v2-16-2f44f64f0b66@kernel.org>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Fri, 30 Oct 2026 16:09:57 +0000
+Date: Fri, 30 Oct 2026 16:10:01 +0000
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 87DCD40009
+X-Stat-Signature: fyf67wh7a6e7dzz49jrpfwd93buxdj5z
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 6428014000A
-X-Stat-Signature: wjixqwd5ewze1rqespxqzsdxj194ro4h
-X-Rspamd-Server: rspam01
 X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
 	autolearn_force=no version=4.0.1
-X-HE-Tag: 1793376599-335923
-X-HE-Meta: U2FsdGVkX1+0gkc6rc7PZ2fyFhtxgtKmewgy1PGpmfrDPL77FYacDvscXtZDghzSfk7AfKl5nZTZ7Atky/TLrihCqfyfN/BugXqxvGyJErw4jTG7kaHrxeQAk2Z7bL8XsRI0nazcDA/0dClRm6yWWoGtkPRMA6Vz2p4FWX7hhDxGw7tioZDtH/ls5InZx0zWlTIKXelQbis8ieoY+tbifIINVOK/7ysa0unxs1rSjsbBjJHrTSkuTTQPMpsXoOLh5bJlYJN2FUBnW3P0dJ8yWeRSj1mXv4SW4bsho4Dl2R+ilVL+StkOy/OcQ4NOpkhQz1WhlT9+9LkPQqkJuuEpHQ3nC0ZtLhRkN9ylFjP4Q+3AFXvYCjoEFneHm6M+FndJ77ITyCWeLju0BhaiIWQyEurYqOuCaZpv5v1OaUqzt8gOROS6obtr0dqJpYHjdYwsw4GhkJvwiMTkU4G4pZr1rB/moArAmaKlQ2eTBYwbA0+/HUIZ4ioWOArOJ+633SRyXbeq5fryLigo2kCsxbu9xcJzH3cuU+UPTF4t7L50pusGzckeaPxIp/eLeJTigaAxigL0bSAWyN/VmYkY+7+VwM3EFt1MGFGK90WMo/3u/EFDH1bYj8U2nIyT8iRtf+h4NPibBGyxCzbnpMgKKRAfag2f4nVqcuGbFkOQzGnaLjF+l6YTca7ILfNk/JQcy4IBAvscowRSkL+yloFE5+ZytbgPq2HzV5/1AbJjW/4tlTIRuIj4rn5Ij7j16qqTyXLMV/E9CfuOygKXlJbX1lv/KFvzEfXlMqV41Jsvwkm+lyFqJaE3GxIPPFcIgld/Wo87HEKD8V9rJAP938+5Z8CP2HqqguYuC+BTHFniTJv3yKcHWm7EjLjiKddFo4R/G8sqUPhQ9h3EpHAZCbiMkqoSNYZL9wKARLzbAl5jW4S5WuSj+e1IfZh+Z8B17+g3m+KO8EvwaiFRDQLnzb4GNWJ
- L1cP0+py
- LUnO7ztdfHogEW7nvVd7kKmHeY+BnlpXapErxW6ErOVqbBZF1kdQu1Ua6dLVdK5rCBOvGdkIZH/F9Z0+zXdlXfOTPRqB7bQEUePe/9jLhb4BQI1MeS0k6ptgdb7YCIjN09hh20PPzS+aPBI3chDpqU1mGvllJaUzttt8pILnhedv+HgNePSmNHqcBz8vvC9Nth4AjhzksBlG81xWkOAUm3c1GQfiYIxDFbOccbZJcEmHHx46kKhP1nB/8OX+QXwAZv8d2hldVTjICxkTo5ieQg6nIaUZI8ovsWolKeKud2Va3z0fcxAQDR4ZjnPiYsXRdQDCoyyQD75NWvyKjbiNxUpB0KjmMjFIVv9wNvCRQm/t8rIgxcThpBHhd8F4c8jFSbZw7tg0yiZjzYEKjLYiLNeoaDayK5FyBoJFA2G34o8YnoljkkVefAAtrE5wsFQSB5Qb2/YTlDll9fq3bWHhXCf0X53BYj6rHBNNLWKiEPdGyjeiBCV9WtuOAKZ+tj5dV9F+WWj8JnMvi6xrJrLm6/R12XIs3xD+Fk8ij0/qRT5LfD/Hunh75Im/osHe07k8COjCwELWwevcijAnzie08Kb3JjSpEQQiJ5Si9F9OgIkV7s0AoaY/31hB9M0lpVdCkk9QB
+X-HE-Tag: 1793376603-281176
+X-HE-Meta: U2FsdGVkX1/0aOuuH+Gc3FThESGWdf/2WQ85kJvv5SrayxCQPHaNSf226JT7NFIQHugLKUTAtngRXuteV74tT3RZMQ1Ji3Ce+A2Cv/vAGua47QaFMru3bN0CiwtDV5Qvlh4ODrIOhZreyL6vx2HQTGOHnSYcyunQFWBmbO+Zle4MIf1MSrWPFWPH/oHTL3vlr0bVMi7Ax7HAqjoybQ7gixlL38tDeabwbODy5f1nuzBKU0M0N+eirGl/hFk3ncAn+xNKII7UFaiLnPzy5ODIGtWssNKFbF0G85HR588uR6o510E7Kn6FnruII8WKzctFV2S2Exl8WrmdNEbNHfiXf5L6eZQO7mGlQ4rTzO0J0LkyshJWEypYJ+Du5vIImfBrw6fnN1K4wSRADS7dB4KFnNQ6Sg3urdEh3yMIxd8O2/zAVKipVx7ysqYzjuV6jWt924aY9+nFeN4R+idhdYtHDCpEqoc96VorQk0nNuQu4DQKahQdfpBjUhCWsD7cuzI0fnuCAAkgVPAvx7h3NfsEbScLqU8WCLq/kcIwlUSnuLTZdHGbWntARLIaB5jHTsdwjL5nDuG9ineTrpUCFveupiPm+7F0sg8paWt9BzXraiTfOOlJItT92YrUbbNMG0uVH7ulpbBoOPNgvBiJn9hBPfitB3EfXCaiiHoFuNABqfcgUpioyNqeGaNfZJZ+Dj+1ZVPxRSMyYTrhz2PYMUqeYg0ujwIHNhXXi6q3NTYr3MFyUy6l1T+2cFhiCEKC9OJAaKe1ii5QGaEvCAN73lQy3Jm5yqgGu+jjFoMqu8BgjaTExn4lzpFl9x+pxARcIoYEh/+M2AY0Ybrs2EV3+VOEEQTyCXn2laMo/G2Smufz3z8CEkWIpXjb6FJjF0ByogFZ7Soey8SNsa2S5rsYYyfRoaHuBmHdkb98n8fZun3jB62NJdwsSp/5+iOnft1dPB1sUaMtX/QSHW/pvvKej2v
+ 9mko0eC9
+ azpfPGLmJREIW059zhEM3fwqmWf3zEZlFjVgkTYy+3ZN5V+14SSeTVotwaF5ekpLjhtvIRSmKOQ6VEVty7C+sZ4vONpuugBwBWOxtXOb0Rp88oj7R0BZ9TmboX+6HLsMQZaPRDJ0ZLb+yZVxmGfOxuPYlNnd4l83/0c19X+xRKoyLN6QqA8jcwn0naKWrnOkxGK/cMXwPzGVIsP7VQHw2QiyY6B1/c+gepsbVzhJa4MBD5C0R4w16mrh7hRDQU5jwvyPyZUCmdZY8nsehmga8RPmewNJBGIIs0GYeVeP6rJiI4ZOAIqn5vIe7XaVwdo9ugfwZ+a4fifjJzxHBnNJd4ECZfcRXygUgJ7+vNuY6098FnQhsfCm5jjLWDLcxoaopOXYsdR1j5A3GSB/Wmpp7TPGVfOknPXSSNmxx7SW5X29zThKFzpJ5qXrg5ozBqf1ldPaOvExj2uvRxazn0zPlhLwKixzN/UM/xLYRh23foRqBWs3tFyEemkfpURP9zgUeCgsCb61fcD86CFgknBQ2S7OlHdb9JGOheH7DV4u8fLlEsGWFbhhmbhGxvbRHLSl9q/A89eTHgio/T6LOA6+MlUt1wdqijKdmwCFI4aELIR3VceUgVaLRYIJNm/maAe3Y+TcX
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,103 +97,86 @@ X-Archived-By: <archiver.kernel.org>
 
 Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [Medium] hfs: hfs_file_truncate() early return leaves in-memory inode siz=
-es inconsistent
+- [Medium] hpfs: remount rw after error succeeds and writes spare block in =
+mark_dirty()
 --
 
-commit a6e743f06af9edb59d94367cc189bbdb5b8bd883
+commit 1e8d846622af872ec2aab29caf0990fcc20ac2f2
 Author: Christian Brauner <brauner@kernel.org>
 
-hfs: don't set SB_RDONLY after MDB write errors
+hpfs: don't set SB_RDONLY after filesystem errors
 
-Instead of setting SB_RDONLY without holding s_umount when an MDB write fai=
-ls,
-this commit records the error in a new HFS_FLG_EMERGENCY_RO flag and rejects
-subsequent filesystem modifications with EROFS.
+This commit updates hpfs_error() to call sb_set_emergency_ro() instead of
+setting SB_RDONLY directly once SB_BORN is set, avoiding a hang in
+thaw_super() when an error occurs while the filesystem is frozen. It also
+updates hpfs_trim_fs(), hpfs_lookup(), hpfs_map_dnode(), and unmark_dirty()
+to check sb_emergency_ro().
 
-> diff --git a/fs/hfs/extent.c b/fs/hfs/extent.c
-> index 26357086517fc..dacf7ce1ffe4a 100644
-> --- a/fs/hfs/extent.c
-> +++ b/fs/hfs/extent.c
-
+> diff --git a/fs/hpfs/super.c b/fs/hpfs/super.c
+> index 8fbdbf0806276..ab89e624cd517 100644
+> --- a/fs/hpfs/super.c
+> +++ b/fs/hpfs/super.c
 [ ... ]
-
-> @@ -491,6 +494,8 @@ void hfs_file_truncate(struct inode *inode)
->  	hfs_dbg("ino %llu, phys_size %llu -> i_size %llu\n",
->  		inode->i_ino, (long long)HFS_I(inode)->phys_size,
->  		inode->i_size);
-> +	if (unlikely(hfs_emergency_ro(sb)))
-> +		return;
->  	if (inode->i_size > HFS_I(inode)->phys_size) {
->  		struct address_space *mapping =3D inode->i_mapping;
->  		void *fsdata =3D NULL;
+> @@ -81,7 +81,14 @@ void hpfs_error(struct super_block *s, const char *fmt=
+, ...)
+>  			else {
+>  				pr_cont("; remounting read-only\n");
+>  				mark_dirty(s, 0);
+> -				s->s_flags |=3D SB_RDONLY;
+> +				/*
+> +				 * Before SB_BORN the mounter holds s_umount,
+> +				 * later see sb_set_emergency_ro().
+> +				 */
+> +				if (s->s_flags & SB_BORN)
+> +					sb_set_emergency_ro(s);
+> +				else
+> +					s->s_flags |=3D SB_RDONLY;
 
 [Severity: Medium]
-Can returning at the top of hfs_file_truncate() in fs/hfs/extent.c leave
-in-memory inode size metadata inconsistent when HFS_FLG_EMERGENCY_RO (or
-SB_STATE_EMERGENCY_RO in the follow-up commit "hfs: use the generic
-emergency read-only state") is set concurrently by the mdb_work worker or
-sync_fs()?
+When a runtime error occurs on a read-write mount after SB_BORN is set,
+hpfs_error() calls sb_set_emergency_ro(s) without setting SB_RDONLY in
+s->s_flags, leaving sb_rdonly(s) false.
 
-First, in the expanding truncate path via hfs_inode_setattr() in
-fs/hfs/inode.c (or notify_change() in the follow-up commit):
+If userspace then attempts to remount read-write (or reconfigures mount
+options without SB_RDONLY), reconfigure_super() in fs/super.c checks:
 
-    if ((attr->ia_valid & ATTR_SIZE) &&
-        attr->ia_size !=3D i_size_read(inode)) {
-            inode_dio_wait(inode);
+	remount_rw =3D !(fc->sb_flags & SB_RDONLY) && sb_rdonly(sb);
+	remount_ro =3D (fc->sb_flags & SB_RDONLY) && !sb_rdonly(sb);
+    ...
+	if (remount_rw && sb_emergency_ro(sb))
+		return -EROFS;
 
-            error =3D inode_newsize_ok(inode, attr->ia_size);
-            if (error)
-                    return error;
+Because sb_rdonly(sb) is false, remount_rw evaluates to false and bypasses
+the -EROFS check. reconfigure_super() then proceeds into hpfs_reconfigure()
+in fs/hpfs/super.c:
 
-            truncate_setsize(inode, attr->ia_size);
-            hfs_file_truncate(inode);
+	if (!(fc->sb_flags & SB_RDONLY)) mark_dirty(s, 1);
 
-If HFS_FLG_EMERGENCY_RO is set after the initial read-only check (for
-example, while waiting in inode_dio_wait()), truncate_setsize() updates
-inode->i_size and then hfs_file_truncate() returns early before reaching
-the expansion block:
+	hpfs_unlock(s);
+	return 0;
 
-    if (inode->i_size > HFS_I(inode)->phys_size) {
-            ...
-            res =3D hfs_write_begin(NULL, mapping, size + 1, 0, &folio,
-                            &fsdata);
-            ...
-            if (res)
-                    inode->i_size =3D HFS_I(inode)->phys_size;
-            return;
-    }
+And mark_dirty() in fs/hpfs/super.c checks:
 
-Without the early return, hfs_write_begin() fails with -EROFS and reverts
-inode->i_size back to HFS_I(inode)->phys_size. With the early return,
-hfs_inode_setattr() succeeds with inode->i_size larger than
-HFS_I(inode)->phys_size and HFS_I(inode)->fs_blocks, causing subsequent
-buffered reads via hfs_read_folio() -> block_read_full_folio() ->
-hfs_get_block() to see unallocated blocks and return zero-filled pages up
-to the new inode->i_size.
+	if (hpfs_sb(s)->sb_chkdsk && (remount || !sb_rdonly(s))) {
+		struct buffer_head *bh;
+		struct hpfs_spare_block *sb;
+		if ((sb =3D hpfs_map_sector(s, 17, &bh, 0))) {
+			sb->dirty =3D 1;
+			sb->old_wrote =3D 0;
+			mark_buffer_dirty(bh);
+			sync_dirty_buffer(bh);
+			brelse(bh);
+		}
+	}
 
-Second, when an extending write in hfs_write_begin() or hfs_direct_IO()
-allocates some blocks via hfs_get_block() (incrementing
-HFS_I(inode)->phys_size, HFS_I(inode)->fs_blocks, and inode->i_bytes) and
-then hits -EROFS on a subsequent block after HFS_FLG_EMERGENCY_RO is set,
-error cleanup calls hfs_write_failed():
+Unlike unmark_dirty(), neither hpfs_reconfigure() nor mark_dirty() checks
+sb_emergency_ro(s).
 
-    static void hfs_write_failed(struct address_space *mapping, loff_t to)
-    {
-            struct inode *inode =3D mapping->host;
-
-            if (to > inode->i_size) {
-                    truncate_pagecache(inode, inode->i_size);
-                    hfs_file_truncate(inode);
-            }
-    }
-
-Returning early at the top of hfs_file_truncate() skips the out: label
-adjustments as well, leaving HFS_I(inode)->phys_size,
-HFS_I(inode)->fs_blocks, and the inode byte count inflated past
-inode->i_size.
+Does this allow a read-write remount or reconfigure after an error to
+succeed and synchronously write the spare block at sector 17 via
+mark_dirty()?
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261029-work-fs-sb=
-_rdonly-v2-0-2f44f64f0b66@kernel.org?part=3D11
+_rdonly-v2-0-2f44f64f0b66@kernel.org?part=3D16
 
