@@ -1,107 +1,107 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4167606A322
-	for <linux-mm@archiver.kernel.org>; Fri, 30 Oct 2026 17:23:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF3B5606A31C
+	for <linux-mm@archiver.kernel.org>; Fri, 30 Oct 2026 17:23:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=broadcom.com header.i=@broadcom.com header.a=rsa-sha256 header.s=google header.b=Gqb9e2vA
+	dkim=pass (1024-bit key, unprotected) header.d=broadcom.com header.i=@broadcom.com header.a=rsa-sha256 header.s=google header.b=QbxonJYK
 Received: by kanga.kvack.org (Postfix)
-	id C00E16B05B5; Fri, 30 Oct 2026 13:23:35 -0400 (EDT)
+	id 042AF6B05B6; Fri, 30 Oct 2026 13:23:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BB2176B05B7; Fri, 30 Oct 2026 13:23:35 -0400 (EDT)
+	id F0DED6B05B7; Fri, 30 Oct 2026 13:23:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 98CEE6B05B5; Fri, 30 Oct 2026 13:23:35 -0400 (EDT)
+	id DAE3E6B05B8; Fri, 30 Oct 2026 13:23:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 6CA7A6B05B5
-	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 13:23:35 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id D55B314064A
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id B1D0C6B05B6
+	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 13:23:37 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 3D9E1A05F3
+	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 17:23:37 +0000 (UTC)
+X-FDA: 85379964474.08.3AE54C4
+Received: from mail-pg1-f225.google.com (mail-pg1-f225.google.com [209.85.215.225])
+	by imf28.hostedemail.com (Postfix) with ESMTP id F38DDC0004
 	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 17:23:34 +0000 (UTC)
-X-FDA: 85379964348.01.469C2FD
-Received: from mail-pj1-f98.google.com (mail-pj1-f98.google.com [209.85.216.98])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 82FDC4000B
-	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 17:23:32 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=broadcom.com header.s=google header.b=Gqb9e2vA;
-	spf=pass (imf07.hostedemail.com: domain of florian.fainelli@broadcom.com designates 209.85.216.98 as permitted sender) smtp.mailfrom=florian.fainelli@broadcom.com;
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=broadcom.com header.s=google header.b=QbxonJYK;
+	spf=pass (imf28.hostedemail.com: domain of florian.fainelli@broadcom.com designates 209.85.215.225 as permitted sender) smtp.mailfrom=florian.fainelli@broadcom.com;
+	dmarc=pass (policy=reject) header.from=broadcom.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793381015;
+	b=KWfRfH21UeP8uUr41lx5J9n+Xak1vkZsteUveTXU0VsqkWGWg6/ww3+m0BrPoTZjR9kJIh
+	NL9CLXMXZeOSwY0i639yJE8zIIHbXPzRbWyDEgC62E1qPMLbFHqaJdFNuTQmAW/vYFssIt
+	avg8H5AUyC5G7Q1NJ6uQCO3JYh578Q8=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=broadcom.com header.s=google header.b=QbxonJYK;
+	spf=pass (imf28.hostedemail.com: domain of florian.fainelli@broadcom.com designates 209.85.215.225 as permitted sender) smtp.mailfrom=florian.fainelli@broadcom.com;
 	dmarc=pass (policy=reject) header.from=broadcom.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793381012;
+	s=arc-20220608; t=1793381015;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=A/s8CVJR0YF5mgHtNd3A3LZYKxjpwFNKk2F6XF60RQU=;
-	b=PSZPpwIAcxPkBOMmUN+AxKQkauIykzc3URBCj4b1KIOwDJjpE6GFPZOQ3zBXqTOqFFoJDK
-	ViCLxSX2KxPFtz5r7TdXdwhWCrDNiupjjj1ABCnKVPHe7UD5bI2mAYaHPyHySRx31aC72p
-	EL1JJ0Bfh8CHkw6xuzgVZXhUi1c4c88=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793381012;
-	b=QVcx8t3fw2AvsAR4JMeY8iqcZjdT8yIGwIvNw2S0dYKRSUPftfVE50pLhVpXSWEX+2nfun
-	Kx0NTBA2YCWv9m2pQixpoeVr8wWF/iffbSTQMEOOwdbgu+LMPDxZeq72h+EoT92R/gjP5z
-	8S7QDf0SRcqRMU7eJju/mwGfRBixHGc=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=broadcom.com header.s=google header.b=Gqb9e2vA;
-	spf=pass (imf07.hostedemail.com: domain of florian.fainelli@broadcom.com designates 209.85.216.98 as permitted sender) smtp.mailfrom=florian.fainelli@broadcom.com;
-	dmarc=pass (policy=reject) header.from=broadcom.com
-Received: by mail-pj1-f98.google.com with SMTP id 98e67ed59e1d1-3ae1da332bcso545839a91.2
-        for <linux-mm@kvack.org>; Fri, 30 Oct 2026 10:23:32 -0700 (PDT)
+	bh=q/Q9JkBadsgG41NDSYMszyxdI8yHLcwep1flIBRRZUQ=;
+	b=yw06+02cPaSEES/ZtCod7clRT8rLeSeAnJXn3ZFsQNzVgy1Smemcwv8PmSKRNliwG9VkQj
+	HZc7VPekXOKhfJPIF4XlacSOLl3HoZf74XGOuGrW8R0FY4fUi4eFr9VVzzwNGsxDpBByk5
+	34TpLFTjWcjAoylYWz50481a17njUpg=
+Received: by mail-pg1-f225.google.com with SMTP id 41be03b00d2f7-cc4aa0246b7so531329a12.3
+        for <linux-mm@kvack.org>; Fri, 30 Oct 2026 10:23:34 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793381011; x=1793985811;
+        d=1e100.net; s=20260707; t=1793381014; x=1793985814;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:dkim-signature:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=A/s8CVJR0YF5mgHtNd3A3LZYKxjpwFNKk2F6XF60RQU=;
-        b=yy4Dt9uiGK3jiHISYrIKY6HVyrznxSn4v8OcgbJ/Oxeeg0mT56UNDd1f19aHhsn4Bs
-         iUhSvmKUu/KG6EX36MzFtKXk7FhE3YaGBVYwVQNBAYXnZJNbW03cmW4K/vRQSCk04x3B
-         WXhz5DulrizKpBCd7q6kwRZ4IZMHbyeDeprV2jdpdJ7L6y/Ua5WJ+U/LICf/dDcgTKog
-         kzkbURxxbad7vwJkpnnDpdbBmn22B5yCGgoyjgrrClyOzwzYDjgktjKQXbj+puRi2i07
-         pSRexmEqzZFlIarj//RT3YqdlgVTbMLXRbdasykxscrsaLlhfeIK5B5c+DeB7RaIW+t0
-         IJ/A==
-X-Forwarded-Encrypted: i=1; AKwUvBwyDINkLlO8tSLCZpnREqsl2+frrrD9db7dG4Ol3hrESl+lEQQ9LlH2mquy8zJgPvkpS1dElbox7g==@kvack.org
-X-Gm-Message-State: AFq9FYKKWBcnQVU13QgM7B9gq2On3Gl8l9mR+vZSCnxHFBS9D0u6/WmS
-	D1LYf7mwKoTJcRA3RIUWFpmKibh7z73LgIGEF5STywQ6L6ii1EDMfyuBusBLDR/47mlZmoe1O4a
-	DdNpZj/FY+01h0EeNDw4YZKPiUMl7VfSLenZJ1tvQEIu1AmWf4/Oxx3B2LJy6o4Ii5RE/4fQ+MG
-	Ga0AQYTD9DC3W88LDxd89M4HFyiuRsh8y2/qskFWBQEo8UDcmYVaol8KpBY5b+LsOVD8K6CRFNv
-	v6LrAQ2JRmnLA==
-X-Gm-Gg: AYBFou1mXkwxhqEDpb3lvZ57M0R9qNA2TsM2F3W+FIepyOCTo38W/ZZpU6yQPHxUs9b
-	90XYkzZsR5eIvLwczJ9E6KxwoRxD4aOKCYeJ1lbl6KKd8cK0eVkTjGqHrh5e14043TT9GwmN1VZ
-	FmR+byAv2a8hLcCpv7yqP0s5imjJW/DMfNmKyDnzylrAo8n5izu7nT/0el4gnXy0ObEKr6G5b4/
-	Q5mYP3F62ONLLEnLxAmWwMBk/XYFvH2oGUk9xx2kdzv0rNHsT06sNX8osonMHSK0T6sPe+td7bm
-	rWTVbH1m7fOnJ0UGBApktLbKgBnxjRyjXsZgZCZSB5FXA5YyyUUXT4co7It8Av85svPGD1VMvJf
-	K2Khaf5BlU9550RaYygHn091mIvnVhzFOt8nO2vdhwCMa+WzP39pw05xdY428oFzyd4aIwhK5Fq
-	18aQGANr8BSQNnvmI7FAFACkgJf7T2kdv33asqCXZX
-X-Received: by 2002:a17:90b:4406:b0:3ac:b6eb:e0dd with SMTP id 98e67ed59e1d1-3ae8984de49mr2272959a91.50.1793381011319;
-        Fri, 30 Oct 2026 10:23:31 -0700 (PDT)
+        bh=q/Q9JkBadsgG41NDSYMszyxdI8yHLcwep1flIBRRZUQ=;
+        b=ZsnW9Tn9v6SjN0KgUxgY8IZ34GotLr7nhyAllOcyKT1AdTTokT1I4CYXO3p/b0UyJJ
+         RHCmfzMLdnh4Ask9WahcZcHUuJd4fl8SZOq4Qk5lWDv+6u515wkXv3bbTq87N0RXe+3I
+         s6XBhbeltIe+Q6GEp3SZMJmhefuVwRrm5qYoOZkxhNPBNPSPxW3Bgj22Y5KQ3PhQGAvq
+         ijPHlUPP+UVXwbOa47WY9Wjej/l5sUMMV9UbiF1B3nZhFvVCMZYMGg8cW3KwjvUzAZJN
+         QTVO1GTCWEtFX2/TuVy3v8DXMLW0lrz6jOysQ58oQhpAtmvRGk/xaq48OvXjmgzqqLOE
+         Llmw==
+X-Forwarded-Encrypted: i=1; AKwUvBzqTuhwOhRiDKuux2nHU4P5XbR0HVIB9G5QFnK0Gr0be9GJbLTDIqGdfG1WKrz7se9I2M5Q8nt5vA==@kvack.org
+X-Gm-Message-State: AFq9FYL1FsYvq1f/FchV1ydWJyiMgjEzl9GjI9/ATJ9XLhHSeOlhAH+1
+	X2x3615KOgPr0dXUxFU8ivbiGSMffagS0aAvOHzNulq9zwu1vh8HaSYvsw/WKf6B7aVmdrYNnrZ
+	+qLcDRMc0K+7gVEEvZJHBqo/8uTZAHyxvT96kkQGvw5SxItc5QugF9vJ23DKjAF9hieRWWmrrUq
+	gPXLcHSvAG2ohslrwNWbwLCr0uQsvGOxSVOeva/3aQKnJlWhfkdEN7cEN9VWcyjkNBMyJUAcKp/
+	x6Qh6nOSux2QA==
+X-Gm-Gg: AYBFou0gzFQiu/rV9e1FxNyRXSTalJbyQfimHnB0dW8oO8MgEtDK8bujPHNSQounDd9
+	vxC4Fwb+Ng7ohAG7mWld/GBata8Ml65FgGRiMyaD49cTzEcMkl8BE+lFbRGhALBJsTUiB5K8Uke
+	26KiGikQrJEekvFJJa1G4/FWZAaaplc/l+G2Nt2NsEctEaakKwiYQmFnLrp5hRKapzh2/OJbQyP
+	tR4CXHKtARZCgpaIzdNj4C95nh+ncxSbS2YXGBH+zFwCl/lOZr+NwaX5/t+ZtpkeOE921v195Wd
+	4BvIGg2sMz9NLlrJogPIbiLtG8uO6u5ZXuX6iHSDwvm5XXsHUq0umG8BaR4Ml8fF7siwUGQyXQH
+	l/vPh0RSqN5kyYJcFP27sdu7EL/ILR5e/GSjTCrj/XNLJWoOOw3JGUHuO7jzEXyFea1NuSCtddE
+	TfZS1KDXv3rgKTFo/x3+04HvKffJOcfyS/TA3Bn0iP
+X-Received: by 2002:a17:90a:fc4b:b0:3ab:b64:5893 with SMTP id 98e67ed59e1d1-3ae8981bf35mr2279788a91.53.1793381013717;
+        Fri, 30 Oct 2026 10:23:33 -0700 (PDT)
 Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-13.dlp.protect.broadcom.com. [144.49.247.13])
-        by smtp-relay.gmail.com with ESMTPS id 98e67ed59e1d1-3ae8444ce5esm2347833a91.2.2026.10.30.10.23.30
+        by smtp-relay.gmail.com with ESMTPS id 98e67ed59e1d1-3ae6e80415bsm4408054a91.3.2026.10.30.10.23.33
         for <linux-mm@kvack.org>
         (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Fri, 30 Oct 2026 10:23:31 -0700 (PDT)
+        Fri, 30 Oct 2026 10:23:33 -0700 (PDT)
 X-Relaying-Domain: broadcom.com
 X-CFilter-Loop: Reflected
-Received: by mail-dl1-f72.google.com with SMTP id a92af1059eb24-14373747468so988982c88.1
-        for <linux-mm@kvack.org>; Fri, 30 Oct 2026 10:23:30 -0700 (PDT)
+Received: by mail-dy1-f197.google.com with SMTP id 5a478bee46e88-30c0d568830so1792138eec.1
+        for <linux-mm@kvack.org>; Fri, 30 Oct 2026 10:23:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1793381010; x=1793985810; darn=kvack.org;
+        d=broadcom.com; s=google; t=1793381012; x=1793985812; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=A/s8CVJR0YF5mgHtNd3A3LZYKxjpwFNKk2F6XF60RQU=;
-        b=Gqb9e2vAG945y0rJ9SCbI6ZIscrLewUVDs5JP290a2QkcWHMzCkjL6D1QAJhNftOsy
-         HM8haJOJO2FRRhfrLqCsE4Pwy911r2M/ONHQ76xK83q6U4owDkPONgtb0bvWFl3FcV9X
-         9ZeWFXd2W+t4fHrNLczy8NE3Qt93YmZsWqCAw=
-X-Forwarded-Encrypted: i=1; AKwUvBwIMOjR9gaaUKAUeY+l2WgGk6UBzfQh3vk4XGIa4em4NzXw4fGwl1XdO2QRJfRGgs6i49dB4fRT5Q==@kvack.org
-X-Received: by 2002:a05:7023:903:b0:17f:7280:1332 with SMTP id a92af1059eb24-1ac5c92f6e4mr4286481c88.40.1793381009068;
+        bh=q/Q9JkBadsgG41NDSYMszyxdI8yHLcwep1flIBRRZUQ=;
+        b=QbxonJYKTKdZzMrwWymj/ozxLkfcaBm6i/nvElAJRDCwudI4TLhpe9IYMj+kJq4Da6
+         ufuWaekh6YLxmNK7IftLr51Wy3QtkOt85/uXN3zEtO+dLCWm/l+/6sitjUhSgxnUU+Xr
+         qpD9fSH9ifvDAiqa2jCI8gR2afh2K8Xcorfxk=
+X-Forwarded-Encrypted: i=1; AKwUvBwUV2vmhHfyflGtLlLWHSMZqeC2TOstr6CDS+7OBxWok8lGXmMTmbuDoSupc8ldqO6ox9rdOUSDxA==@kvack.org
+X-Received: by 2002:a05:701b:230e:b0:151:2e62:fe4b with SMTP id a92af1059eb24-1ac5bda8579mr3875015c88.23.1793381010375;
+        Fri, 30 Oct 2026 10:23:30 -0700 (PDT)
+X-Received: by 2002:a05:701b:230e:b0:151:2e62:fe4b with SMTP id a92af1059eb24-1ac5bda8579mr3874956c88.23.1793381009347;
         Fri, 30 Oct 2026 10:23:29 -0700 (PDT)
-X-Received: by 2002:a05:7023:903:b0:17f:7280:1332 with SMTP id a92af1059eb24-1ac5c92f6e4mr4286388c88.40.1793381007744;
-        Fri, 30 Oct 2026 10:23:27 -0700 (PDT)
 Received: from stbirv-lnx-1.igp.broadcom.net ([192.19.223.252])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1ac1abcf67csm8463406c88.21.2026.10.30.10.23.25
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1ac1abcf67csm8463406c88.21.2026.10.30.10.23.28
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 30 Oct 2026 10:23:26 -0700 (PDT)
+        Fri, 30 Oct 2026 10:23:28 -0700 (PDT)
 From: Florian Fainelli <florian.fainelli@broadcom.com>
 To: stable@vger.kernel.org
 Cc: bcm-kernel-feedback-list@broadcom.com,
@@ -114,9 +114,9 @@ Cc: bcm-kernel-feedback-list@broadcom.com,
 	linux-mm@kvack.org,
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH stable 5.10] mm: move 'mmap_min_addr' logic from callers into vm_unmapped_area()
-Date: Fri, 30 Oct 2026 10:22:14 -0700
-Message-Id: <20261030172216.368052-2-florian.fainelli@broadcom.com>
+Subject: [PATCH stable 5.15] mm: move 'mmap_min_addr' logic from callers into vm_unmapped_area()
+Date: Fri, 30 Oct 2026 10:22:15 -0700
+Message-Id: <20261030172216.368052-3-florian.fainelli@broadcom.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20261030172216.368052-1-florian.fainelli@broadcom.com>
 References: <20261030172216.368052-1-florian.fainelli@broadcom.com>
@@ -124,18 +124,18 @@ X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 82FDC4000B
-X-Stat-Signature: fd7iooruaeyy6y1bs676srpwy5yeg74b
-X-Rspam-User: 
+X-Stat-Signature: 1c6e96rwp1geqawxzmjbrgoi5gt6zxj6
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1793381012-721362
-X-HE-Meta: U2FsdGVkX1+szJaVTBXXuMd+e2aX7kZO6A3VlMzQlmgLSlkJMtV1yGE2nzl8X43TkaCUY5W1JtXDcKFXjJxlSXJbj6We/uGYlKjciRNaAKYW3patS70gJ2KE6uIFDShuc43LY9ktlbeBktIKNuSRGjzhsSVhxfuSS0q/FXD3IN2wvo+1m4EPcEW6uVjhaqxA3XJNfwfsTwMVk2ItVz7lVpwEsartgu3coCEqWb1GXBPotBDBeknN/lILVT8aJLA56rw2grFSNc6WclX8f2Q6LaHN94z+xHJnGsgxvIG14kU/xhuDgjMasmSYw4pHjj9v7lHfhJiZBWm/La5TFkp/01TBXNm84ZgGjfERwV7RgynA6O+3a8Ey7cjkF3BE2f13gxm+rkujM2qkMvhrrfPQKkF4jpaG0T+fztRUiwQfms+1K4Ajn7o+wPbMzpb8yT45lZYwPlxZuH75fkERC3rjFYMcommyf3ReoXqOjlDkAtkwDDg2jKxLzuklEos7L5V/UWtO6XNyOcbNrUIejjW+MdQ2QkLUI/Fs6fBBtGdJ+gTXSx1mC9FXm54297vdOKgk0EsadEVhZIYDBXhSaJwFvjLrzCT9LYGE6JQHhkQuflHKxKLi83Of+As2s8IVKf9xw+PgpD64jFLqi06G5NCj3temZ0osTuEWA4cAX3k9d3N1a6yXZdKXf/rILJYzEbqL09i1bHa2GGxsdvy3tj2bRTuvgnIp0ERsIh6WzVwuLt0hPWufmrQpGLemUUdGy1epkJlnHGGIc4zBWgO306kYh9J9l6JfrYNA1+ssK5hDrr50nEOhhwKFQLsOKW9U6vgpVlnT5col3dSIy5We+SZK8e6Wecwj1jzva+Ka7u3Z266OAsbqGisdutMyoWrkIYSwN2jd0Aa0EXk0jHEvAlZ0t8hpq0TfRYYvTxjOl2Bmzvz7LW7Igp5KVtimtdeVTL/lm38UO67xUOQgqWu6Y6Q
- 8ri/9Zoq
- RI8yKZ/kAdIgWl5nxEMgHNgay8QjFkIs5Kb+13OquOB9wol4EHiACgk37L4ey2RMV4630PA59PoMfK0jSxGqEk9es/V/EfCOyYc40yxM3ZQMvkr0F8GVm3JUsRJLWJ/Wyg4GqJ/V4wJMNOdlPW9ezheTP2Co7hbJU3qyxpmIiDhftdSxzWD8jfRlcF3nUWU5uu/1+30e9tx0IKQ/cO/jg5/xZAQusU0o7iKFE59ASNsDORLFjdzwtdI3eWITHxpFJ5THz1iGx1KwUeauYuUzd5ZTrtb6hdOYPRjnJKjoURM8PB+6h1QdKsmYMJYATqjYdBkFGXMMIJTNBU3PvrovlKyV6qilkvSzp3Mr8cgyXtaCL8yIFmtDmsOwyMnhrslRDdG73y/W0IoqhGrOtb5UlGSakWZF1bxMp5R/LeUwwEwt46WsYr8s1VNDg2ett++WzBdGfL1MoyJs7NkzPTnKihFIAFJoWfNhpsESzxVQdjWAN56nTQZ9jkCYpvHQs5Z7jFzhKppXZne7ljWNwTEDngodnzCxFdxsBhvPy5XClXa0MMe2SS35k4L+SYs0N7rBGiNkrELRxtDeahAnfKCsyXCQhUERy9EZ/0Oe48CCHFdxzfjS22vdVhvazRhHZHZGe3CzXPryDe1RLc0yp7+EhYsP5/g==
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: F38DDC0004
+X-Rspam-User: 
+X-HE-Tag: 1793381014-30184
+X-HE-Meta: U2FsdGVkX19+BWm8MuNT9ezQNMlmr0rwBpYugGkiJchHMvn8avhABpKmJ+zD7NfFOdeqHStg4Ui1weG2+8tqcGht7AESXoIFzCgTCLQPIyTXXDLC08WzEnIG8vkQyUjW0O2rlyFieldWx2O3/NyCIip6uGeCuK/6CImCC8iAojqoZdalvG9RUChMDEQp/KSdZzsHdeFIPAfAtn+OVUAZli5ahfLizPwbteuWFoUUPhgchulqdOSHo2cWGJWHFoaiMJiGPkOrsusXaGHAYyvm5TiQmyhODolh5FsKnsPa1pE29JTd110tj4RTmuI5aTQokmqEMIpNcSnM6KmnXMpy2i2OkWiOo3SIgMEVemS+uOC3W+s01dE3RJXKoaR9Ockr+cE2o5wCIuUSx+ARIOU9/AMJSWVFWrCxHYkQqb29maihXwhbFZAtqYn+cvYcZHhptxpNf81o3RL+eZHfhfh3BAiUDGMiNCL2ih8QNIYw3R1LcuceQkXusjOMwExYTWfseu5ZbPTESfQLx7XHT29e/hpDzmJKa6/17ksRHHibvCVsfuSoW0fQnW8LC0KAvkiuEInXdGmG8eHv0aM/UfSBt6New3J7QfXB31tR2e4bDAsiG7BZi6wXW+BXtOus20ADzAaQDEI+PCAyzAXSuF6PK7WjTdBLaL5XI8RFdlcVnAXfDauT7vIlddQ/PYUNrX48rwZzZhhHX3s5lMWJsohgR9qeD/zZYiTRG9iltNTY/lmToDbTE4VlqnY7mTpBm9wTjwDLPfTDgf99KWuSLHw0o9KY1TzTTqW8bEmDFscePREY8/yakbxi6dSD8514bMS1o38pU8ZA980ZjtVYrAejcuFh6LvP78UC3LpYVxyuKPaCizjsZRpLy41i5LuKR0c5Lt//gkwKQQ3btUK/NAeFtVswlP5B0MVhIXV+dGhHuc0kTJjD26bGv4NULPWthoAq8qnNvFOBoktA+4GHOUY
+ xTnIfy0D
+ IE2m7Ib3W2CEEWu9n/Wg3lCyyNRn4kDrXb12thTTo5NFnTpiXka0jmpQfJS5cgv6RLA+fEUeCQNGlkY59zPUPcDbHYvFvP85V0Ps/LSK8QBFBD96J+gmfXUciji0mlQb/jw4MSmf/mFadqNM0B29OKkOIAk2Z+NuOFZAAq3ENe2T0wbOvDgnG9m3v312uGr4DZhjt0JmYrbS7v3HAqvQasf1ctTwUc2CmXkPMqqeKSGLD/zDyN1aWCYEa/2o9b3sQRdUEAzonny8GaXg0o7HXkfQPxh511gJfQlrmXbZDPmabG+uRZY8DEHDercKdAldHUknXv3tyzz6b90nSH86cb/fOOUdmVeFq0b6aGtjoLLrRmJIIsOUdrpv+PbObFCzeAzju/dZ2dEJyexmiRgTCe+5j6ASEnlLIjA4zlQoo508G8YCHzHqST8rk0xwA2ucGbZsHUvAFzN2NblOa1231DhNYwdeM07nfg/2i+Ay7C0uzF9XcovuF7w9gGscyzY2/ct0VTUb5eyCIWxJBOMU+5VNH/lJp5wDEDQOTc69seWUFhCJpBxPkI8HIdiBZvoXhDpUw68g87qdwqYaZnBeJ7lu/y/7Emh/p+YCI4834UES9U2WWg7Wr3V8w2q385TfQ8WT0SR2ImZXqQB6sYbl4Ps7TWg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -189,7 +189,7 @@ Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
  4 files changed, 13 insertions(+), 11 deletions(-)
 
 diff --git a/arch/s390/mm/hugetlbpage.c b/arch/s390/mm/hugetlbpage.c
-index 0ca46f5d9438..96c04071a0d6 100644
+index 8631307d3def..01aaf530ee7a 100644
 --- a/arch/s390/mm/hugetlbpage.c
 +++ b/arch/s390/mm/hugetlbpage.c
 @@ -290,7 +290,7 @@ static unsigned long hugetlb_get_unmapped_area_topdown(struct file *file,
@@ -215,7 +215,7 @@ index e54f928503c5..1cb7ec9f9e6f 100644
  	if (filp || (flags & MAP_SHARED))
  		info.align_mask = MMAP_ALIGN_MASK << PAGE_SHIFT;
 diff --git a/fs/hugetlbfs/inode.c b/fs/hugetlbfs/inode.c
-index d2a3964daf70..0a5236d8d2db 100644
+index f663657c237f..b41e79f964d2 100644
 --- a/fs/hugetlbfs/inode.c
 +++ b/fs/hugetlbfs/inode.c
 @@ -232,7 +232,7 @@ hugetlb_get_unmapped_area_topdown(struct file *file, unsigned long addr,
@@ -228,10 +228,10 @@ index d2a3964daf70..0a5236d8d2db 100644
  	info.align_mask = PAGE_MASK & ~huge_page_mask(h);
  	info.align_offset = 0;
 diff --git a/mm/mmap.c b/mm/mmap.c
-index f820bfbe5852..290822968e21 100644
+index 53fa4f5167dd..2c22f4bee04e 100644
 --- a/mm/mmap.c
 +++ b/mm/mmap.c
-@@ -1944,6 +1944,7 @@ static unsigned long unmapped_area(struct vm_unmapped_area_info *info)
+@@ -1917,6 +1917,7 @@ static unsigned long unmapped_area(struct vm_unmapped_area_info *info)
  	struct mm_struct *mm = current->mm;
  	struct vm_area_struct *vma;
  	unsigned long length, low_limit, high_limit, gap_start, gap_end;
@@ -239,7 +239,7 @@ index f820bfbe5852..290822968e21 100644
  
  	/* Adjust search length to account for worst case alignment overhead */
  	length = info->length + info->align_mask;
-@@ -1955,9 +1956,9 @@ static unsigned long unmapped_area(struct vm_unmapped_area_info *info)
+@@ -1928,9 +1929,9 @@ static unsigned long unmapped_area(struct vm_unmapped_area_info *info)
  		return -ENOMEM;
  	high_limit = info->high_limit - length;
  
@@ -251,7 +251,7 @@ index f820bfbe5852..290822968e21 100644
  
  	/* Check if rbtree root looks promising */
  	if (RB_EMPTY_ROOT(&mm->mm_rb))
-@@ -2023,8 +2024,8 @@ static unsigned long unmapped_area(struct vm_unmapped_area_info *info)
+@@ -1996,8 +1997,8 @@ static unsigned long unmapped_area(struct vm_unmapped_area_info *info)
  
  found:
  	/* We found a suitable gap. Clip it with the original low_limit. */
@@ -262,7 +262,7 @@ index f820bfbe5852..290822968e21 100644
  
  	/* Adjust gap address to the desired alignment */
  	gap_start += (info->align_offset - gap_start) & info->align_mask;
-@@ -2039,6 +2040,7 @@ static unsigned long unmapped_area_topdown(struct vm_unmapped_area_info *info)
+@@ -2012,6 +2013,7 @@ static unsigned long unmapped_area_topdown(struct vm_unmapped_area_info *info)
  	struct mm_struct *mm = current->mm;
  	struct vm_area_struct *vma;
  	unsigned long length, low_limit, high_limit, gap_start, gap_end;
@@ -270,7 +270,7 @@ index f820bfbe5852..290822968e21 100644
  
  	/* Adjust search length to account for worst case alignment overhead */
  	length = info->length + info->align_mask;
-@@ -2054,9 +2056,9 @@ static unsigned long unmapped_area_topdown(struct vm_unmapped_area_info *info)
+@@ -2027,9 +2029,9 @@ static unsigned long unmapped_area_topdown(struct vm_unmapped_area_info *info)
  		return -ENOMEM;
  	high_limit = gap_end - length;
  
@@ -282,7 +282,7 @@ index f820bfbe5852..290822968e21 100644
  
  	/* Check highest gap, which does not precede any rbtree node */
  	gap_start = mm->highest_vm_end;
-@@ -2128,7 +2130,7 @@ static unsigned long unmapped_area_topdown(struct vm_unmapped_area_info *info)
+@@ -2101,7 +2103,7 @@ static unsigned long unmapped_area_topdown(struct vm_unmapped_area_info *info)
  	gap_end -= info->length;
  	gap_end -= (gap_end - info->align_offset) & info->align_mask;
  
@@ -291,7 +291,7 @@ index f820bfbe5852..290822968e21 100644
  	VM_BUG_ON(gap_end < gap_start);
  	return gap_end;
  }
-@@ -2235,7 +2237,7 @@ arch_get_unmapped_area_topdown(struct file *filp, unsigned long addr,
+@@ -2208,7 +2210,7 @@ arch_get_unmapped_area_topdown(struct file *filp, unsigned long addr,
  
  	info.flags = VM_UNMAPPED_AREA_TOPDOWN;
  	info.length = len;
