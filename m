@@ -1,90 +1,94 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1D14606A31C
-	for <linux-mm@archiver.kernel.org>; Fri, 30 Oct 2026 02:58:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92DC0606A31A
+	for <linux-mm@archiver.kernel.org>; Fri, 30 Oct 2026 02:59:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=UK1LXpsj
+	dkim=pass (1024-bit key, unprotected) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=hSHEsgsY
 Received: by kanga.kvack.org (Postfix)
-	id E60B56B05B2; Thu, 29 Oct 2026 22:58:57 -0400 (EDT)
+	id AB6D06B05B4; Thu, 29 Oct 2026 22:59:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E385F6B05B3; Thu, 29 Oct 2026 22:58:57 -0400 (EDT)
+	id A8DFE6B05B6; Thu, 29 Oct 2026 22:59:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D75536B05B4; Thu, 29 Oct 2026 22:58:57 -0400 (EDT)
+	id 9A4016B05B7; Thu, 29 Oct 2026 22:59:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id ADE9D6B05B2
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 22:58:57 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 32F85405C4
-	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 02:58:57 +0000 (UTC)
-X-FDA: 85377785514.19.4CB824D
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 9CD32160003
-	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 02:58:55 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UK1LXpsj;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf08.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 78A486B05B4
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 22:59:03 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 3A92CA8058
+	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 02:59:02 +0000 (UTC)
+X-FDA: 85377785724.13.F4B0BAA
+Received: from out30-100.freemail.mail.aliyun.com (out30-100.freemail.mail.aliyun.com [115.124.30.100])
+	by imf30.hostedemail.com (Postfix) with ESMTP id E418080003
+	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 02:58:58 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=hSHEsgsY;
+	spf=pass (imf30.hostedemail.com: domain of joseph.qi@linux.alibaba.com designates 115.124.30.100 as permitted sender) smtp.mailfrom=joseph.qi@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793329140;
+	b=S9r9iiu5NtdQ5rRTNxg0K/avI+oIYikJRUl6tFzbJivP78gEsLr3T6jhwe3hrEFO2lRx/s
+	0Spqizd1Dtlqwoq/IBB+t4GUf0U/U6PDCvZWMCsyaJGXtarhwhm/dJjmpJEEZSdTFCYCjC
+	2iqQ17rKwnkD5viBlMGB2X5HofuheBI=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=hSHEsgsY;
+	spf=pass (imf30.hostedemail.com: domain of joseph.qi@linux.alibaba.com designates 115.124.30.100 as permitted sender) smtp.mailfrom=joseph.qi@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793329135;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
+	s=arc-20220608; t=1793329140;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=EUrLM4J4qCjs4gnuU6Unm6BpALfnacabOygCpkoPuFg=;
-	b=yacvg/PZGpJR0OdQgtB46M/xcL/dOOYRSSJYmAxfnvU9OXUN3aiWJL6ZQTbRBuL2V3jUR2
-	/S3/veXKVdIcNKaBK8z1HLToCl9FRwEvx0jMXb9xB2HH15ORtBi8SRHBH4xeLyzAV806mq
-	B1upN+AzpV9tJImWf3SHcV56sSP4L4U=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UK1LXpsj;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf08.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793329135;
-	b=QxkgVynkxwCoHfxS7kNOzbfofltMcCmTBMzWNrOLAcZbxMB7b+odRBXacO8jx7RA8bpMdW
-	2awdJEzT8/50VW7ae1U3m+t6yFijUocQhWNERHnDGfl1QLXvrpEpmXNqPBN4sOuPuqrK8Y
-	W/kKPKFZP6l/1KfpdDpxL3osx9NhxPI=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id B0D8E600DA;
-	Fri, 30 Oct 2026 02:58:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC6B11F000C1;
-	Fri, 30 Oct 2026 02:58:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793329134;
-	bh=EUrLM4J4qCjs4gnuU6Unm6BpALfnacabOygCpkoPuFg=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=UK1LXpsjT3IOdW/rc2RUdITgWFGhDNrqRK/cLXJ0shF6lU+OHJ2Jky3BGanUOi6PA
-	 6ABpX0U/eJK3yYCoWsQb/UvIHEFm3h7mg/CwLwmOz/xyyKjyZphqQ+TIcBbRJKsIOi
-	 Y9lHsuZRbY3Ih+XWMaQ6DKBUCCDmkQKaA4uDE++jcGAetxnH7Y42b4Az2/yA82V3zj
-	 WaJRSR7O179tsdmBiAM50LkvYn89OHewdRjNW/E2UWSIcNO8kAmbnI/OtoBJf/+qcs
-	 XSOrdC5i30KA4PQZ8L/a+OGvWYn8qPJ3OUYqZSxfsX/V5tjyDpXfz7MVZYZpre+n83
-	 6JEIC+3gKl7Fg==
-Message-ID: <sashiko-outbox-190189@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 3/3] riscv: keep booting if KFENCE pool reservation
- fails
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Jackie Liu" <liu.yun@linux.dev>, glider@google.com
-Cc: dvyukov@google.com, elver@google.com, pjw@kernel.org, alex@ghiti.fr, aou@eecs.berkeley.edu, linux-mm@kvack.org, kasan-dev@googlegroups.com, muchun.song@linux.dev
-In-Reply-To: <44fbd039a5cd78bfe7355ccbafb197775dede29c.1793242457.git.liuyun01@kylinos.cn>
-References: <cover.1793242457.git.liuyun01@kylinos.cn>
- <44fbd039a5cd78bfe7355ccbafb197775dede29c.1793242457.git.liuyun01@kylinos.cn>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Fri, 30 Oct 2026 02:58:53 +0000
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 9CD32160003
-X-Stat-Signature: 79hfcsgft39t1c3xw5rbj4xxo7zrqu7e
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
+	bh=w/Jd2p/prMhPtETNelJfTcFSgzTHlHRnVEoen9y0JaA=;
+	b=yJlV88qz+FY6AnXm4XCNir9ieQ8EWKEMZV59RO+QlMzNQTGvh8Weh6oY834r22AkMGvk0r
+	kJ4+vxIQCPOuart3Mva8NcuajYs0bhPdsbn+1YRGLLT1YSDlyW2gClZZ2xQb9ccINQzwv2
+	wxVydFt1BvxJgZMQswDlaTLl+zSK4rQ=
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1793329134; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=w/Jd2p/prMhPtETNelJfTcFSgzTHlHRnVEoen9y0JaA=;
+	b=hSHEsgsYOl/knZoiaKmOo9/szTsdb243LBtAHNpX/8InfeQ+O8kqyPkUuu0Awv2qPGL1dtHu80lxiinShoX3C//q9xO3uJS7nJ9pA7n/Uvoqx9PjlbXVT4MQjJDtbupw0uuaN9Pd4ZUnz3XFWW920V7V0LBApZUCRivWHHA722Q=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R961e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037026112;MF=joseph.qi@linux.alibaba.com;NM=1;PH=DS;RN=17;SR=0;TI=SMTPD_---0XDkufcn_1793329132;
+Received: from 30.221.129.214(mailfrom:joseph.qi@linux.alibaba.com fp:SMTPD_---0XDkufcn_1793329132 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Fri, 30 Oct 2026 10:58:53 +0800
+Message-ID: <0a8576a4-e397-4a49-ab0e-8f0f32bf2642@linux.alibaba.com>
+Date: Fri, 30 Oct 2026 10:58:52 +0800
+X-Archived-By: <archiver.kernel.org>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 19/34] ocfs2: keep the current mount options on remount
+To: Christian Brauner <brauner@kernel.org>, linux-fsdevel@vger.kernel.org,
+ Jan Kara <jack@suse.com>
+Cc: Al Viro <viro@zeniv.linux.org.uk>, ecryptfs@vger.kernel.org,
+ linux-ext4@vger.kernel.org, jfs-discussion@lists.sourceforge.net,
+ linux-nilfs@vger.kernel.org, exfat@lists.linux.dev, linux-mm@kvack.org,
+ ntfs@lists.linux.dev, ocfs2-devel@lists.linux.dev,
+ linux-btrfs@vger.kernel.org, gfs2@lists.linux.dev,
+ linux-efi@vger.kernel.org, linux-mtd@lists.infradead.org,
+ linux-xfs@vger.kernel.org
+References: <20261029-work-fs-sb_rdonly-v2-0-2f44f64f0b66@kernel.org>
+ <20261029-work-fs-sb_rdonly-v2-19-2f44f64f0b66@kernel.org>
+From: Joseph Qi <joseph.qi@linux.alibaba.com>
+In-Reply-To: <20261029-work-fs-sb_rdonly-v2-19-2f44f64f0b66@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: ateoxzodapnunp4jsxjscs8ueqye8kis
+X-Spam-Status: No, score=-24.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,UNPARSEABLE_RELAY,USER_AGENT_SANE_1,USER_IN_DEF_DKIM_WL
+	autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: E418080003
 X-Rspam-User: 
-X-HE-Tag: 1793329135-245067
-X-HE-Meta: U2FsdGVkX190AtwqOSW1tVSsCvcEmc8sp3N5Voc4WkPYAscIfMRfXzRT9UBCSQelbo5HOnYIxy6GCsrDfqRLXezfQKbBvA5+5ftHzmvX317oaHiucy8mDJFyQyvS3zf1JkKzK7MgXsQH73ATKns9hiIlopCPRPLDFRb4RJWIjoE1ygb9Rb8acUrMLWnqJGTDyJ6GEk3x1gZkJ4UxsJh77I6YJXHqYFmi9sP+3xrb2Sdmgkp+GVrXy8Zdijz7Ip14sXkEAlPBqEKN6juWNhhMg4VnoQbyOP6QCCwAIEfroylQu7PJmcNVeK2Av2AgCzAUap/aoum0MM6MZMtKKYl8qy+J2LED/+FfPk9ocSOeCeCu3O+lorMzS0NmyUzt/SO73vZ/cKMUiZdtbqZRsjSPAR1pkhGxW48tLLes70LtMiK2iP1q60fYtSPYyR9EWLqm+eqVuZFF5eF6DV366Y6/9VuT44HJt+ZwNMlxdVFUCUMpJMAifg16fjookoLYHOz/tWuyPm/hZQ9a97PQvgAaxxQWoi9fWGHaQct10OXiERdZAEqhlHPImdvMRQcHsqctdc7pG1hifGxdTQwvunb95Q3hjoINKO4ke1Jdm9HoRrUHV9R6SOmBYoePS5T/duUKJ+p6U2C8XHCUztDFYXoQusm0zY8PeibW0FMvKBEmrdzZdDqPBjK8vZtYnKsiFWtXoBPlH3LD0xMQJVtVzoGwcnlvfG/29S3+PGg0tXMzN7BfyeQdtfF9CK+EKXks3ar2+iiEUkziu9ySZPUEAwEpFzak2OFhf+p+bV/JXrCnkldy93JQKsea1hhW0/EdyUkVh2Po3NGeRawj1rjGuH++qpYhI3U4yFOYjPE2ETIK8XN0pDYTo5Oz4xU1ZNYJ3tjMQzwkz/lP5g6+IIXmtzXTHDmO/EI7jEAfljBo2wk752ghtrWn5eUtfKGFFSfyOnJV49YWdUiuurDVf0GF4Zs
- rXU3haGK
- w22tvgPmXvd5TxMIuofOj4IqjUNUxoYnVXeWeffl6s0NwVe2YALQtc8rQ68eiEcpim/2ZZHKAU5uavwcPkDafR41o+8wOr+wn6ujm4by2moYXYyK/si32bR50NfoPEqo6Ow2rMrAh0xN3zMLfh4V/rR+eDaFEmgCDRmEXlqH7ssDobuCIKw7zxrzoxFMH70PWF8WNesDRis9YgDbcvmPsSNmnHqD/PrTLikaZqAPlzuKHRQsfGlV8iPJxkgYHNz6AVX5Jmch3e1ElWjymTVrGTWbv1JotL8A4Tekfeuc/31npfGqiMRNMsPmZ5jjas9lV0kvZeLodiPu/EozZOkfB/esY2/yU8HTVfyhcfaxJi4tuU9O67h29aGQUbDAwpWt6cqeaaS9UJ4PvBBPA5NMi+Szp97h3DBp+wDQ51Ni96m6BXX6APHBtVf/fHP9B/vlzQXYcgrFBnVxMuub34U28fjktXw3jseSBk0g9pky/lW4fD/bP48QCCtaDzttf9ZgQ0A4PShJF38KVQw1B+fDKBj+I36T2A7957dIEU7MxQZ8z0DtIHVT5hb5UcQ==
+X-HE-Tag: 1793329138-10707
+X-HE-Meta: U2FsdGVkX18GfT90t8cj4dA2Ukw4/uoi47V81ExRCn8q0Jh1dn35q8aNcOKpTkywHJSiuIf+jJwbIF/HQYSQqRpdTOhyvb2g6UZhcajmOJO4o8zNK+W8/Uz24uYuPZeDayCmrm8nFwjGT4WPTkKmDoIq6l5UVw48OJywcmhPtVfPICgoRPPQdCEC1zaBfclDcEdFT9dsEXbCL232i6wGKLoF5cXP3mzVyxQu2FvyYyLsZUO7d5NcKXmmKe9x2tt7ilKcNALXp63TU/5jFCFmKPyZvrF4fMaoapEfdJK8odsqIrNRPhMhcWgFbAZCf8TjI/UUUq0yZAcJbYlO1EdrCQsa4mnOGhV46b83kok+LocnrgccF6puxZqujmPz37gRfn0s0KtbERgZrawFoldq/ZSnfdYu10WeTt2fkg2Z8hg8jBk6lXksoSehYfu5lxbcAzdVPbqP4AN5jWzNJr/8N0+RBD7D0Q3O3v+oGeRIryfER2ei/V22iMf05bjQwCF/GVIZzfl5LEwsgOTGflPfoopad0aRcYJMv7XQFEU8c16/HH0sN3HV4xRkVll6MQ7O62KAXZfVE5dJyDAn7/SV/oy8ye+R8IiOUEape946CGXDidmXOUMrQ9M9g4k7yCrrsBnlr9lT3vkxIYIJX9Z9wrVAL73ZbQAcQ2QBBNatowTxPMcc38PF/cK2x/Zt09ndPTkkITlBxKAa+lk7Gboajs4/qMfq3apsiQpC3WWaLnxcf6tdBKEQdgcvPe4QZoiWFrm9wta61VCUFM53T6dJn2Bj4tyquctfqUb1m4KgTj2let6/AMfBVVppMlZZ/lvW2UADWZ181cTiax6CwcZwk1qJpkg2BuvCgZjB4CREaGyZhwGv6JrIIeKjJh+fEbHA2WId7A/xyUIXzFvUy4o4cw9rV2GAnQt5VnCVPYHDWvCboHgdSrtxCf9MT/b8borTtDNgWrpii2rOlrsZO/V
+ IIrTF02/
+ OCrdxG5fEdL6bADlrFICrno8iNm6ITz5JHVqZWVascMujHXlgqRMs59QJy7yePO+vD0h4hCW52yZuPJV4oN7rDmU6kBwIfOrfCS6hV6ZmNAAhHoSI+rA64HdhddpoUitEQmmq0aARAmatT44x+m7VZRDKMowUZFhHWV2yOpuGoxmBoGHA/PfarVz+aE4NoYR3hY3WP0LvaBSvAoQGm8gQBmgxDXRSWn7IjXUrHFfKAygmx4yUIIHYiuw6+G3YgTkJOV35sNxTUHZpFCpeL86s0uAhxHIX/PffTF0fdHlBMvEXCGilCZTVRG0g5dVNG7nFMllYuNFqNZlMidyAiTdIUEoKJNIPI4bn59MMM1b7D3pl10w4zD6QIZibdONvLJ72+Raa
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,130 +96,80 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
-X-Archived-By: <archiver.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [High] riscv: kfence: incomplete replacement pool rejection and fallback =
-memblock leak
---
 
-commit 3fb224ed3ecf516e32ff76314492cf99262a5a4f
-Author: Jackie Liu <liuyun01@kylinos.cn>
 
-riscv: keep booting if KFENCE pool reservation fails
-
-This commit avoids hitting BUG_ON() during linear mapping setup when the
-early KFENCE pool reservation fails by tracking the failure in
-kfence_disabled and returning !kfence_disabled from arch_kfence_init_pool().
-
-> diff --git a/arch/riscv/include/asm/kfence.h b/arch/riscv/include/asm/kfe=
-nce.h
-> index 29cb3a6ee113d..57e57426a7d60 100644
-> --- a/arch/riscv/include/asm/kfence.h
-> +++ b/arch/riscv/include/asm/kfence.h
-> @@ -9,9 +9,11 @@
->  #include <asm/cacheflush.h>
->  #include <asm/pgtable.h>
-> =20
-> +extern bool kfence_disabled;
+On 10/30/26 12:07 AM, Christian Brauner wrote:
+> ocfs2_init_fs_context() doesn't inherit the current mount options for a
+> reconfigure. But ocfs2_check_set_options() insists on exactly one
+> heartbeat mode and ocfs2_reconfigure() refuses to change the data mode.
+> So every remount without heartbeat= fails with EINVAL, including
+> emergency remount (sysrq u) which passes no options at all, and that
+> WARNs for every ocfs2 mounted read-write. A remount that does pass
+> heartbeat= silently resets every option it doesn't repeat, e.g. noacl,
+> errors=, barrier= and preferred_slot=.
+> 
+> So start a reconfigure from the current options like exfat and gfs2 do.
+> Asking for a different data or heartbeat mode still fails with EINVAL.
+> 
+> The next patch stops ocfs2 from setting SB_RDONLY after errors. An
+> errored ocfs2 then stays read-write and emergency remount would run into
+> this as well.
+> 
+> Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
+> ---
+>  fs/ocfs2/super.c | 13 +++++++++++++
+>  1 file changed, 13 insertions(+)
+> 
+> diff --git a/fs/ocfs2/super.c b/fs/ocfs2/super.c
+> index 0af2245ae303..67283244426e 100644
+> --- a/fs/ocfs2/super.c
+> +++ b/fs/ocfs2/super.c
+> @@ -1222,6 +1222,19 @@ static int ocfs2_init_fs_context(struct fs_context *fc)
+>  	mopt->resv_level = OCFS2_DEFAULT_RESV_LEVEL;
+>  	mopt->dir_resv_level = -1;
+>  
+> +	/*
+> +	 * Start from the current options so a remount only changes what it
+> +	 * specifies, emergency remount passes none at all.
+> +	 */
+> +	if (fc->purpose == FS_CONTEXT_FOR_RECONFIGURE) {
+> +		struct ocfs2_super *osb = OCFS2_SB(fc->root->d_sb);
 > +
->  static inline bool arch_kfence_init_pool(void)
->  {
-> -	return true;
-> +	return !kfence_disabled;
->  }
-> =20
->  static inline bool kfence_protect_page(unsigned long addr, bool protect)
-> diff --git a/arch/riscv/mm/init.c b/arch/riscv/mm/init.c
-> index fb37b0b67efec..d21be990346c6 100644
-> --- a/arch/riscv/mm/init.c
-> +++ b/arch/riscv/mm/init.c
-> @@ -44,6 +44,10 @@ DECLARE_BITMAP(new_valid_map_cpus, NR_CPUS);
->  struct kernel_mapping kernel_map __ro_after_init;
->  EXPORT_SYMBOL(kernel_map);
-> =20
-> +#ifdef CONFIG_KFENCE
-> +bool kfence_disabled __ro_after_init;
-> +#endif
-> +
->  #ifdef CONFIG_64BIT
->  u64 satp_mode __ro_after_init =3D SATP_MODE_57;
->  #else
-> @@ -1229,10 +1233,13 @@ static void __init create_linear_mapping_page_tab=
-le(void)
->  	 *  for this region.
->  	 */
->  	kfence_pool =3D memblock_phys_alloc(KFENCE_POOL_SIZE, PAGE_SIZE);
-> -	BUG_ON(!kfence_pool);
-> -
-> -	memblock_mark_nomap(kfence_pool, KFENCE_POOL_SIZE);
-> -	__kfence_pool =3D __va(kfence_pool);
-> +	if (kfence_pool) {
-> +		memblock_mark_nomap(kfence_pool, KFENCE_POOL_SIZE);
-> +		__kfence_pool =3D __va(kfence_pool);
-> +	} else {
-> +		pr_err("failed to allocate kfence pool\n");
-> +		kfence_disabled =3D true;
+> +		mopt->mount_opt = osb->s_mount_opt;
+> +		mopt->atime_quantum = osb->s_atime_quantum;
+> +		mopt->slot = osb->preferred_slot;
+> +		mopt->user_stack = ocfs2_userspace_stack(osb);
 > +	}
 
-[Severity: High]
-Does setting kfence_disabled without clearing kfence_sample_interval still
-allow a fallback memblock allocation and a late hugepage-backed replacement
-pool?
+ocfs2_reconfigure() decides the transition from fc->sb_flags alone without
+sb_flags_mask test, unlike reconfigure_super(). And fspick() passes
+fs_context_for_reconfigure(target.dentry, 0, 0). So on a read-only mount:
 
-In mm/kfence/core.c:kfence_alloc_pool_and_metadata():
+  fspick(AT_FDCWD, "/mnt", 0)        sb_flags 0, sb_flags_mask 0
+  fsconfig(fd, FSCONFIG_SET_STRING, "atime_quantum", "30", 0)
+  fsconfig(fd, FSCONFIG_CMD_RECONFIGURE)
+    reconfigure_super()
+      ocfs2_reconfigure()
+        (bool)(0 & SB_RDONLY) != sb_rdonly(sb)  -> 0 != 1, enters
+        fc->sb_flags & SB_RDONLY                -> 0, takes the rw branch
+        sb->s_flags &= ~SB_RDONLY
+        osb->osb_flags &= ~OCFS2_OSB_SOFT_RO
+        ocfs2_enable_quotas(osb)                -> writes the quota files
 
-	if (!kfence_sample_interval)
-		return;
+The final WRITE_ONCE(sb->s_flags, ...) in reconfigure_super() then
+leaves it cleared, because SB_RDONLY is not in sb_flags_mask. The same
+falls out of a legacy remount whose flags omit MS_RDONLY.
 
-	/*
-	 * If the pool has already been initialized by arch, there is no need to
-	 * re-allocate the memory pool.
-	 */
-	if (!__kfence_pool)
-		__kfence_pool =3D memblock_alloc(KFENCE_POOL_SIZE, PAGE_SIZE);
-	...
-	kfence_metadata_init =3D memblock_alloc(KFENCE_METADATA_SIZE, PAGE_SIZE);
-	if (!kfence_metadata_init) {
-		pr_err("failed to allocate metadata\n");
-		memblock_free(__kfence_pool, KFENCE_POOL_SIZE);
-		__kfence_pool =3D NULL;
-	}
+So it seems we should test sb_flags_mask as well?
 
-There look to be two issues with relying solely on kfence_disabled here:
+Thanks,
+Joseph
 
-First, when memblock_phys_alloc() fails in create_linear_mapping_page_table=
-(),
-__kfence_pool remains NULL while kfence_sample_interval is still non-zero.
-Later in mm_core_init(), kfence_alloc_pool_and_metadata() will allocate a
-fallback __kfence_pool and kfence_metadata_init from memblock. When
-kfence_init() -> kfence_init_pool_early() subsequently runs and sees
-arch_kfence_init_pool() return false, it calls memblock_free() on both
-allocations after kmem_cache_init() has already set slab_is_available().
-When CONFIG_DEFERRED_STRUCT_PAGE_INIT is enabled, memblock_free() ->
-memblock_phys_free() -> __free_reserved_area() triggers a warning because
-deferred struct page initialization has not yet run, leaking both
-__kfence_pool and kfence_metadata_init.
+> +
+>  	fc->fs_private = mopt;
+>  	fc->ops = &ocfs2_context_ops;
+>  
+> 
 
-Second, if memblock_phys_alloc() succeeds in
-create_linear_mapping_page_table() (leaving kfence_disabled false), but the
-subsequent kfence_metadata_init allocation in kfence_alloc_pool_and_metadat=
-a()
-fails, the early PTE-mapped __kfence_pool is freed and reset to NULL while
-kfence_disabled remains false. If KFENCE is later enabled at runtime via
-sample_interval, kfence_enable_late() -> kfence_init_late() will allocate a
-replacement pool from the linear map (which may be backed by PMD/PUD/P4D/PGD
-hugepages), arch_kfence_init_pool() will return true, and
-kfence_protect_page() -> virt_to_kpte() will walk the page tables assuming
-PTE mappings, which can corrupt memory or fault.
-
-Would setting kfence_sample_interval =3D 0 on allocation failure in
-create_linear_mapping_page_table() and checking whether the address falls
-within the early PTE-mapped pool range (or disabling late initialization in
-arch_kfence_init_pool()) avoid both paths?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/cover.1793242457.gi=
-t.liuyun01@kylinos.cn?part=3D3
 
