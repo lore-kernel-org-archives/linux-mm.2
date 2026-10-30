@@ -1,94 +1,154 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 424D7606A31C
-	for <linux-mm@archiver.kernel.org>; Fri, 30 Oct 2026 00:19:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43394606A31A
+	for <linux-mm@archiver.kernel.org>; Fri, 30 Oct 2026 00:20:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=KDUPZmYP
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=OMv7mkSB
 Received: by kanga.kvack.org (Postfix)
-	id 348C56B05B2; Thu, 29 Oct 2026 20:19:25 -0400 (EDT)
+	id 51FB16B05B4; Thu, 29 Oct 2026 20:20:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2FBAA6B05B3; Thu, 29 Oct 2026 20:19:25 -0400 (EDT)
+	id 4D1316B05B5; Thu, 29 Oct 2026 20:20:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2124B6B05B4; Thu, 29 Oct 2026 20:19:25 -0400 (EDT)
+	id 399446B05B6; Thu, 29 Oct 2026 20:20:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id EBB1D6B05B2
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 20:19:24 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 612BF1A05E9
-	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 00:19:24 +0000 (UTC)
-X-FDA: 85377383448.11.4E57D73
-Received: from mta0.migadu.com (out-247.mta0.migadu.com [91.218.175.247])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 23F6040006
-	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 00:19:21 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=KDUPZmYP;
-	spf=pass (imf17.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.247 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id F29726B05B4
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 20:20:16 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 6F5DC1C3DF0
+	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 00:20:16 +0000 (UTC)
+X-FDA: 85377385632.19.F0DFF70
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf27.hostedemail.com (Postfix) with ESMTP id B1E404000B
+	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 00:20:14 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OMv7mkSB;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf27.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793319562;
+	s=arc-20220608; t=1793319614;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=EvTEWT4tzbsI9cJ16jquNJfiv3JAh46yKR+2DLJfzKk=;
-	b=qu0gydCG2qlaqsAAyrjcUN9GXq9Vh5ceSTGlTy5Q9ZhW+BK3BIW2mfx8Z/21FW1cHhddAI
-	EzyeQWt5b7HPGkt63tB6WihZceSNkwT9G+16/aWkV1rDPJ2LSG4C2a5FWhjfuH1MLebFLQ
-	yTp7ck7XTrdd36JbwDm3fCO6nvi3ArA=
+	bh=gUNDzrcBQCofjPtOZhO0zF/6BwtiodHnLN9kfJEdKls=;
+	b=3zG9pt66doxivxfl6vglMKotz674xOxYaHrZpVj9K0n96H0V7hdlwxQzpTF5/7L3UlXbKS
+	UTqz/uiO80SX1QGvOecGzG4GTOFR9NFHZGeAbTWIhUtqm0ZuGUUQ9nyy+vDFhM8yqoehIr
+	VFjfjUQIYxsZfhPznkgs/2GS9dTvMHI=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=KDUPZmYP;
-	spf=pass (imf17.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.247 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OMv7mkSB;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf27.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793319562;
-	b=jq3zNzucHrcTXXMBhJ8DQ10gKQV66a5HnDKMUgS0IuQ0R+NkLo+vhTL+949JMC4cN7UUvT
-	tYvEwgdYnUuxFefkjCgWZSEJiTTZZu4id/ck6ffxV6darfY2WhTXKExfBCO7q05gr/H0uu
-	BYq0bA2HlA3yprIquV80VpaivP2Wh7M=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=Z5Bh+KyvVIFM4C1bFYYm95MahEVzuEtoL1Ii4Fx+x8w=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1793319560; v=1; x=1793924360;
- b=KDUPZmYPkk0etsF5vk9qRRVxKTYD8EzUIKCdPb6EubtP3Cl09P3Imioey7zbHsKEtg7YAhqQ
- gPS4J9eJ5znUjmyWVwmm+XBiHnp8fTmUG6FhZ+Gnxd6k8Tsms2Fw7dqtbbpeRkJu7XWJgg+vw/7
- W6Bt3AbPP/qQucrT7q9Azels=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 174ca938c3421467;
-	Fri, 30 Oct 2026 00:19:20 +0000
-X-Mizu-Trace-ID: 174ca938c3421467
-X-Migadu-Flow: FLOW_OUT
-Date: Thu, 29 Oct 2026 17:19:15 -0700
-From: Shakeel Butt <shakeel.butt@linux.dev>
-To: Joanne Koong <joannelkoong@gmail.com>
-Cc: akpm@linux-foundation.org, yosry@kernel.org, hannes@cmpxchg.org, 
-	mhocko@kernel.org, roman.gushchin@linux.dev, muchun.song@linux.dev, 
-	david@kernel.org, ljs@kernel.org, liam@infradead.org, vbabka@kernel.org, 
-	rppt@kernel.org, surenb@google.com, kasong@tencent.com, qi.zheng@linux.dev, 
-	baohua@kernel.org, baolin.wang@linux.alibaba.com, axelrasmussen@google.com, 
-	yuanchu@google.com, weixugc@google.com, baoquan.he@linux.dev, 
-	cgroups@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v2] mm: move LRU size stat updates out of lru_lock in
- folio batches
-Message-ID: <auPhT70GU-Zqe9Qy@linux.dev>
-References: <20261029204157.117879-1-joannelkoong@gmail.com>
+	t=1793319614;
+	b=oLkIknw3flmI4AAkC76dSr1xYWErZ/ZBLPIyYzX/TKl4JcdQimGGo9bYrvPLSjXfSiZ4rC
+	NXmfUJpVHeJwKnIpMkG0AhQw4Is56n3GUMDrKHVvF3K497cTMLePf93JKUbr4NgcOSej5u
+	pMZ/XpXrSEfOzkZ9hh/shGsNC4cyIlc=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 7569943923;
+	Fri, 30 Oct 2026 00:20:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E86C1F000C1;
+	Fri, 30 Oct 2026 00:20:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793319613;
+	bh=gUNDzrcBQCofjPtOZhO0zF/6BwtiodHnLN9kfJEdKls=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=OMv7mkSB943eqjxfOdTCTqRn8rnHCaFZTrdaPeB0aIFCob3E3fqLF62qDpAEPjHQA
+	 B3xh+10xm0pLuUYynSQpI6Nhgsdy13RCNCEvL/EsGdSb7FWvxPCUQBVJ/KVoki3Q3j
+	 A7o8d2rcIlBgQP9lheaOYTIDrvi9q3rsoE+zz/ApHV8bjiyRYYLLaUYBuhT5JdA0R1
+	 w7mbCA1lQdx5BakPTjA+ZD87OkbCVKcnrx9v8R9+8bKdOhFqSO1ssMBMBUYRkSn/Kv
+	 BpHEmrr7LDOBQR8TBi9SkI1IJdsaRv8CC3SznbrHhfqdDWrNhiMX7QP/0o/p/4lUxU
+	 b2bHyvWufwEuQ==
+From: SJ Park <sj@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: SJ Park <sj@kernel.org>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Michal Hocko <mhocko@kernel.org>,
+	Qi Zheng <qi.zheng@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Kairui Song <kasong@tencent.com>,
+	Barry Song <baohua@kernel.org>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Yuanchu Xie <yuanchu@google.com>,
+	Wei Xu <weixugc@google.com>,
+	Baoquan He <baoquan.he@linux.dev>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Kees Cook <kees@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Jann Horn <jannh@google.com>,
+	Pedro Falcato <pfalcato@suse.de>,
+	Hugh Dickins <hughd@google.com>,
+	Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Pratyush Yadav <pratyush@kernel.org>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Jan Kara <jack@suse.cz>,
+	Zi Yan <ziy@nvidia.com>,
+	Lance Yang <lance.yang@linux.dev>,
+	Rik van Riel <riel@surriel.com>,
+	Harry Yoo <harry@kernel.org>,
+	Alistair Popple <apopple@nvidia.com>,
+	Nico Pache <nico.pache@linux.dev>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Dev Jain <dev.jain@arm.com>,
+	Usama Arif <usama.arif@linux.dev>,
+	Kiryl Shutsemau <kas@kernel.org>,
+	Matthew Brost <matthew.brost@intel.com>,
+	John Hubbard <jhubbard@nvidia.com>,
+	Peter Xu <peterx@redhat.com>,
+	Will Deacon <will@kernel.org>,
+	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
+	Nick Piggin <npiggin@gmail.com>,
+	Oscar Salvador <osalvador@suse.de>,
+	Minchan Kim <minchan@kernel.org>,
+	Muchun Song <muchun.song@linux.dev>,
+	Xu Xin <xu.xin@linux.dev>,
+	Chengming Zhou <chengming.zhou@linux.dev>,
+	Chris Li <chrisl@kernel.org>,
+	Kemeng Shi <shikemeng@huaweicloud.com>,
+	Nhat Pham <nphamcs@gmail.com>,
+	Youngjun Park <youngjun.park@lge.com>,
+	Gregory Price <gourry@gourry.net>,
+	Joshua Hahn <joshua.hahnjy@gmail.com>,
+	Rakie Kim <rakie.kim@sk.com>,
+	Ying Huang <ying.huang@linux.alibaba.com>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	kexec@lists.infradead.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-arch@vger.kernel.org,
+	linux-cxl@vger.kernel.org,
+	Josef Bacik <josef@toxicpanda.com>,
+	stable@vger.kernel.org,
+	Muhammad Usama Anjum <usama.anjum@arm.com>
+Subject: Re: [PATCH v2 01/47] mm/mglru: don't use stack pointers when walking PUD and PMD tables
+Date: Thu, 29 Oct 2026 17:20:03 -0700
+Message-ID: <20261030002004.154595-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20261029-fixes_core-v2-1-a64ce7f83abb@kernel.org>
+References: 
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261029204157.117879-1-joannelkoong@gmail.com>
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: B1E404000B
+X-Stat-Signature: dxxwxffdz9619dnxotkj7m1oy7ushw8u
+X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 23F6040006
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
-	autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: 43mau7gwii1fscx3g9gqttxfd9t8bu13
-X-HE-Tag: 1793319561-424944
-X-HE-Meta: U2FsdGVkX1/8FpBA76B0vo+x8mjy7Wt/NNlofbMHjzpNb2zCntbkD1cU+eHWozRJ9FZDVWM43+kw+Dt6iJgvw7P/fZw2eMaUMVU3RcEPtPw5stJ4v4mIv19+xcfwbE5S23ljlkySaolNl57e2H3M2dy7Bo68TqLIONXiza3miAlNC+Lvnooa8rLor7qUvB1gZT+5Fdu038PFhv8/P7zCPBmb2pJe+mi+QGQJyZLyQH+SzKAKmZg9wTDQEZMq/IFVXrEe1ofqX+2T5OtIFmMCpjGbM8z1/a3/FdK8Z4tzA31nsDJEp6WflBfRDMtGQQmm50SKxsVpafePECOlCH3tYh3k73QDWU41eVli8Vb0YApFjQi7zLEui/jgVyLyOZKx51U3UUchH01PVSXcOvMXxSvtC8WAV0j5eBz6kZQaISX/vf5PnCiwPWrQb13DDzTIwX6XmECPbmk2u6wGme09TtZcUSwuTeVI27tH2TxhmWik60mmuGUaiMUz36HN+VKorv0dRJBm2DlkZ+UNev07G4QDhsks3UZHtnWNm+tPXoEH+Fc7GsUXSBOy7CaD5UVrONEJ2tokf/igO9P0sfXZfYisydJ5YO3caGbeOiw2N6MPU9NiJf944XxJNf/s8P8zlPVo5mEq/YOwzp6IIjdQUFakPbl1r/V7qQlMthL9LUwnGohNENyBnMhEI7I0+fQiFukrGWPSjmTOw7faSyeZ2QTeRs0QzjL7+opbivzftB+j8TWg5YGGfWB1jT1mH/qom3h00VeRoOw0Qg7vDTXAHN8ZZd+WVEcFUjXk0v6Enf2+zyGL5Gd1rUetR9LU5qGuU+CU1P0LFG1uNHghmC9lOBECFYiiBIqW0aX8or4Xf4Fzct8JTGK87sYK7u5n8U8eXrr/rmPcRMYMi4H2MmxNv2CtvMCSkw1IOTxf2Kx+oojFus2d40rWnhaMA8brHBy7K3xciAb8hfK6MRHbbJQ
- kPW0IIQR
- z3i0FoLNkGBOUgYy6yano/4hYL4/xIGbWfZomzQlIanuh+RQrKQRM7vu6mZ2A+gafyO6VxmpZPniXXAcpQRyl9+/jVu8VT0xAfjVA9NNaHajNpaxD2iyWIwDTTnNTVN+4LBeiEs8F3q40LlzBwO0XqxqjWiudC/py24OMcnYkGfZ8szzrmV08wuXlmDYipXDBQIl6h4/ww0Yg9XpGaLrEvWIBmxUMUZ6xpoKUVQMfKrbmHhwjjy9FF5H712aAWgvHvvQciQMxKxl7yv6hi8mpp+yo3XTwcJG36TV7+PzzkcxNGnx/yDOZEb5Sdv4cG7i6at0iU3tDUECC082IK1RTSt+fpJ7FBkol+fDYHeEPl8nvV9jxUehe9noL0A==
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1793319614-863317
+X-HE-Meta: U2FsdGVkX197J2R6wOq/i8PAGKJohuFILH/h3KGsYAXGypWn21NRbhu2QkMGoD1LAAXRY98eiZIetN4niAFql8jagbQqO486Qw8TO0Bh4QykYPUrTC16er6ywQ+hd2RF34gK0Y4ilsgSh9EP+HQLSeq7BezwN6yu/g/yI8aq/nOvOFqj2FhXVP1PbKLZcqVUgmOB+qrJv0QV3oku9R0JkKYJ0Ha8Zv+ET+0tygjyhIkjm8XidcmDtdHPWTMldCvAJUyPxMx+oexYRlkyUUU/S9tcsOsbPB+T8HLdCnOGdFj97+WsPJlEamKLt13jpzIVFPqmCBCqKQgIJtIy/pcGYJziVbf1jAEv/H9A2p87EdLn/SBpvk/QaBANXF6HbBtlinAHa2p9MBuwr3Kew5KvrvfNxab4wDfQ3/vU+42xlLh1CDmlNEK2ArZosCnH4YvPdNisQdHRWmMdWEheIWrmUptTqvRIyQPr13YJ6MZ40BbO/iOM3Aad5UVDDaiBydfhzZwcnAtI2Ade4G1TZU20gf+SpptY26uPtQ21oP+ZTjml06EMTCLCbOJBxob2+Sk2Sr+HO8z5jAt7C/dTJ8Bt4g1iTnAgrxw2uBvd0+ZDf2m46k58fZaz0mC+QwHMppapqYDEnw+ln6F8lB3feMVmB8dZOpJ1812ltT3dn8umU9ndx4kucAOK4x6w/A7iV3QxHXoKa+rQ0d1GBmpxpF/TyL9hFDJg9SJ6F6nqQvmc3jPK4o5VmFBCT8awR8Wp9iPLBb806pY+WziP0XS/bDSoP09j9flDPmtl7/SGCESOR7QEnvfOqT9pQaHknHjXGbPI798t12Qf9JBqBauCv8trfSZOEo3fthXTEgWnUXRvukYNqFL5InMLb0qrsxNTGVrYFbhJqbGF7o00DljoseneD4xPE8bDmugRjTI2mv5MDfByPIng74BnheId4rg5SKpiQTIcj3PwpvPeNaDTJax
+ CafQG2BV
+ 2OMA5XwhwHvsSHIniJVJO3OPAOwWXItD6BOdl0eDCqF6yT6Q1R1Elkxgo0rpsEHfkf/40kCrjZPG+duYB/qHR7cOporZLIj4wqTqjKlhVwkJK7hnoHSwnh03BtYO+dWEWm1pIQ8ctqS0vqvRa6HyuQWay8LQdx6qQ1AUmBPei+4FqHaI8hFeps/jljqKVLtx0Gbc5WRU1wU7WxEMz5f5hs6TPwXOM6mI+9d29xvCXieVYpZZubQUqxbO1V1o8hIwuBkSomvesZ/M7MR/Skdk3qWMKitrQcFRMmSs0RJMYhjTvGpehr6NZMKpSIJbWq7zvPXWvKs4oTvDFo/s29dJysYBqm1hpHqilQ4Vz1sMW721DBe7opRyED5PW2tP+ZSPj8aCqU+Y0TXRkD5kFvgOk4WG3axmZBOg0MuDgoRaEJTsOwLBBMkpd7slYgnsb/ttv+JWoiplCntA0ZO2mE6IoaTN+8EzvVdvdE4KpAilYOCKl7mGOenClKWRhzZPZFsfzZQFXNu1NkCfT7qTFDM/Qv7P5e9Goup/o2iu6agb05H1uXfhNfrP1026Tmf4tgQU/O0eiYp3yi2mEm8ZmFtSxVv2ymSoMlkueeQPDv+pgVvYuroM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,61 +157,66 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Thu, Oct 29, 2026 at 01:41:57PM -0700, Joanne Koong wrote:
-> folio_batch_move_lru() and folios_put_refs() take the lruvec's lru_lock
-> once per batch, but they update the node and memcg lruvec stats for
-> every folio in the batch while holding the lock. Only the LRU lists and
-> the memcg lru_zone_size need lru_lock. Updating the stats while holding
-> the lru_lock is unnecessary, and they make up a large part of the
-> critical section, as seen in [1] where a change that added just a few
-> instructions to the memcg stat update path cost about 2% throughput
-> because the LRU stat updates run under lru_lock, and the overhead went
-> away once they were moved outside of the lock.
-> 
-> With many threads faulting and freeing memory in a single memcg, about
-> half of all cycles are spent waiting for lru_lock, and the hold time of
-> the lru_lock directly limits throughput. A perf profile with 80 threads
-> faulting in and freeing shmem in a single memcg shows 52.8% of all
-> cycles spent spinning on lru_lock, split evenly between
-> folio_batch_move_lru() and folios_put_refs(). About 25% of the time
-> spent holding lru_lock in those two paths goes to the LRU stat updates,
-> mostly cache misses loading pn->memcg, pn->lruvec_stats_percpu and the
-> per-cpu counters. The stat updates are only 0.7% of all cycles, but they
-> lengthen the critical section that the other threads are waiting on.
-> 
-> Accumulate the stat changes per LRU list while holding the lock instead,
-> and only apply them after dropping the lock (while still inside
-> the RCU read section that keeps the lruvec's memcg alive). This moves
-> the stat updates out of the lru_lock critical section and turns the
-> per-folio updates into at most one update per LRU list per batch.
+'get_maintainer.pl --nogit --nogit-fallback' suggests adding below recipients.
+But I can show there are already quite a number of recipients, so I'm just
+noting here.
 
-This updating of stats after dropping the lru lock does introduce one behavior
-change i.e. race between reparenting on offlining and stats update. I think it
-is safe and correct though. Better to document it.
+- Brian Geffon <bgeffon@google.com>
+- Oleksandr Natalenko <oleksandr@natalenko.name>
+- Steven Barrett <steven@liquorix.net>
+- Yu Zhao <yuzhao@google.com>
+
+On Thu, 29 Oct 2026 21:32:56 +0100 "David Hildenbrand (Arm)" <david@kernel.org> wrote:
+
+> From: Josef Bacik <josef@toxicpanda.com>
+> 
+> MGLRU passes stack copies of page-table entries in walk_pud_range() and
+> walk_pmd_range() when walking to the next level. These copies can become
+> stale when khugepaged or MADV_DONTNEED (CONFIG_PT_RECLAIM) removes a PTE
+> table concurrently.
+> 
+> This pattern dates back to commit bd74fdaea146 ("mm: multi-gen LRU:
+> support page table walks"). Likely, earlier locking masked the latent
+> bug. Later changes exposed it: commit 1d65b771bc08 ("mm/khugepaged:
+> retract_page_tables() without mmap or vma lock") allowed concurrent
+> retraction, and commit cf4a65539c13 ("memcg-v1: no need for memcg locking
+> for MGLRU") dropped the walker's outer RCU protection.
+> 
+> The fix is simple, so just fix the original commit so we don't have to
+> speculate. To fix it, pass the actual PMD/PUD pointers. This restores the
+> RCU-protected lookup and validation against the live PMD. Note that the PUD
+> handling is required as well to handle folded page tables correctly in all
+> cases.
+> 
+> Fix generated by an LLM and sent by Josef Bacik in private.
+> 
+> [ david: handle walk_pud_range() as well, clarify+simplify description,
+>          adjust Fixes: ]
+
+Looks all good to me.
 
 > 
-> The batch is attached to the lruvec while lru_lock is held so that the
-> LRU add/del helpers don't need to pass it down. To keep struct lruvec
-> from growing, cost_lock is moved into the hole after lru_lock, which
-> leaves room for the batch pointer in the same cacheline as lru_lock.
-> 
-> The stats can now lag behind the LRU lists by one batch, which is well
-> within the per-cpu batching they already have.
-> 
-> On a 2-socket Skylake (80 CPUs, 2 NUMA nodes), with threads pinned to
-> CPUs repeatedly faulting in and freeing memory in a single memcg,
-> average pages per second over 7 freshly created memcgs per run, 2 boots
-> each:
-> 
->                      before    after
->   shmem, 20 threads  4.74M     5.47M   (+15%)
->   shmem, 80 threads  7.94M    10.33M   (+30%)
->   anon,  20 threads  3.04M     3.35M   (+10%)
->   anon,  80 threads  3.23M     3.41M   (+5%)
-> 
-> Link: https://lore.kernel.org/linux-fsdevel/CAJnrk1ZezmmzrYdf8KP6re_a76izMS=qGPeC8ZZXiteHyZZC-Q@mail.gmail.com/ [1]
-> Signed-off-by: Joanne Koong <joannelkoong@gmail.com>
+> Fixes: bd74fdaea146 ("mm: multi-gen LRU: support page table walks")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Josef Bacik <josef@toxicpanda.com>
+> Reviewed-by: Rik van Riel <riel@surriel.com>
+> Reviewed-by: Qi Zheng <qi.zheng@linux.dev>
+> Reviewed-by: Dev Jain <dev.jain@arm.com>
+> Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+> Reviewed-by: Kairui Song <kasong@tencent.com>
+> Tested-by: Muhammad Usama Anjum <usama.anjum@arm.com>
+> Reviewed-by: Harry Yoo (Meta) <harry@kernel.org>
+> Reviewed-by: Barry Song <baohua@kernel.org>
+> Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+> Reviewed-by: Pedro Falcato <pfalcato@suse.de>
+> Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 
-Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
+Reviewed-by: SJ Park <sj@kernel.org>
 
+
+Thanks,
+SJ
+
+[...]
 
