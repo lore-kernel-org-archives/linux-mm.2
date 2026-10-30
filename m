@@ -1,114 +1,146 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E33FC606A31A
-	for <linux-mm@archiver.kernel.org>; Fri, 30 Oct 2026 10:20:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F342A606A323
+	for <linux-mm@archiver.kernel.org>; Fri, 30 Oct 2026 10:20:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=e7wIe6pb
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=FFikltmu
 Received: by kanga.kvack.org (Postfix)
-	id DB6736B05B7; Fri, 30 Oct 2026 06:20:28 -0400 (EDT)
+	id 131F06B05B1; Fri, 30 Oct 2026 06:20:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D67206B05B8; Fri, 30 Oct 2026 06:20:28 -0400 (EDT)
+	id 109E06B05B8; Fri, 30 Oct 2026 06:20:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C7A9C6B05B9; Fri, 30 Oct 2026 06:20:28 -0400 (EDT)
+	id F3AFC6B05B9; Fri, 30 Oct 2026 06:20:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 8A8046B05B7
-	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 06:20:28 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 88D4D140626
-	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 10:20:27 +0000 (UTC)
-X-FDA: 85378898094.26.078447F
-Received: from mail-dy1-f181.google.com (mail-dy1-f181.google.com [74.125.82.181])
-	by imf16.hostedemail.com (Postfix) with ESMTP id DD4E9180005
-	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 10:20:25 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=e7wIe6pb;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf16.hostedemail.com: domain of ritesh.list@gmail.com designates 74.125.82.181 as permitted sender) smtp.mailfrom=ritesh.list@gmail.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id CA4C76B05B1
+	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 06:20:44 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id AC8364064F
+	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 10:20:43 +0000 (UTC)
+X-FDA: 85378898766.21.423A044
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf18.hostedemail.com (Postfix) with ESMTP id D61261C0009
+	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 10:20:41 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FFikltmu;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793355625;
+	s=arc-20220608; t=1793355641;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:in-reply-to:
-	 references:references:dkim-signature;
-	bh=47HRSEMYaHZPzJWzqw3IojT1EDL4QQpT831/3j+yFnA=;
-	b=S5GGEJMSXNzhw6X8cRZXnNDnBqL4Uk9uD1l2qV8JtsJv2OjnG2dJG5hobeDG4nDITCJoc+
-	D75/AvynphMbme6a5LMyfcTEx689U8qXR8l6QmMrCbmzR82R8Nwgy/w1mZ0zv1b8ti+fbu
-	/LddGIuwi+DzCCnyKB1yUdJ0X0vToL0=
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=OrLw9/UJGvMjAGzzPbSW4jaTf//H5JBEzT5oLPpGE4Y=;
+	b=Q27RkHAkBxVPOZAuiT+HblXGrn2XptnyULpCC0LQwkQWxP0YDpgJdPLu++ixs0QE1PSP8Z
+	wJsrogvmhPILgcG6yaJFZ+8/ka9EjtzRuv1SRv0HY2oZ+8minLpafCbBmyA7dKDCFGZS3L
+	fyrMaHev0by7RReafJWbCutzlcvgKCM=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=e7wIe6pb;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf16.hostedemail.com: domain of ritesh.list@gmail.com designates 74.125.82.181 as permitted sender) smtp.mailfrom=ritesh.list@gmail.com
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FFikltmu;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793355625;
-	b=SL9Iq+38NnUWUH8fWrqEpp7EPRU/fmEoPmaLOZVwKbnYRkjyd1C/8lrDQimprW7hGu8y2r
-	Vn8kTvCha6nFc2cqTYMeVSUOyPTRr/O3Xmf5WbuhypAt4g+E1uwsNm2WrqpVxiYWDWZn/Q
-	/1napEGPf3ogAOIMivVBsiAtgxfXnHk=
-Received: by mail-dy1-f181.google.com with SMTP id 5a478bee46e88-36661f953e4so874342eec.1
-        for <linux-mm@kvack.org>; Fri, 30 Oct 2026 03:20:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793355624; x=1793960424; darn=kvack.org;
-        h=references:message-id:date:in-reply-to:subject:cc:to:from:from:to
-         :cc:subject:date:message-id:reply-to:content-type;
-        bh=47HRSEMYaHZPzJWzqw3IojT1EDL4QQpT831/3j+yFnA=;
-        b=e7wIe6pbw5HtqhcMOXNYHFUUvZEGt+lV67XCxiRDzCpJ6p+C2XUnQz4xGoZxBXmctB
-         njodwgVdwCvSEKBa4F6RasG+oXSASKYvBcTF9pVq/EFZbco/5hkVnehDoQ8rP4a1kh4H
-         R665fnm7RKkZBA8y08YUPjRkDoBLCsYP1B//Kj0Zis2OJYTP3WoapsPduduaejEjYPzj
-         Y1IvCIssTpQhzlQtRmr9v5cNmKWm1lOqRZM6i8iM5hfDj1WSASjFvNQO3h0Oiy6HTfkO
-         she9/BlGb37ftKhZD+vD4/Bz68ewXvqCk8ejQzkm17YMhoe07D/3bVD40AvyPOSErNQ9
-         N3fg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793355624; x=1793960424;
-        h=references:message-id:date:in-reply-to:subject:cc:to:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=47HRSEMYaHZPzJWzqw3IojT1EDL4QQpT831/3j+yFnA=;
-        b=r8iGyWFs/LFpbaU9ZmYSxXhVW/BbUM/Vofqos4GRipbdIbawAOoOE+22BqDmiCG2gf
-         4WNsWiJziMEZni6Dz4ZaEWhtgE8hvoSDFOKDHaXfc/1CiFZpB1Hks/yGCOfHEljpHFr7
-         wya5Rb4NunFMFegHRKLe45c6KBkMsRIZO95Xse1N3faoL0bZmI72RzxD3noYJMMKigCr
-         P+p7s+vktZquHRpUZgx5yYVJ+0VuE9/gp31xuSMnO8MpRcs6QP/PFjijJSVKR95w3TL/
-         sPejhACydZVhnItbOdLt+dEhKI7vWk/NkPXChCKIXlyZrO4jva9bekZ3OX0B+VYHl9gl
-         uONQ==
-X-Forwarded-Encrypted: i=1; AKwUvBwkP6/9KL/ocHVKIySupE0I3aKzt0UyftlXIsXGC073nEuhDe+3oW0+qhag7tTqjepnGzN6ad541g==@kvack.org
-X-Gm-Message-State: AFq9FYJKdz+6iEtZ25OZRieP4ebux+KFfvMnlqv0BlgRWfqLuagR9Tlv
-	wTfSPlr/oBzq8CCMfRPNeh9T84Q9T+Lddl6u1hPKtoNeb5Bl1BhR4FaL
-X-Gm-Gg: AYBFou1lGQ7azlINCg9AZBoNUn46+KqZaXi6bhDAzAXWHsKLZWcXnreKtqYjqOYP2X8
-	8HFGgqEpoN1ejaIuuW6LdjTolRezA45Ewgx5oiOT1lzDihq06HTWVxMh86Yfzs6KmnSKcVNljpf
-	/IQnQeOojZvFjSVqlOwY4nq6TOdyKNSxYY6aFGoOxmpoJsSVR8feJUcYvhubLo1SUPhXYriioCy
-	nI8o6reeDdTiSiE4ECku6BAvWgzPbyr2koqZgjFAwwcaGHvYJ6i2/xYIRszwM7TgQQrZbRIHuHp
-	NsYPIOysnlsnfCst67H0LZAkTvgphl9dQfrUZXkJivHmqQjXwfaJFSCAo9Lk3l2II0J5q3p99u9
-	H1kwEP6Gh4S6KGMcVlfc7aC5CeGWhzM8PRW2jFlWaGY8dCJQVC+xt3Gt1ZOW1AbBDnJYEq4HcXF
-	UbnQE8ciw/QNxi9zAgddtDIwsdg6IwzWm7YDdcSPBM9jyEgZtXjO+wCGML6TcGleg5y8g3OTBri
-	hZHMg+jXGf9/+s6dRyZfbERnct78dvld8xrzUowr579IEyGRabTxu4JaV3s3PWXW0O/KuQlGS1U
-	vfiQXRrgFbtb7qjaJ/D3Lc9rZ60=
-X-Received: by 2002:a05:7300:c00f:10b0:36a:1470:da0e with SMTP id 5a478bee46e88-36a423bececmr3563726eec.29.1793355624408;
-        Fri, 30 Oct 2026 03:20:24 -0700 (PDT)
-Received: from pve-server ([49.205.216.49])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-36a42662f23sm7607181eec.2.2026.10.30.03.20.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 30 Oct 2026 03:20:23 -0700 (PDT)
-From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-To: "David Hildenbrand (Arm)" <david@kernel.org>, linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>
-Cc: Madhavan Srinivasan <maddy@linux.ibm.com>, Venkat Rao Bagalkote <venkat88@linux.ibm.com>, linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, Muchun Song <muchun.song@linux.dev>, Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, Pavithra <pavrampu@linux.ibm.com>
-Subject: Re: [PATCHv2] mm/huge_memory: set the mmu_gather page size in zap_huge_pud()
-In-Reply-To: <19012a9f-7a8d-4eb2-a441-cdb04184890b@kernel.org>
-Date: Fri, 30 Oct 2026 15:45:04 +0530
-Message-ID: <cxsrwl3r.ritesh.list@gmail.com>
-References: <8b853e5f9f16145859407b28af654b0f79e12642.1793318297.git.ritesh.list@gmail.com> <19012a9f-7a8d-4eb2-a441-cdb04184890b@kernel.org>
-X-Rspamd-Queue-Id: DD4E9180005
-X-Stat-Signature: dx8csoounarmd9mi56unr4ye93ginff1
-X-Rspamd-Server: rspam04
-X-Spam-Status: No, score=-12.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
+	t=1793355641;
+	b=YRG4gUDXBxo2OHExYODn/kMTrkLfVRVYeKJrJc7apjjPEmaaLaCJk80s9DFEVufbzVksTP
+	mMxet7Xe4gfXbfwa0FRPTP9yR16jwS9vDf1g5O4io8TTgAEM2wW4abh6Aiybw4UkInjCu9
+	69h90PnvJY+J7oe8p/waXpup3LvSMTE=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 550E460092;
+	Fri, 30 Oct 2026 10:20:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 148D51F000C1;
+	Fri, 30 Oct 2026 10:20:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793355640;
+	bh=OrLw9/UJGvMjAGzzPbSW4jaTf//H5JBEzT5oLPpGE4Y=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=FFikltmuWCCwVyRf18ZkqRpgr/N+FXmJlOnXOqQ0ybZVwU6V7yCPqXBcFvzn/aM4r
+	 zelRYCas/epyy1RXYdj1HZzPHTLHjO18P3Dp0BevalikTtbxudTMapLoHy8plYMKO6
+	 SuoodU/F/17ARa7nABgQLDo1oNWTDXqeLdQTy1UQvDXFtutv4tUdntpIIZ0omWg3sz
+	 4V6ZLYjTXAWD8lH4WhzR/aWZCStsmXI/GqQyHp8pIgKvdQcLNDsuhsQM1UOvEXr7Sh
+	 VbmKFoGVWt5eJ8v5yS6KNEHZOcJmDu9TQByoWxIgQ6JSsiEbAjRb1Mzq1Axr+JQfba
+	 RtVvjvUyug49Q==
+Message-ID: <d4891333-43ea-4d74-9fb9-6ad8dac1a446@kernel.org>
+Date: Fri, 30 Oct 2026 11:20:30 +0100
+X-Archived-By: <archiver.kernel.org>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 0/2] mm/memfd: add F_SEAL_PUNCH_HOLE
+To: Samiullah Khawaja <skhawaja@google.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Hugh Dickins <hughd@google.com>
+Cc: Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
+ Jeff Layton <jlayton@kernel.org>, Chuck Lever <cel@kernel.org>,
+ Alexander Aring <alex.aring@gmail.com>, Shuah Khan <shuah@kernel.org>,
+ Jason Gunthorpe <jgg@ziepe.ca>, Gerd Hoffmann <kraxel@redhat.com>,
+ Vivek Kasireddy <vivek.kasireddy@intel.com>, Jeff Xu <jeffxu@google.com>,
+ David Matlack <dmatlack@google.com>, Pasha Tatashin <tatashin@google.com>,
+ linux-mm@kvack.org, linux-api@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20261026220546.3114241-1-skhawaja@google.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20261026220546.3114241-1-skhawaja@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: D61261C0009
 X-Rspam-User: 
-X-HE-Tag: 1793355625-232297
-X-HE-Meta: U2FsdGVkX18AtRDHZB4FJwUqGXnk5my/iGlwdqAbOFat7OU77w567+vPmYWhGsRXRwhIpSCKUdmNoDM8Udh3uur+3fOfokTwyT9CIfbSfHOh60EllxjrViddJkwPig8xMY4RkuSVRBi/xj2ee2YrToSO8A14XgOJaP3gcAxDB8V+WLo6Ry/fD/2RVytSHZLFjkK19P3IlV0KhL4zbenEURrtJtz0VlcloREcpWfzhE950py6H0KWJ4nvk+CbOql3ApObOivCK6ujbeTQrD2xFfdYW3OAdnfUyqttHA802FQO/UFX+B2mz7Z22mpsIoZQbqq3c7SscdNsc6tyOELXiCIOlBMrxWtB5UJsIGM4aGDv0gWEFr/mDmG27l3h0nOi09WlstVypay6Rjh/U9kj06dKfyukQf36M6soH7Wcv9gAG6VXeyQzLq2Y1Wr+SCKp7oMVLPVvNUGzf2w05s6kDE06j+le3VqjIohmKeFRzD30EyX3U6cMGa24FWRat7mQm+NYsuKvFJQ4r/JWzUViya6eNVqp+FksZ7ldWT/y+zRHg6WUuYBxEMNeFcn/07SyYohw8vxWxHNDiHU0Rs3+lg5E4G/QxAqEBxCoy7yQ8GBKFsQrDoBD4A3D4tdim/JJLVCygeeegHmunPZYPFHGmb0Xd474Hmlrb/6maMuKFnwTDYQRJhNuc68JyFwNz13nUi6w9l2rHlS/xFRbOTPagabUyTR/ioi2SbgNk7jTCE37lTUw4Ocztyanky2Zttg0dAyIX2Q/mYnVxSnZ9rwQ5KqJqxjg2AVdofH2S5oU4P7cDkOveoKXHbsP/Ktu25v0ydd7LcaGQdFFS3mr7NjL+5DCjYgKaKqAl5X4w0kL4igUPpFmusvcttGeZft8suzwbrl/MRTX/6mRJ87clH9tZJghmo275s114tM8RrOWcwNUqAfBZH6sZshLqPuD6S5Jb42kKNCPTU4FrhNeW0w
- vT2cBVbe
- 3cszkUqJjGJ9zFIPrtPXDjSklGaCe1+mHCBsCUAU8vOG/ZU3MscGB57xyZGzuyPZ6N7fHwJzNjkt4ogDe71hNnT579l9VJisMZx6FxxVNBrOvnfhbKA2P9N3dwwX/wiFQJBMWJdNPU6pMnT0V/B0DvbRUoGHje7h0A+qPNkI+wfGNHrU9nHrT6U+JPVhenw09TnRP3AqoIMoFLI3UGNp88yUfdMMFg6mOmqb3mMb3qAc0CPzQHJc0nuW/Qcv58P+LdyIuq+1T8Q0TkekaNwIleme3h1NrcFPxrOLu3VdsN/IwgvE+WILaeR0yZeZmqlHS2LiKf9B8evaR0yK2NWUE4gLBsLhughH14cy2vLcJwgcQj+gsdOAhriUk72ZYMOmn3i6NjB/63Dw1xL0GI4ulNKU7OSEpJ6yL8ldP/6FNteC0JksrDkv0MCtOPCRYIbQWtqOBusYTgsMvYhB+PqJdPVJsKIIfXn0IyU68Pi/pt5exfGFIlJMIswtf7shGeywP2ycS3wBPWRRDAMAjnddzdnXhQycSU4lgfqxgkIHmZJ9AesIZcdR4WSNL3A==
+X-Stat-Signature: 6nbwb5ejh6qqhjttx6tzhay6zfp3bp4z
+X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
+	autolearn=no autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1793355641-349297
+X-HE-Meta: U2FsdGVkX19vVa+VU201IWbQhh8TRVISiUpiaktwD/8HzgJzIcfpycmkqJXi4hp/CtdT1aKt0LuYs2k+7zE0b8vLFcvY2NH8PvEzkD1WzTZVtsgedfY1Jbg+iUiokMaMq7afYI9XLdTivz6TzkltHnLZ8voEcLP2S/hgVB/P39+AGkyjkSNhYwICZVyLlGXiCf4AIMXT0qv3S2Bk5NIIZsOtI3fqoDE+EzZEeAFLV4dzIh40yI+uu+WQhiHbBrcTiSUBxgiU22EV9JxDfyld1kVmuDS123rTEYsVAUCMsI1LG7Mzol7eUDd9+JE7WcEdRkptu/cu3mgdzSkRN533nvPw4R75qaY4ld4YAm3AY3CGCPF9vLYOvgSRTOyKdNJMXcuX//lrvkO0GKc5FDxQ57hH/vQUIB6ScpNqyTxOAp/e5PYHq/+8lNOn+L9Ya+T4lrtltvKcoG/nW/zdE7Y5VOnVgGmhSZHMy/2f0jd+VksYSyuTmUHQFd8hDMiCZPlkZMWenWglxgE7/v6LOI2ESQlGiq6sccdlDb7gz/5LPiRmEP4MhvmJfQgpAPo9hAlrpTfD+e5uTI1nQVGyeR7VPFjwb5qse8CGm94JpElftK+/Ln3HSyxjBUPIu4sEj4V3GYcdvnIoibV5v3AxdBA/lWPBtSBouATdj9CUc8Li6Qsyiu8MgyfSsjC5rJJKdm6P+3UrwFXhLzwBLcnpBaLM8bF981c5L44JsvHL5F/7NxQ2Vog36Il+eJ3rsjOGgQWZuiHbfh6rPZYFrH9FcK739RPcPqGt0h4+OPaHTEaSrHtO8YsH7VwfSHoLtUjCo9vQgTnv+3S/wx8107QJ6lrvjDUdUmudOeSUYSQc0vAPqR7BDghpbk3DAC2U8rZXAsAYnLuXhs4xyIh2B0bmnZLK5EAPrxoOtuZPi/wQAZfpG1HKdPUxB71XrYDuWB4EC6uPJNlhFS7CBlHgU1ZIhn4
+ vmegSUzn
+ 7o0rcy2zv7sWpyOUN+16SDg4dvokBek3ugJqqE7CbDGMAHnlI2K/FS9JIeY1k3F7eZ/gQtQiGOhBDzei8vF8mnoN2pQ+vv6awkTh45XJSU7NEiEX0VnIAkR3dTSh/JW+GwTSTJ/f2R+PLJvo4oz6P/Om2AO/Gur/IjHSQ9OIL1YD0zerBxTRsoPpyv38nxH6/CAhZ1MKXJx59gRbgDZUJJyXIl3yFmIUZggOYI92xsTClYHiVAgw9qPvfFQDDlIwZ4AzgF3vds5FpcZqWai9dI9YrrAfClyQpyyzib4MsPslXC5xYp1B5ZkHVpriKbbRIQcwwhAh5adcxRO2RtBubzPMMi0si1r6UnYq0BmKa3axIctY5b+cNgnOEVGyCYOi1w/dw
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -116,95 +148,37 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
-X-Archived-By: <archiver.kernel.org>
 
-"David Hildenbrand (Arm)" <david@kernel.org> writes:
+On 10/26/26 23:05, Samiullah Khawaja wrote:
+> This series introduces F_SEAL_PUNCH_HOLE, a new memfd seal that prevents
+> holes from being punched into a shmem or hugetlbfs memfd while leaving
+> the file fully writable.
+> 
+> Background
+> ==========
+> 
+> Drivers such as udmabuf and iommufd (via IOMMU_IOAS_MAP_FILE) use
+> memfd_pin_folios() to pin the folios backing a memfd and hand them to a
+> device for DMA. Pinning keeps those folios allocated, but it does not
+> keep them in the file. If userspace later calls
+> fallocate(FALLOC_FL_PUNCH_HOLE) or madvise(MADV_REMOVE) on the range,
+> the folios are dropped from the page cache while the device continues
+> to use them. The pin holder is never notified, and from that point on
+> the device and the file silently diverge.
 
-> On 10/30/26 01:07, Ritesh Harjani (IBM) wrote:
->> Unmapping a device-dax mapping with 1G alignment on powerpc radix kernel
->> built with CONFIG_DEBUG_VM triggers this warning on every munmap:
->> 
->>     WARNING: mm/mmu_gather.c:176 at __tlb_remove_folio_pages_size+0x38/0x230
->>     NIP [c00000000063d508] __tlb_remove_folio_pages_size+0x38/0x230
->>     LR [c0000000006fb688] zap_huge_pud+0x1b8/0x2d0
->>     Call Trace:
->>      zap_huge_pud+0x170/0x2d0 (unreliable)
->>      __zap_vma_range+0x1604/0x1e20
->>      unmap_vmas+0xa0/0x1f0
->>      unmap_region+0xb0/0x130
->>      vms_complete_munmap_vmas+0x120/0x310
->>      do_vmi_align_munmap+0x1ec/0x240
->>      __vm_munmap+0x148/0x220
->>      sys_munmap+0x28/0x40
->> 
->> To trigger this - it is enough to mmap() /dev/dax0.0, touch the first
->> byte so that the whole 1G is mapped by a single PUD and then munmap()
->> it.
->> 
->> PowerPC needs MMU_GATHER_PAGE_SIZE in which mmu_gather needs to record
->> the page size for which tlb flush is needed. zap_huge_pmd(),
->> zap_pte_range(), change_huge_pud() etc all do this already. However,
->> since commit:
->>   dbe54153296d ("mm/huge_memory: add vmf_insert_folio_pud()")
->> 
->> a device-dax PUD maps a real folio and zap_huge_pud() now hands it to
->> tlb_remove_page_size(tlb, page, HPAGE_PUD_SIZE). At that point
->> tlb->page_size is still whatever the previous user left behind, which is
->> 0 for the fresh gather set up by munmap() and so the check fires.
->> 
->> Fix this in the same way like how other similar paths do.
->> 
->> Fixes: dbe54153296d0 ("mm/huge_memory: add vmf_insert_folio_pud()")
->> Reported-by: Pavithra <pavrampu@linux.ibm.com>
->> Signed-off-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
->> ---
->> [v1]->v2:
->> =========
->> - Split the 2 part patch series. Patch-1 is now superseded by a different patch
->>   from Muchun which he already posted [2].
->> - No difference in this patch from v1.
->> 
->> [v1]: https://lore.kernel.org/all/97f85592bb78a273be8519e6897e7f9b9bd31469.1793070429.git.ritesh.list@gmail.com/
->> [2]: https://lore.kernel.org/all/20261029063601.1961415-1-songmuchun@bytedance.com/
->> 
->>  mm/huge_memory.c | 2 ++
->>  1 file changed, 2 insertions(+)
->> 
->> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
->> index bd44d58e8684..7e589a2fb02d 100644
->> --- a/mm/huge_memory.c
->> +++ b/mm/huge_memory.c
->> @@ -3040,6 +3040,8 @@ int zap_huge_pud(struct mmu_gather *tlb, struct vm_area_struct *vma,
->>  	spinlock_t *ptl;
->>  	pud_t orig_pud;
->> 
->> +	tlb_change_page_size(tlb, HPAGE_PUD_SIZE);
->> +
->>  	ptl = __pud_trans_huge_lock(pud, vma);
->>  	if (!ptl)
->>  		return 0;
->> --
->> 2.39.5
->> 
->
->
-> Matches zap_huge_pmd().
->
-> I will wait a bit  and then queue this shortly.
->
+We have the exact same situation when userspace maps anonymous folios into vfio
+and then desides to MADV_DONTNEED the pages. Or any other memory backend that is
+used for such purposes.
 
-Thanks David, however, looks like Andrew might have queued this up in
-his mm tree [1], right?
+User space must not zap/punch things that might be pinned elsewhere.
 
-[1]: https://lore.kernel.org/all/20261030021905.2DCA71F000C1@smtp.kernel.org/
+That's not specific to memfd, udmabuf, iommufd or anything else.
 
-> This sounds like stable material?
->
+I don't see a reason to make userspace (that should not shoot itself into the
+foot) a kernel feature it must activate itself to not shoot itself into the foot.
 
-Sorry, my bad. Yes, we should have this Cc: stable@vger.kernel.org.
+-- 
+Cheers,
 
-Kindly let me know if I should update the tag and send v3, or can it be
-taken care? Thanks!
-
--ritesh
+David
 
