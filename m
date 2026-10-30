@@ -1,107 +1,107 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF3B5606A31C
-	for <linux-mm@archiver.kernel.org>; Fri, 30 Oct 2026 17:23:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60EE9606A31A
+	for <linux-mm@archiver.kernel.org>; Fri, 30 Oct 2026 17:23:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=broadcom.com header.i=@broadcom.com header.a=rsa-sha256 header.s=google header.b=QbxonJYK
+	dkim=pass (1024-bit key, unprotected) header.d=broadcom.com header.i=@broadcom.com header.a=rsa-sha256 header.s=google header.b=ZZzaeK98
 Received: by kanga.kvack.org (Postfix)
-	id 042AF6B05B6; Fri, 30 Oct 2026 13:23:38 -0400 (EDT)
+	id 4391A6B05B7; Fri, 30 Oct 2026 13:23:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F0DED6B05B7; Fri, 30 Oct 2026 13:23:37 -0400 (EDT)
+	id 3E9F16B05B8; Fri, 30 Oct 2026 13:23:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DAE3E6B05B8; Fri, 30 Oct 2026 13:23:37 -0400 (EDT)
+	id 2FFAD6B05B9; Fri, 30 Oct 2026 13:23:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id B1D0C6B05B6
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id F3C406B05B8
 	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 13:23:37 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 3D9E1A05F3
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 8D2751A0824
 	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 17:23:37 +0000 (UTC)
-X-FDA: 85379964474.08.3AE54C4
-Received: from mail-pg1-f225.google.com (mail-pg1-f225.google.com [209.85.215.225])
-	by imf28.hostedemail.com (Postfix) with ESMTP id F38DDC0004
-	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 17:23:34 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=broadcom.com header.s=google header.b=QbxonJYK;
-	spf=pass (imf28.hostedemail.com: domain of florian.fainelli@broadcom.com designates 209.85.215.225 as permitted sender) smtp.mailfrom=florian.fainelli@broadcom.com;
-	dmarc=pass (policy=reject) header.from=broadcom.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793381015;
-	b=KWfRfH21UeP8uUr41lx5J9n+Xak1vkZsteUveTXU0VsqkWGWg6/ww3+m0BrPoTZjR9kJIh
-	NL9CLXMXZeOSwY0i639yJE8zIIHbXPzRbWyDEgC62E1qPMLbFHqaJdFNuTQmAW/vYFssIt
-	avg8H5AUyC5G7Q1NJ6uQCO3JYh578Q8=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=broadcom.com header.s=google header.b=QbxonJYK;
-	spf=pass (imf28.hostedemail.com: domain of florian.fainelli@broadcom.com designates 209.85.215.225 as permitted sender) smtp.mailfrom=florian.fainelli@broadcom.com;
-	dmarc=pass (policy=reject) header.from=broadcom.com
+X-FDA: 85379964474.15.03AD505
+Received: from mail-pg1-f227.google.com (mail-pg1-f227.google.com [209.85.215.227])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 653D280005
+	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 17:23:35 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=broadcom.com header.s=google header.b=ZZzaeK98;
+	dmarc=pass (policy=reject) header.from=broadcom.com;
+	spf=pass (imf02.hostedemail.com: domain of florian.fainelli@broadcom.com designates 209.85.215.227 as permitted sender) smtp.mailfrom=florian.fainelli@broadcom.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1793381015;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=q/Q9JkBadsgG41NDSYMszyxdI8yHLcwep1flIBRRZUQ=;
-	b=yw06+02cPaSEES/ZtCod7clRT8rLeSeAnJXn3ZFsQNzVgy1Smemcwv8PmSKRNliwG9VkQj
-	HZc7VPekXOKhfJPIF4XlacSOLl3HoZf74XGOuGrW8R0FY4fUi4eFr9VVzzwNGsxDpBByk5
-	34TpLFTjWcjAoylYWz50481a17njUpg=
-Received: by mail-pg1-f225.google.com with SMTP id 41be03b00d2f7-cc4aa0246b7so531329a12.3
-        for <linux-mm@kvack.org>; Fri, 30 Oct 2026 10:23:34 -0700 (PDT)
+	bh=zmpmCNUnxZltA0RrJz+fEFjfdRhaWWv/gMnrq/ZBymM=;
+	b=EbclPHBOZahBQFEhsIx/2kDkjKBoJ8IJWdqkAEbLbHxqsc3k546h1LW1lW8nfi5RHclRNK
+	M/TPlsukTwWKgofl3YGfbt7Nb/bLYizVKoHzjKH7omFkaNSpfAhmDFbuD9+b1mK0YlzATV
+	4X6i/TxFxAZ0Xrswv/5vc5Xt1IlVwD0=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=broadcom.com header.s=google header.b=ZZzaeK98;
+	dmarc=pass (policy=reject) header.from=broadcom.com;
+	spf=pass (imf02.hostedemail.com: domain of florian.fainelli@broadcom.com designates 209.85.215.227 as permitted sender) smtp.mailfrom=florian.fainelli@broadcom.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793381015;
+	b=vOf7igm+off6m0n1uD+ZGI5N8KdXdjQ+SQWBMNYP14+4SqZlL3J0w3nyTfNGui8KXnM1+a
+	5ClYy+fbM0glh9Qer5OdXe33OxlTDo8r2415s4ue4LYeoaRORC9Q+laymBlilf4MB4kN3A
+	h+XR/z9MGyQKHuh5S66FU3dwAVOfj7U=
+Received: by mail-pg1-f227.google.com with SMTP id 41be03b00d2f7-cd5d2dafeccso584193a12.2
+        for <linux-mm@kvack.org>; Fri, 30 Oct 2026 10:23:35 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20260707; t=1793381014; x=1793985814;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:dkim-signature:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=q/Q9JkBadsgG41NDSYMszyxdI8yHLcwep1flIBRRZUQ=;
-        b=ZsnW9Tn9v6SjN0KgUxgY8IZ34GotLr7nhyAllOcyKT1AdTTokT1I4CYXO3p/b0UyJJ
-         RHCmfzMLdnh4Ask9WahcZcHUuJd4fl8SZOq4Qk5lWDv+6u515wkXv3bbTq87N0RXe+3I
-         s6XBhbeltIe+Q6GEp3SZMJmhefuVwRrm5qYoOZkxhNPBNPSPxW3Bgj22Y5KQ3PhQGAvq
-         ijPHlUPP+UVXwbOa47WY9Wjej/l5sUMMV9UbiF1B3nZhFvVCMZYMGg8cW3KwjvUzAZJN
-         QTVO1GTCWEtFX2/TuVy3v8DXMLW0lrz6jOysQ58oQhpAtmvRGk/xaq48OvXjmgzqqLOE
-         Llmw==
-X-Forwarded-Encrypted: i=1; AKwUvBzqTuhwOhRiDKuux2nHU4P5XbR0HVIB9G5QFnK0Gr0be9GJbLTDIqGdfG1WKrz7se9I2M5Q8nt5vA==@kvack.org
-X-Gm-Message-State: AFq9FYL1FsYvq1f/FchV1ydWJyiMgjEzl9GjI9/ATJ9XLhHSeOlhAH+1
-	X2x3615KOgPr0dXUxFU8ivbiGSMffagS0aAvOHzNulq9zwu1vh8HaSYvsw/WKf6B7aVmdrYNnrZ
-	+qLcDRMc0K+7gVEEvZJHBqo/8uTZAHyxvT96kkQGvw5SxItc5QugF9vJ23DKjAF9hieRWWmrrUq
-	gPXLcHSvAG2ohslrwNWbwLCr0uQsvGOxSVOeva/3aQKnJlWhfkdEN7cEN9VWcyjkNBMyJUAcKp/
-	x6Qh6nOSux2QA==
-X-Gm-Gg: AYBFou0gzFQiu/rV9e1FxNyRXSTalJbyQfimHnB0dW8oO8MgEtDK8bujPHNSQounDd9
-	vxC4Fwb+Ng7ohAG7mWld/GBata8Ml65FgGRiMyaD49cTzEcMkl8BE+lFbRGhALBJsTUiB5K8Uke
-	26KiGikQrJEekvFJJa1G4/FWZAaaplc/l+G2Nt2NsEctEaakKwiYQmFnLrp5hRKapzh2/OJbQyP
-	tR4CXHKtARZCgpaIzdNj4C95nh+ncxSbS2YXGBH+zFwCl/lOZr+NwaX5/t+ZtpkeOE921v195Wd
-	4BvIGg2sMz9NLlrJogPIbiLtG8uO6u5ZXuX6iHSDwvm5XXsHUq0umG8BaR4Ml8fF7siwUGQyXQH
-	l/vPh0RSqN5kyYJcFP27sdu7EL/ILR5e/GSjTCrj/XNLJWoOOw3JGUHuO7jzEXyFea1NuSCtddE
-	TfZS1KDXv3rgKTFo/x3+04HvKffJOcfyS/TA3Bn0iP
-X-Received: by 2002:a17:90a:fc4b:b0:3ab:b64:5893 with SMTP id 98e67ed59e1d1-3ae8981bf35mr2279788a91.53.1793381013717;
-        Fri, 30 Oct 2026 10:23:33 -0700 (PDT)
+        bh=zmpmCNUnxZltA0RrJz+fEFjfdRhaWWv/gMnrq/ZBymM=;
+        b=IqYnCpr6YGK1Pwkro/04TgjAgD3ZGvATZXXZfhZxlhQqXG95AAiRtm5Hd9g+pwVjFd
+         0kHgfqirYxKPM65XDqwQ/Q7yp0B9qpciVIqKVweNBdy5hPw4noEwJRIqo7NJBS6/Hwcf
+         6QLtmQakrbfojm00bw8GoE88vUSNrybUejDSvMf+R8AnCTyKPxfActsSfAODFQk8MIV/
+         BL0KbrOd4iLt9PlW4DrbnbJ5+uBway1/bfyAi9pxgl3HEd1IzISfrcQB9VbT+QAuJKMj
+         pAbuGfftzjtAg4ZB+F9AAsaAl7hsJF5dYTnZCK5frEfHEhajVB+QdGkJW8x+ih5niXhw
+         lW3Q==
+X-Forwarded-Encrypted: i=1; AKwUvBz8lLlTD19heo3qnsB8QcugqK7fnqz0G36+SoWsxGQt1XhjNl8lSlxuTomk1a4Fgr8uH1Di5cbZEA==@kvack.org
+X-Gm-Message-State: AFq9FYLEbjOb6cJbIpdc0ibDv/toNQJkOQOvxjBcUMo6QT6tnej07u2c
+	iecI1238J3iZS18iyDOJFDi91XZLCQd+S4YaGrw7QJMYM8I63Sz3KnHgqpYDghF/P0gPgmwiXVK
+	f/abFX3mD7VMsboxDNxoL+0w8uiApIoqQkjHtDY+Vo2Es00PO7BUXPPx2LGVgciksQs1cPDlZQZ
+	KAtajPqPSmR3NXpuGftRyzMWjDb9lhl26BD6Q+Uf/VkvwN1r+PHm0nXWEjHatlDxtbyZMQuJOYw
+	2TfbZOjsHSbiA==
+X-Gm-Gg: AYBFou0+4pJQu6/LqYnqnAhDQdjmltC2FazzgHOxDzflWfQx316rJuDkU8wqoDgERLF
+	LhJBFg4s0vh3h//v6bwmo5xygjv1Xn+WsHgVpPJPc2i71xnL3IPr3N6eKa8rNl11P+GBR51Wy0p
+	W0tUf9bydCxlTJjeO6x4FLbhg7Kz9R7SbRpxYc4n3Tg6QwkXxW8mG79zr3sr/M4pWwWOJWcJuWx
+	8fcvLZxtKjJK2FXNT+aFsMii7u8jGFpv5if76ILO7NT0nZtg/RIHskRRQAu45iGM28Guc1KcmgC
+	xSAHVpAN76ceVhSBnFiwzCVphmxNZycHJGwFoQN98TyPTAB63bm9R+K2Fb4DB0WSH4JlcnMPIiI
+	SczLc13AdnkHNK7EBFmoG3WxPL6o8kIbKRKaJTEFh4wgqXE+GErFYdJTPVytAs1Wx4KNLwPoykC
+	ZPchYby9rl5z7CDU6bo6FIhC9uKSzqyWkXR8OU/GTV
+X-Received: by 2002:a17:90b:3f84:b0:3ab:b39f:41da with SMTP id 98e67ed59e1d1-3ae89776af6mr2340999a91.11.1793381014220;
+        Fri, 30 Oct 2026 10:23:34 -0700 (PDT)
 Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-13.dlp.protect.broadcom.com. [144.49.247.13])
-        by smtp-relay.gmail.com with ESMTPS id 98e67ed59e1d1-3ae6e80415bsm4408054a91.3.2026.10.30.10.23.33
+        by smtp-relay.gmail.com with ESMTPS id 98e67ed59e1d1-3ae6e874b16sm4470231a91.6.2026.10.30.10.23.33
         for <linux-mm@kvack.org>
         (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Fri, 30 Oct 2026 10:23:33 -0700 (PDT)
+        Fri, 30 Oct 2026 10:23:34 -0700 (PDT)
 X-Relaying-Domain: broadcom.com
 X-CFilter-Loop: Reflected
-Received: by mail-dy1-f197.google.com with SMTP id 5a478bee46e88-30c0d568830so1792138eec.1
-        for <linux-mm@kvack.org>; Fri, 30 Oct 2026 10:23:32 -0700 (PDT)
+Received: by mail-dl1-f71.google.com with SMTP id a92af1059eb24-1aa0fb7f157so1473439c88.0
+        for <linux-mm@kvack.org>; Fri, 30 Oct 2026 10:23:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=broadcom.com; s=google; t=1793381012; x=1793985812; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=q/Q9JkBadsgG41NDSYMszyxdI8yHLcwep1flIBRRZUQ=;
-        b=QbxonJYKTKdZzMrwWymj/ozxLkfcaBm6i/nvElAJRDCwudI4TLhpe9IYMj+kJq4Da6
-         ufuWaekh6YLxmNK7IftLr51Wy3QtkOt85/uXN3zEtO+dLCWm/l+/6sitjUhSgxnUU+Xr
-         qpD9fSH9ifvDAiqa2jCI8gR2afh2K8Xcorfxk=
-X-Forwarded-Encrypted: i=1; AKwUvBwUV2vmhHfyflGtLlLWHSMZqeC2TOstr6CDS+7OBxWok8lGXmMTmbuDoSupc8ldqO6ox9rdOUSDxA==@kvack.org
-X-Received: by 2002:a05:701b:230e:b0:151:2e62:fe4b with SMTP id a92af1059eb24-1ac5bda8579mr3875015c88.23.1793381010375;
+        bh=zmpmCNUnxZltA0RrJz+fEFjfdRhaWWv/gMnrq/ZBymM=;
+        b=ZZzaeK98+I9HZ84WeWC1pZWtkHwNvD9kt0Z54B6LJ/J1BDTr8lLzWmbwqPg3tO28gz
+         +TTgsgO3mwbuS9zDVnlOPy+OsKrMdcnZc7RuMmUmc4ZFiU2MzBEV88+gINPL8+FLqNUb
+         aiaUhDIdjHFVMmrRIfQ/fDAO32oJbuAZ7IdBA=
+X-Forwarded-Encrypted: i=1; AKwUvBy5pKwtHdULqUBnDWfRSNa4xuMWkZACm6eCsca/VeeMYOu9JmLCC7OefIkxENqU6gHmhznOwKnZpA==@kvack.org
+X-Received: by 2002:a05:7022:ea46:20b0:144:c128:4c4d with SMTP id a92af1059eb24-1ac5da76f4cmr4112836c88.38.1793381011598;
+        Fri, 30 Oct 2026 10:23:31 -0700 (PDT)
+X-Received: by 2002:a05:7022:ea46:20b0:144:c128:4c4d with SMTP id a92af1059eb24-1ac5da76f4cmr4112794c88.38.1793381010859;
         Fri, 30 Oct 2026 10:23:30 -0700 (PDT)
-X-Received: by 2002:a05:701b:230e:b0:151:2e62:fe4b with SMTP id a92af1059eb24-1ac5bda8579mr3874956c88.23.1793381009347;
-        Fri, 30 Oct 2026 10:23:29 -0700 (PDT)
 Received: from stbirv-lnx-1.igp.broadcom.net ([192.19.223.252])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1ac1abcf67csm8463406c88.21.2026.10.30.10.23.28
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1ac1abcf67csm8463406c88.21.2026.10.30.10.23.29
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 30 Oct 2026 10:23:28 -0700 (PDT)
+        Fri, 30 Oct 2026 10:23:30 -0700 (PDT)
 From: Florian Fainelli <florian.fainelli@broadcom.com>
 To: stable@vger.kernel.org
 Cc: bcm-kernel-feedback-list@broadcom.com,
@@ -114,9 +114,9 @@ Cc: bcm-kernel-feedback-list@broadcom.com,
 	linux-mm@kvack.org,
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH stable 5.15] mm: move 'mmap_min_addr' logic from callers into vm_unmapped_area()
-Date: Fri, 30 Oct 2026 10:22:15 -0700
-Message-Id: <20261030172216.368052-3-florian.fainelli@broadcom.com>
+Subject: [PATCH stable 6.1] mm: move 'mmap_min_addr' logic from callers into vm_unmapped_area()
+Date: Fri, 30 Oct 2026 10:22:16 -0700
+Message-Id: <20261030172216.368052-4-florian.fainelli@broadcom.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20261030172216.368052-1-florian.fainelli@broadcom.com>
 References: <20261030172216.368052-1-florian.fainelli@broadcom.com>
@@ -124,18 +124,18 @@ X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
-X-Stat-Signature: 1c6e96rwp1geqawxzmjbrgoi5gt6zxj6
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 653D280005
+X-Stat-Signature: neubjsbuh8yhms7or4kipqctrftxrknx
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: F38DDC0004
 X-Rspam-User: 
-X-HE-Tag: 1793381014-30184
-X-HE-Meta: U2FsdGVkX19+BWm8MuNT9ezQNMlmr0rwBpYugGkiJchHMvn8avhABpKmJ+zD7NfFOdeqHStg4Ui1weG2+8tqcGht7AESXoIFzCgTCLQPIyTXXDLC08WzEnIG8vkQyUjW0O2rlyFieldWx2O3/NyCIip6uGeCuK/6CImCC8iAojqoZdalvG9RUChMDEQp/KSdZzsHdeFIPAfAtn+OVUAZli5ahfLizPwbteuWFoUUPhgchulqdOSHo2cWGJWHFoaiMJiGPkOrsusXaGHAYyvm5TiQmyhODolh5FsKnsPa1pE29JTd110tj4RTmuI5aTQokmqEMIpNcSnM6KmnXMpy2i2OkWiOo3SIgMEVemS+uOC3W+s01dE3RJXKoaR9Ockr+cE2o5wCIuUSx+ARIOU9/AMJSWVFWrCxHYkQqb29maihXwhbFZAtqYn+cvYcZHhptxpNf81o3RL+eZHfhfh3BAiUDGMiNCL2ih8QNIYw3R1LcuceQkXusjOMwExYTWfseu5ZbPTESfQLx7XHT29e/hpDzmJKa6/17ksRHHibvCVsfuSoW0fQnW8LC0KAvkiuEInXdGmG8eHv0aM/UfSBt6New3J7QfXB31tR2e4bDAsiG7BZi6wXW+BXtOus20ADzAaQDEI+PCAyzAXSuF6PK7WjTdBLaL5XI8RFdlcVnAXfDauT7vIlddQ/PYUNrX48rwZzZhhHX3s5lMWJsohgR9qeD/zZYiTRG9iltNTY/lmToDbTE4VlqnY7mTpBm9wTjwDLPfTDgf99KWuSLHw0o9KY1TzTTqW8bEmDFscePREY8/yakbxi6dSD8514bMS1o38pU8ZA980ZjtVYrAejcuFh6LvP78UC3LpYVxyuKPaCizjsZRpLy41i5LuKR0c5Lt//gkwKQQ3btUK/NAeFtVswlP5B0MVhIXV+dGhHuc0kTJjD26bGv4NULPWthoAq8qnNvFOBoktA+4GHOUY
- xTnIfy0D
- IE2m7Ib3W2CEEWu9n/Wg3lCyyNRn4kDrXb12thTTo5NFnTpiXka0jmpQfJS5cgv6RLA+fEUeCQNGlkY59zPUPcDbHYvFvP85V0Ps/LSK8QBFBD96J+gmfXUciji0mlQb/jw4MSmf/mFadqNM0B29OKkOIAk2Z+NuOFZAAq3ENe2T0wbOvDgnG9m3v312uGr4DZhjt0JmYrbS7v3HAqvQasf1ctTwUc2CmXkPMqqeKSGLD/zDyN1aWCYEa/2o9b3sQRdUEAzonny8GaXg0o7HXkfQPxh511gJfQlrmXbZDPmabG+uRZY8DEHDercKdAldHUknXv3tyzz6b90nSH86cb/fOOUdmVeFq0b6aGtjoLLrRmJIIsOUdrpv+PbObFCzeAzju/dZ2dEJyexmiRgTCe+5j6ASEnlLIjA4zlQoo508G8YCHzHqST8rk0xwA2ucGbZsHUvAFzN2NblOa1231DhNYwdeM07nfg/2i+Ay7C0uzF9XcovuF7w9gGscyzY2/ct0VTUb5eyCIWxJBOMU+5VNH/lJp5wDEDQOTc69seWUFhCJpBxPkI8HIdiBZvoXhDpUw68g87qdwqYaZnBeJ7lu/y/7Emh/p+YCI4834UES9U2WWg7Wr3V8w2q385TfQ8WT0SR2ImZXqQB6sYbl4Ps7TWg==
+X-HE-Tag: 1793381015-867342
+X-HE-Meta: U2FsdGVkX18RDjHT/yNS4g/MppP/nlnMCEOBx0+COiQ70/hfMtD4GQOKLuaubh98EjGl3uCRt4b+dO4iXBR/vpB0CqLFw5k40n8Y4HoW4xgvOgI1MESEmayQXXGwB8MULt9GjmeBBS779aelNed42Y2H4YBw8QkgSu/hqODWdcbe7MeqYg6OLnAame8Whysdc34xTybNAU4LrItqxa8VOlyS1rFaZnz2vATJAPZifC5VLj96jCSZXbmHAjHZ/Al0Rbs4GDjzDtiSIvxITprz/cZpv0phRw27mzxoqNx/auu6GGnS/+EUpxbxnXxm3ygg2ezeDQO5hYIZDidtVwwal3lIsVItG6T9rcwZTmaD5m+GXMsHM9+2gRPArnegPuu5h4o8wH6Zlw8dqr0YRQIlbXPA02gvsTyh1NvQMyZWOv/zTwoJv6CfEY+mjj+iat4LgIKq3YSZM1+RxFQXOA5qTO+BsNk1g6B6ULbGmQPRAMpV30h695OdVFJi3T3xoMpK6ZSErhyazF8bbH7QPycU5kysf/Oq4hUqiRq4ukQo/7wG257U8HPJORpTOdh0drf/rrlNB+yuDuW91dVEvEYiBv/RGHsEU2b/VRWkrQ7hrsfIxh/64BENDn/WjTLFoWSQLIBXn6Cs+Db6i/nspih7uxIrHcI5JqZyU4HoV6jVYgGJFzHAQgQE/ltMgwWyxQRQrHN966QxIYffqowx1PQ25prP7sUXdJSbxaxNqDUF2Xg++xtnOZlKo9MbTVdCMI4sjFw0reZO7zgzYYCvfpdpw5fNU2Zrc4lfOsNPQyfibVif+ttnAvWW3/VPOQVjSAk+RIt3pho7eJEtAYZMornimtY/ypzS0ZkEYfLqTUPasOIG4x0GCqpyksmivKvEX23/gtntJpbqaJk71dMwevv6yELAQDGpReLFN+JFGZyA/YzMVVe9pmK5AtWUD08XrjYeaR6Kr1h+m5FbinU8NcI
+ BJ425YIp
+ PnjnS3Ly3YfjCojZvVGjidygWUgNhWUPSIZWZILmXNHTzsUm3tkhsHtsxFYYo6JeSI4sv2mRJ7pyqjVox8aa9a3AGCKj3K73/hcuvJ8FbMTXUutYdFQiShfhem2g4knk4i67Kr8Wn6nfk4h3yHgGxV7ZBBeYBxosGC2/uX2ZjBl8kFbhV+fkEXcLJoECw77eaJ1nc+ApMgOaslEzWsaaeolhrjgeAcuu/yvUSfL7aMsuMaN7d7do6IeYZv6cgesXI0FKRD2wgpKfpQdxb/dMfSbTR2AV/qVIOpi709e7AizXBSqbzuiaj7/oaBV/zhpVOoff97Vsv5M+JNtGCDfUV5GecaFPRA04gOcMqkisfHWT19HAOn9mKxJJAYQIz8am2ZiANGKLO6rJuIeCDhom34/1SsMkHvN78/ti+aQWjO2qE6TkqnfT2opLePAMFNHnf5YakGzQZ7lROATrfZBxFliPWAulOQ/stXy1GY6CRnO5m9buWfZxsRFU+irNynRUnS0m5gyQSRI4dKavA4/E+fKeqvz5kXU4t0J+j3YdDD8gHD1F2rTlbRHl38tMPQ2FsABncEx2zK6HC2RPwy/Ll0siTqrBJUaMYd60LJUc90B/Z5ng+XkvtjZiEnZ/SwDIfiy+RfEyZPk7mJeAxZXcWyPr8kA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -177,22 +177,19 @@ Signed-off-by: Liam R. Howlett <Liam.Howlett@oracle.com>
 Cc: Russell King <linux@armlinux.org.uk>
 Cc: Liam Howlett <liam.howlett@oracle.com>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-[ Adapted to the rbtree based unmapped_area() and unmapped_area_topdown()
-  used before the maple tree conversion: clamp the lower search bound to
-  mmap_min_addr there instead of in the maple tree search. ]
 Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
 ---
  arch/s390/mm/hugetlbpage.c |  2 +-
  arch/s390/mm/mmap.c        |  2 +-
  fs/hugetlbfs/inode.c       |  2 +-
- mm/mmap.c                  | 18 ++++++++++--------
- 4 files changed, 13 insertions(+), 11 deletions(-)
+ mm/mmap.c                  | 19 +++++++++++++------
+ 4 files changed, 16 insertions(+), 9 deletions(-)
 
 diff --git a/arch/s390/mm/hugetlbpage.c b/arch/s390/mm/hugetlbpage.c
-index 8631307d3def..01aaf530ee7a 100644
+index 33ef6790114a..d646d81ead5b 100644
 --- a/arch/s390/mm/hugetlbpage.c
 +++ b/arch/s390/mm/hugetlbpage.c
-@@ -290,7 +290,7 @@ static unsigned long hugetlb_get_unmapped_area_topdown(struct file *file,
+@@ -273,7 +273,7 @@ static unsigned long hugetlb_get_unmapped_area_topdown(struct file *file,
  
  	info.flags = VM_UNMAPPED_AREA_TOPDOWN;
  	info.length = len;
@@ -202,7 +199,7 @@ index 8631307d3def..01aaf530ee7a 100644
  	info.align_mask = PAGE_MASK & ~huge_page_mask(h);
  	info.align_offset = 0;
 diff --git a/arch/s390/mm/mmap.c b/arch/s390/mm/mmap.c
-index e54f928503c5..1cb7ec9f9e6f 100644
+index 3327c47bc181..fc9a7dc26c5e 100644
 --- a/arch/s390/mm/mmap.c
 +++ b/arch/s390/mm/mmap.c
 @@ -136,7 +136,7 @@ unsigned long arch_get_unmapped_area_topdown(struct file *filp, unsigned long ad
@@ -215,10 +212,10 @@ index e54f928503c5..1cb7ec9f9e6f 100644
  	if (filp || (flags & MAP_SHARED))
  		info.align_mask = MMAP_ALIGN_MASK << PAGE_SHIFT;
 diff --git a/fs/hugetlbfs/inode.c b/fs/hugetlbfs/inode.c
-index f663657c237f..b41e79f964d2 100644
+index 3faad73c74ab..a7b6a97543b7 100644
 --- a/fs/hugetlbfs/inode.c
 +++ b/fs/hugetlbfs/inode.c
-@@ -232,7 +232,7 @@ hugetlb_get_unmapped_area_topdown(struct file *file, unsigned long addr,
+@@ -219,7 +219,7 @@ hugetlb_get_unmapped_area_topdown(struct file *file, unsigned long addr,
  
  	info.flags = VM_UNMAPPED_AREA_TOPDOWN;
  	info.length = len;
@@ -228,70 +225,58 @@ index f663657c237f..b41e79f964d2 100644
  	info.align_mask = PAGE_MASK & ~huge_page_mask(h);
  	info.align_offset = 0;
 diff --git a/mm/mmap.c b/mm/mmap.c
-index 53fa4f5167dd..2c22f4bee04e 100644
+index 1eb86aba7de5..17ec4d40edc1 100644
 --- a/mm/mmap.c
 +++ b/mm/mmap.c
-@@ -1917,6 +1917,7 @@ static unsigned long unmapped_area(struct vm_unmapped_area_info *info)
- 	struct mm_struct *mm = current->mm;
- 	struct vm_area_struct *vma;
- 	unsigned long length, low_limit, high_limit, gap_start, gap_end;
-+	unsigned long min_addr = max(info->low_limit, mmap_min_addr);
+@@ -1598,7 +1598,8 @@ static inline int accountable_mapping(struct file *file, vm_flags_t vm_flags)
+  */
+ static unsigned long unmapped_area(struct vm_unmapped_area_info *info)
+ {
+-	unsigned long length, gap, low_limit;
++	unsigned long length, gap;
++	unsigned long low_limit, high_limit;
+ 	struct vm_area_struct *tmp;
  
- 	/* Adjust search length to account for worst case alignment overhead */
- 	length = info->length + info->align_mask;
-@@ -1928,9 +1929,9 @@ static unsigned long unmapped_area(struct vm_unmapped_area_info *info)
+ 	MA_STATE(mas, &current->mm->mm_mt, 0, 0);
+@@ -1609,8 +1610,11 @@ static unsigned long unmapped_area(struct vm_unmapped_area_info *info)
  		return -ENOMEM;
- 	high_limit = info->high_limit - length;
  
--	if (info->low_limit > high_limit)
-+	if (min_addr > high_limit)
+ 	low_limit = info->low_limit;
++	if (low_limit < mmap_min_addr)
++		low_limit = mmap_min_addr;
++	high_limit = info->high_limit;
+ retry:
+-	if (mas_empty_area(&mas, low_limit, info->high_limit - 1, length))
++	if (mas_empty_area(&mas, low_limit, high_limit - 1, length))
  		return -ENOMEM;
--	low_limit = info->low_limit + length;
-+	low_limit = min_addr + length;
  
- 	/* Check if rbtree root looks promising */
- 	if (RB_EMPTY_ROOT(&mm->mm_rb))
-@@ -1996,8 +1997,8 @@ static unsigned long unmapped_area(struct vm_unmapped_area_info *info)
+ 	gap = mas.index;
+@@ -1646,7 +1650,8 @@ static unsigned long unmapped_area(struct vm_unmapped_area_info *info)
+  */
+ static unsigned long unmapped_area_topdown(struct vm_unmapped_area_info *info)
+ {
+-	unsigned long length, gap, high_limit, gap_end;
++	unsigned long length, gap, gap_end;
++	unsigned long low_limit, high_limit;
+ 	struct vm_area_struct *tmp;
  
- found:
- 	/* We found a suitable gap. Clip it with the original low_limit. */
--	if (gap_start < info->low_limit)
--		gap_start = info->low_limit;
-+	if (gap_start < min_addr)
-+		gap_start = min_addr;
- 
- 	/* Adjust gap address to the desired alignment */
- 	gap_start += (info->align_offset - gap_start) & info->align_mask;
-@@ -2012,6 +2013,7 @@ static unsigned long unmapped_area_topdown(struct vm_unmapped_area_info *info)
- 	struct mm_struct *mm = current->mm;
- 	struct vm_area_struct *vma;
- 	unsigned long length, low_limit, high_limit, gap_start, gap_end;
-+	unsigned long min_addr = max(info->low_limit, mmap_min_addr);
- 
- 	/* Adjust search length to account for worst case alignment overhead */
- 	length = info->length + info->align_mask;
-@@ -2027,9 +2029,9 @@ static unsigned long unmapped_area_topdown(struct vm_unmapped_area_info *info)
+ 	MA_STATE(mas, &current->mm->mm_mt, 0, 0);
+@@ -1655,10 +1660,12 @@ static unsigned long unmapped_area_topdown(struct vm_unmapped_area_info *info)
+ 	if (length < info->length)
  		return -ENOMEM;
- 	high_limit = gap_end - length;
  
--	if (info->low_limit > high_limit)
-+	if (min_addr > high_limit)
++	low_limit = info->low_limit;
++	if (low_limit < mmap_min_addr)
++		low_limit = mmap_min_addr;
+ 	high_limit = info->high_limit;
+ retry:
+-	if (mas_empty_area_rev(&mas, info->low_limit, high_limit - 1,
+-				length))
++	if (mas_empty_area_rev(&mas, low_limit, high_limit - 1, length))
  		return -ENOMEM;
--	low_limit = info->low_limit + length;
-+	low_limit = min_addr + length;
  
- 	/* Check highest gap, which does not precede any rbtree node */
- 	gap_start = mm->highest_vm_end;
-@@ -2101,7 +2103,7 @@ static unsigned long unmapped_area_topdown(struct vm_unmapped_area_info *info)
- 	gap_end -= info->length;
- 	gap_end -= (gap_end - info->align_offset) & info->align_mask;
- 
--	VM_BUG_ON(gap_end < info->low_limit);
-+	VM_BUG_ON(gap_end < min_addr);
- 	VM_BUG_ON(gap_end < gap_start);
- 	return gap_end;
- }
-@@ -2208,7 +2210,7 @@ arch_get_unmapped_area_topdown(struct file *filp, unsigned long addr,
+ 	gap = mas.last + 1 - info->length;
+@@ -1793,7 +1800,7 @@ generic_get_unmapped_area_topdown(struct file *filp, unsigned long addr,
  
  	info.flags = VM_UNMAPPED_AREA_TOPDOWN;
  	info.length = len;
