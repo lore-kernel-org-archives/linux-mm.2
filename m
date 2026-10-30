@@ -1,69 +1,69 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A06A9606A324
-	for <linux-mm@archiver.kernel.org>; Fri, 30 Oct 2026 03:05:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D954606A31E
+	for <linux-mm@archiver.kernel.org>; Fri, 30 Oct 2026 03:05:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=gTsP82pA
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=TidB5qin
 Received: by kanga.kvack.org (Postfix)
-	id BAD8D6B05BC; Thu, 29 Oct 2026 23:05:07 -0400 (EDT)
+	id 2851A6B05BD; Thu, 29 Oct 2026 23:05:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B5D646B05BD; Thu, 29 Oct 2026 23:05:07 -0400 (EDT)
+	id 1E6F76B05BF; Thu, 29 Oct 2026 23:05:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A24466B05BE; Thu, 29 Oct 2026 23:05:07 -0400 (EDT)
+	id 0D6146B05C0; Thu, 29 Oct 2026 23:05:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 719A96B05BC
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 23:05:07 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 0A090A81C1
-	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 03:05:07 +0000 (UTC)
-X-FDA: 85377801054.18.98C2F1A
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id C47556B05BD
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 23:05:09 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id A65E9C05AB
+	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 03:05:08 +0000 (UTC)
+X-FDA: 85377801096.22.1837662
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 73F7840006
-	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 03:05:05 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gTsP82pA;
-	spf=pass (imf12.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf10.hostedemail.com (Postfix) with ESMTP id 09CE8C0002
+	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 03:05:06 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TidB5qin;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf10.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793329505;
+	s=arc-20220608; t=1793329507;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WXhfIEDy4CTPoGjtcw0B4hVHKAfnO70M3fzVLJckIY4=;
-	b=b4ki3XTirthtSxNmTg/xjLACichukMjnRC1NaBoR8YWytUJwFZmmFnV6atJHdUVA0Si5iF
-	60oe3FBKH+i7HAttr71xfj25DsrXErEMJLGYuFljeJgZcxiZYXD07cqMZjDZNVyMH0zehW
-	mGqRrwz5th9bsKgkukvoeKyaCqhIUHs=
+	bh=nkxYoYJCkX2YAFLHQUMw3KqFGEIML4u3uDs4jfLkO6U=;
+	b=KtwSVqQnivr0sGNkFRycXXcsF1QjYamMYDtVM+aF7bY1hF5CYxnnAbb5ApBjycLy/hdfqB
+	oxm1zVkJ6i1t92GuWiFd+9db2z+KX4IdA23yNs5hrDj35tHjqm8Vf1FAoZSv8TyNCgetxo
+	gOHdfwZRBYRTJhND5eOFhBxFjKmaM3U=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gTsP82pA;
-	spf=pass (imf12.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TidB5qin;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf10.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793329505;
-	b=rumCTyLVunFwoFsdvnt7i2+Uisjwv3XZsfTTNMFmhG2Nt+mgIgST1eIAlqf2yCmTglglJO
-	Iu2kv+sZNxo1im2Avc04ImcUtqMn6RXzOtrO/V75DG9kz318PsR8Nv27m2aLZfmK1NbZlv
-	heDWxGXY85a/SX9YesJ8eqylJ0+zWrU=
+	t=1793329507;
+	b=yASEVpQav6G40l5CTxgGvU1jfr8zL4W6UnrrA5U3X7Va52ePUac4ixZHPVsGqnTegi6LTy
+	T5ZpYqVuxuULr1awt5lunzLcHwf6+FTb0HeaYVErJNuy6w+B2SBh5H2/amLkr4Mhhj51KT
+	2QpTz22nrqGUZr/9u0gR3jjemZrAU+0=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 0861260613;
+	by tor.source.kernel.org (Postfix) with ESMTP id 988A560611;
+	Fri, 30 Oct 2026 03:05:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 337B11F0093A;
 	Fri, 30 Oct 2026 03:05:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91B501F0093A;
-	Fri, 30 Oct 2026 03:05:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793329504;
-	bh=WXhfIEDy4CTPoGjtcw0B4hVHKAfnO70M3fzVLJckIY4=;
+	s=k20260515; t=1793329506;
+	bh=nkxYoYJCkX2YAFLHQUMw3KqFGEIML4u3uDs4jfLkO6U=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=gTsP82pART3TnX9O3ulaGBbCQLhgq92Hg6rDqzSat5uDzTOj02VhwxuSCy5WO7pZq
-	 +N4YCfptBzoMSGodJAskEubtJsxcVy1/4S1ZUpi+xiPvInQffKQAPH9zzP+IQqL1GS
-	 H2++ZHtUiIQ5c8tEloQ7uibdZyr7QKfdrb+ySROtULDMp2ArtBykZ044hmVLhfnvgi
-	 Q6N7S5Zg1pMrSOv5SfMsCDrQ1KSUZ8rGIEa0RQ6Aj7Fnjc19fSA3DbkZqbowNNT9Ym
-	 V//O6n3Vp9aldQLak1iQ2xsdxbEvTlqPnpSwPPAqQ9SbdzSEZpmgYadN7voTtYnf6x
-	 0a8sgZmAgP7AQ==
-Message-ID: <sashiko-outbox-190206@kernel.org>
+	b=TidB5qiniO5A7XVovWmko4QvxqAm+ShCgHveNdob1DgIYmhDpFAUCNMsugjDpLGNL
+	 mp3O06WdLR3dQWaxmlJSj5QA7z/q2AIfip8L5Fu4WfQ9kzveuhZ/3458WtcKnfMa1x
+	 cNAi9wLls/uAYJHVI2LBcPQPYA/khAQPF0XaMVSE53hxmbbzSzJ8kg+t9jCPZaZQI4
+	 fUi4OaHb4Yw6/wjrAVgfJge7EBAEHLKft1KgUuOp56xvvvSeENB219pDam6+lferra
+	 4Zbf8gEYOgWaBPhi1Yh7YF4YXgFS6GAi54QRTFwBu+FhhwXxnmLJ3U3XYra9EPlfCn
+	 OpHIQfODjesfg==
+Message-ID: <sashiko-outbox-190207@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [RFC PATCH v3 12/17] sched/cache: Apply multi-LLC aggregation
- policy to task migration
+Subject: Re: [RFC PATCH v3 13/17] sched/cache: Allow active balance to
+ spread load from a full LLC
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Jianyong Wu" <wujianyong@hygon.cn>, "Ingo Molnar" <mingo@redhat.com>, "Peter
  Zijlstra" <peterz@infradead.org>, "Juri Lelli" <juri.lelli@redhat.com>, "Vincent
@@ -75,24 +75,24 @@ Cc: "Dietmar Eggemann" <dietmar.eggemann@arm.com>, "Steven Rostedt" <rostedt@goo
  Hegde" <sshegde@linux.ibm.com>, "Phil Auld" <pauld@redhat.com>, "Andrew
  Morton" <akpm@linux-foundation.org>, "David Hildenbrand" <david@kernel.org>, maddy@linux.ibm.com, "Michael
  Ellerman" <mpe@ellerman.id.au>, ljs@kernel.org, linux-mm@kvack.org, jianyong.wu@outlook.com, zhongyuan@hygon.cn, huangsj@hygon.cn, wangfengyu@hygon.cn, yingzhiwei@hygon.cn
-In-Reply-To: <20261029022036.4002331-13-wujianyong@hygon.cn>
+In-Reply-To: <20261029024543.4003980-1-wujianyong@hygon.cn>
 References: <20261029022036.4002331-1-wujianyong@hygon.cn>
- <20261029022036.4002331-13-wujianyong@hygon.cn>
+ <20261029024543.4003980-1-wujianyong@hygon.cn>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Fri, 30 Oct 2026 03:05:03 +0000
-X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 73F7840006
+Date: Fri, 30 Oct 2026 03:05:04 +0000
+X-Rspamd-Queue-Id: 09CE8C0002
+X-Stat-Signature: 4rczfkckwqnhs5ufocgpydf7swht5su6
+X-Rspamd-Server: rspam04
 X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
 	autolearn_force=no version=4.0.1
-X-Stat-Signature: 98ubm5mfbix4o96o95on1c8ufc6c3rrf
-X-HE-Tag: 1793329505-125031
-X-HE-Meta: U2FsdGVkX1/mBYs0dQc7G5ep5nVnd+i5hZdSgVOvbfEpaUaM7wVNR2bfdw3V9rniVq4jNa2Sao9AL+x0LcA5hAz8Z8me+BL5Ib922FjMBHHFczCcSie1INBYmR4P4jN9WIp0pEfgqXJYlv52RWc6CCVx+IlODBs0Sbnp7BYOvMkw02ToCPbtthVfpiUwMLohg0oMgqoKq7xO8L1Qj22OkCXj+8ZctCyh9YCTEKTYx9o3/X9ECRbioHFonfiKsau/glzOQDCm0JYC8Vl2MZMIdg1G+z0GA627Z7uNwNDXeJx8WJAtg9022KciKi5h/ylBVqeYpQ3X74n8IgEv7qpjNkX5QKWJtsM0MjEsz6n0IBk9gJYKP/rePhAx8Da08stCeF9t/A3YeIhVWmNG5pVq/8fcWQGX4zrzH693oifM+3bg76Tb9oupXRA6uIa154f7fhUvYoYh2mfOJyjZ4ATSjCXg43oackcjxCyPSiBAwrYbiZy3ghMUyGnn5UjVQDfLdMyWU4/uOne2O4pZR+L3iZmEb6vbA6yldCsjpfv9flcx+lh6IGV+mthIPS1AkW92IsJb/abWYQ3LgIxd2oxD3UqPBo6LHm1rtxRTxvqd4VZURzr4EyChn4gFwXiji0IhZTts42fhUY9Z0PtoLFa5wywb8xUrC9bFGslBoIcRt8349Gbtm5d5Y2dA7nKVqnEPZYMq/DSNEXIKWqL6BAs/raqH+jF0Jkxgw/z7I6c74PYrvuzH+2k4kyZ5no7CoVcfrFnBlJTqzLHF460w5vPL1D/VvLkznWTY7jHK/JB6IU+xglETUTuZ6/Fngg/Ue9t7F+vLLp8i3bq5FCrBug6Ari4pspGD0YO/BYS8HehMy3w3+vCuBm5c89NYaxw8mHj40aCTN2/usdHu4bJcL8Qhqz3LGfVHXoVHnBX4nkTTab/0cHxL0ihcMdgyBN4o/2DA2fOx62LV7wCwWoU8+LY
- OJj88XjX
- uLwzBncUa57Q1rKB5lU+e/70l650ZJyZjFd1b4Hse6/CkEKhlwafGYrvcdPHyH2mYaZjYuDYpok0xdtDVUZhsWmD4UlNI0F6IW22VOLEhfuI94hYKXBUbMcP4UVB8oumidjB5uiSj0+xvmtNX8dRBBmPT5Mo6TJ4FkIdHlGCz9x/bCJB8/lSewx1zthavm7r0/ajOJdC0kmKKl17FCHlgbKZzs903km46mOjtC6Bejc+lk2w9j8YSHFHz7s8Irp/Sbcwb8N/8C78qy44jNwrZ2tdLcvZcLxrCcH9KanqyGflNREKqGyI3pceKRVtMkiOUeQhQryxoDbh6Ojq/c8wQqNdoe0zYK3gZZfGB8Fc8EhNORi8vBGnbS0P7P7KPwUxQYxrt2GVIB+tDwwIjWXoqVLJwC99P/JHeJVfuaFD0xMnjR5qK+hF5XDWMHP1pY4QyEYM90+KITpGjN13GWX6mOtGq/qFkQPkkikHhFcMKw3sdRYPDLCiqZ8WmCAe1vc5dKAJyTm4chfW3ALn1+Ww2QyrklF7LzTkUsL69XO6jms9cGLYPANYqhXy2t/nbUDpgf3Nj
+X-Rspam-User: 
+X-HE-Tag: 1793329506-774316
+X-HE-Meta: U2FsdGVkX1/VwNZ0vu4rVnQZJRS1h1RNq4Fz5+Z2DOugNTJBY0fsAbEstvU6yMpd9Vknk9cfB+PN85u3Fuloy9x4X2+4NzZTiP7dtREYLPPh0lv6DbLLtg0HdPgMvVgGEFhew//TxzpWFAtjmt8XpTbH1C4ZraaHnZzitgqX3i6jlJ+FHIqMnKXbVY9fvYRk5WrjpPTugsu/1J3P4VtGOJcQbYe7otE1wQ77i/kqH4Nv+wf1oMsynqWDKYLFAjQZLSMEvGEUplvkrwQXD3H105xQbk+yOdq0rdTlIWeQSNLrg/yLdxDpg3/tymZToKxHU881E6Jz0POknhBvC3STKlY8kBIGf/yFkcUnszI2Ho+mxYPV9mlzDX2KiuAaa0RELTnCU3Gq1RY3TJXOxKcMlEjheev4W8xxXTe3HB6ut0OkBNPQtWCYDEAnY89QqnGgz4etWEmuCKK07Tu3tJ1MmKiRkaRprzzFg+TZnxTIHDiqEqIjx4Rqte/Ykec/YjVAEnU1cRzraT1DvhQK2A5AWKTDAvnZG0TriX2hQ0LYKSnF9rkAl4kyOiUwxKHQGgKmDcasVj60ZGGs5DC6H1zDrdmzZutBsaKqENz1xYC+RkRLaHAz1H5NjFgVuaSSEwNJxMn4p+ikehMRI++NwNcfN25yrBWKH1ItAxWUVsdT7P5i2G+cA3tL0+wingbcZmUm96KBPA1x8HHhmgajaG9s2nWt6kfALNu0PmABBuro33XwIHThDBtRYn/aQSqsuzuu3Ahb2qukJ+5LQoNeWzJCGA1mMJlGgRU50hILfD+uUyA50KIALgPWdi4avIkgay7/b35wEx87Wj85EioNWLn2nlp44QcAhqa1AcYOli8PVyBaJAQtDtWzsPIVytS9Ae5Zk0An+ciPW+ja1b0WroAljxuJTR3Ux5YJOmTbHq4NBfZhKCqJFA7kvJUme5zOn7dLWSuuCaS8tJ2cgdLSW9u
+ NUatn+8/
+ 35+66D6PhzRNWU5bO/s+WMl6ajhMl0+uVtTDEd7BjNEXQGnrdcVKU2V9pDArIxHoiT0kAp3Rha3X30Gzmg2RN/RmIzN+w8vdJdilZdlISoaaqsQ3xHCZmVA0Ypl6HhVIhuUmH3cPNVCCNAuM33Y/r0zJzm++agy790nQO9slQPRVXe6CkFCjXxmSZFu5meis9c4dHWWAdskVNktnFKlLupMmPI7ftqwn5N1V3emSnENs470+qcTpO7nG9f1AQ1KXnMY1QcQPxQZtiVBWsBCcin/rsGRA+gLJ40JUUe9PNo6ZezLxtnN3A/RreZqa+uuUSQbv0Gxm6ZYqwfMcM/Q6XNTnSgjkQsDU48Cw7AnY+J24nY8zHuKCCups3fbw4OBrr412usiEwCZKpWmGesU5inmP2wzcYMGbsmE/FlQTKHix697EVdQ5U1X9T8O502ErGo9UovYK7sHufU3XOqT6Xr+2c10Q5WH3FpfU+FEj+WD6h7fr5nrCfvHI2kOZw35oz6d/jtYNYzujrY9PoM0Xsm+8lySQMfSL+KCb1XpX1LOh71k4z1PjbA7aJGuo7GNomf6w0
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,239 +102,193 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 X-Archived-By: <archiver.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 3 potential issue(=
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
 s) to consider:
-- [Critical] sched/fair: NULL deref and mm_struct UAF in alb_break_llc()
-- [High] sched/fair: alb_break_llc() blocks active balance when pref_llc < 0
-- [Medium] sched/fair: active balance bypasses migrate_degrades_llc() when =
-degrades > 0
+- [Medium] sched/fair: missing 2-CPU utilization gap check in llc_spread_ac=
+tive_balance()
+- [Medium] sched/cache: futile active load balance in llc_spread_active_bal=
+ance()
 --
 
-commit 7bd76e4bf626d210dfac7f3c5332cbe2a77e81f9
+commit 0b23fd14c184de7459085104b19552a73905471e
 Author: Jianyong Wu <wujianyong@hygon.cn>
 
-sched/cache: Apply multi-LLC aggregation policy to task migration
+sched/cache: Allow active balance to spread load from a full LLC
 
-This commit updates cache-aware task migration and active load balancing to
-use if_to_prefer() and can_migrate_llcs() across all LLC pairs, removes the
-can_migrate_llc() helper, and moves the LBF_ACTIVE_LB check in
-can_migrate_task() after the locality check.
+This commit introduces llc_spread_active_balance() so migrate_task can trig=
+ger
+active load balancing across LLCs without waiting for nr_balance_failed to
+exceed cache_nice_tries + 2 when the source LLC exceeds the aggregation
+threshold and the destination LLC has spare capacity.
 
 > diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-> index 03bb5c85a8b7b..c3f9ef8798d6c 100644
+> index c3f9ef8798d6c..1e286296cd65c 100644
 > --- a/kernel/sched/fair.c
 > +++ b/kernel/sched/fair.c
-
-[ ... ]
-
-> @@ -10827,55 +10779,52 @@ static enum llc_mig can_migrate_llc_task(int sr=
-c_cpu, int dst_cpu,
-
-[ ... ]
-
->  static inline bool
->  alb_break_llc(struct lb_env *env)
->  {
-> +	int pref_llc =3D -1;
-> +	bool to_pref =3D false;
-> +
->  	if (!sched_cache_enabled())
->  		return false;
+> @@ -13558,6 +13558,57 @@ imbalanced_active_balance(struct lb_env *env)
+>  	return 0;
+>  }
 > =20
->  	if (cpus_share_cache(env->src_cpu, env->dst_cpu))
->  		return false;
->  	/*
-> -	 * All tasks prefer to stay on their current CPU.
-> -	 * Do not pull a task from its preferred CPU if:
-> -	 * 1. It is the only task running and does not exceed
-> -	 *    imbalance allowance; OR
-> -	 * 2. Migrating it away from its preferred LLC would violate
-> -	 *    the cache-aware scheduling policy.
-> +	 * We need the preferred LLC to decide whether we can perform migration.
-> +	 * Therefore, we need to obtain task_struct, which is only meaningful
-> +	 * in the case that only one task on the rq.
-> +	 * For cases with more than one task on the rq, we need to check
-> +	 * this in can_migrate_task().
->  	 */
-> -	if (env->src_rq->nr_pref_llc_running &&
-> -	    env->src_rq->nr_pref_llc_running =3D=3D env->src_rq->cfs.h_nr_runna=
-ble) {
-> -		unsigned long util =3D 0;
-> +	if (env->src_rq->nr_running =3D=3D 1) {
->  		struct task_struct *cur;
-> =20
-> -		if (env->src_rq->nr_running <=3D 1)
-> -			return true;
-> -
->  		cur =3D rcu_dereference_all(env->src_rq->curr);
-> -		if (cur && cur->sched_class =3D=3D &fair_sched_class)
-> -			util =3D task_util(cur);
-> +		if (!cur || !cur->mm)
-> +			return false;
+> +#ifdef CONFIG_SCHED_CACHE
+> +/*
+> + * Cache-aware aggregation can trigger active balance via migrate_llc_ta=
+sk
+> + * without waiting for nr_balance_failed. Spreading load via migrate_task
+> + * normally waits for nr_balance_failed to exceed cache_nice_tries + 2.
+> + * This can leave one LLC above the aggregation threshold while another
+> + * LLC has room.
+> + *
+> + * Allow that spread when the source is above the aggregation threshold,
+> + * the destination has room for one CPU's load, and the source leads by
+> + * at least two CPUs' load. The gap prevents one migration from reversing
+> + * their utilization ordering and immediately inviting a migration back.
+> + * The task migration checks still decide whether the task may move.
+> + */
+> +static inline bool llc_spread_active_balance(struct lb_env *env)
+> +{
+> +	unsigned long src_util, src_cap, dst_util, dst_cap;
 > +
-> +		if (cur->sched_class =3D=3D &fair_sched_class)
-> +			pref_llc =3D llc_id(cur->mm->sc_stat.cpu);
+> +	if (!sched_cache_enabled())
+> +		return false;
+> +
+> +	if (env->migration_type !=3D migrate_task)
+> +		return false;
 
-[Severity: Critical]
-Can this dereference of cur->mm cause a NULL pointer dereference or a
-use-after-free on struct mm_struct?
+[Severity: Medium]
+Can llc_spread_active_balance() trigger repeated futile active load balance
+attempts when env->src_rq->nr_running > 1 and detach_tasks() was vetoed by
+cache locality checks?
 
-In sched_balance_rq(), need_active_balance() -> alb_break_llc() is called
-before locking busiest (env->src_rq) and again after unlocking it, holding
-only rcu_read_lock():
+In sched_balance_rq(), when detach_tasks() fails to pull a task because
+can_migrate_task() -> migrate_degrades_llc() -> can_migrate_llcs() returns
+mig_forbid, can_migrate_task() sets LBF_LLC_PINNED in env.flags.
+
+When ld_moved =3D=3D 0, sched_balance_rq() skips incrementing
+sd->nr_balance_failed if LBF_LLC_PINNED is set, and then calls
+need_active_balance():
 
 kernel/sched/fair.c:sched_balance_rq() {
-	...
-	if (need_active_balance(&env)) {
-		unsigned long flags;
+    ...
+		if (idle !=3D CPU_NEWLY_IDLE &&
+		    env.migration_type !=3D migrate_misfit &&
+		    !(env.flags & LBF_LLC_PINNED))
+			sd->nr_balance_failed++;
 
-		raw_spin_rq_lock_irqsave(busiest, flags);
-	...
+		if (need_active_balance(&env)) {
+    ...
 }
 
-Because cur is actively running on env->src_cpu and neither the runqueue lo=
-ck
-nor task_lock(cur) is held, cur can concurrently execute exit_mm() or
-kthread_unuse_mm() and clear current->mm =3D NULL between the cur->mm check=
- and
-the reload in cur->mm->sc_stat.cpu:
+In need_active_balance(), alb_break_llc() only checks can_migrate_llcs() wh=
+en
+env->src_rq->nr_running =3D=3D 1:
 
-kernel/exit.c:exit_mm() {
-	...
-	local_irq_disable();
-	current->mm =3D NULL;
-	membarrier_update_current_mm(NULL);
-	enter_lazy_tlb(mm, current);
-	local_irq_enable();
-	task_unlock(current);
-	mmap_read_unlock(mm);
-	mm_update_next_owner(mm);
-	mmput(mm);
-}
-
-Even if the mm pointer is loaded only once, rcu_read_lock() only protects
-struct task_struct, whereas mm_cachep does not use SLAB_TYPESAFE_BY_RCU and
-__mmdrop() frees struct mm_struct immediately via free_mm(). If cur replaces
-its mm in exec_mmap() or exits and switches out on the unlocked remote
-runqueue, can alb_break_llc() and can_migrate_llcs() end up reading from a
-freed struct mm_struct?
-
-> =20
-> -		if (can_migrate_llc(env->src_cpu, env->dst_cpu,
-> -				    util, false) =3D=3D mig_forbid)
-> +		to_pref =3D if_to_prefer(env->src_cpu, env->dst_cpu, pref_llc);
-> +
-> +		if (can_migrate_llcs(env->src_cpu, env->dst_cpu,
-> +				    cur, to_pref) =3D=3D mig_forbid)
->  			return true;
->  	}
-
-[Severity: High]
-When pref_llc is negative (for instance, when cur->mm->sc_stat.cpu is -1 on
-single-threaded tasks, or when cur is not in fair_sched_class), shouldn't
-alb_break_llc() return false instead of calling can_migrate_llcs()?
-
-When pref_llc < 0, if_to_prefer() returns false, and can_migrate_llcs() fal=
-ls
-back to using src_cpu as target_cpu:
-
-kernel/sched/fair.c:can_migrate_llcs() {
-	...
-	if (p) {
-		struct mm_struct *mm =3D p->mm;
-
-		if (mm)
-			target_cpu =3D READ_ONCE(mm->sc_stat.cpu);
-		target_cpu =3D target_cpu >=3D 0 ? target_cpu : src_cpu;
-
-		tsk_util =3D task_util(p);
+kernel/sched/fair.c:alb_break_llc() {
+    ...
+	if (env->src_rq->nr_running =3D=3D 1) {
+		...
+		if (can_migrate_llcs(env->src_cpu, env->dst_cpu,
+				    cur, to_pref) =3D=3D mig_forbid)
+			return true;
 	}
-	...
+
+	return false;
 }
 
-With to_pref =3D=3D false and target_cpu =3D=3D src_cpu, can_migrate_llcs()=
- treats
-src_cpu as the task's preferred cache location and returns mig_forbid whene=
-ver
-fits_llc_capacity() is true on the source LLC or node:
+When env->src_rq->nr_running > 1, alb_break_llc() returns false, and
+llc_spread_active_balance() does not check env->flags & LBF_LLC_PINNED,
+env->src_rq->nr_running =3D=3D 1, or the post-departure and NUMA node const=
+raints
+in can_migrate_llcs().
+
+If llc_spread_active_balance() returns true here, sched_balance_rq() queues
+active_load_balance_cpu_stop() via stop_one_cpu_nowait() and resets
+sd->balance_interval to sd->min_interval. When the CPU stopper runs
+detach_one_task() -> can_migrate_task(), sd->nr_balance_failed is still 0, =
+so
+migrate_degrades_llc() rejects the migration for the same reason.
+
+Should llc_spread_active_balance() bail out when env->flags & LBF_LLC_PINNED
+is set (or check the post-departure state) to avoid kicking the CPU stopper
+for a move that can_migrate_task() will reject?
+
+> +
+> +	if (cpus_share_cache(env->src_cpu, env->dst_cpu))
+> +		return false;
+> +
+> +	if (!get_llc_stats(env->src_cpu, &src_util, &src_cap) ||
+> +	    !get_llc_stats(env->dst_cpu, &dst_util, &dst_cap))
+> +		return false;
+> +
+> +	if (fits_llc_capacity(src_util, src_cap, true))
+> +		return false;
+> +
+> +	/*
+> +	 * Reserve room for one CPU's load at the destination. A two-CPU gap
+> +	 * keeps one migration from reversing the utilization ordering and
+> +	 * causing the task to ping-pong between LLCs.
+> +	 */
+> +	if (!fits_llc_capacity(dst_util + SCHED_CAPACITY_SCALE, dst_cap, true))
+> +		return false;
+> +
+> +	return util_greater(src_util, dst_util);
+> +}
+
+[Severity: Medium]
+Does llc_spread_active_balance() actually enforce the two-CPU utilization g=
+ap
+described in the comment and commit message?
+
+Moving a task with one full CPU of utilization (SCHED_CAPACITY_SCALE) reduc=
+es
+src_util by SCHED_CAPACITY_SCALE and increases dst_util by
+SCHED_CAPACITY_SCALE, narrowing the gap between src_util and dst_util by
+2 * SCHED_CAPACITY_SCALE.
+
+However, the checks here only verify:
+1. !fits_llc_capacity(src_util, src_cap, true), meaning src_util > threshold
+2. fits_llc_capacity(dst_util + SCHED_CAPACITY_SCALE, dst_cap, true), meani=
+ng
+   dst_util <=3D threshold - SCHED_CAPACITY_SCALE
+3. util_greater(src_util, dst_util), meaning
+   src_util * 100 > dst_util * (100 + llc_imb_pct)
+
+For equal-capacity LLCs, the two fits_llc_capacity() checks only ensure
+src_util - dst_util > SCHED_CAPACITY_SCALE (one CPU of load), and
+util_greater() only requires a 20% relative difference (which is smaller th=
+an
+2 * SCHED_CAPACITY_SCALE whenever dst_util < 10 * SCHED_CAPACITY_SCALE).
+
+For example, on a 4-CPU LLC (cap =3D 4096, 50% threshold =3D 2048) with
+src_util =3D 2050 and dst_util =3D 1024, all three checks pass even though
+src_util - dst_util is only 1026 (~1 CPU). Migrating a 1-CPU task (1024)
+drops src_util to 1026 (below the aggregation threshold) and raises dst_util
+to 2048, reversing the utilization ordering between the two LLCs.
+
+Furthermore, in can_migrate_llcs(), src_util has tsk_util subtracted before
+checking the threshold and post-migration ordering:
 
 kernel/sched/fair.c:can_migrate_llcs() {
-	...
+    ...
 			if (src_node =3D=3D dst_node) {
 				/* Leave the source LLC at or above the threshold. */
 				if (fits_llc_capacity(src_util, src_cap, false))
 					return mig_forbid;
-	...
+
+				if (util_greater(src_pre, dst_pre) &&
+				    src_util >=3D dst_util)
+					return mig_llc;
+    ...
 }
 
-Unlike can_migrate_llc_task(), which returns mig_unrestricted when cpu < 0,
-won't this regression cause alb_break_llc() to block cross-LLC active balan=
-ce
-for tasks that have no preferred LLC?
-
-[ ... ]
-
-> @@ -11027,14 +10976,11 @@ int can_migrate_task(struct task_struct *p, str=
-uct lb_env *env)
-> =20
->  	/*
->  	 * Aggressive migration if:
-> -	 * 1) active balance
-> -	 * 2) destination numa is preferred
-> +	 * 1) destination numa is preferred
-> +	 * 2) active balance
->  	 * 3) task is cache cold, or
->  	 * 4) too many balance attempts have failed.
->  	 */
-> -	if (env->flags & LBF_ACTIVE_LB)
-> -		return 1;
-> -
->  	degrades =3D migrate_degrades_locality(p, env);
->  	if (!degrades) {
->  		/*
-> @@ -11060,6 +11006,13 @@ int can_migrate_task(struct task_struct *p, stru=
-ct lb_env *env)
->  		hot =3D degrades > 0;
->  	}
-> =20
-> +	/*
-> +	 * Keep this after the cache-aware check so active balance respects its
-> +	 * migration veto when NUMA locality is neutral.
-> +	 */
-> +	if (env->flags & LBF_ACTIVE_LB)
-> +		return 1;
-
-[Severity: Medium]
-What happens during cross-node active load balancing when
-migrate_degrades_locality() returns a positive value (degrades > 0)?
-
-In active_load_balance_cpu_stop(), the stopper task is queued on env->src_r=
-q,
-so env->src_rq->nr_running > env->src_rq->nr_preferred_running is true in
-migrate_degrades_locality():
-
-kernel/sched/fair.c:migrate_degrades_locality() {
-	...
-	/* Migrating away from the preferred node is always bad. */
-	if (src_nid =3D=3D p->numa_preferred_nid) {
-		if (env->src_rq->nr_running > env->src_rq->nr_preferred_running)
-			return 1;
-		else
-			return 0;
-	}
-	...
-}
-
-When a task is on its preferred NUMA node, migrate_degrades_locality() retu=
-rns
-1, which skips the if (!degrades) block containing migrate_degrades_llc() a=
-nd
-sets hot =3D 1. Because the LBF_ACTIVE_LB check right after that block retu=
-rns 1
-unconditionally, won't active balance bypass migrate_degrades_llc() whenever
-migrating the task also degrades NUMA locality?
+Should llc_spread_active_balance() check that src_util remains at or above =
+the
+threshold after subtracting SCHED_CAPACITY_SCALE (for example, checking
+fits_llc_capacity(src_util - SCHED_CAPACITY_SCALE, src_cap, false) or
+explicitly checking src_util >=3D dst_util + 2 * SCHED_CAPACITY_SCALE) so t=
+hat
+the two-CPU gap is enforced?
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261029022036.4002=
-331-1-wujianyong@hygon.cn?part=3D12
+331-1-wujianyong@hygon.cn?part=3D13
 
