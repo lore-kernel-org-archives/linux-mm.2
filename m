@@ -1,69 +1,69 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F1D9606A31A
-	for <linux-mm@archiver.kernel.org>; Fri, 30 Oct 2026 03:05:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A06A9606A324
+	for <linux-mm@archiver.kernel.org>; Fri, 30 Oct 2026 03:05:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=k4mn8dWb
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=gTsP82pA
 Received: by kanga.kvack.org (Postfix)
-	id 5E0EC6B05BB; Thu, 29 Oct 2026 23:05:07 -0400 (EDT)
+	id BAD8D6B05BC; Thu, 29 Oct 2026 23:05:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5B80D6B05BC; Thu, 29 Oct 2026 23:05:07 -0400 (EDT)
+	id B5D646B05BD; Thu, 29 Oct 2026 23:05:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4A7186B05BD; Thu, 29 Oct 2026 23:05:07 -0400 (EDT)
+	id A24466B05BE; Thu, 29 Oct 2026 23:05:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 12C356B05BB
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 719A96B05BC
 	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 23:05:07 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id F1E46160522
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 0A090A81C1
+	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 03:05:07 +0000 (UTC)
+X-FDA: 85377801054.18.98C2F1A
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 73F7840006
 	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 03:05:05 +0000 (UTC)
-X-FDA: 85377800970.28.27B8372
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 4D2ED180003
-	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 03:05:04 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=k4mn8dWb;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf06.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gTsP82pA;
+	spf=pass (imf12.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793329504;
+	s=arc-20220608; t=1793329505;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=U0IZ6u1jq1SjDh7kHD4p8VDLm+x3Q5lnbjJd9AFeJ1Y=;
-	b=o32froLtYkN/DoyjafLHE08IalkAewZocClay0v85AP6Pn2yslQoAhhPj7yuhJgZdw810A
-	jJqRGtiygYpdyJu7BZYOWHTffd2nHppNoc4oZbp3X+9aHpcHMOnJ5Bw7588pqnJLOIjkMO
-	FHK6744O0+ljaq65l6iaegGR6pln2OI=
+	bh=WXhfIEDy4CTPoGjtcw0B4hVHKAfnO70M3fzVLJckIY4=;
+	b=b4ki3XTirthtSxNmTg/xjLACichukMjnRC1NaBoR8YWytUJwFZmmFnV6atJHdUVA0Si5iF
+	60oe3FBKH+i7HAttr71xfj25DsrXErEMJLGYuFljeJgZcxiZYXD07cqMZjDZNVyMH0zehW
+	mGqRrwz5th9bsKgkukvoeKyaCqhIUHs=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=k4mn8dWb;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf06.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gTsP82pA;
+	spf=pass (imf12.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793329504;
-	b=24CxEX2JkSmKa+IK2WiwhWYj1SwWWmJVk93oPADF43Are0rA3aftWyFh0ndDTm5G4/6CP5
-	InmOAExVEs6Q2jHssAV7n5vR2RKoXTt3OVhxMDOGgualNSANVn0FTONYaUtAj10Le50/Yy
-	czZV+gjLuH24Q271tpCvqvomvngcebk=
+	t=1793329505;
+	b=rumCTyLVunFwoFsdvnt7i2+Uisjwv3XZsfTTNMFmhG2Nt+mgIgST1eIAlqf2yCmTglglJO
+	Iu2kv+sZNxo1im2Avc04ImcUtqMn6RXzOtrO/V75DG9kz318PsR8Nv27m2aLZfmK1NbZlv
+	heDWxGXY85a/SX9YesJ8eqylJ0+zWrU=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 3841444033;
+	by tor.source.kernel.org (Postfix) with ESMTP id 0861260613;
+	Fri, 30 Oct 2026 03:05:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91B501F0093A;
 	Fri, 30 Oct 2026 03:05:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 021001F000C1;
-	Fri, 30 Oct 2026 03:05:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793329503;
-	bh=U0IZ6u1jq1SjDh7kHD4p8VDLm+x3Q5lnbjJd9AFeJ1Y=;
+	s=k20260515; t=1793329504;
+	bh=WXhfIEDy4CTPoGjtcw0B4hVHKAfnO70M3fzVLJckIY4=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=k4mn8dWb8dnZ3XIZLdwz8fUbrG3jJzIMMc6xhYvd0ZGhxu5cM6X8N/JicAEOV6mjg
-	 UrcE2Oz5D4bCAXCODY9rWKPOUPPDv8pzQh5fO6yhMjKnDlXO7NbyQ1SJa8DgJRDa/r
-	 cht7iq/BWisFoczOn0rMEA/FrVGv4w28qItaTfIhsKO40wvFk8D//v0N5bfebi/oAt
-	 XCz/b8MU3knV/MGmXG8rFhkCJ+gQgn4dVmtCol1xWuw0c9g/24N8ihYtvPrv5Qcav9
-	 MVhBkC1thYxlKHQMN/4EaBq2uPFElunKhP5WQw2SoFFsq1BvJW/V39tseQnFvmrxXv
-	 rzbCNKAAf01DQ==
-Message-ID: <sashiko-outbox-190204@kernel.org>
+	b=gTsP82pART3TnX9O3ulaGBbCQLhgq92Hg6rDqzSat5uDzTOj02VhwxuSCy5WO7pZq
+	 +N4YCfptBzoMSGodJAskEubtJsxcVy1/4S1ZUpi+xiPvInQffKQAPH9zzP+IQqL1GS
+	 H2++ZHtUiIQ5c8tEloQ7uibdZyr7QKfdrb+ySROtULDMp2ArtBykZ044hmVLhfnvgi
+	 Q6N7S5Zg1pMrSOv5SfMsCDrQ1KSUZ8rGIEa0RQ6Aj7Fnjc19fSA3DbkZqbowNNT9Ym
+	 V//O6n3Vp9aldQLak1iQ2xsdxbEvTlqPnpSwPPAqQ9SbdzSEZpmgYadN7voTtYnf6x
+	 0a8sgZmAgP7AQ==
+Message-ID: <sashiko-outbox-190206@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [RFC PATCH v3 10/17] sched/cache: Pick the source rq/group with
- the highest affinity gain
+Subject: Re: [RFC PATCH v3 12/17] sched/cache: Apply multi-LLC aggregation
+ policy to task migration
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Jianyong Wu" <wujianyong@hygon.cn>, "Ingo Molnar" <mingo@redhat.com>, "Peter
  Zijlstra" <peterz@infradead.org>, "Juri Lelli" <juri.lelli@redhat.com>, "Vincent
@@ -75,24 +75,24 @@ Cc: "Dietmar Eggemann" <dietmar.eggemann@arm.com>, "Steven Rostedt" <rostedt@goo
  Hegde" <sshegde@linux.ibm.com>, "Phil Auld" <pauld@redhat.com>, "Andrew
  Morton" <akpm@linux-foundation.org>, "David Hildenbrand" <david@kernel.org>, maddy@linux.ibm.com, "Michael
  Ellerman" <mpe@ellerman.id.au>, ljs@kernel.org, linux-mm@kvack.org, jianyong.wu@outlook.com, zhongyuan@hygon.cn, huangsj@hygon.cn, wangfengyu@hygon.cn, yingzhiwei@hygon.cn
-In-Reply-To: <20261029022036.4002331-11-wujianyong@hygon.cn>
+In-Reply-To: <20261029022036.4002331-13-wujianyong@hygon.cn>
 References: <20261029022036.4002331-1-wujianyong@hygon.cn>
- <20261029022036.4002331-11-wujianyong@hygon.cn>
+ <20261029022036.4002331-13-wujianyong@hygon.cn>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Fri, 30 Oct 2026 03:05:01 +0000
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 4D2ED180003
-X-Stat-Signature: 5pdqtaqzqf7dw5sris5nc6drhqo7xbiy
+Date: Fri, 30 Oct 2026 03:05:03 +0000
+X-Rspam-User: 
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 73F7840006
 X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
 	autolearn_force=no version=4.0.1
-X-Rspam-User: 
-X-HE-Tag: 1793329504-786167
-X-HE-Meta: U2FsdGVkX198dFCKUC3C0aOvrBucMScLEKLimKfcrhXI1tgmUrhi/iBymjn0d0FhJTSXevZV1df7Nc1zuq2L+t3ao/V9dF2ZAfp7l9n1DMOQnsDjyoqpV9erST0BwF+nu8wdMgDGzgpaeTK0OrY0DtPbVzWLgIgdzThKnCh444eCAbNkuCTHrK5pJsFRlwz9a1y7hJIpibzCUa5mR/lC+2ZfkJp4Sf26RzH2IWHe4svCOnpPk/dZr2mpR00C/lVud1BEtI46hO/Jkfkg8jT1NLn3NyQyg07aE3U2jx1Hfrhc77CKsWVfy9XJ26UIF28dj0O43Zr9NiasklzZBL4NfJmfT5rA3JhPdtCV0EPnicDtISqi2c5S7jQDgRVD0foeH7OEuQZWwMUtMRQ8HEyWWIPcgF3djbwvgNfNIwfLJZ4nhQIrSquhC7JIp7pEnotPKXRYiqQCR0wHKd460fPcFnRKN6QhNNPvUXryCoVvxh3fsquOwzyYBo3Xlib13SpVKYbNO383INKlGmeuu3ret196ILWwnzeOqdRpbut0J3Wfg905ZtTkp9Fw7xrIDefKh8fqy1BjFu8o0CpNFRV5ZKZgD2ucFN/nucbva2+ag4FoF4kPB/rCJ8SMWuLOF1HoaM0P6G2ySIHRYiKwI6OvMDW9mLtKoGtwWMqhmW55wafy6FDsyroHEB46vrTJHvVroZJlu/apXFzi92btqQGl/PJNctvVIsdbK7dCJvMc4ZIz1JrJCEU6djnacuCbl37E/J67qtiir0Ehl/k0cEr1WjppK94PAmiGSeQ2jE0KnlEh6jP/grfekKR+CO/j/NJ3z7pHHptl4ED2cCTFDl7cGgmnfWLnQLuK8XTP//ON50qYugTLQoY3e4q6jNV9WHs3DkdNleEkUjiScHPypPKisxwDDR9hys5uMKAufPG8hPylxk7za/XXREFYzXFgNTA3VCirAaEyMKdOi2UJL/i
- d3rbUcU7
- Cl2wFYc0oMwf4YbiaHmbQ6PB5ePYeWJAqocQOpzcnZdJp6yJS4VOXubGHgnXXYaKBFUElIS3kNXPjCoSdu4RJ0Z/H0fpa3UqtPPgRCs4ks/exoJOw5oE3MPXRvTt3GtOgyLmVcHq4/64DLb+M28noO2IT93z90Nca3ad1V/Lf2Zj1KKOfu+/JooLb2f6M0Ntb2Gu6tDQHZ2REJVAHLXesYoPCvxb6j4/UfGq3st1UHjixR1dL3Spxrjpe7h6ToPdKFySldjNHhzXfMil67Os6R4fbDY9SnnXxbMijqgJhHRHYTTRz6Lkaxnw3rYcZ2G5MoqYcRa0eHMkVaxQUvHhUIX95/NGClzq1hYWUvreU2gGBD4sOgas+YXlQaZ7ZJZdLOOqf6M382LDGuXSmsV45SMeJneoCGncWharkWvcmrMEMsWMczUAznMXNw5EI0zRwjUNHAdKNyy6w98fecuHB689yYQYO4tsZA8bh8PADFLcTgo+1KmjFcStE51iF1CO4ee2TgAHqf22PRTVJnAwDbPxY8ZXQff8lHT/psGDE2uWrrWnIdFBL4ntVMub9hiFyN60U
+X-Stat-Signature: 98ubm5mfbix4o96o95on1c8ufc6c3rrf
+X-HE-Tag: 1793329505-125031
+X-HE-Meta: U2FsdGVkX1/mBYs0dQc7G5ep5nVnd+i5hZdSgVOvbfEpaUaM7wVNR2bfdw3V9rniVq4jNa2Sao9AL+x0LcA5hAz8Z8me+BL5Ib922FjMBHHFczCcSie1INBYmR4P4jN9WIp0pEfgqXJYlv52RWc6CCVx+IlODBs0Sbnp7BYOvMkw02ToCPbtthVfpiUwMLohg0oMgqoKq7xO8L1Qj22OkCXj+8ZctCyh9YCTEKTYx9o3/X9ECRbioHFonfiKsau/glzOQDCm0JYC8Vl2MZMIdg1G+z0GA627Z7uNwNDXeJx8WJAtg9022KciKi5h/ylBVqeYpQ3X74n8IgEv7qpjNkX5QKWJtsM0MjEsz6n0IBk9gJYKP/rePhAx8Da08stCeF9t/A3YeIhVWmNG5pVq/8fcWQGX4zrzH693oifM+3bg76Tb9oupXRA6uIa154f7fhUvYoYh2mfOJyjZ4ATSjCXg43oackcjxCyPSiBAwrYbiZy3ghMUyGnn5UjVQDfLdMyWU4/uOne2O4pZR+L3iZmEb6vbA6yldCsjpfv9flcx+lh6IGV+mthIPS1AkW92IsJb/abWYQ3LgIxd2oxD3UqPBo6LHm1rtxRTxvqd4VZURzr4EyChn4gFwXiji0IhZTts42fhUY9Z0PtoLFa5wywb8xUrC9bFGslBoIcRt8349Gbtm5d5Y2dA7nKVqnEPZYMq/DSNEXIKWqL6BAs/raqH+jF0Jkxgw/z7I6c74PYrvuzH+2k4kyZ5no7CoVcfrFnBlJTqzLHF460w5vPL1D/VvLkznWTY7jHK/JB6IU+xglETUTuZ6/Fngg/Ue9t7F+vLLp8i3bq5FCrBug6Ari4pspGD0YO/BYS8HehMy3w3+vCuBm5c89NYaxw8mHj40aCTN2/usdHu4bJcL8Qhqz3LGfVHXoVHnBX4nkTTab/0cHxL0ihcMdgyBN4o/2DA2fOx62LV7wCwWoU8+LY
+ OJj88XjX
+ uLwzBncUa57Q1rKB5lU+e/70l650ZJyZjFd1b4Hse6/CkEKhlwafGYrvcdPHyH2mYaZjYuDYpok0xdtDVUZhsWmD4UlNI0F6IW22VOLEhfuI94hYKXBUbMcP4UVB8oumidjB5uiSj0+xvmtNX8dRBBmPT5Mo6TJ4FkIdHlGCz9x/bCJB8/lSewx1zthavm7r0/ajOJdC0kmKKl17FCHlgbKZzs903km46mOjtC6Bejc+lk2w9j8YSHFHz7s8Irp/Sbcwb8N/8C78qy44jNwrZ2tdLcvZcLxrCcH9KanqyGflNREKqGyI3pceKRVtMkiOUeQhQryxoDbh6Ojq/c8wQqNdoe0zYK3gZZfGB8Fc8EhNORi8vBGnbS0P7P7KPwUxQYxrt2GVIB+tDwwIjWXoqVLJwC99P/JHeJVfuaFD0xMnjR5qK+hF5XDWMHP1pY4QyEYM90+KITpGjN13GWX6mOtGq/qFkQPkkikHhFcMKw3sdRYPDLCiqZ8WmCAe1vc5dKAJyTm4chfW3ALn1+Ww2QyrklF7LzTkUsL69XO6jms9cGLYPANYqhXy2t/nbUDpgf3Nj
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,136 +102,239 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 X-Archived-By: <archiver.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+Thank you for your contribution! Sashiko AI review found 3 potential issue(=
 s) to consider:
-- [High] sched/fair: unchecked sd_rq->llc_max in calc_affinity_llc_score()
+- [Critical] sched/fair: NULL deref and mm_struct UAF in alb_break_llc()
+- [High] sched/fair: alb_break_llc() blocks active balance when pref_llc < 0
+- [Medium] sched/fair: active balance bypasses migrate_degrades_llc() when =
+degrades > 0
 --
 
-commit 706d6b3fdde74f4bc3582ab9ff3b3880647fbae9
+commit 7bd76e4bf626d210dfac7f3c5332cbe2a77e81f9
 Author: Jianyong Wu <wujianyong@hygon.cn>
 
-sched/cache: Pick the source rq/group with the highest affinity gain
+sched/cache: Apply multi-LLC aggregation policy to task migration
 
-This commit updates cache-aware source group and runqueue selection to score
-candidates using the affinity gain calculation when llc_aggr_tolerance is
-greater than 1, while retaining the destination LLC task count metric when
-the tolerance is 1.
+This commit updates cache-aware task migration and active load balancing to
+use if_to_prefer() and can_migrate_llcs() across all LLC pairs, removes the
+can_migrate_llc() helper, and moves the LBF_ACTIVE_LB check in
+can_migrate_task() after the locality check.
 
 > diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-> index eb08ae66f4650..e9a803433b161 100644
+> index 03bb5c85a8b7b..c3f9ef8798d6c 100644
 > --- a/kernel/sched/fair.c
 > +++ b/kernel/sched/fair.c
 
 [ ... ]
 
-> @@ -12248,6 +12250,12 @@ static inline void update_sg_lb_stats(struct lb_=
-env *env,
+> @@ -10827,55 +10779,52 @@ static enum llc_mig can_migrate_llc_task(int sr=
+c_cpu, int dst_cpu,
+
+[ ... ]
+
+>  static inline bool
+>  alb_break_llc(struct lb_env *env)
 >  {
->  	int i, nr_running, local_group, sd_flags =3D env->sd->flags;
->  	bool balancing_at_rd =3D !env->sd->parent;
-> +#ifdef CONFIG_SCHED_CACHE
-> +	int last_node =3D -1, node_num =3D 0, llc_max;
-> +	int *cache_data, *affi;
+> +	int pref_llc =3D -1;
+> +	bool to_pref =3D false;
 > +
-> +	lb_affi_scratch(&cache_data, &affi, &llc_max);
-> +#endif
+>  	if (!sched_cache_enabled())
+>  		return false;
 > =20
->  	memset(sgs, 0, sizeof(*sgs));
+>  	if (cpus_share_cache(env->src_cpu, env->dst_cpu))
+>  		return false;
+>  	/*
+> -	 * All tasks prefer to stay on their current CPU.
+> -	 * Do not pull a task from its preferred CPU if:
+> -	 * 1. It is the only task running and does not exceed
+> -	 *    imbalance allowance; OR
+> -	 * 2. Migrating it away from its preferred LLC would violate
+> -	 *    the cache-aware scheduling policy.
+> +	 * We need the preferred LLC to decide whether we can perform migration.
+> +	 * Therefore, we need to obtain task_struct, which is only meaningful
+> +	 * in the case that only one task on the rq.
+> +	 * For cases with more than one task on the rq, we need to check
+> +	 * this in can_migrate_task().
+>  	 */
+> -	if (env->src_rq->nr_pref_llc_running &&
+> -	    env->src_rq->nr_pref_llc_running =3D=3D env->src_rq->cfs.h_nr_runna=
+ble) {
+> -		unsigned long util =3D 0;
+> +	if (env->src_rq->nr_running =3D=3D 1) {
+>  		struct task_struct *cur;
 > =20
-> @@ -12276,8 +12284,22 @@ static inline void update_sg_lb_stats(struct lb_=
-env *env,
->  			dst_llc =3D llc_id(env->dst_cpu);
->  			if (llc_id(i) !=3D dst_llc) {
->  				sd_tmp =3D rcu_dereference_all(rq->sd);
-> -				if (sd_tmp && (unsigned int)dst_llc < sd_tmp->llc_max)
-> -					sgs->nr_pref_dst_llc +=3D sd_tmp->llc_counts[dst_llc];
-> +				if (sd_tmp && (unsigned int)dst_llc < sd_tmp->llc_max) {
-> +					/*
-> +					 * At tolerance 1, aggregation is limited to
-> +					 * workloads that fit in one LLC. Only count
-> +					 * tasks preferring dst_llc, rather than scoring
-> +					 * intermediate moves along the affinity order.
-> +					 * Migration checks still enforce LLC headroom.
-> +					 */
-> +					if (env->tol > 1)
-> +						sgs->affinity_score +=3D
-> +						calc_affinity_score(env->sd, rq, i, env->dst_cpu,
-> +								    cache_data, affi, &last_node,
-> +								    &node_num, llc_max);
-> +					else
-> +						sgs->affinity_score +=3D sd_tmp->llc_counts[dst_llc];
-> +				}
->  			}
->  		}
->  #endif
+> -		if (env->src_rq->nr_running <=3D 1)
+> -			return true;
+> -
+>  		cur =3D rcu_dereference_all(env->src_rq->curr);
+> -		if (cur && cur->sched_class =3D=3D &fair_sched_class)
+> -			util =3D task_util(cur);
+> +		if (!cur || !cur->mm)
+> +			return false;
+> +
+> +		if (cur->sched_class =3D=3D &fair_sched_class)
+> +			pref_llc =3D llc_id(cur->mm->sc_stat.cpu);
+
+[Severity: Critical]
+Can this dereference of cur->mm cause a NULL pointer dereference or a
+use-after-free on struct mm_struct?
+
+In sched_balance_rq(), need_active_balance() -> alb_break_llc() is called
+before locking busiest (env->src_rq) and again after unlocking it, holding
+only rcu_read_lock():
+
+kernel/sched/fair.c:sched_balance_rq() {
+	...
+	if (need_active_balance(&env)) {
+		unsigned long flags;
+
+		raw_spin_rq_lock_irqsave(busiest, flags);
+	...
+}
+
+Because cur is actively running on env->src_cpu and neither the runqueue lo=
+ck
+nor task_lock(cur) is held, cur can concurrently execute exit_mm() or
+kthread_unuse_mm() and clear current->mm =3D NULL between the cur->mm check=
+ and
+the reload in cur->mm->sc_stat.cpu:
+
+kernel/exit.c:exit_mm() {
+	...
+	local_irq_disable();
+	current->mm =3D NULL;
+	membarrier_update_current_mm(NULL);
+	enter_lazy_tlb(mm, current);
+	local_irq_enable();
+	task_unlock(current);
+	mmap_read_unlock(mm);
+	mm_update_next_owner(mm);
+	mmput(mm);
+}
+
+Even if the mm pointer is loaded only once, rcu_read_lock() only protects
+struct task_struct, whereas mm_cachep does not use SLAB_TYPESAFE_BY_RCU and
+__mmdrop() frees struct mm_struct immediately via free_mm(). If cur replaces
+its mm in exec_mmap() or exits and switches out on the unlocked remote
+runqueue, can alb_break_llc() and can_migrate_llcs() end up reading from a
+freed struct mm_struct?
+
+> =20
+> -		if (can_migrate_llc(env->src_cpu, env->dst_cpu,
+> -				    util, false) =3D=3D mig_forbid)
+> +		to_pref =3D if_to_prefer(env->src_cpu, env->dst_cpu, pref_llc);
+> +
+> +		if (can_migrate_llcs(env->src_cpu, env->dst_cpu,
+> +				    cur, to_pref) =3D=3D mig_forbid)
+>  			return true;
+>  	}
 
 [Severity: High]
-Can this cause an out-of-bounds read or NULL pointer dereference on
-sd_rq->llc_counts[] in calc_affinity_llc_score() (and similarly at the call
-site in sched_balance_find_src_rq())?
+When pref_llc is negative (for instance, when cur->mm->sc_stat.cpu is -1 on
+single-threaded tasks, or when cur is not in fair_sched_class), shouldn't
+alb_break_llc() return false instead of calling can_migrate_llcs()?
 
-In update_sg_lb_stats() and sched_balance_find_src_rq(), lb_affi_scratch()
-sets llc_max from this_rq()->sd->llc_max:
+When pref_llc < 0, if_to_prefer() returns false, and can_migrate_llcs() fal=
+ls
+back to using src_cpu as target_cpu:
 
-kernel/sched/fair.c:lb_affi_scratch() {
-	struct sched_domain *sd =3D rcu_dereference_all(this_rq()->sd);
-
-	*ids =3D sd ? sd->affi_ids : NULL;
-	*weights =3D sd ? sd->affi_weights : NULL;
-	*llc_max =3D sd ? sd->llc_max : 0;
-}
-
-When env->tol > 1, the callers check dst_llc < sd_tmp->llc_max and pass
-llc_max into calc_affinity_score(). That function then re-reads rq->sd into
-sd_rq and, for non-NUMA domains, calls calc_affinity_llc_score():
-
-kernel/sched/fair.c:calc_affinity_llc_score() {
+kernel/sched/fair.c:can_migrate_llcs() {
 	...
-	if (src_llc !=3D *last_llc) {
-		*last_llc =3D src_llc;
-		*num =3D get_affi_llcs(src_llc, dst_llc, affi_llc, llc_max);
-	}
+	if (p) {
+		struct mm_struct *mm =3D p->mm;
 
-	for (int i =3D 0; i < *num; i++) {
-		if ((unsigned int)affi_llc[i] < llc_max)
-			score +=3D sd_rq->llc_counts[affi_llc[i]];
+		if (mm)
+			target_cpu =3D READ_ONCE(mm->sc_stat.cpu);
+		target_cpu =3D target_cpu >=3D 0 ? target_cpu : src_cpu;
+
+		tsk_util =3D task_util(p);
 	}
 	...
 }
 
-Unlike calc_affinity_numa_score(), which checks if (llc >=3D sd->llc_max)
-before indexing sd->llc_counts[llc], calc_affinity_llc_score() only checks
-affi_llc[i] < llc_max (the scratch capacity from this_rq()->sd->llc_max)
-without checking against sd_rq->llc_max.
+With to_pref =3D=3D false and target_cpu =3D=3D src_cpu, can_migrate_llcs()=
+ treats
+src_cpu as the task's preferred cache location and returns mig_forbid whene=
+ver
+fits_llc_capacity() is true on the source LLC or node:
 
-Since sd_rq->llc_counts is allocated with sd_rq->llc_max elements in
-alloc_sd_llc() (and annotated with __counted_by_ptr(llc_max)),
-this_rq()->sd->llc_max can exceed sd_rq->llc_max:
+kernel/sched/fair.c:can_migrate_llcs() {
+	...
+			if (src_node =3D=3D dst_node) {
+				/* Leave the source LLC at or above the threshold. */
+				if (fits_llc_capacity(src_util, src_cap, false))
+					return mig_forbid;
+	...
+}
 
-1. During _nohz_idle_balance(), the ILB CPU (this_rq()) in a cpuset partiti=
-on
-   rebuilt after hotplugging a new LLC (larger max_lid) can balance an idle
-   CPU in an unchanged cpuset partition whose CPUs retained their older
-   rq->sd (smaller sd_rq->llc_max), after rebuild_llc_node_map() has already
-   published the new LLC ID in llc_to_node_map.
+Unlike can_migrate_llc_task(), which returns mig_unrestricted when cpu < 0,
+won't this regression cause alb_break_llc() to block cross-LLC active balan=
+ce
+for tasks that have no preferred LLC?
 
-2. During concurrent build_sched_domains(), cpu_attach_domain() attaches new
-   domains with a larger max_lid + 1 one CPU at a time while load balancing
-   can already run on an updated CPU.
+[ ... ]
 
-3. Because calc_affinity_score() performs a second rcu_dereference_all(rq->=
-sd)
-   without re-checking sd_rq->llc_max, a concurrent domain update where
-   alloc_sd_llc() failed or SD_SHARE_LLC is absent leaves sd_rq->llc_max =
-=3D=3D 0
-   and sd_rq->llc_counts =3D=3D NULL.
+> @@ -11027,14 +10976,11 @@ int can_migrate_task(struct task_struct *p, str=
+uct lb_env *env)
+> =20
+>  	/*
+>  	 * Aggressive migration if:
+> -	 * 1) active balance
+> -	 * 2) destination numa is preferred
+> +	 * 1) destination numa is preferred
+> +	 * 2) active balance
+>  	 * 3) task is cache cold, or
+>  	 * 4) too many balance attempts have failed.
+>  	 */
+> -	if (env->flags & LBF_ACTIVE_LB)
+> -		return 1;
+> -
+>  	degrades =3D migrate_degrades_locality(p, env);
+>  	if (!degrades) {
+>  		/*
+> @@ -11060,6 +11006,13 @@ int can_migrate_task(struct task_struct *p, stru=
+ct lb_env *env)
+>  		hot =3D degrades > 0;
+>  	}
+> =20
+> +	/*
+> +	 * Keep this after the cache-aware check so active balance respects its
+> +	 * migration veto when NUMA locality is neutral.
+> +	 */
+> +	if (env->flags & LBF_ACTIVE_LB)
+> +		return 1;
 
-Should calc_affinity_llc_score() check (unsigned int)affi_llc[i] <
-sd_rq->llc_max (or pass sd_tmp directly instead of re-reading rq->sd and
-bound against min(llc_max, sd_rq->llc_max)) before indexing
-sd_rq->llc_counts[]?
+[Severity: Medium]
+What happens during cross-node active load balancing when
+migrate_degrades_locality() returns a positive value (degrades > 0)?
+
+In active_load_balance_cpu_stop(), the stopper task is queued on env->src_r=
+q,
+so env->src_rq->nr_running > env->src_rq->nr_preferred_running is true in
+migrate_degrades_locality():
+
+kernel/sched/fair.c:migrate_degrades_locality() {
+	...
+	/* Migrating away from the preferred node is always bad. */
+	if (src_nid =3D=3D p->numa_preferred_nid) {
+		if (env->src_rq->nr_running > env->src_rq->nr_preferred_running)
+			return 1;
+		else
+			return 0;
+	}
+	...
+}
+
+When a task is on its preferred NUMA node, migrate_degrades_locality() retu=
+rns
+1, which skips the if (!degrades) block containing migrate_degrades_llc() a=
+nd
+sets hot =3D 1. Because the LBF_ACTIVE_LB check right after that block retu=
+rns 1
+unconditionally, won't active balance bypass migrate_degrades_llc() whenever
+migrating the task also degrades NUMA locality?
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261029022036.4002=
-331-1-wujianyong@hygon.cn?part=3D10
+331-1-wujianyong@hygon.cn?part=3D12
 
