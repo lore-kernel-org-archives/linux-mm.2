@@ -1,136 +1,95 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92243606A31A
-	for <linux-mm@archiver.kernel.org>; Fri, 30 Oct 2026 14:43:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCB57606A31C
+	for <linux-mm@archiver.kernel.org>; Fri, 30 Oct 2026 14:44:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=toxicpanda.com header.i=@toxicpanda.com header.a=rsa-sha256 header.s=google header.b=reer/Bk4
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=SRBbpSBh
 Received: by kanga.kvack.org (Postfix)
-	id 0E7A16B05BD; Fri, 30 Oct 2026 10:43:30 -0400 (EDT)
+	id E57E66B05C0; Fri, 30 Oct 2026 10:44:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 099C96B05BE; Fri, 30 Oct 2026 10:43:30 -0400 (EDT)
+	id E095D6B05C1; Fri, 30 Oct 2026 10:44:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ECA616B05BF; Fri, 30 Oct 2026 10:43:29 -0400 (EDT)
+	id CF8D96B05C2; Fri, 30 Oct 2026 10:44:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id AEE6A6B05BD
-	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 10:43:29 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 330484073F
-	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 14:43:29 +0000 (UTC)
-X-FDA: 85379560938.10.38D9334
-Received: from mail-qt1-f170.google.com (mail-qt1-f170.google.com [209.85.160.170])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 359AF160007
-	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 14:43:27 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=toxicpanda.com header.s=google header.b="reer/Bk4";
-	dmarc=none;
-	spf=pass (imf08.hostedemail.com: domain of josef@toxicpanda.com designates 209.85.160.170 as permitted sender) smtp.mailfrom=josef@toxicpanda.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id A2E9C6B05C0
+	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 10:44:55 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 25CD51406E3
+	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 14:44:55 +0000 (UTC)
+X-FDA: 85379564550.04.C4F664A
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 7226740003
+	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 14:44:53 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SRBbpSBh;
+	spf=pass (imf27.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793371493;
+	b=waWbbCLsiI0FaPcJkCNUcdg84GX2E+e8auMBm5vrlNdDAAI6zj9DTdFBbbygaR729LrQyV
+	1+fS+Y9JlZnzZ7F+32fuDIAxApiHGFP5WnBhgTSVCZOX35B03Gni3JOy0B6l/rPgrKWd8x
+	z6aLYctduC/zH37mFPUsJqIBHlgl/QI=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SRBbpSBh;
+	spf=pass (imf27.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793371407;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
+	s=arc-20220608; t=1793371493;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HxYJPyHsnO8kCvEm8RF+EM8gZ6vVJrs8zKSibqUU+00=;
-	b=VeYoJJTRSLa36J5dYWrD5jbqD+5z5BjkHt0g4I1K11mkxcavZTbOOx5cV5qYJCDwEZpM6b
-	nYpS7CDI1an1e8T5qpvGCIRGZ+Fflbswd0P50gCoP5PCfj68CbyS678unJ6nuCoGv9Jmr9
-	58xxQhG8/ljgPUEaSawPuRzUp85pgsI=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=toxicpanda.com header.s=google header.b="reer/Bk4";
-	dmarc=none;
-	spf=pass (imf08.hostedemail.com: domain of josef@toxicpanda.com designates 209.85.160.170 as permitted sender) smtp.mailfrom=josef@toxicpanda.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793371407;
-	b=fcCnP5eNZOpZo6cPUZrrI7+La487XQLqyxktH+VIFnTFSN2kIqoY3o1UKWV7vxvxQWjTLy
-	sCnG/G3C5pEny1TCpu4CT0zHnrEjWkcVnMDYL+NTvuEeyHlpS6NAV30ox8fjZKyxIEcDoZ
-	GkKkN5z0hFAuwNsGhuo4GhA4msFsfjw=
-Received: by mail-qt1-f170.google.com with SMTP id d75a77b69052e-53653e30353so11900621cf.2
-        for <linux-mm@kvack.org>; Fri, 30 Oct 2026 07:43:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=toxicpanda.com; s=google; t=1793371406; x=1793976206; darn=kvack.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=HxYJPyHsnO8kCvEm8RF+EM8gZ6vVJrs8zKSibqUU+00=;
-        b=reer/Bk4qRB4mOXUhQbNirIoOTCVbNTCVykdPiI8BLe+Gp67kxeR2bvovnX6UWxYVN
-         7ap7fk3f+yxYyCBRW8XIgvlqBxmnHsKAQbzQQF+/q5lufv8/fDYmvOIErynBHhql9Iau
-         VKT12rGn53SGgcnviLhaj+SsTIc9y8qR4QT5eHLSlZUrN4IL5Kr/ZwuISyhPZQvYIDcU
-         fuj9Hr47OqL32c/Ep600cbv8JlRkHExR3phjeLI24jswNLtqqyyikM1oXaH8rPmdkoMd
-         8wekiCpoX88PvoJNKOVdQ1fYNwXsuAckpAFZrfxp+mm6ekT3W1Vf28Cn+g16Ex9pgBoc
-         fzXA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793371406; x=1793976206;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=HxYJPyHsnO8kCvEm8RF+EM8gZ6vVJrs8zKSibqUU+00=;
-        b=2xbTdTDeQYvFCh88cQUJ9YqrmL5IXYzLFEyIjOoe7Xk9Zj1IBPVGnIUoiTueDv9eP9
-         HwjqpIKjZTbNlHg/1HkeNY5y151oR++iW48D693OOvVxOtisATj5alC3+9yCnduWLZz6
-         Ry6STVcwxg9GrnOLknfs3wQ5n55OUjnXt886lzMSh7MditfjXVe1E3fhLvuZknrz/tS+
-         qzSMX4JTwaTnnMgcN/oaUdAsQb8utbLkF0d6q+KilShZx1pcsJUhMivEyehqZzycfm3d
-         01fF6uj3MxSxPi4mXMmPt8PLoRADgk+gY7PKWZ0loWzoVxKkbOaaeTd2Q47vs8wxjC7+
-         a5Vg==
-X-Forwarded-Encrypted: i=1; AKwUvBx6Dp7Hd2yEJgfUd7UD2OZT/vGjYAxptFntNivtEBg/L/vQJ7axBgvceZCX+m7L0n+XSUEBJSzGhA==@kvack.org
-X-Gm-Message-State: AFq9FYJVLqqzwP/sT291ZiOK7n0JsLDfDT7nSKRA+y6nUuxFjs52AzM/
-	5CHizUnrs+PoVY7AYstfYFIdlD01HWOMVYQVQ/1z4QiX17MABXkZHZx4S7foEhwvsqTIwZnI9cE
-	tmVmADo4=
-X-Gm-Gg: AYBFou1vxZJdnqJYUyT4m/6JYDmIylsvFCllNEhzCg6zQ2pv97/nPaMvq80hsPEgaRF
-	yh6wJUw4HHsgyclsoBbo0sbB8vmjQ/sczjaQh4PztSSqjR/g2lMVZFbFRMb1yUvc8kwMsvZwA6k
-	yrsbjTZog1rJ0zo4tjpX71xdhNXDtI6qxSr64ukW6KJM7kAKLLCeCcfD4JPoDO6O7YHt2ioucXc
-	oHn7v77r2+aKAdFGiFSb39c2b63e7FGu5ESHgfYOpRPK1FYu0JC6qWoN/Czzu2hvgkXmiPxTrzz
-	moki2oHmF5UPmNga4CRmxjdWgptFVGEQudreRsysxIVxan9QHHniE9arWAAgnshRHNjtjQdO+pz
-	RsDt+LmdRfef9FJAzbnsNAtehWHl/o0LXWQroz6Vx9spNGlycR9un4A0qr1cUuS50eXeMhhS4S3
-	A96IbMpKoAfNIlMYDakO7BRCqROo9BhiETUx8/NhNMgqYVprE43LbXaDJh2xM8tZCisGBIm0Ffw
-	0qcQN89sU8bVVdeyWE3TOSNnaG76+V8457wpbo8lfSE7LSl276lrj/4O5keo3dUL2am6Qn4tsCC
-	2pwoFNgAluTc+reCT15hpQAVPSvtuOMvLAJ8NR6m3luklw==
-X-Received: by 2002:a05:622a:5793:b0:535:b21:c997 with SMTP id d75a77b69052e-542b3a79103mr39989021cf.8.1793371406059;
-        Fri, 30 Oct 2026 07:43:26 -0700 (PDT)
-Received: from toxicpanda.com ([153.61.196.246])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-5430faff332sm15052181cf.2.2026.10.30.07.43.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 30 Oct 2026 07:43:25 -0700 (PDT)
-From: Josef Bacik <josef@toxicpanda.com>
-Date: Fri, 30 Oct 2026 14:42:51 +0000
-Subject: [PATCH 6/6] mm/mremap: split first so a failed split is reported
-X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261030-b4-mremap-pre-split-v1-6-c1829811aed0@toxicpanda.com>
-References: <20261030-b4-mremap-pre-split-v1-0-c1829811aed0@toxicpanda.com>
-In-Reply-To: <20261030-b4-mremap-pre-split-v1-0-c1829811aed0@toxicpanda.com>
-To: Andrew Morton <akpm@linux-foundation.org>, 
- Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
- David Hildenbrand <david@kernel.org>
-Cc: Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>, 
- Pedro Falcato <pfalcato@suse.de>, Muchun Song <muchun.song@linux.dev>, 
- Oscar Salvador <osalvador@suse.de>, linux-mm@kvack.org, 
- Josef Bacik <josef@toxicpanda.com>
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=openssh-sha256; t=1793371378; l=3590;
- i=josef@toxicpanda.com; h=from:subject:message-id;
- bh=S6y7MbMeBq4sG7K4ABtPlh1W7VoOD99D2FN+R3fYesI=;
- b=U1NIU0lHAAAAAQAAADMAAAALc3NoLWVkMjU1MTkAAAAgUBr36M/n0nWN0DNbnxwzIiCZez6MG
- JiruuNaSCI/zXsAAAAGcGF0YXR0AAAAAAAAAAZzaGE1MTIAAABTAAAAC3NzaC1lZDI1NTE5AAAA
- QNIHZA2KdSqmZaS78T20Z7yZ7mPe9Wi3CO8UmIxA3GVSrFyED0BIY5ztRrnl304EVtvMmJw7uge
- NxzHJEQc9nw4=
-X-Developer-Key: i=josef@toxicpanda.com; a=openssh;
- fpr=SHA256:C8kOX2QUJCMqnCX+KEeoqRAjLo9L+ELOSH2NSAJHqGA
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 359AF160007
-X-Stat-Signature: pb4ixdqkew1dgozoce9ayday3a4qqj9q
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+	bh=aZXf/CiAEOj3syudgngCaaHilsxgeSJVS9oPEnBDhwo=;
+	b=yO/SbI3rmWmYgS/i0GOgcmlGk8x43lItZ2QyvmkOnKhrzHDfuy3G1CWGORjUYYZWsEmY22
+	O+zisc22DW2oj8mn/zW87jy4gaISPZZ0wOI402VmM34MQtx/AZBCsdeJUWPuVQcxrXf2nP
+	1oVpmZDaBGO7TnUHtv40VjtpdOnxeZ4=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id A316640739;
+	Fri, 30 Oct 2026 14:44:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 991E51F000C1;
+	Fri, 30 Oct 2026 14:44:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793371492;
+	bh=aZXf/CiAEOj3syudgngCaaHilsxgeSJVS9oPEnBDhwo=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=SRBbpSBhbpzYPTxEYvVPe0YqNeqeeZXvc40Xfp6E/6NNdDO/YIaX1fQ9xoLaydR/l
+	 M2KlDhSlKxubUE46HvQ8IqmdNWYZrcwWW0rYCpOC8z9eOomi+qBXtW7djAyVYPileJ
+	 +PzoyM10G3unV5KEiQPfN0St5VDMkiFKoQfNFbdBE8xvvgcfkSHazcCfakn6zZPfet
+	 cpZ5PrZ+eSWWsn97mve67wdNmQ+N/b1rVa8wT4L2I9P/WU2XIe0PhfoH7MSIkTEHOr
+	 bqzInNADbdgGCR8YpCMJhAIZFeb+HHPjt+FFh9bSprH3bsl5nEAuJKQ2Tm8QnNWzpb
+	 eWYFbkFOCP7nQ==
+Message-ID: <sashiko-outbox-191117@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [RFC PATCH 1/4] mm/mprotect: add MM_CP_PERM_UPGRADE
+Reply-To: sashiko-reviews@lists.linux.dev
+To: =?utf-8?b?Q2FybG9zIEzDs3Bleg==?= <clopez@suse.de>, kvm@vger.kernel.org, linux-mm@kvack.org, seanjc@google.com, pbonzini@redhat.com
+Cc: linux-s390@vger.kernel.org, imbrenda@linux.ibm.com, "Andrew Morton" <akpm@linux-foundation.org>, "David
+ Hildenbrand" <david@kernel.org>, "Lorenzo Stoakes" <ljs@kernel.org>, "Liam
+ R. Howlett" <liam@infradead.org>, "Vlastimil Babka" <vbabka@kernel.org>, "Mike
+ Rapoport" <rppt@kernel.org>, "Suren Baghdasaryan" <surenb@google.com>, "Michal
+ Hocko" <mhocko@suse.com>, "Jann Horn" <jannh@google.com>, "Pedro Falcato" <pfalcato@suse.de>, "Heiko
+ Carstens" <hca@linux.ibm.com>, "Vasily Gorbik" <gor@linux.ibm.com>, "Alexander
+ Gordeev" <agordeev@linux.ibm.com>, "Christian Borntraeger" <borntraeger@linux.ibm.com>
+In-Reply-To: <20261029143336.390231-4-clopez@suse.de>
+References: <20261029143336.390231-3-clopez@suse.de>
+ <20261029143336.390231-4-clopez@suse.de>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Fri, 30 Oct 2026 14:44:51 +0000
+X-Stat-Signature: xif35ze79wdh4eckutwop31dshcezkgw
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 7226740003
 X-Rspam-User: 
-X-HE-Tag: 1793371407-607441
-X-HE-Meta: U2FsdGVkX18LFECPqBROsWoqmwrt961IPCxeKC3NLn9xf6rvQ89hmaG41fpeg4N+kfMppAaCVGK87+QIvlHFwcwFMZoKae11eAuZ3gYY89loQXY+fdz6I0g14zJKpH7rFfRuycNyjMc7DpdOo89S5zPGUaVpvvACyivSkYulAMbgIjf1va2D1LUZkeiJs8WYDyitD29wlRgemKc9/T34l+uQOKO+J7ikXjKaq0bRIvKqghRPCZqtGKsaZCJxp43VPWVs+9TAzSumVid2zRmX0kwRLbPYAuK3w6ZfnZsZtFunQYK3M1jWfY/lYf4TDcj24VHs8ZVT6R6TE3UFZfHUKekBzL8v82ivR14Wz7zR6cO+EPqwPQ9TM+g8LqOwq/9KaAgSavMS33IwWlrVDWN42XIqG6ZpQSHT+oRw476QrrJv+JdHS+ragTuX7HmUjfAsW7sSYuclcfOTKV9qtGCfe/kl50SUETekOMYSLSdTxQUUgxarn4e6YHI3rreWXnzfTiTkLpBqjb/4JmzHKWXsRhRa008kSsr13mBW+f3j2xJZ+hhHooXCkcN3+vxXS68GBOZiRMMRacoZ91LT+awq9evrrSIJZEZFCoaaNc6XHRxphFfocqA2EckZK879h/OKPvu1e5ObTqIhcKAjnOmQnhMW0f46PdMvRZLTUbzDyR0aWq6ZMzGjFy+EuG62wre8XIy7+2SefyBEX5IDbhqNF3+CuiOifz2AjgzW+yaG+IkT8P3tCAheIfogrjVpRK1qhet2NoSGM5bqyDAZsVC+QJAGMqOh4YrYsc3o24088fNTf+ROHsOabNgiOXMEbZO86svsVrzFDFjZWNMoYDyo5FsaGrsnzYsmlC71f/31LjRFDohxzpxTwFESFDuCc3l8PTTVH82Kh6KC3GyK2laxmukKlf82hJZ3WUu8ro4726RwwUU5U4fBaRfSTCnYUWdz1y9UZ/PKZVT7I34BpCe
- hFP33eKX
- yN6TMMbtG4YbjizQIpxSo/VbmXKXySb5h01vH3Ks5kTdGEsaTyrKZs/UXy5YfCfYIeK+3P3yBzlwJ2z1RxxZiETtRUIr2TLN2ZBuj1+Y6hmIsxnhun1FLzeX6+ECCoR7IH5hGUjfUy2/yPYSA12qPMRpQJtkL2kM8UJsyGLFpD6KgekGw57jbHiAvbGbToAjyIG2pO4wS6bquZ4ULECkAXK951BdqH+WwYbdzRRrl9sOhRfyS3gF9t0TJ966y/7Sn54I3YZeUsy6l4Fz9XX72AeKuWDRlpC+uNK6PI36BvOCHOcqG7NsXDlci4rIwR0vHIybZNHn80q9KOJs=
+X-HE-Tag: 1793371493-42272
+X-HE-Meta: U2FsdGVkX18TUSbDeat0DmOKmRQe1fyTxvwxx9sLUGoerXkz9j4Hho0kkucLrb7PHe3O/dv4gBhe7qVwAwKTPs95DHJowRGgxtBLrifL101VLvVbvOHwI29vpVeXt7ama5n4u6OkflA3kvEihl6ubTEF94PmJauxMApFgxt91RbNgR1iMkd5DjJhilTP++TKuvy3vMM4trNH+JAbth3WWVvcFm13Q3tzQZPQBJw6S5uCS73qMB9Z5vaOp+cXETyG8kNQeLGzh7JC2lQQzdy7tHIPjIXgq8Vjfa8G0dBC2vF4eBoQZL+XuFieGvswylqi5DWqeMAWBiSpSk/D35lfsd9asL3ohkBqOdurRzqobrxSWa3oLUdwcFmTDCB3H0WvjSuMD68wPF9kXqgDC/rvFcWgNSTWtX9bepUcQS5+E+ndUWASSEnoYKEpJuisMYWmAfY2SdPhpCqDc5oEP20brEB66+SOaTDr34pTmIVxgbUAGiaL6O+rSqH5TL3qRGs1GbMPqOoUEQu63GupnCh6eyPvmKzxeO8P36J40CoBOVRTIy0B/5BQnCPSRxgmGBdBvc2opf3kndw5wm+KtwK4TXC2kIyolGx+dUuWnfq+LNjXZswEV6hHyni/VXSVd7IyNeoCwMabYMBiirD+PV19rP4m0dQAQDBewtAlhBvHzWZvdRaaVo+vq+I6W3C2itw/Ltqfl/qDmaYF5ynV1uRR2kB8bAeeVvUP1K2Klnv2C/2QVsrunw0Iikuj5GZd7IlogdNJY+ClYxZAUPChEfE5gFrlW9JUtVnYtTkruZLqpcQuUHgCqr+PaO2NJclI5RMwH/xdNvvdQoRB2KbBABnhbILuT8WJKA33sqyfJqfEMvRWL9u+CocOE3yenie+FTO4bhgSOwBv2tqMKWWv/MQF1HNytNTw1CsIYnxDGNOsURmLOqgZHligrqIaC3Mn6wLVbd9LzjASb2YoGAgkTi0
+ AhmiwFDc
+ GEHI3v7OzUu+zwrc29gCC3v3zAwA4DQqgcO10TxuTue/j6z1KjuocBL5i2/YvWoXNAwf09yyquwFXFp+roeo3cMrfwdUZTApr4WQ4gVtg1PrRuoKABLl+bruQq1chV3x4wY6WpicyNO8uJmlgrbPa0UyH1DxDIeVS1Egyk+9p4zB+hJ+RdSRWLZl8l6cgdv6pr2I+SMch2AwWlNm537VnL6AbdmaNKuyY2GMqBj7y4bp5wvtXHuedQJVQiO6eGCjCozadwl+BT1nkD93muO0GAToQoGhO4B86a8RDy+TgLFUDOSafKARlkV/KPiYGy5lHvGhvshHCEHblgtpKh4PqbQCrPAJrM5/CwyOEK5YhhJ5kgF8X6B6icC7BxYPPZUHjkS6Mkww3XQAytdvXNWVbfQ2sYcYJ6ZwAYvxFg4PujGvLhWy4m+anyNct/s1urWo1tKW30DOPfdSIWQsqE2560bopu/Izpw844mFqYGLJHq7To0ViEraO/PVnG03eQdlin7+27xLNGHgn4D7VGPTsjzGCnrECcSb/dnsZORQHGGkvrbyNRHoFGaEYFYouMCJ0vdpkBGvcme5dIpEtpJZuavJ7ivubqODNMfPJcnhQlcHHvbc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -138,91 +97,168 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
+X-Archived-By: <archiver.kernel.org>
 
-mremap() can return the new address although the old range is still mapped,
-which leaves the caller with a VMA it does not know about.
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+s) to consider:
+- [High] mm/mprotect: MM_CP_PERM_UPGRADE set when change_protection() revok=
+es write
+- [Medium] mm/mprotect: vma_flags_is_perm_upgrade() ignores arch-specific p=
+rot flags
+--
 
-To move a part of a VMA, that part has to be split off, and this is left to
-the unmap at the end of the move. If the split fails there, the page tables
-have moved already and there is nothing to go back to. unmap_source_vma()
-returns void, so move_vma() reports success.
+commit f3d5a380cac712469a433d985427420721eea496
+Author: Carlos L=C3=B3pez <clopez@suse.de>
 
-This was reproduced with fault injection, by failing each allocation of
-such an mremap() in turn. Anonymous and shmem mappings hit it at 2 to 7 of
-7 to 13 allocations, with numbers that differ from boot to boot, and no
-longer hit it with this patch.
+mm/mprotect: add MM_CP_PERM_UPGRADE
 
-Fix by splitting the source VMA in prep_move_vma() whenever it is going to
-be unmapped, so that a failed split is reported before anything has moved.
-An old size of 0 unmaps nothing and does not split. If a later step fails,
-the VMA stays split, as it does after a munmap() that fails half way. The
-unmap at the end can still fail in its allocations, or if copy_vma() has
-merged the range and it has to be split again.
+This commit introduces the MM_CP_PERM_UPGRADE flag for change_protection()
+when mprotect() updates VMA permissions to a superset of the previous
+permissions without changing the protection key, allowing MMU notifier
+consumers to avoid invalidating PTEs.
 
-Signed-off-by: Josef Bacik <josef@toxicpanda.com>
----
- mm/mremap.c | 27 +++++++++++++++++++--------
- 1 file changed, 19 insertions(+), 8 deletions(-)
+> diff --git a/mm/mprotect.c b/mm/mprotect.c
+> index 754333698c1ea..96e32e0159166 100644
+> --- a/mm/mprotect.c
+> +++ b/mm/mprotect.c
+> @@ -756,6 +756,17 @@ static const struct mm_walk_ops prot_none_walk_ops =
+=3D {
+>  	.walk_lock		=3D PGWALK_WRLOCK,
+>  };
+> =20
+> +static bool vma_flags_is_perm_upgrade(vma_flags_t old_vma_flags,
+> +				       vma_flags_t new_vma_flags)
+> +{
+> +	vm_flags_t old =3D vma_flags_to_legacy(old_vma_flags);
+> +	vm_flags_t new =3D vma_flags_to_legacy(new_vma_flags);
+> +	vm_flags_t rwx =3D VM_READ | VM_WRITE | VM_EXEC;
+> +
+> +	return !(old & rwx & ~new) &&
+> +	       (old & ARCH_VM_PKEY_FLAGS) =3D=3D (new & ARCH_VM_PKEY_FLAGS);
+> +}
 
-diff --git a/mm/mremap.c b/mm/mremap.c
-index 256eac721a07..64f8e0895e77 100644
---- a/mm/mremap.c
-+++ b/mm/mremap.c
-@@ -1112,11 +1112,20 @@ static bool split_source_stays(struct vma_remap_struct *vrm)
- 
- static bool needs_pre_split(struct vma_remap_struct *vrm)
- {
-+	/* This duplicates a shared mapping: no range to split off or unmap. */
-+	if (!vrm->old_len)
-+		return false;
-+
- 	/*
--	 * fixup_hugetlb_reservations() takes the reservations away from the
--	 * source VMA.  The parts of it that do not move have to keep theirs.
-+	 * The source range is unmapped once its page tables have moved.  If a
-+	 * split fails at that point there is nothing left to go back to, so
-+	 * split while the failure can still be reported.
-+	 *
-+	 * hugetlb relies on this too: fixup_hugetlb_reservations() takes the
-+	 * reservations away from the source VMA, and the parts of it that do
-+	 * not move have to keep theirs.
- 	 */
--	if (vma_is_hugetlb(vrm->vma))
-+	if (!(vrm->flags & MREMAP_DONTUNMAP))
- 		return true;
- 
- 	return split_source_stays(vrm);
-@@ -1175,10 +1184,10 @@ static unsigned long prep_move_vma(struct vma_remap_struct *vrm)
- 	if (err)
- 		return err;
- 
--	/* Perform any split ahead of time if the source VMA has to be distinct. */
- 	if (needs_pre_split(vrm)) {
- 		VMA_ITERATOR(vmi, vma->vm_mm, old_addr);
- 
-+		/* This leaves vma as the VMA that spans the range to move. */
- 		if (split_before)
- 			err = split_vma(&vmi, vma, old_addr, 1);
- 		if (!err && split_after)
-@@ -1247,10 +1256,12 @@ static void unmap_source_vma(struct vma_remap_struct *vrm)
- 	vrm->vmi_needs_invalidate = true;
- 	if (err) {
- 		/*
--		 * OOM: unable to split vma, just get accounts right. Both the
--		 * old and the new range remain mapped, so charge the range a
--		 * second time, and reinstate the flag on all that is left of
--		 * the VMA so the charge is returned when it gets unmapped.
-+		 * The unmap failed, just get accounts right. Both the old and
-+		 * the new range remain mapped, so charge the range a second
-+		 * time, and reinstate the flag on all that is left of the VMA
-+		 * so the charge is returned when it gets unmapped.
-+		 *
-+		 * An old_len of 0 ends up here as well. It has nothing to unmap.
- 		 */
- 		if (accountable_move) {
- 			vm_acct_memory(len >> PAGE_SHIFT);
+[Severity: Medium]
+Does vma_flags_is_perm_upgrade() also need to check architecture-specific
+protection flags that mprotect() can modify?
 
--- 
-2.55.0
+In do_mprotect_pkey(), newflags is computed via calc_vm_prot_bits() (which
+calls arch_calc_vm_prot_bits()) and masks off VM_FLAGS_CLEAR (which includes
+VM_ARCH_CLEAR):
 
+mm/mprotect.c:do_mprotect_pkey() {
+    ...
+    mask_off_old_flags =3D VM_ACCESS_FLAGS | VM_FLAGS_CLEAR;
+
+    new_vma_pkey =3D arch_override_mprotect_pkey(vma, prot, pkey);
+    newflags =3D calc_vm_prot_bits(prot, new_vma_pkey);
+    newflags |=3D (vma->vm_flags & ~mask_off_old_flags);
+    ...
+}
+
+Several architectures expose PROT_* flags in mprotect() that set or clear
+VMA flags affecting hardware PTE protection or attribute bits in
+vm_get_page_prot():
+
+- On arm64, arch_calc_vm_prot_bits() maps PROT_BTI to VM_ARM64_BTI (cleared
+  via VM_ARCH_CLEAR when omitted) and PROT_MTE to VM_MTE. In
+  arch/arm64/mm/mmap.c:vm_get_page_prot(), VM_ARM64_BTI sets PTE_GP (which
+  restricts execution by faulting on indirect branches to non-BTI landing
+  pads) and VM_MTE sets PTE_ATTRINDX(MT_NORMAL_TAGGED) (which enables MTE
+  tag check faults).
+- On sparc64, PROT_ADI sets VM_SPARC_ADI (cleared via VM_ARCH_CLEAR when
+  omitted), which sets _PAGE_MCD_4V in
+  arch/sparc/mm/init_64.c:vm_get_page_prot() to enable hardware ADI tag
+  checking traps.
+- On powerpc64, PROT_SAO sets VM_SAO, which sets _PAGE_SAO in
+  arch/powerpc/mm/book3s64/pgtable.c:vm_get_page_prot() to alter hardware
+  memory ordering attributes.
+
+Because vma_flags_is_perm_upgrade() only inspects VM_READ | VM_WRITE |
+VM_EXEC and ARCH_VM_PKEY_FLAGS, if userspace calls mprotect() to enable
+PROT_BTI, PROT_MTE, PROT_ADI, or PROT_SAO while keeping the read/write/exec
+bits identical (or a superset) and the pkey unchanged, won't this set
+MM_CP_PERM_UPGRADE and allow MMU notifier consumers to skip secondary MMU
+invalidation when access restrictions were tightened or PTE attributes
+changed?
+
+> +
+>  int
+>  mprotect_fixup(struct vma_iterator *vmi, struct mmu_gather *tlb,
+>  	       struct vm_area_struct *vma, struct vm_area_struct **pprev,
+> @@ -836,6 +847,8 @@ mprotect_fixup(struct vma_iterator *vmi, struct mmu_g=
+ather *tlb,
+>  	vma_flags_reset_once(vma, &new_vma_flags);
+>  	if (vma_wants_manual_pte_write_upgrade(vma))
+>  		mm_cp_flags |=3D MM_CP_TRY_CHANGE_WRITABLE;
+> +	if (vma_flags_is_perm_upgrade(old_vma_flags, new_vma_flags))
+> +		mm_cp_flags |=3D MM_CP_PERM_UPGRADE;
+>  	vma_set_page_prot(vma);
+> =20
+>  	change_protection(tlb, vma, start, end, mm_cp_flags);
+
+[Severity: High]
+Can setting MM_CP_PERM_UPGRADE when the VMA already had VM_WRITE (or on a
+hugetlb VMA) violate the invariant that no access is revoked and the PFN
+stays the same?
+
+Follow-up commits ("mm/mmu_notifier: add MMU_NOTIFIER_RANGE_PERM_UPGRADE",
+"KVM: plumb MMU_NOTIFIER_RANGE_PERM_UPGRADE into kvm_gfn_range", and
+"KVM: x86/mmu: don't zap the secondary MMU on permission upgrade") wire
+MM_CP_PERM_UPGRADE to MMU_NOTIFIER_RANGE_PERM_UPGRADE so that
+kvm_unmap_gfn_range() skips zapping secondary MMU SPTEs.
+
+However, when a VMA already has VM_WRITE and mprotect() adds permissions
+(for example, upgrading PROT_READ | PROT_WRITE to
+PROT_READ | PROT_WRITE | PROT_EXEC, or PROT_WRITE to
+PROT_READ | PROT_WRITE), vma_set_page_prot() computes vma->vm_page_prot
+(newprot) without write permission for all MAP_PRIVATE mappings (COW) and
+for MAP_SHARED mappings where vma_wants_writenotify() is true.
+
+When change_protection() applies this read-only newprot across the VMA,
+there are several paths where write permission is stripped from existing
+entries or entries are unmapped in the primary MMU while MM_CP_PERM_UPGRADE
+is set:
+
+1. In mprotect_fixup(), vma_wants_manual_pte_write_upgrade(vma) is called
+   after vma_flags_reset_once() but before vma_set_page_prot(vma). For
+   MAP_SHARED VMAs without vm_ops->page_mkwrite that use writenotify for
+   VM_UFFD_WP or soft-dirty tracking (such as shmem),
+   vma_wants_writenotify(vma, vma->vm_page_prot) compares the old read-only
+   vma->vm_page_prot against vma_pgprot_modify(vm_page_prot, vma->flags)
+   (which still has VMA_SHARED_BIT | VMA_WRITE_BIT) and returns false. As a
+   result, MM_CP_TRY_CHANGE_WRITABLE is not set, vma_set_page_prot()
+   computes a read-only vma->vm_page_prot, and change_present_ptes() /
+   change_huge_pmd() strip write permission from all writable PTEs and PMDs
+   in the VMA.
+
+2. In mm/hugetlb.c:hugetlb_change_protection(), MM_CP_TRY_CHANGE_WRITABLE
+   is not handled, so huge_pte_modify(old_pte, newprot) unconditionally
+   strips write permission from already-writable COW huge PTEs in
+   MAP_PRIVATE hugetlb VMAs; in addition, huge_pmd_unshare() unmaps shared
+   PMD tables via pud_clear().
+
+3. In mm/huge_memory.c:change_huge_pud(), MM_CP_TRY_CHANGE_WRITABLE is not
+   handled, so pud_modify(oldpud, newprot) strips write permission from
+   writable huge PUDs in writenotify DAX mappings.
+
+4. In mm/mprotect.c:change_softleaf_pte(),
+   mm/huge_memory.c:change_non_present_huge_pmd(), and
+   mm/hugetlb.c:hugetlb_change_protection(), writable migration entries
+   (softleaf_is_migration_write()) and writable device-private entries
+   (softleaf_is_device_private_write()) are unconditionally downgraded to
+   read-only entries via make_readable_exclusive_migration_entry(),
+   make_readable_migration_entry(), or make_readable_device_private_entry().
+
+5. In change_present_ptes() and change_huge_pmd(), pte_modify() /
+   pmd_modify() strip write permission and do not restore it under
+   MM_CP_TRY_CHANGE_WRITABLE when !folio in a private PFN/mixed mapping or
+   when a shared writenotify PTE was cleaned (!pte_dirty(ptent)).
+
+Wouldn't skipping secondary MMU invalidation in these cases leave secondary
+MMUs (such as KVM SPTEs) with stale writable mappings to pages that
+change_protection() has write-protected or unmapped in the primary MMU?
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261029143336.3902=
+31-3-clopez@suse.de?part=3D1
 
