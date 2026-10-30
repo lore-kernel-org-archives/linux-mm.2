@@ -1,95 +1,90 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75CEA606A322
-	for <linux-mm@archiver.kernel.org>; Fri, 30 Oct 2026 02:55:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1D14606A31C
+	for <linux-mm@archiver.kernel.org>; Fri, 30 Oct 2026 02:58:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=ZLPuw5EX
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=UK1LXpsj
 Received: by kanga.kvack.org (Postfix)
-	id 8666F6B05B1; Thu, 29 Oct 2026 22:55:45 -0400 (EDT)
+	id E60B56B05B2; Thu, 29 Oct 2026 22:58:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 83DCD6B05B2; Thu, 29 Oct 2026 22:55:45 -0400 (EDT)
+	id E385F6B05B3; Thu, 29 Oct 2026 22:58:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 77C006B05B3; Thu, 29 Oct 2026 22:55:45 -0400 (EDT)
+	id D75536B05B4; Thu, 29 Oct 2026 22:58:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 4A32B6B05B1
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 22:55:45 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 3851180352
-	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 02:55:43 +0000 (UTC)
-X-FDA: 85377777366.03.3502061
-Received: from mta1.migadu.com (out-181.mta1.migadu.com [95.215.58.181])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 2BA48A0004
-	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 02:55:40 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=ZLPuw5EX;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf15.hostedemail.com: domain of hui.zhu@linux.dev designates 95.215.58.181 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id ADE9D6B05B2
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 22:58:57 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 32F85405C4
+	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 02:58:57 +0000 (UTC)
+X-FDA: 85377785514.19.4CB824D
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 9CD32160003
+	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 02:58:55 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UK1LXpsj;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf08.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793328941;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=pUCbReckSqEr12tJBWbX35Dm/JKcttu5DEw0fkc69DI=;
-	b=waOvId/Q2YySwBm9ShTXHko0Gsw+mcjz+5CM6JXvYCUhOGBquI3ObI2z1hoRZJQamD1ozt
-	JULGfgV+B0OgEo8JcMtii4gvWSMX0xt8tjyh4XDOqJHONj68kqGeQyNlleMSBlYg8pjCk7
-	enh5ZUsIxN1canPdG4IvAbsWY6qebWc=
+	s=arc-20220608; t=1793329135;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=EUrLM4J4qCjs4gnuU6Unm6BpALfnacabOygCpkoPuFg=;
+	b=yacvg/PZGpJR0OdQgtB46M/xcL/dOOYRSSJYmAxfnvU9OXUN3aiWJL6ZQTbRBuL2V3jUR2
+	/S3/veXKVdIcNKaBK8z1HLToCl9FRwEvx0jMXb9xB2HH15ORtBi8SRHBH4xeLyzAV806mq
+	B1upN+AzpV9tJImWf3SHcV56sSP4L4U=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=ZLPuw5EX;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf15.hostedemail.com: domain of hui.zhu@linux.dev designates 95.215.58.181 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev
+	imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UK1LXpsj;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf08.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793328941;
-	b=TSc+Ra6E5ydIQKSuo6sdfEbwFeDxudp5Qi/o3knVvUTMew5M6dG3y0D91+/wJi5UoMoHUo
-	bkp1OQPNOj7sbptCJOmiLXR9d8mrP32EXQMC2VHgt2SWjmQX7fLkKHSmLlMkP30SxotgXz
-	rw+MKPoKoXeoQgFHhnwa4JwaGRervKQ=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=sAQYKG0X+cRq7vrg7+ttEQx6a2fpFc91J/Dodm9J4/w=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1793328939; v=1; x=1793933739;
- b=ZLPuw5EXMctc9GYJweSlQAVVeQcklAr1ydzoP1OgL9PNQ1GMrdrfZh319f8dRhKqxrXYbFmu
- oG5oSwUsozWbD77rPDJ1+F3Q+Cq16azVhE4HxwZKtGOsrXdIs9A463tt6WRzHC7N1WLSsre3BLj
- O3TzgJQEXeStP+MhnI3apFGE=
-X-Envelope-To: linux-mm@kvack.org
-Received: by mta12.migadu.com with ESMTPS id 392c1607db233a43;
-	Fri, 30 Oct 2026 02:55:39 +0000
-X-Mizu-Trace-ID: 392c1607db233a43
-X-Migadu-Flow: FLOW_OUT
-From: Hui Zhu <hui.zhu@linux.dev>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Brendan Jackman <brendan.jackman@linux.dev>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Zi Yan <ziy@nvidia.com>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Cc: Hui Zhu <zhuhui@kylinos.cn>,
-	stable+noautosel@kernel.org,
-	Dev Jain <dev.jain@arm.com>
-Subject: [PATCH v2] mm/compaction: annotate data race for zone->free_area[order].nr_free
-Date: Fri, 30 Oct 2026 10:55:07 +0800
-Message-ID: <20261030025507.115248-1-hui.zhu@linux.dev>
-X-Mailer: git-send-email 2.43.0
-X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 2BA48A0004
-X-Stat-Signature: s99gpgxokry4k6513ty4r8hbf7z1jatc
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+	t=1793329135;
+	b=QxkgVynkxwCoHfxS7kNOzbfofltMcCmTBMzWNrOLAcZbxMB7b+odRBXacO8jx7RA8bpMdW
+	2awdJEzT8/50VW7ae1U3m+t6yFijUocQhWNERHnDGfl1QLXvrpEpmXNqPBN4sOuPuqrK8Y
+	W/kKPKFZP6l/1KfpdDpxL3osx9NhxPI=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id B0D8E600DA;
+	Fri, 30 Oct 2026 02:58:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC6B11F000C1;
+	Fri, 30 Oct 2026 02:58:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793329134;
+	bh=EUrLM4J4qCjs4gnuU6Unm6BpALfnacabOygCpkoPuFg=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=UK1LXpsjT3IOdW/rc2RUdITgWFGhDNrqRK/cLXJ0shF6lU+OHJ2Jky3BGanUOi6PA
+	 6ABpX0U/eJK3yYCoWsQb/UvIHEFm3h7mg/CwLwmOz/xyyKjyZphqQ+TIcBbRJKsIOi
+	 Y9lHsuZRbY3Ih+XWMaQ6DKBUCCDmkQKaA4uDE++jcGAetxnH7Y42b4Az2/yA82V3zj
+	 WaJRSR7O179tsdmBiAM50LkvYn89OHewdRjNW/E2UWSIcNO8kAmbnI/OtoBJf/+qcs
+	 XSOrdC5i30KA4PQZ8L/a+OGvWYn8qPJ3OUYqZSxfsX/V5tjyDpXfz7MVZYZpre+n83
+	 6JEIC+3gKl7Fg==
+Message-ID: <sashiko-outbox-190189@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v2 3/3] riscv: keep booting if KFENCE pool reservation
+ fails
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Jackie Liu" <liu.yun@linux.dev>, glider@google.com
+Cc: dvyukov@google.com, elver@google.com, pjw@kernel.org, alex@ghiti.fr, aou@eecs.berkeley.edu, linux-mm@kvack.org, kasan-dev@googlegroups.com, muchun.song@linux.dev
+In-Reply-To: <44fbd039a5cd78bfe7355ccbafb197775dede29c.1793242457.git.liuyun01@kylinos.cn>
+References: <cover.1793242457.git.liuyun01@kylinos.cn>
+ <44fbd039a5cd78bfe7355ccbafb197775dede29c.1793242457.git.liuyun01@kylinos.cn>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Fri, 30 Oct 2026 02:58:53 +0000
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 9CD32160003
+X-Stat-Signature: 79hfcsgft39t1c3xw5rbj4xxo7zrqu7e
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-HE-Tag: 1793328940-144516
-X-HE-Meta: U2FsdGVkX1/vmlg+MZYppTudeEOfdDdFkV6a0OC8TL3YHrISBeAd1Wyj0ziCPhmHiM1fqzSEW8FKs/yECeXAG0FDYbPlJJrYpHgfj/w5XH/q6jrW9APfrq2j7EbLTd0S+Ayo7nU40p8TmJXG2LTpOkEqFjW3efPiXmPvbUUyn49ekK063JnQyWFYnR0cmlcniHRNlltEYiCTt+SRh1W09V1/yjN5yExW0RV3UEEjZRyKqIKFWoT8VLy+kbu5ngpY0nwABP40JZzt5BfZDp1UXwUhoLeUFOFYG46KITZV0GsvCAZvztTCCmzM+HpCUy5RBzfUfrfytppPkuBu6l2V4pqNZJ/yMomIhkBIIl/zknNTf+xJoVsW56rdPm9aH3ucbPMkVyejN06WR4rvL/ZLk+00mRb6aUGuXSHoP/PfxYXPkBk5t+YjSJAnXRyMWVJkEPf0sN3e+n4RjFhkcKLmv3sMYCqI2XXSa4mERhd30hmjLf7CtDgUWrs/vZ6oJPglUe9DMCb1XWlfgdebpWB9S7Xxt1SpFr5qICVWuKk3bH6UXv59cx3moMJWjZ+cAyBCCNiTth0r0cQqyGtzehwk5H+9pmvSXhxEiKjIcFCCnPyluBeiCH2F9/3BnNeWCbOWVpLQkisYul7KSFzwQchg6UXW3MWKexlGL9VRVKvnSPMbyP5ut89b3cSXFnysjDRCU8v4ZTlIrixDIQk4ostOqEmzhyLxnSnth/RaGrufW6wVl9dGmhqmidSnLifo6DF9ZGt+QTvbl5tT55q+pxTlg4wyBzApKZLau6TYpgWKXoxO2AFB2I0+bSMEGWcHAy1AWyXHIcxN50T1EVlLtyPn2fd3MPvbK5+M3afutx1JtV86qlWL7SxVR1uiHZbnZ5+HtEo8/V+0fr1o1RRvEDUxA3WUsKHQhk1m/aoHi5SofMtemWLjBC/VeJcEAn9oCKiNu+SfRyU8lt4OePtki5G
- +fEtJP2T
- TKFWz1S6VYT/SpV/vfw7c9JXrMwGXXqrXX9ydecXYyGHYDWIcidCK5iInyWW+DUwpt+it+q1Xm6YKrbCMhpp/GTu8QZVxFJ3bANFhxWP4VGcOYBk6yrRabI+04kjj4XwOGl3FLdIH7jU8UR911JINs1w1zFaeJu5TCkAT1MTgUvQi4RniWmVJ8ibGj8+7Psb3igMUVDy76U8eFqUQjMM9I422hxWP6UPDLNrf/SUqeKoTE1+eovX2mH3Cjy2aWiMkgCd4+XUiyZQBB4zeDcWQnLf5omwsat2OL/3WfFNgKyJAeJabxdeQtbEdNbd+O0Eq6274moi+d2M9sz15q2e0ulv4buNz5B/5bP4IUovfyo3ffJncBxYFXUXHIAkLCum0U4RM2LrYa7t9F35UUB3yu12ILMScIY+YGsUDBCoF3/yH/Q/BdpI8mSgRgu9xEvZApEUVecr/+nok2mjk3wppgwkEYyAq3PX2DcDL3m5wGsaZtwDM+7/EtoVzAw==
+X-HE-Tag: 1793329135-245067
+X-HE-Meta: U2FsdGVkX190AtwqOSW1tVSsCvcEmc8sp3N5Voc4WkPYAscIfMRfXzRT9UBCSQelbo5HOnYIxy6GCsrDfqRLXezfQKbBvA5+5ftHzmvX317oaHiucy8mDJFyQyvS3zf1JkKzK7MgXsQH73ATKns9hiIlopCPRPLDFRb4RJWIjoE1ygb9Rb8acUrMLWnqJGTDyJ6GEk3x1gZkJ4UxsJh77I6YJXHqYFmi9sP+3xrb2Sdmgkp+GVrXy8Zdijz7Ip14sXkEAlPBqEKN6juWNhhMg4VnoQbyOP6QCCwAIEfroylQu7PJmcNVeK2Av2AgCzAUap/aoum0MM6MZMtKKYl8qy+J2LED/+FfPk9ocSOeCeCu3O+lorMzS0NmyUzt/SO73vZ/cKMUiZdtbqZRsjSPAR1pkhGxW48tLLes70LtMiK2iP1q60fYtSPYyR9EWLqm+eqVuZFF5eF6DV366Y6/9VuT44HJt+ZwNMlxdVFUCUMpJMAifg16fjookoLYHOz/tWuyPm/hZQ9a97PQvgAaxxQWoi9fWGHaQct10OXiERdZAEqhlHPImdvMRQcHsqctdc7pG1hifGxdTQwvunb95Q3hjoINKO4ke1Jdm9HoRrUHV9R6SOmBYoePS5T/duUKJ+p6U2C8XHCUztDFYXoQusm0zY8PeibW0FMvKBEmrdzZdDqPBjK8vZtYnKsiFWtXoBPlH3LD0xMQJVtVzoGwcnlvfG/29S3+PGg0tXMzN7BfyeQdtfF9CK+EKXks3ar2+iiEUkziu9ySZPUEAwEpFzak2OFhf+p+bV/JXrCnkldy93JQKsea1hhW0/EdyUkVh2Po3NGeRawj1rjGuH++qpYhI3U4yFOYjPE2ETIK8XN0pDYTo5Oz4xU1ZNYJ3tjMQzwkz/lP5g6+IIXmtzXTHDmO/EI7jEAfljBo2wk752ghtrWn5eUtfKGFFSfyOnJV49YWdUiuurDVf0GF4Zs
+ rXU3haGK
+ w22tvgPmXvd5TxMIuofOj4IqjUNUxoYnVXeWeffl6s0NwVe2YALQtc8rQ68eiEcpim/2ZZHKAU5uavwcPkDafR41o+8wOr+wn6ujm4by2moYXYyK/si32bR50NfoPEqo6Ow2rMrAh0xN3zMLfh4V/rR+eDaFEmgCDRmEXlqH7ssDobuCIKw7zxrzoxFMH70PWF8WNesDRis9YgDbcvmPsSNmnHqD/PrTLikaZqAPlzuKHRQsfGlV8iPJxkgYHNz6AVX5Jmch3e1ElWjymTVrGTWbv1JotL8A4Tekfeuc/31npfGqiMRNMsPmZ5jjas9lV0kvZeLodiPu/EozZOkfB/esY2/yU8HTVfyhcfaxJi4tuU9O67h29aGQUbDAwpWt6cqeaaS9UJ4PvBBPA5NMi+Szp97h3DBp+wDQ51Ni96m6BXX6APHBtVf/fHP9B/vlzQXYcgrFBnVxMuub34U28fjktXw3jseSBk0g9pky/lW4fD/bP48QCCtaDzttf9ZgQ0A4PShJF38KVQw1B+fDKBj+I36T2A7957dIEU7MxQZ8z0DtIHVT5hb5UcQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,98 +92,130 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
+X-Archived-By: <archiver.kernel.org>
 
-From: Hui Zhu <zhuhui@kylinos.cn>
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [High] riscv: kfence: incomplete replacement pool rejection and fallback =
+memblock leak
+--
 
-KCSAN reports a data-race on nr_free which also exists on mainline:
+commit 3fb224ed3ecf516e32ff76314492cf99262a5a4f
+Author: Jackie Liu <liuyun01@kylinos.cn>
 
-  BUG: KCSAN: data-race in fast_isolate_freepages+0x284/0x1550 mm/compaction.c:1589
+riscv: keep booting if KFENCE pool reservation fails
 
-  race at unknown origin, with read to 0xffff9894ff3dcb60 of 8 bytes by task 179078 on cpu 12:
-   fast_isolate_freepages+0x284/0x1550 mm/compaction.c:1589
-   isolate_freepages+0x52/0x650 mm/compaction.c:1722
-   compaction_alloc_noprof+0x36e/0x3e0 mm/compaction.c:1850
-   compaction_alloc+0x21/0x30 mm/compaction.c:1880
-   migrate_folio_unmap+0x7f/0x820 mm/migrate.c:1177
-   migrate_pages_batch+0x37e/0x1200 mm/migrate.c:1762
-   migrate_pages_sync+0xce/0x560 mm/migrate.c:1928
-   migrate_pages+0x8c6/0xc20 mm/migrate.c:2037
-   compact_zone+0x539/0x10b0 mm/compaction.c:2660
-   compact_zone_order+0x1b8/0x230 mm/compaction.c:2795
-   try_to_compact_pages+0x20b/0x630 mm/compaction.c:2851
-   __alloc_pages_direct_compact+0x98/0x2b0 mm/page_alloc.c:3722
-   __alloc_pages_slowpath.constprop.0+0x452/0xdf0 mm/page_alloc.c:4401
-   __alloc_pages_noprof+0x28a/0x2d0 mm/page_alloc.c:4794
-   alloc_pages_mpol_noprof+0x1b1/0x470 mm/mempolicy.c:2270
-   alloc_pages_noprof+0x7a/0xe0 mm/mempolicy.c:2347
-   io_mem_alloc_compound io_uring/io_uring.c:2848 [inline]
-   io_pages_map+0xb9/0x330 io_uring/io_uring.c:2892
-   io_allocate_scq_urings+0x231/0x300 io_uring/io_uring.c:3933
-   io_uring_create+0x29c/0x9c0 io_uring/io_uring.c:4091
-   io_uring_setup+0xb6/0x100 io_uring/io_uring.c:4203
-   __do_sys_io_uring_setup io_uring/io_uring.c:4230 [inline]
-   __se_sys_io_uring_setup io_uring/io_uring.c:4224 [inline]
-   __x64_sys_io_uring_setup+0x66/0xe0 io_uring/io_uring.c:4224
-   x64_sys_call+0x1816/0x1d90 arch/x86/include/generated/asm/syscalls_64.h:426
-   do_syscall_x64 arch/x86/entry/common.c:51 [inline]
-   do_syscall_64+0x70/0x2a0 arch/x86/entry/common.c:81
-   entry_SYSCALL_64_after_hwframe+0x76/0xe0
+This commit avoids hitting BUG_ON() during linear mapping setup when the
+early KFENCE pool reservation fails by tracking the failure in
+kfence_disabled and returning !kfence_disabled from arch_kfence_init_pool().
 
-  value changed: 0x00000000000002f4 -> 0x00000000000002f5
+> diff --git a/arch/riscv/include/asm/kfence.h b/arch/riscv/include/asm/kfe=
+nce.h
+> index 29cb3a6ee113d..57e57426a7d60 100644
+> --- a/arch/riscv/include/asm/kfence.h
+> +++ b/arch/riscv/include/asm/kfence.h
+> @@ -9,9 +9,11 @@
+>  #include <asm/cacheflush.h>
+>  #include <asm/pgtable.h>
+> =20
+> +extern bool kfence_disabled;
+> +
+>  static inline bool arch_kfence_init_pool(void)
+>  {
+> -	return true;
+> +	return !kfence_disabled;
+>  }
+> =20
+>  static inline bool kfence_protect_page(unsigned long addr, bool protect)
+> diff --git a/arch/riscv/mm/init.c b/arch/riscv/mm/init.c
+> index fb37b0b67efec..d21be990346c6 100644
+> --- a/arch/riscv/mm/init.c
+> +++ b/arch/riscv/mm/init.c
+> @@ -44,6 +44,10 @@ DECLARE_BITMAP(new_valid_map_cpus, NR_CPUS);
+>  struct kernel_mapping kernel_map __ro_after_init;
+>  EXPORT_SYMBOL(kernel_map);
+> =20
+> +#ifdef CONFIG_KFENCE
+> +bool kfence_disabled __ro_after_init;
+> +#endif
+> +
+>  #ifdef CONFIG_64BIT
+>  u64 satp_mode __ro_after_init =3D SATP_MODE_57;
+>  #else
+> @@ -1229,10 +1233,13 @@ static void __init create_linear_mapping_page_tab=
+le(void)
+>  	 *  for this region.
+>  	 */
+>  	kfence_pool =3D memblock_phys_alloc(KFENCE_POOL_SIZE, PAGE_SIZE);
+> -	BUG_ON(!kfence_pool);
+> -
+> -	memblock_mark_nomap(kfence_pool, KFENCE_POOL_SIZE);
+> -	__kfence_pool =3D __va(kfence_pool);
+> +	if (kfence_pool) {
+> +		memblock_mark_nomap(kfence_pool, KFENCE_POOL_SIZE);
+> +		__kfence_pool =3D __va(kfence_pool);
+> +	} else {
+> +		pr_err("failed to allocate kfence pool\n");
+> +		kfence_disabled =3D true;
+> +	}
 
-nr_free is only updated with zone->lock held, but fast_isolate_freepages()
-and fast_find_migrateblock() read it locklessly to skip an order that has
-no free pages.  page_alloc.o is excluded from KCSAN, so the writer is not
-instrumented and the report is of unknown origin.
+[Severity: High]
+Does setting kfence_disabled without clearing kfence_sample_interval still
+allow a fallback memblock allocation and a late hugepage-backed replacement
+pool?
 
-The race is benign: a stale zero only skips the order for this round, and
-a stale non-zero just finds an empty MIGRATE_MOVABLE freelist under the
-lock.  Annotate both reads with data_race(), following commit
-af1c31acc853 ("mm/vmstat: annotate data race for zone->free_area[order].nr_free").
+In mm/kfence/core.c:kfence_alloc_pool_and_metadata():
 
-No functional change intended.
+	if (!kfence_sample_interval)
+		return;
 
-Fixes: 70b44595eafe ("mm, compaction: use free lists to quickly locate a migration source")
-Fixes: 5a811889de10 ("mm, compaction: use free lists to quickly locate a migration target")
-Cc: stable+noautosel@kernel.org # KCSAN annotation only, no functional change
-Signed-off-by: Hui Zhu <zhuhui@kylinos.cn>
-Reviewed-by: Dev Jain <dev.jain@arm.com>
-Acked-by: Zi Yan <ziy@nvidia.com>
----
- mm/compaction.c | 12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
+	/*
+	 * If the pool has already been initialized by arch, there is no need to
+	 * re-allocate the memory pool.
+	 */
+	if (!__kfence_pool)
+		__kfence_pool =3D memblock_alloc(KFENCE_POOL_SIZE, PAGE_SIZE);
+	...
+	kfence_metadata_init =3D memblock_alloc(KFENCE_METADATA_SIZE, PAGE_SIZE);
+	if (!kfence_metadata_init) {
+		pr_err("failed to allocate metadata\n");
+		memblock_free(__kfence_pool, KFENCE_POOL_SIZE);
+		__kfence_pool =3D NULL;
+	}
 
-diff --git a/mm/compaction.c b/mm/compaction.c
-index f1b2060eb2016..499ec7ceaa3ed 100644
---- a/mm/compaction.c
-+++ b/mm/compaction.c
-@@ -1601,7 +1601,11 @@ static void fast_isolate_freepages(struct compact_control *cc)
- 		unsigned int order_scanned = 0;
- 		unsigned long high_pfn = 0;
- 
--		if (!area->nr_free)
-+		/*
-+		 * Access to nr_free is lockless as it is only a hint; a stale
-+		 * value is harmless. Use data_race to avoid KCSAN warning.
-+		 */
-+		if (!data_race(area->nr_free))
- 			continue;
- 
- 		spin_lock_irqsave(&cc->zone->lock, flags);
-@@ -2031,7 +2035,11 @@ static unsigned long fast_find_migrateblock(struct compact_control *cc)
- 		unsigned long flags;
- 		struct page *freepage;
- 
--		if (!area->nr_free)
-+		/*
-+		 * Access to nr_free is lockless as it is only a hint; a stale
-+		 * value is harmless. Use data_race to avoid KCSAN warning.
-+		 */
-+		if (!data_race(area->nr_free))
- 			continue;
- 
- 		spin_lock_irqsave(&cc->zone->lock, flags);
--- 
-2.43.0
+There look to be two issues with relying solely on kfence_disabled here:
 
+First, when memblock_phys_alloc() fails in create_linear_mapping_page_table=
+(),
+__kfence_pool remains NULL while kfence_sample_interval is still non-zero.
+Later in mm_core_init(), kfence_alloc_pool_and_metadata() will allocate a
+fallback __kfence_pool and kfence_metadata_init from memblock. When
+kfence_init() -> kfence_init_pool_early() subsequently runs and sees
+arch_kfence_init_pool() return false, it calls memblock_free() on both
+allocations after kmem_cache_init() has already set slab_is_available().
+When CONFIG_DEFERRED_STRUCT_PAGE_INIT is enabled, memblock_free() ->
+memblock_phys_free() -> __free_reserved_area() triggers a warning because
+deferred struct page initialization has not yet run, leaking both
+__kfence_pool and kfence_metadata_init.
+
+Second, if memblock_phys_alloc() succeeds in
+create_linear_mapping_page_table() (leaving kfence_disabled false), but the
+subsequent kfence_metadata_init allocation in kfence_alloc_pool_and_metadat=
+a()
+fails, the early PTE-mapped __kfence_pool is freed and reset to NULL while
+kfence_disabled remains false. If KFENCE is later enabled at runtime via
+sample_interval, kfence_enable_late() -> kfence_init_late() will allocate a
+replacement pool from the linear map (which may be backed by PMD/PUD/P4D/PGD
+hugepages), arch_kfence_init_pool() will return true, and
+kfence_protect_page() -> virt_to_kpte() will walk the page tables assuming
+PTE mappings, which can corrupt memory or fault.
+
+Would setting kfence_sample_interval =3D 0 on allocation failure in
+create_linear_mapping_page_table() and checking whether the address falls
+within the early PTE-mapped pool range (or disabling late initialization in
+arch_kfence_init_pool()) avoid both paths?
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/cover.1793242457.gi=
+t.liuyun01@kylinos.cn?part=3D3
 
