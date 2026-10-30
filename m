@@ -1,62 +1,62 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63C7C606A329
-	for <linux-mm@archiver.kernel.org>; Fri, 30 Oct 2026 20:54:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27ACE606A32D
+	for <linux-mm@archiver.kernel.org>; Fri, 30 Oct 2026 20:54:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=flNFtnST
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=posSsXvV
 Received: by kanga.kvack.org (Postfix)
-	id 3CBCD6B00EF; Fri, 30 Oct 2026 16:54:32 -0400 (EDT)
+	id 2BBBD6B05B2; Fri, 30 Oct 2026 16:54:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 37DAA6B05B1; Fri, 30 Oct 2026 16:54:32 -0400 (EDT)
+	id 292796B05B3; Fri, 30 Oct 2026 16:54:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 292A86B05B2; Fri, 30 Oct 2026 16:54:32 -0400 (EDT)
+	id 1816A6B05B4; Fri, 30 Oct 2026 16:54:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 036D16B00EF
-	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 16:54:31 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id DDCF9407B1
-	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 20:54:30 +0000 (UTC)
-X-FDA: 85380495900.27.9B34206
-Received: from mta0.migadu.com (out-62.mta0.migadu.com [91.218.175.62])
-	by imf23.hostedemail.com (Postfix) with ESMTP id C465D140005
-	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 20:54:28 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=flNFtnST;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id E66086B05B2
+	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 16:54:39 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 74AA31404D6
+	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 20:54:39 +0000 (UTC)
+X-FDA: 85380496278.15.651BA06
+Received: from mta1.migadu.com (out-131.mta1.migadu.com [95.215.58.131])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 4B18F160002
+	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 20:54:37 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=posSsXvV;
 	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf23.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.62 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
+	spf=pass (imf08.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.131 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793393669;
+	s=arc-20220608; t=1793393677;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=STYotNoZgg8knNd9pb1oCT8l0qfH9UiTH6m2MFo1QdM=;
-	b=KdZOT5hv2sOzcoEOnpQxLEYlQNitMVI00YAprlgA9eZitQXn8unHkpvLt9qPOSALRLK3ys
-	xkXPT4EG0h316W4qtKQNVNJsIs4DgvdyLGsxyd0y0pm1iOH7TYlWjE1k+Yu5Is+9HSW6y5
-	c9HCNFh4nZYKk9PdZSb035AWdP366JI=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=KR9I261kTrsqtzc7fnfrlPtlTPG2hb9NkIOztRWBktc=;
+	b=2LwgZhJCssKh81yHhgw5BqJg4aq9iIgU6TPwhl1V+njafU5N+8EWzu/i7J0kWlh/XMtqPv
+	yra11Lj9sPVAg3xqtAmsJ4JM7uV3bYGsvth5udDkKS8RmBYkX83WaLNZY0qOxejNEdqeWM
+	szNeUgRdonWVbw4V7qXy44aHhD+XmyY=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=flNFtnST;
+	imf08.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=posSsXvV;
 	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf23.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.62 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
+	spf=pass (imf08.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.131 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793393669;
-	b=PcpB1XPARN2+UC/rsQtIxxnNBYEjQ83V2wALfapaXOrJo0S4bg75HJjT7rXATmtXMv/tqp
-	zWX6AjBEQc1BFfT0oquO74ekPBx0b/m9Neclb4tlOXIuQamqeblBPc4bayPlpJ/4WOHFJ6
-	82uYck+/O8Pft7SEN9iEzv7hHnn+6kA=
+	t=1793393677;
+	b=HgwdRd4PvMFjbKCP2dkhlGEqa7ItTntIsR0667CAgJYw6JGqcSmay7mIWso48bURNbw4eo
+	zfXYbqhfRevpXNS7R7uKypOIR/UAJPBtMTQ4nLakoEKPy0SqN3JwKGaUpAuC1bUrXUB24Z
+	Q4nbSdn0ACXQ3OCBWOkV3RTKF7ZsAPY=
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=8clnnUmUC8q777oCgAvC8M6C04u5+OxxMaV3Uhj9mK4=;
+DKIM-Signature: a=rsa-sha256; bh=rrc83QUVCEKjAuO1Psc8BzjH8gymP25jq76cd3gkcmA=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1793393667; v=1; x=1793998467;
- b=flNFtnSTl9wJzPFeGhajh+eZ5PWtuKFwlQJ/4gTTrkkHaepXb9UfmWHG0qxXFk/79wWXCWZV
- UjOupzlBz/SZ9J7KJSIp8hh72CLDI+TXr6HjamiM5XUCoaCrHdR55Lg+uwAeqhADvsqBek916sP
- U8SWk5gl2nGVuSnMzQs90cMA=
+ t=1793393675; v=1; x=1793998475;
+ b=posSsXvVXjEAaZaa0oR9bQKlIo/bHUN4IQyorG+PQGNbEuIPcIyTSLRPtkrGTYIn41NZMrQt
+ t/hnK4dFo6wHtUtVHWJI/sbzPPfXQBamtdjZVwkTK0S6YDiGYLNpVQzngdGNc1gfOAlkjd1/Qez
+ 2HOHlGkH3opotEnH+p2lDDHY=
 X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 6fa3195e4235a3b9;
-	Fri, 30 Oct 2026 20:54:27 +0000
-X-Mizu-Trace-ID: 6fa3195e4235a3b9
+Received: by smtp.migadu.com with ESMTPS id f4708c483aea1fb8;
+	Fri, 30 Oct 2026 20:54:35 +0000
+X-Mizu-Trace-ID: f4708c483aea1fb8
 X-Migadu-Flow: FLOW_OUT
 From: Shakeel Butt <shakeel.butt@linux.dev>
 To: Andrew Morton <akpm@linux-foundation.org>
@@ -69,26 +69,29 @@ Cc: Johannes Weiner <hannes@cmpxchg.org>,
 	Meta kernel team <kernel-team@meta.com>,
 	cgroups@vger.kernel.org,
 	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v2 0/5] memcg: clean up memory.high enforcement
-Date: Fri, 30 Oct 2026 13:54:11 -0700
-Message-ID: <20261030205418.341214-1-shakeel.butt@linux.dev>
+	linux-kernel@vger.kernel.org,
+	Michal Hocko <mhocko@suse.com>
+Subject: [PATCH v2 1/5] memcg: move memory.high enforcement out of try_charge_memcg()
+Date: Fri, 30 Oct 2026 13:54:12 -0700
+Message-ID: <20261030205418.341214-2-shakeel.butt@linux.dev>
 X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20261030205418.341214-1-shakeel.butt@linux.dev>
+References: <20261030205418.341214-1-shakeel.butt@linux.dev>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: C465D140005
-X-Stat-Signature: 8f4ux1z9fo5c4dk3g33aw16mobpqfkso
-X-Rspamd-Server: rspam04
-X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
-	autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: 4B18F160002
+X-Stat-Signature: ebujzd46ph4bwftuz15y8oj1sszfag61
+X-Rspamd-Server: rspam06
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-HE-Tag: 1793393668-469105
-X-HE-Meta: U2FsdGVkX19ssQopH1Af7+oI36O1tjZ8TT/8mYUXJPkQadESZ86NAl1UAEEGRR2+QDXUPJOnSMdtdKIAQ7kjTGEBTPf79urF5KA2YsdZ/rGBHqG8kftkD86DzB8f+ojFhPBbca4eH0VENDEsi6WAPz1TW3bWwaUeu6pHhRlREdCSxHnjQ2Tt5R8Xpym0jp86TG+wUT9VYQJN5snaLL/QNkK5zbDmrMJChLFZXpjt/n4nlTUnIDBmaSgCQvFkMjJ3MQBqM/Q3advpPOQib29c7hXM+bFAlVB+tMgNgDdAbk2fbIv4NDvfLjlny7IyhBsrBmAFEkKQ1vmZcf5Eoqd9j1aN25NqCz/VnTmni1DBUVqg9hQtfCRgKfYxJBWO8SvfpEbsNswwlGabPF70bSXL3tG6XQt5mLYrciA7bXs3VmeAiTwGlZWIJdee7bjkOTIT0pcWORlvnG6wJvlqeZpxIbShPEuraZo937Dw7xtfLzK7sh9uJyRMl8rKS42w9MZ+YmyhGAmpWoE5wXOAmbuQZuUCrvgBJ95qOgjHDZDkT8HoP/08pySKs6wMw4NvC0C2x+K1quTXRelNsi9wR6lAe46gxc88TTWe4wmaOL+j0xvRPfH1ziuFY916MndrmXVsM7S/GT4zsoIfq9YUKH0QoIDJrssGmf3WQhVEXyAPmoPmIV97J0bmT3w7W9m59Z+ROSu5yaQ2bZu/aBua2YVlH8fvgx6Gu+/mnwwRONAvDPHwgyNJnZRZhi9xU5tqBGx9+YbCJfLAezamDIo008cmeTgnwbm4ao1jUiXaJffbD7kSRw2JJwRUb5oUPZygqu9lgxQTDhXKXgpwAsHouRZzW6ZLpt3SVnCK1JU0qIF40VvlH3Jfg29Nqyeg8VYenMH0j8eh30+ONrdNKYv5a9dJJa+4tv8v+H+V0dgjzCPAiSr/KNZluKpFeqUNJ36wXNiGlUfRral8nr+tkpLxEul
- tfIMEc5u
- BNtXxq5z9erfD9GreRzJ3gRyx1u0dVP/i4JlM8vKrAuRdhysqtbMNd4SmFVMvqAmzJtiz5Y7oWDmkVC8mV3Skh2ZNpwOBE8BBf0Sb1gBopn7oQG4Fm7uNqiBtvu28o5TYjyuGBPIPLliPqLEfDHZ47XjNf7gXPnBEKwgShycDegprH9jzIjjVVKFL/YyBx8roTkhWvxieTYvYMcu6rpbP68Z0+dbEaupTY6jqxRHgrlE7VTphwVv39rheoWfCcBDZJAFK
+X-HE-Tag: 1793393676-977059
+X-HE-Meta: U2FsdGVkX18ZnvugaTBYiqqGMOSQTzu0vCS97zKHXFQRUBSqyumJMoM+Rm85uL6ew7pSfcEFGXhi2pwkOj3wi+uDRcWNII4IB8JUemQ0cu+u4Jltramn+Eaetf3CkW2v9cz0D5CLCCBiOeS3yNKcdjfkxI2rMP6YBFpIIzeZld45zK1p9PtYyWtTNEPhAa4MWFaqBCWyczRA10mpT7hh7srG1iE4RN4z+ft+DON2dgU1cHn79GkUZT/lPV3Wy13Z7OaAwgxnVCQwpskLdqHSeJkQ7RvgyYLDsvYGez4B9IjKFmuD0Z9lzunirfsUn6KH6Hz2RkbbpdPx+CV067QC3D3qbe9XbkmIH5G7Egafrz6wuao7a8QtzAEsf7Gb1JZdjDeIFoAgQOLhveZiKRZzdiY1TR+EJ2Y/aRURr8aBMXpOe0wdW8IShh9Jf8PsJQ7+iXJ2JNwE46gn6e5NU651DX+nO5h2/lf2tJ4F1Neek590Kqw6WRjPxxllLT7inBpPerdlRaGo9SSP71Dxktv9EbcMy+G7WgL5/eevJapu2i27pBxPCPU2kZRZDeMDcuZcmGJSJ14AExVPVTtWxWsUOs71ofjmwQLRF6CoITJn6NAoaZ9Pcft2x4URVi4ON8KfTJGg66e2eg2xDidoBbUrbPM6+nD0AICjtDclfdBbgh0oJKwvgB1hntjCV7tfZnXETup88X3WrkjeMJY5gPZYSS2mDsuQOaZhoaJLNQVguSD/P6x8qpeChtdGJvHWFvfuFgvrp7h5ls9ZwzXfM+2br0Hr01wiaIIrc/gxbj+wjnZAd+8u4Ett06dCMXqe1zsv/Mmn5o2wGitQ7zS6RDqA+JbHe+4FXXh11K8+yotJ5VxRfIeBkHrr2Wj6bqJrEQCVFsRQSo2JiLOR1J3XuqySw2JwLKAKjgJ3bhwUlucZVG0Fu5VPgUfBEQyLNsyG999ik8z+PGfEQSTB91DE6Sf
+ e9YtY0Na
+ OcLXHxleixWcfiTNaN8D7VWhaGls7sJDAZVEIkGlZ/KxktLQz0MgZBmDgf847eYHDYdjDOn+SUDoIg27+7ykJX/nZ0lL+fS4AtU5/KOpnBJ4CLSoV+bsvB5el+JdcL98cet0uZkGHB7etKVjDYjD+k1FYgj4b7mL7Nhrk5NQtbvqstllrDTchotgtDqpGTWq7/I1aLqfRS2XVNRF5iqoNlrBpWb1+W4f8ITXIik80Ulkt1xy/IMM9sBMPORhw8N1d+i+UuwbTePUdf9If592THIm2/LHYIilUocX+LxsubtUcju7QxpEi98Nt/6xyX0Xx5jzi+N96Z8EpNnvEh6ZRNhJ6ORFEaLCqAv+9j1dikofFVTU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,81 +100,167 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-This series cleans up memory.high enforcement and uses a worker for
-kernel threads and remote charges.
+try_charge_memcg() does a lot. It charges the page counters, reclaims
+when a limit is hit, may call the OOM killer, and at the end it checks
+and enforces memory.high. Move the memory.high part into a new function,
+memcg_enforce_high(), so that try_charge_memcg() is shorter and the
+memory.high code is easier to read and change.
 
-Kernel threads never return to userspace to run deferred reclaim.
-Reclaiming and sleeping during a charge can also delay work they do for
-other tasks.
+The code and its comments move as they are. The only difference is that
+the new function gets allow_spinning from gfp_mask itself.
 
-Remote charges can go to a different cgroup from the caller's mm, for
-example through filesystem notifications or faults in another process's
-memory. The high handler uses current->mm, so it can check the caller's
-limits instead of the limits of the charged cgroup.
+No functional change.
 
-Use high_work to reclaim from the charged hierarchy in these cases.
-mm_match_cgroup() identifies charges outside the current mm's cgroup
-and its ancestors. Local user charges keep their current handling.
+Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
+Reviewed-by: Harry Yoo (Meta) <harry@kernel.org>
+Acked-by: Michal Hocko <mhocko@suse.com>
+---
+ mm/memcontrol.c | 125 ++++++++++++++++++++++++++----------------------
+ 1 file changed, 69 insertions(+), 56 deletions(-)
 
-Before that, force charges from PF_MEMALLOC tasks before trying the
-limits, so they skip memory.high enforcement. Reclaim can charge memory
-itself, for example when zswap stores a page, and the high_work worker
-must not queue itself from its own reclaim. These charges still raise
-MEMCG_MAX for the same cgroup as before.
-
-This is best effort. A fast allocator can keep usage well above
-memory.high; memory.max stays the hard limit, as it already is for
-interrupts. The worker paths also skip memory.swap.high throttling and
-its high-event reporting. memory.swap.high only throttles the charging
-task, and a worker has no task to throttle. The cgroup's own tasks are
-still throttled on their own charges, and memory.swap.max still caps
-swap.
-
-The first patch moves enforcement into memcg_enforce_high(). The second
-forces charges from reclaim before the limit checks. The next two add
-kernel thread and remote charge handling. The last simplifies the scan
-and comments. The first and last patches have no intended behavior
-change.
-
-Based on mm-everything-2026-10-29-04-31. v1 was tested in an x86-64 VM
-with loop writes, threaded NAPI, remote faults, notifications, and both
-vhost worker modes. For v2, each patch was built with GCC and Clang
-(W=1). In a VM test with incompressible zswap data and remote faults,
-the high_work worker queued itself from its own reclaim in 118 of 284
-runs without the PF_MEMALLOC patch, and never with the series. The runs
-were counted with bpftrace on queue_work_on() inside high_work_func().
-In another test, a parent cgroup was over memory.max while its child
-was reclaimed. The child's zswap charges raised MEMCG_MAX on the parent
-7133 times with the series and 7124 times without it.
-
-Changes in v2:
-- Rebased on mm-everything-2026-10-29-04-31.
-- Collected Reviewed-by and Acked-by tags.
-- Patch 1: add the missing Signed-off-by (Harry).
-- Patch 2 (was 4): replaced with Michal's suggestion. Charges from
-  PF_MEMALLOC tasks are now forced before trying the limits, instead of
-  skipping enforcement in memcg_enforce_high(). MEMCG_MAX is still
-  raised for the first cgroup whose limit the charge goes over. Moved
-  before the kernel thread patch, so that no commit lets the worker
-  queue itself. (Michal)
-- Patch 4: say more clearly which charges keep the local path.
-- Patch 5: drop locals that are no longer needed, and update the
-  comments.
-
-v1: https://lore.kernel.org/20261010210957.1350874-1-shakeel.butt@linux.dev
-
-Shakeel Butt (5):
-  memcg: move memory.high enforcement out of try_charge_memcg()
-  memcg: force charges from reclaim before trying the limits
-  memcg: use high_work for kernel threads
-  memcg: use high_work for remote charges
-  memcg: simplify high limit handling after a charge
-
- mm/memcontrol.c | 157 +++++++++++++++++++++++++++---------------------
- 1 file changed, 87 insertions(+), 70 deletions(-)
-
-
-base-commit: 7e12256cff20c704fd5c0fbbd6a070fda8c341c9
+diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+index 84f4a8fd4d16..0e484f7f823a 100644
+--- a/mm/memcontrol.c
++++ b/mm/memcontrol.c
+@@ -2699,6 +2699,74 @@ void __mem_cgroup_handle_over_high(gfp_t gfp_mask)
+ 	css_put(&memcg->css);
+ }
+ 
++/*
++ * Called after @nr_pages were charged to @memcg. If @memcg or one of its
++ * ancestors is over memory.high or memory.swap.high, start reclaim or slow
++ * down the task.
++ */
++static void memcg_enforce_high(struct mem_cgroup *memcg, unsigned int nr_pages,
++			       gfp_t gfp_mask)
++{
++	bool allow_spinning = gfpflags_allow_spinning(gfp_mask);
++
++	/*
++	 * If the hierarchy is above the normal consumption range, schedule
++	 * reclaim on returning to userland.  We can perform reclaim here
++	 * if __GFP_RECLAIM but let's always punt for simplicity and so that
++	 * GFP_KERNEL can consistently be used during reclaim.  @memcg is
++	 * not recorded as it most likely matches current's and won't
++	 * change in the meantime.  As high limit is checked again before
++	 * reclaim, the cost of mismatch is negligible.
++	 */
++	do {
++		bool mem_high, swap_high;
++
++		mem_high = page_counter_read(&memcg->memory) >
++			READ_ONCE(memcg->memory.high);
++		swap_high = page_counter_read(&memcg->swap) >
++			READ_ONCE(memcg->swap.high);
++
++		/* Don't bother a random interrupted task */
++		if (!in_task()) {
++			if (mem_high) {
++				if (allow_spinning)
++					schedule_work(&memcg->high_work);
++				else
++					irq_work_queue(&memcg->high_irq_work);
++				break;
++			}
++			continue;
++		}
++
++		if (mem_high || swap_high) {
++			/*
++			 * The allocating tasks in this cgroup will need to do
++			 * reclaim or be throttled to prevent further growth
++			 * of the memory or swap footprints.
++			 *
++			 * Target some best-effort fairness between the tasks,
++			 * and distribute reclaim work and delay penalties
++			 * based on how much each task is actually allocating.
++			 */
++			current->memcg_nr_pages_over_high += nr_pages;
++			set_notify_resume(current);
++			break;
++		}
++	} while ((memcg = parent_mem_cgroup(memcg)));
++
++	/*
++	 * Reclaim is set up above to be called from the userland
++	 * return path. But also attempt synchronous reclaim to avoid
++	 * excessive overrun while the task is still inside the
++	 * kernel. If this is successful, the return path will see it
++	 * when it rechecks the overage and simply bail out.
++	 */
++	if (current->memcg_nr_pages_over_high > MEMCG_CHARGE_BATCH &&
++	    !(current->flags & PF_MEMALLOC) &&
++	    gfpflags_allow_blocking(gfp_mask))
++		__mem_cgroup_handle_over_high(gfp_mask);
++}
++
+ static int try_charge_memcg(struct mem_cgroup *memcg, gfp_t gfp_mask,
+ 			    unsigned int nr_pages)
+ {
+@@ -2856,62 +2924,7 @@ static int try_charge_memcg(struct mem_cgroup *memcg, gfp_t gfp_mask,
+ 	if (batch > nr_pages)
+ 		refill_stock(memcg, batch - nr_pages);
+ 
+-	/*
+-	 * If the hierarchy is above the normal consumption range, schedule
+-	 * reclaim on returning to userland.  We can perform reclaim here
+-	 * if __GFP_RECLAIM but let's always punt for simplicity and so that
+-	 * GFP_KERNEL can consistently be used during reclaim.  @memcg is
+-	 * not recorded as it most likely matches current's and won't
+-	 * change in the meantime.  As high limit is checked again before
+-	 * reclaim, the cost of mismatch is negligible.
+-	 */
+-	do {
+-		bool mem_high, swap_high;
+-
+-		mem_high = page_counter_read(&memcg->memory) >
+-			READ_ONCE(memcg->memory.high);
+-		swap_high = page_counter_read(&memcg->swap) >
+-			READ_ONCE(memcg->swap.high);
+-
+-		/* Don't bother a random interrupted task */
+-		if (!in_task()) {
+-			if (mem_high) {
+-				if (allow_spinning)
+-					schedule_work(&memcg->high_work);
+-				else
+-					irq_work_queue(&memcg->high_irq_work);
+-				break;
+-			}
+-			continue;
+-		}
+-
+-		if (mem_high || swap_high) {
+-			/*
+-			 * The allocating tasks in this cgroup will need to do
+-			 * reclaim or be throttled to prevent further growth
+-			 * of the memory or swap footprints.
+-			 *
+-			 * Target some best-effort fairness between the tasks,
+-			 * and distribute reclaim work and delay penalties
+-			 * based on how much each task is actually allocating.
+-			 */
+-			current->memcg_nr_pages_over_high += batch;
+-			set_notify_resume(current);
+-			break;
+-		}
+-	} while ((memcg = parent_mem_cgroup(memcg)));
+-
+-	/*
+-	 * Reclaim is set up above to be called from the userland
+-	 * return path. But also attempt synchronous reclaim to avoid
+-	 * excessive overrun while the task is still inside the
+-	 * kernel. If this is successful, the return path will see it
+-	 * when it rechecks the overage and simply bail out.
+-	 */
+-	if (current->memcg_nr_pages_over_high > MEMCG_CHARGE_BATCH &&
+-	    !(current->flags & PF_MEMALLOC) &&
+-	    gfpflags_allow_blocking(gfp_mask))
+-		__mem_cgroup_handle_over_high(gfp_mask);
++	memcg_enforce_high(memcg, batch, gfp_mask);
+ 	return ret;
+ }
+ 
 -- 
 2.53.0-Meta
 
