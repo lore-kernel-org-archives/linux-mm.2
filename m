@@ -1,93 +1,153 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1735606A31F
-	for <linux-mm@archiver.kernel.org>; Fri, 30 Oct 2026 03:55:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D08F0606A31F
+	for <linux-mm@archiver.kernel.org>; Fri, 30 Oct 2026 03:55:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=SUUc4n8Y
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=JZqpmtFQ
 Received: by kanga.kvack.org (Postfix)
-	id C14736B05B1; Thu, 29 Oct 2026 23:55:46 -0400 (EDT)
+	id F1AB06B05B3; Thu, 29 Oct 2026 23:55:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BBCDF6B05B2; Thu, 29 Oct 2026 23:55:46 -0400 (EDT)
+	id E7CFD6B05B4; Thu, 29 Oct 2026 23:55:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AD2996B05B3; Thu, 29 Oct 2026 23:55:46 -0400 (EDT)
+	id D6B406B05B5; Thu, 29 Oct 2026 23:55:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 84B246B05B1
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 23:55:46 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 16BA3C05CF
-	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 03:55:46 +0000 (UTC)
-X-FDA: 85377928692.07.9326E53
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 4DDAF100004
-	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 03:55:44 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=SUUc4n8Y;
-	spf=pass (imf14.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id AA2AA6B05B3
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 23:55:50 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 34921A8201
+	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 03:55:50 +0000 (UTC)
+X-FDA: 85377928860.11.A6AD575
+Received: from mta1.migadu.com (out-212.mta1.migadu.com [95.215.58.212])
+	by imf04.hostedemail.com (Postfix) with ESMTP id EA7BB40003
+	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 03:55:47 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=JZqpmtFQ;
+	spf=pass (imf04.hostedemail.com: domain of xu.xin@linux.dev designates 95.215.58.212 as permitted sender) smtp.mailfrom=xu.xin@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793332548;
+	b=sK/ZklVgvS+egbMuA6oCZRLbjXvPMNbfpm1RYxsGZLbAnsg8m07f2w6HNUPRSYcVo9lD9P
+	CNGkNCX5oc1dYOIVwQA31bTU7HVlRcrhCLZfQblEMYky9rum9GrDGKqzrxYBFSb5hbGbZO
+	vUAJyLVLxv3pJzQoNw3JQzfvHSwLXjA=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=JZqpmtFQ;
+	spf=pass (imf04.hostedemail.com: domain of xu.xin@linux.dev designates 95.215.58.212 as permitted sender) smtp.mailfrom=xu.xin@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793332544;
+	s=arc-20220608; t=1793332548;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ZkxPW2ruqc0Icv4y+99LJtMWacocG51kIhVn5Ect5og=;
-	b=30Xq3ugZ+njeSO2NDWGhAh6eXPYSvA1eeky7VgyR1oshcDiFC7P9M05oHQ5N+w8IQWUUmu
-	HszwMcFdwdOepCHn3tYVyal3sf87eIGyRZNuuHm9VGlALV2zcrcXY+KtosjmftllS9Q5cA
-	ZNBbnjuXCDCyXH0QymwnKo4mXHALvSk=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793332544;
-	b=OBl0Bh/J//hzFSbXDIToIiDPq2CXUgiuZgrBcV2x9yFNMn+OHOJ2Iocg3DjePDFh2/4foZ
-	DPVPCLB2SBQiCSGHntwwD8g7SadQvA12Ulzul23Li9FIGnd9G/rGez+JZ5YbUsJvoj9xAb
-	vOdeyR3OASrYduBXE/ow87zzk/5ySRI=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=SUUc4n8Y;
-	spf=pass (imf14.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id A2EB9600DA;
-	Fri, 30 Oct 2026 03:55:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 086BE1F000C1;
-	Fri, 30 Oct 2026 03:55:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1793332543;
-	bh=ZkxPW2ruqc0Icv4y+99LJtMWacocG51kIhVn5Ect5og=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=SUUc4n8Y9twmxefBBWPSiCCNBbkgwNw0CVmf2ItyOZEJv/Y4ha7kDBDwxKdnsbO6J
-	 x1mVLqVUUk290osQYZrec+8tVOIwha/pI8nYNLtqj2PfxUsi1D06/Kx82fUHwiaCFw
-	 9vxMZCneEVL2rlsuJSF/dRDkhIdigfovQ/L2GNrU=
-Date: Thu, 29 Oct 2026 20:55:42 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: "Shubhang Kaushik (Ampere)" <sh@gentwo.org>
-Cc: Uladzislau Rezki <urezki@gmail.com>, Nicholas Piggin
- <npiggin@gmail.com>, Shubhang Kaushik <shubhang@os.amperecomputing.com>,
- "Christoph Lameter (Ampere)" <cl@gentwo.org>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org, Dev Jain
- <dev.jain@arm.com>, Anshuman Khandual <anshuman.khandual@arm.com>
-Subject: Re: [PATCH v2] mm/vmalloc: reject overflowing vm_map_ram page
- counts
-Message-Id: <20261029205542.1fdef1d121d9eb720950b67d@linux-foundation.org>
-In-Reply-To: <20261022-vmalloc-reject-overflow-v2-1-0db7a20c53f0@gentwo.org>
-References: <20261022-vmalloc-reject-overflow-v2-1-0db7a20c53f0@gentwo.org>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	bh=ey3vPsJ2dQFhz2BxI4N3mBDHBT7ectNl9BIu9ANR89g=;
+	b=Y8YnXmIUQnEbW/ZopQZvDxTTda9N46Uf6AoWEGKGzb1HltmsL4tKGZ4OvnTP+QHHn9PQ6k
+	iQC9oDC2p4/Y0HYRXvaFcvVmNXPBtuX4uhZZa7Q9G7fQV+Hm090cFNa8KuY8P1KMbpxQZU
+	5KGo/gZj2sy78OoKi/A/UpxhN8GcGYs=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=U6aEVcyx4cbsQT0ReFIAsX7642J2D1rQ7p5hav7hVYg=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1793332545; v=1; x=1793937345;
+ b=JZqpmtFQ7Ohd/1LNlZcCz7DJxGmfw1W0QBIwKd81WGlQ+GCSScpslPKi5z61+nW3yuNQ2DfG
+ qYpgDNHPL3GYEromeJ9ePTKmdga4oQNe9eAq94ZKZxJjP2u8k8hH0quzBvtjDNrpC+rFPoXIxuw
+ UlDm22KbKQ+To97lJYUZVLqY=
+X-Envelope-To: linux-mm@kvack.org
+Received: by mta10.migadu.com with ESMTPS id 29251291072b5e95;
+	Fri, 30 Oct 2026 03:55:20 +0000
+X-Mizu-Trace-ID: 29251291072b5e95
+X-Migadu-Flow: FLOW_OUT
+From: xu.xin@linux.dev
+To: david@kernel.org
+Cc: akpm@linux-foundation.org,
+	aneesh.kumar@kernel.org,
+	apopple@nvidia.com,
+	axelrasmussen@google.com,
+	baohua@kernel.org,
+	baolin.wang@linux.alibaba.com,
+	baoquan.he@linux.dev,
+	chengming.zhou@linux.dev,
+	chrisl@kernel.org,
+	dev.jain@arm.com,
+	gourry@gourry.net,
+	hannes@cmpxchg.org,
+	harry@kernel.org,
+	hughd@google.com,
+	jack@suse.cz,
+	jannh@google.com,
+	jgg@ziepe.ca,
+	jhubbard@nvidia.com,
+	joshua.hahnjy@gmail.com,
+	kas@kernel.org,
+	kasong@tencent.com,
+	kees@kernel.org,
+	kexec@lists.infradead.org,
+	lance.yang@linux.dev,
+	liam@infradead.org,
+	linux-arch@vger.kernel.org,
+	linux-cxl@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	ljs@kernel.org,
+	mason@kernel.org,
+	matthew.brost@intel.com,
+	mhocko@kernel.org,
+	mhocko@suse.com,
+	minchan@kernel.org,
+	muchun.song@linux.dev,
+	nico.pache@linux.dev,
+	nphamcs@gmail.com,
+	npiggin@gmail.com,
+	osalvador@suse.de,
+	pasha.tatashin@soleen.com,
+	peterx@redhat.com,
+	peterz@infradead.org,
+	pfalcato@suse.de,
+	pratyush@kernel.org,
+	qi.zheng@linux.dev,
+	rakie.kim@sk.com,
+	riel@surriel.com,
+	rppt@kernel.org,
+	ryan.roberts@arm.com,
+	shakeel.butt@linux.dev,
+	shikemeng@huaweicloud.com,
+	stable@vger.kernel.org,
+	surenb@google.com,
+	usama.arif@linux.dev,
+	vbabka@kernel.org,
+	weixugc@google.com,
+	will@kernel.org,
+	willy@infradead.org,
+	xu.xin@linux.dev,
+	ying.huang@linux.alibaba.com,
+	youngjun.park@lge.com,
+	yuanchu@google.com,
+	ziy@nvidia.com
+Subject: Re: [PATCH 39/46] mm/ksm: fix use of a freed anon_vma at swap-in
+Date: Fri, 30 Oct 2026 11:54:47 +0800
+Message-Id: <20261030035447.140856-1-xu.xin@linux.dev>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20261027-fixes_core-v1-39-6f74bec9a5bb@kernel.org>
+References: <20261027-fixes_core-v1-39-6f74bec9a5bb@kernel.org>
 X-Archived-By: <archiver.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 4DDAF100004
-X-Stat-Signature: a3cr9rpdexagww8ad1tfndp9gn6uor75
+MIME-Version: 1.0
+Content-Type: text/plain; charset=y
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Spam-Status: No, score=-17.0 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+X-Rspamd-Queue-Id: EA7BB40003
+X-Stat-Signature: 5qc4dqowoaqhfcx3dqwdhjwc4icu839x
+X-Rspamd-Server: rspam01
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,NICE_REPLY_A,
-	SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1793332544-34285
-X-HE-Meta: U2FsdGVkX1971o+GpEu6T2nP4AUiW8U7QMGmAMp3fTx3aH9DxOcM3qDaucUxRzCnLYfZ8xHOqgF87shZ16DCXeV2ItKOAW348MmpPbcuoBOHQXpAq3yPTbBKPLXcXBpeqjJ/3nPUBPDshPUbCDrsRizIVzWU/yjl1FvTDqSe4UrEH0hbA2Ei4URIxop+CXQyVmqrEt2C31ByQFwrQtpiA11URRd0YI471ycDO1tGvhxFndH0BRVeUF61KWqIelJaL4Mm04mLdo1zAyA/vH6adOkyOSpsvrI7thjrj75JHra1Ng43wqpdFdagPc+0racuOPVkDA+iWs9YncqEUEC3ueW9kKP1zhBPE5GjbfXD104lsymHQmnMPWzav3mSFhJpjPw3fDfJLL1rJbvGyPA8Aqs4i9yLiGfFH/AU2T2te3yIu5nRLmBoO4/SdVy3Iysh2kx6NTrYEUwr2pXlU6f517zOwPN11ttcxUM4SMthsQwsausjUqj7VkntvwV79ygXOkJ7ubiJgYZp/RC1+9isCEvZAsWL+CT816NKlKLvz03k7mxYQENL5O9RYjUk6JEVPYiTNug1Bb+1NRbt887XNjsY8Eb6z86MNvr4XkESTl3OR98umTf9DbK93qQBPSo3S2YV42VLQs2iv7ys1TRDQ2el+QHa/PNF6kmz4WLeDeSSytx2kiRVy9IjOg8UJV4TsQOfO3PNd0tBzuZ4tJQSEptF8EQq7pBfbaZKpgbXnLNfMhYTgxMIMjNjFJDEKqrZM1uxPyI/w07Yaij/aLC9ruL9J96R9cMZvYb8eVUQyq3JJebgzrnSzExQdTSmNwHwTu3qEOuYmK9PG20Ve4VTHmg4mnUfFNCD1EGHzhEU0wMXdxTZYElYsIaGVWpokn7CEw+4X4/HJNrmI68R6nD8+V+VaftIEjd7NLD/ds79wARuVAgN7YFyetWH/zLkpKMKOUhbJHmMTz/Dn3hg4h5
- RXs1exef
- zr9+W/8G/lJwPf/3ReOtADfuq7Epw5M/ju6EPxiQyl9b58byaCq5KecLVB7q8G4LGT3QCYoyZd9aADEsex0TKZS2ghRbpE82TE+pSGvbezONvmQ/PH5u3Mwt0b+5g6vle4jaVhzq5kAoq89K+WF6RZUntf4XR7uBH5nfW8XLB07IIyk29iqQDrghELdSV06Rz193n1asbetRH9eW/8fRA4+GZ4JwhxAW3Bmepit0APRb0NXlfytImifvCphYDN9Fg0D2BMqgde8VAfX83VAV0+28zyyAdLJhtOlslHfyfwh3Z0X2dIEmWuagAPFVrU2XYkJ73h4qdNZv5J7CRjH8BH+YOF34aroZcHRWiiEIQBgOvFDicLJ+BsPye+ZRPGeV04gxf
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1793332547-839863
+X-HE-Meta: U2FsdGVkX195Rr6bXMOBg07mSComOxbVm3SJk3JA9/JY4IE7I62M0dDw+s3BpWUyCi2A0WxlurB8RoGveZA/HxXV2UFkVIaY4IXIfL/VWYbRITnpbrknxw/gG5ELUsnkMOjeg5Hayr+con4CvSjL56nx6ZgLVzhs5x5uANjdum5c6OvKE1vWV2gge0VE2zGhHg+8t+7xeMkt9TTMvn1pDeV/qqkNbM1h3wzL1vgWNANkD4jrLBA13mxJrBEHkuuHUMCM+9HthfDuM8ybrgVJGcTVO64ji2lSuMq6O/Sj0/JqCb0fo4iFexPxmiT91w3he8xJKUXH+pnpvjvhos6na6VpFlICK8fXZBn/u6J4vOYRfxhWLfQvYneAV1HLT9eWasEhNV7/rFH/iUPyVLNR0O0JLtaKXOti6w77+f2hVsg9P+o2yspslOlZy0Lly8hzw+XtGl3lEDAWhThF/hupCbPedXMuLQ8kZMF2elNtU0/YQyNjD/Z7S5cjQw3GxFLjMdZ1F4vjLAFEBzMwh6aQZ7oVoD2oe4SG0P85djQQkO8USZpRqlgAA/B98+yLk269KCqW2DDk1wraYZ6EvbG4mL/4y2nK5s9ktJ0rx7aXE4bBkMDAKqzDAx9u57hfr6yvlujatME+UiJBk1wIoDyQ46JSHolNnhwNxwEqipy9+w4LHviEvUsOw5qUQHFJBDhB7rKdxlll1TZgoB3adrYqfmSQ2pg6iv8w4yuA0MmV/iaTVbXcPCMYEetamJZtnjq2InhtS1t+RT2pzZw0xGnaYnBhyCSbRR1/hCIQ19xmeaRCsz2a9N2f8+JQ0aXwm3+N8HM8nz8tVyKnychfo1J42UqfrgkEbkTYzKQp8CUsjMtTALTifzYtOoIw5rroInPpuBX9JuiZ+eyOQvZSndlLOT9/ejBR3Cgmftmaqhdzd4bjSnCmHApv1KaHHnxgM8/eQBMbmss9idLrOTrZqw+
+ ZNWjRCe7
+ vRfdKRB08sLqqtOT741+pdue6vx8FcJXrR+5oDHNwdnD4/Z0EzTQS38hIdMvJppcoCmO4h4T34ubLkOzhjdLvovaMcfrgCksoRLm6dkXzyyMWMMkwtuhPAkmUJzAMN10DvNqhqu9VquexevXbMOBYtVzXCf4PoYpD3I3BYx5F/4V8kNrw5Y0gVtqyLVTIQSLqTdqO6p42aGlDJvHPxhbsxoY6mEbzQC2fxJRMXFkUP+DwgoZlJjeaybLHJA09jDOzOhMAVSp3qvgt2M9TeMETNFALp9dr0IXpr+M6p/NhJqVmLVXFBpNubGReOTDFzJbkYPRKMb4wlAixWXT2DRDPG72raGpcR/0gV9XmaY4sA7J8GAWLIFWvZUl2oKWUVUju1b3+4gQjRqOSmL/a9J8hfgDlJQ59K/DBGvsLQ7wbEB0wAn1Ggq69Yx0a/Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,71 +156,86 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Thu, 22 Oct 2026 23:43:47 -0700 "Shubhang Kaushik (Ampere)" <sh@gentwo.org> wrote:
-
-> vm_map_ram() accepts a page count and must either map that many pages or
-> fail. It currently converts the count to a byte size with:
+> A folio read from a swap slot previously shared by KSM can remain in the
+> swap cache after the process that first mapped it exits. Its anon_vma
+> can then be freed, so ksm_might_need_to_copy() must not dereference it
+> to compare roots.
 > 
->         (unsigned long)count << PAGE_SHIFT
+> Doing so can result in some false-positives, resulting in the reverse
+> mapping missing the new folio mapping, preventing migration and reclaim.
 > 
-> On 32-bit kernels, this conversion overflows when count is greater than
-> ULONG_MAX >> PAGE_SHIFT. vm_map_ram() then allocates and maps only the
-> wrapped byte size, but returns a non-NULL address to its caller.
+> SLAB_TYPESAFE_BY_RCU allows individual anon_vma objects to be reused
+> immediately after freeing. A stale pointer can then refer to another
+> anon_vma whose root matches, even though the target VMA is not linked
+> to that anon_vma.
 > 
-> For example, with 4 KiB pages, a count of 1048577 wraps to PAGE_SIZE.
-> vm_map_ram() therefore returns a mapping containing one page instead of
-> the requested 1048577 pages.
+> Move the anonymous rmap compatibility checks into
+> folio_anon_rmap_compatible(). Keep the page-index check and compare the
+> folio's anon_vma pointer against the VMA's own anon_vma and root first.
 > 
-> If a caller uses the successful result as a mapping of all requested
-> pages, it can access beyond the allocated mapping. Such an access can
-> fault. If the accessed virtual address is occupied by another vmalloc
-> mapping, it can instead access and corrupt unrelated kernel memory. In a
-> userspace-reachable call path, this can result in a failed operation, a
-> kernel oops or panic, or the effects of corrupted kernel data.
+> If neither matches, bite the bullet and walk the VMA's anon_vma_chain.
+> The VMA keeps these anon_vmas alive, and finding a match guarantees that
+> reverse mapping can find the new mapping.
 > 
-> Return NULL before allocating or mapping anything when count * PAGE_SIZE
-> cannot be represented in an unsigned long.
-
-Thanks.  Let's cc the developers who commented on the v1 patch.
-
-> Fixes: db64fe02258f ("mm: rewrite vmap layer")
+> Lorenzo Stoakes says in a private discussion:
+> 
+>   "This isn't quite equivalent to the existing check.
+> 
+>   Every anon_vma in an anon_vma_chain shares the same root, but if you
+>   split a VMA then fork both of them like this:
+> 
+>                   VMA A
+>                /        \         <split>
+>             VMA B      VMA C
+>                \        /
+>         root <- anon_vma 1
+>                ----^ ^----        <fork>
+>               /   parent  \
+>         anon_vma 2   anon_vma 3
+>              |            |
+>            VMA D        VMA E
+> 
+>   VMA's D and E both get their own new
+>   anon_vma's such that:
+> 
+>   VMA D: anon_vma 2 -> anon_vma 1 -> root
+>   VMA E: anon_vma 3 -> anon_vma 1 -> root
+> 
+>   And if you found a folio referencing anon_vma 2, the existing check:
+> 
+> 	anon_vma->root == vma->anon-vma->root
+> 
+>   Would be true for VMA's B, C, D & E.
+> 
+>   However after your change it'd be true for VMA D only, as it's the only
+>   one with anon_vma 2 in its anon_vma_chain.
+> 
+>   Whether or not that could actually happen in practice... 🙂 I don't
+>   know.
+> 
+>   [...] after your change it'd be true for VMA D only, as it's the only
+>   one with anon_vma 2 in its anon_vma_chain. [...] I would [...] say that
+>   you are making the test stricter but more correct.
+> "
+> 
+> If this affects performance when KSM was never even involved, we could
+> just track whether KSM ever merged anything and just skip these checks.
+> 
+> There isn't really a lot we can do otherwise: for mapped folios we might
+> be able to use folio_get_anon_vma(), but for unmapped folios there really
+> is no easy way to see if the anon_vma is still valid.
+> 
+> Document the (confusing) lifetime requirements of folio_anon_vma().
+> 
+> Fixes: ba6f0ff3981e ("ksm: fix ksm swapin time optimization")
 > Cc: stable@vger.kernel.org
-> Signed-off-by: Shubhang Kaushik (Ampere) <sh@gentwo.org>
+> Reported-by: Chris Mason <mason@kernel.org>
+> Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 > ---
-> Changes in v2:
->   - Use check_mul_overflow() to validate the page-count-to-byte conversion.
->   - Describe the short-mapping failure mode and its worst-case effects.
-> 
-> Link to v1: https://lore.kernel.org/r/20261022-vmalloc-reject-overflow-v1-1-5fde0042ffb9@gentwo.org
-> ---
->  mm/vmalloc.c | 5 ++++-
->  1 file changed, 4 insertions(+), 1 deletion(-)
-> 
-> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-> index bea9f76ed7e74247d4ce919250c2f02dd5c36483..8a056e424a4f2c037c10f736002839014f1f57dc 100644
-> --- a/mm/vmalloc.c
-> +++ b/mm/vmalloc.c
-> @@ -3083,10 +3083,13 @@ EXPORT_SYMBOL(vm_unmap_ram);
->   */
->  void *vm_map_ram(struct page **pages, unsigned int count, int node)
->  {
-> -	unsigned long size = (unsigned long)count << PAGE_SHIFT;
-> +	unsigned long size;
->  	unsigned long addr;
->  	void *mem;
->  
-> +	if (check_mul_overflow((unsigned long)count, PAGE_SIZE, &size))
-> +		return NULL;
-> +
->  	if (likely(count <= VMAP_MAX_ALLOC)) {
->  		mem = vb_alloc(size, GFP_KERNEL);
->  		if (IS_ERR(mem))
-> 
-> ---
-> base-commit: 734bef548a96e8774d6eef5dfa2026c6edc4e80b
-> change-id: 20261022-vmalloc-reject-overflow-e532c556f3fa
-> 
-> Best regards,
-> -- 
-> Shubhang Kaushik (Ampere) <sh@gentwo.org>
+>  mm/ksm.c  | 36 +++++++++++++++++++++++++++++++-----
+>  mm/util.c | 13 +++++++++++++
+>  2 files changed, 44 insertions(+), 5 deletions(-)
+
+Acked-by: Xu Xin <xu.xin@linux.dev>
 
