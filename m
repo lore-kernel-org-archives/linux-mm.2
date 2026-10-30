@@ -1,96 +1,124 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D632A606A31A
-	for <linux-mm@archiver.kernel.org>; Fri, 30 Oct 2026 05:51:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2D18606A31D
+	for <linux-mm@archiver.kernel.org>; Fri, 30 Oct 2026 05:52:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gondor.apana.org.au header.i=@gondor.apana.org.au header.a=rsa-sha256 header.s=h01 header.b=QlYl8R23
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=PY5kdhTj
 Received: by kanga.kvack.org (Postfix)
-	id C18B16B05B1; Fri, 30 Oct 2026 01:51:40 -0400 (EDT)
+	id 899EE6B00EF; Fri, 30 Oct 2026 01:52:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BC9A46B05B3; Fri, 30 Oct 2026 01:51:40 -0400 (EDT)
+	id 84C1A6B05B2; Fri, 30 Oct 2026 01:52:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AB89D6B05B4; Fri, 30 Oct 2026 01:51:40 -0400 (EDT)
+	id 789F06B05B4; Fri, 30 Oct 2026 01:52:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 8FA086B05B1
-	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 01:51:40 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 12DF4C0512
-	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 05:51:39 +0000 (UTC)
-X-FDA: 85378220718.13.0C7F940
-Received: from abb.hmeau.com (abb.hmeau.com [180.181.231.80])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 939A5180006
-	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 05:51:36 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=gondor.apana.org.au header.s=h01 header.b=QlYl8R23;
-	spf=pass (imf24.hostedemail.com: domain of herbert@gondor.apana.org.au designates 180.181.231.80 as permitted sender) smtp.mailfrom=herbert@gondor.apana.org.au;
-	dmarc=pass (policy=quarantine) header.from=apana.org.au
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793339497;
-	b=oZhGDXElfjdIELqP39KQ8Gk6Pqp2do5rPM4Cpm4LZx6eErW1pOzLGJRSx/wMvrRXNND3pZ
-	JRMV8hDeE35ZK/wfTmaxnYExzL2PT6sXvAmNLJIF7nXw8awdEHZBlAwNn1FDD9OkJimNEH
-	78dzBN2/4SS5SRd3PGHG8ndg9zw0jJQ=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=gondor.apana.org.au header.s=h01 header.b=QlYl8R23;
-	spf=pass (imf24.hostedemail.com: domain of herbert@gondor.apana.org.au designates 180.181.231.80 as permitted sender) smtp.mailfrom=herbert@gondor.apana.org.au;
-	dmarc=pass (policy=quarantine) header.from=apana.org.au
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 592876B00EF
+	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 01:52:48 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 73CEB1A02B4
+	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 05:52:47 +0000 (UTC)
+X-FDA: 85378223574.16.33CDE6B
+Received: from mail-dl1-f54.google.com (mail-dl1-f54.google.com [74.125.82.54])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 9DAB7100008
+	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 05:52:45 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=PY5kdhTj;
+	spf=pass (imf05.hostedemail.com: domain of odys.yuan@gmail.com designates 74.125.82.54 as permitted sender) smtp.mailfrom=odys.yuan@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793339497;
+	s=arc-20220608; t=1793339565;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9YfJOSpnYoqiR78tZwDBtF0PrUJ/nLB9HJdYwRb1UHU=;
-	b=blMBB8OixrDyLaW4kbtL9ofj2WSGkcex18Dd4gWbNd6ZMA3McSqca3zcqaZQoe2JAUxMxw
-	bpx/TGoa0dDM0bbjPAeAavkFHFJK9qqiGSHtVIj468P4DzghRTNEFJ6nbBfoZhBcWGOaM6
-	Q4hYHNuM9B1vt6BGIWmd02c92QI3b0c=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=gondor.apana.org.au; s=h01; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:cc:to:subject:message-id:date:
-	from:content-type:reply-to; bh=9YfJOSpnYoqiR78tZwDBtF0PrUJ/nLB9HJdYwRb1UHU=; 
-	b=QlYl8R23ah7db17cXjIK67qEfvz8JUtktiO7fjnOtMoLCiyWnmZA3/MnFD4QhgRePS3V2XlyJ5m
-	SHueIHs1OxKrVfgPR9Cur5A17QChscsZYTpyZNEj6oLMIKjUO+lMKmVlP725RDtaDAfTGjF40UoSN
-	rI8WTGQfxdkbr0pdR66K5Cg8mc+BY3NuJtmjfM+iB9AxhFWNjc349K6LhV6SOfeOWv4ha5YbI3f2w
-	0IKrX+w1QeNNbWcwYujuLdcYF/sqkedsBuag4Tka+PjEdcuJGCiuEMg5iTty3YYRVeIw87KRhf3UF
-	mOQxSDjHsxPgt0yfy6To3jpBqfE8o9bEOsAg==;
-Received: from loth.rohan.me.apana.org.au ([192.168.167.2])
-	by formenos.hmeau.com with smtp (Exim 4.98.2 #2 (Debian))
-	id 1xMfWM-00000008zTr-1ZKw;
-	Fri, 30 Oct 2026 13:51:23 +0800
-Received: by loth.rohan.me.apana.org.au (sSMTP sendmail emulation); Fri, 30 Oct 2026 13:51:22 +0800
-Date: Fri, 30 Oct 2026 13:51:22 +0800
-From: Herbert Xu <herbert@gondor.apana.org.au>
-To: "Kanchana P. Sridhar" <kanchanapsridhar2026@gmail.com>
-Cc: sashiko-reviews@lists.linux.dev, hannes@cmpxchg.org, yosry@kernel.org,
-	nphamcs@gmail.com, chengming.zhou@linux.dev,
-	akpm@linux-foundation.org, linux-mm@kvack.org, davem@davemloft.net,
-	linux-crypto@vger.kernel.org, rientjes@google.com,
-	willy@infradead.org, senozhatsky@chromium.org
-Subject: Re: [PATCH v2 6/8] mm: zswap: Store large folios in batches.
-Message-ID: <auQwWgMbBuo0YEBI@gondor.apana.org.au>
-References: <20261028030503.17923-1-kanchanapsridhar2026@gmail.com>
- <20261028030503.17923-7-kanchanapsridhar2026@gmail.com>
- <sashiko-outbox-188658@kernel.org>
- <auQhULh1VTh6lWoe@gondor.apana.org.au>
- <CACpmpodWMtmE0yNVN656K-8fPZgTj_DSZ0J7qxou+5Asoht+4A@mail.gmail.com>
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=VbRiuv1zzZPpsXqO5zwHM0e9x6dnlvGPnhrO6rm2E7A=;
+	b=K72tLawHVYjeI3zm1gAN+IYAAgqCdYDPHdXkhUdkrGrnNfH4dRnujXrPmHY1TyWMF2oiA/
+	qBNIKlTLfMSsBPJKbDKxqNQApOc1Cdw7UjMlfbHkLQOv4IdrehJGSA+oLS0tym05uGwAl1
+	fyiPnfgpkE+bCAt0UDbEILqrEU/Xn4I=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793339565;
+	b=l+aDUxkPuarS2N84iz/JHzfjH/gbMmJQPpmXdp+VYHxtKzukfQ2ysvqK1UblRccEQqNT4h
+	zY6XrG5OoBPGGlrJokRxMHaDBWn9TQzEmE4kBd3EsJ4s5bNwZtAuZoLshYpDkfgRKvdrR+
+	uzJvj0vLDSFZIFkFc2mizk+qt7Ngd4c=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=PY5kdhTj;
+	spf=pass (imf05.hostedemail.com: domain of odys.yuan@gmail.com designates 74.125.82.54 as permitted sender) smtp.mailfrom=odys.yuan@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-dl1-f54.google.com with SMTP id a92af1059eb24-18cdcfc05ffso416533c88.1
+        for <linux-mm@kvack.org>; Thu, 29 Oct 2026 22:52:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1793339564; x=1793944364; darn=kvack.org;
+        h=cc:to:message-id:content-transfer-encoding:content-type
+         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=VbRiuv1zzZPpsXqO5zwHM0e9x6dnlvGPnhrO6rm2E7A=;
+        b=PY5kdhTjjyGngLWOdZZ12iS0yYkUDpmx4fzGL8lKLB/0zFc26sif9xBPO+QhiG4uc5
+         lpKU4FnW43d7ATQzVBPNg+83ncQ4Axv8fadW+uVXGIzeLcFTUqcMKcSXIeGwkGYt9gEt
+         wi8vBnSmiIqgGG7pJ1NZj0lQlqaCredUEcn0PRUxKRMhf0kyr4FWHNxw2zkIj01DCA7a
+         OrIT12WEVRHPGYPbTxZZJsyrWZTSMIhdNprcOAwnAeV7sWpP0mXzCUjFVmejLCm6EQjq
+         K7WcWMCKvLw/lOiGzq91jI370QGhnMhDEhoo9/Fa2/df1vuldoK9ss5O8pfBswDdv1Qc
+         kwEA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793339564; x=1793944364;
+        h=cc:to:message-id:content-transfer-encoding:content-type
+         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to:content-type;
+        bh=VbRiuv1zzZPpsXqO5zwHM0e9x6dnlvGPnhrO6rm2E7A=;
+        b=2jiobN0ofWkJH2v/P/RlfFc+VV33F11quSk3HiZ4aP45rVlhJeadepel5ju4h9Hp8n
+         pQrwTxCIcoO/1Jvjj+j5iyCQLNYZuPAk+Xgxk+Jr8zfyz1i5oZInpdZWEt05jj2RlqRg
+         5u0YkB8OX7TRUZ+mZRVnOi9CWvC8/n+ZrDwbT3sa1tyCR7AAeMwBP8ldq3CqbcK5+jEY
+         sFQkiVrDo5JHKb04CzRKqjErm7cA1n1px9qvZO7QpMErZNucvtGt7bl2olB0BWryRzP/
+         ptxdNNOoy80wTdgCW1VKkF/Z4qxLmdoAbPnG/OKHC6Wd9ZMXrhoK5rj8KuhszB2gHVw9
+         3oVA==
+X-Forwarded-Encrypted: i=1; AKwUvBzia3QpLQx4QSu9NPiacYfvfzQHjDLuhAeanR5t7cAbPpg8g9upOmBqwefkVToxWrLUFp+3MX1iPg==@kvack.org
+X-Gm-Message-State: AFq9FYIZP46BMs+nwjW0NM6CcX/fUBkvzdz1K52OdkmBMRsY1LIeOddw
+	UribqsIdzmRuWrlfNMSM9Ojz/tLvS2ofFbiGW2XNOXc0zx3K6VcCNEmB
+X-Gm-Gg: AYBFou1QukJ3LFh1ntt4EbaYYaP8ml91CCdYVcFXjhGg1uusFbXx06/no0udKgAkdXR
+	k8thhxb8AweL8m5Z66vQjeTKDcM2MQ7h0Nkj/2MpVN0ghSM4R1kgXqstab2KPtk+rODG+n4O/tB
+	6R7mdOMv8BhS4+LZGfsS7Rv7Ybi4FF0oCs9oGU4b2uURM7Wtt8Hm96OQ516ePXsEt5rWGFp+pLI
+	Rl5yq4a/aY4ZUKldpONAKupY8vjpQHQ8QnjWztLyOpd3mpFKFbgWdwZh26sgDVLC3vtioJHzGf8
+	3pkkemOkGJkIstfMrGTUqAETq5jU3aB+LuNRYPxCNJ3nvRX4aRg89VBxhc8B2jyBKrwrF40UOSD
+	OULu4YLMUEUJxvet/LVdV+kW6hrlsa6seZQVV5tb4mPqYvohoUwqRAA0bFbjBNYLfbbzYX7mEy0
+	h23faBgNFkNPfbPVJpIcABn+WXi4rPdMyOXTTXgfy2H0t+89mUlx0f0U6bfJTJdZHs2SBlGb5zz
+	cdANAvPBzXhlkVIsrvRyA2/fQQoZd36HPKWglhvq2e5N5vVjxn+rqXpjGnikHD7QA3sEvExNzKJ
+	5ljm4vZK3eWyeTWh1H2SR3ph
+X-Received: by 2002:a05:701b:2411:b0:1ac:75b9:f82c with SMTP id a92af1059eb24-1ac75b9f892mr1448025c88.34.1793339564232;
+        Thu, 29 Oct 2026 22:52:44 -0700 (PDT)
+Received: from [127.0.1.1] ([23.254.208.9])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1ac1b0a628bsm3675448c88.22.2026.10.29.22.52.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 29 Oct 2026 22:52:43 -0700 (PDT)
+From: Qiliang Yuan <odys.yuan@gmail.com>
+Date: Fri, 30 Oct 2026 01:52:38 -0400
+Subject: [PATCH] mm/filemap: clear page cache marks once when removing a
+ folio
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CACpmpodWMtmE0yNVN656K-8fPZgTj_DSZ0J7qxou+5Asoht+4A@mail.gmail.com>
-X-Stat-Signature: h9pzokcf3ii5p7bn6ksmhzn3jd34nxdn
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
-	autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 939A5180006
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20261030-bug-mm-filemap-init-marks-once-v1-1-699835fc6690@gmail.com>
+X-B4-Tracking: v=1; b=H4sIAKUw5GoC/x3NQQ5AMBBA0avIrE1SJCWuIhbTGkxoSYtIxN01l
+ m/z/wORg3CENnsg8CVRNp9Q5BnYmfzEKEMylKrUhaoUmnNC53CUlR3tKF4OdBSWiJu3jKaprCb
+ StSEDKbIHHuX+B13/vh+gfW5ecAAAAA==
+To: "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
+ Jan Kara <jack@suse.cz>, Andrew Morton <akpm@linux-foundation.org>
+Cc: linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
+ linux-kernel@vger.kernel.org, Qiliang Yuan <odys.yuan@gmail.com>
+X-Mailer: b4 0.13.0
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 9DAB7100008
+X-Stat-Signature: nwj8yadmhcgr5pubh61sdy48sy35m669
 X-Rspam-User: 
-X-HE-Tag: 1793339496-902185
-X-HE-Meta: U2FsdGVkX18gIZV/IkpFXfGvFo42xjoLY9390eZqbq8THm1W5mUsGKhZ4Wwi+sd85zFXQNJfa1qs/e3vNUcpNuvd+qr0jU13i5rxUyit54CxgemHUSR5HmPnEPfNn0AUgDL7KP2HGNfXVSr6SVE1coPIVqRe9ciwbtow4nebRZSkqKX9G57c0B4WbUznnFiXH5I1/dmMTNaa+n1bmDC8ME8YpUsa1dmimX/DVOZ5TW9ONju5Gkvuph+G4YlKi1waJKEM/YO6djppUqD//LPDeOS6i8Rdtz3k8udYWI91USpRHCIU9oG/yZUJKLAfg4vKBQc8HHEd1jJ8STSNExIBDI8yHePrgA0LFlwC3I57ipWP96tR9HuSOIyZw+BB1KZ8M4kHMDAAV7vBitOY0b/XZ4v63vZI7AjzKLA7Nfrct7m2EM1rhddVr9pqNePKMAafCh6xGINIqqYrGKy2cDfZzkjXg9kCq9T2RYWyHCAb2PZLbE6JSXLZXvNXT1d8UhAQOqwAvo0zt2577pbOZN0RSlgRtNBol53+OfF6P/oIDozvl2lyidXDFpkMTjFUH6DdZbnOkNXWeE2U1TDhRlj7ZzvZetqpjCwiSpmf7/P5kKtWNerXr+IB6z0FF3WS9egBXwgAD6wNxXKUA1wu1JB3iZzZ8Ia7A3JVwDwuTu6L9dd8ekLtqEBg3f/jxx2ctkwURcWhXmdTZbsXN6PcIMuolWvvYKJDB9Q/Q/ySbJw8Pp05HWclZ3o41S5eWh2K68HPAOUUNVNwfA8lWEX3q/gdFYdTULA/XpZmPl5ikUPoxfj7ePcmBxjGqduxx2yqrIiQa0NVbSvWyVZOO8BKVK9Q0b16sRhu58IZ+Er10MBshmLdaQ7PbVqNUJVRNJkU05JOhumNs2fBzPsvWiDtTZKbVerh4RwE5yRVffHy+YlCealpqFa5rB6C1P3QQaE28J1cXu5li8L6jHcS6E/xWoB
- D0rAEXS9
- qzEouG5Lw1PABjT//V46KzpssWW/v/nRBcuCu4i5FdU98nHLJAMK0rZ/tVi2iWG6UszuPytMT6VObGGo5E8/Mxh5hMJkIT9u+Pcg2SJbv5FWxruh2AJOKvtMUl+FSPoMwazC66+jy62wkGN8MeC7PN9IbKx8maHvVSHqN+l9H31pJ3GxQustnaG9hU8x7vccvKcNFrP1yi40NrC39lD3QgYK+5eOOKIlcXxVuRIcjnVkmNn/QtdFFU5r6HEftuNhQdeklaE55X5C8bHwd9KldCQX/GersbAGb1fwb
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1793339565-832417
+X-HE-Meta: U2FsdGVkX18GOcNMc9onqhCFuvmu5v3fpoluOfNbjeSxpVP/NLO5p3cKw3K5czzblQ80+i40OCalf1Wx6p0cxLQLDU5XC7N+9qz1bq9SqyhdYFQBWXR8xwvkzK8wSFLeaxr5K54VYCdH7hKjDP26CR6bmVzOkybcH0W3wsunv8JrmQT3BIwgy2VVjub+ljfuy0uCGkk1F2zIpC05t0jwSVgMVd5HFciDks0iW3aMtxSsjqGMS9ijulEymHTDZMxwDstwkmGK4sdmyJJcwxt3AOs9MOC6eFd6Y/RQq5wlQ1G9IjfNPwQHUw/mnkJABYaOUW20bsjoJl7I7QY/WzTsVZML2tZzdrtLUj+56SyF6YUK4CBo9PYrmMVVtEEvlmuweHPnWYFoKb7t56DEWAntAYjohewVht9SnOWMjnRJ46m6j4v2/AkrW2ry1kGOY+JZzqmbdP+YHEUPiEOXWpEjKYnu5yPqDoBQYblVkzag0aJ0dtLgfoSCvwFLhQ5e1SRLcpjH3hfzG53d8vLylGoWBlzXXuTJB9MLGnBch7m6fn5IPsQLS3AUJeuOB1KOzqSi2++VZOnntnqgPONSXe9J5YBf8H8bIvEjo/5HTU4neDhXqJd+wcDL/Dyq/G5RugubCZA0Hi0uWwqTYGdI/hfT0CxFctT/QBrQ5xnsyvRmEF1qO2SrSTE9uRcgnvdQ+KLib3jELXiaTrBGDrOkiVgmJa7AzeVGYHb3ERivnl7GgdHnCIwA4LUSjMOCkPkyaggHkc+lDP5pXy5Wd1Mb6dS8f29tZa1JCB3coMEhDZBOxp2QuNQrx6PQwFNIeafUbLzobTwyiBV9Bfv9t0Mr2n4Zt5GPuFxf4Ch88E3U42qiswrnal3Cc8FBKDXAAGXpW0+F2/K5eqYyRAuZARxhUAbTnOSREi8hy5dWHNcYnBE2fCUpI7pWaX/8pXuZrO0VSFJil+9bynMs4/ALoApDI7w
+ wouY7Kjv
+ eT5J4U8+jiXj+7FvOZdrOD/f8UUsxZLniQalcS8TZCdaOgI1Tmgfi0saScWrBI55lkb3AU8UPu6vavERbHgN4ZXJ1ADAjf2Q5MBaM1LEafzVuNMTXiSOh9oxZm+5brgXeLxFWhDbf9av2VtYO5Ic/JocBhydlvahdYDUoKNpbb+o213+IAouK/lG0UhxXn8hq8ANx8m/nAkjD49AR1ExdkaB7oL/nlghjCFMadmP3N2pZpZZQbDttnsiht7EliqZfvWGFIFG9x+PjKIxHagppHNQ1WgOLVWsnUX/Zqsn8kaW+2/sxZzeVXsKz0HOufL79ZngKdBvo36EmG+ZgkuehlT1vBHwsEYsv9cOe9nD0hYvjLihOEo75d9AYRFIqj6Uj1UDB/K2sJQAXbsY6YD2ca+Ndjzn3HzOxlxsUFiuv+QALhFik3S5ZpieT97xE/fg7VpKNJ1/LtwK4AQ3KxG1Jng/MU+e0eyM4604USU+Odpwj802AVtKQ0FksvA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,18 +127,49 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Thu, Oct 29, 2026 at 10:15:15PM -0700, Kanchana P. Sridhar wrote:
-> 
-> This is how it is in the current mainline, and has been for as long as
-> I can remember.. I assumed it was because we need a per-CPU acomp_req
-> to be allocated for the tfm. Can this be done with a single
-> crypto_acomp for a given algorithm?
+xas_store() clears the marks of an entry before it replaces the entry
+with NULL.
 
-The request needs to be per-cpu, but the tfm does not.
+page_cache_delete() calls xas_init_marks() after xas_store() whether it
+stored a shadow entry or NULL, so a folio removed without a shadow, as
+POSIX_FADV_DONTNEED and drop_caches do, has its marks cleared twice.
+With 4K folios that is about 6% of the time it takes to drop clean page
+cache.
 
-Cheers,
+Call xas_init_marks() only after storing a shadow entry, whose marks
+xas_store() leaves alone. Dropping 8 GiB of 4K folios, median of five
+runs, averaged over two boots of each kernel, in a 32 vCPU VM:
+
+                          before    after
+  POSIX_FADV_DONTNEED    1517 ms  1423 ms
+  drop_caches            1515 ms  1422 ms
+
+Signed-off-by: Qiliang Yuan <odys.yuan@gmail.com>
+---
+ mm/filemap.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/mm/filemap.c b/mm/filemap.c
+index b74bc1e5015c6..a0c959e74533e 100644
+--- a/mm/filemap.c
++++ b/mm/filemap.c
+@@ -140,7 +140,8 @@ static void page_cache_delete(struct address_space *mapping,
+ 	VM_BUG_ON_FOLIO(!folio_test_locked(folio), folio);
+ 
+ 	xas_store(&xas, shadow);
+-	xas_init_marks(&xas);
++	if (shadow)
++		xas_init_marks(&xas);
+ 
+ 	folio->mapping = NULL;
+ 	/* Leave folio->index set: truncation lookup relies upon it */
+
+---
+base-commit: d89e1d186ec9271bf78e62771779e9fc03bf0fc3
+change-id: 20261030-bug-mm-filemap-init-marks-once-b83c6aa67bab
+
+Best regards,
 -- 
-Email: Herbert Xu <herbert@gondor.apana.org.au>
-Home Page: http://gondor.apana.org.au/~herbert/
-PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
+Qiliang Yuan <odys.yuan@gmail.com>
+
 
