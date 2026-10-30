@@ -1,131 +1,108 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19F95606A31C
-	for <linux-mm@archiver.kernel.org>; Fri, 30 Oct 2026 14:46:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB347606A337
+	for <linux-mm@archiver.kernel.org>; Fri, 30 Oct 2026 14:49:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=toxicpanda.com header.i=@toxicpanda.com header.a=rsa-sha256 header.s=google header.b=ZVAwe7xZ
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=NA1m8gVY
 Received: by kanga.kvack.org (Postfix)
-	id E83096B05C7; Fri, 30 Oct 2026 10:46:20 -0400 (EDT)
+	id D28A46B05B2; Fri, 30 Oct 2026 10:49:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DED936B05C8; Fri, 30 Oct 2026 10:46:20 -0400 (EDT)
+	id CD98C6B05CB; Fri, 30 Oct 2026 10:49:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CADC26B05C9; Fri, 30 Oct 2026 10:46:20 -0400 (EDT)
+	id BC7F16B05CC; Fri, 30 Oct 2026 10:49:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 9BA316B05C7
-	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 10:46:20 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 903EE1C40BA
-	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 14:46:19 +0000 (UTC)
-X-FDA: 85379568078.19.6AAB021
-Received: from mail-qv1-f41.google.com (mail-qv1-f41.google.com [209.85.219.41])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 9D37D2000C
-	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 14:46:17 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=toxicpanda.com header.s=google header.b=ZVAwe7xZ;
-	dmarc=none;
-	spf=pass (imf03.hostedemail.com: domain of josef@toxicpanda.com designates 209.85.219.41 as permitted sender) smtp.mailfrom=josef@toxicpanda.com
+	by kanga.kvack.org (Postfix) with ESMTP id 9268F6B05B2
+	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 10:49:28 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 8BB05160677
+	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 14:49:27 +0000 (UTC)
+X-FDA: 85379575974.29.8919040
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf29.hostedemail.com (Postfix) with ESMTP id A059212000E
+	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 14:49:25 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NA1m8gVY;
+	spf=pass (imf29.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793371765;
+	b=ykYJzZdnt0CdTLrYcVJZBfdfCXgk0IjuSuXaFTS5/o0TKdr0frv1YxCvrr7rQrsnLime+8
+	V709o0WGW5Man2Wti2pfkjUH0wvd+gmNhJ3McsZ/QsrXVEbkUbuJpY5Qz6eMHp8EOVEMso
+	Ia7QmAdNWJEMxDcepvfV5/twt2zugUc=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NA1m8gVY;
+	spf=pass (imf29.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793371577;
+	s=arc-20220608; t=1793371765;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tDfFuK4DV2rycFo6z7Q9L1F34BxLwMu6adMyDScYC/4=;
-	b=NA2DaPicrEBdxSHPzaXpDTgLr1Qo2M2aE6nI+AeSSMwN4WgD/uE1Dl3ePIN2bZ0123wjJ+
-	Y9X1tckakJDnquqyqkQkLSkFFqwHtrNePE7ySrE9WjK7xmjTUWtxBOaRPPYzMA2ZI1iMn4
-	IvXqowxgDcqShlTluYdWeJdD6irhmRQ=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=toxicpanda.com header.s=google header.b=ZVAwe7xZ;
-	dmarc=none;
-	spf=pass (imf03.hostedemail.com: domain of josef@toxicpanda.com designates 209.85.219.41 as permitted sender) smtp.mailfrom=josef@toxicpanda.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793371577;
-	b=uE9ZOUyX+j9y9EcET04BeJ62zwi+opVowGBXZq7iubU3MujuCSFC1CdY2o+EvRGZofo0bo
-	+o4hbVsiqTwJfR66yx09yeyTRzEL18Pk+bqoZRRmVuMH0nJ4+i4/GX4Z7Kqm84qCymLk4+
-	rOwoaqsp+zDaVqD0eIxoTk2fINEXE9I=
-Received: by mail-qv1-f41.google.com with SMTP id 6a1803df08f44-91c905d7b6bso8396606d6.2
-        for <linux-mm@kvack.org>; Fri, 30 Oct 2026 07:46:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=toxicpanda.com; s=google; t=1793371577; x=1793976377; darn=kvack.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=tDfFuK4DV2rycFo6z7Q9L1F34BxLwMu6adMyDScYC/4=;
-        b=ZVAwe7xZKs6gbzenlb75iq+hRMZjJ0qBo4yhn7j6SCSJr/4kAvpb+ElrWy3n4EDcry
-         GzcXHWBJX1ZdmpMCNa6b/L6B/ZUP/NYC3Ns8PZF0E6tB+YsjPDD8fV0wPNEX85TDC/jN
-         80gK37mZphuaExcqfUuZ7z2pHrLLGhAnSV571aeSwLWmu6bWiiLSM3czJ3BpDQccL6TX
-         3tnS202weSyeK2caoJ/xSRQEcblkTWBoJ43VjzZ9zwSNxp+fL5EqXkU2dB+Wo5qgvdP3
-         KJqk5svp+LxX5y8oraGqKNXZKDdF1NyEUU8A1J8kq3j45hJe7jO3O3mGq/h4Yxo8eBvG
-         TgLQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793371577; x=1793976377;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=tDfFuK4DV2rycFo6z7Q9L1F34BxLwMu6adMyDScYC/4=;
-        b=PYCFn2Z1kEEuPxZcl0o7uAmauLMVWadxWF06/GsqUi3WiNlbRFYAK6u1TZxI5x+AJo
-         qPvfeuI6N4zYmnS0kbbJQDPlrHR5NGZ0S0YY1F4Qyje+raXh92Q8pbVQdGYXhr6ktIKg
-         O+oL76MpLFnmUKEfa53domOPwZxIbEX9tYVW1bJBzrpM3sCt9mONB/LcKJx6uAcoK5U0
-         oRUi2CuhXVT38oOnwlSPJ2IpjtVWI4XrwVADrsYCydu3NByJ3lyzrlMDpM4RNnSq3C1c
-         2EP71qo0OCqWk+GQeVMeM4ZvHmih2zqUHbFpuKxyjzKIunS9SRqsqoPGsRxTxIPdVkkm
-         oKzA==
-X-Gm-Message-State: AFq9FYIPSaBZFaws70E7dYwIxpoUequEmx6Er+nouaDU2G7zpyNfsYk1
-	zCNsmAexTbM2eZkzn6NQpjlh2jsc+Q4y+Vo9CueQHQ+jpmr1Pxz/DNqE7YMChM3YQ/sAYy0mFXG
-	av2VQwiE=
-X-Gm-Gg: AYBFou2NJ1OwTkVJVmHCGiYZb9Moh7kqpWC0C2hxKrr/TF8Z++/N0hZjGc0a+px3K9a
-	vQchjLG5rvA+wfPemQb90g8drqdq5CyjimYDlLBiZWGPFGD/OZVs493b6wnFR6Z1lW80mfwFVi+
-	qOaXKEb9+yNaB06wBCanTbaYUwaIYb6AOOTjDxYIdHdfmYu8mB+y3zuzNb65JbPfG4lz+2/FiSn
-	6BMHpEbB/A7OlIWRpsd2P0HBGIyUCfsWotH+szGAq8zWwTI7iLYAfQafmYd5WaROMz3maFsyi8v
-	XdSxJaRLrwGRQo9CI8X7bHQ8vu/GR7qPW/a+F9HYmVdV7XozC9LREf2bZUtwdZmHsoIjmLOJL3U
-	7lbnvMSF/SP2c6nx8Py0yQ9izEyiwcFcQnhtpMK/XWumnBv8O3CKumuExOOm4QX9MimSaLg9yFu
-	I9qgjJZyCwVf2nn0Qn/ew5pHluKjZNVyBACDi2MgYHsJKTfG+xufqZoBf971FaKyCxNov1xD7cR
-	caXgdbmcfD88EbkDXqrvsOY6zox5siPZt4y35nYEk9SsRqEW2rahBOq8SSiTyG2dCMbedtJr6B+
-	6W44ryiR0lEcpKNw3sT93f4kuJS/YT1EkOSz6JzPh40r
-X-Received: by 2002:a05:620a:84c4:b0:93f:1ed3:a9d7 with SMTP id af79cd13be357-94421719099mr396848385a.27.1793371576775;
-        Fri, 30 Oct 2026 07:46:16 -0700 (PDT)
-Received: from toxicpanda.com ([153.61.196.253])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-9442581b2ddsm158514785a.11.2026.10.30.07.46.15
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 30 Oct 2026 07:46:16 -0700 (PDT)
-From: Josef Bacik <josef@toxicpanda.com>
-Date: Fri, 30 Oct 2026 14:46:05 +0000
-Subject: [PATCH 2/2] binfmt_elf: don't leave the alignment probe mapped
+	bh=0TQjte6CqBgM+wFSxhT/bgRaDtwXwwSO4uSgCgPB3OY=;
+	b=FMBLKWLP+WaCJb2TgxIWe+MKrN/rwW6gBtiMdLTDNBvEPQNxTnbjmL60MezXxJlYEAPlYM
+	X+M3oOu0lRXUJ5FTMycVuY3r47F2/2f1i/XcsMmLb88KxoPfKmBEcnl7aBVnfmInhjGxiT
+	IUBPf9r+iVv8IPmr0y2rBGmv6+Kxm4E=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id D339943E20
+	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 14:49:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB4E61F00A02
+	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 14:49:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793371764;
+	bh=0TQjte6CqBgM+wFSxhT/bgRaDtwXwwSO4uSgCgPB3OY=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=NA1m8gVYHOCdqHGrZ4A/CsTsWNYOnrQL/kvNqYRh855w0eE48qkiEbOD/mUSAQJs8
+	 THi9A92uzFqXpL7REevNWMot+i0pxkE0Xz+q3vi9EvINUn3EcRXGZ67OxqbH52OCGj
+	 YEqxEc1/aQg9ETlfCD/kkezGO4FD1hN3Al4UcskSYIHPj9LFrLy7b99XqYU4NRSEHD
+	 lFunqd0Ki4rXYamLX95N8zKRGOHlg365oDaDLMoe35BHu3j9X+tvaNmY3o6zBj5ImX
+	 hTN8QnEdpiUj9nDiIhkAMojiIysBntHAy98ofps5LHCuIWmkrsK3dZP/jqUhOWqi32
+	 ofF2caZU1LBfg==
+Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-c3f04e0e65fso120670866b.2
+        for <linux-mm@kvack.org>; Fri, 30 Oct 2026 07:49:24 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBypZKxqrECJd6e2VXxeF+4ef0AVJxV+lLvMf4CIwPRSr6RD2hUuzRzM86m1PRV7n94PUKv+7MlERw==@kvack.org
+X-Gm-Message-State: AFq9FYJVHpODIRfgqcnx5Y5MB35lya+WgI7w1YqsuVvmSgV+tvTimCJ7
+	3mYKf/ND9lEbAhPef+Neq6BNs+bxP3uCTgZAxeJTbG3CRLz0DmIdUX0w8DRLGn/4Qzee0gmSwJH
+	puJBXKhejJinbJtE6AAcm8HTPZs48Eq4=
+X-Received: by 2002:a17:906:9f92:b0:c29:4915:83cb with SMTP id
+ a640c23a62f3a-c4ca7ab09dbmr235759666b.39.1793371763605; Fri, 30 Oct 2026
+ 07:49:23 -0700 (PDT)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261030-b4-binfmt-elf-trim-v1-2-dbd8683bccf9@toxicpanda.com>
-References: <20261030-b4-binfmt-elf-trim-v1-0-dbd8683bccf9@toxicpanda.com>
-In-Reply-To: <20261030-b4-binfmt-elf-trim-v1-0-dbd8683bccf9@toxicpanda.com>
-To: Kees Cook <kees@kernel.org>
-Cc: linux-mm@kvack.org, linux-fsdevel@vger.kernel.org, 
- Josef Bacik <josef@toxicpanda.com>
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=openssh-sha256; t=1793371570; l=1210;
- i=josef@toxicpanda.com; h=from:subject:message-id;
- bh=X/ASOFjcZWFCPphxCek+/PZuE8QILdbqMeZPQM3mC6s=;
- b=U1NIU0lHAAAAAQAAADMAAAALc3NoLWVkMjU1MTkAAAAgUBr36M/n0nWN0DNbnxwzIiCZez6MG
- JiruuNaSCI/zXsAAAAGcGF0YXR0AAAAAAAAAAZzaGE1MTIAAABTAAAAC3NzaC1lZDI1NTE5AAAA
- QIGjAMucuuZ7Y3nPwVmOqkc31/+E3a6jL83u12VI2pAeoRBg/AeoxSja/iLAsGBUefnVDd5aaFp
- WOqPTZ57jWg4=
-X-Developer-Key: i=josef@toxicpanda.com; a=openssh;
- fpr=SHA256:C8kOX2QUJCMqnCX+KEeoqRAjLo9L+ELOSH2NSAJHqGA
-X-Rspamd-Queue-Id: 9D37D2000C
-X-Stat-Signature: dgm83b7u9y9e4kjcinxnto4stbt4oy3n
-X-Rspamd-Server: rspam06
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+References: <20261028030503.17923-1-kanchanapsridhar2026@gmail.com>
+ <20261028030503.17923-7-kanchanapsridhar2026@gmail.com> <sashiko-outbox-188658@kernel.org>
+ <auQhULh1VTh6lWoe@gondor.apana.org.au> <CACpmpodWMtmE0yNVN656K-8fPZgTj_DSZ0J7qxou+5Asoht+4A@mail.gmail.com>
+ <auQwWgMbBuo0YEBI@gondor.apana.org.au> <CACpmpodxvQCkQgXUU6pF8d7onxHvHF7sEYCbTkv81WXyyrFiEg@mail.gmail.com>
+In-Reply-To: <CACpmpodxvQCkQgXUU6pF8d7onxHvHF7sEYCbTkv81WXyyrFiEg@mail.gmail.com>
+From: Yosry Ahmed <yosry@kernel.org>
+Date: Fri, 30 Oct 2026 07:49:11 -0700
+X-Gmail-Original-Message-ID: <CAO9r8zNvy7ftXsmLnj4qbQYJ5nyQo=hrio4UQvNrpMbwj9YbMg@mail.gmail.com>
+X-Gm-Features: AclHuK_VMB6EZ1UVhDMh9oCJ1ZyT4EAf7VOhmffq_u4OhZNJTl7iN40sgLIywfU
+Message-ID: <CAO9r8zNvy7ftXsmLnj4qbQYJ5nyQo=hrio4UQvNrpMbwj9YbMg@mail.gmail.com>
+Subject: Re: [PATCH v2 6/8] mm: zswap: Store large folios in batches.
+To: "Kanchana P. Sridhar" <kanchanapsridhar2026@gmail.com>
+Cc: Herbert Xu <herbert@gondor.apana.org.au>, sashiko-reviews@lists.linux.dev, 
+	hannes@cmpxchg.org, nphamcs@gmail.com, chengming.zhou@linux.dev, 
+	akpm@linux-foundation.org, linux-mm@kvack.org, davem@davemloft.net, 
+	linux-crypto@vger.kernel.org, rientjes@google.com, willy@infradead.org, 
+	senozhatsky@chromium.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: 6ycbysg68qg6r6ywnwunutpqmoeyz4i3
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
+	autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: A059212000E
 X-Rspam-User: 
-X-HE-Tag: 1793371577-55737
-X-HE-Meta: U2FsdGVkX182sA1AKcxcZ98YQMc4a3yyvEPKnR2tIQVyo86wKfNgbOFw/F4X/+G96cZ0/SucLbujnaIvh6WB4yMyj4GhHlt/1fyqP4hhVA5rXoGkTu2fYMTm3IwSAhczTIDgdz2BDdblJCrFLWo50y5iCQlv0beYG1NA5sZa2BCeNbvl2FxdUcUjAoKaQMwJ3w9AzDg4kaTXk18WxbX0z3r+rmob0nY5nTa8rj7cvoE/xnu3OVmpSzOKdVNkIl7C9aZnmiTw+yy/dOwsip9QSVw9R/72FRpiSe3pd3Cg7cvD65LbsiBuqv2EBe5ckHw/VKhkqNfnZfJeY7jGQIn0BjT57u+1IpCWqGIjiv6DrwNTLKssJO/fMnz91knIGnbXY3VIAdEa5JCv3qb/bABFDF9cYogedkl1eklqCElseBexc1GUj6hR7pY6BGe6Fq+C1AXyXC6CfSvkp03PYrAXOaHClq57zUunNIe4QgZCNf2HOn2iS5M62bhflq1D19GvlSnpIOyOLNDoM0mbT7JZSyhHgHASa+jkRbSNv6w7ClA2xi2uKW1O6udLWRIF2jk7Ebw1aihVmkz0Vh9GBSr7MsLwc9nlMfKdURbRH36VGgI9NRIyqGd7Si2J3mojreGWIxv2Cv7LzBS0c0uklwHPXm0YwpNfvM26CvCjKCcN6gpsTTdJJVILQQ1YFVlrsqdG7fyf6ScLaYpiyQs9OfzE4fa5ppK2DmWUXSsnUx01gb2m1pCmkcDJFqQUZVpI1oF+nfqiZ1opZsjOXRVDphsSfgswgS+Prp1ObAHLX3HUUC0iwIF86/+upniPaiVdBU56s2634qDjwRW8dYBA23yiInIVe6s/7JOUqlmIYvPglk2Xw3Rt8x/1er7rs2ZHyX2uB2nZ6KgnN/ThdxPaMtLGBvKS2lWWueoQXU96dPMjsblh8lwX9QI+nKgcoU4f+qoP6+wxI49+l4csPq2Svdq
- DXwPHBI3
- P+A30/pqP8SdvDTZhzksNdohsJOqEK1zuT7QWfaQoZHIQHDqpb8gkdutFdWvNTRjeDqab1VcanzAbB6hyu5bYyJ54rej5sDBoSgSFC319xz3prVldDgj8ncpr8S/Py/mBH6QSR0lz4fW6Ld0qYyabt3AmFSkqhYlllLr96P0CaGFqy9V/YCbz291RW9/9punXhd3wShnqBT+RUt1X5LDop3Cl+484GfsIlju67BMYD+AWQ0qKPJhmhieFyX7vIwLnhGzgCX2Lu4O2EKmZTts/KMxFxh1VgZ4EJXaCH1rf8K8xPenHMMtsoL93ngrd/wSgWAcbvEWX7F0kYHg8ORoxGmQ9Di6wS+wbgOKb1XFo2JcLZpNkyY80PrMFVA==
+X-HE-Tag: 1793371765-702304
+X-HE-Meta: U2FsdGVkX18oNlOxQs7NZCHxkGWUeb3Es8LNg6iWssdhifvdBf+SGBCeB5Vhw0cvUnbVr6wjbbc84PkXjN5J4Z1+3S+26fmadk7yqzuXD8RzdraCC1Yl8WWF4gBZ55WLXHKihpNXk6cB0Fsh6M97B0sU9gRzirAkwSiFN88fkp0hJRBpu3xs+tHvmHXW1S4OKdX3aJCfTL6JUxsihKUSaVSga6duc/ar1r1wV24T2BxBy1u3ogrYGHYJjOeRaeO4smvZyyvi/goYpuD7dLJGEBJfagz89F+Q8UvG6mFiQJ2OhHD1Z0htC+QbkI+BJpxb+gso+aIdaqUCY1AH6R7MWWf9R6vHcEgrJvkNgQOv0BOVxbAFOMbEtvaVGZcgBQpOj8LBxzMteKcDWd0ZmxerTE2GFLk+F8WxtkmO749DjiMag/zk2DPJ48GAZwlAq4kogz3it8vvCzW/HWGNIf3bVmwHBtSli+VspVitlSRjAD/u6pEeeIcs+dhcWGS2skB6D64RchT37th4i75VLbh59VsVu5VdwpBEqDt8Z/qfsBHB3MEltvS4L8GSQQI9a5UqNCCqyUNNLoKGl8rwjFEI0Fl89aLsJWdiiTFUnVh00wJu1Chzl+7wIrUFpsPPf9sMGAY3P6DBidgJVuiJl+7sdA6XQw4XiA9DVs8v/mFCTwrnrdMRaXBa6hpfKyCvC//2aW/pwZmdyZzpnaoPIRSFNCKA1SFFqoFbyAIonf5GMWT92x9jfiflNbWudrJMNfY97RD/xBLNlfunNFyN5i8SCtXYpESyiIEdgpoioCcJZ2VF32nkn0KWYXSlAqJPcLZozrK71RB4i+Gj/f171bz9dhFg9ICXknOA2VAhZeR/3dd0HlVd8hIEJwv3uiLKf38vwxm/cYYKMbsNxDeFE9f08DE8S6LNnDfaxPvEKXa8y/uixsb8+OguMTcVojKxK3rEYRSqV8GvU3i45KosZKE
+ 73qIhhx0
+ DGoeZsewkpOia6iVc7gqqmB2/N95HlJzVDhJYscpInAKMnBp/FO/FgI5sOzkVXfFSAj2zgu1ird/0ur5GwP4oWL8jqOswsOGdJ40rn5f4KvsMzvBQzMWNSP/mm5SH9Mb9p10ybHZVvQA3ce9Jozn6jRHkGFU+hXjEuX++j6gQRi2QuMpAIwj1sIhsYdWwvuAK5EWYGGQPHAtEZhsFTUzqNJZcMauD37XEc+6U646dyIWsdUr/GxeelNqrknt5sNeQVEDIcyBaxOEEXIU+07ldZXzepOWsSVc6vosu6BOybRW/OEpQ/GYNr3x8p2XzfThixblUHAbn2crkD9ggYAE4UMVO146jFocZvX13aLFsXVf+yd58buNR+9G5DQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -134,39 +111,27 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-A static PIE whose segments ask for more than page alignment can be started
-with a stray mapping of its first segment in its address space.
+On Thu, Oct 29, 2026 at 11:19=E2=80=AFPM Kanchana P. Sridhar
+<kanchanapsridhar2026@gmail.com> wrote:
+>
+> On Thu, Oct 29, 2026 at 10:51=E2=80=AFPM Herbert Xu <herbert@gondor.apana=
+.org.au> wrote:
+> >
+> > On Thu, Oct 29, 2026 at 10:15:15PM -0700, Kanchana P. Sridhar wrote:
+> > >
+> > > This is how it is in the current mainline, and has been for as long a=
+s
+> > > I can remember.. I assumed it was because we need a per-CPU acomp_req
+> > > to be allocated for the tfm. Can this be done with a single
+> > > crypto_acomp for a given algorithm?
+> >
+> > The request needs to be per-cpu, but the tfm does not.
+>
+> Great.. we can save a lot of memory this way.
+>
+> Yosry, should I go ahead and include this fix in this patch series? I
+> am Ok if you want to take this up.
 
-load_elf_binary() maps such an image once to find a large enough address
-range and unmaps it again, dropping the result of vm_munmap(). That unmap
-can fail, and MAP_FIXED_NOREPLACE only notices what was left behind if the
-first segment overlaps it. This was found by reading the code and was not
-reproduced.
-
-Fix by failing the exec if the probe can't be unmapped.
-
-Signed-off-by: Josef Bacik <josef@toxicpanda.com>
----
- fs/binfmt_elf.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
-
-diff --git a/fs/binfmt_elf.c b/fs/binfmt_elf.c
-index bf0d4df16ae1..6df0a6d979fa 100644
---- a/fs/binfmt_elf.c
-+++ b/fs/binfmt_elf.c
-@@ -1171,7 +1171,9 @@ static int load_elf_binary(struct linux_binprm *bprm)
- 							 PTR_ERR((void*)load_bias) : -EINVAL;
- 						goto out_free_dentry;
- 					}
--					vm_munmap(load_bias, total_size);
-+					retval = vm_munmap(load_bias, total_size);
-+					if (retval)
-+						goto out_free_dentry;
- 					/* Adjust alignment as requested. */
- 					if (alignment)
- 						load_bias &= ~(alignment - 1);
-
--- 
-2.55.0
-
+Feel free to send a patch, but I think it doesn't have to be part of the se=
+ries.
 
