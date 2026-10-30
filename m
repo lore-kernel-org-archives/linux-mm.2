@@ -1,89 +1,131 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62934606A31C
-	for <linux-mm@archiver.kernel.org>; Fri, 30 Oct 2026 09:20:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB8B5606A31A
+	for <linux-mm@archiver.kernel.org>; Fri, 30 Oct 2026 09:20:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ZiovnmKr
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=d87jxZYs
 Received: by kanga.kvack.org (Postfix)
-	id 0DF8A6B05B2; Fri, 30 Oct 2026 05:20:11 -0400 (EDT)
+	id BB6306B05B3; Fri, 30 Oct 2026 05:20:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 091096B05B3; Fri, 30 Oct 2026 05:20:11 -0400 (EDT)
+	id B93B56B05B4; Fri, 30 Oct 2026 05:20:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EE7636B05B4; Fri, 30 Oct 2026 05:20:10 -0400 (EDT)
+	id AA4266B05B5; Fri, 30 Oct 2026 05:20:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id CFC826B05B2
-	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 05:20:10 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 8E7C96B05B3
+	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 05:20:55 -0400 (EDT)
 Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 5DA4A1A067B
-	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 09:20:10 +0000 (UTC)
-X-FDA: 85378746180.08.8729097
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf09.hostedemail.com (Postfix) with ESMTP id CA74B140007
-	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 09:20:08 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZiovnmKr;
-	spf=pass (imf09.hostedemail.com: domain of da.gomez@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=da.gomez@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 87639A057D
+	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 09:20:53 +0000 (UTC)
+X-FDA: 85378747986.08.1621084
+Received: from mta0.migadu.com (out-86.mta0.migadu.com [91.218.175.86])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 632AA40004
+	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 09:20:51 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=d87jxZYs;
+	spf=pass (imf04.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.86 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793352008;
+	s=arc-20220608; t=1793352051;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=uyCrS3trZJ5YkE9uiv746PMfpKl6S+0MjX103j94QEY=;
-	b=Xry8klfrRMDBUuCYiBBFYRSmSNdtDTKqDrEhHmbLPGvYqDIkcjRqktLfciYLkNmp5QGV3j
-	ByV3fo3Sj+vLYo1oZwbor9dTpcqa7fTNSNvE+ekal4O5UnAep/aRkGBsP+1s4Ya2z1yzMn
-	yEVQGOW2x4enjgOlpaOitHhEYsg9aAI=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793352008;
-	b=zP3kd0IV9L5GGVb4bRyOJo4245L2TuEiGYg262GNx3G7/BGpNhRApXDLwlmeiH0j3T9ac9
-	P/KNIFwjga6jQv7gdD48TrcFwGBM5ZXUg43YVOr4UrNh4g2hrg8Ll/DJHwYZdCCEsuLnxS
-	ay2ZfGTRdzkST509JhIfGlNbnEuy2zw=
+	bh=DwWDiQU31GhAJkKLOok0q5GmDT5UejWxDA7k4JTVj4M=;
+	b=H2ebVZm1oFkS8950TTMDxLO/1WXFtDgSI2e8c0Co0gEDmnAz8bD6vilefwKdLAAmxWyuko
+	lnCWhAHc6BEjmX3aTL8m8IEpU0/4NQA01qXCEYshCRIh6SQ2TbSrNazm/JSTpfPv0ITofv
+	8mAm0T92/iiFvhRGBYxr2cGrnlaymw4=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZiovnmKr;
-	spf=pass (imf09.hostedemail.com: domain of da.gomez@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=da.gomez@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 5764A60617;
-	Fri, 30 Oct 2026 09:20:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 650CA1F00A02;
-	Fri, 30 Oct 2026 09:20:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793352008;
-	bh=uyCrS3trZJ5YkE9uiv746PMfpKl6S+0MjX103j94QEY=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=ZiovnmKrsbRP2VmxkyKnd/smnpW9g2XeHW0OgwBRw81hFTmlrAmSSvb3ln6dSEnpS
-	 ELLxvhCk2YPWZNnGj1a2svlnm2Na5/RJ4FOkfREQuyZ9aNduDaW4TwX4bbf+HFDNvO
-	 ZOW3cwjUdvtUc0MBnsN2cT+qrQ1MNpIwWR3+JWrcj0gXh2ZJxhXcFodPEAbFHB7QxH
-	 vL5+HmXsf1mA2ITlitEbSNIr5z0W/a1kRfCOwKoMcla/Q5jot2XcbOaq0qvs6pxPJ3
-	 8WimzQ7l1rfc5b8a6lGS5lMdHJT3JFOW+bs53Ca2UPZtIQ/R8n/v/3EtJUJ0JpQrNo
-	 k/2vTfw6psolw==
-Date: Fri, 30 Oct 2026 10:19:27 +0100
-From: Daniel Gomez <da.gomez@kernel.org>
-To: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, Björn Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, Onur Özkan <work@onurozkan.dev>, Andrew Morton <akpm@linux-foundation.org>, Julia Lawall <Julia.Lawall@inria.fr>, Corinn Tiffany <corinn.tiffany@inria.fr>, Liam R. Howlett <liam@infradead.org>, Philipp Stanner <pstanner@redhat.com>, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, Samsung GOST <gost.dev@samsung.com>, Daniel Gomez <da.gomez@kernel.org>
-Subject: Re: [GIT PULL] Rust XArray for v7.4
-Message-ID: <20261030101626.0-da.gomez@kernel.org>
-In-Reply-To: <20261012115028.73246-1-da.gomez@kernel.org>
-References: <20261012115028.73246-1-da.gomez@kernel.org>
+	imf04.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=d87jxZYs;
+	spf=pass (imf04.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.86 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793352051;
+	b=chZEN7VDABUix2ILOXlX0tz1nnalpoe4AVDB2QMZfMGiOZbMRhFtF+4oqYeAUWHIuSSzby
+	xH5a2jISJT8gGTU9mJ1fRN5wfHgACkr6Q70XLXkb7JyEb1uUhnkiv4NHdmsmO1x+LPrqon
+	JT1+kdQdjv7+l2cjvJONeTKBmkovpFY=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=DwWDiQU31GhAJkKLOok0q5GmDT5UejWxDA7k4JTVj4M=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1793352050; v=1; x=1793956850;
+ b=d87jxZYsXzSYCQ/xHD6fPWdvBbmfDED2jZYdIP/wz0YMDb65qjez3nTkqQ2OiGGUSbvTbfQM
+ 4fRPwHh32lyypRcBqLI618nMxfYTKzklpEZuKUGzwqzhkdwzTqJOKu5v5/QYZXXVsjgPD8Ix4e3
+ f6sg9vfDv/TQg6Cbx/x5kjZ0=
+X-Envelope-To: linux-mm@kvack.org
+Received: by mta12.migadu.com with ESMTPS id 222f0c8429a65a02;
+	Fri, 30 Oct 2026 09:20:38 +0000
+X-Mizu-Trace-ID: 222f0c8429a65a02
+X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain;
+	charset=us-ascii
 X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-X-Mailer: lorebird
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: CA74B140007
-X-Stat-Signature: bt4y6pczcewraejg4yb6f51se8wbeun3
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3901.100.1.1.12\))
+Subject: Re: [PATCH 06/15] mm/hugetlb: fix mremap() racing with page migration
+From: Muchun Song <muchun.song@linux.dev>
+In-Reply-To: <20261028-fixes_hugetlb-v1-6-a0a033db180f@kernel.org>
+Date: Fri, 30 Oct 2026 17:20:12 +0800
+Cc: Oscar Salvador <osalvador@suse.de>,
+ Naoya Horiguchi <nao.horiguchi@gmail.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Mel Gorman <mgorman@suse.de>,
+ Andy Whitcroft <apw@canonical.com>,
+ Miaohe Lin <linmiaohe@huawei.com>,
+ Michal Hocko <mhocko@suse.com>,
+ Rik van Riel <riel@surriel.com>,
+ Hugh Dickins <hughd@google.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Vivek Kasireddy <vivek.kasireddy@intel.com>,
+ Dave Airlie <airlied@redhat.com>,
+ Jason Gunthorpe <jgg@ziepe.ca>,
+ Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R. Howlett" <liam@infradead.org>,
+ Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>,
+ Jonathan Corbet <corbet@lwn.net>,
+ Shuah Khan <skhan@linuxfoundation.org>,
+ Randy Dunlap <rdunlap@infradead.org>,
+ Peter Xu <peterx@redhat.com>,
+ Breno Leitao <leitao@debian.org>,
+ Will Deacon <will@kernel.org>,
+ "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
+ Nick Piggin <npiggin@gmail.com>,
+ Peter Zijlstra <peterz@infradead.org>,
+ Heiko Carstens <hca@linux.ibm.com>,
+ Vasily Gorbik <gor@linux.ibm.com>,
+ Alexander Gordeev <agordeev@linux.ibm.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Sven Schnelle <svens@linux.ibm.com>,
+ Arnd Bergmann <arnd@arndb.de>,
+ linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org,
+ Gerd Hoffmann <kraxel@redhat.com>,
+ linux-doc@vger.kernel.org,
+ linux-arch@vger.kernel.org,
+ linux-s390@vger.kernel.org,
+ stable@kernel.org,
+ Chris Mason <mason@kernel.org>
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <9FFF0EF2-A99A-4448-9CA3-50E1733D6232@linux.dev>
+References: <20261028-fixes_hugetlb-v1-0-a0a033db180f@kernel.org>
+ <20261028-fixes_hugetlb-v1-6-a0a033db180f@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+X-Mailer: Apple Mail (2.3901.100.1.1.12)
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 632AA40004
+X-Stat-Signature: t3qfnsintrxmswow9qa49fhp1jedoar9
 X-Rspam-User: 
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
-	autolearn_force=no version=4.0.1
-X-HE-Tag: 1793352008-558526
-X-HE-Meta: U2FsdGVkX19whP+fh86yjuzATP8VnR3INCW+yRg7H8LMeyYW0YLjawQWmVdORrjfPK88MsuXEHqeOChPlpEG2iFdmOvcwxzFB9g22KLM5qgBVU/DskmUs0lZBTbjM5wVcKgEXtpFvqoZZZglhJhBhgTzJWzumX4NBZleEkxKAm+d8KevTyN3wh3TtHQe7k63PcRRb9NAyhBddU297Gd8YvhvVHoiYYpamgirlduB0VHRfXvWPfaXqDNy7dkAqJakItzsZkqKRG4PyWmq9hedig6UKutILnsibM3SeBExH8rG7HFYxK0Owxlsd1efF5rHOx/OOKhHw8aTtvzwbpC830EhE9Y2Z6KN545VjtXWQqfWFTPuA1BritX8CYGwvgfXYpsJrx9LDcuz3CAw3nq8FX5z5ijUmqnyfb44cwCZQPPhtmy5Bb6LZqPVTp2E1nRpyxccOw/aEvuRyCF6IFlfMCxRcnrhJ5H7VT3m9HFcVShGv7p0gx9lCXr1r+RtECQWjYMsUUkegY6ShVp7bQTz7glAJcvEW49JiqQqn6mOE8xrJRYRqCGtnphqU2FAvynEi4L8og4mtX2tSUsj2HekYm96BwHwSJsd0M4Nv0I5TKE64/kl640OavrfhDVyY49CliZy9mFg4h/VA/7znhqWrLJeEfJZUG2bYQ7FeIHnSd7r0TSna1Sb9b2F0vQgTcSPuOQtqKTXfGbCNJLNut9Q14HUom30V5OuXB8cJs5TUHS8KRd4Nd2kn+1ookw02wn00QEieL4HYZuXcLKhjxnFYLjaNsmo8uAZKd3wjGy2Ssh3izn8pntzX2lHmeI57KPUrUBu8qdykwRNiisOLqITgWsH8k/CfAmU8iJOf5thyHX8RGmmPfhc5sUIHZCNBBC3/9nfaRq8qHgCXd4usKck8Sn8iMjjtmen2gUaoV4K1n1GfyjdEB0ZkfLQBlz2UpDZ1bhEMmsv+mXAXhocgXn
- 9g4t8lh7
- dim0A/znEaovLH+uq44aSot8INshA+HLqWM75EXPJQyWBnEUCJoeja4rsl+hZ1I/DjL2MQgATwIk0FcqKHfWxE+NDy91HBf8iUYKQ7EQcGSLC26+3KyFDeulwkKZt3yGUv80G1Iijd05T+8zRS4j4kZsi4dSzXZis5vT/MkkD/Lwvx1/7sCWPX/SuBH0sIxEcgEiHE6vfKJlmySs0hsplXbho6Yd0Gf7OAzUqUVxzsMryMdyecfVxa/dye/d03jHxYSNRvfSUQH6ofSu/wU0j45zA8Cm0XJJ/FcUeDryL9oP3mTrJB1Mttg6ZNpVKheOlhf9bu+swfhZFpm0HlYDs8ANQz8fFnyVlxrEaj5MDYq5y3yTnG+NnNMEQbFHYsRaf9Bvn
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
+	autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1793352051-501363
+X-HE-Meta: U2FsdGVkX1864F2OGWGHL0gmqDm8hPCjBqHHYS4tfZqpVz9znE0jq77Jru/XY+ispU4nwwmIHuboj50bpUn1y9TnXFc+9bIqTe7MAp6pUHecpN2ccbpuI2x2HUZ7cAc5MOh2UwX1oxBMJQ6/8BL7NYP5ySZjyfEGNUlgCu/9+w/K7Uimxp19PF2W0/fKE6Vx+j/IGPiMdiXotmtffdA0Vzy9DU4PE69tgRAKHUS9sjepnNo9QjXfFOQCmtaoMaJmgdW4btVLtCkrc33BRFY0zlJOPl67X9DIfKqvNK08PEdF+xbADTmtr9r6Qtf+Mj6tid/uf6TiUzstG3DO9sQzGfSkg10gs+HoB8xcoJgJEwmuf5i56Yc65KJOfv6IX5DzXB5HhPJmjQesHgwCAPzPQ4wBt+vmRv2Mk1aY0HJnS7xb7wt7KdGyrorJ+4WODn0gu7Gh2JRKy69KgjC/L1jmY5FqWVKLYeq+NLqw/aMzB2nCDbdER2/gzjck3klSrYHGt5jYVW5HMTHLwTcd1PRRCsI9/VjQLTi0w9QEH+2hpGSUjftwRxyoUpJAoivKqgdhm6abruzkXT1jdETnNvBu7FnP8DKwu5/TrxQphF/BWaVDyvovK5hp8CIE2hBlixN2xKG7Ab2YG3+kkPvZzMV/pWGJdl8PuCNz8Q5o7cysQwlPhAMc3Bus1S32I9Fw1K3SzH7JmbrXn216Mr4twq5bJQjDH0S1F1NXTH6F51268qqBbt9N2ynSVessERdakmurRisQETwujwBvMFWdns6qY4vAQaHyKkxZJv+oZOZeQ7MeVLuPP6Z3FZIKiG0mfYhwZ6sUqlDDupBezPPCd5YY0j4QNTT2nu+lYoonWyFKxII/kQeFUa1cCLD3OhE5KoyoXEON4cWTQtvEtpON60bP6pDH7yh98tA2++8T9FSKzRbAuCDMqaxMVAUNYqfQwnBGoyzfsH89a8XJ/TnDmfG
+ sZ2Sq17d
+ ymIJCth3ABEoZ73JGNPNCN6sNdTuAi9twSyEGMWTWHRBByebRVvVgZUla1/nfVEM+EhfpSCK53FBdRLnZe5n+up0bkWPCYhl7rZ6+O3BdCZWqFUyVByz7vJGJ8swt4NUFygiormDbhf6CvJSSRipiW0BEGt5J9K/RGsKj9tYR6dcMxwy7SA9tumjOeDM67KIJU36dIT5oup4VSSEhR9VzQZDeNI4pkm41YEtckoE6ssBpe2xmfiwzZiNkCj3D0EFeYy/tSm3yANMSMC3wgsbPCP7aJ0S4p2YboS4PqRVJLVyiWItXWJe/a4KJas3HeEoqFfCp6kYkh4hFkdu4UrhO9RxdperWOtEO7rx92sQln17lxF/o/kMn1mzyOXCBqqQLHBXf3cQ25BNRXgXnhsdS55mJRw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,19 +134,58 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 2026-10-12T13:50:26+02:00, Daniel Gomez <da.gomez@kernel.org> wrote:
-> Hi Matthew,
->
-> I'm sending the Rust XArray for the current v7.4 cycle, although it is
-> probably too late for it. Just let me know if you need me to resend it
-> later, rebased or under a different tag.
 
-This missed the v7.4 merge window, so please drop it.
 
-I'll send a new one for v7.5 based on rc2. I'm also asking Mark Brown
-to add rxarray-next to linux-next. Let me know if you'd prefer something
-else.
+> On Oct 29, 2026, at 04:13, David Hildenbrand (Arm) <david@kernel.org> =
+wrote:
+>=20
+> Migration of anon hugetlb folios walks the anon_vma, so the file's
+> i_mmap_rwsem does not serialize it against move_hugetlb_page_tables().
+>=20
+> There are various issues with that. Most importantly, move_huge_pte()
+> releases both page table locks before the TLB is flushed. Migration =
+can
+> then find the destination entry and finish migration, reusing the old
+> folio while the TLB still has entries cached.
+>=20
+> Hold the anon_vma write lock across the move and the final TLB flush.
+> This also prevents concurrent rmap walks from missing entries moved
+> during rollback.
+>=20
+> When we must allocate a destination page table, flush the TLB before
+> dropping the anon_vma lock, then reacquire it after allocation.
+>=20
+> Dropping the lock only works around lockdep: hugetlb folios are not
+> reclaimed or migrated by allocation compaction, but their anon_vmas
+> share the lock class used by ordinary anonymous memory. Having a
+> separate lock class for hugetlb's anon_vma (like already done for
+> i_mmap_rwsem via hugetlbfs_i_mmap_rwsem_key) requires more thought.
+>=20
+> There is a concern that this can block page migration of anonymous
+> folios quite a while ... which is not really different to what happens
+> to page-cache folios today. If ever a problem, we can temporarily
+> release the lock.
+>=20
+> So let's keep it simple for now.
 
-Could you confirm by v7.4-rc5 that you can take it?
+Make sense.
+
+>=20
+> It is a shame that hugetlb has to implement everything core-mm =
+implements
+> in a different way that just screams for problems.
+
+Yeah, nightmare in MM.
+
+>=20
+> Fixes: 550a7d60bd5e ("mm, hugepages: add mremap() support for hugepage =
+backed vma")
+> Cc: stable@kernel.org
+> Reported-by: Chris Mason <mason@kernel.org>
+> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+
+Acked-by: Muchun Song <muchun.song@linux.dev>
+
+Thanks.
 
 
