@@ -1,66 +1,67 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92DC0606A31A
-	for <linux-mm@archiver.kernel.org>; Fri, 30 Oct 2026 02:59:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D9FA606A331
+	for <linux-mm@archiver.kernel.org>; Fri, 30 Oct 2026 03:02:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=hSHEsgsY
+	dkim=pass (1024-bit key, unprotected) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=P3EUpEDX
 Received: by kanga.kvack.org (Postfix)
-	id AB6D06B05B4; Thu, 29 Oct 2026 22:59:03 -0400 (EDT)
+	id 4A1C06B05B1; Thu, 29 Oct 2026 23:02:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A8DFE6B05B6; Thu, 29 Oct 2026 22:59:03 -0400 (EDT)
+	id 479566B05B6; Thu, 29 Oct 2026 23:02:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9A4016B05B7; Thu, 29 Oct 2026 22:59:03 -0400 (EDT)
+	id 3BE396B05B7; Thu, 29 Oct 2026 23:02:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 78A486B05B4
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 22:59:03 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 3A92CA8058
-	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 02:59:02 +0000 (UTC)
-X-FDA: 85377785724.13.F4B0BAA
-Received: from out30-100.freemail.mail.aliyun.com (out30-100.freemail.mail.aliyun.com [115.124.30.100])
-	by imf30.hostedemail.com (Postfix) with ESMTP id E418080003
-	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 02:58:58 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=hSHEsgsY;
-	spf=pass (imf30.hostedemail.com: domain of joseph.qi@linux.alibaba.com designates 115.124.30.100 as permitted sender) smtp.mailfrom=joseph.qi@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793329140;
-	b=S9r9iiu5NtdQ5rRTNxg0K/avI+oIYikJRUl6tFzbJivP78gEsLr3T6jhwe3hrEFO2lRx/s
-	0Spqizd1Dtlqwoq/IBB+t4GUf0U/U6PDCvZWMCsyaJGXtarhwhm/dJjmpJEEZSdTFCYCjC
-	2iqQ17rKwnkD5viBlMGB2X5HofuheBI=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=hSHEsgsY;
-	spf=pass (imf30.hostedemail.com: domain of joseph.qi@linux.alibaba.com designates 115.124.30.100 as permitted sender) smtp.mailfrom=joseph.qi@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 1A8C06B05B1
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 23:02:07 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id AACED120564
+	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 03:02:06 +0000 (UTC)
+X-FDA: 85377793452.22.8FDEE1F
+Received: from out30-112.freemail.mail.aliyun.com (out30-112.freemail.mail.aliyun.com [115.124.30.112])
+	by imf16.hostedemail.com (Postfix) with ESMTP id E169E180002
+	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 03:02:03 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=P3EUpEDX;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf16.hostedemail.com: domain of joseph.qi@linux.alibaba.com designates 115.124.30.112 as permitted sender) smtp.mailfrom=joseph.qi@linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793329140;
+	s=arc-20220608; t=1793329325;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=w/Jd2p/prMhPtETNelJfTcFSgzTHlHRnVEoen9y0JaA=;
-	b=yJlV88qz+FY6AnXm4XCNir9ieQ8EWKEMZV59RO+QlMzNQTGvh8Weh6oY834r22AkMGvk0r
-	kJ4+vxIQCPOuart3Mva8NcuajYs0bhPdsbn+1YRGLLT1YSDlyW2gClZZ2xQb9ccINQzwv2
-	wxVydFt1BvxJgZMQswDlaTLl+zSK4rQ=
+	bh=CHLQ7b2LcR7am1RKbZkh1e8kwZYbJ2OrwqImdsIBbbw=;
+	b=F2Hz8CXwoJTpKb08fLdS+EHybKKSX1+GpHrKb5E/FJ9bfpWbWJ/cYt2oYvAqTO/5lP6aUa
+	2EJcMvfHANc3tiBvK0r0gJS25BeCLcV0nQb8pMGB4nduCZys/tQqExVkFDhaaxyUGYrGMg
+	P8+1Qc18VmmiybsHWu7se5i4ehA+UXU=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=P3EUpEDX;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf16.hostedemail.com: domain of joseph.qi@linux.alibaba.com designates 115.124.30.112 as permitted sender) smtp.mailfrom=joseph.qi@linux.alibaba.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793329325;
+	b=yUlW3gEh4CgqbjqbAeP9YuFpkTDlQbL0sBkeKx8cUb7Rsy++CTf4ZwxZsNJRGfOZcdojp9
+	F4xeZoKisAGrCBe4c9wxVtyr+sMF0uFFenLePq1D27KxxGt9b4aMMVa/ZsH0erRiaZUL7m
+	loYkzsNfv5tA7rWUbI5y2MZffBXE2hk=
 DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=linux.alibaba.com; s=default;
-	t=1793329134; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=w/Jd2p/prMhPtETNelJfTcFSgzTHlHRnVEoen9y0JaA=;
-	b=hSHEsgsYOl/knZoiaKmOo9/szTsdb243LBtAHNpX/8InfeQ+O8kqyPkUuu0Awv2qPGL1dtHu80lxiinShoX3C//q9xO3uJS7nJ9pA7n/Uvoqx9PjlbXVT4MQjJDtbupw0uuaN9Pd4ZUnz3XFWW920V7V0LBApZUCRivWHHA722Q=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R961e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037026112;MF=joseph.qi@linux.alibaba.com;NM=1;PH=DS;RN=17;SR=0;TI=SMTPD_---0XDkufcn_1793329132;
-Received: from 30.221.129.214(mailfrom:joseph.qi@linux.alibaba.com fp:SMTPD_---0XDkufcn_1793329132 cluster:ay36)
+	t=1793329320; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=CHLQ7b2LcR7am1RKbZkh1e8kwZYbJ2OrwqImdsIBbbw=;
+	b=P3EUpEDXjFYc7t9vYYRCz1pheQWh2OCsVgQHajoLYY7mar314/KyFODZ1m/Bx3732YPlUX/9mgkhkxHtZvlKaP/r8tG5iUFYR6RjeVEzRHEvZlb44qO001lYjE8WqGw+itEsYWrea5uNPR7AtSB9r2wsmY6F8l5pa5OuFFW0k30=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R531e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033032089153;MF=joseph.qi@linux.alibaba.com;NM=1;PH=DS;RN=17;SR=0;TI=SMTPD_---0XDkxfAa_1793329318;
+Received: from 30.221.129.214(mailfrom:joseph.qi@linux.alibaba.com fp:SMTPD_---0XDkxfAa_1793329318 cluster:ay36)
           by smtp.aliyun-inc.com;
-          Fri, 30 Oct 2026 10:58:53 +0800
-Message-ID: <0a8576a4-e397-4a49-ab0e-8f0f32bf2642@linux.alibaba.com>
-Date: Fri, 30 Oct 2026 10:58:52 +0800
+          Fri, 30 Oct 2026 11:01:59 +0800
+Message-ID: <736cc238-0af8-417b-bf3f-5e8b002badaf@linux.alibaba.com>
+Date: Fri, 30 Oct 2026 11:01:58 +0800
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 19/34] ocfs2: keep the current mount options on remount
+Subject: Re: [PATCH v2 20/34] ocfs2: don't set SB_RDONLY after filesystem
+ errors
 To: Christian Brauner <brauner@kernel.org>, linux-fsdevel@vger.kernel.org,
  Jan Kara <jack@suse.com>
 Cc: Al Viro <viro@zeniv.linux.org.uk>, ecryptfs@vger.kernel.org,
@@ -71,24 +72,24 @@ Cc: Al Viro <viro@zeniv.linux.org.uk>, ecryptfs@vger.kernel.org,
  linux-efi@vger.kernel.org, linux-mtd@lists.infradead.org,
  linux-xfs@vger.kernel.org
 References: <20261029-work-fs-sb_rdonly-v2-0-2f44f64f0b66@kernel.org>
- <20261029-work-fs-sb_rdonly-v2-19-2f44f64f0b66@kernel.org>
+ <20261029-work-fs-sb_rdonly-v2-20-2f44f64f0b66@kernel.org>
 From: Joseph Qi <joseph.qi@linux.alibaba.com>
-In-Reply-To: <20261029-work-fs-sb_rdonly-v2-19-2f44f64f0b66@kernel.org>
+In-Reply-To: <20261029-work-fs-sb_rdonly-v2-20-2f44f64f0b66@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: ateoxzodapnunp4jsxjscs8ueqye8kis
-X-Spam-Status: No, score=-24.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+X-Rspamd-Queue-Id: E169E180002
+X-Stat-Signature: i4cb7poqhzuo3kftdyo533mmwf1i7ut4
+X-Spam-Status: No, score=-19.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,UNPARSEABLE_RELAY,USER_AGENT_SANE_1,USER_IN_DEF_DKIM_WL
-	autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: E418080003
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	UNPARSEABLE_RELAY,USER_AGENT_SANE_1,USER_IN_DEF_DKIM_WL autolearn=ham
+	autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-HE-Tag: 1793329138-10707
-X-HE-Meta: U2FsdGVkX18GfT90t8cj4dA2Ukw4/uoi47V81ExRCn8q0Jh1dn35q8aNcOKpTkywHJSiuIf+jJwbIF/HQYSQqRpdTOhyvb2g6UZhcajmOJO4o8zNK+W8/Uz24uYuPZeDayCmrm8nFwjGT4WPTkKmDoIq6l5UVw48OJywcmhPtVfPICgoRPPQdCEC1zaBfclDcEdFT9dsEXbCL232i6wGKLoF5cXP3mzVyxQu2FvyYyLsZUO7d5NcKXmmKe9x2tt7ilKcNALXp63TU/5jFCFmKPyZvrF4fMaoapEfdJK8odsqIrNRPhMhcWgFbAZCf8TjI/UUUq0yZAcJbYlO1EdrCQsa4mnOGhV46b83kok+LocnrgccF6puxZqujmPz37gRfn0s0KtbERgZrawFoldq/ZSnfdYu10WeTt2fkg2Z8hg8jBk6lXksoSehYfu5lxbcAzdVPbqP4AN5jWzNJr/8N0+RBD7D0Q3O3v+oGeRIryfER2ei/V22iMf05bjQwCF/GVIZzfl5LEwsgOTGflPfoopad0aRcYJMv7XQFEU8c16/HH0sN3HV4xRkVll6MQ7O62KAXZfVE5dJyDAn7/SV/oy8ye+R8IiOUEape946CGXDidmXOUMrQ9M9g4k7yCrrsBnlr9lT3vkxIYIJX9Z9wrVAL73ZbQAcQ2QBBNatowTxPMcc38PF/cK2x/Zt09ndPTkkITlBxKAa+lk7Gboajs4/qMfq3apsiQpC3WWaLnxcf6tdBKEQdgcvPe4QZoiWFrm9wta61VCUFM53T6dJn2Bj4tyquctfqUb1m4KgTj2let6/AMfBVVppMlZZ/lvW2UADWZ181cTiax6CwcZwk1qJpkg2BuvCgZjB4CREaGyZhwGv6JrIIeKjJh+fEbHA2WId7A/xyUIXzFvUy4o4cw9rV2GAnQt5VnCVPYHDWvCboHgdSrtxCf9MT/b8borTtDNgWrpii2rOlrsZO/V
- IIrTF02/
- OCrdxG5fEdL6bADlrFICrno8iNm6ITz5JHVqZWVascMujHXlgqRMs59QJy7yePO+vD0h4hCW52yZuPJV4oN7rDmU6kBwIfOrfCS6hV6ZmNAAhHoSI+rA64HdhddpoUitEQmmq0aARAmatT44x+m7VZRDKMowUZFhHWV2yOpuGoxmBoGHA/PfarVz+aE4NoYR3hY3WP0LvaBSvAoQGm8gQBmgxDXRSWn7IjXUrHFfKAygmx4yUIIHYiuw6+G3YgTkJOV35sNxTUHZpFCpeL86s0uAhxHIX/PffTF0fdHlBMvEXCGilCZTVRG0g5dVNG7nFMllYuNFqNZlMidyAiTdIUEoKJNIPI4bn59MMM1b7D3pl10w4zD6QIZibdONvLJ72+Raa
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1793329323-890128
+X-HE-Meta: U2FsdGVkX194NjwejrewrXdXYkVU5urAmTiToTG0jpXJo2C3DN+izL4g+cBpefTWiE9Qba+NPZfCaIafpWRn/FcLP+VA6FMOuvI96ifYZGfSam1W31NTwraDzjcs+PACtRVHPg+bKzCMczwglaUTygRO9LZ6sjJMhFSbRo7BzMYAUZEa5Pxt8cRtpP60Z6jk2X3TCgjK5tMPceA412e80ZCfHPPEYkgpXlyHTHgcTqzqEYhgorPK1u4htXAqXawZglP1Sgb3FVuJj9ytb6DBpdOi+fq7UDMnP8NOR+zcoA/kSoTJeQlH+OkDMx8gyLI5ZUneH7Gz3M9PeUEbTufxNrW9rmYGX9Fp2MEbY+rbi7EuYpVb+KMpVOMUkadDWCwwfXQ+URvRJpJ3AvqNXE4h/J2ucixo6tMCcQvadIwJLT1ds0uxpfo9h/rBNRufKYJ6jMPNxi0/gm/1SNfB083duHTpSpa5nhG3c9SN6N0xTsHf7uOggewfhkcsSh8+oeNummwx/bgxKShv4e/ii1psEYohH4HP/XER0ntI9UCFLVcWY48HHO5cCox2tffEMP+BRVGqyDeJ+GkgzoQ1xwIeGGr4fJPgiQKGjwdzv80HgCagKt2fTcqA6ZYwi4gp7KoNF7K6kktgjn0kW+QkUHtOcwnHZZBWwF7YV+Ckq84U2CP5v15X3SsviMUNrZMHul24c7sVsk2zt2YqHCrgG93R4m4tLsQZl1hKzwCKqFKxhAGnTJWd+1YUKFuTGVu9puIYxJx5v+8lGyoubrFx0WwQgUN4pwmQ9hlSYF7xk7XkWbFKRogjIBm56UmwDNXMjDz54nX5bYRddKbu57LrApbZaemHqX9OixXRmQmiVrJGCfkqZPegKUKcn+HWvMfPJLxUmZftQQRouGZ6ZgYjQ8a8rduvMS5jIkcwzjqtSTsvL/RYwDIlYyjnuXPFiodI+qrk/DxkN4XrBBWU5z+wnJm
+ iFLumaNN
+ 6OmmqkcB5J//+a6BPE7mUE/y/rrNZvyI54q59FKIWODoOd0Py3k0of+2r49x2KIULJSBdW6hD9c6AniNS1HjKPvJtcNTqE5Sx/i7PBiXcZKc16Ezpa5gUzFEQZ84R/faV0GDaLfw/plFuD+mAtLo1frMaP0+7C/FWVg7BEVGcut+eCMjbcUA0kJJvOqyr4M92Cv0BHDA+XFxlnV8g7fNxrzZfu8Sj5YVuF/+3/RXq1g0Bw4NWxtDS+5ZkOg0OMOrMfH2AtcukvjeBpMxt2DAqf6uAOfID8CwjaJ0ssLU8ZWDNMCbEVNwkaBomhJ+qotIQygmIJPh1sEkR8u0XXlmLcadrr/Grpjy2ih8e7k3ZXTkWcxF3TVXXRn0oq36+sY3dHKK/uUrnyau2pBFmPqoOIiFrERkkE9AhVd7H
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,76 +101,34 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 
 
 On 10/30/26 12:07 AM, Christian Brauner wrote:
-> ocfs2_init_fs_context() doesn't inherit the current mount options for a
-> reconfigure. But ocfs2_check_set_options() insists on exactly one
-> heartbeat mode and ocfs2_reconfigure() refuses to change the data mode.
-> So every remount without heartbeat= fails with EINVAL, including
-> emergency remount (sysrq u) which passes no options at all, and that
-> WARNs for every ocfs2 mounted read-write. A remount that does pass
-> heartbeat= silently resets every option it doesn't repeat, e.g. noacl,
-> errors=, barrier= and preferred_slot=.
+> With errors=remount-ro, the default, ocfs2_handle_error() sets SB_RDONLY
+> without holding s_umount. If that happens while the filesystem is frozen
+> through bdev_freeze() thaw_super() leaves the s_writers rwsems locked.
+> Writers hang and so does umount because ocfs2_shutdown_local_alloc()
+> needs sb_start_intwrite().
 > 
-> So start a reconfigure from the current options like exfat and gfs2 do.
-> Asking for a different data or heartbeat mode still fails with EINVAL.
+> The soft read-only state doesn't stop modifications on its own. Every
+> read-only mount sets it and those still need transactions for recovery,
+> the local alloc and the truncate log. Everything else was stopped by the
+> VFS because of SB_RDONLY. So call sb_set_emergency_ro() instead which
+> keeps it that way, and keep setting SOFT_RO for the existing
+> ocfs2_emergency_state() checks.
 > 
-> The next patch stops ocfs2 from setting SB_RDONLY after errors. An
-> errored ocfs2 then stays read-write and emergency remount would run into
-> this as well.
+> The xattr and ACL setters get a check of their own because ecryptfs
+> calls them without write access on the lower mount. It sits in the xattr
+> handlers and not in ocfs2_xattr_set() because chmod and setfacl store
+> the ACL through it after the new mode was already committed.
+> 
+> Quotas aren't enabled at mount in the error state because that writes
+> the quota files. ocfs2_sync_fs() doesn't flush anything anymore and a
+> remount to read-only doesn't suspend quotas. Q_GETQUOTA, Q_GETNEXTQUOTA
+> and Q_SYNC can still start transactions. I've left that alone.
+> 
+> Writes through file descriptors opened before the error fail with EROFS
+> and umount completes instead of hanging.
 > 
 > Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
-> ---
->  fs/ocfs2/super.c | 13 +++++++++++++
->  1 file changed, 13 insertions(+)
-> 
-> diff --git a/fs/ocfs2/super.c b/fs/ocfs2/super.c
-> index 0af2245ae303..67283244426e 100644
-> --- a/fs/ocfs2/super.c
-> +++ b/fs/ocfs2/super.c
-> @@ -1222,6 +1222,19 @@ static int ocfs2_init_fs_context(struct fs_context *fc)
->  	mopt->resv_level = OCFS2_DEFAULT_RESV_LEVEL;
->  	mopt->dir_resv_level = -1;
->  
-> +	/*
-> +	 * Start from the current options so a remount only changes what it
-> +	 * specifies, emergency remount passes none at all.
-> +	 */
-> +	if (fc->purpose == FS_CONTEXT_FOR_RECONFIGURE) {
-> +		struct ocfs2_super *osb = OCFS2_SB(fc->root->d_sb);
-> +
-> +		mopt->mount_opt = osb->s_mount_opt;
-> +		mopt->atime_quantum = osb->s_atime_quantum;
-> +		mopt->slot = osb->preferred_slot;
-> +		mopt->user_stack = ocfs2_userspace_stack(osb);
-> +	}
 
-ocfs2_reconfigure() decides the transition from fc->sb_flags alone without
-sb_flags_mask test, unlike reconfigure_super(). And fspick() passes
-fs_context_for_reconfigure(target.dentry, 0, 0). So on a read-only mount:
-
-  fspick(AT_FDCWD, "/mnt", 0)        sb_flags 0, sb_flags_mask 0
-  fsconfig(fd, FSCONFIG_SET_STRING, "atime_quantum", "30", 0)
-  fsconfig(fd, FSCONFIG_CMD_RECONFIGURE)
-    reconfigure_super()
-      ocfs2_reconfigure()
-        (bool)(0 & SB_RDONLY) != sb_rdonly(sb)  -> 0 != 1, enters
-        fc->sb_flags & SB_RDONLY                -> 0, takes the rw branch
-        sb->s_flags &= ~SB_RDONLY
-        osb->osb_flags &= ~OCFS2_OSB_SOFT_RO
-        ocfs2_enable_quotas(osb)                -> writes the quota files
-
-The final WRITE_ONCE(sb->s_flags, ...) in reconfigure_super() then
-leaves it cleared, because SB_RDONLY is not in sb_flags_mask. The same
-falls out of a legacy remount whose flags omit MS_RDONLY.
-
-So it seems we should test sb_flags_mask as well?
-
-Thanks,
-Joseph
-
-> +
->  	fc->fs_private = mopt;
->  	fc->ops = &ocfs2_context_ops;
->  
-> 
-
+Looks fine.
+Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
 
