@@ -1,91 +1,92 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6369E606A329
-	for <linux-mm@archiver.kernel.org>; Fri, 30 Oct 2026 16:10:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7500A60A2601
+	for <linux-mm@archiver.kernel.org>; Fri, 30 Oct 2026 16:10:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=QI6bw7Wp
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=lTf12mwh
 Received: by kanga.kvack.org (Postfix)
-	id 5F8506B05BA; Fri, 30 Oct 2026 12:09:59 -0400 (EDT)
+	id 5F8716B05BB; Fri, 30 Oct 2026 12:10:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 582C46B05BB; Fri, 30 Oct 2026 12:09:59 -0400 (EDT)
+	id 5836E6B05BD; Fri, 30 Oct 2026 12:10:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 423506B05BC; Fri, 30 Oct 2026 12:09:59 -0400 (EDT)
+	id 44A8C6B05BE; Fri, 30 Oct 2026 12:10:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 16C746B05BA
-	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 12:09:59 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 18B036B05BB
+	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 12:10:01 -0400 (EDT)
 Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 957CA120785
-	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 16:09:58 +0000 (UTC)
-X-FDA: 85379778876.21.AE2755D
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf20.hostedemail.com (Postfix) with ESMTP id E23991C0009
-	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 16:09:56 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QI6bw7Wp;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf20.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 501BD40592
+	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 16:09:55 +0000 (UTC)
+X-FDA: 85379778750.21.5C6A241
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf09.hostedemail.com (Postfix) with ESMTP id B1E9C14000B
+	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 16:09:53 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lTf12mwh;
+	spf=pass (imf09.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793376597;
+	s=arc-20220608; t=1793376593;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Fcm+hIfEyXj/1FIUdG0rmsM/tGutxaQ6UYWcc0TMcU8=;
-	b=mckVeYuo/mLFnwOiU8Ye2EfQZqzlbYwrZD3f5cNvWIh9OLe8JW/IxrW8T9pCCHUsO69T4C
-	rDcy7lRnvmmKihHZmELoeWbyCtuUXArFytbYdFhD61vPLO/qPUbvK6yhGD5Ois1VQXWJap
-	2+NjHMeimY0FRhHfbFSdfoqZzvaAQrY=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QI6bw7Wp;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf20.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+	bh=2dFc8Ot80oApMbDR2tgbKCiRs0Ur7pPi8cDZxbTcx58=;
+	b=0VMIvHjqniU665yuwvKQqL0/Jj0FQ57A8yP+AcuG95+pomb8rZP5kxYHFx9y6+/4lnXgD9
+	gGoONbJVRmHZLLttFvto47VJ9QZEIcSeXRCupyiNXDiXAluhBVXtDpgaiMCiTrpma+3WPU
+	zYKiUsjN9uluJuF8g00KEW8oel+JYFI=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793376597;
-	b=DtN7asWqY/Obj/zkHQt9xJWgCUk54oSPs6DhMDdCaXYMmo3LIsdXTg4L/0GLwU5z3StjTr
-	USZz2jIbM8eciOs/zKsZm+Kmn27b66+VMy02Z4kOcjd1xeg6gX2E+seToZg7wcvkMxusW+
-	vA23vD+BgXFjc/lrjApQzsVqyqhDAUw=
+	t=1793376593;
+	b=OdaitDwSZSdNkRg+OCRKwrbqBHz0EkJJi4WC1EZ3xidrRRSJGukTRobvJTSs9dqpERXi+y
+	x27kN4hCYv7ec3KUSXH8tg7JqxHReoPLH7J2pkSM1L35iAWi0rLcZmDolXS0u3YSs+UHrT
+	2sPNznMoEYHuh1fcuf51NedwG25BaJw=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lTf12mwh;
+	spf=pass (imf09.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 39FDA43EAE;
-	Fri, 30 Oct 2026 16:09:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CF091F00A17;
-	Fri, 30 Oct 2026 16:09:55 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 4B79260617;
+	Fri, 30 Oct 2026 16:09:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6618E1F00A1E;
+	Fri, 30 Oct 2026 16:09:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793376596;
-	bh=Fcm+hIfEyXj/1FIUdG0rmsM/tGutxaQ6UYWcc0TMcU8=;
+	s=k20260515; t=1793376593;
+	bh=2dFc8Ot80oApMbDR2tgbKCiRs0Ur7pPi8cDZxbTcx58=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=QI6bw7Wpe0jvnRPZ/15BzNWtxNle/TBdjDueozdSB/u2+/+fN4EKSixohfH5HY8vF
-	 hPc/925bZQTYTslO+O7V3sjaQP8Q4jnS47UWxyoQhVd3NuruyQmqu5PyHSYDWcmfVF
-	 2r6pd4ob3QSIt8N/S0Ra/BZ8+RRVJk2wFTjqxvITxBIchJXK6FE66lWDShwdQqP0CN
-	 lUBtcpSOBG+XvEynjhP6CpHYGeTlxDVG3rz9pVGpRy/D8t6rMhUhVLrDhyseFKXrbY
-	 b0W63QZ0rPxzdHARLQo2Yxq7pucvv7/7vOOY68ITxchgMhLfPg+AWOiAcUjYzSEkWH
-	 Rw2ljddrjlsEg==
-Message-ID: <sashiko-outbox-191228@kernel.org>
+	b=lTf12mwhklBjlUqb3cRkM5KDg5S3wMQNXUK8Ps1PQrb4lDrPs+8SUUbNfVM9k60go
+	 sq33nmWdNJP2/ooVyv/A8JtR7SqRH1xaFrIb1wTwPo6tno8R1kmwlWzPOuOQO/Wb36
+	 OQY6IWhqk7dvfdBO1gkPftxQ7EYxAYANZe7W/+pTCbn5N4f7GprOcmdd+PU1OuXero
+	 I3kdHZd+ycOzNZzOm6wuypLOO/3NkhATjsTlOiNSsaojyULc7J7O95lp2mt2K1FBC9
+	 AOyCAtn5x2auHrMhdvw/Z7ZVbCv6dUGswZKj0CubKY1dOwMHIwIGzJXqAoIISsFj0c
+	 FMOYsOZHnc1Pw==
+Message-ID: <sashiko-outbox-191225@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 09/34] exfat: don't set SB_RDONLY after filesystem
+Subject: Re: [PATCH v2 06/34] nilfs2: don't set SB_RDONLY after filesystem
  errors
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Christian Brauner" <brauner@kernel.org>, "Jan Kara" <jack@suse.com>
-Cc: "Al Viro" <viro@zeniv.linux.org.uk>, linux-ext4@vger.kernel.org, linux-mm@kvack.org, linux-efi@vger.kernel.org, linux-mtd@lists.infradead.org, dsterba@suse.cz, tytso@mit.edu, "Mark
+Cc: "Al Viro" <viro@zeniv.linux.org.uk>, linux-ext4@vger.kernel.org, linux-mm@kvack.org, linux-efi@vger.kernel.org, linux-mtd@lists.infradead.org, "Karl
+ Mehltretter" <kmehltretter@gmail.com>, "Ryusuke Konishi" <konishi.ryusuke@gmail.com>, dsterba@suse.cz, tytso@mit.edu, "Mark
  Fasheh" <mark@fasheh.com>, "Joel Becker" <jlbec@evilplan.org>, "Joseph Qi" <joseph.qi@linux.alibaba.com>
-In-Reply-To: <20261029-work-fs-sb_rdonly-v2-9-2f44f64f0b66@kernel.org>
+In-Reply-To: <20261029-work-fs-sb_rdonly-v2-6-2f44f64f0b66@kernel.org>
 References: <20261029-work-fs-sb_rdonly-v2-0-2f44f64f0b66@kernel.org>
- <20261029-work-fs-sb_rdonly-v2-9-2f44f64f0b66@kernel.org>
+ <20261029-work-fs-sb_rdonly-v2-6-2f44f64f0b66@kernel.org>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Fri, 30 Oct 2026 16:09:55 +0000
-X-Rspamd-Queue-Id: E23991C0009
-X-Stat-Signature: bpdm53k81x7g8hbhq4odi6w91wrc665d
-X-Rspamd-Server: rspam06
+Date: Fri, 30 Oct 2026 16:09:52 +0000
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: B1E9C14000B
+X-Stat-Signature: mz7yh7addb4fgsykhhswbgufopduu8qz
+X-Rspam-User: 
 X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
 	autolearn_force=no version=4.0.1
-X-Rspam-User: 
-X-HE-Tag: 1793376596-398304
-X-HE-Meta: U2FsdGVkX18lNu9U8Z1JleffXVJb7cSL6h06/+r9bwCi4sNGG4nBtWvSHVGRWJILr/y09dhieWLYsJy9diAugFKCLdk7GL23O2cIjmo54E2c5xHj9U2/U6X2j5IsDDRGPkPNS/58rhaFWl2zqg2EGMqIQws0Y+GHboUzEAk7IURxvi6yT2Ww8XPlYCla2gt5yd0C7IiabU9w12lsmIeVMJvBtpt+vMmE5DpIRIvMvn2vduTYV7nlxQebohxJIlXwYCxpu7F1oQk/iwMCOWndb9iP9IDeqRU1+aNeZtV6tZcK64NhnjiIuHESJYCni83QGycSwkZpGY3Da280p3gAh9KErnmQzvdP7qmhV7fFK6FwF10HNeiynFu+RhfjDZKpnfveW1PxtvpXc/725wNN5/aJQybXEIaY6yUCbmXPZ7xpYNN2Fh3UI/oxzC6gPswzDGfLQ7WzbwtUvcGjcjzFD3fdjbZw1UeAwayM437dLplJu9W6B15k8Xw1WjxiyCdqCTyEDi5z8Xzpb74jg5VWcN1L3GFUc+C+fVgLXPCfbb14PJScfXb7rYplcGk5x4f1oajcIYcZBkRMneAbHczbhfpwCBfsMRELnzvt6wPAHACaz1oLpsDr8oPM9UV3BbfZIeak3n1IZhRo59MdAVG0+OPpQTaqPZG7h2Crmj35HdiiufjCbCMVG4so/VFZWBUTvxm1uupXSKbaoSKl4hvbBzjpz7LVcPP7wY1Vc50XTehvLeUQGVRJ2JvmVACTtclO0UOKHbu+7VpXrUgqMK55FtsPyfvzgIcv3pLOi+T/Z68XspJF46s8sVUquBwr1VLxeV7P4G5ocJfa+nKDryARoD7sc2aEX/sQFm1TyBz2O4gnrr2CRv9tk+y2v6vt5vMlJ7iCc+jX42Gyzn3RFapCNEAC/+yvGADl9kMlJRBQ72JLVpFJGRjXPJ5Ux8CdPQf3vBaWbdxpe8CAC/MG5Y2
- PwKmWfnd
- kPjFDb0VdOwgn47PIBqs8+KQvhReWLfE8a6ExKWDKTbPzBtvGgNHzzcTnTNelvdqTkmPiyJMCfPeKNnBIPP1I0LP6j6jl+erp8kmMqVaJVKywUfYR4OtqGfuJp+7ym5KnlBIf5VnIS6XH28LUfj1TUc9ZuW4xgBAxhZdf+tlMFZ62i+dkVBI2/p1FUBSxC36xcrmei5P5H9SoTJNB/VgjuvCV8JsJKHsxga6G5EgVZR1c2nd+ZUpPeTTm6hFTBb2RsHF9A9pld1t8n2s+B6RjY0Bl4cudcolhXYU7TJwzkYjQpWfz+swFMRI8MRad0Qagdg6jeORrkJj05ySrhkzI6GhH/hEd2GxqaIJ0nb/6yb8Eq0ZQbiYZqisfDga4c+xhUWk3M0ruAFpZA1gMIyYsk/a4XR9ahOABzFxhMv1EOUqaHnoAr/4fWyzgudURimHDlduvyHoeLW79tz1Co+yQKz9h8JKxC2B45m3j7zuS+9plrBNbqCJj3MMeH/yBpn3Wb6VJJ27pI1e2gV88E+LI5YEC9qhorO417QgwTCN8XUUacVCE82+Q8db1DhRJR+2QchGrJF8IvPbehzSbALqpR06Fs3/KtaC8tRkTNtQvXqNWS9Zhd0d2BUfUuzI0OBv/lXZkTJGRovk8Iv0=
+X-HE-Tag: 1793376593-294588
+X-HE-Meta: U2FsdGVkX185SkNG67JpsD5XanR5K38kYq2WEon1kI0ElrnoPyKHvWMcKYR+8fX/nQIkJWm9aBwSNR5cHAXlC8RYFlh2KfBgCFL3lNEOepf0JxppYjlcRNooblaB3cLtSm+2KyMN2JodJMo1Gu8eEyJP81CqRKTpaxN0BdAl13yzKzVNgqfoE1j0hsmc4M/eMmSNeV6DUCYp79fxjZnDJBuzGo2Q7QxuIw2GyggsRJp8tTw48O5ith12NsnRBeiBth6WBogpRw9R6ARg/WWMBCQDgOz6Egzjc+RasHSiK0sZ4+0hvEw6WgLj1Bsv+YxFyq5KYLEfi0m7k5qPxbJJH/bpPtx4TQKJp26wDac43He9KgEtDOcU0yhJrNSUlKR6SL1EXP9y0uSp62ws5wM98Z6BfbQLSkdDWmmdsGAMh24KKPfDoduTo1fm3kDCad9ruOsSioYq5CDqvYLJ8SueOn7F48nIh/Izcae5arMzsDmCXQIKa1Lj2b41GLMjzymGRqCcMIXJeEM0HCRrONznSCOh0wh8JeKmji1r40il4QwOFBN+7GK4wSggVnIDFqrFcVeGMAkiGsoD7pnl8yjtZvzKtehKqrS3H/btYDmRi3ZPT+ev/HpDtxzuEKpNaLR+j74/mcS9hG4gKWh3C1Epngmj1yvNX5/2tw12H9KE+A8Z7oDQQD7hdgH2fLVppB4GHeXAe/SIknQYkfpL5XYyVvUYwJ0zk+xBE9l5OgB2cYGYXQjao8JLw+iEApQpptpeTzSnRYefgyYI656jhfNWPA6vlwBwOK9fTKZ1aZm1u55Sp5RCjTt1hLCFDQ99Z8h4ckhN4//NJwL0tgtIMywgwclI43txfNuIwhJT6GfKJr+tmQ0poH9tFfZkmOYDYfZ6yXISPiEav+S20/1fOPPnLohjGy8Xk9pui1DG62hO0pD/xnLtkDu+2rjZLQnU9HPSyWgWtI56gUxAudLSR6N
+ SNGwhlmk
+ cA8bXygOXWmw09rPp7oCo/H5vJkvumHxMGamTvdqE0jgD7yxU4LYfcI0aHq5e5W4/BXWcvT+JHl12x1rrXCQO1LBSz9RgNaxU4XBkbKM5cDfktpY3hO64ePE9cxpKFkc+3W8GDXYFMYt+QD7JU3uV5wrC3cLrGybl/W+5eW7naSg0bHfiIDoWkOG81nLClQbJTl0gFn/I6qgt7DfoGDsBks+u+0icMQ7IOyuvlDqzDoTtV8BRyP8+C9ciTAyvEVO96BVJAyhMflwdPbZGcOvnlgaMIxirQ+3a7b1cWKppqnAwZ4tbXaM1rlU6nYRRcgbiwHbmq2hBv7w5MpWO71zJ6l0FMBEqjvDcD7WTvgEMLbsW2hz4mDJjm0ElEv0xBcWm5WECSYP0EsRvlThp4BmrJOA4+UvlcwCp1E9fxoYsuP6YP2pr/6CQ3rYF4hMzHZVCCXF17bebucezmPqw6NpRhIKpyZdUSTXnAFLT2FzzI2eDKjfhZEqrQuJ/FbjmAte0OFFCPezmb1NrT7dkp5gnIXmk429/fE8qBQIfLwebS4RswWAU0Q4k0gxpqDw2XnDYRrXtQpxMKz5dbyJSvcnebUgJ3UWWPSRh5lwKXGzRWu3kADRwtac/7bBv2TkOEf6cz2SMviVdjKvfaNxdnkG0LEYkZg7CeCZgMrFKLFNIJWiTpZ20z+70N6KT4tK2mDXwN9QR+virpHPbobrtLuMsWZVB6w+jPzohJX5HZmm/2E160mE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,105 +98,110 @@ X-Archived-By: <archiver.kernel.org>
 
 Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [High] exfat: __exfat_truncate() and exfat_evict_inode() modify fs in eme=
-rgency RO
+- [Medium] nilfs2: nilfs_reconfigure() and nilfs_get_tree() bypass sb_emerg=
+ency_ro()
 --
 
-commit 17c10ac04b3dad50bb870e977d92e72ea9d3bcfd
+commit ff163f1297bca8964f03776869c3a8bc9e3c38ba
 Author: Christian Brauner <brauner@kernel.org>
 
-exfat: don't set SB_RDONLY after filesystem errors
+nilfs2: don't set SB_RDONLY after filesystem errors
 
-This commit introduces EXFAT_FLAGS_EMERGENCY_RO and exfat_emergency_state()=
- so
-that filesystem errors after mount mark the filesystem emergency read-only
-rather than setting SB_RDONLY without holding s_umount.
+This commit replaces setting SB_RDONLY in __nilfs_error() with
+sb_set_emergency_ro() and introduces nilfs_sb_rdonly() to guard write paths
+after filesystem errors without taking s_umount.
 
-> diff --git a/fs/exfat/inode.c b/fs/exfat/inode.c
-> index 5129df1e79b44..3f24e5bd3eb11 100644
-> --- a/fs/exfat/inode.c
-> +++ b/fs/exfat/inode.c
-> @@ -114,8 +114,9 @@ int exfat_write_inode(struct inode *inode, struct wri=
-teback_control *wbc)
->  {
->  	int ret;
+Link: https://lore.kernel.org/r/20260903060855.4610-1-kmehltretter@gmail.com
+
+> diff --git a/fs/nilfs2/super.c b/fs/nilfs2/super.c
+> index 2e3b591c117c9..edb7d379ecbdf 100644
+> --- a/fs/nilfs2/super.c
+> +++ b/fs/nilfs2/super.c
+> @@ -137,12 +137,13 @@ void __nilfs_error(struct super_block *sb, const ch=
+ar *function,
 > =20
-> -	if (unlikely(exfat_forced_shutdown(inode->i_sb)))
-> -		return -EIO;
-> +	ret =3D exfat_emergency_state(inode->i_sb);
-> +	if (unlikely(ret))
-> +		return ret;
+>  	va_end(args);
 > =20
->  	mutex_lock(&EXFAT_SB(inode->i_sb)->s_lock);
->  	ret =3D __exfat_write_inode(inode, wbc->sync_mode =3D=3D WB_SYNC_ALL);
+> -	if (!sb_rdonly(sb)) {
+> +	if (!nilfs_sb_rdonly(sb)) {
+>  		nilfs_set_error(sb);
+> =20
+>  		if (nilfs_test_opt(nilfs, ERRORS_RO)) {
+>  			printk(KERN_CRIT "Remounting filesystem read-only\n");
+> -			sb->s_flags |=3D SB_RDONLY;
+> +			/* SB_RDONLY needs s_umount, see sb_set_emergency_ro(). */
+> +			sb_set_emergency_ro(sb);
+>  		}
+>  	}
 
-[Severity: High]
-Should __exfat_truncate() or exfat_evict_inode() also check
-exfat_emergency_state()?
+[ ... ]
 
-When an unlinked file is closed (or during unmount) after a filesystem error
-sets EXFAT_FLAGS_EMERGENCY_RO (or SB_STATE_EMERGENCY_RO in the follow-up
-commit "exfat: use the generic emergency read-only state"),
-exfat_evict_inode() calls __exfat_truncate():
+> @@ -1141,6 +1146,10 @@ static int nilfs_reconfigure(struct fs_context *fc)
+>  	if (fc->sb_flags & SB_RDONLY) {
+>  		sb->s_flags |=3D SB_RDONLY;
+> =20
+> +		/* After an error nothing may be written, just go read-only. */
+> +		if (sb_emergency_ro(sb))
+> +			goto out;
+> +
+>  		/*
+>  		 * Remounting a valid RW partition RDONLY, so set
+>  		 * the RDONLY flag and then mark the partition as valid again.
+> @@ -1152,6 +1161,12 @@ static int nilfs_reconfigure(struct fs_context *fc)
+>  		__u64 features;
+>  		struct nilfs_root *root;
+> =20
+> +		/* The VFS doesn't refuse this when nilfs_get_tree() calls us. */
+> +		if (sb_emergency_ro(sb)) {
+> +			err =3D -EROFS;
+> +			goto ignore_opts;
+> +		}
+> +
 
-fs/exfat/inode.c:exfat_evict_inode() {
-	truncate_inode_pages_final(&inode->i_data);
+[Severity: Medium]
+Can this sb_emergency_ro(sb) check in the else branch of nilfs_reconfigure()
+be bypassed after an error on a read-write mount?
 
-	if (!inode->i_nlink) {
-		i_size_write(inode, 0);
-		mutex_lock(&EXFAT_SB(inode->i_sb)->s_lock);
-		__exfat_truncate(inode);
-		mutex_unlock(&EXFAT_SB(inode->i_sb)->s_lock);
-	}
-    ...
-}
+When __nilfs_error() calls sb_set_emergency_ro(sb) on a read-write mount,
+SB_RDONLY is not set in sb->s_flags, so sb_rdonly(sb) remains false.
 
-Similarly, if a write in exfat_file_write_iter() encounters a corrupted FAT
-chain or cluster error that sets EXFAT_FLAGS_EMERGENCY_RO via
-exfat_fs_error(), the error unwind in exfat_extend_valid_size() or
-exfat_write_failed() calls exfat_truncate() -> __exfat_truncate().
+In nilfs_reconfigure(), right before the if (fc->sb_flags & SB_RDONLY) bloc=
+k:
 
-Because __exfat_truncate() in fs/exfat/file.c calls __exfat_write_inode()
-directly rather than exfat_write_inode(), it bypasses the
-exfat_emergency_state() check above:
+	if ((bool)(fc->sb_flags & SB_RDONLY) =3D=3D sb_rdonly(sb))
+		goto out;
 
-fs/exfat/file.c:__exfat_truncate() {
-    ...
-	if (__exfat_write_inode(inode, inode_needs_sync(inode)))
-		return -EIO;
+When a read-write mount or remount is requested (!(fc->sb_flags & SB_RDONLY=
+))
+on a superblock where sb_emergency_ro(sb) is true and sb_rdonly(sb) is still
+false (for example, via nilfs_get_tree() -> nilfs_reconfigure() when the
+superblock was kept alive by a snapshot after the corrupted read-write mount
+was unmounted, or via reconfigure_super() -> nilfs_reconfigure() on a direct
+remount,rw without an intermediate remount,ro), this comparison evaluates
+false =3D=3D false and jumps straight to out, overwriting nilfs->ns_mount_o=
+pt and
+returning 0 instead of -EROFS.
 
-	/* cut off from the FAT chain */
-	if (ei->flags =3D=3D ALLOC_FAT_CHAIN && last_clu !=3D EXFAT_FREE_CLUSTER &&
-			last_clu !=3D EXFAT_EOF_CLUSTER) {
-		if (exfat_ent_set(sb, last_clu, EXFAT_EOF_CLUSTER))
-			return -EIO;
-	}
-    ...
-	/* free the clusters */
-	if (exfat_free_cluster(inode, &clu))
-		return -EIO;
-    ...
-}
+Also, in nilfs_get_tree(), when nilfs_tree_is_busy(s->s_root) is true:
 
-This modifies directory entries, FAT entries, and allocation bitmap buffers=
- via
-exfat_free_cluster() -> __exfat_free_cluster() -> exfat_clear_bitmap() (whi=
-ch
-also writes synchronously when IS_DIRSYNC(inode) is set), and if mounted wi=
-th
-discard (which __exfat_fs_error() does not clear, unlike
-exfat_force_shutdown()), issues block device discard requests via
-exfat_discard_cluster() while walking a potentially corrupted cluster chain.
-Furthermore, because SB_RDONLY is no longer set on error, sync_filesystem()=
- no
-longer returns early at sb_rdonly(sb) and flushes those dirtied metadata
-buffers to disk.
+	} else if (!ctx->cno) {
+		if (nilfs_tree_is_busy(s->s_root)) {
+			if ((fc->sb_flags ^ s->s_flags) & SB_RDONLY) {
+				nilfs_err(s,
+					  "the device already has a %s mount.",
+					  sb_rdonly(s) ? "read-only" : "read/write");
+				err =3D -EBUSY;
+				goto failed_super;
+			}
 
-Can __exfat_truncate() and/or exfat_evict_inode() check
-exfat_emergency_state() to prevent metadata modifications and discards after
-the filesystem enters emergency read-only state?
+Because s->s_flags does not have SB_RDONLY set after sb_set_emergency_ro(s),
+doesn't this treat the emergency read-only superblock as read/write, reject=
+ing
+a secondary read-only mount with -EBUSY while allowing a secondary read-wri=
+te
+mount?
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261029-work-fs-sb=
-_rdonly-v2-0-2f44f64f0b66@kernel.org?part=3D9
+_rdonly-v2-0-2f44f64f0b66@kernel.org?part=3D6
 
