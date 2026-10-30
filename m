@@ -1,134 +1,141 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F037606A323
-	for <linux-mm@archiver.kernel.org>; Fri, 30 Oct 2026 17:23:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4167606A322
+	for <linux-mm@archiver.kernel.org>; Fri, 30 Oct 2026 17:23:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=broadcom.com header.i=@broadcom.com header.a=rsa-sha256 header.s=google header.b=MdSsXvC4
+	dkim=pass (1024-bit key, unprotected) header.d=broadcom.com header.i=@broadcom.com header.a=rsa-sha256 header.s=google header.b=Gqb9e2vA
 Received: by kanga.kvack.org (Postfix)
-	id 105166B05B2; Fri, 30 Oct 2026 13:23:33 -0400 (EDT)
+	id C00E16B05B5; Fri, 30 Oct 2026 13:23:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0B5E46B05B5; Fri, 30 Oct 2026 13:23:33 -0400 (EDT)
+	id BB2176B05B7; Fri, 30 Oct 2026 13:23:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EE6BD6B05B6; Fri, 30 Oct 2026 13:23:32 -0400 (EDT)
+	id 98CEE6B05B5; Fri, 30 Oct 2026 13:23:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id C3BF86B05B2
-	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 13:23:32 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 4ADE8A080F
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 6CA7A6B05B5
+	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 13:23:35 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id D55B314064A
+	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 17:23:34 +0000 (UTC)
+X-FDA: 85379964348.01.469C2FD
+Received: from mail-pj1-f98.google.com (mail-pj1-f98.google.com [209.85.216.98])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 82FDC4000B
 	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 17:23:32 +0000 (UTC)
-X-FDA: 85379964264.20.9FD179D
-Received: from mail-pj1-f100.google.com (mail-pj1-f100.google.com [209.85.216.100])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 04365A0003
-	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 17:23:29 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=broadcom.com header.s=google header.b=MdSsXvC4;
-	spf=pass (imf25.hostedemail.com: domain of florian.fainelli@broadcom.com designates 209.85.216.100 as permitted sender) smtp.mailfrom=florian.fainelli@broadcom.com;
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=broadcom.com header.s=google header.b=Gqb9e2vA;
+	spf=pass (imf07.hostedemail.com: domain of florian.fainelli@broadcom.com designates 209.85.216.98 as permitted sender) smtp.mailfrom=florian.fainelli@broadcom.com;
 	dmarc=pass (policy=reject) header.from=broadcom.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793381010;
-	b=r6/iMK1yyf4am5W6v8kJYjwzI/jPvsqdaVkd5kgScxgcwW9n7o/hEVydMD8dDZblZtYvNG
-	NpINnlO289K6sgp/MaFSUMePHslIHRmNMeGkeKcMQXu80ZS9XT8sIOOZDKth0AM00GINPI
-	fCdeXJtsBENixwXiwCpPVYdbAA2magM=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793381010;
+	s=arc-20220608; t=1793381012;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=xxbZQjtm9fOqIJixd8F3mRtkVPXrctgUHoISK45HDYU=;
-	b=0G5duCIyFSlGyLuZKhzsGOJDJw0eoOEsdGu6laLnsztq841Aa5JTw2lDO8OLoxxDKkr12b
-	gVng89KL/xGhMxjs4uuk9L//R3Ovy5GHZ/T/2CXclGjjcfWHWBM6kXFRGj1PyvlVeCiaqh
-	XALecXLIfBDrvwud+O0FSkJMhpTATfE=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=A/s8CVJR0YF5mgHtNd3A3LZYKxjpwFNKk2F6XF60RQU=;
+	b=PSZPpwIAcxPkBOMmUN+AxKQkauIykzc3URBCj4b1KIOwDJjpE6GFPZOQ3zBXqTOqFFoJDK
+	ViCLxSX2KxPFtz5r7TdXdwhWCrDNiupjjj1ABCnKVPHe7UD5bI2mAYaHPyHySRx31aC72p
+	EL1JJ0Bfh8CHkw6xuzgVZXhUi1c4c88=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793381012;
+	b=QVcx8t3fw2AvsAR4JMeY8iqcZjdT8yIGwIvNw2S0dYKRSUPftfVE50pLhVpXSWEX+2nfun
+	Kx0NTBA2YCWv9m2pQixpoeVr8wWF/iffbSTQMEOOwdbgu+LMPDxZeq72h+EoT92R/gjP5z
+	8S7QDf0SRcqRMU7eJju/mwGfRBixHGc=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=broadcom.com header.s=google header.b=MdSsXvC4;
-	spf=pass (imf25.hostedemail.com: domain of florian.fainelli@broadcom.com designates 209.85.216.100 as permitted sender) smtp.mailfrom=florian.fainelli@broadcom.com;
+	imf07.hostedemail.com;
+	dkim=pass header.d=broadcom.com header.s=google header.b=Gqb9e2vA;
+	spf=pass (imf07.hostedemail.com: domain of florian.fainelli@broadcom.com designates 209.85.216.98 as permitted sender) smtp.mailfrom=florian.fainelli@broadcom.com;
 	dmarc=pass (policy=reject) header.from=broadcom.com
-Received: by mail-pj1-f100.google.com with SMTP id 98e67ed59e1d1-3ac78f4c10bso489632a91.1
-        for <linux-mm@kvack.org>; Fri, 30 Oct 2026 10:23:29 -0700 (PDT)
+Received: by mail-pj1-f98.google.com with SMTP id 98e67ed59e1d1-3ae1da332bcso545839a91.2
+        for <linux-mm@kvack.org>; Fri, 30 Oct 2026 10:23:32 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793381009; x=1793985809;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:dkim-signature:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=xxbZQjtm9fOqIJixd8F3mRtkVPXrctgUHoISK45HDYU=;
-        b=cuHLf8EtH8EiAeuDwERGok5JILdUSz91/Eg1xdPkaRs6zcG8HkbjMxRzQzl2oy17Xi
-         cbS7EfAZ1U4J92VoFgF3GP3LtXI2wTpRrwNPdNYOqLtS+Rr1h71gwL42HaANkOQHcj/9
-         aXlN+x1Uc6jNFvaO3S0oYOmzOXaIC9qDJZb9HniliIJMY4EQUckkeAcDwUpl0fM5YZxn
-         v/8qjLTttdoC2Y090LlDx5pe1wkDAr0+IVQ07IuiAK7GdH39OU/wV43ntxokDAON0NW9
-         SqWlEXSxKWtNHDmCIngGbcU0KuaFXhWiq0v4Bb+tHLQgS/QoJtR5W4sPBWwcP5AGQg25
-         6pcA==
-X-Forwarded-Encrypted: i=1; AKwUvBzY8Iz2kv2H/8YbuT5aXgXXABrnKCVWb5CceduzXVmHXC6HN2MNEG71nxJnGzR4tj5SDj3RJsX2IQ==@kvack.org
-X-Gm-Message-State: AFq9FYI5s9n1Xj6Y8hoIptmWUPwXCaKIJiSrAhefGQQCX3kmgIxS5x7U
-	xwX9zNiREMisHnRJBIaCw9oumdTJRLopz3VMSJ9vezLkkNd/5ZP2p1ov9grWxCjJxTDigCTuKqV
-	0etlGm55SR/NpNXLYxhtqYeSB8QxN/PqGMvqOkVLuFEs1lRzSqccbXNNhJo5B/UC1VNli1LGuLE
-	yoL9T7azEodK+NM49nwzAgMteRdSOvqL+rCMaEONfg9SIvBf3m5cmqt3x/94VfPd3a0qwXK9Ldy
-	iP2+gw+KjhygQ==
-X-Gm-Gg: AYBFou2Itci7Ln3g0F+VLuoTG88IEN0NBrS4Gf4yB/9lnC/LiPlVojEG8Fwx20j8CFA
-	YSE6j91xzMBI4qzILOBX9obeQa2cHewbOnTUQCSIEcKDoR5kjiA9G3162KL8fjIVSARdShrcMTE
-	pP+41RZKHjcN038mEsDOQx2dHURTcll4w92PLP0fEoHee2ZADpWWKIk33mWyJqQOsZAS/3ErkB+
-	glOWFziO/KuzmAZzYxYeohCyagRNB4g/iC/s0wh3set+6O6bAfGjBACQyL4Vq4TJbNjzOLqZmMV
-	aoPJ3JWMya8EMAPVaGe6T1GV2rQkMjq1YkooF5UXiZJ1qcWG3sNqKlXKQDrxJUt7WmaWAaVLkG6
-	p/zIpvZr0zTuqnm32wfUI7PaOO3QuQ0Acx9rjFDWVC7qyNlYTxsd3aqL+tjPNfKgCO0V87nONom
-	HQc3lnBeBr4cszufeGzFunLnFk1U8RTUp/1S1DSNYF
-X-Received: by 2002:a17:90b:3d4b:b0:3ae:2969:903f with SMTP id 98e67ed59e1d1-3ae89771936mr2530412a91.45.1793381008766;
-        Fri, 30 Oct 2026 10:23:28 -0700 (PDT)
+        d=1e100.net; s=20260707; t=1793381011; x=1793985811;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:dkim-signature:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=A/s8CVJR0YF5mgHtNd3A3LZYKxjpwFNKk2F6XF60RQU=;
+        b=yy4Dt9uiGK3jiHISYrIKY6HVyrznxSn4v8OcgbJ/Oxeeg0mT56UNDd1f19aHhsn4Bs
+         iUhSvmKUu/KG6EX36MzFtKXk7FhE3YaGBVYwVQNBAYXnZJNbW03cmW4K/vRQSCk04x3B
+         WXhz5DulrizKpBCd7q6kwRZ4IZMHbyeDeprV2jdpdJ7L6y/Ua5WJ+U/LICf/dDcgTKog
+         kzkbURxxbad7vwJkpnnDpdbBmn22B5yCGgoyjgrrClyOzwzYDjgktjKQXbj+puRi2i07
+         pSRexmEqzZFlIarj//RT3YqdlgVTbMLXRbdasykxscrsaLlhfeIK5B5c+DeB7RaIW+t0
+         IJ/A==
+X-Forwarded-Encrypted: i=1; AKwUvBwyDINkLlO8tSLCZpnREqsl2+frrrD9db7dG4Ol3hrESl+lEQQ9LlH2mquy8zJgPvkpS1dElbox7g==@kvack.org
+X-Gm-Message-State: AFq9FYKKWBcnQVU13QgM7B9gq2On3Gl8l9mR+vZSCnxHFBS9D0u6/WmS
+	D1LYf7mwKoTJcRA3RIUWFpmKibh7z73LgIGEF5STywQ6L6ii1EDMfyuBusBLDR/47mlZmoe1O4a
+	DdNpZj/FY+01h0EeNDw4YZKPiUMl7VfSLenZJ1tvQEIu1AmWf4/Oxx3B2LJy6o4Ii5RE/4fQ+MG
+	Ga0AQYTD9DC3W88LDxd89M4HFyiuRsh8y2/qskFWBQEo8UDcmYVaol8KpBY5b+LsOVD8K6CRFNv
+	v6LrAQ2JRmnLA==
+X-Gm-Gg: AYBFou1mXkwxhqEDpb3lvZ57M0R9qNA2TsM2F3W+FIepyOCTo38W/ZZpU6yQPHxUs9b
+	90XYkzZsR5eIvLwczJ9E6KxwoRxD4aOKCYeJ1lbl6KKd8cK0eVkTjGqHrh5e14043TT9GwmN1VZ
+	FmR+byAv2a8hLcCpv7yqP0s5imjJW/DMfNmKyDnzylrAo8n5izu7nT/0el4gnXy0ObEKr6G5b4/
+	Q5mYP3F62ONLLEnLxAmWwMBk/XYFvH2oGUk9xx2kdzv0rNHsT06sNX8osonMHSK0T6sPe+td7bm
+	rWTVbH1m7fOnJ0UGBApktLbKgBnxjRyjXsZgZCZSB5FXA5YyyUUXT4co7It8Av85svPGD1VMvJf
+	K2Khaf5BlU9550RaYygHn091mIvnVhzFOt8nO2vdhwCMa+WzP39pw05xdY428oFzyd4aIwhK5Fq
+	18aQGANr8BSQNnvmI7FAFACkgJf7T2kdv33asqCXZX
+X-Received: by 2002:a17:90b:4406:b0:3ac:b6eb:e0dd with SMTP id 98e67ed59e1d1-3ae8984de49mr2272959a91.50.1793381011319;
+        Fri, 30 Oct 2026 10:23:31 -0700 (PDT)
 Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-13.dlp.protect.broadcom.com. [144.49.247.13])
-        by smtp-relay.gmail.com with ESMTPS id 98e67ed59e1d1-3ae881b211dsm797318a91.4.2026.10.30.10.23.28
+        by smtp-relay.gmail.com with ESMTPS id 98e67ed59e1d1-3ae8444ce5esm2347833a91.2.2026.10.30.10.23.30
         for <linux-mm@kvack.org>
         (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Fri, 30 Oct 2026 10:23:28 -0700 (PDT)
+        Fri, 30 Oct 2026 10:23:31 -0700 (PDT)
 X-Relaying-Domain: broadcom.com
 X-CFilter-Loop: Reflected
-Received: by mail-dl1-f72.google.com with SMTP id a92af1059eb24-193b5eb133eso1093583c88.1
-        for <linux-mm@kvack.org>; Fri, 30 Oct 2026 10:23:27 -0700 (PDT)
+Received: by mail-dl1-f72.google.com with SMTP id a92af1059eb24-14373747468so988982c88.1
+        for <linux-mm@kvack.org>; Fri, 30 Oct 2026 10:23:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1793381007; x=1793985807; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=xxbZQjtm9fOqIJixd8F3mRtkVPXrctgUHoISK45HDYU=;
-        b=MdSsXvC4nmHEaobqz5+SDVYpW4VUYb7bfDZZ+25/EtilW043b+rjus2rTVpi8MmlHo
-         zz3jtUpk4Ui/8hCbFVF9EbydofUv/nVa8Hvwgh6HiVXi41/z36UJ97eUC50QFXCddfQR
-         WHxDw9vgvWs8Ix6Hqdm66pjmAJ37l+ig4DusA=
-X-Forwarded-Encrypted: i=1; AKwUvBwcUMzSwG9J4hd1Qn5654juMNoAczKEIqyJ7xIUStYvpu9ZwWzWV9hGq2xuE+05A47vVpaX6f6SJQ==@kvack.org
-X-Received: by 2002:a05:701b:420c:20b0:194:f017:5a01 with SMTP id a92af1059eb24-1ac5fc0d363mr3906646c88.42.1793381006452;
-        Fri, 30 Oct 2026 10:23:26 -0700 (PDT)
-X-Received: by 2002:a05:701b:420c:20b0:194:f017:5a01 with SMTP id a92af1059eb24-1ac5fc0d363mr3906598c88.42.1793381005631;
-        Fri, 30 Oct 2026 10:23:25 -0700 (PDT)
+        d=broadcom.com; s=google; t=1793381010; x=1793985810; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=A/s8CVJR0YF5mgHtNd3A3LZYKxjpwFNKk2F6XF60RQU=;
+        b=Gqb9e2vAG945y0rJ9SCbI6ZIscrLewUVDs5JP290a2QkcWHMzCkjL6D1QAJhNftOsy
+         HM8haJOJO2FRRhfrLqCsE4Pwy911r2M/ONHQ76xK83q6U4owDkPONgtb0bvWFl3FcV9X
+         9ZeWFXd2W+t4fHrNLczy8NE3Qt93YmZsWqCAw=
+X-Forwarded-Encrypted: i=1; AKwUvBwIMOjR9gaaUKAUeY+l2WgGk6UBzfQh3vk4XGIa4em4NzXw4fGwl1XdO2QRJfRGgs6i49dB4fRT5Q==@kvack.org
+X-Received: by 2002:a05:7023:903:b0:17f:7280:1332 with SMTP id a92af1059eb24-1ac5c92f6e4mr4286481c88.40.1793381009068;
+        Fri, 30 Oct 2026 10:23:29 -0700 (PDT)
+X-Received: by 2002:a05:7023:903:b0:17f:7280:1332 with SMTP id a92af1059eb24-1ac5c92f6e4mr4286388c88.40.1793381007744;
+        Fri, 30 Oct 2026 10:23:27 -0700 (PDT)
 Received: from stbirv-lnx-1.igp.broadcom.net ([192.19.223.252])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1ac1abcf67csm8463406c88.21.2026.10.30.10.23.24
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1ac1abcf67csm8463406c88.21.2026.10.30.10.23.25
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 30 Oct 2026 10:23:25 -0700 (PDT)
+        Fri, 30 Oct 2026 10:23:26 -0700 (PDT)
 From: Florian Fainelli <florian.fainelli@broadcom.com>
 To: stable@vger.kernel.org
 Cc: bcm-kernel-feedback-list@broadcom.com,
-	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
 	Linus Torvalds <torvalds@linux-foundation.org>,
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Liam Howlett <liam.howlett@oracle.com>,
 	Andrew Morton <akpm@linux-foundation.org>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
 	linux-mm@kvack.org,
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH stable 6.1, 5.15, 5.10 0/3] mm: backport mmap_min_addr handling fix to vm_unmapped_area()
-Date: Fri, 30 Oct 2026 10:22:13 -0700
-Message-Id: <20261030172216.368052-1-florian.fainelli@broadcom.com>
+Subject: [PATCH stable 5.10] mm: move 'mmap_min_addr' logic from callers into vm_unmapped_area()
+Date: Fri, 30 Oct 2026 10:22:14 -0700
+Message-Id: <20261030172216.368052-2-florian.fainelli@broadcom.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20261030172216.368052-1-florian.fainelli@broadcom.com>
+References: <20261030172216.368052-1-florian.fainelli@broadcom.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
-X-Rspam-User:
-X-Rspamd-Queue-Id: 04365A0003
-X-Rspamd-Server: rspam12
-X-Stat-Signature: 4c4j9enp94ghu3bn6ikgfckaxfjyno13
-X-Spam-Status: No, score=-8.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 82FDC4000B
+X-Stat-Signature: fd7iooruaeyy6y1bs676srpwy5yeg74b
+X-Rspam-User: 
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
-	autolearn_force=no version=4.0.1
-X-HE-Tag: 1793381009-48013
-X-HE-Meta: U2FsdGVkX1+XlKsWoJ3xjP4LTZlZ3Nr7+UsLZADWTG038UTuUfl48orS7hAhlHCV7Msn1p0J5HwDHTOx+SrhI2jwsj7PkGkGsFDjhF4xrhTKmqzFNKwX4qMgF1Fcn4Eci+oyZBAVfAZJdNKXYbz6iuyHub63Wnxu0/M55kepD7mMweGhLkwTcLp6mcEl/z+GUhM1rvJH4cviU+LCLZM6VtZubeloEtAQ/YcN6ObPi1ZbpTzlQKRxAWWJkr6UpsQK09HYxCc3xXmvK5MTzGyU0wOBeyY5fMr/Zi5pXRPwPtg/E3zvQdfeHehPTIN3aY7Q5adz+Rp7oRApv4tZmi6YapAwpAyrfdTOB9xSoPUtrljfZEjgB3Jg4DpFkLOFUvLanFJ0Hq4YqU2fbKT9Ue3A+NKTC8TJsFhny++pwTxNxfYNZFtK8Zd0U1pzP9qPkjmC5p1joPxrhluNu9KpRvbr6Vq6Vu7x2t0nmWD/4tqXYOTmYRs50Aqv8GcT70c0Kroqtxgw+QxfRrznhOaczdHHW+tjJGj+AqBE7QvwTNKjtRg9SX94ffTXyV/DsA79/Lwcz9+Q/ddCkQVCVmwHO8orhpJ78Vqku6ocmkM1I2X2JjizjxmF2jLLcuNhLDLvmx1GKlHFwxPczmXTJ04GMcq2NiFyFVouRIQVf2FHV0ATgUmgG+cJIwuYPTonlV9yx4fzMYitWOsHXuc4UUbW12tB5P6EyQs9FmRCW1QihfewxA4nbQoxtoEcgKfb/YS/fQ6+sWR4Do8NApePp4M5vnr3KSxTufgoXLVnTqaEux+mRkv7JizbWjHojLvhCEK/mtMNX7xDViCSjhe0mUHAEjTQKRRvzseVfCzlEkHf5NV7UzzxTrlIpZimMRLTdxph5YT/qN6IEzbWeDkPvHoDWjJScuFtsWrcySEE5XP/wPYabWSkAE/7NRONCL/dzICrhFD/8GENhLw+xO/tWzbSpfy
- mHpibx1Z
- 5x5mJLQWu9FzdhkKxjmikgShE70J1yy5CdGLBTH554r+/wUBZyz+Ta+09CLa9hSgp/6rL08jFkzTn4yTJ0o711Qpuu9Tu65HV6jA6SeKqG4ddwrEj6KxwbeuU7Ch3L6pHIio19X/it0OM0xiMXGDl9sEXXAYe7VgQZ7a69FKiJIWBZGYwPyU1Wan5yJlmldmTBI6Hs8N1rDOJ/C3ANO8BHzmYk0f9VWMmXwmkchtPuNTStMWiD8Zy+p6/FItwAm+4746nYitlsZW1PcKfosVEpA6YSfBHZze4DO0bGpsZxBfv5fpZietOtPR6X3WiY0DavMe/x4F3Mm8hvFSd1+4pnr4jtyS1DN/Nmw+QbGbKAHiDz/98Li9Uz2ObFZ5Oo635Vh4gNHb4R3wpQJ35MecQJaDuL92foMaOq5S24UzuxwyP4t+3bz6C7dCY8970p3e8pzvM4TfFgMyOgkuAyht2M6EDT3wp0IV6w9MKVpoUXe0vt53NBxwb4cWsdM1WbMtaxWJgCZ1DDOdN5uNTyytOu0l/xJvguEAJfpiVlJvucm2SXjXJcPc0Huldrh+MH7AOq8yVyroFYBwVTrWBcmhYaqjxF6gU/6yfb7vw
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1793381012-721362
+X-HE-Meta: U2FsdGVkX1+szJaVTBXXuMd+e2aX7kZO6A3VlMzQlmgLSlkJMtV1yGE2nzl8X43TkaCUY5W1JtXDcKFXjJxlSXJbj6We/uGYlKjciRNaAKYW3patS70gJ2KE6uIFDShuc43LY9ktlbeBktIKNuSRGjzhsSVhxfuSS0q/FXD3IN2wvo+1m4EPcEW6uVjhaqxA3XJNfwfsTwMVk2ItVz7lVpwEsartgu3coCEqWb1GXBPotBDBeknN/lILVT8aJLA56rw2grFSNc6WclX8f2Q6LaHN94z+xHJnGsgxvIG14kU/xhuDgjMasmSYw4pHjj9v7lHfhJiZBWm/La5TFkp/01TBXNm84ZgGjfERwV7RgynA6O+3a8Ey7cjkF3BE2f13gxm+rkujM2qkMvhrrfPQKkF4jpaG0T+fztRUiwQfms+1K4Ajn7o+wPbMzpb8yT45lZYwPlxZuH75fkERC3rjFYMcommyf3ReoXqOjlDkAtkwDDg2jKxLzuklEos7L5V/UWtO6XNyOcbNrUIejjW+MdQ2QkLUI/Fs6fBBtGdJ+gTXSx1mC9FXm54297vdOKgk0EsadEVhZIYDBXhSaJwFvjLrzCT9LYGE6JQHhkQuflHKxKLi83Of+As2s8IVKf9xw+PgpD64jFLqi06G5NCj3temZ0osTuEWA4cAX3k9d3N1a6yXZdKXf/rILJYzEbqL09i1bHa2GGxsdvy3tj2bRTuvgnIp0ERsIh6WzVwuLt0hPWufmrQpGLemUUdGy1epkJlnHGGIc4zBWgO306kYh9J9l6JfrYNA1+ssK5hDrr50nEOhhwKFQLsOKW9U6vgpVlnT5col3dSIy5We+SZK8e6Wecwj1jzva+Ka7u3Z266OAsbqGisdutMyoWrkIYSwN2jd0Aa0EXk0jHEvAlZ0t8hpq0TfRYYvTxjOl2Bmzvz7LW7Igp5KVtimtdeVTL/lm38UO67xUOQgqWu6Y6Q
+ 8ri/9Zoq
+ RI8yKZ/kAdIgWl5nxEMgHNgay8QjFkIs5Kb+13OquOB9wol4EHiACgk37L4ey2RMV4630PA59PoMfK0jSxGqEk9es/V/EfCOyYc40yxM3ZQMvkr0F8GVm3JUsRJLWJ/Wyg4GqJ/V4wJMNOdlPW9ezheTP2Co7hbJU3qyxpmIiDhftdSxzWD8jfRlcF3nUWU5uu/1+30e9tx0IKQ/cO/jg5/xZAQusU0o7iKFE59ASNsDORLFjdzwtdI3eWITHxpFJ5THz1iGx1KwUeauYuUzd5ZTrtb6hdOYPRjnJKjoURM8PB+6h1QdKsmYMJYATqjYdBkFGXMMIJTNBU3PvrovlKyV6qilkvSzp3Mr8cgyXtaCL8yIFmtDmsOwyMnhrslRDdG73y/W0IoqhGrOtb5UlGSakWZF1bxMp5R/LeUwwEwt46WsYr8s1VNDg2ett++WzBdGfL1MoyJs7NkzPTnKihFIAFJoWfNhpsESzxVQdjWAN56nTQZ9jkCYpvHQs5Z7jFzhKppXZne7ljWNwTEDngodnzCxFdxsBhvPy5XClXa0MMe2SS35k4L+SYs0N7rBGiNkrELRxtDeahAnfKCsyXCQhUERy9EZ/0Oe48CCHFdxzfjS22vdVhvazRhHZHZGe3CzXPryDe1RLc0yp7+EhYsP5/g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -137,194 +144,160 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-To: stable@vger.kernel.org
-Cc: Liam R. Howlett <Liam.Howlett@oracle.com>, Linus Torvalds <torvalds@linux-foundation.org>, Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org
+From: Linus Torvalds <torvalds@linux-foundation.org>
 
-This series backports
+commit 6b008640db7355d8de6ac18f74cedd7ccc92684f upstream.
 
-  6b008640db73 ("mm: move 'mmap_min_addr' logic from callers into vm_unmapped_area()")
+Instead of having callers care about the mmap_min_addr logic for the
+lowest valid mapping address (and some of them getting it wrong), just
+move the logic into vm_unmapped_area() itself.  One less thing for various
+architecture cases (and generic helpers) to worry about.
 
-to the 6.1, 5.15 and 5.10 stable trees. It is already part of v6.4-rc1
-and therefore present in 6.6.y and later. The three patches are
-independent of each other, one per tree, and are meant to be applied to
-the respective stable branch only.
+We should really try to make much more of this be common code, but baby
+steps..
 
-Problem
-=======
+Without this, vm_unmapped_area() could return an address below
+mmap_min_addr (because some caller forgot about that).  That then causes
+the mmap machinery to think it has found a workable address, but then
+later security_mmap_addr(addr) is unhappy about it and the mmap() returns
+with a nonsensical error (EPERM).
 
-An unprivileged process can get EPERM from mmap(MAP_ANONYMOUS) although
-plenty of address space is still available. This happens when
-vm.mmap_min_addr is larger than PAGE_SIZE (the usual case, distributions
-and embedded systems set 32 KiB or 64 KiB):
+The proper action is to either return ENOMEM (if the virtual address space
+is exhausted), or try to find another address (ie do a bottom-up search
+for free addresses after the top-down one failed).
 
-  - with the top-down layout, the search starts at mm->mmap_base and
-    walks down towards low_limit;
-  - several architectures pass a low_limit below mmap_min_addr to
-    vm_unmapped_area() (PAGE_SIZE, FIRST_USER_ADDRESS, ...), so the
-    search can return an address in [low_limit, mmap_min_addr);
-  - get_unmapped_area() gets that address back from the architecture
-    code, but security_mmap_addr() then refuses it, and the caller sees
-    -EPERM.
+See commit 2afc745f3e30 ("mm: ensure get_unmapped_area() returns higher
+address than mmap_min_addr"), which fixed this for one call site (the
+generic arch_get_unmapped_area_topdown() fallback) but left other cases
+alone.
 
-The right outcome is to treat the range below mmap_min_addr as not
-available, so that the top-down search fails with -ENOMEM and the caller
-falls back to the bottom-up search above mmap_base, as the generic code
-already does.
+Link: https://lkml.kernel.org/r/20230418214009.1142926-1-Liam.Howlett@oracle.com
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Signed-off-by: Liam R. Howlett <Liam.Howlett@oracle.com>
+Cc: Russell King <linux@armlinux.org.uk>
+Cc: Liam Howlett <liam.howlett@oracle.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+[ Adapted to the rbtree based unmapped_area() and unmapped_area_topdown()
+  used before the maple tree conversion: clamp the lower search bound to
+  mmap_min_addr there instead of in the maple tree search. ]
+Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
+---
+ arch/s390/mm/hugetlbpage.c |  2 +-
+ arch/s390/mm/mmap.c        |  2 +-
+ fs/hugetlbfs/inode.c       |  2 +-
+ mm/mmap.c                  | 18 ++++++++++--------
+ 4 files changed, 13 insertions(+), 11 deletions(-)
 
-Commit 2afc745f3e30 ("mm: ensure get_unmapped_area() returns higher
-address than mmap_min_addr") fixed this only for the generic
-arch_get_unmapped_area_topdown(). Architectures with their own
-implementation were left alone. 6b008640db73 moves the clamp into
-vm_unmapped_area() itself, which fixes all callers at once.
-
-Affected code, determined by reading the 6.1, 5.15 and 5.10 trees and
-confirmed by running the kernels below:
-
-  - x86-64 (arch/x86/kernel/sys_x86_64.c), including 32-bit processes
-    on a 64-bit kernel, and the x86 hugetlb search
-    (arch/x86/mm/hugetlbpage.c)
-  - arm (arch/arm/mm/mmap.c)
-  - mips (arch/mips/mm/mmap.c)
-  - sparc64 (arch/sparc/kernel/sys_sparc_64.c and
-    arch/sparc/mm/hugetlbpage.c); only 32-bit tasks use the top-down
-    layout there
-  - by code inspection only, not run: parisc, sh and, in 6.1, loongarch
-
-arm64, s390 and powerpc already clamp to mmap_min_addr in their own or in
-the generic code, so their behaviour does not change; they were run as
-regression checks (see below). 32-bit x86 kernels use the generic code,
-which already clamps; that was checked by reading the code only.
-
-Backport notes
-==============
-
-  6.1.y   The patch applies cleanly.
-
-  5.15.y  Same as 5.10.y, see below.
-  5.10.y  These trees predate the maple tree, so the mm/mmap.c hunks do
-          not apply. unmapped_area() and unmapped_area_topdown() are the
-          rbtree based versions; the lower search bound is clamped
-          there with a local min_addr = max(info->low_limit,
-          mmap_min_addr), which is then used in place of
-          info->low_limit (including the early "low_limit > high_limit"
-          check, the final clipping of the gap and the VM_BUG_ON()). The
-          arch/s390 and fs/hugetlbfs hunks apply as in the original
-          commit. This is noted in the commit message of each patch.
-
-Reproducer
-==========
-
-Run it as an unprivileged user, with vm.mmap_min_addr set to something
-larger than PAGE_SIZE (for example 65536). It exits with status 1 and
-prints "Operation not permitted" on an affected kernel, and exits with
-status 0 and prints "Cannot allocate memory" on a fixed one.
-
-  - 32-bit process:                      ./repro
-  - 64-bit process:                      ./repro 1099511627776
-    (starting with 1 TiB chunks makes the 47/48 bit address space run out
-    after a few hundred mappings instead of billions)
-
---- mmap-minaddr-repro.c ---
-// SPDX-License-Identifier: GPL-2.0
-/*
- * Map anonymous memory until mmap() fails and report why.
- *
- * Run as an unprivileged user (root has CAP_SYS_RAWIO, which bypasses
- * vm.mmap_min_addr) with vm.mmap_min_addr larger than PAGE_SIZE.
- *
- *   32-bit process:  ./repro                 (64 KiB first, halved on ENOMEM)
- *   64-bit process:  ./repro 1099511627776   (start with 1 TiB so that the
- *                                             address space is used up quickly)
- *
- * A kernel that handles vm.mmap_min_addr correctly ends with ENOMEM once the
- * address space is exhausted.  An affected kernel ends with EPERM while there
- * is still free address space above mmap_base.
- */
-#include <errno.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <sys/mman.h>
-
-int main(int argc, char **argv)
-{
-	size_t size = argc > 1 ? strtoull(argv[1], NULL, 0) : 65536;
-	unsigned long count = 0;
-
-	for (;;) {
-		void *p = mmap(NULL, size, PROT_READ | PROT_WRITE,
-			       MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
-
-		if (p != MAP_FAILED) {
-			count++;
-			continue;
-		}
-		if (errno == ENOMEM && size > 4096) {
-			size /= 2;
-			continue;
-		}
-		printf("mmap(%zu) failed after %lu mappings: %s (errno %d)\n",
-		       size, count, strerror(errno), errno);
-		return errno == EPERM;	/* exit status 1: bug present */
-	}
-}
---- end ---
-
-Example output with vm.mmap_min_addr=65536, 6.1.y, x86-64 kernel:
-
-  without the patch, 32-bit process:
-    mmap(65536) failed after 63458 mappings: Operation not permitted (errno 1)
-  without the patch, 64-bit process (./repro 1099511627776):
-    mmap(32768) failed after 172 mappings: Operation not permitted (errno 1)
-  with the patch, 32-bit process:
-    mmap(4096) failed after 65513 mappings: Cannot allocate memory (errno 12)
-  with the patch, 64-bit process:
-    mmap(4096) failed after 184 mappings: Cannot allocate memory (errno 12)
-
-The hugetlb paths can be exercised with a variant of the same loop: use
-MAP_HUGETLB | MAP_NORESERVE (no huge pages need to be reserved), keep the
-size a multiple of the huge page size and stop halving at the huge page
-size, and set vm.mmap_min_addr (as root, before dropping privileges)
-above the huge page size, for example to 256 MiB. Huge pages are
-aligned, so with a smaller mmap_min_addr the search can never land below
-it and the problem is not reachable.
-
-Testing
-=======
-
-Every tree was built twice per architecture, without and with its patch,
-and booted under QEMU (TCG) with a minimal initramfs. A process running
-as uid 1000 was run three times per configuration (once on s390, where
-a run takes about 17 million mmap() calls) with vm.mmap_min_addr=65536,
-with 1 MiB on powerpc64 (64 KiB pages) and with 256 MiB for the hugetlb
-runs. The results were identical for 6.1.y, 5.15.y and 5.10.y.
-
-  kernel / process                           without patch   with patch
-  ------------------------------------------------------------------------
-  x86_64, 32-bit and 64-bit process          EPERM           ENOMEM
-  x86_64, hugetlb, 64-bit process            EPERM           ENOMEM
-  arm (multi_v7), 32-bit process             EPERM           ENOMEM
-  mips (malta, big endian), 32-bit process   EPERM           ENOMEM
-  sparc64, 32-bit process                    EPERM           ENOMEM
-  sparc64, hugetlb, 32-bit process           EPERM           ENOMEM
-
-  arm64, 64-bit and 32-bit (compat) process  ENOMEM          ENOMEM
-  arm64, hugetlb (generic hugetlbfs path)    ENOMEM          ENOMEM
-  s390                                       ENOMEM          ENOMEM
-  powerpc64 hash (POWER8) and radix (POWER9) ENOMEM          ENOMEM
-  powerpc64 radix, hugetlb                   ENOMEM          ENOMEM
-  powerpc32                                  ENOMEM          ENOMEM
-
-The arch/s390 files touched by the patch were compiled and linked on all
-three trees.
-
-Not covered: parisc, sh and loongarch were not run at all. hugetlb on
-s390 and on powerpc64 with the hash MMU could not be run, because QEMU
-does not provide a usable default huge page size for them. The
-generic hugetlbfs hunk was exercised through arm64 only (where the
-behaviour is unchanged, as that path already clamped locally).
-
- 6.1.y:   4 files changed, 16 insertions(+), 9 deletions(-)
- 5.15.y:  4 files changed, 13 insertions(+), 11 deletions(-)
- 5.10.y:  4 files changed, 13 insertions(+), 11 deletions(-)
+diff --git a/arch/s390/mm/hugetlbpage.c b/arch/s390/mm/hugetlbpage.c
+index 0ca46f5d9438..96c04071a0d6 100644
+--- a/arch/s390/mm/hugetlbpage.c
++++ b/arch/s390/mm/hugetlbpage.c
+@@ -290,7 +290,7 @@ static unsigned long hugetlb_get_unmapped_area_topdown(struct file *file,
+ 
+ 	info.flags = VM_UNMAPPED_AREA_TOPDOWN;
+ 	info.length = len;
+-	info.low_limit = max(PAGE_SIZE, mmap_min_addr);
++	info.low_limit = PAGE_SIZE;
+ 	info.high_limit = current->mm->mmap_base;
+ 	info.align_mask = PAGE_MASK & ~huge_page_mask(h);
+ 	info.align_offset = 0;
+diff --git a/arch/s390/mm/mmap.c b/arch/s390/mm/mmap.c
+index e54f928503c5..1cb7ec9f9e6f 100644
+--- a/arch/s390/mm/mmap.c
++++ b/arch/s390/mm/mmap.c
+@@ -136,7 +136,7 @@ unsigned long arch_get_unmapped_area_topdown(struct file *filp, unsigned long ad
+ 
+ 	info.flags = VM_UNMAPPED_AREA_TOPDOWN;
+ 	info.length = len;
+-	info.low_limit = max(PAGE_SIZE, mmap_min_addr);
++	info.low_limit = PAGE_SIZE;
+ 	info.high_limit = mm->mmap_base;
+ 	if (filp || (flags & MAP_SHARED))
+ 		info.align_mask = MMAP_ALIGN_MASK << PAGE_SHIFT;
+diff --git a/fs/hugetlbfs/inode.c b/fs/hugetlbfs/inode.c
+index d2a3964daf70..0a5236d8d2db 100644
+--- a/fs/hugetlbfs/inode.c
++++ b/fs/hugetlbfs/inode.c
+@@ -232,7 +232,7 @@ hugetlb_get_unmapped_area_topdown(struct file *file, unsigned long addr,
+ 
+ 	info.flags = VM_UNMAPPED_AREA_TOPDOWN;
+ 	info.length = len;
+-	info.low_limit = max(PAGE_SIZE, mmap_min_addr);
++	info.low_limit = PAGE_SIZE;
+ 	info.high_limit = arch_get_mmap_base(addr, current->mm->mmap_base);
+ 	info.align_mask = PAGE_MASK & ~huge_page_mask(h);
+ 	info.align_offset = 0;
+diff --git a/mm/mmap.c b/mm/mmap.c
+index f820bfbe5852..290822968e21 100644
+--- a/mm/mmap.c
++++ b/mm/mmap.c
+@@ -1944,6 +1944,7 @@ static unsigned long unmapped_area(struct vm_unmapped_area_info *info)
+ 	struct mm_struct *mm = current->mm;
+ 	struct vm_area_struct *vma;
+ 	unsigned long length, low_limit, high_limit, gap_start, gap_end;
++	unsigned long min_addr = max(info->low_limit, mmap_min_addr);
+ 
+ 	/* Adjust search length to account for worst case alignment overhead */
+ 	length = info->length + info->align_mask;
+@@ -1955,9 +1956,9 @@ static unsigned long unmapped_area(struct vm_unmapped_area_info *info)
+ 		return -ENOMEM;
+ 	high_limit = info->high_limit - length;
+ 
+-	if (info->low_limit > high_limit)
++	if (min_addr > high_limit)
+ 		return -ENOMEM;
+-	low_limit = info->low_limit + length;
++	low_limit = min_addr + length;
+ 
+ 	/* Check if rbtree root looks promising */
+ 	if (RB_EMPTY_ROOT(&mm->mm_rb))
+@@ -2023,8 +2024,8 @@ static unsigned long unmapped_area(struct vm_unmapped_area_info *info)
+ 
+ found:
+ 	/* We found a suitable gap. Clip it with the original low_limit. */
+-	if (gap_start < info->low_limit)
+-		gap_start = info->low_limit;
++	if (gap_start < min_addr)
++		gap_start = min_addr;
+ 
+ 	/* Adjust gap address to the desired alignment */
+ 	gap_start += (info->align_offset - gap_start) & info->align_mask;
+@@ -2039,6 +2040,7 @@ static unsigned long unmapped_area_topdown(struct vm_unmapped_area_info *info)
+ 	struct mm_struct *mm = current->mm;
+ 	struct vm_area_struct *vma;
+ 	unsigned long length, low_limit, high_limit, gap_start, gap_end;
++	unsigned long min_addr = max(info->low_limit, mmap_min_addr);
+ 
+ 	/* Adjust search length to account for worst case alignment overhead */
+ 	length = info->length + info->align_mask;
+@@ -2054,9 +2056,9 @@ static unsigned long unmapped_area_topdown(struct vm_unmapped_area_info *info)
+ 		return -ENOMEM;
+ 	high_limit = gap_end - length;
+ 
+-	if (info->low_limit > high_limit)
++	if (min_addr > high_limit)
+ 		return -ENOMEM;
+-	low_limit = info->low_limit + length;
++	low_limit = min_addr + length;
+ 
+ 	/* Check highest gap, which does not precede any rbtree node */
+ 	gap_start = mm->highest_vm_end;
+@@ -2128,7 +2130,7 @@ static unsigned long unmapped_area_topdown(struct vm_unmapped_area_info *info)
+ 	gap_end -= info->length;
+ 	gap_end -= (gap_end - info->align_offset) & info->align_mask;
+ 
+-	VM_BUG_ON(gap_end < info->low_limit);
++	VM_BUG_ON(gap_end < min_addr);
+ 	VM_BUG_ON(gap_end < gap_start);
+ 	return gap_end;
+ }
+@@ -2235,7 +2237,7 @@ arch_get_unmapped_area_topdown(struct file *filp, unsigned long addr,
+ 
+ 	info.flags = VM_UNMAPPED_AREA_TOPDOWN;
+ 	info.length = len;
+-	info.low_limit = max(PAGE_SIZE, mmap_min_addr);
++	info.low_limit = PAGE_SIZE;
+ 	info.high_limit = arch_get_mmap_base(addr, mm->mmap_base);
+ 	info.align_mask = 0;
+ 	info.align_offset = 0;
 
