@@ -1,95 +1,95 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3A48606A31A
-	for <linux-mm@archiver.kernel.org>; Fri, 30 Oct 2026 09:46:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B458606A31D
+	for <linux-mm@archiver.kernel.org>; Fri, 30 Oct 2026 09:46:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 83D5F6B05B2; Fri, 30 Oct 2026 05:46:27 -0400 (EDT)
+	id 9C5176B05B3; Fri, 30 Oct 2026 05:46:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7ED636B05B3; Fri, 30 Oct 2026 05:46:27 -0400 (EDT)
+	id 99C8D6B05B4; Fri, 30 Oct 2026 05:46:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 703EE6B05B4; Fri, 30 Oct 2026 05:46:27 -0400 (EDT)
+	id 8D9F66B05B5; Fri, 30 Oct 2026 05:46:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 48ACF6B05B2
-	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 05:46:27 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 3BACEA8040
-	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 09:46:26 +0000 (UTC)
-X-FDA: 85378812372.10.D18121D
-Received: from mail-qk1-f171.google.com (mail-qk1-f171.google.com [209.85.222.171])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 28CE8100007
-	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 09:46:24 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	spf=pass (imf05.hostedemail.com: domain of geert.uytterhoeven@gmail.com designates 209.85.222.171 as permitted sender) smtp.mailfrom=geert.uytterhoeven@gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id 6C1D26B05B3
+	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 05:46:52 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 52619805EA
+	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 09:46:51 +0000 (UTC)
+X-FDA: 85378813422.24.B4CD408
+Received: from mail-oo1-f54.google.com (mail-oo1-f54.google.com [209.85.161.54])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 66459160007
+	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 09:46:49 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	spf=pass (imf08.hostedemail.com: domain of geert.uytterhoeven@gmail.com designates 209.85.161.54 as permitted sender) smtp.mailfrom=geert.uytterhoeven@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793353584;
+	s=arc-20220608; t=1793353609;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=UvOO6JqfZMd+v5QBaFPCO17vd6AxfiDuRyj9QuuRkjg=;
-	b=6H0e/bayH+9JLxcY7p1qYE9Pon+8dePIU+UyCgzgVlxtNsRf/vwKZ0dXJRTAfLmWN3rdWc
-	74KCRrwthnQAiGK/fGQTLVu4R9E+rOG/thtQbBr2cxsGBHAkb9hj07mKa/dfy3DQMcL6hP
-	IGcB6z4nLMUvJz/yCSIdw4kZYAR9iyk=
+	bh=q8Bp4lvQqYUsZT0k0dArzQOZC6e3m0dIfgAJwvcDsr4=;
+	b=hMw0iv8pRCCwPWZFeiXqPttx//fQaziSNt0naoTOqBrBW2gkNv3RHQgq73C0/iIU/CydPZ
+	6gyluzQ38wQhwQIm3iXTXNSNSt+sOdsSdqlnQwFdfK2T0Aebee5sKFYqE5NUFWtnyhi2iw
+	FJyjUuu7Dnj45RNeNcQOLUV7n+SW5/g=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
+	imf08.hostedemail.com;
 	dkim=none;
 	dmarc=none;
-	spf=pass (imf05.hostedemail.com: domain of geert.uytterhoeven@gmail.com designates 209.85.222.171 as permitted sender) smtp.mailfrom=geert.uytterhoeven@gmail.com
+	spf=pass (imf08.hostedemail.com: domain of geert.uytterhoeven@gmail.com designates 209.85.161.54 as permitted sender) smtp.mailfrom=geert.uytterhoeven@gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793353584;
-	b=N01iNvX+Hp39WaGP9CI+UlDyZ9gtp3gLA5LETZo88ip8OcjMMQuAsvWZ1N4O9w70vTm8OM
-	tUK12129wqML7WLwnWrwtqT9Ov1lpebX2OTLGp97jDH2qC2+fluxJc6bPPYB/iOuVh9rXc
-	55/HDHZzaib8K2wWjvTu6KukWRsKFt8=
-Received: by mail-qk1-f171.google.com with SMTP id af79cd13be357-93e55db58cfso47773285a.1
-        for <linux-mm@kvack.org>; Fri, 30 Oct 2026 02:46:23 -0700 (PDT)
+	t=1793353609;
+	b=a8dqejxuY/llQoQYuazkI50FCW95uLtcK2VE1IqKnHkb2q1t4bzKzOnFKPKmU0ZW4hzOzX
+	7ME9+JqPObw22SRNlCSakxV3QLXuh/PeTk0XcoGARBjirgk5dBHlz7TPXzSo8LjiYk6jlP
+	xPBPtQ3iqaDMuWbNpWto6LwUgLtSzYw=
+Received: by mail-oo1-f54.google.com with SMTP id 006d021491bc7-713e6ecf595so509329eaf.0
+        for <linux-mm@kvack.org>; Fri, 30 Oct 2026 02:46:49 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793353583; x=1793958383;
+        d=1e100.net; s=20260707; t=1793353608; x=1793958408;
         h=content-type:cc:to:subject:message-id:date:from:in-reply-to
          :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to:content-type;
-        bh=UvOO6JqfZMd+v5QBaFPCO17vd6AxfiDuRyj9QuuRkjg=;
-        b=sfREmPijNr+Vg8gdm5XkUN8v4mxPPFCat5cfgW3B/UvPjFfSHUdR8k/5cjBh4eczNt
-         Uk+0dasSNAQ3WTzxmtFqoE3wOyoplNTZLTJazIiy7iaKgx7GInk7KJJJu3Z67mHP5s+Q
-         Z1A42VCVYo3HpJkZADFgEaEDLUyw3132KMnNwFC1mJYVsISNmWIzxBK+kENywxwilJUh
-         M83qkWSxfWe2TiSORn/Sx2sJLr4aVZRmEya7hKPyjESthHfrLFvn/jbLGmCp6hhesSsr
-         09+LfS8m9jZOzo7C4JDfIt3DqTdtJAPt3Ah/+PcWRP0j658ZLyzQkwXTe4547rtpZxSb
-         Dgbg==
-X-Forwarded-Encrypted: i=1; AKwUvBza1NsyfZd6njPo9n64eVJzrojhHOJaqPOqjWzW23F5rU2OAB+XAhSlyGtCAdVOgsDoF9ODmbIBBA==@kvack.org
-X-Gm-Message-State: AFq9FYK59TbInB1RBQUDnX4Tnd8hG/KFUKXRonRxvL7X+UX75ibjV8BJ
-	fyrC1WGeVj3OSUxIQDPviglJXgAKeF7sOG8GtO1CdIQBqtc4MvbWNh3+r7mG/lWh
-X-Gm-Gg: AYBFou01r1+WCAvu4+i/7oC3w3kDxhL3rNxFymCFfs+dezlF8/HpbAXgCy/XDUtZVno
-	ySMaFAcQvWtXsp/GKShvblEhlTyHDhCZUNyzBSFT/Lu+HqU/yJxXIS9BlP6xSavJjJdFMBbhhYl
-	PFgW3MZIhw5Et6N3GWP6Ox2wOTlEZF2LMum44Amvn27fu+/PEh1gclqTfM2YT8a38Vo69Pia93f
-	qqq/ETjPijtIPKRbIaqhHrHxYUsyP31crMfPEnXdJXBFVUbBboMF8wCSSO6KRlP0DxaLdCkarsg
-	3njW1cFiKDLTIvLGzJ6kLt8xOU/l2C62/dGq3FC++sudQeyq42aKJbNACodA3X5XTyPfqaCMkVB
-	FpvbH0Y+A9uYX8/4oDRsWdadflukDCj3VIgikJ2iNau9/yEMemHITacWzxDlxwHi/s+h8MW2bo0
-	N3kwK+ElZbqJIj7zGcZH6dhQ86Bq/1kn1fvG6pCHFzoh8FX79DFVNUAb/KVccBZjw+BlOBoBe0c
-	7GNJWtJU+Fiy7S7pk4m3ETyeSzQuz7Dg026apqPPYklz2nSRPOLHJH3TWoYc88OAQ2eXy1Tm+ZR
-	cU4QaU+2t35X00mpT88qQq5XL25wq623MssFRg3ATVuUKcwR29HoUaWZyxDuyyU1IP0=
-X-Received: by 2002:a05:620a:8394:b0:93e:722b:1f79 with SMTP id af79cd13be357-944217a1f21mr281763685a.53.1793353583395;
-        Fri, 30 Oct 2026 02:46:23 -0700 (PDT)
-Received: from mail-qv1-f41.google.com (mail-qv1-f41.google.com. [209.85.219.41])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-94425abd317sm99238485a.36.2026.10.30.02.46.23
+        bh=q8Bp4lvQqYUsZT0k0dArzQOZC6e3m0dIfgAJwvcDsr4=;
+        b=m4MV+GmXaAt1ldkYDchYvw8kRGihhqdz7dKm92qHr+5QsTZq9X+lDoxPNAcGJkqz1p
+         VT6bDWKlIQODo8DAk12tPgahScVuBDkW19e3FxieqDDryFd6YRaf+FakMhJ1x/9XPB+E
+         mKFNIbTD7HyhwRM45NkdBIB9cEsqZriDikgGGXz36IFV6YNEFY8KukHP/NKXamUn1Rpo
+         P/3i1aia9TBvdYcU/eZgpPLnUFhtw1+s1BWRpY8ffT8mEofzL3rV3mDNz5lfNEjlhwJz
+         gavgAFZ5aUIs/LdzPpGMkqgo4zIeGbPwuEGnmblvSf5Iyse2/zYTI19/BRSrGgJj9dSV
+         TQ8Q==
+X-Forwarded-Encrypted: i=1; AKwUvBzpTjFfjUuBenWE7v+Mw78OCrWK7yjUbMxSTP+L+Tr+oqfspa2suJ35EJqg2ozvlj6Ia/Hq8GuJSA==@kvack.org
+X-Gm-Message-State: AFq9FYLjYfIMlvVrxgHEy6mddk6kLuGqFi8bCdVXeH+tvGbOgu+HJCUy
+	2EFMsqZnjWGJvl7NTJDqa4YFBglFN4pDNfmJvK4QQ4mSeLIruVbsv8159uekAgxd
+X-Gm-Gg: AYBFou01jHmusaQ6jczXQY7wYOPFEztfRHCVuUoxT96kMQ2xZHAv/J06CXFQ0lc2OTA
+	ASyDrYxpaWRNl0EKv+nVXrEdFwmR5XNZoxD1sDab0MNiWHqSuuOH8IVI2Oieo8l6j9Pa4K31hAK
+	WqnJRSP3mTxqzZfXMB8hj1f4qBd1Bgkh8UrRNkg2/DB78Yn6RkQkottNsxeRYxBGoEmOkFqIVlQ
+	3AYW7T5W3nOHG6AonAkj3g9pR11zHJdiU7k7wSjbjImlvHG3EmXzwl0qEGIoBm7/lsPJQgFMvgM
+	JIvSCoV1kLpSYWlrqfYeIiyDd1rSgHR9iC6b714bovogoL1gPlrcRudCM0wHGIID2iyB0dWfoLM
+	9VUUARPx0Odq1IqmiliabxefT0VYOYJDZOO0EjlP8uIVEnAh5A3lg53HEbYbasKCVEA3kmCDtyR
+	7Z6LiNvZnddrBlmHcOYZE0oHqyRckSl3rVosHWMF+b6j/q3sNyK+mKKa3pjhpog7lbVDT/alXS/
+	dIFlkPmEXW+yG9Ok/XMzUPatuZ4NcflhcMW/3PhQI7AChWjstOW5cCo+uCKEihFIqWgsOJV6rNJ
+	5oX5sXhoBVYA7WPv87OkV36wLVGZ7tnsVYDUKdsTYZrC3KnB/m0mjpuxuNJ/fPdgrrc=
+X-Received: by 2002:a05:6820:571a:20b0:6f5:86e1:b020 with SMTP id 006d021491bc7-714f29fa61amr537614eaf.26.1793353608250;
+        Fri, 30 Oct 2026 02:46:48 -0700 (PDT)
+Received: from mail-oo1-f41.google.com (mail-oo1-f41.google.com. [209.85.161.41])
+        by smtp.gmail.com with ESMTPSA id 006d021491bc7-714f2ce869asm1500119eaf.4.2026.10.30.02.46.47
         for <linux-mm@kvack.org>
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 30 Oct 2026 02:46:23 -0700 (PDT)
-Received: by mail-qv1-f41.google.com with SMTP id 6a1803df08f44-91befbcad6dso9915316d6.3
-        for <linux-mm@kvack.org>; Fri, 30 Oct 2026 02:46:23 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBy+j2sH0ztwhvrinQ6VWKEGxbtTeWJIdP9fuzMyhFuK7brMD5NKs6iqZCHlo9GG/Ktb2FdYE0cGQg==@kvack.org
-X-Received: by 2002:a05:6102:14a3:b0:7c3:1395:a090 with SMTP id
- ada2fe7eead31-7d0726152famr950274137.6.1793353170421; Fri, 30 Oct 2026
- 02:39:30 -0700 (PDT)
+        Fri, 30 Oct 2026 02:46:47 -0700 (PDT)
+Received: by mail-oo1-f41.google.com with SMTP id 006d021491bc7-713e6ecf595so509324eaf.0
+        for <linux-mm@kvack.org>; Fri, 30 Oct 2026 02:46:47 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvByUDnDmr0QlJVoWNLJJj++uu9teuDY9FXGtaCZMxjghFcpXNgXZGhOKjC2SVqwN2P0ENEkcT+L9Ag==@kvack.org
+X-Received: by 2002:a05:6102:605a:b0:7ca:8f2d:5c29 with SMTP id
+ ada2fe7eead31-7d0542ccab3mr1591386137.27.1793353163338; Fri, 30 Oct 2026
+ 02:39:23 -0700 (PDT)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-References: <20261030083800.599152-1-songmuchun@bytedance.com> <20261030083800.599152-3-songmuchun@bytedance.com>
-In-Reply-To: <20261030083800.599152-3-songmuchun@bytedance.com>
+References: <20261030083800.599152-1-songmuchun@bytedance.com> <20261030083800.599152-2-songmuchun@bytedance.com>
+In-Reply-To: <20261030083800.599152-2-songmuchun@bytedance.com>
 From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Fri, 30 Oct 2026 10:39:18 +0100
-X-Gmail-Original-Message-ID: <CAMuHMdVYbJOGCd82fNm8dD5kXTWQvRnymkx3w2PFH-dKnH7G8g@mail.gmail.com>
-X-Gm-Features: AclHuK8vFqi3dqWRxr6f8_rNGo4Y5wLrZ0prryPEwyIfD0-s59WP5msq_iDtOig
-Message-ID: <CAMuHMdVYbJOGCd82fNm8dD5kXTWQvRnymkx3w2PFH-dKnH7G8g@mail.gmail.com>
-Subject: Re: [PATCH 2/2] mm: remove redundant pagetable_dtor() calls
+Date: Fri, 30 Oct 2026 10:39:10 +0100
+X-Gmail-Original-Message-ID: <CAMuHMdVjr+-4GA=jBNpL3nig6QfQ0Fm8ob+c-OkLADPUJSaNqw@mail.gmail.com>
+X-Gm-Features: AclHuK-5feC2ixWlfC3xXKJ1XowEcUrdLUZ-UGAaez_2WzCy_48TVc-7hVrg-7U
+Message-ID: <CAMuHMdVjr+-4GA=jBNpL3nig6QfQ0Fm8ob+c-OkLADPUJSaNqw@mail.gmail.com>
+Subject: Re: [PATCH 1/2] mm: remove pagetable_dtor_free()
 To: Muchun Song <songmuchun@bytedance.com>
 Cc: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
 	Oscar Salvador <osalvador@suse.de>, Alistair Popple <apopple@nvidia.com>, Will Deacon <will@kernel.org>, 
@@ -104,18 +104,18 @@ Cc: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.o
 	sparclinux@vger.kernel.org, linux-arch@vger.kernel.org, linux-mm@kvack.org, 
 	linux-kernel@vger.kernel.org, Muchun Song <muchun.song@linux.dev>
 Content-Type: text/plain; charset="UTF-8"
-X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 28CE8100007
+X-Rspamd-Queue-Id: 66459160007
+X-Stat-Signature: g3unw46tz4frczhqpp6r8qjqws1n9wre
+X-Rspamd-Server: rspam06
 X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,
 	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
 	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=unavailable
 	autolearn_force=no version=4.0.1
-X-Stat-Signature: b3a5gstw7nznyoxbu53igqtrrsfyynya
-X-HE-Tag: 1793353584-278937
-X-HE-Meta: U2FsdGVkX18rpTsqD38HekoOJ5JHpqlrd26fMXRxwsiMo0VfkyqcZy62LV7hiIao8iVsxNOmikF/olW+ipzYPmDD4L6lVpM5otAfdU9vZkyIwj9J8LREhw16VNU+JqabJ3YlaIGgi32y7CDlguk/+YaxgEuP78z6BbeF/3G/sW82gFOznHhetNkijc9rE8VpTXkLGKfZd0eb83TjI5LS0ZGghyeaMzDicN6h4R1BYv2eeYfQ+tlDcqOeQys3rtvSxbOqNwe5lEcSF4eVesyxTHJJxKnCNvxNm2wrurSIhGWB3nPw2TgOlO7koBXB0tiFP03rWR4EoWsHWTiKWdSA9c/SRkQuqt+o7H6cGyiTR21SAMDJN37Id+2Azm2NszjNdl+2+03mOe8GRK6ITAe+nw9Kpby+IBRkSY+5AT9ASYHEWBcFWBXpEk06GB3By1V63jpc/kJjts8zWI1sqG6Kfbkn+ivvl7WeBS8BCUwwDfe+t8fuv3IT6NU2Om8nB6uZMPDrMPW+jdSxl2eAwiiUqyvem9yy+TjvQESolN0zaC75/GwVKLtRmeHTxP/4wqnV3bK9j/PF47iLATZWjlxK4DpkoG34FyBt0FIAZW8lexACAy3MinDxd4cLqn91db0E4lfO7yn2y7Gb2JEmrYJ7shsMjnKcfbH1+aSTpESKw4FJIeIoH91pyoRZSMt99QG30MlCivaumShcPrNzWbV0yUa90x9REh0uN08l0/QMQniVoFkcfY0iunQcS73/5t19o4OwJ4F+fExet1cBJH+DrhEYuISzDGtiLX0DAVFQ4yPYM8EgP4WZqVfc/tb6FFVMYm/0nJaHSSNZZ6KKye4ywlU/AHQti/M+WGo6PygAv35/8gWT7OR9eDZNlmo4qnKevc+HE6LhVMadB3C3rnimOoLqdZQOV+VNwvnjVKpDdTipBNJPiKeTOzKEt0W6WW4q/XlkCtiiZbDIBi7uJCb
- yg5mj3lW
- ra/vrz0t4wv68YQG7JgrqFckpAUpa8MP9flKcsIWHtMf4iHkgfW8bEbg28vzcPU75ewGjwP6tQssh2aEwAAnDHP+mSEQZhV2OMCfopj6hd/BsjlT7w9N5nsUl2tb9Z9ClOQoatMPa6QvX465spcjvefK86+3Aa35uJUL2OH3r5J5QFeUxAZAelqk4trm/mGVsmbCdvEi4y5fuKjOwGcWrT0zqNie5JB8z8lnxdSWvSAC+DavC0gUINqYUWvX0dXwRVd/neEsmwxh2kaiNEFm1v5MI1hDouWADDdf6mpNsue4tC9znIuvrt1JGSbqYxVnkRjKr5qT7ehXROi0EENVproiopBc7eGtPeO755fVWNG7jwmPaeDqOPT6em+Uiaut9bgFkIDmpz8cmTYrE8ZvbCUgCqAF3uqpDxQWkYSoBThGpM+Op7oefzHsHhGw1Zxb7yFsFDaAuiCt6T4DnayxRA4+YfTug3+QTH2R1
+X-Rspam-User: 
+X-HE-Tag: 1793353609-783379
+X-HE-Meta: U2FsdGVkX1828dO+vZyDivYa2KAqvx2rnp3ZIhDEfNZ84o2ccRh+GUk7WrEDGQqPmmOhbmQqk30V30gk673JfMvS1xHFIlgOb+EBjBI/Ex7QDnU6nWTTy4wW47nrga/JWzpwc94coaRAn3oa/LcCoa8kyfxHNfW0Prm7jKuymqI1p/H78v7iJMdgURLTW7o4vcswi3beYqpyUGVzNUGzsv837xnwQzGW32qYOl7+eJCevl/Lnhtf6cTA54EK7RtF7kOqN6BdDVDsOJpCYIybmr4l2Mazo4g5eHjJMTUIRi2423DWFEOc2TfePXnFLxDeosiLFx+4cM+JfmVck8inMBuuDepg7jC/zth5r8oy2wDgdhNHH0IRWGfUS/h4aA5npywbkgq4myL0DVxijQE+9RP9Uf49RZFGO58vJFccJL9D1W395+i1flqNsrj1QL9odMSj0noaSTz0SetzT8aVC7kYb7mAxB4jsNVPqJ92sVVsbG+gC2bvWoNmKNO0G2+sTZUYWlZem8zVovlLwKaJPr4e/iMkmgFwak+GEKXlg/K94yy1IJbjMrsBnTkx837Nm9Sz9f5pCsxgB7J8W8anittbADJATnPfmEKIhJmwsJHz62eNh/0wf3v0Ek4+5vRh6hnld78w7ey3JS04Jl0HswkpGQRQR34tQix/OxP55YRtOLFQRDB+XsIw5nfzyjxca6NnoBfj9nK+NevwqWHa61wG3EcPX9hckle+IkyJYMgWR4dNERiKYOyctoxXNuXmkAf7jbKmnjF3CSOa5IYYPwy/fkOgltNnKGUjvBzTCAwwEmw0G/eRUb4m4NXBo1rbsOJLPZAMRNYLqH7g3yhVhAJveoLySaIbtvDtjNVhNasB1/X4ikAuJ9AnDA5pnsJ+KJawhiGgqhEJ6sfIpIYYlcdZAUtaaOiiplGXTQ172B9d6KpOnGdubukJCKb8LnnB1cAghhgjrTIhBRXnz4k
+ ESS62+/n
+ zhzwz4E2HKgZI4mbHxQee/64EjM9iyPpaAtgVz6Z3rAiuM3RBqSFv8F/f8mg78LsEklkM88H/kKl/tJxcx/V1XEb20Ygivu+GASYi189BUSE4Ze2uX1wg+fWu3d2z72YWlPU+5XANJjPWSIa04ydH6YTOfjwPiTiv2P/kj1AUj7c7KYMdFpKe40+fIB0pzPLrHURXsk6e1X7Mv8hoguBA1HXeZ+5wt7Tp6Mmtrhp73hxVsqL9IRWRC56keyMQFduMAkQgN7zIsrKBxp6Pa29cJBTDRpwfiwVLskLmUZl6lPsTtpLLyCswTeGlVrmDzt6ea2ucqzQsT0Q1BefiYNUcttAtH4jLB8XPXsMXndziH7utKYpnfrojYOGVtLu2ZnAWm8PmL//79QunaO7Z1zdI/45l3mJQT4EAw/tSfGGHLs4WBMUB2BUp+E7z9X1qq7KGzcI3iU/+PgyRTUGNQ72+seh1q/jfa+44NcP2
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -125,16 +125,18 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
 On Fri, 30 Oct 2026 at 09:38, Muchun Song <songmuchun@bytedance.com> wrote:
-> pagetable_free() now runs pagetable_dtor() for constructed page
-> tables. Calling the destructor immediately before freeing the page table
-> therefore duplicates the lifecycle handling at each caller.
+> pagetable_free() now runs pagetable_dtor() for pages that have gone
+> through a page-table constructor, so pagetable_dtor_free() no longer
+> provides distinct behavior.
 >
-> Remove the redundant calls and let pagetable_free() handle the
-> destructor. No functional change is intended.
+> Use pagetable_free() directly at the remaining call sites and remove
+> the redundant helper. This keeps the decision to run the destructor in
+> the common free path.
 >
 > Signed-off-by: Muchun Song <songmuchun@bytedance.com>
 > ---
->  arch/m68k/include/asm/mcf_pgalloc.h    | 1 -
+>  arch/m68k/include/asm/mcf_pgalloc.h |  4 ++--
+>  arch/m68k/mm/motorola.c             |  2 +-
 
 Acked-by: Geert Uytterhoeven <geert@linux-m68k.org> # m68k
 
