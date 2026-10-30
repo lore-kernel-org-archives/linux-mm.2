@@ -1,125 +1,163 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14270606A31A
-	for <linux-mm@archiver.kernel.org>; Fri, 30 Oct 2026 13:08:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99098606A327
+	for <linux-mm@archiver.kernel.org>; Fri, 30 Oct 2026 13:10:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=bXwIYEvJ
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=YsyyzjeN
 Received: by kanga.kvack.org (Postfix)
-	id 407106B05B6; Fri, 30 Oct 2026 09:08:40 -0400 (EDT)
+	id 9D6BC6B05B8; Fri, 30 Oct 2026 09:10:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3DF426B05B7; Fri, 30 Oct 2026 09:08:40 -0400 (EDT)
+	id 987966B05B9; Fri, 30 Oct 2026 09:10:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2F50D6B05B8; Fri, 30 Oct 2026 09:08:40 -0400 (EDT)
+	id 84F876B05BA; Fri, 30 Oct 2026 09:10:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 084ED6B05B6
-	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 09:08:40 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id D12A11C3BF0
-	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 13:08:36 +0000 (UTC)
-X-FDA: 85379321832.23.44581D5
-Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 06B5F18000E
-	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 13:08:34 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=bXwIYEvJ;
-	spf=pass (imf16.hostedemail.com: domain of olsajiri@gmail.com designates 209.85.221.54 as permitted sender) smtp.mailfrom=olsajiri@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 5F50F6B05B8
+	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 09:10:32 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id E621A1406AB
+	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 13:10:31 +0000 (UTC)
+X-FDA: 85379326662.04.A90A51D
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf23.hostedemail.com (Postfix) with ESMTP id A2B8D14000D
+	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 13:10:29 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YsyyzjeN;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf23.hostedemail.com: domain of mason@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=mason@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793365715;
+	s=arc-20220608; t=1793365829;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nZOCDzk4C5KN1JtOyDvdr0FxSEI/UMG9a/p3BL1dBmI=;
-	b=rU7wpOmQuBGD9XCYWNAKRXltwlfVfDIuJitEuz62atgidQzlZlmKgMukvmJaknyONIWZ+2
-	fZU0kcpP/ByvMst5Vg3/u5n+tJnv+BpzMGprf4Cpq2vzLS3yRZw1wRiWul2SU1cDMCyepH
-	zOqhJp8Wws11wvZAlzSpG1i1ZsQ5/SI=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793365715;
-	b=nqeg6KOEvvqWPJjneNhhM5zD+34eyzVgsoKKzyDZTocH1T66hZGkW3i7/eqyvC30p1yTx2
-	s0Ia2sne5o09sBXWwZz66XeZwEmTXfQB2S84Ci5RkY5n42A4GwFm7pRaNoaMa9m1c4VFbp
-	FY7IH99AJz8PqVSXkj+HTyhFDL3kiJU=
+	bh=BIsmxaqlcIiqqe+DfpItRAhgOJbkWsY0ZSYuASH2dgo=;
+	b=SyPN9D1GGzLmQGjjKxpxfrR3XEw0peK8f5RH1wXbp3iy9Sn4I5gzPES9Y4MJVwQKZHEjQ0
+	9beG9q5dnjbZC/M14jWPwCzx9XBEGjuRCf8D6LJfGQQXaCOq8cusSPkSUTy6YqAKrvXPxO
+	ZW9e85nOW3D/hGjfBSe6AXeUz/TwPSY=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=bXwIYEvJ;
-	spf=pass (imf16.hostedemail.com: domain of olsajiri@gmail.com designates 209.85.221.54 as permitted sender) smtp.mailfrom=olsajiri@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-48c4d870d54so417581f8f.2
-        for <linux-mm@kvack.org>; Fri, 30 Oct 2026 06:08:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793365714; x=1793970514; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:date:from:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=nZOCDzk4C5KN1JtOyDvdr0FxSEI/UMG9a/p3BL1dBmI=;
-        b=bXwIYEvJgzwdRNU5rJ4Dz8RpKBvjN7I3dKkzip18fl4fovhjbp4zts4ZG/YdOuX8cC
-         xu50KoGjouoLLPwxaaKsDYhy9n8yxllFdmxyNPImikN+/1ozOp0h/luS3GNGNbg4/D8r
-         GZfBAQhYSjvvq0T0zfxP8UnTmcWKuybd2DsvP12JEM4Tdk5mLRra4duyHlm9IvrtUhz6
-         07jPfaw+CHUn0OylHJ7VIQttz8T3kB+QPN9DiQ9NQhEV0qF7uJl1VGZh6rvcfA9xYpMT
-         cMIqxdSLTYwHopXS0cV/k1iBWjrijDHtQG7ChX+PzOxU2UOZlfaPgObF0AMCMMXdS0DA
-         GU3Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793365714; x=1793970514;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:date:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=nZOCDzk4C5KN1JtOyDvdr0FxSEI/UMG9a/p3BL1dBmI=;
-        b=y4XtZo4vLiap2mEFnsvrgze4wLzTRlyo3jzvImobQzR/2C55xtSP4W/HGIYPeQrPsZ
-         DP19sTzJQqZQbD6QqUUAH2Xyzhy0JNGvXj1OedpRSoZ3BtJ26gyFa5PEy6ehOthCFY28
-         kAKnG41Z/l0/Ih9rwRB4wned9tVCIfo0ZDumSYvowLviIKr4oxW8kkKkNWfBU2A7BdNd
-         V37LBEUZDrg3en583HQf8Cg/BCWqf54MKOGyHqja+6TriFoy3uEca6e4WClHiFHGgDsc
-         3DwXf7TiO9ga/wZnl9sx6gz1xxHRWyQS1qjmPC9eZL1or8rsjcB8lizu1afIDbTR3HsI
-         Yo9g==
-X-Forwarded-Encrypted: i=1; AKwUvBwqMpTzR1UcXym1lAGVSMJ5hDCJadme/EA88yvsRMC2QR6YX4CE9pwXG/5JbGJBvxEDNx2FDcol+Q==@kvack.org
-X-Gm-Message-State: AFq9FYJ5XwEtEiTiQWKU8H3KKVZswsRhtwIp5tL+hsAHa/niV5IRKBY5
-	CY42sFOknOLc7aMYbXcWpRJ6wtiFzY3WRIL1m2n3DM0v4wY5fq3891fm
-X-Gm-Gg: AYBFou2W6dRpNFUjsArG+q3JZYzQ+00lYOdI125xHyi8gS3/pZweOrwK0xIguO+VH+H
-	tPEP4mSwt+RwcDPg+q3uzUDaGS+epGjCUDBmoVIJWFDq+iWS5+oG8xWPYyuAcpM2lPs/iIiaG86
-	sPVsg6DUkd8kNBVCgBXteArXPtYpqor9bHXBLWqaFafpqxRIA8B1mf+QYKfN4bU1x78WV62qqql
-	eQATqQyQm8YOAteYCPmjsB4rHXHaVLeLipQvhIpXsIUT0vxHKtMWAuE/1mih+xrvY1fbpkqSjIR
-	tdG/mSrLwgCP7eDsARXQS2f76WfVqHPLc8KAx+9pVNl2AorigTOSMQ3IeXnBSSiiWSw1o2w7VOo
-	AIUoFyxrvAviyCvN912mQ1MO61cntS5uLJpED+m/ys71rfFhTeoaI0Plnph+sf+2GMf9UiCqhyj
-	3Kkx+1ppcBLfsnG67ab0xGokugh40Q+6fDgYeuNrgo45eUSlXIJkJ3J2XxrHBTggLUjpb8ySoe4
-	SlWusDVLWwROCpjFhJrk3DYoCw3RSWRcZFGWDaQtPgzgOMm2dG29yZ4p4xurOfUFbmjqGhcKt9P
-	Kw==
-X-Received: by 2002:a05:6000:2204:b0:48d:ffe8:ace6 with SMTP id ffacd0b85a97d-48e6e3004fcmr5231472f8f.42.1793365713640;
-        Fri, 30 Oct 2026 06:08:33 -0700 (PDT)
-Received: from krava ([2a02:8308:a00c:e200::25dc])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e71baa1b3sm3053979f8f.56.2026.10.30.06.08.31
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 30 Oct 2026 06:08:33 -0700 (PDT)
-From: Jiri Olsa <olsajiri@gmail.com>
-X-Google-Original-From: Jiri Olsa <jolsa@kernel.org>
-Date: Fri, 30 Oct 2026 14:08:30 +0100
-To: bot+bpf-ci@kernel.org
-Cc: ast@kernel.org, daniel@iogearbox.net, bpf@vger.kernel.org,
-	linux-mm@kvack.org, andrii@kernel.org, eddyz87@gmail.com,
-	memxor@gmail.com, ljs@kernel.org, john.fastabend@gmail.com,
-	nierro92@gmail.com, martin.lau@kernel.org, yonghong.song@linux.dev,
-	mason@kernel.org, ihor.solodrai@linux.dev
-Subject: Re: [PATCH bpf-next 8/8] selftests/bpf: Test user memory kfunc errors
-Message-ID: <auSWzm7W1SiQN0Ul@krava>
-References: <20261029212551.56964-9-jolsa@kernel.org>
- <d023b011d67ae13695a93c94ae0197e96fb5d42bbc3a4a63b42fcd0c1852a605@mail.kernel.org>
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YsyyzjeN;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf23.hostedemail.com: domain of mason@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=mason@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793365829;
+	b=NJn4yQXxU32ZxTVKlYLhmVRQ6ftBKC1L19PkHDFLtSkWdD2eq/z4JJMC7RPOk5CzE99i+E
+	/uLk6wPfsaoUyDWzqFP977/W4RUWYPyBR/9T93pOAY8lsfuyn5TuZ2xzIbBValmhmYibCL
+	mbnEEIWj++B3qIuKIQbZxIfiDWGWlmE=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 6274E43D99;
+	Fri, 30 Oct 2026 13:10:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 555F11F00A17;
+	Fri, 30 Oct 2026 13:10:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793365828;
+	bh=BIsmxaqlcIiqqe+DfpItRAhgOJbkWsY0ZSYuASH2dgo=;
+	h=Date:From:To:Cc:In-Reply-To:References:Subject;
+	b=YsyyzjeNSnn4NdzV/HZ1aXH97z2sULKyBNgRpsULjLOkSAQDdeytR2rt6JKIWbX8J
+	 NJKISnwg3GlSJV3alLWBM4FViTUd9AZ9ts7gDpSfUHt9u6eAOTkf7G+2Bx99txUbNF
+	 bnOei7ODniDRJ2cFOVbuIBOH2v/BFY983Pe8eoid3RccWmS+FTBnhaMBd53tIKGmkP
+	 4nxfbqnF2+s3l94S1LoBzcbGHawvowUeYUiswzeN+26Z9oHUTIiFCMa0KFS6713jYG
+	 oweCHkLxnh8kCE8Y6mCO0HSMaa+n1A6aEPEzMMMH8UJ3vAgvqzm2v2Yx8PoRS7c04j
+	 0JeJa72utHtag==
+Received: from stl-compute-04.internal (stl-compute-04.internal [10.204.2.64])
+	by mailfauth.stl.internal (Postfix) with ESMTP id CE537780068;
+	Fri, 30 Oct 2026 09:10:26 -0400 (EDT)
+Received: from stl-imap-13 ([10.204.2.104])
+  by stl-compute-04.internal (MEProxy); Fri, 30 Oct 2026 09:10:26 -0400
+X-ME-Sender: <xms:QpfkapuEEiWvnYkAbvGo9ysv-v7TBwkorMqKQptpbuZvqzGbgFpqaw>
+    <xme:QpfkatSLePC3ZqpvsICMdaVZjgd2nhgN4ac6cf3pKUOffOW26FNBeCG8_fYEgYJks
+    1oDFRvVjNMpLJe4U41lyostVUROS_e4ktzdeJ42JhubFzZVSSlQ>
+X-ME-Proxy-Cause: dmFkZTG32OlWsLwdAtEeDvbuX+kS2E5ZrJYjCVos+iJYpUWXUV6VRMoUTSQI/F3gDFUlRY
+    KlT8DJ1rPfzYkRdcG8OMi2tRmlDRQduhPo40avHI8Knf3VizQC7DRrLMNWopHbifd9Q5yw
+    Dfyt4tg4BeyURi2mWO8CklDoMyO4B5PvTL/7aeaUn2VjiCNmJAZOiXHAVOQFnXzJC7stSy
+    W3WIWdyjaIM+fWF84Mb5rjOroqXFiYJKoECTBlQrhYOUL5+mZw5DpUDGIBIiN4lguaLkyt
+    oD7NTjmN2T9ahci9vRKn3bmV0FYLgkDHndh8CJE5uh3AcBuG9Qfg+/PrXIPS+nhvc0mBKn
+    Us3Of1fWwQvi2VOdBEiFV2znZy9clT1YYWRLCh2nzSzqMEZqQWClKk/ADQIDzOEW/zOfrH
+    9aa2S5JZSjmFO+Sn5dtx6Uz0ETZ51ia3mVU+79WvFSDWZp3onwYSGSqUMLeRBIACC3irLb
+    u3ZAjQZOkZnMl8uauMeXF+ERqqILy6gSIbDifjRYLE4At9wbm3jgeIgMw0milmp05ICC8I
+    3h6iBm04QeHqE/6h0irKtOVnTkCdS1rHGA4yw6CQAp/EFDNNNAfbo12eSejrLAg/pAM48W
+    Yxgehf1goIUqMKABNyfPFy4Xqy/kOgIsFbfgl1056pYO+75O0d0RiObwsfTg
+X-ME-Proxy: <xmx:QpfkauzU3e0Iazb18MDpVj0fZLYl2dQ0gY7_TiE8LkBBqeq1lOZHXg>
+    <xmx:QpfkakevNXYtxmHt6UBCUoFoVZQZhjRRt0-H5a0Et2i62eZMFvnTGQ>
+    <xmx:Qpfkak-Jq0AcmJBn79OdZVfkM1GrOWoRJZ8l-K4Jo49WxZ63wlsMCg>
+    <xmx:QpfkalH5l8KlnQnc64yNFR5h5-AQGEc2IdNz8x4ZquC_2G-el7oiHg>
+    <xmx:QpfkakQzlxrhr7RCrmHVYQkPkq4zpY5MHsFRDcycffuj8EJXrDhqm9Sm>
+Feedback-ID: iccae4b50:Fastmail
+Received: by mailuser.stl.internal (Postfix, from userid 501)
+	id 59AA0F6007F; Fri, 30 Oct 2026 09:10:26 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <d023b011d67ae13695a93c94ae0197e96fb5d42bbc3a4a63b42fcd0c1852a605@mail.kernel.org>
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 06B5F18000E
-X-Stat-Signature: 14fm96ngkh87rqmp5biwjb7eu5dt8jes
+X-ThreadId: Aey4jMk1dEgs
+Date: Fri, 30 Oct 2026 09:10:05 -0400
+From: "Chris Mason" <mason@kernel.org>
+To: "Muhammad Usama Anjum" <usama.anjum@arm.com>,
+ "David Hildenbrand (Arm)" <david@kernel.org>,
+ "Andrew Morton" <akpm@linux-foundation.org>,
+ "Johannes Weiner" <hannes@cmpxchg.org>, "Michal Hocko" <mhocko@kernel.org>,
+ "Qi Zheng" <qi.zheng@linux.dev>, "Shakeel Butt" <shakeel.butt@linux.dev>,
+ "Lorenzo Stoakes (ARM)" <ljs@kernel.org>, "Kairui Song" <kasong@tencent.com>,
+ "Barry Song" <baohua@kernel.org>,
+ "Axel Rasmussen" <axelrasmussen@google.com>,
+ "Yuanchu Xie" <yuanchu@google.com>, "Wei Xu" <weixugc@google.com>,
+ "Baoquan He" <baoquan.he@linux.dev>,
+ "Baolin Wang" <baolin.wang@linux.alibaba.com>,
+ "Liam R. Howlett" <liam@infradead.org>,
+ "Vlastimil Babka" <vbabka@kernel.org>, "Mike Rapoport" <rppt@kernel.org>,
+ "Suren Baghdasaryan" <surenb@google.com>, "Michal Hocko" <mhocko@suse.com>,
+ "Kees Cook" <kees@kernel.org>, "Peter Zijlstra" <peterz@infradead.org>,
+ "Jann Horn" <jannh@google.com>, "Pedro Falcato" <pfalcato@suse.de>,
+ "Hugh Dickins" <hughd@google.com>,
+ "Pasha Tatashin" <pasha.tatashin@soleen.com>,
+ "Pratyush Yadav" <pratyush@kernel.org>,
+ "Matthew Wilcox" <willy@infradead.org>, "Jan Kara" <jack@suse.cz>,
+ "Zi Yan" <ziy@nvidia.com>, "Lance Yang" <lance.yang@linux.dev>,
+ "Rik van Riel" <riel@surriel.com>, "Harry Yoo" <harry@kernel.org>,
+ "Alistair Popple" <apopple@nvidia.com>, "Nico Pache" <nico.pache@linux.dev>,
+ "Ryan Roberts" <ryan.roberts@arm.com>, "Dev Jain" <dev.jain@arm.com>,
+ "Usama Arif" <usama.arif@linux.dev>, "Kiryl Shutsemau" <kas@kernel.org>,
+ "Matthew Brost" <matthew.brost@intel.com>,
+ "John Hubbard" <jhubbard@nvidia.com>, "Peter Xu" <peterx@redhat.com>,
+ "Will Deacon" <will@kernel.org>,
+ "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
+ "Nick Piggin" <npiggin@gmail.com>, "Oscar Salvador" <osalvador@suse.de>,
+ "Minchan Kim" <minchan@kernel.org>, "Muchun Song" <muchun.song@linux.dev>,
+ "Xu Xin" <xu.xin@linux.dev>, "Chengming Zhou" <chengming.zhou@linux.dev>,
+ "Chris Li" <chrisl@kernel.org>, "Kemeng Shi" <shikemeng@huaweicloud.com>,
+ "Nhat Pham" <nphamcs@gmail.com>, "Youngjun Park" <youngjun.park@lge.com>,
+ "Gregory Price" <gourry@gourry.net>, "Joshua Hahn" <joshua.hahnjy@gmail.com>,
+ "Rakie Kim" <rakie.kim@sk.com>, "Ying Huang" <ying.huang@linux.alibaba.com>,
+ "Jason Gunthorpe" <jgg@ziepe.ca>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ kexec@lists.infradead.org, linux-fsdevel@vger.kernel.org,
+ linux-arch@vger.kernel.org, linux-cxl@vger.kernel.org,
+ "Josef Bacik" <josef@toxicpanda.com>, stable@vger.kernel.org,
+ "Thadeu Lima de Souza Cascardo" <cascardo@igalia.com>,
+ "Mani Tofigh" <mt4022@columbia.edu>,
+ "Samiullah Khawaja" <skhawaja@google.com>
+Message-Id: <ad0d82f5-c2ad-46d0-986d-94626faac1f9@app.fastmail.com>
+In-Reply-To: <bc8c1fc5-4620-4515-8520-22ebcd0d592a@arm.com>
+References: <20261029-fixes_core-v2-0-a64ce7f83abb@kernel.org>
+ <2f23dafc-43a5-47c9-a819-e696cda6fd44@arm.com>
+ <baeda061-e0d0-4be1-9aa5-8886182ca83f@kernel.org>
+ <bc8c1fc5-4620-4515-8520-22ebcd0d592a@arm.com>
+Subject: Re: [PATCH v2 00/47] mm: various (urgent?) fixes
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: A2B8D14000D
+X-Stat-Signature: q8afpxd1sxhdgepz3ookqbnwj6be7nuq
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
+	autolearn=unavailable autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-Spam-Status: No, score=-7.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,
-	SPF_HELO_PASS,SPF_PASS autolearn=no autolearn_force=no version=4.0.1
-X-HE-Tag: 1793365714-154467
-X-HE-Meta: U2FsdGVkX183exL48qrwnSBKQclJOcZNeiiFdOiFLM0b2tWPXBG67uvEFM54JWSjCH1f1K8J9sjXAFdIMR3eJcjooo7+fesPx7KvA7ArGUUZbOnDfmo5qqb1SSfpGKb+jVCjh0YjbgL7zxpy2iz5wZz2vWcffhy6Z0H3jo9sRbT73IN032NvoJBOkM4loRyUn20GGCX2saRml2iDG0SfNWuCRlNKWx/yaznOG0y3fPdmf06pHlK0vSwc1hG2DbTsWHEsY7vBjFdda6jEPO/6s4N43oVVpq+vDG4QJGLwedh/LNcOGFV2DIiz/bOvaQhJV+PgIAEUp/Gp6wb7rU20L/VDyi8H1dYL9pFAS0lfVcsvYGQnM7qChhntTYrx8tk+XWnXPWDhYEvVjfV4/6MQjbFp73L4kps5u1QWPHhCJBU2LYw98HpiZAXt6ziJ3XfvQRUGWi8msVCwn/SpXcjhj4Uit7qgqGVGmiUhj5zIvFKvmtGv6CSSs+VsZCm4Xxj5RVBLK/HHqHi799zc9Qnq25f1NXzlflD50znBxy9nD/pE2oBrV8Cwt6CKS+SIgNz1/yigbA19PSnUmKKuY9p1FwVmov9X1XRFz3NKMlkVP226JX2o1WsnT116mMYry8wic/RfL0v662UASD00EkMGxB6QBJsZD3YG+ldPpl/yNgjYQgGxlaeqIEBkdOb2McNBVQ/syUM8l4HJY00ASq/dI02m6TO9RGCSCXAOag1cYu3BGBTrIcLEp8Tb/MmoH7oBxyRMZzB3UeKtyCreU1iwjoPgarGRpp1OCI5mO2uc8WQwaT+7TFAr1g12XUXbKzpoGRTj+lmZ19Lm5Yq/i4yHMtCkAoMqK0EGPNDjIobPE3louzaDKrSvda+eXXmW5RHhD8/i4DTaQxEvL0UE4xaCfNAXEqkAHc/oxqDoC3pbB6mEXqH/kYQGPOAd4MnbnCLMdfaZV9coFmMLzVgVTP8
- Bmo6jCsy
- 4O/VKHlNyy43IDQJfwgGpC/ic+yqGPTELk4puCc30cUan6UXKycDi9W0iBUS4HiHYjRWvCGHBpmbBGp9XNMOcMXhg7e7M9psvbUeeqypPUoJ8lLH/OcUW3NGdE/Y7WsT0nfCQpheEUI4/lArd+eMRgs/lWEL+flowVw4WBqFoBUszC4Us1ZlCS4S64cj3sEy+FcQDuC3s9dZrVHxN9VdCqS+bcVjCYXbwu+N7kMVedqAS+l3HjBEKJB+rYMH30GZ/9HrrwT2QHB+1MH3J3m+MpPyEvVtrvWGyEUQKJVGaT282EP97MGywzw9UHy8XawKsiO2sTMY5sw8fsoqKZEL4QDvlnaWcbl+NJA1+ziFAssvrZxghMlKLOZrqMzbBa8fwpQBk4qVUewhRLQo/cQbg0ahgise7FxqFmGujkmjW+Wxge2+yQXDwBYz2e3ozvE+yAikP0GG0HilKu8YtgjMxRXPTxuD6Ga3Vob4hsZaVmRsloKuRz1uuCaAQmMjmvDPpmkZv7ul6WxjEHec8i65DO0N99bPb9MjCxYgAaKoG55qY7DelmZ46AF/sv3iTAUP7faGRGvklV8FmzSQnfZyFYSEGWLh2stVICv/gJpRq8lmTsAs=
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1793365829-1217
+X-HE-Meta: U2FsdGVkX19K1G73eUctgLgO1E/nmrftDugHqQPedwYMpDxCn5wAWAp0DX8wWCwJ6dzo988yAXvH8JCszCs76ThvB7I/XghM5oZmq/yAK4WapoDURx3NIoePUYlHT6C9pAiNirkij8snwHzxGmyOvqdW/bae6jIjBDd1rta0lWAqZmatMPpCFdEEPKtLNOI77qYfN2lsG98QAVXJTLrYxuIfpz9z8BM6izVmXOTrCpZsuBlHsN3YhqmT/oqwuaE+5HqSokZfQBhxNHZqq52WaGd4a4jTs/03jLssc8doYZaJc7IK8tLlVJmi6eILenJ3/W2JDZHJ1tC9m10xT657osA57KJ3g2CgxJaQi3faA+tqB6hX+sltz0kPpx3CyEbTtfhZ6qCN3FLe3O+jXUQFQ8+rZat+UhcO0ILkyTxevcZHyqw1z+1rR1xwzrw3sRkvmgJinJFQX0F9w/0QgcZ9e/KK4JA/b1HNrTyjJ4bIFklXooBpBPIwT+Rp0AekDOI1gs6+ZZMm3EiC9NDK6DTrU+RKDy0z3USzd2GbL79VhdGadtom6gI/EayhhKdE62KRjZIf1aeepfIQuPQt1jU8R77Du5XzNxCx6kbb7ifVWMGYinR2P2ni0Dwt/RAGKljWEsHJccJzxy9ZSye44BIxU55rTM8PgoQZ7vWQZJd+KC35vbymZO6OIZ5uaxQE2frGuqnOy/jPVpPoiee2k7FIDIqR0vsOcQhfJjekR63+e7KtkNuq9zPvNwU0L610JGwTOGGstNn7wbZbYx5Hewy+lAJT7QBJwRMWVh6qp77uJKhNdGSGmiUCArP01QEj/0pSBtrzvcX3aTsxR3i5YTWrsf7x/jcThPXhJ3187XUbaoyh+yjKZL5+fapJfRZolS/mQn3g2BVYrVOiFONT/JLrFDkP+PmV79/FJ/yufjpCeEGZFHPtmKEP1hwHMwlmNSHtad0kcAeSQH1EAfLMPbA
+ DDbd4ctC
+ kXJ79paNUr20s6EEAGPyfPyHNFRZSWeSQJijAelDpMwkY3vEVovtJzhYg/Vebai+77Bndy78oc12yXkOllk+ilr3CdYl4iJRRFDqYJ9MA4zh2IQyBrehs0ML3BwZ/D3VjB15qiP1iM7BS83J4J7Z5qwkVLk8V/haYDic1+ygFSr/xPIscFbY84CugTIxZwux8G6Zs9BeS/fk6Q/GXd1X9tcrIni1apqZyKz/MxRoIh8JWCBOERL6mT6IeGLY8xc4pLm7pbOZJynn0bBGT0l6V8fNunKdm8Khya42WbvdSdblaQ3ITLR5g3ytkyKv0xL3M05l5EZhGhJa4tLMdvfTSbf/ELDFlH5kdYLd3b+fr4/fjlpJ4vDyJNFbP6OeX6rezEg+7ZaieDJ6guJLObTHrp9QZ2S2n8jvLvsh2V1uqKuHLE3J7HPP8HD1wMpr+oOEC4YhecJCm3txPKunqLriHNCnIZsRbzUQE4pqc
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -128,42 +166,68 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Thu, Oct 29, 2026 at 09:59:33PM +0000, bot+bpf-ci@kernel.org wrote:
-> > selftests/bpf: Test user memory kfunc errors
-> 
-> TL;DR: Commit message only: it claims tests for partial copy faults and
-> read-only mappings that were added by the previous patch, and omits the new
-> RUN_TESTS(user_mem) verifier-failure tests.
-> 
-> > selftests/bpf: Test user memory kfunc errors
-> >
-> > Test invalid copy arguments, zero-length mapping operations, partial copy
-> > faults, and copying to read-only mappings. Verify that a failed unmap
-> > leaves the mapping intact, and that non-sleepable programs and programs
-> > without CAP_SYS_ADMIN cannot call bpf_user_mmap.
-> >
-> > Assisted-by: Codex:GPT-6
-> > Signed-off-by: Jiri Olsa <jolsa@kernel.org>
-> 
-> The changelog says this commit tests "partial copy faults, and copying to
-> read-only mappings".  Is that accurate for this patch?
-> 
-> test_partial_copy_fault() and test_copy_to_readonly_mapping() were added by
-> the previous commit 8f0bac0f80cd ("selftests/bpf: Test bpf_copy_to_user
-> kfunc"), whose changelog already describes them, and this diff does not touch
-> them.
-> 
-> What this diff adds is test_zero_length_mapping(), test_failed_unmap(),
-> test_invalid_copy(), the three verifier-failure programs
-> (user_mem_nonsleepable, user_mem_kprobe and user_mem_no_sysadmin), and the
-> RUN_TESTS(user_mem) call that runs them.
-> 
-> The changelog also does not mention RUN_TESTS(user_mem), which turns the
-> existing user_mem_test program into a privileged load-only subtest.
-> 
-> Could the changelog be reworded to describe what this patch adds?
 
-yep, will fix
 
-jirka
+On Fri, Oct 30, 2026, at 8:12 AM, Muhammad Usama Anjum wrote:
+> On 30/10/2026 11:35 am, David Hildenbrand (Arm) wrote:
+>> On 10/30/26 12:19, Muhammad Usama Anjum wrote:
+>>> On 29/10/2026 8:32 pm, David Hildenbrand (Arm) wrote:
+>>>> See v1 on details. TL;DR various fixes :)
+>>>>
+>>>> Thanks to everyone for the review! Hoping I can get some more? :)
+>>>>
+>>>> I am planning on picking these myself, moving them to linux-next fairly
+>>>> soon through mm/core.git.
+>>>>
+>>>> ---
+>>>> Changes in v2:
+>>>> - "mm/memfd: check for real shmem inodes before accessing shmem state"
+>>>>  - Call it inode_is_shmem
+>>>> - "mm/truncate: look again if a folio left the mapping"
+>>>>  - Different fix for truncate_inode_pages_range
+>>>>  - Adjust description
+>>>> - "mm/huge_memory: fix zapping migration entries for device-private THPs"
+>>>>  - Move handling in zap_deposited_table
+>>>> - "mm/mmu_gather: fix flushing ranges with 4 GiB or larger"
+>>>>  - Adjust description"
+>>>> - "mm/huge_memory: split huge PUDs when adjusting VMA boundaries"
+>>>>  - Drop split_pud check
+>>>> - Link to v1: https://patch.msgid.link/20261027-fixes_core-v1-0-6f74bec9a5bb@kernel.org
+>>> I ran Fastpath, a Linux kernel performance benchmarking framework, on
+>>> this series against mm-stable on aws-m7g.metal. (I) and (R) indicate
+>>> statistically significant improvements and regressions, respectively.
+>>> The results show 10 improvements and 1 regression. Other, unmarked
+>>> percentage changes can be ignored as statistically insignificant. Hence:
+>>>
+>>> Tested-by: Muhammad Usama Anjum <usama.anjum@arm.com>
+>> 
+>> 
+>> Thanks for the results. IIUC it's schbench that shows a possible regression.
+>> 
+>> I would expect that no changes here really affect performance at all (neither
+>> positively nor negatively).
+>> 
+>> "mm/huge_memory: fix list corruption when deferred_split_scan() races with
+>> deferred_split_folio()" fixes locking, but I wouldn't assume that this matters
+>> at all for this benchmark.
+>> 
+>> "fork: take mmap_lock before copying mm_struct" changes locking, but I also fail
+>> to see how that would affect the benchmark.
+>> 
+>> Maybe some code layout changes just affect some benchmark on some machines?
+>> Because already seeing 10 improvements makes me wonder how that could possibly be.
+>> 
+>> So I'll move forward with these fixes for now and see if we get more reports and
+>> could identify actual problematic commits.
+>
+> Yes, these improvements/regression might be because of code movement and how it
+> has affected the run time performance. Most importantly, these results show that
+> there isn't any drastic affect on performance. These fixes are good to go.
+
+This schbench configuration is going to be really sensitive to process placement, and it
+should be doing all of its memory allocations up front.   I haven't done many schbench
+runs on this type of hardware, but I'd agree this result shouldn't indicate a bigger lurking
+regression anywhere.
+
+-chris
 
