@@ -1,92 +1,91 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58F90606A33B
-	for <linux-mm@archiver.kernel.org>; Fri, 30 Oct 2026 16:09:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60E55606A331
+	for <linux-mm@archiver.kernel.org>; Fri, 30 Oct 2026 16:10:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=PfRb7zlK
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=X0vb+QKs
 Received: by kanga.kvack.org (Postfix)
-	id 0A1396B05B7; Fri, 30 Oct 2026 12:09:55 -0400 (EDT)
+	id A3DC66B05B9; Fri, 30 Oct 2026 12:09:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 02AE46B05B8; Fri, 30 Oct 2026 12:09:54 -0400 (EDT)
+	id 9F4566B05BA; Fri, 30 Oct 2026 12:09:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E5C786B05B9; Fri, 30 Oct 2026 12:09:54 -0400 (EDT)
+	id 86A696B05BB; Fri, 30 Oct 2026 12:09:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id B527A6B05B7
-	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 12:09:54 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 47AD7160453
-	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 16:09:54 +0000 (UTC)
-X-FDA: 85379778708.09.0C6EE29
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf18.hostedemail.com (Postfix) with ESMTP id B38AC1C000E
-	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 16:09:52 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PfRb7zlK;
-	spf=pass (imf18.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 555B86B05B9
+	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 12:09:58 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 0B4E1407E7
+	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 16:09:57 +0000 (UTC)
+X-FDA: 85379778834.12.5945C48
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 4A0531C000D
+	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 16:09:55 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=X0vb+QKs;
+	spf=pass (imf21.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793376592;
+	s=arc-20220608; t=1793376595;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=bXdDkLDRoQfo0RDcxKVzZBJ1sPUWnSU51HFGyOfej4k=;
-	b=xUGHrSKZis02DzHBfO+oyKm+MJMpi1aC5loEBAQLtKnqCGUodd6MNspIyzCIaeWr6PiDfQ
-	vbYyCZwZdFEZRov60yHGIqoLs5zFXYD0u4o9/OrlbxuaxC1dGgXksETZesNBsl+uAq2rX+
-	q3k2UtNFOA1s+WB1WzOSHoE5gap9MXQ=
+	bh=G/NlFSnNcldx9naDXGStLPpiwmKvzlTeOOk/gge3EPI=;
+	b=1ARn/dqt5h1KEhKckL0NTfBwDJAXkIERKREtB3UMH2AgCTEkXfIC4U5sGeyiiW6O5vKl5t
+	Is3oyoojjgsrUm6uu7KM8Ozz7Dwhz+4BwiVCDMBFkzvYhbk7Uu+k99lxueHNWhoQRfmwVD
+	sGGinRYC/RBallDbPyQc5ohDmOSm0vM=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793376592;
-	b=1OZSGJ7wdP2jbH3Mrm/21iU1CJjIBDpjA+IPSREEhzQnwvhVTz+0BVjFPwhuo+h5JD5q+C
-	3GbR0WeX6puSG0omcrkN/8gyUYjX0b97r+SrxubonpnEciep/jpmPJbMRwbwzOQbKJKvKS
-	QNy2Vlkxp2RE9XKHp2MGNvL9Jub97xw=
+	t=1793376595;
+	b=MTYVoxWerWKi/EfGYmX6piM3Yw89ol4dUOOAfmiRLh7s0UVIIG+w/4CZNLXfjBPD9CbSaL
+	dvrJmnsj2jPax2kUVClCLrvHdxlFqIzWsSqe4pogxzLIWBXrCxz9Nn3CEp8xGaMpbXg//0
+	Jhfu24VUN+zkfAwum2m92AGMlMuaDxM=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PfRb7zlK;
-	spf=pass (imf18.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=X0vb+QKs;
+	spf=pass (imf21.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 3F6CA605C6;
-	Fri, 30 Oct 2026 16:09:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67CC61F00A17;
-	Fri, 30 Oct 2026 16:09:51 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 8C546402BA;
+	Fri, 30 Oct 2026 16:09:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FFD41F00A17;
+	Fri, 30 Oct 2026 16:09:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793376591;
-	bh=bXdDkLDRoQfo0RDcxKVzZBJ1sPUWnSU51HFGyOfej4k=;
+	s=k20260515; t=1793376594;
+	bh=G/NlFSnNcldx9naDXGStLPpiwmKvzlTeOOk/gge3EPI=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=PfRb7zlK3p1uNnvx3Ov4FLVxblzsklQrJh/YO3Z8iV6j3TtkBBmecG96JvE2fAKfF
-	 aHF+WdNcgwv90aphI7rsDhbSi/3uRGFpZVhrii67yHqKCzmiznqsEVOOreNgteURKT
-	 bqVNkaIW8I97eyHWNS7sFZS5NyCQ2vVyp6NIzc0cpEfayy5QedTUhh2tyK0vxTw1c3
-	 gNJiWlfeaGm/+A5ZJezGe3j6Ehy7VJ+JzYU2S7ACEB/B4YoVyqmJzYoP1p2jrxnaTh
-	 FuoZCaHWS+XJpdlLrEbv9AX/LK8HQaoOIK1TgrtZpBH7FACtFac79/2/2Lr/wQo7sD
-	 UloeYHujID5NA==
-Message-ID: <sashiko-outbox-191224@kernel.org>
+	b=X0vb+QKsc0IfCurUZLqL1bXCL4/R5byO7UPcHRV5QGGJsKwXncsM9RFyYBy3fzkXd
+	 FdIt7I8/c4kyHBMyx+WzDD4cFvakaVRlfmo+h/MfUVXnPumegsa4GttpC83jrDvxx6
+	 ZoxohkjJWLK01b6m8c43ZltgssPNu3ZQu8ZOVj7UOiWfUFzg58iw4UIruyslgfhirt
+	 YbOnPd6ULjJJiF0dUJLE9TxPkv1KDrpr52th/qSGVq3gfYBkVJjLF0dt/mV0KhRjsk
+	 zSHCKLTNZ6vYq1vhtPLSrNcc6x6TN3ldQwLcgkR8qx/xN0+ZAGwc6MYM+mWhG4c8r8
+	 6E/+TaSxXOhVw==
+Message-ID: <sashiko-outbox-191226@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 05/34] jfs: don't set SB_RDONLY after filesystem
+Subject: Re: [PATCH v2 07/34] fat: don't set SB_RDONLY after filesystem
  errors
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Christian Brauner" <brauner@kernel.org>, "Jan Kara" <jack@suse.com>
-Cc: "Al Viro" <viro@zeniv.linux.org.uk>, linux-ext4@vger.kernel.org, linux-mm@kvack.org, linux-efi@vger.kernel.org, linux-mtd@lists.infradead.org, "Karl
- Mehltretter" <kmehltretter@gmail.com>, dsterba@suse.cz, tytso@mit.edu, "Mark
+Cc: "Al Viro" <viro@zeniv.linux.org.uk>, linux-ext4@vger.kernel.org, linux-mm@kvack.org, linux-efi@vger.kernel.org, linux-mtd@lists.infradead.org, dsterba@suse.cz, tytso@mit.edu, "Mark
  Fasheh" <mark@fasheh.com>, "Joel Becker" <jlbec@evilplan.org>, "Joseph Qi" <joseph.qi@linux.alibaba.com>
-In-Reply-To: <20261029-work-fs-sb_rdonly-v2-5-2f44f64f0b66@kernel.org>
+In-Reply-To: <20261029-work-fs-sb_rdonly-v2-7-2f44f64f0b66@kernel.org>
 References: <20261029-work-fs-sb_rdonly-v2-0-2f44f64f0b66@kernel.org>
- <20261029-work-fs-sb_rdonly-v2-5-2f44f64f0b66@kernel.org>
+ <20261029-work-fs-sb_rdonly-v2-7-2f44f64f0b66@kernel.org>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Fri, 30 Oct 2026 16:09:51 +0000
+Date: Fri, 30 Oct 2026 16:09:53 +0000
 X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: B38AC1C000E
-X-Stat-Signature: dapmhdw74r4ne5c44me4aa7bihp4sssw
+X-Rspamd-Queue-Id: 4A0531C000D
+X-Stat-Signature: khj416xqmtzfpozm75nu8ax7tk3eecam
 X-Rspam-User: 
 X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
 	autolearn_force=no version=4.0.1
-X-HE-Tag: 1793376592-876172
-X-HE-Meta: U2FsdGVkX1/aZpxrnKd8EGMFNRztNiKi28nv3PW9yEMGHBtERhOSfaipE9Z8jyp+mr2PCWhZWy7URr/Vk0NsCH9tTSl/7hxR6mxrX7TWhRhODus5K3bceLdMUTwYAmt54Of4G9XV+Ld4CO1LODRZuqmAvX2flRYeXrN93iNwk4wAFdwg7DQesTs6yghxEOo60h6yKr5wQ3SVho6oPRNajcQZthPThCB62xAcLehngqmFsgHH/h3A+RAxra9dwASpmr10AjwQF5YKRJSLlzSgRWhpUEY7r+zGMB6JF/ko2iDg6n/LLWAl6gtqwrZDrI/GWss2jS8XiJsPkRWmRWhf4D8K7EYigyIJfExUpSN0FGSXvFapR3dUKxpEYIAVE7hEFmvjpro004Xok6CK5GMeOHQofnru0lqM6TXoHZ7YXj1YegjXooGFkwJiQtNbfxAN4WP2EEt8AOMjLBUKabMFvUsz+PkmqqTEBpcVvxCXfHbYo7lfDIV6I0/z6WWGQGE9/uCyTmC4cHct8BZoLmL7YWSPzosPJy1hOX4S18jW21Ft3lU8UpzbWkQn3I5SIwPulxvsEB6oKMxNM1XgvDkIzBL1vzZUnE/Y2moTyKQafBMHaVax06kLV2VQKs8A8Q9NTjnD9Ymp99OAZxiIvPt5rpSNEluK3tpONZWlIySoyn6+pN9yJmV/AO2xLBMg4HjmeIvvxPUK3SUwDfwxMVcDsr9mGOuddszIdTnGQ8vOrAec5AH6r3IboJI4K2hUafwpmFP4P21CkrvSnKwBaL4qft3pP/u9uBArrVVHnlPZDoOVS33OxpcCzv3xzfsGf6b1FJ9Zwz5O3hCVW6EX/hbj0dbBj7FLohMaWX4FEME9qmwKhJ7GU0EFDTtHdLs5w/OdSyRImPgMDaDsneCEywBQH1IBnnAX1UnSFyAE1msCcBw08iX3U7yb4U9kpuVt3+gvUFLb6CDoUcNBErBydCm
- 3pA8DR2Q
- OK3nsea88UT8HuCsT1ahiHctY8xr2OfYNSehAuGx5xNym6vBNbXLZMT8iZMAJ9aZ4SIFqkhhl8YDUmiH7SqYBd/U9DF0zZRTFiHIl4sUXqCbCuQMymPQFnmnW+MmjWKdVn/OI3whtX5RaXMZ6ReRRz9/yn5MaVvad/uLfmiUScllWAopjzFe1ScqD5ZxxYeXcZqmGYLrpGi3Ga84+nGispYpFVNLSUUE14X1ysygNoIRwaZUq5HF/VA+Tx6U2KvqHNfDyQOvcGpitVrNi1mRiZuJ0ahCChNPtUH++ZLsOZ0zRC3wYUJVdgDYsTYxEgYYQg7HihGTNTEUkzbKs+fDxVWbNqavVPYD5u4UWCj2nbfObdO5FWNAsXczZ/75BCFceeTpqY9+DTLiCDRtWY4eEfaciKiZVEwT9820Z6QSnzjwCBffOMEX0WQleEQJndTeWrpO9IfIkJzE2uFZi4z+Z98BrDFu1meBLX626a1iuQNYqpYJY5YpSGTUZVwK4UPIWtirUR32hUIA1J/YlBaO0lT0s8e7Nmbq1Vx4mGkkH9xqdBZJOueLcbZzkKf3knhQ13E5lvF+z/t2VLR82rjaIL88ITMlZEGFPHqKgtBrgbXzYu37zJx/99AttobjFkocUuWLnA+oN4gp6epfavp49y82uH2tGhYa6SWCO
+X-HE-Tag: 1793376595-220810
+X-HE-Meta: U2FsdGVkX1/YlZaXmcE4fdQltAgUJCN4xMV1ELNZ+4F2cfrLSK8IkaogK+pjtBtxB8WcROkjMEvW7CukNB+Sl8OdFLh40kxEM4m/slOswr7Rtzi21iqN0rcbgeQTmWqfNQReA3lqTGifrfi8cqcJpNPP9eTxp9Iqbn+s/oUhVKwuQatJNgSuF4vtDAvYoPa48jnT+yd9czlTo4Txt1J9d6aZxJOGHXcIeVqg5XMUMbXRRLvjXg4u7WIE3NGgKYNqH8JHBq1icC+3SgkGEQ2MB1m2rC9+NnGXxXZQwn6X6l5Hwh3xdy18WwFnrvUZH+hN3Aw8SlHvsAb9iuo2SBKlkIEKndK78pmt+gcN5qGnMp6zOvzbT/JqUd2tuMClVmb6FSZdawLRZJfjPSFpyqXqoOyVO+HWFO+zX/TYQ2DxlDG6SSbWkO320YRoPRTbj/y6li3KFsvFlUl6AXPN8ZGMFzdOglHiF1ExFR2aruCiCitfonA/4oT+7t3pFblNwOmxWiu+5s5ig0tyu/ag6Yu3oy1ZGp47iSjIp1Rtns0uFWhyT5IQzsYh6vKlz1/Iig2yK/RpWmCeNMwevIaI9KlcxiwKECyJSbntNCBrjuDg0zETx4KzNQU8m5cQFuZoeNugJy6VP4pl3AOm/sNkQoBbkvL54vj6NNUKBQkbyCPbCyajfW/6mzcYMKtlzJDg5pyg/UB+Dx5tj6MBkOifd6VQdiAfWkectoDXGacSBJtWECkU0Q+qNCUy1NIge0aSsj+ywmbxmNTW2tLb4p7OgaFCctNT3vE3jZ97S7wB1gKUHsd3ubUsDS+6FZ6w3Oqm5aLbyB4J09SW/wcdyUM6m4bE3Lzc9bQUqBv911mjCbcmcPwM8tZSF4wlW3w5vICCGiRz+p+RCqU2VTdbixuI3Cys6p8uCRUhcJPJVgD/e8xBBbPtxWNuA2S9Y5rI6grHiQqz5UsyhwkEmvD9g0JWQ+p
+ UqeWSu+O
+ UUBFmLjQN99mXVF2pze8dnfMJtLbqbNO1gVUVLyfP4CWuuruhQLsb57zaVjWlvuVnNJdlYh1Y8at11VdylYdqjhTuA4G6f9KINmcIhZCbBr5l+DIiEoEt7fxPF4+/tpWqHZkFZxrKaU/5Ypo/N/ErWVHmkhkfqd6c8757+RQ2EFVmSRsas/wsZzuKAQHQtZWiSIPM09V6JY9JoxYKi68xtp/TYPxA6oyVIisvrQORC4TwAIJ5+Bi0+trmTxnbjqqdiO/sTxW3D8X6lTmbheSTJKRBudJ5aKbGCfMV8k2JvKSswYRqZEbvmlKdoYjDhaIGIOPf1BoychrvlOgjGRdOOv2Cno6dsFfFodxhO2LGxKF8qFrqDrSLkYc0y3BfyDBVyUTJZTgwmhZtYbO4BOPUjVGgUtiAIFHRyuKZqJrr/rTVdGV67/Yz1Hey2o3j/RteVu8Jz73omM+eq9bA44FgHh4whLy2FTQ/hMnrl0pKJjbOEarfaRckeh/D+EcPXIYW1zQNQsR803g0uh4vbgjH7ndKIICvXG3Uwxw5wEtXQHz6XBeNn1x7dFE54yIQezdlMFTq3dGp3+Sjirzr0LSY2X0yuobj7seyiibxJqkE6HiK3f815k+zYnLHL287/YV21a/gr3VSTDgavGc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,324 +95,112 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 X-Archived-By: <archiver.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 5 potential issue(=
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [High] jfs: jfs_reconfigure() allows rw remount and mutates sbi->flag in =
-emergency_ro
-- [High] jfs: uncommitted anon tlocks on error in extRecord() and extAlloc()
-- [High] jfs: updateSuper() clobbers FM_DIRTY in jfs_unfreeze() under JFS_N=
-OINTEGRITY
-- [High] jfs: race between jfs_reconfigure() and in-flight allocations trig=
-gers BUG_ON
-- [Medium] jfs: jfs_reconfigure() does not recheck sb_emergency_ro() after =
-sync
+- [High] fat: fat_write_inode() refusal on emergency ro corrupts pending di=
+r entries
 --
 
-commit 2a162200f78051c6110938dcdd3b265d4583997b
+commit 57e06a99b59c945df35624d543f51f3cdc78897d
 Author: Christian Brauner <brauner@kernel.org>
 
-jfs: don't set SB_RDONLY after filesystem errors
+fat: don't set SB_RDONLY after filesystem errors
 
-This commit replaces direct setting of SB_RDONLY in jfs_handle_error() with
-sb_set_emergency_ro() so that errors occurring while frozen do not cause
-thaw_super() to skip jfs_unfreeze(). It also tracks log shutdown state in
-JFS_FLAGS_LOG_SHUTDOWN and adds sb_emergency_ro() checks across JFS
-allocation, metadata modification, freeze, sync, and remount paths.
+This commit replaces setting SB_RDONLY in __fat_fs_error() after SB_BORN wi=
+th
+sb_set_emergency_ro() so that thaw_super() does not leave s_writers locked =
+if
+an error occurs while the filesystem is frozen. It also adds
+sb_emergency_ro() checks across FAT operations to reject further
+modifications.
 
-Link: https://lore.kernel.org/r/20260903060855.4610-1-kmehltretter@gmail.com
+> diff --git a/fs/fat/inode.c b/fs/fat/inode.c
+> index d85c8fbdcca46..afd73dc4ba9a8 100644
+> --- a/fs/fat/inode.c
+> +++ b/fs/fat/inode.c
 
-> diff --git a/fs/jfs/jfs_extent.c b/fs/jfs/jfs_extent.c
-> index 46529bcc8297e..ba55e0bbecd24 100644
-> --- a/fs/jfs/jfs_extent.c
-> +++ b/fs/jfs/jfs_extent.c
 [ ... ]
-> @@ -270,6 +276,10 @@ int extRecord(struct inode *ip, xad_t * xp)
->  	/* update the extent */
->  	rc =3D xtUpdate(0, ip, xp);
+
+> @@ -954,6 +963,9 @@ static int fat_write_inode(struct inode *inode, struc=
+t writeback_control *wbc)
+>  {
+>  	int err;
 > =20
-> +	/* get the anonymous tlocks committed, like extAlloc() does */
-> +	if (!rc)
-> +		mark_inode_dirty(ip);
-> +
->  	mutex_unlock(&JFS_IP(ip)->commit_mutex);
->  	return rc;
->  }
-
-[Severity: High]
-What happens in extRecord() and extAlloc() if xtUpdate(), xtExtend(), or
-xtInsert() fails after acquiring an anonymous tlock?
-
-In xtUpdate() and xtExtend(), BT_MARK_DIRTY(mp, ip) runs before txLock(0, i=
-p,
-mp, ...):
-
-fs/jfs/jfs_xtree.c:xtUpdate() {
-	...
-	BT_MARK_DIRTY(mp, ip);
-	/*
-	 * acquire tlock of the leaf page containing original entry
-	 */
-	if (!test_cflag(COMMIT_Nolink, ip)) {
-		tlck =3D txLock(tid, ip, mp, tlckXTREE | tlckGROW);
-		xtlck =3D (struct xtlock *) & tlck->lock;
-	}
-	...
-	if ((xoff > nxoff) ||
-	    (nxoff + nxlen > xoff + xlen)) {
-		XT_PUTPAGE(mp);
-		jfs_error(ip->i_sb,
-			  "nXAD in not completely contained within XAD\n");
-		return -EIO;
-	}
-	...
-}
-
-If mp is not the root xtree page, BT_MARK_DIRTY() does not call
-mark_inode_dirty(ip). If mp is the root xtree page and sb_emergency_ro() was
-already set concurrently, BT_MARK_DIRTY() calls jfs_dirty_inode() while
-JFS_IP(ip)->atlhead is still 0, so jfs_dirty_inode() returns early without
-setting COMMIT_Dirty.
-
-Immediately afterward, txLock(0, ip, ...) attaches an anonymous tlock to
-JFS_IP(ip)->atlhead and queues JFS_IP(ip)->anon_inode_list onto
-TxAnchor.anon_list. Similarly, in extAlloc(), xtExtend() and xtInsert() (via
-xtSplitUp() -> xtSplitPage() or xtSplitRoot()) call txLock(0, ip, ...) befo=
-re
-subsequent metapage reads or extent checks can fail and call jfs_error() ->
-sb_set_emergency_ro().
-
-When xtUpdate(), xtExtend(), or xtInsert() returns a non-zero rc, extRecord=
-()
-skips mark_inode_dirty(ip) because of the !rc check, and extAlloc() returns
-early before mark_inode_dirty(ip):
-
-fs/jfs/jfs_extent.c:extAlloc() {
-	...
-	if (xaddr && xaddr =3D=3D nxaddr)
-		rc =3D xtExtend(0, ip, xoff, (int) nxlen, 0);
-	else
-		rc =3D xtInsert(0, ip, xflag, xoff, (int) nxlen, &nxaddr, 0);
-
-	if (rc) {
-		dbFree(ip, nxaddr, nxlen);
-		dquot_free_block(ip, nxlen);
-		mutex_unlock(&JFS_IP(ip)->commit_mutex);
-		return (rc);
-	}
-	...
-	mark_inode_dirty(ip);
-}
-
-With COMMIT_Dirty never set on ip (and jfs_freeze() skipping txQuiesce() on=
-ce
-sb_emergency_ro() is set), could evicting the inode trigger
-BUG_ON(!list_empty(&ji->anon_inode_list)) in jfs_evict_inode()?
-
-> diff --git a/fs/jfs/super.c b/fs/jfs/super.c
-> index 8180d83d33fed..bbaba14821e64 100644
-> --- a/fs/jfs/super.c
-> +++ b/fs/jfs/super.c
-[ ... ]
-> @@ -367,6 +368,11 @@ static int jfs_reconfigure(struct fs_context *fc)
->  	int flag =3D ctx->flag;
->  	int ret;
-> =20
-> +	/* Don't resize based on a block map we don't trust after an error. */
-> +	if (ctx->resize && sb_emergency_ro(sb))
+> +	if (unlikely(sb_emergency_ro(inode->i_sb)))
 > +		return -EROFS;
 > +
-> +	/* After an error this only commits what was queued before it. */
->  	sync_filesystem(sb);
+>  	if (inode->i_ino =3D=3D MSDOS_FSINFO_INO) {
+>  		struct super_block *sb =3D inode->i_sb;
 > =20
->  	/* Transfer results of parsing to the sbi */
-
-[Severity: Medium]
-If a filesystem error occurs while sync_filesystem(sb) is flushing dirty pa=
-ges
-or inodes during a resize remount (or concurrently while sync_filesystem(sb)
-is running), jfs_handle_error() now sets sb_set_emergency_ro(sb) instead of
-SB_RDONLY.
-
-When execution reaches the ctx->resize block in jfs_reconfigure():
-
-fs/jfs/super.c:jfs_reconfigure() {
-	...
-	if (ctx->resize) {
-		if (sb_rdonly(sb)) {
-			pr_err("JFS: resize requires volume to be mounted read-write\n");
-			return -EROFS;
-		}
-		...
-		rc =3D jfs_extendfs(sb, ctx->newLVSize, 0);
-}
-
-sb_rdonly(sb) is still false, so won't jfs_extendfs() proceed on a filesyst=
-em
-that just entered emergency read-only mode during sync_filesystem(sb)?
-
-> @@ -415,6 +421,9 @@ static int jfs_reconfigure(struct fs_context *fc)
->  		return ret;
->  	}
->  	if (!sb_rdonly(sb) && readonly) {
-> +		/* After an error nothing may be written, umount closes the log. */
-> +		if (sb_emergency_ro(sb))
-> +			return 0;
->  		rc =3D dquot_suspend(sb, -1);
->  		if (rc < 0)
->  			return rc;
+> @@ -1949,6 +1961,9 @@ int fat_flush_inodes(struct super_block *sb, struct=
+ inode *i1, struct inode *i2)
+>  		ret =3D writeback_inode(i2);
+>  	if (!ret)
+>  		ret =3D sync_blockdev_nowait(sb->s_bdev);
+> +	/* The change is done, an error made us read-only in the meantime. */
+> +	if (ret =3D=3D -EROFS && sb_emergency_ro(sb))
+> +		ret =3D 0;
+>  	return ret;
+>  }
+>  EXPORT_SYMBOL_GPL(fat_flush_inodes);
 
 [Severity: High]
-What happens if userspace requests a read-write remount (for example, mount=
- -o
-remount,rw) after a runtime filesystem error without having remounted
-read-only first?
+Can rejecting fat_write_inode() when sb_emergency_ro() is set corrupt
+on-disk directory entries when dirty block device buffer_heads are still
+flushed to disk?
 
-Because jfs_handle_error() calls sb_set_emergency_ro(sb) without setting
-SB_RDONLY, sb_rdonly(sb) remains false. In reconfigure_super():
+In FAT, an inode's starting cluster (i_logstart) and size (i_size) are stor=
+ed
+inside its msdos_dir_entry in sb->s_bdev buffer_heads and are only written =
+to
+that buffer_head by fat_write_inode() -> __fat_write_inode():
 
-fs/super.c:reconfigure_super() {
-	...
-		remount_rw =3D !(fc->sb_flags & SB_RDONLY) && sb_rdonly(sb);
-		remount_ro =3D (fc->sb_flags & SB_RDONLY) && !sb_rdonly(sb);
-	}
+    raw_entry =3D &((struct msdos_dir_entry *) (bh->b_data))[offset];
+    if (S_ISDIR(inode->i_mode))
+        raw_entry->size =3D 0;
+    else
+        raw_entry->size =3D cpu_to_le32(inode->i_size);
+    raw_entry->attr =3D fat_make_attrs(inode);
+    fat_set_start(raw_entry, MSDOS_I(inode)->i_logstart);
 
-	/* An error made the filesystem read-only until it is unmounted. */
-	if (remount_rw && sb_emergency_ro(sb))
-		return -EROFS;
-}
+During vfat_rename() and do_msdos_rename(), vfat_add_entry() or
+msdos_add_entry() creates the target directory entry in new_dir's buffer_he=
+ad
+with cluster =3D 0 and size =3D 0 and marks that buffer_head dirty:
 
-remount_rw is false, so reconfigure_super() calls into jfs_reconfigure() wi=
-th
-!sb_rdonly(sb) && !readonly.
+    err =3D msdos_add_entry(new_dir, new_name, is_dir, is_hid, 0,
+                  &ts, &sinfo);
+    if (err)
+        goto out;
+    new_i_pos =3D sinfo.i_pos;
+    ...
+    fat_detach(old_inode);
+    fat_attach(old_inode, new_i_pos);
+    ...
+    mark_inode_dirty(old_inode);
+    ...
+    err =3D fat_remove_entries(old_dir, &old_sinfo);
 
-In jfs_reconfigure(), JFS_SBI(sb)->flag =3D ctx->flag is executed unconditi=
-onally
-right after sync_filesystem(sb) (which also makes the later
-(JFS_SBI(sb)->flag & JFS_NOINTEGRITY) !=3D (flag & JFS_NOINTEGRITY) check c=
-ompare
-flag against itself), and then jfs_reconfigure() falls through and returns 0
-instead of -EROFS.
+Similarly, when a newly created file allocates its first cluster in
+fat_chain_add() and updates i_size in fat_write_end(), the FAT and directory
+buffer_heads are dirtied in sb->s_bdev while the directory entry still has
+start =3D 0 and size =3D 0 until __fat_write_inode() updates it.
 
-Furthermore, if a remount (either ro or rw) includes the nointegrity option
-after an error, JFS_SBI(sb)->flag gains JFS_NOINTEGRITY while sbi->p_state =
-is
-still 0 (FM_CLEAN). When jfs_umount() later calls updateSuper(sb, FM_CLEAN):
+If fat_fs_error() sets sb_emergency_ro(sb) either during the operation (for
+example, fat_add_entries() hitting "Odd directory size" or fat_chain_add()
+hitting "clusters badly computed", both of which call fat_fs_error() and
+still return 0) or before background inode writeback runs, fat_write_inode()
+will now return -EROFS without updating the directory entry's start cluster
+and size.
 
-fs/jfs/jfs_mount.c:updateSuper() {
-	...
-	if (sbi->flag & JFS_NOINTEGRITY) {
-		if (state =3D=3D FM_DIRTY) {
-			sbi->p_state =3D state;
-			return 0;
-		} else if (state =3D=3D FM_MOUNT) {
-			sbi->p_state =3D sbi->state;
-			state =3D FM_DIRTY;
-		} else if (state =3D=3D FM_CLEAN) {
-			state =3D sbi->p_state;
-		} else
-			jfs_err("updateSuper: bad state");
-	} else if (sbi->state =3D=3D FM_DIRTY)
-		return 0;
-}
-
-won't updateSuper() take the JFS_NOINTEGRITY branch instead of returning ea=
-rly
-at sbi->state =3D=3D FM_DIRTY, and overwrite the on-disk FM_DIRTY error sta=
-te with
-FM_CLEAN?
-
-[Severity: High]
-Can a read-only remount in jfs_reconfigure() also race with an in-flight
-extAlloc() or extRecord() that passed the sb_emergency_ro(ip->i_sb) check j=
-ust
-before an error occurred?
-
-Consider an in-flight allocation running concurrently with reconfigure_supe=
-r()
--> jfs_reconfigure() (either during a forced remount such as
-emergency_remount() where sb_prepare_remount_readonly() is skipped, or via
-background writeback in do_writepages() -> jfs_writepages() ->
-mpage_write_folio() -> jfs_get_block() after writeback_iter() clears
-PAGECACHE_TAG_DIRTY and before folio_start_writeback() sets
-PAGECACHE_TAG_WRITEBACK):
-
-1. extAlloc() or extRecord() passes sb_emergency_ro(ip->i_sb) before
-   sb_set_emergency_ro(sb) is set.
-2. jfs_reconfigure() runs sync_filesystem(sb) and returns 0 at the
-   sb_emergency_ro(sb) check, and reconfigure_super() sets SB_RDONLY on
-   sb->s_flags.
-3. extAlloc() or extRecord() finishes acquiring its anonymous tlock (setting
-   ji->atlhead and adding ji->anon_inode_list to TxAnchor.anon_list) and ca=
-lls
-   mark_inode_dirty(ip) -> jfs_dirty_inode(ip), which sees ji->atlhead !=3D=
- 0 and
-   sets COMMIT_Dirty.
-4. During unmount, generic_shutdown_super() calls sync_filesystem(sb), which
-   immediately returns 0 because sb_rdonly(sb) is now true.
-   generic_shutdown_super() then calls evict_inodes(sb) before
-   jfs_put_super().
-
-Wouldn't jfs_evict_inode() hit BUG_ON(!list_empty(&ji->anon_inode_list))
-because nothing commits the inode after jfs_reconfigure() sets SB_RDONLY?
-
-[ ... ]
-> @@ -616,15 +635,19 @@ static int jfs_unfreeze(struct super_block *sb)
->  	struct jfs_log *log =3D sbi->log;
->  	int rc =3D 0;
-> =20
-> -	if (!sb_rdonly(sb)) {
-> +	/* Undo what jfs_freeze() did, also if an error happened meanwhile. */
-> +	if (test_bit(JFS_FLAGS_LOG_SHUTDOWN, &sbi->jfs_flags)) {
->  		rc =3D updateSuper(sb, FM_MOUNT);
->  		if (rc) {
->  			jfs_error(sb, "updateSuper failed\n");
->  			goto out;
->  		}
-
-[Severity: High]
-If the filesystem was mounted with JFS_NOINTEGRITY and an error occurs whil=
-e it
-is frozen, does calling updateSuper(sb, FM_MOUNT) in jfs_unfreeze() clobber=
- the
-FM_DIRTY state?
-
-When jfs_freeze() runs on a JFS_NOINTEGRITY mount, updateSuper(sb, FM_CLEAN)
-writes FM_CLEAN and sets sbi->state =3D FM_CLEAN. If a filesystem error hap=
-pens
-while frozen, jfs_handle_error() calls updateSuper(sb, FM_DIRTY):
-
-fs/jfs/jfs_mount.c:updateSuper() {
-	...
-	if (sbi->flag & JFS_NOINTEGRITY) {
-		if (state =3D=3D FM_DIRTY) {
-			sbi->p_state =3D state;
-			return 0;
-		} else if (state =3D=3D FM_MOUNT) {
-			sbi->p_state =3D sbi->state;
-			state =3D FM_DIRTY;
-		} else if (state =3D=3D FM_CLEAN) {
-			state =3D sbi->p_state;
-		}
-		...
-	}
-	...
-	sbi->state =3D state;
-}
-
-Under JFS_NOINTEGRITY, updateSuper(sb, FM_DIRTY) records FM_DIRTY in
-sbi->p_state and returns 0, leaving sbi->state as FM_CLEAN.
-
-When jfs_unfreeze() then calls updateSuper(sb, FM_MOUNT), the state =3D=3D =
-FM_MOUNT
-branch sets sbi->p_state =3D sbi->state (FM_CLEAN), overwriting the FM_DIRT=
-Y in
-sbi->p_state. When jfs_umount() later calls updateSuper(sb, FM_CLEAN), won'=
-t it
-write sbi->p_state (FM_CLEAN) to disk, leaving the corrupted filesystem mar=
-ked
-clean?
+However, the dirty directory and FAT buffer_heads in sb->s_bdev are still
+written out by bdev writeback, mmb_sync() in fat_evict_inode(), and
+sync_blockdev() on unmount. Wouldn't that flush the deleted old directory
+entry along with a new directory entry containing start =3D 0 and size =3D =
+0,
+losing the file or directory contents and orphaning its cluster chain?
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261029-work-fs-sb=
-_rdonly-v2-0-2f44f64f0b66@kernel.org?part=3D5
+_rdonly-v2-0-2f44f64f0b66@kernel.org?part=3D7
 
