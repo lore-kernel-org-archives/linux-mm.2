@@ -1,110 +1,145 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6407A60A261A
-	for <linux-mm@archiver.kernel.org>; Fri, 30 Oct 2026 16:55:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDE64606A33D
+	for <linux-mm@archiver.kernel.org>; Fri, 30 Oct 2026 17:13:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=IJq8a19B
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=DbGzyk9a
 Received: by kanga.kvack.org (Postfix)
-	id 451EF6B00EF; Fri, 30 Oct 2026 12:55:32 -0400 (EDT)
+	id BC71D6B00EF; Fri, 30 Oct 2026 13:13:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3DD356B05B1; Fri, 30 Oct 2026 12:55:32 -0400 (EDT)
+	id B779A6B05B1; Fri, 30 Oct 2026 13:13:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2A5286B05B2; Fri, 30 Oct 2026 12:55:32 -0400 (EDT)
+	id A65B86B05B2; Fri, 30 Oct 2026 13:13:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id F3BAB6B00EF
-	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 12:55:31 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 8052116079A
-	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 16:55:31 +0000 (UTC)
-X-FDA: 85379893662.15.23E4250
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
-	by imf23.hostedemail.com (Postfix) with ESMTP id BDBD7140002
-	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 16:55:28 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=IJq8a19B;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf23.hostedemail.com: domain of tim.c.chen@linux.intel.com designates 198.175.65.21 as permitted sender) smtp.mailfrom=tim.c.chen@linux.intel.com
+	by kanga.kvack.org (Postfix) with ESMTP id 6E0836B00EF
+	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 13:13:26 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id DDA0116079F
+	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 17:13:25 +0000 (UTC)
+X-FDA: 85379938770.10.76C3F37
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf10.hostedemail.com (Postfix) with ESMTP id CCCF3C000C
+	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 17:13:23 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DbGzyk9a;
+	spf=pass (imf10.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793380403;
+	b=wmTtfHuyJmbFA1zet8ep1xtl+HPCTKdyt52sJgJ3X0wZSRkVhM475o112kyKK5xTeKGN+1
+	qKwyl1L1pxWaNuTzBNdqLdVIm+GY6hlnruv5OLcplsPN4C2J2qmfSRTbFP19UKcVrZV5xD
+	HZK1yF+XzzaA5Jp0DHGijkD6A5788NU=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DbGzyk9a;
+	spf=pass (imf10.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793379329;
+	s=arc-20220608; t=1793380403;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=BgnmbS0qtZzofNOhBfAuY9e9ZGW0X9MHEKQwmV+gFd4=;
-	b=rCbGkN7oeNiaKnBE2rDgM6LWiBVvRiiJhppysTvwcD/q11bxj+r0FxQ/tITLBHeaxH4Z1c
-	/uq5ZZdbo5Q93ndRkUSy5Pr+eokmreeAsR+GULipzpi3RWdyGH/Pu+4S2KvfTdzyqsI8e5
-	tR/mp0INj0PRCB38nxAC3Z0ZKd6I+20=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=IJq8a19B;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf23.hostedemail.com: domain of tim.c.chen@linux.intel.com designates 198.175.65.21 as permitted sender) smtp.mailfrom=tim.c.chen@linux.intel.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793379329;
-	b=7J6iWSVanB1NaJMYKMNxWHqXSzaCtyyOdhwmJQmcUJe125GP/otGrGCiuAAsGKEVB2iL2D
-	BLxnYbYaHxpy2ejqlcWXEJMB72WDWnbfMCMjd76IiK0G683n9ImxLXH+I752s7XIv3Ns5j
-	s8qsrSy5ouGtOjQA6e/Q9KvRXzJDze4=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1793379329; x=1824915329;
-  h=message-id:subject:from:to:cc:date:in-reply-to:
-   references:content-transfer-encoding:mime-version;
-  bh=SfRf/e5D4fJBitFkWiH24F7RsXJMv4g9Vd/EK7VDuik=;
-  b=IJq8a19BnnHbJ4doMozr3nbAg0y5Gau7yXjxJD7IdUDdYnHNPVFIweNi
-   iWvGZEmr8RsWtOKIMSfkGp+U2VwTbHZT6X60msIeR7fWO1LreDOysmbdt
-   BgPqoIhC8uPWqYkyQHRHb4Tqyos2KgVF2Z2FKzhiT0NJjFkR16kyKB8Th
-   +cnIkvJ/oRQWUlem0g0u3eTMNUI68sCOoSbop9jQuus+ehQe7ZJzJ6lXf
-   mjDeq8m4E01PgYr13PKG2tSKnOkO1yHhgR+f8BjjQaxZv0zR5l3MdXSIm
-   pqckvPHAdO5onSzEyoyFYKRJl0J/uDP2eo4eplEuf7ya8FYWQkBzLl0QJ
-   g==;
-X-CSE-ConnectionGUID: Wlh/rmxgR8aTkFyYGBPKRg==
-X-CSE-MsgGUID: vi4xa7y1SyieDFyNoUTIQg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11951"; a="2241150"
-X-IronPort-AV: E=Sophos;i="6.27,186,1787036400"; 
-   d="scan'208";a="2241150"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Oct 2026 09:55:27 -0700
-X-CSE-ConnectionGUID: rhDb9+csTMmsZXY9RNR4aA==
-X-CSE-MsgGUID: CmQR+n7gRuSQVAfNnNQelw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,186,1787036400"; 
-   d="scan'208";a="5487915"
-Received: from schen9-mobl4.amr.corp.intel.com (HELO [10.125.109.99]) ([10.125.109.99])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Oct 2026 09:55:27 -0700
-Message-ID: <7efb942eb0f4fb81528e1a97e7f73996a95988ee.camel@linux.intel.com>
-Subject: Re: [PATCH] mm/hugetlb_vmemmap: Fix usemap overrun on nodes with
- multiple ranges
-From: Tim Chen <tim.c.chen@linux.intel.com>
-To: Muchun Song <muchun.song@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Oscar Salvador	
- <osalvador@suse.de>, David Hildenbrand <david@kernel.org>, Frank van der
- Linden	 <fvdl@google.com>, Mike Rapoport <rppt@kernel.org>,
- linux-mm@kvack.org, 	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
- Mohini Narkhede	 <mohini.narkhede@intel.com>, Pooja Jain
- <pooja.jain@intel.com>, Doug Nelson	 <doug.nelson@intel.com>
-Date: Fri, 30 Oct 2026 09:55:26 -0700
-In-Reply-To: <0611C182-4A76-4751-A04B-0849EC31DAD3@linux.dev>
-References: <20261029212137.3141875-1-tim.c.chen@linux.intel.com>
-	 <0611C182-4A76-4751-A04B-0849EC31DAD3@linux.dev>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.58.1 (3.58.1-1.fc43) 
+	bh=QXe+E+RdINfQkHY+Os5n/a14dX5ou5KZ8OJABuBnKpA=;
+	b=CRvvsGPzvwHJYu3CgIAl/31Q6H/SFZAMdz2za00tchVLJJV+P298Pnhk9HvG9Ve+AWDSHE
+	U33SERd4Ld+QwpME/adxW7gfIz7C2LLUrLsfW9KYh+yiahS3QnWQVHtERaVM8NqxBziTJz
+	RxNTCCDg20M4BzTdoZ4cNDGjqd6sLCQ=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 19D81605D0;
+	Fri, 30 Oct 2026 17:13:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 925621F0093A;
+	Fri, 30 Oct 2026 17:13:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793380402;
+	bh=QXe+E+RdINfQkHY+Os5n/a14dX5ou5KZ8OJABuBnKpA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=DbGzyk9azvvZF4/Hf1MTiO384vuycPWTpofwisFowcjfo9WOO4kdW/wu1Ibqn+W6X
+	 gy8qEeDON8gi/LmAcPUpHcAM6SwwMxcc1RI5XzFx+w/cR1PUoyu5jNOX856m5HUzj7
+	 tsTPxHh6q4pXGm3Fqfla8pk7sbXX84pxQEyv/1GypbCyzauFS0gkv/BxU+qmfUzXCD
+	 L1dr4R/iSkJQaZr/fenudyZudqY8PtXbSOyZT6+Ni/FYj4qE5UAS3UV68aVOaJWVIS
+	 jhlY31zdemO/w2q32veNVndGy1v5j2Pb6YJI/wCOqHKqV5u+Dv2WXdDfvExfzK0IFu
+	 hw9EktPxmvAJg==
+Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
+	by mailfauth.ams.internal (Postfix) with ESMTP id 044BE198003A;
+	Fri, 30 Oct 2026 13:13:06 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-01.internal (MEProxy); Fri, 30 Oct 2026 13:13:17 -0400
+X-ME-Sender: <xms:ItDkaj6BqRTxPmXLqubigL9EIueGGMOYyDZJHCauOtMaJ3MgxX2GuA>
+    <xme:ItDkauPmBiLS4zCQgI1ako_rkgN7gbD3xA4ARpouMkPkpq9O5bXLcGZwRmkNbUUut
+    qyhhY_EPdfh927drDZvQyQeEArWzf_MyCtxvA8F_6kLpeF5_qBhFD4>
+X-ME-Received: <xmr:ItDkalmIuXQCXobPHjON4pMwdG5tSr8ylF0JjGNRwZNDTm2lzJPWtHsCUV4>
+X-ME-Proxy-Cause: dmFkZTErCCgqI31kxNLKTziv36fnXBEJjUhhbu5DiE4X/B+EDWlW7m/zWFNgj1YSweXkBU
+    PolifZvSXcJFjYufRKMQCfH+Axb7faxt1OysaST/5q0uUjNM3zGxzIA3gFeFVcWBhKXbNW
+    KPCqx0t+2ThS+g9I65B/SqyV4EvgT8RlcuSd8AYuiBPGNwT0icuK3QI4dKqmmyYnVc3+GT
+    6sN2z26Z5vHbtaohVyhAiEzg5APh/ZsY1FhYWee3mGH8aF7tJkErXhZ/+GVhIa6n2uEJBH
+    7u5P0K7Osx5Q9n4zMWIL1lmmrSHDOexahwyC1SzqtSVC6J0zZuS3gxQCWSSTutkbLvz9OL
+    1G5B0tCBk3zs4PzBncyaLxYHanwinwdtaZCqpJ6ef6jJM2nPi2PwFlt5b0F/ITt4b0h9+N
+    izzIHz2ibHZClHnL2/8tuTURhBG1Ba2FmvoP3NwOgzaF03d1urngRk50/UaHRkfb97cyRM
+    IAGxj9UWlUuiLNDhLWj9LLzrJRJWBrIr3BO1pnJqvr5enhEZfEYeCVvf1npM4ODEAjt8pG
+    ARm03c556YtFsMKqSFO8pTdHu2AOabc3nN1UdP3lNk3JPopre+kBHu8NM5sit83odXXixV
+    jTndLM0PW/1LFe8x41sowgTYQrmlsDVv97xDfCdkdL1jfY+QRBa84fdZR4qA
+X-ME-Proxy: <xmx:ItDkapPAmZPW4q4RAziPX67H4eU72Yrby8DdxcsuJnNo0pFZ-jDvCw>
+    <xmx:ItDkakIMIm-_XrCHX4dmQFiWs9DlFcrikbwOcl3tkf5o1lepgl-B9w>
+    <xmx:ItDkaqMNySXZj_L2GTHIklevHvfhnRQclkIEgZsWH22uE8K1My3IrA>
+    <xmx:ItDkapdG_1eBWASKAWJm3tyiukEI-QLBZXWe1PqxLtyhat2Sm5uwiQ>
+    <xmx:ItDkaiyw8GqfXS_d4RkLJK8Hj0Mla3U0nqXEpyEFV7uLsMI1u4YkQmrM>
+Feedback-ID: i10464835:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 30 Oct 2026 13:13:04 -0400 (EDT)
+Date: Fri, 30 Oct 2026 17:13:03 +0000
+From: Kiryl Shutsemau <kas@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, Qi Zheng <qi.zheng@linux.dev>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>, 
+	Kairui Song <kasong@tencent.com>, Barry Song <baohua@kernel.org>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
+	Baoquan He <baoquan.he@linux.dev>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
+	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, Kees Cook <kees@kernel.org>, 
+	Peter Zijlstra <peterz@infradead.org>, Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
+	Hugh Dickins <hughd@google.com>, Pasha Tatashin <pasha.tatashin@soleen.com>, 
+	Pratyush Yadav <pratyush@kernel.org>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
+	Jan Kara <jack@suse.cz>, Zi Yan <ziy@nvidia.com>, Lance Yang <lance.yang@linux.dev>, 
+	Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>, 
+	Alistair Popple <apopple@nvidia.com>, Nico Pache <nico.pache@linux.dev>, 
+	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Usama Arif <usama.arif@linux.dev>, 
+	Matthew Brost <matthew.brost@intel.com>, John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, 
+	Will Deacon <will@kernel.org>, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, 
+	Nick Piggin <npiggin@gmail.com>, Oscar Salvador <osalvador@suse.de>, 
+	Minchan Kim <minchan@kernel.org>, Muchun Song <muchun.song@linux.dev>, Xu Xin <xu.xin@linux.dev>, 
+	Chengming Zhou <chengming.zhou@linux.dev>, Chris Li <chrisl@kernel.org>, 
+	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, 
+	Youngjun Park <youngjun.park@lge.com>, Gregory Price <gourry@gourry.net>, 
+	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>, 
+	Ying Huang <ying.huang@linux.alibaba.com>, Jason Gunthorpe <jgg@ziepe.ca>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, kexec@lists.infradead.org, linux-fsdevel@vger.kernel.org, 
+	linux-arch@vger.kernel.org, linux-cxl@vger.kernel.org, stable@vger.kernel.org, 
+	Josef Bacik <josef@toxicpanda.com>
+Subject: Re: [PATCH v2 05/47] mm/truncate: look again if a folio left the
+ mapping
+Message-ID: <auTQFEMJucBqFuzJ@thinkstation>
+References: <20261029-fixes_core-v2-0-a64ce7f83abb@kernel.org>
+ <20261029-fixes_core-v2-5-a64ce7f83abb@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: BDBD7140002
-X-Stat-Signature: srnb856bn354jykws6o6zb8yrqhkz77j
-X-Spam-Status: No, score=-8.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261029-fixes_core-v2-5-a64ce7f83abb@kernel.org>
+X-Stat-Signature: fe5z9kh9cnp8sr1jbh7xqpwipehdozwj
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
 	autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: CCCF3C000C
 X-Rspam-User: 
-X-HE-Tag: 1793379328-323277
-X-HE-Meta: U2FsdGVkX1+hxnd8u3eStayu8FxriNdF7tpLnfOnJtCVVtLiz/dIr9bPqE2DqXGCNGbgenhG7xhOjgtu0GPPXyvl1t5/Icm6/2vIgW1snS0w2+3qpk4af2KhVNSt9Jd18aB4iqNpaANODTfzyRCJejyPglA+3BNv0ZSSHWiEjT3S3sE7sBsH3hzaaIqCbjWdMLdnZsn+/PK0ohfPebhfh7T4x2P9qVglHNwiW60LnZFyC8cTA2KUAqPRiee2QtOZaINtOlzC3RJe9u93vrvQ7xsxbJijzA9bU6RzhLZP6VKY7+qdZkVYMtCGLE45UWP3Fl6l3K1kcy3fGD/lkF7MRuYlh1XoWGajTkQVbBpFlE6lKes2onVBFl/3oYybdxeA1XR/aGUhzXzgrW8x/NlEhwumM1fhV+KMw/EJeAc/sULhtunFpdfhtUSXUcBU86ohKnO5wN/ofa34zMc4nfoRCEuOGE2L9S7G9/VMlAhHVzZrnajd6tj+CG7NS3cxKveLm0aI7HHqnRRrvNSdCDn6PAEBT39ZeGYnYfmEy8N3gio6p0z5Z7kdGPa1AcI0kWnYlKFjL3cqwQl4q1r6f0hwCOnlKfnk+YL/vEsS7/m2C/IYm21o7v8MISZumPlVPt9JrHuPvuCRqMM5lxRBoWM8LclowjraPUl0P3z5LXKeGMqyLj9jOs/mPqcc+H/td54dvUC01lAl1fvRj/UNKRng+dfLBJo/ukeBZ/s5VufwYfZspvPnzGHl9FJ7vHMgDyc1Y86Wx5i4kMjgqAXTQVgue/G2kybdQJ2GbbtrbAb0KlZHS7xwQ2sPmSBS2/RTajBz/6hktAYo2ikJ3VhvgQVDnXl4/xNHTNGwUXTlQniwQmLsl0rmfrOw7NEmQLMnREkpj3J5bfSK/MRmXNEqj1xVgCWLg+wPFQS6KtSvsD6GOJ0kS02RRTLkUKGa347alF+T1J7wMbvUN/P9qpssl+/
- +RjeFism
- MCg3tloc85irmOXXPC+5gNrUbRQqh7Yf2Hv/iRZdJKb9+tf3hNV/q7BplFaRvdVIcgmG439kHzVsAbOzESjQe4e2p60kE7W4DZeyv1LNq0W8ESmt57x/55Ln74yMJNmCU3BVhpliK2c5SxYArWzk5/LzKnQwhjKPZvilkLsgpQTFfG4I1bN1OfzzjkotC+0/Vw7t/zCqJ+LDmLe3whsLuIIxEDNKHLYSsORAv1jHe9qdYqJftK/j9M/zLiGy//CH1Gcg1ALr7PLHrSRc=
+X-HE-Tag: 1793380403-587602
+X-HE-Meta: U2FsdGVkX1/EPp3+AwteH6Bm3LYtEuzB1wHnf24CtelvbC6Bfm447wXdgwxj7ePBOQK+mShFH+eN2FEWYRW61yKgpqys0O3+wunhPKn42WD8WNXstaMuP0tdEeeJf+ZYv7dKm4HgquV8jBc4zHuQxaeWigqfI6nXWuqaDtwGg8SNHdsByETIRFrgaz5L+rUg8pNTSIpWOANWg/XcEZdc6d2C2HPxTdGOXtOtv504q7HoCvsGgulWGbzECLkBZbN/9yGr8BwendOxg7n/3vbjVdQYT7VLKZg5TmR5/9A6rLyoC5quNQo2ALyUAqOmN+xPwGFD7p/pLZmouNKR7pq2UL2YXcm4xnXmh3hQObvSOzJPUpWu2vdGm6R2dvAG0CBF0tPcud+lwuljDvUh84+YHHIeozDh1NwjTwsxDz7nS9Qm0k/7CC7q+lvm3nxQ1alnCuTmWoa6WHzlQPwmAyeO8Sbq8kt+bvedV8WhVaNslOF4bkBnOOZ/Te2MO3bdrbBxRzs5ISarrVdJk/27e76PzI0CU/twpQkUCzYiz066jYogrCO6FMzAbPcV7XpouedHfHOnraenRD3O3Rahsu+hrEcA/FZ4Dhmku9MIb0tpHYZ4XnjNGBEfLyJRuFxNVvNWawiltjfQFpvvSx0T8VAmpBCpYlTdByvHBKPhQDxvhNWR/d5JDWFtb7X5lkAkUY7S8HUsXYOu6vxxyX6WonNM+4L4Xz8tYCVKDvzE3giWLAqxxJq+p55g4vzy2aeoS88OnUCQdgXs6/PCNlbjqlWhrYltBCHe1uB8tupmK/MWV9nxYM7rZkiT4Ps2gAGHMFraFMka8HQoyIizFnmqBo9g43bG1jVaMt2iymF01KHTLlRM/Kr6EpyLAiov6NhTv9puBtSf9Xu0rXCcsJELTHlUuJfK1ocvX9lQ4IS2XawA8ekulRKXqp8Lpfru783O3YGB1cu3ZfEiL3bbMw262Gc
+ scTKozoS
+ alzlYJ2R4G3y94phiCgnTHr+5UJ5MqziSS67x/ceNG4hQ5nvXqIl/L/YKzoUKA5CGhYT7UFhbdrsCvfBDUr/EZQiP1AXPV3Kcl2ZgKqho8SMeqo9uWAjHmzdBhIzPLjHdJSzTDralsAzQPvwG5WSQBkyzDq/BpJq2GU2EmrTEMhEGwXqVxaj9aBhg+ZpmJRsxl5/hfD0QXWEPSaHnTujkSUEW7xZeOILVg3DZN13U3sOS+XDNHpclJgC1i7Xcw32jiKK9SyN8N00FWHypp0lD9Lb8wbmQ+IPSNiJ4wNa8vLDvxT/job7GE+rAwbcedTA9coHqHDmDVM4JNXm2yZ0/OeIVEfVNeKhLPvDqis3A63begML/qW/y6+3D191Dv/442+y+DXsy//mGxO4rWLlzRzd9x0ojiEUSV37b08edleDKAOXw1a01UfDExsdbQamNPOZG5HR5+1fXS17pxKfO/6HiboDf803ZAfmMxvPb6P0X4cI+6IxNVPT/LlNqPp7iS7RJjkXD/j64n/U=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -113,88 +148,52 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Fri, 2026-10-30 at 13:32 +0800, Muchun Song wrote:
->=20
-> > On Oct 30, 2026, at 05:21, Tim Chen <tim.c.chen@linux.intel.com> wrote:
-> >=20
-> > sparse_init_nid() allocates one usemap slot (struct mem_section_usage)
-> > per present section in [pnum_begin, pnum_end), and
-> > sparse_init_early_section() hands them out in order, with a BUG_ON() wh=
-en
-> > they run out. hugetlb_vmemmap_init_early(nid) however initializes the
-> > sections of every bootmem gigantic page on the node, including pages
-> > outside the range being initialized. If a node's memory is split into
-> > more than one range, sparse_init() calls sparse_init_nid() once per ran=
-ge,
-> > and this takes more slots than were allocated. The same happens if a
-> > gigantic page straddles a node boundary.
-> >=20
-> > For example, with this SRAT layout every node has a small range below 4=
-G
-> > and a large range above 4G:
-> >=20
-> >  Node 0 PXM 0 [mem 0x00000000-0x2fffffff]          768 MB  (low)
-> >  Node 0 PXM 0 [mem 0x100000000-0x80cfffffff]               (high)
-> >  Node 1 PXM 1 [mem 0x30000000-0x5fffffff]          768 MB  (low)
-> >  ...
-> >=20
-> > In 128 MB memory sections (x86_64 SECTION_SIZE_BITS =3D 27), node 0's l=
-ow
-> > range is sections 0x00-0x05 (6 present sections) and its high range is
-> > sections 0x20-0x1019. The low ranges of the other nodes are 4 or 6
-> > sections, all smaller than the 8 sections of a 1G page.
-> >=20
-> > Node 0's first range has 6 sections, so 6 slots. With "hugepagesz=3D1G
-> > hugepages=3D400", hugetlb_vmemmap_init_early(0) then initializes node 0=
-'s
-> > 1G page at 0x67c0000000 (sections 0xcf8-0xcff, in its high range), and
-> > the 7th section hits the BUG_ON() (seen on v7.2.6):
-> >=20
-> >  kernel BUG at mm/sparse.c:268!
-> >  RIP: 0010:sparse_init_early_section+0x9f/0xb0
-> >  RAX: 0000000000200000 RBX: 0000000000000cfe RCX: 0000000000000020
-> >  RDX: 0000000000000cfe RSI: ffd7e1d09fc00000 RDI: ff252cb28ffb3f50
-> >  R10: ff252cb28ffb3d40 R13: 0000000000000d00
-> >  Call Trace:
-> >   hugetlb_vmemmap_init_early+0xe1/0x140
-> >   sparse_init_nid+0x56/0x370
-> >   sparse_init+0x192/0x2b0
-> >   free_area_init+0x7f/0x690
-> >   start_kernel+0x64/0x540
-> >=20
-> > Here RDX is the section number, and R10/RDI are 6 slots apart: the star=
-t
-> > of the usemap buffer and its current position, which is the end.
->=20
-> A detailed analysis.
->=20
-> >=20
-> > Pass the section range to hugetlb_vmemmap_init_early() and only pre-HVO=
- a
-> > page whose sections are all present and within it. Ranges are disjoint,
-> > so each page is handled once, in its own range.
-> >=20
-> > Skipped pages are not marked HUGE_BOOTMEM_HVO. Their sections get a
-> > regular memmap from sparse_init_nid(), and the pages are optimized late=
-r
-> > by hugetlb_vmemmap_optimize_bootmem_folios().
->=20
-> Thanks for fixing this.
->=20
-> However, the master branch has already switched to section-based vmemmap
-> optimization, it has been already fixed. So this fix should target the
-> stable kernels (6.18, 7.2 and 7.3).
->=20
-> The change LGTM. So:
->=20
-> Reviewed-by: Muchun Song <muchun.song@linux.dev>
+On Thu, Oct 29, 2026 at 09:33:00PM +0100, David Hildenbrand (Arm) wrote:
+> invalidate_inode_pages2_range() skips a folio which no longer belongs to
+> the mapping by the time it has got the folio lock, on the assumption
+> that somebody else has removed it from the page cache. But the folio may
+> have been replaced, and then there is a new folio with the same data at
+> that index.
+> 
+> For most cases, like folio migration, that is impossible. However,
+> collapse_file() only checks the refcount of the old folios, under the
+> i_pages lock, and relies on their folio locks from there on. That works for
+> users which repeat the lookup when they find folio->mapping changed.
+> The following scenario is, however, possible:
+> 
+>   CPU0 pwrite(O_DIRECT)               CPU1 collapse_file()
+>   kiocb_invalidate_pages()
+>                                       read the folio (old data), lock it
+>                                       refcount check
+>   the write completes                 copy to new_folio
+>   kiocb_invalidate_post_direct_write()
+>     find_get_entries() -> old folio
+>                                       xas_store(new_folio)
+>                                       folio->mapping = NULL
+>                                       folio_unlock(folio)
+>     folio_lock()
+>     folio->mapping != mapping
+>       -> continue
+> 
+> In that scenario, the collapsed folio with the data from before the write
+> stays in the page cache after the write has returned.
+> 
+> This used to be impossible, as khugepaged only collapsed files that nobody
+> had open for writing.
+> 
+> Restart the lookup at that index, like shmem_undo_range() does. The same
+> problem seems to exist in truncate_inode_pages_range() as well when
+> truncate_inode_folio() fails, so handle it there as well, but slightly
+> differently: simply check once more through find_get_entries().
+> 
+> Fixes: 1b6444331beb ("mm/khugepaged: enable clean pagecache folio collapse for writable files")
+> Cc: stable@vger.kernel.org
+> Reported-by: Josef Bacik <josef@toxicpanda.com>
+> Reviewed-by: Rik van Riel <riel@surriel.com>
+> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 
-Thanks for the review.  Indeed the master tree has the section rework,
-so this bug is fixed for current master.  It just needs to be
-applied to stable 6.18, 7.2 and 7.3.
+Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
 
-Tim
-
->=20
-> Thanks.
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
 
