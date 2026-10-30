@@ -1,179 +1,116 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34A45606A33F
-	for <linux-mm@archiver.kernel.org>; Fri, 30 Oct 2026 17:59:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33E91606A329
+	for <linux-mm@archiver.kernel.org>; Fri, 30 Oct 2026 18:32:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=5JayW4uB
+	dkim=pass (2048-bit key, unprotected) header.d=debian.org header.i=@debian.org header.a=rsa-sha256 header.s=smtpauto.stravinsky header.b=hVbj95Uf
 Received: by kanga.kvack.org (Postfix)
-	id 542126B05B4; Fri, 30 Oct 2026 13:59:32 -0400 (EDT)
+	id C83716B05B1; Fri, 30 Oct 2026 14:32:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4F2466B05B5; Fri, 30 Oct 2026 13:59:32 -0400 (EDT)
+	id C33036B05B3; Fri, 30 Oct 2026 14:32:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 393426B05B6; Fri, 30 Oct 2026 13:59:32 -0400 (EDT)
+	id B48B96B05B4; Fri, 30 Oct 2026 14:32:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 14C416B05B4
-	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 13:59:32 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 914781A0842
-	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 17:59:31 +0000 (UTC)
-X-FDA: 85380054942.15.AE38987
-Received: from BYAPR05CU005.outbound.protection.outlook.com (mail-westusazon11010019.outbound.protection.outlook.com [52.101.85.19])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 7948A10000B
-	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 17:59:28 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b=5JayW4uB;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf05.hostedemail.com: domain of radhey.shyam.pandey@amd.com designates 52.101.85.19 as permitted sender) smtp.mailfrom=radhey.shyam.pandey@amd.com;
-	dmarc=pass (policy=quarantine) header.from=amd.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793383168;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 9169C6B05B1
+	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 14:32:20 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 887538079A
+	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 18:32:18 +0000 (UTC)
+X-FDA: 85380137556.27.C0186B9
+Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 6B79620005
+	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 18:32:17 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=hVbj95Uf;
+	dmarc=pass (policy=none) header.from=debian.org;
+	spf=pass (imf31.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1793385136;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=iZmi5tpFXwhfOkG0YQ8UjtPGEyGwEuV1Gr1U1fVTNWo=;
-	b=mAPsobk6lHpmzlWD4ka5My4w2YZ6Pbq4wOhRR9F08R/jrWaev1isNvznAQ2xYU6gvhXnBa
-	ZA14gDYpaz3rr4kHJYkKLHbu0NhfZ5DlYdp2/Qko/VjMDhyRwaa16mJ3B4HftSwXp5UIJI
-	spaw9LVs3VhFnu3/20Sc9Nt1SU325kc=
-ARC-Authentication-Results: i=2;
-	imf05.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b=5JayW4uB;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf05.hostedemail.com: domain of radhey.shyam.pandey@amd.com designates 52.101.85.19 as permitted sender) smtp.mailfrom=radhey.shyam.pandey@amd.com;
-	dmarc=pass (policy=quarantine) header.from=amd.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1793383168;
-	b=U6ebFIwq1WjZWQqQAw1NzQswmeDMw84c6X10/Zg6zmAqsBmo6DaSedQnCuBdgspO3L5lhh
-	Bi9d0SXplgGx4aTO6aZGSB4lHkHgyu0bNChd/Xj/qT7YD2Q+VIcVD2i8a1RBk3c1PgbMLL
-	VGQzhy57RXMY/x3WOIs+TvZsdss2wQo=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=L5yeOGDdkYtpQuoynm+lpD1YX/9kA+EX8v8kWz8Ifi0bsiFTiK2P2gxMvqtt/QhZq48uD9zR0i6iRzONH0uzsLhHQj1Sfc+oy+ah36BXVImkoS3uXa8psp89ReurKqil5SipOTmdltC8Hcz+RLbHK6XGStfN9D0tsXxDWb+6LBbkqqglp6pxfai1zYJb+FTJRsv7YfjhqrtyF3ctK9T2D9jvkBp61c4IiTIREbS41QFDWSfSwZSO6ggRvI83lbGv4iPkrbtoLy6gKyygsITimGz1QGH89E0zOq3a4nH2o9utLtZiTg3OvIust6SvzTbasp6nK0VsvnyUdkEqcofJ/g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=iZmi5tpFXwhfOkG0YQ8UjtPGEyGwEuV1Gr1U1fVTNWo=;
- b=HSAneYf7Rn8iNgYJC1dVjJdlLBQv63nYXCUGkdoQRGpGlDeT59ub89RgZ6n3yEg1Ta2ipvgFQrRbLHpAemt8NooUdiRUD7CEBBhUGAdKXsDrDiSZYCMKPbSTaNrzX725s3sae8SOYLAWKhJ3AyuUjUVx4GXYDZkqWOSWW4Vk1Oo1VRRJPUMRBM77PC5bBd+lxlbTS0sXxT19dUvm/vrC9oWJyCVXj3Nu/hRS3W3AcHX9pp2K1Ahf8srmhInmHaEP6D2ABQwmyjPCCRBKCyRXdU15Rq3Qs0mwsPlCQwmfAFIbEcAWfX3tKyh8cUBCqS8F1uqQXzLpL0VsZLdhWrf/RQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=iZmi5tpFXwhfOkG0YQ8UjtPGEyGwEuV1Gr1U1fVTNWo=;
- b=5JayW4uBJMPn//bPg+2mEhWt6DLOJOKpnLt4m6azxaYIPSoY9kNOjz3lmI3hcm8781D2n1kCO/YCu7odDZ2T8t0pn6lQcMuQyQvrgrIaMnSWG1yKB4MIYJRNLAqMf1YiuOV3PWF+Glxut3BZNIoC/etqIBQcl5ey183d8aoliPk=
-Received: from CY1PR12MB9697.namprd12.prod.outlook.com (2603:10b6:930:107::6)
- by LV2PR12MB5918.namprd12.prod.outlook.com (2603:10b6:408:174::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.569.9; Fri, 30 Oct
- 2026 17:59:20 +0000
-Received: from CY1PR12MB9697.namprd12.prod.outlook.com
- ([fe80::3a41:55a0:8203:596d]) by CY1PR12MB9697.namprd12.prod.outlook.com
- ([fe80::3a41:55a0:8203:596d%6]) with mapi id 15.21.0569.009; Fri, 30 Oct 2026
- 17:59:19 +0000
-Message-ID: <9463783e-5425-4ba8-9155-033c21d7f516@amd.com>
-Date: Fri, 30 Oct 2026 23:29:11 +0530
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 1/2] kexec: do not place the next kernel in a
- fixed-address CMA area
-To: Mike Rapoport <rppt@kernel.org>
-Cc: Pratyush Yadav <pratyush@kernel.org>,
- Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>,
- akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org,
- liam@infradead.org, vbabka@kernel.org, surenb@google.com, mhocko@suse.com,
- baoquan.he@linux.dev, pasha.tatashin@soleen.com, graf@amazon.com,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, kexec@lists.infradead.org
-References: <20261014145731.3431527-1-radhey.shyam.pandey@amd.com>
- <20261014145731.3431527-2-radhey.shyam.pandey@amd.com>
- <2vxzh5i5orbv.fsf@kernel.org> <auL3UW2InVqYU6Fs@kernel.org>
- <2vxzzevwmz2v.fsf@kernel.org> <7625fa23-5f4b-4658-b17a-fe4e58103e7c@amd.com>
- <auSHrdDdFrWRsuzM@kernel.org>
-Content-Language: en-US
-From: "Pandey, Radhey Shyam" <radheys@amd.com>
-In-Reply-To: <auSHrdDdFrWRsuzM@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: PN4PR01CA0014.INDPRD01.PROD.OUTLOOK.COM
- (2603:1096:c01:26e::10) To CY1PR12MB9697.namprd12.prod.outlook.com
- (2603:10b6:930:107::6)
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=SmhaNZx9fzAsP3d5pmW+pPxvxrjdQVasbzqQOyPPKdo=;
+	b=X7ny5us9O3r63RXPwx5IbcI/Bs3tUxx3xhV46PNQJPpxcqJF7x8SyvGGCAcZyjIXlpFH0p
+	YmMRMKdHpzk1wu/pRq+FJS6g1RDi+cb06CjtWpa/s3vM4mvkQoRkWO7vQxllAGCTTSExsk
+	EOJPqo0CuJFH/CkOtJW9B4dtr31RzVs=
+ARC-Authentication-Results: i=1;
+	imf31.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=hVbj95Uf;
+	dmarc=pass (policy=none) header.from=debian.org;
+	spf=pass (imf31.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793385136;
+	b=cr5xXKqguKwG3shMdptKv3dD5FK56DuXnvLpWdWeVtwsYIlDIaIxeMwor9h5drICk2Kg1u
+	5W2bxdJOFdrSnMRKWk30JscLetO94OydkE1q0IMGNn2u4+Il64CZtPJeAQW816+VBUS5Mt
+	2SODXWbiJYClnfBNWdIvhqHWEC2nHa8=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+	s=smtpauto.stravinsky; h=X-Debian-User:Cc:To:Message-Id:
+	Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:From:
+	Reply-To:Content-ID:Content-Description:In-Reply-To:References;
+	bh=SmhaNZx9fzAsP3d5pmW+pPxvxrjdQVasbzqQOyPPKdo=; b=hVbj95Uf9oJvIeAQES6vymLH/j
+	wKuzMjROSMhvF8gwrne+31UshGKyvIZ94yq49SJuKr0jq2FRRSmciwYsM7YIvPyj5imTltcBMrtM6
+	Xtskm4Z5ye5w8yGkDzMKgkq78skBHsnIcqB+dYzX89XukVEM7B4TixkeJuvqoCiVggCrwVG7gPsjP
+	1OOCYj2cI3yB4NxENHdplwFvwOQImAHnZ7zlNy19tFdd1ArdncLZrrIA/bFWvYMxfX/+bZdpFEu+n
+	VUgSeRiawR46HouMDGDrCdzGhPODXB3wzt/lM/GUXdMf+y+ZYlxAvVQEmNdQhcgaBUo1Wy1hR1l+C
+	eN3NbUDQ==;
+Received: from authenticated-user
+	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.96)
+	(envelope-from <leitao@debian.org>)
+	id 1xMrOb-0040uF-2z;
+	Fri, 30 Oct 2026 18:32:10 +0000
+From: Breno Leitao <leitao@debian.org>
+Date: Fri, 30 Oct 2026 11:31:10 -0700
+Subject: [PATCH v2] mm: kmemleak: scan modified objects as soon as they are
+ grayed
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CY1PR12MB9697:EE_|LV2PR12MB5918:EE_
-X-MS-Office365-Filtering-Correlation-Id: dd6bd916-7b3c-4ed7-baf3-08df36af8571
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|23010399003|7416014|366016|1800799024|11063799006|4143699003|56012099006|261028144727099003|261022105027099003|261026140227099003|261026121527099003|261021121427099003|10067099003|261022075727099003|261009223027099003|261022115727099003|22082099003|18002099003|6133799003|3023799007;
-X-Microsoft-Antispam-Message-Info:
-	F3UmCoUIEt9wXI1Wsq5GLcygBuZuykUdwDdVql3k/91lgNdXJB045FU2sV4wGbIMm/1kA3oXgs9w5e5AlcKLBEZ7RO0i2Z/p3odMPmuIHBD9aY0Slx5X1hzMYt/SW9oonAhYwKSZ2Vw6LKhvsibpi70w8gsMp36vUmLA5hqV5K5BXuYFp46uBmDDmjmJCZ4XXkf0sr0VdZXT73zWVJxcKxW1QGtjDTUC3MdSco0f7Lr1HHoHU3fQTtrjS5bEfA3zMKpWuwJDRzXxj4Umn8NPhNEmYc33OTUHcxbzUdSRzsBgJrnnHtg+m3xYPP65JbRPHudWlqhfQdFN7ife1HVgxyvBHSINmHGmc+8wZ+4p7I+TcVEp3Nm5t9+q+moR2kgOi2bcXx/ECy4WQKP9isoOzj4h7SJ4rK2nK58p7jOWEk+HNw9wES+57IrmffAd2K6mkIavdDoB2u7t62u0L+drdmd1DWDFi6eXtRFS8nhTXODIpNISaDKJNDjggauhtg4Pd0iInvLEwChk87wHTgFW3QQJV+qT2zAQFRIsO93/hkViMGomDdcW3txBsxle+FoI3H5P3eC792cliKswjyfsk5TLVxY8H46eUS9e/VEyfL5oKSIZ2IahfJAW4PPeX8tmHkoMEBqGGMEUfssY/mwSPZpGf/Rt5LikMWbzyHkii6Q=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CY1PR12MB9697.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(23010399003)(7416014)(366016)(1800799024)(11063799006)(4143699003)(56012099006)(261028144727099003)(261022105027099003)(261026140227099003)(261026121527099003)(261021121427099003)(10067099003)(261022075727099003)(261009223027099003)(261022115727099003)(22082099003)(18002099003)(6133799003)(3023799007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?cDhCQnl3ZTBvNGlPVVFMNzUrdGhxbFYxWm9va2tFajkzYmtnMjBKK1NXN1Nn?=
- =?utf-8?B?K1FrMkdqamxIK1R5RUd2Y2p2M2M0KzFDY1dzcTdrWW1KQXY0ZXM4V0VuQlFJ?=
- =?utf-8?B?Nys1SEJsZkoyMzVET3c3RVVrVzd3NE9WdS9IaGo1Y2ZobmVNeWJlZUZMcHRN?=
- =?utf-8?B?OFVma1greDByRno3YXZ4WGRKM1RFZE9UN2lBZVJpb1RUR21pOTJGT1dVOUN0?=
- =?utf-8?B?czcrZ2dTRlJkRkRidVRRdHAzdWxjTjdmd0VjUnNCWVBFOElCWEV5dDVIY0JG?=
- =?utf-8?B?OG5kdXFObjJMWHc4S25FajFrVEpsazI1d2JtQlRZcXB0OE4xQWw1Si9oQjIv?=
- =?utf-8?B?RHpJYmh4OUJxSzVHb2grdW1uMHMxN1UwUjNWTkJLL1E4WXFnMDk4U1JXaVRn?=
- =?utf-8?B?QmduUHA0UmR3UEoxc000TDlBUGZSbEdlL29obnNkOElrZHpwRjMvSUNXcExs?=
- =?utf-8?B?bzA3MGIwQ0V3RllUbzc4NXpGT2I4Vm81YWlONmpkM1BtLzdiRmZ0Y3Y4Y1Zz?=
- =?utf-8?B?cVl3WXZqaHpNMkdSSVFRNFVpbW1LZHg0OTQyRUgrTkFqQnJIUXJadzUzREZS?=
- =?utf-8?B?QlpxZXROL1lvbjZPNFpGc2xUTks2YU9RVGJKMUJydWFrK2hrYlVMTVk1V0px?=
- =?utf-8?B?N1FwMlhGZ0lZVkVtcUgyb0RtT2FwV1E1ajA1SFdBdXoyT3YxVGtSOE5wMnJl?=
- =?utf-8?B?WFV1Ty9SeGNCYXZuSkpOQ0p1ZDcxRTBIZnpVejBqTDVjcTdQUUFla1c3dzFz?=
- =?utf-8?B?NmN0Sy92UmwvK1N5S0kxY3AvUlM2TVpOb1hVVzJzdUlrQlc2VWh3TGtwMmxz?=
- =?utf-8?B?THBhRlBjTEdTbE84T0xQUGV0MjN0ZGZ5VTJFc09yQzlSTTA1MjlzeFNHV0l2?=
- =?utf-8?B?L2llZ3NwdGhUMkZybDQ5R01EWEpXVnkyV3MzQlpqa3ZMa1VvejlEM095SkFZ?=
- =?utf-8?B?Z3Vxd25BUXZqMmxBZm00VnRsYVJkdnUxUmZTdWhRUk92Z2ErUDY2Y3p3NktQ?=
- =?utf-8?B?V3pBczJES0ZGQStaWlBCd0gyYldNRkpDcjRLQUFmVnZQSVBIUkpoZVZzZ3hy?=
- =?utf-8?B?TUNvRnkxbnU3eGdhMzQ2MG1RcW55aXM5QnRPckJJMzQvTnZwQUdBRVZMdU9l?=
- =?utf-8?B?OTI4LzBseG1LeEV2b0xQOGFBdDNBaUtVa1dTUWZyNnQ2VjFOcFlZcHI4S2tY?=
- =?utf-8?B?Z1ZhaUsyOTBUWDRBR3ZXc0VDUUlSalZlcmtRQy8wUmVDZWxvakZ6VWk3VVFQ?=
- =?utf-8?B?c2FmTUJBcjFoajVyTGszMk5ybjRGcTQxUDBIWVdxRUc4TG1maTV4eDU1RGtu?=
- =?utf-8?B?YmRPZlJZZlFsek1mV3lZdU1wQ05VaGt3elpab0E2VnRzZWZxZi9NdDdXTXhi?=
- =?utf-8?B?ZjduSm5pL2IxZHYvV2tjbXl1SlJQdzdlNTZlYXdoSTR6dWVEbU5GMCsxQXRw?=
- =?utf-8?B?dldIbjZjN3ZnQnVFejlxZ1MvMEpXNnM4a1NBNTlBSlhHRk16UFR4ZlFENkFD?=
- =?utf-8?B?UWk1bGJhUGRGYmZCREorV3Y5VjU0ZUtORW1ONlBJY24xeTlteHdNUjB4dVNv?=
- =?utf-8?B?UHNobGZ4a3cwOTR1QnZjMW5MNXVBYUlRekpxeENaWGhjeUdHQVdDZ0g2M05n?=
- =?utf-8?B?cllDMUVDU3B2ZmNIL3ArdUp2dnVucFBybUloS3ZCOVNFNUVEVEV0U3ZMWDZo?=
- =?utf-8?B?MUJFdTNEUVNlVU5GY3NrYTRFaTQvcnpFN21vbklPT0E4SVozYXBNaXhpZnFN?=
- =?utf-8?B?cS9OdWl2b1dZU04yRS9qUHBoVWVYWXpvcllNNiswdE9RVjBQZjN5RytINmpt?=
- =?utf-8?B?R2R3ejlLTzBIeVRqVVIxYlV2TGt5YzBSa1I4eDZtVlp2QW9iMHozd2FtSk4w?=
- =?utf-8?B?SUJLVVVURlJvZDNrWHNZN2FvTDZIMnhuQTY2WWxpQVVBYTZoVkVqRkgwZ3k1?=
- =?utf-8?B?RGVEdVp3eVVmZGQ3di9GYlFiK3NWTys2LzM2RUNnYnhjYWlzb2ZqbCtiUlA4?=
- =?utf-8?B?djhRVWdQRjF1eFJKZUVkQjlMTmsxS2lXdytOdlZycy9EbGNFcDZaamYzb2Zo?=
- =?utf-8?B?RlFKeTlTWTM5dFo3ajFZUlMrQko1T3ZqNGMyZzFTS2NEdWFzcGF5SFl4NWZk?=
- =?utf-8?B?NUdYdDAxelNIbmVCT0lQZC9IRnhwSFJlbXpwOWlEMVN0NW1TK1VuOFhDMStn?=
- =?utf-8?B?bmp5dlcycHBCZkpwa0ZaQXhLd3JwYzJYQ1c5ZkRYRDA4MkdEL0pSOHd4a080?=
- =?utf-8?B?VFJqaXpIOEhYRDJDN2haVjFjTkcvcXY3NURMQU5FZU4rTjMxMHlKY2JKYnVZ?=
- =?utf-8?Q?pku3Gg8MeUlQYSLf+r?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: dd6bd916-7b3c-4ed7-baf3-08df36af8571
-X-MS-Exchange-CrossTenant-AuthSource: CY1PR12MB9697.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Oct 2026 17:59:19.8463
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: y/Fa/RgVHtk4ZUYmLOK6d9NsecHaD9JRKrd71RD0vEIOKR06x3Dhr9AdqhJA+Rax
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV2PR12MB5918
-X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 7948A10000B
-X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20261030-kmemleak-gray-drain-v2-1-3ec29a96668e@debian.org>
+X-B4-Tracking: v=1; b=H4sIAG3i5GoC/22NQQ6CMBBFr0Jm7Zi2SkVX3sOwKHQKI1JMi0RCu
+ LuAcefyJf+/N0GkwBThkkwQaODInV9A7RIoa+MrQrYLgxJKSyFTbFpqH2QarIIZ0QbDHp3NhNT
+ C2fNRw/J8BnL83qy3/MvxVdyp7FfVuqg59l0Yt+wg192voP8WBokSD+okVKqdLTO6WirY+H0XK
+ sjnef4Aa/H7O8kAAAA=
+X-Change-ID: 20261015-kmemleak-gray-drain-fd80160fd946
+To: Catalin Marinas <catalin.marinas@arm.com>, 
+ Andrew Morton <akpm@linux-foundation.org>, 
+ David Hildenbrand <david@kernel.org>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, kernel-team@meta.com, 
+ Breno Leitao <leitao@debian.org>
+X-Mailer: b4 0.15-dev-47773
+X-Developer-Signature: v=1; a=openpgp-sha256; l=6632; i=leitao@debian.org;
+ h=from:subject:message-id; bh=Am15vGy4KAT+0gKSou3UJAm8KE5mqNB0nSviaBtOpGg=;
+ b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBq5OKm9gbp1quqr7syMzZeIrmtcUtbY0rBcskXP
+ 8jLe9DqKu+JAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCauTipgAKCRA1o5Of/Hh3
+ bTP1D/93vZdWtXAgQ/ZWYTKCd4Zo3+u2tNGXofD71UzmXPugdegMEu59HaVSvyd8/dOI00GmUTS
+ RVHjUAlmgX1tA6tBV0+UEjC/XGcbYxv/PhrbRrXQ8DUl0zQJ4y/ObrG17yanhYIZh+QHaIJzu0z
+ p6vhii17vZA7h53+r+6bmsE/05gyJ3BET++tXIttgdRwbT7+GUHnFV0RyfynoshHr777UD0+5uW
+ VlqZBWUNxPiOxK4rvbLJakYLnYFV6EW9LyJWzViSbFk02gxkIjTqbHB449kRHAHyfDvoHBK18XH
+ stBYEVDFjsz2g3DLm2U7YSH4CmZJIT9OPAZpv9DXX8cKxSq7Fc2r8mVGFuUEa+kuwWtmak5nb9e
+ m/qSRKYdLegwJvP0ZMuOtT3ZnFcybphBjG0w7TyYsd6PQ7whCSEseWVQrLaXeRp52WZjvM1zaFj
+ /gpEfNRMJVu3FDVgpSxkOZTQdh3hFE+55wnDwhELU7HXxaYSl10vBXmU0HkCLkMCjmiie0mIXjO
+ 5yQP1yggPxqVlI9elSRRam9vl0hWYr6Ga+ukgAMtykB6aeunF51U8UH+rEXATEfm3LEXUWlJAss
+ pdUQfcvxvfQN8UiD4ehWXit/6HxqL1JYbqhx5zZxdth253c8KYYxEQYJ+pCryfgo2YNwVQHeJnN
+ E5/akRAq0HEATtw==
+X-Developer-Key: i=leitao@debian.org; a=openpgp;
+ fpr=AC8539A6E8F46702CA4A439B35A3939FFC78776D
+X-Debian-User: leitao
+X-Rspamd-Queue-Id: 6B79620005
+X-Stat-Signature: i3xo9r68d91zgxp6yap9yyuftanrqk6y
+X-Spam-Status: No, score=-23.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_SANE_1 autolearn=unavailable autolearn_force=no
-	version=4.0.1
-X-Stat-Signature: qwnsmwsj6ow8gbpepaexmatrnwj9mnrd
-X-HE-Tag: 1793383168-907505
-X-HE-Meta: U2FsdGVkX1/oIF6Lg1w9wWrpJocVjh2udrbLd5+c7Ovg8wI51N9Tq5XybvHI15V+wzXtUP5iVaw/dkLBBu9gnDjcOo9A6ABxLT1WXzd+ZiUMExp/U4+upydPk49h405sAH2xpowUw5OljhqIZP9ItnY3TFt/F9SSmrvJ8d5makoQ/SCOG7oPh3onMJTEcjjO0URiPMNVGtHDRh9Ndo+GuZrSYzH8134HQImogZ3ihQEL1BeHPmZUdSn/aKwzfSamkv58UrYG7bNG1g5nCL974QsAKtN+MWhFWEJVfoe0t0yltCMOfiHWcFR1ecW+yUge7LgIBjHYeDnJNVqkrJSIU+2ED+kWqNAZ/v0By3O7IOcS8IlBs552UcNreKg2wNE3vUVnEuSLXWzqLL8uWKSjNzQKoqI0+MFMhaJhS8V7kO411qgf2316V+DvKT/oHUHFF0OdMzTUVJf2avYe+m0XeEVSXNzF7WZC1YMb90Ej1/I20AS1e40uSzcnigfMk4iHz6dmAlgBlJtlEywcjm379q1VgQpTG4S1jxjb/Z+kA2h9PvxJpytLJsOdAe73VqQUk9p4W5Ecmueh6NXMWiZ8eNzjLTsQsOv5w5NPKwEld+UabkO9OAjZp+tcktSBiodFuxJbCRJu4eXQOiclciMh51Fcu3wG7xPNjRksMbK4NmLeVrWMonUtHTgyvBWj3T+QnWFZxHCVuglya5gesddo89ip6ypRe51tn5dPPQq3VOocF5jfEupJz1iucGDHElGR/1prr9AH1AYrvlteYPgCBV3R7FK8YYCx7Tfqym19UVrU8KoSjtPCtnRqQRi49sp0bNqA6hBCRa7kh9/JzO5SzKULLxHf/zyXQGGBpydjRcO65tWjIixT9OMvR5z/EFzVglMy7f6+KmMH8UFsnSTuITGa9FpDNsiY9ikXe+Gdo86LVq0YiWODFzSW/rtd+d06HzHm2LOtlBR61w667Mo
- qVliAdyN
- Oth8yA6okMcOkp76aqtZXaZYvnBc63JiyGLbMSWjbwylsfav9Mn2MmDQm7l5A9pKFjElgatdbn419yZlHqmpR5WKavMpn3i5B+SDXHXbBkhJz1xQlu+vMsp7c9Q0PpZ2i+AaRzJIcze+lXB13GkSwNPIz0eZ0eBFV8NWxV33BjUhGunsVgmvlM4fpkQGjwKlsALPQ39i4RzZl6sfWiGUdyKD0nxhnIz5qGuJB1pDARxPqq6PYtFgYWNDtx8+Jm4Rw5k0E6VZl4dxheznsn0bdJK+Pn79eFU/S6yJcMf5qv9vOGbhr9VghSzybCvY1FXfarHBVaKvUxpPxXEXPbDGaYfDcDYHsSlOcES2U45mjHQaeLGMXD2QWnzinpwT5lJrAAhE9/MjYqmDrVJcZEFO/JDDavaWfCH7jKm+xbUASo471v/QhkXiu5b6C1B+ZIOOXsfLRnpeep5/Cy0t4EtqhRsoJ67/YOHmPyPpPnNfxH59M98Z2xfIiYeounV+Y+SstrMaLR7MgVXRqGcwo/U6n4ZIxD1oHvNhUDQLkD1pR0idH7LCRBmhOVHtV/onJ7VvSbuZ4WYvdvej2twY=
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,
+	MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT
+	autolearn=ham autolearn_force=no version=4.0.1
+X-Rspam-User: 
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1793385137-943824
+X-HE-Meta: U2FsdGVkX19pTY+Ck03MIptNCb5ER9T/wa7Chf2P1HXA3T+Nf8YezdQBZM2d5x2yH7PFhS2F31u4vDoxydOp1ARvOcZzYJtBsqW91kCMzfjF2+g2iywyY+AKLXSlh87d70QnryKbxMt9Um4B/xwfmYjdNifOJwliYNufmbW/K/Kjexwfow1tPOMluqLyxH6IP98Sv+W6XxKIEdIG+dCSolZon5HjX4CpXxY9SrevfUqcJ/vU1rao0OzTCMr85M9fqymMbFZawKTDKV3a+ODwkapda78fR74awK4Q0fMHtsOKfaliQoZt/k5J4e6Ibof1xnQ3U1UKUO1z+RI5Vu5Cq1eN8ffcrZSf5Z7yA18gbn1wJ4zycizHVHGfKeOCdpwG/42WuNfV6gqE+Dar7fH+/EvQ7nlXw7njhL/IPAlnJRVSBT5vQjO6G6e8SOQpkmmEmKAqRRIPiFpYtg7UYfq5PEATs3TZ7M91qYM0YDT4hu2DIu6uJK/Vo2ktTHSh/QhEYSy16ZU+QjBfWPyo0bAJiEZGf/0f/UghsYzauSyxl38gqEGBmKG3tx4VglGtJiqx614T6y0T+2MnbTSqzVYkU3S3eIrqxTvnQ/cn5RN7npNAQDM9IAMT01IjHQ7mlcH6yWWqopujTExxL3EKp5dAb6U6WMQvuq1xS+WX9N/ZRN7iAQgbiOJrdpu9ZbrXWCnlNjkv5USxlYmIEW2QLKDbV3LaHfQILU86WzUKW4AD0lVIBOiOqA2/JFw2A0NCNlasSzklyIukeP/zaY9JNpBzYGkiLnzmsgYL8k5h9aWxpegG0w0YCiEnSSSlLN1q6QUjd/PxNBUueE+M8UHDT2bvoF9fBR5H0AtQqWIV6gTWtXWmpI37owzh/FQRo6kJSYiNLsAaViiOjDqXjCoTLCFtLceOlkt2Lfe9TDvLlaL+/e0EX7i3yUmDGfEmB1plYL8lV1vQg7JhkOEHRWI+wBW
+ u9a0KXKU
+ LInHjTEEQw92huIBUe/nXSHxr4Z4SmDDEPsQ7YxvGhIrdIfX2LB5OOO9Rf4265zU33SvnnV/wPbQV9sZA+OVmid+mikg5rOodWKVmTyJ7I6iA1daLgWT39zZ0IKkjHr5AbLP3nGBbtUIrL8RLffQwXxTktOmGRaeZLMNQ/ObVX3RIfG/A+kv5Wc4SAJIvP1bUu5ysQ6gUBRYCxcxsFSIT2o9E2ZUtcmCVRmjFMsMpCiqv6E957zAQHc3FWemdldPSnUuCEUBZp69OePFi+1exZIuOvYU8i0ByGu2X/pAu6ZGfOD4Uo2wE2TXjLCRA3+ry2z1pyBzsN9KPC9WI0sF7iOBJK2dyqWtbU0K5uCpHwEZ7yHuOV2faiA5FQKPPlhdCGv619TuwOvu/hXqqM6CuqVZyXWSVFxwpr9uEXt0+IvlBZ6fqRLYncQcu8ZNQh8YCDCw3wyS3pauBTVc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -182,68 +119,166 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 10/30/2026 5:33 PM, Mike Rapoport wrote:
-> On Fri, Oct 30, 2026 at 01:22:50PM +0530, Pandey, Radhey Shyam wrote:
->> On 10/29/2026 6:41 PM, Pratyush Yadav wrote:
->>> On Thu, Oct 29 2026, Mike Rapoport wrote:
->>>> On Wed, Oct 28, 2026 at 03:03:16PM +0100, Pratyush Yadav wrote:
->>>>> On Wed, Oct 14 2026, Radhey Shyam Pandey wrote:
->>>>>> @@ -304,6 +317,7 @@ int __init cma_init_reserved_mem(phys_addr_t base, phys_addr_t size,
->>>>>>    	cma->ranges[0].count = cma->count;
->>>>>>    	cma->nranges = 1;
->>>>>>    	cma->nid = NUMA_NO_NODE;
->>>>>> +	set_bit(CMA_FIXED_BASE, &cma->flags);
->>>>>>    	*res_cma = cma;
->>>>>> @@ -517,6 +531,8 @@ static int __init __cma_declare_contiguous_nid(phys_addr_t *basep,
->>>>>>    	}
->>>>>>    	(*res_cma)->nid = nid;
->>>>>> +	if (!fixed)
->>>>>> +		clear_bit(CMA_FIXED_BASE, &(*res_cma)->flags);
->>>>>
->>>>> Nit: This reads a bit odd. cma_init_reserved_mem() sets the fixed base
->>>>> and then you clear it later. Wouldn't it be better to just pass the
->>>>> fixed boolean to cma_init_reserved_mem()?
->>>>
->>>> Actually, we shouldn't expose cma_init_reserved_mem() at all.
->>>>
->>>> The current callers of cma_init_reserved_mem() should be switched to
->>>> cma_declare_contiguous_nid() that does sanity checks before calling
->>>> cma_init_reserved_mem().
->>
->> Thanks Pratyush and Mike for the review.
->>
->> The switch from cma_init_reserved_mem() to cma_declare_contiguous_nid()
->> looks like a broader CMA refactoring and requires additional changes to work
->> correctly.
-> 
-> Hmm, you are right.
-> 
-> How about we invert the flag meaning?
-> Than cma_declare_contiguous_* will set it where appropriate and we won't
-> have the weirdness Pratyush pointed out.
+kmemleak keeps reporting the guard page of a systemd-journald thread
+stack on Meta's debug kernels, even with min_unref_scans set:
 
-That's a good point. I will invert the flag meaning - something like.
+  unreferenced object 0xffff88829a30ae40 (size 256):
+    comm "systemd-journal", pid 961, jiffies 4294814590
+    backtrace (crc 49b3881c):
+      kmem_cache_alloc_noprof+0x2ee/0x630
+      vm_area_dup+0x36/0x750
+      __split_vma+0xef/0x7d0
+      vma_modify+0x11c3/0x18a0
+      vma_modify_flags+0x1ea/0x2a0
+      mprotect_fixup+0x249/0x630
+      do_mprotect_pkey+0x531/0x820
+      __x64_sys_mprotect+0x7c/0x90
 
-__cma_declare_contiguous_nid()
+The VMA is still mapped. It was never faulted in, so it has no anon_vma
+and no file, and the only pointer to it is a slot in a maple tree leaf.
+The mm tree runs in RCU mode: every write replaces the leaf with a copy
+and frees the old one after a grace period. journald rewrites its tree
+every couple of seconds, while a scan on a large debug host takes many
+minutes, so the leaf kmemleak queued is freed before its turn, and the
+copy that replaced it was linked after its parent had been scanned.
 
-<snip>
-+       if (!fixed)
-+               set_bit(CMA_DYNAMIC_BASE, &(*res_cma)->flags);
+The pass over modified objects is meant to catch such moved references,
+and the new leaf, being a new white object, does get grayed there.
 
+But the gray list is only scanned after the whole object_list walk, and
+by then that copy has been replaced and freed as well. The confirmation
+scan has no such pass, so the miss repeats round after round no matter
+how many consecutive scans are required.
 
-So the v2 series would look like:
-mm/cma: drop the duplicate alignment check in rmem_cma_setup()
-of: reserved_mem: keep the reservation when node_init returns -EBUSY
-mm/cma: reject CMA areas that overlap the kernel image
-kexec: do not place the next kernel in a fixed-address CMA area
+Scan the gray list during the walk instead, within a jiffy of an object
+being grayed. Do it from a variant of kmemleak_cond_resched(), which
+already pins the current object while the RCU read lock is dropped. The
+live leaf is then read shortly after the walk reaches it, before it can
+be freed.
 
-> 
-> And Radhey, please, make your LLM to spill more concise and to the point
-> text and teach it to trim emails ;-)
+Scanning the gray list after every grayed object made a full scan 41%
+slower (1.72s -> 2.42s, arm64 guest with lockdep) when the pass grays a
+million objects that do not point to each other. Scanning it at most
+once a jiffy keeps that at the baseline, leaves idle, file storm and
+mmap churn workloads unchanged, and still removes the false positives
+at HZ=100.
 
-Noted. Will take care of it in next version.
+I was able to come up with a reproducer that reproduces these false
+positives most of the time:
 
-Thanks,
-Radhey
+https://github.com/leitao/linux/commit/1291579c487303c5ffbea2cf532649d26329c8a9
+
+Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
+Signed-off-by: Breno Leitao <leitao@debian.org>
+---
+Changes in v2:
+- Keep kmemleak_cond_resched() and its callers as they are. Pass 2 calls
+  a new kmemleak_resched_drain() helper, which decides when to scan the
+  gray list and calls the new __kmemleak_cond_resched() (Catalin). The
+  other two callers keep need_resched() and are not touched.
+- Scan the gray list at most once a jiffy (Catalin). Doing it after every
+  grayed object cost up to 41% of the scan time in a synthetic worst
+  case. This part can be dropped if it is not wanted.
+- Add the scan time numbers to the commit message.
+- Keep Catalin's Reviewed-by, as both changes follow his review.
+- Link to v1: https://patch.msgid.link/20261016-kmemleak-gray-drain-v1-1-3270256fdc8e@debian.org
+
+Tested on an arm64 virtme-ng guest (8 vCPUs, lockdep, HZ=1000,
+min_unref_scans=1), two boots of ten scans per kernel, same base:
+- Guard VMA reproducer: base reported live guard VMAs as leaks in 19
+  of 20 scans (up to 106 at once) and needed a confirmation pass in 17.
+  v2 reported none and never needed one, so a scan took 13.6s instead
+  of 26.4s.
+- Pass 2 graying 1M objects that do not point to each other: base
+  1.74s, v1 2.46s, v2 1.73s per scan.
+- No lockdep, RCU or WARN splats in any run.
+
+The v2 changes, the changelog update and the measurements above were
+done with Claude Code (claude-opus-5-5).
+---
+ mm/kmemleak.c | 31 ++++++++++++++++++++++++++++---
+ 1 file changed, 28 insertions(+), 3 deletions(-)
+
+diff --git a/mm/kmemleak.c b/mm/kmemleak.c
+index 8fa409a4f9fb26..7e24408ba83821 100644
+--- a/mm/kmemleak.c
++++ b/mm/kmemleak.c
+@@ -1696,8 +1696,10 @@ static void scan_gray_list(void)
+  * Conditionally call resched() in an object iteration loop while making sure
+  * that the given object won't go away without RCU read lock by performing a
+  * get_object() if necessaary.
++ * If @scan_gray is set, also scan the gray list while the RCU lock is dropped.
+  */
+-static void kmemleak_cond_resched(struct kmemleak_object *object)
++static void __kmemleak_cond_resched(struct kmemleak_object *object,
++				    bool scan_gray)
+ {
+ 	if (!get_object(object))
+ 		return;	/* Try next object */
+@@ -1709,6 +1711,8 @@ static void kmemleak_cond_resched(struct kmemleak_object *object)
+ 	raw_spin_unlock_irq(&kmemleak_lock);
+ 
+ 	rcu_read_unlock();
++	if (scan_gray)
++		scan_gray_list();
+ 	cond_resched_tasks_rcu_qs();
+ 	rcu_read_lock();
+ 
+@@ -1721,6 +1725,26 @@ static void kmemleak_cond_resched(struct kmemleak_object *object)
+ 	put_object(object);
+ }
+ 
++static void kmemleak_cond_resched(struct kmemleak_object *object)
++{
++	__kmemleak_cond_resched(object, false);
++}
++
++/*
++ * Scan newly grayed objects within a jiffy, not after the object_list walk:
++ * one may hold the only reference to another and be freed by then, like a
++ * maple tree node being replaced.
++ */
++static void kmemleak_resched_drain(struct kmemleak_object *object,
++				   unsigned long *last_drain)
++{
++	if (need_resched() ||
++	    (!list_empty(&gray_list) && time_after(jiffies, *last_drain))) {
++		__kmemleak_cond_resched(object, true);
++		*last_drain = jiffies;
++	}
++}
++
+ /*
+  * Scan all task kernel stacks, rescheduling between tasks. Each task is looked
+  * up and pinned within its own RCU read-side section, so no lock is held across
+@@ -1863,6 +1887,7 @@ static void dedup_flush(struct xarray *dedup)
+ static int __kmemleak_scan(bool full)
+ {
+ 	struct kmemleak_object *object;
++	unsigned long last_drain;
+ 	struct zone *zone;
+ 	int __maybe_unused i;
+ 	int stop = 0;
+@@ -1979,10 +2004,10 @@ static int __kmemleak_scan(bool full)
+ 	 * Check for new or unreferenced objects modified since the previous
+ 	 * scan and color them gray until the next scan.
+ 	 */
++	last_drain = jiffies;
+ 	rcu_read_lock();
+ 	list_for_each_entry_rcu(object, &object_list, object_list) {
+-		if (need_resched())
+-			kmemleak_cond_resched(object);
++		kmemleak_resched_drain(object, &last_drain);
+ 
+ 		/*
+ 		 * This is racy but we can save the overhead of lock/unlock
+
+---
+base-commit: 587858367581b9c55c3690f4e63382ad622719d4
+change-id: 20261015-kmemleak-gray-drain-fd80160fd946
+
+Best regards,
+--  
+Breno Leitao <leitao@debian.org>
 
 
