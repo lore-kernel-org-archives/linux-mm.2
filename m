@@ -1,98 +1,95 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBC5B606A31C
-	for <linux-mm@archiver.kernel.org>; Fri, 30 Oct 2026 14:44:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4590F606A329
+	for <linux-mm@archiver.kernel.org>; Fri, 30 Oct 2026 14:45:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=fPlzr8wi
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=n8ejGIg+
 Received: by kanga.kvack.org (Postfix)
-	id D1F346B05C1; Fri, 30 Oct 2026 10:44:57 -0400 (EDT)
+	id AFD736B05C2; Fri, 30 Oct 2026 10:44:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CF7946B05C2; Fri, 30 Oct 2026 10:44:57 -0400 (EDT)
+	id AAE436B05C3; Fri, 30 Oct 2026 10:44:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C0F6D6B05C3; Fri, 30 Oct 2026 10:44:57 -0400 (EDT)
+	id 9EB4F6B05C4; Fri, 30 Oct 2026 10:44:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 92CB76B05C1
-	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 10:44:57 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 88E50120711
-	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 14:44:56 +0000 (UTC)
-X-FDA: 85379564592.29.4CD2A8E
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf28.hostedemail.com (Postfix) with ESMTP id D0D7AC000F
-	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 14:44:54 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fPlzr8wi;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf28.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 737E96B05C2
+	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 10:44:59 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id F0D70A0652
+	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 14:44:58 +0000 (UTC)
+X-FDA: 85379564676.22.AD44A8F
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 4E3AB40002
+	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 14:44:57 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=n8ejGIg+;
+	spf=pass (imf01.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793371495;
+	s=arc-20220608; t=1793371497;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hPt7qAKZRrvPL5BVnFsb1T/fR58XHGnKeaH+GP2tuQg=;
-	b=hgDTUVCyJrFRzCYdWR6aaINmF2y7V8NVAQNEZch/6AtP0SaXApMcJLARC0+Gp/CibjPK89
-	H46QWHgFgH2870STIhSZxShyc6Fmr013vgBxspzIko2PamvsR3+89zLGdN0hS8R6WL9fvQ
-	tHwvy+lI4tZc3MeI8LPHpzlSGkwCxms=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fPlzr8wi;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf28.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+	bh=H/AJXxh88ofL2EmTVTuJdaMcLODH3bnV50L91OVxIF4=;
+	b=1naamWmcDFroBcsKlF5jFQwIORoYoXkYgjlW4lQwe3460jfXlEKxVStcbcazzm7fwq1QF6
+	i9sq8GkiSYTGHomznC6DhOjsJnXLfJpIu2SzW7VjQtCepwHO65aAfHPWezmPQYwQ2+X6jy
+	2dZ28EE4aTrnturhVpTwvHMw9lqJ6RU=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793371495;
-	b=rxOkP0RojC6RmAs7coN8/OS1JOKTX/7D1sFnhloQGEMA5HBNqTDvjUYh7GBCMGtoSPiDEu
-	9i/6dhBo69cg49jogL/Aa2pfdU7iWg/PFwWuzJrM/qwWsKIjlj1aREKoOv2JH64bP8/T09
-	FUnldW1BFumMjJY3WKAOVGJ/8R78Z6o=
+	t=1793371497;
+	b=AStT1JoR+EO7q/iO0V+Dbz0m1dsOLfjURMH9aBNYJXoVL6bMOm4PJ5BjwVrJ3rRkgLlcfO
+	dyoxt/NrAchxOnwHq0uvt+flUCYrN/JAw9rE2pHTQt+lUUgOMieBsZyUlPII/w7IhcuJJ2
+	2ZiuKllah4b8HGe9o5twka2hUbMu4as=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=n8ejGIg+;
+	spf=pass (imf01.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 2C0CC43D0C;
-	Fri, 30 Oct 2026 14:44:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09F841F0093A;
-	Fri, 30 Oct 2026 14:44:52 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 61E6F601F8;
+	Fri, 30 Oct 2026 14:44:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5563E1F00A15;
+	Fri, 30 Oct 2026 14:44:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793371494;
-	bh=hPt7qAKZRrvPL5BVnFsb1T/fR58XHGnKeaH+GP2tuQg=;
+	s=k20260515; t=1793371496;
+	bh=H/AJXxh88ofL2EmTVTuJdaMcLODH3bnV50L91OVxIF4=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=fPlzr8wia4+bjalsKbkMQTe5GEef4pxi+7XORZlnLWiUeuLwyyZKg1pPZzApsY2nl
-	 IBNubWjp8tEQl4cY7ZF+jfV81kl6ngF3FFVFZH7r7Uh3UbbLcJHZpCnzfMCyVcR9P2
-	 ddW9pWj946kNgm6+1HO0r9lV0DTcl/P5VneOdEcx/RsOGnUFH6borckNl88JdBHTHv
-	 5D85EDUI5+gUseYdh7G2g7ViJ5Ymv80wXV0xZ8RlgrE8M2If6Hr+Lbx/Ap2Jt9K6D4
-	 bLULvILaXGVHluk5Cujm0RlD1QVvegbjx53dYbv7IcReEC2hCyLq6Qt7+ZOSvUpUld
-	 UsSFf16gZCB1g==
-Message-ID: <sashiko-outbox-191118@kernel.org>
+	b=n8ejGIg+7xN6FNYSqmWb0hOPwVuDl/KSi8E/gvF6eQHSLkfHmVTnR9jgvpHXgEwIQ
+	 Drap8g3sEvYxVD3aFlZeo2VQKFV6wKcxH3Qos9rv2UcwAQfYXEGfiepDt9Cm181B4M
+	 enOHAXl5G0QJsgzpz8XBaIsuIx/2iyaZ0zhPoFRNLEuAjdd4J9/CKNReWiszfL25zC
+	 kx4b5OMVeZRN2l5ruH+nn96mSyuUg1ldG54Ra78nfCtKqM7xSvfNFY2c6IKPCW22D7
+	 20NxJJLrg9SvK082uxVBpkNLv7G/JkOK1IH6Zhg9tvjZ4ED9MFDPqJLSlq5ZjO+ZNo
+	 Xox+ZDAqfb0xQ==
+Message-ID: <sashiko-outbox-191120@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [RFC PATCH 2/4] mm/mmu_notifier: add
- MMU_NOTIFIER_RANGE_PERM_UPGRADE
+Subject: Re: [RFC PATCH 4/4] KVM: x86/mmu: don't zap the secondary MMU on
+ permission upgrade
 Reply-To: sashiko-reviews@lists.linux.dev
 To: =?utf-8?b?Q2FybG9zIEzDs3Bleg==?= <clopez@suse.de>, kvm@vger.kernel.org, linux-mm@kvack.org, seanjc@google.com, pbonzini@redhat.com
-Cc: linux-s390@vger.kernel.org, imbrenda@linux.ibm.com, "Andrew Morton" <akpm@linux-foundation.org>, "David
- Hildenbrand" <david@kernel.org>, "Lorenzo Stoakes" <ljs@kernel.org>, "Liam
- R. Howlett" <liam@infradead.org>, "Vlastimil Babka" <vbabka@kernel.org>, "Mike
- Rapoport" <rppt@kernel.org>, "Suren Baghdasaryan" <surenb@google.com>, "Michal
- Hocko" <mhocko@suse.com>, "Muchun Song" <muchun.song@linux.dev>, "Oscar
- Salvador" <osalvador@suse.de>, "Jann Horn" <jannh@google.com>, "Pedro
- Falcato" <pfalcato@suse.de>, "Heiko Carstens" <hca@linux.ibm.com>, "Vasily
- Gorbik" <gor@linux.ibm.com>, "Alexander Gordeev" <agordeev@linux.ibm.com>, "Christian
- Borntraeger" <borntraeger@linux.ibm.com>
-In-Reply-To: <20261029143336.390231-5-clopez@suse.de>
+Cc: linux-s390@vger.kernel.org, imbrenda@linux.ibm.com, "Thomas Gleixner" <tglx@kernel.org>, "Ingo
+ Molnar" <mingo@redhat.com>, "Borislav Petkov" <bp@alien8.de>, "Dave Hansen" <dave.hansen@linux.intel.com>,
+ =?utf-8?b?bWFpbnRhaW5lcjpYODYgQVJDSElURUNUVVJFICgzMi1CSVQgQU5EIDY0LUJJ?=
+ =?utf-8?b?VCk=?= <x86@kernel.org>, "H. Peter Anvin" <hpa@zytor.com>, "Heiko
+ Carstens" <hca@linux.ibm.com>, "Vasily Gorbik" <gor@linux.ibm.com>, "Alexander
+ Gordeev" <agordeev@linux.ibm.com>, "Christian Borntraeger" <borntraeger@linux.ibm.com>
+In-Reply-To: <20261029143336.390231-7-clopez@suse.de>
 References: <20261029143336.390231-3-clopez@suse.de>
- <20261029143336.390231-5-clopez@suse.de>
+ <20261029143336.390231-7-clopez@suse.de>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Fri, 30 Oct 2026 14:44:52 +0000
-X-Rspamd-Queue-Id: D0D7AC000F
-X-Stat-Signature: fsn5nkx88h1unf88phbwjtnifhdis53h
-X-Rspamd-Server: rspam04
+Date: Fri, 30 Oct 2026 14:44:54 +0000
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 4E3AB40002
+X-Stat-Signature: 4dnwn1p9w8xmkzq1t6g74a8nhe6ontpe
+X-Rspam-User: 
 X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
 	autolearn_force=no version=4.0.1
-X-Rspam-User: 
-X-HE-Tag: 1793371494-281658
-X-HE-Meta: U2FsdGVkX18Kgc3zWoScMfei0MIzdB4dZJ7gy6G5GvFxz9uHLXn0RR0xLeY7DCMuSmVrjrz8Olew14aEFbf/BvI9Npf9uYz2stot3eQD4nJlEsB5xFZo2RfoYLsbBldX55+jiHhcyW2GqMpxschCq5jCRtbc6eOvWsMkIEZ7Hn9V7wHRJbSdbEzmZtpWmOrNJ/kUANhEPSZqKJfdfSpg01ujnhY7x1s0gGX7KWXjWO8ueOUu7fjuoKCZqosXhCKxNksAFGUbbhz5AA+owxVMgl8BRJRB/Yj2+X38038IQ1c8GtWLv7Yt4rDNOIi+Y8NUEMyEkTcsIUssLIEkiD6PNx91XIBVN2tmq6RhJ+U7TEgqOVmItVBSSu76j8JvwOQn7S2UD5n3VHHRSyxWbzzjbAZ4iBaQ76NN+uAxQjUp1cHCYomonxmCTviCYXC88q7Fdh/zsPaJA8CRodST61vl/JvMzhjvc47fB5oQ1gtuPlCZiYjByCgap1/1Onn9+R4WpPxsydbFtKaEYz3TDY39130C7uR2DIxA6+Rqqc2TkjvAf0C/xHGlxD1zeHswDODAQfrK1Nji1rYaJYMhkcJ8PjdVIKLx73O4v/NEWeo53h2DI9PXwiV5rZTX1Wf911I4XsxZzjRWH2i2HKfW89wocI9iMuVD05j2R5pfswSP/NZUj+8z/Yv9cPdi6bwMyo2bQKpX65k8t0Sa0luR5CLHJIhJYSzRqu6/wWaCD48F1eYJQlFlkbdZ/j5d4tJMEGcCq1hNC0BrPC8HgHfsf261neb5KOqoZRiBTExXRpvS6tg/jM0aY41JUhOQ2We7ByFnp24Lbav8zyv5XCnXhF8iDoUMsbhMRNw0kTs8jnnsJ5XkieKmaSQw990nWKPJyDh4SSk4M8JnEGR5oVtWvnQIyPFU5PuRu3r0gqaucprb3crRyT4aA8Z2h4J2tbL4GyekWSv2/LeTeZkGtAl7Ek3
- KKfMublE
- Oo/gH6RBPiLp0N14GnPbaRMglgrM0z77KA4Rabko/urTS3wLsOyTbV817skz3ehSVcsodCfqE2kHsLw92sbkU90U+o90aSnyLLQ8rb15BHTalB33pohHzPJadMUSS9aAlZ2aQVFFTehBb8CoIumEirgct1EpOy9/376/xqVoCRpRjtczq4nU/6UJJThhqn9XLDSMtUDMSav/YbraX4zrZjtksYADOoTko+1YkISv7iDjh2JRvrfF5/NsbD3v70bg6RtqgS6hIsv+2mJ2fqyTEmJwSDbM6Z0ekt7o+ZCcEd7CwRkPsgeHMDCn7WQl/rhYDkWQ3BpWLkyNWGZ7pmDyEYwFJ15RCZIeEOeNUm5iqyc9XuwkOyDQ4o0THUwDrV244gHQyB7D4WJZqhaPUjsz8tlRmhwHTR/H/Yo5VlRxq29K8psLqEZ9wzAngSFwIdMDXMp1kRCJD/eVZvlyYC5tTfTvBP5hMeQx3vI688ZIxCYT9825aGxwRYOBak8XpoUNZLrriZFs40j5yA+yMh6YurYkGG8NPuVIForCWq92HjIyl90J/lwlLJzqoF9LS+CHn5RlUdtE8oSuDMjO465hrXqjhx+OwD+leY+gxwhG+nHFGOyQ=
+X-HE-Tag: 1793371497-204258
+X-HE-Meta: U2FsdGVkX1+CY70gF0Ty7TrcxpKbodiXh8F2MTI+nR/c/JlWwS+UfNLI7MSPVgICjB39SHJyktQm9/OA3mcGtcXMQaCItByJPKKOR54xz4s42c0N2aWX7zxMnnR2KlWT+Igc3V8uX+HFAbfe8hyr9CKbmrluXfc6kjCVw5E4YZmZlYXUd08QRn8rugOBdyh0ODDEPxqd28rFHC2/RLOl5v21/dYTYV1wnzSw4h6Tnr0XMnZjDBpQpekaE17gDgdEuJMXCgRxE8PsKqfCbK9dwQDSbBq8UBQ90kNELT9Csg858JzJp+YWhk3kwB5vrcnwOwqyqCB6DO4taytZETLbAgD3hI9haQZXpsXKoh6BimBIO/myKvgoBkShNB06c5BMFIcJ6OzK3DZHB1J7IrhXEjDyqjDJQ9unecyA511zsJ++/1P62YkMwMrYVuowD/kFX7wwDG5vvB/49DEaJwFTmZCDsxgNh4M1TTHleq25ZxegNLJhdhrSOl1yKFpcqtXgMeAZnEfxAf7vgC0pglfBYNu7ATOjD7y1DCPMQqIwJ/aEgGctdNwZoyZbrYm8LVPZfmbrWt1SiZEZDgA4NmcE7GJY9yaG5sw/Ze9sxkq5+PyN9Wem0fWynWCXpHpkROal++IYiD2WgbEOuNbIdVCnH3EbAaFcpIj0H5hTCYYMgrDATIIkoeMThu2b74g1cr1yYXr/pTf5KNe6v/TqDk0y4oJ7+cGXDInIVgYXnLJDAZgPKFlCGdXk4rNE2uWCZPaymvTF/O05S5Pccr2NHUvz+UMcwKwRD/TdB4EGvcKrnTK4s1aWrZ028MJCvu/1IeaB2avw7YyoVdkc0/sxK1u6vjwNtbizn+nAou1p8+VeyvFIirlClRb6nqxzi67aDn3R9VdGZ5cve0L753v/6cP+/dHNV+UadJi2rYP7w2m5hLh+iIZmPGM5ucGCEoIDgQKFvDkGFYh0XvYsf1JM9Xt
+ COnJ3Cav
+ V9hXY50yeoCCdRUL4P1psW6opmgFwQzlxpJAUf55TFuHPz0sUExKdAu2qSMgeJtegDGYxKliOO1q/9CEtKAQquLTgnrJSSWgxvaw/Yqz5u+gFicFScXltWDj3s4/9rm1luC9IjNruWypEbjIcQOCKVSsbJdnj+zGeEChQUhjb6nHmPnmpfXVmMviK2mQRUfbRa2ZH1Xce9T4dOLT+lVlrXDZsQR+DlZMqRDeSUTDefHcrFDJ6FvTM/unNSFpZvpa91Uv3vsPZ/VVuQdyg3DWYaBsPTAXMI5LgQ7GEcbVKNFISnP6xAPkmvWJWBEnsirbhVs95TjPSjUOxofZJBrOsauHo9mw23GYgxi2BiwR3pCxOoH2e40O7ikS04yiugoAwt9sHTRapD+iRClNzBnJ78412NLPNfX6FAzzzknakToniyvkZagCa6ogFUiGUan/O7B6l++imzUConBo1XyVIUPEjw0pfArnKw5CkPWbBAmBzxqXJsdA0wzQPim/snhMJ8/SXDpLTN3+MlxrbBi1Bwe08BqoGnbAvrmLaUcFUr08BsBaKiTbpAA/yUtLuF5MPjQqS7vqE3n442KT4LiJ/4+IhPV/ShTvg7TO5
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,267 +99,257 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 X-Archived-By: <archiver.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 4 potential issue(=
+Thank you for your contribution! Sashiko AI review found 3 potential issue(=
 s) to consider:
-- [Critical] mm/hugetlb: hugetlb_change_protection() sets PERM_UPGRADE when=
- revoking access
-- [High] mm/mmu_notifier: change_protection() sets PERM_UPGRADE when revoki=
-ng write
-- [High] mm: change_protection() revokes write access under MMU_NOTIFIER_RA=
-NGE_PERM_UPGRADE
-- [Low] mm/mmu_notifier: unused-but-set mn_flags when CONFIG_MMU_NOTIFIER=
-=3Dn
+- [Critical] KVM: x86/mmu: stale SPTEs in kvm_unmap_gfn_range() on hugetlb =
+PMD unshare
+- [High] mm: change_protection() revokes _PAGE_RW under MMU_NOTIFIER_RANGE_=
+PERM_UPGRADE
+- [Medium] KVM: x86/mmu: kvm_unmap_gfn_range() skips APIC page reload on pe=
+rm_upgrade
 --
 
-commit 22cbc27b0ff3d2d6c7ee718ba2fc52e905cded0f
+commit eb63ff65a947838d12f405a5148038708c2ed0d7
 Author: Carlos L=C3=B3pez <clopez@suse.de>
 
-mm/mmu_notifier: add MMU_NOTIFIER_RANGE_PERM_UPGRADE
+KVM: x86/mmu: don't zap the secondary MMU on permission upgrade
 
-This commit adds the MMU_NOTIFIER_RANGE_PERM_UPGRADE range flag to mark MMU
-notifier invalidations that only upgrade permissions without revoking
-existing access or changing PFNs. It sets this flag in
-hugetlb_change_protection() and change_pud_range() when
-mm_cp_is_perm_upgrade(cp_flags) is true.
+This commit skips zapping secondary MMU SPTEs in kvm_unmap_gfn_range() when=
+ an
+mmu_notifier invalidation has range->perm_upgrade set, leaving permission
+upgrades to be faulted in on demand.
 
-> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-> index da5d04edf7c10..3a988ca364e6c 100644
-> --- a/mm/hugetlb.c
-> +++ b/mm/hugetlb.c
-> @@ -6596,19 +6596,23 @@ long hugetlb_change_protection(struct vm_area_str=
-uct *vma,
->  	long pages =3D 0, psize =3D huge_page_size(h);
->  	struct mmu_notifier_range range;
->  	unsigned long last_addr_mask;
-> +	unsigned int mn_flags =3D 0;
->  	bool uffd_wp =3D cp_flags & MM_CP_UFFD_WP;
->  	bool uffd_wp_resolve =3D cp_flags & MM_CP_UFFD_WP_RESOLVE;
->  	bool uffd_rwp =3D cp_flags & MM_CP_UFFD_RWP;
->  	bool uffd_rwp_resolve =3D cp_flags & MM_CP_UFFD_RWP_RESOLVE;
->  	struct mmu_gather tlb;
+> diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
+> index dc2aef72ffddc..a4258a8c0c899 100644
+> --- a/arch/x86/kvm/mmu/mmu.c
+> +++ b/arch/x86/kvm/mmu/mmu.c
+> @@ -1719,6 +1719,13 @@ bool kvm_unmap_gfn_range(struct kvm *kvm, struct k=
+vm_gfn_range *range)
+>  	lockdep_assert_once(kvm->mmu_invalidate_in_progress ||
+>  			    lockdep_is_held(&kvm->slots_lock));
 > =20
-> +	if (mm_cp_is_perm_upgrade(cp_flags))
-> +		mn_flags |=3D MMU_NOTIFIER_RANGE_PERM_UPGRADE;
-> +
->  	/*
->  	 * In the case of shared PMDs, the area to flush could be beyond
->  	 * start/end.  Set range.start/range.end to cover the maximum possible
->  	 * range if PMD sharing is possible.
->  	 */
->  	mmu_notifier_range_init(&range, MMU_NOTIFY_PROTECTION_VMA,
-> -				0, mm, start, end);
-> +				mn_flags, mm, start, end);
+> +	/*
+> +	 * Do not bother zapping SPTEs if this is only a protection upgrade.
+> +	 * Permissions will be faulted-in on demand.
+> +	 */
+> +	if (range->perm_upgrade)
+> +		return false;
 
 [Severity: Critical]
-Can setting MMU_NOTIFIER_RANGE_PERM_UPGRADE in hugetlb_change_protection()
-leave dangling mappings in a secondary MMU or leave writable secondary MMU
-mappings to pages that the host unmapped or downgraded to read-only?
+Can skipping the zap in arch/x86/kvm/mmu/mmu.c:kvm_unmap_gfn_range() leave
+stale SPTEs pointing to freed 2MB hugetlbfs folios when hugetlb PMD page ta=
+ble
+sharing is active (CONFIG_HUGETLB_PMD_PAGE_TABLE_SHARING)?
 
-First, when PMD sharing is active on a MAP_SHARED hugetlbfs mapping (for
-example, two processes sharing a PUD_SIZE-aligned PROT_READ mapping of a 2MB
-hugetlbfs folio where only one process holds the folio rmap count on the
-shared PMD table) and the process with a secondary MMU calls mprotect() to
-upgrade to PROT_READ | PROT_WRITE, mprotect_fixup() sets MM_CP_PERM_UPGRADE.
-hugetlb_change_protection() then advertises MMU_NOTIFIER_RANGE_PERM_UPGRADE,
-telling secondary MMUs such as KVM to keep their existing SPTEs, and procee=
-ds
-to unshare and unmap the PUD entry:
+When a guest backed by a MAP_SHARED hugetlbfs VMA faults in a 2MB page,
+huge_pmd_share() can map a shared PMD table into kvm->mm's PUD while KVM
+installs a present 2MB leaf SPTE and drops the GUP reference in
+kvm_mmu_finish_page_fault().
 
-mm/hugetlb.c:hugetlb_change_protection()
-  -> huge_pmd_unshare()
-    -> __huge_pmd_unshare()
-         pud_clear(pud);
-
-Because the PUD in this mm is now cleared and detached from the shared PMD
-page table without zapping the secondary MMU, when the other process later
-unmaps the file, unmap_hugepage_range() only notifies that other mm and dro=
-ps
-the shared folio's mapcount to zero. If the folio is subsequently migrated =
-or
-freed in migrate_hugetlb_folio(), folio_mapped(src) is false and
-try_to_migrate() is skipped, freeing or reusing the physical page while the
-first process's secondary MMU still retains a live mapping to it.
-
-Second, unlike change_present_ptes() and change_huge_pmd(),
-hugetlb_change_protection() ignores MM_CP_TRY_CHANGE_WRITABLE and
-unconditionally overwrites the huge PTE protection with newprot
-(vma->vm_page_prot):
+If host userspace later upgrades permissions via mprotect() over the VMA or=
+ a
+PUD-aligned range (where hugetlb_split() does not unshare beforehand),
+mprotect_fixup() sets MM_CP_PERM_UPGRADE and
+mm/hugetlb.c:hugetlb_change_protection() marks the mmu_notifier range with
+MMU_NOTIFIER_RANGE_PERM_UPGRADE:
 
 mm/hugetlb.c:hugetlb_change_protection() {
-    ...
-    old_pte =3D huge_ptep_modify_prot_start(vma, address, ptep);
-    pte =3D huge_pte_modify(old_pte, newprot);
-    pte =3D arch_make_huge_pte(pte, shift, vma->vm_flags);
-    ...
+	if (mm_cp_is_perm_upgrade(cp_flags))
+		mn_flags |=3D MMU_NOTIFIER_RANGE_PERM_UPGRADE;
+	...
+	mmu_notifier_range_init(&range, MMU_NOTIFY_PROTECTION_VMA,
+				mn_flags, mm, start, end);
+	adjust_range_if_pmd_sharing_possible(vma, &range.start, &range.end);
+	...
+		ptl =3D huge_pte_lock(h, mm, ptep);
+		if (huge_pmd_unshare(&tlb, vma, address, ptep)) {
+			...
+			pages++;
+			spin_unlock(ptl);
+			address |=3D last_addr_mask;
+			continue;
+		}
 }
 
-For any MAP_PRIVATE hugetlb VMA, and for any MAP_SHARED hugetlb VMA with
-VM_UFFD_WP enabled (where vma_wants_writenotify() is true and
-vma_set_page_prot() clears VMA_SHARED_BIT from vma->vm_page_prot), newprot =
-is
-read-only. When mprotect() upgrades permissions (for example adding
-PROT_EXEC with MM_CP_PERM_UPGRADE) or userfaultfd resolves write protection
-(MM_CP_UFFD_WP_RESOLVE via uffd_wp_range() or userfaultfd_clear_vma()), any
-already-writable huge PTE in the range has its write bit stripped to
-read-only while MMU_NOTIFIER_RANGE_PERM_UPGRADE tells secondary MMUs not to
-zap their writable mappings.
+With range->perm_upgrade set, kvm_unmap_gfn_range() returns false without
+zapping its SPTEs. However, inside the loop,
+hugetlb_change_protection() -> huge_pmd_unshare() -> __huge_pmd_unshare()
+clears the PUD entry (pud_clear(pud)) in kvm->mm, decrements the shared PMD
+count, and skips the rest of the 1GB PUD range without re-populating PTEs or
+issuing a non-upgrade mmu_notifier invalidation.
 
-Similarly, hugetlb_change_protection() unconditionally downgrades writable
-migration entries to readable migration entries even when
-mm_cp_is_perm_upgrade(cp_flags) is true:
+Because the shared PMD table holds only a single rmap count across all shar=
+ing
+VMAs, once the other sharing VMA unmaps the range via
+__unmap_hugepage_range() -> hugetlb_remove_rmap(folio), folio_mapped(folio)
+becomes false while kvm->mm is already pud_none() and KVM still holds live
+SPTEs.
+
+When that folio is subsequently migrated or truncated,
+mm/migrate.c:unmap_and_move_huge_page() (or try_to_migrate() ->
+mm/rmap.c:__rmap_walk_file() stopping once rwc->done / folio_not_mapped() is
+true, or fs/hugetlbfs/inode.c:remove_inode_single_folio() ->
+hugetlb_unmap_file_folio()) sees !folio_mapped(src) and skips mmu_notifier
+invalidation on kvm->mm:
+
+mm/migrate.c:unmap_and_move_huge_page() {
+	if (folio_mapped(src)) {
+		...
+		try_to_migrate(src, ttu);
+		was_mapped =3D 1;
+	}
+
+	if (!folio_mapped(src))
+		rc =3D move_to_new_folio(dst, src, mode);
+}
+
+This leaves the guest with direct read/write access to the migrated or freed
+folio, and if the guest later faults on that GFN after a new folio is mappe=
+d,
+KVM attempts to replace the still-present leaf SPTE with a different PFN and
+hits BUG() in arch/x86/kvm/mmu/tdp_mmu.c:__handle_changed_spte():
+
+	if (was_leaf && is_leaf && pfn_changed) {
+		...
+		BUG();
+	}
+
+[Severity: High]
+Is it always guaranteed that primary MMU entries retain _PAGE_RW when
+range->perm_upgrade is set?
+
+In mm/mprotect.c:change_protection(), newprot (vma->vm_page_prot) is passed=
+ to
+pte_modify(), pmd_modify(), pud_modify(), and huge_pte_modify(). Because
+_PAGE_RW is not in _COMMON_PAGE_CHG_MASK, those helpers overwrite _PAGE_RW =
+from
+newprot. Whenever vma->vm_page_prot has _PAGE_RW =3D=3D 0 (such as MAP_PRIV=
+ATE VMAs
+or MAP_SHARED VMAs where vma_wants_writenotify() was true due to VM_UFFD_WP,
+soft-dirty tracking, vm_ops_needs_writenotify, or vma_fs_can_writeback),
+_PAGE_RW is stripped from any already-writable entry in the range unless
+explicitly restored:
+
+1. In mm/hugetlb.c:hugetlb_change_protection() and
+   mm/huge_memory.c:change_huge_pud(), MM_CP_TRY_CHANGE_WRITABLE is not
+   implemented:
 
 mm/hugetlb.c:hugetlb_change_protection() {
-    ...
-    if (softleaf_is_migration_write(entry)) {
-        if (folio_test_anon(folio))
-            entry =3D make_readable_exclusive_migration_entry(
-                        swp_offset(entry));
-        else
-            entry =3D make_readable_migration_entry(
-                        swp_offset(entry));
-        newpte =3D swp_entry_to_pte(entry);
-        pages++;
-    }
-    ...
+	...
+	old_pte =3D huge_ptep_modify_prot_start(vma, address, ptep);
+	pte =3D huge_pte_modify(old_pte, newprot);
+	pte =3D arch_make_huge_pte(pte, shift, vma->vm_flags);
 }
 
-> diff --git a/mm/mprotect.c b/mm/mprotect.c
-> index 96e32e0159166..8c17875cdcfa6 100644
-> --- a/mm/mprotect.c
-> +++ b/mm/mprotect.c
-> @@ -597,8 +597,13 @@ static inline long change_pud_range(struct mmu_gathe=
-r *tlb,
->  			continue;
-> =20
->  		if (!range.start) {
-> +			unsigned int mn_flags =3D 0;
-> +
-> +			if (mm_cp_is_perm_upgrade(cp_flags))
-> +				mn_flags |=3D MMU_NOTIFIER_RANGE_PERM_UPGRADE;
-> +
->  			mmu_notifier_range_init(&range,
-> -						MMU_NOTIFY_PROTECTION_VMA, 0,
-> +						MMU_NOTIFY_PROTECTION_VMA, mn_flags,
->  						vma->vm_mm, addr, end);
->  			mmu_notifier_invalidate_range_start(&range);
->  		}
+   Any already-writable hugetlb PTE or huge PUD has _PAGE_RW cleared during
+   mprotect() permission upgrades (e.g. PROT_READ | PROT_WRITE to
+   PROT_READ | PROT_WRITE | PROT_EXEC), UFFDIO_WRITEPROTECT(enable_wp=3Dfal=
+se)
+   across a range containing already-writable hugetlb pages, or
+   mm/userfaultfd.c:userfaultfd_clear_vma() on UFFDIO_UNREGISTER / close(uf=
+fd)
+   (which calls change_protection() with MM_CP_UFFD_WP_RESOLVE while VM_UFF=
+D_WP
+   is still set before userfaultfd_reset_ctx() updates vma->vm_page_prot).
 
-[Severity: High]
-Does change_pud_range() also set MMU_NOTIFIER_RANGE_PERM_UPGRADE in cases
-where the underlying page table walk actually revokes write access?
-
-1. In change_softleaf_pte() and change_non_present_huge_pmd() (as well as
-hugetlb_change_protection()), cp_flags is not checked when handling writable
-non-present entries. Both SOFTLEAF_MIGRATION_WRITE and
-SOFTLEAF_DEVICE_PRIVATE_WRITE entries are unconditionally downgraded to
-readable entries during permission upgrades:
-
-mm/mprotect.c:change_softleaf_pte() {
-    ...
-    if (softleaf_is_migration_write(entry)) {
-        ...
-        if (folio_test_anon(folio))
-            entry =3D make_readable_exclusive_migration_entry(swp_offset(en=
-try));
-        else
-            entry =3D make_readable_migration_entry(swp_offset(entry));
-        ...
-    } else if (softleaf_is_device_private_write(entry)) {
-        entry =3D make_readable_device_private_entry(swp_offset(entry));
-        ...
-    }
-    ...
-}
-
-2. In change_huge_pud() (as in hugetlb_change_protection()),
-MM_CP_TRY_CHANGE_WRITABLE is not handled:
-
-mm/huge_memory.c:change_huge_pud() {
-    ...
-    oldpud =3D pudp_invalidate(vma, addr, pudp);
-    entry =3D pud_modify(oldpud, newprot);
-    set_pud_at(mm, addr, pudp, entry);
-    ...
-}
-
-Whenever vma->vm_page_prot is read-only (such as a MAP_SHARED DAX PUD VMA
-where vma_wants_writenotify() is true), pud_modify(oldpud, newprot) strips
-write permission from already-writable huge PUDs while
-MMU_NOTIFIER_RANGE_PERM_UPGRADE is advertised.
-
-3. In change_present_ptes() and change_huge_pmd(), pte_modify() and
-pmd_modify() first apply newprot (which is read-only when !VM_SHARED or
-vma_wants_writenotify()), and only restore write permission if
-MM_CP_TRY_CHANGE_WRITABLE is set and can_change_pte_writable() or
-can_change_pmd_writable() returns true. For already-writable PTEs or PMDs
-where can_change_shared_pte_writable() returns false (for example, a writab=
-le
-shared PTE cleaned by clean_record_pte(), or a clean writable
-VM_PFNMAP/VM_MIXEDMAP entry) or where vm_normal_page() is NULL in a
-!VM_SHARED VMA, write permission is stripped while secondary MMUs are told
-no access was revoked.
-
-[Severity: High]
-What happens when change_protection() runs with MM_CP_PERM_UPGRADE,
-MM_CP_UFFD_WP_RESOLVE, or MM_CP_UFFD_RWP_RESOLVE on a writable MAP_SHARED V=
-MA
-without vm_ops->page_mkwrite/pfn_mkwrite (such as shmem/tmpfs) after
-vma->vm_page_prot has been downgraded to PAGE_COPY for userfaultfd-wp or
-soft-dirty tracking?
-
-When userfaultfd-wp is registered or soft-dirty is cleared on a writable
-MAP_SHARED shmem VMA, vma_set_page_prot() sees vma_wants_writenotify() retu=
-rn
-true, clears VMA_SHARED_BIT on its local flags copy, and stores read-only
-PAGE_COPY in vma->vm_page_prot while vma->flags retains
-VMA_SHARED_BIT | VMA_WRITE_BIT.
-
-Later, when uffd_wp_range(), userfaultfd_clear_vma(), or mprotect_fixup()
-checks whether MM_CP_TRY_CHANGE_WRITABLE should be set, it calls
-vma_wants_manual_pte_write_upgrade(vma):
-
-mm/vma.h:vma_wants_manual_pte_write_upgrade()
-  -> vma_wants_writenotify(vma, vma->vm_page_prot)
-
-In vma_wants_writenotify(), because shmem has no page_mkwrite or pfn_mkwrite
-callback, execution reaches:
+2. For 4KB PTEs in mm/mprotect.c:change_present_ptes() and 2MB THP PMDs in
+   mm/huge_memory.c:change_huge_pmd(), restoring _PAGE_RW depends on
+   MM_CP_TRY_CHANGE_WRITABLE from vma_wants_manual_pte_write_upgrade(vma),
+   which calls mm/vma.c:vma_wants_writenotify(vma, vma->vm_page_prot):
 
 mm/vma.c:vma_wants_writenotify() {
-    ...
-    /* The open routine did something to the protections that pgprot_modify
-     * won't preserve? */
-    if (pgprot_val(vm_page_prot) !=3D
-        pgprot_val(vma_pgprot_modify(vm_page_prot, vma->flags)))
-        return false;
-    ...
+	if (pgprot_val(vm_page_prot) !=3D
+	    pgprot_val(vma_pgprot_modify(vm_page_prot, vma->flags)))
+		return false;
 }
 
-Because vm_page_prot is already PAGE_COPY whereas
-vma_pgprot_modify(vm_page_prot, vma->flags) computes PAGE_SHARED (and in
-mprotect_fixup(), vma_wants_manual_pte_write_upgrade(vma) is also called
-after vma_flags_reset_once() updates vma->flags but before
-vma_set_page_prot(vma) updates vma->vm_page_prot), vma_wants_writenotify()
-returns false. As a result, MM_CP_TRY_CHANGE_WRITABLE is not set, and
-change_present_ptes() and change_huge_pmd() apply read-only newprot
-(PAGE_COPY), stripping _PAGE_RW from all present writable PTEs and PMDs in
-the range while change_pud_range() sets MMU_NOTIFIER_RANGE_PERM_UPGRADE.
+   On a MAP_SHARED VMA where vm_ops_needs_writenotify(vma->vm_ops) is false
+   (such as shmem/memfd) and vma->vm_page_prot was set to read-only due to
+   VM_UFFD_WP or soft-dirty tracking, or in mm/mprotect.c:mprotect_fixup()
+   where vma_flags_reset_once() updates vma->flags before calling
+   vma_wants_manual_pte_write_upgrade(vma) and vma_set_page_prot(vma):
 
-[Severity: Low]
-When CONFIG_MMU_NOTIFIER=3Dn, does mn_flags in change_pud_range() and
-hugetlb_change_protection() trigger a -Wunused-but-set-variable warning und=
-er
-W=3D1?
+mm/mprotect.c:mprotect_fixup() {
+	vma_flags_reset_once(vma, &new_vma_flags);
+	if (vma_wants_manual_pte_write_upgrade(vma))
+		mm_cp_flags |=3D MM_CP_TRY_CHANGE_WRITABLE;
+	if (vma_flags_is_perm_upgrade(old_vma_flags, new_vma_flags))
+		mm_cp_flags |=3D MM_CP_PERM_UPGRADE;
+	vma_set_page_prot(vma);
+}
 
-In include/linux/mmu_notifier.h, when CONFIG_MMU_NOTIFIER is disabled,
-mmu_notifier_range_init() is a macro that drops the flags argument:
+   vma_wants_writenotify() returns false and MM_CP_TRY_CHANGE_WRITABLE is n=
+ot
+   set, so change_present_ptes() and change_huge_pmd() strip _PAGE_RW from
+   already-writable PTEs and PMDs. Even when MM_CP_TRY_CHANGE_WRITABLE is s=
+et,
+   can_change_shared_pte_writable() and can_change_pmd_writable() only rest=
+ore
+   _PAGE_RW if the entry is dirty, downgrading writable-but-clean shared
+   PTEs/PMDs to read-only.
 
-#define mmu_notifier_range_init(range,event,flags,mm,start,end)  \
-	_mmu_notifier_range_init(range, start, end)
+Because kvm_unmap_gfn_range() skips zapping on range->perm_upgrade, KVM kee=
+ps
+writable leaf SPTEs (PT_WRITABLE_MASK, shadow_host_writable_mask, and
+shadow_mmu_writable_mask) while the host PTE is now read-only, bypassing ho=
+st
+write-fault tracking. If a subsequent non-write KVM fault (such as an
+access-tracking fault or shadow MMU exec fault) resolves the read-only host=
+ PTE
+with fault->map_writable =3D false, make_spte() clears shadow_host_writable=
+_mask
+and shadow_mmu_writable_mask on the present leaf SPTE and triggers the
+WARN_ON_ONCE in arch/x86/kvm/mmu/tdp_mmu.c:tdp_mmu_map_handle_target_level(=
+):
 
-So mn_flags is initialized and modified with |=3D, but never read after
-preprocessing when CONFIG_MMU_NOTIFIER=3Dn.
+	else if (is_shadow_present_pte(iter->old_spte) &&
+		 (!is_last_spte(iter->old_spte, iter->level) ||
+		  WARN_ON_ONCE(leaf_spte_change_needs_tlb_flush(iter->old_spte, new_spte)=
+)))
+		kvm_flush_remote_tlbs_gfn(vcpu->kvm, iter->gfn, iter->level);
+
+[Severity: Medium]
+What happens to the APIC access page reload in
+arch/x86/kvm/mmu/mmu.c:kvm_unmap_gfn_range() when range->perm_upgrade is tr=
+ue?
+
+Further down in kvm_unmap_gfn_range(), invalidations on
+APIC_ACCESS_PAGE_PRIVATE_MEMSLOT issue KVM_REQ_APIC_PAGE_RELOAD:
+
+	if (kvm_x86_ops.set_apic_access_page_addr &&
+	    range->slot->id =3D=3D APIC_ACCESS_PAGE_PRIVATE_MEMSLOT)
+		kvm_make_all_cpus_request(kvm, KVM_REQ_APIC_PAGE_RELOAD);
+
+When arch/x86/kvm/vmx/vmx.c:vmx_set_apic_access_page_addr() handles
+KVM_REQ_APIC_PAGE_RELOAD, it resolves the PFN with FOLL_WRITE:
+
+	pfn =3D __kvm_faultin_pfn(slot, gfn, FOLL_WRITE, &writable, &refcounted_pa=
+ge);
+	if (is_error_noslot_pfn(pfn))
+		return;
+
+	read_lock(&vcpu->kvm->mmu_lock);
+	if (mmu_invalidate_retry_gfn(kvm, mmu_seq, gfn))
+		kvm_make_request(KVM_REQ_APIC_PAGE_RELOAD, vcpu);
+	else
+		vmcs_write64(APIC_ACCESS_ADDR, pfn_to_hpa(pfn));
+
+If the VMA backing APIC_ACCESS_PAGE_PRIVATE_MEMSLOT is made read-only (e.g.=
+ via
+mprotect(..., PROT_READ)) before the page is faulted in or while the backing
+page is migrated, swapped out, or unmapped, __kvm_faultin_pfn() fails after
+kvm_check_request() has already cleared KVM_REQ_APIC_PAGE_RELOAD, leaving
+APIC_ACCESS_ADDR uninitialized or holding a stale HPA.
+
+When write permission on that VMA is later restored via
+mprotect(..., PROT_READ | PROT_WRITE), range->perm_upgrade is true and the
+early return in kvm_unmap_gfn_range() skips requesting
+KVM_REQ_APIC_PAGE_RELOAD. Since APIC_ACCESS_ADDR in the VMCS is not updated=
+ on
+demand during kvm_mmu_do_page_fault(), wouldn't this leave APIC_ACCESS_ADDR
+stale?
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261029143336.3902=
-31-3-clopez@suse.de?part=3D2
+31-3-clopez@suse.de?part=3D4
 
