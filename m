@@ -1,109 +1,139 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19975606A31E
-	for <linux-mm@archiver.kernel.org>; Fri, 30 Oct 2026 09:52:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB11D606A322
+	for <linux-mm@archiver.kernel.org>; Fri, 30 Oct 2026 09:52:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=SpdV53ga
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=n2fkQxLz
 Received: by kanga.kvack.org (Postfix)
-	id 2568B6B00EF; Fri, 30 Oct 2026 05:52:39 -0400 (EDT)
+	id C1A306B05B1; Fri, 30 Oct 2026 05:52:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 206B36B05B1; Fri, 30 Oct 2026 05:52:39 -0400 (EDT)
+	id BCB086B05B2; Fri, 30 Oct 2026 05:52:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0F6556B05B2; Fri, 30 Oct 2026 05:52:39 -0400 (EDT)
+	id A93C66B05B3; Fri, 30 Oct 2026 05:52:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id DF92B6B00EF
-	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 05:52:38 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id E17351205EE
-	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 09:52:37 +0000 (UTC)
-X-FDA: 85378827954.24.F97C0B9
-Received: from mta1.migadu.com (out-192.mta1.migadu.com [95.215.58.192])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 00965140007
-	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 09:52:35 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=SpdV53ga;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf26.hostedemail.com: domain of jiayuan.chen@linux.dev designates 95.215.58.192 as permitted sender) smtp.mailfrom=jiayuan.chen@linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 8F0886B05B1
+	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 05:52:45 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 8248DA8274
+	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 09:52:44 +0000 (UTC)
+X-FDA: 85378828248.23.3F85364
+Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
+	by imf27.hostedemail.com (Postfix) with ESMTP id AB1E840005
+	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 09:52:42 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=n2fkQxLz;
+	spf=pass (imf27.hostedemail.com: domain of urezki@gmail.com designates 209.85.218.50 as permitted sender) smtp.mailfrom=urezki@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793353962;
+	b=uet5e6wAAU+15sHie7x5BIaaqq1aQ+QEgi1rgHHYJkPNpgxtO33RNT6wDG22C6B9oejxd0
+	gnPP998gQSpDBdFExYCo6jC4SEazAPO0YUROa/L1tJ7nd3r4OSu0SF6hY27hWXCoVZEIhA
+	gRC1JvR8DRcY4Kxd3E2Udf61yFb6rYU=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=n2fkQxLz;
+	spf=pass (imf27.hostedemail.com: domain of urezki@gmail.com designates 209.85.218.50 as permitted sender) smtp.mailfrom=urezki@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793353956;
+	s=arc-20220608; t=1793353962;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=H3pdNgV2kIMazb8X+rUUMyHlKbuV+ZiZTksRXL4D6lI=;
-	b=agcMilnVC+Gc2qhRpB5StGbeAXGzB9o3IA+rqG7yUPq/aWpLGr/kDuqS52XXhlHU/8VDO7
-	ywymGcu6kMGZYGX8hK/ihmabXUwAG7vR52sTh5GrhGgfv6O074As8bzJAavaHrSqMjVB2U
-	Xo5s1hfc+RwyoKYdBv/cdXOKLlq1YKw=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=SpdV53ga;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf26.hostedemail.com: domain of jiayuan.chen@linux.dev designates 95.215.58.192 as permitted sender) smtp.mailfrom=jiayuan.chen@linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793353956;
-	b=BRL8UrJPWN3ycjxzIZlKMeqIxQG+URtUUjIJ7LSUDE/m6M8glbuc9jQWqDT3kO4WrD+6g/
-	lelY/+XL1P2DP63DZTzW1iGlRQdA92nV4Kq0xrW0W/BYhaf0kZxaSgl4DkkiRHqhK5yNUI
-	X0JySED3Hj6AETpwLsCa9WO87w6lyEc=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=1p2vPcKyuahPiXCpBK1Tm8nVn5slemcow3+ebdFu0mI=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1793353954; v=1; x=1793958754;
- b=SpdV53gaDoeTngFa7y6FaAQdRKpkiOm5tM2wSWFWy98yAZlWdEwaGoxv4LBdM+RWAGrANlvb
- jaLhxCYw+uLQN2JZdWAMIunuToWU5dp1rASctC1jrhuZIe0Q/BBG5joTMcQuFpqypHLbE4Wbxub
- DpYTALbNaUUDx7OaSPdt4JaQ=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id df75d9a41b4a335a;
-	Fri, 30 Oct 2026 09:52:34 +0000
-X-Mizu-Trace-ID: df75d9a41b4a335a
-X-Migadu-Flow: FLOW_OUT
-From: Jiayuan Chen <jiayuan.chen@linux.dev>
-To: linux-mm@kvack.org
-Cc: Jiayuan Chen <jiayuan.chen@linux.dev>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Michal Hocko <mhocko@kernel.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>,
-	Yosry Ahmed <yosry@kernel.org>,
-	Nhat Pham <nphamcs@gmail.com>,
-	Chengming Zhou <chengming.zhou@linux.dev>,
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=2B3bjvz5/cRFhwo9ukB7ZLLCsSJwpiNTa01piLcwoAs=;
+	b=JW91uyf8J0OjYQSQB+4M/Mwlw7NUP4KoEIBCoaAyuvvU4GosIHeG3r/6BEOqyFNT+k+2ia
+	wpzzeOmY7FB6b+ubAQfvFt/92EdOZgaGkEsu58l1eN19hGZHInhjCEeYqd6mH7H0axaJQ1
+	yJuDF1OJCzjkagS5Hkr8X4LdrinLTXA=
+Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-c4caf490606so30864666b.0
+        for <linux-mm@kvack.org>; Fri, 30 Oct 2026 02:52:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1793353961; x=1793958761; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:date:from:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=2B3bjvz5/cRFhwo9ukB7ZLLCsSJwpiNTa01piLcwoAs=;
+        b=n2fkQxLzAr4XO1M08O1kEMb1sjPQKpm6vF8ltIYAqZlPwI0/os2gBzqjkzDJiYC7Wx
+         Ws4QveT667TTZAI9YdjIgAD6ksJQ42P8itiqHtBQYkFV4Q6Rf5FCdBqQ1Zjk/3bNo3M9
+         uiS88uAfQ0LP4NWHnee9FKGTwb6LRTILYmYzhB/V8Uhshx2Hdj0fA9P9wv9T8a4kt9m1
+         y1jps8p+g7C4IpxKcrN7T9Vc9bCmaX6IioQkqgZ/+JYtfjeUF30dJchtmbltyAbxhhU7
+         lhASEe96dtuheHPrtFri9UYkz/tw8zEw085it0+vFx2cf3Y9t/He7y8t3ZX3Ew9Mb9OM
+         cLgg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793353961; x=1793958761;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:date:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=2B3bjvz5/cRFhwo9ukB7ZLLCsSJwpiNTa01piLcwoAs=;
+        b=AiDQL6FSwZx8GGkou9+honvybpB4UsR0iRgHAfG82FcGI0vr8C/OmMsjo7DoAOnTEo
+         R3v1+bobDXyA78wMtsJ3MdafBK1u+wKzT29M2fNFlVJv7TPNAtnnKMN2VCMi8wISwq6Z
+         SgDXGEjMzMbHM8FswbUrG9V3osGOJNN2i6Jg9zYzX2hDGvLKT+q+tE0DdDzcH1MHUp89
+         +am+u3oaASf5J4DjQxIlXL2wYrmP+/NVZKFK8ywWXbeCdAfBNb82GsXmVL4IClv8HVSP
+         77QHxKc9Dle4fLjRMrSc9RsUhjr3bEpjQLmpg7FLUh310HQ7YpnJz6TfIXH5WxcicVqC
+         V06A==
+X-Forwarded-Encrypted: i=1; AKwUvBzawhCDdJtjqFxEVuomc22nwZoKY/TY43J5O76R8plf15zH7Oq1By1qrTaHmnoGcWwqhYkUuc3XqA==@kvack.org
+X-Gm-Message-State: AFq9FYIBAMwBbX7JvDf9O1M99OmBfAz/M4BwMKwhQ+DdcfP/bjxfE52J
+	6MHlBO+R5TlmZeaSj/+7BmO7HZM2Hva4fI7YMm/ijSACb1dcC0oCbXjR
+X-Gm-Gg: AYBFou1fx6VKLWpgO1HJNwlJDPyHh3t7yOFgmf8vMOuBOESxLXqvJlcJCwNQeXwyk/c
+	OWz5KJKUKsBTt8Lw5N1foNmVVq3uXOtxb4JXDEW1y+GZvmYTfnJEu7JxKv83/i9at6zquDwz2+1
+	GO6Sh3zkgv6jMgFz9KjtsIAhjP2UIVHjT6xSQbZRVQvaJlKrQ4Q7Ib563weySU+BoOnAxcHAp90
+	Hf+ezOFXu+gbRODAJZpR9spAWCwaqAvrwxvwNQHM98v9guVvPC48WYbZoQtJsO30PTl9kaRz6qd
+	uDvkUXjtwGgHV1jq0nscO5qd85KpXj4k5w6V6EAEolbmuXec1JqH4tc5U6EVU65DeKoniACaIZ/
+	2r2nSVQz25zhAloXBjSnqDUV3t2zYcsHVCt2Z5FXxQJZLyvCmen7lNaOaW0RSghaQQAXWcHuVN9
+	961qd2zVyVqJlJLyJnA3sUb+l26t6w1fhMt0ltVVEOtvEW+d3rDBk3vH1fqrJdlm/qYU1V+5Xl9
+	5m44OLFfBh41y47UCXRyJQnkIamlWFIw5ns+i+e7Sgp9tkOrYO+ro6wc/b335dSNQPYRw==
+X-Received: by 2002:a17:907:d26:b0:c2d:c800:d797 with SMTP id a640c23a62f3a-c4ca79478f8mr163699766b.6.1793353960890;
+        Fri, 30 Oct 2026 02:52:40 -0700 (PDT)
+Received: from pc636 ([2001:9b1:d5a0:a500::800])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6b4d7b1d556sm432290a12.28.2026.10.30.02.52.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 30 Oct 2026 02:52:40 -0700 (PDT)
+From: Uladzislau Rezki <urezki@gmail.com>
+X-Google-Original-From: Uladzislau Rezki <urezki@pc636>
+Date: Fri, 30 Oct 2026 10:52:37 +0100
+To: Herbert Xu <herbert@gondor.apana.org.au>,
+	"Liam R. Howlett (Google)" <liam@infradead.org>,
+	Michal Hocko <mhocko@suse.com>
+Cc: "Liam R. Howlett (Google)" <liam@infradead.org>,
+	Uladzislau Rezki <urezki@gmail.com>, Michal Hocko <mhocko@suse.com>,
+	Baoquan He <bhe@redhat.com>,
+	Alexander Potapenko <glider@google.com>,
+	Andrey Ryabinin <ryabinin.a.a@gmail.com>,
+	Marco Elver <elver@google.com>, Michal Hocko <mhocko@kernel.org>,
+	Linux Crypto Mailing List <linux-crypto@vger.kernel.org>,
 	Andrew Morton <akpm@linux-foundation.org>,
-	Chris Li <chrisl@kernel.org>,
-	Kairui Song <kasong@tencent.com>,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Baoquan He <baoquan.he@linux.dev>,
-	Barry Song <baohua@kernel.org>,
-	Youngjun Park <youngjun.park@lge.com>,
-	David Hildenbrand <david@kernel.org>,
-	Qi Zheng <qi.zheng@linux.dev>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>,
-	Wei Xu <weixugc@google.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	cgroups@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH mm-new v1 0/2] mm: vmscan: skip anon folios zswap would refuse when writeback is off
-Date: Fri, 30 Oct 2026 17:52:16 +0800
-Message-ID: <20261030095223.325309-1-jiayuan.chen@linux.dev>
-X-Mailer: git-send-email 2.43.0
+	Thomas Graf <tgraf@suug.ch>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, maple-tree@lists.infradead.org,
+	Lorenzo Stoakes <ljs@kernel.org>, Chris Mason <mason@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Andrew Ballance <andrewjballance@gmail.com>, stable@vger.kernel.org,
+	"David Hildenbrand (Arm)" <david@kernel.org>
+Subject: Re: [PATCH 4/4] rhashtable: fix vmalloc() deadlock in atomic rehash
+Message-ID: <auRo5WBj2OlKlWGW@pc636>
+References: <20261028154218.1668182-1-liam@infradead.org>
+ <20261028154218.1668182-5-liam@infradead.org>
+ <auKshDXKQXt1kvjy@gondor.apana.org.au>
+ <auMbCuecFeRmBFSK@pc636>
+ <jfvq7vkx73vzp2ukq6nwnb3v3g2ezdcyppba4oa5lpzmz6ls6t@akc46gonndgy>
+ <auQhkHG6XlgNTdRr@gondor.apana.org.au>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 00965140007
-X-Stat-Signature: nj9c41kt1x1dx69gcnn3fuzoudaywohs
-X-Rspamd-Server: rspam06
-X-Spam-Status: No, score=-12.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,HK_RANDOM_FROM,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <auQhkHG6XlgNTdRr@gondor.apana.org.au>
+X-Stat-Signature: hsbcxodsmjtm534o316gjzhb9oat67n6
+X-Spam-Status: No, score=-2.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=no autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: AB1E840005
 X-Rspam-User: 
-X-HE-Tag: 1793353955-149190
-X-HE-Meta: U2FsdGVkX196TP6c/pKzv0FPx5thqF19zDv0cSRt62H3UL35R75gsEThejjx3VfDGBwqDl6Xb0EywUL9Dm9lynDsFYv/fPkEgA+2zfY2U+cUVWVbAKG0J6uODBJW6/e2/WdrY3Bfx1aKN7Sonf0WRM4JFmPaPTolrgWFyzNXh6xnQO0gpeX3uA386lymF+f0/E3PnC2RVnY7e37r8VjiK1TFwIZKqJcZ1gCbCku3obm7+oh5h0GAlSzG8RnO0J34RSCxxOMZEeVmg6nQhcDAifnMxooJ3GF/s7Dcr4KD+Vd1/NmPrge/4kIRDnp4zf2WLXOgP6z8M7j4Etp0/mVjoab8QZcP8DlgWqJ/0Xk/x7Aj4O9SGxYtwZxUAoq/Pi6vx7cc3YeG2MXv9cVfcOfGHrRzeEit1Rz8nggz1ga4xxi26F+RH8Jj8jspUybp4RsOrl9L9cjSTsKXuEJnw5V7AsWMN+cZoEON6iZlI+f3dY81xm9MKq39A+YKqtht9V6hgUnEVQW802qz7QRbnaw27MchhNXMEmnFD15D7aEu7teEk+qbix2djwpgf1iumWskcaHDb+WQm4Vtffc01EIdz6i9DK1PyD/fK0Ipq0gGS2d8k88e7en0gESAnh03/zztU75gtwT5aDpaUz0elECaTKhHXlL9FW0wnHqEAUqljD4ImUY2lpOC8tUXhuk7jGbrqJE7KEXvj0/3chFVUSMmCcwUbJh36mbeCT7zyw7iy7q6TKQ7HXEYRHbysKs7hMAfLX/x4gmie7Blo8ucrDWZkt/MnAd3myPkM3ZljJmOeVg3bzqFSglfA9auVaX+rFbFzntcj4T83fSkHjqm2uDGfk0D1gw6kpdoN8yKnZxk1KZXuoxTGNavMrHkseZaqXr2NCtdbM83hvUqPeb7UbxAXg0Qq/mUA0ZeY3vt1JqsBFW79xFKj+gGbcF/SSYz/BOGbFfFccPTVYJcR3BbyUA
- CC371iy7
- bJjYQ64UCJo6eCMTm90DO4syIsNyn93FsmM+ZsGc/+7N0frM4WMXrq6V1ZBJCBdm/Czs2ZVoSajYsj7bDALdp9ToR2sTtzEV3XLaKohZ5xUdFiCjQVMbcupSpylZMfZolGe1h3H6/YuCG3wPoKw1CmS6Bw9uNDLpppvtL5vedeLERGEXdEEwBdTSRFj5mcKDsAc2Xa29vJMVX6yAUkAnoWhbXwqFgYoJj5MT3
+X-HE-Tag: 1793353962-552311
+X-HE-Meta: U2FsdGVkX1+3Up53NtUTfUW6NkXyGUIMDuttNFUyuTgZgGtI6WLlEKjK+Qa2BDhSTy1q1mei/g1vFx2cVagOzX0vcQ6vkjFPcV6TUu7mDJe2LVs7kTVrSbC2CKFJkiBm0rwHibWVOo0xp0jAUXan+DgOOeKqWnRZdKW4i496AxjGPDALdR0H2aUVG7RjcDkwz98Fm7fknxchEQ/f2rE7DglvGeY9AUpSU5CVREHhaBZLbCcNWcij17Ebwi/J9KfaNf15IZcGlgNvQH3CSpnP0TwI/2mFyo56W/ksysXcxpPeujPDeYFWC1QT2wc2F8mkCMHi/BmlSNKpk8alBi/dbjCz1C8Toas6cX0x33VfqeyyO9kdQ1rlRUtabwz7DYwjw3Woa8Uep1VXoHgm/54sKt3qaD/WYhu07g7W6+D7/aYQOjAvDaGQaB5nPLZBQ8m3Sh4HhYAvRKuD6UunO2NwGS3DCjh+Xwmp78KV9xk+JOBEcLO1bl6grFqxVj/avIbRnd2INQPMEGOGreLc3pF8+NUN8EuuENxTjOEFxnR219H9kNMDvMOA0dDbdjKVMfrwsCe4Y9FU0+05RBjuDjW96MVGFujBjaKGGEp8baxreQUK4EJQe2yERfKMVNIoq35kORpezMjxVcNi+1Of/yC6HLiHxBDu7CDWjqTtRel4is8d4izfGa59+ZTQQYdbgjsM8lnU8O+E9YbDcOdJJqTScO9saYApu6gLHwik6CEUER+Alwz2F6HTxmx0vz7Hqgi8P2LZeIknifuqb303ESgd4beuPqdP6xJ9zWRL57ds8SU/MUxIEea1in59CBktOfb2ul2LAkvILorjVgDeDhqBKgwmrrMfaPXyp6ter10Evh/kuLELEIB8Fwpmupy3t4BLE338r/UaGId6VHJjfEiqCCnjfnFaUjbyivOaAuaKJuHIpftxjkK/rFwTS/Ro9S0uisk8/N2jqOsglPcUhLh
+ WQnkxA7E
+ 6FKUDqS3JrlmTGeZ6k+QUiNVEm0gUrGVF+tGbjcMIKVcMugYWLej2Mct1n4G03AVH+GTjDC0j6JpoMiYPs7pTk46iEqKlfZevLUsmsdz5g8zNJ10vX1Pp4Q+mgHxaLCDpnDWFiQCMxbrI4vzi594RZal9fXry/WO5ITUU+aRPrBBQ3brBwoHWvQrkTKLpdCN+pgnPyCuy3pPAhck0GUOleCAfN1KQwu7rCDpwldEQWx/BRQURwHBl9gPWOHIDafduaSKB6+XfJZUUu1L97/TcvIz3V7zhb71gigZeeDpOfNEYVSv639INX3JbvUyG+DBfRhtyuiVvIdXyzfZwjFUAGsDbsdZntHbGtxhwDz3AxiUijwpE4TKQoMl+AzC6cB2cypOPvsl48aZDcwoAoB3THLCCSvw4G3MkyMAYPn/KDClNzpU5zYiPrzxuySSA0Cw0blM6GQpL0hcjRIvlNJcJ7WDSGWDdlF6JCmOmmINEWbXWfp0XEgRlPnzTkrFkyl3DEPi2U2w2SjDtVXU+5WgRKVPmLEni58gk1Fqh
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -112,57 +142,29 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-memory.zswap.writeback=0 is what we set for latency sensitive services:
-their cold anon pages may go to zswap, but never to disk, a swapin
-from disk is a latency spike they cannot afford. Such a memcg can only
-swap into zswap. When zswap stops taking its pages, because the pool
-hit max_pool_percent or the memcg hit memory.zswap.max, reclaim still
-goes through the motions on its anon LRU: every folio it picks gets a
-swap slot, is unmapped, is refused by zswap_store() and is activated
-again. Nothing is freed, the folio now sits in the swap cache holding
-a slot, and the owner takes a minor fault on the next access.
+> On Thu, Oct 29, 2026 at 10:53:56AM -0400, Liam R. Howlett (Google) wrote:
+> >
+> > Given where we are in the release, this fixes a real issue that can
+> > happen so maybe we take this now and settle the general handling later?
+> 
+> There is no rush at all since the bug that you found has existed
+> since 2025:
+> 
+> commit c6307674ed82c0c57d6e1e3408e84ac449ab8e94
+> Author: Uladzislau Rezki (Sony) <urezki@gmail.com>
+> Date:   Tue Oct 7 14:20:35 2025 +0200
+> 
+>     mm: kvmalloc: add non-blocking support for vmalloc
+> 
+> Let's take the time to fix this properly.
+> 
+The problem with spin_lock_irqsave() is that vmalloc() path can take
+time to alloc and map pages. I am not sure this is worth to switch to
+irq-save locking primitive. So this is the "heaviest" allocator in the
+kernel. Callers have to be careful how the call vmalloc().
 
-memory.reclaim below is just the easiest way to trigger it. The same
-loop runs whenever the memcg is reclaimed: when it hits memory.max, or
-when kswapd walks it under node pressure. Neither is something the
-service can opt out of.
+IMO, this caller has to be fixed.
 
-Patch 1 is a refactor so the memcg zswap check can be reused from
-reclaim. Patch 2 adds the check to shrink_folio_list(). It cannot go
-into can_reclaim_anon_pages(): zero-filled folios never reach zswap
-and must stay reclaimable.
-
-Numbers from a 16-CPU, 32G QEMU guest on mm-new, zswap with
-max_pool_percent=2 (~640M), a memcg with memory.zswap.writeback=0
-holding 3G of 2:1 compressible anon. The pool fills up after ~300k
-pages. Then 5 x "echo 512M > memory.reclaim", and the task walks its
-3G once:
-
-                     minor faults on the walk
-                     MGLRU        classic LRU
-  before             786,454      786,452
-  after              301,168      301,158
-
-The ~300k after the patch are the pages that really are in zswap
-(stored_pages was 301,133 / 301,165), swapped back in once each. The
-other ~485k before the patch are pages zswap refused: unmapped, left
-in the swap cache, mapped again on the next touch.
-
-Jiayuan Chen (2):
-  mm: memcontrol: split mem_cgroup_may_zswap() out of
-    obj_cgroup_may_zswap()
-  mm: vmscan: skip anon folios zswap would refuse when writeback is off
-
- include/linux/memcontrol.h |  5 +++++
- include/linux/zswap.h      |  5 +++++
- mm/memcontrol.c            | 26 ++++++++++++++++++--------
- mm/page_io.c               | 15 ++++++++++++++-
- mm/swap.h                  | 12 ++++++++++++
- mm/vmscan.c                | 17 +++++++++++++++++
- mm/zswap.c                 | 11 +++++++++++
- 7 files changed, 82 insertions(+), 9 deletions(-)
-
--- 
-2.43.0
-
+--
+Uladzislau Rezki
 
