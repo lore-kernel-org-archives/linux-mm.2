@@ -1,62 +1,62 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41AB9606AC1C
-	for <linux-mm@archiver.kernel.org>; Fri, 30 Oct 2026 10:59:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90A0D606AC2E
+	for <linux-mm@archiver.kernel.org>; Fri, 30 Oct 2026 10:59:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=QOVpmjIb
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=YNMXeSlR
 Received: by kanga.kvack.org (Postfix)
-	id 3B4FF6B05B1; Fri, 30 Oct 2026 06:59:55 -0400 (EDT)
+	id A05356B05B3; Fri, 30 Oct 2026 06:59:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 374796B05B3; Fri, 30 Oct 2026 06:59:55 -0400 (EDT)
+	id 9DC4E6B05B4; Fri, 30 Oct 2026 06:59:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2B1126B05B4; Fri, 30 Oct 2026 06:59:55 -0400 (EDT)
+	id 8CB476B05B7; Fri, 30 Oct 2026 06:59:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 0A07E6B05B1
-	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 06:59:55 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id F233812060A
-	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 10:59:53 +0000 (UTC)
-X-FDA: 85378997466.30.5497BA3
-Received: from mta1.migadu.com (out-221.mta1.migadu.com [95.215.58.221])
-	by imf22.hostedemail.com (Postfix) with ESMTP id C06E9C0009
-	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 10:59:51 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=QOVpmjIb;
-	spf=pass (imf22.hostedemail.com: domain of liu.yun@linux.dev designates 95.215.58.221 as permitted sender) smtp.mailfrom=liu.yun@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 6B76E6B05B3
+	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 06:59:58 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 82B1E1A06A3
+	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 10:59:57 +0000 (UTC)
+X-FDA: 85378997634.27.B1B7001
+Received: from mta0.migadu.com (out-3.mta0.migadu.com [91.218.175.3])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 9691E10000D
+	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 10:59:55 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=YNMXeSlR;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf14.hostedemail.com: domain of liu.yun@linux.dev designates 91.218.175.3 as permitted sender) smtp.mailfrom=liu.yun@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793357992;
+	s=arc-20220608; t=1793357995;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=vziFBOVKclDdUFksW/8nizqKn6YzugA9FE8OWBNsw6Y=;
-	b=dwGgKEbHV7fURzrfbpIGe0AmyjbUHeV8GGm3bPTW0h67qKrkpc+9Xi6P7xY5GCyujYlT6H
-	tr3ImF+Isr5Rnu6ziXGSOsqOz5mXp5Kpzl1jMCeWWM4Myi0CzqhttFCvT9DOilINcLErxO
-	WbY06OGb4TDHhL6KJBr+NQTauLkgvc0=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793357992;
-	b=6UtW01T9GhqKlCZnp8Ze7YCDk+hTF7rvdf4x50Z44PzQ8CPb3mkAxqiAVq08fr69uIDTfT
-	pEdHrolQHa8C/Cac8Os7zc/LBmAMRC4DmSbuHbCeu4eT5Rikd9oPszugawb8mYKNY4RnQl
-	x4ccME1+0PibFRs9Ygk5WFY+FiLgFLI=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=grU69V2izEqiyRQzFTG28lTTPJjElzjd757Ih1SjJmw=;
+	b=k06Su33pqkEarsweM5Vn4AUsYBQLT/KH5P8xbqcw37wZTX6kdw2faaU4hLAc6GQH3tkWRv
+	1rXXvPk6284BlGBKLrL4z1tbcWCc9S51b0IUF0mm9uAebmHZgy9rTvRrawphaDBqpysfAr
+	nOIP2ZfJ/WIwQ/BIdXw47EUFwwVy1tY=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=QOVpmjIb;
-	spf=pass (imf22.hostedemail.com: domain of liu.yun@linux.dev designates 95.215.58.221 as permitted sender) smtp.mailfrom=liu.yun@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	imf14.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=YNMXeSlR;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf14.hostedemail.com: domain of liu.yun@linux.dev designates 91.218.175.3 as permitted sender) smtp.mailfrom=liu.yun@linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793357995;
+	b=nRWeY2pRzGQIL5dbsRnQqNTuGhSxz/7cWt/z7O14coC2GHrbQaEmIGEySh6/C/Vbzrs6x6
+	uARTv3PHJzUw6AC8bj3crvS+bBl65N3GtFWb6em4eRplPkNWkjvt3QMZSby6fuzIJXwo1x
+	z1ivwxZqJhJZ6hSjWdQsvJ/ALYj3wPs=
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=VzDmls3xFLsfubnFzXQlx1U4XfDEnnN9KmRFzEhDzIQ=;
+DKIM-Signature: a=rsa-sha256; bh=CuJ+ZQTil/SFgi386JLyvRG7Aby/Bj7KaYnuIE8fy6Q=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1793357990; v=1; x=1793962790;
- b=QOVpmjIbMsK4a0sCC/JyqeXysKcagljWXqo6wT/YtIwC5IZIiJtI9K4F4M2FzFeJ29gi841I
- m6DEK2GK/bTugMSpkdvORaiUuUdBw8T28lZ/fMJyYq97PYkPT0yUGf7p0181+ihSZ4wkaANxcMq
- AKDE46C4cZJCcO/BqsXzH2Yo=
+ t=1793357994; v=1; x=1793962794;
+ b=YNMXeSlR7KwSt0ujwdKsVyF8AnGTOL1mV2LrEKPXtGkpKM9rtYC6gw6Cjf3If9zhhjhyoXnz
+ e7ux1o9ap5yFJwr1RMIMyrPlU8acMLGOuliKufNgYwKQ+xeAO1J2aQdAoKHvo1GMzb1oFTtH1aw
+ idfIR1JUxbG7/vNIocBuqkK4=
 X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 5ee6d4bb77ebb1ef;
-	Fri, 30 Oct 2026 10:59:49 +0000
-X-Mizu-Trace-ID: 5ee6d4bb77ebb1ef
+Received: by smtp.migadu.com with ESMTPS id 4afd703a427bb278;
+	Fri, 30 Oct 2026 10:59:53 +0000
+X-Mizu-Trace-ID: 4afd703a427bb278
 X-Migadu-Flow: FLOW_OUT
 From: Jackie Liu <liu.yun@linux.dev>
 To: akpm@linux-foundation.org
@@ -70,25 +70,27 @@ Cc: palmer@dabbelt.com,
 	linux-riscv@lists.infradead.org,
 	linux-mm@kvack.org,
 	kasan-dev@googlegroups.com
-Subject: [PATCH 0/2] riscv: fix KFENCE pool initialization
-Date: Fri, 30 Oct 2026 18:59:31 +0800
-Message-ID: <20261030105933.4180-1-liu.yun@linux.dev>
+Subject: [PATCH 1/2] riscv: Recognize P4D leaves when splitting the linear mapping
+Date: Fri, 30 Oct 2026 18:59:32 +0800
+Message-ID: <20261030105933.4180-2-liu.yun@linux.dev>
 X-Mailer: git-send-email 2.56.0
+In-Reply-To: <20261030105933.4180-1-liu.yun@linux.dev>
+References: <20261030105933.4180-1-liu.yun@linux.dev>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: C06E9C0009
-X-Stat-Signature: 7o1zyjh69hrjoq6jdumnt1bxscwck8ye
+X-Rspamd-Queue-Id: 9691E10000D
+X-Stat-Signature: 1614u313yfua5k1ek99sxx31jpxch6ty
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
-	autolearn_force=no version=4.0.1
-X-HE-Tag: 1793357991-452721
-X-HE-Meta: U2FsdGVkX1+LYajiz7ndd928/NsRaeH578vlEBbHnNc7Z4VLEcQU4GZqBQttI1P9BLl3WX9SuvN61UKqCCRkz5T7KvGi1qKtUll6ynoDsGGztcLqVixO/iwaz6sYVAtUQUlaogo9OXkLa2hVpYNkEcJrZdKDXU4V2WJ1u27KPe1l8cKROrGkHxtq2qZ0Rb48/1bmc+pOs9oUSH+QOztWEyeKovmDdFIlgzvYqnPsZ7LAqGPot5XB/72kkrE140/X5pqOC3Z82BkstAKK/qHLTzR2lxfpP4NDzt9x0HgLUFzBsIsl/NbjEz57LwCMLIc2TiTdlX63E4YKXKAvWxnCJQu6uOMW7nNlvtnB1T8wNz2OGlhlGu2X8Hhl8L7KQ/Ia578U2CTEsqNxrdOFJyABxV2EJyhg2UneZEmw/Pb4wv8/MU85E8m8+LJFM8Im7tIZvBNsHclNtEF1BB16e9Lka2VD84qf7yUPKKO9oJhB5X8F3UviUqrUeHb4f39YluP7s9/9dxdp5C8WY8o9lrezbN/kcvRKDgr7+U6prIYuUhNsQ0Fo5gbjn+eQeiIxMaTaOrQf8g4sVxPfzlQ7yExfJfmEqnwVXnjgK2avXaN8jH303A08O89Bp63plkPDrZf2OepsYerS3FxYL6U+mbdji8pJq60l21SwQLX35orrNdbWE1Qu9XY6zlzmWkgpLMpocLG0B6wIMsO8kfg2OoAKONFzs3W729YLXlDqHMGJyeIXNbzre8iRSuRr+geW/DcRjhcrDILF3YacqggHvsFGvHig9t18PfBJKfrIVJodDoF6YujFpgfuifMBuieyZ9tL7JcaiwmFe3646q0Mmzg71XlQVOuqMqrc7PIAgsiuvZ56dkWhuZvKmk+Ya0k874G2Ws8ip/gLhNEVz1xXXO7S4Fi5zI3S0SImKkeiAoNRijg7Oq7R45YXb+Z1Ugh3pdVKQeYatLStrW1QFeyAKK2
- YYQLbKF+
- TxyKEGKhmb+hR7SCXyV4zfQEnv9qEfqjpDWI6yWBBDGE1jUTyuXBDSQhL/7h6Zs3u+Lh+wqI02QhnQ6Nw/u0S6/Fwh20/vN6yogWWhkQQISVQypqu1TTcKpd7grQDH16efNyzldLGfUMTXaPJ5NE+N9VNOgPsw8q8ljtt0NnlGybHXhJpO8Voh0uDEZqHNxG+3RpfOZbLvPEQd9Djv5zCLvpF8pWMhq2JGShY
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1793357995-489992
+X-HE-Meta: U2FsdGVkX19Lpu6daPMVgE4MSsmB+rUhTlkKN/VQ2b7yVvmFzSw+hu1u3Bdkk1My6m1QE75F3PMx1GoJaDUuvv21ks+uZ9E5HZ4BdH/bxWgk80miks+XgFNuk7yEXvNltocchKxVQ1CikyYj49RtVWT4+yNm+CFQrP5XdiIK65hWkTd+SJG8DLFu1c98Z61BMjIFxN8rhRzquAALkGZ99mLUCAtGvKYn/lCtvPsG4TO21VnVcTlpgKuhv0HUbbFz7jzLec+pdLrCa9CZjEZDXjbaR5XataEd5dgeqCU1oDtrmA/DvQsRizTPM8WX29by0SZR+IkZPNPOKD1EVH0x5XVfDe3T0aDtbt6K8m71RthZEknWGcOJ6kssrSbvPz2G/71KkpirQB1sVpVLHfNvkv/XmqDmD+wgqF894TayHpUYcdbwbTXpwHd1SjDSVCcvHq9wK+riJ5sDppDa33+Z+7N4eJLJYGFGSkOGiqUFVQuTrKqMWCrdgrGRRsiYyVs7lIJ6+hmoVVUX3nCQnM+dEheNykuhCj0wQ2Hhl/XSzhSeOS0P2Dw72irdKViPpXo5X8MPpuL83n+pPE9pG3lY/67/cIpiC+k5/+dBmeACJhxb57vO4Jkygd6c+v6E1hxCJ5Y2ltSpzekY9ANyIEDuIiw9RzSkhSw0aEudWZnD/ZMkYZj1g4siMuhETNRAPtxh7wY+VasQ9lgDfhQ4P6FzQDfEIUHSbyHKHDYkeXiisjr80kChLSKdzwAgzAMXlnff39sDKj6UVU/uLgYlG1dAvpNCnsnGBxwtf+dQ5dKcWjGkddJXQLVOXwSnWmT/YrigOOL2KzwcbJnxRtybOa0+/F1AnJEmV0oaAOrT94phC9laBiVP8tw5AUysdMVPraxr3w9bK74WQBSySJQZUI+ywJGZzAb40uF0ojkHELb0WPg1/Wnm0rQT4/cvoI13It4HKnILqej/tekEHke/R9G
+ NdUs5A2S
+ pL2bCa2tR1rIyNocXCFjzgq5UEQNhWy3dOHpZ7SQF7QZnGDqBFWIhLEH/X24Kzt7S56dH8WHIbfOWThc7AplkuSWXFtAFuottcH2CFMvZXoDeSyEVQzHeYgIUfo0QLstdBfxAlKa7mPsCDyYjIhBrItfIzGEFRRK1B641I73hoKGRbXgrB5MK2kzek2CnNjr0Sd5ZGcZUaCDV8OpMHmtxQ/QCI8N6gllxkpOnlo0lDkSdM3XovoLJcyzLaA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,30 +101,41 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 
 From: Jackie Liu <liuyun01@kylinos.cn>
 
-RISC-V KFENCE pool reservation failures can prevent the system from
-booting. These fixes allow boot to continue with KFENCE disabled and
-prepare late pools with the page mappings KFENCE requires.
+The linear mapping can contain P4D leaves on Sv57, but p4d_leaf() uses
+the generic definition which always returns false. Splitting a partial
+P4D range therefore treats the mapped physical memory as a PUD table
+instead of allocating and populating that table.
 
-The first patch fixes P4D leaf detection in the linear-map splitter.
-The second uses that splitter to prepare late KFENCE pools, while
-retaining the early PTE mapping.
+Check the hardware leaf bits in the linear-map splitter. Only do so
+when the PUD level is present: on Sv39 the folded P4D entry may contain
+a PUD leaf, which must be handled by the PUD splitter.
 
-Built RV64 kernels and RV32 pageattr.o. QEMU KFENCE KUnit covered boot
-and runtime enabling, pool reservation failure, and page-table allocation
-failures.
+Keep this check local to kernel mappings. Defining p4d_leaf() globally
+would conflict with the GUP assertions that userspace P4D leaves are
+unsupported.
 
-Thanks,
-Jackie
+Link: https://lore.kernel.org/all/sashiko-outbox-190189@kernel.org/
+Fixes: 311cd2f6e253 ("riscv: Fix set_memory_XX() and set_direct_map_XX() by splitting huge linear mappings")
+Signed-off-by: Jackie Liu <liuyun01@kylinos.cn>
+---
+ arch/riscv/mm/pageattr.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-Jackie Liu (2):
-  riscv: Recognize P4D leaves when splitting the linear mapping
-  riscv: Prepare late KFENCE pools with PTE mappings
+diff --git a/arch/riscv/mm/pageattr.c b/arch/riscv/mm/pageattr.c
+index 5b3cf326455db..32834a09a8097 100644
+--- a/arch/riscv/mm/pageattr.c
++++ b/arch/riscv/mm/pageattr.c
+@@ -197,7 +197,8 @@ static int __split_linear_mapping_p4d(pgd_t *pgdp,
+ 		    vaddr <= (vaddr & P4D_MASK) && end >= next)
+ 			continue;
+ 
+-		if (p4d_leaf(p4dp_get(p4dp))) {
++		/* p4d_leaf() does not cover kernel-only leaf mappings. */
++		if (pgtable_l4_enabled && (p4d_val(p4dp_get(p4dp)) & _PAGE_LEAF)) {
+ 			struct page *pud_page;
+ 			unsigned long pfn = _p4d_pfn(p4dp_get(p4dp));
+ 			pgprot_t prot = __pgprot(p4d_val(p4dp_get(p4dp)) & ~_PAGE_PFN_MASK);
+-- 
+2.43.0
 
- arch/riscv/include/asm/kfence.h     |  4 +-
- arch/riscv/include/asm/set_memory.h |  3 ++
- arch/riscv/mm/init.c                | 23 +++++++++--
- arch/riscv/mm/pageattr.c            | 59 ++++++++++++++++++++---------
- 4 files changed, 67 insertions(+), 22 deletions(-)
-
-base-commit: c339f4010dea8b0d754f84ace70cd1b089878ef8
 
