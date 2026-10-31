@@ -1,62 +1,62 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16156606A31C
-	for <linux-mm@archiver.kernel.org>; Sat, 31 Oct 2026 09:01:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C602606A31E
+	for <linux-mm@archiver.kernel.org>; Sat, 31 Oct 2026 09:01:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=DpkU7/06
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=bxoqk+Ac
 Received: by kanga.kvack.org (Postfix)
-	id 32DA76B05B6; Sat, 31 Oct 2026 05:01:46 -0400 (EDT)
+	id 1A6AC6B05B8; Sat, 31 Oct 2026 05:01:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2DD2B6B05B7; Sat, 31 Oct 2026 05:01:46 -0400 (EDT)
+	id 17D446B05B9; Sat, 31 Oct 2026 05:01:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1A6276B05B8; Sat, 31 Oct 2026 05:01:46 -0400 (EDT)
+	id 0BA286B05BA; Sat, 31 Oct 2026 05:01:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id E42B56B05B6
-	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 05:01:45 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id D34FEC0935
-	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 09:01:44 +0000 (UTC)
-X-FDA: 85382328528.10.733C061
-Received: from mta1.migadu.com (out-88.mta1.migadu.com [95.215.58.88])
-	by imf17.hostedemail.com (Postfix) with ESMTP id B881340004
-	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 09:01:42 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="DpkU7/06";
-	spf=pass (imf17.hostedemail.com: domain of ridong.chen@linux.dev designates 95.215.58.88 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793437303;
-	b=XyAI6GqMNxycTj22BBbrCkGMh7y3exJbgCmiZg2MITQ6UPzaqi3BLJBe0Zu+gt24oBudZW
-	KfUeigm3Hl1eB5XoDmmFztIWWTnOMAWb8blBIrG5E45Xv6Bt1REWQ9CQu8VA6XTguh8s12
-	XvlTK09k+4to6UoKasryC2EQvNdMWq8=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="DpkU7/06";
-	spf=pass (imf17.hostedemail.com: domain of ridong.chen@linux.dev designates 95.215.58.88 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id E133E6B05B8
+	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 05:01:53 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 07597A08EC
+	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 09:01:53 +0000 (UTC)
+X-FDA: 85382328906.07.E5B4FE8
+Received: from mta0.migadu.com (out-156.mta0.migadu.com [91.218.175.156])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 07891180002
+	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 09:01:50 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=bxoqk+Ac;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf16.hostedemail.com: domain of ridong.chen@linux.dev designates 91.218.175.156 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793437303;
+	s=arc-20220608; t=1793437311;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=A6UAB49Z1LpHBU8b1xWt4+XwxaM2AkGaEn6Zvnkg/3M=;
-	b=fQFte0MOH9cy6s0g8rlZp0tUE+5VBVR6zfROHElYUyP7RHgCiJi7w2n0Cesvibx78PoN6e
-	nPS447/U4ZB2BBdsslcpEtJ7nqU2v+I0BiGYJc2KiU42/zZ958ivAI730cm4YWTugmikU/
-	pXTnqGkFgRbfV9I8tmnj6C2WyHecS5s=
+	bh=p4OmGQxsritGUdYbgy/naTEuzzYOIoKE4RkWq95RFj8=;
+	b=5nzNkxmHETTigrZHGE5Y/4zHhSM6pOfwEmK1L1S/UqEG5NYncunXQrd75YcjfW/G+83Jm8
+	+gi/txMHdhPE1St+Qr+n+MlieZcQ+KXepoJW/vcP0/DrsOc4yQcSTjiq+LfN3zwGq9BnoY
+	PMLCAEzMsqPcjDQWE2wALkx/c9ar6Vs=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=bxoqk+Ac;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf16.hostedemail.com: domain of ridong.chen@linux.dev designates 91.218.175.156 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793437311;
+	b=QtphC0+D7n75p8oWjqxYGPTnbs7XSTuChjxNYkned2dCPzYImYC8oejU2jbA35mXrw3qZA
+	FWl/731NJ5M6WR1WAMNk7ARSblFD9/7Tautu6/21zqqNT2yF8QkTgvNcS7cS3yvVvWdiLm
+	X7phTgE2fECDslV/RWbm3vgIfXHNl/Y=
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=63F/H5y9zeyyPdztUvgYmzYCRYIWeUoSfig5jcwoZ88=;
+DKIM-Signature: a=rsa-sha256; bh=Ls8zPAr0DtsaeSjNYl2FTkQyXE0tQvzbmKKSnoHdJ8c=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1793437301; v=1; x=1794042101;
- b=DpkU7/06df2towDpOzvyARYPBT/KwMemZLI7CmDsXRIV5PwgjRvjEAfLz6E0kbQhuZtq2bmK
- 7k6bmrMoszYV6lHgpUF7qqlZfqPv7Xxt3vNymvn8MG9tnWylKZnb5W33ULgYgH0WgN3gBqF/XRB
- rJhoEdbM1WPeP180GJzxy+qs=
+ t=1793437309; v=1; x=1794042109;
+ b=bxoqk+AcExeM4CrDXgUqVYesb4iWBXa5MSdaUclXkE2MuThsFFqcpRwHIhcMRvZhy4TW2eMr
+ rU0orMLeqowtzGC1Xz+0d8AzyhjKbQ7FtzOR3eocB7dNFm6c5BwwUHpWN7ce3wHrOcQDcj6Gi1Q
+ bnqgfwCF/JHkhpfAue+x9fSg=
 X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 15492aafd9b08072;
-	Sat, 31 Oct 2026 09:01:41 +0000
-X-Mizu-Trace-ID: 15492aafd9b08072
+Received: by smtp.migadu.com with ESMTPS id 9b188fab69ac5f20;
+	Sat, 31 Oct 2026 09:01:49 +0000
+X-Mizu-Trace-ID: 9b188fab69ac5f20
 X-Migadu-Flow: FLOW_OUT
 From: Ridong Chen <ridong.chen@linux.dev>
 To: Steven Rostedt <rostedt@goodmis.org>,
@@ -86,27 +86,27 @@ Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
 	bpf@vger.kernel.org (open list:BPF [MISC]:Keyword:(?:\b|_)bpf(?:\b|_)),
 	Ridong Chen <ridong.chen@linux.dev>,
 	Ridong Chen <chenridong@xiaomi.com>
-Subject: [PATCH v5 4/6] mm/vmscan: pass scan_control to the vmscan tracepoints
-Date: Sat, 31 Oct 2026 17:00:39 +0800
-Message-ID: <20261031090041.58574-5-ridong.chen@linux.dev>
+Subject: [PATCH v5 5/6] mm/mglru: add tracepoint for scan_folios()
+Date: Sat, 31 Oct 2026 17:00:40 +0800
+Message-ID: <20261031090041.58574-6-ridong.chen@linux.dev>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20261031090041.58574-1-ridong.chen@linux.dev>
 References: <20261031090041.58574-1-ridong.chen@linux.dev>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: zkg8oqwu77rwottu5dq4iccia8pz6uu4
+X-Rspamd-Queue-Id: 07891180002
+X-Stat-Signature: hubtn49mj6brwcq1341bgxo4ay9kye47
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: B881340004
 X-Rspam-User: 
-X-HE-Tag: 1793437302-935254
-X-HE-Meta: U2FsdGVkX1/yO+8pDXDTXz+nt0IMn+pm22XnfsxnzRM8eKwDQnzhaP6bSqP4yEu1zFt2GaEX3bMezc0HjqxK7qk+Hgu4zVYCJHMxFC9POZntqDWFsrxC+KljK/kAqP13nzUaFQIiYFfBRJGw7UEF+cbtKrtFcqXatwzh+MosLGFixOKiTB+WCcTUu4ka3DZ2Juca2zU/Qt1mcfEhf0x+E6IWZ6x5KP+gnbtbP9O/IzbYA99T56Vg/Qo7l9BrlcDoGf5c8Pzqwmfg9TIwX1gUEYcABMS+fP1a2PJI/D3UY+D5u7Mi2ZoZJEmxrdXtRbohmH8IFOdjp0IB9qKJEeYLs6hdZKJOrWOZ0ktfRVpyj798mzuLyQh0hV5q2cSnjh1GtmeZO7nK3HXdZhYfaajliMF/3dGx1tHG5OYhirb0juVAj5fj1xvSBSNFEwH65msYxtBTORy74ORpa/5kDDa2pjmfAHdh1RgSCWN/qAAnN/u1AEbtuXeza3CSHJs1c4qI/zhasbI14XrFXgq7AP13B2ybzV9ttTwaNU4a8Ttw2gX0LO/lnTB5Zr6yXYgZGb+HoIDbpTekuk3CuKEOVbXFwyx24FvD82luYLla44PeLmjl8fxoMPRMKhxqU215pda67w/THerH6KaF9GY0LV5oHYiMOBA57QAZ7PwpmwHf+B8Qu8f3SyDspM/MleAD+3SG+cTtGzqCRdLItAtzjNQ/tIKJkOV8zOGCQgid6txAU/llpp5bi4EP8efm6kP0hIZm4B22kKEDxo9o1mgyt0Yv2qMp5ZYYQzKG4sEtAvz6pZk1A7haQ2J3CxsXf9IeXEmxq/j5mazarn75dnULa9r2kmarbUP06rMwqMzP8yrWUUD7mgcT8t/wNvabOpeT7l0LNhQpqcnn86xYWzX7rzo8x4TkzfQzbHJyqNV8EabqLYDNr3J0uxUYwH+W1VRlnWD/kJxInGq8KxOE4NYcni8
- dI7/3BSi
- ObjKbB9r78Y2Z+mlaA4xEHrxKWlTrb4ynfh48nIgq3i1sJXbxm9r50122Qph4D2ysuYutB2fsCAFf/X5bPUBHDIPLlVBvT1wtueR4YWzgV29p3lpujfaGu1qkGmq1fPDYcxYv0huU1zjJmlnNCsQPAxq1VnYiKjh5I0RH9pgaOlPeXc414zycaQq80R3FaFuayW7XbaGubOSsZMv4g19ycTWrjkIcx78AosXxH1YSqxkHHwqLf7J+kKf66sYg1MLF5KagUb1Kc34ukLbJvefLsb7wHTQ4uEnhSXBZPIVJ8bOg8fk=
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1793437310-862704
+X-HE-Meta: U2FsdGVkX19WAkc6I+y8HTyl6nORbX+tck7t7ULhIUmV9Q7Hh/RlPdirksQ/0hdjv2TmD0pogmMHXjGJFBWjyYBJQpk3DLqurW4xWqruR0zyJo0P7Mw4nlvpwbleDDvQLvbeynL7rntaP4tPIaiJj4YDt9g5wGw6zai5G/0NctbN81F9pW/0cX9cVEbXJGf/dR2o3pbKVa4DIFqIUgsD76nW5vkh0BSlbm/VidYME/AHPmgxZVdCasT5BqSoWDka/7kIk4egHZCuLxCeJGjCHWoNsgvwdCxfTx8BYUdRDLg56EmhF+Vxc+yGRf6Iq5mWbFtaUxazAnQhWA5fLE81IYDeHRTYIpQcjK1M06OP4r3cbOjewol3sN02BrzHn2MQLrY8HO0S/lW4oVZmBURmWrgWGj5Pj3ezvEiMk17U3+S4Lit86ryEL5JJAw/eEe7s0kZxGIUNyZ9rYb7gQfedS3TsxpyNq323qtAqrz/9wpZTerI6sOWxoHfpiK0H7uyKYmVfYbe8cZ0CeZneaB/lFFV+CEZ58OFWp01kgMJQ7OBuMFsQAllK07YRdmNL4TAPisUA306vfQzhhTUyuxE7cNAjMPHvbYes7lIpDnpokecOywcO2jHVzyOFluXm/gxx0Xr1vg5ZRW/gfl95CTbxeuBCEttehEVCji2m1pE5h2fb7kN/6vnVzUxC6SVEKFINX4llbfcuF8ujXTGptcdAsWMB8G4JJLXuBFVDiueRP127YqMWiQNBClH6hnLNg87oDNoJkI5uD5Ad7XxnOZUaLK9VJg3zdJa1m4IgXuayEI0YlESrn1sqKB7L+tjL1xt3rLdx1ZBnGllNY80n1Dik/dD0AD4kzx1IZ6xV2LzUW6djBqtLNBcHAbHaWT/lj/s4l+BVSAIUtube1TM00uZpBMpFdCT2iHlOkm43EE0s7SE3Zw+zaa3g+isJjI4pFNakjaBkE1XSLc1ag23pyRz
+ hDYdxAqR
+ MSk5wq9uqNDcqmFbKm+9Nb9hMPZcNplrFrGb8b3M3onXHdxWIL1AkzEttqgLoVD0WNq6OVPvjoX223wQTk9M+aWKjqbZNQTP49HJ7f4wYB1pZkwZdG5byuUz4yOSz1lhFvvKMPiTIEgmzeT1GT6r0GLDBJuMCDyHkKBHTQ3WsgcTSCks7SbuROu7QvuXTVm+iy7ivdCqf6WT3fDWgdoWHkGHH+eaUXUFqDtW9CZ6FpCTYR7AuhapqnjliL0oUk8p8OytJdLGTXP79CqVBBD89qY+9BxWUPmT5WtZXgbvVpReqih8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -117,336 +117,125 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 
 From: Ridong Chen <chenridong@xiaomi.com>
 
-Several vmscan tracepoints spell out reclaim state as individual
-arguments, all of which the caller already holds in struct scan_control.
-Now that the struct is visible from the trace header, pass sc directly
-and pick the fields out in TP_fast_assign instead of spelling them out
-at every callsite:
+MGLRU's scan_folios() emits the classic-LRU tracepoint
+trace_mm_vmscan_lru_isolate(), which predates MGLRU. It reports the
+scan/isolate counts and the LRU type, but carries no generation or
+memcg context, so a trace of an MGLRU run cannot tell which memcg a
+given scan belongs to, nor how far reclaim has progressed through the
+generations.
 
-- mm_vmscan_direct_reclaim_begin, mm_vmscan_memcg_reclaim_begin and
-  mm_vmscan_node_reclaim_begin: gfp_mask and order.
+Add mm_mglru_scan_folios next to it, reporting the same counters plus
+nr_sorted (folios moved to a younger generation by sort_folio()) and
+the context the classic tracepoint lacks: the node id and memcg id of
+the lruvec, and the max_seq, tier and min_seq of the type being
+scanned.
 
-- mm_vmscan_lru_isolate, mm_vmscan_lru_shrink_inactive and
-  mm_vmscan_lru_shrink_active: reclaim_idx, order and priority.
+Now that struct scan_control is visible to the trace header, pass sc,
+lruvec, type and tier straight in and derive everything else in
+TP_fast_assign(), so nothing is computed at the call site when the
+event is disabled. The int fields are grouped at the end of the entry
+to avoid padding on 64-bit.
 
-- mm_vmscan_reclaim_pages: nr_scanned. nr_reclaimed stays a separate
-  argument: it is the return value of shrink_folio_list(), which does
-  not update sc->nr_reclaimed.
-
-- mm_vmscan_balance_pgdat_end: order and nr_reclaimed. highest_zoneidx
-  stays a separate argument: it is a balance_pgdat() parameter, and
-  sc.reclaim_idx may differ from it by the time the end event fires.
-
-No functional change. The tracefs event format (TP_STRUCT__entry and
-TP_printk) is unchanged, so tracefs-based consumers are unaffected.
-BPF programs attached via raw_tp/tp_btf see the new TP_PROTO and need
-to be adjusted; tracepoints are not a stable ABI (see
-Documentation/bpf/bpf_design_QA.rst).
+scan_folios() is the MGLRU-specific layer where folios are actually
+scanned, so it has no classic-LRU counterpart. The existing tracepoint
+is left unchanged.
 
 Signed-off-by: Ridong Chen <chenridong@xiaomi.com>
 ---
- mm/trace_vmscan.h | 74 +++++++++++++++++++++++------------------------
- mm/vmscan.c       | 26 ++++++++---------
- 2 files changed, 48 insertions(+), 52 deletions(-)
+ mm/trace_vmscan.h | 66 +++++++++++++++++++++++++++++++++++++++++++++++
+ mm/vmscan.c       |  2 ++
+ 2 files changed, 68 insertions(+)
 
 diff --git a/mm/trace_vmscan.h b/mm/trace_vmscan.h
-index 3917e1b62dfa..b2ad83e5f25e 100644
+index b2ad83e5f25e..8148b8224422 100644
 --- a/mm/trace_vmscan.h
 +++ b/mm/trace_vmscan.h
-@@ -124,10 +124,9 @@ TRACE_EVENT(mm_vmscan_balance_pgdat_begin,
- 
- TRACE_EVENT(mm_vmscan_balance_pgdat_end,
- 
--	TP_PROTO(int nid, int order, int highest_zoneidx,
--		 unsigned long nr_reclaimed),
-+	TP_PROTO(int nid, struct scan_control *sc, int highest_zoneidx),
- 
--	TP_ARGS(nid, order, highest_zoneidx, nr_reclaimed),
-+	TP_ARGS(nid, sc, highest_zoneidx),
- 
- 	TP_STRUCT__entry(
- 		__field(int, nid)
-@@ -138,9 +137,9 @@ TRACE_EVENT(mm_vmscan_balance_pgdat_end,
- 
- 	TP_fast_assign(
- 		__entry->nid = nid;
--		__entry->order = order;
-+		__entry->order = sc->order;
- 		__entry->highest_zoneidx = highest_zoneidx;
--		__entry->nr_reclaimed = nr_reclaimed;
-+		__entry->nr_reclaimed = sc->nr_reclaimed;
- 	),
- 
- 	TP_printk("nid=%d order=%d highest_zoneidx=%-8s nr_reclaimed=%lu",
-@@ -178,9 +177,9 @@ TRACE_EVENT(mm_vmscan_wakeup_kswapd,
- 
- DECLARE_EVENT_CLASS(mm_vmscan_direct_reclaim_begin_template,
- 
--	TP_PROTO(gfp_t gfp_flags, int order, struct mem_cgroup *memcg),
-+	TP_PROTO(struct scan_control *sc, struct mem_cgroup *memcg),
- 
--	TP_ARGS(gfp_flags, order, memcg),
-+	TP_ARGS(sc, memcg),
- 
- 	TP_STRUCT__entry(
- 		__field(	unsigned long,	gfp_flags	)
-@@ -189,8 +188,8 @@ DECLARE_EVENT_CLASS(mm_vmscan_direct_reclaim_begin_template,
- 	),
- 
- 	TP_fast_assign(
--		__entry->gfp_flags	= (__force unsigned long)gfp_flags;
--		__entry->order		= order;
-+		__entry->gfp_flags	= (__force unsigned long)sc->gfp_mask;
-+		__entry->order		= sc->order;
- 		__entry->memcg_id	= mem_cgroup_id(memcg);
- 	),
- 
-@@ -204,17 +203,17 @@ DECLARE_EVENT_CLASS(mm_vmscan_direct_reclaim_begin_template,
- 
- DEFINE_EVENT(mm_vmscan_direct_reclaim_begin_template, mm_vmscan_direct_reclaim_begin,
- 
--	TP_PROTO(gfp_t gfp_flags, int order, struct mem_cgroup *memcg),
-+	TP_PROTO(struct scan_control *sc, struct mem_cgroup *memcg),
- 
--	TP_ARGS(gfp_flags, order, memcg)
-+	TP_ARGS(sc, memcg)
+@@ -392,6 +392,72 @@ TRACE_EVENT(mm_vmscan_lru_isolate,
+ 		__print_symbolic(__entry->lru, LRU_NAMES))
  );
  
- #ifdef CONFIG_MEMCG
- DEFINE_EVENT(mm_vmscan_direct_reclaim_begin_template, mm_vmscan_memcg_reclaim_begin,
- 
--	TP_PROTO(gfp_t gfp_flags, int order, struct mem_cgroup *memcg),
-+	TP_PROTO(struct scan_control *sc, struct mem_cgroup *memcg),
- 
--	TP_ARGS(gfp_flags, order, memcg)
-+	TP_ARGS(sc, memcg)
- );
- #endif /* CONFIG_MEMCG */
- 
-@@ -350,15 +349,14 @@ TRACE_EVENT(mm_shrink_slab_end,
- );
- 
- TRACE_EVENT(mm_vmscan_lru_isolate,
--	TP_PROTO(int highest_zoneidx,
--		int order,
--		unsigned long nr_requested,
--		unsigned long nr_scanned,
--		unsigned long nr_skipped,
--		unsigned long nr_taken,
--		int lru),
-+	TP_PROTO(struct scan_control *sc,
++#ifdef CONFIG_LRU_GEN
++TRACE_EVENT(mm_mglru_scan_folios,
++
++	TP_PROTO(struct lruvec *lruvec,
++		 struct scan_control *sc,
 +		 unsigned long nr_requested,
 +		 unsigned long nr_scanned,
++		 unsigned long nr_sorted,
 +		 unsigned long nr_skipped,
 +		 unsigned long nr_taken,
-+		 int lru),
- 
--	TP_ARGS(highest_zoneidx, order, nr_requested, nr_scanned, nr_skipped, nr_taken, lru),
-+	TP_ARGS(sc, nr_requested, nr_scanned, nr_skipped, nr_taken, lru),
- 
- 	TP_STRUCT__entry(
- 		__field(int, highest_zoneidx)
-@@ -371,8 +369,8 @@ TRACE_EVENT(mm_vmscan_lru_isolate,
- 	),
- 
- 	TP_fast_assign(
--		__entry->highest_zoneidx = highest_zoneidx;
--		__entry->order = order;
++		 int type,
++		 int tier),
++
++	TP_ARGS(lruvec, sc, nr_requested, nr_scanned, nr_sorted, nr_skipped,
++		nr_taken, type, tier),
++
++	TP_STRUCT__entry(
++		__field(u64, memcg_id)
++		__field(unsigned long, nr_requested)
++		__field(unsigned long, nr_scanned)
++		__field(unsigned long, nr_sorted)
++		__field(unsigned long, nr_skipped)
++		__field(unsigned long, nr_taken)
++		__field(unsigned long, max_seq)
++		__field(unsigned long, min_seq)
++		__field(int, nid)
++		__field(int, highest_zoneidx)
++		__field(int, order)
++		__field(int, lru)
++		__field(int, tier)
++	),
++
++	TP_fast_assign(
++		__entry->memcg_id = mem_cgroup_id(lruvec_memcg(lruvec));
++		__entry->nr_requested = nr_requested;
++		__entry->nr_scanned = nr_scanned;
++		__entry->nr_sorted = nr_sorted;
++		__entry->nr_skipped = nr_skipped;
++		__entry->nr_taken = nr_taken;
++		__entry->max_seq = lruvec->lrugen.max_seq;
++		__entry->min_seq = lruvec->lrugen.min_seq[type];
++		__entry->nid = lruvec_pgdat(lruvec)->node_id;
 +		__entry->highest_zoneidx = sc->reclaim_idx;
 +		__entry->order = sc->order;
- 		__entry->nr_requested = nr_requested;
- 		__entry->nr_scanned = nr_scanned;
- 		__entry->nr_skipped = nr_skipped;
-@@ -419,11 +417,11 @@ TRACE_EVENT(mm_vmscan_write_folio,
++		__entry->lru = type ? LRU_INACTIVE_FILE : LRU_INACTIVE_ANON;
++		__entry->tier = tier;
++	),
++
++	TP_printk("nid=%d memcg_id=%llu classzone=%d order=%d nr_requested=%lu nr_scanned=%lu nr_sorted=%lu nr_skipped=%lu nr_taken=%lu lru=%s max_seq=%lu tier=%d min_seq=%lu",
++		__entry->nid,
++		__entry->memcg_id,
++		__entry->highest_zoneidx,
++		__entry->order,
++		__entry->nr_requested,
++		__entry->nr_scanned,
++		__entry->nr_sorted,
++		__entry->nr_skipped,
++		__entry->nr_taken,
++		__print_symbolic(__entry->lru, LRU_NAMES),
++		__entry->max_seq,
++		__entry->tier,
++		__entry->min_seq)
++);
++
++#endif /* CONFIG_LRU_GEN */
++
+ TRACE_EVENT(mm_vmscan_write_folio,
  
- TRACE_EVENT(mm_vmscan_reclaim_pages,
- 
--	TP_PROTO(int nid,
--		unsigned long nr_scanned, unsigned long nr_reclaimed,
--		struct reclaim_stat *stat),
-+	TP_PROTO(int nid, struct scan_control *sc,
-+		 unsigned long nr_reclaimed,
-+		 struct reclaim_stat *stat),
- 
--	TP_ARGS(nid, nr_scanned, nr_reclaimed, stat),
-+	TP_ARGS(nid, sc, nr_reclaimed, stat),
- 
- 	TP_STRUCT__entry(
- 		__field(int, nid)
-@@ -441,7 +439,7 @@ TRACE_EVENT(mm_vmscan_reclaim_pages,
- 
- 	TP_fast_assign(
- 		__entry->nid = nid;
--		__entry->nr_scanned = nr_scanned;
-+		__entry->nr_scanned = sc->nr_scanned;
- 		__entry->nr_reclaimed = nr_reclaimed;
- 		__entry->nr_dirty = stat->nr_dirty;
- 		__entry->nr_writeback = stat->nr_writeback;
-@@ -466,9 +464,9 @@ TRACE_EVENT(mm_vmscan_lru_shrink_inactive,
- 
- 	TP_PROTO(int nid,
- 		unsigned long nr_scanned, unsigned long nr_reclaimed,
--		struct reclaim_stat *stat, int priority, int file),
-+		struct reclaim_stat *stat, struct scan_control *sc, int file),
- 
--	TP_ARGS(nid, nr_scanned, nr_reclaimed, stat, priority, file),
-+	TP_ARGS(nid, nr_scanned, nr_reclaimed, stat, sc, file),
- 
- 	TP_STRUCT__entry(
- 		__field(int, nid)
-@@ -498,7 +496,7 @@ TRACE_EVENT(mm_vmscan_lru_shrink_inactive,
- 		__entry->nr_activate1 = stat->nr_activate[1];
- 		__entry->nr_ref_keep = stat->nr_ref_keep;
- 		__entry->nr_unmap_fail = stat->nr_unmap_fail;
--		__entry->priority = priority;
-+		__entry->priority = sc->priority;
- 		__entry->reclaim_flags = trace_reclaim_flags(file);
- 	),
- 
-@@ -517,9 +515,9 @@ TRACE_EVENT(mm_vmscan_lru_shrink_active,
- 
- 	TP_PROTO(int nid, unsigned long nr_taken,
- 		unsigned long nr_active, unsigned long nr_deactivated,
--		unsigned long nr_referenced, int priority, int file),
-+		unsigned long nr_referenced, struct scan_control *sc, int file),
- 
--	TP_ARGS(nid, nr_taken, nr_active, nr_deactivated, nr_referenced, priority, file),
-+	TP_ARGS(nid, nr_taken, nr_active, nr_deactivated, nr_referenced, sc, file),
- 
- 	TP_STRUCT__entry(
- 		__field(int, nid)
-@@ -537,7 +535,7 @@ TRACE_EVENT(mm_vmscan_lru_shrink_active,
- 		__entry->nr_active = nr_active;
- 		__entry->nr_deactivated = nr_deactivated;
- 		__entry->nr_referenced = nr_referenced;
--		__entry->priority = priority;
-+		__entry->priority = sc->priority;
- 		__entry->reclaim_flags = trace_reclaim_flags(file);
- 	),
- 
-@@ -551,9 +549,9 @@ TRACE_EVENT(mm_vmscan_lru_shrink_active,
- 
- TRACE_EVENT(mm_vmscan_node_reclaim_begin,
- 
--	TP_PROTO(int nid, int order, gfp_t gfp_flags),
-+	TP_PROTO(int nid, struct scan_control *sc),
- 
--	TP_ARGS(nid, order, gfp_flags),
-+	TP_ARGS(nid, sc),
- 
- 	TP_STRUCT__entry(
- 		__field(int, nid)
-@@ -563,8 +561,8 @@ TRACE_EVENT(mm_vmscan_node_reclaim_begin,
- 
- 	TP_fast_assign(
- 		__entry->nid = nid;
--		__entry->order = order;
--		__entry->gfp_flags = (__force unsigned long)gfp_flags;
-+		__entry->order = sc->order;
-+		__entry->gfp_flags = (__force unsigned long)sc->gfp_mask;
- 	),
- 
- 	TP_printk("nid=%d order=%d gfp_flags=%s",
+ 	TP_PROTO(struct folio *folio),
 diff --git a/mm/vmscan.c b/mm/vmscan.c
-index 49677464fc9a..15e9184a580a 100644
+index 15e9184a580a..ff51fee872f8 100644
 --- a/mm/vmscan.c
 +++ b/mm/vmscan.c
-@@ -1764,7 +1764,7 @@ static unsigned long isolate_lru_folios(unsigned long nr_to_scan,
- 		}
- 	}
- 	*nr_scanned = total_scan;
--	trace_mm_vmscan_lru_isolate(sc->reclaim_idx, sc->order, nr_to_scan,
-+	trace_mm_vmscan_lru_isolate(sc, nr_to_scan,
- 				    total_scan, skipped, nr_taken, lru);
- 	update_lru_sizes(lruvec, lru, nr_zone_taken);
- 	return nr_taken;
-@@ -2053,7 +2053,7 @@ static unsigned long shrink_inactive_list(unsigned long nr_to_scan,
- 
- 	handle_reclaim_writeback(nr_taken, pgdat, sc, &stat);
- 	trace_mm_vmscan_lru_shrink_inactive(pgdat->node_id,
--			nr_scanned, nr_reclaimed, &stat, sc->priority, file);
-+			nr_scanned, nr_reclaimed, &stat, sc, file);
- 	return nr_reclaimed;
- }
- 
-@@ -2160,7 +2160,7 @@ static void shrink_active_list(unsigned long nr_to_scan,
- 		mod_lruvec_state(lruvec, PGROTATE_ANON + file, nr_rotated);
- 
- 	trace_mm_vmscan_lru_shrink_active(pgdat->node_id, nr_taken, nr_activate,
--			nr_deactivate, nr_rotated, sc->priority, file);
-+			nr_deactivate, nr_rotated, sc, file);
- }
- 
- static unsigned int reclaim_folio_list(struct list_head *folio_list,
-@@ -2183,7 +2183,7 @@ static unsigned int reclaim_folio_list(struct list_head *folio_list,
- 		list_del(&folio->lru);
- 		folio_putback_lru(folio);
- 	}
--	trace_mm_vmscan_reclaim_pages(pgdat->node_id, sc.nr_scanned, nr_reclaimed, &stat);
-+	trace_mm_vmscan_reclaim_pages(pgdat->node_id, &sc, nr_reclaimed, &stat);
- 
- 	return nr_reclaimed;
- }
-@@ -4849,9 +4849,9 @@ static int scan_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
- 	mod_lruvec_state(lruvec, item, isolated);
- 	mod_lruvec_state(lruvec, PGREFILL, sorted);
- 	mod_lruvec_state(lruvec, PGSCAN_ANON + type, isolated);
--	trace_mm_vmscan_lru_isolate(sc->reclaim_idx, sc->order, nr_to_scan,
--				scanned, skipped, isolated,
--				type ? LRU_INACTIVE_FILE : LRU_INACTIVE_ANON);
-+	trace_mm_vmscan_lru_isolate(sc, nr_to_scan,
-+				    scanned, skipped, isolated,
-+				    type ? LRU_INACTIVE_FILE : LRU_INACTIVE_ANON);
+@@ -4852,6 +4852,8 @@ static int scan_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
+ 	trace_mm_vmscan_lru_isolate(sc, nr_to_scan,
+ 				    scanned, skipped, isolated,
+ 				    type ? LRU_INACTIVE_FILE : LRU_INACTIVE_ANON);
++	trace_mm_mglru_scan_folios(lruvec, sc, nr_to_scan, scanned, sorted,
++				   skipped, isolated, type, tier);
  
  	*isolatedp = isolated;
  	return scanned;
-@@ -4993,7 +4993,7 @@ static int evict_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
- 	if (isolated)
- 		handle_reclaim_writeback(isolated, pgdat, sc, &stat);
- 	trace_mm_vmscan_lru_shrink_inactive(pgdat->node_id,
--			type_scanned, reclaimed, &stat, sc->priority,
-+			type_scanned, reclaimed, &stat, sc,
- 			type ? LRU_INACTIVE_FILE : LRU_INACTIVE_ANON);
- 
- 	list_for_each_entry_safe_reverse(folio, next, &list, lru) {
-@@ -6889,7 +6889,7 @@ unsigned long try_to_free_pages(struct zonelist *zonelist, int order,
- 		return 1;
- 
- 	set_task_reclaim_state(current, &sc.reclaim_state);
--	trace_mm_vmscan_direct_reclaim_begin(sc.gfp_mask, order, NULL);
-+	trace_mm_vmscan_direct_reclaim_begin(&sc, NULL);
- 
- 	nr_reclaimed = do_try_to_free_pages(zonelist, &sc);
- 
-@@ -6930,7 +6930,7 @@ unsigned long try_to_free_mem_cgroup_pages(struct mem_cgroup *memcg,
- 	struct zonelist *zonelist = node_zonelist(numa_node_id(), sc.gfp_mask);
- 
- 	set_task_reclaim_state(current, &sc.reclaim_state);
--	trace_mm_vmscan_memcg_reclaim_begin(sc.gfp_mask, 0, memcg);
-+	trace_mm_vmscan_memcg_reclaim_begin(&sc, memcg);
- 	noreclaim_flag = memalloc_noreclaim_save();
- 
- 	nr_reclaimed = do_try_to_free_pages(zonelist, &sc);
-@@ -7407,8 +7407,7 @@ static int balance_pgdat(pg_data_t *pgdat, int order, int highest_zoneidx)
- 	psi_memstall_leave(&pflags);
- 	set_task_reclaim_state(current, NULL);
- 
--	trace_mm_vmscan_balance_pgdat_end(pgdat->node_id, sc.order,
--					  highest_zoneidx, sc.nr_reclaimed);
-+	trace_mm_vmscan_balance_pgdat_end(pgdat->node_id, &sc, highest_zoneidx);
- 
- 	/*
- 	 * Return the order kswapd stopped reclaiming at as
-@@ -7886,8 +7885,7 @@ static unsigned long __node_reclaim(struct pglist_data *pgdat,
- 	unsigned int noreclaim_flag;
- 	unsigned long pflags;
- 
--	trace_mm_vmscan_node_reclaim_begin(pgdat->node_id, sc->order,
--					   sc->gfp_mask);
-+	trace_mm_vmscan_node_reclaim_begin(pgdat->node_id, sc);
- 
- 	cond_resched();
- 	if (!sc->proactive)
 -- 
 2.43.0
 
