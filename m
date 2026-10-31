@@ -1,189 +1,188 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACBB3606A31A
-	for <linux-mm@archiver.kernel.org>; Sat, 31 Oct 2026 15:19:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E46E2606A321
+	for <linux-mm@archiver.kernel.org>; Sat, 31 Oct 2026 15:22:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmx.com header.i=aros@gmx.com header.a=rsa-sha256 header.s=s31663417 header.b=j/nX8rSD
+	dkim=pass (2048-bit key, unprotected) header.d=gmx.com header.i=aros@gmx.com header.a=rsa-sha256 header.s=s31663417 header.b=LebiIaej
 Received: by kanga.kvack.org (Postfix)
-	id BE3926B05B2; Sat, 31 Oct 2026 11:19:17 -0400 (EDT)
+	id 114B66B00EF; Sat, 31 Oct 2026 11:22:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BBB0B6B05B3; Sat, 31 Oct 2026 11:19:17 -0400 (EDT)
+	id 09EB86B05B1; Sat, 31 Oct 2026 11:22:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A83036B05B4; Sat, 31 Oct 2026 11:19:17 -0400 (EDT)
+	id E5A086B05B4; Sat, 31 Oct 2026 11:22:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 7ADFF6B05B2
-	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 11:19:17 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 016EEA09E4
-	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 15:19:16 +0000 (UTC)
-X-FDA: 85383279912.30.130F7CC
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id B77E36B00EF
+	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 11:22:25 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 2F15A1C43BC
+	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 15:22:25 +0000 (UTC)
+X-FDA: 85383287850.16.90DA401
 Received: from mout.gmx.net (mout.gmx.net [212.227.17.20])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 09DFE1C0005
-	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 15:19:14 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=gmx.com header.s=s31663417 header.b="j/nX8rSD";
-	spf=pass (imf20.hostedemail.com: domain of aros@gmx.com designates 212.227.17.20 as permitted sender) smtp.mailfrom=aros@gmx.com;
-	dmarc=pass (policy=quarantine) header.from=gmx.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793459955;
-	b=vj3PzTXpVvTsFitD2g4Dd0BbJfJzi2ilDNOcovnHRk4TADmDEmKFpjzwWQXo1qf8WOk5gW
-	DgwyHFhsDde6a4m142ImKMVf1HM/LvwUX0fqWP6spQA6NGPzjG1PXxLo8B7XFh7hYmPaIm
-	4sP0/nu4p4aAtD49U8RhWz2s0XQC9/o=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=gmx.com header.s=s31663417 header.b="j/nX8rSD";
-	spf=pass (imf20.hostedemail.com: domain of aros@gmx.com designates 212.227.17.20 as permitted sender) smtp.mailfrom=aros@gmx.com;
+	by imf05.hostedemail.com (Postfix) with ESMTP id 2468D100008
+	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 15:22:22 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=gmx.com header.s=s31663417 header.b=LebiIaej;
+	spf=pass (imf05.hostedemail.com: domain of aros@gmx.com designates 212.227.17.20 as permitted sender) smtp.mailfrom=aros@gmx.com;
 	dmarc=pass (policy=quarantine) header.from=gmx.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793459955;
+	s=arc-20220608; t=1793460143;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=rGJRUWHVZc+GV1T2glbBDs4zn8y35bavghVZaNWEV38=;
-	b=eoE2m+Tr6srRMaVck6VOXrJ8ggNOZyQEytFk3unoNcjP6IYo7EjhfYOQ36s+bgATlI7hG4
-	X0Pz7etKjpFKL6pQhKpk6CW5eJLuGJGmWCr4WpMNpTy+Iojv2J6c08JnL+CupVp+U80zYQ
-	TsCn0OjSiQVKbnCEQCTJbpGIrjcb5h0=
+	 references:dkim-signature; bh=eLl6f1LYL/UZ4WIb68htvev2zuj1DylnxY79Ju5sTEA=;
+	b=NEDdqCTAZMUC2WJ/yyFwXPnvSaWuy4Rouz6TPFNWJ0l5gsGFXQqtSj0Kkmg8cljEHplcky
+	d7mHNPK28bbhWt73Jyydhsk1+QFFtBppUNyAvYP5U7VmIlTGMjv7h/hUeB4rLsMVPeRYgi
+	49NIGTJ8+KarZGwGfQLsqyL4EjauSHw=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=gmx.com header.s=s31663417 header.b=LebiIaej;
+	spf=pass (imf05.hostedemail.com: domain of aros@gmx.com designates 212.227.17.20 as permitted sender) smtp.mailfrom=aros@gmx.com;
+	dmarc=pass (policy=quarantine) header.from=gmx.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793460143;
+	b=7YDBdIlN3w43ylzlhkIQvlRC6/fy3iqsTTPeI2gcFwAppJNZ5P2Wpx+PfDiTqnj2HgKXK5
+	ap5g8hSPSUYiPy+jFzb+TxzDpGTYpsXOzwTxRNxB4cPckIWvPm+VblmWIEqYIkF6VEl+oZ
+	r52CChWjy5HCh6gUN/b48sHVk09+k/M=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.com;
-	s=s31663417; t=1793459953; x=1794064753; i=aros@gmx.com;
-	bh=rGJRUWHVZc+GV1T2glbBDs4zn8y35bavghVZaNWEV38=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:To:Cc:From:
-	 Subject:Content-Type:Content-Transfer-Encoding:cc:
+	s=s31663417; t=1793460138; x=1794064938; i=aros@gmx.com;
+	bh=eLl6f1LYL/UZ4WIb68htvev2zuj1DylnxY79Ju5sTEA=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:From:Subject:To:
+	 Cc:Content-Type:Content-Transfer-Encoding:cc:
 	 content-transfer-encoding:content-type:date:from:message-id:
 	 mime-version:reply-to:subject:to;
-	b=j/nX8rSD4Mfw1iqyIRgS/twhxb1tk6Yv42LTcq/9lDMX1UDaSb26hAimO1JuhBuf
-	 HOKn+3UhV0zlkP4pR7QcDehLRheVugtdceZYfAXlD+8OsW2HVzF4GFbiozYNYNRdd
-	 EsVtzV1+1K9KKEJTyI/oW1gfKTZC0pkgO1XLVb+RE4uXN8ozIUtbTae37g+BJQnD9
-	 uNxSjY1R5nH0zQPxJ3XlCbEZT69UQX0hIuI23B6UOqoWpcAYhYD11ugUgl1lkU+X4
-	 dbKx6tmVFkuHTvR4CRRwpAkXq50QiKwia9H3c3IakxAyLs7fLDqVMclYQN/RAuIRl
-	 8FnLYzw4THj3DJCVRA==
+	b=LebiIaej+zKWDBUTcw0pvTD+pyvKhEiSS8GVWVpPl+3S+Hi2RIe6yV+QXGzNNWva
+	 YgEKmnY6iqwLYmMqmj5HZzaQxRf7wJwO19IMdnSUXTUJmxrsYOG4rCU9SN5CKDfK3
+	 3DLm8QHbzAmI+bcaAqA6VN1Yt3YuIn2TYrsxvHVuoC2gDbFz8ZIqIbAUTnOtlCnRX
+	 IK+Ca3Wyzs4AyfUQCojksyGyW/d12Yw4E57pN+AV4J7d93YCIovVJZLmA2AKFpCnZ
+	 S+HFKRU+nN6pbOLBPCySEG9/IANA3ap/B3czs2uSMxVDKitCuJ7W5MRh0Mqm/c66c
+	 7AC5ZLXEO3FnrOL0UA==
 X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from client.hidden.invalid by mail.gmx.net (mrgmx104
- [212.227.17.174]) with ESMTPSA (Nemesis) id 1N9MpY-1wR89E3Sho-012l6H; Sat, 31
- Oct 2026 16:19:13 +0100
-Message-ID: <b42192af-d9b6-4820-bff3-e3b6c6ce9bf2@gmx.com>
-Date: Sat, 31 Oct 2026 15:19:08 +0000
+Received: from client.hidden.invalid by mail.gmx.net (mrgmx105
+ [212.227.17.174]) with ESMTPSA (Nemesis) id 1MA7KU-1xG49r2qUc-000aM3; Sat, 31
+ Oct 2026 16:22:17 +0100
+Message-ID: <73f0a43e-e314-4a31-bf1d-184019d58ed8@gmx.com>
+Date: Sat, 31 Oct 2026 15:22:15 +0000
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-To: d@ilvokhin.com
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, david@kernel.org
 From: "Artem S. Tashkinov" <aros@gmx.com>
 Subject: mm: tmpfs: huge=always Kconfig help understates severe space
- amplification
+ amplification (follow up)
+To: d@ilvokhin.com
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, david@kernel.org
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:xPe759PgRxemlHDr55Fx082NlvzbE+Q1otpItHIcym3ZjYJ++Zn
- kZgmbtIF05SLsfsocZsjna0DWdPIacKvLbe+ghl3RzZZ6Xq45CI6Wlb5ZhE3Br0kURVWadz
- TGk5ukLRdKK/ys8rm8nIdTCOySWuZQmZt89jEXRgC4I/F48d7Wt7GdqCX64BUkob791e1Fm
- hNp4ZjW9xneUeKl1o4+eQ==
-UI-OutboundReport: notjunk:1;M01:P0:Nlp4ASWUcvY=;x26xLF1PeZhZYQMlPGuzCfCutpf
- 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
-X-Stat-Signature: 18xeru53mp9hn8fnbhyctto9twd9p6tj
+X-Provags-ID: V03:K1:EakrhKYLSKK9kx8IDSMb5I5bcILvuCw+uClaAE/S+xoPYkvJyra
+ VEhcKPmSYzRezCLX432l53KamuLLNtrFo+JFWWNTX7r0exCRGd8f88OU7GVQCEl3WLJY0Wg
+ juL9fPcWP6DzUZW0AoRemP81gboGcr1uesUG5EGfWLoWEp7XpvGDl8uDSbFwqN1PgKYNQZI
+ VSjNmqACtoneWoSXYkYVg==
+UI-OutboundReport: notjunk:1;M01:P0:PZT2iqREkeo=;KfkeL8/uE70dCQPrNUltOA5sr06
+ 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
+X-Rspam-User: 
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 2468D100008
 X-Spam-Status: No, score=-2.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
 	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS autolearn=no autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 09DFE1C0005
-X-Rspam-User: 
-X-HE-Tag: 1793459954-178000
-X-HE-Meta: U2FsdGVkX18et0/J9ZdXmMdJ6ccQRWhXEOTtXXcw3+oLxd4EZO5qeFq6AY557MAfV174Swe4BEcKoyWnZ1/xqzw8d0b4ucdEC3CbeP7DMaDQok7pK78DCfoD8v1745QdTO4ANgweVK4VzVT1J16dnJvnxUarQ83fJ3GKiI+0izGDgJSo58urrOhtGX6O9c6IVnyixvYKYIkooQ140wDMRZCTtx6ggKnCUheFP+C6uuKetAF+yJu0L1j7SWX/8+WV5NkVeh3zp9ni6CT+T1B0PIdRjXIqDLHM0xLUMR4OMC3SyNrQ3rpExFpw2Twt0VYOIdDGBZFhybAT9LdZobDs6HJtaLQD27UFho53p9ysajDXQWkqGLv5EPEe6J/f1TmnTnxk8brAdXyfrZBJhIwnNgLd6oh1/rjFrVrqs5KFSHiqyxS5ziiUMCJwC1gzecz9+/lbXSkI4DnGTLSFuZIki9qJkqH+uvqxIlDHkZjoqbMMy9FZAI+28yMtq0Vs2GNMgqZXdM0xI26drcufSMSvckL3zttNFptueDZUU6ocRRODZaU/O747O6aarB1/d76UMc6fdB6v925A583z0wPSiB8CW1iYOVqnnU33RjLSIKT0HIazKFarcMlmzZWBECpY1XUWKIL5QEDkF4wJkfZIRmN1ixYu0XFuL19nAJQYMhbj46ja8FpXJrSNNdjh8p3zC9tVJO6nW556nA1CwjzSSK6KeJrVgtHe9FETWTehwWJfhG5erdy43gzIjYVWB8EAnM5esjeU4M8OxKTwQkR03CmGYQ85bsahhwPqIebYkrFaNiUE1wsPkJcaKJjyTlcyv4soeKRv7+NLlkoHoFJluwDTVvuEZ4zjWDBqP9Kv8u/+tTNr4uYHeHKFtQi9HKEzH0n+7umD2jIFlUc2Nd7vqhtAzr7LYQIbl2sunjFXMQXOY3g/CKtU94Bew/XODIKXce2fQ8jWxZ622ujEjZa
- kn20Keqw
- y82hHq4sG8xiD78lW0a/DkWAzyDpucif5ohIGYgyvtVVYjzdUP32FcVzSNIdArV5AWtKrHF1d8+uDn5o6GTCTijD7O/Ed17Y3cWmlLJiyElnfiDJhar2joS6rRRdf2dr0jMk/m8w2TBuUDCTQqYLtKd2PN3M3R3rPJ/1m34fbArpxF4L2elKMrp9ywkW0e/TwJ8FG3u3Dmjag97SkPMPKuD4xIKTK5DaQXhWDxCbfL+YdvXP3mQCR5nUL6ayFttVL8gFlLg7dntVwb/3zhIE3GNs4ea/at1vPL1I5PF2HR4lyaxYGxSVQf6rHB3cX9jgoSt5l
+X-Stat-Signature: djez3kp8difx74tak6h398a5jmhkoprh
+X-HE-Tag: 1793460142-895582
+X-HE-Meta: U2FsdGVkX189yPwG4JkCOUj7JK/RYGc9GqO21Gh7fV3v9tO/0t0j3B2xhJgXPhWApkxBygQr37abtA/ZS+LYIicYo1csArqqqPxl2B0NG6xHtMovx8MwCbAOQIyU4AjfuNt27lNDsLyC7c48cvI+Z27jLGuQZc6M6wpWVITAhrSFOBIKvjIOBOFaW9PZHfOqedtdmI5tKe0S2TqCGKW/ktYM4aSHer1srY2ZRcxDnV5VFvpfn+djLf/cg2tbxlIRaznkyvJ4SNNs+qHC/Z5jgI0oydFW/x4ce8HhKNazsRJhrk849lDpWcYTcmZlTWzRyEWyocee/B0LODtJ5ZATCx0sNx6r9x/hHSXp2uc3S5W9+XgtTblTCUz0SmGmGyqzBez6r/O+3ljf+ofvvsf8upSsASwynGT32CSlEUULRCMvsrhU1SbTOQ1INr5BdUgLu/l8aalImDrTJnnT8RQOWKRKw1FvK+nFQXqD09AgCDN07GKUNGYn2HB8owgiRpRc3aEQ/jRwc3/e2kWx9qEZAuOyvUWHzEQo4nD+urNaJxPnSqcj1NCy1TY9SpVy7ITpjPLWVXJOpxQbfU4C03Xa/PQ9Kok58y5xnlVkcIiJqYEmm2Z6Pv17Uyy3FDRwYMcO7viCukeT1c30afDpNXAyhIaEqi1eCifllALxgfnM0XA7QffmeGkfpCIFn9QooUXJEBQi1MSS+KgDgZOiVDR1fNcAbsMIAQD3JVPrmNpLw4DBuFFoHdFaOZALVsikxybCNoUX02rmVFjmwjn2LDDniBlo9sQHsTgtrW2bOVK8fI1OQgjHMOvYcsiUowtxZbNxL62srv1/0Pvv3oJgeYxG3W8cSIbVpdk8iYFayEK0O0I8LpeYuN+2kGWPQqad730lg6VeALwuajHn6p8omgDkOsqHaEyeux/TAGfnkF7CvdWScvjPdBdS57rD0IPY2JpzPE6i01gfo7yt3l4ZEaS
+ c3ieT3Mm
+ xmVB+z/2NS4XeoUNg+FJKHj3he15oFwoCRX4QYFb4EhUkLFZdZVhn8gVNKM0w1cw5XgSYQdginkkth+y6hxw9V/f4isAhQKfYXNnyudtqb+sVdLv7NcgeEMKiH+NJ1WSXpuJwtXAQYgXoQzktTn7bpkRjafNs0b/qt1DiPaMoHO7Pd49dfIhY9Uouf7TmYpmCfkqfm02KvxCtspjaBXBpznyLrPs4Ro0aF3Un6/L7I5pUbm4X/UPkRoqzAEXxvxxOFPm0wGEuMD0s5OcND73nmtpJ67DRTxhXmyqWXqWbrTmNbPceWACHqVXAZON8OtXG2ZTv
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -194,112 +193,29 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 
 Hi Dmitry,
 
-I'd like to raise a documentation issue with the Kconfig option=20
-introduced by your patch:
+One additional observation concerning diagnostic tools:
 
-     mm: shmem/tmpfs hugepage defaults config choice
-
-Specifically, CONFIG_TRANSPARENT_HUGEPAGE_TMPFS_HUGE_ALWAYS.
-
-The help text currently says:
-
-     Always attempt to allocate hugepage for tmpfs mount, can
-     increase the memory footprint of applications without a
-     guaranteed benefit but it will work automatically for all
-     applications.
-
-I believe this substantially understates the potential consequences of=20
-selecting this option, particularly on general-purpose systems where=20
-/tmp is mounted as tmpfs.
-
-I recently encountered the following situation while extracting a Fedora=
+In this situation, ordinary du reports 45 GiB for a tree containing only=
 =20
-filesystem tree under /tmp on an x86-64 system running Linux 7.3.
+1.4 GiB of apparent data.
 
-The tmpfs mount had huge=3Dalways enabled.
+Although this is technically correct allocation accounting, it makes=20
+identifying the cause quite difficult. Both df and du show an almost=20
+full filesystem, while neither explains that huge-page allocation=20
+overhead is responsible for most of the consumption.
 
-     $ df -hT /tmp/Fedora
-     Filesystem  Type   Size  Used  Avail  Use%
-     tmpfs       tmpfs   48G   47G   925M   99%
+Only comparing du against du --apparent-size exposed the scale of the=20
+discrepancy.
 
-     $ du -sh /tmp/Fedora/usr
-     45G     /tmp/Fedora/usr
-
-     $ du -sh --apparent-size /tmp/Fedora/usr
-     1.4G    /tmp/Fedora/usr
-
-Even more strikingly:
-
-     $ du -sh /tmp/Fedora/usr/share/man/man3
-     7.5G    /tmp/Fedora/usr/share/man/man3
-
-     $ du -sh --apparent-size /tmp/Fedora/usr/share/man/man3
-     7.8M    /tmp/Fedora/usr/share/man/man3
-
-Thus, a directory containing just 7.8 MiB of apparent file data occupied=
+This reinforces the need for explicit Kconfig documentation: users=20
+investigating unexpectedly exhausted tmpfs filesystems may reasonably=20
+conclude that they have accumulated excessive data, rather than=20
+recognising that the selected allocation policy is consuming vastly more=
 =20
-approximately 7.5 GiB of allocated space.
+space than the contents require.
 
-The overall tree occupied approximately 45 GiB despite containing only=20
-1.4 GiB of apparent file data.
-
-This is consistent with severe allocation amplification caused by=20
-transparent huge pages, although I have not yet established the exact=20
-breakdown of huge-page allocations and other tmpfs overhead.
-
-The problem with the existing Kconfig help is not that it fails to=20
-mention additional memory consumption. It does mention that.
-
-The problem is that "can increase the memory footprint" gives no=20
-indication of the magnitude involved, nor does it explain the workloads=20
-most likely to suffer.
-
-A kernel builder selecting "always" may reasonably expect better=20
-performance at the cost of somewhat higher memory consumption. The help=20
-does not adequately warn that workloads involving many small files can=20
-experience extreme space amplification, potentially exhausting a tmpfs=20
-filesystem containing relatively little actual data.
-
-There is also an important distinction between enabling transparent huge=
-=20
-pages for selected workloads and making huge-page allocation the default=
-=20
-policy for all tmpfs mounts.
-
-I suggest expanding the Kconfig help text to explicitly mention:
-
-- The potential for very large allocation overhead with small files.
-- The risk of exhausting tmpfs space far sooner than apparent file sizes=
-=20
-would suggest.
-- The fact that selecting "always" is not a universal performance=20
-optimisation.
-- The availability of "never", "within_size", and "advise" as=20
-alternative policies.
-
-For example, the help might say:
-
-     Always attempt hugepage allocation for tmpfs mounts.
-
-     WARNING: This policy can substantially increase memory and
-     tmpfs space consumption, particularly for workloads creating
-     large numbers of small files. Allocated space may greatly
-     exceed apparent file sizes, potentially exhausting tmpfs
-     capacity even when relatively little file data is stored.
-
-     This setting does not guarantee improved performance and
-     should only be selected when its memory overhead is
-     understood and acceptable for the intended workload.
-
-     Consider "never", "within_size", or "advise" for
-     general-purpose systems.
-
-I appreciate that the upstream default remains "never". My concern is=20
-specifically that the help text does not adequately communicate the=20
-consequences of explicitly selecting "always".
-
-A more prominent warning would help kernel builders make an informed=20
-choice and avoid potentially severe memory consumption surprises.
+I am not suggesting that GNU du is itself defective. Rather, this is a=20
+diagnostic trap worth documenting alongside the configuration option.
 
 Regards,
 Artem
