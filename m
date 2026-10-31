@@ -1,117 +1,104 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA278606A32D
-	for <linux-mm@archiver.kernel.org>; Sat, 31 Oct 2026 08:36:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 160BC606A31C
+	for <linux-mm@archiver.kernel.org>; Sat, 31 Oct 2026 08:36:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=F9oz3JPD
+	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=UpsLjqpI
 Received: by kanga.kvack.org (Postfix)
-	id 0B2216B00EF; Sat, 31 Oct 2026 04:36:37 -0400 (EDT)
+	id 40F366B05B2; Sat, 31 Oct 2026 04:36:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 08B156B05B1; Sat, 31 Oct 2026 04:36:37 -0400 (EDT)
+	id 3E64F6B05B3; Sat, 31 Oct 2026 04:36:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EBC716B05B2; Sat, 31 Oct 2026 04:36:36 -0400 (EDT)
+	id 325316B05B4; Sat, 31 Oct 2026 04:36:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id C9ECE6B00EF
-	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 04:36:36 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 4A8651606B1
-	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 08:36:36 +0000 (UTC)
-X-FDA: 85382265192.04.D02D8FD
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf15.hostedemail.com (Postfix) with ESMTP id B3450A0004
-	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 08:36:34 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=F9oz3JPD;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf15.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 001436B05B2
+	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 04:36:56 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id F1CA41A08AF
+	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 08:36:54 +0000 (UTC)
+X-FDA: 85382265948.26.B116B6D
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 727D820006
+	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 08:36:53 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=UpsLjqpI;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf31.hostedemail.com: domain of lkp@intel.com designates 198.175.65.11 as permitted sender) smtp.mailfrom=lkp@intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793435794;
+	s=arc-20220608; t=1793435813;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lbspxFRuG1ePr26isPz4p8MVA1RRVBu6YGTJfFDFJ5g=;
-	b=baur4UsM9mEEG8tVv98dDxDt9HRd2qHs6yR+epTUtn+wYHiuv9NYZl/NnMpF6WVNwImutq
-	0vU1Hb2+VKTm03nybmPaW6HCzuB6K8g/POPkY7O206NSjqm3mZmO6SNEIoOdpc4BeqbKwR
-	atu8tXGXtsKVxOuGUqAVso2m+jTdo0E=
+	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references:dkim-signature;
+	bh=bJgvSlNrNKH1NoDZY0nuEfgdStiOApNnubWTBDknRnI=;
+	b=ommGmaC7Dk5kc1bVxRX+LAZX+0vtOKA7tXCH/iFIAaee+0rqtJttXU81uwjtj/s8zoeza7
+	EClF63ZP6TT4az4oUj7UmQS/vTHrzqJ2U4xnceI7xcXWxRY5hVqPl+om5cS30pHR0YcVyE
+	GLidWkE9RZSxI04KaE88RUHyfVcHXf8=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=F9oz3JPD;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf15.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	imf31.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=UpsLjqpI;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf31.hostedemail.com: domain of lkp@intel.com designates 198.175.65.11 as permitted sender) smtp.mailfrom=lkp@intel.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793435794;
-	b=OYoQb0V/TPAlYiUQEPlzz2nfcdG8YK5lTSsnCDNpFiA9EzCtUui8IxxdSlYoY5OdIws2vg
-	ipMwY2AQ2Fy9/Vik/LG1/Dh771t7P55LxujbyPdsOVXf7NNiE3HGloUAZFSm+g8Wkn53N5
-	+IsRBx+U6aFHsmuS8nHt1IrEdoGX9VE=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 17DD5600C8;
-	Sat, 31 Oct 2026 08:36:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 540411F000C1;
-	Sat, 31 Oct 2026 08:36:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793435793;
-	bh=lbspxFRuG1ePr26isPz4p8MVA1RRVBu6YGTJfFDFJ5g=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=F9oz3JPD7vvav88u5xwG7vZiDr3PnHUFI8fOXgW/Qd1UYCWIDNQvtcH5wnrMUl2nD
-	 LgnwKJhtkTJxWu8MetMbGDOY5Wy8qJIMQGTWBTUBKLmhz82MjiDIW6kgydZsv/YG/9
-	 TdkD1iMlnd4yW2qLxJzDaxj+UF9VRWE4rmUbZBX9EYi3r4TLX+Pe+yYs/90o4NSpBU
-	 lz/SF1rDjLZA1FWqQjdpR9CT5O8yO71D9uNO53N2BrYXkBUomlv19t1Ufrq8uPcUSJ
-	 Vh+9Nf0M9OI8tToK00G4syxyBAXlNe3QT8l3MMhOnXGekqpai2BlvkmNkpc6pvGPBG
-	 MwMQnO5Fjn14A==
-Date: Sat, 31 Oct 2026 08:36:18 +0000
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Alistair Popple <apopple@nvidia.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Baoquan He <baoquan.he@linux.dev>, 
-	Barry Song <baohua@kernel.org>, Brendan Jackman <brendan.jackman@linux.dev>, 
-	Byungchul Park <byungchul@sk.com>, Chengming Zhou <chengming.zhou@linux.dev>, 
-	Chris Li <chrisl@kernel.org>, Christoph Lameter <cl@gentwo.org>, 
-	Dave Chinner <david@fromorbit.com>, David Rientjes <rientjes@google.com>, 
-	Dennis Zhou <dennis@kernel.org>, Dev Jain <dev.jain@arm.com>, Gregory Price <gourry@gourry.net>, 
-	Hao Li <hao.li@linux.dev>, Harry Yoo <harry@kernel.org>, Hugh Dickins <hughd@google.com>, 
-	Jann Horn <jannh@google.com>, Johannes Weiner <hannes@cmpxchg.org>, 
-	John Hubbard <jhubbard@nvidia.com>, Joshua Hahn <joshua.hahnjy@gmail.com>, 
-	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Kiryl Shutsemau <kas@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
-	"Liam R. Howlett" <liam@infradead.org>, Matthew Brost <matthew.brost@intel.com>, 
-	Miaohe Lin <linmiaohe@huawei.com>, Michal Hocko <mhocko@kernel.org>, 
-	Mike Rapoport <rppt@kernel.org>, Muchun Song <muchun.song@linux.dev>, 
-	Naoya Horiguchi <nao.horiguchi@gmail.com>, Nhat Pham <nphamcs@gmail.com>, Nick Piggin <npiggin@gmail.com>, 
-	Nico Pache <nico.pache@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
-	Pedro Falcato <pfalcato@suse.de>, Peter Xu <peterx@redhat.com>, 
-	Peter Zijlstra <peterz@infradead.org>, Qi Zheng <qi.zheng@linux.dev>, Rakie Kim <rakie.kim@sk.com>, 
-	Rik van Riel <riel@surriel.com>, Roman Gushchin <roman.gushchin@linux.dev>, 
-	Ryan Roberts <ryan.roberts@arm.com>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Suren Baghdasaryan <surenb@google.com>, Tejun Heo <tj@kernel.org>, Uladzislau Rezki <urezki@gmail.com>, 
-	Usama Arif <usama.arif@linux.dev>, Vlastimil Babka <vbabka@kernel.org>, 
-	Will Deacon <will@kernel.org>, Xu Xin <xu.xin@linux.dev>, 
-	Ying Huang <ying.huang@linux.alibaba.com>, Youngjun Park <youngjun.park@lge.com>, Zi Yan <ziy@nvidia.com>, 
-	Jason Gunthorpe <jgg@ziepe.ca>, linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH 3/7] MAINTAINERS: add Zi Yan as co-maintainer for MEMORY
- MANAGEMENT - THP
-Message-ID: <auWn9O8Ryx6-yCXY@gremlin>
-References: <20261030-maintainers-v1-0-97278f8a5f54@kernel.org>
- <20261030-maintainers-v1-3-97278f8a5f54@kernel.org>
-X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261030-maintainers-v1-3-97278f8a5f54@kernel.org>
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: B3450A0004
-X-Stat-Signature: bqfqggcfdq5y6dhkqsaoaemj1tocrka5
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	t=1793435813;
+	b=iKlIxcdiNJObwtDwtr1bG7iIrSTz6rhSHLSEyFJyCnL3UH8zjGHfdZTYrVOUuQ/GY2VRp2
+	Sj1wSO29+y/ROaD5k7nQn39p8lxu12AL8f5YqZtQap9uPp4Hp1gv1ic1dM9f8YavUCP0Jx
+	EDoCEAqoTjxLtZstHYZJIP3VLt7GELw=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1793435812; x=1824971812;
+  h=date:from:to:cc:subject:message-id;
+  bh=dtvVYbFvIDyClFn9yLxM4QhxjXgihlmypuRixwz0OHQ=;
+  b=UpsLjqpIgElDIiYRJmV8wKEpxdA0T1nAvoR75vxAIiZGrxvQSMfblvd2
+   FQKTYzLVhOQSeUNHSyajNRGH3A/MG02WeeaA+UOMZ6WvYs7dcWkC/Wmoy
+   cgzedSobRslUK4z6E5XaYQ5yAqSzcbCf8iCI/2ICIXk9slDWU/BCORP+D
+   lxwk0hrlKgmc9mOh0IUPJDEfA9+O2CST1j+eIsYxd6eGuEmKYs5toXnS8
+   QHZHBsoUy6NdwnbrrSRQ2nfZ+GH8wi+Z9wiikqzemH/3WQbtLd7Ehx733
+   i5pngU5uEO2V0Fpe6F+fxBaXvkr+xKllIJCnPzTgC273Y+B78uyfXLJq1
+   Q==;
+X-CSE-ConnectionGUID: 65N3qB8kQBiS9uBSDa3h6A==
+X-CSE-MsgGUID: 2wrTlwfMQMWFTOspzA4ibQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11951"; a="2073554"
+X-IronPort-AV: E=Sophos;i="6.27,186,1787036400"; 
+   d="scan'208";a="2073554"
+Received: from fmviesa013.fm.intel.com ([10.60.135.153])
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Oct 2026 01:36:51 -0700
+X-CSE-ConnectionGUID: mphRazFYQZepekTuwCYghA==
+X-CSE-MsgGUID: q+ktFgiNTK2IKryNULnS7Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,186,1787036400"; 
+   d="scan'208";a="7454246"
+Received: from lkp-server01.sh.intel.com (HELO 0caa9d2d175c) ([10.239.97.150])
+  by fmviesa013.fm.intel.com with ESMTP; 31 Oct 2026 01:36:49 -0700
+Received: from kbuild by 0caa9d2d175c with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1xN4Zy-00000000cfc-19P3;
+	Sat, 31 Oct 2026 08:36:46 +0000
+Date: Sat, 31 Oct 2026 16:36:43 +0800
+From: kernel test robot <lkp@intel.com>
+To: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+Cc: oe-kbuild-all@lists.linux.dev, linux-kernel@vger.kernel.org,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Linux Memory Management List <linux-mm@kvack.org>,
+ "Christian Brauner (Amutable)" <brauner@kernel.org>
+Subject: arch/riscv/include/asm/syscall_wrapper.h:35:14: warning:
+ '__se_sys_userfaultfd' alias between functions of incompatible types 'long
+ int(ulong,  ulong,  ulong,  ulong,  ulong,  ulong,  ulong)' {aka 'long
+ int(long unsigned int,  long unsigned int,  long uns...
+Message-ID: <202610311814.sISpHHXr-lkp@intel.com>
+User-Agent: s-nail v14.9.25
+X-Rspamd-Queue-Id: 727D820006
+X-Stat-Signature: i6n4mc53t1j6ys8bhkxrr5qtp7h8cr3t
+X-Rspamd-Server: rspam04
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS
+	autolearn=ham autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-HE-Tag: 1793435794-904140
-X-HE-Meta: U2FsdGVkX19XHfI0Ej8JLb2y73nVIcdkB9QDTpjeGPk+7G47kUTRe5kKRgIK/Ixp9uMRc4QGx4oZgkmPRiBQEGyV+932tBzK1/lARbDvY+KPH4EuiWKpyX8mTDO/adW0Au8TBgTY3/in0KAOYd5HFn7esJM1PBuuOchXE7WJyePjhC9xMxiST4CSHmw4Aas6p1/hB6YbaaC8MIUr4kMJL6ASMazq8u7FihnOX5N74TjLfwSzi+rH7i77uhqXDQixFbJnXAanEZzNd+Nx+RIRaJUrPAwtSEecfzGYZ8XrJtspPPao934jKbZwJuGcCrtLH+o3FTOfrrETNVNjgnM3YeI54HBtJ3Y89VLZMlltfdCIvDDWiBmjTcIUm+6FwEOfknhNmetadk7GEgrCATt2fcTrpi8pF6nHG/I0NnZgPYg1wBlKf3+bhYBXMx+bRcT6V1QiA2BtLC5zWvAShSKo/x7oTJHRhURWc3Nu7KmXU4aKfjbPQXpFv1A+rvVO2ZikDV5IzqlmXmcGr36uIyxMiyUkRjEx0ZeQoGGQmGLl00mx7LDG30MPx/vq++XF9kRjp4r0MOQ2iVF2ivxwWkPMGLrA6Zz76Qx3mlLMtAMYdZpCIPLyXTKbKhXLgmnUdD3IqLslKnW/qzyEdya1I8kZuKy1lcW7UQ6o2REJ78TsFH14yM3c+eIw/G64iptK2wJp87IIcZ5EBOkV9NgMW4mlivakIBYfjLGdX0arjQd/eF0Ui8jidgRrfKsVFqQuyWZ3HL8hb/8pKZ6WlrIxcsyD3v2vg5VlX9IByEayRTO7BBTOgTBATkWwsa2VMIQSnQz5R/uoYwiIQhuLKrU6au7UnsmP0jnaKaP3bh2nB7rENoCcWoXM5ASoV+sFgec0VPCuAwX6/LuqWQDkRhKks7TyOLUE0ej+56LhR8bCs/LFqWCcmeqJmR7efDXKK2eIzM4DhdOCvU+cy48NHD3Wafi
- Yf/3m3R9
- IYLn8ISGAmFBGKAKEBfpvhNeKdvBZagerM5AaU6FyaeTT2oaecLIKmCiqzSS9ZWYMMxMRJvMzgXu5PyYbFd/Tcgqkrr9j10fsEAoo+1xTN4ClFrVKvr17zsWCGl9TYQjLDS1lVKmXc+RTbU5czLeUzIkhc+WLWNBW9J6NIJsmosTjtMG0rF06CF0FKJIlgBRNp7Ob1/SDMmOiALCORlt+n02J8/VSNiE0LQyrtpS9OQRpkIMfWzjdgR9CcQgK/F643iKoo3VVpjmM8LnX64geXsOjw8fItCjn0mqFKtSa5TsvrsCVb0jUp7oF8rkSJHUkl/RJ6SgAtdEr/HZcwa2LMUWpdki7S/eKlhz12F28u4pKeHygQjLCepFglEBnaPJAWkXSrkXUP/yplSqSd63T3a7W9K1az+UlUXJ9jtn6Wh9PcGmnPBUc32cj47RPgDx424RFMlgwbN+m3nm8nXzraVjggJCyJWrtydrivjLb7B7/3FwHusqptbayFxu9ikxQhc2JOsIhE5d4rnw=
+X-HE-Tag: 1793435813-31306
+X-HE-Meta: U2FsdGVkX1+biyj1S7zLuIxIbBYOthcRJJf5JlwhMkVaul7DvD7rr9xR0d5G3Y7R/1OpXuoLfquMYHEagu4T7lPsH3faKcSSNZMn3oZDK1TIArnqU6fn9jsIEr3hxsXVGE7uZkQF6VLdeHWWdT4Xac4OFpCCR5qlsnt+PKDKy7UVNuBMypegDFB+iroP5QPjW1Fvppq/dlvODLkkTboCXpGkQ4/2CXGfiR2YgrB2HZm4AJr7IEQASZKJkYo676tD6j7E9pyROeQq8Pk2TCeCS5Fxlk/DhaY5psA2uJEYlKOlIFOMmb4rX/brDEuKzGWbN7p/EooSVwcQpW0XvQH+o0V7n0mrRbSTtqwe/By/j5V/TIPtCiQA++MK1q8awjzSB1cBblUp0qYT0/zbsbnOHCDgrlfuw9lauC5BufIoshhGns1suFoyjcm/zxZNAtO3OI3SzLJyXZg+ob9O57SVtZpLcWhVop/Qvrvna8Pi9hkDGCTq5ySRVlo0SvB/YXeHdAhq1yaYUraKToXUOBY6MGD7JlA1qGqfC4mGAyuCU+s4SiF7agMy9MUO+4/aytT1P1CCgixkfUS919xCNXL7x6lh542mjiM4HZrJ1nRRGDsXaMl1Sj2XbOgnvUGVRM9db/ejmOXuv6dmSUsrHqRIdIVxmyRE1bk9br44qPiH3eglW9/OfrWsS9g3HhVjyREqTn1RlHXPR6i38p7E3gbNTcjHLVlwZjerh5Mru07XbLlf04wpNJ0ryEB7U5p5za9RwWWjfA6ryZlA9B/5uRHViWUHIQsfA2GifUrUampk5UODMpYhp53f+D64M8qEMMSjhLmyoo0J2IC1JLlV9g1IKCqm/LeLs/1JLDV6CgH7+sQu+EYx9dEEUa/T7BGBZtYFmeabSpytAEho8CcqczHgiOM1puIapwibaK+2c9cOCO68A5kaTm60gVYe/lN6v3HD6n7Rp5/zwSkyfP26j6j
+ ejmxmRpf
+ jmfzPmrfsSzWEumqgZHRCyc7aA8rSY3g1IUQxUQu9VOlJKIzU16OplY6CdU8o0nMhpF+Hd7VlTQdyXDgTjitBpw8dY/bLOtBYPe1Mq8EyDyQzQJNVZyyJ7H8Unvm1p6+iwMLQjwtr0mOk0+7RODhvCSe/xIEPo6+b7ZV48VUt7/yemCa+quY1/gB1LeO9AXxPnDmG6l7Uow4qAcRQtlZHvcvzYWcAURAdxkYqnFy5TKbgwOrfxONWJEUWqYBx9vOPmDDsJTZmbHDSAnH7BAEvVbJpu0+OzB8VwGFK5pyhpnb1vQE8FBIbEALDpOA4cw1XUq+gRXqGsUd563AtiXfBpXb2cFu65sSRqS9OjPQdBjQVhxL+QpOk6Zy8wErS1boMFKC1IBlZW6/NKu3Z04V8E/on9UWmn1s4e/i3sj2P0j5r63k6RAWSTxwyv7+L94pKRnp5rieBE8WTvKOEaWu4ouPoaw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -119,47 +106,108 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
+X-Archived-By: <archiver.kernel.org>
 
-On Fri, Oct 30, 2026 at 10:34:27PM +0100, David Hildenbrand (Arm) wrote:
-> Zi has been contributing to THP consistently and reliably over many
-> years and is considered one of our most valuable THP experts. As THP is
-> an especially active area lately, having a single dedicated THP maintainer
-> is not sustainable.
->
-> Fortunately, Zi volunteered to take on more responsibility by stepping
-> up as a THP co-maintainer. So let's do exactly that.
->
-> His placement in the MAINTAINERS entry is very convenient to perform
-> this change :)
->
-> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+Hi Mike,
 
-Amazing, congratulations Zi! :)
+FYI, the error/warning still remains.
 
-Acked-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git master
+head:   2a500a04d6f969318c05f46aedb6e73fc1963a00
+commit: 7bc5e747bba29d5b77b2278e8c696eea0c796706 userfaultfd: merge fs/userfaultfd.c into mm/userfaultfd.c
+date:   5 months ago
+config: riscv-randconfig-1000-20261031 (https://download.01.org/0day-ci/archive/20261031/202610311814.sISpHHXr-lkp@intel.com/config)
+compiler: riscv32-linux-gcc (GCC) 8.5.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20261031/202610311814.sISpHHXr-lkp@intel.com/reproduce)
 
-> ---
->  MAINTAINERS | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 0baeb37b0dcdc..02b5b542f81ee 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -17817,7 +17817,7 @@ F:	mm/swapfile.c
->  MEMORY MANAGEMENT - THP (TRANSPARENT HUGE PAGE)
->  M:	Andrew Morton <akpm@linux-foundation.org>
->  M:	David Hildenbrand <david@kernel.org>
-> -R:	Zi Yan <ziy@nvidia.com>
-> +M:	Zi Yan <ziy@nvidia.com>
->  R:	Baolin Wang <baolin.wang@linux.alibaba.com>
->  R:	Liam R. Howlett <liam@infradead.org>
->  R:	Nico Pache <nico.pache@linux.dev>
->
-> --
-> 2.43.0
->
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Fixes: 7bc5e747bba2 ("userfaultfd: merge fs/userfaultfd.c into mm/userfaultfd.c")
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202610311814.sISpHHXr-lkp@intel.com/
+
+All warnings (new ones prefixed by >>):
+
+   In file included from include/linux/compat.h:34,
+                    from arch/riscv/include/asm/elf.h:12,
+                    from include/linux/elf.h:6,
+                    from include/linux/module.h:20,
+                    from include/linux/device/driver.h:21,
+                    from include/linux/device.h:32,
+                    from include/linux/blk_types.h:11,
+                    from include/linux/writeback.h:13,
+                    from include/linux/memcontrol.h:23,
+                    from include/linux/rmap.h:12,
+                    from mm/userfaultfd.c:16:
+>> arch/riscv/include/asm/syscall_wrapper.h:35:14: warning: '__se_sys_userfaultfd' alias between functions of incompatible types 'long int(ulong,  ulong,  ulong,  ulong,  ulong,  ulong,  ulong)' {aka 'long int(long unsigned int,  long unsigned int,  long unsigned int,  long unsigned int,  long unsigned int,  long unsigned int,  long unsigned int)'} and 'long int(long int)' [-Wattribute-alias]
+     static long __se_##prefix##name(ulong, ulong, ulong, ulong, ulong, ulong,  \
+                 ^~~~~
+   arch/riscv/include/asm/syscall_wrapper.h:82:2: note: in expansion of macro '__SYSCALL_SE_DEFINEx'
+     __SYSCALL_SE_DEFINEx(x, sys, name, __VA_ARGS__)    \
+     ^~~~~~~~~~~~~~~~~~~~
+   include/linux/syscalls.h:236:2: note: in expansion of macro '__SYSCALL_DEFINEx'
+     __SYSCALL_DEFINEx(x, sname, __VA_ARGS__)
+     ^~~~~~~~~~~~~~~~~
+   include/linux/syscalls.h:225:36: note: in expansion of macro 'SYSCALL_DEFINEx'
+    #define SYSCALL_DEFINE1(name, ...) SYSCALL_DEFINEx(1, _##name, __VA_ARGS__)
+                                       ^~~~~~~~~~~~~~~
+   mm/userfaultfd.c:4475:1: note: in expansion of macro 'SYSCALL_DEFINE1'
+    SYSCALL_DEFINE1(userfaultfd, int, flags)
+    ^~~~~~~~~~~~~~~
+   arch/riscv/include/asm/syscall_wrapper.h:41:14: note: aliased declaration here
+     static long ___se_##prefix##name(__MAP(x,__SC_LONG,__VA_ARGS__))
+                 ^~~~~~
+   arch/riscv/include/asm/syscall_wrapper.h:82:2: note: in expansion of macro '__SYSCALL_SE_DEFINEx'
+     __SYSCALL_SE_DEFINEx(x, sys, name, __VA_ARGS__)    \
+     ^~~~~~~~~~~~~~~~~~~~
+   include/linux/syscalls.h:236:2: note: in expansion of macro '__SYSCALL_DEFINEx'
+     __SYSCALL_DEFINEx(x, sname, __VA_ARGS__)
+     ^~~~~~~~~~~~~~~~~
+   include/linux/syscalls.h:225:36: note: in expansion of macro 'SYSCALL_DEFINEx'
+    #define SYSCALL_DEFINE1(name, ...) SYSCALL_DEFINEx(1, _##name, __VA_ARGS__)
+                                       ^~~~~~~~~~~~~~~
+   mm/userfaultfd.c:4475:1: note: in expansion of macro 'SYSCALL_DEFINE1'
+    SYSCALL_DEFINE1(userfaultfd, int, flags)
+    ^~~~~~~~~~~~~~~
+
+
+vim +35 arch/riscv/include/asm/syscall_wrapper.h
+
+a9ad73295cc1e3a Sami Tolvanen 2024-03-11  16  
+a9ad73295cc1e3a Sami Tolvanen 2024-03-11  17  #define __SYSCALL_SE_DEFINEx(x, prefix, name, ...)					\
+a9ad73295cc1e3a Sami Tolvanen 2024-03-11  18  	static long __se_##prefix##name(__MAP(x,__SC_LONG,__VA_ARGS__));		\
+a9ad73295cc1e3a Sami Tolvanen 2024-03-11  19  	static long __se_##prefix##name(__MAP(x,__SC_LONG,__VA_ARGS__))
+a9ad73295cc1e3a Sami Tolvanen 2024-03-11  20  
+08d0ce30e0e4fcb Sami Tolvanen 2023-07-10  21  #define SC_RISCV_REGS_TO_ARGS(x, ...)							\
+08d0ce30e0e4fcb Sami Tolvanen 2023-07-10  22  	__MAP(x,__SC_ARGS								\
+08d0ce30e0e4fcb Sami Tolvanen 2023-07-10  23  	      ,,regs->orig_a0,,regs->a1,,regs->a2					\
+08d0ce30e0e4fcb Sami Tolvanen 2023-07-10  24  	      ,,regs->a3,,regs->a4,,regs->a5,,regs->a6)
+08d0ce30e0e4fcb Sami Tolvanen 2023-07-10  25  
+a9ad73295cc1e3a Sami Tolvanen 2024-03-11  26  #else
+a9ad73295cc1e3a Sami Tolvanen 2024-03-11  27  /*
+a9ad73295cc1e3a Sami Tolvanen 2024-03-11  28   * Use type aliasing to ensure registers a0-a6 are correctly passed to the syscall
+a9ad73295cc1e3a Sami Tolvanen 2024-03-11  29   * implementation when >word-size arguments are used.
+a9ad73295cc1e3a Sami Tolvanen 2024-03-11  30   */
+a9ad73295cc1e3a Sami Tolvanen 2024-03-11  31  #define __SYSCALL_SE_DEFINEx(x, prefix, name, ...)					\
+a9ad73295cc1e3a Sami Tolvanen 2024-03-11  32  	__diag_push();									\
+a9ad73295cc1e3a Sami Tolvanen 2024-03-11  33  	__diag_ignore(GCC, 8, "-Wattribute-alias",					\
+a9ad73295cc1e3a Sami Tolvanen 2024-03-11  34  			"Type aliasing is used to sanitize syscall arguments");		\
+a9ad73295cc1e3a Sami Tolvanen 2024-03-11 @35  	static long __se_##prefix##name(ulong, ulong, ulong, ulong, ulong, ulong, 	\
+a9ad73295cc1e3a Sami Tolvanen 2024-03-11  36  					ulong)						\
+a9ad73295cc1e3a Sami Tolvanen 2024-03-11  37  			__attribute__((alias(__stringify(___se_##prefix##name))));	\
+a9ad73295cc1e3a Sami Tolvanen 2024-03-11  38  	__diag_pop();									\
+653650c468be211 Sami Tolvanen 2024-03-26  39  	static long noinline ___se_##prefix##name(__MAP(x,__SC_LONG,__VA_ARGS__))	\
+653650c468be211 Sami Tolvanen 2024-03-26  40  			__used;								\
+a9ad73295cc1e3a Sami Tolvanen 2024-03-11  41  	static long ___se_##prefix##name(__MAP(x,__SC_LONG,__VA_ARGS__))
+a9ad73295cc1e3a Sami Tolvanen 2024-03-11  42  
+
+:::::: The code at line 35 was first introduced by commit
+:::::: a9ad73295cc1e3af0253eee7d08943b2419444c4 riscv: Fix syscall wrapper for >word-size arguments
+
+:::::: TO: Sami Tolvanen <samitolvanen@google.com>
+:::::: CC: Palmer Dabbelt <palmer@rivosinc.com>
 
 --
-Cheers, Lorenzo
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
