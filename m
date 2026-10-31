@@ -1,102 +1,101 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90DCA606A31A
-	for <linux-mm@archiver.kernel.org>; Sat, 31 Oct 2026 16:08:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2008606A31A
+	for <linux-mm@archiver.kernel.org>; Sat, 31 Oct 2026 16:27:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=RFz6wVcr
+	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=XroL3Nxk
 Received: by kanga.kvack.org (Postfix)
-	id ADF816B05B2; Sat, 31 Oct 2026 12:08:57 -0400 (EDT)
+	id 81D3B6B00EF; Sat, 31 Oct 2026 12:27:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A90706B05B3; Sat, 31 Oct 2026 12:08:57 -0400 (EDT)
+	id 7A6D66B05B1; Sat, 31 Oct 2026 12:27:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 97F4A6B05B4; Sat, 31 Oct 2026 12:08:57 -0400 (EDT)
+	id 66EBA6B05B2; Sat, 31 Oct 2026 12:27:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 7351E6B05B2
-	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 12:08:57 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 7B4BB40A50
-	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 16:08:56 +0000 (UTC)
-X-FDA: 85383405072.08.02907E8
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf12.hostedemail.com (Postfix) with ESMTP id B6B7140004
-	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 16:08:54 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RFz6wVcr;
-	spf=pass (imf12.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793462934;
-	b=a/iso38GB935RaBzJnA/ncJwIjmZ7OeVkZZHqrie+/06w4RKsXNN2bDbVnQ4AnWt1LsVze
-	a5O7ND1gjT7059nkP2/Fn+dC7D7LPXVY8ljW/UeCibyg4w6mp7WNqe8RS/DYOyFxm8MEal
-	U6OcX1Y4TN4QLx9MBElRV6y35mRZHEM=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RFz6wVcr;
-	spf=pass (imf12.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 3BAAF6B00EF
+	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 12:27:51 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id B51A5C09FC
+	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 16:27:50 +0000 (UTC)
+X-FDA: 85383452700.05.F10530E
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 0153540005
+	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 16:27:47 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=XroL3Nxk;
+	spf=pass (imf07.hostedemail.com: domain of lkp@intel.com designates 198.175.65.20 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793462934;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=s2q7xPa35BAHDOQ+++CerAIr4KoLioGpEtciQ77nd8I=;
-	b=kHHCMXTnvyEsToxDtBRMVzWNZJRdObjcqGfvxZlc9QGsxY9NOumUe7X9/1wubAsR/Bo//h
-	dk3bSocH5zAOaDDCn2ZKdQSQWuHh/QR2Jfkokni0mUgyUZPIG580bPonsNx/HR5y6QUZcX
-	DEJT/y5BS+si5qHh4E5Q/dDudqKLo84=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 930F742E0A;
-	Sat, 31 Oct 2026 16:08:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 458041F000C1;
-	Sat, 31 Oct 2026 16:08:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793462933;
-	bh=s2q7xPa35BAHDOQ+++CerAIr4KoLioGpEtciQ77nd8I=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=RFz6wVcrxaYAhcxuXI7cp40EcOByTPt3TcRCob4x2/H0sYHOepshkYVNvCEFSlkaR
-	 IT596bHj5O6rDliLpVBsNge083ivXclxxc944ty1Q67TAN+JiLcCPyuXzDKSEC8p7i
-	 XAchGsLDpt+PXzvARLQrpy8i0iyjTUC2r+sFQp3e5XQwBJcp4Q9UQ2+s9aIndbWFgp
-	 mMATntGmUsCbGqggjTwO+cKaI7Hws+wKNKDldGmp3cMECrNql+MCdew8EG26OLTmIh
-	 fQ+U3ui+pqEMH9EDxkkV8QHGmSx/Hh+y1nwlG3goMy6hMS7rQZq47HaNAWpJAYZcCi
-	 2FWKZAOcNs/1w==
-Message-ID: <sashiko-outbox-192033@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v4 2/2] rust: alloc: move `NumaNode` to the `numa`
- module
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Andreas Hindborg" <a.hindborg@kernel.org>, "Miguel Ojeda" <ojeda@kernel.org>, "Boqun
- Feng" <boqun@kernel.org>, "Gary Guo" <gary@garyguo.net>, =?utf-8?b?Qmo=?=
- =?utf-8?b?w7ZybiBSb3kgQmFyb24=?= <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Alice
- Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>, "Danilo
- Krummrich" <dakr@kernel.org>, "Daniel Almeida" <daniel.almeida@collabora.com>, "Tamir
- Duberstein" <tamird@kernel.org>, "Alexandre Courbot" <acourbot@nvidia.com>,
- =?utf-8?b?T251ciDDlnprYW4=?= <work@onurozkan.dev>, "Thomas Gleixner" <tglx@kernel.org>, "Peter
- Zijlstra" <peterz@infradead.org>, "Lorenzo Stoakes" <ljs@kernel.org>, "Vlastimil
- Babka" <vbabka@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, "Uladzislau
- Rezki" <urezki@gmail.com>, "Yury Norov" <yury.norov@gmail.com>, "Yury Norov" <ynorov@nvidia.com>, "Andrew
- Morton" <akpm@linux-foundation.org>
-Cc: "Rasmus Villemoes" <linux@rasmusvillemoes.dk>, "Suren Baghdasaryan" <surenb@google.com>, "Michal
- Hocko" <mhocko@suse.com>, "Brendan Jackman" <brendan.jackman@linux.dev>, "Johannes
- Weiner" <hannes@cmpxchg.org>, "Zi Yan" <ziy@nvidia.com>, linux-mm@kvack.org
-In-Reply-To: <20261030-cpu-helpers-v4-2-a8d840d34837@kernel.org>
-References: <20261030-cpu-helpers-v4-0-a8d840d34837@kernel.org>
- <20261030-cpu-helpers-v4-2-a8d840d34837@kernel.org>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Sat, 31 Oct 2026 16:08:51 +0000
+	s=arc-20220608; t=1793464068;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references:dkim-signature;
+	bh=UVVdTSFlwxyqD/9fw01xgyqC8L1ZKUkJ/4Vb6MjowdE=;
+	b=qcs5A/Qblbw3ACfPlI0gvoUNuMwjJJGC+K+yUcfEWPdYTXEyVY4lNgNUhCg/ishYFK6tcG
+	vZig3uOGPKzxlGgzkGE/zZORU2z5XNLh1KfurDMaSnrxGNFvKR405cFrAVmbBWY9vkZYqx
+	Zw5ghkTod8SGWJxMzk6e2MDivGrFro0=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793464068;
+	b=F2F1Cfct0wDcAhgAZPJJtFHnw2HEYZ4m8teEO/WthC7GsDrz80hbvlTHiYshDknylZLb29
+	hEMncJvgnhRWBZBml8syJNYgvuK7HuShjJP1uV21GJS6UWF4b1xIDz/o2LtaGmsOmWF8XB
+	FyuhwzOmXnapdjwZnbSJWI6NG+nDlsw=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=XroL3Nxk;
+	spf=pass (imf07.hostedemail.com: domain of lkp@intel.com designates 198.175.65.20 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1793464068; x=1825000068;
+  h=date:from:to:cc:subject:message-id;
+  bh=1JMBdD6kmsJXQXLrXcqnjEnGPYiEwTJuslCd16FCcGY=;
+  b=XroL3Nxk5fD4S8FqTgnzW4nvrL45AeNn7ZaVlPMB7b7V4TeHJD3BDnD2
+   K7deK09ryA5x/UUHvnxoBFBsylfOEy9fTmd5nqLoTRqLHU5RZsT9zaPlj
+   2Toq6dDkqqoKkVqLEA44R2uac7s3nrDzVWSpAzQoM4quPfB+3jhdYoYGL
+   ++wxMsQjCWzSTPysmz9KjwYu+VpWDUXE56eKeqDG8RGK6TTga2EN1Gr3o
+   vVdE9OX3U6CV70O7BcgChx5VqSdvxQ0P2ULWgmLinri0sq90pqwArVsnk
+   BOhJ+9262uHlS1D/Ff2nkJSalkaNzzPCyBVQrfUFOOr3YJnMhkMzSofZq
+   w==;
+X-CSE-ConnectionGUID: WcFUriz4TOSllcEwY/7VtQ==
+X-CSE-MsgGUID: szc0TwThSeaVek66Bohe+A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11952"; a="2232492"
+X-IronPort-AV: E=Sophos;i="6.27,188,1787036400"; 
+   d="scan'208";a="2232492"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Oct 2026 09:27:47 -0700
+X-CSE-ConnectionGUID: UB1lXirFR+e/lvukiJcyYQ==
+X-CSE-MsgGUID: vcMsiHUZTi2qCpCKgHjBTQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,188,1787036400"; 
+   d="scan'208";a="6027981"
+Received: from lkp-server01.sh.intel.com (HELO 0caa9d2d175c) ([10.239.97.150])
+  by fmviesa001.fm.intel.com with ESMTP; 31 Oct 2026 09:27:45 -0700
+Received: from kbuild by 0caa9d2d175c with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1xNBvh-00000000cyi-3zh3;
+	Sat, 31 Oct 2026 16:27:41 +0000
+Date: Sun, 01 Nov 2026 00:27:24 +0800
+From: kernel test robot <lkp@intel.com>
+To: David Hildenbrand <david@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Linux Memory Management List <linux-mm@kvack.org>,
+ mm-commits@vger.kernel.org
+Subject: [akpm-mm:mm-new] BUILD SUCCESS
+ 243e8cdab64129d6207c398f8cf5fbb1962ff7e1
+Message-ID: <202611010020.uHV1BRFO-lkp@intel.com>
+User-Agent: s-nail v14.9.25
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 0153540005
+X-Stat-Signature: n15sz339nmy9mnbwwwpcy7uarstwd3ks
 X-Rspam-User: 
-X-Rspamd-Queue-Id: B6B7140004
-X-Stat-Signature: 1awbo4qb15ezfnfmp7ucyk5tx54kn6tq
-X-Rspamd-Server: rspam01
 X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
-X-HE-Tag: 1793462934-748328
-X-HE-Meta: U2FsdGVkX18mFElQH2gSadKyNJSE+nnJphfTgF9JfqjkwGKXe9UxT6rg7KJMt4Mqya2r5suKCH31JTIqXrirQ1BBR1fQ3zp/wsmBmhDcJ4EnlgcBsKK00JZLzC7HTaQyMVN3IVmQvnIJxX/TTJdUHPNiGLNnkV90QfYwkT4Zd6IHgir4G+9i1Mdrpa+Tafiw2vSDouQ9XzdaAFwnEKkZHXYF5+FAlRinImcp9IIw20vnIWoPOuR1wDr8ckA+TjWzomrbYXPKuNpU74kTGvfD8Z8cMumUX7ys6M37zcY4fQ2jmohdP23FhshKu2dsKBwUrB2eV6n7SSOXih7Ji+g4HdhqpYuZvxi3X4bQ8sll/EziyEvB8gf2wrK/9zDg89puvZLAcboZZAZPwpBzqvyx4oteF/oLVC3ZZIVRPlaFcgwFb9g3Z87VpsOp5UKStQff187165ZlE+0lYfbATcm/hqwfvD9GikmkLVvSLRsgt1P3b8m+zCzbDoOQSLPZfG3lYqx6dnvaJvnUepHFAr1pwdaMBuhGbjq36b/bBSkCylcC4XhPEQnTh7kZq9+hOO1pu2yfmXeXfXi4Io4l1pTT3UBohxTK9t8FXLMpuDF/MgwIqKmlz4cRIi943lzgEkHqmf9QVb8M7JVX/ZkIR0eK0FMIlicwl6FJm5RKql4wG5WeM3cxrxtj0JGCeoxgw5np3L7eWVWakA5xFxnsyXRpim+FbITANLnt5M1YSQXKjHUqaHXp4b2ApSmkoyPfLmaPk7vLQ7nU1YjKp6/DWxFpdQOufKzwbuhNUVs5LChoIVS0JMmDC403Suq/vC3uSMV00xrbSpb/m1epQoUtMmEgQBkvX6XXYXsWw3qNb5te+wvh5mbyOG8nL/RU2WlCLNjbOpQkJRiPf+r2K+P7CN9bHHRhoS+GcS71XRA2rAEx/Xz9+/MCfv/zIR9Q/dpMGNlgVdhyIYHqJ/Azwp1XPst
- JcaiuinM
- CGSG7Eyxv7IYiM9uIfLvCKRdGZMDpQCN+tP8DOOaU0obpaxlE30H59MqjMXWB+piFDZnV30CuYBmsofZTRt3eVzmOKx6Q57xMIArERlzJqbSFsAb07LKnZRzcszQuW/1mB8s49a/RBpwUP+zKRah0LCCWgS4hldMHmIfrBvOMVImD/ePQtRW2nJ8tX8klW80aAQ/TpoXE8AL8soKJyH3vWaaHxMus98VT3cWPx8DH8FS7H5fZJ+7bHQaDIa8mV58oPIl5Nmj0eQG8pgofHwMEsEdVR3P/y0rPHvfTGTvAl4E3z/uomKsSnwFFyeO8sq9TS0BRmWi0flqvBjPlY+gJqxmE54i4q8MB5fu3lZnvX6Vg0wc63MSVBQmiTWwfc1dg3SlavY4CF9eGvV1vPpTagRQ+jhm8CcpYWk/ARFKpiN5wpO9woeat4G3BB6yWi6Tbibmknum1fm6jbCf2jgWQATdHgCAHaILYPEy3AmzqeWEtzxuFePEHIfW81m88x1pHiitYutYHSiXVIsDsfX7Z5AUj2EPZpQElC+Txw/5byypplTk4hQDS78I3cIiRvnQFniduWcJ9LHz9pmkW0mp9FyqsQvgDQIwqkbWoB6FfWR7llMS3BR39uR4rU1HIaaUivmCNrhK7fs3hfVqY7MZAU5uMKsrSbROgbZEVNhd98PBl/D9JT0P+JhpI/g==
+	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS
+	autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1793464067-432822
+X-HE-Meta: U2FsdGVkX1+7cXzyMvD58tuwkcvxzVI+nbUi179B89PmWefP3+dWwjWoUiNZ/s2mqOEpR8KlFykNLLp1wMNasxIcc5xvdDclCtDdsN8H9sz2raOoUII/XG1lfuNK6R2sdxMoiHGFoyWBZto4ynRmj/jlEhGcQqThnni8T6/EzOJ+J9Eg475OQskrK+eHdEwf73dlfNmCTz6duqlpTVNOtZD1M12A/htXHFxQCIGVmEPfzRqpP5j21ZY3GyoLjjkGUMkGD3SAtc3pUvtgPU+WzIMOK8xsEj35dxP8IS6Y34abNdd7dXptvqnESyWdh7nnHonJXi9Sw1MjVgOWnOVlMdW4calgp70cfNj0yZjNQA3CUeWO5Mh/lww1qDFyOpMdUfp7AFDct9Wv7ipLF7qvG4UBdGUDo2Mz6UdC3HcRfBsYVnFMQ2WWQkm39D2DKT4eNrUCW+IYBRVtYudsdh2zoVdOEal09ZdBDk3gwOqxhEnhLpdbGmNT+vupAa8pd6AlRlN4685ghIFwkkMP53oGjO0uzlU8dMKSM/F7MLDGVhS0hoF4PHt2xcKt50/uAWTsHaN3xJJ8YGZ4NnuK/WUZQ5Q7ZuqtblrfDkepEIUwMmokBLI/mc6sKZnnj9tbmMLxzBZMXA4YUA5HfAnWEsFu1J8h7BS5+maGRQhq5bRyVsdj4JOt1Pbi94GMU6bhLaqC1hzsn1ixLBpT4ukxmHYMYmjX38EaTuxJzP89Meosf+M062nQar9QUjc1uQ5093Q8bWajzCfJunjo6wRJXQAqn2LgYXk9Zd1gBd8esi6ilj1NjcIJLVkG5kkj0JJTHoUUZ0eIftH2eHJo9b7sCGCZzXVcPfOu8Dh2G0IOGlLfMHtXmaiXB5kdzeWNyFN1mOqmb3AFgMfS3PLsHbXtndJsrFLq2ZTYj3GEoDCwDsBMb0L2MEb2fyRQa2LHtC+6PlMimgJwFV6MezUEeMRmale
+ R1Rxg1CH
+ 6DMjAMNDKG/cJVyr4fMDgyEnKtOF7hg8iQa43RhKCZS4oQKECg7U/ZgeHQfU5GZoD+ONrnAdKii+nVdYpTaVHxeCrhTd9TUmIJMZ7N1h/VH8Fdp43Qe6sls7Yar9EfbYTnYi4VCtUIYAaNwyNSwdOhWZ5A4c+Sa6SHtDDeJOoQZtRWE39Bh9pwmlVe4InOqkZCCB07rtRZcSLdNs=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,65 +105,186 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 X-Archived-By: <archiver.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [Low] rust: missing #[inline] on NumaNode::as_raw()
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-new
+branch HEAD: 243e8cdab64129d6207c398f8cf5fbb1962ff7e1  riscv: mm: fix concurrency in mark_new_valid_map()
+
+elapsed time: 966m
+
+configs tested: 166
+configs skipped: 4
+
+The following configs have been built successfully.
+More configs may be tested in the coming days.
+
+tested configs:
+alpha                              allnoconfig    gcc-16.2.0
+alpha                             allyesconfig    gcc-16.2.0
+alpha                                defconfig    gcc-16.2.0
+arc                               allmodconfig    gcc-16.2.0
+arc                                allnoconfig    gcc-16.2.0
+arc                               allyesconfig    gcc-16.2.0
+arc                                  defconfig    gcc-16.2.0
+arc                   randconfig-1000-20261031    gcc-9.5.0
+arc                   randconfig-1001-20261031    gcc-8.5.0
+arc                     vdk_hs38_smp_defconfig    gcc-16.2.0
+arm                                allnoconfig    clang-17
+arm                               allyesconfig    gcc-16.2.0
+arm                                  defconfig    clang-24
+arm                          mv78xx0_defconfig    clang-24
+arm                   randconfig-1000-20261031    clang-17
+arm                   randconfig-1001-20261031    gcc-13.5.0
+arm                   randconfig-1002-20261031    clang-21
+arm                   randconfig-1003-20261031    gcc-13.5.0
+arm                           sp7021_defconfig    gcc-16.2.0
+arm                          wpcm450_defconfig    gcc-16.2.0
+arm64                             allmodconfig    clang-24
+arm64                              allnoconfig    gcc-16.2.0
+arm64                                defconfig    gcc-16.2.0
+arm64                 randconfig-1000-20261031    gcc-8.5.0
+arm64                 randconfig-1001-20261031    clang-24
+arm64                 randconfig-1002-20261031    gcc-10.5.0
+arm64                 randconfig-1003-20261031    gcc-12.5.0
+csky                              allmodconfig    gcc-16.2.0
+csky                               allnoconfig    gcc-16.2.0
+csky                                 defconfig    gcc-16.2.0
+csky                  randconfig-1000-20261031    gcc-13.5.0
+csky                  randconfig-1001-20261031    gcc-16.2.0
+hexagon                           allmodconfig    clang-24
+hexagon                            allnoconfig    clang-24
+hexagon                              defconfig    clang-24
+hexagon               randconfig-1000-20261031    clang-24
+hexagon               randconfig-1001-20261031    clang-24
+i386                              allmodconfig    gcc-14
+i386                               allnoconfig    gcc-14
+i386                              allyesconfig    gcc-14
+i386        buildonly-randconfig-1000-20261031    clang-22
+i386        buildonly-randconfig-1001-20261031    clang-22
+i386        buildonly-randconfig-1002-20261031    clang-22
+i386        buildonly-randconfig-1003-20261031    clang-22
+i386        buildonly-randconfig-1004-20261031    gcc-14
+i386        buildonly-randconfig-1005-20261031    gcc-14
+i386                                 defconfig    clang-22
+i386                  randconfig-1000-20261031    gcc-13
+i386                  randconfig-1001-20261031    gcc-14
+i386                  randconfig-1002-20261031    clang-22
+i386                  randconfig-1003-20261031    gcc-14
+i386                  randconfig-1004-20261031    clang-22
+i386                  randconfig-1005-20261031    clang-22
+i386                  randconfig-1006-20261031    clang-22
+i386                  randconfig-1007-20261031    clang-22
+i386                  randconfig-1008-20261031    clang-22
+i386                  randconfig-1009-20261031    clang-22
+i386                  randconfig-1010-20261031    gcc-14
+i386                  randconfig-1011-20261031    gcc-12
+i386                  randconfig-1012-20261031    gcc-14
+i386                  randconfig-1013-20261031    clang-22
+loongarch                         allmodconfig    clang-19
+loongarch                          allnoconfig    clang-20
+loongarch                            defconfig    clang-24
+loongarch             randconfig-1000-20261031    clang-24
+loongarch             randconfig-1001-20261031    clang-24
+m68k                              allmodconfig    gcc-16.2.0
+m68k                               allnoconfig    gcc-16.2.0
+m68k                              allyesconfig    gcc-16.2.0
+m68k                                 defconfig    gcc-16.2.0
+microblaze                         allnoconfig    gcc-16.2.0
+microblaze                        allyesconfig    gcc-16.2.0
+microblaze                           defconfig    gcc-16.2.0
+mips                              allmodconfig    gcc-16.2.0
+mips                               allnoconfig    gcc-16.2.0
+mips                              allyesconfig    gcc-16.2.0
+nios2                             allmodconfig    gcc-11.5.0
+nios2                              allnoconfig    gcc-11.5.0
+nios2                                defconfig    gcc-11.5.0
+nios2                 randconfig-1000-20261031    gcc-11.5.0
+nios2                 randconfig-1001-20261031    gcc-11.5.0
+openrisc                          allmodconfig    gcc-16.2.0
+openrisc                           allnoconfig    gcc-16.2.0
+openrisc                             defconfig    gcc-16.2.0
+parisc                            allmodconfig    gcc-16.2.0
+parisc                             allnoconfig    gcc-16.2.0
+parisc                            allyesconfig    gcc-16.2.0
+parisc                               defconfig    gcc-16.2.0
+parisc                randconfig-1000-20261031    gcc-15.3.0
+parisc                randconfig-1001-20261031    gcc-13.5.0
+parisc64                             defconfig    gcc-16.2.0
+powerpc                           allmodconfig    gcc-16.2.0
+powerpc                            allnoconfig    gcc-16.2.0
+powerpc               randconfig-1000-20261031    gcc-12.5.0
+powerpc               randconfig-1001-20261031    clang-24
+powerpc                      skiroot_defconfig    clang-24
+powerpc64             randconfig-1000-20261031    clang-24
+powerpc64             randconfig-1001-20261031    clang-24
+riscv                             allmodconfig    clang-24
+riscv                              allnoconfig    gcc-16.2.0
+riscv                             allyesconfig    clang-24
+riscv                                defconfig    clang-24
+riscv                 randconfig-1000-20261031    gcc-8.5.0
+riscv                 randconfig-1001-20261031    gcc-8.5.0
+s390                              allmodconfig    clang-24
+s390                               allnoconfig    clang-24
+s390                              allyesconfig    gcc-16.2.0
+s390                                 defconfig    clang-18
+s390                  randconfig-1000-20261031    gcc-12.5.0
+s390                  randconfig-1001-20261031    gcc-8.5.0
+sh                                allmodconfig    gcc-16.2.0
+sh                                 allnoconfig    gcc-16.2.0
+sh                                allyesconfig    gcc-16.2.0
+sh                                   defconfig    gcc-16.2.0
+sh                             hp6xx_defconfig    gcc-16.2.0
+sh                    randconfig-1000-20261031    gcc-9.5.0
+sh                    randconfig-1001-20261031    gcc-16.2.0
+sh                            se7619_defconfig    gcc-16.2.0
+sh                    secureedge5410_defconfig    gcc-16.2.0
+sparc                              allnoconfig    gcc-16.2.0
+sparc                                defconfig    gcc-16.2.0
+sparc                 randconfig-1000-20261031    gcc-8.5.0
+sparc                 randconfig-1001-20261031    gcc-15.3.0
+sparc64                           allmodconfig    clang-20
+sparc64                              defconfig    clang-24
+sparc64               randconfig-1000-20261031    gcc-12.5.0
+sparc64               randconfig-1001-20261031    gcc-8.5.0
+um                                allmodconfig    clang-17
+um                                 allnoconfig    clang-17
+um                                allyesconfig    gcc-14
+um                                   defconfig    clang-24
+um                              i386_defconfig    gcc-14
+um                    randconfig-1000-20261031    gcc-12
+um                    randconfig-1001-20261031    clang-24
+um                            x86_64_defconfig    clang-24
+x86_64                             allnoconfig    clang-22
+x86_64      buildonly-randconfig-1000-20261031    gcc-14
+x86_64      buildonly-randconfig-1001-20261031    gcc-14
+x86_64      buildonly-randconfig-1002-20261031    gcc-14
+x86_64      buildonly-randconfig-1003-20261031    clang-22
+x86_64      buildonly-randconfig-1004-20261031    gcc-14
+x86_64      buildonly-randconfig-1005-20261031    clang-22
+x86_64                               defconfig    gcc-14
+x86_64                randconfig-1000-20261031    gcc-14
+x86_64                randconfig-1001-20261031    gcc-14
+x86_64                randconfig-1002-20261031    clang-22
+x86_64                randconfig-1003-20261031    gcc-14
+x86_64                randconfig-1004-20261031    clang-22
+x86_64                randconfig-1005-20261031    clang-22
+x86_64                randconfig-1006-20261031    gcc-14
+x86_64                randconfig-1007-20261031    clang-22
+x86_64                randconfig-1008-20261031    clang-22
+x86_64                randconfig-1009-20261031    clang-22
+x86_64                randconfig-1010-20261031    gcc-14
+x86_64                randconfig-1011-20261031    clang-22
+x86_64                randconfig-1012-20261031    gcc-12
+x86_64                randconfig-1013-20261031    gcc-14
+x86_64                randconfig-1014-20261031    gcc-14
+x86_64                randconfig-1015-20261031    clang-22
+x86_64                randconfig-1016-20261031    gcc-14
+x86_64                randconfig-1017-20261031    gcc-14
+x86_64                           rhel-9.4-rust    clang-22
+xtensa                             allnoconfig    gcc-16.2.0
+xtensa                            allyesconfig    gcc-16.2.0
+xtensa                randconfig-1000-20261031    gcc-11.5.0
+xtensa                randconfig-1001-20261031    gcc-9.5.0
+
 --
-
-commit 642cdfa1b2261df4d8bb7af89b382fd608fe93f2
-Author: Andreas Hindborg <a.hindborg@kernel.org>
-
-rust: alloc: move `NumaNode` to the `numa` module
-
-This commit moves the NumaNode type from the alloc module to the numa
-module and adds an as_raw() accessor so callers outside the numa module
-can obtain the raw node ID.
-
-Link: https://lore.kernel.org/all/aiZvKPFCkqJUsP0a@google.com/
-
-> diff --git a/rust/kernel/numa.rs b/rust/kernel/numa.rs
-> index 164e622d325f8..4a3a880308f3d 100644
-> --- a/rust/kernel/numa.rs
-> +++ b/rust/kernel/numa.rs
-[ ... ]
-> @@ -27,3 +30,33 @@ pub fn num_online_nodes() -> u32 {
->          bindings::nr_online_nodes
->      }
->  }
-> +
-> +/// Non Uniform Memory Access (NUMA) node identifier.
-> +#[derive(Clone, Copy, PartialEq)]
-> +pub struct NumaNode(i32);
-> +
-> +impl NumaNode {
-> +    /// Create a new NUMA node identifier (non-negative integer).
-> +    ///
-> +    /// Returns [`EINVAL`] if a negative id or an id exceeding [`binding=
-s::MAX_NUMNODES`] is
-> +    /// specified.
-> +    pub fn new(node: i32) -> Result<Self> {
-> +        // MAX_NUMNODES never exceeds 2**10 because NODES_SHIFT is 0..10.
-> +        if node < 0 || node >=3D bindings::MAX_NUMNODES as i32 {
-> +            return Err(EINVAL);
-> +        }
-> +        Ok(Self(node))
-> +    }
-> +
-> +    /// Get the raw representation of this node identifier.
-> +    pub(crate) fn as_raw(self) -> i32 {
-> +        self.0
-> +    }
-
-[Severity: Low]
-As reported by Sashiko on v3 [1], this isn't a bug, but should
-NumaNode::as_raw() in rust/kernel/numa.rs be marked #[inline] since it is
-a small accessor function in the kernel crate called by
-ReallocFunc::call() in rust/kernel/alloc/allocator.rs?
-
-[1] https://lore.kernel.org/r/20260929-cpu-helpers-v3-3-e968ce5ee613@kernel=
-.org
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261030-cpu-helper=
-s-v4-0-a8d840d34837@kernel.org?part=3D2
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
