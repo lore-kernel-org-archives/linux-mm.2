@@ -1,97 +1,133 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 244EE606A324
-	for <linux-mm@archiver.kernel.org>; Sat, 31 Oct 2026 08:03:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 498F5606A320
+	for <linux-mm@archiver.kernel.org>; Sat, 31 Oct 2026 08:30:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=MtOdxnO+
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ClYhZINu
 Received: by kanga.kvack.org (Postfix)
-	id 492266B05B1; Sat, 31 Oct 2026 04:03:29 -0400 (EDT)
+	id EB13B6B00EF; Sat, 31 Oct 2026 04:30:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 46A026B05B2; Sat, 31 Oct 2026 04:03:29 -0400 (EDT)
+	id E61CE6B05B1; Sat, 31 Oct 2026 04:30:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3A7CE6B05B3; Sat, 31 Oct 2026 04:03:29 -0400 (EDT)
+	id D50F56B05B2; Sat, 31 Oct 2026 04:30:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 1AB3E6B05B1
-	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 04:03:29 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 8DB751408D3
-	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 08:03:28 +0000 (UTC)
-X-FDA: 85382181696.08.7ED2541
-Received: from mta1.migadu.com (out-159.mta1.migadu.com [95.215.58.159])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 5CDFA80003
-	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 08:03:26 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=MtOdxnO+;
-	spf=pass (imf02.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.159 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id AF54E6B00EF
+	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 04:30:35 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id A6B2A1A08AF
+	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 08:30:33 +0000 (UTC)
+X-FDA: 85382249946.19.CFC7E7F
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 0C07D20008
+	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 08:30:31 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ClYhZINu;
+	spf=pass (imf03.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793433806;
+	s=arc-20220608; t=1793435432;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gbmKrXUxMGpkX3MNHgLNV7gSiCM3yMUiLklT1taAK08=;
-	b=WQUAJMVLfBEe/ZnNEcdIylIyNS/U0RM6kgnwJhAtZDyHhr2TOD8Req08WPBrbUGwjPJgR6
-	OjMoELinqSEV7tOJb/EDrEV10qcgxI1vqBpSx4fdCE4mKBzmKEHeS9dOEfFlA9s1eoDZBf
-	AENyb5lgImt0qiF5t6ZRe/TJTk4p7pg=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=MtOdxnO+;
-	spf=pass (imf02.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.159 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	bh=spOkjFwUciiGe8KT5cGcnRY9XKTmmpVqexi2Bqbn5rE=;
+	b=M8+8qA8aQE1KwlFEmpYHJCD/YetksAKWZBH+X5SdXVLLPvYBBp2THS1I/fh4qMs3h1vEHT
+	SeWvVUc4DTXiDHgw5OvpYlyZTgk3y35ZUmfKwBdvYdnfskCky0ao4FKkdRwiq8XMld84ei
+	15E343E6nZYj8b6Af2SjPehIIrKFdL4=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793433806;
-	b=aRwbM4J+J7iCaLumsMXnKSkcjWLJjvMWuM7FfRdCzr6slJYEcqMpU4dBMD+7ydukRXX+Cx
-	/ZssBeI58ui0tkRTgSPG6lhLeuU89cWjw+mQIlFY41OSEQfZF0tITO/IcLanFuKpzspff0
-	ZuKOgj5zbX8wAILyIsXNKoq3qeIvrm8=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=2ExtZ8QuR1DZDKx/RuoMNZw4ql/mM6Uzh+5t41m9Wew=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1793433805; v=1; x=1794038605;
- b=MtOdxnO+rZ+rR2RiU9T8zCHm+uVQh+saqsPcKmIPqLDat6KVd8JIstJRDfm6EMvhBqjELZPD
- nQSqol8lBN+oD4kRHhB1ooMsbX52rMCuv+d8wFmwu0+n4Ai9zaq9V4CsnaNydPXSzDgqJ/3JaW2
- JmWGVxhLIrJaWKB90grTeLqE=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 91100bf70793d15d;
-	Sat, 31 Oct 2026 08:03:24 +0000
-X-Mizu-Trace-ID: 91100bf70793d15d
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <158ad4d4-a57d-4c6b-a840-0f6b9d5bbf7f@linux.dev>
-Date: Sat, 31 Oct 2026 16:03:17 +0800
+	t=1793435432;
+	b=A4FSvC0/jwaL2qTvcZPBnWPQ3uv6nReTBeZCuvJmD2+5Fvm2v4LVLwI/VJrKdNtgWj9rDB
+	tOPh8tH/cx3W5naMePUToiA6UrAIymRwVQD1HVU9IQyWFvhn48cB3/PgCpJAV5cTEd4xqQ
+	kjX48EgNKH+bDPfbZA/XBRhZM6uJiP0=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ClYhZINu;
+	spf=pass (imf03.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 3794A43E82;
+	Sat, 31 Oct 2026 08:30:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 696971F000C1;
+	Sat, 31 Oct 2026 08:30:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793435430;
+	bh=spOkjFwUciiGe8KT5cGcnRY9XKTmmpVqexi2Bqbn5rE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=ClYhZINuPfuJiCYUEiyjdoHCU1/pBjA7GVM9j2SeiGDzci4dMAGdJ0eCc40y3FS9t
+	 ry3lCiIUMkYLn/4zL4h0VeFCKcjed7KvgGvNx658bJjBX1SkHzjew5tEYISor60cYs
+	 I/8uYB9Fr/6D0BYURX7zpb2fyO/QgJ/sAK3/VNHt1YU/0bEdTiGcO27fM5Rj+GbtUt
+	 JNilErJdupO4B518oLxkbdx9j9zvaZo8Bo3h8JtuZs+vHjCJOJgBmb9k6JTfIS1hZ7
+	 wuw3f7GiXkAB83BJgZjkL+W3IbsXxFIpvCPJbtrwSk4MvbM3G0yLrgQ93hv6TaO7Br
+	 oKyJmcrLqdxGg==
+Date: Sat, 31 Oct 2026 10:30:08 +0200
+From: Mike Rapoport <rppt@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Alistair Popple <apopple@nvidia.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Baoquan He <baoquan.he@linux.dev>, Barry Song <baohua@kernel.org>,
+	Brendan Jackman <brendan.jackman@linux.dev>,
+	Byungchul Park <byungchul@sk.com>,
+	Chengming Zhou <chengming.zhou@linux.dev>,
+	Chris Li <chrisl@kernel.org>, Christoph Lameter <cl@gentwo.org>,
+	Dave Chinner <david@fromorbit.com>,
+	David Rientjes <rientjes@google.com>,
+	Dennis Zhou <dennis@kernel.org>, Dev Jain <dev.jain@arm.com>,
+	Gregory Price <gourry@gourry.net>, Hao Li <hao.li@linux.dev>,
+	Harry Yoo <harry@kernel.org>, Hugh Dickins <hughd@google.com>,
+	Jann Horn <jannh@google.com>, Johannes Weiner <hannes@cmpxchg.org>,
+	John Hubbard <jhubbard@nvidia.com>,
+	Joshua Hahn <joshua.hahnjy@gmail.com>,
+	Kairui Song <kasong@tencent.com>,
+	Kemeng Shi <shikemeng@huaweicloud.com>,
+	Kiryl Shutsemau <kas@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Miaohe Lin <linmiaohe@huawei.com>, Michal Hocko <mhocko@kernel.org>,
+	Muchun Song <muchun.song@linux.dev>,
+	Naoya Horiguchi <nao.horiguchi@gmail.com>,
+	Nhat Pham <nphamcs@gmail.com>, Nick Piggin <npiggin@gmail.com>,
+	Nico Pache <nico.pache@linux.dev>,
+	Oscar Salvador <osalvador@suse.de>,
+	Pedro Falcato <pfalcato@suse.de>, Peter Xu <peterx@redhat.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Qi Zheng <qi.zheng@linux.dev>, Rakie Kim <rakie.kim@sk.com>,
+	Rik van Riel <riel@surriel.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Suren Baghdasaryan <surenb@google.com>, Tejun Heo <tj@kernel.org>,
+	Uladzislau Rezki <urezki@gmail.com>,
+	Usama Arif <usama.arif@linux.dev>,
+	Vlastimil Babka <vbabka@kernel.org>, Will Deacon <will@kernel.org>,
+	Xu Xin <xu.xin@linux.dev>,
+	Ying Huang <ying.huang@linux.alibaba.com>,
+	Youngjun Park <youngjun.park@lge.com>, Zi Yan <ziy@nvidia.com>,
+	Jason Gunthorpe <jgg@ziepe.ca>, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: Re: [PATCH 0/7] MAINTAINERS: MM updates
+Message-ID: <auWnELXh960kTdfs@kernel.org>
+References: <20261030-maintainers-v1-0-97278f8a5f54@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 01/12] mm: hugetlb_vmemmap: remove HugeTLB-specific
- vmemmap optimization macros
-To: Muchun Song <songmuchun@bytedance.com>, Oscar Salvador
- <osalvador@suse.de>, Andrew Morton <akpm@linux-foundation.org>,
- Mike Rapoport <rppt@kernel.org>
-Cc: Lance Yang <lance.yang@linux.dev>, James Houghton
- <jthoughton@google.com>, David Hildenbrand <david@kernel.org>,
- Muchun Song <muchun.song@linux.dev>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-References: <20261020115306.813483-1-songmuchun@bytedance.com>
- <20261020115306.813483-2-songmuchun@bytedance.com>
-From: Qi Zheng <qi.zheng@linux.dev>
-In-Reply-To: <20261020115306.813483-2-songmuchun@bytedance.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 5CDFA80003
-X-Stat-Signature: 6tqxy3gpfjh9efb1xtxjgwf7xbgza116
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261030-maintainers-v1-0-97278f8a5f54@kernel.org>
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 0C07D20008
+X-Stat-Signature: drzwgjmyu9dh8f1pzkkkj7q9bn3b4pxg
 X-Rspam-User: 
-X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
-	version=4.0.1
-X-HE-Tag: 1793433806-916271
-X-HE-Meta: U2FsdGVkX18WD+QqDaiEm3NAsbdadjoy9E2bhku3LWfuK/D6JQSY5iKQEUCGazS8onz5htbukWyxFj6zuOyzu9BmqLuNgVCwatHB1hl3f40RBCLA8WsmiqUSx7si+S0kElAzdUeEzNIJgByod+IUSGUOUaRGSSn0Q9GV7XVgC7POzP3YX/fPQ8Syq0O6WKfO14KjLaz9EpOecxt+jc3kpQiQc1lg/s5LGicwjIXvx/XbLaB2vxtRltUu4WIT3AhWMihX65+T1YVZ0VQzSdsMQM8vPTDy43HcvTcw+vnLG+xubAZDIYLuw1nFOwwlbF1yJSPY2eOQrmiYsz2V+f7GklNWPyWAKCMU+zMu9f5I4iVhUuFXbS5CQbLlsIuvwiuP3TrZcDtaDyPuE2H5gYpi17j7UyAODSAfo10a99AyPGFXmwEj5XtU8SS3vU9pFBH0yaMzKzcNKFtVs4lqMM83OB8xqmYnpNK/irsNW/IE4/r4Clj13FYTDQCh4K+FG3Clye5AxYZSArgERw/MQuxWlroQo32XNvyAW8JKUKZJtGwTVHgCEURwxf1Af8h1dP5RxUetvsXyqjjtDvGzZ2EfdldJVy2PF/N9h42qmp9IqOWISn5usjgLDRJ6wScuS9XNv1fT0bkrmChVEKkXoR8Kgya6xMkJ4/Yd6Ncam/fxr1lMSot22t6g7wK8OTKvdsX4FS140G6jI+VP3TP1e9yPPnaOn3+N2egu2IiHsacR32DcRT+L0bRoAYmYg7HAtLATQpB9j2lxuHpYKNHykO8udk2cswdv41FKX8GJNiFqctIrDRAETG8VQW+kv5xqM38nRiVnG2zcjN4Q9bpQb69Wdx6BsWCgBaowaY5TYjtLi6fbBIEJBHSViLwPvCZweDrHUlCmV0g7ex+KYDg/gz0j01V9TRAyMbog9dr4mwmE7MVF6542PC7AZxCk4UM3Y5yZzkq6vXzSOx4T//Y3SBb
- 5l7ck2yO
- yrKMccHtUQi0/m85hcZLrddcnzeJaIoR3v55+VDatHcfsRWAsEx7c+SYf029XmAxCFBi5J3SUvVnEE5J/X2sS+Eh47CknCbCkNRFqBxGxyrd0icz6PaDoE6IgEJWWdmIoaBuh3N+zzEAhy90b2mbloymDGCxgu4fxYSFf4r7ewNLIEToQDFrjQ4OGJowF0YPuvNaRRYT77IY1zgCK1OllS8Y4Zxe+UFMFoKNZfFIP6cKtQrz5sue84FNfUvWYq12pb2r5NWoyTgmlhT197XYOZVwcpZn5StNPyn0MxtEDH4qa8U2uiLeZ0r0Lxg9cNegHLKR0Q0s5rfRXeDxNKnL0DKm33A==
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1793435431-968413
+X-HE-Meta: U2FsdGVkX19JKjOGtwaEoe265hWX2B4Ae8WdNCKAec1XPf08omM6vU77s20z1OECHK22w+I75D6WBshCgiEIMQiiFbS0+V1W0aCyqSF5flV+8OI2Gfxu+NKHw1B472oCjmgoQXFfVlTeBnd5cl5luBNL/9NJ2yWPabYRdokVDQAfqXu+Awt2w2SDn4l2UQqwHLAEU1PnQaXsKID1C/X6FIzqim2KEff6qG8rvps1G/ItEXlbvDV6v4P7ELde9wGr+xetIrGTtT/ZiK/VIylBON49UeQQdPxpZTU1rjT7tCBP1YOUTZ1foeK2DPujmyA173BJtNySoiEGY/zcyf8UZCFaIlYOftJy6MwOdFSyFgEoTfqkPeszLG5+HU3Io1RGTWuBDtfPcs1nYjn8WSf66vJoIWpzZ2WgvmUXU5jTURC77MIC8gu3cPBYHx92yMQQk11OdqqMugHK85OVUPccdx4S+0Miq4toUB2bsTJpWjLQZA0m+eZp2INnXC+uO0ImMtMCLFHEAqoJ8fF99bi3xWeLo0IivWNBd1EOypjAiipQOXjumOCiVyF7kheg1KpeRd+eshXpmqUWbLMJ66uIQe1NBcbqPtyLubrr1tx0SxEmwKVl6O0NIO3ZMGUVwW29Eq1Y/WCwf5IMkShPzN5fl8Je/zi7t/YkOYrHJA3byEO6j1pIQySzNco18kXAVz17AicD9LDYzHvUWWxiqn9tMOVv55jIu2S30cY2gd+InnIRhBRTvUpg8FLPTuLB3UYEsjBJ/vSanC7YXm9Y5gl4N4LLk+XZgq2zhg4J9DmG2a50s3oLw715l22MmpzuyCS296eUh5B4j7JZX/Lvn44uHaulpXCIdHeHz5DTYoB8bm+altnpJ7nVjFkweNwSwQesSBbRhE49DEdfc3lp64UB8IosZRCTtuLpT7+mUrL4AtfrTUxsjBtAk4/zj7pWI8TDEUEO0KYnKy1rl23tEki
+ WnsOwKRj
+ OWUPhXqjGOgCqt/XXKUIEy6gcyuwjxmoEQ/YwkZVuUGCnp2LUU/OnxZGyq7pOldora6rLLBjgQu89UOtKKC40V0fDDyItIdpN/8OVhqg8SCrCoN9Lo/q1qPZl15v+CL1ruRM+tlQU9G+Jy0L7lYqjBQ2FxBtUTvxqcIKICd9WR6+j3cu1VDm48uWvj7beT3ezAgBosV6sC9WtXZKbd0xJuPvZn5/elu/Do0fOURt2CAKnfWY76NlLtBf2BLaWIR8T5gRc4vw+G1LVh8uNLa4bDhjvbbIRFXKniBF6EbXua+vz3DfkmMslO7v9ImfMX+dP6Z7tu7XT5hDnAIZS6s6oROBdRuG75evYhilq
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,25 +136,49 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-
-
-On 10/20/26 7:52 PM, Muchun Song wrote:
-> Vmemmap optimization is no longer HugeTLB-specific, so the remaining
-> HugeTLB-local reserve macros are redundant.
+On Fri, Oct 30, 2026 at 10:34:24PM +0100, David Hildenbrand (Arm) wrote:
+> Hi,
 > 
-> Replace them with the generic definitions to remove duplication and keep
-> the HugeTLB vmemmap code aligned with the common optimization macros.
+> several MM updates:
 > 
-> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+> Make Zi Yan a THP maintainer (thanks for all your hard work over
+> the years and thanks for taking on this responsibility), and perform some
+> MM MAINTAINERS cleanups.
+> 
+> Then, start the next step of the transition from Andrew's MM tree to
+> separate component trees that all get integrated into the mm-next
+> integration tree.
+> 
+> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 > ---
->   include/linux/vmemmap-optimization.h |  4 ++--
->   mm/hugetlb.c                         |  4 ++--
->   mm/hugetlb_vmemmap.c                 |  8 ++++----
->   mm/hugetlb_vmemmap.h                 | 10 ++--------
->   4 files changed, 10 insertions(+), 16 deletions(-)
+> David Hildenbrand (Arm) (7):
+>       MAINTAINERS: mention for-next branch in MEMORY MANAGEMENT - MEMORY MAP
+>       MAINTAINERS: TMPFS (SHMEM FILESYSTEM) updates
+>       MAINTAINERS: add Zi Yan as co-maintainer for MEMORY MANAGEMENT - THP
+>       MAINTAINERS: sort entries in MM sections
+>       MAINTAINERS: add missing files to MM component sections
+>       MAINTAINERS: rename and move MEMORY HOT(UN)PLUG
+>       MAINTAINERS: route more MM changes through mm/core.git
+> 
+>  MAINTAINERS | 165 ++++++++++++++++++++++++++++++++++++++----------------------
+>  1 file changed, 105 insertions(+), 60 deletions(-)
 
-Reviewed-by: Qi Zheng <qi.zheng@linux.dev>
+Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 
-Thanks,
-Qi
+> ---
+> 
+> base-commit: d89e1d186ec9271bf78e62771779e9fc03bf0fc3
+> 
+> change-id: 20261029-maintainers-e2699bff7521
+> 
+> --
+> 
+> Cheers,
+> 
+> David
+> 
+
+-- 
+Sincerely yours,
+Mike.
 
