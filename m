@@ -1,72 +1,73 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E464F606A322
-	for <linux-mm@archiver.kernel.org>; Sat, 31 Oct 2026 09:25:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A83A1606A31E
+	for <linux-mm@archiver.kernel.org>; Sat, 31 Oct 2026 09:26:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=CRvn2SXI
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=PL9O65uR
 Received: by kanga.kvack.org (Postfix)
-	id 160A36B00EF; Sat, 31 Oct 2026 05:25:43 -0400 (EDT)
+	id D48436B05B8; Sat, 31 Oct 2026 05:26:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1108D6B05B7; Sat, 31 Oct 2026 05:25:43 -0400 (EDT)
+	id CF8356B05B9; Sat, 31 Oct 2026 05:26:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F1AF26B05B8; Sat, 31 Oct 2026 05:25:42 -0400 (EDT)
+	id BC1486B05BA; Sat, 31 Oct 2026 05:26:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id C8B1F6B00EF
-	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 05:25:42 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 5C8121C4120
-	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 09:25:42 +0000 (UTC)
-X-FDA: 85382388924.26.3B6D0FB
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf20.hostedemail.com (Postfix) with ESMTP id A1F141C0009
-	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 09:25:40 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CRvn2SXI;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 866F76B05B8
+	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 05:26:50 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 1C2AFA06CD
+	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 09:26:50 +0000 (UTC)
+X-FDA: 85382391780.19.EE93D4C
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 4422E20002
+	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 09:26:48 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PL9O65uR;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793438740;
+	s=arc-20220608; t=1793438808;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qUIuRPOIKD0RvmowTNJE+Km2XYhISf2R7WQ881mWgaQ=;
-	b=I3IADY0KDNXCkBQQ8ZTF4ZknkfJ/6LO0BzvVdprxWRZ+ELvvmasFhNi47AxraFsEfDVk8O
-	3cLVrwl4UILOkOZTzObIJYPElqttNtldnJffb4NltEsNAhvBV6TdWUoa6iexzDEFJiOXk7
-	8K7wUyFoAlZG4xDR5vyBS2+arRYGkNY=
+	bh=hZHGBSOTjfIv5psqYCswThHtlgHtRKk5pmgDRNFcrfM=;
+	b=hfodGk096a2Dzt6C2bBUFqWjxRBSH0qeVnUFIC8lIJxzsQwWWrSPwc6DTg6TmZ8tSwKq2C
+	0eaIPjh7iDzNNrBVBiGjNMteE3ccOEkXPUSQZ9i3pakTnxTjQlYWRmiJKScqDyqNWbL+gP
+	vjzK6JSOIcy4PprP+bRPYQRBZfkm29Q=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CRvn2SXI;
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PL9O65uR;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793438740;
-	b=Fj2qyLzPI4u+qWo7P9QumzONi/nEwF4rVE4/1ySNprTO8wDKWk9pO4vXhZ0JhDx3RXN/wA
-	2ghYZ4ZEzU4P1TQUuGcd6JDZH2GKa9jzE4W0MB1dKbq1eaDf9c3YEtTIPbjsKjUB+fMlKZ
-	ay+0NU+rnxYnmpjVcdPJbB2lvWkpJLM=
+	t=1793438808;
+	b=DtUYpb0xsSELj8BgEr1nhyO9o94k/XETTA+stzLxf89Uv/S8+OEwYFqIxIjLap49fRS32r
+	QGAsWCT0v7G1Dc3Lh2lvKU1mM9wobZgPIdAfsS9sHwL/eMDukcRpAlu2xZrOkg4Dj0mUFp
+	zHvOUDz9g09dunR+qExpNgqaUX7p+2g=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 4001E600D4;
-	Sat, 31 Oct 2026 09:25:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D6C11F000C1;
-	Sat, 31 Oct 2026 09:25:24 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 73E2F43EA9;
+	Sat, 31 Oct 2026 09:26:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3C321F000C1;
+	Sat, 31 Oct 2026 09:26:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793438739;
-	bh=qUIuRPOIKD0RvmowTNJE+Km2XYhISf2R7WQ881mWgaQ=;
+	s=k20260515; t=1793438807;
+	bh=hZHGBSOTjfIv5psqYCswThHtlgHtRKk5pmgDRNFcrfM=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=CRvn2SXI7LSAaQCvtHB1U9Xi2YoEfX4HM0CDV6J8UQRCqquTSLJknLqW7oudW7gKD
-	 Mdt8B0pwfM/jLY0u79ns4uOjyJegOK+ksEa4ymTLnnYTrIAlRemnP6CWijBAhJX/5N
-	 So2Qmb8x69nhpotqRWLV6lTiQGPaZl1I0QNUv8luk38OZKTaeJJBZjJdJ27vprgJlM
-	 22UCsUpAgxHdtViyO5KQlEnEjMwUxTzo/CQveOd2mM/prwnCtT+mFFGqG927yi1Sp6
-	 p05HtIdG5ALB+cqYAjmg8ZfmmsDxy0t461TrZGfsqL45/UWPO3JomEGnKiGfI3+Mi+
-	 ezUr8wbVUi8jA==
-Message-ID: <a4106ec5-7735-47d3-b94a-a80a17eaad7f@kernel.org>
-Date: Sat, 31 Oct 2026 10:25:20 +0100
+	b=PL9O65uRUsVqqbO5z6Qc9D3FBxeq+LSLgFia1VPxxAssQjeEyF/VF4zk6XsaqHS6W
+	 +Mmb54Mrhh61NP1Ci/M0kDXoxznptOCmEhukvScWb553QC1KstG3qLCZ9a9mrxr3rb
+	 jLCOhc8ibmw5mpm6LMuggjEVITVUVXSCDu3ovO4Qrw5CCRIweTB3BjLUhjv0dpJU8e
+	 KpokjJwBJxOuWQV9sg7rOHEDQfc8gSIDKlyaaM/iu1iLl+fjvS+QoNGm7kHJsZiC/g
+	 HyWQB2zbKJIfsth4IIRi/ZTjbfA83759x5FRmyfy58xZ1PTmcYg4W7Ql6Q8jhe3m53
+	 uFGc2Yws5griw==
+Message-ID: <a0c32d43-c948-44e5-8802-b64d6fbab8de@kernel.org>
+Date: Sat, 31 Oct 2026 10:26:28 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 4/7] MAINTAINERS: sort entries in MM sections
+Subject: Re: [PATCH 5/7] MAINTAINERS: add missing files to MM component
+ sections
 To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
 Cc: Alistair Popple <apopple@nvidia.com>,
  Andrew Morton <akpm@linux-foundation.org>,
@@ -103,8 +104,8 @@ Cc: Alistair Popple <apopple@nvidia.com>,
  Jason Gunthorpe <jgg@ziepe.ca>, linux-kernel@vger.kernel.org,
  linux-mm@kvack.org
 References: <20261030-maintainers-v1-0-97278f8a5f54@kernel.org>
- <20261030-maintainers-v1-4-97278f8a5f54@kernel.org>
- <auWqPPYNQlwAOAnm@gremlin>
+ <20261030-maintainers-v1-5-97278f8a5f54@kernel.org>
+ <auWwWRcoNhuuDOY5@gremlin>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -151,21 +152,21 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <auWqPPYNQlwAOAnm@gremlin>
+In-Reply-To: <auWwWRcoNhuuDOY5@gremlin>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: A1F141C0009
-X-Stat-Signature: rjprpergwsuhiucycf6ngzonzw6qjre7
-X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 4422E20002
+X-Stat-Signature: gj3nbeygp3w9p1ubk4zw9mw3qaua36gc
 X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
 	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-HE-Tag: 1793438740-821067
-X-HE-Meta: U2FsdGVkX1/uv7NVjar+nhR3fO3QvQJjMurAQg2eOPGko2lv5EE9sKJFLhZhqjr+hhUj/YHOmSHeEG8wq0zmI0vgBTCv90uV6VtBK1oky7zP9LdevhGDaS4tPksIsH87xTLDyi0mn+tUdDVKND/vMee5kYXcaOerTRAb7UDAU9DlQqLiUL27F9UrHwZ9WRr8CpkwkRlQwNRSqV1yjdbzbE6PmzW2pJ7cSRV2wmmyX/Foc+AynH2eBm/ku7jKutiIAWkyxkKuoaqxGdEBrgkVXITAg1l2meOuEUzwHc9ZIN/+r/yBVibe4rRJehZ9AmNJNE/+klxrqE6BJK4D7O4fVi3cskJeeBzH1z4ceBqi51/CgQnbr8h3lBs2ymcVjM2I4tQrLetAkvPn2YAMsjQOcFr1CAxx5B8tVXn6X6Ydhga3O/6oIQQ+4NOii6MJY6Ze4lvyg/rzKI4FLNVAtQP5EuIuY5ZBXHFe8JJlFSgf54w+aIUkpR9J6Rj2BCsdEF71Xv8lCP4u7UWJmezrCN8HVzKGYNkT6Gp6hFfOXAmDqpnAvQXnLu8beWiUOZr5Qg9V+4OidG4CV5ZggERiJWeWZ8Uyi6kfcnVTkzdEukm3Fyllx/tco8jNN3nex1BbYghF+15MkdMCtXVtxV6PkdxnEzurytIIIgHzt7eT8N0DGdtRfxKB1rLoxdDF0JyWYBRWKwynIhgqtYjRrveZuwOzNvwgnBrxdYflgsAM8AQW14EG9oVXr4o0JkiMU5yB/ZKK30F0PDVBbRecJDBmRdkU1n0vXC5n019THZf2dwRRmmQ4eWgOGbifEepFg/sVEaSShKtlJhBJtFbQV40xHtmulDnrn8RFMnyOE2U57q6O0HCKMCFOChF8OtlgZq0fdLSpRyZV5IOUGwog/rLpG8xGv3Qe292TbAPjxJemnX4F5qjmQeVDsOmN6eu1Ipj98f/629f4m57amBixDYXVydy
- 8/ytx7G+
- O5OiIW5zThBanKWITwVJAs4qFHhuBM1K/hXrFTAOPzkK86wrsQ2hQblD8in5YY8meuQUORJILcwjWH0MyrRkRxd6AIrQoEXsyWxpNQTyUSSWKXh9k/uUEaAqlemzEmGTq6QP/MUfwPs8Y98DTvQgZd/o+sR1BAeSYwNUPoO9D+c4GF+kY5sZt1OnIvZe8xk8NwZ63KOGifdCTuBx46EwIB+tmfgjt3oT0poaIbSgfOsEUFCZDLAVq10VF9DHzfMfteiBY78B3VZRMilDG71GZSn5VgZkvB5EQbKxyVg19b1Xw53nJybAnJd/mo16j2Fg+KCN3XxLHR0tqhbGHBovKpIY1Ycr4mn8wHVxa
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1793438808-798877
+X-HE-Meta: U2FsdGVkX19EpKi8IOjteJoLDJ9hYTt6ZaqyCf32n4SZHhyJ07/YhyejsB79VXIc6EDp1FxseQJ8opEgVe23/wOKvVkFSqC2/2WZU731hpuplLvEVrN3DCEfyzmhfn0zyK9l8rNNcb2093wk+4xJx7E6+48DPF3ZUZXrTB7WYk0XnOHs4djyfzuXjT5wg6FaYp0KzZUdpQRq5nHIT5/FNHBzH5pON0WFxyYK84SzIsgUL9i0AHWxwlvJShDc3VHYk0XT3KZcINSnQmGlDBNBnL6m0zgkt1mI4MdxmhUbm9xPJFAgrWpKsVK+AK9u/M2UBgKWZjJgn9NDocULb2aFhXQo2rwZsCi2nSvxPt8rDwDMzlOGezQhUUEAPRkJtQeNfaU33XkPDMRagbQHUmg/iSAq+Nfh3bp5V0l6XweRLcy8BQ86wbnab9z+DPXgypsBQQ4jatSiuhLFdv54k4PJOhOW4J3NLKn6bmtFF10nFUBHLLKBR81moJ8VH8jlO5sNciJrV03FPYbIFrhRpjv+Gk10UHEiVcfzK1qaOlIfGSx2o4kbBmNbz/UOQ4Qg9Z7FZ9hLuBXMBfuX7R8CUcE6Xeoreefem3r6NK/ZK4b3qiEgpJ2Ab1RllYMBNuyt60/zNbGTqhOSuJP7wNLVgvgFcVJJiX4Ca6gYG2WMPJfctoPCxRpb3h8XNf93QkkzB5F/uTrx3bBBLGbjcF/lTrUwQkupLWchogmyc4r5RyQHLjCCCgM59bkscBUEV7vPdYiRIQm5of8xugciCudU0XUkI/1RL8CQmDg7dl+XqS/JBXTxsHCZizGnOz2FIzr5gXCJVatYXj9Pl/zurWKToloFCGEijCYgClMp05QwtKWo26kShrzTOnk70sr8q7Tzw/dP5kZ+GRE3NrWJ5AhswOJxx0qVDClgJSG0U7WKSQd6wdjlQ/5iZ/G5Lcv9/DQ7+76+UmRgQmFMCr0R+2DAMki
+ OhRgGo18
+ T4AgYk/Psu1EU73OgNc7N1Hd/dMgPCkuU67Peelb7tk8DytOst98EVXxb62fs72nTD+ND/jsG5TehTdHomxXEVudKJOchB4N1usPN10zGjnPPDKw8WOHn+7ZKvpXMfoYExo+n6/gpnMwQkjtFEtplAd8fiuh+CgGakEVm4+eVujzM8+A6+hN6vXXQ6yEhDKs/sO4+5+TqW3hEMJImQIMniQzwVgK6uEpdpSW9awvopqQwduLuJKhf91vvXogny5R8ORxq8jVF6yRq6zdOb3ZkvHBcLFfaQFn56fvWBC8rwxivdTnnsOcdK4/dfjd7Fsg0F3t/sfwpqfY9FsW7dVdtVb0F7K3onO/S/Sc6iuLeprgp0GM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -174,18 +175,44 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 10/31/26 10:08, Lorenzo Stoakes (ARM) wrote:
-> On Fri, Oct 30, 2026 at 10:34:28PM +0100, David Hildenbrand (Arm) wrote:
->> We try to keep these entries sorted; let's sort the MM related ones.
+On 10/31/26 10:23, Lorenzo Stoakes (ARM) wrote:
+> On Fri, Oct 30, 2026 at 10:34:29PM +0100, David Hildenbrand (Arm) wrote:
+>> We want to make sure that MM components cover all relevant MM files. The
+>> generic "MEMORY MANAGEMENT" sections will probably go away at some
+>> point.
+> 
+> You mean MISC or the MEMORY MANAGEMENT - prefixes?
+
+MEMORY MANAGEMENT, the context of this change :)
+
+> 
+> Latter are useful just for tracking what's mm in general I think but I guess
+> debatable.
+> 
+> 'MEMORY MAPPING' of course breaks this rule :P
+> 
+>>
+>> We have a bunch of files that are not explicitly tracked under MM
+>> components. Let's add these missing files.
+>>
+>> Split up tools/mm to the appropriate components, but still add it also
+>> under MISC, similar to what we did with selftests.
+>>
+>> Don't split up selftests for now. They are covered by MISC and some
+>> sections name them separately.
+>>
+>> Some files like
+>>
+>>  - include/linux/numa.h
+>>  - include/trace/events/kmem.h
+>>  - Documentation/admin-guide/numastat.rst
+>>
+>> are a bit fuzzy. Add them to the best fit for now.
 >>
 >> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 > 
-> Oh damn, checkpatch warns for this so I'm surprised these exist, maybe legacy
-> stuff?
-
-I think some of that was added recently, maybe people ignored checkpatch ... :)
-
-Thanks!
+> Nice, finishing my work for me, I like it ;)
+Thanks for getting the ball rolling :)
 
 -- 
 Cheers,
