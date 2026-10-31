@@ -1,98 +1,99 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 012E2606A326
-	for <linux-mm@archiver.kernel.org>; Sat, 31 Oct 2026 10:55:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84C8C606A31C
+	for <linux-mm@archiver.kernel.org>; Sat, 31 Oct 2026 10:55:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=LX0RjJQJ
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=FdAdo72s
 Received: by kanga.kvack.org (Postfix)
-	id 230CC6B05B4; Sat, 31 Oct 2026 06:55:40 -0400 (EDT)
+	id 9ABC46B05B7; Sat, 31 Oct 2026 06:55:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 209266B05B5; Sat, 31 Oct 2026 06:55:40 -0400 (EDT)
+	id 95C2C6B05B8; Sat, 31 Oct 2026 06:55:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 11F536B05B6; Sat, 31 Oct 2026 06:55:40 -0400 (EDT)
+	id 872366B05B9; Sat, 31 Oct 2026 06:55:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id E63516B05B4
-	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 06:55:39 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 763F11A06C6
-	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 10:55:39 +0000 (UTC)
-X-FDA: 85382615598.27.3421833
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf11.hostedemail.com (Postfix) with ESMTP id D8F0D40006
-	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 10:55:37 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LX0RjJQJ;
-	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 63A026B05B7
+	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 06:55:46 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id DE1971608F9
+	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 10:55:45 +0000 (UTC)
+X-FDA: 85382615850.23.AE79666
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 3E80540003
+	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 10:55:44 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FdAdo72s;
+	spf=pass (imf27.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793444137;
+	s=arc-20220608; t=1793444144;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7b46y4s0/zi9X4zHo11yWW6Vbp88X1A148hn2dA9HOA=;
-	b=6Fsm4uysdCpRsSag2GgbhdgG/Od6rTTd9H515j576VQgv4aenCPaTSlmIvAM/vI5jVDWEi
-	r3RZkUSNE953LLY3RBmJ57bz4QL+19avKDYRblKMPmOIt8WdOUDIKtLSQ07irZV5AH/Ns0
-	R8AJ6rl0n5Zx4Os0Db7XjmHewpKgE2Q=
+	bh=/zHOCVGlKd+Gbw9WkcwRAX9nfU8lVQAZb5r1Oq1ewkk=;
+	b=69D+iGQSeASnZXZhJ/8RThmgr1itpNeYSlrIGf5Z1RhilSKroI3rvhVMgKAT+fpfeibDDp
+	0PHzxL2ihyFhoqo8OwO9jkrKduPuptz0Zv5LiwQ7T1rt2nn5dy8EnIG86mBDVPuCeA8h8k
+	PL/1XqoXFfLGVy/iTE+1cTTMZBFiSfg=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793444137;
-	b=6VL6gjEs+HxpMZhoTf3UBIe7xQhXwSqWh2tRA8EgINsuU6eZx1DCTdIiqZx4z0bj5Jlxt2
-	N5hVBfh5jQ5dfntR9o1cbc0dcJPIJEvdqhZdg2ZSiYihYnDcH9POibqToVY8FfIhd9pZ21
-	FqbqZV5CcthQEHZlWaOx3l/r0Lc/EmU=
+	t=1793444144;
+	b=yU781MqfJRQQxwMKbJrCn7brOjHXRdhXR35jWnlRUN+Hc8jVwTkR4Q7IH3Oq0BDAT3Nbbe
+	dDROmvfSgHv4ODQ/bDVK9RVuTFSffPCVZJIw2wQ0VxQpJxE8Yi+4l5pC70eN/14VsYAAcg
+	QOLiVwiuaCzVyhKu3MHRHJvh+Ek6PTI=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LX0RjJQJ;
-	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FdAdo72s;
+	spf=pass (imf27.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 766CB600C8;
+	by sea.source.kernel.org (Postfix) with ESMTP id 6EDFB43D9F;
+	Sat, 31 Oct 2026 10:55:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF88D1F00A17;
 	Sat, 31 Oct 2026 10:55:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 210BC1F00919;
-	Sat, 31 Oct 2026 10:55:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793444137;
-	bh=7b46y4s0/zi9X4zHo11yWW6Vbp88X1A148hn2dA9HOA=;
+	s=k20260515; t=1793444143;
+	bh=/zHOCVGlKd+Gbw9WkcwRAX9nfU8lVQAZb5r1Oq1ewkk=;
 	h=From:To:Cc:In-Reply-To:References:Subject:Date;
-	b=LX0RjJQJpWdppLt42SNRn7EQV2Ff5N7jMe3itfLCjplO/MRkUZIp3jFNWvcrwA1mQ
-	 UcCj6Mk2yZ8lLHHTQDlrfQDnCXDNASSI3GyG08p720TBjS7E7BDx/hdhXgrHg1QsO3
-	 LbeRvsMZBc5KtLwSi7wWODzYoqe6aeCx8rzl2jQQSBqaCz+nLmFTtRvNi8zQ4mcSLK
-	 IWFp1W844QfHer5jTZdGQvH25z2biHGD6EeJx++6y7oK/Hf2tF4RjSoEn4R3z8Xtnk
-	 8m+5hfjRvvOela8b76hyVYCr8+w5vrvKSzquGangM6VzaPOpzRyecLva2TLMDrvoyV
-	 b8B8LK0WZHFHg==
+	b=FdAdo72siP0pWKtPYHKtDnT3myBbO44Iwr2y7PQ+tvrQr16MRxsWBeogf0w1mEycX
+	 F7KTXuXQz91GvFIZwzuFXxSVKD02xpOyrHOGApOiHCw0zx8OXrMxu3khaoylsQzd1m
+	 xKaG+SRpDZHcgyg+l3ScfTlpQdzujaWDiHne2N8c4k9djSAqlQUdQDr7cy3uJ/lzeP
+	 VMrODT4NtA6cATADzB73dBOSZfqgXIV6n2GgvQTDXcVIqnmhMNXHHgSV/nFteiftAi
+	 fv9qjBDhYrKGwvHE3Y0MQhc0eXTV7uKkWuk+6b1W4Y91/zGSNhOl8gODnISQZyt8JJ
+	 jjetI8m0mleMg==
 From: David Hildenbrand <david@kernel.org>
-To: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
- "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
-Cc: Madhavan Srinivasan <maddy@linux.ibm.com>, 
- Venkat Rao Bagalkote <venkat88@linux.ibm.com>, linux-kernel@vger.kernel.org, 
- linuxppc-dev@lists.ozlabs.org, David Hildenbrand <david@kernel.org>, 
- Muchun Song <muchun.song@linux.dev>, Zi Yan <ziy@nvidia.com>, 
- Baolin Wang <baolin.wang@linux.alibaba.com>, 
- Pavithra <pavrampu@linux.ibm.com>
-In-Reply-To: <8b853e5f9f16145859407b28af654b0f79e12642.1793318297.git.ritesh.list@gmail.com>
-References: <8b853e5f9f16145859407b28af654b0f79e12642.1793318297.git.ritesh.list@gmail.com>
-Subject: Re: [PATCHv2] mm/huge_memory: set the mmu_gather page size in
- zap_huge_pud()
-Message-Id: <179344413383.15514.17004105179365165951.b4-ty@b4>
-Date: Sat, 31 Oct 2026 11:55:33 +0100
+To: akpm@linux-foundation.org, Lance Yang <lance.yang@linux.dev>
+Cc: david@kernel.org, ziy@nvidia.com, baolin.wang@linux.alibaba.com, 
+ liam@infradead.org, nico.pache@linux.dev, ryan.roberts@arm.com, 
+ dev.jain@arm.com, baohua@kernel.org, usama.arif@linux.dev, kas@kernel.org, 
+ jack@suse.cz, djwong@kernel.org, linux-mm@kvack.org, 
+ linux-kernel@vger.kernel.org, hch@lst.de, pfalcato@suse.de, 
+ ngocthang2710.1999@gmail.com, 
+ syzbot+16bf7cd0ebeb1de93aa5@syzkaller.appspotmail.com, 
+ stable@vger.kernel.org
+In-Reply-To: <20261026152013.10511-1-lance.yang@linux.dev>
+References: <20261026152013.10511-1-lance.yang@linux.dev>
+Subject: Re: [PATCH v4] khugepaged: fix readahead lock inversion in
+ collapse_file()
+Message-Id: <179344413746.15514.3017134720155207012.b4-ty@b4>
+Date: Sat, 31 Oct 2026 11:55:37 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.16.0
 X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: D8F0D40006
-X-Stat-Signature: kc5ic98r7yeimwmjbeai5wbc7u8jdun3
+X-Rspamd-Queue-Id: 3E80540003
+X-Stat-Signature: is411zpjj55piyi1pke3z5q7n6m5cagk
 X-Rspam-User: 
 X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS,
 	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1793444137-679386
-X-HE-Meta: U2FsdGVkX19ApC4a9T6ACa3m07yeC9BHgv4wqI7yDKofJw8IWRN2+PeJqvW3vruSXZ3lcuFCiFXYC40JscQlWt8RW/v8i7eJ89QpuDtfBj5KVtT8R0kPJQ+nqXxkJpOcxVLIvLMlf1xuVXCgb7FA0lRDGHG98nuOmXDEXZ4OW+EOuDzZd6B/fmeX0zzSewsm3bqDnp70xUSi2F81GWxIpTfgKQIBtrOISw1iQKa0/cN4cTRjobmShrRaVkWLI+Uy3Mnn3GIm3A6WVYv1QuPbJcPz3g/CSr6zZ34xtfNJK/4PsLUf/Zf2fjLtzqPn+sVoBb43GRs9qQAsFi2ZbJDFUKMMtI/DnCV9TCRfsdehG6ZNos9N9wF4WeAFdnRFtMuy7ukfEf+8sx6MtMUSzJ+fHIjqxqnIIH5q9uyXzlqXl3hYlUrEzrSBo6uE0UzSh6fmSpkGNO3Eb3luMnKZHDkTyL4v5a8ANrM5m8LewxuCldPgoEJ9h/UWhctZUGXs7+4y0t5zn1E7wPOgMDIfgpCtcbnl2Mtv8D4snM2qAcEo2aTn6Zu3d3cUW9YFUrv3Pqgi3h1krv7o362u7Hb57udISAJy10wWZVz6pLkr3Hol9OwvybmR6bxauPVPuSobygvTrGhTkSJH4cl3wVeoLBh9TnhVg0l9sp/4phvfSO/BnlEVH2LRjNBuzg2sRuV+gjpRDEk7+7Kt2Y5B6A4vdYSGwahii3fW9T82cVXXM+dJpp8nht2rm5kkIzV9m3v70hqDRLliHQrpQuYG9Dt271L7yIkcPUJv7ZU+uBGcpTXW0HzJaGL7pLPU20g5NZpYu5Ybc5H44NaxAzihOKHtYrSX8ISEHeOFUGz0jhUqqKiom3hVIP6KJ7gJEF2FUOafL9WFzLoD+WX4/Avd/JJAEOIQBfmZNmBfaoo5G18fYb6W+oLQQN+2J7mfvyO8BOMCNVcu7oWiRvDjgB8wF89p+BP
- W8wf9hCO
- xgK/EjAZoVTBpIHrC9Dk4HS7p4o5A064ToPFPWLI2OfzDUSOPDxvzyuIO+8+a+0g+iu3SaXajpz/CfarpNvukjJ0kokD4Q2PdR2uiTX/N/fpSPtlrsnJ9Fixi7kn/l8QKuuzXUdk4zR7ZkCJ5IVgAuS7TpUoOihX/QY979fPQdlbULVQlQE7NCwbWReufASG6ci9tYMc462JiEAk7DtaQiVMjmnINP2H8yymHDd3ucZq6MaMe+eUMCeEl9ajFe9U6GAI/v1m1koSSyifea85ttd3Xq0H0GxbaaWFhMbi3behuVO/FvjB8zDaxml9yRBZC1lvr9gbBW485jfsyzRkM6ZWKy7UZt8x7G/9XxeKprixYVtg=
+X-HE-Tag: 1793444144-968618
+X-HE-Meta: U2FsdGVkX1+FU8+SNKgrRVvxkQ7qml4Kd4oEuqC1ruJZWBaDW6i72Mv7i7v2HY/sX5qGdvB8s6N7SNvnMzoRSiBD2MIFGbVwlwa8Zo73w+UoVJzua1zX8d/j38y2hWwLqahDhOvNTzXgm1DEnosvFkRgTEFDkG7+3uC8Ub2f2phvC7+LDkhGOhny0CogSwLLQiJEPDnuYL4V9ipAIlU5VHzOtZSdvvyN/RRoEgUX3ROMaI2suTacqL8ZhPxR14mnvoj6yVVO3tNOPhMHd/IaNjGLrj9vS2dSmtgvDf649CJXC2gGLQ10vpRXHuXbp8pUKYytVXpk+dTwMjnQNftk7J0mTqrLqUM+mCCnuQJr7CNSfsGrUF5tnDXNJ5GbEytaMml6ZRvwP7JIGkBqPwuPj8X0u6AorXP4CWVl+pKh/l2XN7g7s7UtXSl7LHv4iTXywtV/qPeKpIJ4gU+9NZymuaCQSswMVeevHov5DSGZP87N2P6SA3M8+TrCgNCUYW+mcy78kTkfKVEnrViNKZI13MYJXqz3KArWlAhvzixLYWme6OjgOswIrFW51r0bw3kbmjvisf+Iq+4Y1JBncnDUoWuj6c6olkaaZd9oJgwwhikN93mNQmvpZyyEpCRdV7yTFnKWK/8/BvfUP7mDEzEuV4jD44GcES+NTlaShZYuWK467PyzlOzKnvsoeALKrGvE4g8sys9AeqP/w1w9zandHudVqk/IYDToD5kLD9cN+Encz1+uYbEJ6BQEpBEWu2AwGVyElvy/LofdAXWu3IUGc4/1aAquipFwD4QsOScw6uENJMQPc+8iFFNPp4kQfiokBxkd7ZNNSdO7rl+LgWPCb3vzT61GThtUAH9zevaelaB4M3AGosIoubpXsc+4Pgu98Emj7VjoIOYfJzIRoIXSJL83KG9NgV8M5gGXXj+zK2JOF+28wr8E0I3AUKT+eJPZAYj2hwc4KWzS3/OgnpZ
+ hu5vyJTv
+ 5iO/LlQ5ARICNVZnW2crMCbbpEkF7YD9e5Pxkxd2HfdLkcROFWJtAGQCF12IurEkDieeidPCoRlzMuuqNo4Ce4YmeqYn6nculpJvVkEnO19YzmeWAd+4WEXvx7MWWwI3XhE7JNGpMZvb2zigyLnWd5CHwCQ3xz1X93k+rX+uxG27lyNOTOBfdYe1S/KJ9EFNCraAdb3XX1EJPb1aLELCRO+J/W/ogLerkX0JrBJCl8t4x0s4rNtp2RQlxMzBqZc2nMSUdr+LrswNXfw0wTFLE2jVwxufzC8djH1PgY1TluFYgIBpyj7r4H5l+G1bk4SN/H5MJL6ayWtD7rorYBXL7xXJouDNCCXTo9G0os4Jm1Me3THosCldi9qqtuv0YSf+PK9YWuchMmWf3J9pNZLUZVgFQgonj0ZcneYNlIzpUdrurIoE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,22 +102,17 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Fri, 30 Oct 2026 05:37:36 +0530, Ritesh Harjani (IBM) wrote:
-> Unmapping a device-dax mapping with 1G alignment on powerpc radix kernel
-> built with CONFIG_DEBUG_VM triggers this warning on every munmap:
+On Mon, 26 Oct 2026 23:20:13 +0800, Lance Yang wrote:
+> collapse_file() can call page_cache_sync_readahead() while still holding
+> source folios locked. If truncate holds mapping->invalidate_lock
+> exclusively and waits for one of those folios, readahead waits for
+> invalidate_lock and neither side can make progress.
 > 
->     WARNING: mm/mmu_gather.c:176 at __tlb_remove_folio_pages_size+0x38/0x230
->     NIP [c00000000063d508] __tlb_remove_folio_pages_size+0x38/0x230
->     LR [c0000000006fb688] zap_huge_pud+0x1b8/0x2d0
->     Call Trace:
->      zap_huge_pud+0x170/0x2d0 (unreliable)
->      __zap_vma_range+0x1604/0x1e20
->      unmap_vmas+0xa0/0x1f0
->      unmap_region+0xb0/0x130
->      vms_complete_munmap_vmas+0x120/0x310
->      do_vmi_align_munmap+0x1ec/0x240
->      __vm_munmap+0x148/0x220
->      sys_munmap+0x28/0x40
+> We need to release those folio locks before starting readahead. On a page
+> cache miss, roll back first, populate the collapse range, and retry once.
+> Doing readahead after rollback avoids an extra pass when all folios are
+> already present. If another miss occurs on retry, give up rather than keep
+> retrying while truncate or reclaim removes folios.
 > 
 > [...]
 
@@ -138,8 +134,8 @@ Note that commit hashes shown below are subject to change due to rebase,
 trailer updates or similar. Further, this is not a guarantee that the
 patches will go upstream. If in doubt, please check the listed branch.
 
-[1/1] mm/huge_memory: set the mmu_gather page size in zap_huge_pud()
-      https://git.kernel.org/mm/core/c/0ba86a16
+[1/1] khugepaged: fix readahead lock inversion in collapse_file()
+      https://git.kernel.org/mm/core/c/96995467
 
 -- 
 Cheers,
