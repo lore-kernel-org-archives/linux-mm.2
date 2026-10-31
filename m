@@ -1,94 +1,90 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABA78606A31A
-	for <linux-mm@archiver.kernel.org>; Sat, 31 Oct 2026 20:26:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7D40606A31A
+	for <linux-mm@archiver.kernel.org>; Sat, 31 Oct 2026 20:29:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Xmf1ZoGy
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Qm+fVmTi
 Received: by kanga.kvack.org (Postfix)
-	id 9BEF36B05B7; Sat, 31 Oct 2026 16:26:27 -0400 (EDT)
+	id CAA076B05BD; Sat, 31 Oct 2026 16:29:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9702D6B05B8; Sat, 31 Oct 2026 16:26:27 -0400 (EDT)
+	id C5AAC6B05BE; Sat, 31 Oct 2026 16:29:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 886266B05B9; Sat, 31 Oct 2026 16:26:27 -0400 (EDT)
+	id B70466B05BF; Sat, 31 Oct 2026 16:29:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 593B46B05B7
-	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 16:26:27 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id A4D81A093F
-	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 20:26:26 +0000 (UTC)
-X-FDA: 85384053972.02.E38FFD4
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 939A16B05BD
+	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 16:29:04 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 18F971409F7
+	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 20:29:03 +0000 (UTC)
+X-FDA: 85384060566.03.2F6620E
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 19BA2180009
-	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 20:26:24 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Xmf1ZoGy;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf24.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+	by imf02.hostedemail.com (Postfix) with ESMTP id 8093180007
+	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 20:29:01 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Qm+fVmTi;
+	spf=pass (imf02.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793478385;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	s=arc-20220608; t=1793478541;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=70C4Ph3UTf6cW+VymDmG9zqM2mh9k5ZlsNQ24H+enrI=;
-	b=35gTqHstyR55HjH/Esvjva2QHS4YmHw9vrsXNGSvn7SiPlmcm5QMV6XwuFQ+75l3rBUzmw
-	TF9QeDlDdgR2m2l52J6e6s8mUW0/fjI16FsQihUiaKyy6t8iELdiU4uq+SOY/QUtDO6Zo8
-	TSEJqrn+DLUWZFZ3MBNjBrxG5utG0O0=
+	bh=F2JHwEtDf9D7TWTWSurLCwRlzX6xohlUFs5XtZvypmk=;
+	b=VREJ3EaMS0h/jNFFXlHClo6lIsDjlPnk7F4JBlaZB+t7JjApKKvTr0upmgksq36k40NuL9
+	LDL7b5CxSW8BHMsGBrPAsLZpRcMoERTINvidt9HMC476NYyMcy2FVrXSg6lLVIigEAqnPQ
+	SHBivuDN0XmXqqhEK3luxs1aIrlMGVo=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Xmf1ZoGy;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf24.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Qm+fVmTi;
+	spf=pass (imf02.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793478385;
-	b=CSDnRYtL8Q843jN+qZ43nzMBBayJT2nUwpmF1qDIDkZDrB3ysgu9i45Lt7+hEAtM5Aubrg
-	Cjmzy3tlGttm1vDw0AVu3cKJrOyJFW3RMMb6PuzMnLAV5rdTAH6T+AHqHDs1zuGFeilb08
-	sOZfr8Sfqkw1dQugE5SD5amXcZLEAXQ=
+	t=1793478541;
+	b=0amWbiiyJyvIrir0M5yuPUS9Iy6mE0msE/JIMpFdk8zp9npT5guTBzk8fHUtVyDI7AV+Rl
+	mzgWJ+pTmkr0O2ntbvNOEv+MsnTILgXBA2GyrXr995RD4BagLikYzcdEZvCBDlbiKVKz0m
+	j+YBQQYJZF+SrVH8n6GQzCdJvs3RESI=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 6490743EE2
-	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 20:26:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13D121F00A17;
-	Sat, 31 Oct 2026 20:26:24 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id C250041F18
+	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 20:29:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 760F71F000C1;
+	Sat, 31 Oct 2026 20:29:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793478384;
-	bh=70C4Ph3UTf6cW+VymDmG9zqM2mh9k5ZlsNQ24H+enrI=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Xmf1ZoGylTJ7V7s8tHeeR5xjfQystGY8ac/LppuY+XFyKUcX4h4p3yCAx0yJhK59M
-	 pQDoEkGjcbBAdphannF7mt1f6uGhWHfaNXUviR2tszW0CwUI2WIQPF3cvsKh82FdF9
-	 KiyC4f6ZuBrCb9BRXbo6eHavlHFfBXkKbEJD2VmYAlXnZZwY7QyleQCFjCc6klxgTI
-	 jXY9//+47DH84Z8C9j+n2UIL6/jUlqq9BRO7xcGUyPft+GR1YcMUKZCOYesgpOHUrW
-	 aN4w36ja7orqBNxLPV6QgNFD5mFSNdHq9MxbEN+9ETcaE2A0sp3x8ZQHkn+EZA4xyZ
-	 z+PZJtgQa59rg==
-From: SJ Park <sj@kernel.org>
-To: 
-Cc: SJ Park <sj@kernel.org>,
-	Shuah Khan <shuah@kernel.org>,
-	damon@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [RFC PATCH 6/6] selftests/damon: remove unused imports of os and sys modules
-Date: Sat, 31 Oct 2026 13:26:13 -0700
-Message-ID: <20261031202614.96036-7-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20261031202614.96036-1-sj@kernel.org>
+	s=k20260515; t=1793478540;
+	bh=F2JHwEtDf9D7TWTWSurLCwRlzX6xohlUFs5XtZvypmk=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=Qm+fVmTiP5YQVGyMNUQskoohBCdoe4RPYkTh6VwfWeR+c1Bd+N7WtG1Blbz7fJDH1
+	 8oXAQYvGKHcgqixycxbEp9m+PrZ++Ncvpz9sWTT9Ywf14aRRp9TR92i0m/l15bvVQs
+	 ITjwgXCUS/OAj+MMcCIMVIurlaNuZg9ac3br4ZRhouVJLhT/VQVAhJwiiHBvQgDnxI
+	 46eDDm0WJoI39YlGj3lvXtt0ujUt5Jv9G59PRiuk0vQCCQTFj5JrbNoOrQJrYNBLdp
+	 V7//DvgfYY7i8/zd0HQWve4PegoKeP39VCcUEjZMTnonOJktX41eOP1lSTcNdlmOXL
+	 mLIbgYTePnQqw==
+Message-ID: <sashiko-outbox-192115@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [RFC PATCH 6/6] selftests/damon: remove unused imports of os
+ and sys modules
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "SJ Park" <sj@kernel.org>
+Cc: "Shuah Khan" <shuah@kernel.org>, damon@lists.linux.dev, linux-mm@kvack.org
+In-Reply-To: <20261031202614.96036-7-sj@kernel.org>
 References: <20261031202614.96036-1-sj@kernel.org>
-X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 19BA2180009
-X-Stat-Signature: nfaw7nskkm94botue4ysi4kab5bpiyeq
-X-Rspamd-Server: rspam06
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+ <20261031202614.96036-7-sj@kernel.org>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Sat, 31 Oct 2026 20:29:00 +0000
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 8093180007
+X-Stat-Signature: nop5uwgqbcmpte9dghuzb8fqtigezh5c
 X-Rspam-User: 
-X-HE-Tag: 1793478384-127701
-X-HE-Meta: U2FsdGVkX1+h2nY3ZnIyAIn8Hfzl3jZPS7hgcAzrYpHdX0ORrAnxbePXvFn2K76MDSzYfAsdF4heO3Ffi32pnddN9y6nsSywxpqTXPnTT8Wjr9+P/zOJWjx9rW0t4IENWs1kJcIO8NGmL1HDKQrdZNgRom6iJHoBoZA9wc1zZIZr/mxN8EMsBybbVw0ThzgnxfjqUgs9PWYfoY4F5E2bfc8MDna5kZWIIFpFAW/u1K9e1jPWMyOXt54oXaZ6K8EnndW1tHSTUGr1a9pRjeUt0NYeCWNuf3D/OOrfzmKc5dp/TCvMZq7fBf5VAPhka96LlurBhyk15A67EemeTO7sDIBQye8kP2uJHLeqYpmD3NLA5sebrYhp7uPHwfEqqViAjH8vVwvZMr757g+buJGeFVHa2/h8rrOFGHIo0LYNhYoYxWwqwc/xfqHMn6x9YwbV+kIr4zb1/FcAGcjbFJylza/HFHAj8604lM9WCr1kaIlCxDlRmCqtL7mJEXg9rIzHSXOr0ueV9h4fiLeO0pn68cDcocC01GvGLaCk2Uy+MjwY2/YLEr2pnroxw9OM1hMlAfm5nFAfxNuBlKkz4s5KzrIZjYlw7QT7IyAXWfHdYxB7OYnWhZ58znt110Fh1BIcnBdvk9wSz7VyU4LtjiUZh+wOc+Y8SVP4iaCZlK+jzuwu5rE1hfwT6YEI3gB39dWBaejhMiVWVedBnR6iTb04vxRP+qr9DfoR7eB5sATkW4NevBQFdhW82L3x9cBLsl3B2XlcW3+i4HM9TII2x7xSON4/MNECn12Zu+WKEAz+ALPOw5sNgcNra206CweNRsknFR6/hLr7xau1Hn4NbmpmSAcTxxA8iBT+LGQzeMre+l/Wwm17CwgUUVIMUjNHydaZIAzZCyEFJ68xK5hxWTTjnFba43ubmQ4C39kIW7/GTpAnR8ciWZdpIP+TvyraazeL+rs3GlB6OjYp0WpVo1O
- uugWB9nK
- cXUYL+1+bHdFTugeU81B0VEUuJ4TM5O4Q/YoqEc6XRIW9fS8bTcNqDF1Md1XYJSH3BzfIcW3obvz5MnQHghMAKoLC+c37d9CYjkFvcCCpNYoUk+UUp3QeblhZemT3eQgRgg8akm7AXYKj/Bd+kJL2fThUwSm2wlTL4XFP61br6cYvSFn+AEBhZAIFMh7G0utbn0MJY3Wx6Tw5AKb2nFzS9dJgMbGzKekp8Hn0QS8Sx5T0PddPZ/LQRmlVIfPB1jXfkYcm0N/b306UL6IKafer/0ZrwcMqkMhVWQ3krRw9SVlvffc=
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
+	autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1793478541-614876
+X-HE-Meta: U2FsdGVkX1+Hd/CtWvbSzihWIAyGYQ+ZiccvsKAQDg3A/X+KMBbQobbRRaz0nq5yW0f6z2Sb50mrng9zfZpqQaXjbGX0R9CDwTAoLrHA24d5KfQtMij/y67mUW90hhL6901KKGq4EYMenEv+XFDjcuxAf565d8d/iZXjag4SmUHkjzEfVWP8FJFsoIhIVhS6BJtI/bfSSGNAT+bDpWHW1btFBnu0yjT2wCM+dTIDwybzJ8YG/u0h2OC6hcKlP+H9THV8gBsedPjtHeWqjMC009oL2VsSdklJc2LOR0vPnravi0YIHqzMvZcQa88yWq+kAvNE5Z7kIofhDBDUoiRQq0mAsMXO65apt8DHOPuMACnFjJDTkfDxvZ5/2kpnwaIajRHo1tYs38oKCaXmqJqm2QqIxHLjHB4eyyTupBCOk2DLvyNAxboIlcM/5fdR6qGOqC8JaI4pcUueUeGdnqXcZMoYwIuwzSjXwtuX6qJWOAXwnqShf6sGbzEgW/9JG+5RXbRLbJaaA43Bsa7S2xyrUJgDc5dwq/V6xfJgk1nh9YBVE+Za48cylXRApjL/y4GT8o6UOv4B3f9wCfyfJ3Ub3zB+Gs0KQNnWmCZSngGHN9gcOvUwyX9rEzKgUFGNYEbNSUMR+Sd9ZSQTjbLR7dvmdwU3gPtXcOcaONUY98C+G0ZGhdluZNZKsLVUiwmVz3JNJCLeFKy6e3AQ7Fl6nZrPpBZG+9HAzTuKGXuoMLfB6LuTjnwcvy66KrSjQVseRSgbf6g194kWULgwpfzjldhjRcvlDoAufDD6BSljkgYXBiTT8XlcB6wxLcSQL+e3Rnzv1WpC71TyB61spni9ojgAMySOLusHynduRyp1kDmWBZmLoxqkFce1uFak/+Ux8muyHNkULktP7sbsoL78bzqwIMQ90+jZiGFa9bgYmhKhuaEUTC85FMTHhNg03svqYUIc0/Ol+wP3hKdxIlrBMg6
+ deiHcRun
+ ttrUOasdZ1XXFGoQNIdUDifnmELbI2EfvTK5XbQAM3Ywco9Y0UyjUMeoYhzDHir4mX5xdyRqyhRGKliEtN1wojFxsrlFXI6FyeMUtKs4BkMQjPUMU+qAPZFQgOyPesWEb1XX72+J31bkyLGTveJl8DFyGV1amCU3T0LGDJgmnqYeWtY/JNalFuMU7vXOPudXJJs0yfRLUxyHjff8hd9H753gzsYPeOoWvCm1ZbhbmSSD1dMFg6tJYZ7rkZ0vlj+w4XmBlxZfbAVWbrDWx9E7l/7BXoZPAsnrO0QcHAKipDYS/LZAxB2fapSmSEbo2zUhOZja9j7i3moT3/zopkoYIg2p3vbwKaBSEZXpeCG4XNBdpCXFD4ZCQtnrrjMx7WetHhiwRmFsQdMD7h7apm3Uo1wBDMc+9zYMnN1Z+I1dUZPvp/bkoM9p8oy5K/vvSu8EDE2nQeqst0/6fvDYkSFKdSvJNNIIYXwN1ZAvGTzKmeiFUUKVb9c8bXjfkD593ZAeKn6c3n3i9J4EjUura+64p7mleaiD+2m1pn7HLQF6kB6azocyyZVqwGAdsEBGE8P9cTyt/GaD/cJV9FT2ZJME4HNAxlTL+W2SgircYBpdxNluTPv6hrTXV9RQvZwJ2TjC5yy7TMFZvyjA5WaE20VF3qgkotQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,43 +92,52 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
+X-Archived-By: <archiver.kernel.org>
 
-sysfs_no_op_commit_break.py imports os module but never uses it.
-sysfs_update_schemes_tried_regions_hang imports the sys module but never
-uses it.  Remove the unnecessary imports.
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [Low] selftests/damon: commit message names wrong removed modules
+--
 
-The issue is found using flake8.
+commit 55304159b940aad6f9b71d318671a40d9d63ca46
+Author: SJ Park <sj@kernel.org>
 
-Signed-off-by: SJ Park <sj@kernel.org>
----
- tools/testing/selftests/damon/sysfs_no_op_commit_break.py        | 1 -
- .../selftests/damon/sysfs_update_schemes_tried_regions_hang.py   | 1 -
- 2 files changed, 2 deletions(-)
+selftests/damon: remove unused imports of os and sys modules
 
-diff --git a/tools/testing/selftests/damon/sysfs_no_op_commit_break.py b/tools/testing/selftests/damon/sysfs_no_op_commit_break.py
-index 81774ddc55ac4..5664f75186bac 100755
---- a/tools/testing/selftests/damon/sysfs_no_op_commit_break.py
-+++ b/tools/testing/selftests/damon/sysfs_no_op_commit_break.py
-@@ -4,7 +4,6 @@
- import json
- import os
- import subprocess
--import sys
- 
- import _damon_sysfs
- 
-diff --git a/tools/testing/selftests/damon/sysfs_update_schemes_tried_regions_hang.py b/tools/testing/selftests/damon/sysfs_update_schemes_tried_regions_hang.py
-index 625761c243b58..326a14f040534 100755
---- a/tools/testing/selftests/damon/sysfs_update_schemes_tried_regions_hang.py
-+++ b/tools/testing/selftests/damon/sysfs_update_schemes_tried_regions_hang.py
-@@ -4,7 +4,6 @@
- import os
- import subprocess
- import sys
--import time
- 
- sys.path.append(os.path.dirname(os.path.abspath(__file__)))
- import _damon_sysfs
--- 
-2.47.3
+This commit removes unused Python module imports from two DAMON selftest
+scripts.
+
+>     selftests/damon: remove unused imports of os and sys modules
+>    =20
+>     sysfs_no_op_commit_break.py imports os module but never uses it.
+>     sysfs_update_schemes_tried_regions_hang imports the sys module but ne=
+ver
+>     uses it.  Remove the unnecessary imports.
+>    =20
+>     The issue is found using flake8.
+>    =20
+>     Signed-off-by: SJ Park <sj@kernel.org>
+
+[Severity: Low]
+Does the commit message name the wrong removed modules?
+
+In tools/testing/selftests/damon/sysfs_no_op_commit_break.py, the patch
+removes import sys rather than import os, and os is still used in
+dump_damon_status_dict():
+
+    file_dir =3D os.path.dirname(os.path.abspath(__file__))
+    dump_script =3D os.path.join(file_dir, 'drgn_dump_damon_status.py')
+
+In tools/testing/selftests/damon/sysfs_update_schemes_tried_regions_hang.py,
+the patch removes import time rather than import sys, and both sys and os
+are still used at module load time:
+
+    sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+
+Should the commit subject and message be updated to refer to the sys and
+time modules instead of os and sys?
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261031202614.9603=
+6-1-sj@kernel.org?part=3D6
 
