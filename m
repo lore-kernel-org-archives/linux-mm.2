@@ -1,120 +1,123 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25932606A31D
-	for <linux-mm@archiver.kernel.org>; Sat, 31 Oct 2026 07:29:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97B3B606A323
+	for <linux-mm@archiver.kernel.org>; Sat, 31 Oct 2026 07:49:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=DHohPplR
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=k2DV4TNM
 Received: by kanga.kvack.org (Postfix)
-	id 319156B05B4; Sat, 31 Oct 2026 03:29:07 -0400 (EDT)
+	id AB9746B00EF; Sat, 31 Oct 2026 03:49:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2F0186B05B5; Sat, 31 Oct 2026 03:29:07 -0400 (EDT)
+	id A6B016B05B1; Sat, 31 Oct 2026 03:49:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1DF376B05B6; Sat, 31 Oct 2026 03:29:07 -0400 (EDT)
+	id 959576B05B2; Sat, 31 Oct 2026 03:49:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id EBDDB6B05B4
-	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 03:29:06 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id CC94B1408CC
-	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 07:29:04 +0000 (UTC)
-X-FDA: 85382095008.10.0418709
-Received: from mail-pj2-f7.google.com (mail-pj2-f7.google.com [74.125.227.135])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 1A0CFC0003
-	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 07:29:02 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 6359F6B00EF
+	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 03:49:42 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id C591A1A013F
+	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 07:49:41 +0000 (UTC)
+X-FDA: 85382146962.08.8C9C67C
+Received: from mta1.migadu.com (out-129.mta1.migadu.com [95.215.58.129])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 8EF34C0002
+	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 07:49:39 +0000 (UTC)
 Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=DHohPplR;
-	spf=pass (imf22.hostedemail.com: domain of jm5905938@gmail.com designates 74.125.227.135 as permitted sender) smtp.mailfrom=jm5905938@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	dkim=pass header.d=linux.dev header.s=key1 header.b=k2DV4TNM;
+	spf=pass (imf22.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.129 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793432980;
+	b=1oBCs+k2rY6c9LjdYhOKU0ql/Bw4GeVFHAWkt8Bp25qirKuKS3WfmiKGMN31xsofd0TdB4
+	oIzHwmDK7bnjAOhejkEs3U/ywZRYKK5HZh8Qw+DvW7E9Pv1MU6Sg4pe8GDD3d88TaWwfEe
+	r7JsXEcIgMIqW20vc4CtKocdvoEFuY4=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793431743;
+	s=arc-20220608; t=1793432980;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=1GfHJENjm3HCl2SLDMEeoyrSRdru9fmVN3yznIPIXt8=;
-	b=tPlZdFtHPvLefUh4LGuV7/kmwjTcdOGK9QZUo1TZvVUwb3JhP2OsmESHl24M1hMFWlZ/KG
-	58SDPtHsnBLCmF6gw/pViVjJxC6rcxtfgTLmqFcu6x4RkFC1jUOjtumCwdyRnpb1jsKqri
-	moB35GqG8rsrLF/OkAqjR//fu0KVZ18=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793431743;
-	b=EgoX7BBT2gQmJi7B6PPjfCvSHjxSjPwzCvWZwaB87UzB8WCBhJ1HTY6IHvXrZ6WRpypvHl
-	yBqleyCtnx3UwEi4YLZt92BI5XP8xc66QB55HI8RCb4JPqry3Oy8+JS0ENicOHxfQYxKfp
-	wyDCPgR5+/KoQeg5GFqEETU9sSFC7VI=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=/yrnXSjuGtKvXirNf19gKPohNcjZeXRzs8MVdnL1uJo=;
+	b=OmSsJvHMkqq6xRVgXVakOeF9EPUxN4C9l9GMVqx841L211i/VJpk/sAn4xiVlnmgt1c4kB
+	SF1WDeNcZDwuimy9t4h16DBc5r3tdiZ/0xfBTCIscciGw5OBT6MCpqI8bhjtKLRFfXMGof
+	P8lwvqigA0AeiTCSTpIoGdLi6aO6YV8=
 ARC-Authentication-Results: i=1;
 	imf22.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=DHohPplR;
-	spf=pass (imf22.hostedemail.com: domain of jm5905938@gmail.com designates 74.125.227.135 as permitted sender) smtp.mailfrom=jm5905938@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-pj2-f7.google.com with SMTP id 98e67ed59e1d1-3ac63aee1ecso346520a91.0
-        for <linux-mm@kvack.org>; Sat, 31 Oct 2026 00:29:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793431742; x=1794036542; darn=kvack.org;
-        h=mime-version:content-transfer-encoding:content-type:subject
-         :message-id:date:cc:to:from:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=1GfHJENjm3HCl2SLDMEeoyrSRdru9fmVN3yznIPIXt8=;
-        b=DHohPplRPEAzeqUTj6HSUPS2uYoO7CjfYK4EQBEkMe57XLw4QsvcqIHjNEbum3hXcW
-         5RMl7nlzJzw4CDe0iKVzkSkVd1N17I+lnnbU1cvQo5Gdop2b2Zx6THCSY6rm3CN+CJ/E
-         s7rQKVM44wn6zC5qR+3QwyqzfiWN5c1yDCnF9UTzQboTdi8cTyzxgLxSjWLANb6hcQiY
-         zfiRq27csBot0qrV95RT1+VNhmLPICE4MXhaCENIcEarWwyB2j/c58kIkr+vLS+XDNEb
-         q11lymAzaY6I7fB4tK9+Nj49zhK9bRnFCZajqA/gF8cn+Bmz710R2e82dPF6oEauB2uV
-         yrUQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793431742; x=1794036542;
-        h=mime-version:content-transfer-encoding:content-type:subject
-         :message-id:date:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=1GfHJENjm3HCl2SLDMEeoyrSRdru9fmVN3yznIPIXt8=;
-        b=V9ZI6AP2cEf2rPSh5vyI1JeuIytKGBRNDDRv7gPxmYJ79IF0OqitVp9wyUK0qvS9vr
-         MQvhsOfNsZIzi/XtptO0KYAmmwsVjzAfypGdRrylskukP+VcUflBKnhHfNWmLhRvBj1f
-         YUD+UcGXQPIf5GX0nGNDcccJvUeVkE/8QmupJTJmQIbIa7ItjBgmL3/tQV7AbzHMm7XS
-         +kobxqUsnvwyDrXNPHxvHQIK2WtEJBa3y2bDfOr9SAHMbrniiLSTMVcVLs/f1x230mrD
-         JlN7mompmi016vCcWR0mGg0EbwdnIpm6n+gzguziFAlTc+UtMhE3CdykJUXHVZSrsFfP
-         LUng==
-X-Forwarded-Encrypted: i=1; AKwUvBxygSnB4l6EFq3oZ85eaYH/Ys1fRHkb1+tRpF9Oo49+x8L4wqbJ5awVipcCnoq0sBCT8YRX+MRqPw==@kvack.org
-X-Gm-Message-State: AFq9FYIXJQPOCpi7p4EiKEFlf1bNMig757wvbC4f8F0rBGMbDaPuOHnY
-	c8FUPIRqzMNOAqbl7lEUrPgyvGyv9V8dh1VTf5hQXxQj5Wk7z+FA3sBg
-X-Gm-Gg: AYBFou29/Y71kLantc3bGlf5WHKiKYgfV+1xGk6LP3f/RKf16Hl33ImMYQnhOf+OZ1H
-	l+4Idrw1ps65GN0QbHexOLoqQJaA6kdqjTBEcyIexqEHbEc1iEYki1cgg4rUoPkKqdhPDCOgZRF
-	xBzABR3blLztziWXTRT9hthn6RdYU8MWC8hYy046yHZ4QrucHJi8Rqj5lpuXn0vYXRBkTkbANiP
-	KnYV3axezinANGgufWhqxQhpCxdNnyvDvTyG2Tu8qCm3l+W7gXiVPz+BtOVS8/xFwuAv9p3c1yi
-	45yMZrwP3x2EhQoNP0ENzNZEAcp7PHD3nTT10tZKLcziaPOG21CUT6c0OvvqSFce0o6jzWdcfx6
-	iovAfxCg/wfqRbmySYa0tsJL5NVzvwmKpvUUvYrc9njsw0HDtkV4uVOBHS0xvc0FUmteosP/waX
-	Dz7XehgXzbF3xIW/9oSntBiUg7zqSB35K35Dra10RtHQiHUGSlsDDuYy+1HMVFE7H5ehhkFbgD4
-	UTtCL/pViiC402J36m9+KZrKdXshLGNTRwB76NPNNKDmJZNmuW/uOMSpOpyEUQXCr4rzkECZKk/
-	Hfjy3bV2gDTm5DgG/KDqWXjIi5QiKsYdxqJ6QWBdtBD29cYjsG1psiB04pf/rGdvDXGQwOb1uHH
-	6X0ed5Y7Y9UCWXXlB53iQSpxWrs3uRCcA
-X-Received: by 2002:a17:90b:4f87:b0:3ac:af8d:c839 with SMTP id 98e67ed59e1d1-3ae897f6e6dmr3575891a91.35.1793431741819;
-        Sat, 31 Oct 2026 00:29:01 -0700 (PDT)
-Received: from [10.208.43.86] (n106-71-19-159.sun21.vic.optusnet.com.au. [106.71.19.159])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3ae6e98afe3sm11008530a91.12.2026.10.31.00.28.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 31 Oct 2026 00:29:01 -0700 (PDT)
-From: Aveline Noir <jm5905938@gmail.com>
-To: Jason Gunthorpe <jgg@ziepe.ca>, Andrew Morton <akpm@linux-foundation.org>
-Cc: Francois Dugast <francois.dugast@intel.com>,
- Christoph Hellwig <hch@lst.de>, Leon Romanovsky <leon@kernel.org>,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Date: Sat, 31 Oct 2026 18:10:22 +1100
-Message-ID: <179343062238.2.2773026701442863377@gmail.com>
-Subject: [PATCH] mm/hmm: honor write requests for owned device-private pages
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass header.d=linux.dev header.s=key1 header.b=k2DV4TNM;
+	spf=pass (imf22.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.129 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=2hMyZCs1UGewOfOEo2oSastc/qJPy14To9PU6CeHTdk=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1793432978; v=1; x=1794037778;
+ b=k2DV4TNMPKdue/DBAOU7cA9uLmURd3BY5v6y0UkKo/1LnjZyF5jKWpC5kyg5sInIFdiW/AEu
+ CnbFpM0zZMgWnea8Q76MIVqWbrstSK5H/CD46HilBSKHlzQXIXNrAmMI6bvBfc7zSlP78gdkNIr
+ Bzrrc2qmAnyIelevzXHnJn4E=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id 1faece7cfffda491;
+	Sat, 31 Oct 2026 07:49:37 +0000
+X-Mizu-Trace-ID: 1faece7cfffda491
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <33ce5d90-cc8b-4d21-9838-17db23407e84@linux.dev>
+Date: Sat, 31 Oct 2026 15:49:12 +0800
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 1A0CFC0003
-X-Stat-Signature: ioqr3zhxfhwqmhubtgz8tcqu617bhunb
-X-Rspam-User: 
-X-Spam-Status: No, score=-12.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
-X-HE-Tag: 1793431742-981940
-X-HE-Meta: U2FsdGVkX1/Z8Z+WibkxwVkSpSNZt+A1WAgSW/hxfUyJXIpe/jmxPqHHx8v2+AyQxH2yxLwprsOr86mV5a8z7TO4/aIvREAIh3F9IoeAmnBBQ9W2vgIRIl4DcBYdKY2i+p3jbngzL2ZtMesPkcHoJ2ZPQBMrhllpRKD+dOQE1a2aiIb/EAZSCAcNZOTnR3vatJVF2HNjTa+fH+2kjngztW4EhkvtPYsU/rTjbt1cHkZd0URKNadN9Y5zwBxgy5d7WQpB1IPYOkbPfatPulLcGssbnLeB0sS4C+aMslCZNJotyyf/P74VW7sSVaDWxxs5GkeHl+NDEp/PJ6DyN6SPrFtSSeYK47PPRYpSDWvw8sR2QIbURTWZtA5H6ucs2XXNWk4luKWGoPuB+D0XSmH3IFS/B7KHCruNIUAoEKsYEA25CLPtlOViRR/GtHFpKaXC9mkDr2gEubG/nJtCb2o1tL5/tNnB8xS8nvHBRgCb2CDn7fwUS1VcMe1J4ivCxm1fnn3YJWyo/xLOz0AwzIFMu2YRl1+zvbDPFeg9moucfZjdjH710Agjxapp9gXQl7NhXzyV5OKImFfhh1zsYnKMgWKErPlQPZwESc6a9UnUF+q5UdtxU736mM4p3ERAfdSKfoAiWRAM5KWUuyg0d8DknR4ukMFgkv2UnkVWr6QEs2dA7+ptUU6Dw3xJKtjl5jW4/bcNtiDD9h7Bt+JPSkUxauOzjd9MtocI/bJq7IIx5erNZXIX6HWxPBztyG7iOP3GxeyDOCc7ZS0Q5wAz+Zd+hPsQAU5yrasGSOgBRuFa6UZw3oRZFoSzyKQqCOSW4trwEtbTEh18ArGhUqbphY1n58vjHBH9lrW++3bw/Pt4xekr7/2DPwLvuwJdDY/bwHiZodaWm++H8Ffm3JHUynTR0tgkwdLMt/f3pa9r38BuBTonjPD0l4qTWn0fHClSr8AmEz6HBESttdx9vsjT5ds
- Gz92qoAI
- vgTYlw9xw5/l5TsRyNv6Zwip2pBwQ9imzfU2YUrkue4OD00gAY4ytxsLzsXswEQ0PHNTbsybBXRDtsiKz7X+kiQbI3edcH7DSnuRVKQbFnxW0o/EEsNvH1aHYZcp2RCktWcFixa7+FWTP0j9s8ESkYJK3fRdFIDECYbK+b8ztcNzI482Xi4+l8v3RddOk7Tgm/cyYbLHPo8Y29hbQjwygp26e1gYTE1C3WxNe0b3+0Az+oI0fXV213u0QQNyf0DetaVnCxSYD7HLGlQbGgnJL3YL51yN/uO5OKfjCy05LfivEgL020aZUChQTDKqTB46vrawDEf+KI5f1piIhvFLJPotHYMvFPqRhU7x8LKCUMlx6X3yUx9FQOguTyOdQ7+Kn+AvZYmZMHuQx52U2D99zGAqjao3tftt4TZ3CvIFPpPU4LpXPo1RE4UEpmPnx36T38ISp/J0jHbWjTo8=
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 0/7] MAINTAINERS: MM updates
+To: "David Hildenbrand (Arm)" <david@kernel.org>,
+ Alistair Popple <apopple@nvidia.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Baoquan He <baoquan.he@linux.dev>, Barry Song <baohua@kernel.org>,
+ Brendan Jackman <brendan.jackman@linux.dev>,
+ Byungchul Park <byungchul@sk.com>, Chengming Zhou
+ <chengming.zhou@linux.dev>, Chris Li <chrisl@kernel.org>,
+ Christoph Lameter <cl@gentwo.org>, Dave Chinner <david@fromorbit.com>,
+ David Rientjes <rientjes@google.com>, Dennis Zhou <dennis@kernel.org>,
+ Dev Jain <dev.jain@arm.com>, Gregory Price <gourry@gourry.net>,
+ Hao Li <hao.li@linux.dev>, Harry Yoo <harry@kernel.org>,
+ Hugh Dickins <hughd@google.com>, Jann Horn <jannh@google.com>,
+ Johannes Weiner <hannes@cmpxchg.org>, John Hubbard <jhubbard@nvidia.com>,
+ Joshua Hahn <joshua.hahnjy@gmail.com>, Kairui Song <kasong@tencent.com>,
+ Kemeng Shi <shikemeng@huaweicloud.com>, Kiryl Shutsemau <kas@kernel.org>,
+ Lance Yang <lance.yang@linux.dev>, "Liam R. Howlett" <liam@infradead.org>,
+ Lorenzo Stoakes <ljs@kernel.org>, Matthew Brost <matthew.brost@intel.com>,
+ Miaohe Lin <linmiaohe@huawei.com>, Michal Hocko <mhocko@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Muchun Song <muchun.song@linux.dev>,
+ Naoya Horiguchi <nao.horiguchi@gmail.com>, Nhat Pham <nphamcs@gmail.com>,
+ Nick Piggin <npiggin@gmail.com>, Nico Pache <nico.pache@linux.dev>,
+ Oscar Salvador <osalvador@suse.de>, Pedro Falcato <pfalcato@suse.de>,
+ Peter Xu <peterx@redhat.com>, Peter Zijlstra <peterz@infradead.org>,
+ Rakie Kim <rakie.kim@sk.com>, Rik van Riel <riel@surriel.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Ryan Roberts <ryan.roberts@arm.com>, Shakeel Butt <shakeel.butt@linux.dev>,
+ Suren Baghdasaryan <surenb@google.com>, Tejun Heo <tj@kernel.org>,
+ Uladzislau Rezki <urezki@gmail.com>, Usama Arif <usama.arif@linux.dev>,
+ Vlastimil Babka <vbabka@kernel.org>, Will Deacon <will@kernel.org>,
+ Xu Xin <xu.xin@linux.dev>, Ying Huang <ying.huang@linux.alibaba.com>,
+ Youngjun Park <youngjun.park@lge.com>, Zi Yan <ziy@nvidia.com>,
+ Jason Gunthorpe <jgg@ziepe.ca>
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org
+References: <20261030-maintainers-v1-0-97278f8a5f54@kernel.org>
+From: Qi Zheng <qi.zheng@linux.dev>
+In-Reply-To: <20261030-maintainers-v1-0-97278f8a5f54@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: 6ty6afge7rm3eg4pobn3o517eytpkwep
+X-Rspamd-Queue-Id: 8EF34C0002
+X-Rspam-User:
+X-Rspamd-Server: rspam12
+X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
+	version=4.0.1
+X-HE-Tag: 1793432979-661045
+X-HE-Meta: U2FsdGVkX1+q3M5rJH6RJQ5OPJY4llYyLUA3Q46pGxKBdzUwgDYc2Bz3gyKDywWUnDNeOrLPydNUzq31901gRhHq1NMgre7rvzSEpsvbW+zmU3a+BHYt/5OBXCEN/XeqoQXlT65HjXqfecKufPOaBAIKWNfhsVI7vVGXpIo+0G7ydEFKT5COHvDwEppcyJN0CF9VwepnFnFFRxISLCUSy6xTbGrkpLsWZ6gFWm0xadcmL5TVaKBJBShvpAt1jzJfP0wErA0EJksJM/xh3Rq4I3beEtPIqG/AQGcChq5xbmm25Lcf6lg7OJXRCfZ2URNmX0mY+YOcy72fLK96xAgideh6tVmrM5hrs2Hu44ARigQbm8MqfDw04frIfGSa7SArZK2ROYQ/+ZhgSk0IuGnQzANDCCNaF4RfmPPGwNrYMySPupVLD4JtZjBRrOgi88pup+XWMVpdDy7srhRFmIhs2bHSUOYsxwY6BuBrWRWqvmnknvta8RYLM4ndPhdMcxAttJc/Vpmeesjlv3v/PUCajzWPM4ugpaymTWbDXCnL0QreudV11QsWeT6tQzB4XbBKzqlPJfxy/8CYYXX6vhqDvamyJL4//AQebGL6oF0zjb5PDA2EpC5v8Krj9LGhBqzDIFjaHxazMVlouDgI7+Kb9kgLOtUqPhSENlfz4Zsc6rtWr1HrphhAOCkPGyfK+KcekGQOL+d1/0IYODranIj5Y0MH39mALE2DpJzTjBF5g+IoW9sXYAtk3nBpq5OUUY72+oQ6+UOpJT3XEjbKG8Bi/Kiqlz2uNxLUYVaZtZyDHNV3CzZJ/Tu6nPJbcI8aEqRXSvX1dfH5q76m1hW7xncvZuqCkCUNAXZKaAeRVycOestWBEr+sxkbeAFtysamw1QBi39Z8xlL8tUf1/nmNCsgrbh3knalYUH61iqzvEXaJGZVaojgDgynCNIWo+Bp2qbk21j+6iuoDMh1FkRjbXJ
+ 7FYHxd2Y
+ kcBN9+ONuqtXSeFtD5uwfEBJdhdy2DBnjFoPBg+wtpByzfSty7GZ4G93zdQDQLHluYg613eCKnd+9HOr8CPDwwlGAGFh/VyvKjYeALNdjUlg7fpna7qJJzszy1IgRDy4jzG7Ri3Ruhly3T7oRvH2Zwn1cVSwVthb6T2FKusTcGTbN/cto30S94fncbiMaU7+LSL0Dd0TbQhM4X6YicSrerW0yIe6TGHn+TQCjDxbWtvNbXYE8jJhKVYYB4A0e+0/ymLSekgUS6gAQIUiUcpufbFC3JJUuKGzQwxNFhlDo9NFqfBU/FhYn6avt0kgVTGi67iPIWjiAjOheQTpGWMAs5+d/m8T2kdAtR8PPNemdvAVW7enyM/FXELYAq6Hv8lCfPOMZZ3FWBglWfygpBwQIMySybHogy7bvIbqhEAFEq8kOCfodfG1mPXpFoMYKUzU7k7l6wDCQvSlrkEJEvds7uDSZqPY6/FcbObtk
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -123,77 +126,79 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-The owner-matching device-private PTE and PMD paths return read-only
-pages even when HMM_PFN_REQ_WRITE is requested. For example, after fork,
-a write request can succeed without resolving COW or returning
-HMM_PFN_WRITE. The test_hmm consumer then returns -EFAULT.
 
-Check read-only entries for write faults before returning their PFNs.
-Keep the fast path for writable entries and skip the PMD request scan
-when no write request is possible.
 
-Fixes: 10b9feee2d0d ("mm/hmm: populate PFNs from PMD swap entry")
-Signed-off-by: Aveline Noir <jm5905938@gmail.com>
----
-Found during code review and synthetic HMM testing.
+On 10/31/26 5:34 AM, David Hildenbrand (Arm) wrote:
+> Hi,
+> 
+> several MM updates:
+> 
+> Make Zi Yan a THP maintainer (thanks for all your hard work over
+> the years and thanks for taking on this responsibility), and perform some
+> MM MAINTAINERS cleanups.
+> 
+> Then, start the next step of the transition from Andrew's MM tree to
+> separate component trees that all get integrated into the mm-next
+> integration tree.
+> 
+> Start routing shmem through mm/core.git, adding me as a maintainer
+> primarily to pick patches.
+> 
+> Then, target the following components for the mm/core.git tree that I
+> (co)maintain:
+> 
+>       - MEMORY MANAGEMENT - BALLOON
+>       - MEMORY MANAGEMENT - CORE
+>       - MEMORY MANAGEMENT - GUP (GET USER PAGES)
+>       - MEMORY MANAGEMENT - KSM (Kernel Samepage Merging)
+>       - MEMORY MANAGEMENT - MEMORY HOT(UN)PLUG
+>       - MEMORY MANAGEMENT - MIGRATION
+>       - MEMORY MANAGEMENT - NUMA PLACEMENT
+>       - MEMORY MANAGEMENT - RMAP (REVERSE MAPPING)
+>       - MEMORY MANAGEMENT - THP (TRANSPARENT HUGE PAGE)
+> 
+> More details in the last patch.
+> 
+> In the upcoming cycles we'll then route more of the other MM components
+> through different trees.
+> 
+> Let's see how this goes, in particular with the continuous stream of
+> fixes. But getting these in in a controlled way has highest priority
+> right now wither way.
+> 
+> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+> ---
+> David Hildenbrand (Arm) (7):
+>        MAINTAINERS: mention for-next branch in MEMORY MANAGEMENT - MEMORY MAP
+>        MAINTAINERS: TMPFS (SHMEM FILESYSTEM) updates
+>        MAINTAINERS: add Zi Yan as co-maintainer for MEMORY MANAGEMENT - THP
+>        MAINTAINERS: sort entries in MM sections
+>        MAINTAINERS: add missing files to MM component sections
+>        MAINTAINERS: rename and move MEMORY HOT(UN)PLUG
+>        MAINTAINERS: route more MM changes through mm/core.git
+> 
+>   MAINTAINERS | 165 ++++++++++++++++++++++++++++++++++++++----------------------
+>   1 file changed, 105 insertions(+), 60 deletions(-)
 
-Tested PTE and PMD write requests, COW and read-only VMAs with QEMU
-test_hmm on x86-64. A separate test probe covered request flags. All
-executed tests passed. Testing on a real GPU would be appreciated.
----
- mm/hmm.c | 22 ++++++++++++++++++----
- 1 file changed, 18 insertions(+), 4 deletions(-)
+For this series:
 
-diff --git a/mm/hmm.c b/mm/hmm.c
-index 2f1e98c6b644..92957541ba95 100644
---- a/mm/hmm.c
-+++ b/mm/hmm.c
-@@ -268,15 +268,22 @@ static int hmm_vma_handle_pte(struct mm_walk *walk, unsigned long addr,
- 		const softleaf_t entry = softleaf_from_pte(pte);
- 
- 		/*
--		 * Don't fault in device private pages owned by the caller,
--		 * just report the PFN.
-+		 * Don't fault in device private pages owned by the caller unless
-+		 * a write fault is required.
- 		 */
- 		if (softleaf_is_device_private(entry) &&
- 		    page_pgmap(softleaf_to_page(entry))->owner ==
- 		    range->dev_private_owner) {
- 			cpu_flags = HMM_PFN_VALID;
--			if (softleaf_is_device_private_write(entry))
-+			if (softleaf_is_device_private_write(entry)) {
- 				cpu_flags |= HMM_PFN_WRITE;
-+			} else {
-+				required_fault =
-+					hmm_pte_need_fault(hmm_vma_walk, pfn_req_flags,
-+							   cpu_flags);
-+				if (required_fault)
-+					goto fault;
-+			}
- 			new_pfn_flags = softleaf_to_pfn(entry) | cpu_flags;
- 			goto out;
- 		}
-@@ -358,8 +365,15 @@ static int hmm_vma_handle_absent_pmd(struct mm_walk *walk, unsigned long start,
- 		unsigned long pfn = softleaf_to_pfn(entry);
- 		unsigned long i;
- 
--		if (softleaf_is_device_private_write(entry))
-+		if (softleaf_is_device_private_write(entry)) {
- 			cpu_flags |= HMM_PFN_WRITE;
-+		} else if ((range->default_flags | range->pfn_flags_mask) &
-+			   HMM_PFN_REQ_WRITE) {
-+			required_fault = hmm_range_need_fault(hmm_vma_walk,
-+							      hmm_pfns, npages, cpu_flags);
-+			if (required_fault)
-+				return hmm_record_fault(addr, end, required_fault, walk);
-+		}
- 
- 		/*
- 		 * Fully populate the PFN list though subsequent PFNs could be
+Acked-by: Qi Zheng <qi.zheng@linux.dev>
 
-base-commit: d89e1d186ec9271bf78e62771779e9fc03bf0fc3
--- 
-2.56.0
+Thanks,
+Qi
+
+> 
+> ---
+> 
+> base-commit: d89e1d186ec9271bf78e62771779e9fc03bf0fc3
+> 
+> change-id: 20261029-maintainers-e2699bff7521
+> 
+> --
+> 
+> Cheers,
+> 
+> David
+> 
 
 
