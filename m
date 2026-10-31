@@ -1,121 +1,118 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB09A606A31A
-	for <linux-mm@archiver.kernel.org>; Sat, 31 Oct 2026 10:36:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF9DD606A31A
+	for <linux-mm@archiver.kernel.org>; Sat, 31 Oct 2026 10:51:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=icloud.com header.i=@icloud.com header.a=rsa-sha256 header.s=1a1hai header.b=goKA296C
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=APx9dNUb
 Received: by kanga.kvack.org (Postfix)
-	id 060186B05B9; Sat, 31 Oct 2026 06:36:00 -0400 (EDT)
+	id 0C97A6B05B1; Sat, 31 Oct 2026 06:51:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 036FD6B05BA; Sat, 31 Oct 2026 06:35:59 -0400 (EDT)
+	id 0534D6B05B2; Sat, 31 Oct 2026 06:51:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E8ECD6B05BB; Sat, 31 Oct 2026 06:35:59 -0400 (EDT)
+	id E5DE76B05B3; Sat, 31 Oct 2026 06:51:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id BD7DA6B05B9
-	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 06:35:59 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 4E303A8290
-	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 10:35:59 +0000 (UTC)
-X-FDA: 85382566038.29.031AF45
-Received: from outbound.st.icloud.com (st-2004h-snip4-5.eps.apple.com [57.103.78.246])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 523E620002
-	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 10:35:58 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=icloud.com header.s=1a1hai header.b=goKA296C;
-	dmarc=pass (policy=quarantine) header.from=icloud.com;
-	spf=pass (imf31.hostedemail.com: domain of zippermonkey@icloud.com designates 57.103.78.246 as permitted sender) smtp.mailfrom=zippermonkey@icloud.com
+	by kanga.kvack.org (Postfix) with ESMTP id 6EB3B6B05B1
+	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 06:51:25 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id EDD03808C4
+	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 10:51:24 +0000 (UTC)
+X-FDA: 85382604888.26.56FE676
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 50A4DC0002
+	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 10:51:23 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=APx9dNUb;
+	spf=pass (imf22.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793442957;
+	s=arc-20220608; t=1793443883;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3KiLbCqh3KbXG4ivr0NTs62tHMSh1wth3efulb21WI4=;
-	b=DrhxGLQKz4SZ06mVSpX6ZryaBp9WmbxSh2kx01ohh/kB3S8/k87s/CTT5oDu8haThQBLka
-	XQ0GrdXHQfriqYiNMSwpMN97KNq8S7aoqKWSCfn+5UNvSpewxQzS/iJNuVO2NoP0f+nRBw
-	xgwIcmomODVMQVqsKL26z39GhCxHAhY=
+	bh=GJfWazGdUI7keV3g8AbsyvSUWQ0SKJj/fzlMxSdGma8=;
+	b=4S0B5Zwsu+p0cHssPVqFr6E1aLnduzOimSAOH3jJCyaAfwRtWM62DouJqoJimyz1C2QYn9
+	JvfmGOBRGhcjxzQGIi50UipC3dhIFY9kdN01+DaVqx3J493HmiWi7Aw48mwuWEWQr4UAxb
+	5IjY3Gbu+WvVZ/l6S8DkJJDx7tfIxzk=
 ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=icloud.com header.s=1a1hai header.b=goKA296C;
-	dmarc=pass (policy=quarantine) header.from=icloud.com;
-	spf=pass (imf31.hostedemail.com: domain of zippermonkey@icloud.com designates 57.103.78.246 as permitted sender) smtp.mailfrom=zippermonkey@icloud.com
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=APx9dNUb;
+	spf=pass (imf22.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793442957;
-	b=F1md3lat0yx/EFvYm0Ha/1FShB99dUvpeUZEU6lg+iDa88ImpNx5yfqqHFQvzcUcpigVNt
-	7ziYHaA5zewNlyTDJeaRi+3YtagS+jcqbzBCaQGavapHwtwofjyahyy8CIeRxCk7tKQs8s
-	ImBIyAvAdsWdXuytj5WNW4f/AFdO9N0=
-Received: from outbound.st.icloud.com (unknown [127.0.0.2])
-	by p00-icloudmta-asmtp-us-east-1a-60-percent-7 (Postfix) with ESMTPS id D1E4D18002AD;
-	Sat, 31 Oct 2026 10:35:51 +0000 (UTC)
-X-ICL-RepId: 01a19187-b226-72d1-834e-d22ae37e9ad0
-X-ICL-Out-Info: HUtFAUMEWwJACUgBTUQeDx5WFlZNRAJCTQtJCkMGXwFeCEADQwZbC1BcHA4XXhtCFUsVXANcDkswUBtfAkIPHBNWFRMLU1ZbE1UXRgkZCF0dGQpQUAZcEhhcFFxQWB5GElYNXQkZGEZeUBtfAkIPHBNWFRMdQxkPKwhKBEMHRQJeCyUTCVNWWxNVF0YJGQhdHRkVWgkKVwBAC04CXQRaHxJYDFAFGh9eEhQeXxhEAx8GD1UGQAZSAkUKQQteDg5XE3kMVgNUDlwEFxtcAAlLRglJHQ4EVAddBV0=
-Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=icloud.com; s=1a1hai; t=1793442956; x=1824978956; bh=3KiLbCqh3KbXG4ivr0NTs62tHMSh1wth3efulb21WI4=; h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:x-icloud-hme; b=goKA296CZN4xa9ZT6VYN887j+QL5AyD2TZjC5YGhTRvB7DuWcP3F1dbk3kVbAP3nMPZJ/qDR1AegPIFcvg686uyvPynKoJyX8aikMmQNOvvmt5xVpGa5Q1TIqQKWShRxygJ+F5BC/EsrfYtRJ8W50LyvBzsCMRvhcGTr3vLARwSnLMOUZJ+cWjvUFKHPr0Pu14L2pxA9PAmcyLqezog4MwD4GlzInWEuRBehoIfy8Vsk96zPxi00PnorHKEYGntyfYoI5ZqBC0picUjdZbnv4VMFwUtrPqnxG6xqdIOAKMEtsgWVQ4QWvkuxLwFu3S/aaI7mwArc6zrPfMG0gXp3LA==
-Received: from [192.168.5.15] (unknown [17.156.216.30])
-	by p00-icloudmta-asmtp-us-east-1a-60-percent-7 (Postfix) with ESMTPSA id 62E7F18002BD;
-	Sat, 31 Oct 2026 10:35:46 +0000 (UTC)
-From: Zhang Peng <zippermonkey@icloud.com>
-Date: Sat, 31 Oct 2026 18:35:12 +0800
-Subject: [PATCH v6 5/5] mm/vmscan: batch dirty TLB flushes before pageout
+	t=1793443883;
+	b=z4yGTH4xiwQMScjWOiJsggwqOC69mWnE2aieL5rx5e7MHT9EypcM6jUg+J4NJFXA6RSeb/
+	9nrqblYKJtA7WrWO9I5El/VvSRecHkQXDzJdDdiGqUimSBSKyY4xk9y2XVuPNlNBUILDG5
+	yKwfc2Zxyfqe9yfKz6ocM3sO4xsIiaY=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 3BC76600AA;
+	Sat, 31 Oct 2026 10:51:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E37F1F00919;
+	Sat, 31 Oct 2026 10:51:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793443881;
+	bh=GJfWazGdUI7keV3g8AbsyvSUWQ0SKJj/fzlMxSdGma8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=APx9dNUbT7yZLB/p2GSjvVjuw7LZThTTfcI0IfJOtAItDN44ti8ZXwWN/0c7by3tN
+	 p4+LL9UVyELty38TxXOBsRGVLacUu9NNoJ9oB7guKvq1atTb755L6myuZ5PKejS9mj
+	 Rz3/jd+XHdmj6hi3rxbOoY+5jOuMqpM+BjAvYjVGqcYCz7hhsPXtO3Jsfgm1LeGFcx
+	 2+B5RkkIi9ziKbLkktFBECWAQap7Fe50mAdoFoz65Www1BSZGF/Hp2MNwV1bWbsYbo
+	 i9vIOK2RPNuMHhN9Prsw+WbKpA1fT1yy0xXFzs5M9kszTgEl2oWrkw9ag0D2NOkawU
+	 eTw4ornuUwqyw==
+Date: Sat, 31 Oct 2026 10:51:06 +0000
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Alistair Popple <apopple@nvidia.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Baoquan He <baoquan.he@linux.dev>, 
+	Barry Song <baohua@kernel.org>, Brendan Jackman <brendan.jackman@linux.dev>, 
+	Byungchul Park <byungchul@sk.com>, Chengming Zhou <chengming.zhou@linux.dev>, 
+	Chris Li <chrisl@kernel.org>, Christoph Lameter <cl@gentwo.org>, 
+	Dave Chinner <david@fromorbit.com>, David Rientjes <rientjes@google.com>, 
+	Dennis Zhou <dennis@kernel.org>, Dev Jain <dev.jain@arm.com>, Gregory Price <gourry@gourry.net>, 
+	Hao Li <hao.li@linux.dev>, Harry Yoo <harry@kernel.org>, Hugh Dickins <hughd@google.com>, 
+	Jann Horn <jannh@google.com>, Johannes Weiner <hannes@cmpxchg.org>, 
+	John Hubbard <jhubbard@nvidia.com>, Joshua Hahn <joshua.hahnjy@gmail.com>, 
+	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Kiryl Shutsemau <kas@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
+	"Liam R. Howlett" <liam@infradead.org>, Matthew Brost <matthew.brost@intel.com>, 
+	Miaohe Lin <linmiaohe@huawei.com>, Michal Hocko <mhocko@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>, Muchun Song <muchun.song@linux.dev>, 
+	Naoya Horiguchi <nao.horiguchi@gmail.com>, Nhat Pham <nphamcs@gmail.com>, Nick Piggin <npiggin@gmail.com>, 
+	Nico Pache <nico.pache@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
+	Pedro Falcato <pfalcato@suse.de>, Peter Xu <peterx@redhat.com>, 
+	Peter Zijlstra <peterz@infradead.org>, Qi Zheng <qi.zheng@linux.dev>, Rakie Kim <rakie.kim@sk.com>, 
+	Rik van Riel <riel@surriel.com>, Roman Gushchin <roman.gushchin@linux.dev>, 
+	Ryan Roberts <ryan.roberts@arm.com>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Suren Baghdasaryan <surenb@google.com>, Tejun Heo <tj@kernel.org>, Uladzislau Rezki <urezki@gmail.com>, 
+	Usama Arif <usama.arif@linux.dev>, Vlastimil Babka <vbabka@kernel.org>, 
+	Will Deacon <will@kernel.org>, Xu Xin <xu.xin@linux.dev>, 
+	Ying Huang <ying.huang@linux.alibaba.com>, Youngjun Park <youngjun.park@lge.com>, Zi Yan <ziy@nvidia.com>, 
+	Jason Gunthorpe <jgg@ziepe.ca>, linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH 7/7] MAINTAINERS: route more MM changes through
+ mm/core.git
+Message-ID: <auWz3J5Jrv3_grER@gremlin>
+References: <20261030-maintainers-v1-0-97278f8a5f54@kernel.org>
+ <20261030-maintainers-v1-7-97278f8a5f54@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261031-batch-tlb-flush-v6-5-190539839eec@tencent.com>
-References: <20261031-batch-tlb-flush-v6-0-190539839eec@tencent.com>
-In-Reply-To: <20261031-batch-tlb-flush-v6-0-190539839eec@tencent.com>
-To: Andrew Morton <akpm@linux-foundation.org>, 
- Johannes Weiner <hannes@cmpxchg.org>, David Hildenbrand <david@kernel.org>, 
- Michal Hocko <mhocko@kernel.org>, Qi Zheng <qi.zheng@linux.dev>, 
- Shakeel Butt <shakeel.butt@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>, 
- Kairui Song <kasong@tencent.com>, Barry Song <baohua@kernel.org>, 
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
- Wei Xu <weixugc@google.com>, Baoquan He <baoquan.he@linux.dev>, 
- Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
- Zhang Peng <bruzzhang@tencent.com>
-X-Mailer: b4 0.14.3
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDMxMDA0MiBTYWx0ZWRfX7sKGwIC7XZPd
- PlZTtk40uF8LvLnqACQ8aufD5hXMFxFHfWdWKTbDRKlSrMQ1eBHE4hbnZuFnAaMaydk4pV6vNnw
- Hap7fwxHgWrD8y/xo1OdKTQL6W2RPGuNxCCZaRetMz7sm4vCxAL6iFNaR37L85G4mxBPpITTCAy
- XLyIzX2H/KllL+lSojsFvyCu6hIqQh+89vK3uiCsoQIlYnEoKCesOJMZjLwxOOLcjFmQfvLjz2V
- XTkSLVxfsyBzueG9hRWoSGCSww1u20BGEe4Y/XARuOzeTjCDV8Am7kSAm4KxgS5Cgb11YC/PdKA
- wD6+LCDy5Soi2J7wniaFucu8GkDiim5i91fkNJ6BGh11jxeZOx+hTwn5Ekwn5k=
-X-Proofpoint-ORIG-GUID: 2mMLgDoyhFjcu4KCPlvbE47ROxDQhDnr
-X-Proofpoint-GUID: 2mMLgDoyhFjcu4KCPlvbE47ROxDQhDnr
-X-Authority-Info-Out: v=2.4 cv=TZqbdBQh c=1 sm=1 tr=0 ts=6ae5c48a
- cx=c_apl:c_pps:t_out a=oyWFxbOnq+dmhQrAPgaJYA==:117
- a=oyWFxbOnq+dmhQrAPgaJYA==:17 a=IkcTkHD0fZMA:10 a=660iZSQnnn4A:10
- a=x7bEGLp0ZPQA:10 a=YE32fvk_ji8A:10 a=VkNPw1HP01LnGYTKEx00:22
- a=GvQkQWPkAAAA:8 a=bSmHYz4YPk1EoIDwg3UA:9 a=QEXdDO2ut3YA:10
-X-JNJ: AAAAAAABkHeuJtQ6+/Yz0kcGtFchbRSQCpFyLuLDBdfBx6VKDWxqbOwMQEmXLmjTvwZLHC
- CjYk9wluuR7x032VqgXQBFkaqUL6E1KqRgawRTh84mFlnEUdUVpctk4idnb2qdUSEn6RY4
- UZekgnDWlB1dieovTC9WTvWSR5u5Z7JlLbhnllwscDKuOJeXaEZcsYALJ8qoND+uJgJUtR
- nRJ5r6SWHVzWW9CG/8hOlt1yagfcMJ3bI5xv8KhLzsWQpxc5qWT1T4fj4sqfTLBYul7uVd
- fIaKoTVUr3C62OpZ2XASYURr32t+PSBlJ/cg+z5vOomyKLKXRA85vsqZW+DSl3O+pQzt1q
- tFvyPqM8HIouPuUt64Acnfn4kwW0U0ckZewLhf1ilILAAKYXdzfR2rKB0MrmoGB7ly/uxn
- mITyoVgcblLaWUC+WfqRj9riTY++EadCsbGDMf/b+8E+vXPEqinbLAxzSyufLdbvsI+W3M
- +5UkX6PapxJnWon8ZjHFwTBVaRSrc3XaocTV8irVtdhJ1gaFb8zOQEYCxYuvSNoaV+pwZz
- 8Ge04pMKi7W1dppdUar5mUqK4wzUkunD547xM7+vEz5mbbWtP+1RXg0Acyvn3+fmMBCW5l
- TFpT3EcANYIhK/CUKq08HsBRrlVetuRb6U5cdHXgXUlMLwEnOgLmDRrNiBuWkXTmS/LGcJ
- pCcvlggyV32lGTA5/kNyt45vyblCD5mnEidSA2TaIGrgcGyXJbN0wIHv49Rqg5K04//YfY
- nUkH6nmXUTgt+wPKnDijtsfp2I/4fTgdxyAPSQ+oJQv8iGAwGDYyzvMAZADHCsvntqqhRR
- X5veXEIQ3Zcqfjl4R+zfaQuFprTFP3NvbZ4idyDZI6k3xZPy3UgjwBYvWsvOPSNwd5sY4B
- crgRlNslOt7i0t+qsKw6EOsXuXD1sJb4Ob
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 523E620002
-X-Stat-Signature: gx5cs8uonodh39m4sjtmahzk5dke1fua
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
-	autolearn_force=no version=4.0.1
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261030-maintainers-v1-7-97278f8a5f54@kernel.org>
 X-Rspam-User: 
-X-HE-Tag: 1793442958-680970
-X-HE-Meta: U2FsdGVkX1/lSKybtGPUWqqbIF5oeqxn7zaf3Oc4rnAAOX+Ukqx/oS60Myf//vSD2d5tWMSI4zhi24x+qFRTsN2lb7isQgN/vDtTopfzO1mtAICUDElxz2AxHrzT22N4/m8sRtjl7IlMOqQeknE7N69IAatjRbvjka8pN30R43p8u+kHG4fsotMwz9lYQnJqriXYlnPHIugOVhiNxLuxmzKC+AIUej/BRGBKGkLofGUvsMLtwn3ccTesgfB8Ar9FKcRff6ZnV7V2BYrGj+mbaq+cyUFlNzlmDcF8OZnpZyLWV4l8V9rCPR4fhWjbO/gv6uPyJwlOonLiw2FqrR9qtt4l41E0H4ppvWrQ+txRGX3Yr0JQG0D9iIxsZI5VC/7R964FaVy7h4f78iqMthc5jDNTjNwgJk0O3XxrmzBvTDiSlKYt8iIhm6W7qPCCB53i8+DBhxVovJCWuccwFqjfZOCiBnasj1l08iPUIARXkGka6GNTqr7I1Yy64/q2ao2zZpQrdjajih4WPyb6Jfu8eYqO9kvdhLAaiG/Rga6UJ56OJ8a8VkITmao8itZ2YJFtnpYhUw1KiO5T2qqJXGDWFawf7nJCZiBPaPYwZygl2+aQqxuKB6+2bIZL4hX0QbtX7lqNXjkAoPY58hgm00m6Bdt8QzqVDZDH4tKpi0CrJkFbKgZpfbvRcop4dxLDBWNafFP6q2qU0ji3nEmICwIccpkaZDSQtXn7gZ0CsY7QKX4vauAO8qlzjBP/y5slnLnxsAwjbHUlnZzbE6lt3ng8wB+/4MPHEEKfc774IhD1o+OzuEydz4rwqlsQNpNdTgTeIi4OZFya3D6bUC27FtiVEgII8Zh8xjS9AXCY921WmtnkNufdTcNgiOOFPMs4iEZmVeDuwHo5hSe773FDhJqzr2lKWOIwlIK9VRoM/9I5afDQHSuEwB6KVd5WyscEt6UO3Dgn3M2eHwuVYaJaOZ8
- wqgacjDE
- B9HljHjcxAAec4uU4SDaBrnEZVtewajOZDG2oDgmYgsS31ZC2XLMRnS6+oG0u4+rtWyiSjHSpWSPAKsBztdyhdxP0Njqzfj+Ds9466Sc8UOHGywbIv1ZcM4vQ4Ec4ICPUj15Zy62GhOqAx8WdhewjUZcu02RepzEvJa/MMHSCZJXscLo1bmgu7nFK3dHpbaJJaP3QZLOs8McwsxKjWmSIrUqOBsSFTA6M8b5y3IbeTNiLgC1y2FspN0SrJVp1TY4aT9X1x/dVzEE1GC9bH0TZt/3thakzpZLcnQgfwtgJ8Iao4tPENqyGZ8iQz+UXAefrgi6fhQsGLuUTIPWZ2OAa+3PxIZ6meXf2p3k6Wxq9jFjglj37v+nMj55ofnXDJFd1tP0evf7TzOsIPKJywU9Db1vq2GwkDri0IM5L
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 50A4DC0002
+X-Spam-Status: No, score=-20.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,
+	MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
+X-Stat-Signature: rk479hyq31wh4drnssj13on78abdkw8j
+X-HE-Tag: 1793443883-163924
+X-HE-Meta: U2FsdGVkX19YnUDTFrJeuaP/mb5odSOuMs9lPz+sbYo7P7ivz1Y1WlHVvNdD+Fus6dSLSHDGRXO1YuVZo87Dn0PBJk1urkeIBxQtP4o7QR2D9EL7p+aXoD8Rqr3+3ATeEob35i/ERNPw4grXiQjPOcEMqrj0Av/Q5e0kBWuM6kbGmnOnBZxBotUtZqRH5TGurz9JB0ZoAL15vB0fNO9GP3JgkWQGMkMKLaDe3qnI1Th79oEdF3gGUa7HX+PKVhJwb3ih2eUBL+AL2CHGiTHP7gO3bMb8AsSFtB2SewP0BRLmTjR5ltlr0ANc3pZnsP2k+CYKwwYwTNKUNK1jT550pcB4UxsTzLEqpn5aMRghiPDV9PLq+f1/+HEb+qs4u4OXbiP7bSHxSakDaH5wFKp2nd/YIapYOb5HkmVjKLgNRdvm2OofKqk8Bb5mb4091PTkmaOIGWgb7oPHvSm/ZF3BAZ95mQpb5rqYHs1Q2WtjlcYbibqxCztd+GllISiv0noycLxCsQ0R7DZn5Eib9qp1wHeAmCzzy7+iGy1UvFp8heV4wq33n2R2jMV5O9ocfuzcrq05/Nnth+FaOAmPgb6Nl10oxYmR/1wuBfk3EveJJq8v0W9OnYyiG85Blxfi4TMZMQK5R6b4XH4Btqb8oEnkEmzZQyxHXaml59DQsL+WfKs7JYg++tCdnrqsEq+2dy0RgVZtScPCSP4KBV0HDWBgGxJWy+EiX3jx8ahKFZ8CsK8/Cuae73+u/yuovDwICR9z8E+BQ573GocM5mFrKb3VX7pQhzAmq4n/yiLh8k1wCpDpObENVS5RfD/tLMTGrM4xoTCi22cWBAatgb8Va/w6o0MEXFTZsgSQ/uuNuc9ydaA+6I+26ivS5/Qkl9VQpe+OjJlP9ljQma8dimFKuLaJac0G6jk7kFGYxKd4ZaUtRUYk4R36DqKRZPlqX3MYzf4HIMLg9uE0hR+j2Y3Vtth
+ tHNj1zzO
+ cArjBqTVbw0uzCcj2n8VfZwYMB1VE4L4RjSnlZLpU6NuM9tAnKlrEEwZlItqRYkxqHAA77Ik4ujSSqfiTMle8P3JXguD/oE+fbYBQSq30HG2UtjGsyJwq3kC+KB5MQ1WsKOZatti09cbcTnPk9FUa1GhQaONcENvkSrRxr9yBC0yeHYyPBB2DBlIkmGPiyuxputiUXw4WNKoVRNk9L+ABrLUkZmWbSd0eb6BAMJ8TvkANwfaZ7qW+scfmFhi7e1MqhwzAT7RfgkUfYeaixBOMSF3/zsnZpL9Bm6pYIU1nmhpxFuowTVhHYHQwTDwamebb17gql4BMqpeStaCHp3CuLYLq5Na01zPq1yVl2zppjtEAbIdv/RAp7dqStJW+l/d8iHe3I7TzMku7x1GcZkN/Mo4kxUhCRbNGN12fLNCsbk0dSLpqXpBpXrvpXWV3pugnmLVcSFhodCR46VOD6+zbd/hj1+FwBZWFQQwL7YKbjLo1fMuaftabdQJleMbDT1j4FKHG5i3Mec+0SE8MUIRJZ9nig8Lcs9N60UC+0xBQM4yImRdjJ5Ei9M532RVj4nrK7n3n80jUMCL6kMG30hmnHLP2VeRN6rdjAE+qPxZ80ZcUuTrgUvDEgyji+HgFuxzxQ9YWTb+022uleM3V5fxB7YuHp7W9t1e+rnqeiDyZsy4LOJgzoYC2E6iawW+e8FmO+f6a8SkTE5eU0QUA7p5xFj/lGCXEH3ERQJND2WPKJF+nUOUMOAny57WPvpfmAwKbRbEL8BrOv5nBzPFSKR6mBd+CLWO3u7/x8iUS33piV+mdtBts9aB9p8OLfniB+Ghh2C+cM+stpqrmHj+DSE4uHd8jwfxQ8SfJknvpQFaVhuMiBsp6aYIYDC5tr/FSuGTWAQP162EBYNFBiGm5Mmv9N5kMjZL348Rh5vgL8QRJEAJKA4hZ9PbD1vBTeQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -124,190 +121,206 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Currently reclaim flushes the TLB for every dirty folio before pageout.
-On systems with many CPUs, the resulting IPIs can be a significant
-bottleneck.
+On Fri, Oct 30, 2026 at 10:34:31PM +0100, David Hildenbrand (Arm) wrote:
+> Let's start routing more components I (co)maintain through mm/core.git.
+> Update the git trees by pointing them at the for-next branch:
+>
+>  - MEMORY MANAGEMENT - BALLOON
+>  - MEMORY MANAGEMENT - CORE
+>  - MEMORY MANAGEMENT - GUP (GET USER PAGES)
+>  - MEMORY MANAGEMENT - KSM (Kernel Samepage Merging)
+>  - MEMORY MANAGEMENT - MEMORY HOT(UN)PLUG
+>  - MEMORY MANAGEMENT - MIGRATION
+>  - MEMORY MANAGEMENT - NUMA PLACEMENT
+>  - MEMORY MANAGEMENT - RMAP (REVERSE MAPPING)
+>  - MEMORY MANAGEMENT - THP (TRANSPARENT HUGE PAGE)
+>
+> Leave out MISC for now.
 
-Collect dirty folios in a folio_batch instead. When the batch is full,
-lock and revalidate each folio, flush pending writable TLB entries once,
-and page out the folios that remain eligible. Flush a final partial batch
-at the end of the scan.
+Aww :(
 
-Folios are unlocked while waiting in the batch so swap faults can make
-progress. After reacquiring the folio lock, recheck writeback, mappings,
-and DMA pins; a concurrent swapin may have installed a PTE and allowed a
-parallel GUP pin while the folio was unlocked. Keep each unmapped folio
-locked across the TLB flush and pageout to prevent swap faults from
-remapping it before I/O starts. The folio lock alone does not exclude GUP.
+We do need to move as much as we can out of there over time, is really the
+catch-all obviously.
 
-Save the original batch count and reinitialize the batch, then add back
-folios that pass validation. Reinitialization leaves the array intact,
-and each add writes at or before the current read index. This reuses
-the batch without overwriting unread entries or needing a second array.
+>
+> This change doesn't imply that all changes to these components will
+> immediately be routed through that tree; in particular changes that cover
+> other components, or severe conflicts will require coordination with
+> Andrew's tree.
+>
+> So this marks merely the start of "mm/core.git will start picking
+> relevant material for these components".
+>
+> Remove Andrew from these components to set the expectation that he won't be
+> the primary person picking stuff for these components; he is listed as
+> maintainer under the generic "MEMORY MANAGEMENT" and will get CCed on most
+> changes, and can keep an eye on stuff that falls through the cracks
+> (thanks!).
+>
+> While at it, drop the link to http://www.linux-mm.org: it's not
+> particularly useful in 2026.
 
-Suggested-by: Kairui Song <kasong@tencent.com>
-Signed-off-by: Zhang Peng <bruzzhang@tencent.com>
----
- mm/vmscan.c | 115 ++++++++++++++++++++++++++++++++++++++++++++++++++++--------
- 1 file changed, 101 insertions(+), 14 deletions(-)
+:))
 
-diff --git a/mm/vmscan.c b/mm/vmscan.c
-index 061414ff45bb..1150361e7d52 100644
---- a/mm/vmscan.c
-+++ b/mm/vmscan.c
-@@ -1334,6 +1334,92 @@ static enum folio_pageout_result folio_try_pageout(struct folio *folio,
- 	unreachable();
- }
- 
-+static void folio_batch_pageout(struct folio_batch *batch,
-+		struct reclaim_folio_state *state, struct scan_control *sc,
-+		struct reclaim_stat *stat, struct swap_io_ctx *ctx,
-+		struct list_head *folio_list)
-+{
-+	unsigned int nr = folio_batch_count(batch);
-+	unsigned int i;
-+
-+	/*
-+	 * Reuse this private batch to collect the locked folios. Reinit
-+	 * leaves the array intact; nr preserves the original input count.
-+	 * Adding each accepted folio writes at or before the current read
-+	 * index, so entries we have not read yet cannot be overwritten.
-+	 */
-+	folio_batch_reinit(batch);
-+
-+	/*
-+	 * Revalidate after taking the lock: writeback may have started, or
-+	 * a swap fault may have remapped the folio and allowed GUP to pin it.
-+	 * Keeping an unmapped folio locked prevents swap faults from mapping
-+	 * it again before the TLB flush and pageout. The lock alone does not
-+	 * exclude GUP, so existing mappings and pins must both be checked.
-+	 */
-+	for (i = 0; i < nr; i++) {
-+		struct folio *folio = batch->folios[i];
-+
-+		if (!folio_trylock(folio)) {
-+			list_add(&folio->lru, &state->ret_folios);
-+			continue;
-+		}
-+
-+		VM_WARN_ON_FOLIO(folio_test_lru(folio), folio);
-+
-+		/* The folio may have changed while it was unlocked. */
-+		if (folio_test_writeback(folio) || folio_mapped(folio) ||
-+		    folio_maybe_dma_pinned(folio)) {
-+			folio_unlock(folio);
-+			list_add(&folio->lru, &state->ret_folios);
-+			continue;
-+		}
-+
-+		folio_batch_add(batch, folio);
-+	}
-+	nr = folio_batch_count(batch);
-+
-+	if (!nr)
-+		return;
-+
-+	/*
-+	 * Flush writable TLB entries before any folio in the batch is
-+	 * submitted for I/O.
-+	 */
-+	try_to_unmap_flush_dirty();
-+
-+	for (i = 0; i < nr; i++) {
-+		struct folio *folio = batch->folios[i];
-+
-+		switch (folio_try_pageout(folio, sc, ctx, folio_list)) {
-+		case FOLIO_PAGEOUT_ACTIVATE:
-+			goto activate_locked;
-+		case FOLIO_PAGEOUT_KEEP_LOCKED:
-+			goto keep_locked;
-+		case FOLIO_PAGEOUT_KEEP_UNLOCKED:
-+			goto keep;
-+		case FOLIO_PAGEOUT_RECLAIM:
-+			break;	/* folio is locked; try to free it below */
-+		}
-+
-+		switch (folio_try_reclaim_free(folio, state, sc)) {
-+		case FOLIO_RECLAIM_ACTIVATE:
-+			goto activate_locked;
-+		case FOLIO_RECLAIM_KEEP:
-+			goto keep_locked;
-+		case FOLIO_RECLAIM_DONE:
-+			continue;
-+		}
-+activate_locked:
-+		folio_activate_locked(folio, stat);
-+keep_locked:
-+		folio_unlock(folio);
-+keep:
-+		list_add(&folio->lru, &state->ret_folios);
-+	}
-+	folio_batch_reinit(batch);
-+}
-+
- static bool folio_try_unmap(struct folio *folio, struct reclaim_stat *stat,
- 		unsigned int nr_pages)
- {
-@@ -1375,6 +1461,7 @@ static unsigned int shrink_folio_list(struct list_head *folio_list,
- 		struct mem_cgroup *memcg)
- {
- 	struct reclaim_folio_state state = {};
-+	struct folio_batch pageout_folios;
- 	LIST_HEAD(demote_folios);
- 	unsigned int nr_demoted = 0;
- 	unsigned int pgactivate = 0;
-@@ -1383,6 +1470,7 @@ static unsigned int shrink_folio_list(struct list_head *folio_list,
- 
- 	INIT_LIST_HEAD(&state.ret_folios);
- 	folio_batch_init(&state.free_folios);
-+	folio_batch_init(&pageout_folios);
- 	memset(stat, 0, sizeof(*stat));
- 	cond_resched();
- 	do_demote_pass = can_demote(pgdat->node_id, sc, memcg);
-@@ -1679,21 +1767,16 @@ static unsigned int shrink_folio_list(struct list_head *folio_list,
- 			if (!sc->may_writepage)
- 				goto keep_locked;
- 			/*
--			 * Folio is dirty. Flush the TLB if a writable entry
--			 * potentially exists to avoid CPU writes after I/O
--			 * starts and then write it out here.
-+			 * Drop the lock so swap faults finding this folio
-+			 * via swap cache lookup can make progress; the
-+			 * recheck that this necessitates is documented in
-+			 * folio_batch_pageout().
- 			 */
--			try_to_unmap_flush_dirty();
--			switch (folio_try_pageout(folio, sc, &ctx, folio_list)) {
--			case FOLIO_PAGEOUT_ACTIVATE:
--				goto activate_locked;
--			case FOLIO_PAGEOUT_KEEP_LOCKED:
--				goto keep_locked;
--			case FOLIO_PAGEOUT_KEEP_UNLOCKED:
--				goto keep;
--			case FOLIO_PAGEOUT_RECLAIM:
--				break;	/* folio is locked; try to free it below */
--			}
-+			folio_unlock(folio);
-+			if (!folio_batch_add(&pageout_folios, folio))
-+				folio_batch_pageout(&pageout_folios, &state,
-+						    sc, stat, &ctx, folio_list);
-+			continue;
- 		}
- 
- 		switch (folio_try_reclaim_free(folio, &state, sc)) {
-@@ -1721,6 +1804,10 @@ static unsigned int shrink_folio_list(struct list_head *folio_list,
- 		VM_BUG_ON_FOLIO(folio_test_lru(folio) ||
- 				folio_test_unevictable(folio), folio);
- 	}
-+	if (folio_batch_count(&pageout_folios)) {
-+		folio_batch_pageout(&pageout_folios, &state, sc, stat,
-+				    &ctx, folio_list);
-+	}
- 	/* 'folio_list' is always empty here */
- 
- 	/* Migrate folios selected for demotion */
+>
+> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 
--- 
-2.56.0
+Acked-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 
+> ---
+>  MAINTAINERS | 31 +++++++++----------------------
+>  1 file changed, 9 insertions(+), 22 deletions(-)
+>
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 0adc674304987..b68bc36267091 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -17446,18 +17446,15 @@ F:	mm/alloc_tag.c
+>  F:	tools/testing/selftests/alloc_tag/
+>
+>  MEMORY MANAGEMENT - BALLOON
+> -M:	Andrew Morton <akpm@linux-foundation.org>
+>  M:	David Hildenbrand <david@kernel.org>
+>  L:	linux-mm@kvack.org
+>  L:	virtualization@lists.linux.dev
+>  S:	Maintained
+> -W:	http://www.linux-mm.org
+> -T:	git git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+> +T:	git git://git.kernel.org/pub/scm/linux/kernel/git/mm/core.git for-next
+>  F:	include/linux/balloon.h
+>  F:	mm/balloon.c
+>
+>  MEMORY MANAGEMENT - CORE
+> -M:	Andrew Morton <akpm@linux-foundation.org>
+>  M:	David Hildenbrand <david@kernel.org>
+>  R:	Lorenzo Stoakes <ljs@kernel.org>
+>  R:	Liam R. Howlett <liam@infradead.org>
+> @@ -17467,8 +17464,7 @@ R:	Suren Baghdasaryan <surenb@google.com>
+>  R:	Michal Hocko <mhocko@suse.com>
+>  L:	linux-mm@kvack.org
+>  S:	Maintained
+> -W:	http://www.linux-mm.org
+> -T:	git git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+> +T:	git git://git.kernel.org/pub/scm/linux/kernel/git/mm/core.git for-next
+>  F:	Documentation/admin-guide/sysctl/vm.rst
+>  F:	Documentation/core-api/gfp_mask-from-fs-io.rst
+>  F:	fs/proc/meminfo.c
+> @@ -17526,15 +17522,13 @@ F:	include/linux/execmem.h
+>  F:	mm/execmem.c
+>
+>  MEMORY MANAGEMENT - GUP (GET USER PAGES)
+> -M:	Andrew Morton <akpm@linux-foundation.org>
+>  M:	David Hildenbrand <david@kernel.org>
+>  R:	Jason Gunthorpe <jgg@nvidia.com>
+>  R:	John Hubbard <jhubbard@nvidia.com>
+>  R:	Peter Xu <peterx@redhat.com>
+>  L:	linux-mm@kvack.org
+>  S:	Maintained
+> -W:	http://www.linux-mm.org
+> -T:	git git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+> +T:	git git://git.kernel.org/pub/scm/linux/kernel/git/mm/core.git for-next
+>  F:	Documentation/core-api/pin_user_pages.rst
+>  F:	mm/gup.c
+>  F:	mm/gup_test.c
+> @@ -17544,14 +17538,12 @@ F:	tools/testing/selftests/mm/gup.c
+>  F:	tools/testing/selftests/mm/gup_longterm.c
+>
+>  MEMORY MANAGEMENT - KSM (Kernel Samepage Merging)
+> -M:	Andrew Morton <akpm@linux-foundation.org>
+>  M:	David Hildenbrand <david@kernel.org>
+>  R:	Xu Xin <xu.xin@linux.dev>
+>  R:	Chengming Zhou <chengming.zhou@linux.dev>
+>  L:	linux-mm@kvack.org
+>  S:	Maintained
+> -W:	http://www.linux-mm.org
+> -T:	git git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+> +T:	git git://git.kernel.org/pub/scm/linux/kernel/git/mm/core.git for-next
+>  F:	Documentation/ABI/testing/sysfs-kernel-mm-ksm
+>  F:	Documentation/admin-guide/mm/ksm.rst
+>  F:	Documentation/mm/ksm.rst
+> @@ -17566,6 +17558,7 @@ M:	Oscar Salvador <osalvador@suse.de>
+>  L:	linux-mm@kvack.org
+>  L:	linux-cxl@vger.kernel.org
+>  S:	Maintained
+> +T:	git git://git.kernel.org/pub/scm/linux/kernel/git/mm/core.git for-next
+>  F:	Documentation/ABI/testing/sysfs-devices-memory
+>  F:	Documentation/admin-guide/mm/memory-hotplug.rst
+>  F:	Documentation/core-api/memory-hotplug.rst
+> @@ -17614,7 +17607,6 @@ F:	mm/vmscan.c
+>  F:	mm/workingset.c
+>
+>  MEMORY MANAGEMENT - MIGRATION
+> -M:	Andrew Morton <akpm@linux-foundation.org>
+>  M:	David Hildenbrand <david@kernel.org>
+>  R:	Zi Yan <ziy@nvidia.com>
+>  R:	Matthew Brost <matthew.brost@intel.com>
+> @@ -17625,8 +17617,7 @@ R:	Ying Huang <ying.huang@linux.alibaba.com>
+>  R:	Alistair Popple <apopple@nvidia.com>
+>  L:	linux-mm@kvack.org
+>  S:	Maintained
+> -W:	http://www.linux-mm.org
+> -T:	git git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+> +T:	git git://git.kernel.org/pub/scm/linux/kernel/git/mm/core.git for-next
+>  F:	include/linux/migrate.h
+>  F:	include/linux/migrate_mode.h
+>  F:	include/trace/events/migrate.h
+> @@ -17698,7 +17689,6 @@ F:	mm/numa_emulation.c
+>  F:	mm/numa_memblks.c
+>
+>  MEMORY MANAGEMENT - NUMA PLACEMENT
+> -M:	Andrew Morton <akpm@linux-foundation.org>
+>  M:	David Hildenbrand <david@kernel.org>
+>  M:	Gregory Price <gourry@gourry.net>
+>  R:	Zi Yan <ziy@nvidia.com>
+> @@ -17707,8 +17697,7 @@ R:	Rakie Kim <rakie.kim@sk.com>
+>  R:	Ying Huang <ying.huang@linux.alibaba.com>
+>  L:	linux-mm@kvack.org
+>  S:	Maintained
+> -W:	http://www.linux-mm.org
+> -T:	git git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+> +T:	git git://git.kernel.org/pub/scm/linux/kernel/git/mm/core.git for-next
+>  F:	Documentation/ABI/testing/sysfs-kernel-mm-memory-tiers
+>  F:	Documentation/ABI/testing/sysfs-kernel-mm-mempolicy
+>  F:	Documentation/ABI/testing/sysfs-kernel-mm-mempolicy-weighted-interleave
+> @@ -17782,7 +17771,6 @@ F:	mm/vmscan.c
+>  F:	mm/workingset.c
+>
+>  MEMORY MANAGEMENT - RMAP (REVERSE MAPPING)
+> -M:	Andrew Morton <akpm@linux-foundation.org>
+>  M:	David Hildenbrand <david@kernel.org>
+>  M:	Lorenzo Stoakes <ljs@kernel.org>
+>  R:	Rik van Riel <riel@surriel.com>
+> @@ -17793,6 +17781,7 @@ R:	Jann Horn <jannh@google.com>
+>  R:	Lance Yang <lance.yang@linux.dev>
+>  L:	linux-mm@kvack.org
+>  S:	Maintained
+> +T:	git git://git.kernel.org/pub/scm/linux/kernel/git/mm/core.git for-next
+>  F:	include/linux/rmap.h
+>  F:	mm/interval_tree.c
+>  F:	mm/page_vma_mapped.c
+> @@ -17850,7 +17839,6 @@ F:	mm/swap_table.h
+>  F:	mm/swapfile.c
+>
+>  MEMORY MANAGEMENT - THP (TRANSPARENT HUGE PAGE)
+> -M:	Andrew Morton <akpm@linux-foundation.org>
+>  M:	David Hildenbrand <david@kernel.org>
+>  M:	Zi Yan <ziy@nvidia.com>
+>  R:	Baolin Wang <baolin.wang@linux.alibaba.com>
+> @@ -17864,8 +17852,7 @@ R:	Usama Arif <usama.arif@linux.dev>
+>  R:	Kiryl Shutsemau <kas@kernel.org>
+>  L:	linux-mm@kvack.org
+>  S:	Maintained
+> -W:	http://www.linux-mm.org
+> -T:	git git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+> +T:	git git://git.kernel.org/pub/scm/linux/kernel/git/mm/core.git for-next
+>  F:	Documentation/ABI/testing/sysfs-kernel-mm-transparent-hugepage
+>  F:	Documentation/admin-guide/mm/transhuge.rst
+>  F:	include/linux/huge_mm.h
+>
+> --
+> 2.43.0
+>
+
+--
+Cheers, Lorenzo
 
