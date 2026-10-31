@@ -1,98 +1,99 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60925606A31A
-	for <linux-mm@archiver.kernel.org>; Sat, 31 Oct 2026 00:54:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2A1A606A323
+	for <linux-mm@archiver.kernel.org>; Sat, 31 Oct 2026 00:56:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=cdDEp1hg
+	dkim=fail reason="signature verification failed" (2048-bit key, unprotected) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=RWB/ouch
 Received: by kanga.kvack.org (Postfix)
-	id 55BB76B05B2; Fri, 30 Oct 2026 20:54:39 -0400 (EDT)
+	id C16526B05B4; Fri, 30 Oct 2026 20:56:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 49E206B05B3; Fri, 30 Oct 2026 20:54:39 -0400 (EDT)
+	id BEF116B05B5; Fri, 30 Oct 2026 20:56:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3AD1E6B05B4; Fri, 30 Oct 2026 20:54:39 -0400 (EDT)
+	id B2B016B05B6; Fri, 30 Oct 2026 20:56:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id F08596B05B2
-	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 20:54:38 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 6DA001A0908
-	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 00:54:38 +0000 (UTC)
-X-FDA: 85381101036.03.027100F
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf06.hostedemail.com (Postfix) with ESMTP id DBB90180002
-	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 00:54:36 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cdDEp1hg;
-	spf=pass (imf06.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 8C30C6B05B4
+	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 20:56:13 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id EC5441208C4
+	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 00:56:11 +0000 (UTC)
+X-FDA: 85381104942.28.C908A4B
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+	by imf25.hostedemail.com (Postfix) with ESMTP id CAE2BA0006
+	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 00:56:09 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b="RWB/ouch";
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=pass (imf25.hostedemail.com: domain of liam@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=liam@infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793408076;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	s=arc-20220608; t=1793408170;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4V3DWQ3hn0Q46L4O/zEHmAdFwXpEQVhEqdNgIlo3Qm8=;
-	b=tGsb8Esw/YRFmpDkyFTJVnZFbD+UKGAnskxi6CZzA8G5hwm5z3lON1e96kk8OBNjDePZQM
-	phQOEftnEf1kZbSWgUYRRExbDBAiq5hVXQlevj2Ya280xIx7TjPAH4H2S24htaTrhf46Vv
-	P0zCnkL20/r595DdVL+uRfOSSsToekQ=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793408076;
-	b=SUfaF3i5icA4bIDLtZbwaeF08k0qDYfJ3P9xv+l5KDen+BuG8AkbhKQ6RW0IvNsw6f3ESt
-	UM+yunOf+EmbL3DEabnDP+SFOD2pLeGrM9fKduc2QHCQinEUXUk8FOQNHUCaltdvLzcRKi
-	yxaZOVyb/xZ0dkOQai6yJN2OMgTS7P8=
+	bh=NNZ0jWpXyvTAI1fGB9HbbXYilWwVTrHzAZcnT/C24Ac=;
+	b=pPJenSU/cKmecwd5KHvmXSinCl5zHFSwnF3A9n3gntGau8MfFpfBHoQlk6C1S6YJ5DxZj4
+	qZX9EScRsVucOw8GnVBOYnq53C2P+R4UYc5/5LfA8Ju+vRgx4Xt3GUrP+P1j7GQ7hoAxA3
+	7Cccq0E6Tv33/dSSViDigtyuIfPwhY4=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cdDEp1hg;
-	spf=pass (imf06.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 342446061D;
-	Sat, 31 Oct 2026 00:54:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 065BB1F00A02;
-	Sat, 31 Oct 2026 00:54:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793408075;
-	bh=4V3DWQ3hn0Q46L4O/zEHmAdFwXpEQVhEqdNgIlo3Qm8=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=cdDEp1hgM5e6drAfESkvdZ5t1YJD6Pri82SC5R+jw4HbTRvxlmBXmCsEFJM/GuDuP
-	 n8IDvfXBxlfxOkJKvdEeJ8kBRIqLoSCGcHND9S4hnZJiB0Ih7RokoISXstn0NTFcYs
-	 eCOipphgG9GTuwe7lSaD5RuwK89VSF3Si4YA5tT7pfhYcGeCflQCRsmtfeKmFF9oGI
-	 EXdcYDrepGQvcjhGSFCTOBn3c5MvO1aApESh/UE7bUyHe6q/8eLFfVuo6O2zXx1qJ7
-	 Ye5G+ZHMQFY1M5L389TI8ieJ3ViUA5kY04VIrwqkrVXHr9ff3rnhhTwCapGw1JtGhH
-	 gnoCYPDIH9i2w==
-Message-ID: <sashiko-outbox-191688@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 4/4] mm/sparse-vmemmap: drop @pgmap from vmemmap
- population APIs
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Muchun Song" <songmuchun@bytedance.com>, "David Hildenbrand" <david@kernel.org>, "Madhavan
- Srinivasan" <maddy@linux.ibm.com>, "Mike Rapoport" <rppt@kernel.org>, "Andrew
- Morton" <akpm@linux-foundation.org>
-Cc: "Lance Yang" <lance.yang@linux.dev>, "Michael Ellerman" <mpe@ellerman.id.au>, "Nicholas
- Piggin" <npiggin@gmail.com>, "Christophe Leroy" <chleroy@kernel.org>, "Ritesh
- Harjani" <ritesh.list@gmail.com>, "Shrikanth Hegde" <sshegde@linux.ibm.com>, "Oscar
- Salvador" <osalvador@suse.de>, "Qi Zheng" <qi.zheng@linux.dev>, "Muchun
- Song" <muchun.song@linux.dev>, linux-mm@kvack.org, x86@kernel.org, linux-s390@vger.kernel.org, "Heiko
- Carstens" <hca@linux.ibm.com>, "Vasily Gorbik" <gor@linux.ibm.com>, "Alexander
- Gordeev" <agordeev@linux.ibm.com>, "Christian Borntraeger" <borntraeger@linux.ibm.com>
-In-Reply-To: <20261030140720.1256062-5-songmuchun@bytedance.com>
-References: <20261030140720.1256062-1-songmuchun@bytedance.com>
- <20261030140720.1256062-5-songmuchun@bytedance.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Sat, 31 Oct 2026 00:54:34 +0000
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: DBB90180002
-X-Stat-Signature: udahekgthgq17tcbwguherhtzwjg1y1d
+	imf25.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b="RWB/ouch";
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=pass (imf25.hostedemail.com: domain of liam@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=liam@infradead.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793408170;
+	b=mTtsTQIa5wMx3OK9I/xi7e4NYGam8/ZDGJ8A8EiWlZ7+pHyPyR/GGtusqT96jPE3r6xRkO
+	IF3D/PSELtikVjqT000gFz+5AzGuzPOPLtgT5pDN1R83W7UNyHVcMYPAdSGeRvekNATb7h
+	vgqnE1VQcvGxhbc4nNEvc1nQrv7MSu0=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
+	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=NNZ0jWpXyvTAI1fGB9HbbXYilWwVTrHzAZcnT/C24Ac=; b=RWB/ouchWeYcNlfYevA/mj7l9N
+	cXBd9jmS0mL/cCVzaorN/VcfjaeExVPwuO0LbceCUiGeqGCEij0CLT5Ovi8h501hFGB70Kh2Ggi3P
+	aapHxvhOQ4B7J0PQn97CMaQwoJZgYWp8wBUwVrAmTxrE5Z9COzjOnpUNnV8NyWpBgpCTCOCnTr6bN
+	6AZsN6OCZl32yis0lLPscYGyMJ5nm3vo+sKP+SvRto8LQam2FWXxXJeERxnAgMQL4AoooO1tIyQFF
+	AXZAU8gYN4FMtVGGhRLtmvP+HZTHXiVAoY5Efs/iYK0KQXINtj/+co/ipfhw5exzZJKYAxdZkhpdy
+	1OlossLw==;
+Received: from [38.23.173.23] (helo=localhost)
+	by bombadil.infradead.org with esmtpsa (Exim 4.100.1 #2 (Red Hat Linux))
+	id 1xMxOA-0000000CoBp-1cwP;
+	Sat, 31 Oct 2026 00:56:06 +0000
+Date: Fri, 30 Oct 2026 20:56:03 -0400
+From: "Liam R. Howlett (Google)" <liam@infradead.org>
+To: Uladzislau Rezki <urezki@gmail.com>
+Cc: Herbert Xu <herbert@gondor.apana.org.au>, 
+	Michal Hocko <mhocko@suse.com>, Baoquan He <bhe@redhat.com>, 
+	Alexander Potapenko <glider@google.com>, Andrey Ryabinin <ryabinin.a.a@gmail.com>, 
+	Marco Elver <elver@google.com>, Michal Hocko <mhocko@kernel.org>, 
+	Linux Crypto Mailing List <linux-crypto@vger.kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	Thomas Graf <tgraf@suug.ch>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	maple-tree@lists.infradead.org, Lorenzo Stoakes <ljs@kernel.org>, Chris Mason <mason@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Andrew Ballance <andrewjballance@gmail.com>, 
+	stable@vger.kernel.org, "David Hildenbrand (Arm)" <david@kernel.org>
+Subject: Re: [PATCH 4/4] rhashtable: fix vmalloc() deadlock in atomic rehash
+Message-ID: <urkgmijyytg3rrislm5fdzmfggqavzpiry23f6lpkqonvy2tqx@d56stj3eixfa>
+References: <20261028154218.1668182-1-liam@infradead.org>
+ <20261028154218.1668182-5-liam@infradead.org>
+ <auKshDXKQXt1kvjy@gondor.apana.org.au>
+ <auMbCuecFeRmBFSK@pc636>
+ <jfvq7vkx73vzp2ukq6nwnb3v3g2ezdcyppba4oa5lpzmz6ls6t@akc46gonndgy>
+X-Archived-By: <archiver.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <jfvq7vkx73vzp2ukq6nwnb3v3g2ezdcyppba4oa5lpzmz6ls6t@akc46gonndgy>
+X-Rspamd-Queue-Id: CAE2BA0006
+X-Stat-Signature: d7mp3ud6ipu9tuumpwtmywwb8naupnu5
+X-Spam-Status: No, score=-3.6 required=3.0 tests=BAYES_00,DKIM_INVALID,
+	DKIM_SIGNED,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
+	SPF_HELO_PASS,SPF_PASS autolearn=no autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
-X-HE-Tag: 1793408076-704682
-X-HE-Meta: U2FsdGVkX19CuD0NfxTblWSi946wJJDMc3R967wRNFyGDxvH3R7PVWMQkujdBXOlNE0Cwr79nB6Dg4mdAD65q+2BuaHhFm8+9Wb0kCdkt9RWscPVLr5aSL6kJ85LaXrxV98ZABuxaH+AGTMR2eTTd/7XcF3832yoHLaNCQdQ8xSCBtIXEJY/KGNQbm9hwo8xsmrTGyRsRUpYyY6cLg4i4cXFnTp39fo/u6ZE7Vtf2bhAm4M76HeplzkDrgXhEWg6cnJELOQA7bdGRFZuNJRQ3SpJVfRrP2QDIAhD3Xp8ZFkaxnLP5X/+UNjI8mDUPih28c/5QUcM+80SEi0HvEnWGGWdsnzKcaDN13ZsCxgnE/qtN/Vlwpt3/8cTI+pdnUHUdK1nwj09bpwKWSmJaJU+AP2RUYPoN3aCYlbccQxLH0BqlW45PrhPhc/NRWVZMP86x2MOrELw8oVGfA73bNkHuZ70G7CoRbB13LjQhneMTtZRR7NUOyUx5xk4AdLioGqgR0RA5MefTZHecfrxhpY4fYE2kbW6M/pmqjO5FO9lYzkiNS/kc0ti8fO7b4OeONSwnpiIDsxMWcpj6w2ckovvm/zOSFmL3Z6iJNk1bFlctNhOFSlozsuwVMQatsxTF/zE9DG2X8aXysELB1pUHB9ill0K6DztVgFbjxPlWJHsXWh3ahCvX/CM80Yc/vkD6RNQOmwD25BpQX4YrTsV/eLBvkDmNp5Qbd+xfiEpVgvfLRxehFWZSzGR4TFjzSb/GfSQ80TD8o3S8im9cumiA7mUrRjFOY0Mw5GPeENwJTb5nyEY1HsuaCx+DJXUG3yOb1xr7Q4sp09JEvh38C2xd8XQjq9eJVm6ImzM/4vyzxhuM4hke2yrYhGvBDwUljwbmeJ+Z3ZplMHxt5WTKtrr7fWlGh5L96U9CqXI767zADThWzuFzoPFivqtLxRQPYrdeGWMXpiamhZN5tA7GVCzDx3
- wIuiq8Py
- rXNSwV0AxiZBntmtSTdgaUp50pwI09pUQtnYx35OUfGQTOGz6oTTxk6JH0RtQFWXa/o2MEMVi/UgcHzKYzuDbKiiIEDdbj+LGlkFhAD/GqzQhShBi7lxoYRYvlDaAYKQXIS0j0iH9v8fP/HZV/Smlstr2bX4ek17Cg3XKeYYsm+3YVODSVMauPN71d6wI11ecmA+HOnfC0DU1jeRKNrF80T/HWRNKlw0EOJZ1uYhOo+bjthi2bEWkEPWYy/Z7V92rrpwdl5EVF3mKpR2JKQfX3SbqwBQY+FnR11VNrUcmpRCvFuwGnAOd8L7nG+a1xxaTAHX5VBhNXlu3n8gZYqrHJHIkPuiTzQj7S4gPqSDO6GnwJUohd1iJUQWYXIiowos9Sog5DdoUmecSXGwT8/mOdbdtsy1NPMbXO4LUJN+ZvCBTAfvNJWI6k3M8ALnIZkCNng8d/WujvcprjWwXv4h3hip2x1uBKU8VD89KyXkwRPCwGe1gPT+ddqmTmF1s0NOmB7kXMwXA/oP0Mjg4wOAJIQ8WRYMko8LUtYd6VNNLK6GX1ynM8uyyNA+DFyTd8owMCDK/GmzhsPMltAYLPQEZMxX+p4nKns64h1VlmoJ22VYauFMXNY4kvxEB7CdiGWVNSQs9IbIUxormAj22u0WqV7tNpk8xfjCDWO+C
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1793408169-758245
+X-HE-Meta: U2FsdGVkX19K0+xeV+8pZ2wpdW7JNBtcRzV2xTjSO5c5CnTsSIvt5jeHNYa4pKhlgUG/pIs3ue8b2qBJJdZpPdoX0KTQGLw6/4/eO1PC1AWZLjLFVQAA0JqiqpKmWE3RKhAlmLT4VDzioLH/mrWWpzqCDOWiC8blC5Ns5tUH/2lF7ylIZ+pk7hhfVMLqGBaAeoK6MyNBaTHiRgbXqARlv59Tlrz82ewYKUNWmPI0vFlBOZBJbVkfuzj0RBxzfONAvQP22/2YyS6XBmcsZYRBlUx1ORySQz8RNFgfnWEAKkXL2vgFnk0MALk+ZBzUZVKTxY/7ppjQwkDXRgWiNYCOuiL6ls2LnuQJihy0Hz4Y9ahF+7KyEmQ89TcJL3U7j+6oKPZrhl9tvmMDIqXGc7n3M7A0Hp4C/Kmp7fFpchqofyJzHcKTMsDG/k8go7YJWfh41mGkqQ9TkyIoya3ZX6ECKKYP+rHQahwz80Nja8pzM6geQf/PUw99IxMEqJLDHK34ZHWn7m1L8VLYpDrGgiOCKTpcpSTSdaE/9jh46AvxUC/OLgO23wSwWLXafFORh3H3SUXc2e6Jy+gI2gjhTNliJJiOLonc1eED0hAj8zVrY1vL9JW0dSkCeMeh63+pYkL1WgSUN83hqbC6qeVpr0cCoopHQsGUl589HjUYnBW557LYvHFfgaMeKQd7g4yFtdGY0FoB19yOHbQHzAHV2NpbQbZ1tbKOcn3HkwrjSjmdN1iWDzskxp4Zhr62B1kKx+vPSsi71t1x63vBgufiLWU0Vnt/d0FLOTpbNbhaU0NoEdpOerYZzMOrR3FPerW/BnwxOxUXDMjVu3LofDlbX763KDt/5fHg8MGg7+nuQKWvr/tltH05qBcJjxVcd1xmOsyAkrVaYUnce1DlN2+aoAdR/84BFDXH1PXUcfpVfhjK7RDCFR0rNCqvQv4z9SisYbQO/npkn7zKZsjMvVXm1ov
+ 4dOF5TFr
+ sgmMm4TMC4ArSx0d6IUYUgbjPkDPI2FdAT7t5p+xre3MvDa34DIM5Cj1GQvzojGtTNiAbDbyiapaHI6VdvO4EfbvqMJdOgZQUw7X3z7DEeI4yLHpRTHb3N7mFWr/6QmhSDNoVjnE9aafG1QETrXKgSXLIhoAbevuirA016eVFTf0oApxSfJ+z3K05E4sn9h25srFbfvmN452P5pmMl0QOCSHnraeFgEZpuFl2YJygki92msclLF/KIjnqlMac4EOPznIACcyASJVVxj+Oih3/OXi7YVcoYICYsSJ9qG0dPhZy1f/9/+4H+XR6Vs+8iK2w5WDFL/FSohlh4DMoB5Izo7pglRdrOv4JgGhInQ3Tm8VfgU4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,193 +101,97 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
-X-Archived-By: <archiver.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 3 potential issue(=
-s) to consider:
-- [High] mm/sparse-vmemmap: section_activate() ignores ARCH_WANT_OPTIMIZE_D=
-AX_VMEMMAP
-- [Medium] mm/sparse-vmemmap: section_activate() stores non-optimizable com=
-pound order
-- [Low] powerpc/mm: missing vmemmap-optimization.h include in init_64.c
---
+On 26/10/29 10:54AM, Liam R. Howlett (Google) wrote:
+> 
+> Sorry for missing the ML in my initial email, I missed it from
+> get_maintainers.  I should have really clued in with such a small cc
+> list ;)
+> 
+> On 26/10/29 11:08AM, Uladzislau Rezki wrote:
+> > On Thu, Oct 29, 2026 at 10:16:36AM +0800, Herbert Xu wrote:
+> > > On Wed, Oct 28, 2026 at 11:42:18AM -0400, Liam R. Howlett (Google) wrote:
+> > > >
+> > > > Below, one CPU adds an FDB entry for an RTM_NEWNEIGH netlink request,
+> > > > while another CPU is inside vmalloc() or vfree():
+> > > > 
+> > > >     RTM_NEWNEIGH                      vmalloc() or vfree()
+> > > >     ============                      ====================
+> > > >     spin_lock_bh(&br->hash_lock)
+> > > >                                       spin_lock(&vn->busy.lock)
+> > > >     rhashtable_insert_rehash()
+> > > >       kvmalloc(GFP_ATOMIC)
+> > > >         vmalloc()
+> > > >           spin_lock(&vn->busy.lock)
+> > > >             waits for the other CPU
+> > > >                                       softirq: a frame for the bridge
+> > > >                                         spin_lock(&br->hash_lock)
+> > > >                                           waits for RTM_NEWNEIGH
+> > > 
+> > > I think this is a fundamental bug in the kvmalloc non-blocking
+> > > support patch.  How can it be used at all if it is susceptible
+> > > to such dead-locks?
+> > > 
+> > > And if you can't use it safely why don't we just get rid of the
+> > > broken kvmalloc non-block path and have it always go to kmalloc
+> > > like it did before?
+> > >  
+> > If we have a look at this as we did not have vmalloc() here:
+> > 
+> > 
+> >      RTM_NEWNEIGH                      foo() or ...
+> >      ============                      ====================
+> >      lock_bh(&br->hash_lock)
+> >                                        foo()
+> >                                         lock(B)
+> >      rhashtable_insert_rehash()
+> >          foo()
+> >            lock(B)
+> >              waits for the other CPU
+> >                                        softirq: a frame for the bridge
+> >                                          lock(&br->hash_lock)
+> >                                            waits for RTM_NEWNEIGH
+> > 
+> > Same issue?
+> 
+> Looks like it to me.
+> 
+> > 
+> > I have a question:
+> > 
+> > GFP_ATOMIC/GFP_NOWAIT guarantee they do not sleep. Do they guarantee
+> > not hitting ABBA dead-locks or they are not interrupted?
+> 
+> GFP_ATOMIC and GFP_NOWAIT can be interrupted.  It's more about not
+> waiting for reclaim (kswapd might still run) and GFP_ATOMIC might dip
+> into reserves.
+> 
+> The issue is that kvmalloc() now falls back to vmalloc() for
+> non-blocking flags (I am restating this to make sure I'm not missing
+> something here, please correct me).
+> 
+> So this changes what is called internal to rhastable so it doesn't reach
+> vmalloc(), like before, if the caller cannot block - they go to
+> kmalloc() with the old fall back.
+> 
+> I *think* the question is if the change should be here in the caller,
+> internal to mm, or a new call to opt-in.
+> 
+> Considering this is the only kvmalloc() caller that forwards
+> non-blocking gfp from BH lock + softirq context, I think that it makes
+> sense to do it in the caller.
+> 
+> Given where we are in the release, this fixes a real issue that can
+> happen so maybe we take this now and settle the general handling later?
 
-commit 48cc74f276edacd74ae0108659b8fbbf37ab5193
-Author: Muchun Song <muchun.song@linux.dev>
+Hubert, I have another version of this patch set to send out, but this
+particular patch remains the same.
 
-mm/sparse-vmemmap: drop @pgmap from vmemmap population APIs
+Are you okay with keeping it the way it is for this release?
 
-This commit removes the @pgmap parameter from the vmemmap population helpers
-and related memory hotplug interfaces, relying on mem_section state and
-architecture-specific population code to determine whether vmemmap mappings
-can be optimized.
+I don't want to force your hand but I also don't want to keep a valid
+deadlock scenario in-tree.
 
-> diff --git a/include/linux/mm.h b/include/linux/mm.h
-> index 4fb48fbe712d2..b4b63f89d1884 100644
-> --- a/include/linux/mm.h
-> +++ b/include/linux/mm.h
-> @@ -5345,8 +5345,7 @@ static inline void print_vma_addr(char *prefix, uns=
-igned long rip)
->  #endif
-> =20
->  struct page * __populate_section_memmap(unsigned long pfn,
-> -		unsigned long nr_pages, int nid, struct vmem_altmap *altmap,
-> -		struct dev_pagemap *pgmap);
-> +		unsigned long nr_pages, int nid, struct vmem_altmap *altmap);
-
-[Severity: Low]
-Does building arch/powerpc/mm/init_64.c with CONFIG_SPARSEMEM_VMEMMAP=3Dy f=
-ail
-due to an implicit declaration of section_set_compound_order() after the
-earlier changes in this series?
-
-In commit 84948c20ec18 ("powerpc/mm: drop powerpc vmemmap_can_optimize()"),
-vmemmap_populate() in arch/powerpc/mm/init_64.c was updated to call
-section_set_compound_order():
-
-arch/powerpc/mm/init_64.c:vmemmap_populate() {
-	...
-	section_set_compound_order(__pfn_to_section(page_to_pfn((struct page *)sta=
-rt)), 0);
-	return __vmemmap_populate(start, end, node, altmap);
-}
-
-Then commit 4171e4b9fc2a ("mm/sparse-vmemmap: drop vmemmap_can_optimize()")
-removed the linux/vmemmap-optimization.h include from include/linux/mm.h:
-
-include/linux/mm.h:
- #include <linux/bitops.h>
- #include <linux/iommu-debug-pagealloc.h>
- #include <linux/kcsan-checks.h>
--#include <linux/vmemmap-optimization.h>
-
-Because neither arch/powerpc/mm/init_64.c nor any header it includes pulls =
-in
-linux/vmemmap-optimization.h, should arch/powerpc/mm/init_64.c include
-linux/vmemmap-optimization.h directly?
-
-[ ... ]
-
-> diff --git a/mm/sparse-vmemmap.c b/mm/sparse-vmemmap.c
-> index 43559593107c9..df71125a6ee23 100644
-> --- a/mm/sparse-vmemmap.c
-> +++ b/mm/sparse-vmemmap.c
-
-[ ... ]
-
-> @@ -739,9 +736,9 @@ static struct page * __meminit section_activate(int n=
-id, unsigned long pfn,
->  		return pfn_to_page(pfn);
-> =20
->  	section_set_compound_order_range(pfn, nr_pages, order);
-
-[Severity: Medium]
-What happens in section_activate() when pgmap->vmemmap_shift is non-zero, b=
-ut
-smaller than VMEMMAP_OPTIMIZATION_MIN_ORDER (or sizeof(struct page) is not a
-power of two)?
-
-Previously, section_activate() gated order on vmemmap_can_optimize(altmap,
-pgmap), leaving ms->compound_page_order as 0 whenever the order was not
-eligible for vmemmap optimization. With commit 4171e4b9fc2a ("mm/sparse-vme=
-mmap:
-drop vmemmap_can_optimize()") and this commit, section_activate() sets:
-
-mm/sparse-vmemmap.c:section_activate() {
-	...
-	unsigned int order =3D pgmap ? pgmap->vmemmap_shift : 0;
-	int rc;
-
-	if (nr_pages < PAGES_PER_SECTION && section_compound_order(ms))
-		return ERR_PTR(-EOPNOTSUPP);
-	...
-	section_set_compound_order_range(pfn, nr_pages, order);
-	memmap =3D populate_section_memmap(pfn, nr_pages, nid, altmap);
-}
-
-And __populate_section_memmap() only clears compound_page_order when both
-altmap and section_vmemmap_optimizable(ms) are true:
-
-mm/sparse-vmemmap.c:__populate_section_memmap() {
-	...
-	if (altmap && section_vmemmap_optimizable(ms))
-		section_set_compound_order(ms, 0);
-}
-
-If 0 < pgmap->vmemmap_shift < VMEMMAP_OPTIMIZATION_MIN_ORDER (for instance,=
- a
-2MB PMD-aligned devdax range with vmemmap_shift =3D 5 on 64KB-page PowerPC
-where VMEMMAP_OPTIMIZATION_MIN_ORDER is 11), section_vmemmap_optimizable(ms)
-returns false. However, ms->compound_page_order remains set to that non-zero
-order even though the section's vmemmap is not optimized.
-
-If a subsection of that section is later deactivated (leaving the section
-non-empty) and re-added with nr_pages < PAGES_PER_SECTION, won't the
-section_compound_order(ms) check in section_activate() falsely reject the
-subsection activation with -EOPNOTSUPP?
-
-> -	memmap =3D populate_section_memmap(pfn, nr_pages, nid, altmap, pgmap);
-> +	memmap =3D populate_section_memmap(pfn, nr_pages, nid, altmap);
-
-[Severity: High]
-Could dropping vmemmap_can_optimize() and @pgmap unintentionally enable DAX
-vmemmap optimization on architectures that select
-ARCH_WANT_OPTIMIZE_HUGETLB_VMEMMAP but not ARCH_WANT_OPTIMIZE_DAX_VMEMMAP,
-such as 64-bit LoongArch?
-
-Previously, __vmemmap_can_optimize() was guarded by
-CONFIG_ARCH_WANT_OPTIMIZE_DAX_VMEMMAP, so section_activate() kept order =3D=
- 0
-for dev_pagemap mappings when that option was disabled. After commit
-4171e4b9fc2a ("mm/sparse-vmemmap: drop vmemmap_can_optimize()") and this
-commit, CONFIG_ARCH_WANT_OPTIMIZE_DAX_VMEMMAP is no longer checked. Instead,
-section_activate() unconditionally records pgmap->vmemmap_shift via
-section_set_compound_order_range(), and section_vmemmap_optimizable() ->
-vmemmap_optimizable_order() only checks IS_ENABLED(CONFIG_VMEMMAP_OPTIMIZAT=
-ION).
-
-On 64-bit LoongArch, ARCH_WANT_OPTIMIZE_HUGETLB_VMEMMAP is selected (enabli=
-ng
-CONFIG_VMEMMAP_OPTIMIZATION when CONFIG_HUGETLB_PAGE=3Dy), but
-ARCH_WANT_OPTIMIZE_DAX_VMEMMAP is not selected, and vmemmap_free() is an
-empty stub:
-
-arch/loongarch/mm/init.c:
-void vmemmap_free(unsigned long start, unsigned long end, struct vmem_altma=
-p *altmap)
-{
-}
-
-When memremap_pages() maps a dev_pagemap with vmemmap_shift >=3D
-VMEMMAP_OPTIMIZATION_MIN_ORDER on LoongArch:
-
-memremap_pages()
-  pagemap_range()
-    arch_add_memory() / add_pages()
-      __add_pages()
-        sparse_add_section()
-          section_activate()
-            populate_section_memmap()
-              __populate_section_memmap()
-                vmemmap_populate()
-                  vmemmap_populate_hugepages()
-                    vmemmap_populate_basepages()
-                      vmemmap_pte_populate()
-                        vmemmap_alloc_pte()
-
-vmemmap_pte_populate() now installs read-only shared tail PTEs and takes
-page references on the shared tail page. When memunmap_pages() later runs,
-LoongArch's no-op vmemmap_free() leaves those PTEs mapped and leaks the
-vmemmap pages while section_deactivate() resets compound_page_order to 0,
-causing subsequent hot-add or memremap_pages() calls on that PFN range to
-trigger WARN_ON_ONCE(vmemmap_optimizable_pfn(pfn)) in vmemmap_pte_populate()
-or fault when writing to read-only vmemmap pages.
-
-Should section_activate() still gate pgmap->vmemmap_shift on
-IS_ENABLED(CONFIG_ARCH_WANT_OPTIMIZE_DAX_VMEMMAP) (as well as
-!altmap && vmemmap_optimizable_order(pgmap->vmemmap_shift))?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261030140720.1256=
-062-1-songmuchun@bytedance.com?part=3D4
+Thanks,
+Liam
 
