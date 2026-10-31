@@ -1,136 +1,126 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5443606A320
-	for <linux-mm@archiver.kernel.org>; Sat, 31 Oct 2026 19:30:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE4CA606A32E
+	for <linux-mm@archiver.kernel.org>; Sat, 31 Oct 2026 20:13:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=E/9pEJTV
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=AdwdlbtO
 Received: by kanga.kvack.org (Postfix)
-	id 3B11C6B05B1; Sat, 31 Oct 2026 15:30:46 -0400 (EDT)
+	id E132F6B00EF; Sat, 31 Oct 2026 16:13:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 362046B05B2; Sat, 31 Oct 2026 15:30:46 -0400 (EDT)
+	id DC43F6B05B1; Sat, 31 Oct 2026 16:13:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 252346B05B3; Sat, 31 Oct 2026 15:30:46 -0400 (EDT)
+	id CDA5D6B05B2; Sat, 31 Oct 2026 16:13:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id F33C36B05B1
-	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 15:30:45 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 75DCFA87A1
-	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 19:30:45 +0000 (UTC)
-X-FDA: 85383913650.17.C3EDFAA
-Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 9D53C4000A
-	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 19:30:43 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b="E/9pEJTV";
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf04.hostedemail.com: domain of skhawaja@google.com designates 209.85.214.177 as permitted sender) smtp.mailfrom=skhawaja@google.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id A4F786B00EF
+	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 16:13:31 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 29DA7A0A34
+	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 20:13:31 +0000 (UTC)
+X-FDA: 85384021422.27.344E99F
+Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 42E46140007
+	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 20:13:29 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=AdwdlbtO;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf23.hostedemail.com: domain of azpijr@gmail.com designates 209.85.128.50 as permitted sender) smtp.mailfrom=azpijr@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793475043;
+	s=arc-20220608; t=1793477609;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+8QGpnyPZ7DhkQpiphg595uJGsoBZBg/wk/3XMNmDqI=;
-	b=1Jlyi4jDb2FZz0zonqstPZUNI1PJ0XF3yhfzHZZ+TsOi9Q25jUIfiKoD6Ih+f5UE3TIpyK
-	7hm+px+RLtvLBCQoRnA1A3nUc9O+GQZjrF6zNoskIRZQdAyw0AFjJT1o2dLXKGgAe+9gep
-	KmVGUe4ClUFW/AmStt8d03FbfasjCYk=
+	bh=ECtJrZ810nCPL/tA58/OGxY/aV7ZpN5NiiX8ilCDeYc=;
+	b=mndmtg9fVjErry9w1lrPYiDMFutK2D0lo9JUg9Myq0Sni+ewQvFTmsO8x6kRnIKbsVUN75
+	YXpERDWqWWCkFgdR07QcB71xdiLM3sRYQDhE6w34lhZMzN+/bqkvk0wwVfo2qnqZHVuhRc
+	VkNGtPwH+fWefRIcC89muYgXoVMjMIg=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b="E/9pEJTV";
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf04.hostedemail.com: domain of skhawaja@google.com designates 209.85.214.177 as permitted sender) smtp.mailfrom=skhawaja@google.com
+	imf23.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=AdwdlbtO;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf23.hostedemail.com: domain of azpijr@gmail.com designates 209.85.128.50 as permitted sender) smtp.mailfrom=azpijr@gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793475043;
-	b=fLqQXxMyoq5HJ+Z7k4dmCePmSyZd9/RXFi6RDhFdT3rznCPs9+p/cMAcaL7m9G8su55yCa
-	KA6wanffuYvaKqe94QPGvrG74YirLflXM7LTVqeI/1nqF/tfECj3UKuK1PhmEIu9ahPyhD
-	Eka7tSgUWYwF59lYxz2EH/jTTWP2pqA=
-Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-2e9f6a16afcso31745ad.1
-        for <linux-mm@kvack.org>; Sat, 31 Oct 2026 12:30:43 -0700 (PDT)
+	t=1793477609;
+	b=U/UScY2VXvkecYXY+lK/DE8M7ADw5OhPlR6HEE57QZh/9g+eA6/5kf38KxgGJVCAE4kyYe
+	Rdz2HHoudp/TAlFZGYyOaAyZC4cGnIEA/qrm8eL9OKFUKKNnZ7BK0t8dI2agj0JYLP3tBz
+	VQSduPdGGBBOOTSHjwWwoyfcZ2B7TKs=
+Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-4a2084d62cdso15853805e9.1
+        for <linux-mm@kvack.org>; Sat, 31 Oct 2026 13:13:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1793475042; x=1794079842; darn=kvack.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=+8QGpnyPZ7DhkQpiphg595uJGsoBZBg/wk/3XMNmDqI=;
-        b=E/9pEJTVAGpOHtP802Mr9kHshtuLfVQA7fK0b7A1dEuhYeF2xcb60oJTWZQQqJCsvp
-         PAZ/vN4iUK3brCyd5sVGYRy77a/4+Q4bK7KU1kjhbubb8kFR1+/hmJEfHdI6JLYMU+tW
-         SFKhS8bnJBBbC7GHIwPkyQCgiWnDjFfw24VeuU4j8Z61S8EAaTTtN90R8+FW75GYvjTE
-         mxVD8/biYzGSNauW0Xi77tOR5cNWwt4R2FTVVLE5FlvJxCukkir+TxVWkxTLKOFU5dTa
-         dB+kAx8bqOx1UT2YgjyvxjAA7DgDTS4O/HhIyImplEIEBLGHuee8E06BXGJR2tRXSCE+
-         fl+w==
+        d=gmail.com; s=20260707; t=1793477608; x=1794082408; darn=kvack.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=ECtJrZ810nCPL/tA58/OGxY/aV7ZpN5NiiX8ilCDeYc=;
+        b=AdwdlbtOrdIk4FO3lAVHzVwkWRrUcMwdp6LK8vTEtLwx7wr83qNOPDbd/bXnuR8Tjs
+         dAUp7sef0LNyjBRrmmcnlxKBZR79wJ16gv+0zcD66g7SyNvEISdHTK/ny/P2jMNSnKFH
+         /lcVjii7TaHqKNQ1IpQADiZAXC3UBzTr6B1m0ynHHJBa21WTdX/o3OfL65yR1kRI1IUA
+         42oQjOZFKTijMxyKn/XVM4tsGZ5DucqmdHB2ZLUtn2uSCDV0QU6udJU0X7he/tiq0w9c
+         VacYiFZiIx1wb4MI37YPDjyzqKW8mZA9yKA0YLAJqOXke7AZsG6F0D0UyMpdCFFtnp+3
+         gD8g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793475042; x=1794079842;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=+8QGpnyPZ7DhkQpiphg595uJGsoBZBg/wk/3XMNmDqI=;
-        b=ZNaacvDx86yUv/kJTAk814rB2y5SVxhfHAJY//VV3NIrV1z53AwWWE8BlUDkOQO4Sc
-         clhfdArUtrn/EgEvg3aKxfr5RbZlyInsB9aPkI+/ww7z8w2PW73cpUdYOpC1+909vHK7
-         7OQDCgmRh7L3DF7PflMpyFsuYbNki1IGg0mPPBJXzXB2m7RBZkhf9TUrlZPRhaiJeCIT
-         oQxbKTTnumIIVjAaEUY+7tcRdz0M76hAxxRwQiUmO5aH63WMKKdzAt3wrQ+KI81jP1Qv
-         M4kUzobFzjYjAELcwJPXr0xUUgouyTc504/DmuFVi+4mtpj6yJ6MPvk9pvGMMub9gXXv
-         NPlQ==
-X-Forwarded-Encrypted: i=1; AKwUvBzf2gG+jAJkpyjyNMcQVMjqM0UdArXdvCrqiuttbDXZJbx05EQRArDiX/kqb3dItwdQ05y+AHmusA==@kvack.org
-X-Gm-Message-State: AFq9FYK5aiBWrrp0ShW1Hbr8CtEZmlXOfacsdpp3XEHWNWR2en+5nhKx
-	xXVJK7VrhIWaZR8jKSvwSjXzaCqQ5ug9x9ZvUiqVkX0Pwawxj6uj8N+2vu2h1CDVsA==
-X-Gm-Gg: AYBFou25w1TuREZYjHJKYlmn+6w/KScm62AG2hFtCYOoPW2xpKgovnEX1I0IoHXYEUt
-	aGSoxztX4CpxiCO1JhTpbK1R2vXoRDuIiRUHfn0DMfRoUHOQpUUBdFQQ30/aqZnkv+TEUG2hvwd
-	cAQH63H47qgT3VEoDu6qSmlsciEQeRqONzA3eu3caBOGH+eQWKBRmet+EhfwAMNIuIQSX5OAyEl
-	PIM2Epi5OHKqfNEIV4ua+Bn4jOtIbA6DRi2wmH3FnD0vb4OFHvnhDbegHAXxufl8b4v2hhuiCDi
-	YNkJRrEv8UyTa43ho35Vf8nqAzaz8hBDP2nrr5FC7npVIdPwfH9xwcDC5F+SOt+UanSyfAAjAEQ
-	C6RguL9XlbLvxCmqJvAYyflWgujuCvlmYxwrHBNMy1t9boMRLq4GKsBFHwQsMo6P8MV6OUu6OT3
-	85lMSDaqTMAe2NC2Z2qysUrf91+9BNeKoTdAYjVEe9daV+Vxrdcii4qJi7IzRWV/nQB5BAcAs3D
-	92Ns+qMA8ne0QPMPZ+okOkbDWWPuibqHixKgbuVBFsLe/Xn4w6kWNiLApjFuHjjjaAGWZ1tRMPX
-	+jrGDawFTemYsa+PlokLo5YD3rkbQjWmiumdd+myXnXmOIbzKdNN41FnZIz6Ikw1widhi8Yh14V
-	OWEz3/IbD+cA/gE4ZrcYbRw==
-X-Received: by 2002:a17:903:3904:b0:2e2:d665:6ad8 with SMTP id d9443c01a7336-2eb1b81b9e8mr16615795ad.4.1793475041906;
-        Sat, 31 Oct 2026 12:30:41 -0700 (PDT)
-Received: from google.com (25.75.145.34.bc.googleusercontent.com. [34.145.75.25])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3ae6e9b1506sm12552004a91.15.2026.10.31.12.30.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 31 Oct 2026 12:30:39 -0700 (PDT)
-Date: Sat, 31 Oct 2026 19:30:36 +0000
-From: Samiullah Khawaja <skhawaja@google.com>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Andy Lutomirski <luto@amacapital.net>, Jason Gunthorpe <jgg@ziepe.ca>, 
-	Andrew Morton <akpm@linux-foundation.org>, Hugh Dickins <hughd@google.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Muchun Song <muchun.song@linux.dev>, 
-	Oscar Salvador <osalvador@suse.de>, Jeff Layton <jlayton@kernel.org>, Chuck Lever <cel@kernel.org>, 
-	Alexander Aring <alex.aring@gmail.com>, Shuah Khan <shuah@kernel.org>, Gerd Hoffmann <kraxel@redhat.com>, 
-	Vivek Kasireddy <vivek.kasireddy@intel.com>, Jeff Xu <jeffxu@google.com>, David Matlack <dmatlack@google.com>, 
-	Pasha Tatashin <tatashin@google.com>, linux-mm@kvack.org, linux-api@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 0/2] mm/memfd: add F_SEAL_PUNCH_HOLE
-Message-ID: <auZAViCjlzN3gd6g@google.com>
-References: <20261026220546.3114241-1-skhawaja@google.com>
- <d4891333-43ea-4d74-9fb9-6ad8dac1a446@kernel.org>
- <20261030121113.GB3889730@ziepe.ca>
- <2c7aa5c1-3af3-4654-b244-1257d05c9d45@kernel.org>
- <auTR9SnDLsLVmnJ7@google.com>
- <CALCETrV5eqg6d9=+BQhCpRwBNe3aCQiut8vxPBs8b7PToqjaHg@mail.gmail.com>
- <auVRLPmbWYvMnly-@google.com>
- <bb50fcfa-9d71-4905-a76a-ab7bc149d62b@kernel.org>
+        d=1e100.net; s=20260707; t=1793477608; x=1794082408;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=ECtJrZ810nCPL/tA58/OGxY/aV7ZpN5NiiX8ilCDeYc=;
+        b=2tp1ybyI7k1+KwYYtUrNtUoHPSk/qk1gG7He3ziCiTmMSIhYYfsqx15WXo+R5v3ujk
+         NY/xGnvAu3/R3VfZsVHtOg9iZboFxGRtwGLvYq5Khg1mAjKjNWgykD24K49G6G5gslw2
+         l+9IVd4WB71DgZCu4eHgFDRo7cJzO0JIsMvQOoFyo0GKbr+Ed/zuuxci4PGEUMcyRJE7
+         HeHs00LMt4iThfYq6kii8C3/Cu4OVXqQPv060S4Md+tNDAKum0ZfrlfSssPBuolT5fY6
+         kO5BUIWdH45AIxpgaY4Wx1mXPFR+rdf/GB1ZPRLtT8dpgzRYgCyQR37gz7qzo5kGQuzS
+         PnwA==
+X-Gm-Message-State: AFq9FYJAm466CFE+xG2pXDnCu0aT9qQb/rWVW/IDQ5Hb+GGmcUfpohHh
+	ikXQmiZOR5jYa5U7WdIAZSA8tdtSPYg0TvZ6wk228Jk4gpvig61PxHqX
+X-Gm-Gg: AYBFou1gGpbgCE0TLz3txO/5NZCSdQBJGvUqFN4ZEIgDMVh/FCQHTxFc7AaeDZmfI8y
+	k4M7o7BcjePIs1OUrlYjngxtsmyRHJq1ZEnic1NWTfyuutl5L3MKCf+XXdIbD2YYmmfsrBD384D
+	Pa5fk/836iz4sNdK5v8m6QiPV+aRxFgbNegFxhHzwflb0swsuCfDXmnbjX1k+bPmVx/xu/6UVbP
+	3deBsxBflCHWybHtH6cYRhhXMBJbrfs9b+E9ZKNYFDL7gYlxlw1lxhr/2EpMJKYtaCn4HzUGD1l
+	xUjhXS25uQMXMqwWEYDJIbc1nUl0yGrmKB0XPp89p0sSBB5ay7xeo8k3fBf3bZp1DUdxMcgptdE
+	jEWYtJG9Gf487u6CCCEDsd+iqTCTxdo6YVrcmEXAK/pDHes34KQnII0THbQOKGeJniBQQFxWPYR
+	suIlN2es8U9+R06azHCNEgjE9uZI3j1VEEtHGUBbUAOvBj0k8aZVBUF7NXrQrjDTw9DGbVc4iD+
+	+cqfhK6kOkI2osHf/L7O4EkXPSsPmyPhGcYCzk8f4/GXjtr+Ou/DRrbxpwwooc/Z7htZ2B2QWs8
+	UXVJ6YXwO/tp4GJnbC5Um8L1
+X-Received: by 2002:a05:600c:198c:b0:4a2:5ca:767f with SMTP id 5b1f17b1804b1-4ac151a9a36mr144521815e9.4.1793477607538;
+        Sat, 31 Oct 2026 13:13:27 -0700 (PDT)
+Received: from [192.168.1.22] ([83.231.69.9])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e71b8011csm11733605f8f.31.2026.10.31.13.13.26
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 31 Oct 2026 13:13:26 -0700 (PDT)
+Message-ID: <751f878c-1a2f-4fbe-a255-3520ffaa2f28@gmail.com>
+Date: Sat, 31 Oct 2026 21:13:25 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <bb50fcfa-9d71-4905-a76a-ab7bc149d62b@kernel.org>
-X-Rspamd-Queue-Id: 9D53C4000A
-X-Stat-Signature: f1syyz4769pnaobwjdjw4kitf8qnmcuk
-X-Spam-Status: No, score=-13.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_IN_DEF_DKIM_WL
-	autolearn=no autolearn_force=no version=4.0.1
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm/userfaultfd: store the child's new uffd context in the
+ wait queue entry
+To: Tal Zussman <tz2294@columbia.edu>,
+ Andrew Morton <akpm@linux-foundation.org>, Mike Rapoport <rppt@kernel.org>,
+ Peter Xu <peterx@redhat.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <20261031-uffd-fork-ctx-v1-1-a837fd576ffc@columbia.edu>
+Content-Language: en-US
+From: "Jose A. Perez de Azpillaga" <azpijr@gmail.com>
+In-Reply-To: <20261031-uffd-fork-ctx-v1-1-a837fd576ffc@columbia.edu>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 42E46140007
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1793475043-612734
-X-HE-Meta: U2FsdGVkX18LH9ru14X9F3UkkyzMgZa84mqIDmSDQajPc0fG1DcpQcnRCQp2IoRw/54rLW8/2CJeUFLuFTGClMIF/JZg8ZUU+h/SLHr3ULsREunax6Z5eZGu1t9QliKLi/SdqisqLLR3h6Ha17dupd92nBp4DtsIYWKMeLQLeb3SWZe8cd0AtDZuAiyD7hOoDWc/TNMAihIJL3dwEyy91srAvrUolRYY2TZPW+lI8qy1NP8USHyEYAVz9EuhrGM15p2XMCvJQlcTdBEx06VTw0pSCMufRjbzkQKesE8jZUJLSHaz3+LFlfuyQKTvR8QkjIg8lQK8rYwLMOanOefOZFrO7x7ufJb6I0IibxUSuwoBzt/FCtyY71EYeJqTl6z0Wk/5gu7b/MVPlEWZ1bstqHBIhONKJnFxoRRS2QlP0uJqFEsE4GyZE4Eg/3TvMLXlOVIPu8HVEL1yq2MYcK3BzgPpJRh3KXxWfv/2XpRjfdFCgsF+qd6XW5DkEKX4NHnfUtVo52uiRI2/kMwMk/hSOOSUHn9i51LA7w84wEUmHlPoOGmbJwMkRVz4cuGTmQ/yn0uwlPpb4r+3hZZM8lbnkuPHgQYyMvWQtq1hM5lKCfALjAAxTBCY/4+wJAPeODT74Kk8ixSWfTlT7Sz8wsYm58nWwEfcW/KFi2AV7okKCJybbGQ4G0MM4rZZ9SetZhbBKaElwyYSVyr3SpI51+XXMzXV7KzTVTXmtiPih7L9Up25whVkOaSWxjNhExajzx8mmpmdaIcmFtcRtQEgA6MCh9zhVdvveWajitKOdK1EPB7HSJRToxJfr3YeQdllnmS1mY8YZy7/slnJo1PgL8uhYMMi9J3iN4S5cScW3kECnY1z3tVFwJNHYMv2HDINfIHVTt4gXXKeGjXqWG5k/d6K2DvrNVWYH0iVjAepzN8cZereEPFfM+I1ejWY3dm7TEdWpUOlp0Eo6p5A3Og1mN6
- 8DlqTyso
- XYoXl7f1HHj7SThGVUImNPoVhx4vkUaJBkLQ9seMQC4egvQGPmhm4XDDwmMkDl9uqE5XmMlkjR5VCkw8tW1QNKlYdtUN30xt0yBwpeitcAe0m/0+MVW0tamQ0hI8OshKpJ78DzXexhrxhYR4BN8hf3t/fNMHbOcCx/AwliaA9RB0p1PlyK8a1nEk8sDiu6KowhEYsP/6HMxLPSvDvjPVUmaGQPtRgVOwGCfqiyOGe+jE2V+axlNZ9QTuobJM6UI0FdeXq3NLen1zrLtAm+ICq7JQA+9IIbxAv4S1055vQ5ysKlRN2Q9Qy8Z2ZzYZrbptVCi0AH7piWBTETZWbjnaH/jnXErm6kBI6h7f1fAiwtKTNH9EBiW5n9DfawrwhTezN7ZO/JFoAmJacNv44MFKiAu0N0QqvkCSJCf+/nF1A8OtEGmiFn0QD8sykQHvtSFN3tuK3NBiHaq/jzbhq8awfRk6cv+E6pr+d6EssnBzO/91K150mbpcfLosp4w==
+X-Stat-Signature: cn9gj5f5qrsxfsmdiaboxwato9jtrjtt
+X-Spam-Status: No, score=-14.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
+	autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1793477609-529795
+X-HE-Meta: U2FsdGVkX1++WTQ57VsQ34O8TcRqgkMf6sPoNzYAObB+XFqS/BJK198ys9GYU9w+WcGCyQKXsn+gH6Gz0UOeVz1GpXHWe+Qc++nBEIz1AUDIhn96NNDKS7n5ui+gXpFHCBunG6beCtC69NsRYvrXzSvG1VE24a845nrUJ18TcL16Ti5VMc10CmwNzU4bH4cdEXV18w7HOqidPyERVpHkKBioeGX6OmnFqhtRC/OIB1ox7tc4cjKRbsUx5+e6Ihd+2UZufh1eOAOUVTisNSbNMRkKfXURxU06sr+X2kf18WgmpgL+m8udLyLYHH0Ox+C4nJt7Qpd+LY5/3b3TlixjAfbRHayYq5TW4fbGP4jOXqo3Zhtj6xN+mHn8TeLIfYHxYSchpbabS0WE82VK+JHi/3OT+TISPjUGv+EsPzZA2OSl1XNwZuH6+txkjmxEU2uic6hNz8eZIV5V1P3MoyTov3bdue7W2lq7aP8P8XZWhaWHbZIZGFstcg5dYHPnMEvpLK6FhBvN5MSpShtecknDMWJ2IYqJUD/N2XU3vy+ZxAqcoX52oE7t8dTR13N2C8d5sPppCSzM1/y9TkHpm/iqIR3VrQlwY+9hlYhYV08yH8gEh0yjBCplZiYdUMbUCG+mlt1I1DqhELunPR+1iE+EdpWAH6da/gqePuvHz63Jw8G+9zE+hlndnpAGYFF39odm/JkfpwkQQzKxRp0dh0qr1wdigihZUJUGxPb9XDQD6MUqvhO7LQtJE4kgafhsfUxQT3he7XyyN70G4W9iOqQKxkkm8IsAqBAToTpw861iBciLgSJiomfXKyQmJ+n5A5NNl5b3sKMd0CeuQg86i3teHdFK3jX5BA+B9Z27DIDnB9FJiSK+jFVgoBng4UP/fKFlvgtCFOylenlvHO38yWR9qN0F7bICMIrNXDvHV68n56mSmmpyeScQEEiBRBk+Iep5Rjb2G/JNeyiPYlAOJ1C
+ Z4S8tgHb
+ pj4srtEWXUpqc6ybA+CEvKjOPMzIx599XMB5QflfDfV50rfkAX+S99fHhiEP8UY+heMtQ1KMfedikJKjGoCaFrawTid2/wD3tPuymbtxSHat9PHCMQ9FFEVnGAxN6GX6Yg5k7CwjSrPbnMkFDVsrNy7QEBIXVdBDMnBUX2xaBzMY0bWmIK0PsmYcvtPxWWZmuS8lV83ea6dfhs66wVEwglc7LnlD3d4iCLj80ia6xeiU/Y2Gf2H/zeASwZ+MRfRBPKUhtsCRju8tGkswFsveYKgSy/YbYSmjeChpFhaRsyeQlWaq6oRRCg9wqTmBnSb9zWoXT2FznWVm/5bYjEv/ho2cDU2aFFKbWqEyM7trCcIIRNCSggfKC04Nrj1i2K0N2eO2QlFQZ4CSQOWmeeYTdYkq36Y8d9gDBngtzTSetxZHDjL3eWOC94GquLV/swgR8Z3W3d9poNpIWi78=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -139,108 +129,96 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Sat, Oct 31, 2026 at 10:32:32AM +0100, David Hildenbrand (Arm) wrote:
->On 10/31/26 04:03, Samiullah Khawaja wrote:
->> On Fri, Oct 30, 2026 at 03:43:53PM -0700, Andy Lutomirski wrote:
->>> On Fri, Oct 30, 2026 at 10:40 AM Samiullah Khawaja <skhawaja@google.com> wrote:
->>>>
->>>> >On 10/30/26 13:11, Jason Gunthorpe wrote:
->>>> >> On Fri, Oct 30, 2026 at 11:20:30AM +0100, David Hildenbrand (Arm) wrote:
->>>> >>>
->>>> >>> We have the exact same situation when userspace maps anonymous folios
->>>> into vfio
->>>> >>> and then desides to MADV_DONTNEED the pages. Or any other memory backend
->>>> that is
->>>> >>> used for such purposes.
->>>> >>>
->>>> >>> User space must not zap/punch things that might be pinned elsewhere.
->>>> >>>
->>>> >>> That's not specific to memfd, udmabuf, iommufd or anything else.
->>>> >>>
->>>> >>> I don't see a reason to make userspace (that should not shoot itself into
->>>> the
->>>> >>> foot) a kernel feature it must activate itself to not shoot itself into
->>>> the foot.
->>>>
->>>> Agreed, for normal use this is userspace's problem. The seal was meant
->>>> for the kernel to cheaply verify at preserve time that nothing was
->>>> punched.
->>>>
->>>> >>
->>>> >> The issue is live update doesn't preserve those background punched
->>>> >> folios and now we have created an UAF attack on the kernel across
->>>> >> kexec if you don't do something about it.
->>>> >>
->>>> >> There was some notion here that with the right sealing flags we could
->>>> >> tell if everything was 'live update compatible' and then know that
->>>> >> these attacks are impossible.
->>>> >Just remember that there was any hole punch and refuse to live update this
->>>> instance.
->>>> >
->>>> >We could likely implement "we saw hole punch on a pinned folio" as well, but I
->>>> >don't think that's required initially.
->>>>
->>>> If I understand correctly, you mean recording on the memfd that a hole
->>>> punch happened, and refusing the live update if it did? That would work
->>>> and is much cheaper than what we do today, where iommufd walks all the
->>>> mapped pages at preserve time. For truncate, the existing F_SEAL_SHRINK
->>>> is enough or I can record that also on the memfd. I will send patches
->>>> for this.
->>>
->>> This entire situation continues to give me the willies.  After much
->>> prodding and contemplating (in my own brain), I got a friendly LLM to
->>> report:
->>>
->>> --- begin AI output ---
->>>
->>> IOMMU_IOAS_MAP_FILE uses memfd_pin_folios(). Collapse [MADV_COLLAPSE
->>> or khugepaged] checks the old folio’s reference count, so a pin
->>> acquired before that check makes collapse fail.
->>>
->>>  The problematic interleaving is:
->>>
->>>  1. collapse_file() locks and unmaps the old folio, then passes its
->>> reference-count check (mm/khugepaged.c:2446).
->>>  2. memfd_pin_folios() (mm/gup.c:3483) obtains the old folio from the
->>> file’s XArray and pins it, without taking the folio lock.
->>>  3. Collapse copies the contents and replaces the old cache entries
->>> with the new huge folio. It does not repeat the reference check or
->>> freeze the old count.
->>>  4. IOAS retains the old physical pages; accesses through the file
->>> use the new folio.
->>>
->>> --- end AI output ---
->>>
->>> Is this correct?  I haven't personally verified it.  But this whole
->>
->> Yes, I think this is correct. memfd_pin_folios() pins the folios
->> directly without taking the folio lock. Other page cache lookups lock
->> the folio and recheck folio->mapping, e.g. shmem_get_folio_gfp(). Only
->> memfd_pin_folios() misses it.
->>
->> This scenario is different from punch hole or MADV_DONTNEED where the
->> user decides to remove the pinned memory. Here the kernel is removing
->> the pinned page without the user knowing. Collapse already checks the
->> refcount to avoid this.
->>
->> The recent fix [1] by Chris already takes the folio lock for !uptodate
->> folios. I think we can take the lock unconditionally and recheck
->> folio->mapping, that should fix this. I can send a patch for this fix,
->> if folks agree.
->
->I have another patch from Anthropic on my "rework schlop" queue that should fix
->this:
->
->"mm/gup: pin memfd folios under the folio lock".
->
->
->We'd do just what we do in other context now, which is checking under folio lock
->whether the folio was truncated.
->
->Care to send a proper fix?
+On 10/31/26 4:47 PM, Tal Zussman wrote:
+> A UFFD_EVENT_FORK message cannot carry the child's fd when it is queued,
+> because the fd has to be installed in the fd table of whichever task
+> reads the event. The forking task has to hand the reader the new context
+> itself. It does that by casting the child's userfaultfd_ctx pointer into
+> the arg.reserved.reserved1 field of the UAPI struct uffd_msg, which the
+> readers cast back.
+> 
+> That temporarily puts a kernel pointer in a struct that is copied to
+> userspace, and results in ugly casts when passing the uffd context
+> around. While resolve_userfault_fork() currently zeroes reserved1 before
+> it is exposed to userspace, this unnecessarily risks leaking a kernel
+> pointer to userspace if future modifications are buggy.
+> 
+> Store the fork_ctx pointer in struct userfaultfd_wait_queue instead,
+> which is kernel-internal and passed around anyway. The casts and the
+> zeroing go away, at the (negligible) cost of 8 more bytes on the
+> stack.
+> 
+> No functional change.
+> 
+> Signed-off-by: Tal Zussman <tz2294@columbia.edu>
+> ---
+>  mm/userfaultfd.c | 19 ++++++-------------
+>  1 file changed, 6 insertions(+), 13 deletions(-)
+> 
+> diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
+> index 3b71712edab4..cae70df89c00 100644
+> --- a/mm/userfaultfd.c
+> +++ b/mm/userfaultfd.c
+> @@ -2430,6 +2430,8 @@ struct userfaultfd_wait_queue {
+>  	struct uffd_msg msg;
+>  	wait_queue_entry_t wq;
+>  	struct userfaultfd_ctx *ctx;
+> +	/* UFFD_EVENT_FORK: the context created for the child */
+> +	struct userfaultfd_ctx *fork_ctx;
+>  	bool waken;
+>  };
+>  
+> @@ -3006,14 +3008,8 @@ static void userfaultfd_event_wait_completion(struct userfaultfd_ctx *ctx,
+>  			 * didn't.
+>  			 */
+>  			__remove_wait_queue(&ctx->event_wqh, &ewq->wq);
+> -			if (ewq->msg.event == UFFD_EVENT_FORK) {
+> -				struct userfaultfd_ctx *new;
+> -
+> -				new = (struct userfaultfd_ctx *)
+> -					(unsigned long)
+> -					ewq->msg.arg.reserved.reserved1;
+> -				release_new_ctx = new;
+> -			}
+> +			if (ewq->msg.event == UFFD_EVENT_FORK)
+> +				release_new_ctx = ewq->fork_ctx;
+>  			break;
+>  		}
+>  
+> @@ -3111,7 +3107,7 @@ static void dup_fctx(struct userfaultfd_fork_ctx *fctx)
+>  	msg_init(&ewq.msg);
+>  
+>  	ewq.msg.event = UFFD_EVENT_FORK;
+> -	ewq.msg.arg.reserved.reserved1 = (unsigned long)fctx->new;
+> +	ewq.fork_ctx = fctx->new;
+>  
+>  	userfaultfd_event_wait_completion(ctx, &ewq);
+>  }
+> @@ -3404,7 +3400,6 @@ static int resolve_userfault_fork(struct userfaultfd_ctx *new,
+>  	if (fd < 0)
+>  		return fd;
+>  
+> -	msg->arg.reserved.reserved1 = 0;
+>  	msg->arg.fork.ufd = fd;
+>  	return 0;
+>  }
+> @@ -3482,9 +3477,7 @@ static ssize_t userfaultfd_ctx_read(struct userfaultfd_ctx *ctx, int no_wait,
+>  			*msg = uwq->msg;
+>  
+>  			if (uwq->msg.event == UFFD_EVENT_FORK) {
+> -				fork_nctx = (struct userfaultfd_ctx *)
+> -					(unsigned long)
+> -					uwq->msg.arg.reserved.reserved1;
+> +				fork_nctx = uwq->fork_ctx;
+>  				list_move(&uwq->wq.entry, &fork_event);
+>  				/*
+>  				 * fork_nctx can be freed as soon as
+> 
+this LGTM:
 
-Sure, I will send a fix.
+Reviewed-by: Jose A. Perez de Azpillaga <azpijr@gmail.com>
 
-Thanks,
-Sami
+-- 
+cheers,
+jose a. p-a
 
