@@ -1,73 +1,73 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 152C3606A31A
-	for <linux-mm@archiver.kernel.org>; Sat, 31 Oct 2026 15:45:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5302606A323
+	for <linux-mm@archiver.kernel.org>; Sat, 31 Oct 2026 15:45:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=8alias.com header.i=@8alias.com header.a=rsa-sha256 header.s=dkim header.b=pdmSeHB3
+	dkim=pass (1024-bit key, unprotected) header.d=8alias.com header.i=@8alias.com header.a=rsa-sha256 header.s=dkim header.b=Uu3KFHHX
 Received: by kanga.kvack.org (Postfix)
-	id 2EC3D6B00EF; Sat, 31 Oct 2026 11:45:25 -0400 (EDT)
+	id F221E6B05B3; Sat, 31 Oct 2026 11:45:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 276206B05B3; Sat, 31 Oct 2026 11:45:25 -0400 (EDT)
+	id ED2A66B05B4; Sat, 31 Oct 2026 11:45:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 168426B05B4; Sat, 31 Oct 2026 11:45:25 -0400 (EDT)
+	id D9A246B05B5; Sat, 31 Oct 2026 11:45:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id DC1DE6B00EF
-	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 11:45:24 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 5BE2C1609C6
-	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 15:45:24 +0000 (UTC)
-X-FDA: 85383345768.26.359B65B
-Received: from mail-200165.simplelogin.co (mail-200165.simplelogin.co [176.119.200.165])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 650A4100008
-	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 15:45:22 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=8alias.com header.s=dkim header.b=pdmSeHB3;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id B7CA36B05B3
+	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 11:45:33 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 465171A0781
+	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 15:45:33 +0000 (UTC)
+X-FDA: 85383346146.06.3FA45F4
+Received: from mail-107169.simplelogin.co (mail-107169.simplelogin.co [79.135.107.169])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 5C7E240007
+	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 15:45:31 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=8alias.com header.s=dkim header.b=Uu3KFHHX;
+	dmarc=pass (policy=quarantine) header.from=8alias.com;
 	arc=pass ("simplelogin.co:s=arc-20230626:i=1");
-	spf=pass (imf05.hostedemail.com: domain of sl.lmysyibrg4ztkojyga4donrmeazdknbrgeydkxi.zmculzw5zubyq@8alias.com designates 176.119.200.165 as permitted sender) smtp.mailfrom=sl.lmysyibrg4ztkojyga4donrmeazdknbrgeydkxi.zmculzw5zubyq@8alias.com;
-	dmarc=pass (policy=quarantine) header.from=8alias.com
+	spf=pass (imf07.hostedemail.com: domain of sl.lmysyibrg4ztkojygezdonrmeazdknbrgeydkxi.cuedpvy3pntvq@8alias.com designates 79.135.107.169 as permitted sender) smtp.mailfrom=sl.lmysyibrg4ztkojygezdonrmeazdknbrgeydkxi.cuedpvy3pntvq@8alias.com
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793461522;
+	s=arc-20220608; t=1793461531;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qD482B1x9OW46mcV0NOxxvY9DRkgOEV3+OdPHjQp9+k=;
-	b=GKsupH8QF13wG66HHxbCtcQbmkRKb+dbM489IHcdf1wY9IOuKT4aWwmeMi98taomKM5U7U
-	8YdkTPmvisukfT+YuSU7zFvMYrBYei0/gROiqAUy80MAXyDIlFuDYBcBtr3o9dIvLTB9Te
-	gLU9TdB+0lAZFWt3YcZYpAMjOXOy0BA=
+	bh=KzUzEHBbmgc5bGwSKasygIMu+7J+1rdvRalQ/DDgKSA=;
+	b=TlxmnpCjZFZkov67H00ascYhpiDWWbxEJqfwiu7IKf4/sLE67Ffrg9Vf5Lqbj59N6XKbGZ
+	P7hQaecgfl5aWzMYTtJuP/cFnNlnn+lQUS7h2zYxh6/WA0ZVUWrmtSKPPQ7IwDhYnxJGMW
+	xg9a6Q4pk/Y7PbzIpey+0/ZLeFvb0aQ=
 ARC-Authentication-Results: i=2;
-	imf05.hostedemail.com;
-	dkim=pass header.d=8alias.com header.s=dkim header.b=pdmSeHB3;
+	imf07.hostedemail.com;
+	dkim=pass header.d=8alias.com header.s=dkim header.b=Uu3KFHHX;
+	dmarc=pass (policy=quarantine) header.from=8alias.com;
 	arc=pass ("simplelogin.co:s=arc-20230626:i=1");
-	spf=pass (imf05.hostedemail.com: domain of sl.lmysyibrg4ztkojyga4donrmeazdknbrgeydkxi.zmculzw5zubyq@8alias.com designates 176.119.200.165 as permitted sender) smtp.mailfrom=sl.lmysyibrg4ztkojyga4donrmeazdknbrgeydkxi.zmculzw5zubyq@8alias.com;
-	dmarc=pass (policy=quarantine) header.from=8alias.com
+	spf=pass (imf07.hostedemail.com: domain of sl.lmysyibrg4ztkojygezdonrmeazdknbrgeydkxi.cuedpvy3pntvq@8alias.com designates 79.135.107.169 as permitted sender) smtp.mailfrom=sl.lmysyibrg4ztkojygezdonrmeazdknbrgeydkxi.cuedpvy3pntvq@8alias.com
 ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1793461522;
-	b=eucSFRRLS1mt3NSz9kV8iL/eXnusR1Yr3uvCoW7FmIgYbaKzVwdGQf0+OlUH6hoBBvY/xU
-	uwqGpyWQWjb8a401LAcfLqrPlAjcNNpkp72GVR+lfSzptg1C4dJpP4otV6pWc0hKWVUv81
-	PJCJXT6XyAOL9KY0WyHxOhTgMWrZqYc=
-ARC-Seal: i=1; a=rsa-sha256; d=simplelogin.co; s=arc-20230626; t=1793461521;
-	cv=none; b=yW/8h64RfhKwx1I3c+GSAnpmJ4xHm4ZgAJRl3speQt81t8MNaAwfHS78fjJfQbthCZdpE9dvD2Og0E/20KB9rV5Ex9e+xop0IgALlCyB8NDRMytbTQ1QOUwB93Mll6xEDso5NhT4rbOK6pacJ5pOed3MuJonRGCbwugWP7kGZlVPECcP9dIuiiS7XDX9vEURWgribvS0weiEriawBuF1NpQfHL5v54UrvWNYhMKf71phq+Kh30GXBgujKHAF2XvRJcITtrs9JmQNODEua8mdpsFY6ZrGRFwoyaO9PkWoU80elQDA1bnCS2UDCDjLV2YuLSKMtAx2STZPBq9S1viDlQ==
+	t=1793461531;
+	b=lcq6DWbIrWhHSf5WzPsILSsOBvEW2PAdjNQk3P0ROpjTnhXeClmgXJ0cwlbAjQgDdrhPDT
+	a8gGH8MFjdtBu2b5e8lcY411rGM5SqM0wieU6X8HvHMMXcffkEnESUYZRm/LdHKo0D6xFa
+	XWFljTbYRvXxO1UyYfnkRKz0jA9WJzI=
+ARC-Seal: i=1; a=rsa-sha256; d=simplelogin.co; s=arc-20230626; t=1793461530;
+	cv=none; b=Uu6UPx67nmHQjF86wBhXtfp6S+hA8FTOtZQPLOPwGjM0NEEsNZNTbyZ+UYj5hy/EK5ZwIxnCf4E7hlLctnsZDq76OpqDqf7gtenDfW8iU7lAuUOV3FlMJbX7I1URjr7ia4VsfULG8IEHkRSusjTTYRUgjuRFmBnoSbBC2HD8a1b+rKSt9clh3gBozsg79BkDnfAMIAh53JpHBXh8WYi/e7ypmL6J9PV2ukenZ39tff1bViWupC2OgF4x6rz0RcvZJfpOsCbw/ONNlnOzvv2we7o3MOwxGcnjmTx3rnJGMi7eDWcC9DnjfgLdHBGn3Pz4gnMq7R9o4Q+qX0Y0N8MVQQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=simplelogin.co; s=arc-20230626;
-	t=1793461521; c=relaxed/simple;
-	bh=qD482B1x9OW46mcV0NOxxvY9DRkgOEV3+OdPHjQp9+k=;
-	h=Date:Subject:In-Reply-To:From:To:Cc:References; b=eyB7Q4BpxOq0pFR8SAWnWikK1Nn3TXSSHW82WcJf4lYLfodWaDeS4qCG3YSUd9DoZ2pudtWQcHi0oM7ymvUYda+3jQ3Y+mRBwHZZwzqK8WZgwmyiqFR5Znwn/ki5XUya0FMVYKIzwHtsWY6qBEM8rZ33vkmc7uQ6iuWEaU61eCC6fnmXxPvWkltXgaera1jGarrrul9Mz5XA5La1p+ujPNe1ySpPiSzr10mTuJg3COtOcsu91It35A0B1X1pCRCK3FII5ZIvbubGgEbVWPRyvjh1B5Szwuim45QGp8qMr57NF/5zKRebJuLaWjZWTkonmJu+JgYZDk1R3j5Voc8z+A==
+	t=1793461530; c=relaxed/simple;
+	bh=KzUzEHBbmgc5bGwSKasygIMu+7J+1rdvRalQ/DDgKSA=;
+	h=Date:Subject:In-Reply-To:From:To:Cc:References; b=2KY8BK4t0yfEQL1OyFB2x2uoodbRJIvnUiAYqZzH3s9npGOJAXHqEGTHs8Vwnxp0qtJHmvpi7hYlnZnWUC73WkiOcD7E46BmPv/kfDMFo1zM6eyYOBYLkyDD5H2b+4N14hl/znVU4KxKWst9FHjrgKOOnvkkAAWl2Bn9B1x0LyWmrbkyCBY1k6dDYOXlD1WaZJQXoGaw2FDzgFYydWLC3Mq0XIwaGjbmOMa+Nqn3qI2zFMN7r9AvwJln2HjftTvee6xQzIia7uXs5sR3p0xzzEm0Gaek/M88TH+zsRGEXpkycowV61Q9UBvojHrt+uBJSZtKXjgFUwDxbl0JoayCcQ==
 ARC-Authentication-Results: i=1; mail.protonmail.ch
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=8alias.com; s=dkim;
-	t=1793461521;
+	t=1793461530;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=qD482B1x9OW46mcV0NOxxvY9DRkgOEV3+OdPHjQp9+k=;
-	b=pdmSeHB3HPsR4w43goZTKVojtsSynHw87P4a1NEOtPmgtZT5QfqZEt+qXvamcdJmvbaMrl
-	ork4p8f8wzDYmAZDHHTzv/3AyB0VTL+ZFAWUzl03YR8y0iaEHHa8SOZYJB0cudYdEBd1YI
-	4bzM3VSVh8nmPFCX81qVRycp2p990D4=
-Date: Sat, 31 Oct 2026 15:45:13 +0000
-Subject: [PATCH 6.12.y 1/2] x86/ioremap: Sign-extend PAGE_MASK when aligning
- the physical address
+	bh=KzUzEHBbmgc5bGwSKasygIMu+7J+1rdvRalQ/DDgKSA=;
+	b=Uu3KFHHX88CcCh5JfEviiqH0gnfXqkGciAG7Z/cRJX72aW0pV5QhdC2h1Lf6uOFPkwn7Lg
+	Axk0u/Dyqd+UcyeDZ/GJQAM8A0W5sf0jiOPFyd+RRFPoTRF/j5OcW4auCXlCjXKA2VUlWE
+	MG5BAGmFhROWyvP9eggB2X0mEa1uGGo=
+Date: Sat, 31 Oct 2026 15:45:21 +0000
+Subject: [PATCH 6.12.y 2/2] mm/early_ioremap: Sign-extend PAGE_MASK when
+ aligning the physical address
 In-Reply-To: <179346145167.7.7861216093151225931.1735978772@8alias.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
@@ -81,23 +81,23 @@ Cc: Thomas Gleixner <tglx@kernel.org>,Ingo Molnar <mingo@redhat.com>,Borislav
  <akpm@linux-foundation.org>,David Hildenbrand
  <david@kernel.org>,linux-mm@kvack.org,Arnd Bergmann <arnd@arndb.de>,Michael
  Kelley <mhkelley58@gmail.com>,linux-kernel@vger.kernel.org
-Message-ID: <179346151984.7.6028133845439165356.1735980824@8alias.com>
+Message-ID: <179346152914.8.7838190602983146541.1735981230@8alias.com>
 References: <179346145167.7.7861216093151225931.1735978772@8alias.com>
 X-SimpleLogin-Type: Reply
-X-SimpleLogin-EmailLog-ID: 1735980876
+X-SimpleLogin-EmailLog-ID: 1735981276
 X-SimpleLogin-Want-Signing: yes
-X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 650A4100008
+X-Rspamd-Queue-Id: 5C7E240007
+X-Stat-Signature: r5xdse66qwu5z5e5ueqkxjmsbwusqhyy
+X-Rspamd-Server: rspam04
 X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: mqey59awysum1zjq9wremztuo4eu9imy
-X-HE-Tag: 1793461522-523659
-X-HE-Meta: U2FsdGVkX190f8y1FOFQMo5JDfKzmqT+bUhAh5n2INOETzqW5+UPcW4XkSYPGrXItmb9mg+ErGcOOtMvInw3vOkxy0Gc+Qau9c6qzxYwGgsWKw4OR3oZMl+PWKYtKAz2W6grsXOPyWGhsvneNhUW9w88Ty0ploOsCb+qrWxCkoaggyKHLG/cQkpTB4S48kQBJI8v3rTaSbRJCJKrv73S1NCab5bBFmnW8yvE1RPsvUoCwYEPOiV3XRE/XqkhKaskTTPe3WNTNkPEFRxfPphADxpR0k/FZgElmIvSehTTWCEgp+MGgc9UAriUHEpjG/Az+WIYXrSnN5FcueWrcSGY3XqS1wPIZLkeLysmxFyPNkUTe90WMY/duL5sWe/Tl9DNK9/H414Hb6ToRhLDRNbnpePSa/rWHO1QqkvR2v68MHDxY98WFsRnCD0eVZJzBrUchCB6yUCKFg7m2gBpH/rrjSQK4T53S2fnuOjuqkwO/o5gaGaYk0/Dzvd8EVfURvgIivnAQeoHPKCTbWkDiKNDrdc2QF+7WD6EiWISywnzLXb+hd0MIEt+ai6MmzuS1iGlfcKIRDanMcITY1k5gZbKbhJZwubLLQ/EuryGPn5LIYA+0RdAToofZh5M3Nh0poQD7LHE+CesJVtUdSV5+5LltQyaTHn2FrscNCdhO4Kc1Vot8q3hX6E796qHYOIGRB7fJKSgk7Tr4SqReFkj9H98Fu05BFh8vuETl4U7l+JNIJYvRdNfz5nT9mQ6vpeI1OwL7PqqzLqsBrxGqlqFIUXAPl9WueraZYYSlyjdwiuUpQHojtBp38tzNw7IBlbqMg6A9IsT7QzG94j14wHbkhpLZBEkL2xhC+RfguSNwGQ5GpecI/wDxXeMPabirgoZdFeKg5p4ZMHSCFxg+DYd+uZeLi/C3T8dMULzreep1YpuV2Wxnl38v7VIYuMqX089/ZLEy+krN3oMtNlGbWp8xa7
- UbhWIxCS
- IS+1t59yhWc+o9LKWNkfVB7Rf7ngX4zrKOnWZ4gfsfHpWQh+5Ei3DI1JuoCWbrJ8hOzIQCZx5hIO8jPREwZVFXA0LCRQmZi5JXtc6/8F9zGCK/RIHbKz+FiP7TMD2O7RS65LaveFUExrue3yiDxsDnGfBf58IEYaKuxGid7WL/yAZrVfIEYEZdVmo1C7w1+u5FaZY0gNBOSh+vHq8HFlRkkLtsl1Jd7T/Ju/WR21a1yT9/Avg13milnO9ezehhOYOp0KX3zlegHzUljupqViJ45vz3v9S+HXl7wj14y1lLQj8C+rYOm+4rGaRqE8lcqfvuYa30iW2BSiid9NzFYsWuIAGFEYhujad06vrleHqVXfAMedEfVEt1QAfPlwXf8tuLWYJBzkFjH+2gcJYI5iio1LTqX5TzlEdZyke1zk2FDu/m2MR14m+JNgX5SF4ZMFkpXkLtipoJO9Okccl29i0On7iZpL76oIAi4qHAEA+DUhaHUssrhGQ9a2Q79Dmg7KNHjq+rCy4IZVLjDi/cNUla9KOxwrLA0OZRecz6P5lsNdlxiJOElCWVBheaCFXL7hOOfBPsQN8EJXuX4yD47/l11VgfjrySdycFJjqlIz9F1jFXyg=
+X-Rspam-User: 
+X-HE-Tag: 1793461531-576497
+X-HE-Meta: U2FsdGVkX1/68A3QqIbKSPD+qgDnkrZ3QrcjU6jriJOsS9/58dwkkLs5d4t8NkeuZVjT37kj7PvoSFguvviAJfKsEOCxWhEjkPSdbyPzp9PkP150oc0HQUoXGzyP1bSXnlXjFRGGCYVo/RrNJEMMcBOl6ZsivwerIR9P1CE9Uhcc/6cELdZYnWh657KNv4svDDExxuYIcFUY6abXQemDIIVaf7pWZIDP7+1SII5Xr/4xVZSrUQFA0ZTxehhpy4Fke7KYjigQN16yuywWOLtrbLPm7eiVq/60t/p8u3XqXYTb4fpYA9kQjSdlgLg1bSrAOc6IhTkdxZO911hJSnywfOYbwXqG9jYV55aNNyOPwpSX7T7gV7B8Pu1l45dUCE+degJCwzxrjCLbpuYqaNId8hKp0ZUOlsAcChW5kovhR8kgCPnA5EmIXFgCrM4mh7Z+wtqEox95iuwpqWpSp07az8aAJcolvR7e35jDSU4y0I8vvcT1+TfL+Y2ryvjg7oxK7+qi02inWt+snJpEzakwCaH2SyxqcGol/7bzFMLwBpY/T+5EF05XRDDqjRvNY2lrUcEFOEPD6yRV/MA542MTPTBWif3ZPL5r/gXxm9OM2U6r/WYdq0FX6ZDoH6elUrf8ALXQt+NgpoWUJw5lHXBpqT1p1hqo5w3zTgqRfnEPSsnjWO4MrAhCQzI/uP13d+QzzBScqR/7YlYrfBvheYgXQ2n8yTqevYQUEmKoknTixtoGTliXvPpBu/DCMDy5irG0rIdjCETt9OkVOC9L9FlVC36sKNz2J4pe7HzgXUMu9ITyWEzffCjYWLQ8sI7gnoaes5pZZWT23OtXNe1y3sCNye8pq7NjwVFEUCfCU8QOXHHpobxK1qo/G5MLasiHK/F48L0rNMtXL4qwhGwNL/NHK2SldGpt4oF9V+dsmmq/N28rdKu0vWPC6kcLGDr7PJEz2L8G3e2oE6fDZlZqobc
+ wk7yCHL4
+ o/WTMlNofjkit69AHU7ChlN5eFc4kdu5AVHFFGDMOLbuVzRlEytkZUBR9EJ+x7jvTUxYmHmPne9iULSw0kdL0+S0vsSRYu5HzSZJ1KkL42C9knzEaC4A3DyWrZ34K9Zmjs+mFyfVFa6NhpT/WxWBK1uGpn6xdNaXqZYNdp7nvzSjo4nc6edNn9sEm4GPiSG7E3E0Hssg2WucowM5cYkiBhLZZIRo9iGUN0HM0bBnPo5fK4+o9fEGJJa7rY6FKZmVa9eS9gudmo0EFnr8Nd94FTjHvrwHimnwFH9pulCinQ/XT4n1RD6+EDbyQ913Fh58QC1bpLvFHqu2KptmFB8tecUH94ktA6Czog1A/MAS57p9rQ68lQOr13L6Gis+qz8DT3EfN8HNjp4slqyaoix2njhFanMiSjJS/Vr1kF0PSj+pdfguRAxM8564sn/+lfG9NoBRBfngdZ7n8fYiz1+aiDADYLKrE6FhSSPJKl46hZwjLCziPCuCfUg6hAOkiv2hbeWt/3K/Da+8AFrG1VJibBfmUaLw5DaSCOTnuQUcdKUasF7g78XFVRIDYeUDiQfZ/BEC34ErjwzQVj8n2tAmfXQV9gdOFyn4ZjY08gIULSVNOcFA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,22 +110,14 @@ From: Radek Marci=C5=88a <github.unusual340@8alias.com>
 
 [ Stable-only fix: mainline is not affected since v6.13, see below. ]
 
-On x86-32 with PAE, resource_size_t is 64-bit but PAGE_MASK is an
-unsigned long, so in __ioremap_caller()
+On 32-bit kernels with a 64-bit phys_addr_t and an unsigned long
+PAGE_MASK, which in this tree is x86-32 with PAE, __early_ioremap()
 
 =09phys_addr &=3D PAGE_MASK;
 
-clears bits 32-63 and ioremap() of anything above 4 GiB maps the alias
-at the low 32 bits instead. The RAM check runs earlier on the original
-address, so the alias is mapped even when it is system RAM, and the
-caller's MMIO writes land there.
-
-Commit ffa71f33a820 ("x86, ioremap: Fix incorrect physical address
-handling in PAE mode") fixed this by masking with PHYSICAL_PAGE_MASK,
-which casts PAGE_MASK to signed long. Commit 4dbd6a3e90e0 ("x86/ioremap:
-Fix page aligned size calculation in __ioremap_caller()") reintroduced
-the plain PAGE_MASK to compute the size before the high bits are masked
-off. Cast it the same way here.
+clears bits 32-63, so early_ioremap() and early_memremap() of anything
+above 4 GiB map the alias at the low 32 bits instead. Cast PAGE_MASK
+to signed long so it sign-extends.
 
 Mainline lost the bug when commit efe8419ae78d ("vdso: Introduce
 vdso/page.h") and commit d4a65302dd84 ("vdso: Change PAGE_MASK to
@@ -133,26 +125,25 @@ signed on all 32-bit architectures") made PAGE_MASK signed on 32-bit.
 Those rework PAGE_MASK for every architecture, so they are not
 backported.
 
-Fixes: 4dbd6a3e90e0 ("x86/ioremap: Fix page aligned size calculation in __i=
-oremap_caller()")
+Fixes: 9e5c33d7aeee ("mm: create generic early_ioremap() support")
 Assisted-by: LLM
 Signed-off-by: Radek Marci=C5=88a <github.unusual340@8alias.com>
 ---
- arch/x86/mm/ioremap.c | 2 +-
+ mm/early_ioremap.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/x86/mm/ioremap.c b/arch/x86/mm/ioremap.c
-index 8d29163568a7..14529884671e 100644
---- a/arch/x86/mm/ioremap.c
-+++ b/arch/x86/mm/ioremap.c
-@@ -223,7 +223,7 @@ __ioremap_caller(resource_size_t phys_addr, unsigned lo=
-ng size,
+diff --git a/mm/early_ioremap.c b/mm/early_ioremap.c
+index ce06b2884789..ba0acdb72396 100644
+--- a/mm/early_ioremap.c
++++ b/mm/early_ioremap.c
+@@ -129,7 +129,7 @@ __early_ioremap(resource_size_t phys_addr, unsigned lon=
+g size, pgprot_t prot)
  =09 * Mappings have to be page-aligned
  =09 */
- =09offset =3D phys_addr & ~PAGE_MASK;
+ =09offset =3D offset_in_page(phys_addr);
 -=09phys_addr &=3D PAGE_MASK;
 +=09phys_addr &=3D (signed long)PAGE_MASK;
- =09size =3D PAGE_ALIGN(last_addr+1) - phys_addr;
+ =09size =3D PAGE_ALIGN(last_addr + 1) - phys_addr;
 =20
  =09/*
 --=20
