@@ -1,127 +1,94 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62D68606A31D
-	for <linux-mm@archiver.kernel.org>; Sat, 31 Oct 2026 13:40:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C2E5606A31D
+	for <linux-mm@archiver.kernel.org>; Sat, 31 Oct 2026 14:30:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=iJICbfa8
+	dkim=pass (1024-bit key, unprotected) header.d=goodmis.org header.i=@goodmis.org header.a=rsa-sha256 header.s=dkim1 header.b=PBPr4zWR
 Received: by kanga.kvack.org (Postfix)
-	id 86A516B00EF; Sat, 31 Oct 2026 09:40:23 -0400 (EDT)
+	id 36ED36B00EF; Sat, 31 Oct 2026 10:30:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 81B856B05B1; Sat, 31 Oct 2026 09:40:23 -0400 (EDT)
+	id 31FD96B05B1; Sat, 31 Oct 2026 10:30:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 70B1E6B05B2; Sat, 31 Oct 2026 09:40:23 -0400 (EDT)
+	id 25DBC6B05B2; Sat, 31 Oct 2026 10:30:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 3F6016B00EF
-	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 09:40:23 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 34F27409DD
-	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 13:40:21 +0000 (UTC)
-X-FDA: 85383030642.29.E369031
-Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 4E1D740003
-	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 13:40:19 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=iJICbfa8;
-	spf=pass (imf04.hostedemail.com: domain of azpijr@gmail.com designates 209.85.128.43 as permitted sender) smtp.mailfrom=azpijr@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 02E2C6B00EF
+	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 10:30:19 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 0BE1880964
+	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 14:30:19 +0000 (UTC)
+X-FDA: 85383156558.20.E40FC4A
+Received: from relay.hostedemail.com (unirelay08 [10.200.18.71])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 4206840013
+	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 14:30:17 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	none
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793454019;
-	b=nvuWbYxX8flcxW2WhSfUDNvuJ+phxid1wk3kkFl2oXvvhwwTOJBH8MNaOsGSVqYSuxya3/
-	4yZIiEbtKcbcFhH8Shelm9fMPvpfXBmK8HUA148QJpVZWzZEW2RBYvcQ7NDA5VyaIoeZc3
-	/b5KefRaOmvQho3+Epl+3oUwDm0cRYc=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=iJICbfa8;
-	spf=pass (imf04.hostedemail.com: domain of azpijr@gmail.com designates 209.85.128.43 as permitted sender) smtp.mailfrom=azpijr@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	t=1793457017;
+	b=qtTZKiONflVUiWLS7Um4oO4h+u1fvq7czzQMuDtgnGZjmpEWWmY/ERhKPCR9g+S18PW4hT
+	ok4a8bWVbvVp3GRlGbdtcB3890p1FPvrJqv907AbNFlOFPftYCvkGruKBI9p8ooqAOVb+B
+	kjqmFdsGHP+W2qkKm8kHMRt9gPLzWck=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793454019;
+	s=arc-20220608; t=1793457017;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=AvdEESxqCoWismxl8U8najQ6zPeCJtfE4dKqVYiQpFs=;
-	b=xbQ5MNcBffybNTT8HWhBVD1YMrlBQnqCwgT6qWhhFetGHFmkjsNzVOrtqAWwC/oimkBxV/
-	EI8MpWSGqLp3OqxGd1FE+7aDU4LYbHDtkPXYDTtqZpwRX0TD7SGXVTEhiOma89bK1TEB7b
-	rqok97706lCHwOtoLakXh9Ybzc2GBAU=
-Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-4a35db1f202so16631265e9.3
-        for <linux-mm@kvack.org>; Sat, 31 Oct 2026 06:40:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793454018; x=1794058818; darn=kvack.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=AvdEESxqCoWismxl8U8najQ6zPeCJtfE4dKqVYiQpFs=;
-        b=iJICbfa8H+3F7fUpujWWuiyuI1AM4wgaElzcecqkYr1evKfm2wW2KPYtqyJGVqwNve
-         vquQ5zoIG1KP0OXvKBDCjbtFYZrE5XB33pzuu+ooTR5pvFxk9SrD/M2gG6DQZx6w5adT
-         0x2ViZH5HW8BJhLi3ZeR1g6Q2GNe8FefuzdDEP0BYxcv1ZcqDEQ1iZEG1Dl3pCmBdEl/
-         eYqabtfQKSuPn46qKA2H9OynNYIjDk7GbsGvCOYahdIz4mVpdTohf1PIXvV6xlMMlipx
-         MenDTgWaqGisldpR7gO+UNqUpo16BmWzP9wOHZ1MbKMEDS64eDez4HpGCpzXjYWLG1rt
-         iY+Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793454018; x=1794058818;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=AvdEESxqCoWismxl8U8najQ6zPeCJtfE4dKqVYiQpFs=;
-        b=0IjOWaxWitQouLR1ko69Y0F+cHJ8jwLPQogZT7RRpVacXY3vAvOFWb3sDPuEESwrYI
-         kkF/xv1KtP/u5z46GgXHwe/l9C20jyCBkCucRSi0gH1MUy01UN2DW5caacIdLsj1+FaM
-         TIox3yCqVqr62JNm26d8upqOi5YV+7xE0OH1OHWTFEsuJZYmThvUmFu8idm93bJXRo8B
-         UGos+CLPaFjQAEqvchPCoIRbIXeq5sPnqDZIuprJN5rAbmRiHA+uPkelpTwi9sPS2YMA
-         +0jU36YPyJEDgoWwB0Cf72NGlnDVolsFr+6s6gBjgXgpBiOs0pWBOgsjU4/2TB3j/SVI
-         Z6zA==
-X-Forwarded-Encrypted: i=1; AKwUvBy5Gj7hADCYR0+JZxq6zAWmViJdpmMNNWqNDxN43ZtS/4J3o8uevt6RM/VPqy92prOst9pVODnDGg==@kvack.org
-X-Gm-Message-State: AFq9FYKrpy/3nrUxjrx5UEnkFroQnbJds+/qhlCu/0VH4chJBmRqz9/o
-	YQ/gu11Bd7Wu057IdpV7nCt/lubtpTl4xLsh+IZAsgipNhQvDHGNh96ULQUg6zFz
-X-Gm-Gg: AYBFou0zec/IGnABRTgngdlktdbNiKsKaZrGpdVZ4kenfPWckYfbQ3AXcT97l6cri+l
-	AE8fhZdFMYNKYFqQW4Ks3OOGuO+zTdp974CgsIvzOHvXjx99DA2kYnMY6zmzMt1OY5BZPmPNZI9
-	841S7lH0+6pEbnOkaO3ADhqVMDsO2wOaVyuE3hmfv1MsbLf9Dp/pBsn2a9i9aVs7QdYU+jS2o4q
-	IIfBaKXqP3vA6dg/oB+6KreGGVPEPV8fKM++9PIX8G6kc3v2IZDxJnmgqGebFqIRzRyxXetkE6n
-	aRMVMXSYGW3Sm8mae8KsgHFTHE7APp34M1iYgctPpgC5dmZi5+S1Bfce2Tip6ws4bowr7IKSilM
-	ByxWyl/A8fq5MHgVR80HBQwprE5imp/6ss6BuTM3KB+2LsUFYBQsmnFG2Fp2zQ+mslUSnolD7No
-	0n+CjTSHC2mulO5yJZEX1QmSZplSUh3aHYNWlRwHnQDRDqCDH0xvqjeGx0IkEBXdccE6B/TaUuh
-	dXTVI5UnNsYW1xBToWQyGrmT4nXCOlSi2tPXHae6VBJ3z0SG3vcr/0X/Fkcp0svSC+2hYD3QZrg
-	IkZdISJdS2M6gWcjk2SVGzpS
-X-Received: by 2002:a05:600c:c16d:b0:4a1:e00b:a0ea with SMTP id 5b1f17b1804b1-4ac150b204fmr125293245e9.1.1793454017873;
-        Sat, 31 Oct 2026 06:40:17 -0700 (PDT)
-Received: from [192.168.1.22] ([83.231.69.9])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4abeb77af8csm193004545e9.1.2026.10.31.06.40.16
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 31 Oct 2026 06:40:17 -0700 (PDT)
-Message-ID: <2c132a52-1118-4773-866b-a8c713c4933e@gmail.com>
-Date: Sat, 31 Oct 2026 14:40:16 +0100
+	bh=L1IHNH1tOqh0ElrkxzuEZgOPCPQw1/dqe7tff8NfeaM=;
+	b=x+g9XJmwOaPQ0Uzjy91i1oGifSmCBZ/Nw9n1dBmBkecyiekHDvQwl+O1fO4w+saTZmcAPb
+	oVJ9aev3mTemxiRWvqDPZiPNN6Z2fRF9oWNWWt/MeIPPMknRAd0+poUp8OAsaFGPPrJysI
+	CxgQxdbQxWUFK62glgOwevtox0QK+XQ=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	none
+Received: from omf20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 4935E14099B;
+	Sat, 31 Oct 2026 14:30:14 +0000 (UTC)
+Received: from [HIDDEN] (Authenticated sender: rostedt@goodmis.org) by omf20.hostedemail.com (Postfix) with ESMTPA id 0384720028;
+	Sat, 31 Oct 2026 14:30:09 +0000 (UTC)
+Date: Sat, 31 Oct 2026 10:30:08 -0400
+From: Steven Rostedt <rostedt@goodmis.org>
+To: David Laight <david.laight.linux@gmail.com>
+Cc: =?UTF-8?B?QW5kcsOp?= Almeida <andrealmeid@igalia.com>, Peter Zijlstra
+ <peterz@infradead.org>, Juri Lelli <juri.lelli@redhat.com>, Vincent Guittot
+ <vincent.guittot@linaro.org>, Christian Brauner <brauner@kernel.org>, Kees
+ Cook <kees@kernel.org>, Shuah Khan <shuah@kernel.org>, willy@infradead.org,
+ mathieu.desnoyers@efficios.com, Linus Torvalds
+ <torvalds@linux-foundation.org>, akpm@linux-foundation.org, Yafang Shao
+ <laoar.shao@gmail.com>, andrii.nakryiko@gmail.com, arnaldo.melo@gmail.com,
+ Petr Mladek <pmladek@suse.com>, linux-kernel@vger.kernel.org,
+ kernel-dev@igalia.com, linux-mm@kvack.org, linux-api@vger.kernel.org,
+ linux-trace-kernel@vger.kernel.org
+Subject: Re: [PATCH v8 2/6] treewide: Replace memcpy(..., current->comm)
+ with copy_task_comm()
+Message-ID: <20261031103008.6849760c@gandalf.local.home>
+In-Reply-To: <20261030223435.0e802eb7@pumpkin>
+References: <20261030-tonyk-long_name-v8-0-c9b030332254@igalia.com>
+	<20261030-tonyk-long_name-v8-2-c9b030332254@igalia.com>
+	<20261030223435.0e802eb7@pumpkin>
+X-Mailer: Claws Mail 3.20.0git84 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] userfaultfd: clear uffd state in child PTEs if uffd is
- released during fork
-To: "Mike Rapoport (Microsoft)" <rppt@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: Peter Xu <peterx@redhat.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20261031-uffd-prot-bits-fork-event-v1-1-3572921c2111@kernel.org>
-Content-Language: en-US
-From: "Jose A. Perez de Azpillaga" <azpijr@gmail.com>
-In-Reply-To: <20261031-uffd-prot-bits-fork-event-v1-1-3572921c2111@kernel.org>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: k7j4xm7kszyahw5kbjgo18z98ohbyfha
-X-Spam-Status: No, score=-14.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
-	autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 4E1D740003
-X-Rspam-User: 
-X-HE-Tag: 1793454019-435368
-X-HE-Meta: U2FsdGVkX18v0xTnxdc1SYnCglHemFG/70kBcO/CtaAkOF6G6upbpnBLJjH67IU//F/jrOvgm4NcEF9wXquzxAug24A5GC3AYnowrnfy2QGpb7XA5axUNGIZ3jyFyaAtI0dyug4SM6kf0WBSwUOyJtEoiXTEvXAa6JjEafHjEyLE8XEPqY3b7f0nr1BYkSBiU0X5XqM3/DWXLxD6OXbpxdahwGeoHwaVABj2urVZ+7RHQwqs9QQT9SJAWDjynoKdG8dZ4lnffK11TUgBLbXVl/2oSTwOQkTplyi8+hCCGP8VuaCCtU5gR/pRaVtHFRU3q5iycuODs91a2ZEKO4H9nuZUxVhcXWm0QbFDffZTS0sGnZVSVQNx/bKVHxGcIGmGr2cZd2sphgm2FICndl5chrYlzZ4+a2rO/qWvuIiWyLE4sCF8UBnrfmhPdV85leoa1K+mcmjIVFGRG/5egFfAWa7pHeuy9SpQopxTZu7nBszcdaIaH1nKaFeCIjcTJin6IncAuNC3B+bA6ZueDDDfOWvolKyeFJ/GVM2ECIvAov0j2NiU3sZevUDu7IiYuXGkC9pn7nKEqeY/skmBjavA4K8E3w6Wv3TXRdlwtLv4W//LwDvwJ1gHB5saU/gJZBILb34KSurKoXvviczJq/ZcP5p50+9Uvf+M+zJTfwUDwRsUld6uWd4R5j5njFNxXHpxyne+c9uozUtmAMLj2y+IvH/Scr7/G2V1SjrwloqV+fW1a4ACU0Ioex/KLmvHuyi98ONKyUaCT3FhyQ10xWQMKR1ERADDUO9oFBDpi8lVS5l4KthZyfpJVh76vlbCwhfg1eRF2035Sq4ryBvstaY/TK6rM3P/3XYEufxNvkZKYb6TpyZOSK2shw7DI0dKFCM/8LgF8wTPzvXWbqVlLeLH2754rg08BkTarHlgW03OMgZB0UGdLFJmDtCQAw1obohJqYTMVF4POe3lv1p+o5c
- cvtBun94
- BQrlr62qWK+2ZIocvVi2FRqWG1mtAryxGS4lsbOyl2ZLE2vQJD8Vl0LLrP8iu0GTCBgOoqqT6MvPxmfSFIxOEU21jJQNu3kfLy2APs2mGC7afJnRSlVByN619QukDMXCVsMTMBL4dopxyeFwan3sUKB4VXdzCKp1kgBrv/McoVzGq5yd+aF30d+1Mc4dY19DnpQ1wnmf7Sq2zV16swm4HFqTx9AqqByYcG40ScsYEYZ36cHbCulzxApPYUvheICOQ9Gn9n9nClP7iTCgdPKgJyvWPl/KerVuDhtgrXi1I6I3VZ9BW1ponhLZbPLNXvgIzOtzMhaYQb+jHhjPBn9vPf+/TZPyMyEuwO3CA+yXAipqkohxiIgdNcF5iimWd1ypt0+sgyKeysoPwx5/V/n94WAuwEq7VKafIXxiZF2A/lhcM4gKPL0JlCjADYZ6HQEZ9iuPsRLFuzrOGdIjyS8xdmu+GjkW1ITiDsyVxb3zOGNarm9s=
+X-Session-Marker: 726F737465647440676F6F646D69732E6F7267
+X-Session-ID: U2FsdGVkX19PtJe/63eTC/xkaNfGiJ5uBmq6C/NDxGc=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=goodmis.org; h=date:from:to:cc:subject:message-id:in-reply-to:references:mime-version:content-type:content-transfer-encoding; s=dkim1; bh=L1IHNH1tOqh0ElrkxzuEZgOPCPQw1/dqe7tff8NfeaM=; b=PBPr4zWR7xVHQn7lESfrz+Z1k17LvdUKBJmd2JiZzRU1ujzKeO/PrCrGKGtiwiDF5DLaYsAiiQQNfvl8+m7MVwHesisvOoYWP38K5QcNZctHRcGRLZWBeIKzL3bXzxWQhtIeVG9ptEHsI1JSApLrFLUAEMfvHs1zMpQ/KilPFY4=
+X-HE-Meta: U2FsdGVkX1+c070Bb41la7t5jN1BzuwNBvpfmTjGU4SkaREpJRXrGLs7S8FI42GHbjriLE/xEuJ5Auuyk4NWkxHcvVv1VEM3mLXOs5T70MxInifBc+GQ96BONclagQH1D+0PZuikD+2lnCVmIYMoxylnYzJSoASeydma1oSFAyF00NPjCIo+BnZjFzGTYnScxuLxJXwH5blA0wGD9LBWOl8fLRUkt/B5BlpfHgiFxsoIN0HSPEZ7vY1Z1BvuTrKEgD+gOECzIPifjoMyxeGTN1xLr7WXtvxc/17+8WTz0VMW2Z+EqFGGjL9uMHfno3NQpDvZMFP23xaBmE3P7h8wAEJ7XvVIyI3s
+X-Rspamd-Queue-Id: 4206840013
+X-Stat-Signature: i41crhwziuyr3iypubash458fx7ndnz1
+X-Rspam-User:
+X-HE-Tag-Orig: 1793457009-500293
+X-Rspamd-Server: rspam12
+X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,UNPARSEABLE_RELAY,
+	USER_AGENT_SANE_2 autolearn=no autolearn_force=no version=4.0.1
+X-HE-Tag: 1793457017-749118
+X-HE-Meta: U2FsdGVkX1+21HmBN25Ji40n5w6kQhVke53ycjuWy1DeBSR4t1eRRyNNDfX6Qew1Qr8sOe6W273M/5ZLQSFriPLDy5ySkG137MUBCtHy+BnGpiR4LDxg6+e2uSON3r+8UdsWPKd3zh1GyTamUG29v+3WrI7mSCSeYUiB4dcLviXv/ZZHsE4MHDrkD6LeUZ4deu1AhdnNQvK7FYFj6fdqAsNG53pak8oOO4ynkC5bVP6DWkc56vrV3NMHBzJAu2DBzkG3Q8VBwFpUSzRjj+QunU2iISCEVXqOx2KMXoUKYena+DKo7PslSccmM3gvpx6JdrRrRfeDB/EMgkR7uS8/j6o4RJTJodqTkelDMHkokGNK7uZ4g2spVGkVxdRC3PyAPFADH+/A4/dIAbqJXjBBh8xYfMhugvcK9AwcV/r9BV9vLBb30hx5Zi1k1qZeZDmUO+NL6K1/cAfG+w03mdkvyKaPIvIiN93cQigtw0oj6Mrf9PzguhsT7PUk29q4hTscMiWoHqNwQAOk5D3t+w+cti8lkdFOJqFY0KkEGXG5+vp5b8hpgoTqoI0d+M7+HPVGAXK1NC5T2W0pVdkWWANBuDUCrDGZC7LFe/Yw1JBjpzWU7+qKuz1Vv7G5MIJTTgJt22rtZCdHXGCBMm0NPHJ9lDKRjL/WEYuLNMuaik+wM/9tw1WhXBBTgUznkoqyNYqZSfnQyMjkd5jhLryK4jOfL+KlbSeWCf/lxpuzNWXeqROBwgcdDaw/ZZmE1Fa0WLZunAariDTeh+3PTzoPhZPy2sv/dRX6SQ/x+fuzLWglTIXSTDI2oRhWjxe7hY44IeGe0jfbkhAGh2ML+m9+R1GZb2HcALDUuqEL/iJi6m7Xell2LGTYwhutSyomL1ybErtROAcrpp5Xl2lWyEHOXQhiykkaFvTi2bhXSUdz5VK6jRQ8AScl+cYheX0/IDraWOxEZukS6LF/ha0I+UAkwks
+ pPMu/4/u
+ 1tJ6AkugPz2iZFszqWWeCeOaREZmHc8Lm9m6MOFkpFMQrkZcQkYDhA7QuVtTRYtsfFirsOuP1GA4FvW/pfBBJA7cpzk7jAtXN/2VCQj+YoofrcPURlZwYAF251qGlDkXyzCl9njFhsqDoTPl5wYZ+7JUV8eSWiskQ0lLS
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -130,112 +97,43 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 10/31/26 1:35 PM, Mike Rapoport (Microsoft) wrote:
-> With UFFD_FEATURE_EVENT_FORK the userfaultfd context is duplicated for the
-> child process, the child VMAs are registered with the new context, and uffd
-> protection state from the parent PTEs is copied into the child.
-> 
-> If the parent's userfaultfd is released before the fork event is read,
-> userfaultfd_release_new() resets the VMA flags but keeps uffd state in the
-> child PTEs.
-> 
-> This leaves the child's VMAs in an inconsistent state: they are not
-> registered with userfaultfd but their mappings carry uffd protection state.
-> 
-> If the child registers the range with userfaultfd again, the stale state
-> turns into protection the child never asked for.
-> 
-> When a write fault makes such a PTE writable without copying the page, the
-> uffd bit remains set and page_table_check_pte_flags() warns about it.
-> 
-> Split resolving of the uffd PTE state out of userfaultfd_clear_vma() and
-> call it from userfaultfd_release_new() before resetting the VMA.
-> 
-> Fixes: f369b07c8614 ("mm/uffd: reset write protection when unregister with wp-mode")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-> ---
->  mm/userfaultfd.c | 43 ++++++++++++++++++++++++++-----------------
->  1 file changed, 26 insertions(+), 17 deletions(-)
-> 
-> diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
-> index 3b71712edab4c..2c11ac5dad3d5 100644
-> --- a/mm/userfaultfd.c
-> +++ b/mm/userfaultfd.c
-> @@ -2220,6 +2220,28 @@ static void userfaultfd_reset_ctx(struct vm_area_struct *vma)
->  	userfaultfd_set_ctx(vma, NULL, 0);
->  }
->  
-> +/* Clear the uffd bit and/or restore protnone PTEs */
-> +static void userfaultfd_clear_ptes(struct vm_area_struct *vma,
-> +		unsigned long start, unsigned long end)
-> +{
-> +	unsigned int mm_cp_flags = 0;
-> +	struct mmu_gather tlb;
-> +
-> +	if (!userfaultfd_protected(vma))
-> +		return;
-> +
-> +	if (userfaultfd_wp(vma))
-> +		mm_cp_flags |= MM_CP_UFFD_WP_RESOLVE;
-> +	if (userfaultfd_rwp(vma))
-> +		mm_cp_flags |= MM_CP_UFFD_RWP_RESOLVE;
-> +	if (vma_wants_manual_pte_write_upgrade(vma))
-> +		mm_cp_flags |= MM_CP_TRY_CHANGE_WRITABLE;
-> +
-> +	tlb_gather_mmu(&tlb, vma->vm_mm);
-> +	change_protection(&tlb, vma, start, end, mm_cp_flags);
-> +	tlb_finish_mmu(&tlb);
-> +}
-> +
->  static struct vm_area_struct *userfaultfd_clear_vma(struct vma_iterator *vmi,
->  					     struct vm_area_struct *prev,
->  					     struct vm_area_struct *vma,
-> @@ -2239,22 +2261,7 @@ static struct vm_area_struct *userfaultfd_clear_vma(struct vma_iterator *vmi,
->  	if (start == vma->vm_start && end == vma->vm_end)
->  		give_up_on_oom = true;
->  
-> -	/* Clear the uffd bit and/or restore protnone PTEs */
-> -	if (userfaultfd_protected(vma)) {
-> -		unsigned int mm_cp_flags = 0;
-> -		struct mmu_gather tlb;
-> -
-> -		if (userfaultfd_wp(vma))
-> -			mm_cp_flags |= MM_CP_UFFD_WP_RESOLVE;
-> -		if (userfaultfd_rwp(vma))
-> -			mm_cp_flags |= MM_CP_UFFD_RWP_RESOLVE;
-> -		if (vma_wants_manual_pte_write_upgrade(vma))
-> -			mm_cp_flags |= MM_CP_TRY_CHANGE_WRITABLE;
-> -
-> -		tlb_gather_mmu(&tlb, vma->vm_mm);
-> -		change_protection(&tlb, vma, start, end, mm_cp_flags);
-> -		tlb_finish_mmu(&tlb);
-> -	}
-> +	userfaultfd_clear_ptes(vma, start, end);
->  
->  	ret = vma_modify_flags_uffd(vmi, prev, vma, start, end,
->  				    &new_vma_flags, NULL_VM_UFFD_CTX,
-> @@ -2353,8 +2360,10 @@ static void userfaultfd_release_new(struct userfaultfd_ctx *ctx)
->  	/* the various vma->vm_userfaultfd_ctx still points to it */
->  	mmap_write_lock(mm);
->  	for_each_vma(vmi, vma) {
-> -		if (vma->vm_userfaultfd_ctx.ctx == ctx)
-> +		if (vma->vm_userfaultfd_ctx.ctx == ctx) {
-> +			userfaultfd_clear_ptes(vma, vma->vm_start, vma->vm_end);
->  			userfaultfd_reset_ctx(vma);
-> +		}
->  	}
->  	mmap_write_unlock(mm);
->  }
-> 
+On Fri, 30 Oct 2026 22:34:35 +0000
+David Laight <david.laight.linux@gmail.com> wrote:
 
-reproduced the leftover bits in the child with wp and rwp on all memory
-types, and they're gone with this. tested on x86_64 in qemu. LGTM so:
+> I suspect the trace code would be faster it is just copied the (first)
+> 16 characters and worried about whether it was terminated later on.
+> It does far more 'saves' than trace reads and their performance is
+> much more important.
 
-Reviewed-by: Jose A. Perez de Azpillaga <azpijr@gmail.com>
-Tested-by: Jose A. Perez de Azpillaga <azpijr@gmail.com>
+I'm assuming that the compiler would optimize:
 
--- 
-cheers,
-jose a. p-a
++/*
++ * Copy task name to a buffer. Final result is always a NUL-terminated string.
++ */
++static __always_inline void copy_task_comm(char *dst, struct task_struct *tsk, size_t len)
++{
++	const char *_src = tsk->comm;
++	size_t _len = min(len, TASK_COMM_LEN);
++
++	if (!_len)
++		return;
++
++	memcpy(dst, _src, _len);
++	dst[_len - 1] = '\0';
++}
++
+
+to basically:
+
+	memcpy(dst, src, _len);
+	dst[_len - 1] = '\0';
+
+Where it already figured out _len at build time. Adding a single write of
+the nul byte without any branches would likely be a couple of cycles at
+max. It's all hot cache (from the memcpy) and writing a immediate.
+
+I'm not worried that one line will cause any measurable overhead to the
+tracing.
+
+-- Steve
 
