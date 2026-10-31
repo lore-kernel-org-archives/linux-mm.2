@@ -1,126 +1,96 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE4CA606A32E
-	for <linux-mm@archiver.kernel.org>; Sat, 31 Oct 2026 20:13:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23C6A606A31F
+	for <linux-mm@archiver.kernel.org>; Sat, 31 Oct 2026 20:26:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=AdwdlbtO
+	dkim=pass (1024-bit key, unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=lo7IeOrk
 Received: by kanga.kvack.org (Postfix)
-	id E132F6B00EF; Sat, 31 Oct 2026 16:13:31 -0400 (EDT)
+	id 1330A6B00EF; Sat, 31 Oct 2026 16:26:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DC43F6B05B1; Sat, 31 Oct 2026 16:13:31 -0400 (EDT)
+	id 0E44B6B05B1; Sat, 31 Oct 2026 16:26:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CDA5D6B05B2; Sat, 31 Oct 2026 16:13:31 -0400 (EDT)
+	id F3B806B05B2; Sat, 31 Oct 2026 16:26:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id A4F786B00EF
-	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 16:13:31 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 29DA7A0A34
-	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 20:13:31 +0000 (UTC)
-X-FDA: 85384021422.27.344E99F
-Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 42E46140007
-	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 20:13:29 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=AdwdlbtO;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf23.hostedemail.com: domain of azpijr@gmail.com designates 209.85.128.50 as permitted sender) smtp.mailfrom=azpijr@gmail.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id CAE0A6B00EF
+	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 16:26:15 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id ECCC51A0814
+	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 20:26:14 +0000 (UTC)
+X-FDA: 85384053468.16.7E51A31
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 216E580005
+	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 20:26:12 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=lo7IeOrk;
+	spf=pass (imf30.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org;
+	dmarc=pass (policy=none) header.from=linuxfoundation.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793478373;
+	b=b6A9zUekaQkRxs0SFK5ATMPCZhmXBlvX9BUo7giWrbRQRiz20yCLX6Hr6n54q8hk4hj+ip
+	C9rRhX+NlXbWUUdvxQ/YjgTFhksVg84oQ1LVLcCfsPVvNjOy1S59fmNdmeIOIKyFYcHFx8
+	VrNLztoG1M7MRtYV9zYycgzGisrNWQQ=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=lo7IeOrk;
+	spf=pass (imf30.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org;
+	dmarc=pass (policy=none) header.from=linuxfoundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793477609;
+	s=arc-20220608; t=1793478373;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ECtJrZ810nCPL/tA58/OGxY/aV7ZpN5NiiX8ilCDeYc=;
-	b=mndmtg9fVjErry9w1lrPYiDMFutK2D0lo9JUg9Myq0Sni+ewQvFTmsO8x6kRnIKbsVUN75
-	YXpERDWqWWCkFgdR07QcB71xdiLM3sRYQDhE6w34lhZMzN+/bqkvk0wwVfo2qnqZHVuhRc
-	VkNGtPwH+fWefRIcC89muYgXoVMjMIg=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=AdwdlbtO;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf23.hostedemail.com: domain of azpijr@gmail.com designates 209.85.128.50 as permitted sender) smtp.mailfrom=azpijr@gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793477609;
-	b=U/UScY2VXvkecYXY+lK/DE8M7ADw5OhPlR6HEE57QZh/9g+eA6/5kf38KxgGJVCAE4kyYe
-	Rdz2HHoudp/TAlFZGYyOaAyZC4cGnIEA/qrm8eL9OKFUKKNnZ7BK0t8dI2agj0JYLP3tBz
-	VQSduPdGGBBOOTSHjwWwoyfcZ2B7TKs=
-Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-4a2084d62cdso15853805e9.1
-        for <linux-mm@kvack.org>; Sat, 31 Oct 2026 13:13:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793477608; x=1794082408; darn=kvack.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=ECtJrZ810nCPL/tA58/OGxY/aV7ZpN5NiiX8ilCDeYc=;
-        b=AdwdlbtOrdIk4FO3lAVHzVwkWRrUcMwdp6LK8vTEtLwx7wr83qNOPDbd/bXnuR8Tjs
-         dAUp7sef0LNyjBRrmmcnlxKBZR79wJ16gv+0zcD66g7SyNvEISdHTK/ny/P2jMNSnKFH
-         /lcVjii7TaHqKNQ1IpQADiZAXC3UBzTr6B1m0ynHHJBa21WTdX/o3OfL65yR1kRI1IUA
-         42oQjOZFKTijMxyKn/XVM4tsGZ5DucqmdHB2ZLUtn2uSCDV0QU6udJU0X7he/tiq0w9c
-         VacYiFZiIx1wb4MI37YPDjyzqKW8mZA9yKA0YLAJqOXke7AZsG6F0D0UyMpdCFFtnp+3
-         gD8g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793477608; x=1794082408;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=ECtJrZ810nCPL/tA58/OGxY/aV7ZpN5NiiX8ilCDeYc=;
-        b=2tp1ybyI7k1+KwYYtUrNtUoHPSk/qk1gG7He3ziCiTmMSIhYYfsqx15WXo+R5v3ujk
-         NY/xGnvAu3/R3VfZsVHtOg9iZboFxGRtwGLvYq5Khg1mAjKjNWgykD24K49G6G5gslw2
-         l+9IVd4WB71DgZCu4eHgFDRo7cJzO0JIsMvQOoFyo0GKbr+Ed/zuuxci4PGEUMcyRJE7
-         HeHs00LMt4iThfYq6kii8C3/Cu4OVXqQPv060S4Md+tNDAKum0ZfrlfSssPBuolT5fY6
-         kO5BUIWdH45AIxpgaY4Wx1mXPFR+rdf/GB1ZPRLtT8dpgzRYgCyQR37gz7qzo5kGQuzS
-         PnwA==
-X-Gm-Message-State: AFq9FYJAm466CFE+xG2pXDnCu0aT9qQb/rWVW/IDQ5Hb+GGmcUfpohHh
-	ikXQmiZOR5jYa5U7WdIAZSA8tdtSPYg0TvZ6wk228Jk4gpvig61PxHqX
-X-Gm-Gg: AYBFou1gGpbgCE0TLz3txO/5NZCSdQBJGvUqFN4ZEIgDMVh/FCQHTxFc7AaeDZmfI8y
-	k4M7o7BcjePIs1OUrlYjngxtsmyRHJq1ZEnic1NWTfyuutl5L3MKCf+XXdIbD2YYmmfsrBD384D
-	Pa5fk/836iz4sNdK5v8m6QiPV+aRxFgbNegFxhHzwflb0swsuCfDXmnbjX1k+bPmVx/xu/6UVbP
-	3deBsxBflCHWybHtH6cYRhhXMBJbrfs9b+E9ZKNYFDL7gYlxlw1lxhr/2EpMJKYtaCn4HzUGD1l
-	xUjhXS25uQMXMqwWEYDJIbc1nUl0yGrmKB0XPp89p0sSBB5ay7xeo8k3fBf3bZp1DUdxMcgptdE
-	jEWYtJG9Gf487u6CCCEDsd+iqTCTxdo6YVrcmEXAK/pDHes34KQnII0THbQOKGeJniBQQFxWPYR
-	suIlN2es8U9+R06azHCNEgjE9uZI3j1VEEtHGUBbUAOvBj0k8aZVBUF7NXrQrjDTw9DGbVc4iD+
-	+cqfhK6kOkI2osHf/L7O4EkXPSsPmyPhGcYCzk8f4/GXjtr+Ou/DRrbxpwwooc/Z7htZ2B2QWs8
-	UXVJ6YXwO/tp4GJnbC5Um8L1
-X-Received: by 2002:a05:600c:198c:b0:4a2:5ca:767f with SMTP id 5b1f17b1804b1-4ac151a9a36mr144521815e9.4.1793477607538;
-        Sat, 31 Oct 2026 13:13:27 -0700 (PDT)
-Received: from [192.168.1.22] ([83.231.69.9])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e71b8011csm11733605f8f.31.2026.10.31.13.13.26
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 31 Oct 2026 13:13:26 -0700 (PDT)
-Message-ID: <751f878c-1a2f-4fbe-a255-3520ffaa2f28@gmail.com>
-Date: Sat, 31 Oct 2026 21:13:25 +0100
+	bh=31OiWa7Bx6I+GremiKpxsthouh1jt/r3kqbeVlN0OHs=;
+	b=WJiaoHel3Vy4slIbUbYjOHzZTXrvmcyIKTj6wOoRsz8D/QJAZNKL6hbz38AFepQXg6BGjF
+	75S2TEJm0+zIAHicAILp91xL4XKxB4ctv7ihvM3DKT3Fc/h6TXbsczDhxiLyASkhIYOMKM
+	qySiXSFvsefVH3bmbLuX61fD6S7KgHg=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id B0945600C8;
+	Sat, 31 Oct 2026 20:26:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C6AB1F00A18;
+	Sat, 31 Oct 2026 20:26:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
+	s=korg; t=1793478371;
+	bh=31OiWa7Bx6I+GremiKpxsthouh1jt/r3kqbeVlN0OHs=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=lo7IeOrk67ctqrGEFCDLMXypVEqIIsbbanGBvTw3tsxy4zUap5zf87NtFJYtMIGKd
+	 RxfgmhQ4vRf2jK9dBpv3zeezgtDNbmPe2fd/N342PR1ugL2lvFgDOB5LBtMQ14+ZA/
+	 z4ePe3R+kEmPnj3kp5mVISBjiG5w9cKB39OsWO1c=
+Date: Sat, 31 Oct 2026 21:25:22 +0100
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Radek =?utf-8?Q?Marci=C5=88a?= <github.unusual340@8alias.com>
+Cc: stable@vger.kernel.org, Thomas Gleixner <tglx@kernel.org>,
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>, linux-mm@kvack.org,
+	Arnd Bergmann <arnd@arndb.de>,
+	Michael Kelley <mhkelley58@gmail.com>, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 6.12.y 2/2] mm/early_ioremap: Sign-extend PAGE_MASK when
+ aligning the physical address
+Message-ID: <2026103137-showplace-numerator-a05b@gregkh>
+References: <179346145167.7.7861216093151225931.1735978772@8alias.com>
+ <179346152914.8.7838190602983146541.1735981230@8alias.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/userfaultfd: store the child's new uffd context in the
- wait queue entry
-To: Tal Zussman <tz2294@columbia.edu>,
- Andrew Morton <akpm@linux-foundation.org>, Mike Rapoport <rppt@kernel.org>,
- Peter Xu <peterx@redhat.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20261031-uffd-fork-ctx-v1-1-a837fd576ffc@columbia.edu>
-Content-Language: en-US
-From: "Jose A. Perez de Azpillaga" <azpijr@gmail.com>
-In-Reply-To: <20261031-uffd-fork-ctx-v1-1-a837fd576ffc@columbia.edu>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 42E46140007
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <179346152914.8.7838190602983146541.1735981230@8alias.com>
 X-Rspam-User: 
-X-Stat-Signature: cn9gj5f5qrsxfsmdiaboxwato9jtrjtt
-X-Spam-Status: No, score=-14.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
+X-Rspamd-Queue-Id: 216E580005
+X-Stat-Signature: 189pdbjg1iit1xxfo73m56nidu9pzfbg
+X-Rspamd-Server: rspam01
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
 	autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1793477609-529795
-X-HE-Meta: U2FsdGVkX1++WTQ57VsQ34O8TcRqgkMf6sPoNzYAObB+XFqS/BJK198ys9GYU9w+WcGCyQKXsn+gH6Gz0UOeVz1GpXHWe+Qc++nBEIz1AUDIhn96NNDKS7n5ui+gXpFHCBunG6beCtC69NsRYvrXzSvG1VE24a845nrUJ18TcL16Ti5VMc10CmwNzU4bH4cdEXV18w7HOqidPyERVpHkKBioeGX6OmnFqhtRC/OIB1ox7tc4cjKRbsUx5+e6Ihd+2UZufh1eOAOUVTisNSbNMRkKfXURxU06sr+X2kf18WgmpgL+m8udLyLYHH0Ox+C4nJt7Qpd+LY5/3b3TlixjAfbRHayYq5TW4fbGP4jOXqo3Zhtj6xN+mHn8TeLIfYHxYSchpbabS0WE82VK+JHi/3OT+TISPjUGv+EsPzZA2OSl1XNwZuH6+txkjmxEU2uic6hNz8eZIV5V1P3MoyTov3bdue7W2lq7aP8P8XZWhaWHbZIZGFstcg5dYHPnMEvpLK6FhBvN5MSpShtecknDMWJ2IYqJUD/N2XU3vy+ZxAqcoX52oE7t8dTR13N2C8d5sPppCSzM1/y9TkHpm/iqIR3VrQlwY+9hlYhYV08yH8gEh0yjBCplZiYdUMbUCG+mlt1I1DqhELunPR+1iE+EdpWAH6da/gqePuvHz63Jw8G+9zE+hlndnpAGYFF39odm/JkfpwkQQzKxRp0dh0qr1wdigihZUJUGxPb9XDQD6MUqvhO7LQtJE4kgafhsfUxQT3he7XyyN70G4W9iOqQKxkkm8IsAqBAToTpw861iBciLgSJiomfXKyQmJ+n5A5NNl5b3sKMd0CeuQg86i3teHdFK3jX5BA+B9Z27DIDnB9FJiSK+jFVgoBng4UP/fKFlvgtCFOylenlvHO38yWR9qN0F7bICMIrNXDvHV68n56mSmmpyeScQEEiBRBk+Iep5Rjb2G/JNeyiPYlAOJ1C
- Z4S8tgHb
- pj4srtEWXUpqc6ybA+CEvKjOPMzIx599XMB5QflfDfV50rfkAX+S99fHhiEP8UY+heMtQ1KMfedikJKjGoCaFrawTid2/wD3tPuymbtxSHat9PHCMQ9FFEVnGAxN6GX6Yg5k7CwjSrPbnMkFDVsrNy7QEBIXVdBDMnBUX2xaBzMY0bWmIK0PsmYcvtPxWWZmuS8lV83ea6dfhs66wVEwglc7LnlD3d4iCLj80ia6xeiU/Y2Gf2H/zeASwZ+MRfRBPKUhtsCRju8tGkswFsveYKgSy/YbYSmjeChpFhaRsyeQlWaq6oRRCg9wqTmBnSb9zWoXT2FznWVm/5bYjEv/ho2cDU2aFFKbWqEyM7trCcIIRNCSggfKC04Nrj1i2K0N2eO2QlFQZ4CSQOWmeeYTdYkq36Y8d9gDBngtzTSetxZHDjL3eWOC94GquLV/swgR8Z3W3d9poNpIWi78=
+X-HE-Tag: 1793478372-533178
+X-HE-Meta: U2FsdGVkX1+JT4ZsYfVT9Hh5wEIn19W43b3C0CEmO/yLYJHy4pWzMOlwdkyGfbp3vh8OL5dNyJGjzsStQ7RFV8aa1Oqu2imCr+yQCicfQwk4tdq/aN+VxfrtpcP22qZ8OO2nys0jrTOYNGI6oVopcbdeSN/TrUot2QrRVIx092lGMUomTSsPMCy8rtW97zsblbOqMNB5TpGKb3gxlCM3+2LykG7k97b97uQlbfVdKhHzwfcjd/5y511nsgMXNgZ7A1MSqRDj3zII2cJtVPw/N6hW1KQxnYbqlVKGsRn2R3jPheOZj7y0t/ApPeTwvJLwu3RvfbOtJuZBA9BaXDUhP0AWxYHalh7TreA6yWRRAciVVxhPQob9oZz2nH1QN2CU2yeUlczsPAHlrtCCPRQaFdIOLQWaQgQc3XL5xiA81SOJCD1b6uPonn2xAol9Kv2k1U4UwZqZcntz2Q0Lb62MQJv5jdoVRkYk/9EhQ3PGXVS/3pkSIvRE6N6dbnCauyIWE/mYdLzQYiNZCNKFWnOgzOmLauhMWBXQ8y4kLj4vtAtDf4ts+pWc2HzT16KfZrf5RPDhotqvlcMTrusD/npsPWBm8kAMyUOnjXK8aYDA1oS25onqss+ZyEA3SXWJBpgLy/o5Dhn64q8xeQS/3cE8E2mQPBpuRwearGDfyvaHybWSXwd9ugMyEQHGcHwlj4/mho6ynWhgGcHZkzKULkEMdvR/Z41qBRfp/ew41uUZROVZGyEBNFnauVdjAVCtp6tyNLj4pf6owT4Ik6JWqvIR1CLBhjMJUe3fq19Hf7Pb1PQ31E7aYJvyUCmM2DRmcsIu6ZSKEqZ7KQyfIEqOWi6FuA7u7OrNitDW34A1j5PJecLBqRoQTaM2KnuRuF2xK07zrpt97PTIAZqZGLwCNEk39mPvp1wAPC5C/FK0KzqmA+es0/iPRPFnhitX5NTO2SRB2AJWLNRUY+Xywif25gY
+ qfUgmeh2
+ BKrlMFGujccSiNoGVLblb3ddxskZZyABSnVKuDH0HS0dS6ryC1R/22xC9RQJBUUUm++Q31BFLXFHu/Vag8wsWgxi/p5pzuwKV6gCTtA9UH1dGxRn1ZS6zAys5t948A7KHbKKZdCf9NfgGdgjee4qlyfNXKteZiVWbkjKar+zP6pTEWlXl3AEyu2LX+cetzXbaKBszGH3IXxC2TSJSsoNc+ER8m+8aaXRbeRumRGBiQ3nRMFfkk7/Cvp4r/MY5lR69WwbAUlNgGVgkz7/wK3NvFktf96pFkoN+mJLc/CUJsc4bIMqnBFgZnJueKSoZ0Zz+dbcBEkmSRBHD1Jg++hmIq5UkakbY62XmabiopQ4vjoxOD3vyR/m03dLcrVEIExTwvbdT0uBUTcIyQjtBqwJv5KE4NHDKiJYOxD8pbAKzZQy9cqu9rjrotSWE/VruIWZtwJu9q8WFclES8yPtkwRIxMnYLQqHR2afYz+la/wnJ/uzVgvm9GxU8Q0ILQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -129,96 +99,11 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 10/31/26 4:47 PM, Tal Zussman wrote:
-> A UFFD_EVENT_FORK message cannot carry the child's fd when it is queued,
-> because the fd has to be installed in the fd table of whichever task
-> reads the event. The forking task has to hand the reader the new context
-> itself. It does that by casting the child's userfaultfd_ctx pointer into
-> the arg.reserved.reserved1 field of the UAPI struct uffd_msg, which the
-> readers cast back.
-> 
-> That temporarily puts a kernel pointer in a struct that is copied to
-> userspace, and results in ugly casts when passing the uffd context
-> around. While resolve_userfault_fork() currently zeroes reserved1 before
-> it is exposed to userspace, this unnecessarily risks leaking a kernel
-> pointer to userspace if future modifications are buggy.
-> 
-> Store the fork_ctx pointer in struct userfaultfd_wait_queue instead,
-> which is kernel-internal and passed around anyway. The casts and the
-> zeroing go away, at the (negligible) cost of 8 more bytes on the
-> stack.
-> 
-> No functional change.
-> 
-> Signed-off-by: Tal Zussman <tz2294@columbia.edu>
-> ---
->  mm/userfaultfd.c | 19 ++++++-------------
->  1 file changed, 6 insertions(+), 13 deletions(-)
-> 
-> diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
-> index 3b71712edab4..cae70df89c00 100644
-> --- a/mm/userfaultfd.c
-> +++ b/mm/userfaultfd.c
-> @@ -2430,6 +2430,8 @@ struct userfaultfd_wait_queue {
->  	struct uffd_msg msg;
->  	wait_queue_entry_t wq;
->  	struct userfaultfd_ctx *ctx;
-> +	/* UFFD_EVENT_FORK: the context created for the child */
-> +	struct userfaultfd_ctx *fork_ctx;
->  	bool waken;
->  };
->  
-> @@ -3006,14 +3008,8 @@ static void userfaultfd_event_wait_completion(struct userfaultfd_ctx *ctx,
->  			 * didn't.
->  			 */
->  			__remove_wait_queue(&ctx->event_wqh, &ewq->wq);
-> -			if (ewq->msg.event == UFFD_EVENT_FORK) {
-> -				struct userfaultfd_ctx *new;
-> -
-> -				new = (struct userfaultfd_ctx *)
-> -					(unsigned long)
-> -					ewq->msg.arg.reserved.reserved1;
-> -				release_new_ctx = new;
-> -			}
-> +			if (ewq->msg.event == UFFD_EVENT_FORK)
-> +				release_new_ctx = ewq->fork_ctx;
->  			break;
->  		}
->  
-> @@ -3111,7 +3107,7 @@ static void dup_fctx(struct userfaultfd_fork_ctx *fctx)
->  	msg_init(&ewq.msg);
->  
->  	ewq.msg.event = UFFD_EVENT_FORK;
-> -	ewq.msg.arg.reserved.reserved1 = (unsigned long)fctx->new;
-> +	ewq.fork_ctx = fctx->new;
->  
->  	userfaultfd_event_wait_completion(ctx, &ewq);
->  }
-> @@ -3404,7 +3400,6 @@ static int resolve_userfault_fork(struct userfaultfd_ctx *new,
->  	if (fd < 0)
->  		return fd;
->  
-> -	msg->arg.reserved.reserved1 = 0;
->  	msg->arg.fork.ufd = fd;
->  	return 0;
->  }
-> @@ -3482,9 +3477,7 @@ static ssize_t userfaultfd_ctx_read(struct userfaultfd_ctx *ctx, int no_wait,
->  			*msg = uwq->msg;
->  
->  			if (uwq->msg.event == UFFD_EVENT_FORK) {
-> -				fork_nctx = (struct userfaultfd_ctx *)
-> -					(unsigned long)
-> -					uwq->msg.arg.reserved.reserved1;
-> +				fork_nctx = uwq->fork_ctx;
->  				list_move(&uwq->wq.entry, &fork_event);
->  				/*
->  				 * fork_nctx can be freed as soon as
-> 
-this LGTM:
+On Sat, Oct 31, 2026 at 03:45:21PM +0000, Radek Marciňa wrote:
+> Signed-off-by: Radek Marciňa <github.unusual340@8alias.com>
 
-Reviewed-by: Jose A. Perez de Azpillaga <azpijr@gmail.com>
+Sorry, but this isn't going to work for the obvious reason, so we can't
+take these as-is.
 
--- 
-cheers,
-jose a. p-a
+greg k-h
 
