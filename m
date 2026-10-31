@@ -1,117 +1,99 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4714C606A31A
-	for <linux-mm@archiver.kernel.org>; Sat, 31 Oct 2026 09:08:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C33B4606A31E
+	for <linux-mm@archiver.kernel.org>; Sat, 31 Oct 2026 09:20:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Za6UBL4q
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=VRaEF/4D
 Received: by kanga.kvack.org (Postfix)
-	id 645966B05B2; Sat, 31 Oct 2026 05:08:25 -0400 (EDT)
+	id DAFE76B00EF; Sat, 31 Oct 2026 05:20:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5F82D6B05BC; Sat, 31 Oct 2026 05:08:25 -0400 (EDT)
+	id D882C6B05B1; Sat, 31 Oct 2026 05:20:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4E5576B05BD; Sat, 31 Oct 2026 05:08:25 -0400 (EDT)
+	id CC4B96B05B2; Sat, 31 Oct 2026 05:20:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 22E726B05B2
-	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 05:08:25 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 95D0C1208D9
-	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 09:08:24 +0000 (UTC)
-X-FDA: 85382345328.20.891F7F0
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 0767C20006
-	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 09:08:22 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Za6UBL4q;
-	spf=pass (imf03.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id AE0DA6B00EF
+	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 05:20:26 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 4006DA8614
+	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 09:20:26 +0000 (UTC)
+X-FDA: 85382375652.18.B31F670
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 9FC64A0003
+	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 09:20:24 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="VRaEF/4D";
+	spf=pass (imf15.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793437703;
+	s=arc-20220608; t=1793438424;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tm5Bg/j5fUgwCZIJXEdNeBM4C4IjSDPmSRohlhbzh7o=;
-	b=xxelrHyCLN5uZcVSl54w45jvNJqD76YCDR2uE+WYomQGlRFh5VTow/ZKHIaXzLkLqKgoPf
-	JPSkoMS4LmOym+iF+SNYmgBCyxCMYjDSrcvF9APu43MluheHB7JKO6oU9db+0C1n/xotox
-	35/E2NyFr2nK3UC1m3w527RIm7Qz0Io=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793437703;
-	b=ZQV1EHtXwJkrEDLczArv/wxxvud4DvpgzDpVWCk+EYG+P4KnREuTkbbe9GOTpRG+t6GXkP
-	B5Wy9iuEqA8uXLfKL3QAZ37211O2nVUaQ2TUKHUCiEjqkGbXcgEo+qgywvuX23g+uOj79c
-	pkj3IPssg6nkRDMhEr0iWitB5AsLwSA=
+	bh=dLwZlfqngcUMXWHHM0GFPkimZNPQuLtLOOkOpLsUjjg=;
+	b=p2gTH2dcgT7wWWpyOY6c84FLZ5topNw5lg3kcHk7jfS1Gvjs7y/TB0fy7dFqAmwCJN1v/X
+	q/qjlfkNlIdNncRcU+ZVpHSvVYo5me7P5zGdlZaQJ8CaoCr7vDEqxiBurOtTUuyXEs0JM3
+	mCDaEIEaDaiOJUjd6uFT4VfINLVZ+Xc=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Za6UBL4q;
-	spf=pass (imf03.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="VRaEF/4D";
+	spf=pass (imf15.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793438424;
+	b=y1i0L4imZ7JUnmqHziJhun8IGagZYQSyZtFdET9ZkaK8ttcpM7ui6uwrHNQs+CAncpjsFn
+	jF6LnM9i4sowq8s0OAQJFdOLc1l13sq+OKMUhDtlUexQ74kwncn7j83mT6loErAN0stB2d
+	CHBfg+krdDGp+HuG+6rkm10QyIW5hwM=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 6FED6600D4;
-	Sat, 31 Oct 2026 09:08:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 087B31F000C1;
-	Sat, 31 Oct 2026 09:08:08 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 7961941E47;
+	Sat, 31 Oct 2026 09:20:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44E1A1F000C1;
+	Sat, 31 Oct 2026 09:20:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793437702;
-	bh=tm5Bg/j5fUgwCZIJXEdNeBM4C4IjSDPmSRohlhbzh7o=;
+	s=k20260515; t=1793438423;
+	bh=dLwZlfqngcUMXWHHM0GFPkimZNPQuLtLOOkOpLsUjjg=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=Za6UBL4q5Ycah54CTfxr5+sWHe8Spk6G9/PM8TWndexFEz4xe8Ia9QhE7YgOeQfLx
-	 QBjpQpZ7zK42HjwtQcv9q5H9iWUAmJoCvett6ZnZ2h1EPXySuTupdbvUejz6CSLyAv
-	 ps+J1YQJbUkNmxcYDEnK42bZy0HyeREwHmwQaWQGcPq11yLz76vkzKY5N8egBtrAvm
-	 OuJOqZ+3a0o6YiWKa0H73L8AQNSsOZLegMy9g0P5BpVVnGKvj8I3yOiQDMVp2lPB66
-	 /nFghzHltrl/jL2BYEVTXpNGTeHPsu2kQ0zIZ8FEWTGgjsuofVB6JTJ2KsXJdV+9pV
-	 9nOGaDV2cw20w==
-Date: Sat, 31 Oct 2026 09:08:06 +0000
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Alistair Popple <apopple@nvidia.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Baoquan He <baoquan.he@linux.dev>, 
-	Barry Song <baohua@kernel.org>, Brendan Jackman <brendan.jackman@linux.dev>, 
-	Byungchul Park <byungchul@sk.com>, Chengming Zhou <chengming.zhou@linux.dev>, 
-	Chris Li <chrisl@kernel.org>, Christoph Lameter <cl@gentwo.org>, 
-	Dave Chinner <david@fromorbit.com>, David Rientjes <rientjes@google.com>, 
-	Dennis Zhou <dennis@kernel.org>, Dev Jain <dev.jain@arm.com>, Gregory Price <gourry@gourry.net>, 
-	Hao Li <hao.li@linux.dev>, Harry Yoo <harry@kernel.org>, Hugh Dickins <hughd@google.com>, 
-	Jann Horn <jannh@google.com>, Johannes Weiner <hannes@cmpxchg.org>, 
-	John Hubbard <jhubbard@nvidia.com>, Joshua Hahn <joshua.hahnjy@gmail.com>, 
-	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Kiryl Shutsemau <kas@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
-	"Liam R. Howlett" <liam@infradead.org>, Matthew Brost <matthew.brost@intel.com>, 
-	Miaohe Lin <linmiaohe@huawei.com>, Michal Hocko <mhocko@kernel.org>, 
-	Mike Rapoport <rppt@kernel.org>, Muchun Song <muchun.song@linux.dev>, 
-	Naoya Horiguchi <nao.horiguchi@gmail.com>, Nhat Pham <nphamcs@gmail.com>, Nick Piggin <npiggin@gmail.com>, 
-	Nico Pache <nico.pache@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
-	Pedro Falcato <pfalcato@suse.de>, Peter Xu <peterx@redhat.com>, 
-	Peter Zijlstra <peterz@infradead.org>, Qi Zheng <qi.zheng@linux.dev>, Rakie Kim <rakie.kim@sk.com>, 
-	Rik van Riel <riel@surriel.com>, Roman Gushchin <roman.gushchin@linux.dev>, 
-	Ryan Roberts <ryan.roberts@arm.com>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Suren Baghdasaryan <surenb@google.com>, Tejun Heo <tj@kernel.org>, Uladzislau Rezki <urezki@gmail.com>, 
-	Usama Arif <usama.arif@linux.dev>, Vlastimil Babka <vbabka@kernel.org>, 
-	Will Deacon <will@kernel.org>, Xu Xin <xu.xin@linux.dev>, 
-	Ying Huang <ying.huang@linux.alibaba.com>, Youngjun Park <youngjun.park@lge.com>, Zi Yan <ziy@nvidia.com>, 
-	Jason Gunthorpe <jgg@ziepe.ca>, linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH 4/7] MAINTAINERS: sort entries in MM sections
-Message-ID: <auWqPPYNQlwAOAnm@gremlin>
-References: <20261030-maintainers-v1-0-97278f8a5f54@kernel.org>
- <20261030-maintainers-v1-4-97278f8a5f54@kernel.org>
+	b=VRaEF/4DeMBVRS71BuPehLobGcZjQr4lbt3Eg5H3r0+MSS/zy7bVsOkDYlcOX2x8t
+	 ef/45OQj6sN9w7U1GRdYDZPpCYIPwBvWc93HADX7RFUBJsbXgkUt7juyplVQnOTmge
+	 t5bjZ0D9tQed9CbbBroLcc7+hGf2dtFjrjkFWbZTUM8rwn4Ndux5b/2VQa/X648bNV
+	 V220Z2PhgazW5bp+GQrfoq3zNnJuN7bx69Ix4qS1/HWYSuKtMWCS4Z++lGdcN91Glx
+	 39nz0LpcCAVE/g8qhcslvcIR4JDwOHgF+iZeF7vyQZrQzFidDp8WaoS64i33vvXsG2
+	 m3cFWvjbE+6TA==
+Date: Sat, 31 Oct 2026 11:20:14 +0200
+From: Mike Rapoport <rppt@kernel.org>
+To: "Jose A. Perez de Azpillaga" <azpijr@gmail.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>, Shuah Khan <shuah@kernel.org>,
+	Peter Xu <peterx@redhat.com>, Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+	Muchun Song <muchun.song@linux.dev>,
+	Oscar Salvador <osalvador@suse.de>
+Subject: Re: [PATCH 0/2] mm/userfaultfd: recheck WP registration in the
+ hugetlb UFFDIO_COPY retry
+Message-ID: <auWyzvThW5EAT_XQ@kernel.org>
+References: <20261029221129.89068-1-azpijr@gmail.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261030-maintainers-v1-4-97278f8a5f54@kernel.org>
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 0767C20006
-X-Stat-Signature: mqrgs5qn5h9a1ymxmeuycwedkzy4up4h
+In-Reply-To: <20261029221129.89068-1-azpijr@gmail.com>
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 9FC64A0003
+X-Stat-Signature: jpcd719hnjg7iyinthfjcgkhb45mab4e
 X-Rspam-User: 
-X-Spam-Status: No, score=-20.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,
-	MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
 	autolearn_force=no version=4.0.1
-X-HE-Tag: 1793437702-314346
-X-HE-Meta: U2FsdGVkX1/CdB8HvDyMJt6F7SKRiBFQ3WMWtqL9sfKRiW6MJT+pP6ilFdgicZvq9c3Wi+/g9Jjeqq7/ZVC4UGImT468bXSHRxg/XBFcRzZD1TmVml1I7KFQHsYSTIkKg6wNX2S/hQaLH+O1mhOUBxcWMT2XKlpVYrzCoZuZJZgELvaCBLHlr6PhV42p1+sMNUeH1VubGmYzz7qKmYsTXNmhsgeUzamiHNK1CYMzO2wjWUxkrYMqHDntLBBSRmT/b6gec9Ggo2V5+8+t8ZwS5/6p7amd95Ar3iCvSrYODZkfdyOkVpj3BcxPOdWT6cnX7oRln506hR9qRTnnjHFRBbCOSFg+6drz/Y6FtPsa8RTbBdHMOG8fQbDBJWbt0GJxBTuKQc3LTrMjIUwV+yOcThWKX+nW/4/DzWevPA9RfOhG2qnNhSDwolL2pPjX/X9Sb3ysBsLP/xxD2d0Ae3dgo/Gdg1nHptaM+Lq3rJT9bb+CPVhcd0SGxCNx+6ENNCnd40fvnUkm+0KdpQwjpyT16ZUUnPccICTIX7neWJ0wTgBgoTteC4hcc0aW6iccYz+d3S1M7UyDggOosNPh93jmb0H2RbGtQzGUXVPkPicfcd3d5FdSK2ZTE1geOsTaPeGoPlo0kx4kSQIhjoo5w4X1A1t5Ae4s0KVD1X7aaDmRf1s5WKLkrOipXG3efxnjOCqBCbcdzWg4RZZI+VCLwGV/uDs9WVTGH+J/D5cjhsWG5VeoP8TI11aDHXYRn1Kmf4j/vjoQTMpFX5yl/eKNbyvJ7HCry2oEO/g0Bp6yDq3ewzTr+MGWLq0LpZHfkUr+Cmm20PJ2IcfJkR7SC2McRx+3UHHHOout/308RtV1iWIvu8wIWW3htKwhMxunMJjjFgVpMnFccvhHmpulHs5F6F0x7usLOe8R0FsXW9LnAeYoEQBjs5bdO0cfmRdugY3wqpGpYbziI7JU8JXGbu1+CsL
- wWbzvqh4
- EewSFmIML5jZ08/JKIEFo7/TXcDO9/RNQTDIVHEYuiHHaWqAqzFjBVGCGjlY6rLuaW08c5NbA+1xgO/CuTO3Ig+h+O5Usw2l1thDkPcD6SZkdSne7Zyk3Qmld42uheTOXYWJDHVZjYyRm/AnmFrm0RKplqet3X1nW9PI6mdseO89t4cI8X9GNHxPx3o0e6S3UXzug/jL5zh6vP7VO9LqutVxBwdes1ZbvmzonIFmyUwACQa8zH8Kp16Ym6v1KAbNLtqyh+P61ZVYvApkJnnP+LRPj87nPBOSN3jlxQibwdcZN8mN3usPgJQ0VQ8v3UPinWVmv621qDzPHV9PSqJoeZaEeRY4fQzdgHaZbu70xhEj9M2GmmC08fLzBIjBBfY247W2Y7fWiO59znEBJ96oX5NGZtDI+cd/s4HG9heqL8FiroN48RYXHu9pWP1MOy9YBAl3r9tfjSq2M+x7iqKINq35UzLfgLLjGyxAfk1OsP02FsRos4MvZum4AFfVrpkMcoJ89H/hKht1u09MykSK2fJa+gQ==
+X-HE-Tag: 1793438424-241485
+X-HE-Meta: U2FsdGVkX1+kCauXjPAd8r4txyxNXTtG8qffyVawh/gpx9dA7/sla/NG1Mru80FuERy80HKJxboKbZqsencaMG22+/jubIE4T49/p62CMp8YGs0afRUMhXQH258WIAA9JpnOasPp6YsJloFCtgO9VQq8XXS0lPgk3ixORPShKQoXjeFdYXDL1m93s+P4OgFi61uIpWSD7XsXq/k+Sw28qpfbM7bSxAcAXwyfLltFImj6S3eR3fp+S+Zc4LHZ8ClwArez9Sn/Gu5hNp57KQCDqDgb6/wUAOAhR2OZp/2FZYf1n9F6Y1PpM7pUMlHO97A6PBPug0b8wUTUgIDd0YoELNXnrigtxF2zicIlrF2PGm61rIhjnMmuFwSRd/B6aJe6DnMH6na8l7wul3Z+ygiJNSX6aaTswx71Dvj6m6jd2VddNqwYY6NRL0Kz2vhboOsypS+DOghIT9qRxhJLH8QKuQIlYPcN2rDFQFS+ISso0tcQ6y62z3SoDXzV+cZJisfNmh09Lj1tXJ8kmA9o4REDogL9OEfTy/z9CNPIVyS+IAGYR6tAJ7vUkAZYQ+Fl06lcd8W+IJGkWRwS0T17Pmeoe+UFT0Y4jVCcEr+Z34y2eRZ3v/0ieYhnPj4B+07PY9RWgrLC6qrvh4p/F/6438zdY1bHIGA4Yq+aDUNx74udUG+xM2gRXG1sPpQxFlQ10orM3dCsbD55nGbHQNot70gj1Udp4khjQ7P8DbmSllgmYXBFoJWtxaqzC8BsJsY7Kv+/9C8EuBT0ubLroDF0n8XKPC8VbAM1873akDRaqdcOcZ8o2YcXWvlHW70pwvAMJgFslJyt5kcA31hoMk1b+uLWIH8o+5kVumEiqyc98JfpOYFRuWpSVKa/2EHnv7M1ckXyPFJh/Nrv8QkMzVATtrLHoiQ4vPoM5H5Rrlm5O++Mdr9iO0p4OrkyQRLmWUob65iIlUqoXJ5pr5moVixtwZa
+ PPOWC/x3
+ z5DYpw3ZM+7hzYWPJGbEqOM9DjF39nlIkHHl/7oNRJUhCDGuTsY7VXm/nVdwJiTl2PHbJUkkVhhZk6rOlf/ORY2MdJhL9cda/UX3TKXof9Hxh0AFQSPX9sB1e2/N7rikCXBRN9u/4lw+owNX3CnbEeiiI9queWIohb0zj6zXz+9OzanuYG+zDta6hrr1sPds7B7BJpaIcGXy5VLyyT7fFCqQFWOnuxwsl1CgOyNoeD8las9NEIO7FK4U6qCJUY765G3LCFlQ8h7vj8JKSkxwDevNFOdEG3sN9f+el7Zf5ynGLUHZf9DHnAgY/t8IhY2GZ0KpFCuA/t8q+/4c=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -120,137 +102,59 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Fri, Oct 30, 2026 at 10:34:28PM +0100, David Hildenbrand (Arm) wrote:
-> We try to keep these entries sorted; let's sort the MM related ones.
->
-> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+Hi Jose,
 
-Oh damn, checkpatch warns for this so I'm surprised these exist, maybe legacy
-stuff?
+On Thu, Oct 29, 2026 at 11:11:00PM +0100, Jose A. Perez de Azpillaga wrote:
+> The urgent fixes made hugetlb_fault() tolerate uffd bits left in VMAs
+> that are no longer registered for them, and asked for follow-ups that
+> remove the sources [1]. This is one: a hugetlb UFFDIO_COPY_MODE_WP copy
+> that has to fault in its source page doesn't recheck the WP registration
+> before retrying, so re-registering the range without WP in that window
+> leaves a uffd-wp PTE behind.
+> 
+> Patch 1 adds the check the non-hugetlb retry already gets from
+> mfill_get_vma(). Patch 2 adds a uffd-unit-tests case for it, which fails
+> on hugetlb without patch 1.
+> 
+> Question:
+> 
+> - The non-hugetlb retry compares the whole mfill_retry_state. hugetlb
+>   copies into a freshly allocated folio, so only WP seemed to matter
+>   there. Mike, would you rather have the full comparison on both paths?
 
-Anyway:
+Let's keep things simple and easily backportable :)
 
-Acked-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+Since hugetlb does not leave a folio from the original VMA behind there's
+no inconsistency we need to worry about.
+ 
+> The other source 6/10 of [1] mentions, UFFDIO_COPY in MODE_WP racing
+> with UFFDIO_UNREGISTER [2], is closed by "mm/userfaultfd: write-lock the
+> VMA before waking waiters when unregistering" [3].
+> 
+> Based on mm-unstable.
+> 
+> Tested on x86_64 in QEMU.
+> 
+> [1] https://lore.kernel.org/20261015-urgent_fixes-v1-0-42796911043b@kernel.org
+> [2] https://lore.kernel.org/20261015-urgent_fixes-v1-6-42796911043b@kernel.org
+> [3] https://lore.kernel.org/20261027-fixes_core-v1-23-6f74bec9a5bb@kernel.org (v1, now 23/47 in v2)
+> 
+> Jose A. Perez de Azpillaga (2):
+>   mm/userfaultfd: recheck WP registration in the hugetlb UFFDIO_COPY
+>     retry
+>   selftests/mm: add a uffd test for re-registering during UFFDIO_COPY
+> 
+>  mm/userfaultfd.c                             |   4 +
+>  tools/testing/selftests/mm/uffd-unit-tests.c | 105 +++++++++++++++++++
+>  2 files changed, 109 insertions(+)
+> 
+> 
+> base-commit: 24d45a1475dd4c671feb1df705f67ef2fc293969
+> -- 
+> 2.55.0
+> 
 
-> ---
->  MAINTAINERS | 22 +++++++++++-----------
->  1 file changed, 11 insertions(+), 11 deletions(-)
->
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 02b5b542f81ee..bc82ef545e0aa 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -6843,9 +6843,9 @@ L:	linux-mm@kvack.org
->  S:	Maintained
->  F:	include/linux/memcontrol.h
->  F:	include/linux/page_counter.h
-> -F:	mm/memcontrol.c
->  F:	mm/memcontrol-v1.c
->  F:	mm/memcontrol-v1.h
-> +F:	mm/memcontrol.c
->  F:	mm/page_counter.c
->  F:	samples/cgroup/*
->  F:	tools/testing/selftests/cgroup/memcg_protection.m
-> @@ -17429,8 +17429,8 @@ F:	Documentation/core-api/memory-hotplug.rst
->  F:	drivers/base/memory.c
->  F:	include/linux/memory_hotplug.h
->  F:	include/linux/memremap.h
-> -F:	mm/memremap.c
->  F:	mm/memory_hotplug.c
-> +F:	mm/memremap.c
->  F:	tools/testing/selftests/memory-hotplug/
->
->  MEMORY MANAGEMENT
-> @@ -17480,6 +17480,7 @@ S:	Maintained
->  W:	http://www.linux-mm.org
->  T:	git git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
->  F:	Documentation/admin-guide/sysctl/vm.rst
-> +F:	fs/proc/meminfo.c
->  F:	include/linux/folio_batch.h
->  F:	include/linux/gfp.h
->  F:	include/linux/gfp_types.h
-> @@ -17488,16 +17489,15 @@ F:	include/linux/leafops.h
->  F:	include/linux/memory.h
->  F:	include/linux/mm.h
->  F:	include/linux/mm_*.h
-> -F:	include/linux/mmzone.h
->  F:	include/linux/mmdebug.h
->  F:	include/linux/mmu_notifier.h
-> +F:	include/linux/mmzone.h
->  F:	include/linux/pagewalk.h
->  F:	include/linux/pgalloc.h
->  F:	include/linux/pgtable.h
->  F:	include/linux/ptdump.h
->  F:	include/linux/vmpressure.h
->  F:	include/linux/vmstat.h
-> -F:	fs/proc/meminfo.c
->  F:	kernel/fork.c
->  F:	mm/Kconfig
->  F:	mm/debug.c
-> @@ -17636,14 +17636,12 @@ F:	Documentation/admin-guide/mm/
->  F:	Documentation/core-api/memory-allocation.rst
->  F:	Documentation/core-api/mm-api.rst
->  F:	Documentation/mm/
-> -X:	Documentation/admin-guide/mm/damon/
-> -X:	Documentation/mm/damon/
-> -F:	mm/char-mem.c
->  F:	include/linux/cma.h
->  F:	include/linux/dmapool.h
->  F:	include/linux/ioremap.h
->  F:	include/linux/page_idle.h
->  F:	mm/backing-dev.c
-> +F:	mm/char-mem.c
->  F:	mm/cma.c
->  F:	mm/cma_debug.c
->  F:	mm/cma_sysfs.c
-> @@ -17658,6 +17656,8 @@ F:	mm/pgalloc-track.h
->  F:	mm/process_vm_access.c
->  F:	tools/lib/mm/
->  F:	tools/testing/selftests/mm/
-> +X:	Documentation/admin-guide/mm/damon/
-> +X:	Documentation/mm/damon/
->
->  MEMORY MANAGEMENT - NUMA MEMBLOCKS AND NUMA EMULATION
->  M:	Andrew Morton <akpm@linux-foundation.org>
-> @@ -17810,8 +17810,8 @@ F:	include/linux/swapfile.h
->  F:	include/linux/swapops.h
->  F:	mm/page_io.c
->  F:	mm/swap.h
-> -F:	mm/swap_table.h
->  F:	mm/swap_state.c
-> +F:	mm/swap_table.h
->  F:	mm/swapfile.c
->
->  MEMORY MANAGEMENT - THP (TRANSPARENT HUGE PAGE)
-> @@ -17883,10 +17883,10 @@ L:	linux-mm@kvack.org
->  S:	Maintained
->  W:	http://www.linux-mm.org
->  T:	git git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-> -F:	mm/char-mem.c
-> -F:	include/trace/events/mmap.h
->  F:	fs/proc/task_mmu.c
->  F:	fs/proc/task_nommu.c
-> +F:	include/trace/events/mmap.h
-> +F:	mm/char-mem.c
->  F:	mm/mincore.c
->  F:	mm/mlock.c
->  F:	mm/mmap.c
-> @@ -29842,9 +29842,9 @@ S:	Maintained
->  W:	http://www.linux-mm.org
->  T:	git git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
->  F:	include/linux/vmalloc.h
-> +F:	lib/test_vmalloc.c
->  F:	mm/vmalloc.c
->  F:	mm/vmalloc.h
-> -F:	lib/test_vmalloc.c
->
->  VME SUBSYSTEM
->  L:	linux-kernel@vger.kernel.org
->
-> --
-> 2.43.0
->
-
---
-Cheers, Lorenzo
+-- 
+Sincerely yours,
+Mike.
 
