@@ -1,66 +1,66 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E28CE606A31D
-	for <linux-mm@archiver.kernel.org>; Sat, 31 Oct 2026 04:28:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DF43606A336
+	for <linux-mm@archiver.kernel.org>; Sat, 31 Oct 2026 04:29:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=YYb7BKxt
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=GIbmAu2e
 Received: by kanga.kvack.org (Postfix)
-	id F34046B00EF; Sat, 31 Oct 2026 00:28:34 -0400 (EDT)
+	id 3C47D6B05B1; Sat, 31 Oct 2026 00:29:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EBDDB6B05B1; Sat, 31 Oct 2026 00:28:34 -0400 (EDT)
+	id 375C46B05B2; Sat, 31 Oct 2026 00:29:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D89296B05B2; Sat, 31 Oct 2026 00:28:34 -0400 (EDT)
+	id 23F4C6B05B3; Sat, 31 Oct 2026 00:29:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id A3B636B00EF
-	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 00:28:34 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 109648061D
-	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 04:28:34 +0000 (UTC)
-X-FDA: 85381640148.23.7C64244
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 00D8F6B05B1
+	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 00:29:29 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 792181608E8
+	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 04:29:29 +0000 (UTC)
+X-FDA: 85381642458.30.10088E3
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 62F1040006
-	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 04:28:32 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YYb7BKxt;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf07.hostedemail.com: domain of kees@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kees@kernel.org
+	by imf03.hostedemail.com (Postfix) with ESMTP id D8A5720002
+	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 04:29:27 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GIbmAu2e;
+	spf=pass (imf03.hostedemail.com: domain of kees@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kees@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793420967;
+	b=u46XN54wv2ixuXpvTc6wmUZFT7mQKEI4JC6Cx8d/PPc5ZN/wP2toRiGu6xzPmE2DQ1orWd
+	aA/XRLd788bC/sbc09KJiypM2cEkw7wRx3tebNJ1uRW1PXvrLgZuau3Q+u3i8UFmjdZ39W
+	fsHfkYvtQPPiK5XAq9zaurVt+zxmT6Q=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GIbmAu2e;
+	spf=pass (imf03.hostedemail.com: domain of kees@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kees@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793420912;
+	s=arc-20220608; t=1793420967;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nPI7+m7xqukMbqrFFt+ctdQhrHqe+UHCY/7XpSE1aQU=;
-	b=SCf59m2XT3YjTGM3cXZq7R3AIrkoIdC12uCIErRpZyf4j6cW2ZhuwZS+Kv8IMS0Ve/Dalh
-	rwRIzqxWcaDVaS1Rm5yDZawJkDcy47P9eZVDMXDD6Bx7qGSIxSFv33RppqhRB94tfx5dSH
-	uqdPVJgW9+J6aBvauRT6rBcG03qDe1w=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YYb7BKxt;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf07.hostedemail.com: domain of kees@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kees@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793420912;
-	b=Xn/dK3C1HFly0maozGxXcGobMt6QRzk0L6HHxmRVtT3MVVPbcseFM/lpiHSvVtQq6S7fnB
-	4rBSBeqjrHIP3u72tu+LNEoC8NE4oZBwsjVyszMta7VJ7YmZvqNGFgiVeQSG6TsIB9A2fG
-	qwkBu9/kRcdzlkneXUz3HQ4OybofykQ=
+	bh=F+AT69Pw/D+atv5Rt7qE2T+LpdzYoQhnYrr78IvOD04=;
+	b=wR0W6bSnMH8XjWBTdL+mtgMAk3SP2IpGyACYqi4STN30sF6U3nwFt9DH70r2zwu5mmyzUI
+	Eze8egpiC2I9Wlav54Zib8A6eifiC0ce6YJpDzGG6kX5yMy3unaufMN322eh8oN43Z2u7W
+	GbUMk61R2zkaTR3VJzgj3MGHJyuYZx4=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 59EDB4378D;
-	Sat, 31 Oct 2026 04:28:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 389E31F000C1;
-	Sat, 31 Oct 2026 04:28:31 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 271BE4073E;
+	Sat, 31 Oct 2026 04:29:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 095F61F000C1;
+	Sat, 31 Oct 2026 04:29:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793420911;
-	bh=nPI7+m7xqukMbqrFFt+ctdQhrHqe+UHCY/7XpSE1aQU=;
+	s=k20260515; t=1793420967;
+	bh=F+AT69Pw/D+atv5Rt7qE2T+LpdzYoQhnYrr78IvOD04=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=YYb7BKxtbnvtVVP17CkQSB9ZHp+q7J5pQnsntezGl3/r67S0/g58i2DSZyhH4Vcc+
-	 8zHUeXXiqXoaogxItyNX3VmIJffBG+2qwMRxX2b5gZaoe2R7eNUsxLwWct4M1pJcU3
-	 u8AEKYNCE2vXGX+8ZOkVT0kczwGR4QPYYo7obUvEOlacUL/7pt1CHJN9Rf33ojM1lH
-	 u8qBgs0DngHLJeIYCVYXuLPpu7MhtfZnlcUgoTvsFbNMrfzEq38fzrF9PgtKONtCac
-	 MNHhdYS9I/TKZIF/Sm8OemJe2Ne5yyAvMh2f3JkX+q9FBkzPgyONJZIykuMTDNEBPC
-	 OZadJGLN+hLEw==
-Date: Fri, 30 Oct 2026 21:28:30 -0700
+	b=GIbmAu2exceR1uIZTs7rl2hC9kygOoZXYd8Y3qH3jGjd4i5fI3QDnM2lcqs9KMCUN
+	 YtMrTP4XFTnOfdTfApE23z7YrJKGmPa/0L2iqHqPAga76lEMtHAWbXHPlsThGMi2Nu
+	 QKjGT3muQdoirvHhGTIzTZayNmDTMt1ZJMEqTw79Z4/mG/whx3uGZuYeWv6Sr+wmrw
+	 ASU/rpCy65bePqmVh9v6vYlRIoaADrtJLpevDq3BNlJD/3OO4/A88oBPdYLH7h2gHY
+	 dn64zja+WxpOFshJ/S9FsE258ABtIForRe37CdrQFzdtZCuaBOtbsgJNjR2s6kk5az
+	 4UDq9XtL57X4Q==
+Date: Fri, 30 Oct 2026 21:29:26 -0700
 From: Kees Cook <kees@kernel.org>
 To: Chris Down <chris@chrisdown.name>
 Cc: Vlastimil Babka <vbabka@kernel.org>, Harry Yoo <harry@kernel.org>,
@@ -73,28 +73,28 @@ Cc: Vlastimil Babka <vbabka@kernel.org>, Harry Yoo <harry@kernel.org>,
 	Jonathan Corbet <corbet@lwn.net>, linux-mm@kvack.org,
 	linux-hardening@vger.kernel.org, linux-doc@vger.kernel.org,
 	linux-kernel@vger.kernel.org, kernel-team@meta.com
-Subject: Re: [PATCH v2 5/6] mm/slab: Support disabling
- KMALLOC_PARTITION_CACHES at boot
-Message-ID: <202610302123.687A961@keescook>
+Subject: Re: [PATCH v2 6/6] slub_kunit: Add a test for the kmalloc_partition
+ boot parameter
+Message-ID: <202610302128.1009F254@keescook>
 References: <cover.1793253633.git.chris@chrisdown.name>
- <617bbfdce4fb2689c2510f0cd7f9adbb3ab8edfa.1793253633.git.chris@chrisdown.name>
+ <66f981ce04dfb01d02d1683bb18ba6db1c4eabd1.1793253633.git.chris@chrisdown.name>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <617bbfdce4fb2689c2510f0cd7f9adbb3ab8edfa.1793253633.git.chris@chrisdown.name>
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 62F1040006
-X-Stat-Signature: uajmox7zz3fyujsraknjgs8tnkiusejx
+In-Reply-To: <66f981ce04dfb01d02d1683bb18ba6db1c4eabd1.1793253633.git.chris@chrisdown.name>
+X-Rspam-User: 
+X-Rspamd-Queue-Id: D8A5720002
+X-Stat-Signature: rtsqxtoxu4i9nxmzh1entqs8jnc7tuzw
+X-Rspamd-Server: rspam01
 X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-Rspam-User: 
-X-HE-Tag: 1793420912-98431
-X-HE-Meta: U2FsdGVkX18ULHWPvyOTEcNzLZJ+wVqBTIBF3ylHVsGrETKqsle0SpcqKjao0Lf6FU43hs8TdFgjsyr42hyF9NlX25pPpAl9lZp9CVXNNwyYH2WzKafi01K52ETrn6rg1CSZprIMFocREgsKVb9NNAXj8HdyOsCsSxKqR9/z0vKgCBqIZb9hDFbZkv5jUCV1lBpKYdKoBzo+ve+ldNjuHIaZuW47NzEwpaB60m/eXFu9ZUEuSvBeYygCzjp6COnXjg6rm119e5iWsGHrgNzjlzN8Q7xW670VkOdn+c+WhNZY71yYz14aTlRTw0QbyYBGU/2FBhHk/TYiBiyRFZ4weaHaJXIdcpyLepZh5jvBUH/qvkcgko/aSPzA1PGjieNm500z/GlgsUbFTOuP2iyAmHKU22ENy+JQwwPyDjw6L9ucs8nEgXpwxqBtNXLqcJpkwDMTGMUW8CgnAW19m5866AIKEJjk/7TYXCBBVOCssrAseU4eexUvqj7QCWutO03g+lYA/rj+SSpaGxxpll1y0hN2G6iT/NpkzY2zsB5JyZ3z5FvNnVKuWN15Wt7+CQV7QY0FJR0/1Tbp5E+6C2xSdtZC5k+p16tHFkkT7QaCYzAAmIDO9yx3Ph4YkzAzrvusC0GAR7pZs1E9TivjxAwbfKqBGaxLEx8FFmTKdoPs/2oDs1AnPNIKCSArwLHAXussqo6nffS/4zH/L/f4o9lomlHO7f3OULpFqexmif3qA01gjcKGdw/D6AH1U8IC/CIDw1jcQV/yPhmZXacBOLKCO6HmLI+FIbDU4fJ4eUHqRow/LHwEM72IhZhW7ZfzydxlTyAQ9yVu1T6S8BLAPNm/ynWKR8DW0yKsj9EbTukRw3JOpicJqtrZCbTUic63EbSCGxptbCAzK4O/ybt+zKPBFmVUVu8T5+X6HOBft3EO2TwSpsmTPEEJKKV+5STF3kZQuashlEGGykUYSWGoGCf
- uY9JwsSD
- 57whpGwy6oiHdVc7pv6S334GgOc6KHUtz3YQvY3BEdNdObx6kAlNPRuI1qCDGn1VXFZ5atzfhqLhCQUkL8i31SMJbrBYvONTwNDHw6e9+LaN/ocm447lrXBoLs7eiEmrlTt1IwP3KVU5dYVzu4RVW37KSEBnpJkydSHrxV+Jxz4ll+mlFaEGAGLR+08pukFOBwcFrp6kMQ9nVNuFyV/61o2r6lV+P/ZL1q8qbawxrC/xqvur/vOT2EmAPXzVasDlT9AY8UJZmC35HnONuIGzd4UQFPF4ttdwoB14qFhdAnTGcslBspUHd+RbeGlBNfx61pAgINfYjuchMouhQ4s+LpswrYV84azjyjGeZb7tBNcsm02g=
+X-HE-Tag: 1793420967-701799
+X-HE-Meta: U2FsdGVkX18nSsvgVkEvGpphz6kZtrM1Txutxbuh5bLGhJ37FHS34+MY4ULIQP5BvyG78lSxNPH/zF2blpmjiMfcS4d4U+x+ETRNt6xpHUkKzoBJnSmBW94z+VOTjCKT6gIV1iccnCPPmzIcvwJWqY+R5pAS/ZWidFRr999QmQ0yFCtrLhP2iTGapfrTqbJsWeeeq7dVrMhgp+Qo1237XtNMyd0uMB+HcfVV4C2V2JKR8oeMwBKafRcHhUvl2aKWwxQxHMC56a2ljLV4Sxlr7omN0R4UiVYDiwa0GdNpwoQMxDf0/VRvD25wVAeKYwavB811kEzzk7xt1ou3MGPLQq+ZT78xya+7F4lalNqMDn9c8F5Kq9YMDgjekQg7tU2zbsk+OyT94uHg71/OVBA3kAxtmXgrVBDJjrU9GMPyoWsgK88WSJqR+gtROju7OhJIWanyrm9rKyomZE1ktn2lKf91NWCYdcWhl7/5M9lUz/7dxUHJ5eqnx0ldRLXeujkywQyvPUH8kmkevokwgKP99mshYTpSYJaVJiyCY8f6HscApBgTI7ks8vJa/CQi0lP4PaDGutjYGOXJr9lCfDxsrNbgADUW1ZGN7vpjYByq4YSD7tvfukTws7yB4XYMz1As6tK5tHKKTxDh6UXjAFMqKwqMz2Jm1wnp/oWCYqJtovGhN2UfOmbAXTltemFSo3Dgg/xJa8m7diFNp+9KTceuYcPftw/6woVZcy1VMnUx/yWorbW9dRZjqQwMUaeM1hsNN8FdTyTH+WurzPP5H6AsYuZCC7ZERp5EIJ4SLXuupOk4Tv9FaYVYmm/kNwAH2MEmei4PVBEWm1cC2NkjR6WMtndobDErVIm/4uBRwS1/0+wfYVlEJSvtwaeHFGZhZDebfgxYV6TsuFheeUQav4dh80AaowA/c3DXoqJExL/8AjP33TewgMClxH369pqbHp1zRT3FCYRsMttQLYu2Dxk
+ mki8WgZE
+ MM7likb93inNjfKC6oGyfn3OuWPlzQ/ZeC58qjG2MQv67rnCKNY80sIhHh07ZxUt3WNiAimTtQoTIhXy5E0xu6HqP64H7+IK/LQLa4ULfAayrjN9TmaEBDskr45AtBYlw0uFFmRUnoesr3hpvP58hdNXJKwqoJN2tYu+NS/8PaJhsb/bNE34z1YEsK18wYn7t4IgGM7znXukngK0EkRvItcA4YGttQFLTjcaw5+AsBT0iyCaXW9YuwzOZIWyqy6Jnc3wvbrVkFqjz168kUotUJOJFaOsmwTXI/WIAYYPc8GH2XFc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,107 +103,29 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Thu, Oct 29, 2026 at 02:09:09PM +0800, Chris Down wrote:
-> KMALLOC_PARTITION_CACHES creates several copies of each normal kmalloc
-> cache and spreads allocations across them. That costs a fair bit of
-> memory: Harry measured about 18 MiB more slab memory after boot on a 64
-> CPU, 64 GiB VM, mostly from under-used slabs [1]. Like SLAB_BUCKETS, it
-> can only be chosen at build time.
+On Thu, Oct 29, 2026 at 02:09:21PM +0800, Chris Down wrote:
+> Check that the kmalloc partitions are separate caches by default, and
+> alias the normal kmalloc caches when they're turned off with
+> kmalloc_partition=0.
 > 
-> Add a kmalloc_partition= early parameter, enabled by default on kernels
-> built with CONFIG_KMALLOC_PARTITION_CACHES=y. When it's off, the copies
-> alias the normal caches rather than being created.
-> 
-> Let's leave kmalloc_type() unchanged since each index simply resolves to
-> the same cache when partitioning is off.
-> 
-> Link: https://lore.kernel.org/r/179312451613.474906.1475329637924619088@kernel.org [1]
 > Signed-off-by: Chris Down <chris@chrisdown.name>
 > ---
->  .../admin-guide/kernel-parameters.txt         |  7 +++++++
->  mm/Kconfig                                    |  5 +++++
->  mm/slab_common.c                              | 19 ++++++++++++++++++-
->  3 files changed, 30 insertions(+), 1 deletion(-)
+>  lib/tests/slub_kunit.c | 46 ++++++++++++++++++++++++++++++++++++++++++
+>  mm/slab.h              |  4 ++++
+>  mm/slab_common.c       |  3 ++-
+>  3 files changed, 52 insertions(+), 1 deletion(-)
 > 
-> diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
-> index de2fd6963a16..6633a553a79c 100644
-> --- a/Documentation/admin-guide/kernel-parameters.txt
-> +++ b/Documentation/admin-guide/kernel-parameters.txt
-> @@ -3054,6 +3054,13 @@ Kernel parameters
->  			Configure the RouterBoard 532 series on-chip
->  			Ethernet adapter MAC address.
->  
-> +	kmalloc_partition= [MM,EARLY]
-> +			Format: <bool>
-> +			Enable or disable kmalloc cache partitioning on
-> +			kernels built with CONFIG_KMALLOC_PARTITION_CACHES=y.
-> +			Ignored without that option.
-> +			Default: on.
-> +
->  	kmemleak=	[KNL,EARLY] Boot-time kmemleak enable/disable
->  			Valid arguments: on, off
->  			Default: on
-> diff --git a/mm/Kconfig b/mm/Kconfig
-> index 48078c1fd26f..b90b3915fcd5 100644
-> --- a/mm/Kconfig
-> +++ b/mm/Kconfig
-> @@ -266,6 +266,11 @@ config KMALLOC_PARTITION_CACHES
->  	  limited degree of memory and CPU overhead that relates to hardware
->  	  and system workload.
->  
-> +	  The partitioning can be disabled at boot with the
-> +	  "kmalloc_partition=0" kernel parameter, in which case the copies
-> +	  are not created and all normal kmalloc allocations use the
-> +	  regular kmalloc caches.
-> +
->  choice
->  	prompt "Partitioned slab cache mode"
->  	depends on KMALLOC_PARTITION_CACHES
-> diff --git a/mm/slab_common.c b/mm/slab_common.c
-> index 9fe48da12010..5391149a2eed 100644
-> --- a/mm/slab_common.c
-> +++ b/mm/slab_common.c
-> @@ -781,6 +781,16 @@ unsigned long random_kmalloc_seed __ro_after_init;
->  EXPORT_SYMBOL(random_kmalloc_seed);
+> diff --git a/lib/tests/slub_kunit.c b/lib/tests/slub_kunit.c
+> index 670645875b27..e3035864577d 100644
+> --- a/lib/tests/slub_kunit.c
+> +++ b/lib/tests/slub_kunit.c
+> @@ -333,6 +333,49 @@ static void test_slab_buckets(struct kunit *test)
+>  }
 >  #endif
 >  
 > +#ifdef CONFIG_KMALLOC_PARTITION_CACHES
-> +static bool kmalloc_partition_enabled __ro_after_init = true;
-> +
-> +static int __init setup_kmalloc_partition(char *str)
-> +{
-> +	return kstrtobool(str, &kmalloc_partition_enabled);
-> +}
-> +early_param("kmalloc_partition", setup_kmalloc_partition);
-> +#endif
-> +
->  /*
->   * Conversion table for small slabs sizes / 8 to the index in the
->   * kmalloc array. This is necessary for slabs < 192 since we have non power
-> @@ -1013,8 +1023,15 @@ new_kmalloc_cache(int idx, enum kmalloc_cache_type type)
->  	}
->  
->  #ifdef CONFIG_KMALLOC_PARTITION_CACHES
 
-Swap the ifdef for a CONFIG-controlled static branch that defaults off
-without CONFIG_KMALLOC_PARTITION_CACHES.
-
-> -	if (type >= KMALLOC_PARTITION_START && type <= KMALLOC_PARTITION_END)
-> +	if (!kmalloc_partition_enabled) {
-> +		/* Use the normal caches, which have already been created. */
-> +		if (type > KMALLOC_PARTITION_START && type <= KMALLOC_PARTITION_END) {
-> +			kmalloc_caches[type][idx] = kmalloc_caches[KMALLOC_NORMAL][idx];
-> +			return;
-> +		}
-> +	} else if (type >= KMALLOC_PARTITION_START && type <= KMALLOC_PARTITION_END) {
->  		flags |= SLAB_NO_MERGE;
-> +	}
->  #endif
->  
->  	/*
-> -- 
-> 2.54.0
-> 
+Same feedback as the other test: let's get rid of all this ifdef-ery :)
 
 -- 
 Kees Cook
