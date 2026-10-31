@@ -1,75 +1,75 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02BDA606A31A
-	for <linux-mm@archiver.kernel.org>; Sat, 31 Oct 2026 09:47:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E540606A31C
+	for <linux-mm@archiver.kernel.org>; Sat, 31 Oct 2026 09:47:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=IaCWaKaw
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=H+Zu2OmD
 Received: by kanga.kvack.org (Postfix)
-	id 1B79D6B05BF; Sat, 31 Oct 2026 05:47:20 -0400 (EDT)
+	id 86D5D6B05C0; Sat, 31 Oct 2026 05:47:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 160796B05C0; Sat, 31 Oct 2026 05:47:20 -0400 (EDT)
+	id 816C26B05DD; Sat, 31 Oct 2026 05:47:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 028716B05DD; Sat, 31 Oct 2026 05:47:19 -0400 (EDT)
+	id 705F76B05DE; Sat, 31 Oct 2026 05:47:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id D41D16B05BF
-	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 05:47:19 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 5E7791408CC
-	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 09:47:19 +0000 (UTC)
-X-FDA: 85382443398.25.106D8CA
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 8367040003
-	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 09:47:17 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IaCWaKaw;
-	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793440037;
-	b=TVKOWkv1vucfm5IxBOinLSXJKv4pfKq8mvlfV0wKrojUtzqeAQ9wx+vMFCMd7N7WOtw9lh
-	3mrqowXPWRqxRqpqNEe49HSSinjtQwpIvfns4d5lsu4+iwFEd2Z3q6Igj0XdGR1/6RTDX5
-	02tJfSfX16oguDtRnBWS2K+dBrfy25I=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IaCWaKaw;
-	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 46EEA6B05C0
+	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 05:47:35 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id D999D1208EB
+	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 09:47:34 +0000 (UTC)
+X-FDA: 85382444028.23.780301F
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 196FD140009
+	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 09:47:32 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=H+Zu2OmD;
+	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793440037;
+	s=arc-20220608; t=1793440053;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KVrdbHh4TefzyeW1e6RlSzEhzIhMK50yL/X3kkZm6/4=;
-	b=HCveir7mesp/XnnnmdmFPH6smE+Ww0XQeSudgyEAAMloRDPlUp+Jy6T0/VcjcbKJbecWnR
-	RaeJqBlVxWBFnwHsbR8fGfyvM7470hiHd13epht8O4hKpRUovrvs6iDL7YTGPHqioQ/s74
-	Il600fszUvmIvjrjVSFsQpkLAH7TmO4=
+	bh=Xc81+pQCpvOEFV1SjV2hvWtNjfruVqO4qaaYMBxu1qU=;
+	b=cWTwJ9AFJ/zU2Tf4f+SePHaY3P0pL5Ni6h+On355J9jSR3Cz+q4Z7SMUd7oz+xaKXmzW5T
+	ocpmdWRP/N8jRJC70PKIKhalfae+cCZK/DyhhjSb5TXvTD9tarrcHQkeDRbUGKxAADn5ME
+	AFVrCi01UKZ13QnAs1HU1BqJB2vNRJU=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=H+Zu2OmD;
+	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793440053;
+	b=pgB2FaTPgNCJDFWi/KFhibQG7n9+SUYUsk7n+KLRVc41mXZki39zEkjmvHDX1NvWgn3vm2
+	eLDUUfRflkypsgZAiAdye2zqNVHpL89RN8OWfOkLW9lKzKpiwVqLlxmZsrhmpKrcb/M8yo
+	EjcT3vskOIzfcoFryTJYis1rHvBXdSU=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id ECB7B605CF;
+	by sea.source.kernel.org (Postfix) with ESMTP id 5DFBA40321;
+	Sat, 31 Oct 2026 09:47:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B3531F00919;
 	Sat, 31 Oct 2026 09:47:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27FC01F00919;
-	Sat, 31 Oct 2026 09:47:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793440036;
-	bh=KVrdbHh4TefzyeW1e6RlSzEhzIhMK50yL/X3kkZm6/4=;
+	s=k20260515; t=1793440052;
+	bh=Xc81+pQCpvOEFV1SjV2hvWtNjfruVqO4qaaYMBxu1qU=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=IaCWaKawXOqDcZ22xFCnwg7umYwYJDgAbJNOOK5GTEKGHR4Bx9Acayri7plzIv2dF
-	 0xsaLS7xr4ETWZusdZHXrFhdvJbU1AhSTCPEA0QR3Dj1ccFkxelrbwXMWTOnrQQWG3
-	 58kyNmdrL4h4kMvLnIkpzCrckrID/LCj0Cf5LWhtYMlVhaHMgI1lgO/M9mXJT3I+oS
-	 Z2xhPUc1AK103gnGCePYltjzgbzdLKcT6Hk2CY7ZOOT3q1CY+nRSeutkrRUi7hRWeR
-	 F8JX7Cij2PkVFNeFOQbrbxnEdvAY1cKNFIxVfTTwYaHRhB/a7xn+bEQBXPQJM9W6rl
-	 g/T9m03kc4kGQ==
+	b=H+Zu2OmDANIogo0KydYV684DDgB6E/JPWdC8WKGejHwloLgYyBl4uyENmjkOgd+6z
+	 OpHcmg49k4+J99+rvf3R9wI6eHcjtYL+GrE5zpm+mr76ayPfV9ZLRnX3oK2Y37qgQ2
+	 1aYeP4op/vYaWDQOw+1+5AqmWmgTC3hF095aAs2CFn2+kGIewLHko2nddZ74GOdzqr
+	 e5nZGqckvv1VpUgOe0qZ+KqE9Ew47LvziANO06udnWQOvHD49NDmNyJBy3EBFe25ax
+	 CzMxvJ8U3MUD3xbw/ySjXDB5JQeks8KgBBk5OPWhDWliDuB9GvinW+iv1tqP5vDc5P
+	 CGgb4Dm/lalVg==
 From: "David Hildenbrand (Arm)" <david@kernel.org>
-Date: Sat, 31 Oct 2026 10:39:56 +0100
-Subject: [PATCH v3 27/47] mm/mmu_gather: fix flushing ranges with 4 GiB or
- larger
+Date: Sat, 31 Oct 2026 10:39:57 +0100
+Subject: [PATCH v3 28/47] mm/mmu_notifier: finish non-blocking interval
+ invalidation on error
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261031-fixes_core-v3-27-d6437171ecc3@kernel.org>
+Message-Id: <20261031-fixes_core-v3-28-d6437171ecc3@kernel.org>
 References: <20261031-fixes_core-v3-0-d6437171ecc3@kernel.org>
 In-Reply-To: <20261031-fixes_core-v3-0-d6437171ecc3@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>, 
@@ -108,30 +108,30 @@ Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
  kexec@lists.infradead.org, linux-fsdevel@vger.kernel.org, 
  linux-arch@vger.kernel.org, linux-cxl@vger.kernel.org, 
  Josef Bacik <josef@toxicpanda.com>, stable@vger.kernel.org, 
- SJ Park <sj@kernel.org>, Muhammad Usama Anjum <usama.anjum@arm.com>, 
+ Muhammad Usama Anjum <usama.anjum@arm.com>, 
  "David Hildenbrand (Arm)" <david@kernel.org>
 X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2186; i=david@kernel.org;
- h=from:subject:message-id; bh=XMqAbJynrW+dSeh468tky7AqZSEZvUJFOrLi82qkd/w=;
- b=owGbwMvMwCF2/OVpCdfQ3ZWMp9WSGLKebs+Q9csy471kdl/JWJJ57iLLuN+/Dm83vFRrH99oc
- 7pyn8zijlIWBjEOBlkxRZag4PsGL1+uq61242OGmcPKBDKEgYtTACbifp2R4daLlSYBH/m0hd89
- 6zgm/f7UvRPHexf3Ppv+3PCr3TX9iQqMDGs2JfTrdpm2nXv/RPP2W62itX1MireabfWCQlf+3vo
- olh8A
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3161; i=david@kernel.org;
+ h=from:subject:message-id; bh=zlFjez9kL2dtssRVxiCEM6wJKA5W9Xa0kYQZPudLU3A=;
+ b=owGbwMvMwCF2/OVpCdfQ3ZWMp9WSGLKebs+wdVs899LDdv233UvDPnaf8rB/f2qO2Bvdcx/W+
+ xUeu+T4oaOUhUGMg0FWTJElKPi+wcuX62qr3fiYYeawMoEMYeDiFICJCHcxMtyOuKqxIr/t32zJ
+ XNNZu1k4Pxj8v/h3rZRusULpUtbDVfKMDLsOv2T88yi9dnvL5JBVGziT32oftbzySfi4epSisuW
+ pQF4A
 X-Developer-Key: i=david@kernel.org; a=openpgp;
  fpr=1BD9CAAD735C4C3A460DFCCA4DDE10F700FF835A
-X-Stat-Signature: ao5tzoitc7zs6z5xc3nha3i1ufq8o9eh
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 196FD140009
+X-Stat-Signature: tmkxizgq4ydmnxxpe13wcbu4medo6wof
+X-Rspam-User: 
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
 	version=4.0.1
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 8367040003
-X-Rspam-User: 
-X-HE-Tag: 1793440037-79174
-X-HE-Meta: U2FsdGVkX1/a8ju6ggoYX6qxsgZ4D+U6ivN9HWE+NuD9IDXauYWYIRASjKxZNuE13mJwiH0AJMHLf8rPv5rLLaOQBOz2bgCodIpejKpRBunBjwNXCL1Sv+vp5KPrbOIPnwck2tsuWhEyvy0IJHT58nGLLGCG2l1UpF7EWsvZ5omMTGS4zO01lVRfr/0qY0q/ceAHbaOxMsbidMGnKIqnCYkp7hlUBO+HH52PjbzuIGCfgA8MZNy9zQ9wiRPSu1uPK0x8geeaZoIPW0+q4YTSXW9445kLDRi5l1wq5D1BZ8N4pGoapHueHdJznDKKI+PCLB2u2vEAoDwMrMUpRE/XNflv3RpsXWkXLiEAiojihnNCAHRqQqIXYrMwsefD6Ke87GxqWY71wd2tR7ZdtsbnvoodK9XKbQ2C2mEKOJxQml+HoaVoFGjYoGRs1FyF0aK0/XOuQ0wF+dwFux36nWx/+0tRyPTtrtA9HGOWL3tdm4uTIhkEIw4GeKhwL4m3hBKbnW5zi9s6mje6n0ayiB85+zqxIyrVyVtIWLpfSyv5RFZoNwJEzhlpHDXJXlYq0bqX1tpjyBPmlBflmuiMjlClAH5jDAvc7vuBw+Bbd+X1ZWnqfxljIlX/jcmNbEB8o2sVwmp+T2MQHJ9zY8odJyFr/8wgiWtEa9McIM+0bgSApNArv1xXlHOCbirORY9ob0zTYpNlVb/xRUjKiIM/75YOU5tvryJtkVkdKjmn50kvD1C9vOXj8ffY3Q2VUIUUDm2zSwGkuvRn430LPvqUAro8LsRga0or1lpopC/lFlfWdqDoy8GwL0YKRl9DPbrsVfn8zCK5A6HXaguMOgfy6p78N7PLAovzawDyxpqre0r1ztdbu/LELuS82Z5siO0ei7E+EQzXXiOrNJoWOfwcDgiEzKtUZY6Ap1ywV7fjg/sIivRKtcsJTAyLNQQ55HIa3RkurVob6v3SPbqL+N4oex3
- AwszRv5C
- hkC04moYcQXCIwYdsJ/+W6e+GNeht8OVHm8TjxklgN+0/ngyqY+ywiMDlM+XZnjkouIPwvzApSoS9zzCRVRXbgGMUot5obTjGzNDoxazp5/AEyjPNLwUP6FH+0RUL8g/pUlzsvd+UxMHiRTWl8M5ZKIp9nIUUVyA8k+HyzQsRuvEKvsIpMkZYbFYTzS/0bK8rPKHvQI6ZoX8zhtYC/SwEKNWftbcXOecTUhK5ccZWeR6D11XkvUBpjacXPM60gfKhdVnijqEZGCowN+712MRJ5CQCZBAWYAeJ0wg37SgKfKGkwSsIimKFT0leWm91fZNmq4NLVCyesH44G61HlbshMkKbLQEOJmFQFgSIInaG2hz+CyP0auyoudtywffBw/pZAEPLwrmGG34J+4B/SxzXwJUGFcvseZPLuOwdfsePu2vHZguSjfTe2dsjkIil46JWOTw6d6mqsCd14qJo/QaGOrlrVSfluoy5tuaMvVvdyLY5MEhIQVZYtiPD1noHyZGi1d9167H1wIAEOwBMxGr03UhGlR3i6aqbimxi
+X-HE-Tag: 1793440052-92068
+X-HE-Meta: U2FsdGVkX18wHEWBh7BQdSWrDkxjPmddF5B2zzw+K0u8i9bhtG3CuNBGL0Mp8yQ7XKRni62ONgQxZiHtpq/aZ2ESurQwanihuXt6DP0T2ddI7be6U2TyEJeqO0yuLRKMeLPcja9oBkC8efxSeWFjTYl8FpyCtN4DvD7XnIkyq2MA0ZMe6M6SCr407qlINWhoshkEvbZvfuS6TxjSLNI+nDJoKFCMf3k1ahASZ3QXTRr2LXpxpD5TyOLiQJMSaU9hON03ljKj1v022IQYQeQBP49xl7sIbiojcRQWKnnOkeOsoNRcVuDvJAxe6jmOXWbL6B2roOvhQya/EyvF3emh9vZ5Sptb/3dkvcl4WWAywqkHE8xddqoB5/5caV78Wrr8PzOJOJW9pijXqIlCr97wQPunBhhyHcv6u+JIyj7nIeTmSnRYcS6LvW5jjLrKNX16GinhjWvgn5P+5axMU57602BS8W+7pprk9aU+rqW5Wnm3RRyLpJdJrNBxQM5I3y6Xn9+XYZrtzHKjTIeU5oIsG4oturH9TGUEImIYExYE/KJq7aC4fRajJZXcbgpmKzeFA5Xc4ZpBx7ifm3mXSMyU70n31LGNAzClVwTd6sQ5gCnFyzS/zFu5pQwB/K1EqYiITWvpZHWr4zEtfSFDQlHROiXUmMGE6bIr0q4CD3xZggYT/ivIrI9e6Wln4lhoF7T0t41pXJoOgGJu09Ivy9klRyFt0sCdGX8fQ3+O//kJikHFO5bkKK8/PdeTrwS2iMztFfL8c0C2xCV9PCrbWfAJc4iDble5jPJaDUbShPPFG2VUSh3dwplasZ+9l2/NVew37DpSOEEcDHDkMdLQtT73QqvRsUV6xgqjuMaCPeA9O103RE0hNc6AYqJAmceSDStC6iLIaWeKWcfXl2rn7VyQKdnsXBhQ6EQr3p6emWdw8aIETN458SUbTiUq/A+IvptDnArbkGHxtdycNEDgFan
+ exj3gIFf
+ FnAX/Q0IWZvsIckloHGpFA9s9R5OWxcCVKuH1YqBiNAXCnabhMRqEMfcccZxgYjMy99zzvJ/CtB5q68+GNd+Y6KgsRaw/lFW7onD/PTOUwOqQ5UAVE6QakI9Tpxu4wM7tnMhZdq2T3lutoPKrs6fnfgk7RWTuNmqQAPkyvKzsFK1DMNDOkDIFQNlGhj8yLXv9mMGBasDf3j1F31Zuf3l4uzLOITOvK8WptwWUBIXMKBDr6Rjwg/0BU453RavTYQ/Pxt7wJ8tJHXo9QyyD5sC2kFzj9HuJGYJ11aZMRMBDbJbzZra8n+lgTixsNrOKjXWX+BFrRW8ixAc/8gNpUjaiAIEBi/tgaGGmptBk/NcgNrhb/aAXxugK2O04lEFDHitWtJp31nyYeuLcaDFEpEjAWqGsfLoFaN0pg1a+akvBuL+Dilyd+vrzcL6Z/CgbEbKjS6Mw7A4t+EeiIwr2JIhpd9lc7C8Ccn7DFR8ineQkPeiqpkQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,54 +142,84 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 
 From: Josef Bacik <josef@toxicpanda.com>
 
-__tlb_adjust_range() takes the size of the range which has to be flushed
-as an unsigned int. Its callers, tlb_flush_{pte,pmd,pud,p4d}_range(), get
-and pass an unsigned long. Consequently, a range that is 4 GiB or larger
-gets truncated, possibly to 0.
+When an ordinary MMU notifier rejects a non-blocking invalidation, the
+interval invalidation started beforehand is left unfinished: the caller
+skips mmu_notifier_invalidate_range_end(). Subsequent interval notifier
+operations can then wait forever.
 
-On arm64 with hugetlb, a 64k kernel can have 16 GiB hugetlb folios
-mapped contiguously at the PMD level and flush them when unmapping, and a
-16k kernel can flush 64 GiB PUDs through tlb_unshare_pmd_ptdesc(). So
-at least these two scenarios are affected.
+The only in-tree trigger is nouveau SVM, which uses both notifier types
+and rejects non-blocking invalidations. Reaping via the OOM reaper or
+process_mrelease() can therefore leave the GPU fault worker stuck,
+holding a reference that prevents the dying process's address space
+and memory from being freed.
 
-Fix it by flushing the proper range instead of the truncated one by
-properly using "unsigned long" for range_size.
+End the interval invalidation when an ordinary notifier fails a
+non-blocking invalidation, like mn_itree_invalidate() already does when
+an interval notifier fails. Make that handling clearer in the
+documentation of mmu_notifier_invalidate_range_start_nonblock().
 
 Fix generated by an LLM and sent by Josef Bacik in private.
 
-Fixes: b528e4b6405b ("mm/hugetlb: add tlb_remove_hugetlb_entry for handling hugetlb pages")
-Fixes: 8ce720d5bd91 ("mm/hugetlb: fix excessive IPI broadcasts when unsharing PMD tables using mmu_gather")
+Fixes: 99cb252f5e68 ("mm/mmu_notifier: add an interval tree notifier")
 Cc: stable@vger.kernel.org
 Signed-off-by: Josef Bacik <josef@toxicpanda.com>
+[ david: simplify description, update function doc ]
 Acked-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-[ david: use two-tab indent, simplify description ]
-Reviewed-by: Qi Zheng <qi.zheng@linux.dev>
-Reviewed-by: Gregory Price (Meta) <gourry@gourry.net>
-Tested-by: Gregory Price (Meta) <gourry@gourry.net>
-Reviewed-by: Dev Jain <dev.jain@arm.com>
-Reviewed-by: Muchun Song <muchun.song@linux.dev>
-Reviewed-by: Pedro Falcato <pfalcato@suse.de>
-Reviewed-by: SJ Park <sj@kernel.org>
 Tested-by: Muhammad Usama Anjum <usama.anjum@arm.com>
 Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 ---
- include/asm-generic/tlb.h | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ include/linux/mmu_notifier.h |  3 ++-
+ mm/mmu_notifier.c            | 17 +++++++++++++----
+ 2 files changed, 15 insertions(+), 5 deletions(-)
 
-diff --git a/include/asm-generic/tlb.h b/include/asm-generic/tlb.h
-index fbe1114e9a443..3f4a180b48f3c 100644
---- a/include/asm-generic/tlb.h
-+++ b/include/asm-generic/tlb.h
-@@ -350,8 +350,7 @@ struct mmu_gather {
- void tlb_flush_mmu(struct mmu_gather *tlb);
- 
- static inline void __tlb_adjust_range(struct mmu_gather *tlb,
--				      unsigned long address,
--				      unsigned int range_size)
-+		unsigned long address, unsigned long range_size)
+diff --git a/include/linux/mmu_notifier.h b/include/linux/mmu_notifier.h
+index a11a44eef521e..5db78e5761c5c 100644
+--- a/include/linux/mmu_notifier.h
++++ b/include/linux/mmu_notifier.h
+@@ -483,7 +483,8 @@ mmu_notifier_invalidate_range_start(struct mmu_notifier_range *range)
+ /*
+  * This version of mmu_notifier_invalidate_range_start() avoids blocking, but it
+  * can return an error if a notifier can't proceed without blocking, in which
+- * case you're not allowed to modify PTEs in the specified range.
++ * case you're not allowed to modify PTEs in the specified range or call
++ * mmu_notifier_invalidate_range_end().
+  *
+  * This is mainly intended for OOM handling.
+  */
+diff --git a/mm/mmu_notifier.c b/mm/mmu_notifier.c
+index df69ba6e797f7..2e20f88e162d7 100644
+--- a/mm/mmu_notifier.c
++++ b/mm/mmu_notifier.c
+@@ -569,16 +569,25 @@ int __mmu_notifier_invalidate_range_start(struct mmu_notifier_range *range)
  {
- 	tlb->start = min(tlb->start, address);
- 	tlb->end = max(tlb->end, address + range_size);
+ 	struct mmu_notifier_subscriptions *subscriptions =
+ 		range->mm->notifier_subscriptions;
+-	int ret;
++	const bool has_itree = subscriptions->has_itree;
++	int ret = 0;
+ 
+-	if (subscriptions->has_itree) {
++	if (has_itree) {
+ 		ret = mn_itree_invalidate(subscriptions, range);
+ 		if (ret)
+ 			return ret;
+ 	}
+ 	if (!hlist_empty(&subscriptions->list))
+-		return mn_hlist_invalidate_range_start(subscriptions, range);
+-	return 0;
++		ret = mn_hlist_invalidate_range_start(subscriptions, range);
++
++	/*
++	 * On error, the non-blocking caller is not allowed to call
++	 * invalidate_range_end(), as in mn_itree_invalidate().
++	 */
++	if (ret && has_itree && !mmu_notifier_range_blockable(range))
++		mn_itree_inv_end(subscriptions);
++
++	return ret;
+ }
+ 
+ static void
 
 -- 
 2.43.0
