@@ -1,90 +1,94 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACDE5606A31A
-	for <linux-mm@archiver.kernel.org>; Sat, 31 Oct 2026 20:36:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDE65606A31A
+	for <linux-mm@archiver.kernel.org>; Sat, 31 Oct 2026 20:49:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=lBkXbKm0
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=NF3x9qzp
 Received: by kanga.kvack.org (Postfix)
-	id CE0FC6B05BE; Sat, 31 Oct 2026 16:36:45 -0400 (EDT)
+	id E58D06B00EF; Sat, 31 Oct 2026 16:49:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C91806B05BF; Sat, 31 Oct 2026 16:36:45 -0400 (EDT)
+	id E09A16B05B1; Sat, 31 Oct 2026 16:49:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BA7246B05C0; Sat, 31 Oct 2026 16:36:45 -0400 (EDT)
+	id D1EA96B05B2; Sat, 31 Oct 2026 16:49:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 9D79C6B05BE
-	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 16:36:45 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 87E7DA0A33
-	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 20:36:44 +0000 (UTC)
-X-FDA: 85384079928.22.4466DC3
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 01801A0002
-	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 20:36:42 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lBkXbKm0;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id A9E986B00EF
+	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 16:49:33 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 43732801CE
+	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 20:49:33 +0000 (UTC)
+X-FDA: 85384112226.23.9C6EFC1
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 8E8ED40003
+	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 20:49:31 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NF3x9qzp;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf15.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+	spf=pass (imf17.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793479003;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
+	s=arc-20220608; t=1793479771;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Q1FLDEmGnWMRgBUd/62r3WuYHm0P7ulS+ZFGuHNlRhs=;
-	b=nrJbmYUbXOquTE7LmnuDI3EG1k/UClSeDwIISVQJZvrUTrjHLs6BTEdBtewrfpmG+nNBzK
-	96VPvZLL5H2OhImVw6HOflPDjcpoWTDb+NAy04LAYrsPtMItZVOprSVaNaGFn3Ab73vxcH
-	H0kmx5xXhmWZ4BHjgQn688DyRx7jIdU=
+	bh=GfcB9TvOu6Mjj8+qufOnmdae3K58sylRc4kNrDjGfQQ=;
+	b=pjnGaDJBha8KFIuiznD5D+TJ24IxAO3Ad9ziqZ0EX4TCdEEd7NV3jeVHdBvGzJxogza8QX
+	DiThuceErrs6CH6KVXS611dNXqH/y1t9HbosQXWWc9TuCrKNjMIWFzVw1e/C6abvX1fcrc
+	IkvnkeLyOzIrETMrybQbPLU3TZNbnXw=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lBkXbKm0;
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NF3x9qzp;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf15.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+	spf=pass (imf17.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793479003;
-	b=QGo9c2gbUcWUnYr9ttL+y1jhZh9nxVfpTTcvcIPmSFpGS+gGRPt64pvgBk6tcJlOX5onqf
-	vOt5vgRNfgXToCYhm1g9GICbrO/UbSaFQ8yrKMi3ZXTzCGL9brOsOP852uWXKymrxuuB2g
-	0E9NATLvbDQuUMXRwuMV5kbnKOvcOJY=
+	t=1793479771;
+	b=I/rokwzJpnaMdMijvHxtNudP9R2tqKbADVjZcrb3dTwzHbPG+lBQs7CseRYMR2Hlf94xJ/
+	E9TyoEcjq/Upzcdsu5wz3GJg/H3Y+wQ4hI6qPcO7h/FCtgfZnFQzyZTbR1G03fM50evN+e
+	zT3Q88ApJYSFiEtiwVO/GYSTJIm9JFw=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 8A394600C8;
-	Sat, 31 Oct 2026 20:36:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E4FE1F000C1;
-	Sat, 31 Oct 2026 20:36:42 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id B28EA4082D;
+	Sat, 31 Oct 2026 20:49:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5186E1F000C1;
+	Sat, 31 Oct 2026 20:49:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793479002;
-	bh=Q1FLDEmGnWMRgBUd/62r3WuYHm0P7ulS+ZFGuHNlRhs=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=lBkXbKm0ggNaVdYj3PLU457vdE8DIw4WdjhJH7utu9m9MiI2gHhu5DoA5F2ozLy3H
-	 obgcQknCpoL9hjk9AKez74ZHsER4E5uouIY2eyc4sshTDmSphMrIcesMIlqE9YmXeL
-	 7tGytCPZgt/MuuJj1WdEth1PnVua4sidm6Am/rxmsb8lTze0EweEPsgi7MdyHtaYXe
-	 O47UkGmOQAmL105q33xrAYpzxhRlaXdnKB/cCNqOm01S4/jPRoONubrmTgN/mHhe7A
-	 HoZWfM66k+gW4Yglj+0UduQUU4ZXUJuZomdQ8AQikjm30R94Miz2StRk5BEUnn987G
-	 Wl38HzVtqMBiw==
-Message-ID: <sashiko-outbox-192119@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [RFC PATCH 3/6] mm/damon/vaddr: implement sz_filter_passed for
- migrate_{hot,cold} action
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "SJ Park" <sj@kernel.org>
-Cc: "Andrew Morton" <akpm@linux-foundation.org>, damon@lists.linux.dev, linux-mm@kvack.org
-In-Reply-To: <20261031202614.96036-4-sj@kernel.org>
-References: <20261031202614.96036-1-sj@kernel.org>
- <20261031202614.96036-4-sj@kernel.org>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Sat, 31 Oct 2026 20:36:41 +0000
-X-Rspamd-Queue-Id: 01801A0002
-X-Stat-Signature: ifzpma63sjh5se39r6tdg76d5g5h7mhq
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	s=k20260515; t=1793479770;
+	bh=GfcB9TvOu6Mjj8+qufOnmdae3K58sylRc4kNrDjGfQQ=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=NF3x9qzpmt9KSRu9FegTUQncFR0lNXiplGIUK5tfIM7DStEB7TvANGiTkMivbrg1J
+	 YY0E5M+pIUS+APOGc9F8vQOCmZ1bQ7wD571M8Fzoj40vPMJfGlx9ZIZPvwHKKNqLIS
+	 59tK3arW76yF7DkUS4R+MI2EFUIp2J7ZfR8FCErTe8+N2zlJ2YAWuw3vNdChspJmsM
+	 Wc/HC5mwBvVK+zCYpTvDN0tPiuS8BkGKfN52bb0y/7UzPsojMTkIY6qxvtbKK07+Gg
+	 X7Kt78GRA+dj/jEVZjMiynqaQTa7yowLezXjGfGbXqvFvaYThFryjWiuVIqK6wK96D
+	 DhWgdGJypBO0g==
+From: SJ Park <sj@kernel.org>
+To: sashiko-bot@kernel.org
+Cc: SJ Park <sj@kernel.org>,
+	"Andrew Morton" <akpm@linux-foundation.org>,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org
+Subject: Re: [RFC PATCH 1/6] mm/damon/core: handle invalid target in damos_fix_stale_charge_pointers()
+Date: Sat, 31 Oct 2026 13:49:21 -0700
+Message-ID: <20261031204923.96778-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <sashiko-outbox-192118@kernel.org>
+References: 
+X-Archived-By: <archiver.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 8E8ED40003
+X-Stat-Signature: dp8d39p6rnxr8emrihotx797i6ff9h49
+X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1793479002-131714
-X-HE-Meta: U2FsdGVkX1+ioUCWM7Dc3Q76jAPpYnzYICux2bJjTSnXk4fsjwq1yI3W5JRmbFatYgEkXSZpHofd3yf5ITjoFEEHXrHWBsHWGEsWwFLd2gDP8d2PG9anNmFUkKBRVk7q6WeJ3pxjV4Hy0mviktzSCkNafMCpxSD/RKxPYsbz2XGqIa6DigAit2i+ZZlne1yqXaNOqhGMtP1dE1lpW+v2aVtXb59CXVJB4njpvHRVwSOiCqQ3qJEiVcZSgtvBN5N4o0xIxfdNCy+QgcHTFs2Vjf55YlPLRzZiNPJ5hHvG1Xh7SMuRlMRSBLuFz4+8QNfYp8VtFWvkBTWneyZnalf2yc7EogCF51bs0TSZH0t4wCcriSpxR6wwxkIcOsfTS1MQbOkdksxtKfBq0ytSG09VtYpbaF2/MQvKEgnTHgJLkfQYl06AdSD1U3305DU7LXNKzTK9mv/HJ0e4oWnEDWgsWoFWCqCewbH6JQITO92caBZpo+FB6meCrYLx/OK9WPc+pH9XO+C9Pz00OlPcPapX0JO9xWJPgLHGBNCbjgoNjckeLoeSSLoymnYpZ1i1x5PmoMyD9yQUD/vl20h+hBAyV0zYR5XPi5XfI+cL9pyGqB59HOTLkPPBzzwUqTXTWMJeGuQD7TQjft+vEgUVzQSf2qkOKbkMD7Cpm+Z4+FAJn7byzMHRqhTAlKBkq6jCLeVKGNjFsntrpFsgqRMEywuRRSYlDocnEa3YIrSQ46PED7Zz+uXs5AGcOn5mP68F63sco0bMFpzN7feN7mZQ/QWaxX73N0vvjZmJL+y6KvGYrgQVTAhnvdYPoVO3W3FhmMY5F2JmjE5XHYiMnsgoCk5Gwnqs6kGSl7haAKUCGmFAqij07TUVCySxIZeKxOMwDAJnxe4C2Uo29MYPk96xcgjGN6naAubfmOPfX1uUlXus+VCPo8VPhTFitHv5qHufHmPZZtvYJ8jUklHvdoUQVmo
- fpNVrCh2
- zP/LpWytjrKmOSVB3Bi8jCkEhIao42S5zT8MEfiZO18dzNGqDhmX0a15dCtbnzbNDVmddn9BHI+v4q5PAAwkNMmhQxGkYgYiDlPo8hiJKKCX0W8ArHtWC1uTFuiLn11lAH78CMW2hoi0sMepOOdwyVGwiYEgCmoXIrP4Sq80r6oITHm/yzSUDXJM1kdKV76S54KAPVKMbzUHljGnp8o42Ufwvj+IPIrNUTdhjT7mAUwc6+BR2aPhHIxis1EaVVAPNQKywtExVUnQEZpnty8Gd99wAv8K0d1LlBZXzbSegBhfGjlK1rfzsR/k7wVDcYFldABzMfB8PYOHavq/nENT7g/fhW/N9/PabXDWehLNccarad9dDIfHPlfudfPNzZP55+W+T/WsbgesmlHEVWZkpWGiRu+G011gPG3Y5mMGeaxEx/qvGg110c4INcm1BjwdJXhk1dIhK5+XFutMTp/RslN5mk53RCWeC9oK39zeLHqaLYXzHAF15O05RiUwAdWoJpgM0Z7wWqTHgH7e2icmSxPM4dfHDLTqe9Sky/H0qJD6vyeZAv4dbhiDiQqorpIRb9nn8ZNuXtIlj+lGRTYaYqPEc5tBKiX+bS5Cchw1spz4VqsgPmHedJL/wRaUJf/eWdmb6
+X-HE-Tag: 1793479771-698849
+X-HE-Meta: U2FsdGVkX1+OKf+LeB3Ovmqgys8gIdY/bPixgctgIsyOrc2VKFJhB8W8rJnwb+U9by8tEAw2VXKidd5/Fru5GgJezqfgXp8tmI/YtdrtPf8CwV/v+nQJemKR/Egfz2pEImonZFfIrnYSq2rKM3p37nZ2pCuWg5wbf+g+9Y/vVxFhzQ+FtsyycRUynrgVzTr9siRa/z0XAcz/NNJsdKpIbhgAYMZXR9asecA+Ay4U0nJphT2p/yY/VYtoQaaGNaB/JrdCEUuV57B6/dz6BL/MIJW3b2CPdEnV3m+4NwELbbO1o+hSiurn+InvQXfVlwRwyxgQijKkHEHTL48ZIMvGpR1uzUWypXlLb4Wm5RBv3b2fmyNmydCY0TKjAQgb6UA4ZUI4tNv0/ACuRGQXqDu3MogsqDK87A2C8IHg2YfEHwevwPRsjnbSt5bdZzhfaz00BUZfQbfGDkdWdmeccvR1nvVYsU/hBoGNOyyceLM8woVLREN+7QM5ztNWozp74Bpo7nUHfMtsLC7ahXt8IhxICxKuJUd0m1tTzAku84tfRXd+FFvlAqeqSnU70u4akSEn25m1oNIq8lYR3Y0cig2E7gk1xdD0yO6XW22uNt55UHlRyRqAnZj1m8jdZGruVvmysVxyCEb3CJb/ltdCkiwTbnq6/gWpjx6O4DBfQQgxT3Ae24msstqJK/N3QY0Bm6m13vsIadI/GaPoA+Wn87zcprm6fvYwdbampAiATKXv6mzZH6AWVNP/aDIE5h+kQeUPQNm6qOKqaL+P7kU+NDb3T8Ie/RV9PTUrTuveTO4qYOlmQ2G6oP4X8UEAEkdsFFxuJYS2OvBMWICR2sitVdKMPFdOmqU/PZLBA/x9pQPAZDYC3Rz8u01V2hGiN82B/gHMu8rCRgc2ZrqfF414MXPjWcyWAZvHKcEO8yhFaUHo8tKo6W5VUnKcMHrMaeAbxfMOjBporT0vGL41UiRTHqA
+ K/uGcsN5
+ BVzP9fJwdNsnzz6riWND+dcAu/H5qAlLfeFm4Xb98phrUX4hci5QDnuzV32tbT7WhuMkjAPcaXCUGvPIHVpILjPCOG1/6TR1SXIyP32928VDRxXRcc4vtlFB1U1TjELyN0+omUv3BMNif8dSgjfy2B4i+DlYbZcsSjQgcpFikxTlyIfspaT6GeH1hm6LejaeRf5gG00nrS0Kc//W+9SDpqWxat0hGS5iOgE0Bsv1K3SofCh6dJtSQQQ9WnJJpQ0XT9qRPigK9Wh1dfntYIeLN9/6cpfsQz40CuKXOwtpG2bFNuLTiPtQ795nWDDz133oSNj/i//MNMTZF9AfkObucexCro6bjJYdPe78hAWdFUyli/wDImBy7Vm5Bpg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,131 +96,131 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
-X-Archived-By: <archiver.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
-s) to consider:
-- [Critical] mm/damon/vaddr: uninitialized priv.sz_filter_passed in damos_v=
-a_migrate()
-- [Medium] mm/damon/vaddr: double-counted sz_filter_passed in damos_va_migr=
-ate_pmd_entry()
---
+On Sat, 31 Oct 2026 20:36:25 +0000 sashiko-bot@kernel.org wrote:
 
-commit 872d2945863aba3a6ac672128498f5d65dbc8d40
-Author: SJ Park <sj@kernel.org>
+> Thank you for your contribution! Sashiko AI review found 1 potential issue(s) to consider:
+> - [Medium] mm/damon/core: stale charge_target_from and skip regression on invalid target
+> --
+> 
+> commit 3b1cac25b68197d5c2819d4a16dbde02446b2d07
+> Author: SJ Park <sj@kernel.org>
+> 
+> mm/damon/core: handle invalid target in damos_fix_stale_charge_pointers()
+> 
+> This commit moves the DAMOS quota charge pointer fixup for invalid targets
+> from kdamond_apply_schemes() into damos_fix_stale_charge_pointers().
+> 
+> > diff --git a/mm/damon/core.c b/mm/damon/core.c
+> > index 73b571b429cb3..ce75db510a9d3 100644
+> > --- a/mm/damon/core.c
+> > +++ b/mm/damon/core.c
+> > @@ -3394,7 +3394,11 @@ static void damos_fix_stale_charge_pointers(struct damon_ctx *c,
+> >  		return;
+> >  	damon_for_each_target(t, c) {
+> >  		if (t == quota->charge_target_from) {
+> > -			if (damon_nr_regions(t) > 0)
+> > +			bool valid_target = true;
+> > +
+> > +			if (c->ops.target_valid && !c->ops.target_valid(t))
+> > +				valid_target = false;
+> > +			if (valid_target && damon_nr_regions(t) > 0)
+> >  				return;
+> >  			break;
+> >  		}
+> > @@ -3513,15 +3517,8 @@ static noinline_for_stack void kdamond_apply_schemes(struct damon_ctx *c)
+> >  	max_region_sz = damon_region_sz_limit(c);
+> >  	mutex_lock(&c->walk_control_lock);
+> >  	damon_for_each_target(t, c) {
+> > -		if (c->ops.target_valid && c->ops.target_valid(t) == false) {
+> > -			damon_for_each_scheme(s, c) {
+> > -				if (s->quota.charge_target_from != t)
+> > -					continue;
+> > -				s->quota.charge_target_from = NULL;
+> > -				s->quota.charge_addr_from = 0;
+> > -			}
+> > +		if (c->ops.target_valid && c->ops.target_valid(t) == false)
+> >  			continue;
+> > -		}
+> 
+> [Severity: Medium]
+> Can moving the invalid-target reset from kdamond_apply_schemes() into
+> damos_fix_stale_charge_pointers() cause stale quota->charge_target_from
+> pointers and alter round-robin target skipping across multiple targets?
+> 
+> First, in kdamond_apply_schemes(), damos_adjust_quota() (which calls
+> damos_fix_stale_charge_pointers()) runs for all schemes before the
+> damon_for_each_target() application loop.  For virtual address space
+> monitoring, c->ops.target_valid(t) is damon_va_target_valid(), which
+> checks whether the target PID still has a live task_struct.
+> 
+> If the target referenced by s->quota.charge_target_from is valid when
+> damos_fix_stale_charge_pointers() checks it, but the process exits while
+> damos_adjust_quota() builds the score histogram or while
+> damos_apply_target() applies schemes to earlier targets, the target loop
+> in kdamond_apply_schemes() will see c->ops.target_valid(t) == false and
+> skip t without clearing s->quota.charge_target_from.  For all remaining
+> targets after t in c->adaptive_targets, damon_do_apply_schemes() calls
+> damos_skip_charged_region():
+> 
+> mm/damon/core.c:damos_skip_charged_region() {
+> 	if (quota->charge_target_from) {
+> 		if (t != quota->charge_target_from)
+> 			return true;
+> ...
+> }
+> 
+> which will skip every subsequent target for that apply interval.
 
-mm/damon/vaddr: implement sz_filter_passed for migrate_{hot,cold} action
+This race can happen even in the current code.  That is, the target could be
+terminated between the current check and damos_apply_target() call.  The race
+can happen more easily, but I don't think this is a regression.
 
-This commit adds sz_filter_passed accounting to the DAMON virtual address
-space implementation of the migrate_hot and migrate_cold DAMOS actions by
-accumulating folio sizes in damos_va_migrate_pmd_entry().
+> 
+> Second, damos_adjust_quota() returns early before calling
+> damos_fix_stale_charge_pointers() whenever damos_quota_is_set(quota) is
+> false:
+> 
+> mm/damon/core.c:damos_adjust_quota() {
+> 	if (!damos_quota_is_set(quota))
+> 		return;
+> 	...
+> 	damos_fix_stale_charge_pointers(c, s);
+> }
+> 
+> whereas damon_do_apply_schemes() calls damos_skip_charged_region()
+> unconditionally.  If damos_quota_is_set(quota) becomes false while
+> quota->charge_target_from is still set to a target t (for example, when a
+> quota is disabled or its goal is removed via online commit in
+> damos_commit_quota(), which preserves quota->charge_target_from, and
+> quota->esz becomes 0), and t exits before kdamond_apply_schemes() reaches
+> t, neither damos_adjust_quota() nor kdamond_apply_schemes() will ever
+> clear quota->charge_target_from, causing damos_skip_charged_region() to
+> skip all other targets permanently.
 
-> diff --git a/mm/damon/vaddr.c b/mm/damon/vaddr.c
-> index c271b6d63c027..112095c2d53fd 100644
-> --- a/mm/damon/vaddr.c
-> +++ b/mm/damon/vaddr.c
-> @@ -776,6 +776,7 @@ static bool damos_va_filter_out(struct damos *scheme,=
- struct folio *folio,
->  struct damos_va_migrate_private {
->  	struct list_head *migration_lists;
->  	struct damos *scheme;
-> +	unsigned long *sz_filter_passed;
->  };
-> =20
->  /*
-> @@ -840,6 +841,7 @@ static int damos_va_migrate_pmd_entry(pmd_t *pmd, uns=
-igned long addr,
->  	struct damos_va_migrate_private *priv =3D walk->private;
->  	struct list_head *migration_lists =3D priv->migration_lists;
->  	struct damos *s =3D priv->scheme;
-> +	unsigned long *sz_filter_passed =3D priv->sz_filter_passed;
+Good finding.  I will drop this patch from the next version of this series for
+now.
 
-[Severity: Critical]
-Is priv.sz_filter_passed ever initialized before the page walk runs?
+> 
+> Finally, when monitoring multiple targets [t0, t1, t2] where the previous
+> quota window stopped at charge_target_from = t1 and t1 has since exited,
+> kdamond_apply_schemes() previously skipped t0 via
+> damos_skip_charged_region(), cleared charge_target_from upon reaching t1,
+> and resumed applying the scheme at t2.  With charge_target_from cleared
+> upfront in damos_fix_stale_charge_pointers() before the target loop
+> starts, won't kdamond_apply_schemes() restart charging from t0 instead of
+> advancing to t2?
 
-In damos_va_migrate(), struct damos_va_migrate_private priv is declared on
-the stack without an initializer, and only priv.scheme and
-priv.migration_lists are set before calling damon_va_walk_page_range():
+Again, good finding.  This is only a corner case that happen only for one
+cycle.  I think it is a reasonable tradeoff for code simplicity.  But since I
+decided to drop this patch for now, I will think about this again, too.
 
-mm/damon/vaddr.c:damos_va_migrate() {
-	...
-	struct damos_va_migrate_private priv;
-	...
-	priv.scheme =3D s;
-	priv.migration_lists =3D kmalloc_objs(*priv.migration_lists, nr_dests);
-	if (!priv.migration_lists)
-		return 0;
-
-	for (int i =3D 0; i < nr_dests; i++)
-		INIT_LIST_HEAD(&priv.migration_lists[i]);
+> 
+> -- 
+> Sashiko AI review · https://sashiko.dev/#/patchset/20261031202614.96036-1-sj@kernel.org?part=1
+> 
 
 
-	mm =3D damon_get_mm(target);
-	if (!mm)
-		goto free_lists;
-
-	damon_va_walk_page_range(mm, r->ar.start, r->ar.end, &walk_ops, &priv);
-	...
-}
-
-When damon_va_apply_scheme() invokes damos_va_migrate() for DAMOS_MIGRATE_H=
-OT
-or DAMOS_MIGRATE_COLD and damos_va_migrate_pmd_entry() encounters a present
-folio that passes damos_va_filter_out(), won't *sz_filter_passed +=3D
-folio_size(folio) dereference an uninitialized stack pointer?
-
->  	struct damos_migrate_dests *dests =3D &s->migrate_dests;
->  	struct folio *folio;
->  	spinlock_t *ptl;
-> @@ -858,6 +860,7 @@ static int damos_va_migrate_pmd_entry(pmd_t *pmd, uns=
-igned long addr,
->  			goto huge_out;
->  		if (damos_va_filter_out(s, folio, walk->vma, addr, NULL, pmd))
->  			goto huge_out;
-> +		*sz_filter_passed +=3D folio_size(folio);
->  		damos_va_migrate_dests_add(folio, walk->vma, addr, dests,
->  				migration_lists);
->  huge_out:
-> @@ -885,6 +888,7 @@ static int damos_va_migrate_pmd_entry(pmd_t *pmd, uns=
-igned long addr,
->  		nr =3D folio_nr_pages(folio) - page_idx;
->  		if (damos_va_filter_out(s, folio, walk->vma, addr, pte, NULL))
->  			continue;
-> +		*sz_filter_passed +=3D folio_size(folio);
-
-[Severity: Medium]
-Can *sz_filter_passed double-count a large folio that spans across multiple
-adjacent damon_region ranges?
-
-In damos_va_stat_pmd_entry(), the walk checks damos_va_invalid_folio(folio,=
- s)
-and records s->last_applied =3D folio so that a PMD-mapped THP or PTE-mapped
-large folio overlapping more than one damon_region is only counted once per
-scheme application pass:
-
-mm/damon/vaddr.c:damos_va_stat_pmd_entry() {
-		...
-		if (damos_va_invalid_folio(folio, s))
-			goto huge_unlock;
-
-		if (!damos_va_filter_out(s, folio, vma, addr, NULL, pmd))
-			*sz_filter_passed +=3D folio_size(folio);
-		s->last_applied =3D folio;
-		...
-}
-
-In damos_va_migrate_pmd_entry(), s->last_applied is neither checked nor
-updated on either the THP path or the PTE loop path. If a large folio spans
-multiple regions and is not migrated during the first region's walk (for
-example, because folio_nid(folio) already matches the target node in
-damos_va_migrate_dests_add(), or because isolation or migration fails),
-walking the next overlapping damon_region will encounter the same folio and
-add the full folio_size(folio) to *sz_filter_passed again.
-
-Should damos_va_migrate_pmd_entry() also check damos_va_invalid_folio(folio,
-s) and update s->last_applied =3D folio?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261031202614.9603=
-6-1-sj@kernel.org?part=3D3
+Thanks,
+SJ
 
