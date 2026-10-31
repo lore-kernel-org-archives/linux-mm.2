@@ -1,97 +1,87 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3C56606A31A
-	for <linux-mm@archiver.kernel.org>; Sat, 31 Oct 2026 18:14:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83188606A31D
+	for <linux-mm@archiver.kernel.org>; Sat, 31 Oct 2026 18:23:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ltuI0pYY
+	dkim=pass (2048-bit key, unprotected) header.d=bytedance.com header.i=@bytedance.com header.a=rsa-sha256 header.s=2212171451 header.b=XrsGCPuM
 Received: by kanga.kvack.org (Postfix)
-	id DCBD76B00EF; Sat, 31 Oct 2026 14:14:12 -0400 (EDT)
+	id 85F506B00EF; Sat, 31 Oct 2026 14:23:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D7D206B05B1; Sat, 31 Oct 2026 14:14:12 -0400 (EDT)
+	id 8102B6B05B1; Sat, 31 Oct 2026 14:23:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C6B8E6B05B2; Sat, 31 Oct 2026 14:14:12 -0400 (EDT)
+	id 726076B05B2; Sat, 31 Oct 2026 14:23:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 9690B6B00EF
-	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 14:14:12 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 9E2E11A097A
-	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 18:14:11 +0000 (UTC)
-X-FDA: 85383720702.25.C38558A
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 09AFD120005
-	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 18:14:09 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ltuI0pYY;
-	spf=pass (imf29.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 5238C6B00EF
+	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 14:23:24 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id D09071C4426
+	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 18:23:23 +0000 (UTC)
+X-FDA: 85383743886.01.7DD3B79
+Received: from va-1-112.ptr.blmpb.com (va-1-112.ptr.blmpb.com [209.127.230.112])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 08BA120003
+	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 18:23:20 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=XrsGCPuM;
+	spf=pass (imf13.hostedemail.com: domain of zhaogongyi@bytedance.com designates 209.127.230.112 as permitted sender) smtp.mailfrom=zhaogongyi@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793470450;
-	b=CLB/RvZdkw1EeOcGj6prEDpvPvCBMoKUNPn2iAA7IXJgwPdSq3H1WpFUp32PX6b7m/W/om
-	q3w90Xj7+dHXiMDatPC5ztNB5jTdnpMUAorQRrDC2IjNwaX7C9AjUMkw2iGykLgUSFkyVG
-	Pl3x2eoXasYviPn7uUShJvcpcdfgoTo=
+	t=1793471001;
+	b=PS7nP7XAdhUlhmORfwCyMkweH48DAAc90wn8FSxZL6lCne6xRGVoPTuAkM6bAXXA9bBUlc
+	j3VZ+h2jdgtSGJfRmu3cio70INbUAuh1IAX+kbWT3T9i0DX04R9jdWgjzyjvnbQPTWLSoA
+	kObxFQBo9CzYa1wWFUxrVJsrnFdcaYM=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ltuI0pYY;
-	spf=pass (imf29.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf13.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=XrsGCPuM;
+	spf=pass (imf13.hostedemail.com: domain of zhaogongyi@bytedance.com designates 209.127.230.112 as permitted sender) smtp.mailfrom=zhaogongyi@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793470450;
+	s=arc-20220608; t=1793471001;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=+lDk8EHYpV0tgsYzdqpx9pkwT/VF+dJgKPq60hbaEBs=;
-	b=79sgqgFw5joKynoCGfecGb4HH96PTq3JblXL+Gl+Tt8+hvykDk4hXqM19rcv40p39MwxEF
-	VcIIhtbFeKHipYoKEZzzhrkkBUkyo+KWSslpRFadVikE6paoKDgt0ua3zxMqRkb25mm48C
-	MimOAvJcSxDqnJ6oFu/BrvgyWUFahMA=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 8C00160619;
-	Sat, 31 Oct 2026 18:14:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 759D01F00A15;
-	Sat, 31 Oct 2026 18:14:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793470449;
-	bh=+lDk8EHYpV0tgsYzdqpx9pkwT/VF+dJgKPq60hbaEBs=;
-	h=From:Date:Subject:To:Cc;
-	b=ltuI0pYYmAHP6jr8YvI2mcaCXAy0wGU5zNKYgobO5roa0kNXxuUoMEEude3X1Oq4d
-	 pnZ6rPf4P5Q0Djz4L4HwBBa0lmBC8KylvWV6TxldJ8n0+tp0eErvLDiFw44syJo/zT
-	 YGd9IvxWzwidEgr6jBR4i+xlbk+TTUp9TeU4qIzSX+Cd11FYtzuWFx5JPUjvYkdls7
-	 J0zOx4QkwphnwTGLhkTmZx4eAhdOKxZAs8jsk4LzdFkEcTGAYj8n4F0yKCwxUcUp/X
-	 F6HzCiGlbWJBU+G9pJfVX2NpaojdLGGdvG4DA4uBFeOrkuXUZz1KWEfssK9NMkb51M
-	 dkW21P9pzLrBw==
-From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-Date: Sat, 31 Oct 2026 20:14:03 +0200
-Subject: [PATCH v2] userfaultfd: clear uffd state in child PTEs if uffd is
- released during fork
-X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+	 references:dkim-signature; bh=vXDRVZFCX5eXPv5+rEujKnF1AW3QkNUi2OD2EgtvPTE=;
+	b=5OkqwLeB99Ctju/TJoWvzqF/wjpqftLJx+owzZoY+c3kVSTR49S61pN2qBdvWKp+aKzNxF
+	Bf2CddFQeHdoFsBDUFwcKR8S5ngGZxbvI05WHUpOk236R26FtQgX+k5dxH/lIuBFG0UJbr
+	ml0/W4wVxt6/MNm4SNht3Hk+dKtoOJw=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ s=2212171451; d=bytedance.com; t=1793470996; h=from:subject:
+ mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
+ mime-version:in-reply-to:message-id;
+ bh=vXDRVZFCX5eXPv5+rEujKnF1AW3QkNUi2OD2EgtvPTE=;
+ b=XrsGCPuM38VRdyljtUfiHBIpNl0ymbf1a8Q2dBGVEEaEWpP9LN1kYcgnJMUAS4EzVEDQy1
+ 8AIECxw/zZwtl5GAkeZEDkkQFKgdzepJpIMMesZ3fuw4kf2kK+v7K9jQVDavHp4PT+34GI
+ okUDMSsDKqJwlcC+A93kB9/J3vrg6D01FlzJw1mj/OlA6/9m130RnaE3S5Z/r+F71X3XY2
+ nqe8TmGusSbF5PBI7rQtH+jDhmjVYZ7MtoorjmE0xbCmsLvJ7ELQOHuEivPUQdUn8Tu262
+ r7+wrtswUWj8nlbwZL9K320ZDti+TftYw/lK0SUOZrWQPi+stENfnEt39e3JYg==
+To: <akpm@linux-foundation.org>, <david@kernel.org>
+Date: Sun,  1 Nov 2026 02:22:56 +0800
+Cc: <xu.xin@linux.dev>, <chengming.zhou@linux.dev>, <aarcange@redhat.com>, 
+	<riel@redhat.com>, <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>, 
+	"Zhao Gongyi" <zhaogongyi@bytedance.com>
+X-Original-From: Zhao Gongyi <zhaogongyi@bytedance.com>
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261031-uffd-prot-bits-fork-event-v2-1-c448e57df417@kernel.org>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/42OTQ7CIBCFr2JYO+rQtP6svIdxAe1gUQEzUKJpe
- ndLvYDL7+W9L28UkdhSFKfVKJiyjTb4GeR6Jdpe+RuB7WYWcicb3FUIgzEdvDgk0DZFMIEfQJl
- 8go4OErumRqUbMe9fTMa+F/fl+uM46Du1qQhLQ6tIoFn5ti+RcyG5rXMw+JiUflLp9DamwJ/lY
- Mbi+udLRkCo6r08SmwlIp4fxJ6em8A3cZ2m6QtNamy8+QAAAA==
-X-Change-ID: 20261031-uffd-prot-bits-fork-event-de821d651ab6
-To: Andrew Morton <akpm@linux-foundation.org>, 
- Mike Rapoport <rppt@kernel.org>
-Cc: "Jose A. Perez de Azpillaga" <azpijr@gmail.com>, 
- Peter Xu <peterx@redhat.com>, Tal Zussman <tz2294@columbia.edu>, 
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-X-Mailer: b4 0.16.1-dev
+Content-Type: text/plain; charset=UTF-8
+From: "Zhao Gongyi" <zhaogongyi@bytedance.com>
+Subject: [PATCH] mm/ksm: avoid anon_vma UAF during page merging
+Message-Id: <20261031182256.40205-1-zhaogongyi@bytedance.com>
+X-Lms-Return-Path: <lba+26ae63212+b58a0f+kvack.org+zhaogongyi@bytedance.com>
+X-Mailer: git-send-email 2.39.5 (Apple Git-154)
+X-Archived-By: <archiver.kernel.org>
+Mime-Version: 1.0
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 09AFD120005
-X-Stat-Signature: nrpfney7nqjp4trangp538k9azdocb8i
+X-Rspamd-Queue-Id: 08BA120003
+X-Stat-Signature: gm36rgj8c13i91no5cmuo346ox48twx6
 X-Rspamd-Server: rspam01
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1793470449-243470
-X-HE-Meta: U2FsdGVkX1+Y8zKe1KnJeDagOZXFI7w85ACX5Lk+GZIERMee17BfL7hgf0aT7aZ1qnMjj9CgMeikPeqI/HQGoPWPPnzV+oOIDFa5uhN5JN+Z7FEolwMaZDebWkP5MCa6ogwV8xoGhqgfMJihvJ8Pi1XJU2VdPBeDQcHAtjjiGJ+NLi6N3KsLYbBaRaox33Ffyzr9Y1ELrP+WVB0ckcjnuxMxMSTDyXw8GJZnQdIsjrDXsRzKY8myyyA353OAZ2dHphX49ou738rmuVfhrg2HMEm91y9MWDxJ39tbhbPnoyD3qa/nNshZPBicYf7zJJOOw3kqaOtkQmtzAKw5DSTGCMme9Y0JWYPocmaeL2+PUmNpK8XhwPW4aSK9KyEWLujRPMk7gswTn2T22AqwcnT6DmFfzAvkpmh4vHMazK5QGJm/dfKWIfa3K2gd2SIqy106OzVQUgqT4ycgkRDpw9M1rFKAlPpd8p3qPbD5lHeeIXJ6sjbknr6G7p/cEZ6sXIoG7X+3hy6p5sJnHUkIvhR/1xIQf1JbE6dyhhwqtIzun2JMIgMRZ2LBbfDVcoYruPbLO6A97zBiBsE1aPptYXvb1TF1mZlFYffd+izOLI8DDTCXT8Mr7zjc41/4Kj1NjeL4E9QFhYN5DRJ2kMzqGpVvOJidWCFyByLvYqet0hacKLnZ2VJNw+u9PT1Y8+/R37q3WG8sByb6BZvnmk6O0TP18jFqaooQmTy4E0HfEnTphUKIHWPtHge3Y6QCg/J5IsDT1f4RCf6SEWH0OD9fNbS49MPXzlR0kOjrxDCM/EY40Y24ZyNgEjYU5BXo3w4FFj8W4r7L3FGB4132xMpEibXHtieYdgV6jQEuF2oGzDekPY9wHHMpNLdNBRR8ekYMWQP+SyEX2JpSLQEbs9sAcYX6990B9xXCDyogzVUUIYxpQh6pKmak/JeARCxEGODzN6InjhovdhGRWWwwK/BUnYj
- s8Y9qck/
- k+5igy8PnjB32OHPvQsvCJanPAvNszHTPnIHiqtUjhhMRzUSCDAqsp1awy6l242LYm02M5TygkULCqOoH3tcrgmmSepIgUjmHNatLGWgXblVefHmI+QbnPlr37opUaAOCf6pWwW5MRtvoIsHOS7XVDIvZVbzWM/gX6hTq40FN1ecY0eIVzUMi4v0LfyuqzDi4MTGO0q9HzPHGx790i3R0GNg2SDCXDrIORmarQvINAKOXeoN/xvAqd7OLlptUKU+Ry9WNP3I92L2AFxhXDqfRbHe7sbpc8PAs6Tkvn0XfS6t1gHs0OIc8DpIRjjpMeH55bVOASgSMQOqOu+wYtw6EJov5xY62iKoGBT2I
+X-HE-Tag: 1793471000-221991
+X-HE-Meta: U2FsdGVkX19FLMdn4m1KOKZDziC2O0EVVPde+hlW2nk8a7WNG8VcW1wdErU/Hb0Cl1sLnSC4N6EwVjeVNEtIRFH3SCsh5L63eD/sLm0dLQR/0Ud/IeMDQNiGC2pi0kGsjPvDNorEAvbD9eaOtQkOknZQdLbEiznWDtcvaWEAop6tYEwFh3Lpjksw1LVUqk8URof/vO76ieJJeouOmTYOQbfv4i5f7fwUZwOPlG11N5aCwAqFMs+MKz+VyylwZbeUWdsAoHqVHcHIQp/g/14Mcp+nu34ynkBFgndKBDPTJGvNda8BkfqCRu3+5WJXY5h8ar2SwmRw0USFqzSraWdxL7uDlj+iTIlieQCqakINJ22VieogQB6bsTLbeOIlrNYDY2sHQnU8zRrVCoo5RwcKmN9hFrW8FTPxUWBVdjGkT+C0z9zQ88/y5Xp34fZ+TlRU1miCxKNvDzYgAcHzQdHCcZAQtPvUgqAjn61aFRHrGDh/sEJdMgWnbpGYnYccH+LfmgpdcKKCq2GpCI6nuN741+MWe0nZHhsY8ilLJA8n4qB1LeqS8w07J1rfJnN2J/QH336NpSTMmxMLzCg/cNTtZa7QS/NeODH17dyKtI6QaNBzGI8D+G3HuX1RlVknivDPMq7mltCNhR5E/3vFGOH6jVxZ3wyTyHgn8bw1bxMOEHyaL8CCDMhEERw07dh4JIDqc+Tzfk67MAxp4JY/OCi7AckLAilveOmU6HhjPqdoK897ofSuV7R8dy+rzsYwaoq3zNPeFglJe4d4JyGUjW82nxOrrb6UFyfUjxeEy6r9+H461wVVn44AAtfCTkzigZK9hA0zaky/+Ucpo5gxdLwWrxvTYtq8WlHLpBUX/UrkRANzyl0giptL5nIOowRhPYAMSkqxQG8idpZYvg/e0dFNs9v9lGNpWhILeYPZNjvBrLhJjZvKJ6yrWK/LnhECGU+AiPKpFNOiyqq8zu635Bp
+ x3XFOXR3
+ rja8j5Pyg+u1aTytdHp5QF35Rw0hHM98b8vPNZ1mzN88K+Sw8pq6FeccFeDbmHAXi1vyCa4q5TOSLJINs8KVAg6/q3Zc+89egDMQU4OY2llTT4mkhwoCNfmsXrj9JdphWGOsX4aU/wBLycEwifxbdo7Zo24qk4mPhnaQjiflqJ48AE+GUvA+sVtJKNQNE/iuHevQ1lAjdDf4Vs4J2k9jmEOO4TMpvo0rJRtV0D4Vl+X1wo8LJignsXHgPDPKRkhlxgKiMc95jEE1L3WbnuXMM/ZrHDwChWW+mhDWq5ZWyjh8juyc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,121 +90,61 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-With UFFD_FEATURE_EVENT_FORK the userfaultfd context is duplicated for the
-child process, the child VMAs are registered with the new context, and uffd
-protection state from the parent PTEs is copied into the child.
+KASAN reports a use-after-free in page_address_in_vma() while ksmd
+merges pages. ksmd keeps a folio reference across an mmap_lock drop,
+during which mremap() can remove its last mapping and free its
+anon_vma. page_address_in_vma() then dereferences the stale pointer
+from folio->mapping.
 
-If the parent's userfaultfd is released before the fork event is read,
-userfaultfd_release_new() resets the VMA flags but keeps uffd state in the
-child PTEs.
+KSM needs only a candidate address. write_protect_page() checks that
+the PTE maps the folio, and replace_page() verifies the saved PTE
+before replacing it. Compute the candidate from the folio index and
+VMA instead of dereferencing the folio-side anon_vma. Reject KSM
+folios because their page index is not meaningful.
 
-This leaves the child's VMAs in an inconsistent state: they are not
-registered with userfaultfd but their mappings carry uffd protection state.
-
-If the child registers the range with userfaultfd again, the stale state
-turns into protection the child never asked for.
-
-When a write fault makes such a PTE writable without copying the page, the
-uffd bit remains set and page_table_check_pte_flags() warns about it.
-
-Split resolving of the uffd PTE state out of userfaultfd_clear_vma() and
-call it from userfaultfd_release_new() before resetting the VMA.
-
-Fixes: f369b07c8614 ("mm/uffd: reset write protection when unregister with wp-mode")
-Cc: stable@vger.kernel.org
-Reviewed-by: Jose A. Perez de Azpillaga <azpijr@gmail.com>
-Tested-by: Jose A. Perez de Azpillaga <azpijr@gmail.com>
-Reviewed-by: Tal Zussman <tz2294@columbia.edu>
-Tested-by: Tal Zussman <tz2294@columbia.edu>
-Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+Fixes: 21d0d443cdc1 ("rmap: resurrect page_address_in_vma anon_vma check")
+Signed-off-by: Zhao Gongyi <zhaogongyi@bytedance.com>
 ---
-Changes in v2:
-- make comment about what userfaultfd_clear_ptes() does more elaborate
-- Link to v1: https://patch.msgid.link/20261031-uffd-prot-bits-fork-event-v1-1-3572921c2111@kernel.org
----
- mm/userfaultfd.c | 47 ++++++++++++++++++++++++++++++-----------------
- 1 file changed, 30 insertions(+), 17 deletions(-)
+Testing:
+  Unpatched mm-new: fixed-pool KSM/mremap reproduced the KASAN UAF.
+  Patched mm-new: the same workload ran for 12 minutes without KASAN,
+  BUG or WARNING; fork/COW KSM smoke passed.
 
-diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
-index 3b71712edab4c..087b66260d04c 100644
---- a/mm/userfaultfd.c
-+++ b/mm/userfaultfd.c
-@@ -2220,6 +2220,32 @@ static void userfaultfd_reset_ctx(struct vm_area_struct *vma)
- 	userfaultfd_set_ctx(vma, NULL, 0);
- }
+ mm/ksm.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/mm/ksm.c b/mm/ksm.c
+index d6f736a..f8af5ee 100644
+--- a/mm/ksm.c
++++ b/mm/ksm.c
+@@ -1307,7 +1307,7 @@ static int write_protect_page(struct vm_area_struct *vma, struct folio *folio,
+ 	if (WARN_ON_ONCE(folio_test_large(folio)))
+ 		return err;
  
-+/*
-+ * Clear uffd state from a WP or RWP range: the uffd bit, WP markers and
-+ * RWP PAGE_NONE entries. Call this before dropping the registration, as it
-+ * needs the VMA flags to know what to resolve.
-+ */
-+static void userfaultfd_clear_ptes(struct vm_area_struct *vma,
-+		unsigned long start, unsigned long end)
-+{
-+	unsigned int mm_cp_flags = 0;
-+	struct mmu_gather tlb;
-+
-+	if (!userfaultfd_protected(vma))
-+		return;
-+
-+	if (userfaultfd_wp(vma))
-+		mm_cp_flags |= MM_CP_UFFD_WP_RESOLVE;
-+	if (userfaultfd_rwp(vma))
-+		mm_cp_flags |= MM_CP_UFFD_RWP_RESOLVE;
-+	if (vma_wants_manual_pte_write_upgrade(vma))
-+		mm_cp_flags |= MM_CP_TRY_CHANGE_WRITABLE;
-+
-+	tlb_gather_mmu(&tlb, vma->vm_mm);
-+	change_protection(&tlb, vma, start, end, mm_cp_flags);
-+	tlb_finish_mmu(&tlb);
-+}
-+
- static struct vm_area_struct *userfaultfd_clear_vma(struct vma_iterator *vmi,
- 					     struct vm_area_struct *prev,
- 					     struct vm_area_struct *vma,
-@@ -2239,22 +2265,7 @@ static struct vm_area_struct *userfaultfd_clear_vma(struct vma_iterator *vmi,
- 	if (start == vma->vm_start && end == vma->vm_end)
- 		give_up_on_oom = true;
+-	pvmw.address = page_address_in_vma(folio, folio_page(folio, 0), vma);
++	pvmw.address = vma_anon_address(vma, folio_pgoff(folio), 1);
+ 	if (pvmw.address == -EFAULT)
+ 		goto out;
  
--	/* Clear the uffd bit and/or restore protnone PTEs */
--	if (userfaultfd_protected(vma)) {
--		unsigned int mm_cp_flags = 0;
--		struct mmu_gather tlb;
--
--		if (userfaultfd_wp(vma))
--			mm_cp_flags |= MM_CP_UFFD_WP_RESOLVE;
--		if (userfaultfd_rwp(vma))
--			mm_cp_flags |= MM_CP_UFFD_RWP_RESOLVE;
--		if (vma_wants_manual_pte_write_upgrade(vma))
--			mm_cp_flags |= MM_CP_TRY_CHANGE_WRITABLE;
--
--		tlb_gather_mmu(&tlb, vma->vm_mm);
--		change_protection(&tlb, vma, start, end, mm_cp_flags);
--		tlb_finish_mmu(&tlb);
--	}
-+	userfaultfd_clear_ptes(vma, start, end);
+@@ -1408,7 +1408,7 @@ static int replace_page(struct vm_area_struct *vma, struct page *page,
+ 	int err = -EFAULT;
+ 	struct mmu_notifier_range range;
  
- 	ret = vma_modify_flags_uffd(vmi, prev, vma, start, end,
- 				    &new_vma_flags, NULL_VM_UFFD_CTX,
-@@ -2353,8 +2364,10 @@ static void userfaultfd_release_new(struct userfaultfd_ctx *ctx)
- 	/* the various vma->vm_userfaultfd_ctx still points to it */
- 	mmap_write_lock(mm);
- 	for_each_vma(vmi, vma) {
--		if (vma->vm_userfaultfd_ctx.ctx == ctx)
-+		if (vma->vm_userfaultfd_ctx.ctx == ctx) {
-+			userfaultfd_clear_ptes(vma, vma->vm_start, vma->vm_end);
- 			userfaultfd_reset_ctx(vma);
-+		}
- 	}
- 	mmap_write_unlock(mm);
- }
-
----
-base-commit: b61fa14ce6bcbba2cb9a96feea31b760226d6b43
-change-id: 20261031-uffd-prot-bits-fork-event-de821d651ab6
-
---
-Sincerely yours,
-Mike.
-
+-	addr = page_address_in_vma(folio, page, vma);
++	addr = vma_anon_address(vma, page_pgoff(folio, page), 1);
+ 	if (addr == -EFAULT)
+ 		goto out;
+ 
+@@ -1515,7 +1515,7 @@ static int try_to_merge_one_page(struct vm_area_struct *vma,
+ 	if (page == kpage)			/* ksm page forked */
+ 		return 0;
+ 
+-	if (!folio_test_anon(folio))
++	if (!folio_test_anon(folio) || folio_test_ksm(folio))
+ 		goto out;
+ 
+ 	/*
+base-commit: 243e8cdab64129d6207c398f8cf5fbb1962ff7e1
+-- 
+2.39.5 (Apple Git-154)
 
