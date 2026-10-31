@@ -1,94 +1,94 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09B3C606A31A
-	for <linux-mm@archiver.kernel.org>; Sat, 31 Oct 2026 20:56:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84113606A31A
+	for <linux-mm@archiver.kernel.org>; Sat, 31 Oct 2026 20:58:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=FcN7mrT0
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=a2zKxdT8
 Received: by kanga.kvack.org (Postfix)
-	id CB83B6B00EF; Sat, 31 Oct 2026 16:56:18 -0400 (EDT)
+	id 911C26B05B1; Sat, 31 Oct 2026 16:58:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C68486B05B1; Sat, 31 Oct 2026 16:56:18 -0400 (EDT)
+	id 8C1CD6B05B2; Sat, 31 Oct 2026 16:58:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B7DB66B05B2; Sat, 31 Oct 2026 16:56:18 -0400 (EDT)
+	id 7D7796B05B3; Sat, 31 Oct 2026 16:58:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 8178B6B00EF
-	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 16:56:18 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id D6A161A023F
-	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 20:56:17 +0000 (UTC)
-X-FDA: 85384129194.07.6AF582E
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 22CEA100008
-	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 20:56:16 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FcN7mrT0;
-	spf=pass (imf14.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793480176;
-	b=moZqG6TZjK+E/8vradbNlJvczRbzqnKWnovR4weRL9LMaH67jSWWO8NjqOBgNJe5jLGlaJ
-	Q8kRnuk3p4xNLlWBuulfyadUGXERb8e5l8dRkV1fOymY30y47q3RjksIpwGFfPIIY/kJmb
-	i68bmA9uDjopO1vT3d0PJXCGc8mZrmY=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FcN7mrT0;
-	spf=pass (imf14.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 5CBA06B05B1
+	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 16:58:01 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id D01D51201D6
+	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 20:58:00 +0000 (UTC)
+X-FDA: 85384133520.15.38CF702
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 38BF0180005
+	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 20:57:59 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=a2zKxdT8;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf06.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793480176;
+	s=arc-20220608; t=1793480279;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=bjK3yGbh9I562aCl8x1LgXKj2z60QV4RAB6gwWU7JvI=;
-	b=poBDYjiLjiswyFAVwt+jyCJZDPREs5gVINpx1SIaeWcPCLE434e2wjUBRUq24Kl3f6Z2FD
-	fhcoje4GORYfrntw3R2u61NgcUhY4xY/wfHOdp+XW9MyndcKkF93NQ0hrAF6I7RS56B6NW
-	kB5KgfFDYHU7PVt/DThasvf4XBnvYU4=
+	bh=9ME/DwqzmVxiuu2qCC6yi8ywsrQDgzY0nAzN4XnJ72s=;
+	b=OVFC5Zum8vqmmBJGcaJPHLiQ/rGPa24oB+od6jo7RFVY6WdJF6yyJ4uTB1mccMCerVJXV2
+	d+Yxi+k2PIGtBx7x38AmQ8qX5AK+y6mi7DY0fLpSPJnvVDPpxkGKp2UVS5gSi2rpeykvDx
+	h9KMeB7nzkcu+JtDv4IsJE3lkXrsqGE=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=a2zKxdT8;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf06.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793480279;
+	b=ac6h8m+X6PrMpLlow/UJ+qKSmuqtiZTM9DFbfRkNQ5EbCqaKYqTr7GI5KIBxA8AX0AtXNO
+	wyq2Lp3DmCm+XOF6cHQxFdJ2S5dbOpvvUuwN4kCdE2ORLgEc0I87U36r/AAuXPBeEWJS1O
+	wABA+m5LsaYYQvaql0xJCu/5IiS82b0=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 5252E409AF;
-	Sat, 31 Oct 2026 20:56:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08E0F1F000C1;
-	Sat, 31 Oct 2026 20:56:14 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id AD128600C8
+	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 20:57:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F1231F000C1;
+	Sat, 31 Oct 2026 20:57:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793480175;
-	bh=bjK3yGbh9I562aCl8x1LgXKj2z60QV4RAB6gwWU7JvI=;
+	s=k20260515; t=1793480278;
+	bh=9ME/DwqzmVxiuu2qCC6yi8ywsrQDgzY0nAzN4XnJ72s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=FcN7mrT0Fk92Pf9d8ua1XgnJRDHDr2AYDAk6Q6oX1zirqp1LEZMolcKZ8/DkUMCVJ
-	 b+37cUAkM7wRvYaVTmpoQ5finMV84Zak/q5m2IEMRymE8oLT2IP7baliOf28DEVP8A
-	 J6FEoieIsELr9eEE9pwj9pnAL3S/AZrBKPSlhKgmZFqN4EcneNyX1hl/o11QsL9FoR
-	 YA6WE3viXtwLJirmi07y4Opwjfr6M6L8VhOoSzjdeKWTWwLFMqBZjPELma/2fbqGFW
-	 GNzAgo8gPGrcZHyjL4G+jqNWLyhQCXb0y82Gr5APhntirYbkgPz5fy8S2t678zObBF
-	 5B7XSBLqbjdBQ==
+	b=a2zKxdT88rxs4YIcSMs5D84GMbDVm/XhD4gZ07oiTDLAA8DEkyNOah0XcscTm7V9T
+	 +tg978hxHZK64QEYIAcecR8fmrQ3InNoL01bVp5ggvWjEnLhEcwNEfXovgP4QoPXCU
+	 FqZ40Ef8/6JGAkCgR1p31s3UKv69HpwHA49ONdsKA9xb3D5qeEm8GAxooClXkaue3K
+	 YrVjqRrD0exk3GMWJDolJp7bXkIyh+HzswzwP784X5NIowMtaWlg97SZ7LDzv2h5Kx
+	 bV7Ld4p58+p5RjUTcaiM1KQKdhHbCmyrKiaLWXdpm1ssqmxg3mtxtH+pntaMpamt0y
+	 zuRSkpiVhGH8g==
 From: SJ Park <sj@kernel.org>
 To: sashiko-bot@kernel.org
 Cc: SJ Park <sj@kernel.org>,
-	"Andrew Morton" <akpm@linux-foundation.org>,
+	"Shuah Khan" <shuah@kernel.org>,
 	damon@lists.linux.dev,
 	linux-mm@kvack.org
-Subject: Re: [RFC PATCH 3/6] mm/damon/vaddr: implement sz_filter_passed for migrate_{hot,cold} action
-Date: Sat, 31 Oct 2026 13:56:06 -0700
-Message-ID: <20261031205608.97086-1-sj@kernel.org>
+Subject: Re: [RFC PATCH 6/6] selftests/damon: remove unused imports of os and sys modules
+Date: Sat, 31 Oct 2026 13:57:50 -0700
+Message-ID: <20261031205751.97240-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <sashiko-outbox-192119@kernel.org>
+In-Reply-To: <sashiko-outbox-192115@kernel.org>
 References: 
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspam-User: 
-X-Rspamd-Queue-Id: 22CEA100008
-X-Stat-Signature: peybyb75q3y4whx9mj11nwrdm4j6y3b7
-X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 38BF0180005
+X-Stat-Signature: 5u1r98ct19eihef1jc65wqtr78ia7ukf
+X-Rspamd-Server: rspam06
 X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
 	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1793480176-393280
-X-HE-Meta: U2FsdGVkX1/n2Ppfh8ZSpqrO1DdLBKraDNhre/kn3hMPPUX5N3vrpvhE75t4aiLU7qv3XqGBSmb1d1eaAow9QBtd4/+QziBL0vZxlMgfuSx+Yh+VcsRAswm66wMb/i/FMAiMlWQ90KNjwCdNY8H6EvoQEvHLySNtEv9CLz7m0W1RIVt7kG/tnkuJfk3eUILd0CTS/ruSRlfRWvSCChcQSwqh+pRg1h2+BPt31LX/+C3pwy7F+voHMDl0R8mLT6Bsbcc8nojHjNCqkMj17Xs6ukE0qzz4RkyxpBpxi5xhvCMjyeyI657pjPlo1HC1rjpedVKTurUAqjd6nb8EUfV1Ldlyhj49UjbmMhDjAHu+meJNxNKCkp3WTX4k62znK3YNaLLtNhANSIr6Ey4wPT01tn4BHk2tyBiYi05HIcoZllEgLtI8eMw66f3SR18gyUdsDD6+j+SSMLFWwzAkWrGsLLZYNc3h05ontj0qJMUALro7qu4A18IaDwO4qhBrvpA0583Krkofey853EjUz8b8KANv3QwkfSP+S7PjSZDfIjQMxkm6+ERw+LWTD27Zzo9rhJW5rPG1CcRPXwVjOh6hYymtm10Ong6RJZxsBwIOGQzZKnzTGRYkiluTCYETmeqtGum7jGTX9tAoyvcFEp1GZIDOSW3RI0t3aubXB8BSTrIz2SxUWYEmIKOyWOb4yc1vO5Z1KonYlPvGhr2T+B0EGdU/X55/QmlkRGpWzzhRF3zQpVv7olKb4+r+A0Z6cdqRsodmoHEPhnFuvcffk9zRrM/Ve8fPzu8kXIiPHYtlPWP8glDN2MLIXDXRd9G6KAbI131hALVzQywtp9fCFLafzVX9jkFokB5XdnGs3gyzJ13a07nyITVMWGCJeXokd3aGk9J5IVcawqMEqR8FeL5j9V5uFzobFJHzWdVKBnsyZUUCoZ59L7SvEzRpPLZwGsiVYkK3U7FEp1Hd9jI6A7A
- pq0FRzlE
- Bo/f+y7qqOJodT6brOClPWy0fineEU4Y/zRH/Um2TrLvAfyDRKyLoMPz2G50w3FsuPMMmq8KYexOVmskKeuu+upFzFSOg+/zlgusl+mmtEDI6ccq4nq/pMgI5uHINd1gDnrj1U6EJrDRYULiPLYzzNbpNUAL+XPebgf1U6U6b+kaIdRDePdFsNZOFuTXPHgqWMeNH+stJB5K072UxKfuY47b2uIyzihwHitibldwjl7HuTEXAyso3YnE92Sispblt8yfAJ9isqhsAqsz4RACFNy2WFRg9xkfZe89lMMq/J23TULm965XnJsdFEk0UKjttAvP1ifBQQkfQY2TAe9LHTETuSjcnLkYe37xb6Kr62+KaP8xyL3hqHNTpwA==
+X-Rspam-User: 
+X-HE-Tag: 1793480279-152863
+X-HE-Meta: U2FsdGVkX18VQ1BVxZBy8J2PODraFQNEtB+y+PeMXGxAfk+nPr/mVNLQfTGACtqfVIh47SeWXJsENRsQNa/bBQj18apEW/uuNNfGfcy4XOsxkfXyz4PzuMCSvc0UyCK/Vl5qm33PjOfPf0a3i6l0M7C59w13i71Iwkcw5UO1b0UpnL5SBb0r0yxBCQNkKtMSI05B5qpD5L4bO/Ez71sRDou/215hhGpx1PRJQ4rD3GReJvK+hwJn+/iYuJFEeaS3YQCBzJv17lokOB25au9pa15QIFgfVA7XaQb18586su+aFeBz43io94eTZCYUNr7T85CDs1rai/GX/zQTjvhCM0VNy8IHhMJk1FPXrMa0pb/UxrrtAvt5GTTPatco96TumC+o50MxUjr0EBwK5kn2hqFxrV0HhU0ijrlXRSD8RonPnXWEqpiP+Fm3KB2Jw/pAsE1G610dR70KMpeeTEynmkNJCZmAKf+RH1sOeYiJGT0uH8O4zxRvVNYI1wBsBFtJXT1zL3+U7Iq01Qu0IoZp7D469Zr/v04QaY5sU9w4qLbZzrYAQoa2mzB2whXRQ4Bdr8Vj834n3j4FFd9l60ebWUVTAQYfet+ZW7xvpovYrMG4NBKBQDZ/QoHOCVAXn/ZIXra3FeZ40PQPmKtLGE9hvyLrx/nHBKEofthShrc6x+8c5qq2WzXj8NJEbl1paExoJHsndpMzAi0lPI0fCNLjCAfPT4FT+58DFbClTzQ4PC4pPRk8FJfA7MhiU3L0E8cbcSIIsGbPv4fVLYUe/C0rEBla0CICcXHwAQa6ydmLeqP9CXPf2VfHzfnSZfV9uDPGlF7W1Y5d60KDQDzeMBkLWdeIl8s+rF1Y6uoY1Nii+uzxycqXJN4piWTzcLFCXhdHHuz2XHjsDS5d11Pg6K7kyp4ASt5yFUK7h8ZlbIzL7Ql1lGUZNLMOUZUdp8tZJ4HkV+o1KwqZXH5S5emhTtp
+ 75LD1dIk
+ O3XIBPxN3UYHTSUc2/fPhPkv6ERGcEpLuVilYJIJL75WhdJiO3aTasQlep656dFq+KKusV7hHy65Yiyj9YQPzqNzJ9g81SI4NQodxTQBVdtI+gQ/+K6qAWmYGnedfdpON/MnUjm0veorHY0ENUBB2KC3MRxfuapRhkkHxf71sA1Ipwe5pb/VBIuRlYqaDuiLMj/+sHEqIK63JJY6Y7zXY8JkqhzuN3zqgdKGZ+DE3UWDZmpiKZExNk4k+KJGxyju+BTgDKj2aSifVaL4Shr4+03sa8YKjtt5U1cT0+CW7N4Ck586FCLTxqWtj7PTEuML9yDcqIqlj70AEjAT8XxgpvIbqEyfqLFskaMg/NujCEaqs3JFfuRSKvFgAJL7lmAqLuQ7+d8SH++VCjfI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,132 +97,54 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Sat, 31 Oct 2026 20:36:41 +0000 sashiko-bot@kernel.org wrote:
+On Sat, 31 Oct 2026 20:29:00 +0000 sashiko-bot@kernel.org wrote:
 
-> Thank you for your contribution! Sashiko AI review found 2 potential issue(s) to consider:
-> - [Critical] mm/damon/vaddr: uninitialized priv.sz_filter_passed in damos_va_migrate()
-> - [Medium] mm/damon/vaddr: double-counted sz_filter_passed in damos_va_migrate_pmd_entry()
+> Thank you for your contribution! Sashiko AI review found 1 potential issue(s) to consider:
+> - [Low] selftests/damon: commit message names wrong removed modules
 > --
 > 
-> commit 872d2945863aba3a6ac672128498f5d65dbc8d40
+> commit 55304159b940aad6f9b71d318671a40d9d63ca46
 > Author: SJ Park <sj@kernel.org>
 > 
-> mm/damon/vaddr: implement sz_filter_passed for migrate_{hot,cold} action
+> selftests/damon: remove unused imports of os and sys modules
 > 
-> This commit adds sz_filter_passed accounting to the DAMON virtual address
-> space implementation of the migrate_hot and migrate_cold DAMOS actions by
-> accumulating folio sizes in damos_va_migrate_pmd_entry().
+> This commit removes unused Python module imports from two DAMON selftest
+> scripts.
 > 
-> > diff --git a/mm/damon/vaddr.c b/mm/damon/vaddr.c
-> > index c271b6d63c027..112095c2d53fd 100644
-> > --- a/mm/damon/vaddr.c
-> > +++ b/mm/damon/vaddr.c
-> > @@ -776,6 +776,7 @@ static bool damos_va_filter_out(struct damos *scheme, struct folio *folio,
-> >  struct damos_va_migrate_private {
-> >  	struct list_head *migration_lists;
-> >  	struct damos *scheme;
-> > +	unsigned long *sz_filter_passed;
-> >  };
-> >  
-> >  /*
-> > @@ -840,6 +841,7 @@ static int damos_va_migrate_pmd_entry(pmd_t *pmd, unsigned long addr,
-> >  	struct damos_va_migrate_private *priv = walk->private;
-> >  	struct list_head *migration_lists = priv->migration_lists;
-> >  	struct damos *s = priv->scheme;
-> > +	unsigned long *sz_filter_passed = priv->sz_filter_passed;
+> >     selftests/damon: remove unused imports of os and sys modules
+> >     
+> >     sysfs_no_op_commit_break.py imports os module but never uses it.
+> >     sysfs_update_schemes_tried_regions_hang imports the sys module but never
+> >     uses it.  Remove the unnecessary imports.
+> >     
+> >     The issue is found using flake8.
+> >     
+> >     Signed-off-by: SJ Park <sj@kernel.org>
 > 
-> [Severity: Critical]
-> Is priv.sz_filter_passed ever initialized before the page walk runs?
+> [Severity: Low]
+> Does the commit message name the wrong removed modules?
 > 
-> In damos_va_migrate(), struct damos_va_migrate_private priv is declared on
-> the stack without an initializer, and only priv.scheme and
-> priv.migration_lists are set before calling damon_va_walk_page_range():
+> In tools/testing/selftests/damon/sysfs_no_op_commit_break.py, the patch
+> removes import sys rather than import os, and os is still used in
+> dump_damon_status_dict():
 > 
-> mm/damon/vaddr.c:damos_va_migrate() {
-> 	...
-> 	struct damos_va_migrate_private priv;
-> 	...
-> 	priv.scheme = s;
-> 	priv.migration_lists = kmalloc_objs(*priv.migration_lists, nr_dests);
-> 	if (!priv.migration_lists)
-> 		return 0;
+>     file_dir = os.path.dirname(os.path.abspath(__file__))
+>     dump_script = os.path.join(file_dir, 'drgn_dump_damon_status.py')
 > 
-> 	for (int i = 0; i < nr_dests; i++)
-> 		INIT_LIST_HEAD(&priv.migration_lists[i]);
+> In tools/testing/selftests/damon/sysfs_update_schemes_tried_regions_hang.py,
+> the patch removes import time rather than import sys, and both sys and os
+> are still used at module load time:
 > 
+>     sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 > 
-> 	mm = damon_get_mm(target);
-> 	if (!mm)
-> 		goto free_lists;
-> 
-> 	damon_va_walk_page_range(mm, r->ar.start, r->ar.end, &walk_ops, &priv);
-> 	...
-> }
-> 
-> When damon_va_apply_scheme() invokes damos_va_migrate() for DAMOS_MIGRATE_HOT
-> or DAMOS_MIGRATE_COLD and damos_va_migrate_pmd_entry() encounters a present
-> folio that passes damos_va_filter_out(), won't *sz_filter_passed +=
-> folio_size(folio) dereference an uninitialized stack pointer?
+> Should the commit subject and message be updated to refer to the sys and
+> time modules instead of os and sys?
 
-Nice finding.  I will set the field in damos_va_migrate(), to sz_filter_passed
-parameter it received.
-
-> 
-> >  	struct damos_migrate_dests *dests = &s->migrate_dests;
-> >  	struct folio *folio;
-> >  	spinlock_t *ptl;
-> > @@ -858,6 +860,7 @@ static int damos_va_migrate_pmd_entry(pmd_t *pmd, unsigned long addr,
-> >  			goto huge_out;
-> >  		if (damos_va_filter_out(s, folio, walk->vma, addr, NULL, pmd))
-> >  			goto huge_out;
-> > +		*sz_filter_passed += folio_size(folio);
-> >  		damos_va_migrate_dests_add(folio, walk->vma, addr, dests,
-> >  				migration_lists);
-> >  huge_out:
-> > @@ -885,6 +888,7 @@ static int damos_va_migrate_pmd_entry(pmd_t *pmd, unsigned long addr,
-> >  		nr = folio_nr_pages(folio) - page_idx;
-> >  		if (damos_va_filter_out(s, folio, walk->vma, addr, pte, NULL))
-> >  			continue;
-> > +		*sz_filter_passed += folio_size(folio);
-> 
-> [Severity: Medium]
-> Can *sz_filter_passed double-count a large folio that spans across multiple
-> adjacent damon_region ranges?
-> 
-> In damos_va_stat_pmd_entry(), the walk checks damos_va_invalid_folio(folio, s)
-> and records s->last_applied = folio so that a PMD-mapped THP or PTE-mapped
-> large folio overlapping more than one damon_region is only counted once per
-> scheme application pass:
-> 
-> mm/damon/vaddr.c:damos_va_stat_pmd_entry() {
-> 		...
-> 		if (damos_va_invalid_folio(folio, s))
-> 			goto huge_unlock;
-> 
-> 		if (!damos_va_filter_out(s, folio, vma, addr, NULL, pmd))
-> 			*sz_filter_passed += folio_size(folio);
-> 		s->last_applied = folio;
-> 		...
-> }
-> 
-> In damos_va_migrate_pmd_entry(), s->last_applied is neither checked nor
-> updated on either the THP path or the PTE loop path. If a large folio spans
-> multiple regions and is not migrated during the first region's walk (for
-> example, because folio_nid(folio) already matches the target node in
-> damos_va_migrate_dests_add(), or because isolation or migration fails),
-> walking the next overlapping damon_region will encounter the same folio and
-> add the full folio_size(folio) to *sz_filter_passed again.
-> 
-> Should damos_va_migrate_pmd_entry() also check damos_va_invalid_folio(folio,
-> s) and update s->last_applied = folio?
-
-Good finding.  But this is a pre-existing issue.  I think it is better to be
-fixed first, before this patch, though.  I will add the fix to this series, or
-post it as a separate one before this series is merged.
+Good catches.  I will fix these in the next revision.
 
 > 
 > -- 
-> Sashiko AI review · https://sashiko.dev/#/patchset/20261031202614.96036-1-sj@kernel.org?part=3
+> Sashiko AI review · https://sashiko.dev/#/patchset/20261031202614.96036-1-sj@kernel.org?part=6
 > 
 
 
