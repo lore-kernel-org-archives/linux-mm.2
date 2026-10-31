@@ -1,74 +1,74 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 476CE606A31E
-	for <linux-mm@archiver.kernel.org>; Sat, 31 Oct 2026 09:50:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F706606A32A
+	for <linux-mm@archiver.kernel.org>; Sat, 31 Oct 2026 09:50:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=D55mz271
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Yr9l+Fh+
 Received: by kanga.kvack.org (Postfix)
-	id 586F56B05EB; Sat, 31 Oct 2026 05:50:27 -0400 (EDT)
+	id 511D46B05ED; Sat, 31 Oct 2026 05:50:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 536566B05EC; Sat, 31 Oct 2026 05:50:27 -0400 (EDT)
+	id 4C1D86B05EE; Sat, 31 Oct 2026 05:50:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 425EB6B05ED; Sat, 31 Oct 2026 05:50:27 -0400 (EDT)
+	id 38A306B05EF; Sat, 31 Oct 2026 05:50:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 1367D6B05EB
-	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 05:50:26 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 8ABED40955
-	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 09:50:26 +0000 (UTC)
-X-FDA: 85382451252.10.F80AC72
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf25.hostedemail.com (Postfix) with ESMTP id BB44BA0005
-	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 09:50:24 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=D55mz271;
-	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793440224;
-	b=nmW0BugdRyjdOvzVBXbrnL00X9c60GB6xOvE5v7QndBvkNvz095rnDQHhDuVxF7DcseE3T
-	TD2yrZeB1WpGvEmEgSKar8rp3vUPnyEirlhwhmQ7FyTSU1Qd4L8G3kDWBJLCIR36gqcVoj
-	Z4b09Sfp0zVy99ZcoDjKaRDRBKulfDM=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=D55mz271;
-	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 067886B05ED
+	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 05:50:43 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 7FD9A1A092B
+	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 09:50:43 +0000 (UTC)
+X-FDA: 85382451966.11.5EEA3ED
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf12.hostedemail.com (Postfix) with ESMTP id BC5F540002
+	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 09:50:41 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Yr9l+Fh+;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793440224;
+	s=arc-20220608; t=1793440241;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=a7XJnsrw1a5gmHitwDTAR/cnJ4FEA4vxklFTb+Y9pAI=;
-	b=sv/66eje3+YdX4VD+iYbSDGO1pJFyYxLhWQ9RKqocbsM2w1k+rKQbb6cairg2/yOfBj1Kr
-	oGgFLVAwx3EgJPkEslSi4uuwENScZsZuTi91uIkUENfjOVMRGXvImjVfNUsE7BYksf0tyh
-	sPeBwI4chEEgr5fBQSneW7IeiOwHUC0=
+	bh=VYlMeH+q4hS08pWQrgQz/Zl4BVbNdljyBojnlqTTFgI=;
+	b=QKlDKxaY3evkGh04QLNui6aL1MQfrQMuHYmIue4jtqna3DjCoHGcEUqGzibnhjAKXgeou7
+	2KW4Ksofr7Y0xn2P8D/0kh9J5Lu0F41QLBzHayrlkqCzUvKYoPBXj2wfTzs07VocQX6djc
+	OvP7m0RW1yLq8xY9KY554cbKlkVauYU=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Yr9l+Fh+;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793440241;
+	b=GeR3aVLqzNgRSDz5RKalThty0+GRfWWduvn5HIHUzTiu4F8DLilMX9z7sotIGcm9Mg2T7N
+	fS65pscPWWg9TqUUyC7HAki9QZqGs/lZqvECp26PRRmZYt4JGLf3n7ftlq7hvns3qmZmVT
+	tnCVzjDEuP+8rpreCH2iDyGB4EtWY84=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 01EEB40E06;
+	by tor.source.kernel.org (Postfix) with ESMTP id E5A3E6061D;
+	Sat, 31 Oct 2026 09:50:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A2871F00919;
 	Sat, 31 Oct 2026 09:50:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB23E1F000C1;
-	Sat, 31 Oct 2026 09:50:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793440223;
-	bh=a7XJnsrw1a5gmHitwDTAR/cnJ4FEA4vxklFTb+Y9pAI=;
+	s=k20260515; t=1793440239;
+	bh=VYlMeH+q4hS08pWQrgQz/Zl4BVbNdljyBojnlqTTFgI=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=D55mz271223NPR/LC1mWZwbXNt7+1AppD98IF3Xlhmsw7cr59Bv8ph/Qx9T9wBTnt
-	 IRwJ7seKAp3Xt9M0DCeWAyLI/MBriK9GHaWUguJRzUqEOo+TiWgX1qd5uRZCu44wc3
-	 amVr5MQIuUPQd/aX+pFw1+Aqa6T0sOTHCCeSMgSu05Km1pYzwKn2nx9VLksIuSqedo
-	 anriGwlarij1k2nk9IYxr5TA0xhzc7DIcNVboZ7ylnFEKgBq+ljyKATpFJ08imOsjt
-	 luKTD8IrLdDRCGXQ76EvNimb8cuzICBrv/G7y1QJwDUhW0eiLn4XandQmIWO1ShaKU
-	 YWQzaO32/jcow==
+	b=Yr9l+Fh+pf6zFn9EkhXVHrqHodWFP/3jvyRpjpmBWcx8JjtCbiIuRHptcMrztZgp3
+	 xz5ypGp89btb7Lor8BgzY7X0/CKKkdTUFMGeidSnO/gyReZTIInyi5ARFKjHj86Pes
+	 ze2A85JCyUVEQ4GOM0lwt68V41FnOJ93sDpvP6mFyGnk3XmHptyk0lvXUYSaZiFjHJ
+	 FlQy63tZOgqGXB0UpG/RhwdO5RSDdOXQhV8W3HuH9kozLXUjiXDamnKUb9VYrLFENM
+	 sEoydXOLV8Kh5t01uIGtMTcZFGXBtZkCQf9yZSiJk0Y8cuSUJAc27B0uRp1qrMh7nJ
+	 ZMUkvrp9l3rEQ==
 From: "David Hildenbrand (Arm)" <david@kernel.org>
-Date: Sat, 31 Oct 2026 10:40:08 +0100
-Subject: [PATCH v3 39/47] mm/ksm: reset the unstable trees of all nodes
+Date: Sat, 31 Oct 2026 10:40:09 +0100
+Subject: [PATCH v3 40/47] mm/ksm: fix use of a freed anon_vma at swap-in
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261031-fixes_core-v3-39-d6437171ecc3@kernel.org>
+Content-Transfer-Encoding: 8bit
+Message-Id: <20261031-fixes_core-v3-40-d6437171ecc3@kernel.org>
 References: <20261031-fixes_core-v3-0-d6437171ecc3@kernel.org>
 In-Reply-To: <20261031-fixes_core-v3-0-d6437171ecc3@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>, 
@@ -106,31 +106,31 @@ To: Andrew Morton <akpm@linux-foundation.org>,
 Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
  kexec@lists.infradead.org, linux-fsdevel@vger.kernel.org, 
  linux-arch@vger.kernel.org, linux-cxl@vger.kernel.org, 
- stable@vger.kernel.org, Josef Bacik <josef@toxicpanda.com>, 
+ stable@vger.kernel.org, Chris Mason <mason@kernel.org>, 
  Muhammad Usama Anjum <usama.anjum@arm.com>, 
  "David Hildenbrand (Arm)" <david@kernel.org>
 X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2273; i=david@kernel.org;
- h=from:subject:message-id; bh=nUvclxTiUv/Tum9+/Zt09Qv8koZgF+ihTZzvWN6IkJ0=;
- b=owGbwMvMwCF2/OVpCdfQ3ZWMp9WSGLKebs8SFbm2as8ZL5Oti3XlL6p6yF24d96eSeSMwCaJw
- rLk7vlRHaUsDGIcDLJiiixBwfcNXr5cV1vtxscMM4eVCWQIAxenAEykZB/D/7A7eX6mD/nX/Ltk
- 832B+LYAgVaxGd9nsTU7uyRtnjjXYQvDP9WEP9ebK1m+eVvpxFrq87b9VOuZltIVvGG+efeHM0U
- fGAA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=6048; i=david@kernel.org;
+ h=from:subject:message-id; bh=Z78lq+MMz7mlQo8hJjX2bkGO/ohrcRkdBZioXy6jyEo=;
+ b=owGbwMvMwCF2/OVpCdfQ3ZWMp9WSGLKebs+y5Z7KpLF2su5SK0n5dKOmGweTS3+WyVX4fTz4K
+ n7Snl/dHaUsDGIcDLJiiixBwfcNXr5cV1vtxscMM4eVCWQIAxenAExkRzEjw8su08kyTcXuZuZL
+ v25fMWvt1cTpz7Yv92QrS9hw+uB75XhGhicP3fxORy6MWq39vPG867acZWvKv/kVh1zQfajM0R7
+ PwQcA
 X-Developer-Key: i=david@kernel.org; a=openpgp;
  fpr=1BD9CAAD735C4C3A460DFCCA4DDE10F700FF835A
-X-Stat-Signature: ijtj93e4s9s3goh3m51n185qfa9b3hmq
+X-Rspamd-Queue-Id: BC5F540002
+X-Rspam-User: 
+X-Stat-Signature: 7at1wt4qbzdmeqwmarkmgxo9wc74tfjk
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
 	version=4.0.1
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: BB44BA0005
-X-Rspam-User: 
-X-HE-Tag: 1793440224-593088
-X-HE-Meta: U2FsdGVkX1/JSFzDMiBIXoGK6+/EnADw1LDBsmYnt6WpzqO1js+5+GOSJ+ezo5unlPmuXX2bHplm8BXS3xG5GbJA7oAsHRNuETx7HArge6AjMaUWSyzx+I3iNQTUU1jp6PPyPzaFjl3AKvRnQ+wMjoNGi3kxOvP1BZ3iak3VBjnFPm1pXUWJfC7v6RtHt8bbwFbtABchJeKauXZniYcY1lycLxIusgf58+5vSo8vORGGuYmT7FtRVfBj2JPRW5dWaZfmfOTR/ihdGzAAZD/FFL52CJ4mF9BtocVviMoJxvLP7xnpGljloAUcfAWetHdxUK84yw3fCv64RzhSJ3D2Ynmu1WBaIRl6KonoHb+c68YXKvuzABJyxXcAOgjel/ZhEqd4TNZv096Cdj9qVy/7kmrKYf1LbsMDmzWiQSEqGDoiL85/TlOP1L0vy1dTo/XRqOCkQwWE+/fpJrIe3JaRKb/qxYkDLu3br6jtVdhztndjRoqtemuqkdWS5JsEWWkR2shnNWCizIPshHcdf+P1BLw8YiGZvtmVazswSJanilAGbgHEValuXDiUjRG5qAAgKmTdgj+jkrOiCMmm1MTaUQ5oOglZnal7fnA8GyLfSBJvQ8GaBe2yqVbJa4vDuF0spfHch/RAIxEkAnwnnJR0BdzvdTzzh/RLDqXtQjJ96VZyNJyK/M1KdTaxxS26XX9NXakKAr+FhGxjwitUNNS8IuYiT7VouKugafM+Lbc6VqkwkvMJpOK+yzfDrXQFTqtcO5qnvZpNLB7d8U8RclpaNOVg4Zq9EPoL1Fn8g/KWWdfZPi+p0HLLzY19fI3QaGi2QcN39uLV+PSVPWlwuy8dbR6esuRB6eayg5GsfljDj2ZvSCWQW2X3SEcK7U7lIHCA1+2k9z+t+Jryshe/doROaVKPJJgMS3+QjZPy6Ik7uc0B78u/GNSBgHNBdZSeP7NuLWdu6CIrQmCp5c6zgmy
- 80Yc4wZs
- J9QY2iflfWj3fAPu5WVFKOPWSMGPMlRuXiRgJsyWn6LzRacrVRvqJbgQdjdJy29azjsORlbFG1hsJNIhSNjjbiXhG/NN+IADmx5F9kFvJsOiMFZj0BMtbYZQS2qeN3IuKGlt5v2zqsbXq/u/zKCoGp5jILlMnqbA76u9jE4PME9EwzPM7wL09U5twQGwA4BQQG92iPk935SeIN/goJ86zPeuO/ZxpI2Nx5QU7EcQGA4SxLuV7XJ6+WRI9kf/TrqDVUqx5xSeRzP2c26kaEG1dFEiMvVdjOzMBJvD2SfLpeptY1rqO9Lnh44XCyIygmO3vyha75Xlu8xSGE18pnpM3BZVdCWdAPhma9z4PimEAKtg/xidJOirRAvDAk73eBfn3CZPIrO6YA5EyGJca8GXtoOBWfdWJmDUe9WOdWtSON7YmNYL88jSU2aMYywLFkaO1V46jJBEqt3NGX0nUwXC82CxNjDIwmqKdeey6OV//Hrh9WFKhlktMWS2bfQ==
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1793440241-191690
+X-HE-Meta: U2FsdGVkX19+LXrLLVtFoLLEqEHFHBe9AcPJEK/JxyX7BAn4IB7/maz3OLyU2b2RINB7o+qHgI6ZwIQ2P8wEVOAtZo5b+/nHHrrRdYFCOuKH5McNphA+8UW757bJaRlbFITLCujxFrsVwxaPSQhxSjmazGvVq0mO1L1yigQjYUZxQ2zHW5ZZiY45g8QGK9XnTVlivcdGrntrdA/B2rjFt/Z8/dxtcKO8lnmpcr+zT0s/lm5k3r0016ANfJmljjXdFceStZFDqDgbM6alS+L21ENw3J9W/+s2+OAcyUSDgLJp6w8R2k2T96BGu7VRb4N+qcUh+FpVYIo8pyNj7RedBmeZgLctedd+EcZiAbtgKxLplNFLbDdwuR22g2pnO/gtn1oik0LBoYAWfsgiE4nRfzYsGW/H5WhlpJ7VtR84iPQecxjS5RyyECUT7MoyMyMDQ5vzZU0+FwyymuyoHdftI0FelwylYIOfVDkZ2oLYXcYGtZ8U+/1CJi5cGx30vlWDodLxg5wDdSjH7Bdxdec5M5Xk1t8qTiO5iQOTRsoaO/GocN4TubWRS7HzbixmGX36TktutvVvZ9BZ4tWfdE3omnJNefqHEEcKhfcLUF5h94Q1X/creUeEjcvdM6JosuH2x02cAEQDmkntT7F8QIwyDXTD2uUXCEs586m9p62EeurA5exGk4pHzK64Rd2rHk9j23PWZMYZAwJYCrYj2lWjnTfxTekmuWJEBCNYrCbpINkmpotfohm0i3DP9mpIjFpss+8GK/uw8K+QeyCava+2TSKsWhToRQjL1pYVJaUR6dV52XksvqUIG14Fqv8WYNk55Gn5dHiTbmFk2Wdo13l7y6HgV1qX68YrGgazwOc6wscsyrYl0amrMdU1NmzoHfXi08ZSKmapW/5qEla02MrlT+xyflxrZLVCHBwqPrkSKwg0fEJeWRmDvnMC2EYyIxiRkl2lJScQKXNGL6L/YNm
+ miMlIhxW
+ lGj9JzDO3zxZggiNJk8oCQxKmT3T0CdetmCiYRGfL4/3BHiGn2pJ+BqDRM8cMvnf5Fm8/S5kGRRwCqYkcm3eQDZyJfyJtLlcsRxyUGkk4YLmEt5shNosGeQ0xl5Zaul3TsIoyYZSyPp5yUh+TJ1ExNSXNZG80vdmq3C6BMmxUuDi/mYOBXt8/OvjDcWXOhhW91ESKGgPTgmKKVyFoVCGBN4SSpPPJtp5UPARIku/uHvvSGpKV0Hc+O7/k/yuHw2/L3UxsncIsU+uz2UkX7jcAOxOatQtIXWLibWkSSKO03Qo73W9+BcWXTsLijsN2acNMVuZFqtDCA0VeyZ+60dJ4ApT7jRq8CNE+cjqz/zVua6+Za/iie3X7Q4CPVy4sUHxmUt2A7dXfe2dmO3tHGDEBpFQTnNCaHgg+ANe/J8Wf7BskKz5xAoQao7gfLPKMw6WbaFlSEHhSIxO9esw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -139,66 +139,171 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Each full scan resets ksm_nr_node_ids unstable tree roots. Enabling
-merge_across_nodes resets this count to 1, even if per-node roots were
-previously allocated.
+A folio read from a swap slot previously shared by KSM can remain in the
+swap cache after the process that first mapped it exits. Its anon_vma
+can then be freed, so ksm_might_need_to_copy() must not dereference it
+to compare roots.
 
-So when toggling "merge_across_nodes" 0 -> 1 -> 0, a scan that starts
-while the setting is 1 and continues after switching back to 0 can
-encounter stale unstable tree roots, resulting in UAF.
+Doing so can result in some false-positives, resulting in the reverse
+mapping missing the new folio mapping, preventing migration and reclaim.
 
-Only root is allowed to change "merge_across_nodes", and the documented
-sequence is: "merge_across_nodes setting can be changed only when there
-are no ksm shared pages in the system: set run 2 to unmerge pages first,
-then to 1 after changing merge_across_nodes, to remerge according to the
-new setting."
+SLAB_TYPESAFE_BY_RCU allows individual anon_vma objects to be reused
+immediately after freeing. A stale pointer can then refer to another
+anon_vma whose root matches, even though the target VMA is not linked
+to that anon_vma.
 
-Let's fix it by tracking in ksm_nr_node_ids the actual number of
-allocated tree roots.
+Move the anonymous rmap compatibility checks into
+folio_anon_rmap_compatible(). Keep the page-index check and compare the
+folio's anon_vma pointer against the VMA's own anon_vma and root first.
 
-remove_all_stable_nodes() and ksm_check_stable_tree() will now scan
-more tree roots (skipping the empty ones), which is harmless.
+If neither matches, bite the bullet and walk the VMA's anon_vma_chain.
+The VMA keeps these anon_vmas alive, and finding a match guarantees that
+reverse mapping can find the new mapping.
 
-Fixes: ef53d16cded7 ("ksm: allocate roots when needed")
+Lorenzo Stoakes says in a private discussion:
+
+  "This isn't quite equivalent to the existing check.
+
+  Every anon_vma in an anon_vma_chain shares the same root, but if you
+  split a VMA then fork both of them like this:
+
+                  VMA A
+               /        \         <split>
+            VMA B      VMA C
+               \        /
+        root <- anon_vma 1
+               ----^ ^----        <fork>
+              /   parent  \
+        anon_vma 2   anon_vma 3
+             |            |
+           VMA D        VMA E
+
+  VMA's D and E both get their own new
+  anon_vma's such that:
+
+  VMA D: anon_vma 2 -> anon_vma 1 -> root
+  VMA E: anon_vma 3 -> anon_vma 1 -> root
+
+  And if you found a folio referencing anon_vma 2, the existing check:
+
+	anon_vma->root == vma->anon-vma->root
+
+  Would be true for VMA's B, C, D & E.
+
+  However after your change it'd be true for VMA D only, as it's the only
+  one with anon_vma 2 in its anon_vma_chain.
+
+  Whether or not that could actually happen in practice... 🙂 I don't
+  know.
+
+  [...] after your change it'd be true for VMA D only, as it's the only
+  one with anon_vma 2 in its anon_vma_chain. [...] I would [...] say that
+  you are making the test stricter but more correct.
+"
+
+If this affects performance when KSM was never even involved, we could
+just track whether KSM ever merged anything and just skip these checks.
+
+There isn't really a lot we can do otherwise: for mapped folios we might
+be able to use folio_get_anon_vma(), but for unmapped folios there really
+is no easy way to see if the anon_vma is still valid.
+
+Document the (confusing) lifetime requirements of folio_anon_vma().
+
+Fixes: ba6f0ff3981e ("ksm: fix ksm swapin time optimization")
 Cc: stable@vger.kernel.org
-Reported-by: Josef Bacik <josef@toxicpanda.com>
-Acked-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-Reviewed-by: Pasha Tatashin <pasha.tatashin@soleen.com>
+Reported-by: Chris Mason <mason@kernel.org>
+Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+Acked-by: Xu Xin <xu.xin@linux.dev>
 Tested-by: Muhammad Usama Anjum <usama.anjum@arm.com>
 Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 ---
- mm/ksm.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ mm/ksm.c  | 36 +++++++++++++++++++++++++++++++-----
+ mm/util.c | 13 +++++++++++++
+ 2 files changed, 44 insertions(+), 5 deletions(-)
 
 diff --git a/mm/ksm.c b/mm/ksm.c
-index dbfb8f98b1892..9c51925825cbf 100644
+index 9c51925825cbf..e050b1bdf810d 100644
 --- a/mm/ksm.c
 +++ b/mm/ksm.c
-@@ -475,6 +475,7 @@ static void advisor_stop_scan(void)
- #ifdef CONFIG_NUMA
- /* Zeroed when merging across nodes is not allowed */
- static unsigned int ksm_merge_across_nodes = 1;
-+/* Number of allocated stable and unstable tree roots. */
- static int ksm_nr_node_ids = 1;
- #else
- #define ksm_merge_across_nodes	1U
-@@ -3636,14 +3637,13 @@ static ssize_t merge_across_nodes_store(struct kobject *kobj,
- 			else {
- 				root_stable_tree = buf;
- 				root_unstable_tree = buf + nr_node_ids;
-+				ksm_nr_node_ids = nr_node_ids;
- 				/* Stable tree is empty but not the unstable */
- 				root_unstable_tree[0] = one_unstable_tree[0];
- 			}
- 		}
--		if (!err) {
-+		if (!err)
- 			ksm_merge_across_nodes = knob;
--			ksm_nr_node_ids = knob ? 1 : nr_node_ids;
--		}
- 	}
- 	mutex_unlock(&ksm_thread_mutex);
+@@ -3137,11 +3137,40 @@ void __ksm_exit(struct mm_struct *mm)
+ 	trace_ksm_exit(mm);
+ }
  
++static bool folio_anon_rmap_compatible(const struct folio *folio,
++		struct vm_area_struct *vma, unsigned long addr)
++{
++	const struct anon_vma *anon_vma = folio_anon_vma(folio);
++	struct anon_vma_chain *avc;
++
++	VM_WARN_ON_ONCE_FOLIO(!folio_test_locked(folio), folio);
++	VM_WARN_ON_ONCE_FOLIO(folio_test_large(folio), folio);
++	VM_WARN_ON_ONCE_FOLIO(folio_test_ksm(folio), folio);
++	vma_assert_stabilised(vma);
++
++	if (!anon_vma)
++		return true;
++	if (folio->index != linear_anon_page_index(vma, addr))
++		return false;
++
++	/*
++	 * Careful: anon_vma might have been freed, so we cannot safely
++	 * dereference it. Add a fast path before we walk the anon_vma chain.
++	 */
++	if (anon_vma == vma->anon_vma || anon_vma == vma->anon_vma->root)
++		return true;
++
++	list_for_each_entry(avc, &vma->anon_vma_chain, same_vma) {
++		if (avc->anon_vma == anon_vma)
++			return true;
++	}
++	return false;
++}
++
+ struct folio *ksm_might_need_to_copy(struct folio *folio,
+ 			struct vm_area_struct *vma, unsigned long addr)
+ {
+ 	struct page *page = folio_page(folio, 0);
+-	struct anon_vma *anon_vma = folio_anon_vma(folio);
+ 	struct folio *new_folio;
+ 
+ 	if (folio_test_large(folio))
+@@ -3151,10 +3180,7 @@ struct folio *ksm_might_need_to_copy(struct folio *folio,
+ 		if (folio_stable_node(folio) &&
+ 		    !(ksm_run & KSM_RUN_UNMERGE))
+ 			return folio;	/* no need to copy it */
+-	} else if (!anon_vma) {
+-		return folio;		/* no need to copy it */
+-	} else if (folio->index == linear_anon_page_index(vma, addr) &&
+-			anon_vma->root == vma->anon_vma->root) {
++	} else if (folio_anon_rmap_compatible(folio, vma, addr)) {
+ 		return folio;		/* still no need to copy it */
+ 	}
+ 	if (PageHWPoison(page))
+diff --git a/mm/util.c b/mm/util.c
+index 8acfe2148ba52..80f6c714844f2 100644
+--- a/mm/util.c
++++ b/mm/util.c
+@@ -697,6 +697,19 @@ void *vcalloc_noprof(size_t n, size_t size)
+ }
+ EXPORT_SYMBOL(vcalloc_noprof);
+ 
++/**
++ * folio_anon_vma - Get a folio's raw anon_vma pointer.
++ * @folio: The folio.
++ *
++ * The returned pointer may be stale for an unmapped folio. The caller
++ * must ensure the anon_vma stays alive before dereferencing it. A folio
++ * reference or lock alone is insufficient; use folio_get_anon_vma() when
++ * the anon_vma's lifetime is not otherwise protected. Note that
++ * folio_get_anon_vma() is only useful for folios that are still mapped.
++ *
++ * Return: The raw anon_vma pointer for an anonymous, non-KSM folio, or
++ * %NULL otherwise.
++ */
+ struct anon_vma *folio_anon_vma(const struct folio *folio)
+ {
+ 	unsigned long mapping = (unsigned long)folio->mapping;
 
 -- 
 2.43.0
