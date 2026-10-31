@@ -1,75 +1,75 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A1B5606A326
-	for <linux-mm@archiver.kernel.org>; Sat, 31 Oct 2026 09:49:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40622606A320
+	for <linux-mm@archiver.kernel.org>; Sat, 31 Oct 2026 09:49:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Vxe+k77k
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Nk8DpZQP
 Received: by kanga.kvack.org (Postfix)
-	id 13E2D6B05E4; Sat, 31 Oct 2026 05:49:09 -0400 (EDT)
+	id 55D6F6B05E6; Sat, 31 Oct 2026 05:49:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0EF876B05E5; Sat, 31 Oct 2026 05:49:09 -0400 (EDT)
+	id 50D466B05E7; Sat, 31 Oct 2026 05:49:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F22926B05E6; Sat, 31 Oct 2026 05:49:08 -0400 (EDT)
+	id 3FD266B05E8; Sat, 31 Oct 2026 05:49:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id CC1C56B05E4
-	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 05:49:08 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 56C628089D
-	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 09:49:08 +0000 (UTC)
-X-FDA: 85382447976.18.1A0C5C2
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 9B6F3140007
-	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 09:49:06 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Vxe+k77k;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 1B4616B05E6
+	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 05:49:25 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 89B24A85C4
+	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 09:49:24 +0000 (UTC)
+X-FDA: 85382448648.12.1BD25B6
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf02.hostedemail.com (Postfix) with ESMTP id C71A980007
+	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 09:49:22 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Nk8DpZQP;
+	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793440162;
+	b=GNxir/ua/2ICqjXFn/n5Fy4CJAvQHPtzjKUHlM7Uli9jU4JJebPPn7Los9Ik5eYeU1NtgD
+	y7rdQ+DUXEUoA2M1gte70hYec8tHnYYy2f1hs8XMWQdh+yuZg9fgDwwy+CtXys7wZ87Sg9
+	i3iTWckL+hvTTyUTsmdSwB7ZIjZMbes=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Nk8DpZQP;
+	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793440146;
+	s=arc-20220608; t=1793440162;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=IjXGxdI21GHlefNuc9d8WG3Gh6i1uecgZnNzYjBLxQA=;
-	b=o6HahPucYb//k/3NnXhAbCOsJATgOrr4ALnRSgp5qBjpCM3IoZpXoZCg9PglkaSkRgCYVb
-	yWUQsGgEOebE77H6X8o+Z5cXPNg6OovlChSH7x688ElRh/y4hPRI7Y1G5NiVbgPTQ81pOM
-	k+2XYIh8fVGGPNVBAynLdOnOmF9bPI0=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Vxe+k77k;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793440146;
-	b=l19w6LtQkGy8pRBSGxIuobUBpvHeUJU1Jrol1xrMv1lt/dI9DFPuI3f8Olt+Z+iLPxBaqQ
-	B/0tab2ZNICBt80vK5IfoxWNIXA0yJTixby9MLeYNEuIoXLApTua9P1iFDdTNjuFBME7eP
-	Jl6d/c9z0yNMeCk4gTvuf1I9xSvvENA=
+	bh=pzeRdDMVfEMNbkMdT/nRgGx9sjoVV/E/1Sv6j9DFArI=;
+	b=N7CPMLvZxGpMq3gFzEfi6NQDn6lsr8vcQfK+k6a/PpmNjo15Rr9Hnr6Ugeu0kQ3fsBfb8D
+	M5vbP1uLY3Eme0T6IaD2EftokS1WjJNP/bpvYPVWm4l+Xt/5vpsci4hB9Me45IhktDYniz
+	Skkxhg8gOkKU/R0NpArjJaVJdjivZrE=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 3C78E605CF;
+	by sea.source.kernel.org (Postfix) with ESMTP id 09C7B40D9F;
+	Sat, 31 Oct 2026 09:49:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 768741F000C1;
 	Sat, 31 Oct 2026 09:49:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB06D1F00A16;
-	Sat, 31 Oct 2026 09:48:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793440145;
-	bh=IjXGxdI21GHlefNuc9d8WG3Gh6i1uecgZnNzYjBLxQA=;
+	s=k20260515; t=1793440161;
+	bh=pzeRdDMVfEMNbkMdT/nRgGx9sjoVV/E/1Sv6j9DFArI=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=Vxe+k77kJPuUdVyhCbp6hqSL5tOVmFwh62QnvvZPRanJVeYjVeqJffbeRNnz6bi7Z
-	 vJdeaHpjumIsgJdILQnTJEu7H7EbVbRZsqoXiAagi4mHoe3X/P3hsSEdpjEbruGdEl
-	 fkie4Ik9xJ4scAW7TEs2sD0XZmJ98VuYgSZwI9KITCZBowq0dQUQCaY6WDXIIIhDSW
-	 mlGHw7ibBWgm3xwzwaCOM78EU02kSve6SOeLgYiVL3f8yUrfXWbUbskMw2cilY0ust
-	 QFg4g9JR0agefCjXswUnCs6aQu3t7FyolU+jzLtrz4mmumfSsW66hGPLXxSJJBbO+9
-	 RX+PAGn7J9Qnw==
+	b=Nk8DpZQP6BzD9OA8zt/17XY/95wwW4UIU2PZ2B9LYSCoMPTi2ddtIV6u99LHr+5Oe
+	 g4tDbV0A9eSd5emCxI8wukjjJ2YT2aWaeikxo/9ZsvfdGNzOUVTriMj7ENkyyLHSUr
+	 /AmyIiG8Vw/uXBjmX5bA/kDSRtXD7rVcvEJxXTMudlPtX62drHe3FsXcaMp69dcM9/
+	 YwYGbDDS5YN7PQOQjxE/6H/9hJFXhZl2GVnrqXpy2NO/l62R63MYQrI/IpmBB0SIR1
+	 0pQhFdr/sND4w08uekTBmbzVcrRzdHw2xwe/pl3C0l93a6hCf30nDvqDtr32D5+WyV
+	 NJm0qxt4y7qnw==
 From: "David Hildenbrand (Arm)" <david@kernel.org>
-Date: Sat, 31 Oct 2026 10:40:03 +0100
-Subject: [PATCH v3 34/47] mm/madvise: fix data loss from MADV_FREE on a KSM
- page
+Date: Sat, 31 Oct 2026 10:40:04 +0100
+Subject: [PATCH v3 35/47] mm/memory: reject remote COW faults on PFN
+ mappings
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261031-fixes_core-v3-34-d6437171ecc3@kernel.org>
+Message-Id: <20261031-fixes_core-v3-35-d6437171ecc3@kernel.org>
 References: <20261031-fixes_core-v3-0-d6437171ecc3@kernel.org>
 In-Reply-To: <20261031-fixes_core-v3-0-d6437171ecc3@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>, 
@@ -107,31 +107,31 @@ To: Andrew Morton <akpm@linux-foundation.org>,
 Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
  kexec@lists.infradead.org, linux-fsdevel@vger.kernel.org, 
  linux-arch@vger.kernel.org, linux-cxl@vger.kernel.org, 
- stable@vger.kernel.org, Josef Bacik <josef@toxicpanda.com>, 
+ Chris Mason <mason@kernel.org>, stable@vger.kernel.org, 
  Muhammad Usama Anjum <usama.anjum@arm.com>, 
  "David Hildenbrand (Arm)" <david@kernel.org>
 X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1790; i=david@kernel.org;
- h=from:subject:message-id; bh=1jHBM4yk7cItfizVmqJa87+gzav2ElPv67Z1UsegsEg=;
- b=owGbwMvMwCF2/OVpCdfQ3ZWMp9WSGLKebs9coxvHyH1z9s7VefczZtw+fkhp40ypL1M2bLLxy
- Cx3fSHF2VHKwiDGwSArpsgSFHzf4OXLdbXVbnzMMHNYmUCGMHBxCsBEZmkz/C/0dhFjdz3d/179
- gLK7z3f2pa9y9xzsbsid1zQ1c8LEyp+MDHPUY16u7ZrSKTKz6UJziCPDjl/K/z5zx+p/sKx6+vj
- GE04A
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2304; i=david@kernel.org;
+ h=from:subject:message-id; bh=vy3o0JKxTUrol+3XYhfqk0XP7HsGSqgA1eThmpFZJfQ=;
+ b=owGbwMvMwCF2/OVpCdfQ3ZWMp9WSGLKebs/sadz7N7koN4X/1CmTNuOJDc28a4xv2m9VPWy6Q
+ qSCb2NnRykLgxgHg6yYIktQ8H2Dly/X1Va78THDzGFlAhnCwMUpABPxes3IMDdGTmx1U9JkAxWO
+ z0JHpPjtV/9wspB8sXV9S7o/z6MaV0aGG98XcfzwDPadESJ0P5rn4aVNSzjtP99zunv3xwmuytf
+ uHAA=
 X-Developer-Key: i=david@kernel.org; a=openpgp;
  fpr=1BD9CAAD735C4C3A460DFCCA4DDE10F700FF835A
-X-Rspamd-Queue-Id: 9B6F3140007
-X-Stat-Signature: eini3wnr1frd65hg63rtau4t7ezrax4j
-X-Rspamd-Server: rspam04
+X-Rspam-User: 
+X-Rspamd-Queue-Id: C71A980007
+X-Stat-Signature: rq397qhmuqggxx4qmwhzukahd7r4q65q
+X-Rspamd-Server: rspam01
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
 	version=4.0.1
-X-Rspam-User: 
-X-HE-Tag: 1793440146-398296
-X-HE-Meta: U2FsdGVkX1/5Z9Tw2FVRpNszuCF8kKB4v+FgksKJLSPK6wEeucpIE/SncjXMVLSPt6BFqwGWLfTPZsAWoUZwvlU6Wd9J6rjJegV3sfzCA6rwaPY/DuFUVp2ocK2ByJ/yYHMJ9W+TOI2nbeZfx7wuv8yaJV/dfrzV8OOtCdFAWfT4Xr7MEkJv8pFvRv++cF6ld4nDINQQQW7LOOsG2Rq7V4YV7n7tO9h1qMxMg5v62IDw/iqekwH2ueStn6UHe9qI0Yv7Ni2Wnp01g3sXjHLj0Go8wWICqs+H/GmI1/gsFd6DHWptImZWGkIBsuL133A85s7Trdx1buDCLi8PVhWUk1C06o2/K92KsVOZ8zi8kZJXixvYCFhJVfB6ypoII5JSqIE7zPX3THUPMQfquyplWlHsyfQDksdztAFvywgtdXUCm8Wj9c+NUF1Wt6Tv97iTzac8lErN3bJyXlETWeA88lHafTjOaqobwl1FmS3oJmo3Vdz3BgEX5nohD9QtpbAe7/tpaJkEmbHzfkzduzSxG7cRa7+X9DRrZ15REnmWcxvQCJ32ZphAhCilVOPQi+a1Jio11uKK/Ib5WKT7JbSt9d86Ux4sPa8TJeOZT9G+ldaoB8MlslIDiz/+Uh3dDz4ObSlHfOKhxSL89JK1rLv2YgUUM6JqwkKvsVA6pINxm3WEVeitJO+Wjv44ShRydEFU9DViiM+Dpm4EUOCax6dVbP8N1JhKbBbqLF84qlB1UlOE3lXE3X/m+Nl80ZV7hresVEQuJ07dCqspvkVkF5U3WdnPM+ARWyyS5OYnSXjxINgrAw+Tnk/5Jlk3Xh55HdJkrOBw5FtvVviVA4fGz9+2QG8NxOtJIFvDqQNfBWZo8TUzY59VQd7kIBCVLw6JYd0T1NgPVSagHqcl9njGKPyxeULuE3Nv1UgAPixRBDvltAuFKVPicE95U3Ud8AqxPmIS85z47tlkmsc697BLDM3
- Uzb/SStE
- FdbFwscLadECHbWf17Z8OPF8wGa0AF256Bsk8mYQftj6hRTJBAmmOYhkSBGfkMb2E0dSLVS97J176FB3+y5qhcc897+grzpdWaVn5k2YGPOWW23b6wNoRiwl6FFnuKuPpuDD5IzyTkCI0nnKTql7YlPQqYX3uDwG3XAzLu2sbsQ9LtL+4Lf6HrE8dLtOwqH9sOvSel2IvvzOPN7/9qFGS0YfMTBtC9D6RsZKMQJHYCPjAENl74gWdAwQq9oOo9WU2Zla0dgeG0UaiqtUtHHFfdivDhHBooNPyHxQHRGXqEgRcQKUSMAXEcxbBMmQoZoMVbW3vnycR/Mk84PTwOWbuq7xbzbG8hQkvTrVk1L7CHY1umdOuKUAek88ohZoMonWCTjr/maVyjkHbxx1sYOEIAxrC+JL+SyYqKczqQf9ZmkEXTNj7ryFnkkVmpR9KgH+PnvL+e83VAgnMNZMGR5NZDr6En9i9D0vKQkOO
+X-HE-Tag: 1793440162-264639
+X-HE-Meta: U2FsdGVkX18B5txbFy4UdBAIQctazL3/8b0X6OatuMdCA9NNU7rdfTxmnyfawVcr19E7NvMjWDT85Qh4lGRiQj+Z3vl6yr1HwYRW2/fMKt0flPYr1ceLYczPkShMi6PDKgPFHNlAn7den7nCj26h7jZzbW6e7yzDmh1TkdQzRgcHTkA1fmk1PtgP1vSSlilNKubY4FcUgaNT47MuzDW9ZpSn0fPayQE+f6YMxJcaywz7mFUh2HW4EBIVXxQoONyOe0pN4/rB5Y8l8AxNA9zfQMiwxfJXS8bSabhIIFBaG/7V++7HJvBWizb11pRr+0pVm9CKGUz4rTl1wBCeyPGWgEGy9mOPDa2TX27e02VDW/4L11jMBmkjl/m32YMovzHaDOvfGp+N7f5swS6Lxmt4xrMe1b0DisFExgvt6v63Z+EgNWkbOlNz6+51A1WQfRketku5WEVFncu9rrxtin+UuPDsEvFBSP1uRhUXS46qRUdLAIj85LcPhG74whSK7ANiVUGbIHudlNx/LLrWkeaoUwsQe0wgbvVULBExlq1TxIkjcUnRpDoriXtNZD0Q1d8LQlF7JaOYWO179jygsyyKV1VxzDInEdFwqZbJW01o8r8mJ5Wg+QtLsKR3ur6drmsIMx7VttaHQ+el8gHW/4sqVg2tlMPeUbhA1iPBe5FA7tjzYdHz2AWN0UkMAQymfCUmXqFG44FW3TkOXjfOE3evA2fpmqdg1Y6H4v6RhGqgI7SbQFd0HnWwnfGmg2A51kM/ocZ8ViEgyWuc8UrLlOdxEGPcKYI0TJieBhCUm2zqlhwWIbJ0ZGQp76QwFQp/eTgnMrd4qW8wATMJ4+Ayg/o46T+M8Opie3yjroEk0cxAnJGzAhQ8K1iWXH0PjK9ay6+BT3/4cvApqfHoEJBvkUPpSy0wCQXOKvHLIyNCEzS2Jv4YbFJu9MsYC/bRndoG6mHalG/0jHL5ygKlyx/7PR+
+ 23wyHS3a
+ 5f/XiuqNmGQ1B/4HgpNVtqCiShWAqTLrj6LzYj+k2JEeg+ZiYOhnSkjYASBvocVWiyQA4gD/jqXof5uyQlpBewIOu9fWIxHGVJxjN2Mt5z/o16qNmgM7r8OEXdTZnVlyXgpUCDWK4Ay7NQHkt8ifR9kYDxlOnBorxYkyRHVzVcyDeCoiQ3sycqpEvyPpHUWXrY+SmO+NjaN3YURcWLla8zjEom0oP/dDfjxUnPiO2Nw3ciY9WjnwOQJXljNLKuHX6QF3Ozt4/GcbIOhKvJIKlEU0gLfBeblHeQoCanF5aS+K0C6X3nYHTmEC5Dgk9T+ODq2QwpqGC9Zw5Qzt57JQJQwgIzxj5pexjLiclP6lT26gRgcgN+I5ufAtAFyUAOax7rWrJ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -140,51 +140,68 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-MADV_FREE can clear the dirty flag of a singly mapped KSM folio. The
-folio remains in the stable tree and can gain new mappings without being
-dirtied again. Once marked lazyfree, reclaim can discard data that those
-mappings still need.
+From: Chris Mason <mason@kernel.org>
 
-KSM always marks a folio dirty when converting it to a KSM folio in
-try_to_merge_one_page(). Marking a folio lazyfree clears PG_swapbacked
-but leaves PG_dirty unchanged. Preserving PG_dirty makes reclaim restore
-PG_swapbacked instead of discarding the folio. This also protects folios
-that were already lazyfree when KSM converted them.
+When handling a COW fault without a normal source page (PFN mappings),
+__wp_page_copy_user() copies from the faulting user address. For remote
+faults, this accesses the wrong address space, resulting in wrong data
+getting copied.
 
-Skip KSM folios before clearing their dirty flag, checking under the
-folio lock to serialize with KSM conversion.
+For example, user_events updates an enable bit in the registering
+process's memory. If that memory needs to be faulted in,
+user_event_enabler_fault_fixup() calls fixup_user_fault() from a work
+item. Placing the enable bit in a private PFN mapping can trigger this
+remote COW path.
 
-Fixes: 854e9ed09ded ("mm: support madvise(MADV_FREE)")
+Reject these faults with VM_FAULT_SIGBUS when the target mm differs from
+current->mm: remote faults. Ordinary (non-PFN) mappings are not affected.
+
+The user-address copy dates back to commit 6aab341e0a28 ("mm: re-architect
+the VM_UNPAGED logic"); likely, actual ways to get remote faults in
+there on COW PFN mappings appeared afterwards. But the fix is simple and
+straight forward.
+
+Fix generated by an LLM and sent by Chris Mason in private.
+
+Fixes: 6aab341e0a28 ("mm: re-architect the VM_UNPAGED logic")
 Cc: stable@vger.kernel.org
-Reported-by: Josef Bacik <josef@toxicpanda.com>
+Signed-off-by: Chris Mason <mason@kernel.org>
 Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-Reviewed-by: Xu Xin <xu.xin@linux.dev>
+[ david: simplify comment and description ]
+Reviewed-by: Pedro Falcato <pfalcato@suse.de>
 Tested-by: Muhammad Usama Anjum <usama.anjum@arm.com>
 Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 ---
- mm/madvise.c | 9 +++++++++
+ mm/memory.c | 9 +++++++++
  1 file changed, 9 insertions(+)
 
-diff --git a/mm/madvise.c b/mm/madvise.c
-index 75b409e97dbf2..a16e3cb256b7b 100644
---- a/mm/madvise.c
-+++ b/mm/madvise.c
-@@ -756,6 +756,15 @@ static int madvise_free_pte_range(pmd_t *pmd, unsigned long addr,
- 		if (folio_test_swapcache(folio) || folio_test_dirty(folio)) {
- 			if (!folio_trylock(folio))
- 				continue;
-+			/*
-+			 * KSM folios can gain new mappings at any time, so we must
-+			 * not clear their dirty flag.
-+			 */
-+			if (folio_test_ksm(folio)) {
-+				folio_unlock(folio);
-+				continue;
-+			}
+diff --git a/mm/memory.c b/mm/memory.c
+index 5392bcb1d24d6..ae8d567bc6ba3 100644
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -3761,6 +3761,13 @@ static inline int __wp_page_copy_user(struct page *dst, struct page *src,
+ 		return 0;
+ 	}
+ 
++	/*
++	 * __copy_from_user_inatomic() only works as expected for local faults.
++	 * Reject remote faults.
++	 */
++	if (unlikely(mm != current->mm))
++		return -EFAULT;
 +
- 			/*
- 			 * If we have a large folio at this point, we know it is
- 			 * fully mapped so if its mapcount is the same as its
+ 	/*
+ 	 * If the source page was a PFN mapping, we don't have
+ 	 * a "struct page" for it. We do a best-effort copy by
+@@ -4086,6 +4093,8 @@ static vm_fault_t wp_page_copy(struct vm_fault *vmf)
+ 				folio_put(old_folio);
+ 
+ 			delayacct_wpcopy_end();
++			if (err == -EFAULT)
++				return VM_FAULT_SIGBUS;
+ 			return err == -EHWPOISON ? VM_FAULT_HWPOISON : 0;
+ 		}
+ 		kmsan_copy_page_meta(&new_folio->page, vmf->page);
 
 -- 
 2.43.0
