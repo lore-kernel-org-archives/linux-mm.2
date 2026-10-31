@@ -1,99 +1,125 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2A1A606A323
-	for <linux-mm@archiver.kernel.org>; Sat, 31 Oct 2026 00:56:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15417606A31F
+	for <linux-mm@archiver.kernel.org>; Sat, 31 Oct 2026 01:42:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key, unprotected) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=RWB/ouch
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=i4RxBCx4
 Received: by kanga.kvack.org (Postfix)
-	id C16526B05B4; Fri, 30 Oct 2026 20:56:13 -0400 (EDT)
+	id F2DF96B00EF; Fri, 30 Oct 2026 21:42:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BEF116B05B5; Fri, 30 Oct 2026 20:56:13 -0400 (EDT)
+	id EB79B6B05B1; Fri, 30 Oct 2026 21:42:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B2B016B05B6; Fri, 30 Oct 2026 20:56:13 -0400 (EDT)
+	id D7FE26B05B2; Fri, 30 Oct 2026 21:42:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 8C30C6B05B4
-	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 20:56:13 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id EC5441208C4
-	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 00:56:11 +0000 (UTC)
-X-FDA: 85381104942.28.C908A4B
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	by imf25.hostedemail.com (Postfix) with ESMTP id CAE2BA0006
-	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 00:56:09 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b="RWB/ouch";
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=pass (imf25.hostedemail.com: domain of liam@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=liam@infradead.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id A802E6B00EF
+	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 21:42:20 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 1929F16087A
+	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 01:42:20 +0000 (UTC)
+X-FDA: 85381221240.24.DDB301D
+Received: from mta1.migadu.com (out-21.mta1.migadu.com [95.215.58.21])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 7BA53A0002
+	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 01:42:16 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=i4RxBCx4;
+	spf=pass (imf15.hostedemail.com: domain of ridong.chen@linux.dev designates 95.215.58.21 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793408170;
+	s=arc-20220608; t=1793410938;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NNZ0jWpXyvTAI1fGB9HbbXYilWwVTrHzAZcnT/C24Ac=;
-	b=pPJenSU/cKmecwd5KHvmXSinCl5zHFSwnF3A9n3gntGau8MfFpfBHoQlk6C1S6YJ5DxZj4
-	qZX9EScRsVucOw8GnVBOYnq53C2P+R4UYc5/5LfA8Ju+vRgx4Xt3GUrP+P1j7GQ7hoAxA3
-	7Cccq0E6Tv33/dSSViDigtyuIfPwhY4=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b="RWB/ouch";
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=pass (imf25.hostedemail.com: domain of liam@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=liam@infradead.org
+	bh=i5beK/wqta6fa7ekid99EnBANYB7xsLLW6wDEnyFugQ=;
+	b=Yf/VklsoXQz31nSH+t51EzDM4NnW2MyzKmCEw9HYlLVhIGRXQwdIA3zdXaIGs4MHFcO1IY
+	RkGZnWBHW9/AZFLws/t/dZzIaxHkzy2S+caBkeouabYbc5jhPSBC1jV0KEbXV4l3bWf3wu
+	qqJEWJUN7kJoaiw5HaZAs07yJ2c/uus=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793408170;
-	b=mTtsTQIa5wMx3OK9I/xi7e4NYGam8/ZDGJ8A8EiWlZ7+pHyPyR/GGtusqT96jPE3r6xRkO
-	IF3D/PSELtikVjqT000gFz+5AzGuzPOPLtgT5pDN1R83W7UNyHVcMYPAdSGeRvekNATb7h
-	vgqnE1VQcvGxhbc4nNEvc1nQrv7MSu0=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
-	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=NNZ0jWpXyvTAI1fGB9HbbXYilWwVTrHzAZcnT/C24Ac=; b=RWB/ouchWeYcNlfYevA/mj7l9N
-	cXBd9jmS0mL/cCVzaorN/VcfjaeExVPwuO0LbceCUiGeqGCEij0CLT5Ovi8h501hFGB70Kh2Ggi3P
-	aapHxvhOQ4B7J0PQn97CMaQwoJZgYWp8wBUwVrAmTxrE5Z9COzjOnpUNnV8NyWpBgpCTCOCnTr6bN
-	6AZsN6OCZl32yis0lLPscYGyMJ5nm3vo+sKP+SvRto8LQam2FWXxXJeERxnAgMQL4AoooO1tIyQFF
-	AXZAU8gYN4FMtVGGhRLtmvP+HZTHXiVAoY5Efs/iYK0KQXINtj/+co/ipfhw5exzZJKYAxdZkhpdy
-	1OlossLw==;
-Received: from [38.23.173.23] (helo=localhost)
-	by bombadil.infradead.org with esmtpsa (Exim 4.100.1 #2 (Red Hat Linux))
-	id 1xMxOA-0000000CoBp-1cwP;
-	Sat, 31 Oct 2026 00:56:06 +0000
-Date: Fri, 30 Oct 2026 20:56:03 -0400
-From: "Liam R. Howlett (Google)" <liam@infradead.org>
-To: Uladzislau Rezki <urezki@gmail.com>
-Cc: Herbert Xu <herbert@gondor.apana.org.au>, 
-	Michal Hocko <mhocko@suse.com>, Baoquan He <bhe@redhat.com>, 
-	Alexander Potapenko <glider@google.com>, Andrey Ryabinin <ryabinin.a.a@gmail.com>, 
-	Marco Elver <elver@google.com>, Michal Hocko <mhocko@kernel.org>, 
-	Linux Crypto Mailing List <linux-crypto@vger.kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	Thomas Graf <tgraf@suug.ch>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	maple-tree@lists.infradead.org, Lorenzo Stoakes <ljs@kernel.org>, Chris Mason <mason@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Andrew Ballance <andrewjballance@gmail.com>, 
-	stable@vger.kernel.org, "David Hildenbrand (Arm)" <david@kernel.org>
-Subject: Re: [PATCH 4/4] rhashtable: fix vmalloc() deadlock in atomic rehash
-Message-ID: <urkgmijyytg3rrislm5fdzmfggqavzpiry23f6lpkqonvy2tqx@d56stj3eixfa>
-References: <20261028154218.1668182-1-liam@infradead.org>
- <20261028154218.1668182-5-liam@infradead.org>
- <auKshDXKQXt1kvjy@gondor.apana.org.au>
- <auMbCuecFeRmBFSK@pc636>
- <jfvq7vkx73vzp2ukq6nwnb3v3g2ezdcyppba4oa5lpzmz6ls6t@akc46gonndgy>
+	t=1793410938;
+	b=CKwyQ4yYXEiP22Vd5ZypFEHj/1jgmHVF3W+YclmkJDPehVvnwNWklF8qKIIg4+bj/8fkPx
+	hmbWKpIAJvrmAe3GOvS+WS/4K6xDnIszbYvo6i/OscsLaBabuzuLpdzOz3WtEfe4Qod6Ga
+	B76ubDc+xvxyRARKiUAkz1zREL0fUSg=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=i4RxBCx4;
+	spf=pass (imf15.hostedemail.com: domain of ridong.chen@linux.dev designates 95.215.58.21 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=MpJ2KknoxvhydMM0mBu6hlDwlGwxhQOvcnm75Ft8d4M=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1793410933; v=1; x=1794015733;
+ b=i4RxBCx4+vXFIwhiP6CNwflbt3rAtoBok+EdOFAGJXqPkgnid6trH1RYGNUsz+s0B79enYr8
+ c7kWo/qZ/bkJtum4X3dvnr5XpPJDNhEMkqmtbV5EHWkoKh7AlaPIljgPOcsVoG9ZsLRhFMyZGU8
+ PtnFVSvFeTCx34K90DjAn8LY=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id bee3307f5ff8da89;
+	Sat, 31 Oct 2026 01:42:12 +0000
+X-Mizu-Trace-ID: bee3307f5ff8da89
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <febf6aeb-82dd-4a98-9a33-0ef321792285@linux.dev>
+Date: Sat, 31 Oct 2026 09:41:50 +0800
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <jfvq7vkx73vzp2ukq6nwnb3v3g2ezdcyppba4oa5lpzmz6ls6t@akc46gonndgy>
-X-Rspamd-Queue-Id: CAE2BA0006
-X-Stat-Signature: d7mp3ud6ipu9tuumpwtmywwb8naupnu5
-X-Spam-Status: No, score=-3.6 required=3.0 tests=BAYES_00,DKIM_INVALID,
-	DKIM_SIGNED,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
-	SPF_HELO_PASS,SPF_PASS autolearn=no autolearn_force=no version=4.0.1
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 01/47] mm/mglru: don't use stack pointers when walking
+ PUD and PMD tables
+To: "David Hildenbrand (Arm)" <david@kernel.org>, SJ Park <sj@kernel.org>
+Cc: Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
+ Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
+ Lorenzo Stoakes <ljs@kernel.org>, Kairui Song <kasong@tencent.com>,
+ Barry Song <baohua@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>,
+ Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
+ Baoquan He <baoquan.he@linux.dev>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Kees Cook <kees@kernel.org>,
+ Peter Zijlstra <peterz@infradead.org>, Jann Horn <jannh@google.com>,
+ Pedro Falcato <pfalcato@suse.de>, Hugh Dickins <hughd@google.com>,
+ Pasha Tatashin <pasha.tatashin@soleen.com>,
+ Pratyush Yadav <pratyush@kernel.org>,
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>,
+ Zi Yan <ziy@nvidia.com>, Lance Yang <lance.yang@linux.dev>,
+ Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>,
+ Alistair Popple <apopple@nvidia.com>, Nico Pache <nico.pache@linux.dev>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>,
+ Matthew Brost <matthew.brost@intel.com>, John Hubbard <jhubbard@nvidia.com>,
+ Peter Xu <peterx@redhat.com>, Will Deacon <will@kernel.org>,
+ "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Nick Piggin
+ <npiggin@gmail.com>, Oscar Salvador <osalvador@suse.de>,
+ Minchan Kim <minchan@kernel.org>, Muchun Song <muchun.song@linux.dev>,
+ Xu Xin <xu.xin@linux.dev>, Chengming Zhou <chengming.zhou@linux.dev>,
+ Chris Li <chrisl@kernel.org>, Kemeng Shi <shikemeng@huaweicloud.com>,
+ Nhat Pham <nphamcs@gmail.com>, Youngjun Park <youngjun.park@lge.com>,
+ Gregory Price <gourry@gourry.net>, Joshua Hahn <joshua.hahnjy@gmail.com>,
+ Rakie Kim <rakie.kim@sk.com>, Ying Huang <ying.huang@linux.alibaba.com>,
+ Jason Gunthorpe <jgg@ziepe.ca>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, kexec@lists.infradead.org,
+ linux-fsdevel@vger.kernel.org, linux-arch@vger.kernel.org,
+ linux-cxl@vger.kernel.org, Josef Bacik <josef@toxicpanda.com>,
+ stable@vger.kernel.org, Muhammad Usama Anjum <usama.anjum@arm.com>
+References: <20261030002004.154595-1-sj@kernel.org>
+ <6d679adb-a866-4a76-b9ea-3b8c64171fae@kernel.org>
+From: Ridong Chen <ridong.chen@linux.dev>
+In-Reply-To: <6d679adb-a866-4a76-b9ea-3b8c64171fae@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 7BA53A0002
+X-Stat-Signature: zq1gyjo6c4c35c4z9xkmbat3fxhcpscj
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1793408169-758245
-X-HE-Meta: U2FsdGVkX19K0+xeV+8pZ2wpdW7JNBtcRzV2xTjSO5c5CnTsSIvt5jeHNYa4pKhlgUG/pIs3ue8b2qBJJdZpPdoX0KTQGLw6/4/eO1PC1AWZLjLFVQAA0JqiqpKmWE3RKhAlmLT4VDzioLH/mrWWpzqCDOWiC8blC5Ns5tUH/2lF7ylIZ+pk7hhfVMLqGBaAeoK6MyNBaTHiRgbXqARlv59Tlrz82ewYKUNWmPI0vFlBOZBJbVkfuzj0RBxzfONAvQP22/2YyS6XBmcsZYRBlUx1ORySQz8RNFgfnWEAKkXL2vgFnk0MALk+ZBzUZVKTxY/7ppjQwkDXRgWiNYCOuiL6ls2LnuQJihy0Hz4Y9ahF+7KyEmQ89TcJL3U7j+6oKPZrhl9tvmMDIqXGc7n3M7A0Hp4C/Kmp7fFpchqofyJzHcKTMsDG/k8go7YJWfh41mGkqQ9TkyIoya3ZX6ECKKYP+rHQahwz80Nja8pzM6geQf/PUw99IxMEqJLDHK34ZHWn7m1L8VLYpDrGgiOCKTpcpSTSdaE/9jh46AvxUC/OLgO23wSwWLXafFORh3H3SUXc2e6Jy+gI2gjhTNliJJiOLonc1eED0hAj8zVrY1vL9JW0dSkCeMeh63+pYkL1WgSUN83hqbC6qeVpr0cCoopHQsGUl589HjUYnBW557LYvHFfgaMeKQd7g4yFtdGY0FoB19yOHbQHzAHV2NpbQbZ1tbKOcn3HkwrjSjmdN1iWDzskxp4Zhr62B1kKx+vPSsi71t1x63vBgufiLWU0Vnt/d0FLOTpbNbhaU0NoEdpOerYZzMOrR3FPerW/BnwxOxUXDMjVu3LofDlbX763KDt/5fHg8MGg7+nuQKWvr/tltH05qBcJjxVcd1xmOsyAkrVaYUnce1DlN2+aoAdR/84BFDXH1PXUcfpVfhjK7RDCFR0rNCqvQv4z9SisYbQO/npkn7zKZsjMvVXm1ov
- 4dOF5TFr
- sgmMm4TMC4ArSx0d6IUYUgbjPkDPI2FdAT7t5p+xre3MvDa34DIM5Cj1GQvzojGtTNiAbDbyiapaHI6VdvO4EfbvqMJdOgZQUw7X3z7DEeI4yLHpRTHb3N7mFWr/6QmhSDNoVjnE9aafG1QETrXKgSXLIhoAbevuirA016eVFTf0oApxSfJ+z3K05E4sn9h25srFbfvmN452P5pmMl0QOCSHnraeFgEZpuFl2YJygki92msclLF/KIjnqlMac4EOPznIACcyASJVVxj+Oih3/OXi7YVcoYICYsSJ9qG0dPhZy1f/9/+4H+XR6Vs+8iK2w5WDFL/FSohlh4DMoB5Izo7pglRdrOv4JgGhInQ3Tm8VfgU4=
+X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
+	autolearn=no autolearn_force=no version=4.0.1
+X-HE-Tag: 1793410936-873588
+X-HE-Meta: U2FsdGVkX19mr2UMgo/52akV5wsccRclBAqMKTP/enOEtunhQLVavjKv1CVu+OHVrpU5y1Y5igKDUioTxQiYeD7O6eDKVE7eU5xdWixN3kfgN4ZgFlXbeEA8Rm9wgK61P1EJTWReVJHMX02NBlSck3E4QmXzHceJ+zyV9CX2+VU+DTq3DXonRXjPtwPMP9B1GwB3Qpm6ttqjh70gAKRynx19qTQVLSN9E1ogZ7Oc+kNj2DyPIlWvjWCe0mgU2FelaGCD/QGc4vn8qqo9sLm0EdmygR1psDrilN3HnCpWlC4bgbpqMScLONDrkml8T/l6cFtTwYsf3bWBH1rClcscPphRJ5twVtW0qnvl7ZaMBUUvmqdamJINRoVJ4md1AXLp0zjDaDlUYJYyq3zreTimQ/j3/7nZ2T+kFSSVhfohqY/9laTIcyDjkksF4nyR1F0A9USUsFn1AT67iweXGdCpdlDo2nm/+5N9yAlmKuZH7X0skn4ic9YcuQgoHEUpa+2ont2k+7zaDi10WQbiqJNJG+h1nhaIUWr4ER0Qnl5MwbyMRB98/oIM51wEh6P0706cq7tnyKj/DrxGtNctKM+DxOxwwBScXd1DfJFTRFhpH52mQc4qQ4svKbvOE1KXk46b8Vk4m6OG96FdO02Vm9nRGXCy5sryk/viB1nXcD6oLqoCajp36DHk4NyDV7a3rhwQOLZY1lPTXiC+lQT84h3ofwcf+pMi8dpYTkykW43ui6+hvCDL3N2Jsa9Oy5uG9CEr0QR5vBz3h+vmGxDH6pEF6kye8/JXAbhTsqjbitxUMReHd8TsBt96kKEk9VYkET26uOGPzj0RNrf30HsUzj0LOksjn8w+0jcl1Ukjs+U7O6csQX/DhH3r0d7MJL6QN30GPjmtitZtkOoykhy/skqIt0RKybzSDDMe+TBZPBbkp8NtVqxpFECEqgsh/MrvJKeV4h/TUT84uREkREn6X+9
+ ghgl9DrO
+ D/Wnq1M5FF9QPqlYlshzJ0UhYdxXQY6PJntAgaDM4oOrxajud3k2brruEucTvNN2H4sNVfqJfhqkoZ8ptKmwKXNZCt29KxalgE2tJyXPTXNs9PSfqgyiDIhPPYtySBTqSuOWdF8CXdKhrwjzcYf7cjZO5wY06rnJfiXagndktqG6XMIVhb5xFDY7ZeP011/hFaCFUFzFOu3gYrunv+y+A2n2bxuQL/BU1uIQ2UkHMI5kzPgHPNUBeuiAtyljuUGHVeaYOFOErvpOvuHOuN8926lV8UN9y0kZG8xM+23Qigl0Kj3s4U/HIbLZQ5kuYtwSuiIisNgSSSME5dZ4GnBg2oD1reBOFfXZ7UWhPGeAwcliBDjQ19bz/M4oFQSGyPE1140ExE0mq8thwVX5FgnXpLagKud4ZHrCx2mjWVs67A6bGglT4akMyZctTtA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,96 +128,40 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 26/10/29 10:54AM, Liam R. Howlett (Google) wrote:
-> 
-> Sorry for missing the ML in my initial email, I missed it from
-> get_maintainers.  I should have really clued in with such a small cc
-> list ;)
-> 
-> On 26/10/29 11:08AM, Uladzislau Rezki wrote:
-> > On Thu, Oct 29, 2026 at 10:16:36AM +0800, Herbert Xu wrote:
-> > > On Wed, Oct 28, 2026 at 11:42:18AM -0400, Liam R. Howlett (Google) wrote:
-> > > >
-> > > > Below, one CPU adds an FDB entry for an RTM_NEWNEIGH netlink request,
-> > > > while another CPU is inside vmalloc() or vfree():
-> > > > 
-> > > >     RTM_NEWNEIGH                      vmalloc() or vfree()
-> > > >     ============                      ====================
-> > > >     spin_lock_bh(&br->hash_lock)
-> > > >                                       spin_lock(&vn->busy.lock)
-> > > >     rhashtable_insert_rehash()
-> > > >       kvmalloc(GFP_ATOMIC)
-> > > >         vmalloc()
-> > > >           spin_lock(&vn->busy.lock)
-> > > >             waits for the other CPU
-> > > >                                       softirq: a frame for the bridge
-> > > >                                         spin_lock(&br->hash_lock)
-> > > >                                           waits for RTM_NEWNEIGH
-> > > 
-> > > I think this is a fundamental bug in the kvmalloc non-blocking
-> > > support patch.  How can it be used at all if it is susceptible
-> > > to such dead-locks?
-> > > 
-> > > And if you can't use it safely why don't we just get rid of the
-> > > broken kvmalloc non-block path and have it always go to kmalloc
-> > > like it did before?
-> > >  
-> > If we have a look at this as we did not have vmalloc() here:
-> > 
-> > 
-> >      RTM_NEWNEIGH                      foo() or ...
-> >      ============                      ====================
-> >      lock_bh(&br->hash_lock)
-> >                                        foo()
-> >                                         lock(B)
-> >      rhashtable_insert_rehash()
-> >          foo()
-> >            lock(B)
-> >              waits for the other CPU
-> >                                        softirq: a frame for the bridge
-> >                                          lock(&br->hash_lock)
-> >                                            waits for RTM_NEWNEIGH
-> > 
-> > Same issue?
-> 
-> Looks like it to me.
-> 
-> > 
-> > I have a question:
-> > 
-> > GFP_ATOMIC/GFP_NOWAIT guarantee they do not sleep. Do they guarantee
-> > not hitting ABBA dead-locks or they are not interrupted?
-> 
-> GFP_ATOMIC and GFP_NOWAIT can be interrupted.  It's more about not
-> waiting for reclaim (kswapd might still run) and GFP_ATOMIC might dip
-> into reserves.
-> 
-> The issue is that kvmalloc() now falls back to vmalloc() for
-> non-blocking flags (I am restating this to make sure I'm not missing
-> something here, please correct me).
-> 
-> So this changes what is called internal to rhastable so it doesn't reach
-> vmalloc(), like before, if the caller cannot block - they go to
-> kmalloc() with the old fall back.
-> 
-> I *think* the question is if the change should be here in the caller,
-> internal to mm, or a new call to opt-in.
-> 
-> Considering this is the only kvmalloc() caller that forwards
-> non-blocking gfp from BH lock + softirq context, I think that it makes
-> sense to do it in the caller.
-> 
-> Given where we are in the release, this fixes a real issue that can
-> happen so maybe we take this now and settle the general handling later?
 
-Hubert, I have another version of this patch set to send out, but this
-particular patch remains the same.
 
-Are you okay with keeping it the way it is for this release?
+On 10/30/2026 6:21 PM, David Hildenbrand (Arm) wrote:
+> On 10/30/26 01:20, SJ Park wrote:
+>> 'get_maintainer.pl --nogit --nogit-fallback' suggests adding below recipients.
+>> But I can show there are already quite a number of recipients, so I'm just
+>> noting here.
+>>
+>> - Brian Geffon <bgeffon@google.com>
+>> - Oleksandr Natalenko <oleksandr@natalenko.name>
+>> - Steven Barrett <steven@liquorix.net>
+>> - Yu Zhao <yuzhao@google.com>
+> 
+> The CC list was so long that I limited it to people that area either a reviewer
+> or a maintainer of code.
+> 
+> MGLRU not having any real maintainer is a big problem; because that maintainer
+> would know whom to CC.
+> 
+Agreed. FWIW, I think Barry Song and Kairui Song would be good candidates
+for the maintainer role.
 
-I don't want to force your hand but I also don't want to keep a valid
-deadlock scenario in-tree.
+Both of them have been contributing to MGLRU consistently and
+substantially. Barry is currently working on improving aging and fixing
+the swappiness-related issues, and Kairui is driving the MGLRU-FG
+optimization work.
 
-Thanks,
-Liam
+They have also been active in reviewing MGLRU patches, and their review
+comments are usually to the point and helpful. They have been looking
+after this code well, so I think they would be a good fit as
+maintainers.
+
+-- 
+Best regards
+Ridong
+
 
