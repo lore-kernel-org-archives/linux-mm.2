@@ -1,96 +1,92 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A86F606A31A
-	for <linux-mm@archiver.kernel.org>; Sat, 31 Oct 2026 16:42:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 258E3606A31C
+	for <linux-mm@archiver.kernel.org>; Sat, 31 Oct 2026 16:53:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=maf51kOi
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=w0+M577m
 Received: by kanga.kvack.org (Postfix)
-	id 57B3F6B00EF; Sat, 31 Oct 2026 12:42:58 -0400 (EDT)
+	id 1BEB96B00EF; Sat, 31 Oct 2026 12:53:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 52BA76B05B1; Sat, 31 Oct 2026 12:42:58 -0400 (EDT)
+	id 16FE56B05B1; Sat, 31 Oct 2026 12:53:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4419D6B05B2; Sat, 31 Oct 2026 12:42:58 -0400 (EDT)
+	id 062B36B05B2; Sat, 31 Oct 2026 12:53:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 219356B00EF
-	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 12:42:58 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 91B41409D5
-	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 16:42:57 +0000 (UTC)
-X-FDA: 85383490794.01.58618B6
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf12.hostedemail.com (Postfix) with ESMTP id C328A40009
-	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 16:42:55 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=maf51kOi;
-	spf=pass (imf12.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793464976;
-	b=MQbxYFJ0GY7y/QZ2LaiFcvjs1c4q6mt89z+99ConeQeExmm21jSd5Kiy0mE/EyiNoEAcby
-	QtGxiJ1/5NwSR8rG0WvBnlWJCu2jPGDR5bAYRSWVjbzQ4tIzncL/iB6RW4pU4pbhCgXAAD
-	DHljVt5kQmYjbDg1+2ON52toQLvWhaE=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=maf51kOi;
-	spf=pass (imf12.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id CCD6A6B00EF
+	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 12:53:48 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 042B81409E5
+	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 16:53:47 +0000 (UTC)
+X-FDA: 85383518136.07.D51387A
+Received: from mta1.migadu.com (out-198.mta1.migadu.com [95.215.58.198])
+	by imf11.hostedemail.com (Postfix) with ESMTP id DB11240006
+	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 16:53:45 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=w0+M577m;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf11.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.198 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793464976;
+	s=arc-20220608; t=1793465626;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=J41Y1S2rh3yGXRCAhNBommWpMFq+IhDlxy5NAe+nz38=;
-	b=uXRQ5oSu2MeZ4I2jiTXwgi4hLXYFeIrgNpkuHMX4xER9k/oFhva+D4/c+nsYafxwKZ//64
-	kI+lh6b4tOHSAJXAQUvbbDR6+VVN5jqWgqi7gxktNKPSrFITQhq6jVABCQOwo1JckhISXB
-	1CeYsIXqWffTS8TQxBMtRvrfjx8GqyM=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id E03A742E47;
-	Sat, 31 Oct 2026 16:42:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D6831F000C1;
-	Sat, 31 Oct 2026 16:42:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1793464974;
-	bh=J41Y1S2rh3yGXRCAhNBommWpMFq+IhDlxy5NAe+nz38=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=maf51kOi2GfeExT2mteFp7wbRm1Pbs4NPJ8LE3EJWN7TJAxJ+lFNA8GrTaJtq2Ssf
-	 BOvgg2MqoNiY2Lxsx0H23hLjEqLlDS6PB328E6JD3yfPOJYCuZISy3EUG6x1BN4b11
-	 alPh9jtkf+21MD4RjaM/0HgJ4mZ1YCQxzeKaFHCo=
-Date: Sat, 31 Oct 2026 09:42:53 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Qi Xi <xiqi5703@163.com>, linux-mm@kvack.org, Zi Yan <ziy@nvidia.com>,
- Matthew Brost <matthew.brost@intel.com>, Joshua Hahn
- <joshua.hahnjy@gmail.com>, Byungchul Park <byungchul@sk.com>, Gregory Price
- <gourry@gourry.net>, Ying Huang <ying.huang@linux.alibaba.com>, Alistair
- Popple <apopple@nvidia.com>, Qiliang Yuan <odys.yuan@gmail.com>,
- linux-kernel@vger.kernel.org, wangkefeng.wang@huawei.com,
- sunnanyong@huawei.com, xiqi2@huawei.com
-Subject: Re: [PATCH] mm/migrate: fix softlockup in do_pages_stat() with huge
- page arrays
-Message-Id: <20261031094253.d28f484e7e27de469cfa76d2@linux-foundation.org>
-In-Reply-To: <76579248-64db-47bf-b8d0-4eb3ca556f5a@kernel.org>
-References: <20261031033330.3416326-1-xiqi5703@163.com>
-	<76579248-64db-47bf-b8d0-4eb3ca556f5a@kernel.org>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	bh=WXG/VuGgA2nLHyyo2HBxCIFByTCjqyBPDh3lixMNfY4=;
+	b=syeFJdIv2JcCRq5NqMnuRtCKzSjcn0n7XKv10bUM6Gu3TLnVI0UcdJX/kNlkwDdPEq93Mf
+	8ZVQEIc4Pb+FGDnRNpNcn8kCFpl9AvtOYgUCB3V95bNl996kOyJs5elL7WD0vdZC2MqFsN
+	R3fW8Jq2vCLSvDxmJ1Nea6QbpYfnuxU=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=w0+M577m;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf11.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.198 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793465626;
+	b=29CVNYhT+VvoewGA+J9pDS43xbqtwrJ73aqQa8HJNsKrLbVyhIvebeQX88lrL4KyiBmWg4
+	RuzgY0F70qXws9AAUgD9De66buREBD+HfPqvQum/C+IeQbsVu/nVLZXw2r0sfneV1s5KXw
+	vFtBMIT5qWIQ3Lvk2srEdYYvR8azThk=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=jade3sx8Nnul+MHi6aqoKxBIknYtcAapdEpzanu8AQo=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1793465624; v=1; x=1794070424;
+ b=w0+M577mVaWzqtdSUI3kEqiAiA64yOA9tnImxrrKnPp7n5JJoXbPlfWGM7FwWuWM5y06ESp5
+ MUs5SfJhO0QzMIWJKGHpN+UTN31dxavlleBVkc1FZp9bbfIK9kTN81+qB4EclE5K4IcYPCdnAGV
+ 6PrUwCvKHgOS1w4QSUcd0Co4=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id a73ddf1f7291a74a;
+	Sat, 31 Oct 2026 16:53:43 +0000
+X-Mizu-Trace-ID: a73ddf1f7291a74a
+X-Migadu-Flow: FLOW_OUT
+Date: Sat, 31 Oct 2026 09:53:38 -0700
+From: Shakeel Butt <shakeel.butt@linux.dev>
+To: Vernon Yang <vernon2gm@gmail.com>
+Cc: akpm@linux-foundation.org, david@kernel.org, kasong@tencent.com, 
+	qi.zheng@linux.dev, baohua@kernel.org, axelrasmussen@google.com, yuanchu@google.com, 
+	weixugc@google.com, baoquan.he@linux.dev, hannes@cmpxchg.org, mhocko@kernel.org, 
+	ljs@kernel.org, roman.gushchin@linux.dev, dave@stgolabs.net, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, Vernon Yang <yanglincheng@kylinos.cn>, stable@vger.kernel.org
+Subject: Re: [PATCH v2] mm: vmscan: don't count per-node proactive reclaim as
+ memory pressure
+Message-ID: <auYc-G488bbhy9QY@linux.dev>
+References: <20261012022917.1102467-1-vernon2gm@gmail.com>
 X-Archived-By: <archiver.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: ssjk8wyodg8k7da9u55iacufd56php7u
-X-Spam-Status: No, score=-17.0 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261012022917.1102467-1-vernon2gm@gmail.com>
+X-Rspamd-Queue-Id: DB11240006
+X-Stat-Signature: mshhhbaxqwyurg76osrs51gmaoz6y1m9
+X-Rspamd-Server: rspam06
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,NICE_REPLY_A,
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,
 	SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: C328A40009
 X-Rspam-User: 
-X-HE-Tag: 1793464975-418711
-X-HE-Meta: U2FsdGVkX1+Pl6LBJ5wnB7d7XlHrAxuQc2wSA/6CapjpX9Ib0HFGaT6eH7bRTiKmgartkkk4mX5086StBB+2D51gatTO7YIKNc6Kf8SbmDJGCCPta/bgD+E5pqiTAGVERx8ENxRYj/KJLn7qd7mUhAH9Ip8/BibTjCDqfdY1+42KTkndnlbL4/nDDL4tQdjedHvday1Xqn51AUNvEKk+jc/diFJ+R09Q0oTd8yJoQQiBTWLWjP2HUV4uynNGVJoci6MgKLl3yE/NMnddXb+aJbOPNF0V0/S4kCmWQo1Lh48l3ESt8c0JX5MZGM+YOe1WtkGDzO9BtVndZkoutt0Jb7EFZKgEa+7h1gDYSVQgTwJp4319W3jCXUGUUQwPIfsGpXVJ2yDUAY9utv2UL9OpRqFKMILwHTk5oV/6MKMjzkkPjxfXU6rbbq816+ORdwpcsot/Q/9rMz01Cjp9AuGGeWUc1MP04MoWHKl9tWdoTWNobJPaK6pRQlTD8HQA7gSqlP5P6pRcwkDYRZJU3zmyc0Kw6wFG9PaiYLYEcFV8qIdIzD8BFOCv9rD7zQts3jiqdv6fUYfVkqrIltvvNPEWLuJb0qP9jRu8R0hC3v2RmMJU0hPRWjmSb6Bn4hXjgJDGF4jVDhVyUXTC4JGzZPhnTUL+g1drKYSNU3TBzkXZQbrmNn8rs5ParDG4DwKNMs57+WvxQZN/T86fME4Ow9+M59tmzTMW7L8SctH+UjVD3UGZJT+vE69HtLGdZCTpItHfc5UhNZGQa/TAjc3pKN/Jk4ptTbYgc5CLB3PSzqjAvZsi3+ofZZfGXuq0dfHMYQEms+hSHebZg5TyzyNM3BYslP3+AAlzFCiGmntC6cUYP+gv5q4CWegpdDiprWID1ydjFbl5EL7C8gQrLRIUDSC8Fuhi0tSvvdgasQB3eE+pgulJgfDxmMqnudWtxLx1frYlOdBzxgDnRhqtGEEWJkd
- pSWod7wW
- 45Ql8AfJyQ7Fp/8GhQuHvVCPjo5v9htwRlTX8hNvO1V6J0NwUSUhpeb4/H5rHAOXPYcN1Rx9sYtIJXsex1u4tDoFEf3CntsuIGRKYNdXyE42NMmwPbrGobgymVfB8w27gdieAY4Q2Ohh776HEZ6MFjSiv7hJ57tmvd9i29jF2SJfXzi49wLE+wu51/ZwEvf+ma+9TtHN45ayFWbBYJmnXpkfsnRfYaljGglbJlfGz/2FTwhHlkpp3xPT7BTWUBFJAVZ+vIH1wpmoxcR9XcrJ/RUdQ9yaPkhr1aPJfif7RATfZVyMS6egtDNu7jgpJUQE9/Xe2lKftQUxEkEHJGuP7zQfaIXhLNyOmKoF4y/BafDL9bcj+7GJw57bQR6q13rWzr3uzhnGBx/5DLVwQqUIB4bJOGfyL7p82aD1TGxkPSm/GM+E=
+X-HE-Tag: 1793465625-947584
+X-HE-Meta: U2FsdGVkX19dusDAg0wiXNtGGv2SlEB3pRV1jw9ojxd75pK3/kYSbCBGFDV6cWi2mr/N/nMlWnt+xA0+1Bu/PKiT9GBPE6SD8idSuYZuKfVmWjKbrTEdM0bv1y2oWqCiHL2eTqXVVdhDA/zqjHvouPQLaPM8B0WNGGeQZnoGY8WkhpLPGBVTJJOB+gE9JUKbPJTpeAHlqPnPAdcUhIJyS3Ji4y8HxtiMK4WudhrmBTtm18XBJuyh76x909c9rHwguInA8RFEgIsSQgCONC7+tUhqdHO+J+619PQyU7o6qxivKZlk16XIaArzwL9dIGk3FEvtzqpM1ipDjuqgvBW45foTAlq35l0dzkI2S2XQoC/1eyPXCd+sx2n0p74xQSLILyvJLS/QJ5+tkqXwk8mOZ+6OPK8grGeWQGagCqJ8H6i+N62EiuRpAc0gJ8ZtyX3BoyN9Bmap0miyJc0Glc5mvQe4Or2w1nSeXyQzO9lpm/TdZ9TWCEHCJTvDnIIx4qM35ReDCWQIxMy2DDACtp96uAYCRowG+XCz/Jgi6JjSimfTpnSWo6/E7lOCM4zDTuGecveV3vXPHH+0UojtPdHU+xaq4eWqFdlwqrNDNKo54FLjbXO1N7mHO3MQFAyorG9aKqOUiJGFRjvI1R03zPi1UBHkuKJcqFpSOnRx+K2+lgB3BXp89380QzgquK2OYIfA6ml8ST2mhZ2Be9wIDcEQMXVINC5T+QhJ8uVIHzJk8uNXaN0Evx4Nbi10Pg6irybNWOn5QmN2+tmfe7guBJoUBipO4nbsPcfYiWQ7ebVus8BsSg5kURpWRzorgGNC4SrNQ9jbafGm8NKfjIoJmj2Z+Vu08t+RTb72iN/j2B8xyooImF/qew/T1wCqO7k0RbA/jzf16rW4rqmEvvfuZ2bf4LNHizMnjYpMUh/FJ08bEFcA0yilYAN9430JPaMvMaAbG+dRPlE1mII887WfEwV
+ CiIwHNou
+ b/jUeitRPsnQAkJ7fgB6SjT76F1NKQLldaS/iutCj23LQzs+Vr4fCtitl14GGEFif+VJGBg7uZ2muZGYtNPrVkwYFWvAFgSA4QsXboE2mFNfa+KKO98sM2jDv7HJRY5NekG9OH2jW7gbQ8OWyjm2ybE5igHb/ZMRbo5gINnTHoLQ9W5L6ep9TC81hzT+3G1vWxVfxAAlLLpOZNDsZg0pdqVOkQdDawJ3hsC+1rBRO3lOetgT1h7Pe8DHZ9SJlnGmHJKwKsrpuxFSfRMFVdx3cETWscomGLbGnesE337iCHrofV6+lbZob7hvqvyHaTqN0o0Jj
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,63 +95,46 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Sat, 31 Oct 2026 11:52:30 +0100 "David Hildenbrand (Arm)" <david@kernel.org> wrote:
-
-> On 10/31/26 04:33, Qi Xi wrote:
-> > From: Qi Xi <xiqi2@huawei.com>
-> > 
-> > do_pages_stat() walks the user page array in 16-page chunks but never
-> > reschedules, so a huge nr_pages can hold a CPU past the watchdog
-> > threshold on non-preemptible kernels. Add cond_resched() to the loop so
-> > long move_pages() node-query calls yield periodically.
-> > 
-> > With KASAN and function tracing enabled, a move_pages() node query
-> > (nodes == NULL) over 10 million page entries (~40GB) can trigger the
-> > softlockup on a PREEMPT_NONE kernel.
-> > 
-> > Fixes: 80bba1290ab5 ("mm: no get_user/put_user while holding mmap_sem in do_pages_stat?")
-> > Signed-off-by: Qi Xi <xiqi2@huawei.com>
-> > ---
-> >  mm/migrate.c | 1 +
-> >  1 file changed, 1 insertion(+)
-> > 
-> > diff --git a/mm/migrate.c b/mm/migrate.c
-> > index 7bdcdb57652f..6c2371020cc5 100644
-> > --- a/mm/migrate.c
-> > +++ b/mm/migrate.c
-> > @@ -2545,6 +2545,7 @@ static int do_pages_stat(struct mm_struct *mm, unsigned long nr_pages,
-> >  
-> >  		chunk_offset += chunk_nr;
-> >  		nr_pages -= chunk_nr;
-> > +		cond_resched();
-> >  	}
-> >  	return nr_pages ? -EFAULT : 0;
-> >  }
+On Mon, Oct 12, 2026 at 10:29:17AM +0800, Vernon Yang wrote:
+> From: Vernon Yang <yanglincheng@kylinos.cn>
 > 
-> I though we wanted to stop throwing in cond_resched() at this point?
+> When the cgroup has no memory pressure at all, writing to
+> /sys/devices/system/nodeX/reclaim triggers proactive reclaim on
+> NUMA node, causing increase in the writer cgroup's memory PSI.
+> 
+> Due to this reclaim is performed in the context of the write(),
+> accounted as memory pressure on the writer, like
+> commit e22c6ed90aa9 ("mm: memcontrol: don't count limit-setting reclaim
+> as memory pressure"). This is unexpected, the similar scenarios (e.g.
+> senpai) will continue to occur, only this time it is for the
+> /sys/devices/system/nodeX/reclaim knob.
+> 
+> The Documentation/ABI/stable/sysfs-devices-node documentation also
+> notes that "This interface is equivalent to the memcg variant."
+> 
+> This patch unifies the semantics of the memcg and node interfaces:
+> per-node proactive reclaim is no longer counted as memory pressure,
+> and the per-node proactive reclaim interface no longer produces
+> phantom pressure.
+> 
+> I ran demo[1] that performs per-node proactive reclaim 10000 times
+> in qemu, writer cgroup memory.pressure as follows:
+> 
+> without patch:
+> 
+> some avg10=31.53 avg60=13.42 avg300=3.31 total=10602985
+> full avg10=31.53 avg60=13.42 avg300=3.31 total=10602985
+> 
+> with patch:
+> 
+> some avg10=9.59 avg60=3.41 avg300=0.81 total=2686221
+> full avg10=9.59 avg60=3.41 avg300=0.81 total=2686221
+> 
+> [1] https://github.com/vernon2gh/app_and_module/tree/main/reclaim_node_psi
+> 
+> Fixes: b980077899ea ("mm: introduce per-node proactive reclaim interface")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Vernon Yang <yanglincheng@kylinos.cn>
 
-It's almost unneeded in current mainline kernels.  PREEMPT_NONE can
-still be selected by
-
-	All supported Alpha configurations
-
-	All supported Hexagon configurations
-
-	Non-ColdFire configurations (classic m68k)
-
-However 99% of the world are on 5.x and 6.x kernels and many of those
-machines use PREEMPT_NONE.
-
-
-IOW, cond_resched() is not really needed in mainline, needed in
--stable.
-
-
-I think simply merging the thing with cc:stable is the simplest and
-most reliable way of getting those older kernels fixed up.  mm/ already
-has >200 cond_resched/need_resched so a few more won't matter.
-
-Presumably the day will come when we remove all those scheduling
-points, after which people will have to work directly with the -stable
-maintainers to get these things fixed up.
+Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
 
