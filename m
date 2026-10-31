@@ -1,112 +1,117 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91F74606A326
-	for <linux-mm@archiver.kernel.org>; Sat, 31 Oct 2026 09:02:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4714C606A31A
+	for <linux-mm@archiver.kernel.org>; Sat, 31 Oct 2026 09:08:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=uGbX2OdZ
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Za6UBL4q
 Received: by kanga.kvack.org (Postfix)
-	id B92966B05BA; Sat, 31 Oct 2026 05:02:04 -0400 (EDT)
+	id 645966B05B2; Sat, 31 Oct 2026 05:08:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B69156B05BB; Sat, 31 Oct 2026 05:02:04 -0400 (EDT)
+	id 5F82D6B05BC; Sat, 31 Oct 2026 05:08:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AA5B46B05BC; Sat, 31 Oct 2026 05:02:04 -0400 (EDT)
+	id 4E5576B05BD; Sat, 31 Oct 2026 05:08:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 850416B05BA
-	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 05:02:04 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 1ADC31C42DC
-	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 09:02:04 +0000 (UTC)
-X-FDA: 85382329368.02.84D6673
-Received: from mta1.migadu.com (out-113.mta1.migadu.com [95.215.58.113])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 288CC8000D
-	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 09:02:01 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=uGbX2OdZ;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf02.hostedemail.com: domain of ridong.chen@linux.dev designates 95.215.58.113 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 22E726B05B2
+	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 05:08:25 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 95D0C1208D9
+	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 09:08:24 +0000 (UTC)
+X-FDA: 85382345328.20.891F7F0
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 0767C20006
+	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 09:08:22 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Za6UBL4q;
+	spf=pass (imf03.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793437322;
+	s=arc-20220608; t=1793437703;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=olUAZWb4rGnN0WOUAfDAcNNMoLgDIGZnl5od4gLL/8A=;
-	b=kBA2aqz98E87gK/dSiX6HD4UezM4n9xzUTW0wWoy0r8E0A3dgVrkOTpM34AtaMGr+gw7Sa
-	5GD4b1ryb3vLqOA9wtPzEgNfS7jcpypao58mt+ts28DV3Ws0JFFGbyg8dfieF2Tf3hKmqC
-	FRHviqer7iEftkwQx3gM6jLTsbUO9qk=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=uGbX2OdZ;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf02.hostedemail.com: domain of ridong.chen@linux.dev designates 95.215.58.113 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev
+	bh=tm5Bg/j5fUgwCZIJXEdNeBM4C4IjSDPmSRohlhbzh7o=;
+	b=xxelrHyCLN5uZcVSl54w45jvNJqD76YCDR2uE+WYomQGlRFh5VTow/ZKHIaXzLkLqKgoPf
+	JPSkoMS4LmOym+iF+SNYmgBCyxCMYjDSrcvF9APu43MluheHB7JKO6oU9db+0C1n/xotox
+	35/E2NyFr2nK3UC1m3w527RIm7Qz0Io=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793437322;
-	b=57RbceHs+SoiFO2v0tXXhPBUpRZjpEG0zQoRkeV12XKVzCt/JXuh0mk72A/t7RNjIRM0wq
-	hEOoJT9S0XlkZhr1+6rI1vrjqkZp1Tuh7gCk95msrcXXWt19TQbfYq6z4HmyyfS5Xzfz5b
-	5s0wdBKwMbt+ugt3Us8Jz6UQXw1x13A=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=7oaQzh3qIYdYljiSohYitxTlhwMYY+sEAEK75MIPRFw=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1793437320; v=1; x=1794042120;
- b=uGbX2OdZDDvuT9QNY7AfoBgt6rUlIIG5PSNdObeHyALrAP1okGgWz4f4p4tTlFqHUVD9j1ZG
- WNLlsgtgdqhG2FdFDIK/q1pbYHcHJt4dC+IeeW8D2XxgOoScxqh4x1OtVzHYOKDlGLCVUo/J4NZ
- bShoJ8QG63/QOTYhq/BftB7w=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id bda5cc6f278b6035;
-	Sat, 31 Oct 2026 09:02:00 +0000
-X-Mizu-Trace-ID: bda5cc6f278b6035
-X-Migadu-Flow: FLOW_OUT
-From: Ridong Chen <ridong.chen@linux.dev>
-To: Steven Rostedt <rostedt@goodmis.org>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Michal Hocko <mhocko@kernel.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Dave Chinner <david@fromorbit.com>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Muchun Song <muchun.song@linux.dev>,
-	Qi Zheng <qi.zheng@linux.dev>,
-	Kairui Song <kasong@tencent.com>,
-	Barry Song <baohua@kernel.org>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>,
-	Wei Xu <weixugc@google.com>,
-	Baoquan He <baoquan.he@linux.dev>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	linux-kernel@vger.kernel.org,
-	linux-trace-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	cgroups@vger.kernel.org (open list:CONTROL GROUP - MEMORY RESOURCE CONTROLLER (MEMCG)),
-	bpf@vger.kernel.org (open list:BPF [MISC]:Keyword:(?:\b|_)bpf(?:\b|_)),
-	Ridong Chen <ridong.chen@linux.dev>,
-	Ridong Chen <chenridong@xiaomi.com>
-Subject: [PATCH v5 6/6] mm/mglru: add tracepoint for inc_max_seq()
-Date: Sat, 31 Oct 2026 17:00:41 +0800
-Message-ID: <20261031090041.58574-7-ridong.chen@linux.dev>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20261031090041.58574-1-ridong.chen@linux.dev>
-References: <20261031090041.58574-1-ridong.chen@linux.dev>
+	t=1793437703;
+	b=ZQV1EHtXwJkrEDLczArv/wxxvud4DvpgzDpVWCk+EYG+P4KnREuTkbbe9GOTpRG+t6GXkP
+	B5Wy9iuEqA8uXLfKL3QAZ37211O2nVUaQ2TUKHUCiEjqkGbXcgEo+qgywvuX23g+uOj79c
+	pkj3IPssg6nkRDMhEr0iWitB5AsLwSA=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Za6UBL4q;
+	spf=pass (imf03.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 6FED6600D4;
+	Sat, 31 Oct 2026 09:08:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 087B31F000C1;
+	Sat, 31 Oct 2026 09:08:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793437702;
+	bh=tm5Bg/j5fUgwCZIJXEdNeBM4C4IjSDPmSRohlhbzh7o=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=Za6UBL4q5Ycah54CTfxr5+sWHe8Spk6G9/PM8TWndexFEz4xe8Ia9QhE7YgOeQfLx
+	 QBjpQpZ7zK42HjwtQcv9q5H9iWUAmJoCvett6ZnZ2h1EPXySuTupdbvUejz6CSLyAv
+	 ps+J1YQJbUkNmxcYDEnK42bZy0HyeREwHmwQaWQGcPq11yLz76vkzKY5N8egBtrAvm
+	 OuJOqZ+3a0o6YiWKa0H73L8AQNSsOZLegMy9g0P5BpVVnGKvj8I3yOiQDMVp2lPB66
+	 /nFghzHltrl/jL2BYEVTXpNGTeHPsu2kQ0zIZ8FEWTGgjsuofVB6JTJ2KsXJdV+9pV
+	 9nOGaDV2cw20w==
+Date: Sat, 31 Oct 2026 09:08:06 +0000
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Alistair Popple <apopple@nvidia.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Baoquan He <baoquan.he@linux.dev>, 
+	Barry Song <baohua@kernel.org>, Brendan Jackman <brendan.jackman@linux.dev>, 
+	Byungchul Park <byungchul@sk.com>, Chengming Zhou <chengming.zhou@linux.dev>, 
+	Chris Li <chrisl@kernel.org>, Christoph Lameter <cl@gentwo.org>, 
+	Dave Chinner <david@fromorbit.com>, David Rientjes <rientjes@google.com>, 
+	Dennis Zhou <dennis@kernel.org>, Dev Jain <dev.jain@arm.com>, Gregory Price <gourry@gourry.net>, 
+	Hao Li <hao.li@linux.dev>, Harry Yoo <harry@kernel.org>, Hugh Dickins <hughd@google.com>, 
+	Jann Horn <jannh@google.com>, Johannes Weiner <hannes@cmpxchg.org>, 
+	John Hubbard <jhubbard@nvidia.com>, Joshua Hahn <joshua.hahnjy@gmail.com>, 
+	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Kiryl Shutsemau <kas@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
+	"Liam R. Howlett" <liam@infradead.org>, Matthew Brost <matthew.brost@intel.com>, 
+	Miaohe Lin <linmiaohe@huawei.com>, Michal Hocko <mhocko@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>, Muchun Song <muchun.song@linux.dev>, 
+	Naoya Horiguchi <nao.horiguchi@gmail.com>, Nhat Pham <nphamcs@gmail.com>, Nick Piggin <npiggin@gmail.com>, 
+	Nico Pache <nico.pache@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
+	Pedro Falcato <pfalcato@suse.de>, Peter Xu <peterx@redhat.com>, 
+	Peter Zijlstra <peterz@infradead.org>, Qi Zheng <qi.zheng@linux.dev>, Rakie Kim <rakie.kim@sk.com>, 
+	Rik van Riel <riel@surriel.com>, Roman Gushchin <roman.gushchin@linux.dev>, 
+	Ryan Roberts <ryan.roberts@arm.com>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Suren Baghdasaryan <surenb@google.com>, Tejun Heo <tj@kernel.org>, Uladzislau Rezki <urezki@gmail.com>, 
+	Usama Arif <usama.arif@linux.dev>, Vlastimil Babka <vbabka@kernel.org>, 
+	Will Deacon <will@kernel.org>, Xu Xin <xu.xin@linux.dev>, 
+	Ying Huang <ying.huang@linux.alibaba.com>, Youngjun Park <youngjun.park@lge.com>, Zi Yan <ziy@nvidia.com>, 
+	Jason Gunthorpe <jgg@ziepe.ca>, linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH 4/7] MAINTAINERS: sort entries in MM sections
+Message-ID: <auWqPPYNQlwAOAnm@gremlin>
+References: <20261030-maintainers-v1-0-97278f8a5f54@kernel.org>
+ <20261030-maintainers-v1-4-97278f8a5f54@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 288CC8000D
-X-Stat-Signature: sdin8nzwiedjk8jqqpmaug41c34uymfj
-X-Rspamd-Server: rspam04
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261030-maintainers-v1-4-97278f8a5f54@kernel.org>
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 0767C20006
+X-Stat-Signature: mqrgs5qn5h9a1ymxmeuycwedkzy4up4h
 X-Rspam-User: 
-X-HE-Tag: 1793437321-861084
-X-HE-Meta: U2FsdGVkX1/pqK/gjlkDwcC/EytvUBCIMYq1RxQPtZ51buDltjN1UQUx0TSRo8TWhC8+SglreNIxCUW9YMK3ND0LZ/waWeMD4XdQ9OFE+5kKilLB7epzHT52zoSGowdHtCDCfRJHf1f3bp1hwYKKaIXIu2wsVrBr39UOTyqpBGKIMdKZ7T/CDGqxqhH9P/D510na1iihBHkCNdHaufJJO81/m2ifu0mhdbjZDN1Xtj+jDsyK7JGnwBDyCoWZW/W8x3oBNy1SYIqTysvacmvi7xlctnlogkWgJbVG+A3Z480BLYGvecga91KlC9BXZwVohO6KEV23X2MxJLfM/5ALYIiRMckjY8bpiuxQGEeTRRgB1SaIu0LMvFtoLOfgYBXYomv+LV9pfxmNZNhedELRuMhb/pc8ozyZ7vjOVqzYgbQFHIXp1i7dr4ty/f33DVaSP7l6Z5mjPh6SxjaJWThznOVPDgHXKWH8R/5tZqGwi84B2q935nDArwUrcIIkCZPqYBiEoaNgFfPauY0e78dGRJyEngDsf8PToX60/HhwZ4ngEoq0YvJmwyl9u+gZoELtmBWt0IV2kFbrGr9V9gk3Vj7YMEYFcywDEjoERJsGwsJ0qNAMfQUyBnY4G+4ZZlmkc1woH8vI07CDxUrdp+sivcTMqZ5uOwEyvDzqj1+zkDvbsU6L1NbQC7HZojW85AkWWnZMo9U0PeaMiteo0K2p9zv8oWmTcTPGx2ipZvJEN4OFtZsUQ/6LXocy/A44MQwvrn7+sBnUnwVzJHsS7AhMIrj0ydJU/SUb4Mga9B79nA+81WROAjpZda3cQ46yHdfDgge13OHKcrDzDPbUJUIUwiPad9rP4/CaoxEhKQx3OOkDxk44WZeTSyhylLqfcUWoyf3jCJhBeskw+KN07+P8HTdPfFwH2QzbnyuwAZf/pl+lUExXGZeB2abE8sc1ZK/FTZrtYHfBtHePnUVVTcw
- 8lQh+N/V
- yC5q0x/mV7TSETBableVhx9DtgMoGyIFEBsB5arBxDznP+FnmgKmtbyIgzVplb3zAO3i+6LJBGzEg1M9eF+BCBcveIvzV90FRHdlpZaJQhn1VPEdSFgJrQ4JolQbOAshArp/eA6CiVH+SeN3kIcGoWxyJmhhqhdxgCID8kh0Noh7evl7jayU8qkFazLRGCADxCsonUEGu5I3T0iZ5dvCWkQP94q1pTORrmySzTGC6Y02nLdYnXeG2CVGcPjypvjNIdjfkDv54TKbblJVdsr4q9INtb3p42jIxEEwpXqX5Vre4N3rtrsqqSJ4eYqMg4s1YevXib6Ba1rppWLaPr9F43RU8EA==
+X-Spam-Status: No, score=-20.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,
+	MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1793437702-314346
+X-HE-Meta: U2FsdGVkX1/CdB8HvDyMJt6F7SKRiBFQ3WMWtqL9sfKRiW6MJT+pP6ilFdgicZvq9c3Wi+/g9Jjeqq7/ZVC4UGImT468bXSHRxg/XBFcRzZD1TmVml1I7KFQHsYSTIkKg6wNX2S/hQaLH+O1mhOUBxcWMT2XKlpVYrzCoZuZJZgELvaCBLHlr6PhV42p1+sMNUeH1VubGmYzz7qKmYsTXNmhsgeUzamiHNK1CYMzO2wjWUxkrYMqHDntLBBSRmT/b6gec9Ggo2V5+8+t8ZwS5/6p7amd95Ar3iCvSrYODZkfdyOkVpj3BcxPOdWT6cnX7oRln506hR9qRTnnjHFRBbCOSFg+6drz/Y6FtPsa8RTbBdHMOG8fQbDBJWbt0GJxBTuKQc3LTrMjIUwV+yOcThWKX+nW/4/DzWevPA9RfOhG2qnNhSDwolL2pPjX/X9Sb3ysBsLP/xxD2d0Ae3dgo/Gdg1nHptaM+Lq3rJT9bb+CPVhcd0SGxCNx+6ENNCnd40fvnUkm+0KdpQwjpyT16ZUUnPccICTIX7neWJ0wTgBgoTteC4hcc0aW6iccYz+d3S1M7UyDggOosNPh93jmb0H2RbGtQzGUXVPkPicfcd3d5FdSK2ZTE1geOsTaPeGoPlo0kx4kSQIhjoo5w4X1A1t5Ae4s0KVD1X7aaDmRf1s5WKLkrOipXG3efxnjOCqBCbcdzWg4RZZI+VCLwGV/uDs9WVTGH+J/D5cjhsWG5VeoP8TI11aDHXYRn1Kmf4j/vjoQTMpFX5yl/eKNbyvJ7HCry2oEO/g0Bp6yDq3ewzTr+MGWLq0LpZHfkUr+Cmm20PJ2IcfJkR7SC2McRx+3UHHHOout/308RtV1iWIvu8wIWW3htKwhMxunMJjjFgVpMnFccvhHmpulHs5F6F0x7usLOe8R0FsXW9LnAeYoEQBjs5bdO0cfmRdugY3wqpGpYbziI7JU8JXGbu1+CsL
+ wWbzvqh4
+ EewSFmIML5jZ08/JKIEFo7/TXcDO9/RNQTDIVHEYuiHHaWqAqzFjBVGCGjlY6rLuaW08c5NbA+1xgO/CuTO3Ig+h+O5Usw2l1thDkPcD6SZkdSne7Zyk3Qmld42uheTOXYWJDHVZjYyRm/AnmFrm0RKplqet3X1nW9PI6mdseO89t4cI8X9GNHxPx3o0e6S3UXzug/jL5zh6vP7VO9LqutVxBwdes1ZbvmzonIFmyUwACQa8zH8Kp16Ym6v1KAbNLtqyh+P61ZVYvApkJnnP+LRPj87nPBOSN3jlxQibwdcZN8mN3usPgJQ0VQ8v3UPinWVmv621qDzPHV9PSqJoeZaEeRY4fQzdgHaZbu70xhEj9M2GmmC08fLzBIjBBfY247W2Y7fWiO59znEBJ96oX5NGZtDI+cd/s4HG9heqL8FiroN48RYXHu9pWP1MOy9YBAl3r9tfjSq2M+x7iqKINq35UzLfgLLjGyxAfk1OsP02FsRos4MvZum4AFfVrpkMcoJ89H/hKht1u09MykSK2fJa+gQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -115,105 +120,137 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-From: Ridong Chen <chenridong@xiaomi.com>
+On Fri, Oct 30, 2026 at 10:34:28PM +0100, David Hildenbrand (Arm) wrote:
+> We try to keep these entries sorted; let's sort the MM related ones.
+>
+> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 
-Aging in MGLRU advances max_seq via inc_max_seq(), creating a new
-youngest generation. There is currently no tracepoint on this path, so
-the moment a new generation is created, and how the min_seq of each type
-trails behind it, cannot be observed as it happens.
+Oh damn, checkpatch warns for this so I'm surprised these exist, maybe legacy
+stuff?
 
-Add mm_mglru_inc_max_seq, emitted right after max_seq is bumped while
-the lruvec lock is still held, with the node id, memcg id, the new
-max_seq, the anon and file min_seq, and the number of pages in each
-generation for both types, summed over zones and clamped to >= 0 the
-same way the debugfs lru_gen file reports them. The nr_anon/nr_file
-arrays are indexed by generation slot, so the emitted max_seq/min_seq
-say which slot holds which seq. They are printed with __print_array(),
-so the output is hex and its length follows MAX_NR_GENS automatically.
+Anyway:
 
-Only the lruvec is passed in; all of the above is collected in
-TP_fast_assign(), so inc_max_seq() does no extra work when the event is
-disabled. Paired with mm_mglru_scan_folios it makes the full
-aging-to-eviction window observable per memcg.
+Acked-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 
-Signed-off-by: Ridong Chen <chenridong@xiaomi.com>
----
- mm/trace_vmscan.h | 47 +++++++++++++++++++++++++++++++++++++++++++++++
- mm/vmscan.c       |  2 ++
- 2 files changed, 49 insertions(+)
+> ---
+>  MAINTAINERS | 22 +++++++++++-----------
+>  1 file changed, 11 insertions(+), 11 deletions(-)
+>
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 02b5b542f81ee..bc82ef545e0aa 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -6843,9 +6843,9 @@ L:	linux-mm@kvack.org
+>  S:	Maintained
+>  F:	include/linux/memcontrol.h
+>  F:	include/linux/page_counter.h
+> -F:	mm/memcontrol.c
+>  F:	mm/memcontrol-v1.c
+>  F:	mm/memcontrol-v1.h
+> +F:	mm/memcontrol.c
+>  F:	mm/page_counter.c
+>  F:	samples/cgroup/*
+>  F:	tools/testing/selftests/cgroup/memcg_protection.m
+> @@ -17429,8 +17429,8 @@ F:	Documentation/core-api/memory-hotplug.rst
+>  F:	drivers/base/memory.c
+>  F:	include/linux/memory_hotplug.h
+>  F:	include/linux/memremap.h
+> -F:	mm/memremap.c
+>  F:	mm/memory_hotplug.c
+> +F:	mm/memremap.c
+>  F:	tools/testing/selftests/memory-hotplug/
+>
+>  MEMORY MANAGEMENT
+> @@ -17480,6 +17480,7 @@ S:	Maintained
+>  W:	http://www.linux-mm.org
+>  T:	git git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+>  F:	Documentation/admin-guide/sysctl/vm.rst
+> +F:	fs/proc/meminfo.c
+>  F:	include/linux/folio_batch.h
+>  F:	include/linux/gfp.h
+>  F:	include/linux/gfp_types.h
+> @@ -17488,16 +17489,15 @@ F:	include/linux/leafops.h
+>  F:	include/linux/memory.h
+>  F:	include/linux/mm.h
+>  F:	include/linux/mm_*.h
+> -F:	include/linux/mmzone.h
+>  F:	include/linux/mmdebug.h
+>  F:	include/linux/mmu_notifier.h
+> +F:	include/linux/mmzone.h
+>  F:	include/linux/pagewalk.h
+>  F:	include/linux/pgalloc.h
+>  F:	include/linux/pgtable.h
+>  F:	include/linux/ptdump.h
+>  F:	include/linux/vmpressure.h
+>  F:	include/linux/vmstat.h
+> -F:	fs/proc/meminfo.c
+>  F:	kernel/fork.c
+>  F:	mm/Kconfig
+>  F:	mm/debug.c
+> @@ -17636,14 +17636,12 @@ F:	Documentation/admin-guide/mm/
+>  F:	Documentation/core-api/memory-allocation.rst
+>  F:	Documentation/core-api/mm-api.rst
+>  F:	Documentation/mm/
+> -X:	Documentation/admin-guide/mm/damon/
+> -X:	Documentation/mm/damon/
+> -F:	mm/char-mem.c
+>  F:	include/linux/cma.h
+>  F:	include/linux/dmapool.h
+>  F:	include/linux/ioremap.h
+>  F:	include/linux/page_idle.h
+>  F:	mm/backing-dev.c
+> +F:	mm/char-mem.c
+>  F:	mm/cma.c
+>  F:	mm/cma_debug.c
+>  F:	mm/cma_sysfs.c
+> @@ -17658,6 +17656,8 @@ F:	mm/pgalloc-track.h
+>  F:	mm/process_vm_access.c
+>  F:	tools/lib/mm/
+>  F:	tools/testing/selftests/mm/
+> +X:	Documentation/admin-guide/mm/damon/
+> +X:	Documentation/mm/damon/
+>
+>  MEMORY MANAGEMENT - NUMA MEMBLOCKS AND NUMA EMULATION
+>  M:	Andrew Morton <akpm@linux-foundation.org>
+> @@ -17810,8 +17810,8 @@ F:	include/linux/swapfile.h
+>  F:	include/linux/swapops.h
+>  F:	mm/page_io.c
+>  F:	mm/swap.h
+> -F:	mm/swap_table.h
+>  F:	mm/swap_state.c
+> +F:	mm/swap_table.h
+>  F:	mm/swapfile.c
+>
+>  MEMORY MANAGEMENT - THP (TRANSPARENT HUGE PAGE)
+> @@ -17883,10 +17883,10 @@ L:	linux-mm@kvack.org
+>  S:	Maintained
+>  W:	http://www.linux-mm.org
+>  T:	git git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+> -F:	mm/char-mem.c
+> -F:	include/trace/events/mmap.h
+>  F:	fs/proc/task_mmu.c
+>  F:	fs/proc/task_nommu.c
+> +F:	include/trace/events/mmap.h
+> +F:	mm/char-mem.c
+>  F:	mm/mincore.c
+>  F:	mm/mlock.c
+>  F:	mm/mmap.c
+> @@ -29842,9 +29842,9 @@ S:	Maintained
+>  W:	http://www.linux-mm.org
+>  T:	git git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+>  F:	include/linux/vmalloc.h
+> +F:	lib/test_vmalloc.c
+>  F:	mm/vmalloc.c
+>  F:	mm/vmalloc.h
+> -F:	lib/test_vmalloc.c
+>
+>  VME SUBSYSTEM
+>  L:	linux-kernel@vger.kernel.org
+>
+> --
+> 2.43.0
+>
 
-diff --git a/mm/trace_vmscan.h b/mm/trace_vmscan.h
-index 8148b8224422..cddf42b5849a 100644
---- a/mm/trace_vmscan.h
-+++ b/mm/trace_vmscan.h
-@@ -456,6 +456,53 @@ TRACE_EVENT(mm_mglru_scan_folios,
- 		__entry->min_seq)
- );
- 
-+TRACE_EVENT(mm_mglru_inc_max_seq,
-+
-+	TP_PROTO(struct lruvec *lruvec),
-+
-+	TP_ARGS(lruvec),
-+
-+	TP_STRUCT__entry(
-+		__field(u64, memcg_id)
-+		__field(unsigned long, max_seq)
-+		__field(unsigned long, anon_min_seq)
-+		__field(unsigned long, file_min_seq)
-+		__array(unsigned long, nr_anon, MAX_NR_GENS)
-+		__array(unsigned long, nr_file, MAX_NR_GENS)
-+		__field(int, nid)
-+	),
-+
-+	TP_fast_assign(
-+		struct lru_gen_folio *lrugen = &lruvec->lrugen;
-+		int gen, zone;
-+
-+		__entry->memcg_id = mem_cgroup_id(lruvec_memcg(lruvec));
-+		__entry->max_seq = lrugen->max_seq;
-+		__entry->anon_min_seq = lrugen->min_seq[LRU_GEN_ANON];
-+		__entry->file_min_seq = lrugen->min_seq[LRU_GEN_FILE];
-+		/* summed over zones and clamped to >= 0, as debugfs lru_gen does */
-+		for (gen = 0; gen < MAX_NR_GENS; gen++) {
-+			__entry->nr_anon[gen] = 0;
-+			__entry->nr_file[gen] = 0;
-+			for (zone = 0; zone < MAX_NR_ZONES; zone++) {
-+				__entry->nr_anon[gen] +=
-+					max(lrugen->nr_pages[gen][LRU_GEN_ANON][zone], 0L);
-+				__entry->nr_file[gen] +=
-+					max(lrugen->nr_pages[gen][LRU_GEN_FILE][zone], 0L);
-+			}
-+		}
-+		__entry->nid = lruvec_pgdat(lruvec)->node_id;
-+	),
-+
-+	TP_printk("nid=%d memcg_id=%llu max_seq=%lu anon_min_seq=%lu file_min_seq=%lu nr_anon=%s nr_file=%s",
-+		__entry->nid,
-+		__entry->memcg_id,
-+		__entry->max_seq,
-+		__entry->anon_min_seq,
-+		__entry->file_min_seq,
-+		__print_array(__entry->nr_anon, MAX_NR_GENS, sizeof(unsigned long)),
-+		__print_array(__entry->nr_file, MAX_NR_GENS, sizeof(unsigned long)))
-+);
- #endif /* CONFIG_LRU_GEN */
- 
- TRACE_EVENT(mm_vmscan_write_folio,
-diff --git a/mm/vmscan.c b/mm/vmscan.c
-index ff51fee872f8..24cb2b7779b1 100644
---- a/mm/vmscan.c
-+++ b/mm/vmscan.c
-@@ -4134,6 +4134,8 @@ static bool inc_max_seq(struct lruvec *lruvec, unsigned long seq, int swappiness
- 	WRITE_ONCE(lrugen->timestamps[next], jiffies);
- 	/* make sure preceding modifications appear */
- 	smp_store_release(&lrugen->max_seq, lrugen->max_seq + 1);
-+
-+	trace_mm_mglru_inc_max_seq(lruvec);
- unlock:
- 	lruvec_unlock_irq(lruvec);
- 
--- 
-2.43.0
-
+--
+Cheers, Lorenzo
 
