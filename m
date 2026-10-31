@@ -1,93 +1,129 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE92C606A31A
-	for <linux-mm@archiver.kernel.org>; Sat, 31 Oct 2026 17:24:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A021606A331
+	for <linux-mm@archiver.kernel.org>; Sat, 31 Oct 2026 17:29:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Wu9dP0ze
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=JENMhMAU
 Received: by kanga.kvack.org (Postfix)
-	id 8B45E6B00EF; Sat, 31 Oct 2026 13:23:59 -0400 (EDT)
+	id B07F26B05B3; Sat, 31 Oct 2026 13:29:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8632E6B05B2; Sat, 31 Oct 2026 13:23:59 -0400 (EDT)
+	id A91C96B05B5; Sat, 31 Oct 2026 13:29:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6DBEE6B00EF; Sat, 31 Oct 2026 13:23:59 -0400 (EDT)
+	id 9591E6B05B6; Sat, 31 Oct 2026 13:29:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 3D93A6B05B1
-	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 13:23:59 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id A9613C0A0A
-	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 17:23:58 +0000 (UTC)
-X-FDA: 85383594156.24.623F19D
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 021D11C0002
-	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 17:23:56 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Wu9dP0ze;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf18.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 6E1EB6B05B3
+	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 13:29:43 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id DCB1F1407BA
+	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 17:29:42 +0000 (UTC)
+X-FDA: 85383608604.02.D43FBCF
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 0EABEC0006
+	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 17:29:40 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=JENMhMAU;
+	spf=pass (imf28.hostedemail.com: domain of kmehltretter@gmail.com designates 209.85.128.51 as permitted sender) smtp.mailfrom=kmehltretter@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793467437;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	s=arc-20220608; t=1793467781;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HiabTMz/1RAldfc34SMunp+HSIChlfqjeTxEtO8dyq4=;
-	b=K8sPLRB0aBdOqSR7ktevZWx0dX9wax5RWqhJy05OfA2XIbSnN4TldvXrT+BeLC/8qV3Arl
-	Qu3PnDd7tG+eywgUyIjGjhoOiQIVVLpiFROHSoAYbfMaMoCQfjPUaNbdok601MZrPmWZcL
-	87fS1/4DnPGQo//MXLyHal729ev8Gfo=
+	bh=RwRF56TcOm8rFLCnqU2JxOydhmu46zMDXK5qAXpa48g=;
+	b=RfS78NFdA13/bwGM+2R2hCXyMFzQLbFn1JXwrn7dq9F1eqtHnsnqD5NT93PwDNYtbvUREj
+	vXKSA9gucFn+3kbt7DvSn15cV2K4xphEtzobdooadAPUkZSGA/a5AklCwlr9VM5l+EAggI
+	TOXhBzyzxNMuI9d9NqKL5iAGzhjaI38=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Wu9dP0ze;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf18.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+	imf28.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=JENMhMAU;
+	spf=pass (imf28.hostedemail.com: domain of kmehltretter@gmail.com designates 209.85.128.51 as permitted sender) smtp.mailfrom=kmehltretter@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793467437;
-	b=dq5V3b8Esjk+H3D1zuSFbFdHwnUlUi+PVmxGfxIPblCgvQ5tW4MEA3hW3Juq8UEljsC8SG
-	4/ZatqdVHo8ujFN8PTPsIEPfIIy+OB9WUJKdIF0umdJB7FRWbulOTwQXtF8aXCCgQd5o2O
-	bU/95Z4OmbogGgTRljWu0jP5vfztS0U=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 7B1834163F;
-	Sat, 31 Oct 2026 17:23:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF41D1F000C1;
-	Sat, 31 Oct 2026 17:23:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793467435;
-	bh=HiabTMz/1RAldfc34SMunp+HSIChlfqjeTxEtO8dyq4=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=Wu9dP0zeyi++5BnJyNxUwS/ZZwxW/vZ+Rq3rQlljrDOZbQpcpYTBPhmwFWVq++luZ
-	 Q1aC1GIEiKeI+T57fNzCTgvxq0E/m4f2s2UUEOZpoPTNz6l2V8rhdJ8Is9CRhQpBNI
-	 Qhqg6E5e8bcajwTgonI76Su8YHUF+GJVZmitkjR5Q8j+JdPN5gCj28u8ByOwPNDEjY
-	 y0Fwwy8Jegb7+EedGl4rqiZm0WmUCyek26yNgEPMd6sRxO+bDbFjx++DzvCUJo3xWe
-	 RUZgsGNnV7NEXHMjmmBnS5a4MGQxiz4d7T+0iRYmDpViwP8rbp/bWcW50lIlx/2EJ9
-	 D9XOUfnYCLwTw==
-Message-ID: <sashiko-outbox-192063@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH stable 5.15] mm: move 'mmap_min_addr' logic from callers
- into vm_unmapped_area()
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Florian Fainelli" <florian.fainelli@broadcom.com>
-Cc: bcm-kernel-feedback-list@broadcom.com, "Linus Torvalds" <torvalds@linux-foundation.org>, "Liam
- R . Howlett" <Liam.Howlett@oracle.com>, "Russell King" <linux@armlinux.org.uk>, "Andrew
- Morton" <akpm@linux-foundation.org>, linux-mm@kvack.org, "Greg
- Kroah-Hartman" <gregkh@linuxfoundation.org>, "Sasha Levin" <sashal@kernel.org>
-In-Reply-To: <20261030172216.368052-3-florian.fainelli@broadcom.com>
-References: <20261030172216.368052-1-florian.fainelli@broadcom.com>
- <20261030172216.368052-3-florian.fainelli@broadcom.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Sat, 31 Oct 2026 17:23:54 +0000
-X-Rspamd-Queue-Id: 021D11C0002
-X-Stat-Signature: qbpwjw5yny7bmtf6bmmibf9zqsfr43ty
-X-Rspamd-Server: rspam04
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
+	t=1793467781;
+	b=xkDUJDzwCQJgTchErRjOXf4vW66UkevP0GQYOPyhEupdu2HVfL/bLexg72YCkD+EC16Crl
+	7fLXQTvQVMznHvsSXlyLcOUjd19UjbR3D4aoeU5ktj2bMVLDuisjJH5yyJsnGcJenYZYjm
+	kCmwdjtJL+/GQco5vZv/nHtbqQEYRRI=
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-4a140e7405dso17854425e9.3
+        for <linux-mm@kvack.org>; Sat, 31 Oct 2026 10:29:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1793467779; x=1794072579; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=RwRF56TcOm8rFLCnqU2JxOydhmu46zMDXK5qAXpa48g=;
+        b=JENMhMAUddhO9L7Dgpyvk287DmsC8S66cEhIU7dRlNGffxoU8KZPy2OuWGAKI3cpx0
+         /vDZ8XRXfSzvsgG5g/GT9nViht10nc6eO4Joi9aRfWu0R3R/2Q58cf7utRMYZIuOHAR0
+         qq0wdYlxexFxdig0LsVEpROe8JZMw+2Y9id+y8S0mf/sBkVMB3/bqqs38KfVZY9yoAPL
+         8BjgWwX2XTf6NrftcRdUYJxMITMx+A6w8yxesIAnM5LInyBl1WIfz5lQTB/77/FyVe9N
+         Iv2chwoWKwAfcowt5p7GWQ9f8uk7d15IYxKC9Ol1au1V6efGpbKpiyKhnaiJDHy0AwAr
+         zHgg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793467779; x=1794072579;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=RwRF56TcOm8rFLCnqU2JxOydhmu46zMDXK5qAXpa48g=;
+        b=mK1j4Xgxk6l0mHspUKLaRNPFEgYVcqFlgNrdS3WxMhE31jak+HnyqyjWClgsQj8WD6
+         QaXhY49UUIa/5P7e72d0K9gxGfQqFXlSeCn5Ny5IxLbLh0vdDn0muSEy9y5t2vDetDkm
+         BbIlmkOx2fAHiCuL73yACgKLZbcKlmZMskXjrT38ZpwXZGEf8wc3JHANMh8tC0rfZj/s
+         A/L0fj3Imub54aAe1qCEMWGrf4We0SRwXRpDYJosWWNsVri5LPJPrDWmW1GjkEO+F7RP
+         I+fSlZS2qjRxn72JK/HpwaCNEHQb1X8cPBq0hrcj8/teXz6N+sZpWKlop6XYmggWQyq0
+         y5uA==
+X-Forwarded-Encrypted: i=1; AKwUvBxKqSV3aBe6e6TMwoUIWyWRtsQPgq724xzcjxeECuEOeiqUa+pNG9V8MmGYSIzQTzb+6xUaNVKm/g==@kvack.org
+X-Gm-Message-State: AFq9FYKx70ZsxyxlkY2N/ZzFZTLkbc4EwyMxWNKXVWamZ+J0mz93bJZb
+	gXcherl0jsnAvglI44lY2H1OqRxIjAFo13b3SNZKT+WWRwzHQm66w1Vl
+X-Gm-Gg: AYBFou0HRWlfTQUx2xqH2DwFfEYaWnJp/b2aBTQwMte0+b3ebpXItn2pNspBlqm6Jvq
+	TZW6yzb0wMuyg878XmqzF1oQ23bX5n3Mwx/UwKgzR0BAPmn8XmR/DB9oyxdWhBeKJAYNNbroTxF
+	aorS/jry8z3EywRSreFU+EBvH2v89aOhnbRipwknEBRP17oSQeAFQVHDXd27yL2sHloN0xYmAFu
+	yXCsxr3uJlTwm9uXd7Ezxj+JUSWFybFFb7bu6h7NpzdNgi48/cdjJTm9svxgBMZTAD9ejO4Daae
+	hm3tlsli67jIfXIj10JoW2cm1fNYwDoNO1CcZ2EBRYlj0q0KYXHtsBOIHOuIDtqyanQo9HOG9Ox
+	PvN2c1HJTLA4Cg4dajJt1tjNcz62gekcQtHqNjF7KfRe1tDiLg9e2AxZ3USo7FYYCr26S/5E3X6
+	4FnBVVBVhFADfkEMP37RJmwp4Ie0oSOXyfchPNpdBaxphQIZcijmRFPNXDAGanGxmEGuBJSWfGX
+	ys47lVlZtFD8CYLfDZF2G6heqrrB9ypk5ywisIafaeUkqFa7SWpEQLuWPUildTNhyZt/G0PodQl
+	qBMeJb98RD6cnjLVa1NQFIEXeBSroNO63NpQXE24e3ZikaKsFB59dfSU992F3vtt3zkBnfWkEEF
+	4ph2Y3B7f7SueFf3H/KTFkhLn/Rwv81bHUvIya9mSVz1YaonVkFRK7Kkz2hKGgjxQxVyLe8yCU7
+	nQHWnuo8GWXeoIXVzcApYt/DkfCW2hqJc=
+X-Received: by 2002:a05:600c:8b63:b0:49d:34:420d with SMTP id 5b1f17b1804b1-4ac17ff9d41mr121811015e9.20.1793467779294;
+        Sat, 31 Oct 2026 10:29:39 -0700 (PDT)
+Received: from localhost.localdomain (dynamic-2a02-3100-a81d-e001-9c9b-db33-f166-0fda.310.pool.telefonica.de. [2a02:3100:a81d:e001:9c9b:db33:f166:fda])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4aa7c5063e3sm212352935e9.0.2026.10.31.10.29.37
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Sat, 31 Oct 2026 10:29:38 -0700 (PDT)
+From: Karl Mehltretter <kmehltretter@gmail.com>
+To: Nickolai Zeldovich <nickolai@csail.mit.edu>
+Cc: Karl Mehltretter <kmehltretter@gmail.com>,
+	Paul Walmsley <pjw@kernel.org>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>,
+	Alexandre Ghiti <alex@ghiti.fr>,
+	Andrew Waterman <andrew@sifive.com>,
+	linux-riscv@lists.infradead.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v1] riscv: mm: Skip the icache flush for special PTEs
+Date: Sat, 31 Oct 2026 18:29:30 +0100
+Message-Id: <20261031172930.835-1-kmehltretter@gmail.com>
+X-Mailer: git-send-email 2.39.5 (Apple Git-154)
+In-Reply-To: <20261017013634.792220-1-nickolai@csail.mit.edu>
+References: <20261017013634.792220-1-nickolai@csail.mit.edu>
+X-Archived-By: <archiver.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 0EABEC0006
+X-Stat-Signature: bmbeedw73r9rqokacp7nnonw7jj4tcpk
 X-Rspam-User: 
-X-HE-Tag: 1793467436-325066
-X-HE-Meta: U2FsdGVkX19i26TiM23pE7WENh53PEtN7YLOyN9H5a4Xi0W9HKWdOS4Tpf/V18g7FTOTQ1zroDYNnrRvMSZGmYWsofS/fc1w7tesYEL8bGHLh5ovme8u19cv4mz4cPE6JTTUpcFpzuNuO2woeMPCuzXsAaJJiInwz8ESwnLWJBBzNZs3aJeb8jKt0a6gnpwRSdkxNXXzzU1KWiv0Sn4Md/Hk2d78oZ9JmK4cIP1HKTxClk/y5bYCkgQ37BYe9HIOe6i6oXOAYOm9ji4qFwKMa0aX8PMujwryoglSS/lFMc5b54K+I0BGUDo09Etfn7WaviMrxta+ZwS3/HqoRJ86HNSFqfsRSrQ98upm/ta2nuvdkSKbtCTXV3k5Wra9t07nZcXucYqrNXoPygfmC63YRip676GzTBlZHC0tSBKAXGZnBePf3KJ0jUXqp50BTdbDov0yxhJ+kfG9aqvgdSrCph73Y9E/+KkI9dtORE/17L/Gtbk4Ve4RHa02rQpFp9LSp7C4OA3eg0rx4Rv2D87R2aCGsFr0ow2M39F4xh1HzB86v3kjB7UMXF7lW20LUnWrCI9mJZQC3BRuYg4mOrt5H67m3BI3VmyLd52maerfExktEqvN+AoPzQHNGOjqc5gxf7+WCM/EXcYcpbFJXKgITHBotHHt/CqJizI0CcsI7zLPoYEJ+XoyQDJf141KEFjPlqYAVRmxBhxD7IWn4GE5qWUlf9t4W1z0FIht8aMxVoqKXKQYdJ0gznum0elkM3ceZgF7TO54hr6+4O8KHIrnXvkUvmjghX0nhknTjAZHKoTVbwpEcjNJ3rIjk72fXJFZ35w3tOpzmvnz67Hmq2y1+BkLgzsi3jf7CY1iOiMNxrgvPxEOpRwfX1f39H8GoRVSU9pm3kWnLpGQNkDMNcjW57aHqu0Ax6sP5UA+qYBGDQRSxg/NrS8w5G9+GONHvAoWD6c3xnyiPUgYdPc4/ff
- BRy8DRDK
- gQ/nK0uEOm+8+W9gYZOQmnESqvG6jQP65N+JjBNPbU83bcAsu6emIjpPESUnMZURLmfujITdx7cYdm4sPkSqePuDDcpJCNAfneu24Xik3U6Gdt1ZuhU8zCKzqwUm15jKfKjX+Ga7F6MBOGmA87aULDIlwo0de5YTyeFKETWXmdQ7j78EAu66JPnQxkimtZB7e9RXG1msUaaRDXjYQaqB7BLvAiF9WXuCF1YAeNLez3Dda7xWz3Yrj/vjTi5rl1H55x/E16R21nfXCBurp0X3JSJd+0nKFBthAXQTPCxsljs+uVWqOYNbEvRk/uj3j2CgvQOIMYyHpiFT/mmBhystToabIc/gXCFZWflsC7rYk9RSloeniFAy+yXWtnsUmp0Zqjlutej5ayo4Jh91CrYGpYmgREVJKjXMn7H2vU7oA5ps7ySRPVdRoaECTNSGT96Sr+9blrrZZSOTMycRQgohlyUqXN5b4Sbt6r6L7M5k+/TFNDpLaEGRexqEkU/p1H2QZEH+vTEC6z8o7ccvOU3ijkYx9JO1uynVCBA9pfuycQGNXkeH77yjAFOpzyDQ2/v8lcwoB1v/9AJ1cGyEKJMSgXIDehY06NdjeJ3HI1cRCOlBfeE1/IW8QBBKsAcOBk/ITjhyGE/Pp22MiXev5JD3MIazX+w9anDge3uyDoAaz7zECy6neJtdT3JDsUA5zFRfH7nt5oagc4Hkb+Ncucua4xaLibZosT4ZwkuBJIbStgWHkMd/5ie4rNW9Y9TrcMknH+4NUKXCT20y4eI8TTD4E/gIZMaD3ZD3WqPkLS4HTiJLQheCK5cGliofKnA==
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,
+	SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no
+	version=4.0.1
+X-HE-Tag: 1793467780-124139
+X-HE-Meta: U2FsdGVkX18hw1rqXOrpn3cN02B/vFSpjhsQV6SiGibVxppwirmHIP30fniSufd98n7is1ex6G9saj/iYFRgypM0egKrl6W29fRpeDLiIrnh1ycZOqnmotzSKpomAhaU8QZKu5BLvSrUMeRzqQ588xyuYvAoWG3Wnf+6WyKVOsfvZtrKroFrKDKgFh/JK+cJroSE7lyKWX5JV5wkofZSSlZznVpB44+pp2QCFNmult6KltYIH7zFh3Pwz1DtMlyXrONIHIvuT/mOXaqKlJncwvDWUgAmHf1oiV+fEputmJrDS41rzgaP/q7Vb2h8N8RUmfc9UGe5mMQ5k/BLdKXfN6ME6L46x7gdnxpf3q+Z/M18B494oezJJJzCq5vKbnbNRAcaOzeoFipIKnCH/SD0HSoJo/cuwkEJCZZbZ5l2ilmImnY1idFekVLy54ioTv3rynjbz7xmpbY4XLBLQSUPq4cx4DKRkQ2mcqRdCjz5VtA8LOyIFg25LWJ8tngm9IFVc2MTR/QFTmyr5/Dv7xjkAreaW4+6VWfPmX9QW46ckif9ipBBdObanp//EnggR56SB7EOjJhBieRYd3IM0QoAsgbozDhfeG3HQUIYJcLLYnxTm+ifGViNCg/F1DKyfl0YjrF5ZXhfqz5H2A5FGXHB3y7hr1h9fSEB+OZe03mhjcIK2VOFvSeEAFkh53J4GPGNJLz42cnyuSrMXAVwVWjbS2Vxiwys1d4kPYRiYqsboXNorLe9MFaEaQdD5qwIs33e6xV9hKizIORulkb0m1pmvSAkEqJUVinPjCctFy9qZ2GsW0tUY2gMA/DgM4DGMeXMG7P+cdRSpkHBja5vvlvBYzDo4T1XR9n3uDKSMtlCOYWeXILfSossAkDFbTNwhmuBzVJzpDkVc1+LxregCmrSjrFhK2KPEdrz6T/CbzjBHdK2kcoqllWVh8CXoCD2nvhn/opp5HKmBzd78FmJ0D1
+ Yz7yCUgg
+ hVKr0UMYi9UTwrUx6pdgP9iKDZg3IhEamnZsVCXu2t/l07zG5uxZGtZFEyhOFGFV6s5a2HAyRlMLHJNntn32gwezuY+w82LnRBxh8Y5JVt+Oy6HefW9ph4Pb+oGnTe2DxMxvA+ekwNnAaUBY/ML9a/wBMnamK8lTSeg7wAaz2W3Gs+7YXYWnAsxy1TUqvPwW3Tc0tpJr6oqs6q6IYkjDeu+Qj2cuv0C6GlkW1Eo36RYPAgHmKBow5zoPu3cN8ENPz5VQLbvc/8OzRStHJRPVBjW6OgGbo2Ev8YPZhFzTOg0dbpwXTQKDBs+ZcAg7SIMkVAV826rCHltgZwelrpBI42VSNpI9GWqtKVurJaJzpb6DipID2xzy11n9her0dQvciWmabjwyNkvUsWIZUnenqjv5D+hxdVEIbN+wxXayCwoED9veIP1hkF/gcnSUv2TZZGUtQ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,107 +131,25 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
-X-Archived-By: <archiver.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [Medium] mm: unaligned return from unmapped_area() when mmap_min_addr is =
-unaligned
---
+On Fri, Oct 16, 2026 at 09:36:34PM -0400, Nickolai Zeldovich wrote:
+> Mapping device memory executable crashes the kernel: an mmap() with
+> PROT_EXEC of a physical range outside RAM, from /dev/mem, from a PCI
+> BAR's sysfs resource file, from a frame buffer or from any driver whose
+> mmap() uses remap_pfn_range(), io_remap_pfn_range() or vmf_insert_pfn(),
+> oopses in flush_icache_pte() with the page table lock held
 
-commit 357809efe869317caba6039aa012c441fb76a0c6
-Author: Linus Torvalds <torvalds@linux-foundation.org>
+I hit the same oops on QEMU virt with an executable /dev/mem mapping of
+0x200000, which is unassigned there. The kernel was abf8c33470f7 with
+riscv64 defconfig and OpenSBI v1.8.1. The mmap() oopses in
+flush_icache_pte() called from do_remap_pfn_range(), and init dies.
 
-mm: move 'mmap_min_addr' logic from callers into vm_unmapped_area()
+With this patch the mapping succeeds. Loads, stores and instruction
+fetches through it raise access faults, which reach user space as
+SIGSEGV.
 
-This commit moves the mmap_min_addr lower-bound clamping out of individual
-callers and into unmapped_area() and unmapped_area_topdown() so that
-vm_unmapped_area() never returns an address below mmap_min_addr.
+Tested-by: Karl Mehltretter <kmehltretter@gmail.com>
 
-Link: https://lkml.kernel.org/r/20230418214009.1142926-1-Liam.Howlett@oracl=
-e.com
-
-[ ... ]
-
-> diff --git a/mm/mmap.c b/mm/mmap.c
-> index 53fa4f5167dd0..2c22f4bee04ee 100644
-> --- a/mm/mmap.c
-> +++ b/mm/mmap.c
-> @@ -1917,6 +1917,7 @@ static unsigned long unmapped_area(struct vm_unmapp=
-ed_area_info *info)
->  	struct mm_struct *mm =3D current->mm;
->  	struct vm_area_struct *vma;
->  	unsigned long length, low_limit, high_limit, gap_start, gap_end;
-> +	unsigned long min_addr =3D max(info->low_limit, mmap_min_addr);
-> =20
->  	/* Adjust search length to account for worst case alignment overhead */
->  	length =3D info->length + info->align_mask;
-> @@ -1928,9 +1929,9 @@ static unsigned long unmapped_area(struct vm_unmapp=
-ed_area_info *info)
->  		return -ENOMEM;
->  	high_limit =3D info->high_limit - length;
-> =20
-> -	if (info->low_limit > high_limit)
-> +	if (min_addr > high_limit)
->  		return -ENOMEM;
-> -	low_limit =3D info->low_limit + length;
-> +	low_limit =3D min_addr + length;
-> =20
->  	/* Check if rbtree root looks promising */
->  	if (RB_EMPTY_ROOT(&mm->mm_rb))
-> @@ -1996,8 +1997,8 @@ static unsigned long unmapped_area(struct vm_unmapp=
-ed_area_info *info)
-> =20
->  found:
->  	/* We found a suitable gap. Clip it with the original low_limit. */
-> -	if (gap_start < info->low_limit)
-> -		gap_start =3D info->low_limit;
-> +	if (gap_start < min_addr)
-> +		gap_start =3D min_addr;
-> =20
->  	/* Adjust gap address to the desired alignment */
->  	gap_start +=3D (info->align_offset - gap_start) & info->align_mask;
-
-[Severity: Medium]
-Can unmapped_area() return a non-page-aligned address here when mmap_min_ad=
-dr
-is not page-aligned?
-
-In security/min_addr.c, mmap_min_addr_handler() updates mmap_min_addr via
-proc_doulongvec_minmax() without enforcing page alignment, which is why
-round_hint_to_min() in mm/mmap.c explicitly uses PAGE_ALIGN(mmap_min_addr):
-
-mm/mmap.c:round_hint_to_min() {
-	if (((void *)hint !=3D NULL) &&
-	    (hint < mmap_min_addr))
-		return PAGE_ALIGN(mmap_min_addr);
-	return hint;
-}
-
-In the upstream commit 6b008640db73 ("mm: move 'mmap_min_addr' logic from
-callers into vm_unmapped_area()"), vm_unmapped_area() also aligned
-mmap_min_addr to a page boundary:
-
-	info->low_limit =3D max(info->low_limit, PAGE_ALIGN(mmap_min_addr));
-
-Here in unmapped_area(), min_addr is computed using the raw mmap_min_addr. =
-If
-mmap_min_addr is set to a non-page-aligned value above info->low_limit and a
-bottom-up search finds a gap with gap_start < min_addr, gap_start is clipped
-to the unaligned min_addr. Because info->align_mask has its low page-offset
-bits cleared (or is 0), adjusting gap_start with info->align_mask leaves the
-non-zero sub-page bits intact (and can also borrow from bit PAGE_SHIFT when
-computing higher-order alignment).
-
-Callers of vm_unmapped_area() then see offset_in_page(addr) or
-(addr & ~PAGE_MASK) as non-zero and treat the returned address as an error,
-causing get_unmapped_area() to fail with -EINVAL or callers checking
-VM_BUG_ON(addr !=3D -ENOMEM) to trigger.
-
-Should unmapped_area() and unmapped_area_topdown() use
-PAGE_ALIGN(mmap_min_addr) when computing min_addr?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261030172216.3680=
-52-3-florian.fainelli@broadcom.com?part=3D1
+Thanks,
+Karl
 
