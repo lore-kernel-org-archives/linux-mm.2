@@ -1,101 +1,149 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFD42606A31C
-	for <linux-mm@archiver.kernel.org>; Sat, 31 Oct 2026 03:40:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18194606A31E
+	for <linux-mm@archiver.kernel.org>; Sat, 31 Oct 2026 04:01:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=fgNvs0zJ
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=ME/E9smf
 Received: by kanga.kvack.org (Postfix)
-	id 0AB886B00EF; Fri, 30 Oct 2026 23:40:21 -0400 (EDT)
+	id E18156B00EF; Sat, 31 Oct 2026 00:01:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 05B756B05B1; Fri, 30 Oct 2026 23:40:21 -0400 (EDT)
+	id DC8996B05B1; Sat, 31 Oct 2026 00:01:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E8CF66B05B2; Fri, 30 Oct 2026 23:40:20 -0400 (EDT)
+	id CB8406B05B2; Sat, 31 Oct 2026 00:01:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C22386B00EF
-	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 23:40:20 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 329BE807C1
-	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 03:40:20 +0000 (UTC)
-X-FDA: 85381518600.13.BD7E171
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.2])
-	by imf31.hostedemail.com (Postfix) with ESMTP id C634F20002
-	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 03:40:17 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=163.com header.s=s110527 header.b=fgNvs0zJ;
-	spf=pass (imf31.hostedemail.com: domain of xiqi5703@163.com designates 220.197.31.2 as permitted sender) smtp.mailfrom=xiqi5703@163.com;
-	dmarc=pass (policy=none) header.from=163.com
+	by kanga.kvack.org (Postfix) with ESMTP id A6C256B00EF
+	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 00:01:30 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 0DE788086D
+	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 04:01:30 +0000 (UTC)
+X-FDA: 85381571940.30.7DE3010
+Received: from mta0.migadu.com (out-12.mta0.migadu.com [91.218.175.12])
+	by imf05.hostedemail.com (Postfix) with ESMTP id D6EAA10000D
+	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 04:01:27 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="ME/E9smf";
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf05.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.12 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793418018;
+	s=arc-20220608; t=1793419288;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=3dxr/8PguZyVf6pN+W3kq1oumxAvIQqUFP4HyBpPUZE=;
-	b=Y9YI4VfzIw/QggKT6eQ7HkonO7brKzUKc4tSfrDHlrLXBU9fmCk/Cw4sbT4tjSQv4gseVb
-	yaEE5zXTbzDi1MpV6+y4iwmQB7jKXOWoVDAeIjewLhwVSHxcU32F4G4femIDbd27bbLZl4
-	rL+X2lfwSAR+I24Z5D7OiynCJQfylxc=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=SVfa0gIfJ0mFFHTR1txtm9nrtHNlGhjBAfd3nh/ZFDo=;
+	b=NOiuaayHFnqr53w0Ti6bgRz/0a1qz/etlIN/lTCXkrQ2mBk6HMAk/g+ZARhD9QRDrwBOyH
+	0yg9H3IRlMQ2XHFMFfiMyo54JpgLp+5o8GSVIT8bXw7x/eJi3yR41TYqoSO1LLKDvKPABE
+	Z7c3XjCTrO2N3ABN6CSbudhC9lr604k=
 ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=163.com header.s=s110527 header.b=fgNvs0zJ;
-	spf=pass (imf31.hostedemail.com: domain of xiqi5703@163.com designates 220.197.31.2 as permitted sender) smtp.mailfrom=xiqi5703@163.com;
-	dmarc=pass (policy=none) header.from=163.com
+	imf05.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="ME/E9smf";
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf05.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.12 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793418018;
-	b=RcuBbVSub7SVyBnDmG0rFJu3pcI/DNHQDtWZeAicSxcG5NFpE8yddkaMotnCyOciB7jPbY
-	K5jT7ej9wNlA/kBPJrIIp2ebYHXN4btiyyYzvOsPUTQazkvpgfbwneVbTg0yywyG7ul+AW
-	Qg0dbM9MdFb3ga44O+8eaj9inlRQtFg=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=3d
-	xr/8PguZyVf6pN+W3kq1oumxAvIQqUFP4HyBpPUZE=; b=fgNvs0zJrvIGtohxFr
-	CsL6UX4hjr80NCesA+JgmEZRg2u2FGK907w/Kbh2pc/7ZrI7bmyzrzy6sIVnSe5x
-	0fmlxlYj3X/9RYw3ozXlT5vbmtqzDfdOpKhe5jW96DjY4kisxKSRAuvRAikWvRSi
-	fiHftYjjNihkJoe8/kTbzYCTw=
-Received: from mm (unknown [])
-	by gzga-smtp-mtada-g0-1 (Coremail) with SMTP id _____wD3fxX7YuVqwv03EA--.41986S2;
-	Sat, 31 Oct 2026 11:39:46 +0800 (CST)
-From: Qi Xi <xiqi5703@163.com>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	linux-mm@kvack.org
-Cc: David Hildenbrand <david@kernel.org>,
-	Zi Yan <ziy@nvidia.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Joshua Hahn <joshua.hahnjy@gmail.com>,
-	Byungchul Park <byungchul@sk.com>,
-	Gregory Price <gourry@gourry.net>,
-	Ying Huang <ying.huang@linux.alibaba.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	Qiliang Yuan <odys.yuan@gmail.com>,
+	t=1793419288;
+	b=1fe8DFGmEna7JxCK+5Di9Ax+ZOqKltckwbtiED7zVloyhhkCO0wVy6LV72pSwDZg0cs0Mm
+	WLLJCPdJma33vVu6CZ02zCxm9PceGswKiIGlKCHSM+I5+u6eJopwhzcSzZ6Rpimx8icQkQ
+	gitqzbuFNUEyqkupKXP4NGmV6xGqu6A=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=XfEaAPgAHtnFtcCOsY1hz9YOxl0K/jzQz3+QJgV86BY=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1793419284; v=1; x=1794024084;
+ b=ME/E9smfnqc3VhfPxpLpOIMFEZ9+HuzSrewiJmPQlI/Mrf7qI/IwjcHzcYxyHGXpBrMAHrgM
+ lgOmzHNlCudQtntnDt/THr+8520JTCwJKoHS72MUnMoE5OATYa0fc/rbCKUtwx0PJlfl3LdhlVK
+ UJUZTLll9FYApsN7tQwHcWls=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id 31186c4904888d22;
+	Sat, 31 Oct 2026 04:01:23 +0000
+X-Mizu-Trace-ID: 31186c4904888d22
+X-Migadu-Flow: FLOW_OUT
+From: Lance Yang <lance.yang@linux.dev>
+To: david@kernel.org,
+	ziy@nvidia.com
+Cc: apopple@nvidia.com,
+	akpm@linux-foundation.org,
+	aneesh.kumar@kernel.org,
+	baolin.wang@linux.alibaba.com,
+	baoquan.he@linux.dev,
+	baohua@kernel.org,
+	brendan.jackman@linux.dev,
+	byungchul@sk.com,
+	chengming.zhou@linux.dev,
+	chrisl@kernel.org,
+	cl@gentwo.org,
+	david@fromorbit.com,
+	rientjes@google.com,
+	dennis@kernel.org,
+	dev.jain@arm.com,
+	gourry@gourry.net,
+	hao.li@linux.dev,
+	harry@kernel.org,
+	hughd@google.com,
+	jannh@google.com,
+	hannes@cmpxchg.org,
+	jhubbard@nvidia.com,
+	joshua.hahnjy@gmail.com,
+	kasong@tencent.com,
+	shikemeng@huaweicloud.com,
+	kas@kernel.org,
+	lance.yang@linux.dev,
+	liam@infradead.org,
+	ljs@kernel.org,
+	matthew.brost@intel.com,
+	linmiaohe@huawei.com,
+	mhocko@kernel.org,
+	rppt@kernel.org,
+	muchun.song@linux.dev,
+	nao.horiguchi@gmail.com,
+	nphamcs@gmail.com,
+	npiggin@gmail.com,
+	nico.pache@linux.dev,
+	osalvador@suse.de,
+	pfalcato@suse.de,
+	peterx@redhat.com,
+	peterz@infradead.org,
+	qi.zheng@linux.dev,
+	rakie.kim@sk.com,
+	riel@surriel.com,
+	roman.gushchin@linux.dev,
+	ryan.roberts@arm.com,
+	shakeel.butt@linux.dev,
+	surenb@google.com,
+	tj@kernel.org,
+	urezki@gmail.com,
+	usama.arif@linux.dev,
+	vbabka@kernel.org,
+	will@kernel.org,
+	xu.xin@linux.dev,
+	ying.huang@linux.alibaba.com,
+	youngjun.park@lge.com,
+	jgg@ziepe.ca,
 	linux-kernel@vger.kernel.org,
-	wangkefeng.wang@huawei.com,
-	sunnanyong@huawei.com,
-	xiqi2@huawei.com
-Subject: [PATCH] mm/migrate: fix softlockup in do_pages_stat() with huge page arrays
-Date: Sat, 31 Oct 2026 11:33:30 +0800
-Message-ID: <20261031033330.3416326-1-xiqi5703@163.com>
-X-Mailer: git-send-email 2.53.0
+	linux-mm@kvack.org
+Subject: Re: [PATCH 3/7] MAINTAINERS: add Zi Yan as co-maintainer for MEMORY MANAGEMENT - THP
+Date: Sat, 31 Oct 2026 12:01:18 +0800
+Message-ID: <20261031040118.53610-1-lance.yang@linux.dev>
+X-Mailer: git-send-email 2.49.0
+In-Reply-To: <20261030-maintainers-v1-3-97278f8a5f54@kernel.org>
+References: <20261030-maintainers-v1-3-97278f8a5f54@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wD3fxX7YuVqwv03EA--.41986S2
-X-Coremail-Antispam: 1Uf129KBjvdXoWruw43uFykCr48tr48Wr4UJwb_yoWDWwb_Zw
-	4rKr1xCr4kXF1IyF9xAws3X3W3ta48GFWDAw4jqrW7AFy8AFyvqFW0vF98WryDZFZrCFZ0
-	kwn2qw4q9r9YkjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7IU0YLvJUUUUU==
-X-CM-SenderInfo: 50ltxkqxqtqiywtou0bp/xtbC7QLsI2rlYwJtqQAA3K
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: D6EAA10000D
+X-Stat-Signature: 1g3q6oa74zoq69gqsrzepysqj8cgr7nd
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: C634F20002
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,UNPARSEABLE_RELAY,
-	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: oyaq5g34xw9qxorxn7r1sqnuh8ugcnpz
-X-HE-Tag: 1793418017-769175
-X-HE-Meta: U2FsdGVkX1+khrEAKoOJwmOIQXiC7KSYM9Uws5rrZM9gTZQsEjCv282qFsKyS25al/Rhy05cjW0K9p8+k03noPVTjBMxjMK9ni0dSK/qjLaP1xJK2wrdPR0pzhkVu3w6AbweyBBHIGKP0VRaOf21izzFA7sG3VHUYfIiIaDzA2K3FZzk/iuZftneBJ2HXEr49/E8EAoDZxbjuZcCWVdoClQelsC/PvUwFF0TJu2fdbQkEc8v9086InA0lZO/DCPwMMYLF9tIF5Dr8kqWDpDZ6M73VMXWelIJyT8Oe8Ri2XNAxG9DZRxWp3LTd2XtsXscGcDJRqgZ3wfMSnIxr6tcS463lSZ7w6CcwuBeRgvVy4/KYvXnMNkbsb7qgnTH5k0LGkb28ZG9PEsgeZmKoiWhZGI+PKo3GAa6DYLyzzefYArwF28ubmbddrFiU/Fh2gy7Vh2uDe/uyNTIHwkD9Y+VJx0LCM/F2k6cjrk8rF46OI+jBXM3eVoPTjVmncZwQHEmBMLXbJPuNBX6K7IawGmSGDN54RiQHTgqn51EOcYFd1X9eLBxXNyPXArbchcq7mdqhXEax9SkCCfQBMmcKSb7GRXCUhHiFWn1baNhLlLmythEoc6ZyNn4tEPA99KEvASh2Ce7VVwbaQqGGFKYxOC2p8EZDBMPG04aKcnbw65prSmQ/eshklZDelflGx148kBDMA7eqQuInm7VaAKJLWoOgOGv2np9TCqsLYhbwgXQuh6Rb7tjFuTZBLJBzqKTZiPWXzYrLBLQy9oVOb5ghLTkehQrqJblTpOqMp9R5wkc80BvCEUoEbtx7kKjd2o+X86NayZJL8Bh+UVrGKBIypzcZY+KOkiWHb3/U/VgOqeQlaYYtmOC782mvzP1cVAYpF5khDRGfS+mFRqYmo7wst+iiFfqus+UYI55FDw7FesvL2WfU7Qlooqwpgx6Mn9RSgJu4U4MTVz4Cxj39gbw7xp
- q9was8o+
- KXieJ/hIP8KEsOJRn2DOC+9dTczLIHVTFvM9j1Tt3JWB2s3PkJk4uy9rA1Q0ox/F1yaYDGeR8UWVwtshX7kXkE93APNQY0GTbr9wrkBPuD0F06yPTSosvMaW70RYOcbOdFir+EOj0soQ10h83eKLZ5wshrZT5RPuNJL9luxMqeDdhcZfUqSUmJcED5HaLlft/ylRmAJ3E23PDaEfW0rrJEfeBG4ImRMyHx3RzEMBfYeBjTHs5usMlz4jZaJjkeaS293TsyyS7XArPO9DAdahzNsPl6sr5Py4+nWL5dTu5PEMsR71If1F0d6KqCgohznAu0EgkuvOnbDzTBot672/qQAwS/pczkwWEgHxHDbiSug5nwpvM8eSkZElGBAkH59ehiEd1xc044KSfxavcXRouuu6/rugJ/KItuwR1
+X-HE-Tag: 1793419287-858173
+X-HE-Meta: U2FsdGVkX18STeypvNXU+rhSmQhQ86HWhON2IKA7cv8NpqRQZkOEQpUa/yGqdgFagtfqhJ0DzBXuF7WhnuZUIlUwbnkBqg36DY6jQuc2OCXAFTdrysVJ7dQrYSMxNN5ZYE3n2EBJp55rhco0sigNtGcZZjFfLgU/CDYZl2RCbRpLomvdgm2eq0rHzi9Ah1Yz8gQ4ktIXTrXjxOjeA5+IykB/falcbKSIIc38zN1ccKo3SHXoJijlow9SW74aD5BPX71kROkywW0gA8HqCmuYCxdy6M7NVcWcCyrZ1TnD2P5aEgA+cmVeH55MWucToxeT/fjHpQHQgSNKd4OkN3rk/RpkrBr++bGWrS9vWAxdxGcxvbZHnpD0/j6q+aNO6alFCmk5VCm+6YpjV4knZkqyZ4F0r1gsmBF8FOOjHaPoNy5cjE/N6+tvCbou2U5Ez7wLY9KhzYnrf/nJSH9WEDucb5vCAlU4ueWTRCOZQmCA7WFEgVHZfdKSN1rdBq1XVQoObBWmeyRqLUePsIQQFncPFSvf89Mi+y2YH5iP8TmiDfAKIJKzVg7mNcoNtnZGpZODI8+hzt1p7fcujCnHIf0hB5t5fjXbQvjwQFK6FMOn9ooBNbd+6pNQ1GuPgsj8GCny8Qvhw33Gg/e/ZXX/Tn3x+aGnPayREu3zDrUOV9moAMssbOxGIO+VOBIrzWewnl2cGYURbt436++G1CFp3jp3/F9udAuqO1Spts4yCSQgzxZipmxqeNvJEk7OvbK/BKUGLC6lklqPAL99PKADUIvLHed7aO6aRv1gf2pqW++Md+AqQUwQx+yPHsHLus5MXzU4q9Xysirv6AOwS74vZvQEwDFI7zWZBlUzQkW06tBS4Kki+vQQ0v1MXL9I5M8q8+k8YrqpPoJyM7bLkzNQoBR2Or/TlYeHWv+FUbaeuNcjEOoAUxccQePv9a/i19mjGBHUE9+e1IyoR6rZpDIWGGg
+ GpK0x6c6
+ 6T9ErnRVauU3YDEE+EfCa79pmJcJbVzLbYmE8RWZm3oS/d6Fj6B8X75QsqinGfHf9bh1MIcHrUTUQLFLNECT8dW0acwu24AjSLjYPWFhUX1ekUnlx+Jh/a1QpBxP19M4mXc1Z1xSFJCXhNhpmN/QbfhZKf8DMu46muuk2qq8dlnZ3PePukcBqQ0+reAF4D4LzJtpOFiLjn0GkCcuQSdPpZ/hxG2/ua6D0imbzr1BZe8tYuslr+WFMujZhxMIrIP17uuEuihXp78vhaK6f+PTih3ZYCMxbzUP5VKb1X74k1SPuUZgMwi7qFsg7P6P72SNHZfjEu627lo+g+nOgIMgCPIlQnAd9DmiH9Ta5uGwKHv6ql4TO/+JOkcXzMhNM73UvPbgFFP+B0AykKe9lpYFjpYHVt+LsuqTgiRW4C5/FiWTxRwqBFcLvqK7YUy7cY7+1PwxnL+pVQVpe8BkexAzs3Yz+9qU+dvHnbcd9HVkS4QdecDli41eQOfU0oQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,36 +152,49 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-From: Qi Xi <xiqi2@huawei.com>
 
-do_pages_stat() walks the user page array in 16-page chunks but never
-reschedules, so a huge nr_pages can hold a CPU past the watchdog
-threshold on non-preemptible kernels. Add cond_resched() to the loop so
-long move_pages() node-query calls yield periodically.
+On Fri, Oct 30, 2026 at 10:34:27PM +0100, David Hildenbrand (Arm) wrote:
+>Zi has been contributing to THP consistently and reliably over many
+>years and is considered one of our most valuable THP experts. As THP is
+>an especially active area lately, having a single dedicated THP maintainer
+>is not sustainable.
+>
+>Fortunately, Zi volunteered to take on more responsibility by stepping
+>up as a THP co-maintainer. So let's do exactly that.
 
-With KASAN and function tracing enabled, a move_pages() node query
-(nodes == NULL) over 10 million page entries (~40GB) can trigger the
-softlockup on a PREEMPT_NONE kernel.
+Nice one!
 
-Fixes: 80bba1290ab5 ("mm: no get_user/put_user while holding mmap_sem in do_pages_stat?")
-Signed-off-by: Qi Xi <xiqi2@huawei.com>
----
- mm/migrate.c | 1 +
- 1 file changed, 1 insertion(+)
+Couldn't think of a better candidate to step up as co-maintainer.
 
-diff --git a/mm/migrate.c b/mm/migrate.c
-index 7bdcdb57652f..6c2371020cc5 100644
---- a/mm/migrate.c
-+++ b/mm/migrate.c
-@@ -2545,6 +2545,7 @@ static int do_pages_stat(struct mm_struct *mm, unsigned long nr_pages,
- 
- 		chunk_offset += chunk_nr;
- 		nr_pages -= chunk_nr;
-+		cond_resched();
- 	}
- 	return nr_pages ? -EFAULT : 0;
- }
--- 
-2.53.0
+>His placement in the MAINTAINERS entry is very convenient to perform
+>this change :)
+>
+>Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+>---
+> MAINTAINERS | 2 +-
+> 1 file changed, 1 insertion(+), 1 deletion(-)
+>
+>diff --git a/MAINTAINERS b/MAINTAINERS
+>index 0baeb37b0dcdc..02b5b542f81ee 100644
+>--- a/MAINTAINERS
+>+++ b/MAINTAINERS
+>@@ -17817,7 +17817,7 @@ F:	mm/swapfile.c
+> MEMORY MANAGEMENT - THP (TRANSPARENT HUGE PAGE)
+> M:	Andrew Morton <akpm@linux-foundation.org>
+> M:	David Hildenbrand <david@kernel.org>
+>-R:	Zi Yan <ziy@nvidia.com>
+>+M:	Zi Yan <ziy@nvidia.com>
 
+Long haul, hard work, never quit. Fully deserved.
+
+Acked-by: Lance Yang <lance.yang@linux.dev>
+
+> R:	Baolin Wang <baolin.wang@linux.alibaba.com>
+> R:	Liam R. Howlett <liam@infradead.org>
+> R:	Nico Pache <nico.pache@linux.dev>
+>
+>-- 
+>2.43.0
+>
+>
 
