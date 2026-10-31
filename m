@@ -1,93 +1,82 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB22C606A322
-	for <linux-mm@archiver.kernel.org>; Sat, 31 Oct 2026 09:32:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BB89606A320
+	for <linux-mm@archiver.kernel.org>; Sat, 31 Oct 2026 09:34:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Cg4K3/Ax
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=PMeX0QQv
 Received: by kanga.kvack.org (Postfix)
-	id F011F6B05B1; Sat, 31 Oct 2026 05:32:48 -0400 (EDT)
+	id B5BC96B05BC; Sat, 31 Oct 2026 05:34:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id ED8D16B05B2; Sat, 31 Oct 2026 05:32:48 -0400 (EDT)
+	id B33416B05BF; Sat, 31 Oct 2026 05:34:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DEE5D6B05BF; Sat, 31 Oct 2026 05:32:48 -0400 (EDT)
+	id A233C6B05C0; Sat, 31 Oct 2026 05:34:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id A8FFF6B05B1
-	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 05:32:48 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 794576B05BC
+	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 05:34:58 -0400 (EDT)
 Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 91B0EC0651
-	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 09:32:46 +0000 (UTC)
-X-FDA: 85382406732.20.74AA6F6
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf22.hostedemail.com (Postfix) with ESMTP id C19C3C0004
-	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 09:32:44 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Cg4K3/Ax";
-	spf=pass (imf22.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 114F01608F4
+	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 09:34:58 +0000 (UTC)
+X-FDA: 85382412276.20.53068CF
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 456BC20006
+	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 09:34:57 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PMeX0QQv;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf31.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793439164;
+	s=arc-20220608; t=1793439296;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jVV37u2/JFMbTqwrO/nldhPTNdr2cEJ4JwbP51ZF0as=;
-	b=zn9aBZ4EMuoVAVdQvTWPrEJjRyGfvJydtVNJY9IALQ4w1Ya9OORbVTDArF4exQfglu9Ovo
-	SmVIvw5Qfz3LWxOlYGEMywzOzxut9CWvh90NtdtiX3ddIbmRXmR8L0BlOtpjAFqfDKLiri
-	vYpo0NaUQxrI1xz2MhVqI1CO5rOuEB4=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793439164;
-	b=1O+9KcpffvLo3emtorWHxfP0DaWMjHAJxQdsHsH+zaArIXWuPf04uV/MRNOFnpjnlo7saQ
-	aB5XzsEvo16jjmlIOsd500Pne+nRiKhY5h+OonHMf4rvRBqQVQPuWBZqfKvPEpVglwRyl2
-	YD63EZCpmLquj2OdP4Gj6wb9pQdGeZU=
+	bh=P9o1mQzkbmTdaiTKQdIgL8fzuR8hlpHa+FcuDOUlG7g=;
+	b=MQX1NnCkLU134sBAZ2rxVfoVyHOC4Hosn3NhhTvWz4XtB+loM6BvSPN83NyMCCO6KHMJzL
+	d4snqYyYctZ9W/tjoQmL/eEH14WF6BsDMxZdQajZrwcB2DFLxIL23VvMpfeqm3xH0pvnyu
+	0lRLsOlr821aXFKmoyyq6PcBph8E4tA=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Cg4K3/Ax";
-	spf=pass (imf22.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PMeX0QQv;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf31.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793439296;
+	b=3bIXxMfenr18XTMh4lAqbk8zZ8tWb0xlJhnaG1RfmQojGmTh4UfeqdEB3qN4dd6mTrz6ID
+	+LEI4ttgjWexRci7BtvuUvNOTBjzWnLly4+UsPaCK8/Qig0Vjt4hlYbrx2cegdiqJ7di6i
+	Zbecj0msY4sgI4V8ravxiO33O9KFeKA=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 9D76040242;
-	Sat, 31 Oct 2026 09:32:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67CF61F000C1;
-	Sat, 31 Oct 2026 09:32:37 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id C6A3F60236;
+	Sat, 31 Oct 2026 09:34:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCAA11F000C1;
+	Sat, 31 Oct 2026 09:34:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793439163;
-	bh=jVV37u2/JFMbTqwrO/nldhPTNdr2cEJ4JwbP51ZF0as=;
+	s=k20260515; t=1793439295;
+	bh=P9o1mQzkbmTdaiTKQdIgL8fzuR8hlpHa+FcuDOUlG7g=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=Cg4K3/Ax3YvyEFtn0SNP9CSc1Nk8veaJhxtFdP64CVmOxVBaqGziD6b1+pBnD2HCG
-	 TVpmFTnFoZprPb5oow/zeRYBZiObDg94zPComBUYuYenUE4S3d209Zy+ZPC1Jj7kEQ
-	 0gVgZmal7UaOb7UN+jTfYnC1bsVG3uHV+QGOoQhv14Un4veVVSB+CP1OIvNs9WoJvC
-	 0+m11isq4Tnsx5Iacv8L+cTpIo6hCp70pcfqFrt+qJTnxkvekLbITYiHWgqwADr+vc
-	 46MFftPD6d5QRa33rv24eA32zC4o7DU4fJv1ncoIwIe+TF2c/slf0sogg5/ApvFgMN
-	 6yzm2FAR1D/uA==
-Message-ID: <bb50fcfa-9d71-4905-a76a-ab7bc149d62b@kernel.org>
-Date: Sat, 31 Oct 2026 10:32:32 +0100
+	b=PMeX0QQvPBgkOrecOplu7IqNxYMnMEyiD5AjPxAjtugRusW9fJiuNj9IXZNPcnSH/
+	 WMqSf4rUuty4Ax+BW2IdK8zetJkUQAMx3/TqvyUINiyjs6NfC0rfqsO3X79DBBi4Sc
+	 WhfQaM1PTWd6z3XfFqVDPxoYFuZCr8x+mzLIQ503fxBBUSUX6dp+bH4tgB3FpN4yeA
+	 JimfPT0DLgkb4O0DeQsG/FdpYWITpOIdsyvhtAmXLxivSzB4EiIbnVSluZg62j/4Ro
+	 txxIMOW7G42uEhpVi6RVyYto7K6f2/WDA2zTfShc/YtXJ3HZghe/m3wXmmC0cGiTT8
+	 MG8uqaygp9/SQ==
+Message-ID: <04155e81-a88f-4bba-a77f-0aad1ffdcde0@kernel.org>
+Date: Sat, 31 Oct 2026 10:34:47 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/2] mm/memfd: add F_SEAL_PUNCH_HOLE
-To: Samiullah Khawaja <skhawaja@google.com>,
- Andy Lutomirski <luto@amacapital.net>
-Cc: Jason Gunthorpe <jgg@ziepe.ca>, Andrew Morton
- <akpm@linux-foundation.org>, Hugh Dickins <hughd@google.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
- Jeff Layton <jlayton@kernel.org>, Chuck Lever <cel@kernel.org>,
- Alexander Aring <alex.aring@gmail.com>, Shuah Khan <shuah@kernel.org>,
- Gerd Hoffmann <kraxel@redhat.com>,
- Vivek Kasireddy <vivek.kasireddy@intel.com>, Jeff Xu <jeffxu@google.com>,
- David Matlack <dmatlack@google.com>, Pasha Tatashin <tatashin@google.com>,
- linux-mm@kvack.org, linux-api@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, linux-kselftest@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20261026220546.3114241-1-skhawaja@google.com>
- <d4891333-43ea-4d74-9fb9-6ad8dac1a446@kernel.org>
- <20261030121113.GB3889730@ziepe.ca>
- <2c7aa5c1-3af3-4654-b244-1257d05c9d45@kernel.org>
- <auTR9SnDLsLVmnJ7@google.com>
- <CALCETrV5eqg6d9=+BQhCpRwBNe3aCQiut8vxPBs8b7PToqjaHg@mail.gmail.com>
- <auVRLPmbWYvMnly-@google.com>
+Subject: Re: [PATCH] mm/swapfile: drop a large unmapped swap-in folio in
+ unuse_pte()
+To: Andrew Morton <akpm@linux-foundation.org>,
+ Mani Tofigh <mt4022@columbia.edu>
+Cc: Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>,
+ Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>,
+ Baoquan He <baoquan.he@linux.dev>, Barry Song <baohua@kernel.org>,
+ Youngjun Park <youngjun.park@lge.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, tz2294@columbia.edu, stable@vger.kernel.org
+References: <20261030-swapin-large-unmapped-v1-1-41e4ae378e6c@columbia.edu>
+ <20261030155419.b10056c8fb37bc784b0d2778@linux-foundation.org>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -134,21 +123,21 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <auVRLPmbWYvMnly-@google.com>
+In-Reply-To: <20261030155419.b10056c8fb37bc784b0d2778@linux-foundation.org>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: C19C3C0004
-X-Stat-Signature: 4kokqynu4mmgfoj71g165jos1b8sy7xa
-X-Rspam-User: 
-X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 456BC20006
+X-Stat-Signature: rcsumj7148q9a889dabi4wdztuzfyf8u
+X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
-	autolearn=no autolearn_force=no version=4.0.1
-X-HE-Tag: 1793439164-495950
-X-HE-Meta: U2FsdGVkX19ewnkfbh1wD3fGTnWphE5tK+A1S1zzJO+Rp79TXha4QIPp/EWrCeksSRRbpMHhKfs++AUJ3+YdcG+h7whXnGtMpMrytEyEdG8Gxri1dXh3Bj42FahYvdFRneb4JNLPBydm+XCX1ehJulSRsOTA9wxK0BoDjYZWlFCTVewEYhMhp6GsxkBsCXKUuKa06qHGO5XtDLZZnqijccxbQy6El/C7dTAr2OE6e4XNT+Whx4qk7/k1kpqDgvHvQEBiJddObPHWtySqXqe+N37c2/J0hTfXOLMOU1+RTZQxP8kzVlRoCdgvq9Ix3yj5UJ13v8YmIHLAHS13ijdXwC+vHCkJpTfIgYBnJZKonoCgLL7+p4sQ9bCkQl3oTo0f61CgsLAo31ry8jacU0plvqiEz7RwoyibhpyMS+oriZfhI4GRhW0nwYRB+/vS7sXMN5OMP1Pa51b25m1cR2h+82+dckk8EJl3CKpFCHxNtqFLA2YtD/vzRjSFw/mXk7jcsQ7yqPI2fKP+Ko/IF8Fwvk+YBf0LBUXjzuV31sVNQ+7jqUz63o9PwZJu7q7a/ZzyH6PLeZW2pgSWP5ZHp5I8uDGnapPdnbdHolEFmjVLO+dpyFf5LHR2RgD4xVpJVIVXlp+0dcRf3caNV8IBP2bwQJO1y2JEWdAzIzPTXN8E56N/tkRCe4UaMevYI+LVQCY1FH/94Wi2LjhwpBI9P7qvyxnDO9/NrvY19fZhwBvqiBz5bur9AaQxQgGUsttBE66cYchDls/UYtj7ZdZWJyyn+K7YxRitWVscph5cqzj0LGWLWO8Anr+T1y3IWCJkvPF49Xt/otJrW1+t0j9H2iVPQ8h3kbmX/3NbI/Dj0pb4fvg768T5Ns6l74Z5CHTyjkNceE5F+jvUyostDgIOLZFs3+Nj9ZQrPlSwwFWad7GTea0Sr4pt41Mr5Y3mWDBADf55W+zDKr1EUjvASKI/yGS
- 3F58UFkc
- FyAfCtcbtaUWKyLdWmIEXDrxL4oqpX0ZBlSfl2e/K3c4au1O/4JVqdb11sAJz4HuyH4NzReFyw71ijMGwZvojdDT2mQ416zK1H1fVyprYKeCzHleAgQeRZ3u0HN2bNVFKPp+vpj+XTZDaxULfc/tUXrzentQ1vQr1ImzjHvm4u7Vkk3wVvFRu0rZ6fvODfF4ZWd+OSjd/dsFxmP5rDmTcSMW13fqkUIzh+lJ2bxV4V5hkxXMMLEgWqEfDl9X90ZrvtN5bkzhr30cr3oXU+3MRA2mRhXnwIMvl3dKXKaEMwt1yzduu8bjkYPoPTmhw74OTfHPOvt+VvsrwYZsutj28GBnd8JUZ6nWAKWwU+p+QwPMAj0CKsX8x1xfHe8tPolIjikre4WuigKLHPKFtomQpFGFtL91ZoVYlwpbqTjGUxgK0e6Mo+m2hnF8c2g==
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
+X-Rspam-User: 
+X-HE-Tag: 1793439297-249927
+X-HE-Meta: U2FsdGVkX18BZm/ypbL7MFCRwAoPg9vqihPVBXZKqJB0vA0GNVUOqIibyEHlZ936O5sROOBNzIWoNosGm5kCAKIGQehe6Zd75iv+lb1E2TiNiYMYEyFAtndn7wE0oFxmqdCXUUA1PJvYMTXpbpQXN6lKJlXPNRBBUHq9s98FosokcgwiX3IWOZn1/bUCj6wwI/+nqGSkunSezmnwf6uxHTmX1xj9EvYOtcukczxK472WBh7SgfXMeYZSeCl6F3pK5T9n5m+hHjkrbaHosBZ/OjZWtEJVliIDnpKINmNByaA8U+KJ9bwa/9XtH0Khp3nKmoz0gZeO93oCvK2gRJkV18kVOV7M9JczhtLTASRVWqVbva4Bs5nolSas0PIlxHw2mP0qvyaHToxzOGH/Zim+G4oWqOAmSI/uK1m+nNDXO3GbqhVwehf8zxDgXS1w5ImM+YGBy5wdg3Dhl6NZ7lbANX4qZxmoSEs4f25cSS7lmt2gsduDqB1o6qv8B47BMhEoVErY1mBtrZOTJiyWbfwkBoCM3yRtC1buqOoj90Yme7DJmDATr1xRmMuIgVuWDQSsASU8ympvMwM9zU3M1GII47LpFt26Wht91MHWBJB3UV9mahYrInzbWmtJ4d7yqDrM9L0PEfelrYqFJM8b1AZ6v70IlUfuk3lmQUl0YhANEQQsUKD4qcZ8GQkoIvunr3V/n1FOIaZoGv1+bd/mo+cR8KbDpmc50GZPbiHIOpdZGgabyPerpLS8az1Benfn2/qWncbE34fcq2VRZlk2t1Lja/sQ0kwR5sYIrsbLHhwSgJ1dkQO9eltl7291PWYmD7wXZ7A67372llqZrDn751Z01+e8NibOw5bjWd72PHbU3ILzGYnSsZxKlMvC9waO6sKrgwatJcwvTNxXuNJJYI0nbdqVELnP+gi2VThZpbubl4B0yqgELRZRBxe8kvSjPeLigR2IBoATYgxvk8ADAQ3
+ hqEmfyTi
+ z5GaQ+mHfHrjrxYic9y+qPLpT/GVF/5lxPmxZF5eLtsWTDq3VSN2P9APfY5xTsaZrMw9Vi2L6gluJ4CVe4KMFT5qZzxw3EdjijppHNTmBYYHtQFHNnN4gZfUhdgwAVa4oc1jaBPibWGRMkk9qlJJIxmkTh1QMcaVQ9OSo7p06kdo2sFbLnOcOmcDLYw2nNSa52FSjpwaOTo707/6ozg8dS5QA96/+mRtk+JR3zhz6gDA43TJ1FICCubvXJJF4fXuAg2cJ5gkcDGnukAxuO401UexfDyMqKxl7QPotCgNy/dv2AoD7h+3J4cxi6Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -157,104 +146,68 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 10/31/26 04:03, Samiullah Khawaja wrote:
-> On Fri, Oct 30, 2026 at 03:43:53PM -0700, Andy Lutomirski wrote:
->> On Fri, Oct 30, 2026 at 10:40 AM Samiullah Khawaja <skhawaja@google.com> wrote:
->>>
->>> >On 10/30/26 13:11, Jason Gunthorpe wrote:
->>> >> On Fri, Oct 30, 2026 at 11:20:30AM +0100, David Hildenbrand (Arm) wrote:
->>> >>>
->>> >>> We have the exact same situation when userspace maps anonymous folios
->>> into vfio
->>> >>> and then desides to MADV_DONTNEED the pages. Or any other memory backend
->>> that is
->>> >>> used for such purposes.
->>> >>>
->>> >>> User space must not zap/punch things that might be pinned elsewhere.
->>> >>>
->>> >>> That's not specific to memfd, udmabuf, iommufd or anything else.
->>> >>>
->>> >>> I don't see a reason to make userspace (that should not shoot itself into
->>> the
->>> >>> foot) a kernel feature it must activate itself to not shoot itself into
->>> the foot.
->>>
->>> Agreed, for normal use this is userspace's problem. The seal was meant
->>> for the kernel to cheaply verify at preserve time that nothing was
->>> punched.
->>>
->>> >>
->>> >> The issue is live update doesn't preserve those background punched
->>> >> folios and now we have created an UAF attack on the kernel across
->>> >> kexec if you don't do something about it.
->>> >>
->>> >> There was some notion here that with the right sealing flags we could
->>> >> tell if everything was 'live update compatible' and then know that
->>> >> these attacks are impossible.
->>> >Just remember that there was any hole punch and refuse to live update this
->>> instance.
->>> >
->>> >We could likely implement "we saw hole punch on a pinned folio" as well, but I
->>> >don't think that's required initially.
->>>
->>> If I understand correctly, you mean recording on the memfd that a hole
->>> punch happened, and refusing the live update if it did? That would work
->>> and is much cheaper than what we do today, where iommufd walks all the
->>> mapped pages at preserve time. For truncate, the existing F_SEAL_SHRINK
->>> is enough or I can record that also on the memfd. I will send patches
->>> for this.
->>
->> This entire situation continues to give me the willies.  After much
->> prodding and contemplating (in my own brain), I got a friendly LLM to
->> report:
->>
->> --- begin AI output ---
->>
->> IOMMU_IOAS_MAP_FILE uses memfd_pin_folios(). Collapse [MADV_COLLAPSE
->> or khugepaged] checks the old folio’s reference count, so a pin
->> acquired before that check makes collapse fail.
->>
->>  The problematic interleaving is:
->>
->>  1. collapse_file() locks and unmaps the old folio, then passes its
->> reference-count check (mm/khugepaged.c:2446).
->>  2. memfd_pin_folios() (mm/gup.c:3483) obtains the old folio from the
->> file’s XArray and pins it, without taking the folio lock.
->>  3. Collapse copies the contents and replaces the old cache entries
->> with the new huge folio. It does not repeat the reference check or
->> freeze the old count.
->>  4. IOAS retains the old physical pages; accesses through the file
->> use the new folio.
->>
->> --- end AI output ---
->>
->> Is this correct?  I haven't personally verified it.  But this whole
+On 10/30/26 23:54, Andrew Morton wrote:
+> On Fri, 30 Oct 2026 15:11:56 -0400 Mani Tofigh <mt4022@columbia.edu> wrote:
 > 
-> Yes, I think this is correct. memfd_pin_folios() pins the folios
-> directly without taking the folio lock. Other page cache lookups lock
-> the folio and recheck folio->mapping, e.g. shmem_get_folio_gfp(). Only
-> memfd_pin_folios() misses it.
+>> Since commit f1879e8a0c60 ("mm, swap: never bypass the swap cache even
+>> for SWP_SYNCHRONOUS_IO"), a fault can read a swapped-out mTHP range into
+>> one large folio in the swap cache.  The folio only becomes anon once
+>> do_swap_page() maps all of it, so if the faulting PTE changes in the
+>> meantime the folio stays in the swap cache while not being mapped or
+>> anon:
+>>
+>>   Task A (fault)                       Task B
+>>   do_swap_page()
+>>     /* swaps in large folio F */
+>>                                        madvise(MADV_DONTNEED)
+>>                                          /* zaps the faulting PTE */
+>>     /* PTE changed (F not mapped) */
+>>
+>> swapoff then maps it, which marks all of its pages as mapped and
+>> exclusive, and the next fault on one of the other PTEs crashes in
+>> do_swap_page():
+>>
+>>   [    6.424485] kernel BUG at mm/memory.c:5195!
+>>
+>> ...
+>>
+>> do_swap_page() already drops such a folio from the swap cache when it
+>> can't map all of it.  Do the same in unuse_pte() so that swapoff swaps
+>> the entries in again.  With the fix, nothing is reported.
+>>
+>> This bug was identified and confirmed with the help of a deterministic
+>> hypervisor currently under development.  The C reproducer below however
+>> hits it within a second.
+>>
+>> --- a/mm/swapfile.c
+>> +++ b/mm/swapfile.c
+>> @@ -2518,6 +2518,18 @@ static int unuse_pte(struct vm_area_struct *vma, pmd_t *pmd,
+>>  	if (!folio_matches_swap_entry(folio, entry))
+>>  		return 0;
+>>  
+>> +	/*
+>> +	 * A large folio that is not anon yet was swapped in by a page fault
+>> +	 * that did not map it (yet). It can only be mapped as a whole, by
+>> +	 * do_swap_page(). Drop it from the swap cache and swap in small
+>> +	 * folios instead.
+>> +	 */
+>> +	if (unlikely(folio_test_large(folio) && !folio_test_anon(folio))) {
+>> +		if (!WARN_ON_ONCE(folio_test_dirty(folio)))
+>> +			swap_cache_del_folio(folio);
+>> +		return 0;
+>> +	}
 > 
-> This scenario is different from punch hole or MADV_DONTNEED where the
-> user decides to remove the pinned memory. Here the kernel is removing
-> the pinned page without the user knowing. Collapse already checks the
-> refcount to avoid this.
-> 
-> The recent fix [1] by Chris already takes the folio lock for !uptodate
-> folios. I think we can take the lock unconditionally and recheck
-> folio->mapping, that should fix this. I can send a patch for this fix,
-> if folks agree.
+> Let's not WARN here.  If it hits and someone reports it, what do we
+> tell them?  "uh, that's working as designed, no action needed".
 
-I have another patch from Anthropic on my "rework schlop" queue that should fix
-this:
+I thought harder about this, and it just shouldn't happen.
 
-"mm/gup: pin memfd folios under the folio lock".
+Something that was swapped in and never mapped (!anon) that would be dirty would
+reveal a bug elsewhere.
 
+I think we can just turn that into a VM_WARN_ON_ONCE() and still drop the folio.
 
-We'd do just what we do in other context now, which is checking under folio lock
-whether the folio was truncated.
-
-Care to send a proper fix?
+(there is a reason we never saw this so far in do_swap_page())
 
 -- 
 Cheers,
