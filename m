@@ -1,74 +1,75 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4545606A31D
-	for <linux-mm@archiver.kernel.org>; Sat, 31 Oct 2026 09:45:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19508606A31E
+	for <linux-mm@archiver.kernel.org>; Sat, 31 Oct 2026 09:45:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=I+u/qiUF
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=JhV9oGMq
 Received: by kanga.kvack.org (Postfix)
-	id C5A986B00EF; Sat, 31 Oct 2026 05:45:30 -0400 (EDT)
+	id 0C2246B05D5; Sat, 31 Oct 2026 05:45:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C0A716B05D4; Sat, 31 Oct 2026 05:45:30 -0400 (EDT)
+	id 072126B05D6; Sat, 31 Oct 2026 05:45:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AFAD16B05D5; Sat, 31 Oct 2026 05:45:30 -0400 (EDT)
+	id E7D366B05D7; Sat, 31 Oct 2026 05:45:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 8C4B46B00EF
-	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 05:45:30 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 134211408BA
-	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 09:45:30 +0000 (UTC)
-X-FDA: 85382438820.19.9E9C23C
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 308F3180002
-	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 09:45:28 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="I+u/qiUF";
-	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793439928;
-	b=8HNAWvoIVehWUkl8u5j5b1lSd05aE5l0Ej0SCHBOcm1PxL9bXo4u+ZOPlcmnY0FR90XWUz
-	gqmLc+OCLn/otBC5trYngMlsXgCfUOIiVQm1d08Xc3/1a9cLqMDyNWnebARFVrwqngbFou
-	lR0IAXoNjT3OocThn7BEqDxImme9X1o=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="I+u/qiUF";
-	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id AD37D6B05D5
+	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 05:45:46 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 2D5A016083E
+	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 09:45:46 +0000 (UTC)
+X-FDA: 85382439492.25.A9DAA6C
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 6FC6440003
+	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 09:45:43 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JhV9oGMq;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793439928;
+	s=arc-20220608; t=1793439943;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=i0fOCg32ZVxaPUOTstAI4PWBunqX+FIUzQ1HDwJNXX0=;
-	b=cRhAr91Fy6ldqb8cbeJW/0njOXzTvHwdWum9e1vqnvAhut+jmzQ7HTgvw49pTYOfYItNQk
-	FkBzU11/K4HiNtT6K0edgOxGfs7lEu7SRoZl2Y6ubqsnY+7mXyPoidRbNcfHvGmmNkIQ5L
-	Wx7gW3f50+al1nZhs0I2r/Qp/WvcVGg=
+	bh=foIE8/qjRxOslIMIVm5LWTcoDseO7kpGoD14hc0ILxg=;
+	b=i2YE6XGtCyPJ7VBRY8DkUwNAEqT33FEUU35hZU2wVF2WEOQHiK4p2OR2ucncHr6lk597yV
+	2/t7cs0qluytnfu3+ETmBV4i6gmkfDyLOqLDBlW3Ns983/SFBIOU8jgSLHjLbrBrxnhFro
+	edXrCKH0GhVNtQo04KQUGHMzrOG7fuk=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JhV9oGMq;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793439943;
+	b=isHPrYYETagnbtX39OFG9wO3ZnTFyti4YhQprLvXYN6IuYTFwnU12S1C2eQWgtgrjxU8ea
+	aQF5yf4ZzAbzCSZyt32IDGEpPVr7Tad/V0/U2I3z8S2Rc9UgEAcdoJhIUipDWG3sDrUIDE
+	ftMgs+indjcPjXPFFHyqG56rSGoBG2Y=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 6B0184172C;
+	by tor.source.kernel.org (Postfix) with ESMTP id EFC7C605CF;
+	Sat, 31 Oct 2026 09:45:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D56871F000C1;
 	Sat, 31 Oct 2026 09:45:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBB241F00A02;
-	Sat, 31 Oct 2026 09:45:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793439927;
-	bh=i0fOCg32ZVxaPUOTstAI4PWBunqX+FIUzQ1HDwJNXX0=;
+	s=k20260515; t=1793439942;
+	bh=foIE8/qjRxOslIMIVm5LWTcoDseO7kpGoD14hc0ILxg=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=I+u/qiUFq55Bqh/mCzeRdaNEZVbWz2Cez27DLAzD/CdZXTyqmB5bYm+Fl6qEmq2Z2
-	 WJvwseUo7zHKYRbWt9Rv4IEnwRIhPvMDh/PKuwrOafaZnW8X/5pqr5Bkq9YF7RmOYS
-	 4Zei8laaNlZyX2P2Q6NUKdD1GbEww9ZjP+y70mr1OQYlD1V64LRxmdqoaSomaV2FtX
-	 CQ8Ic3S0l1ZmuJLSZ0I7IOLDDtdlEsNfHC7kEu6Ki9oOfT6r3v2JnYREAy6h6bHLWn
-	 X/ei8Nn0JLhG5DT/1yTYHYlsyj1adY19h8G8Oq2LvYsF7hvt7JNDTs8gKO6F2XpwYB
-	 apJOtNdWZXBwg==
+	b=JhV9oGMqjIuZGgcbHEUsRikcUmJNTkInVxMbDD2McBF1KHRCOovytr11YurFRKmY+
+	 bzpFUCXJV07KGchANo9OXAYly2i+TAjzzG2qyAyH0zYRfED/AUnwLW/4JR6ep8DOEp
+	 3ob8fsc2zXmkJajPfwx9ACN5aMF4fl4RqsnmBccaStiOm1Ik3W84FuIM9kDgSEnVcs
+	 FnUcTU/F9+4T7XCWF7hfPk1mhEKqJzRhHlBbv4kVrzqvgm/NnX6C0xi3dX2J6sa5iR
+	 Ryhd7cB6JyGhcESjQmqHd0GH2cyaVRdT7FizFV9PWwZW6Rt8Hkhe6GmVGYIIMTUxku
+	 0gFPxVWBEFA7Q==
 From: "David Hildenbrand (Arm)" <david@kernel.org>
-Date: Sat, 31 Oct 2026 10:39:49 +0100
-Subject: [PATCH v3 20/47] mm/gup: fix clearing folios in memfd_pin_folios()
+Date: Sat, 31 Oct 2026 10:39:50 +0100
+Subject: [PATCH v3 21/47] mm/gup: fix out-of-bounds write for nr_pages == 0
+ in GUP-fast
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261031-fixes_core-v3-20-d6437171ecc3@kernel.org>
+Message-Id: <20261031-fixes_core-v3-21-d6437171ecc3@kernel.org>
 References: <20261031-fixes_core-v3-0-d6437171ecc3@kernel.org>
 In-Reply-To: <20261031-fixes_core-v3-0-d6437171ecc3@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>, 
@@ -107,31 +108,30 @@ Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
  kexec@lists.infradead.org, linux-fsdevel@vger.kernel.org, 
  linux-arch@vger.kernel.org, linux-cxl@vger.kernel.org, 
  Chris Mason <mason@kernel.org>, stable@vger.kernel.org, 
- Samiullah Khawaja <skhawaja@google.com>, 
  Muhammad Usama Anjum <usama.anjum@arm.com>, 
  "David Hildenbrand (Arm)" <david@kernel.org>
 X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1729; i=david@kernel.org;
- h=from:subject:message-id; bh=xcEwKBas+pY55btjstA9an0JLHBAjCwLiQD85ZwKAMo=;
- b=owGbwMvMwCF2/OVpCdfQ3ZWMp9WSGLKebk/P5eswTLp9ZXLkC/9lrHE/q3ZEFgpdslmWPqPj/
- eeCtB8rOkpZGMQ4GGTFFFmCgu8bvHy5rrbajY8ZZg4rE8gQBi5OAZjIgjBGhvvPd/1JS1pZsSZj
- 4YRAc8n5JzsyOWbXbgkOuvGe5XSddzIjw4NFU/SfrmJzfKdh3SrxLb541d9lcemla96uStcJCCu
- cww4A
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1320; i=david@kernel.org;
+ h=from:subject:message-id; bh=R62eMdMsJypxqcni0WbltJmOI5kqokR7T4ahYSHS7oQ=;
+ b=owGbwMvMwCF2/OVpCdfQ3ZWMp9WSGLKebk9XufzzUt3qVRK79jW/zlzmvMenZ80MsUTHtrnHE
+ 7tlXOZqdpSyMIhxMMiKKbIEBd83ePlyXW21Gx8zzBxWJpAhDFycAjCRtAqGv6InnopkrO0IDNHq
+ 7pC+cvvWiW0b+d98XM7UJ9iq53RHYQ3Df69HC3Z+ryqu27DmAne4j/fJiz8+bFvAecZ3t5uDiFP
+ eOk4A
 X-Developer-Key: i=david@kernel.org; a=openpgp;
  fpr=1BD9CAAD735C4C3A460DFCCA4DDE10F700FF835A
-X-Rspam-User: 
-X-Rspamd-Queue-Id: 308F3180002
-X-Stat-Signature: 8hyhyceh6bfz8ntqc7h7sk61uk4ebqd8
-X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 6FC6440003
+X-Stat-Signature: dzp6m4tmridngoairpwxdx14337hjrwz
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
 	version=4.0.1
-X-HE-Tag: 1793439928-277836
-X-HE-Meta: U2FsdGVkX18tbe/ha/38BJeWtEbAW1ZxaP09EvfN+dSsjr2GhX8bkfRouz1A+jSxOcdwPDaLUnEfsBcXIj4an8ENdk4SK4xbNSK5VYbxR57c5DYWrEdoSv/8oqlbPoiuvTmZVm//jhsyK37ezYbK+WO5IMQJg2B7nleM/hMNoyhqGzpg7KRn2GZnWVG3lEXXuCjn8dQDRdBcz29ss+eVEz9vGYGIkgU9jePWW+w4l+y0dOcCydFMZStSomV1hjz29T5by3NJaY6rUPMrlVETcTqCfkEbeW7RV60tIGgeVrJI8DuQCIWmN48S5m0KsMiT3lKHurKZDbkKEgtrdRn8l3MLZUYJO+sEQDJivUdx5p3K4vG3cLmD/9McnlGhzZUsfo7vzdVKZBdkRtQ++Ac5VIhBVxkhcNpNg4k5MA9ybhcN3vuAZwkJW6/pKugXFwwFvN8HuIWPVHpd5MJ0ibdKQoSOvGFbVOMb6+vYQMeg2rDsjDg4PyyowOFgQhvRAHDJ43vi0QTOD6fD0xBKDsTqyBBpF4HqEo4Msi5JLvvDnTKidmJ2Kp9KNOe8QR9xdNzC71rCH+Uz2IpnoODIgzh4l/VKgKubj+lEL6ci4QP7T8IJlfd1/zQ0YXv4OakHRPcX1YnzQ/j11yqNKnLMyLG7FWX4Krp+Z/iXGOc9TI4JGkPIsNEY2Tt4t3pXsxG0D8iY8ZlD5mdhqOxpJg8FVhS3OkXnmFOKupNPe0xda3ep3ydlk6lj4q+kSgCf5FRJLQsAVoS1JKZvrJBge7vciIWWaWxBekmU1BNNsBocL+6jJdQQ5Val8HWtZ6nkwKP9ZMsA43MU4AsCXeyf9IdcFxmtaUqoxFSsUgKcDS4J0A4DOX4VPeFY+wrjPMdIXiZJzo0Xycq2yAJB9stWxZNyp51t0C3SkQYGKWa8MyxaZsgXmUMi/cVflP8huxDkN3FzmwQykoXStD0O4XN4TojlgF6
- EDmheqbZ
- rY/CvRjMmIPZXT4WOPVOgIzTyiOQnFXpvJxWa1ZIR76sR29LD4yJ9CwqUVyOMif1og/2S8q6iW5ZNcbLxiSJAEf3AxKayA6kBY6hgYom48xLGlNAnMO5+FNkQbvDnsSMgGExk5oEaSMqK2BGf6Rktcgvrh83sQnAssYdGolpwp2H4EOBVma58vlSx6vvhmNEHjAPfVnCd3X2M4jx6Hq40FwMlR5M5FbAQEA2Xdul/9dQH5f3oQVi0quA5YphJBZr/QBSkCtQU63jr6OqkUZ6sPnt5d/1gTFZwJma4LTrL/O0lKBX5q+g1rCkOhE3eQE29v9E1EjKQ4ckQRlWCT9ekSKGUd4rmSXLAhsVf7FdJyn4ULTmDWXYGwedzGXy4av5qWbALL3rTQsMbQ3yPe8inJsYbNIfM3D/lbEyRFINccdX2CmUWMWCfE7IWmLImbzwwAlRa
+X-Rspam-User: 
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1793439943-67497
+X-HE-Meta: U2FsdGVkX186bb8wkREVdMzv85HGp9h+EFaxziXU04rhbV8Z3RRVqoNGHqe5JRoDEzUv7l5ZpfQ+LlGZbVPB8/GIm0l/bmvcwLR+KSWxRE4ypEAmSyoce1BuFd6MmuhtnVoKjki4vcjfzqw6elIJSRNq/aYw9M2U6ib4RfYmkvzWcTz6fUrJ3ComQpFtfmLS6KAVlltaSh+fxCSo7l1m95jZl1duhYylPvy4KU12ZzavVMQ9vqs1hslOb8PzWWH6bRMXSY1Kdk7uieSV9sp2/wl4BTsuxZxz0WP4lVevNUuOH6CX0hJuWhkF8YhBwAkIZT/jiDiPwPpJiKEHYuO8VQ6NRZOBRi3fsbJpimCJshtmOvBF3YQrhLufcLyOh6ec3FQQ+FwnVA1RjozHXGeH/7FUMzsRVJ+isLBcndMk30XbBf5gq78v7BZO16kHfKKF0bLdzYVOZaS2tZihwQ2qGIQrApcXlVcpknM6PQYaa3KROlKhhYxO4pEPen+OZ1W5aTums2hHCZU+RgqQ+m79T7x2pTfasywysctK4egkoBWB3y70Blfzn04+6/Zumz0WJvCGYf0O4/cuOQoTFx/4azWYXhkgbuVOXAzMI3d/6NbEAEzrKkV5Xp6SoY+l8pBeEABFaluOrlLVxd07vRwKLwV4e1dzcgOj8bsOBLWbnI/6DNydc50hh0exwFMx+rfeW1BxZmcd+1TNBzFcvkkZNpC9AHeHbSgX7eBdj/jZnDwGZDAinnHYaHLPhX7xNPUQkKUit8rYZCw+Ep4sRmNYa9iFsSd02yfy7woaKJ9aERp/rTV5e0jer6rHJOP3b3pkPyZh37xyo5Rwmm1zl9+OYgNPwqUZQyoTUq5kAvjy0GhV6hFH9RGlPCdZlTLEPev7DQrQqvFK4Iolw/mMt1v7sllRCpy2/bYUr7KInabUNPYWBiL1D6QuoelRJ/cORcZ/jAJ0DLZTevRiwORhCeK
+ APg//yre
+ HM4NgUp800pA9mQZN/yt7K0h7XggikTKqIDUAwRl5yL3DHnMwPGxSyl0QLpkCVixQ7xuAI/QYUS4ywI/HqMgN+DIz4jupCxezJfMPPRuFi+miPuvvj9P+QGwQw6yRCcYBuEpQX0izDikvIqkUJ+tUiwPdfRD71NWe//Es5xo/mrV2Ta10/lCStMAHajMg5SsWQMGULO7eldSl5TbQB3MCZInfDjgxY7ADM6095eF7Rock0ZB5+X6kzgoN5jWrSyiCfLdHm7n3caVuanC5r9VfaC0fmFE4kGAqflnsU7IZsZrPgPhZzMRHOfCBcuUB/nflGdzScX+HgzX3MfoI0lvV4kJp1072JEFABsbpg55gK0k+yUeQ0Ez2GUla0QIDMkgk5pBzpR+eATAJ+Xau1iwwPx/0VEQPy3A9X6uIRl4SjwV1lHA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,53 +142,41 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 
 From: Chris Mason <mason@kernel.org>
 
-memfd_pin_folios() pins folios obtained directly from the page cache
-without checking whether they are uptodate. However, shmem fallocate()
-can leave newly allocated folios uncleared and not uptodate. Callers
-such as udmabuf can then expose uninitialized memory to userspace.
+With nr_pages == 0, GUP-fast still enters its page table walk and can
+write past the caller's page array. The old end <= start check caught
+empty ranges, but was replaced with an overflow check.
 
-Clear non-uptodate folios and mark them uptodate under the folio lock
-before returning them to the caller.
+Users such as OrangeFS can pass a zero page count derived from a
+userspace-supplied length. So let's return zero for nr_pages == 0 before
+starting the walk, just like GUP-slow.
 
 Fix generated by an LLM and sent by Chris Mason in private.
 
-Fixes: 89c1905d9c14 ("mm/gup: introduce memfd_pin_folios() for pinning memfd folios")
+Fixes: c28b1fc70390 ("mm/gup: reorganize internal_get_user_pages_fast()")
 Cc: stable@vger.kernel.org
 Signed-off-by: Chris Mason <mason@kernel.org>
-[ david: simplify description and comment ]
-Reviewed-by: Pratyush Yadav (Google) <pratyush@kernel.org>
-Reviewed-by: Samiullah Khawaja <skhawaja@google.com>
-Tested-by: Samiullah Khawaja <skhawaja@google.com>
+[ david: simplify description ]
+Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+Acked-by: Muchun Song <muchun.song@linux.dev>
 Tested-by: Muhammad Usama Anjum <usama.anjum@arm.com>
 Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 ---
- mm/gup.c | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ mm/gup.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
 diff --git a/mm/gup.c b/mm/gup.c
-index f809361227e7e..cc4fa18783ce0 100644
+index cc4fa18783ce0..1c2ac7c66c309 100644
 --- a/mm/gup.c
 +++ b/mm/gup.c
-@@ -3527,6 +3527,20 @@ long memfd_pin_folios(struct file *memfd, loff_t start, loff_t end,
- 					goto err;
- 				}
+@@ -3215,6 +3215,9 @@ static int gup_fast_fallback(unsigned long start, unsigned long nr_pages,
+ 				       FOLL_PCI_P2PDMA | FOLL_HONOR_NUMA_FAULT)))
+ 		return -EINVAL;
  
-+				/*
-+				 * fallocate() can leave folios in the
-+				 * page cache that were never cleared.
-+				 */
-+				if (!folio_test_uptodate(folio)) {
-+					folio_lock(folio);
-+					if (!folio_test_uptodate(folio)) {
-+						folio_zero_range(folio, 0, folio_size(folio));
-+						flush_dcache_folio(folio);
-+						folio_mark_uptodate(folio);
-+					}
-+					folio_unlock(folio);
-+				}
++	if (unlikely(!nr_pages))
++		return 0;
 +
- 				if (nr_folios == 0)
- 					*offset = offset_in_folio(folio, start);
+ 	if (gup_flags & FOLL_PIN)
+ 		mm_set_has_pinned_flag(current->mm);
  
 
 -- 
