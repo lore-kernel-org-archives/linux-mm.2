@@ -1,150 +1,102 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5FA8606A321
-	for <linux-mm@archiver.kernel.org>; Sat, 31 Oct 2026 00:43:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DD7D606A322
+	for <linux-mm@archiver.kernel.org>; Sat, 31 Oct 2026 00:45:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=msdHDOcK
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=j6XhbBjg
 Received: by kanga.kvack.org (Postfix)
-	id DD2446B05B5; Fri, 30 Oct 2026 20:43:35 -0400 (EDT)
+	id 0B6926B05B6; Fri, 30 Oct 2026 20:45:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DAA3A6B05B6; Fri, 30 Oct 2026 20:43:35 -0400 (EDT)
+	id 069916B05B7; Fri, 30 Oct 2026 20:45:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C98F76B05B7; Fri, 30 Oct 2026 20:43:35 -0400 (EDT)
+	id EC3AA6B05B8; Fri, 30 Oct 2026 20:45:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id AE6CD6B05B5
-	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 20:43:35 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 389024090D
-	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 00:43:35 +0000 (UTC)
-X-FDA: 85381073190.19.D8973ED
-Received: from mta0.migadu.com (out-108.mta0.migadu.com [91.218.175.108])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 24EF980007
-	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 00:43:32 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=msdHDOcK;
-	spf=pass (imf30.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.108 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793407413;
-	b=LjYFusMrsQ4qGSQmLsZLEYa+Ti9qXA5tTYMv6uWpS8ti9M479Zo8xT3odQKMYGpokgFQC7
-	I2kU3NA8ZLRmj8RZ13bPt+2YhrV4tzku245GaYGFdLHNFDWX450YH0dRt893swi+p3DLT5
-	v8+CuhnrIIA48bK818yMNVdH++mcwqI=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=msdHDOcK;
-	spf=pass (imf30.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.108 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id CA93F6B05B6
+	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 20:45:56 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 5EC2BC0850
+	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 00:45:56 +0000 (UTC)
+X-FDA: 85381079112.15.DA7421D
+Received: from mta0.migadu.com (out-126.mta0.migadu.com [91.218.175.126])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 4D01220002
+	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 00:45:55 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=j6XhbBjg;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf31.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.126 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793407413;
+	s=arc-20220608; t=1793407554;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=GcsvWI0Wp94jtSX1XbU0q9DSWkp9MXum6AodoX2HZek=;
-	b=lp2bnW5qV+NzBPaFBGo/G41hGLsm5XcPjXOMqAH7Ecd2WXl6hs0Ih3SvlJpC7utyz2evHJ
-	Xqujb+D5BX8WOtAc7stbKQs8qARmd7OC/0YuA4qcKwZD1658GwFa7DF+VqV+jgBmVLIg0C
-	RYTgy1vnBUceiYI8FUIVantrcDL9i2c=
+	bh=N347scaieRKnfZAxwyIlV4lZkQNr3Gsi349x5S8E61Q=;
+	b=1pcns9SPG1bi5yUYhfMoJybqWzgikunh5qNNHlSPtV7Zn+5zEN0Qx6y0BKGI0dPsKgvK6x
+	883oc+yfNTg0l4ceiUbH7OanawOkBYAsLGHhFQZcR8j9CWxatWznDdtCbZc51jFzU4twJb
+	UzWKUCv3Dos8WcLxv6q5TozhIAy7/wY=
+ARC-Authentication-Results: i=1;
+	imf31.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=j6XhbBjg;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf31.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.126 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793407554;
+	b=qJUhVNXuQF9pKYiHFr43dW9DWZKeh+kQ9oHeokISfLbkYdJiTRs89JsIka4H0VI9Wpi4vZ
+	aVLWy26gXmnJDwcS0LUasGDkhSCILX8VJuscxanXwUhFselp3JSquL8ivQTVNdcNZF/6V9
+	rZ7SJNiinfaB0kuh0RKVjAtP7Tw0F7k=
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=GcsvWI0Wp94jtSX1XbU0q9DSWkp9MXum6AodoX2HZek=;
+DKIM-Signature: a=rsa-sha256; bh=qzhoW8hkYHWNhkLmB736TkASUeOo7ZLmpURHWLLr858=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1793407411; v=1; x=1794012211;
- b=msdHDOcKXUZXeMgjI2ScsWQZ64pO42RvFaX5gOMfg3YmamTmcuMFDjfhKMpF6FMVa1Bz+USZ
- czeUjKOe2gPfVXn+8WHmcVsI+mt+tRQfUiXBMGodxYFz14KowcbJmwXkREhOAiIhVgkPsC/mizT
- f645KIKLDDezBeqGXT1aDwpk=
+ t=1793407553; v=1; x=1794012352;
+ b=j6XhbBjgJNbD6upXqbFwJ6CDx13X4cfER3mBEBan53in/Cp7e8tnocb12U27v6AGv4ozE9cL
+ 80TgE4/+Evo9Q3RaeADQ+JKR+z68BcSGM3n6RVGD5Le4Awn7K8X8vql3T542dWOVqFas1YcN9+4
+ riwCt1P8eY1PDxgleOfRawpY=
 X-Envelope-To: linux-mm@kvack.org
-Received: by mta11.migadu.com with ESMTPS id 72c000753756bb73;
-	Sat, 31 Oct 2026 00:43:31 +0000
-X-Mizu-Trace-ID: 72c000753756bb73
+Received: by mta11.migadu.com with ESMTPS id 59289533df5a5a2f;
+	Sat, 31 Oct 2026 00:45:52 +0000
+X-Mizu-Trace-ID: 59289533df5a5a2f
 X-Migadu-Flow: FLOW_OUT
 Content-Type: text/plain;
 	charset=us-ascii
 X-Archived-By: <archiver.kernel.org>
 Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3901.100.1.1.12\))
-Subject: Re: [PATCH 6/7] MAINTAINERS: rename and move MEMORY HOT(UN)PLUG
+Subject: Re: [PATCH v2 1/5] memcg: move memory.high enforcement out of
+ try_charge_memcg()
 From: Muchun Song <muchun.song@linux.dev>
-In-Reply-To: <20261030-maintainers-v1-6-97278f8a5f54@kernel.org>
-Date: Sat, 31 Oct 2026 08:43:03 +0800
-Cc: Alistair Popple <apopple@nvidia.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- Baoquan He <baoquan.he@linux.dev>,
- Barry Song <baohua@kernel.org>,
- Brendan Jackman <brendan.jackman@linux.dev>,
- Byungchul Park <byungchul@sk.com>,
- Chengming Zhou <chengming.zhou@linux.dev>,
- Chris Li <chrisl@kernel.org>,
- Christoph Lameter <cl@gentwo.org>,
- Dave Chinner <david@fromorbit.com>,
- David Rientjes <rientjes@google.com>,
- Dennis Zhou <dennis@kernel.org>,
- Dev Jain <dev.jain@arm.com>,
- Gregory Price <gourry@gourry.net>,
- Hao Li <hao.li@linux.dev>,
- Harry Yoo <harry@kernel.org>,
- Hugh Dickins <hughd@google.com>,
- Jann Horn <jannh@google.com>,
+In-Reply-To: <20261030205418.341214-2-shakeel.butt@linux.dev>
+Date: Sat, 31 Oct 2026 08:45:32 +0800
+Cc: Andrew Morton <akpm@linux-foundation.org>,
  Johannes Weiner <hannes@cmpxchg.org>,
- John Hubbard <jhubbard@nvidia.com>,
- Joshua Hahn <joshua.hahnjy@gmail.com>,
- Kairui Song <kasong@tencent.com>,
- Kemeng Shi <shikemeng@huaweicloud.com>,
- Kiryl Shutsemau <kas@kernel.org>,
- Lance Yang <lance.yang@linux.dev>,
- "Liam R. Howlett" <liam@infradead.org>,
- Lorenzo Stoakes <ljs@kernel.org>,
- Matthew Brost <matthew.brost@intel.com>,
- Miaohe Lin <linmiaohe@huawei.com>,
  Michal Hocko <mhocko@kernel.org>,
- Mike Rapoport <rppt@kernel.org>,
- Naoya Horiguchi <nao.horiguchi@gmail.com>,
- Nhat Pham <nphamcs@gmail.com>,
- Nick Piggin <npiggin@gmail.com>,
- Nico Pache <nico.pache@linux.dev>,
- Oscar Salvador <osalvador@suse.de>,
- Pedro Falcato <pfalcato@suse.de>,
- Peter Xu <peterx@redhat.com>,
- Peter Zijlstra <peterz@infradead.org>,
- Qi Zheng <qi.zheng@linux.dev>,
- Rakie Kim <rakie.kim@sk.com>,
- Rik van Riel <riel@surriel.com>,
  Roman Gushchin <roman.gushchin@linux.dev>,
- Ryan Roberts <ryan.roberts@arm.com>,
- Shakeel Butt <shakeel.butt@linux.dev>,
- Suren Baghdasaryan <surenb@google.com>,
  Tejun Heo <tj@kernel.org>,
- Uladzislau Rezki <urezki@gmail.com>,
- Usama Arif <usama.arif@linux.dev>,
- Vlastimil Babka <vbabka@kernel.org>,
- Will Deacon <will@kernel.org>,
- Xu Xin <xu.xin@linux.dev>,
- Ying Huang <ying.huang@linux.alibaba.com>,
- Youngjun Park <youngjun.park@lge.com>,
- Zi Yan <ziy@nvidia.com>,
- Jason Gunthorpe <jgg@ziepe.ca>,
+ Harry Yoo <harry@kernel.org>,
+ Meta kernel team <kernel-team@meta.com>,
+ cgroups@vger.kernel.org,
+ linux-mm@kvack.org,
  linux-kernel@vger.kernel.org,
- linux-mm@kvack.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <755C6FD5-84CB-4091-9AA7-929CA04B065F@linux.dev>
-References: <20261030-maintainers-v1-0-97278f8a5f54@kernel.org>
- <20261030-maintainers-v1-6-97278f8a5f54@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
+ Michal Hocko <mhocko@suse.com>
+Content-Transfer-Encoding: 7bit
+Message-Id: <F94627B5-26E7-4F9F-ADAD-395026632C45@linux.dev>
+References: <20261030205418.341214-1-shakeel.butt@linux.dev>
+ <20261030205418.341214-2-shakeel.butt@linux.dev>
+To: Shakeel Butt <shakeel.butt@linux.dev>
 X-Mailer: Apple Mail (2.3901.100.1.1.12)
-X-Rspam-User: 
-X-Rspamd-Queue-Id: 24EF980007
-X-Stat-Signature: b4adtofhpx3gfpohmiu37n9eho7pc1a6
-X-Rspamd-Server: rspam01
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 4D01220002
+X-Stat-Signature: hm1xngm8kakhn8f4txhxug3yq1giu4nh
 X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
 	autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1793407412-369217
-X-HE-Meta: U2FsdGVkX180xuVyfDzbYzt2UKydo6kZsRg9+B7PFJr7NmQJOwmXWYsID+9llPWUzrPoHZnZESc0z7ziVEmdkgHCWa41suWNxBWlHgbk33N0gHrhNM3CYU1FDcQUFQUh8Z+1HDxdOQDv+syP7OUsI2sTzQ3c+Ocp3LjuMXo+TJK1qOlagPXhfe9WWXDjB+aLmcUgIrVli9DFksAfURu2s5f5320/bkA0BwiITruEjasz1X81+yvqNsjY6RxCTH6LVnQwZ4CeexO53WJwZoIihoe9KMizw3QYT78CGHPl2U4N4iaTIfolS852LYNZ8sPpKshk/khr8qnnfFrwOB7ROW1XVSRBek6UBVIbyjaheJswn2H0zih+cCm7yTY2OGuTN32/0VNqP1rrWMZ0CRm6RmgzV1b4ZFPZ7f62aj0KCPM+Th4y0F7DOfp3ACkEXMcuQ4RhrotlkYyIgMEe+z06o1R5MA94ii3uBiZWDe1AZp2I2zeEk2P8QlFFFgiddsQxvhvfcHX+PFa0zylKXgsH4ZDAeqM/crirltyRsLJv+juolX01fmbkLe9GimU8x+xFPtYV79yEjtNAFKmzojgNjhfq1FJmN8oZixcVUpv22a5a0Jwd2v279jUtHlravPyV6aOgTi7lNMqdmezCrCzB+whiIK9XFsV0suT1lviIBfXZ/8VAvYznB0hUEu0dS1Bh2SB7MVWPNQewG2/BLw6Pz2MEhT/RB8rgnBvMFhaSG+t1waT3+d8Vi66nAp/WR8vy1O6E4CTe6NG8r9ilvifyh7mn682aFyKbbFrtF6ywk5/GfihQaPb+TacXClgzmvC/cAvLUwMNIjXh53udogJu8FstLjaAEw+02DAxijet6LjxYJB/yGLzdlyAaaESEoAP52wIvc8gVUCwGvbtwOtZ7hSzKGcxqlni3UdbiKRgatgp5aSpyCv3TX38O/4bHqnc7Cvih0s0b8oXIi21r+p
- 10iAfUFM
- NdqEUhqk7JZe5qExgf9WzrZcLVIpTYoJLFmko9+yZDqRGWUhnwbAB/Ol4g6GGuilXdxjoT/dPZtzv3Kpo3oEC/+Fy1emdQDPxoAvpO4VcJKPi4Ph8ntQdUlKHH2FCrDMHy3xFH//U+lWQDdvevDJYaPk2XjVVU6hxJy0mCI977G+R/4tMWHwFvVW9KDtubxxmR/kNxxK8e6chfsAF5HAAFN/SPQMZwD7/Qi74WeMUqd6a6SmjLZ44/ncbTEPKvgDRiKEU53PDK7YnGmPeRSugBYPU5ymSlf9GdB470aMwiEqajFFzCrTWvd0OQZmGYETQ3mCn/UUWCT5OYVXAWBncJb3wvwJSg0Joa7YVW8k50IB/NwM=
+X-Rspam-User: 
+X-HE-Tag: 1793407555-711045
+X-HE-Meta: U2FsdGVkX19qWqjbDlEPntqoNvZWigN60vpsqp9V8Vo6UA4Fz0XwFYwQZpCtOZOGFYwi1UAtcDIc/sqsrGSGgZK+xn+JyamTdB/316so1Hsg3WS2JuMxpg+GBYkTrSrNb6oH+O6qb0qdq5GHGqYuFC5XPi0Y1u7n+sjprOB0CJYUvtYagRPd9QeUmlzk/znKuOsgTBt2rSTXqFAb2gQ/BJRV+AMPWxLsOpNp8Id4d//XFg4pWPVudvt1tcZCW1jzGV2Rm+DAd8bXhKyLIW6IUlRNOoxQsu2ShAo4RejbsipKLO/rPTvKcWIcchkaTaVbI0KDujRf6x2IL+1IMSBBY6MzrmJPx/AiI9w5PU97mOl2GdievBqXPP3vP9snWMld4H0Sp2pMyy/OrGXB/iA4ZOO1AeNNBIVDp9v1tPt9nWQnp1t5nXeVv9nVH51BYMeCbfru2WweANkss2JpcM1Xx55oU3G0Jv/8B2ea4ttuxQaI0EIWl4tRQeIDfzLgT0jg06xTxc0C5cjEpD5uOzYXiihr10FXm99X9ySeqJG1XwBQZY10j5gbdBtveuEV+iNGRV8HiRXYBL6g4KMRdRYDWwtlmDgFSiSTm70JIkb2ZDXK5nzD4oeojArH+lwpv+iiQM6n0InGXep9AIZBagRaeaP/v2YJoxhNcruXMbDP4hlzcmTb9Wfi67XnVAHNDJVnDv18qnkbtNH98pnTd1Ntief9dqwHtQWTFMI4La3MVFZD7XRdo9VNgHT3T4T2clrGpB2yWCVFdlyAVXq5WHfk3lCNBy4I7lCu/86B8IlDUzPif+d7Tv2Oue8vbwBk+eesf8GoZ0otgIl7srYNrs/vbtfnfsmbG1SwxdZ2ufD2h/E8tVmaMxMhDT5d6bGPYGpJZuwurqbywC3w6P0CJbDnggWVydI4t20nglr5xfj+vFXybuRZM+qWHgXkkhzxFdLj/99nD1u/Z9cg7Hb3cfG
+ bz/KOB8/
+ PvDhDUHF+NVu2WFD0VAIStcVl1d+23ootlyM4Wc1D0KMQkOL/Zuz9ziLVhmKLlPO232QjDSksQjV8zPg9bmypj1ESVNgHB3kRRzJht50fnvm5WAERDnf4D91xl5afrG5rTNamkvfnBC4ET1VWWIETT7FZdd4+ogZqx/cAkWCxtZI704f5FTeJ8QtYcK1gc3NkbBHEzKPivJvtVKEil/na9777beFhl0rsrNs4BDPWtipmH+/ZjheXvIKXlHZG2QxQ9VnaLZu3VbJcTghDtGjWbbJEHt23qxGhMIhDcNE+N+6poY74XByy8MgucKua/gq6Hfeuc4Keg73snragQDzY/p0DFoPq85Fi/KBLk1NGyoKfzv/Zuozm110wg/YtPryE+w95sWbqLzihIdc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -155,14 +107,22 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 
 
 
-> On Oct 31, 2026, at 05:34, David Hildenbrand (Arm) <david@kernel.org> =
-wrote:
->=20
-> Prefix "MEMORY HOT(UN)PLUG" with "MEMORY MANAGEMENT" and put it into =
-the
-> right spot in the MM component section list.
->=20
-> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>\
+> On Oct 31, 2026, at 04:54, Shakeel Butt <shakeel.butt@linux.dev> wrote:
+> 
+> try_charge_memcg() does a lot. It charges the page counters, reclaims
+> when a limit is hit, may call the OOM killer, and at the end it checks
+> and enforces memory.high. Move the memory.high part into a new function,
+> memcg_enforce_high(), so that try_charge_memcg() is shorter and the
+> memory.high code is easier to read and change.
+> 
+> The code and its comments move as they are. The only difference is that
+> the new function gets allow_spinning from gfp_mask itself.
+> 
+> No functional change.
+> 
+> Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
+> Reviewed-by: Harry Yoo (Meta) <harry@kernel.org>
+> Acked-by: Michal Hocko <mhocko@suse.com>
 
 Acked-by: Muchun Song <muchun.song@linux.dev>
 
