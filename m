@@ -1,75 +1,75 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA1A9606A31E
-	for <linux-mm@archiver.kernel.org>; Sat, 31 Oct 2026 09:42:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76049606A330
+	for <linux-mm@archiver.kernel.org>; Sat, 31 Oct 2026 09:43:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=SlvOoo7h
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=XKxku93c
 Received: by kanga.kvack.org (Postfix)
-	id C08026B05C5; Sat, 31 Oct 2026 05:42:54 -0400 (EDT)
+	id A331D6B05C7; Sat, 31 Oct 2026 05:43:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BDF006B05C6; Sat, 31 Oct 2026 05:42:54 -0400 (EDT)
+	id A0AD56B05C8; Sat, 31 Oct 2026 05:43:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AF5656B05C7; Sat, 31 Oct 2026 05:42:54 -0400 (EDT)
+	id 8F9666B05C9; Sat, 31 Oct 2026 05:43:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 6F5406B05C5
-	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 05:42:54 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id DD3911C42D1
-	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 09:42:53 +0000 (UTC)
-X-FDA: 85382432226.11.F96C6DF
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 1D5F2100003
-	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 09:42:51 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SlvOoo7h;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 696A96B05C7
+	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 05:43:09 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 012451208E1
+	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 09:43:08 +0000 (UTC)
+X-FDA: 85382432898.06.9298E40
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 3FCA7140002
+	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 09:43:07 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XKxku93c;
+	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793439772;
+	s=arc-20220608; t=1793439787;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=l+l7vL6OppC3xXbuZ+6FYNU9AQPqNjHig+EtP/8oH5c=;
-	b=paeoGvGGJsjpL7Hxr76cKOtHPAN+v0fooIdwsGkVCUZpAB3fYBo1o+KRYTZwh1vTyr1XZv
-	JvOezrffo9Pe2Bu1rBQLbQoXgJ0IC7UV8RTJJIoResbwDMUNcdAhA9OoLZAVRGDWwgMv3z
-	mMH+oVb4AejJJlYQ7oZlCEgCw6o0FHQ=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SlvOoo7h;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	bh=c8H3MH6BWdT2aUP2bxmCyTqdb38oNJ2FfQ3UjfLBqqg=;
+	b=o5kqY/hKBJ5ckI8qR6mv71YEZvnk3nf7R/HB+Gf0lWBV9PrqN0Z25ZO+GQPN8rkkHe/NVv
+	uh5ZUDpiRRb+WFJA8yah8FXEUxcJzanyM6rL5iwEYb79mMvGkBQ+Jq0wMOWtvSa/hTPwr9
+	lykkV5MUl/GHremQxryeZGyUsZIQMIs=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793439772;
-	b=gnKNCd/EbkLEtIllhJ9JyQzN6QTOd9qA6sWT4eyCI3lzkJS9Ns1wqtkPoa4se2b/+D9Cj6
-	YqJ+lwlWYQCl2IfydCWocbkSeNCX7QP6GRdeaECVYqRlYYJ4iGbiMEC40wkhWLv6h/JZSj
-	DF8XRiu5Kwg/WPPHFub40mJL3OOY+AM=
+	t=1793439787;
+	b=5gOoEEwkoQNveWZiO1mBEbdWXFfRtv7IIrRBz5fuekyY/3hRVKP1DCuCRpBjCGWW535VfB
+	6fOwG0+jDD/FK666qRfGDcRukD3gesrQ3LNjqv+mTzug3nYSW3EtGNBr48pJZL0d7kUxRG
+	rCfs3iUze8sITwfhSM8E8A8+GsEr90I=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XKxku93c;
+	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 5D62842A93;
+	by tor.source.kernel.org (Postfix) with ESMTP id C9685600C8;
+	Sat, 31 Oct 2026 09:43:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CABA11F000C1;
 	Sat, 31 Oct 2026 09:42:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E61F31F00A1A;
-	Sat, 31 Oct 2026 09:42:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793439771;
-	bh=l+l7vL6OppC3xXbuZ+6FYNU9AQPqNjHig+EtP/8oH5c=;
+	s=k20260515; t=1793439786;
+	bh=c8H3MH6BWdT2aUP2bxmCyTqdb38oNJ2FfQ3UjfLBqqg=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=SlvOoo7h2NrGSce+EZ0r/TEXEBd2b3M+W3a5ZrbTwYZjlGRtxW/0dAR4JP4GA+76w
-	 P+f7bAuUNu1Yv1g1H7D8kFS4QD5s2CZBGegKhPNpITqlN7Ip3qbNZ4cy/WVa1ZlmjD
-	 /D2MxgtNqIQyQIzKHKj7qIVDjMAvkJf4rRPteq1rzuV+/rMCJ7D7uysNhe47S8OYi0
-	 hM/g0ow18Z8BSkDidvpS/QUBtepf7GfsSShe5dLagt+hSjgLUsSJX9zgTlj9tPN+J/
-	 0X8jIEgDjVqkM1UbZ87/UjTXIQyGyjjTepCGPRDVpmowDIpCv4zaqmYY0OHgBX6iW2
-	 qTDUniZzh/0Ww==
+	b=XKxku93c8qqYSbfQDsRSTB03j2MAGwx1Lqs5hUQsI3c4sVWK1n2y4ro23Yhs3yX0D
+	 G2R5gX3bGIgaNFqk4rGiAAmeHR1A8Z22O+UZuVKxuVnQidVfOkRKkUnmjOE8w8OlnF
+	 w1WTiEptpTJlrZYoFv3Q3eElYjggt1zyAdckWVOrBUKj2UlqZxm4oBG0QRp1rSjtGi
+	 sU9HajefmO9Iv/63c/2VyNxCNchdSIuMtMG3TOhjdJU37i7o+MDbZKFoEPwF2gOlOc
+	 X/J80Khhp+hD6DjBpYJ2pNYgGRlwj2tKhcPYnPihqvrA0RgtumI9uuNZ6B+nKWGFUx
+	 6fqVpNTsWFxFw==
 From: "David Hildenbrand (Arm)" <david@kernel.org>
-Date: Sat, 31 Oct 2026 10:39:39 +0100
-Subject: [PATCH v3 10/47] mm/huge_memory: fix list corruption when
- deferred_split_scan() races with deferred_split_folio()
+Date: Sat, 31 Oct 2026 10:39:40 +0100
+Subject: [PATCH v3 11/47] mm/huge_memory: properly handle refcounted PUD
+ mappings on fork
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261031-fixes_core-v3-10-d6437171ecc3@kernel.org>
+Message-Id: <20261031-fixes_core-v3-11-d6437171ecc3@kernel.org>
 References: <20261031-fixes_core-v3-0-d6437171ecc3@kernel.org>
 In-Reply-To: <20261031-fixes_core-v3-0-d6437171ecc3@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>, 
@@ -107,32 +107,30 @@ To: Andrew Morton <akpm@linux-foundation.org>,
 Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
  kexec@lists.infradead.org, linux-fsdevel@vger.kernel.org, 
  linux-arch@vger.kernel.org, linux-cxl@vger.kernel.org, 
- stable@vger.kernel.org, Josef Bacik <josef@toxicpanda.com>, 
- Mani Tofigh <mt4022@columbia.edu>, 
- Muhammad Usama Anjum <usama.anjum@arm.com>, 
+ stable@vger.kernel.org, Muhammad Usama Anjum <usama.anjum@arm.com>, 
  "David Hildenbrand (Arm)" <david@kernel.org>
 X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3706; i=david@kernel.org;
- h=from:subject:message-id; bh=JLLChxKIypxsdt4WbVQ02kyFhDQ6FU9NlTqVcswW/5U=;
- b=owGbwMvMwCF2/OVpCdfQ3ZWMp9WSGLKebk8TMZnE9X4D4/OEzCXBE1Z9d/jC1rw4beqiza7Gr
- ftD/0+x6ihlYRDjYJAVU2QJCr5v8PLlutpqNz5mmDmsTCBDGLg4BWAitXmMDDuD94idilyy2OlJ
- +uw7ca5Hak9PM5FUNfP55rpY7WLg7Z0M/9NvzDOcl7v+Y92qeT0exhK3v3ycJN1/VN6Lyeh+8ln
- l97wA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4524; i=david@kernel.org;
+ h=from:subject:message-id; bh=AisWB7KHkrv1Z9AhryNka/aHvDbvx4kG++9kdVXIDVU=;
+ b=owGbwMvMwCF2/OVpCdfQ3ZWMp9WSGLKebk97dqHknGJAm3OY3urrucx5lxhlNjFHMJi8PiD30
+ u7Nh8dbOkpZGMQ4GGTFFFmCgu8bvHy5rrbajY8ZZg4rE8gQBi5OAZjIuqcM/0w3N+1dlv165Zx2
+ iU/tEsKH3CJmJ+jNZjBRkNtx1V41+Dsjw8KA7INaO1NsZGN4qjhjlld/fBpkvov/y/Ss39s7n6X
+ VswIA
 X-Developer-Key: i=david@kernel.org; a=openpgp;
  fpr=1BD9CAAD735C4C3A460DFCCA4DDE10F700FF835A
-X-Rspamd-Queue-Id: 1D5F2100003
-X-Stat-Signature: 6rubkw45h1x3oun7s93cbo6wnu69a965
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 3FCA7140002
+X-Stat-Signature: u183wcritz4pcwpgj7scey1s7juizuih
+X-Rspam-User: 
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
 	version=4.0.1
-X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1793439771-559849
-X-HE-Meta: U2FsdGVkX1/7c4mjTDRISQ4GC54VcqdmC0ScusSRNdRC9jiiHSIApL5lpLD4knS0CSgWoj7tlGCw4IEpc8r/TccfmUbFRhlpwxhsIJZ1P58RMfuBAuA7nm94TLdqsfFaoxm4NdXA18yq9JQ65GegMrko+Qv1xcbk+7Ys5WVfp2tswG425fo04AhOhGDoty/9oDoWc/ozgSIgMGKGYH1/ih/ikGojrZ8ycVlXtbWlUFw8yL3F/aS7qJT66dBXn1tyxEKz9CYppJSEH23XpH0zbgduwgAVwv4RUXkCcxGAtJeXYqFJPYSCrQKriMi5pRxPmhJp/pdEmdJBeDAcwGkZ6RcVaE6UmieFyGJfiGNIvPlcU8BB5ff4ccKJrmK/gMiexHvxgOm3v2BQe1Vw7CXVSVxvl3IhFtuw7xNlD4gfblZDcf2DQ4UEsHc2BQ71zBiAg6RC6kV7nDaL5WVDuCT2N3v5fE9BPPKrWKpICoqaQ6lObutweaqFBWTQPG5kxlbfdTf94vx9QEEpOoeceteHD1tTP4DLq5hhd8eje7dK4GXiTBQ/HcDnNbAWQaifWwABZTfcbflVxJETnGxUFeXf8V1B0RsQ/b5S4MIUBNgEJWhh5jb3AxnAw4MsIoWPvT1XBM8DdQUFQkhjma8E+KB4fnJ/HxwnQM2VRYtYZZ/w5zhnmfEJsLIzfWg258LsKxnAFv5mWUg0WxuY1Q/pYaAsG0CQNrduceODnEt4H8POg634X+AvSsA6l4lUH46eX29YdJ8pvSRDalKtsk2t9jyeZK5yiG7bAP+Zrl9a0CcVooPEbESTznUbNB0aU5+HWJ6Qemb1pr+iLtevKYzRthGzQ228Jz0b7OtVl0FqbVbWO6ObZ9ZkmygUeY5bVEzmK8Apk+XEFI8gmrhyXhZpPdFRybXn2+Ji8ti6QGunjm3bQKdyMEwolquVej5IXbhtkujgtOIdPAa8AWLP4+yTtY5
- vkTkXwGX
- EZ3/toLHlKBdMxTiLzTS5m1q6vpz1agP6FQ+tKlsCZZsNmZaLWBennk5EsNg+VsLjowaAbqNB8dHTiyQ3Eq8gH9/PBJs6ztdnIZs8NqX5o4TYY00n35bAzp/fwbt9XuHODEQWKb6mxbTxi0IeNizxOoeC0HwD98943ZCUj/VKjsLlTngf+lHWv06toI8GLWEkvux3BkR164l68eZeqBvNfTzhxK24EXUzpiDIentzxb1Uc5CTqoIrxdGG52nb4NpHK2o22J2+2LF00gmKE2BjAZ7Y1aXFAVHvobradRD745qkkN6fNo73d+OyUgsM9xhGZCjSCvBQ2B34WCTQHujOLRslr9TrOGkooP/ZJ6eKmIGzAfLLjEQNpyhAwpfjgY67CB3ZZsQ27THamZzhwAPoEoEUoV6BIdrc4fvZ63CTxO4n8zrQYA+wRPEi1pbmwfNBIMaKeO7GrINixhYS82GIqFZzQGDpG9rCjh8a2Uojw05lIpaRg9BBNPRg08VYzbl3n/FML3zcwLrnzasLHHGhRZzwYGxe8ehvm0yR
+X-HE-Tag: 1793439787-550391
+X-HE-Meta: U2FsdGVkX19ehpw+f0EuppU4se0pSYIyiiq8/5vyn4pkc6ZZgb/jZPJPFCKQCcLitFQvEC8aqStOawXZCgel0RrBY0GpgNocgFZys4BQVO8tb4bSgK+vxew28cNFwIwVf9oDdbHfqDnQELR8Gwa9QqInenotldLO7Q/EBJTVFBpCuTVkQ8r2jWVVjP2sF7WFz/74UdyN/jRaI3lOE1FktDbpzq820t6AT/WX6YdgQcQvjQEZbk6hd9a0BZCyYlr05LKLmdX5n93nc2UUcj3ZK0YTUw+KnteoqSYFIzJGKC9PMPmN+z2tJ3nd4xhQKuFkOlwlx7pxGBfXeewYdl0jpORcLCBthm6Mq2Yb3iqiQV31rrXiu2Gsyw+8ERXRTU8opy8jnxzgvkExnE7lsml3SRR/ryKNzdDVfbUiNkT+DVAZFx4gQnoNGztI6cAUfSEg2UUyF65pRQErMP5iHUZXG6uW2Bbiqa2+wD+CBOQHREBMYQyNj8y7mRn7vCl9e14n2dvR2K3mt4sDaV+Sjb+Xhljs8X6FzN5KUG4ILyF/e6dOiTXiuY32V+uoEQo5PA+tDJDLwFdAhQKYeNaxfdaZetBBblDai8iR8cb+oD2aGYibGp2Qahmd1xxiCt+xbqyXDR5qtVDyPZz3U9c+5QkkMfBqCmZTpQgEMWhtunrB9c5kn10LANsm62dbYU0RPgYlWWt3WXeXlv0/lkZ5T4lYowxKfEEskUG07Gi0KEhpmNI2MIRaip5WLB0S6D/sVAi593Cr1rRWQ0rYdv00SVKLDz8/Gq+MSf7VubFPuv/Spa9SAMdVwnXTwKRJ9QJ8meP75kjhiOXuq+0qRRZR9to2b+TYyep2jd/EYJKTxHNkwggxQlWc/E7c9CVFY+2GzeqowcR4nitPY0CUwxVwPl7vDMJTD3Zj2C1vQ6xDlG9wtIJ6+vLYelSm9N1+JC3v+Wc3IUOlUEPEqevHF5tnFB2
+ mNH4gEv3
+ ejCTKLxgJXbjAQtv+IoLdw0iQFrMwJIW0LlwYf10MRuHEbisu4GGoajI5iL8Kgy5FzjmeWRWkaMhplOtcovZyHVYTMuZL1N5xGNaIRipd5zJ0aM51s3HHLxkekFSYEha5m9iFGR80hX+5291lojCcAd8YdBCvwY1V926FrGQuMrvxcXtK69WljDxRiSQocMDsxn5vb7K5bi0FDfUlE86Td47Jjc5ooQqKhoXj38mqS6d3byja0o6PpB+ReBWRmk0Zz17zExDxeu33Q17rzR8fmRXv/jMGBeS7kowGKZpemOIE9f54NQW41fHv6XDPdMooXMUO87DfTSleIo5owTSS2RCqNQ51xxMp1CaT0ynFPzncUFB6z2gysjd06BEm+wBB+vILVARt0T3uZeUCMoWY7J9dQ2ip87kd1XePxaNgxVwRoErRLMTED7eHwaVHHmwmnQ7u
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,91 +139,117 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Since the deferred split queue became a list_lru, the isolate callback
-moves the folios it took a reference on to an on-stack list, linked
-through folio->_deferred_list, and deferred_split_scan() takes them off
-that list with list_del_init() without holding the list_lru lock.
+copy_huge_pud() copies device-DAX entries without taking a folio reference
+or updating mapcounts and the child's RSS.
 
-deferred_split_folio() does not know about the on-stack list. It only
-holds the list_lru lock when it looks at the same list_head, and it can
-run for such a folio: a THP is queued when it is mapped, as a candidate
-for the underused check, and is queued "again" when a part of it gets
-unmapped:
+For example, MADV_GUARD_INSTALL sets VM_MAYBE_GUARD on a device-DAX VMA,
+forcing copy_page_range() to traverse the whole VMA on fork. Any remaining
+huge PUDs are then copied without accounting for the new mappings.
+Unmapping them in the child decrements accounting that was never added.
 
-  CPU0 deferred_split_scan()          CPU1 deferred_split_folio()
-  list_del_init(&folio->_deferred_list)
-    next->prev = prev
-    prev->next = next
-    entry->next = entry
-                                      list_lru_lock_irqsave()
-                                      folio_set_partially_mapped()
-                                      __list_lru_add()
-                                        list_empty(item)  -> true
-                                        list_add_tail(item, &l->list)
-                                          item->next = &l->list
-                                          item->prev = tail
-    entry->prev = entry
+Use vm_normal_page_pud() to identify refcounted mappings. Take a folio
+reference and add the child's PUD rmap and RSS accounting before installing
+the copied entry. Pass src and dst VMAs consistently instead of src and
+dst MM. Move the TODO.
 
-The folio now sits on the list_lru with ->prev pointing to itself. The
-next removal leaves the neighbours pointing to it, and they still do so
-after the folio has been freed. With CONFIG_DEBUG_LIST:
-
-  list_del corruption. prev->next should be ffd4000000270090, but was
-  ffd4000000278090. (prev=ffd4000000270090)
-
-Fix it by grabbing the lock around list_del_init() so
-deferred_split_folio() cannot race with it.
-
-Fixes: fafaeceb89a5 ("mm: switch deferred split shrinker to list_lru")
+Fixes: aed877c2b4257 ("device/dax: properly refcount device dax pages when mapping")
 Cc: stable@vger.kernel.org
-Reported-by: Josef Bacik <josef@toxicpanda.com>
-Reviewed-by: Johannes Weiner <hannes@cmpxchg.org>
-Reviewed-by: Mani Tofigh <mt4022@columbia.edu>
-Tested-by: Mani Tofigh <mt4022@columbia.edu>
+Reviewed-by: Zi Yan <ziy@nvidia.com>
+Reviewed-by: Pedro Falcato <pfalcato@suse.de>
 Reviewed-by: Lance Yang <lance.yang@linux.dev>
 Tested-by: Muhammad Usama Anjum <usama.anjum@arm.com>
 Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 ---
- mm/huge_memory.c | 15 +++++++++++++--
- 1 file changed, 13 insertions(+), 2 deletions(-)
+ include/linux/huge_mm.h |  5 ++---
+ mm/huge_memory.c        | 27 +++++++++++++++++++--------
+ mm/memory.c             |  4 +---
+ 3 files changed, 22 insertions(+), 14 deletions(-)
 
+diff --git a/include/linux/huge_mm.h b/include/linux/huge_mm.h
+index c745f7ad22987..fac05120ab774 100644
+--- a/include/linux/huge_mm.h
++++ b/include/linux/huge_mm.h
+@@ -12,9 +12,8 @@ int copy_huge_pmd(struct mm_struct *dst_mm, struct mm_struct *src_mm,
+ 		  pmd_t *dst_pmd, pmd_t *src_pmd, unsigned long addr,
+ 		  struct vm_area_struct *dst_vma, struct vm_area_struct *src_vma);
+ bool huge_pmd_set_accessed(struct vm_fault *vmf);
+-int copy_huge_pud(struct mm_struct *dst_mm, struct mm_struct *src_mm,
+-		  pud_t *dst_pud, pud_t *src_pud, unsigned long addr,
+-		  struct vm_area_struct *vma);
++int copy_huge_pud(struct vm_area_struct *dst_vma, struct vm_area_struct *src_vma,
++		pud_t *dst_pud, pud_t *src_pud, unsigned long addr);
+ 
+ #ifdef CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD
+ void huge_pud_set_accessed(struct vm_fault *vmf, pud_t orig_pud);
 diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-index bd44d58e86845..4c0194af9016d 100644
+index 4c0194af9016d..283c4bc8b927c 100644
 --- a/mm/huge_memory.c
 +++ b/mm/huge_memory.c
-@@ -4522,8 +4522,7 @@ int split_folio_to_list(struct folio *folio, struct list_head *list)
-  *
-  * It is unsafe to call folio_unqueue_deferred_split() until folio refcount is
-  * zero: because even when the list_lru lock is held, a non-empty
-- * _deferred_list might be in use on deferred_split_scan()'s unlocked
-- * on-stack list.
-+ * _deferred_list might be in use on deferred_split_scan()'s on-stack list.
-  *
-  * The list_lru sublist is determined by folio's memcg: it is therefore
-  * important to unqueue deferred split before changing folio memcg.
-@@ -4665,10 +4664,22 @@ static unsigned long deferred_split_scan(struct shrinker *shrink,
- 					    deferred_split_isolate, &dispose);
+@@ -2072,11 +2072,13 @@ void touch_pud(struct vm_area_struct *vma, unsigned long addr,
+ 		update_mmu_cache_pud(vma, addr, pud);
+ }
  
- 	list_for_each_entry_safe(folio, next, &dispose, _deferred_list) {
-+		struct mem_cgroup *memcg;
-+		struct list_lru_one *lru;
- 		bool did_split = false;
- 		bool underused = false;
+-int copy_huge_pud(struct mm_struct *dst_mm, struct mm_struct *src_mm,
+-		  pud_t *dst_pud, pud_t *src_pud, unsigned long addr,
+-		  struct vm_area_struct *vma)
++int copy_huge_pud(struct vm_area_struct *dst_vma, struct vm_area_struct *src_vma,
++		pud_t *dst_pud, pud_t *src_pud, unsigned long addr)
+ {
++	struct mm_struct *dst_mm = dst_vma->vm_mm;
++	struct mm_struct *src_mm = src_vma->vm_mm;
+ 	spinlock_t *dst_ptl, *src_ptl;
++	struct page *page;
+ 	pud_t pud;
+ 	int ret;
  
+@@ -2089,11 +2091,20 @@ int copy_huge_pud(struct mm_struct *dst_mm, struct mm_struct *src_mm,
+ 	if (unlikely(!pud_trans_huge(pud)))
+ 		goto out_unlock;
+ 
+-	/*
+-	 * TODO: once we support anonymous pages, use
+-	 * folio_try_dup_anon_rmap_*() and split if duplicating fails.
+-	 */
+-	if (vma_is_cow_mapping(vma) && pud_write(pud)) {
++	page = vm_normal_page_pud(src_vma, addr, pud);
++	if (page) {
++		struct folio *folio = page_folio(page);
++
++		folio_get(folio);
 +		/*
-+		 * Sync with deferred_split_folio(), which can requeue the
-+		 * folio once list_empty() is true, and sets PG_partially_mapped.
++		 * TODO: once we support anonymous pages, use
++		 * folio_try_dup_anon_rmap_*() and split if duplicating fails.
 +		 */
-+		rcu_read_lock();
-+		memcg = folio_memcg(folio);
-+		lru = list_lru_lock_irq(&deferred_split_lru, folio_nid(folio),
-+					&memcg);
- 		list_del_init(&folio->_deferred_list);
-+		list_lru_unlock_irq(lru);
-+		rcu_read_unlock();
++		folio_add_file_rmap_pud(folio, page, dst_vma);
++		add_mm_counter(dst_mm, mm_counter_file(folio), HPAGE_PUD_NR);
++	}
++
++	if (vma_is_cow_mapping(src_vma) && pud_write(pud)) {
+ 		pudp_set_wrprotect(src_mm, addr, src_pud);
+ 		pud = pud_wrprotect(pud);
+ 	}
+diff --git a/mm/memory.c b/mm/memory.c
+index 0fb676dd2bd63..5392bcb1d24d6 100644
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -1463,7 +1463,6 @@ copy_pud_range(struct vm_area_struct *dst_vma, struct vm_area_struct *src_vma,
+ 	       unsigned long end)
+ {
+ 	struct mm_struct *dst_mm = dst_vma->vm_mm;
+-	struct mm_struct *src_mm = src_vma->vm_mm;
+ 	pud_t *src_pud, *dst_pud;
+ 	unsigned long next;
  
- 		if (!folio_test_partially_mapped(folio)) {
- 			/*
+@@ -1477,8 +1476,7 @@ copy_pud_range(struct vm_area_struct *dst_vma, struct vm_area_struct *src_vma,
+ 			int err;
+ 
+ 			VM_BUG_ON_VMA(next-addr != HPAGE_PUD_SIZE, src_vma);
+-			err = copy_huge_pud(dst_mm, src_mm,
+-					    dst_pud, src_pud, addr, src_vma);
++			err = copy_huge_pud(dst_vma, src_vma, dst_pud, src_pud, addr);
+ 			if (err == -ENOMEM)
+ 				return -ENOMEM;
+ 			if (!err)
 
 -- 
 2.43.0
