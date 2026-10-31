@@ -1,73 +1,73 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87E4F606A31D
-	for <linux-mm@archiver.kernel.org>; Sat, 31 Oct 2026 00:41:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A669606A31D
+	for <linux-mm@archiver.kernel.org>; Sat, 31 Oct 2026 00:43:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=j8uPZm/c
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=Sf4dsc/8
 Received: by kanga.kvack.org (Postfix)
-	id 7B2F06B05B2; Fri, 30 Oct 2026 20:41:04 -0400 (EDT)
+	id 67F766B05B4; Fri, 30 Oct 2026 20:43:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7633D6B05B3; Fri, 30 Oct 2026 20:41:04 -0400 (EDT)
+	id 62F146B05B5; Fri, 30 Oct 2026 20:43:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 652E26B05B4; Fri, 30 Oct 2026 20:41:04 -0400 (EDT)
+	id 51DCA6B05B6; Fri, 30 Oct 2026 20:43:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 38F726B05B2
-	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 20:41:04 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id A945DA8441
-	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 00:41:03 +0000 (UTC)
-X-FDA: 85381066806.30.65856D2
-Received: from mta1.migadu.com (out-100.mta1.migadu.com [95.215.58.100])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 9566B180002
-	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 00:41:01 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="j8uPZm/c";
-	spf=pass (imf24.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.100 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 335866B05B4
+	for <linux-mm@kvack.org>; Fri, 30 Oct 2026 20:43:15 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id AB91B1A0904
+	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 00:43:14 +0000 (UTC)
+X-FDA: 85381072308.19.27F04A0
+Received: from mta1.migadu.com (out-168.mta1.migadu.com [95.215.58.168])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 9CE3DC0004
+	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 00:43:12 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="Sf4dsc/8";
+	spf=pass (imf28.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.168 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793407262;
-	b=hTVOkjDXhLrlPH5PY5N30CevYxH02vsBa62a6DpsgKNv054y3Y/a0UEtQeKpCLURQV93nG
-	OWgpaCVFL000/zndCSpnM0+v/jGdi5PdaGDDrEXTxa5oYSn3AeLYlogri74IEnNp9Gvp4i
-	ZH3EGFc+fn4GOB1yXvBiGeTGsuQLEuc=
+	t=1793407392;
+	b=hLCofApmqvd8x6LaMTtZpReCNnvrYhFfBV+4/t/lGwzPHxC49kNRX1sPDZraqXhF803X/M
+	zKqh8LrA7ehmZLkEZD3GyzC01vi2jUdcvm/v2GckokoOXQyd4eZHGhc1qaQk6bO1o7Tml8
+	EFJkP/tQDiqwXJ++UjzNNgg9kPv5vq0=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="j8uPZm/c";
-	spf=pass (imf24.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.100 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	imf28.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="Sf4dsc/8";
+	spf=pass (imf28.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.168 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793407262;
+	s=arc-20220608; t=1793407392;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=RVsVhQ/ReZ0Z2nIJhQWtigrg3sY6kB0bqA5wLYKs5WM=;
-	b=WQRXxxJujEIgYZxSclkcTIs5466uW2OH0J6Qc/KO2HYEVLqZuHotbawUBod3r2jVMgDmkK
-	dh3NICc7mxENwSXvH/Mb0PUZmT4uu+NxIXSCoQDAV/0LQw2zOfUmGbdGBtHSOvvzwbAcPl
-	Jo5xbBfaRP4VknpKipujFoXv7OQeonA=
+	bh=Hs9ww9OWyyWTWd7XYZJCVayYLvTIQuyzD0QuSnMbhZg=;
+	b=IoR/OvZGwyC8WiWDJX7+udi5ayruEEZCfJ0Xy8EiFocGTtqknKY0w45xM+uINepBM6SHdy
+	t9SRkkiQzg6Sp/HcMjBzs7nl4md/W+KUApOlyzz3SAI39pLhb+VwpnhQRrt8NxP+bj6ah9
+	NIDIIPNYApu1msCPcTR7/m68lbLRpG0=
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=RVsVhQ/ReZ0Z2nIJhQWtigrg3sY6kB0bqA5wLYKs5WM=;
+DKIM-Signature: a=rsa-sha256; bh=kWjkjHMuIQ/mRw2cul8HJjHFpbEMvDl4j7cCQ9zauHA=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1793407260; v=1; x=1794012060;
- b=j8uPZm/cTAon5Bx/qz/wD3CF3+IVsaSKY1ZevVtNO1QBhqfs7WaSMurCbxcpTVXHmwEz2shA
- C79mytiiso1SKU2stFj/VmIcisD7f9str2F0QVhZ8gbvHyjnLQVXETwKFxvhL5O9sux3cGjl4fv
- PH1rWL9p5WGJVHIB550VXHjA=
+ t=1793407389; v=1; x=1794012189;
+ b=Sf4dsc/8F4076h8jMVHI7rNf+3W1b/61uDUgqP8E5HHTLPa8nU5oc/o8ISUg13IlHCWcGKQA
+ UB+ZLth8Vkc0MHA/p9oE12VEqzKr9FC9ymTBDF+Ig1ksRMNz0jQewv0eDvmcSLdmB5OR8+ivAAv
+ q8ZwWLwKtsEl0knW1TygDsEw=
 X-Envelope-To: linux-mm@kvack.org
-Received: by mta10.migadu.com with ESMTPS id bce34db760ad78a9;
-	Sat, 31 Oct 2026 00:40:59 +0000
-X-Mizu-Trace-ID: bce34db760ad78a9
+Received: by mta11.migadu.com with ESMTPS id 86d28ed59939afc0;
+	Sat, 31 Oct 2026 00:43:09 +0000
+X-Mizu-Trace-ID: 86d28ed59939afc0
 X-Migadu-Flow: FLOW_OUT
 Content-Type: text/plain;
 	charset=us-ascii
 X-Archived-By: <archiver.kernel.org>
 Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3901.100.1.1.12\))
-Subject: Re: [PATCH 1/7] MAINTAINERS: mention for-next branch in MEMORY
- MANAGEMENT - MEMORY MAP
+Subject: Re: [PATCH 5/7] MAINTAINERS: add missing files to MM component
+ sections
 From: Muchun Song <muchun.song@linux.dev>
-In-Reply-To: <20261030-maintainers-v1-1-97278f8a5f54@kernel.org>
-Date: Sat, 31 Oct 2026 08:40:27 +0800
+In-Reply-To: <20261030-maintainers-v1-5-97278f8a5f54@kernel.org>
+Date: Sat, 31 Oct 2026 08:42:39 +0800
 Cc: Alistair Popple <apopple@nvidia.com>,
  Andrew Morton <akpm@linux-foundation.org>,
  "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
@@ -129,23 +129,23 @@ Cc: Alistair Popple <apopple@nvidia.com>,
  linux-kernel@vger.kernel.org,
  linux-mm@kvack.org
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <FA211DB3-E11E-4FC3-8AB2-9EDB5AA80DB7@linux.dev>
+Message-Id: <815030A5-DBF5-48C8-A585-CAD27089E599@linux.dev>
 References: <20261030-maintainers-v1-0-97278f8a5f54@kernel.org>
- <20261030-maintainers-v1-1-97278f8a5f54@kernel.org>
+ <20261030-maintainers-v1-5-97278f8a5f54@kernel.org>
 To: "David Hildenbrand (Arm)" <david@kernel.org>
 X-Mailer: Apple Mail (2.3901.100.1.1.12)
-X-Rspam-User: 
-X-Rspamd-Queue-Id: 9566B180002
-X-Stat-Signature: cqocyc9f783zd9yottfqujx4751q8c4s
-X-Rspamd-Server: rspam01
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+X-Stat-Signature: 98rehz54jq8byhdcmj1mw5enn3nm1hsq
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
-	autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1793407261-840135
-X-HE-Meta: U2FsdGVkX18XAk4Znu5oKya1U0u3Ictroq0VdMgg+UFGc+pFYV7XaAy/gUFPqCd4uPE59+X8uXcSXLJJvY89Wv8bnPAJVLs3D22Zd3dGBxlyhUH/NfYhD9e5Lpnz9AaGq0gCOyh6KxnKxciH4E4s++jEkHR/pOpZ2MZAzzpTZ7RmGlR7aElp9bfAKXGdkqG8SJwkc4C+10qsofigDhGOr4WLDM/Dkyqfweg4vba2D2xBp1pO+g0QkaPYzdYr9z0e355wLScvLg/szxB/XdB5wipNP6L3Dh5GL+D0AlvCjkEb2EBEw02pi/r8Kzne0BmfhEzfzbHdMtTPoDcwr7cGBp7y0nqKieDFMnPl0thoC7q1VXLQaKtct5bQ2RHHn3USWQMfeu5RI75iuBBMf+ScMWA4QgYhzI4FSDcbUHsg4ZWSTC5P20E2irxQHVb4rJ+pmt4w0mp/+NmRkjzYQQJjjuUYDFMnKtYq8lMFJ3Pnzt1GRFK5WqASf4Qyoh1TMVe+9eNOGFibZDVnsmJzLv4JDkYEyCbeNhoRVvVxfzqhKYv4nd7vvkpZUoCZTm07+wBf7uxwaNDQJGqMzEr/Cb+/kyR0ZvAvfx04EZcvZJYbYH8y8XWF2U80HrPAlDdsnbvlC/bqczwpLruZcc5yuMlDnGUhX5VE1hWU1rKAud46+UQTkpgDUoq8VIrTLrHSCRnqeHTcgMqEJAmLjC+LrXQs/u2u2Ef7OMMfi05xVnlPu2fftazX4Mf4D82PSfS3G2Nq6V1DtPiuR7yT8RdgjwpaKO1c5DK7pdROa07PKpZKfVJCFvc934OPH85Ny4SHnF1rYka4jNlY/rQEYWDfUeFPrsUQwyHsm0hTQ3zeyn26mxvWfIX76rGgt87JykK11fgmi8IgGVMA/FUGWneWMwC9ElXa+YnsbR2MSuWn49/a7y6y/Yg8E/uT99mFZialOWof1Ae19cdnqjYhVxhAHB+
- HgwSy3c3
- xecdUTTeEOOXyBl1ixQx0CleCZa9vmmkzrWdFcwKLady62NFt2KMhfFW5XJkcd8KdMSUnUgepBj6LPFyKz9PU578cUYBrDQZ5RYojchhe6wOIW9+b9b2Iq0gnU/+DYqBPBmu9kBDeQ1qEVyuSpSJsyqQf6p2pvisxbWX3NrQX1HZygV/NJ5D1n/kwVvih76Q6n6HbNbmVtC3Cjsqjx9v5dbyACmu9usKGTNQFXycioSh8gCxHFuYmP7twvzOenKUr7CsdIHb/y6hZKBV0JmzM15B5fD3LrrTgSH3Xju1UaQDdG4b80bgz6pJ4ZvnAhH3Qm7xFEiME7l+RZJp4rqps/+bkO4jLq7JnvvBxvFJXOIBq7Hs=
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 9CE3DC0004
+X-Rspam-User: 
+X-HE-Tag: 1793407392-232744
+X-HE-Meta: U2FsdGVkX18jNfz/hckKzTtQX+fIBP6QuRHZiyQfJQvutBeKNm9f9Bu5GptbCfX/Axd/334ZYTEkocnB/dtvbodGGGmRm/m2uaH/t9QE911R4HAOWqEGbdz5H6Bsfce0LC9UJ4ewrHQaVZuOURc0WHSRFzbSwlGHLMkopsBVN8pPck1A6oXiDFcvpD/hryfe2L2Oqk4u2oHBrPI+1aNp+/qGyR1paACQT7/xNVr9YVsKn5IZFOnclgglysmT00xuelJDj/pkSZGNknzkR1C+pm3PRRVpwE7w/Ltq0bW73JMcdTx+n1mT+yF9cSrp9dJS4n3xqRGt4uvQqTVPbGRI5NJHyNvRb7MwWJsXpbCkyDAgheTj16K3rJpRUe9XdvSxUPyVgAneQ0OGlSPbYgujIwAG4NKjTTxuS3lnyDrO8frHtN9ehGBYI7yMmazCIuf6xG7VbPRIEf7mZUDpfuFRaI1n7qnyrMrimxMrCz9NFKjDtP0A0dD8oQNVVbCclolrR72y5LTUWQL+E0qw0DkDqdIyeWuIFXffByWdXJbhQ9z6LgTCTWsJL5C5AzpLkBZm6vrLq708hLRr5mJqgqd4K4VUDswctZLdDByuW1EW54IjAc8ob2QxLG8wPofYay9OHh9uAz06wu8Wr8t37zDGKxYnWA++ZWEccQrewIwGvozZrCVgHOcy439sLSDxi/TYpXtei/YO9rigm45M9n3SkisIfmts0U7fonbmFPqPDPIskyknW2Bv5ftdchUCpRC/gqKOOHPmWMmfRP7d7ll1xHRwD67+RIWeUfKuv6j4wLEjLAXmR4xHpP7eeiPCihv1jqOQrO43lqpECajNqmRuQtHPpSv8yuWqvLX7/eXEBtmqOPO0B8g4VdY+Oa2QaSHmh0TUTgpj0BhqJG0s5qVC2bBnbBPnEwJXjnJgA1QdQ/7SwKZtGSK39wh+xY5NEHM3RYUgCTc61zLEgq6gYZt
+ yPms9K69
+ ZNz/tvHefz3IhNEmlkYQ+//Hj6PdGkPSxJ3tGbn2dunMkcbAQvW8B753eHCgXo0LazkhT5h9CgG49qD89dPRYzilCebvWVmNfwTTMwixntionNiebRo4QNb9Jj4DCTKfWlbuMqBzyH/AyE5qfJGpCFs4mtRIUY4AWM+UI4lmZvQ19UDZKsFrj5GKjGNYCpvjNfY9zqz7GYpfSDLC82d7aGTONXlwxNdxsNwDEs9wX9K72IfeLMZ3wtU0VXAbpmm37NulTEphjRJ5ukl+dtcUJWlaZV+KcggX+wzQ+RdIKhr2Th11aBCWvBO1pGeIqiIq+jQ9NdWa8DjR6Cmdtsc5BUK+rBsU3HLcR+4fq11Hv9Hw9BTt2OYjeHK5i4RlkPKFdxmpNTIAylWcaknb5Af0AnlbI67FjgYS4i8mm3RMM3KVPjwU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -159,16 +159,61 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 > On Oct 31, 2026, at 05:34, David Hildenbrand (Arm) <david@kernel.org> =
 wrote:
 >=20
-> "memmap" will be used as a prefix for branches, but not as a branch
-> itself. "for-next" is the integration for all these things against =
-which
-> people should ideally send patches.
+> We want to make sure that MM components cover all relevant MM files. =
+The
+> generic "MEMORY MANAGEMENT" sections will probably go away at some
+> point.
 >=20
-> Not mentioning a branch makes them assume "master", which is wrong.
+> We have a bunch of files that are not explicitly tracked under MM
+> components. Let's add these missing files.
 >=20
-> So just mention the right thing, which is "for-next"
+> Split up tools/mm to the appropriate components, but still add it also
+> under MISC, similar to what we did with selftests.
+>=20
+> Don't split up selftests for now. They are covered by MISC and some
+> sections name them separately.
+>=20
+> Some files like
+>=20
+> - include/linux/numa.h
+> - include/trace/events/kmem.h
+> - Documentation/admin-guide/numastat.rst
+>=20
+> are a bit fuzzy. Add them to the best fit for now.
 >=20
 > Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+> ---
+> MAINTAINERS | 50 ++++++++++++++++++++++++++++++++++++++++++++++++++
+> 1 file changed, 50 insertions(+)
+>=20
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index bc82ef545e0aa..98948d159173b 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -6841,8 +6841,10 @@ R:	Muchun Song <muchun.song@linux.dev>
+> L:	cgroups@vger.kernel.org
+> L:	linux-mm@kvack.org
+> S:	Maintained
+> +F:	Documentation/admin-guide/cgroup-v1/memory.rst
+> F:	include/linux/memcontrol.h
+> F:	include/linux/page_counter.h
+> +F:	include/trace/events/memcg.h
+> F:	mm/memcontrol-v1.c
+> F:	mm/memcontrol-v1.h
+> F:	mm/memcontrol.c
+> @@ -12349,6 +12351,7 @@ R:	David Hildenbrand <david@kernel.org>
+> L:	linux-mm@kvack.org
+> S:	Maintained
+> F:	Documentation/ABI/testing/sysfs-kernel-mm-hugepages
+> +F:	Documentation/admin-guide/cgroup-v1/hugetlb.rst
+> F:	Documentation/admin-guide/mm/hugetlbpage.rst
+> F:	Documentation/mm/hugetlbfs_reserv.rst
+> F:	Documentation/mm/vmemmap_dedup.rst
+> @@ -12360,6 +12363,7 @@ F:	mm/hugetlb.c
+> F:	mm/hugetlb_cgroup.c
+> F:	mm/hugetlb_cma.c
+> F:	mm/hugetlb_cma.h
+> +F:	mm/hugetlb_internal.h
 
 Acked-by: Muchun Song <muchun.song@linux.dev>
 
