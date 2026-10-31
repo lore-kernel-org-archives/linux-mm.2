@@ -1,149 +1,99 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18194606A31E
-	for <linux-mm@archiver.kernel.org>; Sat, 31 Oct 2026 04:01:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A497606A31D
+	for <linux-mm@archiver.kernel.org>; Sat, 31 Oct 2026 04:13:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=ME/E9smf
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=R4EQdXBN
 Received: by kanga.kvack.org (Postfix)
-	id E18156B00EF; Sat, 31 Oct 2026 00:01:30 -0400 (EDT)
+	id 493B36B00EF; Sat, 31 Oct 2026 00:13:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DC8996B05B1; Sat, 31 Oct 2026 00:01:30 -0400 (EDT)
+	id 443226B05B1; Sat, 31 Oct 2026 00:13:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CB8406B05B2; Sat, 31 Oct 2026 00:01:30 -0400 (EDT)
+	id 358F36B05B2; Sat, 31 Oct 2026 00:13:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id A6C256B00EF
-	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 00:01:30 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 0DE788086D
-	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 04:01:30 +0000 (UTC)
-X-FDA: 85381571940.30.7DE3010
-Received: from mta0.migadu.com (out-12.mta0.migadu.com [91.218.175.12])
-	by imf05.hostedemail.com (Postfix) with ESMTP id D6EAA10000D
-	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 04:01:27 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="ME/E9smf";
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf05.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.12 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 15F5E6B00EF
+	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 00:13:34 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 90101A043C
+	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 04:13:33 +0000 (UTC)
+X-FDA: 85381602306.22.901F069
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 1051E20002
+	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 04:13:31 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=R4EQdXBN;
+	spf=pass (imf13.hostedemail.com: domain of kees@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kees@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793420012;
+	b=EHvcYhheGU0y8ZXwg2ie8e1iH0u3+G6ro4uQJaqglVHeLlRdP0af53CsURq2EwRfm4FrGw
+	97UBeFShh42mJPH1JSgc4OM61eNxUQQ05xLinS9sSlWCpC8n0ywV86418VHn3dNaMjq4cV
+	Za1GIAbJiKuHDcO8MBJO5bRlyg7ReGM=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=R4EQdXBN;
+	spf=pass (imf13.hostedemail.com: domain of kees@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kees@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793419288;
+	s=arc-20220608; t=1793420012;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=SVfa0gIfJ0mFFHTR1txtm9nrtHNlGhjBAfd3nh/ZFDo=;
-	b=NOiuaayHFnqr53w0Ti6bgRz/0a1qz/etlIN/lTCXkrQ2mBk6HMAk/g+ZARhD9QRDrwBOyH
-	0yg9H3IRlMQ2XHFMFfiMyo54JpgLp+5o8GSVIT8bXw7x/eJi3yR41TYqoSO1LLKDvKPABE
-	Z7c3XjCTrO2N3ABN6CSbudhC9lr604k=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="ME/E9smf";
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf05.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.12 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793419288;
-	b=1fe8DFGmEna7JxCK+5Di9Ax+ZOqKltckwbtiED7zVloyhhkCO0wVy6LV72pSwDZg0cs0Mm
-	WLLJCPdJma33vVu6CZ02zCxm9PceGswKiIGlKCHSM+I5+u6eJopwhzcSzZ6Rpimx8icQkQ
-	gitqzbuFNUEyqkupKXP4NGmV6xGqu6A=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=XfEaAPgAHtnFtcCOsY1hz9YOxl0K/jzQz3+QJgV86BY=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1793419284; v=1; x=1794024084;
- b=ME/E9smfnqc3VhfPxpLpOIMFEZ9+HuzSrewiJmPQlI/Mrf7qI/IwjcHzcYxyHGXpBrMAHrgM
- lgOmzHNlCudQtntnDt/THr+8520JTCwJKoHS72MUnMoE5OATYa0fc/rbCKUtwx0PJlfl3LdhlVK
- UJUZTLll9FYApsN7tQwHcWls=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 31186c4904888d22;
-	Sat, 31 Oct 2026 04:01:23 +0000
-X-Mizu-Trace-ID: 31186c4904888d22
-X-Migadu-Flow: FLOW_OUT
-From: Lance Yang <lance.yang@linux.dev>
-To: david@kernel.org,
-	ziy@nvidia.com
-Cc: apopple@nvidia.com,
-	akpm@linux-foundation.org,
-	aneesh.kumar@kernel.org,
-	baolin.wang@linux.alibaba.com,
-	baoquan.he@linux.dev,
-	baohua@kernel.org,
-	brendan.jackman@linux.dev,
-	byungchul@sk.com,
-	chengming.zhou@linux.dev,
-	chrisl@kernel.org,
-	cl@gentwo.org,
-	david@fromorbit.com,
-	rientjes@google.com,
-	dennis@kernel.org,
-	dev.jain@arm.com,
-	gourry@gourry.net,
-	hao.li@linux.dev,
-	harry@kernel.org,
-	hughd@google.com,
-	jannh@google.com,
-	hannes@cmpxchg.org,
-	jhubbard@nvidia.com,
-	joshua.hahnjy@gmail.com,
-	kasong@tencent.com,
-	shikemeng@huaweicloud.com,
-	kas@kernel.org,
-	lance.yang@linux.dev,
-	liam@infradead.org,
-	ljs@kernel.org,
-	matthew.brost@intel.com,
-	linmiaohe@huawei.com,
-	mhocko@kernel.org,
-	rppt@kernel.org,
-	muchun.song@linux.dev,
-	nao.horiguchi@gmail.com,
-	nphamcs@gmail.com,
-	npiggin@gmail.com,
-	nico.pache@linux.dev,
-	osalvador@suse.de,
-	pfalcato@suse.de,
-	peterx@redhat.com,
-	peterz@infradead.org,
-	qi.zheng@linux.dev,
-	rakie.kim@sk.com,
-	riel@surriel.com,
-	roman.gushchin@linux.dev,
-	ryan.roberts@arm.com,
-	shakeel.butt@linux.dev,
-	surenb@google.com,
-	tj@kernel.org,
-	urezki@gmail.com,
-	usama.arif@linux.dev,
-	vbabka@kernel.org,
-	will@kernel.org,
-	xu.xin@linux.dev,
-	ying.huang@linux.alibaba.com,
-	youngjun.park@lge.com,
-	jgg@ziepe.ca,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: Re: [PATCH 3/7] MAINTAINERS: add Zi Yan as co-maintainer for MEMORY MANAGEMENT - THP
-Date: Sat, 31 Oct 2026 12:01:18 +0800
-Message-ID: <20261031040118.53610-1-lance.yang@linux.dev>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20261030-maintainers-v1-3-97278f8a5f54@kernel.org>
-References: <20261030-maintainers-v1-3-97278f8a5f54@kernel.org>
+	bh=3hdblefE6S5tAiJMj8KJmoICUKdholikSnOmEf5tzMU=;
+	b=CEd37D9rQG36c5p+RROQWf2Fq7xg6EbaLMwqeYXpqIJ8LBjIKfohqS8sR21wu//AS3haQR
+	jPQKYyP9SJJBy8w9dNejy3BXRi/PWjQk7M3qdxryewajD1L3hJ4WGRAJ6q2MgiWThnAMEs
+	aIYJ/sFJWfZ4g5eeGwMGg/eXfMFx3Ss=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 520B6600C8;
+	Sat, 31 Oct 2026 04:13:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04F601F000C1;
+	Sat, 31 Oct 2026 04:13:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793420011;
+	bh=3hdblefE6S5tAiJMj8KJmoICUKdholikSnOmEf5tzMU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=R4EQdXBNX8QLXGc0X8TmBH9Fb9wWbqf+Oyh7f7jwj4AQpxv0TaRTM+7oBwtj9pXcT
+	 kufcOzg4jPz6GRNP+iX6tFOWBfsU1mAYaGgqHYG2KRsiM14/+4ZLjO7CJBikdSMBpJ
+	 wVkiA3Y5wG7dEInpGmZFZ2JLXRYrEJFIGjxAMD5eqBw8yBcxEEyJxPAfr+XSZE/98X
+	 0AwNwjGi479VRMBjZkIVFsZ8kiCCML/MQmWVQtHlS9ylY4ZS1f21kzS1cLumk073Lw
+	 Ve0mbW/MPWGakjeHzDS4YCtvvKb4rP50KyXWyYkP0gtn7AIbRYA/mJFlm4a2Soau1B
+	 EBx8vWbmq8Zmg==
+Date: Fri, 30 Oct 2026 21:13:30 -0700
+From: Kees Cook <kees@kernel.org>
+To: Chris Down <chris@chrisdown.name>
+Cc: Vlastimil Babka <vbabka@kernel.org>, Harry Yoo <harry@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>,
+	David Rientjes <rientjes@google.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Marco Elver <elver@google.com>,
+	GONG Ruiqi <gongruiqi@huaweicloud.com>,
+	Jonathan Corbet <corbet@lwn.net>, linux-mm@kvack.org,
+	linux-hardening@vger.kernel.org, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org, kernel-team@meta.com
+Subject: Re: [PATCH v2 1/6] mm/slab: Enable SLAB_FREELIST_HARDENED by default
+Message-ID: <202610302112.453CE16119@keescook>
+References: <cover.1793253633.git.chris@chrisdown.name>
+ <2ba9dc862607d70050bbc86fce0091de2e23c023.1793253633.git.chris@chrisdown.name>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: D6EAA10000D
-X-Stat-Signature: 1g3q6oa74zoq69gqsrzepysqj8cgr7nd
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2ba9dc862607d70050bbc86fce0091de2e23c023.1793253633.git.chris@chrisdown.name>
 X-Rspam-User: 
-X-HE-Tag: 1793419287-858173
-X-HE-Meta: U2FsdGVkX18STeypvNXU+rhSmQhQ86HWhON2IKA7cv8NpqRQZkOEQpUa/yGqdgFagtfqhJ0DzBXuF7WhnuZUIlUwbnkBqg36DY6jQuc2OCXAFTdrysVJ7dQrYSMxNN5ZYE3n2EBJp55rhco0sigNtGcZZjFfLgU/CDYZl2RCbRpLomvdgm2eq0rHzi9Ah1Yz8gQ4ktIXTrXjxOjeA5+IykB/falcbKSIIc38zN1ccKo3SHXoJijlow9SW74aD5BPX71kROkywW0gA8HqCmuYCxdy6M7NVcWcCyrZ1TnD2P5aEgA+cmVeH55MWucToxeT/fjHpQHQgSNKd4OkN3rk/RpkrBr++bGWrS9vWAxdxGcxvbZHnpD0/j6q+aNO6alFCmk5VCm+6YpjV4knZkqyZ4F0r1gsmBF8FOOjHaPoNy5cjE/N6+tvCbou2U5Ez7wLY9KhzYnrf/nJSH9WEDucb5vCAlU4ueWTRCOZQmCA7WFEgVHZfdKSN1rdBq1XVQoObBWmeyRqLUePsIQQFncPFSvf89Mi+y2YH5iP8TmiDfAKIJKzVg7mNcoNtnZGpZODI8+hzt1p7fcujCnHIf0hB5t5fjXbQvjwQFK6FMOn9ooBNbd+6pNQ1GuPgsj8GCny8Qvhw33Gg/e/ZXX/Tn3x+aGnPayREu3zDrUOV9moAMssbOxGIO+VOBIrzWewnl2cGYURbt436++G1CFp3jp3/F9udAuqO1Spts4yCSQgzxZipmxqeNvJEk7OvbK/BKUGLC6lklqPAL99PKADUIvLHed7aO6aRv1gf2pqW++Md+AqQUwQx+yPHsHLus5MXzU4q9Xysirv6AOwS74vZvQEwDFI7zWZBlUzQkW06tBS4Kki+vQQ0v1MXL9I5M8q8+k8YrqpPoJyM7bLkzNQoBR2Or/TlYeHWv+FUbaeuNcjEOoAUxccQePv9a/i19mjGBHUE9+e1IyoR6rZpDIWGGg
- GpK0x6c6
- 6T9ErnRVauU3YDEE+EfCa79pmJcJbVzLbYmE8RWZm3oS/d6Fj6B8X75QsqinGfHf9bh1MIcHrUTUQLFLNECT8dW0acwu24AjSLjYPWFhUX1ekUnlx+Jh/a1QpBxP19M4mXc1Z1xSFJCXhNhpmN/QbfhZKf8DMu46muuk2qq8dlnZ3PePukcBqQ0+reAF4D4LzJtpOFiLjn0GkCcuQSdPpZ/hxG2/ua6D0imbzr1BZe8tYuslr+WFMujZhxMIrIP17uuEuihXp78vhaK6f+PTih3ZYCMxbzUP5VKb1X74k1SPuUZgMwi7qFsg7P6P72SNHZfjEu627lo+g+nOgIMgCPIlQnAd9DmiH9Ta5uGwKHv6ql4TO/+JOkcXzMhNM73UvPbgFFP+B0AykKe9lpYFjpYHVt+LsuqTgiRW4C5/FiWTxRwqBFcLvqK7YUy7cY7+1PwxnL+pVQVpe8BkexAzs3Yz+9qU+dvHnbcd9HVkS4QdecDli41eQOfU0oQ==
+X-Rspamd-Queue-Id: 1051E20002
+X-Stat-Signature: s76ae7zisif6sxdrg949uyeeh9ndiomg
+X-Rspamd-Server: rspam01
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
+	autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1793420011-770814
+X-HE-Meta: U2FsdGVkX1+QpoSt5BjcVchnLGpmbToy2Lilll3+dztCsTZ7UPPjFiHrJaEG5PhVczpjaXAcQ1cUBY7gnm1C18HoO0acEdvZJTDrl+2hJ7XrVUfgmBvCQmMFZPM4VQhymdBtiAwJ1rGRNqWF6pvLEvcTUO+9pGAHbiAoi4CWara95j3jZwnGC9ZtyFEhGWA1Okd8qbwVFrninD051C8bwk1jd30WvAl3UdZmvJUmkOsbFRz2HVFsJdoLpYSPs0pfFHsFJxEEp7akryPSAOd001OjDXr+HKrjaX6gyaGImREj7u7fx76Oc3sPVcEfKXqYwB1kf1RTtiZhoD10H1zoKeGQ/EptoPHo/LyKkf1isZ/CcHCPyYm6POGLRbpuivQEGAekIn9w8DIcJLqXeHvV/bWMcBHhfAr1KYpyxQ0OdIP0OdRlWQr5yHBtL5WyZrpoHQf934aQV/ZH/5XlRJXf441CBqHETOlF0vpH+oVizwGf+eYdytvdsRM2+R7rlMrxwSpXBzdeeXIKS2F18vvESGQaXC2w02gdleyxUmC7P/64sYtBCEf86dlMTrGe4a+w6ahkLgGQalPVtiokabliz0pFQRHhYSlAzUVZN0jhC7a9FIp6ZnP43Ky+QfmZod687S2gwaLs6aBEm0cvKyWvIFeX5hBoDFbd7fEeIGC4yM7AkyH6VqX3mclOA9Cre+ZrldSfpykaCg5N8xrskVZ7r/fwSziX3s1vKTLDvEQeatkgrcKRjZFaoT/SNOzy1QhBuvYsmjzTTf/O8uD4NUssvg/IAVp15rRHiVGZBR4fi/HvZge1IHrD0D2nhQ+0HtT2sFW+mcd+l8fOWHcUPtTHH86Tdbih5WWWg89CB2H0MJcbXlP5YMY2RR0sJm8MVFF/xoUac66TT49Kbdusbuwb9Vpq/Zr+aZy144GohBGrlzuPji1kqShvv22f+HbQ2WC4eEMfEJmUaWHkMbWql2u
+ usyBAQrd
+ HK1sT+pAV29bovdiaNwX1SUdtJFIc3btWufdpNiFyLSLscH7GoNy9/T73XWpUMF4jLYt2R2AdNe8zTJPQt78WUjEYm32cmcXrjvC8LW8Cr/D9TNLrd4aQMcYPSpw3lTVOUX+pBPh83Fsh+lPeEUIWgA515wTyrJpYkeaZ1f7/Gg7yI8EHJ5r1Q6fk527nK2cS8/h6HZeB068M/1XR3FElWnHKZJcBuVdZbByKjYtoXheIPkWrVBWILb0eZ/ZMZVtRYVebtJhWOhjC4ySWsiU2mdxdM3VJF4DVJPwPtBC2h7me1tWu8X5hKBpZSVBJesVE6GDI
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -152,49 +102,25 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
+On Thu, Oct 29, 2026 at 02:07:22PM +0800, Chris Down wrote:
+> SLAB_FREELIST_HARDENED obfuscates the free pointers stored in free
+> objects, and catches naive double frees and frees to the wrong cache.
+> Most distros already enable it, and with sheaves its cost is small,
+> since the per-cpu fast paths don't touch freelists. Measurements also
+> show this quite clearly [1][2].
+> 
+> So let's just enable it by default. SLAB_BUCKETS defaults to
+> SLAB_FREELIST_HARDENED, so it's now enabled by default too.
+> 
+> Link: https://lore.kernel.org/all/auITixAJMfLtfa7i@chrisdown.name/ [1]
+> Link: https://lore.kernel.org/all/179312451613.474906.1475329637924619088@kernel.org/ [2]
+> Suggested-by: Vlastimil Babka <vbabka@kernel.org>
+> Signed-off-by: Chris Down <chris@chrisdown.name>
 
-On Fri, Oct 30, 2026 at 10:34:27PM +0100, David Hildenbrand (Arm) wrote:
->Zi has been contributing to THP consistently and reliably over many
->years and is considered one of our most valuable THP experts. As THP is
->an especially active area lately, having a single dedicated THP maintainer
->is not sustainable.
->
->Fortunately, Zi volunteered to take on more responsibility by stepping
->up as a THP co-maintainer. So let's do exactly that.
+Like I've always wanted it. :)
 
-Nice one!
+Reviewed-by: Kees Cook <kees@kernel.org>
 
-Couldn't think of a better candidate to step up as co-maintainer.
-
->His placement in the MAINTAINERS entry is very convenient to perform
->this change :)
->
->Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
->---
-> MAINTAINERS | 2 +-
-> 1 file changed, 1 insertion(+), 1 deletion(-)
->
->diff --git a/MAINTAINERS b/MAINTAINERS
->index 0baeb37b0dcdc..02b5b542f81ee 100644
->--- a/MAINTAINERS
->+++ b/MAINTAINERS
->@@ -17817,7 +17817,7 @@ F:	mm/swapfile.c
-> MEMORY MANAGEMENT - THP (TRANSPARENT HUGE PAGE)
-> M:	Andrew Morton <akpm@linux-foundation.org>
-> M:	David Hildenbrand <david@kernel.org>
->-R:	Zi Yan <ziy@nvidia.com>
->+M:	Zi Yan <ziy@nvidia.com>
-
-Long haul, hard work, never quit. Fully deserved.
-
-Acked-by: Lance Yang <lance.yang@linux.dev>
-
-> R:	Baolin Wang <baolin.wang@linux.alibaba.com>
-> R:	Liam R. Howlett <liam@infradead.org>
-> R:	Nico Pache <nico.pache@linux.dev>
->
->-- 
->2.43.0
->
->
+-- 
+Kees Cook
 
