@@ -1,75 +1,75 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD562606A31A
-	for <linux-mm@archiver.kernel.org>; Sat, 31 Oct 2026 09:47:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02BDA606A31A
+	for <linux-mm@archiver.kernel.org>; Sat, 31 Oct 2026 09:47:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Goo08VUO
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=IaCWaKaw
 Received: by kanga.kvack.org (Postfix)
-	id 09DC66B05DC; Sat, 31 Oct 2026 05:47:04 -0400 (EDT)
+	id 1B79D6B05BF; Sat, 31 Oct 2026 05:47:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 04DA76B05DD; Sat, 31 Oct 2026 05:47:03 -0400 (EDT)
+	id 160796B05C0; Sat, 31 Oct 2026 05:47:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E7FA56B05DE; Sat, 31 Oct 2026 05:47:03 -0400 (EDT)
+	id 028716B05DD; Sat, 31 Oct 2026 05:47:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id C5A386B05DC
-	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 05:47:03 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 5D57DA08FF
-	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 09:47:03 +0000 (UTC)
-X-FDA: 85382442726.30.B98DE80
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 8E8CD140004
-	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 09:47:01 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Goo08VUO;
-	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id D41D16B05BF
+	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 05:47:19 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 5E7791408CC
+	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 09:47:19 +0000 (UTC)
+X-FDA: 85382443398.25.106D8CA
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 8367040003
+	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 09:47:17 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IaCWaKaw;
+	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793440037;
+	b=TVKOWkv1vucfm5IxBOinLSXJKv4pfKq8mvlfV0wKrojUtzqeAQ9wx+vMFCMd7N7WOtw9lh
+	3mrqowXPWRqxRqpqNEe49HSSinjtQwpIvfns4d5lsu4+iwFEd2Z3q6Igj0XdGR1/6RTDX5
+	02tJfSfX16oguDtRnBWS2K+dBrfy25I=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IaCWaKaw;
+	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793440021;
+	s=arc-20220608; t=1793440037;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gNn7/nSxmNJguW2bsADoqLsPI7cv25lI/JHeobxIgIk=;
-	b=mfX4XrbbdRT99s2FZ9sBcmbvjXg85hxZ4u+CEcxDgzxoIw8xF3Bw15nk+L2FRoVm0BkueA
-	O2XjCMqvwL4p4zWhlxSK6utAqFV80bRLtbwITwQzn7nD31AY33IpJvfW5EYX/tg0XJEuXG
-	lOTij2T1I1NhG+BcRfsa62SupR80Pbc=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793440021;
-	b=hmzevgAC4zZ1mIQzwh7n//mZjzLvrcxQxLL47YoEEFrAXkOS1CvI7FSSRUOXqgGzmXdhz7
-	+30RPzyMjmdaiW1VBajuTCylBIi+bzjOfwxqk8Mes3D8JsMDArIHU20FFVTkgjPPV0fJEK
-	rjHRLkTDqMdO8ZaO3nxSE96nS38ObVY=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Goo08VUO;
-	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=KVrdbHh4TefzyeW1e6RlSzEhzIhMK50yL/X3kkZm6/4=;
+	b=HCveir7mesp/XnnnmdmFPH6smE+Ww0XQeSudgyEAAMloRDPlUp+Jy6T0/VcjcbKJbecWnR
+	RaeJqBlVxWBFnwHsbR8fGfyvM7470hiHd13epht8O4hKpRUovrvs6iDL7YTGPHqioQ/s74
+	Il600fszUvmIvjrjVSFsQpkLAH7TmO4=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id B0F2D43664;
+	by tor.source.kernel.org (Postfix) with ESMTP id ECB7B605CF;
+	Sat, 31 Oct 2026 09:47:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27FC01F00919;
 	Sat, 31 Oct 2026 09:47:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3A131F0093A;
-	Sat, 31 Oct 2026 09:46:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793440020;
-	bh=gNn7/nSxmNJguW2bsADoqLsPI7cv25lI/JHeobxIgIk=;
+	s=k20260515; t=1793440036;
+	bh=KVrdbHh4TefzyeW1e6RlSzEhzIhMK50yL/X3kkZm6/4=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=Goo08VUOyTuxB+9BiU8tT1hGY7xIbPlcSmnFKYKLEns6CjMozp+42PLDwlris0Wgy
-	 Epy0qZs9ruATYG7k3H09RtPnyDeTrQWjydx2A76PkzWc/HJEqku1kfq+YGHjvzgiu7
-	 PVzQSIFw2G73kn0/TmY4S7YikUWi5ZjSlNlCvW8sTI4Xwv03qxL3EhI9T4GGCOuzOS
-	 wqesxAZme6fwCbZotjvP7RH+qDfB95lIIOdkup1BldzJkCVJXYxqy9DC9vPqebcprH
-	 uLdmoGd5Ixnvi0Tvgq2KahgXTyv1qFs3LN+TYfkQH8ipONbe0mXOCdtPulAg5ZVhx7
-	 dsOwRYfOdSfgQ==
+	b=IaCWaKawXOqDcZ22xFCnwg7umYwYJDgAbJNOOK5GTEKGHR4Bx9Acayri7plzIv2dF
+	 0xsaLS7xr4ETWZusdZHXrFhdvJbU1AhSTCPEA0QR3Dj1ccFkxelrbwXMWTOnrQQWG3
+	 58kyNmdrL4h4kMvLnIkpzCrckrID/LCj0Cf5LWhtYMlVhaHMgI1lgO/M9mXJT3I+oS
+	 Z2xhPUc1AK103gnGCePYltjzgbzdLKcT6Hk2CY7ZOOT3q1CY+nRSeutkrRUi7hRWeR
+	 F8JX7Cij2PkVFNeFOQbrbxnEdvAY1cKNFIxVfTTwYaHRhB/a7xn+bEQBXPQJM9W6rl
+	 g/T9m03kc4kGQ==
 From: "David Hildenbrand (Arm)" <david@kernel.org>
-Date: Sat, 31 Oct 2026 10:39:55 +0100
-Subject: [PATCH v3 26/47] mm/userfaultfd: compare exact registration modes
- before skipping
+Date: Sat, 31 Oct 2026 10:39:56 +0100
+Subject: [PATCH v3 27/47] mm/mmu_gather: fix flushing ranges with 4 GiB or
+ larger
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261031-fixes_core-v3-26-d6437171ecc3@kernel.org>
+Message-Id: <20261031-fixes_core-v3-27-d6437171ecc3@kernel.org>
 References: <20261031-fixes_core-v3-0-d6437171ecc3@kernel.org>
 In-Reply-To: <20261031-fixes_core-v3-0-d6437171ecc3@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>, 
@@ -107,30 +107,31 @@ To: Andrew Morton <akpm@linux-foundation.org>,
 Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
  kexec@lists.infradead.org, linux-fsdevel@vger.kernel.org, 
  linux-arch@vger.kernel.org, linux-cxl@vger.kernel.org, 
- stable@vger.kernel.org, Muhammad Usama Anjum <usama.anjum@arm.com>, 
+ Josef Bacik <josef@toxicpanda.com>, stable@vger.kernel.org, 
+ SJ Park <sj@kernel.org>, Muhammad Usama Anjum <usama.anjum@arm.com>, 
  "David Hildenbrand (Arm)" <david@kernel.org>
 X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1520; i=david@kernel.org;
- h=from:subject:message-id; bh=VPLF7ZF60P6QZsc5ogJFtB1G0DgMIn6ux/cdpuH/iTQ=;
- b=owGbwMvMwCF2/OVpCdfQ3ZWMp9WSGLKebs/ojGKyT+C9PCWZu/jAdn/xR/eWdutsjRLU8tn3S
- GhxtmtcRykLgxgHg6yYIktQ8H2Dly/X1Va78THDzGFlAhnCwMUpABNZIMzwV1CyVabwyaF8oQum
- Z0+LdgcvbTw/7Wih/MHrHFWK3NvDDzD8Ffi01Oet/XuBJXyLvH7pvd019+vmjPjl/i3pgnKt0x3
- OsgMA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2186; i=david@kernel.org;
+ h=from:subject:message-id; bh=XMqAbJynrW+dSeh468tky7AqZSEZvUJFOrLi82qkd/w=;
+ b=owGbwMvMwCF2/OVpCdfQ3ZWMp9WSGLKebs+Q9csy471kdl/JWJJ57iLLuN+/Dm83vFRrH99oc
+ 7pyn8zijlIWBjEOBlkxRZag4PsGL1+uq61242OGmcPKBDKEgYtTACbifp2R4daLlSYBH/m0hd89
+ 6zgm/f7UvRPHexf3Ppv+3PCr3TX9iQqMDGs2JfTrdpm2nXv/RPP2W62itX1MireabfWCQlf+3vo
+ olh8A
 X-Developer-Key: i=david@kernel.org; a=openpgp;
  fpr=1BD9CAAD735C4C3A460DFCCA4DDE10F700FF835A
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 8E8CD140004
-X-Stat-Signature: bcx98mtciybnr5e53e4ht9a636jzddfb
-X-Rspam-User: 
+X-Stat-Signature: ao5tzoitc7zs6z5xc3nha3i1ufq8o9eh
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
 	version=4.0.1
-X-HE-Tag: 1793440021-845273
-X-HE-Meta: U2FsdGVkX1/cCkBxkvi/ZtU6hTEA0t+IyvBfvO/lAYHteCY8i4GcaViIL2YdqKypy61h92OmrXJWmGb7UrtR4zPDP9QNCg47g4tBE1YgjttaZ4vtcGFJjeMRFep5QFJq2HcycC213QgOp6hGou55iXX5seXMnSgVtzfCWOjTdUHoxiUfYD23KD9rQTalB13yBeJCDbdaMDLxrtqH8l/F290JZamMUEqOx2ToDIl/ld9KBbFji5LhzJUioFzCoi7y+CM2sHroSipXcLFILoKknyxPZEXnFyER/TysCbkgGrdybBI7IJVwMpFMmzgBL8qu4pdm43717TQssh60CKua450/aTn2hfc/+3OgDFnP9BE/qe0mIcYbSvZ7dQftlJiQxtuYGuTUCqxYZhUhEgoL88zPKkeZKRofrKh0oq6XY1T2u6poSfY8nRv7AFcmFY1PBRfnEsVQYUnKSsdq9bVv6Q98IWPShYSVOoKX5qixThhZvry97dqjlBiQ3FkU/WtYUX2CV4DZCvCnESapNiOde+IQJJRiRkhE7wQS/SjowFvI0p7x7sioHuH2HnjaTKcKOKb4KnMqatn0nJY0FOVXUV5JcrAUtBN33vr5yOoKBtosD8L4O+ZxLPltP1SsJWmZmghGLEMlW5HOgXts43vg2lqN4lrjkNVdp2ZXyzoYEZ6T/TpCDnU+prDdHq4r22Q7MLAmdIK2YDtVhj2fnbuQFvoX1z9ZxJChxwJV0sL0h7DqfoqpMilHVqagFqe/f77nUTe55NKCnHgTqltv/NN93YPsg5gJVlP24mejd57Ks5x0UHkvRRlhVjmd3ykDyxTWjrarO+IMvg+z49wv0qNEajwgqG7BxGL2Y6JZQavNebX/TeKkfamMBdFSRPBK0EnBD1V+DDzQwjxdgYhjaoP02C6LNOT9hKUps9yAwvOLCjV5iDdt3N8FZUrQWocE1cQ8G9K4hM0vrnl27dWLBIc
- Bv+h7vid
- ZgaRDdfR974NTIkif9wCMSjw+p7TqV7QkXnoednaYBQzAw4UZTu9jTdSfwDt2E0Y92sltEGJq4EgcFDUl3qB9cwFejF1TWsZNHIbY9pnPL0uaYiGTDZPm1KXKXppiYjQoJU3LmO3MTZfdBAAWWpvrFtQrpIh1svvkUi5pwSURkxi0Q+STim+N/M+sJYbpYbypGD0SRtvNgKr3InP6YE+LcZ04JBQ8rRX6L8PSvXahwCdUxvN09ISGjXte0jJuPaf5vYU5PKn2pQ55acR5SXT43HpVsiRDvdkgqqg1vGczndThBq7mQgZTT/xZnOHEas4fIAW8zzSmrmizeiKnNLFV1ovAAa7dP7B5QeKfuus2cAfxE27ekM5D+y8/A/1xD4g7wqHA7mUQ5pvupBEcS05w3lmM7h9qQFOwmvnmEjs7h7ZLuFldSkARob8u3p4uZT3YMHTEIRYbvKB/zwMPLWJloF/AnmVasqdGkGXAe5rl/qCISXk=
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 8367040003
+X-Rspam-User: 
+X-HE-Tag: 1793440037-79174
+X-HE-Meta: U2FsdGVkX1/a8ju6ggoYX6qxsgZ4D+U6ivN9HWE+NuD9IDXauYWYIRASjKxZNuE13mJwiH0AJMHLf8rPv5rLLaOQBOz2bgCodIpejKpRBunBjwNXCL1Sv+vp5KPrbOIPnwck2tsuWhEyvy0IJHT58nGLLGCG2l1UpF7EWsvZ5omMTGS4zO01lVRfr/0qY0q/ceAHbaOxMsbidMGnKIqnCYkp7hlUBO+HH52PjbzuIGCfgA8MZNy9zQ9wiRPSu1uPK0x8geeaZoIPW0+q4YTSXW9445kLDRi5l1wq5D1BZ8N4pGoapHueHdJznDKKI+PCLB2u2vEAoDwMrMUpRE/XNflv3RpsXWkXLiEAiojihnNCAHRqQqIXYrMwsefD6Ke87GxqWY71wd2tR7ZdtsbnvoodK9XKbQ2C2mEKOJxQml+HoaVoFGjYoGRs1FyF0aK0/XOuQ0wF+dwFux36nWx/+0tRyPTtrtA9HGOWL3tdm4uTIhkEIw4GeKhwL4m3hBKbnW5zi9s6mje6n0ayiB85+zqxIyrVyVtIWLpfSyv5RFZoNwJEzhlpHDXJXlYq0bqX1tpjyBPmlBflmuiMjlClAH5jDAvc7vuBw+Bbd+X1ZWnqfxljIlX/jcmNbEB8o2sVwmp+T2MQHJ9zY8odJyFr/8wgiWtEa9McIM+0bgSApNArv1xXlHOCbirORY9ob0zTYpNlVb/xRUjKiIM/75YOU5tvryJtkVkdKjmn50kvD1C9vOXj8ffY3Q2VUIUUDm2zSwGkuvRn430LPvqUAro8LsRga0or1lpopC/lFlfWdqDoy8GwL0YKRl9DPbrsVfn8zCK5A6HXaguMOgfy6p78N7PLAovzawDyxpqre0r1ztdbu/LELuS82Z5siO0ei7E+EQzXXiOrNJoWOfwcDgiEzKtUZY6Ap1ywV7fjg/sIivRKtcsJTAyLNQQ55HIa3RkurVob6v3SPbqL+N4oex3
+ AwszRv5C
+ hkC04moYcQXCIwYdsJ/+W6e+GNeht8OVHm8TjxklgN+0/ngyqY+ywiMDlM+XZnjkouIPwvzApSoS9zzCRVRXbgGMUot5obTjGzNDoxazp5/AEyjPNLwUP6FH+0RUL8g/pUlzsvd+UxMHiRTWl8M5ZKIp9nIUUVyA8k+HyzQsRuvEKvsIpMkZYbFYTzS/0bK8rPKHvQI6ZoX8zhtYC/SwEKNWftbcXOecTUhK5ccZWeR6D11XkvUBpjacXPM60gfKhdVnijqEZGCowN+712MRJ5CQCZBAWYAeJ0wg37SgKfKGkwSsIimKFT0leWm91fZNmq4NLVCyesH44G61HlbshMkKbLQEOJmFQFgSIInaG2hz+CyP0auyoudtywffBw/pZAEPLwrmGG34J+4B/SxzXwJUGFcvseZPLuOwdfsePu2vHZguSjfTe2dsjkIil46JWOTw6d6mqsCd14qJo/QaGOrlrVSfluoy5tuaMvVvdyLY5MEhIQVZYtiPD1noHyZGi1d9167H1wIAEOwBMxGr03UhGlR3i6aqbimxi
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -139,46 +140,56 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-From: Gregory Price <gourry@gourry.net>
+From: Josef Bacik <josef@toxicpanda.com>
 
-Changing registration from MISSING|WP to WP returns success but leaves
-MISSING enabled. The no-op check sees that WP is already set and skips
-the update, so later accesses to missing pages still wait for userspace.
+__tlb_adjust_range() takes the size of the range which has to be flushed
+as an unsigned int. Its callers, tlb_flush_{pte,pmd,pud,p4d}_range(), get
+and pass an unsigned long. Consequently, a range that is 4 GiB or larger
+gets truncated, possibly to 0.
 
-Skip the update only when the current and requested UFFD modes match
-exactly.
+On arm64 with hugetlb, a 64k kernel can have 16 GiB hugetlb folios
+mapped contiguously at the PMD level and flush them when unmapping, and a
+16k kernel can flush 64 GiB PUDs through tlb_unshare_pmd_ptdesc(). So
+at least these two scenarios are affected.
 
-Fixes: 63b2d4174c4a ("userfaultfd: wp: add the writeprotect API to userfaultfd ioctl")
+Fix it by flushing the proper range instead of the truncated one by
+properly using "unsigned long" for range_size.
+
+Fix generated by an LLM and sent by Josef Bacik in private.
+
+Fixes: b528e4b6405b ("mm/hugetlb: add tlb_remove_hugetlb_entry for handling hugetlb pages")
+Fixes: 8ce720d5bd91 ("mm/hugetlb: fix excessive IPI broadcasts when unsharing PMD tables using mmu_gather")
 Cc: stable@vger.kernel.org
-Signed-off-by: Gregory Price (Meta) <gourry@gourry.net>
-[ david: apply fixup from Lorenzo ]
+Signed-off-by: Josef Bacik <josef@toxicpanda.com>
+Acked-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+[ david: use two-tab indent, simplify description ]
+Reviewed-by: Qi Zheng <qi.zheng@linux.dev>
+Reviewed-by: Gregory Price (Meta) <gourry@gourry.net>
+Tested-by: Gregory Price (Meta) <gourry@gourry.net>
+Reviewed-by: Dev Jain <dev.jain@arm.com>
+Reviewed-by: Muchun Song <muchun.song@linux.dev>
+Reviewed-by: Pedro Falcato <pfalcato@suse.de>
+Reviewed-by: SJ Park <sj@kernel.org>
 Tested-by: Muhammad Usama Anjum <usama.anjum@arm.com>
 Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 ---
- mm/userfaultfd.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ include/asm-generic/tlb.h | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
-index 03f1b15bfe63e..dac696bda19f0 100644
---- a/mm/userfaultfd.c
-+++ b/mm/userfaultfd.c
-@@ -2291,6 +2291,7 @@ static int userfaultfd_register_range(struct userfaultfd_ctx *ctx,
+diff --git a/include/asm-generic/tlb.h b/include/asm-generic/tlb.h
+index fbe1114e9a443..3f4a180b48f3c 100644
+--- a/include/asm-generic/tlb.h
++++ b/include/asm-generic/tlb.h
+@@ -350,8 +350,7 @@ struct mmu_gather {
+ void tlb_flush_mmu(struct mmu_gather *tlb);
  
- 	for_each_vma_range(vmi, vma, end) {
- 		const bool any_mode_removed = vma->vm_flags & __VM_UFFD_FLAGS & ~vm_flags;
-+		const vma_flags_t curr_vma_flags = vma_flags_and_mask(&vma->flags, __VMA_UFFD_FLAGS);
- 
- 		cond_resched();
- 
-@@ -2304,7 +2305,7 @@ static int userfaultfd_register_range(struct userfaultfd_ctx *ctx,
- 		 * userfaultfd and with the right tracking mode too.
- 		 */
- 		if (vma->vm_userfaultfd_ctx.ctx == ctx &&
--		    vma_test_all_mask(vma, vma_flags))
-+		    vma_flags_same_pair(&curr_vma_flags, &vma_flags))
- 			goto skip;
- 
- 		/*
+ static inline void __tlb_adjust_range(struct mmu_gather *tlb,
+-				      unsigned long address,
+-				      unsigned int range_size)
++		unsigned long address, unsigned long range_size)
+ {
+ 	tlb->start = min(tlb->start, address);
+ 	tlb->end = max(tlb->end, address + range_size);
 
 -- 
 2.43.0
