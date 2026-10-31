@@ -1,145 +1,120 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E41A2606A31C
-	for <linux-mm@archiver.kernel.org>; Sat, 31 Oct 2026 07:27:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25932606A31D
+	for <linux-mm@archiver.kernel.org>; Sat, 31 Oct 2026 07:29:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=VpVX4uss
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=DHohPplR
 Received: by kanga.kvack.org (Postfix)
-	id 55EB36B05B2; Sat, 31 Oct 2026 03:27:31 -0400 (EDT)
+	id 319156B05B4; Sat, 31 Oct 2026 03:29:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 536C36B05B3; Sat, 31 Oct 2026 03:27:31 -0400 (EDT)
+	id 2F0186B05B5; Sat, 31 Oct 2026 03:29:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 44E7C6B05B4; Sat, 31 Oct 2026 03:27:31 -0400 (EDT)
+	id 1DF376B05B6; Sat, 31 Oct 2026 03:29:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 153646B05B2
-	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 03:27:31 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 0E1911C42B1
-	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 07:27:30 +0000 (UTC)
-X-FDA: 85382091060.13.E44A6BE
-Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 226FE1C0005
-	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 07:27:27 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=VpVX4uss;
-	spf=pass (imf18.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.218.52 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id EBDDB6B05B4
+	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 03:29:06 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id CC94B1408CC
+	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 07:29:04 +0000 (UTC)
+X-FDA: 85382095008.10.0418709
+Received: from mail-pj2-f7.google.com (mail-pj2-f7.google.com [74.125.227.135])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 1A0CFC0003
+	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 07:29:02 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=DHohPplR;
+	spf=pass (imf22.hostedemail.com: domain of jm5905938@gmail.com designates 74.125.227.135 as permitted sender) smtp.mailfrom=jm5905938@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1793431648;
-	b=sXUEZ/a9twtSXNaf9KjqG2BpNKyo9hk82t6eubtUF+5fntnnnHJBGMPBy0a55pln7NI0GH
-	jDq3mG61QRhOXb9XgrKfal/irnhEJyTh0nIY7HacKA5gvsHIRMDLJJJxDupCPhCNRzxtAY
-	gAmxeXGio9WPfKZyRts6sHHEExuM1dA=
-ARC-Authentication-Results: i=2;
-	imf18.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=VpVX4uss;
-	spf=pass (imf18.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.218.52 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793431648;
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1793431743;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=P3XWvG238gH7dkSgQ74A3SG60T6iclJBQql1w995p9U=;
-	b=y8QItMTdLC/VPplikCqKj2SyYReQ205CA8834NRmS4mrJmFWP8TfE5nU/OR2LSeEua+O7u
-	6jFiM57FE/RJASaKxpEZ7GCR+B9uzcnLfnEs/yoJk6oLCLz9Odt5pq8iQrfhxOfhtq2lsX
-	yxAIzACEhyDr/qJUcWqylhCpltyryAU=
-Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-c468bd799ecso177097266b.1
-        for <linux-mm@kvack.org>; Sat, 31 Oct 2026 00:27:27 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1793431647; cv=none;
-        d=google.com; s=arc-20260327;
-        b=DKtWJja4TY+/Om6AvRQj9i6w9J3XpaGGJw7O0uifF6XrA86IyDvlcIYdzqp+HE3g7O
-         NJ0GA+lOQqJOMJ1C1XNSp9KovTiHSvD4FaRUhbc+yK87CJcV7l1ufLuJukTe3N++hlWE
-         7vtKXZJulYPIyS+4wOCHQi0p5oAro6kQbUVKqiX5Hx383NZohRI4Y83Yoyp+yh3tK80u
-         eRmAk/7zO2KwDSblWWwkD1UPcKREuHE/Iy1pSTbG89qWgVefpLGJ4lJM+jBlcKmlVGoQ
-         /kGo0TAhbhmCFd5MF3/s57fw6/s+1BwFq3Aan11jMKnc+Ow+lnSwB/4rXWSHCEd3PpxF
-         oRrg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=P3XWvG238gH7dkSgQ74A3SG60T6iclJBQql1w995p9U=;
-        fh=LjhQpJCyLXI6namr4BmJWBL1cvtO0XpmB4+f+iBs4Lg=;
-        b=SSYn6m559B73/2qJssSXZ9Teg67rqj96oeu6F+9e2RPKwkpMo+J/nqfYsUhsNq5sIk
-         BAkxCQZ9uJeB0rdIfqoSC8KD5+xOP1sW50czj3Msvd4BF5A1Jkd5V0GUuwi1k3QijQ11
-         X49n9klwIbiU2+3guPo2wg8cDv2ykiSfq573Zt23JIn3Ai84bef1hVYciY6A4iPGL4wh
-         kB01/RmnfmVf3DS18jkVZRC1pwUWd0meYxoSC3UweihCni2yhBHPNN1g89uf7kMEygC4
-         312V1QDU6U/+/ADr0W1uEHOmjFU1gUSm/F8YNndU3glDV7p7xQdEV6rFkLpHOQS24/NQ
-         ac2Q==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=1GfHJENjm3HCl2SLDMEeoyrSRdru9fmVN3yznIPIXt8=;
+	b=tPlZdFtHPvLefUh4LGuV7/kmwjTcdOGK9QZUo1TZvVUwb3JhP2OsmESHl24M1hMFWlZ/KG
+	58SDPtHsnBLCmF6gw/pViVjJxC6rcxtfgTLmqFcu6x4RkFC1jUOjtumCwdyRnpb1jsKqri
+	moB35GqG8rsrLF/OkAqjR//fu0KVZ18=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793431743;
+	b=EgoX7BBT2gQmJi7B6PPjfCvSHjxSjPwzCvWZwaB87UzB8WCBhJ1HTY6IHvXrZ6WRpypvHl
+	yBqleyCtnx3UwEi4YLZt92BI5XP8xc66QB55HI8RCb4JPqry3Oy8+JS0ENicOHxfQYxKfp
+	wyDCPgR5+/KoQeg5GFqEETU9sSFC7VI=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=DHohPplR;
+	spf=pass (imf22.hostedemail.com: domain of jm5905938@gmail.com designates 74.125.227.135 as permitted sender) smtp.mailfrom=jm5905938@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-pj2-f7.google.com with SMTP id 98e67ed59e1d1-3ac63aee1ecso346520a91.0
+        for <linux-mm@kvack.org>; Sat, 31 Oct 2026 00:29:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793431647; x=1794036447; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=P3XWvG238gH7dkSgQ74A3SG60T6iclJBQql1w995p9U=;
-        b=VpVX4ussblJxNUslesdDpRCZt1OSjCl8mgPLRwZUJfL7WYb3e3srh+AKQlNFSEWIVM
-         U/j9FslD3xJ9OFFNmfoprVxo8GuoMsTsMxBYFpaNYMk1X44htJwo04EWdCM7EXskG8Us
-         MuVKjygwlXxUHv0RPHtaDWGaNfNi/hhtTZzeXlCKDaHGltirn09//4Vz2w4Cv1lPvA3j
-         ymrM9jPAjKuFm9WrM4wEQVCITKVbjhZ3iColq3xBye1dvWlN1vARyjzND4G134cib4Br
-         2+1WE+jOS91Czb4GMtWOM1wxmX4revQeqMJRKTTGrrAp/h9ZtBl0D0gjl6YV1FAt/sYJ
-         /NmQ==
+        d=gmail.com; s=20260707; t=1793431742; x=1794036542; darn=kvack.org;
+        h=mime-version:content-transfer-encoding:content-type:subject
+         :message-id:date:cc:to:from:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=1GfHJENjm3HCl2SLDMEeoyrSRdru9fmVN3yznIPIXt8=;
+        b=DHohPplRPEAzeqUTj6HSUPS2uYoO7CjfYK4EQBEkMe57XLw4QsvcqIHjNEbum3hXcW
+         5RMl7nlzJzw4CDe0iKVzkSkVd1N17I+lnnbU1cvQo5Gdop2b2Zx6THCSY6rm3CN+CJ/E
+         s7rQKVM44wn6zC5qR+3QwyqzfiWN5c1yDCnF9UTzQboTdi8cTyzxgLxSjWLANb6hcQiY
+         zfiRq27csBot0qrV95RT1+VNhmLPICE4MXhaCENIcEarWwyB2j/c58kIkr+vLS+XDNEb
+         q11lymAzaY6I7fB4tK9+Nj49zhK9bRnFCZajqA/gF8cn+Bmz710R2e82dPF6oEauB2uV
+         yrUQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793431647; x=1794036447;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=P3XWvG238gH7dkSgQ74A3SG60T6iclJBQql1w995p9U=;
-        b=tj+VSWRDIjAH9x0gXVeYLaqWnJfEA720gI+Y4iAbnEhfVoD7MU62LYbabb2EGkbPSk
-         yg2pbKp459FK5VJAl1Tn7ttb1FOx9k7XL9/igWoF1GXOrCZ50jczz8lrT+2dbMjefqlp
-         s5P7gFGnY4rJ+pp/p3791bJdsKkasY0DRIgPyZL4z1YGPIkNN5aOSVw5qbTbgYUxu8M+
-         1YVmkZCaaEJggm82S5YdIVcPr2fQDsT+AHCknXM+FAo9yBiL7zNRApB7M0sTg5Rk3+xQ
-         8bLbRQpIu9S9j0KEU1QmOFFxbB+tFCfYNlv9qWb6Zy85c3OSF7E+VESsAUq6WTNqZBMD
-         2kaA==
-X-Forwarded-Encrypted: i=1; AKwUvBwnd2+L1IGVsf2XifmyyIqg67caTA4lDuJXqME0FmCGISbqh+r2d3eAHgjNi3H8uqWvy0C3FC/G6A==@kvack.org
-X-Gm-Message-State: AFq9FYI3AlTbWItKNBUgsVOu51EOTwS4O3YWXPB1+ETkJmNnRlX6nrn7
-	JJe2zT9IGCXLeVUjIb70ZFHdbO4vq7irus7slwvZpUESAqB3MOZQt06rqgDG4jiMC4WM5LGRRFK
-	3IOS/leWWOcFkkjAXXLc6rmhututgWq4=
-X-Gm-Gg: AYBFou322/BS9QiCk56ADL/wOJcDEwz6sT4sMbFE2MIy01TL46F52EP8LBrLIq7IlVh
-	lEQmSOGyvIJHV8snZ/D4+pYgSpt1WK4ZVgzgT741/aBEXhDCZgOudksQvSwErGfLGbullSJw7xK
-	6zkoLA4gCLrL2u3tdeTiSybL6ZIdoHXxyQ+2gYT3NOHuYBTMJQJHUQoOib10yiqd5IeGJ2gHzUT
-	biz/hbKcqObSXqVXTKbK33mE95JXlB5aDz/Z2+CHAGsrurOSH2SVbpA9audnuoX0KDuX1SZt7Pt
-	vl2qpVh+cTkx9lVrF4cCLEbTrlEzUe3LFbaWurTuoky5XpsvrL35VvaUaCQ3QeUq33680gcRlo6
-	nBfPk+/d4aNiBjuZP6wdJVvuVXky4MkmvczX6I+Mf2iPWVcy2N5oNT5RYpXk9i7FF2jix+g==
-X-Received: by 2002:a17:907:9446:b0:c49:a571:c4f9 with SMTP id
- a640c23a62f3a-c4ca7a4205emr379272166b.13.1793431646490; Sat, 31 Oct 2026
- 00:27:26 -0700 (PDT)
+        d=1e100.net; s=20260707; t=1793431742; x=1794036542;
+        h=mime-version:content-transfer-encoding:content-type:subject
+         :message-id:date:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=1GfHJENjm3HCl2SLDMEeoyrSRdru9fmVN3yznIPIXt8=;
+        b=V9ZI6AP2cEf2rPSh5vyI1JeuIytKGBRNDDRv7gPxmYJ79IF0OqitVp9wyUK0qvS9vr
+         MQvhsOfNsZIzi/XtptO0KYAmmwsVjzAfypGdRrylskukP+VcUflBKnhHfNWmLhRvBj1f
+         YUD+UcGXQPIf5GX0nGNDcccJvUeVkE/8QmupJTJmQIbIa7ItjBgmL3/tQV7AbzHMm7XS
+         +kobxqUsnvwyDrXNPHxvHQIK2WtEJBa3y2bDfOr9SAHMbrniiLSTMVcVLs/f1x230mrD
+         JlN7mompmi016vCcWR0mGg0EbwdnIpm6n+gzguziFAlTc+UtMhE3CdykJUXHVZSrsFfP
+         LUng==
+X-Forwarded-Encrypted: i=1; AKwUvBxygSnB4l6EFq3oZ85eaYH/Ys1fRHkb1+tRpF9Oo49+x8L4wqbJ5awVipcCnoq0sBCT8YRX+MRqPw==@kvack.org
+X-Gm-Message-State: AFq9FYIXJQPOCpi7p4EiKEFlf1bNMig757wvbC4f8F0rBGMbDaPuOHnY
+	c8FUPIRqzMNOAqbl7lEUrPgyvGyv9V8dh1VTf5hQXxQj5Wk7z+FA3sBg
+X-Gm-Gg: AYBFou29/Y71kLantc3bGlf5WHKiKYgfV+1xGk6LP3f/RKf16Hl33ImMYQnhOf+OZ1H
+	l+4Idrw1ps65GN0QbHexOLoqQJaA6kdqjTBEcyIexqEHbEc1iEYki1cgg4rUoPkKqdhPDCOgZRF
+	xBzABR3blLztziWXTRT9hthn6RdYU8MWC8hYy046yHZ4QrucHJi8Rqj5lpuXn0vYXRBkTkbANiP
+	KnYV3axezinANGgufWhqxQhpCxdNnyvDvTyG2Tu8qCm3l+W7gXiVPz+BtOVS8/xFwuAv9p3c1yi
+	45yMZrwP3x2EhQoNP0ENzNZEAcp7PHD3nTT10tZKLcziaPOG21CUT6c0OvvqSFce0o6jzWdcfx6
+	iovAfxCg/wfqRbmySYa0tsJL5NVzvwmKpvUUvYrc9njsw0HDtkV4uVOBHS0xvc0FUmteosP/waX
+	Dz7XehgXzbF3xIW/9oSntBiUg7zqSB35K35Dra10RtHQiHUGSlsDDuYy+1HMVFE7H5ehhkFbgD4
+	UTtCL/pViiC402J36m9+KZrKdXshLGNTRwB76NPNNKDmJZNmuW/uOMSpOpyEUQXCr4rzkECZKk/
+	Hfjy3bV2gDTm5DgG/KDqWXjIi5QiKsYdxqJ6QWBdtBD29cYjsG1psiB04pf/rGdvDXGQwOb1uHH
+	6X0ed5Y7Y9UCWXXlB53iQSpxWrs3uRCcA
+X-Received: by 2002:a17:90b:4f87:b0:3ac:af8d:c839 with SMTP id 98e67ed59e1d1-3ae897f6e6dmr3575891a91.35.1793431741819;
+        Sat, 31 Oct 2026 00:29:01 -0700 (PDT)
+Received: from [10.208.43.86] (n106-71-19-159.sun21.vic.optusnet.com.au. [106.71.19.159])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3ae6e98afe3sm11008530a91.12.2026.10.31.00.28.54
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 31 Oct 2026 00:29:01 -0700 (PDT)
+From: Aveline Noir <jm5905938@gmail.com>
+To: Jason Gunthorpe <jgg@ziepe.ca>, Andrew Morton <akpm@linux-foundation.org>
+Cc: Francois Dugast <francois.dugast@intel.com>,
+ Christoph Hellwig <hch@lst.de>, Leon Romanovsky <leon@kernel.org>,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Date: Sat, 31 Oct 2026 18:10:22 +1100
+Message-ID: <179343062238.2.2773026701442863377@gmail.com>
+Subject: [PATCH] mm/hmm: honor write requests for owned device-private pages
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-References: <20261026084035.535989-1-hui.zhu@linux.dev> <CAMgjq7AJSU9jUBTHGcm05mtGBH4EMQ_ua9YNwuLOGVzhkdLKkA@mail.gmail.com>
- <CAGsJ_4zPZg6pCuhDtTpSkueS2EDSfWeYa23h7kC9hEU0iGB-+w@mail.gmail.com> <CAMgjq7DvmrwTu0vz7oHx7y7w1B9uA0AbS3YJ5CcrDVg9VwKqpw@mail.gmail.com>
-In-Reply-To: <CAMgjq7DvmrwTu0vz7oHx7y7w1B9uA0AbS3YJ5CcrDVg9VwKqpw@mail.gmail.com>
-From: Kairui Song <ryncsn@gmail.com>
-Date: Sat, 31 Oct 2026 15:26:50 +0800
-X-Gm-Features: AclHuK9LzX3HeYvpy2ZEmMy_v4dhENNFHAe1DOS4WkMeFjZGEVQnRuR5VhkzfvY
-Message-ID: <CAMgjq7A6jJQ_Ncp0BCqjQJ8pJXrjr1PoOu0rdj0NJOivKp6e+A@mail.gmail.com>
-Subject: Re: [PATCH v2] mm/mglru: fix a no-op lru_gen_clear_refs() call in lru_lazyfree()
-To: Barry Song <baohua@kernel.org>
-Cc: Hui Zhu <hui.zhu@linux.dev>, Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Yu Zhao <yuzhao@google.com>, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, Hui Zhu <zhuhui@kylinos.cn>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 1A0CFC0003
+X-Stat-Signature: ioqr3zhxfhwqmhubtgz8tcqu617bhunb
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 226FE1C0005
-X-Stat-Signature: s7h4oc1aq684ueagkdh9w4633e7xtaxc
-X-Rspamd-Server: rspam01
 X-Spam-Status: No, score=-12.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
 	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
 	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
 	autolearn_force=no version=4.0.1
-X-HE-Tag: 1793431647-756287
-X-HE-Meta: U2FsdGVkX1//MIE7sH86Q681zlEIF7WBbEjdaHR5uLdv4BhvOcGDNovYQcZMHKya+2C00ROr/MInkw87eS3dol2NY6Jr7aW9uexDrzSe9hy4bq1WhFomag6/NE6Cds66FwyYyHQhFPRDGGJcrQ4DoRXqXbas52QmtvFNU9RNEtH5z4lrDWHMitxcvoVmlm1wOKQ25P3EZDIISG2QPhTjSAHWfOCrYSy4aIA6R7N8AxNWwvlPKNTAX2dxO2MUC4+HGoisTKZEyy7PyJQ/Y/yf9ND/RJfdEX3R/p/sJKsSsdUfWyx3GzVHO7I/nX/0BF4FHI36447NrCc1kIb5GIpntr8QKtEsY2oXHYCN2n/SnjVSZ43huTvJbxLZafBMMhZXqBdgmLY5uYqFi8Nx+BEsqKV0Hr8Z6YsAN7lwGoop3G8vKoJgDAxzJYIg7cr5r5rOG4XW8eCAlVIb2IC1KRtBk0yqbw6/eIvo1TWkrbFsuCgobk7AQB6a+D++rUq09W6m019y30hU1dPUzV6U19C8NmIALUKxgnoslEgJZJAB8HdkEYyKokAWa+cN5rfuiJRG9O3Fw9nlUqQ2C5DjwfJB10Bo02keLNSQ4Y0rdhuwopK2cPwYJoykplivaNHrL4QGPREFjjAdx/+pTfF+pfkO32Kz54ir6F2OtklP0wR/GWVra3iOmCqL5eqbQLIv/DkIkEOfLUgLApMWvs0eHFMMu8CcixTOncigpVW4I+3ZB/5+a8iqzKgbNYS764GfMwQ+V6u40vUf3fjt/slYqzfzjS6SMNK0lY7EPBStrobMouXZ0/eVSXhOJ0OZkZHSneVwBailvWUOjfxCp6qD30OhSuipeg8DxuH+isiIGmnAQpGLV7huVEOpU/Ohr9j50YQHnWEtoO8i8KyuEe0BYHfzxrPUsHpWphy6N4ynrZW5rQKQE1SQXhc6/90c7ppzYM6GDD6O4ry8lrgkJ70fTkj
- ebdkwCix
- IGYoWbn8w4Y5jW7LAKkTdG7RV4fB7yWXUQ68FZsggSqlSZ1IUnIHdnbZDAp18T4SERbAA8A20EH6r7PxL9p20oofn/BHoMd7KZXX+FU6neZSkerpOfFaEw0eCSLM/yO3JNOYIDMG5hmmXE81bI0aMs70dNziCUMccVbqQ60rueL020ysiRuFDELd0gSNKfLJ3bBYl5aBWwCP9Lvm+fwYaSOKIgE3eTfGlM6syz54stwaeOd5ZqmbFHQAFl0ndphfBwrFT+2YMxaZ8Ut85spUAdCO8KG/RJcWI02E6IecCsg2HV+QqPzw9UlU7Jgw9NA3CuOn37IfTjqvCRZTFZbTOm73XLmJZfpwnrGNI9o0TKwI90qA+e5VqWJFgIF1UVNydFUxmV1ANASrYQi95xv1/lOtTs+3Fyd8EowZZWPueIpWwiC3sMT7+kYSguDnalk9tNrkQzE4fME40NlXryvOFZnDjeAnAZCnxHDz42jKIqay4LF0nE3LCdQ1COQ==
+X-HE-Tag: 1793431742-981940
+X-HE-Meta: U2FsdGVkX1/Z8Z+WibkxwVkSpSNZt+A1WAgSW/hxfUyJXIpe/jmxPqHHx8v2+AyQxH2yxLwprsOr86mV5a8z7TO4/aIvREAIh3F9IoeAmnBBQ9W2vgIRIl4DcBYdKY2i+p3jbngzL2ZtMesPkcHoJ2ZPQBMrhllpRKD+dOQE1a2aiIb/EAZSCAcNZOTnR3vatJVF2HNjTa+fH+2kjngztW4EhkvtPYsU/rTjbt1cHkZd0URKNadN9Y5zwBxgy5d7WQpB1IPYOkbPfatPulLcGssbnLeB0sS4C+aMslCZNJotyyf/P74VW7sSVaDWxxs5GkeHl+NDEp/PJ6DyN6SPrFtSSeYK47PPRYpSDWvw8sR2QIbURTWZtA5H6ucs2XXNWk4luKWGoPuB+D0XSmH3IFS/B7KHCruNIUAoEKsYEA25CLPtlOViRR/GtHFpKaXC9mkDr2gEubG/nJtCb2o1tL5/tNnB8xS8nvHBRgCb2CDn7fwUS1VcMe1J4ivCxm1fnn3YJWyo/xLOz0AwzIFMu2YRl1+zvbDPFeg9moucfZjdjH710Agjxapp9gXQl7NhXzyV5OKImFfhh1zsYnKMgWKErPlQPZwESc6a9UnUF+q5UdtxU736mM4p3ERAfdSKfoAiWRAM5KWUuyg0d8DknR4ukMFgkv2UnkVWr6QEs2dA7+ptUU6Dw3xJKtjl5jW4/bcNtiDD9h7Bt+JPSkUxauOzjd9MtocI/bJq7IIx5erNZXIX6HWxPBztyG7iOP3GxeyDOCc7ZS0Q5wAz+Zd+hPsQAU5yrasGSOgBRuFa6UZw3oRZFoSzyKQqCOSW4trwEtbTEh18ArGhUqbphY1n58vjHBH9lrW++3bw/Pt4xekr7/2DPwLvuwJdDY/bwHiZodaWm++H8Ffm3JHUynTR0tgkwdLMt/f3pa9r38BuBTonjPD0l4qTWn0fHClSr8AmEz6HBESttdx9vsjT5ds
+ Gz92qoAI
+ vgTYlw9xw5/l5TsRyNv6Zwip2pBwQ9imzfU2YUrkue4OD00gAY4ytxsLzsXswEQ0PHNTbsybBXRDtsiKz7X+kiQbI3edcH7DSnuRVKQbFnxW0o/EEsNvH1aHYZcp2RCktWcFixa7+FWTP0j9s8ESkYJK3fRdFIDECYbK+b8ztcNzI482Xi4+l8v3RddOk7Tgm/cyYbLHPo8Y29hbQjwygp26e1gYTE1C3WxNe0b3+0Az+oI0fXV213u0QQNyf0DetaVnCxSYD7HLGlQbGgnJL3YL51yN/uO5OKfjCy05LfivEgL020aZUChQTDKqTB46vrawDEf+KI5f1piIhvFLJPotHYMvFPqRhU7x8LKCUMlx6X3yUx9FQOguTyOdQ7+Kn+AvZYmZMHuQx52U2D99zGAqjao3tftt4TZ3CvIFPpPU4LpXPo1RE4UEpmPnx36T38ISp/J0jHbWjTo8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -148,109 +123,77 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Sat, Oct 31, 2026 at 3:25=E2=80=AFPM Kairui Song <ryncsn@gmail.com> wrot=
-e:
->
-> On Sat, Oct 31, 2026 at 10:42=E2=80=AFAM Barry Song <baohua@kernel.org> w=
-rote:
-> >
-> > On Tue, Oct 27, 2026 at 7:40=E2=80=AFPM Kairui Song <ryncsn@gmail.com> =
-wrote:
-> > >
-> > > On Mon, Oct 26, 2026 at 4:41=E2=80=AFPM Hui Zhu <hui.zhu@linux.dev> w=
-rote:
-> > > >
-> > > > From: Hui Zhu <zhuhui@kylinos.cn>
-> > > >
-> > > > lru_lazyfree() calls lru_gen_clear_refs() after lruvec_del_folio(),=
- but
-> > > > lru_gen_del_folio() has already cleared LRU_GEN_MASK, so folio_lru_=
-gen()
-> > > > returns -1 and lru_gen_clear_refs() exits at its "gen < 0" check wi=
-thout
-> > > > clearing the refs or PG_workingset.
-> > > >
-> > > > A MADV_FREE folio therefore keeps the state it had before madvise(2=
-),
-> > > > even though madvise_free_pte_range() has already cleared the access=
-ed and
-> > > > dirty bits of its PTEs.  lru_gen_folio_seq() places it one generati=
-on
-> > > > younger, and PG_workingset puts it in the last tier, so sort_folio(=
-)
-> > > > promotes and protects it instead of evicting it and charges it to
-> > > > lrugen->protected[], which read_ctrl_pos() uses to balance anon aga=
-inst
-> > > > file reclaim.  __folio_inc_gen() clears the refs but not PG_working=
-set,
-> > > > so this repeats every time the folio reaches the oldest generation.=
-  If
-> > > > the folio is redirtied first, ttu_anon_lazyfree_folio() keeps it an=
-d
-> > > > lru_gen_eviction() packs the stale state into the shadow entry, so =
-a
-> > > > later refault is promoted to the youngest generation.
-> > > >
-> > > > Call lru_gen_clear_refs() while the folio is still on the generatio=
-n
-> > > > list, as deactivate_file_folio() and folio_deactivate() already do.=
-  Its
-> > > > return value only says whether the folio is in the oldest generatio=
-n,
-> > > > which lru_lazyfree() does not need because it re-adds the folio bel=
-ow.
-> > > > Keep folio_clear_referenced() unconditional: the classic LRU needs =
-it,
-> > > > and it also covers the folios that lru_gen_clear_refs() skips.
-> > > >
-> > > > Fixes: cc8ec7be78ff ("mm/mglru: optimize deactivation")
-> > > > Suggested-by: Barry Song <baohua@kernel.org>
-> > > > Signed-off-by: Hui Zhu <zhuhui@kylinos.cn>
-> > > > ---
-> > > > Changelog:
-> > > > v2:
-> > > > Call lru_gen_clear_refs() before lruvec_del_folio() instead of
-> > > > open-coding the flag clears; drop the lru_gen_enabled() branch and
-> > > > the comment (Barry Song).
-> > > >
-> > > >  mm/folio.c | 6 ++----
-> > > >  1 file changed, 2 insertions(+), 4 deletions(-)
-> > > >
-> > > > diff --git a/mm/folio.c b/mm/folio.c
-> > > > index 35e242b48870..ea3adb6a89d7 100644
-> > > > --- a/mm/folio.c
-> > > > +++ b/mm/folio.c
-> > > > @@ -597,12 +597,10 @@ static void lru_lazyfree(struct lruvec *lruve=
-c, struct folio *folio)
-> > > >             folio_test_swapcache(folio) || folio_test_unevictable(f=
-olio))
-> > > >                 return;
-> > > >
-> > > > +       lru_gen_clear_refs(folio);
-> > > >         lruvec_del_folio(lruvec, folio);
-> > > >         folio_clear_active(folio);
-> > > > -       if (lru_gen_enabled())
-> > > > -               lru_gen_clear_refs(folio);
-> > > > -       else
-> > > > -               folio_clear_referenced(folio);
-> > > > +       folio_clear_referenced(folio);
-> > >
-> > > Why can't we just call folio_set_lru_refs(.., 0), and should we clear
-> > > PG_workingset? Keeping it helps PSI on refualt / redirty tracking (no=
-t
-> > > sure if meaningful but CLRU does this), clearing it makes eviction
-> > > better, but the eviction issue is MGLRU-only, CLRU keeps it.
-> >
-> > I recall that in v1 [1], Hui mentioned:
-> >
-> > "Use folio_clear_referenced() rather than
-> > folio_set_lru_refs(), which is not defined without
-> > CONFIG_LRU_GEN."
-> >
->
-> Or prehaps we can have a folio_clear_lru_refs() do in a unified way
-> for For both CLRU / MGLRU? (Just like folio_migrate_lru_refs).
+The owner-matching device-private PTE and PMD paths return read-only
+pages even when HMM_PFN_REQ_WRITE is requested. For example, after fork,
+a write request can succeed without resolving COW or returning
+HMM_PFN_WRITE. The test_hmm consumer then returns -EFAULT.
 
-And it will be better if we can keep this operation off-list just like
-right now :), some later works could benefit from it.
+Check read-only entries for write faults before returning their PFNs.
+Keep the fast path for writable entries and skip the PMD request scan
+when no write request is possible.
+
+Fixes: 10b9feee2d0d ("mm/hmm: populate PFNs from PMD swap entry")
+Signed-off-by: Aveline Noir <jm5905938@gmail.com>
+---
+Found during code review and synthetic HMM testing.
+
+Tested PTE and PMD write requests, COW and read-only VMAs with QEMU
+test_hmm on x86-64. A separate test probe covered request flags. All
+executed tests passed. Testing on a real GPU would be appreciated.
+---
+ mm/hmm.c | 22 ++++++++++++++++++----
+ 1 file changed, 18 insertions(+), 4 deletions(-)
+
+diff --git a/mm/hmm.c b/mm/hmm.c
+index 2f1e98c6b644..92957541ba95 100644
+--- a/mm/hmm.c
++++ b/mm/hmm.c
+@@ -268,15 +268,22 @@ static int hmm_vma_handle_pte(struct mm_walk *walk, unsigned long addr,
+ 		const softleaf_t entry = softleaf_from_pte(pte);
+ 
+ 		/*
+-		 * Don't fault in device private pages owned by the caller,
+-		 * just report the PFN.
++		 * Don't fault in device private pages owned by the caller unless
++		 * a write fault is required.
+ 		 */
+ 		if (softleaf_is_device_private(entry) &&
+ 		    page_pgmap(softleaf_to_page(entry))->owner ==
+ 		    range->dev_private_owner) {
+ 			cpu_flags = HMM_PFN_VALID;
+-			if (softleaf_is_device_private_write(entry))
++			if (softleaf_is_device_private_write(entry)) {
+ 				cpu_flags |= HMM_PFN_WRITE;
++			} else {
++				required_fault =
++					hmm_pte_need_fault(hmm_vma_walk, pfn_req_flags,
++							   cpu_flags);
++				if (required_fault)
++					goto fault;
++			}
+ 			new_pfn_flags = softleaf_to_pfn(entry) | cpu_flags;
+ 			goto out;
+ 		}
+@@ -358,8 +365,15 @@ static int hmm_vma_handle_absent_pmd(struct mm_walk *walk, unsigned long start,
+ 		unsigned long pfn = softleaf_to_pfn(entry);
+ 		unsigned long i;
+ 
+-		if (softleaf_is_device_private_write(entry))
++		if (softleaf_is_device_private_write(entry)) {
+ 			cpu_flags |= HMM_PFN_WRITE;
++		} else if ((range->default_flags | range->pfn_flags_mask) &
++			   HMM_PFN_REQ_WRITE) {
++			required_fault = hmm_range_need_fault(hmm_vma_walk,
++							      hmm_pfns, npages, cpu_flags);
++			if (required_fault)
++				return hmm_record_fault(addr, end, required_fault, walk);
++		}
+ 
+ 		/*
+ 		 * Fully populate the PFN list though subsequent PFNs could be
+
+base-commit: d89e1d186ec9271bf78e62771779e9fc03bf0fc3
+-- 
+2.56.0
+
 
