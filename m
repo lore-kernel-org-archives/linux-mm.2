@@ -1,155 +1,122 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D36D4606A31C
-	for <linux-mm@archiver.kernel.org>; Sat, 31 Oct 2026 05:59:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9FA5606A31A
+	for <linux-mm@archiver.kernel.org>; Sat, 31 Oct 2026 07:05:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=WvaC4FsD
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=OhxvzF3C
 Received: by kanga.kvack.org (Postfix)
-	id 3CFA26B05B4; Sat, 31 Oct 2026 01:59:09 -0400 (EDT)
+	id A67516B00EF; Sat, 31 Oct 2026 03:05:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 380126B05B5; Sat, 31 Oct 2026 01:59:09 -0400 (EDT)
+	id A170D6B05B1; Sat, 31 Oct 2026 03:05:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1FDCC6B05B6; Sat, 31 Oct 2026 01:59:09 -0400 (EDT)
+	id 905C96B05B2; Sat, 31 Oct 2026 03:05:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id EEB366B05B4
-	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 01:59:08 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 4F8F31208C9
-	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 05:59:08 +0000 (UTC)
-X-FDA: 85381868376.10.F2971DB
-Received: from mta1.migadu.com (out-27.mta1.migadu.com [95.215.58.27])
-	by imf09.hostedemail.com (Postfix) with ESMTP id DE980140002
-	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 05:59:05 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=WvaC4FsD;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf09.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.27 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 6BDC86B00EF
+	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 03:05:27 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 175CD16089C
+	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 07:05:27 +0000 (UTC)
+X-FDA: 85382035494.24.9B457BD
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 5A704180004
+	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 07:05:25 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=OhxvzF3C;
+	spf=pass (imf16.hostedemail.com: domain of thnkslprpt@gmail.com designates 209.85.128.47 as permitted sender) smtp.mailfrom=thnkslprpt@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793430325;
+	b=TEBb13WkFSx56qYr2MJbSwXZTU3TxIbYlC5y0hSxB+aJgxfulg4ERB9EpdOnrWFCcP64vI
+	QblQrTv3KvQeeF5+w/W2le3p0m+5P/HP/kJtLd1PMQq2lh2m8ECGtbU4jnXSeOXnDzX03o
+	wTD8NFqiT00+2cQFzJIbd6hwm6gK/ms=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=OhxvzF3C;
+	spf=pass (imf16.hostedemail.com: domain of thnkslprpt@gmail.com designates 209.85.128.47 as permitted sender) smtp.mailfrom=thnkslprpt@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793426346;
+	s=arc-20220608; t=1793430325;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wHHnuTTmSOXbH6E8lHg0GEvp+GQz96PM/IlXLU1wjgs=;
-	b=Dj+Zg6k/2EoP7SOHFHOFO+ydY11lRANngHlsHQzJNS9IlvIANjsHuYQwjFia/aQ2YL2jfH
-	KPvF8idvw6HJaluB2sERAYsJoMm3Rs02nY20UTNSWOJlWAHzB/mU/rUDH0lXZ1N5IrU4f+
-	FyvpzTkqjzO5Y5DCk2vf6Mv9i/bbwJs=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=WvaC4FsD;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf09.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.27 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793426346;
-	b=EiqzsnY2zmUQr1C/uTGBmCi12yZYegxzvGlBLrFL3d8d1McZg5i5RlRY99EkrlW7/gSCy5
-	i2QZRuUrcWugLza7h0XTfsA51hZ5xEcPr5SxsaeFwgV1zWlg3L8DZThBxbr3792MJEmHFb
-	mla/lvgMsRsyarZhVX3c7DVerJUVYv8=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=r3xzYw939vN9vzH8UsK6AomPfxJthDwVeWo/3xRQ2Fo=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1793426343; v=1; x=1794031143;
- b=WvaC4FsDcAHQ2NQ2JuiHYy56AQRK9rpDlaBUPZSd+xgQihu0+x11PWIm4iqwRFyZyy1U2XAd
- No3BIBUDoNW7w/V5YVqDdoRSxK0L8ZNvB0OPSou2EJq8Y5jatu2VQdepv+5F4j7PiwSI/BjV5Zc
- 4e5m+WqcgzPmPI8SJmGlTm5c=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 14fc0ff97d323868;
-	Sat, 31 Oct 2026 05:59:02 +0000
-X-Mizu-Trace-ID: 14fc0ff97d323868
-X-Migadu-Flow: FLOW_OUT
-From: Lance Yang <lance.yang@linux.dev>
-To: muchun.song@linux.dev,
-	david@kernel.org,
-	kasong@tencent.com,
-	ridong.chen@linux.dev,
-	baohua@kernel.org,
-	sj@kernel.org
-Cc: hannes@cmpxchg.org,
-	mhocko@kernel.org,
-	qi.zheng@linux.dev,
-	shakeel.butt@linux.dev,
-	ljs@kernel.org,
-	axelrasmussen@google.com,
-	yuanchu@google.com,
-	weixugc@google.com,
-	baoquan.he@linux.dev,
-	baolin.wang@linux.alibaba.com,
-	liam@infradead.org,
-	vbabka@kernel.org,
-	rppt@kernel.org,
-	surenb@google.com,
-	mhocko@suse.com,
-	kees@kernel.org,
-	peterz@infradead.org,
-	jannh@google.com,
-	pfalcato@suse.de,
-	hughd@google.com,
-	pasha.tatashin@soleen.com,
-	pratyush@kernel.org,
-	willy@infradead.org,
-	jack@suse.cz,
-	ziy@nvidia.com,
-	lance.yang@linux.dev,
-	riel@surriel.com,
-	harry@kernel.org,
-	apopple@nvidia.com,
-	nico.pache@linux.dev,
-	ryan.roberts@arm.com,
-	dev.jain@arm.com,
-	usama.arif@linux.dev,
-	kas@kernel.org,
-	matthew.brost@intel.com,
-	jhubbard@nvidia.com,
-	peterx@redhat.com,
-	will@kernel.org,
-	aneesh.kumar@kernel.org,
-	npiggin@gmail.com,
-	osalvador@suse.de,
-	minchan@kernel.org,
-	xu.xin@linux.dev,
-	chengming.zhou@linux.dev,
-	chrisl@kernel.org,
-	shikemeng@huaweicloud.com,
-	nphamcs@gmail.com,
-	youngjun.park@lge.com,
-	gourry@gourry.net,
-	joshua.hahnjy@gmail.com,
-	rakie.kim@sk.com,
-	ying.huang@linux.alibaba.com,
-	jgg@ziepe.ca,
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=Iufanw/5KFAPDTTrdzVdPmEyBabAy2noz2vvQUjeASc=;
+	b=Eo+TwOMdcEEkbgnqcTxUiDXWfv9EAjStPsdqKYWh8O1fqYZxNBI/xYf6KPjgfOxPIeBxS6
+	55Ma0+bdKBve3VlhEFhmgQqibXAMpUbzvGUZJs3WZXsOYY6Wtd+DeVltLGtD6UmyMbZ4Q1
+	hHTSfsdAUCh7ueIfwtlEW7lFRz+jCyA=
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-4a35ac4475dso9675595e9.2
+        for <linux-mm@kvack.org>; Sat, 31 Oct 2026 00:05:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1793430324; x=1794035124; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=Iufanw/5KFAPDTTrdzVdPmEyBabAy2noz2vvQUjeASc=;
+        b=OhxvzF3C6YlmAfTnwdXrHkeB+fjxS8g1GprqIUvhTCryZgTcECpAog2B5YFslk5JNA
+         M/dKptN3GOcjoCUQpJc8MUT6PRtwUo2EIsX7nUE8y33iKqpR3VpmYZHdyhZB5ejtMlPT
+         h6WEoV8aifO7hAOL6yiMRwAqZI430vxWvSF10KwdQjWKbd2OOKmus/oAxyNWMe+ztX8O
+         vyRo/yNAD3pr1MtbITTLd3N1JnOvcqSKazAsb4qGUNH2Li5QOo3jcuj4A6EL0JtUZG0P
+         idATRFCYGouunpqVeWmSdWq9W49nvgJcy2sC5OSG2224sDZ/7nnDQwoVj33SQwfpUoTz
+         /nag==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793430324; x=1794035124;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=Iufanw/5KFAPDTTrdzVdPmEyBabAy2noz2vvQUjeASc=;
+        b=veS6v7b2/zMJ+K3/aBz2Gun3/nW4WvnZHKNPFV+nmHfeuDwHjzeWH2KqhguB+ittc3
+         ehLrjVzyjd8nQq4o7CREZ4GggrVgqylaVd6mV72J4gKF2GekYL45CKNIQ7mWAF9FfFaH
+         gNEGk2M3GZkkcO04t30LmaS6VjJZHkwxYUj7m83P/zgoMzphqiRzU3v7I2J9q+6kijJh
+         t5A/xFEKcl21ywM/t7W4lXJL40aihWKZslqBRD/45KrEydRxkyAeJfbvOQ6jaLz7tgT1
+         sHtsMwqReJucq1ZoBeCgD4V+sbc5PGaCzD5VNNDxca+FTqnmqYqisPEWdxhsQ2q3yEb+
+         oXvw==
+X-Forwarded-Encrypted: i=1; AKwUvByfGhqFgwu97BuIrrb5Adyyq9MxFdHsiZhpesmUf8pt2BnEboiy7KvHkLIIEkbrThrmvxLp0I6+hg==@kvack.org
+X-Gm-Message-State: AFq9FYINPDI5jQmq4k7xUiAJjdKNkhXi7EfM4cjJLrfD0oE1De0sBHSm
+	aD9JGYRvf+KyefrIAEw+rTU1OmhCnQqE+3Jv2BJtCl63iSsGeRDvBTUv
+X-Gm-Gg: AYBFou22bb3xKf4j3IJ8wHq7V1xf78Z5N9CJk3/IIeDhLT5iI3oD6AlL7K1iIwBMw7s
+	AoQk7TsDDQNbY2VdVKullLJeosbdkOEdYfun/m1WI50n8XuxN2r1jn2R/gfBc3X6PamGgXKHZiv
+	O4/beo5WT7WemJF2Axw4fwg4EYUkZ2c4xp223OmeyzMXXfRH/zDqulngvTm64pEr3QD5If989Ck
+	RVP5O2IO8r/1m7f5xLwbooraufjarTtKuNA7zYJ4tZrPtqBxbgpiVkS9VGvwW85t3OCYr0vY6/l
+	fG6V6sS/XXYDHDopPfuTlPZSm3s7uyX/k21kTMNwjMwzmtUOKIDQb6h36Vzb+RKSSeoHFWZbuIy
+	yGziCX4RgbNdFyndKCiKUgwEs4evc2fQqYh8qwogWUJ585c9kHnxSEFrQgzVGINBo53p7YYG2hd
+	QcfdfMArKpCJhlqaxzS/DSuDnDC4CVMQVxpaJBcYWfPlec7HqO//wNmMT9yJGNwica0s7f83j8u
+	uMLq+5QEyxJuSt3VpglMdBbApdHQzLgBMs6eyG7pgLdq/wbchGDsJ56k3q+clYfof4T4wXz5z9v
+	XM+XhxBNtFggJ0/ClgXOk4jOY8MCjQyZ6xz8flkz8uNe
+X-Received: by 2002:a05:600c:8b0a:b0:4a2:e0c:2b0a with SMTP id 5b1f17b1804b1-4ac1709a200mr101686865e9.16.1793430323735;
+        Sat, 31 Oct 2026 00:05:23 -0700 (PDT)
+Received: from localhost.localdomain ([2a06:c701:4773:6f00:c8d4:ec29:293e:f39])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4ac09cc3e9asm46827155e9.3.2026.10.31.00.05.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 31 Oct 2026 00:05:23 -0700 (PDT)
+From: Avi Weiss <thnkslprpt@gmail.com>
+To: Matthew Wilcox <willy@infradead.org>,
+	Jan Kara <jack@suse.cz>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Joanne Koong <joannelkoong@gmail.com>,
 	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	kexec@lists.infradead.org,
 	linux-fsdevel@vger.kernel.org,
-	linux-arch@vger.kernel.org,
-	linux-cxl@vger.kernel.org,
-	josef@toxicpanda.com,
-	stable@vger.kernel.org,
-	usama.anjum@arm.com
-Subject: Re: [PATCH v2 01/47] mm/mglru: don't use stack pointers when walking PUD and PMD tables
-Date: Sat, 31 Oct 2026 13:58:38 +0800
-Message-ID: <20261031055838.60138-1-lance.yang@linux.dev>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <6FACF8FF-F943-45C8-BDFD-3AFB5C060E0A@linux.dev>
-References: <6FACF8FF-F943-45C8-BDFD-3AFB5C060E0A@linux.dev>
+	linux-kernel@vger.kernel.org,
+	Avi Weiss <thnkslprpt@gmail.com>
+Subject: [PATCH] mm/page-writeback: avoid unnecessary strictlimit background wakeups
+Date: Sat, 31 Oct 2026 09:05:15 +0200
+Message-ID: <20261031070515.3042848-2-thnkslprpt@gmail.com>
+X-Mailer: git-send-email 2.43.0
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: DE980140002
-X-Stat-Signature: 9iy1zmdopafc1n7yigxoxwmage3pgsct
-X-Rspamd-Server: rspam06
-X-Spam-Status: No, score=-8.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
-	autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-HE-Tag: 1793426345-881563
-X-HE-Meta: U2FsdGVkX19mn0hvFluzl8Cue9T1ebfAVA0jEt9gcl72z/swPUbFcv0PGXYPvhQE5DegPp/g83LlW7Vo2KUhK9/CHrK+vp4OUegWl+OTkkpJKDU+pe3RoPwVfbAxgXtr/hCYaui6/yTfMMroIv4MRI23/nwtUEvYF5SszfBZQlW1/P5vW8RicMURSywYz2uIvE/8h6bZee+RxD/GJ0T0htkyxfyTuIxK6UMV1cWPuQcIxXMdD7FlsNnpiCHEABOqHsVpoc+HmcmOHPvj3jSY3o9JL7WEIMjZz+NW1sGdR7eCNX87OxuW4a54Mg7xxlXtGT6UaZj47WirCJkmlSX4DUK0OInp2qNK1Hl/16CIlHFuFa+Sb+WvCsG5UeBlof56wXdJ6F5xGbvv3FEEM2QIM0hUKoNQOjVpl8bCQd6Bl+Ldi0UuSJLsczqUvvlVf6IH1cEOfF3dR7rD0ODbszqssp1VbSgsYtOudcXcrrXU/LDEc9odQQHP2jjVz6FcBIx12SCFdNoQV8DmGxIuaiEkJxClJANEnMbi/1lR5R6SK69jwNVJCss9buU6Ic7Eg8kULkneLVOG6TIfvLy+ofZtCLVUT1Lt2h+ICg4uznJQjesjLr9Cnty9aPFcxV44MP8U5Iv3Nds2NFnJH1dFcV2zRKfIuQFVcEgNLkWuW8a25/QZ1XWa1bq/c1ltrpxAnf5BYy1FsH0Px1G3tt+8/ZD7+XGOQ4kqALyHJknyb1IZ123O+sUai/p+Gve7sKVjm3UVBUtd2SP0rEhAIV9rH4nXLMrCMDkT6yCH/eNTWF38RIkiq6U+G9y9nyAvTL/9/UTEXiYh/bWxui3Au0QUxOk+LshQvehM9ZJBgPWwa6/w5k/H88BJS8f8fbW3DRWFiiVEDl0QPw67Jed40E/XDBtn2RHJv7GhsEWwXIs/tlcCUdUR7LK1hRwD5huN662JRFOyrctl6ykbFbpTrV7Z7SR
- HXGfJ7/G
- TVEclGwd5fECBNNzw2G9UZNzKvZ/GWSZ1ItY6b75aYkx/bPdz31n6A9BgFYsiEke4G9o5586Gak3JcPnr4t0ceGGro+ABjJZA793EwNlMJeMrc51yHreyx/bb/rIWwrA5N5QGj3F361v+g9Fr3nignDISRzsynfLSe5hK5WiNewe26MQ1qoCGOk82V1tHTViwBNzkbgqlBf+K8d9/XfGVA4KlVLhzai7Ipje10WiIpROcy6IfRwYgnhf1IQAGPsUaxmCi0Meupqke85A++swt/cN177r0F52NrnWrQ2JhJv7xu45hP9nMXFBQADIYphoT1NxHzk+KTfOggQSwEXA+IM0VFhbhX3UthOEJzp5d30un+v46vAjD4Kzi9HRZTy5z6FosORbOf/3teT8=
+X-Rspamd-Queue-Id: 5A704180004
+X-Stat-Signature: cqqqxhkdcts3pmx9rci17kq3refb1oi9
+X-Rspamd-Server: rspam01
+X-Spam-Status: No, score=-14.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	FROM_LOCAL_NOVOWEL,HEADER_FROM_DIFFERENT_DOMAINS,HK_RANDOM_FROM,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1793430325-843137
+X-HE-Meta: U2FsdGVkX19yXrL4rDPwRrUX1AwkxtO4cLKVojDUMCJekeWdOayx9+/8LE9RpLCnD36eDEfn0swCcO1+BmvP2YwfGfx/KOxTxNkVUPQ4qu78EtfJXuPICF3dpesl9B6gi4ezRSukR6cIkfgP3Pst6zxy3pAmObKz1JRXW+RbS18UHOmmAZQtjMCiX4ZnwgO1FFwTIIReaqiKM3l+AjVPXOMzptlUnb9Yqgq8sucLp315Vw/N321qHoiSlvO0qYbggMxiIklwNRsnH5jWF5v1tCRDe7WQ6my4R8pcb9rAMDW0HoS7CaMxi4Hvq2gQkLRLQoyxp4xn6sDsspPiDrE6RAmu3d3uW4VtJiQa95PSKZwPl5wB0Z8oXSIBxABHlg/CsaAnjw3lXRhNbJnyNDHaaLokmK3F3tGVAyv3LtUJuy88mKB7lIcoVV1G6KG8BCrlxK1atJ2J0nTIIoz36h+IIq74R8SRd9l1Uh36hJYs6+VnH4cmqHCPAINBraP07OUK1hVBd8wVC4ZQj3ZBwchXuK6HEKTGAEASDGy2fitqkMp3NBK3TMaexBarL6ytnVt7PiPwRb12Eag4aRtj9LaAiZmaEx82zE/08H+BhBi1iDzz3A1zyVuXOGYyT9XFOXIbmRB7+5TN82VJyb4HfZ8MiER7q8zTfTTZic69fQiesRrSBZafyO3bOKj5E49RIp1Vy+tsozV1hpLMO9HfqcxbkPotdT7YfA49CQK192YXitgVzDfd9KRoz+3clh9M6DhT9U/27arIQwX9kbjKUBFZDfhMHqg9d9ZiqAUwMjnQqYQW8fnSDvaadAVXB/PlGexu2/1YiJlNKvFynE0Kp1ObzJPUOddJdKYGtfHrJd604HBfNrLaDYNgolK3oi9Im1Zf5wVSwdDxjnCa1FvK65PLB59T9+zEO9InoCVhx/WiRFD1EPQKrAfQsimzgeCGRbq2Qw3DJuqaINjLzFayLmQ
+ GHMtGm5e
+ gefe5vBrrNc7KQNyFdEKZUn2MeDWjknBBthOt02JTaSI68zJQxo5azOL+IzQ3Ril6fL1Phtdeg2EfAy7Zm1Rkr3ynP56aohOpqenQhwFWtWC4sf9vjXoDwdmo9Dd9pI381C/PNNoO8lSmCdnmbU/xLMpiwPU9vSEaOLWQXhybmQrUczTfFZMz5dhb2z7305vPJaRQL3peVa65YyCD8HhW+KJxBXviS00dmOm4BN6ee/DDkhMOw9zE8T+WC41jYby5iwFel37spioIei/9tQNcOLFcuVCZHk/8OCA8U+Xwo7l+jP2sHYFkr/FdmOcxGMIcyjfW/Pr52i5hBiQZfOpG0hF++fECH54xxnckykVM5GGxEmZazCjmLxB2D5JccRGDbrICPRsSc8IzItnKCuaNMOAsgGshN1M1wOHr6O5qtZIRy5U7kepTwXd2v2sBbeYWNkxP
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -158,60 +125,44 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
+balance_dirty_pages() includes pages under writeback in
+gdtc->wb_dirty when checking the per-wb background threshold for
+strictlimit BDIs. However, wb_over_bg_thresh() only considers
+reclaimable dirty pages when deciding whether to start more
+background writeback.
 
-On Sat, Oct 31, 2026 at 09:46:37AM +0800, Muchun Song wrote:
->
->
->> On Oct 31, 2026, at 09:41, Ridong Chen <ridong.chen@linux.dev> wrote:
->> 
->> 
->> 
->> On 10/30/2026 6:21 PM, David Hildenbrand (Arm) wrote:
->>> On 10/30/26 01:20, SJ Park wrote:
->>>> 'get_maintainer.pl --nogit --nogit-fallback' suggests adding below recipients.
->>>> But I can show there are already quite a number of recipients, so I'm just
->>>> noting here.
->>>> 
->>>> - Brian Geffon <bgeffon@google.com>
->>>> - Oleksandr Natalenko <oleksandr@natalenko.name>
->>>> - Steven Barrett <steven@liquorix.net>
->>>> - Yu Zhao <yuzhao@google.com>
->>> The CC list was so long that I limited it to people that area either a reviewer
->>> or a maintainer of code.
->>> MGLRU not having any real maintainer is a big problem; because that maintainer
->>> would know whom to CC.
->> Agreed. FWIW, I think Barry Song and Kairui Song would be good candidates
->> for the maintainer role.
->
->+1
->
->It would be great if they could take this over.
+This can repeatedly wake the background worker even when there are
+too few dirty pages to write. In a 15-second FUSE writeback test,
+background wakeup requests dropped from 2657 to 682 (74% drop),
+while writeback_start events remained nearly unchanged at 99 and 98.
 
-+1 from me too ;)
+Check wb_over_bg_thresh() before starting background writeback through
+the strictlimit condition. Leave the global background threshold
+check and the wakeup required for dirty throttling unchanged.
 
-They both have been really active on MGLRU and doing great work for quite
-a while. No doubt they'll continue to do so :D
+Fixes: 0437906841d0 ("mm: start background writeback based on per-wb threshold for strictlimit BDIs")
+Signed-off-by: Avi Weiss <thnkslprpt@gmail.com>
+---
+ mm/page-writeback.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-Cheers, Lance
+diff --git a/mm/page-writeback.c b/mm/page-writeback.c
+index 499a35473e4f..cb0c58715b93 100644
+--- a/mm/page-writeback.c
++++ b/mm/page-writeback.c
+@@ -1826,7 +1826,8 @@ static int balance_dirty_pages(struct bdi_writeback *wb,
+ 
+ 		if (!writeback_in_progress(wb) &&
+ 		    (nr_dirty > gdtc->bg_thresh ||
+-		     (strictlimit && gdtc->wb_dirty > gdtc->wb_bg_thresh)))
++		     (strictlimit && gdtc->wb_dirty > gdtc->wb_bg_thresh &&
++		      wb_over_bg_thresh(wb))))
+ 			wb_start_background_writeback(wb);
+ 
+ 		/*
 
->Thanks,
->Muchun
->
->> 
->> Both of them have been contributing to MGLRU consistently and
->> substantially. Barry is currently working on improving aging and fixing
->> the swappiness-related issues, and Kairui is driving the MGLRU-FG
->> optimization work.
->> 
->> They have also been active in reviewing MGLRU patches, and their review
->> comments are usually to the point and helpful. They have been looking
->> after this code well, so I think they would be a good fit as
->> maintainers.
->> 
->> -- 
->> Best regards
->> Ridong
->> 
->
->
+base-commit: 36aad21d50d1af3f6954bb0c988257a908202477
+-- 
+2.43.0
+
 
