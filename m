@@ -1,129 +1,136 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D98AB606A31E
-	for <linux-mm@archiver.kernel.org>; Sat, 31 Oct 2026 19:28:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5443606A320
+	for <linux-mm@archiver.kernel.org>; Sat, 31 Oct 2026 19:30:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=ze3iW0q7
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=E/9pEJTV
 Received: by kanga.kvack.org (Postfix)
-	id C11C56B00EF; Sat, 31 Oct 2026 15:28:00 -0400 (EDT)
+	id 3B11C6B05B1; Sat, 31 Oct 2026 15:30:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BC1686B05B1; Sat, 31 Oct 2026 15:28:00 -0400 (EDT)
+	id 362046B05B2; Sat, 31 Oct 2026 15:30:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AB1206B05B2; Sat, 31 Oct 2026 15:28:00 -0400 (EDT)
+	id 252346B05B3; Sat, 31 Oct 2026 15:30:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 819A36B00EF
-	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 15:28:00 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id A169714099A
-	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 19:27:59 +0000 (UTC)
-X-FDA: 85383906678.22.7013C1E
-Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
-	by imf15.hostedemail.com (Postfix) with ESMTP id CD434A0002
-	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 19:27:57 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=ze3iW0q7;
-	spf=pass (imf15.hostedemail.com: domain of azpijr@gmail.com designates 209.85.221.51 as permitted sender) smtp.mailfrom=azpijr@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793474877;
-	b=8qSLyr0blRu4A/m/V51sfX4+moXYF0Loui99QMFe4Rfn/COPvTzPOuajwxU7GdBq18DLwz
-	C9+wbVO/d4nr/yb8OCQdGCasdoDf3njSi8qQrP3Dq1Mid1b7Ad0MIAAsTHTB91Mp+5Uf2T
-	BcyGBf/8D4aLejY7/k8el67jZr8rvC0=
+	by kanga.kvack.org (Postfix) with ESMTP id F33C36B05B1
+	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 15:30:45 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 75DCFA87A1
+	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 19:30:45 +0000 (UTC)
+X-FDA: 85383913650.17.C3EDFAA
+Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 9D53C4000A
+	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 19:30:43 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b="E/9pEJTV";
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf04.hostedemail.com: domain of skhawaja@google.com designates 209.85.214.177 as permitted sender) smtp.mailfrom=skhawaja@google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793474877;
+	s=arc-20220608; t=1793475043;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=c/gnKk2+sniHQkIT+FGrUUN0y7Ag+lC5S9EVpOY7Ua4=;
-	b=CUlkU+bG1YjqK9Jm0RskpNwtXI55gNhKjCwYwMz4z0CJXhopX0Fhw9tX8TdyEXxWGqKakX
-	7CwQ41B7mwARHYe2KTzgy4ycaHkjnB/kjeDjwMUuTpGvMk/a1u2UQhjCSt5xdPoVY3OXsJ
-	Wh7bcviU/cJ+T8mttsqfjoB7yECrW7c=
+	bh=+8QGpnyPZ7DhkQpiphg595uJGsoBZBg/wk/3XMNmDqI=;
+	b=1Jlyi4jDb2FZz0zonqstPZUNI1PJ0XF3yhfzHZZ+TsOi9Q25jUIfiKoD6Ih+f5UE3TIpyK
+	7hm+px+RLtvLBCQoRnA1A3nUc9O+GQZjrF6zNoskIRZQdAyw0AFjJT1o2dLXKGgAe+9gep
+	KmVGUe4ClUFW/AmStt8d03FbfasjCYk=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=ze3iW0q7;
-	spf=pass (imf15.hostedemail.com: domain of azpijr@gmail.com designates 209.85.221.51 as permitted sender) smtp.mailfrom=azpijr@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-48af4d4e61fso992076f8f.2
-        for <linux-mm@kvack.org>; Sat, 31 Oct 2026 12:27:57 -0700 (PDT)
+	imf04.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b="E/9pEJTV";
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf04.hostedemail.com: domain of skhawaja@google.com designates 209.85.214.177 as permitted sender) smtp.mailfrom=skhawaja@google.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793475043;
+	b=fLqQXxMyoq5HJ+Z7k4dmCePmSyZd9/RXFi6RDhFdT3rznCPs9+p/cMAcaL7m9G8su55yCa
+	KA6wanffuYvaKqe94QPGvrG74YirLflXM7LTVqeI/1nqF/tfECj3UKuK1PhmEIu9ahPyhD
+	Eka7tSgUWYwF59lYxz2EH/jTTWP2pqA=
+Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-2e9f6a16afcso31745ad.1
+        for <linux-mm@kvack.org>; Sat, 31 Oct 2026 12:30:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793474876; x=1794079676; darn=kvack.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=c/gnKk2+sniHQkIT+FGrUUN0y7Ag+lC5S9EVpOY7Ua4=;
-        b=ze3iW0q7KCR9jL/Q2+fpo25e8oyE6FZGHUeULpxoUebo5rhRTdi5VFkQACPpD3bBNl
-         heX7WfuRAnjRWXNxUH62r5+QwNxNd99MaWfzZJi6nvPRZG0mnVYHBmLoq/IUyMHGD8Wn
-         Jm0LITyveAzNaatYod6AlX4scHQOwrsqRbMCUIxNpcWYCRbVXHZr+aZEgbck/J7imnbe
-         9kmCj6JivhjeEx91IC1aOsxQ7yQdr9135e51CVQo4c1d9L8MODCtanF73iQMLO/tpV3/
-         97sb/XV/oMP1dFa5aCX/x860F1QMRkqNUtL1mVQcYaysB5Axhi8vuQdCuyi/WxCiRseg
-         FL9A==
+        d=google.com; s=20260707; t=1793475042; x=1794079842; darn=kvack.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=+8QGpnyPZ7DhkQpiphg595uJGsoBZBg/wk/3XMNmDqI=;
+        b=E/9pEJTVAGpOHtP802Mr9kHshtuLfVQA7fK0b7A1dEuhYeF2xcb60oJTWZQQqJCsvp
+         PAZ/vN4iUK3brCyd5sVGYRy77a/4+Q4bK7KU1kjhbubb8kFR1+/hmJEfHdI6JLYMU+tW
+         SFKhS8bnJBBbC7GHIwPkyQCgiWnDjFfw24VeuU4j8Z61S8EAaTTtN90R8+FW75GYvjTE
+         mxVD8/biYzGSNauW0Xi77tOR5cNWwt4R2FTVVLE5FlvJxCukkir+TxVWkxTLKOFU5dTa
+         dB+kAx8bqOx1UT2YgjyvxjAA7DgDTS4O/HhIyImplEIEBLGHuee8E06BXGJR2tRXSCE+
+         fl+w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793474876; x=1794079676;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=c/gnKk2+sniHQkIT+FGrUUN0y7Ag+lC5S9EVpOY7Ua4=;
-        b=wRKOhaRbM/D3GYQ0ruiY+hHjIyqzWwNp2S0zpykthE2xhZUjbb9rwrl9wOE1NqmW6X
-         MFVo5w8oWDWMNo+aPoefwAIcGWqE/ElDciCJhAQgmVYncenGjYnmUIYtQqwkafwB7If9
-         wdZfxS8lFieBIHPSV86g2qMp4nO9xc3/acF7uVrlVSP+tDUBcWEbJCjfgVGchA7okLCf
-         I2aDl5i+IKfN9drgdYApAgpHwqTG+WkzhgfaUt/WCAN7Od1J4tkPfgek23tPv1eEYrLi
-         MeuHl8EqXcfSSxfdjCzlsqHDr0hfDqsuMrd6b4k09voZZqII64EsehWo+xNB91HtyZmS
-         zzMg==
-X-Forwarded-Encrypted: i=1; AKwUvByziNwLZ6HoFfo3nwCSIU934NniyZl/PHuop8SQuXu5lrExyIkQRJw0GVvosDiuYzXQkXENg48SOw==@kvack.org
-X-Gm-Message-State: AFq9FYKUSqkDHbXJanst2nL8Cj3r2XFsNfOYH9ju3Xgbi6mvVXbL/RDn
-	niVgo4+nYGQ0QnuSjXAUfO39K81rdRbki71XNJI4NC+j+r0UrugJpiEW
-X-Gm-Gg: AYBFou2TeSZMn3jducSsh6MaZiZR0KEXWAUskVnMnu7NTNK0RkmdL0m6y8uEnRbym8y
-	n3gdUNqJ11YTgNatfxJDf0y5DDgJaZjpm6vNIVuQvlVT+kATkKdQ8pOG9J/8f+E26oZxDP5DC9y
-	u+wyKTCyli4pH2cddfG5kF0njSfUgexptkkZpQznVjdvXddGSUc9Oj6ojI5U/+R9Yr18OyWeQG+
-	NjgiLQ283aZk2EZXGqdrghcTxy/Q6QeeauDg0zbB2pjsfufO6r/LKpfMjN9dY34QUR3K7wLqhoY
-	ZMRqbr8+LiOQObXTgRcYecE0eXsXtSJlFB2ML+yL0DOtexm3l8Cc5td7/KmPGO3OyrnXA8MtxBo
-	S71wAHQNqs2QpkRpNnwcDf/R58GSEiNQCscX8zxLchu7J/ULE3fnhpe+Pxl2JF7QqbaRIkLZKbc
-	blzrTh2dPVNCbwSZZ5bchxmnBjrETPKs0H9CUdAf9MUKWTdwXzwj1mtg3W47qt1i/UvNa5OLR58
-	ddwkKEzPmTzOn2Wq5CEidiabojEOeJC+xMRC3GjsG8rzts4IoXYHYT1zjEZXPzhl6HBIefCrBH/
-	0lgkKCCf8YbKHPNyb70HELysgA==
-X-Received: by 2002:a05:6000:26c8:b0:48b:677:f80d with SMTP id ffacd0b85a97d-48e6e2ff7demr12569827f8f.26.1793474876057;
-        Sat, 31 Oct 2026 12:27:56 -0700 (PDT)
-Received: from [192.168.1.22] ([83.231.69.9])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e71a4d3e9sm11383388f8f.6.2026.10.31.12.27.53
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 31 Oct 2026 12:27:54 -0700 (PDT)
-Message-ID: <6f7c7b4b-6bc7-4bc5-bfec-86ef9263d7a2@gmail.com>
-Date: Sat, 31 Oct 2026 20:27:52 +0100
+        d=1e100.net; s=20260707; t=1793475042; x=1794079842;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=+8QGpnyPZ7DhkQpiphg595uJGsoBZBg/wk/3XMNmDqI=;
+        b=ZNaacvDx86yUv/kJTAk814rB2y5SVxhfHAJY//VV3NIrV1z53AwWWE8BlUDkOQO4Sc
+         clhfdArUtrn/EgEvg3aKxfr5RbZlyInsB9aPkI+/ww7z8w2PW73cpUdYOpC1+909vHK7
+         7OQDCgmRh7L3DF7PflMpyFsuYbNki1IGg0mPPBJXzXB2m7RBZkhf9TUrlZPRhaiJeCIT
+         oQxbKTTnumIIVjAaEUY+7tcRdz0M76hAxxRwQiUmO5aH63WMKKdzAt3wrQ+KI81jP1Qv
+         M4kUzobFzjYjAELcwJPXr0xUUgouyTc504/DmuFVi+4mtpj6yJ6MPvk9pvGMMub9gXXv
+         NPlQ==
+X-Forwarded-Encrypted: i=1; AKwUvBzf2gG+jAJkpyjyNMcQVMjqM0UdArXdvCrqiuttbDXZJbx05EQRArDiX/kqb3dItwdQ05y+AHmusA==@kvack.org
+X-Gm-Message-State: AFq9FYK5aiBWrrp0ShW1Hbr8CtEZmlXOfacsdpp3XEHWNWR2en+5nhKx
+	xXVJK7VrhIWaZR8jKSvwSjXzaCqQ5ug9x9ZvUiqVkX0Pwawxj6uj8N+2vu2h1CDVsA==
+X-Gm-Gg: AYBFou25w1TuREZYjHJKYlmn+6w/KScm62AG2hFtCYOoPW2xpKgovnEX1I0IoHXYEUt
+	aGSoxztX4CpxiCO1JhTpbK1R2vXoRDuIiRUHfn0DMfRoUHOQpUUBdFQQ30/aqZnkv+TEUG2hvwd
+	cAQH63H47qgT3VEoDu6qSmlsciEQeRqONzA3eu3caBOGH+eQWKBRmet+EhfwAMNIuIQSX5OAyEl
+	PIM2Epi5OHKqfNEIV4ua+Bn4jOtIbA6DRi2wmH3FnD0vb4OFHvnhDbegHAXxufl8b4v2hhuiCDi
+	YNkJRrEv8UyTa43ho35Vf8nqAzaz8hBDP2nrr5FC7npVIdPwfH9xwcDC5F+SOt+UanSyfAAjAEQ
+	C6RguL9XlbLvxCmqJvAYyflWgujuCvlmYxwrHBNMy1t9boMRLq4GKsBFHwQsMo6P8MV6OUu6OT3
+	85lMSDaqTMAe2NC2Z2qysUrf91+9BNeKoTdAYjVEe9daV+Vxrdcii4qJi7IzRWV/nQB5BAcAs3D
+	92Ns+qMA8ne0QPMPZ+okOkbDWWPuibqHixKgbuVBFsLe/Xn4w6kWNiLApjFuHjjjaAGWZ1tRMPX
+	+jrGDawFTemYsa+PlokLo5YD3rkbQjWmiumdd+myXnXmOIbzKdNN41FnZIz6Ikw1widhi8Yh14V
+	OWEz3/IbD+cA/gE4ZrcYbRw==
+X-Received: by 2002:a17:903:3904:b0:2e2:d665:6ad8 with SMTP id d9443c01a7336-2eb1b81b9e8mr16615795ad.4.1793475041906;
+        Sat, 31 Oct 2026 12:30:41 -0700 (PDT)
+Received: from google.com (25.75.145.34.bc.googleusercontent.com. [34.145.75.25])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3ae6e9b1506sm12552004a91.15.2026.10.31.12.30.38
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 31 Oct 2026 12:30:39 -0700 (PDT)
+Date: Sat, 31 Oct 2026 19:30:36 +0000
+From: Samiullah Khawaja <skhawaja@google.com>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Andy Lutomirski <luto@amacapital.net>, Jason Gunthorpe <jgg@ziepe.ca>, 
+	Andrew Morton <akpm@linux-foundation.org>, Hugh Dickins <hughd@google.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Muchun Song <muchun.song@linux.dev>, 
+	Oscar Salvador <osalvador@suse.de>, Jeff Layton <jlayton@kernel.org>, Chuck Lever <cel@kernel.org>, 
+	Alexander Aring <alex.aring@gmail.com>, Shuah Khan <shuah@kernel.org>, Gerd Hoffmann <kraxel@redhat.com>, 
+	Vivek Kasireddy <vivek.kasireddy@intel.com>, Jeff Xu <jeffxu@google.com>, David Matlack <dmatlack@google.com>, 
+	Pasha Tatashin <tatashin@google.com>, linux-mm@kvack.org, linux-api@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 0/2] mm/memfd: add F_SEAL_PUNCH_HOLE
+Message-ID: <auZAViCjlzN3gd6g@google.com>
+References: <20261026220546.3114241-1-skhawaja@google.com>
+ <d4891333-43ea-4d74-9fb9-6ad8dac1a446@kernel.org>
+ <20261030121113.GB3889730@ziepe.ca>
+ <2c7aa5c1-3af3-4654-b244-1257d05c9d45@kernel.org>
+ <auTR9SnDLsLVmnJ7@google.com>
+ <CALCETrV5eqg6d9=+BQhCpRwBNe3aCQiut8vxPBs8b7PToqjaHg@mail.gmail.com>
+ <auVRLPmbWYvMnly-@google.com>
+ <bb50fcfa-9d71-4905-a76a-ab7bc149d62b@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6/6] mm/mremap: split first so a failed split is reported
-To: Josef Bacik <josef@toxicpanda.com>,
- Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <liam@infradead.org>, David Hildenbrand <david@kernel.org>
-Cc: Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>,
- Pedro Falcato <pfalcato@suse.de>, Muchun Song <muchun.song@linux.dev>,
- Oscar Salvador <osalvador@suse.de>, linux-mm@kvack.org
-References: <20261030-b4-mremap-pre-split-v1-0-c1829811aed0@toxicpanda.com>
- <20261030-b4-mremap-pre-split-v1-6-c1829811aed0@toxicpanda.com>
-Content-Language: en-US
-From: "Jose A. Perez de Azpillaga" <azpijr@gmail.com>
-In-Reply-To: <20261030-b4-mremap-pre-split-v1-6-c1829811aed0@toxicpanda.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: yu31mre89fjym6o4prndcbe41ej3gc3c
-X-Rspamd-Queue-Id: CD434A0002
-X-Rspam-User:
-X-Rspamd-Server: rspam12
-X-Spam-Status: No, score=-4.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=no autolearn_force=no
-	version=4.0.1
-X-HE-Tag: 1793474877-27056
-X-HE-Meta: U2FsdGVkX18aduED6ovDGAPMISugBCBtBqPGdkt57O54fzDLaRjqFEBXd6Tc2KDvTSLNjz9sqY87ZwKzTAgsHKW/hIz3/r2nDgYDlL9hxjXfL2KQx2KK3FPQopNnhR7QYDZauGNYS/bs6LGLqHg208LuaUwcfZpXroTu5TrqL5TmuB8rc8CKMbks5ub2h5NIfCTH3cnZYrFsWecyFApgmIDZty0Xp9WBj395E4gRVaSACYqlRXsn5gy/2Jp9nWBCc2LXcBpduOYcp+XUh3A3aNwVSq/kGZxmmMtDdlB4BQXCTGkhk+adOwL1+DsIMcDLWlVo5azHtt4N+3o37bmg7UrBVSezOnqEeae3JKrcP7/+rtalwb8Co/krrXKlaQCb57f5iJVbpAPjLNNtryAZeJ3UT7obK+uCnpTRkzPVhuCoHapvPDvtZ2uDsNa8QyKw9LVR+nOsb+9gswbwyfQ9tKUuIRucKfzuFjm90X/ZyRZvY6HsfY2p1w6pfQ/b+i6zjPVFxWrUsafBVRclqqVIKapz3gbECrPm9AjFhqbBOTLPOgPDNf5tVqPLruhkk/cU2QvMkXW/tBPqubKexML70DO/IWCODPGO+V4r6WnxRNJOaE+W047h+v2+3r/5u7wVjFyWMN6wYPfbcEg+N2gQRTQ3bUmlMNMpgy3+Im5TMNmHBcmHWS1rDr+o78fl8lmC7ZwG11j9IxcAEKdZD0x6SBCCFjTfm/3RSlHpyjuVhSV+rEAPdVYbfPI12z9IuVcKKiD4mYylpPB7v7IZGmsf3oTB1c4JGwia5iYOmgLlM5doTE9J63vfsoSrIkM3p5ZXIWd2y5SNS8+X/f80W7WmyAU+cfLX+141jkEHag/aJGa+0YJfFEsR0V0rZDJSzy5m10TEPlIVtqJqsiYhGNx1BZfbjhyxzdq9Bo0vFmadAafHFzZwwvzXg0GOjwiQrL3HNdL+ZSH4eVHh7TWPeyZ
- 11NLd6TQ
- BHUplSXUc9jMd9eGNwxZmUDBoMGczVpm+UJD2fOlbwT3EfjBIMekznRYICdEq7tW8VvjC9/R/Akl0h8o0YAx9y9Fyh51owiccWAsJwI1f9zWRwQjwq9lM2Cw0ph6+E2WHf0VDbIlzonn2ZYIpQDWL4feT2Xuc5OUx7byNW7tDwLFQObg6tbcqX3Xjynm7QY8JHfZBAGe0DS/fsEicCVxi0H9iduYqJ5Q7fvQa/zZ/hBsivUt2GnRoi+bNU6G+x6lX3bh+cW0uJ4Y1tam0tM2UBxMGJy6whpwUn06YINwN1Rkj3iFp9Ec8XABTHNwfJn8xPtro/JBQOae9Mwcq0qIZL15LozLQ7Gn9RFz5/84nJBaLrlEzTd1O1yIk795Q/HDxvDG1KYPLwMjK1ov0fbG7heQVH4NIVwqB1+AVBO/a2iTNbfirofl4zTP2UrfJIHwHhco0vPQCeGQCO+TEKVCHhm/EDC499COMJM2FKWVVPzO8x9E=
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <bb50fcfa-9d71-4905-a76a-ab7bc149d62b@kernel.org>
+X-Rspamd-Queue-Id: 9D53C4000A
+X-Stat-Signature: f1syyz4769pnaobwjdjw4kitf8qnmcuk
+X-Spam-Status: No, score=-13.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_IN_DEF_DKIM_WL
+	autolearn=no autolearn_force=no version=4.0.1
+X-Rspam-User: 
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1793475043-612734
+X-HE-Meta: U2FsdGVkX18LH9ru14X9F3UkkyzMgZa84mqIDmSDQajPc0fG1DcpQcnRCQp2IoRw/54rLW8/2CJeUFLuFTGClMIF/JZg8ZUU+h/SLHr3ULsREunax6Z5eZGu1t9QliKLi/SdqisqLLR3h6Ha17dupd92nBp4DtsIYWKMeLQLeb3SWZe8cd0AtDZuAiyD7hOoDWc/TNMAihIJL3dwEyy91srAvrUolRYY2TZPW+lI8qy1NP8USHyEYAVz9EuhrGM15p2XMCvJQlcTdBEx06VTw0pSCMufRjbzkQKesE8jZUJLSHaz3+LFlfuyQKTvR8QkjIg8lQK8rYwLMOanOefOZFrO7x7ufJb6I0IibxUSuwoBzt/FCtyY71EYeJqTl6z0Wk/5gu7b/MVPlEWZ1bstqHBIhONKJnFxoRRS2QlP0uJqFEsE4GyZE4Eg/3TvMLXlOVIPu8HVEL1yq2MYcK3BzgPpJRh3KXxWfv/2XpRjfdFCgsF+qd6XW5DkEKX4NHnfUtVo52uiRI2/kMwMk/hSOOSUHn9i51LA7w84wEUmHlPoOGmbJwMkRVz4cuGTmQ/yn0uwlPpb4r+3hZZM8lbnkuPHgQYyMvWQtq1hM5lKCfALjAAxTBCY/4+wJAPeODT74Kk8ixSWfTlT7Sz8wsYm58nWwEfcW/KFi2AV7okKCJybbGQ4G0MM4rZZ9SetZhbBKaElwyYSVyr3SpI51+XXMzXV7KzTVTXmtiPih7L9Up25whVkOaSWxjNhExajzx8mmpmdaIcmFtcRtQEgA6MCh9zhVdvveWajitKOdK1EPB7HSJRToxJfr3YeQdllnmS1mY8YZy7/slnJo1PgL8uhYMMi9J3iN4S5cScW3kECnY1z3tVFwJNHYMv2HDINfIHVTt4gXXKeGjXqWG5k/d6K2DvrNVWYH0iVjAepzN8cZereEPFfM+I1ejWY3dm7TEdWpUOlp0Eo6p5A3Og1mN6
+ 8DlqTyso
+ XYoXl7f1HHj7SThGVUImNPoVhx4vkUaJBkLQ9seMQC4egvQGPmhm4XDDwmMkDl9uqE5XmMlkjR5VCkw8tW1QNKlYdtUN30xt0yBwpeitcAe0m/0+MVW0tamQ0hI8OshKpJ78DzXexhrxhYR4BN8hf3t/fNMHbOcCx/AwliaA9RB0p1PlyK8a1nEk8sDiu6KowhEYsP/6HMxLPSvDvjPVUmaGQPtRgVOwGCfqiyOGe+jE2V+axlNZ9QTuobJM6UI0FdeXq3NLen1zrLtAm+ICq7JQA+9IIbxAv4S1055vQ5ysKlRN2Q9Qy8Z2ZzYZrbptVCi0AH7piWBTETZWbjnaH/jnXErm6kBI6h7f1fAiwtKTNH9EBiW5n9DfawrwhTezN7ZO/JFoAmJacNv44MFKiAu0N0QqvkCSJCf+/nF1A8OtEGmiFn0QD8sykQHvtSFN3tuK3NBiHaq/jzbhq8awfRk6cv+E6pr+d6EssnBzO/91K150mbpcfLosp4w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -132,31 +139,108 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 10/30/26 3:42 PM, Josef Bacik wrote:
-> mremap() can return the new address although the old range is still mapped,
-> which leaves the caller with a VMA it does not know about.
-> 
-> To move a part of a VMA, that part has to be split off, and this is left to
-> the unmap at the end of the move. If the split fails there, the page tables
-> have moved already and there is nothing to go back to. unmap_source_vma()
-> returns void, so move_vma() reports success.
-> 
-> This was reproduced with fault injection, by failing each allocation of
-> such an mremap() in turn. Anonymous and shmem mappings hit it at 2 to 7 of
-> 7 to 13 allocations, with numbers that differ from boot to boot, and no
-> longer hit it with this patch.
-> 
-> Fix by splitting the source VMA in prep_move_vma() whenever it is going to
-> be unmapped, so that a failed split is reported before anything has moved.
-> An old size of 0 unmaps nothing and does not split. If a later step fails,
-> the VMA stays split, as it does after a munmap() that fails half way. The
-> unmap at the end can still fail in its allocations, or if copy_vma() has
-> merged the range and it has to be split again.
-that later step isn't always an allocation failure though. a partial
-mremap() of an aio ring still fails -EINVAL, but now leaves the ring
-split in three. is that intended?
+On Sat, Oct 31, 2026 at 10:32:32AM +0100, David Hildenbrand (Arm) wrote:
+>On 10/31/26 04:03, Samiullah Khawaja wrote:
+>> On Fri, Oct 30, 2026 at 03:43:53PM -0700, Andy Lutomirski wrote:
+>>> On Fri, Oct 30, 2026 at 10:40 AM Samiullah Khawaja <skhawaja@google.com> wrote:
+>>>>
+>>>> >On 10/30/26 13:11, Jason Gunthorpe wrote:
+>>>> >> On Fri, Oct 30, 2026 at 11:20:30AM +0100, David Hildenbrand (Arm) wrote:
+>>>> >>>
+>>>> >>> We have the exact same situation when userspace maps anonymous folios
+>>>> into vfio
+>>>> >>> and then desides to MADV_DONTNEED the pages. Or any other memory backend
+>>>> that is
+>>>> >>> used for such purposes.
+>>>> >>>
+>>>> >>> User space must not zap/punch things that might be pinned elsewhere.
+>>>> >>>
+>>>> >>> That's not specific to memfd, udmabuf, iommufd or anything else.
+>>>> >>>
+>>>> >>> I don't see a reason to make userspace (that should not shoot itself into
+>>>> the
+>>>> >>> foot) a kernel feature it must activate itself to not shoot itself into
+>>>> the foot.
+>>>>
+>>>> Agreed, for normal use this is userspace's problem. The seal was meant
+>>>> for the kernel to cheaply verify at preserve time that nothing was
+>>>> punched.
+>>>>
+>>>> >>
+>>>> >> The issue is live update doesn't preserve those background punched
+>>>> >> folios and now we have created an UAF attack on the kernel across
+>>>> >> kexec if you don't do something about it.
+>>>> >>
+>>>> >> There was some notion here that with the right sealing flags we could
+>>>> >> tell if everything was 'live update compatible' and then know that
+>>>> >> these attacks are impossible.
+>>>> >Just remember that there was any hole punch and refuse to live update this
+>>>> instance.
+>>>> >
+>>>> >We could likely implement "we saw hole punch on a pinned folio" as well, but I
+>>>> >don't think that's required initially.
+>>>>
+>>>> If I understand correctly, you mean recording on the memfd that a hole
+>>>> punch happened, and refusing the live update if it did? That would work
+>>>> and is much cheaper than what we do today, where iommufd walks all the
+>>>> mapped pages at preserve time. For truncate, the existing F_SEAL_SHRINK
+>>>> is enough or I can record that also on the memfd. I will send patches
+>>>> for this.
+>>>
+>>> This entire situation continues to give me the willies.  After much
+>>> prodding and contemplating (in my own brain), I got a friendly LLM to
+>>> report:
+>>>
+>>> --- begin AI output ---
+>>>
+>>> IOMMU_IOAS_MAP_FILE uses memfd_pin_folios(). Collapse [MADV_COLLAPSE
+>>> or khugepaged] checks the old folio’s reference count, so a pin
+>>> acquired before that check makes collapse fail.
+>>>
+>>>  The problematic interleaving is:
+>>>
+>>>  1. collapse_file() locks and unmaps the old folio, then passes its
+>>> reference-count check (mm/khugepaged.c:2446).
+>>>  2. memfd_pin_folios() (mm/gup.c:3483) obtains the old folio from the
+>>> file’s XArray and pins it, without taking the folio lock.
+>>>  3. Collapse copies the contents and replaces the old cache entries
+>>> with the new huge folio. It does not repeat the reference check or
+>>> freeze the old count.
+>>>  4. IOAS retains the old physical pages; accesses through the file
+>>> use the new folio.
+>>>
+>>> --- end AI output ---
+>>>
+>>> Is this correct?  I haven't personally verified it.  But this whole
+>>
+>> Yes, I think this is correct. memfd_pin_folios() pins the folios
+>> directly without taking the folio lock. Other page cache lookups lock
+>> the folio and recheck folio->mapping, e.g. shmem_get_folio_gfp(). Only
+>> memfd_pin_folios() misses it.
+>>
+>> This scenario is different from punch hole or MADV_DONTNEED where the
+>> user decides to remove the pinned memory. Here the kernel is removing
+>> the pinned page without the user knowing. Collapse already checks the
+>> refcount to avoid this.
+>>
+>> The recent fix [1] by Chris already takes the folio lock for !uptodate
+>> folios. I think we can take the lock unconditionally and recheck
+>> folio->mapping, that should fix this. I can send a patch for this fix,
+>> if folks agree.
+>
+>I have another patch from Anthropic on my "rework schlop" queue that should fix
+>this:
+>
+>"mm/gup: pin memfd folios under the folio lock".
+>
+>
+>We'd do just what we do in other context now, which is checking under folio lock
+>whether the folio was truncated.
+>
+>Care to send a proper fix?
 
--- 
-cheers,
-jose a. p-a
+Sure, I will send a fix.
+
+Thanks,
+Sami
 
