@@ -1,75 +1,75 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 712F8606A324
-	for <linux-mm@archiver.kernel.org>; Sat, 31 Oct 2026 09:42:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA1A9606A31E
+	for <linux-mm@archiver.kernel.org>; Sat, 31 Oct 2026 09:42:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Z5e53RJF
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=SlvOoo7h
 Received: by kanga.kvack.org (Postfix)
-	id 80F2F6B05C3; Sat, 31 Oct 2026 05:42:38 -0400 (EDT)
+	id C08026B05C5; Sat, 31 Oct 2026 05:42:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7E73E6B05C4; Sat, 31 Oct 2026 05:42:38 -0400 (EDT)
+	id BDF006B05C6; Sat, 31 Oct 2026 05:42:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6FC7D6B05C5; Sat, 31 Oct 2026 05:42:38 -0400 (EDT)
+	id AF5656B05C7; Sat, 31 Oct 2026 05:42:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 3C7BE6B05C3
-	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 05:42:38 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id BC6C3405FF
-	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 09:42:37 +0000 (UTC)
-X-FDA: 85382431554.21.D866C2A
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 156D5180004
-	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 09:42:35 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Z5e53RJF;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 6F5406B05C5
+	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 05:42:54 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id DD3911C42D1
+	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 09:42:53 +0000 (UTC)
+X-FDA: 85382432226.11.F96C6DF
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 1D5F2100003
+	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 09:42:51 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SlvOoo7h;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793439756;
+	s=arc-20220608; t=1793439772;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=PCXji8t2YghBn8zNO97WnfB06mhFIwWKCiaxVt0zvRk=;
-	b=COYWa4/R0JrNWMJ84C4zGdkJLZVllYBX8LvskCyR2gV/+VjRV1gl4j8xh1V2/J9LQdnXMc
-	w8rmx1oftVL6XcBsaaWM+O7v8UznC5+VYbULtS9lN7zXAyyJUlTYx1IFG4kY8FN6r52M9b
-	bBHNXo9jIgGUrS7pCg+8aeYd3Jx58ys=
+	bh=l+l7vL6OppC3xXbuZ+6FYNU9AQPqNjHig+EtP/8oH5c=;
+	b=paeoGvGGJsjpL7Hxr76cKOtHPAN+v0fooIdwsGkVCUZpAB3fYBo1o+KRYTZwh1vTyr1XZv
+	JvOezrffo9Pe2Bu1rBQLbQoXgJ0IC7UV8RTJJIoResbwDMUNcdAhA9OoLZAVRGDWwgMv3z
+	mMH+oVb4AejJJlYQ7oZlCEgCw6o0FHQ=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Z5e53RJF;
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SlvOoo7h;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793439756;
-	b=CqwOWu/H31OchDrpCaOxyBGiHUDjH2xaVowT2HddfBi7kiOZTamMHUleRG6kI0RgCghwld
-	V83mh3vYpWWIMwJv4k5Ko1PH0/KWivZpnrJXoVsH5ltlnl1VcNnVeU1gKiQitnt+I1xqf9
-	tHCjqF90fkOSskQ0WyM5HWuai/HvMsY=
+	t=1793439772;
+	b=gnKNCd/EbkLEtIllhJ9JyQzN6QTOd9qA6sWT4eyCI3lzkJS9Ns1wqtkPoa4se2b/+D9Cj6
+	YqJ+lwlWYQCl2IfydCWocbkSeNCX7QP6GRdeaECVYqRlYYJ4iGbiMEC40wkhWLv6h/JZSj
+	DF8XRiu5Kwg/WPPHFub40mJL3OOY+AM=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 904B8600C8;
+	by sea.source.kernel.org (Postfix) with ESMTP id 5D62842A93;
+	Sat, 31 Oct 2026 09:42:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E61F31F00A1A;
 	Sat, 31 Oct 2026 09:42:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C6831F0093A;
-	Sat, 31 Oct 2026 09:42:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793439755;
-	bh=PCXji8t2YghBn8zNO97WnfB06mhFIwWKCiaxVt0zvRk=;
+	s=k20260515; t=1793439771;
+	bh=l+l7vL6OppC3xXbuZ+6FYNU9AQPqNjHig+EtP/8oH5c=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=Z5e53RJFYXZm94nrWWOWfz98i5n0k7Vq1mlTIUq5K8+xJc8k6dpaYYzSZsF4CgBGh
-	 v4KYqINsYG9kt2cDdfKy0eTyGyYpv6J5W5NiuEPWdzqHf88nGhb0V60FfXxzWiLdX3
-	 QmdhnZrltq4DP3/sy1XSUvGTC8FipG5eXCbz9AOB+hjr5+MIg4VzYpuGk4ssaJpufB
-	 TQO0s/RKG+JX4ALqjZDzvmreezhmYOe5sHjpVmP0tZoPQLouAFH7bKEQyTb3phuSOY
-	 jUGQIHVgorDoKoHm4liePBrx/LWneHktnw6p09RxrbfVYcoo6un0Z7fj/dn2+TFapn
-	 MVKDKVJ5kogzA==
+	b=SlvOoo7h2NrGSce+EZ0r/TEXEBd2b3M+W3a5ZrbTwYZjlGRtxW/0dAR4JP4GA+76w
+	 P+f7bAuUNu1Yv1g1H7D8kFS4QD5s2CZBGegKhPNpITqlN7Ip3qbNZ4cy/WVa1ZlmjD
+	 /D2MxgtNqIQyQIzKHKj7qIVDjMAvkJf4rRPteq1rzuV+/rMCJ7D7uysNhe47S8OYi0
+	 hM/g0ow18Z8BSkDidvpS/QUBtepf7GfsSShe5dLagt+hSjgLUsSJX9zgTlj9tPN+J/
+	 0X8jIEgDjVqkM1UbZ87/UjTXIQyGyjjTepCGPRDVpmowDIpCv4zaqmYY0OHgBX6iW2
+	 qTDUniZzh/0Ww==
 From: "David Hildenbrand (Arm)" <david@kernel.org>
-Date: Sat, 31 Oct 2026 10:39:38 +0100
-Subject: [PATCH v3 09/47] mm/rmap: handle device-exclusive entries in
- folio_referenced_one()
+Date: Sat, 31 Oct 2026 10:39:39 +0100
+Subject: [PATCH v3 10/47] mm/huge_memory: fix list corruption when
+ deferred_split_scan() races with deferred_split_folio()
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20261031-fixes_core-v3-9-d6437171ecc3@kernel.org>
+Content-Transfer-Encoding: 7bit
+Message-Id: <20261031-fixes_core-v3-10-d6437171ecc3@kernel.org>
 References: <20261031-fixes_core-v3-0-d6437171ecc3@kernel.org>
 In-Reply-To: <20261031-fixes_core-v3-0-d6437171ecc3@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>, 
@@ -108,30 +108,31 @@ Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
  kexec@lists.infradead.org, linux-fsdevel@vger.kernel.org, 
  linux-arch@vger.kernel.org, linux-cxl@vger.kernel.org, 
  stable@vger.kernel.org, Josef Bacik <josef@toxicpanda.com>, 
+ Mani Tofigh <mt4022@columbia.edu>, 
  Muhammad Usama Anjum <usama.anjum@arm.com>, 
  "David Hildenbrand (Arm)" <david@kernel.org>
 X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3393; i=david@kernel.org;
- h=from:subject:message-id; bh=glmREPecf3Soxf23A8cAtJsaeHFT2ex5UzHoQI9g+28=;
- b=owGbwMvMwCF2/OVpCdfQ3ZWMp9WSGLKebk8TXHrRW3j5ImPXqRM2+EWeLvBgOzKltzWl/Yf1J
- /Wu2evmdpSyMIhxMMiKKbIEBd83ePlyXW21Gx8zzBxWJpAhDFycAjARpheMDFNaAhtDhL1kNO1c
- dGdue3/ixn6rTU5ud9Ss+l5+3C7szsbwk7Fgs0P+Td/7KsFuhndbzDKmPefPbc5Li/3Itfb6dNY
- p3AA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3706; i=david@kernel.org;
+ h=from:subject:message-id; bh=JLLChxKIypxsdt4WbVQ02kyFhDQ6FU9NlTqVcswW/5U=;
+ b=owGbwMvMwCF2/OVpCdfQ3ZWMp9WSGLKebk8TMZnE9X4D4/OEzCXBE1Z9d/jC1rw4beqiza7Gr
+ ftD/0+x6ihlYRDjYJAVU2QJCr5v8PLlutpqNz5mmDmsTCBDGLg4BWAitXmMDDuD94idilyy2OlJ
+ +uw7ca5Hak9PM5FUNfP55rpY7WLg7Z0M/9NvzDOcl7v+Y92qeT0exhK3v3ycJN1/VN6Lyeh+8ln
+ l97wA
 X-Developer-Key: i=david@kernel.org; a=openpgp;
  fpr=1BD9CAAD735C4C3A460DFCCA4DDE10F700FF835A
-X-Rspamd-Queue-Id: 156D5180004
-X-Stat-Signature: wu6z3f5coscess7rpwhh1b1a6wq8fqif
-X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 1D5F2100003
+X-Stat-Signature: 6rubkw45h1x3oun7s93cbo6wnu69a965
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
 	version=4.0.1
 X-Rspam-User: 
-X-HE-Tag: 1793439755-610496
-X-HE-Meta: U2FsdGVkX183TBB8FkHefS9+FrXoD9I9oiJ92JArgeFO67iThz22aYjQDA42OZmFD9EHCkXct6wFX0yb8IvG439+9FC+IZ6uP/GBimbYAxJgVJHNMxZJ3OGtrCwDAG8AR9SSIk66cbDc0bd/+XLj3oQZtUws96y4MO+hpGSA7uLUotd9O4OXP2KKPRiAoHKLf7tGebsI1VfEIxOcvOxnhyqzN4NA15YAvdR0vL/rfBnDIQL9gAxzCch3ierrciXWpuRG+Cm5kpbRXmvcPpE2gx48JJrBUK3tRtBc5ZbFWb+yyOTmUvYBS+PGdmlxpHvHIen3QL/4bRo9i2Fq3q5jghcfs2bDLaPhh67oRk9GXyZJByDW3snE0t2hZBO9leCf95l0KPSVtw4D5hvRXwvR+NfrKC0nRwq1AD1dMGgITFxMSXRjaaCab8LIBkhSBtls1sOaoLyFbZV3vfl6LWejXmYGQbxVuY+YFAT+Z06ZYVkUR/Ziyd1923EDHXEUotD/dFuORUuOrrIzhQpMX541jjWIK8Bd4DIxXQMv716B3VD1e5oRSEkRdvlptxb75QsFj40zwjA8gFCsBDuIe39xgad5hCgr8wrwti1CFyzA+btl5MqK+t48lqEqWwG3FjyGvdRiM7fjQkDwc/IyQ814S4ZKVr/nnuBom5icgq1CdFtkLYmkQG9TX3f6I2heY55ydG7tEX1h8nTO7V6M8A0bIuWeYlDm1rpuIHfkvK9yIftlw7gWXXn4dQpz7u/4UL4+OzcdylXz/Z0ROrvf+Ja2iDG5IatRjI0yTB58sxITZ0/Ueqfr4xFlZyjqvn1q3OymKxVpH00m0BBkKz+CQ//mdzgsyZqFfRMkIkT49gBC1bdIGDitSOnzhbDNM4H4J3BpWumttxJPaz01p2MYal6Fom2DHljQY9K03VHPPq0QyJGuasZDpJQBJQ692osbIXKua0fGEtInud314IkqVtK
- +XehCMd8
- Sg/garaWq+z+hh3J06zCKGTmAjWxgX/N87wQbce1stcpbsC5QZsxC/NNpWZX5huFpZeLWmz3nwEVFx6DBxTMwQ8TH7OtInb5EITDrPCk552cpqYAbghOktRANggNROr5w2Dw7tD+YwOADJEmHoZ0Zzt+LUIPzLzvioA8SgovIpbn3mDgFwwuXC1W0mhLQeH+TgRKFzVPz/NrtQ5YojEt07hpbFz+IJDZ3iSFUkZaITfNmerLq6mxNBLljl0cRAYq+e32K1BXlEwW+YxL30Pvrw6lnwP7l26TLqGlDHqu6xDWORF+yz+sLo7pm7lO/jeibzPAy8iuDMjJGxbfsUABkdDYEr70quf4plZyCj2Qqr718Vd+xh6GU4xgqJYd48Y3snZlQlyJ3bDVZ8baMvimqPfL4rStFLuzhDuX7U5bbmbhJteZ3C7YHd2sth3oaL4o0GYBcpVXhkivIp/jv8gJL/yYazoOC+EbIxMa9K3oWsywkcqYg4CAit6Ce3hl7ibPetJhB
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1793439771-559849
+X-HE-Meta: U2FsdGVkX1/7c4mjTDRISQ4GC54VcqdmC0ScusSRNdRC9jiiHSIApL5lpLD4knS0CSgWoj7tlGCw4IEpc8r/TccfmUbFRhlpwxhsIJZ1P58RMfuBAuA7nm94TLdqsfFaoxm4NdXA18yq9JQ65GegMrko+Qv1xcbk+7Ys5WVfp2tswG425fo04AhOhGDoty/9oDoWc/ozgSIgMGKGYH1/ih/ikGojrZ8ycVlXtbWlUFw8yL3F/aS7qJT66dBXn1tyxEKz9CYppJSEH23XpH0zbgduwgAVwv4RUXkCcxGAtJeXYqFJPYSCrQKriMi5pRxPmhJp/pdEmdJBeDAcwGkZ6RcVaE6UmieFyGJfiGNIvPlcU8BB5ff4ccKJrmK/gMiexHvxgOm3v2BQe1Vw7CXVSVxvl3IhFtuw7xNlD4gfblZDcf2DQ4UEsHc2BQ71zBiAg6RC6kV7nDaL5WVDuCT2N3v5fE9BPPKrWKpICoqaQ6lObutweaqFBWTQPG5kxlbfdTf94vx9QEEpOoeceteHD1tTP4DLq5hhd8eje7dK4GXiTBQ/HcDnNbAWQaifWwABZTfcbflVxJETnGxUFeXf8V1B0RsQ/b5S4MIUBNgEJWhh5jb3AxnAw4MsIoWPvT1XBM8DdQUFQkhjma8E+KB4fnJ/HxwnQM2VRYtYZZ/w5zhnmfEJsLIzfWg258LsKxnAFv5mWUg0WxuY1Q/pYaAsG0CQNrduceODnEt4H8POg634X+AvSsA6l4lUH46eX29YdJ8pvSRDalKtsk2t9jyeZK5yiG7bAP+Zrl9a0CcVooPEbESTznUbNB0aU5+HWJ6Qemb1pr+iLtevKYzRthGzQ228Jz0b7OtVl0FqbVbWO6ObZ9ZkmygUeY5bVEzmK8Apk+XEFI8gmrhyXhZpPdFRybXn2+Ji8ti6QGunjm3bQKdyMEwolquVej5IXbhtkujgtOIdPAa8AWLP4+yTtY5
+ vkTkXwGX
+ EZ3/toLHlKBdMxTiLzTS5m1q6vpz1agP6FQ+tKlsCZZsNmZaLWBennk5EsNg+VsLjowaAbqNB8dHTiyQ3Eq8gH9/PBJs6ztdnIZs8NqX5o4TYY00n35bAzp/fwbt9XuHODEQWKb6mxbTxi0IeNizxOoeC0HwD98943ZCUj/VKjsLlTngf+lHWv06toI8GLWEkvux3BkR164l68eZeqBvNfTzhxK24EXUzpiDIentzxb1Uc5CTqoIrxdGG52nb4NpHK2o22J2+2LF00gmKE2BjAZ7Y1aXFAVHvobradRD745qkkN6fNo73d+OyUgsM9xhGZCjSCvBQ2B34WCTQHujOLRslr9TrOGkooP/ZJ6eKmIGzAfLLjEQNpyhAwpfjgY67CB3ZZsQ27THamZzhwAPoEoEUoV6BIdrc4fvZ63CTxO4n8zrQYA+wRPEi1pbmwfNBIMaKeO7GrINixhYS82GIqFZzQGDpG9rCjh8a2Uojw05lIpaRg9BBNPRg08VYzbl3n/FML3zcwLrnzasLHHGhRZzwYGxe8ehvm0yR
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -140,91 +141,91 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-page_vma_mapped_walk() can return non-present device-exclusive entries,
-but folio_referenced_one() passes them to PTE young-bit accessors that
-require present PTEs.
+Since the deferred split queue became a list_lru, the isolate callback
+moves the folios it took a reference on to an on-stack list, linked
+through folio->_deferred_list, and deferred_split_scan() takes them off
+that list with list_del_init() without holding the list_lru lock.
 
-We must neither call clear_flush_young_ptes_notify() nor
-folio_pte_batch() with non-present entries. For example, clearing the
-young bit on non-present PTEs can corrupt the entry: on arm64
-PTE_AF overlaps the swap type, so clearing it turns a device-exclusive
-entry into an ordinary swap entry.
+deferred_split_folio() does not know about the on-stack list. It only
+holds the list_lru lock when it looks at the same list_head, and it can
+run for such a folio: a THP is queued when it is mapped, as a candidate
+for the underused check, and is queued "again" when a part of it gets
+unmapped:
 
-folio_pte_batch() will VM_WARN_ON_FOLIO.
+  CPU0 deferred_split_scan()          CPU1 deferred_split_folio()
+  list_del_init(&folio->_deferred_list)
+    next->prev = prev
+    prev->next = next
+    entry->next = entry
+                                      list_lru_lock_irqsave()
+                                      folio_set_partially_mapped()
+                                      __list_lru_add()
+                                        list_empty(item)  -> true
+                                        list_add_tail(item, &l->list)
+                                          item->next = &l->list
+                                          item->prev = tail
+    entry->prev = entry
 
-Apply the same approach as the previous fixes to e.g., damon_ptep_mkold():
-treat these entries as old from the CPU's perspective and obtain their
-young state through the MMU notifier.
+The folio now sits on the list_lru with ->prev pointing to itself. The
+next removal leaves the neighbours pointing to it, and they still do so
+after the folio has been freed. With CONFIG_DEBUG_LIST:
 
-Skip PTE batching and MGLRU look-around for non-present entries, and
-don't modify non-present PTEs.
+  list_del corruption. prev->next should be ffd4000000270090, but was
+  ffd4000000278090. (prev=ffd4000000270090)
 
-Fixes: b756a3b5e7ea ("mm: device exclusive memory access")
-Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+Fix it by grabbing the lock around list_del_init() so
+deferred_split_folio() cannot race with it.
+
+Fixes: fafaeceb89a5 ("mm: switch deferred split shrinker to list_lru")
 Cc: stable@vger.kernel.org
 Reported-by: Josef Bacik <josef@toxicpanda.com>
-Reviewed-by: Harry Yoo (Meta) <harry@kernel.org>
-Reviewed-by: Barry Song <baohua@kernel.org>
-Reviewed-by: Dev Jain <dev.jain@arm.com>
+Reviewed-by: Johannes Weiner <hannes@cmpxchg.org>
+Reviewed-by: Mani Tofigh <mt4022@columbia.edu>
+Tested-by: Mani Tofigh <mt4022@columbia.edu>
+Reviewed-by: Lance Yang <lance.yang@linux.dev>
 Tested-by: Muhammad Usama Anjum <usama.anjum@arm.com>
 Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 ---
- mm/rmap.c | 23 +++++++++++++++++++----
- 1 file changed, 19 insertions(+), 4 deletions(-)
+ mm/huge_memory.c | 15 +++++++++++++--
+ 1 file changed, 13 insertions(+), 2 deletions(-)
 
-diff --git a/mm/rmap.c b/mm/rmap.c
-index 1131b76bbbc28..0faef46806e5c 100644
---- a/mm/rmap.c
-+++ b/mm/rmap.c
-@@ -924,6 +924,7 @@ static bool folio_referenced_one(struct folio *folio,
- 	DEFINE_FOLIO_VMA_WALK(pvmw, folio, vma, address, 0);
- 	int ptes = 0, referenced = 0;
- 	unsigned int nr;
-+	pte_t pteval;
+diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+index bd44d58e86845..4c0194af9016d 100644
+--- a/mm/huge_memory.c
++++ b/mm/huge_memory.c
+@@ -4522,8 +4522,7 @@ int split_folio_to_list(struct folio *folio, struct list_head *list)
+  *
+  * It is unsafe to call folio_unqueue_deferred_split() until folio refcount is
+  * zero: because even when the list_lru lock is held, a non-empty
+- * _deferred_list might be in use on deferred_split_scan()'s unlocked
+- * on-stack list.
++ * _deferred_list might be in use on deferred_split_scan()'s on-stack list.
+  *
+  * The list_lru sublist is determined by folio's memcg: it is therefore
+  * important to unqueue deferred split before changing folio memcg.
+@@ -4665,10 +4664,22 @@ static unsigned long deferred_split_scan(struct shrinker *shrink,
+ 					    deferred_split_isolate, &dispose);
  
- 	while (page_vma_mapped_walk(&pvmw)) {
- 		address = pvmw.address;
-@@ -968,10 +969,12 @@ static bool folio_referenced_one(struct folio *folio,
- 			return false;
- 		}
+ 	list_for_each_entry_safe(folio, next, &dispose, _deferred_list) {
++		struct mem_cgroup *memcg;
++		struct list_lru_one *lru;
+ 		bool did_split = false;
+ 		bool underused = false;
  
--		if (pvmw.pte && folio_test_large(folio)) {
-+		if (pvmw.pte)
-+			pteval = ptep_get(pvmw.pte);
-+
-+		if (pvmw.pte && pte_present(pteval) && folio_test_large(folio)) {
- 			const unsigned long end_addr = pmd_addr_end(address, vma->vm_end);
- 			const unsigned int max_nr = (end_addr - address) >> PAGE_SHIFT;
--			pte_t pteval = ptep_get(pvmw.pte);
++		/*
++		 * Sync with deferred_split_folio(), which can requeue the
++		 * folio once list_empty() is true, and sets PG_partially_mapped.
++		 */
++		rcu_read_lock();
++		memcg = folio_memcg(folio);
++		lru = list_lru_lock_irq(&deferred_split_lru, folio_nid(folio),
++					&memcg);
+ 		list_del_init(&folio->_deferred_list);
++		list_lru_unlock_irq(lru);
++		rcu_read_unlock();
  
- 			nr = folio_pte_batch(folio, pvmw.pte, pteval, max_nr);
- 		}
-@@ -981,11 +984,23 @@ static bool folio_referenced_one(struct folio *folio,
- 		 * are. —they could be on active/inactive lists or on MGLRU. So the
- 		 * simplest approach is to disable this look-around optimization.
- 		 */
--		if (lru_gen_enabled() && !lru_gen_switching() && pvmw.pte) {
-+		if (lru_gen_enabled() && !lru_gen_switching() && pvmw.pte &&
-+		    pte_present(pteval)) {
- 			if (lru_gen_look_around(&pvmw, nr))
- 				referenced++;
- 		} else if (pvmw.pte) {
--			if (clear_flush_young_ptes_notify(vma, address, pvmw.pte, nr))
-+			bool young = false;
-+
-+			/*
-+			 * PFN swap PTEs, such as device-exclusive ones, that
-+			 * actually map pages are "old" from a CPU perspective.
-+			 * The MMU notifier takes care of any device aspects.
-+			 */
-+			if (pte_present(pteval))
-+				young = clear_flush_young_ptes(vma, address, pvmw.pte, nr);
-+			young |= mmu_notifier_clear_flush_young(vma->vm_mm, address,
-+								address + nr * PAGE_SIZE);
-+			if (young)
- 				referenced++;
- 		} else if (IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE)) {
- 			if (pmdp_clear_flush_young_notify(vma, address,
+ 		if (!folio_test_partially_mapped(folio)) {
+ 			/*
 
 -- 
 2.43.0
