@@ -1,142 +1,123 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97B5F606A31C
-	for <linux-mm@archiver.kernel.org>; Sat, 31 Oct 2026 21:44:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D578606A31D
+	for <linux-mm@archiver.kernel.org>; Sun,  1 Nov 2026 00:11:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=amacapital-net.20260707.gappssmtp.com header.i=@amacapital-net.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b=DygX3CvE
+	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=JtBmp5hB
 Received: by kanga.kvack.org (Postfix)
-	id 4AD826B05B6; Sat, 31 Oct 2026 17:44:03 -0400 (EDT)
+	id 745AC6B00EF; Sat, 31 Oct 2026 20:11:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 439DF6B05B7; Sat, 31 Oct 2026 17:44:03 -0400 (EDT)
+	id 6CFB76B05B1; Sat, 31 Oct 2026 20:11:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2FFDD6B05B8; Sat, 31 Oct 2026 17:44:03 -0400 (EDT)
+	id 596B26B05B2; Sat, 31 Oct 2026 20:11:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id E979A6B05B6
-	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 17:44:02 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 35C401A025A
-	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 21:44:02 +0000 (UTC)
-X-FDA: 85384249524.22.7F9488E
-Received: from mail-lj1-f182.google.com (mail-lj1-f182.google.com [209.85.208.182])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 3C4C9100005
-	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 21:44:00 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=amacapital-net.20260707.gappssmtp.com header.s=20260707 header.b=DygX3CvE;
-	dmarc=none;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf05.hostedemail.com: domain of luto@amacapital.net designates 209.85.208.182 as permitted sender) smtp.mailfrom=luto@amacapital.net
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793483040;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 258626B00EF
+	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 20:11:42 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 983ABA0387
+	for <linux-mm@kvack.org>; Sun,  1 Nov 2026 00:11:41 +0000 (UTC)
+X-FDA: 85384621602.11.F90BA1A
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 39CA740002
+	for <linux-mm@kvack.org>; Sun,  1 Nov 2026 00:11:38 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=JtBmp5hB;
+	spf=pass (imf17.hostedemail.com: domain of lkp@intel.com designates 192.198.163.12 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793491899;
+	b=dgOq2uuCHilbYUzDntu/aGsw2oYGx4aUwHM1SnaQhn67xA9Irpq2tBrTQE/qPmUasU4Q7Y
+	k/mq3VQQyH6pIovPzyvet1LAjt6WZqOJiUBmx//si/3mVkPbSrp8O+JcAi5BrfpkHWIw26
+	QfZTx0SzdBrRvC1/jHRE6J28CrMLEKA=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=JtBmp5hB;
+	spf=pass (imf17.hostedemail.com: domain of lkp@intel.com designates 192.198.163.12 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1793491899;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=n4/FdkbJCBiK1V2GJNaCfclA9B0e/fDcc+jSWi7alCA=;
-	b=bZmzcn6naZdRgw1S3QXlDU/6xPQBRJAVaqE0xfMsgTv5SSTwAZer/5GDaOe2btG/6Hyj0v
-	+51aKruIiUu0aqdumrEV8Ru/t7vEXjy1NwASN6WvR/kSnE5051c11S6nUAXpWwOY4lyvhH
-	Y2JuUmfo++B++hck56NxI5gVtDhpOW0=
-ARC-Authentication-Results: i=2;
-	imf05.hostedemail.com;
-	dkim=pass header.d=amacapital-net.20260707.gappssmtp.com header.s=20260707 header.b=DygX3CvE;
-	dmarc=none;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf05.hostedemail.com: domain of luto@amacapital.net designates 209.85.208.182 as permitted sender) smtp.mailfrom=luto@amacapital.net
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1793483040;
-	b=FQ8nSO1H9V/z8DXTslqFJJpzngiOaUnjtKlau7n/oWok+C1SZQUgY90T+l4BdxfBt/RZIP
-	3RuPhcf6V21+Bp6D6QojbMaRWkwuJEdxKwyqigf+9rvRcV3qxtj7oDhDNfEmt+pAg0s9eP
-	Xl3TZ7yBBTDLkEE5ZF68eq9/HRPKpzI=
-Received: by mail-lj1-f182.google.com with SMTP id 38308e7fff4ca-3aae7df0971so13373841fa.1
-        for <linux-mm@kvack.org>; Sat, 31 Oct 2026 14:43:59 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1793483038; cv=none;
-        d=google.com; s=arc-20260327;
-        b=a8S7a9teopbeotCYKiSuuFVksujibCOPbEI0IWuTa/zllkl5fzVtHg4x1WVKJ7Me4x
-         0qfa1qZs/PInQz/8ILtnTQBI2LZUB+0MI767nP+PL1d2NzhtvNIhoWnAbtsyUM9SJdkR
-         w7se5YMLwSHeHREozTwoBk0h7YrFHt5WIvkwfP6xTTu5HH6TjsIEKh/gsQrUMSM2jzVW
-         KYJKLY+LWzHTCKYVOqxqcuVC+qN+vjyYoSjPx1bQNWmypeV98B/NW/gp0y1bRmgumeRC
-         uiGt/Ka5NEwWLGK4JoalCKd+AXpZPAnk5XTX6SRP0IBjXY9zpel5qCWjqnq80KpV9NxI
-         eD9g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=n4/FdkbJCBiK1V2GJNaCfclA9B0e/fDcc+jSWi7alCA=;
-        fh=j7u5coEF3NykOQ/IfDJgWLnaIXuvqgKTXRKTZl7rcAM=;
-        b=sYkTLswou+m5+nbaQHSpHviuV4NamzNCRqlUVlvBw8tsfZu/g4wBRGL+BZGXMJDSMh
-         1Y4t+AT6jsjBl7Xt/UQ/TIBdccwKPLHpWC3YnIJIgY8dgNybjYppphZzqpEicMSW7jrv
-         Ry/5Mj+b0SIgj3oc/hQ9dWgwBDQlFY+qI5JsKeJ1A0FThu4CUmIUCDLz21EGhlqdYGXn
-         21tCbaLA7Fo0Ehp45QKJ0gZ9uDajUd+C0bANftYVGhinSV3s7vDoSZCLIv0gOHxs9Lwz
-         gF8b0QVtXMawfkxB7DUAWEtyCZicpBJeaVx6y7Glh7TjJZnkS/MIfq7bQtyIPNVrzDoO
-         dGLg==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=amacapital-net.20260707.gappssmtp.com; s=20260707; t=1793483038; x=1794087838; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=n4/FdkbJCBiK1V2GJNaCfclA9B0e/fDcc+jSWi7alCA=;
-        b=DygX3CvEtYMR5u8EOILvUsUCzfDqoOOS1SINpKVUQC7q1hvYNOhEdYyeoOtmmbn3sA
-         f9jm/DXEmBUGIQY2T+dAARhq3A0yyamWF9OVLK4NzrHJ3dwbNZNAVOJVeFyecvNFLg2z
-         8U3gIXT4Aqa9sN2coa+9lwiHAkCEi3IpNhxiGPxAZ9L0tjPuCJHW8JsUbVtlGJJP6JO8
-         3njm9Ua/3vQGM6LOi0mA/kDpsxxvGIhTVHJURCzi51vEim47fOgIpPcLW0G7a1NMVqST
-         YNTqtGfLmLQ94arQ5pa+Gn40G58xWPp6hdxd7qxBDX0sOswuEVX7EZxglqoIE0RrHAD/
-         DQYg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793483038; x=1794087838;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=n4/FdkbJCBiK1V2GJNaCfclA9B0e/fDcc+jSWi7alCA=;
-        b=z+o0jqVj7o8aa1k/LN7XBUBzM0cpfQ5ZtNRGmIqCP7lcgD6XUUhXXVoFgHQvK+rXGF
-         vY218aCIz0nX6lJBQw59euu2Jy/WNrK0gvDM1fGkJysw2fF7wIS9S0teiY7tCKNVfvji
-         gOm/Vs6q9WDwjDPtd1djrphzZcjZZEqywo+cKa+M/Zmi6cGFwctaPLvCjEyHJh5XCH4u
-         SuUhqZ5sh95+i1QkbfKjBL8yWVMdqdEa4qljG8ooE21KLr48eIyweVKYSjJ65KAxlZnf
-         /SycGfu48hTIS1VnbUbj3WtaZGvjxUl0ETCn9++svaty+yxDvnOe7iQm/yeEOVMtkiOp
-         c/Dg==
-X-Forwarded-Encrypted: i=1; AKwUvBxXDUY3L6hABcZDbIgj4PXYK11jbfDG3O5WyGJhSGq9C1MXtPqy8lFNmXxlRGFNa4YKbC4uFJxBNA==@kvack.org
-X-Gm-Message-State: AFq9FYKR6cMfcSJ7NBt+BX590RxACagumNdtU17wBkwYcaY2sT51kfCv
-	BIG08lujKeCkH9BH5wy5m9xqKqGvD0w81SBhjg9ADlq+e7LjGe5ISMBOUaf9/23HPkW9n26md+3
-	nnxfqttkA0hhR7FBgF15M65fL38OENeBK8WYastJK
-X-Gm-Gg: AYBFou0+gDw95wSBgWZHc0hiAa3yajhlXFPmTBe6JJOjPmTAyvRE39bbbKJHJzwBybh
-	cr1MBsCJi1YQxLTOQx1Ppi+LB6qRvIu4XP+WLu2EmjT/lkIecMGTXtnn5it5ps+Q8hk3x8DVmgV
-	mpneOnVJVCvjPd8+NXYw7fBe0GRYyoBhDsP7fP9EEJfmLKcTaPVdaktdYLtfogfecGUcq4Nx26y
-	/vNSBJ3GTvhOhFszJkP9K+ugIyVp6MNCMcQd1DNEpj51I7JL3D9G8+3AxFdBpVrdPVmTwxY7b3a
-	oGo9L++0lmg208jL2dAi5RVpac4BKmCiMXiUivrJbrjODUAcfnK9PP/j+Fw80mfxxg33j6K3otq
-	Ys4/6PaYz2sSRQIe5aGDF/Usi9C+iIBC40ytYBX0n2XsglNSj09nkasw=
-X-Received: by 2002:ac2:5681:0:b0:5bf:c2af:3915 with SMTP id
- 2adb3069b0e04-5bfd95730d2mr2003629e87.28.1793483037747; Sat, 31 Oct 2026
- 14:43:57 -0700 (PDT)
+	bh=2EzAq3F/oZImqHNtfFN7yucFQTKmJ98J6mbsgnQaAnk=;
+	b=qhfqlcTqvtM3j51DwicNXKr9maExpQMyH83sFWQfp693FuOWRx2ISCjFakSmeqWhoq8dL6
+	pIAepoevkL07l2CCTP3iMXv6O1JlYWid4o14FMXH60wW0YECDKGxOX+agr4cOoY/4/sW6W
+	x2dEDW79Ca9PuoHPSoTBOI5GsrMckg4=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1793491898; x=1825027898;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=JxWINGtEXiE/19oIrBdKjOvxqg4jRzLQd0nxSgU6mLQ=;
+  b=JtBmp5hBl2Z6GdEPpCzaBVhO0VcqdWTiXjLSwQNumaAniBgbijsGzmVa
+   1Gdm05akxCag1uVS2sIsq1vpVLYwfqXLS1dMUSThqOSauoeZr7B65L/Nt
+   lCvekJZk9JdxqQiOWAcoROVbJ0hLa1okWygakvB3x/RPtI/KC1TO8OGrD
+   qBjY9EwAeJhhmBtKjsB578kqGcl8xR5L9odl8ga+iATNky7q43Bd8A+ND
+   iMYRYW1q59WeEc6k3OLsEmU8PJl+sSTlN0AVLpOypjCCfk/DKENbseCsi
+   2wZNAHaE/uVxL4wQwQkSzBE+q1ddTczN+bxXtrTwPJXdOeZqXwBG8UR0m
+   w==;
+X-CSE-ConnectionGUID: +JbFbtXIS62UNFYyys7dVg==
+X-CSE-MsgGUID: jaJ71APXRVeitIPh6yXdSA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11952"; a="2108913"
+X-IronPort-AV: E=Sophos;i="6.27,188,1787036400"; 
+   d="scan'208";a="2108913"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Oct 2026 17:11:36 -0700
+X-CSE-ConnectionGUID: hWVuwracTrCN1bMAbJ7VaQ==
+X-CSE-MsgGUID: 9l+96SLnSdSfe1kZ1buVAQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,188,1787036400"; 
+   d="scan'208";a="5762544"
+Received: from lkp-server01.sh.intel.com (HELO 0caa9d2d175c) ([10.239.97.150])
+  by orviesa002.jf.intel.com with ESMTP; 31 Oct 2026 17:11:32 -0700
+Received: from kbuild by 0caa9d2d175c with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1xNJAW-00000000dIq-1U6v;
+	Sun, 01 Nov 2026 00:11:28 +0000
+Date: Sun, 1 Nov 2026 08:10:33 +0800
+From: kernel test robot <lkp@intel.com>
+To: =?iso-8859-1?Q?Andr=E9?= Almeida <andrealmeid@igalia.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Juri Lelli <juri.lelli@redhat.com>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Christian Brauner <brauner@kernel.org>, Kees Cook <kees@kernel.org>,
+	Shuah Khan <skhan@linuxfoundation.org>, willy@infradead.org,
+	mathieu.desnoyers@efficios.com,
+	David Laight <david.laight.linux@gmail.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	akpm@linux-foundation.org, Yafang Shao <laoar.shao@gmail.com>,
+	andrii.nakryiko@gmail.com, arnaldo.melo@gmail.com,
+	Petr Mladek <pmladek@suse.com>
+Cc: oe-kbuild-all@lists.linux.dev, LKML <linux-kernel@vger.kernel.org>,
+	kernel-dev@igalia.com, linux-mm@kvack.org,
+	linux-api@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
+	=?iso-8859-1?Q?Andr=E9?= Almeida <andrealmeid@igalia.com>
+Subject: Re: [PATCH v8 4/6] sched: Extend task command name with
+ TASK_COMM_EXT_LEN
+Message-ID: <202611010746.Qs8jUny8-lkp@intel.com>
+References: <20261030-tonyk-long_name-v8-4-c9b030332254@igalia.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-References: <20261031203540.2282507-1-skhawaja@google.com>
-In-Reply-To: <20261031203540.2282507-1-skhawaja@google.com>
-From: Andy Lutomirski <luto@amacapital.net>
-Date: Sat, 31 Oct 2026 14:43:45 -0700
-X-Gm-Features: AclHuK8DXwQuKXG7YuVQ17qPxlP42BoepMeBjGp7aRwX7XDPrtPwMbgsBa7Xe70
-Message-ID: <CALCETrVMC4cPuBeSgPRr21zNoCDqz5op8VR=16382FFSf9ymeA@mail.gmail.com>
-Subject: Re: [PATCH] mm/gup: check folio->mapping under folio lock in memfd_pin_folios()
-To: Samiullah Khawaja <skhawaja@google.com>
-Cc: David Hildenbrand <david@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, 
-	Chris Mason <mason@kernel.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 3C4C9100005
-X-Stat-Signature: droq8xxjqu9cyzhdrwwbuzm96bbubtmb
-X-Spam-Status: No, score=-8.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20261030-tonyk-long_name-v8-4-c9b030332254@igalia.com>
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1793483040-599260
-X-HE-Meta: U2FsdGVkX1/OpKMQqPHjFaYZ1Un4XWoesrydFy2RhF+otjKnH3SLUaWTBvVoh28Zi0TpJ0YXYuZXRmLqwLHkhDzXfLnZTKea3oH7OWulAgozTDE+9vr2WA/EpOS5NaU+KFns58Y7HNKleNRiINmn2msFMiH14ZrNp+n0DxQe54cnfkE+FNtrXoagMaBwUw0FJS2UsM4DjOVN0p6RE2vnRgMaXGOfIQI5w71lQi65pH4h4J1R5Kb4bW468CsMAfK6vKt3mYQjM74D7iF87G95A006WQbeZoLE9aomp9GX+P8epkgPzlNJFQHUYMeoRjrgje/kqlVMNLul0Iugpcv/PvYu2B2/tYgX04DBcRIeHH2nShR7L/tDFRCRi6XLaIIXt1EcxAu/AQgPwp17kSxiHHSPpGBeyWJ2zLrXl8dgTfD6EuheI97j1WOaruuvwmGsNMcaP6kvU2ww1/VQEDV+6zEYcEHHshGy6h22IBKeX1NYfvVlaJ34XK7YSem979m1zawqckWASIBewCN0oI5JFy452ZlEIxofqxYLp2L72MvTpEp3B1SwUx5aY9IgvMQyAtzUTIJMX1qKDUSUF/qXuGMX6fr/DjJWHrJY3UsWfSu7r6Rcd9nty9iYRkNYzcZPdFg4P6LVA2QEYr8ofaZz1Ef3h+pQI1Zg3SPl78xh9Tb44HV0Fh176+X158F+OEOOpTKV/HhDpyO3/XC0i3R6EnqIRo27H3EAVNtQk9/WoadvJvZ08ynFkp8bNBV0ORWbt7KwKS+DTQ9yXMYhClz8VRnoYze4diUGVSSQPzeJTapImkv9cxBhKWzEy4RGr0usOj+1NSn8WodJYGrGbFEEH9T9pMSnmkyrOt/4ffXX+WV3BsjGDp3Hq2St2VuHTTlBTbVosR2vE9mLoKjV6DM5DNMuz1V+ZKw4I76na17ZaQo2mAwyXhOuL/tOBTPqnwmjkTBs5ROtpXeeAyF1rWU
- 8AG6IXX4
- P3mS6mhUpqqkvsP1CnaiEGLKLOKQXjQsXsVphUe3wLrHU8WvmaBXIBsjx41xE1TOPaLX8cZTx3C3+wITHYoshb4pzZW1MSKtES+2fI+VCiMRtzkC/76zyHcUTH8aLlaKQrYutVZd1isDKxFtMiILyWTheaWcnilgbfKacEYdrBXYEUWxr4/W/M+4t5qILPbT7hEF8talVMh/FYPFSkC5SlbM+vdIuuYIoM2r5QDvZ+7SR9P17IGMn75O3+nVU1oLvXD0nJ8R9YsEXHxkvVb9UuHDd2fxGFc0bCqs8YgMETRDctApH+ikBZ3a7B5h5j5zVyS3f24LHRTzdqRpX9sWJYeMrG0kd+atYifJFORCOy5uLfYDgq3pujm0WfH+y4Nebkotu73pphXcdg7HMY5dR+vsBl7ft5L2LYlMaAbBpHXtULQZbIsR/BeCtyXUWvEteHlLV4rs+mI3+D/w=
+X-Rspamd-Queue-Id: 39CA740002
+X-Stat-Signature: j6kmpqgf5s7fircjr5foehrahhtaaop1
+X-Rspamd-Server: rspam01
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS
+	autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1793491898-82216
+X-HE-Meta: U2FsdGVkX1+vuZ+lab7VRQGfDW9kEfIfDfnm/lclUTh94s1wyxEl2XRjPUa0wNzPhQuUxeyNXPxZvpaj1KmOec6FWKNEXy1ynnXFxf+Y06xvNr7Zik1DDpPJ8xZq7oc+jW0doRxKsgpn8yGe1p4JoINB+wP3h5n6vhQRBl6nTPkI7rMWbD+JaFfZz3/Aw5he3b4uZG1mo9i3llPydg8YQpIWjndTvdJOzoAPOfuRJF0Fpx/04Q51yidEZY3eONgaMleDN+rrfWQOF0orwv9b4XNNyUzHndGwTA4QxhV+XCjh+PBb87ai4ZxsBRns5MBepwFprD58wOF+nB+DmVhnZ5rUOhFm766vzfPTxZLRGa/pPV1cMwkU8p/px03EECP7WlZ98gfyhoOwytNudeN+ypsqvjxHiYfNRzeeFpxeXyfs0hx0nB1xY6b4xxgzTyRyk9aUY6zRVfdGjW6cj681jiWKMTtJO2hwOA2pgS62Hw68x5B5I5Ck8dfzJPsrrXl6WXfjNi7fF4K2zuJBTNKFnhCAL7TQZBHduQRqix3gXAiRjLyMQqtIAH5cDsg5ItiOoQmauRhlyPkwGZ5Xd/vPJlTzcNm2edH1xbf1NUgCJewFHU7g7+vSncUBv+rMcf6ral45J53LmNhAw7rkVzNjz5EZQ5xtvvt3HhXC4L65rty9+vM7+pMIQTWB9xupqbX5FWzkUXWhZBCwqE5IRiTnEK+f9P1mI7PvvqXPq1FtzqGeBkKTzpS0nAEfBcYUQb/jHMzYiKFdcJX8ozKImLexaqwTRkgXpcEEYRm9DQa3WDg1GdEUtgE94HUJfWNWlUjOcHCAhyZclgLauJpX8KM3TXxaeKjbnf6XWEitl1oSOJs4u5r62X79zwdffxwYte26JMqc4RuopHKal+xtFXsqI6vdNVR8P6JZG9qmtMyaJbzASOpmPOGWXNdGMUHDBo6vQ32UdiP1YMCDshv6Z2O
+ ZBIJfJEF
+ RojnMZ62uQUC9MGboGNJcqFrpYoU8OecP5MP36qaO90e11VxbQ0idOCwms7raOBQHJzadL91SX+YVxvFM78QmFANB0uc0wwK4V3i6qWG4clp657A96qyCv+sdItqhWjZuICRjEkrPizevj945y/Yrh2JSmWruNyyGsbr9FztNUb9aJLTb4WrKWUF0GLP5e6+9Iwwyx0ptjC61G8aUER+/yediuKIzstBb6cOkmye0oVk55Ifpzhh3G5CCuC1011CtDQ4YjjTC1L/V2EiIyYSSvu/yDjL76ghHvXkHBhgMBIJ+WMKKS1h8e6ITtUPJG9Vr6CCXxuKTe8kTTsNzqmzHFz1W3AyhKvmN6JtoR5d/4+YpBTOGspEKXSisGfj1l/5NX+i3T/ZYKFmnBI4R4VTq/YMCcEaFjfONw17MCYfHNur4ejj0b4YevkWfaVyIqNs1RBhV7KkHyP4fIDRIFJBNlCMrIAqNSQ0X9FDYEwF/+k/Y1cNYHyY7RaPBwEkV/4t0ozu/MUP5ZHG1T5v0Y1lWHun4tMl4zBnpS+Q+
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,24 +126,149 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Sat, Oct 31, 2026 at 1:35=E2=80=AFPM Samiullah Khawaja <skhawaja@google.=
-com> wrote:
->
-> memfd_pin_folios() pins folios from the page cache without taking the
-> folio lock. So khugepaged or MADV_COLLAPSE can replace the folio after
-> its refcount check while memfd_pin_folios() still pins the old folio,
-> and the caller ends up with a folio that is no longer part of the memfd.
->
-> Lock the folio and recheck folio->mapping before pinning it, like other
-> page cache users do. If the folio was removed, retry the folio lookup
-> from the index that was removed.
->
-> Fixes: 89c1905d9c14 ("mm/gup: introduce memfd_pin_folios() for pinning me=
-mfd folios")
-> Reported-by: Andy Lutomirski <luto@amacapital.net>
+Hi André,
 
-Reviewed-by: Andy Lutomirski <luto@amacapital.net>
+kernel test robot noticed the following build warnings:
 
-(with the caveat that I still don't like the fact that pinning a folio
-does not keep it associated with the mapping.)
+[auto build test WARNING on 4dd16e31135ea8437a720222df34e8745f385d6d]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Andr-Almeida/treewide-Get-rid-of-get_task_comm/20261030-183832
+base:   4dd16e31135ea8437a720222df34e8745f385d6d
+patch link:    https://lore.kernel.org/r/20261030-tonyk-long_name-v8-4-c9b030332254%40igalia.com
+patch subject: [PATCH v8 4/6] sched: Extend task command name with TASK_COMM_EXT_LEN
+config: x86_64-rhel-9.4 (https://download.01.org/0day-ci/archive/20261101/202611010746.Qs8jUny8-lkp@intel.com/config)
+compiler: gcc-14 (Debian 14.2.0-19) 14.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20261101/202611010746.Qs8jUny8-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202611010746.Qs8jUny8-lkp@intel.com/
+
+All warnings (new ones prefixed by >>):
+
+   drivers/gpu/drm/nouveau/nouveau_chan.c: In function 'nouveau_channel_ctor':
+>> drivers/gpu/drm/nouveau/nouveau_chan.c:343:58: warning: '%s' directive output may be truncated writing up to 63 bytes into a region of size 32 [-Wformat-truncation=]
+     343 |         snprintf(args->name, __member_size(args->name), "%s[%d]",
+         |                                                          ^~
+   drivers/gpu/drm/nouveau/nouveau_chan.c:343:9: note: 'snprintf' output between 4 and 77 bytes into a destination of size 32
+     343 |         snprintf(args->name, __member_size(args->name), "%s[%d]",
+         |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     344 |                  current->comm, task_pid_nr(current));
+         |                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+vim +343 drivers/gpu/drm/nouveau/nouveau_chan.c
+
+ebb945a94bba2ce Ben Skeggs          2012-07-20  253  
+5b8a43aeb9cbf6b Marcin Slusarz      2012-08-19  254  static int
+5cca41ac70e5877 Ben Skeggs          2024-07-26  255  nouveau_channel_ctor(struct nouveau_cli *cli, bool priv, u64 runm,
+06db7fded6dec88 Ben Skeggs          2022-06-01  256  		     struct nouveau_channel **pchan)
+ebb945a94bba2ce Ben Skeggs          2012-07-20  257  {
+152be54224de182 Danilo Krummrich    2023-10-02  258  	const struct nvif_mclass hosts[] = {
+284ad706ad2f509 Ben Skeggs          2025-02-04  259  		{ BLACKWELL_CHANNEL_GPFIFO_B, 0 },
+32cb1cc358ffed2 Ben Skeggs          2024-11-25  260  		{ BLACKWELL_CHANNEL_GPFIFO_A, 0 },
+44f93b209e2afde Ben Skeggs          2024-11-25  261  		{    HOPPER_CHANNEL_GPFIFO_A, 0 },
+06db7fded6dec88 Ben Skeggs          2022-06-01  262  		{    AMPERE_CHANNEL_GPFIFO_B, 0 },
+7f4f35ea5b080e6 Ben Skeggs          2022-06-01  263  		{    AMPERE_CHANNEL_GPFIFO_A, 0 },
+06db7fded6dec88 Ben Skeggs          2022-06-01  264  		{    TURING_CHANNEL_GPFIFO_A, 0 },
+06db7fded6dec88 Ben Skeggs          2022-06-01  265  		{     VOLTA_CHANNEL_GPFIFO_A, 0 },
+06db7fded6dec88 Ben Skeggs          2022-06-01  266  		{    PASCAL_CHANNEL_GPFIFO_A, 0 },
+06db7fded6dec88 Ben Skeggs          2022-06-01  267  		{   MAXWELL_CHANNEL_GPFIFO_A, 0 },
+06db7fded6dec88 Ben Skeggs          2022-06-01  268  		{    KEPLER_CHANNEL_GPFIFO_B, 0 },
+06db7fded6dec88 Ben Skeggs          2022-06-01  269  		{    KEPLER_CHANNEL_GPFIFO_A, 0 },
+06db7fded6dec88 Ben Skeggs          2022-06-01  270  		{     FERMI_CHANNEL_GPFIFO  , 0 },
+06db7fded6dec88 Ben Skeggs          2022-06-01  271  		{       G82_CHANNEL_GPFIFO  , 0 },
+06db7fded6dec88 Ben Skeggs          2022-06-01  272  		{      NV50_CHANNEL_GPFIFO  , 0 },
+06db7fded6dec88 Ben Skeggs          2022-06-01  273  		{      NV40_CHANNEL_DMA     , 0 },
+06db7fded6dec88 Ben Skeggs          2022-06-01  274  		{      NV17_CHANNEL_DMA     , 0 },
+06db7fded6dec88 Ben Skeggs          2022-06-01  275  		{      NV10_CHANNEL_DMA     , 0 },
+06db7fded6dec88 Ben Skeggs          2022-06-01  276  		{      NV03_CHANNEL_DMA     , 0 },
+06db7fded6dec88 Ben Skeggs          2022-06-01  277  		{}
+06db7fded6dec88 Ben Skeggs          2022-06-01  278  	};
+e270b3665f8321c Gustavo A. R. Silva 2025-04-16  279  	DEFINE_RAW_FLEX(struct nvif_chan_v0, args, name, TASK_COMM_LEN + 16);
+5cca41ac70e5877 Ben Skeggs          2024-07-26  280  	struct nvif_device *device = &cli->device;
+ebb945a94bba2ce Ben Skeggs          2012-07-20  281  	struct nouveau_channel *chan;
+06db7fded6dec88 Ben Skeggs          2022-06-01  282  	const u64 plength = 0x10000;
+06db7fded6dec88 Ben Skeggs          2022-06-01  283  	const u64 ioffset = plength;
+06db7fded6dec88 Ben Skeggs          2022-06-01  284  	const u64 ilength = 0x02000;
+06db7fded6dec88 Ben Skeggs          2022-06-01  285  	int cid, ret;
+06db7fded6dec88 Ben Skeggs          2022-06-01  286  	u64 size;
+06db7fded6dec88 Ben Skeggs          2022-06-01  287  
+06db7fded6dec88 Ben Skeggs          2022-06-01  288  	cid = nvif_mclass(&device->object, hosts);
+06db7fded6dec88 Ben Skeggs          2022-06-01  289  	if (cid < 0)
+06db7fded6dec88 Ben Skeggs          2022-06-01  290  		return cid;
+06db7fded6dec88 Ben Skeggs          2022-06-01  291  
+06db7fded6dec88 Ben Skeggs          2022-06-01  292  	if (hosts[cid].oclass < NV50_CHANNEL_GPFIFO)
+06db7fded6dec88 Ben Skeggs          2022-06-01  293  		size = plength;
+06db7fded6dec88 Ben Skeggs          2022-06-01  294  	else
+06db7fded6dec88 Ben Skeggs          2022-06-01  295  		size = ioffset + ilength;
+ebb945a94bba2ce Ben Skeggs          2012-07-20  296  
+ebb945a94bba2ce Ben Skeggs          2012-07-20  297  	/* allocate dma push buffer */
+5cca41ac70e5877 Ben Skeggs          2024-07-26  298  	ret = nouveau_channel_prep(cli, size, &chan);
+ebb945a94bba2ce Ben Skeggs          2012-07-20  299  	*pchan = chan;
+ebb945a94bba2ce Ben Skeggs          2012-07-20  300  	if (ret)
+ebb945a94bba2ce Ben Skeggs          2012-07-20  301  		return ret;
+ebb945a94bba2ce Ben Skeggs          2012-07-20  302  
+ebb945a94bba2ce Ben Skeggs          2012-07-20  303  	/* create channel object */
+e270b3665f8321c Gustavo A. R. Silva 2025-04-16  304  	args->version = 0;
+e270b3665f8321c Gustavo A. R. Silva 2025-04-16  305  	args->namelen = __member_size(args->name);
+e270b3665f8321c Gustavo A. R. Silva 2025-04-16  306  	args->runlist = __ffs64(runm);
+e270b3665f8321c Gustavo A. R. Silva 2025-04-16  307  	args->runq = 0;
+e270b3665f8321c Gustavo A. R. Silva 2025-04-16  308  	args->priv = priv;
+e270b3665f8321c Gustavo A. R. Silva 2025-04-16  309  	args->devm = BIT(0);
+06db7fded6dec88 Ben Skeggs          2022-06-01  310  	if (hosts[cid].oclass < NV50_CHANNEL_GPFIFO) {
+e270b3665f8321c Gustavo A. R. Silva 2025-04-16  311  		args->vmm = 0;
+e270b3665f8321c Gustavo A. R. Silva 2025-04-16  312  		args->ctxdma = nvif_handle(&chan->push.ctxdma);
+e270b3665f8321c Gustavo A. R. Silva 2025-04-16  313  		args->offset = chan->push.addr;
+e270b3665f8321c Gustavo A. R. Silva 2025-04-16  314  		args->length = 0;
+bbf8906b2cad17c Ben Skeggs          2014-08-10  315  	} else {
+e270b3665f8321c Gustavo A. R. Silva 2025-04-16  316  		args->vmm = nvif_handle(&chan->vmm->vmm.object);
+06db7fded6dec88 Ben Skeggs          2022-06-01  317  		if (hosts[cid].oclass < FERMI_CHANNEL_GPFIFO)
+e270b3665f8321c Gustavo A. R. Silva 2025-04-16  318  			args->ctxdma = nvif_handle(&chan->push.ctxdma);
+06db7fded6dec88 Ben Skeggs          2022-06-01  319  		else
+e270b3665f8321c Gustavo A. R. Silva 2025-04-16  320  			args->ctxdma = 0;
+e270b3665f8321c Gustavo A. R. Silva 2025-04-16  321  		args->offset = ioffset + chan->push.addr;
+e270b3665f8321c Gustavo A. R. Silva 2025-04-16  322  		args->length = ilength;
+06db7fded6dec88 Ben Skeggs          2022-06-01  323  	}
+e270b3665f8321c Gustavo A. R. Silva 2025-04-16  324  	args->huserd = 0;
+e270b3665f8321c Gustavo A. R. Silva 2025-04-16  325  	args->ouserd = 0;
+06db7fded6dec88 Ben Skeggs          2022-06-01  326  
+06db7fded6dec88 Ben Skeggs          2022-06-01  327  	/* allocate userd */
+06db7fded6dec88 Ben Skeggs          2022-06-01  328  	if (hosts[cid].oclass >= VOLTA_CHANNEL_GPFIFO_A) {
+06db7fded6dec88 Ben Skeggs          2022-06-01  329  		ret = nvif_mem_ctor(&cli->mmu, "abi16ChanUSERD", NVIF_CLASS_MEM_GF100,
+06db7fded6dec88 Ben Skeggs          2022-06-01  330  				    NVIF_MEM_VRAM | NVIF_MEM_COHERENT | NVIF_MEM_MAPPABLE,
+06db7fded6dec88 Ben Skeggs          2022-06-01  331  				    0, PAGE_SIZE, NULL, 0, &chan->mem_userd);
+06db7fded6dec88 Ben Skeggs          2022-06-01  332  		if (ret)
+ebb945a94bba2ce Ben Skeggs          2012-07-20  333  			return ret;
+ebb945a94bba2ce Ben Skeggs          2012-07-20  334  
+e270b3665f8321c Gustavo A. R. Silva 2025-04-16  335  		args->huserd = nvif_handle(&chan->mem_userd.object);
+e270b3665f8321c Gustavo A. R. Silva 2025-04-16  336  		args->ouserd = 0;
+ebb945a94bba2ce Ben Skeggs          2012-07-20  337  
+06db7fded6dec88 Ben Skeggs          2022-06-01  338  		chan->userd = &chan->mem_userd.object;
+06db7fded6dec88 Ben Skeggs          2022-06-01  339  	} else {
+06db7fded6dec88 Ben Skeggs          2022-06-01  340  		chan->userd = &chan->user;
+06db7fded6dec88 Ben Skeggs          2022-06-01  341  	}
+ebb945a94bba2ce Ben Skeggs          2012-07-20  342  
+e270b3665f8321c Gustavo A. R. Silva 2025-04-16 @343  	snprintf(args->name, __member_size(args->name), "%s[%d]",
+e270b3665f8321c Gustavo A. R. Silva 2025-04-16  344  		 current->comm, task_pid_nr(current));
+ebb945a94bba2ce Ben Skeggs          2012-07-20  345  
+06db7fded6dec88 Ben Skeggs          2022-06-01  346  	ret = nvif_object_ctor(&device->object, "abi16ChanUser", 0, hosts[cid].oclass,
+e270b3665f8321c Gustavo A. R. Silva 2025-04-16  347  			       args, __struct_size(args), &chan->user);
+06db7fded6dec88 Ben Skeggs          2022-06-01  348  	if (ret) {
+06db7fded6dec88 Ben Skeggs          2022-06-01  349  		nouveau_channel_del(pchan);
+ebb945a94bba2ce Ben Skeggs          2012-07-20  350  		return ret;
+bbf8906b2cad17c Ben Skeggs          2014-08-10  351  	}
+ebb945a94bba2ce Ben Skeggs          2012-07-20  352  
+e270b3665f8321c Gustavo A. R. Silva 2025-04-16  353  	chan->runlist = args->runlist;
+e270b3665f8321c Gustavo A. R. Silva 2025-04-16  354  	chan->chid = args->chid;
+e270b3665f8321c Gustavo A. R. Silva 2025-04-16  355  	chan->inst = args->inst;
+e270b3665f8321c Gustavo A. R. Silva 2025-04-16  356  	chan->token = args->token;
+06db7fded6dec88 Ben Skeggs          2022-06-01  357  	return 0;
+ebb945a94bba2ce Ben Skeggs          2012-07-20  358  }
+ebb945a94bba2ce Ben Skeggs          2012-07-20  359  
+
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
