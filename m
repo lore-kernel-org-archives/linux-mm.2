@@ -1,127 +1,97 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93D3E606A326
-	for <linux-mm@archiver.kernel.org>; Sun,  1 Nov 2026 13:08:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43261606A325
+	for <linux-mm@archiver.kernel.org>; Sun,  1 Nov 2026 13:33:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=EZJ1bCVY
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=AYYDVKoD
 Received: by kanga.kvack.org (Postfix)
-	id 97C176B00EF; Sun,  1 Nov 2026 08:08:43 -0500 (EST)
+	id 5168F6B00EF; Sun,  1 Nov 2026 08:33:28 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 92CD96B05B1; Sun,  1 Nov 2026 08:08:43 -0500 (EST)
+	id 4A1B46B05B1; Sun,  1 Nov 2026 08:33:28 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 81D976B05B2; Sun,  1 Nov 2026 08:08:43 -0500 (EST)
+	id 367A36B05B2; Sun,  1 Nov 2026 08:33:28 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 63DDA6B00EF
-	for <linux-mm@kvack.org>; Sun,  1 Nov 2026 08:08:43 -0500 (EST)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id ECB26C09BC
-	for <linux-mm@kvack.org>; Sun,  1 Nov 2026 13:08:42 +0000 (UTC)
-X-FDA: 85386579684.07.1CE32DC
-Received: from mail-dy2-f2.google.com (mail-dy2-f2.google.com [74.125.229.2])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 1DCA92000F
-	for <linux-mm@kvack.org>; Sun,  1 Nov 2026 13:08:40 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=EZJ1bCVY;
-	spf=pass (imf13.hostedemail.com: domain of jm5905938@gmail.com designates 74.125.229.2 as permitted sender) smtp.mailfrom=jm5905938@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 13D446B00EF
+	for <linux-mm@kvack.org>; Sun,  1 Nov 2026 08:33:28 -0500 (EST)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 8C6F81C450E
+	for <linux-mm@kvack.org>; Sun,  1 Nov 2026 13:33:27 +0000 (UTC)
+X-FDA: 85386642054.10.F3AC2B2
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf10.hostedemail.com (Postfix) with ESMTP id DFFC8C0004
+	for <linux-mm@kvack.org>; Sun,  1 Nov 2026 13:33:25 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AYYDVKoD;
+	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793538521;
+	s=arc-20220608; t=1793540006;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=DN+73IopgojkHF5owDqrZcQJFph061u4C7fIX+4pVMM=;
-	b=sNicghb0dQ9fhnVhPsz3np4XDp2llkzgli54dmEyHGueO6910UiaMD10BGrPCyK5n/d3jo
-	t/al0o14NIb+nTcbfywcf9FUxvWYKe6k0GUH+npeGCW9iSOidR1/MdCMHmVwqRt+KiVuTi
-	8boW5Rk4rV0OgoFgsCDJsnMZxrMjAfQ=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=EZJ1bCVY;
-	spf=pass (imf13.hostedemail.com: domain of jm5905938@gmail.com designates 74.125.229.2 as permitted sender) smtp.mailfrom=jm5905938@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	bh=neLWtSceMYlxYsjXzdJ9arOYUSJDsCqTRHZbfoxyj3Q=;
+	b=XQWT9lVdX0hJo71FdMJ2P6+6d4fevxT0DGEaxzo4IqEW7vqAbrpbyIJyhFuA7Vij8wqgRN
+	ndmXEKT2rFgxrHRx2VF/bNZZDzlzPAsoHGD/taES52MyWmavf7pY2HTyrES+fN8jrAfUtH
+	f4DwIg1gRTG6dN5e4AWKctKC4ye6rTU=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793538521;
-	b=jN9/+QHM3CIHz3+Js5D8ikYmDA/jVVaSLeZGVBWmBuiZlJVszj3R/aW62wp+7a0Zyd6GRy
-	sc2+krq90KESQntV+l2zdQ17QsUyCT4LJ/2UEQZXT7OVM49yYbRoiqyLRfga3tqTqGtuiJ
-	PR2rYyXsptNTzk755X2tONgWvKPnoIc=
-Received: by mail-dy2-f2.google.com with SMTP id 5a478bee46e88-327b1d5824fso2158950eec.1
-        for <linux-mm@kvack.org>; Sun, 01 Nov 2026 05:08:40 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793538520; x=1794143320; darn=kvack.org;
-        h=references:in-reply-to:cc:to:message-id:date:from:subject
-         :content-transfer-encoding:content-type:mime-version:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=DN+73IopgojkHF5owDqrZcQJFph061u4C7fIX+4pVMM=;
-        b=EZJ1bCVY4LDHJWdZYWYCsGQRhxlluVqh8/cU7UprGWJ6kq/LQjlFF/qFNWd3fT57d5
-         l8qv+mqmF61OzAHy+WQdlfxxxrSc1Kojf7L2SWFjVaNwo1t8fbR+oyarURjcdEO1rJ0j
-         aLeqNKBKxrx3SHP2Egd/XEu6AxOK4aOFdvg7pkv/Av/mC9nwuUjtCoMohvKQjeTgUWkY
-         T/9JNcZmFFc6id7gO/MwsNSpAWFPwwUQFobtbsfoxRHIBPv34lcM2lh8047iOuUtwWHG
-         W/ax2wXkM3AGDDItJhb8/un9qNFUc0UPglIhgumTyS9DpRceAVDAR+YAFzmbu+NGTIlP
-         TPag==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793538520; x=1794143320;
-        h=references:in-reply-to:cc:to:message-id:date:from:subject
-         :content-transfer-encoding:content-type:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=DN+73IopgojkHF5owDqrZcQJFph061u4C7fIX+4pVMM=;
-        b=AydpMKt8obMdwr5C+Nls9ClocN02EWiEql1NrUIcAjQxoeGs+DJVnDbw4P98i8kfq5
-         ganOKc4uk3RhFJKlbIV76veJVx+t8ULJxg0ZUiHuM+giIGh3vdWLGkJMX9YXV+ciQGWl
-         HjC7fsMjebKn5BQltwX1CM+C1J6kUw4LqThWuqfqDEBjRB/ZCdHb0NiZZSKadvYAhsMr
-         fk2ITEZW22biR0P4b3oY+f4GEeJvLh9RLsWJ5pXGNy3LCzYqEMWjbjTM/C8mBp/VT8Rg
-         Ea2ezaV8rbszPyxSesCbCqi9nTVcX39VRwLa9u1R4PBcfzGgKqTLchDe6608PSfyD0Iw
-         xs1g==
-X-Forwarded-Encrypted: i=1; AKwUvBwTEGCMb7Tg/D1QSnLDxGETlKJ1z9eIWX3ftgrJtg7Fyit4o3dwoKi7bFL2HPNY5m/9jywFw5Fmxg==@kvack.org
-X-Gm-Message-State: APuU4Z8QlCl/oSiPamGUxAZqjjXK+ZeBEhun8s9zqm87QwwTyzE30gB7
-	azwQSaFjUEAPhsGEtIH94XjRnd1Bf0P2UOGarBi54owcz0GQtWtGpJVbboHNGnriWrKbE2Cx
-X-Gm-Gg: AYBFou1OfrtTra6GAPDd/lkUsj2RTNvAuDWsMBAsAm8HkVdywk5A4ACDnGpwE+7VorV
-	svTgIMpS5KVhOJndTsEGYnkwODvWqNIdn0KJkpn0+xW5k09b8DLRk1JVcM0mz+V43dgP/m8D+Qx
-	qSBJSdN4lfLgo5xMtfiBU+MkHMwg+NFELFyVdrcx1iB5GuZJyrci0V0T7xO/sMpBlDBDn6KYoel
-	N3J98S8dU7gL9AFYWegLtVnFuADCE1D6iw7neAyddsrJc4W9HrxoTt6JNJnkNgm/LLtycucuddL
-	bIjfMIKRS+sLDl9xUz6iJ2uoLW51Ajy4LZltS6zdQyozzzFm9pvysIYdXf4Lubir00JtnGCia0o
-	FBuCOFgr2/orlsTOGZq442yQn/8s3Uho1klRd/6KxtQ9KRS8QIKyDalvbmtL+I0KSZi3DBCVyPq
-	vPUjLfaBmVd4nO6nWhBga5fxbgcfZArrZKsPxhA1JAU2tDC2v4zXCkKICTmShQlTSZ8LjX4XzX1
-	VBvN8RBpXY53N3t0iKwkTuiodmoSQ8zRmFRk8AAb/QYeDtQK9sj2KbHgOGJSL7YtUmwFwSYJ2Z7
-	T/r6MHFBQfJy3zptVD4Re1TV0Lvb85JzZZjYgr0LN1GK7DTmQj7QORNeKU5eoVe2XC6k+swoPaC
-	nNm18J4amxHcXGytrznwDBNsZFIA=
-X-Received: by 2002:a05:7301:da83:b0:366:83dd:46f3 with SMTP id 5a478bee46e88-36a423a1f05mr10839613eec.14.1793538519681;
-        Sun, 01 Nov 2026 05:08:39 -0800 (PST)
-Received: from localhost (n106-71-19-159.sun21.vic.optusnet.com.au. [106.71.19.159])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-36a4294419dsm25939660eec.18.2026.11.01.05.08.33
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 01 Nov 2026 05:08:39 -0800 (PST)
+	t=1793540006;
+	b=ZDgQ4rlrwNEz4PQkD6T44mOOZD9AOVvdo5re3TapZcOA1WZSUVZ9Z4mkyvxQXF9fmWBFS5
+	2ATJTb3wLub1JBpCfmu8CziCSnxxV1iFLW59Xyqw4El0r/9Z/Ix89O7TcEn84YLjgwKPjE
+	XmqLh6Zb8SHQI1O7BkBOyC7uAWSXpiQ=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AYYDVKoD;
+	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id BD0EA42BB7;
+	Sun,  1 Nov 2026 13:33:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B836B1F000C1;
+	Sun,  1 Nov 2026 13:33:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793540004;
+	bh=neLWtSceMYlxYsjXzdJ9arOYUSJDsCqTRHZbfoxyj3Q=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date;
+	b=AYYDVKoDRJv3WOKI2s3gA9ET9FOf86cYW2f9/a+SmZbaPnZTSGJpPraTfOsKS5dI9
+	 udjzMc0Mv3xwBW4MdlPa/yVahM3ZuMq4XW6y0MEhzstCx1w0ZJuJpW6IiLPz6XJbxa
+	 hQmDNEeSGMH4ggIaUT2z0JgxTlQ24Wc2tSPEwvhUsl7EyZWhieeTKOHaaA/AigUGSp
+	 K+LUmZDOiOjMEe7z+jEsAmpqSxK+JqTaebB5Z39bexKieFL8FfGUzs1kS67vXax3Lj
+	 nmPzQNXxmQFJbrg2b9r1WwH6VF31NR/QVVc/2zTfm7qZI3+Z2maylHRbXIeGhoYv7k
+	 /bP5aFkJKUdkg==
+From: David Hildenbrand <david@kernel.org>
+To: David Hildenbrand <david@kernel.org>, 
+ Andrew Morton <akpm@linux-foundation.org>, 
+ Samiullah Khawaja <skhawaja@google.com>
+Cc: Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>, 
+ Peter Xu <peterx@redhat.com>, Andy Lutomirski <luto@amacapital.net>, 
+ Chris Mason <mason@kernel.org>, linux-mm@kvack.org, 
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+In-Reply-To: <20261031203540.2282507-1-skhawaja@google.com>
+References: <20261031203540.2282507-1-skhawaja@google.com>
+Subject: Re: [PATCH] mm/gup: check folio->mapping under folio lock in
+ memfd_pin_folios()
+Message-Id: <179354000144.6438.8171913734635387726.b4-ty@b4>
+Date: Sun, 01 Nov 2026 14:33:21 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] hugetlbfs: report inode limits without a memory
- subpool
-From: Aveline Noir <jm5905938@gmail.com>
-Date: Sun, 01 Nov 2026 23:58:16 +1100
-Message-Id: <179353789680.2.16953097023348053073.b4-reply@b4>
-To: Hungyu Lin <dennylin0707@gmail.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
- David Hildenbrand <david@kernel.org>, linux-fsdevel@vger.kernel.org, 
- linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
- Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>
-In-Reply-To: <20261101122653.53982-1-dennylin0707@gmail.com>
-References: <20261101122653.53982-1-dennylin0707@gmail.com>
 X-Mailer: b4 0.16.0
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: DFFC8C0004
+X-Stat-Signature: o9cqc9zp64bortr5dcfx3453sexbr6i6
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 1DCA92000F
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,
-	SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no
-	version=4.0.1
-X-Stat-Signature: djyi89qe6csei8xph8835t8idjdugzru
-X-HE-Tag: 1793538520-880946
-X-HE-Meta: U2FsdGVkX19zVHv1QcqGU8kfg3O8YVMrSZVVe4myw2At8Tyg2XFWPuTzxKGr14RUSSRvmI498OPcSKvk7T9tZPNBYSwJJUaotAcp3n80AP8r1t64kB8H5t5KwOEbY8SifZpaG/6aM1DCd/x6bO5p6XwnD0OotG8/jz8TDs+EKG66GvC+uRsE+eel00BBXl/h3LP7HdUDOVrJYYVVwhBpV9urgDEiEbXnntebSUjJ5HBDp6285caHBRfK7AJs6Qhy+vt1vtU9HNrFZpkyJZ7iBfk9xn7ZmJE3euDXYUeH3tImd8M8ls/n3zm9ZmEY1i5rgPJOfl1Mzf94asu3lfddiOPZT6r9SdzmzjmCLsnpP04avdXcdeB0KXvV4Sdgp9IrN4KHHggzYKnIMnI+kXQ7FrI73VLVoz8kI/wU3EcVLtDmMR3g1ZYH5Lzh957bz3ympJJvs+8UKBpxF2lRZ0pER4mrNNQqIXq1w0wpXvmCTEdGEfDlibZ92FJdB4Vfw9B7UHfPKOy6G01n46P9IHHnO+Be8Rtrb8HyEMBardFwMMbqaXXBOZrcVgsl59lKYY9S8yYNQpeHUWt44TP/kyLSWK5UqhELs3XBgoWJoaGVzKAl02LegaTVC06HTj+diXNAptQ7viKRetnD1uFCvJSVEYtQb9by9HNrWgAZzAx/1yOBwKftnRhDy3FEv3ePPnIzM2q/77QaP24f+CvORzPS+RyVptZ4jJTJavX/XoBCd+7kxrEUeCgERL4znIjDXlKG0IrRwgQRAk3CrvKMxluymomv8yybdGaxkNWRuiLmTiwibuqerG1grM1cxt1JOoOM9m84GkKdmKCv7AjJsl30FthXDOQq+iGPQsSXneEgZPOUHCOQg13EokGzflHCpBy7S7C+kRUR5WPTD4RBeXN+SmngFhWwoguUgGzozm0ru2J+maycbXrC2RFry/S/uRm+L0CYSZQNLwe5GK8N3WG
- J2fCQAdf
- /yFB0RN23G7pjxWjMJUVl8i++EK3NTcVcmKq0gVcijrTbB5t1VHNE2R0111ysN+HOCw7bpN9N8ruiYUWq0dDR+kTDwGSJxKynpAM1d3bLxXWJ6BHGqd3KGyw6uVkA+qL7MsT117GDXBZ+lk60juFv1HIssYZPiu8uHLcA7+MZOFxf7c1cfaASZPdMQSzuaeSGWLnB7aebkxZ62bM1w3rl+XTdtNyDbYbZ2eYvOOCKVPc4Vgvf2jype5RAJxjflUORp0SiqcmqckduJFqmh0PoUuvLhaJGq/F1NdQHWPNkw+I++vY8mXmYkjZpOLz78HSpc+SK/olK3bTv3dKkiW3tLXOJp53Xo4lecMLH8+Km4514988FDIJnI4guZE+fVCtsgSTuWlbEzQM9blpu9zUAYST6VBpC7vx6t/iNsGfGwh6Z0BQkIZPmZU+ByjpCjfyjHp3K2Sk34D3XgO7Isfh0D8tLzg==
+X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1793540005-441091
+X-HE-Meta: U2FsdGVkX1/3IBFKbp8escp8o+EvGaXfZxgRa42c19WIWrr18wCHeqsPgUy4ISeHzpFwkhnr6X9ab6YUuzyEvnBwwHdI1/FW8ZnuBWiEDE1FekHVejeW2RyLSFYs1CSUuZyukTu7h33bcyt0VvCqGou8+mtcyZxg8AdYRBsNri+7Uc1XGNAh1aFSRAnWXm/QKPOGEMkjewoY8i3kpNEJP8Og0rC2wm/jrUY3U4VmWYz0OEV3h+8Bwo1Yb35XjcoDHmoePFf7LNsYGpY1m2RzUJoCh7ny0g6sYOqmwWKap2BsfMFYJqo9MrrTaPeKXjJw5PbhFCJhTBJJUrfVDlHLw+P9JoO01CWkf0ekumICEzrXuENQkioscguv3UtN7ANCF+40EKMZOcJrOWa7TngJju8q4pl25aTXEl2KIQJI5HMtPQYTUDrozv5CaonOuXhqhh8GGiCwL8Y6BkBNgp3KPzzjFjSwlWI6Zq9kSdnQ+qyz9ClUt9S8pdhaN0JZv0YJXbkyz8ynLom2Z37kcaSXLLxfA+IL7Nn6ZyrnNnTiwgx7bn0GAkB8ANlIfCyPfa7SfZCPGitSH2TAkgyPK4Nm+Popz/bnkC2jHYO3A1SVKM+7HwEXKbuTfBCc5oPRX+ii1IcYt1/l/70tGK5+5fy96lDXK4HtQFieVLaXIZVejKg9Fzx0cAgYAPd5ml8VXQWsjg3ghSG2pTkgEv2rcr5pUW6tLx1nhPPR/XxjP6ABOahB8MJkE6akwRyZqxfE0pL7BWBnoxY53EUSA/Cke30jmAfd2p3mWObiiSVI6pMZS3VN+ty1w8FaIPyNfkPvchC4cFmB7lldXt4t0ePlKcmrcV+zTQBLSeqAQPeM/811EChqE3LGTeouV6UpsKOJlLPc9INMSOMuiPSJQY2Y/qh0EoQkJ3SEc1Ms1/hj08zpxbJcIgyiS4F3F9HTwCOXtzQRb8i6TrumjkyEF1ojHk7
+ zm91WHvQ
+ 2XT2rumtu2hYJB5Qq5l23s3AfR+Ov8Wzj5+tWgJqme773tpu9N53KRch49CE77DZm8IoC9JCZQpZL1ZsB9uzpSsWFchn0x8aGRpptv9PFtqyQ4bKK0uVqbRuEEfWy3DbcfIFsCxsYNfKmFgoN3gl6H9EIzxlYofjQNGpW7x7sixR1nWNSw1yr3YVB/zqf6bNcGVbvO7AhJFV7e7LlfXBY0mPlKGFfp1yCvdygCZt6qLTYz3rFqsnQd2HocBDurPul5S7SqQR0C+uTLjDhgSoHVUlreIIlw1OxhV20
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -130,21 +100,42 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Hi Hungyu,
+On Sat, 31 Oct 2026 20:35:40 +0000, Samiullah Khawaja wrote:
+> memfd_pin_folios() pins folios from the page cache without taking the
+> folio lock. So khugepaged or MADV_COLLAPSE can replace the folio after
+> its refcount check while memfd_pin_folios() still pins the old folio,
+> and the caller ends up with a folio that is no longer part of the memfd.
+> 
+> Lock the folio and recheck folio->mapping before pinning it, like other
+> page cache users do. If the folio was removed, retry the folio lookup
+> from the index that was removed.
+> 
+> [...]
 
-On Sun, 01 Nov 2026 12:26:53 +0000 Hungyu Lin wrote:
+Applied, thanks!
 
-> Report the inode counters when an inode limit is configured,
-> independently of the memory subpool. Preserve the existing zero and -1
-> results for unlimited inode counts.
+tree: mm/core.git
+branch: for-next-fixes
 
-Tested in an x86-64 QEMU/KVM guest and all checks passed.
-Inode-only counts are fixed, and unlimited counts are unchanged.
-Makes sense to me.
+Applied patches will appear soon in mm-next, followed by linux-next.
 
-Reviewed-by: Aveline Noir <jm5905938@gmail.com>
-Tested-by: Aveline Noir <jm5905938@gmail.com>
+Please report any outstanding bugs that were missed during review, so we
+can either drop the patch series or decide how to fix it up.
 
-Thanks,
-Aveline Noir
+It is encouraged to provide Acked-bys, Reviewed-bys, and Tested-bys even
+though the patches have already been applied. If possible, patch trailers
+will be updated.
+
+Note that commit hashes shown below are subject to change due to rebase,
+trailer updates or similar. Further, this is not a guarantee that the
+patches will go upstream. If in doubt, please check the listed branch.
+
+[1/1] mm/gup: check folio->mapping under folio lock in memfd_pin_folios()
+      https://git.kernel.org/mm/core/c/10b2920f
+
+-- 
+Cheers,
+
+David
+
 
