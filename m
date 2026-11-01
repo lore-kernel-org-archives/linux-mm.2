@@ -1,116 +1,127 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F2EC606A32C
-	for <linux-mm@archiver.kernel.org>; Sun,  1 Nov 2026 16:35:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94765606A331
+	for <linux-mm@archiver.kernel.org>; Sun,  1 Nov 2026 17:01:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=lVZ+sydb
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=ZEPDPrbw
 Received: by kanga.kvack.org (Postfix)
-	id 976076B05B3; Sun,  1 Nov 2026 11:35:34 -0500 (EST)
+	id 75CCE6B00EF; Sun,  1 Nov 2026 12:01:07 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 926A76B05B4; Sun,  1 Nov 2026 11:35:34 -0500 (EST)
+	id 734746B05B1; Sun,  1 Nov 2026 12:01:07 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 83CDE6B05B5; Sun,  1 Nov 2026 11:35:34 -0500 (EST)
+	id 64A446B05B2; Sun,  1 Nov 2026 12:01:07 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 466186B05B3
-	for <linux-mm@kvack.org>; Sun,  1 Nov 2026 11:35:34 -0500 (EST)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id AF197C0A8F
-	for <linux-mm@kvack.org>; Sun,  1 Nov 2026 16:35:33 +0000 (UTC)
-X-FDA: 85387100946.17.AE7432F
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 0714640006
-	for <linux-mm@kvack.org>; Sun,  1 Nov 2026 16:35:31 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lVZ+sydb;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf17.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 3BA946B00EF
+	for <linux-mm@kvack.org>; Sun,  1 Nov 2026 12:01:07 -0500 (EST)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id BF423160A67
+	for <linux-mm@kvack.org>; Sun,  1 Nov 2026 17:01:06 +0000 (UTC)
+X-FDA: 85387165332.08.EECB093
+Received: from mail-dy1-f174.google.com (mail-dy1-f174.google.com [74.125.82.174])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 0E0F9160014
+	for <linux-mm@kvack.org>; Sun,  1 Nov 2026 17:01:04 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=ZEPDPrbw;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf08.hostedemail.com: domain of zhangxp1998@gmail.com designates 74.125.82.174 as permitted sender) smtp.mailfrom=zhangxp1998@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793550932;
+	s=arc-20220608; t=1793552465;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=YpxeTkJB1bA2U9lceP4MrjPGCxxWE+eVAqMF4TwyDY8=;
-	b=JidFlzJ1e0J2ymXzIUj/SYlbwl8mpK7kvQab2FDsMMd1iF9LSO/nNjH9DNgAKgvo/3F9SW
-	Qqx10ayj8eXI4cjnspmxvg3rjBzVYaLjGljJBA2VuIUX6Kjt8ru49sK9p1YU5VHOfVVo+f
-	cy+ZOAS5INDMbrE+/pr5x/z1L0sm3IM=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=ROsDDi/peHhOy6BynZJX3N2nHlHF3d+geUaRBvCkIfc=;
+	b=aI2yuYkrFYXvkaEYpmHbMjEIhTtdNwlpMchsC3GOVyotTQSZH8yALTb6gNicBVMyRllG7U
+	57omSAPoEM0Kytiija6LcqQSD/l16qL3Y5wNKpEVT9lJAu+vIAzqfNimZ1VqBeYMChZGWw
+	qEHi8gxDlBSGuR33UDbCNBxrnkrfywA=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lVZ+sydb;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf17.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org
+	imf08.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=ZEPDPrbw;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf08.hostedemail.com: domain of zhangxp1998@gmail.com designates 74.125.82.174 as permitted sender) smtp.mailfrom=zhangxp1998@gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793550932;
-	b=nRxS3IDQnLg3IH/XjciJV8HRg9yNMQwAHy0lx3mO7YXPRWblIccmq17fBhwDS/t/2yKAyg
-	tn1kL7dxzUSQh22IRdjTXwbOdz6TCTzjRld4aDwVxNGMA7fSBNU6pXm9DufBQpLo9omlsV
-	04dnqlk0bZOjv2Fq1G7GHHwChyB2zPI=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 302AC60252;
-	Sun,  1 Nov 2026 16:35:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92D241F0093A;
-	Sun,  1 Nov 2026 16:35:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793550930;
-	bh=YpxeTkJB1bA2U9lceP4MrjPGCxxWE+eVAqMF4TwyDY8=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=lVZ+sydbX4IaalU9rxb8FWIjpvdImbXKLH5nmSn1TvKoHrCByGAdOlIHSgPGu0ujg
-	 YWFdM9diqbkgFrSdYdbOKRMdULyhOXXNUGzpWXSeSeXA3uTJ5r+X2PEPdGcvmV9eCQ
-	 JXinML6jFJpyK0fuE0V5q4UiEO2L6ovIsJKFc9VX1dTmSSxvsISoSgcvkU4gG+ruS/
-	 RPqxN7J/Mi5WxoKltitvI9NDusqY6VaE4IjeUiAwnjI+63r4WGYSxLuIViegZyhki3
-	 ecfoM+omSd71pWITyCEvJnoe+ROliHfGpBvENV4Oh0WhMVWUI7OA2A0rEBVJguwyy0
-	 KP1sF/5V3O0/g==
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Date: Sun, 01 Nov 2026 17:34:49 +0100
-Subject: [PATCH 2/2] MAINTAINERS: move SLAB ALLOCATOR under MEMORY
- MANAGEMENT
+	t=1793552465;
+	b=GwAwhdk1iFyxCrKWnwuu/OFMMW7HQR647u6B6urMeZyAE4eKXvKWGGWKhKMbDTGyG+ewzr
+	lResvRuiuAs6n01Ga+xIYgIfKHII12LD756RQgcgz7QK14ll5GdN8v1pRpWYUvrggwJahb
+	TQojCz+6OM24a+g17zgsOJFUpF2Y4mk=
+Received: by mail-dy1-f174.google.com with SMTP id 5a478bee46e88-369f33df08eso4585199eec.0
+        for <linux-mm@kvack.org>; Sun, 01 Nov 2026 09:01:04 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1793552464; x=1794157264; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=ROsDDi/peHhOy6BynZJX3N2nHlHF3d+geUaRBvCkIfc=;
+        b=ZEPDPrbwASwo9d8I1tAhyyXJ5oUhR3z6PSgEsKK54FUSbFqFsqqcND19YUwCJJywPC
+         btYU0yOWT7cgBJmHVO7IYN2ygojYV48TFZ+i/I+xCawIwkSgaGl3HaBmezaxr2J5vK2w
+         aXAaaNtLW3TpDNo7ENXqxRND9TA7f97ZzGYUdRyZTZlPsGIg3rXmkaOj1eGA7y0xL8mV
+         HzxecNCKwE9g7UXFgOVELaWEknRw4igCT2HbFwRrAKGE/cRvU50EVucj0PL+XAmYtCj7
+         iVT8Wt+nWY1kJITEx0AzrtkbwIzpCVY9Rqww763Zp9m3NTU8YWWiFTedFeqmOltP7Ok4
+         D5Rg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793552464; x=1794157264;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=ROsDDi/peHhOy6BynZJX3N2nHlHF3d+geUaRBvCkIfc=;
+        b=g8kJ8H5VZA60Uw+OxaeSI8+E8wAjR0g4Blhzw7cd86gwzsWcAn6LRf4CBXJHaNNM/T
+         xOZPO0wJ4YytAkdAUjMfC9QCFOuI9mC4V53N8zzh6mBQ3B2MG07qgaCp1Y91QfQ0CAqM
+         Z7+gSKzPuZZw2+OQuVI21LumctPByx96C/+p3BqfJH4edtJGqzUDTfaGDMmPd5PHfuze
+         Frihhzxk5z1H6aCzmnWDnAeaZy2Ewogz2qjbZZzsT1oT49xZsTFVvuXPyjfY+1soz6/a
+         Lv7tgNeKWGnlvg+KnPv8USK4p4oNSwcjg4C0jHCqL+Evy4U0tEzV+m58LNzIO+u7ze+q
+         J+5g==
+X-Forwarded-Encrypted: i=1; AKwUvBy4k2ivPxHm+WPNWD0CQc75S8ijmbCV/pDUnhD7GSSNQnliJi6i5LZbmLX6e2kF0J0HbaikmxrCow==@kvack.org
+X-Gm-Message-State: AFq9FYJK5RdstJRqaP+m5IRZvpTz9HHa4Hzu4O/vQL9bRa13rZWDuw17
+	0hCUYQxRrr+dMgxH7P5x0GaFXU8SxNDb2M6RjiBzVlfoprUD/0ISaD7b
+X-Gm-Gg: AYBFou0MJxptHamhQkUv/m1X4+I8IrnFrl8aN3/iGJ+zEmcB0L6xaudMhL05lfhlLPd
+	abQVE9SzHZQtnCKCvP+3kt1bkLdo7AQ4zTRQJwDBtunCjgyFxbCfjw580VvngZ8eD1L1OfRt2hY
+	QCN3CDXSFkhBMqvhGpRI/QpVBf+11Uwj6pKbTrFcDTy3NVmshvbS/X8Fra3u66gPoFNBikWMxWY
+	nwBzMDe8R92fih8iNjdcFUy5/rQwHCQBeIJZ5X6t6Q4tGPgjDOHG8Fr0RkbEfuZxaIFiXwwmDC+
+	9JyxqmBgtXuFZGL2pqXPcaJ/7emiKXwrnEozzqIHV2NlTwf6YyOeJRy9bh8vQdFR0+oxNN1JzHp
+	B+HaKntdiyttV4DZHWKG4ohz97EE2canxVyNL5dO44NXFThg6eQZXY627qF7eLueZaD2acsaeP1
+	VXNk3DroqwlR59BapN2CQ77aH6kobKa+6MP7UrG0E+owkEE0Qsclwcwf3bBtKKJkmteK10LuXBT
+	jXn170jDK7KVC9p9xArcP8jHjtpEb/o59yJFqOfNOEOsQsWJJpN7gWGEY72nm1pTZ3sdWnkEyAZ
+	cqxg1mPvNu1RTGa/d3mK/Dsi9T3daTIpIHa4UmcuOdexHIAQ0QNK/i7e
+X-Received: by 2002:a05:7022:f50a:b0:144:eb46:be0 with SMTP id a92af1059eb24-1ac5cb19684mr9393895c88.13.1793552463413;
+        Sun, 01 Nov 2026 09:01:03 -0800 (PST)
+Received: from [127.0.1.1] ([2601:647:4184:b3f0:b5a0:ac44:5583:ef02])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1ac18458e07sm25456350c88.8.2026.11.01.09.01.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 01 Nov 2026 09:01:02 -0800 (PST)
+From: Kelvin Zhang <zhangxp1998@gmail.com>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	linux-mm@kvack.org
+Cc: Kelvin Zhang <zhangxp1998@gmail.com>,
+	David Hildenbrand <david@kernel.org>,
+	"Liam R . Howlett" <liam@infradead.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Jann Horn <jannh@google.com>,
+	Pedro Falcato <pfalcato@suse.de>,
+	Kalesh Singh <kaleshsingh@google.com>,
+	linux-kernel@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH] fs/proc/task_mmu: check THP exclusivity for each subpage
+Date: Sun,  1 Nov 2026 09:01:00 -0800
+Message-ID: <4c1b393a4b04bd94e4f1c7879ae04e1793eb0931.1793552446.git.zhangxp1998@gmail.com>
+X-Mailer: git-send-email 2.53.0
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261101-maint-page_alloc-update-v1-2-27e8c246b13d@kernel.org>
-References: <20261101-maint-page_alloc-update-v1-0-27e8c246b13d@kernel.org>
-In-Reply-To: <20261101-maint-page_alloc-update-v1-0-27e8c246b13d@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Harry Yoo <harry@kernel.org>, Hao Li <hao.li@linux.dev>, 
- Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
- Roman Gushchin <roman.gushchin@linux.dev>, 
- Johannes Weiner <hannes@cmpxchg.org>, 
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
- Brendan Jackman <brendan.jackman@linux.dev>, Zi Yan <ziy@nvidia.com>, 
- "Liam R. Howlett" <liam@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>, 
- Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
- Mike Rapoport <rppt@kernel.org>, David Hildenbrand <david@kernel.org>, 
- Gregory Price <gourry@gourry.net>, linux-mm@kvack.org, 
- linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
- "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3248; i=vbabka@kernel.org;
- h=from:subject:message-id; bh=Yj97FLTqxQQ/XjojdX3j7TfC2CQw8jz0GMpF5tBgTkk=;
- b=owGbwMvMwMG4+8GG0kuuHbMYT6slMWQ9z3JaK9ifkLU39plOR/VDcS7ZZXvEBN1+v9f5zBETf
- MTkaIZ1J6M/CwMjB4OlmCJL9e4TjqIzlT2mefh+hBnEygQyRVqkgQEIWBj4chPzSo10jPRMtQ31
- DIEMHSMGLk4BmOpLJez/A+aL1+Tn+yxVDl0ty9N/l61VaFrm5tLMORNTJnAmi65ap/KCJWnPGoa
- DDZOfFwkIaj1RNa14GqZ5YHnf29U7YqxnBV639//Q5H7u4IE6l9dpjz6nxzCzHn198NIC/wdr5a
- UPr3LPFjHxnaZr+JJ71Zy9AfF9QVx7r+cd2N6l1uGldjrgwtyT56Ye1dvv6ae7wWLyBf3G24eeP
- 0xoKJldnr6c9+07gXdtCyfevJGt81g0bxHLvz1XqlZOO2U++6x251M3ec6UglMXJ6dGx3kKSFs8
- q/n8r9w6xE9xteBG3h0ty7ec3L5Mrb5rJtPc12s4mkqFzi4TDDhyc83ktVI8/JrPAk7sSfRYpzn
- v6YeAfQA=
-X-Developer-Key: i=vbabka@kernel.org; a=openpgp;
- fpr=A940D434992C2E8E99103D50224FA7E7CC82A664
-X-Rspamd-Queue-Id: 0714640006
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 0E0F9160014
+X-Stat-Signature: 9iqgn9dc8xiik5iwdz8zjrmrqor4bs4t
+X-Rspamd-Server: rspam06
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
+	autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-Stat-Signature: 7mpyt4uhjr1hwynmumj9znf76owsenht
-X-Spam-Status: No, score=-23.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,
-	MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT
-	autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1793550931-419942
-X-HE-Meta: U2FsdGVkX1+udalgqtOfUERn50p2cJvevOhxjc9dIJEuKSiTWlv98taSY8ockyGE68p2AnsN5FA2gvS1xc+Xvemzy62S4TGnZ+SdMxLIggSBEV+q7W+So0FUTvDnR8fss2wG3lrE69GWeGYcNLFPs/6ylm/UvYpMZnjmKJtFTVtj42V2947Y3cjmXv6aUi9exp2nSHExmNiyCZYpeFAOLw2jdVyR1TpvcxH0lskLElelbaE6PYBj0xvowkQd5FwfMUY+uO5faloWLERhYSScVBtTLsH2iC4mkEofmXRo8ac1tqx6zYEWaq/RWSb8lpR1Mc7mUyN/cA/SwVncSHqpCyE86bnIC4Z080D2XM0FqjmFb/zRarHLkH/gTC0YklZUEaoVHIHAojU96+UgYe3qeepSUv/u0mQ1EFP+ItFNfblL4Wxx86AP6KZu5IXmYG/JtFgE5yRSYT/A3ugrqEmUFFRHpWf6EpMaJD3BXSoRQc+7+pIvx3D/8NRq5JwKn2lzA5FHH0hG3YKMPBNjfwEONo3jtNatTeWCrTAa4bk3gJdHWVUxHUvnsCfltWU5VXdgRSmsaBQiBgHASOM4jXEUf/E7a8Js0vS6rnMwYaygWGjzMEb3BkI1cfc8LTUFVT4c9k3ASSmX8Uvd5F0fZyLSajDXuE2BNzbyAaTvcEUQ7sLrqSyRNBGZGsYem1agMjA1wUPuK44B59UyGDzA3VXSEFBZ4cY5ndjOMeseSwb64WYSc/pCpqR0W6nx5BQlevOjyn/I4ORKiRr7MmyNpPM8KRAuw6Cow4ecCBZu1VsboTpFJ3pxgbGWA+Ua65Jga1VvQ0Ie8iXiH32r6mbkeY6LMTEDE3KoIbRF3ObtojxMix3X0CeTtrEVxUz2V3aViJOjTJaeZq6JQS2ALcw1MfjLmtMbB0b+rq+uWqkhIbxzdu1mToRFqi/6ihdbAWBQpqdetBdW8YPChEGUxc4LLR0
- j3gERt82
- J39TXNmBEuaql9rFmsP0LCnwKuQ3nGfO98MkwEqQlf1t6udK7kewYD8St9neWHfwA07GqizmcIln68gXFznjkiCBDkGb0RUhSfoUP+rEIdi/XuBDPDXBxZz8BhcLX2WG9ZbNt1TnZ2TqdtMjHh37s2x+asRivUPnJbNMvDgG8oiY0OnIX6CWD31tTs3LWf3Rzk0cdKvqO2fElxUhkclzIJE9MCStTyZUXhjImnoJsk3HdkqKywyHugXw2PRLCoH33S23gGtnKqEaUIqfFL1P/FVgKKaPzsZD1EUmOEYLMXirSRoCuoxcuaAbnpwA4ytvQVl4p3qUqN9sOpI2kRjSwB6svapzMONbcOtez+EsTtgZ6RG20GS5aeG4qFh1vTw9azhqIcgzQhd97QD/wyzd820h9HkxifHjtN3meiMyWjL0ZQwLCJRRulztDRlRMJy9zHYr2Q7n3zYF/6sSE8msnWYNnw1xPcwTIpU0mKjC5NZXnwrEkRN6QUv8npwSgqnKqsotM
+X-HE-Tag: 1793552464-244909
+X-HE-Meta: U2FsdGVkX1/MUebIhTw4ik7ODCcimqarQYfgThD66MKCh0/UEF7mt1fuHKHyM7KAB6HpFXu8KaTetBjYsa0v0HDwsFzZ9ZPb7ZT19WZaUMH7mgFZNHj5Msd/JQXDhXkiuGG5P0cdwBVvUTDCQ0C4xophPhGct+Uy9kaTtnkrJhruxkITjdOye+0v9NXaqz0iZBJ+/td0ncfvVHwNDrxXEJd1Wnr0EdiYbzhqeB4PXJh9c3W7AvwJ2qp+IlFsEYrKAISaebCoS2qHWoLyQerNct5yB0XjQv6Gy3fxKRoWxuQEB0lUoJoKyXIPSlmzQ8yK1F+S9IW3J6u6oAG256zW+eGpLfNos6wRFv2ZuvKHlcgzLn1kY3Ly2xL8dspg7x+e+xkD//tkBPhVNkcu7qIQcwjpHtAAc3RK8fIpbBDATHHDsPJtbBUIWZ675HKBjl9GqQK2gwaFTlaWnKhT0/9GaR6ihdj2+ccV1joMWES71YRAvyx6NNPMIQwPR2BhpHYFTnE9Y6h9Ywuic/1uEMHr4HsLAtMuwvQlMXGz80rW0qyC/ueslFnXuPNXLBTFYO2crvJGXw+pQ8ZcGJQC03gVawyKMj7YW0QB4cfMFP86Y7VWsHfNqCTCkDtTLiPgPY01SbgVpbJD/BlPPZZzyNydjUNpd2eo5VvduLZh3vZerw+iY/hn/d9Cw7I+GbwuNBgEY57mdmWun/l9IMIIYyJBvWg2i9CrcjgbDzKXkROkBaa9rGPHHogH9Ncv/3k0x3M7lEw1CK5JQF1JOdvfIwnesxONeYHsh/J8I0wy/3iavePdjEn8JpQMkC2qOJnwrVoe/JeFC3Ul2bqcR8InRJrB6tQjrtK51TRk1YG+A6tk7dqIzlttEWF+7qiPqFpZCjv1RVkTRkcDMBbW6KADiyWpi93YrJEcGsfidvnnCB6Kvd8UN7bhJ/SwqNwcuXJlt62j6sJ0v/27pIc0fswoGqf
+ Zu8HdzRV
+ F/Ou4jMaffacB5Pc8CDsStTeIQjXo7WfZKWzxjfl3CE+jiBnvt6qeBUgT73UmDECAjIiWD42VYWt4WYCEA1xlB4PJLpIVlArLfB/YoE1x1pbdfvy1xGnveB4qOJ5C4UY1kLbbklnss9s+/aAYT5pFvwvSiLbeA/+rF1DID3u+OXou8iqGN3kgyywRhs1pKIliiHDUkvg8ligrgHV0OhPN8wMVTEzwqsQHgBITLp5tnKhayL2BBrfjHdRveKn81Yb/6LKpE/aXTKWoEDu1tstyZfOnQMpoT4iIZrSsSrdf8O+Jh3p7NqnpENCAJc8Jb8zKwpj5ZlH8G8owTvyYQ+GCzij+NM1eF8QZ1skwAkKACOFCazF99bL/Kt7jTwunYjxdez50pbYq8UzRSACRtOY8VEVOpaI8DXtTrlMdBuBJL49ZunB70iqn2eXy8F9lndKiMjnxrCyvi3ESv8mH8mL2sW36O1XMzVc2efAk8CQf5fQubl4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -119,104 +130,56 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Following David's consolidation of several other MM subcomponents, do
-the same for the slab allocator.
+A PMD-mapped THP can contain subpages with different mapcounts. For
+example, after fork(), the child can unmap only part of the THP. The
+parent retains its PMD mapping, while the remaining child mappings
+are PTE mappings.
 
-Rename the section to MEMORY MANAGEMENT - SLAB ALLOCATOR and move it to
-remain in alphabetical order.
+pagemap_pmd_range_thp() passes the same initial page to
+__folio_page_mapped_exclusively() for every pagemap entry. With
+CONFIG_PAGE_MAPCOUNT=y, this applies the first subpage's exclusivity
+to all entries, falsely setting or clearing PM_MMAP_EXCLUSIVE for
+subpages with different sharing.
 
-Remove Andrew as M: to signify he's not the primary person for picking
-patches in this subcomponent. get_maintainers will continue CCing him on
-most patches via the catch-all MM entry. David prefers not being added
-for mail volume reasons.
+Pass page + idx to check the subpage corresponding to each entry, as
+was done before converting to __folio_page_mapped_exclusively(). The
+index already accounts for reads starting partway through the PMD.
+The conservative whole-folio check without CONFIG_PAGE_MAPCOUNT is
+unchanged.
 
-Indicate the primary integration branch (slab/for-next) in the T: entry.
-It will now be integrrated via the mm/linux integration tree.
-
-Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+Fixes: eb16876971ea ("fs/proc/task_mmu: remove per-page mapcount dependency for PM_MMAP_EXCLUSIVE (CONFIG_NO_PAGE_MAPCOUNT)")
+Cc: stable@vger.kernel.org # 6.15+
+Signed-off-by: Kelvin Zhang <zhangxp1998@gmail.com>
 ---
- MAINTAINERS | 59 +++++++++++++++++++++++++++++------------------------------
- 1 file changed, 29 insertions(+), 30 deletions(-)
+Tested on x86-64 under QEMU/KVM with CONFIG_TRANSPARENT_HUGEPAGE=y
+and CONFIG_PAGE_MAPCOUNT=y, using the same test binary before and after
+this change. After fork(), the child unmaps the first, second, middle,
+or last 4 KiB subpage, while the parent retains a PMD mapping. Both
+bulk pagemap reads and reads starting inside the PMD are checked.
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index d7cfb28a9029..e449ee3009ac 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -17815,6 +17815,35 @@ F:	mm/shmem_quota.c
- F:	tools/testing/selftests/memfd/
- F:	tools/testing/selftests/tmpfs/
- 
-+MEMORY MANAGEMENT - SLAB ALLOCATOR
-+M:	Vlastimil Babka <vbabka@kernel.org>
-+M:	Harry Yoo <harry@kernel.org>
-+R:	Hao Li <hao.li@linux.dev>
-+R:	Christoph Lameter <cl@gentwo.org>
-+R:	David Rientjes <rientjes@google.com>
-+R:	Roman Gushchin <roman.gushchin@linux.dev>
-+L:	linux-mm@kvack.org
-+S:	Maintained
-+T:	git git://git.kernel.org/pub/scm/linux/kernel/git/mm/slab.git slab/for-next
-+F:	Documentation/ABI/testing/sysfs-kernel-slab
-+F:	Documentation/admin-guide/mm/slab.rst
-+F:	Documentation/mm/slab.rst
-+F:	include/linux/mempool.h
-+F:	include/linux/slab.h
-+F:	include/trace/events/kmem.h
-+F:	lib/tests/slub_kunit.c
-+F:	mm/failslab.c
-+F:	mm/mempool.c
-+F:	mm/slab.h
-+F:	mm/slab_common.c
-+F:	mm/slub.c
-+F:	scripts/gdb/linux/slab.py
-+F:	tools/cgroup/memcg_slabinfo.py
-+F:	tools/include/linux/slab.h
-+F:	tools/lib/slab.c
-+F:	tools/mm/slabinfo-gnuplot.sh
-+F:	tools/mm/slabinfo.c
-+
- MEMORY MANAGEMENT - SWAP
- M:	Andrew Morton <akpm@linux-foundation.org>
- M:	Chris Li <chrisl@kernel.org>
-@@ -25809,36 +25838,6 @@ S:	Maintained
- F:	Documentation/devicetree/bindings/nvmem/layouts/kontron,sl28-vpd.yaml
- F:	drivers/nvmem/layouts/sl28vpd.c
- 
--SLAB ALLOCATOR
--M:	Vlastimil Babka <vbabka@kernel.org>
--M:	Harry Yoo <harry@kernel.org>
--M:	Andrew Morton <akpm@linux-foundation.org>
--R:	Hao Li <hao.li@linux.dev>
--R:	Christoph Lameter <cl@gentwo.org>
--R:	David Rientjes <rientjes@google.com>
--R:	Roman Gushchin <roman.gushchin@linux.dev>
--L:	linux-mm@kvack.org
--S:	Maintained
--T:	git git://git.kernel.org/pub/scm/linux/kernel/git/mm/slab.git
--F:	Documentation/ABI/testing/sysfs-kernel-slab
--F:	Documentation/admin-guide/mm/slab.rst
--F:	Documentation/mm/slab.rst
--F:	include/linux/mempool.h
--F:	include/linux/slab.h
--F:	include/trace/events/kmem.h
--F:	lib/tests/slub_kunit.c
--F:	mm/failslab.c
--F:	mm/mempool.c
--F:	mm/slab.h
--F:	mm/slab_common.c
--F:	mm/slub.c
--F:	scripts/gdb/linux/slab.py
--F:	tools/cgroup/memcg_slabinfo.py
--F:	tools/include/linux/slab.h
--F:	tools/lib/slab.c
--F:	tools/mm/slabinfo-gnuplot.sh
--F:	tools/mm/slabinfo.c
--
- SLCAN CAN NETWORK DRIVER
- M:	Dario Binacchi <dario.binacchi@amarulasolutions.com>
- L:	linux-can@vger.kernel.org
+Across three repetitions (12 cases), the unmodified kernel fails 24 of
+84 assertions; with this change all 84 pass. Fully private and fully
+shared PMD controls pass before and after the fix.
 
+ fs/proc/task_mmu.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/fs/proc/task_mmu.c b/fs/proc/task_mmu.c
+index b87d3e86442d..da4319d972e4 100644
+--- a/fs/proc/task_mmu.c
++++ b/fs/proc/task_mmu.c
+@@ -2038,7 +2038,7 @@ static int pagemap_pmd_range_thp(pmd_t *pmdp, unsigned long addr,
+ 		pagemap_entry_t pme;
+ 
+ 		if (folio && (flags & PM_PRESENT) &&
+-		    __folio_page_mapped_exclusively(folio, page))
++		    __folio_page_mapped_exclusively(folio, page + idx))
+ 			cur_flags |= PM_MMAP_EXCLUSIVE;
+ 
+ 		pme = make_pme(frame, cur_flags);
+
+base-commit: 64703f0fee7421f0ddfcbd8ee1bfa53b25ffc4ca
 -- 
-2.56.0
+2.53.0
 
 
