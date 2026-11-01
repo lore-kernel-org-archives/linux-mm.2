@@ -1,116 +1,93 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D78CE606A324
-	for <linux-mm@archiver.kernel.org>; Sun,  1 Nov 2026 17:14:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9932C606A338
+	for <linux-mm@archiver.kernel.org>; Sun,  1 Nov 2026 17:16:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=NW0/ZItu
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=fCdRHVbT
 Received: by kanga.kvack.org (Postfix)
-	id 023CD6B00EF; Sun,  1 Nov 2026 12:14:19 -0500 (EST)
+	id 753E46B05B1; Sun,  1 Nov 2026 12:16:41 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F17176B05B1; Sun,  1 Nov 2026 12:14:18 -0500 (EST)
+	id 704986B05B2; Sun,  1 Nov 2026 12:16:41 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E06696B05B2; Sun,  1 Nov 2026 12:14:18 -0500 (EST)
+	id 61AF66B05B3; Sun,  1 Nov 2026 12:16:41 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id BD83C6B00EF
-	for <linux-mm@kvack.org>; Sun,  1 Nov 2026 12:14:18 -0500 (EST)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id C4557A0847
-	for <linux-mm@kvack.org>; Sun,  1 Nov 2026 17:14:17 +0000 (UTC)
-X-FDA: 85387198554.16.CFE0963
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 401326B05B1
+	for <linux-mm@kvack.org>; Sun,  1 Nov 2026 12:16:41 -0500 (EST)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id BA227120A1A
+	for <linux-mm@kvack.org>; Sun,  1 Nov 2026 17:16:40 +0000 (UTC)
+X-FDA: 85387204560.17.9330C83
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 290B4120002
-	for <linux-mm@kvack.org>; Sun,  1 Nov 2026 17:14:16 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="NW0/ZItu";
-	spf=pass (imf29.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	by imf28.hostedemail.com (Postfix) with ESMTP id 39660C0008
+	for <linux-mm@kvack.org>; Sun,  1 Nov 2026 17:16:39 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fCdRHVbT;
+	spf=pass (imf28.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793553256;
-	b=6RSIlJ7xu0CUL4/yJq5Pe4BnuHg1e72Wqi5JvUK77MsRxPQar+VYWCHtW1bG6pADoq5mhE
-	1sgRj1Ie9ZcijA4hAoryC3owzsWvp9WvR4WxPzmsrTm0ZX/GUCabhEsm508t/qdU3UHOPm
-	sqBbCgD7euRy7jz6lzVUNHQ9GpZT51A=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="NW0/ZItu";
-	spf=pass (imf29.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	t=1793553399;
+	b=v0Pee1Vzq1nbnkSz1dusgNrv4fO4ektW1I0dKwhCl7CzCYAcIEZM96S6WLjvq6+bmNq2JO
+	j0jTwKg0iOHTm5Cu9U1b+GcOqowfERkM6GQRYKwfRGYSDv73R0gldzZPlon/yGfUZ4MgNE
+	w52pcLZTsxdQFA5QObNMggHf8jokpQA=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793553256;
+	s=arc-20220608; t=1793553399;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=R6gUavSXN8o98nfRqPmDU4mBwMW9oSNT3lHuUTmjbYo=;
-	b=csaVX7hJACciKRAWar1uR8+tHIX5wu5be4yQJpoazLN94XveQ57z6310BXIkIDDkl/EZr6
-	wxFX0RQEjSMNixPJ0ZO60e3a2YVBvigUwxEIWoobm6p8nNJvibTDSkLLNK6MuR48/boBxt
-	vueKqsPp6s8+JQsI9/Um5dySughYuD4=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=9FIAjLQl49vWGxEAT5mry9z/qprr2ACY4K70jv59AGk=;
+	b=iIeVSB/DNU13BCiAZoBHE7BbI+RtrlNxc+vFppjGCUSqjF3iaz4DcIkugF6fnGLmlmfbRa
+	x/9YmtUjzqfYS8eAKqMziHRCeGUBq6n/qfRkw2htN3QhruOfp3YN/3v/LEFpNtZTRg/cOF
+	M18zvF4y7YJ22PrdYZHSynllAOsbPtU=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fCdRHVbT;
+	spf=pass (imf28.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 5725D43950;
-	Sun,  1 Nov 2026 17:14:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7622E1F000C1;
-	Sun,  1 Nov 2026 17:14:14 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 6A99442E31;
+	Sun,  1 Nov 2026 17:16:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 183001F00A16;
+	Sun,  1 Nov 2026 17:16:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793553255;
-	bh=R6gUavSXN8o98nfRqPmDU4mBwMW9oSNT3lHuUTmjbYo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=NW0/ZItu8ulb85kahpqmxU5Cdhwkdm5fODVcRqYy5093olCiYLGwX7cw1FLgl/Wr8
-	 be6fSFpfOzilrkt3Mgrvv3f30APu+WmoLRhr6w5YThqBESoP5fQrAnIRvDI+unlBU2
-	 XGY/8ngxF/IMenuje6LAqPjw894hwe+xyz7HmvasyKt/fGFx5myHpXwVbtlwHGIAdV
-	 bB06uoPXtIzgtCDJYVFA8LfpKvY5/jU7OOmM4yRQIQRaHCfhUvHo0WMuxWN1NR58rh
-	 81Kl3CuXfHLi8oQYLM0CMiFJlqua3DYgG4QBD9lfGheBq5gAgkTK7Ku1qzRr72QTQK
-	 Ed8/XYIg/OB4w==
-Date: Sun, 1 Nov 2026 17:14:12 +0000
-From: Harry Yoo <harry@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Alistair Popple <apopple@nvidia.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Baoquan He <baoquan.he@linux.dev>, 
-	Barry Song <baohua@kernel.org>, Brendan Jackman <brendan.jackman@linux.dev>, 
-	Byungchul Park <byungchul@sk.com>, Chengming Zhou <chengming.zhou@linux.dev>, 
-	Chris Li <chrisl@kernel.org>, Christoph Lameter <cl@gentwo.org>, 
-	Dave Chinner <david@fromorbit.com>, David Rientjes <rientjes@google.com>, 
-	Dennis Zhou <dennis@kernel.org>, Dev Jain <dev.jain@arm.com>, Gregory Price <gourry@gourry.net>, 
-	Hao Li <hao.li@linux.dev>, Hugh Dickins <hughd@google.com>, Jann Horn <jannh@google.com>, 
-	Johannes Weiner <hannes@cmpxchg.org>, John Hubbard <jhubbard@nvidia.com>, 
-	Joshua Hahn <joshua.hahnjy@gmail.com>, Kairui Song <kasong@tencent.com>, 
-	Kemeng Shi <shikemeng@huaweicloud.com>, Kiryl Shutsemau <kas@kernel.org>, 
-	Lance Yang <lance.yang@linux.dev>, "Liam R. Howlett" <liam@infradead.org>, 
-	Lorenzo Stoakes <ljs@kernel.org>, Matthew Brost <matthew.brost@intel.com>, 
-	Miaohe Lin <linmiaohe@huawei.com>, Michal Hocko <mhocko@kernel.org>, 
-	Mike Rapoport <rppt@kernel.org>, Muchun Song <muchun.song@linux.dev>, 
-	Naoya Horiguchi <nao.horiguchi@gmail.com>, Nhat Pham <nphamcs@gmail.com>, Nick Piggin <npiggin@gmail.com>, 
-	Nico Pache <nico.pache@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
-	Pedro Falcato <pfalcato@suse.de>, Peter Xu <peterx@redhat.com>, 
-	Peter Zijlstra <peterz@infradead.org>, Qi Zheng <qi.zheng@linux.dev>, Rakie Kim <rakie.kim@sk.com>, 
-	Rik van Riel <riel@surriel.com>, Roman Gushchin <roman.gushchin@linux.dev>, 
-	Ryan Roberts <ryan.roberts@arm.com>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Suren Baghdasaryan <surenb@google.com>, Tejun Heo <tj@kernel.org>, Uladzislau Rezki <urezki@gmail.com>, 
-	Usama Arif <usama.arif@linux.dev>, Vlastimil Babka <vbabka@kernel.org>, 
-	Will Deacon <will@kernel.org>, Xu Xin <xu.xin@linux.dev>, 
-	Ying Huang <ying.huang@linux.alibaba.com>, Youngjun Park <youngjun.park@lge.com>, Zi Yan <ziy@nvidia.com>, 
-	Jason Gunthorpe <jgg@ziepe.ca>, linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH 2/7] MAINTAINERS: TMPFS (SHMEM FILESYSTEM) updates
-Message-ID: <audzTEdSflX9iZMg@minisforum>
-References: <20261030-maintainers-v1-0-97278f8a5f54@kernel.org>
- <20261030-maintainers-v1-2-97278f8a5f54@kernel.org>
+	s=k20260515; t=1793553398;
+	bh=9FIAjLQl49vWGxEAT5mry9z/qprr2ACY4K70jv59AGk=;
+	h=From:To:Cc:Subject:Date;
+	b=fCdRHVbTv7LssVGIaJeoJS4MdHHPVs9+iHHW6hyzu5w1w5Y6o/UDhYyRW/dIRklP9
+	 yloZkzUlKQldmVHFvh4o+n7mfWqaz62e9lKgkuexu1b9ipH+ZqMRB6rqXgRC5x7yAe
+	 vA3CNOrQ2yJK06fJl5IqTJCn2RvN+cRDMKFTtCU7ZhDQQfDH0C4ajQ3pbjnr+ImD5R
+	 qZ5Zug2sS3UiFx76sr4iyehCTX/8KgHXuWNED2zVWRsyhX1aB6dI7oRiqNNLFMkJBG
+	 +fOxNd4LC0QPoGfYKDnnKwAT1tAvtgJKUNVDYSYY2EoWU8vUvV3YoOVLizt4+qB/gf
+	 YLJxAyXuWkD5g==
+From: SJ Park <sj@kernel.org>
+To: 
+Cc: SJ Park <sj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Shuah Khan <shuah@kernel.org>,
+	damon@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: [RFC PATCH v2 0/6] mm/damon: misc improvements/cleanups for core, vaddr, sysfs and tests
+Date: Sun,  1 Nov 2026 09:16:23 -0800
+Message-ID: <20261101171630.81477-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261030-maintainers-v1-2-97278f8a5f54@kernel.org>
-X-Rspam-User: 
-X-Rspamd-Queue-Id: 290B4120002
-X-Stat-Signature: z9beozqfwh3od3ps9jf1f7gdzwgrutge
-X-Rspamd-Server: rspam01
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: y1borjfrj6wziweorfmucrs484ytc8yp
+X-Rspamd-Queue-Id: 39660C0008
+X-Rspam-User:
+X-Rspamd-Server: rspam12
+X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
-	autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1793553256-680815
-X-HE-Meta: U2FsdGVkX1/Cr1pd9ULOgh4XTYSnySecTuNp+VkQoZJY+avOstkaTu0zxHbGAtcFUm/uGcY+pb/ahKsj+hy6Ah9/hTiESh8SolR4nI6NT2FUI/BNczGONpNtf6pZJDi5MFCXX/c5LWoDBKY6jh0lu10SnepcJR8ajk6Cd0hGeYIq8508ETQydiY5xEFDJT8GaeJhc2VDQ4Jq3knaMQBizZ8LGPoKM38JRRxOt61xtYeXzP/z9h+m/WF9HCNmNQ7GKtON+IXqYvStE7CSHp/0CeaYku+5AFcAMvYCzSyBhHseVgXevg/EEvhp9LzPAXFVm8iqMVQQOi8y3v54mude23Hf+Ol0udqTLi97lyM17LHFC/aGgSnEA7qQuA9IPjvpjEi+VSAa3IPhJMn8HzYmLqs4D+Mm0MtIyp8OuKHzHrMcUOkKtZZhW+pAimGxXRtxtmYifM36NG/p5crw9VEbAqt103EnCnssOmY7NL/DGvusYq/9/ItX4RukGL/FIEvMsPBOqQ1OS+DlmLYS2OVlymgs0FhEPtJhTH2zoyphCQaC4yyRzhVWoQOBPmZZTYwTPPBiNaX1jWZXm32X4dbZcQ5Um5+WT6k4FJ8LKGOITu3NkDTER4MulPdUy541OSoqrKAPEB6N5P3aCXd3Pc9jEftbiDYKbgTrVJCHG/W5IaZCy7LFYstBKk7jaJGb27bjlyZjitNDay1tNcjoJ/LxGVRKDvNmbKwmgOnP2/3WdlWzbABWzX9x/iSHA8dEF+d/MJOcGw9QkqGc0etk1dBKf8xmBKVWEsLaPlE4bq1nA9GqC+wguC5bb+TvY2es6x0TQHJU5niAgvCRYk324SCc0ozIkQEhN786G0FPBc4hwDB5cYdzFKqQJv9F5eYWx3Bi70V81aZK0IOcWg6DJSB/WNo0AnmjogbZbbspLpFGEgtLDCFznrHPN1xPkGHpYI2irt45tojlX+9V1VlkftZ
- bWbYrObY
- fub4kNy515q708bCMG3+YJrOW6Z/rr4E/tjWjNEpqFF7FzqMQzrLB+HbmVUhc5KFqWU2m+3Iksz1JbQfbt6Us3q6LThgU3qsweAdignIqvX4T+aHP1L2VXgJMV9InSeBcT1Tf/fhHg5pFU4aL5q1edIJ3qzbJzkVq7DqRXD8Mi4xVlxKcX9MnwYV5Wau0rf4uCSGXl7gaZ6fDvLqj0gAbEuJFOKvXcAcXq7OJ4O6/4Ee+fPN8u9InzWxkvewDDAfa9GiRMfjGK6nt3MSfCxkPfooeVDW/Rni6cPEWttIXgC5p0bz9PP60UcQHsoX7SzOWZ1rduxFL40AV/HXY8nCw1hk7S2fnX9ukYBeY
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1793553399-624831
+X-HE-Meta: U2FsdGVkX1+M7RVymgwTQ4ACODhaxUmrCiD+86S2szzSKLwG6mWb1p5ILc9VpAXMazcr5aZ4hWLunvVY1E3hfTVkKBZCsAWPKZe4UcBuMWIVv/Pb79Oc5tGAWO9csGs6DCwV8NMJfwiIZc1DaN6n4PaIuStKkXmYFfQcMxQOuXeGZs94OMSUfEyzNYQKF6n9Apysx0aBIdfQlAVjFJaYcnPQzcjqAFLDCBPXKRrKkwbFE7OC/rIQCbf3ro7dQ8yqtcP30mEEkt2lMLzosFhbojs3M6t7ehvFJrveB9hLtyE2h91ovMb6K8Fj51WwGi2CTFIubCfB/qTW/O5yQbTmmevnYSDkwwgjF1HPOVnppkUZgyL5EO+KS3K2CJgz/vqofoHT8dCl+RQm6HrkJCxdKiemOUSSSJK3Rre1+At2LWKKxfPIqNKVFAdHq+evTCsXTtlEjZ0Ml9JS1Pxw9KKaO/7LbbF63Z59nSyeilhF9J2hqPYDoH5YnkwQBq6YKbBPKFa/PGFgsqRAkrcUdUu8HiW6mkhfUnc8hwZCr8GHG0hdE99Q1RVyZDlzXTOOJidT489WRUJtVQJvKPwsDaSEnuc9Po9xBea3ST8Ssq9579tvzPqpa4IXChWEJ0Ac19/tgft7I59e5Ww6jWURFY7gTpoKBU+u8y3ZQeqmfRsPd0ZPVZvK1HwMDitBsP6dDjbsUyACwR1OM6L1TGyDEKW0ZbZn3twtS+DucncXqVl6Sy57a267QRZYZ9ATYTUMgbUUvXyqEFW5f7DC84dOHYiFwj9LgH8ijR2eiu+cl7zw8l3Sa3kTHmU4+4dtGJNcrbbJKDRk8Blo/I618NTYp5SdEVPZipXVAZGhjZSTrle5AUN3Cdr4BqN8nKBZIEmtRhmeq90MX7K0Z2jbGS+g7kfPloS8AP5MuS9Q1X73dDkeJq5StNCzUMipdvlhoYMvxVqoSB+KqVoMYuDfrNyPvD3
+ LbU/psap
+ DarBp+o2daxSLPivDJA5DGs+F9+iRDgCMeq39E93X0rW3hxIf/97YbBUcqwn8h00wTIGEzubgv46cyRNp62P9JANADlEA6Xuzl/RLqBWRyNB/LU//LJNfQtm7rL9cvgqjefd0tiHa+zLJHLFXDXvMPHTEt1rNUZmdQWJDFPceHn8omOfiIrG6/NO5o9hp40xrUfF9hBsalB9Ybd05VAw9tmkYwvufiXg0BftNJsUAjLK+F33GjoVqinQPyF4YDd9wh6TQPYuvB3q1rXqqBb74hLIgDw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -119,33 +96,44 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Fri, Oct 30, 2026 at 10:34:26PM +0100, David Hildenbrand (Arm) wrote:
-> I am not really the best shmem/tmpfs/memfd expert around, but it should
-> be good enough to judge when something is ready to be picked up, to then
-> pick it up. I'll have to heavily rely on Hugh and Baolin on judgment
-> for the more involved and more controversial bits.
-> 
-> Rename "TMPFS (SHMEM FILESYSTEM)" to "MEMORY MANAGEMENT - SHARED MEMORY
-> (SHMEM/TMPFS/MEMFD)" and move it accordingly. Add myself as a MAINTAINER
-> so people know whom to CC.
-> 
-> Add mm/core.git as the target git tree. Once shmem becomes a high volume
-> component we can dedicate it a separate tree and have dedicated people
-> pick it up.
-> 
-> While at it, add some more shmem/tmpfs/memfd related files+directories
-> we missed so far.
-> 
-> There is also "kernel/pid_sysctl.h", which includes some of the pid
-> namespaced sysctl vm.memfd_noexec. But that's really more of a proc/
-> namespace thingy, so it's not a good fit here.
-> 
-> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
-> ---
+Refactor code, optimize code speed, and add missing feature supports on
+various areas of DAMON.
 
-Acked-by: Harry Yoo (Meta) <harry@kernel.org>
+Optimize the efficiency of vaddr damos_migrate action under filter
+failures with patch 1.  Use damos->last_applied on damos_migrate action
+in vaddr and support sz_filter_passed for damos_migrate action in vaddr,
+respectively with patch 2 and 3.  Drop a redundant and racy quota goal
+target value validation in sysfs, in favor of that in the core layer,
+with patch 4.  Drop unused variables and imports from selftests with
+patch 5 and 6.
 
+Changes from RFC
+- RFC: https://lore.kernel.org/20261031202614.96036-1-sj@kernel.org
+- Drop charge_target_from fixup consolidation.
+- Add a patch for using last_applied on vaddr migrate action.
+- Add missed damos_va_migrate_private->sz_filter_passed setup.
+- Fix wrong commit message for unused imports removal.
+
+SJ Park (6):
+  mm/damon/vaddr: advance migration attempt in folio level for filter
+    out
+  mm/damon/vaddr: use damos->last_applied for migrate action
+  mm/damon/vaddr: implement sz_filter_passed for migrate_{hot,cold}
+    action
+  mm/damon/sysfs-schemes: drop redundant and racy zero target_value
+    check
+  selftests/damon/damos_apply_interval: remove unused variables
+  selftests/damon: remove unused imports of os and sys modules
+
+ mm/damon/sysfs-schemes.c                      |  3 --
+ mm/damon/vaddr.c                              | 28 +++++++++++--------
+ .../selftests/damon/damos_apply_interval.py   |  2 --
+ .../damon/sysfs_no_op_commit_break.py         |  1 -
+ ...sysfs_update_schemes_tried_regions_hang.py |  1 -
+ 5 files changed, 17 insertions(+), 18 deletions(-)
+
+
+base-commit: 807c0ce92f8424fbb7eb13e7ea48746f68b24dca
 -- 
-Cheers,
-Harry / Hyeonggon
+2.47.3
 
