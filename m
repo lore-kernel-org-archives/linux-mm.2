@@ -1,86 +1,93 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0420606A32C
-	for <linux-mm@archiver.kernel.org>; Sun,  1 Nov 2026 18:02:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C2DF60A2614
+	for <linux-mm@archiver.kernel.org>; Sun,  1 Nov 2026 18:03:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=eW7Jg6QJ
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=MvXR4gxh
 Received: by kanga.kvack.org (Postfix)
-	id ED10C6B05B3; Sun,  1 Nov 2026 13:02:15 -0500 (EST)
+	id 2EC3D6B05B4; Sun,  1 Nov 2026 13:03:16 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E81F46B05B4; Sun,  1 Nov 2026 13:02:15 -0500 (EST)
+	id 2C3C56B05B6; Sun,  1 Nov 2026 13:03:16 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D983B6B05B5; Sun,  1 Nov 2026 13:02:15 -0500 (EST)
+	id 1B3596B05B7; Sun,  1 Nov 2026 13:03:16 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id B5FBE6B05B3
-	for <linux-mm@kvack.org>; Sun,  1 Nov 2026 13:02:15 -0500 (EST)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 4BD43C095B
-	for <linux-mm@kvack.org>; Sun,  1 Nov 2026 18:02:15 +0000 (UTC)
-X-FDA: 85387319430.11.4B869C1
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id F17386B05B4
+	for <linux-mm@kvack.org>; Sun,  1 Nov 2026 13:03:15 -0500 (EST)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 8D5E6A0A8F
+	for <linux-mm@kvack.org>; Sun,  1 Nov 2026 18:03:15 +0000 (UTC)
+X-FDA: 85387321950.23.228B8B9
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 9344B2000D
-	for <linux-mm@kvack.org>; Sun,  1 Nov 2026 18:02:13 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=eW7Jg6QJ;
+	by imf25.hostedemail.com (Postfix) with ESMTP id D030EA0003
+	for <linux-mm@kvack.org>; Sun,  1 Nov 2026 18:03:13 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MvXR4gxh;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf03.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793556133;
+	s=arc-20220608; t=1793556193;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3PqNiwmu6idHErTlM4aRyLM7lhRtmfiQPGaaL0E482g=;
-	b=2DDAtZsZNBxA6mcz8U5W/TK8s11nGVX3pjlvVEm4KO7ab1bv13ttOFyM7FXtYm0r+M7DIS
-	IbRcUp6wuZfmCPaMb7KKdxRupWCki1zE3lBDr+HrqtFQ8YKNN3nraGHH7QYvRQWRiSTF2S
-	Q95HfrmawVBgiOUAa7UWYlpTn+YnATI=
+	bh=7mhxiZNhkkdLt3oC4RT7kchnbf+mH0SO2hpYKZyskw8=;
+	b=pVJIXMRD9FhYs6wh5Z+WaH1sOtu5Iy8jQhL5lV2t+SwEQwx0rLmpEh5GI7IJZiBGKu6tub
+	4RRSqBnvm5NUKD04njflStXWL7cjPCgGfGHn9XqRpOBzPrnMAdoJSWPzH9qXV0olvZ0GQi
+	HTB7XRzRinFajQlu15/7VRQZFQD2zYk=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=eW7Jg6QJ;
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MvXR4gxh;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf03.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793556133;
-	b=Ii8MaUeT0qVdLhKCKLppbdXPHrvoGWpBdssYGTlBSf6rTA+7m6s/KHjMFBmNZVHy8BzSVU
-	1wgQiHbd63XIXx1k/Z9ViA8ATC4w2tQIoICTSCccQbvI5jNvRAbEqqR7tviYPFoH9ORz/I
-	bBvFkw3IA+2qXwTLvOjZvnzKQq/gk18=
+	t=1793556193;
+	b=D7qYI187OsbIl68TAJscAvuH8vkx5KYyeCe5VrIDLlTC/JY3dMLG1Z0MGUT4UCgubip9WE
+	ZQlE0coM1BbZWfjgTK5mJXh1r+36Ctwg2NYnx38HA2DN5H2h1yE9LAsSwGg81fXd+IrTPM
+	YW6c9OSrskahva1khjPVcJMVtFtLkyg=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 2071060054;
-	Sun,  1 Nov 2026 18:02:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FAB01F000C1;
-	Sun,  1 Nov 2026 18:02:07 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 6FA19601FB;
+	Sun,  1 Nov 2026 18:03:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78C881F000C1;
+	Sun,  1 Nov 2026 18:03:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793556132;
-	bh=3PqNiwmu6idHErTlM4aRyLM7lhRtmfiQPGaaL0E482g=;
+	s=k20260515; t=1793556193;
+	bh=7mhxiZNhkkdLt3oC4RT7kchnbf+mH0SO2hpYKZyskw8=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=eW7Jg6QJYxgjLyolk/6DfzEGYux3I7G6ldXSplLfTtNGZELaDfTuN5I8J2EqURODN
-	 xpdN1FFl631aeqAs4oiVQb+q8AgXpdlK27CVhtweeYfZKR40sllRwmHOJUItRVxIHh
-	 zEDIYzx7J0d2WjR5x6HMW3AgB0vunQ6ghpbWLrpAs+5GKbFNW+l6fWNhQr363yoHzR
-	 /6B588wGbgrW6NOlHgre+rLVWTnNv0Bbsy2YXFFqZibH9S07UXXG2fBcQuM4Hw+nh0
-	 Nqh9spsOA/d7B+9zw7QdP2R7HtpjbXaHv6jMa3mUVMc0a/WCq8BCyBWunei2L4bJ4X
-	 P97Ey2VUelDQg==
-Message-ID: <96fbe172-0b1d-4df0-b73d-432bb5df37b4@kernel.org>
-Date: Sun, 1 Nov 2026 19:02:04 +0100
+	b=MvXR4gxhOU3vw4FzvT9CnPA5agFpVNsjgAycsevmiTUy5qF1pmyHNG24cI/9DvY58
+	 qjQ1K3AAF2CLMULaRFH2rP29YUCbUBW1GSXYw1M/q6SUu6UbRFQwKIunNMEI/IWmBm
+	 jb/b7ZHvGJ+Mz2DEMSfL8B88Jw54YgcgmPa2Hdk5Z08l2PLprqCfp5dQnmkWw8qRz5
+	 nagMwvEdGs/dVcR2uwKCSTv4UMS6UDPe8SFsJPYQNne6zxJcFEBVyzCq65vupn8qdf
+	 DsBmYA3LjbuQTUFeXLkc8QR6p6jcIlNzpzp03UFF3ycMdrDVk82DUhTPkB5Y2CNoee
+	 fJgDIpM0FyvXQ==
+Message-ID: <e1e54f29-6c06-4e81-b310-d6a10114720f@kernel.org>
+Date: Sun, 1 Nov 2026 19:03:01 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/2] MAINTAINERS updates for page and slab allocators
-To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: Harry Yoo <harry@kernel.org>, Hao Li <hao.li@linux.dev>,
- Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Johannes Weiner <hannes@cmpxchg.org>, Suren Baghdasaryan
- <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Brendan Jackman <brendan.jackman@linux.dev>, Zi Yan <ziy@nvidia.com>,
- "Liam R. Howlett" <liam@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>,
- Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>,
- Mike Rapoport <rppt@kernel.org>, Gregory Price <gourry@gourry.net>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- linux-fsdevel@vger.kernel.org
-References: <20261101-maint-page_alloc-update-v1-0-27e8c246b13d@kernel.org>
+Subject: Re: [PATCH v2 3/4] mm: Factor __pfn_valid() out of pfn_valid()
+To: vrilutza@gmail.com, Dave Hansen <dave.hansen@linux.intel.com>,
+ Andy Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
+ Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, x86@kernel.org,
+ "H. Peter Anvin" <hpa@zytor.com>, Alexander Potapenko <glider@google.com>,
+ Marco Elver <elver@google.com>, Dmitry Vyukov <dvyukov@google.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Kairui Song <kasong@tencent.com>,
+ Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
+ Barry Song <baohua@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>,
+ Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
+ Baoquan He <baoquan.he@linux.dev>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>, Lorenzo Stoakes
+ <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Kees Cook <kees@kernel.org>
+Cc: Borislav Petkov <bp@suse.de>, linux-kernel@vger.kernel.org,
+ kasan-dev@googlegroups.com, linux-mm@kvack.org,
+ Ilya Leoshkevich <iii@linux.ibm.com>
+References: <20261101-kmsan-serie-v2-0-f97f66dc57ef@gmail.com>
+ <20261101-kmsan-serie-v2-3-f97f66dc57ef@gmail.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -127,21 +134,21 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20261101-maint-page_alloc-update-v1-0-27e8c246b13d@kernel.org>
+In-Reply-To: <20261101-kmsan-serie-v2-3-f97f66dc57ef@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 9344B2000D
-X-Stat-Signature: 1h4jztbobkoq3tncbe4cocsynijc4hns
+X-Rspamd-Queue-Id: D030EA0003
+X-Stat-Signature: bnrn6r7maxwbdbjpyehkaitiordd1snu
 X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
 	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-HE-Tag: 1793556133-702501
-X-HE-Meta: U2FsdGVkX1/bihg6OxEAMMDKU9dDjOyfLHGAK+lFjtXN/Exq5R/ZkC58dfOXKds/vbSllhnU3cje7IQeogapFepjwoJpGLtqDWMPMo0a7A8vrtZLogEkYqgrZhry56cO0ojvHbFx/SUwH9NK3i+AVHjUY0jy/q6fYe9NNBMPl5yKecbQ2UDReoyArHAkRoU6UhTb7yyAuHUc8/xBPEMhDBakap8eTaVEJUZXjBP4KDQ0JXv+uIyxWlLag8nABWJTkUH9sOgMAzNovvptsVLO6aoidkZ39OavXXJojjKxVmk++zeEpJxSk6zMyEmXK6gbNIrJ0LN5QnONJ9P+EkdwX23JTH3JE+ck9+OOthnZML9mb4cCKNyhAOI1f7Kmw/9cdX+O8C6JSpN3F78d/USQxwz9k6EIyDov/T8dHg8Ze9OheuywgzRS4fNwS4NO4OuCNxMMnDdYdvIyHtGfETePjeJE8S9mebbal0Y91J8Z6lbF6epoxyjDZJtx33Jy8h5VgrS9Xa+drrLOrjwJZoDMRqERiPOf7MMYH03nF21DBJhyjcCJi+EnW6F1z9pnyAdF1NblsfJSXTA4TVggF2duwvgKMmsuPZfRLsLkwbld6obI/gJ/6E9BV13UaF0/y5OEyl5EmcIuCKw6V6uJYdVVRdO4B2yjosmY6RUKN+8hnS0K9mCpxPflVN2O0pPtK6xYNSj2YE+pEMBY6IowLg+Abgtew0U2L38/7cXcgePhq4e1avcPayC9c6rUPzLexDwTi8z5ewygYL6LSvMAo2ODm75GIed3u8WB25EMYLEBFVzIa0AuNucDHVVJ0V+n25Se+DolUgjDXDjlt0VJdZrtd55Edffrnkv03zAYamIku5GDJYtFa80hm+XvKx68L3HWmxuO1qHm3RUKzrpvobfRjeH2Prmms4coASA4cepMuybCbpxs6eHT6XxI+9i5nSdoOAIvPzWoz+NuzX/L+94
- SfxUjJGl
- 3D2QI39EqFfF3guL91Oma24FTRnNaurDji9vbjhtZC9qKBtYFLOCqa9TuPVy+H2WrTlLQMaMoHoEUknH2QZqLNxWDBlbCc2RFbRx8fm4EidrmRTaioGLwNLNsB6drRc/6r4iUltRPENkaorHq2QlQkXmYSQNW0juwNystCo9T87IM2DqqShJfiRloM/JCAXHG/uoiq0aWA+UXPGbR3w8s2SFLTrfP0Uvwt3XA7Ibgy5Et7CUN8Kx/12PMHzetGK4PBVNk6NG8Qcv22Zgx6FkbLl47Ww==
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1793556193-972243
+X-HE-Meta: U2FsdGVkX18gJUyJLqpIbB0Q+YDZ2Endy58UFtkNrYSbsskXlQm7P7Ot58nVy/1VWrcoPGlRH8FdUfHC+Iu0iGW5QxluspVixdOS7HEcRkMfGaNIH6LPVcVrvWFpE6BIPVcaC0PyGnEUz8VX1g+itKl2VFlMWrfhpzn99BwsrKeYzWkWb3lXO8Ev2YfUF+pACu7TJvcVNBSmcQnny2Esrc9acBoPipdrZ32Aa0laM0d5wDhZjN0y2aSkSAgrj/haNOoB5VINCWVT1j+PSL7sMO3aSnrkgoPHj5PQSfmgto7AwE4Cv2FwZnVu7XkCbkURx0vHPlW3FMWBM0sucgMT4xqSZer+PagLMRWviKGfduwNnA+QjTtte1feFLkD33XHzNo/FZP4GnGr3+VVJDMHAJLRR24Nm85IVFmP61EWQQaDlFmgTV1D/QcKdP4OWKu1o2JjZ8PYu9W0lT8GOz/W5rV9eYvxBi9kGx57viM0a0ZfGZUzdDJDgsH8M5WJBVEwaGS/PZZPDyhPW7/lQ4C0y17MTEYm3G7oUtWFYgAUgv6FYOaeFgnMYnL0SI7Cpr6EJGJGt7N11qXyb9hjdCCiE1kvVrJXMHNWtTKoA8+PgfExmmFgPB1mEiL6Rp7SitrUm2YRz7pCyeeBugbwFk/Bbbisk+qM7/DoVxltKyklZmEa+jcvycXBsAhqF53sMTQjNNRRD5exaIO0gMaxkrPl6FoUp68okkMKVXpAiUKfiOvH1H88j6P0U6lDxbvaAAx5c77+GWB/5IXt5lXTeRfsJvrQbD3DbSfehvtO5+aDMj6twwrM3CyheikAhR08hA2wxCaG+G2FpOOE2dTmcvTbYwuw4zjKjuZktCkcbm2gxziuVQVawyOVNWyjWKFQWszk4nF8wjUswKT8DfA2zM+0d8k92WwqyqgHberGnJARRxwvCqhmcO7JaHE7f6ETqsmJkqYTitekfD/+wxqv4Wi
+ u24MUX0f
+ BVo5me8nUChBukBdutzEa4X6O2R1Dvmp3icFtAHLJlrQhGmilfWCwfigmJow8wdTsNAuqi06YwtPkgDMr6HQgPQnaB+Oj5azil7fOlcICcly0zhtuhbn9lJt2nTzWU1rdL/LNOiIdB+WedUWHkhxyOjrc8kubKRfYpzcLWWRmiaBhV850rH/AFaseYm/WST86qJIXYFasySrim2wtD8YOYiiw326i70qziEn8V1vyQKoeF14hl0llQkyOY3czEdeMvYjymngo3VIlT1bkWI72ZelvUe5ipNUhSRQIwLfILExDQdSdrhpN33hTLIjdiIgfaN2R9NrlgXNhf5VzlW2fuiQmJsS1xa+PyKX/wx0epnfA/nZ5P8BgdeAB1hgjmk844+AO
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -150,19 +157,29 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/1/26 17:34, Vlastimil Babka (SUSE) wrote:
-> Following David's updates [1], perform similar updates for page and slab
-> allocators to indicate the MM process transition for these
-> subcomponents. Importantly, add Johannes as a page allocator
-> co-maintainer.
+On 11/1/26 18:04, Viorel Cernateanu via B4 Relay wrote:
+> From: Viorel Cernateanu <vrilutza@gmail.com>
 > 
-> [1] https://lore.kernel.org/all/20261030-maintainers-v1-0-97278f8a5f54@kernel.org/
+> KMSAN needs to validate a PFN during metadata lookup without entering
+> instrumented code. Calling pfn_valid() also calls
+> rcu_read_lock_sched(), which can enter instrumented code and recurse
+> into the metadata lookup.
 > 
-> Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+> Extract the PFN checks into __pfn_valid(), whose caller must already
+> be in an RCU-sched read-side critical section. Keep pfn_valid() as
+> the wrapper that acquires and releases that protection.
+> 
+> This lets KMSAN reuse the existing PFN validation while providing
+> the required protection without instrumented helpers.
+> 
+> The wrapper now also holds the RCU-sched read lock during the
+> initial range checks, which previously ran before acquiring it.
+> 
+> Suggested-by: Alexander Potapenko <glider@google.com>
+> Signed-off-by: Viorel Cernateanu <vrilutza@gmail.com>
 > ---
 
-Thanks Vlastimil -- and thanks Johannes!!
-
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
 -- 
 Cheers,
