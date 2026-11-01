@@ -1,123 +1,91 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5840D606A324
-	for <linux-mm@archiver.kernel.org>; Sun,  1 Nov 2026 07:35:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA53F606A324
+	for <linux-mm@archiver.kernel.org>; Sun,  1 Nov 2026 07:35:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=fke4hQfB
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=O7YmzRxr
 Received: by kanga.kvack.org (Postfix)
-	id 678D66B00EF; Sun,  1 Nov 2026 02:35:04 -0500 (EST)
+	id D09776B05B2; Sun,  1 Nov 2026 02:35:58 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 601AE6B05B1; Sun,  1 Nov 2026 02:35:04 -0500 (EST)
+	id C930E6B05B3; Sun,  1 Nov 2026 02:35:58 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4C9346B05B2; Sun,  1 Nov 2026 02:35:04 -0500 (EST)
+	id B81D76B05B4; Sun,  1 Nov 2026 02:35:58 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 1658C6B00EF
-	for <linux-mm@kvack.org>; Sun,  1 Nov 2026 02:35:04 -0500 (EST)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 0FDEEC08B3
-	for <linux-mm@kvack.org>; Sun,  1 Nov 2026 07:35:03 +0000 (UTC)
-X-FDA: 85385738886.06.BC64F09
-Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 328DA100007
-	for <linux-mm@kvack.org>; Sun,  1 Nov 2026 07:35:01 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=fke4hQfB;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf05.hostedemail.com: domain of shorne@gmail.com designates 209.85.128.49 as permitted sender) smtp.mailfrom=shorne@gmail.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 8E6226B05B2
+	for <linux-mm@kvack.org>; Sun,  1 Nov 2026 02:35:58 -0500 (EST)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id D6868409EA
+	for <linux-mm@kvack.org>; Sun,  1 Nov 2026 07:29:19 +0000 (UTC)
+X-FDA: 85385724438.08.CEB33E0
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 22E0E140004
+	for <linux-mm@kvack.org>; Sun,  1 Nov 2026 07:29:17 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=O7YmzRxr;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf26.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793518501;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	s=arc-20220608; t=1793518158;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=yMfjSjcyrqnI6elm+AdDS/CkwuBjoRxXW9M4kovCuBI=;
-	b=RVRbgcDAKAQ9JFUfWVIpls1EpczzwCczGeS0TT/lKIWZpRo91COuSnUPN0E9M0W+nNtwG6
-	RxLmMlcPagLlMqCYpwBBxZTHpksfCVADb+NtOJwlK7hdmMw7It/QmC+7fZii0P7i47Z4Dc
-	ktrIEpEBjemaXJ2O08B6A4fmx29itIc=
+	bh=QmalFTzk8PC4gVYAeFfovnjepN+ajuf1Nd4Y1xSkE4M=;
+	b=JfY4LwvLzPRTohCa9k37u+D3frv5hkfIDkCzeW6HLoxAjd1J8I+OVU77am5EcUUANf3Rz+
+	pBZzE1HDzG58A0UoGfmwvGpMydJ1+L9JbEFelud/9Lz7Vy3VwuIEOS7HTbVuuhjwJtHW8z
+	5Yls39PrB0u34eY0tjkUmu+dLD+KgfY=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=fke4hQfB;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf05.hostedemail.com: domain of shorne@gmail.com designates 209.85.128.49 as permitted sender) smtp.mailfrom=shorne@gmail.com
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=O7YmzRxr;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf26.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793518501;
-	b=FuyPya+mjjJ68NaQJgrtAUNRcQXB1RC9AMxvCWKl0avXsIrDzS3yQSsjGe0Covlncqhih6
-	W0MQ/rFsdYEV0JE/Oimb+rC8ijnM/D2aOxRJ9PGV7Ix2fuFWQSKj0gNHn+3fvtxjFpKCLz
-	dayS22X9R3+k482hSuatwUU9O//3ZJQ=
-Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-4a1b07c3c5fso17166935e9.1
-        for <linux-mm@kvack.org>; Sun, 01 Nov 2026 00:35:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793518500; x=1794123300; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=yMfjSjcyrqnI6elm+AdDS/CkwuBjoRxXW9M4kovCuBI=;
-        b=fke4hQfBcXdgabhrvYBW61N3Szok4RdY2H4irLrZ4nRb/WfVK0qh49H/Qp+YzzWT3q
-         BD/eO4ewcpdoyEz8DIjoCpDkM/HZNo4GenIo+0BQ/QRc3as59G5skMrpt/eUztgwuxh1
-         E4EGD+EH70hHNg+fRwCbnlydsqSMqaDeBw20nRn2NkejDDfHroU48CGIpFGUkMGakzY9
-         Ve6Ar5BsLah+uf8bPPgyMuMMJnxto4PVZv8QFc2lPTPTae5kx6gH2stzfF5yL/YUAYda
-         wytWcEdCznYi/auTmdJWw3/a+z9XOijWyE1ClvzqpRrvGhjWyzxmwJCH+sCryFPe9vvK
-         wFBQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793518500; x=1794123300;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=yMfjSjcyrqnI6elm+AdDS/CkwuBjoRxXW9M4kovCuBI=;
-        b=2B9W8v9AwtSzqnsIT2hdUlKI+tk9Gp6xJYqVYKfFe765xLs6Uj3HFRFsGjjlVbYEiZ
-         s9KHjCfpTBVu/3+JJOFj/NSF/ziCNoYoxcShP8wfqk3Cux6lPzoeyairASfT+aQVu9IR
-         SJFuJXnlnVC48h+mYbqH7Q0b9iDoy4Q3T2Ix+bT7RpO+FgBNKB8fLToS6R7dyRCKOoZb
-         CRDhDpOro4FxFkAbl3ML2fIv8ddFXli+OlNUi5L6zPHwxGa+0TR0cV7HPF+b0O7OS2ET
-         FzFHmS3tefzObQ/2Y2NaE8yINThLROIvLwGQqcOFn6NARUgjtqWaIc5GPPCbh6KKWO7H
-         KVcA==
-X-Forwarded-Encrypted: i=1; AKwUvBxnU8SEwUx4KCuyjqJczBS4KHXQ5s4jpu70FWo6/hsC/xi54vCb2I6RMbKi9G32nDttXAnrwLwoWA==@kvack.org
-X-Gm-Message-State: AFq9FYIzTYqzOfcZwCbOC8WBMCgmNgxM1Wew/sCYqEZWh8u0Mo0COYlC
-	z7jotZiro2nPHYtpO7HoKeFbcD1bV1sXvVfTi1cfFyOnGVqEaVFanOeG
-X-Gm-Gg: AYBFou0ctdkHVHo5LmH+DmyJnVQRnSlfrjzDNi8gJMw2YvRR4WalHjdFAHjG96OWKIq
-	xAXCcJJwnP/y0+ea2ImWG86/VDbzzgdrRZErsFfk6L5x6By7xHmQMgNLq83I6hBJrhnAEK9AZcd
-	6X08+sJGAa8kPsF/4zsM8vU85WYf30JUnyKYgGDJGnCZ4kzW46hVWD1JnmCxyksUxph3RIUqm+j
-	q7DqcYD02rHk13KYEcaQ2eUwj48s2QJpiJTO3gMaERUO0Qod+eQu696gB20zerdnRVxyAD2WX7F
-	rchLSFpEqs99n2koRY2tUTySMLu+12JKUTzyZN/UIKZZMazM0nN5rdpQqwZHwI9OaOtfybANPSa
-	eWFq6Ul3L1y8fqcnQseNPnnWRZgLYPwSmq+U1LV0k7DVjcZbLJqdnAJEPVEywQF6zRO/fQptDgd
-	CEPvGOfinx+7e3kHaMgdHLZ9ut3vZenbmCvncapx8EQebKMT7XE1Ko9HxdSKsTQ/b9GgjMuxRn6
-	hLqltaAu45nbs0AkJagWORRXOLZ4rerWXEy6yIO9VQJiBV5fR4UOumHTp7eNnlPVrX6H4svZLDU
-	D3KuHm2XY+p+QxZKqyLdcFB8DQYCC/4qp4ZppENznGLYV+30NK2Q38IobWDd1651O1mGhpW0pZB
-	x9h8aVCtX7jiLQbAd8TSNri/SF5g=
-X-Received: by 2002:a05:600c:19d2:b0:4a4:4d57:8487 with SMTP id 5b1f17b1804b1-4ac1737c51dmr154466065e9.5.1793518499393;
-        Sun, 01 Nov 2026 00:34:59 -0700 (PDT)
-Received: from localhost (brnt-04-b2-v4wan-170138-cust2432.vm7.cable.virginm.net. [94.175.9.129])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e7a1d9d71sm7150261f8f.48.2026.11.01.00.34.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 01 Nov 2026 00:34:58 -0700 (PDT)
-Date: Sun, 1 Nov 2026 07:34:57 +0000
-From: Stafford Horne <shorne@gmail.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: stefan.kristiansson@saunalahti.fi, lkp@intel.com, jonas@southpole.se,
-	broonie@kernel.org, linux-mm@kvack.org, willy@infradead.org
-Subject: Re: [PATCH 1/1] openrisc: include asm/page.h before folded pgtable
- headers
-Message-ID: <aubrobg1lV24DH4h@antec>
-References: <7e6799e4a26d4c87b28bfe1d0bab7d54.1@linux-foundation.org>
-X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <7e6799e4a26d4c87b28bfe1d0bab7d54.1@linux-foundation.org>
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 328DA100007
-X-Stat-Signature: a11m75n3sjadubebsfs86fy54y83msqo
-X-Spam-Status: No, score=-12.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
+	t=1793518158;
+	b=zsAlbze2zZgw9menl3GWsV4eGGLtsF3xtwKtJGL+Ug6OJQKgBAt+LcNdlOFX/VztnW78RL
+	VmAdNnAZbnNJGzsVqr7xsKd1hXfjo7WorRsn0pob3cSiImldvtJtkTwe67ru96w0I6XJWg
+	M0fybPC6ip0gaxzdpB6z+wwJo5xTn+8=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id E3B3743AD7;
+	Sun,  1 Nov 2026 07:29:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D6B01F000C1;
+	Sun,  1 Nov 2026 07:29:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793518155;
+	bh=QmalFTzk8PC4gVYAeFfovnjepN+ajuf1Nd4Y1xSkE4M=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=O7YmzRxrLbjTpMT1FEqoCHCe31YZmF0Eok7kU6tCrqzr4x6Y+aK76GhC/tOzSzRtf
+	 /aPOxiklaBQyp2eQQpxHjD2VcApMA7UinD+VsngnJTtFe6PHYySvKabGrUlxstZhR1
+	 5M6gytN3t94qjQFDzmiL+8/+CYKPqmoqn54S/8aFVNUIlpSVMB2jEueQPYWW5q5gQU
+	 BpjgBoztdlYROZIcb+jNsCszhWlxA9x2+exbL0d80sC2d1Uuz3MovKAVrhHemyySkP
+	 xW9RoePoovA7cCByUWyjZeCt9RfssAn+Iq7TZQsBGHEGx3AP78KTcJcbsw3E0/UYDG
+	 XeybIIC8Rjsmg==
+Message-ID: <sashiko-outbox-192310@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH] mm/hmm: honor write requests for owned device-private
+ pages
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Aveline Noir" <jm5905938@gmail.com>, "Jason Gunthorpe" <jgg@ziepe.ca>, "Andrew
+ Morton" <akpm@linux-foundation.org>
+Cc: "Francois Dugast" <francois.dugast@intel.com>, "Christoph Hellwig" <hch@lst.de>, "Leon
+ Romanovsky" <leon@kernel.org>, linux-mm@kvack.org
+In-Reply-To: <179343062238.2.2773026701442863377@gmail.com>
+References: <179343062238.2.2773026701442863377@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Sun, 01 Nov 2026 07:29:15 +0000
+X-Rspamd-Queue-Id: 22E0E140004
 X-Rspam-User: 
-X-HE-Tag: 1793518501-941706
-X-HE-Meta: U2FsdGVkX19OiFiGOgdexMpdZySdP9NizRX+FXpODIJY/OpJVkFahjk/182pDU4D1eIo38V4zhaBnBFlTBBBFzd4uHLv3m08zMG8MMcRbs2Niaw0PBuQPSBZWbrsqsG2zcwTnLxNgVyj6hMrGqbUIttiZTVvfRGacHG9UxvHBs0jM5tBV35qj5oBdodQpFvcX41pu2TFeuEpX7aiUPaY+VAnMOh142y7BgCS8EpFRrNOd7n1D3H2phacbM4eLJNImfm7Tg7WdhGuUghwxv7W2ylwwI4absj8kXyIqzOlkswzuOk1c0SSD0nS2GmWxnIXjrb6pGBRusiSFqROD5CmZisQbXWMWQHTCqq3K1b6gT3Y2SDfEU3dizUQo9R+VFCsfatx2OasqEESPBGOPm7hCvA/lm3+LiIvnUlWO0BXXF7ig+1kS5cTBhh8j5iJ1GNxaG9gjkBXQuotys02DS965X2Sc+eeq2sriXSHrwWiyug/nmm5qYaZq/H65XT++/ZP42G3PlLWeOHWr0KgrGDSJz3U5oB6urv7VaARk/9lXnLKt4omQ2rXqicYcFLX4iAAqfFlNOyTZqmkZh6bxMWUF2Puct2r23cZkt6iCd3mbif5gnuduFTBiO1qpWGOgwJfEsnuJ+MVnLqiRYGXCtAvelq9BaSupKZHik4c8I4WacHpSuthRXjgcbUJCW8K7nVqKhxmwn4gvuk+LJCzcqVV5H4XEvXdUnzLhNXFLXLp+wgsmPYqfCgVdvvKlW7m7VAgjnhMBXLKhEZeZkxNVOH3G6ROOuc5zYVpqPPmIj8lq2fUEQwrIwkcxy8RVg+YWgyP7Vhs3bdHfFGSoo+AGroGLs1xGUWjYwYujlm0XdaarTYUCGt9/PWvsol76cq92+vluf3/w64b4L50fchijmisN1Bc9lPoSzwc+9O0cCSXO49rXVpacO/+CtFUW7ZRdv13Gysmll4LkqPsDukjOod
- C6VZxCAS
- qXa1lo6InYkpCwMyPeq9ac/84jOMa2Hc5a8gN+Tvcw6Thc0sAOZ9B2FSuXsdi6ygxJTU4p3KMPfpjTKkkStv0kzhcHqUq7HM4gh9W05RN62r1hriWThasreYVXAFqwCOBdTTOZZIRzgtQOp/Ld9DQA1lCbNMPaMC8n/wEhOeXR/77D6aUxD0FsgEAM5BGF+HwOHRzN4BDjMEz9vGJMIH3qzDfLE3Fggb4GkOuzw2smW5zmEk2kHP5mp98FO8MLZY/1emD1tswGWpN3f8S0m0YMfcvGd/mIe6A2/sO5gW/NNP1wWClaYc9nn7BeeL0uAkilBhsw62G5ubVyHfD0WT3AstVahypUAaxfiiEx7Z9xT/naNpfsobvFyU5dIoORNsgR28d1kcGX9XjWPw2CgMHgiIY+eGIJv/tRZ9O8ocIVCRxw4z+eM94127gQE496S14Dfozq4HvPYF4WLUYrbiFx0zlsOFBB3PVFQyrRTlHTYVzQebDZchQ3h9jaKV1QX5hR5TNNOYS6JJUi2pFyBIdQ8OuV3wwNuEgOs7ebVO6jRiEgfCaUF6iiIr2EvV2a1cfSVt0Q2RkzprvK0Gh7ogq2CSEx85eYyF3aEo+Ie4jZIOGlZz7sDjGsKIKn90kwanqeRq6+aVj1HxaNhHbqUSY41fjvOgE7P9ZES9m
+X-Stat-Signature: ixtcuwck7nmzfra66bb6rfncjnaitg1o
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1793518157-800669
+X-HE-Meta: U2FsdGVkX19X6+aBBVovpX5UO9mTB1RPdvWzi3Z1B2AJuD7RXxm878LEfp6X0aU8T0/qo2onqb11L+KJEEvKq5UKViu9oJh54iq1rij2ro6QQbShp2u719PjPInm80ZlEXDIV5s+E2UCTusC2Uxsb+0TpdAlOcVnwTiYwFT3v9wLQOQAa1hitp0XQT2+ZF8OeG7LYWWsVZYkTRc734mVKDsifAmb+CP3EFG4/Xd66h32BdujTYpo+r4d+Y7plfkbepINgFVqzxwyGMzWo4HSJEq2fz93XuT+giOPqi/5zSM6n3Ly5asBUOtEen9PARvNauNM1NIOireAqVnCaAeKvxMwAAjN5fZh5iKWQHJIj84yhs180V42FdM3aKGFYMNphivJ6EenewuEEfryqOKv3ZXagA4EZvcqiKh5CZTCeKxII6PcqAxS4ywrdzt+thPtVJtNaD4hdqpUUSCzlawcSXOywkMT3TBa1inJJhsgS6ZqEyYZYcT/hpN5qct7bZtE6DD8Ogd+HeEK6I+I2TIgVIHRHzYrnYiEw9WeZeFVe/Kt5tqk3RQNynokhPP63LX9fEM5sNm4zn3kboVq+VOljFAdVUdGBvq+lE7aumarxNzeNXH4QGllGIRcwN+qbChpjYI8vumzVE6RgWTkbVPWTVcd4/NfN0FF56jHgcU3u826WWe6dMkxWYBSFKyewJ0Pj2gURSs2xiVppLhc3InY9VN+J3lw3+3eAm3sbk23+Nj0z5Jolex8j9WWI+cDq4D5Z+azCnfCD8/jAjiLIaw6gaoABcrr/KR4f6TX/0ltpYf95SrYkc50kM0qBLHwmRtIsrZp8GlCZv9wFSk0CoXk5UzaduPF90hU6gb7dwZlUNyjRTbaPvgUAsl+NsCODNLKrobtiLD30MTY2Etr+VqHzhz5B4ahIcRg6XQ6oNr4+7q9bal/f05vpLUKVRJLtxvM3H8FB2ZTH+SzyuUBwK6
+ ZIybNpnz
+ yNIzZ3FCzw5W5gKMlb/DP7uPIyDXICd39yeu62k56agc+8Wz0KI/EloN7T9aws5+bVrlAcZ1xXQGlGdw2aLHiR17fI8oIFGlHWW0uYQMnRIS94BM4GH7RDyNWQGqua6xNqdtMae1AVGfKpaD6auIkUDPksYP5q2xhSaOx97SRt2WYboPV5X4YHCkmiPluLsjDbgBpbfHnvLZFP0cNVPQCcipI8dxfa3BQGR1H4RIIyETJ8OpEQIoQCFD7y8b4lOKusqWL7IIcHJi7EOjlKXo5RSkrk7DC5xfD4drII7FTeqO3xz8uyWnxAqFDaMc54uH73bMTMiVPORGQLS/MkpJShNHEkrTeL5TlrKvGDS+4Gst33gNwHDLee9BcJzUUurE6iZV7qW4Q9vn4YtMBG839KkVHO4X8Jf+5+MvALoo/4i9QOT4ksb1tTlUNi4OfnX7BwPpSqcW9MWiPUdo0nCAucjLeEYDeRFSJmaTE7rkAwD+81s241AU5QNz3imtoBP2v4ZDJpMiiKC34sQsU61uwDZbaclCrdXKAaYM2rl1f3mQdwn9mwVRavsX09OnIs1PBFCwLvW0mtCtgTy7F1/URIWWsPA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -125,56 +93,151 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
+X-Archived-By: <archiver.kernel.org>
 
-On Fri, Oct 23, 2026 at 05:52:47PM -0700, Andrew Morton wrote:
-> From: Andrew Morton <akpm@linux-foundation.org>
-> Subject: openrisc: include asm/page.h before folded pgtable headers
-> Date: Fri, 23 Oct 2026 17:37:53 -0700
-> 
-> An OpenRISC allmodconfig build fails while compiling the DRM TTM KUnit
-> helpers:
-> 
->   include/asm-generic/pgtable-nop4d.h:9:18: error:
->   unknown type name 'pgd_t'
-> 
-> The TTM header cleanup stopped including linux/pagemap.h from ttm_tt.h. 
-> The remaining ttm_caching.h include pulls in linux/pgtable.h, which
-> reaches OpenRISC's asm/pgtable.h before asm/page.h has supplied the pgd_t
-> definition.
-> 
-> Include asm/page.h ahead of the generic folded page-table headers.  This
-> restores the missing type definition and allows OpenRISC allmodconfig
-> builds to get past this failure.
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [High] mm/hmm: infinite fault loop in hmm_range_fault_locked() with amdkf=
+d SVM
+--
 
-Hi Andrew,
+commit 1f96e5c5d80c40ba632786bdf9197a9a37329854
+Author: Aveline Noir <jm5905938@gmail.com>
 
-Thanks for this I will queue this.
+mm/hmm: honor write requests for owned device-private pages
 
--Stafford
+This commit updates hmm_vma_handle_pte() and hmm_vma_handle_absent_pmd() to
+check read-only, owner-matching device-private entries for write faults when
+HMM_PFN_REQ_WRITE is requested, rather than returning their PFNs directly.
 
-> Fixes: 2854902575ac ("drm: Remove pagemap from ttm_tt.h header")
-> Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-> Reported-by: kernel test robot <lkp@intel.com>
-> Closes: https://lore.kernel.org/202610240135.uFA85jSq-lkp@intel.com
-> Cc: Jonas Bonn <jonas@southpole.se>
-> Cc: Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>
-> Cc: Stafford Horne <shorne@gmail.com>
-> Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-> Cc: Mark Brown <broonie@kernel.org>
-> ---
-> 
->  arch/openrisc/include/asm/pgtable.h |    1 +
->  1 file changed, 1 insertion(+)
-> 
-> --- a/arch/openrisc/include/asm/pgtable.h~openrisc-include-asm-page-before-folded-pgtable-headers
-> +++ a/arch/openrisc/include/asm/pgtable.h
-> @@ -21,6 +21,7 @@
->  #ifndef __ASM_OPENRISC_PGTABLE_H
->  #define __ASM_OPENRISC_PGTABLE_H
->  
-> +#include <asm/page.h>
->  #include <asm-generic/pgtable-nopmd.h>
->  
->  #ifndef __ASSEMBLER__
-> _
+> diff --git a/mm/hmm.c b/mm/hmm.c
+> index 2f1e98c6b6440..92957541ba95c 100644
+> --- a/mm/hmm.c
+> +++ b/mm/hmm.c
+> @@ -268,15 +268,22 @@ static int hmm_vma_handle_pte(struct mm_walk *walk,=
+ unsigned long addr,
+>  		const softleaf_t entry =3D softleaf_from_pte(pte);
+> =20
+>  		/*
+> -		 * Don't fault in device private pages owned by the caller,
+> -		 * just report the PFN.
+> +		 * Don't fault in device private pages owned by the caller unless
+> +		 * a write fault is required.
+>  		 */
+>  		if (softleaf_is_device_private(entry) &&
+>  		    page_pgmap(softleaf_to_page(entry))->owner =3D=3D
+>  		    range->dev_private_owner) {
+>  			cpu_flags =3D HMM_PFN_VALID;
+> -			if (softleaf_is_device_private_write(entry))
+> +			if (softleaf_is_device_private_write(entry)) {
+>  				cpu_flags |=3D HMM_PFN_WRITE;
+> +			} else {
+> +				required_fault =3D
+> +					hmm_pte_need_fault(hmm_vma_walk, pfn_req_flags,
+> +							   cpu_flags);
+> +				if (required_fault)
+> +					goto fault;
+> +			}
+>  			new_pfn_flags =3D softleaf_to_pfn(entry) | cpu_flags;
+>  			goto out;
+>  		}
+> @@ -358,8 +365,15 @@ static int hmm_vma_handle_absent_pmd(struct mm_walk =
+*walk, unsigned long start,
+>  		unsigned long pfn =3D softleaf_to_pfn(entry);
+>  		unsigned long i;
+> =20
+> -		if (softleaf_is_device_private_write(entry))
+> +		if (softleaf_is_device_private_write(entry)) {
+>  			cpu_flags |=3D HMM_PFN_WRITE;
+> +		} else if ((range->default_flags | range->pfn_flags_mask) &
+> +			   HMM_PFN_REQ_WRITE) {
+> +			required_fault =3D hmm_range_need_fault(hmm_vma_walk,
+> +							      hmm_pfns, npages, cpu_flags);
+> +			if (required_fault)
+> +				return hmm_record_fault(addr, end, required_fault, walk);
+> +		}
+
+[Severity: High]
+Can triggering a fault on an owner-matching SOFTLEAF_DEVICE_PRIVATE_READ
+entry in hmm_vma_handle_pte() or hmm_vma_handle_absent_pmd() cause an
+infinite loop in hmm_range_fault_locked() when used with amdkfd SVM?
+
+An anonymous VM_WRITE VMA can contain an owner-matching read-only
+device-private entry (SOFTLEAF_DEVICE_PRIVATE_READ) either after fork() via
+copy_nonpresent_pte(), or when svm_migrate_vma_to_vram() migrates a present
+read-only PTE (!pte_write(pte), such as a read-faulted anonymous page) to
+VRAM via migrate_vma_collect_pmd() and remove_migration_pte().
+
+When validating and mapping an SVM range in a VM_WRITE VMA, amdkfd calls
+hmm_range_fault() with default_flags =3D HMM_PFN_REQ_FAULT | HMM_PFN_REQ_WR=
+ITE
+and dev_private_owner set to the GPU owner while p->svms.faulting_task is s=
+et
+to current:
+
+drivers/gpu/drm/amd/amdkfd/kfd_svm.c:svm_range_validate_and_map() {
+    ...
+			WRITE_ONCE(p->svms.faulting_task, current);
+			range =3D amdgpu_hmm_range_alloc(NULL);
+			if (likely(range))
+				r =3D amdgpu_hmm_range_get_pages(&prange->notifier, addr, npages,
+							       readonly, owner, range);
+			else
+				r =3D -ENOMEM;
+			WRITE_ONCE(p->svms.faulting_task, NULL);
+    ...
+}
+
+With this change, hmm_vma_handle_pte() and hmm_vma_handle_absent_pmd() see
+HMM_PFN_REQ_WRITE without HMM_PFN_WRITE on the owner-matching read-only
+device-private entry and return HMM_FAULT_PENDING at addr.
+
+In mm/hmm.c, hmm_range_fault_locked() then invokes:
+
+  hmm_do_fault()
+    -> handle_mm_fault()
+      -> do_swap_page()
+        -> pgmap->ops->migrate_to_ram() (svm_migrate_to_ram())
+
+In drivers/gpu/drm/amd/amdkfd/kfd_migrate.c, svm_migrate_to_ram() checks
+p->svms.faulting_task to avoid deadlocking on svms.lock and
+prange->migrate_mutex:
+
+	if (READ_ONCE(p->svms.faulting_task) =3D=3D current) {
+		pr_debug("skipping ram migration\n");
+		r =3D 0;
+		goto out_unref_process;
+	}
+
+Because svm_migrate_to_ram() returns 0 without migrating the page to RAM,
+modifying the PTE, or firing an MMU notifier, hmm_do_fault() returns -EBUSY:
+
+mm/hmm.c:hmm_range_fault_locked() {
+	do {
+		/* If range is no longer valid force retry. */
+		if (mmu_interval_check_retry(range->notifier,
+					     range->notifier_seq))
+			return -EBUSY;
+		ret =3D walk_page_range(mm, hmm_vma_walk.last, range->end,
+				      &hmm_walk_ops, &hmm_vma_walk);
+		if (ret =3D=3D HMM_FAULT_PENDING) {
+			ret =3D hmm_do_fault(mm, &hmm_vma_walk);
+			if (ret =3D=3D HMM_FAULT_UNLOCKED) {
+				if (fatal_signal_pending(current))
+					return -EINTR;
+				return -EBUSY;
+			}
+		}
+	} while (ret =3D=3D -EBUSY);
+}
+
+Since no MMU notifier fired, mmu_interval_check_retry() returns false and
+walk_page_range() restarts at the same hmm_vma_walk.last address. Won't this
+spin forever on the unchanged SOFTLEAF_DEVICE_PRIVATE_READ entry while
+holding mmap_read_lock(mm) (or mmap_write_lock(mm)), svms.lock, and
+prange->migrate_mutex?
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/179343062238.2.2773=
+026701442863377@gmail.com?part=3D1
 
