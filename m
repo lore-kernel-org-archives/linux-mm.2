@@ -1,31 +1,31 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D690A606A324
-	for <linux-mm@archiver.kernel.org>; Sun,  1 Nov 2026 17:05:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C7B2606A324
+	for <linux-mm@archiver.kernel.org>; Sun,  1 Nov 2026 17:05:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=AeIt+nB/
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=hWFKsSjK
 Received: by kanga.kvack.org (Postfix)
-	id BD8E86B05BB; Sun,  1 Nov 2026 12:04:59 -0500 (EST)
+	id D5A156B05B8; Sun,  1 Nov 2026 12:04:59 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B0D016B05B6; Sun,  1 Nov 2026 12:04:59 -0500 (EST)
+	id BD05F6B05B7; Sun,  1 Nov 2026 12:04:59 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9D51E6B05BA; Sun,  1 Nov 2026 12:04:59 -0500 (EST)
+	id A70516B05B9; Sun,  1 Nov 2026 12:04:59 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 5C4136B05B6
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 6800B6B05B7
 	for <linux-mm@kvack.org>; Sun,  1 Nov 2026 12:04:59 -0500 (EST)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id B2D81C095B
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id A9D1316088E
 	for <linux-mm@kvack.org>; Sun,  1 Nov 2026 17:04:58 +0000 (UTC)
-X-FDA: 85387175076.20.F81928D
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf21.hostedemail.com (Postfix) with ESMTP id B20F01C0010
+X-FDA: 85387175076.14.348ECD8
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 8C807180005
 	for <linux-mm@kvack.org>; Sun,  1 Nov 2026 17:04:56 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="AeIt+nB/";
-	spf=pass (imf21.hostedemail.com: domain of devnull+vrilutza.gmail.com@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+vrilutza.gmail.com@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	arc=pass ("kernel.org:s=arc20260519:i=1")
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hWFKsSjK;
+	arc=pass ("kernel.org:s=arc20260519:i=1");
+	spf=pass (imf24.hostedemail.com: domain of devnull+vrilutza.gmail.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+vrilutza.gmail.com@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1793552696;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
@@ -33,72 +33,72 @@ ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jaNvTICrxB6ZQEsCT6rQeT4YxzmEYHhNdvsA+92xchk=;
-	b=GpVGdMPfSxg68XtHKvZI1yLwQ090VOF1v9ZGOcsyK/BseW4T8dxihAlIIxRKtAvCBfMhPB
-	VJt7LFTL5UUCC6SSf9kioyP6AuXdsA7op8AZ8754dCM8yTyDAkk/EEVKzo8RoRTZYqiJuM
-	Z6PfxMyvmX4DzekBUr1IPrljBSyU+bI=
+	bh=PJ8xawFkvQChuRbpRvFM3kzwdMyBEtgBeCZPpV2XFyg=;
+	b=7qLfpY+tIhrW9dteUjHDx/WOmCFaee4L00viWK5HUe5dTy/zADIIvcGtlQzu7FXzmtTqkG
+	d2z6D95cEDX27lL6lN/WyVkwYNTkHDGtOT5KVNQSD0X7IcIKemA1cfNEuZ/4XPGLtg+P0N
+	WB9yh4HQf7rG2MUjdxIjni4lsAnc+RQ=
+ARC-Authentication-Results: i=2;
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hWFKsSjK;
+	arc=pass ("kernel.org:s=arc20260519:i=1");
+	spf=pass (imf24.hostedemail.com: domain of devnull+vrilutza.gmail.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+vrilutza.gmail.com@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
 	t=1793552696;
-	b=u/2Xb0iVVPg6bg406PGETUE9EjE+nLsz48TfCsSB2Tdrw14DMZZIIUewZLRvBpv/kkszgg
-	apMY/9y1om9FQ03oV1eGQ3oif54U31MWJV/M85dclJqI9hSBmYzFV75YvpxTJpv1L0coNl
-	g0BmNxsW8M6xPvmSp/TTEHnQgZGD8AA=
-ARC-Authentication-Results: i=2;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="AeIt+nB/";
-	spf=pass (imf21.hostedemail.com: domain of devnull+vrilutza.gmail.com@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+vrilutza.gmail.com@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	arc=pass ("kernel.org:s=arc20260519:i=1")
+	b=b1RzR2oOOpkxQSnYAOzS6sZL03Tnhh7G5GSnQlJxjhGLnUR/Z3FKRA1aU7NbiIubwGndGi
+	DKtnrGZZb6f3/gyrX5qtzLtv+26263Em0U2xCu4eUHVsoU24XetbOp7/H/NGCR95J3rfYd
+	okqpBhUgSoigokV93Dni7xtc3SYuyFI=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 43AFA601F8;
-	Sun,  1 Nov 2026 17:04:56 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 5DCF543FAC;
+	Sun,  1 Nov 2026 17:04:55 +0000 (UTC)
 ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
-	t=1793552696;
-	b=w092sqlrhiZMVihGoz/UO1ubiJCDDdh/MTLSc5i2Kp/NakQjOfzbm7/jmaaSmL+dQ1pj
-	 Yambc+Hkdo1/1QC58lGxIE1w4a2t9Th3QSJoyw+kcGxwcCWJgMkyKAK3vKGDXd6wCtUEe
-	 OZOIzJ4nKH3c8wVYCCd3LW1gmZnNS0/SBgNvc4WCROaQLE2EO8bRBJ6Now0x6Of6424vP
-	 fViL8lW7eVfcIdiFi4d6MDv4wM06S4VnhifP02LuFpqyE0hJ4h7+LCwc9wfX8XZ4z5Z/S
-	 Zrt5knujBBXjh2/LW5VkN4aEuKL02xC8UfLeluD6WFJ7BKi5oxDroFqsadrN1Fi00xA==
+	t=1793552695;
+	b=qfjWH5+04uhsEJN8X5z5hdC1sLJp2JEOm4yJ85mI692oviINv+FwSN+dH0RH6aV1CeDf
+	 ChIcnvikNEZ34zDp6lgX4eNMq8foXfhnd0HkQ04y+LzMBwYqsDx8K8cbaIsvJY0LbSz9W
+	 UJLD1vEqo4kTsN+TIkgRWAInHEN5NOBjDqMGraAGsqCOYeIxCToHnHRiMZtsW4y5Y66PW
+	 AU2Tpc56XaJ798i51td6GFPqt00y2/lOPqTjxATC+EasKndogylniLTVBUKb8ZoiKuYik
+	 evCbyDFaexbSF/rw8pRGXM7KRjUYhel3OxvWazIXE5FQiO1HfCQPJg5vsAhaonGZF3A==
 ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
-	c=relaxed/relaxed; t=1793552696;
+	c=relaxed/relaxed; t=1793552695;
 	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
 	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
 	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
 	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=jaNvTICrxB6ZQEsCT6rQeT4YxzmEYHhNdvsA+92xchk=;
-	b=0/toclBpVbmWX6OxMQfE7RSpZaB8xVkCAxH+HQWHYK9gQF2C8bY9k7GPJUhZtoeRwM1P
-	 DbHtwNrp0i3Bevp4Z/F1cI4Bz7uMVmWIwLVnQfJkL0XiyMYVGj2YA/bY7y2XvN2B6V9My
-	 Ex0vaE6S/zHuVbzcv0qhD7oOJ6/d87YiPCHIQi04kqeZMfiws1TmYADNkLujaLKwxM3IJ
-	 1P0X3+y5NURgM4537HtsZKGT61D3So5HzopwsLoQ2+bTfp0nHp+5cN/ANbDgsFbABovio
-	 v7X12ELOfQJUZP7i4fBVHH1d5XYhVMClPgrnzTAsk+JMXPiXuUKpGDOodqMFQdn4h/A==
+	bh=PJ8xawFkvQChuRbpRvFM3kzwdMyBEtgBeCZPpV2XFyg=;
+	b=PLpVEs5Gu/t0rFhnijQGjoDiu7//4Sy1P+RVPmUFmfyiTVczSb9u+FCjSJdiGVPx3YGc
+	 G8W4aalxyhNlG/Moox6nlGeUVISjqY4/bsXiBiwuDy9vdDbnm3YbLqB3uunf1kqycKY5d
+	 OA9/NHSqmj7x0pjlReaCPnzGCdgHbwjFXwRWSOVE18jtVny/pv2bFiTXAE47/qXjlN7MV
+	 LZTRbdPvsCK+2CLT4FpuEAa0IXaH1irv8NOvNIctqXs57A0kkkeONiwnRT/78sV3dDg4q
+	 UKGb+DW23nSboyHwdOkIqdd7GP70JwntKu7gmf38KRLgCuJKmKPXaQsaNb2hVxQH73g==
 ARC-Authentication-Results: i=1; smtp.kernel.org; 
 	arc=none smtp.remote-ip=100.80.115.77
 Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.kernel.org (Postfix) with ESMTPS id BB5041F00A15;
+	by smtp.kernel.org (Postfix) with ESMTPS id 9CF281F00919;
 	Sun,  1 Nov 2026 17:04:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
 	s=k20260515; t=1793552695;
-	bh=jaNvTICrxB6ZQEsCT6rQeT4YxzmEYHhNdvsA+92xchk=;
+	bh=PJ8xawFkvQChuRbpRvFM3kzwdMyBEtgBeCZPpV2XFyg=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To;
-	b=AeIt+nB/z8mBm3H46VKVIg8qKaltx/qyuOTWtYLjPDXVasRaZ4oa+wVdrFdiWeFn4
-	 HlzAAoynzqLDGcT6RYyffn/L+aL21Coi+TxYvXAqAFPzY1bn5jxQrKHfzAJz8yxL1E
-	 DLl6I5V/39TtJFSd9xvoZgM8Niull69kVQTUnf0X87gkBCFQKnlpXsrkTTemE7YYZk
-	 wpGiYZTZVtgN4YUOoBb+60BZquUWxoRmebSjI/EOqXN6nUmJiaekUq+U6XjIlbPfeZ
-	 SEiCKvZbzgeJclrdn7PxAwFar8Eqn2PLFBk5eBSzyHJUqdMqw0+wxLaLpR/6qse9LU
-	 H3odTY/aPiZkA==
+	b=hWFKsSjKc7QjZnpePN0uyidulXuwPGOXphX9fP0Z+84iVAQEi9A9GSNxvftKw6mGO
+	 bJuUDWVi15fLfTPKMoj1mO79uV3ttnXGPogOFxpyZTaETKjdvVn33O4N34NbllxET8
+	 oBaBtNFco3YhYlTU8AjjsHQTxb0N+VeVRrMXwW4sw9NuC0tfpBlfulCE8GY+0Wzu7a
+	 /4SULSTlHdCMj7d3/05EtGrKxZRxAF3TjWvIJPEh+xbU+RX7pK6fsI2Z349mnylLeq
+	 Jx+cnhpapzZIKmwAW8I0+d3vx9v0KQplmmjw1jwywTZMwWpGvB9wO0BLbD3RcOFMkK
+	 rNUhM6U+Av+IQ==
 Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
-	by lkml.kernel.org (Postfix) with ESMTP id 3E25F4620F;
+	by lkml.kernel.org (Postfix) with ESMTP id 15737461F2;
 	Sun,  1 Nov 2026 17:04:53 +0000 (UTC)
 From: Viorel Cernateanu via B4 Relay <devnull+vrilutza.gmail.com@kernel.org>
-Date: Sun, 01 Nov 2026 19:04:39 +0200
-Subject: [PATCH v2 4/4] x86/kmsan: Don't call instrumented code from
- kmsan_virt_addr_valid()
+Date: Sun, 01 Nov 2026 19:04:36 +0200
+Subject: [PATCH v2 1/4] x86/mm: Don't randomize the CPU entry area with
+ KMSAN
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Message-Id: <20261101-kmsan-serie-v2-4-f97f66dc57ef@gmail.com>
+Message-Id: <20261101-kmsan-serie-v2-1-f97f66dc57ef@gmail.com>
 References: <20261101-kmsan-serie-v2-0-f97f66dc57ef@gmail.com>
 In-Reply-To: <20261101-kmsan-serie-v2-0-f97f66dc57ef@gmail.com>
 To: Dave Hansen <dave.hansen@linux.intel.com>, 
@@ -122,11 +122,11 @@ Cc: Borislav Petkov <bp@suse.de>, linux-kernel@vger.kernel.org,
  Ilya Leoshkevich <iii@linux.ibm.com>, 
  Viorel Cernateanu <vrilutza@gmail.com>
 X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1793552692; l=2610;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1793552692; l=1962;
  i=vrilutza@gmail.com; s=lenovo-20261005; h=from:subject:message-id;
- bh=4lXdVBpJSiUWkUV4FYeTn6HuAjrb93rQ9oQKVwzlb6A=;
- b=o1OjIlZvUzgJ+zlmu7Rc0edi0aBd0UOWa/X09z9NOQ1Xbdz5UwRFALG2LG7nc3rQ/JH/tX7Ot
- u/YA3JxtV/ZB3DyUgm46sTQ12cCCQq2/9XlO0o6B9q31clwrM1b0+oi
+ bh=3GnlWiRUuop6GUO7x6h5NkCg48nWG8mPXHhT2pkVM5I=;
+ b=yKz6MZ9gYqyG+QuCK81CgBR/q2zsFoBHJwnWKEvwQ6EyvvaGBEtoqNWRB3Iz2r9tvXCtvXbik
+ qf1R5WMpACrA7a4Vnzww4SNVFt8w/FhpREa3DOYYxUVlJc+Mp+u3K2y
 X-Developer-Key: i=vrilutza@gmail.com; a=ed25519;
  pk=HttZd2ffphVYTK/pvlflateaij8E4SdPd6Y+xDQMqDU=
 X-Endpoint-Received: by B4 Relay for vrilutza@gmail.com/lenovo-20261005
@@ -134,18 +134,18 @@ X-Endpoint-Received: by B4 Relay for vrilutza@gmail.com/lenovo-20261005
 X-Original-From: Viorel Cernateanu <vrilutza@gmail.com>
 Reply-To: vrilutza@gmail.com
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: B20F01C0010
-X-Stat-Signature: wh376z9ty3j4pdu5rsdnr6faar1hxhi4
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 8C807180005
+X-Stat-Signature: 8gx6qp6uf18pfzp3p6cd3bw5qx4xxjjt
 X-Rspam-User: 
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1793552696-449177
-X-HE-Meta: U2FsdGVkX1/7xFyodaIbsl9+LWpGpPViWxi1LGWY97gksohQ3MZg8B0BQOdDWpKNn18FrWIJZsBPnDDB5JpN05K9stamH7J/hl4FTN4XIlRB0mUWvi5Ry1FOHNA30j8uE8LZAXMhIe0WEeR6jyru8jVfmEMA8aqLK5vFO1CgkmTQBE4IWS6NS/Gq4uqrdeAvdzr/7pzwBaLfVqOJ2elqvTDVwO4U/ianA3xf+M7FLnlNXAm+tchgWFmtgL5NfW1dZo3QziG7W+jpptRCkJ/0YQjN13xW0AOt4v62CDoDs+CkMJUBaiGt1NM4i43LFvLHXBrr3koBE8nJbQYNLW23bCEoPm4fJw5ypnqeshYI2v5u+TMLid8kEBJJm3Ybc5wsTwIzfH8OSFnVn89a9PR0NHHcBJD3OMFH1fqoQsuJGigwSSU0eoOnFR+dEbGkBzuQvfbq8hyaY9AAQz21bGbobG8m0L2w7mCFY/QBmJ241wfEMH0LpkzBc+jnwn5OJ/b6vNPa1qydSKoAAdbhk/XFXtdVFry8nISBU6LUl7ZTogSYb9gFyDZj2YmGjI2i9KNl+4yJ81PRDnVgQdulfjSBTE6gpQ3zGgY/EJCkHdgt3XiKRvGwpw49UpEqrnClmNCBGI6ue1RqFu0I0hceCrCCt0RmHLlCh4Im4KJv61f97Tstb/DaxJWfVhTipCNlmUUOUB+iupD37XWqp0EJvhn0imI1TFtP7/7Y8tsLSD9/4zm/UnN+aWaQBI7nXUDmqUwiq6TRwol/6XICunkrtK5p4jD39qNL4xse/HjzBMR+yRc5C4H4HIRTW09fLpcl8AF3REYhuJ9BWQsvaY4/PlYXbTnPtnxJq3P+b3wH4GmP+sfihM1zRkNbJ/ZUMUYXPyfyvoFyGAFAWjYiYTVAIdjw9zEtyaE05bkmZhYrIT7dgO79JLkTFE2TCAxNaYMVQWn7wz+x1lJd/M0DJfrePsV
- QFKeAjtH
- UhoiJNVlSsKLS0S3me0eGQr048we/dr5Y8PC+Vl05ZZMvFFlL64slRKcu1JTUFq43FsRJG+JoEtZp+76W1Oy6jSIYEATD+Gj8bkR9mIBvsEQoT+3bgWonH45JYnfFA0w9zVPFAb4QL5yudsuax8ZcDOn43DpgBOZXToxswzi6qaa92J3c3UhWkRP/SUhq+UCb4Fm2GUhkrPmlqhAaOC8qjymPHFhYUcAXw0Ct2Tr3n5BjrN+xqzaCIKwaHmT3qUO8Ka87CU5YS3G9OG4+vzQH6XasUbupG5dzizfDTQJkgthI4F+SqycHgZ8iPoUnfXaHhkhH9KhUgEFrAjKKOzoeCTCiFuUDDboYp/wmu9XoCuKASnsFfip7MUWqoD0y0YTtWozUj5Q1rQgvNhoD+Iw1/hAXLITeu3qzTbx+IbGZzFqktLIZmpbPTcV/ydU3qWp4f2zgyptEfmZy2vbRvBfCb13ldg0kVWyBCemLv5VFi1ZV/y1ehO5JJdBFt3iiWGxjTY853912/+lgu5XeuzPs8A84+CuxYaHxRt+SZ9D4VHSuzWYMmvA9Pk7TgTWyHobXXJYptHyKrEb9HiXZpKIK8n934T8e60BryBECCOEJ8l0iLf0k1f46EfsihLEhuWCZAL64faiKWzPZvcmQ0MVSaYkW4A==
+X-HE-Tag: 1793552696-770668
+X-HE-Meta: U2FsdGVkX1/pjkWf+QvtMAaFkP7j9I2uTIClJEL5ynlKFfZqWXIlJxzOg++9S9pAyT7C1OKZ6V9eLoJzZeMkAqkLwcX+zvFbb2bTRKlgbJxP0uuXLTf8GSKesJ6j7Eo1RMNDB9yjyhYcAB8z3M2v6UQyZjXo1r5JD5lBL0/cs6fEnMce2U+1aaVZo0i9xGF4lRaA2pJqTBfX+n5kperU7+SQ1Lg/un2BawfF1lN/F/Eg9/aozl7xokK1U2xcMSGJaOgeUzQOIifks4xlGdxh1kvGiGfKe/X0UBCVdcmT3wnGXrRAtAn8nbYMzfysT0tqueaz6LjnGN6OypkRNzx7eAqjkzgVt9xV69oBJPCEniRirOLAdMbbQCZzSngoVztfFlgsEU7QAInsQnMy4wdp7hcPBbwXBcqPWOXHoOI9SH6XyMmPhHmOMGprKDV2e1NeUw1jQU/zzvmd/JVK7YoXLvB+x8daPDFoPKA885vaTmyT1l4CxEMnKAkE2l0n8zEgK68ocNIcPcV7HIsLImFCikmOmeeX6FfClMfGISP3ij5zG2r4XMOmDBcrbwTkimqJMhGuyzShFvIiRVDlxpuWi4ZVlBoRvaCRbK2zCKa5NMpKJZ8c7ak2KBp12rZSCy394XHXnrjpP3kJXcbaMtPgrsdESogUM46t58QjRlIHtaKAOe5l+Uuj3QuelXJvfLn4SnsA/TqT66Id73H9yBHdr13u+1wUIxtFCg4vDpi/b9eVxseut7zL6PpNSSwhCM9cWXsu+vh4VaxL9NQU7kjIJjSH32VtnWGxXmIt8Hei5McjM16XtNNKlh4ua3Q1T4Csf20ODC6NObehQyf7uUUqmWqDgzXU23T7jTThu32Ru8zMQgAFnf7bzPVdLH+oxRD0AmuisWSJIdPyUvfkCiPGXyExsHW49+gc2NMC2PKYxTJQvDlEvx2a42V9Wp7wd51Eco67d6LNfJ037cmIkeP
+ NUtJVkaC
+ NZHt5cGOPArP/ArsdgS/RlnHs2P9LTQsv7MUdvt8PBZqNGaKM09qjkWrT3RLIHtOG0cfTxfcR2Tq9t3zXUvQfXsq13qqEYJOOrgiKlaOjz0XT0x0E/O/UfmWaFRj1QZJuehta8Th3vD/iMHJJBo0Z7cuh6tKE+U5+bw9PuL7w4GIoSJ8tLrbm0ozCri7S8uGUX+1D+QLWIb1zZep9BT+C9L8iQgYjXxwrAKyKoXbFk+TRG/xknMJ18/2IxOmcYzOcJjyiDu3rY7FvRe76bZMXDZLBuOd3vvu7tdbeRJpblCvvYka0JShDNB9DgwLcT4X9wuYuVeEMImjawAzyHuqOb8NjS8lWzEqkJo20CcG/cwxlNuBHMC2BbgI3mr9lZqO1Lpde1ef8CcnEp2QGvD4r2NXLMX+AsjakUq+5KK4El4R4qHIyfHUdQgUbgA2xCt1wdLlxhqgBFApXBymUjV6b7fcAfFOFLEBd+P0uXle9xUQDOhRbeqNsisEDy3HtVeEAVg6sIffDU0R+3KbMGYn+cLf2NKlHHe4SzwuVO7NoKkx+aerZs7Hd35QAEnUnhS5y2/OK17X2DHbllxA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -156,63 +156,54 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 
 From: Viorel Cernateanu <vrilutza@gmail.com>
 
-With CONFIG_DEBUG_PREEMPT enabled, a KMSAN kernel hangs during boot
-immediately after KMSAN is enabled.
+arch_kmsan_get_meta_or_null() derives the CPU number from the offset
+of an address within the CPU entry area. This assumes that the areas
+are laid out in CPU order.
 
-kmsan_virt_addr_valid() calls preempt_disable() and pfn_valid(), which
-in turn calls rcu_read_lock_sched(). With CONFIG_DEBUG_PREEMPT, these
-paths call the instrumented preempt_count_add(). Its instrumentation
-requests metadata and re-enters kmsan_virt_addr_valid(), causing
-recursion.
+With KASLR, init_cea_offsets() assigns each CPU a random slot. The
+metadata lookup treats that slot number as a CPU number and can pass
+an out-of-range index to get_cpu_entry_area().
 
-Use preempt_disable_notrace() and __pfn_valid() to validate the PFN
-without entering those instrumented helpers. Disabling preemption
-provides the RCU-sched read-side protection required by __pfn_valid().
+On an Ivy Bridge laptop, this causes a KMSAN kernel to oops during
+boot while the hard lockup detector sets up its perf event. A QEMU
+test that reads one byte from the current CPU's GDT alias reproduces
+the out-of-bounds access:
 
-Use preempt_enable_no_resched_notrace() on exit to avoid both
-instrumentation and a reschedule from the metadata lookup.
+  UBSAN: array-index-out-of-bounds in arch/x86/mm/cpu_entry_area.c:25:9
+  index 2100006 is out of range for type 'unsigned long[64]'
+  RIP: 0010:get_cpu_entry_area+0x14/0x50
 
-Fixes: f6564fce256a ("mm, kmsan: fix infinite recursion due to RCU critical section")
-Link: https://lore.kernel.org/20240308043448.masllzeqwht45d4j@M910t
+Keep the CPU entry areas in CPU order when KMSAN is enabled. This
+allows the metadata lookup to identify the CPU directly, without
+searching every CPU's area on each lookup.
+
+This disables CPU entry area randomization for KMSAN kernels.
+Kernel text randomization remains enabled.
+
+Fixes: 97e3d26b5e5f ("x86/mm: Randomize per-cpu entry area")
 Suggested-by: Alexander Potapenko <glider@google.com>
 Signed-off-by: Viorel Cernateanu <vrilutza@gmail.com>
 ---
- arch/x86/include/asm/kmsan.h | 17 ++++++++++-------
- 1 file changed, 10 insertions(+), 7 deletions(-)
+ arch/x86/mm/cpu_entry_area.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/include/asm/kmsan.h b/arch/x86/include/asm/kmsan.h
-index c6715b2db0dc..e36df95439df 100644
---- a/arch/x86/include/asm/kmsan.h
-+++ b/arch/x86/include/asm/kmsan.h
-@@ -85,18 +85,21 @@ static inline bool kmsan_virt_addr_valid(void *addr)
- 	}
+diff --git a/arch/x86/mm/cpu_entry_area.c b/arch/x86/mm/cpu_entry_area.c
+index 575f863f3c75..ce9b5d0e968d 100644
+--- a/arch/x86/mm/cpu_entry_area.c
++++ b/arch/x86/mm/cpu_entry_area.c
+@@ -30,7 +30,11 @@ static __init void init_cea_offsets(void)
+ 	unsigned int max_cea;
+ 	unsigned int i, j;
  
- 	/*
--	 * pfn_valid() relies on RCU, and may call into the scheduler on exiting
--	 * the critical section. However, this would result in recursion with
--	 * KMSAN. Therefore, disable preemption here, and re-enable preemption
--	 * below while suppressing reschedules to avoid recursion.
-+	 * pfn_valid() takes rcu_read_lock_sched(), which can call instrumented
-+	 * code (preempt_count_add() with CONFIG_DEBUG_PREEMPT, lock_acquire()
-+	 * with CONFIG_DEBUG_LOCK_ALLOC). That code looks up metadata itself and
-+	 * would recurse here. Disable preemption with the notrace helpers
-+	 * instead, which keeps this an RCU-sched read-side critical section,
-+	 * and re-enable it without a reschedule to avoid entering the scheduler
-+	 * from the metadata lookup.
- 	 *
- 	 * Note, this sacrifices occasionally breaking scheduling guarantees.
- 	 * Although, a kernel compiled with KMSAN has already given up on any
- 	 * performance guarantees due to being heavily instrumented.
- 	 */
--	preempt_disable();
--	ret = pfn_valid(x >> PAGE_SHIFT);
--	preempt_enable_no_resched();
-+	preempt_disable_notrace();
-+	ret = __pfn_valid(x >> PAGE_SHIFT);
-+	preempt_enable_no_resched_notrace();
- 
- 	return ret;
- }
+-	if (!kaslr_enabled()) {
++	/*
++	 * KMSAN works out the CPU of a CPU entry area address from its offset,
++	 * see arch_kmsan_get_meta_or_null(), so keep the areas in CPU order.
++	 */
++	if (!kaslr_enabled() || IS_ENABLED(CONFIG_KMSAN)) {
+ 		for_each_possible_cpu(i)
+ 			per_cpu(_cea_offset, i) = i;
+ 		return;
 
 -- 
 2.53.0
