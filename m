@@ -1,125 +1,89 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31409606A324
-	for <linux-mm@archiver.kernel.org>; Sun,  1 Nov 2026 22:38:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9012606A324
+	for <linux-mm@archiver.kernel.org>; Sun,  1 Nov 2026 23:20:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=WhlDmhe1
+	dkim=pass (1024-bit key, unprotected) header.d=inria.fr header.i=@inria.fr header.a=rsa-sha256 header.s=dc header.b=sur1vkFH
 Received: by kanga.kvack.org (Postfix)
-	id E160A6B00EF; Sun,  1 Nov 2026 17:38:12 -0500 (EST)
+	id 5DCEE6B00EF; Sun,  1 Nov 2026 18:20:50 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DC7376B05B1; Sun,  1 Nov 2026 17:38:12 -0500 (EST)
+	id 58DBC6B05B1; Sun,  1 Nov 2026 18:20:50 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CDD0F6B05B2; Sun,  1 Nov 2026 17:38:12 -0500 (EST)
+	id 47C366B05B2; Sun,  1 Nov 2026 18:20:50 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id AA6256B00EF
-	for <linux-mm@kvack.org>; Sun,  1 Nov 2026 17:38:12 -0500 (EST)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 33C45A88BF
-	for <linux-mm@kvack.org>; Sun,  1 Nov 2026 22:38:12 +0000 (UTC)
-X-FDA: 85388014824.29.D216019
-Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 63D9C1A0007
-	for <linux-mm@kvack.org>; Sun,  1 Nov 2026 22:38:10 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=WhlDmhe1;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf19.hostedemail.com: domain of shorne@gmail.com designates 209.85.128.50 as permitted sender) smtp.mailfrom=shorne@gmail.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 106AF6B00EF
+	for <linux-mm@kvack.org>; Sun,  1 Nov 2026 18:20:50 -0500 (EST)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 6AF59A0B10
+	for <linux-mm@kvack.org>; Sun,  1 Nov 2026 23:20:49 +0000 (UTC)
+X-FDA: 85388122218.15.4018FF5
+Received: from mail3-relais-sop.national.inria.fr (mail3-relais-sop.national.inria.fr [192.134.164.104])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 97F0D140008
+	for <linux-mm@kvack.org>; Sun,  1 Nov 2026 23:20:45 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=inria.fr header.s=dc header.b=sur1vkFH;
+	dmarc=pass (policy=none) header.from=inria.fr;
+	spf=pass (imf09.hostedemail.com: domain of julia.lawall@inria.fr designates 192.134.164.104 as permitted sender) smtp.mailfrom=julia.lawall@inria.fr
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793572690;
+	s=arc-20220608; t=1793575247;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=cyVD91132bU9Mh34FqVz6AEtmXuum78f1uIKiL1Rw/o=;
-	b=KtPVBD7trfZqlixcIyawz9Q6cD2Z/I99U2xQM1Gdy7MC2/DcQe+SR1/bM+Ekk6kxAzAKB8
-	4qftKqKIAQKmS3xsNmj/nslvxgMlvIyEmI2A/0DOf7/gAUDiBFuhphitL21CQUdkpeJ7Na
-	Ga1pQ2wgF1AJHSCSrg0yK0n2LL8LsUc=
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=DN2qS6zGxd+41Wpysh4jKjE7aUcT+0wcXmczyVLoNZ4=;
+	b=u4EHL900HUzHPIbqAzFRJRKfD9wqnTREkeWQgdo20PWkMXwtGfjOJGwqEhMhB/7z122ztq
+	JmcESdf6Bm4KoDvx0XVBKGmy6PiGzxlnezA3sV8KudH8PjsA5NLa531hGIR6CtOpD6RJDN
+	68KjAhGLvgJfp6c4tm5gSvHqHy/cPiU=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=WhlDmhe1;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf19.hostedemail.com: domain of shorne@gmail.com designates 209.85.128.50 as permitted sender) smtp.mailfrom=shorne@gmail.com
+	imf09.hostedemail.com;
+	dkim=pass header.d=inria.fr header.s=dc header.b=sur1vkFH;
+	dmarc=pass (policy=none) header.from=inria.fr;
+	spf=pass (imf09.hostedemail.com: domain of julia.lawall@inria.fr designates 192.134.164.104 as permitted sender) smtp.mailfrom=julia.lawall@inria.fr
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793572690;
-	b=RD8O+L2dXiJ1luTG234kzNus7hedK/Mr/DNWhPfyB1g0ULVmUiuFelnJIq+nhGcQA7iES3
-	RDBejTTnI4OYXtnxO+rM6VhCjI7EpXw2igAujs75S9VS2TW2tfVkDVE3LmS9x/7spqg5Ne
-	GqD7hhwkpkEXUao9kVihKel+8IuvdVE=
-Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-4a2153c8525so14248305e9.3
-        for <linux-mm@kvack.org>; Sun, 01 Nov 2026 14:38:10 -0800 (PST)
+	t=1793575247;
+	b=whK+/ptIW4oXCaaWHZSSEoEG3LlpoeWyh0aKsM7/ND9KUbNkYaxbMIOM5pik/9uf1nxBnB
+	tjQyFSAu5xJ19uQJa+AlnzegILDle4EoJ4T3lhYkVsRhVSpO0Km8pmNXJW6vVbfyQTBO64
+	p+W0J40O4oBPOgVCOvmqT8Jw4CGBNoQ=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793572689; x=1794177489; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=cyVD91132bU9Mh34FqVz6AEtmXuum78f1uIKiL1Rw/o=;
-        b=WhlDmhe1PgiAIEJiLzzyGDhzRw0p2VG8KSefQzT4ibeUaEduLbAsMr+OmxdnKZm2OH
-         Cmzju6j8Eh2rx9eOjpIP+6TdGHN280dxNf160+XqbxTpc/HX904VupJfsiA6r7H15DYG
-         ODmjUFecs++jCy28kEEcG1oTOYUbNIXnTBLBl6poKWuAWIqnM78NdHOv5pttBS6Pf3k0
-         HFpvdupMP4KG4TQ0f/ZecqenqpsFptDxFdhCrzvOqe8Z+Dnq0QgZb/YYi6P+ejXu5w6o
-         ugv5Dhl/t6E98f79AuN+gXvccprQZUeuxtlZlB84qZAZvCGVvDwJlL6gcFvp68I+6EuA
-         LFcw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793572689; x=1794177489;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=cyVD91132bU9Mh34FqVz6AEtmXuum78f1uIKiL1Rw/o=;
-        b=a9/uGkviMnNumsxxKnplXMEX2QCmQDXN/+OrPmn6s2RPHTn+3s/HQaDLtgo5Fu+hQw
-         8Tyz7zsRyW1DhyqWrIg4YRny6NZmmekfR0oVqXqNnv7QHLG7mN0fPUF4ezOHzCNgZndh
-         bkasYFonKv5ykwyX2nlrm4+MuFG95cag2HC5oM2ezseQY1Sd1jVmpWDYriyJwiVXzUce
-         akDZ7P9DYV/FTO00V4Dba7bV7UTsQ7HugPrvRS5JNI/Rz7eKCE66m7YBbD/+9JiYldrD
-         XX8nf/r4YPfuMZcXf7K+/vwDbZUbqNNqvJq2bScC/y0spsRKyCVekAXuIvSPqndN5WGO
-         pjXQ==
-X-Forwarded-Encrypted: i=1; AKwUvBxAfAEntaMXJvaw+nyXrg4/0OqglXono8bl0oyHzuELRn8hV9HdMf3mCMAoKuTIE1SJ5EFFV7xpSA==@kvack.org
-X-Gm-Message-State: AFq9FYIN40k/fe3Dk4Cn/J7VIFnvZr2dk81OEglhri9Y9U75OzWM8Me/
-	PiL+xuGaHHJQ7oSkVRb5sgQrTE5cBAJCldxcQwHJLCgb4VH+j+4I3FhW
-X-Gm-Gg: AYBFou2Gl+PQkfGP3kdrhuc60cLap7wXPCImOU6nh9xiI8b1plD1ZiL0LwpJa+oNUSs
-	GPbt1bBS7aioOeXuYm+lr0jj3E+EiTIniGdo0Ch1LRh0shp81S7XJHkro97TvzjvpMIAepXng4x
-	68lm2B74SodFxIkMHnM7GFp67NOmO5RJMmuqpwhMCS2l37HFzleM3vi079zV4yA/S7MgCVJwRIb
-	g1UXXrXZoncpdLKOLid5dLjdsktGVr8gWnFdOTbHct14/PmWHkamFqzf4aiAAb+Z377gsOFaUKI
-	yiFaxYxHqKAQdxU1BaVHUZ8Vp0rwpCYt2XW3SiOw258My6pqWYZScgJ4i9MNm4LMOzSpKviAuoE
-	N464OMDQt8RupibzAzaYAS8i31dLXP5K2eVKoRnqPYTtVSessnISfPIaDUS9qcwk8lO8QsZKspl
-	2DdDaF7IA0QtLh6bDbpOggZIBlAJjWFs+1iuJ1oWdBo/7k+/pcG5rNiXrFq2B/kOAu7UrrII2BP
-	N5UvIaomUWv0ZSaODSKWie/q0UBeqedTUl2wxCXN0/8BbTaJjBK7PFApHu+O+5+9JxG5+ImWN6t
-	suOoiP+J8aj3SIV1vwEmSuqMHP04FLimme9nGoXlh328L2lTe5eVyi6GDzhwbeUsaneLeRh5qyK
-	p/7jyaiskQ4tKd/eiNCIURh5BePE=
-X-Received: by 2002:a05:600c:5397:b0:4a4:7a8d:c736 with SMTP id 5b1f17b1804b1-4ac16acfceamr186954635e9.9.1793572688638;
-        Sun, 01 Nov 2026 14:38:08 -0800 (PST)
-Received: from localhost (brnt-04-b2-v4wan-170138-cust2432.vm7.cable.virginm.net. [94.175.9.129])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4aa80f047bfsm297681255e9.3.2026.11.01.14.38.08
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 01 Nov 2026 14:38:08 -0800 (PST)
-Date: Sun, 1 Nov 2026 22:38:07 +0000
-From: Stafford Horne <shorne@gmail.com>
-To: Matthew Wilcox <willy@infradead.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	stefan.kristiansson@saunalahti.fi, lkp@intel.com,
-	jonas@southpole.se, broonie@kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH 1/1] openrisc: include asm/page.h before folded pgtable
- headers
-Message-ID: <aue_T9TdK9MOIAOg@antec>
-References: <7e6799e4a26d4c87b28bfe1d0bab7d54.1@linux-foundation.org>
- <aubrobg1lV24DH4h@antec>
- <aucp6NrW64B30tO0@casper.infradead.org>
+  d=inria.fr; s=dc;
+  h=date:from:to:cc:subject:message-id:mime-version;
+  bh=DN2qS6zGxd+41Wpysh4jKjE7aUcT+0wcXmczyVLoNZ4=;
+  b=sur1vkFHUFM4tdopFk453RMy0yzNeGFzo15QkmRsOjong5vtylwkc2Mg
+   b2acZclxfvTsSwhszQpKDwTsQT97YcvS3/d27hRinjCiHZvg3c02W3BXH
+   ViK4uQdDW8dFQnry4i8jpSmnV9m8yI6ot/dBYRKFVWnDv6msSPNJop3Tc
+   k=;
+X-CSE-ConnectionGUID: seC/1H/YRD2C1QvPGX9PXw==
+X-CSE-MsgGUID: 4emA+J89SAm/t9cYuuNo8g==
+X-IronPort-AV: E=Sophos;i="6.27,190,1787004000"; 
+   d="scan'208";a="161430623"
+Received: from 88-188-149-159.subs.proxad.net (HELO hadrien.home) ([88.188.149.159])
+  by mail3-relais-sop.national.inria.fr with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Nov 2026 00:20:41 +0100
+Date: Mon, 2 Nov 2026 00:20:41 +0100 (CET)
+From: Julia Lawall <julia.lawall@inria.fr>
+To: Pasha Tatashin <pasha.tatashin@soleen.com>
+cc: Andrew Morton <akpm@linux-foundation.org>, 
+    Linux Memory Management List <linux-mm@kvack.org>, 
+    "Mike Rapoport (Microsoft)" <rppt@kernel.org>, 
+    Pratyush Yadav <pratyush@kernel.org>, linux-kernel@vger.kernel.org, 
+    oe-kbuild-all@lists.linux.de
+Subject: kernel/liveupdate/luo_file.c:558:5-13: ERROR: invalid reference to
+ the index variable of the iterator on line 553 (fwd)
+Message-ID: <a1b79e2b-e960-b6de-9139-fbbd13bfb2b3@inria.fr>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aucp6NrW64B30tO0@casper.infradead.org>
-X-Rspamd-Queue-Id: 63D9C1A0007
-X-Stat-Signature: u57s5ttwwxrnfuom1tb5i3stw4ba3tzu
-X-Spam-Status: No, score=-2.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=no autolearn_force=no version=4.0.1
+Content-Type: text/plain; charset=US-ASCII
+X-Rspamd-Queue-Id: 97F0D140008
+X-Stat-Signature: zi5pm8gkhz9p48p8n9xiyut4bzkdsg5o
+X-Rspamd-Server: rspam06
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS
+	autolearn=ham autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1793572690-820164
-X-HE-Meta: U2FsdGVkX1/F76A7jKaG1EXc4Pp//lEGSkgdwxSeH+PAzzWTEib1BFmJGlVcQsxvkxKcy3ULlE/7bC8FApreMTVKNCy896yt64A/cL2DDqkbB/0LvmZnGmAkIXm5w+1qEhN8QZaSfwIgccoslCyBrbZVFG5M0vkt1Qn5XH8oNdFRhzQv68aTwPFrBUvt3ZkSgfKEHuJjtn8WBJ+/vomwyXXaQV6/V++3q/KqbRf2RWCL+SE40+S1QwoutI+X0Uh30nJqkO/GXL/m6ru3EEZ0l03A/LV1CoacdNOihMI4H6oiQzRjmh7rtpnBs9567LsWCx+5A8Tm9XdbuNaotn65JTKWkysjG07Izm508Av0Mk/eD9Ur7SwMmeg4AhxQ7KR5mxFQuHgSz7KdLjqcpnieHAWbaUYtrLesjQTEt5WnMi/f+Ajc8B2cDbZ0kcMszO0U+iwOkkumZR77G4HL14DJo52Rk1dFPhwr2sd6XGKKc5Yq9UcpqX5pQcZ8kpZRbHNW4G8pfVDuD6WEVg/nCBVbXcPlqH36l2S5tjIIRz1Ko5rMsGw1BCWC8N91msWfnE2GKRSl4sClXgne/IPaKDTlm74jFZRhZVljbHJr53iASQdoT4UY+Vs6Rm6x1chL+OWl2t6avJKnnfaIqhQUULeSQpkGlGPmD4ut39Wg0wJJ33KiKY8MrRNsaRIzwXc+RKsHLolrXyj3iAqzRRZH+mJq32l0ERcf5ox8yKNWKNsBYuV18ws1dXTUOSrCJ7kvNlMFMaUUjRjpmOnvCWiItjAdn22FkKWAIXNRjQba5prpQ9J3Y1EyqLJNPKRE4bUMvKr3qyL6oAQn9IpGhYJE4Q15mN22j5B1ZnfHCzrC7GNGiXMXaX4e2mobXVPLrwrpIfi8wM+VI5aIWIAqTZ1cYxuKrpMgGRY2m41kv1o2wbvTQbI2zed6CVZjpmGZZ0ZQb6jHARvFEW2LIUP9SK3MDkV
- TE886UBU
- XMp9NWfqilDbUiVTTn1GM/VSJY7q9CnU7ttobjcna1EwBY5ExcpKsaGIOUyk8caRMGLTrybrgKMSD5MO4TQVtgObcOxruQJOJOA/UyTII5HtYWdZ9tjdGQ62UcZHFWofVCh3hIgR+9OGVlTV8piXtQsEMgc7Vlz00vAigyjcGiwqtpNV+aJr3JWJs/Us1vZYiCxwKdJke6wgAZ4R9d+AbjPtKVp7gG7XFJsKpjYGQf9FBpEyJ+7OVEEm05y87n3i8TWuwOVKzqknF6ed/oc1QO7s6qd/MVE1EIPPM8iBF+PYbYBHXcTzSIxz9kvtce2aFd3ePT6Lj7WL/LIAAQLmOCw9L8TYZHtsO7w1hN8jrkhrz+yzFJUVrdfnygGIMJq9/GF06tY7gk0WsGQbEbD8jGqckVmqIhULXxWbViYhR1FDwqKPJ2DULJ1c6/DeZKtPcU8TWf+Kww/ySuWgEbDGPqtiW1nxjBdJ/F0oBogTLJEHjFDDcKTRhOGSqjk10/PygiCnmEZKd5hOWPbpj84O9JrPoZhPMB8YK0icq
+X-HE-Tag: 1793575245-455271
+X-HE-Meta: U2FsdGVkX1+rPwYm5W5sYxECTTMcSdjdwsLzQd9Xhk8EsZOo7RvkEOvW1lo1S3NUlDBHL1YArZpjCaPCY7iQBpfpjUmGIMr0Ucxv0qCl5wFK91WotUpC+TPSCmljndpm9EwkjmnN0AJ10GCmRnpYy4YNqo2/ynVW1j+/4lVJ0aqQDhAgX4/Dv3hkS0/1rYu5IK9gpVko8Mx/b1FYZ1km98nYYhuwnLRkOdtzJbXmQRQ3jrR79rSL/hmTdJ/yLE0w5g5aYHH7bSi1jy1MFgfx++9Yqsv50JeaF8HGWOAtQlsWY/pifKfgvJg0sjYV88byEasDq00ncCfbJR98Ypf+IQbHxjiuDp1nE+Lygf+i1wKV1X/wSSrYvxou8V7scgkH+s2DcBjmgpGxITsQ/6RclTP3TNN3hatGfx+PFWCf6jCBEGJuUVidvAFCgIVfpl6piYb/uOZ50bBDllEnVCttielgey9wdn2TQKgxjgOBJAZbfvlYzylDACzcuYFboBiVxZfGjwVwky4Jb1p2famF83cn9LeVe2k6F8T8WRnxZ3K+L3CD/5+z1o+qDQffDEppKCzkKeSrHTw4opyPG3QvgS8yaOj4d9nmwNa5JisVIiIHrwvfEF9hZ6hRQPofn9QFGWIOqCHCTmbVaBFZCE8SbDPUNl8u4edKtV5rCuWGI8FHfs69dPLvQU0WvD5dVZ2MXzyAp1xtF5DloLXLLnwSerBBYtoL4ufk37dKBvyqHz44pdtOVCUDLpSV0+nfcmbHaK4fs6/EFLDOnOuzbNVFA96QYqpyE0nZbbaNXNC0FcErZme+NeqE5e27FYoq+nHa6YE0COuIROJ2Zm2WeG/FcCrsgrVH6dgXNqCBtK+d/f2FBN2jzoixpXzimE4a5NXPkx91B8QzarCvQxLrSD8mt4G+1dUzOF8DHsZ9k95UwAhWAw068nYR7vGs5yweAVoYULLYYNs70y1+U7cVtc7
+ 4185l1JM
+ kZz2tPbRHA3oZ5I2ENqszlKViavhrhjY9mZ5wX4uGcnJJA9EWzj62wGJcHnJey+s6Au+AZAeY1ua6gYNKWcJcV4sujxigmTQNW3P8QYPMJ9jXaew/cJt2DQFvc5SB5Lc7rCowH0wv+eNJ2kTfF/byga+V9mH6f8RHfLRk6GWclm5simmqlVtEx75/QNkTvxAsOBhnr88Resw5cBF2Qcu3rlOikzPTZTxb4hYt7F3UN3OP7M0yYlK1pXqoZ6nEpD/V2yMZf9FS/Iyu2C184EcNRyQ/ovoUE6xFUkDWfXk5lWz331s3X2y0NwcQj0ARih55ykdNZLNIaXiiXF7L3W3i9grbY8eFkxHzuw9X8GjFd6wfQBO+609qJE+vha1mHJ5+YYA6btk8u20YqVqfmAMKmPh/DLZzgzJj/pvW/+y5uA1YOauXtpCyQ2e1qmwYVSvIOYbxzHuecZn79+poIuVSoh6oAXWboIkpNAlsv19SLw4x+kxMdZX/MfiVe/Xp+UKOJbAGwwUuSUV2ou1z0YPT4GB3aWMGpi/7/eOJma5obBTw9WWv6UwL6jDaxy6Zt9/YUIRgOxjpRet0tTtFFQVG+Tpl25mDkAvVQ4fW
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -128,33 +92,121 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Sun, Nov 01, 2026 at 12:00:40PM +0000, Matthew Wilcox wrote:
-> On Sun, Nov 01, 2026 at 07:34:57AM +0000, Stafford Horne wrote:
-> > On Fri, Oct 23, 2026 at 05:52:47PM -0700, Andrew Morton wrote:
-> > > From: Andrew Morton <akpm@linux-foundation.org>
-> > > Subject: openrisc: include asm/page.h before folded pgtable headers
-> > > Date: Fri, 23 Oct 2026 17:37:53 -0700
-> > > 
-> > > An OpenRISC allmodconfig build fails while compiling the DRM TTM KUnit
-> > > helpers:
-> > > 
-> > >   include/asm-generic/pgtable-nop4d.h:9:18: error:
-> > >   unknown type name 'pgd_t'
-> > > 
-> > > The TTM header cleanup stopped including linux/pagemap.h from ttm_tt.h. 
-> > > The remaining ttm_caching.h include pulls in linux/pgtable.h, which
-> > > reaches OpenRISC's asm/pgtable.h before asm/page.h has supplied the pgd_t
-> > > definition.
-> > > 
-> > > Include asm/page.h ahead of the generic folded page-table headers.  This
-> > > restores the missing type definition and allows OpenRISC allmodconfig
-> > > builds to get past this failure.
-> > 
-> > Hi Andrew,
-> > 
-> > Thanks for this I will queue this.
-> 
-> No, I'll take it.
+luo_file may point to something random if the break in the
+list_for_each_entry is not taken.
 
-OK, thanks.
+julia
+
+---------- Forwarded message ----------
+Date: Mon, 02 Nov 2026 00:06:55 +0100
+From: kernel test robot <lkp@intel.com>
+To: oe-kbuild@lists.linux.dev
+Cc: lkp@intel.com, Julia Lawall <julia.lawall@inria.fr>
+Subject: kernel/liveupdate/luo_file.c:558:5-13: ERROR: invalid reference to the
+    index variable of the iterator on line 553
+
+BCC: lkp@intel.com
+CC: oe-kbuild-all@lists.linux.dev
+CC: linux-kernel@vger.kernel.org
+TO: Pasha Tatashin <pasha.tatashin@soleen.com>
+CC: Andrew Morton <akpm@linux-foundation.org>
+CC: Linux Memory Management List <linux-mm@kvack.org>
+CC: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+CC: Pratyush Yadav <pratyush@kernel.org>
+
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git master
+head:   6628e7d4c6b25c8d18f1345e3a20d21829aae7e4
+commit: 7c722a7f44e0c1f9714084152226bc7bd644b7e3 liveupdate: luo_file: implement file systems callbacks
+date:   11 months ago
+:::::: branch date: 2 hours ago
+:::::: commit date: 11 months ago
+config: x86_64-randconfig-2103-20261101 (https://download.01.org/0day-ci/archive/20261101/202611012349.RESCKElP-lkp@intel.com/config)
+compiler: clang version 22.1.8 (https://github.com/llvm/llvm-project ca7933e47d3a3451d81e72ac174dcb5aa28b59d1)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Fixes: 7c722a7f44e0 ("liveupdate: luo_file: implement file systems callbacks")
+| Reported-by: kernel test robot <lkp@intel.com>
+| Reported-by: Julia Lawall <julia.lawall@inria.fr>
+| Closes: https://lore.kernel.org/r/202611012349.RESCKElP-lkp@intel.com/
+
+cocci warnings: (new ones prefixed by >>)
+>> kernel/liveupdate/luo_file.c:558:5-13: ERROR: invalid reference to the index variable of the iterator on line 553
+
+vim +558 kernel/liveupdate/luo_file.c
+
+7c722a7f44e0c1 Pasha Tatashin 2025-11-25  517
+7c722a7f44e0c1 Pasha Tatashin 2025-11-25  518  /**
+7c722a7f44e0c1 Pasha Tatashin 2025-11-25  519   * luo_retrieve_file - Restores a preserved file from a file_set by its token.
+7c722a7f44e0c1 Pasha Tatashin 2025-11-25  520   * @file_set: The file_set from which to retrieve the file.
+7c722a7f44e0c1 Pasha Tatashin 2025-11-25  521   * @token:    The unique token identifying the file to be restored.
+7c722a7f44e0c1 Pasha Tatashin 2025-11-25  522   * @filep:    Output parameter; on success, this is populated with a pointer
+7c722a7f44e0c1 Pasha Tatashin 2025-11-25  523   *            to the newly retrieved 'struct file'.
+7c722a7f44e0c1 Pasha Tatashin 2025-11-25  524   *
+7c722a7f44e0c1 Pasha Tatashin 2025-11-25  525   * This function is the primary mechanism for recreating a file in the new
+7c722a7f44e0c1 Pasha Tatashin 2025-11-25  526   * kernel after a live update. It searches the file_set's list of deserialized
+7c722a7f44e0c1 Pasha Tatashin 2025-11-25  527   * files for an entry matching the provided @token.
+7c722a7f44e0c1 Pasha Tatashin 2025-11-25  528   *
+7c722a7f44e0c1 Pasha Tatashin 2025-11-25  529   * The operation is idempotent: if a file has already been successfully
+7c722a7f44e0c1 Pasha Tatashin 2025-11-25  530   * retrieved, this function will simply return a pointer to the existing
+7c722a7f44e0c1 Pasha Tatashin 2025-11-25  531   * 'struct file' and report success without re-executing the retrieve
+7c722a7f44e0c1 Pasha Tatashin 2025-11-25  532   * operation. This is handled by checking the 'retrieved' flag under a lock.
+7c722a7f44e0c1 Pasha Tatashin 2025-11-25  533   *
+7c722a7f44e0c1 Pasha Tatashin 2025-11-25  534   * File retrieval can happen in any order; it is not bound by the order of
+7c722a7f44e0c1 Pasha Tatashin 2025-11-25  535   * preservation.
+7c722a7f44e0c1 Pasha Tatashin 2025-11-25  536   *
+7c722a7f44e0c1 Pasha Tatashin 2025-11-25  537   * Context: Can be called from an ioctl or other in-kernel code in the new
+7c722a7f44e0c1 Pasha Tatashin 2025-11-25  538   *          kernel.
+7c722a7f44e0c1 Pasha Tatashin 2025-11-25  539   * Return: 0 on success. Returns a negative errno on failure:
+7c722a7f44e0c1 Pasha Tatashin 2025-11-25  540   *         -ENOENT if no file with the matching token is found.
+7c722a7f44e0c1 Pasha Tatashin 2025-11-25  541   *         Any error code returned by the handler's .retrieve() op.
+7c722a7f44e0c1 Pasha Tatashin 2025-11-25  542   */
+7c722a7f44e0c1 Pasha Tatashin 2025-11-25  543  int luo_retrieve_file(struct luo_file_set *file_set, u64 token,
+7c722a7f44e0c1 Pasha Tatashin 2025-11-25  544  		      struct file **filep)
+7c722a7f44e0c1 Pasha Tatashin 2025-11-25  545  {
+7c722a7f44e0c1 Pasha Tatashin 2025-11-25  546  	struct liveupdate_file_op_args args = {0};
+7c722a7f44e0c1 Pasha Tatashin 2025-11-25  547  	struct luo_file *luo_file;
+7c722a7f44e0c1 Pasha Tatashin 2025-11-25  548  	int err;
+7c722a7f44e0c1 Pasha Tatashin 2025-11-25  549
+7c722a7f44e0c1 Pasha Tatashin 2025-11-25  550  	if (list_empty(&file_set->files_list))
+7c722a7f44e0c1 Pasha Tatashin 2025-11-25  551  		return -ENOENT;
+7c722a7f44e0c1 Pasha Tatashin 2025-11-25  552
+7c722a7f44e0c1 Pasha Tatashin 2025-11-25 @553  	list_for_each_entry(luo_file, &file_set->files_list, list) {
+7c722a7f44e0c1 Pasha Tatashin 2025-11-25  554  		if (luo_file->token == token)
+7c722a7f44e0c1 Pasha Tatashin 2025-11-25  555  			break;
+7c722a7f44e0c1 Pasha Tatashin 2025-11-25  556  	}
+7c722a7f44e0c1 Pasha Tatashin 2025-11-25  557
+7c722a7f44e0c1 Pasha Tatashin 2025-11-25 @558  	if (luo_file->token != token)
+7c722a7f44e0c1 Pasha Tatashin 2025-11-25  559  		return -ENOENT;
+7c722a7f44e0c1 Pasha Tatashin 2025-11-25  560
+7c722a7f44e0c1 Pasha Tatashin 2025-11-25  561  	guard(mutex)(&luo_file->mutex);
+7c722a7f44e0c1 Pasha Tatashin 2025-11-25  562  	if (luo_file->retrieved) {
+7c722a7f44e0c1 Pasha Tatashin 2025-11-25  563  		/*
+7c722a7f44e0c1 Pasha Tatashin 2025-11-25  564  		 * Someone is asking for this file again, so get a reference
+7c722a7f44e0c1 Pasha Tatashin 2025-11-25  565  		 * for them.
+7c722a7f44e0c1 Pasha Tatashin 2025-11-25  566  		 */
+7c722a7f44e0c1 Pasha Tatashin 2025-11-25  567  		get_file(luo_file->file);
+7c722a7f44e0c1 Pasha Tatashin 2025-11-25  568  		*filep = luo_file->file;
+7c722a7f44e0c1 Pasha Tatashin 2025-11-25  569  		return 0;
+7c722a7f44e0c1 Pasha Tatashin 2025-11-25  570  	}
+7c722a7f44e0c1 Pasha Tatashin 2025-11-25  571
+7c722a7f44e0c1 Pasha Tatashin 2025-11-25  572  	args.handler = luo_file->fh;
+7c722a7f44e0c1 Pasha Tatashin 2025-11-25  573  	args.serialized_data = luo_file->serialized_data;
+7c722a7f44e0c1 Pasha Tatashin 2025-11-25  574  	err = luo_file->fh->ops->retrieve(&args);
+7c722a7f44e0c1 Pasha Tatashin 2025-11-25  575  	if (!err) {
+7c722a7f44e0c1 Pasha Tatashin 2025-11-25  576  		luo_file->file = args.file;
+7c722a7f44e0c1 Pasha Tatashin 2025-11-25  577
+7c722a7f44e0c1 Pasha Tatashin 2025-11-25  578  		/* Get reference so we can keep this file in LUO until finish */
+7c722a7f44e0c1 Pasha Tatashin 2025-11-25  579  		get_file(luo_file->file);
+7c722a7f44e0c1 Pasha Tatashin 2025-11-25  580  		*filep = luo_file->file;
+7c722a7f44e0c1 Pasha Tatashin 2025-11-25  581  		luo_file->retrieved = true;
+7c722a7f44e0c1 Pasha Tatashin 2025-11-25  582  	}
+7c722a7f44e0c1 Pasha Tatashin 2025-11-25  583
+7c722a7f44e0c1 Pasha Tatashin 2025-11-25  584  	return err;
+7c722a7f44e0c1 Pasha Tatashin 2025-11-25  585  }
+7c722a7f44e0c1 Pasha Tatashin 2025-11-25  586
+
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
