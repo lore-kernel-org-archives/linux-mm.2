@@ -1,94 +1,93 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC490606A324
-	for <linux-mm@archiver.kernel.org>; Sun,  1 Nov 2026 19:02:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E9B7606A324
+	for <linux-mm@archiver.kernel.org>; Sun,  1 Nov 2026 19:13:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=T32TZ0K0
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=J9orr59w
 Received: by kanga.kvack.org (Postfix)
-	id DBDA76B05B3; Sun,  1 Nov 2026 14:02:51 -0500 (EST)
+	id 56EC76B00EF; Sun,  1 Nov 2026 14:13:55 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D6ECC6B05B4; Sun,  1 Nov 2026 14:02:51 -0500 (EST)
+	id 520056B05B1; Sun,  1 Nov 2026 14:13:55 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C5CCC6B05B5; Sun,  1 Nov 2026 14:02:51 -0500 (EST)
+	id 4383D6B05B4; Sun,  1 Nov 2026 14:13:55 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 923656B05B3
-	for <linux-mm@kvack.org>; Sun,  1 Nov 2026 14:02:51 -0500 (EST)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 00A4C1C44C2
-	for <linux-mm@kvack.org>; Sun,  1 Nov 2026 19:02:50 +0000 (UTC)
-X-FDA: 85387472142.03.43F77BA
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 44A7C140003
-	for <linux-mm@kvack.org>; Sun,  1 Nov 2026 19:02:49 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=T32TZ0K0;
-	spf=pass (imf23.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 21A9B6B00EF
+	for <linux-mm@kvack.org>; Sun,  1 Nov 2026 14:13:55 -0500 (EST)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 8C3AE120A8D
+	for <linux-mm@kvack.org>; Sun,  1 Nov 2026 19:13:54 +0000 (UTC)
+X-FDA: 85387499988.20.24D7888
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf07.hostedemail.com (Postfix) with ESMTP id D34A740007
+	for <linux-mm@kvack.org>; Sun,  1 Nov 2026 19:13:52 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=J9orr59w;
+	spf=pass (imf07.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793559769;
+	s=arc-20220608; t=1793560432;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WggtPILRKQmq1fPsXP3UeL8pjRSJDLX7wsrAkv0vb7g=;
-	b=becWXMnNXTNKke9Q2PWDxa/oNJiNZwiE9+mJkgWS5VgYjRMjuzPcO4WBrNmNtePPfrka8C
-	bhFkbXKq8q+yEieKihiK7qw4lKGrgDpbueF/CQ7NGsL3zeAes6K0bkg1w9oZriCw1TTa0S
-	qjaPhUVwrtuiq23byedY2EXzZhTlNks=
+	bh=7S6qxSAluU5AdwDGWk4KFzyP5dBcL1YEzQEDbpdNMCo=;
+	b=zG65QBrgOIy93vDy3T9cNIBFErdsxtyI6YKlSHHXbWvpP9ylBdRLKFZGEMkNZz1XUKCduz
+	nkwomSTf8kM87NC4dYvzlqah/EFPi3WTYK6SrwoJRfjZ5GCh3zKplVvl20akLucX6oNFnL
+	eApiujb9u74P9CMsELj/XOer9GCqubc=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793559769;
-	b=1YWY++Q6uGMFKCdj6ASyIRvVj5ekgHw+mNwiSuim/Si466J0Kmukxz/Da4vtSpiWWU/D9i
-	e55szrF4uWmTHVfE2GG15WUiQ8Z6FMOR+kK6fEgypOg/Adxq4y9SS0DlGGU9/9yDN8svJo
-	47ixE7RDHEFQZN/xX9eC09pmVfg+uSA=
+	t=1793560432;
+	b=KsoTlwwKHJRDXgTnsBDYcNwvAGLlB80PUqO+AttYFBdZC/2GEHFbdzyX9gMtunGL7zDyO1
+	M/c6SRp8qa/lWX0ZpTOLDHviiCDda/dfHTIL6ReuggTNRZxepE/d5qscetLJ8fCuz/LSgH
+	Iwtj/K7fv8jTaf8Apk8RdqoI4/gJKbA=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=T32TZ0K0;
-	spf=pass (imf23.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=J9orr59w;
+	spf=pass (imf07.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id BCCDB605D1;
-	Sun,  1 Nov 2026 19:02:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 152201F000C1;
-	Sun,  1 Nov 2026 19:02:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1793559768;
-	bh=WggtPILRKQmq1fPsXP3UeL8pjRSJDLX7wsrAkv0vb7g=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=T32TZ0K0bSUBw8B+3JGLMuQPRUCQd1CschZWipLljnoqd5xMJTLLQfZftxMB5iOFH
-	 rKVBvPd66COoJcyapjdR00+vfV/yMdY2Wi2Q6HS7u/nY6XHwz7dxk/V30vL+dRmqxJ
-	 av67p5tRMF6Lq3FUQ4psOH/sHMHqSHANOU0Bn+qs=
-Date: Sun, 1 Nov 2026 11:02:47 -0800
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Kelvin Zhang <zhangxp1998@gmail.com>
-Cc: linux-mm@kvack.org, David Hildenbrand <david@kernel.org>,
- "Liam R . Howlett" <liam@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>,
- Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>, Pedro
- Falcato <pfalcato@suse.de>, Kalesh Singh <kaleshsingh@google.com>,
- linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
- stable@vger.kernel.org
-Subject: Re: [PATCH] fs/proc/task_mmu: check THP exclusivity for each
- subpage
-Message-Id: <20261101110247.95a03a5601f235ffb39c54c1@linux-foundation.org>
-In-Reply-To: <4c1b393a4b04bd94e4f1c7879ae04e1793eb0931.1793552446.git.zhangxp1998@gmail.com>
-References: <4c1b393a4b04bd94e4f1c7879ae04e1793eb0931.1793552446.git.zhangxp1998@gmail.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	by sea.source.kernel.org (Postfix) with ESMTP id 43419417C4;
+	Sun,  1 Nov 2026 19:13:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E73061F000C1;
+	Sun,  1 Nov 2026 19:13:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793560431;
+	bh=7S6qxSAluU5AdwDGWk4KFzyP5dBcL1YEzQEDbpdNMCo=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=J9orr59wDCUxwTVoMXio+VZBFQqFXKqHct9qyTpQX6AYK/aEi3wlWAxRJBT9bbsXV
+	 6OKkw1BaGmeNdzruw8FpzJ2nH5WG2lANAchqxlO7c/eXUHh+h7vdXM8XdWdN48ehGP
+	 xpERGMWHbF3etUfiIfbY6RKViVcKjL5oI32mIOTZ4c0CctH3j+jQ68bIlFwCDsf6dV
+	 5ksod5lN/+lhd2xVF7Xo26Cxz2vGQcF6X4qz4lUwaO74N29SCOavE/kCOCHJoJdHnr
+	 A7fD0qR+jzmV+VuDv70p1epw1+s7AjNLDHpvXu83VWyMWI4dpwsm5ssrk2MamC4Llj
+	 l6msJQyclhn5g==
+From: SJ Park <sj@kernel.org>
+To: Wang Guangke <gkwang@linx-info.com>
+Cc: SJ Park <sj@kernel.org>,
+	akpm@linux-foundation.org,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm/damon/stat: avoid overflow in estimated_memory_bandwidth calculation
+Date: Sun,  1 Nov 2026 11:13:43 -0800
+Message-ID: <20261101191344.85683-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20261101180001.167198-1-gkwang@linx-info.com>
+References: 
 X-Archived-By: <archiver.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 44A7C140003
-X-Stat-Signature: 78n1dim5awrjxsbcm3ckfg7eufb9c7tw
+X-Rspamd-Queue-Id: D34A740007
+X-Stat-Signature: hed8fesoy67aqbf9j493e5qhq8x9t6xt
 X-Rspam-User: 
-X-Spam-Status: No, score=-7.0 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,NICE_REPLY_A,SPF_HELO_PASS,SPF_PASS autolearn=no
-	autolearn_force=no version=4.0.1
-X-HE-Tag: 1793559769-363712
-X-HE-Meta: U2FsdGVkX18T2y0F8BnsFtEHoigbnPym13ZFXbJIr74uWGRyWM9XPnOs+hZSlXLQhlKJkDxBIrjmg3KENRSrgNJi0PxUn/if10p5z+zYc7IJC3gjhZAmymeBiOP15se/P0o5HrHvkMfAX6KJpRWbBx0OIQXYAr3pPHQY6h288EnuxYOfVdSoxcRWKmXCH4GbXWEdciq9+bbFOok14tAtI6MV0zXQuqNp7ALfxYN+bGntImqPg34vRw53zZi75eIDKJHgGLTPKm34nBeEBDP8qOmQvfduIq6glyPD6XQ/0evBoXfUU6WyV8dkqvyAaKgGbtO+D64b5EI05rROQTTbKslrm5rGLGhek3qyXgpdGgGsaHjdf8hu6gdK4y8rj1Dpqb5CzbnrINDjhniQkFQWjlJWPz4h6JLWpW6y2/ORF8Ho5RN6Z5GjbVURseUp5QzUbu5US2h6AnmLO25Ab9m7CZGPYYPOpWXZ+Tpm4qBVxmHyd2OUBYCIXp6eajInb6BYFM63FVX1HEVFnuk0j0/YRyuheQUs66ZLqwoAUlB+f813z+9+nosvAfy5dCzK4rfo1KBYNNYpxduAYFcMnMQSjl1kOPwqe775mG0UwOFzJcp9Ae0rjgz+GsnuQ1pQkVVfZ0K8WrCFdD6BRu8qVpvLFOqVJqLxYE/4q/9VhkBhFMEHsP1en8hfgXrwBMbPpZc6CgwxtIS8tRxGDmz1C5271SGipAkvIq4RZOx3qNa2KNX4PjvFRwT01Fbu22aln2Q5MV5gN4TtWdQyb8m5t+0ASkGIrVX3qSzy+gQe23bxzp9Va6GSqZaLlQpNG38gstR8d8ehWmQj0Pe4J4aVZ8h3rpDMX2ONbB4FZqWWSx5kZT59evcNWI8JdgUCEhtCU3osl18SM+sKDhaNMEqE8CfAJZigpahHd+Yv/3K1G0hbRpIbrt/lBhP2s9YkZuYC3xcPhpynb5N8C4TINgNbt+a
- clhcj17c
- pU7t0+LI+cHwxfVRtx8Y8Eyb6+JOeTSaXYDK4Aundg+mquw1bL4XceHWEO9gGEhlMu4ltffJ8fuuTb0MbBi+Lrlz6qxuunuOn3J5brvzQ5FlAkEu4y7KRocVdSQEPXmm0MVGz+n8H0qdMKmokaErRLcbKSifr7XblWNaX1MuBApoLEQk2Y9Sr67o+/0sOW/64b7wNUffFAYA72ZWJliLvj4mkrZ6j54Fnoh5md6wN3zTNM486B3Aj7rg2uP7pNsfo6TonHpzkGSLNqjw3le8fjIDC+73E+gXC1aaqhau3A1FofXQXCL9ieh1CCnkEQzAwsIDN
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1793560432-513146
+X-HE-Meta: U2FsdGVkX18qYl5ZcsMEuqT0jJoABB4wpxeZe/cl20RGgCjrDTfCkaoTIsqEtB28XDZ76MgZLGFUk9WFpvuynlb2Wg8vKuH1ImhHXjPBbCaFdaqUUnhgnN1KxHdfWo/3R/JbfObzibm454hsFQmw3iN2TQe+sidsvM0ZsOoqreUtCVbl/gSx+Ov89/sRD6nCcCnfctbuljbLrJGLT1Q7FlLRqzHVePIKElbKgNyf2bGgHUJDuQp2GD1ei5w8+PzlbMa17uL1eBaUlX9+Ydrm98At5UKNGV+yfkA1stEL6x5aLwDJ1rBb++2rH2iAIr7yJ3UF+g1Pzpf0yRBViYKC3f951XvEKkeyLQStvv/WBsGXOM77pKx9RS4WRXf7dp0K4nFPLuuKrOAVNFGken9Yf8rulEMz4j3uxIAw3Twx+lr8NEkdpybTtwOJAQajQXnNXTKWCmUA8co1AZYQ3u5Nt+VRGt/Etc6aKnCqrW5HZdVWw8aJ8tU/AAm8Yp46ppWvVgrc4kojGGeFMgWlI0GE1ogiWSf6ETJpWbofcHb+hp+SkOW96s3G9N6PTt/QPRweKapCdDhoVgWHburdQm9+IgVDRngV7O9KVPLY7f/p8z1ayXpejAC5yGuRDlnohZtEFZxxoKFhSgzGl3QR2LXw0OHeHyg6bPL2kg8g0DaWto1Yr5+vpr+I4bSXiNHxCrPIPXwPYUreeiMgdLQ+pgVmUH7d03OLqYvjS85g+MFjBRLizeq8YgAODS4MlBZdl+/j9anMPWwYf8au5R9ZR1k2RrFRk6QaRwOOPDZxXv4UUfv8re/E3CV8tcw/UbpNdaomr/HX0tACy2qs8feTDIouEiwwEoHGxTtrZc0xtYEOyR6WEu1HBgPE8rq7InRQOutSJGP3LzkdJ4MCtNjUODEB0bSvbi5PFvSquKyWPVFK1bWtvQSMxv9xCFCNPl/2DXqNlRbqHqKzTpd9jjqkcNz
+ sdEIN+FY
+ dv46qmhJYhX+5VmxMC1cFmQb7n1h3zs40UCb731gP0rH9zvfRBQ/AK6/RLxgTC5xEW+zCAkgAKd2mvfnlPceRS4MF7DKMwNRTgor3xkGBxETPayNCz0kLwpdW5VGj/JuI7nzlK/QSQiOfX/m2Q9oVgP+o/8ztCLN2XFijjJ68Cd21u2354dCL9yXWSI4VB1KTuHmvQ6zxP+OXxpNl8XdGt3R52tJAIjFWtLY5yfKNygLuVejMAVyR/5CJjpQebVlT3QipTY8l6USGehtuv9bHePol3UIDHzQsPFwRV5UbbEFOXuHPE4ZIJ3ekHw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,64 +96,92 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Sun,  1 Nov 2026 09:01:00 -0800 Kelvin Zhang <zhangxp1998@gmail.com> wrote:
+Hello Wang,
 
-> A PMD-mapped THP can contain subpages with different mapcounts. For
-> example, after fork(), the child can unmap only part of the THP. The
-> parent retains its PMD mapping, while the remaining child mappings
-> are PTE mappings.
+On Mon,  2 Nov 2026 02:00:01 +0800 Wang Guangke <gkwang@linx-info.com> wrote:
+
+> The calculation of estimated_memory_bandwidth computes
+> access_bytes * USEC_PER_MSEC * MSEC_PER_SEC / aggr_interval directly.
+> On 32-bit systems, the intermediate product
+> access_bytes * USEC_PER_MSEC * MSEC_PER_SEC may overflow before the
+> division is performed.
+
+Do you find this issue from real usage?  Or, jsut theoretical?  Could you
+please clarify it, and user impacts of the issue?
+
 > 
-> pagemap_pmd_range_thp() passes the same initial page to
-> __folio_page_mapped_exclusively() for every pagemap entry. With
-> CONFIG_PAGE_MAPCOUNT=y, this applies the first subpage's exclusivity
-> to all entries, falsely setting or clearing PM_MMAP_EXCLUSIVE for
-> subpages with different sharing.
+> Fix it by splitting the division into quotient and remainder,
+> multiplying each part separately.
+
+Thank you for this patch.
+
 > 
-> Pass page + idx to check the subpage corresponding to each entry, as
-> was done before converting to __folio_page_mapped_exclusively(). The
-> index already accounts for reads starting partway through the PMD.
-> The conservative whole-folio check without CONFIG_PAGE_MAPCOUNT is
-> unchanged.
+> Fixes: fabdd1e911da ("mm/damon/stat: calculate and expose estimated
+> memory bandwidth")
 
-Thanks.
+Please do not wrap Fixes: tag line.
 
-I don't want to pick on you at all, but this is a classic changelog - I
-see this pattern so often.
+Could you clarify why you do not Cc stable@?
 
-	a) here's what the code does
+> 
+> Signed-off-by: Wang Guangke <gkwang@linx-info.com>
+> ---
+>  mm/damon/stat.c | 17 +++++++++++------
+>  1 file changed, 11 insertions(+), 6 deletions(-)
+> 
+> diff --git a/mm/damon/stat.c b/mm/damon/stat.c
+> index b05b68f73e10..7cfa3a8d6801 100644
+> --- a/mm/damon/stat.c
+> +++ b/mm/damon/stat.c
+> @@ -32,8 +32,8 @@ static bool enabled __read_mostly = IS_ENABLED(
+>  module_param_cb(enabled, &enabled_param_ops, NULL, 0600);
+>  MODULE_PARM_DESC(enabled, "Enable of disable DAMON_STAT");
+>  
+> -static unsigned long estimated_memory_bandwidth __read_mostly;
+> -module_param(estimated_memory_bandwidth, ulong, 0400);
+> +static u64 estimated_memory_bandwidth __read_mostly;
+> +module_param(estimated_memory_bandwidth, ullong, 0400);
+>  MODULE_PARM_DESC(estimated_memory_bandwidth,
+>  		"Estimated memory bandwidth usage in bytes per second");
+>  
+> @@ -55,15 +55,20 @@ static void damon_stat_set_estimated_memory_bandwidth(struct damon_ctx *c)
+>  {
+>  	struct damon_target *t;
+>  	struct damon_region *r;
+> -	unsigned long access_bytes = 0;
+> +	u64 access_bytes = 0;
+> +	u64 remainder, bytes_per_interval;
+>  
+>  	damon_for_each_target(t, c) {
+>  		damon_for_each_region(r, t)
+> -			access_bytes += (r->ar.end - r->ar.start) *
+> +			access_bytes += (u64)(r->ar.end - r->ar.start) *
+>  				r->nr_accesses;
+>  	}
+> -	estimated_memory_bandwidth = access_bytes * USEC_PER_MSEC *
+> -		MSEC_PER_SEC / c->attrs.aggr_interval;
+> +	bytes_per_interval = div64_u64_rem(access_bytes,
+> +			c->attrs.aggr_interval, &remainder);
 
-	b) here's why that's wrong
+This is not bytes per interval but bytes per microsecond.  Let's rename the
+variable to bytes_per_us.
 
-	c) here's how I fixed it.
+> +	estimated_memory_bandwidth =
+> +		bytes_per_interval * USEC_PER_MSEC * MSEC_PER_SEC +
+> +		div64_u64(remainder * USEC_PER_MSEC * MSEC_PER_SEC,
+> +				c->attrs.aggr_interval);
 
-But that's missing a very important bullet point:
+Let's use USEC_PER_SEC instead of 'USEC_PER_MSEC * MSEC_PER_SEC'.
 
-	a) here's what the code does
-
-	b) here's why that's wrong
-
-	c) here's how this affects users
-
-	d) here's how I fixed it.
-
-see?  This omission is so common!  And I might have sent one or two
-emails asking people for the missing info.
-
-For the missing c), how does this sound?
-
-: With transparent huge pages, /proc/PID/pagemap can incorrectly
-: report shared pages as exclusive, or vice versa, after fork() and
-: partial unmapping.  This can mislead memory-analysis and
-: checkpoint/restore tools.  Actual mappings and copy-on-write behavior
-: are unaffected.
-
-And now that we have our statement of userspace impact, busy non-mm
-downstream readers of this patch can easily see why your proposed
-cc:stable is justified.
+>  }
+>  
+>  static int damon_stat_idletime(const struct damon_region *r)
+> -- 
+> 2.47.3
+> 
+> 
 
 
-Also, it would be helpful to show brief before-and-after excerpts from
-/proc/PID/pagemap to help others understand the impact of the change. 
-But I don't think we need a v2 just for this.
-
+Thanks,
+SJ
 
