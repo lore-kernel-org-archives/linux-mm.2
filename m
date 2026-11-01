@@ -1,71 +1,71 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2E74606A324
-	for <linux-mm@archiver.kernel.org>; Sun,  1 Nov 2026 06:22:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73253606A326
+	for <linux-mm@archiver.kernel.org>; Sun,  1 Nov 2026 06:31:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=Tit538k9
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=xY+HVFBq
 Received: by kanga.kvack.org (Postfix)
-	id E6B296B00EF; Sun,  1 Nov 2026 01:22:14 -0500 (EST)
+	id 77A586B00EF; Sun,  1 Nov 2026 01:31:46 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E1BF16B05B1; Sun,  1 Nov 2026 01:22:14 -0500 (EST)
+	id 72AC56B05B1; Sun,  1 Nov 2026 01:31:46 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D315E6B05B2; Sun,  1 Nov 2026 01:22:14 -0500 (EST)
+	id 618E56B05B2; Sun,  1 Nov 2026 01:31:46 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id B12FC6B00EF
-	for <linux-mm@kvack.org>; Sun,  1 Nov 2026 01:22:14 -0500 (EST)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 351931A09C9
-	for <linux-mm@kvack.org>; Sun,  1 Nov 2026 06:22:14 +0000 (UTC)
-X-FDA: 85385555388.08.726B92B
-Received: from mta1.migadu.com (out-58.mta1.migadu.com [95.215.58.58])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 6E76E180004
-	for <linux-mm@kvack.org>; Sun,  1 Nov 2026 06:22:10 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Tit538k9;
-	spf=pass (imf06.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.58 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793514132;
-	b=rRlsSw5w7ysD2/dyEJE48zcrhHkMqfVaUAkLZH1OObso/+VqglAqe5NVqr1k+nfG4E+pi2
-	WXpvSJrUCYnOsWzgd/JVoGLiBTRp3NFBVyrkWzc2Q1n9xTpU8D1grcZgHWVTIJyrWz6w8l
-	6lO/cdAsfKYPFQqzUnO3SYSvKiFhbgE=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Tit538k9;
-	spf=pass (imf06.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.58 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 36AB26B00EF
+	for <linux-mm@kvack.org>; Sun,  1 Nov 2026 01:31:46 -0500 (EST)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id E9A031C4167
+	for <linux-mm@kvack.org>; Sun,  1 Nov 2026 06:31:42 +0000 (UTC)
+X-FDA: 85385579244.30.EBA8AD3
+Received: from mta1.migadu.com (out-105.mta1.migadu.com [95.215.58.105])
+	by imf14.hostedemail.com (Postfix) with ESMTP id B3953100002
+	for <linux-mm@kvack.org>; Sun,  1 Nov 2026 06:31:40 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=xY+HVFBq;
+	spf=pass (imf14.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.105 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793514132;
+	s=arc-20220608; t=1793514701;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=blO6k0GV9t7jq832MC9mTaWTEhU4J8juq8TCxnkK4WQ=;
-	b=0K1POdwUuFk/bgPuoHyMIlJDAr/xXkPwfrOxL7yfwwwVDcxwwzn+FG8xBYIxupdT6Qctlz
-	ZZ16EfIWQgTQrTGqKQ/qCeAOv3Du3uZA0VlDr5t237URvvKrrlv7rJFCHTdGBycINdRPaw
-	efQrtgeUn8rmgFgV3TmYoEd5D9yvQ3s=
+	bh=J/f/Ic8iNRBscTPM/Roy1R1y5UupvBWWJfdvYPp6M38=;
+	b=dcsCk3YVSmHCOwgqWWNG8TWlGnH1UKasboa9R5OhXo18uRmv557EtLrksqtVP2dy7ZPF+j
+	uthOztaMmiTwxpH9+J4D6I6Wm9oUHcBfNEyE3aIp98PZzl3znbM+JEit5YfvviqVzKxf8p
+	xARX8OHV3M+IdiOYBBVC1830LBGTreY=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793514701;
+	b=OBJuEcu2y2VlXv+wllgxyyfNzgujNHxomeXqILi1jaGiObHWQPtW2NLIcHfqJEWRdUgkaX
+	SmSpZeAmM568Kk31+qD9DfIaJG6e3QM1LOWMko5blmwbDaEkd3FocOA86XIWzzoKDoQGSB
+	4ZpuyMKQY0THlUc25KSEiTYijHgF8dQ=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=xY+HVFBq;
+	spf=pass (imf14.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.105 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=gaF9RaTUlWJnz0Kz7eSN92fdFpU4AaHftDt4HKXl/YY=;
+DKIM-Signature: a=rsa-sha256; bh=MQQBK01CLkmuEldY36FpAZR9pIhbrpe/1CRm0UOIKVA=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1793514127; v=1; x=1794118927;
- b=Tit538k9XfHYAjy4otnRC7vAz5Cj/Lshaoxkkk8Ghq1rfQBmNwtxsywKDb9yCi4afi7pP4H2
- azVrDg4QS5ZtzmVl643fP8STHG/kKplwbnGDLa/Y6/LSRHQbsSx6TbqgXQyIEcr3izcualOTZCZ
- zJw5W9KJF/mRI50gqQiw4csM=
+ t=1793514699; v=1; x=1794119499;
+ b=xY+HVFBqLlL29sSlrtuRKeI04WYPdqOOYeX/KNUAtfX3c07DyoO6W0VNhOpCy95Jp7sUzoC3
+ eofCnKq9srkbprjgFaMDAzpGHPTPMtTcjDvGWNZ4gk4eB09LFzDOEivHvFWo/EOOvWci8ghNCj+
+ 9oQG35VurhFDKW+oduG9lJt4=
 X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 5ef06936bde13713;
-	Sun, 01 Nov 2026 06:22:07 +0000
-X-Mizu-Trace-ID: 5ef06936bde13713
+Received: by smtp.migadu.com with ESMTPS id 7f876ae71b4a29e6;
+	Sun, 01 Nov 2026 06:31:39 +0000
+X-Mizu-Trace-ID: 7f876ae71b4a29e6
 X-Migadu-Flow: FLOW_OUT
-Message-ID: <86d9a986-58ea-44f5-a8af-514abff12c2a@linux.dev>
-Date: Sun, 1 Nov 2026 14:22:00 +0800
+Message-ID: <587556c5-389f-4616-99f9-f0216b72f112@linux.dev>
+Date: Sun, 1 Nov 2026 14:31:33 +0800
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 02/12] mm: hugetlb_vmemmap: unify
- VMEMMAP_{SPLIT,REMAP}_NO_TLB_FLUSH
+Subject: Re: [PATCH 03/12] mm: hugetlb_vmemmap: simplify vmemmap head page
+ handling
 To: Muchun Song <songmuchun@bytedance.com>, Oscar Salvador
  <osalvador@suse.de>, Andrew Morton <akpm@linux-foundation.org>,
  Mike Rapoport <rppt@kernel.org>
@@ -75,23 +75,24 @@ Cc: Lance Yang <lance.yang@linux.dev>, James Houghton
  linux-kernel@vger.kernel.org
 References: <20261020115306.813483-1-songmuchun@bytedance.com>
  <20261020115824.823278-1-songmuchun@bytedance.com>
+ <20261020115824.823278-2-songmuchun@bytedance.com>
 From: Qi Zheng <qi.zheng@linux.dev>
-In-Reply-To: <20261020115824.823278-1-songmuchun@bytedance.com>
+In-Reply-To: <20261020115824.823278-2-songmuchun@bytedance.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: 5koc6eyb51nbe44yb45kpe88xraareim
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: B3953100002
+X-Stat-Signature: ypuzqmzngn1qas3jgpg1yrkk4pqxdesj
+X-Rspam-User: 
 X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
 	version=4.0.1
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 6E76E180004
-X-Rspam-User: 
-X-HE-Tag: 1793514130-264581
-X-HE-Meta: U2FsdGVkX19TXIxAsrwU/Pr4PXKGuxdDaXvr6hYFB+tG3hza1B3OFeWLkn7y8ObKQ8dfkoexp5sX9FxfwMbBBLIII/vLHhbwVs8GWD+yHuL5gyrkKPhg6oNySnMsrwHNgJvuK6w1haf4m23zJOrx8k3TF8Rx2hd7QHS8zNtWEgUZU9onQ3rMeLUtHUlMWlQEhJi586VJU5rfkbDAdNHTSiYZ/xGV8VAufAKXgC6Aty1fYh4x5kwJs/bOLUzkfR9Z02l1XDNjcWz+XIVeveBywqc2UNDIwj1d5tzeE7u/BK6ggpYbM9ItPfG8drhVRQGPiT1tHC5rrydiRJGecu/TUxNQ/rYonXM435SQVpJJyLYoPmJZaGEue3D3EWkLx9ng8JCjnXVxFbwuk23TtVG3SGwuZfhOm/VsfT9xRKMH7Fiy/5Bbji7N+emKL/fSBlCwBz6ai6KXfScrcWP1kkL+ZQLj/Rzdcd+aMHfafXuipge9ZAYfJ75nZxnZFTl8Idikt5YMNo/GNQ0PNjcSyDyXDu2yw8ZSdhw6RjCD63x1XUIQn/kZgSkCH1eB1DZdV3xuTnfkFFfEd9TiGMpVtdaQpQzlSu4cx0y8XEKmTttEOSfJbZeJIn/H5cbI14/Wg+fZQAwX7nTlXHNJipOZwwIRHy4zBKAWiOU7zys9wEK17B9i/5mI1MxpmzQ7WYs80GvrgkF7pQZKzp9xr661zKYwWoYFp/3h9uCIZ7AFK6PKJdrGATxnSa9RZ1mFDqlymdVq7rYkH1QxrhdvzBSFeiO0H2YhzUxJqvvFIF2Dnin6UT9ZPLaBWQz2ij+ogTsSRr1k6alLOtkz0fUnL3FgHRcctqhhOrg+A44I0bpot//WvyMTkoKTugRiBXtz+aDnaE5sI6h+IgDAcvPPak2AZMcMtfMPl+ig0jaMUVerCBEbHf8cheA/bphc5mzy48lqdIqSoZmkWjyJ58Q98Eb9oNF
- 6hdMpMzR
- Jl6t6iAIOXdz38+ecCZX2Wac9nlNBuTCL3FRRfkanSZBRfNsEg93vR9Grd/eSd4X7R8IT1HxgBdd2wg0jrIBVvl+JqzQDas+xnOrB+iMKl1NARS02m2Tn1/VAGeSgUeFN61GH6f0e5bpF+Bc34ufo8WO8yYdfuSIVuP04o26Peyzfb1rhkDJmwRTqzofT6RTVy/34v15BfG6zWbc7GVDMHlc+gzLGf1RwWhfZEZWRfB5DJN8evUp2Zgq4di9nfev86luQYk4xL6lu+2V2ZBKHCFvHDN2AM7kabZWDkkUEM1ov16iiq8cz2GWkHms8+mH6vRbPhKQMMIzfdhBVxszzPJN+RQ==
+X-HE-Tag: 1793514700-774704
+X-HE-Meta: U2FsdGVkX19+9eVCMXrXUl9Qbu0PkXmNLI5MBtQvETerBd5Bri48HIqD48JFxQaN8KUzc2pJ7pfgNrWFzCRmGMuRQYaqlP5poKchXHWKe617sclrUg4IR5aczqbcD389zgCADHi6/uc4oNhlbxjafC9GxBA55hYS/sDYydVDQ2ZQrXvfk30/HpJ2/3R7Yoba/OtUR7o3tXhygYFjTq71WAeJ/eBRPUumAMMagPrh/hsH7CnKDiTYs38NfkOZHNMdUAohp1NsMpQ//Yme6nkNXyZVNv8uP0RRuFEZzLn5OwAzfijAMAsale7EVbOUpI7phDkG2gINgaUsOML9pjfGMy7Ucyb+G0hR1Bj6PuRm0TRfd9ZcEdBgA90rsdptpezpRYahIgfzhCkeDIy0of6KD5NboJ3fv3h2ZNtYhe/ypPu672Srp3HdD5aPzM0vRxefZ0p1+ySYJXvv0FIiLBwRgNVpLiikQXLioV5J0xbGZG9N15UwrGuyw9oSpqy4EZHuK5pTqAQtZaWt//aEr6Gg0VpErfkJzuUXWJ2SyWY5FdDtuu/0JJ3m+SfkK3Oz7zdd9l0BQvBnNmkUPMiZg0Kux2joF1V4whmHDlrNMUNTmLgI18svBXzyCZz1wYjrDI/5oWXPWQvIKisCu8uOYmLmTpSTg5VFu6ARsgUGLInDMUFZ0eL7cx3xYXqeUh0P4rNcvZ2cxbP9H1wZ4zmkUml5SOxxMtn2L3Avv4jMXfRW1aoSl+yaI8+Ob9D6FQZLXGgaJnOfizVr/PLEEk6CXZEw13Vv2XKTRSgaJwzfy5X9hLMRlO/MOPYXSRnz7KyJ5PSjhO2wvl9aD4XqrJ9KF15Bci08oUr2oW412ltf/vwrOZMpbNZyO+NEpPXwoOHPoE3/f3LCkKfWaG4iC3JI99ro7q6rjSTgzhktze4jtt54lHNyfOpOaZpR+FM673g8SDtPSBPKFk6jrh6GscllqQD
+ AJGl+WVZ
+ bmVxLqoLrx1KIAFENIWiA2NlZzreSqFR8lOQcRkX6nUJVoBIeXtJBon0VSFTzmRLWB538fNvamRfgEYdgUFDUq3IBRE3caoT1TulmdyHnV82xQjhOPesbbTLg3ZIdJtwbcH+aX+QrHqCpUbt4E04gK4wXcoJHbAHUWIEkI4M4D6uOhhX0TXULeZVOb6BfPhr8lVMskFe0GiHfUl1ZkQc8LZuTad5S9bcxju6THH97sP5hRrjsD8xMfeI44mclpl/jZUZBmC3pHFr9niG3oiqT2JibtdwdFrkl/k0a917vaRLCVLAjJz1GSvqjZE+QvOGlskBmRJLpwAG2swdu5Y9CoS8mYQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,79 +104,112 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 
 
 On 10/20/26 7:58 PM, Muchun Song wrote:
-> VMEMMAP_SPLIT_NO_TLB_FLUSH and VMEMMAP_REMAP_NO_TLB_FLUSH do not
-> describe fully independent choices. A split-only walk can defer the
-> PMD-split flush to a later global flush, and a remap-only walk can
-> defer the final remap flush. However, when a PMD split is followed
-> by PTE remapping, the split flush must happen before the PTEs are
-> changed, because stale large-page translations must not overlap with
-> new small-page translations that map different physical pages.
+> The new head page is already tracked on the vmemmap page list before
+> remapping starts.  Passing it separately gives the remap walker two
+> ways to refer to the same page and unnecessarily complicates its
+> interface.
 > 
-> Replace the two flags with a single VMEMMAP_REMAP_NO_TLB_FLUSH flag.
-> Keep split-only walks able to defer the flush, but force the split
-> flush whenever a remap_pte callback is present. Callers that batch
-> HVO work can still defer the final remap flush and issue their own
-> global flush.
+> Use the page list as the single handoff mechanism for the head page,
+> removing the redundant state from the walker.
 > 
-> Current callers keep the same flushing behavior.
+> No functional change intended.
 > 
 > Signed-off-by: Muchun Song <songmuchun@bytedance.com>
 > ---
->   mm/hugetlb_vmemmap.c | 15 +++++++++------
->   1 file changed, 9 insertions(+), 6 deletions(-)
+>   mm/hugetlb_vmemmap.c | 17 +++++++----------
+>   1 file changed, 7 insertions(+), 10 deletions(-)
 > 
 > diff --git a/mm/hugetlb_vmemmap.c b/mm/hugetlb_vmemmap.c
-> index 1105aa925acc..8b3abb562599 100644
+> index 8b3abb562599..164e93e980bf 100644
 > --- a/mm/hugetlb_vmemmap.c
 > +++ b/mm/hugetlb_vmemmap.c
-> @@ -42,10 +42,8 @@ struct vmemmap_remap_walk {
->   	struct list_head	*vmemmap_pages;
->   
->   
-> -/* Skip the TLB flush when we split the PMD */
-> -#define VMEMMAP_SPLIT_NO_TLB_FLUSH	BIT(0)
-> -/* Skip the TLB flush when we remap the PTE */
-> -#define VMEMMAP_REMAP_NO_TLB_FLUSH	BIT(1)
-> +/* Skip the TLB flush while updating the vmemmap page tables. */
-> +#define VMEMMAP_REMAP_NO_TLB_FLUSH	BIT(0)
+> @@ -25,7 +25,6 @@
+>    *
+>    * @remap_pte:		called for each lowest-level entry (PTE).
+>    * @nr_walked:		the number of walked pte.
+> - * @vmemmap_head:	the page to be installed as first in the vmemmap range
+>    * @vmemmap_tail:	the page to be installed as non-first in the vmemmap range
+>    * @vmemmap_pages:	the list head of the vmemmap pages that can be freed
+>    *			or is mapped from.
 
-Since this flag is now also used by the split-only path, the
-VMEMMAP_REMAP_NO_TLB_FLUSH name is somewhat misleading. Moreover, the
-flag does not suppress every TLB flush, as the PMD-split flush is still
-mandatory when remapping follows.
+The @vmemmap_pages description may need updating as well. After this
+change, the list is no longer only an output list for pages to be freed;
+its first entry is also consumed as the new head backing page. It would
+be helpful to document this input contract explicitly.
 
-Would VMEMMAP_DEFER_TLB_FLUSH better describe its semantics? It
-indicates that flushes which can be safely batched are deferred, without
-implying that all TLB flushes are skipped.
+Other than that, once Lance's comment is addressed:
+
+Reviewed-by: Qi Zheng <qi.zheng@linux.dev>
 
 Thanks,
 Qi
 
->   	unsigned long		flags;
->   };
+> @@ -37,7 +36,6 @@ struct vmemmap_remap_walk {
+>   					     struct vmemmap_remap_walk *walk);
 >   
-> @@ -85,7 +83,12 @@ static int vmemmap_split_pmd(pmd_t *pmd, struct page *head, unsigned long start,
->   		/* Make pte visible before pmd. See comment in pmd_install(). */
+>   	unsigned long		nr_walked;
+> -	struct page		*vmemmap_head;
+>   	struct page		*vmemmap_tail;
+>   	struct list_head	*vmemmap_pages;
+>   
+> @@ -208,10 +206,13 @@ static void vmemmap_remap_pte(pte_t *pte, unsigned long addr,
+>   	pte_t entry;
+>   
+>   	/* Remapping the head page requires r/w */
+> -	if (unlikely(walk->nr_walked == 0 && walk->vmemmap_head)) {
+> +	if (unlikely(walk->nr_walked == 0)) {
+> +		struct page *head;
+> +
+>   		VM_WARN_ON_ONCE(!PageHead((const struct page *)addr));
+>   
+> -		list_del(&walk->vmemmap_head->lru);
+> +		head = list_first_entry(walk->vmemmap_pages, struct page, lru);
+> +		list_del(&head->lru);
+>   
+>   		/*
+>   		 * Makes sure that preceding stores to the page contents from
+> @@ -220,7 +221,7 @@ static void vmemmap_remap_pte(pte_t *pte, unsigned long addr,
+>   		 */
 >   		smp_wmb();
->   		pmd_populate_kernel(&init_mm, pmd, pgtable);
-> -		if (!(walk->flags & VMEMMAP_SPLIT_NO_TLB_FLUSH))
-> +		/*
-> +		 * Modern MMUs allow overlapping TLB entries with different mapping
-> +		 * granularities only if they map the same physical address. So
-> +		 * remapping must not proceed without first flushing the TLB.
-> +		 */
-> +		if (walk->remap_pte || !(walk->flags & VMEMMAP_REMAP_NO_TLB_FLUSH))
->   			flush_tlb_kernel_range(start, start + PMD_SIZE);
->   	} else {
->   		pte_free_kernel(&init_mm, pgtable);
-> @@ -272,7 +275,7 @@ static int vmemmap_remap_split(unsigned long start, unsigned long end)
->   {
->   	struct vmemmap_remap_walk walk = {
->   		.remap_pte	= NULL,
-> -		.flags		= VMEMMAP_SPLIT_NO_TLB_FLUSH,
-> +		.flags		= VMEMMAP_REMAP_NO_TLB_FLUSH,
->   	};
 >   
->   	return vmemmap_remap_range(start, end, &walk);
+> -		entry = mk_pte(walk->vmemmap_head, PAGE_KERNEL);
+> +		entry = mk_pte(head, PAGE_KERNEL);
+>   	} else {
+>   		VM_WARN_ON_ONCE(!PageTail((const struct page *)addr));
+>   
+> @@ -289,7 +290,6 @@ static int vmemmap_remap_split(unsigned long start, unsigned long end)
+>    *		to remap.
+>    * @end:	end address of the vmemmap virtual address range that we want to
+>    *		remap.
+> - * @vmemmap_head: the page to be installed as first in the vmemmap range
+>    * @vmemmap_tail: the page to be installed as non-first in the vmemmap range
+>    * @vmemmap_pages: list to deposit vmemmap pages to be freed.  It is callers
+>    *		responsibility to free pages.
+> @@ -298,7 +298,6 @@ static int vmemmap_remap_split(unsigned long start, unsigned long end)
+>    * Return: %0 on success, negative error code otherwise.
+>    */
+>   static int vmemmap_remap_free(unsigned long start, unsigned long end,
+> -			      struct page *vmemmap_head,
+>   			      struct page *vmemmap_tail,
+>   			      struct list_head *vmemmap_pages,
+>   			      unsigned long flags)
+> @@ -306,7 +305,6 @@ static int vmemmap_remap_free(unsigned long start, unsigned long end,
+>   	int ret;
+>   	struct vmemmap_remap_walk walk = {
+>   		.remap_pte	= vmemmap_remap_pte,
+> -		.vmemmap_head	= vmemmap_head,
+>   		.vmemmap_tail	= vmemmap_tail,
+>   		.vmemmap_pages	= vmemmap_pages,
+>   		.flags		= flags,
+> @@ -547,8 +545,7 @@ static int __hugetlb_vmemmap_optimize_folio(const struct hstate *h,
+>   	 * they can be freed by the caller.
+>   	 */
+>   	ret = vmemmap_remap_free(vmemmap_start, vmemmap_end,
+> -				 vmemmap_head, vmemmap_tail,
+> -				 vmemmap_pages, flags);
+> +				 vmemmap_tail, vmemmap_pages, flags);
+>   out:
+>   	if (ret)
+>   		folio_clear_hugetlb_vmemmap_optimized(folio);
 
 
