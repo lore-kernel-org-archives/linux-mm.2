@@ -1,108 +1,95 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57A51606A33C
-	for <linux-mm@archiver.kernel.org>; Sun,  1 Nov 2026 03:20:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 561AD606A324
+	for <linux-mm@archiver.kernel.org>; Sun,  1 Nov 2026 04:25:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=AsHsd6iv
+	dkim=pass (1024-bit key, unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=XPTW/R/H
 Received: by kanga.kvack.org (Postfix)
-	id 7E5E16B05B6; Sat, 31 Oct 2026 23:20:54 -0400 (EDT)
+	id 3F2696B00EF; Sun,  1 Nov 2026 00:25:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 76FF56B05B7; Sat, 31 Oct 2026 23:20:54 -0400 (EDT)
+	id 37C3A6B05B1; Sun,  1 Nov 2026 00:25:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 661126B05B8; Sat, 31 Oct 2026 23:20:54 -0400 (EDT)
+	id 246746B05B2; Sun,  1 Nov 2026 00:25:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 41D716B05B6
-	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 23:20:54 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id C56E9A657E
-	for <linux-mm@kvack.org>; Sun,  1 Nov 2026 03:20:53 +0000 (UTC)
-X-FDA: 85385098386.19.C6F486C
-Received: from mta0.migadu.com (out-134.mta0.migadu.com [91.218.175.134])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 9962280005
-	for <linux-mm@kvack.org>; Sun,  1 Nov 2026 03:20:51 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=AsHsd6iv;
-	spf=pass (imf30.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.134 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id ECEFA6B00EF
+	for <linux-mm@kvack.org>; Sun,  1 Nov 2026 00:25:12 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 52F37120787
+	for <linux-mm@kvack.org>; Sun,  1 Nov 2026 04:25:12 +0000 (UTC)
+X-FDA: 85385260464.12.5CC50A8
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 72407180002
+	for <linux-mm@kvack.org>; Sun,  1 Nov 2026 04:25:10 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b="XPTW/R/H";
+	spf=pass (imf16.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793503252;
-	b=xkuSrJ5DgA3hpSokNI6ugameylIntc/Z3lQNc4mbZpiKRqyu9NDz9HdmjZJjHzstAfYU7t
-	OaFMOD+xO/DUN3xYsmak3roiv4tpqqBx868NtkmW6V2few79EB5sRB0q9KNyhGAxGCLcI4
-	OJmY40DG9R7Cja5o/5Q4M3U0HZ8QyMQ=
+	t=1793507110;
+	b=6XMWyIflDa0FS/v/w0OfKQd/0hwHUNe8ZiE95VuHNDUTkXUNFo3pFyQ/LocXM50zx19+75
+	cRx0u5c07ICG3vLC/ZFmPTRictOlfHkI4ycKnZJKKaMOKhd1jX6oybK8F1uUgYY0q4b4K6
+	c/eBJ7+ao/JSZks+EEcct4nbvdJwe3Y=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=AsHsd6iv;
-	spf=pass (imf30.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.134 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	imf16.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b="XPTW/R/H";
+	spf=pass (imf16.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793503252;
+	s=arc-20220608; t=1793507110;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FbZweDIxhmL7siggWffrhdl3D49Th5aeEe2VbeYB8MQ=;
-	b=LOhbyqNv6uy9VI7aBNVyGxYmq0b4E6AjSpUhCmiR7MsMs4CEDXXtbqX/IHdvOgKP0oXVfK
-	FGtZBPiR82K7IC4GaiBVz8xHYSnj7l6BaYJxCwrCH5+tnAI8ZuU/OR8WVw8LIuEhw7bP5z
-	1fN2QI5M1J+AmPHGIgUQwmd4sSZg8N4=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=DY5Hprcbq1eAPJOCDEu5rT8kzGVBeBju20d+Mp3qU9Q=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1793503250; v=1; x=1794108050;
- b=AsHsd6iv+QMCCWQMCEf+Jdxm7nXGSTHuufXbC+H9Va2YBuno7SRw/fjOnQnmLdqZwY8vHfgz
- 3y+FEoSWmigW7CguhUpgy7DNRQUSOnQN0PKmPPF1N9JAdBjMFMOHHVB0prULwZrdVH3L/NTU66r
- v92lrCSOdpPT0Igh5kIZN/P8=
-X-Envelope-To: linux-mm@kvack.org
-Received: by mta10.migadu.com with ESMTPS id 307f81ddaafada5e;
-	Sun, 01 Nov 2026 03:20:50 +0000
-X-Mizu-Trace-ID: 307f81ddaafada5e
-X-Migadu-Flow: FLOW_OUT
-Date: Sun, 1 Nov 2026 11:20:41 +0800
-From: Baoquan He <baoquan.he@linux.dev>
-To: Ridong Chen <ridong.chen@linux.dev>
-Cc: Steven Rostedt <rostedt@goodmis.org>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Michal Hocko <mhocko@kernel.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Dave Chinner <david@fromorbit.com>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Muchun Song <muchun.song@linux.dev>, Qi Zheng <qi.zheng@linux.dev>,
-	Kairui Song <kasong@tencent.com>, Barry Song <baohua@kernel.org>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>, linux-kernel@vger.kernel.org,
-	linux-trace-kernel@vger.kernel.org, linux-mm@kvack.org,
-	"open list:CONTROL GROUP - MEMORY RESOURCE CONTROLLER (MEMCG)" <cgroups@vger.kernel.org>,
-	"open list:BPF [MISC]:Keyword:(?:b|_)bpf(?:b|_)" <bpf@vger.kernel.org>,
-	Ridong Chen <chenridong@xiaomi.com>
-Subject: Re: [PATCH v5 1/6] mm/memcontrol: drop unused vmscan tracepoint
- include
-Message-ID: <auawCfHE-jUUZunl@bogon>
-References: <20261031090041.58574-1-ridong.chen@linux.dev>
- <20261031090041.58574-2-ridong.chen@linux.dev>
+	bh=AaJPl9a9qhxWoN0NnjUzfzvyBJovsF7rWwGHYOTv9cA=;
+	b=KrRdkLXYWgY463VPkFm9mXK5bSX7mZY2NHoZINrO+gpwcpotUgqLcz/f5VuVt1LD0cvwif
+	VNJ/AbPKCikGNk52aYaqhqcmMCr82bYUpeELV8OPdgrF+A9+obl450rDK8Vn/AztsILkYy
+	3HXnZH8Apk6zWevqYiDQv7IYAmuIWQY=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 9C49C410A4;
+	Sun,  1 Nov 2026 04:25:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F9C91F000C1;
+	Sun,  1 Nov 2026 04:25:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux-foundation.org; s=korg; t=1793507108;
+	bh=AaJPl9a9qhxWoN0NnjUzfzvyBJovsF7rWwGHYOTv9cA=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=XPTW/R/HdyZBfz+1MYvVMhTd7exeqadSGQnqrCnmq3Bk1dfSl/sDytOqoQpiSmGMV
+	 w6UIZQnaIrYx5uviPDZFwtdPCywav27UzXlhJdvtV+A/BkrEMrMOa1hjuO168/CGxh
+	 i+gq4WFy6pDFSKYdAEfeJYecWAOdsknlcn3kHk34=
+Date: Sat, 31 Oct 2026 21:25:07 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Andy Lutomirski <luto@amacapital.net>
+Cc: Samiullah Khawaja <skhawaja@google.com>, David Hildenbrand
+ <david@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard
+ <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, Chris Mason
+ <mason@kernel.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+Subject: Re: [PATCH] mm/gup: check folio->mapping under folio lock in
+ memfd_pin_folios()
+Message-Id: <20261031212507.31609e7ed27de35253b226c3@linux-foundation.org>
+In-Reply-To: <CALCETrU76ThzLDbUfpoota5=xcoOS4aZrwgK2B3ELkYcFOjGJQ@mail.gmail.com>
+References: <20261031203540.2282507-1-skhawaja@google.com>
+	<20261031194058.d3bd25ed950e5340ab595f07@linux-foundation.org>
+	<CALCETrU76ThzLDbUfpoota5=xcoOS4aZrwgK2B3ELkYcFOjGJQ@mail.gmail.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261031090041.58574-2-ridong.chen@linux.dev>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 9962280005
-X-Stat-Signature: 6yiofeppypnu65tqz1j8dh9y6fbnux9j
+X-Rspamd-Queue-Id: 72407180002
+X-Stat-Signature: wdbddyrat9b4rewxnp86hi1ns94s5ksi
 X-Rspamd-Server: rspam01
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+X-Spam-Status: No, score=-7.0 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1793503251-900686
-X-HE-Meta: U2FsdGVkX18vFn9Jwb0xRC+An70zKr1W639L/r7vwzhErg4cg8j1CwRcms6LI3FnXVdns2pTJtlf40Lvs4k/IpI/Jvejspclibs4PSq5tHE7K6YF5VO9yKgOhdKkkGx4Q9Bv/1p0wh+ZdmwJ706VfhLgZRGjEK36wlBODWXdDyyLDGeWlPD793mGBOsamTKfN4w+JRS1LB9qfBRi4r5t34cDGzzg00EXIG9xDHNLMqhBSM9V5gMvO3/V2oBfCUzrilkU9HufoeAT6LJFV3AvGfjkbk4fFcJwYEg9NGg78hoGN0mp8D3cxnjcBAiEy86GPf36pUCsyLTCpZVZKASoOxqAAvs3vj5mbm6TIkuvs6YjO571mpdHM58zt2V1M8qVaWGffx1L/VJUy5pQJ971WEw6rkaUqL3bCupxVNhPyb7trbzjdtzS2iUaLiJXXS74U+n0C5qcoMWyBYy69xH5Qn2k3kdVPq7b3DBH8uTOFmOswBcooDJDA7UuXnABqrLYXUmeRY1ZSl1g7mBEmWwCG40kHbD9kw8xyT6AAtyNdzGv/tqzgomo+LlYuvQAVkYaJjH+yxY2TaJoAyWh7C4CMeTMwktuOXftJpaFLNMid9xtNeaC2Zch/jS5490R8L3b+WH6RQk1JSVYZCx/Yya5+j3CnChdtK4OaS3dZbbDwoZXSXBu5+rVMqxWP8AlyZoNEgBbsYIFNnAy4P8Un+qoH+dNRZM3x86zUKv51Gih2ni72OV3XejMLVBpAxMzzwnntZbPbVC6bBD3ObCaZCG3F+dV1/9wKnSpvjJXmFasF80Onf5VrjegTd45ELRBNhALmEHNgFctDy2+r7wnKxxLX0On2jUrLxyjCKdGABwP4UcdL0qbkt/foCsyhgK2X1eqOOhkssYWOOvqxT/y7XJ6jnYlhLL2Qx2xOgZV0CS7Mhq1OoTjpeJjQpxRqsp1oLEwVF/aCf1zZCvtg0UsRzE
- Y4NC3ObI
- 147ECMoKPf6k31/BTv3ov5atX+DAjxeJ5WMI6XqIMJos5ynSF7Zg5prYi5D/JSDbmX/KZ0a45LjTiOURqAkTPUWGFowV0E9pmG9trbwrFUi//nBcdP/4kdFuFRAuHuVk4It4ofIYBflVX6xqi67I7X2n9BXFqa16BKM3m0ml+sfqkkC+im06NkRWLnOYtyTMCSjleEQ1X2NvexkYGyZuA8+y3a20Fr5gNJJ+bIet5S4TU2O0biIeP9iGvH0wIknaPF7A2UxbNBu4X1kdAYyZX7GqhwuPyZfISb6wC/q4lsTRNZ6dY6S7QfJ+8I53Yp72UL3Td
+	MAILING_LIST_MULTI,NICE_REPLY_A,SPF_HELO_PASS,SPF_PASS autolearn=no
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1793507110-411985
+X-HE-Meta: U2FsdGVkX19R7/vply5KhLnb0hGw6daPSKAhSRodoGG3mvKwzjYcUfDdnQCD2ciGOa53p8vRX5CVFEr5yqpYomd+RVbB5fH8/HbNXAP15hBXU2lr9aw1+khkwgXr7hw46ybATO/uVRvFHZUaujLiT4d31hg8YTgNgCFUMJHoM0YcdpF5InNwG8QqAylIuqLSAQ5AOXNuN7e2JRPLIoaN07gpvfVLfPmWUrlYMbvFccW8dAa2oQLWSzfiLADrzDtm6tcIYMgYDiwi05rKpNfCX6ahFSpDjygsWI9YisUmqFlwifn3/XELP7wX1mQx+mAqXhk00OWZsPygmO0VofVnDuEkakqBCWt/A/m96Y+pDlO5zZhTQvULFhIXzCuS13GTcWgn+O0XySxlxty8y7tFA/9u4Csq8FMjrQbMuxeeOrmCfhez72yRuILSjX05ET0XpQAsUI9333SOuoAGW27GkUyI6v/aBKzAQ8pWJu+zZHfA+WCvssy0dfxKu9/Rx4LA/pD+viUA4tgpp0Z42/JnqbYjaHi5Ko1qieiayyl1tXb/E2S1xiYlQkVs2i34RVVEbMBU2H95aoP64bxi9GglHlWv9VN1dtMD0bQ+U1L9YE6T1ZMQ3zetPDpN8MekPk/Bo6xDEHVjMKnbp3JMgIt4DXPQO/H/Yr+EPOusG1WVwsskE1IK5C5lXEOO3iiKVFdRyKOsZozo9EMZ9DpYBcoYDoZTVkwxevARjSni6uGkQ4RlHEL7HZ+cEJesoavhr3bdVPC5/vJmP2XxjZ/j1THaDE6441qDVi60VBb7BRruBvfixJYBBmrQt4hvvGx7QZh+xvZ3HF7b+rcLOlGbyyfufqyhVIGd/tURNsXmK9Z1MlngT5ZGa1tvnjS88UPQLQzqWyqyIAquOg+P18ulISoL7UuANMuiH3Y7RBlkRzdjkR1yL54PnemK6RP4YnH8/PwI+ypfPMc86Nw+326Sb37
+ 0S91RN7G
+ Lx2oa/lmrtXKwakyMpKBuU27Li3Wo85dB40H3rb2jZxwrxY1vfs3vt5utnIwpnpeeRZGvXaRgxoSU2/w/tg8ftNWSEv6mznJZSaW6HArIp2NeFHKBJyLRhRsCquUFj+Ozrz3Muh+N8QIbLDbpOEt0HihUxXY/VOYHnYQEPEDvj18JlSWAesxWS4wxvcmiws64Gy0D2kvS5M9WiO4GEIOAkUBjQy+Gh5Vc7ATvTb9tQxW1qbn3pmV3wfj6c4ViCKnbfzauQ2j+1ZGUqpc773uSgxNGDTFf8xw2Axeuj+0KaeBsnkTp8muHgxJ9vRSioKKMimtu2hMO/TKfh0yVkQhQnbAoB8Desm+9ScCGov/e+xuFSwn69GjAE8Hq0aNLevwV6jsc3jvvT9n9RuDONoCJxN10NgdK1sa7Opm3y4OKpQ5qdLiD0wPqUQn+clOZzqr9MFDZD9zzOn3vPrZHz5+nTEPxzQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -111,42 +98,66 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 10/31/26 at 05:00pm, Ridong Chen wrote:
-> From: Ridong Chen <chenridong@xiaomi.com>
-> 
-> memcontrol.c includes <trace/events/vmscan.h> but does not use any of
-> the tracepoints or macros it defines: all tracepoints invoked here come
-> from memcg.h and writeback.h.
-> 
-> Drop it ahead of moving the vmscan trace header under mm/, after which
-> <trace/events/vmscan.h> will no longer exist.
-> 
-> No functional change.
-> 
-> Acked-by: Muchun Song <muchun.song@linux.dev>
-> Signed-off-by: Ridong Chen <chenridong@xiaomi.com>
-> Reviewed-by: Barry Song <baohua@kernel.org>
-> ---
->  mm/memcontrol.c | 2 --
->  1 file changed, 2 deletions(-)
+On Sat, 31 Oct 2026 20:20:03 -0700 Andy Lutomirski <luto@amacapital.net> wrote:
 
-Reviewed-by: Baoquan He <baoquan.he@linux.dev>
+> On Sat, Oct 31, 2026 at 7:40 PM Andrew Morton <akpm@linux-foundation.org> wrote:
+> >
+> > On Sat, 31 Oct 2026 20:35:40 +0000 Samiullah Khawaja <skhawaja@google.com> wrote:
+> >
+> > > memfd_pin_folios() pins folios from the page cache without taking the
+> > > folio lock. So khugepaged or MADV_COLLAPSE can replace the folio after
+> > > its refcount check while memfd_pin_folios() still pins the old folio,
+> > > and the caller ends up with a folio that is no longer part of the memfd.
+> > >
+> > > Lock the folio and recheck folio->mapping before pinning it, like other
+> > > page cache users do. If the folio was removed, retry the folio lookup
+> > > from the index that was removed.
+> >
+> > Can we please include a clear description of the userspace-visible
+> > runtime effects of the bug?
+> 
+> It's straight-up data corruption if you manage to trigger it, no?  If
+> you manage to race a memfd_pin_folios() against collapse,
+> memfd_pin_folios() will pin the wrong folio.
+> 
+> Fortunately, there are a whopping three callers in the whole tree.
+> You can hit it from udmabuf or iommufd or memfd LUO.
+> 
+> The former two will direct DMA to the wrong folio.  Fortunately it's
+> not UAF as the DMA will be directed to a folio that is still pinned,
+> but it's the wrong one.  DMA reads will read potentially stale data
+> and DMA writes will overwrite that stale data but not update the live
+> copy.  (The DMA will not be directed to some other application's
+> memory, just to a leftover copy of the calling application's memory.)
+> 
+> As far as I know, the effect with LUO would be for stale data to
+> reappear in the memfd after handover.  With the patchset that started
+> this whole discussion applied, I think it might result in misdirected
+> DMA to freed memory (I do not stand by that claim at all), but that
+> patchset is not applied.
 
-> 
-> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-> index 84f4a8fd4d16..8a35f5b635e0 100644
-> --- a/mm/memcontrol.c
-> +++ b/mm/memcontrol.c
-> @@ -77,8 +77,6 @@
->  #include <trace/events/memcg.h>
->  #undef CREATE_TRACE_POINTS
->  
-> -#include <trace/events/vmscan.h>
-> -
->  struct cgroup_subsys memory_cgrp_subsys __read_mostly;
->  EXPORT_SYMBOL(memory_cgrp_subsys);
->  
-> -- 
-> 2.43.0
-> 
+Thanks.  How's this for a changelog?
+
+: memfd_pin_folios() pins folios from the page cache without taking the
+: folio lock. khugepaged or MADV_COLLAPSE can therefore replace a folio
+: after checking its refcount while memfd_pin_folios() still pins the old
+: folio. The caller then receives a folio which is no longer part of the
+: memfd.
+: 
+: For udmabuf and iommufd, this can cause data corruption: DMA accesses
+: the detached folio rather than the live memfd contents. DMA reads can
+: return stale data, while DMA writes update the detached copy and are
+: lost from the live memfd. The detached folio remains pinned, so these
+: accesses do not constitute a use-after-free or target another
+: application's memory. For memfd live update, the stale contents can
+: reappear in the memfd after handover.
+: 
+: Lock the folio and recheck folio->mapping before pinning it, like other
+: page cache users do. If the folio was removed, retry the folio lookup
+: from the index that was removed.
+
+Samiullah's patch assumes the presence of Chris Mason's "mm/gup: fix
+clearing folios in memfd_pin_folios()" which is in mm-next, so... 
+->David
+
 
