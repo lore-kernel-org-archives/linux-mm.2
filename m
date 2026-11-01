@@ -1,70 +1,70 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 704B7606A338
-	for <linux-mm@archiver.kernel.org>; Sun,  1 Nov 2026 07:08:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FDF8606A32E
+	for <linux-mm@archiver.kernel.org>; Sun,  1 Nov 2026 07:14:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=KMKXHJm/
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=pKp+qtJ/
 Received: by kanga.kvack.org (Postfix)
-	id 974A06B05B5; Sun,  1 Nov 2026 02:08:43 -0500 (EST)
+	id 451EC6B05B3; Sun,  1 Nov 2026 02:14:36 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 94BA66B05B6; Sun,  1 Nov 2026 02:08:43 -0500 (EST)
+	id 3DC596B05B4; Sun,  1 Nov 2026 02:14:36 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8616E6B05B7; Sun,  1 Nov 2026 02:08:43 -0500 (EST)
+	id 2CCF96B05B6; Sun,  1 Nov 2026 02:14:36 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 6B7C56B05B5
-	for <linux-mm@kvack.org>; Sun,  1 Nov 2026 02:08:43 -0500 (EST)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id C8A1114086A
-	for <linux-mm@kvack.org>; Sun,  1 Nov 2026 07:08:42 +0000 (UTC)
-X-FDA: 85385672484.05.08F7CDD
-Received: from mta1.migadu.com (out-51.mta1.migadu.com [95.215.58.51])
-	by imf23.hostedemail.com (Postfix) with ESMTP id ABFDB140005
-	for <linux-mm@kvack.org>; Sun,  1 Nov 2026 07:08:40 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="KMKXHJm/";
-	spf=pass (imf23.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.51 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 0C9B06B05B3
+	for <linux-mm@kvack.org>; Sun,  1 Nov 2026 02:14:36 -0500 (EST)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 7AA90A0933
+	for <linux-mm@kvack.org>; Sun,  1 Nov 2026 07:14:35 +0000 (UTC)
+X-FDA: 85385687310.22.11DD534
+Received: from mta0.migadu.com (out-18.mta0.migadu.com [91.218.175.18])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 64AF640002
+	for <linux-mm@kvack.org>; Sun,  1 Nov 2026 07:14:33 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="pKp+qtJ/";
+	spf=pass (imf17.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.18 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793517273;
+	b=q0yMcL7DbMRCcJlOimcNVPqApnDRqCi6ZXk23Ki+owauSGsfsqDm6NcYJrPKF9tPDY2bzK
+	6nplD/MHhR1aRHq45dnz4BVd5MwkMoxXkUK9m7nTrYqCexsF27X9VPfU2VzDghq4czFrOY
+	xUWt2GomQ3Uq1Gm+CmZ0/lFX9Gfp4xA=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793516921;
+	s=arc-20220608; t=1793517273;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jkyFPxHdMr8VD/svuO9SwwzAL9XDCMj3MbQCES3rGok=;
-	b=bL+8raGK93IYga6m3aQpKpsqO1sTr/zuFnGwjDYEFImVoEcFZ1zAaEYwMTq5MvEFFPAupE
-	fjUzoNT02d+v+7EMFfW2yhXvORBazk4gdMruTSQ4yUJsFympNWekXWTd9FsE12hwZFLFaD
-	dzdhdIgEtH0nmymTKp7EHNfVA7aT8DI=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793516921;
-	b=CRA2YF/VMPlwmRX/Fgw163S56ChbsNmKUhOzJeL5wOWj75w7RI4vr3R5ZU9XW/Pm7V5pV6
-	vUnwHkSuVYXdKrlmkySWaNE4kWDXn0oAhjxScPhDF+TELjtVx5yB3JayGzAmO0WwqkU0TG
-	iwZ53+JgNEBNbtcfI+PznxROMiuVNy4=
+	bh=hMKZpg15BN7ibax6GuM/EqpnZ+65bEpp5yD8qzjlvfQ=;
+	b=uUleEDU+kjtT3gLUf1frx/WoHkAUmfqzKLt2iI9D+WDUs+uYu0B0G3W7gQ+JEWOHfRGmei
+	g0rm21cT5GckyECScaDP7qtUtlCcH00n8Hkp1ScyqoQAp2so7qXHyTqHrb/yxXYK/t1laH
+	7u7rO3K1NE1tyIXV22WdLCchEdeEfFk=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="KMKXHJm/";
-	spf=pass (imf23.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.51 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+	imf17.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="pKp+qtJ/";
+	spf=pass (imf17.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.18 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=237fh+P6+tsOas/EETdM8oy9lOZa3289Iwq/LFSdwHQ=;
+DKIM-Signature: a=rsa-sha256; bh=f+gZnwn4jlugsItkgzJzya2zQVZHOUrl/EtEyxGLANI=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1793516919; v=1; x=1794121719;
- b=KMKXHJm/a59z+4diB0DgMxWfGBs9ql+WELEuvIAPDc32JjEjbPIoMdYHw9IOo0jSgMC2TldQ
- jKlIZCuMGA0JHrN3qmur6hig6fOYl45r8ZnEWhhBOY4HCA4VzYAv23ov4484M5r8Gmhum0hfPjs
- hCpeY1g1KUV1GdrCxva5Q6F8=
+ t=1793517272; v=1; x=1794122072;
+ b=pKp+qtJ/xVn4uGzq4OPTyxXWgbIH6IJ5x4NWorZ29EN+NPsRGO7X8Kr49VEYb6EJZHl89CjL
+ jtpuxYMMrEz30tkqMRCUzTR6YmmsJBXeodhtKNUyByfyw82UABHWY1Oz+GLFdGYyfL5NMveF1CW
+ BnYCuOOwwmxD+5ZzFDuVOWJA=
 X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 64230bdbd9a72431;
-	Sun, 01 Nov 2026 07:08:39 +0000
-X-Mizu-Trace-ID: 64230bdbd9a72431
+Received: by smtp.migadu.com with ESMTPS id f110c669da18e7dc;
+	Sun, 01 Nov 2026 07:14:31 +0000
+X-Mizu-Trace-ID: f110c669da18e7dc
 X-Migadu-Flow: FLOW_OUT
-Message-ID: <2f429ff5-76bf-48e4-b6ac-3db0b9bac498@linux.dev>
-Date: Sun, 1 Nov 2026 15:08:32 +0800
+Message-ID: <2aebd191-5c20-4865-8f2b-8db326ef6ddc@linux.dev>
+Date: Sun, 1 Nov 2026 15:14:26 +0800
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 09/12] mm: hugetlb_vmemmap: make vmemmap optimization
+Subject: Re: [PATCH 10/12] mm: hugetlb_vmemmap: make vmemmap restoration
  folio-oriented
 To: Muchun Song <songmuchun@bytedance.com>, Oscar Salvador
  <osalvador@suse.de>, Andrew Morton <akpm@linux-foundation.org>,
@@ -75,24 +75,24 @@ Cc: Lance Yang <lance.yang@linux.dev>, James Houghton
  linux-kernel@vger.kernel.org
 References: <20261020115306.813483-1-songmuchun@bytedance.com>
  <20261020115824.823278-1-songmuchun@bytedance.com>
- <20261020115824.823278-8-songmuchun@bytedance.com>
+ <20261020115824.823278-9-songmuchun@bytedance.com>
 From: Qi Zheng <qi.zheng@linux.dev>
-In-Reply-To: <20261020115824.823278-8-songmuchun@bytedance.com>
+In-Reply-To: <20261020115824.823278-9-songmuchun@bytedance.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: ABFDB140005
-X-Stat-Signature: wtagb4cha4q88zab56u5cedxji93q6oe
-X-Rspam-User: 
+X-Stat-Signature: spk8zixkqqt7mq5gk3b7ck9s13476rgq
+X-Rspamd-Queue-Id: 64AF640002
+X-Rspam-User:
+X-Rspamd-Server: rspam12
 X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
 	version=4.0.1
-X-HE-Tag: 1793516920-602337
-X-HE-Meta: U2FsdGVkX19RfxkbSFhmSlRqXNXa5/YttvbSN8swGREZOyGHJruFVviY/k4wQQp8kxrA572vESYBEW+z5jfYLvsATjjY/gchlwX0RS0CW3ooFHjBuOa5/6Y/bTCFhoPcg6RJJVYkW9aUE5giJeXFde49V7zkUGDCwPCQFYXrN0mLDz7IbhOxT1vWYuL4Xq1O9sySFg//Y149u0wcT4gxuXVfhvxuSgsHM1jlTe/17vjKEXYoJA0FzfzgHBwixCka/Rpa727lF3s5PE1r3APQAyV959oLOCEU0WSTdor7XGt4eJdtTA107lBrd9B7uA+QfmLQR3vaSPUgA6UfYiaKXIpdGEjmsQzNIhTbEASBhKeOaFBXgK7ldj4k3nCClcejW+lP7SwvZLSq5yE3kuko+T/kGA3AgP6bKA2SW2ktCuGPnNDJLutvst0letnUDA/zvncL23ND4AWx7FQtcmYoSy4BSfYmgfSOaP/S+KcAFqnQSc7c2VEA7YBXKJq3r1r5fknw1AzVKhoxEPBGoYOCZJhFBzSwQPX7Y66gTCrzJC2PHqyVtX2SALKtA3yGdpRKSyLX1zThD9dQbR4HKZuVo1WOKjojnkrGjuw3mbN6Lwfu5fpV5tJwm7I0q3+hmPnDC4Cqb0aMngw+lcCEEp3dLduLjaYWr0FWqb0+b5rYC1ayJ/vgqEgFjYJeEhY7RAt6lPEFOK0gwYpclhW8+1l7BsUmY45L4f8VEfh9/4gdAr/Ec8UpALfFidG+mHNKpy8FsHPaYGwb9ztNFg/xBP4rr7cXaiRwodSCYNzwibAWecpXMys6DKTmb+Xd9TrGPxv6QbodwpznH1gy3LTQyDnf5J5/45j6gnv8QTA5D7zwdtUCC9ycPVNYvGnIFez8hzp+FDkUFb17arW0bdU2cWM88o+UgBG4TDI4JPnb4QFqFprOxlbl50oHRettXBA6KzN3C1IWY7sCr6RzS5Sc/v8
- N24FLMbh
- kO+Y1bnMu7buc0NTEHsYY2hNtMwqMSaF2FC0SzthEMxJo0vZXe8h1IDrZXyK+Up8Ljs36lAQBMZOWw8dV9Br9dgyDh+lBqooWOnZ5eivWok0v6/SzxyR7aPqUXq2hfN1a6kU1aay7QOj4ElwlM1XlBN6VZ6DHCeh8pyYPLSHZeccZoRp8KYNI3Hmf0sXwRsuBf1QHDLAb/TjbQ5pb7uD6CAedqGfaJgxs9x03MWX+dVBFsrXbykxjhAAuHJdZNdOG48P6OMUcvdQe365zqxQCBaXepsq4WUhkCY1BZNEwMv6Rxj4Ecq4C10tRBHGuqcOZjOCQ093V7PFaKaUsVBN+VOZgEw==
+X-HE-Tag: 1793517273-335146
+X-HE-Meta: U2FsdGVkX1983gUG1i3akmcIyXSYsVaL75eqXmmVqgOPBmHjFnKnfbkdws24wHvWDzQ3qkCp1Yp6IfDtNMd77QsrxkB4mnQF411yxccRFZD2RXIzt6L2HxkCZ8ez+ZpHKqPkHPS89xVKDwn1U5sB/DDaxTjBUfNilq/ZHJ0TT7HAOSEs491nmYqosR3T0nMQtftWkF7+MzrZtXZKs2DJ+W+1qfbZmYMajMno76OLLYTXYGhj+TVN1XEdi5JePopJw51Mf1ASGm8xzwdu2feHjiILyj4LxKcex2kcRTdjMCmmnej78LHyAtLPprqSy1fWlMBITjWxXr903RyVxJLc1VHF/y+PBMTKmCV4kiXQp/dgv1LRepZRddu4Kvey8ken0vUZOjo4a6BJWHjk92BSDg7o7acE02GLAodKlP0qI/4QHTO6tnkVBY2XJEPM358aa3vTCyXKGASOS7vNnmwae2GP239Zv2u5JBe/Ccr2ChssGmqiQDjNsxmDAAV1XVHO4tncsn2yUHoPz0nhnXRTU+0miGJXjCLIyGMtq0D7xCChRS/Vt9a1nPiOTqPxiEMTxpvpGoqte89N1zmZAqkWdhtWh5hzn+Hjg7E+SHlWjRyt8F9cL+GBNtl069vzvXLRKHxWnGmqMg0YZKetKYj+RJggOVKyKuBx71p5mLliaBz6mSx1iwRQsD3vVysvy7jklPncoKMBPgoRSYeirTyU44DgP1L52v7MHmO8LKSJzMuB+0bCb3Jdgr29ULsgmxT5Ce439EShvEBFPUFx8YUccPg5ivaVOfR1mFB2UYMOPq0YYkL7mXGg8knvld8NBylLRgC4uXPybff28YK3e8lwzzo0SA5FzCW8erZxQTwwLndrQqS7irKc1oFkpZVGdGb2iVPoBFH43MW4M/5N/OX7wzKnQ7NCIbKYP6bsUfSm+xsAKm12+QkO1iEze+pMjVGnhXP9FuEsvApFJNw4kUT
+ R+nJsH1l
+ yHOh6CmWJujChzrVY5iPgnx37e2VmJZ42ipJWpPDQMReH3e+NxMnFAtTXABD4BbwHgn7/IVwH1Fvysxypl84PIUEtV2i3KBQ2TUgc0J03vArLEJluQcffIGLov2mV1Uf2n49GwWFvvwvMJDUiCR7/Hw35MZ7n3FzNHuAtJ77H0Bvtyj9G2VDma/Jdu36vUCODeyZXhFsukTnGrO2EM3FDjR6gRlQFZOsulWfvVTQ7itZDmklaOH026JisE/6BLnRZH7SfioeILiBRcVTYNRMalaoosW6lQA6Yq3WfKhpFLHdk93wl+MRH+4QEOQaNdZgdbJGohlnhN+btbjh7vZ9nEngMmX6MEWv9dkNKB38nAtuC/IlKauxK2UKNWn04TKgbl7NAPFa7Sc4THRT2HYFytDY+MQiYRyn1zO1Wz3bX3uBdn/qHNzeGDkotAhAjPYNmaaxJ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,26 +104,24 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 
 
 On 10/20/26 7:58 PM, Muchun Song wrote:
-> Vmemmap optimization operates on one folio at a time, but the current
-> interface exposes a raw address range and requires the HugeTLB caller to
-> prepare part of the operation.  This splits the common mechanism across
-> layers and obscures its natural unit of work.
+> Like optimization, vmemmap restoration operates on one folio at a time,
+> but the current interface exposes a raw address range and requires the
+> HugeTLB caller to prepare part of the operation.  This splits the common
+> mechanism across layers and obscures its natural unit of work.
 > 
-> Make the folio the unit of vmemmap optimization and move the common
-> mechanics behind a folio-oriented interface.  This keeps HugeTLB-specific]
-
-This makes the interface much more solid. Nice cleanup!
-
-> eligibility and state in the caller while making the remapping code
-> applicable to any eligible folio.
+> Make the folio the unit of vmemmap restoration and move the common
+> mechanics behind a folio-oriented interface.  This keeps HugeTLB-specific
+> eligibility and state in the caller and gives both directions of HVO
+> consistent folio-level interfaces.
 > 
 > No functional change intended.
 > 
 > Signed-off-by: Muchun Song <songmuchun@bytedance.com>
 > ---
->   mm/hugetlb_vmemmap.c | 67 ++++++++++++++++++++------------------------
->   1 file changed, 31 insertions(+), 36 deletions(-)
-> 
+>   mm/hugetlb_vmemmap.c | 37 +++++++++++++------------------------
+>   1 file changed, 13 insertions(+), 24 deletions(-)
+
+Nice cleanup.
 
 Reviewed-by: Qi Zheng <qi.zheng@linux.dev>
 
