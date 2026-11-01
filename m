@@ -1,146 +1,141 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48F3F606A324
-	for <linux-mm@archiver.kernel.org>; Sun,  1 Nov 2026 18:03:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A663606A333
+	for <linux-mm@archiver.kernel.org>; Sun,  1 Nov 2026 18:08:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=ja71SZz5
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=h1TzP+oE
 Received: by kanga.kvack.org (Postfix)
-	id 584D96B05B5; Sun,  1 Nov 2026 13:03:16 -0500 (EST)
+	id 761AB6B00EF; Sun,  1 Nov 2026 13:08:00 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 55BCF6B05B6; Sun,  1 Nov 2026 13:03:16 -0500 (EST)
+	id 6EB286B05B8; Sun,  1 Nov 2026 13:08:00 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 471AF6B05B7; Sun,  1 Nov 2026 13:03:16 -0500 (EST)
+	id 58BE46B05B9; Sun,  1 Nov 2026 13:08:00 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 156EA6B05B5
-	for <linux-mm@kvack.org>; Sun,  1 Nov 2026 13:03:16 -0500 (EST)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 8F9181A0AF5
-	for <linux-mm@kvack.org>; Sun,  1 Nov 2026 18:03:15 +0000 (UTC)
-X-FDA: 85387321950.26.B060896
-Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
-	by imf27.hostedemail.com (Postfix) with ESMTP id A632340007
-	for <linux-mm@kvack.org>; Sun,  1 Nov 2026 18:03:13 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=ja71SZz5;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf27.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.47 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793556193;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 2B8B56B00EF
+	for <linux-mm@kvack.org>; Sun,  1 Nov 2026 13:08:00 -0500 (EST)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 7472F80A37
+	for <linux-mm@kvack.org>; Sun,  1 Nov 2026 18:07:57 +0000 (UTC)
+X-FDA: 85387333794.03.ED40646
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf05.hostedemail.com (Postfix) with ESMTP id B2A79100005
+	for <linux-mm@kvack.org>; Sun,  1 Nov 2026 18:07:55 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=h1TzP+oE;
+	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1793556475;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=E2KNNLNC1SGWQPktfWAC0fctv/qW21YYnE3QrHE9Xgw=;
-	b=oJl9VBpMnKv8JWucTTFBWgEpTfnDoXbP3Zv2IgyVUj1fXM0mXUBjo6tPeQ/pARSQwSMZpu
-	1lV7km2XIyVR7DfRhQoOKa7S8aO8g5frru+cCbuKLGosV9pMoXNzypt7QUaD0f4EbBPzlt
-	KN2Y3K90cST0vpRNVR26G1wZ63tpIXQ=
-ARC-Authentication-Results: i=2;
-	imf27.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=ja71SZz5;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf27.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.47 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1793556193;
-	b=3gSDyrQEyRVHqtdRDtSr5lrFnz9RynuEMA03aVXVINZIP4h0tql67KLsP9oqSn2qals5le
-	I9z3Va2fWfG/t2Y3B5uR5grt2P4pFsIDb3at3M5eXcpLXuvPe8MvxHGTmMp7oIW+8+aZhY
-	uhUzIEZJl7iNz2oWzICNNgj6aB3kqxs=
-Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-6b2237b596cso4599295a12.0
-        for <linux-mm@kvack.org>; Sun, 01 Nov 2026 10:03:13 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1793556192; cv=none;
-        d=google.com; s=arc-20260327;
-        b=pwvdeot+UvW2QZOQ6U7gfK37vloRSu6feBdJrDJ81Kxg193nCKp6Jzmajc5QzQ5br+
-         /PFx2TYTKtAlsLmFOlHINVwIe0EnOcdCKpa0egFxHVGCQf2rHO/RcqZJRi/4qC6Cnw5r
-         RjjyRcMN5SaT9G6/9B7TxrHSMuTjKR1tIo+Ch4U7FzSmuZpbQnkzTU6z14UR0mxHsZhp
-         O4p48/G9OO5KKDm8n3JOhTzuJy0q+GdqzVqJFacXBtgYT6ZbEIFbVwUMOzUBql+hGT6T
-         Q5tEY5D5veZ/dWyp7opshWF7/USCbRT7g4VMvmymjd1JyQ+JCv/6sRdNJVJ5uDI6p+4N
-         iuWg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=E2KNNLNC1SGWQPktfWAC0fctv/qW21YYnE3QrHE9Xgw=;
-        fh=ZMj1z+T6xNUAEKGFDwOyCvz85RZxwkFShQgq487KNHY=;
-        b=m7Y/UVCAG6wgYfwAusI3j2tANGiHWSoYwO2ADsRbCr90pto7qXMxLmRIM2EzvqXUAd
-         vO5yzZV1dzARNK4+o0RbcPb/SkkK5i6ufzIR/wDhOnVllRtNkoASXlKhFUxFGj/wYY94
-         GJ+47kkV6lVh8w10bhuXup5fYNSTunkVYULRj6tPfg9Pd5G2jmEXPIk2hVVv7VjhGg7T
-         ynMYLbuyjUbTi2DBHCJnthmyt4v0VdVhyxXo8qQv6bvWxtkpneY9roFtPl2LUQiCxluh
-         zP+GAULcXQx4sxIobJNiU2tsyrh/TVbLfcMkcjtpeS/JvK7Lt8L+RJ49nx1UCLqC4Lud
-         PwYQ==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793556192; x=1794160992; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=E2KNNLNC1SGWQPktfWAC0fctv/qW21YYnE3QrHE9Xgw=;
-        b=ja71SZz5K4utEZj3gLnCxD+8AgQqlC4l/x05pU/2ncBNFaFkIxbbZYRcVNRibcoWQi
-         64QPHcvoowXHhaR+l/GorYBMAGZrjU7JdhbkQwVYioD0S9TKBnsVasPMkwXlcEqm0iaA
-         0X/74Z204oiQDYlZSKGZFZoB6psasxu56p1Huq+rM8KJkFwJvfAmP2PMEMlflyMqEZND
-         oXNn0qH3rdN1FCkmSEXQL7Y3ZPOC/9x6yeQ1uHfyEhyZ90UTBAOpnAA77qn6+HFLP2Tr
-         TvYQQVicbi7C3zW9Fj33Tdkmi9HnzQcaZpXs1RcDJRSsTmqbVlQijLgjkdYk6RMfPspO
-         Lupw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793556192; x=1794160992;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=E2KNNLNC1SGWQPktfWAC0fctv/qW21YYnE3QrHE9Xgw=;
-        b=HPnc2f4MseISfXQK0Z9k4+mYmDBMc6RZ8xEXaX4CmLHxNX0mNMBLiFAHGPq7Pxhhk+
-         eugqwAhmvICbRh4ycK+xTvwvk8QfztlVoBj185yi1lGbKmIAiJLl+vmnfL+bfdZvgCsI
-         uURMtiDkHIgIUI8bddK/eaE2TEcpLA07THnUae+SrlDcH0u6cqOJ71wX6Km3NfFTdwvK
-         QTGyA+dM9u1mejA7bs+4NsJOHNaJu/EkB862dqiCq7n2aBk5nWjT0MVxzlz7qeHdX6og
-         cDvKGiKQHNOkJHFHiHgqearnSirE2qMnwOqzFIhlhteJd5a0KIzIXAaTU8l68ct+qM0E
-         UZLw==
-X-Gm-Message-State: APuU4Z9mwTJL9xBCuBj4gqNxBLS0UH8nlBzdhkPjiH+5/HxVHIxsrR3Z
-	rtAQUzzN73cgroaRTZFIDsrQ8bSs8AxsY6/3CuN5Gg/z7sOUVaajckWrcx10OxF4YiATL/5uF/C
-	xSjsLWqgty+Y2uQGXh506PgrXgDTomkk=
-X-Gm-Gg: AYBFou0kMA/rGcbVdgliNDPsnUUPXYvaMxo/uU+X5UbbsjXiN78qqfX3Rn1v6YlEM/q
-	e3DWlkdTRNVtVGHIbivAJPgJoPVraX6sQTKB7UTacksVpWGCCrsvQrg3inlJ/ufRImHuZaUHvtY
-	tq5WHjGmrFgF+962xFAgbeBozbwLMw7cPU8PVvHRfxiHv5Y/QRq/tL4qBb3MWYWcHNdVz+azwJQ
-	pB4sLIK/bEk2rrK/lu67ffEUQkR/TBTJo3c6272GEqXNU5PsxZ58zIiM0jfZhrT0ni+EWoSPs4D
-	lrv5BG98Tk2bEaLJ4fbkoC9DPXmu2b70Vk3oivuq3n5NEaRBKafyB9MwEYISs/YdTtmL2SadBs3
-	BNH0F8rpyfQW64+z5x4yVs6fuPItHhH1LMitnZHXuuYLrEQhTk/otjkd7g2fKQjJH/a0mLHA=
-X-Received: by 2002:a05:6402:a50b:10b0:6b4:27a:38f7 with SMTP id
- 4fb4d7f45d1cf-6b4d46841c0mr3680555a12.22.1793556191678; Sun, 01 Nov 2026
- 10:03:11 -0800 (PST)
+	bh=wtVX074xn4Ax9Ym2W5G9udDOf7jc7SoXAtiT9SubY18=;
+	b=MDMNita1SQKtWg/8lUCLfqwCeuiY4eQXPUp0t+CTfIrng0qR4sN/q9SIGOpc9YuA0q7Z6c
+	IJ0rEkS76b6K1QY2kHF4QQgZYVlkUtIhdbswvtshC8AborhrAGJA4d7Ujda8LSem7HtmSu
+	eg3tNG6gwQwVOzJRztp5+CY8Lm5m+BE=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=h1TzP+oE;
+	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793556475;
+	b=pE+N3G145AD4uLCJNzcg2eRqW+SWVtAsfxcMrro7nQmxrO7bL98LF1ApbM9Hcv6oyy0I1K
+	UIpi1oXPkGrZoeEq/i4ccIehaw9TDnFjwbVQe9f/txkUBi3gT822ck4em5wIm03t80x80J
+	4bMNwpQIc+WucmcM0VKSBiViNn3e4LY=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id ED67041B2D;
+	Sun,  1 Nov 2026 18:07:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCB141F000C1;
+	Sun,  1 Nov 2026 18:07:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793556474;
+	bh=wtVX074xn4Ax9Ym2W5G9udDOf7jc7SoXAtiT9SubY18=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=h1TzP+oEyvUummX3FBrsaDg6F/T4dtjOssjippILdgLc7Pshpgl+k71VVqaBz6gjZ
+	 00qb4JZ7RpQTw0jGCW58RLWfO0T5DtrzR6+rMbQoflSGjSFxieCo+wMTb+EJjHvCi5
+	 eIQtv8k/EQhMV6LSRI7w+VcB8+BQz/JoJ0xXSate5ZZjFePTzGCy21AkAtA0p9FizX
+	 oXzFJvR08nY5j30ATR+qwIwRpHL1JHdIHYUoH6sbE1KL/lCb78SSctsV9H1wDwCQ49
+	 DOqFTmi2w9Ews2UgoYCcuMGExZtqCXiMR5A6SVQ6/GPcu92wLeFjhk3KCkrIXrwD7I
+	 lDYKLzlxbvAqA==
+Message-ID: <54617273-262f-4e17-b912-8b07113ca45c@kernel.org>
+Date: Sun, 1 Nov 2026 19:07:49 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-References: <20261101160427.85701-1-maxmuzaf@gmail.com>
-In-Reply-To: <20261101160427.85701-1-maxmuzaf@gmail.com>
-From: Kairui Song <ryncsn@gmail.com>
-Date: Mon, 2 Nov 2026 02:02:33 +0800
-X-Gm-Features: AclHuK-mBCMSO3NX7Gmc3L4MrGwIlRmJA-dre9im5G-WapDPHEKVriJE5cMlVMk
-Message-ID: <CAMgjq7AEf_cJsLw4fxs7m5ntYPW9mjCOC_-w5j6ihk8F=xLRWA@mail.gmail.com>
-Subject: Re: [RFC PATCH 0/1] mm/mglru: MADV_RANDOM page cache never ages and
- thrashes the oldest generation
-To: Maxim Muzafarov <maxmuzaf@gmail.com>
-Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
-	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Barry Song <baohua@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>, 
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
-	Baoquan He <baoquan.he@linux.dev>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	Yu Zhao <yuzhao@google.com>, Johannes Weiner <hannes@cmpxchg.org>, 
-	David Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: A632340007
-X-Stat-Signature: e3tu5y8hq6sweih3dbnkdimwu4hbifmh
-X-Rspamd-Server: rspam06
-X-Spam-Status: No, score=-2.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=no autolearn_force=no version=4.0.1
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] fs/proc/task_mmu: check THP exclusivity for each subpage
+To: Kelvin Zhang <zhangxp1998@gmail.com>,
+ Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org
+Cc: "Liam R . Howlett" <liam@infradead.org>, Lorenzo Stoakes
+ <ljs@kernel.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>,
+ Kalesh Singh <kaleshsingh@google.com>, linux-kernel@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, stable@vger.kernel.org
+References: <4c1b393a4b04bd94e4f1c7879ae04e1793eb0931.1793552446.git.zhangxp1998@gmail.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <4c1b393a4b04bd94e4f1c7879ae04e1793eb0931.1793552446.git.zhangxp1998@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-HE-Tag: 1793556193-936815
-X-HE-Meta: U2FsdGVkX1/3Y7hl+QyPWbGT00kn8J5XobNEe0o99Gu6ISa0+cahHv72s3/Ixbh6BGhs2GP1HwzuaRQ/uB9YOoHYnvtal9LvBqdE3fhDuvRyvBoPpWiRRpSMMTjrEmym5NiWCKqW5MOlJ0ipdHgfAouSsvUISA33uijpzKCtRagei38/hMXFGY8oPXw1lrQFH6eo2oDsEYLTmmt9FG5o0T1O48m5a5KEX/zHfedAg0lLIdHwOZN7mmxMlCU2G8EUMMB5b1fPWLadlYx61+GeJ3/0+48g+9pI+K1WjnUq4min1QkldkiLeKCRQX4GkYbRVNN7f1qHKTXHfneDsHrxMigkhyC4AGOokQZL0wkybxA3m3Z83nXSe8FnBUZCFMi4/gMtZKKWem1mIZcgMz8yLaHm5EvVTnK8+QFItnSqujXK1LUPBc5WDFZcQvRD67/2LDuG1sl+o1HmijrYFNsgFsijaPnXjAGq7UDvyXuRzofD2ZUtMcfv4OhNATPlYTZVN71lz84qZi03Z86ec2KX1SeV5NrE5u4HaVhzJjSvlVutKH4OQQ15PyxSiiKWGbAdI0iugqLF4kQEzbxev1a4zzbJQoGNaWTNLTEbaBpEpqnsD+5CyRFAMP40bRdbyrHig8UBJ51+0WbZbuK7tE8Iw/5OSYXdhQ3Q2+/XZa+Px5QeTiDPTiq87OtP+q7xI0KYqDl/jkPRIxVcJGtqFualXvBsqgQ903DJEYDC+W/6K3+8Pk/mq6Ak5PN3WL9P0LQ5J3X3F9SRKQMnKTlBUlI8hYpruDSUfngRHclcg468+agGcJZQhFx4MNlAlbKhdm/kdA7gPq8LNc00xbqALqwrWnN8/r66/XjikO3zGR/vwvhddbYfUmd3VinqurN/gDrzaxpHXnzeukjefoRQkycOD6QfB8arFXPL3EOu8aOvYOHBI9cNse0fKOU6TXRjwzpU2bxQB80/04XuqMozHuL
- lB15lJj4
- tI9nyKu32mnskrq6adlGYKfgpuHfZbBAk3XuO2O++9Z1W31Kcm2yV2jBn2XMdPeAIDGIZzaHampYfkcLsB3dqCB8eA6XIZwivMMrxDcpd8wF8aHNiQZzj4DnyCSt4q3kg9/5Ka9e876CeFAzu8UU2lN/b9WUqjgrHOhrxtojxDBVNH06mfPDJz9hWWHn7sw31Rxcq0HRyDJPzonvWqe4Ufk8K51swom/NP6t90srmthjDIrCxv0IyJvphNWIkGakVw1QJ+pDu17+kFDkE9I2M+2nuK1N27rUDLpQb96qlkbtieAX5kkiXJp4H+KwrkH28esf4wvSwaexIhoK+6cX5URCU0sPfjzoBnjlWugwJXNfVPJCB0zzfz1i2zPSARBCFGIOTi7mpJw+vWbaJ6/RmyhMa8YyCxIN8ISYYfWvhQf/duDKnbA/zQLra2c7/rHk5PNfSavnRl7TEaNXXXF2CQVpjEsc+PVqd83NoNGhmtamMYx82yLYKPmfDFd2klYbs1DqFw3FxSqueFlA=
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: B2A79100005
+X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
+X-Stat-Signature: 7mz84dj96ruaofx3s7i19iqp4pj78g5j
+X-HE-Tag: 1793556475-942444
+X-HE-Meta: U2FsdGVkX197/gK4xjtzpQrnTFHiboL5MxjSTD4pXfHTdLlq2kgylqQ/68rkFqZKlUoLoak1JLztHJMLiKmST0cZBjeCpjUZrlIJ3qXcgYWlDNmxrJa/VyOfLhvtXn1ArxdIS5Sxty243R5IPu5zp5CViyZSPnRrzhbqJgJUftMPJpABsI+J87zdB/jS8wesE4CKWhBioNDQuZi2YeuGMQTFgZXmC3R2+CeO4yUXjItBjFChxq9upQWtexgwVw7k2L8XIwNQ9Jy8Gg1/4A+pFrG5RgxtVkDx133ZzTRoD083aua989mDnL44zxlaGbrMW17BblmA7zkg6dgcRL7gw0WfgGzJ7iC3eyZbFhIWrL3/TGHSvuRUg62ZcSw81kPpkzUJ7n8XEGB8ZftjB3KiRAm66j9OKwgZJAiee2gnTab7XhBUvmCF62QhTaIHAGprjfpMNuUjzDi0UMP7dDhA3F9gVCukRU1zA/A5yBrCl3A7JC2Q4/JCqBxVQvmNbjduiHd0nrnUQpnlSJQHGV5wZZI4po1Wfhycp31aGPTDWVLzJlgyQXLsTlKX8yLCVXuljB8d4ZblZBpCr1rbVYQfZtKnzMz7HuR4es67Z0FgsScEDLrcFUvI96DiT4cjv9lusQwwkk3MrPgB+pJddyPqUHGKX3q82I//kPfTKlyTGlDBey55bwis1bdkTzxi8dQzm5TK2CEKX2l1Nxtoq/8DPGCfaPYZ+HAwBX9xJ3IoU9txOkKwJgDU7US1xMJf8J8/5I0e8qoUuv9DfcsfvyoRiKopcglbtxGpVXucTQUkTEtVhGlGHCErR79E3W9k3HFzG8l3oD1R1nppyqy6Ds48eYAUHgY6tZtsOjoKR+wxgkO6dB6jPR9ejytjXg9o+ZUBVlTCD0wgK+HzZCldjfgICox6iAQmXLaNPOvwgrB2IRLWkI47gLgXC68rqJyGggt3v+8a+ztKBH7cIy9QqCF
+ McnlzWe7
+ BX77GjcJPrRBFHeMQ8Yi5r2fwEgGwFEcjr7uIvRs1nd1rDVX0fR7XEz76WcfSFiq0wKHGDcGqSdyG0emPvmguujnjGFzZozPcKoUdt6t53lfN90vx+KdeBGE4De3TSF9hv/Kp3yMc5cvU8VB9Bh40Y1joXD0wLBCBADhr1/GnF/VTYMZuc/2Xbcw8b8W23ALL+qpniN7zt+p3BkLXd6PwL5oMLxgoZXa7Ev/der7nTvCft2Ek0UUDjAXqBMvqiiMN3UwjZZ2WJ7BWCX4p6fdPdCJOakGLwGsFOY75q/yXAuYzwEuP6Odgpr9ucW67MmSOydA6vMutUmkYPR9avV/Uo2E40bXOooDl22TL
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -149,99 +144,53 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Mon, Nov 2, 2026 at 12:04=E2=80=AFAM Maxim Muzafarov <maxmuzaf@gmail.com=
-> wrote:
->
-> Hi,
+On 11/1/26 18:01, Kelvin Zhang wrote:
+> A PMD-mapped THP can contain subpages with different mapcounts. For
+> example, after fork(), the child can unmap only part of the THP. The
+> parent retains its PMD mapping, while the remaining child mappings
+> are PTE mappings.
+> 
+> pagemap_pmd_range_thp() passes the same initial page to
+> __folio_page_mapped_exclusively() for every pagemap entry. With
+> CONFIG_PAGE_MAPCOUNT=y, this applies the first subpage's exclusivity
+> to all entries, falsely setting or clearing PM_MMAP_EXCLUSIVE for
+> subpages with different sharing.
+> 
+> Pass page + idx to check the subpage corresponding to each entry, as
+> was done before converting to __folio_page_mapped_exclusively(). The
+> index already accounts for reads starting partway through the PMD.
+> The conservative whole-folio check without CONFIG_PAGE_MAPCOUNT is
+> unchanged.
+> 
+> Fixes: eb16876971ea ("fs/proc/task_mmu: remove per-page mapcount dependency for PM_MMAP_EXCLUSIVE (CONFIG_NO_PAGE_MAPCOUNT)")
+> Cc: stable@vger.kernel.org # 6.15+
+> Signed-off-by: Kelvin Zhang <zhangxp1998@gmail.com>
+> ---
+> Tested on x86-64 under QEMU/KVM with CONFIG_TRANSPARENT_HUGEPAGE=y
+> and CONFIG_PAGE_MAPCOUNT=y, using the same test binary before and after
+> this change. After fork(), the child unmaps the first, second, middle,
+> or last 4 KiB subpage, while the parent retains a PMD mapping. Both
+> bulk pagemap reads and reads starting inside the PMD are checked.
+> 
+> Across three repetitions (12 cases), the unmodified kernel fails 24 of
+> 84 assertions; with this change all 84 pass. Fully private and fully
+> shared PMD controls pass before and after the fix.
+> 
 
-Hello Maxim!
+How was this found. Through an LLM or because there was actually a problem in
+practice?
 
-> It looks like I've stumbled upon an awkward behaviour. When MGLRU is
+Why do you care about this information to be reliable.
 
-You are not alone, I encountered same issue too :)
+If the answer is "I don't care, I don't care, an LLM reported so I blindly
+submit a fix" we might just perform the switch to the CONFIG_NO_PAGE_MAPCOUNT
+variant directly.
 
-> enabled, page cache faulted in through an MADV_RANDOM mapping goes into
-> the oldest generation, and the refaults land there at the same rate as
-> well. In my tests bpftrace shows the generations stay at seq 0-3, with
-> no aging attempts and no new generations during the workload run, and
-> /sys/kernel/debug/lru_gen_full shows for generation seq 0 15758245
-> pages evicted and 15580028 pages refaulted, which is 98.87%.
->
-> At the same time, a file read through a normal mmap lands one
-> generation higher and none of its pages are evicted. It stays cached
-> until the end of the workload, and the randomly read working set
-> shrinks. With lru_gen disabled, the CLRU evicts the file
-> instead, and throughput recovers 20-30 seconds after the file was read.
-> I would expect the same behaviour for MGLRU.
->
-> I first saw this slowdown on a single-node OpenSearch 3.6 (Lucene 10.4)
-> HNSW vector search workload [1]. The node had about 2.8 GiB of page
-> cache for a 2.9 GiB index, and Lucene maps the .vec and .vex files with
-> MADV_RANDOM. Kernel 7.2.10-200.fc44.aarch64.
->
-> Search latency and throughput on a single-node OpenSearch:
->
->                          MGLRU on   MGLRU off
->   p50, ms                   286.0        73.6
->   p90, ms                   512.1       135.6
->   p99, ms                   687.0       191.0
->   queries/s                  27.4        87.1
->
-> Disk reads, same runs:
->
->                          MGLRU on   MGLRU off
->   major faults/query         1484         325
->   disk reads/query           1484         325
->   read size, KiB              4.0         4.0
->   disk read, GiB/run        509.6       111.5
->
-> This is clearly visible on the page cache chart [2], where "blue" are
-> page cache pages mapped into at least one process's address space and
-> "orange" the rest of the page cache.
->
-> Then I reproduced it with a synthetic HNSW-like query script in python,
-> and later with fio alone, on 7.2.10-200.fc44.aarch64, 7.2.14, 7.2.14
-> with the MGLRU-FG v4 series [3][4], and on mainline v7.3-rc7.
 
-The missing piece here is refault distance. Both MGLRU and CLRU ignore
-hotness on eviction for vma_has_recency() =3D=3D false case, however, CLRU
-still has refault distance protection, while MGLRU doesn't.
+https://lore.kernel.org/linux-mm/20260412-mapcount-v1-4-05e8dfab52e0@kernel.org/
 
-I observed a similar issue, which disappeared after we added refault
-distance for MGLRU.
+-- 
+Cheers,
 
-There is an early version of FG that have it:
-https://lore.kernel.org/linux-mm/20260502-mglru-fg-v1-0-913619b014d9@tencen=
-t.com/
-
-See this patch, it too long so I have to split it out and dropped it
-for later version:
-https://lore.kernel.org/linux-mm/20260502-mglru-fg-v1-30-913619b014d9@tence=
-nt.com/
-
-This code snip:
-+ /* Set refault as active. */
-+ if (distance < total / 2) {
-+ folio_set_active(folio);
-
-I may change it to something like
-folio_set_lru_refs(LRU_REFS_WORKINGSET) later for non in-fault case
-cause this kind of break FG for other cases.
-
-That way, even a random folio will be put to the head directly instead
-of keep thrasing on tail. And placing on head or newer gen will trigger agi=
-ng.
-
-I think I got the problem right? I'll run your benchmark too a bit
-later, still tweaking it for some other issues. The refault distance
-part needs some rebasing and tweaking as it will have chemical
-reactions with many other MGLRU components and it may not work as
-expected yet (I also need to use it for an MRU fallback, because, in
-theory a pure random case may benifit more from fallback to MRU
-stragegy, but your case is a hybrid of hot random and cold non-random,
-so a bit tricky to get it right)...
-
-(And we may also loose lru_gen_in_fault for refault case? Not sure...)
-
-But I think we are getting there :), and your report is a really nice case!
+David
 
