@@ -1,91 +1,127 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34AE8606A32C
-	for <linux-mm@archiver.kernel.org>; Sun,  1 Nov 2026 08:26:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2FF1606A324
+	for <linux-mm@archiver.kernel.org>; Sun,  1 Nov 2026 08:59:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kvIAQjUJ
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=VGbBnxpN
 Received: by kanga.kvack.org (Postfix)
-	id 355056B05B2; Sun,  1 Nov 2026 03:26:20 -0500 (EST)
+	id E3D8B6B00EF; Sun,  1 Nov 2026 03:59:55 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 306C26B05B3; Sun,  1 Nov 2026 03:26:20 -0500 (EST)
+	id DC79C6B05B1; Sun,  1 Nov 2026 03:59:55 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 21EB26B05B4; Sun,  1 Nov 2026 03:26:20 -0500 (EST)
+	id C92266B05B2; Sun,  1 Nov 2026 03:59:55 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id F2EFF6B05B2
-	for <linux-mm@kvack.org>; Sun,  1 Nov 2026 03:26:19 -0500 (EST)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 8468B40A06
-	for <linux-mm@kvack.org>; Sun,  1 Nov 2026 08:26:19 +0000 (UTC)
-X-FDA: 85385868078.13.26789AA
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf29.hostedemail.com (Postfix) with ESMTP id DAB30120002
-	for <linux-mm@kvack.org>; Sun,  1 Nov 2026 08:26:17 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kvIAQjUJ;
-	spf=pass (imf29.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793521578;
-	b=SeNNfuUbxAuhg9myP4MnlB/b/FK4AXv43DN5ZnhYPmL3+NUiJWX1M2bK9BlTl4iC+ZUK+a
-	193gs1x9q8EqhoaRtK8ubU/WKJTAGIt/sVDYKEZcERYunXsZny8SEx09cHmlT7L2PTPuuU
-	O/06KxWu9yZsrKqrvFKyPxDEiaxta8Y=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kvIAQjUJ;
-	spf=pass (imf29.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 9D2DA6B00EF
+	for <linux-mm@kvack.org>; Sun,  1 Nov 2026 03:59:55 -0500 (EST)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 146C8A09DC
+	for <linux-mm@kvack.org>; Sun,  1 Nov 2026 08:59:55 +0000 (UTC)
+X-FDA: 85385952750.21.4DC2B6E
+Received: from mail-dy2-f8.google.com (mail-dy2-f8.google.com [74.125.229.8])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 436F3100008
+	for <linux-mm@kvack.org>; Sun,  1 Nov 2026 08:59:53 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=VGbBnxpN;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf05.hostedemail.com: domain of jm5905938@gmail.com designates 74.125.229.8 as permitted sender) smtp.mailfrom=jm5905938@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793521578;
+	s=arc-20220608; t=1793523593;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KNsJBBBgsxOmM1zuQK6aYuVr+p7Ctuqp4i+1aNHodeQ=;
-	b=6guiHJvoyBTn/V/aBtHFrkqemgyLflW8+348zv0xizOs2SotI9l4MC97/bK4Cc9z/Eybcl
-	59Ps5iUMb2rsribj0rvve65tOmDahPaKckZ6Jle60VxDdR6q9Uh6HjujWmNTFbAcYUHbIY
-	BBQfriSzYeTdsocY7/AO7ccWRGWkuvY=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 13689408BF;
-	Sun,  1 Nov 2026 08:26:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBFC61F000C1;
-	Sun,  1 Nov 2026 08:26:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793521577;
-	bh=KNsJBBBgsxOmM1zuQK6aYuVr+p7Ctuqp4i+1aNHodeQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=kvIAQjUJHsI2zMo7gCLMkjddDhJaogUsYHfyK6mHjWnhUcES37ve1U4Ic7IntD1U+
-	 nTBKCw0GRaIlUlxkfIWAbPLhLL4E1tFR7FSouSxfzbgcf1kyHwjZQZ5dI81SqJARPU
-	 MRFf1k+zG7GrX9S8aNvONy+Otf6y9QlbVM5m9Edqg7NhKfsoL5150rljpLjmWyg6oE
-	 dstM+toHdhCMY4PI6FwbIR1rTcmH4CGZA4Kd4c94+YOAds5JGP9YFtDLjWul0wgKf0
-	 Ur5vkZpRkyaLhfGCGiMI3E+su8K9kwua03lApNoIh9tBl8gQ2VGTLr8gDFqS+GWX+q
-	 sDa92PtrmDtMA==
-Date: Sun, 1 Nov 2026 10:26:11 +0200
-From: Mike Rapoport <rppt@kernel.org>
-To: Tal Zussman <tz2294@columbia.edu>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Peter Xu <peterx@redhat.com>,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm/userfaultfd: store the child's new uffd context in
- the wait queue entry
-Message-ID: <aub3o-i3h2OVcWM-@kernel.org>
-References: <20261031-uffd-fork-ctx-v1-1-a837fd576ffc@columbia.edu>
+	bh=Qot3DPVKnGE0VVwUhDNO4+shB6YIfE7k5yrGO2m+J5M=;
+	b=B3kR1SXmZdbAh3cDnoTSL1+lRh6UPIxvwU3xttv2YBvE6XGffk3KwmRkDLEdv1VkySRXlT
+	wB2Tht/80KI5NWsmdCMMb8sMFe5rAazO3GW3zph1jmf8kp+7V7jRh6gXZyW+hmYYQl+Gx0
+	Pb+PNGB+aarYEoX4cnel80YSBTvZQAM=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=VGbBnxpN;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf05.hostedemail.com: domain of jm5905938@gmail.com designates 74.125.229.8 as permitted sender) smtp.mailfrom=jm5905938@gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793523593;
+	b=qzpZVstdNT4IhA2ve1MGZ8kp84XV4n0H6mIlXrSfyC/totHzdoyNAQndOf11TICfc21GB5
+	nkgEJhPgTOymvdfFiVukjvB1p1vVUD8ptDaPTaeMLRThV+y3q7DoPzkUFOr0o5AFTicatX
+	G/nMZWnkSW2vDYQyLBIrRLuexMewKC8=
+Received: by mail-dy2-f8.google.com with SMTP id 5a478bee46e88-36a24f47293so1295152eec.0
+        for <linux-mm@kvack.org>; Sun, 01 Nov 2026 01:59:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1793523592; x=1794128392; darn=kvack.org;
+        h=references:in-reply-to:cc:to:message-id:date:from:subject
+         :content-transfer-encoding:content-type:mime-version:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=Qot3DPVKnGE0VVwUhDNO4+shB6YIfE7k5yrGO2m+J5M=;
+        b=VGbBnxpNJHHAKlpn2kuDbwiQ0nkvLEB4ig/p38SQbOYrRocUpW+DIAYam38CYNvVwX
+         nxjH1U8FauE2mnSoL1zQv1JVMe9ZXd/CfmQWj1ypkcyKW8NENgWoudpvIhGk/srMZg6R
+         M1UHTSMGwJKkv7c6AYMY4uzPfYhGO1D28fccO0VFFSjaz2gZWQZDiDF4v+Yoi/XvQQwx
+         2Q9sD+f1aKmbl8g3Wq8IHQV05ROa2272wszDgStU4GGDMPRGa4L0iY7TWM4ryU5iuL8u
+         qotol9c5P3aJum8hz9Gw0fVb1eQqQK8clWKcPi401bNkt3h21O9nL/BjbbPOyFctdraL
+         cZ7Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793523592; x=1794128392;
+        h=references:in-reply-to:cc:to:message-id:date:from:subject
+         :content-transfer-encoding:content-type:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Qot3DPVKnGE0VVwUhDNO4+shB6YIfE7k5yrGO2m+J5M=;
+        b=E+1ob5PuFAoyKdvAo9W6V8nGPZYKlonS/UYuUI/cfLYrApcH/AC3TlPgmj2bX6tLtp
+         PZECkIYePSHiVMztiDQb/LTzP2BxNVMYAcxvWKHvbG/fG8S9/L0ePE96B3cIDJqsEC1H
+         3PQG39vhxt1zyXwtD4QGNmzJsGbQEE4lwzgqthKxSp+cpt3xEvqqlfetW8pYE3qXWXcg
+         66328ELgYjk47ueGR7F8tVfn292GIVqtc+I5XfwR9gVbRdegVeAO4yqMDe7wydc1EvRY
+         DE0mEkcLz0Gm4UsOyAvIOBMZk3phsWM70AqoYQ8TGQyE8nZkG6G2rqhip8bUY8jJsT4M
+         6TbQ==
+X-Forwarded-Encrypted: i=1; AKwUvBx6dUYfuhgQRSQSOtKnON0XGZRe+WkTIwWeqriNVJqpPGS8eB3kbZvHa8X8xJ6PckNWXNHGNd7tiw==@kvack.org
+X-Gm-Message-State: APuU4Z8FK9AkKP/n1JORYweLXMQEnS4N5pj49GRZleWNxk8q3Xjv5yxA
+	hv60rVQEynJo7H3huUZDVqSP6IBS78nsoffhrylvZZA/a+9E6s3QEjzT
+X-Gm-Gg: AYBFou1UCA5kQqJKNF0v72C8yXwUtPubhHTbmLtjHufm+Rf0AflVTyPw5Enkx4EBN/l
+	ZfitFT6ucmFaq7962PzxBrut4TB9eh/Fm9h7bvO0HaNSyF9FPOmry4eZmtJnUGFEJPaVtTi0v/4
+	tKGUGvSx/n/V4eDb5naBDHNvKSIAoUDlsVsQJsc3XXl73NKMkV8yV0zED3JXmeqoXP8P/S2Iicd
+	nwywiqnRgxHn/MrgoozD6Oob2Agn4mVZvlmEUMUmWQvBApFQG6FVikkwxjPRTUakgLlpVwMDcWk
+	c3O5/6U4Mx20XBTPpbYzg5tCDPrUCohxeaCWqE0Wa4zBB1kkmx6De4jXT+IMReSUeBC1PV7+yjX
+	yL/Hzl2liwX5sNjErzO5rGdI+iqW6qB9/8KndXSRsRHgrKFzG37uTO4cmIGjPdZ95ggyTtW1dEf
+	0Pru1eWyeK471MGGrzxzNNxx6R5i0DPXp+2Sqo2qUv89IgSOwPHF6sTXRfBydtV9OMY71aCp6sd
+	7/4x6RauLNv5jSLCU97WKLqybMD03GN8VYsEKLVOixKAcXXJKnWJWFuZce5DLu7Cx4xy183F3Na
+	Y7CO874fAVQJNxSFFCnZrIegvLIhBQphrGizX+kiRBep8+LpY6J1bi7V+GdQYRzp8YvXqDqBXIq
+	qo3eKwyQn1l3GWSNjhP+D+NuC6Kc=
+X-Received: by 2002:a05:7300:ce08:b0:343:ff9f:26f3 with SMTP id 5a478bee46e88-36a42401de6mr10143619eec.9.1793523591850;
+        Sun, 01 Nov 2026 01:59:51 -0700 (PDT)
+Received: from localhost (n106-71-19-159.sun21.vic.optusnet.com.au. [106.71.19.159])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-36a5eee0f20sm6176212eec.17.2026.11.01.01.59.43
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 01 Nov 2026 01:59:51 -0700 (PDT)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261031-uffd-fork-ctx-v1-1-a837fd576ffc@columbia.edu>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH] mm/hmm: honor write requests for owned device-private
+ pages
+From: Aveline Noir <jm5905938@gmail.com>
+Date: Sun, 01 Nov 2026 19:58:21 +1100
+Message-Id: <179352350180.2.12918668886938034091.b4-reply@b4>
+To: sashiko-reviews@lists.linux.dev
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+ Francois Dugast <francois.dugast@intel.com>, Christoph Hellwig <hch@lst.de>, 
+ Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>, 
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org, sashiko-bot@kernel.org
+In-Reply-To: <sashiko-outbox-192310@kernel.org>
+References: <179343062238.2.2773026701442863377@gmail.com>
+ <sashiko-outbox-192310@kernel.org>
+X-Mailer: b4 0.16.0
+X-Rspamd-Queue-Id: 436F3100008
+X-Stat-Signature: dyt9ei8u5xmbrhmbwwgrn7gz3uk5kak5
+X-Rspamd-Server: rspam06
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=no autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-Rspamd-Queue-Id: DAB30120002
-X-Stat-Signature: gqmhgg9t7ah8df6qjiwyfk7gab5nhqk9
-X-Rspamd-Server: rspam01
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1793521577-491865
-X-HE-Meta: U2FsdGVkX1+LoA6sTltt/7Qpi013mTyoajWITGl7aZdkmacQf5VFy9GuJyeNoRBEX4cV/X8s8RrU49eIuFSL0I3HRkMGLNU3VWHH2I4itGbZgrONW2oi7utA+Sam6U8q7JbOREgBo9JdGA9SQdHjl1cCDVBoqt0ASYQgA0DpklNO7lhslc9A9VttgYvgHbZVAlm9XAPkOiYpFSRSFh0cTEgM9B+F7TaXuf8zbPjETlzLhJg0GR3MYOAHcSq+z9gdElAQr2KbmAXoXQgwCRnzrS/KW8T4hcNpTQ8k91KTc45f9WJM2G7L7PmlgLdLO7Ai2XflLs1r3jV5DJx7EKjyFEbhVf7ukeRJgAhGQhrDOEqpoa6IFk/KNZeXd6+ZPhmsP2C+tJmZWQyVmKItdrgnwODkrwXgxFFdr9+lz4PiJK0CGrKUtQ2jozPTRjDt4UmVrc2OjHufIKbKQ7gF1EKVQhety8fY/HWBjb6CqNM0pqJkUsc4erUSfam6qEfFUJ8PfCZSRnmLqBd9by3Oe3HSSE6/ue5kW99TZhXIZCKpDuND1YOUe2WeCnHCW5aawh9THGKoSyyhhNjISKrH2kW50MGvwkONxUS734nMhdCMHUHNiD4AYKxFNqRpxby5hcqXrwAE3t4pPX2Dta8mS11pBB+lPjzOBBOVpWyCek1GvxoyPVZNvZD6dDMBSlts+I5xHBrnrmCw94To+TjDv23MiaByLgu14/h6L2JFflWQ0wGxGNIaCg4FONEyWSGwABNNpggFDRWU69uvZ36donBYMG65+3IP6bFT/mWXDLh5uR66MQ/qN/n7Agwr29s781iA/rHQpj1wn/+LBj0YfcaEjbs1UXKMUDE79OcKBqRDTRkOtVacx3ZkaZYjQ0mpjyOLID1dmxqfEQje5Zs7OM9s9RJ7ryoMW0A7GyfT4rLl5mroAEyLipjOV818Nk6fyzKJM0A78s3eeb4eWlWgL2p
- 0KprMjy7
- TJKnayewBdjco1mWLZG/MAmfq4YKBwm039ux/2qEuqOzpXsNUFFOPHH9Mbv1q+7hlQ1hL6zRs1fk4GnxuxIXQC2kODRsljyt9744ONUPi6aGFL+01kXJR0ISxdi8E21R5Vy4kylf2qwgdcPeCjO4olC4F/zO3NjU1DWECbKSmUZPw96Imf95307mvG0k3ULHAyXRxL0duak0yVLOARGKodr+mlWQbSX+75C2fXSyGMOCzBclxFXF9/I5VimJCHJh6tSW4zWVF6pyHNSuwuTBhM++PAQ==
+X-HE-Tag: 1793523593-23914
+X-HE-Meta: U2FsdGVkX18+telTQwC97wTiP7DPfgNreKaezVV/kqb/EWJFNQt2UqPSRc0bvjTOFcxJmypEJ3oPbMV3TMrNGz0UA/Ruq54oIM8lNWfznXAboKOg9gGnvzUaWjR141YGVW59FwQOMuxa6ZtHx7v8L/WyZH91nMaCtxMNtFq2oWWK8mhM95RGSk7axxgRL6Lqodb0ZvKkknWD9pU7vEtIuazjYlKN1ZgkJarb0rYkWt1PrASQlMnhb8Xaupva2V2yRhFPUfw0dtfTzhtx+CFcmpInBGpMfAIIEdRkuWgIEvbS88swnQQ+WKB0lbGSrI9Tnvuw65c/4Fk863IfmoEF2hKN0WVItG/6azU21ELegzoADCXYlDwaLL3Xtgm5se1aEUTjUmJBbzhq2ie84et4a446zu0F0DpmvfwpwSCUB4MUd11CN9wTguTiVIWXo6YLZ26JgLciun4DVpi+cEa9UDasRGoC8l/cjqy5liBF42vEXxMzpRAYf9C3p7GeqMaJtRUGItkk7irj1XcIPOV3atIQiYKPSCqlehMs1Uf0sei4dBpx1yH3cGFX/jHC+r+dKuW+Ec1XfFcZM5YQFDpyUhW4xFPzGvf6moK+IvP2VgLeHF2NWg9ZglW3w+C+CnbeaYOElAdikaLAfo2fNlGb16jfENToy8o7sEyuJkgoW7XVMmuqD/dn81eFmHIANH/G0yvKqIbn/VnMX1rI6lVK22qPhKxEsfdkj2rSpapPaEwpYzAJnO4YL0XDChdNj4H86szLC/c8W4zhwUXFy0emDxraBI6jg6zbbvfjihtCOeTwaCsmGTBJUqnikEAKVsUE72KTGwhCEZbDSwBv9wkfOLgPfBDfjhR37w3wRe8kRoR5E9GiMZs+06S2hnAmRg8r1NiAtvRAESoukxjIE2JlQUeTbF6Fmaw9UHR4mhg/9+JGfqp8NDjNJYDD7iZVjMPh5DFFXU8JA3QBEdPCOk6
+ 5uSI/BhH
+ UJdKQIjdgA4kObnEgqEeDv1ZWUp+br4v2KlfXm0UR155W96Oot8yGN/dYAthYAEb+u4ib7+GB9TsDK7rKip2OoStAQqp3uCcAWmXpUwqi0/dZ0DPCmcQTD/A4BRNwlwEL5n6tmtiYWaNxLMtcna/MjacR6UfIR4rScMGIoLhU95s0bjjcTUUSNJsolkuZFb/SmnbqMKq9wFRdSbyNc2sjKLg21cPIThBZUITnMXQzDzn6CZOMDsdI1NxkVVvN8cEcUlYwaSlQkMcSOYyWFILiNy9e5At1zzqNzk05DMSjw2Hsa4c2NHUhORl4F2YCwUuOZYpAcKtVT/HykAAvYNv2efC9cTqLuQN99LamYDvVPzzwphCX4o+N770tSF6sc2jW5p4dItdF5yuAeLp2Uiy20/8z4GsYY1DJdiHrPay3B/c+1ZFl7IJrmWC7bpfj2pP33XieUuQcQEQfqOakaWl+Ng3vJA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,36 +130,18 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Sat, Oct 31, 2026 at 11:47:48AM -0400, Tal Zussman wrote:
-> A UFFD_EVENT_FORK message cannot carry the child's fd when it is queued,
-> because the fd has to be installed in the fd table of whichever task
-> reads the event. The forking task has to hand the reader the new context
-> itself. It does that by casting the child's userfaultfd_ctx pointer into
-> the arg.reserved.reserved1 field of the UAPI struct uffd_msg, which the
-> readers cast back.
-> 
-> That temporarily puts a kernel pointer in a struct that is copied to
-> userspace, and results in ugly casts when passing the uffd context
-> around. While resolve_userfault_fork() currently zeroes reserved1 before
-> it is exposed to userspace, this unnecessarily risks leaking a kernel
-> pointer to userspace if future modifications are buggy.
-> 
-> Store the fork_ctx pointer in struct userfaultfd_wait_queue instead,
-> which is kernel-internal and passed around anyway. The casts and the
-> zeroing go away, at the (negligible) cost of 8 more bytes on the
-> stack.
-> 
-> No functional change.
-> 
-> Signed-off-by: Tal Zussman <tz2294@columbia.edu>
+Hi Sashiko,
 
-Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+On Sun, 01 Nov 2026 07:29:15 +0000 sashiko-bot@kernel.org wrote:
 
-> ---
->  mm/userfaultfd.c | 19 ++++++-------------
->  1 file changed, 6 insertions(+), 13 deletions(-)
+> Since no MMU notifier fired, mmu_interval_check_retry() returns false and
+> walk_page_range() restarts at the same hmm_vma_walk.last address. Won't this
+> spin forever on the unchanged SOFTLEAF_DEVICE_PRIVATE_READ entry while
+> holding mmap_read_lock(mm) (or mmap_write_lock(mm)), svms.lock, and
+> prange->migrate_mutex?
 
--- 
-Sincerely yours,
-Mike.
+Oh, I missed that. I'll try to fix it.
+
+Thanks,
+Aveline Noir
 
