@@ -1,71 +1,71 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F282D606A325
-	for <linux-mm@archiver.kernel.org>; Sun,  1 Nov 2026 07:16:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D0B1606A333
+	for <linux-mm@archiver.kernel.org>; Sun,  1 Nov 2026 07:18:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=LH6zBUF5
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=QlYZS2a7
 Received: by kanga.kvack.org (Postfix)
-	id 037E36B05B4; Sun,  1 Nov 2026 02:16:26 -0500 (EST)
+	id 371096B00EF; Sun,  1 Nov 2026 02:18:41 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F2A576B05B6; Sun,  1 Nov 2026 02:16:25 -0500 (EST)
+	id 321376B05B1; Sun,  1 Nov 2026 02:18:41 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E3F426B05B7; Sun,  1 Nov 2026 02:16:25 -0500 (EST)
+	id 260146B05B6; Sun,  1 Nov 2026 02:18:41 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id BC9BA6B05B4
-	for <linux-mm@kvack.org>; Sun,  1 Nov 2026 02:16:25 -0500 (EST)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 1DB37120A2C
-	for <linux-mm@kvack.org>; Sun,  1 Nov 2026 07:16:25 +0000 (UTC)
-X-FDA: 85385691930.17.A7E989D
-Received: from mta1.migadu.com (out-98.mta1.migadu.com [95.215.58.98])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 9A58140002
-	for <linux-mm@kvack.org>; Sun,  1 Nov 2026 07:16:21 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=LH6zBUF5;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf01.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.98 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id EF8C76B00EF
+	for <linux-mm@kvack.org>; Sun,  1 Nov 2026 02:18:40 -0500 (EST)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 746231609F4
+	for <linux-mm@kvack.org>; Sun,  1 Nov 2026 07:18:40 +0000 (UTC)
+X-FDA: 85385697600.19.F8EDE96
+Received: from mta1.migadu.com (out-115.mta1.migadu.com [95.215.58.115])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 6E97A120006
+	for <linux-mm@kvack.org>; Sun,  1 Nov 2026 07:18:38 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=QlYZS2a7;
+	spf=pass (imf29.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.115 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793517518;
+	b=LzdPRrj8jJDIzQuQbE5joAO14Y2prOXBn5vkRqHTNyT6BoX3Ee7ETcTZLCUw2yN63M8zn/
+	k4rXCzSeNVPT86KgcZrQA83DzDHEDzhWotgQcok4K/mkxh9/seUp0MGtZkg83yjgWyBx7B
+	0s3Hb4nVGJ9TMKbAHAUd4lAg7bPvpdA=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=QlYZS2a7;
+	spf=pass (imf29.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.115 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793517381;
+	s=arc-20220608; t=1793517518;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=sKUtUKSAT7N9lWEULtTe5OHLm/0QKeLXLq/cuehm0hY=;
-	b=6SOKyyPUlXoKS4QxTQ2n+juCc3uI8/gRQhP5/4ZDhpmyqIV7y1CFVcdpVH0FFaXIDz/yS/
-	QOIugAjJPo/oeglSNxpNCP32YFyUctheZMUe+vd5x16yB/mxFN5QdwvDuNxF5aZV6zEJoA
-	O4BGj+eo17aHpmN8qEFDV7PYqJ5Em+s=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=LH6zBUF5;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf01.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.98 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793517381;
-	b=U9NnbC5t/LQzizN3ITAe3bWb1mVVDK0+bJgeeL8rKO3L2Z3dri1OEQHupIEef+SUZWCe6G
-	TNo9QZDc9FznfPFrjuU+mumOg9ublV7RZSuat/3Vp6rGrGM4bXXKL+XEWnbHC7EJ9/jMyk
-	s/h+GEdR+77+HPIK85IRCNISXYKGPhc=
+	bh=jgSF75huK5lq6JDQkVCdSAQMAD+xLgu3G0GXHmKK5Dk=;
+	b=zVuAgJiNvsdlCoVl78BxtxwogJJF9zt+LyQKv9/n0hUtMThWICffNcBs6U3mYpSyh/43Mc
+	iJqUhVQdk55TwfwZNl0Ar4T62A0Y9LMyD+hYKWyy6ZzDzVfCvX4Ix3ahp9zHOIsQ+DmWdg
+	5jWeTjWio5+XSpIPxbhPpl0Fcgza+no=
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=kHUvHYnw2dekg8CUjBUhuxM8s0SCtb5RHv0FpAGfgMc=;
+DKIM-Signature: a=rsa-sha256; bh=BBXd3+OxUyf5WsG1NDuZHkvK3T+6qnkUwUPM6ID5tqk=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1793517377; v=1; x=1794122177;
- b=LH6zBUF5EdvcDy4FlVd/3Q5UigVrRVxhrnhHOqrazo9ldwqMs9obVky87NL6QenKubvhrI6q
- XMj3bb2b2YjNvk0CTEXFPZLQAaKmniolyu8Akifd0u0A92dWuwIDu0goFqmfLXuNds+0D3GofNF
- uuMft3H07+IoN39TmjwhZuRs=
+ t=1793517517; v=1; x=1794122317;
+ b=QlYZS2a7eKbaORr55Lgn68numsDnacZy4+GYQzykFJS/zWy01sg4BSsXEc+qekgmmkBYChRJ
+ xidkXBA2vQE8HWIPsDb2l0cGBG+vA+mM7823UtcLSR43maLttvLN2309nUFUO0tszKQIWgCp5Gm
+ Ji4B04y+DyJi0OrNd3FZr1MI=
 X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 3d2700dedfd938b8;
-	Sun, 01 Nov 2026 07:16:17 +0000
-X-Mizu-Trace-ID: 3d2700dedfd938b8
+Received: by smtp.migadu.com with ESMTPS id d3aa89a8db00bc1d;
+	Sun, 01 Nov 2026 07:18:36 +0000
+X-Mizu-Trace-ID: d3aa89a8db00bc1d
 X-Migadu-Flow: FLOW_OUT
-Message-ID: <fe601caa-3676-4623-b77c-35930a6f65e6@linux.dev>
-Date: Sun, 1 Nov 2026 15:16:09 +0800
+Message-ID: <ec140fbd-da68-43e2-b7c9-893e494f5925@linux.dev>
+Date: Sun, 1 Nov 2026 15:18:28 +0800
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 11/12] mm: hugetlb_vmemmap: unify vmemmap range
- restoration
+Subject: Re: [PATCH 12/12] mm: hugetlb_vmemmap: make vmemmap PTE conversion
+ folio-oriented
 To: Muchun Song <songmuchun@bytedance.com>, Oscar Salvador
  <osalvador@suse.de>, Andrew Morton <akpm@linux-foundation.org>,
  Mike Rapoport <rppt@kernel.org>
@@ -75,24 +75,24 @@ Cc: Lance Yang <lance.yang@linux.dev>, James Houghton
  linux-kernel@vger.kernel.org
 References: <20261020115306.813483-1-songmuchun@bytedance.com>
  <20261020115824.823278-1-songmuchun@bytedance.com>
- <20261020115824.823278-10-songmuchun@bytedance.com>
+ <20261020115824.823278-11-songmuchun@bytedance.com>
 From: Qi Zheng <qi.zheng@linux.dev>
-In-Reply-To: <20261020115824.823278-10-songmuchun@bytedance.com>
+In-Reply-To: <20261020115824.823278-11-songmuchun@bytedance.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 9A58140002
-X-Stat-Signature: 3mbsy6uzrnw1dh4smi1ig381x6ssce83
+X-Rspam-User: 
+X-Rspamd-Queue-Id: 6E97A120006
+X-Stat-Signature: 519cw8x3mmf46p7eduw4ktfeeq6xdwit
+X-Rspamd-Server: rspam01
 X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
 	version=4.0.1
-X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1793517381-378760
-X-HE-Meta: U2FsdGVkX1+tKDvG545ssJ4/rIcBEbppzuoYAFRcDdT/uhrcna3xLvSwHRXOQwCKdaj47ntLnbfYYr9Q6t0RTqqMRsBlF+5DZVfuc4XU1XbNnLjAIZVJnVXyrB10j/meb4tTi/YP/lWh7burEZGIYZ4ebcSdCA0vIa0XjuRhjLVVqYlfCjInrAGQNRL/aIF4BQ7h1v82+ALmCoZlhWFy95W32gKlmyOZCdxxOokgWqFTAeKHQPkue5pTkFB1Cdp2S/zNM3CzcksdGwGUnwDu0agaewA5tivpgZ9gPyQfu/SZ6P/b5pdQTwyrA5ZjrLBSKdhqyS9hJmwSmAuAxQ0GyH50LN83xelvjz0JPjOdAbtBkTnqoACTSiHH1gH9eJVZ7J2bUxE265OPgBiQZJuG8ZNwBorTibEtXNm+5A5gsZuXraBSa7L5l/QEWQGfJGuCgpfwmThPfrsuSZoUwAZhj6E2RCySH1WxaVmhKDCfJHimEOSWFSL79MVDbq2/wYhNo7BSqM/hjyb3AqgAZ22fwk6FudhgsmBTZymQCPtsH7Xv2VxgPU9uWQsB0/IjJUpdNglEZlmiKUqlXCOl/p8S4JAh8g0Ckkd3+tUcsqHCfezHwOq9bKMsikq8/saNVafCvMV3+syhPW/BtpgVK1YvxgNZQTR1qS7qHgz3o0MYliKcbGTq8jNz2oCx2kxwlgAjcGC+GxDZUdRQDsJcUxl76Mr7X+hJU2jzui/5HOuTCpJHOJrJKgc0gMoSk85TaDpzxXp+ZCZT3m+0imfVJlWEcjsTlZJBqjfNeSbPQeTqFNZtpKTtVzOoyKqsAqSbUQDbVAN3fB/uhhcJkNZEh+EHPxxrmCcrVGeSv5kOXlszomJnOI9hmd31gNw3iR0Rx+3S9fsc6wP3wM2RO+kbj9wwGLC8IpMI9yHq4xgJdJsN5TuIDwXiOxRL3C02QW3+VEl6PcWWJ9IJ65keUePaun0
- NhQSpxq1
- 0QlWq7w1Vx/cjHsnfO48TSm/FXT6YJLfdg7kC851PYWxPpu+YATNeo1xzMX4z2XvMqVfrZl1akbT4tDKnAaXdvapg62HQmHFxPJ/ze8pt+kdAgGB/qtuc1l7SMFx6y+TfcBlIN6uXC2q9WyloS5l1cNOLu19brDEepQl8lky6sXCpBLl5CGNJMxALsAhlrXJq3Y7WD09e7YRp6KDAO0cfrdymklD/MjvsnoTYRZitdyPo6pwTrqjoGsdSLxVEJSbOmkXtIE9up/qivJ7jFIGlbALlTfrdqombQi21o9oqgPFkSAnGQgfbY1CaV9hUDVLQssNPyr7faKmonN8xXQNBqi21WQ==
+X-HE-Tag: 1793517518-192722
+X-HE-Meta: U2FsdGVkX1/9IEsafU5mdYK8NErATC2sLah+oj7AeLRaXoIJCJzmjPlpEObTp7zB7TVEdczxiAE/+rgtb3J4QjzJwMPTaLxqFfriTnYIMWrPfWIYoRwBhtttoxzv1EA/zPRjAtwsC5w/ApwNMAvH4wZ5LBf5RKUhrqFbdxSRR4rwwm2TqbwY8i/H59t81oy31hf3gRl63RutNyj0DozpW/JT98S3DS9yT+D1Kvh1sSVuBZzjUJS2GCVjfsLHTfAFg/sdwocvkgXvp77gsz5SsMeezYVIrJrLcgk3zdXuO6WBrC7oYx4Gx/1qstBK8jG8LddWGbEtSQljDnA5K1oN5WtYSCnRyjg2MrlLJ81IK6YPtgw9jPP0X81B2wDQnViXg01l3++4A75Y762noCy8FdcB7glumFzVyXqGAayi2kPJ94XpLBNEOTBJy+Hj51ZtHBBajuZdMBgAE0KU4psDZBwGq8KttFqOxxz7fIvFAjOaBbPERnEbvSaNBl4DU9vve1ox7cvAp9RNf8WWrLTbA9BFR8w1D7hAxVyFXCy4lsjUv4yXQFT7sRLY5B6Xexa7kKkwLpKKUd7ThQ5zinNnwnf1skK/J7qKGk2vOg8PLBVzWRYdUnK4h9R4+hVdT4IJ32gzgzgd9MLzExouCDWglXAhdXVE4lF0N5lC5q2OfSXJ1OpUdxeBlD+AQ2flwW1vifgHZlBi0jRk23UxPhXU6ACKqJW7chHGsM+0ZQlbkzus0HA28ay+ws2LPO26kJZpPgN2la6h+Nq+mvpQMx//+asdJa8o+wJcEHsdH5+lYDr856zbk5HiVRJsAYsXNV0xrK1czGuu4CuFJ4ifuaEPK1N0+ZOlle9blybSWBnKK3YT2P+VMf9AxdD9WkNthN041HCtj4/Mnod8upAkyFIZgbeGyvaGSDsdKCEb70+Ls7f7JXk84TQflTMUpybwM/SugX8FKd5xjqqneCTcbWy
+ OEhjM3a2
+ T5Gv5/AoscP4Akxp/Zp3rBIUxBFZT9GMVNXrfsbXM8U+qBMNm9/f0R5CXPMJxOkaW2UAjoYL/bkA3c+VYrcIOkleJImavL2kDObW+LsQbsmAfFMXlEKj8AEm9GclR9cjGNDFzNbcHBWaQLroKSqYIhgOvZQBAUougmEYYviPKXjN5QHUcpDEga24Bk3PJCO0ttnUqbZr4Gt4VMeBBKM0dqrYY+MzOXnEux93XRCkAHO2OUV1IGUiAMBQETmbgl9v5MipHcXdY3Y/ai+6IebAnii0QHVzcxg+jdogCtLuYkyMolKndGvVMel4pRxmo3emBqd1j7OgpjROmOfP6nDb+ZF/fhA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,19 +104,22 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 
 
 On 10/20/26 7:58 PM, Muchun Song wrote:
-> Restoring an optimized folio and rolling back a partial optimization
-> both restore a vmemmap range, but the operation is currently implemented
-> separately in each path.
+> Converting a folio's vmemmap mappings from PMDs to PTEs is a per-folio
+> operation, but the current interface exposes a raw address range and
+> hardcodes deferred TLB flushing.  This splits the common mechanism
+> across layers and couples it to the HugeTLB batching policy.
 > 
-> Use a single range-restoration path for both cases, making rollback an
-> explicit bounded form of normal restoration.
+> Make the folio the unit of PTE conversion and let callers select the TLB
+> flush policy through the folio-oriented interface.  This keeps
+> HugeTLB-specific eligibility and batching outside the common operation.
 > 
 > No functional change intended.
 > 
 > Signed-off-by: Muchun Song <songmuchun@bytedance.com>
 > ---
->   mm/hugetlb_vmemmap.c | 33 ++++++++++++++-------------------
->   1 file changed, 14 insertions(+), 19 deletions(-)
+>   mm/hugetlb_vmemmap.c | 40 +++++++++++++++++++---------------------
+>   1 file changed, 19 insertions(+), 21 deletions(-)
+> 
 
 Reviewed-by: Qi Zheng <qi.zheng@linux.dev>
 
