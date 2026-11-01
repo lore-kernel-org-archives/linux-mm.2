@@ -1,99 +1,134 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 528F8606A327
-	for <linux-mm@archiver.kernel.org>; Sun,  1 Nov 2026 03:13:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B3E6606A32D
+	for <linux-mm@archiver.kernel.org>; Sun,  1 Nov 2026 03:18:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=b6R/J3oD
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=p/Q4ETTt
 Received: by kanga.kvack.org (Postfix)
-	id 678A56B00EF; Sat, 31 Oct 2026 23:13:46 -0400 (EDT)
+	id 855B56B05B2; Sat, 31 Oct 2026 23:18:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 62D2C6B05B1; Sat, 31 Oct 2026 23:13:46 -0400 (EDT)
+	id 806716B05B3; Sat, 31 Oct 2026 23:18:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 518CC6B05B2; Sat, 31 Oct 2026 23:13:46 -0400 (EDT)
+	id 6F5AD6B05B4; Sat, 31 Oct 2026 23:18:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 248146B00EF
-	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 23:13:46 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id A317C4079F
-	for <linux-mm@kvack.org>; Sun,  1 Nov 2026 03:13:45 +0000 (UTC)
-X-FDA: 85385080410.03.B02B1B8
-Received: from mta1.migadu.com (out-92.mta1.migadu.com [95.215.58.92])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 1FF93140004
-	for <linux-mm@kvack.org>; Sun,  1 Nov 2026 03:13:41 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="b6R/J3oD";
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf26.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.92 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
+	by kanga.kvack.org (Postfix) with ESMTP id 455476B05B2
+	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 23:18:02 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 891D11A0778
+	for <linux-mm@kvack.org>; Sun,  1 Nov 2026 03:18:01 +0000 (UTC)
+X-FDA: 85385091162.26.8B76AF9
+Received: from mta1.migadu.com (out-139.mta1.migadu.com [95.215.58.139])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 72B7DA0002
+	for <linux-mm@kvack.org>; Sun,  1 Nov 2026 03:17:59 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="p/Q4ETTt";
+	spf=pass (imf15.hostedemail.com: domain of baoquan.he@linux.dev designates 95.215.58.139 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793502822;
+	s=arc-20220608; t=1793503079;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=G2Sq0gLLsHldeSIR+epke8YlRr21X/+4SzZkJoBo7gY=;
-	b=tB1c3GFBy60hxTWn0BTkrucf5jV4JBnpP/kNf78zpAoOcV8m0qHmKnEFoHzwkwMP8qKh/4
-	c9bpopXsQ57bg4EuUUMPIJKioBEj/2+SL2gOCWRUgmJdMTxPBdpvYldT3xBZuPY+aFTvT/
-	FoX+803YjoYJ1iMAQtsUHKGMGIOK0nw=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="b6R/J3oD";
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf26.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.92 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
+	bh=Z6x5MIctxHa9/j/zlx7zweNCYHHtp8racH88QViVO7E=;
+	b=FausC22Zk+NnEZTOczIOPo/mSacAObxZZ5PRz3Js20/bjEWocEBbNE0t+GBrCoXsQIV2qI
+	1h/7SuNEtIIF+93CmntqIfRWEapoJzeIS3o+hIOzyr8gPeuCNxPmgfFtA3ZginPg4syYq5
+	RK+ia1hStIa3ra/P1TR36waKbXt0YYA=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793502822;
-	b=py0XaQyW9g5j02pgbzQRAm2Hih+Ioirq0xSiH+7MJjHIxHal01TvXzhw39FPF08zMq96sY
-	ijehRdR52O4VbWkVsPY70mpop+pJ075g8S5GJiEfAZh3weKGVMw72dSkJup0D3LXaBpeVw
-	7g74YPEsAe5XHZfi11lkYjdAG0FPL6E=
+	t=1793503079;
+	b=MpZ81QMZOZVRNyFRskQa6AxQLJNR0fNGFETA3Lx46ZoQI3TBCCM0mnhtC32eMeS5sXI090
+	n9p8g++kT2S1eZogRdfkR3UCQWNlkElIiQfY/NYhu2r4+/tTEUJ7RY8QM9spnXhwm1wj5B
+	BF+Hy67Nf65d2rebGb6RHiuWuwA2ZlM=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="p/Q4ETTt";
+	spf=pass (imf15.hostedemail.com: domain of baoquan.he@linux.dev designates 95.215.58.139 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=9EHwrI8bkAWMARTdLxi0cB28WQ9c8LLtlAJzoaChO84=;
+DKIM-Signature: a=rsa-sha256; bh=VqvV8qpM4mS5SY0ZFKzHPcZcEDmnWQFJ4Ho78vSEfFk=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1793502820; v=1; x=1794107620;
- b=b6R/J3oD9Mt3LlXnLwajFd7+WOQcAce4m3j5KWvdNrmex1E9nerZkVONXfReFMeOrmqWIbQg
- A95yHdAEN0hc45oeIJiicazdWnGLlXXXymdhpsjdI0Ik3/Q48hH/mnCxYMG3Im21SCIrtyQ0CxO
- 4ic5vh+KRpfcmwO0mpL0fMX8=
+ t=1793503078; v=1; x=1794107878;
+ b=p/Q4ETTtIC16vjBAdv8+ISuTf0FXF9cgntxqj25Zl5aIfG1jL2F0WbNloasy9A7EoIVpIFOr
+ OxNrtrDS+/8yGvz1wt4ceJoaCmPzh5TpOQQ1e5tJ/a9TBWUPDyrRr4BKmkx4z9zaG7vrKKwqfCV
+ BxONu9cspI2Vmlgf0XZ8Mkzo=
 X-Envelope-To: linux-mm@kvack.org
-Received: by mta11.migadu.com with ESMTPS id a030bda49eede247;
-	Sun, 01 Nov 2026 03:13:40 +0000
-X-Mizu-Trace-ID: a030bda49eede247
+Received: by mta10.migadu.com with ESMTPS id 83615b79e9b3fb35;
+	Sun, 01 Nov 2026 03:17:57 +0000
+X-Mizu-Trace-ID: 83615b79e9b3fb35
 X-Migadu-Flow: FLOW_OUT
-Content-Type: text/plain;
-	charset=us-ascii
+Date: Sun, 1 Nov 2026 11:17:50 +0800
+From: Baoquan He <baoquan.he@linux.dev>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Michal Hocko <mhocko@kernel.org>, Qi Zheng <qi.zheng@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Lorenzo Stoakes <ljs@kernel.org>, Kairui Song <kasong@tencent.com>,
+	Barry Song <baohua@kernel.org>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, Kees Cook <kees@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>, Jann Horn <jannh@google.com>,
+	Pedro Falcato <pfalcato@suse.de>, Hugh Dickins <hughd@google.com>,
+	Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Pratyush Yadav <pratyush@kernel.org>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Jan Kara <jack@suse.cz>, Zi Yan <ziy@nvidia.com>,
+	Lance Yang <lance.yang@linux.dev>, Rik van Riel <riel@surriel.com>,
+	Harry Yoo <harry@kernel.org>, Alistair Popple <apopple@nvidia.com>,
+	Nico Pache <nico.pache@linux.dev>,
+	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+	Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>,
+	Matthew Brost <matthew.brost@intel.com>,
+	John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>,
+	Will Deacon <will@kernel.org>,
+	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
+	Nick Piggin <npiggin@gmail.com>, Oscar Salvador <osalvador@suse.de>,
+	Minchan Kim <minchan@kernel.org>,
+	Muchun Song <muchun.song@linux.dev>, Xu Xin <xu.xin@linux.dev>,
+	Chengming Zhou <chengming.zhou@linux.dev>,
+	Chris Li <chrisl@kernel.org>,
+	Kemeng Shi <shikemeng@huaweicloud.com>,
+	Nhat Pham <nphamcs@gmail.com>,
+	Youngjun Park <youngjun.park@lge.com>,
+	Gregory Price <gourry@gourry.net>,
+	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
+	Ying Huang <ying.huang@linux.alibaba.com>,
+	Jason Gunthorpe <jgg@ziepe.ca>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, kexec@lists.infradead.org,
+	linux-fsdevel@vger.kernel.org, linux-arch@vger.kernel.org,
+	linux-cxl@vger.kernel.org, Josef Bacik <josef@toxicpanda.com>,
+	stable@vger.kernel.org, Muhammad Usama Anjum <usama.anjum@arm.com>,
+	SJ Park <sj@kernel.org>
+Subject: Re: [PATCH v3 01/47] mm/mglru: don't use stack pointers when walking
+ PUD and PMD tables
+Message-ID: <auavXi5A57dM-_Nf@bogon>
+References: <20261031-fixes_core-v3-0-d6437171ecc3@kernel.org>
+ <20261031-fixes_core-v3-1-d6437171ecc3@kernel.org>
 X-Archived-By: <archiver.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3901.100.1.1.12\))
-Subject: Re: [PATCH] hugetlbfs: emit hugetlbfs_free_inode from
- ->destroy_inode()
-From: Muchun Song <muchun.song@linux.dev>
-In-Reply-To: <20261031-b4-hugetlbfs-trace-v1-1-4ec8d02a30cc@gmail.com>
-Date: Sun, 1 Nov 2026 11:13:18 +0800
-Cc: Oscar Salvador <osalvador@suse.de>,
- David Hildenbrand <david@kernel.org>,
- linux-mm@kvack.org,
- Andrew Morton <akpm@linux-foundation.org>,
- Hongbo Li <lihongbo22@huawei.com>,
- linux-fsdevel@vger.kernel.org,
- linux-kernel@vger.kernel.org,
- syzbot+91e1fc35f51774c479b2@syzkaller.appspotmail.com,
- stable@vger.kernel.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <ADB13A93-9C2E-4136-B639-742069AF74D6@linux.dev>
-References: <20261031-b4-hugetlbfs-trace-v1-1-4ec8d02a30cc@gmail.com>
-To: joasantonio108@gmail.com
-X-Mailer: Apple Mail (2.3901.100.1.1.12)
-X-Rspamd-Queue-Id: 1FF93140004
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261031-fixes_core-v3-1-d6437171ecc3@kernel.org>
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 72B7DA0002
+X-Stat-Signature: 38j1cmfg9pqu54rf6jfwcue59rg9qwzo
 X-Rspam-User: 
-X-Stat-Signature: s4x5676nnzid6e97c1g7mrq7f36gqk6h
 X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1793502821-211506
-X-HE-Meta: U2FsdGVkX18RR9zmshBB/vcAfc5llVJRN4WT3mR5PwZAKGi1RqXDItyQHfWyIo9/kKpw+zOYGCN0uxmbQ9E/0szNzSjypwjC3g+XKh3YMq0QqunYUIWO9I/ZM20s68U//n/35X6A0569lQ2cC919buFwE20KTdj5C30IvwjAZpUCtA56cGr6nRRbDub7gRgHsEanyXPh8vmaCq8zPgjqLDwkpRWPYbn5eQQ5WCFZ5ZshfQrgToiKvRxnpS2hPJalytqL/E4EOJBMdUO3TsH9It5cnU4VuTetDym3/NeXUv4tNvcMMIKQdf2dpDUN/N7wQEawqEtGkZfxYXiks2TlMOjJNIdPR6RY7dMWfI2sra6pRsM7RpQj7nqiai7F2XEeuC6kX9qG840y1YzlnPLOTXnh6Ht/I52WNal7tj+pJHj9EFYUMXXU17PN8+5vRuXGhvU0xhnxPp3sUrP5ZZzndCyIp2nU0xQC9x4bo5AqgeWUfK/bEdg4tKfrhZiTr41Oqa7Vi3J1K5VRwtvzinbQFVmxptIbJJbf6p1CDnL0wriGbYuHRdC5E/qgA+KkUSgozNACqtAx5JuXzVBPma1NrvlY+PmZCzclvJ7rruoBbezZ0IFyVr2KwbniDv6aBSqSipbrl0s0shzSnEfqwB+ygcePZRMApNX12SmalQYXq/5/VyT6OpM8tXGfNdFEChCxsXlDr5vHW5N8W4dAZ5C7zhQt45Ro6yaOrEqGGlqF3uXOyOGl2YYSfk+mhUSIw2fCDLGE/HUZJygW8OVZ7K1TSaP6lJlcFvZgqbFrVvI9qcFocu7k/a1OtxJqCFjDWS9pkK1yP0oqjdUVhMZZOfI2aTYZp5X5imvWUzaxORqKa+P/4mqPJWNc+vCyx0OAxA4J5eUbrXZkmMXHmRTdcpekhtbdwprReHlX1jii2TvamKiZO+uNFWIr8c02JXATXJAR1Pt+NPBsF1g6dk+TZhx
- CMNvsiJQ
- r2egSTpBZfTL+UpOJLkPH/0eDwzbNt+Ut4Y90yHkntQ+m/oavqtoLGl8cj8waY3mmv0Wsv2jk/Y/c1EmSRlLF+vjGsT5JUqbEsEblcpz1yuZhEAZiMfp/Z7OIMOPUbemGpLmNKv001ACxs7gc7z1kViOS/AJJOP5JZiod41Do2DNI5wMQ2TFTk0aETHcGi3Lu50M98+WcnuHXY1PpTPKqLgPeofm88CDqha9len+7WmAuWzUL+btwHwJzn+hUq3f5PUQVBbWV+1KBQfPAb1TBrH/iIYUcGLnej5SMGo9iLMtUm4kjHytNZ7VH1MAvFPGg6toahiw6TrYR5n5on6HV7BND/nQn+OvMT9nTXyaa1QsscexXPzq7BiTr366WP741j1OmG7be1ETOsdGULmpXKXnlj1WoAF71NP5L2KvWYkBvUMzjiGhLVzP1SN9Ey8n92dwvKCQuUtt5hiVML3xPxLuN+maQ3o6T/OTtbKMpKa0pcoZAa/cj2J6MjPS9soXGyctih+O8tNCH0EJueFgiOIncT6IpfjYJ1QGVLYPFvAfbKwk/TD1PLJMpd1Qx9SkbtBFu
+X-HE-Tag: 1793503079-67025
+X-HE-Meta: U2FsdGVkX1+d+gBwgGF4JCDnEYMSIolV90JnUdH0EQOsbN3GMkxvc4VlWaQSaPfwBC4/DuW+zMym4REKMKWJgMxOkWBvGSJYWgnubrplaKzQyur/RIALOYtoInzpLGCHi4oAAuMGzHmZJ7SxcRHRUUCdknsjY1DfiGb6egE67i5Aa4eJhKmN8d9ecdfL9NTND2prRCgyTRzXNk9aTfZpGrTy++j+W3vmC4Bai7cGv0QasLB1VlrqZBRRiU/IDcxeK36bRHImVUem8G6BfBE7mtOxorRJxRi2mVsSjSxalCF/8lf3tV5GHg/YOifpTpc6zZug0g53KutlUlbl6NwqR0Xh3MY38DCSHDpeY9OrNxo2HIMte4zKqBpExpJIhxYKlRIVepjOPxPLZ+IASwdCdqv/e9gI1ls1jjlKpFxgGsMp2P+T3FfO23IJHtrPEU26QCybBU3CzexNVwtf7O7rGy52Vy9bnlIWsdTWGIECAwJSyhTxoR3HPwEVEIPP3XbADFAk2yGZAbtyZAZzxz7Ku7Hs33LQ9N0RD+265M7nhL2fohjiq4ZQAzvYkFWyCVtMQb09y5zeZSdVgX8c4GrNXHof5twZB7rgIxl4X706zInpxHF9Bya5rcvfploRJYxhXgw6/p1pE3pIed1+btV6eY5zcMpax/KCLW5rRtUJsBx1S8eYNQ3jmelXU0YtXDiGtxoE2CWBFVN1yS9hQ5BOdIPOUXk8IkZ+EqgcZplpEOoVryDZACHTSITfGDIeKu3Edjydet1V5SOU5s7L0eM0K5TF7P/S7+ZeEsQUXX+8lYIQzVh+YClbqb9/yWdwZOrLbABJ+dRwBgBgHqzV3BTlKPpS3TWR3vurKM9qWzo/ryC1tPi527k//CMgvadm1BkcKF0R3Ko7TVu+12G55vw/jl8hl6A6CYOqSXxQmRF8EQRCkMrYxZYDTG7zZw2QoPAXDEEcSAfhfm0rSM8ltik
+ yz1Fyw2M
+ xc1i+lhQLLQ4RfugZ1jLJn/st1TCHDo1G/HiVjni0nb2Fx2gKgvHYCE1r8IlB0WQ3LIMy1y74rWezIJXo8nMtFQqRd/bM2gFXGZYgaGoxz+MG7OgYxf2X+Axis9KoEmc91AsmZtGHjBFDDwzkMdf9xWVxR3trRseOrU7IkXOraNYiwe6LQgPtebzPTeRJDLjmSAtINamnQ315KBnwCVlgNFExwsfveiiVeknc21NknGkHxGywMtScYjN+Qu1hb8Ui5BBhE50zxjlqwg/g7O6iiUgp8YA3rmB0RTG6pB8axIuYCW1miuYJsHuk0n68LqYmEyHpuUFTrqCnnH08348uSZWnFJDJjwag6ftVvDdbbFzFeYHOrj5VM8bkZh1Dr7CntzWFS8O7LUkhYo75TYoUpA/qToevTgqEFBjCY0R1OPK4ZYrB9Nn+iF+Db3jCxTjl55cAOjY43Sd8zXmpnRcZ9/MNsERelYPgD2nml+XfI+3uSYbt4s5rX1HSko1H7xmz3ij6sOSOK9c4kZ9niCNLzak0h9cmBHHMiFXDZVF0SQ+e8mRbxNszgc7lDuSw3XpbG2LfYpeyPpeBF/SEWn38pJRTiw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,123 +137,81 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-This is the V2 version. you should specify it in your subject line =
-prefix.
-
-> On Nov 1, 2026, at 00:06, Joas Antonio dos Santos via B4 Relay =
-<devnull+joasantonio108.gmail.com@kernel.org> wrote:
->=20
-> From: Joas Antonio dos Santos <joasantonio108@gmail.com>
->=20
-> hugetlbfs_free_inode() calls trace_hugetlbfs_free_inode(), and the
-> hugetlbfs__inode event class records inode->i_sb->s_dev.  =
-->free_inode()
-> runs from an RCU callback (destroy_inode() queues i_callback() with
-> call_rcu()), and Documentation/filesystems/porting.rst says that this
-> callback "is *NOT* ordered wrt superblock destruction; as the matter =
-of
-> fact, the superblock and all associated structures might be already
-> gone".  put_super() frees the superblock with call_rcu() followed by a
-> workqueue item (destroy_super_rcu() -> destroy_super_work()).  syzbot
-> hit this with the event enabled:
->=20
->  BUG: KASAN: slab-use-after-free in =
-trace_event_raw_event_hugetlbfs__inode+0x45b/0x4c0 =
-include/trace/events/hugetlbfs.h:36
->  Read of size 4 at addr ffff888038850010 by task syz-executor952/6134
->   hugetlbfs_free_inode+0x15e/0x1f0 fs/hugetlbfs/inode.c:1182
->   i_callback+0x46/0x80 fs/inode.c:317
->   rcu_do_batch kernel/rcu/tree.c:2650 [inline]
->   rcu_core+0x5f0/0x1220 kernel/rcu/tree.c:2919
->  Allocated by task 6134:
->   alloc_super fs/super.c:326 [inline]
->   sget_fc+0x1ba/0x1f60 fs/super.c:874
->   hugetlbfs_get_tree+0x1e7/0x2b0 fs/hugetlbfs/inode.c:1431
->  Freed by task 855:
->   kfree+0x22b/0x6d0 mm/slub.c:6923
->   process_one_work+0xac7/0x1b10 kernel/workqueue.c:3495
->=20
-> Emit the event from hugetlbfs_destroy_inode() instead.  =
-destroy_inode()
-> calls ->destroy_inode() synchronously, before it queues the RCU
-> callback, while the superblock is still alive; =
-hugetlbfs_destroy_inode()
-> already dereferences inode->i_sb there.  ->free_inode() is left with
-> only the kmem_cache_free().
->=20
-> Fixes: 014ad7c42a69 ("hugetlbfs: use tracepoints in hugetlbfs =
-functions.")
-> Reported-by: syzbot+91e1fc35f51774c479b2@syzkaller.appspotmail.com
-> Closes: =
-https://lore.kernel.org/all/6ae27525.5451848c.f7707.0001.GAE@google.com/
+On 10/31/26 at 10:39am, David Hildenbrand (Arm) wrote:
+> From: Josef Bacik <josef@toxicpanda.com>
+> 
+> MGLRU passes stack copies of page-table entries in walk_pud_range() and
+> walk_pmd_range() when walking to the next level. These copies can become
+> stale when khugepaged or MADV_DONTNEED (CONFIG_PT_RECLAIM) removes a PTE
+> table concurrently.
+> 
+> This pattern dates back to commit bd74fdaea146 ("mm: multi-gen LRU:
+> support page table walks"). Likely, earlier locking masked the latent
+> bug. Later changes exposed it: commit 1d65b771bc08 ("mm/khugepaged:
+> retract_page_tables() without mmap or vma lock") allowed concurrent
+> retraction, and commit cf4a65539c13 ("memcg-v1: no need for memcg locking
+> for MGLRU") dropped the walker's outer RCU protection.
+> 
+> The fix is simple, so just fix the original commit so we don't have to
+> speculate. To fix it, pass the actual PMD/PUD pointers. This restores the
+> RCU-protected lookup and validation against the live PMD. Note that the PUD
+> handling is required as well to handle folded page tables correctly in all
+> cases.
+> 
+> Fix generated by an LLM and sent by Josef Bacik in private.
+> 
+> [ david: handle walk_pud_range() as well, clarify+simplify description,
+>          adjust Fixes: ]
+> 
+> Fixes: bd74fdaea146 ("mm: multi-gen LRU: support page table walks")
 > Cc: stable@vger.kernel.org
-> Signed-off-by: Joas Antonio dos Santos <joasantonio108@gmail.com>
+> Signed-off-by: Josef Bacik <josef@toxicpanda.com>
+> Reviewed-by: Rik van Riel <riel@surriel.com>
+> Reviewed-by: Qi Zheng <qi.zheng@linux.dev>
+> Reviewed-by: Dev Jain <dev.jain@arm.com>
+> Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+> Reviewed-by: Kairui Song <kasong@tencent.com>
+> Tested-by: Muhammad Usama Anjum <usama.anjum@arm.com>
+> Reviewed-by: Harry Yoo (Meta) <harry@kernel.org>
+> Reviewed-by: Barry Song <baohua@kernel.org>
+> Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+> Reviewed-by: Pedro Falcato <pfalcato@suse.de>
+> Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+> Reviewed-by: SJ Park <sj@kernel.org>
+> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 > ---
-> Resend: my mail provider blocked the original submission to the lists
-> on 2026-10-29, so only the direct recipients got it. No change to the
-> patch, except dropping a deprecated Assisted-by trailer.
->=20
-> David asked whether the tracepoint should be renamed now that it no
-> longer fires from ->free_inode(). I'd keep this patch as is, since it
-> is tagged for stable and the event name is visible in tracefs
-> (events/hugetlbfs/hugetlbfs_free_inode); renaming it in stable kernels
-> would break existing tracing setups just to fix the use-after-free. I
-> can send a follow-up for mm-unstable that renames it to
-> hugetlbfs_destroy_inode, next to hugetlbfs_evict_inode, or fold the
-> rename into a v2 if preferred.
+>  mm/vmscan.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
 
-At least for me, I think we should rename it, and it belongs to the fix
-itself. Otherwise, we will introduce another behavior change, someone
-thinks the tracepoint is fired through free_inode callback, but it's
-not, it's weird.
+LGTM,
 
-Thanks,
-Muchun
+Reviewed-by: Baoquan He <baoquan.he@linux.dev>
 
->=20
-> Tested with the syzbot C reproducer on a KASAN kernel with the event
-> enabled: the use-after-free reproduced in 3 of 3 boots without the
-> patch and in none of 12 runs with it, and the event is still emitted.
->=20
-> Tool-use note: the analysis and testing were done with help from an
-> LLM-based assistant; I reviewed the change and ran the tests myself.
-> ---
-> fs/hugetlbfs/inode.c | 6 +++++-
-> 1 file changed, 5 insertions(+), 1 deletion(-)
->=20
-> diff --git a/fs/hugetlbfs/inode.c b/fs/hugetlbfs/inode.c
-> index 01c4d6f44..5bd348288 100644
-> --- a/fs/hugetlbfs/inode.c
-> +++ b/fs/hugetlbfs/inode.c
-> @@ -1179,12 +1179,16 @@ static struct inode =
-*hugetlbfs_alloc_inode(struct super_block *sb)
->=20
-> static void hugetlbfs_free_inode(struct inode *inode)
-> {
-> -	trace_hugetlbfs_free_inode(inode);
-> 	kmem_cache_free(hugetlbfs_inode_cachep, HUGETLBFS_I(inode));
-> }
->=20
-> static void hugetlbfs_destroy_inode(struct inode *inode)
-> {
-> +	/*
-> +	 * Not in ->free_inode(): that runs from an RCU callback, when =
-the
-> +	 * superblock the event reads may already be freed.
-> +	 */
-> +	trace_hugetlbfs_free_inode(inode);
-> 	hugetlbfs_inc_free_inodes(HUGETLBFS_SB(inode->i_sb));
-> }
->=20
->=20
-> ---
-> base-commit: c339f4010dea8b0d754f84ace70cd1b089878ef8
-> change-id: 20261031-b4-hugetlbfs-trace-341b338ab57b
->=20
-> Best regards,
-> --=20
-> Joas Antonio dos Santos <joasantonio108@gmail.com>
->=20
->=20
-
+> 
+> diff --git a/mm/vmscan.c b/mm/vmscan.c
+> index 9959ca158ce83..6a1af9b92349f 100644
+> --- a/mm/vmscan.c
+> +++ b/mm/vmscan.c
+> @@ -3911,7 +3911,7 @@ static void walk_pmd_range(pud_t *pud, unsigned long start, unsigned long end,
+>  
+>  		walk->mm_stats[MM_NONLEAF_FOUND]++;
+>  
+> -		if (!walk_pte_range(&val, addr, next, args))
+> +		if (!walk_pte_range(pmd + i, addr, next, args))
+>  			continue;
+>  
+>  		walk->mm_stats[MM_NONLEAF_ADDED]++;
+> @@ -3947,7 +3947,7 @@ static int walk_pud_range(p4d_t *p4d, unsigned long start, unsigned long end,
+>  		if (!pud_present(val) || WARN_ON_ONCE(pud_leaf(val)))
+>  			continue;
+>  
+> -		walk_pmd_range(&val, addr, next, args);
+> +		walk_pmd_range(pud + i, addr, next, args);
+>  
+>  		if (need_resched() || walk->batched >= MAX_LRU_BATCH) {
+>  			end = (addr | ~PUD_MASK) + 1;
+> 
+> -- 
+> 2.43.0
+> 
 
