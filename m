@@ -1,142 +1,181 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38BEA606A329
-	for <linux-mm@archiver.kernel.org>; Sun,  1 Nov 2026 19:41:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2371606A324
+	for <linux-mm@archiver.kernel.org>; Sun,  1 Nov 2026 19:43:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=LYqVyDMf
+	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=cm8ERMWJ
 Received: by kanga.kvack.org (Postfix)
-	id 2201C6B00EF; Sun,  1 Nov 2026 14:41:03 -0500 (EST)
+	id F1CE26B05B2; Sun,  1 Nov 2026 14:43:20 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1D1556B05B1; Sun,  1 Nov 2026 14:41:03 -0500 (EST)
+	id ECE7B6B05B3; Sun,  1 Nov 2026 14:43:20 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0C00A6B05B2; Sun,  1 Nov 2026 14:41:03 -0500 (EST)
+	id D96AC6B05B4; Sun,  1 Nov 2026 14:43:20 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id D87AE6B00EF
-	for <linux-mm@kvack.org>; Sun,  1 Nov 2026 14:41:02 -0500 (EST)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id AD8D31405F4
-	for <linux-mm@kvack.org>; Sun,  1 Nov 2026 19:41:00 +0000 (UTC)
-X-FDA: 85387568280.06.91DA826
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 7E4E720002
-	for <linux-mm@kvack.org>; Sun,  1 Nov 2026 19:40:58 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LYqVyDMf;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf13.hostedemail.com: domain of devnull+mt4022.columbia.edu@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+mt4022.columbia.edu@kernel.org;
-	arc=pass ("kernel.org:s=arc20260519:i=1")
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id B0B0D6B05B2
+	for <linux-mm@kvack.org>; Sun,  1 Nov 2026 14:43:20 -0500 (EST)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 41A2340AAC
+	for <linux-mm@kvack.org>; Sun,  1 Nov 2026 19:43:20 +0000 (UTC)
+X-FDA: 85387574160.21.1BB26AA
+Received: from BL2PR02CU003.outbound.protection.outlook.com (mail-eastusazon11011059.outbound.protection.outlook.com [52.101.52.59])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 5A7B620002
+	for <linux-mm@kvack.org>; Sun,  1 Nov 2026 19:43:18 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=cm8ERMWJ;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	spf=pass (imf31.hostedemail.com: domain of ziy@nvidia.com designates 52.101.52.59 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793562058;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1793562197;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=7XMDi9CyJyqlkPG+GPZu8bn2Eo00P3/ky4TB2vvOoyk=;
-	b=rFIvyuDIjrRlBq5vbomuCBlDkGQP3A+QdAujcPe727jU4h6wo0Cejzrj63c2k8JkoHLybv
-	11p9ReJVWqxBkzKrp2RIEOfSM353VtgkVvAkj59UYBzGXd4C/eNjRu/FycVV6IBd6ZfTDj
-	/BSeZok3EWAqDKqPMqjyqNy/KGNHmqM=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=JBZfaNAkYx7KUh5qfoFgmAoDdZtvqrev3/lxcZX5wAQ=;
+	b=Ulf2I7cCxl29qpcc/kheYOkVcPXgy8xEfJ/LRhZRnV+vpKT1WN6gqM9Q6UtDFl30fEWGDq
+	y7RxtouXKiT6dIA2zjG5oBZsOiZWVHSFgJfUVLFhjEE8Hx3dSApQ5ehwDCWyIppp+F2k1F
+	zkbIvxLXQZYjScPPVICE3K4e+jybzRs=
 ARC-Authentication-Results: i=2;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LYqVyDMf;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf13.hostedemail.com: domain of devnull+mt4022.columbia.edu@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+mt4022.columbia.edu@kernel.org;
-	arc=pass ("kernel.org:s=arc20260519:i=1")
+	imf31.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=cm8ERMWJ;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	spf=pass (imf31.hostedemail.com: domain of ziy@nvidia.com designates 52.101.52.59 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
 ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1793562058;
-	b=U/iqg71LLRHGH6WuIKiInjx7bi9O4nx2HTFY4g4s1bDliX1F7l+cRTIYWpTw1dh1tlvCcJ
-	yMnBYFLM1RHNr2IfHXuGrBYadhWd5lRqb9w1t0wQ/XVljv2yjm77q2eeYX5UGjUNYPF7OJ
-	cgalvWq5NmQrbmQ020JmYaVCeBXHJ6Q=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id AF8D442B5F;
-	Sun,  1 Nov 2026 19:40:57 +0000 (UTC)
-ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
-	t=1793562057;
-	b=zxZV+Oy8wV1D+AyQbLyRO0WlY9+e48SJoHoI3ba53/7kVdXYxU+YyJJZS/T2ox4UIg/J
-	 hU1qHvLuKTHaw42KHaSSbnLA/gAYqMD5EPQndtlPBoi8oGTiK8Hhyr7KsNTw1v7c8n6+0
-	 1JEotGO1s6BRK//BWGTV6nCj4sE/qkd5zXDX51ZOHwFj6W9i8r2RqDJ0aULEOmCe0QOfN
-	 wik3Yx2iuOOvLhjgPh1Nf/ARUqbATfKTxtwI5hRNRsfjma4nyb2hcG7Fsc0o7STzjoFy1
-	 dggr8Ld9N97jV/IDF5XgxEU36s92jI2ji1XQmTIFcMXanz4u+xpIItb4lHxS5C36ZtA==
-ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
-	c=relaxed/relaxed; t=1793562057;
-	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
-	 Message-Id:X-B4-Tracking:X-Change-ID:To:Cc:X-Mailer:
-	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
-	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=7XMDi9CyJyqlkPG+GPZu8bn2Eo00P3/ky4TB2vvOoyk=;
-	b=yV6dYbOEhu5JSD9PZm+qO7GCj+GKioutI2rBIwDtrBnSplwzk1gaMoatfFeMGfHVNFvI
-	 Gmg9RrksfbCLMT9Q3RPRHsOTYyU7kmfoyqIP6acFkA3uc/cVQAIQDJBHvtqKQ0np2HStD
-	 2yfctUnfimcJhox5ZSVZ5d2YM5OxQB2T7S82wKV+j+JoC+8JsKzL/z1mFzewa/1wOXRFI
-	 dYnOn0hhFP3kAw1c3C32FwCaUAnz3Ly0b3NM384g/S8oHghGe+EcIDkVqp8CP3zCbTKD6
-	 ScY3Q751oXn1iFfETMXqH12TE9MQD6Ll8WSxZ1iqpX16K/nurTGY/8u2llnVIcPK6+Q==
-ARC-Authentication-Results: i=1; smtp.kernel.org; 
-	arc=none smtp.remote-ip=100.80.115.77
-Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
-	(No client certificate requested)
-	by smtp.kernel.org (Postfix) with ESMTPS id 030231F000C1;
-	Sun,  1 Nov 2026 19:40:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793562057;
-	bh=7XMDi9CyJyqlkPG+GPZu8bn2Eo00P3/ky4TB2vvOoyk=;
-	h=From:Date:Subject:To:Cc:Reply-To;
-	b=LYqVyDMfZgOyNqQRM6wvXgEYSfdlTOIM0SKR3H5shrw+i0/XRhQA7JeuOpfdkj/QB
-	 dlYHRh7G4IibxzD7/fQ5MnJt/ErZCfxxDAf9nIB7ecTjK6G9gS+Fn/LWtqkDHFeE6c
-	 fZXivq0fOwDu5n6QK7kAVfjAUJbGNc2WnaBj19zy1iG1BiUfj358mdrnzzTipnQog/
-	 i9dhE9qEP6SfaYXZB4K4uC2nW2l9Pcluzrxs+h+5XPw5FnUJYsb0fDdJRKqw3GqCcb
-	 /6ZdiLzZrFw7hlqdOb+IcIkRBr8OG0nw1lrQAe/8N8y/5fkzI+6Ak87UDE02QRa5Px
-	 gb1MlGNkv0nug==
-Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
-	by lkml.kernel.org (Postfix) with ESMTP id 573A546250;
-	Sun,  1 Nov 2026 19:40:56 +0000 (UTC)
-From: Mani Tofigh via B4 Relay <devnull+mt4022.columbia.edu@kernel.org>
-Date: Sun, 01 Nov 2026 14:40:56 -0500
-Subject: [PATCH] mm/memory_hotplug: don't offline a hwpoisoned page still
- in the page cache
+	t=1793562197;
+	b=QASnymEmAdkgCBifA7hvdtiWmvvwTHjZ37Rotv0TYyF0cYJKyGgSIdpGrHeUUCsDHW2Evj
+	z7FzwRyye05WamUvKrexaKbCZYq2iL8XEog85EzL/evgqS/zNAd1GUeN0xjoTK/beBhLG8
+	xhmRt1xO5bJAmphxiSGND3uSk4aw+Hg=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=PGNhUyWVzqjpPFtGox3dFKrg+uulG2tGnOiAQiWMw8WmOuVEXKKYgMk30UwyEbfW1EkAddyToNBC+cDfopnpz5sJR8K++kW/aRG5rFTS/tMCWm1UtWxYDxF/iZ8q/bJSCa4U8KH8rT417B/gkSL3OJDOQ/I2QNy5XAa+cKEQYGqY2txTAux2rmpHrN9D8iWugueLgfErrYxgx/1fHqiWt+Ix6jBcX0SQNrJWy3yUjtZz40NhKUHr7o0kfYBx1+geZ7ORW0dK+kFEkGq78Zg4lfvbDLxZuMmMyVTg1FCmRDG/A5qyh/HuzBW0sMftdRWri/QbY3axwCckDEBE5cUKQQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=JBZfaNAkYx7KUh5qfoFgmAoDdZtvqrev3/lxcZX5wAQ=;
+ b=B6miCoL2abzOUvhPv3HqoZjdH7ih532UQXWDNe75eeXR/7Z/hYZt6BM16UmSMj4lUBCijHf/x4IdkbvO5WqflllVu+EgEWwQbg+OXHTXHo+8PdiME98xXuzZnoBwl2redG4X8PatWAYE1S4Lou7T5YJIxjh2NPCr1iO8IrYNpzeYa078LNOtBk9v83SYMNgTebs55xlgjokrWahp+I6boe5Ue1JPdkZNYIkItbYkWn99nvxA+ni3ZVlCO9Q1Cvhh+C5lj+JJs/Qp5EHFOvMDfJn4fmwjQIaEZ1Ou6+I6mw+Y7KkKskKEvnZBrXrzigKzC/z1ZDKz2ffgm/Fac0dUAw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=JBZfaNAkYx7KUh5qfoFgmAoDdZtvqrev3/lxcZX5wAQ=;
+ b=cm8ERMWJSzzBTBWT6Ugyu8ZQRnDQ9x9bleoN6hfGDqepzk2tnqHpZLbWE0Iy3ZDIilpwukGXj1EaKkkiyNxWMBx6BgB/PveX7IxhP6dYtsJQmn05Wtqhgh0HzxWsLsXBi8mqQs2cP6ie7efyR7MWEmr73p3E/cqCB/uJT7wz3nNiK6dSvaOAd6GRM738CT4XAUohv9mVjQbYAXoPvMbAEStimsUD49lkPRkFGdYPgfzwnIt5a0PUCKkFm3ntBTKZQWyG3s7iAzngU+pecCB83MYxngDAtmc7L0KbGeEPXxv+MZPYPa7XXk6mATaJVo1/1UYUaSMl7IjZnI/6Pj+reA==
+Received: from IA0PR12MB8374.namprd12.prod.outlook.com (2603:10b6:208:40e::7)
+ by BY5PR12MB4179.namprd12.prod.outlook.com (2603:10b6:a03:211::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.569.12; Sun, 1 Nov
+ 2026 19:43:12 +0000
+Received: from IA0PR12MB8374.namprd12.prod.outlook.com
+ ([fe80::d85f:4c87:ae84:3f16]) by IA0PR12MB8374.namprd12.prod.outlook.com
+ ([fe80::d85f:4c87:ae84:3f16%6]) with mapi id 15.21.0569.011; Sun, 1 Nov 2026
+ 19:43:12 +0000
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Sun, 01 Nov 2026 14:43:10 -0500
+Message-Id: <DMK4QFHLOO5K.3Q6VPFME6DE2D@nvidia.com>
+Subject: Re: [PATCH 1/2] MAINTAINERS: add Johannes as the page allocator
+ co-maintainer
+Cc: "Harry Yoo" <harry@kernel.org>, "Hao Li" <hao.li@linux.dev>, "Christoph
+ Lameter" <cl@gentwo.org>, "David Rientjes" <rientjes@google.com>, "Roman
+ Gushchin" <roman.gushchin@linux.dev>, "Johannes Weiner"
+ <hannes@cmpxchg.org>, "Suren Baghdasaryan" <surenb@google.com>, "Michal
+ Hocko" <mhocko@suse.com>, "Brendan Jackman" <brendan.jackman@linux.dev>,
+ "Liam R. Howlett" <liam@infradead.org>, "Lorenzo Stoakes" <ljs@kernel.org>,
+ "Jann Horn" <jannh@google.com>, "Pedro Falcato" <pfalcato@suse.de>, "Mike
+ Rapoport" <rppt@kernel.org>, "David Hildenbrand" <david@kernel.org>,
+ "Gregory Price" <gourry@gourry.net>, <linux-mm@kvack.org>,
+ <linux-kernel@vger.kernel.org>, <linux-fsdevel@vger.kernel.org>
+To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>, "Andrew Morton"
+ <akpm@linux-foundation.org>
+From: "Zi Yan" <ziy@nvidia.com>
+X-Mailer: aerc 0.22.0
+References: <20261101-maint-page_alloc-update-v1-0-27e8c246b13d@kernel.org>
+ <20261101-maint-page_alloc-update-v1-1-27e8c246b13d@kernel.org>
+In-Reply-To: <20261101-maint-page_alloc-update-v1-1-27e8c246b13d@kernel.org>
+X-ClientProxiedBy: CH2PR15CA0007.namprd15.prod.outlook.com
+ (2603:10b6:610:51::17) To IA0PR12MB8374.namprd12.prod.outlook.com
+ (2603:10b6:208:40e::7)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Message-Id: <20261101-memhp-hwpoison-pagecache-v1-1-ed8785ca44eb@columbia.edu>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yXMyw6CMBBG4Vchs3aSUhSjr2JcjOWXjglt0+IlI
- by7FZff4pyFCrKi0LlZKOOlRWOoaHcNOS9hBOtQTdbYvjX2xBMmn9i/U9QSAycZ4cR5sPTo5GD
- 30h0N1Txl3PWzrS/Xv8vz9oCbfz9a1y+oKOfyfAAAAA==
-X-Change-ID: 20261029-memhp-hwpoison-pagecache-a6e3a524a370
-To: David Hildenbrand <david@kernel.org>, 
- Oscar Salvador <osalvador@suse.de>, 
- Andrew Morton <akpm@linux-foundation.org>
-Cc: Miaohe Lin <linmiaohe@huawei.com>, 
- Naoya Horiguchi <nao.horiguchi@gmail.com>, 
- Vlastimil Babka <vbabka@kernel.org>, Gregory Price <gourry@gourry.net>, 
- linux-mm@kvack.org, linux-cxl@vger.kernel.org, linux-kernel@vger.kernel.org, 
- tz2294@columbia.edu, stable@vger.kernel.org, 
- Mani Tofigh <mt4022@columbia.edu>
-X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1793562056; l=5557;
- i=mt4022@columbia.edu; s=20261026; h=from:subject:message-id;
- bh=4LOLUja2zhU2UmZEiAhPn4FmO7n0a/B92rAAWeju898=;
- b=id4ER9EJOI/KEW5CRMKHacr3GbM19oDkiK8h+mizdyCCmDEw/R1+cUw4WSv8ve40O0ZIjZKFC
- wBbU5QsS08nBzG1vzh9tN0wgXi5yoVweIBBzOmid+9oGZFmLC906wZe
-X-Developer-Key: i=mt4022@columbia.edu; a=ed25519;
- pk=gljCMQDuxyKPmd5y37CRpEJGSPXDV1MyAnHBhCgXl0I=
-X-Endpoint-Received: by B4 Relay for mt4022@columbia.edu/20261026 with
- auth_id=1322
-X-Original-From: Mani Tofigh <mt4022@columbia.edu>
-Reply-To: mt4022@columbia.edu
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 7E4E720002
-X-Stat-Signature: 88951qdsuyibyycjy9cn1ctmuw51ap7y
-X-Spam-Status: No, score=-23.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: IA0PR12MB8374:EE_|BY5PR12MB4179:EE_
+X-MS-Office365-Filtering-Correlation-Id: 878823fa-386b-458f-ea62-08df38505d46
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|366016|23010399003|376014|7416014|4143699003|11063799006|56012099006|261009223027099003|261028144727099003|261021121427099003|261021123027099003|261026121527099003|261026140227099003|261022105027099003|10067099003|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	UfhFvtRf3kEvdChLHG+bw7LbO2GkACOOswLW3/CwrOvxMqNCOvDV4Btnv4k27m1PD0I1y8fC77VJDD9vPiybY4mD4VYMU1R6s+quSSFl+Y6otf7jbHG3COp0Xt9THRthWEXkLzFQBsPK8UdqjFCa5Hzws2KCo/SD0Cthiu+N//D82fP3YYlm2+mfA99QcdEm7xfasxT0gpOg8IJ+WhPsqQbZd9qL4gs1KfFRDSA23cxV5TRfWYgWyuR7W+pxxHM7JBZhMAiPgLV2qGfOiRGS2d+h912qUYuw8RVw4tUVJj1hzqSSZ+N85ZcxX/bu5d5XQteLChbOhNulrZp8/KmdP8EvNzkBQ5LP86s1S5HxtqWDldvVN6NtH+SsCBhs7lcBKCWxfKTvKR8Wo+OHKxPtWbgkhMpF6qX974s946UXQhfA/gd/gRepdwvp7HFoOHi3WMozlsoZPSLRFDYG5y2Q3wkCxKJgTjsZGvK9zwyJVuZMrOJqubCG19AJIqkMu1oM2H1SdQ7+vEbEeImwYvlxhKtw6UTGu1aK37MQ+/J+RYHG+aHy3yRhDHfN/y5hQ8EQpYfW6sx2Q19BoJtBkd+ct80hnMhqEkWFHnSXE/KD5IBEs4Ye7liNJZOq528CCnPjSliqqbx+imadbN09wj48XX/rFFa680PEATJbZUdbCWI=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA0PR12MB8374.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(23010399003)(376014)(7416014)(4143699003)(11063799006)(56012099006)(261009223027099003)(261028144727099003)(261021121427099003)(261021123027099003)(261026121527099003)(261026140227099003)(261022105027099003)(10067099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?U1F3SWg4Y3dzVFVOR0NFM24vaHJ2a09pTXdsM3h3elpIM2RkQitiQmk5Q2Na?=
+ =?utf-8?B?MUptUUgxUjFDOEFhWWxsc2hMWng1b1Bma0FCdmEveWlYbDVsd0REd3ZRbHls?=
+ =?utf-8?B?V21JQks3a1BMSi9YeTdEdS9uYkFiT0JicnRkdHNoWHhxRXkzUGxjQ1kyMmwx?=
+ =?utf-8?B?d1ZpbThrd013NE8wRXpOeEdHWEs4VytUZk9Wc1MwQVZ5R3NZMGNLV25nVG5l?=
+ =?utf-8?B?VFlWMSt4YnMySGZnSTRzZnV5bjYzSkZKbnllSDkrVmpQVHA2TEtMUWF0WWtZ?=
+ =?utf-8?B?emhkMkJ2SFVSTndvMWN4aG1NS29SWTVoOFpUYUpJNmNzc1UrTHVJbWpoWjd6?=
+ =?utf-8?B?RzRJMjk5QU8zaVNNbmw0TytZR0RHYWR3d3VQbmk2d1hhM0NMbENKQXJwZ3gv?=
+ =?utf-8?B?WGlaSlB0WGM2bnRyVFhmRGhJWVNQU0dJODRTOVhKa0VJM1ZwYmFzRnVDRUM2?=
+ =?utf-8?B?R29mT0xiZFZpRFcrRE02b3FDTWJ5cmMwTFRiNnhOaThuMGNNS2hGMjdTTGV0?=
+ =?utf-8?B?cDNYcmRnWWlHaUdCOVkwQjliTG50RUlFZkh1WjNteVBCQjVQR1JWK0xZOWt6?=
+ =?utf-8?B?bG5DUnZYajNvS05QSTFzQy9xdVBqaGhob1hVNzF3K2tsdCtHYktRNzZuNWJp?=
+ =?utf-8?B?d1R0RUNkWEhNSmlXanBLNkxjWTVkdmJESjNJSUJTelBpVnhsZFdsRXdoUnMx?=
+ =?utf-8?B?SEpWNklOclByVHRDK3VLbXlhanVuVkY4WFNRV2VYeTJCMlN5RUtrc1R1dkRF?=
+ =?utf-8?B?MkM0Z1o0R25CZ0krSEU3RGpaRytkWVJwYUl5cEt3ZEdMeFNQQlBHM3l0Rm5x?=
+ =?utf-8?B?bFJYSWxsbG1BNVRtTERaMktZelN1YWp2SFExdmtUeUp6c0wyWURKMlhRRlAz?=
+ =?utf-8?B?RG1GT2tVZUt1VzhvT1ZQSnZsSWtjRThIK3VBNmZpQmI5WTN6NE5VbW9KRnly?=
+ =?utf-8?B?K3FIRUtEeHhmWjFOOWk1NVZDVEtzZitEbWN6QXp1d3NnZVJYbm1rQ2Z6UStr?=
+ =?utf-8?B?UTFNeWR5Qm54SFcwRWNrazI1UDhQNlZmR2hDUFQ3cUFWbEFQa2hJVXVGMzNB?=
+ =?utf-8?B?QVhPZ3VGelZaYlVlSCsrcTN2TXIxdFpKLy9DYVhmRGxBaDJreTg0T1BJelpE?=
+ =?utf-8?B?bDE2N1M2aE0zZnNqV1R0U1VVMCtIM2QzL0JEWXFDMHpxU3RUQ0g3UGFsTE5M?=
+ =?utf-8?B?YzZ5aFVva282T0VpN1Q2d1c1L0lQbjhQNm0xWHVQcCs2VnhGdzdiRmNDejlM?=
+ =?utf-8?B?cEpZM2ZnVmpmQ1BvOXIzTEJrVVpYMldLdGkvVVpCemNRVFNrbkJ1dU01ZFg1?=
+ =?utf-8?B?SHEzdEhiYXdyeGhEV3BaVHRsc3RJdHd3bXcyNERaNllDZUEzeDB5ZkMrcFEy?=
+ =?utf-8?B?ak1BT0dmN3VoclZVNG9mRVVFQUJ6N3VNN3BKNng2RkNyc0tYZ0FFc1h2ZTAy?=
+ =?utf-8?B?bDJZS3FyS2FJQmNja0hsanYzV0sySllkOHNSTzBSNU5XRlRCRUd4VFdJSzBs?=
+ =?utf-8?B?SVNIM1F2ZlBqZFpqV0I4ZFJZSU5nWHVoUUViS1hVY2pPUWZSWVM2TnRVNjJ0?=
+ =?utf-8?B?N25NSFpqeFJFM3Bldm8xNWRkR1Z0TUErNHV1Q0szb05XTDgzbUdmMjBRdWFa?=
+ =?utf-8?B?V2c2UTJKUGhvelgwYXEyM3lCdndISHlVUmVzZWcwbEpsVlRGZENsOFdFZnht?=
+ =?utf-8?B?dTdNL3lSeENvakRMaGJVRXI1V3pvb3JWTjNOTTVwVjlqemc4MzlmZDhCRDI2?=
+ =?utf-8?B?cXNMQ0lIc25ndUZTclI5OUUzTTlVcTZiclRyMStKQXhXc05ydW1pdkFSTUFD?=
+ =?utf-8?B?RWg4YUNXZWRiTGFmMEhTelVpdWxxTVh3NWVkR0VRREFkZmRRZTVjbDNsRWc4?=
+ =?utf-8?B?cUxyY0lMQndhMEwvcW5qbVF2dHZIYlU0VHArZG5nT0t2cnVhQ2pvY0NmZktk?=
+ =?utf-8?B?Nm1TbDVGQ0p6VGlSRFp6NzNpc2xCT2JXTk54cmg4OTRHMmtQcUlzZld6TE11?=
+ =?utf-8?B?SmFhRDh1dkE3bUNlRjl1SkxTcVlNOGRqMmM4b2ZDNDVEU1FFcDdIYjJQRnlq?=
+ =?utf-8?B?emZRb0pnNCtINlN4cm9Ra1czaFdVQVc2NmZ1bFVuY0kwcDFLa1UzUHA5ZExY?=
+ =?utf-8?B?L3lGc2Uwbzg0eEJ3UjJyZ0ZSOEkrS2Z1VjNMRkpOZTJlT3JMRWxsMElLVlAw?=
+ =?utf-8?B?V2JZUytKTStvRTBBODFxdXlKZ2FndlMxZzlZUThhTm8wTTJFeENHZVpJbWF3?=
+ =?utf-8?B?YlhPQ0NYaVR6emxXQWNkOXJESDNrcjdJV3NGd0ZvYmJXdGVhVEFmNHRCd2x5?=
+ =?utf-8?Q?X+qRTVnpkoPvzAGb0F?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 878823fa-386b-458f-ea62-08df38505d46
+X-MS-Exchange-CrossTenant-AuthSource: IA0PR12MB8374.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Nov 2026 19:43:12.4623
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: ItOQ086rwqEUG0TW7tA+qjjopOh7Elw+gWX+NL6N/jp7nqTIY0cbjcev0TO81b/N
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY5PR12MB4179
+X-Rspamd-Queue-Id: 5A7B620002
+X-Stat-Signature: 3p3w6959563mq36ti1cezw75bgi3bszq
+X-Rspamd-Server: rspam06
+X-Spam-Status: No, score=-20.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,
-	MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT
-	autolearn=ham autolearn_force=no version=4.0.1
+	MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-HE-Tag: 1793562058-733060
-X-HE-Meta: U2FsdGVkX1+AIQ5j7mzhrXweU9ylFSFnDsd1URBqGys/ROhJlQl7owek2ZgGkNPcJotR6PwnlDbrQJn+/fWSUnUpwNAfec6QWxzyLxUJ1rVt6eWzgFxqUW3ZvZXw0a3z6yJdJ8eaGO8EJ5vZY3b4e460RvFaek/Ebc5fPhY7j8B9R455JrFI2OiHAgg4JWU+8zs2dCaR4pZmzggzqrzlFKPzfyihGffvr6OVTe80zJnw9qmCnd5bDudDdgGgvx/rd6BF1QB278E95GpUAtE9NVR0wXTu38gkkBos3WKl3bzbSATtLRcqGFMERGGOoNzMaboqiCFqRotI+hkkbqYTYNfFaZQ5lnVvFGJjm7yijwq3vlzVlAyjFPZRlC/3vI7nY6tlo1bkm9iqlXMLcqSbWG/hZ5yCIAUPDIGkUJBx8lSE7qDEAHxgB60HpOFxra04kcu/n/R2F2Jx77yzesl8jmvyCIcmo3DHlWYUqMA7pTQwLK0I4TnOSFqiFuJGcgXDEOKVezB0Y4b0k+lp0V0lLxHM/U552GIHK/P+fegG5luZoi5isB6SK0kZxPlpd+jaofsnnZpR9MT1BQ8xgRld5mfeuxlGYnogQaOduG1ezxmOieUGdy1Y1LHOodAgmLksSrRq81ODPZ4bvZkbV7I9u3D3Hi26/eRKlKiUf84mUaSQlaCtTja6N8MGRUiwfOXbym2UUXtg6lSbblOPaH3ozSEIVCz70vdtQCtekguV9a+1PruP8gGAA89yafkGffTxuXOXvGTRxd7CyiBY1492M2GlXzp79spxQ7mFTtG6hy712j7S8OJw876GdYCFQFuASfMaZ7XO1kzCi54SmV2kgpT6c4er4GcEwxD+y9XDixokMkyEKI8v0zU3f3qRnma4GLrCwtjpGLghD5CtWKzDsFHHGhvsHYPr/129/zyC2BknnJL6Syp6w+Yv24ZLZiSOsE3wMpb4+G2Iij7O5as
- 109HJGGR
- rp3fCfy/G4jZP7JY4xN1YuGNa4/HM+Z+q/iHsb2fBAMUN04ON/F+R71K4WyV4QFGeZbJ24DmGHsTTyr2nAA3J69jg1I/dLTfHSHypE4bAokfOIN4FhuAeOx9OytbY3vedmZU/M21ZwRzpHFRmby4aGFe5hixyatjb+Fyr8mLQ1bqKmqfTQZgp8Om6vtCYAguF52t6kXFeu8nPiFpIip3/q/5gwX1fVWamSLfYQvqlAcq1UpRsYpGsolOgG/husxDknEbMtRibx1IGDVuyjAqI1xagWQ9Oo2b7Hpz1YchqW9UQp23rdPLMqYYvhQeTHL7JOOguJUXOoKuWET7fM1EoyyWrBiVLHJIh++0KUwjWay7QsAQnW6KGR+ToL0C3W6eK7+M/WiQrwTTFPHGGJxeeeixqqt7Ci9nYRk7CVLX79ztrbtTLNGqdL3ssZMq+qVhNI2f7PYpChY/1oK8ZJ59kPhe8iwqWwXwNBIOPapVMCEFI/geDYJMqV1As3pD7oO8Sb+1XJbuwkGO+6XGVfjLTrs6xCIgpw5nNV0dbh4v6gfrMxTCEBO6AQf9Iiw2TdbUuyhk7ywgWplsa3L5uxfZB+Upw5bPx9H+yZfpGlZbKOq970c74rbkwaH7niE0JiC8xTmSgSXi1hEY5bnqC2kULMYL89zP9E3h8Yp705TuxV1Am2r/vkpWKRvmJYFPPx3BOv+4ZfXiil9aoEoQ=
+X-HE-Tag: 1793562198-609542
+X-HE-Meta: U2FsdGVkX1+M82CdDsqjoZWxPsE4mpux7jfhPE0/eV+4BH59CE283ESQ+lVE29pJHk0JJa8IFaJ2n3YvOfDHgE+Uuz7B6CQdzpbSi70/DrhL2k0DRjew5mD9hpvqLN+d6S6yiUV03HBysexVrHZwo9qI3qnsgdLQ9qZdK9EIASylbLG9hLmftOG9uv4+iIiSDTwtDHUoAL5CSHAE6uI/7cxEFEcuzWC9p6r+mMZdL7fQnWxuv7AkTgMdXmSsnVdD6nDeilJiEwNQb8j0700FS0hpBzKCuz56XZO6A5uAqNZ+NqfIVFxrvqgopObBNWZY0WriofkCWSW/4s7Mfyckhh7QiyVvlM4j1rX3phBOuHVwJwomMM+V7WEJ591lD44LQNun3wcO1+UTP2KlLMj/WabRSaNkp3oKNb65yfdia13S8sUKFCIKNYqXkxwn7+44Yl7U6BwP9kdn5onG25S/fua9jYn4pgdTHsc3vdkEYo5bmH1i+1P0IeiobzklGqLoUtygkp3A2174JDk83aBBBalohH3IoI+RjvuF7lXNEXqkB1ZuawAw+G1mlQIa/P1lTNxxYCsPrrUdpXwx5uOXJiKpXCjAp/cQ5AyoHPeDZcqbSFH5oug+kXVe56Nu4H9TI1Zp+Zja/i1pGFQN579hj4JWmlx5g9ei23jHPIwkmMJ6iOgj/A3SaLWQcXLPrXvYh6sUqGj9DMYI4nH2weuRAp/1oSvpQ2Qwv7Ar6BqXnxDmQ3A6VtQ9hP0D1ln3iTjzm3/0vcDeLahONg0gqxR9HdTCbNY+DqcCJahU/e94EQknIxVAMpJkRmaietvJBe5e5SCi1VrCACeJBOao26V7kZq1wY8T7LC7ABbSnLt48qH4CnoEWlv6t5V9kxUa/gxPci/a3fvTp4YTHRD8UzSJvEJUTw+Q7saEFkrkF04gSKFk59gHuL06MEekbihP83P0Bka9LUCu19FUNOHbgzR
+ +bRoztrh
+ 2B+pEozQh0fgKGls8pLguQ6t1G4Xb2Gvg1yMWWOMvDyrbAG74TYy6GmwlS4pjsJ+zv4m+0xbqRWDPzuzAaZ20OtrPMI2eqB0KNzmVXR/eAaH97oDz+lGLmuKVDfhmj3nFKQIxKcev23AIwVbqhYXBxIGhkVGBR+WmfvJP7e4iZi8PJnQU4goMuH3G+uxC7YPYFDPn69ZyMnxjBbRHl9v1GUgw8IAsmz+B4R4rdw/KjsuHQaKxw3V3hva9gXYo7rLj3osCMyomYpNNYhC9DSBE//mNL6ws7WlELj8VS5ZBvzOJlezqfMmL6xJHX8h6/eM3smYaJeZS3Ssw1WXyb9Odcz5RRQm40WCpB7sb87MGE2SP8dLYa98ABolCZ4aRjN22/TMWwRWwzt20haRTZ1i9WBOFGyQ3daH3uW//0lqYJ6iAv6n0PWOOlsoJ0UTfQ4UKbz2PuDrjfdJhJKNDFNLEqqE2ZUzzyUNOmZKsg8Y27LWswCK+UGR/I9fewwnjbT7GrwuxKTkMkK6FQBvaexCtU8vZxn971xTY3hPGjAQtuucIhqcIZhRcabZ6Yw0dOIzmXVVyRpYlKwfJHrX8r6yL8SdtxYj6/3WhO9F0Lw6X3htXhILZm2SakvZm1pDnOBttob5Ci8sYYjEGVDPElzkTD/PWUrNN5VAITEuoXlDMOcP+moznZkNk19HQrA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,139 +184,59 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-From: Mani Tofigh <mt4022@columbia.edu>
+On Sun Nov 1, 2026 at 11:34 AM EST, Vlastimil Babka (SUSE) wrote:
+> Johannes is a long-time expert and reviewer for the page allocator and
+> has agreed to step up to a co-maintainer role, so do that. Thanks!
 
-Memory offline skips hwpoisoned pages, assuming nobody uses them
-anymore.  memory_failure() however sets PG_hwpoison before it takes the
-page, and taking it waits on pcp_batch_high_lock, which offline_pages()
-holds for the whole offline.  A memory error during the offline thus
-marks the page and then waits while the offline skips it:
+Thank you for the contribution.
 
-  Task A (offline_pages)               Task B (memory_failure)
-  zone_pcp_disable()
-                                       TestSetPageHWPoison(P)
-                                       get_hwpoison_page()
-                                         /* waits for Task A */
-  do_migrate_range()
-    /* P is poisoned (not migrated) */
-  test_pages_isolated()
-    /* P is poisoned (accepted) */
-  zone_pcp_enable()
-                                       /* P is off the LRU (Ignored) */
+>
+> Additionally, page allocator is joining the MM transition, following the
+> MM core updates from David [1].
+>
+> Patches will be collected in the mm/page_alloc git tree and integrated
+> via the mm/linux integration tree. To signify the change from Andrew's
+> mm tree, remove Andrew as M: - get_maintainers will continue CCing him
+> on most patches via the catch-all MM entry. David prefers not being
+> added for mail volume reasons.
+>
+> [1] https://lore.kernel.org/all/20261030-maintainers-v1-7-97278f8a5f54@ke=
+rnel.org/
+>
+> Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+> ---
+>  MAINTAINERS | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+>
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index b68bc3626709..d7cfb28a9029 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -17720,15 +17720,15 @@ F:	include/uapi/linux/oom.h
+>  F:	mm/oom_kill.c
+> =20
+>  MEMORY MANAGEMENT - PAGE ALLOCATOR
+> -M:	Andrew Morton <akpm@linux-foundation.org>
+>  M:	Vlastimil Babka <vbabka@kernel.org>
+> +M:	Johannes Weiner <hannes@cmpxchg.org>
+>  R:	Suren Baghdasaryan <surenb@google.com>
+>  R:	Michal Hocko <mhocko@suse.com>
+>  R:	Brendan Jackman <brendan.jackman@linux.dev>
+> -R:	Johannes Weiner <hannes@cmpxchg.org>
+>  R:	Zi Yan <ziy@nvidia.com>
+>  L:	linux-mm@kvack.org
+>  S:	Maintained
+> +T:	git git://git.kernel.org/pub/scm/linux/kernel/git/mm/page_alloc.git p=
+age_alloc/for-next
+>  F:	include/linux/compaction.h
+>  F:	include/linux/gfp.h
+>  F:	include/linux/page-isolation.h
 
-The block goes offline while the file still points to P, and the next
-walk of the file's pages (here drop_caches on ext4) crashes on a struct
-page of offlined memory:
+Acked-by: Zi Yan <ziy@nvidia.com>
 
-  [   11.710348] Memory failure: 0x24224: unhandlable page.
-  [   11.710372] Memory failure: 0x24224: recovery action for get hwpoison page: Ignored
-  [   11.765371] page:000000008c304eee is uninitialized and poisoned
-  [   11.765389] page dumped because: VM_BUG_ON_PAGE(page_ref_count(page) == 0)
-  [   11.765440] kernel BUG at include/linux/mm.h:1990!
-  [   11.765458] Oops: invalid opcode: 0000 [#1] SMP KASAN NOPTI
-  [   11.772284] CPU: 3 UID: 0 PID: 85 Comm: mfoffline Tainted: G        W            7.3.0-17087-gd865f2677c44 #1 PREEMPT
-  [   11.777970] RIP: 0010:find_lock_entries+0x8ee/0xad0
-  [   11.798761] Call Trace:
-  [   11.799297]  <TASK>
-  [   11.803284]  mapping_try_invalidate+0xfd/0x2c0
-  [   11.810571]  drop_pagecache_sb+0x111/0x330
-  [   11.811572]  __iterate_supers+0x2e2/0x370
-  [   11.815863]  drop_caches_sysctl_handler+0x74/0xb0
-  [   11.816994]  proc_sys_call_handler+0x2ec/0x440
-  [   11.821360]  vfs_write+0x545/0x1250
-  [   11.825220]  ksys_write+0xfa/0x200
-  [   11.830202]  do_syscall_64+0xfb/0x590
-  [   11.832084]  entry_SYSCALL_64_after_hwframe+0x77/0x7f
-  [   11.848423]  </TASK>
 
-Once the memory is also removed it's a use-after-free of the memory map.
-tmpfs and the swap cache can end up the same way without the race.
-Since commit a76054266661 ("mm: shmem: don't truncate page if memory
-failure happens"), memory_failure() leaves a poisoned tmpfs folio in the
-page cache on purpose, and it does the same for a dirty folio in the
-swap cache.
-
-Treat a hwpoisoned page whose folio is still in a page cache or swap
-cache as busy in scan_movable_pages() and
-__test_page_isolated_in_pageblock() so that the offline fails and a
-waiting memory_failure() can go on.  A later offline succeeds once the
-page is out of the cache.  With the fix, the offline fails with -EBUSY
-and the file doesn't point to offlined memory anymore.
-
-This bug was identified and confirmed with the help of a deterministic
-hypervisor currently under development.  The C reproducer below however
-hits it within about 10s.
-
-Fixes: b023f46813cd ("memory-hotplug: skip HWPoisoned page when offlining pages")
-Cc: stable@vger.kernel.org
-Signed-off-by: Mani Tofigh <mt4022@columbia.edu>
----
-Taking get_online_mems() in memory_failure(), as in Gregory's series
-[1], would close only the race and not the tmpfs or swap cache case.
-
-[1] https://lore.kernel.org/all/20261027042204.3741307-4-gourry@gourry.net/
-
-Reproducer: https://github.com/manitofigh/files/blob/main/linux-repros/mfoffline.c
----
- mm/internal.h       | 9 +++++++++
- mm/memory_hotplug.c | 2 ++
- mm/page_isolation.c | 2 +-
- 3 files changed, 12 insertions(+), 1 deletion(-)
-
-diff --git a/mm/internal.h b/mm/internal.h
-index aeebb3e49ed1..ba7b1650a5ca 100644
---- a/mm/internal.h
-+++ b/mm/internal.h
-@@ -1195,6 +1195,15 @@ static inline int unmap_poisoned_folio(struct folio *folio, unsigned long pfn, b
- }
- #endif
- 
-+/*
-+ * A hwpoisoned page can be skipped by memory offline only once no page
-+ * cache or swap cache can find it anymore.
-+ */
-+static inline bool hwpoison_page_offlineable(const struct page *page)
-+{
-+	return !folio_mapping(page_folio(page));
-+}
-+
- extern unsigned long  __must_check vm_mmap_pgoff(struct file *, unsigned long,
-         unsigned long, unsigned long,
-         unsigned long, unsigned long);
-diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
-index c9cc42e54f05..3d36f7f2e04b 100644
---- a/mm/memory_hotplug.c
-+++ b/mm/memory_hotplug.c
-@@ -1820,6 +1820,8 @@ static int scan_movable_pages(unsigned long start, unsigned long end,
- 		struct folio *folio;
- 
- 		page = pfn_to_page(pfn);
-+		if (PageHWPoison(page) && !hwpoison_page_offlineable(page))
-+			return -EBUSY;
- 		if (PageLRU(page) || page_has_movable_ops(page))
- 			goto found;
- 
-diff --git a/mm/page_isolation.c b/mm/page_isolation.c
-index 5aaad037384e..beb09ef345ee 100644
---- a/mm/page_isolation.c
-+++ b/mm/page_isolation.c
-@@ -593,7 +593,7 @@ __test_page_isolated_in_pageblock(unsigned long pfn, unsigned long end_pfn,
- 			 */
- 			pfn += 1 << buddy_order(page);
- 		else if ((mode == PB_ISOLATE_MODE_MEM_OFFLINE) &&
--			 PageHWPoison(page))
-+			 PageHWPoison(page) && hwpoison_page_offlineable(page))
- 			/* A HWPoisoned page cannot be also PageBuddy */
- 			pfn++;
- 		else if ((mode == PB_ISOLATE_MODE_MEM_OFFLINE) &&
-
----
-base-commit: 243e8cdab64129d6207c398f8cf5fbb1962ff7e1
-change-id: 20261029-memhp-hwpoison-pagecache-a6e3a524a370
-
-Best regards,
---  
-Mani Tofigh <mt4022@columbia.edu>
-
+--=20
+Best Regards,
+Yan, Zi
 
 
