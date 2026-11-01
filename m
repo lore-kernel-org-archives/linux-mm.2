@@ -1,102 +1,98 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28CBE606A329
-	for <linux-mm@archiver.kernel.org>; Sun,  1 Nov 2026 06:42:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAD12606A324
+	for <linux-mm@archiver.kernel.org>; Sun,  1 Nov 2026 06:51:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=JB0ZOzkr
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=Ko/MkeP/
 Received: by kanga.kvack.org (Postfix)
-	id 2D60C6B00EF; Sun,  1 Nov 2026 01:42:33 -0500 (EST)
+	id C5D856B05B2; Sun,  1 Nov 2026 01:51:58 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 284B06B05B2; Sun,  1 Nov 2026 01:42:33 -0500 (EST)
+	id C0E286B05B3; Sun,  1 Nov 2026 01:51:58 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 19BDB6B05B3; Sun,  1 Nov 2026 01:42:33 -0500 (EST)
+	id AFCE76B05B4; Sun,  1 Nov 2026 01:51:58 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id E3A6D6B00EF
-	for <linux-mm@kvack.org>; Sun,  1 Nov 2026 01:42:32 -0500 (EST)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 35C5AA853B
-	for <linux-mm@kvack.org>; Sun,  1 Nov 2026 06:42:32 +0000 (UTC)
-X-FDA: 85385606544.14.8842784
-Received: from mta1.migadu.com (out-162.mta1.migadu.com [95.215.58.162])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 140931C0004
-	for <linux-mm@kvack.org>; Sun,  1 Nov 2026 06:42:29 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=JB0ZOzkr;
-	spf=pass (imf20.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.162 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793515350;
-	b=PL3draMVpof3igie4jdDUcnVXBRueT3CHbwZt1yrzOkgqfadjiUXKRWzvRVw4Flq4Edrx1
-	neQysYWvgRlU9KLXUwZWrRRaUGoefFwFagSBnIQHQjJ2gYBO1NMoR+RQ5JnPbwkCvORiTr
-	6AafX8mL8LlF+J09EPLDU+Th4NkgVrE=
+	by kanga.kvack.org (Postfix) with ESMTP id 8C1C76B05B2
+	for <linux-mm@kvack.org>; Sun,  1 Nov 2026 01:51:58 -0500 (EST)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 9DA28A85D2
+	for <linux-mm@kvack.org>; Sun,  1 Nov 2026 06:51:56 +0000 (UTC)
+X-FDA: 85385630232.08.1EBC52F
+Received: from mta1.migadu.com (out-211.mta1.migadu.com [95.215.58.211])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 9D236140004
+	for <linux-mm@kvack.org>; Sun,  1 Nov 2026 06:51:54 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="Ko/MkeP/";
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf26.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.211 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793515350;
+	s=arc-20220608; t=1793515914;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fWPBh4xlXvHa2PfIk2O3jnTg7iaOCA9kUP9jRVQ5YkU=;
-	b=pLAMSrdneFjS0uzwDG/k0Ze5R6tgPN/t0wR8f2KqcmnDGvsTttt17F2UgtjHhkZKxjivDH
-	xqyi50yHwWmm5SdTKVS5yTXYgUYZSCKnI2FdO8Ncqj6Gkzycmzmyw784AKMd6B6HNtLmP9
-	Ggk669+NqtZu+MTC82N95HrmlA0QDVM=
+	bh=tuwGBOzAiVCP+vrlW5UwmQsu01V4i5/BJRy78zItdGE=;
+	b=C0EJnFYKh0ZF3SCqtEMu4FKp7sMOBeFua8Q2SUAu8lYE7CEDS4IPide05+o9AJcDU1NfK2
+	EgWHph5OGP1ZUt1wu3j9iVGISr7xkaiFiuh4kYC0NMX8FSpAyu3IB44oodGIk5ht5Fq/Dv
+	MvLZ6AEFgqNV4S9KipsUYDzbP/+BYw4=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=JB0ZOzkr;
-	spf=pass (imf20.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.162 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	imf26.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="Ko/MkeP/";
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf26.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.211 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793515914;
+	b=l9fxiwg0HyA5osgqd9s0WvsJKQey9mjxMPuPoGI3W/IZaEC9SHR2XP7pPOA8wkLjhCK/hx
+	p9qv3DNi5hLz6DhyC1C6BZC/k5hRE1I+/mwRkXJB+RacGqhtgPWNu5Mj/3ji6t+5UcbO3A
+	6yXERhmvJknrVqiaKb2RoJ7wHgwDG24=
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=Xl9e7alOwd/kiUgVOqOJ845lSSz3tfs5SaPASXGt7kg=;
+DKIM-Signature: a=rsa-sha256; bh=VLeE2/rDXpLDVi9e5DrH1IIJumuqSoLutYfcLgv+pXA=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1793515348; v=1; x=1794120148;
- b=JB0ZOzkr9yBqzyGeHjJkHQyDVZmJtGcrtMU5ckKpJ/45p6f47rU81ZuYt4Zx3eXcAbI1XnC5
- n+a10glpaCyhCjPBPaljZrdGw7nHg/X43qT5LA+Z3i3NDtU3Wg5/2dXTbMunmtjUT/oL3m/XSGB
- dW72FeU8bExF8q1SYhikXu5g=
+ t=1793515913; v=1; x=1794120713;
+ b=Ko/MkeP/JuNRQcANUqPeEjZdTGUFRZxfe0Z8Sv05EKfQJ87wbcFQnbfn3Xwgno6gb88NaTEX
+ Mdfqr8dIuqvo2Q2KNGq22CqfsBd/gtugHlAWAebky3j5j4iT0t7KmpZgwuBUHoj5E/VNcIIiJBS
+ MjIhgDLZ4eEhHtK3xHUcDhwY=
 X-Envelope-To: linux-mm@kvack.org
-Received: by mta10.migadu.com with ESMTPS id 48526ceea99b9bcd;
-	Sun, 01 Nov 2026 06:42:28 +0000
-X-Mizu-Trace-ID: 48526ceea99b9bcd
+Received: by smtp.migadu.com with ESMTPS id 43a291ed986079d8;
+	Sun, 01 Nov 2026 06:51:53 +0000
+X-Mizu-Trace-ID: 43a291ed986079d8
 X-Migadu-Flow: FLOW_OUT
-Content-Type: text/plain;
-	charset=us-ascii
+Message-ID: <2fb322ca-d54f-465e-b342-cb4e3ce55621@linux.dev>
+Date: Sun, 1 Nov 2026 14:51:47 +0800
 X-Archived-By: <archiver.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3901.100.1.1.12\))
-Subject: Re: [PATCH 03/12] mm: hugetlb_vmemmap: simplify vmemmap head page
- handling
-From: Muchun Song <muchun.song@linux.dev>
-In-Reply-To: <587556c5-389f-4616-99f9-f0216b72f112@linux.dev>
-Date: Sun, 1 Nov 2026 14:42:07 +0800
-Cc: Muchun Song <songmuchun@bytedance.com>,
- Oscar Salvador <osalvador@suse.de>,
- Andrew Morton <akpm@linux-foundation.org>,
- Mike Rapoport <rppt@kernel.org>,
- Lance Yang <lance.yang@linux.dev>,
- James Houghton <jthoughton@google.com>,
- David Hildenbrand <david@kernel.org>,
- linux-mm@kvack.org,
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 05/12] mm: hugetlb_vmemmap: unify writable vmemmap page
+ preparation
+To: Muchun Song <songmuchun@bytedance.com>, Oscar Salvador
+ <osalvador@suse.de>, Andrew Morton <akpm@linux-foundation.org>,
+ Mike Rapoport <rppt@kernel.org>
+Cc: Lance Yang <lance.yang@linux.dev>, James Houghton
+ <jthoughton@google.com>, David Hildenbrand <david@kernel.org>,
+ Muchun Song <muchun.song@linux.dev>, linux-mm@kvack.org,
  linux-kernel@vger.kernel.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <2D520BF9-F46D-4652-B155-DACEF486B473@linux.dev>
 References: <20261020115306.813483-1-songmuchun@bytedance.com>
  <20261020115824.823278-1-songmuchun@bytedance.com>
- <20261020115824.823278-2-songmuchun@bytedance.com>
- <587556c5-389f-4616-99f9-f0216b72f112@linux.dev>
-To: Qi Zheng <qi.zheng@linux.dev>
-X-Mailer: Apple Mail (2.3901.100.1.1.12)
-X-Stat-Signature: ustio8tieceheef3dcwc4zyehx6iechy
-X-Rspamd-Queue-Id: 140931C0004
-X-Rspam-User:
-X-Rspamd-Server: rspam12
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+ <20261020115824.823278-4-songmuchun@bytedance.com>
+From: Qi Zheng <qi.zheng@linux.dev>
+In-Reply-To: <20261020115824.823278-4-songmuchun@bytedance.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 9D236140004
+X-Stat-Signature: gosx13kz99hsnxncbsxz845jeuf6dd9g
+X-Rspamd-Server: rspam06
+X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1793515349-176148
-X-HE-Meta: U2FsdGVkX18K0jJquZoKUs45V7hDjnAWzC7/xR/4Fq7qBufs2b9zNS+gg+hnlAS1yPMx9sZIoZoH++Cen1Yxaa/6CEQGvrrBZMD/Y6kyhMRyoMInWH6+EwUqqbb7RmuF+FAHKqNyENg3EGFamYMvZuOpTOKM7BCfKo3iS5BSFGGEmQmYhLDR9lFW2T8wY0WT0MVN8B/HzIt/mehLBBGW+7b39g+pCi67JyOcj6psjXj5n7YVskXHL6aZiryr1CjUo+K5YpvQdgZgrOXS0OFq8xcAq3+8b0p/g1k+wab+R0oI3LstGGU0IXMg7ydlCxDMYOb2/2FCU4noU7GH+9ccaw7u3vBI/NVEAn0fWQDq9FmFPnmXgaBTHpmwgpdz7F7i2eFe5V8EpiLnnP4tP9aGQiPEBHYdh5uH62pzfvk6cScTB8V+uivhhyVBVEPPOArNsTDwMQYNupmm6Lp2qlME2/+EudHtVnbZEpPzovHn5EWiK9+d1uFowlhmXF++gLiIEI8H9EdLil+K4KeGnG6EMgZMUiYlMONAFPVkx8AXgQYe/iTgdKs4MzPK9hxIBKVgNETpHNtjE4h/ih6TNCn1xix7PdUZl4+no46Hf4tA1s65Mh0nSedtviIDPBuQqYf3kGMv9ur/TgUhVjDBB+IECopyeSHrcGtS586OUdjHugoclbi9D+mF71IPS60uSjR9I4dVgKm2ZiKjhLaZdy9wc/kyBwQa1Iux5XNAx4T+XFZO4hJXs6RbX5R56/5RV/dLwII8hfBON6lhbOP12v/FjluuTuAwylYHr9GkafJupyAeT+S2pdGutAH6vrzt1MP3Wl6PdDuQzWg2fJAvg+dYNo68x8K9VuXgIxwr69zq15Ttd95bJBSs94dS/iwFVtkZ10d0Gp05EC0YlyKXX5V3nP0xiAxpbF8mrL6UKHduymJFvv0CqTOCfjLYSD2XhShoMN+XCsbTBo2J0aEHbFZ
- lSBl2Zdd
- BQOhdAwBNLfCmeqkQUa+/QgqYU/TQFpZEt+Ke3mIrkc9Vi7upyD+8sXmh4z8R85U8kjk5hq41ioyuBFDeek7KGaNrvu8M8Wl1H6knRG1fLSDPkK5Q1kSdUWNAhkYvECWUDWy0nQDGtYayFJywyfZye9NNYFd35yYKvi4FL7gPeMOIyDUjBQCfKLbpB6sbXvE+ZV/ybVxbnjp/wLihLW7DV6tcduY8fyu9ej+zxeXRE6Eveblhf/T3Kjg5jRpEOLd+ioBIvu7iYxI2S8i6XTHcmZ95U7iJRDRiqpPs85LjXBJ9drzE5e/vo418gnhyK5ZUDWXHdTicEclMdKbFx0naXQO2qI7tu0kqpJaBsZdRYYFWG3QQ5rieSxdqroHMdM3u76Pcc1XSUZcCAY9BjTWt4YaZZVwJNF7EIRZKZCwZhzJ3KCV69qNMFsPBxw==
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
+	version=4.0.1
+X-Rspam-User: 
+X-HE-Tag: 1793515914-285394
+X-HE-Meta: U2FsdGVkX189z56aIiZsDfHMMzcCmm/AFDF4GtASUMhXgdMMiNKOS+/geVbKMcKuaO2c5Q490tbVaAiBKQGZ32R7lgUX4Gh+LZsSTotuppG3OylYbfxjDJ5c7OfyEiqonAiMS1jmfGzTRcWh/4vjwD9mt28W1JsD9ehemm+fREFxTqnuYOm8u/dX/Bl1ZRh0y+8RzEgrBsyZJBmVXgLEjkSCWjN+Vyl55aDXWtld4nzJkvZzS+L5Bsvw/R0/8tx/j7nlbqvZRTNiEuL6U8xUPEySBOhDkm34tIv3owjJ633zMPwQy0HwLgfACQavPvSLm+1849hdDWBeJJjRK9/+ND9NdSmiaq6LeRei7llWHAec5ZWQdQZrz08fzrsllBBgTt0/Xpv488giId0KQbdx8LayHv/gNHRalQX8ERmtJ8tsnaFCTZcibHGn11Bx5eLdOS1h4aylLJ8Tu1pEeGFlIieXZQ8edkbuRLVnaQnhSaGOKIGqyeriOt7AfVTTVXeyipBFiCPVfA3wmsB3XpXOcIVwtiBFkoL7ILXLd9IzqI1GIT88JZkjtZZRg3sysiyjb6IdmrBLWNtQYgloNMp/uKVtOPyz76HYJKfpZX5RFuECSpRL9sX4o7/nz0OTkA/k960A6KgVAktBzmBCNsFOffNrVFd/elLXOqtWhbpVK+c+Rix6tUX1w6zbulANw/TpA3okJ+jG4d2VwStcmcRjzc7t4aWTC46OJt52J33Yet0y4rE/pcio71hZHYr5CHxuK3l1UvQmUk7zevi2CUIuMMyL1DxKXbNV1PUC4ALz2+NUB4+G2VtKmdII2pYXjPq5cxCHbCRXDvPj9svMsvCp32QkmW4J6fjaVyu9asZt9iOZAh4rGc/XliwX8fahcM+eC+2cmua/3Eck2ktwYj1wq7Ky7Ouk2hiOByrHY5crmf0dEGVLjyxhWVfjuy61d1Z/M1bxtms59vM7xiPEqx4
+ pvFRQqWo
+ L2m9uu0jRLIYYYtGkTj2e06Yapv5n5BK5rItdCRL3ymsh5odX2FbXTwcccePkTXfmu8ByG7EfrtwA3ipbpXNQGplOQEXtI0hWxWBbDMzugTiwbHyUV0U2NUmH8Yx26Z/qLa3dI3SdIL2eRr175+zG6UCwIIV6G9uB/Jxo9M+LuTYEY4wCJ/KPQw+72Mn4jn0nm9a737+kWDSvzUeeuwq1ledjx+0FrKFNc9OaCFwg8GhB797rZhBy/4rfrS8BkP/VXw+UidsWSo4qC/2CCj9NSwKJnr3yX9viObs+mp6XAA8toDVlzzz8C5+hHMfhNI3US8Me0xhkIpUcnSjzfbPxegc8KQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,136 +103,32 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 
 
 
-> On Nov 1, 2026, at 14:31, Qi Zheng <qi.zheng@linux.dev> wrote:
->=20
->=20
->=20
-> On 10/20/26 7:58 PM, Muchun Song wrote:
->> The new head page is already tracked on the vmemmap page list before
->> remapping starts.  Passing it separately gives the remap walker two
->> ways to refer to the same page and unnecessarily complicates its
->> interface.
->> Use the page list as the single handoff mechanism for the head page,
->> removing the redundant state from the walker.
->> No functional change intended.
->> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
->> ---
->>  mm/hugetlb_vmemmap.c | 17 +++++++----------
->>  1 file changed, 7 insertions(+), 10 deletions(-)
->> diff --git a/mm/hugetlb_vmemmap.c b/mm/hugetlb_vmemmap.c
->> index 8b3abb562599..164e93e980bf 100644
->> --- a/mm/hugetlb_vmemmap.c
->> +++ b/mm/hugetlb_vmemmap.c
->> @@ -25,7 +25,6 @@
->>   *
->>   * @remap_pte:		called for each lowest-level entry =
-(PTE).
->>   * @nr_walked:		the number of walked pte.
->> - * @vmemmap_head:	the page to be installed as first in the vmemmap =
-range
->>   * @vmemmap_tail:	the page to be installed as non-first in the =
-vmemmap range
->>   * @vmemmap_pages:	the list head of the vmemmap pages that can be =
-freed
->>   *			or is mapped from.
->=20
-> The @vmemmap_pages description may need updating as well. After this
+On 10/20/26 7:58 PM, Muchun Song wrote:
+> Installing a writable vmemmap page requires consuming a replacement page,
+> copying the current contents into it and making the copy visible before
+> publishing the new mapping.  HVO currently splits this sequence between
+> the page-table walker and its caller depending on the remap path.
+> 
+> Centralize the sequence in the walker so all writable replacements follow
+> the same copy-and-publish protocol.  This keeps page preparation with the
 
-Yes, the comment is out of date even without this patch.
+This makes the copy-and-publish protocol much more solid and easier to
+reason about. Nice cleanup!
 
-> change, the list is no longer only an output list for pages to be =
-freed;
-> its first entry is also consumed as the new head backing page. It =
-would
-> be helpful to document this input contract explicitly.
+> mapping update and removes path-specific handling from higher-level HVO
+> code.
+> 
+> No functional change intended.
+> 
+> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+> ---
+>   mm/hugetlb_vmemmap.c | 40 +++++++++++++++++-----------------------
+>   1 file changed, 17 insertions(+), 23 deletions(-)
+> 
 
-But I can fix this in this along the way.
+Reviewed-by: Qi Zheng <qi.zheng@linux.dev>
 
->=20
-> Other than that, once Lance's comment is addressed:
->=20
-> Reviewed-by: Qi Zheng <qi.zheng@linux.dev>
-
-Thanks.
-
->=20
-> Thanks,
-> Qi
->=20
->> @@ -37,7 +36,6 @@ struct vmemmap_remap_walk {
->>  					     struct vmemmap_remap_walk =
-*walk);
->>    	unsigned long		nr_walked;
->> -	struct page		*vmemmap_head;
->>  	struct page		*vmemmap_tail;
->>  	struct list_head	*vmemmap_pages;
->>  @@ -208,10 +206,13 @@ static void vmemmap_remap_pte(pte_t *pte, =
-unsigned long addr,
->>  	pte_t entry;
->>    	/* Remapping the head page requires r/w */
->> -	if (unlikely(walk->nr_walked =3D=3D 0 && walk->vmemmap_head)) {
->> +	if (unlikely(walk->nr_walked =3D=3D 0)) {
->> +		struct page *head;
->> +
->>  		VM_WARN_ON_ONCE(!PageHead((const struct page *)addr));
->>  -		list_del(&walk->vmemmap_head->lru);
->> +		head =3D list_first_entry(walk->vmemmap_pages, struct =
-page, lru);
->> +		list_del(&head->lru);
->>    		/*
->>  		 * Makes sure that preceding stores to the page contents =
-from
->> @@ -220,7 +221,7 @@ static void vmemmap_remap_pte(pte_t *pte, =
-unsigned long addr,
->>  		 */
->>  		smp_wmb();
->>  -		entry =3D mk_pte(walk->vmemmap_head, PAGE_KERNEL);
->> +		entry =3D mk_pte(head, PAGE_KERNEL);
->>  	} else {
->>  		VM_WARN_ON_ONCE(!PageTail((const struct page *)addr));
->>  @@ -289,7 +290,6 @@ static int vmemmap_remap_split(unsigned long =
-start, unsigned long end)
->>   *		to remap.
->>   * @end:	end address of the vmemmap virtual address range that we =
-want to
->>   *		remap.
->> - * @vmemmap_head: the page to be installed as first in the vmemmap =
-range
->>   * @vmemmap_tail: the page to be installed as non-first in the =
-vmemmap range
->>   * @vmemmap_pages: list to deposit vmemmap pages to be freed.  It is =
-callers
->>   *		responsibility to free pages.
->> @@ -298,7 +298,6 @@ static int vmemmap_remap_split(unsigned long =
-start, unsigned long end)
->>   * Return: %0 on success, negative error code otherwise.
->>   */
->>  static int vmemmap_remap_free(unsigned long start, unsigned long =
-end,
->> -			      struct page *vmemmap_head,
->>  			      struct page *vmemmap_tail,
->>  			      struct list_head *vmemmap_pages,
->>  			      unsigned long flags)
->> @@ -306,7 +305,6 @@ static int vmemmap_remap_free(unsigned long =
-start, unsigned long end,
->>  	int ret;
->>  	struct vmemmap_remap_walk walk =3D {
->>  		.remap_pte	=3D vmemmap_remap_pte,
->> -		.vmemmap_head	=3D vmemmap_head,
->>  		.vmemmap_tail	=3D vmemmap_tail,
->>  		.vmemmap_pages	=3D vmemmap_pages,
->>  		.flags		=3D flags,
->> @@ -547,8 +545,7 @@ static int __hugetlb_vmemmap_optimize_folio(const =
-struct hstate *h,
->>  	 * they can be freed by the caller.
->>  	 */
->>  	ret =3D vmemmap_remap_free(vmemmap_start, vmemmap_end,
->> -				 vmemmap_head, vmemmap_tail,
->> -				 vmemmap_pages, flags);
->> +				 vmemmap_tail, vmemmap_pages, flags);
->>  out:
->>  	if (ret)
->>  		folio_clear_hugetlb_vmemmap_optimized(folio);
->=20
+Thanks,
+Qi
 
 
