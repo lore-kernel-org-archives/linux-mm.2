@@ -1,31 +1,31 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C7B2606A324
-	for <linux-mm@archiver.kernel.org>; Sun,  1 Nov 2026 17:05:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25FBB606A324
+	for <linux-mm@archiver.kernel.org>; Sun,  1 Nov 2026 17:05:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=hWFKsSjK
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=mL+W0iwj
 Received: by kanga.kvack.org (Postfix)
-	id D5A156B05B8; Sun,  1 Nov 2026 12:04:59 -0500 (EST)
+	id 087B36B05B6; Sun,  1 Nov 2026 12:05:00 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BD05F6B05B7; Sun,  1 Nov 2026 12:04:59 -0500 (EST)
+	id 0120D6B05B9; Sun,  1 Nov 2026 12:04:59 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A70516B05B9; Sun,  1 Nov 2026 12:04:59 -0500 (EST)
+	id D57436B05B6; Sun,  1 Nov 2026 12:04:59 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 6800B6B05B7
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 8DA496B05B8
 	for <linux-mm@kvack.org>; Sun,  1 Nov 2026 12:04:59 -0500 (EST)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id A9D1316088E
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 632811209F5
 	for <linux-mm@kvack.org>; Sun,  1 Nov 2026 17:04:58 +0000 (UTC)
-X-FDA: 85387175076.14.348ECD8
+X-FDA: 85387175076.12.4387A1F
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 8C807180005
+	by imf16.hostedemail.com (Postfix) with ESMTP id 39F21180009
 	for <linux-mm@kvack.org>; Sun,  1 Nov 2026 17:04:56 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hWFKsSjK;
-	arc=pass ("kernel.org:s=arc20260519:i=1");
-	spf=pass (imf24.hostedemail.com: domain of devnull+vrilutza.gmail.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+vrilutza.gmail.com@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mL+W0iwj;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf16.hostedemail.com: domain of devnull+vrilutza.gmail.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+vrilutza.gmail.com@kernel.org;
+	arc=pass ("kernel.org:s=arc20260519:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1793552696;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
@@ -33,72 +33,71 @@ ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=PJ8xawFkvQChuRbpRvFM3kzwdMyBEtgBeCZPpV2XFyg=;
-	b=7qLfpY+tIhrW9dteUjHDx/WOmCFaee4L00viWK5HUe5dTy/zADIIvcGtlQzu7FXzmtTqkG
-	d2z6D95cEDX27lL6lN/WyVkwYNTkHDGtOT5KVNQSD0X7IcIKemA1cfNEuZ/4XPGLtg+P0N
-	WB9yh4HQf7rG2MUjdxIjni4lsAnc+RQ=
+	bh=/x/wiZazHW4/ffi1+IFEOVxN+Fc8NZQPK12ktyLeSjw=;
+	b=ErRdxbAatDNL1vhcP/cFEXYvUHudmbsrRKZZd2j6C4n7GYOE6XqNjj7yw2H27FBvtbDjet
+	whk9YRCA3gqZCOTlxOWFWylK7S5oBN/qgD3ubtV3Lhd3otYmInXQmatz6Ac2rd97mw1BAC
+	O7KTZFpEFmh/vi3Xq9ctIqQ+YMRf/ns=
 ARC-Authentication-Results: i=2;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hWFKsSjK;
-	arc=pass ("kernel.org:s=arc20260519:i=1");
-	spf=pass (imf24.hostedemail.com: domain of devnull+vrilutza.gmail.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+vrilutza.gmail.com@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mL+W0iwj;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf16.hostedemail.com: domain of devnull+vrilutza.gmail.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+vrilutza.gmail.com@kernel.org;
+	arc=pass ("kernel.org:s=arc20260519:i=1")
 ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
 	t=1793552696;
-	b=b1RzR2oOOpkxQSnYAOzS6sZL03Tnhh7G5GSnQlJxjhGLnUR/Z3FKRA1aU7NbiIubwGndGi
-	DKtnrGZZb6f3/gyrX5qtzLtv+26263Em0U2xCu4eUHVsoU24XetbOp7/H/NGCR95J3rfYd
-	okqpBhUgSoigokV93Dni7xtc3SYuyFI=
+	b=ceWI1y0AKm0HDFOoUGKWroSMjf4dhYcvZegMhpeJBNuuN5j6vouysTKzzX5Dw/sFR+beGp
+	AmW290cQZ1CyEGL1EEuIXYao/bzSEpzGQtkA3y08g/6bRBQM/KyNn2b+XB69jnAUlZ0cJq
+	kfrLCN6sSMZqgqygAhD6ka/EK0Ez1bE=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 5DCF543FAC;
+	by sea.source.kernel.org (Postfix) with ESMTP id 1613C43F66;
 	Sun,  1 Nov 2026 17:04:55 +0000 (UTC)
 ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
-	t=1793552695;
-	b=qfjWH5+04uhsEJN8X5z5hdC1sLJp2JEOm4yJ85mI692oviINv+FwSN+dH0RH6aV1CeDf
-	 ChIcnvikNEZ34zDp6lgX4eNMq8foXfhnd0HkQ04y+LzMBwYqsDx8K8cbaIsvJY0LbSz9W
-	 UJLD1vEqo4kTsN+TIkgRWAInHEN5NOBjDqMGraAGsqCOYeIxCToHnHRiMZtsW4y5Y66PW
-	 AU2Tpc56XaJ798i51td6GFPqt00y2/lOPqTjxATC+EasKndogylniLTVBUKb8ZoiKuYik
-	 evCbyDFaexbSF/rw8pRGXM7KRjUYhel3OxvWazIXE5FQiO1HfCQPJg5vsAhaonGZF3A==
+	t=1793552694;
+	b=jblMK7gODO78ltyl6FMSpxc8gVFT+AESY7FQCrA8+/bKj78QK+wI2GcXGKCgkrAI4GuF
+	 +TNh6uvg93ULqUu7OalPoWzUD63BNofd30bhasCUVXx/xpxeIVOxzGZW56JTep2ajnZCI
+	 lwWoEz+M2YICvucDmxWJHmnSEXb5gtBPfhoFuLbYQqHOOZYhRy3uZJeedwAoGDVaJ+WO8
+	 GXXmgX9QWlUHycu5y9W0kP3VzY2Xq6uZsPzk8Cq95WtbsqhbiySL40oHNiSucE6RFQWwH
+	 Wf0y9gy1vrJKvDvgs8UQYcj/69Zy4++kB7lMLYPL5OEzoTQ+jFFnncOFj9CMVKtAGeQ==
 ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
-	c=relaxed/relaxed; t=1793552695;
+	c=relaxed/relaxed; t=1793552694;
 	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
 	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
 	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
 	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=PJ8xawFkvQChuRbpRvFM3kzwdMyBEtgBeCZPpV2XFyg=;
-	b=PLpVEs5Gu/t0rFhnijQGjoDiu7//4Sy1P+RVPmUFmfyiTVczSb9u+FCjSJdiGVPx3YGc
-	 G8W4aalxyhNlG/Moox6nlGeUVISjqY4/bsXiBiwuDy9vdDbnm3YbLqB3uunf1kqycKY5d
-	 OA9/NHSqmj7x0pjlReaCPnzGCdgHbwjFXwRWSOVE18jtVny/pv2bFiTXAE47/qXjlN7MV
-	 LZTRbdPvsCK+2CLT4FpuEAa0IXaH1irv8NOvNIctqXs57A0kkkeONiwnRT/78sV3dDg4q
-	 UKGb+DW23nSboyHwdOkIqdd7GP70JwntKu7gmf38KRLgCuJKmKPXaQsaNb2hVxQH73g==
+	bh=/x/wiZazHW4/ffi1+IFEOVxN+Fc8NZQPK12ktyLeSjw=;
+	b=eMQNcjvPAfaW1xbzVnYERHCbHSWOMmRJvRRDCe8j5eXE9LF9Kam12Gd/AZ6+6dxFumik
+	 UhSQC1ji+fVdRXLCWERNfkViQ9clAWkBCvxC5LAx6qkZ61p55/8nZeNhi4v+2rhdSbLYL
+	 EIYjPuhxxBKPVk6RGX5dg3nQoEangLyMnYznCR3S2NDuAIdf5wuG1ZHCsRIBLz5fnAp6n
+	 32spjuJavigP0X2cwyv9VTwSZvp6yNwsaJZwW0RJXwljDCKgj1oRv828DxNcy1wg0OFUk
+	 tJ/BSwhivTC8t0cLC/nBCohEeVmbxSt3+gxo0njIHyoTiI2AU9Deb/Rs7NVEhT+Baew==
 ARC-Authentication-Results: i=1; smtp.kernel.org; 
 	arc=none smtp.remote-ip=100.80.115.77
 Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.kernel.org (Postfix) with ESMTPS id 9CF281F00919;
+	by smtp.kernel.org (Postfix) with ESMTPS id AE16F1F00A02;
 	Sun,  1 Nov 2026 17:04:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793552695;
-	bh=PJ8xawFkvQChuRbpRvFM3kzwdMyBEtgBeCZPpV2XFyg=;
+	s=k20260515; t=1793552694;
+	bh=/x/wiZazHW4/ffi1+IFEOVxN+Fc8NZQPK12ktyLeSjw=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To;
-	b=hWFKsSjKc7QjZnpePN0uyidulXuwPGOXphX9fP0Z+84iVAQEi9A9GSNxvftKw6mGO
-	 bJuUDWVi15fLfTPKMoj1mO79uV3ttnXGPogOFxpyZTaETKjdvVn33O4N34NbllxET8
-	 oBaBtNFco3YhYlTU8AjjsHQTxb0N+VeVRrMXwW4sw9NuC0tfpBlfulCE8GY+0Wzu7a
-	 /4SULSTlHdCMj7d3/05EtGrKxZRxAF3TjWvIJPEh+xbU+RX7pK6fsI2Z349mnylLeq
-	 Jx+cnhpapzZIKmwAW8I0+d3vx9v0KQplmmjw1jwywTZMwWpGvB9wO0BLbD3RcOFMkK
-	 rNUhM6U+Av+IQ==
+	b=mL+W0iwj7lkIQNQPBWZJQsIWGywKDFKyQjpS8bh6tvatlMSRkeMTXW4IyQ83n2JMA
+	 Il/zHMg0gEnBv7M4DNP9XoljuBYxNMqJyloI2kCiwfxl6C8b5dLzMTiKKYSD3F+aMB
+	 B3JPVlcIPkNm6QLC310Izf1WMA2jKZtr0hMF5cMlec6Pbtuymn27zsbz0ia6tXfnVl
+	 aiCLC36+YfkgIPKvAWRr9gcjFFQ1gty10nqZwtdq+8qTtK6tVPc6D2+o4dOxz6Bj6s
+	 yXtf94zlb0WxbPD+oNpp/qJUuIPiMm1JpPALHeeLRRHuIHzboFCJsZmx+sJRRsKS8N
+	 Wac39gbjinHQg==
 Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
-	by lkml.kernel.org (Postfix) with ESMTP id 15737461F2;
+	by lkml.kernel.org (Postfix) with ESMTP id 30AEE4620B;
 	Sun,  1 Nov 2026 17:04:53 +0000 (UTC)
 From: Viorel Cernateanu via B4 Relay <devnull+vrilutza.gmail.com@kernel.org>
-Date: Sun, 01 Nov 2026 19:04:36 +0200
-Subject: [PATCH v2 1/4] x86/mm: Don't randomize the CPU entry area with
- KMSAN
+Date: Sun, 01 Nov 2026 19:04:38 +0200
+Subject: [PATCH v2 3/4] mm: Factor __pfn_valid() out of pfn_valid()
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Message-Id: <20261101-kmsan-serie-v2-1-f97f66dc57ef@gmail.com>
+Message-Id: <20261101-kmsan-serie-v2-3-f97f66dc57ef@gmail.com>
 References: <20261101-kmsan-serie-v2-0-f97f66dc57ef@gmail.com>
 In-Reply-To: <20261101-kmsan-serie-v2-0-f97f66dc57ef@gmail.com>
 To: Dave Hansen <dave.hansen@linux.intel.com>, 
@@ -122,11 +121,11 @@ Cc: Borislav Petkov <bp@suse.de>, linux-kernel@vger.kernel.org,
  Ilya Leoshkevich <iii@linux.ibm.com>, 
  Viorel Cernateanu <vrilutza@gmail.com>
 X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1793552692; l=1962;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1793552692; l=3241;
  i=vrilutza@gmail.com; s=lenovo-20261005; h=from:subject:message-id;
- bh=3GnlWiRUuop6GUO7x6h5NkCg48nWG8mPXHhT2pkVM5I=;
- b=yKz6MZ9gYqyG+QuCK81CgBR/q2zsFoBHJwnWKEvwQ6EyvvaGBEtoqNWRB3Iz2r9tvXCtvXbik
- qf1R5WMpACrA7a4Vnzww4SNVFt8w/FhpREa3DOYYxUVlJc+Mp+u3K2y
+ bh=dsg65O1UX/YgTMqtnmluSfWLq95yf8DD327IK6k7U4k=;
+ b=TEbLB8WV9dS41IpUSxXS+cmQiZqUbRgRqNwMEIswcGyuuFjl7gBgh/jU/GoafzgI93HvfF4qB
+ ZRiBLb6tGcFCgF7stfJjEwxtZdf3wGeWLfE2On3O5wDgjsAMVjkGMp4
 X-Developer-Key: i=vrilutza@gmail.com; a=ed25519;
  pk=HttZd2ffphVYTK/pvlflateaij8E4SdPd6Y+xDQMqDU=
 X-Endpoint-Received: by B4 Relay for vrilutza@gmail.com/lenovo-20261005
@@ -134,18 +133,18 @@ X-Endpoint-Received: by B4 Relay for vrilutza@gmail.com/lenovo-20261005
 X-Original-From: Viorel Cernateanu <vrilutza@gmail.com>
 Reply-To: vrilutza@gmail.com
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 8C807180005
-X-Stat-Signature: 8gx6qp6uf18pfzp3p6cd3bw5qx4xxjjt
-X-Rspam-User: 
+X-Rspamd-Queue-Id: 39F21180009
+X-Stat-Signature: ydgp9irtsse8k4pye7jr4gps16pgmswk
+X-Rspamd-Server: rspam06
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1793552696-770668
-X-HE-Meta: U2FsdGVkX1/pjkWf+QvtMAaFkP7j9I2uTIClJEL5ynlKFfZqWXIlJxzOg++9S9pAyT7C1OKZ6V9eLoJzZeMkAqkLwcX+zvFbb2bTRKlgbJxP0uuXLTf8GSKesJ6j7Eo1RMNDB9yjyhYcAB8z3M2v6UQyZjXo1r5JD5lBL0/cs6fEnMce2U+1aaVZo0i9xGF4lRaA2pJqTBfX+n5kperU7+SQ1Lg/un2BawfF1lN/F/Eg9/aozl7xokK1U2xcMSGJaOgeUzQOIifks4xlGdxh1kvGiGfKe/X0UBCVdcmT3wnGXrRAtAn8nbYMzfysT0tqueaz6LjnGN6OypkRNzx7eAqjkzgVt9xV69oBJPCEniRirOLAdMbbQCZzSngoVztfFlgsEU7QAInsQnMy4wdp7hcPBbwXBcqPWOXHoOI9SH6XyMmPhHmOMGprKDV2e1NeUw1jQU/zzvmd/JVK7YoXLvB+x8daPDFoPKA885vaTmyT1l4CxEMnKAkE2l0n8zEgK68ocNIcPcV7HIsLImFCikmOmeeX6FfClMfGISP3ij5zG2r4XMOmDBcrbwTkimqJMhGuyzShFvIiRVDlxpuWi4ZVlBoRvaCRbK2zCKa5NMpKJZ8c7ak2KBp12rZSCy394XHXnrjpP3kJXcbaMtPgrsdESogUM46t58QjRlIHtaKAOe5l+Uuj3QuelXJvfLn4SnsA/TqT66Id73H9yBHdr13u+1wUIxtFCg4vDpi/b9eVxseut7zL6PpNSSwhCM9cWXsu+vh4VaxL9NQU7kjIJjSH32VtnWGxXmIt8Hei5McjM16XtNNKlh4ua3Q1T4Csf20ODC6NObehQyf7uUUqmWqDgzXU23T7jTThu32Ru8zMQgAFnf7bzPVdLH+oxRD0AmuisWSJIdPyUvfkCiPGXyExsHW49+gc2NMC2PKYxTJQvDlEvx2a42V9Wp7wd51Eco67d6LNfJ037cmIkeP
- NUtJVkaC
- NZHt5cGOPArP/ArsdgS/RlnHs2P9LTQsv7MUdvt8PBZqNGaKM09qjkWrT3RLIHtOG0cfTxfcR2Tq9t3zXUvQfXsq13qqEYJOOrgiKlaOjz0XT0x0E/O/UfmWaFRj1QZJuehta8Th3vD/iMHJJBo0Z7cuh6tKE+U5+bw9PuL7w4GIoSJ8tLrbm0ozCri7S8uGUX+1D+QLWIb1zZep9BT+C9L8iQgYjXxwrAKyKoXbFk+TRG/xknMJ18/2IxOmcYzOcJjyiDu3rY7FvRe76bZMXDZLBuOd3vvu7tdbeRJpblCvvYka0JShDNB9DgwLcT4X9wuYuVeEMImjawAzyHuqOb8NjS8lWzEqkJo20CcG/cwxlNuBHMC2BbgI3mr9lZqO1Lpde1ef8CcnEp2QGvD4r2NXLMX+AsjakUq+5KK4El4R4qHIyfHUdQgUbgA2xCt1wdLlxhqgBFApXBymUjV6b7fcAfFOFLEBd+P0uXle9xUQDOhRbeqNsisEDy3HtVeEAVg6sIffDU0R+3KbMGYn+cLf2NKlHHe4SzwuVO7NoKkx+aerZs7Hd35QAEnUnhS5y2/OK17X2DHbllxA=
+X-Rspam-User: 
+X-HE-Tag: 1793552696-586721
+X-HE-Meta: U2FsdGVkX18E8Zj4R175/10zRtwWjat2kmcErWFk1K6IVnmfDtB5fGdZ9Ln1XY+3j+TO/rKVQuN2DpzC/kNglffu3U97QnKltBQYJkMkZ+Wv271Q3uw5Co9M522E2PDJX8RyHHBCXFFVPgBKEJaHlK/IQ/2y0AxEUzsHaaPE75zJxiU99XrqjswXC7wEVUG/KiM6RIUQC2hycgBEK9HGHqn8Oxj7Ranvcais0VaI3M8D612dmuoY+342VAow2EdEpegxZikz/rMemhKk9TlVO2XnXuPyd+OrF4bj3i411AxDGiRMNU9V7FACDMbipirKrsf23Kc7nys4ZyEPvZiqGmqOx7o3tWAGg0yDozIHwGlUyro+/sxGYjDLTbpWWu9F5p/AKYu7SfmjFb430IpiaziNNKULJAfwegf9nLTjl8JohNJll2+r7vLVEKaSrUCM0bobo7qHw2xPezkZbVLsMFJInPHyk7OOlVB5wXrdH5El8SVI8tjCUl9PCEuvRSp3ATG2Go61GvH00T1Lovf9wcpB+T5WuP3wGMdnWtyb+vyZZSh+D14ZX/dG/NDGwdts7VK11HURxRGAvDTLPrOV1mHZriw1IYugfjYfUIezszsa+329kQas+Jy87Eu6r/EF/Hb2OQalMkaCF9V1+JsC0dSsjFU8hNk1V8YARH/d0+F/GGjs9inrqZSYRvbo0hzrDhVHCfYwtCQalSNOtonNrHWLRfZzvb8G+DXBFTe4FKJh4w/AuSOgYRUh2PNl2/OoeDIxdITPatCGBIYGvL7NjxWR/bJS0/V7IxrfxkUar7yau0pGA1z+f6/fhC1es/2VqBGB+ynjiDwKwZW/Ycal8v5mE/hOBpkqSrbksmfeg7VRM51E8S+PHJh4dN/l7gU/Rsy1mLO9ZMMFYPkALDg9wJ8flN8CiitRyWDB10wvnYibX3aoC+oHF+2jhFX57BiW5d2uDi5bDLdYP4CNKV2
+ pKDNWiKg
+ lFUwltKnSww4IGB2r5VVYdPeh+oxFedkABZt8znI5KPoXZIgVIxNe8wVC+S3syci/e+tSgHOvo/wlgzHQZ2qertWPtS68eeuZlZsUgdEiNppSr1U9O6IUScUPagseos3YJXBxN+BD1qLBA4YKZ9sf1yDxXBteYL0U7ntD/RwvFYVoyP2TJnxGPSLlnv5mCP3C5Qe40z6iiOfYD8KLTWh4oFx0ykFdcqrJxj9qwBOGXU/K7Sjhjv5yQRqn4Dy+TZa2U1E3kRS6ePFp9oipNx1ycGbbx8xN9Tfr9CmcV0yEcAiiKHL/WqT3L0FZvKzqz+HH89L2evD0KzoPSGSMGzL0TYvU0w7sswhR/Sz83Bb3mbnPu574s9w4149dMjF00mJsK2wjthYiKXRaWMWq1m/7m5SvRGIgj7btIy4qTFkOp8dpTKre9cfsQw6qNgIVwfVP624CyDCfn624IeMNo8SJpqUMz016WCkAgycDnIzexxNYuSqdEWQN2XbmYeDALwZs0qKywqUmoEK3t6lO1zlHDKqrxmIvFUkB9UoK7ZLOKEt4GK2BRhG4hhatDXu44SQmI3miZCmETOF7U7ls9pw7Kl9Js6iAfhJOwHQBkrLbTUjH+MIsCkKb6lQfyQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -156,54 +155,95 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 
 From: Viorel Cernateanu <vrilutza@gmail.com>
 
-arch_kmsan_get_meta_or_null() derives the CPU number from the offset
-of an address within the CPU entry area. This assumes that the areas
-are laid out in CPU order.
+KMSAN needs to validate a PFN during metadata lookup without entering
+instrumented code. Calling pfn_valid() also calls
+rcu_read_lock_sched(), which can enter instrumented code and recurse
+into the metadata lookup.
 
-With KASLR, init_cea_offsets() assigns each CPU a random slot. The
-metadata lookup treats that slot number as a CPU number and can pass
-an out-of-range index to get_cpu_entry_area().
+Extract the PFN checks into __pfn_valid(), whose caller must already
+be in an RCU-sched read-side critical section. Keep pfn_valid() as
+the wrapper that acquires and releases that protection.
 
-On an Ivy Bridge laptop, this causes a KMSAN kernel to oops during
-boot while the hard lockup detector sets up its perf event. A QEMU
-test that reads one byte from the current CPU's GDT alias reproduces
-the out-of-bounds access:
+This lets KMSAN reuse the existing PFN validation while providing
+the required protection without instrumented helpers.
 
-  UBSAN: array-index-out-of-bounds in arch/x86/mm/cpu_entry_area.c:25:9
-  index 2100006 is out of range for type 'unsigned long[64]'
-  RIP: 0010:get_cpu_entry_area+0x14/0x50
+The wrapper now also holds the RCU-sched read lock during the
+initial range checks, which previously ran before acquiring it.
 
-Keep the CPU entry areas in CPU order when KMSAN is enabled. This
-allows the metadata lookup to identify the CPU directly, without
-searching every CPU's area on each lookup.
-
-This disables CPU entry area randomization for KMSAN kernels.
-Kernel text randomization remains enabled.
-
-Fixes: 97e3d26b5e5f ("x86/mm: Randomize per-cpu entry area")
 Suggested-by: Alexander Potapenko <glider@google.com>
 Signed-off-by: Viorel Cernateanu <vrilutza@gmail.com>
 ---
- arch/x86/mm/cpu_entry_area.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ include/linux/mmzone.h | 42 +++++++++++++++++++++++++-----------------
+ 1 file changed, 25 insertions(+), 17 deletions(-)
 
-diff --git a/arch/x86/mm/cpu_entry_area.c b/arch/x86/mm/cpu_entry_area.c
-index 575f863f3c75..ce9b5d0e968d 100644
---- a/arch/x86/mm/cpu_entry_area.c
-+++ b/arch/x86/mm/cpu_entry_area.c
-@@ -30,7 +30,11 @@ static __init void init_cea_offsets(void)
- 	unsigned int max_cea;
- 	unsigned int i, j;
+diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
+index ecd1ebd49756..819042264088 100644
+--- a/include/linux/mmzone.h
++++ b/include/linux/mmzone.h
+@@ -2266,21 +2266,13 @@ static inline bool pfn_section_first_valid(struct mem_section *ms, unsigned long
+ #endif
  
--	if (!kaslr_enabled()) {
-+	/*
-+	 * KMSAN works out the CPU of a CPU entry area address from its offset,
-+	 * see arch_kmsan_get_meta_or_null(), so keep the areas in CPU order.
-+	 */
-+	if (!kaslr_enabled() || IS_ENABLED(CONFIG_KMSAN)) {
- 		for_each_possible_cpu(i)
- 			per_cpu(_cea_offset, i) = i;
- 		return;
+ #ifndef CONFIG_HAVE_ARCH_PFN_VALID
+-/**
+- * pfn_valid - check if there is a valid memory map entry for a PFN
+- * @pfn: the page frame number to check
+- *
+- * Check if there is a valid memory map entry aka struct page for the @pfn.
+- * Note, that availability of the memory map entry does not imply that
+- * there is actual usable memory at that @pfn. The struct page may
+- * represent a hole or an unusable page frame.
+- *
+- * Return: 1 for PFNs that have memory map entries and 0 otherwise
++/*
++ * Like pfn_valid(), but the caller must be in an RCU-sched read-side critical
++ * section, for example by disabling preemption.
+  */
+-static inline int pfn_valid(unsigned long pfn)
++static inline int __pfn_valid(unsigned long pfn)
+ {
+ 	struct mem_section *ms;
+-	int ret;
+ 
+ 	/*
+ 	 * Ensure the upper PAGE_SHIFT bits are clear in the
+@@ -2294,16 +2286,32 @@ static inline int pfn_valid(unsigned long pfn)
+ 	if (pfn_to_section_nr(pfn) >= NR_MEM_SECTIONS)
+ 		return 0;
+ 	ms = __pfn_to_section(pfn);
+-	rcu_read_lock_sched();
+-	if (!valid_section(ms)) {
+-		rcu_read_unlock_sched();
++	if (!valid_section(ms))
+ 		return 0;
+-	}
+ 	/*
+ 	 * Traditionally early sections always returned pfn_valid() for
+ 	 * the entire section-sized span.
+ 	 */
+-	ret = early_section(ms) || pfn_section_valid(ms, pfn);
++	return early_section(ms) || pfn_section_valid(ms, pfn);
++}
++
++/**
++ * pfn_valid - check if there is a valid memory map entry for a PFN
++ * @pfn: the page frame number to check
++ *
++ * Check if there is a valid memory map entry aka struct page for the @pfn.
++ * Note, that availability of the memory map entry does not imply that
++ * there is actual usable memory at that @pfn. The struct page may
++ * represent a hole or an unusable page frame.
++ *
++ * Return: 1 for PFNs that have memory map entries and 0 otherwise
++ */
++static inline int pfn_valid(unsigned long pfn)
++{
++	int ret;
++
++	rcu_read_lock_sched();
++	ret = __pfn_valid(pfn);
+ 	rcu_read_unlock_sched();
+ 
+ 	return ret;
 
 -- 
 2.53.0
