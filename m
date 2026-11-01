@@ -1,92 +1,95 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD365606A325
-	for <linux-mm@archiver.kernel.org>; Sun,  1 Nov 2026 02:41:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96B31606A324
+	for <linux-mm@archiver.kernel.org>; Sun,  1 Nov 2026 02:51:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=w8ubrdgQ
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=YH4H9VDh
 Received: by kanga.kvack.org (Postfix)
-	id CC81E6B05B1; Sat, 31 Oct 2026 22:41:02 -0400 (EDT)
+	id 27C946B05B1; Sat, 31 Oct 2026 22:51:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CA0786B05B2; Sat, 31 Oct 2026 22:41:02 -0400 (EDT)
+	id 253E26B05B2; Sat, 31 Oct 2026 22:51:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BDCF06B05B3; Sat, 31 Oct 2026 22:41:02 -0400 (EDT)
+	id 16A516B05B3; Sat, 31 Oct 2026 22:51:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 9743F6B05B1
-	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 22:41:02 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 335FD1A025A
-	for <linux-mm@kvack.org>; Sun,  1 Nov 2026 02:41:02 +0000 (UTC)
-X-FDA: 85384997964.11.56186AE
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 6964A140002
-	for <linux-mm@kvack.org>; Sun,  1 Nov 2026 02:41:00 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=w8ubrdgQ;
-	dmarc=none;
-	spf=pass (imf09.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id DF7546B05B1
+	for <linux-mm@kvack.org>; Sat, 31 Oct 2026 22:51:45 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 65749A0619
+	for <linux-mm@kvack.org>; Sun,  1 Nov 2026 02:51:45 +0000 (UTC)
+X-FDA: 85385024970.18.E0629DB
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf14.hostedemail.com (Postfix) with ESMTP id B4931100003
+	for <linux-mm@kvack.org>; Sun,  1 Nov 2026 02:51:43 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YH4H9VDh;
+	spf=pass (imf14.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793501503;
+	b=vVrP46UrM0qb2EexB1mcxV16SzC9dbaD5iXDZc3T7WMuXpr8zrxfx8cfgO2cJizlhOhleb
+	lkVKOd4UgX8KYB7eK1i8QdHh8Hc/ncnWAzDgRKRqeaVYiIohh+ZzF4h3ipDUUknUXu7r8v
+	zAbAr1Fv9xgF9aZiWMjWD8ACyFQfOnQ=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YH4H9VDh;
+	spf=pass (imf14.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793500860;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
+	s=arc-20220608; t=1793501503;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vtgNBTDMW/DtrGtv/8hkAbq35pBY5cFFg+9Km6ShdQ4=;
-	b=EP/M75f0dYxXd8bZjEzBwl/HhxBrF3f1clcmB2/XrSYkgYXiWfIxqRSVtNoZs5ptvbj29x
-	MXRD5xE76fZyRMU9CrraVBg9mZT+keI2mKNH7NCbjD1AqEtnXlbbVeC4W8I8FKlTKw9Oh6
-	n/y8JYfDVqyLVufXajHCzjnC3duyq/8=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=w8ubrdgQ;
-	dmarc=none;
-	spf=pass (imf09.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793500860;
-	b=3aXtlRFLunUk3M4NmBjUwf49aMgS6nGP96jdFdN4XlTfHnjXbBEuQOeWm4p8oo25ZyZZ2d
-	HyNUVlp30eQqczBnOD8PdV/2/jiTp3PI7u3mQKtDek8ENp49vzTtPhJkVbOBd21D+vW4Nz
-	OxJQ+Pvi48VlURo4LcViPDQOBLemxNc=
+	bh=58ZsKtDKrG2SZIpXqcA8U4fCMBio0d1dxr2NweLN31s=;
+	b=y5TxB2hKCgXcfddQlyjlhjczQYBpg4azBa6Bc/OtZ6Hps4Z80AV6mPGKWXa5o2NfDV9GIF
+	FxfBDW5Y6Rl9ls/k/6s2xhs3VclyX2SUmZkTQOiK36sf0V4cI3YyYjI/e4tAt78c2+mCKG
+	73czX/pHTWCCvO9J4XluccB8DREnt30=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 2184C6060E;
-	Sun,  1 Nov 2026 02:40:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 810C41F0093A;
-	Sun,  1 Nov 2026 02:40:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1793500858;
-	bh=vtgNBTDMW/DtrGtv/8hkAbq35pBY5cFFg+9Km6ShdQ4=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=w8ubrdgQ1H/88s1oR8DPOKefcURK6dl+7lDkz06LB+py/vNtwV5SmJt623XeYDEPG
-	 MmQJmYnC4dazZopFbfUqdgOKXd1qQ5jzZTsIGyf5XJsbvppfZbm0CCL6SFvmZzHExJ
-	 h2qnSkEyYWst05ejBOP+EHuEFy/ccuXV1qGDpCnI=
-Date: Sat, 31 Oct 2026 19:40:58 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Samiullah Khawaja <skhawaja@google.com>
-Cc: David Hildenbrand <david@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>,
- John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, Andy
- Lutomirski <luto@amacapital.net>, Chris Mason <mason@kernel.org>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] mm/gup: check folio->mapping under folio lock in
- memfd_pin_folios()
-Message-Id: <20261031194058.d3bd25ed950e5340ab595f07@linux-foundation.org>
-In-Reply-To: <20261031203540.2282507-1-skhawaja@google.com>
-References: <20261031203540.2282507-1-skhawaja@google.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-X-Archived-By: <archiver.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 6964A140002
-X-Stat-Signature: pmhcgpqz1zg7ca1j9gjqynzqw5aqrbpz
-X-Spam-Status: No, score=-7.0 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,NICE_REPLY_A,SPF_HELO_PASS,SPF_PASS autolearn=no
+	by sea.source.kernel.org (Postfix) with ESMTP id 085824370E;
+	Sun,  1 Nov 2026 02:51:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F9A11F000C1;
+	Sun,  1 Nov 2026 02:51:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793501501;
+	bh=58ZsKtDKrG2SZIpXqcA8U4fCMBio0d1dxr2NweLN31s=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=YH4H9VDhk/aA1yz4G1Z5RP96/gldojcRbsWjYrC71EYnroGs7IGaQZwl4JHN4t3vF
+	 5gyxtLh4hSS1VN5AA3+IVlI5HA9HlqA1i7LtbNdgbJ5AxLD/XTbxte2vSOXbDDJ9/t
+	 2wmQ5MN9c82G6PAsxn90N41EgtG4980v8exlFoR+3uJw6P5Wvf1p01GTSP+B+DSZO2
+	 WEe6hAWvOgYxcsf4h69+QGBfgxsfa7Br+/ykm4RhM0y2OWtWAF5Us0ka+iKq4PX8sX
+	 WVidGf7jqtPsFA4EKhw+kNHpafncvZqfYS2V0B57my80N9oz7ItnmcFMsnIEnttvPS
+	 LlV77XgMdPwvA==
+Message-ID: <sashiko-outbox-192259@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v6 5/5] mm/vmscan: batch dirty TLB flushes before
+ pageout
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Zhang Peng" <zippermonkey@icloud.com>, "Andrew Morton" <akpm@linux-foundation.org>, "Johannes
+ Weiner" <hannes@cmpxchg.org>, "David Hildenbrand" <david@kernel.org>, "Michal
+ Hocko" <mhocko@kernel.org>, "Qi Zheng" <qi.zheng@linux.dev>, "Shakeel Butt" <shakeel.butt@linux.dev>, "Lorenzo
+ Stoakes" <ljs@kernel.org>, "Kairui Song" <kasong@tencent.com>, "Barry Song" <baohua@kernel.org>, "Axel
+ Rasmussen" <axelrasmussen@google.com>, "Yuanchu Xie" <yuanchu@google.com>, "Wei
+ Xu" <weixugc@google.com>, "Baoquan He" <baoquan.he@linux.dev>, "Baolin Wang" <baolin.wang@linux.alibaba.com>
+Cc: linux-mm@kvack.org, "Zhang Peng" <bruzzhang@tencent.com>
+In-Reply-To: <20261031-batch-tlb-flush-v6-5-190539839eec@tencent.com>
+References: <20261031-batch-tlb-flush-v6-0-190539839eec@tencent.com>
+ <20261031-batch-tlb-flush-v6-5-190539839eec@tencent.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Sun, 01 Nov 2026 02:51:40 +0000
+X-Stat-Signature: 5j3rmytonzhggreit4jopy1cc1gca7ak
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
 	autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: B4931100003
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1793500860-424806
-X-HE-Meta: U2FsdGVkX1+1bmfxGKyD/zLHp17UbAhP/P/on+iuNsBHRi3/YtlTpmoAF1+Dbx0mfvAYDQxnuZp6OcofeosxRMaNoWyxUrI/+RP3o5lx3Q/8U+0ikt7hC18l7vONW6ko+0whTnknG3BYV1icd9KF0FWBqP386mtxyt726YJtY/1f1nwbDAtEin6m7xL0AY6c8iPIBKpCEr+G92npMB3QADElAK7fUxp4UgLq3VsTb5e9XGnAAC0cEDilGhXPvxeKMJkwEcVdZClujHaTrTrBW9DegQoBj5dPPAAYASZjBnBQ6xwheUfWadLS0DQ6WYQ7JKS6obNqHL/UoJitVgmeOGsCYB6zpDGkdK9BclzGU9/fesb4lK6zDoIh5L08j1086J2UxkLPO+5nPnC+E1shj7ecnx9GpBokng/ajnDIn/96m7se0/TnYVPxulzFMaznB0CZ3NXUiXjPwpv49QbOVUzkmbdXpSQS17nEV399TY9e+V/fXfYn5bgxTxzjR4SCB3fyuBXMcqJWyUvX11nW7iGyIev4TKcWxwd15Ay1rBkZUBA8aC8iF80pTr6Aq67G3q1pCL3hSMKfF4MCMVJ7cwyhdl/IYfMaZuduqssbfyVrvfAzt6xiRJm0nYHyIIrjCZdqdW2kJ+Gs8GoeObIXEH6o9riaFydDEJT1c+yewJeUpmJ6Puhna/RKAzoloIkRwnN09jykpxDjnqMz5G105Dy6qGvUQEXixwS0T7HD92ca8eBFggn94KPlLuR+iIJX2FYL32bR1Q1fWl2BYZD8RDP6ws041V2HyyUSqSve7yZzBMR8/DAOs++/1wUv+jr8++MycZS5KrCA+Z/PKmGFwRexB7kaIR57YlqgXGxZB6GcLO1gs7mRFH7WEo63Y1EMoRs7sp1KsKHKAL8ckil1xdafbasM50lt9KFOp/stIrMxdnbCB59+lyIl6IlJ+YBs3Fj6HSoPE12wN3aEIcH
- QDHeu5Kh
- ZcrO+gvMKOkX7UfAKUv4CiLcStdtGUawnZy/JNAA2Ub/jasqabbxn4vfhLK57MCDkFCSgtI8xMm4kM+4rOD1hldmxUTYYBmFHbcjqk2J9RoOGZOEjkQBggIjkKx8oFcqSxY5xrFqY1i5qclIoZWwwxf4BuBqwo1Qz2PPzfn16YKkOXl/Hm/2yGh+FGxirawIs/RkAfXy3Bx3AGSQznEiAWPec+UH6CmJVKF26cgoNIX0XN225J4+TsZKRAUfzoDUow2asvB+e20axvJZDl1hdEza7wG0tBsYj5XRhSb5wgTWdHNBN6ORICU1na36p/CmMZM+j9nfpdnex6n3O3USae1rIuk9XfRaMQl+E70plvGtGYshqdrD2Qdnf5/PkUCD1skMeXtaOECYEBKLoLgB/iYiiGecCJVb4vgzraxFyKOGcM7k=
+X-HE-Tag: 1793501503-55776
+X-HE-Meta: U2FsdGVkX18E/1a64XXLJlB/Z4snmxWNURkv4mbBNmffGE3gAb+zzOrZryvA12RCf0z3y4z/9DuHIGTNkBd9JeJ8/VEBzst9mSWy5+UIUioVG/HllqaokEi1UjVnxSriZUr4oWKA84+j5lpLykXD4c+IBNN0bp/1KeFjIB1h8AZwpS8Z3cOhpjcTAmBTX4qKb+dUzf1uUEyW1jsFvdqdrxagjlxnKN7KeXdxl0kgj8KtPiPKluCIfgBobnjgBEh+yyMMN5/z02Lk+3s1D/nyZPUu0NTKZhjvGSwwsOUGqo8vRJeubTFGGNapsYfEVp/PEi/ucUAcyokG8w+pl7AKMbwuDfz6s1qROy4eZ29uhEqJKs+qlNyCmbClHQ9nAiAZlEPDp01LTaeZNkad9iSjo8pgYDW+qsKgUEsfD7+g1x7OG2WgT+Kl8PhEdP7lx5J8cIXPGbCZEhKs0m4tKUqI33wrPAdkMaj1NuWiA66V/vT21lcxpKOKiq5SP9gcgj7quiLyumngYFdjJQb2BaRVkZ56BvtFaYvmGbbFWEBJ7eBHUKzpPrbjFlfaqFCEXvR7Ae9eito4i/8oe53iBmAWRAaZ4ca6AauSsnzpoQjqeCKhtuhe3vZIlOTRTm19JU9TSslVXFlFBE0NRWOUgNs5lsSjPWd6JjwgmSIlAeueE3Bq3gpuSeYYhq9+sr0Pc7ZtgmY9/KA2g4EtiHz5MokDIooYkbhgXBrWo3Gw62esmd4bHX5m7Bok1PBqR0ewsJQR7EXHZplf5c3n+/lXiPSWWbH62a4Cm8EMrcoexhoY3baMhyoZMoNCwgVf5mqZ9As/M9rWIgc0o3XSaQcr6i9zM9BcZXP1XGIpgLZtptsGw+V8jqcyLVv7+A9TNLXh4xFy6bYmYpAQEHnCReE1o4y4kj4NdQvHn3s6wB8J+RDLobD8BoWoMFNsULMBcBuCg3Lsjpb23MpFI7R2FScWlQC
+ 6q8wdT1i
+ PR9MjiswuECdwEQ2pkmSa+6+qb0HM5BPGwreQB48iSkVBFU9ynoal4KvHcS3W7LLs0eeKIyoxExXMleA2sa0wfqWyyLGOjET7p5ecU/gqEibNqGSMVdqtHEFbKMJDp+h/mjPDd0CWHHABM8JuxI0xk8QjSIbCngGgAxxOQzda3TuTsXUrJzrmqdlRzxtr+omEp8lXklSwhFymVmhBYKHbfiZXFFw0RfgVqRSKlwY6yaa8ZCawq9fq08sLdZ2WaIW6luSM0AHCBxGI70ueLoHU1JytU0/6o7Y40beJ/MqXMtU4LHM6ICRuQyiZsgvK7Hg3jyi0acq2BpFt6K05igcnvr/40E0aiOw7hmHoHMkOfd3/vjIZ0kfDmOdVCWh0tfQkfW6sVlAZTowBfE4rJKGg6EH0vuq4T94C01Bn1pq3C/9yovVjV6sq2io+CO/SfGt4zxsqYhJDbYafjdgP8YClxi0yPmU0w4xZ2tGQKRfprTrBcsQ2v3cG4ZUUZR7aEQFfSpyaxok2q28ZDaBqjxJJVNl6dkNJL+euDApsTZAXhVcNPJDuOwnUxWuNYFkrUWx/dghl+Tz8uGci2fBB4AqyqbD9UgmVk5iDbgUyEPSedPzNfdk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,32 +97,113 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
+X-Archived-By: <archiver.kernel.org>
 
-On Sat, 31 Oct 2026 20:35:40 +0000 Samiullah Khawaja <skhawaja@google.com> wrote:
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [Medium] mm/vmscan: split shmem tail folios left unprocessed in shrink_fo=
+lio_list()
+--
 
-> memfd_pin_folios() pins folios from the page cache without taking the
-> folio lock. So khugepaged or MADV_COLLAPSE can replace the folio after
-> its refcount check while memfd_pin_folios() still pins the old folio,
-> and the caller ends up with a folio that is no longer part of the memfd.
-> 
-> Lock the folio and recheck folio->mapping before pinning it, like other
-> page cache users do. If the folio was removed, retry the folio lookup
-> from the index that was removed.
+commit cb4d38468a11c1912d88e753c3510180ab891a8b
+Author: Zhang Peng <zippermonkey@icloud.com>
 
-Can we please include a clear description of the userspace-visible
-runtime effects of the bug?
+mm/vmscan: batch dirty TLB flushes before pageout
 
-> Fixes: 89c1905d9c14 ("mm/gup: introduce memfd_pin_folios() for pinning memfd folios")
-> Reported-by: Andy Lutomirski <luto@amacapital.net>
-> Closes: https://lore.kernel.org/all/CALCETrV5eqg6d9=+BQhCpRwBNe3aCQiut8vxPBs8b7PToqjaHg@mail.gmail.com/
+This commit batches dirty swap-backed folios during shrink_folio_list() into
+a folio_batch so that pending writable TLB entries can be flushed once per
+batch with try_to_unmap_flush_dirty() before paging the folios out. Folios
+are unlocked while queued in the batch and re-locked and revalidated in
+folio_batch_pageout().
 
-Includes the words
+> diff --git a/mm/vmscan.c b/mm/vmscan.c
+> index 061414ff45bb8..1150361e7d525 100644
+> --- a/mm/vmscan.c
+> +++ b/mm/vmscan.c
+> @@ -1334,6 +1334,92 @@ static enum folio_pageout_result folio_try_pageout=
+(struct folio *folio,
+>  	unreachable();
+>  }
+> =20
+> +static void folio_batch_pageout(struct folio_batch *batch,
+> +		struct reclaim_folio_state *state, struct scan_control *sc,
+> +		struct reclaim_stat *stat, struct swap_io_ctx *ctx,
+> +		struct list_head *folio_list)
+> +{
 
-> The issue is live update doesn't preserve those background punched
-> folios and now we have created an UAF attack on the kernel across
-> kexec if you don't do something about it.
+[ ... ]
 
-Is that the extent of it, or are there other effects?
+> +	for (i =3D 0; i < nr; i++) {
+> +		struct folio *folio =3D batch->folios[i];
+> +
+> +		switch (folio_try_pageout(folio, sc, ctx, folio_list)) {
 
+[ ... ]
 
+> @@ -1721,6 +1804,10 @@ static unsigned int shrink_folio_list(struct list_=
+head *folio_list,
+>  		VM_BUG_ON_FOLIO(folio_test_lru(folio) ||
+>  				folio_test_unevictable(folio), folio);
+>  	}
+> +	if (folio_batch_count(&pageout_folios)) {
+> +		folio_batch_pageout(&pageout_folios, &state, sc, stat,
+> +				    &ctx, folio_list);
+> +	}
+>  	/* 'folio_list' is always empty here */
+
+[Severity: Medium]
+What happens if a dirty large shmem folio is split during this final
+folio_batch_pageout() call after the while (!list_empty(folio_list)) loop
+has already exited?
+
+When folio_batch_pageout() calls folio_try_pageout() -> pageout() ->
+shmem_writeout(), shmem_writeout() can split a large shmem folio via
+split_folio_to_list(folio, folio_list) (for example when CONFIG_THP_SWAP is
+disabled, the folio crosses i_size, or folio_alloc_swap() fails with
+-E2BIG):
+
+mm/shmem.c:shmem_writeout() {
+	...
+		if (split_folio_to_list(folio, folio_list))
+			goto redirty;
+	...
+}
+
+Then folio_try_pageout() adjusts sc->nr_scanned expecting the newly split
+tail folios on folio_list to be scanned by the main loop in
+shrink_folio_list():
+
+mm/vmscan.c:folio_try_pageout() {
+	...
+	case PAGE_ACTIVATE:
+		/*
+		 * If shmem folio is split when writeback to swap, the
+		 * tail pages will make their own pass through this
+		 * function and be accounted then.  There is no need to
+		 * clamp nr_pages here: folio_activate_locked() derives
+		 * the count from folio_nr_pages() itself.
+		 */
+		if (nr_pages > 1 && !folio_test_large(folio))
+			sc->nr_scanned -=3D (nr_pages - 1);
+		return FOLIO_PAGEOUT_ACTIVATE;
+	case PAGE_KEEP:
+		return FOLIO_PAGEOUT_KEEP_LOCKED;
+	case PAGE_SUCCESS:
+		if (nr_pages > 1 && !folio_test_large(folio))
+			sc->nr_scanned -=3D (nr_pages - 1);
+	...
+}
+
+Because this final folio_batch_pageout() runs after the
+while (!list_empty(folio_list)) loop has finished, won't those split tail
+folios remain unprocessed on folio_list (violating the "'folio_list' is
+always empty here" invariant) and leave sc->nr_scanned undercounted by
+nr_pages - 1?
+
+Should shrink_folio_list() loop back to process folio_list again if
+folio_batch_pageout() adds split tail folios back onto folio_list?
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261031-batch-tlb-=
+flush-v6-0-190539839eec@tencent.com?part=3D5
 
