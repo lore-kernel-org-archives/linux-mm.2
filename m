@@ -1,108 +1,106 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 016D2606A33F
-	for <linux-mm@archiver.kernel.org>; Sun,  1 Nov 2026 17:04:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A712606A326
+	for <linux-mm@archiver.kernel.org>; Sun,  1 Nov 2026 17:05:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=QVSQsGrN
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=PRQH2Ke7
 Received: by kanga.kvack.org (Postfix)
-	id E90FF6B05B4; Sun,  1 Nov 2026 12:04:57 -0500 (EST)
+	id 3E3D06B05B5; Sun,  1 Nov 2026 12:04:59 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E411B6B05B5; Sun,  1 Nov 2026 12:04:57 -0500 (EST)
+	id 36B046B05B7; Sun,  1 Nov 2026 12:04:59 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D09486B05B6; Sun,  1 Nov 2026 12:04:57 -0500 (EST)
+	id 1E2556B05B5; Sun,  1 Nov 2026 12:04:59 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 9584B6B05B4
-	for <linux-mm@kvack.org>; Sun,  1 Nov 2026 12:04:57 -0500 (EST)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 1F505C0AC0
-	for <linux-mm@kvack.org>; Sun,  1 Nov 2026 17:04:57 +0000 (UTC)
-X-FDA: 85387175034.18.74236D0
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 0F1D3A0003
-	for <linux-mm@kvack.org>; Sun,  1 Nov 2026 17:04:54 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QVSQsGrN;
-	spf=pass (imf15.hostedemail.com: domain of devnull+vrilutza.gmail.com@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+vrilutza.gmail.com@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	arc=pass ("kernel.org:s=arc20260519:i=1")
+	by kanga.kvack.org (Postfix) with ESMTP id DDD036B05B5
+	for <linux-mm@kvack.org>; Sun,  1 Nov 2026 12:04:58 -0500 (EST)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 53240C0AA4
+	for <linux-mm@kvack.org>; Sun,  1 Nov 2026 17:04:58 +0000 (UTC)
+X-FDA: 85387175076.06.2B823AF
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf30.hostedemail.com (Postfix) with ESMTP id E8C6680012
+	for <linux-mm@kvack.org>; Sun,  1 Nov 2026 17:04:55 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PRQH2Ke7;
+	spf=pass (imf30.hostedemail.com: domain of devnull+vrilutza.gmail.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+vrilutza.gmail.com@kernel.org;
+	arc=pass ("kernel.org:s=arc20260519:i=1");
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1793552696;
+	b=YOOz4/gsjMHfL+7wE2SFicC1Eazq8nO0QJy+5o6Q1ZUvbW35kvHCHm+cauRd2xOlTnb0Ed
+	UTMB8IcTILH6FJ/j3nBePyFQEHkhqqjTMIiJODGDJUN2iHg5MSbeAMn3YKl+hgE1Xv5avx
+	ImptpMJrMWaN5dGlM32N/tKmSAxhF0M=
+ARC-Authentication-Results: i=2;
+	imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PRQH2Ke7;
+	spf=pass (imf30.hostedemail.com: domain of devnull+vrilutza.gmail.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+vrilutza.gmail.com@kernel.org;
+	arc=pass ("kernel.org:s=arc20260519:i=1");
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793552695;
+	s=arc-20220608; t=1793552696;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=6ZhjtEGoIXYajBUtxBWTOChkOo/ZSi2InW/pWlQIKSo=;
-	b=mn3OI+7FnkcbK8kSHOEdtpHWOE4mjJGbmEeoF0Q6QOtM0LWHNHj3BkFB7G8Y0CCDjRs/L5
-	vEll6GRoNNbAWZDvcz1vVZaBXxALt5vlwdouTLpHHvFAFVhdGd+SQacT0PVfH9haHT55Kk
-	VHEPymCQbA3O09tW421tjrb3Q+JFeZM=
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1793552695;
-	b=jNqO2ZLSN+RaRHxBKNLrK4un1BooHZNHA1jSsa+zmi7qZXlLYNs99EMZKQMaYfIhjEI/+a
-	2qZL5Nr/3jTt/AzyKbK0hrGeKBA76nDkmfoUxmPyiNeCughHTJiB6VuWLowMktEPvhjDtK
-	WS/m/DDjxApvDnYnKJj/aSRxSwH9wug=
-ARC-Authentication-Results: i=2;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QVSQsGrN;
-	spf=pass (imf15.hostedemail.com: domain of devnull+vrilutza.gmail.com@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+vrilutza.gmail.com@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	arc=pass ("kernel.org:s=arc20260519:i=1")
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=62qoK2pO81XgznFvwxDzAXRoE7cV0Lfka+X+SvLqreQ=;
+	b=BKW6gwN19WwD1eMLDDqwNGBbYRdDnNsSMx9ws49Bw2QXrvr7n05cPmlGnUKxVVWITc1tmI
+	zPstIATsRUoyBsW4AiO9iVYOzBL6y5TXmRa2jhBrC2cQpAhc0JNy4taGW5foyN8mSv3a6q
+	3d4lc9lhGBNKt7PGMxZgTF8SCIQ4pso=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 9325960052;
-	Sun,  1 Nov 2026 17:04:54 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 041B343D56;
+	Sun,  1 Nov 2026 17:04:55 +0000 (UTC)
 ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
 	t=1793552694;
-	b=rVfBmOhOupH6jF2EvJZWbDIs237Ru4q7O0UDATYK+t9EGk9n9tKmV3KtRZlNFyjQ1cbj
-	 15VLd9c2mmEZrOs4ociSU89cG/6iLCQ7ty2oyYs8mNBOExgvlVgoI1kmVX+FuXv3yYzln
-	 KBHjgc3enqJnIRNGwndv1q2VxTZvJBkYJlZ//RBXXbbpt4gmALnwjA6EfpN0znoDADT9v
-	 PbZL1rEVSHNsaCUwKWAc+zZeKt0Ckv0SuTBrTBy/p/vTnrRyD+hZEln/gkmVlNoqeSJNI
-	 5tXGLvC2uIVf60gaJP4bs/wL2u/FfkwQkMuk/9iyrIWhrFDGsBz/qmi+cN6hg6+ypnA==
+	b=nmqcbrAS/zMnfZfbqv5WfKz8sJEhNBMKlunJx557hMitoPt2z0ipbSN7rYPEbd9i33CF
+	 VYd/HE7XxOqQs2JNaDsPM1hfRqiGUtydZhsqd9+weY2UZjTGzE1NMAMc5zKbSvPNl4fmr
+	 oWOl9cVfPb2kprOmPlBxAcu8vqLayprrDtvjcsvwM7WqdjkwvhBn/JRy3uoJ0hN+d6m+u
+	 uhjhI6UOPyla4oeQ5MCYJwxw1BzjpKT78CoLtgu7sjMWNyl2HUHqEFaB2TcdSCxTsf3lD
+	 zLNWfOQMhoB/CsFby+0USJCLh1YlgptkLxmZZOAgQKpoC9n2htamx5hvVPVWQooGznw==
 ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
 	c=relaxed/relaxed; t=1793552694;
-	h=DKIM-Signature:Received:From:Subject:Date:Message-Id:MIME-Version:
-	 Content-Type:Content-Transfer-Encoding:X-B4-Tracking:X-Change-ID:To:
-	 Cc:X-Mailer:X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
-	 X-Original-From:Reply-To;
-	bh=6ZhjtEGoIXYajBUtxBWTOChkOo/ZSi2InW/pWlQIKSo=;
-	b=BzhdjxU2JsMC5nYhku9+3u6jOa8u0EP5NlsTtXuZ22VndSDDMD4vMzy/HNeoHEOmC7Sf
-	 N4Ty7a+gYVAYatLqOFV12/PXWIrAMcpnGh7+OKKl2zTsUkAlfwWP5O6ihpK3wKzvWDXUM
-	 qIRmScJ6W/xnxnLxDkICihTWKatRynGSAB01JaNbaNnlQZJ6ZoddlAngbt8HtPKnSfWK1
-	 lSwKxgvrKMfD0gkRDy/XXIo3hrz+nW7bm9TowA7w7W3lT2GQfJO9mJePMyG2aDjCRnjyc
-	 e2mXb6SBS1qLeH/2DBSJ135aexexcQ3czza8T/y3JpmpIf0KyaZM9jZjepLLECgSCHw==
+	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
+	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
+	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
+	 X-Original-From:Reply-To:Content-Transfer-Encoding;
+	bh=62qoK2pO81XgznFvwxDzAXRoE7cV0Lfka+X+SvLqreQ=;
+	b=2UatVVGowrPmVkNi1+QmbjK5WFrjr/NKnLpj1w5dC4JHpjVlak9/EzkZrRC0AFxiNYkP
+	 9CObF/KJm4EuTPQpe6LH7P1Pv9TuMFXWOViSTlT1MOEC3QjXZDRWDiA/VqSQVM1jNmxDY
+	 xGp/jccrm4G8+pMoTBzAgQdh8BQ5QXEebVQ8G59NBSbQeM1Ji20Q/MFmAttgkxmjL7l6T
+	 dg06beI+O/gkH9q4T2G+VmCSu6SraX8o1duExF1sDoIG9shX/9p/deXqROORGjJn/982q
+	 vU6NBBhPS+f/DD1+y5Tp6vDGw+0Ou6RxSjSWuSheBvOX7oWGe7HSHOa4aWY74Qc4T6w==
 ARC-Authentication-Results: i=1; smtp.kernel.org; 
 	arc=none smtp.remote-ip=100.80.115.77
 Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.kernel.org (Postfix) with ESMTPS id 9CF031F000C1;
+	by smtp.kernel.org (Postfix) with ESMTPS id A1D961F0093A;
 	Sun,  1 Nov 2026 17:04:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
 	s=k20260515; t=1793552694;
-	bh=6ZhjtEGoIXYajBUtxBWTOChkOo/ZSi2InW/pWlQIKSo=;
-	h=From:Subject:Date:To:Cc:Reply-To;
-	b=QVSQsGrNCtJXqcbIhhCWw6UEOCLVTwgs9/s0cslmMr8i5e6dMZhci/aXJHcWYi15P
-	 GnLO8fQi/qvc5Ox/Lb73WXPS1d0hFbX73vCFzBTuj9zyIBR4Bm4NJlm/R9F2Ib16Pr
-	 LkzGqtLTzgAiXYlyraOsMC70xCbXVkTfZjqQ8ZHroHQO+XiamzZ3x38ZEeZ0xKKKY4
-	 f5xwqqv0M3IYLtdRAHytNgEPjWWMwf59Ju3fTna9NkLlLpuP2I4Dxhxqmg4kobOfLj
-	 33diIx+T3VoMu+zCbSamo7PuX7M4J2fIpZ4tiLAhwllAm0ebKUDxo368AUTwH51wAo
-	 Ren/Lp8Dwn2rg==
+	bh=62qoK2pO81XgznFvwxDzAXRoE7cV0Lfka+X+SvLqreQ=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To;
+	b=PRQH2Ke7p7Tkx9xdUoud04SF9I5X5CUcHi5yYnvXEh9AkZDuU92gvgg1QnKsdelro
+	 t3xLNGos5Cj6VfhxqN8aFRxBcuWW94RTfgbkXvVu2e7PusTT06lO5obYYVtQWOxerF
+	 6G3bNZN56I0GLrEwinTHMNdolz8e/MeSgVxJ8hj5qxZzeJ8Jl4GyyPU9oh4804ZIlB
+	 wCSiuoeqAJWisstlrYUEgjOWSJaOV70IpIDnWguCB8H3AgIMXSz+eAiDK7VUtMq+jz
+	 uRx3oBU1fDidqX73FBumogAiYwlbyDnRErqT+Aps3hBKTcyhtpeoEoBqLjcYInFzpa
+	 wwaaGXSaG+7EA==
 Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
-	by lkml.kernel.org (Postfix) with ESMTP id ECC1846203;
-	Sun,  1 Nov 2026 17:04:52 +0000 (UTC)
+	by lkml.kernel.org (Postfix) with ESMTP id 238A146207;
+	Sun,  1 Nov 2026 17:04:53 +0000 (UTC)
 From: Viorel Cernateanu via B4 Relay <devnull+vrilutza.gmail.com@kernel.org>
-Subject: [PATCH v2 0/4] x86/kmsan: Fix two bugs in the metadata lookup
-Date: Sun, 01 Nov 2026 19:04:35 +0200
-Message-Id: <20261101-kmsan-serie-v2-0-f97f66dc57ef@gmail.com>
+Date: Sun, 01 Nov 2026 19:04:37 +0200
+Subject: [PATCH v2 2/4] x86/kmsan: Use the per-CPU area base for metadata
+ lookup
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/22OwQ6CMAyGX4XsbE03EhRPvofh0I0CUxlkw0Ulv
- LsMrh6/9v+/dhaBveUgLtksPEcb7OBWUIdMmI5cy2DrlYVCVUjEAh59IAdbCzjPEVHLsjQs1sb
- oubHvzXardg4vfWczJUVKaAoM2pMzXRrtGk1fgqjSvrNhGvxneyfK5Pl/OUpAwFND5wK5yWu+t
- j3Z59EMvaiWZfkBwydlCdgAAAA=
-X-Change-ID: 20261006-kmsan-serie-e33000b199ce
+Message-Id: <20261101-kmsan-serie-v2-2-f97f66dc57ef@gmail.com>
+References: <20261101-kmsan-serie-v2-0-f97f66dc57ef@gmail.com>
+In-Reply-To: <20261101-kmsan-serie-v2-0-f97f66dc57ef@gmail.com>
 To: Dave Hansen <dave.hansen@linux.intel.com>, 
  Andy Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
  Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
@@ -124,29 +122,30 @@ Cc: Borislav Petkov <bp@suse.de>, linux-kernel@vger.kernel.org,
  Ilya Leoshkevich <iii@linux.ibm.com>, 
  Viorel Cernateanu <vrilutza@gmail.com>
 X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1793552692; l=3024;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1793552692; l=2372;
  i=vrilutza@gmail.com; s=lenovo-20261005; h=from:subject:message-id;
- bh=70IlPx1AKJ8+cqwvWRwobdqND9Oht8b+HJuyYoNKqmg=;
- b=FdDO8TSJQ+sj2UKnZMnNeYqMDmWCZVcKj/oNKlP7ur1VuKC10ya7OWVdZ7KEcPuzmH5QOLV9D
- REcYDbXZA/nDm+/qM0rMMa8PViACooI+H01bEDMiM1InW/oheZrWwAo
+ bh=NoOANBIkTTfd/eqBkNAgT+oIrASIhNAW1KDPRJHc8EE=;
+ b=QwxnxeGnXDmOd0DLmmsnWf6hS/U2H9z5w0zqfUe3FwI30/q+cMZZ3cIhxbu4zEaIwpmDEOOgW
+ Qh8H+LP1/BxCCn5PY4EV0iqampEubxUsI2yfqO1JYZ8zM0xSpo3c+ME
 X-Developer-Key: i=vrilutza@gmail.com; a=ed25519;
  pk=HttZd2ffphVYTK/pvlflateaij8E4SdPd6Y+xDQMqDU=
 X-Endpoint-Received: by B4 Relay for vrilutza@gmail.com/lenovo-20261005
  with auth_id=1115
 X-Original-From: Viorel Cernateanu <vrilutza@gmail.com>
 Reply-To: vrilutza@gmail.com
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 0F1D3A0003
-X-Stat-Signature: jmz8osfukz8cw9aur9c59wznfnfndaux
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Rspamd-Queue-Id: E8C6680012
+X-Stat-Signature: w8j466y8si4eyjk5mkkwfnraqmdu1mmg
+X-Rspamd-Server: rspam01
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1793552694-267208
-X-HE-Meta: U2FsdGVkX1+IK5Usv0hOFryV8alwysZP9fWSNU5Gg/jtpNCJqr2Dp5jzWw+HT9tof3cDo/D/7Xz+0nYiwirlyGnogxINdy6dIH3qASAwCM7MTdhCaZvaYiZ+wsjAFu8skkN/1OnyGxEJtFbqWAqllUDZK27hMr33GhMGBST8lXd2J7aUfmhfz/E95SIgkJF3LWtvfNWRHJMzMq+Bf6X4aA3jNyE9KTydf5mcKPJKTrSUYDur1rL166pRq/2FXgeeubtDdCgz+9pBVbQZycFoPU9zjavDU4A4Jvzm79VQKONXMwdFgHHcm8X2oINPbpA57gliWJVK85Hu6U1kKvpP4tP9dPE1fv4fdX021vxgU9NRcfCPMVJdXR4YzIjT37lyOo/kthfbcye78JwcYjNZPiK+w3p4eDUTl+Fx9SJd1xW1p66h6D1bNckycVTRc4uJKS07sWOYstGkmb15s/sxZYXheu9iiQ7NhNO+BgeUJ+63sQARHm/ASIPP1mTidPKk7C4XLXFBYXD23bYm9DQap9WCqanwWyPoBPpfKkD4nkyeXGi8Y0Cuh5J9jdvD/jKpDXLtZRhItjETAJ38VW2LBc9ikDGewvkAur4CnSoaW2Pm7teoN77ILGKcdDwxdaYev+UWL7/WvcfmoPO3um9lOFQjfmDvivFs/EZCZhLMcQ9CVyi0eAw7BuRbl36pjp5RnhOcxjvyRQ/FhKYLEmU+qg101Qf+A/fpiwHDhC0hPt0a+8UBYDijn8uiBrWHDnxCYsfEUJbV0Cr6ov2aH+4Pg1UccRVgGFFl6CWKyA55ch6yQ3NF2ZZCha+9Ur2gxR/hh/DBcrZFIGilGwDM163yFI00XBEtj4y2ZsADcq6xkFTG5YQRfsJhVc+H1WgFzCNo5aqlFE5Z5dPVfYLwONF825HhlCC9QaFN2ZiwtdsDdtuWxehe+UxApOlwykKXHL1YeZBQHVEHOyvZ3OEiD66
- psqbJhfT
- Ak/vl2+whN2PwEgdAHkiQ0L/GePI5SmQy01xFeT0FvBxigEMbNL5YKdDrUlC/TaVLw+wNP7sMepLc2Am8O6TEEOcUz2SKND+NSosvSWpS1MzbZTv4uiQdeUmVAECJ7IwYa7pLEUC0Gg2iAy95JxKGF4uQ2Aa3kozgPNBY46ss0E7c3a10qtCFBJ7hEfJwIO4GBepyVS/qWYZZzq5LIxs0zKG8RvCeN0jcemqOC3DE0XSCUEtWk7ghw00mebBKL1+yVk7NiCQeWIbveiApuPoSf+2I6xvQ5cGJkBbEuFkJvbMM81A6is5UdKLVtPw1P2mH8Mg9Ru+/utLDEm57KGAQeaySRP/Gd0hn1SXVb47MgM0/z+LFsQdkBZ9PcYvXhVnqRc/nLU1KGpBUBOiqyJnXwQMMa050IBGsPshcXCO6s4ngRLllLdxolIVrJcy1+Q6Yi46TzT8L8vRfJ61MBq2ii3sDXSZAnoc8PgQVxQc3T6dNBWbT/NdnvtHgtTYA58z0Bcti8gTwviie0Ov+pua4iIpbC2k3fKOimlOt16Z+ZuZNoOCtBosOL4I8hbqzYFyb9B7RKbSLqnXUH0OXYdAea/Bpjr1BUFbK+O62XJsW+FevtZjzd2uE6KAduIHXXrA6xeCci7Tn6btf8Yw=
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1793552695-839892
+X-HE-Meta: U2FsdGVkX1+cAex5CdZJE09kKrPl7iNoxu31tHqTIJp4N5t5iOEb1XFR5IJ20Xkr+kJc1U/9pV3165Sxdp4C91894wpVgnY3hm2M2V6j/iODRKAu3wUJZYAx/4zaPlLohp+NfBXCTIsS9V9VAEbpRF4imW8zDeQkM+ba2pAfyPuo4p8Aaj5Uqs2GuXIvWG/IYSdxHTGkZ9OJstw69gAtRzowsRLos2aLDTjNORO84ZcDzTkcyz3qgQIUKKdMklDT2Kjcbnv4JAxewBmGfGdGJ8KNsRsTugfpk/mpwe9TErE8GqrqvKzLevTauQdkGOAECHbT9LlmO5aFQGnCwpHf6wNQNL/Aw65OQ7DHHCvQQwinKJphyhtIFAUhlsdtSiqll20P+zt0IQnykfd0hfCTMZ9nE67gpz51/13h0WzT440Kj8DSalMOsDtbwrrhh/Z6iRAdlRWxP3E+7bCImCeU2UmylvZGHfLjINCJGhGbMdxnTqksLBXgRHrZXmz3jHq/NR6+wQZa2v7YJawFGEyWwQgKR/IhsswbYhUz/LNCM8+InXo+SOC6kVGc19TvNBju8SaFHwFrGm0f44fZks8QVCpKhdzz760Zx8MQAep2PlsYIgzL4nWRlGhFNnhLvtl13rMLTJAyEyXgPPzrCnk14HTzq8jFggbGftnOBmf1i20Mga7QPqgzuxoLUpPd/mgTm3O+ohhsfsy+YLyANxgTX06mC9e9ku8O3EdRyMsZFDYuKqPuMHqZPL2mYBNmdHg/2yy8BdHEMyl6A+ewKh7VxBW2XcsRlwtQ5hgWmY7mGDpJ73y0/DmSysFm9e8EiT3gsWdQoVavufX6HOVREoz/+SUYBGducDjyH5tT1Wvh9crX42G5sMTHM2XnOfIf8idiNRnIgPULQuUhs6FCsN740C/OximOBSTO/sLbCYT3HYNzI9fwDyhjZ5UkYOv3yMAjr/DNLPiIz8Dbkj36Wkh
+ eY7VBIwW
+ FSZug275DIweu6NBuBI46296G/mIuRZQ2XMq6vuE35hQDW97DxgStCvXAeMDlLe573EC7zdbgqHVhqAT0A4wKkjEhCaRFKt+kAsN7g+ekJTCL7t9Ojx8p/ccHUFThLWIU2jbI7CKCxIW69fn4QrxgmtBSk0ww8cDseSk2i7LUStUPPLEr3oS84Ew0awz+WX5SlPnHYDeuCS2oaPMMArbeuHePnuZAFuU1F+JLHgQ4dBWfCFsZJwe0xYKYTypp4WE3tFSHdWL2hNCaIb9Ok3RJuQsJCDmYJMab/JjQO9sgvI7+IM9Q1DXzzElq2I8KBZ/T7A/97Pl0tSoBRZTEQZUnpzTDQK4weQB3ayd86Yg570ID40A7KZtCjwR4xVZzc9sHokHET/lLTj7xyCSO4mTB3FOLpl55iW7lVaDF8JozQhkAB6+wGrlhPkdJTvdLKnxZ6TcuWnAniUfOxWmE5ybFTQp4l8Ry7BEQpLxF4luRKusBGha6WyiVAR55MSdvzuTTJSggR7rCqYpsc/Nfgbpulb4aUm7CKwLuz1bX169pTyxbba0qHZ3RjKSA49dUdExzu+8jSI1xhAF/FfTWI2RxUq0N7g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -155,72 +154,68 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Two fixes for the KMSAN metadata lookup on x86, found while running
-KMSAN kernels with KASLR and with CONFIG_DEBUG_PREEMPT.
+From: Viorel Cernateanu <vrilutza@gmail.com>
 
-Patches 1 and 2 fix the CPU lookup for addresses in the CPU entry area.
-With KASLR, the lookup treats a randomized slot as a CPU number. With
-the areas in CPU order, it still attributes the last page of each CPU's
-area to the next CPU.
+The per-CPU entry areas start at CPU_ENTRY_AREA_PER_CPU, one page
+above CPU_ENTRY_AREA_BASE, after the read-only IDT page.
 
-Patches 3 and 4 fix a recursion with CONFIG_DEBUG_PREEMPT: the metadata
-lookup ends up in the instrumented preempt_count_add(), and the kernel
-hangs right after KMSAN is enabled. Patch 3 factors __pfn_valid() out
-of pfn_valid() so that patch 4 can use it.
+arch_kmsan_get_meta_or_null() computes the CPU number relative to
+CPU_ENTRY_AREA_BASE. With the areas laid out in CPU order, this
+attributes the last page of each CPU's area to the next CPU. The
+subsequent offset check rejects the address, so KMSAN cannot find
+its metadata. At the end of the populated area, the lookup can also
+select a CPU that is not possible.
 
-I tested the cumulative series with the v1 configurations, against the
-same unpatched base:
+Compute the CPU number relative to CPU_ENTRY_AREA_PER_CPU and
+exclude the IDT page from the lookup. Check that the resulting CPU
+is within nr_cpu_ids and possible before accessing its per-CPU data.
 
-- QEMU reproduces the GDT lookup failure and the metadata boundary
-  failures on the base. The corresponding tests pass with v2, including
-  the metadata tests with and without KASLR.
-- With CONFIG_DEBUG_PREEMPT, the base hangs immediately after KMSAN
-  starts. The candidate completes all six boots, three with KASLR and
-  three without.
-- On an Ivy Bridge laptop, the candidate boots with KASLR using a
-  minimal init, and the GDT and metadata tests pass on all four CPUs.
-- An x86_64_defconfig build without KMSAN boots to init.
+Remove the always-false negative check on the unsigned offset.
 
-I have not tested CONFIG_DEBUG_LOCK_ALLOC or measured the performance
-difference.
-
-s390's kmsan_virt_addr_valid() also calls preempt_disable() and reaches
-pfn_valid() through virt_addr_valid(). This series does not change the
-s390 code, but patch 3 refactors the generic pfn_valid() used on that
-path. With an s390 defconfig plus KMSAN and CONFIG_DEBUG_PREEMPT, I
-only compiled mm/kmsan/, arch/s390/mm/ and a few mm objects that use
-pfn_valid(), with no warnings before or after the series. With
-CONFIG_DEBUG_PREEMPT, the s390 metadata lookup still calls
-preempt_count_add(). I have not built a full s390 kernel or run it.
-
+Fixes: ce732a7520b0 ("x86: kmsan: handle CPU entry area")
+Signed-off-by: Viorel Cernateanu <vrilutza@gmail.com>
 ---
-Changes in v2:
-- Keep the CPU entry areas in CPU order with KMSAN instead of searching
-  all possible CPUs on each lookup (Alexander, Peter).
-- Move the one-page offset fix into its own patch.
-- Factor __pfn_valid() out of pfn_valid() instead of adding a KMSAN
-  copy of it (Alexander).
-- Rebase onto current mainline.
-- Link to v1: https://patch.msgid.link/20261006-kmsan-serie-v1-0-07fa860ef3de@gmail.com
+ arch/x86/include/asm/kmsan.h | 14 +++++++++-----
+ 1 file changed, 9 insertions(+), 5 deletions(-)
 
----
-Viorel Cernateanu (4):
-      x86/mm: Don't randomize the CPU entry area with KMSAN
-      x86/kmsan: Use the per-CPU area base for metadata lookup
-      mm: Factor __pfn_valid() out of pfn_valid()
-      x86/kmsan: Don't call instrumented code from kmsan_virt_addr_valid()
+diff --git a/arch/x86/include/asm/kmsan.h b/arch/x86/include/asm/kmsan.h
+index d91b37f5b4bb..c6715b2db0dc 100644
+--- a/arch/x86/include/asm/kmsan.h
++++ b/arch/x86/include/asm/kmsan.h
+@@ -13,6 +13,7 @@
+ 
+ #include <asm/cpu_entry_area.h>
+ #include <asm/processor.h>
++#include <linux/cpumask.h>
+ #include <linux/mmzone.h>
+ 
+ DECLARE_PER_CPU(char[CPU_ENTRY_AREA_SIZE], cpu_entry_area_shadow);
+@@ -32,14 +33,17 @@ static inline void *arch_kmsan_get_meta_or_null(void *addr, bool is_origin)
+ 	unsigned long addr64 = (unsigned long)addr;
+ 	char *metadata_array;
+ 	unsigned long off;
+-	int cpu;
++	unsigned int cpu;
+ 
+-	if ((addr64 < CPU_ENTRY_AREA_BASE) ||
+-	    (addr64 >= (CPU_ENTRY_AREA_BASE + CPU_ENTRY_AREA_MAP_SIZE)))
++	/* The per-CPU areas start after the read-only IDT page. */
++	if (addr64 < CPU_ENTRY_AREA_PER_CPU ||
++	    addr64 >= CPU_ENTRY_AREA_BASE + CPU_ENTRY_AREA_MAP_SIZE)
++		return NULL;
++	cpu = (addr64 - CPU_ENTRY_AREA_PER_CPU) / CPU_ENTRY_AREA_SIZE;
++	if (cpu >= nr_cpu_ids || !cpu_possible(cpu))
+ 		return NULL;
+-	cpu = (addr64 - CPU_ENTRY_AREA_BASE) / CPU_ENTRY_AREA_SIZE;
+ 	off = addr64 - (unsigned long)get_cpu_entry_area(cpu);
+-	if ((off < 0) || (off >= CPU_ENTRY_AREA_SIZE))
++	if (off >= CPU_ENTRY_AREA_SIZE)
+ 		return NULL;
+ 	metadata_array = is_origin ? cpu_entry_area_origin :
+ 				     cpu_entry_area_shadow;
 
- arch/x86/include/asm/kmsan.h | 31 +++++++++++++++++++------------
- arch/x86/mm/cpu_entry_area.c |  6 +++++-
- include/linux/mmzone.h       | 42 +++++++++++++++++++++++++-----------------
- 3 files changed, 49 insertions(+), 30 deletions(-)
----
-base-commit: cbbddb6b08cc9900a87cccaa9b22bbe06aa4f50a
-change-id: 20261006-kmsan-serie-e33000b199ce
-
-Best regards,
---  
-Viorel Cernateanu <vrilutza@gmail.com>
+-- 
+2.53.0
 
 
 
