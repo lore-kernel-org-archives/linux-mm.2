@@ -1,110 +1,90 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B8EE606A324
-	for <linux-mm@archiver.kernel.org>; Sun,  1 Nov 2026 10:38:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1DC1606A324
+	for <linux-mm@archiver.kernel.org>; Sun,  1 Nov 2026 11:00:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=dWtiVPpm
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=k4qpasIY
 Received: by kanga.kvack.org (Postfix)
-	id 702F96B00EF; Sun,  1 Nov 2026 05:38:05 -0500 (EST)
+	id 9EDCA6B00EF; Sun,  1 Nov 2026 06:00:56 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6B4EB6B05B1; Sun,  1 Nov 2026 05:38:05 -0500 (EST)
+	id 99E5D6B05B1; Sun,  1 Nov 2026 06:00:56 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5A2F76B05B2; Sun,  1 Nov 2026 05:38:05 -0500 (EST)
+	id 866236B05B2; Sun,  1 Nov 2026 06:00:56 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 273386B00EF
-	for <linux-mm@kvack.org>; Sun,  1 Nov 2026 05:38:05 -0500 (EST)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 9BF641609DF
-	for <linux-mm@kvack.org>; Sun,  1 Nov 2026 10:38:04 +0000 (UTC)
-X-FDA: 85386200088.11.42ABD42
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf05.hostedemail.com (Postfix) with ESMTP id E1952100009
-	for <linux-mm@kvack.org>; Sun,  1 Nov 2026 10:38:02 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dWtiVPpm;
-	spf=pass (imf05.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 5D3136B00EF
+	for <linux-mm@kvack.org>; Sun,  1 Nov 2026 06:00:56 -0500 (EST)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 5DCF71409E7
+	for <linux-mm@kvack.org>; Sun,  1 Nov 2026 11:00:54 +0000 (UTC)
+X-FDA: 85386257628.14.0F74D33
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 7550880014
+	for <linux-mm@kvack.org>; Sun,  1 Nov 2026 11:00:52 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=k4qpasIY;
+	spf=pass (imf30.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793530852;
+	b=144e20vv4C1x6tyL+Ye5Gnoc+i/0KRd3sUofgkBe0oNkUfxzC94YWdB0lckIpzgMn3Bkr1
+	INz+ZzcFyL3l6OgUiQ0CRuYGmvwsvXnB6T0jGofdANxD9vjmjNjfMlqDi6fsRY0BXVnOMy
+	BR2uPPfRaNQUTutn4c74BrFJJCwVR74=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=k4qpasIY;
+	spf=pass (imf30.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793529483;
+	s=arc-20220608; t=1793530852;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=IPY64yWlCtKaDiro0PGqoP7N/7OKUCSWO0JKTZUHSfg=;
-	b=XPKfxKv5M54QyQo/DRQLzDmhhxlheSiovaYPK/UkmFY9uT1FpUjxgazz+rtE1Mu5YEWgN5
-	FkoOBkCgKLi/Lr4s7wzW3Qswv4L73l4nlsTLiAG1aWl8aqnJ6VZEu5KpmvNTu5b4GFCVGw
-	ZbWONpt8NCVxTQ25LdFgsDK6cMDScRQ=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793529483;
-	b=HbG+8VoKvUpyWr/IVJLO/E5KwXvNJ97jqJ0oRJDyxHRNQXFXINrspIBGnHOrvYWd25XdAy
-	+KXgRJQrQhlce2pQ/cSRZaZFMqq2/Rt8ikhREZcRjqdrnTekdZ5FSbbSmeW9p1IlUyCZmO
-	dsIFp1ECVJibhTGRYa8KBsl9QSQdaf4=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dWtiVPpm;
-	spf=pass (imf05.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=d+OmU1VU579id6zin8obBb2cLrIhplvEdrcBOIeNOAg=;
+	b=oHM5p+RmNwm7eluL2LP6/z1+tIBQDg6qrMXy9fqSLgEGy2aTmU3igFqbBIz6JfWqjSq3GJ
+	RpjxrklRK3XJleGCtPeVy7q6xyFD4CTlLrCJGDuEjHpBXHyNyh3xkOYxjPpcRUNW8ide8f
+	qh7Is73IXqBiUR0/pN+R4cg6SCWJaSQ=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 6EC98600E2;
-	Sun,  1 Nov 2026 10:38:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BC051F000C1;
-	Sun,  1 Nov 2026 10:37:49 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 5030040879;
+	Sun,  1 Nov 2026 11:00:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4410D1F000C1;
+	Sun,  1 Nov 2026 11:00:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793529481;
-	bh=IPY64yWlCtKaDiro0PGqoP7N/7OKUCSWO0JKTZUHSfg=;
+	s=k20260515; t=1793530851;
+	bh=d+OmU1VU579id6zin8obBb2cLrIhplvEdrcBOIeNOAg=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=dWtiVPpmRhKXcvxHHWPLMeoOn6f/UWonvIBtlm2brvj0C977bioeVIoaTTSrhZIW8
-	 yqeDlO3pZOQ7/3P4d8mE1giVlCB2eu2lJYlv59mahM8JeukLP4VNjmi9snr0S7aon3
-	 UNMoIYYc16PYApEhpNmT/XsKiVj22pel6CLvV7gfUvevic1W1GzU4vIyIPMU5M1gmK
-	 dOPo+xh73mwwF8vg3X9tClfXnnlSLZytRNm7DnBK1AfEHuGIO6WRbo1T2OxLGKo3ox
-	 YxEB0ecj+X11Wl9PFuTneU7aQXXWsJpo7wg4FyPFF5/ah7RCLMId2ZyjlpGQ/xdi1z
-	 +gpMi4qMprNkg==
-Message-ID: <2395821f-7fd1-4ee0-8481-91123109632f@kernel.org>
-Date: Sun, 1 Nov 2026 11:37:47 +0100
+	b=k4qpasIYpQSby9KowkAKbK/aQ8DCK+rwyfbVBH4Tr1eI++KO46zFbaldOfjk/IJDN
+	 SJtj+Vzn0hZnD392eSukon0D6rgsPJlAU3zJgwxAHrL+TPAHnVSqib8G5Xtpo1KioG
+	 lF2t+Sw9s/sL4AyrIXEt26O1UMqG1tThJsJeDD8e2Rb70GcDUw29jzcDf8OzBSMehB
+	 wHTBnTvzmrpRjtNq9z788PyC4Cd8dkYAoRiJ9dUjbDGOr9o0AvWsWQQsibeF96G9zU
+	 2/UWOe74wRshH+Pi5/eEgupfrIk/GOrE2Et4mB6oskh0ofbqkubpJ9TD0U9LjRT/n0
+	 lqtNz0go9cHSg==
+Message-ID: <c159c1f9-34ff-41dc-a7ec-9a147a24d1e8@kernel.org>
+Date: Sun, 1 Nov 2026 12:00:41 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/7] MAINTAINERS: MM updates
-To: "David Hildenbrand (Arm)" <david@kernel.org>,
- Alistair Popple <apopple@nvidia.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- Baoquan He <baoquan.he@linux.dev>, Barry Song <baohua@kernel.org>,
- Brendan Jackman <brendan.jackman@linux.dev>,
- Byungchul Park <byungchul@sk.com>, Chengming Zhou
- <chengming.zhou@linux.dev>, Chris Li <chrisl@kernel.org>,
- Christoph Lameter <cl@gentwo.org>, Dave Chinner <david@fromorbit.com>,
- David Rientjes <rientjes@google.com>, Dennis Zhou <dennis@kernel.org>,
- Dev Jain <dev.jain@arm.com>, Gregory Price <gourry@gourry.net>,
- Hao Li <hao.li@linux.dev>, Harry Yoo <harry@kernel.org>,
- Hugh Dickins <hughd@google.com>, Jann Horn <jannh@google.com>,
- Johannes Weiner <hannes@cmpxchg.org>, John Hubbard <jhubbard@nvidia.com>,
- Joshua Hahn <joshua.hahnjy@gmail.com>, Kairui Song <kasong@tencent.com>,
- Kemeng Shi <shikemeng@huaweicloud.com>, Kiryl Shutsemau <kas@kernel.org>,
- Lance Yang <lance.yang@linux.dev>, "Liam R. Howlett" <liam@infradead.org>,
- Lorenzo Stoakes <ljs@kernel.org>, Matthew Brost <matthew.brost@intel.com>,
- Miaohe Lin <linmiaohe@huawei.com>, Michal Hocko <mhocko@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Muchun Song <muchun.song@linux.dev>,
- Naoya Horiguchi <nao.horiguchi@gmail.com>, Nhat Pham <nphamcs@gmail.com>,
- Nick Piggin <npiggin@gmail.com>, Nico Pache <nico.pache@linux.dev>,
- Oscar Salvador <osalvador@suse.de>, Pedro Falcato <pfalcato@suse.de>,
- Peter Xu <peterx@redhat.com>, Peter Zijlstra <peterz@infradead.org>,
- Qi Zheng <qi.zheng@linux.dev>, Rakie Kim <rakie.kim@sk.com>,
- Rik van Riel <riel@surriel.com>, Roman Gushchin <roman.gushchin@linux.dev>,
- Ryan Roberts <ryan.roberts@arm.com>, Shakeel Butt <shakeel.butt@linux.dev>,
- Suren Baghdasaryan <surenb@google.com>, Tejun Heo <tj@kernel.org>,
- Uladzislau Rezki <urezki@gmail.com>, Usama Arif <usama.arif@linux.dev>,
- Will Deacon <will@kernel.org>, Xu Xin <xu.xin@linux.dev>,
- Ying Huang <ying.huang@linux.alibaba.com>,
- Youngjun Park <youngjun.park@lge.com>, Zi Yan <ziy@nvidia.com>,
- Jason Gunthorpe <jgg@ziepe.ca>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org
-References: <20261030-maintainers-v1-0-97278f8a5f54@kernel.org>
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Subject: Re: [PATCH v5 0/12] mm: fix allocator races with memory hotplug
 Content-Language: en-US
+To: "Gregory Price (Meta)" <gourry@gourry.net>, linux-mm@kvack.org
+Cc: linux-trace-kernel@vger.kernel.org, linux-kernel@vger.kernel.org,
+ kernel-team@meta.com, akpm@linux-foundation.org, david@kernel.org,
+ ljs@kernel.org, liam@infradead.org, rppt@kernel.org, surenb@google.com,
+ mhocko@suse.com, kasong@tencent.com, qi.zheng@linux.dev,
+ shakeel.butt@linux.dev, baohua@kernel.org, axelrasmussen@google.com,
+ yuanchu@google.com, weixugc@google.com, baoquan.he@linux.dev,
+ baolin.wang@linux.alibaba.com, rientjes@google.com, rostedt@goodmis.org,
+ mhiramat@kernel.org, mathieu.desnoyers@efficios.com, muchun.song@linux.dev,
+ osalvador@suse.de, ziy@nvidia.com, joshua.hahnjy@gmail.com,
+ rakie.kim@sk.com, ying.huang@linux.alibaba.com, brendan.jackman@linux.dev,
+ hannes@cmpxchg.org, bigeasy@linutronix.de, clrkwllms@kernel.org,
+ nathan@kernel.org, ndesaulniers@google.com, morbo@google.com,
+ justinstitt@google.com, Bessel.Wang@huawei.com, jiang.liu@huawei.com,
+ mgorman@techsingularity.net, anshuman.khandual@arm.com
+References: <20261101021340.2251928-1-gourry@gourry.net>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
 Autocrypt: addr=vbabka@kernel.org; keydata=
  xsFNBFZdmxYBEADsw/SiUSjB0dM+vSh95UkgcHjzEVBlby/Fg+g42O7LAEkCYXi/vvq31JTB
  KxRWDHX0R2tgpFDXHnzZcQywawu8eSq0LxzxFNYMvtB7sV1pxYwej2qx9B75qW2plBs+7+YB
@@ -144,22 +124,21 @@ Autocrypt: addr=vbabka@kernel.org; keydata=
  NcaZ+c6J4H+nEJGi2SkHAUJz5oBzuThvPudLvPA/SK8sKoM01IRxSihev/S/5WLazXB1PGem
  OCbvzC1IjWJJraxiDJ5IygokapUa2RP7+WBR22skQ3SSl6G107QgWKSyTOGWEaRmV53vxQLV
  jXuCmzSSasTL60zq5yGrT4/DYQVSNEUiUbG4pYekxJujNeEDkUlky0Y=
-In-Reply-To: <20261030-maintainers-v1-0-97278f8a5f54@kernel.org>
+In-Reply-To: <20261101021340.2251928-1-gourry@gourry.net>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: E1952100009
-X-Stat-Signature: hje6k7hheeenoydf4ngufa17ijdwcshz
 X-Rspam-User: 
-X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Rspamd-Queue-Id: 7550880014
+X-Stat-Signature: quu7mwa35egauaj7e9q6zpkod3br7z6t
+X-Rspamd-Server: rspam01
+X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
-	version=4.0.1
-X-HE-Tag: 1793529482-723113
-X-HE-Meta: U2FsdGVkX19fTzCCIQb9Zp9Ih+o92LFwfzO0mNc/svQ8l90Padxt3SDgJRFCqBb7sY9CzNlb/eR4hgsGnUGMEuLQoRpU7YhvAo1m8CFH3loo0HstP2aV2WZlwJykc0LXCeUXD3d+yTnuMepmnYM8lpMqTM3m73Mb50VFN8hvGYg8IVtAux8Kbvu5rFmEZZ3oAjQGjnEubp7XrFM7eDq8x1di3PwCIX/+SgqEX7bKOPI/pWpr5inMPlsOVvRQW4jp4fTAgfMWw4+rjJT2aGskvSO3HkbIn8NDczDJY5yZ+bCzr8JqTFQFObGsb48jM4uQZRusF1Yq/m07Kne6VAWGEc+F2WwlVkSTlXxvWm/n7hjihwIG/P3zjUZHblYZfHcjSuAL5nuNtQCg9c4vvxRQSZRGT6suc8MOmD97Ay3A/bHjz4ZEoLM9xrpxxOIZhaSiOuUsC5FLKGYGb4TIFf5zdlHGEYyOeuEBHDpOiFdjbzT/9iAaeMfpPxjQVX52aGE6gVTlIds+04N89qSKn6DFtUlhWRz1kdA2Q6pv/zf00AMChToRcXHCxGGMglGxOefLAupdZ2DJ45teVDAZ06S7sR9eHEMnWGhS1yDKynASzaMfgiVFhlmX5y/SyTYP0boSPMkDphawffukIW4SxAgEScy4P8nyzCcYn6+WsQLf9JSMKBLaEmEtaYRxC4qc0HHt6f+pIvmkW2q3vJrSVxOXL36tY2SzhftcaJysrAoWlsH60ZKG3LDLToJdY0x/HXtofxPdtkLTxrkCZtZYe2unUDi24KlYzgyjhVkL5GezYL9yIIMayXYpc4j/kcYoT4SoE5eqNp65Fv8v6Dw+MyZC9YUDlKDErSIArOEWnNYSSWm7SdZXzunO/MwIrh1zcnUY2qSt1ogUPUZRNJUTmNYlH4o/xo7787+TjpN0dC9giJzK+oP0HBZOQ/bw/oSF46qjUfCeMfeW+wu+vpEhvDH
- 01SZz15n
- fDl2aiJsU9uLDYnCITuD6OurrSPENdyxFamyYO0kx37djCq6Aoyqk9/13xlgngh3fotDXLAy2I2bhHY/sN1FetoKWpfGrl08vk624hr03RhmeJTcIIvUEe8pir8ZXV/Yns47ODV+JCjd4Ibuv+rQscyrtuH9JHjNBXhKGnXtnbvqZjxl0bE+iIdzJdslJuZ4j7rYrY3U2SA75RHQJORXhk3FlzSTx0eGHdaqieBJ/YMEbnPz5zewwniuWJTTi+EvsJ/kkVkxqUZmxFBVQD6AOAih+tr0kRrdXsWpyT2JDJYN+BzCz7OE7Y59DbJbBFnnimZpWMJbgc2IRfagC4/HG3iCRmiNiOp8Iubkh4aqUvieaou8=
+	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1793530852-256341
+X-HE-Meta: U2FsdGVkX191LJIrOyuHXcDJ/nugcMX5AOJE1nsa7y/USn13wgKhcc1yig+q5isu4k4weCgejoYRM3ATVjv2gQhPxTLsKBUATALt/exyr6K5Iyt8BkTsq25vEOooWEeY/9///huL32RzpKJtKUd3cX2ES23iTkFMwOZIwaZbDwvXBs5nESgdtnCh+/n0yVc+60bcvnJmzVVyS3qaG3Q8H+wEN71KWBvSpWEF+hxG+q5V4RvMfNDx4Qgr9QT6rm/ASI0FE5gQxytjtuRpehlwob3GE/TLMZJoqU8/Ev5bqodRMKkn7eBeILZPAV2+YM247KWocsGJoZpMuhmXRmCuDK966bGdw45bOV9k/Gc/28F6FyufA3pmjGRceBThANfSeiVBHX+zq0uDZouFpM3lrnA6kFSXr5tDp7Icj1BoIrXISBHBSMe3aR1suI7MO2hibvL2P/MOB9tGYLQAJREyqX2e56pGkdcZPPitI2NXJhuYMiiqAr+wCdp8gEJXW80KgNY/KNbwxkQDyNR64WImqjF+WrQKmglzJEwr/s2aoghyXQN2Un8a23ox1EEe9I7qG9f7uwYspomRGt/HuVDCQfhyWydRIdxZLpM/Zy4eNzmCnZl09Ss/J0z2byzk4cLPz+xLhg+cd1Ft+uRuQ/4UFvHBR6n4V8fuLH8921/7LpQSJk8IcQuOwit33Py3qdawLQQ1enenOXSNNxrrveeC+zBtlGPUAiBJ1ZPrlTji5D1VT/ZBroYOgWIc60q2olHkLyCa0+/2RCGGU+akL/IGSO7kshCKfU2WHUBe1vTEEcwBZhq2Oy8h1YjNeRhMTZFrRFnovH4Emj2zA48qN+2OlYfjJBKw+tosJaHKAvPBK2uR5QfoQcLxGrcuFiGJZ+RpOJ1eLIEu/6XH3IL8Rk167Jy5QukreP3FqK6uAN9MXBJN5qIzNf9Zh+q76lrA6nJRywPWawbO77Y7RWGw7O8
+ KdNKmfow
+ vS+w882H7f7buhk9yGkS0x/S5CuSGbT8C8QRbCvvjFZ5vxmauYCwmqFHJyx2rUGkliCG5VdKcZqxAa/xQhtAOT4Tlr9DzgPvLhseq18HDl9J9++GbmN9JbDX8lEsgcDU+PG0gqoK03kbv4HLHCApTXRg8KJh+1g+i6X07RIvTkiT8gErHO5wRkW3HJMzvvyfNnZE+me9RGgdhDuZgonuW/FTdb2hRRe8pDMw8POFibRvyUqMLxeoMWELISrDPkgjV8lie7d/GSoxAlAWxtU/NzQ1xo7TkZX0UmOwWx7fitn2/7K6Pu470ElBCSvzEvdbgSNccuq783+uQS4xmWyDYcb24yszxpTI/wvKbHAjK7DHG3GRTydOTLYDIsLWai/YbIoq5fCTy/vjBqqNED1uXmckSxUM4kPfz5Nx2nbzWmEuW5tk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -168,73 +147,150 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 10/30/26 22:34, David Hildenbrand (Arm) wrote:
-> Hi,
+On 11/1/26 03:13, Gregory Price (Meta) wrote:
+> Memory hotplug rebuilds zonelists in place while allocations walk them,
+> and offlining an emptied zone frees pagesets the vmstat worker can still
+> hold.
 > 
-> several MM updates:
+> These eleven fixes cover the walkers that crash, fail, or pick the wrong
+> zone or node as a result, and a twelfth patch removes a helper that
+> invites the same bug.
 > 
-> Make Zi Yan a THP maintainer (thanks for all your hard work over
-> the years and thanks for taking on this responsibility), and perform some
-> MM MAINTAINERS cleanups.
+>    1. a restarted slowpath loses its retry with reserves
+>    2. offlining an emptied zone frees pagesets still in use
+>    3. the reclaim_retry_zone tracepoint rereads a zoneref slot
+>    4. the zonelist retry is compiled out without MEMORY_HOTREMOVE
+>    5. zonelist_zone() may load its slot more than once
+>    6. NULL preferred zone after a shrink rebuild
+>    7. __next_zones_zonelist() rereads a slot
+>    8. allocations land outside their zone or nodemask
+>    9. the hugetlb pool walk takes another node's page
+>   10. alloc_contig_pages() takes a range outside its filters
+>   11. mempolicy_slab_node() rereads a slot
+>   12. zonelist_node_idx() invites the same double read
 > 
-> Then, start the next step of the transition from Andrew's MM tree to
-> separate component trees that all get integrated into the mm-next
-> integration tree.
+> Patches 1-11 are for stable.  Patch 12 is a cleanup and is not.
 > 
-> Start routing shmem through mm/core.git, adding me as a maintainer
-> primarily to pick patches.
+> Patches 8-10 need patch 4, without which their retry is compiled
+> out on HOTREMOVE=n kernels.
 > 
-> Then, target the following components for the mm/core.git tree that I
-> (co)maintain:
+> Patch 8 needs patch 1.
 > 
->      - MEMORY MANAGEMENT - BALLOON
->      - MEMORY MANAGEMENT - CORE
->      - MEMORY MANAGEMENT - GUP (GET USER PAGES)
->      - MEMORY MANAGEMENT - KSM (Kernel Samepage Merging)
->      - MEMORY MANAGEMENT - MEMORY HOT(UN)PLUG
->      - MEMORY MANAGEMENT - MIGRATION
->      - MEMORY MANAGEMENT - NUMA PLACEMENT
->      - MEMORY MANAGEMENT - RMAP (REVERSE MAPPING)
->      - MEMORY MANAGEMENT - THP (TRANSPARENT HUGE PAGE)
+> Patches 6, 7 and 11 need patch 5, which makes zonelist_zone() read
+> the slot once.  Patch 12 needs patches 7 and 11, which remove the
+> other callers of zonelist_node_idx().
 > 
-> More details in the last patch.
+> Patches 2 and 3 are patches from anthropic, pulled in from Vlastimil's
+> series to keep the backport issues self-contained on the series.
 > 
-> In the upcoming cycles we'll then route more of the other MM components
-> through different trees.
+> Testing
+> =======
 > 
-> Let's see how this goes, in particular with the continuous stream of
-> fixes. But getting these in in a controlled way has highest priority
-> right now wither way.
+> Each race was reproduced on unmodified source in a QEMU guest with three
+> NUMA nodes and a 512M pc-dimm on node 1, left offline at boot.
 > 
-> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
-> ---
-> David Hildenbrand (Arm) (7):
->       MAINTAINERS: mention for-next branch in MEMORY MANAGEMENT - MEMORY MAP
->       MAINTAINERS: TMPFS (SHMEM FILESYSTEM) updates
->       MAINTAINERS: add Zi Yan as co-maintainer for MEMORY MANAGEMENT - THP
->       MAINTAINERS: sort entries in MM sections
->       MAINTAINERS: add missing files to MM component sections
->       MAINTAINERS: rename and move MEMORY HOT(UN)PLUG
->       MAINTAINERS: route more MM changes through mm/core.git
+> A test module widens each window with a kprobe that stalls one CPU inside
+> it, as an interrupt or a vCPU preemption would.
 > 
->  MAINTAINERS | 165 ++++++++++++++++++++++++++++++++++++++----------------------
->  1 file changed, 105 insertions(+), 60 deletions(-)
+>        base                            this series
+> patch  outcome                  runs   outcome                  runs
+> =====  =======================  =====  =======================  =====
+>  1     NULL returned            3/3    page from reserves       3/3
+>  2     UAF                      6/6    no UAF                   3/3
+>  3     NULL dereference         3/3    allocation succeeds      3/3
+>  4     allocation fails         3/3    waits for the rebuild    3/3
+>  6     NULL dereference         3/3    ZONE_NORMAL page         3/3
+>  7     NULL dereference         3/3    ZONE_NORMAL page         3/3
+>  8     wrong zone or node       18/18  right zone and node      18/18
+>  9     page from node 1         3/3    page from node 2         3/3
+> 10     1G page in ZONE_MOVABLE  3/3    1G page in ZONE_NORMAL   3/3
+> 11     NULL dereference         4/4    keeps allocating         3/3
+> 
+> 
+> Cost (these tests were run on v4, v5 hasn't substantially changed)
+> ====
+> Kernel instructions per order-0 allocation and free in the QEMU guest,
+> counted with a task-bound hardware instruction counter around 1M
+> iterations on a pinned kthread, non-debug kernel, mean of 15 rounds.
+> 
+>                            instructions per alloc+free
+>                              base   this series
+>   alloc_pages()             890.5         900.5
+>   bulk, nr=1, nodemask      865.5         875.5
+>   bulk, nr=16, per page     477.2         478.1
+> 
+> 
+> Bare metal, two-socket Xeon Gold 6138 (Skylake-SP, 80 CPUs).
+> 
+> will-it-scale page_fault1-3: each iteration touches one page, so
+> the unit is millions of faults per second, summed over all tasks.
+> 
+> Base, millions of faults per second:
+> 
+>   tasks                         1     10     40     80
+>   page_fault1, processes     0.46   4.16  10.51   9.23
+>   page_fault1, threads       0.46   3.51   4.35   4.19
+>   page_fault2, processes     0.43   3.66   9.02   8.33
+>   page_fault2, threads       0.43   3.48   4.37   4.19
+>   page_fault3, processes     3.89  14.78   8.10   8.00
+>   page_fault3, threads       3.87  14.29   6.88   7.96
+> 
+> Change in faults per second with this series, + is faster:
+> 
+>   tasks                         1     10     40     80
+>   page_fault1, processes    -0.3%  +0.1%  -3.0%  -1.7%
+>   page_fault1, threads      -0.5%  -1.6%  -0.9%  -0.9%
+>   page_fault2, processes    +0.0%  +0.9%  -1.4%  -0.5%
+>   page_fault2, threads      +0.3%  +1.5%  -1.4%  -1.0%
+>   page_fault3, processes    -1.0%  -3.8%  -0.7%  +1.2%
+>   page_fault3, threads      -0.9%  -0.7%  +0.8%  -0.2%
+> 
+> The boot-to-boot stddev is 1.0-1.8% at 1 task and up to
+> 15% in 10-80 tasks, so basically this is all within noise.
+> 
+> Changes in v5
+> =============
+> - Pulled in patches from Vlastimil's series (patches 2 and 3 here)
+> - inline functions (Vlastimil)
+> - Added patch 5: zonelist_zone() reads the slot with READ_ONCE(), as
+>   recommended by sashiko on v4's mempolicy patch.
+>   Patches 6, 7 and 11 call it instead of open-coding the load.
+> - Added patch 12, removing zonelist_node_idx().  Not for stable.
+> - Patch 1: reworded the changelog (Vlastimil).
+> - Collected Reviewed-by tags.
+> 
+> Link: https://lore.kernel.org/linux-mm/20261028211930.3504634-1-gourry@gourry.net/
+> Link: https://lore.kernel.org/linux-mm/20261027-pgalloc-ai-hotfixes-v1-0-9c7d1aca801e@kernel.org/
+> Link: https://lore.kernel.org/linux-mm/20261014222456.2318284-1-gourry@gourry.net/
+> Link: https://lore.kernel.org/linux-mm/20261015210539.3243563-1-gourry@gourry.net/
+> Link: https://lore.kernel.org/linux-mm/20261019172346.3344005-1-gourry@gourry.net/
+> 
+> Gregory Price (Meta) (10):
+>   mm/page_alloc: reset can_retry_reserves when the slowpath restarts
+>   mm/page_alloc: detect zonelist rebuilds from memory hot-add
+>   mm/mmzone: read the zoneref slot once in zonelist_zone()
+>   mm/page_alloc: snapshot the preferred zone against shrink rebuilds
+>   mm/mmzone: read each zoneref slot once when filtering by nodemask
+>   mm/page_alloc: retry allocations that raced with a zonelist rebuild
+>   mm/hugetlb: retry the pool walk when the zonelist is rebuilt
+>   mm/page_alloc: retry alloc_contig_pages() when the zonelist is rebuilt
+>   mm/mempolicy: read the zoneref slot once in mempolicy_slab_node()
+>   mm/mmzone: remove zonelist_node_idx()
+> 
+> Josef Bacik (2):
+>   mm/page_alloc: keep the pagesets of an empty zone
+>   mm, page_alloc: pass zone pointer to trace_reclaim_retry_zone
 
-Thanks, and congrats Zi!
+Thanks, applied to mm/page_alloc [1] page_alloc/for-next-fixes
 
-Acked-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+It should result in no conflicts with other trees AFAICS.
 
-> ---
-> 
-> base-commit: d89e1d186ec9271bf78e62771779e9fc03bf0fc3
-> 
-> change-id: 20261029-maintainers-e2699bff7521
-> 
-> --
-> 
-> Cheers,
-> 
-> David
-> 
+Following David's MAINTAINERS updates [2] and mm-next call discussions,
+we'll move ahead with the page_alloc.git tree (integrated to mm-next) now to
+spread the handling of the endless fixes stream. I'll send the MAINTAINERS
+update soon.
 
+[1] https://git.kernel.org/pub/scm/linux/kernel/git/mm/page_alloc.git
+[2]
+https://lore.kernel.org/all/20261030-maintainers-v1-0-97278f8a5f54@kernel.org/
 
