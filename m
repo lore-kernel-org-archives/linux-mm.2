@@ -1,66 +1,66 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5ED79606A324
-	for <linux-mm@archiver.kernel.org>; Sun,  1 Nov 2026 17:11:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D78CE606A324
+	for <linux-mm@archiver.kernel.org>; Sun,  1 Nov 2026 17:14:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=a8K7STZD
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=NW0/ZItu
 Received: by kanga.kvack.org (Postfix)
-	id 6FB976B05BF; Sun,  1 Nov 2026 12:11:31 -0500 (EST)
+	id 023CD6B00EF; Sun,  1 Nov 2026 12:14:19 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6AC7C6B05C0; Sun,  1 Nov 2026 12:11:31 -0500 (EST)
+	id F17176B05B1; Sun,  1 Nov 2026 12:14:18 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 59BEC6B05C1; Sun,  1 Nov 2026 12:11:31 -0500 (EST)
+	id E06696B05B2; Sun,  1 Nov 2026 12:14:18 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 2F2BE6B05BF
-	for <linux-mm@kvack.org>; Sun,  1 Nov 2026 12:11:31 -0500 (EST)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 9178EA0A72
-	for <linux-mm@kvack.org>; Sun,  1 Nov 2026 17:11:30 +0000 (UTC)
-X-FDA: 85387191540.15.ADB893B
+	by kanga.kvack.org (Postfix) with ESMTP id BD83C6B00EF
+	for <linux-mm@kvack.org>; Sun,  1 Nov 2026 12:14:18 -0500 (EST)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id C4557A0847
+	for <linux-mm@kvack.org>; Sun,  1 Nov 2026 17:14:17 +0000 (UTC)
+X-FDA: 85387198554.16.CFE0963
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf13.hostedemail.com (Postfix) with ESMTP id E8F6F20002
-	for <linux-mm@kvack.org>; Sun,  1 Nov 2026 17:11:28 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=a8K7STZD;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf13.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org
+	by imf29.hostedemail.com (Postfix) with ESMTP id 290B4120002
+	for <linux-mm@kvack.org>; Sun,  1 Nov 2026 17:14:16 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="NW0/ZItu";
+	spf=pass (imf29.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793553256;
+	b=6RSIlJ7xu0CUL4/yJq5Pe4BnuHg1e72Wqi5JvUK77MsRxPQar+VYWCHtW1bG6pADoq5mhE
+	1sgRj1Ie9ZcijA4hAoryC3owzsWvp9WvR4WxPzmsrTm0ZX/GUCabhEsm508t/qdU3UHOPm
+	sqBbCgD7euRy7jz6lzVUNHQ9GpZT51A=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="NW0/ZItu";
+	spf=pass (imf29.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793553089;
+	s=arc-20220608; t=1793553256;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=OAh3bSv7u3LMOUIxSn2imLDtJLVr1ST8Nu4wB45AsEY=;
-	b=MpnuEvLgrwrDiqgUTgMf3CvjbyPEa200pkPDqVny9yg+kqLK2bJhltEYoPaEiPU+hf9O6m
-	MKddxRvgH4fWhnhxcdVMEBS38uekGEpdcuwVjQ1f52J9BaO63Dhz/RiorPpvAEdgA0bQmz
-	HzjOxgrZXdVpG9a1vuaLmUZfpAWTm/I=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=a8K7STZD;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf13.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793553089;
-	b=H5sN3q2VkCrenD2jpr0ORM8AD/kbC8swhJggKck6Nyks7HuPV+quwCgWdxpkpDNPGc87Dq
-	SxoF2DFCnQuRq2kHF+2RUBx1xWLS8kGrMuVDZTX6A7UYgtJKHn/fFxH1OoRvRwLDUtrl8h
-	oZpsUDVeNMatZ2iqCe9DU/Jq0haMLqo=
+	bh=R6gUavSXN8o98nfRqPmDU4mBwMW9oSNT3lHuUTmjbYo=;
+	b=csaVX7hJACciKRAWar1uR8+tHIX5wu5be4yQJpoazLN94XveQ57z6310BXIkIDDkl/EZr6
+	wxFX0RQEjSMNixPJ0ZO60e3a2YVBvigUwxEIWoobm6p8nNJvibTDSkLLNK6MuR48/boBxt
+	vueKqsPp6s8+JQsI9/Um5dySughYuD4=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 1E0B241834;
-	Sun,  1 Nov 2026 17:11:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88D681F000C1;
-	Sun,  1 Nov 2026 17:11:27 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 5725D43950;
+	Sun,  1 Nov 2026 17:14:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7622E1F000C1;
+	Sun,  1 Nov 2026 17:14:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793553088;
-	bh=OAh3bSv7u3LMOUIxSn2imLDtJLVr1ST8Nu4wB45AsEY=;
+	s=k20260515; t=1793553255;
+	bh=R6gUavSXN8o98nfRqPmDU4mBwMW9oSNT3lHuUTmjbYo=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=a8K7STZDnDa6mE0nR6n9AkERHliVp3c33Rev6eagR57gXJzu8hsiiy99MzzPNjCka
-	 KhVl5q9nLlLcOq5eLBtvMpWVpMBgVNwrhw4J+PYjxnvi4eX4IqxbuCf3i7Dv9qVuZt
-	 Yc6pbWe6DDMvUrImKxCcW5KqZvWPg0ydFHEvq7McLGsbMJ2dE4JYtzQoP9cLV+/AFM
-	 9Ji2j0IMq+fhBKX15/mASDdqANUXhrNxgMoIPZP4ldBZSCSSapXuVxmANPf6C8N7OD
-	 jgxvF8PlFUMLdbioT+PlrganVE0wyWDd+82hWmBe42oUwuOeeI2eFwZlrl7XNbC/yG
-	 EHdBO4MFILNhw==
-Date: Sun, 1 Nov 2026 17:11:26 +0000
+	b=NW0/ZItu8ulb85kahpqmxU5Cdhwkdm5fODVcRqYy5093olCiYLGwX7cw1FLgl/Wr8
+	 be6fSFpfOzilrkt3Mgrvv3f30APu+WmoLRhr6w5YThqBESoP5fQrAnIRvDI+unlBU2
+	 XGY/8ngxF/IMenuje6LAqPjw894hwe+xyz7HmvasyKt/fGFx5myHpXwVbtlwHGIAdV
+	 bB06uoPXtIzgtCDJYVFA8LfpKvY5/jU7OOmM4yRQIQRaHCfhUvHo0WMuxWN1NR58rh
+	 81Kl3CuXfHLi8oQYLM0CMiFJlqua3DYgG4QBD9lfGheBq5gAgkTK7Ku1qzRr72QTQK
+	 Ed8/XYIg/OB4w==
+Date: Sun, 1 Nov 2026 17:14:12 +0000
 From: Harry Yoo <harry@kernel.org>
 To: "David Hildenbrand (Arm)" <david@kernel.org>
 Cc: Alistair Popple <apopple@nvidia.com>, 
@@ -90,28 +90,27 @@ Cc: Alistair Popple <apopple@nvidia.com>,
 	Will Deacon <will@kernel.org>, Xu Xin <xu.xin@linux.dev>, 
 	Ying Huang <ying.huang@linux.alibaba.com>, Youngjun Park <youngjun.park@lge.com>, Zi Yan <ziy@nvidia.com>, 
 	Jason Gunthorpe <jgg@ziepe.ca>, linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH 1/7] MAINTAINERS: mention for-next branch in MEMORY
- MANAGEMENT - MEMORY MAP
-Message-ID: <audyrBPhYRZvkJVl@minisforum>
+Subject: Re: [PATCH 2/7] MAINTAINERS: TMPFS (SHMEM FILESYSTEM) updates
+Message-ID: <audzTEdSflX9iZMg@minisforum>
 References: <20261030-maintainers-v1-0-97278f8a5f54@kernel.org>
- <20261030-maintainers-v1-1-97278f8a5f54@kernel.org>
+ <20261030-maintainers-v1-2-97278f8a5f54@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261030-maintainers-v1-1-97278f8a5f54@kernel.org>
-X-Rspamd-Queue-Id: E8F6F20002
-X-Stat-Signature: 47egjjuayqraqsr31r8uhsr7mw9t7ekh
-X-Rspamd-Server: rspam06
+In-Reply-To: <20261030-maintainers-v1-2-97278f8a5f54@kernel.org>
+X-Rspam-User: 
+X-Rspamd-Queue-Id: 290B4120002
+X-Stat-Signature: z9beozqfwh3od3ps9jf1f7gdzwgrutge
+X-Rspamd-Server: rspam01
 X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
 	autolearn=ham autolearn_force=no version=4.0.1
-X-Rspam-User: 
-X-HE-Tag: 1793553088-808561
-X-HE-Meta: U2FsdGVkX1/rEtWnoqqX77d+nwSamJnSbOEE+WBTb+4JhpY7kbxoW292+aulsHfYUgxDBRLRtdnrVBUH45ySr+k+6kQyy8VX+aHGjugkgYtshEEtjxTOq+nb9buyC1MyCyTzjvttDfOGaPu8ad17KQ54LA+HknYphLH9R0XOZKox175wvoGwbrD5Q+8vukToY4Hm2wI3ortcelk9LpIhPNoqJDqxMw8IjB4zgt4uBH/glEFGWENrcEeccWGC/s56aceTGb7HO19vVGOGIr7982oToEwbe71fXRskXg1zQOUOJxME0IebGQ+8oJk8R4GMoff0v+UKBiXuisF1bLF7UfjWuPqiWgGh2hFOsTyWoPEDnxRRPWPBwoMwysz01yzZVzaYckggoamAJCQovdLPY5Qaus+tV7xt9oHrEDJEZhVfakaowjzilOwQf5oCgmkjXYwBXKSLJFfo1AJXUwdICorA3bUNAXoiF2v3Xk9ng1zKUS8pu95ybr3YP4xOznLsvrdI9TuNICR/cQuCBj48qGf/1EeYJkeVo6VVjA8fNpUacggcmKmX0sgtO2H2XZtckCDD7L+GSxgBNKOG1piN5fnneb4soujfiLGY2IpkfHIMe1PqVO8BEyhKORFFHFbjZMcO7jJ712OaV6jjcBlfUjIiko20plk+tTo/q8DEV9WWHyVFmkuTqIkj+u+K6OnmiKMSYYYF2mp+KC7dy6qRFxXz1qCZj0Mkx5Z3oFQC59RKX5VZsmDulu+1yh4/2CwOAz+2DjN2neSTB8KwUGkJBjpJ89/9g4EOwkqXhVHf9Y2hkaMPGeK7rs3D1MqVKdX9ZkJW2yjns2LdZUy+DfjD7P4bsdYfVYI7vRcmtE1RVvrVXjAJ7pNHhtKKH/h4h+8+lbjGZ0wH01+FIcGonEPYdzXmqRWInaU7uRWdb90Or9EnR8A818AXtbwCmOVmuRihX6adpsVzY8+NT9Sbs2z
- RCzme6jz
- P7iaqEiVc6fzgJdha7eOFeFR+OC/AtMM1JR28kfTWIdYNWZxvecouZaOWEHvz/yoKRFF0W81WrAXfyIFZpvbDz5mqy3HBnoUYKZ92DgjLj688Bzcqvd20d/GfDMAKraNhGJQjsrYEn6jKK8wHP83X4M4EiNrYBIQWpKZnZkqM9rMETHAN8RfIYIiLRpApQmrt5N3f0TCNRFN+44MVoEUoQnNN8WYfxk+6xop8aWWU6PuCMESy/q4Oh6bmSLn6ceJKM7Dn44Xk8Mw2KAheaHF8lQXhemPsJGW3OUoAS1fLNtQfvOcDk7KR7R8Ja2Al0wZZ8hRoNq8CtAG6W1ZYLlBXMJmHaD8tQIKHkEH4
+X-HE-Tag: 1793553256-680815
+X-HE-Meta: U2FsdGVkX1/Cr1pd9ULOgh4XTYSnySecTuNp+VkQoZJY+avOstkaTu0zxHbGAtcFUm/uGcY+pb/ahKsj+hy6Ah9/hTiESh8SolR4nI6NT2FUI/BNczGONpNtf6pZJDi5MFCXX/c5LWoDBKY6jh0lu10SnepcJR8ajk6Cd0hGeYIq8508ETQydiY5xEFDJT8GaeJhc2VDQ4Jq3knaMQBizZ8LGPoKM38JRRxOt61xtYeXzP/z9h+m/WF9HCNmNQ7GKtON+IXqYvStE7CSHp/0CeaYku+5AFcAMvYCzSyBhHseVgXevg/EEvhp9LzPAXFVm8iqMVQQOi8y3v54mude23Hf+Ol0udqTLi97lyM17LHFC/aGgSnEA7qQuA9IPjvpjEi+VSAa3IPhJMn8HzYmLqs4D+Mm0MtIyp8OuKHzHrMcUOkKtZZhW+pAimGxXRtxtmYifM36NG/p5crw9VEbAqt103EnCnssOmY7NL/DGvusYq/9/ItX4RukGL/FIEvMsPBOqQ1OS+DlmLYS2OVlymgs0FhEPtJhTH2zoyphCQaC4yyRzhVWoQOBPmZZTYwTPPBiNaX1jWZXm32X4dbZcQ5Um5+WT6k4FJ8LKGOITu3NkDTER4MulPdUy541OSoqrKAPEB6N5P3aCXd3Pc9jEftbiDYKbgTrVJCHG/W5IaZCy7LFYstBKk7jaJGb27bjlyZjitNDay1tNcjoJ/LxGVRKDvNmbKwmgOnP2/3WdlWzbABWzX9x/iSHA8dEF+d/MJOcGw9QkqGc0etk1dBKf8xmBKVWEsLaPlE4bq1nA9GqC+wguC5bb+TvY2es6x0TQHJU5niAgvCRYk324SCc0ozIkQEhN786G0FPBc4hwDB5cYdzFKqQJv9F5eYWx3Bi70V81aZK0IOcWg6DJSB/WNo0AnmjogbZbbspLpFGEgtLDCFznrHPN1xPkGHpYI2irt45tojlX+9V1VlkftZ
+ bWbYrObY
+ fub4kNy515q708bCMG3+YJrOW6Z/rr4E/tjWjNEpqFF7FzqMQzrLB+HbmVUhc5KFqWU2m+3Iksz1JbQfbt6Us3q6LThgU3qsweAdignIqvX4T+aHP1L2VXgJMV9InSeBcT1Tf/fhHg5pFU4aL5q1edIJ3qzbJzkVq7DqRXD8Mi4xVlxKcX9MnwYV5Wau0rf4uCSGXl7gaZ6fDvLqj0gAbEuJFOKvXcAcXq7OJ4O6/4Ee+fPN8u9InzWxkvewDDAfa9GiRMfjGK6nt3MSfCxkPfooeVDW/Rni6cPEWttIXgC5p0bz9PP60UcQHsoX7SzOWZ1rduxFL40AV/HXY8nCw1hk7S2fnX9ukYBeY
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -120,14 +119,26 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Fri, Oct 30, 2026 at 10:34:25PM +0100, David Hildenbrand (Arm) wrote:
-> "memmap" will be used as a prefix for branches, but not as a branch
-> itself. "for-next" is the integration for all these things against which
-> people should ideally send patches.
+On Fri, Oct 30, 2026 at 10:34:26PM +0100, David Hildenbrand (Arm) wrote:
+> I am not really the best shmem/tmpfs/memfd expert around, but it should
+> be good enough to judge when something is ready to be picked up, to then
+> pick it up. I'll have to heavily rely on Hugh and Baolin on judgment
+> for the more involved and more controversial bits.
 > 
-> Not mentioning a branch makes them assume "master", which is wrong.
+> Rename "TMPFS (SHMEM FILESYSTEM)" to "MEMORY MANAGEMENT - SHARED MEMORY
+> (SHMEM/TMPFS/MEMFD)" and move it accordingly. Add myself as a MAINTAINER
+> so people know whom to CC.
 > 
-> So just mention the right thing, which is "for-next"
+> Add mm/core.git as the target git tree. Once shmem becomes a high volume
+> component we can dedicate it a separate tree and have dedicated people
+> pick it up.
+> 
+> While at it, add some more shmem/tmpfs/memfd related files+directories
+> we missed so far.
+> 
+> There is also "kernel/pid_sysctl.h", which includes some of the pid
+> namespaced sysctl vm.memfd_noexec. But that's really more of a proc/
+> namespace thingy, so it's not a good fit here.
 > 
 > Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 > ---
