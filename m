@@ -1,71 +1,71 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FDF8606A32E
-	for <linux-mm@archiver.kernel.org>; Sun,  1 Nov 2026 07:14:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F282D606A325
+	for <linux-mm@archiver.kernel.org>; Sun,  1 Nov 2026 07:16:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=pKp+qtJ/
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=LH6zBUF5
 Received: by kanga.kvack.org (Postfix)
-	id 451EC6B05B3; Sun,  1 Nov 2026 02:14:36 -0500 (EST)
+	id 037E36B05B4; Sun,  1 Nov 2026 02:16:26 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3DC596B05B4; Sun,  1 Nov 2026 02:14:36 -0500 (EST)
+	id F2A576B05B6; Sun,  1 Nov 2026 02:16:25 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2CCF96B05B6; Sun,  1 Nov 2026 02:14:36 -0500 (EST)
+	id E3F426B05B7; Sun,  1 Nov 2026 02:16:25 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 0C9B06B05B3
-	for <linux-mm@kvack.org>; Sun,  1 Nov 2026 02:14:36 -0500 (EST)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 7AA90A0933
-	for <linux-mm@kvack.org>; Sun,  1 Nov 2026 07:14:35 +0000 (UTC)
-X-FDA: 85385687310.22.11DD534
-Received: from mta0.migadu.com (out-18.mta0.migadu.com [91.218.175.18])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 64AF640002
-	for <linux-mm@kvack.org>; Sun,  1 Nov 2026 07:14:33 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="pKp+qtJ/";
-	spf=pass (imf17.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.18 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793517273;
-	b=q0yMcL7DbMRCcJlOimcNVPqApnDRqCi6ZXk23Ki+owauSGsfsqDm6NcYJrPKF9tPDY2bzK
-	6nplD/MHhR1aRHq45dnz4BVd5MwkMoxXkUK9m7nTrYqCexsF27X9VPfU2VzDghq4czFrOY
-	xUWt2GomQ3Uq1Gm+CmZ0/lFX9Gfp4xA=
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id BC9BA6B05B4
+	for <linux-mm@kvack.org>; Sun,  1 Nov 2026 02:16:25 -0500 (EST)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 1DB37120A2C
+	for <linux-mm@kvack.org>; Sun,  1 Nov 2026 07:16:25 +0000 (UTC)
+X-FDA: 85385691930.17.A7E989D
+Received: from mta1.migadu.com (out-98.mta1.migadu.com [95.215.58.98])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 9A58140002
+	for <linux-mm@kvack.org>; Sun,  1 Nov 2026 07:16:21 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=LH6zBUF5;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf01.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.98 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793517273;
+	s=arc-20220608; t=1793517381;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hMKZpg15BN7ibax6GuM/EqpnZ+65bEpp5yD8qzjlvfQ=;
-	b=uUleEDU+kjtT3gLUf1frx/WoHkAUmfqzKLt2iI9D+WDUs+uYu0B0G3W7gQ+JEWOHfRGmei
-	g0rm21cT5GckyECScaDP7qtUtlCcH00n8Hkp1ScyqoQAp2so7qXHyTqHrb/yxXYK/t1laH
-	7u7rO3K1NE1tyIXV22WdLCchEdeEfFk=
+	bh=sKUtUKSAT7N9lWEULtTe5OHLm/0QKeLXLq/cuehm0hY=;
+	b=6SOKyyPUlXoKS4QxTQ2n+juCc3uI8/gRQhP5/4ZDhpmyqIV7y1CFVcdpVH0FFaXIDz/yS/
+	QOIugAjJPo/oeglSNxpNCP32YFyUctheZMUe+vd5x16yB/mxFN5QdwvDuNxF5aZV6zEJoA
+	O4BGj+eo17aHpmN8qEFDV7PYqJ5Em+s=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="pKp+qtJ/";
-	spf=pass (imf17.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.18 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	imf01.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=LH6zBUF5;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf01.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.98 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793517381;
+	b=U9NnbC5t/LQzizN3ITAe3bWb1mVVDK0+bJgeeL8rKO3L2Z3dri1OEQHupIEef+SUZWCe6G
+	TNo9QZDc9FznfPFrjuU+mumOg9ublV7RZSuat/3Vp6rGrGM4bXXKL+XEWnbHC7EJ9/jMyk
+	s/h+GEdR+77+HPIK85IRCNISXYKGPhc=
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=f+gZnwn4jlugsItkgzJzya2zQVZHOUrl/EtEyxGLANI=;
+DKIM-Signature: a=rsa-sha256; bh=kHUvHYnw2dekg8CUjBUhuxM8s0SCtb5RHv0FpAGfgMc=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1793517272; v=1; x=1794122072;
- b=pKp+qtJ/xVn4uGzq4OPTyxXWgbIH6IJ5x4NWorZ29EN+NPsRGO7X8Kr49VEYb6EJZHl89CjL
- jtpuxYMMrEz30tkqMRCUzTR6YmmsJBXeodhtKNUyByfyw82UABHWY1Oz+GLFdGYyfL5NMveF1CW
- BnYCuOOwwmxD+5ZzFDuVOWJA=
+ t=1793517377; v=1; x=1794122177;
+ b=LH6zBUF5EdvcDy4FlVd/3Q5UigVrRVxhrnhHOqrazo9ldwqMs9obVky87NL6QenKubvhrI6q
+ XMj3bb2b2YjNvk0CTEXFPZLQAaKmniolyu8Akifd0u0A92dWuwIDu0goFqmfLXuNds+0D3GofNF
+ uuMft3H07+IoN39TmjwhZuRs=
 X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id f110c669da18e7dc;
-	Sun, 01 Nov 2026 07:14:31 +0000
-X-Mizu-Trace-ID: f110c669da18e7dc
+Received: by smtp.migadu.com with ESMTPS id 3d2700dedfd938b8;
+	Sun, 01 Nov 2026 07:16:17 +0000
+X-Mizu-Trace-ID: 3d2700dedfd938b8
 X-Migadu-Flow: FLOW_OUT
-Message-ID: <2aebd191-5c20-4865-8f2b-8db326ef6ddc@linux.dev>
-Date: Sun, 1 Nov 2026 15:14:26 +0800
+Message-ID: <fe601caa-3676-4623-b77c-35930a6f65e6@linux.dev>
+Date: Sun, 1 Nov 2026 15:16:09 +0800
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 10/12] mm: hugetlb_vmemmap: make vmemmap restoration
- folio-oriented
+Subject: Re: [PATCH 11/12] mm: hugetlb_vmemmap: unify vmemmap range
+ restoration
 To: Muchun Song <songmuchun@bytedance.com>, Oscar Salvador
  <osalvador@suse.de>, Andrew Morton <akpm@linux-foundation.org>,
  Mike Rapoport <rppt@kernel.org>
@@ -75,24 +75,24 @@ Cc: Lance Yang <lance.yang@linux.dev>, James Houghton
  linux-kernel@vger.kernel.org
 References: <20261020115306.813483-1-songmuchun@bytedance.com>
  <20261020115824.823278-1-songmuchun@bytedance.com>
- <20261020115824.823278-9-songmuchun@bytedance.com>
+ <20261020115824.823278-10-songmuchun@bytedance.com>
 From: Qi Zheng <qi.zheng@linux.dev>
-In-Reply-To: <20261020115824.823278-9-songmuchun@bytedance.com>
+In-Reply-To: <20261020115824.823278-10-songmuchun@bytedance.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: spk8zixkqqt7mq5gk3b7ck9s13476rgq
-X-Rspamd-Queue-Id: 64AF640002
-X-Rspam-User:
-X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 9A58140002
+X-Stat-Signature: 3mbsy6uzrnw1dh4smi1ig381x6ssce83
 X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
 	version=4.0.1
-X-HE-Tag: 1793517273-335146
-X-HE-Meta: U2FsdGVkX1983gUG1i3akmcIyXSYsVaL75eqXmmVqgOPBmHjFnKnfbkdws24wHvWDzQ3qkCp1Yp6IfDtNMd77QsrxkB4mnQF411yxccRFZD2RXIzt6L2HxkCZ8ez+ZpHKqPkHPS89xVKDwn1U5sB/DDaxTjBUfNilq/ZHJ0TT7HAOSEs491nmYqosR3T0nMQtftWkF7+MzrZtXZKs2DJ+W+1qfbZmYMajMno76OLLYTXYGhj+TVN1XEdi5JePopJw51Mf1ASGm8xzwdu2feHjiILyj4LxKcex2kcRTdjMCmmnej78LHyAtLPprqSy1fWlMBITjWxXr903RyVxJLc1VHF/y+PBMTKmCV4kiXQp/dgv1LRepZRddu4Kvey8ken0vUZOjo4a6BJWHjk92BSDg7o7acE02GLAodKlP0qI/4QHTO6tnkVBY2XJEPM358aa3vTCyXKGASOS7vNnmwae2GP239Zv2u5JBe/Ccr2ChssGmqiQDjNsxmDAAV1XVHO4tncsn2yUHoPz0nhnXRTU+0miGJXjCLIyGMtq0D7xCChRS/Vt9a1nPiOTqPxiEMTxpvpGoqte89N1zmZAqkWdhtWh5hzn+Hjg7E+SHlWjRyt8F9cL+GBNtl069vzvXLRKHxWnGmqMg0YZKetKYj+RJggOVKyKuBx71p5mLliaBz6mSx1iwRQsD3vVysvy7jklPncoKMBPgoRSYeirTyU44DgP1L52v7MHmO8LKSJzMuB+0bCb3Jdgr29ULsgmxT5Ce439EShvEBFPUFx8YUccPg5ivaVOfR1mFB2UYMOPq0YYkL7mXGg8knvld8NBylLRgC4uXPybff28YK3e8lwzzo0SA5FzCW8erZxQTwwLndrQqS7irKc1oFkpZVGdGb2iVPoBFH43MW4M/5N/OX7wzKnQ7NCIbKYP6bsUfSm+xsAKm12+QkO1iEze+pMjVGnhXP9FuEsvApFJNw4kUT
- R+nJsH1l
- yHOh6CmWJujChzrVY5iPgnx37e2VmJZ42ipJWpPDQMReH3e+NxMnFAtTXABD4BbwHgn7/IVwH1Fvysxypl84PIUEtV2i3KBQ2TUgc0J03vArLEJluQcffIGLov2mV1Uf2n49GwWFvvwvMJDUiCR7/Hw35MZ7n3FzNHuAtJ77H0Bvtyj9G2VDma/Jdu36vUCODeyZXhFsukTnGrO2EM3FDjR6gRlQFZOsulWfvVTQ7itZDmklaOH026JisE/6BLnRZH7SfioeILiBRcVTYNRMalaoosW6lQA6Yq3WfKhpFLHdk93wl+MRH+4QEOQaNdZgdbJGohlnhN+btbjh7vZ9nEngMmX6MEWv9dkNKB38nAtuC/IlKauxK2UKNWn04TKgbl7NAPFa7Sc4THRT2HYFytDY+MQiYRyn1zO1Wz3bX3uBdn/qHNzeGDkotAhAjPYNmaaxJ
+X-Rspam-User: 
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1793517381-378760
+X-HE-Meta: U2FsdGVkX1+tKDvG545ssJ4/rIcBEbppzuoYAFRcDdT/uhrcna3xLvSwHRXOQwCKdaj47ntLnbfYYr9Q6t0RTqqMRsBlF+5DZVfuc4XU1XbNnLjAIZVJnVXyrB10j/meb4tTi/YP/lWh7burEZGIYZ4ebcSdCA0vIa0XjuRhjLVVqYlfCjInrAGQNRL/aIF4BQ7h1v82+ALmCoZlhWFy95W32gKlmyOZCdxxOokgWqFTAeKHQPkue5pTkFB1Cdp2S/zNM3CzcksdGwGUnwDu0agaewA5tivpgZ9gPyQfu/SZ6P/b5pdQTwyrA5ZjrLBSKdhqyS9hJmwSmAuAxQ0GyH50LN83xelvjz0JPjOdAbtBkTnqoACTSiHH1gH9eJVZ7J2bUxE265OPgBiQZJuG8ZNwBorTibEtXNm+5A5gsZuXraBSa7L5l/QEWQGfJGuCgpfwmThPfrsuSZoUwAZhj6E2RCySH1WxaVmhKDCfJHimEOSWFSL79MVDbq2/wYhNo7BSqM/hjyb3AqgAZ22fwk6FudhgsmBTZymQCPtsH7Xv2VxgPU9uWQsB0/IjJUpdNglEZlmiKUqlXCOl/p8S4JAh8g0Ckkd3+tUcsqHCfezHwOq9bKMsikq8/saNVafCvMV3+syhPW/BtpgVK1YvxgNZQTR1qS7qHgz3o0MYliKcbGTq8jNz2oCx2kxwlgAjcGC+GxDZUdRQDsJcUxl76Mr7X+hJU2jzui/5HOuTCpJHOJrJKgc0gMoSk85TaDpzxXp+ZCZT3m+0imfVJlWEcjsTlZJBqjfNeSbPQeTqFNZtpKTtVzOoyKqsAqSbUQDbVAN3fB/uhhcJkNZEh+EHPxxrmCcrVGeSv5kOXlszomJnOI9hmd31gNw3iR0Rx+3S9fsc6wP3wM2RO+kbj9wwGLC8IpMI9yHq4xgJdJsN5TuIDwXiOxRL3C02QW3+VEl6PcWWJ9IJ65keUePaun0
+ NhQSpxq1
+ 0QlWq7w1Vx/cjHsnfO48TSm/FXT6YJLfdg7kC851PYWxPpu+YATNeo1xzMX4z2XvMqVfrZl1akbT4tDKnAaXdvapg62HQmHFxPJ/ze8pt+kdAgGB/qtuc1l7SMFx6y+TfcBlIN6uXC2q9WyloS5l1cNOLu19brDEepQl8lky6sXCpBLl5CGNJMxALsAhlrXJq3Y7WD09e7YRp6KDAO0cfrdymklD/MjvsnoTYRZitdyPo6pwTrqjoGsdSLxVEJSbOmkXtIE9up/qivJ7jFIGlbALlTfrdqombQi21o9oqgPFkSAnGQgfbY1CaV9hUDVLQssNPyr7faKmonN8xXQNBqi21WQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,24 +104,19 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 
 
 On 10/20/26 7:58 PM, Muchun Song wrote:
-> Like optimization, vmemmap restoration operates on one folio at a time,
-> but the current interface exposes a raw address range and requires the
-> HugeTLB caller to prepare part of the operation.  This splits the common
-> mechanism across layers and obscures its natural unit of work.
+> Restoring an optimized folio and rolling back a partial optimization
+> both restore a vmemmap range, but the operation is currently implemented
+> separately in each path.
 > 
-> Make the folio the unit of vmemmap restoration and move the common
-> mechanics behind a folio-oriented interface.  This keeps HugeTLB-specific
-> eligibility and state in the caller and gives both directions of HVO
-> consistent folio-level interfaces.
+> Use a single range-restoration path for both cases, making rollback an
+> explicit bounded form of normal restoration.
 > 
 > No functional change intended.
 > 
 > Signed-off-by: Muchun Song <songmuchun@bytedance.com>
 > ---
->   mm/hugetlb_vmemmap.c | 37 +++++++++++++------------------------
->   1 file changed, 13 insertions(+), 24 deletions(-)
-
-Nice cleanup.
+>   mm/hugetlb_vmemmap.c | 33 ++++++++++++++-------------------
+>   1 file changed, 14 insertions(+), 19 deletions(-)
 
 Reviewed-by: Qi Zheng <qi.zheng@linux.dev>
 
