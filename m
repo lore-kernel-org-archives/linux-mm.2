@@ -1,93 +1,94 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EE70606A33C
-	for <linux-mm@archiver.kernel.org>; Sun,  1 Nov 2026 16:04:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8886B606A326
+	for <linux-mm@archiver.kernel.org>; Sun,  1 Nov 2026 16:04:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=GV96uufp
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=tqAXrMaG
 Received: by kanga.kvack.org (Postfix)
-	id 2D56D6B05B1; Sun,  1 Nov 2026 11:04:37 -0500 (EST)
+	id 483386B05B2; Sun,  1 Nov 2026 11:04:39 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2860F6B05B2; Sun,  1 Nov 2026 11:04:37 -0500 (EST)
+	id 40BCF6B05B3; Sun,  1 Nov 2026 11:04:39 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 175C76B05B3; Sun,  1 Nov 2026 11:04:37 -0500 (EST)
+	id 2FAE66B05B4; Sun,  1 Nov 2026 11:04:39 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id DE4526B05B1
-	for <linux-mm@kvack.org>; Sun,  1 Nov 2026 11:04:36 -0500 (EST)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 75C3A40A98
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 02D346B05B2
+	for <linux-mm@kvack.org>; Sun,  1 Nov 2026 11:04:38 -0500 (EST)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 50571C09AF
+	for <linux-mm@kvack.org>; Sun,  1 Nov 2026 16:04:38 +0000 (UTC)
+X-FDA: 85387023036.06.F8A7AE1
+Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 6241E180005
 	for <linux-mm@kvack.org>; Sun,  1 Nov 2026 16:04:36 +0000 (UTC)
-X-FDA: 85387022952.08.0469FD7
-Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
-	by imf23.hostedemail.com (Postfix) with ESMTP id A35BE14000B
-	for <linux-mm@kvack.org>; Sun,  1 Nov 2026 16:04:34 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=GV96uufp;
-	spf=pass (imf23.hostedemail.com: domain of maxmuzaf@gmail.com designates 209.85.208.42 as permitted sender) smtp.mailfrom=maxmuzaf@gmail.com;
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=tqAXrMaG;
+	spf=pass (imf16.hostedemail.com: domain of maxmuzaf@gmail.com designates 209.85.218.46 as permitted sender) smtp.mailfrom=maxmuzaf@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793549074;
-	b=kKNwCnjEZS6qWdcdR13tMc6UJDsQQVJD6LcgseN5hNnyUXbuDpbXUNMGzt3z6SHIbXHksf
-	JnGuum5RZWp2ZvngZVlgH/315mdwuypeDMz9vDms0BDqHiNDhQBHHwUemXcuhzrLne6UK1
-	NjEumG89rmaokwIZXOjSoAoC/BlQHfw=
+	t=1793549076;
+	b=whtL44pBjPycjrvHaSFax/lxKhnsw6b4EmjRr+y59Qf/lcynQxZZ1gOghULqTlKQj0TA4G
+	+RDRfFx0ku/W85+hT9Cz4nyMnjAp+XbZKOtM9w0z46spONwj/iU1k2EKg6qHxMXUGZomLF
+	aE25e/WTVqZ37RjnpaIX86jCbI1yy0M=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=GV96uufp;
-	spf=pass (imf23.hostedemail.com: domain of maxmuzaf@gmail.com designates 209.85.208.42 as permitted sender) smtp.mailfrom=maxmuzaf@gmail.com;
+	imf16.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=tqAXrMaG;
+	spf=pass (imf16.hostedemail.com: domain of maxmuzaf@gmail.com designates 209.85.218.46 as permitted sender) smtp.mailfrom=maxmuzaf@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793549074;
+	s=arc-20220608; t=1793549076;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=VpiNcJITzAimIo2l/+wZFEDSgKEuus8b7eMSXpkoRXc=;
-	b=fGOxHTtFafmLeAz1YV7mQi3z6Co3PqUBv0hxJygZwX+DAWSCbjOZMwGe6DVloVn+3SAxcO
-	NLFqdy4rOsVZq1Vf7spnx6kipDCXPit4k4sGe42TsQfYD9U+iR3KjAgbyby6KqTKO60V/o
-	SaRpw8BActkCMT0WKHaSgQRoA+QMCMo=
-Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-6a642495d81so3375114a12.2
-        for <linux-mm@kvack.org>; Sun, 01 Nov 2026 08:04:34 -0800 (PST)
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=59AkfJZqg17nYrV8HOTYJbLmwWBLcbXj8cjORtW0eeM=;
+	b=7d0G9Nnae5dUtq/UnU/b2wdU5H5SOAdPgY973LYphJnUdviVnmjZEAf2JNR3ewhqHUtB1U
+	3m0hpTS/s6CXi4J2n5iZTcTKfjmw+DJa742/lS4nXcfNaevzJI+KgweBcPZ5AoSn4z21Zz
+	9eAj3H3e2U1pw20kOWjqgPhlURO5PUI=
+Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-c4cac7a7d3cso237739766b.3
+        for <linux-mm@kvack.org>; Sun, 01 Nov 2026 08:04:36 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793549073; x=1794153873; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=VpiNcJITzAimIo2l/+wZFEDSgKEuus8b7eMSXpkoRXc=;
-        b=GV96uufpCtlKwsszro2RWr/2pzj73I3iZIiJjCh4FiUyN2/HymWWRp7krohJP383ub
-         9SbKDswBLkHmIUnNA67VcEVyeK3EzOkpZZbUKhkU1B7qoz1G/kAOvfxhec+eYSlkmHw+
-         /smtpWGhub4F94ZyoKQkEFOpHfmV2Sphpwf6urtkuvh5Yld8xw00zdQhG91l7aWn0B+z
-         ZhAXWZN1yJW1vV4z2bbqnMCHlgA7B4QyVobdQ2RdPfDHyyR6bZc7G7ai9JO2HFr5HXna
-         Z0MKdHgcP9wuhSfcsMNM/V+2AAfIupeloT8lpairNhTeSHB7czABq+IaoiMMLkdWpMXF
-         MN6w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793549073; x=1794153873;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20260707; t=1793549075; x=1794153875; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=VpiNcJITzAimIo2l/+wZFEDSgKEuus8b7eMSXpkoRXc=;
-        b=Yjzrk1vB6sQxsYmItmQR/3wYsoLjJTtg/R0j4u5fzaIZTrb7c5LNRBe27bBL7Kuh6r
-         cNNGLJJDzsICRRLjSe0wllOh8s7OOr7rcVcHBXU5Hl4AUthNW6PkxvjBCPaOX/qJMipN
-         Iv1EuC15K1nQad3rKfY8guwqGnQlWJcEpMn4em9Y33leqDCVSyswLhgzP5j9aPFYu3/G
-         wmJtyIwXlE5rOG2Ed+36Kp0GLuxJl2pZFPkwSyh1XBFdxUOdLkZGfTxu3Sx29NYr1WLZ
-         j+0yz9D9UCmI1l0Dsd4VCghjXsVD9i0/qUMxs8HUh+nwxKSKol/dXF+C5kNUhERqR/Jp
-         U/9w==
-X-Gm-Message-State: AFq9FYIDJFPNDzSOwmS8/KupHVkjlNpSO5XppX83dVG8x7cIm5AU6vUQ
-	KVUGyOn0+HCbJcW51RecoyXD1Oi1hjX9r/YvjCGDPldDeEiAka1t9r4EgXVJFm5xRxM=
-X-Gm-Gg: AYBFou0GJcrvYs8ESC9rTen0D8qZWDtpYFEiw0LGN0X1HV/uqYdpnD6qD39GJ7vge5k
-	cnT5cvlr1A5tVPAWBC6R5YmVEFBNs3/pnfc+0/poD1ou9yZJWTUHYETUeD5un4WLlWNf8lZyUe/
-	4uNhbd20uOeflyW/S+PgNZJmOgT0K/Viq2uBcc4Og2d7afGvqepnmY9nUfb9hBj1Qpq9Ys4wFXS
-	bozVKixKeGU5leJ9bfVO4enPzVf1Igsrv+YLthohwO1Jb/Q+BIKr+OADyc5z3KadPZ0QW3paerg
-	z0Hbje+ZW8Otr2TH0+nrk1poCv6g/S1sOerNB6NHAmxybUOXFKW7ypZ9DrPyMPKSGqwU0/lBcek
-	zaxT9q2jc8ref1/E6qAH94sEx5XZ29rLTXhs2SYXtZjtvJ7IM5jk/WrSZtkjfxzB9mAmjF+iEJe
-	q7Nqnh1/Luxj9sqKJJfho2T+d5568Doiy1e9hDE7nHioDXo9huVsoPP9bI7MKDhDMM+TXwQwisf
-	CNqdeTa58En4pKMy8k/ch83TGN3JpLx3XXFKMyGA71yQsm1G7f9aoK5mMEoCcQ1RcbJaHxTSvHS
-	ci6eDlpLTPaGe1GV+/JyaZTxkHlHB4KSl7IZPGL2WPXGDmG93oRK8gfvlF+nx5vsL/2M2r/R3hE
-	ydpiXO12rApV/CdxTpK0R3CYTSJyWafMSRp9hS/M=
-X-Received: by 2002:a17:907:84c:b0:c46:ba0d:3728 with SMTP id a640c23a62f3a-c4ca7a408c7mr613297866b.18.1793549072714;
-        Sun, 01 Nov 2026 08:04:32 -0800 (PST)
+        bh=59AkfJZqg17nYrV8HOTYJbLmwWBLcbXj8cjORtW0eeM=;
+        b=tqAXrMaGLxjhBSHEiketaKYGMe/pUj6FUownoT3g+5mzd3ZMSHAxqxuV9UXkebB0ET
+         3r+fGykOHrn38OxeRlwL8p9Ar4CmE8VY3fY6NH7N7Kmf3OxbTNEJsxDP9cVtgDxYKgoo
+         l3HiFxZLn09fjfjCZ2+k39SUUEKhcyBQ+8HXsAp8yVWxsJKGNL6afMtDspo6+7xDchL9
+         0jh6+Fr6q2Yk+Xj4lICzdKKBGrEKak462h+zSF1eW4x3joomEcB+43Ncpx+PYxuzB7UB
+         FyNIQR+c/Hshwva0/ODk5oCNIEc1Yjl+fEVcTmTIljCVl/NChd80QLU8pFqayEVEFl+8
+         fQVA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793549075; x=1794153875;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=59AkfJZqg17nYrV8HOTYJbLmwWBLcbXj8cjORtW0eeM=;
+        b=v5AXRnl+oXGbAKCF2VvJ3nJvOdeHF07ii7LFnVIqyqSwl5LSluU0zNUfeS3Rh5ID/o
+         R8IIC5z0TBLWprQnFyrln/Tp7qxmIWlntPxVZnxPdwM4ZuFU/9H9gMZGkeHkDHkT+8KQ
+         UbHVER/1NIh9wc/VrM7kx6H0rXeul6iy5SpREEa76evJSr7v2zlvxW3gxgfiWAtHFiSR
+         uisd2emM+NuBQq7tEKqDbuPEJjb3z8zf1uPcrRi17TorGerMKpXU6An33pe+oEymM/9u
+         zG/wp6iEWYbNEl84rov6LFzJnsw8CtWe9k1Slg3nNUGlSOs8G6itcH+RqMz8LBi2TqBK
+         /2HQ==
+X-Gm-Message-State: AFq9FYIIhprKnsfraWDmJSImupI8sTTsy7ZNnnNb09irvbPeTcHOR2I6
+	eqRLjdzJhzJ0PUPFlWb8LoRCOqyTEHUn5qZJ+ClqhFjlKFadvBBr2dPntUtNVOxYznk=
+X-Gm-Gg: AYBFou3fuMuet0CgTny3R/iCvo3IPWNUOaVUpA01YBRI2jnu/hAiXPD9aI/gZxUHRej
+	URdMFlOBvmc1CPEXQCOqUlzolBhTB1IhlleQzK20FG6l3HopsLt92tteouO58XZRNK1CbLB9ZuQ
+	yw7TyGSLWJCAXw9QQVHIO1WVfdSpH8KD2hcabRe6rQBwEAz8lxCkH+sYT+qCT+UTKF6/ohLOJLP
+	rVaeqYy5wOqo3Nvh0T5po6x8gDjd8b2wYF5NiKO//MpzEo3k3yXuzAOynkrCWDzyEMU+lKjUeup
+	CJ1/SxLrWedgbCG9y/ZuApreXALfzB5fXIHH8wbQARLzOQIVRjuUSu+sXLX3uR1PMdv128f2ARa
+	JZrhUVHA4BJ2u98avMD2N92Oo9Axgw4MpkOmzrn3wb0o5NkwvaS8hu08QZgEI/VKvfDvrAU56fx
+	99goXYHMEtLQYWmQYbSWK4KaZaVSvvz813sCX7Sw3eoWZRIJOa26F4uQ+FBmho9V4QzdaKYv/+Q
+	yDZHzJ80jzeBDvBEiDjxe/UQ5BJNkNc5vUIFUfOloSL5floM4afQapi2kzHzMGKzbAYW8RRkGrz
+	IRW3g3ZOwD8DzWeBkyEv/EWNI20fCOFpDurNVaQFs1Eque9rMYhY8drck73XlotkhCIZTK1uinf
+	1dGpCkwNVCrO1c16GnFEIO+kiQpZTI5FiwiTJgbc=
+X-Received: by 2002:a17:907:7f92:b0:c49:8fa6:f585 with SMTP id a640c23a62f3a-c4ca7ac0085mr639888566b.38.1793549074709;
+        Sun, 01 Nov 2026 08:04:34 -0800 (PST)
 Received: from localhost.localdomain (dynamic-077-188-130-121.77.188.pool.telefonica.de. [77.188.130.121])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c4cabc174c0sm287957166b.8.2026.11.01.08.04.31
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c4cabc174c0sm287957166b.8.2026.11.01.08.04.32
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Sun, 01 Nov 2026 08:04:32 -0800 (PST)
+        Sun, 01 Nov 2026 08:04:33 -0800 (PST)
 From: Maxim Muzafarov <maxmuzaf@gmail.com>
 To: linux-mm@kvack.org
 Cc: Maxim Muzafarov <maxmuzaf@gmail.com>,
@@ -107,26 +108,28 @@ Cc: Maxim Muzafarov <maxmuzaf@gmail.com>,
 	Michal Hocko <mhocko@kernel.org>,
 	Lorenzo Stoakes <ljs@kernel.org>,
 	linux-kernel@vger.kernel.org
-Subject: [RFC PATCH 0/1] mm/mglru: MADV_RANDOM page cache never ages and thrashes the oldest generation
-Date: Sun,  1 Nov 2026 17:04:26 +0100
-Message-ID: <20261101160427.85701-1-maxmuzaf@gmail.com>
+Subject: [RFC PATCH 1/1] mm/mglru: age when the oldest generation is thrashing
+Date: Sun,  1 Nov 2026 17:04:27 +0100
+Message-ID: <20261101160427.85701-2-maxmuzaf@gmail.com>
 X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20261101160427.85701-1-maxmuzaf@gmail.com>
+References: <20261101160427.85701-1-maxmuzaf@gmail.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: x5f94jg3sqf9tdsjx5sqxjdkzf1ghk3n
+X-Stat-Signature: pypebrxdt64bcnaeipruwzt9ge4143qh
 X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,
-	MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT
-	autolearn=ham autolearn_force=no version=4.0.1
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
+	autolearn_force=no version=4.0.1
 X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: A35BE14000B
+X-Rspamd-Queue-Id: 6241E180005
 X-Rspam-User: 
-X-HE-Tag: 1793549074-811579
-X-HE-Meta: U2FsdGVkX1+ERRj5Yr/0ScuGPPGo2Wai/n3av/fI398AWRYK5JkCw2xnCBtGTd22IAXpVrCoVuknbzHbBR/gOUQkjJwggvujl8iO6CB+VRtPRDDlQD4ViMrMAQ6CnkFDNtEstb7Iy6TBXlE0ZoXyZ1N/8Lj5wd5XukehtkUhIZY7lQRj4119AlIDlvjK378abfYtWLOnKwDFKrKCU2lal112cCSnVSHw5ANbd1PtTyjPj+8dllTrQ/PghgJTEdusAs7Y3vHEpGdrRpYPBpTP3g63lDt7Y0EWMA7X0bcRoF1Vf9CIs4B4exa+e0QKRkTutE8UtFv7IouWYys9Hzv06RlMNP1j9lbS8019NTZD6T8rEqPAQlTBN3u0V4w1r4dcxyLhdYWAaQa51OT5pBNi9YL44Aw9W80gYv6LTYEMwiiiNQKHwZCloES3MtQFVmRa2f/MZgKzBedJVKy6k3slYUFzV/PE7Fzwr9LvCnjYTia000TbO5GrA2Z3xQMpzoFYBDfEHvtdmVyKXcHjMHCc+8oprvryhQ91kwcFteW3mVboqSTUCB9HFxVo94Up52lhWJd5HWycEckoaTq6xhNBI05dCh7dlyq05qlvB4cCbs8T5MOnPR+WnGd1Wo3HaL12w1q0SOb2UDu5kqfmjyELT1ywAdHJOxXCpOU+pE40wVZYKedFfbQwRMWhb+K87KQodANqSBGT0nEQAWB3oN4ml0tGrI0g23/VrS+RmP0mOKDyhGbjnO3mixwmj7D7coxjDwwUi8LHH/ZjzLLA+/X3PkgBEfDPHlX2w3Nu3tpusccrXdwu/x8hpAQxgDGqQNUEC+7DzXiiIk8vDvV3Va3Wo405K6zl1OQbvzSsSXXhWXzkq8UOzzl6UDd0eyrp+jthHM2A21ic+cwbqan+LExKYxWuqN2x9Of0LSexlU2yMdOHJL3ygjvW1EL1bLufjs6iKj9LlAxGUbNQIojd7jd
- u1FFEYPQ
- PVD3Of/pVJhG18UR1UPFhTBQI7hKP5tBypj2BN9seW3OQ5llccvuWuJlzkwKrhj49L5zZH9DDdx/ClBsDv5TvF9g17cgyszVEhpdt9OFwb0ficKMcezkgf1XlDxC7R5tW5kegXQKadTO0D1nd6PrYGf1UKJdQl+oOjIemKA7x5RD/16K4LpDeLEoZEKT6NolmxwHkj69Hk7FcH1i2MJOihVWp06sOu+k5E0aSq+2bpK0RpUM4egc1zPeiASdvytk/VFRnMOz0HVERVG5hn/2MwhvfLB8lQnZ0hcgAS3c/A/abmQCAePK123Tv4MLAEAEGpgO47OdUEEZGUOuPNP1bR/qMnOAAIdf9ckB2g1rxwebY0ncXuH6Xt4VY9W2goY13L1GBkAYDVKHmF5QF/qu/e7JYu3OBcJQ5T1ErJaheLshi5JwkSdSNLgAnP4RA9awl4dkGAha0LNh7vFatw4E7AsKHJumFQJ0Nw0U1LuT9A6F1YtkQLrE8THtDZd/cliaCudBrNZyd+0mrMM87xsPiJhQ2n4G+wZHW1x+Jo2vIilA3gAJ0Xe8D1LM/tsbJ2KWC/eFbxCSDRxB2TBufpTv1nsJwLvqkjOEV9L78IzmLAuPjmHNXrEbu/b1Cj37v1NxewnJcINk5ed7pkwmjpbb2TLShSue2BF7x4PL1JUKzNbpSSRTdUaX2uJBZzjG9J17x4X0Tea3/Az1meGoVdjQhMwzDdiIzfqcfYezw7OyizHDrhC4=
+X-HE-Tag: 1793549076-467919
+X-HE-Meta: U2FsdGVkX1+Nq88chRs30Z/l7kDtLaicM09MQksPyLipAyyPx6WfvhtsxCHzK3+H7Mu/e3pq86XF4ZvA9LVdQ+UrYLSw4WYP5MX28yY55E3M2YWfNfRm87BlLUYfHwyBadrzhNVnP5ql7aoGM2wUJC8gK+xg+CK4iF+l/u9d6XAvZzYazlpUdOvb+9Yo0m+PID5D4AKKlfyzphbnFykZ/QY8irrDIZISxtMe7HhNTxpv1NveKCsYD1JZ5BBJHGRjhcYEImgHVa8KdfWT8KIyNFlqjxY6ESsWxfXKR8LmG45G76c6DB5bCxB8NDiwHoskNn78d+fGYJEMXXLioYeM2VDAIaJayOFLwdXMjsqC1cRyu/BYHqIT0lqxx1suIrIHQty2uNPmwzrPxB5ahHxyGBoJxp8cLyr9+kSgllSLzfLwrXJXvUpVO0dtMMN5R1F7D7qTQhcWEYvIlMDQNQ+Qtxaejawqsd4fgxxZ0Tdr39Swoosc4pGPUh/nTXKEP+R1hKYVJep4dutNBH/QACtgHi13RNsOd+9UQPEP81g9cw+KV+824BE60mNPwbleQNqPbzHNVSZP7HowZnhhnOrvOVvRPKR9rDiZxLqYK53TieqC7PrqtUPhhED01oj0x0vPoBFEuxgk8wXbPXrRf2HXBcvm62rfwdeGFc1WNa0ur7MVuPkhMgz4S8UI1x+f8PoaBJvZyoEqJWJ8MQSzMIRg49SgAwXzLJCXoxD4Wh6WqhwckMHcKAl9Ww2el0Ch1CKm8vGCiwaucWkFngKkZv2MiZ8O68rQAlxSmYlKI4IqctjZtIiQpveonLVDH5WktV99GhQjtuZKtDhJPx2nf0e15kNOxdBqDnjIbygERnjBo8GXgRUYMLrku5EAqoRs6r+WpERZfNKi7uq1z7GL+nKIyvZisbkmolKt8Fv2IDwIrsdH/bz8YSWY1eplY0IB8kdQH1uoxdViIyJIuxLLdYo
+ fESg7jYW
+ DAOfLUDzftQrqPi3GolBiUDZmoBQgsvtYRd91D8Je6Yi/7Drf3B6se1yQgCP5up6lrdTtaGuwidVLr8fpAhP4J/DxJKt2UL4X0xNJp/sPn0wwpGtVKnXN8rF6qHvDFpqPxxhbNglKeKOjkoePP8wFTsoV0ipKMs5cTEWDvAtPBUfjCgNenN3pnQSrSNh3rZfXq7rIrwlxoYUbFa9LaWc4fktTdGWkNz4nvYlOlc43D1pCZ5PmlwItLsikAuHrYZEjHaZhC6tcbJBUIQ03utKmDK+i9c8ecRwM9IMp5q8VXPjpXIf5T3g7oFYu7TIeGvQXZuHjzyTh+WMcYKz2HvfvWXkh1Ii1i67H2/oqooJcOpILo/e2/kF0QcqqotFs2XhkE4H80mpMtL8dIwpljKBFEo5bIs7jDHOkf/m3
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -135,312 +138,102 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Hi,
+With four generations, should_run_aging() only runs when the window
+shrinks. With every fault on MADV_RANDOM mapping landing in min_seq,
+and the oldest generation refilling as fast as it is evicted,
+min_seq never advances and pages in the generations above it are
+never evicted.
 
-It looks like I've stumbled upon an awkward behaviour. When MGLRU is
-enabled, page cache faulted in through an MADV_RANDOM mapping goes into
-the oldest generation, and the refaults land there at the same rate as
-well. In my tests bpftrace shows the generations stay at seq 0-3, with
-no aging attempts and no new generations during the workload run, and
-/sys/kernel/debug/lru_gen_full shows for generation seq 0 15758245
-pages evicted and 15580028 pages refaulted, which is 98.87%.
+Run aging when the oldest file generation has refaulted more pages than
+the lruvec holds since it became the oldest.
 
-At the same time, a file read through a normal mmap lands one
-generation higher and none of its pages are evicted. It stays cached
-until the end of the workload, and the randomly read working set
-shrinks. With lru_gen disabled, the CLRU evicts the file
-instead, and throughput recovers 20-30 seconds after the file was read.
-I would expect the same behaviour for MGLRU.
-
-I first saw this slowdown on a single-node OpenSearch 3.6 (Lucene 10.4)
-HNSW vector search workload [1]. The node had about 2.8 GiB of page
-cache for a 2.9 GiB index, and Lucene maps the .vec and .vex files with
-MADV_RANDOM. Kernel 7.2.10-200.fc44.aarch64.
-
-Search latency and throughput on a single-node OpenSearch:
-
-                         MGLRU on   MGLRU off
-  p50, ms                   286.0        73.6
-  p90, ms                   512.1       135.6
-  p99, ms                   687.0       191.0
-  queries/s                  27.4        87.1
-
-Disk reads, same runs:
-
-                         MGLRU on   MGLRU off
-  major faults/query         1484         325
-  disk reads/query           1484         325
-  read size, KiB              4.0         4.0
-  disk read, GiB/run        509.6       111.5
-
-This is clearly visible on the page cache chart [2], where "blue" are
-page cache pages mapped into at least one process's address space and
-"orange" the rest of the page cache.
-
-Then I reproduced it with a synthetic HNSW-like query script in python,
-and later with fio alone, on 7.2.10-200.fc44.aarch64, 7.2.14, 7.2.14
-with the MGLRU-FG v4 series [3][4], and on mainline v7.3-rc7.
-
-Kernel and setup
-----------------
-
-Arm64 Lima VM (vz) on an Apple M1 Max host, 8 vCPUs, 16 GiB RAM, virtio
-disk, btrfs, 4K pages, THP madvise. Tests run in a 2 GiB memcg with
-swap disabled.
-CONFIG_LRU_GEN=y, CONFIG_LRU_GEN_ENABLED=y, CONFIG_LRU_GEN_WALKS_MMU=y.
-
-Reproducer
-----------
-
-The script below reproduces the stall with fio, MGLRU on (y) or off
-(n). 4 fio jobs read the vector file at random through an mmap in a
-2 GiB memcg, with MADV_RANDOM or no advice (normal).
-
-At t=90 a second fio reads a 600 MB cold file twice through a normal
-mmap. With MGLRU on and MADV_RANDOM, the cold file stays cached and
-IOPS doesn't recover.
-
-./run.sh <y|n> [random|normal]
-
--------
-#!/usr/bin/env bash
-set -u
-
-usage="usage: sudo $0 <y|n> [random|normal]"
-lru=${1:?$usage}
-advice=${2:-random}
-case $advice in random) hint=1 ;; normal) hint=0 ;; *) echo "$usage" >&2; exit 1 ;; esac
-out=$(dirname "$(readlink -f "$0")")/results/$(uname -r)/$lru-$advice.txt
-[ ! -e "$out" ] || { echo "$out exists, move it aside first" >&2; exit 1; }
-vec=/var/tmp/mglru/vs-vec.bin
-cold=/var/tmp/mglru/cold.bin
-unit=mglru-06-$$
-cg=/sys/fs/cgroup/system.slice/$unit.scope
-log=/tmp/mglru-06-$$.fio
-
-workload() {
-	fio --name=vec --filename=$vec --ioengine=mmap --rw=randread --bs=4k \
-	    --fadvise_hint=$hint --random_distribution=zipf:0.8 --numjobs=4 \
-	    --group_reporting --time_based --runtime=270 \
-	    --status-interval=1 --output-format=terse --output=$log &
-	sleep 90
-	fio --name=cold --filename=$cold --ioengine=mmap --rw=read --bs=4k \
-	    --fadvise_hint=0 --loops=2 > /dev/null
-	wait
-}
-
-memstat() {
-	awk -v key=$1 '$1 == key { print $2 }' $cg/memory.stat
-}
-
-cached_mb() {
-	fincore -nb -o RES $1 | awk '{ print int($1 / 2^20) }'
-}
-
-render() {
-	local t=$1 kb faults refaults activated
-	kb=$(tail -n 1 $log | cut -d';' -f6)
-	faults=$(memstat pgmajfault)
-	refaults=$(memstat workingset_refault_file)
-	activated=$(memstat workingset_activate_file)
-
-	printf '%4s %9s %9s %9s %9s %7s %7s\n' $t \
-		$(( (kb - prev[0]) / 4 / 5 )) \
-		$(( (faults - prev[1]) / 5 )) \
-		$(( (refaults - prev[2]) / 5 )) \
-		$(( (activated - prev[3]) / 5 )) \
-		$(cached_mb $vec) $(cached_mb $cold)
-
-	prev=($kb $faults $refaults $activated)
-}
-
-mkdir -p /var/tmp/mglru
-[ -f $vec ] || dd if=/dev/urandom of=$vec bs=1M count=1905 status=none
-[ -f $cold ] || dd if=/dev/urandom of=$cold bs=1M count=600 status=none
-
-echo $lru > /sys/kernel/mm/lru_gen/enabled
-sync
-echo 3 > /proc/sys/vm/drop_caches
-
-mkdir -p "$(dirname "$out")"
-exec > >(tee "$out")
-echo "MGLRU $(cat /sys/kernel/mm/lru_gen/enabled), kernel $(uname -r), $advice advice, cold file read at t=90 s"
-printf '%4s %9s %9s %9s %9s %7s %7s\n' t IOPS majflt/s refault/s activ/s vec_MB cold_MB
-
-export -f workload
-export vec cold hint log
-systemd-run --scope --quiet --unit=$unit -p MemoryMax=2G -p MemorySwapMax=0 bash -c workload &
-
-until [ -e $cg/memory.stat ]; do kill -0 $! 2>/dev/null || exit 1; sleep 0.1; done
-prev=(0 $(memstat pgmajfault) $(memstat workingset_refault_file) $(memstat workingset_activate_file))
-for t in $(seq 5 5 270); do
-	sleep 5
-	render $t
-done
-wait
--------
-
-Results
--------
-
-v7.3-rc7, cold file read at t=90
-
-lru_gen on, random:
-   t      IOPS  majflt/s refault/s   activ/s  vec_MB cold_MB
-  85   4966675         0         0         0    1904       0
-  90   4863829      1150      1158         0    1729     277
-  95    174236     30664     30669         0    1408     600
- 120    202080     28161     28163         0    1408     600
- 180    207005     26665     26667         0    1408     600
- 270    226341     22677     22669         0    1409     600
-
-lru_gen off, random:
-   t      IOPS  majflt/s refault/s   activ/s  vec_MB cold_MB
-  85   5007909         0         0         0    1904       0
-  90   5150972       140       228        51    1873     139
-  95    188806     29509     29504      9283    1413     600
- 110    342921     31803     31802     23547    1697     313
- 115   2563389     15857     15849     10540    1903     107
- 120   5157256        31        31        27    1904     107
- 270   5179181         2        28        27    1904     107
-
-lru_gen on, normal:
-   t      IOPS  majflt/s refault/s   activ/s  vec_MB cold_MB
-  85   5093044         0         0         0    1904       0
-  90   4887136         0         0         0    1904      39
-  95   2612769      3665     88721      6458    1904     109
- 100   4997923         0         0         0    1904     106
- 180   5134344         0         0         0    1904     104
- 270   5025222         0         0         0    1904     104
-
-lru_gen off, normal:
-   t      IOPS  majflt/s refault/s   activ/s  vec_MB cold_MB
-  85   4866859         0         0         0    1904       0
-  90   4466107         0         0         0    1904     103
-  95   2378250      3027     34135     33956    1885     127
- 100   2734588      5431      5520      5500    1903     109
- 105   4933296        62        69        67    1904     104
- 270   4822353         2        17        14    1904     104
-
-As you can see, only MGLRU with MADV_RANDOM stalls, at about 220k IOPS
-until the end. It activates no refaults, and cold.bin stays at 600 MB
-while the vector file stays near 1408 MB. With MGLRU off, the same
-workload is back to ~5M IOPS 30 seconds after the cold read. With
-normal advice, both LRUs recover within 15 seconds.
-
-With MGLRU and MADV_RANDOM, vs-vec.bin reads in my python reproducer
-drop from ~2.5M/s to ~300K/s after the cold read and never recover
-(chart [5]). On the same kernel with normal advice, MGLRU recovers
-normally (chart [6]).
-
-What I traced
--------------
-
-On 7.2.14 with bpftrace, every MADV_RANDOM fault and refault is
-inserted in the old gen. lru_gen_enter_fault() sets in_lru_fault from
-vma_has_recency(), which is false for VM_RAND_READ, so refaults are
-never activated. The aging walk and the look-around on eviction skip
-these mappings too.
-
-On 7.2.14 with bpftrace, the oldest generation is evicted and refilled
-at the same rate, and never empties. min_seq doesn't advance,
-fentry:try_to_inc_max_seq is never called, and the window stays at
-seq 0-3.
-
-On 7.2.10 (fio, no tracing), one manual aging step, "+ memcg_id 0
-max_seq" written to /sys/kernel/debug/lru_gen, evicts the cold file
-within 10 seconds.
-
-I also tested the MGLRU-FG v4 series [3][4] on top of 7.2.14. The stall
-is the same, refaults on the MADV_RANDOM mapping are still not
-activated. The series cover letter [3] describes this as intended,
-so I'm not sure what the right fix is here.
-
-RFC patch
----------
-
-Patch 1/1 is a draft against v7.3-rc7. I'm still not sure it is the
-right fix and would appreciate feedback. The simplest thing I found is
-one more condition in should_run_aging(), which does the same as the
-manual aging step above, at the cost of a few more reads and a
-comparison.
-
-In short:
-
-1. Run aging when eviction only recycles the oldest generation
-2. Pass the evictable size that get_nr_to_scan() already computes down
-   to should_run_aging(), so lruvec_evictable_size() is still called
-   once per pass and not on every batch
-
-The module parameter lru_gen_age_on_thrash and noinline was only for
-A/B runs and bpftrace and comparing results.
-
-Results with the patch
-----------------------
-
-The fio reproducer from above on v7.3-rc7 with the patch. "checks" is
-the number of oldest_gen_thrashing() calls in the last 5 seconds, and
-"gens" the number of generations added by aging, both from bpftrace.
-
-lru_gen on, random, lru_gen_age_on_thrash=Y:
-   t     IOPS majflt/s refault/s activ/s vec_MB cold_MB checks gens
-  85  5019235        0         0       0   1904       0      0    0
-  90  5073570      377       384       0   1764     254      0    0
-  95   130923    20534     20527       0   1418     600   2441    0
- 105   218624    23462     23456       0   1418     600   1785    0
- 115   178889    26035     26043       0   1418     600   1338    0
- 120   175238    26918     26910       0   1418     600   2086    1
- 125   256621    27773     27780       0   1418     600   1959    0
- 130   253813    24509     24501       0   1677     342   1910    0
- 135  2678888    11649     11649       0   1904     116   1914    0
- 140  5064423        2         2       0   1904     116    297    0
- 180  4872187        0         0       0   1904     116      0    0
- 265  4939524        0         0       0   1904     115      0    0
-
-The check returned true 3 times, and aging added one generation, at
-t=117 (seq 0-3 to 1-4).
-
-lru_gen on, random, lru_gen_age_on_thrash=N:
-   t     IOPS majflt/s refault/s activ/s vec_MB cold_MB checks gens
-  85  5127299        0         0       0   1904       0      0    0
-  90  5290342      409       417       0   1822     196      0    0
-  95   151082    27372     27372       0   1418     600   2739    0
- 120   251683    33784     33789       0   1418     600   2425    0
- 180   252607    31539     31542       0   1418     600   2314    0
- 265   223364    28211     28220       0   1418     600   2290    0
-
-The recovery is still slower than with CLRU. With the patch IOPS
-recovers at t=135-140, with CLRU at t=115-120. I think the patch adds
-this delay, as the first aging step needs up to one lruvec worth of
-refaults after the stall starts.
-
-In the OpenSearch workload reclaim runs from the start, so the counter
-is already close to the threshold when the cold file is read, and the
-recovery is comparable to CLRU (chart [7]).
-
-The threshold could be lowered, but it's not clear to me yet how to
-pick it right. The patch is a draft to get feedback on the approach.
-Any thoughts?
-
-Thanks,
-Maxim Muzafarov
-
-Links
------
-
-[1] https://docs.opensearch.org/latest/benchmark/workloads/vectorsearch/
-[2] https://gist.github.com/user-attachments/assets/cbfa5c17-0a89-458f-b816-4d1bb72cb97c
-[3] https://lore.kernel.org/all/20261016-mglru-fg-v4-0-2106750c0bfa@tencent.com/
-[4] https://github.com/zen-kernel/zen-kernel/commits/7.2/mglru-fg-v4/
-[5] https://gist.github.com/user-attachments/assets/f65fbbf3-a30a-464f-8535-29d39e0dff43
-[6] https://gist.github.com/user-attachments/assets/5d28512d-3a1d-4475-b20e-3690a8c9e196
-[7] https://gist.github.com/user-attachments/assets/41b7aaa1-5e9c-43dc-8fc1-09d2df52f8d7
-
-Maxim Muzafarov (1):
-  mm/mglru: age when the oldest generation is thrashing
-
+Signed-off-by: Maxim Muzafarov <maxmuzaf@gmail.com>
+---
  mm/vmscan.c | 32 ++++++++++++++++++++++++++++----
  1 file changed, 28 insertions(+), 4 deletions(-)
+
+diff --git a/mm/vmscan.c b/mm/vmscan.c
+index f11491ee9ed5..f59b29723ec9 100644
+--- a/mm/vmscan.c
++++ b/mm/vmscan.c
+@@ -4966,8 +4966,26 @@ static int evict_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
+ 	return scanned;
+ }
+ 
++static bool oldest_gen_thrashing(struct lruvec *lruvec, unsigned long *min_seq,
++				 int swappiness, unsigned long evictable)
++{
++	int tier;
++	unsigned long refaulted = 0;
++	struct lru_gen_folio *lrugen = &lruvec->lrugen;
++	int hist = lru_hist_from_seq(min_seq[LRU_GEN_FILE]);
++
++	if (swappiness == SWAPPINESS_ANON_ONLY)
++		return false;
++
++	for (tier = 0; tier < MAX_NR_TIERS; tier++)
++		refaulted += atomic_long_read(&lrugen->refaulted[hist][LRU_GEN_FILE][tier]);
++
++	return refaulted > evictable;
++}
++
+ static bool should_run_aging(struct lruvec *lruvec, unsigned long max_seq,
+-			     struct scan_control *sc, int swappiness)
++			     struct scan_control *sc, int swappiness,
++			     unsigned long evictable)
+ {
+ 	DEFINE_MIN_SEQ(lruvec);
+ 
+@@ -4975,6 +4993,9 @@ static bool should_run_aging(struct lruvec *lruvec, unsigned long max_seq,
+ 	if (evictable_min_seq(min_seq, swappiness) + MIN_NR_GENS > max_seq)
+ 		return true;
+ 
++	if (oldest_gen_thrashing(lruvec, min_seq, swappiness, evictable))
++		return true;
++
+ 	/* try to avoid aging, do gentle reclaim at the default priority */
+ 	if (sc->priority == DEF_PRIORITY)
+ 		return false;
+@@ -4984,7 +5005,8 @@ static bool should_run_aging(struct lruvec *lruvec, unsigned long max_seq,
+ }
+ 
+ static long get_nr_to_scan(struct lruvec *lruvec, struct scan_control *sc,
+-			   struct mem_cgroup *memcg, int swappiness)
++			   struct mem_cgroup *memcg, int swappiness,
++			   unsigned long *nr_evictable)
+ {
+ 	unsigned long nr_to_scan, evictable;
+ 	struct pglist_data *pgdat = lruvec_pgdat(lruvec);
+@@ -5003,6 +5025,7 @@ static long get_nr_to_scan(struct lruvec *lruvec, struct scan_control *sc,
+ 	}
+ 
+ 	evictable = lruvec_evictable_size(lruvec, swappiness);
++	*nr_evictable = evictable;
+ 
+ 	/* try to scrape all its memory if this memcg was deleted */
+ 	if (!mem_cgroup_online(memcg))
+@@ -5053,10 +5076,11 @@ static bool try_to_shrink_lruvec(struct lruvec *lruvec, struct scan_control *sc)
+ {
+ 	bool need_rotate = false, should_age = false;
+ 	long nr_batch, nr_to_scan;
++	unsigned long evictable = 0;
+ 	int swappiness = get_swappiness(lruvec, sc);
+ 	struct mem_cgroup *memcg = lruvec_memcg(lruvec);
+ 
+-	nr_to_scan = get_nr_to_scan(lruvec, sc, memcg, swappiness);
++	nr_to_scan = get_nr_to_scan(lruvec, sc, memcg, swappiness, &evictable);
+ 	while (nr_to_scan > 0) {
+ 		int delta;
+ 		DEFINE_MAX_SEQ(lruvec);
+@@ -5066,7 +5090,7 @@ static bool try_to_shrink_lruvec(struct lruvec *lruvec, struct scan_control *sc)
+ 			break;
+ 		}
+ 
+-		if (should_run_aging(lruvec, max_seq, sc, swappiness)) {
++		if (should_run_aging(lruvec, max_seq, sc, swappiness, evictable)) {
+ 			if (try_to_inc_max_seq(lruvec, max_seq, swappiness, false))
+ 				need_rotate = true;
+ 			should_age = true;
 
 base-commit: 24a19b953e2a3d0ea5a8c4951a0ab8f32720c907
 -- 
