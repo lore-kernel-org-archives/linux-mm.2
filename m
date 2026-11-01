@@ -1,129 +1,97 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22B50606A325
-	for <linux-mm@archiver.kernel.org>; Sun,  1 Nov 2026 05:32:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2E74606A324
+	for <linux-mm@archiver.kernel.org>; Sun,  1 Nov 2026 06:22:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=bU6Jup5B
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=Tit538k9
 Received: by kanga.kvack.org (Postfix)
-	id 098596B00EF; Sun,  1 Nov 2026 01:32:01 -0400 (EDT)
+	id E6B296B00EF; Sun,  1 Nov 2026 01:22:14 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0497A6B05B1; Sun,  1 Nov 2026 01:32:00 -0400 (EDT)
+	id E1BF16B05B1; Sun,  1 Nov 2026 01:22:14 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E7A5E6B05B2; Sun,  1 Nov 2026 01:32:00 -0400 (EDT)
+	id D315E6B05B2; Sun,  1 Nov 2026 01:22:14 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id B3D796B00EF
-	for <linux-mm@kvack.org>; Sun,  1 Nov 2026 01:32:00 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 058431209E1
-	for <linux-mm@kvack.org>; Sun,  1 Nov 2026 05:32:00 +0000 (UTC)
-X-FDA: 85385428800.03.367E775
-Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 39AAA40005
-	for <linux-mm@kvack.org>; Sun,  1 Nov 2026 05:31:58 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b=bU6Jup5B;
-	spf=pass (imf11.hostedemail.com: domain of skhawaja@google.com designates 209.85.214.179 as permitted sender) smtp.mailfrom=skhawaja@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id B12FC6B00EF
+	for <linux-mm@kvack.org>; Sun,  1 Nov 2026 01:22:14 -0500 (EST)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 351931A09C9
+	for <linux-mm@kvack.org>; Sun,  1 Nov 2026 06:22:14 +0000 (UTC)
+X-FDA: 85385555388.08.726B92B
+Received: from mta1.migadu.com (out-58.mta1.migadu.com [95.215.58.58])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 6E76E180004
+	for <linux-mm@kvack.org>; Sun,  1 Nov 2026 06:22:10 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Tit538k9;
+	spf=pass (imf06.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.58 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793511118;
-	b=j57s4+4cKz+sn15JF9rlOW6XXY40B3HG0PhDMnboKnq/imYtoH7/RSd5GHQ+L3rY1ZrirR
-	TptyVsV/hyAz8tKTs756SEXPYa+O6cybdIHr3CNz3bFD0QDC6r/Vy0P3Rq+fw/aht1Drv+
-	UPZhkk5tWk+8hOS8TM2pH0h8UR1FZ7k=
+	t=1793514132;
+	b=rRlsSw5w7ysD2/dyEJE48zcrhHkMqfVaUAkLZH1OObso/+VqglAqe5NVqr1k+nfG4E+pi2
+	WXpvSJrUCYnOsWzgd/JVoGLiBTRp3NFBVyrkWzc2Q1n9xTpU8D1grcZgHWVTIJyrWz6w8l
+	6lO/cdAsfKYPFQqzUnO3SYSvKiFhbgE=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b=bU6Jup5B;
-	spf=pass (imf11.hostedemail.com: domain of skhawaja@google.com designates 209.85.214.179 as permitted sender) smtp.mailfrom=skhawaja@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+	imf06.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Tit538k9;
+	spf=pass (imf06.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.58 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793511118;
+	s=arc-20220608; t=1793514132;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XVwPKoe9RjiKHmMO6/+ENKIpPwM8V1vN0DPm5EJ76mY=;
-	b=kQMmYRck5XMV6I4HQVKqoYoJ8+WquefDY9IFrTPS2JUo8dSpylpncXOX1Go5DaBz0Fyt1J
-	v8JpehdzJvWdRvfR4TFxWwNzAt2BnxEqzdbnFmmSPeg4pVIYxCWzUmtYWMXRhtz3FR8AJM
-	8e4l51tlGgO5zQ+CF16SNyLkQPJwJM4=
-Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-2eb0a52d605so44825ad.0
-        for <linux-mm@kvack.org>; Sat, 31 Oct 2026 22:31:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1793511117; x=1794115917; darn=kvack.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=XVwPKoe9RjiKHmMO6/+ENKIpPwM8V1vN0DPm5EJ76mY=;
-        b=bU6Jup5B6nDdqy2npYJb41mEf+9VqRnMw0J1NrY6yzArp0xpSO1dGtl5BzyGHnUYJo
-         CuCpmO3iNdYRQ5bne8/gOY5DN+n4YsmoIl8D0i9vlOXZapbhB8KC43sVGUOnQ+dn/CFm
-         G9+oUeRg3iI9Ncg6A8ginuDD+OjwIy68aF1ZG+QYf2a9XKNezg4CJmHtXmjUC5CFXjUt
-         DT48nDdg+RJt4X1BX1UoCtDiLUlg4d8RfpeyIXx8DRMSj4zNZrXntWYNFrWba7R/8tXm
-         +IaQ1lEMgDOXghLieRax4Vfoe4Kkt7zxc/BvAP/qt3l5xjv2j3GSJRToA1ONjw/k068K
-         c4aw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793511117; x=1794115917;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=XVwPKoe9RjiKHmMO6/+ENKIpPwM8V1vN0DPm5EJ76mY=;
-        b=19XUcjqevdYOCYxlUVi7O3TiDGLGEJjsJKGXsCl+9FilpleAgtHK8NbTN/phn2f6a5
-         CoMK2Xq0yFVZUf9iIZy7C5bsigLKefwCGdXfD3ISt4vg65rBa9VzASHKzSwXIK/nyFNy
-         XAiVYli83ezvav8VCivPUucdpl5nG+N2C75HhJMs91GFpvpIrEKzJmXQteVVMUb6Zukx
-         czgKVCTsX/TKXLsk7SAB5ShOFRHlKQrODtLFAqzxikU65hUEOU9DZa1m7wfD0dKR8T3n
-         5A1YoipDAHRYvuUoN5eR8g2P1eF6s4CrDxfcb5nrztIV5AoyRmqB68yaz5NNrJjX7LX7
-         k1tQ==
-X-Forwarded-Encrypted: i=1; AKwUvBzRIVNw1LBvQY/B0wvi0KCvmCp4xneyXzwxscWonJLivSdWOOv2P8sK4c7sA2SDx2ZATbUidjra6Q==@kvack.org
-X-Gm-Message-State: APuU4Z8JR8nHbYwQ/2tsm8zcNWHfSX6+qwls4cUTTFEi2CiA5HsmtNYe
-	jK+N17m27gsJwDLq7fFfRHmhvQywbi7efzlr/3Qr3ey018emd+8meZFps0vnTZfOEQ==
-X-Gm-Gg: AYBFou0zmL5tlLWoziCfbyuKAHIk47YDOTLTgN3FPM6UZv0gGHZMDIzPRtqQQORkxZH
-	uslGiUIavFxTTMwgsW1lBDu+yql0aFJfNvFfpcKox3geQN81s/lzga31rfEVarUpMTJVxqMzHmt
-	j5iKn2HdBB3qd0YaOPlwnDfaYKGJUoHpLsPEU+M8WPWTYjZyIf0Aolzv/OEFt/YyuIXmnJwGq7C
-	RESRMl7QrVVdgRfl6CNGEeGxF1bdayLXxAf9Innl/NL49aVUiwOLa5UPpzUOBLBXCV+W/MfF3Z/
-	fxhqgMl2ewlkJUhi2VKi6qpA+6y5VuucVc9A8in1YWCBabGB/rGTrMYQ5LxIKPmE/0APoYHVDBm
-	D0kHn+ALElhCMR/CmMoZllFBuiWJFftmN6WxM0AR42iGeR2NzTjkyLlrTKNNF+zuC8ah1jFY3AR
-	yO/j5PyLmQzV9Smfns9IUqXkdj7Q8Ykbj7PWyBTn3zNMexUwH1eRf7W7AoBIyEnoRx9+4PzaoR1
-	uhh+46/ipjRIfjSoHZdQloBhodzZOWTxn5kKtuDr0GJskeaXTvoIFQzg93jn16pvRkUipV51QU+
-	RdLGAPjk3Wub22xLuwMy0i3Cpf3WJg2Xt7Kxnhm9sl6yLy4q0r7GnHfQFrV5X0SGz9TF2g4U68B
-	DYs3VGenFnowRQuqEEN2t
-X-Received: by 2002:a17:902:f541:b0:2df:42af:2f9f with SMTP id d9443c01a7336-2eb1ec33fd5mr15542125ad.1.1793511116342;
-        Sat, 31 Oct 2026 22:31:56 -0700 (PDT)
-Received: from google.com (25.75.145.34.bc.googleusercontent.com. [34.145.75.25])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cdb09614e4bsm1987052a12.4.2026.10.31.22.31.53
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 31 Oct 2026 22:31:54 -0700 (PDT)
-Date: Sun, 1 Nov 2026 05:31:50 +0000
-From: Samiullah Khawaja <skhawaja@google.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Andy Lutomirski <luto@amacapital.net>, 
-	David Hildenbrand <david@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>, 
-	John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, Chris Mason <mason@kernel.org>, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] mm/gup: check folio->mapping under folio lock in
- memfd_pin_folios()
-Message-ID: <aubLkqA-aWrcklwS@google.com>
-References: <20261031203540.2282507-1-skhawaja@google.com>
- <20261031194058.d3bd25ed950e5340ab595f07@linux-foundation.org>
- <CALCETrU76ThzLDbUfpoota5=xcoOS4aZrwgK2B3ELkYcFOjGJQ@mail.gmail.com>
- <20261031212507.31609e7ed27de35253b226c3@linux-foundation.org>
+	bh=blO6k0GV9t7jq832MC9mTaWTEhU4J8juq8TCxnkK4WQ=;
+	b=0K1POdwUuFk/bgPuoHyMIlJDAr/xXkPwfrOxL7yfwwwVDcxwwzn+FG8xBYIxupdT6Qctlz
+	ZZ16EfIWQgTQrTGqKQ/qCeAOv3Du3uZA0VlDr5t237URvvKrrlv7rJFCHTdGBycINdRPaw
+	efQrtgeUn8rmgFgV3TmYoEd5D9yvQ3s=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=gaF9RaTUlWJnz0Kz7eSN92fdFpU4AaHftDt4HKXl/YY=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1793514127; v=1; x=1794118927;
+ b=Tit538k9XfHYAjy4otnRC7vAz5Cj/Lshaoxkkk8Ghq1rfQBmNwtxsywKDb9yCi4afi7pP4H2
+ azVrDg4QS5ZtzmVl643fP8STHG/kKplwbnGDLa/Y6/LSRHQbsSx6TbqgXQyIEcr3izcualOTZCZ
+ zJw5W9KJF/mRI50gqQiw4csM=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id 5ef06936bde13713;
+	Sun, 01 Nov 2026 06:22:07 +0000
+X-Mizu-Trace-ID: 5ef06936bde13713
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <86d9a986-58ea-44f5-a8af-514abff12c2a@linux.dev>
+Date: Sun, 1 Nov 2026 14:22:00 +0800
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20261031212507.31609e7ed27de35253b226c3@linux-foundation.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 02/12] mm: hugetlb_vmemmap: unify
+ VMEMMAP_{SPLIT,REMAP}_NO_TLB_FLUSH
+To: Muchun Song <songmuchun@bytedance.com>, Oscar Salvador
+ <osalvador@suse.de>, Andrew Morton <akpm@linux-foundation.org>,
+ Mike Rapoport <rppt@kernel.org>
+Cc: Lance Yang <lance.yang@linux.dev>, James Houghton
+ <jthoughton@google.com>, David Hildenbrand <david@kernel.org>,
+ Muchun Song <muchun.song@linux.dev>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+References: <20261020115306.813483-1-songmuchun@bytedance.com>
+ <20261020115824.823278-1-songmuchun@bytedance.com>
+From: Qi Zheng <qi.zheng@linux.dev>
+In-Reply-To: <20261020115824.823278-1-songmuchun@bytedance.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: 5koc6eyb51nbe44yb45kpe88xraareim
+X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
+	version=4.0.1
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 6E76E180004
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 39AAA40005
-X-Stat-Signature: i7trhd3sr1dqk7ctbwwdn7oj7m16kyct
-X-Rspamd-Server: rspam01
-X-Spam-Status: No, score=-13.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_IN_DEF_DKIM_WL
-	autolearn=no autolearn_force=no version=4.0.1
-X-HE-Tag: 1793511118-115593
-X-HE-Meta: U2FsdGVkX1/lEx+ea8GapFC7fhKT8uwBmFQXd1jLgU+qUFOVXsk8MRuaIdJzR2AryMgyd6e7665JFB95SRm/eYoBE3iYfv+kFJevT2GMBePv+aYeJSVcNdYyG0M++s7fFTS3XTitno6fHqsQVo7ZZwtXuhsdR1cOKUIGSBueMZyfAtt7KgULuVjfOChaXWWDqJjiN8u/VHqxHKWNhwG1IJE8pmCazi275FakOfwWw1sLetYZ8GQblGdjw1e8+kYv6N8bhnjp2Cg1KXFp9epTuQ/Yso7YGQo1CTKnhfVUtx3xavVq/pmP+t23kViVgd40G3BpQCKPS/EkQkF0zJhWTsN7+4ZwCjdMD/UUracY/ray/LOkDtJ31DN3RPwX5+LtSxIzwf5u/+eA92QyBlyHFKLSyP89pI8tAwq1KLPeUK2bPuR74mZc2S1e7X5hCw1pe34FyFVSUNYBcR7zUapfu/wQy5W6JkPrvRvLJVuWEblXCi7Hr7t1WnwyqSfUYZpLlLOXYQreM4CK3lJ78izjXK66uze5gwSBV3euHF8PBeJS7m+d8srWubHLOmOOVQvrDF/bqdxBEJG/ZdVCUdX2UMGuQgY8AljDEpDU4s+JvhPVQT9h4fL5aNfcEbgO6Na1OcY0ZNsJ9omi+ZsGW1YXNJlgp/Eg9uNdFlGboPPX3GaLo8garCEc9JFYk4AbZTZuA/FZ4K2TjAN+6eAwHoxrsX2IkIjahYLJnWI4G7ajqWp+PIku57coX81c/XWkSICWEz0yvq8oiO+Ku7F1Fed9j3UR2J1Hq/ElTq2RAER0cwgnwxPMKj9TGeCNZhhcH4+SqFwwuu/T6EHSpKTh1rloTULQdb2OVu6E7LBso+uaCpxT4W/zllWnIel4CFRnTGn+mrINoHb6sNcRcKIj6iK/obAwun3qEXLkI28Zyr3gK6bOMqhjjWJr7u+CTik5+HjPzzoj4e/fXn8RLcRdUBY
- QA2c/j9A
- VkKXGcm4HhnAW2G/3GvDDpNm7+99khp4XsLmRvbsx8igFJm8Tx0A77aZAMmaQhgRa92PZ/VPNNHTcMIQIR/TflrkMlCW3WnrFaxJdriE6Nh+ddOPp5y6E2pmm3YSowJmcvoZEWeufmkgqbtIVC9w6JFhFC3R7vrDxY04a+iXDs90N5QytuhDyt13hu9iyYhRVqfWk4xxjSbAQF8NyCWcWE698+zxog2/YXNcy+BBsx4UaJ+6aZOTYDqRPKoLmNB2bXR8ZGVdDCp/jAnIKEsv+UYfLTq4C6huNlWbEGhoVBjJdn0T6EKij+DpeLtL+kOdyiATbH3oG33fv205/LNtrtOwUaf8Cluge32fNwVsUafw4C2cK3ZvvfJl9Mu19CQtU+N9+xtfL+9feZv/pnUhEeayPf/tYkjr3k2Wby28RExDbI7nhHm5GPHJjyi2l5+lDOuvXOz+kiwgzSrkGaIHh6gOVGm+qA0KaS3rJfi9LyNrSUqwA8fOKuTh5QC24b+k+4fE1tF5JpisW+rYRng5ArjoA4LKxLjfs/SEd
+X-HE-Tag: 1793514130-264581
+X-HE-Meta: U2FsdGVkX19TXIxAsrwU/Pr4PXKGuxdDaXvr6hYFB+tG3hza1B3OFeWLkn7y8ObKQ8dfkoexp5sX9FxfwMbBBLIII/vLHhbwVs8GWD+yHuL5gyrkKPhg6oNySnMsrwHNgJvuK6w1haf4m23zJOrx8k3TF8Rx2hd7QHS8zNtWEgUZU9onQ3rMeLUtHUlMWlQEhJi586VJU5rfkbDAdNHTSiYZ/xGV8VAufAKXgC6Aty1fYh4x5kwJs/bOLUzkfR9Z02l1XDNjcWz+XIVeveBywqc2UNDIwj1d5tzeE7u/BK6ggpYbM9ItPfG8drhVRQGPiT1tHC5rrydiRJGecu/TUxNQ/rYonXM435SQVpJJyLYoPmJZaGEue3D3EWkLx9ng8JCjnXVxFbwuk23TtVG3SGwuZfhOm/VsfT9xRKMH7Fiy/5Bbji7N+emKL/fSBlCwBz6ai6KXfScrcWP1kkL+ZQLj/Rzdcd+aMHfafXuipge9ZAYfJ75nZxnZFTl8Idikt5YMNo/GNQ0PNjcSyDyXDu2yw8ZSdhw6RjCD63x1XUIQn/kZgSkCH1eB1DZdV3xuTnfkFFfEd9TiGMpVtdaQpQzlSu4cx0y8XEKmTttEOSfJbZeJIn/H5cbI14/Wg+fZQAwX7nTlXHNJipOZwwIRHy4zBKAWiOU7zys9wEK17B9i/5mI1MxpmzQ7WYs80GvrgkF7pQZKzp9xr661zKYwWoYFp/3h9uCIZ7AFK6PKJdrGATxnSa9RZ1mFDqlymdVq7rYkH1QxrhdvzBSFeiO0H2YhzUxJqvvFIF2Dnin6UT9ZPLaBWQz2ij+ogTsSRr1k6alLOtkz0fUnL3FgHRcctqhhOrg+A44I0bpot//WvyMTkoKTugRiBXtz+aDnaE5sI6h+IgDAcvPPak2AZMcMtfMPl+ig0jaMUVerCBEbHf8cheA/bphc5mzy48lqdIqSoZmkWjyJ58Q98Eb9oNF
+ 6hdMpMzR
+ Jl6t6iAIOXdz38+ecCZX2Wac9nlNBuTCL3FRRfkanSZBRfNsEg93vR9Grd/eSd4X7R8IT1HxgBdd2wg0jrIBVvl+JqzQDas+xnOrB+iMKl1NARS02m2Tn1/VAGeSgUeFN61GH6f0e5bpF+Bc34ufo8WO8yYdfuSIVuP04o26Peyzfb1rhkDJmwRTqzofT6RTVy/34v15BfG6zWbc7GVDMHlc+gzLGf1RwWhfZEZWRfB5DJN8evUp2Zgq4di9nfev86luQYk4xL6lu+2V2ZBKHCFvHDN2AM7kabZWDkkUEM1ov16iiq8cz2GWkHms8+mH6vRbPhKQMMIzfdhBVxszzPJN+RQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -132,69 +100,82 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Sat, Oct 31, 2026 at 09:25:07PM -0700, Andrew Morton wrote:
->On Sat, 31 Oct 2026 20:20:03 -0700 Andy Lutomirski <luto@amacapital.net> wrote:
->
->> On Sat, Oct 31, 2026 at 7:40 PM Andrew Morton <akpm@linux-foundation.org> wrote:
->> >
->> > On Sat, 31 Oct 2026 20:35:40 +0000 Samiullah Khawaja <skhawaja@google.com> wrote:
->> >
->> > > memfd_pin_folios() pins folios from the page cache without taking the
->> > > folio lock. So khugepaged or MADV_COLLAPSE can replace the folio after
->> > > its refcount check while memfd_pin_folios() still pins the old folio,
->> > > and the caller ends up with a folio that is no longer part of the memfd.
->> > >
->> > > Lock the folio and recheck folio->mapping before pinning it, like other
->> > > page cache users do. If the folio was removed, retry the folio lookup
->> > > from the index that was removed.
->> >
->> > Can we please include a clear description of the userspace-visible
->> > runtime effects of the bug?
->>
->> It's straight-up data corruption if you manage to trigger it, no?  If
->> you manage to race a memfd_pin_folios() against collapse,
->> memfd_pin_folios() will pin the wrong folio.
->>
->> Fortunately, there are a whopping three callers in the whole tree.
->> You can hit it from udmabuf or iommufd or memfd LUO.
->>
->> The former two will direct DMA to the wrong folio.  Fortunately it's
->> not UAF as the DMA will be directed to a folio that is still pinned,
->> but it's the wrong one.  DMA reads will read potentially stale data
->> and DMA writes will overwrite that stale data but not update the live
->> copy.  (The DMA will not be directed to some other application's
->> memory, just to a leftover copy of the calling application's memory.)
->>
->> As far as I know, the effect with LUO would be for stale data to
->> reappear in the memfd after handover.  With the patchset that started
->> this whole discussion applied, I think it might result in misdirected
->> DMA to freed memory (I do not stand by that claim at all), but that
->> patchset is not applied.
->
->Thanks.  How's this for a changelog?
->
->: memfd_pin_folios() pins folios from the page cache without taking the
->: folio lock. khugepaged or MADV_COLLAPSE can therefore replace a folio
->: after checking its refcount while memfd_pin_folios() still pins the old
->: folio. The caller then receives a folio which is no longer part of the
->: memfd.
->:
->: For udmabuf and iommufd, this can cause data corruption: DMA accesses
->: the detached folio rather than the live memfd contents. DMA reads can
->: return stale data, while DMA writes update the detached copy and are
->: lost from the live memfd. The detached folio remains pinned, so these
->: accesses do not constitute a use-after-free or target another
->: application's memory. For memfd live update, the stale contents can
->: reappear in the memfd after handover.
->:
->: Lock the folio and recheck folio->mapping before pinning it, like other
->: page cache users do. If the folio was removed, retry the folio lookup
->: from the index that was removed.
 
-This explanation sounds good to me.
 
-Please let me know if you want me to send a v2 with this changelog.
+On 10/20/26 7:58 PM, Muchun Song wrote:
+> VMEMMAP_SPLIT_NO_TLB_FLUSH and VMEMMAP_REMAP_NO_TLB_FLUSH do not
+> describe fully independent choices. A split-only walk can defer the
+> PMD-split flush to a later global flush, and a remap-only walk can
+> defer the final remap flush. However, when a PMD split is followed
+> by PTE remapping, the split flush must happen before the PTEs are
+> changed, because stale large-page translations must not overlap with
+> new small-page translations that map different physical pages.
+> 
+> Replace the two flags with a single VMEMMAP_REMAP_NO_TLB_FLUSH flag.
+> Keep split-only walks able to defer the flush, but force the split
+> flush whenever a remap_pte callback is present. Callers that batch
+> HVO work can still defer the final remap flush and issue their own
+> global flush.
+> 
+> Current callers keep the same flushing behavior.
+> 
+> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+> ---
+>   mm/hugetlb_vmemmap.c | 15 +++++++++------
+>   1 file changed, 9 insertions(+), 6 deletions(-)
+> 
+> diff --git a/mm/hugetlb_vmemmap.c b/mm/hugetlb_vmemmap.c
+> index 1105aa925acc..8b3abb562599 100644
+> --- a/mm/hugetlb_vmemmap.c
+> +++ b/mm/hugetlb_vmemmap.c
+> @@ -42,10 +42,8 @@ struct vmemmap_remap_walk {
+>   	struct list_head	*vmemmap_pages;
+>   
+>   
+> -/* Skip the TLB flush when we split the PMD */
+> -#define VMEMMAP_SPLIT_NO_TLB_FLUSH	BIT(0)
+> -/* Skip the TLB flush when we remap the PTE */
+> -#define VMEMMAP_REMAP_NO_TLB_FLUSH	BIT(1)
+> +/* Skip the TLB flush while updating the vmemmap page tables. */
+> +#define VMEMMAP_REMAP_NO_TLB_FLUSH	BIT(0)
+
+Since this flag is now also used by the split-only path, the
+VMEMMAP_REMAP_NO_TLB_FLUSH name is somewhat misleading. Moreover, the
+flag does not suppress every TLB flush, as the PMD-split flush is still
+mandatory when remapping follows.
+
+Would VMEMMAP_DEFER_TLB_FLUSH better describe its semantics? It
+indicates that flushes which can be safely batched are deferred, without
+implying that all TLB flushes are skipped.
 
 Thanks,
-Sami
+Qi
+
+>   	unsigned long		flags;
+>   };
+>   
+> @@ -85,7 +83,12 @@ static int vmemmap_split_pmd(pmd_t *pmd, struct page *head, unsigned long start,
+>   		/* Make pte visible before pmd. See comment in pmd_install(). */
+>   		smp_wmb();
+>   		pmd_populate_kernel(&init_mm, pmd, pgtable);
+> -		if (!(walk->flags & VMEMMAP_SPLIT_NO_TLB_FLUSH))
+> +		/*
+> +		 * Modern MMUs allow overlapping TLB entries with different mapping
+> +		 * granularities only if they map the same physical address. So
+> +		 * remapping must not proceed without first flushing the TLB.
+> +		 */
+> +		if (walk->remap_pte || !(walk->flags & VMEMMAP_REMAP_NO_TLB_FLUSH))
+>   			flush_tlb_kernel_range(start, start + PMD_SIZE);
+>   	} else {
+>   		pte_free_kernel(&init_mm, pgtable);
+> @@ -272,7 +275,7 @@ static int vmemmap_remap_split(unsigned long start, unsigned long end)
+>   {
+>   	struct vmemmap_remap_walk walk = {
+>   		.remap_pte	= NULL,
+> -		.flags		= VMEMMAP_SPLIT_NO_TLB_FLUSH,
+> +		.flags		= VMEMMAP_REMAP_NO_TLB_FLUSH,
+>   	};
+>   
+>   	return vmemmap_remap_range(start, end, &walk);
+
 
