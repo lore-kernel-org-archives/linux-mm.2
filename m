@@ -1,127 +1,105 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52A2460A5BCD
-	for <linux-mm@archiver.kernel.org>; Sun,  1 Nov 2026 22:16:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EB6660A3829
+	for <linux-mm@archiver.kernel.org>; Sun,  1 Nov 2026 22:16:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=gT8uquAn
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=dkhr+eF3
 Received: by kanga.kvack.org (Postfix)
-	id 651D56B05B2; Sun,  1 Nov 2026 17:16:03 -0500 (EST)
+	id C1E126B05B3; Sun,  1 Nov 2026 17:16:07 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 629126B05B3; Sun,  1 Nov 2026 17:16:03 -0500 (EST)
+	id BCF976B05B4; Sun,  1 Nov 2026 17:16:07 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5662C6B05B4; Sun,  1 Nov 2026 17:16:03 -0500 (EST)
+	id B0BFA6B05B5; Sun,  1 Nov 2026 17:16:07 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 1F5756B05B2
-	for <linux-mm@kvack.org>; Sun,  1 Nov 2026 17:16:03 -0500 (EST)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 92EE5A82A9
-	for <linux-mm@kvack.org>; Sun,  1 Nov 2026 22:16:00 +0000 (UTC)
-X-FDA: 85387958880.18.D159E21
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 765636B05B3
+	for <linux-mm@kvack.org>; Sun,  1 Nov 2026 17:16:07 -0500 (EST)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 2251D120A65
+	for <linux-mm@kvack.org>; Sun,  1 Nov 2026 22:16:06 +0000 (UTC)
+X-FDA: 85387959132.01.E62B5F2
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf15.hostedemail.com (Postfix) with ESMTP id D1293A0003
-	for <linux-mm@kvack.org>; Sun,  1 Nov 2026 22:15:58 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gT8uquAn;
-	spf=pass (imf15.hostedemail.com: domain of patchwork-bot+linux-riscv@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=patchwork-bot+linux-riscv@kernel.org;
+	by imf29.hostedemail.com (Postfix) with ESMTP id 6F6F2120006
+	for <linux-mm@kvack.org>; Sun,  1 Nov 2026 22:16:04 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dkhr+eF3;
+	spf=pass (imf29.hostedemail.com: domain of patchwork-bot+linux-riscv@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=patchwork-bot+linux-riscv@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793571359;
-	b=CBElliDT0i3tyoEhDWROPKc3JyoTowo2T6v5Koa9WrSo908ET5gN428aXobhEXGhJT7Dbl
-	4gCLH7KqWvrPslHDHkIanvblhOKWpYvtOJTTkNJFw7DuFF591yULSmQrpKfUTtQtC6eUux
-	KqWk6a3vhFeuMhlvmfpTUUaZBlNQsaY=
+	t=1793571364;
+	b=yzQBn1LMUY7FgLrm8UaLzyqpJti77r/Vf9FYm2hhgF81qbiU8E92pdIuehZ0HdEclDKDpA
+	MzpCGjsr8AwpaMtntvxHBe1lgFt+f5RXVdX6AqkoMHpUcJyUACz76Rqd+Ur+HvPW2fuTEr
+	bAmokqFBXYUofEERGV4t6bbV3j+DawQ=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gT8uquAn;
-	spf=pass (imf15.hostedemail.com: domain of patchwork-bot+linux-riscv@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=patchwork-bot+linux-riscv@kernel.org;
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dkhr+eF3;
+	spf=pass (imf29.hostedemail.com: domain of patchwork-bot+linux-riscv@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=patchwork-bot+linux-riscv@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793571359;
+	s=arc-20220608; t=1793571364;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=22yhHEiHUWVm81OxkB+6UNZ5/HC7Jn4HF5eln+k49OY=;
-	b=kho/Y6QjWRfHqeXpvHHtK/wzrv6eCEVTZu+6Zqp21KcKgoKmQ5FJ/RR1c/bJy5EtweWMFj
-	W44K7qamgRERcujNjTn6z/nbSAnUbCP5Ro2VlGbMQkU+u+EUN3qdyQ3TvSkVnhqaYgUGFw
-	ZkC3vw7uELPqRCCMy2dNg/iBZ43v61A=
+	bh=1QVLcxKIGpBrR1ls29kmgMJV8dBu1FUp9t501+9SlJY=;
+	b=324DcTbU6uxD9m9BzP4zStU0Y6PB3NJWoNco0f2MzlFwjtrWHQcsCryLouCmonRdH42ocM
+	6ZVV3bEdcmYn1Y4zJ0E4IZtB6KlR11hqva52ht/huAfpeeWbAtYfRV72HYbi7kIIrF6wt5
+	rsLnFEV2wj7IhQi/F8qP1qirON3YB/U=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 1478344038;
-	Sun,  1 Nov 2026 22:15:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94D191F0157D;
-	Sun,  1 Nov 2026 22:15:57 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id B123D41FEF;
+	Sun,  1 Nov 2026 22:16:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 887CB1F00A2C;
+	Sun,  1 Nov 2026 22:16:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793571358;
-	bh=22yhHEiHUWVm81OxkB+6UNZ5/HC7Jn4HF5eln+k49OY=;
+	s=k20260515; t=1793571363;
+	bh=1QVLcxKIGpBrR1ls29kmgMJV8dBu1FUp9t501+9SlJY=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=gT8uquAnEWBRqbOFSUZpNEaxjvUvJ/bDn3nZQUsNJZUlI6Gk8Hbb3XEkhVIaVDRoV
-	 2gYU6ml+WaMNKlPmFp30xmMIjuvfyf8SlD8YdPaaBgTyNJmHvk9bFXZ1fiH4aHx/Zk
-	 edGwaci/wyJ0nCQhsH9YKkutM0kU8KLugwOCbc/N+SxR6OEDg23CaFG3hwoGs2NiCA
-	 Kbij8WbBXvF7uQxa8xbqi0+xePd+KJBP0eQnINMffjV7Gf5NvA1MsereH7UBTMliqO
-	 5rcpUaXdFoKO8f5lPDIkkfGcDqtMLaxl2k5QhPhvXyRLajFq6WKmv5GsciX18v/q8M
-	 Bz9guAmO027gQ==
+	b=dkhr+eF3q1vLH5j+Vt4HH9N1vxJVl63OY3ZWjO6x3dSLn6eQyYKacs6+oM+3Qn+lI
+	 thS97Vkt+DR9px4LyR/SisaZrzLD9G4XkXITq3BcSDr6ocIppa7a8idnye+qEIqM/4
+	 lA297xuw1etIPcz1D0z9fjeTfmdqf6SQPW4T9L8XHNuLzhxg5drxCmE0d9RsQKGE7f
+	 z+lpwxPVzUbcNwvBGGrQmdsobEkchSaH6YXFrcneezcbTudB2i/2DWGMJc6AtOWD6C
+	 C8++koYKIE/Rb+G/udcYaxQ5Bv2MDWCQ3FwdoYvX/c9BzD2IHxxqLnrHL9kBU1vqtn
+	 vMh0jbZFxh6bw==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 7D5B538003B8;
-	Sun,  1 Nov 2026 22:15:57 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 7D35B38003B8;
+	Sun,  1 Nov 2026 22:16:03 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH v5 00/12] mm: make userland page table freeing RCU-safe
+Subject: Re: [PATCH RFC 00/18] arch, mm: create a generic
+ set_memory/change_page_attr core
 From: patchwork-bot+linux-riscv@kernel.org
 Message-Id: 
- <179357135604.2624073.12750471724213497880.git-patchwork-notify@kernel.org>
-Date: Sun, 01 Nov 2026 22:15:56 +0000
-References: <20260925-rcu-pagetable-freeing-v5-0-31e91065fea4@kernel.org>
-In-Reply-To: <20260925-rcu-pagetable-freeing-v5-0-31e91065fea4@kernel.org>
-To: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-Cc: linux-riscv@lists.infradead.org, akpm@linux-foundation.org,
- david@kernel.org, ziy@nvidia.com, baolin.wang@linux.alibaba.com,
- liam@infradead.org, nico.pache@linux.dev, ryan.roberts@arm.com,
- dev.jain@arm.com, baohua@kernel.org, lance.yang@linux.dev,
- usama.arif@linux.dev, kas@kernel.org, guoren@kernel.org, bcain@kernel.org,
- geert@linux-m68k.org, dinguyen@kernel.org, schuster.simon@siemens-energy.com,
- jonas@southpole.se, stefan.kristiansson@saunalahti.fi, shorne@gmail.com,
- dalias@libc.org, glaubitz@physik.fu-berlin.de, pjw@kernel.org,
- palmer@dabbelt.com, aou@eecs.berkeley.edu, alex@ghiti.fr,
- linux@armlinux.org.uk, vgupta@kernel.org, monstr@monstr.eu, chris@zankel.net,
- jcmvbkbc@gmail.com, will@kernel.org, aneesh.kumar@kernel.org,
- npiggin@gmail.com, peterz@infradead.org, davem@davemloft.net,
- andreas@gaisler.com, richard.henderson@linaro.org, mattst88@gmail.com,
- linmag7@gmail.com, catalin.marinas@arm.com, mark.rutland@arm.com,
- chenhuacai@kernel.org, kernel@xen0n.name, tsbogend@alpha.franken.de,
- James.Bottomley@HansenPartnership.com, deller@gmx.de, maddy@linux.ibm.com,
- mpe@ellerman.id.au, chleroy@kernel.org, hca@linux.ibm.com, gor@linux.ibm.com,
- agordeev@linux.ibm.com, borntraeger@linux.ibm.com, svens@linux.ibm.com,
- richard@nod.at, anton.ivanov@cambridgegreys.com, johannes@sipsolutions.net,
- tglx@kernel.org, mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com,
- x86@kernel.org, hpa@zytor.com, arnd@arndb.de, vbabka@kernel.org,
- rppt@kernel.org, surenb@google.com, mhocko@suse.com, jgg@ziepe.ca,
- jhubbard@nvidia.com, peterx@redhat.com, ysato@users.sourceforge.jp,
- shakeel.butt@linux.dev, corbet@lwn.net, rdunlap@infradead.org,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, linux-csky@vger.kernel.org,
- linux-hexagon@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
- linux-openrisc@vger.kernel.org, linux-sh@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-snps-arc@lists.infradead.org,
- linux-arch@vger.kernel.org, sparclinux@vger.kernel.org,
- linux-alpha@vger.kernel.org, loongarch@lists.linux.dev,
- linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
- linux-um@lists.infradead.org, hughd@google.com, qi.zheng@linux.dev,
- linux-doc@vger.kernel.org, gerg@linux-m68k.org
+ <179357136205.2624073.6611857519856364383.git-patchwork-notify@kernel.org>
+Date: Sun, 01 Nov 2026 22:16:02 +0000
+References: <20260721-generic-set-memory-v0-1-v1-0-2c1fc62306b3@kernel.org>
+In-Reply-To: <20260721-generic-set-memory-v0-1-v1-0-2c1fc62306b3@kernel.org>
+To: Mike Rapoport <rppt@kernel.org>
+Cc: linux-riscv@lists.infradead.org, linux-mm@kvack.org,
+ aou@eecs.berkeley.edu, akpm@linux-foundation.org, luto@kernel.org,
+ bp@alien8.de, jackmanb@google.com, catalin.marinas@arm.com,
+ dave.hansen@linux.intel.com, david@kernel.org, chenhuacai@kernel.org,
+ mingo@kernel.org, mingo@redhat.com, kevin.brodsky@arm.com,
+ liam@infradead.org, ljs@kernel.org, mhocko@suse.com, palmer@dabbelt.com,
+ pjw@kernel.org, peterz@infradead.org, hpa@zytor.com, surenb@google.com,
+ tglx@kernel.org, vbabka@kernel.org, will@kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ loongarch@lists.linux.dev, x86@kernel.org, dave.hansen@intel.com,
+ jgross@suse.com
 X-Rspam-User: 
-X-Rspamd-Queue-Id: D1293A0003
-X-Stat-Signature: gdft1bgdwo54exxydn3u57yt3rpz1tog
+X-Rspamd-Queue-Id: 6F6F2120006
+X-Stat-Signature: t6zjuo1sxxyrrgmhdqhpj6q3sxueofyk
 X-Rspamd-Server: rspam01
 X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS
 	autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1793571358-231419
-X-HE-Meta: U2FsdGVkX18vBkahnu/PwPEl7yKYiQl4EXNOQVQXDxFXxXU5Gnkqd5RRIvozLcO8Ff55p09Co/QbjJT89wSnw1GKjLMIh6jMlqC6HmmkPtdliydzbRI4vWpJFfM4BrplFJ7o5HA1MPbbXALVtFItQokoAkTyqUMPjtCJYYoXiJDgmD1QEx8ffFFy0BiaMYKSGTgQesqHb2TYTC0GNNnlPD9GQHN2K6sax+frva/PVsQ407LlW1UMuTuuBg5TALkYkmU2OkLlHvW5ygkSQorBNc2bJRMz0WJ8W4H4mCMm0RaxnSiXmw7+w3oG7yK+shvmrcp9lZZSAHzzJTwssog00HhSF8IuzoOTMJpVv3npLS1ULcE2uJGSl/KSYFssipK3SlKpIZt2UDhs+ZuCeTFOoVbyHZ7wrOQrvMac/hi97l9akfE3V0MpuIZOtHv7znimNg7/Ah2FvZ86J1A24rqvgp4tQbuSsAERdfavjv0UptkqOQdlvBlb0G39bhi0kfZ/15Z5ekhXyiRi49xisSA8s4+Bxj/1HUtadfEZrMHqiqTVux1BUSjGctqaQgT/cc0yIss8uvsYu5NBg9ZJJDlegysGDdGAy4Y/Ys46JqigN5rUrya2a4SHYHIkcJotpQe1dE0VbcFHISGYIA08iR6EAjszAAEogFP5XjUv1t0oCGlXqXRt6BdJj6GD4eOjxtV4m2lPlBEgpTdIir0jD1ivxHZ8kkAR/qJoZF1reV4GH4XDQZKP/jUjD0lRIpDI5DcsXZNeug9zeeXbuw2rM9my4SjRmSRflxAkF8o/vAVpO5Rybmv3hOmHfg4kNvhwotSRqy0svb6FD1QurV9tPCCh2M8/N1he4d/KQsc492Mbda8Qi2I6gG/WRrN7oXvNlrZL+LjXj6sdYA1fgLnnPbglb1RJtgNjPJ3XaqLIKr/0BvWVifiiW9y+MlR4Qvdu/e5ERd1M0jirgQIFKv5jTxX
- mGyNdb+s
- npyzDMOA7gGSHLa86Em5QdXIQYIJHYyXt0dK0LORIDiwNPmT12UIqOvc3Vjtr3KOdUm/nDrNgMST6NxSMsUcer8TrZf3RqVQBXahQg3ZJ5bUHK+wZyW3ZeR2nJV3ASRGOg5vgymeVkuw6/WPMIxZw0NqWGsVVHcb89Bv93A8azd+jGJtoJfbJR54D/D6UaEth/FauldCXSeWLM8zvxhzn8vfAqsFm1c3+Vs9B/JgoE4MyfZn27i/BSqZLKLwrufB4Zc1jUVDhTFczfQFYrziA/XV4tijWqn7qLQc+vBI6/SkFRggXi96/9vlvGACceN4y7T/xerwUAfCh1Gv+BgR5MjHzdvPtKk7On+J71xLIdJI83u0mJVoKamWhnrQuzpcsNj1DBb6045MmcBWpb7bVFAccsOxLqNeZqnOJv8o0IBl9aPu8jHKfJApk5DjEtoeyqbYivEf6HRGPECcXilMU56FcXh7+/qxDxPh9dIRN9upEIgbjHT53tpRHDVCWokQYWndk
+X-HE-Tag: 1793571364-552337
+X-HE-Meta: U2FsdGVkX1+b8TJBtSR3K3aPIFsq63MLDnpaYzdHXVg8ujLNQYNjkE8YYykKLBaQuXlOEHxJAvvEy4RiHqcBD8ZQuLacNa8fBvf9YYTyVYePNaBqtT6NRImLKv1S2pgCkjG3HBkyakAx/55yU6FadxjgTTmo0xesO7BJ2E1xtajFj5/0vuxflnC0ENWtwZvsRfn+S96VK1yux3o66VZxDggWPBt9WHx/bVevYXrFd7PQYr2LAvOHaWFqUk3mMGJWGMDHusCiTFcxEESr/kF+crta80K2gnejd8ftd5zCKv602KP8Ay/g4oU8ArQ722wkTxQnv1H1VCh+SC0naygyHCrkjzlaG9oQuCgejygfKkDPmyD1gHcIYTl8niD+2LxgB3WZ0Z+Vo/sRI6xzO3zURjnuyfKsF4zgJQoOqmvA1p0vSsYNdhMtiLVBsCiJi53f1ZI50u5uMO4RQPswZwaeIUDzpuj7m0rTIUV8ZYoBhOxkbrnBg6UMw8NQOTfIsjcsQXDuQRhip9SRAWIA3vNpIz6WNAxRFY/p8KeMWPZrhI3V5EBNFMpZijVA1A7oHUyutRLs/flXYYOHu0tBLTmpBFDyw63SWHPfC8345E9MlHq0PqU73BHH2OeuT5DivKamWxTPWbFBaEIAVvQiVnVqSfmTAk2rK7gPZhnXtsYTdAfj3f98qjGusZ5xbfprfqXi9kwdC35iM0Li9qfYBj/aJyncCt0MKAJLW8hC8Mz7+/QMAqLdxLyrg4CiXE549EPcL16czMOBZ96tRxg/BaZoZgu53ovC7MRpOfPHjAB4LGZk0LzJ+fUBdTySvBaggxCOOpSeXMVBgLigogY9MQTTEqgxOWAfJ5CxfI6e5Q6bp3a5DNY7z6pzB1ecp0nH/BGZcoLomjJokeuAIFqAtTxpA0zYfVCnIh6IC01OcgUwmEit7Ip0XXA3ealX6ujsP9d17kNOh3aVRwJidf8O4h6
+ DtwlKbYN
+ z5qrJZNFGuYRHd1UIIKSf1k8gEYveuYjoi2Zj4stRHqIkNdnUHjcY9eH5mWXriDO6IEGYDYXs7vFupm2a2gM4CzCnMXB1WgdUxQ0fX41UF0HHBz84aLJzcoWJS45p6ukChHJ9s/puxop7NQZbKR7Xe1aQeOeV0JHwdCcxHobmIeV8piRUQ0eNj6EFxoGghpKi9ePzAmU2H+kp/5aiCq4h2u81oXA5TQHjbVNXWNKpZBix1w13opVB9BAgw3jil642emgQij4rHE88ET0NZJPFyXvOdhjpzrOWB8sH1uX2YTBbaW0QWPQrZkhioLCrp9R4t+/TTgbgCG16P6dnQrx8PBbHRX82kKy/cGKX1SKLZn6lOHqCeu9/LaAAV4ClrM1lbttb4Cffs7wR2/0M8ajsckSzmtpzsMcVd8gUr2nD3C/873JG50LSkh7yDsRJd10jhGplzrmDA5OWKALDBXwXyd/CSMLbIOVF1DNqbSZ2cqs6dHU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -133,44 +111,57 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 Hello:
 
 This series was applied to riscv/linux.git (fixes)
-by Andrew Morton <akpm@linux-foundation.org>:
+by Dave Hansen <dave.hansen@linux.intel.com>:
 
-On Fri, 25 Sep 2026 21:09:35 +0100 you wrote:
-> The majority of architectures in the kernel defer page table freeing until
-> an RCU grace period has elapsed, this series converts all remaining
-> architectures to do so too and eliminates CONFIG_MMU_GATHER_RCU_TABLE_FREE
-> altogether.
+On Tue, 21 Jul 2026 19:23:23 +0300 you wrote:
+> Currently there are 6 independent implementations for set_memory and
+> set_direct_map APIs.
 > 
-> This is important because it enables safe lockless page table walking under
-> RCU alone.
+> With increasing demand for kernel page table manipulations, for example
+> "Direct Map Removal Support for guest_memfd" [1] and "mm: ASI direct map
+> management" [2], it makes sense to have a generic core for kernel page
+> table manipulation in mm/ with helpers in the architecture specific
+> code.
 > 
 > [...]
 
 Here is the summary with links:
-  - [v5,01/12] mm/khugepaged: deposit a newly allocated page table on collapse
-    https://git.kernel.org/riscv/c/eb823057e092
-  - [v5,02/12] mm: enable MMU_GATHER_RCU_TABLE_FREE for most 2-level architectures
-    https://git.kernel.org/riscv/c/d22254fd57f0
-  - [v5,03/12] mm: enable MMU_GATHER_RCU_TABLE_FREE for MMU riscv
-    https://git.kernel.org/riscv/c/5ae75414416f
-  - [v5,04/12] mm: enable MMU_GATHER_RCU_TABLE_FREE for MMU arm
-    https://git.kernel.org/riscv/c/8e645d98fb78
-  - [v5,05/12] mm: enable MMU_GATHER_RCU_TABLE_FREE for arc, microblaze, xtensa
-    https://git.kernel.org/riscv/c/799bd3c4be5f
-  - [v5,06/12] mm: enable MMU_GATHER_RCU_TABLE_FREE for sparc64
-    https://git.kernel.org/riscv/c/461a24a81215
-  - [v5,07/12] mm: enable MMU_GATHER_RCU_TABLE_FREE for m68k-coldfire
-    https://git.kernel.org/riscv/c/ccdaaf591664
-  - [v5,08/12] mm: enable MMU_GATHER_RCU_TABLE_FREE for sh-X2
-    https://git.kernel.org/riscv/c/a72df945113a
-  - [v5,09/12] mm: enable MMU_GATHER_RCU_TABLE_FREE for m68k-motorola
-    https://git.kernel.org/riscv/c/0f5cbeebe00e
-  - [v5,10/12] mm: enable MMU_GATHER_RCU_TABLE_FREE for sparc32
-    https://git.kernel.org/riscv/c/35dd856770f3
-  - [v5,11/12] mm: userland pgtable freeing is RCU-safe now, remove leftover bits
-    https://git.kernel.org/riscv/c/35e340a47888
-  - [v5,12/12] mm: change the contract for free_pgtables(), update docs
-    https://git.kernel.org/riscv/c/a5c0a39d0e57
+  - [RFC,01/18] x86/mm/pat: Don't gate cpa_lock on debug_pagealloc_enabled()
+    (no matching commit)
+  - [RFC,02/18] x86/mm/pat: fix effective RW computation in lookup_address_in_pgd_attr()
+    https://git.kernel.org/riscv/c/ebaf7c9bbb1e
+  - [RFC,03/18] x86/mm/pat: replace x86-speficic pg_level with generic pgtable_level
+    (no matching commit)
+  - [RFC,04/18] x86/mm/pat: use page table accessors for effective RW/NX bits
+    (no matching commit)
+  - [RFC,05/18] x86/mm/pat: use a generic helper for the large page size
+    (no matching commit)
+  - [RFC,06/18] x86/mm/pat: introduce an inline helper to check if alias needs update
+    (no matching commit)
+  - [RFC,07/18] x86/mm/pat: introduce cpa_handle_large_page()
+    (no matching commit)
+  - [RFC,08/18] x86/mm/pat: use cpa_split_data structure to pass split parameters
+    (no matching commit)
+  - [RFC,09/18] x86/mm/pat: use a single locked lookup for PTE verification
+    (no matching commit)
+  - [RFC,10/18] x86/mm/pat: move the large page size calculation to should_split_large_page
+    (no matching commit)
+  - [RFC,11/18] x86/mm/pat, mm: set_memory: pull change_page_attr() core to mm/
+    (no matching commit)
+  - [RFC,12/18] x86/pat/mm, mm/set_memory: abstract the CPA page table lock
+    (no matching commit)
+  - [RFC,13/18] mm/set_memory: read page table entries with pXdp_get()
+    (no matching commit)
+  - [RFC,14/18] x86/mm/pat, mm: move cpa-test to mm
+    (no matching commit)
+  - [RFC,15/18] riscv: convert set_memory to the generic CPA implementation
+    (no matching commit)
+  - [RFC,16/18] riscv: make set_direct_map_*_noflush actually noflush
+    (no matching commit)
+  - [RFC,17/18] loongarch: convert set_memory to the generic CPA implementation
+    (no matching commit)
+  - [RFC,18/18] loongarch: make set_direct_map_*_noflush actually noflush
+    (no matching commit)
 
 You are awesome, thank you!
 -- 
