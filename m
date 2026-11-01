@@ -1,128 +1,88 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 850DE606A324
-	for <linux-mm@archiver.kernel.org>; Sun,  1 Nov 2026 23:47:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F830606A332
+	for <linux-mm@archiver.kernel.org>; Sun,  1 Nov 2026 23:54:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=D9aNQXoJ
+	dkim=pass (1024-bit key, unprotected) header.d=inria.fr header.i=@inria.fr header.a=rsa-sha256 header.s=dc header.b=hXM26/to
 Received: by kanga.kvack.org (Postfix)
-	id 54B616B00EF; Sun,  1 Nov 2026 18:47:26 -0500 (EST)
+	id 447456B05B2; Sun,  1 Nov 2026 18:54:36 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4FBE96B05B1; Sun,  1 Nov 2026 18:47:26 -0500 (EST)
+	id 3F7B66B05B3; Sun,  1 Nov 2026 18:54:36 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3EACA6B05B2; Sun,  1 Nov 2026 18:47:26 -0500 (EST)
+	id 2E97C6B05B4; Sun,  1 Nov 2026 18:54:36 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 11CEA6B00EF
-	for <linux-mm@kvack.org>; Sun,  1 Nov 2026 18:47:26 -0500 (EST)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 7E68D40B56
-	for <linux-mm@kvack.org>; Sun,  1 Nov 2026 23:47:25 +0000 (UTC)
-X-FDA: 85388189250.02.41B4CD0
-Received: from mail-dy1-f170.google.com (mail-dy1-f170.google.com [74.125.82.170])
-	by imf04.hostedemail.com (Postfix) with ESMTP id A06F540003
-	for <linux-mm@kvack.org>; Sun,  1 Nov 2026 23:47:23 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=D9aNQXoJ;
-	dmarc=pass (policy=none) header.from=chromium.org;
-	spf=pass (imf04.hostedemail.com: domain of senozhatsky@chromium.org designates 74.125.82.170 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 080346B05B2
+	for <linux-mm@kvack.org>; Sun,  1 Nov 2026 18:54:35 -0500 (EST)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 8322EC0B4E
+	for <linux-mm@kvack.org>; Sun,  1 Nov 2026 23:54:35 +0000 (UTC)
+X-FDA: 85388207310.21.127879A
+Received: from mail2-relais-roc.national.inria.fr (mail2-relais-roc.national.inria.fr [192.134.164.83])
+	by imf31.hostedemail.com (Postfix) with ESMTP id B8A2C20002
+	for <linux-mm@kvack.org>; Sun,  1 Nov 2026 23:54:34 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=inria.fr header.s=dc header.b="hXM26/to";
+	dmarc=pass (policy=none) header.from=inria.fr;
+	spf=pass (imf31.hostedemail.com: domain of julia.lawall@inria.fr designates 192.134.164.83 as permitted sender) smtp.mailfrom=julia.lawall@inria.fr
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793576843;
+	s=arc-20220608; t=1793577274;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NGKq3X08/HBTqu+TtIKLeW2xAMA2Xfd1c0mdem9B3G4=;
-	b=UzzsCzrmCFasddM9ymPFr9Arp5Qy37rWReDlAAAZ+RBoPa1ZpLaW+aXwDor+NT+jJDfHCy
-	RoWboMj+06RjyPOxw1hXSyy0qNThBzTmvQargBgBtWhW/0lULTQRqMO6c8m4gcIcnD4vFd
-	fEL2W2762DWRlymp4wOfPoAsSk8hi7o=
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=BlqBpaBiBIH3lx9LCXT9bYsm6eEmk51QgXtyvSdnxRE=;
+	b=Ph6Jn1LGC3EbjM45aSD98O8s+kaMfXQQFZPzdmBu5icoXRygH3r2eWUwBEsqKJlID2rdUg
+	v4tfegDFSiEaVvuYMkJDbWTYPL0f6yoogoqirVOq9BYmdlf3/gcL2B26sRsm9+xq6KC81V
+	j/CuhZ+8z+C/0nNtyXihxbXZGBI9+Dw=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=D9aNQXoJ;
-	dmarc=pass (policy=none) header.from=chromium.org;
-	spf=pass (imf04.hostedemail.com: domain of senozhatsky@chromium.org designates 74.125.82.170 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org
+	imf31.hostedemail.com;
+	dkim=pass header.d=inria.fr header.s=dc header.b="hXM26/to";
+	dmarc=pass (policy=none) header.from=inria.fr;
+	spf=pass (imf31.hostedemail.com: domain of julia.lawall@inria.fr designates 192.134.164.83 as permitted sender) smtp.mailfrom=julia.lawall@inria.fr
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793576843;
-	b=yB1ScuJXlp4bD58WrOWBPn5ICdex3QozmXGrdVyGjSrlgHYrS9bG7uxWka61B1oVrvEJJQ
-	WpPDCVsJZdNbMPHVNlQeIBPiCTXRiTB5eD1ySMDv3wgDM7gBEL1kscL8rkTMkN26AmC9SL
-	QoH2Sf3NQDA0FJjEcVv5DwFqhKt2IQs=
-Received: by mail-dy1-f170.google.com with SMTP id 5a478bee46e88-35829219da8so4091921eec.0
-        for <linux-mm@kvack.org>; Sun, 01 Nov 2026 15:47:23 -0800 (PST)
+	t=1793577274;
+	b=0YTrQX8R1/wuIK+gPxoGFIuK4rx7nkYGCM7Vw3QAZkggZCT8ICrm5L1/hvJojEm1nVk88s
+	BU6iMLR74BgwadCSOJnjIe/K46dimPR/sdYvHX/hfyub7/052Ghvp4uTRypACiAZlJK0uO
+	D3Zu/AS6g8/3/wJcUN91DizGQnr9dQU=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1793576842; x=1794181642; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=NGKq3X08/HBTqu+TtIKLeW2xAMA2Xfd1c0mdem9B3G4=;
-        b=D9aNQXoJqBkdJdWr8NtIhIKjeBTabK7m9+VA1bUPphbkHA9gZgnpMCEacir5smp4MI
-         jUz31UXTiOROlHMWelmYbs3YSl7L4Pg8kx7FlZnzAicJrjQvMyGwrbxI7dxgXXhh3Ues
-         EZJqoQ4z/DkX8IYxdGSfiGpQSoomGMLIlnQkc=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793576842; x=1794181642;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=NGKq3X08/HBTqu+TtIKLeW2xAMA2Xfd1c0mdem9B3G4=;
-        b=h2a6xGWReodtWi6CnqRIJBoIYmEm+y1e+i58T+3BCwGyGLNWc1fchU2EYNMM643PBa
-         11eCP/2K4ql6OICfdq5MWXzPSCO4zTiNXfTCOSAysmpz5WOJWuJ4omUadux5o5TxUogy
-         frxlrDi8JM5ZvLFSyAG85w9nNwKaD/ntQL3w/tV+J9uIO6m9/ZA7VLjT9OrXNmlPlL7y
-         Pox9oJk9YWn8+QW96FR4lq7FXRrV3lRJOeDY8VVjeROaxONbwNlcQyLj4UWnzn5qnNP6
-         0cSW+KnOtwVa1li8M1nW7+WSD7EYKQ8dq5j2X1/AkbFgnoQlpiqIsnBIvIxbgj2o0Sv5
-         3ByA==
-X-Forwarded-Encrypted: i=1; AKwUvBzF6fcl7KPGdTcRz7q7KUm2Gz68WmZn2oGpzaTHTxrk2p152rA1zYn3LcSK2LXd1y3H/qVwZX7TWg==@kvack.org
-X-Gm-Message-State: APuU4Z/ngvrAAb18Se9UCtHLNCyNENJjqXdvqDNDn+eUprv9Jx+Z/BFc
-	Oz0qyyrouRYQpYtzuUAOGpzLdLuhe0bo4vihnZnXfMhWH+SIzWhLTHnBl4l6SL6pNayh7Or0pL3
-	xL+Y=
-X-Gm-Gg: AYBFou1ZBTzguLKiQWvr4BASDqz+TcAnABE12vSeu7RyYnJuAGel5uM+JkUQoCT1LI+
-	+dS9CrzdYRIQTAwX3STEpfkrYby8xZaqwUKRf43ypU8TwTyTcce0kO5dfDQeUp5mpOYBUGUfvj4
-	XlGecVoongu648lkqqMvOfm2LSpw1PSToqfOE7AiQFL9ViLz3+0Qm6stOH55TyudkKZ/TwISlZ0
-	w7XVq0SsiGKH7mo6G+eoOLiHQ5r0jLmqTzlaCU9AdoZT7a69N+yD8H78XlozpeGBebpQ6i27OGw
-	5GfNorJ2fsrNhTpC2E4XH9PBGJfrECyKURVbj/zT62wv7kgqUV1xyE0cruoXw9yNZgeSFKkMjWb
-	QloBTmz0SYS+zqyljOZ6u2UttDPqOjT8Ffbm5ofSJV1om5eC5fh+P1P0pnvFIoKUpdchoO9o0Vm
-	Mxaq3eT4BOWCaknQmAuPAZc3shAAntNwR6SrYbFY3Woqa+qzzVFq6hmSbJtBc8qZg3FSmVDUV0E
-	T+TvtQ6kP6aWDkFxxM0cuUN/QH8aCmjo8jLayP8PtM9Y0vKkIvAg+mucVCusPfLvSfx/PkVCN8a
-	RKWKGQ57kZJqc7X6QJbqNNfKjRPW+ZZqNH5RkWKMiWSo30B8QQISeNtEhAcinFCvM2EM
-X-Received: by 2002:a05:7300:f40c:b0:351:606f:2832 with SMTP id 5a478bee46e88-36a42340896mr11385000eec.3.1793576842036;
-        Sun, 01 Nov 2026 15:47:22 -0800 (PST)
-Received: from google.com ([2a00:79e0:2031:6:2bf9:d7d2:dcf1:c2a2])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-36a42662f23sm35840147eec.2.2026.11.01.15.47.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 01 Nov 2026 15:47:21 -0800 (PST)
-Date: Mon, 2 Nov 2026 08:47:17 +0900
-From: Sergey Senozhatsky <senozhatsky@chromium.org>
-To: Sergey Senozhatsky <senozhatsky@chromium.org>
-Cc: Nhat Pham <nphamcs@gmail.com>, Xueyuan Chen <xueyuan.chen@vivo.com>, 
-	Barry Song <baohua@kernel.org>, Yosry Ahmed <yosry.ahmed@linux.dev>, 
-	Chris Wiseman <chriswiseman@google.com>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Brian Geffon <bgeffon@google.com>, Minchan Kim <minchan@kernel.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	xueyuan.chen21@gmail.com
-Subject: Re: [RFC PATCH 0/2] mm: zsmalloc: make shrinker compaction
- budget-aware
-Message-ID: <aufPMirl4cD7tz0X@google.com>
-References: <cover.1786003779.git.xueyuan.chen@vivo.com>
- <anVWZVOt-xeD0dMH@google.com>
- <47ed45b5-de67-41aa-aa21-a3ba3479a7cc@vivo.com>
- <anXJ-5_vO7-toSe1@google.com>
- <CAKEwX=Mm2tXcen-quRXHf1Y2qSHYvpEUe4xiw-mHYaJnRUR-EA@mail.gmail.com>
- <auKqt6b4AxCLziIH@google.com>
+  d=inria.fr; s=dc;
+  h=date:from:to:cc:subject:message-id:mime-version;
+  bh=BlqBpaBiBIH3lx9LCXT9bYsm6eEmk51QgXtyvSdnxRE=;
+  b=hXM26/toW/dGBf8YdPcVB8v1CmTt3tQYL4Nk9ZIAB+Wd1KIRUgXXbIDR
+   Q9NVch7ziYUX8zSunSDAB6W1Ua9j+0DtBRbG6QTmfYxNqx8z/5IUU+cAB
+   VFttaM4t7h0nCnn23XD6dymTUMC4rxVY3iG1TX9n7wU0vGhfi0Q4cSFnf
+   4=;
+X-CSE-ConnectionGUID: 7Vm0An2ETui3fCCnKWyczw==
+X-CSE-MsgGUID: E/l8+JRzSWC0WBlBdEXO9g==
+X-IronPort-AV: E=Sophos;i="6.27,190,1787004000"; 
+   d="scan'208";a="303236812"
+Received: from 88-188-149-159.subs.proxad.net (HELO hadrien.home) ([88.188.149.159])
+  by mail2-relais-roc.national.inria.fr with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Nov 2026 00:54:32 +0100
+Date: Mon, 2 Nov 2026 00:54:31 +0100 (CET)
+From: Julia Lawall <julia.lawall@inria.fr>
+To: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
+cc: Andrew Morton <akpm@linux-foundation.org>, 
+    Linux Memory Management List <linux-mm@kvack.org>, 
+    Suren Baghdasaryan <surenb@google.com>, linux-kernel@vger.kernel.org, 
+    oe-kbuild-all@lists.linux.dev
+Subject: drivers/hwtracing/stm/core.c:509:8-24: WARNING: stm_fops: .write()
+ has stream semantic; safe to change nonseekable_open -> stream_open. (fwd)
+Message-ID: <f887f7b3-b72c-99d2-8dbf-96cbd83774bf@inria.fr>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <auKqt6b4AxCLziIH@google.com>
-X-Rspamd-Queue-Id: A06F540003
-X-Stat-Signature: u1iemmcukw6uf8imkhm7w9gttqpfjbcq
-X-Rspamd-Server: rspam04
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
+Content-Type: text/plain; charset=US-ASCII
+X-Rspamd-Queue-Id: B8A2C20002
+X-Stat-Signature: msi6pr98dy5dsg1suqsj1zxjo97nwzsb
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS
+	autolearn=ham autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-HE-Tag: 1793576843-509651
-X-HE-Meta: U2FsdGVkX180uDpSpVsdMWve9q3QG6SZl/YqOrS6/0bhwWUBUzg2JHgQsh8y4hTVlFPA5qUuGjpRqNCpKa9wa44BSGXarlv4Tz489Oc+2hEop0QKbGRAPXVPJkKSJ6jDHu9Vbe+kL7FNRtcT2SQ6QzCOBFBtqx9c4AsSGFpRWVchtwoDBCh79Gi3n2ZzCn33qevVFJBAF5XNIxJbh6o6R+1Wb416/m2wie+e40iKodd+U8JKJbET7+sbMj6vkG7DiQu2/2FKVGzZt+fqW5WjfTr9nRwyO7YQzOhnOKwT6JrXr8vX8hPqiDCFyZ9N4wEcsIZ85LNZdBZhi6m1Qe1LPmLY/XeRyWxo7SsvPA/2CjVQydVq5XIuvi1PJc948kJM9sNKnKtezmdWvVAaFXX5nRk3OkR9rOkAstVD6LMVr9e3KqotVps0cL/+9GmRi5Zr/xuLvo0m0V1fWX18OIOtjH2NEar8X1YudvkwMoR7WGvwLf/cS2l0LeHz5tbYocEnxn2WnW1HMbcDCGgTKBwlkvZbZJ1e6KRQJVLmTXjkcWi9gtjK31A3G6/wgwamY7W+FDELnU73o9lxanlE607s0COENZs7kTNSUiG6WDSq8YTXKU/FXwDjMAAjqyD34lHiTUUrZvIpW3RXJngdRmkQpl3DiUhCgwFJCPj1km5fMVmuB0FL54V1K7wPTMH79gNwq0QruNE59JjZ/SIyb2kw0BTmsE+5hG+Rx3t1EDkvNYbNEv/t9lEAF5NIGGvVM2Z/ZcG+QU4FHVpaHHBi2Nd3LGl4POowoWplcr2yXzlNlP8xb4QCYBX0mvaW0qTYs/fFX+9joP48TWUfDgycXFOQIUhnK4NUc/oLRi0mmIW2PlxseuPsyDwd817wNG6v6Ltmv5XlmctUlYhceQpLnuQlNIK5k+3OgHgvOiUneLBQ3dTFHiKY3hy19j49Ne2JAU6NJ+Klo3N7LDFQNFBMD7K
- 0XRmBs7L
- fzKLEBe/WW8/XMQz+JQJOCgzFS4byHLaHR1Hsa2CcSFFqk1wz2RsBR8F7D7xTFHG1ScjwJYQ+nL1G6i5+lJtoo5UHUEGXYr1nnlGZZPkRdweTlnKKLyFtSJh0AFDrY1KsWzmk4OVPXZi81pRMrXbZWkWeLq3JftqzLD9fXfCi6CUyQEQTWp+ii4zVUEfMS72I6Ba6giFsuJ1Ki2x+rff+6MW/MbJfnALLnh7VwBkfzq2pj1iKE/WkJ2NbbJG4Vy9l3tlu45Il0kw0/4D8AQCt3nxRs7xpc0HdnbFnSujgUWIxq6irMHQD9+NbPtRp3mr5qPg5I24r64zVrquMaJ0Di/8db085DedUzUcaDBEyo5nTS8ShupZpHXDpR8+mVm7EABN8t+1ow41BhvNpr9VKuhD+FO56YHGrba+93qUaCdt+bds3TCUMa4033g==
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1793577274-711503
+X-HE-Meta: U2FsdGVkX1/8FHqCmQIvNYtybu6q8gwM5P8bNrLwpsXHxd6E+/A1su1yzQNMKv9p97Tv0fA4iCQBdmLBJ7XUDo1MuE9RIZ1Wes7hOkWbZajbh18Y2LWHqco1NjSNY5BfU6+/6Rojlq8gZW3sje0upB598GaP5e4G6G4I0LpYc0eEUUEHXxvbn4qz1b9JBZWtfGHNWvlyzGQ4bb4vocujtzbSqIepGwZrwdQp78o+S/0U1ic2pGT5QdmLla41kOp2I/ErQUbN8C/rOmh63EeUAwV/uZmlfSWf2JT5wkhRfiEFiVx+2VU2QdHTmtHu/pcy3OdQprhZ4w1mc0T2P9rr6q5M6MJ8v4XKITLQYCeA0NcN1De1+5NqxjPH1OBKvlVomIgsr8ieiz/LXLZbvOrsRqOXTTdYktyMaJwtH2Fl4A2jKW6bi8XWgOT7wnSDuAW6rIdY8s2LBTy4O+UWKu+QakZdEXQ83SwTXIqHOEI01VLRgN/jJ5Pvi1Xim/Yy5mIXW6CfD+ZyFisReGCA8nHGkm9WUu/TN75PtklezlHuBIeGuLzZtTHXn4d6iH80A9H4e3gEw0sY3/K6YefJPfDjX5Z03IFmu1oftuHSz5xCfa+Pkk16NKgCkmZJwhKok/K9Xo1k9tZ9DocF9ZDXxnf7WKTbjrhm1H1T3wJsq1CIGkKGrnG9fYxLgM732DZCC/6Vc0Zn5vYfe76b8jw47F1mG4NxF8OzIr3QTdTvOroAAc7c2QU/OhmZPwvfcq4mTQAIMFdbLP5A+JXRcufJ96wlhF6yRGPDfdKbsFjjCkoUcntDiWe7+vPMjqzT3jEY6Cf8qWQnnr0b5eTBqm2sm506qknN3ZAUqRLm/KlM7v7/LWRkdobepaOnJXy9VU4+KX9n+6A3WphUSrQhIv/ZpHZVIFXT4WZxOAXVNislUMRkOpZq03Nc3iqZtKN9Kz/LbsekNBt7Fjss8u8ipJwX9ZS
+ XdnL2Ujn
+ xz/wgqK0StGzceo7b4tkoaA5uNyZiaSAAQSfNG5ED/3rg8yauP/1pqjpuEKv65hPNlrEYq1CGlQKZngZHw6Ankbp5An0g9pNNw2WJw5X8dQi5DckC2F2usUaijYBEJRacjCEUV8JaOeVBn2HscF933d43yZtb0AnMmgmlb5MeZcUdvq9n8WzRRxRnrZpr0/MLeOOgZqk9xLywqCoIbNYx5KB/pCyclqllhLHqUfS6zAF55TAbsxTX5KiLTim1p2iFOYoLWoSQLm0tfLI6s6hlfA5lK55yQvMwoXHGzTtqbiNHV4AVXmOVoEyGtbiHybFsTIBpps5vOtp2y+g7EMHkc5t8ry0mQMRG1C23kaMrJPhUTnbUkyItNCaiTaxvibV6WuOKAeqLL8EdIe/zE6MPGpO9S3LJOheba3QcZ+zmHl/libjjI+YaBxfTginQAEd1dSCMRc2UpPp4gTsseZ7LnPfPm9HF0j8MFrGTiApjy78b4DlWEvfq9VX8wLLtZlpXm8Q8N/KbqvHue/crB8pO/T9A5XUtGt5kGgR0vCvZ1sZtsS59i0OTLMBPT0Zj8O/BBWJFkuosGLJX2Z+mSTdSIXfWCA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -131,86 +91,91 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Adding Chris for visibility
+just forwarding.  I don't know anything about this issue.
 
-On (26/10/29 11:26), Sergey Senozhatsky wrote:
-> On (26/08/07 09:25), Nhat Pham wrote:
-> > Hmm we'd need to collect more data in our workloads to determine, but
-> > if we can compute compactable ratio (freeable_pages / total_pages) on
-> > a per size class basis, can we just skip the size class whose ratio is
-> > too bad? Would that at least cut down on the vast majority of
-> > fruitless memcpys and lock acquisitions etc?
+julia
 
-[..]
+---------- Forwarded message ----------
+Date: Mon, 02 Nov 2026 00:48:49 +0100
+From: kernel test robot <lkp@intel.com>
+To: oe-kbuild@lists.linux.dev
+Cc: lkp@intel.com, Julia Lawall <julia.lawall@inria.fr>
+Subject: drivers/hwtracing/stm/core.c:509:8-24: WARNING: stm_fops: .write() has
+    stream semantic; safe to change nonseekable_open -> stream_open.
 
-> ---
-> 
-> diff --git a/mm/Kconfig b/mm/Kconfig
-> index afff1b25b543..72542946bc53 100644
-> --- a/mm/Kconfig
-> +++ b/mm/Kconfig
-> @@ -157,6 +157,17 @@ config ZSMALLOC_CHAIN_SIZE
->  
->  	  For more information, see zsmalloc documentation.
->  
-> +config ZSMALLOC_SHRINKER
-> +	bool "Enable zsmalloc pool shrinker"
-> +	default y
-> +	help
-> +	  This option enables the zsmalloc pool shrinker, which allows
-> +	  the zsmalloc pool to be shrunk when the system is under memory
-> +	  pressure. The shrinker will attempt to free up memory by
-> +	  compacting zspages and releasing empty zspages back to the system.
-> +
-> +	  If unsure, say N.
-> +
->  endmenu
->  
->  menu "Slab allocator options"
-> diff --git a/mm/zsmalloc.c b/mm/zsmalloc.c
-> index 7ef80e0da626..e0d7ab9142bb 100644
-> --- a/mm/zsmalloc.c
-> +++ b/mm/zsmalloc.c
-> @@ -276,8 +276,10 @@ struct zs_pool {
->  
->  	struct zs_pool_stats stats;
->  
-> +#ifdef CONFIG_ZSMALLOC_SHRINKER
->  	/* Compact classes */
->  	struct shrinker *shrinker;
-> +#endif
->  
->  #ifdef CONFIG_ZSMALLOC_STAT
->  	struct dentry *stat_dentry;
-> @@ -2050,8 +2052,9 @@ void zs_pool_stats(struct zs_pool *pool, struct zs_pool_stats *stats)
->  }
->  EXPORT_SYMBOL_GPL(zs_pool_stats);
->  
-> +#ifdef CONFIG_ZSMALLOC_SHRINKER
->  static unsigned long zs_shrinker_scan(struct shrinker *shrinker,
-> -		struct shrink_control *sc)
-> +				      struct shrink_control *sc)
->  {
->  	unsigned long pages_freed;
->  	struct zs_pool *pool = shrinker->private_data;
-> @@ -2067,7 +2070,7 @@ static unsigned long zs_shrinker_scan(struct shrinker *shrinker,
->  }
->  
->  static unsigned long zs_shrinker_count(struct shrinker *shrinker,
-> -		struct shrink_control *sc)
-> +				       struct shrink_control *sc)
->  {
->  	int i;
->  	struct size_class *class;
-> @@ -2105,6 +2108,10 @@ static int zs_register_shrinker(struct zs_pool *pool)
->  
->  	return 0;
->  }
-> +#else
-> +static void zs_unregister_shrinker(struct zs_pool *pool) { }
-> +static int zs_register_shrinker(struct zs_pool *pool) { return 0; }
-> +#endif
->  
->  static int calculate_zspage_chain_size(int class_size)
->  {
+BCC: lkp@intel.com
+CC: oe-kbuild-all@lists.linux.dev
+CC: linux-kernel@vger.kernel.org
+TO: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
+CC: Andrew Morton <akpm@linux-foundation.org>
+CC: Linux Memory Management List <linux-mm@kvack.org>
+CC: Suren Baghdasaryan <surenb@google.com>
+
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git master
+head:   6628e7d4c6b25c8d18f1345e3a20d21829aae7e4
+commit: b0085cb94d2477787f4197a3000e33aabf3d48fc stm: replace deprecated mmap hook with mmap_prepare
+date:   7 months ago
+:::::: branch date: 2 hours ago
+:::::: commit date: 7 months ago
+config: mips-randconfig-r2106-20261101 (https://download.01.org/0day-ci/archive/20261102/202611020009.xkUfJUpm-lkp@intel.com/config)
+compiler: clang version 24.0.0git (https://github.com/llvm/llvm-project 8f6b51ca8bab1d49006ddaa042bc7e4e7306975d)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Fixes: b0085cb94d24 ("stm: replace deprecated mmap hook with mmap_prepare")
+| Reported-by: kernel test robot <lkp@intel.com>
+| Reported-by: Julia Lawall <julia.lawall@inria.fr>
+| Closes: https://lore.kernel.org/r/202611020009.xkUfJUpm-lkp@intel.com/
+
+cocci warnings: (new ones prefixed by >>)
+>> drivers/hwtracing/stm/core.c:509:8-24: WARNING: stm_fops: .write() has stream semantic; safe to change nonseekable_open -> stream_open.
+
+vim +509 drivers/hwtracing/stm/core.c
+
+c7fd62bc69d022 Alexander Shishkin 2018-10-05  484
+7bd1d4093c2fa3 Alexander Shishkin 2015-09-22  485  static int stm_char_open(struct inode *inode, struct file *file)
+7bd1d4093c2fa3 Alexander Shishkin 2015-09-22  486  {
+7bd1d4093c2fa3 Alexander Shishkin 2015-09-22  487  	struct stm_file *stmf;
+7bd1d4093c2fa3 Alexander Shishkin 2015-09-22  488  	struct device *dev;
+7bd1d4093c2fa3 Alexander Shishkin 2015-09-22  489  	unsigned int major = imajor(inode);
+a0ebf519b8a266 Johan Hovold       2016-11-18  490  	int err = -ENOMEM;
+7bd1d4093c2fa3 Alexander Shishkin 2015-09-22  491
+7bd1d4093c2fa3 Alexander Shishkin 2015-09-22  492  	dev = class_find_device(&stm_class, NULL, &major, major_match);
+7bd1d4093c2fa3 Alexander Shishkin 2015-09-22  493  	if (!dev)
+7bd1d4093c2fa3 Alexander Shishkin 2015-09-22  494  		return -ENODEV;
+7bd1d4093c2fa3 Alexander Shishkin 2015-09-22  495
+bf4afc53b77aea Linus Torvalds     2026-02-21  496  	stmf = kzalloc_obj(*stmf);
+7bd1d4093c2fa3 Alexander Shishkin 2015-09-22  497  	if (!stmf)
+a0ebf519b8a266 Johan Hovold       2016-11-18  498  		goto err_put_device;
+7bd1d4093c2fa3 Alexander Shishkin 2015-09-22  499
+a0ebf519b8a266 Johan Hovold       2016-11-18  500  	err = -ENODEV;
+cde4ad8368840e Alexander Shishkin 2016-02-15  501  	stm_output_init(&stmf->output);
+7bd1d4093c2fa3 Alexander Shishkin 2015-09-22  502  	stmf->stm = to_stm_device(dev);
+7bd1d4093c2fa3 Alexander Shishkin 2015-09-22  503
+7bd1d4093c2fa3 Alexander Shishkin 2015-09-22  504  	if (!try_module_get(stmf->stm->owner))
+7bd1d4093c2fa3 Alexander Shishkin 2015-09-22  505  		goto err_free;
+7bd1d4093c2fa3 Alexander Shishkin 2015-09-22  506
+7bd1d4093c2fa3 Alexander Shishkin 2015-09-22  507  	file->private_data = stmf;
+7bd1d4093c2fa3 Alexander Shishkin 2015-09-22  508
+7bd1d4093c2fa3 Alexander Shishkin 2015-09-22 @509  	return nonseekable_open(inode, file);
+7bd1d4093c2fa3 Alexander Shishkin 2015-09-22  510
+7bd1d4093c2fa3 Alexander Shishkin 2015-09-22  511  err_free:
+a0ebf519b8a266 Johan Hovold       2016-11-18  512  	kfree(stmf);
+a0ebf519b8a266 Johan Hovold       2016-11-18  513  err_put_device:
+f7c81c7176c72c Alexander Shishkin 2016-02-15  514  	/* matches class_find_device() above */
+f7c81c7176c72c Alexander Shishkin 2016-02-15  515  	put_device(dev);
+7bd1d4093c2fa3 Alexander Shishkin 2015-09-22  516
+7bd1d4093c2fa3 Alexander Shishkin 2015-09-22  517  	return err;
+7bd1d4093c2fa3 Alexander Shishkin 2015-09-22  518  }
+7bd1d4093c2fa3 Alexander Shishkin 2015-09-22  519
+
+:::::: The code at line 509 was first introduced by commit
+:::::: 7bd1d4093c2fa37d1ecab05da3c9d48ea2af2264 stm class: Introduce an abstraction for System Trace Module devices
+
+:::::: TO: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+:::::: CC: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
