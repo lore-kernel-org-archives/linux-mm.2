@@ -1,149 +1,127 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D5A260A380A
-	for <linux-mm@archiver.kernel.org>; Sun,  1 Nov 2026 22:15:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52A2460A5BCD
+	for <linux-mm@archiver.kernel.org>; Sun,  1 Nov 2026 22:16:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kSuQm1gi
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=gT8uquAn
 Received: by kanga.kvack.org (Postfix)
-	id 0D30F6B00EF; Sun,  1 Nov 2026 17:15:57 -0500 (EST)
+	id 651D56B05B2; Sun,  1 Nov 2026 17:16:03 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0AB636B05B1; Sun,  1 Nov 2026 17:15:57 -0500 (EST)
+	id 629126B05B3; Sun,  1 Nov 2026 17:16:03 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F03906B05B2; Sun,  1 Nov 2026 17:15:56 -0500 (EST)
+	id 5662C6B05B4; Sun,  1 Nov 2026 17:16:03 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id BD3FA6B00EF
-	for <linux-mm@kvack.org>; Sun,  1 Nov 2026 17:15:56 -0500 (EST)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 377901209B4
-	for <linux-mm@kvack.org>; Sun,  1 Nov 2026 22:15:56 +0000 (UTC)
-X-FDA: 85387958712.05.F8D26B3
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 1F5756B05B2
+	for <linux-mm@kvack.org>; Sun,  1 Nov 2026 17:16:03 -0500 (EST)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 92EE5A82A9
+	for <linux-mm@kvack.org>; Sun,  1 Nov 2026 22:16:00 +0000 (UTC)
+X-FDA: 85387958880.18.D159E21
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 7C167C0005
-	for <linux-mm@kvack.org>; Sun,  1 Nov 2026 22:15:54 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kSuQm1gi;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf22.hostedemail.com: domain of patchwork-bot+linux-riscv@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=patchwork-bot+linux-riscv@kernel.org
+	by imf15.hostedemail.com (Postfix) with ESMTP id D1293A0003
+	for <linux-mm@kvack.org>; Sun,  1 Nov 2026 22:15:58 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gT8uquAn;
+	spf=pass (imf15.hostedemail.com: domain of patchwork-bot+linux-riscv@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=patchwork-bot+linux-riscv@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793571359;
+	b=CBElliDT0i3tyoEhDWROPKc3JyoTowo2T6v5Koa9WrSo908ET5gN428aXobhEXGhJT7Dbl
+	4gCLH7KqWvrPslHDHkIanvblhOKWpYvtOJTTkNJFw7DuFF591yULSmQrpKfUTtQtC6eUux
+	KqWk6a3vhFeuMhlvmfpTUUaZBlNQsaY=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gT8uquAn;
+	spf=pass (imf15.hostedemail.com: domain of patchwork-bot+linux-riscv@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=patchwork-bot+linux-riscv@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793571354;
+	s=arc-20220608; t=1793571359;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FTHI4iJKGW8nTdZJYWi2ZEsJRVp05NwkVgRYnkQTnQI=;
-	b=E3xJs8KOiTYXwkDsKh981bgMQFCOwninw8Lt6L9LJEoT4SufIn7SEHzuWj6GRaJlq8sSqK
-	9t0t77bI++eXZOunauaYzRnzoT5HmVf1L0gXphHiVjhy/U3bju20G+kO3KxYjHo2BlLv36
-	y1Z5mAmVjD15LxEZ2BaXt2uxCOctMIE=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kSuQm1gi;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf22.hostedemail.com: domain of patchwork-bot+linux-riscv@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=patchwork-bot+linux-riscv@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793571354;
-	b=P7KuCOxJyHDSJI1mLUkGEo/2VLuBY0OdHdLGefkrKXFLQvUlz5VSvBXKsHiEjfmUOdRh6v
-	4BVbwGgQBkRvK0DQdhok+rUQWtrXn4pdCEUrCqoNvQPTHg2KMtkpf1Iz9D2xdkvJ+hfmIl
-	kCkrnGDWiIqF8ZWtOTsoVCBXXF8H21U=
+	bh=22yhHEiHUWVm81OxkB+6UNZ5/HC7Jn4HF5eln+k49OY=;
+	b=kho/Y6QjWRfHqeXpvHHtK/wzrv6eCEVTZu+6Zqp21KcKgoKmQ5FJ/RR1c/bJy5EtweWMFj
+	W44K7qamgRERcujNjTn6z/nbSAnUbCP5Ro2VlGbMQkU+u+EUN3qdyQ3TvSkVnhqaYgUGFw
+	ZkC3vw7uELPqRCCMy2dNg/iBZ43v61A=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 5095E44009;
-	Sun,  1 Nov 2026 22:15:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 155181F00A1F;
-	Sun,  1 Nov 2026 22:15:53 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 1478344038;
+	Sun,  1 Nov 2026 22:15:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94D191F0157D;
+	Sun,  1 Nov 2026 22:15:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793571353;
-	bh=FTHI4iJKGW8nTdZJYWi2ZEsJRVp05NwkVgRYnkQTnQI=;
+	s=k20260515; t=1793571358;
+	bh=22yhHEiHUWVm81OxkB+6UNZ5/HC7Jn4HF5eln+k49OY=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=kSuQm1gig26F3a5hbFrlCEgTV6KZdAUm8pVgji64pGU9IHFtmj1+0lqa6FjFwtpwY
-	 RQDDMAWpx0nuTd442k2/dkXZmO3ak6/b0bODbLMMOiXHR7sqan7+OYTSomVvsVhatc
-	 5sO4YlxH84ZbDrCWiv6NIlf3enn6ckTlaSH0A2hbLwanZ7TAw2vRzqI9LjdgxD9mYw
-	 rVyzHjy74WbfzuCKilIc61p8YM/etpQQgk31aiPP5AoELP2cxYQDze2rDXYJz/8udp
-	 9mbnMTtDK0Vamho7QvOMgWKAobDTF7XMy60kwODafcPU8OakiOi1fCrlQV4kt03Hd9
-	 bPj8B6YTEsy3w==
+	b=gT8uquAnEWBRqbOFSUZpNEaxjvUvJ/bDn3nZQUsNJZUlI6Gk8Hbb3XEkhVIaVDRoV
+	 2gYU6ml+WaMNKlPmFp30xmMIjuvfyf8SlD8YdPaaBgTyNJmHvk9bFXZ1fiH4aHx/Zk
+	 edGwaci/wyJ0nCQhsH9YKkutM0kU8KLugwOCbc/N+SxR6OEDg23CaFG3hwoGs2NiCA
+	 Kbij8WbBXvF7uQxa8xbqi0+xePd+KJBP0eQnINMffjV7Gf5NvA1MsereH7UBTMliqO
+	 5rcpUaXdFoKO8f5lPDIkkfGcDqtMLaxl2k5QhPhvXyRLajFq6WKmv5GsciX18v/q8M
+	 Bz9guAmO027gQ==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 032DA38003B8;
-	Sun,  1 Nov 2026 22:15:53 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 7D5B538003B8;
+	Sun,  1 Nov 2026 22:15:57 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH v6 00/39] mm: make VMA flag semantics explicit, eliminate
- VM_SPECIAL
+Subject: Re: [PATCH v5 00/12] mm: make userland page table freeing RCU-safe
 From: patchwork-bot+linux-riscv@kernel.org
 Message-Id: 
- <179357135155.2624073.13862678489444424470.git-patchwork-notify@kernel.org>
-Date: Sun, 01 Nov 2026 22:15:51 +0000
-References: 
- <20261013-b4-mmap-prepare-vma-flag-sanify-v6-0-1aa3c9b139f9@kernel.org>
-In-Reply-To: 
- <20261013-b4-mmap-prepare-vma-flag-sanify-v6-0-1aa3c9b139f9@kernel.org>
+ <179357135604.2624073.12750471724213497880.git-patchwork-notify@kernel.org>
+Date: Sun, 01 Nov 2026 22:15:56 +0000
+References: <20260925-rcu-pagetable-freeing-v5-0-31e91065fea4@kernel.org>
+In-Reply-To: <20260925-rcu-pagetable-freeing-v5-0-31e91065fea4@kernel.org>
 To: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 Cc: linux-riscv@lists.infradead.org, akpm@linux-foundation.org,
- liam@infradead.org, vbabka@kernel.org, jannh@google.com, pfalcato@suse.de,
- david@kernel.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com,
- corbet@lwn.net, gregkh@linuxfoundation.org,
- dennis.dalessandro@cornelisnetworks.com, jgg@ziepe.ca, leon@kernel.org,
- paul@paul-moore.com, stephen.smalley.work@gmail.com, perex@perex.cz,
- tiwai@suse.com, ast@kernel.org, daniel@iogearbox.net, andrii@kernel.org,
- eddyz87@gmail.com, memxor@gmail.com, ziy@nvidia.com,
- baolin.wang@linux.alibaba.com, nico.pache@linux.dev, ryan.roberts@arm.com,
+ david@kernel.org, ziy@nvidia.com, baolin.wang@linux.alibaba.com,
+ liam@infradead.org, nico.pache@linux.dev, ryan.roberts@arm.com,
  dev.jain@arm.com, baohua@kernel.org, lance.yang@linux.dev,
- usama.arif@linux.dev, kas@kernel.org, dgilbert@interlog.com,
- James.Bottomley@HansenPartnership.com, mkp@kernel.org, simona@ffwll.ch,
- deller@gmx.de, sre@kernel.org, jhubbard@nvidia.com, peterx@redhat.com,
- mhiramat@kernel.org, oleg@redhat.com, peterz@infradead.org, tglx@kernel.org,
- mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org,
- acme@kernel.org, namhyung@kernel.org, mark.rutland@arm.com, riel@surriel.com,
- harry@kernel.org, juri.lelli@redhat.com, vincent.guittot@linaro.org,
- maarten.lankhorst@linux.intel.com, mripard@kernel.org, tzimmermann@suse.de,
- airlied@gmail.com, will@kernel.org, aneesh.kumar@kernel.org,
- npiggin@gmail.com, arnd@arndb.de, muchun.song@linux.dev, osalvador@suse.de,
- willy@infradead.org, jack@suse.cz, maz@kernel.org, oupton@kernel.org,
- catalin.marinas@arm.com, maddy@linux.ibm.com, anup@brainfault.org,
- pjw@kernel.org, palmer@dabbelt.com, aou@eecs.berkeley.edu,
- borntraeger@linux.ibm.com, frankja@linux.ibm.com, imbrenda@linux.ibm.com,
- agordeev@linux.ibm.com, gerald.schaefer@linux.ibm.com, hca@linux.ibm.com,
- gor@linux.ibm.com, davem@davemloft.net, andreas@gaisler.com,
- viro@zeniv.linux.org.uk, brauner@kernel.org, matthew.brost@intel.com,
- joshua.hahnjy@gmail.com, rakie.kim@sk.com, byungchul@sk.com,
- gourry@gourry.net, ying.huang@linux.alibaba.com, apopple@nvidia.com,
- chrisl@kernel.org, kasong@tencent.com, shikemeng@huaweicloud.com,
- nphamcs@gmail.com, baoquan.he@linux.dev, youngjun.park@lge.com,
- hannes@cmpxchg.org, qi.zheng@linux.dev, shakeel.butt@linux.dev,
- axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com,
- chengming.zhou@linux.dev, mhocko@kernel.org, miklos@szeredi.hu,
- xu.xin@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- linux-doc@vger.kernel.org, linux-usb@vger.kernel.org,
- linux-rdma@vger.kernel.org, selinux@vger.kernel.org,
- linux-sound@vger.kernel.org, bpf@vger.kernel.org, linux-scsi@vger.kernel.org,
- linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
- linux-trace-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org,
- linux-arch@vger.kernel.org, linux-fsdevel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev,
- linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org,
- kvm-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
- sparclinux@vger.kernel.org, fuse-devel@lists.linux.dev,
- ihor.solodrai@linux.dev, spasswolf@web.de, tiwai@suse.de,
- emil@etsalapatis.com
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 7C167C0005
-X-Stat-Signature: m5wzuneodx54yzi56csgz5p69aiercbk
+ usama.arif@linux.dev, kas@kernel.org, guoren@kernel.org, bcain@kernel.org,
+ geert@linux-m68k.org, dinguyen@kernel.org, schuster.simon@siemens-energy.com,
+ jonas@southpole.se, stefan.kristiansson@saunalahti.fi, shorne@gmail.com,
+ dalias@libc.org, glaubitz@physik.fu-berlin.de, pjw@kernel.org,
+ palmer@dabbelt.com, aou@eecs.berkeley.edu, alex@ghiti.fr,
+ linux@armlinux.org.uk, vgupta@kernel.org, monstr@monstr.eu, chris@zankel.net,
+ jcmvbkbc@gmail.com, will@kernel.org, aneesh.kumar@kernel.org,
+ npiggin@gmail.com, peterz@infradead.org, davem@davemloft.net,
+ andreas@gaisler.com, richard.henderson@linaro.org, mattst88@gmail.com,
+ linmag7@gmail.com, catalin.marinas@arm.com, mark.rutland@arm.com,
+ chenhuacai@kernel.org, kernel@xen0n.name, tsbogend@alpha.franken.de,
+ James.Bottomley@HansenPartnership.com, deller@gmx.de, maddy@linux.ibm.com,
+ mpe@ellerman.id.au, chleroy@kernel.org, hca@linux.ibm.com, gor@linux.ibm.com,
+ agordeev@linux.ibm.com, borntraeger@linux.ibm.com, svens@linux.ibm.com,
+ richard@nod.at, anton.ivanov@cambridgegreys.com, johannes@sipsolutions.net,
+ tglx@kernel.org, mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com,
+ x86@kernel.org, hpa@zytor.com, arnd@arndb.de, vbabka@kernel.org,
+ rppt@kernel.org, surenb@google.com, mhocko@suse.com, jgg@ziepe.ca,
+ jhubbard@nvidia.com, peterx@redhat.com, ysato@users.sourceforge.jp,
+ shakeel.butt@linux.dev, corbet@lwn.net, rdunlap@infradead.org,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, linux-csky@vger.kernel.org,
+ linux-hexagon@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
+ linux-openrisc@vger.kernel.org, linux-sh@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-snps-arc@lists.infradead.org,
+ linux-arch@vger.kernel.org, sparclinux@vger.kernel.org,
+ linux-alpha@vger.kernel.org, loongarch@lists.linux.dev,
+ linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+ linux-um@lists.infradead.org, hughd@google.com, qi.zheng@linux.dev,
+ linux-doc@vger.kernel.org, gerg@linux-m68k.org
+X-Rspam-User: 
+X-Rspamd-Queue-Id: D1293A0003
+X-Stat-Signature: gdft1bgdwo54exxydn3u57yt3rpz1tog
+X-Rspamd-Server: rspam01
 X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS
 	autolearn=ham autolearn_force=no version=4.0.1
-X-Rspam-User: 
-X-HE-Tag: 1793571354-68644
-X-HE-Meta: U2FsdGVkX1+9UYkhyfZ7V3QYCZenUz/ITrjtF9v30ZqWuknd1PFvwAZwzta+cYz4cWQqZOVisMYhbW5TW9JbCXcablIrGS1hbpsXqjHcgsn0ypySzRfn2+syRzwx7PwN72wsNxojXt7Tn91RbMLU8kwMEgdBvbuBMkGHR5KrCGs32A+6iWv4mE6du+YLKR6OBOXlnMaXx7C4y9LPYCRtH9pTds1YjFimUfkYjmNOWBzT24HKFvKDC5VTsFXwAhqSoUlAfk3qr/rqzKyFSuAEdchMZF6fUbM9rzm18IvIMIoUCoMbHlNvswCOFxWmKWk4slWvBZKIQgOIwChtuP//iKw5agLVSpclr14nGpF6Lo+0+tZvwD5ivyrIQnDJZ3+mZhgC8itoT8KBpR2IzMTKQ7gbMGRpWmBbkKneUeB/1FprvVpfXCFJkKgLxbdYyPjxTipCFrwB4L6ExTUS+zgVri8a6U2zly/k3spA//KYmPELppYzqalGytJTqq63fXtPQOC6c4QqgLrmPQb7B0AcPtRAMRNQeYvOJ7hqinU2k8VhyeYqaLpI6wB18nrTq0KhcssBuVppb3utbVnh8HriVld1V7DohEOaqVkrKhteXqs6gq2M+6Iek7wKGCht9ztc38ull+VDumd447PoiGpcWFe4CSDvYzzPfuNA0iX5+9GEnFGhtofoAYyjrPxYi5htpLEXJZLqE/ETcy2nVWbkJEVJK6K7nTEUqJNrha3vcrRxiqtZVEWPJhvZMktYSz463WQ4ZTJ8zJU8E2EqaYosWJwhc1WFjd17g+jkCjrUZym9mA08dRBSAVOpV/xxk7sQT8a9b2fCAOneBo5rxfrOs/AylmwIaJq/qJ5VzPGsWcBgPImnPXfvrzb/TeawP89AdBI1Sg6BzUGXChF7gnl01DlhB+M/B96kjxPKfgk/T4AxLTCqLmLpBZ55PU5apfkWdq/20SoEi5O3mKQfcTM
- l6XXj62q
- Cl6RAXHP+HZbJlOfUMQElQJyftrBDaE6ZSQ+Y48iDfmhDdxv+ziF7HS7HDkAaYL8G+qZmVxF3VQNLMinYjg1M5FTyV0g89Yn9TR6+HXxnmtmv2zsu2mj1jrmw/AhkR3yuXz5mi/lvAb+u4dQBFnHauzlQ2kibNw3UXV5q0PcbFv14Hfyxu/WvsSSk6xO9iumgbW4TO/gWVbHcLbPLnEnfnyypvw3xInnt+tOELM/lzx8ShD27ibbXG4QzOWl0OydIY3P7PpvDteJZi7abt+S4yv+lI0g3qtk8z2nEDSAgqAFaXbwhu3G45i2MM1P8dd1gtMiIF3RbkAjYu/ad6VQPXiKyJmWHsYY05ozk/DyDiGrkxWjo4kJvO+JNoTSXDnPZhFvEr4IJyD4MVnIpc4FiRhiJX3KG1z+prDN6HQ4Uyb60CKc0DL6OjgfVDx/0EPx39S1rxIAO3cTltzISk72wiwO3OK0oCsjRVuKUCQNvpL9aFA55j+R6+yVluAQiJhMX/+wb33oZMNMG9/J6Z4xLAI6OgggsbpQqWmtBxDySCMX/l1Hk/XtbIL29my+hOCNGrOM5h0ypNckGIJjczJKZpxiqRjFZMi3sbMQCFWXUB66pfjrdkwgknjY/TtFUWR8fEz2yReHNJr1IymjC6un1i4JHynslGxVZ1PyVfe2vKrylyaROumGnHcBU4C+Tu66PUCVYomeENcs9GiVfcWJ4wmsD5YuKSZ/0f9Wuo5xFzwjc4WtSFR1+E8iFIY5ThdWfDw++OxxvQziRd3L1otWIueRGvAyGvEA3zg4UL07OdYAFbAHidIjRb4CYnYiCCcbrYjrHthmr1i8R9VJ6x4bmHM0l6iYyCVQoA/qcPzzUN3xEP5ZMaxuW+boWaFEMdo9yHjqYTIk/ujnzkm6sNgm1nOwv+OoliLnxXdh+a+fXmSPQg8Z7pX3GO1x2+7vTVcc4CllJHYhgfsS1Xpb2rAftk+JieJAu
- lajWj1ff
- qnWBKl1ylqh6IQptbQHCMCslEHUeAvu1K3aJT8QbOUCF5wE2cfFRupE2VD9+K5WFWAwHI9NcOSbY/jm4ikGaZICePASUwXlYxBKEK5R8qsAGLKh7CaUUUBN95gw8UbCCbSKhLt9eTIUdGevvxl51rYYr3RtDNzqBVUBauznSaaygjCxelivtH9qWt08DoXrUVWq0Kqa4opsZqZOvzSjDFZuqbKW0/g21XWhwbOdw5T2XG5SEfh3Hzeo8kWzC/EabUIwHgAym3ysfIdVS9lNIHryPnFMe3jomaJAMoerqulStL2ZPyvKHb9k1AKaMaPuov9ae7qsClEEwwaQrlSfg3bEwQxFUVsWiTl+SW5MjevyViQl+KnCTIg6AmElLTMMI03OkLicvMWlnykDvUYKFGveYCGHUpROFL03QWGNvm68v1RygQXrllWxL8XXaT883zlwHz19v6NznACgAiHGtqKQ6LoF4sW0NdW2wFNcrpAeWSlxu3CHpz6xuN09rqoZr8qYarkcEAhmmZDWzZ7ZCI7UJEbhBsLwXAkPb3PyCUuiVAax03GSuboyN+2xJ3M8X8TrLp0QMy/ls/regMVrgTjVReDBHKDXsA3qy43Ib+DIB0s3nP3hL9/csiS/d240BYvnarGhGxpj9ZIPBKOsBz3bfcnVYzjQUgWDTJwfDD9kYwaxK4fQKIiEkudacsYWdOuYHt9vsoF6Jc2XqgeTvmTbDq6rYiAd/GiyVvqZyxcQdn7J2RTo1iI668q5RjAgpTa9yromQfVYjKaUR3FIyOdvYjODjRc8e9mvXWFspoMf+XWMSAivS6+JXmOUzdFeqSshEeeEeSDfrC1mz49jIIrPNKhCDzKmWzKXwelDwgHjFhadp16BYl/SuVPP8z6JHKHEZdZVDA7ZNdyEMSJvcvhVme4yDxIqUXm3KRgLXJ41DfB/2eVuLKRhALud2F+3wIQYWuQDWUbL0l5a4gEzMYiG38WIpS
- KGGC0ocL
- tdMOfK9bi24qRWzgfewmWwXIKhFwxAwi0SGGnAZoK9MBkyYQFz5ZkFPVJnSz5NZ10dsdD78yT9fZkpcjxg3yea/PKN6b3PjzBz9un/Nj9iYFttWsTgooNC73jZLOYHdPqeVAAr3xnXeSHc6NGfKcZAGNo4+wfT0iCUFTnpQtshwh985MtGETstxZyi5AYgf+/cA06ZUp6te+dk5xore3+xd5wcxA8SP8Mw6lEDGVuZWtvnkW7GaBdBIHnTgDMAiE0rKvICRYkOBTwrZk0F/38aW/dPaJDVfOG9d8MqByrkl+0ZCdyLRMdn0DeiZjrOxAmyaln7ECRtZRodJCYrn9HXoy665W6Z+Fx9kDjmuy1NjQAkuk4Z9+O8ndDrEU2+Ygej1cJtc4Sr3TV6nclMtqcyTFfv/WEtxQbQvafoJwF93SEqu7/S7MfK5xsHJFnVddsyDsZVtOhKY1lTPv7E3IPlV6XpCACaFlwntj2JkVNJ9Fu/W8XAV4a9jg3Qv48eoDpye44V3RjJ9r3O/uhW+pu+sQXg5Ifhrsq+Ue/EHdDQ6zBBaifJe5joATJRRn2IqombqZ3iFKOVjHfX6tQL40bYa0SdFMNVD/G98nNR/UxsFs/54ggbd/U4rOcCEd7MMbqj7apuwMgLgpJwFh48dLV+JhmgeOzM0s3+FNfr5Zo409aGL/ZKFo4uZjRpItessErS2izlvAD0Xuvjc0nr69PldJ5OSCFjX4S7LEjr+DTwFwKOMskXEivUe4N4/vEzlnmzLib5rxj5IedrZV/qFtlIEF7fXsCUcReI/Di+74AfuTiosfq7zDZzmXy8Xhfwl9JZ5baiPhoFbDREcPlb75l3Mb3MHaJC99lMhrLqi4hGe9CMtIpF9PT0fL7iYvCgsYV1CIh8bPHXArlH7aCUVIC5092sP27cpvr3hSmgZLMAW+JW1PAQDV6FXlqEDefz1J1dM34tip65oK+fcw+CSYp5E4uQxMe
- J74aY2yX
- fz45JLG3RLfKmO+RQbMwBPM+U2O11zCmOqWX2AUM4RjQ1DQXYcpDqg9PHhaQircrJZ/M9VRBew/t1pLCW4TWW5PJrPI7IxVk0PPQH7FE24/BgmpcVxbIax3N3ePSEsDMw/c147sW0VsoTVBBT/djFuXX6HwuAT98XrkWjyjSnuWJeCHq57rtvaMDBr+ksITaDBSCYaYnad6RWWatjWUx88KBwttpVt63+loA4kuuuDdzP8X2tCZbMYeKthi4yMdgJcFIrchydj6MBYMKBA0t0Tz4dMBjohuUCHS/KlUKjHwOyd+phaWm3IxtROC6BLR07kQuokV94s/uRBWBz8iSmN6aWNXDDm5GmvLDd94H15QSKsQZAQxiJFFlXBv31ssNOn3z89NxgaDK9P0moe5pLqWxlr3rsNBGeBJnE5rVe5w1TxFK5ftbtpnGV8xIfzmoxN5Es8Pks9nzVL+Jt904Ux6f2x/8NCjSndrtZ3FL/L0U4YCO6Woz//USFeme6kraFhYtq8XsIVRMo5eQRenQRHWsY4YntbCO4=
+X-HE-Tag: 1793571358-231419
+X-HE-Meta: U2FsdGVkX18vBkahnu/PwPEl7yKYiQl4EXNOQVQXDxFXxXU5Gnkqd5RRIvozLcO8Ff55p09Co/QbjJT89wSnw1GKjLMIh6jMlqC6HmmkPtdliydzbRI4vWpJFfM4BrplFJ7o5HA1MPbbXALVtFItQokoAkTyqUMPjtCJYYoXiJDgmD1QEx8ffFFy0BiaMYKSGTgQesqHb2TYTC0GNNnlPD9GQHN2K6sax+frva/PVsQ407LlW1UMuTuuBg5TALkYkmU2OkLlHvW5ygkSQorBNc2bJRMz0WJ8W4H4mCMm0RaxnSiXmw7+w3oG7yK+shvmrcp9lZZSAHzzJTwssog00HhSF8IuzoOTMJpVv3npLS1ULcE2uJGSl/KSYFssipK3SlKpIZt2UDhs+ZuCeTFOoVbyHZ7wrOQrvMac/hi97l9akfE3V0MpuIZOtHv7znimNg7/Ah2FvZ86J1A24rqvgp4tQbuSsAERdfavjv0UptkqOQdlvBlb0G39bhi0kfZ/15Z5ekhXyiRi49xisSA8s4+Bxj/1HUtadfEZrMHqiqTVux1BUSjGctqaQgT/cc0yIss8uvsYu5NBg9ZJJDlegysGDdGAy4Y/Ys46JqigN5rUrya2a4SHYHIkcJotpQe1dE0VbcFHISGYIA08iR6EAjszAAEogFP5XjUv1t0oCGlXqXRt6BdJj6GD4eOjxtV4m2lPlBEgpTdIir0jD1ivxHZ8kkAR/qJoZF1reV4GH4XDQZKP/jUjD0lRIpDI5DcsXZNeug9zeeXbuw2rM9my4SjRmSRflxAkF8o/vAVpO5Rybmv3hOmHfg4kNvhwotSRqy0svb6FD1QurV9tPCCh2M8/N1he4d/KQsc492Mbda8Qi2I6gG/WRrN7oXvNlrZL+LjXj6sdYA1fgLnnPbglb1RJtgNjPJ3XaqLIKr/0BvWVifiiW9y+MlR4Qvdu/e5ERd1M0jirgQIFKv5jTxX
+ mGyNdb+s
+ npyzDMOA7gGSHLa86Em5QdXIQYIJHYyXt0dK0LORIDiwNPmT12UIqOvc3Vjtr3KOdUm/nDrNgMST6NxSMsUcer8TrZf3RqVQBXahQg3ZJ5bUHK+wZyW3ZeR2nJV3ASRGOg5vgymeVkuw6/WPMIxZw0NqWGsVVHcb89Bv93A8azd+jGJtoJfbJR54D/D6UaEth/FauldCXSeWLM8zvxhzn8vfAqsFm1c3+Vs9B/JgoE4MyfZn27i/BSqZLKLwrufB4Zc1jUVDhTFczfQFYrziA/XV4tijWqn7qLQc+vBI6/SkFRggXi96/9vlvGACceN4y7T/xerwUAfCh1Gv+BgR5MjHzdvPtKk7On+J71xLIdJI83u0mJVoKamWhnrQuzpcsNj1DBb6045MmcBWpb7bVFAccsOxLqNeZqnOJv8o0IBl9aPu8jHKfJApk5DjEtoeyqbYivEf6HRGPECcXilMU56FcXh7+/qxDxPh9dIRN9upEIgbjHT53tpRHDVCWokQYWndk
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -157,99 +135,42 @@ Hello:
 This series was applied to riscv/linux.git (fixes)
 by Andrew Morton <akpm@linux-foundation.org>:
 
-On Tue, 13 Oct 2026 16:04:40 +0100 you wrote:
-> The VM_SPECIAL / VMA_SPECIAL_FLAGS mask conflates several unrelated
-> properties:
+On Fri, 25 Sep 2026 21:09:35 +0100 you wrote:
+> The majority of architectures in the kernel defer page table freeing until
+> an RCU grace period has elapsed, this series converts all remaining
+> architectures to do so too and eliminates CONFIG_MMU_GATHER_RCU_TABLE_FREE
+> altogether.
 > 
-> * Is this managed by core mm, or by a driver mapping MMIO, kernel-allocated
->   pages, or even ordinary pages itself?
-> * Can it be expanded or merged?
-> * Is this a 'weird' case like mlock where migration might race and we
->   'have' to set invalid flags to notify?
-> * Is it another 'weird' case where we just want to stop GUP from touching
->   it?
+> This is important because it enables safe lockless page table walking under
+> RCU alone.
 > 
 > [...]
 
 Here is the summary with links:
-  - [v6,01/39] mm/vma: fix mmap_prepare file handling, remove file_doesnt_need_get
-    (no matching commit)
-  - [v6,02/39] mm/vma: introduce and use vma_[flags_]can_merge()
-    https://git.kernel.org/riscv/c/86a779c53204
-  - [v6,03/39] mm: consistently validate VMA state after mmap[_prepare] hooks
-    https://git.kernel.org/riscv/c/9cae38dc11da
-  - [v6,04/39] mm/vma: ensure mmap_prepare doesn't set actions on a mergeable vma
-    https://git.kernel.org/riscv/c/6335c786299f
-  - [v6,05/39] mm: make map_kernel_pages_[prepare,complete] internal and unexported
-    https://git.kernel.org/riscv/c/2a234f79d416
-  - [v6,06/39] mm/vma: tidy up map kernel pages enum values
-    https://git.kernel.org/riscv/c/4852f3421456
-  - [v6,07/39] mm: assert mmap lock held, use new flags API in vm_insert_page[s]
-    https://git.kernel.org/riscv/c/dad8e88fcfce
-  - [v6,08/39] mm: add mmap action for discontiguous kernel page mapping
-    https://git.kernel.org/riscv/c/b7b4d8f37a4f
-  - [v6,09/39] docs: filesystems: update mmap_prepare docs for discontig kernel pgs
-    https://git.kernel.org/riscv/c/ae60723abb65
-  - [v6,10/39] drivers/usb/mon: update to use mmap_prepare + map kernel pages
-    https://git.kernel.org/riscv/c/5323bb5f6ef3
-  - [v6,11/39] infiniband: update hfi1 to use remap_vmalloc_range()
-    (no matching commit)
-  - [v6,12/39] selinux: reject writable opens of policy file, drop mmap shared/write check
-    https://git.kernel.org/riscv/c/c6ce4378f20a
-  - [v6,13/39] ALSA: pcm: use vm_insert_page() to map PCM status page
-    https://git.kernel.org/riscv/c/ceb0de27371f
-  - [v6,14/39] bpf: arena: mark arena_map_mmap() mappings VM_MIXEDMAP
-    https://git.kernel.org/riscv/c/0c2c9885c5e9
-  - [v6,15/39] mm/vma: add vma[_flags]_is_mm_managed() predicates
-    https://git.kernel.org/riscv/c/7fdbc26b69c0
-  - [v6,16/39] mm/vma: only allow mmap to clear VMA_MAYWRITE_BIT if not mm-managed
-    https://git.kernel.org/riscv/c/d99c4a302c5a
-  - [v6,17/39] mm/vma: add and use vma_[flags]_is_fixed_mapping
-    https://git.kernel.org/riscv/c/9201d0f5b9d5
-  - [v6,18/39] scsi: sg: convert mmap hook to mmap_prepare and rework
-    https://git.kernel.org/riscv/c/abdd54cef5fc
-  - [v6,19/39] fbdev: defio: assert FBINFO_VIRTFB, drop VM_IO, add VM_MIXEDMAP
-    https://git.kernel.org/riscv/c/19458d015fcc
-  - [v6,20/39] HSI: cmt_speech: convert mmap hook to mmap_prepare, refactor
-    https://git.kernel.org/riscv/c/5605c40895fc
-  - [v6,21/39] mm/gup: error out early on !VMA_MAYREAD_BIT VMAs
-    https://git.kernel.org/riscv/c/2d2b1c508f21
-  - [v6,22/39] uprobes: remove VM_IO, set VM_MIXEDMAP for mapped kernel pages
-    https://git.kernel.org/riscv/c/0d219bc3cb88
-  - [v6,23/39] mm/mlock: clear VMA_LOCKED_MASK over mmap callback
-    https://git.kernel.org/riscv/c/61e012ab9a1c
-  - [v6,24/39] mm/mlock: eliminate weird VMA_IO_BIT abuse and simplify
-    https://git.kernel.org/riscv/c/aea83f2694ed
-  - [v6,25/39] mm/vma: enforce that mm-managed mappings may not set VMA_IO_BIT
-    https://git.kernel.org/riscv/c/99fd6bf43d5d
-  - [v6,26/39] mm: remove VMA_IO_BIT check in vma[_flags]_is_mm_managed()
-    https://git.kernel.org/riscv/c/88d77002e1a1
-  - [v6,27/39] mm: remove hugetlb_inline.h
-    https://git.kernel.org/riscv/c/94c86564538e
-  - [v6,28/39] mm: rename is_vm_hugetlb_page() to vma_is_hugetlb()
-    (no matching commit)
-  - [v6,29/39] mm: drop some redundant checks around hugetlb VMAs
-    (no matching commit)
-  - [v6,30/39] mm/vma: introduce vma[_flags]_is_mm_backed()
-    https://git.kernel.org/riscv/c/44debd840ec9
-  - [v6,31/39] mm/madvise: update is_valid_guard_vma() to use vma_is_mm_backed()
-    https://git.kernel.org/riscv/c/fc95d1cf4a13
-  - [v6,32/39] mm/uffd: use predicates for userfaultfd checks
-    https://git.kernel.org/riscv/c/fb700342f506
-  - [v6,33/39] mm/madvise: use predicates for madvise(..., MADV_DOFORK)
-    https://git.kernel.org/riscv/c/1d1104fe6dc6
-  - [v6,34/39] mm: eliminate VMA_SPECIAL_FLAGS usage when hugetlb explicitly tested
-    https://git.kernel.org/riscv/c/531e56359ffb
-  - [v6,35/39] mm: eliminate VMA_SPECIAL_FLAGS check in lru_gen_look_around()
-    https://git.kernel.org/riscv/c/5997da57a09b
-  - [v6,36/39] mm: avoid use of VMA_SPECIAL_FLAGS in migrate_vma_setup()
-    https://git.kernel.org/riscv/c/8bf792b7afcb
-  - [v6,37/39] mm: eliminate VM_SPECIAL, VMA_SPECIAL_FLAGS
-    https://git.kernel.org/riscv/c/72a993449cb0
-  - [v6,38/39] fuse: dax: do not set VM_MIXEDMAP
-    https://git.kernel.org/riscv/c/b0d88bfa7515
-  - [v6,39/39] mm/huge_memory: remove vma_is_special_huge()
-    https://git.kernel.org/riscv/c/e2a1d080f510
+  - [v5,01/12] mm/khugepaged: deposit a newly allocated page table on collapse
+    https://git.kernel.org/riscv/c/eb823057e092
+  - [v5,02/12] mm: enable MMU_GATHER_RCU_TABLE_FREE for most 2-level architectures
+    https://git.kernel.org/riscv/c/d22254fd57f0
+  - [v5,03/12] mm: enable MMU_GATHER_RCU_TABLE_FREE for MMU riscv
+    https://git.kernel.org/riscv/c/5ae75414416f
+  - [v5,04/12] mm: enable MMU_GATHER_RCU_TABLE_FREE for MMU arm
+    https://git.kernel.org/riscv/c/8e645d98fb78
+  - [v5,05/12] mm: enable MMU_GATHER_RCU_TABLE_FREE for arc, microblaze, xtensa
+    https://git.kernel.org/riscv/c/799bd3c4be5f
+  - [v5,06/12] mm: enable MMU_GATHER_RCU_TABLE_FREE for sparc64
+    https://git.kernel.org/riscv/c/461a24a81215
+  - [v5,07/12] mm: enable MMU_GATHER_RCU_TABLE_FREE for m68k-coldfire
+    https://git.kernel.org/riscv/c/ccdaaf591664
+  - [v5,08/12] mm: enable MMU_GATHER_RCU_TABLE_FREE for sh-X2
+    https://git.kernel.org/riscv/c/a72df945113a
+  - [v5,09/12] mm: enable MMU_GATHER_RCU_TABLE_FREE for m68k-motorola
+    https://git.kernel.org/riscv/c/0f5cbeebe00e
+  - [v5,10/12] mm: enable MMU_GATHER_RCU_TABLE_FREE for sparc32
+    https://git.kernel.org/riscv/c/35dd856770f3
+  - [v5,11/12] mm: userland pgtable freeing is RCU-safe now, remove leftover bits
+    https://git.kernel.org/riscv/c/35e340a47888
+  - [v5,12/12] mm: change the contract for free_pgtables(), update docs
+    https://git.kernel.org/riscv/c/a5c0a39d0e57
 
 You are awesome, thank you!
 -- 
