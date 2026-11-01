@@ -1,65 +1,65 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3DD3606A32F
-	for <linux-mm@archiver.kernel.org>; Sun,  1 Nov 2026 17:16:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9E3060A261E
+	for <linux-mm@archiver.kernel.org>; Sun,  1 Nov 2026 17:16:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=mRVe0/+Y
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=bHnHlvuL
 Received: by kanga.kvack.org (Postfix)
-	id D48376B05B3; Sun,  1 Nov 2026 12:16:41 -0500 (EST)
+	id A14B96B05B5; Sun,  1 Nov 2026 12:16:42 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D20186B05B5; Sun,  1 Nov 2026 12:16:41 -0500 (EST)
+	id 977316B05B8; Sun,  1 Nov 2026 12:16:42 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C351A6B05B6; Sun,  1 Nov 2026 12:16:41 -0500 (EST)
+	id 88B966B05B9; Sun,  1 Nov 2026 12:16:42 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id A40706B05B5
-	for <linux-mm@kvack.org>; Sun,  1 Nov 2026 12:16:41 -0500 (EST)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 3C17AA0A71
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 650D76B05B5
+	for <linux-mm@kvack.org>; Sun,  1 Nov 2026 12:16:42 -0500 (EST)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id CA0061C3F71
 	for <linux-mm@kvack.org>; Sun,  1 Nov 2026 17:16:41 +0000 (UTC)
-X-FDA: 85387204602.20.3449826
+X-FDA: 85387204602.30.688FEE5
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf02.hostedemail.com (Postfix) with ESMTP id A4FA480003
-	for <linux-mm@kvack.org>; Sun,  1 Nov 2026 17:16:39 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="mRVe0/+Y";
-	spf=pass (imf02.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	by imf23.hostedemail.com (Postfix) with ESMTP id 3F42E140004
+	for <linux-mm@kvack.org>; Sun,  1 Nov 2026 17:16:40 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bHnHlvuL;
+	spf=pass (imf23.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793553400;
+	b=Ex23RiQGbS1m3MR3Ly+VwsdCzm2W8buQJAdE5A7E7BOJWF2bjNsUfRJDkmncGzWfxNqHE1
+	w0XK51HLxfmlEwDt/G0Dk47qcEOisGPIlw87oMzRIbv28ZnPb77eKzi3fqAfhx+1mJ+Fff
+	IOdnTEcxylztfy2dvFm5ZCZwKcFX0Ro=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bHnHlvuL;
+	spf=pass (imf23.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793553399;
+	s=arc-20220608; t=1793553400;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=LWF8HqqZQM/4p+lXqb/vLTu7jnbhepuFV5KLr5c8wVs=;
-	b=XpESWaPDVjiusK+WMTu6z2qXiwY1dhfcZlE80UpBTAPn7cccuagdXyRXcjLlODSo5FAmay
-	g4akUjkSdHuGGctJTDsKH+VoxhUlfyVPGJkkaP01RqtWxl9Mnb9wKg0c+Ufb51uEmeunHZ
-	KcKyNC/uvjfUeGTv6FpQOWg9meI4XUk=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="mRVe0/+Y";
-	spf=pass (imf02.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793553399;
-	b=Sija5tbJGDpG5WxjC+KuUhBj5WXGve4hJJagp2LVFaYeiDVNthetHTF2rxZ7xpNXsot3Am
-	cYnXgJt++exMR3oXfpsWueprLfx8afvLE6dYfrgs8ZHdNF/rGvdlM+TGRJV6jfYOI9ikEu
-	1pfHFUk4l+yU5CNAvrQGzR3DZH54uv8=
+	bh=kuii1OxTBCJKn/aKUCi3+2COKzMgGJ8Y558hfckwvWc=;
+	b=mjqxC+SsaQkctYa6Ap/S6AYS0NTWm/wKl3pZVoltc4C8yyydOQx7uFG3FbBQUutZIrLk8R
+	+t0aoYvNSgIrq/FolQJONtLF4YCfwennerTSIyHZ9p5y5Rgzi3Ub7NH7zUk2/ixMPp/7e1
+	PmY+a/I4X9nOJw1DgfBlsUhCidRnGG0=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 38C1F601EE;
+	by tor.source.kernel.org (Postfix) with ESMTP id D4052601FB;
 	Sun,  1 Nov 2026 17:16:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF1F31F00A1B;
-	Sun,  1 Nov 2026 17:16:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65F0F1F00A18;
+	Sun,  1 Nov 2026 17:16:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793553398;
-	bh=LWF8HqqZQM/4p+lXqb/vLTu7jnbhepuFV5KLr5c8wVs=;
+	s=k20260515; t=1793553399;
+	bh=kuii1OxTBCJKn/aKUCi3+2COKzMgGJ8Y558hfckwvWc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=mRVe0/+Ybe+Q344Ia1uQmRR0/nFDfHWg4/WCy0yK8y1JLvVyKdE9xKBbujg1iaJ3C
-	 iBUYVPzMOB5Qg7xQaJv1rhZg4S5mDd4nnH0Jp8nCAMXXxDJvDwLtvw4UwRMEgHzH2J
-	 Qt3HwC0z+xp/aVswXTUMNtSZeLUI+m64ng6tDUZmW6b144L/pj1+QevI3kG9vU72a8
-	 L11M8hYyPZtosI6CoTbMjfL/+TyROFcK8MPkWWnC1loerqsQ1M9EmevY0EaJAImabo
-	 toOn3myIwZcenoxqk6DGfXzCkrKGMp7hvC7t4meDpg5JnoGza4nU5OSGtajzKqTKog
-	 U+q8HgF8QA3Pg==
+	b=bHnHlvuLtN8sAW4efMQa/2BStqLpezZTUSvbaMHV4QTiT0zRg9a8rjjsZ4nEIzjMX
+	 NB0/XxHhbZM4xXO/RZgy2tQz276Nxs0atzjpGLVanS+E8J1uhgXiGKbkjZ+C//TP6X
+	 5Y0mPolpqhHcAvQxISBEINUq2cAbGNgNEX08k3M2SAAC7XbU57ZHEZ9/UYN0tNf9yJ
+	 5CmaCYVRbHLauBdWQBbuNuXHL7o+0mKlheCugfDltMc4jjblbf5JUrTOM5Zs0wL8oc
+	 gb72hxel/oq1xU7u11QdktDXNwNiNEq6fDbzNy+pXuKnGEeKWMIp9WVH9fML3DXTh3
+	 TkrYcb2Z7oHyQ==
 From: SJ Park <sj@kernel.org>
 To: 
 Cc: SJ Park <sj@kernel.org>,
@@ -67,9 +67,9 @@ Cc: SJ Park <sj@kernel.org>,
 	damon@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [RFC PATCH v2 2/6] mm/damon/vaddr: use damos->last_applied for migrate action
-Date: Sun,  1 Nov 2026 09:16:25 -0800
-Message-ID: <20261101171630.81477-3-sj@kernel.org>
+Subject: [RFC PATCH v2 4/6] mm/damon/sysfs-schemes: drop redundant and racy zero target_value check
+Date: Sun,  1 Nov 2026 09:16:27 -0800
+Message-ID: <20261101171630.81477-5-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20261101171630.81477-1-sj@kernel.org>
 References: <20261101171630.81477-1-sj@kernel.org>
@@ -77,17 +77,17 @@ X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: A4FA480003
+X-Rspamd-Queue-Id: 3F42E140004
+X-Stat-Signature: 7gb1yi6aw3a6mbtfor73u31stmtoc5y8
+X-Rspamd-Server: rspam01
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: gy99hijh4kk9xmwxqrtoywmq3eoijt4m
-X-HE-Tag: 1793553399-57847
-X-HE-Meta: U2FsdGVkX18aBoc0EfPiRyCHLdAIoHnWBD8jjkJSJ2QllImg3XBwpAc5MKYX9uZwRBN0oA1Byz5pws1v383Qqdv6YE0vFHa6gLuBq1Z/3ZQElHAoob78T2edw1U5i/2IPwUbI8jUKgkRYFhR1LODVy6f/Xu6GGhIkTuoyJBP1c0Sb9X/pXU8m0mRs85C4uCuu4HUh6O2nn/y1Az0tg2RTRDHUIHTCD0lLLEejyikWKkEZX7fhT25Fsmg5xK/0X+BZyUds5Twgq7oueiDv2gO4MnztRGK1LYTtaeo8MRncSdUrX/YEnFQjrbE4lKkgAqReZQUlGhmfYLCiw9s2d2Y5d47jnry7EXFkSqDrUXTkSmIkQOCcHtBm3/rZTdQ2B28ZTPYdAELJ4HwpC/AhOdRrJbxLRLa8HPOtH0nBbYIrIJyS+mKnlrKTJ3XFB4ty6enBIaYsXvdzX4eBnrC0Xb3Eo/VbCPwu3pCEsRlAKLyditVCv+g0m6pP76t+R985OdQBnbVtwQ2vdUH95mPeoY1WCfISTTjl9ajgGnLfSvoZfGP6eBxqGJU73xb243VMYSGHzmk/qpIotXs6atzlVaZQP1G0lMqevYIjhkkItP4JXx8FRzbOhUBp5ZGnlwB1mOtiRvvI0qhNspLk/Ra4KxZ3RlZqx0k6J+M96TxAYr4wVOaWOyuTXnJ7mZaH+T7TnNjt55PiQdZc6lWaGgwYyGxQcrzPppFNb2QrIVizzR5tD49B+UJ8PyZUC9MIeSJhgDNEgZBAETqWQmlVsbnXBgXCbbV35hHTkQ+Z9x4jm/B4YSpOCyF7Vf26OEOS+zNzJYg2P3/d2WC/IQT/ZrYB08JgFwbMfZOfE4pWZTR+zyHnvkYFXRLRsdyTaiRM3JBdgOdc0oio3+XDgmFOt9sDJAp8pCMkfbxSKcwnlR5nO8WD02I2eTwF3qx/re15qzGSS4se+58ZACfqmIM5RP4glj
- +w/8Sp4j
- 1id66NRbDz6PrxNtnd/LqfxNF4yxNh/WPOO4+iBlyyFh3w1VsprF7Z7pC+oL8w8eDaT14QuNjg8wBZwYzRGHYmqX6ghgPxM1DAKI43+L4VPm5B6Y8EZLoZGUUvmj9tyGz/OMldvAgEdRMC8WMtuJTi0tnifnY4i+YN/mb5asRL2S/Tj5HQ20gcWJsOgGT89yw3vfOJQZ46uOCAbiBSMZRmT4FSZutSt9esnTCfd71QE/nMPfN0V20pTuusuoUGzWpHAMOG/N36cnwtynl+xPLK3tbJw==
+X-HE-Tag: 1793553400-219655
+X-HE-Meta: U2FsdGVkX19p1VwxbkM8VwNl/PIQUr5Z0G2UQ1eXjK7/N35zlu7pddLHWGNgFGHmhQMx7qOA2AKuu/edBfMkl11oxB5FPmWdi68N8Xb5is5CWnDHdCDp929XLaCfDN25kmLedoMRkGcocmyG+IGp1REJgl3UGELb9slJQB3MA89nt+diF2CNECkBGMlLwtcNxVWD4ejHcU39U4rczWgRsYONvyb64slTO/DeY1Qi0NNjzoL/dqWLqiTIujxuJ3QRwdyzKrgdeEdx6cdO32JiOjpkJhgnz4hxaQOF9eiBvQCuRgiLUfWvNH+vJfPJRjaNywODk5tPaTo15MQbfeMsIHOXvpt/1sO3lcJLhs0cC8J9BnAQQ0hRH0u7JZBx/4aM0TmNCqr4qYfl4l8k7I48BGL9BrGJvOh2o051LleK12rD6pL/AZEIGhsXGWIF/vU3oKiKPZmpjsgsaBZ1eOx06hFgceYCmiUHrIb8i4ZfT7C/lYjcGdZ741ElZLR25qKfp28C02cmm5FGu6nznFjw7VN73A6pjyTI7XjBhXfSywYiZfiVKrwXCt4q3o73lMle1dDTdxkVkTlowMQKCYHAjrpc8JOoPI+Rffw78ONnMZRauQ7IMzR9Zsi7i0ueic8EmZxAifEolRoCiLOizgOi+ItE0yKen0sQo/n9ltuV8bG5ZbaYBe/7toy0XlrjZDZ/VMvG31B/WkunyKP/iEKt1CRSQ9fpAHHUX1bctdJWtObN0dJnZDP3u06gDX0cprHOLEVO0zEkN7dXZyFdbIGK9XtvNBrZURivFu9hi/JyTvkqw++ewSnUBTRqIzN5L6i59vLsWCtZgxbAjdXc9RNjnXklddeEM2whLkggbav0jP3VVcj6u5sHfAV1pq5X5LVF4pxkh5lDT3+6bfTMXBo2Jl9drVbQJWUv8h9bLI8bEAmJe+7X7zsXIcHeL1Yd3fkautYd8boBWBWH61Ba7ce
+ uvLd63mm
+ cqd/4hQ8nwvGtUnnykMYCeA3hYzlyjv6qtg5vhg0+ebeUKB02j7NFw05WAf/GRnyC7PoDt+Z4iMx+xEBjExLyYjkaz78ntXKwlhJ5MTr8Q8VvOb3PS30D+N6Lf/f+Qt6gxUnn41Db2lymdbGIrLUcaIuJX0Vc7SMXj8LRibUGgINRHPq1TQ3q7ggpwGMS7SwnneAjo3tieGq7qkq8XglsiOeseEnT34W8TZ91m8byzQWq8Jvjy6lBv/qMoLwhtKcP/x0K+mNKYd1Bd+kPNu1AQ0xPeg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,75 +96,41 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-To avoid applying the same DAMOS action multiple times to folios that
-are located across adjacent regions, damos->last_applied was introduced.
-DAMOS_MIGRATE_{HOT,COLD} action support in vaddr is not utilizing it.
-Use it to avoid unnecessarily applying the same action to the same folio
-multiple times.
+DAMON sysfs interface disallowed zero target_value because it could
+result in divide-by-zero in damos_quota_store().  Because similar checks
+were duplicated to other DAMON API callers, a patch series that starts
+with commit 610c4438fb66 ("mm/damon/core: error
+damos_commit_quota_goal() for zero target_value") added a same check in
+the core layer central parameters, and dropped redundant checks in
+DAMON_LRU_SORT and DAMON_SAMPLIE_MTIER.  It forgot to drop that in the
+DAMON sysfs interface.
+
+Now the zero target_value check in DAMON sysfs interface is only
+redundant.  Further, it has a time-of-check to time-of-use (toctou) race
+with target_value_store().  It can confuse readers to believe [1] the
+division-by-zero can still happen.  Drop the redundant and racy check.
+
+[1] https://lore.kernel.org/20261021005234.94107-1-sj@kernel.org
 
 Signed-off-by: SJ Park <sj@kernel.org>
 ---
- mm/damon/vaddr.c | 18 ++++++++++--------
- 1 file changed, 10 insertions(+), 8 deletions(-)
+ mm/damon/sysfs-schemes.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/mm/damon/vaddr.c b/mm/damon/vaddr.c
-index c271b6d63c027..b1d7bcf7305bb 100644
---- a/mm/damon/vaddr.c
-+++ b/mm/damon/vaddr.c
-@@ -834,6 +834,12 @@ static void damos_va_migrate_dests_add(struct folio *folio,
- 	list_add(&folio->lru, &migration_lists[i]);
- }
+diff --git a/mm/damon/sysfs-schemes.c b/mm/damon/sysfs-schemes.c
+index 637f1bd0c950b..38efdc258ef3f 100644
+--- a/mm/damon/sysfs-schemes.c
++++ b/mm/damon/sysfs-schemes.c
+@@ -2898,9 +2898,6 @@ static int damos_sysfs_add_quota_score(
+ 		struct damos_sysfs_quota_goal *sysfs_goal =
+ 			sysfs_goals->goals_arr[i];
  
-+static inline bool damos_va_invalid_folio(struct folio *folio,
-+		struct damos *s)
-+{
-+	return !folio || folio == s->last_applied;
-+}
-+
- static int damos_va_migrate_pmd_entry(pmd_t *pmd, unsigned long addr,
- 		unsigned long next, struct mm_walk *walk)
- {
-@@ -854,10 +860,11 @@ static int damos_va_migrate_pmd_entry(pmd_t *pmd, unsigned long addr,
- 		if (!pmd_present(pmde))
- 			goto huge_out;
- 		folio = vm_normal_folio_pmd(walk->vma, addr, pmde);
--		if (!folio)
-+		if (damos_va_invalid_folio(folio, s))
- 			goto huge_out;
- 		if (damos_va_filter_out(s, folio, walk->vma, addr, NULL, pmd))
- 			goto huge_out;
-+		s->last_applied = folio;
- 		damos_va_migrate_dests_add(folio, walk->vma, addr, dests,
- 				migration_lists);
- huge_out:
-@@ -879,12 +886,13 @@ static int damos_va_migrate_pmd_entry(pmd_t *pmd, unsigned long addr,
- 		if (pte_none(ptent) || !pte_present(ptent))
- 			continue;
- 		folio = vm_normal_folio(walk->vma, addr, ptent);
--		if (!folio)
-+		if (damos_va_invalid_folio(folio, s))
- 			continue;
- 		page_idx = folio_page_idx(folio, pte_page(ptent));
- 		nr = folio_nr_pages(folio) - page_idx;
- 		if (damos_va_filter_out(s, folio, walk->vma, addr, pte, NULL))
- 			continue;
-+		s->last_applied = folio;
- 		damos_va_migrate_dests_add(folio, walk->vma, addr, dests,
- 				migration_lists);
- 	}
-@@ -991,12 +999,6 @@ struct damos_va_stat_private {
- 	unsigned long *sz_filter_passed;
- };
- 
--static inline bool damos_va_invalid_folio(struct folio *folio,
--		struct damos *s)
--{
--	return !folio || folio == s->last_applied;
--}
+-		if (!sysfs_goal->target_value)
+-			continue;
 -
- static int damos_va_stat_pmd_entry(pmd_t *pmd, unsigned long addr,
- 		unsigned long next, struct mm_walk *walk)
- {
+ 		goal = damos_new_quota_goal(sysfs_goal->metric,
+ 				sysfs_goal->complement,
+ 				sysfs_goal->target_value);
 -- 
 2.47.3
 
