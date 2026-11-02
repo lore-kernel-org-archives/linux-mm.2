@@ -1,80 +1,79 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D0DC606A327
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 12:51:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F87D606A330
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 12:53:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=S7BWKxBM
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=dIMU5P/5
 Received: by kanga.kvack.org (Postfix)
-	id A61176B05B3; Mon,  2 Nov 2026 07:51:58 -0500 (EST)
+	id 6460C6B05B4; Mon,  2 Nov 2026 07:53:19 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A37D76B05B4; Mon,  2 Nov 2026 07:51:58 -0500 (EST)
+	id 61C396B05B5; Mon,  2 Nov 2026 07:53:19 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 94EC16B05B5; Mon,  2 Nov 2026 07:51:58 -0500 (EST)
+	id 535986B05B6; Mon,  2 Nov 2026 07:53:19 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 6E6FC6B05B3
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 07:51:58 -0500 (EST)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 16C1BA8B3C
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 12:51:58 +0000 (UTC)
-X-FDA: 85390166316.17.AF192B3
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 678C5C0004
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 12:51:56 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=S7BWKxBM;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf22.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 2E0576B05B4
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 07:53:19 -0500 (EST)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id A4E3F40D10
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 12:53:18 +0000 (UTC)
+X-FDA: 85390169676.04.30DA1B4
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf02.hostedemail.com (Postfix) with ESMTP id D6FC280009
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 12:53:16 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="dIMU5P/5";
+	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793623916;
+	s=arc-20220608; t=1793623996;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gYrHasKbCnivUZKlafZ5WVAkPwuwplVb+icnUCX5yjY=;
-	b=QJB76NOfhOw+bSZjTi+9tbv/CLsj0883YnRU/4x97DR9K1loNfh/Q2DKsPnrTEQXcjErl8
-	TJcxFPSozw6HHtyZYg4TlmoQJN7HwisKMHgy4ANdUQvr09RsfNfoXbIRC8uGebj4d1e/Q5
-	9/jyCKdbvd0DWSFWg/uL3BHSHK95ZTg=
+	bh=ijfgBYo2lcQ0Tr0sYHboCjedjNEhiovIXXVXgY6yBGY=;
+	b=Tpcb4coubI8th3pYbARU7sKnNV3k4rJIzWP5MrovcN8GbmAXvAA5uJh7tNJW70iQ8JesY1
+	albb42OtfescUPZf0yUYIDtw1l/nUZiCMgVrha0ZWeYyiS89kgaY5hnyqpaamftx+V4lnL
+	tDP9+ccFoY2ZiQpfhkjz68xybLtdX40=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=S7BWKxBM;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf22.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="dIMU5P/5";
+	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793623916;
-	b=LtYJkiC9l/e7H4kbhVk7jtpL9DTQca4HYZ0J+a/39cf/G8Z4i7dc49lQgcIRTkC6eyxXRC
-	31SF21KpQHE/AecGqqLcrP/rF/UB1fveIXNt+8YEFWurGbWWTzh1ibQ8J3yJ635y6Va+AH
-	vFtd05UCXaqvgcQ4vXKK6ADvMO0/I98=
+	t=1793623997;
+	b=SSUPnbGPDlmaeDPp11G9v7A2+wxCzZWICQ25I9Ky9seGGwlbt6lEymStxrqaAIeY7OXeLr
+	h3trLlG+fLGBXn2vRqZfmFIeENEHEU/0FJ5ZKOajB07gKWZW6uA/7JSeVP9UYzM42hOLeW
+	uJA7+iN35VwESK5spuR0lWz0LrtsbBY=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id E64A2602C4;
-	Mon,  2 Nov 2026 12:51:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FB291F00A16;
-	Mon,  2 Nov 2026 12:51:54 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 1490C43A57;
+	Mon,  2 Nov 2026 12:53:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE6E31F00A17;
+	Mon,  2 Nov 2026 12:53:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793623915;
-	bh=gYrHasKbCnivUZKlafZ5WVAkPwuwplVb+icnUCX5yjY=;
+	s=k20260515; t=1793623996;
+	bh=ijfgBYo2lcQ0Tr0sYHboCjedjNEhiovIXXVXgY6yBGY=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=S7BWKxBMbz2TWV1nf0UCf7ZV5WKchz9k6I6etY/gESRikgsmpQDZBXjP/EXr4akBa
-	 /j5B0jJ/sPjy5d6if9n8y7qgBbUVoowfJYp2HGXQLE48D2x/dAqdUJV6QdntlevleI
-	 eGno6zZHuKPuxVWDvaM1XsxHGFD3U0Dql/1gRPoPgyHCPBwfJboNlvbJ1moYrPRqvT
-	 EDusjqcTxWypyUht1ESIULFpAcrA/zF2TcuHU1A+bVxaSYth0oQ0AW6YHXs5PqMCTc
-	 lkF5hkKAFiPuxFWGPibAl6FSdUQZYkrb7S5/hLf938RJ2pMXmQrI3jtqE2IBM1HfAD
-	 kJ1ScwyaFZIDA==
-Message-ID: <f3ac30ce-4f6c-4ad5-a604-d28ac78cdbb8@kernel.org>
-Date: Mon, 2 Nov 2026 13:51:52 +0100
+	b=dIMU5P/5NKuiVlBu3RpjjqCXHsVSQVCF+PtSwono2pYLRWyrCGQCF210arQQDztes
+	 miih4rmoGkEDiOxAY1uFRV9MKzjHlDQ4vDxdqvfhIrgJ4MkGPqxZ3ErvMKbU8TdacD
+	 tczs9FDE/Io7XoWAEL6mwB1qOd27Cg3feRae5Vv35k+kK/reyms3+TM5DrOw0bJm2a
+	 OQoHfA/zrYNOGc8hNT+r/vp9ZD+h9kqt3WhMy/h02yiW5qjDgX2XLrWUkh+Qw2ub8u
+	 Jc8x9Wmx6mSZoJa3baPdNkOsRbQMLmorNO/BWLbs//HLrjh7x5hK3MMU6dVrfk2K8y
+	 bYcveRhiIN9XQ==
+Message-ID: <8412a82a-f5bc-474d-b810-11a97a25c231@kernel.org>
+Date: Mon, 2 Nov 2026 13:53:12 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/3] tools/mm/thpmaps: fix missing order-1 file THP
- statistics
+Subject: Re: [PATCH 3/3] tools/mm/thpmaps: fix missing mapping names
 To: Weilin Tong <tongweilin@linux.alibaba.com>,
  Andrew Morton <akpm@linux-foundation.org>,
  Ryan Roberts <ryan.roberts@arm.com>
 Cc: Baolin Wang <baolin.wang@linux.alibaba.com>, linux-mm@kvack.org,
  linux-kernel@vger.kernel.org
 References: <20261027074904.3328878-1-tongweilin@linux.alibaba.com>
- <20261027074904.3328878-3-tongweilin@linux.alibaba.com>
+ <20261027074904.3328878-4-tongweilin@linux.alibaba.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -121,22 +120,21 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20261027074904.3328878-3-tongweilin@linux.alibaba.com>
+In-Reply-To: <20261027074904.3328878-4-tongweilin@linux.alibaba.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 678C5C0004
-X-Stat-Signature: 5ozez3mn6c1usie9fqgtirfi7ywpt5p1
-X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
-	version=4.0.1
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: D6FC280009
+X-Stat-Signature: e7c11ikze43ipjg77uounyymnhsd9uxe
 X-Rspam-User: 
-X-HE-Tag: 1793623916-28634
-X-HE-Meta: U2FsdGVkX1+cQbF+kg/sZWp+N58yqxjMX86Nijax4we80KdU714iRcEzpzSiqVRSnDx6A2Gwt63qOHTFon+FXwGMEF11fFHkw8EqpyZM4QEntthevRdFTEw09jrLICxlgNHfwZUGrnCbTRSiKEV5FnK+IKdfHfKxUG84GXR3c+rKMyG3lIy3c6Bwn8jKnnZ/qMk6/ucz1wq7ahbgxQHHOlLtiGqlmRliFtqX6qwtdCt5ShEk6Q4A8XmXD5q2rAeYfNNk3rkNTBjZyTGIXqFnFXJlkprd0WS9M5u3PGyAMluShXYRxbRyAD/DWA+P6k1rbjqRTAtl5xyC1OMwPE5cSr72M/mqj6UTFf4wQvK2++FH3kHziA7kZCCuNmI7fbpEyqBCuGFsK2JQwJPx1oKU17wIkC7W+2Fx6pN7H9CAVVJej5w8AlCyWdFquEHUnEYzMVxcyBU2K2q8J3gV/Pgqp3BIEjsP09xxKaVHAmzmzdq+l6RSiT6AjPZrpgxbEz7/uh4OO/4i0+RAJis189e64pPtIdzw3IBSKY+KkOxuaSNhvTa5vOVN6UttE41qUNGEFZ6ZnmWZO2mM+4iUtNkUT887xKq/Iow2uBHn+vPUHiI08tkrdZSwnaKZ5yCTrUjrnonyD5KuBLUYwGRJ6a3erWVStA8QyoH873seVmktN6aMk0yrP3NFnuHdLm3QB7fF/fJkOtI+rUZALdUxzHImBpUi2QXgV6T3+0ZVMWixVsjBOxcOeQEP42kFq/ejxi7BCol8KSEC7fGGxphghiOBfo27PPwv9DJQ5IKqOm0nHNUBYo4UPBmmUQW3EgNdiIEEtprED3Cc5hVfTBEVoT8IF+jGNF6pka4Few1Z7NfoFdt6pv1T3d3DmLsnqy0G7n4CVDhNuy35PeFp61COZlKVowRcQOqDLst9o1krxwU7bx9ODslojdi0Ceyj8+6cq17aDL9gL3TvQRPv1jFpAkJ
- S00aa+65
- N2a95jRWlVYJmfsp4TOKwxUJcp3GqDZfFnK+g4Dhws+FQQZ/PfSpHeajj+FkLatGj4B/vU1pQ2utkmOXHN15bObWqyj7fBr6iCTGgZVJQ6tiH2E9zvw4yIZ2KQwroqao/o9/dL4zfP/1cTaq+BVI+O8WzDKdCIVDQ1k//jarU5m7iwwi92H3IojiU94MIyf43zZH2oP59BxcQ8nSD1yVg9e7fslEFL83+LO/CQkqRzcLlq342Pa5NzCT6YZQSm7tv/97e6CUecI0bGCwAa5rgSHkiI3eB67Yarq9Xa0Gw7vHvBmM=
+X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1793623996-689679
+X-HE-Meta: U2FsdGVkX1/be0Nc9KWX4vGONwW3mJldiGfumSAZvHHfOTxSOFx3s06govUCXt2yOcga+j72liDEXkg4S9tf9LdAb2+sqsajgKJCF5Y4f3DqVsWw8dvys6+0j0y9Bf8BH+3JkV3a/Qq/RBuOwjLHarHGlnNDGSDcAh8CL4WCLlEtzbG7YYW6mRGDdfFyOPDXNrN9qgoGujW7KjhCRCipec0+hGQM5992qg+NVNfrRRplxCLcV6CLIvVP5jH1819OISt+H59SehEjrdcmcP2O/mo06o1sI7gvCf2hlk2QOTBvJKaEklEywfxVspO8KidWx7PMpwdcLt1IFqOc5ru2s4ycYc8PXA4YMoxyHHvLryKrVD+v2/mfLHB5OC9CDXs9qa2fpDmebFG5gOf//rIOE6E0+M/OJb5lyYYt5ni5icx8El5sj8QPfunpJFbXqzU/Ob3GJe5ud7fPaqckz2R0O3bRUHV5+cyQ21T6S749C1cfNTQx5Uv0vUqM36oaGw2lroW1Ek1WsJR8F2G9Ig2CNsYwgLDbkvb+PKdGX4vZyoToMlJOPqZX/uC+OdTxe7aW14+AkZsv/1oX1nLnl2Cb50SoKCU+FXQl5TVsC7s4FLJTjgS+muznYJwIWa4o+EoMX0666ltSKjOlPO2Wne0V1as6Urm4A1BuJk8XHifIUYuvM/o0EO3OCgWIpec09X4orKbK+5H/J7Pl7VRT6qE9jBUI/a4rHG0KKlhiTcAXTdCN/DaZ6n4J0aC4jX+FXJVnflPEdz21jAmp0kjJCEhgVqFRfGiIQH5RsYtZ4Oc2NAL6dX+W7PBHw8rC6K/pIP46n2aq/gMrfTJdW64EqNw9I5RAS+J1vEG0U6j8oIXp+X1dTw+eWhnhL+nLncgqKjHSgXQl0NHhBHMqui5lj9XbLvbPf2S3yF3Q+urpzIGqs4ryAjL5aHO90cXTqD6KHTlErNv5NbhIL2EVK0BtyjJ
+ lFISfl8m
+ gTDk05+iRhI0o0TeYyHa6Rjwl12njNPNpnQkDU8xLReMdrndJ1kwohdl1I3Ey31X+IsqSMXtX2c3LheyO3jK3HVT61tXlZpspUsbTrthJzktJd94STGu4kHdRBgbHIgsiW2T2FAa9u3SqVwyXx7+m1KAKnB2gqm8uYWX9obmcwHNyb36vhFfqu3xldXI04Vz1n58iKIAEWEPabsXvzJ/BCY5ZCeODR60gvAUNb9EqRaSCPaT5ExCVC9Byr0UxbBtni7SOVBPxL+16fgk4Q0FP9tPtX9IGao4Sa2gqzkKrsV3B8Io=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -146,32 +144,17 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
 On 10/27/26 08:49, Weilin Tong wrote:
-> File-backed THPs can have order 1, but the per-size counters are only
-> emitted for order 2 and above. Fully and contiguously mapped order-1
-> file THPs are therefore missing from the output.
+> VMAList splits smaps lines on whitespace and only keeps the mapping
+> name when there are exactly six fields. Names containing whitespace,
+> including paths with a (deleted) suffix, are therefore lost.
 > 
-> Start emitting the per-size counters at order 1.
+> Limit splitting to the five fixed fields and preserve the remaining
+> name.
 > 
 > Fixes: 2444172cfde4 ("tools/mm: add thpmaps script to dump THP usage info")
 > Assisted-by: LLM
 > Signed-off-by: Weilin Tong <tongweilin@linux.alibaba.com>
 > ---
->  tools/mm/thpmaps | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/tools/mm/thpmaps b/tools/mm/thpmaps
-> index d92aace005c1..30a8e915d677 100644
-> --- a/tools/mm/thpmaps
-> +++ b/tools/mm/thpmaps
-> @@ -295,7 +295,7 @@ def thp_parse(vma, kpageflags, ranges, indexes, vfns, pfns, anons, heads):
->  
->      def flatten_sub(type, subtype, stats):
->          param = f"{type}-thp-pte-{subtype}-{{}}kB"
-> -        for od, nr in enumerate(stats[2:], 2):
-> +        for od, nr in enumerate(stats[1:], 1):
->              rstats[param.format(odkb(od))] = {'type': type, 'value': nrkb(nr)}
->  
->      def flatten_type(type, stats):
 
 Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
