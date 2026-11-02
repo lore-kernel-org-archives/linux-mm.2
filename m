@@ -1,82 +1,100 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9543A606A324
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 10:04:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69A8D606A329
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 10:08:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=iPYSnUUT
 Received: by kanga.kvack.org (Postfix)
-	id BC0D56B05C8; Mon,  2 Nov 2026 05:04:30 -0500 (EST)
+	id 86C066B00EF; Mon,  2 Nov 2026 05:08:05 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B70D96B05C9; Mon,  2 Nov 2026 05:04:30 -0500 (EST)
+	id 842456B05B1; Mon,  2 Nov 2026 05:08:05 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AAE2E6B05CA; Mon,  2 Nov 2026 05:04:30 -0500 (EST)
+	id 77FFD6B05C9; Mon,  2 Nov 2026 05:08:05 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 8DEFA6B05C8
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 05:04:30 -0500 (EST)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 25EFA1C46BC
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 10:04:30 +0000 (UTC)
-X-FDA: 85389744300.05.99EA50D
-Received: from mail.linx-info.com (mail.linx-info.com [114.247.232.78])
-	by imf19.hostedemail.com (Postfix) with ESMTP id E05601A0002
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 10:04:26 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	spf=pass (imf19.hostedemail.com: domain of gkwang@linx-info.com designates 114.247.232.78 as permitted sender) smtp.mailfrom=gkwang@linx-info.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 44CE76B00EF
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 05:08:05 -0500 (EST)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 664D5A8AEC
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 10:08:03 +0000 (UTC)
+X-FDA: 85389753246.29.84A8BFF
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf14.hostedemail.com (Postfix) with ESMTP id D62DF10000C
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 10:08:01 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iPYSnUUT;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf14.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793613868;
+	s=arc-20220608; t=1793614081;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=bsgXfputfPQiAxudDpHtBy77ru0u4ys8CRqHYkfdZLs=;
-	b=QwqXGectJ6Sgkd/YQ/aqPq6cIHHbziB5ZnIqHCh8hpW2+s0H17ahrH3sNwzMrvKT+DLF1c
-	vJaJDYYCjqJhSAwXHfbEPRia0/NZJIauHQpu1HBJ1SAH0Q4rynQMNjrer7T6BD086G8Zjv
-	tQrslP1IO4Db23HmjS/UihYpPWZLws0=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=PHGkVJUa8HZ0EZXHtvtoWcBsgIqIizfSFjqQHTffook=;
+	b=KzIxHkkPLRre2+S6GrigTONweB1kKCHkUnFk3vj2VsF+uI2xNYrnR3NAPC2UKGeA/cRro3
+	6Icuz17g1El0C5aGY6yRm4a/unq13xc0KrwkcPgZnH8V4xyE6nP92STTeBnOXNU39d7N4W
+	m/ji2GZhH2xFgVGXzR6TAX0sYYegfSw=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=none;
-	dmarc=none;
-	spf=pass (imf19.hostedemail.com: domain of gkwang@linx-info.com designates 114.247.232.78 as permitted sender) smtp.mailfrom=gkwang@linx-info.com
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iPYSnUUT;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf14.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793613868;
-	b=0KLzK9DU0VtHIV9RpFf7GtqGwmlPQdI+bQS4eJuilakma8UzGgVtJM7tEmAdECNf3k+k+a
-	NtpX96rK0xShGTBv2j/bfHMia2MfyteOwewl9XnXAct6uPefg2cm097Sm1bthoO+7VuuqL
-	Ihtj0fY18Jwpc3nJmuQX8Kbe1le4aWE=
-Received: from localhost (localhost [127.0.0.1])
-	by mail.linx-info.com (Postfix) with ESMTP id 5FD36321215;
-	Mon,  2 Nov 2026 18:04:24 +0800 (CST)
-Received: from mail.linx-info.com ([127.0.0.1])
-	by localhost (mail.linx-info.com [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id UpQ_qoaeNUmA; Mon,  2 Nov 2026 18:04:24 +0800 (CST)
-Received: from DiGouShu (unknown [172.22.21.200])
-	by mail.linx-info.com (Postfix) with ESMTPSA id 485823211C6;
-	Mon,  2 Nov 2026 18:04:24 +0800 (CST)
-Date: Mon, 2 Nov 2026 18:04:23 +0800
-From: Wang Guangke <gkwang@linx-info.com>
-To: SJ Park <sj@kernel.org>
-Cc: akpm@linux-foundation.org, damon@lists.linux.dev, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm/damon/stat: avoid overflow in
- estimated_memory_bandwidth calculation
-Message-ID: <auhgJ74TeQOIvTtO@DiGouShu>
-References: <20261101180001.167198-1-gkwang@linx-info.com>
- <20261101191344.85683-1-sj@kernel.org>
+	t=1793614081;
+	b=ZP7OkAqZWS+FIkrrmPJVpTv9BWKSYFaSgA0v1Qxhg6AZ8K8R3N/5nmg/Bc8h0DhlCIMFj6
+	+JTtxLOd1CuFYtKkewjfBe/K3GofFSGY8PEzV5CqqRjNTPXC5lJRHG6M0VQUd63PpahtkF
+	iifGa4AENJTas4Rk/uJr4glvf0Yw0WU=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 573B860F1F;
+	Mon,  2 Nov 2026 10:08:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99AE71F000C1;
+	Mon,  2 Nov 2026 10:07:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793614081;
+	bh=PHGkVJUa8HZ0EZXHtvtoWcBsgIqIizfSFjqQHTffook=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=iPYSnUUTD7dz8nPcsslscQX96/YM7XFOPcKFwif1kzlBcgxqvNAMCrVFP3QT6/mJZ
+	 H4VRAaYJzIFAyHlW5W1jLO3NPMD+c7alEhiQmcQJo+OUkp/auAy/BT+u5o9cpDVicR
+	 p9fAM54yUdtbuB81DDxcYdF0dj4wOmfT9f70NL3ZyZHE9Lm9PsFsx30ljFlCCZ9xU2
+	 QViJXiddc29ptMiRWPuA7RjV29OSdK5nN+kph0hj6UopE8NUZ7NYGF4+RJ5ctqT9VH
+	 xalu0NI6bpvoTvTg0ePb8jy898hnsvd3z6I97tBZ5f9Zx7neuXHAP6Zaz4MoUb5VX7
+	 RbtKVBHSplV/w==
+Date: Mon, 2 Nov 2026 12:07:52 +0200
+From: Mike Rapoport <rppt@kernel.org>
+To: "Jose A. Perez de Azpillaga" <azpijr@gmail.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>, Shuah Khan <shuah@kernel.org>,
+	Peter Xu <peterx@redhat.com>, Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+	Muchun Song <muchun.song@linux.dev>,
+	Oscar Salvador <osalvador@suse.de>
+Subject: Re: [PATCH v2 2/2] selftests/mm: add a uffd test for re-registering
+ during UFFDIO_COPY
+Message-ID: <auhg-HLrl4jbpaAT@kernel.org>
+References: <20261102081140.201987-1-azpijr@gmail.com>
+ <20261102081140.201987-3-azpijr@gmail.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261101191344.85683-1-sj@kernel.org>
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: E05601A0002
-X-Stat-Signature: bhxwibgszeo95o7spuzwy8nqxjtnb1fy
-X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
+In-Reply-To: <20261102081140.201987-3-azpijr@gmail.com>
+X-Rspamd-Queue-Id: D62DF10000C
+X-Stat-Signature: fsc7ez7tqe1w6mim4fh3j3zyu6xdqwjs
+X-Rspamd-Server: rspam06
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-HE-Tag: 1793613866-944652
-X-HE-Meta: U2FsdGVkX19jkjwA0W1nW0wM/bS0nKQ/9cIdshNqB0fmlddzAizC0K1Gjb25x/f2P20XjY+DY7USkON9vZjei+39zKBCKuRdavJ4xKu9tEWJJwidgQgLqD12XtpdGw5sVxPPMe1FjaInlxmnzkUCBhuyZUkObZgYpz+2JDFRKyWwdt/+tJxvxQy3BNUQa0phhM+0GF8cV6zuG3TjiF9cwoe/cgMonvIfGXd+GeCItySe6//KQigiEJ5iNo4rkjSn3ujalPOYAednDAL8JBmgdOD0La1wOsxXwlNWsKGabEBAvYWAJhq1rBxbsit+7gGV5PaJiruxr8Mpaont2mD7moraeQCg+1HiJLSUbZ/11bGbO3Dac86jKm9SxQU4Gskr0/LoNMS5r1m4uIkHTph95i+dNchgyLix8EAinpP7T1deSP86iebVipcT3zvPh0UGJLgdOubTOfUet+9tQ4eKlx5ee8xW8rkrLrslfgXD2K0VppUVIih8LaNs3ISOiuBNpm839TTXynBbTxOP/WrV2xFhYj07HYsJJ5E1h2KMs+ciy8IQ+K1MoWF6O1QqpXwZRYj0HzfycwZiAaOhdtP3/+GIf+e6oSucQ72xK5o9XPNNRU59B3i9DKQTDhvZUDVzP5QstsI9Xwgd4Yo+qSY5i/ra9lLeXhtuCD6bv2O/JFMnk/P+O71fAZmNuDsRG+EMW32ngyJ6jpguvxPqHiUKwTqkifqZ5mqP+1U1chg9VRBWOLVE+HlDsN6Y5LQhqWQPtxYFcZibtua0F91MVyuGX+VHScZR+lfe9X32IEMr8VjKLhCWj40PWgSStcQPFWB6YZPxyRfKsol/0oTbgtUaUaJplYRZ9+r/pliLuo6NKcwjkV8xT7AYE3N2uaqqFWRAuQh6eS5TohcjWp12zzDEsO1zLqbndx4nvqjVdo7Mx1/dd/ylz0EIB2zMVszvMeOlGVhfjiA6gTXVF/ilKsq
- dpnG0Vy0
- G/+i2rA7k1SRaqytl4eyV+cuvDunNnlmrkvmjyk+5pFhFU/wzLUXRJXjUMURCvOa9xhm4yhv5DencLv3loPqo4r0o4yEgDDmOtw0sREoRy5m1CWz/2T9Kw+ar7GieNA0UU+dWavrqaSV+BWa6ioXTwagI+itxTwZ7ROagwcBCL+EnOsqOlQQJqCoN5Jp7pq2l/9AVuK67OhWg4SrLsDDaC7TdoJzJfmVdl6N/msC6haDEWCw06jw7qyle11HcPp/5vpAYhALUHGLgJm7nsOrtyiYL0WbvNBXhKE0syEuRUvQudYQ=
+X-HE-Tag: 1793614081-77625
+X-HE-Meta: U2FsdGVkX1/roab0qVWRmgIQ3NWcWuAjirEb9AGQZ9K/qJhyShcuGgpC9J3se+R3WZSF6Hm6KQXw7RjRMs/n35orAs0vAx8r/sMLbIUpNwbgaXRejPOKagN51YqKRngmXKcD6L+JihKyh4QplilLi4tmE+7S1xJ4RIE9gMeti9YkpdckI7wi5T2dKX1okhCqZwbczOtD7CbZ1XYHm18BqlyMjw6ySEjWr9ZwAuLNOIzjFlvKjJL9WEW68WdEDj/38Y/14jWSej5atpeKVzIFhYSane1T3lsy5Ly6uf8Ukde7tBJ820aOhDzUm2G637334XDSG2NK3wz5iLTNjnWIuhQnbSvXlqaB6mYjo5AV883ds22eeCVx892uaHy0CiKDjkmbsNbnck0pTBwU2MR2tg8HGy1yh22kxN/uZXxJL4cvAuWlfR6X4mTFEk3pEGLMsTAM4y4MG1NjObWcXEfsFG/xCR+Px9K+kbJ90ORP5x5SOY74E5uRv8Jw89o0IprkCBsydcImU5IkIaOWIYFajPNc4bYROlUwODX1S+ADb6nmv73Ca4NbgliyebsPwpnIXXQk1MOIeBbwU3BeJTMkaGhTSwqeZXxNY7uT+zGYUVWv5ShLprI01Mc94rfpXBQmI2+Gba2d+N1pj4d4y8t8vZz6iY7AuudcjghwqUgwCBJOtSj/raZQXALhwk2R+2pqBQKmVdOINSc9gfilNh2ZZbwU6IgoUxmIH0WJBKJj8BTp+0GGgg/eXXzoMq+2d7sVOJjhmK+koQ3Uw5pju9gNmBs2BMYSv1fhNITmSCFEGu94a+vEguAMWmdHv3K7AXJOgfccmdrbecrK40Eiq2mZjuYLQKH2FAPgdFk93XX9rFcAYHXBZjLlwgbXUg+VyjQOW8b8KFRTXWq8KqBTIdN52XyaxxhRf5xPz/FGeudDFQ/DPk7s2lvtmHqNWTi+Rq4G2JQZrSkj73EpruuN5qj
+ C1Z0Xuv7
+ IbRtKymIA/0pEqUSpWZRG35rjCPOGnC8uFMXqAE9fpqQPicHANqibYGg8P6tPcANwzX3N51DIg7grQchfz5u6imLq2Hy3kjJu5ff8dXHKqnc/0aCnqT3BxJbEDNllC9Jl6GhsoaKkGy9QqSNbImmbkVB/Tl8PrLbxZBK1+lXymZqvEm2r+4gTBQAZJdbP3WZieEqtpbc0kRBIcQqeoxNREOJVIo4Y17FKQY7A+4VlpCcocMKLyuti+I4dWlz0aMJkJCvxYZNeIKbLfUcWwTyM8tfavHhLz9PtxjnLcBrZ0GVbfkdCiuQX0UN83fy7wk96pyCQ2Zr09LW7Ltje1V6JK+uI+HbbGiJOqsnI
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -85,159 +103,153 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Hi SJ,
-Thanks for your review.
+On Mon, Nov 02, 2026 at 09:11:31AM +0100, Jose A. Perez de Azpillaga wrote:
+> Re-register the destination without WP while a UFFDIO_COPY_MODE_WP copy
+> waits for its source page, then check that the copy fails with -EINVAL
+> and leaves no uffd-wp bit behind. This covers all memory types.
+> 
+> Signed-off-by: Jose A. Perez de Azpillaga <azpijr@gmail.com>
 
-On Sun, Nov 01, 2026 at 11:13:43AM -0800, SJ Park wrote:
-> Hello Wang,
-> 
-> On Mon,  2 Nov 2026 02:00:01 +0800 Wang Guangke <gkwang@linx-info.com> wrote:
-> 
-> > The calculation of estimated_memory_bandwidth computes
-> > access_bytes * USEC_PER_MSEC * MSEC_PER_SEC / aggr_interval directly.
-> > On 32-bit systems, the intermediate product
-> > access_bytes * USEC_PER_MSEC * MSEC_PER_SEC may overflow before the
-> > division is performed.
-> 
-> Do you find this issue from real usage?  Or, jsut theoretical?  Could you
-> please clarify it, and user impacts of the issue?
+Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 
-I found it by code inspection, not from real usage on a 32-bit system.
-
-The parameter estimated_memory_bandwidth of the damon_stat
-module is calculated from access_bytes * USEC_PER_MSEC *
-MSEC_PER_SEC (= USEC_PER_SEC) / c->attrs.aggr_interval,
-and users read it via
-/sys/module/damon_stat/parameters/estimated_memory_bandwidth.
-
-The maximum value of a 32-bit unsigned integer is 4294967295. Therefore,
-in the product access_bytes * USEC_PER_SEC, once access_bytes exceeds 4294,
-the 32-bit value is bound to overflow. Users reading
-/sys/module/damon_stat/parameters/estimated_memory_bandwidth
-on 32-bit systems will get a wrong value.
-
-To see whether real workloads exceed this threshold, I printed the
-intermediate values of the computation via a tracepoint on a 64-bit
-system.
-
-on 64-bit system:
-    ~ # echo 1 > /sys/kernel/debug/tracing/event/damon/estimated_memory_bandwidth
-    ~ # cat /sys/kernel/debug/tracing/trace
-    ...
-           kdamond.0-78      [003] .....  7507.959114: estimated_memory_bandwidth: access_bytes=5536956416, c->attrs.aggr_interval=200000000
-
-I observed that access_bytes can far exceed 4294.
-
-In addition, I used qemu-system-i386 to emulate a 32-bit system and
-performed the same verification:
-
-on 32-bit system:
-without-patch:
-    ~ # cat /sys/kernel/debug/tracing/trace
-    ...
-           kdamond.0-45      [000] .....  1809.507372: estimated_memory_bandwidth: access_bytes=15237120, c->attrs.aggr_interval=7910660
-    ~ # cat /sys/module/damon_stat/parameters/estimated_memory_bandwidth
-    362
-    ~ # echo "15237120 * 1000 * 1000 / 7910660" | bc
-    1926150
-
-The module parameter value (362) does not match the expected value
-(1926150), so an overflow has occurred.
-
-with-patch:
-    ~ # cat /sys/kernel/debug/tracing/trace
-    ...
-           kdamond.0-45      [000] .....   212.682057: estimated_memory_bandwidth: access_bytes=7503872, c->attrs.aggr_interval=3615680
-    ~ # cat /sys/module/damon_stat/parameters/estimated_memory_bandwidth
-    2075369
-    ~ # echo "7503872 * 1000 * 1000 / 3615680" | bc
-    2075369
-
-The module parameter value (2075369) matches the expected value.
+> ---
+> Changes in v2:
+> - "all memory types" in the commit message
+> - rename copy to result
 > 
-> > 
-> > Fix it by splitting the division into quotient and remainder,
-> > multiplying each part separately.
+> v1: https://lore.kernel.org/20261029221129.89068-3-azpijr@gmail.com
 > 
-> Thank you for this patch.
+>  tools/testing/selftests/mm/uffd-unit-tests.c | 105 +++++++++++++++++++
+>  1 file changed, 105 insertions(+)
 > 
-> > 
-> > Fixes: fabdd1e911da ("mm/damon/stat: calculate and expose estimated
-> > memory bandwidth")
+> diff --git a/tools/testing/selftests/mm/uffd-unit-tests.c b/tools/testing/selftests/mm/uffd-unit-tests.c
+> index 2a97ba1d6feb..cc22b4cde621 100644
+> --- a/tools/testing/selftests/mm/uffd-unit-tests.c
+> +++ b/tools/testing/selftests/mm/uffd-unit-tests.c
+> @@ -375,6 +375,104 @@ static void uffd_wp_unpopulated_test(uffd_global_test_opts_t *gopts, uffd_test_a
+>  	uffd_test_pass();
+>  }
+>  
+> +struct wp_copy_args {
+> +	uffd_global_test_opts_t *gopts;
+> +	char *src;
+> +	__s64 result;
+> +};
+> +
+> +static void *wp_copy_thread(void *data)
+> +{
+> +	struct wp_copy_args *args = data;
+> +	struct uffdio_copy copy = {
+> +		.dst = (unsigned long)args->gopts->area_dst,
+> +		.src = (unsigned long)args->src,
+> +		.len = args->gopts->page_size,
+> +		.mode = UFFDIO_COPY_MODE_WP,
+> +	};
+> +
+> +	ioctl(args->gopts->uffd, UFFDIO_COPY, &copy);
+> +	args->result = copy.copy;
+> +
+> +	return NULL;
+> +}
+> +
+> +/*
+> + * UFFDIO_COPY drops its locks to fault in the source page.  Re-register the
+> + * destination without WP while it waits there: the MODE_WP copy must then
+> + * fail instead of leaving a uffd-wp bit in a VMA that no longer has WP.
+> + */
+> +static void uffd_wp_copy_reregister_test(uffd_global_test_opts_t *gopts,
+> +					 uffd_test_args_t *args)
+> +{
+> +	struct uffdio_api api = { .api = UFFD_API };
+> +	struct wp_copy_args copy_args = { .gopts = gopts };
+> +	unsigned long len = gopts->page_size;
+> +	struct uffdio_zeropage zeropage;
+> +	struct uffd_msg msg;
+> +	struct pollfd pfd;
+> +	pthread_t thread;
+> +	uint64_t value;
+> +	int pagemap_fd;
+> +	int src_uffd;
+> +
+> +	/* The source fault comes from the kernel, so no UFFD_USER_MODE_ONLY */
+> +	src_uffd = uffd_open(O_CLOEXEC);
+> +	if (src_uffd < 0) {
+> +		uffd_test_skip("cannot open a kernel-mode userfaultfd");
+> +		return;
+> +	}
+> +	if (ioctl(src_uffd, UFFDIO_API, &api))
+> +		err("UFFDIO_API failed");
+> +
+> +	copy_args.src = mmap(NULL, len, PROT_READ | PROT_WRITE,
+> +			     MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
+> +	if (copy_args.src == MAP_FAILED)
+> +		err("mmap() failed");
+> +
+> +	if (uffd_register(src_uffd, copy_args.src, len, true, false, false))
+> +		err("register src failed");
+> +	if (uffd_register(gopts->uffd, gopts->area_dst, len, true, true, false))
+> +		err("register dst failed");
+> +
+> +	if (pthread_create(&thread, NULL, wp_copy_thread, &copy_args))
+> +		err("pthread_create() failed");
+> +
+> +	/* Wait until UFFDIO_COPY blocks on the source page */
+> +	pfd = (struct pollfd){ .fd = src_uffd, .events = POLLIN };
+> +	if (poll(&pfd, 1, 10000) != 1)
+> +		err("no fault on the source page");
+> +	if (read(src_uffd, &msg, sizeof(msg)) != sizeof(msg))
+> +		err("read() failed");
+> +
+> +	if (uffd_unregister(gopts->uffd, gopts->area_dst, len))
+> +		err("unregister dst failed");
+> +	if (uffd_register(gopts->uffd, gopts->area_dst, len, true, false, false))
+> +		err("re-register dst failed");
+> +
+> +	zeropage.range.start = (unsigned long)copy_args.src;
+> +	zeropage.range.len = len;
+> +	zeropage.mode = 0;
+> +	if (ioctl(src_uffd, UFFDIO_ZEROPAGE, &zeropage))
+> +		err("UFFDIO_ZEROPAGE failed");
+> +
+> +	if (pthread_join(thread, NULL))
+> +		err("pthread_join() failed");
+> +
+> +	if (copy_args.result != -EINVAL)
+> +		err("UFFDIO_COPY returned %lld, expected %d",
+> +		    (long long)copy_args.result, -EINVAL);
+> +
+> +	pagemap_fd = pagemap_open();
+> +	value = pagemap_get_entry(pagemap_fd, gopts->area_dst);
+> +	pagemap_check_wp(value, false);
+> +	close(pagemap_fd);
+> +
+> +	munmap(copy_args.src, len);
+> +	close(src_uffd);
+> +	uffd_test_pass();
+> +}
+> +
+>  static void uffd_wp_fork_test_common(uffd_global_test_opts_t *gopts, uffd_test_args_t *args,
+>  				     bool with_event)
+>  {
+> @@ -2403,6 +2501,13 @@ uffd_test_case_t uffd_tests[] = {
+>  		.uffd_feature_required =
+>  		UFFD_FEATURE_PAGEFAULT_FLAG_WP | UFFD_FEATURE_WP_UNPOPULATED,
+>  	},
+> +	{
+> +		.name = "wp-copy-reregister",
+> +		.uffd_fn = uffd_wp_copy_reregister_test,
+> +		.mem_targets = MEM_ALL,
+> +		.uffd_feature_required = UFFD_FEATURE_PAGEFAULT_FLAG_WP |
+> +		UFFD_FEATURE_WP_HUGETLBFS_SHMEM,
+> +	},
+>  	{
+>  		.name = "minor",
+>  		.uffd_fn = uffd_minor_test,
+> -- 
+> 2.56.0
 > 
-> Please do not wrap Fixes: tag line.
 
-Sorry, I will not wrap it in v2.
-> 
-> Could you clarify why you do not Cc stable@?
-
-Sorry, I missed it. I will Cc stable@ in v2.
-> 
-> > 
-> > Signed-off-by: Wang Guangke <gkwang@linx-info.com>
-> > ---
-> >  mm/damon/stat.c | 17 +++++++++++------
-> >  1 file changed, 11 insertions(+), 6 deletions(-)
-> > 
-> > diff --git a/mm/damon/stat.c b/mm/damon/stat.c
-> > index b05b68f73e10..7cfa3a8d6801 100644
-> > --- a/mm/damon/stat.c
-> > +++ b/mm/damon/stat.c
-> > @@ -32,8 +32,8 @@ static bool enabled __read_mostly = IS_ENABLED(
-> >  module_param_cb(enabled, &enabled_param_ops, NULL, 0600);
-> >  MODULE_PARM_DESC(enabled, "Enable of disable DAMON_STAT");
-> >  
-> > -static unsigned long estimated_memory_bandwidth __read_mostly;
-> > -module_param(estimated_memory_bandwidth, ulong, 0400);
-> > +static u64 estimated_memory_bandwidth __read_mostly;
-> > +module_param(estimated_memory_bandwidth, ullong, 0400);
-> >  MODULE_PARM_DESC(estimated_memory_bandwidth,
-> >  		"Estimated memory bandwidth usage in bytes per second");
-> >  
-> > @@ -55,15 +55,20 @@ static void damon_stat_set_estimated_memory_bandwidth(struct damon_ctx *c)
-> >  {
-> >  	struct damon_target *t;
-> >  	struct damon_region *r;
-> > -	unsigned long access_bytes = 0;
-> > +	u64 access_bytes = 0;
-> > +	u64 remainder, bytes_per_interval;
-> >  
-> >  	damon_for_each_target(t, c) {
-> >  		damon_for_each_region(r, t)
-> > -			access_bytes += (r->ar.end - r->ar.start) *
-> > +			access_bytes += (u64)(r->ar.end - r->ar.start) *
-> >  				r->nr_accesses;
-> >  	}
-> > -	estimated_memory_bandwidth = access_bytes * USEC_PER_MSEC *
-> > -		MSEC_PER_SEC / c->attrs.aggr_interval;
-> > +	bytes_per_interval = div64_u64_rem(access_bytes,
-> > +			c->attrs.aggr_interval, &remainder);
-> 
-> This is not bytes per interval but bytes per microsecond.  Let's rename the
-> variable to bytes_per_us.
-> 
-> > +	estimated_memory_bandwidth =
-> > +		bytes_per_interval * USEC_PER_MSEC * MSEC_PER_SEC +
-> > +		div64_u64(remainder * USEC_PER_MSEC * MSEC_PER_SEC,
-> > +				c->attrs.aggr_interval);
-> 
-> Let's use USEC_PER_SEC instead of 'USEC_PER_MSEC * MSEC_PER_SEC'.
-
-Thanks, I will rename the variable to bytes_per_us, and use USEC_PER_SEC
-instead of 'USEC_PER_MSEC * MSEC_PER_SEC'.
-> 
-> >  }
-> >  
-> >  static int damon_stat_idletime(const struct damon_region *r)
-> > -- 
-> > 2.47.3
-> > 
-> > 
-> 
-> 
-> Thanks,
-> SJ
-> 
-Thanks,
-Wang Guangke
+-- 
+Sincerely yours,
+Mike.
 
