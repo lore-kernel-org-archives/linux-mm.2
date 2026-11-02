@@ -1,160 +1,130 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B701606A327
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 13:42:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 691C5606A33D
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 13:45:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Tl7djDwB
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=dppISlYB
 Received: by kanga.kvack.org (Postfix)
-	id 987386B05B7; Mon,  2 Nov 2026 08:42:57 -0500 (EST)
+	id 7B5AE6B00EF; Mon,  2 Nov 2026 08:45:28 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 938D56B05B8; Mon,  2 Nov 2026 08:42:57 -0500 (EST)
+	id 76A676B05B8; Mon,  2 Nov 2026 08:45:28 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 826866B05B9; Mon,  2 Nov 2026 08:42:57 -0500 (EST)
+	id 67C846B05B9; Mon,  2 Nov 2026 08:45:28 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 55E796B05B7
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 08:42:57 -0500 (EST)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id D6A7740D2C
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 13:42:56 +0000 (UTC)
-X-FDA: 85390294752.16.5BE94EB
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 3FFD320003
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 13:42:56 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 3E66D6B00EF
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 08:45:28 -0500 (EST)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id C1FABC0B72
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 13:45:27 +0000 (UTC)
+X-FDA: 85390301094.05.B9A418B
+Received: from mail-wm2-f10.google.com (mail-wm2-f10.google.com [74.125.225.138])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 20F4220005
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 13:45:26 +0000 (UTC)
 Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Tl7djDwB;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf31.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=dppISlYB;
+	spf=pass (imf31.hostedemail.com: domain of alitariq45892@gmail.com designates 74.125.225.138 as permitted sender) smtp.mailfrom=alitariq45892@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793627126;
+	b=nO2kwyLh44Q8TtXUbsx0B4xtr/ThCsc8/TidlLo6gOBgmu00m2Rx+4gRX0wWnqfgJE+MDA
+	IPHCxxoOk94al4BcxaoAcylK8FnaBksIchXSVBwgprY+sCeKT6fVhIVhPlL0itHxXGVISv
+	DaHDgdfaIOlwA9RIrzmCqjqg7XnElt4=
+ARC-Authentication-Results: i=1;
+	imf31.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=dppISlYB;
+	spf=pass (imf31.hostedemail.com: domain of alitariq45892@gmail.com designates 74.125.225.138 as permitted sender) smtp.mailfrom=alitariq45892@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793626975;
+	s=arc-20220608; t=1793627126;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=N92l3jjvO00CtpEZOu8rveygTDy+OqbCyAbm8AeBzYI=;
-	b=aAdtlySoFrJ9cjD7QjXDWIi2Yjzv/Pnhm78zKzsjNtMGb5RMbrb9xL9pfajWA3eBp7h8Zd
-	dd2eoqoPXp97GIxxTmn94NkkGaQT3md50O6mvrqhYSdQo1r3yNwn0tiD9NNqEOeSkZ9UTI
-	GYseBXpKlOUM8LPRDDvYowLiQ5l13GU=
-ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Tl7djDwB;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf31.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793626975;
-	b=eR6Wx4kDklFhnsLMHqsY+IGXfsZx2XPW8+4em+ATuFjxBRM5Q0+rEw8nm35SO+4G3IJrjV
-	GfU3j1U4bgkw1O44NNT90m6WMb6EVW3fVDBn+nM3rDV5s1CSONBdhsLvZQfo7exU1cDu+0
-	wLfUEbyd/WizlF1Wiw+Za2N+MtSBd2w=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 9EE116060E;
-	Mon,  2 Nov 2026 13:42:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11AEB1F00A17;
-	Mon,  2 Nov 2026 13:42:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793626974;
-	bh=N92l3jjvO00CtpEZOu8rveygTDy+OqbCyAbm8AeBzYI=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=Tl7djDwBaHB0P3Kuzzh7diRALB/XJy9zz68TIIVk13VN6FbCQF9rlMQTZ+oud5OLl
-	 HWdrdGu92Aug5rumrxIjAlxSeiiGCK05JPKz7CjySd03tUiGnIMPEeY4RxKPlM4i80
-	 DBwyqwD33qgtQ032BD3Wqd/FqZfcfOycAsImhKBSBE9gr0LdZkH3MJO08/pvLlQQVj
-	 svMwhggPT2rj+R+FeAo817O/t8DLzYJ8t2drgE6WPataY85jbXk9eJTHug2kgBiV1n
-	 0IhhxesRgcT5odVtnYFc1IRsmkrSeAyFybeAQwiHqdguNoJt3cghZKbcXpqjTLdDii
-	 ocf436Tuj7SfA==
-Message-ID: <12d9eb7a-a9eb-4e3a-b5fe-abc49f67f212@kernel.org>
-Date: Mon, 2 Nov 2026 14:42:44 +0100
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=UUcrbJLOOZAs9Qd9MyHCkEc9mio81RdYYZ8wU36Zvg8=;
+	b=XR8/CVwxoeGXGS+CP0aTNEvcck52UTMRyZExyDYnYUp1JoA1MKiLU1APHLcnvii/DJFbOk
+	67rHmNvFixX+phcKqk70c/9NffaJPaSr0EgNfpx276ELkdytqXYd9wh4Cq13W5Ar/qXqcA
+	Lg6lFi4RmKDdjkjFgQU0VEZfZOr7L9Q=
+Received: by mail-wm2-f10.google.com with SMTP id 5b1f17b1804b1-4a16dfb8fa6so16971825e9.1
+        for <linux-mm@kvack.org>; Mon, 02 Nov 2026 05:45:25 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1793627124; x=1794231924; darn=kvack.org;
+        h=content-transfer-encoding:content-type:mime-version:message-id:date
+         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=UUcrbJLOOZAs9Qd9MyHCkEc9mio81RdYYZ8wU36Zvg8=;
+        b=dppISlYBDLhd10vRkXMicJ+lTRUTbE3cZ6zeaEvznvUEvWHvt9GoLQGsh2Obeqb1Kp
+         TjrRz/bXrYUPTksOnU6K2KY9oP965nCjKcIh57a5BXUBh2UAfCP0589cLg991tGQ2iNQ
+         jYHPQv+aMSk3ksufzKPAGusiVG/uazaWzp4PDJpYqA2hp3oMHSfXNL71yW+DU4tVIRNb
+         G358RQCIHqAd9tizQfWkv8zSC0o5o/AJVKW0TuByTEsX3NBkcricALbJ9p87Zh8op2jD
+         91lohkJb4gFF1YLj0oSPoVkeCcGv+NezdlvlMG+Z+damJIzvoriHoHSrWsac89cEX/Tb
+         pKTg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793627124; x=1794231924;
+        h=content-transfer-encoding:content-type:mime-version:message-id:date
+         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=UUcrbJLOOZAs9Qd9MyHCkEc9mio81RdYYZ8wU36Zvg8=;
+        b=Qno0wBDIZPKlH7jc3pAwOB9FwE7oNMALpGJd3TO9lVhAomhs4+GI/Y8r5c8heiq97l
+         7FWqS1XMi6LDUEPZZx7YJnVin+y1S39+Pvjyit87ijpsE/2ivoE0ErZEhGRBB71YXU03
+         J2pAdeOXKJPvMTJlqu6oKVJcvG+jsdlUxqsM1E7YgDdgcC3PcgTHmqJumsLaQ1iY5rL9
+         8FWjI6D97wIMPmr5R6qSGloX2eFboaMAs8xA2q8IquQMyGhKX9+NwR2rSVbvVZhtRD+g
+         mtTbelASt5Bltax5tZJG+reL93vPUbEgWrLoVjd8ayfi3vSKNJj9CLVuF35n6Xh7ODot
+         asoQ==
+X-Forwarded-Encrypted: i=1; AKwUvBzJ25kPx8SkU6xB2E+PteoHWxbACCsCmZedMSJlcIklAxfzhyXk/i+/ZiF29Bt6tdvP+6Qm6Ak3og==@kvack.org
+X-Gm-Message-State: AFq9FYJzLbpp3Vu+RgxwbPCO5jqjzyXSZWlfojFUyigSuse59mNyGZ/L
+	X8RIyoAlWjD/5xQCebC7iFIv3jPm+sO4iORnK/HwCwaqvoKLZ9tpOuIp
+X-Gm-Gg: AYBFou1/t5Kx2I8Q3boeToFJhnTe5s2ilSPhnvv/lpsAEQmHhKJ1LrhiQK3CuW8kfIU
+	Fbz3x90bkLT6VlxJWQaZHeveMA2m57FIitkaBOZMHemNMXHYC+NQ6AAhQ5EraqDsK9zJzMOB/r1
+	Gy5nhpDHk31K0U7L69q94u3JTSpEXYr/bRlWUcp4A6QNlVex6mSz5etIcECU3HJpbwL1CeucELS
+	ljPJmjfpKRNFGy/6579gB6VmL4AYN1RRV6y0WXkTNrx2IR6MdL2zOMSMkx07C64ObVUBbBsvFGd
+	Onroobl3VfPGmf7LNL2eTx6O0w/mEyVLGKePBiWfiNdAvkDmnP8hTPSSeHtZl0uUHdGPDg3N0Me
+	ZzidybbVaJX80Zr/L5kEAkIZia/SrIfjpwb7Uy5J/p61fzxY45AGYh6zs6ZX2shOR//7J7d00dp
+	0bAtykH6cbY3jEZ8z+UMa8npCiErGty+6n9uZa9q2rHQitK1mGVt3+nC/gaU5lEOMror/pvIuna
+	So1jyKXQ07+evh6RM8aCCxHKMgS7RYusMx4v+vUKgP3qmEvL4jYK9ZwMA1IYk0EIB03Whb+2zw8
+	MNUjITt9RydJtk8aXIcFKqPmKhXPv2qgAZpJSRXYhkn98CldTvFzVvs=
+X-Received: by 2002:a05:600c:1f87:b0:4a1:f68a:9736 with SMTP id 5b1f17b1804b1-4ac17b2be08mr233027865e9.26.1793627124284;
+        Mon, 02 Nov 2026 05:45:24 -0800 (PST)
+Received: from workstation.. ([110.93.227.81])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4ab61d8b9f4sm319164755e9.12.2026.11.02.05.45.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 02 Nov 2026 05:45:23 -0800 (PST)
+From: Ali Tariq <alitariq45892@gmail.com>
+To: Paul Walmsley <pjw@kernel.org>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>,
+	linux-riscv@lists.infradead.org
+Cc: Alexandre Ghiti <alex@ghiti.fr>,
+	Vivian Wang <wangruikang@iscas.ac.cn>,
+	Yunhui Cui <cuiyunhui@bytedance.com>,
+	Muchun Song <muchun.song@linux.dev>,
+	Mike Rapoport <rppt@kernel.org>,
+	David Hildenbrand <david@kernel.org>,
+	kasan-dev@googlegroups.com,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Ali Tariq <alitariq45892@gmail.com>
+Subject: [PATCH] riscv: mm: Add KASAN shadow mapping to flush_cache_vmap()
+Date: Mon,  2 Nov 2026 18:44:21 +0500
+Message-Id: <20261102134422.610837-1-alitariq45892@gmail.com>
+X-Mailer: git-send-email 2.34.1
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 14/15] RFC: mm/hugetlb: account restored reservations
- before freeing folios
-To: sashiko-reviews@lists.linux.dev, Muchun Song <muchun.song@linux.dev>,
- Oscar Salvador <osalvador@suse.de>, Naoya Horiguchi
- <nao.horiguchi@gmail.com>, Andrew Morton <akpm@linux-foundation.org>,
- Mel Gorman <mgorman@suse.de>, Andy Whitcroft <apw@canonical.com>,
- Miaohe Lin <linmiaohe@huawei.com>, Michal Hocko <mhocko@suse.com>,
- Rik van Riel <riel@surriel.com>, Hugh Dickins <hughd@google.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- Vivek Kasireddy <vivek.kasireddy@intel.com>, Dave Airlie
- <airlied@redhat.com>, Jason Gunthorpe <jgg@ziepe.ca>,
- Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Jonathan Corbet <corbet@lwn.net>,
- Shuah Khan <skhan@linuxfoundation.org>, Randy Dunlap
- <rdunlap@infradead.org>, Peter Xu <peterx@redhat.com>,
- Breno Leitao <leitao@debian.org>, Will Deacon <will@kernel.org>,
- "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Nick Piggin
- <npiggin@gmail.com>, Peter Zijlstra <peterz@infradead.org>,
- Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
- Alexander Gordeev <agordeev@linux.ibm.com>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- Sven Schnelle <svens@linux.ibm.com>, Arnd Bergmann <arnd@arndb.de>
-Cc: linux-mm@kvack.org, Gerd Hoffmann <kraxel@redhat.com>,
- linux-s390@vger.kernel.org, Josef Bacik <josef@toxicpanda.com>
-References: <20261028-fixes_hugetlb-v1-0-a0a033db180f@kernel.org>
- <20261028-fixes_hugetlb-v1-14-a0a033db180f@kernel.org>
- <sashiko-outbox-189914@kernel.org>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <sashiko-outbox-189914@kernel.org>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 3FFD320003
-X-Stat-Signature: gjawqc3jirf63pmxc9o47i3nfjxf5i8f
-X-Rspamd-Server: rspam06
-X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-HE-Tag: 1793626976-590055
-X-HE-Meta: U2FsdGVkX19gr3QuU6odxEOU0NX6rIYI2qcjfecA+TByIRuOP4i89+L/1xjLi18op0hKRNQPxvdk+RKvE5yILmTvwqI5b3LMqCew68J1wikrCHfxyAzruVxwNccfNns0Bkhp0G/B8MuH0TfVyz1hlHjNgh9OYOJq66CBIysILpgipNYKx4LpQLcPQvgiA+gDBqJt3GS6aMvFYwyMFjD1qvLktfQzR5JJq3F30zB7VV+o07GJCjpk2p+4l11q9SgZ0KNmAcc6r7HFp1hoTe408YcoOzEpl0wVnkG+HVwkzbmooGEs75JNW1WJZLaufO47qJEwgoxrb3H5U4386KM9pb4QuPpgZBpZh0XJ0da9tn8eQYkKe+p+QdOGO99NDMwTxp0KN2AXvip5iYRBiXbXtmehjbNVn58fsZEC75M8CrAUn8KaQDJH/LQl0Jpx4i58VI85FdHX5tCqjRQ4WVNPct4SugnZUA7Pieb+ejJhJlj+zc3pZ8Qxy6+1bn17zmkdWjr5jIPLVTetiPlot4Koaa5M+qVnk8gQruyn5fggUa396+vbMdJcf8NFpdk7HX1v6bCy5u0wP2FfjycMvrUkWTVRA9yRs2MZD9hWGWVMdxBX/b4+TY7Hp3dchygn4ZfCFny4Ef3j3iMSuViC7weyoiS/FPsVtWVHtiWTRBOfFQQGMzs85L+eGOWDlr6JlmuZXjVHfkmJhfSU5yMUHwpTqVAWOOpSgiqYAGS9VhH2VQymZ9tHx3NTwxrJSAwYt8tjJCeYlAuuLPITso9wSTwnF6ki16hIOXIlvMQLiGI3ZK9AQBS1w1uoD3rBnnlnsqpCc1bcy2M7moRvSFkZbDk1pPOmAseeHWLMhkQUuPucZZlf8HbANplsIXXTq5WvZmTGR510kls+lNQHI0WPEBuFhJIz/9cG5J4OBqem8d9G7TI2Kr70kZQoZ8dmDmAQbNtJKLs5acmUBSB7I6lZTXV
- Bz4RjjaI
- pD/YxWsTR8sOY5G/vfAlggUiBJkIkg8UrAXsXyQ7GwxE5sPQH3bNqvIkuzVEDi6V6S1J5fYptkpBOyoXocAvBU/Chd3fvEbH2RWKwht9Ln8A7WWrWH2vb1qUpv3Wt/+WWI9E38LriKPSj9XsGe8ph3a+qZkEwV6+8NfZbYEz+UicH+v+3nkzTEQ0JZPVtepMg4auRSAXWyuptCaVOe4vBdD8ROFEhK482IIQUup1l9POdYipU9LRUpI/3amTWR9xSlhmiX6UToWdSmf6Wd1sczpPzX4lA77B+7KjzgOq72OYV6lOGKdZq5Wnt3SuiBOHmkRAvvawFPMhzEeQ2O1usdDnETUTpraDjEUn9S6X0rO2AWBw=
+X-Rspamd-Queue-Id: 20F4220005
+X-Stat-Signature: rfx4j6ak7fbeqew3nintxfkbudcyksgy
+X-Rspamd-Server: rspam01
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1793627126-643124
+X-HE-Meta: U2FsdGVkX1/jA6i9mhO28JAZRLvgY2xsGqAujDWd4yK5/8F8uJRnmch/+1apfP88iwALd/A+QXsUUJL1J01pkBCnOShRD21vBmCbIJJGQlQlNB/clOrbECK05cirb6+lFLCqMXEaHfeRyWxfwvM75C/iOTZTHqH/1Gd9vE37lP3IkN4KxNU1AQVxMi1QmcFnjFAl0BSNuAr7iZtt1kNUsA9swS0mdi2Yvej7nHJWw8iFd3Hr+CZF6z7SvsIRkZCM9S5R/a3GmkwQYHekCXFAXnIM60izlaYwt46KGP7hYScTzLS3acMf24waYRb7onRz2q5NvLn4Eqz6VlMlNZsb+EaBx7VdeThjdHy+IPTdDUY8KD6ZMGh2Xf7DrWVsialuxw4PC183/jHHdZv+CmZHAVAADgSq+eBaSDz0CmNdmjKvkVxke8L799RPu9FHYPZdh+R/hH7FOS+1Vj79u+Z1rD5lmzUNPEXiHQlPHFWhjZYGEhyl9vOZanL9B4hYzRn8ixKhJIhEMeyHLVKFpj03DBCQJqs/evs3dN+3pWUepeiORw5079CT9kdh5eaYULoFXBX1Y6hymfdNAVfPhsfS0bOQtiwsQ+r3GRwxYciARPl4qCp30pr55a1TWsCdfCm/Ya3qBZnMSs0hbK4zAJOvt6/dYPqdI4EMZzL7dqbJfCisSFsFePPKYCczTMbLsdj3Jqe0vSjoyBx/s1dhWV9LpX/GGDVjcw7VD65HV7VY0JtRLJZheYk/v1uHbG09U+rArcurMU7/JuuMLxUxAvKBdLPWTL0d6P04lel8m62Oa7acHR7TZpzcmAJbooihfGhOfN9+dtKNyYqUzv2b0mOJN+oLbxwRCJOM2VyKa/6ZH/ADpkKPjEA0ATBDa+nrVz6l56evGQSzeCRFM/u5Ljdesumd+VgydwtsPyDD4w5WOT3YV1LWOtsSCx++rBNEmCc3xYnKffOaqarOQxY9gEg
+ uh5VGMnM
+ You5rrA8/rsYJPlzQ+vhva/FJEWV3v8ADo8Z0Ppkc6Yj8otVZhJcKv3J0pTVY812ShZq8xICKAmfalx+28CVUXfQicnw14CAH/H3JZsJCtrFopsZoQiAy+naOsCfJ0Z49wLQJgVmIKChCOZnsHPSsb2erzwciEeWmIp+4sTPfrwgRSNCB/IVUhoxt18MgAE3bOuqBWxeM1hCQIs3fJx3fH9GHNFAlnhBp9ThmlWm7eTD1lezKs46/mc5nuiuUhEo/av2XSkLf1JPVy3TV3k8Haa7flUpo3HsppTwRzRJmper4125bFgJ0FJqBZmxlVNru6XrUqbUNc7YWC8VS0EN2OnYCCQdMAU9Giswn1QkDLdE8m/hHlsYa4M0Mah6K2tYHIT3TACpWS3N367xIEZIqmrxcnSq/Ql2wih6GquM/oYAHcsVnEZaOE6U4pztpvTkCkQURQERv6p8z+T2AU4k9qmWfp08HpeN5PK5Bm0nah9VMR8eJmGtQPmrepZ+SQtqFsjmchqx+tckfcvpfKrYb6BY8RIhhwmLcrlLLS1kPHYNX3a3qDoQ3Ujtc1dIiUxVbkKnIDhPpwk/+63A=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -163,158 +133,77 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 10/29/26 21:16, sashiko-bot@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 1 potential issue(s) to consider:
-> - [High] mm/hugetlb: gather_surplus_pages() over-allocates and retains surplus folios
-> --
-> 
-> commit d5256483029a06972dd519de19de57831de33af4
-> Author: David Hildenbrand (Arm) <david@kernel.org>
-> 
-> RFC: mm/hugetlb: account restored reservations before freeing folios
-> 
-> This commit updates anonymous hugetlb folio unmapping to increment
-> resv_huge_pages immediately when restoring the VMA reservation rather than
-> waiting for the folio to be freed. Because resv_huge_pages can now
-> temporarily exceed free_huge_pages while unmapped folios still have
-> elevated reference counts, available_huge_pages() is updated to clamp at
-> zero.
-> 
->> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
->> index 69a5d2c73ee1d..06ef8ba41df7c 100644
->> --- a/mm/hugetlb.c
->> +++ b/mm/hugetlb.c
-> [ ... ]
->> @@ -5313,6 +5309,45 @@ int move_hugetlb_page_tables(struct vm_area_struct *vma,
->>  	return len + old_addr - old_end;
->>  }
->>  
->> +/* Must be called after rmap removal. */
->> +static void hugetlb_folio_restore_rsv_on_unmap(struct vm_area_struct *vma,
->> +		struct folio *folio)
->> +{
->> +	struct hstate *h = hstate_vma(vma);
->> +	unsigned long address;
->> +	long rc;
->> +
->> +	/*
->> +	 * Restore only on the last unmap, otherwise the owner could reuse
->> +	 * the reservation while the folio is still mapped by a child.
->> +	 *
->> +	 * TODO: Handle migration temporarily dropping the mapcount to zero.
->> +	 * TODO: Prevent reservation reuse before the folio is freed.
->> +	 */
->> +	if (!folio_test_anon(folio) || !__vma_private_lock(vma) ||
->> +	    folio_mapped(folio))
->> +		return;
->> +
->> +	address = vma_anon_address(vma, folio->index, 1);
->> +	rc = vma_needs_reservation(h, vma, address);
->> +	if (!rc)
->> +		vma_end_reservation(h, vma, address);
->> +	if (rc <= 0)
->> +		return;
->> +
->> +	rc = vma_add_reservation(h, vma, address);
->> +	if (rc < 0)
->> +		return;
->> +
->> +	/* The restored reservation owns the subpool charge. */
->> +	hugetlb_set_folio_subpool(folio, NULL);
->> +
->> +	/* Account before the VMA can close or fault again. */
->> +	spin_lock_irq(&hugetlb_lock);
->> +	h->resv_huge_pages++;
->> +	spin_unlock_irq(&hugetlb_lock);
->> +}
-> 
-> [Severity: High]
-> With h->resv_huge_pages now able to exceed h->free_huge_pages while an
-> unmapped folio is still referenced (for example, via vmsplice() or GUP),
-> can a concurrent hugetlb_acct_memory() -> gather_surplus_pages() over-allocate
-> surplus folios and retain them in the pool?
-> 
-> In surplus_pages_needed():
-> 
-> 	static long surplus_pages_needed(struct hstate *h, long delta, long allocated)
-> 	{
-> 		long global_free = (long)h->free_huge_pages + allocated;
-> 		long allowed_free = (long)allowed_mems_nr(h) + allocated;
-> 
-> 		return max((long)h->resv_huge_pages + delta - global_free,
-> 			   delta - allowed_free);
-> 	}
-> 
-> When h->resv_huge_pages > h->free_huge_pages, (long)h->resv_huge_pages +
-> delta - global_free includes the deficit from the in-flight unmapped
-> folios on top of delta.
-> 
-> If gather_surplus_pages() succeeds, needed += allocated equals delta +
-> (h->resv_huge_pages - h->free_huge_pages), so it allocates and enqueues
-> extra surplus folios beyond delta (or fails with -ENOMEM if
-> nr_overcommit_huge_pages only had room for delta).
-> 
-> Furthermore, when gather_surplus_pages() cleans up unused or aborted
-> folios at the free label:
-> 
-> 	free:
-> 		spin_unlock_irq(&hugetlb_lock);
-> 
-> 		/*
-> 		 * Free unnecessary surplus pages to the buddy allocator.
-> 		 * Pages have no ref count, call free_huge_folio directly.
-> 		 */
-> 		list_for_each_entry_safe(folio, tmp, &surplus_list, lru)
-> 			free_huge_folio(folio);
-> 
-> free_huge_folio() checks:
-> 
-> 	} else if (h->surplus_huge_pages_node[nid] &&
-> 		   h->free_huge_pages >= h->resv_huge_pages) {
-> 		/* Free this surplus folio that is not required globally. */
-> 		remove_hugetlb_folio(h, folio, true);
-> 		spin_unlock_irqrestore(&hugetlb_lock, flags);
-> 		update_and_free_hugetlb_folio(h, folio, true);
-> 	} else {
-> 		arch_clear_hugetlb_flags(folio);
-> 		enqueue_hugetlb_folio(h, folio);
-> 		spin_unlock_irqrestore(&hugetlb_lock, flags);
-> 	}
-> 
-> While h->free_huge_pages < h->resv_huge_pages, free_huge_folio() will
-> enqueue the aborted surplus folios into the hugetlb pool instead of
-> returning them to the buddy allocator. If the in-flight unmapped folio is
-> a persistent folio on node A (where surplus_huge_pages_node[nid_A] == 0)
-> and the surplus folio was allocated on node B, dropping the last reference
-> to the persistent folio on node A will not free the surplus folio on
-> node B either, leaving the surplus folio stranded in the pool.
-> 
+flush_cache_vmap() sets a per-CPU flag, and a kernel page fault
+that finds the flag set gets an sfence.vma and a retry.
+flush_cache_vmap() only sets the flag for vmalloc, module and vmemmap
+ranges. kasan_populate_vmalloc() maps new shadow pages and calls
+flush_cache_vmap() on the shadow range, so no flag gets set.
+For vmap()-style areas, kasan_unpoison_vmalloc() writes
+the new shadow right away. If the CPU hasn’t seen the new entry yet,
+the store faults, and since there is no flag set, the kernel crashes.
 
-Damn that's confusing. What an overengineered mess :)
+[    0.675216] Unable to handle kernel paging request at virtual address fffffff7c009a000
+Current swapper/0 pgtable: 4K pagesize, 39-bit VAs, pgdp=0x0000000004504000
+[fffffff7c009a000] pgd=000000009ff6e001, p4d=000000009ff6e001, pud=000000009ff6e001, pmd=00000000400e7401, pte=00000000403cb0e7
+status: 0000000200000120 badaddr: fffffff7c009a000 cause: 000000000000000f
+__memset+0x60/0xfe
+kasan_unpoison+0x26/0x4e
+__kasan_unpoison_vmalloc+0x20/0x2e
+__get_vm_area_node+0x1c6/0x276
+get_vm_area_caller+0x52/0x84
+vmap+0xf0/0x264
+dma_common_contiguous_remap+0xa0/0xd0
+atomic_pool_expand+0xb6/0x310
+__dma_atomic_pool_init.isra.0+0xf6/0x1c0
+dma_atomic_pool_init+0xf6/0x1aa
+do_one_initcall+0x134/0x928
+kernel_init_freeable+0x532/0x60a
+kernel_init+0x28/0x162
+ret_from_fork_kernel+0x82/0x94c
+ret_from_fork_kernel_asm+0x16/0x18
 
-Surplus pages ... another thing that should have never been merged.
+The PTE is valid, so the mapping was in place when the CPU faulted.
 
-I guess we'd have to clamp also in surplus_pages_needed:
+Tested on Orange Pi RV2: without this patch 2 of 30 boots crashed,
+with it 50 of 50 booted.
 
-@@ -2317,11 +2312,13 @@ static nodemask_t *policy_mbind_nodemask(gfp_t gfp)
-  */
- static long surplus_pages_needed(struct hstate *h, long delta, long allocated)
+Add the KASAN shadow region to the ranges for which flush_cache_vmap()
+calls mark_new_valid_map(), as commit 4edd70ee6a7d ("mm/sparse-vmemmap:
+flush_cache_vmap() after hotplugging vmemmap") did for vmemmap.
+
+Fixes: 503638e0babf ("riscv: Stop emitting preventive sfence.vma for new vmalloc mappings")
+Signed-off-by: Ali Tariq <alitariq45892@gmail.com>
+---
+Crash Log: https://kernelci.cloud-v.co/scheduler/job/541
+---
+ arch/riscv/include/asm/cacheflush.h | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
+
+diff --git a/arch/riscv/include/asm/cacheflush.h b/arch/riscv/include/asm/cacheflush.h
+index c2b0a2928f06..c95b2f6007fd 100644
+--- a/arch/riscv/include/asm/cacheflush.h
++++ b/arch/riscv/include/asm/cacheflush.h
+@@ -8,6 +8,8 @@
+ 
+ #include <linux/mm.h>
+ 
++#include <asm/kasan.h>
++
+ static inline void local_flush_icache_all(void)
  {
--	long global_free = (long)h->free_huge_pages + allocated;
--	long allowed_free = (long)allowed_mems_nr(h) + allocated;
-+	long available = min(available_huge_pages(h), allowed_mems_nr(h));
-
--	return max((long)h->resv_huge_pages + delta - global_free,
--		   delta - allowed_free);
-+	return delta - available - allocated;
+ 	asm volatile ("fence.i" ::: "memory");
+@@ -57,7 +59,9 @@ static inline void mark_new_valid_map(void)
+ static inline void flush_cache_vmap(unsigned long start, unsigned long end)
+ {
+ 	if (is_vmalloc_or_module_addr((void *)start) ||
+-	    (start >= VMEMMAP_START && end <= VMEMMAP_END))
++	    (start >= VMEMMAP_START && end <= VMEMMAP_END) ||
++	    (IS_ENABLED(CONFIG_KASAN) &&
++	     start >= KASAN_SHADOW_START && end <= KASAN_SHADOW_END))
+ 		mark_new_valid_map();
  }
-
-
-And in gather_surplus_pages() we'd then have to be more careful about which
-surplus folios we're actually freeing.
-
+ #define flush_cache_vmap_early(start, end)	local_flush_tlb_kernel_range(start, end)
 -- 
-Cheers,
+2.34.1
 
-David
 
