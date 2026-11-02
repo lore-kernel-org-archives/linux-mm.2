@@ -1,74 +1,75 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 086FA606A933
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 15:07:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DD46606B0D6
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 15:07:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=IzlZDjTa
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=htIvLzE5
 Received: by kanga.kvack.org (Postfix)
-	id 2AB416B05D3; Mon,  2 Nov 2026 10:07:19 -0500 (EST)
+	id 6F1EE6B00EF; Mon,  2 Nov 2026 10:07:36 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 283096B05D4; Mon,  2 Nov 2026 10:07:19 -0500 (EST)
+	id 6C93B6B05D5; Mon,  2 Nov 2026 10:07:36 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 199156B05D5; Mon,  2 Nov 2026 10:07:19 -0500 (EST)
+	id 606336B05D6; Mon,  2 Nov 2026 10:07:36 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id F191B6B05D3
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 10:07:18 -0500 (EST)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 8B107C0134
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 15:07:18 +0000 (UTC)
-X-FDA: 85390507356.10.77A0B61
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf18.hostedemail.com (Postfix) with ESMTP id D887B1C0002
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 15:07:16 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IzlZDjTa;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 4207A6B00EF
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 10:07:36 -0500 (EST)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id D62348016F
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 15:07:35 +0000 (UTC)
+X-FDA: 85390508070.14.78F55EF
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 1482FC0005
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 15:07:33 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=htIvLzE5;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf18.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org
+	spf=pass (imf28.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793632036;
+	s=arc-20220608; t=1793632054;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mGdLlGj/NJAJr68kXbSPslaJvhomImSQvB5hgldkHFg=;
-	b=CnthQwJlk7q0D0I2HIpbhUzVo+DExCs6vbC67d0HSuLu0NAwgswwRDAdJ1wOWgOyk8sljW
-	HO4DKn+pBtfyqc23nEOy576ljq8w5dwgycDJ6917OVJYM5ZrvUhifNTLmt8RpSGfzB6/PC
-	5AzhniTusA32EqvRTenMhl0BDX8LpWg=
+	bh=Jqve5dom8G0YagWg0DUi21Qt2CUJnz11dMCfHhOCDkM=;
+	b=tRkoX08Wkw89HeCeIYMmbubVgzKy7Cy8R9IWNfm5/5Bk5xwRNudi3F4ACpNu0cgdeS7nUX
+	WMJBrhdBerU+X4vwJ8lWpWcEuB0gl3mxIO6ATwGubuRQEf9wkfd7FsgFqLqoYUzSuCV3JM
+	97wnmwSzx3QRRb2JGwa1NyH9lue/UJw=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IzlZDjTa;
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=htIvLzE5;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf18.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org
+	spf=pass (imf28.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793632036;
-	b=L1xdtolF9Rd3LaWPwbTUOzZJ4Olarv5rd1cqIYq1JX5qgoe1vSM/clPod4K3NRjkwYt5ZZ
-	zY5AHnCjLE+7QO6E1YbsCGUYLz7bgB3K8hPXaLQY1J6Cl+4Z5VkPUFZixQlqH4OzlQ0TO8
-	2VgmnkM89FH7lOIiuKxERw7cCqhqBCU=
+	t=1793632054;
+	b=S5tsLJl/GXLQc49q9jq2kTW7rgRYNA00R8qADt4IknWwhFPyOahJuH7M8hBIZwc+J4iCE6
+	hAkE8jahWoKtTy7z2YRcmYdcTTPtIPrbi8hrE+vAP7pGadN2NXcm534WtFiupO3Wpdo7VJ
+	CynKv/GWV2G92NGh2l6LMqWQWob8UWY=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 6FF48605C9;
-	Mon,  2 Nov 2026 15:07:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B26C51F00A16;
-	Mon,  2 Nov 2026 15:07:01 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 44AD541132;
+	Mon,  2 Nov 2026 15:07:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEC3F1F00A16;
+	Mon,  2 Nov 2026 15:07:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793632036;
-	bh=mGdLlGj/NJAJr68kXbSPslaJvhomImSQvB5hgldkHFg=;
+	s=k20260515; t=1793632053;
+	bh=Jqve5dom8G0YagWg0DUi21Qt2CUJnz11dMCfHhOCDkM=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=IzlZDjTao7VjuIjRRsnw52RX/0AjF/WBmgT4NSpXmtjt4TJbN8zegt24j5DOlUa3Z
-	 44pMabJRvDCRlnweMnKPhfJPYcWc+E6OtpWq1y0Ac43VD4FbMRQP9qey5otxK1q5PL
-	 oT9zsk1HsUa3Ue3zXl6S6BVtFghJKXFiWTJwHmxl0PE/8ztq9iyqz6BcdrpCZDdpYi
-	 3XtzkYqJlHCU6ToIaLkgAjRlsjmuFBtw97UNIAceQYdi00vVfKPn4AuQDU9qRHk19M
-	 URA4zqhN0uKI8rAUpyUb++ZQsVmLXvF7KAChG6Fit1JA/MDvvneOl/7dLgJJZyJ32o
-	 yDuj9+i1oCVEA==
+	b=htIvLzE5mRDE3y0tqv1kyv8W5k1g/Ii7ANwuWhratSAOFS7tbxL3BToIPDpZE85DE
+	 FNEsXXzLmfR4qQugMxmA9eyhIHm6Q6dJAmTZKLeIUK1bHgaHB6rg72WkRZftlCgoe6
+	 E2QfeUCqIA0Nboam57Dh1SlJUtOEamqW0FpuXdYHq09VCiD2DRiKvdUgmVI6MwZESI
+	 HWhsjmhK16tI0mtjDz6fsLrdm37sQrZUo7icVQ6YX0Qr2rzi5YjsmWINl56IQd0nMx
+	 zqjv85Bp1EemyFNq5w6kuaSNgOUZ321NOGqFqL1mOki6ZfyR8nruUh1khBiylH7rMN
+	 bCkpWmWU3eNXw==
 From: Christian Brauner <brauner@kernel.org>
-Date: Mon, 02 Nov 2026 16:01:43 +0100
-Subject: [PATCH RFC 16/22] xtensa: simdisk: let procfs copy out reads
+Date: Mon, 02 Nov 2026 16:01:44 +0100
+Subject: [PATCH RFC 17/22] ACPI: proc: let procfs copy in writes to
+ /proc/acpi/wakeup
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261102-work-procfs-arch-v1-16-c9492ab08480@kernel.org>
+Message-Id: <20261102-work-procfs-arch-v1-17-c9492ab08480@kernel.org>
 References: <20261102-work-procfs-arch-v1-0-c9492ab08480@kernel.org>
 In-Reply-To: <20261102-work-procfs-arch-v1-0-c9492ab08480@kernel.org>
 To: linux-fsdevel@vger.kernel.org
@@ -104,19 +105,19 @@ Cc: Linus Torvalds <torvalds@linux-foundation.org>,
  "Christian Brauner (Amutable)" <brauner@kernel.org>, 
  Chuck Lever <cel@kernel.org>
 X-Mailer: b4 0.17-dev
-X-Rspamd-Queue-Id: D887B1C0002
-X-Stat-Signature: sk6cyi895fb8zj8sgfq39np91xyfdy58
+X-Rspamd-Queue-Id: 1482FC0005
+X-Stat-Signature: dhdiii5bbjwqmndyzfdcrxjrhyy91j1r
+X-Rspamd-Server: rspam04
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
 	version=4.0.1
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1793632036-835229
-X-HE-Meta: U2FsdGVkX1+KxhwAHtVQOYu7OW1AOG1oT1zn+8RJR4VaXZu3hpW4hbT59IeP4F7/B8LFklIcxpEEQkOqdagtZ7Awf8CbDxHnISh5MU5ZlwNyP5SoiGN/n6iZou3lL03h1cXZH//G8rNMjuIAwoWCa+yJ5ljn8rMC9PO+z0Jd0Z8+QZmpP+KHUFGktbrt0yIQwqDjLRmunZHLKvj4d/002rp+FVs3GdpF8J84vh2wpCsrKvuKnj4TsurYeSHC4dK1a2EWVkCXbSPDep8p9414EY9xftdaMawzmbnJc7oF99noJ20f7FWUvFpsgaTaC2MsuVpXHC7tcKY+Czyzj1usEC06XpkttXIlf+TQOR4uv1XSdy39ruIDxGyT4T+pwr/hdNbXkUC7amg/Bs3OZpwZ5iWaR+S64gq61F1szzW3lReRNRu2S9A28BRmutskq42c9shH0Uij+8BN86nxZIxO0G7aHdq+rCcFbaeq2/MZWz6VVNjy7DfnT2h/nCMV0qeDD/QnH+RTf24/9ReLDIM1LN2KvjOScXvK/0KZ3ZOhFvBc2enh28hnx9JEaJrhgUl1GEDtwfenqO0GMXM1Zg6eO+vj+8uMCj8Jw1hDr8K3qvV1wRUj9qe/k7CTpHF156+CQ1xNR2+0Pr88xtwIJT72RgsR8S8OjAQdgMmtbtPdfw5RKXU9dwYMu9I3OuNrh8iCNS/+Iqj5Uh2Zvyh1bmCs5gn2wYEC9x+p1S3MrGw7y+4BzZ+J1LH7AbQEVaeKDNyMgV0rDt4QirjfUq+8H5f7t7E53ya2Rf8w/iBHSnKQ7Mi189BN9cbfNJYLADwq01LK7mUHOcd+BHbaGW7xxmcllCXaCxtiYKckX1DtKT8AyaFN4wqZuRCl2L+elSFY7E+Xlx8fJC54bLHC9p47AI0EaPOU118d5B6PM/U+9weeOMD6fwHgP41UsCBgkLCKdQcP0qNhkcJnywxi4TGMYwG
- VfT7j2IV
- wcXwbJLo8EkD9aNzGRsH2/JPks9wD+CK1Rfa7Ax167Z68POxvxEwqgOjzFZWpx24phlAPYbqx4+Dhib2qUKdhFW0N5vLh1gAOZlc+qIwvFR8YCGOeF/373hkMQmnPMhEqY2jBPOiTkXNAnCjuK2PVjFqq8dcQigiUfYuyeXsNpCPIpXliOw0e5IllpKJuh9RDXZ+eXLx11mFNpxtZy0x61S+2SoDsogcHUifnoOf1eAaZ0nmHkZe5SWopnc4bqZO33XArX48H2/xDjZAG3Af5vfWMnKYAhPPs+jr6X3zTKCCHLRtykGY3IkLrNLmo95SE6jgs4x59vxVSK9c=
+X-HE-Tag: 1793632053-147351
+X-HE-Meta: U2FsdGVkX1+JLs54FG66ucBzoiyE+OEx3WXXCgr9MgD6X0KVlWsqiMn6RrzNT3btPiBo53JOFrTFWKDVuJ/EXsQkpLZhpa+phnibbthkG4zf855gJRkxP27u0P+FSTdc49HEJQAXcTwA0EpLGxVDMGvfvvv6GFiP8JE9tp+aSvakMJhe6+Z4mBJ5TqvCZLgeRF9LGgDjxO68R9mBZvnX/0cM0ZuvQ5ON+vNQFMy+WgEZT4e0wfFhpGLOi5eEFbbpu0NQR207TWn/ggxOh1Q/SdwBlS5QPg0gsgxyoZdQzbNIvH6zARHIiVdt+KKJydk7J29raVuIWb/CzB2Yjqb6dua80E9ybU10doJfV7mXdZmtiw0cgD3r0nz50y9Ezzz3IIEJ9YlkZfuMyqp3EZQG/2S+nhSwMC+UsZRy/GnF5qkjaIU+TH4CR27AfjrvdOBLWT4WvNPQPq3Ux4rRjSdzBCchWM3+g0LP2ERNga/BBaQA2XONHp8ueDV8G0oZ7PH4LCaF82LNqEkT2porvhDxoVJhXZX2qBL4q/Szdx6OA8IQF2UoLWtuDv9f2yYTX4S6kwc/JDO8i95FFIBZdtHwMYw/JdZDHVlrhY0dOkt/e8A+c7USiS2ZtmbUZpns2s9CfCgRPvhQ+5E4BjEgTfziJi1Ckvu99B2iEYKDvzV4UQ02mAbX++4ujmH6Lk2jjNJvtifuOYpuVyhoNyAbefxu3CWPKCs0liKMvNjrFXL7zouq3SQPi2uJNoJoBMdKE3ChEEqpo9HGigm58AA183RA6v3kd+e/w9woDztFCcL3y7eZtDY6pSKJyscZnISHfnOuAoGT8IGFGtwfYkMH8bgiVOZFdPtU8ToYNeXQqePYQPrgR0yL//v94BENcJ4dLjmsz7pdVk0t/HhCsh9OOmN96Ouo8qaVtDgzCjSqIssGLRc/EqqM2Qla+vAMElwDaclAqN+vCuanWAhyt8glrbT
+ RZTHt9fz
+ nvJBv3t4t1rVS/hwVVRbrc+kV2MsAR7bxTSIo3wBlLycCbkrhOU8RIL9abJhXmr4J2nENT/bm0Jv/zby5QmjKPDq8MAAQkIBbn6+UkC5KNmM/jKO+q0TKA/sNuyfj3UqW+b7NcDcIeY847WGByI8wCFfaj3I/zhm3BWuSgWKtWZmQh8UmE4NWJu+awK/Y0q5Dbru+pX+hI3lNAa6a1DX+o7vwk4BczfT2xqolejiKhVamCSLwcgwIBTMlVfeKSaXrBPqRNKZZcnQyPO6C2pDYgf9vGmSF9CHqpCHT
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -125,45 +126,47 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Implement ->proc_read_buf() so procfs copies what is read to userspace
-after it unpinned the entry.
+Implement ->proc_write_buf() so procfs copies in what is written before
+it pins the entry, and take the device name from that copy. Writes
+larger than PAGE_SIZE - 1 bytes fail with -EINVAL now.
 
 Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 ---
- arch/xtensa/platforms/iss/simdisk.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/acpi/proc.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/arch/xtensa/platforms/iss/simdisk.c b/arch/xtensa/platforms/iss/simdisk.c
-index b2f9e7f3ade3..b597d8642e8a 100644
---- a/arch/xtensa/platforms/iss/simdisk.c
-+++ b/arch/xtensa/platforms/iss/simdisk.c
-@@ -234,7 +234,7 @@ static int simdisk_detach(struct simdisk *dev)
- 	return err;
- }
+diff --git a/drivers/acpi/proc.c b/drivers/acpi/proc.c
+index b8a0bd4580e0..feb8283fd855 100644
+--- a/drivers/acpi/proc.c
++++ b/drivers/acpi/proc.c
+@@ -86,7 +86,7 @@ static void physical_device_enable_wakeup(struct acpi_device *adev)
  
--static ssize_t proc_read_simdisk(struct file *file, char __user *buf,
-+static ssize_t proc_read_simdisk(struct file *file, char *buf,
- 			size_t size, loff_t *ppos)
+ static ssize_t
+ acpi_system_write_wakeup_device(struct file *file,
+-				const char __user * buffer,
++				char *buffer,
+ 				size_t count, loff_t * ppos)
  {
- 	struct simdisk *dev = pde_data(file_inode(file));
-@@ -250,7 +250,7 @@ static ssize_t proc_read_simdisk(struct file *file, char __user *buf,
- 	len = scnprintf(temp, PAGE_SIZE + 2, "%s\n", dev->filename ?: "");
- 	spin_unlock(&dev->lock);
+ 	struct acpi_device *dev, *tmp;
+@@ -96,8 +96,7 @@ acpi_system_write_wakeup_device(struct file *file,
+ 	if (count > 4)
+ 		count = 4;
  
--	len = simple_read_from_buffer(buf, size, ppos, temp, len);
-+	len = memory_read_from_buffer(buf, size, ppos, temp, len);
- 	kfree(temp);
- 	return len;
- }
-@@ -280,7 +280,7 @@ static ssize_t proc_write_simdisk(struct file *file, char *buf,
- }
+-	if (copy_from_user(strbuf, buffer, count))
+-		return -EFAULT;
++	memcpy(strbuf, buffer, count);
+ 	strbuf[count] = '\0';
+ 	sscanf(strbuf, "%s", str);
  
- static const struct proc_ops simdisk_proc_ops = {
--	.proc_read	= proc_read_simdisk,
-+	.proc_read_buf	= proc_read_simdisk,
- 	.proc_write_buf	= proc_write_simdisk,
- 	.proc_write_size = PAGE_SIZE,
- 	.proc_lseek	= default_llseek,
+@@ -123,7 +122,7 @@ acpi_system_write_wakeup_device(struct file *file,
+ 
+ static const struct proc_ops acpi_system_wakeup_device_proc_ops = {
+ 	.proc_show	= acpi_system_wakeup_device_seq_show,
+-	.proc_write	= acpi_system_write_wakeup_device,
++	.proc_write_buf	= acpi_system_write_wakeup_device,
+ };
+ 
+ void __init acpi_sleep_proc_init(void)
 
 -- 
 2.53.0
