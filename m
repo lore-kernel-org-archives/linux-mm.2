@@ -1,97 +1,95 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB462606B1D7
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 15:08:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB7E160A8C3D
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 15:08:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=hZ3jzzXe
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=UwS8eLLR
 Received: by kanga.kvack.org (Postfix)
-	id EE41F6B05DF; Mon,  2 Nov 2026 10:08:11 -0500 (EST)
+	id 1E9AA6B05E0; Mon,  2 Nov 2026 10:08:12 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EB98A6B05E3; Mon,  2 Nov 2026 10:08:11 -0500 (EST)
+	id 1C24A6B05E2; Mon,  2 Nov 2026 10:08:12 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DCFDA6B05E2; Mon,  2 Nov 2026 10:08:11 -0500 (EST)
+	id 08A256B05E4; Mon,  2 Nov 2026 10:08:11 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id B36146B05DF
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id CDAF36B05E0
 	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 10:08:11 -0500 (EST)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 453541A0155
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 399AA1C1C1F
 	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 15:08:11 +0000 (UTC)
-X-FDA: 85390509582.15.0D9D6BA
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf27.hostedemail.com (Postfix) with ESMTP id B39814000D
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 15:08:09 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hZ3jzzXe;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf27.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+X-FDA: 85390509582.02.0CF62EC
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf23.hostedemail.com (Postfix) with ESMTP id D4346140018
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 15:08:08 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UwS8eLLR;
+	spf=pass (imf23.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793632089;
+	s=arc-20220608; t=1793632088;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=EOIOo2WRViZfcB5LyNG3dNe7ZyXvt9pNDQFYal3R+A8=;
-	b=L8jaWYFY1hv0imp08lDmQp3KYc8x8kDafgnyTflPywwkuvB4tyx/KHmyAogNMPU6qh43kH
-	fHSgqqSBagg3AOU4EtBPjjyj22Tk3+G+IYvt+TSG7olTxQnVNVRbVuLEeWlqKyeyOCgUty
-	aM4WZxZF07TJZW1mxShLnOYaQ7udc+g=
+	bh=IPYegOcZnqJKuxWjm10FaVpCHZ3NA5+s//M69XaIXpo=;
+	b=QN7fTnYsOiVqyIjM4j5Dj+TCmhwj6UpImc+4HKDUJvVeJ8f4ff9FS1Iy8dfT/J0tqBQN7G
+	1G9+a5rTftOce38E+ANcRIzBlcUoQwpONvcYRH05jLACpNdk3FdRIb6DMP80+OQrn6kpI6
+	4XSlzxgG3IF5cWs3J+yiSQ7GoZEvfSk=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hZ3jzzXe;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf27.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UwS8eLLR;
+	spf=pass (imf23.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
 	t=1793632089;
-	b=i1JjhSlSJDb2aqwmo9Cz6wJ8AGAWE4yDhvXqL9xrJxUDudAJbY9Ypzw1OiqcET25V9ECv4
-	SyNy/Q14G3QLWOwZICYsL2qyRJpLG344smw9793zjccOt6YMys+5awswnWRSUWV/Zx01kN
-	CFEro+kMdVt5Mn572Oh0U8lnF73PW8g=
+	b=2I1Gy5BmvOfP6sVTuXdYE/+9CvFiYPQzorGM7KDGKunTr5IBcIjouQt3K+7pd7ETGtznn7
+	yRuueQ/34UuHzN43K53JIQKLufLWBuL3oKEwbq6Ie9bh88mHQ5EnD6FrxiivONOjwlwpiO
+	1CAfCEOZhKdgydDmK72tbzigylvySCA=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 54159605D6;
-	Mon,  2 Nov 2026 15:08:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B10721F00A20;
+	by sea.source.kernel.org (Postfix) with ESMTP id 2D12343DD8;
 	Mon,  2 Nov 2026 15:08:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C99591F00A1A;
+	Mon,  2 Nov 2026 15:08:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793632089;
-	bh=EOIOo2WRViZfcB5LyNG3dNe7ZyXvt9pNDQFYal3R+A8=;
+	s=k20260515; t=1793632088;
+	bh=IPYegOcZnqJKuxWjm10FaVpCHZ3NA5+s//M69XaIXpo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=hZ3jzzXe4gx8n7MBZeCRakfm9HOlLvf9jFjlwFESg5Jm4sD/MhZAQt8kb5DlUnOK5
-	 DNbU47GQk7H9ZMFiNYeXo9J/oYvXNRctFi6Rpt8O14AS5hvsgGF+mRRfcWT1TumK9q
-	 cHUdHZfgyt1jRhTXCc6xTE0ZebWXnQsYzVTUfNWdcbuPKU3CoDrowWsFP4yG5Jj2iZ
-	 Vy6SgRoqAo1Hhj+CQXjfKfluEIBUOedbelAexoQjrqaDyCs8eBBdMDrsSN/49zhbd9
-	 wTo/4o+CT6VNTeqiaDES5LNSgGaJQKD2BmpAt6ItswXDb1fp5oHS1Ui3exVch7ZPlX
-	 OqkAAEfW8FnSw==
+	b=UwS8eLLRWF8izmiHdkYNq5LjxdeOp4umkkvwQYcN34Z9rw3DEKdCxVIm/QMb8A7gR
+	 t5+m5d83T/fIrn5L0b2ZAaN+8jZ8g1DjsOy4JByu0FIJyt69c5MfIXSvrsAbFBC0Pd
+	 ZAtpp1vQf8YD6BCFoUNHZYkpQ79JLWhYVuCXuNHc2UKBv7hCmoi0Q7AAjw/MixKYxT
+	 uvmWxbyVmaVI3iozvmnI9cOQjZJEhATXkZoWZ8/1z9nyAElTJm9BLKwMSXMPyl9gO7
+	 EGmzLkuetYZj11k9JWy7s0gliO0ZEnlRkK04QqGqiUkHfFbEccHQnJ5BsvDFUF/TAU
+	 e16s1CFDecEtg==
 From: SJ Park <sj@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Jinjie Ruan <ruanjinjie@huawei.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Randy Dunlap <rdunlap@infradead.org>,
+Cc: Manuel Ebner <manuelebnerli@mailbox.org>,
+	"Adrian Huang (Lenovo)" <adrianhuang0701@gmail.com>,
 	SJ Park <sj@kernel.org>,
-	Shuah Khan <skhan@linuxfoundation.org>,
 	damon@lists.linux.dev,
-	linux-doc@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [PATCH 9/9] Docs/admin-guide/mm/damon/reclaim: document how to disable watermarks
-Date: Mon,  2 Nov 2026 07:07:56 -0800
-Message-ID: <20261102150757.93058-10-sj@kernel.org>
+	linux-mm@kvack.org,
+	Enze Li <lienze@kylinos.cn>
+Subject: [PATCH 7/9] mm/damon/reclaim: fix typo and grammar
+Date: Mon,  2 Nov 2026 07:07:54 -0800
+Message-ID: <20261102150757.93058-8-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20261102150757.93058-1-sj@kernel.org>
 References: <20261102150757.93058-1-sj@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: B39814000D
-X-Stat-Signature: 1a5uoepsb939mwfgjio98cgoyas6d6mp
+X-Rspam-User: 
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: D4346140018
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1793632089-724755
-X-HE-Meta: U2FsdGVkX18XCnTyZJK9T2GmA3d1fhDMOu+Xh5a9IcOjf/I/3tpgi5D/uEAqYcdmaawz/SvEuQE7otijY4pDGFP14xZJDHX1p+ebP0HqHzwtiBxRws2pQP0VUuRCj8NmFWREzIpfPjgLkhY9lxVpLq4dC/IiC1r9Pnb2kTzmI5iKHLmaLmTLQP2SzuUw9w5s9WHRvTf85qu0dIFM9vbbA1iI3OcC6Ww4HcKRxO49KIsU2tdNo2fnFXKB+QfEw7eJPfZ9BNXhHibgUx2qzcdcEZawOCyyBfcuSkmy7O0P5sIg7H3GdEDLOvAH2B//rr2HfA1AIJkeIb1/mTdJVdR8xV6jNY8Y1KqDywpby97R1Ylqe70PcxLf7poiErgHG7lqazYluIc9T2ckE++aHgH75Hms9JSXBOHB+401WKg6PkqubR+ABp2dduxyit+KU9x8TyjH9Co4QVVgEpwcaoxr4yibcdPHPXsDKJomX7DrOfs9Sh2SsoNtNqyY/6V5IODbVBcZFBCbl9fuswNBEnBxzufiWF2ChQAJEzWXuJ8/5HcfvIDDUntDrdu12gr4YTwQokY4XT7PQX/iwgcO4igNVHfQDmyuhr3CtC5etpW74Kt3rMvIEzrJetOqnIDRRGDiUOoYhAzffXYGHwXb8vbyB+j3ZnRBYyvXIoYStCmLsCWJc+S+GMgQpys7kLW4E9Rhoyhkj/nPqR59nx1zLIMp2dMS2FvVkjt9dn66WyvBAZSU5oLCYOeGokkDnbCaNSpY3bCDSVJhaewFvz2U7/eWrSsdcqJPXC6+irvMvv2tTEB+CWnsBtIDrNe0Gb3ffZ01v7CniMUXF2ZoBPyLJ7DXYO9836rC8o9gXlr5++r7RBBzsNYyKs2K/zInUpDXf9Yxkmit5YaSlqBoGLYSHtzZV8pURBngJ+RcCju3rEtZ+OXRzUkysk8jrOkMTx8ggTK1seP8EPkVFFMB/YtWO4x
- Ns3hmgSG
- YZWF1fI6txnCLWj21H6or+gk1qmckp+ek1mr/7CDdkjtuS3uxDAdoEox0ykbazu8F/WEykqtwDIShNUc6wyWzESVACn3pR5lgsjVa+9VDTgdKEkml26ivl8iS3mXMUAP/I1zGtAALpRPxLYlFBnsQysXp7+yoPloZSFpcBkIV5L+CEKFBXJGXX7pfqbUnZaJrXZUMNUksyZzOGAjyCS57zKNU72NF8mjnvj2iv5IQx7AyEj9vWF0Lor5iyfZ+mUtEE046
+X-Stat-Signature: b4hirdpss4ojmwgfykekzgbg468u3676
+X-HE-Tag: 1793632088-387831
+X-HE-Meta: U2FsdGVkX19xfpYioHuUkcsevHXB3pa3ejASzDT0LRd48S+3bYcaluLbv+aVP+rDjF9+PT21Uhnah0VmJ8GD0PZqd9VOrbtr6bUIP+zzzgwH+m4CklB6tBrk/jF13yMd07Dewn1zKhKZyf9MDEs98RILqYPqNMkBdlYjrsiHKir6rDA57lwFZfMucn7VuQaAwmPq6VBzC8el4ZnO/H91WKJdfZAGL1zKCN2QtLWi108sV3/bTFABDlY7mvQtEFFUmyz8eIv0yCH+CT14uq3uBfrQredH67XVABWBNsFb2bI7AwspMC7I7R0gLHrt/fYKhJ/xayKDFa1Ycst+Ip71lHRh06/4bGUcX7pMuZZYJ8AUzBLW/uZXNNDruKmTv3zdGW4GtdhoAz6FTTcNYjU3rLs+EnE0n+DdkTiqJ05Yk/C2I1uT6a5I6nLb5WHUy3CnoFcghTl2amD6G3pA/tNgE0mc5UIb/c3zIbAftZUDIcVbp1Nj7+pTZfcrDiLL0V2qPnF405R6wSodbJHOpG/upsmKcYQVfPeNRJIfnhh6g44TWtpuw2WtztFVuDi7ycYqcfj4s4eQ5XyWRjvv+uFTIjdcnSjZqUdaKd6cALLjDi9SfAtDLcT7Ig5WsCL23mMRy70/nXuQk7+Hn+4xyeefQMNm78QHfY6FVJBFra5ZQYCi1LzgXW4JTx3S7CML+BCnYa8Y8ubOxko1FXjkxq0XGDv0Yeg7tSrSrQ3wA3q5LJD0hQKg0Kb8aHlOFcIjwrF9vgSGz8M3yU6O4yltp2a1x9vuy9ErfMY26FCdNT4C1nQav/wJg/FyQqF0uoYq/odwWvT8YM5aVF2yx+wEPyWEXcIAxjPHIaITOpbHGgTAlX3iCG76ZF8QaIQ7Sv2ANkVIi2a9TgWEK0dFb37PctPoiRLPCzIza/aNDxAG0AgGXHI82N/vpXH0TuEhaQLazLOm7pAOLKiUee732852JR6
+ o6c9uvwN
+ byp7a4dvprqNyO+6R4Qk+HkV3JFyn1Euk/9K1QoWbmUVlW8TVebOwBrCoQ91xLEKePUrFSBeA0PvN5dGXyx9gGHUVsCg57EZdyaTyw3ebNrPlkbxFqCa3fYrmm0gGKuViOWwLuMo7oKQ6yeN016WfyLhU2pXO3KEzVnBmBcyTOtcBv9kZSp9+ZYDOtJM3I0kRnPDveNbFWOltKcXfceZw4sb37fKMFY1JQVoMytnNZseqWRn5z1fDb29VQxM8Ljp6ZH53eGbirl7Ckl8PCXHAWOJmEIyNznrv2O5INk7foMJBz6TmJnSYW8G1SA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,42 +98,78 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-From: Jinjie Ruan <ruanjinjie@huawei.com>
+From: Manuel Ebner <manuelebnerli@mailbox.org>
 
-DAMON_RECLAIM runs its scheme only while the free memory rate is
-between `wmarks_low` and `wmarks_mid`.
+DAMON_RCLAIM -> DAMON_RECLAIM
+set as -> set to
 
-But some users want to reclaim cold pages even while the system has
-plenty of free memory, and it is not obvious that the existing
-watermarks parameters can already do that. So Document the setup.
-
-Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
+Cc: "Adrian Huang (Lenovo)" <adrianhuang0701@gmail.com>
+CC: Adrian Huang (Lenovo) <adrianhuang0701@gmail.com>
+Signed-off-by: Manuel Ebner <manuelebnerli@mailbox.org>
+Reviewed-by: Enze Li <lienze@kylinos.cn>
 Reviewed-by: SJ Park <sj@kernel.org>
 Signed-off-by: SJ Park <sj@kernel.org>
 ---
 Changes from v1
-- v1: https://lore.kernel.org/20261028023628.795637-1-ruanjinjie@huawei.com
+- v1: https://lore.kernel.org/20261008162010.4010682-2-manuelebnerli@mailbox.org
+- Collect R-b: from Enze.
+- Update subject prefix.
 - Collect R-b: from SJ.
 - Rebase to latest mm-new.
 
- Documentation/admin-guide/mm/damon/reclaim.rst | 4 ++++
- 1 file changed, 4 insertions(+)
+ mm/damon/reclaim.c | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/Documentation/admin-guide/mm/damon/reclaim.rst b/Documentation/admin-guide/mm/damon/reclaim.rst
-index ec7e3e32b4ac6..14f9b82b38ed9 100644
---- a/Documentation/admin-guide/mm/damon/reclaim.rst
-+++ b/Documentation/admin-guide/mm/damon/reclaim.rst
-@@ -193,6 +193,10 @@ DAMON_RECLAIM becomes inactive, so it does nothing but periodically checks the
- watermarks.  In the case, the system falls back to the LRU-list based page
- granularity reclamation logic.
- 
-+To keep DAMON_RECLAIM always active regardless of the free memory rate, set
-+``wmarks_high``, ``wmarks_mid`` and ``wmarks_low`` to ``1000``, ``1000`` and
-+``0``, respectively.
-+
- sample_interval
- ---------------
- 
+diff --git a/mm/damon/reclaim.c b/mm/damon/reclaim.c
+index 014b0779ea6dd..a84cea070ec76 100644
+--- a/mm/damon/reclaim.c
++++ b/mm/damon/reclaim.c
+@@ -19,8 +19,8 @@
+ /*
+  * Enable or disable DAMON_RECLAIM.
+  *
+- * You can enable DAMON_RCLAIM by setting the value of this parameter as ``Y``.
+- * Setting it as ``N`` disables DAMON_RECLAIM.  Note that DAMON_RECLAIM could
++ * You can enable DAMON_RECLAIM by setting the value of this parameter to ``Y``.
++ * Setting it to ``N`` disables DAMON_RECLAIM.  Note that DAMON_RECLAIM could
+  * do no real monitoring and reclamation due to the watermarks-based activation
+  * condition.  Refer to below descriptions for the watermarks parameter for
+  * this.
+@@ -31,9 +31,9 @@ static bool enabled __read_mostly;
+  * Make DAMON_RECLAIM reads the input parameters again, except ``enabled``.
+  *
+  * Input parameters that updated while DAMON_RECLAIM is running are not applied
+- * by default.  Once this parameter is set as ``Y``, DAMON_RECLAIM reads values
++ * by default.  Once this parameter is set to ``Y``, DAMON_RECLAIM reads values
+  * of parameters except ``enabled`` again.  Once the re-reading is done, this
+- * parameter is set as ``N``.  If invalid parameters are found while the
++ * parameter is set to ``N``.  If invalid parameters are found while the
+  * re-reading, DAMON_RECLAIM will be disabled.
+  */
+ static bool commit_inputs __read_mostly;
+@@ -92,11 +92,11 @@ module_param(quota_autotune_feedback, ulong, 0600);
+ /*
+  * Auto-tune monitoring intervals.
+  *
+- * If this parameter is set as ``Y``, DAMON_RECLAIM automatically tunes DAMON's
++ * If this parameter is set to ``Y``, DAMON_RECLAIM automatically tunes DAMON's
+  * sampling and aggregation intervals.  The auto-tuning aims to capture
+  * meaningful amount of access events in each DAMON-snapshot, while keeping the
+  * sampling intervals 5 milliseconds in minimum, and 10 seconds in maximum.
+- * Setting this as ``N`` disables the auto-tuning.
++ * Setting this to ``N`` disables the auto-tuning.
+  *
+  * Disabled by default.
+  */
+@@ -151,7 +151,7 @@ static unsigned long addr_unit __read_mostly = 1;
+ /*
+  * Skip anonymous pages reclamation.
+  *
+- * If this parameter is set as ``Y``, DAMON_RECLAIM does not reclaim anonymous
++ * If this parameter is set to ``Y``, DAMON_RECLAIM does not reclaim anonymous
+  * pages.  By default, ``N``.
+  */
+ static bool skip_anon __read_mostly;
 -- 
 2.47.3
 
