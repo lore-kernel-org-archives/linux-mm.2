@@ -1,128 +1,99 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3209606EEA1
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 19:16:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91D22606A32D
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 19:31:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=cmpxchg.org header.i=@cmpxchg.org header.a=rsa-sha256 header.s=google header.b=Ne3wYAR2
+	dkim=fail reason="signature verification failed" (2048-bit key, unprotected) header.d=surriel.com header.i=@surriel.com header.a=rsa-sha256 header.s=mail header.b=d4f04/pQ
 Received: by kanga.kvack.org (Postfix)
-	id 258B96B05BD; Mon,  2 Nov 2026 14:16:11 -0500 (EST)
+	id 9C6F56B00EF; Mon,  2 Nov 2026 14:31:13 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 208B36B05C6; Mon,  2 Nov 2026 14:16:11 -0500 (EST)
+	id 99EB96B05B1; Mon,  2 Nov 2026 14:31:13 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 11F606B05C7; Mon,  2 Nov 2026 14:16:11 -0500 (EST)
+	id 88DF16B05B2; Mon,  2 Nov 2026 14:31:13 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id E14EB6B05BD
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 14:16:10 -0500 (EST)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 05DB6A01B2
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 19:16:10 +0000 (UTC)
-X-FDA: 85391134500.22.D673DD2
-Received: from mail-yw1-f180.google.com (mail-yw1-f180.google.com [209.85.128.180])
-	by imf10.hostedemail.com (Postfix) with ESMTP id D0458C000B
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 19:16:07 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b=Ne3wYAR2;
-	spf=pass (imf10.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.128.180 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
-	dmarc=pass (policy=none) header.from=cmpxchg.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 5D4216B00EF
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 14:31:13 -0500 (EST)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id D65F71C22F4
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 19:31:12 +0000 (UTC)
+X-FDA: 85391172384.23.883C682
+Received: from shelob.surriel.com (shelob.surriel.com [96.67.55.147])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 433521C000E
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 19:31:11 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=surriel.com header.s=mail header.b="d4f04/ p";
+	spf=pass (imf20.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
+	dmarc=pass (policy=quarantine) header.from=surriel.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793647871;
+	b=i5ZVxQE6Oxk7+27wWtZmjxJbm9cEMEwypemCT1GKX1bO/bDxo6uU0CKNJ9Zi9SBl3jNN5l
+	FsOdTDziox7GbtaPQL3dH4nztmCsoxzo8VqdUQJX2COOmf24w0BmirEbUW8uzADjn+2mx0
+	PLAP8hvBwVq3OCzecpY1taX7CZOL/vk=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=surriel.com header.s=mail header.b="d4f04/ p";
+	spf=pass (imf20.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
+	dmarc=pass (policy=quarantine) header.from=surriel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793646968;
+	s=arc-20220608; t=1793647871;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xSwUt1ejfmZqGDfLTWVnhEyPBYCa77Ql8jnQXRCQM2M=;
-	b=ju5W9z0oqk/84P9uMajs1KrpSFG6JFzu1t1gxWAgCypbRToQO3CmhZ9ECp+I1bsDzpc6q4
-	eBJDBug37+miZCU9kFhBcmNgyEGEUVmW4Vkfz0KRhUV4LLRMDGQKiTO6vRhEx04/Sv1Y1f
-	6bvZFDiUjhZdc139YR2PzX/jj1UH5Ok=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793646968;
-	b=lgcMj10eaxCTbrglCzYj1pN6pUW2JDwYbXeSyyxzBFwial9cJFwUK05H97EQIbNI8//Rhi
-	r6N2S5BeX8TNHtq18iSej3mgDk1ymqN2DWpbfuooxOSOta9Z1XwBPTo6mz8SLtjmFxLOsS
-	5y1qsl/bHQuVIran95zBUruflrstf50=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b=Ne3wYAR2;
-	spf=pass (imf10.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.128.180 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
-	dmarc=pass (policy=none) header.from=cmpxchg.org
-Received: by mail-yw1-f180.google.com with SMTP id 00721157ae682-8ad98c3fb15so28786107b3.2
-        for <linux-mm@kvack.org>; Mon, 02 Nov 2026 11:16:07 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cmpxchg.org; s=google; t=1793646967; x=1794251767; darn=kvack.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=xSwUt1ejfmZqGDfLTWVnhEyPBYCa77Ql8jnQXRCQM2M=;
-        b=Ne3wYAR2MQ52MawU1m4B9RWRn9sJbIUT7ZPE+bap8uJ85GtyXlbSw+HxhpRHf78yor
-         z8Qjs5djZo6CWimbikWOVWf7dmyep+UEIhC16A6AAYl4AclN4dgfVkdeeZiT0xWbVjJS
-         hyCoX8Vpg7lYidLPDg8M4ZwpnZTcjKNz5ndXkKPugQRgYkqClEhCkrVqoC76c11bzib8
-         3TUcFokvZhn9lRTUCreqyGfXjlJH8emz2QQcPrPnfEIJ8UAJThXhMQ0ge1GlKqHLgNd1
-         57FBic+IqoSLxhVOg9Fp5ZSYGBrK4Y2YHDek9mx+prsgyguTd4DJ/gqC7MLUKqq4Caz0
-         yBNw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793646967; x=1794251767;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=xSwUt1ejfmZqGDfLTWVnhEyPBYCa77Ql8jnQXRCQM2M=;
-        b=hIcbneVy+lRtkGu7sGMkbB3lRI0GluQGijcbnoC6Dh+nvudGFB+n6PmXnrbpQlcm3B
-         Wt+B7nZMah1ewn/qlWBcGVD8o4LyuBSm54bwsYyWF1KGAFJDxKDGaoXavTsF6/CgDE9j
-         27Nz9BLq8uDrv0AbLEoFJt01XDmLj2mBO98rThfGs+Sag3dm4ux3QpNSFeWQsbTtFhDf
-         xgOGDRR/BE34t0Bpv/O0lTplQF/PzzdoS9cND5PRlDWxW3BK/bXMfC0swvoUeV/UKWxR
-         3JptF7AHrr0i6bVdPT9KCXpeWe6gMP0WgO72UyHBqq+wBsCA3KWOnSzM7/Q7AhQK4bbG
-         svKQ==
-X-Forwarded-Encrypted: i=1; AKwUvBwYlV2niVQHdyMAxWf+KcXXp/uQPulmBzyibhygbd044/JyLSYM4RXmDTk3D5+kAbohe6n3Iy0Jeg==@kvack.org
-X-Gm-Message-State: APuU4Z9k4BMyVjkRcUt0i+AUPJEh5Z3PQnI13L9WN2n8V/ZZ6wbXMT2t
-	MpOc4KbRRzjPzmYLzRwLGRgberbUdp+Kiv+V0Bwe1nvaxm+DHvJigbwuiVRZ6NWx0M0=
-X-Gm-Gg: AYBFou0iEYUjQ+H5wzJl65okMycbnQLx/VXfTLWmpi+bEVrpOAPFoo/zTS4IOswBPYm
-	B6vRlIuVCEeGQmO6D3GFRQsijBCANgP+qkqPOjtVC0i6UgostInozGgNQ+o80u4ns3Ozf8X14Du
-	Oyb2cFyd3SvY7/tnMSZnXKAr+MRIvAKPu4Nd8EyaD/HT5RM7Rp16/A/L8wEuubExt48PCHZlxZ+
-	2tg5mBVIO7a1U/9mjfyeDVReuADFolfNB7zcP7md9mil3qTF+qMwwiPezzJm7H0I04tPpuZc0vC
-	Em3WHuK42np32lkoFZXyE92GJNV6gkAhG4sI1E2pvTsQrZXY1JphnnxvMZjCwjAJZVwTPQBWxSp
-	vYDSlUc9xqDP+2x7RYnnpn5GU6MoHFO8ByK5PomUo+xokMpjxL2uEbpq6a5kJTtejIel95U/+D2
-	mzw/ZUY2IBNiRilcQLXKqrYFgKCtTgJACvOQib53RNv2XwSaKQgDVi8L2DAvFEKYGgzqCcBJkvb
-	CSbgcE42C69GklSihP2iccXAbBVeR1JaoeGifji7aiE0Wbb6gyC2CQbtpkTwit7cak5mCCWQI9m
-	KvVaEEsn/Ho6eSdasfFFS+md02C+/YqBwhvn0XRaYMrbsgwg
-X-Received: by 2002:a05:690e:191a:b0:67b:9a76:cd0b with SMTP id 956f58d0204a3-67ba4edd88fmr8834059d50.28.1793646966752;
-        Mon, 02 Nov 2026 11:16:06 -0800 (PST)
-Received: from localhost ([2605:8600:200:14e3:365a:60ff:fe62:ff29])
-        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-67baf147246sm5737296d50.1.2026.11.02.11.15.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 02 Nov 2026 11:16:00 -0800 (PST)
-Date: Mon, 2 Nov 2026 14:15:52 -0500
-From: Johannes Weiner <hannes@cmpxchg.org>
-To: Roman Gushchin <roman.gushchin@linux.dev>
-Cc: Tao Cui <cui.tao@linux.dev>, Michal Hocko <mhocko@suse.com>,
-	Shakeel Butt <shakeel.butt@linux.dev>, muchun.song@linux.dev,
-	cgroups@vger.kernel.org, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, Tao Cui <cuitao@kylinos.cn>
-Subject: Re: [RFC PATCH 0/3] mm, memcg: isolate deprecated v1 state from
- struct mem_cgroup
-Message-ID: <aujhaEfimB0S5Msu@cmpxchg.org>
-References: <b36ab4a7-b692-49e8-92b5-1dc4d76dee00@linux.dev>
- <0BEF7489-16EC-44EE-847B-A6AA380BE11F@linux.dev>
- <32e80536-64e4-4ae3-a7da-4a37ed415f0a@linux.dev>
- <7ia41p9341lv.fsf@castle.c.googlers.com>
+	bh=K4zW81m8lz2rVHicSvgVGAJW0sedRnDfC1U5tufjT9M=;
+	b=d6HM7bTy0Z1oOUZCQ+XiWVImhrLJ4+yRLIXRQHwVoZ4ZyaOcUKVXsZQ4mDSQR+MRewySG3
+	blz/sSF+wi5QNnCdTZRoapqtU8ayPMsoRUb1R6kpq+Q+xGxFrSHceaSbAqPoQ7zo9aJFLW
+	Y8wMpYlFq+LgPsG0i68rwAmcz9cW8fE=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=surriel.com
+	; s=mail; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
+	Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID; bh=K4zW81m8lz2rVHicSvgVGAJW0sedRnDfC1U5tufjT9M=; b=d4f04/
+	pQEYXAThvRzHyhhzOr/tEv8hkX5De7iclJDHyvRjKQ5JzKKqpwZ/hRGdcvVF1FTqf9TKbjENa2oTG
+	GXejnNKOMk51gZTLRJ4w2YwoetLEZO7ZmKmpmQONUV2/OMpTWqJKF2B4TN+5s8oIDz1zcGONOGUKs
+	TRO8j4fs9HVR6Du5dh5Emau7A4XvPEUhSJmumYB0tfWjn8iX5MJb/5YgO8AluFNq12ZQOHn4nBLif
+	cxrLL59ji2iqB9eoVRtyN3T0wlgGP41++xpYA33sI/yHTYbswqISpw8V+Y/isGKb/A9cKA8D2qmaR
+	Z4aZqMO70SS2ev01VT1bqgR+7YKA==;
+Received: from [2601:18c:8100:a0e0:2541:b86e:2586:d219] (helo=fangorn.surriel.com)
+	by shelob.surriel.com with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.99.5)
+	(envelope-from <riel@surriel.com>)
+	id 1xNxjk-00000001W8x-0zAX;
+	Mon, 02 Nov 2026 19:30:32 +0000
+From: Rik van Riel <riel@surriel.com>
+To: linux-kernel@vger.kernel.org
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	John Hubbard <jhubbard@nvidia.com>,
+	Peter Xu <peterx@redhat.com>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Yuan-Hao Hsu <aa9736195201@gmail.com>,
+	Christoph Hellwig <hch@infradead.org>,
+	linux-mm@kvack.org,
+	Rik van Riel <riel@surriel.com>
+Subject: [PATCH 7/8] mm/gup: walk multiple PTEs per follow_page_pte() call
+Date: Mon,  2 Nov 2026 14:30:25 -0500
+Message-ID: <20261102193026.3860700-8-riel@surriel.com>
+X-Mailer: git-send-email 2.56.0
+In-Reply-To: <20261102193026.3860700-1-riel@surriel.com>
+References: <20261102193026.3860700-1-riel@surriel.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <7ia41p9341lv.fsf@castle.c.googlers.com>
-X-Stat-Signature: 74audj1gywjq3enqf46rzf8iys5yyf5y
-X-Rspamd-Queue-Id: D0458C000B
+X-Stat-Signature: 4hqdmtwikzhiy5fgyjf4rps63enejj3t
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
-	autolearn_force=no version=4.0.1
-X-HE-Tag: 1793646967-729430
-X-HE-Meta: U2FsdGVkX1/Q0IqnjHtAwOZAMARk+1bDZJYuoPOYtUnZcY254NWDI8b3xmuYVfQ8MYQf8mxYD9hGv5lLtT+A6uCgshLlEEmyuzc2FsVOW6ClSX0nm0HF1oFC3qBRaCAOSTtnqxcwPoWBt6Uu8wgTKjddpqxGFN5MBe3cNALa86FsmMukZUerPKC0obftw/0W3ByW305TIpzhMbg46vC7CZj8xjgN5EK4W6LxeBh1MQPC0k5rnDdE6cInF2g5p3K8Wk1nNsYqj8axPJDw57DzTFUW5oGl2nKb31Rg9xnHKhlSFirpLfb+gUn+1dnh9u95B2PYXdbscY7fPJ0SFGPSpkT9NasB8aKsWfuyqYj4uQFNv1SUp1qNDpQtQtHT0OEKd7t/cvJCsT7q2iI7Ae3FdXXB6l2H59CRRGssuA4HiF64Wl1ORePGa3wXdfWlBNTnLeOfPDv4KTkDvR2LlapQ43MbAH+quTDhLfCUng+DIF49RJbwYs2ZzmY7Erg0YREUquK0pYJ3WAB91kWO+YhjvMYjP6qLGfTYfIBImf8WN9q8oVYNtz0LQolAGE7vL/+LG8pXVp/fCBTTko50g5bd+ESmjiGdkfds9oSY9aU4QU/49Pa7eWZDfIq1R14+VFaqI2oED3ZliUerAs6fKDSSMUB+YWsBSgAtFlmn1ruc8P8CGOeaFZmGTL3+bu+yd9gn06ZBZyOSz7jM1/3xj37pPzNrDhERAjCH0r72+aMcfH84cMpQf8K/oL3p9cC8KMmr2ZbAg1VtfM2IKT1eq3pn4d60VKti6wlE48LROI2Z6fp+vQoTUG55NWnPQtHYGNP8Ix4s3VHokI70zDyH0TVenBM0pgYIHSRMGyV5BwMQw2KJJSycRpsmfGjbEOY2VlspPb3YPep8sNMcleCMpDg+WjwJG6GJVFQ8O6vtr9JEvaOvFcGqr85toRxcEJ5F+2xwdScfRXL5/9+yU0AmLfb
- mQIOQIah
- aRnWxStw0uVcILWl02arOlDWu/2pcw3FeNx3FXYI0l2nJJE2qfwHZXDQnnznvcID60pr7hYVb7migsvnkoSQSEe9mMckr+2tpUXFjOvVBMQd37OroVBpcbeh30PRqrUti/+rCjUYcg7OgJ0l/80eaBcum+LUwRK6KdWEKlde5gbUe0BmVq1v8Kx81U8fodU2r9ntJBf2NTMlTLC66mMLLtrfqeFAjsPJ0tn5pV0o14zrliBwSVg0ArtWBELvMI3xzw5O0O+uE6aDKAuN9DPO5SfYN3PDBWiAuhPWrE4Xx2BLqrtrjAheLQM3L2a8yims3gu8vkmssrLbsh61LXPOswz1sgANFjYU6EkVDU2xzRbQ8p6yx+6IzabhCiJ/9yWHGfFzqmMOByFZH+C/s4+B/c6w8dl0Eo+plDI45e5IRs38njqrSC6u5iBauChaFTEEgb4DBK5gi9Rao3Gu4SLPYrnhO6quvGYfjYfZJ
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 433521C000E
+X-Spam-Status: No, score=-16.6 required=3.0 tests=BAYES_00,DKIM_INVALID,
+	DKIM_SIGNED,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1793647871-768938
+X-HE-Meta: U2FsdGVkX1/ISCim7EeJG+eP8bw8Fne+Slqu/ZlujFf0KHcfyVUPObuX1ota9arx4TyUIltrbginKE94TLMh5xmIm+8OkmB2aeiZjZx8QjjfV7o4FOkjca24ZOiYVS+7KoM7iNx/mlP1Kcx59k2T1PnOstFWeF1WcIhUWKa8o5DOz0wwndImPrUQVYXDo/mpQ58AUKNoFM6verb/Fa1X2+bowL5U9gh3QqL1fu59wVy4GYo8xl2GdXge0Zu7tLM9o47DGaIfL7Rtutk6pkcKO6pJYhPYZRetY43IjaksIhy+N+q/X5U/rNtE+hhH+XPD2jm3SSgNcsCU04gYljg6NLYvMY5JJKtCSPTthM7/KZu1B+QyxpE/UkWH10fsUfnvjy0iWYP1LCJJ11EbkoZi8infSw3BYP4tDz8tVdJsIJdosxInm1gbdXasGl1rUFR559/ggRj4/0+HoYEljk0XnfGOiydIYly035ez3iqPbj4v4nN2V1ffVVtPq200LnhLD9PN5gpSJfAbDrZTfpHnlPhjbRlL+vWALY4v4v3l/5OggGxk2zVDhD52IGRSwdVPaYA4Z5lT96OeyWYCdaTi9GEwkqZEb5MvTpnGnxwSOsG3Lfea7QX73W/9OutBSdGbrfMmwSiDDqpPFwGnQ5a/VU2awifbRhzAW2kDzUO1tGUdxfmTMFy6//JzZUv19fRiWlWDDy//UKiifV4TIIuoa5l6DNOpxWl92uDXxRWV7aAityVIp4jtkEtlLmMjt+FrZLjHO+yNBD3MbQTB4biCq12NMsTQDmbXS3omrKZepp82a3TvUgNno5ptWwtmb6+e4zsAXg/GNt5isp6MbdjjCtrmxmpiGspyP8Rc1rmZNB3ONumN4GDdMRVoa50H4/Ut/dNKdphC19fiVbnEnm3tB9o36Xng1U3RH5+dG1+74pjK2v4/zqUh5HESmwizDSBjFNW71X7CdpLj8qv6v/6
+ Qh6uTSbc
+ IKjpq/IcUH7LufwFsj5c+0rpPBWgCAhlq6+c0djCiquoSigvexF2Acq4/YmGydWbL8FqQIjM4QUspluhxflMXqRmhMmwfKnEJdOBUEE0G36qKpQG+HR3gYEnPs6vSxwnII5BlUkhm4UZZbIWWEijNmxnAJBmWz0vGktPhokuEl7CfobLQ4bjloigpLPlba89N3S9+vD189ODlry6ZB1G624JPcL5AwQhNo5IDMpGL1HFXDKVDWevDJFtC1a6QVjjl9dDYW9o06pFP4/IAXz8xDyDLUKmD3m8BAbGRtIrnnLtIuBqX+LQuuqh5XOA+ZI0QtF2tLykkCB4B/rI1G3QEIchK8k8frjo090/kMGJ+jS2vg4RJh/nL4QZlZLP5if2sdHDqtF6hekicPlc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -131,47 +102,168 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Mon, Nov 02, 2026 at 04:52:44PM +0000, Roman Gushchin wrote:
-> Tao Cui <cui.tao@linux.dev> writes:
-> 
-> > Hi Roman,
-> >
-> > 在 2026/10/30 14:05, Roman Gushchin 写道:
-> >> I believe we want to delete this code sooner than later, why would we rewrite it before that?
-> >> 
-> >
-> > My assumption was that v1 would still be maintained for some time
-> > before its eventual removal, and the goal was to reduce the coupling
-> > between the remaining v1 code and the shared core structures during
-> > that period, rather than to rewrite the implementation for its own
-> > sake.
-> 
-> I understand. But personally I don't see big issues with the current
-> code caused by the v1 stuff. Maybe I miss something...
-> 
-> The proposed changes on the other hand create difficulties for those
-> who use v1 and maintain some local changes or simple backport upstream
-> fixes. Of course, it's not a reason to not change the upstream code if
-> it's justified, but in this case I'm hardly convinced.
-> 
-> > If the expectation is that the remaining v1 implementation will be
-> > removed in the near future, then I agree this work becomes much harder
-> > to justify.
-> >
-> > Am I being too optimistic about how long the remaining v1 code is
-> > expected to stay around?
-> 
-> Well, Idk, it was considered deprecated for quite some time already,
-> so maybe announcing that it will be deleted in a year is reasonable?
+follow_page_pte() looks at one PTE per call, so __get_user_pages() calls
+it once per page, restarting the pgd/p4d/pud/pmd descent and retaking the
+PTE lock each time.
 
-That might be tougher for v1 users than the member placement :-)
+Walk every PTE from @address to the page-table/VMA/@end boundary in one
+call instead. Adjacent pages from different folios, or plain base pages
+with no folio relationship at all, are covered by the same call under one
+lock.
 
-My understanding is that there are still a few heavy v1 users out
-there. I'm not sure they can move within that timeframe. Personally I
-think the cost of the v1 code now is kind of negligible now?
+A failure on the first PTE is returned as before. A failure after that
+ends the walk, and __get_user_pages() retrying the read gets the error.
 
-> Shakeel, Johannes, Michal, wdyt?
+The pages[] slots are stored under the lock, but the cache flushes run
+after it is dropped, over the pages the walk stored: holding one page
+table can cover up to PTRS_PER_PTE pages, and the flush helpers need no
+lock once the folio references are held.
 
-I was a weak yes on Tao's patch. Happy to keep it out with you and
-Michal not being fans of it.
+Measured with mm/gup_test.c, median get time over 16 iterations on a
+256 MB MADV_HUGEPAGE region in a 4 CPU VM. Folio size was confirmed
+through the per-size anon_fault_alloc counters, 4100 folios for 64 kB
+and 128 for 2 MB:
+
+  gup_test -L -m 256 -n 65536 -r 16 -t
+                        before      after
+  4 kB base pages      2753 us     1178 us   (2.3x)
+  64 kB mTHP           2946 us     1361 us   (2.2x)
+  2 MB THP (control)     72 us       70 us
+
+Base pages and mTHP gain about the same amount, because what is saved is
+the page-table descent that no longer restarts per page, not anything
+folio-specific. 2 MB THP does not reach follow_page_pte(), so it stays
+flat.
+
+Suggested-by: David Hildenbrand <david@kernel.org>
+Signed-off-by: Rik van Riel <riel@surriel.com>
+---
+ mm/gup.c | 77 ++++++++++++++++++++++++++++++++++++--------------------
+ 1 file changed, 50 insertions(+), 27 deletions(-)
+
+diff --git a/mm/gup.c b/mm/gup.c
+index 9e7eb8a323bbf..67e20b326be6e 100644
+--- a/mm/gup.c
++++ b/mm/gup.c
+@@ -937,44 +937,67 @@ static long gup_lookup_pte(struct vm_area_struct *vma, unsigned long address,
+ 	return 0;
+ }
+ 
++/*
++ * Walk the PTEs from the start address to the end of this page table or VMA,
++ * whichever comes first, and commit every page found.
++ *
++ * A failure on the first PTE is returned to the caller. A failure after that
++ * is a short read; __get_user_pages() retrying the read will get the error.
++ *
++ * Return: the number of pages stored in @pages, 0 when no mapping exists at
++ * the start address, or a negative errno for a failure on the first PTE.
++ */
+ static long follow_page_pte(struct vm_area_struct *vma,
+-		unsigned long address, pmd_t *pmd, unsigned int flags,
+-		struct page **pages)
++		unsigned long address, unsigned long end, pmd_t *pmd,
++		unsigned int flags, struct page **pages)
+ {
+ 	struct mm_struct *mm = vma->vm_mm;
+ 	bool need_no_page_table = false;
+-	struct page *page;
++	pte_t *ptep, *orig_ptep;
++	unsigned long walk_end, base;
++	unsigned long nr = 0;
+ 	spinlock_t *ptl;
+-	pte_t *ptep, pte;
+-	long ret;
++	long ret = 0;
+ 
+-	ptep = pte_offset_map_lock(mm, pmd, address, &ptl);
++	orig_ptep = ptep = pte_offset_map_lock(mm, pmd, address, &ptl);
+ 	if (!ptep)
+ 		return no_page_table(vma, flags, address);
+-	pte = ptep_get(ptep);
+ 
+-	ret = gup_lookup_pte(vma, address, ptep, pte, flags, &page);
+-	if (!ret && page) {
++	base = address;
++	walk_end = min(pmd_addr_end(address, end), vma->vm_end);
++
++	for (; address < walk_end; address += PAGE_SIZE, ptep++) {
++		pte_t pte = ptep_get(ptep);
++		struct page *page;
++
++		ret = gup_lookup_pte(vma, address, ptep, pte, flags, &page);
++		if (ret || !page) {
++			/*
++			 * no_page_table() may look up the page cache, so it
++			 * cannot run under the PTE lock. A none PTE returns
++			 * from gup_lookup_pte() before any write check runs,
++			 * so this is the same call the old code made -- not a
++			 * new failure mode for FOLL_WRITE.
++			 */
++			if (!ret && pte_none(pte))
++				need_no_page_table = true;
++			break;
++		}
+ 		ret = gup_grab_folio_pages(page_folio(page), page,
+-						     1, pte_dirty(pte), flags, pages);
+-		if (!ret)
+-			ret = 1;
+-	} else if (!ret && pte_none(pte)) {
+-		/*
+-		 * no_page_table() may look up the page cache, so it cannot run
+-		 * under the PTE lock. A none PTE returns from gup_lookup_pte()
+-		 * before any write check runs, so this is the same call the old
+-		 * code made -- not a new failure mode for FOLL_WRITE.
+-		 */
+-		need_no_page_table = true;
++						     1, pte_dirty(pte), flags,
++						     pages ? pages + nr : NULL);
++		if (ret)
++			break;
++		nr++;
+ 	}
++	pte_unmap_unlock(orig_ptep, ptl);
+ 
+-	pte_unmap_unlock(ptep, ptl);
+-
++	if (nr) {
++		gup_flush_pages(vma, base, pages, nr);
++		return nr;
++	}
+ 	if (need_no_page_table)
+ 		return no_page_table(vma, flags, address);
+-	if (ret > 0)
+-		gup_flush_pages(vma, address, pages, ret);
+ 	return ret;
+ }
+ 
+@@ -994,7 +1017,7 @@ static long follow_pmd_mask(struct vm_area_struct *vma,
+ 	if (!pmd_present(pmdval))
+ 		return no_page_table(vma, flags, address);
+ 	if (likely(!pmd_leaf(pmdval)))
+-		return follow_page_pte(vma, address, pmd, flags, pages);
++		return follow_page_pte(vma, address, end, pmd, flags, pages);
+ 
+ 	if (pmd_protnone(pmdval) && !gup_can_follow_protnone(vma, flags))
+ 		return no_page_table(vma, flags, address);
+@@ -1007,14 +1030,14 @@ static long follow_pmd_mask(struct vm_area_struct *vma,
+ 	}
+ 	if (unlikely(!pmd_leaf(pmdval))) {
+ 		spin_unlock(ptl);
+-		return follow_page_pte(vma, address, pmd, flags, pages);
++		return follow_page_pte(vma, address, end, pmd, flags, pages);
+ 	}
+ 	if (pmd_trans_huge(pmdval) && (flags & FOLL_SPLIT_PMD)) {
+ 		spin_unlock(ptl);
+ 		split_huge_pmd(vma, pmd, address);
+ 		/* If pmd was left empty, stuff a page table in there quickly */
+ 		return pte_alloc(mm, pmd) ? -ENOMEM :
+-			follow_page_pte(vma, address, pmd, flags, pages);
++			follow_page_pte(vma, address, end, pmd, flags, pages);
+ 	}
+ 	ret = follow_huge_pmd(vma, address, end, pmd, flags, pages);
+ 	spin_unlock(ptl);
+-- 
+2.53.0-Meta
+
 
