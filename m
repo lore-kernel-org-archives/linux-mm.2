@@ -1,135 +1,154 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E65D606A32F
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 06:01:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CDDC606A333
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 06:06:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=eSia+FWG
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=mnLeKo3J
 Received: by kanga.kvack.org (Postfix)
-	id 371836B05B3; Mon,  2 Nov 2026 01:01:37 -0500 (EST)
+	id 6D4BC6B05B6; Mon,  2 Nov 2026 01:06:02 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3483B6B05B4; Mon,  2 Nov 2026 01:01:37 -0500 (EST)
+	id 65DED6B05B8; Mon,  2 Nov 2026 01:06:02 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 285566B05B5; Mon,  2 Nov 2026 01:01:37 -0500 (EST)
+	id 4D8396B05B7; Mon,  2 Nov 2026 01:06:02 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 0B4A46B05B3
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 01:01:37 -0500 (EST)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id A5E9B40C47
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 06:01:36 +0000 (UTC)
-X-FDA: 85389132192.10.581ACFE
-Received: from mail-dy1-f179.google.com (mail-dy1-f179.google.com [74.125.82.179])
-	by imf20.hostedemail.com (Postfix) with ESMTP id C86D21C0007
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 06:01:34 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=eSia+FWG;
-	spf=pass (imf20.hostedemail.com: domain of odys.yuan@gmail.com designates 74.125.82.179 as permitted sender) smtp.mailfrom=odys.yuan@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 265586B05B5
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 01:06:02 -0500 (EST)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id A2C73A0645
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 06:06:01 +0000 (UTC)
+X-FDA: 85389143322.01.9646CE5
+Received: from mta1.migadu.com (out-178.mta1.migadu.com [95.215.58.178])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 79FB420005
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 06:05:59 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=mnLeKo3J;
+	spf=pass (imf03.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.178 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793599294;
-	b=bXnatSGIuPRlX4hnIaIG0KDV7ejcW1LdOU3VPFh/opmYZw23eKBOO+7Km6FdttCjZrsY2a
-	suJ40wKFY9wsj5f+gbfukh9SYyjUy1hQtkBM2Shc5jIUFMcglOo+WiTPc8xpnfzyCbJ6WE
-	mAtW/1kzdZ5TaB7JWIBzdqXet00LASw=
+	t=1793599559;
+	b=mGkLpXzwvLoq37bdFzgmenkT2cx2Y+dp01M0XlnmMo37u8lqWPpHChCz6ylYjl3Q3xiYha
+	IQCOpA+pUbE18iH84uXL7uLKQZkvOSsl1tFvEzs3azE7SwVzqclhmyHdjA1Akm669YDIky
+	R3IkOhqQmeSyO8DKXni5sfyqiR1qHKk=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=eSia+FWG;
-	spf=pass (imf20.hostedemail.com: domain of odys.yuan@gmail.com designates 74.125.82.179 as permitted sender) smtp.mailfrom=odys.yuan@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	imf03.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=mnLeKo3J;
+	spf=pass (imf03.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.178 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793599294;
+	s=arc-20220608; t=1793599559;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=YSkr4xPSOMpmzvdQfZBF00qXeylEmPR38zvgW8C7IJ8=;
-	b=UMwBmYG2PWOeg52Bcpqd7PIuVC8bIHlTCqRossjMMG1ladBlpj3HsG81Lu9QNsFFyMxtKe
-	ss96cxvkmai/+IAR8oS4/8RzebPEtiLFFlgQQhNP3iNH1WbpJMDS54psPra3fSCC3K3L2m
-	Tpq1rjNx7P+RsZEkwGXVrImg+ph0XrQ=
-Received: by mail-dy1-f179.google.com with SMTP id 5a478bee46e88-3645f0f3fcdso4642595eec.0
-        for <linux-mm@kvack.org>; Sun, 01 Nov 2026 22:01:34 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793599293; x=1794204093; darn=kvack.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=YSkr4xPSOMpmzvdQfZBF00qXeylEmPR38zvgW8C7IJ8=;
-        b=eSia+FWG3YEq8akIV+EvjGOp1m2xgBN4CAnaUB9WPakOsJdRS/DJzIL+oXdXe+HZdc
-         gu2Ph9ajcbbQFMkyVMlAtNzHMe6PFuW/lwFQm1QxI2w506Fu1jMjbxUq/c25wnnPoRGL
-         yldmz9B4005MRwPWyv/2JUKiDh+UyxdBgAgoCYgJsGcAYgVYbDVVm/veeQPRIUxtChSd
-         6EHi4bZjmorzc76PoeImjpmk3+WNzR93VbBucrfX7EZ2nOJdvHcYDUsTW74rudaz5dOj
-         YKuOesqhwjXkJLcm41xS2+ked3/yOXK1FTh8arNlCphy3809Ci4MYvNY4weHUgo7Vtko
-         85HQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793599293; x=1794204093;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=YSkr4xPSOMpmzvdQfZBF00qXeylEmPR38zvgW8C7IJ8=;
-        b=zW3LvYE33sQen+D/eJqAsHh4xt83ZZff7NzH2JMwS/Byr5UMfAAZdkRLdglVs/Cx+G
-         1MlCHCaMIFd5qlFG/uF81llnwO/DXOkQiZUgS4ejBUuT2S1fF6wvs0JH2kvwvZvU/auh
-         0l/Faqna67sb1Khi+rip1ciVe0CY4XIA4l2JW8r2LFPqrIpYK60aYAOUQfEuF5X7DwdP
-         zhvffqOawkNP4JAq4nRsAci/Gi/EhGxciPAnF5DkZFwn840wfMG5i8CuEhJa4tTnl5nV
-         f91dFdEDkJG5+/L3O2KGECdU/68uqNaD7MumIBnBUKXIkBZgffBWM/BA2YovYL8UbYan
-         ZDng==
-X-Gm-Message-State: APuU4Z+C5UpNElUrQ0b7hMSsyDKXbuZTZdJLVlsqr4spTyCii4UpZmyn
-	B7eG3wS6/5fwClCABgSS0neKQYDx91BwYwdG9BvZxYot0jOmXCKgB6h7
-X-Gm-Gg: AYBFou3dhlvTk6rwHPOnUIbVKSm+8D89a6MyaKNYl0beSDxi522SRMkggRAvtH3AnVa
-	tzJqlBn+WilThy7DyJ4J/sb5RMFho82hfu3heSzC/C/I5eIedt8beYe0cus8z3plyTgEPdETN3S
-	TsRYA0QPtsuN9EuLtY5XWs39EiG2xcNWiIB9MoX51s8JdMYUUGgooSZow8P+0b/cxPIqpL5PMe0
-	KW/7A7t2etPPY1N4eH6KpLlNoHvUmdTsDtCA0Vy5wFne6K0oR/I0x0tQvhRCm+6LUkPBUT7nE+a
-	pJD0ojyLfUBi65wxb7tbhtK8d4d/O11OBz21WoNVLwr4PB75YYGMkLXfPYRqKvnFzfI2kpSGgB5
-	maoaz/m108ggF5ypwRJRnFCg8YBss8tq8MqLeYD3NpjCq3B54tvfYAPcLLzNvPhHpehx7yRIq78
-	XK9gQ0ma4V44IMtR7H8P5J25cb7DhLXqLNsUBRm5MKPj5shwKrdlElssJ2vjz+0ioau+LhPQHV8
-	iXczh+/Q62GQf8arW0Mj2Fx2UY+C2ggZF5pbW3NFWt9bxFg8VoAAFQIoqUY9oSBNkAHTnbWPieD
-	U9F5rkvUzmnkZ4cetV+jikhj
-X-Received: by 2002:a05:693c:4154:10b0:369:f4d7:19fc with SMTP id 5a478bee46e88-36a424988abmr16343588eec.41.1793599292932;
-        Sun, 01 Nov 2026 22:01:32 -0800 (PST)
-Received: from [127.0.1.1] ([23.254.208.9])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-36a428af4e6sm28755363eec.4.2026.11.01.22.01.23
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 01 Nov 2026 22:01:32 -0800 (PST)
-From: Qiliang Yuan <odys.yuan@gmail.com>
-Date: Mon, 02 Nov 2026 01:01:08 -0500
-Subject: [PATCH v2 2/2] mm/compaction: defer failed async direct compaction
+	bh=+yuFDhrhf3kM/PO/AnTTpZJjMtV5tAkK8200L66uGl8=;
+	b=Z2QKBIf33I/v14ZYqUMMG0RUnMD6XdgORwDVZ88rS8Vi0l8AEJ5powgmRzh/Gt1Y0/d6zv
+	et3ZAJHKAlVKO2FwyCHNEe8c+q128/HtTLSN2mwso2AMz19cVvDLia9SWKyskRCB9Ja9Xj
+	/fMlnVH36zMipcr/tLvbkPuKLSIEqms=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=ex0bR+wqY48y7Ys0l1lS/C4xyqfg/lqStx93s8K9wXI=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1793599557; v=1; x=1794204357;
+ b=mnLeKo3JIlrjZ0v8csYIXQvs0MqjNYBAaha6FI+GsXgzsTBscKhu47xfdxei1GstkYX55TtU
+ s7+ijDrBsSQikbWr4RhQIABec//XfnZQfXcLKbZqgwK2XEUTDJ36HqPkKEIRh6O+ifRMQgl5bW3
+ ABiUUGhU4PsBaXEJa27dL80Y=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id 85932c5ab249e449;
+	Mon, 02 Nov 2026 06:05:56 +0000
+X-Mizu-Trace-ID: 85932c5ab249e449
+X-Migadu-Flow: FLOW_OUT
+From: Lance Yang <lance.yang@linux.dev>
+To: david@kernel.org
+Cc: akpm@linux-foundation.org,
+	hannes@cmpxchg.org,
+	mhocko@kernel.org,
+	qi.zheng@linux.dev,
+	shakeel.butt@linux.dev,
+	ljs@kernel.org,
+	kasong@tencent.com,
+	baohua@kernel.org,
+	axelrasmussen@google.com,
+	yuanchu@google.com,
+	weixugc@google.com,
+	baoquan.he@linux.dev,
+	baolin.wang@linux.alibaba.com,
+	liam@infradead.org,
+	vbabka@kernel.org,
+	rppt@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	kees@kernel.org,
+	peterz@infradead.org,
+	jannh@google.com,
+	pfalcato@suse.de,
+	hughd@google.com,
+	pasha.tatashin@soleen.com,
+	pratyush@kernel.org,
+	willy@infradead.org,
+	jack@suse.cz,
+	ziy@nvidia.com,
+	lance.yang@linux.dev,
+	riel@surriel.com,
+	harry@kernel.org,
+	apopple@nvidia.com,
+	nico.pache@linux.dev,
+	ryan.roberts@arm.com,
+	dev.jain@arm.com,
+	usama.arif@linux.dev,
+	kas@kernel.org,
+	matthew.brost@intel.com,
+	jhubbard@nvidia.com,
+	peterx@redhat.com,
+	will@kernel.org,
+	aneesh.kumar@kernel.org,
+	npiggin@gmail.com,
+	osalvador@suse.de,
+	minchan@kernel.org,
+	muchun.song@linux.dev,
+	xu.xin@linux.dev,
+	chengming.zhou@linux.dev,
+	chrisl@kernel.org,
+	shikemeng@huaweicloud.com,
+	nphamcs@gmail.com,
+	youngjun.park@lge.com,
+	gourry@gourry.net,
+	joshua.hahnjy@gmail.com,
+	rakie.kim@sk.com,
+	ying.huang@linux.alibaba.com,
+	jgg@ziepe.ca,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	kexec@lists.infradead.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-arch@vger.kernel.org,
+	linux-cxl@vger.kernel.org,
+	mason@kernel.org,
+	stable@vger.kernel.org,
+	usama.anjum@arm.com
+Subject: Re: [PATCH v3 17/47] mm/khugepaged: preserve dirty bits when collapsing PTE-mapped THPs
+Date: Mon,  2 Nov 2026 14:05:47 +0800
+Message-ID: <20261102060547.39942-1-lance.yang@linux.dev>
+X-Mailer: git-send-email 2.49.0
+In-Reply-To: <20261031-fixes_core-v3-17-d6437171ecc3@kernel.org>
+References: <20261031-fixes_core-v3-17-d6437171ecc3@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261102-bug-mm-thp-async-compact-defer-v2-2-b407e974db54@gmail.com>
-References: <20261102-bug-mm-thp-async-compact-defer-v2-0-b407e974db54@gmail.com>
-In-Reply-To: <20261102-bug-mm-thp-async-compact-defer-v2-0-b407e974db54@gmail.com>
-To: Andrew Morton <akpm@linux-foundation.org>, 
- Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>, 
- Shakeel Butt <shakeel.butt@linux.dev>, Barry Song <baohua@kernel.org>, 
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
- Wei Xu <weixugc@google.com>, Baoquan He <baoquan.he@linux.dev>, 
- Baolin Wang <baolin.wang@linux.alibaba.com>, 
- David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
- Michal Hocko <mhocko@suse.com>, Steven Rostedt <rostedt@goodmis.org>, 
- Masami Hiramatsu <mhiramat@kernel.org>, 
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
- Brendan Jackman <brendan.jackman@linux.dev>, 
- Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
- linux-trace-kernel@vger.kernel.org, Qiliang Yuan <odys.yuan@gmail.com>
-X-Mailer: b4 0.13.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Queue-Id: C86D21C0007
-X-Stat-Signature: 59zaepb61rbpz9hk7o4pk48ngesstkrm
+X-Rspamd-Queue-Id: 79FB420005
+X-Stat-Signature: 6e5biwfeh46upx6ucqxw59a6iu4w4rba
 X-Rspamd-Server: rspam01
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
-	autolearn_force=no version=4.0.1
-X-HE-Tag: 1793599294-414260
-X-HE-Meta: U2FsdGVkX19Rivi4GhBmQQQxP8IDM0f9skOX6sSCWxFQUvvbciOdVi8+tiVfdiWLuppwDybVasVKqtCyIxLXGV+9n7LF3MCKtxVXWh+MvpAMNCINV1lwXBfgR41OllIHVys2i/byiyvhIpRZJne19DmoTNgeHbq0NOZDVmpGNIHUSCvQ5b14JYrxPR24FuaK7Ieby3yI0gpCcgKYxZQMnALd3orOpS5gITjTw8hbArG/buM5go9qDy/D+DxfGM5j2CFBVubx1CxHEYegobb8P6pKp/q34G13suq3uv9P0d5gQUr0F0nJjDAcxhKBMmjt7xWCAvtX7uAQKtZGrrektl4097xm0dzeIWb8E8CX0gpnSeQHzFYonedSFrbf5gSCWeaS0uKQmb3xP51YfX47vlcnfZ7hH4SZPVaT5WsLthFbQBw5C62mGX6lpXvgRXS8JhrWb75cgFU+15GLKGGTCAoEfxRvcf45FYS0nSBrU3WLOmSGdKdh/jOKy6EU8qLx6s7x8KdqXesc+14roX8dzwO3aSCL8iS+xcUHUgu5Tm3VxyWEakDp/l35SBhnLkddSBPhEwfaPlxq5k9fCMxZw7uMICoNro8oLrh79ct/TRSf0ahGlTfR22ZCys2VTIIEjKi3+EGmHXMq16nA3cPPjv7z5zhZebAftRyMLJw+wyvfkjKOHFjcV8RjiQ3khN4U1EIvH84NjtXI80g2agGH9hivDupQa0QEJF97Kpvf6bDOuTbQ78qkd6JB3APMCFZYXm0zCKvRIXUx4zIZE/PRoQGEG8N/XRqVhRITgGhUJ1UTwxRymTUFC98OlQVWtRKCmJpbfykyQZXPBltt1xACVWbq6fbbYM/7H624xMEpYIHmwv/qgkFeQo4399VMgglJcbl5ElmQeXplY3WIdQyYyo7z98dyhhowYM6OsEahGr12u5ihjuixSYoM0xBIuryvDKg6jj0/6PY2KzHz2Gp
- eaknC593
- iJV48RjrBBK2ivD7Zo7rmkCkz6b/8l9J/f5mOKDpkrU1cfu2wW3ILLwWbUh9sKt1ixKF33Vl2AXfqseY/vmynE9fav41+pssIJFw1WfmTnWCHVo+2yD6LYjCJ1whj0Aj8KfsIdxR/BAcxWSmfz75yGZt5Be0XM9KdHCV+Tyz3NMJkTtmBkQAPBrLjGuqyESqIJ+nHM4f/gD2ZlufWZKcEP6/wxeYqGi8ERldOtRGUAZ86W66D3SnkonM8F40Dp7DBt65exiK5KNV5yZT2opWx1yP7kjsYD6Ch5L15R+5nYmhfdwPzUSsZBoRaBQS0y2HJDWaMmShTz88my7++iqoL6feqQ81WB6Yj2/f8OLlUTaR6MzRJ7AWm4YkYerL4MCmBhWDWOmiqQf8yDvgVFgIwAjKwDlz9dkGsApDKUM7V0Y2gJqdkqcHr6HgckZLi0j5LrU2KeuoC89omD/OfFZL5+x3eNzgkOGhEbQV+KVd1RjRF4ELPn/JysWYI5U3Nl0TDECDd3T1uWD4XLcNdr0k8CLuRbw==
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1793599559-539109
+X-HE-Meta: U2FsdGVkX1/z3KuFmh1N3zIVQ+oXSHt+NgX9AIQQqTrRIciSfwMUCYhbU77t2JABEYaaJXvWJM3vXtBlIK9obX5MKmqybpM052/ixRNAH8Ya+D4a2H1Irw3M3wu901jjrKiZbJ5q1ZG/9qmjANSFjTR/IIJUSiE2hkTBJU7UNKYHZezbDENX+k2f6eWUn4rrJ0aQJ5amm3EXlnugR3q/p1nptkBgfQU5nqqicM2qxLENE2AlToQzK1VyLrzmzR7wbGzXifiPCygS0ySoNXXpB7nESPLzVp7dXH+5Hp+8+nE+569dXetzCQk90hxtKf0wljDPURQitM1sCI5Iz3Zd4tRL6HarcxKJ3U+NxL7iTchGRts5Y0rdwoj2ARa7zuB22pbNukvh9DkI5Mc9CecdXOOBtBBwafUYV86Xl4SpQ5573udt0pCI3V6/qywUHWkXuAglVJ2lqjGXrIkVSKgL75cNr208hR+9UtlozQ8FF+qTwUPCg/P0oKNqJkY3PNugjD7ZgbCLDRgfQpjesNddMVdojJXaKV9dgGwgM262ZsHby8jPBo6Ck+xDvD9k1f9FsEvNRe3nQ2fF6I4WrQfnmKIRkCwLvra6Ra37wmRKVziNehW5MmDaKXl4JqfJzrhmWLoYenU0JeM31i6+MUWY9nzhmEOcOiVfvL301OlYRRHium17tHaqYLHKNxN7EVGKdZilNOIOGufg5rTBirJTcsLKursXBlAVKSDMqTfLqsjZMFjAIYw7IXLOEEi5/3mxubO0a22PQzHCQq9ZUavmOTkn48Cex05drbD2pWH9ShuPnM3yQBmLkWhfEJbKLkcRkzgIl31u2oJwdRu45pyL3+gx/bwqfXWMy2GSh+8JVsXH0ibansVladEPoGDyAUmwzk//qWcBNc65mU6vAwoMrL0Qmx32GVEhKKj+X85UQ1uft2WVItIwQVBo6xRxAFS5pOvwyrY98l5g2qeqQmU
+ Mofm/t36
+ E3fdk1+HK15YDfy8yDetwv0+zP8R2lY/i4ZS3Z8GG7e7YpSQjuPSgmpG7cL9iW4SmeUOqtmPKWxVPvTpRpXn83j43+hmK+uwxmnyqIQcnY6WOHnzfOAho/A9dCEVxGxZNz5uVEeV/eAOhzyjMKydWuKJ03VTglaoGuNz7elWaBNsZYZ+SNV5ZKku26R9j2gzMkos9U54tZSYTQTnHikKqRT7MftsottiwXJP1xJVZZcJzt5o/0cUNVl4ofMuhPF9P6kJMPblZBSRMTiKEz69d1pZXf5v5q1NV49mCc1VPA44bhMfacaBa13ZYoL7OffrVoXQHaILRN7OnmVenWayKLdjBO88XrMZIDSWTwdN+z8aZwXtbc00LM4pvLHz0DJ589uWRWoQNWXc04tyDVHaTlidsJRJJdirZg23W+r469KbGQWCeMVHeDWCDIY+JobDIRlxUhZvyS/DHTr0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -138,96 +157,72 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-A THP fault on a MADV_HUGEPAGE VMA first tries the local node only,
-with __GFP_THISNODE | __GFP_NORETRY, and runs a single round of async
-direct compaction there before falling back to other nodes. A failed
-async run is never deferred.
 
-When the local node has plenty of free memory but no free pageblock,
-and what sits between the free pages can't be migrated, such as memory
-long-term pinned for RDMA, each of these faults scans the zone again
-and fails before falling back.
+On Sat, Oct 31, 2026 at 10:39:46AM +0100, David Hildenbrand (Arm) wrote:
+>From: Chris Mason <mason@kernel.org>
+>
+>try_collapse_pte_mapped_thp() clears PTEs without transferring their dirty
+>bits to the folio. A shmem read fault can map a clean folio writable, so
+>a later store only dirties the PTE. Losing that dirty bit allows reclaim
+>to discard modified data.
+>
+>The assumption that regular files are read-only is also obsolete since
+>commit 1b6444331bebb ("mm/khugepaged: enable clean pagecache folio collapse
+>for writable files"). In any case, transferring PTE dirty bits to the folio
+>when removing mappings (and while the folio is still mapped) is the right
+>thing to do.
+>
+>Use get_and_clear_ptes() to collect the dirty bits and mark the folio
+>dirty before unmapping it. Update the comment.
+>
+>This was reproduced with shmem using MADV_COLLAPSE followed by
+>MADV_PAGEOUT.
+>
+>Fix generated by an LLM and sent by Chris Mason in private.
+>
+>Fixes: 27e1f8273113 ("khugepaged: enable collapse pmd for pte-mapped THP")
+>Fixes: 1b6444331bebb ("mm/khugepaged: enable clean pagecache folio collapse for writable files")
+>Cc: stable@vger.kernel.org
+>Signed-off-by: Chris Mason <mason@kernel.org>
+>[ david: adjust comment; simplify description; cover file-thp as well ]
+>Reviewed-by: Pedro Falcato <pfalcato@suse.de>
+>Reviewed-by: Gregory Price (Meta) <gourry@gourry.net>
+>Tested-by: Gregory Price (Meta) <gourry@gourry.net>
+>Tested-by: Muhammad Usama Anjum <usama.anjum@arm.com>
+>Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+>---
+> mm/khugepaged.c | 5 +++--
+> 1 file changed, 3 insertions(+), 2 deletions(-)
+>
+>diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+>index 34ebb37c862c0..ce794d9760a87 100644
+>--- a/mm/khugepaged.c
+>+++ b/mm/khugepaged.c
+>@@ -1995,9 +1995,10 @@ static enum scan_result try_collapse_pte_mapped_thp(struct mm_struct *mm, unsign
+> 		/*
+> 		 * Must clear entry, or a racing truncate may re-remove it.
+> 		 * TLB flush can be left until pmdp_collapse_flush() does it.
+>-		 * PTE dirty? Shmem page is already dirty; file is read-only.
+> 		 */
+>-		clear_ptes(mm, addr, pte, nr_batch_ptes);
+>+		ptent = get_and_clear_ptes(mm, addr, pte, nr_batch_ptes);
 
-Defer the async state when an async run fails, and check it before
-further async runs. Sync compaction keeps deferring on its own state,
-and a successful compaction or allocation resets both. Reset the
-pageblock skip hints only from sync compaction, as async relies on
-them.
+I went through get_and_clear_ptes() as well. It merges dirty bits across
+the batch, so we're covered even when the first PTE is clean and a later
+one is dirty.
 
-Populating a 4 GiB MADV_HUGEPAGE buffer from node 0 of a two-node VM,
-with node 0 (24 GiB) fragmented by long-term pinning every other page,
-median of 3 runs on each of two boots per kernel:
+LGTM!
 
-                          before              after
-  direct compactions      649 / 1473          9 / 41
-  time in compaction      118.6 / 264.2 ms    2.6 / 5.1 ms
-  population time         531 / 504 ms        390 / 261 ms
-  THPs on node 0          1399 / 575          1478 / 727
+Reviewed-by: Lance Yang <lance.yang@linux.dev>
 
-With movable memory in place of the pins, compaction still succeeds
-and both kernels get all 2048 THPs on node 0.
-
-Signed-off-by: Qiliang Yuan <odys.yuan@gmail.com>
----
- mm/compaction.c | 24 ++++++++++++++++--------
- 1 file changed, 16 insertions(+), 8 deletions(-)
-
-diff --git a/mm/compaction.c b/mm/compaction.c
-index e7a450b2be757..390171370b046 100644
---- a/mm/compaction.c
-+++ b/mm/compaction.c
-@@ -2600,9 +2600,12 @@ compact_zone(struct compact_control *cc, struct capture_control *capc)
- 
- 	/*
- 	 * Clear pageblock skip if there were failures recently and compaction
--	 * is about to be retried after being deferred.
-+	 * is about to be retried after being deferred. Leave this to sync
-+	 * compaction: async compaction relies on the skip hints, and clearing
-+	 * them on its retries would rescan the whole zone each time.
- 	 */
--	if (compaction_restarting(cc->zone, cc->order))
-+	if (cc->mode != MIGRATE_ASYNC &&
-+	    compaction_restarting(cc->zone, cc->order))
- 		__reset_isolation_suitable(cc->zone);
- 
- 	/*
-@@ -2858,8 +2861,10 @@ enum compact_result try_to_compact_pages(gfp_t gfp_mask, unsigned int order,
- 			!__cpuset_zone_allowed(zone, gfp_mask))
- 				continue;
- 
--		if (prio > MIN_COMPACT_PRIORITY
--					&& compaction_deferred(zone, order, true)) {
-+		if (prio > MIN_COMPACT_PRIORITY &&
-+		    (compaction_deferred(zone, order, true) ||
-+		     (prio == COMPACT_PRIO_ASYNC &&
-+		      compaction_deferred(zone, order, false)))) {
- 			rc = max_t(enum compact_result, COMPACT_DEFERRED, rc);
- 			continue;
- 		}
-@@ -2890,14 +2895,17 @@ enum compact_result try_to_compact_pages(gfp_t gfp_mask, unsigned int order,
- 			break;
- 		}
- 
--		if (prio != COMPACT_PRIO_ASYNC && (status == COMPACT_COMPLETE ||
--					status == COMPACT_PARTIAL_SKIPPED))
-+		if (status == COMPACT_COMPLETE ||
-+		    status == COMPACT_PARTIAL_SKIPPED)
- 			/*
- 			 * We think that allocation won't succeed in this zone
- 			 * so we defer compaction there. If it ends up
--			 * succeeding after all, it will be reset.
-+			 * succeeding after all, it will be reset. Let a failed
-+			 * async run defer only further async runs, as sync
-+			 * compaction may succeed on pageblocks it skipped.
- 			 */
--			defer_compaction(zone, order, true);
-+			defer_compaction(zone, order,
-+					 prio != COMPACT_PRIO_ASYNC);
- 
- 		/*
- 		 * We might have stopped compacting due to need_resched() in
-
--- 
-2.43.0
-
+>+		if (pte_dirty(ptent))
+>+			folio_mark_dirty(folio);
+> 		folio_remove_rmap_ptes(folio, page, nr_batch_ptes, vma);
+> 		nr_mapped_ptes += nr_batch_ptes;
+> 	}
+>
+>-- 
+>2.43.0
+>
+>
 
