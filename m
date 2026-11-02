@@ -1,75 +1,75 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B538560703AA
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 14:29:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14B8A60703B4
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 14:30:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=cpiq3IqJ
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=RW+vtAzi
 Received: by kanga.kvack.org (Postfix)
-	id D89BA6B05E9; Mon,  2 Nov 2026 09:29:44 -0500 (EST)
+	id 23ED86B05EB; Mon,  2 Nov 2026 09:30:01 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D3A386B05EA; Mon,  2 Nov 2026 09:29:44 -0500 (EST)
+	id 1EF446B05EC; Mon,  2 Nov 2026 09:30:01 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C293A6B05EB; Mon,  2 Nov 2026 09:29:44 -0500 (EST)
+	id 0DE896B05ED; Mon,  2 Nov 2026 09:30:01 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 9FAEB6B05E9
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 09:29:44 -0500 (EST)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 3D5E48010E
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 14:29:44 +0000 (UTC)
-X-FDA: 85390412688.22.2FFECD6
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id D95356B05EB
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 09:30:00 -0500 (EST)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 6FC0D1C085F
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 14:30:00 +0000 (UTC)
+X-FDA: 85390413360.26.645005F
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 7BE0214000B
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 14:29:42 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cpiq3IqJ;
-	spf=pass (imf23.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793629782;
-	b=V8mGVTZlMGv66ujp78r2lrdwxq7+aR3wOYDl0pQdGZABJYF7eMNMa24ejYgHX3qRElJuQd
-	NQskm5iQpT6sMktaBNEK9BcJyA+bsWu8gheg72nzGbmPYJzFCC/+fatqMpDhS8vMgSGJG2
-	OYlhcUOZl5mNk2wxpTtd7/Yr0pPtq4g=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cpiq3IqJ;
-	spf=pass (imf23.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	by imf26.hostedemail.com (Postfix) with ESMTP id A983B140007
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 14:29:58 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RW+vtAzi;
+	spf=pass (imf26.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793629782;
+	s=arc-20220608; t=1793629798;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ic+85LCmRwOCXD9XrptIkWWgbAusIpJ/j/j/KpoPCSM=;
-	b=wQI6JZaWfHtKJ/B01vIbzrKyX0+19/Zo/buGoExdfh9fX/CfInZ+cgFQuPHn2CqHdD1Z7f
-	k2WLORXlrbL0X8PY7bxn+g+uLWN0YLggC/7maLm1V0KNrrTV+Dk9T1EHHMuhCFA5L2qgJs
-	13iwAQs5/ly7Uii8An25mhsFlMwiWtQ=
+	bh=SA3lGiy6S79OdVacoNeeNA0LWGoA0p1Ppo9PoyQO2Ks=;
+	b=PwokY3Kncr3FBWuSLiLLJPF9gZi+xvGzm+J7tEZkPOjRvEwIPmHmsORHbAAVy3K4CSo1H9
+	3I26Bwhls3UHH0Mp7riUAo43CwdQkiblv9tMhBtV/6sXQ/DntYVy2j6+iGzDEE9mLdb1o5
+	nt4iNEkR+wKoiX5qNFt2immEoS7JXj8=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RW+vtAzi;
+	spf=pass (imf26.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793629798;
+	b=u0djOUNWNo4fHNiy1VqY2r7HvUtstzfYVHZml8mEC6Q1MkbyC79noeRvc5lTLMy/PBeCvN
+	Pnuzj4BVxXJ8yRymi+H12mxUfOqXfE2IrJhOEJPeAXrVNWh1/u+ZjtEEnLJ4LuFxHpLuEE
+	9FWPJWjM5D1Nubkh9S2mbnmC0gIgvOU=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 1E91B60EF2;
+	by tor.source.kernel.org (Postfix) with ESMTP id 4C06F60618;
+	Mon,  2 Nov 2026 14:29:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E3171F00A17;
 	Mon,  2 Nov 2026 14:29:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A15B1F00A16;
-	Mon,  2 Nov 2026 14:29:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793629781;
-	bh=ic+85LCmRwOCXD9XrptIkWWgbAusIpJ/j/j/KpoPCSM=;
+	s=k20260515; t=1793629798;
+	bh=SA3lGiy6S79OdVacoNeeNA0LWGoA0p1Ppo9PoyQO2Ks=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=cpiq3IqJzE0jLDTsXK0hhQpT+1tSBJ0m7UHl7jwVgF1Fv4mj9x0h0BFZHMrAfCVa5
-	 iewk6s7JCm0+gwRTm/kjqgkW4YiueXz1TIntYMKngDzC+ACNgbHQBWvInviI1KRtgv
-	 oJz0vOiQG4c8Pbk4iFmvmDh2ZQ6QwxvGwZS6AAmLbVz1ZAlyFcC8D8rCv7m/yTSEu4
-	 1vD4TCJ+dg9PvxhYYplMdQDJY8+AFuovGaLfiL4La8TbkUrkcL9SeYhMCfsPHBpZLk
-	 c+TBML64gtkfFA/ZyGQfZtD060MB4GYjnWd84w2qELeu1iAHFSJ2lpD4cFIe3OBakQ
-	 pRII2n9i/Aq1w==
+	b=RW+vtAzixHFdftAw+FFf7X1DqyjNjrm5rXJzLqMgENvUyh6lxSop0zLX2+vQS8q3U
+	 qRZVYZNACtSOXvDQAbomlArmJKHhYUFIBB2YrfNds0mv1wfARpxrZIlRmEwlYwFopc
+	 5VdZGPqAWRIGCJ/WjNt4zJr1epJ29nqoWmRFqTaIbIhCMRcObitFsIcVlAgJcZod0r
+	 ACWF7EpwiUSzD42RWAztKJAwpw5HeZTLOr4cdHEhkz65HDjFGe1NQmquxEr2sddSYL
+	 RwpzOOV7W3I2TVeiKdqC8qxeUtM4wH2oSQalOWqHC31war9q1hlS5ta/ceFelklXjl
+	 B3xNbX+COlrjQ==
 From: Christian Brauner <brauner@kernel.org>
-Date: Mon, 02 Nov 2026 15:21:48 +0100
-Subject: [PATCH RFC 33/38] proc: sysctl: copy to and from userspace without
- holding the table
+Date: Mon, 02 Nov 2026 15:21:49 +0100
+Subject: [PATCH RFC 34/38] proc: sysctl: look at the table under
+ sysctl_lock when creating an inode
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261102-work-procfs-bugfixes-v1-33-59422ed3e465@kernel.org>
+Message-Id: <20261102-work-procfs-bugfixes-v1-34-59422ed3e465@kernel.org>
 References: <20261102-work-procfs-bugfixes-v1-0-59422ed3e465@kernel.org>
 In-Reply-To: <20261102-work-procfs-bugfixes-v1-0-59422ed3e465@kernel.org>
 To: linux-fsdevel@vger.kernel.org
@@ -103,29 +103,29 @@ Cc: Linus Torvalds <torvalds@linux-foundation.org>,
  linux-ext4@vger.kernel.org, linux-modules@vger.kernel.org, 
  linux-debuggers@vger.kernel.org, 
  "Christian Brauner (Amutable)" <brauner@kernel.org>, 
- Chuck Lever <cel@kernel.org>, stable@vger.kernel.org
+ Chuck Lever <cel@kernel.org>
 X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3702; i=brauner@kernel.org;
- h=from:subject:message-id; bh=OKHYY6G5p6tdI3fThR8iqjZq4Cu2ed8jbKwsRQr4+FI=;
- b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS9mJOjqsfwdP26aUFGgi5C6r2yG2bHan4r+X3s7GyXV
- WxXvQoDOkpZGMS4GGTFFFkc2k3C5ZbzVGw2ytSAmcPKBDKEgYtTACYy4TIjw7uI6fuc5flCf+Zm
- 5zW+q5zWPcdB1K3g9IT5Dob+Sj9nMTD8M73HuT7LtvqMxe4/c10XFfduOPPAQlnpxaaCg3+5lgu
- KcwAA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2783; i=brauner@kernel.org;
+ h=from:subject:message-id; bh=C8EYtx2R+lYWtFHGeY0iXNf5hNAMg0s7P8pl3m1iKgk=;
+ b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS9mJOj8UzGeLUCc9+ZM2pvbvxebnnhmpE+g+SSXWobN
+ Dosy223dJSyMIhxMciKKbI4tJuEyy3nqdhslKkBM4eVCWQIAxenAEzk5QVGhrYU5dR7fIy37FMe
+ 6+iy+10qiYvReZc66/8Z5ztf76fa+DEynFt/fqvi+l16ifbTVh5Z/+J12e1rnoUitwqfWIbW8FV
+ OYgQA
 X-Developer-Key: i=brauner@kernel.org; a=openpgp;
  fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
-X-Stat-Signature: mtsnyoc44ooshxkjxm7a44kc1ryqgzc4
+X-Rspam-User: 
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: A983B140007
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
 	version=4.0.1
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 7BE0214000B
-X-Rspam-User: 
-X-HE-Tag: 1793629782-146906
-X-HE-Meta: U2FsdGVkX18ShovrRR5qAC6R0pYYu22GTpu4Ek9iSix8VVUzve7mspE/ae6Gw0e6mWkT7WwBafmVHIKubAV+/k4sQqu4cmJoOGJzM6kmmiWhiVMEOXVgOLbqfOUzS9LGHPeTOqlCZ3S+INN8j999EiQbByAng/AP0iELsiC4rJ5nsgT31GnLfrhi62q7gT+2bzvJFWIVEDLZMcEBvikETR/Kp3xvI9JdP+koI2F2UagYmlwt8ICrl3Z7zTjJ7PPt306Ds9gsenUbFgJ+7AS5xAhFDBBzeB1rb4lkGmHOhQdrDkYygjN19fkrqFwA+MohbaBQckTvUpXRw25rTymnS1Q45DziNAOgE7lWI0UmKXkmlVDLZXEN9CnVjbm60C+YKxlbm8/2GIfqjg8TMJk/UAVkX7jeEegaYMS93iooxHQKLyB1JLUq6dgy/Isn9JZaK+Dt0KACuGlzEX4vJMbcy2pnfNAnUpNQxgQUfn9z3+0HAmNkNMPjfV1NGQ0+FXVM2xya9Rim8U2WJNuiQyqaEx1iB7rVsGjxREo7RN/WB4sGmK7qEi0XzZcsedjXm4c+34OfERnME2RiPqbGFFQtjG+6aCgIJLU5KrnHNjoEZ/cNEY0Xu9oLS7r4Q0WmUHJOlF5xYB7ctuuvqoWd1lxN9X8z/ft4FpL8idE8WbYPpieryjGLaVsslVnYlj5dofEELfxfVcKu9ejaDhUAY3qdygKsS8je615g3e2QoYqT6ivAHbppqyL5fvrLDBt1vJPevoZ80oBgUqR5OfiJ0Uuq/nBddhgOOlfpta03RYzmOQOcjvyonJn9CCdNgW1pSTF3P4tPGgLmtmrVjq+YNZKnAQyzP7nGUEhXIgwN/ceI6ZBTyYkPeALkZQnH1djaWoYJDtqXM+A7Q3PSFD77fzt3Al+acSXd7qJq1uQTiPKFU9RXf+qZWt+zvPSTu5PwQYLm3vePtpTv6Ha9rTl1wFp
- IOM8dBU/
- twNSOepJ/rPFrY/C/Rdzwa1/EYbS/2E1MOfUUZITIq/uqFHQX9+P56qQhkAOPMbr41bFxxPombUmj6Y0C3wDaYSUi4bpIklj6v+e+dJ6SMZ1OLdvZFx3HUTEOm4GfZeWwZn3+dvG8en7U+geB30TaQnGs3kClbvEKBmiQtbQaY2BdR+n77tS4c+SAeQcn/QFVj80OBKtQD2duNJ7Bxb708rpL83BRiI/RTTq2XL6oO6FhF6Hbz/sShK0qbI+qQOCByH24NqPMABAz5xHO5PSy4cmhgA==
+X-Stat-Signature: jsqrtqwgk8hqfxo98u4yxq31br3pp3ij
+X-HE-Tag: 1793629798-761809
+X-HE-Meta: U2FsdGVkX1+4gRtHR6DaCIiDHruJrdE/SAnT/tZDaPXIY3Qk65v5d7cF3vhD8+i9idZDUjMDEiz2J2mwSLRWULqaEq6xAAv1NrLHG/gzw/QKtdy2C5mpdZndYc9yqSguIP1PdyPNz/xvZNaEi5qxhOo1p/vb3WMJVnY7GdEU01XzyvI6m7gx7pGg208y/5zbOBeGRPLyAR/qafGTg8HX4u7cwd5cBigobvAWI3eSvudyBB+X/yim83bA6pZm+kGNWv0PK5rYIR8f3q1WSSIUwzdIo5mD+hEkiKVj70Cxn2PDIeHMc9m2iQBpW8w62MDPDWfBPNR/tBt3wl7jg1xdhcgnaQsivxGuHAH8CJ+7S65IAvE3efAPeEi8KHOf5qJ9hxM2VbK+AjEdQkXHnMb8yYJPZtU5SQvkFRqfOf3kbA5yc8CaMURf7FjP0Myza+Ryh+BCCIlc1RRMgm6CwAzBqrPJQPshP9EkBIUHWtEVBXOHlmC6ERP2RvMfof02CX51fQobpv+qgIKIx1HOLRu8gAe3lpforvMrUxBt31Prnql3OwC1AfCEmlPGDT/IJ75qTqfEAHrkO3cts16lqjf87PPmos6gldz/GfQqeeWBMA4o9rHKQkFSec+Jprl0o4lSt1GMqn9c6krSoH3ArBp3DH9KZeB1fOHI4GdKtgViAaFwh0rQ5go4vHC/dL8qV+PiBUBrZJ/NrWu3yWtw6aQwg5ew+32zWBuUXDe4MryeCRp25+5Zc2g08y4FZjE3173N6oGgPJIWcp1zPhXgpcuB7sw+WofGhumjFiI/3BnvkElpXlJjMn/lyZJGX24dm+jaTk9jtNQCdFaikLD5aNMKIp4ue/iZp8AMdWKobmC+uWJu1OkWJWREI6AzyiKVpaqINTGRVG5hC4alhGR96CnG4tHcKSw/UrZGYbyIkx90NUbQDigC11CKjYtxEKK6tEv3Zvht1zmB/A3yN32RG5Q
+ jp0yGyqf
+ l6BEq9WH9wrUKSwRwY35JclUgJHxCz6plMjnBZalFtVmAaf+Bx6bX0v30cFlo0P8Ka38qo/3I50laepcep8w42Lk0EXFXyOSTUuQ57lNQnjO58LVe93QiGpvRd9mgE/vjfjStZ90FXMeF08gkjMxzH8C7h7VH3E2n6AT0Zi6ijcw6cRMM9eLa2QwOrH29PKb/bUourI15U7STNpVoAtFLL3DaYHryKVF4CsCwtsPsb1FfKjmvlK+8nMDA9JsBl9ausiSoaSX3g1ew/fwXhk08HgvrnM0E3sMYiBo6wkU0/sOvsY1E89oMs/SK7pIKsvAiCSAb7f4tm7+NQJQPapvRK6FADP4AYYPTsFzyce6mYxB8kQ0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -134,115 +134,80 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-proc_sys_call_handler() grabs the table, copies in what is written,
-calls the handler and copies what it produced out to userspace before
-it lets go of the table again. Unregistering a table waits until nobody
-uses it anymore. So a reader or writer whose copy faults for as long as
-it wants, with userfaultfd or a stalled FUSE mapping, keeps
-unregister_sysctl_table() waiting, and its callers like to hold locks
-while they do that. addrconf unregisters the ipv6 sysctls of a device
-with RTNL held, so a stalled read of /proc/sys/net/ipv6/conf/<dev>/mtu
-holds up every RTNL user until the reader gives up.
+proc_sys_make_inode() checks under sysctl_lock that @head isn't being
+unregistered, lets go of the lock, and then reads the mode of @table
+and calls ->set_ownership() with @head. That's fine as long as the
+caller holds @head in use, which keeps unregistering from getting past
+that check. The next patch has a caller that only pins the memory of
+@head. For that one the table, and whatever the owner of the header
+keeps behind it, is only there for as long as nobody unregisters the
+header, which happens under sysctl_lock. So read the mode and set the
+ownership before letting go of the lock. The ->set_ownership()
+callbacks only look up ids in a user namespace.
 
-Copy in before grabbing the table and copy out after letting go of it,
-like procfs and kernfs do for their files. The buffer is ours, nothing
-needs the table for the copies.
+No functional changes.
 
-That moves the allocation and the copy in before the permission check.
-A write that can't be copied in, or a request that is too large, now
-fails with -EFAULT or -ENOMEM where it used to fail with -EPERM.
-
-Fixes: 330d57fb98a9 ("[PATCH] Fix sysctl unregistration oops (CVE-2005-2709)")
-Cc: stable@vger.kernel.org
 Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 ---
- fs/proc/proc_sysctl.c | 50 ++++++++++++++++++++++++++++----------------------
- 1 file changed, 28 insertions(+), 22 deletions(-)
+ fs/proc/proc_sysctl.c | 20 +++++++++++++-------
+ 1 file changed, 13 insertions(+), 7 deletions(-)
 
 diff --git a/fs/proc/proc_sysctl.c b/fs/proc/proc_sysctl.c
-index 38b61887b59c..2150cf842919 100644
+index 2150cf842919..a1242247f492 100644
 --- a/fs/proc/proc_sysctl.c
 +++ b/fs/proc/proc_sysctl.c
-@@ -602,14 +602,36 @@ static ssize_t proc_sys_call_handler(struct kiocb *iocb, struct iov_iter *iter,
- 		int write)
- {
- 	struct inode *inode = file_inode(iocb->ki_filp);
--	struct ctl_table_header *head = grab_header(inode);
- 	const struct ctl_table *table = PROC_I(inode)->sysctl_entry;
-+	struct ctl_table_header *head;
- 	size_t count = iov_iter_count(iter);
- 	char *kbuf;
- 	ssize_t error;
+@@ -500,6 +500,7 @@ static struct inode *proc_sys_make_inode(struct super_block *sb,
+ 	struct ctl_table_root *root = head->root;
+ 	struct inode *inode;
+ 	struct proc_inode *ei;
++	umode_t mode;
  
--	if (IS_ERR(head))
--		return PTR_ERR(head);
-+	/* don't even try if the size is too large */
-+	if (count >= KMALLOC_MAX_SIZE)
-+		return -ENOMEM;
-+	kbuf = kvzalloc(count + 1, GFP_KERNEL);
-+	if (!kbuf)
-+		return -ENOMEM;
-+
+ 	inode = new_inode(sb);
+ 	if (!inode)
+@@ -509,12 +510,22 @@ static struct inode *proc_sys_make_inode(struct super_block *sb,
+ 
+ 	ei = PROC_I(inode);
+ 
++	inode->i_uid = GLOBAL_ROOT_UID;
++	inode->i_gid = GLOBAL_ROOT_GID;
+ 	spin_lock(&sysctl_lock);
+ 	if (unlikely(head->unregistering)) {
+ 		spin_unlock(&sysctl_lock);
+ 		iput(inode);
+ 		return ERR_PTR(-ENOENT);
+ 	}
 +	/*
-+	 * Copy in before grabbing the table and copy out after letting go of
-+	 * it. Unregistering the table waits for us and a copy that faults can
-+	 * take as long as userspace wants.
++	 * The table, and whatever the owner of the header keeps behind it,
++	 * is only there for as long as nobody unregisters the header, which
++	 * happens under sysctl_lock. So look at them before letting go of it.
 +	 */
-+	if (write) {
-+		error = -EFAULT;
-+		if (!copy_from_iter_full(kbuf, count, iter))
-+			goto out_free_buf;
-+		kbuf[count] = '\0';
-+	}
-+
-+	head = grab_header(inode);
-+	if (IS_ERR(head)) {
-+		error = PTR_ERR(head);
-+		goto out_free_buf;
-+	}
++	mode = table->mode;
++	if (root->set_ownership)
++		root->set_ownership(head, &inode->i_uid, &inode->i_gid);
+ 	ei->sysctl = head;
+ 	ei->sysctl_entry = table;
+ 	hlist_add_head_rcu(&ei->sibling_inodes, &head->inodes);
+@@ -522,8 +533,8 @@ static struct inode *proc_sys_make_inode(struct super_block *sb,
+ 	spin_unlock(&sysctl_lock);
  
- 	/*
- 	 * At this point we know that the sysctl was not unregistered
-@@ -624,28 +646,15 @@ static ssize_t proc_sys_call_handler(struct kiocb *iocb, struct iov_iter *iter,
- 	if (!table->proc_handler)
- 		goto out;
+ 	simple_inode_init_ts(inode);
+-	inode->i_mode = table->mode;
+-	if (!S_ISDIR(table->mode)) {
++	inode->i_mode = mode;
++	if (!S_ISDIR(mode)) {
+ 		inode->i_mode |= S_IFREG;
+ 		inode->i_op = &proc_sys_inode_operations;
+ 		inode->i_fop = &proc_sys_file_operations;
+@@ -535,11 +546,6 @@ static struct inode *proc_sys_make_inode(struct super_block *sb,
+ 			make_empty_dir_inode(inode);
+ 	}
  
--	/* don't even try if the size is too large */
--	error = -ENOMEM;
--	if (count >= KMALLOC_MAX_SIZE)
--		goto out;
--	kbuf = kvzalloc(count + 1, GFP_KERNEL);
--	if (!kbuf)
--		goto out;
+-	inode->i_uid = GLOBAL_ROOT_UID;
+-	inode->i_gid = GLOBAL_ROOT_GID;
+-	if (root->set_ownership)
+-		root->set_ownership(head, &inode->i_uid, &inode->i_gid);
 -
--	if (write) {
--		error = -EFAULT;
--		if (!copy_from_iter_full(kbuf, count, iter))
--			goto out_free_buf;
--		kbuf[count] = '\0';
--	}
--
- 	error = BPF_CGROUP_RUN_PROG_SYSCTL(head, table, write, &kbuf, &count,
- 					   &iocb->ki_pos);
- 	if (error)
--		goto out_free_buf;
-+		goto out;
- 
- 	/* careful: calling conventions are nasty here */
- 	error = table->proc_handler(table, write, kbuf, &count, &iocb->ki_pos);
-+out:
-+	sysctl_head_finish(head);
- 	if (error)
- 		goto out_free_buf;
- 
-@@ -658,9 +667,6 @@ static ssize_t proc_sys_call_handler(struct kiocb *iocb, struct iov_iter *iter,
- 	error = count;
- out_free_buf:
- 	kvfree(kbuf);
--out:
--	sysctl_head_finish(head);
--
- 	return error;
+ 	return inode;
  }
  
 
