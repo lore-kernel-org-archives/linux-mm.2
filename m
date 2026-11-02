@@ -1,172 +1,103 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD431606A332
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 12:32:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62CCD60A2608
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 12:32:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=gyAh8T7O
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=AJZOw0wL
 Received: by kanga.kvack.org (Postfix)
-	id CF9856B05B2; Mon,  2 Nov 2026 07:32:26 -0500 (EST)
+	id 865C56B05B3; Mon,  2 Nov 2026 07:32:34 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CAACF6B05B3; Mon,  2 Nov 2026 07:32:26 -0500 (EST)
+	id 83E446B05B4; Mon,  2 Nov 2026 07:32:34 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B73186B05B4; Mon,  2 Nov 2026 07:32:26 -0500 (EST)
+	id 753F26B05B5; Mon,  2 Nov 2026 07:32:34 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 961F56B05B2
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 07:32:26 -0500 (EST)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 38ABF120CC1
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 12:32:26 +0000 (UTC)
-X-FDA: 85390117092.07.E74E482
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 55C306B05B3
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 07:32:34 -0500 (EST)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 4EC89140C35
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 12:32:33 +0000 (UTC)
+X-FDA: 85390117386.10.8997C07
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 86A7210000B
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 12:32:24 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gyAh8T7O;
-	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf30.hostedemail.com (Postfix) with ESMTP id 90C2580005
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 12:32:31 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AJZOw0wL;
+	spf=pass (imf30.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793622751;
+	b=mUFsPXvWZmSVfSGu/BR6U5xUFizzYj0bkwIGf+K8JRptSFkh436pP7yTFvnYR3vSR10eF7
+	CtNx/ml8bWfqtRvw2aK8YrhJiZjVNXUq5D9nXOLiU0PBrs7VP+zF4jj+3srd7yXDdKwvXW
+	+bD00lmbLI5fCVZaUlzR5W9BqiGY1Xo=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AJZOw0wL;
+	spf=pass (imf30.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793622744;
+	s=arc-20220608; t=1793622751;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7uJi7vbsm+UXiwdS8CU4SHzxGBAn/qkTD6YcNjfIfjQ=;
-	b=w8dnwwk4KvQrEmzypQO1euP1ndtv8Cr6ZjZMXF8fQQXjkdqAdZxQrJgmJXYvvRzLAY4oWj
-	IPm2Pt5FZnw/xo4XZU2iGrvZ5z0+VZnoej4TZz9f+50MeEOLyO6f84fyBFGlxjzmIcbKBq
-	aMcNyuUQL5roZLKWsFqq2a3pzDBG9yU=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793622744;
-	b=5ojVj1hv6uoha69cdWVfc5omYYaZXooRhGdMJIg2rGmWPZE98ONoawDKAKEAFTWkeAV0Dx
-	WfBHttRss9MfUd85rJ5hJGF9XaGYdlj17IvBfNfpudPmHdk9b6YkY7uItn8blSShzLs9In
-	nFmU6Xt+n/gzZAcxrwTCKI86FzEKWnM=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gyAh8T7O;
-	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=3fFBdd/pflWkvdBJFw0jTNoMwa2gmB9NEbXxJt+oA4Q=;
+	b=LIRt0+9Tqvrre1O/b3YhTFo5s50BWdNraOLU2abQEb5/Ek8KjjhrRIO7Jobl4+pewR9Ii2
+	WbUfIzJP0Sw6HfTD5uvVw3lwaSB3eAvko+mgqHPvvmNJLrNpgTHxyJ7FLGxP+ZnE2Fy5EE
+	XX7nhY+lCmaKNHGTrQmyO+eEonpc+QQ=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id CD9CE602C5;
-	Mon,  2 Nov 2026 12:32:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61F351F00A17;
-	Mon,  2 Nov 2026 12:32:12 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 280CE60DB6;
+	Mon,  2 Nov 2026 12:32:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DBB91F00A16;
+	Mon,  2 Nov 2026 12:32:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793622743;
-	bh=7uJi7vbsm+UXiwdS8CU4SHzxGBAn/qkTD6YcNjfIfjQ=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=gyAh8T7ORX22epTMSRWFxR6WRFA4zhOB1WCIITKcxdyx61OylLTtdxb/dr9lmzv4d
-	 cuikthVJo5Icn3Gr8nNmY1lPUSuUR1No4jBHe3d6q/pqne2ZsLxlvRGVo84GuBDelg
-	 1j9C/ufHKlAIkiMuhXfSrTcNOrceZPShIbQ74YXpMXqlW0Ki9ABS9zgYKibWGpd0Ko
-	 Ewj/p8HSVEvLkJ0OrGoJkGBizdMfI8DGeu1GWFyJWY9Sdyc/+Q7hKLRJWAfeebVuxA
-	 UljKd2nn3SkKOmszOlMHz4Gdq5m2JjNyPPSz0O/y1wnYkYxt4Xlad5WCu/VoqrQcxP
-	 uWqlBmF6LrsOA==
-Message-ID: <4adcc07a-2df9-4d5b-8b0f-6734e336182e@kernel.org>
-Date: Mon, 2 Nov 2026 13:32:10 +0100
+	s=k20260515; t=1793622751;
+	bh=3fFBdd/pflWkvdBJFw0jTNoMwa2gmB9NEbXxJt+oA4Q=;
+	h=From:Date:Subject:To:Cc;
+	b=AJZOw0wLqQlm1wmFt2sNAXpkX+xko/eWhjQ+IDeSG3CVbL9zNbCAiq4x71xmL6MD4
+	 tXSecn/VOXoUvsYfvsBmhEo5MHLm/R8ps7Qp2Ng9GmRpiiIxFqwijHam92V5/KUEfV
+	 FXfoI4ZlU1dyiM7LCYUpsI1WN16pqUk7dbDHGNfvhuZh08ToTpWxEXBNB+PXO34+jq
+	 K/iNajjan+VDageqiLqPHp3rU7tsIY/J6NrqJDZk50tlA9GueF5nlTNE8iUTgmJhke
+	 +jG/QOx92nJNatlYBpDWruwhb4O2ey5rtuC/z0CPSvAQmLYvdPy6R8W/qVPzXCKoBg
+	 Pdx4CmAtN+4CA==
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Date: Mon, 02 Nov 2026 12:32:25 +0000
+Subject: [PATCH] mm/ksm: avoid unsafe anon rmap dereference in KSM merge
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/7] MAINTAINERS: MM updates
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Alistair Popple <apopple@nvidia.com>,
- "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- Baoquan He <baoquan.he@linux.dev>, Barry Song <baohua@kernel.org>,
- Brendan Jackman <brendan.jackman@linux.dev>,
- Byungchul Park <byungchul@sk.com>, Chengming Zhou
- <chengming.zhou@linux.dev>, Chris Li <chrisl@kernel.org>,
- Christoph Lameter <cl@gentwo.org>, Dave Chinner <david@fromorbit.com>,
- David Rientjes <rientjes@google.com>, Dennis Zhou <dennis@kernel.org>,
- Dev Jain <dev.jain@arm.com>, Gregory Price <gourry@gourry.net>,
- Hao Li <hao.li@linux.dev>, Harry Yoo <harry@kernel.org>,
- Hugh Dickins <hughd@google.com>, Jann Horn <jannh@google.com>,
- Johannes Weiner <hannes@cmpxchg.org>, John Hubbard <jhubbard@nvidia.com>,
- Joshua Hahn <joshua.hahnjy@gmail.com>, Kairui Song <kasong@tencent.com>,
- Kemeng Shi <shikemeng@huaweicloud.com>, Kiryl Shutsemau <kas@kernel.org>,
- Lance Yang <lance.yang@linux.dev>, "Liam R. Howlett" <liam@infradead.org>,
- Matthew Brost <matthew.brost@intel.com>, Miaohe Lin <linmiaohe@huawei.com>,
- Michal Hocko <mhocko@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Muchun Song <muchun.song@linux.dev>,
- Naoya Horiguchi <nao.horiguchi@gmail.com>, Nhat Pham <nphamcs@gmail.com>,
- Nick Piggin <npiggin@gmail.com>, Nico Pache <nico.pache@linux.dev>,
- Oscar Salvador <osalvador@suse.de>, Pedro Falcato <pfalcato@suse.de>,
- Peter Xu <peterx@redhat.com>, Peter Zijlstra <peterz@infradead.org>,
- Qi Zheng <qi.zheng@linux.dev>, Rakie Kim <rakie.kim@sk.com>,
- Rik van Riel <riel@surriel.com>, Roman Gushchin <roman.gushchin@linux.dev>,
- Ryan Roberts <ryan.roberts@arm.com>, Shakeel Butt <shakeel.butt@linux.dev>,
- Suren Baghdasaryan <surenb@google.com>, Tejun Heo <tj@kernel.org>,
- Uladzislau Rezki <urezki@gmail.com>, Usama Arif <usama.arif@linux.dev>,
- Vlastimil Babka <vbabka@kernel.org>, Will Deacon <will@kernel.org>,
- Xu Xin <xu.xin@linux.dev>, Ying Huang <ying.huang@linux.alibaba.com>,
- Youngjun Park <youngjun.park@lge.com>, Zi Yan <ziy@nvidia.com>,
- Jason Gunthorpe <jgg@ziepe.ca>, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org
-References: <20261030-maintainers-v1-0-97278f8a5f54@kernel.org>
- <1c46e678-1da8-473d-960e-5aa22d4d7e73@kernel.org>
- <20261101123025.4d8133d5321820f2202c8f1a@linux-foundation.org>
- <1b4d0299-4232-43eb-9229-7d2a2a7ce2fc@kernel.org> <auhw4mBAqzKU_-DE@gremlin>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <auhw4mBAqzKU_-DE@gremlin>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 86A7210000B
-X-Stat-Signature: ee96y8qxd9zqi7ti9unej1uhgjb6y1zs
+Message-Id: <20261102-ksm-anon-rmap-fix-v1-1-68962acfb59b@kernel.org>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/x2MQQqAIBAAvxJ7bkGlJPpKdNBca4lUFCKQ/p50n
+ IGZCoUyU4G5q5Dp5sIxNJB9B9thwk7IrjEoobSUQuFZLjQhBsyXSej5QTsO1urJeU0btC5lavp
+ /Luv7fvUgtmNjAAAA
+X-Change-ID: 20261102-ksm-anon-rmap-fix-b54bb68df6ec
+To: David Hildenbrand <david@kernel.org>, Xu Xin <xu.xin@linux.dev>, 
+ Chengming Zhou <chengming.zhou@linux.dev>, 
+ Andrew Morton <akpm@linux-foundation.org>, Rik van Riel <riel@redhat.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, ljs@kernel.org, 
+ Zhao Gongyi <zhaogongyi@bytedance.com>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=9612; i=ljs@kernel.org;
+ h=from:subject:message-id; bh=PxH75+4aFrWwzd9qYlqB6yGrtWWv8reB5ZjtMdlVQR0=;
+ b=owGbwMvMwCV2fu7ZrsZH9SKMp9WSGLJeNN1Ztmxa4ULvC0a6sbalNquWVTeYdc55YbbOxeqx0
+ onLEaVJHaUsDGJcDLJiiizPv4jvDxIJm9d5wd8NZg4rE8gQBi5OAZhIniUjQ4vST+5V6u1r7hXs
+ /7jW91lcoYTyWfMF3cc5H8q4q/zbc52RoeuBwHejCbf2P4noSuTZcLbnSUPwNJ9IJh9+t3MJn6z
+ MOAE=
+X-Developer-Key: i=ljs@kernel.org; a=openpgp;
+ fpr=E7F417BF5214569E89D04F46CF9DCD8A81E27F14
 X-Rspam-User: 
-X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Rspamd-Queue-Id: 90C2580005
+X-Stat-Signature: c1ocgnge8z9uh3gx8yfjkurzuh1sj96m
+X-Rspamd-Server: rspam01
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
-	autolearn=no autolearn_force=no version=4.0.1
-X-HE-Tag: 1793622744-386045
-X-HE-Meta: U2FsdGVkX1+/a2C/LyJJ6SOr21Y+xnRmyWHUGwYsq0yM1HBQvN2ix4xXStGCF5jtjq30uSDGMSDv8w2/JO1vdYcEhenVdb2eHs3FJa8U6QEYxX/bBA4b2vF6mdlXoyR9hmVHPzbjifqJYKEjjh8dU0KjJsLS5kwtYtBaCq3m3ig/E2WaxuXyxvcA6XV7wx+R3PXoeS4IA+2LhzMj2LPACVgWE2rG45g7OuOw6Jp8bGxJB08tZBbh+PLWkMOLdAKpYtChCooLnvdQO6f2lC/djKse1f264HEuSIiKL8zQkjcXCqIwwVcbVEX5Oc1/sMHqosiqNayrOUCf9alLh/3fMIO1IuHg3C1uWTgRTs5Ej/1wON9P6hUPK8d+hB8xbOzzXlGfiB/cNowoESQNTkDLRrKyQCCMTcNx7AU0dzD15SX1lzG15oJ8gRizWTgnJAeRfkJm7uql7c6w4fWJXrUfqGzg2Pq6qiyvmmuP6lLIGoiogfNAG9CUPo9Klpvy/SN4HKw87hJzmLXAbRC+QSWvQ4iO07crquJzgTgMSXdz2PIq/Uyd8pP23eRg/heVeHymvDMvMbeQ7VCBuEC3FQt0VmYYz1sqgpqoSf93PdMu4zBPQNB2TVtIljnSP8kCvgroKJP41vilwxUcISqvyzwY49FcLr6I/iR2qndjOs/ok5KgLlYs7uQd/oeVqv/TP7Sw2SH1T6VZTIttoydrQXpg0qDmI1rb/XbaCx2SX4jtjct7TtP9IoaS/kJSGm4C5xf2JH31LDJ42Jv/Nzkvqn9z8u05p/6SdRn2XOv409G84WGWxomvWMKVc9rgU5P4eOc+6I8JkAfq9fUex3Ppi1C/qbK3nkKuEMbrSe6wEsqZsoY5aINSJPjX2lmBxtmnZTQMFRtbuavtMo/TeTvcgbitwuP+wPFLOI1sU2yVNRaqrC/YmTIk3U/U+PKxbwboHOyR6tqOMWzM+gXP1RqwXre
- UZRMvfKh
- eHdgUrVsx1xWcVB44GP631OQPLPVWTY2NUbcoCbZSiuumr1ZfDK+PotUfpYsPWM/Dh1346PFYotVY+2RvZrjx57UNymPQeKJZ3coTxzITZjw88oUYDVntLRzgzymlnb8W50xDWaaD5C2ZDks7ykluE9UuWUc7Z/cTEo3SB9sonYo3m/0RK1nVLvAkv4F55ShYSfivBvE+VVTcpVqMKk8ta3Wu/KFV4zTYmzVojfm0fldr6eWnDzeY4ZCnk9/uLZrS9TYhD/HyogaWadwU7UlyZhdOKK0pkclj3hMOxS27kgYmczL4gDJW3WOxj0D4Z062IOBNTizJNaPVjGc=
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1793622751-37470
+X-HE-Meta: U2FsdGVkX18IpR7mhN9E4d664tsK07VKSknIm+afEhlLq/tn/l8wslfmZNZqN98D72KZzw+OL8xGGCttY3EaHWC7TGemZZBN1gmj5weCBYBdgu0Lp+lY2Yy+zw4+o1pN7VvzYxSt2Rfw8nLib1r7cxiF3Vfgxkui6GQSDu+KZ5trnAS9903/ugH2txDETi5wuILwnIKU4YMhehINu1qFnEZByRY7WWjE0qKEe4j1XFOZQoKZQxPLTIO7wmjlkxq3ePu9+VoqHC11UVkrJbgiL4STKOO7Mjz0gFcH7Z7IxF7v45Gy6RLpI4IddRMmxQfIAMLGbfc7FuZzPZq/9l2/ORHBvrqYiP/FVI5Ct8HaQNROC76wfem+IXYpMlWwjuXBu2hmDXdqxo/LnzolS56GnKddlDYzqOZbl56gH9eUy+4qRBcOJdR9t3et5cD2fXlmJELrbOdq8oT9Nkj1wQ/NsJL7XVgTTWm/ztgXxtqYtIOkGRDqx2EzFMT/M7+/m6226X4cylwAQzEAfYIMNCjAFJPzj4U55Dsf2DZ3xLelXQQnXkk/vGCXSZfL/sgWizuv6hxKwm/KxMM8/vPUT0DsnLAuQI6qebCGMtbpygRjNJX9vUVBSaIRH/XeskjzJE6uhT+rRZ7heKdlxtezMTEI2un6rQYiXDdN5zl6p8GfJlCRvAjKomHCOK4XtCJDJMkBne5u1HoYx21NDmigNqu4laYI40xafBWrT4gRAULA2ucwFwWYjIjsN9IcYm//eO9pwD+lre6hDFVW1y5/EERNAaUANpVkW6JRIT6ABBd57cqZ+Qvrm7tPGjVk/lyWpZd1IqvtBgdBP6WPJxM2ZPnLhbMHP1hPIXoPKgMx7O3ftr/dZYtObnJkJ2jY2+6s4RXerubmeUXOPfnUt6T5Yuj5DvSJesoja6TrXHIZZXTU/lCKPnqJMSKNNj84ujMvhpYIpuXhuvDiWpKKVcCQUI3
+ 5xpbCXpY
+ wzyuVslqzPHbe6GM0k6/WIxe1/N1FF2GnXw6cjzow7bP0T9QCIxDJMW3MqwaXFbfq8VPs6CfZlT7WV3grddLogeeWpO1ZK0kD5eOT4yMYjl5alJqqKezEfqYKcuvkbUWdyVkIlezjh2JpCwv5O01FsldjoUfydlVe22gwCMUugZDtuKWh2wjelkYOMOZ8p/0YNkghVmcqnyioScKOPf+JY7s0D5MYCtFALfJeM21Qgq0zawO+mDcZIvJo9jE7FOcLC2SOYTbRQg9/a8g=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -175,36 +106,257 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/2/26 12:17, Lorenzo Stoakes (ARM) wrote:
-> On Mon, Nov 02, 2026 at 07:47:46AM +0100, David Hildenbrand (Arm) wrote:
->> On 11/1/26 21:30, Andrew Morton wrote:
->>> After that I need to have it whack away at selftests, shudder.
->>
->> I am not convinced yet that we want that for all tests, which is why I left it
->> out. There is too much churn that's not really relevant for a component
->> maintainer POV.
->>
->> I was rather thinking that maybe we'd want a MM selftest component (likely for
->> the later MISC maintainer) that picks up the usual selftest churn. Component
->> maintainers really only have to be CCed on functional things.
-> 
-> Hmm, but some of these tests are establishing important invariants. I wouldn't
-> want somebody fundamentally changing what the guard region tests do for
-> instance.
-> 
-> On the one hand the churn (especially now) is annoying, on the other hand I can
-> just ignore mail I don't care about.
+When KSM examines candidate VMAs in scan_get_next_rmap_item(), it
+accumulates (mm, address) pairs in ksm_rmap_item objects, assigning them
+via get_next_rmap_item(), pinning folios via a page walk in
+ksm_next_page_pmd_entry().
 
-Well, as a listed maintainer you'd be expected to pick up these things.
+Throughout this operation, scan_get_next_rmap_item() holds mmap read lock,
+which it drops afterwards.
 
-So I'd much rather have a dedicated selftest maintainer that takes care of these
-things.
+After the mmap lock is dropped the VMAs might be freed and remapped where
+the VMA belonging to the folio was previously mapped.
 
-OFC we can still add these tests cases to the relevant sections; we just have to
-figure out who will pick up most simple changes.
+mremap()'s ability to change where anon folios are mapped is dealt with by
+KSM by essentially avoiding the problem - prep_move_vma() unshares KSM
+folios, and the scanning logic is tolerant of concurrent remaps, discarding
+stale ksm_rmap_item objects and allocating new ones at the new address.
 
--- 
+This doesn't account for a new VMA being mapped over an old one where a
+folio was previously mapped, so KSM accounts for this by checking things at
+the page table level.
+
+However, once an anon_vma's reference count reaches zero, it is freed, but
+nothing clears folio->mapping, which is where the KSM pin interacts badly
+with the current KSM implementation.
+
+page_address_in_vma() is consistently used to look up the folio's address,
+but page_address_in_vma() explicitly states:
+
+"It is the caller's responsibility to check the page is actually within the
+VMA."
+
+And KSM violates this, as it cannot know this to be true. This results in
+this function performing a use-after-free:
+
+		struct anon_vma *anon_vma = folio_anon_vma(folio);
+
+		...
+
+		if (!vma_has_anon_rmap(vma) || !anon_vma ||
+		    vma->anon_vma->root != anon_vma->root)
+			return -EFAULT;
+
+As anon_vma->root is dereferenced when anon_vma can already have been
+freed.
+
+This is currently benign in practice, as anon_vma's are slab-allocated
+objects so this will always be within the direct mapping and arbitrary
+memory will be treated as if it were a pointer to be compared.
+
+This either results in an -EFAULT or a spurious match, which will be
+rejected at the page table level.
+
+However we mustn't UAF even if it's harmless, and KASAN rightly flags this.
+
+It turns out we don't even need to use page_address_in_vma() as we already
+know the folio's address, it simply needs to be passed through.
+
+This change therefore updates KSM to do this, sidestepping the issue
+altogether.
+
+Explicitly check for KSM folios in try_to_merge_one_page(), which are
+already merged, and by definition never have an anon_vma.
+
+This was previously handled implicitly by page_address_in_vma() as
+folio_anon_vma() returns NULL for those.
+
+In many cases cmp_and_merge_page() will reject these, but it's possible for
+KSM folios to fall into the unstable tree there, so eliminate that
+possibility by checking for that early.
+
+This maintains existing behaviour.
+
+The bug was introduced by commit 21d0d443cdc1 ("rmap: resurrect
+page_address_in_vma anon_vma check") which first dereferenced
+folio->mapping unsafely, but commit b8c8ba73c68b ("slub: Introduce
+CONFIG_SLUB_RCU_DEBUG") made it visible with CONFIG_SLUB_RCU_DEBUG enabled.
+
+Fixes: 21d0d443cdc1 ("rmap: resurrect page_address_in_vma anon_vma check")
+Reported-by: Zhao Gongyi <zhaogongyi@bytedance.com>
+Closes: https://lore.kernel.org/all/20261031182256.40205-1-zhaogongyi@bytedance.com/
+Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+---
+David - this seems benign in practice, so I'm not sure whether a backport
+is required here.
+---
+ mm/ksm.c | 43 ++++++++++++++++++-------------------------
+ 1 file changed, 18 insertions(+), 25 deletions(-)
+
+diff --git a/mm/ksm.c b/mm/ksm.c
+index d6f736a1aa2f..620455e4754a 100644
+--- a/mm/ksm.c
++++ b/mm/ksm.c
+@@ -1294,10 +1294,10 @@ static u32 calc_checksum(struct page *page)
+ }
+ 
+ static int write_protect_page(struct vm_area_struct *vma, struct folio *folio,
+-			      pte_t *orig_pte)
++			      unsigned long addr, pte_t *orig_pte)
+ {
+ 	struct mm_struct *mm = vma->vm_mm;
+-	DEFINE_FOLIO_VMA_WALK(pvmw, folio, vma, 0, 0);
++	DEFINE_FOLIO_VMA_WALK(pvmw, folio, vma, addr, 0);
+ 	int swapped;
+ 	int err = -EFAULT;
+ 	struct mmu_notifier_range range;
+@@ -1307,10 +1307,6 @@ static int write_protect_page(struct vm_area_struct *vma, struct folio *folio,
+ 	if (WARN_ON_ONCE(folio_test_large(folio)))
+ 		return err;
+ 
+-	pvmw.address = page_address_in_vma(folio, folio_page(folio, 0), vma);
+-	if (pvmw.address == -EFAULT)
+-		goto out;
+-
+ 	mmu_notifier_range_init(&range, MMU_NOTIFY_CLEAR, 0, mm, pvmw.address,
+ 				pvmw.address + PAGE_SIZE);
+ 	mmu_notifier_invalidate_range_start(&range);
+@@ -1380,7 +1376,6 @@ static int write_protect_page(struct vm_area_struct *vma, struct folio *folio,
+ 	page_vma_mapped_walk_done(&pvmw);
+ out_mn:
+ 	mmu_notifier_invalidate_range_end(&range);
+-out:
+ 	return err;
+ }
+ 
+@@ -1389,12 +1384,13 @@ static int write_protect_page(struct vm_area_struct *vma, struct folio *folio,
+  * @vma:      vma that holds the pte pointing to page
+  * @page:     the page we are replacing by kpage
+  * @kpage:    the ksm page we replace page by
++ * @addr:     the address at which @page is mapped
+  * @orig_pte: the original value of the pte
+  *
+  * Returns 0 on success, -EFAULT on failure.
+  */
+ static int replace_page(struct vm_area_struct *vma, struct page *page,
+-			struct page *kpage, pte_t orig_pte)
++		struct page *kpage, unsigned long addr, pte_t orig_pte)
+ {
+ 	struct folio *kfolio = page_folio(kpage);
+ 	struct mm_struct *mm = vma->vm_mm;
+@@ -1404,14 +1400,9 @@ static int replace_page(struct vm_area_struct *vma, struct page *page,
+ 	pte_t *ptep;
+ 	pte_t newpte;
+ 	spinlock_t *ptl;
+-	unsigned long addr;
+ 	int err = -EFAULT;
+ 	struct mmu_notifier_range range;
+ 
+-	addr = page_address_in_vma(folio, page, vma);
+-	if (addr == -EFAULT)
+-		goto out;
+-
+ 	pmd = mm_find_pmd(mm, addr);
+ 	if (!pmd)
+ 		goto out;
+@@ -1499,6 +1490,7 @@ static int replace_page(struct vm_area_struct *vma, struct page *page,
+ /*
+  * try_to_merge_one_page - take two pages and merge them into one
+  * @vma: the vma that holds the pte pointing to page
++ * @addr:     the address at which @page is mapped
+  * @page: the PageAnon page that we want to replace with kpage
+  * @kpage: the KSM page that we want to map instead of page,
+  *         or NULL the first time when we want to use page as kpage.
+@@ -1506,7 +1498,7 @@ static int replace_page(struct vm_area_struct *vma, struct page *page,
+  * This function returns 0 if the pages were merged, -EFAULT otherwise.
+  */
+ static int try_to_merge_one_page(struct vm_area_struct *vma,
+-				 struct page *page, struct page *kpage)
++		unsigned long addr, struct page *page, struct page *kpage)
+ {
+ 	struct folio *folio = page_folio(page);
+ 	pte_t orig_pte = __pte(0);
+@@ -1515,7 +1507,7 @@ static int try_to_merge_one_page(struct vm_area_struct *vma,
+ 	if (page == kpage)			/* ksm page forked */
+ 		return 0;
+ 
+-	if (!folio_test_anon(folio))
++	if (!folio_test_anon(folio) || folio_test_ksm(folio))
+ 		goto out;
+ 
+ 	/*
+@@ -1539,7 +1531,7 @@ static int try_to_merge_one_page(struct vm_area_struct *vma,
+ 	 * ptes are necessarily already write-protected.  But in either
+ 	 * case, we need to lock and check page_count is not raised.
+ 	 */
+-	if (write_protect_page(vma, folio, &orig_pte) == 0) {
++	if (write_protect_page(vma, folio, addr, &orig_pte) == 0) {
+ 		if (!kpage) {
+ 			/*
+ 			 * While we hold folio lock, upgrade folio from
+@@ -1556,7 +1548,7 @@ static int try_to_merge_one_page(struct vm_area_struct *vma,
+ 				folio_mark_dirty(folio);
+ 			err = 0;
+ 		} else if (pages_identical(page, kpage))
+-			err = replace_page(vma, page, kpage, orig_pte);
++			err = replace_page(vma, page, kpage, addr, orig_pte);
+ 	}
+ 
+ out_unlock:
+@@ -1572,6 +1564,7 @@ static int try_to_merge_one_page(struct vm_area_struct *vma,
+ static int try_to_merge_with_zero_page(struct ksm_rmap_item *rmap_item,
+ 				       struct page *page)
+ {
++	const unsigned long addr = rmap_item->address & PAGE_MASK;
+ 	struct mm_struct *mm = rmap_item->mm;
+ 	int err = -EFAULT;
+ 
+@@ -1583,13 +1576,12 @@ static int try_to_merge_with_zero_page(struct ksm_rmap_item *rmap_item,
+ 		struct vm_area_struct *vma;
+ 
+ 		mmap_read_lock(mm);
+-		vma = find_mergeable_vma(mm, rmap_item->address);
++		vma = find_mergeable_vma(mm, addr);
+ 		if (vma) {
+-			err = try_to_merge_one_page(vma, page,
+-					ZERO_PAGE(rmap_item->address));
+-			trace_ksm_merge_one_page(
+-				page_to_pfn(ZERO_PAGE(rmap_item->address)),
+-				rmap_item, mm, err);
++			err = try_to_merge_one_page(vma, addr, page,
++						    ZERO_PAGE(addr));
++			trace_ksm_merge_one_page(page_to_pfn(ZERO_PAGE(addr)),
++						 rmap_item, mm, err);
+ 		} else {
+ 			/*
+ 			 * If the vma is out of date, we do not need to
+@@ -1612,16 +1604,17 @@ static int try_to_merge_with_zero_page(struct ksm_rmap_item *rmap_item,
+ static int try_to_merge_with_ksm_page(struct ksm_rmap_item *rmap_item,
+ 				      struct page *page, struct page *kpage)
+ {
++	const unsigned long addr = rmap_item->address & PAGE_MASK;
+ 	struct mm_struct *mm = rmap_item->mm;
+ 	struct vm_area_struct *vma;
+ 	int err = -EFAULT;
+ 
+ 	mmap_read_lock(mm);
+-	vma = find_mergeable_vma(mm, rmap_item->address);
++	vma = find_mergeable_vma(mm, addr);
+ 	if (!vma)
+ 		goto out;
+ 
+-	err = try_to_merge_one_page(vma, page, kpage);
++	err = try_to_merge_one_page(vma, addr, page, kpage);
+ 	if (err)
+ 		goto out;
+ 
+
+---
+base-commit: 34f88a114888c9dba49e45f2b0c2a3e83c4c871c
+change-id: 20261102-ksm-anon-rmap-fix-b54bb68df6ec
+
 Cheers,
+-- 
+Lorenzo Stoakes (ARM) <ljs@kernel.org>
 
-David
 
