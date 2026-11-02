@@ -1,75 +1,75 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD16C607BDE0
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 14:27:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91558606EE9C
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 14:27:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=DrI+PNek
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=hvt3N63R
 Received: by kanga.kvack.org (Postfix)
-	id B61BA6B05D8; Mon,  2 Nov 2026 09:27:23 -0500 (EST)
+	id B62306B05DA; Mon,  2 Nov 2026 09:27:36 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B396A6B05D9; Mon,  2 Nov 2026 09:27:23 -0500 (EST)
+	id B39A06B05DB; Mon,  2 Nov 2026 09:27:36 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A76546B05DA; Mon,  2 Nov 2026 09:27:23 -0500 (EST)
+	id A777C6B05DC; Mon,  2 Nov 2026 09:27:36 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 841F66B05D8
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 09:27:23 -0500 (EST)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 0AA80A013C
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 14:27:23 +0000 (UTC)
-X-FDA: 85390406766.23.BB7A223
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 38CE94000B
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 14:27:21 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DrI+PNek;
-	spf=pass (imf12.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	by kanga.kvack.org (Postfix) with ESMTP id 88C9C6B05DA
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 09:27:36 -0500 (EST)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 2E3CCA013F
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 14:27:36 +0000 (UTC)
+X-FDA: 85390407312.24.ACD3863
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 5A84C8000C
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 14:27:34 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hvt3N63R;
+	spf=pass (imf02.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793629641;
+	s=arc-20220608; t=1793629654;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xlRe6ByN3zpYNOlJQq83OVbC6fU3d9RayIfuGISBpLE=;
-	b=W4rPTIDHM+cRDPUkrMBs3u76XbMF144JvIO4DyWWNqYdgGUtjyNp7DEZPQ4J92uLjWLnJz
-	FZ6QTdyLUYgWw5S/Gp4QLW+ijlu7Q1kcNTu/V37x/Od0s77tlr4enqj3URSpmdByIrUNcc
-	40q5jW8gnu3g51WSsWUrLfPLhgyJMag=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DrI+PNek;
-	spf=pass (imf12.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=v5t8qKNo68SCWoforDimF8hL2ZYL+p0Okj8bWoZ1JT0=;
+	b=GgOP/5J/XvBhRWLidSbQjSQsdZKdIV/zfpncOe7OR6lH9eNgk6p8bt+RxHFOWy5oGmxnkj
+	ckD/uuWla3SSiWrQ/D8VIanwHCOcU+Z019kiXSNj0Y1XO5qqB/PY6i79rWuVyWUI6dCl44
+	62HFq9FkO9S4Izl+iY8W2UZ/aN9NlGg=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793629641;
-	b=QoCOt0GywqilpYQSZZc5oAtS6vNNLx6rCpO/cfjVVW4N/h0CkVBIRjH2C9oMgjP6mfJD32
-	UVeiA0xIbgCDJ5qkWyA+0WVOIUExNkUKTezwe+JIyDZ0QERfOjwrKJa31oOgu8VT8qzwm9
-	GQed9F1u4wXG5wWNvKYQ3fnmyaXAkzc=
+	t=1793629654;
+	b=jA69f0VOq6VTJ61X5Sn7DrFfaj40/hms6vROky5KLrA4cio9ZxAMRx+ryAWWgJRy8VaEif
+	DazE3aSnh5hV85OckW9dASujRd0bSqrloXqvyL7XGnmjdp6/Tq+8fn3Di02GzNdoh7BZ4A
+	PYCHKSpWtFb069v+ouvR7r3ZJUvEkTU=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hvt3N63R;
+	spf=pass (imf02.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 8497B41787;
+	by tor.source.kernel.org (Postfix) with ESMTP id D7D6A60238;
+	Mon,  2 Nov 2026 14:27:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFFDE1F00A1A;
 	Mon,  2 Nov 2026 14:27:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2FE31F00A1C;
-	Mon,  2 Nov 2026 14:27:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793629640;
-	bh=xlRe6ByN3zpYNOlJQq83OVbC6fU3d9RayIfuGISBpLE=;
+	s=k20260515; t=1793629653;
+	bh=v5t8qKNo68SCWoforDimF8hL2ZYL+p0Okj8bWoZ1JT0=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=DrI+PNekNretHUZ1kn1KtVLM1VAQ4asWCX4darvbDfIiADMbVebIHhgZrW1oD/LQm
-	 ET27Dsfxtbv5Bx6RMcyog3VOgeXPBOtvOh2VXPyT8GPO6Ybp+ewD3KRsx4thesz8VP
-	 QA7RHgKiSLQ1nhgNIeJZ4ihrXQPO5LDA6Zn+C6+rSuuh9NM+5LbiX/ev4owvWjFJK+
-	 w88KxP2goEYkeNG1aUmgx8CoQpiUa0JgLD5JUUs48hMCG8PnbgpkAsa8uZGjQLF3EQ
-	 k2GluFIjmgjBfX+GXD3ZOzpKoAHK50KNKTlCQq/MS76QVFek5Vdqcyn24CZ5KtXYnN
-	 gpYlqS5cSCEuw==
+	b=hvt3N63R16p2fDZtChXjcMwdKVbvtxfkoL2k4OxbkJ9NXiN3sUvoI90Anz8tghLzV
+	 tw7TRLB1mJI+ndKzKgYA8EusdDfCEFHDNDNB81AIW3QjjgCwg/TU6I079wNwJuekME
+	 GgYfwUhSITW0rfvdsRQDJf8rj9zB05fpKjF8xVxdybjPcer/CH1qH37gxEgqe+026Q
+	 OuFUuk+WcD3uSGWDc90qsgO7GgFfaxkgSrLrqyeXVxjbcarjoj5jc97EhboLO3/3O0
+	 KcAvyFsBb08Hf5sOjHYp74WBf8FtRIs604ayotkQgHKNOSX4SCmldQ2ODja09nMv8N
+	 2p+DzdlRSt69w==
 From: Christian Brauner <brauner@kernel.org>
-Date: Mon, 02 Nov 2026 15:21:39 +0100
-Subject: [PATCH RFC 24/38] proc/vmcore: don't let vmcore_cleanup() run
- twice at once
+Date: Mon, 02 Nov 2026 15:21:40 +0100
+Subject: [PATCH RFC 25/38] powerpc/crash_dump: check ioremap_cache() in
+ copy_oldmem_page()
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261102-work-procfs-bugfixes-v1-24-59422ed3e465@kernel.org>
+Message-Id: <20261102-work-procfs-bugfixes-v1-25-59422ed3e465@kernel.org>
 References: <20261102-work-procfs-bugfixes-v1-0-59422ed3e465@kernel.org>
 In-Reply-To: <20261102-work-procfs-bugfixes-v1-0-59422ed3e465@kernel.org>
 To: linux-fsdevel@vger.kernel.org
@@ -105,27 +105,27 @@ Cc: Linus Torvalds <torvalds@linux-foundation.org>,
  "Christian Brauner (Amutable)" <brauner@kernel.org>, 
  Chuck Lever <cel@kernel.org>, stable@vger.kernel.org
 X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1758; i=brauner@kernel.org;
- h=from:subject:message-id; bh=gmON/Vwu30bm66aR7FLjt15bWl4pslPspuVjwp92LoI=;
- b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS9mJN9ymzS0mChk/OuHxLcK7hCIChOYcKK3y/vZOxX9
- hTemFvv2lHKwiDGxSArpsji0G4SLrecp2KzUaYGzBxWJpAhDFycAjCRv4kM/3SchYRYG9b+Xrc8
- wduJ9XImq3xMwSbxeTeYAicKTFfkvcLIcC/DZqdZ5/W1Oa+zPiduuy4Y56u/3qrMJ2nqgj3fHed
- 9YgUA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1312; i=brauner@kernel.org;
+ h=from:subject:message-id; bh=2dbZnDPFapx3dAW5qeN54CL6hHWBvjsrs28L3h6tsIk=;
+ b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS9mJOT3t4mUyCor3Li661vsa/yObLOB7XeUji6boXCC
+ secScIdHaUsDGJcDLJiiiwO7Sbhcst5KjYbZWrAzGFlAhnCwMUpABPh7WFkeC/LwqiVxiMX6PN4
+ IXM3/4WNlnf/rlkw4SVrp5CBfEGgISND+4Gm4KSDXU7MDmLZHq5y5z4dYP+8p+ODD1PYa4mTduu
+ YAA==
 X-Developer-Key: i=brauner@kernel.org; a=openpgp;
  fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 38CE94000B
-X-Stat-Signature: ggbi4mhurgp9s69krzz5fe36wzibwwwy
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 5A84C8000C
+X-Stat-Signature: 3qhchgwzik7nkmei7gmjgd59jpdhay9z
 X-Rspam-User: 
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
 	version=4.0.1
-X-HE-Tag: 1793629641-853514
-X-HE-Meta: U2FsdGVkX18CJc2ClZ0bskh7J1aAHp2DqT5b9SB0yBHzJt87I9xsjfFIl3dxIvZmHMgP338rRpCcVaUNI1IzcQJa958LmhJ7kAu7+9W3ux4zZ5BCWDCewgIdjGPdAv3WVkB6HOE0IOJabS5jyG3DvFN6eZoeOKdEF0foPpd3MfgN4W4qJd6JleyI/qyMqt2eJvSbxkZnHEK5MLuwT+hmkJzUHtw1m4AMGspTXoCeK3UAHSH7DVRPrH4tzCJnbIyiCFi8XSPqAH5XmsFdxEaikI8fvRVDYFrflSibiUp3DD81CQAmbzSrJul4PG2Dr05uouJi8HTE3Rl5UqrQNSegMliZMFjrOJv98eVzZzUC+1Y2zL1KcXdiwWUzyh0tegV4ON+PzqUbiif9uDoguwpd6/4YMXw1DctsC5ejmn/9vzKpkusX8v9h9tDn1r/nE2Y4YQFQezwsYHhvykCXLknCxA6s6sjtzdxlTTtL9LD6tBye2N5DnqF2qTGBJJt6L8milbsx5XW6kdDhgS9VRdoACMJ1WjyIW7kjCDhoMtjfRh2r9MB5IZ0dEwKYtfuFhG2IieDZCmsXCMvHHUXsCH4olxKrencz0m5qQwFM8wEEcWepRxNyKlDGCUpPLibReWVmwrKFHWNGHnZx668px08R7YwxvZYCasEIWSAJWDeVh3ynTTX2YeNrI1SnHnzDi2idSTnA5vMZAEyxgOu7+0Ja3g/5pnt6zJONId/psiFMqgcB6P5ElWDgQTAsW17vRQfcmlcDFb97+kGzE7BVJ18bOoS3+476/y+PGESJB1o+VGJjUQhpwyffaKGZLkbnDuA5WWZtIEje3yllkNDsDNj4K1Z2vCvd/Qj3kwcfO3XJXKd4iokUXc2kmpTSRTOpyHkKoLlI/dZqsXS+yZhandEqmMiUMSPWZpgqDWNeaokfXeAC5YxCGUBY1wP1aiMy0kb6w/zk4ex0UsDWlDws5Pc
- OArPIGOc
- LXEKMO2ylZjqSzAC1xc4qvAnVTW9FbNNf3yKKhVggQvhkGOmjHwhehD1e3+jkZP5+0r8LWj3wrwHa5MbsJXo6J9zmtJjnX3VDIGm5ZhOPHyrbu6BkNpjmjVoyXPiRWZ4qmO0B77jAwkwej65zrE/uTAdwA1XnrNMZHGxI1MBZ33YOLaTXZA60J7s2vKLBwOHBw6kXNC2bpBni9PqMoBNoe1HnIHfN1JwKevJ7Dzv0bVct0q1uOu3/MmHOeDPL3Am9K4UujgnYEO2uAoiMXUDBESmXws0qYvNq7DfG/XLwnLscbl2RZ6ECSsISEfWDAQmuJR50TNSfV6BqnQ4=
+X-HE-Tag: 1793629654-393007
+X-HE-Meta: U2FsdGVkX1+7Dt9FiAsZILCuATROotoq+jUzYdRUoWk60D+padOIYes6Ua4czpdeBncxzKAGOxUUklpetZkW2cjBmR5HcWBTlJaTywPsV4GoYvYefPpu/1HMJ9AqNisfHvPsnv7RxXjyfcXieDUcvy/pn8pfPJv+0OegizVkSl8RnKuV2Xs+ap4V3etv1W51y/mtev1fa9z0iNpwdbI1vN+dkJf3+IhbAJancVhPdu3eHg1jqOet73kNkjFuY1CFUGcGR2S1WpT7+WCB1WtH9FgnrNQqjrzNuetIeZXC5QBiqSQhy2wAZJ6dfxFM0IlN7miR8iveNexEuoEpXsauL2v5tB8uLUFDvkE9WpBxIkUGS6bfuXlQY5Fgw7eTrJYKkmGx6HGK6ob2Dh3JCfP3liiyUr7LeTJ+K2+PHmyFoGO2TA6f7ZuTYSY58/uq3cuBi6ThiUdx0P8EzrYKjyUt4fD9ZL3ltO+mzCguvZp7aGuKA2yxv6ccnc1bPOOorrROMkAxUZl7h3AWNhO9H5ajMxx3PXpcOyCaOH1P49uyZ8gPikGTH05McHsq6QFz5jyRnrKwT4BOEowYgMMvXuD1BghhJY3Y1uKVE3tQQ0z8mOKRubZDPtqFW386AYPh4fNmHoj/TK/xzr9/rKhh0aP9AyLr7+ziS6edluhteBWkkG8qcfVVZSK0G70g14LHTPJEApUwuNevqMggRVrzLwE5JDhTJ8ntVfz2eiA2mrscJs5pdJs1qJLS3ajFGmJNuCBOKyMAZ+f4RxqEnzU9YB+cUKpby0wW5BaixlyDlI/2Zn4HBqvFjfvzZWcT9PSq3VMX4VlRuowgMf15h2bf4WB3jUICSCy+M/jrnBUN2FkUNfuYRQYGYGPT5EH62xCrNMJwPmBOkz4R2Ngfv59fQ+q/JUMOhvparcIMVQMoK7CRjtRXhV2se/jHBfTTZz66lIsgpAzxfe7V+N8hmzHDREJ
+ Uk4HUoK1
+ 9ZH+yb4HN3g/Iv/qRFqLlWAX4bLpgY1tethJOH2vY7FP6lRZZQncn8Gr3Q7/Y8OzShsUyzYZ/sL2dergHFvrzbFIQwWPF0sR1phzEPMEq9y0d9HAcIQjOXfbvoTWPAUVzyayvc/P+PDKNUXX/YEMb2S6+xedZnOpiPi332vT9Mv/S+sgxTyZ6KxabLCbLPQgVrbvftqvDI5yzfwMEPRhFY62R+Irr/E8ij13SIiX18FKRLuV3KxoZiikpp+RXkpMqKi0os1ogmwdXY/KGaA2Dyr0NatAH9JRC9wJMG3q+yogYSwZnQ8jZTqfXgDujORu562LxvRx5uhYT5qE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -134,47 +134,36 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-vmcore_cleanup() has a single caller, fadump's release_mem_store() on
-powerpc. That checks fw_dump.dump_active without a lock and calls
-vmcore_cleanup() without one, and kernfs only serializes the writers of
-one open file. So two tasks that write to
-/sys/kernel/fadump/release_mem through different files run
-vmcore_cleanup() at the same time.
+copy_oldmem_page() maps a page of the old kernel that isn't in the
+linear mapping with ioremap_cache() and copies from it without checking
+whether the mapping worked. If it didn't, the copy reads from an offset
+into the NULL page. That oopses unless the copy happens to be a user
+copy, whose exception table entries turn the fault into a short copy.
 
-The first one removes /proc/vmcore and waits for its readers in
-proc_remove(). The second one finds the entry already unlinked, returns
-from proc_remove() right away and frees vmcore_list, the ELF headers
-and the device dumps while those readers still walk them. Or both of
-them free the same lists at once.
-
-Serialize vmcore_cleanup() with a mutex of its own. It can't be
-vmcore_mutex, removing /proc/vmcore calls release_vmcore() which takes
-it. The second caller then finds nothing left to free.
+Return -ENOMEM like the other architectures do. read_from_oldmem()
+turns that into -EFAULT like any other short copy.
 
 Reported-by: Chris Mason <mason@kernel.org>
-Fixes: b500afff11f6 ("fadump: Invalidate registration and release reserved memory for general use.")
+Fixes: 54c32021eb6f ("[PATCH] powerpc: Add arch-dependent copy_oldmem_page")
 Cc: stable@vger.kernel.org
 Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 ---
- fs/proc/vmcore.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ arch/powerpc/kernel/crash_dump.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/fs/proc/vmcore.c b/fs/proc/vmcore.c
-index 1fe70c4ecc54..ccb795b85509 100644
---- a/fs/proc/vmcore.c
-+++ b/fs/proc/vmcore.c
-@@ -1764,6 +1764,11 @@ fs_initcall(vmcore_init);
- /* Cleanup function for vmcore module. */
- void vmcore_cleanup(void)
- {
-+	/* Not vmcore_mutex, removing /proc/vmcore calls release_vmcore(). */
-+	static DEFINE_MUTEX(vmcore_cleanup_mutex);
-+
-+	/* Two writers of fadump's release_mem can get here at once. */
-+	guard(mutex)(&vmcore_cleanup_mutex);
- 	if (proc_vmcore) {
- 		proc_remove(proc_vmcore);
- 		proc_vmcore = NULL;
+diff --git a/arch/powerpc/kernel/crash_dump.c b/arch/powerpc/kernel/crash_dump.c
+index 103b6605dd68..1543917bd3e1 100644
+--- a/arch/powerpc/kernel/crash_dump.c
++++ b/arch/powerpc/kernel/crash_dump.c
+@@ -86,6 +86,8 @@ ssize_t copy_oldmem_page(struct iov_iter *iter, unsigned long pfn,
+ 		csize = copy_to_iter(vaddr + offset, csize, iter);
+ 	} else {
+ 		vaddr = ioremap_cache(paddr, PAGE_SIZE);
++		if (!vaddr)
++			return -ENOMEM;
+ 		csize = copy_to_iter(vaddr + offset, csize, iter);
+ 		iounmap(vaddr);
+ 	}
 
 -- 
 2.53.0
