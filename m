@@ -1,74 +1,74 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5756C6076738
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 15:11:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A69B5608F393
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 15:11:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=PyH2KrOv
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=eoCb1xon
 Received: by kanga.kvack.org (Postfix)
-	id 684CB6B05F5; Mon,  2 Nov 2026 10:11:34 -0500 (EST)
+	id BB45D6B05F7; Mon,  2 Nov 2026 10:11:51 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 634EC6B05F6; Mon,  2 Nov 2026 10:11:34 -0500 (EST)
+	id B64B26B05F8; Mon,  2 Nov 2026 10:11:51 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 523FD6B05F7; Mon,  2 Nov 2026 10:11:34 -0500 (EST)
+	id A53DF6B05F9; Mon,  2 Nov 2026 10:11:51 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 1BAE26B05F5
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 10:11:34 -0500 (EST)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id B2030A6571
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 15:11:33 +0000 (UTC)
-X-FDA: 85390518066.14.1C21CFB
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 813E36B05F7
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 10:11:51 -0500 (EST)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 20DE1A0125
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 15:11:51 +0000 (UTC)
+X-FDA: 85390518822.03.0992D3F
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf08.hostedemail.com (Postfix) with ESMTP id C63D9160003
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 15:11:31 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PyH2KrOv;
+	by imf24.hostedemail.com (Postfix) with ESMTP id 519B9180004
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 15:11:49 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=eoCb1xon;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf08.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org
+	spf=pass (imf24.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793632291;
+	s=arc-20220608; t=1793632309;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Veri64uIgSpvDnn8LOw8Zp4yMSBZFCckYlFRYYQC2Vw=;
-	b=NrN0jxE/EXXahFNYKPoX3j917Dqiv7sZsUCqZXyb7uxkd2qHU0cdRbM1KZ9HuFbt9ejjrl
-	nJwlLFa3WFVpU36k4NMbwAuOXqDSVBcT23KDanSIOF6z6HG3nquEfKm9u7fZ/NEBvLisd9
-	whMvsmBdaC7GR63THPYAczImRC9BenA=
+	bh=Q/r9Fhg2Z0/w3CqoKnG0DKCxv08Z9PpiFGMKT+radK4=;
+	b=xsXzfWdaldZHDpHDQOvYkCQ5WcwsqVy7pam8yXAsRJ51qHe8de6hGtAAqlTis6lPiNgxd4
+	+G1em9sHE37f+i4k+GDQSDFdk31Ap4LfK/tfbYVj2WLbtFAbiQl/EqJmTc/htdpcvmcIF1
+	mchoXtFI4mk/CJvowoHqeLFQk4n0duY=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PyH2KrOv;
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=eoCb1xon;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf08.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org
+	spf=pass (imf24.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793632291;
-	b=lRz5jBL+tvjyIvnJH8YBHZ1JvriuoI4ilu52A2HTKhvLZEdzA9AVwMX6M2D5CPHpDfTTut
-	NNSBRaU7jKWWCis3zmueYQHNoPNYexZlZy3oP/bS8fMOv4Wbx1Lfq729MM5+SHycsC+c85
-	vI/gQwShN6PcGsN2NrYjDegUwi8avsU=
+	t=1793632309;
+	b=6kXlyTrkZp0kKmuWmQZ7xaLZj9KpLLbJq7q9ffHP4RiRwh5JNNDBYDUNQ7R76t8Uhl3/JW
+	F71nnlM+zCKhK+bEJXIW6tOR2Z+vYm5zXVg8eyLO2k4HNj5Wu8M8izEiN7+SUkxCsUEIX+
+	AiUPu9JvcVjroY+NodJ6irbf+0lowiE=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id F33BF42002;
-	Mon,  2 Nov 2026 15:11:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 768981F00A18;
-	Mon,  2 Nov 2026 15:11:17 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 905ED4396E;
+	Mon,  2 Nov 2026 15:11:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 834C51F00A1A;
+	Mon,  2 Nov 2026 15:11:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793632290;
-	bh=Veri64uIgSpvDnn8LOw8Zp4yMSBZFCckYlFRYYQC2Vw=;
+	s=k20260515; t=1793632308;
+	bh=Q/r9Fhg2Z0/w3CqoKnG0DKCxv08Z9PpiFGMKT+radK4=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=PyH2KrOvZD+BL9zUl6AU8BXeJKg3ikWP80JWS5gYZgMQV/kTMBB7CrV1pMxIJKL4f
-	 ztIp9wftXZwnWLrgNLehHtxksIhWl4dHOxqRJBldIuhEhovhTDw55IVzZ9TROxDjjW
-	 XA3pUmsiO+q6HP7XdahCpcrGPElFCvPN3654lH68oxzD+xgivEgvKHiEVuaV9AbVh7
-	 gyekICA6wkoIzDKxIYuvGIz/7JyEv4UkOBjueUDWmWdaMOfSLMFTmp8c9Hk+Fh9e52
-	 reAWSbDO2KsmTnQ5LN9feY66XkFi20tGnzFSkSmvDBITpiXfojEd7sdGjrZi3hZ2oI
-	 HUDwrYxyBrmbQ==
+	b=eoCb1xonaSPckn24MdF4TgpzPnhB0gLnhwB3+q7VZZ4/VwLP7qSPXNuTMQ/2dNldh
+	 eVFE9vGUSsn5YYaxGqoLLphvtZLuTJd+KylQIE7mCxvO73SPam6GZq8mc3b9CVyDie
+	 3exBK5rK2UuFrqmUvsRYmGiv0WPcd+dv1jT5VIdTEL0j46lSeijrTe4sxEh10rR5bK
+	 zOsOn6lvifS4MnTOAh0Y2SzLal5mx1R7DipSgL85s9IzFy3jc8hi6gaFxlmb2VYUgw
+	 Yg+IrbZgj5ldjUEp69Bi1JJ+66r8wybqWUuSMQZmJ6kfSVqJ9+zpEm7bXhkzV6eqzB
+	 WMso6y2HpsKNQ==
 From: Christian Brauner <brauner@kernel.org>
-Date: Mon, 02 Nov 2026 16:07:11 +0100
-Subject: [PATCH RFC 04/23] PCI/proc: let procfs copy out config space reads
+Date: Mon, 02 Nov 2026 16:07:12 +0100
+Subject: [PATCH RFC 05/23] PCI/proc: let procfs handle the ioctls
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261102-work-procfs-drivers-v1-4-a994bd4d3b1a@kernel.org>
+Message-Id: <20261102-work-procfs-drivers-v1-5-a994bd4d3b1a@kernel.org>
 References: <20261102-work-procfs-drivers-v1-0-a994bd4d3b1a@kernel.org>
 In-Reply-To: <20261102-work-procfs-drivers-v1-0-a994bd4d3b1a@kernel.org>
 To: linux-fsdevel@vger.kernel.org
@@ -104,27 +104,27 @@ Cc: Linus Torvalds <torvalds@linux-foundation.org>,
  "Christian Brauner (Amutable)" <brauner@kernel.org>, 
  Chuck Lever <cel@kernel.org>
 X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3228; i=brauner@kernel.org;
- h=from:subject:message-id; bh=jf9xs+FhfBfS3vas7oIWufWfAbP2hJLFKyaoEXyHsWk=;
- b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS9WG5wN0zQ9uaOcyyafDNO7BVlT6yIqtn0O/D5wm0tX
- HyZC1w2dpSyMIhxMciKKbI4tJuEyy3nqdhslKkBM4eVCWQIAxenAExk/wWGv/JrO7p2sJvf/nju
- 4TeP5aUBLptarsV2/Ve9+3Wq/HwZljUM/2OVDpj3tT+a1faKoWnzHc6CF5vXOViwS7hZp5smJdi
- asAIA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2106; i=brauner@kernel.org;
+ h=from:subject:message-id; bh=2F6i7ISm6IP0WfraLShTjEfHw8rrOdRgm90gAFJMkQE=;
+ b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS9WG6wz+y23KkZj6QTN7spL27IM+Bm2tTyUNrgV7+Tr
+ M+uN3Y9HaUsDGJcDLJiiiwO7Sbhcst5KjYbZWrAzGFlAhnCwMUpABMJymT477j82eGua2tPP5/u
+ /iU1KyGvJs8tjK3vYeGHHaWzRJ14ZzH8U7obxHZv93mOC8mXehiflUxYs0bd3NzPJcDnTdn/mMJ
+ 9vAA=
 X-Developer-Key: i=brauner@kernel.org; a=openpgp;
  fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
-X-Rspamd-Queue-Id: C63D9160003
-X-Stat-Signature: tq95gsz1t4gkytr3um849fb9rsx9jruu
-X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 519B9180004
+X-Stat-Signature: uiaqhwjpyacseyg5w5umnpamci547p68
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
 	version=4.0.1
 X-Rspam-User: 
-X-HE-Tag: 1793632291-58153
-X-HE-Meta: U2FsdGVkX18FkhVaguozrHVEeyptd4EBF0oOY43s7AbMwMnJz62rSxBEA2O2RrlMv+0kRxKMUBIBME3HaKjjCKNNqIPwbqf6JSqDbzBDMh0oSOhWsHHcp5Q9FXhrJPADIvOyEk/uh9OGqaGlJNMsrQ9egt5GRSHkMzllo9jboaAGnEA8h3TNjPSrPhuEa7jAYLBfPmEYW5Lon5UnWX/JHG0B02D5ADa2AKsuB6rf1p9bPjXmQenPn+P9hh/H9MjZ//NRZeXg6QtUgkqXz9R6oLnahoEhmZJw1mO56H35PvEjsV8xmzmHgyzyOgcHD5YoqCvp4PZyjEtYPqNTXe70eQJo4Ca4s6L9drQ5ksbia2YiauGJ2HZNVNxaveo0CbHqR7p1Jy6ylX7hXr9Ltq+EcPGBPc2ij+teEZVxecfJVXADK1b+/kskCg94AYcaWih6YcK8cSXK/Zn8RgNnB3Twid5bAU4WfigDjY2gRN9GRcccaZOtPBiMM8knCmx3UcxDptPCtHjbns25dMS4tGhnl2y8V+RyO2KuPm0Dq9qBjTxFTicIVaCI0aRcFrsNOIUGdaokdxvwaE1UZTWUwK7Wrp4bTBQp5Hn5hOGxpeblnxa98llCH71a/FUiosTeFK77VWpa44bUD7uHCipTu1nOqzZZWHFHdiaPtzEWIXO2thFEFeMw5bRidhhNdFNIHGsPsQNxiwMwRowi8UrAg/teqrv8ZI2YLtFiPZr5CORw/7YdQh/f59KXmcwvCnrDpiUGMnBfqK5uWzCsNcEhJouv0gAUQQVD61Wp42UxqCFyL/1oQBTlOePngFxQSQm2knhybEsoWvvyTtLHMAaF+9BJMWitO+YUZo1ScM35IhP3E5cz5uXWQzyh0elpK/QiNSDzOIDUHi0QJiuEMO+x+KvkiTKLG3IN2dKjIHsJbju7ZacrX+NxpNtLzlHMGCW6OnFIjdJj7T7U0TH7F0ov+AD
- rx4BC3vs
- tbo6wkPUQrygeUWnnY9s/yyD5Ee+DQo4InIiMz8kRvdu+KqzdEIODV+qmTSo62bF0fHiIXHqZnBjT/HSpoV9ZdGNWeEWUsVCXIUsmTDhMa1kF07z3h7/G62d4VbC6Ea+Ss+8J1+uzhJ7aVMmCSlumUCbbYBPfYv9ND6mEwsG4GnYnaC6GPun9wg2c+1riXRuZrQ2r+aAwhaWLS7k6dLalz3XXrkE7oa8sTOkCHpBvYr1uVSr6CmeiloKEBQK6Vib7IZGHjxKsP0JUlcEw4Eajwojyf9QRujNwt6gT
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1793632309-667639
+X-HE-Meta: U2FsdGVkX1+fwM/dLL7PBmRQbEeB1SOT8ki/AgEK1AkSZbXx7ObKr+09Y7XVo3Pv86urpv5Y4Ei0BBfClqiWEcetEXLsc4kGdfSnoABmie96cmVNKGDzhLi6HSEN3+x3mLF++/eNNG4zZa2kXotBLRIrzFjDzOtoGsemzyXzY7hK6PLDCNE9t/B14Wike4S1JwXrFDT6ue1keY20oRW3sdhsqWNMh2uoOtHaGIrnchqXBgYn7qZFj0RZem23OIlYSBJnVqN6HELOwpf1jTbUEhfjIoOnwTz4QZ1V4kih1mBywGXIkZ05OnaLpG/f/f39H23UtLbmJ0offdS9kn7LGR2v6oZM+O3J8loJhO5x7jRAf4jN7us5Ei7/JwML4HFYKejRHC67GeEr5i8aL9Pa9u7ONJYXjnL0Lsfrln7g5ZemgqGtFBsejERqt/fhRzjZRk7U849nDs9dlxGpLZJx5tddiLPnvEGdrelIdhXd8T08cfYTQlXx3pTmV3ni7FpzNiXI/CqPYXmxVXhhwJzynTen1GbFTrYTQVGKM0QyAxFrG2rsAKJYfrrKZuOXqrwWw4vFVS5Ftkz5zBaLyFsKOVdel0At5xp+JjlezoMghSw+DD/WzO9VBFS9lb+pMHfCDCKILvJRh/EzxWQYqwufpCG1MMvzZqXhAQj35PJZ+79pdRWsA1jXwJwRChjatN8iVZqiWW5UMtVuxb5doQIpsmzAVXbhlo0xkLGu6a028WCyVcAql1ZjvNGYuQeqVvMhlS3tLZazXvRHiNepe3LpxDnAb10tGoX5yAri6PQNyEjWbZYi/98RkW7RuI9+/07TfQFMZDj239FwnyoOKzU5yPv17KeCJWIHD7X5dRzcd8TbXYlyifOA26ytH7HrRjq8QO2geFqfE9+KMC3nFdSByr2Zj9iu87yH9ohWZS1ibYm6x8gHHyjJIXy0XD9zKvG5Xqz249ygHHg0KNNH9zz
+ dA3ZoAZG
+ jycJts6rLk2PghMExeXb8CLWLdSKgCRpMj9t+8gh7WsEr0mj/AZKZSRevAHpHKpFkHv2QqqB35hO5ReEj3HONcwJK6p5b/ZyM1Hlgf7hCq7QG/yeL9L2gHriTOjUgbeHQ3Zfnua1iVgqp7GzaClAvNmwu/1PS7dcYkovbI/RiLtZdKq4JFmLilS3kk2yUOpCS97rlsvwiP0w8ehjoAD3kcOYP5Infn1O9ze+rgnXbseE767gZlxhJH/fCHu0dN+raCeGqppDtC6Dv798SS49apcGCUtTaNmXtCzrX
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -133,96 +133,60 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Implement ->proc_read_buf() so procfs copies what is read to userspace
-after it unpinned the entry, and read the config space into procfs'
-buffer with put_unaligned_le16() and put_unaligned_le32() instead of
-put_user(). A read into a buffer that can't be written used to report
-success. It fails with -EFAULT now. A page holds all of the config
-space, so a single read of it still works, libpci treats a short read as
-an error.
+The PCIIOC_* commands take and return plain values and don't touch
+userspace memory. Implement ->proc_ioctl_buf() and list them with
+nothing to copy. 32-bit tasks go through the same table, so the compat
+hook goes away. Unknown commands fail with -ENOTTY from procfs now
+instead of -EINVAL, and instead of -EPERM under lockdown, since they
+never reach the handler.
 
 Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 ---
- drivers/pci/proc.c | 19 ++++++++-----------
- 1 file changed, 8 insertions(+), 11 deletions(-)
+ drivers/pci/proc.c | 18 ++++++++++++------
+ 1 file changed, 12 insertions(+), 6 deletions(-)
 
 diff --git a/drivers/pci/proc.c b/drivers/pci/proc.c
-index d420353ee2b3..a8d7469f222b 100644
+index a8d7469f222b..6b0cb5bcbea3 100644
 --- a/drivers/pci/proc.c
 +++ b/drivers/pci/proc.c
-@@ -29,8 +29,8 @@ static loff_t proc_bus_pci_lseek(struct file *file, loff_t off, int whence)
- 	return fixed_size_llseek(file, off, whence, dev->cfg_size);
- }
+@@ -192,8 +192,7 @@ struct pci_filp_private {
+ };
+ #endif /* HAVE_PCI_MMAP */
  
--static ssize_t proc_bus_pci_read(struct file *file, char __user *buf,
--				 size_t nbytes, loff_t *ppos)
-+static ssize_t proc_bus_pci_read(struct file *file, char *buf, size_t nbytes,
-+				 loff_t *ppos)
+-static long proc_bus_pci_ioctl(struct file *file, unsigned int cmd,
+-			       unsigned long arg)
++static long proc_bus_pci_ioctl(struct file *file, unsigned int cmd, void *arg)
  {
  	struct pci_dev *dev = pde_data(file_inode(file));
- 	unsigned int pos, cnt, size;
-@@ -60,15 +60,12 @@ static ssize_t proc_bus_pci_read(struct file *file, char __user *buf,
- 		nbytes = size - pos;
- 	cnt = nbytes;
+ #ifdef HAVE_PCI_MMAP
+@@ -321,16 +320,23 @@ static int proc_bus_pci_release(struct inode *inode, struct file *file)
+ }
+ #endif /* HAVE_PCI_MMAP */
  
--	if (!access_ok(buf, cnt))
--		return -EINVAL;
--
- 	pci_config_pm_runtime_get(dev);
- 
- 	if ((pos & 1) && cnt) {
- 		unsigned char val;
- 		pci_user_read_config_byte(dev, pos, &val);
--		put_user(val, buf);
-+		*buf = val;
- 		buf++;
- 		pos++;
- 		cnt--;
-@@ -77,7 +74,7 @@ static ssize_t proc_bus_pci_read(struct file *file, char __user *buf,
- 	if ((pos & 3) && cnt > 2) {
- 		unsigned short val;
- 		pci_user_read_config_word(dev, pos, &val);
--		put_user(cpu_to_le16(val), (__le16 __user *) buf);
-+		put_unaligned_le16(val, buf);
- 		buf += 2;
- 		pos += 2;
- 		cnt -= 2;
-@@ -86,7 +83,7 @@ static ssize_t proc_bus_pci_read(struct file *file, char __user *buf,
- 	while (cnt >= 4) {
- 		unsigned int val;
- 		pci_user_read_config_dword(dev, pos, &val);
--		put_user(cpu_to_le32(val), (__le32 __user *) buf);
-+		put_unaligned_le32(val, buf);
- 		buf += 4;
- 		pos += 4;
- 		cnt -= 4;
-@@ -96,7 +93,7 @@ static ssize_t proc_bus_pci_read(struct file *file, char __user *buf,
- 	if (cnt >= 2) {
- 		unsigned short val;
- 		pci_user_read_config_word(dev, pos, &val);
--		put_user(cpu_to_le16(val), (__le16 __user *) buf);
-+		put_unaligned_le16(val, buf);
- 		buf += 2;
- 		pos += 2;
- 		cnt -= 2;
-@@ -105,7 +102,7 @@ static ssize_t proc_bus_pci_read(struct file *file, char __user *buf,
- 	if (cnt) {
- 		unsigned char val;
- 		pci_user_read_config_byte(dev, pos, &val);
--		put_user(val, buf);
-+		*buf = val;
- 		pos++;
- 	}
- 
-@@ -327,7 +324,7 @@ static int proc_bus_pci_release(struct inode *inode, struct file *file)
++/* The commands take and return plain values. */
++static const struct proc_ioctl_arg proc_bus_pci_ioctl_args[] = {
++	PROC_IOCTL_ARG(PCIIOC_CONTROLLER, 0, 0),
++	PROC_IOCTL_ARG(PCIIOC_MMAP_IS_IO, 0, 0),
++	PROC_IOCTL_ARG(PCIIOC_MMAP_IS_MEM, 0, 0),
++	PROC_IOCTL_ARG(PCIIOC_WRITE_COMBINE, 0, 0),
++};
++
  static const struct proc_ops proc_bus_pci_ops = {
  	.proc_flags	= PROC_ENTRY_SHORT_WRITES,
  	.proc_lseek	= proc_bus_pci_lseek,
--	.proc_read	= proc_bus_pci_read,
-+	.proc_read_buf	= proc_bus_pci_read,
+ 	.proc_read_buf	= proc_bus_pci_read,
  	.proc_write_buf	= proc_bus_pci_write,
  	.proc_write_size = PCI_CFG_SPACE_EXP_SIZE,
- 	.proc_ioctl	= proc_bus_pci_ioctl,
+-	.proc_ioctl	= proc_bus_pci_ioctl,
+-#ifdef CONFIG_COMPAT
+-	.proc_compat_ioctl = proc_bus_pci_ioctl,
+-#endif
++	.proc_ioctl_buf	= proc_bus_pci_ioctl,
++	.proc_ioctl_args = proc_bus_pci_ioctl_args,
++	.proc_nr_ioctl_args = ARRAY_SIZE(proc_bus_pci_ioctl_args),
+ #ifdef HAVE_PCI_MMAP
+ 	.proc_open	= proc_bus_pci_open,
+ 	.proc_release	= proc_bus_pci_release,
 
 -- 
 2.53.0
