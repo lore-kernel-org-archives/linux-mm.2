@@ -1,172 +1,133 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BEB5606A327
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 07:42:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33FAE606A330
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 07:44:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=meta.com header.i=@meta.com header.a=rsa-sha256 header.s=pps82601-s2048-2026-q3 header.b=Y6Vrek0Y
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=IOqexI+k
 Received: by kanga.kvack.org (Postfix)
-	id 42E1F6B00EF; Mon,  2 Nov 2026 02:42:15 -0500 (EST)
+	id 4314E6B05B1; Mon,  2 Nov 2026 02:44:23 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 405526B05B1; Mon,  2 Nov 2026 02:42:15 -0500 (EST)
+	id 408DD6B05B2; Mon,  2 Nov 2026 02:44:23 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 31AC56B05B2; Mon,  2 Nov 2026 02:42:15 -0500 (EST)
+	id 31E776B05B3; Mon,  2 Nov 2026 02:44:23 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 061A06B00EF
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 02:42:14 -0500 (EST)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 9E2DC40C88
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 07:42:13 +0000 (UTC)
-X-FDA: 85389385746.06.6EC9131
-Received: from mx0a-00082601.pphosted.com (mx0b-00082601.pphosted.com [67.231.153.30])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 3B663100009
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 07:42:11 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 065AD6B05B1
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 02:44:22 -0500 (EST)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id EFAAD120C32
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 07:44:20 +0000 (UTC)
+X-FDA: 85389391080.27.1BD5E4D
+Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 4CB11100009
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 07:44:19 +0000 (UTC)
 Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=meta.com header.s=pps82601-s2048-2026-q3 header.b=Y6Vrek0Y;
-	spf=pass (imf05.hostedemail.com: domain of "prvs=97666edd39=alexghiti@meta.com" designates 67.231.153.30 as permitted sender) smtp.mailfrom="prvs=97666edd39=alexghiti@meta.com";
-	dmarc=pass (policy=reject) header.from=meta.com;
-	arc=reject ("signature check failed: fail, {[1] = sig:google.com:reject}")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793605331;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=IOqexI+k;
+	spf=pass (imf05.hostedemail.com: domain of azpijr@gmail.com designates 209.85.221.43 as permitted sender) smtp.mailfrom=azpijr@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1793605459;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5mFBSTRr0j5MiHbKH9taC4fPcpaGn0/BbSg2iUW7YhM=;
-	b=xX2cPv1MQGSLhM3rTqd2xCN9a+e9JWHnha1xmm6RZWueXJU8grpxi/nLb1tGE2eME7ByFa
-	7AKrEk3Og+WCJQlli+i5oW2/FiNXMY490OFA4ZKkG8ORP/nLWqKwh/oJuXq0oNvES8qMJQ
-	g4E56GX4h1G4i1PNbRcvQd1ZqU+w2UI=
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=fail;
-	t=1793605331;
-	b=vqDIVvpgNlmCKN17cWwV7CuT11g3IIVvyoZOAvrEu2bkr8y1Co09JoZ3UJGx12TvsYFTmX
-	r5ZDGZUQaiSXQe83zO2KcNnql8J897N9IPc/aMBasDEwKro72yGZMEBMC+5U8B7qllyNHV
-	WlVRxZvB3XcPL61HwtJh7lHR/uVkKng=
-ARC-Authentication-Results: i=2;
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=GMp9mcTTKC9DHoWvLxRWF3MR+m0EkCxt9LMLL8huxSQ=;
+	b=z/b0pGYRpI/OkyP7vQWOq0awLsmXVKrpeaJQDyD3bXay2J2A1EUlOwnkkXLahfPCNqtOYn
+	Vfpv6GB5RKv4Mede7AAt6U6DyeE6V/Sn0V+B1WfG5mzS4JfMINeGlWIhhFDsh8RxieJdzm
+	IAswkwFI972p4Now5dgJ23s2YoihSCQ=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793605459;
+	b=kO6GtDFM1kG8LRahiPUo+FALXTdT0KSf+bmX8SsSc1qHTc9+PT9EhE4Aj7hqwxfJD6xFFh
+	ep+2SdE6/j99O7lLeSDcBkV9DvLBcyvn+OvushJRk/XINlt2dQggW/YyC/s/2pwjdn6qud
+	6sfA9iW4v69KL92oRP/AKJmcFSEo4rs=
+ARC-Authentication-Results: i=1;
 	imf05.hostedemail.com;
-	dkim=pass header.d=meta.com header.s=pps82601-s2048-2026-q3 header.b=Y6Vrek0Y;
-	spf=pass (imf05.hostedemail.com: domain of "prvs=97666edd39=alexghiti@meta.com" designates 67.231.153.30 as permitted sender) smtp.mailfrom="prvs=97666edd39=alexghiti@meta.com";
-	dmarc=pass (policy=reject) header.from=meta.com;
-	arc=reject ("signature check failed: fail, {[1] = sig:google.com:reject}")
-Received: from pps.filterd (m0001303.ppops.net [127.0.0.1])
-	by m0001303.ppops.net (8.18.1.11/8.18.1.11) with ESMTP id 6A248Sq7121247
-	for <linux-mm@kvack.org>; Sun, 1 Nov 2026 23:42:10 -0800
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=
-	pps82601-s2048-2026-q3; bh=5mFBSTRr0j5MiHbKH9taC4fPcpaGn0/BbSg2i
-	UW7YhM=; b=Y6Vrek0Yn8jcVvuIJhYfiBagoJU+Keb+3UHoIkoh7evxP3APa+2/O
-	YCJWv9Z9AJNZZ+HRspxLIVpjpc6hwAjZOc/PuaqFkQjdUFwoOd2f89WJsGfPndaA
-	pf4fJi7PUKY+Y20Pc2ZrwP1UrY1tMEbI1QGn2a+4UW5WZj9Pt3P3mhCkMyublN+I
-	I4F2hTZTgksKUXtxVaC+699KEdxa6VX7lXu+zc/2AzzriG5dBMlkJYdBDawbmUYd
-	SD2un/gGNphjKTiCF88XEDsQXgNQEu3Ca/fnQ9nYHJ6/vF5u7FAFq4hu5Jjv6Qml
-	rFu0qyWSCHTPt7lz6l/2+azJz96bLa4+Q==
-Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com [209.85.208.70])
-	by m0001303.ppops.net (PPS) with ESMTPS id 4hnc09fxmv-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-mm@kvack.org>; Sun, 01 Nov 2026 23:42:10 -0800 (PST)
-Received: by mail-ed1-f70.google.com with SMTP id 4fb4d7f45d1cf-6aff6a8ee69so3046561a12.1
-        for <linux-mm@kvack.org>; Sun, 01 Nov 2026 23:42:09 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1793605329; cv=none;
-        d=google.com; s=arc-20260327;
-        b=WmXh1nbaHkBs2ccHNca2hN+4oZY9PoTVqYpE2fz1yp5TyOC1AqpwYQfuXUCQnqckPR
-         Jznwap5mtgfZtLgKej5ADrXtnLcWFYkU0G8OWiHkTJ4+goaOsDtYPSo70V9fgVkj/lfK
-         xyZEYJzz47514EQOaAYF8g/vFpSmEsFx3X3PYZitZ/tNoE4iHPn8KAdwRV3J3xwPwgWA
-         RBJk2FRGeLFhITHvmvCJhA+DCTqk4TV8FNM033PgQngad/4kA8gmKyIi183CkREBvpgI
-         LykMQRuJpARpHlyCxEn6umxCUrnswF0jNBnEaU2eFPizv/HCldjGIcP9vy45Bs275ygs
-         YpRg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version;
-        bh=/tISQoeOPy1BAFDyFldAVc3RuvTUszXOOf5Ksc60ZGs=;
-        fh=qBjWG4IYdpx2vpqKnWP5A/IFoM6r9lHwcVt+5hDPXBU=;
-        b=XooMLSsljSvfYshqJBOR2Rvy198d1t7oRJghws7PP2kCsHL/hwJmKbUIkFe8gvAOug
-         9FfNrhRE+NPRdQDLBBJM95SHfBdRcOkiXyAWuTJYR9lY4bt51q9uwpOFPxkyGHiQFNO6
-         hF1hRta+WuFhV2bYjHx8wkPE65UPmzR3TEBVJYzWCP3f3Ksyplsmkl8FTKyE+VXrrgZ6
-         EGmbmOCi7aWu6UYE9KHj3vpFXgIlq3zmZ2AoQQMPhzHd6KaT/YAyfg2Z2wiNwvuSw1nr
-         iTnntms3KjTw0O+szHWnQexbubXBYn/aS7Z8LcrGfmGRvBhxdkk6kQEKy7bnCDzf26sH
-         X0Iw==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=IOqexI+k;
+	spf=pass (imf05.hostedemail.com: domain of azpijr@gmail.com designates 209.85.221.43 as permitted sender) smtp.mailfrom=azpijr@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-48e0d885929so2155545f8f.3
+        for <linux-mm@kvack.org>; Sun, 01 Nov 2026 23:44:19 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1793605458; x=1794210258; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=GMp9mcTTKC9DHoWvLxRWF3MR+m0EkCxt9LMLL8huxSQ=;
+        b=IOqexI+kMEfzWP1YM6YXooO3NmwhhNf+lCIvjMu4wrGKcBpQ7bUwRTwE9Pgn2zVh63
+         3EHbQILFJghaKo3Hk5AO7AWpMHlaVKE2q4cvO9vFBT5038+WANQQ9Svwa9rURF0SR8W2
+         2tH3Z60cKSL/QbJJXp7tNKG6cWman9264r+5CN7zWJcKNJimjxTDR1pFD4EgbxWyzOxF
+         N9dDGG070z/z95zRiDVOFNcXb24XQJMS5LcGYXo2bfUEqrmuBISgM6uHrjvjdD9EqcE4
+         1lo3V4e4MgmSbe+757SsJcbjQAKS74H0IlYlyuY4KlaSBr2N4t/4ag/RHgkWWUP+dVwn
+         W2wA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793605329; x=1794210129;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=/tISQoeOPy1BAFDyFldAVc3RuvTUszXOOf5Ksc60ZGs=;
-        b=HzarGRYBropuBxhSC1XRhm5SufSr5xN4yaCw2g72HMW443WhGLyXXN7bBPwl/gy9e/
-         X+BddM27p6ynk4b+cwNBMA5kwJnPjRq2DGX958w95v0xLAMU+mG1foHESaGCi+7F/edR
-         qY/NZYwEfRP1LfOI/QOOdiyiDUVOVZ3CTQuKdCcvLqbtwNmDrwglaABXv/Paj12P6aJD
-         gHBfzcAthh364d+RpVWph4/JcnApZwlxGzViHYZ2lLCKsokRqDpKtXwmU752ot4Hiy95
-         dpSfyx5yGkX/8BUSMQQitQE2hEuyGJAlcX9QbZ/LIlhdC7/uXDLlVgVJ75+egEnGeGRm
-         X9pA==
-X-Forwarded-Encrypted: i=1; AKwUvBw9piiG50lRQ5+UfJr+uUMgqpz9tsetnKTKxVyaw6vKYT/rwc6lponoEKk5NWtswgMlmL5IfvgHnw==@kvack.org
-X-Gm-Message-State: APuU4Z/z2v0FVy7AZWVkUHgf/NTBlUPxbJmIdjppAsw0MQc6mRBk1bKD
-	WIxKEbdwb+0zGk1wg1Zt/6+iZJ1PS991tjyyX1pxYcidSBx55QNs6wxMki8O5ft+H2DZ5DYxb/V
-	vJTCi56Y7HuopMyAAZCnDXykLslzLUu2g5v1gK/I4M6Z+VAKOMdfXRIe0RRg9afLfQX93i/aDMT
-	G2O6LmKpeXwKBVaexeuvIKRMq6LA==
-X-Gm-Gg: AYBFou2AC58OIlLk0kR4TH3x1/BbG9fpKPVMP1Xn53XYADFMnpiHDC80tKIAhKGHuuh
-	Z1sY+ZXk9ZVbKRkt7qdLgcHSbiQweYIwSJAoePwivA8lu3uSgpplTg2FBEj2/HlFvE6yr4wRx0z
-	4YuiQ4XLJzeiosAGjnezUewnpnfmxr74KQS8KbMNE/fS+yuk/3hEDlat9dMqeQxODsy4ZGWVbFs
-	uMMeTyC+Cz78h3i+A==
-X-Received: by 2002:a05:6402:c9:b0:6b4:12df:8243 with SMTP id 4fb4d7f45d1cf-6b4d468ad29mr4577805a12.20.1793605328779;
-        Sun, 01 Nov 2026 23:42:08 -0800 (PST)
-X-Received: by 2002:a05:6402:c9:b0:6b4:12df:8243 with SMTP id
- 4fb4d7f45d1cf-6b4d468ad29mr4577778a12.20.1793605328346; Sun, 01 Nov 2026
- 23:42:08 -0800 (PST)
+        d=1e100.net; s=20260707; t=1793605458; x=1794210258;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=GMp9mcTTKC9DHoWvLxRWF3MR+m0EkCxt9LMLL8huxSQ=;
+        b=QyDePmwTBMGwGxJbqQb5QLfcKYX2M1UdOivp77y6nsk/3Yz9RfCwd4pPAR71m+6esS
+         ugS2AsU3Wg/3/uA2Vexmg+4e2Rq1rWKNJ2wE2QASfL0Yb2MUIW7ibV9/Yrq4Z3rqPJPF
+         wvfkWvsAaqGJpLyBxQN9jeinnA9VuPtBJJX6oDvhdiWnv2YhIJ2X+5kWpWoriEA6PflA
+         B2vybuBiZDpwKfWe9IVxlDPY5sRR33ReE89h6/751u52ITAloUpDndxmr9ol7gBlHXVe
+         W5ACFZoMw776mmOoF3718YAYDnrS9YYjFLB9FxM5TeDelhhcoLiOrn3VoTN9GDuvPBLr
+         8rLw==
+X-Forwarded-Encrypted: i=1; AKwUvBwHcEUdkPPqIiVDBaIQXv974aO9DrKw523LLnrccpJF1ZBLTjE9WZ/vQK4tXwFVL+8LEjXZyI/W0w==@kvack.org
+X-Gm-Message-State: APuU4Z88FJ6MPC7SpjWjDK1PtrepxkYvGCC4D+Y2d3qdS1TxuHKWy2t9
+	o9cPvcgnEUJOPzWIiQpFsZYNcDpPsABKnQ33DpfFJ39+UHXA3PoPCV4S
+X-Gm-Gg: AYBFou1Jqw9wSeDAG92AfiJSbK/y+8I5Oz5X1EXERVxVa1W7XZaL6K6xt5DPGcf0mWd
+	nMvpXd1P/r01qq0QB7m06hfWC0BQbFJdlrVCYZIU39xUZuqTkD7Y8gQKzS7Q2Nu0K+o5MlSJgGE
+	8zIDRt5Rx7VbZ/+zSgk/aEAgCrxC8iOYa7HGpwP/7k2Yyz1vlrSCjTw5sQ1lU1xaGuT9wxKc9R4
+	rXUtO1nxKIxHeiK8d4FlLW9Z0r2JJZlJyid8epQR32HxDHB1NRDOQJn1UHaIsz2pj2khyEvi2qZ
+	l8gSxiQGh6i07nvLamsNTCx8V+tjpbgq/YPQgwltQvprzN0d3wQiq8IFWX0mGsZcdtawnK2C7M7
+	9CO95oe/vW/1/VzX14A04QY7e01eHE3pbV7mqitouqXasFMiQuHf7xxn7EqklTgiwxdTDlIXffP
+	if4QLUPE2eaYw2pFe1Da4vTXhs6dAgndwdmLTZ/1ZlMtpVMxiFgYWLGaln1BURF5tIYGs2qPyyh
+	T5z/sOJMirQBAlLE2g2jeTf6cvtHY9vFiojEVR7W9/1upEWvhVSeZuMZFYrhIeu90yFblScHdYw
+	CIGdsZeF+Hm0Uw==
+X-Received: by 2002:a05:6000:2387:b0:48e:20f9:8d75 with SMTP id ffacd0b85a97d-48e6e50b79cmr21195080f8f.48.1793605457581;
+        Sun, 01 Nov 2026 23:44:17 -0800 (PST)
+Received: from nobara ([83.231.69.9])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e71b81c74sm18050374f8f.36.2026.11.01.23.44.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 01 Nov 2026 23:44:16 -0800 (PST)
+From: "Jose A. Perez de Azpillaga" <azpijr@gmail.com>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	David Hildenbrand <david@kernel.org>,
+	Shuah Khan <shuah@kernel.org>
+Cc: Vlastimil Babka <vbabka@kernel.org>,
+	Jann Horn <jannh@google.com>,
+	Pedro Falcato <pfalcato@suse.de>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	ts930@dgu.ac.kr,
+	alx@kernel.org,
+	linux-api@vger.kernel.org,
+	linux-man@vger.kernel.org,
+	"Jose A. Perez de Azpillaga" <azpijr@gmail.com>
+Subject: [PATCH RESEND 0/3] mm/mlock: make zero length requests a no-op and reject wrapping ranges
+Date: Mon,  2 Nov 2026 08:43:58 +0100
+Message-ID: <20261102074412.189554-1-azpijr@gmail.com>
+X-Mailer: git-send-email 2.56.0
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-References: <20261007153915.53429-1-alex@ghiti.fr> <CAKEwX=M6G3NPOrGJg7Sz68BDSjzrF4R-tTjcX07L9oZ0GK4Upw@mail.gmail.com>
-In-Reply-To: <CAKEwX=M6G3NPOrGJg7Sz68BDSjzrF4R-tTjcX07L9oZ0GK4Upw@mail.gmail.com>
-From: Alexandre Ghiti <alexghiti@meta.com>
-Date: Mon, 2 Nov 2026 08:41:57 +0100
-X-Gm-Features: AclHuK_ZBjm071ukvNbDmfZJEnuL9tpwTpRPlzedYNA1H7fjxQBxYf7Dj8f29uQ
-Message-ID: <CAEmasaV0jxQVTGRi6vfwuZbm6kcnxJcn7xJmT7aHHKf+Ad3bPQ@mail.gmail.com>
-Subject: Re: [PATCH v3] mm: bypass swap readahead for zswap
-To: Nhat Pham <nphamcs@gmail.com>
-Cc: Alexandre Ghiti <alex@ghiti.fr>, akpm@linux-foundation.org,
-        hannes@cmpxchg.org, yosry@kernel.org, shikemeng@huaweicloud.com,
-        baoquan.he@linux.dev, youngjun.park@lge.com, chengming.zhou@linux.dev,
-        david@kernel.org, ljs@kernel.org, liam@infradead.org,
-        vbabka@kernel.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com,
-        kasong@tencent.com, ryncsn@gmail.com, chrisl@kernel.org,
-        baohua@kernel.org, usama.arif@linux.dev, linux-mm@kvack.org,
-        linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Proofpoint-ORIG-GUID: EbA4m-p7FEjuWc8I8hVBWdtiBJ2SEouw
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMTAyMDAzMCBTYWx0ZWRfX+nYQMRGg/+XD
- M4tI2H2WL7GTaWHQr2QqfGQHEy6LeIuAueFhMOVZthgGxcpOWBhGw2sjkEH6tcy2n7U87mG0r4N
- JPWOi/4Kd3vQHDFWL0l/BQ5NfLjxjWg=
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTAyMDAzMCBTYWx0ZWRfXzFJzcMU+DJ+D
- n4DoKexqbZBopy/otpLJvnSO5e8fHTweLgk+JbFM6+WeXFI+qM6pOo5SqcRFEXe3M1YJDOpzZPO
- V8m5DjqLjoatLjnnvJ77SO4tjfMQ2yMWImlZJIGOMre/GHv87UugheNOxJhRBFe62t4IyrCnanY
- kqWmrN/UG1GR2u97HIZkXT+PacUpFesh6l/RmLK/lFd1M9MUdZsYNPWlcPjDYFi4zE/vu3gha8Z
- K2z/+Lrhv/9lcFBlh+RmTnHyeOSfpGyIsvzmPuHtfoqgfvZbZBirQ9BJLGBEi9giqsvbzmd9FAE
- Uz6580R3F3z4VeHF7GMdLMLmD61leP2CzffDzX2g0+mdANLvT8Kd/+yyyJISMi1HHifgDNW9K8N
- 9/9+vMU+vFTafD9mwM7/uyEE9aAwZ0S1j/SJRsaGYMgOLcmoDrg06Lw0qco0Q913/TLkE52EKRO
- WVC+mZrE1WCYzftahAA==
-X-Proofpoint-GUID: EbA4m-p7FEjuWc8I8hVBWdtiBJ2SEouw
-X-Authority-Analysis: v=2.4 cv=OYcNnRTY c=1 sm=1 tr=0 ts=6ae83ed2 cx=c_pps
- a=CYpx6mtW7qE8U/l5VCnCPQ==:117 a=IkcTkHD0fZMA:10 a=zJRp6_cAMcgA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=7x6HtfJdh03M6CCDgxCd:22 a=_78whYxrdx1mplLwxq1U:22
- a=pGLkceISAAAA:8 a=h8lhBcyy4TMpjp85FJYA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
- definitions=2026-11-02_02,2026-10-21_02,2025-10-01_01
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 3B663100009
-X-Stat-Signature: pt1ak4x9nr41xaamdr1136wyri8f7poe
+X-Rspamd-Queue-Id: 4CB11100009
+X-Stat-Signature: yoy7f8fx71pnyri76z4izjkfixjux8zh
 X-Rspam-User: 
 X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
-	autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1793605331-623483
-X-HE-Meta: U2FsdGVkX1+o/+IoHgbw9C904nEcEskL6URokUknuRpXTK6Ro29m3+bjyzVrTvVWpoTxfYRpwUvF5hoornXNhQ1cCsSRLpHUHwG8AzQXOOjC6B4jzIAcajRruqymcA5kUSmUUjsUSoCpKwL3OHfHVd+f0LNki2m22/2Qb2SV1Sg57lRb8lLq4NpE9LoGXsxQnS1ZLBuLOZIB/nAOslcBgHbJ064HweV7+RuP2gEFSiUSRHjTK6ZH17u9SitDgit4cOh5mYU/KOcwZsn4GnjujjGEgIvKeXt/Dv1sPSxoXe5mam5jg/d9iSJ0Y8kSf8RQa9szDlHs4b8bAjJTLLYNaJbjefkPSe6/vB8nYeSLD8hAZW7rRU4FtNE4784TzbmLnp1JKIanpiGN/4UVy6E79B+2PB1fG7QrlG7TtpXH2O8Jj8Esyjyjg5BvVaySmHsgcPmta8P+/pb9WZjWllm7ShYI2tB5eWN09VmvAwIFkrdy8rO1qLRXw5/XpXNjoZqWRMR9Ad9C5OF2K3lYQ966xSVG5mWzE9Qo1A+Vxg0V9qKzp0gWUQ/CmuAZBNoXlNeBK8i7XeeTnCDoYVSyMyIzV+Vih54KZfXy7GAv5s5nneXFMs13I/0LqC9VI5S5SqG/1CeIO4+FOtCNM2xi11PXnAeYLSArIzCklwmSGrDPgQK0gZV+AHnJ9RYgwbauBN8EDVOWEwWdc5EN4HeEpcOeVC2f3dBeKeBkh8fg9HFv+cyBbmwhBZq9YFupifo0R7Mc48Ndt7arHEWcBOZULbJzsJ1/YRsctJmRmhXBl86qjbSxxwY+P2C9Lwd5BsqdmwY5PeGqleFtuOyNkAa5RQOsyaGcOvDgSZips6jGyxDggHbL5cTKbksIDoK4g0helz0KXzkDQ/f0Seqt+HiegVFOTITZuyDVtVu1n/z8S8P9AsXWcsLAyDDmLGDxCdnIJAIjr65XsIXsGbKjMKrpY8O
- 4hOEpFuQ
- AzP14teVazzVE5bRyvdybPDqj96N311L8xdfBoeV6ixIje6hoi5DEczsGnAaZL6F7odjsFKFC1WECDIooqgXZpZ766Xl5rgi9Ww5XifE+vcubJgYDX8CybikrtjnPtPo3XfkgwGhuP9I2Q+ec34fYyrvQQ4SIkapsbfSLTIcWoeNnPBC23/WCsVHnsBmoliQwY9kljwYjGUGA9skhxhox5po+ESWaVaLlAtpdfI6BRMDKakKOkFSTdn5CVqEU4tyS6pw2UWvY0bs1PDr04N91+zY/H9VzTsC7mDGCav2sFJ21eHknxu22Yj9py9SAlkhZ6E+BcMefbq4HSescGuu0JUjk7E4ZsstRjs71383nq1sO3hs/6fKtupYoTrs8+AE5FUOPnKaLeyWQO5kwUC6i0aA1Y9aRkqLEu7YyvzKKoFD+WWdPQM73cijoYYAADKSdUD+bJrmRXr92qjXbAuQHxsTlvNPDcaH4a9Jpiu7N326X2LmpiNm9LlmwX3vBmurlqtIwPoSPM5js3Yc2vBq18JDW73Ezzs4mTLVGlrXGy5VkKhP3Snvn3VLm5Q==
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,
+	SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no
+	version=4.0.1
+X-HE-Tag: 1793605459-156644
+X-HE-Meta: U2FsdGVkX18rby+xIUvF1EJBZz49o4O8yid+HjVdNR9+nibvvG56P07pQzvsJ2ALhq/abRtuAvVnAcZgCXR+wa8xNigEWDvq4Fa2BmApZ2u5W2j5tCN+/jTvh5H9jR8WB8h77BtEpudw1WgfOBQKrDAFddn/cK02XvggFyn/EeW7hH8j7PJIePFDpUiYxABNcOtnZU/bwt+pQIBLqdi6TLb253e3oOobn09ifxkPoQwuHyinXta56lueBL8VzhjRnxSWJT0UT1+v1gLuBC+4hRFuBMTi924yAXvC/26qoqtoGsOOrIrjiZlbXndemvvrZViSKPlmyMDZe/C9WLeYqvKL8cQiC64Cv+6qAqzyKzoJ55cDODML0ZuqjttcaE7GK1Ii93O39ApPAHV0HL67HHPyf3+fxkMEYGPGdxM250J9x/0M/yHHuuZKOlWasivJCU+hB6pCIw3VNIQPz4Ds0z2eyRFHur3BxKSXOOKh+4BkExWk5SjQ0yUFWwPuzvaV7lLCdXBqf77F+tL/z5iUfrx8AR6njswUu82uG0LtzLZhXbSjicwCWP8o8vnwIRDW3cNT8fWsesDMnPopHCGjvj/QhC6zDikLQiwAF8ODE/xpYGwXD1BNDVur/5iRF3U6p3UBaQxlKRwaPSYfA6HcoKlapXz3rgW44qL7N0QTRLjxqzz3FghHZ/qMnP8txUk4qEeAMcNAfFaBDu9TkJ7FOOanfVh4wLEJDC1xyDBV1gJbklNuAdMsiIvw8OsNhq5c2SROat1H/+pcXoYw5V8XXSrHK0iN9mzJXQYrvQDcMkNpmtN2+SgYdmM6BHYa88CwZOViRy4MPFTYN8nI3lQyrsgVVaoApzjxw4maZ1unAiX0gpMC2guwNoX7ZQaIjCU8xJgzLcwyqdlQTtEgfm4iqqaBr0zihAxm1A+Y192K4Jie++QgegY23nGwOokCk3uMYwj5ps7cu+aiNBUyuPY
+ ak+RNmTS
+ sZZKcEp6QvSbtNJgSlOnP2AEfJ2IQr8YqqFMPuYlrIu/F+iGyo9NEvEzWeJ552TxswzWn00ihkW6ELuWiB4Appm82i9rx5CGKe5cI8I/SxShvvkXzpH9/1TavgxZXuDefMRmAE9YABnTXMcBDfKmKwExwhgxyQ4+uuTDlJ587BqgakSJ5c/F36QGjmyR50JJ+B0lPx9J8o3pHpSP7oQiGsqMLHzywP5FvRXSPFv8AIKHGd21XCXSIcgyq3yd8Iy5ssPAdNyEAZ/39QCm1adUXNtoYcnMXqQxA/xJw0TCuJFfZzq2xNJewfnIfAPJn1t9BAlGeDp4bAS2aeoODWNr3j94c03U8ubkcI6dcQe3adFT+XRusRIKavJuqA01IywN0LWF/fAVwrLOT+E5Nn+rYTct9UI5LaurMgkz2
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -175,78 +136,53 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Hi Nhat,
+No changes, rebased on mm-new, Cc fixed.
 
-Sorry I missed your answer.
+Follow-up to Park Tae-sun's patch [1], which was dropped. David asked
+which of the cases it raised can actually be triggered, and for selftests
+that show them. Two can.
 
-On Fri, Oct 16, 2026 at 6:19=E2=80=AFPM Nhat Pham <nphamcs@gmail.com> wrote:
->
-> >
-> On Wed, Oct 7, 2026 at 8:39=E2=80=AFAM Alexandre Ghiti <alex@ghiti.fr> wr=
-ote:
-> >
-> > Commit 0bcac06f27d7 ("mm, swap: skip swapcache for swapin of synchronous
-> > device") made SWP_SYNCHRONOUS_IO devices (e.g. zram) skip swap readahea=
-d.
-> >
-> > zswap is the same kind of in-memory, synchronous backend as zram, not a
-> > swap device flagged SWP_SYNCHRONOUS_IO so it still goes through
-> > swapin_readahead().
-> >
-> > Here are the results from bypassing readahead for zswap too: it was
-> > measured with a kernel build (make -j16) in a memcg, zswap=3Dzstd, shri=
-nker
-> > off, on Sapphire Rapids and 3 iterations.
->
-> Would there be regression with shrinker on, when we have mixed zswap
-> and disk swap backends?
+Patch 1 makes a zero length mlock()/munlock() a no-op before the address
+is rounded. Today mlock(addr + 5, 0) locks a page and munlock(addr + 5, 0)
+unlocks one.
 
-Readahead won't happen if the faulting entry is in zswap but it keeps
-happening when the faulting entry is on disk. But if a zswap fault
-does not bring its disk neighbours, we will incur the latency of the
-disk read on the first disk neighbour that faults.
+Patch 2 rejects ranges where start + len overflows, or where the end
+overflows when rounded to a page. Today these get a silent success, act
+on a single page, or get -ENOMEM/-EINVAL depending on CAP_IPC_LOCK.
 
-It's hard to say if this would regress, it must depend on the
-distribution. v2 deals with that so would you like me to resurrect it?
-That would be in addition to this patch as I'm about to send to the v4
-so it gets merged.
+Patch 3 adds both cases to mlock2-tests.
+
+I could not find the commit that introduced either behaviour in the git
+history. Both are already present in the earliest history I could find,
+so they may predate the imported git history. There is therefore no
+commit to use for a Fixes tag. I have not added Cc: stable since these
+changes intentionally alter UAPI-visible behaviour.
+
+The mlock-random-test failure CI reported on [1] came from that patch,
+not the test: it assigned 0 to do_mlock()'s error, which has to stay
+-ENOMEM for the over-limit case, so mlock() over RLIMIT_MEMLOCK without
+CAP_IPC_LOCK returned 0 without locking anything. With [1] applied the
+test fails 40 runs out of 40; with error set back to -ENOMEM after the
+check_mlock_range() call it passes all 40, as it does with this series.
+
+Tested on x86_64 (KASAN, lockdep) in QEMU: mlock2-tests 31/31 as root and
+as nobody, 24/31 and 23/31 on mm-unstable; mlock-random-test and
+on-fault-limit pass.
+
+[1] https://lore.kernel.org/all/179066531783.50175.13377521828379196177@dgu.ac.kr/
+
+Jose A. Perez de Azpillaga (3):
+  mm/mlock: make a zero length request a no-op whatever the alignment
+  mm/mlock: reject ranges that cannot be represented
+  selftests/mm: test mlock() and munlock() range normalisation
+
+ mm/mlock.c                                |  29 +++-
+ tools/testing/selftests/mm/mlock2-tests.c | 191 +++++++++++++++++++++-
+ 2 files changed, 215 insertions(+), 5 deletions(-)
 
 
->
-> >
-> >   768M memcg (sustained swap thrash):
-> >     metric                 mm-new    + bypass    delta
-> >     build time (s)          405.0       341.7    -15.6%
-> >     zswap-in (GB)            79.5        53.0     -33%
-> >     zswap-out (GB)          144.8       115.6     -20%
-> >     swap readahead (pages)  6.79M       0.45M     -93%
-> >     swap_ra hit (%)          72.1        89.9     +18pp
-> >
-> >   1G memcg (light pressure, build not memory-bound):
-> >     metric                 mm-new    + bypass    delta
-> >     build time (s)          177.7       176.0    ~same (no regression)
-> >     zswap-in (GB)            10.2         7.5     -26%
-> >     zswap-out (GB)           27.7        25.1      -9%
-> >     swap readahead (pages)  1.07M       0.08M     -93%
-> >     swap_ra hit (%)          68.6        87.2     +19pp
-> >
-> > Similar gains were observed on an AMD EPYC 7D13 host.
-> >
-> > The gain is from no longer prefetching pages that are pointless for an
-> > in-memory backend: readahead inflates anon residency and thrashes the
-> > page cache (file pages get evicted and re-read), lengthens each fault by
-> > synchronously (de)compressing a cluster of neighbours, and adds
-> > compression traffic when those extra pages are reclaimed.
-> >
-> > Bypassing swap readahead for zswap therefore makes sense.
-> >
-> > Suggested-by: Usama Arif <usama.arif@linux.dev>
-> > Signed-off-by: Alexandre Ghiti <alex@ghiti.fr>
->
-> Code looks solid to me otherwise! Nice job.
->
+base-commit: afb4eea28037fa55c4560313ecbd8a1e1da8369a
+-- 
+2.56.0
 
-Thanks!
-
-Alex
 
