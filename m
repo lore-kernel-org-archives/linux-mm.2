@@ -1,72 +1,72 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07C1F606A329
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 10:19:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5E1E606A329
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 10:19:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=dB9WMfe8
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=CpFvDYs9
 Received: by kanga.kvack.org (Postfix)
-	id 3E9526B05C2; Mon,  2 Nov 2026 05:19:08 -0500 (EST)
+	id 60C626B05C3; Mon,  2 Nov 2026 05:19:11 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 372A96B05C3; Mon,  2 Nov 2026 05:19:08 -0500 (EST)
+	id 5970B6B05C4; Mon,  2 Nov 2026 05:19:11 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2621C6B05C4; Mon,  2 Nov 2026 05:19:08 -0500 (EST)
+	id 45EEC6B05C5; Mon,  2 Nov 2026 05:19:11 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id F171D6B05C2
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 05:19:07 -0500 (EST)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 84036402CA
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 10:19:07 +0000 (UTC)
-X-FDA: 85389781134.02.ABD5F59
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 211106B05C3
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 05:19:11 -0500 (EST)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id A0E28C0C80
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 10:19:10 +0000 (UTC)
+X-FDA: 85389781260.05.1803259
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf04.hostedemail.com (Postfix) with ESMTP id E7E1E4000A
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 10:19:05 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dB9WMfe8;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf04.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+	by imf01.hostedemail.com (Postfix) with ESMTP id EB3164000B
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 10:19:08 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CpFvDYs9;
+	spf=pass (imf01.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793614749;
+	b=LQAmfhtFHDdE9G6eHwoWpTG552k5i45nm2CCBBaCoflMXyGSdhX096So1qBWEmcdSG+gLs
+	QOy7topPucFOjaP7LmpbmnZjBfo8HFHQEWdGzd6e41XkRw2xFwO/4Fwz9o0NjoQFFc/8uY
+	Izmc3f434Vv7YNqCGquYTpvwLoonHPg=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CpFvDYs9;
+	spf=pass (imf01.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793614746;
+	s=arc-20220608; t=1793614749;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=a8ZxaXME7Bo25b7JtSuwLQt4lbE7+wAcQiQGdsNPSzg=;
-	b=drTsgmkJGl52q8oVNt1PQIGnSnNVrQwcnGPD00pLoM3MB27YPgI4PEf4LaQDaLiNGiOd3l
-	h+sENmKrouFIIy2LfIa1FfJ9hdIGDyPEzQ8EpN9XxRwWfE+Jo/qmJrso2jMTacIlTgDsUy
-	a1WJY2S8HhFwvxxbahOSNxt/I6lU+iE=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dB9WMfe8;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf04.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793614746;
-	b=ozvEcjMW75G+PKUDWGB+RIXrGIieVMM4jKme0c6ZrrydhDoS3IPb9C+/I9gmCDiSDF9jJX
-	zgUBRBfQJcfpytY952bW5YKerdnGSV556JizvEAPnVJqBza+BpNjGVRWNFQZYCkbUZ7Awe
-	P1zI4u6tRHCe1B5MoWxjBMbgL6VGU5s=
+	bh=2SRV5FSJTfbiUrmKVm9iO7XnZ9kNn48288RtL7ogiPk=;
+	b=i/uRexshiKF2w2oFZ3ll0XWSfzi0UD1tBp1BT0CEv8tSMFhnUBc+sGF8nNtTT5T8oA8iAg
+	jM5RqXidySH4icBm/FmsCxMNNxLSaj9QoEUzwtpvs0iz+zrE8g9wE4Dg0n+VvNc0LXyLwr
+	xSqYx3ZzANX8IljEEp0wCtd+RNPdfTI=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 4AF86444F4;
+	by sea.source.kernel.org (Postfix) with ESMTP id 4A6DC43EFD;
+	Mon,  2 Nov 2026 10:19:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC86A1F00A21;
 	Mon,  2 Nov 2026 10:19:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A65421F00A17;
-	Mon,  2 Nov 2026 10:19:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793614745;
-	bh=a8ZxaXME7Bo25b7JtSuwLQt4lbE7+wAcQiQGdsNPSzg=;
+	s=k20260515; t=1793614748;
+	bh=2SRV5FSJTfbiUrmKVm9iO7XnZ9kNn48288RtL7ogiPk=;
 	h=Subject:From:To:Cc:In-Reply-To:References:Date;
-	b=dB9WMfe86WuzsWLNIhLfLhFiI2gB/+s6SmyhN0CAvIfXFd7LcmuTtmqH40bTQanvn
-	 1RDFlklIEI6gVL8kqPGOsMlxNzqA5fb404W9aA4h+Jvp9HGScx/faY3DvhQf2ECaq4
-	 2uLwIwYKgsbbil9xGQ6ntRlX2MI1djgNxiTrUCI8il8IGo1UlUwdiUrWA4OAp8zIS8
-	 TqIG4zhpCxyYobaAgROTkzMIfRikJc+q1k2+NMz5yqQ0rlz8v6hUKGB3PQmB9nqcXL
-	 R10wr59jiL9dHZAXqzK10kmRXl0jqDfR4XM2SLejF9wAo+ZmuhUS80GXWZ6jR6cAig
-	 khieferF5zMtg==
+	b=CpFvDYs9htA9hVrKALdU3qYT2NeHXflE9aDmKWM86QDPZyWSbNzdHEgSXI5hZ53dD
+	 XvIXTvOmd69onHM/24o5gsiGglENzLLa4OhjD7ppjMtdwgpP2niRfzfVwOGUyDgWpv
+	 6q1SbpybSJoTj18pX+j1YHtLyQF+cgAqXniILWTaJVW/4FHo+O+GTvcqup6VQ/bktl
+	 +qu0DDo8O8hf30Y/owgMaTwuzch6ZXw5BiDw3ptHKb2sNYb2bI1vTPawdVdjmA2Slz
+	 8IvxOG06mSHVDZVTEn1ZBbaOuL10otd85FBE0uL/0qyzN1XVyqzg0/7/Y2y01A9zs8
+	 gIqdRPX7emWHQ==
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v2 10/12] mm: hugetlb_vmemmap: make vmemmap restoration
- folio-oriented
+Subject: Re: [PATCH v2 11/12] mm: hugetlb_vmemmap: unify vmemmap range
+ restoration
 From: Mike Rapoport <rppt@kernel.org>
 To: Muchun Song <songmuchun@bytedance.com>
 Cc: Oscar Salvador <osalvador@suse.de>, 
@@ -75,24 +75,24 @@ Cc: Oscar Salvador <osalvador@suse.de>,
  James Houghton <jthoughton@google.com>, 
  David Hildenbrand <david@kernel.org>, Muchun Song <muchun.song@linux.dev>, 
  linux-mm@kvack.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20261102032525.3597743-11-songmuchun@bytedance.com>
+In-Reply-To: <20261102032525.3597743-12-songmuchun@bytedance.com>
 References: <20261102032525.3597743-1-songmuchun@bytedance.com>
- <20261102032525.3597743-11-songmuchun@bytedance.com>
+ <20261102032525.3597743-12-songmuchun@bytedance.com>
 Date: Mon, 02 Nov 2026 12:18:31 +0200
-Message-Id: <179361471105.1337633.13890106172591126826.b4-review@b4>
+Message-Id: <179361471105.1337633.15759596677330627009.b4-review@b4>
 X-Mailer: b4 0.16.1-dev
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: E7E1E4000A
-X-Stat-Signature: 4rdeawqhxbi3kp4h7tgxihded8hwqd4o
+X-Stat-Signature: 7suha7dcqzb98ptrxkmghtxnaag6tfw4
 X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
 	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: EB3164000B
 X-Rspam-User: 
-X-HE-Tag: 1793614745-303890
-X-HE-Meta: U2FsdGVkX19JnnFJqNFczAcfWfI/P0eSOnoP4Y5IwfwGC3rJ8uL3a471iof29jFA7cWc6nUNwcaFis4g30IV8iah8K2CDFqJxb0ijdq08QpDEpbmDwtieZi4VqT4hljV+yLd3bxAGpG4e9HlC4kq6vTzyvTpp7Lnfp7TbhAijIxclR+eT8f15r4j2vjFgWDGUD3HH7XDTmDA+QZyF0ndcOBDRXZqYzyV7ntAgS7AroaR61yr7nHoJBFhoUzPdld4DWd6p2HFWlNrIos/Naee0S+76EilKeq1HBh86UPDjvHOeVMpzT6UJWl/sp/fijrbUdux2at0LxebF6SaANoWM5uofNWa61bO+lr6Wocr+gbwaMioAhXPYHgEv9qF4CBFaXf7J6Fe0lNRP6lA4w64twFu0wJDy104OXBmc0/07o7Yt0h7h0Nlylv5UfLxi/zqeWTjv8mewm4TF0QxzWB/357IHLIxzntJeEZ2JE45pGkYbOljYxUBgxRG/cps059usLZQyudIEzn2T+MgZKD6um6bdLlSBjrIjacz95yOTAucQrFwaxG9crvcGY2KMHxo2L9JsqGtJRP0Pea0r1Y2bIJaQJ6xG37vK+zL75/3NKhGBRDdHuE1Tr7Kq3zCbvwYxrchcxVb1tIVkqCqynFAD6q0OZfgYi3y3T1F4CZCchmruQ1so6SAA1PzJNkah0VGPtiR3SrLYQjhKgUokinObaPt6Tkak+V+fmC+z1Q8MBXBDo89Lju2QIEmHIc9n+h1ooWtsAkP773aVCSdo+uOQB044Tjgr/bUV7S+pIEi027QfhQZ22WbH/dZ7e2M+abi4X1TQDYcfj80qF0lvjYJeDiTHGFP2HtuZWKb1RoAndJuo9Kz5lb7GKGcdxyJqQWEmKnP5bp8Lx2Nmo6E1Mld58iRyW7+V2HLAPx2V2Xat+E3HyB/Ylzy87Z01+DGebF8at0LP4jgZgF+AmLCV79
- o7JSYfDJ
- i5Yw4r9r7GPZYlXmI7KRy0vAruM+AZ9wPA+NI4ZGDaK/HV6pUQyVj9pfwVNxoU8Zqt/fopgyZ3vu4WWBqLjh3BbykVcG4PE80l2k+M9flidsfbibf+KOKO5SGfONzTo7dmlCazeNubtk2WKQCRLH9BfgX9sMhzgYYqVXD5+8jsELn7DDSFF6eLL70XmpcYmyBHXw1dGtnLF1gX6zCHkiNafktEZGjZm6+yZYPXHm6FI5bpw/246Mpwr3go/4EDplLVZK8y9HEwVtASidDWO47MtEd435lzhTIKJS1pmQM7aM8oQQE6zPNfZwVrg==
+X-HE-Tag: 1793614748-580150
+X-HE-Meta: U2FsdGVkX19r1l9LVO3ksNYmf9bi2LgYAGnck+h43ExLz0F81a9eN5KGqdVQw+jsrWgvVIz/5z+bcKMjiF4pBG+/6VhoBTOyygw9GSxJR9qVz5DzsSGRP/yDy1HSDD05mRp/hJzo7JE435jxMvJ2vmJRX0/019U602EJtcD5AxcKtPy03yfOhWY+WRbPdYYXtFxzThCME6Lab7m55L2SnptLXzdsB2NsBe0A+a82yJ/xRYbld4IZjcoRYP5joqpAldt2f7I4Umtl8zQONWVSJ4e962K25ANm2IVv6XIp9SVQelF3Kj6yfNsv/NHwGMhNN5kFbtZViTJ5W6J9Dj6l3qELs8Bd5QToofywMeexfx3PchQ3WhyCcmvdKVwbI1T6/BtCOHdYuyLvEiOe9s6T7BAp8VWl82tuPrLVD3j3gTl5ckywz13NZQqGWjDoVN6juXEVAgRYZhFaZ90Jcyy1Og6kakTfUssWSzqAjx0+JSCOkaWXNPE8k3z74h6yEox3TvRVTVv04IZH80ZyFFwZzAeDM3mltVUJl4rw/lV7YpQxNuhGd7x8dxk3TNkj+cZJ0HoYcEDWpKLvS1DCzSK9LRgeg1TI5Tei6T+P4F/Xydbdpm/aQCpkdgiPcewGh1ChmQS7jYJpaa48jr4rLESGO6kBHUcOjWfSXjlsKOZpRhY9G9MzhmGmXvGfM9F3CdUjUpiJTYpgzODnxCiNE5xuOSdNoofG7JlivtGCMzVcBRA7nIIP/9GZdq4ICkFoR8qCT6txc4BYoGkd4fUBuzHu2WFok8G1/uNldl53+PszPi8p+WTUzxcOrOY6f1WBw9xWxk/k9ag0igjtNxNRGlK2YwmCLt/WmZGxjzmDa4d4z/nRpL8sf/X/jayoZrJZq35VqKBYQcADUwvKJAKfj+BGUGJ/oxA7Ujqm3Yjswnh3RqI1YRKNNKZYh0XT+XjLvu6nVMxMsucsypMn1+syQGm
+ GUzFYtc0
+ OMCFMavl38/D+m3FQx6+DqP/V2ulwgtabzXOKtkYuaYKAOfAmFY51AoEaQb924CE1QafPmo6Gaf+yF3s5BzR7qHpipBwrBrqLVOH1w7Oe9aO9zz6ZjGiYziUdg23/iA4lZm24n2af4tuCsZuHtan6WDLPe3SHwGEd+GkNGK7/4ZrzzRMKdDyc/ybxmBuNc45lSjvTKCi1fxr90SOurzPq4OV+SpdqQ7pfsQ1rrOIAN4R/P1yGFMOhcckoPuVZFm3O6PLk2uv5D6vyaywWMHb0HY0gaV64kkZ9ClLExZbGBcNlsQ/UinypaldjLg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,16 +101,13 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Mon, 02 Nov 2026 11:25:23 +0800, Muchun Song <songmuchun@bytedance.com> wrote:
-> Like optimization, vmemmap restoration operates on one folio at a time,
-> but the current interface exposes a raw address range and requires the
-> HugeTLB caller to prepare part of the operation.  This splits the common
-> mechanism across layers and obscures its natural unit of work.
+On Mon, 02 Nov 2026 11:25:24 +0800, Muchun Song <songmuchun@bytedance.com> wrote:
+> Restoring an optimized folio and rolling back a partial optimization
+> both restore a vmemmap range, but the operation is currently implemented
+> separately in each path.
 > 
-> Make the folio the unit of vmemmap restoration and move the common
-> mechanics behind a folio-oriented interface.  This keeps HugeTLB-specific
-> eligibility and state in the caller and gives both directions of HVO
-> consistent folio-level interfaces.
+> Use a single range-restoration path for both cases, making rollback an
+> explicit bounded form of normal restoration.
 > 
 > [...]
 
