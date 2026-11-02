@@ -1,140 +1,138 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20D78606EE97
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 21:39:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47224606D818
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 21:46:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Jouev5Qt
+	dkim=pass (1024-bit key, unprotected) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=KnQgBc5L;
+	dkim=pass header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=b9Dy6Zmv;
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=KnQgBc5L;
+	dkim=neutral header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=b9Dy6Zmv
 Received: by kanga.kvack.org (Postfix)
-	id 314A26B00EF; Mon,  2 Nov 2026 16:39:29 -0500 (EST)
+	id 40C4A6B00EF; Mon,  2 Nov 2026 16:46:48 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2C57A6B05B1; Mon,  2 Nov 2026 16:39:29 -0500 (EST)
+	id 3BDC86B05B1; Mon,  2 Nov 2026 16:46:48 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1B5DC6B05B2; Mon,  2 Nov 2026 16:39:29 -0500 (EST)
+	id 2AF286B05B2; Mon,  2 Nov 2026 16:46:48 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id E08CF6B00EF
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 16:39:28 -0500 (EST)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 5841140222
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 21:39:28 +0000 (UTC)
-X-FDA: 85391495616.12.F430AF9
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf17.hostedemail.com (Postfix) with ESMTP id A2BB940004
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 21:39:26 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Jouev5Qt;
-	spf=pass (imf17.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id EB3056B00EF
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 16:46:47 -0500 (EST)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 60B4F140211
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 21:46:47 +0000 (UTC)
+X-FDA: 85391514054.29.27C6899
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 34A4B40004
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 21:46:45 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=KnQgBc5L;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=b9Dy6Zmv;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=KnQgBc5L;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=b9Dy6Zmv;
+	dmarc=none;
+	spf=pass (imf12.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793655566;
+	s=arc-20220608; t=1793656005;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4k4497sTbbDvYeqvxlbwbiiYz6zh1ROyOPLpxYM4Y3U=;
-	b=xrVdacybgmYs2RF4rtFesKSAiP1eBnBcCuUsXtW2yt8470wSfA7xImqctMXH7b/SLuUMK5
-	fdZxea2cHPNTMYnAH29GUVs/GZAYoASxzRBvxLCxRhGnxY2Wcc4UA5wfqLHdif5TSklmxS
-	Ovwjs7J5LvjoSffDhZDU4ydL9hgWMCM=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793655566;
-	b=jDnSFIIUFbeDZAsUk7bIqq8EppMYGujR2ou2M1cdIYA0S4L6L4MEqRitPS/ySKfra6Kghm
-	I9OzRQFO1C7ot2u0GNsCHa6UsGMl2ykoqXoruiXMplU6WOt1/u1+BwbuIzNkiFmfMcynCL
-	YNJJsZ0tf1/8LwDebuT3nxLHGiM8Izo=
+	bh=GbOlEoeEjn4AmnKwJIfj7iQ/wucai9bwBp3Ox/nzMzA=;
+	b=3YJmuvOq7ZIlExrgCSUrojMFumBjU+GjIX4tDlhCjOE5zdhW1jCV9XLtmPIE6Lpqmqi8Ik
+	c0DAQjnICCAbMjhA+XmHhQieIYmD2qOHJhjBWVMtnelTTypLi7Dt5qsu7F171e9pAFzFr3
+	9566Pwmsn8v/SfVcPdEhyW8PfoSvFiI=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Jouev5Qt;
-	spf=pass (imf17.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id E049540B28;
-	Mon,  2 Nov 2026 21:39:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FA5A1F00A16;
-	Mon,  2 Nov 2026 21:39:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793655565;
-	bh=4k4497sTbbDvYeqvxlbwbiiYz6zh1ROyOPLpxYM4Y3U=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Jouev5Qt+8GltlW45V5pTUQV7gF9lqCjSzgOdMtlplRDu8wkW1tS8zUxZkwrLfNoS
-	 Go7Xnm7RHkpOao988ciNLcvGMB+qTzrRvSAyDHr9HGiB26HoveciMqfozQeA/1FkgC
-	 dMXstNtWJirqYHBZE93b0O8LsKzBKM9XVaQA0k3yIbmMdKGp2xVmAzmwofgm3GJ8JZ
-	 fCzy01U7ZfgO9h7xH6sDPIqN6Mg4KhnFm7LG+Taef7bp80Piy+npF+2+SoXjuo4cwk
-	 9ezM+djl2yFupw3dIdMFU/nsKfQvTrP6uNmI8JlZOvatS8SgR7g1MLQ6lGmNTTbvMB
-	 AMxMIaS5/5sLA==
-From: "Barry Song (Xiaomi)" <baohua@kernel.org>
-To: devnull+kasong.tencent.com@kernel.org
-Cc: akpm@linux-foundation.org,
-	axelrasmussen@google.com,
-	baohua@kernel.org,
-	baolin.wang@linux.alibaba.com,
-	baoquan.he@linux.dev,
-	cgroups@vger.kernel.org,
-	chenridong@xiaomi.com,
-	chrisl@kernel.org,
-	damon@lists.linux.dev,
-	david@kernel.org,
-	dev.jain@arm.com,
-	ehab.ababneh@intel.com,
-	gourry@gourry.net,
-	hannes@cmpxchg.org,
-	hughd@google.com,
-	kasong@tencent.com,
-	kunwu.chan@gmail.com,
-	lance.yang@linux.dev,
-	liam@infradead.org,
-	lianux.mm@gmail.com,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	liuxiang.277@bytedance.com,
-	ljs@kernel.org,
-	mhocko@kernel.org,
-	muchun.song@linux.dev,
-	nico.pache@linux.dev,
-	nphamcs@gmail.com,
-	qi.zheng@linux.dev,
-	rientjes@google.com,
-	roman.gushchin@linux.dev,
-	ryan.roberts@arm.com,
-	ryncsn@gmail.com,
-	shakeel.butt@linux.dev,
-	shikemeng@huaweicloud.com,
-	sj@kernel.org,
-	surenb@google.com,
-	tz2294@columbia.edu,
-	usama.arif@linux.dev,
-	vbabka@kernel.org,
-	vernon2gm@gmail.com,
-	wangzicheng@honor.com,
-	weixugc@google.com,
-	willy@infradead.org,
-	ying.huang@linux.alibaba.com,
-	youngjun.park@lge.com,
-	yuanchu@google.com,
-	yuzhao@google.com,
-	zhaozhengzhuo@uniontech.com,
-	ziy@nvidia.com
-Subject: [PATCH v4 01/17] mm/memcontrol: allow update of LRU statistic without holding LRU lock
-Date: Tue,  3 Nov 2026 05:39:15 +0800
-Message-Id: <20261102213915.57805-1-baohua@kernel.org>
-X-Mailer: git-send-email 2.39.3 (Apple Git-146)
-In-Reply-To: <20261016-mglru-fg-v4-1-2106750c0bfa@tencent.com>
-References: <20261016-mglru-fg-v4-1-2106750c0bfa@tencent.com>
+	imf12.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=KnQgBc5L;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=b9Dy6Zmv;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=KnQgBc5L;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=b9Dy6Zmv;
+	dmarc=none;
+	spf=pass (imf12.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793656005;
+	b=XIVGhewQRVaQx4HVfAIGe8xWCGNp8n9oOPgxv89b8H0p7vbtpU8sAsKDlvztAyEZoSBZve
+	MFs2IrRZ6dT024hSBzZOpEE0fVeCSa3erpADbUIJpHuXDbWf/nuON4mJ6cPL+LkW1cpqn5
+	bOs/31J2NCHwkAT9F0Fsa8QfuNNMlbg=
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id D3A411FB0A;
+	Mon,  2 Nov 2026 21:46:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1793656003; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=GbOlEoeEjn4AmnKwJIfj7iQ/wucai9bwBp3Ox/nzMzA=;
+	b=KnQgBc5LSsfJB0vBErHP4sXiwRevi1h4AwYob2DboFHAo2gNhr4DMvTb/zodgjrfgN08h0
+	xkSaev+zFffkbIepELvuAWCWQ7bZbqK3uE+15+MBwXr8Gu7WDJVi20W7eXK8R6RTmz+VFu
+	mq3hjR+FGMzjR98w9uDe3yyK+Hcmjjc=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1793656003;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=GbOlEoeEjn4AmnKwJIfj7iQ/wucai9bwBp3Ox/nzMzA=;
+	b=b9Dy6Zmv6zas3gtle7HmkEI71NHDs135kPvAFgqTESsMQP1iAfIAOKsOC066PRJG2GxyLM
+	0WCCYUoyS7Df5CDA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1793656003; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=GbOlEoeEjn4AmnKwJIfj7iQ/wucai9bwBp3Ox/nzMzA=;
+	b=KnQgBc5LSsfJB0vBErHP4sXiwRevi1h4AwYob2DboFHAo2gNhr4DMvTb/zodgjrfgN08h0
+	xkSaev+zFffkbIepELvuAWCWQ7bZbqK3uE+15+MBwXr8Gu7WDJVi20W7eXK8R6RTmz+VFu
+	mq3hjR+FGMzjR98w9uDe3yyK+Hcmjjc=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1793656003;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=GbOlEoeEjn4AmnKwJIfj7iQ/wucai9bwBp3Ox/nzMzA=;
+	b=b9Dy6Zmv6zas3gtle7HmkEI71NHDs135kPvAFgqTESsMQP1iAfIAOKsOC066PRJG2GxyLM
+	0WCCYUoyS7Df5CDA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id A917E134B3;
+	Mon,  2 Nov 2026 21:46:43 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id E7BdI8ME6Wp3AQAAD6G6ig
+	(envelope-from <jack@suse.cz>); Mon, 02 Nov 2026 21:46:43 +0000
+Received: by quack.suse.cz (Postfix, from userid 1000)
+	id 58D03B16B; Mon, 02 Nov 2026 22:46:43 +0100 (CET)
+Date: Mon, 2 Nov 2026 22:46:43 +0100
+From: Jan Kara <jack@suse.cz>
+To: Qiliang Yuan <odys.yuan@gmail.com>
+Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
+	Jan Kara <jack@suse.cz>, Andrew Morton <akpm@linux-foundation.org>, 
+	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm/filemap: clear page cache marks once when removing a
+ folio
+Message-ID: <zchm3kq5yykwhxbqgdr5sqkws2bp4qjmah4pcka5ancv4isk2t@co2erj67xpoe>
+References: <20261030-bug-mm-filemap-init-marks-once-v1-1-699835fc6690@gmail.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: A2BB940004
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: 3sp7cjirht4j5rob6kyfmn11natpceuz
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261030-bug-mm-filemap-init-marks-once-v1-1-699835fc6690@gmail.com>
+X-Spam-Score: -11.30
+X-Spam-Level: 
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 34A4B40004
+X-Stat-Signature: wwi7hqr81o5166b3suus9roz6cbzczo5
 X-Rspam-User: 
-X-HE-Tag: 1793655566-940424
-X-HE-Meta: U2FsdGVkX1+j3Y5i9abqc8x9RlqiroZxAcO2xqeO9PVgFitnXrcuCo8H2n4ppKudL7orYl8NwIMpLFBtSCi9Sg1D8eVL98AScICol1CAEwvKW0sLOX2q7q0aizSunGAt0KzK8P/XLudh8WbrTOmGrk+QNulAgV5vBxF68y8CAV5OmbnXbfUREHZ9XWnAtaz255yLJcQdI0ege8aYHdyw8TaN7maxrBJDU4fCzNxmoo+zK74+kPPwK7ClnCE9sSOEXLgoimprbemKEcwWh3CkCP9pVaYgqtr6K4FFV536wp9/opgoMeQH7VnQJdxW1U37IMZVpCQ4ONmga1gODViU1lmu+EXhuz8gnmj7ryG3/yhi7/iGgmJjyCysw6gqzhFk4LXjtzOxDMMxNxsoqNIY0Th2qUa7RW20KDMqXbgfe2DYiv48atXGB7VgCJ1uIZpDIGcKM/WMkJiJ4sVyXLd+C35O3qyM+qHWSxcSYjqBpRzrUM1+WboMS+t3Z1p5Xddqq5w/HEjrfhHSFsvUKahA72fxFylo+uvg2qQLqmZwpEI4Qbieyknd2siSXvlQ5PwH4LFAi5v4eTa6yJF6WUXKcPGcCR53CH+RgxLeXmmFApAr0vx1oiMaxb22WjqIXJF027CjUS/oxGHyoebvYj99Ul+6ksfRsdkliuKrkRYZCZyfB2x5ivU7oXLasgOCzmhTRdlqRW56/LRT0C8Wi83LESwraizz+aDfSfZyIC3KdAKmiRwu2kIAauLxJmJU1Tudl01T38+sKNru3GxfoQuP3C+UW1IINQxObTXYSwjR4pjw1u1r29QpPUNJPV+CgdpdtXhv8c1mwpOzyBAd8vwm3GSeY8N+RZNvWJ2oxhbzOcra45fN0zhGrBoGmHM0yBw2WN/eNl1R0pHDRX8GS3twsw5azNs7rvj16lP9jK+nZUGMZSObwmDuOvROrlo7KBkjImhALHBveBm2/ZpETpk
- Cg4okFcQ
- +bZQZJTgL13Dks6d7az+C7kI3JUZHt0d3laKfmF6L8Kc7Np5v60jc4U/dzDQvgGJqfgdaGfqfyouWj61blPy21SngK1BLD9yhzH6+JMfqlv4+OBIsSCgEdaPXwnxKVU4q7aL2+a7qetwEZCfeJHtbieNmvsE1VBknZedN6LVigxscMxAtOrpfi3MypYUyiZYjbCIR75cn3i84JMlygbtjnUIJXtQvE3V0GqdhCUOg0iz9/SD/DLT/r/hzXbs9a24e57mmCtYopsjqef3K4sD2mVI80dHln6btTsLsZxM24u6BRsCeIARqxOrSl4AMgXYYs3JkAEWqvyDEf2yv7Kqz4IbWGEyQ0JLD3ZMK8jmU27uFHCx/Y/6g570fsZUJpZ4NAkqvc23P7Wbzrwc7Ts+5YLrFGcc5s3+ERHDhLivXJpCo1no=
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1793656005-235974
+X-HE-Meta: U2FsdGVkX1/2Ixg8cClC/3C4ZKzE3z2JjMzbnfCLgh8fw9wvSghsLB8geTdBtHyzCboJGh8KW5fkYz/mF3epZivHRaSaQXjcuDTd9p7sDzrY2d4N9Das1oiBlj3gGqoXCe4+Vz3pHsFnvIkVyGIsyQB77mujis8/5TtnsXaXI7islzM7op+YWTnEj7KDRJ31sBXVqhVKLCbOmnEVT/ots0JeBxggtdOgayNfiaXdJZYZUxdgNBeR7gK7eJc/rKn4yVQ3c+8WgSWhvzTkihABR60KH08zYSKbhQYBgHrWC6ZFS8GbK38eCOFL7Q8Il7S6TtrHBSGqdIrSLfd8NKMqjQh3fyUNsoXffA7UlppkVU4pgScH6r9cBSS6g8JfKL4VVrKKfNHPxFBosRsEO8odKmJJUfbRF5L0dsv2QKRFwVLKPUGd1WAwdZCaAgzJ9qnlA3lp2xb5Qi9mYjO3mH21QVj4f0hdmp69oL7WFizbppwRInTuNEfH70vVmze5R1ZCZA1nH5249YUOIDDB5qye5HN99867+KehbgYRE1RcEqrHr/oRNNtNSd0Phy7Sbe+SzeJGNRWUXrmnxj6UfppAx5wM9ZWpYkCgod1PwQtaWAOwtKizrpqmr0y22Z4uTuVnsyzKk+/67GtP85k1VTTO4wGZ3td7tHuhbl2gYQiB6eHnm3AZuY/sZg+G1RsrXabhnWn5ZmgcsJpWUBJKaDjSsnJvHQnI9eUKKiZgwJWFHB8k10zc/vvUYXoUnAcDVZHvSXd5BEkKenqFD1r6sCBnRI7wcJzCaI+TvbioKpMlzBT6ZYQfXmw/iojw8PNj0DTQVc6BVd6rLwyltHhZolv7hs/kmTZi+HjAwKO8WgPDaWFk7y84CbKwTxORpluaG/TzatuWHDtxTeLM73TTvCDg683WarxY9f2NLG+ZysE0rJI8iEfy/eOsSqcgJ2JyzjTmTnj14Ib7zF4eDeiFQP8
+ ukUExFg5
+ zA2jPrlM6tFeOaz0mWCZitFSisXqvkeFDfHD+MSLG/38K8h+cLHij7O7BAU9fvFwQYU8ZLLXeVl5v86t4CRRPh+wIZCqGiSq7Qief9hTomQJ7HCAq/fdIC5tLZdgWMtt0LEel3Sq7/Huu7TlRx8xs5720fJ5Fm9F6AxogT2Rm0M/gTkPX0hKXB0vxb6huTEp7OoCar8gK7ZUXPUD7X8C/n5L3JoP+7yh9zrHJFzxVXiNTV6wTUL9vjnbfoL9Nc8xC/TiWa4M1jdIkHoutduCSJ3TgMTLp+YDzi7zc3g7/XyOfzPXBTt/qFrff0PgVbkgWceTpQPb5DTQdMgQq1lTlgLvb4A/3JjR4UBs0FBF38fnkwIWGwfFqBYz5LHquB6zuz/j2uo1gWMZo6ChNSiGYTol6RcLHyqoasyS7/V5x7RGhbpvLWAYmFrGEGQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,140 +141,64 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Fri, Oct 16, 2026 at 2:15 AM Kairui Song via B4 Relay <devnull+kasong.tencent.com@kernel.org> wrote:
->
-> From: Kairui Song <kasong@tencent.com>
->
-> To enable moving file pages in folio_mark_accessed directly and lazily
-> for MGLRU, allow updating the LRU statistic atomically without holding a
-> lock. It may cause temporary counter underflow, which should be fine as
-> we still follow final consistency of the counter, and it only serves as
-> a estimated metrics, a little inaccuracy has no visible effect.
+On Fri 30-10-26 01:52:38, Qiliang Yuan wrote:
+> xas_store() clears the marks of an entry before it replaces the entry
+> with NULL.
+> 
+> page_cache_delete() calls xas_init_marks() after xas_store() whether it
+> stored a shadow entry or NULL, so a folio removed without a shadow, as
+> POSIX_FADV_DONTNEED and drop_caches do, has its marks cleared twice.
+> With 4K folios that is about 6% of the time it takes to drop clean page
+> cache.
+> 
+> Call xas_init_marks() only after storing a shadow entry, whose marks
+> xas_store() leaves alone. Dropping 8 GiB of 4K folios, median of five
+> runs, averaged over two boots of each kernel, in a 32 vCPU VM:
+> 
+>                           before    after
+>   POSIX_FADV_DONTNEED    1517 ms  1423 ms
+>   drop_caches            1515 ms  1422 ms
+> 
+> Signed-off-by: Qiliang Yuan <odys.yuan@gmail.com>
 
-This might be a good idea. Updating the LRU size without
-holding lru_lock could open up possibilities for further
-optimizations.
+Correct but please add a short explanation before the condition like:
 
-Recently, I've been thinking about something in the aging
-path. For example, suppose a folio belongs to the root
-memcg and is heavily shared by some of its descendant
-memcgs, which also access it.
+	/* If xas_store() didn't clear marks, do it now */
 
-Currently, aging in those descendant memcgs will simply
-skip this folio. Eventually, we'll have to rely on the
-rmap of the root memcg to determine whether the folio is
-hot or cold within the root memcg.
+With that feel free to add:
 
-Since the shared folio may have a very large mapcount,
-walking its rmap could be quite expensive.
+Reviewed-by: Jan Kara <jack@suse.cz>
 
-So I've been thinking about this and put together some
-very PoC code. It doesn't really work; it's just meant to
-illustrate what I have in mind:
+								Honza
 
-
-diff --git a/mm/vmscan.c b/mm/vmscan.c
-index 7ddef3b488b3..31b02478269b 100644
---- a/mm/vmscan.c
-+++ b/mm/vmscan.c
-@@ -3618,7 +3618,7 @@ static struct folio *get_pfn_folio(unsigned long pfn, struct mem_cgroup *memcg,
- 		return NULL;
- 
- 	rcu_read_lock();
--	if (folio_memcg(folio) != memcg)
-+	if (!mem_cgroup_is_descendant(memcg, folio_memcg(folio)))
- 		folio = NULL;
- 	rcu_read_unlock();
- 
-@@ -3723,7 +3723,7 @@ static bool walk_pte_range(pmd_t *pmd, unsigned long start, unsigned long end,
- 			continue;
- 
- 		if (last != folio) {
--			walk_update_folio(walk, args->vma, walk->lruvec, last, dirty);
-+			walk_update_folio(walk, args->vma, folio_lruvec(last), last, dirty);
- 
- 			last = folio;
- 			dirty = false;
-@@ -3736,7 +3736,7 @@ static bool walk_pte_range(pmd_t *pmd, unsigned long start, unsigned long end,
- 		walk->mm_stats[MM_LEAF_YOUNG] += nr;
- 	}
- 
--	walk_update_folio(walk, args->vma, walk->lruvec, last, dirty);
-+	walk_update_folio(walk, args->vma, folio_lruvec(last), last, dirty);
- 	last = NULL;
- 
- 	if (i < PTRS_PER_PTE && get_next_vma(PMD_MASK, PAGE_SIZE, args, &start, &end))
-@@ -3812,7 +3812,7 @@ static void walk_pmd_range_locked(pud_t *pud, unsigned long addr, struct vm_area
- 			goto next;
- 
- 		if (last != folio) {
--			walk_update_folio(walk, vma, walk->lruvec, last, dirty);
-+			walk_update_folio(walk, vma, folio_lruvec(last), last, dirty);
- 
- 			last = folio;
- 			dirty = false;
-@@ -3826,7 +3826,7 @@ static void walk_pmd_range_locked(pud_t *pud, unsigned long addr, struct vm_area
- 		i = i > MIN_LRU_BATCH ? 0 : find_next_bit(bitmap, MIN_LRU_BATCH, i) + 1;
- 	} while (i <= MIN_LRU_BATCH);
- 
--	walk_update_folio(walk, vma, walk->lruvec, last, dirty);
-+	walk_update_folio(walk, vma, folio_lruvec(last), last, dirty);
- 
- 	lazy_mmu_mode_disable();
- 	spin_unlock(ptl);
-@@ -4499,7 +4499,7 @@ bool lru_gen_look_around(struct page_vma_mapped_walk *pvmw, unsigned int nr)
- 			continue;
- 
- 		if (last != folio) {
--			walk_update_folio(walk, vma, lruvec, last, dirty);
-+			walk_update_folio(walk, vma, folio_lruvec(last), last, dirty);
- 
- 			last = folio;
- 			dirty = false;
-@@ -4511,7 +4511,7 @@ bool lru_gen_look_around(struct page_vma_mapped_walk *pvmw, unsigned int nr)
- 		young += nr;
- 	}
- 
--	walk_update_folio(walk, vma, lruvec, last, dirty);
-+	walk_update_folio(walk, vma, folio_lruvec(last), last, dirty);
- 
- 	lazy_mmu_mode_disable();
- 
-
-We may want to explore this after mglru-fg. What are your
-thoughts on this?
-
->
-> Signed-off-by: Kairui Song <kasong@tencent.com>
 > ---
->  include/linux/mm_inline.h | 3 +--
->  1 file changed, 1 insertion(+), 2 deletions(-)
->
-> diff --git a/include/linux/mm_inline.h b/include/linux/mm_inline.h
-> index ab69b9930893..597f013c8e04 100644
-> --- a/include/linux/mm_inline.h
-> +++ b/include/linux/mm_inline.h
-> @@ -47,11 +47,10 @@ static __always_inline void __update_lru_size(struct lruvec *lruvec,
->  {
->         struct pglist_data *pgdat = lruvec_pgdat(lruvec);
->
-> -       lockdep_assert_held(&lruvec->lru_lock);
->         WARN_ON_ONCE(nr_pages != (int)nr_pages);
->
->         mod_lruvec_state(lruvec, NR_LRU_BASE + lru, nr_pages);
-> -       __mod_zone_page_state(&pgdat->node_zones[zid],
-> +       mod_zone_page_state(&pgdat->node_zones[zid],
->                                 NR_ZONE_LRU_BASE + lru, nr_pages);
->  }
->
->
-> --
-> 2.56.0
->
->
-
-Best,
-Barry
-
-
+>  mm/filemap.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+> 
+> diff --git a/mm/filemap.c b/mm/filemap.c
+> index b74bc1e5015c6..a0c959e74533e 100644
+> --- a/mm/filemap.c
+> +++ b/mm/filemap.c
+> @@ -140,7 +140,8 @@ static void page_cache_delete(struct address_space *mapping,
+>  	VM_BUG_ON_FOLIO(!folio_test_locked(folio), folio);
+>  
+>  	xas_store(&xas, shadow);
+> -	xas_init_marks(&xas);
+> +	if (shadow)
+> +		xas_init_marks(&xas);
+>  
+>  	folio->mapping = NULL;
+>  	/* Leave folio->index set: truncation lookup relies upon it */
+> 
+> ---
+> base-commit: d89e1d186ec9271bf78e62771779e9fc03bf0fc3
+> change-id: 20261030-bug-mm-filemap-init-marks-once-b83c6aa67bab
+> 
+> Best regards,
+> -- 
+> Qiliang Yuan <odys.yuan@gmail.com>
+> 
+-- 
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
 
