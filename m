@@ -1,131 +1,113 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 549666072234
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 15:31:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D428F60D5465
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 15:31:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=UbE/GY/P
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=Z4IgsNSn
 Received: by kanga.kvack.org (Postfix)
-	id 770176B062E; Mon,  2 Nov 2026 10:31:29 -0500 (EST)
+	id F0F3A6B062F; Mon,  2 Nov 2026 10:31:33 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 746096B062F; Mon,  2 Nov 2026 10:31:29 -0500 (EST)
+	id EC00A6B0630; Mon,  2 Nov 2026 10:31:33 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 65BEA6B0630; Mon,  2 Nov 2026 10:31:29 -0500 (EST)
+	id DFD036B0631; Mon,  2 Nov 2026 10:31:33 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 46B4D6B062E
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 10:31:29 -0500 (EST)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id D8228A597A
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 15:31:28 +0000 (UTC)
-X-FDA: 85390568256.05.B7FF466
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 13476C0004
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 15:31:26 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="UbE/GY/P";
-	spf=pass (imf28.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793633487;
-	b=u3oLtn/i5hchnYAWuZokqFNWPJPyORvZxP4LuatWdVBZamr0T4hfYapNYcKrfwhaQty9k/
-	WwR732rfGfFwo0D/fB+lZYJlu+2viYSSkvZlMgwNqRAkaBMWoCSDSS6GeiuyinEWL5GF7N
-	J2Evy685M6/B4OZFWJpj0178+ihh0Bc=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="UbE/GY/P";
-	spf=pass (imf28.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id C897C6B062F
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 10:31:33 -0500 (EST)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 65F97A016F
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 15:31:33 +0000 (UTC)
+X-FDA: 85390568466.19.9A2F67C
+Received: from mail-pg1-f199.google.com (mail-pg1-f199.google.com [209.85.215.199])
+	by imf10.hostedemail.com (Postfix) with ESMTP id A177CC000B
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 15:31:31 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=Z4IgsNSn;
+	spf=pass (imf10.hostedemail.com: domain of 30qzoagYKCC0bNJWSLPXXPUN.LXVURWdg-VVTeJLT.XaP@flex--seanjc.bounces.google.com designates 209.85.215.199 as permitted sender) smtp.mailfrom=30qzoagYKCC0bNJWSLPXXPUN.LXVURWdg-VVTeJLT.XaP@flex--seanjc.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793633487;
+	s=arc-20220608; t=1793633491;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vwjxO3TYvy6WGJQYdN5saH6B1iVdIocyydf/9B8LfXQ=;
-	b=o832JtSZHqnuRLS7B+HzFiPQxXbTbYZ8HlUEOE2jyvv6T/TaDGbVxUmLOqTfLfUKtQRn3x
-	b6GAXPz67hK3CqO2/2g34PoI5k5L0oa2rJhZT3IQgxR3aAkypnzOmOhSC9l4BzGKIrHmAp
-	qxtSg56gVAmqiyB0f0ND2lUQi2QgU1M=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 4F68C41B56;
-	Mon,  2 Nov 2026 15:31:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89ABC1F00A17;
-	Mon,  2 Nov 2026 15:31:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793633486;
-	bh=vwjxO3TYvy6WGJQYdN5saH6B1iVdIocyydf/9B8LfXQ=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=UbE/GY/PYzhi2Fi7si7/s3It7tNz4DO7UQGlprH7NLzpJSufJcUt6S7sLl4ETioTn
-	 lSrxhrhtFMtQb6rZpoE6MoG5MG9eu/oVVRZmwnTVdQmH/Uc8YanZxUbAPJ3I9S4O7q
-	 z0m2i9CWxWD03GNLvtDJCEzS1ywzTD672wOGOyzXiiTxjSmYm4JDOfioeSmLQa60Ds
-	 a3wnZ+yTE9KkhVTKNfGA/bKsony/u5hTU2nvptIrn6VLRSoxE92Hyqh1vP22R1USo3
-	 fnoX0h5mvFahCSUZxRECbsbRhCqA2NVJbxVIwTQPsraXYkSxXkM4wzwb15ZC+dp27b
-	 y5/kCl5AgK1UA==
-From: Christian Brauner <brauner@kernel.org>
-Date: Mon, 02 Nov 2026 16:07:16 +0100
-Subject: [PATCH RFC 02/11] l2tp: let procfs own the seq_file of
- /proc/net/pppol2tp
+	bh=Q7x6yP+yOfvdzdlAu2HNp3jLSAowdMqE0gkj3ywLMGc=;
+	b=4GZUeX4+nwmEOw4TdWOBJ6Iief5+i9vK/ChMyYCAlLr8Z4Ou8XXRGr15bL7y1wz1J8/H7X
+	5G6htTMK2NxGAMyJoyHtCQpP8+4GMHQpVSlYK5tI7Y3w/hULLgPXcsf6Vr+chOjnZsJwEd
+	+qi1IQ0X2ru2f5T9DUM3DyF/TH050aQ=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=Z4IgsNSn;
+	spf=pass (imf10.hostedemail.com: domain of 30qzoagYKCC0bNJWSLPXXPUN.LXVURWdg-VVTeJLT.XaP@flex--seanjc.bounces.google.com designates 209.85.215.199 as permitted sender) smtp.mailfrom=30qzoagYKCC0bNJWSLPXXPUN.LXVURWdg-VVTeJLT.XaP@flex--seanjc.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793633491;
+	b=5Od6TQpNBdsr9/rfbJZct3rqbj9Oz/+odXCTI3iFsovc6NmX+IIAfOyiJuA098n0Q/DjB3
+	7qtRkYVOH8RC72I7NJGO7Sj5ZKl6D7mZ8bT8U/JBc+lLAYlNnYKvz1DYdnKA+Kz5B+bHZB
+	DZr9aXlrYozMyxHLRsATzlTOjEfatso=
+Received: by mail-pg1-f199.google.com with SMTP id 41be03b00d2f7-cdaf2a74482so1688234a12.3
+        for <linux-mm@kvack.org>; Mon, 02 Nov 2026 07:31:31 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20260707; t=1793633490; x=1794238290; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=Q7x6yP+yOfvdzdlAu2HNp3jLSAowdMqE0gkj3ywLMGc=;
+        b=Z4IgsNSnkItQc8jzeCFnu1YeA0j0AujskdoCzLLUkI7oBTn1JRyJliBVCjwUL6mp5Y
+         fF6LjUSrD6jXb60otKKx0+lq5mh/4KKm5/wEIZ/99ngItnhNHxwo/d2SbjnyW8di4U1f
+         NmbeUMw5Ll/w3uv3zUWhpa5H1FZAbMeqqAPc+A7Dw0EFcvMCbr71FhXTwPHY1FoNcnqR
+         LO14ubsiWBRzN2M6LJ3p1lyxJP6esf59lLXgJCwpLVXYzPA7zQL2YFMVJIHmMKwciNUG
+         4jKumZ+1U42hXV/Bjj0kpIDua4tcecPbn0iM+9d3UT7ufhrzWV07nN9V/dumarP9egno
+         Jpxg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793633490; x=1794238290;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Q7x6yP+yOfvdzdlAu2HNp3jLSAowdMqE0gkj3ywLMGc=;
+        b=hEjazzNfpK46nT19oEoqycsok+YXMZswChsBBEESReA4jUFaq8ZkBPQAANwcALf/n0
+         CIq8LakCzsG2aYHNImkgU7YkIvYINFr9KRYMqrUYXpkqoz21WGRY5JPro7piHo4erH8g
+         k0gqvcVg94aHvDJ/GeOEkuuNKjbLPOhfXD7j6Rwqs1Euve1BdIlwlztuBL5jDcj8QQYP
+         s0Lz0dhtLSf99desqHHJrwPekSb4Q/N7fJ4ze8q7ZDSCBXtBgKLK5VSBfneeRTfKy7VI
+         N9Dw4XK8B3IwJahPPkQFZ6pgbnTdinJscZinEEPfGHkFvTN9etwrUMncq/j8kLfFS18R
+         YdtQ==
+X-Forwarded-Encrypted: i=1; AKwUvBx7RIj0gnjWqI7CVLxm+i8s7obVlwL8LpatsnZ7LHLRx20a0KavUfGWZSJyxKGInn1ygc+NuRto4g==@kvack.org
+X-Gm-Message-State: APuU4Z+89kgN4VTFk5mAp315EkVTt01vAMh//d5qS5zGrOk8O53whlZH
+	1uO3XRL57NHoGF/eR1fMydvbehyTiNnDHUnyAc2HZQ8LZf5naXJBwRK6w8LakKSTYtTeh2KSv2d
+	WrQeQOA==
+X-Received: from pjbgo15.prod.google.com ([2002:a17:90b:3cf:b0:3b0:7a3d:ca4b])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:33ce:b0:3ac:ffb8:1809
+ with SMTP id 98e67ed59e1d1-3ae897e230bmr7958871a91.39.1793633490047; Mon, 02
+ Nov 2026 07:31:30 -0800 (PST)
+Date: Mon, 2 Nov 2026 07:31:29 -0800
+In-Reply-To: <20261030133939.630e29af@p-imbrenda>
 X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
+Mime-Version: 1.0
+References: <20261029143336.390231-3-clopez@suse.de> <20261029175203.5bdd51d7@p-imbrenda>
+ <df9dc526-4275-4784-8a0c-2e4fa8e96402@suse.de> <20261030133939.630e29af@p-imbrenda>
+Message-ID: <auis0SaMkRB6odsK@google.com>
+Subject: Re: [RFC PATCH 0/4] KVM: x86/mmu: don't zap secondary MMU on
+ permission upgrade
+From: Sean Christopherson <seanjc@google.com>
+To: Claudio Imbrenda <imbrenda@linux.ibm.com>
+Cc: "Carlos =?utf-8?B?TMOzcGV6?=" <clopez@suse.de>, kvm@vger.kernel.org, linux-mm@kvack.org, 
+	pbonzini@redhat.com, linux-s390@vger.kernel.org
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261102-work-procfs-net-v1-2-982104a4f592@kernel.org>
-References: <20261102-work-procfs-net-v1-0-982104a4f592@kernel.org>
-In-Reply-To: <20261102-work-procfs-net-v1-0-982104a4f592@kernel.org>
-To: linux-fsdevel@vger.kernel.org
-Cc: Linus Torvalds <torvalds@linux-foundation.org>, 
- Jann Horn <jannh@google.com>, Josef Bacik <josef@toxicpanda.com>, 
- Chris Mason <mason@kernel.org>, Jeff Layton <jlayton@kernel.org>, 
- NeilBrown <neil@brown.name>, Eric Dumazet <edumazet@kernel.org>, 
- Thomas Gleixner <tglx@kernel.org>, Al Viro <viro@zeniv.linux.org.uk>, 
- Jonathan Corbet <corbet@lwn.net>, Christoph Hellwig <hch@lst.de>, 
- Greg Kroah-Hartman <gregkh@suse.de>, 
- Joel Granados <joel.granados@kernel.org>, Kees Cook <kees@kernel.org>, 
- Jan Kara <jack@suse.cz>, Jan Kara <jack@suse.com>, 
- linux-kernel@vger.kernel.org, linux-nfs@vger.kernel.org, 
- linux-acpi@vger.kernel.org, linux-kselftest@vger.kernel.org, 
- linux-s390@vger.kernel.org, linux-scsi@vger.kernel.org, 
- linux-um@lists.infradead.org, linux-wireless@vger.kernel.org, 
- linuxppc-dev@lists.ozlabs.org, netdev@vger.kernel.org, 
- ntfs3@lists.linux.dev, platform-driver-x86@vger.kernel.org, 
- coreteam@netfilter.org, kexec@lists.infradead.org, 
- linux-pci@vger.kernel.org, linux-sound@vger.kernel.org, 
- netfilter-devel@vger.kernel.org, dri-devel@lists.freedesktop.org, 
- ibm-acpi-devel@lists.sourceforge.net, jfs-discussion@lists.sourceforge.net, 
- linux-alpha@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
- linux-cifs@vger.kernel.org, linux-fbdev@vger.kernel.org, 
- linux-hwmon@vger.kernel.org, linux-mm@kvack.org, linux-sh@vger.kernel.org, 
- linux-usb@vger.kernel.org, samba-technical@lists.samba.org, 
- sparclinux@vger.kernel.org, linux-m68k@lists.linux-m68k.org, 
- linux-doc@vger.kernel.org, linux-serial@vger.kernel.org, 
- linux-atm-general@lists.sourceforge.net, Takashi Iwai <tiwai@suse.de>, 
- linux-input@vger.kernel.org, linux-raid@vger.kernel.org, 
- linux-ext4@vger.kernel.org, linux-modules@vger.kernel.org, 
- linux-debuggers@vger.kernel.org, 
- "Christian Brauner (Amutable)" <brauner@kernel.org>, 
- Chuck Lever <cel@kernel.org>
-X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1918; i=brauner@kernel.org;
- h=from:subject:message-id; bh=/g5R4n0Ms+FYrKqMM/T6cxyrF8YI/t11/rZZuOTaMss=;
- b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS9WG78rF41UVcn6s+kRfI/lJTvq/TI+ez8kiHKd3vOn
- QnBrmtYO0pZGMS4GGTFFFkc2k3C5ZbzVGw2ytSAmcPKBDKEgYtTACYi9oyRYf/NOSUiv50MPlxP
- STf7vX/f6RkVu0Vzktw3n+teH3BIfwcjQ6e+2UWHa43H2pdHS7s1ZT76oqVzw0iU/67rXo/gM16
- nuAA=
-X-Developer-Key: i=brauner@kernel.org; a=openpgp;
- fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 13476C0004
-X-Stat-Signature: ndrabjo6wfeop8re6no9t47gn45izg7h
-X-Rspamd-Server: rspam01
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: A177CC000B
+X-Spam-Status: No, score=-13.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
-	version=4.0.1
-X-HE-Tag: 1793633486-47436
-X-HE-Meta: U2FsdGVkX1/uD2ssEK9J+tyhTb2pJgx32jRRVwm7ckxvNQ59Bx4k/ijF/yR42iHIWF/RhlRX9GnWvpLA5oJOf+jtNu6/ByHDIJI0Cjju0Nc3cV+II4CHF70maJWiVexwhcMG3rKsjQ+7ByNCDDzLjF/TKc8XWSFO3kmIUFxm7QsiShJ7eiLJ1jjtCgvn7jVgqPGzyEdFgDS9ACdnsPx9pvm6FoY7zS0kZ1nHQRhDPbEdfLfzpokMQU7wJ85VbGnTE3c3tTAMaH7zT+xLtZ1Nbs3BeRB1tF8/GmOLm9/uwJSaiisKfTUL9JV3744Qr1NZlrSeqolLfIP4Iy867HIK9pttf2vqSg+ohjSm60aBCbpvPukW9LrlHEX0DTlDnTVHWo29F5av0o9jERA/SwAfD8XqCJcU5cPCWboA291Boc57rODJHTetIE4n+hEwrLipOCc9R2zL8U9F2T8k6sW9KiynwxC021+rVxbSakVodRY4eR7gshsI8DrBcTt661YKv5n48zSjAANoyeed5ydiSaFyYXXMlLpKb0C6kkP7yLqmI9ePFXUAgOseHEwYa3tlGhIOvJINne8xUMYHdzzuhnmb4Xco9erfmbs92BicPT3ij6sTlttJE7pVgOh+8wHEAtFckqiSEO+H7xL4WEkaq+wbm5J9wz+bmKZVqBDRCHUFuxdhOJsVy0k3P0GGLjdcmbocVhYPmvoK5UlPw1B/p/RsSQqc7m5RU7XCiP+mPVs028Hl1CheCzBVoycbReHT3NxESfy8V/nr8eHb9dQPR7L9ldtFBjZNKzELjD8RcooFPMT621ALOb6nzJ6PeEcpBFfzw6L1Vmi+tzPaCkoT15nmIs5sn1rG7jWuDOK1QjZh6m0cBpGozUDvb4bi5ye8ZpLc/Io5PfKD5REc40eCEfDi+RlCodhGylEGChvbEwhM2SNwrfUo04NJPTGX3UWyjbMSN2EANn3nZDC2jzv
- +wbwZxqT
- r9vg3DaBikNSxs1UAxAxQuenZpWCfDUFQklOl9jnObjWiYwVE2J3sxco0WnlPpFDknLXCCY0FA0SJonHJ9Ph+9VJLbFRBqDnj2BTPMVMjYUyDs0VfMYjxuFj27QKmGlExtC1fH/7AYuJRH5ZEhZ8fOOsxyJqu4S96LDhVeJucTM6IN7gpZFD0Tg7Uj78oMLpbRWjQjTUlyZVomA9+CHujcJvQBXfIZ+KFL8aypMc5DlYIvjQrKUXmjfvZZoekAl+Bpt8Ijnq1AWjc/uOUuPInhCpa/oRrUaAIZvmjCGaWtdb11AJvcuok3HggEO9kbdIB97mGpuPwbWXJ4J/OEoIswrnPLRTIn87GJ0Sq1yYBrkrpdoCj6PpWEglmjdtwHV0rMw1g0oj4arbKuMA=
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_IN_DEF_DKIM_WL
+	autolearn=no autolearn_force=no version=4.0.1
+X-Stat-Signature: heyej6k1zd7uwc3zguc6wx8pffxugcqh
+X-HE-Tag: 1793633491-823952
+X-HE-Meta: U2FsdGVkX1+pUOmqFaAyDdG+wFsbjyTFdKZlZgWbfdw03SwS3WMK5n+4srL+ZijiIhFBOB+4kJpbTm09lt2rYNVcLWx8GpzKI87yeBORG3R0P772drd1lKjjOd4CenjiWVDJqRj1KAgJfDMS9bdlMcaVl0URMP8cG13Ds0OawI5CKqveTaSflKxgjrkiPZ8tdvL2TSlZnJvQTVimD9BSuwuXepefDtM/qmwJ9TXsdSNoW8tT4LP09hSBchkjYPqsqySkEDp7CdW/7CI9iZom/8XdWdEU93PM8Zvk/EG0SfCfHRTqGmPHlf6xONgLhB1vBq4cZAN9nd/RKu9G3m0YDMCJW9emaeJAb4+hLfxjxv8lLeGdaIWsBWoD6vSRz66Px82y9BwrEq+hetyQTDJNTnUoUrzhtjXjsOIUeMn6xRgvrurUyommlk4Al6xnput5XuKzYU2yJK7gUlYWKGOckPO1DqPXG6rOZ2C3BTBUs8wIKth9/5V/xuX16DQdUaXxwqMHZ4U9MCTGq0ust4EWWx1bpm5+y8wl64GHGgbTkguD9/tdRcilwdxCNehPffL4XnBh3W5UXMY+MzDon+LLbZzNKzPCIVpELxesyC8ZxfLFFn9mrpG0rv98uBxINeMhkwsWjkP+EQ4pwB8nwF6nRYVc4UmLL7vkgo2ihYPoJh602XL1hp9Mn7D5KHcLuhAf9oV8byo3tgjjuy6Wsh2/pnjlv0b7ioJ/IynuG1kf6JYdIhtYDwrJyvYEmZRMYCsNdmUQpeFWxKJG8ucQP3nLXjuNRHCqsErNpnRKB8oeCkoLqGHeKGTDnkYVX52TxAeYL4YNq7gyLcFvYtvDqEsbs7xOQoF93en8yPsgF3oMmuPGPBTbjc6n0Gd8yCkjVWv8uoHUkhtxAe4LMq0oSn9VXXbquID0bw1cecLe6Ix6F3YRqdl+EvY/PmTqkkTMf3we8ZBToHgovY9T9gvXbmb
+ F72ic+VR
+ bLxD8dFYgxPxiGU+Icln/ijWnlnHv5sfJXgsrb7TqDIxllPKWPZbbb0uQgN47kyQ2eIfUPyNJTBqplWX+K9kpWYKQ3nmeC7/8Ys521OT3B3i7DNsBFJ8YFGPJCbJ+pCJAICx6QlwiLrzYFEE+xm/y2oxgynD9nJNJ7UkLZMEApo8uCXlWY7yTFOtGTkNi4HTOVy3ny5Bq8X6UMSSmZAbslFB9rNLw1BNDUPsWbRVscVIkS6fbx3oRqmslnwumxzlTgGkAfxrb+DPJwVmau0YZU7QykbLb4Yp6gZqRZrSvC7nckdH/PRSrDfN0exsR1BQmuPKCb3ky+oLjIXH+BXhHlRmBeb3iryVx8bb5B6Y72MxtTav6qYdIB2sHq5gaXwuwTucOceexW3O7t+DQpxW9Z84oex2tBnVYLq0ZKv3zYYx8mX047lh8ICTwlLnfOCzsbrwS6ERAz98lL15EpJW9y6jEbEumRp/nkFf1QmTpuLu4DUEdIuMOz2+mSteMzGB0jDhTwzjYMl87OIj+5A0Mgf4ytmPtWVMIODM2CmLhwAGnNIXFQL6hJKdzr2oiRyEcO1xxZTuEX8qh5mkE4BLFRsFkTMWwi3P39tgiR/soj3TPnObAAgwzrOAbDg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -134,67 +116,38 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Declare the seq_operations and the size of the iterator state and let
-procfs open and free the seq_file. ->proc_open() only takes the
-reference to the network namespace now and ->proc_release() drops that
-and the references the iterator holds. Reading the file then no longer
-holds up its removal.
+On Fri, Oct 30, 2026, Claudio Imbrenda wrote:
+> On Fri, 30 Oct 2026 12:11:07 +0100
+> Carlos L=C3=B3pez <clopez@suse.de> wrote:
+>=20
+> [...]
+>=20
+> > > regarding this series:
+> > >=20
+> > > on x86 you don't care what the new permissions are, because you're
+> > > updating when re-faulting (if I understood correctly). =20
+> >=20
+> > Correct.
+> >=20
+> > > for s390 it might be beneficial to know what the new permissions are;
+> > > of course we could look up the vma and find out, but since you are
+> > > already checking the permissions, maybe you can find a way to also
+> > > convey the new permission bits?
+> > >=20
+> > > that would make our life on s390 easier :) =20
+> >=20
+> > Right, getting the new bits from vma->flags should be trivially done
+> > from the MMU_NOTIFY_PROTECTION_VMA callsites. There'd be no users in
+> > this series though.  The rest of architectures still need the notifier =
+to
+> > tell them if the change is an upgrade, since they don't have an easy wa=
+y
+> > to grab the old RWX bits. Passing the old RWX bits from the MMU notifie=
+r
+> > does not seem trivial to me either.
 
-Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
----
- net/l2tp/l2tp_ppp.c | 20 ++++++++------------
- 1 file changed, 8 insertions(+), 12 deletions(-)
-
-diff --git a/net/l2tp/l2tp_ppp.c b/net/l2tp/l2tp_ppp.c
-index 4f311d473a64..499e37eb788a 100644
---- a/net/l2tp/l2tp_ppp.c
-+++ b/net/l2tp/l2tp_ppp.c
-@@ -1596,21 +1596,17 @@ static const struct seq_operations pppol2tp_seq_ops = {
- 	.show		= pppol2tp_seq_show,
- };
- 
-+/* procfs opened the seq_file and allocated @pd */
- static int pppol2tp_proc_open(struct inode *inode, struct file *file)
- {
--	struct net *net = pde_data(inode);
--	struct pppol2tp_seq_data *pd;
-+	struct seq_file *seq = file->private_data;
-+	struct pppol2tp_seq_data *pd __maybe_unused = seq->private;
-+	struct net *net;
- 
--	net = maybe_get_net(net);
-+	net = maybe_get_net(pde_data(inode));
- 	if (!net)
- 		return -ENXIO;
- 
--	pd = __seq_open_private(file, &pppol2tp_seq_ops, sizeof(*pd));
--	if (!pd) {
--		put_net(net);
--		return -ENOMEM;
--	}
--
- #ifdef CONFIG_NET_NS
- 	pd->p.net = net;
- 	netns_tracker_alloc(net, &pd->p.ns_tracker, GFP_KERNEL);
-@@ -1633,13 +1629,13 @@ static int pppol2tp_proc_release(struct inode *inode, struct file *file)
- #else
- 	put_net(&init_net);
- #endif
--	return seq_release_private(inode, file);
-+	return 0;
- }
- 
- static const struct proc_ops pppol2tp_proc_ops = {
-+	.proc_seq_ops	= &pppol2tp_seq_ops,
-+	.proc_state_size = sizeof(struct pppol2tp_seq_data),
- 	.proc_open	= pppol2tp_proc_open,
--	.proc_read	= seq_read,
--	.proc_lseek	= seq_lseek,
- 	.proc_release	= pppol2tp_proc_release,
- };
- 
-
--- 
-2.53.0
-
+But why is core MM even doing mmu_notifier_invalidate_range_{start,end}() i=
+n the
+first place?  I.e. why add MMU_NOTIFIER_RANGE_PERM_UPGRADE?  Just skip the
+"invalidation".
 
