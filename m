@@ -1,136 +1,92 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58D39606A329
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 07:44:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 300B5606A329
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 07:44:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=SeoBF77x
+	dkim=pass (2048-bit key, unprotected) header.d=insta360.com header.i=@insta360.com header.a=rsa-sha256 header.s=feishu2606151854 header.b=RG6ZdmZZ
 Received: by kanga.kvack.org (Postfix)
-	id 9B03D6B05B5; Mon,  2 Nov 2026 02:44:32 -0500 (EST)
+	id 2AB116B05B7; Mon,  2 Nov 2026 02:44:38 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9391E6B05B6; Mon,  2 Nov 2026 02:44:32 -0500 (EST)
+	id 282886B05B8; Mon,  2 Nov 2026 02:44:38 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7D95F6B05B7; Mon,  2 Nov 2026 02:44:32 -0500 (EST)
+	id 1BEEE6B05B9; Mon,  2 Nov 2026 02:44:38 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 461C46B05B5
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 02:44:32 -0500 (EST)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id E31EFC0C40
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 07:44:30 +0000 (UTC)
-X-FDA: 85389391500.09.3ECF2D4
-Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 2667640005
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 07:44:29 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=SeoBF77x;
-	spf=pass (imf27.hostedemail.com: domain of azpijr@gmail.com designates 209.85.221.47 as permitted sender) smtp.mailfrom=azpijr@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793605469;
-	b=NEwdaq+wvXPEQ/eNdGXGEkNCTtmhP06kB0HYV1WvKAVfe9+HvVh4q6YD9w9fOq3LK0PD2E
-	HJ+aFhV0CU/IivmLN0/GhdXYs/WUQrS4ye1FBU3L4D/SBXP1mb1al5MzeqglTPV0NG31AI
-	3MZ/pYuSvdjqcLD+jRVW+riJ3250lAM=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=SeoBF77x;
-	spf=pass (imf27.hostedemail.com: domain of azpijr@gmail.com designates 209.85.221.47 as permitted sender) smtp.mailfrom=azpijr@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id D8A226B05B7
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 02:44:37 -0500 (EST)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 4AC57160BD7
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 07:44:37 +0000 (UTC)
+X-FDA: 85389391794.22.7607917
+Received: from va-2-58.ptr.blmpb.com (va-2-58.ptr.blmpb.com [209.127.231.58])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 38B7E180004
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 07:44:35 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=insta360.com header.s=feishu2606151854 header.b=RG6ZdmZZ;
+	spf=pass (imf24.hostedemail.com: domain of yangsongsen@insta360.com designates 209.127.231.58 as permitted sender) smtp.mailfrom=yangsongsen@insta360.com;
+	dmarc=pass (policy=none) header.from=insta360.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793605469;
+	s=arc-20220608; t=1793605475;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tbEqoEmiOLpfQLZXaMwfuY090SS6ZvbC9oI0iDoMLRc=;
-	b=fKtuRpN/fu1yo75WYsDVNTpBDEFjgvG2gPahXP5OkbKj7/KPa1DVP6/5nASwuJ8ZkZ5z3f
-	S7cq6tmMmzZSI0jLXsVW14U0/dmxQRPecNcFlPI545oVkS6lZmzwdM348UU9L+z9F1ILVy
-	2sTC781t9ufheqgfhFnhaEQ3Y33EunQ=
-Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-48b042c0759so1287945f8f.2
-        for <linux-mm@kvack.org>; Sun, 01 Nov 2026 23:44:28 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793605468; x=1794210268; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=tbEqoEmiOLpfQLZXaMwfuY090SS6ZvbC9oI0iDoMLRc=;
-        b=SeoBF77xr0sR50jjSZJTUWj+8Bb07XYH8to3YekMqNc0XTiC9ExhuIjN72gHhjXF6o
-         DBdRxTJkWaBvp3FYD5c/lK9QvgsbXCUlZbZ29HoopNsiTYgKv0sTAhfvmGBz8tNCa/HO
-         DFLlljwpBUx3qYnUnVAv5clNyE6rX39HA2bQHH65vYlbCw7topiGSbVGUX4TN8E/H7hj
-         RV1Ez16uvufO0CDZFcjvnJgF4CfjaYwQPP/F5eBQIhfamzZ/NlPBJV8v4z9urbEA/EGU
-         l2W6oQR4l2X6Q+3rw8mZ8RhaKNQz7z4J1Ej24Zu8daEjolY/Agda/vdcqJe5Pmh5Jyzr
-         ytYw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793605468; x=1794210268;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=tbEqoEmiOLpfQLZXaMwfuY090SS6ZvbC9oI0iDoMLRc=;
-        b=rZxB0tBdgSPijD8RpWrlhnDhbnPMXZFhLeSMIjEeYM55LMvRqXmCvffm9xIyYUrEsM
-         jvtMYPMam5slUfTJpwvg8xxbiVNRGPf2eboM25lpI2GLpBWfzlEgfdMFDBUdnEEtw2ib
-         +t8AFA/vksMMfW7/twzav6sJajftkhb4T4faEBLUr9RBesO2owbCzeIfq2ff4ZTXemFH
-         RNyjP0nLHOwe7mtRN8L0Ear/3pg6g/aiXEqmVCblLEZq6mzsnttYuGq3KVugiMde4P0M
-         JN/xrPRQ1LnFVZFs0GArD8/hlEXQRuuErBof0qM2z8WEKbSAL5+jR5dX1RxlyXyZsN2j
-         cLuA==
-X-Forwarded-Encrypted: i=1; AKwUvBwMcJqnSg4LJbfH2DxITqfyt3VArsT3WhlEosaI3V9oKIZxBF8RkfngTd1tRjzivn5/Bh81zI0QQA==@kvack.org
-X-Gm-Message-State: APuU4Z+to2s7uceh8qoknvWsORhTDnP4vgVhZO88+YFDuYEtIZgbhwQC
-	Ftqwkc7hHlyGj9nOjAAWf5fHph6M6d8Tssxnx+959LD9y+BjFlAFrVxz
-X-Gm-Gg: AYBFou3nvfiTkH7V3ZlA/e/Kr6EGbY8jXXGIn8MjO6Slj71/2piBdfCfLqlZ6TCTUZM
-	MpcZh353MONYGCRY/wkXQ0QTdHuYQC17BWJ1hEc4B+EHDVXu/dXrd5nohOVQqN+d2uHpBfl/sW3
-	6T397gsVJ2mbOipp8O7jum8Cu88rCmDwDEV06wIg90Oww5prOU+oW53YFr8QH3Z53Ht+7O6nVNo
-	maFWXgr1yk6QuPL9FTGqsLb0SvdkPh9wrRTOW5HV+8tBvuroU5U1L+Q1zxrZo+GPE4tAOwl7U7X
-	C/0/heEWUf/YX0aLQXus3uRvFdqDWCWqmwU13ixky2QdiYNh/LpiNibH5Y5B7r6JwzB6guXKT3t
-	jP9VCYEJ9tAtNcOxWbPqTA2+wZzK+TLILgmgBuEJCNSYEv45fndaFNx5ymKdw9r7M6fc9IX4KjO
-	B+llr2hrpp7yTTS8DqzYmdKCrTO7C8zyL/wYlT40Lgmb22P2cGGDHdze2FOqtrZkYV0WdleFfBt
-	RLLsQXuar2GIwIFHYANtn3HkIpMNG5+NOAQzazund9ni/6VAhm2ZsXbHtYgFkFHyinYbFGw2WYU
-	JrpHaUSk8YHyoOrmGTte9/962oxCmKT8Cw0=
-X-Received: by 2002:a05:6000:144f:b0:48d:de0f:b79 with SMTP id ffacd0b85a97d-48e6e264067mr23884219f8f.0.1793605467644;
-        Sun, 01 Nov 2026 23:44:27 -0800 (PST)
-Received: from nobara ([83.231.69.9])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e71b81c74sm18050374f8f.36.2026.11.01.23.44.26
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 01 Nov 2026 23:44:27 -0800 (PST)
-From: "Jose A. Perez de Azpillaga" <azpijr@gmail.com>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	David Hildenbrand <david@kernel.org>,
-	Shuah Khan <shuah@kernel.org>
-Cc: Vlastimil Babka <vbabka@kernel.org>,
-	Jann Horn <jannh@google.com>,
-	Pedro Falcato <pfalcato@suse.de>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	ts930@dgu.ac.kr,
-	alx@kernel.org,
-	linux-api@vger.kernel.org,
-	linux-man@vger.kernel.org,
-	"Jose A. Perez de Azpillaga" <azpijr@gmail.com>
-Subject: [PATCH RESEND 3/3] selftests/mm: test mlock() and munlock() range normalisation
-Date: Mon,  2 Nov 2026 08:44:01 +0100
-Message-ID: <20261102074412.189554-4-azpijr@gmail.com>
-X-Mailer: git-send-email 2.56.0
-In-Reply-To: <20261102074412.189554-1-azpijr@gmail.com>
-References: <20261102074412.189554-1-azpijr@gmail.com>
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=Be7kBnZ2pN0tqA9jaxkboOxPRK3z4kRNDuaOawCuGhc=;
+	b=3oO5j9Xk7nlYBdJeBvm4VHKgG4kYk5k16/P1I2PELeqUwJHGxHX/2fwvhj+XOePbHDDSgQ
+	hx3r/HpIPLiiqKfmmtn3a4OjS7uqQSI+N9bdFuiX3sJwE92FHIgfGylylKAHqxLfj0zRkh
+	OiKW2Q69dCafqfCeO4pjip0ai9Fbalg=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793605475;
+	b=abzBzuxoiIugc7FWgSsUgre7mUcLNMZBFoHq/MfbFCMHv3okFY0nSLNoiod8O7FGbS8AS8
+	15yo4QEyQrovMUrvOQmDFqamoX0kH9jPpvUt+tsvP4FKOm5wJlrlqJXdqglWBsKXBB8LQg
+	vowT0mckI5ln/LcWFzvbs9p8Ehm9rt0=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=insta360.com header.s=feishu2606151854 header.b=RG6ZdmZZ;
+	spf=pass (imf24.hostedemail.com: domain of yangsongsen@insta360.com designates 209.127.231.58 as permitted sender) smtp.mailfrom=yangsongsen@insta360.com;
+	dmarc=pass (policy=none) header.from=insta360.com
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ s=feishu2606151854; d=insta360.com; t=1793605469; h=from:subject:
+ mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
+ mime-version:in-reply-to:message-id;
+ bh=Be7kBnZ2pN0tqA9jaxkboOxPRK3z4kRNDuaOawCuGhc=;
+ b=RG6ZdmZZlsQ4o3Xl/+kiZRBQWhJF/Cvfl/+96eo3Y4O922B9L927Sz0R31Gbr6XCHYFOgs
+ 90EUdkrfwEBdfAu+eSrQpG7+3hBFV1gm8PUdyHzBnz86VuRU1uvocssY4CMLXSWHyZmBlc
+ ++wvL5SF50DaNDi0E2Ckqiw2FdqrCwir2VlmqRf51C9zVA/rppUOu+/EVUYgXSFtS2MMj1
+ TJnFN4RH6bpw8q4qFLVWsOkWb9cWv70exZmW/k2AK+3zfcYvfppUUvlANwdkeuLqqAAGm1
+ 6xY62q7X0RoDTNuOUsNGgWBVTYmu1xm3LKanLpKxvR0ogxWaGYdg/GGgfh3/Aw==
+X-Lms-Return-Path: <lba+26ae83f59+3779c2+kvack.org+yangsongsen@insta360.com>
+Content-Type: text/plain; charset=UTF-8
+From: "Songsen Yang" <yangsongsen@insta360.com>
+Date: Mon,  2 Nov 2026 15:44:13 +0800
+X-Mailer: git-send-email 2.53.0.windows.2
+Content-Transfer-Encoding: 7bit
+To: "Andrew Morton" <akpm@linux-foundation.org>, 
+	"Lorenzo Stoakes" <ljs@kernel.org>
+Subject: [PATCH] mm/vma: fix NULL anon_vma deref in validate_mm() under mmap read lock
+Message-Id: <20261102074414.10902-1-yangsongsen@insta360.com>
+X-Original-From: Songsen Yang <yangsongsen@insta360.com>
+Cc: "Liam R . Howlett" <liam@infradead.org>, 
+	"Vlastimil Babka" <vbabka@kernel.org>, "Jann Horn" <jannh@google.com>, 
+	"Pedro Falcato" <pfalcato@suse.de>, <linux-mm@kvack.org>, 
+	<linux-kernel@vger.kernel.org>, 
+	<syzbot+10e72ea5747737bcd2ad@syzkaller.appspotmail.com>
 X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: j8pkswduwaidk8e4az8tc6fhxgjkniyg
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
-	autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 2667640005
+Mime-Version: 1.0
+Received: from DT-9806 ([58.251.139.251]) by smtp.feishu.cn with ESMTPS; Mon, 02 Nov 2026 15:44:23 +0800
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 38B7E180004
+X-Stat-Signature: bcsghqpgw69ksh4upxju7s55mdaxgknn
 X-Rspam-User: 
-X-HE-Tag: 1793605469-449805
-X-HE-Meta: U2FsdGVkX18tHgxBijMkFCLKT8erYmVGp7vmiPnbsTKCEDSX6VYdv4bflIJPWgKN6OL2fg9c5Yy8tO+QikOFKHU7xCJPSJxB3hcwHI7Gs/WAj9enDi1cRFxqadxi89OcJbL9Batm963BfvGsQF07990mgqMKthNIeHC7IP+OxjH5hcVOSnBDa7jSd60R5KZyVe2tE1OXhtkuqFoMcJy3ME8o6KGco+opf3P2cxe6Co4H63tU7MSQ1owqrE7acIf3x3lYcjP1aWlrAynJmeorUkmLlsxQ0kQoQMX2jFB8rn0AibOLmbSJlxIu2AEDy3uEhUVgNQ+0dxwcg63LPAU4dwsYIa643Rr2jFb7YCwu6Te++2IIszNp7JwkClkvf8CB9aborD1/hEy5EItGMEY6Se0U3g5CQAnQtib8e+q4V41TPluZEhY+gMpQZsIne+Mb+Bzi4GJsEsltN9VTyVpNU13LP45IC6eMLHVeAp3FByVIWX0GOjT6GuTOCinOFoHJ8X0X5NKUmOvbq3/kkAgUOVIdKs8Uq8nlmNANckS5Ho9ZARO9eXbZ1MSnQtt6iSxOaktLeSpnAvlB2aW/VeGQkU+3g5WekV17bZ/T3cyIhxwjLtTZB35XEuDDRmFm0S6bsXbZssc8Ac83tR7gtMyDOkGnjhYIwNB1ms8H4jKWr9tDapIGNQHtmtWqyynQ5Md8b5CN89nc2eVyr1ErcjXlYhSoZEV3QPEOVNpgifFPCf++LVn5V0V0Jftw02/15nCUKiWCRJLsTHvmAdjQd8UfTKn4J82EL8Mn2n1QWUMCxdieFUY01qLrxw9d4TErW+7rErBEKRK1Mpjg1eBKj0j8xx7iZbVmTyg2t/k909oeLmVdfqZXN/0XwysHmQNxbrCulefli3MViz+dvlp6oMWvbtGaF3qgAqwgykigcXAz77ecsUNmA3CxpNiCicTtr3VXvwTLs6D2mm1f9gISPo2
- eplPccbH
- RYHCO0R2+4Fp+82OrT68vmxvvOzE1vi3GArMkioVnkKzclISltD6fyZ0TDpF1GmOXQ26AcNOGaIUEJC162lNEXRpuANT6Z5/Tdkh23ZUTBhuiJj2+f6VNuOjI3ddl1MPu3nM+u3tIEWE9AYLigWa8LifZWbozjJGaGq0PronXiTHSVsKXaqxsrLh5Htosm4bWycCXmxI/InEHfpR9a8V5abLWAnvircGs6KVQDBw1nhMoi87Ps31YPaEuzCFiO0OQ0JoJrW9r9swYuRQEB2RLbBS0k+3v0WWfYkPq50p2Pln4yq6h5Mke5KdsALoNeY/Lp8FpuyusEw+TdadhfeSPBbP0mGQ+la82nViO0G52GBvAGJnFKpnuoKp7ff8sB+XDYuN8rzFFC0bAiQw94dicY3peyfrA3/Mw1NcqM9wiKRgGa48GhvfNtY1/8A==
+X-Spam-Status: No, score=-17.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,
+	MSGID_FROM_MTA_HEADER,SPF_HELO_PASS,SPF_PASS,TVD_FROM_1,USER_AGENT_GIT
+	autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1793605475-774824
+X-HE-Meta: U2FsdGVkX19sHK4B2nYZpv+ZI0iNxCVgQoLM5x16a/JbM1d7kX7LvaOLiuT9nGnr6ppTUVP9e3P6N0pho17wX1ECUx6dXo1OKlTZXZJJNEOKkZ3Rtqf2dXm8iMoXR2Wi6lXODS0Afi96k9r6jTeN+9caMuGHOtvYF2rDWwwvwWaSkC0nA3+ss0ksm3Tiz/6qZ+aTN/ZgB+k0r4XAtf9/fmXPW50LmaLmNs1VTpknyPy3IJL3EReZXO8wzIbXETeurGjqYZDRBuNjjLU/fHi5809XGDmBE+RUqpEESAmvwI6C2TGKM0tbfcnSFQXJ4EXotHGPqWGx+l7XdW4ZZXAyU84fQAkgNVHvn/Zldp2Uz3iTU4HvwcsFen0krtMcsqWB9Xfg7TJTy52z40qNuLfe22hOBNP8UX+nr1rqSrD0Zqk8rm3icNO1lPDk6AFQKg9oGrhHRqnrjoN/246dLrcgdR4ep0AY+BJGm3FnDbzBDz8m5xt88b+KF9RA16ph1dHT8QVpH49hztXCWebO1uPmmtgEDTiIcu6DptixxgMETg+iu+KD723HcFsLxOontPJGjY8v+y8pXJuXU+MtfXMxn6C4+62pYAy4B5ncJ4tzmfW+sPcqhwHdL7e/BnCaQptQPLI5v7tfclnPs3td17kO11FZL8/IYbYEYSjadThRQdir6lnMrGoOkURjWh+HCBE9uo6U0s1OeTTPgM5WlbtQx/HQK1S0q6l0Mk31YLEz1DMoYbwA1TUrTOab1o0YF3NhbcGxdyeKhaj1789HnH4RBnK7tAtsAeDb4Ya4AfuiCzeuo7mWRzUsxsS/ti6dRbSMZNxvH1jVbcNWRHN5LYdPNh9ZNfIuA31ZIEqfwMINm9KaITcUO2qwH3+yNaauWm0B8JDG+CsW2SObkZKA4DLFQWP5ud7RZ0LCXKzuGuzW5c0rfoPQVWsokeEecIduP60Ywgg9UGmRVpnTvJI1WhU
+ FyzDpMBh
+ R1QRdySH6urzmo108O/DA64ojYRxqaOjZq+8EvcKGmLDznxdkKLSeWIftHnGQWiqD9RV7znRbhjTmGDP6wm7vluQMSeLA+nalf5GSpohuXgw6Y9AqNK8pUMG51zYaCiJ/plkAri13VECdw4bpHxMthZkmYaNhC4549nwuA22JdW4d2nWdOxg2viIn09nMGcURr3nk1ayJ7nkBOqYzMjEa5Nbc9oYuBCRQpzRWLkhXxksaFa3/+cD6eHkVoqteOUABJqdvFdtoooawm5/zGks4/u5jV2JC5vGAOiiEC+v4NlWrygqdocWNAnkWpr0cHV6KkeWKbuo2G15Z8x5OY33/DL6t0r/U6Rmy5aU1zsZPtTwY1R6qQXFbozs/3gN1DRupm4S55ERLZ1zVZcmPyc+3aS0b7+Xjm83oSqL1dc5LLIBiYde+x/GesRKElYx2QPi9NQAEYoRSAXv1X2vKzcEy0iz65Zpmea5+i/bf3vvawnIPKASMLBNCcHndXIe8N372AuhyLKySuicUetFHjHVVGK/WrJqJr7ExrN3aLVm4EUrw8AcAHs53a8xmq6B68ypf8fnni1bBeyV7T5jMfzHiTBhlt/u2FPdjgIPzXFdgjbhlHa4dF1JmC9dV/rgexHTt6SBk
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -139,254 +95,85 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Add mlock2-tests cases for a zero length at aligned and unaligned
-addresses, for a length that wraps when rounded to pages, and for an
-overflowing start + len, checking the return value and VmLck.  The
-overflow cases expect -EINVAL with and without CAP_IPC_LOCK, so running
-the test unprivileged also covers the errno that used to depend on it.
+Since commit 38564710f443 ("mm: implement and use vma_has_anon_rmap(),
+silence KCSAN"), validate_mm() decides whether to walk a VMA's anon_vma
+chain with vma_has_anon_rmap(), which re-reads vma->anon_vma, but still
+locks the anon_vma pointer it cached at the top of the loop iteration.
 
-The wrapping cases assume the test is built for the kernel's word size: a
-32-bit binary on a 64-bit kernel cannot pass a range that wraps.
+vms_complete_munmap_vmas() calls validate_mm() after downgrading the
+mmap lock to a read lock. A page fault on another thread can then
+install vma->anon_vma via __anon_vma_prepare() between the two reads.
+The check sees a non-NULL anon_vma while the cached value is still
+NULL, and anon_vma_lock_read() dereferences it:
 
-Suggested-by: David Hildenbrand <david@kernel.org>
-Signed-off-by: Jose A. Perez de Azpillaga <azpijr@gmail.com>
+  BUG: kernel NULL pointer dereference, address: 0000000000000000
+  RIP: 0010:validate_mm+0x143/0x2a0
+  Call Trace:
+   vms_complete_munmap_vmas+0x201/0x2d0
+   do_vmi_align_munmap+0x285/0x2d0
+   do_vmi_munmap+0xcb/0x190
+   __vm_munmap+0xab/0x190
+   __x64_sys_munmap+0x16/0x20
+
+Read vma->anon_vma once and use that value for both the check and the
+lock, as the code did before. Under the mmap read lock vma->anon_vma
+can only go from NULL to non-NULL, so a non-NULL value read here stays
+valid until validate_mm() is done with it. Keep the data_race()
+annotation that vma_has_anon_rmap() provided, since a concurrent
+install is expected.
+
+Only CONFIG_DEBUG_VM_RB kernels are affected.
+
+Testing: on top of mm-hotfixes-unstable at commit 989bf98b512c
+("iov_iter: validate extracted segment for bvec alignment"), x86_64
+under QEMU TCG with -smp 2 and CONFIG_DEBUG_VM_RB=y. The race window
+is too narrow to hit with the syzbot reproducer under TCG in the time
+available, so a debug-only mdelay(1) was added before the check to
+widen it: without this patch the reproducer crashes with the splat
+above in its first round; with this patch and the same mdelay(1) it
+completes all rounds without any splat. The mdelay(1) is not part of
+this patch. mm selftests were not run.
+
+This issue was analysed, and the fix, changelog and tests were
+prepared, with the help of an AI coding assistant (Claude); the
+submitter has reviewed the change.
+
+Fixes: 38564710f443 ("mm: implement and use vma_has_anon_rmap(), silence KCSAN")
+Reported-by: syzbot+10e72ea5747737bcd2ad@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/6ae78418.6552420f.2a0efc.005c.GAE@google.com/
+Signed-off-by: Songsen Yang <yangsongsen@insta360.com>
 ---
- tools/testing/selftests/mm/mlock2-tests.c | 191 +++++++++++++++++++++-
- 1 file changed, 190 insertions(+), 1 deletion(-)
+ mm/vma.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/tools/testing/selftests/mm/mlock2-tests.c b/tools/testing/selftests/mm/mlock2-tests.c
-index 144b550813a6..3dca349c4738 100644
---- a/tools/testing/selftests/mm/mlock2-tests.c
-+++ b/tools/testing/selftests/mm/mlock2-tests.c
-@@ -2,6 +2,7 @@
- #define _GNU_SOURCE
- #include <sys/mman.h>
- #include <linux/mman.h>
-+#include <limits.h>
- #include <stdint.h>
- #include <unistd.h>
- #include <string.h>
-@@ -91,6 +92,7 @@ static bool is_vmflag_set(unsigned long addr, const char *vmflag)
- #define SIZE "Size:"
- #define RSS  "Rss:"
- #define LOCKED "lo"
-+#define VMLCK "VmLck:"
+diff --git a/mm/vma.c b/mm/vma.c
+index 4672d4205..b674c69f7 100644
+--- a/mm/vma.c
++++ b/mm/vma.c
+@@ -679,7 +679,7 @@ void validate_mm(struct mm_struct *mm)
+ 	mt_validate(&mm->mm_mt);
+ 	for_each_vma(vmi, vma) {
+ #ifdef CONFIG_DEBUG_VM_RB
+-		struct anon_vma *anon_vma = vma->anon_vma;
++		struct anon_vma *anon_vma;
+ 		struct anon_vma_chain *avc;
+ #endif
+ 		unsigned long vmi_start, vmi_end;
+@@ -703,7 +703,13 @@ void validate_mm(struct mm_struct *mm)
+ 		}
  
- static unsigned long get_value_for_name(unsigned long addr, const char *name)
- {
-@@ -177,6 +179,27 @@ static int unlock_lock_check(char *map, bool mlock_supported)
- 	return 1;
- }
- 
-+static unsigned long get_vmlck(void)
-+{
-+	unsigned long vmlck;
-+	char line[1024];
-+	FILE *file;
-+
-+	file = fopen("/proc/self/status", "r");
-+	if (!file)
-+		ksft_exit_fail_msg("fopen: %s\n", strerror(errno));
-+
-+	while (fgets(line, sizeof(line), file)) {
-+		if (sscanf(line, VMLCK "\t%lu kB", &vmlck) == 1) {
-+			fclose(file);
-+			return vmlck << 10;
-+		}
-+	}
-+
-+	fclose(file);
-+	ksft_exit_fail_msg("cannot parse VmLck in /proc/self/status\n");
-+}
-+
- static void test_mlock_lock(void)
- {
- 	char *map;
-@@ -204,6 +227,167 @@ static void test_mlock_lock(void)
- 	munmap(map, 2 * page_size);
- }
- 
-+static void test_mlock_zero_length(void)
-+{
-+	unsigned long page_size = getpagesize();
-+	unsigned long vmlck_before, vmlck_after;
-+	char *map;
-+
-+	map = mmap(NULL, 2 * page_size, PROT_READ | PROT_WRITE,
-+		   MAP_ANONYMOUS | MAP_PRIVATE, -1, 0);
-+	if (map == MAP_FAILED)
-+		ksft_exit_fail_msg("mmap error: %s\n", strerror(errno));
-+
-+	vmlck_before = get_vmlck();
-+	ksft_test_result(!mlock(map, 0),
-+			 "%s: zero length mlock() at an aligned address\n", __func__);
-+	vmlck_after = get_vmlck();
-+	ksft_test_result(vmlck_before == vmlck_after,
-+			 "%s: zero length mlock() at an aligned address locked nothing\n",
-+			 __func__);
-+
-+	vmlck_before = get_vmlck();
-+	ksft_test_result(!mlock(map + 5, 0),
-+			 "%s: zero length mlock() at an unaligned address\n", __func__);
-+	vmlck_after = get_vmlck();
-+	ksft_test_result(vmlck_before == vmlck_after,
-+			 "%s: zero length mlock() at an unaligned address locked nothing\n",
-+			 __func__);
-+
-+	munmap(map, 2 * page_size);
-+}
-+
-+static void test_munlock_zero_length(void)
-+{
-+	unsigned long page_size = getpagesize();
-+	unsigned long vmlck_before, vmlck_after;
-+	char *map;
-+
-+	map = mmap(NULL, 2 * page_size, PROT_READ | PROT_WRITE,
-+		   MAP_ANONYMOUS | MAP_PRIVATE, -1, 0);
-+	if (map == MAP_FAILED)
-+		ksft_exit_fail_msg("mmap error: %s\n", strerror(errno));
-+
-+	if (mlock(map, 2 * page_size)) {
-+		munmap(map, 2 * page_size);
-+		ksft_exit_fail_msg("mlock(): %s\n", strerror(errno));
-+	}
-+
-+	vmlck_before = get_vmlck();
-+	ksft_test_result(vmlck_before > 0,
-+			 "%s: the range to release is accounted as locked\n",
-+			 __func__);
-+	ksft_test_result(!munlock(map + 5, 0),
-+			 "%s: zero length munlock() at an unaligned address\n", __func__);
-+	vmlck_after = get_vmlck();
-+	ksft_test_result(vmlck_before == vmlck_after,
-+			 "%s: zero length munlock() at an unaligned address released nothing\n",
-+			 __func__);
-+
-+	munmap(map, 2 * page_size);
-+}
-+
-+static void test_mlock_length_wrap(void)
-+{
-+	unsigned long page_size = getpagesize();
-+	unsigned long vmlck_before, vmlck_after;
-+	char *map;
-+	int ret;
-+
-+	map = mmap(NULL, 2 * page_size, PROT_READ | PROT_WRITE,
-+		   MAP_ANONYMOUS | MAP_PRIVATE, -1, 0);
-+	if (map == MAP_FAILED)
-+		ksft_exit_fail_msg("mmap error: %s\n", strerror(errno));
-+
-+	vmlck_before = get_vmlck();
-+	errno = 0;
-+	ret = mlock(map, ULONG_MAX);
-+	ksft_test_result(ret == -1 && errno == EINVAL,
-+			 "%s: mlock() with a wrapping length is rejected\n",
-+			 __func__);
-+
-+	vmlck_after = get_vmlck();
-+	ksft_test_result(vmlck_before == vmlck_after,
-+			 "%s: mlock() with a wrapping length locked nothing\n",
-+			 __func__);
-+
-+	vmlck_before = get_vmlck();
-+	errno = 0;
-+	ret = mlock(map + 5, ULONG_MAX);
-+	ksft_test_result(ret == -1 && errno == EINVAL,
-+			 "%s: unaligned mlock() with a wrapping length is rejected\n",
-+			 __func__);
-+
-+	vmlck_after = get_vmlck();
-+	ksft_test_result(vmlck_before == vmlck_after,
-+			 "%s: unaligned mlock() with a wrapping length locked nothing\n",
-+			 __func__);
-+
-+	munmap(map, 2 * page_size);
-+}
-+
-+static void test_mlock_addr_overflow(void)
-+{
-+	unsigned long page_size = getpagesize();
-+	unsigned long vmlck_before, vmlck_after;
-+	size_t len;
-+	char *map;
-+	int ret;
-+
-+	map = mmap(NULL, 2 * page_size, PROT_READ | PROT_WRITE,
-+		   MAP_ANONYMOUS | MAP_PRIVATE, -1, 0);
-+	if (map == MAP_FAILED)
-+		ksft_exit_fail_msg("mmap error: %s\n", strerror(errno));
-+
-+	/* addr + len wraps to 0 */
-+	len = (size_t)(0UL - (unsigned long)map);
-+
-+	/* -EINVAL with or without CAP_IPC_LOCK */
-+	vmlck_before = get_vmlck();
-+	errno = 0;
-+	ret = mlock(map, len);
-+	ksft_test_result(ret == -1 && errno == EINVAL,
-+			 "%s: mlock() with an overflowing addr + len is rejected\n",
-+			 __func__);
-+
-+	vmlck_after = get_vmlck();
-+	ksft_test_result(vmlck_before == vmlck_after,
-+			 "%s: mlock() with an overflowing addr + len locked nothing\n",
-+			 __func__);
-+
-+	munmap(map, 2 * page_size);
-+}
-+
-+static void test_munlock_range_overflow(void)
-+{
-+	unsigned long page_size = getpagesize();
-+	size_t len;
-+	char *map;
-+
-+	map = mmap(NULL, 2 * page_size, PROT_READ | PROT_WRITE,
-+		   MAP_ANONYMOUS | MAP_PRIVATE, -1, 0);
-+	if (map == MAP_FAILED)
-+		ksft_exit_fail_msg("mmap error: %s\n", strerror(errno));
-+
-+	errno = 0;
-+	ksft_test_result(munlock(map, ULONG_MAX) == -1 && errno == EINVAL,
-+			 "%s: munlock() with a wrapping length is rejected\n",
-+			 __func__);
-+
-+	errno = 0;
-+	ksft_test_result(munlock(map + 5, ULONG_MAX) == -1 && errno == EINVAL,
-+			 "%s: unaligned munlock() with a wrapping length is rejected\n",
-+			 __func__);
-+
-+	len = (size_t)(0UL - (unsigned long)map);
-+	errno = 0;
-+	ksft_test_result(munlock(map, len) == -1 && errno == EINVAL,
-+			 "%s: munlock() with an overflowing addr + len is rejected\n",
-+			 __func__);
-+
-+	munmap(map, 2 * page_size);
-+}
-+
- static int onfault_check(char *map)
- {
- 	*map = 'a';
-@@ -506,9 +690,14 @@ int main(int argc, char **argv)
- 
- 	munmap(map, size);
- 
--	ksft_set_plan(15);
-+	ksft_set_plan(31);
- 
- 	test_mlock_lock();
-+	test_mlock_zero_length();
-+	test_munlock_zero_length();
-+	test_mlock_length_wrap();
-+	test_mlock_addr_overflow();
-+	test_munlock_range_overflow();
- 	test_mlock_onfault();
- 	test_munlockall0();
- 	test_munlockall1();
+ #ifdef CONFIG_DEBUG_VM_RB
+-		if (vma_has_anon_rmap(vma)) {
++		/*
++		 * Callers may hold only the mmap read lock, in which case a
++		 * concurrent fault can install vma->anon_vma at any time. Read
++		 * it once, so that the check and the lock use the same value.
++		 */
++		anon_vma = data_race(vma->anon_vma);
++		if (anon_vma) {
+ 			anon_vma_lock_read(anon_vma);
+ 			list_for_each_entry(avc, &vma->anon_vma_chain, same_vma)
+ 				anon_rmap_tree_verify(avc);
 -- 
-2.56.0
-
+2.50.1
 
