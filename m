@@ -1,188 +1,97 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AE55606D804
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 22:54:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3903C606A324
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 22:56:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=columbia.edu header.i=@columbia.edu header.a=rsa-sha256 header.s=pps01 header.b=KcIyYlhH;
-	dkim=pass (2048-bit key, unprotected) header.d=columbia.edu header.i=@columbia.edu header.a=rsa-sha256 header.s=lionmail header.b=stVYU9/B
+	dkim=pass (1024-bit key, unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=yW+qkEsl
 Received: by kanga.kvack.org (Postfix)
-	id 576996B05CA; Mon,  2 Nov 2026 17:54:58 -0500 (EST)
+	id 4B7046B05CD; Mon,  2 Nov 2026 17:56:07 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 525746B05CC; Mon,  2 Nov 2026 17:54:58 -0500 (EST)
+	id 467E76B05CE; Mon,  2 Nov 2026 17:56:07 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3C8766B05CD; Mon,  2 Nov 2026 17:54:58 -0500 (EST)
+	id 32EB86B05CF; Mon,  2 Nov 2026 17:56:07 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 0BB046B05CA
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 17:54:58 -0500 (EST)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 884D81202C3
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 22:54:57 +0000 (UTC)
-X-FDA: 85391685834.14.D5A5CC7
-Received: from mx0a-00364e01.pphosted.com (mx0a-00364e01.pphosted.com [148.163.135.74])
-	by imf09.hostedemail.com (Postfix) with ESMTP id DD1DC140005
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 22:54:54 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=columbia.edu header.s=pps01 header.b=KcIyYlhH;
-	dkim=pass header.d=columbia.edu header.s=lionmail header.b="stVYU9/B";
-	spf=pass (imf09.hostedemail.com: domain of tz2294@columbia.edu designates 148.163.135.74 as permitted sender) smtp.mailfrom=tz2294@columbia.edu;
-	dmarc=pass (policy=none) header.from=columbia.edu
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 084276B05CD
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 17:56:07 -0500 (EST)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 912A5402B2
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 22:56:06 +0000 (UTC)
+X-FDA: 85391688732.15.4CFA2E5
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf21.hostedemail.com (Postfix) with ESMTP id C3C2A1C0006
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 22:56:04 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=yW+qkEsl;
+	spf=pass (imf21.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793660165;
+	b=We9G83TIi8r82a0nzIv9S/inIzFMn2ENzMLZwakHPV5dYDxKTpFyKNhShCMGn5tP7Kz4Nx
+	qIypRJ5s/x3ko2KgHbQYOZ5qC9qO7J9ku5eKTRpDXoHQjVolK5LvRff03dTLt6oW8SEXih
+	iO5lODZk6xk+nDLWl4sCfgMwdwj7cBE=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=yW+qkEsl;
+	spf=pass (imf21.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793660095;
+	s=arc-20220608; t=1793660165;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=CLnMk/B1cFQ3z0k0LPzM7qddECf0IZkSoR3rfDNv3Qo=;
-	b=EJi3Hpbzbau30Wo2KPNYUxI30Lbimfm1mvDqDXiWGvQ29BOPYEXCrnETkfkWz4HbinKorQ
-	2GOpLqd2z23mgD8AoWG+yTpN82uVkh2ud8Tqy5JmzlUTWMNMevumli3v7MAy5uDOGhWMsB
-	AiodZtnr5EWUeLn+9Jem5u6gT1plJiQ=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793660095;
-	b=2pIw4BH9nLsnAe59ZlKke2zikYNqkhkhfu2ZUew2h6h4RXpryUuO12pR1u6X8x5UeDlZv0
-	YyxZmh+LmRscEUaEGSJPjqNZKG1V4k8k+u2xHKBk4a9MmyWAjM5v2WEhrZKlgXj7iH3aRi
-	g2VsPe6JWrmsd36+U0yF9Iu/f+sJSDQ=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=columbia.edu header.s=pps01 header.b=KcIyYlhH;
-	dkim=pass header.d=columbia.edu header.s=lionmail header.b="stVYU9/B";
-	spf=pass (imf09.hostedemail.com: domain of tz2294@columbia.edu designates 148.163.135.74 as permitted sender) smtp.mailfrom=tz2294@columbia.edu;
-	dmarc=pass (policy=none) header.from=columbia.edu
-Received: from pps.filterd (m0499199.ppops.net [127.0.0.1])
-	by mx0a-00364e01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6A2MD6vL2287185
-	for <linux-mm@kvack.org>; Mon, 2 Nov 2026 17:54:53 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=columbia.edu; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pps01; bh=CLnM
-	k/B1cFQ3z0k0LPzM7qddECf0IZkSoR3rfDNv3Qo=; b=KcIyYlhHka/aLzj1YcU/
-	Ujww+HQttnvrap2DyOvBYAhHdsOau+joQmC06nexMZwElJ2nJfggfL4Btqp1z0re
-	hW/kZlCLIlr4CR3v5D1GLztV3KjCKmynVi03ZsvBec1pDGh92gK0yR6LWJm4iuDM
-	RsG7CezQlBr6yQx+eZHRoFxWsSybUVQNQmi/XqTghSFF75MD489mSTYsskDg5aYS
-	R+NC+jkKACRpJmCzZ20AgHVkjsp0e8U7D55YSnuc8HfpwegKiwlhLLIsy+HDa6j8
-	6U5TxIgd73F4SF8F0TpNi5AQoPRNGI1CuHxeluSm1+U21kfaNihiBYQJNUNE2Wcl
-	Ow==
-Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com [209.85.222.199])
-	by mx0a-00364e01.pphosted.com (PPS) with ESMTPS id 4hq34br9q3-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-mm@kvack.org>; Mon, 02 Nov 2026 17:54:53 -0500 (EST)
-Received: by mail-qk1-f199.google.com with SMTP id af79cd13be357-93f2373e9b4so355171285a.1
-        for <linux-mm@kvack.org>; Mon, 02 Nov 2026 14:54:53 -0800 (PST)
+	bh=Tjywhpg4haa7M6XUPEdo07mUb7ffrhUZvgkBemX0i2U=;
+	b=R77TFM194xYpdpVHMdLyzNJeNt9xggVE+hnO5VsC+69NCfaNl5F+pZAiaGxyMWbSYoFxQY
+	b66nSbjJMxb6BEbm9mHtcdqM6MWKLXta1UxiX821LrTGNStXlQ/O3r3hkjxS3Z8uEGIbcZ
+	HhPJ3jtgb5QewGIstgMYxfWPcTAXtS8=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 98B32407D1;
+	Mon,  2 Nov 2026 22:56:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E259B1F00A16;
+	Mon,  2 Nov 2026 22:56:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=columbia.edu; s=lionmail; t=1793660092; x=1794264892; darn=kvack.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=CLnMk/B1cFQ3z0k0LPzM7qddECf0IZkSoR3rfDNv3Qo=;
-        b=stVYU9/BnUjXFJmhCoUxaGfvvtH190kP6/jyIT5NujFwqWrAkpL2VW8Mz1fbrQqqVp
-         eCZ7xRa+GHLZ9ttToxD0VLn2aQlYSBEOIi6HmpvN0nfJhjh2Uy9+eUqCWdk7EVe3+jhw
-         nVHANSDci2eN/OXJh5dOejU9iVf6AAI0xVMrneuOm8Xf1SUk7HpP0LZvFhtW/HfwOuQl
-         xBPioFe8CvmhpKSBrwRoXUcF+rLW5C96ayyAd3RGO9eVeOigvJDaxaHMzAU1vl8bSjGJ
-         mzwMcCqDM8uJZw14JA8lZYI8AEyKZ+JGYDYIvom6n1OaaV3zuMCDS7NhobiH4ThQ3Pev
-         G+XA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793660092; x=1794264892;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=CLnMk/B1cFQ3z0k0LPzM7qddECf0IZkSoR3rfDNv3Qo=;
-        b=KutIX7VhWWZz15r31fNZ//Mvm0s6UspFD4QnN3j/NChonwg4lGy4AAtCGnmoVzxauJ
-         js1bSoyE+lhctNTTnnsWhJbVkORbJ8Qh86Qe63vdMtRW1pRdH52egqbecCK5+ph3DRLz
-         89M7JOU1aUyNauKUyuBQzjDmm7EYnP+ooId07alSPS7IhSm57jee5Pz2jELjuRP9x7Lj
-         7SQb+kF7nNIXs6AKdr8pYxxqHwn1v7nRc7YhNSYRqIBr3WNyTA8dZv+3cUIyHrNDA0nh
-         s8QF4UpPFX0WVd2HAaJXD5550j1OUXlZ1ZW+XZEJ0AGsJJgFYs52BVey7w0evANg1SV+
-         mOaQ==
-X-Forwarded-Encrypted: i=1; AKwUvBw8H0KcF37VQ5FT0DBPNh15rPW3LKJQaPxMoW+sCR+Gy4JbeRM5cuyTXZRwrSHGasLUjxC/Omjf/g==@kvack.org
-X-Gm-Message-State: AFq9FYJ2d6ZgjbOs3lHn3GGwtMzAzH31ARXDgt3HPlDoJ4+QG8McvnYD
-	LAIMQD32Ch+iEakIomoqWyiqf71p0Y4Is7KMSYhowXi1n17SlIjix9mDcCJL01QFhHg9EDFW+w1
-	8ogMpMMgXIVyWd03+HmCfDJrRClHjRvWuLz69u2nb33KWVXbB
-X-Gm-Gg: AYBFou2DQbI2BfYeWJHuzXnLUbKEvJVg7zuXnERJTlNpW8dmlR/O+tED7BHqbMwDRW6
-	3wEmvTK+/ZaFRGXJrQcrMHbzpAKuapF1zMevC/thUAbuD4A8cE2fMOBe5LcLbWtqBztIOKA6IOM
-	/wGvHKUGN+/GVgDtHzBUIZfxCqBRpoiSQutnBAztgkr2jAmzxSQEX0XpwevKcz6cZciHomnW2VS
-	ThNNafO17HKUw8qn6LJxDIRp4V3eiI2REI+jLeNyX3JBkWhu8N3fTYC764+RzzjQYbavu05kHBE
-	A+MzDnckkuUiTupoMqigdaTxnZP8EJnvrf+KT7cKX/CzCkErHJXiSpUpfiZ+IYstd/A53i7vOrJ
-	sNyPY5tRk5025nW3+OqQqOYW7fWE0W7ccFrVhB3cgzDmNgTrT8VrZKdffiS8=
-X-Received: by 2002:a05:620a:4402:b0:93f:34c9:9252 with SMTP id af79cd13be357-9442174e1femr1926260285a.55.1793660092573;
-        Mon, 02 Nov 2026 14:54:52 -0800 (PST)
-X-Received: by 2002:a05:620a:4402:b0:93f:34c9:9252 with SMTP id af79cd13be357-9442174e1femr1926257385a.55.1793660091921;
-        Mon, 02 Nov 2026 14:54:51 -0800 (PST)
-Received: from [127.0.1.1] ([37.142.157.119])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e71b8011csm24710529f8f.31.2026.11.02.14.54.48
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 02 Nov 2026 14:54:51 -0800 (PST)
-From: Tal Zussman <tz2294@columbia.edu>
-Date: Mon, 02 Nov 2026 17:54:13 -0500
-Subject: [PATCH 8/8] mm: remove thp_size() and thp_order()
+	d=linux-foundation.org; s=korg; t=1793660163;
+	bh=Tjywhpg4haa7M6XUPEdo07mUb7ffrhUZvgkBemX0i2U=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=yW+qkEslEALOo0D43uyXiR43/P08AtDgKt4P6xisCXzYiAWwHoC2m40quCecPKQ2M
+	 SLJ+/sQFebV9fTCt3ibRoVZe4VcOa8KDZL71wttYVQ3k02xY+gGYz0bCoxw9ryvF/z
+	 CNqy25uXiZjYlUdwcHh4kSKHgBfNayQHOKnZesWU=
+Date: Mon, 2 Nov 2026 14:56:02 -0800
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Barry Song <baohua@kernel.org>
+Cc: Siddharth Chintamaneni <sidchintamaneni@gmail.com>, hannes@cmpxchg.org,
+ david@kernel.org, mhocko@kernel.org, qi.zheng@linux.dev,
+ shakeel.butt@linux.dev, ljs@kernel.org, kasong@tencent.com,
+ axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com,
+ baoquan.he@linux.dev, baolin.wang@linux.alibaba.com, yuzhao@google.com,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, apais@microsoft.com,
+ rlmenge@gmail.com, Hardik Garg <hargar@linux.microsoft.com>
+Subject: Re: [PATCH v2 1/2] mm: multi-gen LRU: use mem_cgroup_lruvec() in
+ get_lruvec()
+Message-Id: <20261102145602.44f2836b6aef7d8e2cd14562@linux-foundation.org>
+In-Reply-To: <CAGsJ_4zVpHAGM=Sz8J+5PFv3H54CyVdpcp6cpVK+rQ5f82Q1EQ@mail.gmail.com>
+References: <20261026202313.63122-1-sidchintamaneni@gmail.com>
+	<20261026202313.63122-2-sidchintamaneni@gmail.com>
+	<CAGsJ_4zVpHAGM=Sz8J+5PFv3H54CyVdpcp6cpVK+rQ5f82Q1EQ@mail.gmail.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261102-page-wrappers-v1-8-e7280bdb31f6@columbia.edu>
-References: <20261102-page-wrappers-v1-0-e7280bdb31f6@columbia.edu>
-In-Reply-To: <20261102-page-wrappers-v1-0-e7280bdb31f6@columbia.edu>
-To: "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
-        "Liam R. Howlett" <liam@infradead.org>,
-        Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
-        Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
-        Zi Yan <ziy@nvidia.com>, Matthew Brost <matthew.brost@intel.com>,
-        Joshua Hahn <joshua.hahnjy@gmail.com>,
-        Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>,
-        Ying Huang <ying.huang@linux.alibaba.com>,
-        Alistair Popple <apopple@nvidia.com>, Jason Gunthorpe <jgg@ziepe.ca>,
-        John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>,
-        Hugh Dickins <hughd@google.com>,
-        Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
-        linux-kernel@vger.kernel.org, Tal Zussman <tz2294@columbia.edu>
-X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1793660051; l=1262;
- i=tz2294@columbia.edu; s=20250528; h=from:subject:message-id;
- bh=6t8b0yasyYH7uaOC/pe0116nR8/5Kr1ZC3jHg5DjY98=;
- b=hJRS3l3lsCEY2qgn9hYW0rOfYfRH53Y+MmXfkNNwQXYDnRHQLgVIFrENlde5pR/kqnnVhHGZw
- aqdn0TcBaRyCRMSDUYUqRTd1SjdjkQj3EkIbJxIwZJVaFBlnU0eMKkb
-X-Developer-Key: i=tz2294@columbia.edu; a=ed25519;
- pk=BIj5KdACscEOyAC0oIkeZqLB3L94fzBnDccEooxeM5Y=
-X-Proofpoint-ORIG-GUID: gcCZcRF7SpqRDf9zGen9wTEriCG_u2zE
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTAyMDA5MCBTYWx0ZWRfX5K7Yi+UUfuXm
- w7swkgrhOBObQ1Medz4ufkUIVoxFTUms/BxEVefSuL28CXDr2rL6cgAVZBYOhUtHeAW7gXYGvTC
- pyQKUzeWh/vquqpnbDgz3AqXZkeLqqmB+IeDDNSpiAECsRvtqm5leJIoS3WwuqtSTOY7B+cAaiy
- v+BYNQ6EjSLpvZ0SO6sO4Q98nu6HcitsQ3PkdL53lAsOFtfY36uy0VVYTrbLsKluMrdy78aukws
- pIWVz2OETSgyZ4C/enof4rfgK1MrNh2NyGhAR8AYqAMpfsfPXkua1pqFW5GT2SOYU/jvpU7jcG+
- VEn6GP1RxUim2ZC0fKzYnwubOAhDrPU/QMOPH/vlYUtJO5tww4brNgDTAI3uk1s09QZyzDwQfTq
- nRuc7sY2lUqXy/lfLryCMvm8+jTbm5pW5IoV6N1iNNIYdQ1zPNnS0l5kGm8TIBf5/csBkBIwpN/
- aIFbtRllv4HNvwPgFfQ==
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMTAyMDA5MCBTYWx0ZWRfX9oxxj7pUXUwg
- eeftOfAvMmFmGdvH4sAfoJf0QwvpehQpqzCTibm5P2Pvg5fCwWCsgCFYfLp3WSj2qo64crGtvLZ
- 7H3RW9ZjIVLs5EdgyhKEmx1IQBHl0SNl+QEWYppsljbcS37hWD80
-X-Proofpoint-GUID: gcCZcRF7SpqRDf9zGen9wTEriCG_u2zE
-X-Authority-Analysis: v=2.4 cv=Sadi5fRu c=1 sm=1 tr=0 ts=6ae914bd cx=c_pps
- a=HLyN3IcIa5EE8TELMZ618Q==:117 a=Qz3frfIdACK70Hl/8c7MJg==:17
- a=IkcTkHD0fZMA:10 a=zJRp6_cAMcgA:10 a=x7bEGLp0ZPQA:10 a=A0y_DWxS2BwA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=Da8U98TiO7q1upZEImrf:22 a=G--0XuH5328wxK7v7Suf:22
- a=VwQbUJbxAAAA:8 a=5wpFShScvf9Uq2YMFBAA:9 a=QEXdDO2ut3YA:10
- a=bTQJ7kPSJx9SKPbeHEYW:22
-X-Proofpoint-Virus-Version: vendor=nai engine=6900 definitions=11954
- signatures=596817
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=10 suspectscore=0 adultscore=0 lowpriorityscore=10 bulkscore=10
- malwarescore=0 clxscore=1015 phishscore=0 spamscore=0 priorityscore=1501
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2610300000 definitions=main-2611020090
-X-Stat-Signature: aoas5sdtcyiyk5dyqmatyr8t8w9d77aw
-X-Rspamd-Queue-Id: DD1DC140005
+Mime-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: ywskdt8ifhbduoj7broxoit61e7sfean
+X-Rspamd-Queue-Id: C3C2A1C0006
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+X-Rspamd-Server: rspam11
+X-Spam-Status: No, score=-17.6 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1793660094-453731
-X-HE-Meta: U2FsdGVkX183W85UX4ZYdgXYlcQexD/LE5RNzmw++RnrlOADl2YDKfDxPLuhCgvQch16+Bh0n9CqDy6+7lXmOunTAM0LsiirLeT8wDYTbhKi74da0abHCLcV/SyaRgbloLKhrhGgZYqxzUJkrb7gBe1dsbD2n3KjB8L20YS57i6UIZxiboXTx1Mo/YaLlT5Tn0UZtR9lojLq/HFtv+WofkFVC/JCizF8j1uhgEm36lzCBQmpB8K0BRUAxDKxPUsHogXHQEtxoiaW+O8IlnP025FzKjY8o4XZOyNEVDDwWZTKBWk07BIbqkRnADz+r3Pu3/r01PEfaLOWyWD+BrxnRekOuEvtfksxFo88b5DUljP3Jt4NTc94C4yyTxUIW05v7lvWvtH4tlDoAb2q+hCohxJc8wsWU8PBDXRjDtA6+clnBg34/jKAbIMNIU7sRVB0nooL1DmWRpH9QWqX9pWv39wpirGxYI2MG8I71HX+xP55ffq0ijjWGk5HgL1REmpdNMoCrkJkvK9cLxD7ZF1VrPnFLfdDgM8ikFbLlht5QkusMex7ZXe7GaCoXFGgJfQ3GhYxZsiV42S/WJ/0jS0hfZjmbTD3L58lZ1fEOqhLZ3+U3nCw6FMtl6/StlJsnGA73R9nqV0E+vfy4PROGU1zkF1JKICV4uUtoO7MgPkgtgQpgGAbPGeSSu+jdjmHw/w8u1KAFB7tB4qke48SKI9mh1U/QV3ReIDmLHB9nYVGbfmAUwglVWADfUpdwVFOwHGBN+e616sXapK2Q6JsvywXjMzqeE9Z2lDqSl2kjaAO0q5wrxWIgau/Xn/dyRV/KfVCuVBlbhMZE0QBhuhEDWUp253YyxzCLGXmlWOLxovOk9i4dJ+4eE66SBofpZtZwKPRtiGPnKi1Q73BJqQ8NZ8EJEAm7KTL1qqseC1JlEeOsH3VrOkwcCOm8/I+GEM3WYuPRl2gCKTQ4zePBZZPjgu
- Mc7gdqdx
- hVVntU5lx56Vin8aHOa/Zah9hn71smTLzFWqc6SgV+OTNARFikIe6ZKw14s/DsTDSk1oFYuU26dCVx3durG9Mo/YA/8njSS5mQPfUU8B8aqMMaXaWDF9h7VGy3KDJlunR9hIwqbz4JlmdwBcLPZwHWR5ZQkb/+xeRyEytP3m2cDcO6M/GCr9Khz7Gi/DeJsBK/7RekdjF5M/rIOquQqGLV+u+KC1ECWtvorkDKtWqU4slzoX8/49U6YvlqRmaFCc2WPgFDN+sy6xEubNFtpjBENF0iFu4LzAvXhx3u1ivsBu52lVKKNEW6qdFe1QNd6MTKpTR9UKNNhtJgnJG65Apf37lBWgsJfBc0wKQXNxuAiyw2HmS8/dq5gZdmHpZIW5EOKO6Jn2kGuB4FIq20wWlt8pwEQvzKddpBNKOsFCkH8CX68Pf/obGycL6TIprMJUUdZTtPI5wgzZi123dOLILAN1JmfqKgLwo4Hf7K7xC6mNuQUGD9PFKmb3CrSfrLStrnZcljNnUOzJdgcOZ6V0xI+Z4dg==
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,NICE_REPLY_A,
+	SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1793660164-913210
+X-HE-Meta: U2FsdGVkX18PmUxByClOgsZo/elV6eB8Pmtt8NJbQIpJ3Rvx02dIGyn5cNLBwWvUAzqdI4Nt1pDiayCu8nrU5tGX7GTBjTVnhpNZiRgVMeq6IbfSDxBaxUaAS8mfVAVkccLfOQ3Xcvd+MYphPQqUyHsZIyOpLTOLCLQs9oU64XUulK/xVCNcm4MoYnm80z2rg64i2U4jfmAAD+Bwb32dFmPpkARspkjyZG1TORJuaY+xOx/afHsHRypicjvV6tDVwy/VyZ9k4rlmrjvUDdLoqa0i5Su58mBs3Pp8WsgAfLaKHrRZef5M7uosuAweGlU9ovCrDvhscwZCIXtSv2ZUTT5bFabK/F6jY29kSjO+W5+NioixYAQYwWmD5WZiLsgFbaXTkYSlgP4uRk1Xj34UyBHryhQzxD043aKICUorrsPHSFWgwB4/6ACsf2SbzRaRaA7tyij3lz/aTZe+xkKnu0+0AqsQbcJqVTiI+quXz3I/ICNRsSLK+Ae22AIbY1TA5V7g4Oho9pMUTS1Ss3mi7oXhGV0JUnv/5RecHCNO3vUFPy78L6MK3M7k6+1/O0rLw1ozy18IPXlDAHXnBCZyIfEyUu+pGfPh8hvQyFuqEP1gFpXLAsD7XUym5+P4qGnHAnlHsl3Nx+6jhcfIC70QL12eVdTQYd1xN2C8X8GLuCQnlQFnlAazrLJr6OlS7L7Dhrog56Q5Z2s8ZguSQ6vmPwJdceipNtEb/I4/4ALbjPvhBLwCwHqWIcmp5MgBALGsM5Dzobn2qNGaCARakw54c+OPm7OyOREcU6cU/TXEhbH6oJseJdnGx4r3IFOU2+75YOWOLVlvd8KllRIADqlqNqKdX7nGDQO/7j+QvzazycSF6cyIA1Pvdpub8sWLVsGpw02hIXvVj57hlMveR9BO28issztbMrC9Usxex9w98UdS7ik0zf/WvRIZ81QXV7teuX8/wZxU7rQsyzxEQ9M
+ Qkb2FX2p
+ hLYf+jliEepcn4tLWNh6gdZHGrrvRby8Yw1a+5vJLshTZz5BDXkRGK+c06weV00n37mt0MUmUoXkrfeeMWErfV1mSlXK/VYQpLHK1xEzURpM5ruGFhOQj4OHwAW1SbR8wUJdNQU+Al9Jft7aP3rE4Lm6tLtqJrfudPbIeh7EhQ7EMRv0yyPK93G9yNxEtMU3AASY0P08tHLj111PYnucDGs5buCrTXdyB6WmHk0EUMMxZ/IVI+GOEfNszV2UcyLVfmU/1hoxeSYvGG9wNIORtPwdZQ8MDE3JgM4NIIcLeIcr4o+Gu3Q8dKla7yM9fHFJfcVRHGhnHIXZRnQZfhJ+wvMnOf0RfQg1YbEQi8ECRzgFEOlQgIbhUU3L1NrpbGP3iUyfsvfglQF8GfNlRRb4pdmhyRI4JyiuLFG3RmCH6gG06JKoBNF1zn2EWQBxsu6isEQYkdXlVl6n5vKukP28uFODUK9skx5jQCnJqSlSZF/EuJl0MZsCixdmHBk1w1TaydTr10LXlbwiQ66hOUKGbjCTihEeWLT/Lt788s1+Z/FH/lOdAVhdb0BSi3YQQKCsQvNpJXc42oqNzusw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -191,50 +100,142 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-The last callers of thp_size() have been converted to folio_size(), and
-thp_order()'s only remaining user was thp_size() itself, so remove
-both.
+On Tue, 3 Nov 2026 06:51:19 +0800 Barry Song <baohua@kernel.org> wrote:
 
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
-Signed-off-by: Tal Zussman <tz2294@columbia.edu>
+> On Tue, Oct 27, 2026 at 4:23 AM Siddharth Chintamaneni
+> <sidchintamaneni@gmail.com> wrote:
+> >
+> > Andrew Morton noted that get_lruvec() has the same pattern as
+> > lru_gen_shrink_node(): when memcg is disabled on the command line
+> > (cgroup_disable=memory), it returns &pgdat->__lruvec directly instead of
+> > going through mem_cgroup_lruvec(), which initializes lruvec->pgdat.
+> >
+> > In practice all callers of get_lruvec() run after kswapd_init() has
+> > already initialized pgdat->__lruvec.pgdat on every N_MEMORY node, so
+> > this is not a runtime bug. Have get_lruvec() delegate to
+> > mem_cgroup_lruvec() directly.
+> 
+> Somehow, I feel this changelog is a bit weird. The earlier
+> description doesn't really justify the final sentence:
+> "Have get_lruvec() delegate to mem_cgroup_lruvec() directly."
+> 
+> Can we change it to the below?
+> 
+> The patch was initially developed to address a possible NULL
+> reference [1].
+> 
+> Andrew Morton reported that get_lruvec() has the same problem as
+> lru_gen_shrink_node(): when memcg is disabled on the command line
+> (cgroup_disable=memory), it returns &pgdat->__lruvec directly and so
+> bypasses the initialization of lruvec->pgdat. The MGLRU debugfs
+> interface calls get_lruvec(), then dereferences the pgdat pointer in
+> lru_gen_seq_show() and other paths, so these can hit the same NULL
+> dereference.
+> 
+> In practice, we found that this cannot happen, as all callers of
+> get_lruvec() run after kswapd_init() has initialized
+> pgdat->__lruvec.pgdat on every N_MEMORY node. Therefore, this
+> is not a runtime bug.
+> 
+> However, it would still be good to clean up get_lruvec() by
+> removing the MGLRU-specific code and having it delegate
+> directly to mem_cgroup_lruvec().
+> 
+> [1] https://lore.kernel.org/linux-mm/20261017050928.128582-2-sidchintamaneni@gmail.com/
+
+Thanks, I locally made that change.
+
+
+From: Siddharth Chintamaneni <sidchintamaneni@gmail.com>
+Subject: mm: multi-gen LRU: use mem_cgroup_lruvec() in get_lruvec()
+Date: Mon, 26 Oct 2026 20:23:12 +0000
+
+Patch series "mm: multi-gen LRU: replace get_lruvec() with
+mem_cgroup_lruvec()", v2.
+
+This series cleans up MGLRU's get_lruvec() helper in mm/vmscan.c.
+
+Patch 1 updates get_lruvec() to delegate to mem_cgroup_lruvec() rather
+than returning &pgdat->__lruvec directly when memcg is disabled on the
+kernel command line.
+
+Patch 2 removes get_lruvec() completely and replaces all 15 call sites
+with mem_cgroup_lruvec().
+
+
+This patch (of 2):
+
+The patch was initially developed to address a possible NULL reference
+[1].
+
+Andrew Morton reported that get_lruvec() has the same problem as
+lru_gen_shrink_node(): when memcg is disabled on the command line
+(cgroup_disable=memory), it returns &pgdat->__lruvec directly and so
+bypasses the initialization of lruvec->pgdat.  The MGLRU debugfs interface
+calls get_lruvec(), then dereferences the pgdat pointer in
+lru_gen_seq_show() and other paths, so these can hit the same NULL
+dereference.
+
+In practice, we found that this cannot happen, as all callers of
+get_lruvec() run after kswapd_init() has initialized pgdat->__lruvec.pgdat
+on every N_MEMORY node.  Therefore, this is not a runtime bug.
+
+However, it would still be good to clean up get_lruvec() by removing the
+MGLRU-specific code and having it delegate directly to
+mem_cgroup_lruvec().
+
+Link: https://lore.kernel.org/20261026202313.63122-1-sidchintamaneni@gmail.com
+Link: https://lore.kernel.org/20261026202313.63122-2-sidchintamaneni@gmail.com
+Link: https://lore.kernel.org/linux-mm/20261017050928.128582-2-sidchintamaneni@gmail.com/ [1]
+Signed-off-by: Siddharth Chintamaneni <sidchintamaneni@gmail.com>
+Signed-off-by: Hardik Garg <hargar@linux.microsoft.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+Reviewed-by: Barry Song <baohua@kernel.org>
+Cc: Johannes Weiner <hannes@cmpxchg.org>
+Cc: David Hildenbrand <david@kernel.org>
+Cc: Michal Hocko <mhocko@kernel.org>
+Cc: Qi Zheng <qi.zheng@linux.dev>
+Cc: Shakeel Butt <shakeel.butt@linux.dev>
+Cc: Lorenzo Stoakes <ljs@kernel.org>
+Cc: Kairui Song <kasong@tencent.com>
+Cc: Axel Rasmussen <axelrasmussen@google.com>
+Cc: Yuanchu Xie <yuanchu@google.com>
+Cc: Wei Xu <weixugc@google.com>
+Cc: Baoquan He <baoquan.he@linux.dev>
+Cc: Yu Zhao <yuzhao@google.com>
+Cc: <apais@microsoft.com>
+Cc: <rlmenge@gmail.com>
 ---
- include/linux/mm.h | 21 ---------------------
- 1 file changed, 21 deletions(-)
 
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index 8b5883878538..143865580169 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -2146,27 +2146,6 @@ static inline unsigned int page_shift(struct page *page)
- 	return PAGE_SHIFT + compound_order(page);
+ mm/vmscan.c |   15 ++-------------
+ 1 file changed, 2 insertions(+), 13 deletions(-)
+
+--- a/mm/vmscan.c~mm-multi-gen-lru-use-mem_cgroup_lruvec-in-get_lruvec
++++ a/mm/vmscan.c
+@@ -2866,20 +2866,9 @@ static struct lruvec *get_lruvec(struct
+ {
+ 	struct pglist_data *pgdat = NODE_DATA(nid);
+ 
+-#ifdef CONFIG_MEMCG
+-	if (memcg) {
+-		struct lruvec *lruvec = &memcg->nodeinfo[nid]->lruvec;
++	VM_WARN_ON_ONCE(!memcg && !mem_cgroup_disabled());
+ 
+-		/* see the comment in mem_cgroup_lruvec() */
+-		if (!lruvec->pgdat)
+-			lruvec->pgdat = pgdat;
+-
+-		return lruvec;
+-	}
+-#endif
+-	VM_WARN_ON_ONCE(!mem_cgroup_disabled());
+-
+-	return &pgdat->__lruvec;
++	return mem_cgroup_lruvec(memcg, pgdat);
  }
  
--/**
-- * thp_order - Order of a transparent huge page.
-- * @page: Head page of a transparent huge page.
-- */
--static inline unsigned int thp_order(struct page *page)
--{
--	VM_BUG_ON_PGFLAGS(PageTail(page), page);
--	return compound_order(page);
--}
--
--/**
-- * thp_size - Size of a transparent huge page.
-- * @page: Head page of a transparent huge page.
-- *
-- * Return: Number of bytes in this page.
-- */
--static inline unsigned long thp_size(struct page *page)
--{
--	return PAGE_SIZE << thp_order(page);
--}
--
- #ifdef CONFIG_MMU
- /*
-  * Do pte_mkwrite, but only if the vma says VM_WRITE.  We do this when
-
--- 
-2.39.5
+ static int get_swappiness(struct lruvec *lruvec, struct scan_control *sc)
+_
 
 
