@@ -1,91 +1,154 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3D8F606A324
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 05:16:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D30F606A324
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 05:42:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=dpfgAeT6
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=UuwuZrpR
 Received: by kanga.kvack.org (Postfix)
-	id A20C86B00EF; Mon,  2 Nov 2026 00:16:48 -0500 (EST)
+	id 9DD9C6B00EF; Mon,  2 Nov 2026 00:42:43 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9D1BE6B05B1; Mon,  2 Nov 2026 00:16:48 -0500 (EST)
+	id 9665B6B05B1; Mon,  2 Nov 2026 00:42:43 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8E7D56B05B2; Mon,  2 Nov 2026 00:16:48 -0500 (EST)
+	id 8072A6B05B2; Mon,  2 Nov 2026 00:42:43 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 66FA16B00EF
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 00:16:48 -0500 (EST)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id BD14D1A0AD0
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 05:16:47 +0000 (UTC)
-X-FDA: 85389019254.18.F351679
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 05CB3140002
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 05:16:45 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=dpfgAeT6;
-	dmarc=none;
-	spf=pass (imf23.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 5AFB36B00EF
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 00:42:43 -0500 (EST)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id AE4371C464D
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 05:42:42 +0000 (UTC)
+X-FDA: 85389084564.24.30FC00A
+Received: from mta0.migadu.com (out-69.mta0.migadu.com [91.218.175.69])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 8433340004
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 05:42:40 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=UuwuZrpR;
+	spf=pass (imf12.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.69 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793596606;
+	s=arc-20220608; t=1793598161;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=AydlHuw6fO2zY4cI253Suc41cz8zgm/O+LvMgOdMh6A=;
-	b=rKfa1Fz3JmgvLInOMrt5Nn0cZ7kIScvHW5pV1CuVb89+o5g39Da16HlQw/stPzgsXE4ptR
-	2JsTBy2QYh339Ev6QXFijuZT0lVqZCOf5jww2OJzdRKU7tbBPTGNDw6arAhCFLAo2NJqD5
-	3hm2wi1+Nzw7ApINiIOMUWZY8uOaGD4=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=dpfgAeT6;
-	dmarc=none;
-	spf=pass (imf23.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+	bh=MiW8Mroe3U2+fZ+1bplzdhcNfTtvPuhlvwZ0rPfG9Ps=;
+	b=Qok1pnr1o8Ecu+vUeKonw29fM7TVUaY3G3hgepi7mcd0g5KKK+U83uhUpocAZVdmh4Pf3V
+	Y5yYEw4fikf14i6gKsYWBjDXbw5vNla6hJ2UUmASn6rkqzdll94FsxxIE5AAH69P25eCCX
+	nzSHM6h6562H3MPXL6JHJaupup11o48=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793596606;
-	b=eyiXLYgxwGpeDxzggkOr7pfgbUuvRntunKC7980GcJPXg1GR3IHqThMYySmAX49veS97H4
-	nwlOs7br1ruCYtCpnfahTzr0NeiUSNBtt+POl+Seo1prmUuxh4EA2a2fKJQQXOQVnRQx6D
-	cbsnQop9TnqFKdYC1mMyCwub/QOGo5k=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id D6D1F40B13;
-	Mon,  2 Nov 2026 05:16:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83B2E1F00919;
-	Mon,  2 Nov 2026 05:16:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1793596604;
-	bh=AydlHuw6fO2zY4cI253Suc41cz8zgm/O+LvMgOdMh6A=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=dpfgAeT6XwqEya62aQgDtukLCRoDokJX4+yTA6W3r5srSYYW8lNaavZshZYU9jVQq
-	 9LT7W1GdOdDeW7O1/cw332G0uaw3C04X6wClEB0mF6r6Ur1Jkp1WnFAKiTyaj+Gx1M
-	 /JlI0wlKndGMZQlDOONwI1O62P1BQofWB/wpHQFU=
-Date: Sun, 1 Nov 2026 21:16:44 -0800
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Weilin Tong <tongweilin@linux.alibaba.com>
-Cc: Ryan Roberts <ryan.roberts@arm.com>, David Hildenbrand
- <david@kernel.org>, Baolin Wang <baolin.wang@linux.alibaba.com>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 3/3] tools/mm/thpmaps: fix missing mapping names
-Message-Id: <20261101211644.c63a2028bbede0f763f41f80@linux-foundation.org>
-In-Reply-To: <20261027074904.3328878-4-tongweilin@linux.alibaba.com>
-References: <20261027074904.3328878-1-tongweilin@linux.alibaba.com>
-	<20261027074904.3328878-4-tongweilin@linux.alibaba.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	t=1793598161;
+	b=S8EGB2I92rimaRutsLV13JMrTew2Ks98kGXXXVOtiw/svcTUiaNchFk83F/u6pZzgr6eH/
+	QE+BbQ7C5N2O1CgJlKrLwbWD5gF4j3kHGV6+TI/l0NivxaYc0/5KqQuL1FZiyFlytKr1RL
+	9q5QiRrcFGtfunVk4w9uyniyO1H2+P4=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=UuwuZrpR;
+	spf=pass (imf12.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.69 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=MiW8Mroe3U2+fZ+1bplzdhcNfTtvPuhlvwZ0rPfG9Ps=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1793598159; v=1; x=1794202959;
+ b=UuwuZrpRkQYutb58GVikL5ByJkdXkY5hrZ320Ad6t9zbKbpIWUeWtzUj6e7jA2gUDGMoLrrH
+ gUeLCTBMp061JCHx6Qhx3sjIJSwh8MQzoBlRonU4eD5oEI2+kpHt3ULEzO6l5PK/syFv0vJ1f4r
+ DZ12u63g6acTOpq0688ukOGg=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id 9704e208af575192;
+	Mon, 02 Nov 2026 05:42:37 +0000
+X-Mizu-Trace-ID: 9704e208af575192
+X-Migadu-Flow: FLOW_OUT
+From: Lance Yang <lance.yang@linux.dev>
+To: david@kernel.org
+Cc: akpm@linux-foundation.org,
+	hannes@cmpxchg.org,
+	mhocko@kernel.org,
+	qi.zheng@linux.dev,
+	shakeel.butt@linux.dev,
+	ljs@kernel.org,
+	kasong@tencent.com,
+	baohua@kernel.org,
+	axelrasmussen@google.com,
+	yuanchu@google.com,
+	weixugc@google.com,
+	baoquan.he@linux.dev,
+	baolin.wang@linux.alibaba.com,
+	liam@infradead.org,
+	vbabka@kernel.org,
+	rppt@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	kees@kernel.org,
+	peterz@infradead.org,
+	jannh@google.com,
+	pfalcato@suse.de,
+	hughd@google.com,
+	pasha.tatashin@soleen.com,
+	pratyush@kernel.org,
+	willy@infradead.org,
+	jack@suse.cz,
+	ziy@nvidia.com,
+	lance.yang@linux.dev,
+	riel@surriel.com,
+	harry@kernel.org,
+	apopple@nvidia.com,
+	nico.pache@linux.dev,
+	ryan.roberts@arm.com,
+	dev.jain@arm.com,
+	usama.arif@linux.dev,
+	kas@kernel.org,
+	matthew.brost@intel.com,
+	jhubbard@nvidia.com,
+	peterx@redhat.com,
+	will@kernel.org,
+	aneesh.kumar@kernel.org,
+	npiggin@gmail.com,
+	osalvador@suse.de,
+	minchan@kernel.org,
+	muchun.song@linux.dev,
+	xu.xin@linux.dev,
+	chengming.zhou@linux.dev,
+	chrisl@kernel.org,
+	shikemeng@huaweicloud.com,
+	nphamcs@gmail.com,
+	youngjun.park@lge.com,
+	gourry@gourry.net,
+	joshua.hahnjy@gmail.com,
+	rakie.kim@sk.com,
+	ying.huang@linux.alibaba.com,
+	jgg@ziepe.ca,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	kexec@lists.infradead.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-arch@vger.kernel.org,
+	linux-cxl@vger.kernel.org,
+	josef@toxicpanda.com,
+	stable@vger.kernel.org,
+	usama.anjum@arm.com
+Subject: Re: [PATCH v3 16/47] mm/khugepaged: fix PMD table lock leak in try_collapse_pte_mapped_thp()
+Date: Mon,  2 Nov 2026 13:42:32 +0800
+Message-ID: <20261102054232.36829-1-lance.yang@linux.dev>
+X-Mailer: git-send-email 2.49.0
+In-Reply-To: <20261031-fixes_core-v3-16-d6437171ecc3@kernel.org>
+References: <20261031-fixes_core-v3-16-d6437171ecc3@kernel.org>
 X-Archived-By: <archiver.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 05CB3140002
-X-Stat-Signature: xkxzxymeh9qmq747c14583doxkqxqwmb
-X-Spam-Status: No, score=-12.6 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,NICE_REPLY_A,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 8433340004
+X-Stat-Signature: ym8sct7sopyxz18a5cutni68x43s3tgf
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1793596605-918167
-X-HE-Meta: U2FsdGVkX18ltk1gI2qswsnLS5BvSaeUwMOQY94MJJwE8ETFUTBPjohjlTKsgi7SmLezPK3SNNjqlE6Bs6x5t3fIIBI9uKMec6cLLr5PhOA+JIOzc/qkYfYJMYiA9I0nhHxzMif/Z4w4Fc1GqEQ5c9/STJW0A4BFOPAkjw+BFGFVhHpNLPstnX23E7jIOO2Vc7rZDVPk2Iq+euJhuVKjR4z4TXECVMcmOHKh1Fzu9UafEctaOoANckWe7tlrGrOWupPkXEZDj8cGosdCu5LmVYGIE06lYgQIsqVMnBWaEjwTtZWXr/mJNLmlzZpoxn4zNCOtcFGbd2MgzODG6GHP+NHqbQ3p6g3ZZuIsPPE7LG37mU6n9IhaHgL16VDpsbzbQhuN86NAh72gTmtTd0Yi557DPnfpP1W4zVPZ99FqNWiYEJCYt7hQJwa91oipvnawSVOk83FFLJeS+ZOrDuFK3Qm025FgJxBRe7QBomvQR3v4qBFmJHHub1bqKPUbGb6+8uh2q/w2UNywERgxfZuqkQKgLv/eL5KcKRPrioZ4dIerugx7Y9cm2y6lUeymskkF5NGjFRtaeMhSoMow5EvXoAUP2KqAbAJzM6Xns+cBEX8pO+v0IPGF2Q8gM7Nj25sWX0qrEAsBb8JyCKDOeHvew06PTSy0lZlf0crfTeWe130ZGSXEkMA6JrxNRvZocpXAISG0LiiZRfaGEzlshrQD99G9Fx8zec+Rc5Cx5EgcRDCzs+lgh29c76XjSLpkujfn1nMwmhpGemM3y0iWQcMGmG1h+/6pvhUlwgFKOCJTY71qiN7PAfzSqc6Ywwd6U7ws+G1icKwujDY01K47zl4nFKr0O4K6Xqrrs8CPAP6QvaaaynkZ4rj/PIaTpPfFw1vSPiJfnS4z+G1e57RTOuCu41RaezbH2VB5kFomTonInXsPCunNhPDvnkUZzFhAodmIuLBORn1xQpwPV/+QUld
- EY2IxVK7
- PW4nvWk8p37pGeLpa5w1ZzqML2uEBgLkIV97sdZC+9cnv4M8yFDADtvNMDzb3ydGsa1i0aYdnp+rOPiPqueP2oF50j0flnm93rHHiJQ1bgJQVkTYqLKXG0UqiZSBiWZG/q2Rk3eFtiNVheL0eExo8x/+9QHvlxrdlXYyDM2Ha1sWSlQbRLMl3p6ZpQiq2NMJjDYxDbRk4N+fWIQX7TpeOc/uQJXaeVkTEASZ0GkWP4cUxmVXKn1JiKEqv5vfxJnctuaAz+KmTOBvp17o=
+X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1793598160-411441
+X-HE-Meta: U2FsdGVkX19DhrjMEHmtC3cM0m7qUgBi+0EWpOCIw5O3/ZB77hjh1o4aP710JDhDUW/S8VBFjDcrSI6+7mNjG1L5arY8vbbi58YjTEeXgQQnoADkgOyHzdQWNhIX+TKFygVx4jk3VUgQP/c6SwZp0dgL9j4idM3KpLzrtuqnl/zHPLcruVQiXHrX+jTg+Nv+9KdPIqMXDRfnwIHeoLbYjoQEQwyjOi6fMjLnh7rZ5KU/s34oIu4qmPy8MxECI3NLiZ/ysfKtZ2+sKGzvgXx/v10rnslpG6nzhuZFv09lJo3YJ+eINYKKpH9cAGotw/dyBJDTkvGJStdr7ImF/GEn4zuNcDs9/vPOq/J96IqI7S/3hhx+KwhxcfZVR1qyHJNgthhpCANMWndwZW2PVnDrpW+Ui4LzsTwbA5Yziq7+bBZR9JGLDNGRyt+odURH/Ufl2q+3AbGjVJ4ID3/m4tnV5Iehpgm62swao6AS3hbneJDBc1a6hQEvhIYpXfQLnvNiSjAs0eg7YcSm2kY2j42CNhzJTgVd1Ir/SkwlmvDVLuNVBIW+aGjp1gfDpI/9/chn8tBmwGFwlPbit1xmj/ZOUBRF2G9JMiw0B6H/k2A5OuDuQCCaPxY8Va9xtK4YOfn4JpOO56BzhdimeDgA9GfLy+OcZ6BIfRiuGPReuBVwv3XgN0OTrapVeDdtJb5QvgdVfSx/v1tkhg1iC5H9KPk0tjGK2g9bt/JLj9f/oPPnOmaxlzhD8lzra6kfxmw5EhmtkcV+juGO7kfelvllq4HrtCpNApnDdrp0cfZPtuerptqHt9kfPZSikoKLTz0SuQsft1ZIMabMvNTdmSkBWR5TAWwRoV+RcsNBaAzxDwACQtkpB0Yo7yIN6Ng23nGexFseCesRsTSQvounCF5ayT+b4Pl2SozwHaRQjwk09bMJ/IYKiR5kX9WodnwVrmkDBjNW47Kz3JCQnD3VRz09NdZ
+ hlKclQlF
+ tLc4zcIed4Kd5itZmyVLM+accGxyJJgsE7kHmOoMgzWeE4uNCb1s3cfkuFyIe8ia4cE6S3d6Hqg3BKI77FQdojK1YqqeOZ1PobQuR9T44bK71e+7wS7t8xHCDl7P3kQlN+qYc0E9bjlOhSOcXntAD6QenONqZGjsXt775vf9Hc9Moo8LTB4emyxyAjgmukBrbUKnZ9g256pEOGjWd/fsEfLvDalnE9+XJ6VnytawXq2scsk0c2h/WMGb0VWmKvH8NJaozmtwa3tLcAXuU2Dj5+uM+pnLWJJZ5jDQrMimLTJc4sF1bqMOwjcCBAg7h0v9cIF7yijQeveCQ2gjjKlR/l9FgE3/Vzo6CQplp9x+tyuRIRG4ff+cYn7iOKFswr1NehRuWa91/QpyGrk3DoNQXwxSdxkmokQdSa5ntRKY81nGfS/MxeemgDQPxuJJ00IaC048MR3zDVZcU7OlAmq50Z1DsIK0YKT9rjeVtw9SvmYVhaY8tfSuXC3Ft7a+P5XVsUDdCDsqN5ZbqDuafFP0xJEZ5UhxU8bBDC18V2pjYcCaaI0QJrGZqPmobQw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,49 +157,34 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Tue, 27 Oct 2026 15:49:04 +0800 Weilin Tong <tongweilin@linux.alibaba.com> wrote:
 
-> VMAList splits smaps lines on whitespace and only keeps the mapping
-> name when there are exactly six fields. Names containing whitespace,
-> including paths with a (deleted) suffix, are therefore lost.
-> 
-> Limit splitting to the five fixed fields and preserve the remaining
-> name.
-> 
-> ...
+On Sat, Oct 31, 2026 at 10:39:45AM +0100, David Hildenbrand (Arm) wrote:
+>From: Josef Bacik <josef@toxicpanda.com>
 >
-> --- a/tools/mm/thpmaps
-> +++ b/tools/mm/thpmaps
-> @@ -198,7 +198,7 @@ class VMAList:
->          self.vmas = []
->          with open(f'/proc/{pid}/smaps', 'r') as file:
->              for line in file:
-> -                elements = line.split()
-> +                elements = line.rstrip('\n').split(maxsplit=5)
->                  if '-' in elements[0]:
->                      start, end = map(lambda x: int(x, 16), elements[0].split('-'))
->                      major, minor = map(lambda x: int(x, 16), elements[3].split(':'))
+>For a private mapping with userfaultfd, try_collapse_pte_mapped_thp()
+>takes the PMD table lock before it maps the page table for the second time.
+>If that (pte_offset_map_rw_nolock) fails, because the page table vanished
+>in the meantime due to concurrent page table reclaim, it leaves through
+>the abort label, where the PMD table lock is unlocked if it differs from
+>PTE table lock.
+>
+>In case the PMD table lock and the PTE table lock match, which is the
+>case without CONFIG_SPLIT_PTE_PTLOCKS after pte_offset_map_rw_nolock()
+>failed, we miss to unlock the PMD table.
+>
+>To fix it, forget the PTE table lock when we unmap+unlock the PTE table.
+>
+>Fix generated by an LLM and sent by Josef Bacik in private.
+>
+>Fixes: 6375e95f381e ("mm: pgtable: reclaim empty PTE page in madvise(MADV_DONTNEED)")
+>Cc: stable@vger.kernel.org
+>Signed-off-by: Josef Bacik <josef@toxicpanda.com>
+>[ david: move the ptl = NULL handling; rewrite description, drop wrong comments ]
+>Reviewed-by: Gregory Price (Meta) <gourry@gourry.net>
+>Tested-by: Gregory Price (Meta) <gourry@gourry.net>
+>Tested-by: Muhammad Usama Anjum <usama.anjum@arm.com>
+>Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+>---
 
-Thanks.  My pedantic reviewbot points out
-
-: Could we also handle carriage returns and non-UTF-8 bytes in filenames?
-: Both are valid filename contents.  Python's universal newline handling
-: splits the former into separate records, while strict decoding raises
-: UnicodeDecodeError for the latter.
-: 
-: I reproduced both failures with real file mappings, before and after
-: this series. Opening smaps this way fixes the tested cases:
-: 
-:     with open(f'/proc/{pid}/smaps', 'r', newline='\n',
-:               errors='surrogateescape') as file:
-: 
-: These are pre-existing problems, not regressions introduced here.
-: They could be included in [3/3] or handled in a follow-up.
-
-and yup, these patterns could indeed be encountered.
-
-But let me grab the series as-is, on the grounds it's much better than
-before - spaces in filenames are common whereas \r's and non-UTF8 are
-not.
-
+Reviewed-by: Lance Yang <lance.yang@linux.dev>
 
