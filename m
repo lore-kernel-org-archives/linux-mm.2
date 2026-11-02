@@ -1,101 +1,82 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 713F5606A327
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 10:04:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=oxbcq5ES
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9543A606A324
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 10:04:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 99C196B05C7; Mon,  2 Nov 2026 05:04:12 -0500 (EST)
+	id BC0D56B05C8; Mon,  2 Nov 2026 05:04:30 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 94CD36B05C8; Mon,  2 Nov 2026 05:04:12 -0500 (EST)
+	id B70D96B05C9; Mon,  2 Nov 2026 05:04:30 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 83C336B05C9; Mon,  2 Nov 2026 05:04:12 -0500 (EST)
+	id AAE2E6B05CA; Mon,  2 Nov 2026 05:04:30 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 5A2AA6B05C7
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 05:04:12 -0500 (EST)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id ED1E51A0C9F
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 10:04:11 +0000 (UTC)
-X-FDA: 85389743502.20.A928F49
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 554D0100003
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 10:04:10 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=oxbcq5ES;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf14.hostedemail.com: domain of sarthak.sharma@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=sarthak.sharma@arm.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 8DEFA6B05C8
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 05:04:30 -0500 (EST)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 25EFA1C46BC
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 10:04:30 +0000 (UTC)
+X-FDA: 85389744300.05.99EA50D
+Received: from mail.linx-info.com (mail.linx-info.com [114.247.232.78])
+	by imf19.hostedemail.com (Postfix) with ESMTP id E05601A0002
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 10:04:26 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	spf=pass (imf19.hostedemail.com: domain of gkwang@linx-info.com designates 114.247.232.78 as permitted sender) smtp.mailfrom=gkwang@linx-info.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793613850;
+	s=arc-20220608; t=1793613868;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Y8MIrwrxZZBXR4U1tlZDUC+Iooupo8bVDyTYl7iwQ+Q=;
-	b=QGunPl1S+FpOBIeu2I4jWlyl45/PyMgTZxQeUcLcJYPEZkVeqWfgGZQSsAgihX4CBBisVI
-	toDzBEwso6qvAPsZ/kVsKgQaYa2CZPpj0CeDPnbrY+ZgBU6A1KvS+pq5Bh+fF9U99Fx72g
-	NBGdiajAefH2JNC+LDt3yv9YQj6oz3s=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=bsgXfputfPQiAxudDpHtBy77ru0u4ys8CRqHYkfdZLs=;
+	b=QwqXGectJ6Sgkd/YQ/aqPq6cIHHbziB5ZnIqHCh8hpW2+s0H17ahrH3sNwzMrvKT+DLF1c
+	vJaJDYYCjqJhSAwXHfbEPRia0/NZJIauHQpu1HBJ1SAH0Q4rynQMNjrer7T6BD086G8Zjv
+	tQrslP1IO4Db23HmjS/UihYpPWZLws0=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=oxbcq5ES;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf14.hostedemail.com: domain of sarthak.sharma@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=sarthak.sharma@arm.com
+	imf19.hostedemail.com;
+	dkim=none;
+	dmarc=none;
+	spf=pass (imf19.hostedemail.com: domain of gkwang@linx-info.com designates 114.247.232.78 as permitted sender) smtp.mailfrom=gkwang@linx-info.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793613850;
-	b=oLj1PsWBc3k41X8RE4cAITT4qBAq6di5sQb8QQaZJXUVMQfNUS3B6UYFzkbWdlB3haFRBw
-	xLHdtV6EM/f5Qac6y+hbjRRd908hQJkfO5pej1fVSAWnLx5FgNo2/FH0acUfu2NMmEh0SP
-	7HQG5c00gtY568fuOF7yDJ1OWQIsMhA=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 93FBC1595;
-	Mon,  2 Nov 2026 02:04:06 -0800 (PST)
-Received: from a081061.arm.com (unknown [10.163.156.187])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 52C663F59E;
-	Mon,  2 Nov 2026 02:04:01 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1793613849; bh=Vl3ojrGKhQ4pEt8ey4N/OpGEcmtPIkRQd8WiP7k/B/0=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oxbcq5ES1uFxcvGr3iCpN5o9yV5gFISnJHlauxh6ZuP+UY3+4tvL+NVZV1ReaYWaB
-	 FCfG9VF7yKYLh6Ypp0f232lbvym0PSPYncoe/ses5mqB+r0Ok7NDuBX+WQ7YT4bRh7
-	 rJbrhiwnoReTByr0xUDDN4lmmui2IrtJq2ZyMVG0=
-From: Sarthak Sharma <sarthak.sharma@arm.com>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>
-Cc: Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R . Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@suse.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Shuah Khan <shuah@kernel.org>,
-	John Hubbard <jhubbard@nvidia.com>,
-	Kalesh Singh <kaleshsingh@google.com>,
-	Anshuman Khandual <anshuman.khandual@arm.com>,
-	Park Tae-sun <ts930@dgu.ac.kr>,
-	linux-mm@kvack.org,
-	linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Sarthak Sharma <sarthak.sharma@arm.com>
-Subject: [PATCH RESEND v2 12/12] selftests/mm: mremap_test: strengthen multi VMA validation
-Date: Mon,  2 Nov 2026 15:32:11 +0530
-Message-ID: <20261102100211.141831-13-sarthak.sharma@arm.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20261102100211.141831-1-sarthak.sharma@arm.com>
-References: <20261102100211.141831-1-sarthak.sharma@arm.com>
+	t=1793613868;
+	b=0KLzK9DU0VtHIV9RpFf7GtqGwmlPQdI+bQS4eJuilakma8UzGgVtJM7tEmAdECNf3k+k+a
+	NtpX96rK0xShGTBv2j/bfHMia2MfyteOwewl9XnXAct6uPefg2cm097Sm1bthoO+7VuuqL
+	Ihtj0fY18Jwpc3nJmuQX8Kbe1le4aWE=
+Received: from localhost (localhost [127.0.0.1])
+	by mail.linx-info.com (Postfix) with ESMTP id 5FD36321215;
+	Mon,  2 Nov 2026 18:04:24 +0800 (CST)
+Received: from mail.linx-info.com ([127.0.0.1])
+	by localhost (mail.linx-info.com [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id UpQ_qoaeNUmA; Mon,  2 Nov 2026 18:04:24 +0800 (CST)
+Received: from DiGouShu (unknown [172.22.21.200])
+	by mail.linx-info.com (Postfix) with ESMTPSA id 485823211C6;
+	Mon,  2 Nov 2026 18:04:24 +0800 (CST)
+Date: Mon, 2 Nov 2026 18:04:23 +0800
+From: Wang Guangke <gkwang@linx-info.com>
+To: SJ Park <sj@kernel.org>
+Cc: akpm@linux-foundation.org, damon@lists.linux.dev, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm/damon/stat: avoid overflow in
+ estimated_memory_bandwidth calculation
+Message-ID: <auhgJ74TeQOIvTtO@DiGouShu>
+References: <20261101180001.167198-1-gkwang@linx-info.com>
+ <20261101191344.85683-1-sj@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261101191344.85683-1-sj@kernel.org>
 X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 554D0100003
-X-Stat-Signature: 7u7zei18fpo84zos9rq8g9ip8y873qau
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: E05601A0002
+X-Stat-Signature: bhxwibgszeo95o7spuzwy8nqxjtnb1fy
+X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-HE-Tag: 1793613850-803869
-X-HE-Meta: U2FsdGVkX19tlN8uaPLOAFJtTSfCQ3257Wlv6cGqPZGz3ir6Fm0yU/Xff4F9ViAwAMPCwMt8uzdMCtePq0LaiFsPxVy86/05XTK5sKBK0T+20BMCUQ9QGRsfM8N9jhG9dXVsj/wqUYsPdZrLsH42PdenF7AO0OM47mAyO0Wy4iRylTfhqN4kV89B8Ylw2NKHDMUQXXw0pCs2r3IbJlBgG+ckxyvfl2UNJ/nSXXKNpddFotpBt6Md/pQENgNYtT4+LHf0YLTHily/6Ti2mY6HRRAkDjOVboOr/Ou6T1D43kgqEyGP8//H7m0gG6yKL4MbBI3G1SBGm9VGLKLiHjK/7JbCfLAWf+PYg2hr8fa7IlDtOoadLj9IbHILUw7fBWoNye60TiC+PmLyBmkGDceCuA57qwcCWAktnnP4B+tsKR35C7qLVm9YVsullfEOforJkDlB5KbD5BmmRU+PREpgHFLxV8la4WUqsm7Q2oywp1LDrEhYsNQYadRfHjZkly1G91HnhvFCu/CBkbkySYD9nS9Gs8WGWaftBbhAjUyvoTshNU7FAuMyH+hHpEA05A2hDwVVNHyTBLtWq0FWuYD08cQrCGAripNE/+Q7uAiUHkrYAUQMvdxJylxz/mY57/fT/SHuMVJ3GulFb0On3s20RHa/maOhlkFn524r5Gbq3LEe36ktlQZjbgn8/WoqgHBheABTECRQgd49u/Iqq9UlVh6gTzzp3mvTGYyGHnhxeIegRlg3tIiAHTZh0m83lUv4fTqVIKg9fZtA1SCZ/hAdm/S6WgORxFDkSVjGG+OBTbKqszUEXVtu8owvuqehtntUU/tQya9KWVCV6KCXkjLKfDAmGDJLN/sLlO6SraAUenwEUp8NCDnlDLrTjVvNKE+vSHOmmMxud4IaD50zXsKqcXOzXGJ+nxBO+PDc5Fu2oqwMjhO5OcSpr2iwhV4v9+qdabnVHx8LAHhSv1SsuHO
- 6pYvoIxJ
- 7gzbp2WA56J7QYtm6Ih5/fOHIidjSLqWKtdEP5p1Rh5krgA5GCWKY9KOZf+1k3eFuD9ePndaWQRLuDTlADvbVit05ImTeXH9bszT2NjVXGLwW7mtppqrFn2/+7bt9/UzDxtrZiVj6UMG3BuPQz3RdCehWqVnLW8FeewxPAIdS+tv3jZE0gY4SSQoSPzQ1QQpaetgVEZV+F7w23MWpK3JXf21dIBmflFZq9drEEDZY/Q8+0o1+QGkgnnOyjuXgzk6Z/9/DYHF7upkoHcBy0n6zPGE6+ZH5aDd68iamA1utrJH/QcQ=
+X-HE-Tag: 1793613866-944652
+X-HE-Meta: U2FsdGVkX19jkjwA0W1nW0wM/bS0nKQ/9cIdshNqB0fmlddzAizC0K1Gjb25x/f2P20XjY+DY7USkON9vZjei+39zKBCKuRdavJ4xKu9tEWJJwidgQgLqD12XtpdGw5sVxPPMe1FjaInlxmnzkUCBhuyZUkObZgYpz+2JDFRKyWwdt/+tJxvxQy3BNUQa0phhM+0GF8cV6zuG3TjiF9cwoe/cgMonvIfGXd+GeCItySe6//KQigiEJ5iNo4rkjSn3ujalPOYAednDAL8JBmgdOD0La1wOsxXwlNWsKGabEBAvYWAJhq1rBxbsit+7gGV5PaJiruxr8Mpaont2mD7moraeQCg+1HiJLSUbZ/11bGbO3Dac86jKm9SxQU4Gskr0/LoNMS5r1m4uIkHTph95i+dNchgyLix8EAinpP7T1deSP86iebVipcT3zvPh0UGJLgdOubTOfUet+9tQ4eKlx5ee8xW8rkrLrslfgXD2K0VppUVIih8LaNs3ISOiuBNpm839TTXynBbTxOP/WrV2xFhYj07HYsJJ5E1h2KMs+ciy8IQ+K1MoWF6O1QqpXwZRYj0HzfycwZiAaOhdtP3/+GIf+e6oSucQ72xK5o9XPNNRU59B3i9DKQTDhvZUDVzP5QstsI9Xwgd4Yo+qSY5i/ra9lLeXhtuCD6bv2O/JFMnk/P+O71fAZmNuDsRG+EMW32ngyJ6jpguvxPqHiUKwTqkifqZ5mqP+1U1chg9VRBWOLVE+HlDsN6Y5LQhqWQPtxYFcZibtua0F91MVyuGX+VHScZR+lfe9X32IEMr8VjKLhCWj40PWgSStcQPFWB6YZPxyRfKsol/0oTbgtUaUaJplYRZ9+r/pliLuo6NKcwjkV8xT7AYE3N2uaqqFWRAuQh6eS5TohcjWp12zzDEsO1zLqbndx4nvqjVdo7Mx1/dd/ylz0EIB2zMVszvMeOlGVhfjiA6gTXVF/ilKsq
+ dpnG0Vy0
+ G/+i2rA7k1SRaqytl4eyV+cuvDunNnlmrkvmjyk+5pFhFU/wzLUXRJXjUMURCvOa9xhm4yhv5DencLv3loPqo4r0o4yEgDDmOtw0sREoRy5m1CWz/2T9Kw+ar7GieNA0UU+dWavrqaSV+BWa6ioXTwagI+itxTwZ7ROagwcBCL+EnOsqOlQQJqCoN5Jp7pq2l/9AVuK67OhWg4SrLsDDaC7TdoJzJfmVdl6N/msC6haDEWCw06jw7qyle11HcPp/5vpAYhALUHGLgJm7nsOrtyiYL0WbvNBXhKE0syEuRUvQudYQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,237 +85,159 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Tests in mremap_test.c where a multi VMA range is involved only
-check if the data remains consistent across mapped pages after
-remap. They do not verify the mapping state of gaps in the
-remapped range.
+Hi SJ,
+Thanks for your review.
 
-Add helpers to check whether a range is mapped with the
-expected permissions using /proc/self/maps. Use them to
-verify that gaps remain unmapped after regular multi VMA
-moves and after the partial move in the userfaultfd
-multi VMA test. Also verify that gaps retain PROT_NONE
-permissions when remapping over an existing mapping
-with PROT_NONE permissions.
+On Sun, Nov 01, 2026 at 11:13:43AM -0800, SJ Park wrote:
+> Hello Wang,
+> 
+> On Mon,  2 Nov 2026 02:00:01 +0800 Wang Guangke <gkwang@linx-info.com> wrote:
+> 
+> > The calculation of estimated_memory_bandwidth computes
+> > access_bytes * USEC_PER_MSEC * MSEC_PER_SEC / aggr_interval directly.
+> > On 32-bit systems, the intermediate product
+> > access_bytes * USEC_PER_MSEC * MSEC_PER_SEC may overflow before the
+> > division is performed.
+> 
+> Do you find this issue from real usage?  Or, jsut theoretical?  Could you
+> please clarify it, and user impacts of the issue?
 
-Signed-off-by: Sarthak Sharma <sarthak.sharma@arm.com>
----
- tools/testing/selftests/mm/mremap_test.c | 105 ++++++++++++++++++-----
- 1 file changed, 85 insertions(+), 20 deletions(-)
+I found it by code inspection, not from real usage on a 32-bit system.
 
-diff --git a/tools/testing/selftests/mm/mremap_test.c b/tools/testing/selftests/mm/mremap_test.c
-index 084f5d4c7b5e..b83c5797a2d8 100644
---- a/tools/testing/selftests/mm/mremap_test.c
-+++ b/tools/testing/selftests/mm/mremap_test.c
-@@ -122,13 +122,14 @@ static unsigned long long get_mmap_min_addr(void)
- }
- 
- /*
-- * Using /proc/self/maps, assert that the specified address range is contained
-- * within a single mapping.
-+ * Using /proc/self/maps, check whether the specified address range is contained
-+ * within a single mapping with the expected permissions, if supplied.
-  */
--static bool is_range_mapped(FILE *maps_fp, unsigned long start,
--			    unsigned long end)
-+static bool is_range_mapped_with_perms(FILE *maps_fp, unsigned long start,
-+		unsigned long end, const char *expected_perms)
- {
- 	char *line = NULL;
-+	char perms[5];
- 	size_t len = 0;
- 	bool success = false;
- 	unsigned long first_val, second_val;
-@@ -136,12 +137,13 @@ static bool is_range_mapped(FILE *maps_fp, unsigned long start,
- 	rewind(maps_fp);
- 
- 	while (getline(&line, &len, maps_fp) != -1) {
--		if (sscanf(line, "%lx-%lx", &first_val, &second_val) != 2) {
-+		if (sscanf(line, "%lx-%lx %4s", &first_val, &second_val, perms) != 3) {
- 			ksft_exit_fail_msg("cannot parse /proc/self/maps\n");
- 			break;
- 		}
- 
--		if (first_val <= start && second_val >= end) {
-+		if (first_val <= start && second_val >= end &&
-+		    (!expected_perms || !strcmp(perms, expected_perms))) {
- 			success = true;
- 			fflush(maps_fp);
- 			break;
-@@ -152,6 +154,12 @@ static bool is_range_mapped(FILE *maps_fp, unsigned long start,
- 	return success;
- }
- 
-+static bool is_range_mapped(FILE *maps_fp, unsigned long start,
-+			    unsigned long end)
-+{
-+	return is_range_mapped_with_perms(maps_fp, start, end, NULL);
-+}
-+
- /* Check if [ptr, ptr + size) mapped in /proc/self/maps. */
- static bool is_ptr_mapped(FILE *maps_fp, void *ptr, unsigned long size)
- {
-@@ -161,6 +169,20 @@ static bool is_ptr_mapped(FILE *maps_fp, void *ptr, unsigned long size)
- 	return is_range_mapped(maps_fp, start, end);
- }
- 
-+/*
-+ * Check if [ptr, ptr + size) is mapped with the required permissions in
-+ * /proc/self/maps.
-+ */
-+static bool is_ptr_mapped_with_perms(FILE *maps_fp, void *ptr,
-+				     unsigned long size,
-+				     const char *expected_perms)
-+{
-+	unsigned long start = (unsigned long)ptr;
-+	unsigned long end = start + size;
-+
-+	return is_range_mapped_with_perms(maps_fp, start, end, expected_perms);
-+}
-+
- /*
-  * Returns the start address of the mapping on success, else returns
-  * NULL on failure.
-@@ -348,10 +370,33 @@ static void mremap_move_within_range(char *pattern_addr)
- 	ksft_test_result(success, "%s\n", test_name);
- }
- 
--static bool is_multiple_vma_range_ok(char *pattern_addr, char *ptr,
--				     unsigned long page_size)
-+static bool is_multiple_vma_range_ok(FILE *maps_fp, char *pattern_addr,
-+				     char *ptr, unsigned long page_size,
-+				     bool expect_gaps_mapped)
- {
--	for (int i = 0; i <= 10; i += 2) {
-+	for (int i = 0; i <= 10; i++) {
-+
-+		if (i == 5)
-+			continue;
-+
-+		/* Odd pages correspond to gaps between the source VMAs. */
-+		if (i & 1) {
-+			if (expect_gaps_mapped) {
-+				if (!is_ptr_mapped_with_perms(maps_fp,
-+							      ptr + i * page_size,
-+							      page_size, "---p")) {
-+					ksft_print_msg("Page %d PROT_NONE mapping overwritten\n",
-+						       i);
-+					return false;
-+				}
-+			} else if (is_ptr_mapped(maps_fp, ptr + i * page_size,
-+						 page_size)) {
-+				ksft_print_msg("Page %d is unexpectedly mapped\n", i);
-+				return false;
-+			}
-+			continue;
-+		}
-+
- 		size_t size = i == 4 ? 2 * page_size : page_size;
- 
- 		if (memcmp(ptr + i * page_size, pattern_addr + i * page_size,
-@@ -365,7 +410,7 @@ static bool is_multiple_vma_range_ok(char *pattern_addr, char *ptr,
- 	return true;
- }
- 
--static void mremap_move_multiple_vmas(char *pattern_addr,
-+static void mremap_move_multiple_vmas(FILE *maps_fp, char *pattern_addr,
- 				      unsigned long page_size,
- 				      bool dont_unmap)
- {
-@@ -428,7 +473,8 @@ static void mremap_move_multiple_vmas(char *pattern_addr,
- 		goto out_unmap;
- 	}
- 	/* Check move was ok. */
--	if (!is_multiple_vma_range_ok(pattern_addr, tgt_ptr, page_size)) {
-+	if (!is_multiple_vma_range_ok(maps_fp, pattern_addr, tgt_ptr,
-+				      page_size, false)) {
- 		success = false;
- 		goto out_unmap;
- 	}
-@@ -441,7 +487,8 @@ static void mremap_move_multiple_vmas(char *pattern_addr,
- 		goto out_unmap;
- 	}
- 	/* Check that the move is ok. */
--	if (!is_multiple_vma_range_ok(pattern_addr, &tgt_ptr[size], page_size)) {
-+	if (!is_multiple_vma_range_ok(maps_fp, pattern_addr, &tgt_ptr[size],
-+				      page_size, false)) {
- 		success = false;
- 		goto out_unmap;
- 	}
-@@ -461,7 +508,8 @@ static void mremap_move_multiple_vmas(char *pattern_addr,
- 		goto out_unmap;
- 	}
- 	/* Check that the move is ok. */
--	if (!is_multiple_vma_range_ok(pattern_addr, tgt_ptr, page_size)) {
-+	if (!is_multiple_vma_range_ok(maps_fp, pattern_addr, tgt_ptr,
-+				      page_size, true)) {
- 		success = false;
- 		goto out_unmap;
- 	}
-@@ -547,7 +595,8 @@ static void mremap_shrink_multiple_vmas(unsigned long page_size,
- 	ksft_test_result(success, "%s%s\n", test_name, inplace ? " [inplace]" : "");
- }
- 
--static void mremap_move_multiple_vmas_split(char *pattern_addr,
-+static void mremap_move_multiple_vmas_split(FILE *maps_fp,
-+					    char *pattern_addr,
- 					    unsigned long page_size,
- 					    bool dont_unmap)
- {
-@@ -623,8 +672,15 @@ static void mremap_move_multiple_vmas_split(char *pattern_addr,
- 
- 	/* Check pattern. */
- 	for (i = 0; i < 7; i++) {
--		if (i == 3)
-+		if (i == 3) {
-+			if (is_ptr_mapped(maps_fp, tgt_ptr + i * page_size,
-+					  page_size)) {
-+				ksft_print_msg("Page %d is unexpectedly mapped\n", i);
-+				success = false;
-+				goto out_unmap;
-+			}
- 			continue;
-+		}
- 
- 		if (memcmp(tgt_ptr + i * page_size,
- 			   pattern_addr + (i + 2) * page_size, page_size)) {
-@@ -840,10 +896,19 @@ static void mremap_move_multi_invalid_vmas(FILE *maps_fp,
- 		goto out_unmap;
- 	}
- 
--	for (i = 0; i < 10; i += 2) {
-+	for (i = 0; i < 10; i++) {
- 		bool is_mapped = is_ptr_mapped(maps_fp,
- 				&tgt_ptr[i * page_size], page_size);
- 
-+		if (i & 1) {
-+			if (is_mapped) {
-+				ksft_print_msg("Gap unexpectedly mapped at %d\n", i);
-+				success = false;
-+				goto out_unmap;
-+			}
-+			continue;
-+		}
-+
- 		if (i < 8 && !is_mapped) {
- 			ksft_print_msg("Valid VMA not moved at %d\n", i);
- 			success = false;
-@@ -1208,10 +1273,10 @@ int main(void)
- 	mremap_move_1mb_from_start(pattern_addr);
- 	mremap_shrink_multiple_vmas(page_size, /* inplace= */true);
- 	mremap_shrink_multiple_vmas(page_size, /* inplace= */false);
--	mremap_move_multiple_vmas(pattern_addr, page_size, /* dontunmap= */ false);
--	mremap_move_multiple_vmas(pattern_addr, page_size, /* dontunmap= */ true);
--	mremap_move_multiple_vmas_split(pattern_addr, page_size, /* dontunmap= */ false);
--	mremap_move_multiple_vmas_split(pattern_addr, page_size, /* dontunmap= */ true);
-+	mremap_move_multiple_vmas(maps_fp, pattern_addr, page_size, /* dontunmap= */ false);
-+	mremap_move_multiple_vmas(maps_fp, pattern_addr, page_size, /* dontunmap= */ true);
-+	mremap_move_multiple_vmas_split(maps_fp, pattern_addr, page_size, /* dontunmap= */ false);
-+	mremap_move_multiple_vmas_split(maps_fp, pattern_addr, page_size, /* dontunmap= */ true);
- 	mremap_move_multi_invalid_vmas(maps_fp, page_size);
- 
- 	fclose(maps_fp);
--- 
-2.53.0
+The parameter estimated_memory_bandwidth of the damon_stat
+module is calculated from access_bytes * USEC_PER_MSEC *
+MSEC_PER_SEC (= USEC_PER_SEC) / c->attrs.aggr_interval,
+and users read it via
+/sys/module/damon_stat/parameters/estimated_memory_bandwidth.
 
+The maximum value of a 32-bit unsigned integer is 4294967295. Therefore,
+in the product access_bytes * USEC_PER_SEC, once access_bytes exceeds 4294,
+the 32-bit value is bound to overflow. Users reading
+/sys/module/damon_stat/parameters/estimated_memory_bandwidth
+on 32-bit systems will get a wrong value.
+
+To see whether real workloads exceed this threshold, I printed the
+intermediate values of the computation via a tracepoint on a 64-bit
+system.
+
+on 64-bit system:
+    ~ # echo 1 > /sys/kernel/debug/tracing/event/damon/estimated_memory_bandwidth
+    ~ # cat /sys/kernel/debug/tracing/trace
+    ...
+           kdamond.0-78      [003] .....  7507.959114: estimated_memory_bandwidth: access_bytes=5536956416, c->attrs.aggr_interval=200000000
+
+I observed that access_bytes can far exceed 4294.
+
+In addition, I used qemu-system-i386 to emulate a 32-bit system and
+performed the same verification:
+
+on 32-bit system:
+without-patch:
+    ~ # cat /sys/kernel/debug/tracing/trace
+    ...
+           kdamond.0-45      [000] .....  1809.507372: estimated_memory_bandwidth: access_bytes=15237120, c->attrs.aggr_interval=7910660
+    ~ # cat /sys/module/damon_stat/parameters/estimated_memory_bandwidth
+    362
+    ~ # echo "15237120 * 1000 * 1000 / 7910660" | bc
+    1926150
+
+The module parameter value (362) does not match the expected value
+(1926150), so an overflow has occurred.
+
+with-patch:
+    ~ # cat /sys/kernel/debug/tracing/trace
+    ...
+           kdamond.0-45      [000] .....   212.682057: estimated_memory_bandwidth: access_bytes=7503872, c->attrs.aggr_interval=3615680
+    ~ # cat /sys/module/damon_stat/parameters/estimated_memory_bandwidth
+    2075369
+    ~ # echo "7503872 * 1000 * 1000 / 3615680" | bc
+    2075369
+
+The module parameter value (2075369) matches the expected value.
+> 
+> > 
+> > Fix it by splitting the division into quotient and remainder,
+> > multiplying each part separately.
+> 
+> Thank you for this patch.
+> 
+> > 
+> > Fixes: fabdd1e911da ("mm/damon/stat: calculate and expose estimated
+> > memory bandwidth")
+> 
+> Please do not wrap Fixes: tag line.
+
+Sorry, I will not wrap it in v2.
+> 
+> Could you clarify why you do not Cc stable@?
+
+Sorry, I missed it. I will Cc stable@ in v2.
+> 
+> > 
+> > Signed-off-by: Wang Guangke <gkwang@linx-info.com>
+> > ---
+> >  mm/damon/stat.c | 17 +++++++++++------
+> >  1 file changed, 11 insertions(+), 6 deletions(-)
+> > 
+> > diff --git a/mm/damon/stat.c b/mm/damon/stat.c
+> > index b05b68f73e10..7cfa3a8d6801 100644
+> > --- a/mm/damon/stat.c
+> > +++ b/mm/damon/stat.c
+> > @@ -32,8 +32,8 @@ static bool enabled __read_mostly = IS_ENABLED(
+> >  module_param_cb(enabled, &enabled_param_ops, NULL, 0600);
+> >  MODULE_PARM_DESC(enabled, "Enable of disable DAMON_STAT");
+> >  
+> > -static unsigned long estimated_memory_bandwidth __read_mostly;
+> > -module_param(estimated_memory_bandwidth, ulong, 0400);
+> > +static u64 estimated_memory_bandwidth __read_mostly;
+> > +module_param(estimated_memory_bandwidth, ullong, 0400);
+> >  MODULE_PARM_DESC(estimated_memory_bandwidth,
+> >  		"Estimated memory bandwidth usage in bytes per second");
+> >  
+> > @@ -55,15 +55,20 @@ static void damon_stat_set_estimated_memory_bandwidth(struct damon_ctx *c)
+> >  {
+> >  	struct damon_target *t;
+> >  	struct damon_region *r;
+> > -	unsigned long access_bytes = 0;
+> > +	u64 access_bytes = 0;
+> > +	u64 remainder, bytes_per_interval;
+> >  
+> >  	damon_for_each_target(t, c) {
+> >  		damon_for_each_region(r, t)
+> > -			access_bytes += (r->ar.end - r->ar.start) *
+> > +			access_bytes += (u64)(r->ar.end - r->ar.start) *
+> >  				r->nr_accesses;
+> >  	}
+> > -	estimated_memory_bandwidth = access_bytes * USEC_PER_MSEC *
+> > -		MSEC_PER_SEC / c->attrs.aggr_interval;
+> > +	bytes_per_interval = div64_u64_rem(access_bytes,
+> > +			c->attrs.aggr_interval, &remainder);
+> 
+> This is not bytes per interval but bytes per microsecond.  Let's rename the
+> variable to bytes_per_us.
+> 
+> > +	estimated_memory_bandwidth =
+> > +		bytes_per_interval * USEC_PER_MSEC * MSEC_PER_SEC +
+> > +		div64_u64(remainder * USEC_PER_MSEC * MSEC_PER_SEC,
+> > +				c->attrs.aggr_interval);
+> 
+> Let's use USEC_PER_SEC instead of 'USEC_PER_MSEC * MSEC_PER_SEC'.
+
+Thanks, I will rename the variable to bytes_per_us, and use USEC_PER_SEC
+instead of 'USEC_PER_MSEC * MSEC_PER_SEC'.
+> 
+> >  }
+> >  
+> >  static int damon_stat_idletime(const struct damon_region *r)
+> > -- 
+> > 2.47.3
+> > 
+> > 
+> 
+> 
+> Thanks,
+> SJ
+> 
+Thanks,
+Wang Guangke
 
