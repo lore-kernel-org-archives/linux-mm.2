@@ -1,127 +1,101 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E030B606A324
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 18:51:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBD26606A326
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 19:01:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=KzAjMyKS
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=OrJUtj1Q
 Received: by kanga.kvack.org (Postfix)
-	id B067B6B00EF; Mon,  2 Nov 2026 13:51:57 -0500 (EST)
+	id EC2406B00EF; Mon,  2 Nov 2026 14:01:11 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AB8FA6B05B1; Mon,  2 Nov 2026 13:51:57 -0500 (EST)
+	id E985D6B05B1; Mon,  2 Nov 2026 14:01:11 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9AC196B05B2; Mon,  2 Nov 2026 13:51:57 -0500 (EST)
+	id DD49F6B05B2; Mon,  2 Nov 2026 14:01:11 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id E12006B00EF
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 13:51:56 -0500 (EST)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 9C6B0C01CD
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 18:51:55 +0000 (UTC)
-X-FDA: 85391073390.04.60924D0
-Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
-	by imf01.hostedemail.com (Postfix) with ESMTP id BDDE94000D
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 18:51:53 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=KzAjMyKS;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf01.hostedemail.com: domain of ampr.mhd@gmail.com designates 209.85.221.41 as permitted sender) smtp.mailfrom=ampr.mhd@gmail.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id BD0E16B00EF
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 14:01:11 -0500 (EST)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 6E72EA0223
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 19:01:10 +0000 (UTC)
+X-FDA: 85391096700.07.5CCBCB3
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf08.hostedemail.com (Postfix) with ESMTP id BC163160005
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 19:01:08 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OrJUtj1Q;
+	spf=pass (imf08.hostedemail.com: domain of broonie@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=broonie@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793646068;
+	b=ngtHcklGO64geikE0UmJNtT5vDfpONtA1bIUNVbmQzlj0jll0h2yz+THhNr7HBpL1WTu1Z
+	tdoCSqz3JYhrBUHKSy22FAoDE1+vuqc7VRBkF3g1SBeK66flSJKvLH1/xG/d4rufMSP08u
+	99COSNLvQF/GRg0COoq7zWUeN4AuNL8=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OrJUtj1Q;
+	spf=pass (imf08.hostedemail.com: domain of broonie@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=broonie@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793645513;
+	s=arc-20220608; t=1793646068;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jUhK5m1lvTjtdfmztu+bilD4B6b4ERUK5SOg2m81DN4=;
-	b=bk9LHHL7rXA0Wqn2hYS6bHt7cS+yargSjxSS+QDztuK/abxiK18qE0w9gRyqBridJ2Q7iK
-	Z6n6qo44X4Xn0EhemC9QT8RRW9suNkpQuUCZrbxKsa32dmDN8B4s+e7jBX6fn3sKECYoSg
-	peOwA7PXkE87iGr+SjSJdgvjWM7DNQI=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=KzAjMyKS;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf01.hostedemail.com: domain of ampr.mhd@gmail.com designates 209.85.221.41 as permitted sender) smtp.mailfrom=ampr.mhd@gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793645513;
-	b=z/vSRXMSeXmlhZVhr4aC8EnWuwp0Ev8uogpGLoeeSwVuoMK3NmbcvKYoIzp5KsDdRgdSia
-	vOyCOJS47JXgl4WUzKd/bwCCN/RRsU4RQa30PeUvzDCL4ytedE9t3wg60iivGzCq5l3Lrj
-	74YtcUVymyWRNVgeLrBrMEnhL5BYXEA=
-Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-48df4e9d2d4so1789141f8f.3
-        for <linux-mm@kvack.org>; Mon, 02 Nov 2026 10:51:53 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793645512; x=1794250312; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=jUhK5m1lvTjtdfmztu+bilD4B6b4ERUK5SOg2m81DN4=;
-        b=KzAjMyKSy4LedzB3w48ogctz1+bDlOwpSv9f4FhFa+77oexDm2WYQcEN+zqQ3jDJKd
-         vMnUBo1JOEzqIFOhSMaFj5p5Izeo79hen1gOFaJoPc3ayD25HQwizxTuWjOdjD5Ma2lF
-         Rq06IF1mOeZsJBqaaw5f75IBNUCg4ViHu/8BvgIPqyoC+3BuTdwThKUIBMyUVov8avIN
-         FqQ7/k7j9FpWu2AgArZwNX/5OV0ZwYg839kOntHHj22AYqTuAVR39RP2NdqqfO09dKRY
-         LyVXgai+WWH/wCJTe1VJX97O2rnMLqgSNEAgEOYNyHoV7F3fY/lY9neCyplRAFeiT809
-         uX3g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793645512; x=1794250312;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=jUhK5m1lvTjtdfmztu+bilD4B6b4ERUK5SOg2m81DN4=;
-        b=oAHsBZzQFRzFgpMVW2ibcSRWgmWa2E5g7NR6s7aiC3a3yqTRF+S+AzYZWsSM2Id4Ta
-         Q+7b4cx2eXM02RtM/Rq4KgBY3NaX+sn3wjvTYKqG7Kyl0XgWx2RuVavFyEzahKXNzusw
-         3+nbzDnXZuUKRE0+Fu0uqI6VvFIN9MTEt0m+/ZGTDANnmLjXPIpIc4+FBdUV0I6erthp
-         +4rvFkBT8AlmugLvp9G7rPmRFqMWU67b76/d2AVvPPI7R9PgtNj8mTcbja6yhBsWHY24
-         JHpgfPEnuS4xPyzQdQvraxThV+cvVnmU4ORPMh+aMNByVG2oT58j1Do3Eflxa55z/fB7
-         mwbA==
-X-Forwarded-Encrypted: i=1; AKwUvBxvk3eL18KnIXpdZgiOsMV8DCDu7FtNs8GH1ZzqCXKVEszSkisJn667JpHYNrr8rZkfKCqWHJVIBg==@kvack.org
-X-Gm-Message-State: APuU4Z9toXWqrwnDkDuTyR3NEM35WhhbMMXHl6wNX9r9nIZcgHKbrGyG
-	4/8q99a2EWytAoFYNDKvZaDVAbj8DSWSdSa9qICOKhg1QySWasgr/GXmMRKmFTVWqaUKi7Nf
-X-Gm-Gg: AYBFou2zSGBY11u/326bins/qr7fzBKpNVR2YhBvQjX+w9cio+4vHTcPPIJDiyVY9Sz
-	5Whi2ahgtHPZl8kcjgfWntXIK5Zqhk9yl8RzebhCgL0njzYYtj2o3TqZSka1Kw4NM+8xJeHHITm
-	63nng8oy4sgPsGtGhe8P6L5T26dg6oyrS8kCEbHwqv3hARjYEgXZDZHiCMuFv/9lLBAQF4R3qqX
-	0X62JlemEHpmgjx/ghUEtYp5j7ZLqSagqkXXt8CwIQoQBqqXh+aTij9U/89oT42cgcOh8yQK/2p
-	ndP0sU/v0YXCBEuq2YSR5qnsko0wezWo5Dw9M4oLAawQrcmyLK+SRnj8Vz6Iy6vQ8b8YTmiYVZl
-	4Xcz5V9SxfM+1Co4B/t/xbCgihPfxh3Fnth2kmkbe8WgN8VoJMAD0LgC+apIdGLd0+swU0nHpFk
-	ufWGdJvqFuGomEwCnnlyA3S4Xgpg/D7ehdcpqE08PHClpikS1hiNO11AoK9krQoTr0w/djub9of
-	DzgiIjQ2RI8fONM1Ck4M442l43XUgL1hMgOJVkMa2/xlBxQhRVhYVsRw5KLCKVAWsok2sf+XOG8
-	Es3Zkll8sLWxMhOhRGkLYVU=
-X-Received: by 2002:a05:6000:4559:b0:488:79d6:a4a6 with SMTP id ffacd0b85a97d-48e6e2bc780mr16125799f8f.8.1793645512031;
-        Mon, 02 Nov 2026 10:51:52 -0800 (PST)
-Received: from fedora ([2a02:4540:28:4cc2:7f6a:92cc:ff40:8b84])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e71b728f9sm21260812f8f.10.2026.11.02.10.51.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 02 Nov 2026 10:51:51 -0800 (PST)
-From: Muhammad Mahdi Amirpour <ampr.mhd@gmail.com>
-To: kas@kernel.org
-Cc: akpm@linux-foundation.org,
-	david@kernel.org,
-	shuah@kernel.org,
-	linux-mm@kvack.org,
-	linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	yeoreum.yun@arm.com,
-	ziy@nvidia.com,
-	Muhammad Mahdi Amirpour <ampr.mhd@gmail.com>
-Subject: [PATCH v2] selftests/mm: handle child status safely in khugepaged
-Date: Mon,  2 Nov 2026 22:21:30 +0330
-Message-ID: <20261102185130.30504-1-ampr.mhd@gmail.com>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <auhvkuDO8cP9Pip4@thinkstation>
-References: <auhvkuDO8cP9Pip4@thinkstation>
+	bh=ZecBYjWUhN4z7fJ6GXfUmUEfwYtS6fvFv39qR2svdwg=;
+	b=13Jceh/vDWMEo8jxUCpxMoKjT7ntCu4d7Ze8IAayJhEDHTVLDCczBOrLX57ckLPLee9xal
+	IE45Se38fnRQ24hqMoef/3WChNWEGkmzGGH2rtvgHE1NUGPaqRj4+DhBamvCYgQrKQPA/+
+	bFGPZYjFmkdulA/3B8YKpLuE0XvIYtk=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 34DA541168;
+	Mon,  2 Nov 2026 19:01:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D6741F00A16;
+	Mon,  2 Nov 2026 19:01:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793646067;
+	bh=ZecBYjWUhN4z7fJ6GXfUmUEfwYtS6fvFv39qR2svdwg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=OrJUtj1QmMk8l1ckUmFtbmCtyGHk78wo4/k1AMngqmUzGb25vHp7820KWVkl2lSMF
+	 rmU+YOR7SyfXAoSs+sjcUYAhq+M4MI5oqqsNvpPTU8IEh7uaxIEn7NNoNaKNUyyDLL
+	 ZWN6jw+KcG8SvcYQMTXHaIHLk9ThnnrVMfcODPpGalpIZvpIe0nE1oYlR3Bj9kcrIs
+	 C1S2MrFKRWxx39BqfcRMfho537Saox7qxlTGPbwesu/SdrCmRKWuUMinDs4+qNA+fC
+	 HgT89W9Ii8pqPgUTdNXc3aR5n5uanYs7dmKQV8zvfmF3zuzQ8BaBFy8poI72foXumx
+	 L5zWxtz03WDrg==
+Date: Mon, 2 Nov 2026 19:01:01 +0000
+From: Mark Brown <broonie@kernel.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Sasha Levin <sashal@kernel.org>, Muchun Song <muchun.song@linux.dev>,
+	Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
+	Alexandre Ghiti <alex@ghiti.fr>,
+	David Hildenbrand <david@kernel.org>,
+	Jisheng Zhang <jszhang@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	linux-riscv@lists.infradead.org, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, linux-next@vger.kernel.org
+Subject: Re: [PATCH linux-next] riscv/mm: fix up the mm-fixes merge of
+ free_pmd_table()
+Message-ID: <b396618b-fa12-46c2-9140-d9e555dc8408@sirena.org.uk>
+References: <as0D2sHzh_UnNF5L@sirena.org.uk>
+ <20261030221401.155797-1-sashal@kernel.org>
+ <20261030153347.5641a97e22e18ddff6043416@linux-foundation.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: BDDE94000D
-X-Stat-Signature: dp1zopd5q8sd3eejcbhnjm31sz5qefze
-X-Rspam-User: 
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="d4hTvcyUwKyTx7AM"
+Content-Disposition: inline
+In-Reply-To: <20261030153347.5641a97e22e18ddff6043416@linux-foundation.org>
+X-Cookie: Used with permission.
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
 	autolearn_force=no version=4.0.1
-X-HE-Tag: 1793645513-345129
-X-HE-Meta: U2FsdGVkX1+IowK+dLpOyG5kO8NTSSlzeEbRkLXnBozK25DpIMve5avKXLJBQMLeG0b1VLnDEltC3W4Vh6uymyUAIoeNgCyYwKzY2xrXToCTfeXRMEu4fRIEgAAUDhpbvHWst0lzjwqtXYKXV1XFUtAAiwSs1J3NpmbPmeUDBmgzP2IXJsOX2/34Gif59AHJakGzHPXEczswiBdRWMELSkzHNGxVsGZOUSP5sIAE2S37mHGaNRzhafO2h9fTDUqgz6aIbNQ6b5kBosr5gyVZuE8HUEG7fe36oglhLjh7U4pYHNfZEVHgiwtNlwz4qLg9m0tZ/32O3DMRk7MgXbAkfRtDyXnjau257zX88wgpw3m9Nep6BYiP4n0re4VLbsRUr4QIEmO/kQsOTjhduiZgxqrwzao9c4TTfrINE6M4OMB2563992wDxOr5dD7GtJD69NK3aDVP3J3SFfh/4aHE1ChLRYjJfjQp3o/9YJSsDNL3m5mWlE4KJDXHjdwfSdJ3KbIJ1s9gFDRikZ0+p3JyJ71I/dBQogZfozKsDrgvFJGGw10Nqvd8iqz0oybQ76ShR9CjrKVoWLd78+yKkRWuOp/l6DcSBFbv+ct5PpysicsCCx6hYjuCYf4Dvty9dPYr8wl6i3kTorTdytzpcec6IwpoYkBxbS2BwvbGVSVfZTc+mYBANLvpaI92DT/ExV0cT4dLSp6co0mwdLxI3l9YHvq7MWCZswY0Mp4kYEbx/QmjBhzpP/RMv2jfUeH6alD1k7F2fqz5cg53HxcpHAMOZwiHcqNhcV4hjexemYwLE14QOa2c8VKELwrg/6VtBVPpylGjYuoPsT77corPAFP8yXpxLjguDgh+jtZlcvtc5nchUoTnO58lvCmX+4EcneGHybrXBZFFKeUlVcIWD5nd5k5uIb39rDbpvhA3N0oQ4sP8EaELHPaPl0X1mu+ZAOI+e2TYAc6YuBFk39jdMJd
- 7Mw0+iOZ
- ZUbzXzLJJY6WXyuFoJMfKkyf/mZLTo+n7Na44eNHu1EFY7JLszMS7661da+kYELe9017bm4kgtM/lNbSStwELqNvaZql2J3negjRH4o1uEWgkeUkyTR/pRnTMT07/uYTpIdfdS1sSriUn4DgOezIrOisbbztYNR5wseUKuYpz/reykAtwKXtrwvKh+sspeO/kW1QOEKnlP4klw44T+4LaE+PpwAtfB+YAyyfq+3Nvgx3WptzQBiOHoYWx7NOAlIELsFnK9ZctY4mo8FRK1r4TkeNao9HZf4Hr2fiUfUejUkdtogook6KtNL5ZmdYVYjBjGwU9ova5MOlS7tkeCyTTCp9e7CM7E1zvhMzckqhy0mtAvQvnx8rt/8Qg9II0Ec4GZQrYLDX27qiD/7iMIRkmcCuobI7v6E4L5DgOvJEUJwtuLRlLd+cPoaP4m3cjsJr/5xV3EUVKjz1xKyl8vUUILJSCNCxT4e7ffSzXlQqRqPZaCverv5dIq8T9gQ==
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: BC163160005
+X-Stat-Signature: u4xz8o4u1tama64rcrapxbs7khnrcfym
+X-Rspam-User: 
+X-HE-Tag: 1793646068-885399
+X-HE-Meta: U2FsdGVkX19HseGUS9X3ks2+HHknj9KwgsD3eEpYPIxzS3+IhfBbqWnuhHdp4ud6JMl+KG61917OltPH933gkcE+zviZNNDu1JuAxQm7cpR88V6HPOkVnaIfyso/zK4izihp10qhlfkYa/vSvkrXPw7cctpqdWDSkmp+UPl30wX6FuxAPANh7hE1QtzYNp7JVP621qQekGItOOLFNFbHUYUXP1WcF/CDerhW2+cYerf+MfegWuZrGSqnkPJ2UufOA0rwzN4+syHg+W9bWlf3TCnTW/Jwidn9B0vdFegE/Ff+yB+8NzLLRiF16Hb+efJUmZmRP6qmymxmvu7AoWFpYJCR0sZbQGKRB7x61dTskBixrbzAM848iz4PsBFKOyP4KnskWbgYcawlxQMkEIawbEBD5i6r0GnDh8W1EaMukqzCjnabr9mOpMtyft6q1PwCYFxHRfT9vFW8bBm+ceCXvh6X2JdFJx09Z3T03Tkubwxb1zZeh8mMCzHzhRlD2fUaerWM2pS78TvbzH1fhxyOtv/DLFiGm6nKduESpCkrDjdL+YLrVCJEW+xcjrKaIF3HLJAvDql71u2Ijhe9Umrs1UzySysyE1NvcFj+BUFMSFHk5BTXN6D+5/ZOuSY1WKtGONl71cKHYaKWmHzCm2XcBTdwCNY5ZJ9ybr6CTlrFc3iAM/JiPY48tJxN9XyHxxN1TAxevxBJMmfS7M9X2zFy97JzEGzLhwpZW3LR2bZopSmhTTW2RqqMYzgUbAQlixuh6YrmnKqguz7NQB4SudMPILAnr2JKZ1dyh5BMd+pshoxoztjjYGHz8LFkGT7wwKhdpFanzLly84zEiF4XNLhz/bojvs1zakkwB6k5y30IZr+0qfsjgEqgNXz+Fw1ZQfxiGm822RvoL+oB0oQBbugy850F3sOlw8hIDnsteYMdgVUJDaFjOoi8baLXxF9dYqMLob+gvcg4uAchKiL2zCB
+ C7rzqTDO
+ rR6Nk+KeYnUL4qEk8NFDcMK5SExZGyBriAaiMyv7Zsjy3VVVyv6EiwTO3P5WoCNWMtb/R7I49EnMxU4mIEUcA+eJ42PvYR24Vkdc+/2qN19gayVUUEUFsXZXuhusR99V9GZZZo9eruvxa6vfKFfaOov4sPZzgMgiaxCJQqZoT/IDgqCjyMG1bSuJ+BJals3AuG+1H7fzaaNqIdnHm03q2yoK5o2ac7/39mLMU0pieN22h65NMUOmv6xWNRoa11oTxQRwZeZ7aht7t3VsHLfs3aTXhDPfh58ro6iEUOupL36sCDAA42ajvG0cfENoWyRdXjxnYnF/cfTekS5SbYqqAwwaILPVs/0JhiDpqMYf+cQ7ueOjZoyeSL6IJIrIfXyJLhzfC
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -130,159 +104,41 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-collapse_fork(), collapse_fork_compound() and
-collapse_max_ptes_shared() take the child result from
-WEXITSTATUS() without checking WIFEXITED(). For a child
-killed by a signal WEXITSTATUS() is 0, which is KSFT_PASS:
-the parent runs its own checks and the test reports ok even
-though the child crashed.
 
-Fail the test when the child did not exit normally, and print
-the signal that killed it. Also fail when fork() fails,
-instead of reading an uninitialised status.
+--d4hTvcyUwKyTx7AM
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Use get_child_status() in all four fork tests, and use
-wait_for_child() to handle fork() and waitpid() in the
-three blocking-wait tests.
+On Fri, Oct 30, 2026 at 03:33:47PM -0700, Andrew Morton wrote:
+> On Fri, 30 Oct 2026 18:14:01 -0400 Sasha Levin <sashal@kernel.org> wrote:
 
-Fixes: bd212a7dbdb1 ("kselftest: mm: return fail when child test result is fail in khugepaged")
-Signed-off-by: Muhammad Mahdi Amirpour <ampr.mhd@gmail.com>
----
- tools/testing/selftests/mm/khugepaged.c | 61 +++++++++++++++++++------
- 1 file changed, 48 insertions(+), 13 deletions(-)
+> > Mark, this applies on top of next-20261030 and is meant to be folded into
+> > the mm-fixes merge resolution. Next/merge.log says it was resolved using
+> > a previous resolution, I think the one from the risc-v/mm conflict on
+> > 2026-10-12, which had the same problem (next-20261012 has it too).
 
-diff --git a/tools/testing/selftests/mm/khugepaged.c b/tools/testing/selftests/mm/khugepaged.c
-index 1bc7acc66a46..b90daf008239 100644
---- a/tools/testing/selftests/mm/khugepaged.c
-+++ b/tools/testing/selftests/mm/khugepaged.c
-@@ -1004,9 +1004,44 @@ static void collapse_compound_extreme(struct collapse_context *c, struct mem_ops
- 	ksft_test_result_report(exit_status, "%s\n", __func__);
- }
- 
--static void collapse_fork(struct collapse_context *c, struct mem_ops *ops)
-+static int get_child_status(int wstatus)
-+{
-+	char buf[64];
-+
-+	if (WIFEXITED(wstatus))
-+		return WEXITSTATUS(wstatus);
-+
-+	if (WIFSIGNALED(wstatus)) {
-+		snprintf(buf, sizeof(buf), "Child killed by signal %d",
-+			 WTERMSIG(wstatus));
-+		fail(buf);
-+	} else {
-+		fail("Child terminated abnormally");
-+	}
-+
-+	return KSFT_FAIL;
-+}
-+
-+static int wait_for_child(pid_t pid)
- {
- 	int wstatus;
-+
-+	if (pid < 0) {
-+		fail("fork() failed");
-+		return KSFT_FAIL;
-+	}
-+
-+	if (waitpid(pid, &wstatus, 0) == -1) {
-+		fail("waitpid() failed");
-+		return KSFT_FAIL;
-+	}
-+
-+	return get_child_status(wstatus);
-+}
-+
-+static void collapse_fork(struct collapse_context *c, struct mem_ops *ops)
-+{
-+	pid_t pid;
- 	void *p;
- 
- 	p = ops->setup_area(1);
-@@ -1019,7 +1054,8 @@ static void collapse_fork(struct collapse_context *c, struct mem_ops *ops)
- 		fail("Fail");
- 
- 	ksft_print_msg("Share small page over fork()...");
--	if (!fork()) {
-+	pid = fork();
-+	if (pid == 0) {
- 		/* Do not touch settings on child exit */
- 		if (ops->check_huge(p, hpage_pmd_size, 0, hpage_pmd_size))
- 			success("OK");
-@@ -1035,8 +1071,7 @@ static void collapse_fork(struct collapse_context *c, struct mem_ops *ops)
- 		_exit(exit_status);
- 	}
- 
--	wait(&wstatus);
--	exit_status = WEXITSTATUS(wstatus);
-+	exit_status = wait_for_child(pid);
- 	if (exit_status == KSFT_FAIL)
- 		goto out;
- 
-@@ -1053,12 +1088,13 @@ static void collapse_fork(struct collapse_context *c, struct mem_ops *ops)
- 
- static void collapse_fork_compound(struct collapse_context *c, struct mem_ops *ops)
- {
--	int wstatus;
-+	pid_t pid;
- 	void *p;
- 
- 	p = alloc_hpage(ops);
- 	ksft_print_msg("Share huge page over fork()...");
--	if (!fork()) {
-+	pid = fork();
-+	if (pid == 0) {
- 		/* Do not touch settings on child exit */
- 		if (ops->check_huge(p, hpage_pmd_size, 1, hpage_pmd_size))
- 			success("OK");
-@@ -1085,8 +1121,7 @@ static void collapse_fork_compound(struct collapse_context *c, struct mem_ops *o
- 		_exit(exit_status);
- 	}
- 
--	wait(&wstatus);
--	exit_status = WEXITSTATUS(wstatus);
-+	exit_status = wait_for_child(pid);
- 	if (exit_status == KSFT_FAIL)
- 		goto out;
- 
-@@ -1104,12 +1139,13 @@ static void collapse_fork_compound(struct collapse_context *c, struct mem_ops *o
- static void collapse_max_ptes_shared(struct collapse_context *c, struct mem_ops *ops)
- {
- 	int max_ptes_shared = thp_read_num("khugepaged/max_ptes_shared");
--	int wstatus;
-+	pid_t pid;
- 	void *p;
- 
- 	p = alloc_hpage(ops);
- 	ksft_print_msg("Share huge page over fork()...");
--	if (!fork()) {
-+	pid = fork();
-+	if (pid == 0) {
- 		/* Do not touch settings on child exit */
- 		if (ops->check_huge(p, hpage_pmd_size, 1, hpage_pmd_size))
- 			success("OK");
-@@ -1146,8 +1182,7 @@ static void collapse_max_ptes_shared(struct collapse_context *c, struct mem_ops
- 		_exit(exit_status);
- 	}
- 
--	wait(&wstatus);
--	exit_status = WEXITSTATUS(wstatus);
-+	exit_status = wait_for_child(pid);
- 	if (exit_status == KSFT_FAIL)
- 		goto out;
- 
-@@ -1248,7 +1283,7 @@ static void collapse_fork_cow_race(struct collapse_context *c, struct mem_ops *o
- 	for (; i < n; i++)
- 		ip[i * stride] = i + 0xbeef0000;
- 	/* A child that died reading the racing pages is a failure, not a zero */
--	child_status = WIFEXITED(wstatus) ? WEXITSTATUS(wstatus) : KSFT_FAIL;
-+	child_status = get_child_status(wstatus);
- 
- 	ksft_print_msg("Check the parent sees only its own writes...");
- 	for (i = 0; i < n; i++)
--- 
-2.55.0
+> Thanks.  The "mm: Fix page-table teardown during memory hot-remove", v3
+> series was problematic, but I now have all four patches lined up in
+> Muchun's as-sent order in mm-hotfixes-unstable.  I'll push that in the
+> next hour or three.  Then hopefully any -next merge resolution can just
+> go away.
 
+I skipped Sasha's fixup on the basis that you'd already handled things.
+
+--d4hTvcyUwKyTx7AM
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmro3e0ACgkQJNaLcl1U
+h9COuQf+O2VXd86qGVq15jkmyMh4j7Bj5xIAx+eVfhmzlQ45rUKfhDjZ6Pq6h5h+
+1TdZGPLr1IJxy/0qf1JJz5fkPGJFAsuzPD9EL8N004bOqyyRkfodbCitEFqElTkF
+5uTKNfKdCLxamg7DbokoU8IdYo5nreN53iJJrBuXNL4ENGgeiktDyqayZxBFWmcQ
+AdV/7nfbFs49gftjcdI7/YdtwCmgYZaVp/jEKTz5aCnxZ0VCLTj0UvPbI2PViwtY
+QVB48svqCofi8vlzR0uaYQnws5+YRCLw3Lva/bnMFftefvg+geRww5pCuH5iTPET
+QLo+yXOc8G3jxE0EZGeN7Nj7EIF45A==
+=TEHF
+-----END PGP SIGNATURE-----
+
+--d4hTvcyUwKyTx7AM--
 
