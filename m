@@ -1,109 +1,80 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43B68606A332
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 06:48:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3652606A324
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 06:49:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ZMQT24qP
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=MFM3BLP9
 Received: by kanga.kvack.org (Postfix)
-	id 639D46B05B3; Mon,  2 Nov 2026 01:48:05 -0500 (EST)
+	id 1F81D6B00EF; Mon,  2 Nov 2026 01:49:48 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5C3AB6B05B4; Mon,  2 Nov 2026 01:48:05 -0500 (EST)
+	id 1A8996B05B1; Mon,  2 Nov 2026 01:49:48 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 465596B05B5; Mon,  2 Nov 2026 01:48:05 -0500 (EST)
+	id 097D36B05B5; Mon,  2 Nov 2026 01:49:48 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 1F53A6B05B3
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 01:48:05 -0500 (EST)
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id D52CD6B00EF
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 01:49:47 -0500 (EST)
 Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 7387180A8D
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 06:48:03 +0000 (UTC)
-X-FDA: 85389249246.18.FAC3CEB
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf08.hostedemail.com (Postfix) with ESMTP id A4852160005
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 06:48:01 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZMQT24qP;
-	spf=pass (imf08.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id BC31FC0BEB
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 06:49:46 +0000 (UTC)
+X-FDA: 85389253572.18.015AAE5
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 13080180002
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 06:49:44 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MFM3BLP9;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793602081;
+	s=arc-20220608; t=1793602185;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tARIC+dAqyWZfQ7V1iPzSWAawgTGQCpeaoo4vLHJExw=;
-	b=dXBC2d6qV5n9pWhJP3Yqmv1ajcvSiw/Z9vseMsa93KoxbHqR+Dn4eRJ6/kkhSGAGv0yHQO
-	AdBQnLmcDMci6sGvAjdM+f4YsnwK2lraZD+Z4uRV1oTyGs/LtVjFPYoLObMxemRempGhpe
-	DnEqJ7WazFjsPly3M2hnR8bptkjx/jI=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793602081;
-	b=5cbNGRVr0HryPuK3nK2VG1K5joeUVdYX0inyLoPZ5CcJiS41DXE0Ac3K2jUwexwL2kL3zS
-	VBSas8bOjRecLxkyuYe/21hGYHklP5/xKx2wk9xRatJ55Pik/joR5H7nbzvgYXPh2RCrKT
-	EEWhfY1r92dXbR/GYi+N5BuOuf6/lRo=
+	bh=lHJKYoJn2rQcORF8UUmu/uUQz3K49GvOCpYRw8uJeTw=;
+	b=YNaRki1oXdqkQiq+rGuwgjtWqbBFHtsB4hzofIy5yNXrEam2m+OHm2NL1fViF//Xw1HsQz
+	xRZz4SESDcDNc7iNdQ1BwVNNkk8pYSanTp3lbS3KH63xJSOUWntftv0/yUGDEZ0Av5KGep
+	MrN4JAge9GWEaCYPmsfDVbbh8tuQA9o=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZMQT24qP;
-	spf=pass (imf08.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MFM3BLP9;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793602185;
+	b=ZlwtBoFePEjDdahBAK0JQARGBg0lSMgZ1+ahEKmx4fRtH09sQpko2imIGu8FIrkqCHnQLw
+	VYaOdhCm7UZTiGZA0ADRzrL+PdCDfA53w4dis4xoXMuxE1RkkqpRzocAuC4TkZG16RoJYg
+	AK/sbOU5K7QnsiAvw9vinPVIvCtNxj0=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id B6BA240545;
-	Mon,  2 Nov 2026 06:48:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAC031F000C1;
-	Mon,  2 Nov 2026 06:47:48 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id CF76260DD8;
+	Mon,  2 Nov 2026 06:49:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BE001F000C1;
+	Mon,  2 Nov 2026 06:49:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793602080;
-	bh=tARIC+dAqyWZfQ7V1iPzSWAawgTGQCpeaoo4vLHJExw=;
+	s=k20260515; t=1793602183;
+	bh=lHJKYoJn2rQcORF8UUmu/uUQz3K49GvOCpYRw8uJeTw=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=ZMQT24qP57yVV1Fsp6lQWEI+yKTzT7CiP70FBa2wkk3XJBkLivBqhfbLQVU1b792l
-	 egkKr+nwcg0yL5I90QDj9SWoJXrPZDfgaU9Ahpw+yeSoGKxW8p+Q645OpGOm+Ou9Rs
-	 FfBagOWRyEId8evM2qdx3ErknKAqs74guNA34QRawkHi7rkGXGxU8yXKPYcTHnYYA9
-	 wdVQzt7YGtEyqqQmDX1wcHnx6jRr5hRGFqckBAf31Okx6m7VLHkDv/l/TjYBYehsRl
-	 65I1ahuEWCW8aBoEA2Bn/7l3v0kWD4b4gH9chLTWw5Hs0b8RvE7YrJAOU/rI1coRTD
-	 7Jhsoe/O4ITUg==
-Message-ID: <1b4d0299-4232-43eb-9229-7d2a2a7ce2fc@kernel.org>
-Date: Mon, 2 Nov 2026 07:47:46 +0100
+	b=MFM3BLP9ClG/wpwp8m2Y+F7r9H7PumjtWx30iXhIhEEVNlaHPzMErxGkapMn919RK
+	 Z7xG7RlaYy6cgJdIGKS4HA38UIGPemB51XWXP7DZlTkX5XWJJtWl6Pb3PSln1FGA9L
+	 AYsg/g7O5HQyQ7r4tB7Uh4C4J2D/N1GgSUOPyPNUgp31aNc9grwPTwSwH9h8IvdLR/
+	 soUnea6qM44H37EC5fbfOAovvWG8ByvoOzjLLzUpGsVIdExut6fiI97Tp0kg8nbvHJ
+	 3kAkvrewtCxarSA+gIi3ipnFFLyPtVEICDKrRLUWjb2DjFmCUsAtuHuMpZlW41I14x
+	 QEK0zthUAlIPQ==
+Message-ID: <40a8fb84-4d76-40f8-b331-66ef94f3b17b@kernel.org>
+Date: Mon, 2 Nov 2026 07:49:39 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/7] MAINTAINERS: MM updates
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Alistair Popple <apopple@nvidia.com>,
- "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- Baoquan He <baoquan.he@linux.dev>, Barry Song <baohua@kernel.org>,
- Brendan Jackman <brendan.jackman@linux.dev>,
- Byungchul Park <byungchul@sk.com>, Chengming Zhou
- <chengming.zhou@linux.dev>, Chris Li <chrisl@kernel.org>,
- Christoph Lameter <cl@gentwo.org>, Dave Chinner <david@fromorbit.com>,
- David Rientjes <rientjes@google.com>, Dennis Zhou <dennis@kernel.org>,
- Dev Jain <dev.jain@arm.com>, Gregory Price <gourry@gourry.net>,
- Hao Li <hao.li@linux.dev>, Harry Yoo <harry@kernel.org>,
- Hugh Dickins <hughd@google.com>, Jann Horn <jannh@google.com>,
- Johannes Weiner <hannes@cmpxchg.org>, John Hubbard <jhubbard@nvidia.com>,
- Joshua Hahn <joshua.hahnjy@gmail.com>, Kairui Song <kasong@tencent.com>,
- Kemeng Shi <shikemeng@huaweicloud.com>, Kiryl Shutsemau <kas@kernel.org>,
- Lance Yang <lance.yang@linux.dev>, "Liam R. Howlett" <liam@infradead.org>,
- Lorenzo Stoakes <ljs@kernel.org>, Matthew Brost <matthew.brost@intel.com>,
- Miaohe Lin <linmiaohe@huawei.com>, Michal Hocko <mhocko@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Muchun Song <muchun.song@linux.dev>,
- Naoya Horiguchi <nao.horiguchi@gmail.com>, Nhat Pham <nphamcs@gmail.com>,
- Nick Piggin <npiggin@gmail.com>, Nico Pache <nico.pache@linux.dev>,
- Oscar Salvador <osalvador@suse.de>, Pedro Falcato <pfalcato@suse.de>,
- Peter Xu <peterx@redhat.com>, Peter Zijlstra <peterz@infradead.org>,
- Qi Zheng <qi.zheng@linux.dev>, Rakie Kim <rakie.kim@sk.com>,
- Rik van Riel <riel@surriel.com>, Roman Gushchin <roman.gushchin@linux.dev>,
- Ryan Roberts <ryan.roberts@arm.com>, Shakeel Butt <shakeel.butt@linux.dev>,
- Suren Baghdasaryan <surenb@google.com>, Tejun Heo <tj@kernel.org>,
- Uladzislau Rezki <urezki@gmail.com>, Usama Arif <usama.arif@linux.dev>,
- Vlastimil Babka <vbabka@kernel.org>, Will Deacon <will@kernel.org>,
- Xu Xin <xu.xin@linux.dev>, Ying Huang <ying.huang@linux.alibaba.com>,
- Youngjun Park <youngjun.park@lge.com>, Zi Yan <ziy@nvidia.com>,
- Jason Gunthorpe <jgg@ziepe.ca>, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org
-References: <20261030-maintainers-v1-0-97278f8a5f54@kernel.org>
- <1c46e678-1da8-473d-960e-5aa22d4d7e73@kernel.org>
- <20261101123025.4d8133d5321820f2202c8f1a@linux-foundation.org>
+Subject: Re: [PATCH] mm/memory: use pmdp_get() for the lockless pmd read in
+ do_fault_around()
+To: Hui Zhu <hui.zhu@linux.dev>, Andrew Morton <akpm@linux-foundation.org>,
+ Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Cc: Hui Zhu <zhuhui@kylinos.cn>
+References: <20261102031308.66177-1-hui.zhu@linux.dev>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -150,24 +121,22 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20261101123025.4d8133d5321820f2202c8f1a@linux-foundation.org>
+In-Reply-To: <20261102031308.66177-1-hui.zhu@linux.dev>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: A4852160005
-X-Stat-Signature: poxsimux3n6qcfk1kbny8wz3byayqdrm
-X-Rspam-User: 
-X-Spam-Status: No, score=-22.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Rspamd-Queue-Id: 13080180002
+X-Stat-Signature: 7tiws4ecjonjo3k4qn5dseg655tjgd8g
+X-Rspamd-Server: rspam04
+X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,
-	MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
-	autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1793602081-625104
-X-HE-Meta: U2FsdGVkX1+lQTNvDtUsrDGOzMAaylVNfKjA/6T2Jn6sLH//k10hQfT4jqIhLgfA0ZIPW6+OPafFMcWQTyIH1FYLTCjqBCxxNb2my/Vw3uou3rnBlk3/exWO631/H61ilk/4WnEBkQc5tG4B5PsXCcSfEux7BJFKsPT+t+2y4RPpvlpoocnB3ptnR2Jp8sfhoNboDsqprWNC3o9n/UK+xcEppJ5+Q3GmA8Elqke9BAFk3PIw67ps4E1vy8PGpOgkHu0WTeAB7etumAqtItFFeTB7Og7py4IJg8ux6ZDUCz55npRa/pyk3hG93LeUXCP41Abp5i3OeF5Fb746SVbdqFKWRkiyoP6dayK688gKWCi6bRD+a1/CN9bAKleeYgA3GVMUoQYgk9+VzE45scP39UA3YxgLRiBCpKfAFBtl+fWmkU51Jn801QCzpAPrHdVhpOOaCb1GGiawmjAeW223w+syi4ya/LM6XvlJpQCIcBVuhRMPYkzV7C1U4pO9QVoT7BoaKC+dutSIGG1tzSTP0j9CUymx1f6MAOGAP5ZPRB8GQIGmOc4xNh90vVz1RHiSl45tMXFdQ+j0A1WbnpiYmTlhIqTpngyT0omOd/Q+F0MsjDEC5vZfgc1/j0+EhHd4YxCp3Jr+Fc4Zh+JQinp83vM3qVuImyoqz/bsaWIsfXCbzHB07aGj5zgsHwwnjP+jhbwhWHgDvNPlLwpUx/IYZaM1wEo/JYFXK57fjyQAazs7RugHS4HNBHvhrtp+u6iEJsSoPPQUtwi5xxsv9+VdL0gHHLCduozw+LUs871Kehxu7Kg9Ak92WcedAZyXO5h5zmxio5rGa0LGzyOPz7O/O8ox0fKZJGDO69VD6xf3xLeBVm5iIsiNxEJ+vJw9GCJpTpWI1I1RuY5l/fmtUHZFHfS7SBDf5ITTiRB6AwmggbkZm9V57GT8bc60qVEAMgrNNd1FEoLmloU0Z0REWFu
- xqi+RhLl
- MvFZ8mwLSmAowjslhNtjNxu/MiFYy4lVYMxumiwWtpOLtL0TD+Pb5PgmqD6WaGTEQfXXjFehMzF+Lca8dF9po6E6wnX/hEvOZymkhB0OPwsN52Mb1OkUCIjM4YN3Yvd4X979GLCwZLrAdVF5Vpt8S3yQsDq/MnZUPuW7PkFVYeAhZ4eTO4JXa/VbvpuxfORplUH19nx6JmUaFd6XzfSowZ3HFtJLNzqLj0epczEgZzgrZNZt11K/4vVPsBStYCXlETG2t01rxBkxenmKzDBj31rVdXzvGTMzZk3IXCa17AUHaKY1Rm/uy2u1uIYlbquThwCq4gw2lj1hBER1MjlM47WbT83uiYlRYd5fOBAK0xBVnw66MshxiOpOuIJz9gcwBwg/wwn/XcocWykSx04D/lRO94OMJiYyHtt0qYo6a5/my2fFzqqbk6+usSSXmzQx90l23RQjCH9OzZqcSH56ztd8pWB9psyf4QpOwSY4juXytgH8cotJ3fk3W1z2B/vUM9wZ9Pixp6nxKd73K4Pt4yvSTsiBJAoCTAI+blUbhqS/0L5s93TDujven8qJ75WEKpcqARRJf6XS/O0yXv5fMTRRR+3UlKYgvO2Qm0vpFtMKesn2QsOy3c6rGLeBe9E08pDJqFZxdXYB9mHkA9QzWgoGYbPa1ZZ2HZvNXX2llVZsDsFrVQ+Si6zaC6LO5F4mMBl9TxNMExhf4gzf1pnXLD0/yf9iboyB2oF0YxQEooAJgzTlaq1sZ28znhrtaZI4JqGbt6XGrE9MBVyCOAYoBmggiebbXMMjse1CcP6b2gJAwjA2dKK1A27UYbSAOujvBkUeHfHM/RUag89A4cWDGPCP72ohpJ0IqQgc/rqtlobf7TwptWV2ubDdCHBhJyjCHvuBM/g3vRxOvBDYm5pS9r5hCM2CoCfvJhXZV3h8hPhSBOuU9L3fNcG8+P5eIMOuCWz/+f1qajbfCYA80NRt9MCSH/3K6
- /p+pnzHy
- vvIV1+mHqCk6Ghd8lzAou5mpKMoL5fQ1XzkV4zP+P918BgFjMjKH6FyT1fFL0weXp5wrJKisVHbYVSrOWx8fGg==
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
+	version=4.0.1
+X-Rspam-User: 
+X-HE-Tag: 1793602184-720634
+X-HE-Meta: U2FsdGVkX18Fo+TWeykrTk5/iosbVPTuCcrV6ehJMKkOhdDdrhebPEQTiFWZ+ukOUtM2/eteIpfqnGRZhZDsKJ6IyjO2I6zhVVn4YBL6aaF9QTJ24JCKqOyA8o+wH8N0cdr3ZewaqDFnYXZEB7smhIBdamCTVfcDfWmE+oxflx2Alt/NHK979V60jtJIAEWkAxofRyS7WaWtTBjSPLDUx+mNEBmiU/oW+7YILUtuEGZI+kBunQ8oYTL4GYViFROicx2BH/SJoVOpY8GKsFu0anoSJz3U9AweVSyWimMMphl/5WVE+cW091eVHJEg1rsI1/X6Br0M5S6HmHEk6VyiBPg8KZB9NZqJi4y1LFutedWPo0Iea08r7r28H66L9F1i1AZE+/MWqFxMcnEVS5meYhKpUUIS5FTpmBuortQSIZJu3zIIufgRLz4aJdOTFMKDVCsCuoJ+ZfI9FvUxvcZKDttkL/QET6sdl6z/kCGaSERpHzmfNb5FmRTFw71ap4mXhhOfhoHPmerwqo59pvaicjCvmwBkCAmc+blxo1VyWSPHC9l78+4Sykb92ujFHoBksELUAFwQKAnAyiwZBTxfe6ac1lKE1vJdBc2t8PqVUiHlyU/UBZf7WFWbDh16+aYIxN+wAJF9Qcs36Of2SJ5zRjOEWER4veSxNu6qSaYh+N0Mjg93hkSzm7Hz6jyoS974T3yt+Qw2Nmw1jcDRp2MvKWPXNQtybo2sKy2+QTjjT0DDmHWFjZdCnPnoym73tgPUlnTJx4Iq10KVwZL3DmNCuNUdOf7+ZU33yANGo/lbcYZ58bwo+hXvAi4BPvtnkuWEPI6E+OJXmcMLJtuOhXbjJI+zxvFKnsRORsdK07LLY8QsJ7WcfcB9mAFMopMy4gDHDa131gbxez24vHp0WOOi/0T9fEQ3PbDZtRMykYA8p3J3q1WFDbbLsnFkys32rJgYQ5Y1yCF1fo48dYAHPcY
+ tD6WVGvP
+ 3R2NfPmfx/bsvMmshSLIJB0DBwwnEoAxzS/ow1FyGdAE9xiXb8svua4Z6wtuQBqhz0NzFTOce74Gxh8P1geH5W766IBvsQgoNc1jYSOskapU56NTuBs/Di2Fyuig5RX2p3KzDbK0hr4grETrBdmCAE4zNUP8d4cNUSqI9HpxPsfD2nC+PTYdh9m7ry12nhtcDM8W9PCc0srUfUEnEp0JjemE+d1Ft6xSI8H/3z+39MmLZ5ABXhZ6C86OAcv2peVzPz+Mt1yATK0x3wMYniffRcXNui8MClvHg6QinadwuLy3Ziub7TYrrQvg/9g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -176,245 +145,76 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/1/26 21:30, Andrew Morton wrote:
-> On Sun, 1 Nov 2026 14:33:57 +0100 "David Hildenbrand (Arm)" <david@kernel.org> wrote:
+On 11/2/26 04:13, Hui Zhu wrote:
+> From: Hui Zhu <zhuhui@kylinos.cn>
 > 
->> On 10/30/26 22:34, David Hildenbrand (Arm) wrote:
->>> Hi,
->>>
->>> several MM updates:
->>>
->>
->> @Andrew, should I pick these or do you want to route them through your tree?
+> KCSAN reports a data-race in do_read_fault / pmd_install; the same code
+> is in mainline:
 > 
-> I'll grab for now, thanks.  As a hotfix.
+>   write (marked) to 0xffff8d52a75fb810 of 8 bytes by task 27487 on cpu 5:
+>    native_set_pmd arch/x86/include/asm/pgtable_64.h:83 [inline]
+>    pmd_populate arch/x86/include/asm/pgalloc.h:84 [inline]
+>    pmd_install+0xe0/0x120 mm/memory.c:444
+>    finish_fault+0x5bc/0xb00 mm/memory.c:5204
+>    do_cow_fault mm/memory.c:5432 [inline]
+>    do_fault+0x5d0/0x6e0 mm/memory.c:5526
+>    handle_mm_fault+0x211/0x4c0 mm/memory.c:6218
+>    __mm_populate+0x144/0x270 mm/gup.c:2207
+>    __do_sys_mlockall+0x2cd/0x380 mm/mlock.c:764
 > 
-> Because I'm whacking away at MAINTAINERS at present.  First step is to
-> consistently name the components, below.
+>   read to 0xffff8d52a75fb810 of 8 bytes by task 27527 on cpu 9:
+>    do_fault_around mm/memory.c:5341 [inline]
+>    do_read_fault+0x162/0x670 mm/memory.c:5381
+>    do_fault+0x31a/0x6e0 mm/memory.c:5524
+>    handle_mm_fault+0x211/0x4c0 mm/memory.c:6218
+>    faultin_page_range+0x227/0x530 mm/gup.c:2156
+>    __x64_sys_madvise+0x67/0x80 mm/madvise.c:1479
 > 
-> This is a two-patch series.  The first renames components so everything
-> starts with "^MEMORY MANAGEMENT", leaving MAIINTAINERS incorrectly
-> sorted.  The second patch only moves things around, to restore the
-> alphasorting.
+>   value changed: 0x0000000000000000 -> 0x000000001386c067
 > 
-> So people only need look at the first patch.  Please review that.
+> do_fault_around() reads vmf->pmd without the pmd lock to decide whether
+> ->map_pages() needs a preallocated PTE page, while pmd_install() publishes
+> the entry with WRITE_ONCE() under the pmd lock.  Both paths above only hold
+> mmap_lock for read, so they can fault into the same VMA concurrently.
 > 
-> After this I'll have it identify the various files under include/linux,
-> mm/ and lib/ which can fairly be described as "mm".  That's looking
-> like about 50 files at this time.
-
-[...]
-
+> The race is benign.  The pmd is a naturally aligned 8 byte object, the
+> store is a single WRITE_ONCE() and pmd_none() only tests the low word, so
+> no torn value is possible.  A stale none pmd only allocates an extra
+> prealloc_pte, which pmd_install() leaves unused because it rechecks
+> pmd_none() under the pmd lock, and do_fault() frees it on the error path.
+> A pmd already seen as populated makes ->map_pages() find no PTE, and
+> do_read_fault() then falls back to __do_fault() and finish_fault(), which
+> allocate the page table properly.
 > 
-> Then I shall have it ensure that all these not-yet-covered files are
-> entered in the appropriate place under an MM component.  This may
-> require creation of new components for the purpose, tbd.
+> Read the entry with pmdp_get() so that the load becomes a READ_ONCE()
+> pairing with the WRITE_ONCE() in pmd_install().
 > 
-> After that I needs to have it cover Documentation/
+> No functional change intended.
 > 
-> After that I need to have it whack away at selftests, shudder.
-
-I am not convinced yet that we want that for all tests, which is why I left it
-out. There is too much churn that's not really relevant for a component
-maintainer POV.
-
-I was rather thinking that maybe we'd want a MM selftest component (likely for
-the later MISC maintainer) that picks up the usual selftest churn. Component
-maintainers really only have to be CCed on functional things.
-
-> 
-> 
-> 
-> From: Andrew Morton <akpm@linux-foundation.org>
-> Subject: MAINTAINERS: use a common prefix for MM components
-> Date: Sun, 01 Nov 2026 12:13:07 -0800
-> 
-> Several MM component entries still use standalone headings, so searching
-> for headings beginning with "MEMORY MANAGEMENT" misses them.
-> 
-> Give these 18 entries the common "MEMORY MANAGEMENT - " prefix.  Leave
-> them in place for now so that the renames can be reviewed separately
-> from the subsequent alphabetical sorting.
-> 
-> Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-> 
-> 
+> Signed-off-by: Hui Zhu <zhuhui@kylinos.cn>
 > ---
+>  mm/memory.c | 6 +++++-
+>  1 file changed, 5 insertions(+), 1 deletion(-)
 > 
->  MAINTAINERS |   36 ++++++++++++++++++------------------
->  1 file changed, 18 insertions(+), 18 deletions(-)
-> 
-> --- a/MAINTAINERS~maintainers-use-a-common-prefix-for-mm-components
-> +++ a/MAINTAINERS
-> @@ -6816,7 +6816,7 @@ T:	git https://gitlab.freedesktop.org/dr
->  F:	include/linux/cgroup_dmem.h
->  F:	kernel/cgroup/dmem.c
+> diff --git a/mm/memory.c b/mm/memory.c
+> index 0fb676dd2bd63..90afbd124d503 100644
+> --- a/mm/memory.c
+> +++ b/mm/memory.c
+> @@ -6017,7 +6017,11 @@ static vm_fault_t do_fault_around(struct vm_fault *vmf)
+>  	to_pte = min3(from_pte + nr_pages, (pgoff_t)PTRS_PER_PTE,
+>  		      pte_off + vma_pages(vmf->vma) - vma_off) - 1;
 >  
-> -CONTROL GROUP - MEMORY RESOURCE CONTROLLER (MEMCG)
-> +MEMORY MANAGEMENT - MEMORY RESOURCE CONTROLLER (MEMCG)
->  M:	Johannes Weiner <hannes@cmpxchg.org>
->  M:	Michal Hocko <mhocko@kernel.org>
->  M:	Roman Gushchin <roman.gushchin@linux.dev>
-> @@ -7322,7 +7322,7 @@ S:	Maintained
->  W:	https://docs.dasharo.com/
->  F:	drivers/platform/x86/dasharo-acpi.c
->  
-> -DAMON
-> +MEMORY MANAGEMENT - DAMON
->  M:	SJ Park <sj@kernel.org>
->  L:	damon@lists.linux.dev
->  L:	linux-mm@kvack.org
-> @@ -12164,7 +12164,7 @@ S:	Maintained
->  F:	Documentation/ABI/testing/debugfs-hisi-zip
->  F:	drivers/crypto/hisilicon/zip/
->  
-> -HMM - Heterogeneous Memory Management
-> +MEMORY MANAGEMENT - HMM (Heterogeneous Memory Management)
->  M:	Jason Gunthorpe <jgg@nvidia.com>
->  M:	Leon Romanovsky <leonro@nvidia.com>
->  L:	linux-mm@kvack.org
-> @@ -12328,7 +12328,7 @@ F:	drivers/power/supply/huawei-gaokun-ba
->  F:	drivers/usb/typec/ucsi/ucsi_huawei_gaokun.c
->  F:	include/linux/platform_data/huawei-gaokun-ec.h
->  
-> -HUGETLB SUBSYSTEM
-> +MEMORY MANAGEMENT - HUGETLB
->  M:	Muchun Song <muchun.song@linux.dev>
->  M:	Oscar Salvador <osalvador@suse.de>
->  R:	David Hildenbrand <david@kernel.org>
-> @@ -12362,7 +12362,7 @@ W:	https://linuxtv.org
->  T:	git git://linuxtv.org/media.git
->  F:	drivers/media/platform/st/sti/hva
->  
-> -HWPOISON MEMORY FAILURE HANDLING
-> +MEMORY MANAGEMENT - HWPOISON MEMORY FAILURE HANDLING
->  M:	Miaohe Lin <linmiaohe@huawei.com>
->  R:	Naoya Horiguchi <nao.horiguchi@gmail.com>
->  L:	linux-mm@kvack.org
-> @@ -17370,7 +17370,7 @@ F:	arch/*/include/asm/sync_core.h
->  F:	include/uapi/linux/membarrier.h
->  F:	kernel/sched/membarrier.c
->  
-> -MEMBLOCK AND MEMORY MANAGEMENT INITIALIZATION
-> +MEMORY MANAGEMENT - MEMBLOCK AND INITIALIZATION
->  M:	Mike Rapoport <rppt@kernel.org>
->  L:	linux-mm@kvack.org
->  S:	Maintained
-> @@ -17879,7 +17879,7 @@ F:	rust/kernel/mm.rs
->  F:	rust/kernel/mm/
->  F:	rust/kernel/page.rs
->  
-> -MEMORY MAPPING
-> +MEMORY MANAGEMENT - MEMORY MAPPING
->  M:	Andrew Morton <akpm@linux-foundation.org>
->  M:	Liam R. Howlett <liam@infradead.org>
->  M:	Lorenzo Stoakes <ljs@kernel.org>
-> @@ -17916,7 +17916,7 @@ F:	mm/vma_internal.h
->  F:	tools/testing/selftests/mm/merge.c
->  F:	tools/testing/vma/
->  
-> -MEMORY MAPPING - LOCKING
-> +MEMORY MANAGEMENT - MEMORY MAPPING - LOCKING
->  M:	Andrew Morton <akpm@linux-foundation.org>
->  M:	Suren Baghdasaryan <surenb@google.com>
->  M:	Liam R. Howlett <liam@infradead.org>
-> @@ -17932,7 +17932,7 @@ F:	include/linux/mmap_lock.h
->  F:	include/trace/events/mmap_lock.h
->  F:	mm/mmap_lock.c
->  
-> -MEMORY MAPPING - MADVISE (MEMORY ADVICE)
-> +MEMORY MANAGEMENT - MEMORY MAPPING - MADVISE (MEMORY ADVICE)
->  M:	Andrew Morton <akpm@linux-foundation.org>
->  M:	Liam R. Howlett <liam@infradead.org>
->  M:	Lorenzo Stoakes <ljs@kernel.org>
-> @@ -18728,7 +18728,7 @@ S:	Maintained
->  F:	drivers/phy/marvell/phy-mmp3-usb.c
->  F:	drivers/phy/marvell/phy-pxa-usb.c
->  
-> -MMU GATHER AND TLB INVALIDATION
-> +MEMORY MANAGEMENT - MMU GATHER AND TLB INVALIDATION
->  M:	Will Deacon <will@kernel.org>
->  M:	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>
->  M:	Andrew Morton <akpm@linux-foundation.org>
-> @@ -21113,7 +21113,7 @@ F:	Documentation/core-api/padata.rst
->  F:	include/linux/padata.h
->  F:	kernel/padata.c
->  
-> -PAGE CACHE
-> +MEMORY MANAGEMENT - PAGE CACHE
->  M:	Matthew Wilcox (Oracle) <willy@infradead.org>
->  M:	Jan Kara <jack@suse.cz>
->  L:	linux-fsdevel@vger.kernel.org
-> @@ -21142,7 +21142,7 @@ F:	include/net/page_pool/
->  F:	include/trace/events/page_pool.h
->  F:	net/core/page_pool.c
->  
-> -PAGE TABLE CHECK
-> +MEMORY MANAGEMENT - PAGE TABLE CHECK
->  M:	Pasha Tatashin <pasha.tatashin@soleen.com>
->  M:	Andrew Morton <akpm@linux-foundation.org>
->  L:	linux-mm@kvack.org
-> @@ -21829,7 +21829,7 @@ S:	Maintained
->  F:	Documentation/networking/device_drivers/ethernet/pensando/ionic.rst
->  F:	drivers/net/ethernet/pensando/
->  
-> -PER-CPU MEMORY ALLOCATOR
-> +MEMORY MANAGEMENT - PER-CPU MEMORY ALLOCATOR
->  M:	Dennis Zhou <dennis@kernel.org>
->  M:	Tejun Heo <tj@kernel.org>
->  M:	Christoph Lameter <cl@gentwo.org>
-> @@ -25539,7 +25539,7 @@ T:	git git://linuxtv.org/media.git
->  F:	drivers/media/i2c/rj54n1cb0c.c
->  F:	include/media/i2c/rj54n1cb0c.h
->  
-> -SHRINKER
-> +MEMORY MANAGEMENT - SHRINKER
->  M:	Andrew Morton <akpm@linux-foundation.org>
->  M:	Dave Chinner <david@fromorbit.com>
->  R:	Qi Zheng <qi.zheng@linux.dev>
-> @@ -25775,7 +25775,7 @@ S:	Maintained
->  F:	Documentation/devicetree/bindings/nvmem/layouts/kontron,sl28-vpd.yaml
->  F:	drivers/nvmem/layouts/sl28vpd.c
->  
-> -SLAB ALLOCATOR
-> +MEMORY MANAGEMENT - SLAB ALLOCATOR
->  M:	Vlastimil Babka <vbabka@kernel.org>
->  M:	Harry Yoo <harry@kernel.org>
->  M:	Andrew Morton <akpm@linux-foundation.org>
-> @@ -29831,7 +29831,7 @@ F:	net/vmw_vsock/
->  F:	tools/testing/selftests/vsock/
->  F:	tools/testing/vsock/
->  
-> -VMALLOC
-> +MEMORY MANAGEMENT - VMALLOC
->  M:	Andrew Morton <akpm@linux-foundation.org>
->  M:	Uladzislau Rezki <urezki@gmail.com>
->  L:	linux-mm@kvack.org
-> @@ -30864,7 +30864,7 @@ M:	"Maciej W. Rozycki" <macro@orcam.me.u
->  S:	Maintained
->  F:	drivers/tty/serial/zs.*
->  
-> -ZSMALLOC COMPRESSED SLAB MEMORY ALLOCATOR
-> +MEMORY MANAGEMENT - ZSMALLOC COMPRESSED SLAB MEMORY ALLOCATOR
->  M:	Minchan Kim <minchan@kernel.org>
->  M:	Sergey Senozhatsky <senozhatsky@chromium.org>
->  L:	linux-mm@kvack.org
-> @@ -30887,7 +30887,7 @@ F:	lib/zstd/
->  N:	zstd
->  K:	zstd
->  
-> -ZSWAP COMPRESSED SWAP CACHING
-> +MEMORY MANAGEMENT - ZSWAP COMPRESSED SWAP CACHING
->  M:	Johannes Weiner <hannes@cmpxchg.org>
->  M:	Yosry Ahmed <yosry@kernel.org>
->  M:	Nhat Pham <nphamcs@gmail.com>
-> _
-> 
+> -	if (pmd_none(*vmf->pmd)) {
+> +	/*
+> +	 * Lockless hint: pmd_install() may populate this pmd concurrently and
+> +	 * rechecks it under the pmd lock, so a stale value is harmless.
+> +	 */
+> +	if (pmd_none(pmdp_get(vmf->pmd))) {
+>  		vmf->prealloc_pte = pte_alloc_one(vmf->vma->vm_mm);
+>  		if (!vmf->prealloc_pte)
+>  			return VM_FAULT_OOM;
 
-What's up with things like KASAN, KFENCE, KMEMLEAK, KMSAN?
-
-I don't have a good question for that.
-
+If it's an lockless access, shouldn't we be using pmdp_get_lockless()?
 
 -- 
 Cheers,
