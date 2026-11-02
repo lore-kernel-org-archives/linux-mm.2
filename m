@@ -1,72 +1,72 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0878E60A2603
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 10:18:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42F5F60A2616
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 10:18:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=IRknnUZY
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=am21LAGB
 Received: by kanga.kvack.org (Postfix)
-	id 632B36B05B1; Mon,  2 Nov 2026 05:18:41 -0500 (EST)
+	id 23AD66B05B2; Mon,  2 Nov 2026 05:18:44 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5BBCE6B05B2; Mon,  2 Nov 2026 05:18:41 -0500 (EST)
+	id 1C4DA6B05B4; Mon,  2 Nov 2026 05:18:44 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 40EFC6B05B3; Mon,  2 Nov 2026 05:18:41 -0500 (EST)
+	id 017246B05B5; Mon,  2 Nov 2026 05:18:43 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 1B1116B05B1
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 05:18:41 -0500 (EST)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 9267C40C7B
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 10:18:40 +0000 (UTC)
-X-FDA: 85389780000.17.ACF34AC
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id D012E6B05B2
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 05:18:43 -0500 (EST)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 6A07DA0BFD
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 10:18:43 +0000 (UTC)
+X-FDA: 85389780126.25.E37A63F
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf23.hostedemail.com (Postfix) with ESMTP id E61EC140007
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 10:18:38 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IRknnUZY;
+	by imf27.hostedemail.com (Postfix) with ESMTP id C99744000B
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 10:18:41 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=am21LAGB;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf23.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
+	spf=pass (imf27.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793614718;
+	s=arc-20220608; t=1793614721;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=t7IUJhNhxhhzwfLlR3ygV5Jof/W3+MUpoySHAqOWKyA=;
-	b=P4DVXD/c0SPaY/7CVkBtZM5MWTLa4R77v6HnEe+G+v/LlQDJ87wWLukoll62GjDIYAWDd9
-	PxVTH5antUUgf1WPmnu2iOp1ocvJKLPZqnJszwDn3aLEJycpGaRpL73+Z2Y/tFC6HvdtX+
-	a8t/E53ikk1JGONcdTlBaPlma6Jz2Sw=
+	bh=AhUm2tRgdmS7ZkPk5TUVWoc0pWoU9lL6iWD8QKMf5pM=;
+	b=LNQd/QjDKyEX6WlrUIIbD7zm/3YAzpw9FPLYuXUZN5aS9aU9Dw6ECKUc9UIxBoPrailywA
+	rgMKJFBttJQPRMUuov+gkE016ndQJHAf8XDwpgYG76boaldG+lpFdh2s5iisw6GlRUpChY
+	vmgg7ZTssAKZufHNHRLieai2ZlGlo8I=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IRknnUZY;
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=am21LAGB;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf23.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
+	spf=pass (imf27.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793614718;
-	b=t9juF/m8s276l0yA29yoTLxCwRoaZsaKP2EnBgn1JBOirjrBMP2D87tZ49HGW3nd9JSYp5
-	bp9QTwZqHNf2xYWolIsFZeeOfkpm4iBc52c1mPQ+lph8BbbEwzfwihLA21tWMavkCg1fHK
-	9XwrMqWL79Wq/TB6ANzr2z60VZMRdFE=
+	t=1793614721;
+	b=egBi2qaB1K+nm7m2yQaVIUd/ta5kr1jR+mpCWsB5jAlRtn1ExGS/Jmf4W81jDsNlSEKVVF
+	r8mY7G/wA+yn5EjY6dP7ffo5EmYjrFD+eLOXCSMILhhyHkqfJPQjpsVUa1Rxq/jHhQWA9p
+	hGjR78TJ/Ow6Gc7M0I5TjL/13fneeVY=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 67C2F60F1F;
+	by tor.source.kernel.org (Postfix) with ESMTP id 69B1F60F43;
+	Mon,  2 Nov 2026 10:18:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D58A1F0093A;
 	Mon,  2 Nov 2026 10:18:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A5651F000C1;
-	Mon,  2 Nov 2026 10:18:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793614718;
-	bh=t7IUJhNhxhhzwfLlR3ygV5Jof/W3+MUpoySHAqOWKyA=;
+	s=k20260515; t=1793614721;
+	bh=AhUm2tRgdmS7ZkPk5TUVWoc0pWoU9lL6iWD8QKMf5pM=;
 	h=Subject:From:To:Cc:In-Reply-To:References:Date;
-	b=IRknnUZYiFYPxfe79PW1lclwilUSf2HndJ+nFLmOsfKXjYmxDdKlwxHtuiqKteqDu
-	 doWDqgILUEAiH8UOh5zQ8lIq5AcpVZXUogkZmtR048UqpaCJwyzHRtHm9EGSPf6Ar/
-	 xVUfKPG/boaqSO0UNeIYC1pbm/m2j4/Sc/cwtXHj9XwZBYIo1TKIeR770RuKToas7a
-	 2FdY1irPaY9EA8t2MTqZuxAD/mTUdQ6Cwqduen/c/s+DcWma+jreGgS2Jt8KiPlAZ2
-	 rBfMIQhU9Ou9yS7t07qbst+VPM5+kSRW4Cs2OcwyyoyrBEnLaCbPB8fSm3PEkPoEJW
-	 +8B8Ej+ENaHGA==
+	b=am21LAGB5HRWVCWqnzuh7hVK0cQAmPz5dPPwvgfhJ+LNbm+kmxRyM1nrj/cayH9pa
+	 +vBfMVhno74jeDQKsFDXNcDIX/mWNPW0ULJhZ3UT/nV9eRGvwiLU6N8TCrnduf2PzC
+	 GHln9Gza4A/xSHIsThHNfW6ipW6QFJfmNmKkSGXackF3ObYvHk6/jF4o6kMNOwyMbA
+	 WTFCeY47F81AXa6ao0VEHuHrXSjPDofVuTVlW1pP4MXLZ1bB4T2cxxszl6o5ac2WRJ
+	 /vZPTNvDdZt+lm62aBQ5j60rt8gFmGvc5yTCeVGK9FwKeJgtcH+fxQIyGmNHfDh8wE
+	 D/3oLIPaZNWCA==
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v2 01/12] mm: hugetlb_vmemmap: remove HugeTLB-specific
- vmemmap optimization macros
+Subject: Re: [PATCH v2 02/12] mm: hugetlb_vmemmap: unify
+ VMEMMAP_{SPLIT,REMAP}_NO_TLB_FLUSH
 From: Mike Rapoport <rppt@kernel.org>
 To: Muchun Song <songmuchun@bytedance.com>
 Cc: Oscar Salvador <osalvador@suse.de>, 
@@ -75,24 +75,24 @@ Cc: Oscar Salvador <osalvador@suse.de>,
  James Houghton <jthoughton@google.com>, 
  David Hildenbrand <david@kernel.org>, Muchun Song <muchun.song@linux.dev>, 
  linux-mm@kvack.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20261102032525.3597743-2-songmuchun@bytedance.com>
+In-Reply-To: <20261102032525.3597743-3-songmuchun@bytedance.com>
 References: <20261102032525.3597743-1-songmuchun@bytedance.com>
- <20261102032525.3597743-2-songmuchun@bytedance.com>
+ <20261102032525.3597743-3-songmuchun@bytedance.com>
 Date: Mon, 02 Nov 2026 12:18:31 +0200
-Message-Id: <179361471103.1337633.7688636981103619415.b4-review@b4>
+Message-Id: <179361471103.1337633.14353990207430443405.b4-review@b4>
 X-Mailer: b4 0.16.1-dev
-X-Rspamd-Queue-Id: E61EC140007
-X-Stat-Signature: ghwnhttoo5j8s7hafqikij4zd6w8rg1p
-X-Rspamd-Server: rspam04
-X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: C99744000B
+X-Stat-Signature: fpwdte5yzhc8k7odxyz91wnxqbx7m9i1
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-HE-Tag: 1793614718-96743
-X-HE-Meta: U2FsdGVkX1/z3aGUaU0+uIIwgbjfrH7vmFvFlZyGLTViBSBQ+Gmt8cEjGIE21b5kZaaSXqMFdFDpGSRtpTiBorJInqfCP6VknCaT0TdnW1nu95wxUax3jzRfUe4mR1Z+WK5mOAogyELrlGia0snwIv3Dxo/1uEz6+enBJffkto1O7bZLM9PSDnGJ08/BI8xjqaPas3izPrVwMno9vgKThCbgUpkS+TRqpfKRLw1ZVoHlocNF0w2xccIlHzc2LUEynBRxC7I/8RDccR0vKud1ILOwSMCubVZvXl78u6vT4XrdaVL7IMdYLJAgHeZUffmkT1B6huDgfQyosugrvyPXf20qLwJHo1YpSXmzmmN9sGMUfVvRhLFvkDk7YzGoGsbb66qfI0ljzgc/RB/T2Nn7rFN+ocUzDoupWcUJ6/OfKvPHEbjg/Rm1/J7xShvLNLyhupkyB7nkxCAImdtlnkA+dDJQ1sGQTikcL2z0It/g69aCxVneSK0C29WNtd3LvgwRDyR75vZuHe/SJWvGtm9w0h+XUPp7W8QclVS7IdqbnXeiJUiww9ha3XRD3Imj7LkubGAdjyIgDmBxlItSvAFlfXLFkMKwKwm/n8c568LYd8LDB6MBZKLTCHqxMx0jyquqfR7In536ONsnrNR2Qxx5M9IY3/394Vc1GpFdR2Dx+fyyOKE5NiaYJ7I31m0UpH77rQBECbabDvtV5/arqp+BMlE6RdZ55f0KpheGdBmD4tMMaMtLuuruaf1Ky1rtytGOMo3VZxcrQVHjy6KCr3aVmpJN6FJuXVN0GNXfx/8KLHVzg8iFBDBoQBOdxuWZNiQPfFSw4BZUmIB4NoogCak7cJ3VS90mBB/0T8D/FsnVx6hQWQnz3eRWxS4C8NsoB4OOp+X2FxjrabANFdnQCFO0Ta3W6ceuL73X7OuAaj+ftY66lGuYl3EPIJJJq/02cIjbijpS/Odja/qmcw5u0Td
- ve5zQLLO
- 7RExvx2dYccYGnBBqbE/VPycGO7FhklY1ns2yysrlSvHIIOVMAdS2nCkEoNb/bOSLnpF6TvRNmiEJxQ0YoRLiHXgbD00GxabOiP9INVQnlqBx8Qozc39hLXsuKTuJ2yIzl+kEcmF89FzDU7SxwwloogyOm8kOZZ4kR6eVsfTkVr2XKI56FQRfiWarm1nc7Mi4Rc9N9B/WJKSCF+IFtISp59XgUppJqSbSZlNd9NKnpm83nJiuvNXBfoklu6UMYMCpRckt/aaCCIFCQIfSAtqbW8YBcfBmZyTiCfzcovLa84t8P95P+PRyJ+k/tA==
+X-HE-Tag: 1793614721-73164
+X-HE-Meta: U2FsdGVkX19HN+HyQWCPuTuqDmI9tNU/Yt34WB54HPkBbC+xURTgGur6OVAy/6ZXjsv4TWil1Lo/U6bPrCR6DUqx2iXmL9h5nCIVIEWViifoYgVlvTY+5hEkNB6olmxhDuTmpQsCZPHXkqN6bl5jOLgpCLO3e+Fx5T2ROp6YYaV7EDfXMeV9K9/yu1IaKgVmUNh6vCsxLZ+LeNiDbBkMBmskwLgT7zIZjCVLkTFEkCZX8qp/QldNuVjzeRPXvyCV5iMyhjQFYqHRWyOsnoecfEt7DR+igrvtyiCpzqMFNbIdXpN9KPwt5fFKXjuvmxIAyq8iyvBncwcz/xn5APwDUVVrikrQFj+AkBHsMuL9RhHgjPvuVpMWEq04qXsc4aPo2d54VHhRHaInrQgUbNBaV92Zq7xJbfBT0d21Zp7PJYB9FPP1xXpBESKOY2hGk/Ti8cT5qhhHO/7l/E6nia4+l/2dhdr27ulXHLMKOFGBwRtgZNhBYmcppj8Qq9rv3nvuOD/h+ykxEKMLPC54ZokgOhWlWJb+4/TyN8VF7MG/XeNlX2yP2rUaDObCy2P03MNn4V9evI8uCq6QfBua9SZym+fSXGWRSzimY8PmkL+MQMvaQafNCTov5BvY6pbbVsAEkyenEM3ubCXPaLmL1Zm/AW60IxL1dWEcvXvIh1ATlIbt2mGD+62bE79+O7cKaB0rq/GTlREuRilWZckIEcYMJ4TYakyJEpcHDYGkgaVr7SetiFlZTjt8628iM30mkWWLvZCg5V+7q8r8vsVcqmMY9UpSfBzrTGdMecsaZGi81nIySNwjgD8Bn5OOJ29d1u9dQa7yGJiUPp3iuwc6UocnGXonWl/IeU+/0SMr4BPDD/kp57vLnc62YW9f0p5uE+9ylOP/7WyIyWS8w/FsLfWyxdScb79jff2lPH0C4V1Uwhk6wjVI8AddMv5b47kiwJI0o9M66s/Rtb076EJIwlt
+ KSzBgXSB
+ K4BnGBWGqZaY3kPwszqyVYE9OLUhYDIghoy4kNwoE3OaiocRkSEkFlhVFicfaTNJg1h2yGsBrAMdbc6vnuxodZER1hpCrt/NI3vEO21yXhlMritcNV4astR9ES90nddiI6YsopjuF8SN06lBI3EL1/z1P3KT3kun/pIH1ALGAKnHecDmeedw48ukFKrBUs2nZ6/Nvqw0qQ06a/tWY1pEMoNoMfdjYWeNCxlu+vwgvg4aYomZ8U5CQ1VgYBw4m6Kmu29xrh4LqoziMiW/PFxs6e614vxfidbEMKhz7
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,17 +101,68 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Mon, 02 Nov 2026 11:25:14 +0800, Muchun Song <songmuchun@bytedance.com> wrote:
-> Vmemmap optimization is no longer HugeTLB-specific, so the remaining
-> HugeTLB-local reserve macros are redundant.
-> 
-> Replace them with the generic definitions to remove duplication and keep
-> the HugeTLB vmemmap code aligned with the common optimization macros.
-> 
-> 
-> [...]
+Hi Muchun,
 
-Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> VMEMMAP_SPLIT_NO_TLB_FLUSH and VMEMMAP_REMAP_NO_TLB_FLUSH do not
+> describe fully independent choices. A split-only walk can defer the
+> PMD-split flush to a later global flush, and a remap-only walk can
+> defer the final remap flush. However, when a PMD split is followed
+> by PTE remapping, the split flush must happen before the PTEs are
+> changed, because stale large-page translations must not overlap with
+> new small-page translations that map different physical pages.
+> 
+> Replace the two flags with a single VMEMMAP_DEFER_TLB_FLUSH flag. The
+> new name reflects that only safely batchable flushes are deferred. Keep
+> split-only walks able to defer the flush, but force the split flush
+> whenever a remap_pte callback is present. Callers that batch HVO work
+> can still defer the final remap flush and issue their own global flush.
+> 
+> Current callers keep the same flushing behavior.
+> 
+> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+> Reviewed-by: Lance Yang <lance.yang@linux.dev>
+> Reviewed-by: Qi Zheng <qi.zheng@linux.dev>
+> ---
+> v2:
+> - Rename the unified flag to VMEMMAP_DEFER_TLB_FLUSH and update its
+>   comment (suggested by Qi Zheng)
+> - Update the commit message for the new flag name
+> - Collect Reviewed-by from Lance Yang and Qi Zheng
+> ---
+>  mm/hugetlb_vmemmap.c | 23 +++++++++++++----------
+>  1 file changed, 13 insertions(+), 10 deletions(-)
+>
+> diff --git a/mm/hugetlb_vmemmap.c b/mm/hugetlb_vmemmap.c
+> index 4b73d6ec8dcea..63e899cfaac3a 100644
+> --- a/mm/hugetlb_vmemmap.c
+> +++ b/mm/hugetlb_vmemmap.c
+> @@ -42,10 +42,8 @@ struct vmemmap_remap_walk {
+>  	struct list_head	*vmemmap_pages;
+>  
+>  
+> -/* Skip the TLB flush when we split the PMD */
+> -#define VMEMMAP_SPLIT_NO_TLB_FLUSH	BIT(0)
+> -/* Skip the TLB flush when we remap the PTE */
+> -#define VMEMMAP_REMAP_NO_TLB_FLUSH	BIT(1)
+> +/* Defer safely batchable TLB flushes to the caller. */
+> +#define VMEMMAP_DEFER_TLB_FLUSH	BIT(0)
+>  	unsigned long		flags;
+>  };
+>  
+> @@ -85,7 +83,12 @@ static int vmemmap_split_pmd(pmd_t *pmd, struct page *head, unsigned long start,
+>  		/* Make pte visible before pmd. See comment in pmd_install(). */
+>  		smp_wmb();
+>  		pmd_populate_kernel(&init_mm, pmd, pgtable);
+> -		if (!(walk->flags & VMEMMAP_SPLIT_NO_TLB_FLUSH))
+> +		/*
+> +		 * Modern MMUs allow overlapping TLB entries with different mapping
+> +		 * granularities only if they map the same physical address. So
+> +		 * remapping must not proceed without first flushing the TLB.
+
+Are we certain that *all* modern MMUs for *all* architecures that 
+support hugetlb are fine with skipping TLB flush after a split?
+
+AFAIU, x86::set_memory always flushes TLBs after a large leaf is split.
 
 -- 
 Sincerely yours,
