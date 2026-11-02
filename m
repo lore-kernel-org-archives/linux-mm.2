@@ -1,98 +1,93 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BA4A60A6C24
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 15:08:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E26F960A0FF4
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 15:08:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=XrZQnn4C
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=d56wof6w
 Received: by kanga.kvack.org (Postfix)
-	id 851E66B05D9; Mon,  2 Nov 2026 10:08:09 -0500 (EST)
+	id F10196B05DB; Mon,  2 Nov 2026 10:08:09 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 803766B05DA; Mon,  2 Nov 2026 10:08:09 -0500 (EST)
+	id EBA9D6B05DC; Mon,  2 Nov 2026 10:08:09 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 718C16B05DB; Mon,  2 Nov 2026 10:08:09 -0500 (EST)
+	id DCEEC6B05DD; Mon,  2 Nov 2026 10:08:09 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 51B0A6B05D9
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id BA9AE6B05DA
 	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 10:08:09 -0500 (EST)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id E17971C1C65
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 15:08:08 +0000 (UTC)
-X-FDA: 85390509456.04.01B8CFC
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 42D42A016A
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 15:08:09 +0000 (UTC)
+X-FDA: 85390509498.24.200EADA
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 37C1018000C
+	by imf29.hostedemail.com (Postfix) with ESMTP id 9E31612000B
 	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 15:08:07 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XrZQnn4C;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf24.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=d56wof6w;
+	spf=pass (imf29.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793632087;
+	b=SvObSQ5/gr23Hnq1SktzQHPSDp0/GKzRg4udNXOAZKBa5CV/pnUlkkY8X1r5MnE6B2BL2x
+	gYjLOnAkHGKW2V7KeVsFh5mScVmW27kgFSrqfbHRvMj99nfNTsHsp6wxgcIwLJJgGYOefq
+	Tbssh/tC2+imkHx2qid3gwqRT8BObKE=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=d56wof6w;
+	spf=pass (imf29.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1793632087;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6b6oFi/epwMKMYOCvMcLX5SixjsFrg88HIyGcM89GbU=;
-	b=o8MJZGA3g9yGiJCV8Lv9zF+CFma/bSf4jYCodGpdx6qI5NA3VyNi9zzVWO2yCzIypndOQu
-	XDKnNIJmzU6+gyDQ3trsuL21Q3NSDsyb0NvM8IuUPKh9jnCED+2DASkfKQY8B5ANBy8lSq
-	52nkU2ekTINNPlmm6Khb3JQOW8eT898=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XrZQnn4C;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf24.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793632087;
-	b=i/4nnZuyiLRXZjKpax6XepxfPnThBS4Ajp+tb+XeYuXjCsxsxpayHIOoDr0L2vYzANPDP6
-	4t3eyABuRcjr38sJ2LpDeUGO8Zbko+Nd0lU3sFRqkpMi60loVaQ36crl0JLkfRctLYkG+Y
-	B9tarTZKCUzMxuBfr4WFbswsdE3idCE=
+	bh=XuK4d1M7JKzxtXkmylZMVK8sWXtnLYK8j0M8Pc5ofm8=;
+	b=3PZtFM46FRIcnPWVu/FEjfNMn0PxabrEgiogrC1QRu7RMrb1w0exRITmppp0v6AOCET57k
+	hZyDo+47w7VbHXMPiZ1Y1QeL/geH8OIfT+qpv8L4VOIuoodGDUsvxDBG7pHiN0HsI18neh
+	QnLAfS34TUpQ93+kSnsxldCEJp7iNbw=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 882CC413AD;
+	by sea.source.kernel.org (Postfix) with ESMTP id E2C8E42491;
 	Mon,  2 Nov 2026 15:08:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17A241F00A2A;
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95C9C1F00A20;
 	Mon,  2 Nov 2026 15:08:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
 	s=k20260515; t=1793632086;
-	bh=6b6oFi/epwMKMYOCvMcLX5SixjsFrg88HIyGcM89GbU=;
+	bh=XuK4d1M7JKzxtXkmylZMVK8sWXtnLYK8j0M8Pc5ofm8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=XrZQnn4CsywSn7qcJI5WSFd6QsTFCkiSXKgVSrtcHW7w3BEPDx2Ei2g0dIeCyp/ho
-	 IELSsBOsA8xgkDWQFCYeCfw/LMll3OC63RXdWKfROfoZiFSISwpziClYJ6Aw3p/2+S
-	 WbH8KnZWq21CEEu9lwvPaL3X1rm/odickrCYAjwXWggL7LQ2G4l+gVJSU+aagHAnHf
-	 fS+e+YShp6GqAAMioEpvJMbOOkjDMCL5lJU/cfxkdiUbSHkjm1yKeXDESlp0fJMfht
-	 iSG23szz+J/DgIdXs8WA/oxAW9kQJfVI1Asn/Vq8H4BGIaKmQGVpSeIQwRK4sFO8y6
-	 RCpEUe885QO8w==
+	b=d56wof6wqHSC2Jccrt0KXPAZZ0jJKKYM00WPVl2hPJUHl9eN14VIGfdC2IRKS6nbu
+	 BtPpN4eIrjpqoH8ndJeCNB7CGsPFZ+X9Ph52EOIO5t+CedTH7GujSQdpoMHBEpcmlV
+	 cSUp6jDpQ1UdTG2a+UMjrEAQbnTTqYu4eH8muFuWrg4XnaSDr2uUHl5PFm/yaPkBLu
+	 YXYqRSrd+GVvivAm3bswv5XNQEARb5XJ7RSXHnv5zIzIYy8k1vL7yOWAbMt85ENR6G
+	 9b4Bf36Rs8J6bikuYA7OuvvLN6us5qAvOI0s3S2DkN66zuyOiykckfS1JNUa9gDyO6
+	 6K976YpcikCFA==
 From: SJ Park <sj@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: Aveline Noir <jm5905938@gmail.com>,
-	Fernand Sieber <sieberf@amazon.com>,
-	Leonard Foerster <foersleo@amazon.de>,
 	SJ Park <sj@kernel.org>,
-	SeongJae Park <sjpark@amazon.de>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Shubhang Kaushik <sh@gentwo.org>,
 	damon@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [PATCH 3/9] mm/damon/ops-common: align MMU notifier range when clearing PMD young bit
-Date: Mon,  2 Nov 2026 07:07:50 -0800
-Message-ID: <20261102150757.93058-4-sj@kernel.org>
+Subject: [PATCH 4/9] mm/damon/stat: avoid 32-bit overflow in idle percentiles
+Date: Mon,  2 Nov 2026 07:07:51 -0800
+Message-ID: <20261102150757.93058-5-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20261102150757.93058-1-sj@kernel.org>
 References: <20261102150757.93058-1-sj@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 37C1018000C
-X-Stat-Signature: patgo31p4t79qygtnsrccdi66k78o6ex
-X-Rspamd-Server: rspam06
+X-Rspam-User: 
+X-Rspamd-Queue-Id: 9E31612000B
+X-Stat-Signature: pakff6n4ubp7xc8pqcp3x74mshezc566
+X-Rspamd-Server: rspam01
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspam-User: 
-X-HE-Tag: 1793632087-362989
-X-HE-Meta: U2FsdGVkX18k9rTed9FJSHOsBHvmN5QHz+JOmGd9LFDH/TQwKxEOwTcbtavV1pQZgxTCqZDopLl5TfkrZ5J+VJZKR8eRBKJpf2lBq9CTiKPUc9nsA6IzwYAYodcSqD9jVwaMF6ij7iaxtLkSbKm6g850wqX87aReXEOe7Yw+Ow0HqP+d4pIlJe4BcjlR/9x+lK/4PzoB/rSigzkTnI4oXb8Q+CyxvobuUSM7C70af0Z/jxI58E8RenmdHbG2esV8bBt3+ALP8i0HQn/m+HR1UnhflYWTF4bIiChHnZqkdG5GsLpjLNdf8tTs2v8Rwr6q/4Z1dl7oe1Fg3bj0iX73wRwyKn6WTo1xQU89vSibIV/R/3zTYbRGxYLjzxH5Zswe+uQeChsj1OnUOmNgQHr+wfa1tfGLKzWTnECvfUg3Vy3G/4JOW2A4FaqTc1WJUhvXsxnAATZexXzR05UVXO9DpoJrz57MPH0Bg4Q3AbKnjL0WTGjItTfpI7GV3IlQGujFh/iqKPu0KZ+2/R9PrrF69EHX/Fm3lcJmBLewvYG6OlLtrzSMuezz2fzRtCLi+rFf6CILa4YACFh8Nih3gZlEihr10YufPWChBPZCyGuWbcIwgaHYz45y2UMP2X1zPqxddzP913y+DykoyVnRBU6IxQHydke4Pq+mMeTr5z381kmGImvQxbkxBcD4eusm9N75Ys93N0N2wKb15cDm2ZtAXwT5aJMfBbyDiBG+hKJN1qAOxxgDKPBidxz0/kTV1nQtcxUm33CNxmIP4WhtAV584ef99//jRLUSRxeb/Ms08RmZ8WkcCuf+sz0Hm7Lh6jndL1znqd6HF1APUfJju8/n9SEMBimJNcS+hDB7u4fFTgM8XBnJBgQPp71mgUHt2srreaLc+MsFPHryymY7QWpxc60t9VBruyy4bbYA5QkoSeQttkBsmv8hx/JaoxnOOdQx7FfRmwuAcR9MYSG3UhU
- 31mV0k+q
- g/4CskShWwr33oSXWrdUczbQkAqxqNfXZKh/KEBRGrodOzRFoMEmTqvKQeLkRLcIq9TD8aMHAtL9C9TzyGG6SMIRK3m0AyxZej9LuKV/wpvCr5wMnXl5t2kG0sHj5CiXBnq1acDSkziYS/dd4LwwFYh6SAkL1jBUSxfLH+Oy1q9lXYMnaShT3eNoUPvtLM17zIZMHS+AQe2RS0/BHWG9F6Kkn8dauB+kmJOZ33FKiIGv2p9T/0tzbDNiv3KCu2gceUpmJ9WFBovk6H4AlBGVKNXeNek5/Ib6UN3RagWA+fXhsthvj2Am1iwY0zQ==
+X-HE-Tag: 1793632087-750165
+X-HE-Meta: U2FsdGVkX18OrUMkawHHFzseAXzDtPOAQvkLuXERECWMUMYCdYDlv5b7yNtLbrUkYyEDiGSAbfu/44hSI6TMRU2LZnFbwZQgKJkb/LMh0YhkcOa7lHtu4af0YZCPa3lWA2HEyyEbs18W8o6+aJz3Wd5a5VPBYDVZuShMNUYGOyjQV2KA7WBNEASyQijDouujw3A14g2z/P5T69XreWd8Raic8ZZq+OgdMUoN4kZHcn5+Kg37iPXr4OB5Bl+COnLQUKLFbVmVup+q0NUScyOlK6/lK+QFW/Atri6uI2oK56RJ8DZnwdiFota1Zqs2uFnyPhHN0tTClvZfasJjQat4UC3DfdGiGGb0huZvLI8h59pvP38IRn8NJgaVr6YKwNiJRQH5a4jMZcBcQJZouosbyrCP8+oUNGjSTQcc/byhTx90ici1nvuuBK6do/RHMZpIxsTPlVeqS7/qh4nly3H4/WzaCtQXVvJYOs9q8q2tv2KcuknJv9QfT3YuTm/iXw6WgNGsGDU0LwfoPMkr2TnDLZZtBz33tQGKxbauo8B0d0Z+dXFXzYNOW1JXY/B4zxyrdrsw/Zd5iIVn8hRz9y06J+SFVVICZozf70rNiZ5i1YiJ22RzN7isbx+LmjBWCuu/t2EOTOeL7pWSoRbVHgDBc6eFQ8QE6PtsOfZiTKUz8kgPowZaxGVeVoL7a++GPi6CQgw8vDFnRgXVb+tIL9Ij42PRoi6xjs+MekDQVnub1of0x55F4NF5/X5duRS81PrXLUM5CvoVUY/A3hbtVFJi4KlfNPcm+EIX44CxpkRG6nzTLU1tjSCrFzaunbXx1t9vqfV3WaBNIGLowrlJVb0ga0sqZ89rJvWSGIwNypmfL77XaW/0vWZxN/Ysy1U/v7foRUD1QNyqJRYN72XvurAKz9bIcB1R/GnD4BtdvOmPBCr66QkzVYjvQtX0B9j9kzBO7fw+bJB2/9dHMuRGo4p
+ X61zPb/8
+ 5B/UkdQ9sVqA9uifKnBnPC7YTy60m+zh2zCm9urmIQ0KHYAqDzakKBSaXFqFaJ/kITTJanG5DPu8RBrQeEN7fIkYUCZbFMA2i1N3A3QdYwIpUaT4c+xAdbvxbvotj53CNGF6UwtBKKP7QxfUcfnWLHayfSVJVmTVurBDHibb1I08nVaHSVuLq5ku5B7flrtpgYso+CPvmar8SqER7zbYiKH8lGIGdf+BVdW85N6LNC8uq/4lEAJC1SAeh0du/x3DR8xTzkcobzL+OP92l59ksUAL2P5QOm7chEoN/BEErh1SFOONtPWQf9mLPRg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,42 +98,54 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 
 From: Aveline Noir <jm5905938@gmail.com>
 
-damon_pmdp_mkold() clears the young bit of a PMD but notifies
-[addr, addr + HPAGE_PMD_SIZE), where addr can be an unaligned sampling
-address. This can miss part of the sampled huge page and age secondary
-mappings in the next one.
+On 32-bit, accounted_bytes * 100 can wrap before division by total_sz.
+Some entries in memory_idle_ms_percentiles then keep their old values
+instead of being updated.
 
-Align addr to HPAGE_PMD_MASK so both operations cover the same huge page.
+For example, a 256 MiB i386 QEMU guest reported p0=19200 ms, but p50 and
+p100 were both zero.  The issue was also shared with another mail [1].
 
-Fixes: 3f49584b262c ("mm/damon: implement primitives for the virtual memory address spaces")
-Cc: Shubhang Kaushik (Ampere) <sh@gentwo.org>
+Cast accounted_bytes to u64 before multiplying and use div64_ul() for
+the division. Compute the percentage once per region.
+
+Link: https://lore.kernel.org/r/CANOyQmHad1vamnZT12M5yPrJ69==Pt1U0+MGw6u0MuNtr-DRCw@mail.gmail.com [1]
+Link: https://lore.kernel.org/179207592479.3.11595453180868898703@gmail.com
+Cc: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Aveline Noir <jm5905938@gmail.com>
 Reviewed-by: SJ Park <sj@kernel.org>
 Signed-off-by: SJ Park <sj@kernel.org>
 ---
 Changes from v1
-- v1: https://lore.kernel.org/r/20261021-damon-align-pte-young-notifier-v1-1-d0365ac45b66@gentwo.org/
-- Drop Link: tag.
+- v1: https://lore.kernel.org/179207592479.3.11595453180868898703@gmail.com
 - Collect R-b: from SJ.
-- Update subject prefix.
 - Rebase to latest mm-new.
 
- mm/damon/ops-common.c | 2 ++
- 1 file changed, 2 insertions(+)
+ mm/damon/stat.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/mm/damon/ops-common.c b/mm/damon/ops-common.c
-index f88c6fd189fca..b9571f53e538c 100644
---- a/mm/damon/ops-common.c
-+++ b/mm/damon/ops-common.c
-@@ -102,6 +102,8 @@ void damon_pmdp_mkold(pmd_t *pmd, struct vm_area_struct *vma, unsigned long addr
- 	bool young = false;
- 	unsigned long pfn;
+diff --git a/mm/damon/stat.c b/mm/damon/stat.c
+index b05b68f73e10d..eccd372810d04 100644
+--- a/mm/damon/stat.c
++++ b/mm/damon/stat.c
+@@ -114,7 +114,7 @@ static void damon_stat_set_idletime_percentiles(struct damon_ctx *c)
+ {
+ 	struct damon_region **sorted_regions, *region;
+ 	int nr_regions;
+-	unsigned long total_sz, accounted_bytes = 0;
++	unsigned long total_sz, accounted_bytes = 0, percentile;
+ 	int err, i, next_percentile = 0;
  
-+	addr &= HPAGE_PMD_MASK;
-+
- 	if (likely(pmd_present(pmdval)))
- 		pfn = pmd_pfn(pmdval);
- 	else
+ 	err = damon_stat_sort_regions(c, &sorted_regions, &nr_regions,
+@@ -124,7 +124,8 @@ static void damon_stat_set_idletime_percentiles(struct damon_ctx *c)
+ 	for (i = 0; i < nr_regions; i++) {
+ 		region = sorted_regions[i];
+ 		accounted_bytes += region->ar.end - region->ar.start;
+-		while (next_percentile <= accounted_bytes * 100 / total_sz)
++		percentile = div64_ul((u64)accounted_bytes * 100, total_sz);
++		while (next_percentile <= percentile)
+ 			memory_idle_ms_percentiles[next_percentile++] =
+ 				damon_stat_idletime(region) *
+ 				(long)c->attrs.aggr_interval / USEC_PER_MSEC;
 -- 
 2.47.3
 
