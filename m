@@ -1,101 +1,172 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2AE78606A329
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 12:29:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD431606A332
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 12:32:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=N4f8/RAK
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=gyAh8T7O
 Received: by kanga.kvack.org (Postfix)
-	id 3CC5D6B00EF; Mon,  2 Nov 2026 07:29:20 -0500 (EST)
+	id CF9856B05B2; Mon,  2 Nov 2026 07:32:26 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3A4516B05B1; Mon,  2 Nov 2026 07:29:20 -0500 (EST)
+	id CAACF6B05B3; Mon,  2 Nov 2026 07:32:26 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2E14A6B05B2; Mon,  2 Nov 2026 07:29:20 -0500 (EST)
+	id B73186B05B4; Mon,  2 Nov 2026 07:32:26 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 05CFD6B00EF
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 07:29:19 -0500 (EST)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 8B617160C6B
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 12:29:19 +0000 (UTC)
-X-FDA: 85390109238.15.3AE97C3
-Received: from mta1.migadu.com (out-95.mta1.migadu.com [95.215.58.95])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 81C25160003
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 12:29:17 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="N4f8/RAK";
-	spf=pass (imf08.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.95 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793622557;
-	b=BkzpY7OGjd4+MEzX8lIAsKr6Ghcu/yxdovZT4Lw3tXTt0A7HOAuZad/2qAV3Ot5lOzJxD5
-	r4Pza+n5En9+fDrRvgvnuK3yFMA7x27l2MyuOPZln103JdiDhuFjbiJ0b7KEUZW2vnz4iI
-	E85Y0V8hbIoGFekxwz6unPcEcvXbZoQ=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="N4f8/RAK";
-	spf=pass (imf08.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.95 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 961F56B05B2
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 07:32:26 -0500 (EST)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 38ABF120CC1
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 12:32:26 +0000 (UTC)
+X-FDA: 85390117092.07.E74E482
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 86A7210000B
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 12:32:24 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gyAh8T7O;
+	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793622557;
+	s=arc-20220608; t=1793622744;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=i5jpm5CuS5hMQjKmVnNP27jSTbTcYAnxBrA5dk6se5s=;
-	b=g7iiltheDjArffNlStkJK4yH13hh/2ugFsVYxXxDP6TRJeRPifBwEjqpjPVvPJ5fJT0hBv
-	nXJdAiRfcCBujCi5tAcWmT9PmhxkEYPWwJ+wDhnsblL8xQEz/AJupSCbKtnnYh3/MPGeWX
-	u1nSrxRd900QN0Ogxnmq/L/B1Omeh30=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=lBOQhpowAzDqo4yhRDS5YU2BDNuirwHB1ryB/ebjSfs=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1793622554; v=1; x=1794227354;
- b=N4f8/RAKVKgzDj0sMXRI2wKidp6iBEGTLilMDBxNotEE13jbz5JJ+Cm33bVE8fAzU2hNd27h
- SItOAxujigfetZnAsyMS49nOaoaLVuXcj7qgfQDUuNka0MJtX84jfK2PYN99A1FJmyYZru/t0I3
- nwh6USvqx0lIj0ME8kNrINcQ=
-X-Envelope-To: linux-mm@kvack.org
-Received: by mta12.migadu.com with ESMTPS id 1b3ff97483b36a93;
-	Mon, 02 Nov 2026 12:29:14 +0000
-X-Mizu-Trace-ID: 1b3ff97483b36a93
-X-Migadu-Flow: FLOW_OUT
-Content-Type: text/plain;
-	charset=utf-8
+	bh=7uJi7vbsm+UXiwdS8CU4SHzxGBAn/qkTD6YcNjfIfjQ=;
+	b=w8dnwwk4KvQrEmzypQO1euP1ndtv8Cr6ZjZMXF8fQQXjkdqAdZxQrJgmJXYvvRzLAY4oWj
+	IPm2Pt5FZnw/xo4XZU2iGrvZ5z0+VZnoej4TZz9f+50MeEOLyO6f84fyBFGlxjzmIcbKBq
+	aMcNyuUQL5roZLKWsFqq2a3pzDBG9yU=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793622744;
+	b=5ojVj1hv6uoha69cdWVfc5omYYaZXooRhGdMJIg2rGmWPZE98ONoawDKAKEAFTWkeAV0Dx
+	WfBHttRss9MfUd85rJ5hJGF9XaGYdlj17IvBfNfpudPmHdk9b6YkY7uItn8blSShzLs9In
+	nFmU6Xt+n/gzZAcxrwTCKI86FzEKWnM=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gyAh8T7O;
+	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id CD9CE602C5;
+	Mon,  2 Nov 2026 12:32:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61F351F00A17;
+	Mon,  2 Nov 2026 12:32:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793622743;
+	bh=7uJi7vbsm+UXiwdS8CU4SHzxGBAn/qkTD6YcNjfIfjQ=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=gyAh8T7ORX22epTMSRWFxR6WRFA4zhOB1WCIITKcxdyx61OylLTtdxb/dr9lmzv4d
+	 cuikthVJo5Icn3Gr8nNmY1lPUSuUR1No4jBHe3d6q/pqne2ZsLxlvRGVo84GuBDelg
+	 1j9C/ufHKlAIkiMuhXfSrTcNOrceZPShIbQ74YXpMXqlW0Ki9ABS9zgYKibWGpd0Ko
+	 Ewj/p8HSVEvLkJ0OrGoJkGBizdMfI8DGeu1GWFyJWY9Sdyc/+Q7hKLRJWAfeebVuxA
+	 UljKd2nn3SkKOmszOlMHz4Gdq5m2JjNyPPSz0O/y1wnYkYxt4Xlad5WCu/VoqrQcxP
+	 uWqlBmF6LrsOA==
+Message-ID: <4adcc07a-2df9-4d5b-8b0f-6734e336182e@kernel.org>
+Date: Mon, 2 Nov 2026 13:32:10 +0100
 X-Archived-By: <archiver.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3901.200.71.1.16\))
-Subject: Re: [PATCH v2 02/12] mm: hugetlb_vmemmap: unify
- VMEMMAP_{SPLIT,REMAP}_NO_TLB_FLUSH
-From: Muchun Song <muchun.song@linux.dev>
-In-Reply-To: <179361471103.1337633.14353990207430443405.b4-review@b4>
-Date: Mon, 2 Nov 2026 20:28:56 +0800
-Cc: Muchun Song <songmuchun@bytedance.com>,
- Oscar Salvador <osalvador@suse.de>,
- Andrew Morton <akpm@linux-foundation.org>,
- Qi Zheng <qi.zheng@linux.dev>,
- Lance Yang <lance.yang@linux.dev>,
- James Houghton <jthoughton@google.com>,
- David Hildenbrand <david@kernel.org>,
- linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <B5E261FB-D532-48A2-801C-C8E4F86D7C1F@linux.dev>
-References: <20261102032525.3597743-1-songmuchun@bytedance.com>
- <20261102032525.3597743-3-songmuchun@bytedance.com>
- <179361471103.1337633.14353990207430443405.b4-review@b4>
-To: Mike Rapoport <rppt@kernel.org>
-X-Mailer: Apple Mail (2.3901.200.71.1.16)
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 0/7] MAINTAINERS: MM updates
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Alistair Popple <apopple@nvidia.com>,
+ "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Baoquan He <baoquan.he@linux.dev>, Barry Song <baohua@kernel.org>,
+ Brendan Jackman <brendan.jackman@linux.dev>,
+ Byungchul Park <byungchul@sk.com>, Chengming Zhou
+ <chengming.zhou@linux.dev>, Chris Li <chrisl@kernel.org>,
+ Christoph Lameter <cl@gentwo.org>, Dave Chinner <david@fromorbit.com>,
+ David Rientjes <rientjes@google.com>, Dennis Zhou <dennis@kernel.org>,
+ Dev Jain <dev.jain@arm.com>, Gregory Price <gourry@gourry.net>,
+ Hao Li <hao.li@linux.dev>, Harry Yoo <harry@kernel.org>,
+ Hugh Dickins <hughd@google.com>, Jann Horn <jannh@google.com>,
+ Johannes Weiner <hannes@cmpxchg.org>, John Hubbard <jhubbard@nvidia.com>,
+ Joshua Hahn <joshua.hahnjy@gmail.com>, Kairui Song <kasong@tencent.com>,
+ Kemeng Shi <shikemeng@huaweicloud.com>, Kiryl Shutsemau <kas@kernel.org>,
+ Lance Yang <lance.yang@linux.dev>, "Liam R. Howlett" <liam@infradead.org>,
+ Matthew Brost <matthew.brost@intel.com>, Miaohe Lin <linmiaohe@huawei.com>,
+ Michal Hocko <mhocko@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Muchun Song <muchun.song@linux.dev>,
+ Naoya Horiguchi <nao.horiguchi@gmail.com>, Nhat Pham <nphamcs@gmail.com>,
+ Nick Piggin <npiggin@gmail.com>, Nico Pache <nico.pache@linux.dev>,
+ Oscar Salvador <osalvador@suse.de>, Pedro Falcato <pfalcato@suse.de>,
+ Peter Xu <peterx@redhat.com>, Peter Zijlstra <peterz@infradead.org>,
+ Qi Zheng <qi.zheng@linux.dev>, Rakie Kim <rakie.kim@sk.com>,
+ Rik van Riel <riel@surriel.com>, Roman Gushchin <roman.gushchin@linux.dev>,
+ Ryan Roberts <ryan.roberts@arm.com>, Shakeel Butt <shakeel.butt@linux.dev>,
+ Suren Baghdasaryan <surenb@google.com>, Tejun Heo <tj@kernel.org>,
+ Uladzislau Rezki <urezki@gmail.com>, Usama Arif <usama.arif@linux.dev>,
+ Vlastimil Babka <vbabka@kernel.org>, Will Deacon <will@kernel.org>,
+ Xu Xin <xu.xin@linux.dev>, Ying Huang <ying.huang@linux.alibaba.com>,
+ Youngjun Park <youngjun.park@lge.com>, Zi Yan <ziy@nvidia.com>,
+ Jason Gunthorpe <jgg@ziepe.ca>, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org
+References: <20261030-maintainers-v1-0-97278f8a5f54@kernel.org>
+ <1c46e678-1da8-473d-960e-5aa22d4d7e73@kernel.org>
+ <20261101123025.4d8133d5321820f2202c8f1a@linux-foundation.org>
+ <1b4d0299-4232-43eb-9229-7d2a2a7ce2fc@kernel.org> <auhw4mBAqzKU_-DE@gremlin>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <auhw4mBAqzKU_-DE@gremlin>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 86A7210000B
+X-Stat-Signature: ee96y8qxd9zqi7ti9unej1uhgjb6y1zs
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 81C25160003
-X-Stat-Signature: g544483amggpqcyfq7gfn19gyuzoe4e5
-X-Rspamd-Server: rspam01
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1793622557-450718
-X-HE-Meta: U2FsdGVkX1++1e7v7h2EySIXemvyhsfGeMkHvIVX8dgL8XeiMYxi9ZbUBSZSNm1JkP6yFsrdBDh0qn+SPgV4EU/SoQxRsmlqSyYaUO1nBWjLu9US7Cug8QvEJwNwkxPlZYDLO0hfBwBHIEUKPfZzESKm91HuhrNSYHHLJYBLVH2L6ELdalKIkK+9KyBWeZlMFqVYcReTAqMtviQflk3Gpbck0VBaVEpY7CURBU4sSQf5waEJawAiNpBx8HLhzWpbN3nSaibof4vZnYxoG5QRwW/oSX3l3Mr07aszMPzcL2o5zDiUjaJQmFhyRBzcJt3f/R/ch9NeRSWSMGPSsskXM10ufqLR3rgdx/BmI6FpqSp6lSP3FUtFvW4CzI+tSfGa+FCycVGnUIf2hEPjUkRp20Ix7UYACS+/yoYlaidEYMFdESu4ZLb6SB0WNjCjlalCnQjVSMPDP6gmk35nsCHjbK9qbhuOFeaNSh3YYNzWXHPm58tVoUksIR0UsfLn3MneKpUBLh45gnjNCbDEl7w+r/Qu+suL+oLgQVmkWjmU36mU7Q69S+DFKK1tr8LmSou/qP3dmogKfUsb4t6Rxp1uV0FX/q7aR3YJ4hMZnzHoEJLKFslmpsOlZEeELaSPQnDimzPtLlIlMabRWaueSerza/8brzoMSVv5a0xEzXB713ONlpJuRZZlFVwOUKHRPpW/gZ7n07CUBVWT3PuBVqHyOhYftKbFC70DwqqYAGLe9m+uECGWYj6gTISETwSDd2OrSueRPL+yV5GNCCVNk8MkWu6H2dr1OpqWf12Q1JBaU0E2FKBxSv2uBNDMP/GyDp34S1zxbxzjCx64diKL83hWnkguhFtiGlbjYFkTpSNdjd3jp/HUMmQ43akEAfc8+3gpcRrFX4vLhGAsAr6bGig8Nr3cl6BoXC1H5R8wQ4a7/fjYoF5RS8/rs34XN8wGJuUPrgylnaU5PynlrR5wVVs
- O66y+AGf
- jXUqjEoi6njS+Gk7E+GoNsiytrmE1dSN8Oo1zCHtayIvx0/ZCzbzZYjsoO/8KkYovEk5U2Kn2VWSQL/gmyICDLHVact3dYNPLWeZsy61z9do/ON6zn+bWAn6kd80/77DR+eca5Y236QvZBlqBLxFwhAtrkQcj57vu/AOX6Fx/tWNsEa1fKfyKH76GmYnJKtTRO0iGB1JVDrMRLulX3IINORQMjRIKFT+UyC3etRqG+o0POrrO8uuT71L0WqjL/2MuWL8AG0PfeRIIhpZHRNahxERGCyLyt5T9NqHiAlGLVm5jOuKYnEpv3d8JJbfD2tLGNpW1cvxyfx5WxtHgGkpHJ/bPXFUTdKivj3NOwFfGPVcnLdI=
+X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
+	autolearn=no autolearn_force=no version=4.0.1
+X-HE-Tag: 1793622744-386045
+X-HE-Meta: U2FsdGVkX1+/a2C/LyJJ6SOr21Y+xnRmyWHUGwYsq0yM1HBQvN2ix4xXStGCF5jtjq30uSDGMSDv8w2/JO1vdYcEhenVdb2eHs3FJa8U6QEYxX/bBA4b2vF6mdlXoyR9hmVHPzbjifqJYKEjjh8dU0KjJsLS5kwtYtBaCq3m3ig/E2WaxuXyxvcA6XV7wx+R3PXoeS4IA+2LhzMj2LPACVgWE2rG45g7OuOw6Jp8bGxJB08tZBbh+PLWkMOLdAKpYtChCooLnvdQO6f2lC/djKse1f264HEuSIiKL8zQkjcXCqIwwVcbVEX5Oc1/sMHqosiqNayrOUCf9alLh/3fMIO1IuHg3C1uWTgRTs5Ej/1wON9P6hUPK8d+hB8xbOzzXlGfiB/cNowoESQNTkDLRrKyQCCMTcNx7AU0dzD15SX1lzG15oJ8gRizWTgnJAeRfkJm7uql7c6w4fWJXrUfqGzg2Pq6qiyvmmuP6lLIGoiogfNAG9CUPo9Klpvy/SN4HKw87hJzmLXAbRC+QSWvQ4iO07crquJzgTgMSXdz2PIq/Uyd8pP23eRg/heVeHymvDMvMbeQ7VCBuEC3FQt0VmYYz1sqgpqoSf93PdMu4zBPQNB2TVtIljnSP8kCvgroKJP41vilwxUcISqvyzwY49FcLr6I/iR2qndjOs/ok5KgLlYs7uQd/oeVqv/TP7Sw2SH1T6VZTIttoydrQXpg0qDmI1rb/XbaCx2SX4jtjct7TtP9IoaS/kJSGm4C5xf2JH31LDJ42Jv/Nzkvqn9z8u05p/6SdRn2XOv409G84WGWxomvWMKVc9rgU5P4eOc+6I8JkAfq9fUex3Ppi1C/qbK3nkKuEMbrSe6wEsqZsoY5aINSJPjX2lmBxtmnZTQMFRtbuavtMo/TeTvcgbitwuP+wPFLOI1sU2yVNRaqrC/YmTIk3U/U+PKxbwboHOyR6tqOMWzM+gXP1RqwXre
+ UZRMvfKh
+ eHdgUrVsx1xWcVB44GP631OQPLPVWTY2NUbcoCbZSiuumr1ZfDK+PotUfpYsPWM/Dh1346PFYotVY+2RvZrjx57UNymPQeKJZ3coTxzITZjw88oUYDVntLRzgzymlnb8W50xDWaaD5C2ZDks7ykluE9UuWUc7Z/cTEo3SB9sonYo3m/0RK1nVLvAkv4F55ShYSfivBvE+VVTcpVqMKk8ta3Wu/KFV4zTYmzVojfm0fldr6eWnDzeY4ZCnk9/uLZrS9TYhD/HyogaWadwU7UlyZhdOKK0pkclj3hMOxS27kgYmczL4gDJW3WOxj0D4Z062IOBNTizJNaPVjGc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,101 +175,36 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
+On 11/2/26 12:17, Lorenzo Stoakes (ARM) wrote:
+> On Mon, Nov 02, 2026 at 07:47:46AM +0100, David Hildenbrand (Arm) wrote:
+>> On 11/1/26 21:30, Andrew Morton wrote:
+>>> After that I need to have it whack away at selftests, shudder.
+>>
+>> I am not convinced yet that we want that for all tests, which is why I left it
+>> out. There is too much churn that's not really relevant for a component
+>> maintainer POV.
+>>
+>> I was rather thinking that maybe we'd want a MM selftest component (likely for
+>> the later MISC maintainer) that picks up the usual selftest churn. Component
+>> maintainers really only have to be CCed on functional things.
+> 
+> Hmm, but some of these tests are establishing important invariants. I wouldn't
+> want somebody fundamentally changing what the guard region tests do for
+> instance.
+> 
+> On the one hand the churn (especially now) is annoying, on the other hand I can
+> just ignore mail I don't care about.
 
+Well, as a listed maintainer you'd be expected to pick up these things.
 
-> On Nov 2, 2026, at 18:18, Mike Rapoport <rppt@kernel.org> wrote:
->=20
-> Hi Muchun,
+So I'd much rather have a dedicated selftest maintainer that takes care of these
+things.
 
-Hi,
+OFC we can still add these tests cases to the relevant sections; we just have to
+figure out who will pick up most simple changes.
 
-I didn't realized that I'm not using a plain text in my last mail.
-It=E2=80=99s my email client's fault. Let me email it again.
+-- 
+Cheers,
 
->=20
->> VMEMMAP_SPLIT_NO_TLB_FLUSH and VMEMMAP_REMAP_NO_TLB_FLUSH do not
->> describe fully independent choices. A split-only walk can defer the
->> PMD-split flush to a later global flush, and a remap-only walk can
->> defer the final remap flush. However, when a PMD split is followed
->> by PTE remapping, the split flush must happen before the PTEs are
->> changed, because stale large-page translations must not overlap with
->> new small-page translations that map different physical pages.
->>=20
->> Replace the two flags with a single VMEMMAP_DEFER_TLB_FLUSH flag. The
->> new name reflects that only safely batchable flushes are deferred. =
-Keep
->> split-only walks able to defer the flush, but force the split flush
->> whenever a remap_pte callback is present. Callers that batch HVO work
->> can still defer the final remap flush and issue their own global =
-flush.
->>=20
->> Current callers keep the same flushing behavior.
->>=20
->> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
->> Reviewed-by: Lance Yang <lance.yang@linux.dev>
->> Reviewed-by: Qi Zheng <qi.zheng@linux.dev>
->> ---
->> v2:
->> - Rename the unified flag to VMEMMAP_DEFER_TLB_FLUSH and update its
->>  comment (suggested by Qi Zheng)
->> - Update the commit message for the new flag name
->> - Collect Reviewed-by from Lance Yang and Qi Zheng
->> ---
->> mm/hugetlb_vmemmap.c | 23 +++++++++++++----------
->> 1 file changed, 13 insertions(+), 10 deletions(-)
->>=20
->> diff --git a/mm/hugetlb_vmemmap.c b/mm/hugetlb_vmemmap.c
->> index 4b73d6ec8dcea..63e899cfaac3a 100644
->> --- a/mm/hugetlb_vmemmap.c
->> +++ b/mm/hugetlb_vmemmap.c
->> @@ -42,10 +42,8 @@ struct vmemmap_remap_walk {
->> struct list_head *vmemmap_pages;
->>=20
->>=20
->> -/* Skip the TLB flush when we split the PMD */
->> -#define VMEMMAP_SPLIT_NO_TLB_FLUSH BIT(0)
->> -/* Skip the TLB flush when we remap the PTE */
->> -#define VMEMMAP_REMAP_NO_TLB_FLUSH BIT(1)
->> +/* Defer safely batchable TLB flushes to the caller. */
->> +#define VMEMMAP_DEFER_TLB_FLUSH BIT(0)
->> unsigned long flags;
->> };
->>=20
->> @@ -85,7 +83,12 @@ static int vmemmap_split_pmd(pmd_t *pmd, struct =
-page *head, unsigned long start,
->> 		/* Make pte visible before pmd. See comment in =
-pmd_install(). */
->> 		smp_wmb();
->> 		pmd_populate_kernel(&init_mm, pmd, pgtable);
->> -		if (!(walk->flags & VMEMMAP_SPLIT_NO_TLB_FLUSH))
->> +		/*
->> + 		 * Modern MMUs allow overlapping TLB entries with =
-different mapping
->> + 		 * granularities only if they map the same physical =
-address. So
->> + 		 * remapping must not proceed without first flushing the =
-TLB.
->=20
-> Are we certain that *all* modern MMUs for *all* architecures that=20
-> support hugetlb are fine with skipping TLB flush after a split?
-
-I think this is the case on architectures that currently enable
-ARCH_WANT_OPTIMIZE_HUGETLB_VMEMMAP. Of course, the point I want to
-further clarify is that the "skip" action here is not really a skip,
-but rather a "defer"=E2=80=94the TLB is subsequently flushed in a single =
-batch.
-
-Thanks for your review.
-
-Muchun.
-
->=20
-> AFAIU, x86::set_memory always flushes TLBs after a large leaf is =
-split.
->=20
-> --=20
-> Sincerely yours,
-> Mike.
-
-
+David
 
