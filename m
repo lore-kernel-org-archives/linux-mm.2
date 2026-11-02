@@ -1,123 +1,130 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B31E3606BA7F
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 15:38:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F0CB606BA7F
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 15:38:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=qPfGZsKv
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=N5d8raPn
 Received: by kanga.kvack.org (Postfix)
-	id B71B86B064E; Mon,  2 Nov 2026 10:37:20 -0500 (EST)
+	id 9013D6B0650; Mon,  2 Nov 2026 10:37:21 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B223F6B0650; Mon,  2 Nov 2026 10:37:20 -0500 (EST)
+	id 863C66B0651; Mon,  2 Nov 2026 10:37:21 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9E9626B0651; Mon,  2 Nov 2026 10:37:20 -0500 (EST)
+	id 6DEBA6B0652; Mon,  2 Nov 2026 10:37:21 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 777746B064E
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 10:37:20 -0500 (EST)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 14E1080156
+	by kanga.kvack.org (Postfix) with ESMTP id 34E636B0650
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 10:37:21 -0500 (EST)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id A271D80156
 	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 15:37:20 +0000 (UTC)
-X-FDA: 85390583040.14.AE67E28
-Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com [209.85.214.199])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 5DE53180006
+X-FDA: 85390583040.01.51E6A2E
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf16.hostedemail.com (Postfix) with ESMTP id B3AF8180007
 	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 15:37:18 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b=qPfGZsKv;
-	spf=pass (imf24.hostedemail.com: domain of 3LK7oagcKCIk8v2v05ut11tyr.p1zyv07A-zzx8npx.14t@flex--vipinsh.bounces.google.com designates 209.85.214.199 as permitted sender) smtp.mailfrom=3LK7oagcKCIk8v2v05ut11tyr.p1zyv07A-zzx8npx.14t@flex--vipinsh.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793633838;
-	b=xurvQINdlQXWjWN0lmZ9Ew+1sW3dMcW6xK9dOGeE8ZcCLvrUdR/iJxFTd4h8AiC0T8rHaX
-	weOmBf3kfDkCHF3tHOwYs0RcHtC9t1uz0/TwP16DudLqtFDLhbQpXyO3dFCKM5YE/TCcOJ
-	8EZLKYe6Smt6TYDI84wbYk4t4p3Xg4Y=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b=qPfGZsKv;
-	spf=pass (imf24.hostedemail.com: domain of 3LK7oagcKCIk8v2v05ut11tyr.p1zyv07A-zzx8npx.14t@flex--vipinsh.bounces.google.com designates 209.85.214.199 as permitted sender) smtp.mailfrom=3LK7oagcKCIk8v2v05ut11tyr.p1zyv07A-zzx8npx.14t@flex--vipinsh.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=N5d8raPn;
+	spf=pass (imf16.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1793633838;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Ms8itCh4PfqJV6uxhFhSbZGdhGd+gOvwo6FEHxIUACI=;
-	b=ZoT7awoY5Wr/zFrqocYYVJNmGH/As5XOmob4EylmcB8gAc+veLAPi//4fAJ0NSzw9PmnTM
-	4A0Vfmqp+aQ9XcRGl3tlZUCT8wles2km9P7Nx+9n5NNXOUq4qI5Wlg9Q3sdKs39t+W0Dny
-	s2lLIwky6DvY5iUaPFA9nR/DYRyYLcY=
-Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-2e93e2f72bfso53692895ad.3
-        for <linux-mm@kvack.org>; Mon, 02 Nov 2026 07:37:18 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1793633837; x=1794238637; darn=kvack.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Ms8itCh4PfqJV6uxhFhSbZGdhGd+gOvwo6FEHxIUACI=;
-        b=qPfGZsKvKZS5vSKobt7lvkx7Ts+uH/H8eQFypXlc8T1fyxarwmgL4poCAr7dXqfy3r
-         jaaNq1RyZdFPzU6CrNzl9AuocO86X6qPXxhQ6DYbZl0D2aF/6WdGnlDQ0TjSvVLyDEUy
-         s5QfR51hJc+k/9M5dyQXbVt+e9o+pKv0yOPIddNQ6a8SMpNImN3kqZZz+rEbDB/EPL6y
-         aLJfjvtseLk4HaKO5Z/sxRs17gYcOkZ3FCjIET/biADtXgz54La9JU5dEGvrFM4jpf2+
-         Q6HkIDgLslYWhADeHF5bWjiSEA2+uMZnTdMYWO7jGsZPNqkwf0XZ9ORJ/WsSe55H5Q10
-         copw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793633837; x=1794238637;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=Ms8itCh4PfqJV6uxhFhSbZGdhGd+gOvwo6FEHxIUACI=;
-        b=kBG+JwwuW8Bp/asAecZ++OurnnDQ+sZosDEqrjmYEcHZaV3VHycpxZ0Y6O/wCH4s57
-         WNPKloF1NMk8AHuDM3T0bN+R6scysSVO6S0dY+MflNG9lZZWBatqZSkAd/PknWg5+4qn
-         yPSSKlKyZPac6Ze6b0JcRKm+wcDWw8zmIY3jM93zjsYIDNe2LqZMMLzz9JQZ4J8/aUFJ
-         JXc77myhLuaQ96k2LIZq0a44ylP9sXflXdylxpERdEL1cFfa1WEUT8ge4fsNRJH/9x35
-         SGXk9B5N6t4tuO3LSC/3kiLYYDMrYtGyRF9e97EkUg8ECgs50fOpDLk0gII33v/2ajmX
-         ezng==
-X-Forwarded-Encrypted: i=1; AKwUvBx01GPTLMxpKPUhUwA9top0PKnDLxIaX0mAPhCiUE1hfdpcJ1xvZEsRej1CZiAR0sWdgqu11i0ObA==@kvack.org
-X-Gm-Message-State: APuU4Z/oCfQwaJtUgudDEpCDO5xhjCg8n69UwUD/UtpTlFIUAeczRqZY
-	7u1KLjf4XsRY0CYyeOFvoosJHkvZUhY9MCfEpCSXuZmoTeD+wsjeq+nmNZv1bu/1DcoGkrebySZ
-	LhvjxBnfyGw==
-X-Received: from plhs10.prod.google.com ([2002:a17:903:320a:b0:2e9:6b18:1067])
- (user=vipinsh job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:1b23:b0:2e5:db61:e5d4
- with SMTP id d9443c01a7336-2eb3653906emr104135025ad.62.1793633836956; Mon, 02
- Nov 2026 07:37:16 -0800 (PST)
-Date: Mon,  2 Nov 2026 07:36:45 -0800
-In-Reply-To: <20261102153656.1431701-1-vipinsh@google.com>
+	bh=MkQRjvaZWXm4tuezHj6GIBRblccuaWpNe7JtwA3svBQ=;
+	b=to10prCRjF2aUL8Eyx+AUYzzOf62HeDC8P7n1sOchtknqsCqBJZsdWVryRP9wyBVJmJRWv
+	q44sT+pQoyy99DxHHmcQ+aHBcYsNT5l5n+xQ3MrHasO6mY46lyUWCVeWtx9td0kZniTa9d
+	ZMqBr33T1YvfDgYr++9c4ulzgwCYgJA=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=N5d8raPn;
+	spf=pass (imf16.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793633838;
+	b=K/q0IyJQLpPdtXBcy1Q3kEOEMMKVMcyOnlmMeDsvHDeCaBGPku6YoalY/7icArE1b8v4ij
+	gVecgdjxf0KjUuhzZ3oF93NB8NTfs4iAcypi3lZWBKUE6ZMW76vAigGf27qX5rYYG5kTdd
+	njR6+pbladiyb69yYCm0e804uQcb9Ys=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 0E950444EA;
+	Mon,  2 Nov 2026 15:37:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 287BC1F00A16;
+	Mon,  2 Nov 2026 15:36:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793633837;
+	bh=MkQRjvaZWXm4tuezHj6GIBRblccuaWpNe7JtwA3svBQ=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc;
+	b=N5d8raPng3UsswrfEfRD/6Yf+jypyuu/YJ4VCAay1GiuUsmcXR0Y+Fa7sMVAYeevV
+	 WM7BUZsbSmL4Fu5gyoWA16hCX0R0Hfuk4/6rrpwUW/n5HR1xQ9hkyJzb1TV8UUEY39
+	 sq81QZhsVNtwBY1vJDzc8qXh8JzgLKmWgem0vI3jtE3Fhmef11/+wBMp2eZbVJNCDl
+	 FVALapmecAgWsUbKfgsbVhfxmQ7Wf8WjCjAYtzp3O7fVon30zJQFMARHQKCK9TYt4X
+	 Gn6a+T3+o2m68mj19GQb8PAki38MHMtf0oH5fqX+2eADrgXwfXQgFFcusidzk7J6TX
+	 G2CFGyyqTA8eg==
+From: Christian Brauner <brauner@kernel.org>
+Date: Mon, 02 Nov 2026 16:15:57 +0100
+Subject: [PATCH RFC 4/5] proc: rename ->proc_read() and ->proc_read_iter()
 X-Archived-By: <archiver.kernel.org>
-Mime-Version: 1.0
-References: <20261102153656.1431701-1-vipinsh@google.com>
-X-Mailer: git-send-email 2.56.0.317.g454f8302e1-goog
-Message-ID: <20261102153656.1431701-17-vipinsh@google.com>
-Subject: [PATCH v6 16/27] vfio: selftests: Build liveupdate library in VFIO selftests
-From: Vipin Sharma <vipinsh@google.com>
-To: kexec@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	linux-doc@vger.kernel.org, kvm@vger.kernel.org, linux-mm@kvack.org, 
-	linux-kselftest@vger.kernel.org, linux-pci@vger.kernel.org
-Cc: ajayachandra@nvidia.com, alex@shazbot.org, amastro@fb.com, 
-	ankita@nvidia.com, apopple@nvidia.com, bhelgaas@google.com, chrisl@kernel.org, 
-	christian.koenig@amd.com, corbet@lwn.net, dmatlack@google.com, 
-	graf@amazon.com, jacob.pan@linux.microsoft.com, jgg@nvidia.com, jgg@ziepe.ca, 
-	jrhilke@google.com, julianr@linux.ibm.com, kees@kernel.org, 
-	kevin.tian@intel.com, leon@kernel.org, leonro@nvidia.com, lukas@wunner.de, 
-	mattev@meta.com, michal.winiarski@intel.com, parav@nvidia.com, 
-	pasha.tatashin@soleen.com, praan@google.com, pratyush@kernel.org, 
-	rananta@google.com, rdunlap@infradead.org, rientjes@google.com, 
-	rodrigo.vivi@intel.com, rppt@kernel.org, saeedm@nvidia.com, 
-	schnelle@linux.ibm.com, skhan@linuxfoundation.org, skhawaja@google.com, 
-	vipinsh@google.com, vivek.kasireddy@intel.com, witu@nvidia.com, 
-	yanjun.zhu@linux.dev, yi.l.liu@intel.com
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20261102-work-procfs-cleanup-v1-4-c40014bc12f5@kernel.org>
+References: <20261102-work-procfs-cleanup-v1-0-c40014bc12f5@kernel.org>
+In-Reply-To: <20261102-work-procfs-cleanup-v1-0-c40014bc12f5@kernel.org>
+To: linux-fsdevel@vger.kernel.org
+Cc: Linus Torvalds <torvalds@linux-foundation.org>, 
+ Jann Horn <jannh@google.com>, Josef Bacik <josef@toxicpanda.com>, 
+ Chris Mason <mason@kernel.org>, Jeff Layton <jlayton@kernel.org>, 
+ NeilBrown <neil@brown.name>, Eric Dumazet <edumazet@kernel.org>, 
+ Thomas Gleixner <tglx@kernel.org>, Al Viro <viro@zeniv.linux.org.uk>, 
+ Jonathan Corbet <corbet@lwn.net>, Christoph Hellwig <hch@lst.de>, 
+ Greg Kroah-Hartman <gregkh@suse.de>, 
+ Joel Granados <joel.granados@kernel.org>, Kees Cook <kees@kernel.org>, 
+ Jan Kara <jack@suse.cz>, Jan Kara <jack@suse.com>, 
+ linux-kernel@vger.kernel.org, linux-nfs@vger.kernel.org, 
+ linux-acpi@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+ linux-s390@vger.kernel.org, linux-scsi@vger.kernel.org, 
+ linux-um@lists.infradead.org, linux-wireless@vger.kernel.org, 
+ linuxppc-dev@lists.ozlabs.org, netdev@vger.kernel.org, 
+ ntfs3@lists.linux.dev, platform-driver-x86@vger.kernel.org, 
+ coreteam@netfilter.org, kexec@lists.infradead.org, 
+ linux-pci@vger.kernel.org, linux-sound@vger.kernel.org, 
+ netfilter-devel@vger.kernel.org, dri-devel@lists.freedesktop.org, 
+ ibm-acpi-devel@lists.sourceforge.net, jfs-discussion@lists.sourceforge.net, 
+ linux-alpha@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+ linux-cifs@vger.kernel.org, linux-fbdev@vger.kernel.org, 
+ linux-hwmon@vger.kernel.org, linux-mm@kvack.org, linux-sh@vger.kernel.org, 
+ linux-usb@vger.kernel.org, samba-technical@lists.samba.org, 
+ sparclinux@vger.kernel.org, linux-m68k@lists.linux-m68k.org, 
+ linux-doc@vger.kernel.org, linux-serial@vger.kernel.org, 
+ linux-atm-general@lists.sourceforge.net, Takashi Iwai <tiwai@suse.de>, 
+ linux-input@vger.kernel.org, linux-raid@vger.kernel.org, 
+ linux-ext4@vger.kernel.org, linux-modules@vger.kernel.org, 
+ linux-debuggers@vger.kernel.org, 
+ "Christian Brauner (Amutable)" <brauner@kernel.org>, 
+ Chuck Lever <cel@kernel.org>
+X-Mailer: b4 0.17-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=9255; i=brauner@kernel.org;
+ h=from:subject:message-id; bh=LiuenQB/cw1jutoK/+2XN6spwsgEUsgUo+MfZZ5B3rY=;
+ b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS9WJlT4nDmwwaZ4MPi7y7HTLWT2yy0SGjlkrpEyzOXf
+ 5j+WJVe1FHKwiDGxSArpsji0G4SLrecp2KzUaYGzBxWJpAhDFycAjARvShGho+MfBYBi1ZMC9JP
+ Son9PcXCOjZk/kJLH7FSxbfvt1Q4X2X4Z1mltufL22qVj4zPQrZu1u8WtJtZ97XhY+dhz0QLh8f
+ C7AA=
+X-Developer-Key: i=brauner@kernel.org; a=openpgp;
+ fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: B3AF8180007
+X-Stat-Signature: irzfefmocf8zx1skg71kmd7nsa8mb9q9
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 5DE53180006
-X-Stat-Signature: 9ds784jfue8eoe4mzrfftdpr6n4kxm46
-X-Rspamd-Server: rspam01
-X-Spam-Status: No, score=-26.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT,USER_IN_DEF_DKIM_WL autolearn=unavailable
-	autolearn_force=no version=4.0.1
-X-HE-Tag: 1793633838-864445
-X-HE-Meta: U2FsdGVkX18nZbMsfOI2jBXUIxMuihK5lkLdpsI52TmQt5Ji9zTlJV1GFIFYEiyFmhX9ntqww0p954e2OPmWGRGBnOcTKBFpVBMnsGXs0lNM8KxdDou7pXwd4kV3gxnh440vrqBU8xT9eJQd3mwu4xMOjWXMqxTE0Ds63b5GEqWg5AjySy1Cx7vqfhKI0xjEnTvTfXgzI5vkllyH35Ek9Sx0N11bBo64TzqkVMZjy6TEY2ae7w4HY6V/gBps3t3c/szpvR6RCdrQuqnNiQWwiUaPWkeSi7toK+jDHPa0z4DNcGnm6i18pH4aESFUGRI2HRfZb8x5pqqz93SwDUnjs9AhyULkHO2XafkzkcmjVl9rFYOieHWuAowfvaptwAUfkUWmpL7r925Qz6A/BXCmKeGSxHGsJfSwINnLyBJ+1GEBPsbecbVKoHH09phSr5d1nKMPfVzk9D3SUgw+x0AhT8LfXzAT1CBXwmHaO6nBtCac5602S9N4oDBjlGo630AIYtHUUwH0sGJ2OBBE9awb/V461m/+pZOxF5VfZrEXcd+/Ea68lRmlsxZg0RGoD2N+Cf5idR0Y+CMdBNLAnB9vaTyOVIQy6PRuhv9Y1j7Mv/+UPA6R0c96pjyc58zmzK4GnkCpZ4Zm47mrgR+Zl1ikf3WDEcdrfOrGD9t+MMViUwFej56H7lMZG/HCEK27UQXVDyhYvbdJSrlmFvmcnXzfDVgSPDak/g6RA0FtpxhVK9IfrnQxPEfPhwTJJu/g/EUQtXB9PNrmDE72KdM+NMZdJwWWWaK2wmtW4ydXCf9Udg9voDB+N3aS/qyllPdnl7vZ/QsPOycW0OWRtFvyebbS4C9HkeN6B2AYud22efId9BJkJMLc5yNSfrgh7nR5v/2GUAsAcI+PMgn7f0rErwuaJBKz3oztrHfmzrthMfvRUgI+3G2AahHrTmLZDww2sZ1tWqTTh9uS6t2LNTjIiFT
- 6IlVzd/s
- f7jLFZuCqIrHt9HhI/eahAk1CXnRlKk3yWCwy6mdiNPB8E98HAFNUF/A1bBbhrW5Ua46DZ8q5sd7eg+iFznP8m1lL5KxBMNXDEK7+FJIzV/ZmLvxwIX6Kbhjh2U3d0+uGrzCaUFqbQHyR5WuAKiq8DqcC0XMeRb1nG0OQ5/tEEcGCtSpYEtlwjuICFEulfhsN643LNeXqKmHd6aWBt4PaNHmSDQm6R/kdObbcxdXYhy46uQp23xUsmPLUQtcLhp8uk6BUu3B7oUV94vpQfuLGEutoIUUQJ81JfUUQGLX1GMYz7LtfQE2+COp6pqvKwqSr0kn33jpjyHBBtOZz8SiLfCgQ1XbvZ7+FB0pgMlPDdSb75RE/yImOkd8lGToJRAIB+2pXjzKbzQDHWoT/40L7VXP2M7p666nf0ZWB5D1jlAf/RtV+L3742659nJShSCRDAC7PEJEpkK2lUzQlUtQ8N9ZvCXXm0AMwkChbVh2DhUmHVkGuk+acZpNdsO/bz8Rj1st90RDANkqAotmLI6xqXovgeMUBVfptEYe1Ocro4f3YIM0vMB7EGUZ07ivLg7mJesJYFVDcnwIgJdSeKzvd3nlb+g==
+	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
+	version=4.0.1
+X-HE-Tag: 1793633838-549358
+X-HE-Meta: U2FsdGVkX19Rr7sBJZvjHPJNie908/ECP9b1M3/SVvSNbJZgr8/bTdY5xGwZClTTVNhosQkkEaNxBLjdHv7FNzLoqGGvRJbxwD0MaGAGTC4SoFq4PjdShCFqI+ufW5Om+La9hji72Q662RCML5xl+RhraUqULW2lCyLt28BeVvmtzo/1H397FDcRNRqbLFZJnWG+OP8pirey0k5B0+5icT9/MUBlcY0jMWPdbPGGVW9Uy092XS24XlptfuJt6OFWgzgCOWNbZI6qdD0qgWDZO5eiWoP0y6+yo3fjLbx5Td2+C/JT3sR8M7Byy98JCoj1OxlrWe3IM9OjIRJ2dqp7nOEas2vT+k6hvfkjuhNy8fMF4F/gByjJtwahA7Aw1zzRFipTKhNdl40/0kafR8pleXz33vFavPG1/h1DPlzgUmxxFrsYi5+0ilQaJy2aEIrWN27/oDKkm2oyG5DbY6krJWY8Ady/5QtZ1AI82l2CHpOC3JEdGG3b/J+PolimSIyB8W2f6AmTl90yenPJDXDa1wz7hEf7k0ctxe/GGv0XihdNS8yz/deausbhq0CynBdIwO9MSlBxnV9mQYp1HN28HdHS2/jW8oQCPRqTuvYNHtK1ipUeIT/BkTWBO/l/+KdEnLMG9z0GM3+tV2rwXM/FxWY+WTPpSlpG/JyHwEs0PoQN0+Gk0MxYFKePSwHq6jZMgGE/TAV64cFJyFeC4lSqYGM9vApAZLPBAGDkgoVZ6xHURJfKM01uOLzLiyYZplWf2EWM8pErZByOYlVXM8vGmMo6LAP6rmhi3MMx26uYJEojuCD1A83Fjkj3O7mFEPqr3sR8QmmKpcv/ZRt/ve6fdnQMF0lwEKlpieUlRvocoLTv+zQLy25io4qKRad/+thUd966yNDckizcuxWWyqukr7r47NaBBG1mezupDxvmvgfzPQ1jdl76F+RL8q4RdovIQV82ukBnZMeXeD/5Jb1
+ 5faOkKJL
+ /U2G95oalbbuuCBE2ojrBq/KLvZu4zMeFi8qdaqeSTkt6Wsl6YMqirMpNI1IjsOtao0GlmBz+Wx7cuDkd65lTKKvjrxMaoANRsjN4aFig56fjEEYaqL0gRwCbf/ccYsSnwb85cfOfIkuf+D1tTaxzVMQtGL3eMzexJXrIYfXKo7sw/E+EmdbbM611ZkSk6yaHR1UQvfvodZ8U9kXUZtD/Nl0WBmUy0VLXkLDklCOO8mfVaRpJUsR95OdC4qj7DjJaIZbb2RDDjzLQyeyRuxWAnZN9N+1GB6Uqcd91T8XAnrauserC9fAJx2jbg+oXoPIaOOx8PrvDwMuT5nQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -126,51 +133,240 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Import and build liveupdate selftest library in VFIO selftests.
+Only entries that are never removed may implement ->proc_read() or
+->proc_read_iter() now, and PROC_ENTRY_PERMANENT is 0 in modules. But a
+module that sets one of them still builds fine and only finds out when
+registering its entry fails with a warning.
 
-It allows using liveupdate ioctls in VFIO selftests
+So rename them to ->proc_permanent_read() and
+->proc_permanent_read_iter(). A module that sets one of them doesn't
+build anymore and the name says which entries may use them. Hiding the
+members from modules behind #ifdef MODULE instead would give modules a
+different layout of struct proc_ops than the rest of the kernel.
 
-Co-developed-by: David Matlack <dmatlack@google.com>
-Signed-off-by: David Matlack <dmatlack@google.com>
-Signed-off-by: Vipin Sharma <vipinsh@google.com>
+While at it, rename PROC_ENTRY_proc_read_iter and
+pde_has_proc_read_iter() to match.
+
+No functional changes.
+
+Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 ---
- tools/testing/selftests/vfio/Makefile | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ fs/proc/generic.c       | 15 +++++++++------
+ fs/proc/inode.c         |  9 +++++----
+ fs/proc/internal.h      |  5 +++--
+ fs/proc/kcore.c         |  2 +-
+ fs/proc/kmsg.c          |  2 +-
+ fs/proc/page.c          |  6 +++---
+ include/linux/proc_fs.h | 10 ++++++----
+ kernel/profile.c        |  2 +-
+ 8 files changed, 29 insertions(+), 22 deletions(-)
 
-diff --git a/tools/testing/selftests/vfio/Makefile b/tools/testing/selftests/vfio/Makefile
-index 2c32c48db509..55e1e1843090 100644
---- a/tools/testing/selftests/vfio/Makefile
-+++ b/tools/testing/selftests/vfio/Makefile
-@@ -21,6 +21,7 @@ TEST_FILES += scripts/setup.sh
+diff --git a/fs/proc/generic.c b/fs/proc/generic.c
+index 7c8def4ed9fc..4bcec5a29b5f 100644
+--- a/fs/proc/generic.c
++++ b/fs/proc/generic.c
+@@ -444,7 +444,8 @@ static int pde_set_flags(struct proc_dir_entry *pde)
+ 	if (proc_ops->proc_flags & PROC_ENTRY_PERMANENT)
+ 		pde->flags |= PROC_ENTRY_PERMANENT;
+ 	/* These copy to userspace and only an entry that can't go away may. */
+-	if (WARN_ON_ONCE((proc_ops->proc_read || proc_ops->proc_read_iter) &&
++	if (WARN_ON_ONCE((proc_ops->proc_permanent_read ||
++			  proc_ops->proc_permanent_read_iter) &&
+ 			 !pde_is_permanent(pde)))
+ 		return -EINVAL;
+ 	if (proc_ops->proc_seq_ops) {
+@@ -457,7 +458,8 @@ static int pde_set_flags(struct proc_dir_entry *pde)
+ 	}
+ 	if (pde_is_seq_file(pde)) {
+ 		/* procfs reads and seeks through the seq_file itself */
+-		if (WARN_ON_ONCE(proc_ops->proc_read || proc_ops->proc_read_iter ||
++		if (WARN_ON_ONCE(proc_ops->proc_permanent_read ||
++				 proc_ops->proc_permanent_read_iter ||
+ 				 proc_ops->proc_lseek))
+ 			return -EINVAL;
+ 		/* and frees it, see pde_seq_release() */
+@@ -467,8 +469,8 @@ static int pde_set_flags(struct proc_dir_entry *pde)
+ 			return -EINVAL;
+ 		pde->flags |= PROC_ENTRY_proc_lseek;
+ 	} else {
+-		if (proc_ops->proc_read_iter)
+-			pde->flags |= PROC_ENTRY_proc_read_iter;
++		if (proc_ops->proc_permanent_read_iter)
++			pde->flags |= PROC_ENTRY_proc_permanent_read_iter;
+ 		if (proc_ops->proc_lseek)
+ 			pde->flags |= PROC_ENTRY_proc_lseek;
+ 	}
+@@ -479,8 +481,9 @@ static int pde_set_flags(struct proc_dir_entry *pde)
+ 			pde->flags |= PROC_ENTRY_SHORT_WRITES;
+ 	}
+ 	if (proc_ops->proc_read_buf) {
+-		if (WARN_ON_ONCE(pde_is_seq_file(pde) || proc_ops->proc_read ||
+-				 proc_ops->proc_read_iter))
++		if (WARN_ON_ONCE(pde_is_seq_file(pde) ||
++				 proc_ops->proc_permanent_read ||
++				 proc_ops->proc_permanent_read_iter))
+ 			return -EINVAL;
+ 		pde->flags |= PROC_ENTRY_proc_read_buf;
+ 		pde->read_size = proc_ops->proc_read_size ?: PAGE_SIZE;
+diff --git a/fs/proc/inode.c b/fs/proc/inode.c
+index a7f8818b0b74..16d8f00bfc26 100644
+--- a/fs/proc/inode.c
++++ b/fs/proc/inode.c
+@@ -464,7 +464,7 @@ static ssize_t proc_reg_read_iter(struct kiocb *iocb, struct iov_iter *iter)
+ 	if (pde_has_proc_read_buf(pde))
+ 		return pde_read_buf(pde, iocb, iter);
+ 	/* only permanent entries have one, see pde_set_flags() */
+-	return pde->proc_ops->proc_read_iter(iocb, iter);
++	return pde->proc_ops->proc_permanent_read_iter(iocb, iter);
+ }
  
- include ../lib.mk
- include lib/libvfio.mk
-+include ../liveupdate/lib/libliveupdate.mk
+ static ssize_t proc_reg_read(struct file *file, char __user *buf, size_t count, loff_t *ppos)
+@@ -475,9 +475,9 @@ static ssize_t proc_reg_read(struct file *file, char __user *buf, size_t count,
+ 	 * Only permanent entries have one, see pde_set_flags(). Anything else
+ 	 * might be gone along with its ->proc_ops.
+ 	 */
+-	if (!pde_is_permanent(pde) || !pde->proc_ops->proc_read)
++	if (!pde_is_permanent(pde) || !pde->proc_ops->proc_permanent_read)
+ 		return -EIO;
+-	return pde->proc_ops->proc_read(file, buf, count, ppos);
++	return pde->proc_ops->proc_permanent_read(file, buf, count, ppos);
+ }
  
- CFLAGS += -I$(top_srcdir)/tools/include
- CFLAGS += -MD
-@@ -29,14 +30,17 @@ CFLAGS += $(EXTRA_CFLAGS)
+ /*
+@@ -880,7 +880,8 @@ struct inode *proc_get_inode(struct super_block *sb, struct proc_dir_entry *de)
+ 		inode->i_op = de->proc_iops;
+ 		if (pde_is_seq_file(de))
+ 			inode->i_fop = &proc_seq_file_ops;
+-		else if (pde_has_proc_read_iter(de) || pde_has_proc_read_buf(de))
++		else if (pde_has_proc_permanent_read_iter(de) ||
++			 pde_has_proc_read_buf(de))
+ 			inode->i_fop = &proc_iter_file_ops;
+ 		else
+ 			inode->i_fop = &proc_reg_file_ops;
+diff --git a/fs/proc/internal.h b/fs/proc/internal.h
+index 93d20995b6fe..f4677815ebfa 100644
+--- a/fs/proc/internal.h
++++ b/fs/proc/internal.h
+@@ -89,9 +89,10 @@ static inline void pde_make_permanent(struct proc_dir_entry *pde)
+ 	pde->flags |= PROC_ENTRY_PERMANENT;
+ }
  
- LDFLAGS += -pthread
+-static inline bool pde_has_proc_read_iter(const struct proc_dir_entry *pde)
++static inline bool
++pde_has_proc_permanent_read_iter(const struct proc_dir_entry *pde)
+ {
+-	return pde->flags & PROC_ENTRY_proc_read_iter;
++	return pde->flags & PROC_ENTRY_proc_permanent_read_iter;
+ }
  
--$(TEST_GEN_PROGS): $(OUTPUT)/%: $(OUTPUT)/%.o $(LIBVFIO_O)
--	$(CC) $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) $< $(LIBVFIO_O) $(LDLIBS) -o $@
-+LIBS_O := $(LIBVFIO_O)
-+LIBS_O += $(LIBLIVEUPDATE_O)
-+
-+$(TEST_GEN_PROGS): $(OUTPUT)/%: $(OUTPUT)/%.o $(LIBS_O)
-+	$(CC) $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) $< $(LIBS_O) $(LDLIBS) -o $@
+ static inline bool pde_has_proc_lseek(const struct proc_dir_entry *pde)
+diff --git a/fs/proc/kcore.c b/fs/proc/kcore.c
+index 390547b992ac..5584b2642f2f 100644
+--- a/fs/proc/kcore.c
++++ b/fs/proc/kcore.c
+@@ -664,7 +664,7 @@ static int release_kcore(struct inode *inode, struct file *file)
  
- TEST_GEN_PROGS_O = $(patsubst %, %.o, $(TEST_GEN_PROGS))
- $(TEST_GEN_PROGS_O): $(OUTPUT)/%.o: %.c
- 	$(CC) $(CFLAGS) $(CPPFLAGS) $(TARGET_ARCH) -c $< -o $@
+ static const struct proc_ops kcore_proc_ops = {
+ 	.proc_flags	= PROC_ENTRY_PERMANENT,
+-	.proc_read_iter	= read_kcore_iter,
++	.proc_permanent_read_iter = read_kcore_iter,
+ 	.proc_open	= open_kcore,
+ 	.proc_release	= release_kcore,
+ 	.proc_lseek	= default_llseek,
+diff --git a/fs/proc/kmsg.c b/fs/proc/kmsg.c
+index 2fc92a13f9f8..28b40ffccdfb 100644
+--- a/fs/proc/kmsg.c
++++ b/fs/proc/kmsg.c
+@@ -48,7 +48,7 @@ static __poll_t kmsg_poll(struct file *file, poll_table *wait)
  
--TEST_DEP_FILES = $(patsubst %.o, %.d, $(TEST_GEN_PROGS_O) $(LIBVFIO_O))
-+TEST_DEP_FILES = $(patsubst %.o, %.d, $(TEST_GEN_PROGS_O) $(LIBS_O))
- -include $(TEST_DEP_FILES)
+ static const struct proc_ops kmsg_proc_ops = {
+ 	.proc_flags	= PROC_ENTRY_PERMANENT,
+-	.proc_read	= kmsg_read,
++	.proc_permanent_read = kmsg_read,
+ 	.proc_poll	= kmsg_poll,
+ 	.proc_open	= kmsg_open,
+ 	.proc_release	= kmsg_release,
+diff --git a/fs/proc/page.c b/fs/proc/page.c
+index 6aa99e42ec22..6a68f392453c 100644
+--- a/fs/proc/page.c
++++ b/fs/proc/page.c
+@@ -133,7 +133,7 @@ static ssize_t kpagecount_read(struct file *file, char __user *buf,
+ static const struct proc_ops kpagecount_proc_ops = {
+ 	.proc_flags	= PROC_ENTRY_PERMANENT,
+ 	.proc_lseek	= mem_lseek,
+-	.proc_read	= kpagecount_read,
++	.proc_permanent_read = kpagecount_read,
+ };
  
- EXTRA_CLEAN += $(TEST_GEN_PROGS_O) $(TEST_DEP_FILES)
+ 
+@@ -259,7 +259,7 @@ static ssize_t kpageflags_read(struct file *file, char __user *buf,
+ static const struct proc_ops kpageflags_proc_ops = {
+ 	.proc_flags	= PROC_ENTRY_PERMANENT,
+ 	.proc_lseek	= mem_lseek,
+-	.proc_read	= kpageflags_read,
++	.proc_permanent_read = kpageflags_read,
+ };
+ 
+ #ifdef CONFIG_MEMCG
+@@ -271,7 +271,7 @@ static ssize_t kpagecgroup_read(struct file *file, char __user *buf,
+ static const struct proc_ops kpagecgroup_proc_ops = {
+ 	.proc_flags	= PROC_ENTRY_PERMANENT,
+ 	.proc_lseek	= mem_lseek,
+-	.proc_read	= kpagecgroup_read,
++	.proc_permanent_read = kpagecgroup_read,
+ };
+ #endif /* CONFIG_MEMCG */
+ 
+diff --git a/include/linux/proc_fs.h b/include/linux/proc_fs.h
+index 17516b064922..4db79f1ab97e 100644
+--- a/include/linux/proc_fs.h
++++ b/include/linux/proc_fs.h
+@@ -18,7 +18,8 @@ enum {
+ 	/*
+ 	 * All /proc entries using this ->proc_ops instance are never removed.
+ 	 * procfs calls into them without pinning them, so they may copy to
+-	 * userspace themselves through ->proc_read() or ->proc_read_iter().
++	 * userspace themselves through ->proc_permanent_read() or
++	 * ->proc_permanent_read_iter().
+ 	 *
+ 	 * If in doubt, ignore this flag.
+ 	 */
+@@ -28,7 +29,7 @@ enum {
+ 	PROC_ENTRY_PERMANENT		= 1U << 0,
+ #endif
+ 
+-	PROC_ENTRY_proc_read_iter	= 1U << 1,
++	PROC_ENTRY_proc_permanent_read_iter = 1U << 1,
+ 	PROC_ENTRY_proc_lseek		= 1U << 3,
+ 	PROC_ENTRY_proc_seq_ops		= 1U << 4,
+ 	PROC_ENTRY_proc_show		= 1U << 5,
+@@ -78,8 +79,9 @@ struct proc_ops {
+ 	 * These two are only for PROC_ENTRY_PERMANENT entries. Everything else
+ 	 * uses ->proc_read_buf().
+ 	 */
+-	ssize_t	(*proc_read)(struct file *, char __user *, size_t, loff_t *);
+-	ssize_t (*proc_read_iter)(struct kiocb *, struct iov_iter *);
++	ssize_t	(*proc_permanent_read)(struct file *, char __user *, size_t,
++				       loff_t *);
++	ssize_t (*proc_permanent_read_iter)(struct kiocb *, struct iov_iter *);
+ 	/*
+ 	 * mandatory unless nonseekable_open() or equivalent is used, procfs
+ 	 * seeks seq_file entries itself
+diff --git a/kernel/profile.c b/kernel/profile.c
+index 6f2441dd4a00..72e30bb30396 100644
+--- a/kernel/profile.c
++++ b/kernel/profile.c
+@@ -207,7 +207,7 @@ static ssize_t write_profile(struct file *file, char *buf, size_t count,
+ 
+ static const struct proc_ops profile_proc_ops = {
+ 	.proc_flags	= PROC_ENTRY_PERMANENT,
+-	.proc_read	= read_profile,
++	.proc_permanent_read = read_profile,
+ 	.proc_write_buf	= write_profile,
+ 	.proc_lseek	= default_llseek,
+ };
+
 -- 
-2.56.0.317.g454f8302e1-goog
+2.53.0
 
 
