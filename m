@@ -1,75 +1,74 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE1A6607F12B
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 15:20:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86A536088B1C
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 15:21:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=gr5d/R5Q
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=DbhUJFDn
 Received: by kanga.kvack.org (Postfix)
-	id 02D7B6B05C2; Mon,  2 Nov 2026 10:20:54 -0500 (EST)
+	id 9F2E66B05C1; Mon,  2 Nov 2026 10:21:15 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 004B66B05C4; Mon,  2 Nov 2026 10:20:53 -0500 (EST)
+	id 9A3296B0617; Mon,  2 Nov 2026 10:21:15 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E35926B0617; Mon,  2 Nov 2026 10:20:53 -0500 (EST)
+	id 8B9026B0618; Mon,  2 Nov 2026 10:21:15 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id BE96D6B05C2
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 10:20:53 -0500 (EST)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 57A9DA0169
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 15:20:53 +0000 (UTC)
-X-FDA: 85390541586.22.D24C070
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 98D821A000D
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 15:20:50 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="gr5d/R5Q";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf19.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 690F66B05C1
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 10:21:15 -0500 (EST)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 05DE714017F
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 15:21:15 +0000 (UTC)
+X-FDA: 85390542510.04.4DC7941
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 35C6740014
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 15:21:13 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DbhUJFDn;
+	spf=pass (imf04.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793632873;
+	b=8DIA4+p/2TJR56Qyb8DyHZhsVzQbOXujTkwEY2/BApqGjLNLVGTaQIznQRcks73NJ+lWNN
+	raiOXk5nIoLeXp4KttvYvKxRS40xNw2E42aoWsSgWC3oP/JstcHk1j+NgOMHO6W5jbXEqc
+	yHhTKANAiluh0rmfRRloJqED44nuqTo=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DbhUJFDn;
+	spf=pass (imf04.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793632850;
+	s=arc-20220608; t=1793632873;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vVBne5gselOZS7qaEMuXaEvBAuXwNF+VXq/xDlGRpv8=;
-	b=n+hpB3yIuEKlR+GccAImiinBnkX4Ily/6ggtSvfqr+DbkfUoG25o6gqnW9DFN+HNuvPsJw
-	jgJyAx3/gQIyh7E2t/5++NGmLkaw8JxkluRoqATmTOCG1gYYF3oKMDLvSwc398y0OMDn9A
-	hu7jR4VyMZhpiPJXqF5fT0OaK/5vSic=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="gr5d/R5Q";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf19.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793632850;
-	b=uDhZwrHJUvzIYvtp92/F6VP884433hD13MpjIeoMoVU78oAOUBKxe/J1IwJ4aK1TokZtsj
-	vRT4PNExnpK4G38MsMXkCfGbycpAsspjP4/pR0rESKzcy4nlQnp7ajIi+cRFTxIgoZ1jpT
-	LZKETH+Kx+IVNLLB3D8W/8fQ1Ue496U=
+	bh=Qv+c+5TDu4Q/teEIdzSpkmAL+eEuuwslAw9ahtaZFXA=;
+	b=5ZXO/t1KH3TZZ2O3I/j47rbwr3VqG6bMwr1en/ibtLYIdqqrQjjxwiqmJe/7R0FvMD821T
+	g9KlqONnCAVEkwyObbLhSYBwsE6iZ9jE+tCrajsmT/Tw22ykk/4RHuUDeX4KBiJyrc1KWa
+	LlFkkb34L26Lw2Wgy8fTnQ7dtnxAEHk=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 26A9060623;
-	Mon,  2 Nov 2026 15:20:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74D411F00A16;
-	Mon,  2 Nov 2026 15:20:33 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 8D6D94132F;
+	Mon,  2 Nov 2026 15:21:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D31E81F00A1A;
+	Mon,  2 Nov 2026 15:20:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793632849;
-	bh=vVBne5gselOZS7qaEMuXaEvBAuXwNF+VXq/xDlGRpv8=;
+	s=k20260515; t=1793632872;
+	bh=Qv+c+5TDu4Q/teEIdzSpkmAL+eEuuwslAw9ahtaZFXA=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=gr5d/R5QulyTLxLD3/MAYMmLMYbT35xK6aId1t52Eow8QSEABCm8rzX4k2Z5I8Uv+
-	 UD3L6bdcCyDENgjDUaRYaIjBpv9KifSo7KdKtRyWAroMom4KY5WF+Ln9EUR/OU8bIw
-	 cfIbJFU0gkdeaQcslP0HV9lJfr+zxpqlFkl/tfWZ6xjZPkExH482FMNrcXoifnZDpb
-	 BBMpFNPyNBOQcsBD+Cr7KjsIhvpuH/wA12Pa4HnVFFk/4VUZAo7SAy5riWBb7UiSlV
-	 k2iUhU3k2r67F3NXxANMDiQuT8gkSLpR87qwXkRQSfThiB+qYgkMJbi1jVvEbOj1vw
-	 BbGpsyobrAFbw==
+	b=DbhUJFDnO++WjegqV6sjnyS3otcl2/2sebZdDMTR095f4hFRZkMTGJyBlkuj94zIa
+	 oSP3D1Ac7j4cfaoTs/YOZ/3HD4OntLtKpa0LwpNCh1+JLKi4UfYnGiwu0CoVUtic+M
+	 /EOwTs/jPaQwpILuGPGbb/lTH5xfB3ImCVRAHdrO8lvkKmi+OSz4QkxvnUntYfmDLy
+	 qsb4GyhuZqoOiqLcQKRlgK+Q8Z7rBL8ybky3VU6Bckc3xoq03qdnURR13NFJolGiGN
+	 NMeI9G1ZGK8/Pa0iYX2UzAKoC/oKZ8aXViZ1ZRVWwt4iYelFx979KqrM1W3LPfQRZF
+	 /OPD4WdSZcZVw==
 From: Christian Brauner <brauner@kernel.org>
-Date: Mon, 02 Nov 2026 16:07:14 +0100
-Subject: [PATCH RFC 04/27] lockd: let procfs copy out reads of
- nlm_end_grace
+Date: Mon, 02 Nov 2026 16:07:15 +0100
+Subject: [PATCH RFC 05/27] nfsd: factor out setting up the exports seq_file
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261102-work-procfs-fs-v1-4-d09a996317b3@kernel.org>
+Message-Id: <20261102-work-procfs-fs-v1-5-d09a996317b3@kernel.org>
 References: <20261102-work-procfs-fs-v1-0-d09a996317b3@kernel.org>
 In-Reply-To: <20261102-work-procfs-fs-v1-0-d09a996317b3@kernel.org>
 To: linux-fsdevel@vger.kernel.org
@@ -105,27 +104,27 @@ Cc: Linus Torvalds <torvalds@linux-foundation.org>,
  "Christian Brauner (Amutable)" <brauner@kernel.org>, 
  Chuck Lever <cel@kernel.org>
 X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1257; i=brauner@kernel.org;
- h=from:subject:message-id; bh=eZ2kMMEIgx0JCcy46KFAm+0lqPvZbTWW97pZVUITElw=;
- b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS9WG74O2799hNsR6IfK5pKSQjHJsw/YPHc0p7/jSlHm
- OeZhvliHaUsDGJcDLJiiiwO7Sbhcst5KjYbZWrAzGFlAhnCwMUpABPZ/ImR4eZSzSvCL/kZRC1V
- N2gkpD259yrLxz9novylvNjbUvvXtzEyLO2o59UOLix8XXD14rToR6HSd+5s+1rF8C/DcQqPudp
- iTgA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1686; i=brauner@kernel.org;
+ h=from:subject:message-id; bh=YYADF9o+HT3otr/TqTwRIyIlVsvmHiIwO/9qKSxr7WM=;
+ b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS9WG74im2vw/SLgkcF9xwvCrAujmja3vZs6iUted4PB
+ lv0d6u4dJSyMIhxMciKKbI4tJuEyy3nqdhslKkBM4eVCWQIAxenAEyk8jPDP8N52YHHueeITrga
+ lFLZpu2/1M/v9c0uN21dk5DSny1CfowMx1f09ARf2fUkLZKFdYNHzvT2UqEvnn+41f65szhZbrL
+ iBAA=
 X-Developer-Key: i=brauner@kernel.org; a=openpgp;
  fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
-X-Rspamd-Queue-Id: 98D821A000D
-X-Rspam-User: 
-X-Stat-Signature: kz3ktxzpawjb8urfq3gxq368w1exkf3d
+X-Stat-Signature: 4jks1t636bztjjrst8yxtujatkbn7apn
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
 	version=4.0.1
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1793632850-77435
-X-HE-Meta: U2FsdGVkX18mJaznLzuVYMk7VZX0oy96GmQnO2FMH4y63UuRao4cF6CgGOtS7a/6sB3d4ypc+NasdcUKryHqRpz/aMOfZ5Zmh3FN+vFafOU8n3w2873shdp7/LamWkReBJCPsyffKI0+A1NmES7k/TEGHqM6i6XQwjfkG8ZOVZsSSIB8txBUbpetK5saA9MDD3WuaMm7MGD1aDQFlrNwljjFSpRuyOH4JASF1V64jJw6SPw4KYWv3YGyeWLvm4Lef7s7onZsyzV2+/fU8z/DejkTG84CK6k+qN1pB0njIPSzpyG1Li/aPpWgN1Asy6yvSfQ4UILF7571nOSnGCH1FJ4MRRj8H+rYS2PeF36qd69OvtPleg6qx9pvKSFqWajezp19pRKlhauUocl2QsSQOotNB1otcLD/Y6PCxoiopY1L3Ot14bBa5FqOAEve2aRJg98nV6rLLICPP0fnBJQQo7pJcHu5cP8Eu0J1/vVLOr8Qb/iIjVb2IT2iv93L6pNDvqd4LK5DiaPXkyqoJRJOgi3bFqPa5uNhdMuyhEmrgqlWzVz/2sm2Xmf/K96l3y5bCpGwoLSOYeDBfQE8tMvFjvxybnfAS49DbmdwiMwiXQXOs1+4nlPu5kXcHoGOK1eRykpNqo5LHkVQWrWDO3IrlwihCnagUNn/98Y+uFRMVvUwbEoSz8V8FTj3fhbtq7JAOrjYYyJ6U8YNv10N9gL+X4Fqf9ulvfid+hIzKUWwKs2Igl6aKvP/eEU+imQpgNaoKg4AuiiLYVVHfLhFdBHeNuc4g7vXgmMOdtCZD9oWHZ13bWLGxikFfEWg1pWUAD7cR8Y8wTT96DRkHRcShwwlaHEH1BTCL3iMUGNsN5wSXWMCiMldwlLtJu68xlZoAb51tsGrBt523pc69VIVHwaNAxT7SFWmCOTZzLoEXrguWSYSPVzNzBc8R+gjkU7+lbwdb2BAB1OyGW4nkShCK94
- Y+QCVTnV
- HNipFew99x+5z2CAQ8bKMH5aTK5BxN8j7bQJaJTMqdOYhdNpefFVxg+t4RAPNnelF9yTYBShY+4IY4mv7oLvbNGuUDjefousm/qLCv+cA1pWT12QA6jzRop4LNPU47O/lzS5g6lE711MK0Ke77or+N+gT4jKnVRrRfOHfi0Zrwu8DfoYl397HtfrXIm9xyerB6zdtMnRz+HLMNmtmTVMd8ESDNAmF5rPXKvDnVamGMI7R28Mr7ExpWA/OB108flL0tJHuVjKQzOxlwjy/KqmkFL/4fyXjD9OQVxXij7p/NHfb31eWC2eUU2RmxL7cdjxNXFSdMTj4q2Ro7D0=
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 35C6740014
+X-Rspam-User: 
+X-HE-Tag: 1793632873-65577
+X-HE-Meta: U2FsdGVkX18hQjUz+4onV7bQE9uPGoL+I9r45nb9xPcYyxBBCq7Man8TQ51blBoeblkMZZvb3AWQsv40xT4ma79DVd8hrS9T9lbDx/BMjpnD58NHPdi3PzKqprG+yQCzm+uunra3Aw0RHYFC3PvsrJ8U6w5SRMk3HhNE4z+e0E3X/jBO0etcMT4w3OollefKHD3wtFzrvzGssXsCYzF0zZsWwZbhuR3fcrFs6P9/LOv8PmRQnsmiS4upqCsrYJk7D2gPSTxo5hZK9lgRWvaWJmKcDTNsi9svTPUeSqLhqWuYUNINVcg1yG2A07qLNL4qoHVkp36Z5gw1+LVmCnBerrhzHV1OIZ3Ph0wFh2AJfFaDlrbn2UEzR+ygXw/1vwchulMdQFynKKio+erExHs5EGg4CcgNXr4GWPFL9Ng2dEguLASInj8IxpJ357dilTds5JRs8NaMqd5IMsKVTc2gJRcYCamS5md82zoiLhQB/7E0SO4p/3DFXjbgOs2Df7hPPQJIBhze4p7it1jrV9aOFeR9JVihfGVf8NKx8Qj8oELcCIVlPGH8Ophdx6yyGvXMzzJPzevA19nAc8kxQYcBseeCTQql+Tg4WPXTiy3Xf4Svt6LGWJFer6d7h8dTg463s0mfewDgr6a+RN9aSfU+fxTgpKUdOf3zdF+sdTj7TcKYJyxkCEay1tpZxVRc+phDauYtjuFZsXaZuGE2FBSCFDisk/50np7cZjakaASYFwNZDTioglLRiPjfnm56NBfLQsJA52XrbuLDvjuBD0fRbFJuk8+NC/MiwMGJxn3+OULULEC0fZCthkUCSLMgrH9HNgBAc1ZFZv+8sBfKQOqR5s0fLkveD3DFEkQu7OcXgS5D7RyqduWZ/Tc5XnVb5ib9iMI7ai+Ay6VOvPZLN7XCRtLVrGs5UTRzujwVDZcIu1LyBpbwu3gu2co7Z6z3JKWPFMjY+GmQtQPm1t/Ssv7
+ LMiRE5a8
+ Kun23TkIWAQKt6E4Pu0hAK7qz7RH8BWJSHPT0Lx33T7P2lvFFJl7CxQr3zIoRgbYlwbKHnBrbFqpUm2NqLwknHW9WEfvoJQDdV0TxROLYTZNj9JN56Z23Z2JToeL8TzRuS0+97VpwrjAVViiq/KHR3jbIBLRVj/BamYW9fip9PAD7XTLHVtMYB1vb8npmxW14PGEFUjr2a11V9auXiuxJgWF+6PybNwaxcjSr/GEM4XQd9CMLJpm6w9+Xp38NrB0dKTdewLo/t+vbtgsiaa05hpZ1FP6/2sytEpxMBT6QUMWmIyU7zd/3V/bVFyHgr3Lp+v2LHdpGQNk5BYI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -134,41 +133,67 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Implement ->proc_read_buf() so procfs copies what is read to userspace
-after it unpinned the entry.
+Move setting up ->private and taking the reference to the network
+namespace into exports_net_init() and dropping it into
+exports_net_put(). The procfs file needs them without the seq_open()
+and seq_release() around them.
+
+No functional changes.
 
 Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 ---
- fs/lockd/procfs.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ fs/nfsd/nfsctl.c | 26 +++++++++++++++++---------
+ 1 file changed, 17 insertions(+), 9 deletions(-)
 
-diff --git a/fs/lockd/procfs.c b/fs/lockd/procfs.c
-index 47949bec7a09..34a7c3705bb6 100644
---- a/fs/lockd/procfs.c
-+++ b/fs/lockd/procfs.c
-@@ -40,7 +40,7 @@ nlm_end_grace_write(struct file *file, char *buf, size_t size, loff_t *pos)
- }
- 
- static ssize_t
--nlm_end_grace_read(struct file *file, char __user *buf, size_t size,
-+nlm_end_grace_read(struct file *file, char *buf, size_t size,
- 		   loff_t *pos)
- {
- 	struct lockd_net *ln = net_generic(current->nsproxy->net_ns,
-@@ -51,12 +51,12 @@ nlm_end_grace_read(struct file *file, char __user *buf, size_t size,
- 	resp[1] = '\n';
- 	resp[2] = '\0';
- 
--	return simple_read_from_buffer(buf, size, pos, resp, sizeof(resp));
-+	return memory_read_from_buffer(buf, size, pos, resp, sizeof(resp));
- }
- 
- static const struct proc_ops lockd_end_grace_proc_ops = {
- 	.proc_write_buf	= nlm_end_grace_write,
--	.proc_read	= nlm_end_grace_read,
-+	.proc_read_buf	= nlm_end_grace_read,
- 	.proc_lseek	= default_llseek,
+diff --git a/fs/nfsd/nfsctl.c b/fs/nfsd/nfsctl.c
+index f32311f2d7cf..f8ce3c0fb077 100644
+--- a/fs/nfsd/nfsctl.c
++++ b/fs/nfsd/nfsctl.c
+@@ -143,28 +143,36 @@ static const struct file_operations transaction_ops = {
+ 	.llseek		= default_llseek,
  };
+ 
++static void exports_net_init(struct net *net, struct seq_file *seq)
++{
++	struct nfsd_net *nn = net_generic(net, nfsd_net_id);
++
++	seq->private = nn->svc_export_cache;
++	get_net(net);
++}
++
++static void exports_net_put(struct seq_file *seq)
++{
++	struct cache_detail *cd = seq->private;
++
++	put_net(cd->net);
++}
++
+ static int exports_net_open(struct net *net, struct file *file)
+ {
+ 	int err;
+-	struct seq_file *seq;
+-	struct nfsd_net *nn = net_generic(net, nfsd_net_id);
+ 
+ 	err = seq_open(file, &nfs_exports_op);
+ 	if (err)
+ 		return err;
+ 
+-	seq = file->private_data;
+-	seq->private = nn->svc_export_cache;
+-	get_net(net);
++	exports_net_init(net, file->private_data);
+ 	return 0;
+ }
+ 
+ static int exports_release(struct inode *inode, struct file *file)
+ {
+-	struct seq_file *seq = file->private_data;
+-	struct cache_detail *cd = seq->private;
+-
+-	put_net(cd->net);
++	exports_net_put(file->private_data);
+ 	return seq_release(inode, file);
+ }
  
 
 -- 
