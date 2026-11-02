@@ -1,110 +1,129 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE91A606A8A9
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 11:22:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 063BE606A8B6
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 11:22:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=WCOu+cj6
+	dkim=pass (1024-bit key, unprotected) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=RsFLsyf1
 Received: by kanga.kvack.org (Postfix)
-	id 153B86B05C6; Mon,  2 Nov 2026 06:22:48 -0500 (EST)
+	id 4B01E6B00EF; Mon,  2 Nov 2026 06:22:49 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0DE3E6B05C7; Mon,  2 Nov 2026 06:22:48 -0500 (EST)
+	id 411A26B05C8; Mon,  2 Nov 2026 06:22:49 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EE8366B05C8; Mon,  2 Nov 2026 06:22:47 -0500 (EST)
+	id 2DA106B00EF; Mon,  2 Nov 2026 06:22:49 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id C94A66B05C6
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 06:22:47 -0500 (EST)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 688AE1C4712
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 11:22:47 +0000 (UTC)
-X-FDA: 85389941574.25.A2CC758
-Received: from mta0.migadu.com (out-61.mta0.migadu.com [91.218.175.61])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 6EF6514000B
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 11:22:45 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=WCOu+cj6;
-	spf=pass (imf23.hostedemail.com: domain of ridong.chen@linux.dev designates 91.218.175.61 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793618565;
-	b=u/1FBQbDQqZUqrM428PGweA+F8KFSGlOXU2+vD47rh0CwrNFvEIycuEef67tXf9mabkf0A
-	SRgWidfE3lDvM+Cl/au605Us46F7/GQLlA+8zf152x6VBfLsrT+AfEOP2UbYVs4vsjk/j0
-	eVEINMii5qvseqr8GmyzcH5rgmvR94c=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=WCOu+cj6;
-	spf=pass (imf23.hostedemail.com: domain of ridong.chen@linux.dev designates 91.218.175.61 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	by kanga.kvack.org (Postfix) with ESMTP id 07B6B6B05C7
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 06:22:49 -0500 (EST)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 95362160C4F
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 11:22:48 +0000 (UTC)
+X-FDA: 85389941616.13.D0F364E
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf28.hostedemail.com (Postfix) with ESMTP id C577BC0002
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 11:22:46 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=RsFLsyf1;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf28.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793618565;
+	s=arc-20220608; t=1793618566;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=X7loASgn+yxCJuZyuGOGYaVSPjNHXEWeXeKmMCLTikE=;
-	b=yxFg8aC9C7YGnQDVH6dTb45dVGXL6NjRIPHXm76vh2vxt0cqlL4fb3ysVacGnC3bEjkpky
-	ziPZk71zcm6ugviQKt0qvj+mj4CA407kEJZrPBezUyq2XEbRS20Hc4Aq8et2XNHbqcsvzh
-	20remtxNZHCYiVxZ0pYLnF6xiieT99A=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=72Z50eGsX0yBdCzUdD2DRF1kVAo5WdsTx+d6WyLQP4A=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1793618564; v=1; x=1794223364;
- b=WCOu+cj6kNM/m98bWxhFmENNuPadN6C2HuhsVN5hVy9dukRiBKNa8k/8PLbFdbj/DXlRF5kM
- IhFFkIS71wTN8YJ4rJr7SHL38vMi1MqQuSvb6+c8wYtyI1xkIsAstcsyHjJeTILcKR6C0ek4Wsf
- CQM217qhkiW4oWusR+yozJyQ=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id aa70f3ab710337ec;
-	Mon, 02 Nov 2026 11:22:43 +0000
-X-Mizu-Trace-ID: aa70f3ab710337ec
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <65edd0da-008a-4c1d-bfd1-7f0b892a76bf@linux.dev>
-Date: Mon, 2 Nov 2026 19:22:28 +0800
+	bh=JQeg6N8tF3c2ZKXl0aeVJdIb4rnpiEyWbh6rBzOCUVQ=;
+	b=gTE9Pq7cy6hPytV9lCRooWr+83RHCUkG2OZh73HXszLAWoLsLRm7oKXoxuKW+AA6mjBBWE
+	bUh9pMhbzkgzW1S2gqIGO0ogzAgqdvxDjx2amR6EJZmxrF7BZZdZNADFGRyUBYy/l9mFnH
+	oCdsRgfpTnUyM9+m22ql6f1Y6G+WY1o=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=RsFLsyf1;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf28.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793618566;
+	b=FOFPUu6Bgkh9SaLlsOsC5SvvjfynfqONms45cuJiDeYcPULSDt1oyN3yerqrCfa9jbmJqj
+	xHumEKAbauYIKnl226ooY31shkFA6cNDQiPQCmohTrqe6AZU/cLcP+PETwAA5gMeJFDTf8
+	HrMjgQfZll0dB1UyBXvDd8Sz2wHS1h8=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id D37871691;
+	Mon,  2 Nov 2026 03:22:42 -0800 (PST)
+Received: from e129823.arm.com (e129823.arm.com [10.2.213.3])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id C7FCA3F632;
+	Mon,  2 Nov 2026 03:22:39 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1793618565; bh=uF4DfWzXa9EkGf1I0Bn2aL3RfBnTbP81TBjbavbJ8QQ=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
+	b=RsFLsyf1Ata7d0KOtqzPB7spCrIFhZHbMA0SSIsc3J50ctwBwFtCV0Z2YINZYuYl1
+	 axvMSatrzTWBN5HpeQBgg1ibhRlgnvCAtI4rJkD/9rMna30Ury4ZYSO33jBiVAAtlf
+	 YwBemrzcCZNlPsQc3YLM94WSry4c46hzaYal8oLs=
+From: Yeoreum Yun <yeoreum.yun@arm.com>
+Date: Mon, 02 Nov 2026 11:21:24 +0000
+Subject: [PATCH RESEND v2 11/21] riscv: mm: use proper set_pXd() for
+ generic compile-time folded patable in vmalloc_fault()
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 6/6] mm/mglru: add tracepoint for inc_max_seq()
-To: Baoquan He <baoquan.he@linux.dev>, Barry Song <baohua@kernel.org>
-Cc: Steven Rostedt <rostedt@goodmis.org>,
- Masami Hiramatsu <mhiramat@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Shakeel Butt <shakeel.butt@linux.dev>, Dave Chinner <david@fromorbit.com>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Muchun Song <muchun.song@linux.dev>, Qi Zheng <qi.zheng@linux.dev>,
- Kairui Song <kasong@tencent.com>, Axel Rasmussen <axelrasmussen@google.com>,
- Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
- linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
- linux-mm@kvack.org,
- "open list:CONTROL GROUP - MEMORY RESOURCE CONTROLLER (MEMCG)"
- <cgroups@vger.kernel.org>,
- "open list:BPF [MISC]:Keyword:(?:b|_)bpf(?:b|_)" <bpf@vger.kernel.org>,
- Ridong Chen <chenridong@xiaomi.com>
-References: <20261031090041.58574-1-ridong.chen@linux.dev>
- <20261031090041.58574-7-ridong.chen@linux.dev>
- <CAGsJ_4zUbkFXBhAesVV74-Ndga5f6xEbestK7Qinqddip8xBrw@mail.gmail.com>
- <aufxuOaKZWMYqEQi@bogon>
-From: Ridong Chen <ridong.chen@linux.dev>
-In-Reply-To: <aufxuOaKZWMYqEQi@bogon>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Rspam-User: 
-X-Rspamd-Queue-Id: 6EF6514000B
-X-Stat-Signature: qnznndubyyq3h71syxegr3katfafd5rn
-X-Rspamd-Server: rspam01
-X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20261102-dummy_ptxp3-v2-11-78840b2ec73c@arm.com>
+References: <20261102-dummy_ptxp3-v2-0-78840b2ec73c@arm.com>
+In-Reply-To: <20261102-dummy_ptxp3-v2-0-78840b2ec73c@arm.com>
+To: Russell King <linux@armlinux.org.uk>, 
+ Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>, 
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>, 
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
+ Arnd Bergmann <arnd@arndb.de>, Andrew Morton <akpm@linux-foundation.org>, 
+ Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>, 
+ Shakeel Butt <shakeel.butt@linux.dev>, Barry Song <baohua@kernel.org>, 
+ Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+ Wei Xu <weixugc@google.com>, Johannes Weiner <hannes@cmpxchg.org>, 
+ David Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@kernel.org>, 
+ Lorenzo Stoakes <ljs@kernel.org>, Tianrui Zhao <zhaotianrui@loongson.cn>, 
+ Bibo Mao <maobibo@loongson.cn>, Anup Patel <anup@brainfault.org>, 
+ Atish Patra <atish.patra@linux.dev>, Paul Walmsley <pjw@kernel.org>, 
+ Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
+ Alexandre Ghiti <alex@ghiti.fr>, Dave Hansen <dave.hansen@linux.intel.com>, 
+ Andy Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
+ Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
+ Borislav Petkov <bp@alien8.de>, x86@kernel.org, 
+ "H. Peter Anvin" <hpa@zytor.com>, "Liam R. Howlett" <liam@infradead.org>, 
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+ Jonas Bonn <jonas@southpole.se>, 
+ Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>, 
+ Stafford Horne <shorne@gmail.com>
+Cc: linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ loongarch@lists.linux.dev, linux-mips@vger.kernel.org, 
+ linux-arch@vger.kernel.org, linux-mm@kvack.org, kvm@vger.kernel.org, 
+ kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org, 
+ linux-openrisc@vger.kernel.org, Yeoreum Yun <yeoreum.yun@arm.com>
+X-Mailer: b4 0.13.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3753; i=yeoreum.yun@arm.com;
+ h=from:subject:message-id; bh=uF4DfWzXa9EkGf1I0Bn2aL3RfBnTbP81TBjbavbJ8QQ=;
+ b=owEB7QES/pANAwAKAW3Vw9FaxTEzAcsmYgBq6HI0EhHemhFZT76+hkFEHBElBSQOBJI6GP7jl
+ ZStUURgzUeJAbMEAAEKAB0WIQQtg+CS3QUzuFh1pJ1t1cPRWsUxMwUCauhyNAAKCRBt1cPRWsUx
+ M84jC/9S9/aAhhSrKviCbj48B1rRZZrYq4NqcKgkdwxZVfhy+7gtmxs99D6rhsaJdl68LkLYoQ6
+ VyH1mb7ItqGWTah++FtNBeXOorhLS2mYEFR/1jKSDb62UfF4DimM3s3wrPH2+G4W8vvlAvA9RE0
+ vr0L8mQ6lrGmyqUgbKu8GrSpaYgd9J8fM6EZpFE4KhVkJqxOe3/Mthnaa+nc/wTvPsTP2HZG9aP
+ uFtGA4pIhDaYRHFox7AQfkAggATajLnNd/gKUF11QNNhxNNbQAcKOkf8XVo3/CqE5rLVNR7FIN9
+ X3jUHSsR4I1853YVKxn9Y6y2Cp9ckjoZXCZL8WtyyAUe+43XVI3EL0dADQQ1EIrjm0Xjd2VgmyC
+ nnkYstSWKwOQigSOlu+TvlKk/0yA8Xn9AdXJ5rXSOb6e0D5pYbVuIhtyLEjNUQpYzjDKKfKfoLm
+ Vx9lj3xIhnAxthINB3ejIGFbqbn5Os3x2fKnddFMK2B19loCvjy5L66p6hupOcw5yRg5U=
+X-Developer-Key: i=yeoreum.yun@arm.com; a=openpgp;
+ fpr=2D83E092DD0533B85875A49D6DD5C3D15AC53133
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: C577BC0002
+X-Stat-Signature: ounqxyewd7prq1wa1fkad3b93m8g3szm
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
-	version=4.0.1
-X-HE-Tag: 1793618565-947990
-X-HE-Meta: U2FsdGVkX18W67FplvQfghRAF3s7oUR5/u8/4gWF2hqw7EPCgTQ3P/AtBGDkEYNLXVRFTEHBeCmv/3zj5MwfMjsBH/Hgm9cprMtSuvsMLegNPICkdi5EsSAHt9uQwMBLIMQq4vFMyJItVbIknNC6WayM4rWK00M/ca8ApyBVk6DFoEtFk1jgrgf4apRqqs0IaphJvWXmdS40a/7kiTVrbIRO8JJ9NJ2SddyHhlWpYDpgifOyKnvKvFxCduf8gDArx/iFfHRS1uvR5QYW/ykI1ix2G+YNxev2n12kL9JCzBZbo0Ll9pI1h26SDDDewifEz0nHOGWs+VXU52cI8XFa2W8iVgnZqikZcP61/ckik2GvBoGTZ+fuh/dIY2swrqQuXlFADVb/Rd1dz9SWNsi04v8cJ2WHXDFK1fOAujb2Ksijbg04hm2PS7ClOdKTSynC7nOzgholQXdp5uvZsYxza05IDK4+l/FORkf3V5hPZnmCOkbqlYrjPeiYzpX2dv2XVB8QBmJNH+wxaah418E1p9JDDaDKjHlSJyWqodofjKF9l+PTbBISvGsXC9/UotX6U1TvX+UcmLfmZm+wM0RLCsg9GipDmjTzYlrku1JIyy6FU8mEwjq1twThldeZjGN4VvQl88Nw1TY+ah3DDBTMp/Nr7cAaAOWICfy8+97HLhDY5Efb721SN6yPSMI1R2Gb7HO3EDsLpo2CgG8Epj4xndl4jgscwAy9Cc/9zsYnFxWfNMUc4td1MG3EKKBP3v2DkJQHPeYmpL3MZBlayCAETQnV1Oatgct7SEAn+AO+dGDrMR7v9iQwnXiu0A7YN7252SGTYuY27pIG9dhPJNDI2ds22gMLLs7V3sxOyQ8cZIB5WVL0kX7ENoR5XAvlh1pdJt3NpwtOYJiwIQy+x3gwijVJqBuG9E+TkXu/b7WvLTGx4eDEF3V3/KgtnjIJOT2Go+FubHo7vJgGbFWrV65
- 2chcrncY
- UVKWrVwDOI4WlU6c+Fz+cVcBbC80abmM8raZwJtILmsjJ3uo29extK5OBQllXds6Zx/x8oIkXlqhXxMfH3gWyqd0lq5L5F1zomS7xzpu211+tZL+C8XDpyieXyxl1G3YfymPbUbV0yB8BlgcOqbGukTynM24TErNSpPXRlm5egYVmngJ8YXZxhIxqoW6fjNGI/mye4p1ft1TK/RqWlCjIGDy/5XKyUhPSN+UDHC0SwNR6JrnfK86kfTaewED2M82JssFOIvzZK5XNNDwlKIM1+Z2j96gHV+fl1fjHYMrNP0ZEwwE0pil89mslQYC2FEc5lvb8669sAj+8Ii8heeNcjveDTNTY+G3S58CIPZfhq+5mNGoktFTGFBNuHjBIJRtR+MEEyUvDTMe0K2E=
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-Rspam-User: 
+X-HE-Tag: 1793618566-33027
+X-HE-Meta: U2FsdGVkX1/IfeF1FP/7WG2IfSx6L9Do3tk/OJwyOrOaQbkVi6CUQ8PtlxiCfXybXWDiHWVPa/sJf+z6WoCcotxVG0buOlSDdxcuKtICDr9gxgTwhFdfFNZ/bvC9XUTS6IelHcYneZuIDSm6cK28b1TqeQq7dmaF1xPA5M4dykGeRGTm7n+5UOmgUoJc2r9Y8hDZdbRk5G+TvbH4fFnnODtfID71vqSXS6rmKFmZ3D7jeKP7FUy9oXoyGqviTXWPqPXpNZpLNC7LNPM7IlLNuhf5g3o5cenynXnXqUfluQ3GECuWPc4AGQL1C6YLYUEqklAjMWegK7iVfaFHWK9ji0HkQ8woEkOkKiRnylZj/tu+xO5tCjVon3nG43047eZQehMwf0V0iuC37H33BhYg4Bb0aSJFUeNveWS5hSUAwkneZeCSx4BFwWF+t5ghCQE2ltFBhCxPDthxk+YAwhpUlM0Q+BIHF/nvIBRdYt7uv9IyaOtffkhkZ1Ixj71mH23jJEmLHv5rmX0ZZqfKCsB1xlhj9xrPMa2eAcGn/nidbQAdcBKrZUgAmR9SvNduiGyBCm5AotxzjvV1D5icgUCxLZHcTelXoIL07cfYnUk3cVOCGUXayE+FbwFu8myy0lQ7AtBI46X+766akgnJluBIvdSZiBjWOCxMmsKhYRILxErqVyEUUU4FyIR355zVT9OUVSXcZ30/A3FW8bH9kD8L3pw3ZtK2a49cOTXfuCdBNS7GZc5jLFWD94YUiwkeaPhD5aM9UAa3268H1CHpL/uN3cmt81ZNe9yu1mChRnRbDPE/Rdce60d9Ijs/kkJGn8YRRP9Twf05KNBHR6reMKPVYlcxXjHNWO3HrlXhatt+F95MWO6uJIGbm4XTycMiYEHQHWH9o7XPA3po8BmswsNiuKlIJOqmSEagI0lYyTQTNw+H9SNlRW7CpO44tfy0N0663A/rdhzDf2crdNBRKda
+ 62/Wik/C
+ kFl8yKebA16aihnVaSADR5/n9pcH+8BqQ3XGZlV+6pD+zg3qa9gYAwvtlC3SJv4ObmaRagOFR5MLZCfk+mUN2vIs5DlsnWovksJKvM+vz7waWF9DF53zCK4slKEBHhwxXNBRIBe0lq3q9woagtqD++wcTJmAuvDwo703JyWzWT1qRx74YRHKR5a1+U/yhu9KseqSKUXG1VFC3lGT6YrMBCnk+oafXuGfNxJ2FSlD4CvCk3YrQ04FbeKzM8rZLW+jsstE/aQit2l8zhNIuANZcuHhW3QnrhkqG5sjfcqMeumkHar4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -113,132 +132,129 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
+The behaviour of pXdp_get() will change with generic compile-time folded
+page tables, making it invalid to use set_pXd() with the result of
+pXdp_get(). Instead, the appropriate first-level set_pXd() must be paired
+with the corresponding pXdp_get().
 
+Therefore, call the appropriate set_pXd() for generic compile-time folded
+page tables so that vmalloc_fault() continues to handle folded entries
+correctly when checking pXd_present().
 
-On 11/2/2026 10:13 AM, Baoquan He wrote:
-> On 11/01/26 at 05:21am, Barry Song wrote:
->> On Sat, Oct 31, 2026 at 5:02 PM Ridong Chen <ridong.chen@linux.dev> wrote:
->>>
->>> From: Ridong Chen <chenridong@xiaomi.com>
->>>
->>> Aging in MGLRU advances max_seq via inc_max_seq(), creating a new
->>> youngest generation. There is currently no tracepoint on this path, so
->>> the moment a new generation is created, and how the min_seq of each type
->>> trails behind it, cannot be observed as it happens.
->>>
->>> Add mm_mglru_inc_max_seq, emitted right after max_seq is bumped while
->>> the lruvec lock is still held, with the node id, memcg id, the new
->>> max_seq, the anon and file min_seq, and the number of pages in each
->>> generation for both types, summed over zones and clamped to >= 0 the
->>> same way the debugfs lru_gen file reports them. The nr_anon/nr_file
->>> arrays are indexed by generation slot, so the emitted max_seq/min_seq
->>> say which slot holds which seq. They are printed with __print_array(),
->>> so the output is hex and its length follows MAX_NR_GENS automatically.
->>>
->>> Only the lruvec is passed in; all of the above is collected in
->>> TP_fast_assign(), so inc_max_seq() does no extra work when the event is
->>> disabled. Paired with mm_mglru_scan_folios it makes the full
->>> aging-to-eviction window observable per memcg.
->>>
->>> Signed-off-by: Ridong Chen <chenridong@xiaomi.com>
->>> ---
->>>   mm/trace_vmscan.h | 47 +++++++++++++++++++++++++++++++++++++++++++++++
->>>   mm/vmscan.c       |  2 ++
->>>   2 files changed, 49 insertions(+)
->>>
->>> diff --git a/mm/trace_vmscan.h b/mm/trace_vmscan.h
->>> index 8148b8224422..cddf42b5849a 100644
->>> --- a/mm/trace_vmscan.h
->>> +++ b/mm/trace_vmscan.h
->>> @@ -456,6 +456,53 @@ TRACE_EVENT(mm_mglru_scan_folios,
->>>                  __entry->min_seq)
->>>   );
->>>
->>> +TRACE_EVENT(mm_mglru_inc_max_seq,
->>> +
->>> +       TP_PROTO(struct lruvec *lruvec),
->>> +
->>> +       TP_ARGS(lruvec),
->>> +
->>> +       TP_STRUCT__entry(
->>> +               __field(u64, memcg_id)
->>> +               __field(unsigned long, max_seq)
->>> +               __field(unsigned long, anon_min_seq)
->>> +               __field(unsigned long, file_min_seq)
->>> +               __array(unsigned long, nr_anon, MAX_NR_GENS)
->>> +               __array(unsigned long, nr_file, MAX_NR_GENS)
->>> +               __field(int, nid)
->>> +       ),
->>> +
->>> +       TP_fast_assign(
->>> +               struct lru_gen_folio *lrugen = &lruvec->lrugen;
->>> +               int gen, zone;
->>> +
->>> +               __entry->memcg_id = mem_cgroup_id(lruvec_memcg(lruvec));
->>> +               __entry->max_seq = lrugen->max_seq;
->>> +               __entry->anon_min_seq = lrugen->min_seq[LRU_GEN_ANON];
->>> +               __entry->file_min_seq = lrugen->min_seq[LRU_GEN_FILE];
->>> +               /* summed over zones and clamped to >= 0, as debugfs lru_gen does */
->>> +               for (gen = 0; gen < MAX_NR_GENS; gen++) {
->>> +                       __entry->nr_anon[gen] = 0;
->>> +                       __entry->nr_file[gen] = 0;
->>> +                       for (zone = 0; zone < MAX_NR_ZONES; zone++) {
->>> +                               __entry->nr_anon[gen] +=
->>> +                                       max(lrugen->nr_pages[gen][LRU_GEN_ANON][zone], 0L);
->>> +                               __entry->nr_file[gen] +=
->>> +                                       max(lrugen->nr_pages[gen][LRU_GEN_FILE][zone], 0L);
->>> +                       }
->>> +               }
->>
->> I feel this is wrong. Can we calculate the newest and
->> oldest generations from seq, then print them in order
->> from newest to oldest?
-> 
-> Agree, from newest to oldest or oldest to newest makes it clearer.
-> 
-> Printing from lrugen->max_seq - MAX_NR_GENS + 1, or from MAX_NR_GENS,
-> both looks good.
-> 
+There should be no functional change.
 
-Hi Barry, Baoquan,
+Since most architectures use a similar pattern to handle vmalloc fault
+by syncing the faulted entry, it would be worth cleaning this up by
+introducing a common helper in the near future.
 
-You are right, thanks. In v6 the arrays are ordered by seq, from the
-oldest to the newest, i.e. the same order in which the debugfs lru_gen
-file lists the generations from top to bottom.
+Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
+---
+ arch/riscv/mm/fault.c | 52 ++++++++++++++++++++++++++++++++-------------------
+ 1 file changed, 33 insertions(+), 19 deletions(-)
 
->>
->> The nr_pages[] array isn't ordered from newest to
->> oldest or vice versa, as we have:
->>
->> static inline int lru_gen_from_seq(unsigned long seq)
->> {
->>          return seq % MAX_NR_GENS;
->> }
->>
->> And I added a helper here:
->> https://lore.kernel.org/linux-mm/20261022220203.91911-11-baohua@kernel.org/
->>
->> +static inline unsigned long lruvec_gen_size(struct lru_gen_folio *lrugen,
->> + int type, unsigned long seq)
->> +{
->> +     int gen = lru_gen_from_seq(seq);
->> +     unsigned long size = 0;
->> +
->> +     for (int zone = 0; zone < MAX_NR_ZONES; zone++)
->> +          size += max(READ_ONCE(lrugen->nr_pages[gen][type][zone]), 0L);
->> +     return size;
->> +}
->>
->> Maybe you could port it here as a separate patch so it
->> can land earlier as part of your tracepoints series. We
->> could then use it in the next version of the swappiness
->> series.
->>
-Sure. I will port lruvec_gen_size() as a separate patch with your Suggested-by, 
-and put it in mm/vmscan.h so the tracepoint can use it.
+diff --git a/arch/riscv/mm/fault.c b/arch/riscv/mm/fault.c
+index 04ed6f8acae4f..b2bcaf10d13f1 100644
+--- a/arch/riscv/mm/fault.c
++++ b/arch/riscv/mm/fault.c
+@@ -167,14 +167,16 @@ bad_area(struct pt_regs *regs, struct mm_struct *mm, int code,
+ 
+ static inline void vmalloc_fault(struct pt_regs *regs, int code, unsigned long addr)
+ {
+-	pgd_t *pgd, *pgd_k;
+-	pud_t *pud_k;
+-	p4d_t *p4d_k;
+-	pmd_t *pmd_k;
+-	pte_t *pte_k;
++	pgd_t *pgdp_k, *pgdp, pgd_k;
++	p4d_t *p4dp_k, *p4dp;
++	pud_t *pudp_k, *pudp, pud_k;
++	pmd_t *pmdp_k, *pmdp, pmd_k;
++	pte_t *ptep_k;
+ 	int index;
+ 	unsigned long pfn;
+ 
++	BUILD_BUG_ON(CONFIG_PGTABLE_LEVELS != 5 && CONFIG_PGTABLE_LEVELS != 2);
++
+ 	/* User mode accesses just cause a SIGSEGV */
+ 	if (user_mode(regs))
+ 		return do_trap(regs, SIGSEGV, code, addr);
+@@ -189,39 +191,51 @@ static inline void vmalloc_fault(struct pt_regs *regs, int code, unsigned long a
+ 	 */
+ 	index = pgd_index(addr);
+ 	pfn = csr_read(CSR_SATP) & SATP_PPN;
+-	pgd = (pgd_t *)pfn_to_virt(pfn) + index;
+-	pgd_k = init_mm.pgd + index;
+ 
+-	if (!pgd_present(pgdp_get(pgd_k))) {
++	pgdp = (pgd_t *)pfn_to_virt(pfn) + index;
++	pgdp_k = init_mm.pgd + index;
++
++	pgd_k = pgdp_get(pgdp_k);
++	if (!pgd_present(pgd_k)) {
+ 		no_context(regs, addr);
+ 		return;
+ 	}
+-	set_pgd(pgd, pgdp_get(pgd_k));
++	if (CONFIG_PGTABLE_LEVELS == 5)
++		set_pgd(pgdp, pgd_k);
+ 
+-	p4d_k = p4d_offset(pgd_k, addr);
+-	if (!p4d_present(p4dp_get(p4d_k))) {
++	p4dp = p4d_offset(pgdp, addr);
++	p4dp_k = p4d_offset(pgdp_k, addr);
++	if (!p4d_present(p4dp_get(p4dp_k))) {
+ 		no_context(regs, addr);
+ 		return;
+ 	}
+ 
+-	pud_k = pud_offset(p4d_k, addr);
+-	if (!pud_present(pudp_get(pud_k))) {
++	pudp = pud_offset(p4dp, addr);
++	pudp_k = pud_offset(p4dp_k, addr);
++
++	pud_k = pudp_get(pudp_k);
++	if (!pud_present(pud_k)) {
+ 		no_context(regs, addr);
+ 		return;
+ 	}
+-	if (pud_leaf(pudp_get(pud_k)))
++	if (pud_leaf(pud_k))
+ 		goto flush_tlb;
+ 
+ 	/*
+ 	 * Since the vmalloc area is global, it is unnecessary
+ 	 * to copy individual PTEs
+ 	 */
+-	pmd_k = pmd_offset(pud_k, addr);
+-	if (!pmd_present(pmdp_get(pmd_k))) {
++	pmdp = pmd_offset(pudp, addr);
++	pmdp_k = pmd_offset(pudp_k, addr);
++
++	pmd_k = pmdp_get(pmdp_k);
++	if (!pmd_present(pmd_k)) {
+ 		no_context(regs, addr);
+ 		return;
+ 	}
+-	if (pmd_leaf(pmdp_get(pmd_k)))
++	if (CONFIG_PGTABLE_LEVELS == 2)
++		set_pmd(pmdp, pmd_k);
++	if (pmd_leaf(pmd_k))
+ 		goto flush_tlb;
+ 
+ 	/*
+@@ -230,8 +244,8 @@ static inline void vmalloc_fault(struct pt_regs *regs, int code, unsigned long a
+ 	 * addresses. If we don't do this, this will just
+ 	 * silently loop forever.
+ 	 */
+-	pte_k = pte_offset_kernel(pmd_k, addr);
+-	if (!pte_present(ptep_get(pte_k))) {
++	ptep_k = pte_offset_kernel(pmdp_k, addr);
++	if (!pte_present(ptep_get(ptep_k))) {
+ 		no_context(regs, addr);
+ 		return;
+ 	}
 
 -- 
-Best regards
-Ridong
+2.43.0
 
 
