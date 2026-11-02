@@ -1,96 +1,140 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66B4C606A331
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 21:24:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20D78606EE97
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 21:39:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=Volu/Qno
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Jouev5Qt
 Received: by kanga.kvack.org (Postfix)
-	id 803E06B00EF; Mon,  2 Nov 2026 16:24:44 -0500 (EST)
+	id 314A26B00EF; Mon,  2 Nov 2026 16:39:29 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7DBE26B05B1; Mon,  2 Nov 2026 16:24:44 -0500 (EST)
+	id 2C57A6B05B1; Mon,  2 Nov 2026 16:39:29 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 71B186B05B2; Mon,  2 Nov 2026 16:24:44 -0500 (EST)
+	id 1B5DC6B05B2; Mon,  2 Nov 2026 16:39:29 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 4DFDA6B00EF
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 16:24:44 -0500 (EST)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id C4486160231
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 21:24:43 +0000 (UTC)
-X-FDA: 85391458446.28.D41CA12
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id E08CF6B00EF
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 16:39:28 -0500 (EST)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 5841140222
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 21:39:28 +0000 (UTC)
+X-FDA: 85391495616.12.F430AF9
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf03.hostedemail.com (Postfix) with ESMTP id D53E020005
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 21:24:41 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b="Volu/Qno";
-	spf=pass (imf03.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793654682;
-	b=AzOId9G9fljO2Z3u3zE1X5U8j77RpXVmy5j7f501egXYoITz1YuxjTUPbDOHT2CJZQATBD
-	LhuCqF9CK5pSEvHH0gYlY4ei0ujSmz31RcB+qJVyn2J8pRPyUd0jWiTPdBB1eRn8JJW1el
-	UUDqBN2/CdYEqyYTrmSK69EGCI288FA=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b="Volu/Qno";
-	spf=pass (imf03.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+	by imf17.hostedemail.com (Postfix) with ESMTP id A2BB940004
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 21:39:26 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Jouev5Qt;
+	spf=pass (imf17.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793654682;
+	s=arc-20220608; t=1793655566;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=cY1t39+3gzTLNFhC7dxLkefRg/oZa/qkP6zoNcN6n2E=;
-	b=cvA8Xww6LAE1p5SmVs5iDpR7S//CrC4PCp500qIxcusN9go3rqwIrULxRDrNnEARpteYW2
-	58J+BgjSZj8zZK9sdLUJnSqxLdyM4hRAhtY0uy2GUYk/H5/aqWHmIryF2qCbyAX2IcRNMR
-	NlRhBxVjDAKxGg7MMzKLfHFDCs1wITc=
+	bh=4k4497sTbbDvYeqvxlbwbiiYz6zh1ROyOPLpxYM4Y3U=;
+	b=xrVdacybgmYs2RF4rtFesKSAiP1eBnBcCuUsXtW2yt8470wSfA7xImqctMXH7b/SLuUMK5
+	fdZxea2cHPNTMYnAH29GUVs/GZAYoASxzRBvxLCxRhGnxY2Wcc4UA5wfqLHdif5TSklmxS
+	Ovwjs7J5LvjoSffDhZDU4ydL9hgWMCM=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793655566;
+	b=jDnSFIIUFbeDZAsUk7bIqq8EppMYGujR2ou2M1cdIYA0S4L6L4MEqRitPS/ySKfra6Kghm
+	I9OzRQFO1C7ot2u0GNsCHa6UsGMl2ykoqXoruiXMplU6WOt1/u1+BwbuIzNkiFmfMcynCL
+	YNJJsZ0tf1/8LwDebuT3nxLHGiM8Izo=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Jouev5Qt;
+	spf=pass (imf17.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id E4B3D43E4E;
-	Mon,  2 Nov 2026 21:24:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77C221F00A18;
-	Mon,  2 Nov 2026 21:24:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1793654680;
-	bh=cY1t39+3gzTLNFhC7dxLkefRg/oZa/qkP6zoNcN6n2E=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=Volu/QnosDZUf/lm+UfDNb6h/cKNwjncmN6pmzGpGXsQSM9RGmoASwJJ7nelEgsm+
-	 f+BA5KHkUa+dEIZzlyCLvVAsuHnl4iLwk+R2M0jXqnYUjA+raXzdeBHO7DyQ+s+ZVI
-	 WQESqkxYsBqNz/Ve5ERhhqxEGDRG/OnlPHfnurOU=
-Date: Mon, 2 Nov 2026 13:24:40 -0800
-From: Andrew Morton <akpm@linux-foundation.org>
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: Kiryl Shutsemau <kas@kernel.org>, "Liam R. Howlett"
- <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, Jann Horn
- <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>,
- "David Hildenbrand (Arm)" <david@kernel.org>, Lance Yang
- <lance.yang@linux.dev>, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- syzbot+10e72ea5747737bcd2ad@syzkaller.appspotmail.com, Songsen Yang
- <yangsongsen@insta360.com>
-Subject: Re: [PATCH] mm/vma: read anon_vma carefully in validate_mm()
-Message-Id: <20261102132440.92038293c42bca37768a541e@linux-foundation.org>
-In-Reply-To: <auhrcEfT5v5MVcFj@gremlin>
-References: <20261102-fix-validate_mm-v1-1-5c309614ef15@kernel.org>
-	<auhn01dpDzK47igy@thinkstation>
-	<auhrcEfT5v5MVcFj@gremlin>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	by sea.source.kernel.org (Postfix) with ESMTP id E049540B28;
+	Mon,  2 Nov 2026 21:39:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FA5A1F00A16;
+	Mon,  2 Nov 2026 21:39:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793655565;
+	bh=4k4497sTbbDvYeqvxlbwbiiYz6zh1ROyOPLpxYM4Y3U=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=Jouev5Qt+8GltlW45V5pTUQV7gF9lqCjSzgOdMtlplRDu8wkW1tS8zUxZkwrLfNoS
+	 Go7Xnm7RHkpOao988ciNLcvGMB+qTzrRvSAyDHr9HGiB26HoveciMqfozQeA/1FkgC
+	 dMXstNtWJirqYHBZE93b0O8LsKzBKM9XVaQA0k3yIbmMdKGp2xVmAzmwofgm3GJ8JZ
+	 fCzy01U7ZfgO9h7xH6sDPIqN6Mg4KhnFm7LG+Taef7bp80Piy+npF+2+SoXjuo4cwk
+	 9ezM+djl2yFupw3dIdMFU/nsKfQvTrP6uNmI8JlZOvatS8SgR7g1MLQ6lGmNTTbvMB
+	 AMxMIaS5/5sLA==
+From: "Barry Song (Xiaomi)" <baohua@kernel.org>
+To: devnull+kasong.tencent.com@kernel.org
+Cc: akpm@linux-foundation.org,
+	axelrasmussen@google.com,
+	baohua@kernel.org,
+	baolin.wang@linux.alibaba.com,
+	baoquan.he@linux.dev,
+	cgroups@vger.kernel.org,
+	chenridong@xiaomi.com,
+	chrisl@kernel.org,
+	damon@lists.linux.dev,
+	david@kernel.org,
+	dev.jain@arm.com,
+	ehab.ababneh@intel.com,
+	gourry@gourry.net,
+	hannes@cmpxchg.org,
+	hughd@google.com,
+	kasong@tencent.com,
+	kunwu.chan@gmail.com,
+	lance.yang@linux.dev,
+	liam@infradead.org,
+	lianux.mm@gmail.com,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	liuxiang.277@bytedance.com,
+	ljs@kernel.org,
+	mhocko@kernel.org,
+	muchun.song@linux.dev,
+	nico.pache@linux.dev,
+	nphamcs@gmail.com,
+	qi.zheng@linux.dev,
+	rientjes@google.com,
+	roman.gushchin@linux.dev,
+	ryan.roberts@arm.com,
+	ryncsn@gmail.com,
+	shakeel.butt@linux.dev,
+	shikemeng@huaweicloud.com,
+	sj@kernel.org,
+	surenb@google.com,
+	tz2294@columbia.edu,
+	usama.arif@linux.dev,
+	vbabka@kernel.org,
+	vernon2gm@gmail.com,
+	wangzicheng@honor.com,
+	weixugc@google.com,
+	willy@infradead.org,
+	ying.huang@linux.alibaba.com,
+	youngjun.park@lge.com,
+	yuanchu@google.com,
+	yuzhao@google.com,
+	zhaozhengzhuo@uniontech.com,
+	ziy@nvidia.com
+Subject: [PATCH v4 01/17] mm/memcontrol: allow update of LRU statistic without holding LRU lock
+Date: Tue,  3 Nov 2026 05:39:15 +0800
+Message-Id: <20261102213915.57805-1-baohua@kernel.org>
+X-Mailer: git-send-email 2.39.3 (Apple Git-146)
+In-Reply-To: <20261016-mglru-fg-v4-1-2106750c0bfa@tencent.com>
+References: <20261016-mglru-fg-v4-1-2106750c0bfa@tencent.com>
 X-Archived-By: <archiver.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-12.6 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,NICE_REPLY_A,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: D53E020005
-X-Stat-Signature: crnouok43d5ew5s545jai4cyig61457k
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: A2BB940004
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-Stat-Signature: 3sp7cjirht4j5rob6kyfmn11natpceuz
 X-Rspam-User: 
-X-HE-Tag: 1793654681-369241
-X-HE-Meta: U2FsdGVkX18I4tezxc/+XvZWwZwA1hYJW5uGESG02KTpzp/byf47iFhjK4Jdaj0fZ4I2v2dL3tFkgbI/Xlf9iNKKVEHblGwAOWwSEfVFZIicE1xzs5VE4KmiisHtfa7OtI0AhoTrpe+cBrkSpzTBk/O0J+bbX1hOK/eSNCuw/nWTjgjN/0PTMupbQGifCzNVpcqWI3mfpLY0NFlh0fJMnm50Uy6PAnZ4A9A4mtFqh5OdZDYBBDJwGtJDGvYkPI4nCCq2144wBGvjIopBJe+NInMh6qbi/PUNDEjEst9H6Zd3zekMbGsiX4wCHxKMGZHkAMZcn31cFH/EVvcn4o8J4UgWSMn6lNr3TrS8yH49+Z4lUGFanl8lv3JIxVNaW7BbB1o3me6mNyYJ9tiIHcaF9NTOGBVEmJS4jAWCtk4Of/eo7ZI9Aoz+racg+7ttBwRg419c/G7mDHdP30CfRu8yKeS/K2f0b7ZEchEMVzn7Kmwa6F7VAdI+WVrmZrePXWom8+EG9aG33hnENHM4+7UMTuznarv+QoTRrnaAuW8i3NiFMzKGl8K4rhg3XXeEqZiEqBcBOiKsNSX21ug01qui+KbcNMdpAUfxUsf3NG7s0l+aS4JXNnTtpOFwP1BC8s0+0NuOH8zCTd+ioSlCsJaUGkARjdksPr2/CHbIBDq2CrrUMseL2VoRSn2lVXas7ovSPnvNouXdxjaWrfCx5gM13l++LO5JVpn/uNqz0r81ly8dBXw4aNt3iOFdyb8AUr4T8FKTs1qutFsVjCMEmjBtpbg59+cx+KCRh76Z07YWmFIDdivdah5hW+FrtdSeAGNberYUiNGL4tV87RIBXxHOUNMxZDwFxRfEeGcqwX/F+JhOhOvLI/7PPH9mDlTigSJ3EVP7rzmxki+X3YQTglZ+wJxesfzua5f461D8RUWDvm1wuFFJCQw5BMlM/ixEEgW8L7eBFXMcn/MaVXAB1qw
- 5c4Sejw2
- rxEntk6HlIawC8LjTZOte5fH3IzdlUmQIurRPMIy1/mZ6zb+ZOrO5jZVE21y0KyWr4zYQ/LaR922L2JvwJFrx4cKRHy9cRR7RnKz5abheTo/v5UiVEatB/y5zE5Z4GLBp+qB3p40UxK0p1/H/jMUXNnwZJJGzaiyr8vrjZ9+mDYAEANtRtQluAeW47yrApCP/yxj1IvTGzK3MAVQY8d7xpHeg8sJSCxMaS78Gj8jh8Y2OSdVTr/H32UOZY8WeNzruHVovk3KjhqeUH2VoX8R9hVx81+2P1QbMcA7MLmGC5JQ6sKEpGL/lb1DPO07uBOagFdmfoZrYziKvtVD2sMI0s86hJ514acFGfdIou2p44EyFcNeu90k48C+SLgOq4F0srKwa12mzfc5aMMKGckCsrbOZBVzaHrVfoFdrPcrjzDn1NGQ6xpyLLZzzraehML9nWutn/VXQ/mB6iTc=
+X-HE-Tag: 1793655566-940424
+X-HE-Meta: U2FsdGVkX1+j3Y5i9abqc8x9RlqiroZxAcO2xqeO9PVgFitnXrcuCo8H2n4ppKudL7orYl8NwIMpLFBtSCi9Sg1D8eVL98AScICol1CAEwvKW0sLOX2q7q0aizSunGAt0KzK8P/XLudh8WbrTOmGrk+QNulAgV5vBxF68y8CAV5OmbnXbfUREHZ9XWnAtaz255yLJcQdI0ege8aYHdyw8TaN7maxrBJDU4fCzNxmoo+zK74+kPPwK7ClnCE9sSOEXLgoimprbemKEcwWh3CkCP9pVaYgqtr6K4FFV536wp9/opgoMeQH7VnQJdxW1U37IMZVpCQ4ONmga1gODViU1lmu+EXhuz8gnmj7ryG3/yhi7/iGgmJjyCysw6gqzhFk4LXjtzOxDMMxNxsoqNIY0Th2qUa7RW20KDMqXbgfe2DYiv48atXGB7VgCJ1uIZpDIGcKM/WMkJiJ4sVyXLd+C35O3qyM+qHWSxcSYjqBpRzrUM1+WboMS+t3Z1p5Xddqq5w/HEjrfhHSFsvUKahA72fxFylo+uvg2qQLqmZwpEI4Qbieyknd2siSXvlQ5PwH4LFAi5v4eTa6yJF6WUXKcPGcCR53CH+RgxLeXmmFApAr0vx1oiMaxb22WjqIXJF027CjUS/oxGHyoebvYj99Ul+6ksfRsdkliuKrkRYZCZyfB2x5ivU7oXLasgOCzmhTRdlqRW56/LRT0C8Wi83LESwraizz+aDfSfZyIC3KdAKmiRwu2kIAauLxJmJU1Tudl01T38+sKNru3GxfoQuP3C+UW1IINQxObTXYSwjR4pjw1u1r29QpPUNJPV+CgdpdtXhv8c1mwpOzyBAd8vwm3GSeY8N+RZNvWJ2oxhbzOcra45fN0zhGrBoGmHM0yBw2WN/eNl1R0pHDRX8GS3twsw5azNs7rvj16lP9jK+nZUGMZSObwmDuOvROrlo7KBkjImhALHBveBm2/ZpETpk
+ Cg4okFcQ
+ +bZQZJTgL13Dks6d7az+C7kI3JUZHt0d3laKfmF6L8Kc7Np5v60jc4U/dzDQvgGJqfgdaGfqfyouWj61blPy21SngK1BLD9yhzH6+JMfqlv4+OBIsSCgEdaPXwnxKVU4q7aL2+a7qetwEZCfeJHtbieNmvsE1VBknZedN6LVigxscMxAtOrpfi3MypYUyiZYjbCIR75cn3i84JMlygbtjnUIJXtQvE3V0GqdhCUOg0iz9/SD/DLT/r/hzXbs9a24e57mmCtYopsjqef3K4sD2mVI80dHln6btTsLsZxM24u6BRsCeIARqxOrSl4AMgXYYs3JkAEWqvyDEf2yv7Kqz4IbWGEyQ0JLD3ZMK8jmU27uFHCx/Y/6g570fsZUJpZ4NAkqvc23P7Wbzrwc7Ts+5YLrFGcc5s3+ERHDhLivXJpCo1no=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,62 +143,140 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Mon, 2 Nov 2026 11:02:56 +0000 "Lorenzo Stoakes (ARM)" <ljs@kernel.org> wrote:
+On Fri, Oct 16, 2026 at 2:15 AM Kairui Song via B4 Relay <devnull+kasong.tencent.com@kernel.org> wrote:
+>
+> From: Kairui Song <kasong@tencent.com>
+>
+> To enable moving file pages in folio_mark_accessed directly and lazily
+> for MGLRU, allow updating the LRU statistic atomically without holding a
+> lock. It may cause temporary counter underflow, which should be fine as
+> we still follow final consistency of the counter, and it only serves as
+> a estimated metrics, a little inaccuracy has no visible effect.
 
-> > This ifdeffery seems unnecessary. What about this:
-> 
-> Yup, even better.
-> 
-> Andrew - could you update it in-place or do you need a v2?
+This might be a good idea. Updating the LRU size without
+holding lru_lock could open up possibilities for further
+optimizations.
 
-I queued this update:
+Recently, I've been thinking about something in the aging
+path. For example, suppose a folio belongs to the root
+memcg and is heavily shared by some of its descendant
+memcgs, which also access it.
 
---- a/include/linux/mm.h~mm-vma-read-anon_vma-carefully-in-validate_mm-fix
-+++ a/include/linux/mm.h
-@@ -4370,9 +4370,7 @@ anon_rmap_tree_iter_first(struct anon_vm
- struct anon_vma_chain *
- anon_rmap_tree_iter_next(struct anon_vma_chain *avc,
- 			 pgoff_t pgoff_start, pgoff_t pgoff_last);
--#ifdef CONFIG_DEBUG_VM_RB
- void anon_rmap_tree_verify(struct anon_vma_chain *avc);
--#endif
+Currently, aging in those descendant memcgs will simply
+skip this folio. Eventually, we'll have to rely on the
+rmap of the root memcg to determine whether the folio is
+hot or cold within the root memcg.
+
+Since the shared folio may have a very large mapcount,
+walking its rmap could be quite expensive.
+
+So I've been thinking about this and put together some
+very PoC code. It doesn't really work; it's just meant to
+illustrate what I have in mind:
+
+
+diff --git a/mm/vmscan.c b/mm/vmscan.c
+index 7ddef3b488b3..31b02478269b 100644
+--- a/mm/vmscan.c
++++ b/mm/vmscan.c
+@@ -3618,7 +3618,7 @@ static struct folio *get_pfn_folio(unsigned long pfn, struct mem_cgroup *memcg,
+ 		return NULL;
  
- #define anon_rmap_tree_foreach(avc, anon_vma, pgoff_start, pgoff_last)		 \
- 	for (avc = anon_rmap_tree_iter_first(anon_vma, pgoff_start, pgoff_last); \
---- a/mm/vma.c~mm-vma-read-anon_vma-carefully-in-validate_mm-fix
-+++ a/mm/vma.c
-@@ -669,14 +669,17 @@ static int dup_anon_vma(struct vm_area_s
- }
+ 	rcu_read_lock();
+-	if (folio_memcg(folio) != memcg)
++	if (!mem_cgroup_is_descendant(memcg, folio_memcg(folio)))
+ 		folio = NULL;
+ 	rcu_read_unlock();
  
- #ifdef CONFIG_DEBUG_VM_MAPLE_TREE
--#ifdef CONFIG_DEBUG_VM_RB
- static void validate_mm_anon_rmap(struct vm_area_struct *vma)
- {
--	struct anon_vma *anon_vma = READ_ONCE(vma->anon_vma);
-+	struct anon_vma *anon_vma;
- 	struct anon_vma_chain *avc;
+@@ -3723,7 +3723,7 @@ static bool walk_pte_range(pmd_t *pmd, unsigned long start, unsigned long end,
+ 			continue;
  
-+	if (!IS_ENABLED(CONFIG_DEBUG_VM_RB))
-+		return;
-+
- 	vma_assert_stabilised(vma);
+ 		if (last != folio) {
+-			walk_update_folio(walk, args->vma, walk->lruvec, last, dirty);
++			walk_update_folio(walk, args->vma, folio_lruvec(last), last, dirty);
  
-+	anon_vma = READ_ONCE(vma->anon_vma);
- 	if (!anon_vma)
- 		return;
+ 			last = folio;
+ 			dirty = false;
+@@ -3736,7 +3736,7 @@ static bool walk_pte_range(pmd_t *pmd, unsigned long start, unsigned long end,
+ 		walk->mm_stats[MM_LEAF_YOUNG] += nr;
+ 	}
  
-@@ -685,11 +688,6 @@ static void validate_mm_anon_rmap(struct
- 		anon_rmap_tree_verify(avc);
- 	anon_vma_unlock_read(anon_vma);
- }
--#else
--static void validate_mm_anon_rmap(struct vm_area_struct *vma)
--{
--}
--#endif
+-	walk_update_folio(walk, args->vma, walk->lruvec, last, dirty);
++	walk_update_folio(walk, args->vma, folio_lruvec(last), last, dirty);
+ 	last = NULL;
  
- void validate_mm(struct mm_struct *mm)
- {
-_
+ 	if (i < PTRS_PER_PTE && get_next_vma(PMD_MASK, PAGE_SIZE, args, &start, &end))
+@@ -3812,7 +3812,7 @@ static void walk_pmd_range_locked(pud_t *pud, unsigned long addr, struct vm_area
+ 			goto next;
+ 
+ 		if (last != folio) {
+-			walk_update_folio(walk, vma, walk->lruvec, last, dirty);
++			walk_update_folio(walk, vma, folio_lruvec(last), last, dirty);
+ 
+ 			last = folio;
+ 			dirty = false;
+@@ -3826,7 +3826,7 @@ static void walk_pmd_range_locked(pud_t *pud, unsigned long addr, struct vm_area
+ 		i = i > MIN_LRU_BATCH ? 0 : find_next_bit(bitmap, MIN_LRU_BATCH, i) + 1;
+ 	} while (i <= MIN_LRU_BATCH);
+ 
+-	walk_update_folio(walk, vma, walk->lruvec, last, dirty);
++	walk_update_folio(walk, vma, folio_lruvec(last), last, dirty);
+ 
+ 	lazy_mmu_mode_disable();
+ 	spin_unlock(ptl);
+@@ -4499,7 +4499,7 @@ bool lru_gen_look_around(struct page_vma_mapped_walk *pvmw, unsigned int nr)
+ 			continue;
+ 
+ 		if (last != folio) {
+-			walk_update_folio(walk, vma, lruvec, last, dirty);
++			walk_update_folio(walk, vma, folio_lruvec(last), last, dirty);
+ 
+ 			last = folio;
+ 			dirty = false;
+@@ -4511,7 +4511,7 @@ bool lru_gen_look_around(struct page_vma_mapped_walk *pvmw, unsigned int nr)
+ 		young += nr;
+ 	}
+ 
+-	walk_update_folio(walk, vma, lruvec, last, dirty);
++	walk_update_folio(walk, vma, folio_lruvec(last), last, dirty);
+ 
+ 	lazy_mmu_mode_disable();
+ 
+
+We may want to explore this after mglru-fg. What are your
+thoughts on this?
+
+>
+> Signed-off-by: Kairui Song <kasong@tencent.com>
+> ---
+>  include/linux/mm_inline.h | 3 +--
+>  1 file changed, 1 insertion(+), 2 deletions(-)
+>
+> diff --git a/include/linux/mm_inline.h b/include/linux/mm_inline.h
+> index ab69b9930893..597f013c8e04 100644
+> --- a/include/linux/mm_inline.h
+> +++ b/include/linux/mm_inline.h
+> @@ -47,11 +47,10 @@ static __always_inline void __update_lru_size(struct lruvec *lruvec,
+>  {
+>         struct pglist_data *pgdat = lruvec_pgdat(lruvec);
+>
+> -       lockdep_assert_held(&lruvec->lru_lock);
+>         WARN_ON_ONCE(nr_pages != (int)nr_pages);
+>
+>         mod_lruvec_state(lruvec, NR_LRU_BASE + lru, nr_pages);
+> -       __mod_zone_page_state(&pgdat->node_zones[zid],
+> +       mod_zone_page_state(&pgdat->node_zones[zid],
+>                                 NR_ZONE_LRU_BASE + lru, nr_pages);
+>  }
+>
+>
+> --
+> 2.56.0
+>
+>
+
+Best,
+Barry
+
 
 
