@@ -1,62 +1,62 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 007D7606A32D
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 02:49:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AA25606A32F
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 02:50:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=EKPM/T/+
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=XhwWY2h6
 Received: by kanga.kvack.org (Postfix)
-	id E89896B05B2; Sun,  1 Nov 2026 21:49:56 -0500 (EST)
+	id 33E726B05B4; Sun,  1 Nov 2026 21:50:07 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E3A246B05B3; Sun,  1 Nov 2026 21:49:56 -0500 (EST)
+	id 2C7FE6B05B5; Sun,  1 Nov 2026 21:50:07 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D76F46B05B4; Sun,  1 Nov 2026 21:49:56 -0500 (EST)
+	id 1DE126B05B6; Sun,  1 Nov 2026 21:50:07 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id BE6186B05B2
-	for <linux-mm@kvack.org>; Sun,  1 Nov 2026 21:49:56 -0500 (EST)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 5D3D7A0BC1
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 02:49:56 +0000 (UTC)
-X-FDA: 85388649192.28.5996C8C
-Received: from mta1.migadu.com (out-120.mta1.migadu.com [95.215.58.120])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 5F22D20002
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 02:49:54 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="EKPM/T/+";
-	spf=pass (imf13.hostedemail.com: domain of kaitao.cheng@linux.dev designates 95.215.58.120 as permitted sender) smtp.mailfrom=kaitao.cheng@linux.dev;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id E8E086B05B4
+	for <linux-mm@kvack.org>; Sun,  1 Nov 2026 21:50:06 -0500 (EST)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 6889B80B53
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 02:50:06 +0000 (UTC)
+X-FDA: 85388649612.14.A8B18B4
+Received: from mta0.migadu.com (out-55.mta0.migadu.com [91.218.175.55])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 6CDB620002
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 02:50:05 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=XhwWY2h6;
+	spf=pass (imf31.hostedemail.com: domain of kaitao.cheng@linux.dev designates 91.218.175.55 as permitted sender) smtp.mailfrom=kaitao.cheng@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793587804;
+	b=LcV8/eLIRUqDqg7ysdCO0Dz0yrZS12FELRKymPGZoOrfLQW3gKm5NqcQjUivoLDLHt3W3W
+	u+hGIe0IWYVS63tdEKzRvB3H2cExQY7+1sNnmRhsMN7yvJ2Fyhx/Jx9GhQVobX8YyZD0Ad
+	T9dDWEcSGXpCkn7n7aBArMALNf4WTE4=
+ARC-Authentication-Results: i=1;
+	imf31.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=XhwWY2h6;
+	spf=pass (imf31.hostedemail.com: domain of kaitao.cheng@linux.dev designates 91.218.175.55 as permitted sender) smtp.mailfrom=kaitao.cheng@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793587794;
+	s=arc-20220608; t=1793587804;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wsq265Y6LzBmkOdoymoFNHjnl3IW2ovvlI+9AwjjAuE=;
-	b=VHWVLVLmUolYmoyM4p2AxcTgWx2Rkm6H0+nxhQ62jkojgdy/bP3VIdgDPWwqzsqiYy3MUA
-	P5xFtjJ/ImYULkT8lIOgHLKmhkkFwX21WPf1SAhvQXUuKMT03X8OzgxkUqIRuaTR/sj11U
-	SVPSl42SR+U5yblwclCIgoQ9AJCwAtU=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793587794;
-	b=MmuWgZbUG86dLLYuYcV10FMOICz5rXXAR8x+xRClX4CXsN2ll4WNuLDonvkKjFUR8LysXJ
-	+8UeyKZI7/4k7+usvZbbUTnexTmsOLks2CzXFQhiMlVt3F8wTFFKQ4dghOp5gFSiRGdT6G
-	rQ+m5uP8ECIlqiOP5dhEtoigL8GbCYg=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="EKPM/T/+";
-	spf=pass (imf13.hostedemail.com: domain of kaitao.cheng@linux.dev designates 95.215.58.120 as permitted sender) smtp.mailfrom=kaitao.cheng@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	bh=PapBgzOyZnAsoQCK2k5mMlWe3Tctg64lj1GVjzYd0Q8=;
+	b=0cAoKAAjPANf2+vBC7TSN2ISRXynStJwdaxBeYfuZmZ+7q74xIqYJYJswQoY5Lgo858vYQ
+	ENZ+tA/8wUSR+G5McD6yumj2Li6tp7n2bokaRzOAd/POnQOdGYHdkO7LJnOFUXP4r+t/0j
+	xy7gFg3nle4vIRZP8FvIK+pzCtoRtuM=
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=j8pQESwrLrfT9Kc/KC2iuBXUJfIeLEImyATEFj6zlDg=;
+DKIM-Signature: a=rsa-sha256; bh=Z9acv076wT5xIN3whZ7kKd6coXEQxd0rgX0Tu8Z5SNw=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1793587791; v=1; x=1794192591;
- b=EKPM/T/+fyZPfUGce3JQha20CDV8IN2FPRNcOmK0DL8riFkgbS58yOw2GC1oidgq5ierEgkF
- XcvtGSINu4IDEsSUidFOVkOQFjDSmAHdqQUuVt7TXSNCvnhcc9Jm6Ji7ZfAodvxAmmRvBH6KPOp
- BfOCPH3lpOtabQbt5d7mmxSk=
+ t=1793587803; v=1; x=1794192603;
+ b=XhwWY2h6EZh069tDtWt7fl7IYIunrs2S2GMV7s4ubhw/3U8GgOAijA9w1qv7v19pWgXUHh+2
+ pG3+KMyGyGpUPBM1N1hl1aK6luXgs3J4ItlwalmsR5X9iDc8/d+BPqjMvcjzW9eNb+va0FsZWNz
+ aMzZ2zARxgazGciUyCRBr71A=
 X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 348b45477b4b0c16;
-	Mon, 02 Nov 2026 02:49:51 +0000
-X-Mizu-Trace-ID: 348b45477b4b0c16
+Received: by smtp.migadu.com with ESMTPS id df44cd3dce38ba1a;
+	Mon, 02 Nov 2026 02:50:01 +0000
+X-Mizu-Trace-ID: df44cd3dce38ba1a
 X-Migadu-Flow: FLOW_OUT
 From: Kaitao Cheng <kaitao.cheng@linux.dev>
 To: Muchun Song <muchun.song@linux.dev>,
@@ -81,27 +81,27 @@ Cc: Mani Tofigh <mt4022@columbia.edu>,
 	linux-kernel@vger.kernel.org,
 	cgroups@vger.kernel.org,
 	Kaitao Cheng <chengkaitao@kylinos.cn>
-Subject: [PATCH v2 2/3] mm/hugetlb: Preserve persistent flags when returning folios to the pool
-Date: Mon,  2 Nov 2026 10:49:09 +0800
-Message-ID: <20261102024910.31486-3-kaitao.cheng@linux.dev>
+Subject: [PATCH v2 3/3] mm/hugetlb: Fix NR_HUGETLB accounting for surplus folios
+Date: Mon,  2 Nov 2026 10:49:10 +0800
+Message-ID: <20261102024910.31486-4-kaitao.cheng@linux.dev>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20261102024910.31486-1-kaitao.cheng@linux.dev>
 References: <20261102024910.31486-1-kaitao.cheng@linux.dev>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 5F22D20002
-X-Stat-Signature: snkihji9ktjc79hars6ad68msi9344tq
 X-Rspam-User: 
+X-Rspamd-Queue-Id: 6CDB620002
+X-Stat-Signature: qbo7ihqjzxqott1y5kc39n4rrntrs1gz
+X-Rspamd-Server: rspam01
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1793587794-509246
-X-HE-Meta: U2FsdGVkX1/WbD2RUYtOf5sQ4WnjkAdi9HutNberyesAQSHt2cMj6IxyoitBi0b1HrFDiUYC5MNjboqU6SKmGbyNNyYKkh/VuUwFMP//Kkg+OyZAZPgfXaYxcvAaE0iu2uruh5vnI1Fl7EHDzvlh4U/1YlVZAHCG2iw2GwxDqQK1ZyUs74nrM2fQKDEbU/p54DsWlU+u6MIiIMP5OHZv6fpyHH1CZTwFe1oTrpwEpF8Uhe/fh3HNZydz4O2RQjQdwMc52/3p4VgimeZo0bDXI3tTTvAdYtBRZ5BtIkEMr5waJ3uf9DdPFU3RZTogz5KrQ1FckRrR1p3/UGZNraTbh0Dg3M8ysJDJ9RVEx2/IXXWf8dgk5GUjxBpF04EzLeSimpwzk2Bl3U5UNbnrG2428vKW2peAEDmZodO29El0GzZ+L4+g6hDXpB9ap0Q5jQS664cpXwxEA2ron4eblMgr06xDKI3VEyVNrs9TYgNHRe1RfIHYFzXoLHAbv4AGlmhGtchh0w5nxJ+i1dP2Jc26ZRbwgWlM2pL2+dm0OWiJDKM0xPid8Y8Jq3qLX8p3RcjIBTBRaiIcH2q91lOQ7zqBPqxc3A3M1y3x/ihBh4KvufQ0GuMtkbF5RPoOueIDthey1aXPlDZ05EnQhN9iyR2lQtfRCp3zL91QrPY2SgtoqjHCPYWr+2fDl9jxczdALAVSpUK1+UTqpLUgA3OUHtz6kw9mo+bkDyz+DfWcIzGqHHW78yFu45XOdvLqbCn1z6bF+S14gsEu+b1CATy7iPQBy/qtuL21RltACX3TqloiW9q3zqQFRF14z1WxmB4oPsQNmRO9myz4PkuvK/W6SxImZuV1iFcyHjssfZTSXggk+i2PtuqC7n5vgr5MTTcjCSpi/LcNR0BdAKeQ96BdqkDQ16BjbWPYnF3kNvq0Tf8F4qNEdi8SpUvZ708kAh/n8Ju1uccVBYsgE1NUgRSXHwI
- H5OFy9Qe
- vsIdWwDF9yJoSP2PZpmHHZel5vcySGgqPcgG5rPDzmD9oRMJp/voHjlINUSyA0s0FfeF3bABpvG1rRjBK+xGUhiZf+uwoXON7jJxToaDC3OWuemnpjZe7n+er5SFjJ6AnueyaMtaEL8Z8EddZY0SNmplHatNBtBBRGDHt3L8OqZBStlo+1idr53IrMask/W0Dg1rVdLD5pqNZe/ZxTgUoZvOVJl1XHopsuddnR9GihgA0PD0UxL8/lSTJWErtOKtifLKpNoJxSPW61uW63a+hAzjplYBU8XjXbA4SE9mBUUy+9fohkXLz2dHPkPWtBTeUwmkW/s3JVPao/7YbiFD9JD+o/ptCBw6ISeWQ9DrltU0IzW03aZGPDVRsFYXgag5o1ZYgcu1TiNQLxrulfHD7+FxthC0t9TaC9eK2
+X-HE-Tag: 1793587805-754162
+X-HE-Meta: U2FsdGVkX18XCp58NVBLcd4Fa6EHRMA0VBjdw8wvdn0S5HPHNh66TbB8BCvH+cAxxQzTcVxoo7+vrDo0E1Qeu0LtK7a82GRJ0kpCXkRVC3d39Z/vCuxat/0zry/ZsUfDqJtqqx2ZyO3zaFf3eU92yiYRPQStaktQma7t6AuFY8vf6btC9OYHZ5Ks2uOGRsqg+JNp5r2PXlryjtxtsu8SHk/D6IN97D05XYLvY9OwNcgHi61NCgiM/aNYCzHXgZX5y/zCRF/5Gygwultqq99HYM+1IOh1xuCakfdxYXGTFgdQz3/Tc84nyzM9wqL+VsVKONOtSyxBzE7irz7WOrM25ViyFkrZ00ERpMagHaINEpiGDjTmX3jY0iRC2oTS/INNzx56Io1GhvZWNUaYm9hIRGzlvs9AdfT+3ENqjgUibJNbvgNdhWoECkVygXdbaMKAm1T1BFKKYksdRwMss4Fnvw8ekqLT9mc0MdUxSg5bwr7xw0UlxcDokrsykfJBVrFNKuOVSFSSQJ5XrULacVO0Z4dwPlF/+vyqFF10snl12BJq5tPtTiff2zEYuX3pF9pj/zW/RpEK3qfN8p8PjKnv0Ry7cD95x15At3gPDoOXAxJE2RHqXmIC8iI6yFyuYnNsd1lv9w1rPZo7aBT8KPUswG2ejqjPDJGzwtcRQz3hWosAGsFe5HxcW/2VHZBKuLsZPcov1mig+iXGTXv+EIvqjNw/k90bbIQpjduFbDlYqZUJpwrpHpHE0JKqgGOMneFeaqy014P7uY+qCkKVOj9+Ie0bI6AWTmfX3SClfgrhyDcuE0hjemEfatZLIJLQqogktSWgVdOcREiZxxPSdBpJf9Dcla+mZ/41hpXWdeppUQDxSrgohk8elUETDge1z6QybxqzSB5Dtu8Vv0TjjeWlk3c67qlcuMSefxicC0ioGucRLuedckNdyMtY9mvTgFGFv2pXK3kUrT5AY+RHBOL
+ HrZl18zV
+ zZPuMu77SXhsSIgBuNrizT2GQ1knslPMJJd4RIn6xTgGu9+APussRbzVG8rn4YMfBUO6EoTDAEHF2eWXDnun18PGslRrWu2jumrvjvBrn+r4wGsa3VYJMXXEeWdlYq8X8q/eklhRf85Rm7sWbCGnCEdToOr7huiyHC0YtvHiyJVvX7tEgw1IZ7iYCg6ApRiW4x/ayoizVBw0any6ThSa9BvOtGxPSruJdLci/crssNQA3OMqv1h/hXXb6evWIeNeiOGjPAbVi7Vuaort7+f6OxvSN71lk39TjwCYR6lORaM+FvgrQsjqI3riQCEHlH1nWuKgObUCHlWgikGav3d7uriLMUFlzttzgncYeKPv5rghRyLV9YJkY4qL+edsQ0jt1avxMst7n1m5aHnOZNriA01vq1Scm8FYjigrx
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -112,71 +112,183 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 
 From: Kaitao Cheng <chengkaitao@kylinos.cn>
 
-add_hugetlb_folio() returns a folio to the HugeTLB pool when vmemmap
-restoration fails. It clears folio->private and restores only
-HPG_vmemmap_optimized, losing other flags that must survive the rollback.
+NR_HUGETLB is incremented in the allocation entry points, but decremented
+unconditionally in free_huge_folio(). Surplus folios allocated while
+gathering reservations can be freed without passing through those entry
+points, leaving an unmatched decrement in the per-node counter.
 
-Clearing HPG_cma causes a later free to bypass the CMA release path,
-leaving the CMA allocation bitmap set. Clearing HPG_raw_hwp_unreliable
-loses the indication that the locations of poisoned subpages are unknown,
-undermining the checks that prevent freeing or unpoisoning such folios.
+This happens when reservation gathering fails or allocates more folios
+than needed, or when the overcommit recheck rejects a newly allocated
+surplus folio. These paths cause nr_hugetlb in /proc/vmstat to underreport
+usage.
 
-Preserve the existing flags instead of resetting folio->private. Callers
-already clear HPG_restore_reserve, HPG_migratable and HPG_freed before
-returning a folio to the pool. Clear HPG_temporary in free_huge_folio()
-before attempting to free a temporary folio, so a failed vmemmap restore
-does not leave that flag set on a folio returned as surplus.
+Move node accounting to the underlying folio state transitions. Increment
+NR_HUGETLB when dequeuing a free folio or allocating a fresh surplus or
+migration folio, and decrement it when returning the folio to the pool or
+removing it from active use. Balance the temporary increment when surplus
+folios gathered for reservations are added to the free pool.
 
-Add a VM_WARN_ON_ONCE_FOLIO() check for flags other than
-HPG_vmemmap_optimized, HPG_raw_hwp_unreliable and HPG_cma to detect
-incomplete transient flag cleanup.
+Separate memcg statistics from node accounting, updating them after a
+successful charge and before uncharging. This keeps node accounting
+balanced independently of whether the folio is charged to a memcg.
 
-Fixes: 161df60e9e89 ("mm, hwpoison, hugetlb: support saving mechanism of raw error pages")
-Fixes: d2d786714080 ("mm/hugetlb: enable bootmem allocation from CMA areas")
-Closes: https://sashiko.dev/#/bug/linux-5363eb09-9c3c-4f8b-9f3c-a998a8c4b258
-Suggested-by: David Hildenbrand <david@kernel.org>
+Fixes: 05d4532b60e3 ("memcg/hugetlb: add hugeTLB counters to memcg")
+Closes: https://sashiko.dev/#/bug/linux-860a3b8f-0b07-4cd5-a122-aa2288463bee
 Suggested-by: Muchun Song <muchun.song@linux.dev>
-Suggested-by: Zi Yan <ziy@nvidia.com>
+Suggested-by: Oscar Salvador <osalvador@suse.de>
 Signed-off-by: Kaitao Cheng <chengkaitao@kylinos.cn>
 ---
- mm/hugetlb.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ mm/hugetlb.c    | 42 +++++++++++++++++++++++++++---------------
+ mm/memcontrol.c |  6 +-----
+ 2 files changed, 28 insertions(+), 20 deletions(-)
 
 diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-index 4a008afaedf9..931ca3a30773 100644
+index 931ca3a30773..d1d7e14858d3 100644
 --- a/mm/hugetlb.c
 +++ b/mm/hugetlb.c
-@@ -1443,6 +1443,12 @@ void add_hugetlb_folio(struct hstate *h, struct folio *folio,
- 
- 	lockdep_assert_held(&hugetlb_lock);
- 
-+	/* Callers must clear transient flags before returning to the pool. */
-+	VM_WARN_ON_ONCE_FOLIO((unsigned long)folio->private &
-+			     ~(BIT(HPG_vmemmap_optimized) |
-+			       BIT(HPG_raw_hwp_unreliable) |
-+			       BIT(HPG_cma)), folio);
-+
- 	INIT_LIST_HEAD(&folio->lru);
- 	h->nr_huge_pages++;
- 	h->nr_huge_pages_node[nid]++;
-@@ -1453,9 +1459,6 @@ void add_hugetlb_folio(struct hstate *h, struct folio *folio,
+@@ -1288,6 +1288,8 @@ static struct folio *dequeue_hugetlb_folio_node_exact(struct hstate *h,
+ 		folio_clear_hugetlb_freed(folio);
+ 		h->free_huge_pages--;
+ 		h->free_huge_pages_node[nid]--;
++		mod_node_page_state(folio_pgdat(folio), NR_HUGETLB,
++				    pages_per_huge_page(h));
+ 		return folio;
  	}
  
- 	__folio_set_hugetlb(folio);
--	/* Clear all folio->private flags except hugetlb_vmemmap_optimized. */
--	folio->private = NULL;
--	folio_set_hugetlb_vmemmap_optimized(folio);
+@@ -1416,6 +1418,9 @@ void remove_hugetlb_folio(struct hstate *h, struct folio *folio,
+ 		folio_clear_hugetlb_freed(folio);
+ 		h->free_huge_pages--;
+ 		h->free_huge_pages_node[nid]--;
++	} else {
++		mod_node_page_state(folio_pgdat(folio), NR_HUGETLB,
++				    -(long)pages_per_huge_page(h));
+ 	}
+ 	if (adjust_surplus) {
+ 		h->surplus_huge_pages--;
+@@ -1693,6 +1698,17 @@ struct hstate *size_to_hstate(unsigned long size)
+ 	return NULL;
+ }
  
- 	arch_clear_hugetlb_flags(folio);
- 	enqueue_hugetlb_folio(h, folio);
-@@ -1743,6 +1746,7 @@ void free_huge_folio(struct folio *folio)
++static void mod_hugetlb_memcg_state(struct folio *folio, int nr_pages)
++{
++	struct mem_cgroup *memcg;
++
++	guard(rcu)();
++	memcg = folio_memcg(folio);
++	if (memcg)
++		mod_memcg_lruvec_state(mem_cgroup_lruvec(memcg, folio_pgdat(folio)),
++				       NR_HUGETLB, nr_pages);
++}
++
+ void free_huge_folio(struct folio *folio)
+ {
+ 	/*
+@@ -1740,7 +1756,7 @@ void free_huge_folio(struct folio *folio)
+ 				     pages_per_huge_page(h), folio);
+ 	hugetlb_cgroup_uncharge_folio_rsvd(hstate_index(h),
+ 					  pages_per_huge_page(h), folio);
+-	lruvec_stat_mod_folio(folio, NR_HUGETLB, -pages_per_huge_page(h));
++	mod_hugetlb_memcg_state(folio, -pages_per_huge_page(h));
+ 	mem_cgroup_uncharge(folio);
+ 	if (restore_reserve)
  		h->resv_huge_pages++;
- 
- 	if (folio_test_hugetlb_temporary(folio)) {
-+		folio_clear_hugetlb_temporary(folio);
- 		remove_hugetlb_folio(h, folio, false);
+@@ -1756,6 +1772,8 @@ void free_huge_folio(struct folio *folio)
  		spin_unlock_irqrestore(&hugetlb_lock, flags);
  		update_and_free_hugetlb_folio(h, folio, true);
+ 	} else {
++		mod_node_page_state(folio_pgdat(folio), NR_HUGETLB,
++				    -(long)pages_per_huge_page(h));
+ 		arch_clear_hugetlb_flags(folio);
+ 		enqueue_hugetlb_folio(h, folio);
+ 		spin_unlock_irqrestore(&hugetlb_lock, flags);
+@@ -2123,6 +2141,9 @@ static struct folio *alloc_surplus_hugetlb_folio(struct hstate *h,
+ 	 */
+ 	account_new_hugetlb_folio(h, folio);
+ 
++	/* The overcommit recheck below can free this folio. */
++	mod_node_page_state(folio_pgdat(folio), NR_HUGETLB, pages_per_huge_page(h));
++
+ 	/*
+ 	 * We could have raced with the pool size change.
+ 	 * Double check that and simply deallocate the new page
+@@ -2160,6 +2181,7 @@ static struct folio *alloc_migrate_hugetlb_folio(struct hstate *h, gfp_t gfp_mas
+ 
+ 	spin_lock_irq(&hugetlb_lock);
+ 	account_new_hugetlb_folio(h, folio);
++	mod_node_page_state(folio_pgdat(folio), NR_HUGETLB, pages_per_huge_page(h));
+ 	spin_unlock_irq(&hugetlb_lock);
+ 
+ 	/* fresh huge pages are frozen */
+@@ -2218,10 +2240,6 @@ struct folio *alloc_hugetlb_folio_reserve(struct hstate *h, int preferred_nid,
+ 
+ 	spin_unlock_irq(&hugetlb_lock);
+ 
+-	if (folio)
+-		lruvec_stat_mod_folio(folio, NR_HUGETLB,
+-				      folio_nr_pages(folio));
+-
+ 	return folio;
+ }
+ 
+@@ -2249,9 +2267,6 @@ struct folio *alloc_hugetlb_folio_nodemask(struct hstate *h, int preferred_nid,
+ 						    nmask);
+ 	}
+ 
+-	if (folio)
+-		lruvec_stat_mod_folio(folio, NR_HUGETLB, folio_nr_pages(folio));
+-
+ 	return folio;
+ }
+ 
+@@ -2369,6 +2384,8 @@ static int gather_surplus_pages(struct hstate *h, long delta)
+ 		if ((--needed) < 0)
+ 			break;
+ 		/* Add the page to the hugetlb allocator */
++		mod_node_page_state(folio_pgdat(folio), NR_HUGETLB,
++				    -(long)pages_per_huge_page(h));
+ 		enqueue_hugetlb_folio(h, folio);
+ 	}
+ free:
+@@ -2944,13 +2961,6 @@ struct folio *hugetlb_alloc_folio(struct hstate *h,
+ 
+ 	ret = mem_cgroup_charge_hugetlb(folio, mm,
+ 					gfp | __GFP_RETRY_MAYFAIL);
+-	/*
+-	 * Unconditionally increment NR_HUGETLB here because if
+-	 * mem_cgroup_charge_hugetlb failed, freeing the page will
+-	 * decrement NR_HUGETLB.
+-	 */
+-	lruvec_stat_mod_folio(folio, NR_HUGETLB, nr_pages);
+-
+ 	if (ret == -ENOMEM) {
+ 		folio_put(folio);
+ 		/*
+@@ -2965,6 +2975,8 @@ struct folio *hugetlb_alloc_folio(struct hstate *h,
+ 		return ERR_PTR(-ENOSPC);
+ 	}
+ 
++	mod_hugetlb_memcg_state(folio, nr_pages);
++
+ 	return folio;
+ 
+  err_uncharge_hugetlb_cgroup:
+diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+index 84f4a8fd4d16..3bfe4b108170 100644
+--- a/mm/memcontrol.c
++++ b/mm/memcontrol.c
+@@ -5417,11 +5417,7 @@ int mem_cgroup_charge_hugetlb(struct folio *folio, struct mm_struct *mm,
+ 	struct mem_cgroup *memcg = get_mem_cgroup_from_mm(mm);
+ 	int ret = 0;
+ 
+-	/*
+-	 * Even memcg does not account for hugetlb, we still want to update
+-	 * system-level stats via lruvec_stat_mod_folio. Return 0, and skip
+-	 * charging the memcg.
+-	 */
++	/* Skip charging unless hugetlb accounting is enabled for cgroup v2. */
+ 	if (mem_cgroup_disabled() || !memcg_accounts_hugetlb() ||
+ 		!memcg || !cgroup_subsys_on_dfl(memory_cgrp_subsys))
+ 		goto out;
 -- 
 2.54.0 (Apple Git-157)
 
