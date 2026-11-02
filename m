@@ -1,107 +1,197 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F248606A326
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 13:49:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4996B606A33E
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 13:52:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=DAowWd3B
+	dkim=pass (1024-bit key, unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=PhkJ+RTg
 Received: by kanga.kvack.org (Postfix)
-	id 488606B05B1; Mon,  2 Nov 2026 08:49:09 -0500 (EST)
+	id 63BA36B05B3; Mon,  2 Nov 2026 08:52:22 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4398D6B05B2; Mon,  2 Nov 2026 08:49:09 -0500 (EST)
+	id 5ECE26B05B4; Mon,  2 Nov 2026 08:52:22 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3281A6B05B3; Mon,  2 Nov 2026 08:49:09 -0500 (EST)
+	id 4B41F6B05B5; Mon,  2 Nov 2026 08:52:22 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 089E76B05B1
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 08:49:09 -0500 (EST)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 8A6941C45F9
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 13:49:08 +0000 (UTC)
-X-FDA: 85390310376.07.2D0C4C5
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf30.hostedemail.com (Postfix) with ESMTP id A906580005
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 13:49:06 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DAowWd3B;
-	spf=pass (imf30.hostedemail.com: domain of chenhuacai@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chenhuacai@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793627346;
-	b=K2ddDDQApg6qyyIGUkThhB91/QmOztnqo5rNkZ6I1LtF5e5zvmNYtXCsSPORJ4itJ9sPV5
-	fwAvB/6CaQFUKHaXtN0NQbtVrPnDNuhteLFJSRDLAYpykVXhJh55W3aLPVCz0Zq0+FLH9M
-	AV6RAepK6si8vEa8SYp6UPjQSgmEZGQ=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DAowWd3B;
-	spf=pass (imf30.hostedemail.com: domain of chenhuacai@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chenhuacai@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793627346;
+	by kanga.kvack.org (Postfix) with ESMTP id 238E36B05B3
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 08:52:22 -0500 (EST)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id D63CB1C478E
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 13:52:20 +0000 (UTC)
+X-FDA: 85390318440.15.D6BCD03
+Received: from BN8PR05CU002.outbound.protection.outlook.com (mail-eastus2azon11011018.outbound.protection.outlook.com [52.101.57.18])
+	by imf01.hostedemail.com (Postfix) with ESMTP id E275D4000A
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 13:52:17 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b=PhkJ+RTg;
+	spf=pass (imf01.hostedemail.com: domain of Christian.Koenig@amd.com designates 52.101.57.18 as permitted sender) smtp.mailfrom=Christian.Koenig@amd.com;
+	dmarc=pass (policy=quarantine) header.from=amd.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1793627538;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=t19/VpHeuZfEnwqIz1VMgr6RSjKRD0I7ktZ5p1JSZr4=;
-	b=7yx9sWlHP6tauBNcEQ8EuKMBHFQ2hTpiyAqk2AMH6wiD6vD806bAcK/C1hjtZY7DVddG80
-	VgKuVV/3BdIuZeFpaHlz1U1eBF5zKrO+wddTCi3ZI0qknaMELPd9n1Ua88hvS6iaIG2alQ
-	1G89Z3Wd0ZZC3ppu7mDfRElUeIjtZDk=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 1B5DB600E2
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 13:49:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7DF11F00A16
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 13:49:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793627345;
-	bh=t19/VpHeuZfEnwqIz1VMgr6RSjKRD0I7ktZ5p1JSZr4=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=DAowWd3BMUfOYCsfzNlODEe95CKBes8NC8j1cPffVVZVFZQDgdjT3WLYp2VnOJKLt
-	 IcB5y6w4kUbZv1cPdCLmYUMPvVqna4N8ai3wCyeqKoNhUv6hPHZbuo2QK42VD4MfyX
-	 cZ3anIB5v1r1ErFiJja5fVMTccdAfNPZov4fMU0jCf3MTvzuVElfzRLIYoICiQhYvv
-	 4QXnxTUll0IjMX98rYsajwypqPrJbDI9NAqt3fjuZ2b7ZpdxK7BDLcSmsgYV0E91dN
-	 UGrsiqKH7M3QRPihurxs3rvC8y32qzJF1yUiasKVU7E0oj8Z6GPxntDn3NiKSXU8UD
-	 UcfkHjax1xpmg==
-Received: by mail-vs1-f54.google.com with SMTP id ada2fe7eead31-7cc0e865dd1so985143137.1
-        for <linux-mm@kvack.org>; Mon, 02 Nov 2026 05:49:05 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AKwUvBxIxR3AimoXuZJ5ahIEsLbVQ0eYDY5gYE++VhLY7aC3UxzSuKbKGBwa1ZNUSDco8eVGOgiblGnY9A==@kvack.org
-X-Gm-Message-State: APuU4Z9Y7dm468hfSUmNNCax68JJ0jl5VQTgg6EVwMJnrhFUhbkUfOSf
-	kPqEuXMOpOdjeErYo7T/A8cgoUFAoTIGWuZaS09Oy0XiPr/i8Uu1LcuRv5bJ27lJdbc1v9Wtt0A
-	cLa35zcJ/o7Dlogr5UFGkxC7if1jgV1Y=
-X-Received: by 2002:a05:6102:6047:b0:7c3:ac59:158b with SMTP id
- ada2fe7eead31-7d072c91ddemr2933364137.23.1793627344929; Mon, 02 Nov 2026
- 05:49:04 -0800 (PST)
+	bh=8q3u5pS+Y65E8Bopb11C+ZzErL0aPrjpl0habtp1hMo=;
+	b=ej3ITkDiHe6pxQlkmWKr+6BIMjyBKJCXlVbbesQZaJ5jNMEWFrQdVugJnRJYQ9kk4q3WgQ
+	lb3tI/RCVIOpJDvhM+xnuc+s70yppgL9NcAurC8KoVJEP7rNg7IN9jeIjKQdctzrZ1PFEC
+	/7c8YiQfUVDAZgCHho7sQQENBkLcpwg=
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1793627538;
+	b=OV0FDpJjMX+D/0F9qZlppPq3S3KC3xXr4z/IfSubbbqNxh919gwZdmlBxqXZ1gGhmOd/yn
+	+uWDoMl1Asb26gXlGZoMxxAs/xIHDZo60VNI8mQJ+1Lp6dw9m7pbYwx3biS9eBFmApDBDW
+	JJJfomsheNWcpwzY3rgLvW1cZTCOojQ=
+ARC-Authentication-Results: i=2;
+	imf01.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b=PhkJ+RTg;
+	spf=pass (imf01.hostedemail.com: domain of Christian.Koenig@amd.com designates 52.101.57.18 as permitted sender) smtp.mailfrom=Christian.Koenig@amd.com;
+	dmarc=pass (policy=quarantine) header.from=amd.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=WZOv5qvXOl+xnn/Wergl/Kz8fk9NjPLwGbxZE27w283tpqJLlDuujA6Ln4SLOdsIUtlr8JpMJ46/usGYDgZY2QI8VxwMWfAVj85Rs/QooIDkM3gctmFyPbaHpJ5Vc32XBh1e7yMu+yzhufMJk1oFOJK+fynW9KGrDwsVCqA9tILU57r2eE6w3EUXgGP18vWwrvme/6M5EnX+zZGHg4MBAQhOfqjGK4fxg1Aeqx9q7wxgN/E2sm7R3JESxKSkHUOwJ6vsKEsTIO5waBjqa8oow+BMFQP5UNyGbFOvF/bwI4nayiKMAdWrK10ICjBOt153g/W21Ob+vtAoY8INHZavvQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=8q3u5pS+Y65E8Bopb11C+ZzErL0aPrjpl0habtp1hMo=;
+ b=cINUl31lVZNVCx9Gbew15/VoWUDxpJjwT/uy18SOZxNf+0MHLEbwnlCAFWGilb2/ZN27x08To0sTlgAopHR+V/mhYQpFODeJPtqVZR9DWAyCCVbIIpOIz9t2FhGoz5+dtCnIPiu8NTvWhFDkpG6IY2FUNk4wRxX61P+GTLKObNlM6a95YkH2PV44IUcUI3PDOdwbf+yY13aiV1Hq7Ds4KeJ3MeBteCC9YMSeo82CpcToYCqxlo6orXEwkttWq9CK8xuzl1h8w3wIvDFxxBMPwKKKj2/UDVECreRM4uSQqobMMgO+1P9Sg/tfo6fQ75YDiXnx2BCXg32WMuBZbcQlGg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=8q3u5pS+Y65E8Bopb11C+ZzErL0aPrjpl0habtp1hMo=;
+ b=PhkJ+RTg7zo5+f3XBcvevcFTuKlj3ne3tcVdShLAZNIyEfWd4b5vYiMc2V0OOeAmWLnriVk/4ZhU0q49vnUoA9SZ6SXabaiwvTG3Xzj3EAIWk4UC88dUe4zpSRrx0eCyOw0m9Wq8N5ilKZ858vkapGlmqwe9q1N50+lWYE8eckg=
+Received: from PH7PR12MB5685.namprd12.prod.outlook.com (2603:10b6:510:13c::22)
+ by DS7PR12MB8348.namprd12.prod.outlook.com (2603:10b6:8:e5::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.569.12; Mon, 2 Nov
+ 2026 13:52:11 +0000
+Received: from PH7PR12MB5685.namprd12.prod.outlook.com
+ ([fe80::ce69:cfae:774d:a65c]) by PH7PR12MB5685.namprd12.prod.outlook.com
+ ([fe80::ce69:cfae:774d:a65c%3]) with mapi id 15.21.0569.011; Mon, 2 Nov 2026
+ 13:52:11 +0000
+Message-ID: <e925fde8-5d07-419f-a25e-4dd0bb90ad46@amd.com>
+Date: Mon, 2 Nov 2026 14:51:58 +0100
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm/hmm: honor write requests for owned device-private
+ pages
+To: Aveline Noir <jm5905938@gmail.com>, Jason Gunthorpe <jgg@ziepe.ca>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Felix Kuehling <Felix.Kuehling@amd.com>,
+ Alex Deucher <alexander.deucher@amd.com>
+Cc: David Airlie <airlied@gmail.com>, amd-gfx@lists.freedesktop.org,
+ Barry Song <baohua@kernel.org>, Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Jonathan Corbet <corbet@lwn.net>, Danilo Krummrich <dakr@kernel.org>,
+ David Hildenbrand <david@kernel.org>, Dev Jain <dev.jain@arm.com>,
+ dri-devel@lists.freedesktop.org, Francois Dugast
+ <francois.dugast@intel.com>, Christoph Hellwig <hch@lst.de>,
+ Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>,
+ Honglei Huang <honghuan@amd.com>, Jann Horn <jannh@google.com>,
+ Kiryl Shutsemau <kas@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+ Leon Romanovsky <leon@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
+ linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ Lorenzo Stoakes <ljs@kernel.org>, Lyude Paul <lyude@redhat.com>,
+ Matthew Brost <matthew.brost@intel.com>, Michal Hocko <mhocko@suse.com>,
+ Nico Pache <nico.pache@linux.dev>, nouveau@lists.freedesktop.org,
+ Pedro Falcato <pfalcato@suse.de>, Philip Yang <Philip.Yang@amd.com>,
+ Randy Dunlap <rdunlap@infradead.org>, Mike Rapoport <rppt@kernel.org>,
+ Ryan Roberts <ryan.roberts@arm.com>, sashiko-bot@kernel.org,
+ sashiko-reviews@lists.linux.dev, Simona Vetter <simona@ffwll.ch>,
+ Shuah Khan <skhan@linuxfoundation.org>, Sunil Khatri <sunil.khatri@amd.com>,
+ Suren Baghdasaryan <surenb@google.com>,
+ =?UTF-8?Q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+ Usama Arif <usama.arif@linux.dev>, Vlastimil Babka <vbabka@kernel.org>,
+ Vitaly Prosyak <vitaly.prosyak@amd.com>, Zi Yan <ziy@nvidia.com>
+References: <179343062238.2.2773026701442863377@gmail.com>
+ <sashiko-outbox-192310@kernel.org>
+ <179352350180.2.12918668886938034091.b4-reply@b4>
+ <179362220860.2958105.9509793190720553695.b4-reply@b4>
+Content-Language: en-US
+From: =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>
+In-Reply-To: <179362220860.2958105.9509793190720553695.b4-reply@b4>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: FR0P281CA0189.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:ab::20) To PH7PR12MB5685.namprd12.prod.outlook.com
+ (2603:10b6:510:13c::22)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-References: <20261102032525.3597743-1-songmuchun@bytedance.com>
- <20261102032525.3597743-8-songmuchun@bytedance.com> <sashiko-outbox-192874@kernel.org>
- <2D6DE4F4-8DB1-45D4-B076-36FE6714C575@linux.dev>
-In-Reply-To: <2D6DE4F4-8DB1-45D4-B076-36FE6714C575@linux.dev>
-From: Huacai Chen <chenhuacai@kernel.org>
-Date: Mon, 2 Nov 2026 21:48:52 +0800
-X-Gmail-Original-Message-ID: <CAAhV-H4BPOJJy367p0MZcEWk3WziV3rPiCtoKPSGOqrQt5W1Pw@mail.gmail.com>
-X-Gm-Features: AclHuK8vnwbfTipAOd6WMVXtrU5YJ6-7EJCkQE6p8MgAvtOeminm8SJMrGrSJ0M
-Message-ID: <CAAhV-H4BPOJJy367p0MZcEWk3WziV3rPiCtoKPSGOqrQt5W1Pw@mail.gmail.com>
-Subject: Re: [PATCH v2 07/12] mm: hugetlb_vmemmap: simplify shared tail page handling
-To: Muchun Song <muchun.song@linux.dev>
-Cc: sashiko-reviews@lists.linux.dev, Muchun Song <songmuchun@bytedance.com>, 
-	Oscar Salvador <osalvador@suse.de>, Andrew Morton <akpm@linux-foundation.org>, 
-	Mike Rapoport <rppt@kernel.org>, Qi Zheng <qi.zheng@linux.dev>, Lance Yang <lance.yang@linux.dev>, 
-	James Houghton <jthoughton@google.com>, David Hildenbrand <david@kernel.org>, linux-mm@kvack.org, 
-	WANG Xuerui <kernel@xen0n.name>, loongarch@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH7PR12MB5685:EE_|DS7PR12MB8348:EE_
+X-MS-Office365-Filtering-Correlation-Id: cf739b49-f493-4e31-a969-08df38e87e1e
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|23010399003|376014|7416014|1800799024|10067099003|18002099003|22082099003|56012099006|11063799006|4143699003|261021121427099003|261022105027099003|261026121527099003|261026140227099003|261022075727099003|261009223027099003|261028144727099003;
+X-Microsoft-Antispam-Message-Info:
+	7PhJomOzB1ZVcNR4zVVcPV71oPfOUSyJB9kloBNlOxNSIAKpsROMTJk8aGEP7vGFYyGKj55VR4zH8jBXOX8kmS8DvSrbkuIQDSqpjCZOjYc5Aa/KLZWEHTgT8DXb4xihvSxGw0kBW0hl/ddrA2LkmHAvN+M3F+2R7+XTMdq/7hR9Sa7eGPWab7z+d39quY1BOvzSHRUfqqMKlJcisOSWpMW3qtmUQVmTAW4V4TFoQYRfimvdT34vA4GKM1HlE6RE8jlBKB9fQgYBFagu3MZaWbZELOhtmCPyVLq/nZdEEuKrSGfPTJYTD/krIe9kUNXYULyGRYtbDYolKaVA7lSMBRrUBcUFIb0q5Fs4AnZuKxxi16u7STCktZk1KLvQFAbbnY0B+dp83L96vlp9pSOh65wroNDtFQ7bmdJpTa9Fl0nk3p/nIbGz/YLRkHVQkF5f87XSH7fxOzl2Bg92+pXrJ9Mf5j5N9JOmwWhpWlpUG5ZtbdkaX/z/B/lyX9EvtyfXYyCV0XYPeCGtdac8q32DXML7vLrN3BbYZ79KV8JhwzMdn8bzO3jIQEGFX1lFAFLBAv1vFF7ELCyi99q04HemWn4yTyG6vViBlZX6bifl88s=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR12MB5685.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(23010399003)(376014)(7416014)(1800799024)(10067099003)(18002099003)(22082099003)(56012099006)(11063799006)(4143699003)(261021121427099003)(261022105027099003)(261026121527099003)(261026140227099003)(261022075727099003)(261009223027099003)(261028144727099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?cW5VMml3bXNCMVNyYmU5V1o5TXEyN29oaXRoSDBBc1hSVjZhT0V6MkNQQjlC?=
+ =?utf-8?B?MmNkeVV4WkhiTGxpUVlad2dYd2N3bStWNnIrWCtobERpWVRuWXpsZksraktN?=
+ =?utf-8?B?WXRwOXdPZHAzalNjYWF5ZzVSSW1nbkc1TDd4SGJnbVNHMHlvSGpvMC9VZnBp?=
+ =?utf-8?B?QXhpMXhTc1lwQUM5b1JlYkF0cmNjWXV1bGYvZjhTWCtZcStxL1hVMVFUc3ds?=
+ =?utf-8?B?b2dCQmpsSlc5Qjl3cDJWZk9hSFJiQ1kvaE5CbG5uWEZCNGtIT1RUc2xMQmty?=
+ =?utf-8?B?NmpUZ1NWazdaUHlqNXRoZG5PM1o3TzJ5SVFCM01OY0NaNHUvWlpib1N3T1FW?=
+ =?utf-8?B?aVQyRGpINzRvYU10aWpVSEY0VnJDeU9aMWcxN2Z2M2pQcTkwWGxtYnNZb0hX?=
+ =?utf-8?B?aERCV29YQXo0eGl5Zm92aTlzenVjaGhxaDRrbEJSSTRGcS9YOCtmcklnY3N1?=
+ =?utf-8?B?UEZvaGxoWGNvcSs0dHBRd1FFZDVQQyttU3NERzBnd2tENkllOTVuQ20yN3l5?=
+ =?utf-8?B?NFBTemwzWVJBeUdJb2NXdzhROUZFaGZxNEdQMHlLT1FCMHNzVm56VDRyZXRi?=
+ =?utf-8?B?NFIwYnpJK0hQT1lPQWNIVjBpb24wNEJHK3E2RTJLMWN6TXBXZkQ2enhwVDhj?=
+ =?utf-8?B?NFQ3dHJOSnNMWkRTV0JRZTFLaDVvUmtBaVhRbHVrZTcxTHNXbUh5TmZsdzRW?=
+ =?utf-8?B?NUpOMnpLNzRVR1VvOWJ4ejdnaHpCVmk2aTZwTlRxQlRpVlczNExvK0l5dUYr?=
+ =?utf-8?B?MUtueTl3T0FPY3VXVndoS2hZd1ZRdnBIcTJiWm9tQXhtTVN4b1llckxGZlpZ?=
+ =?utf-8?B?ZUthejFaRlhLOVRjWStKelNhUEtkYTJKWUNrdkhLblMyOWUyRGdNR1EybHo5?=
+ =?utf-8?B?NG1rOUgvTXBobk5zdEZoS0l3dkc3VElkc05YcTlFSDU0bGJQQ0UzcnZ6ckcw?=
+ =?utf-8?B?eURWZmt3V1M4cXlJSkhtS2FsclJobERDcG5YL3FUY0VqYktNZmJjUlh2Wjhs?=
+ =?utf-8?B?UEhqZUtWS3hQV2R6RmpGNmxiS3F4c1Z1dytrZjFadmZDbWxuVStoc1R1dXRO?=
+ =?utf-8?B?WXhpSTkxVUk3NWZCd3lPdEZBRHMwOStBckxKMUdRdzRKM3IzMmVTOWxZZDAz?=
+ =?utf-8?B?Umtnd00zTHppaWY3TW5PQ2U0TGdDZ2tsYmk2VlgxWXhsZ0JFVFUzQTY2VU9z?=
+ =?utf-8?B?ZkhUM2thYmNTNEU0U0VZTll3VG1YdHhOWjgzTUNEa2xKWFNMamdFWGVabzU2?=
+ =?utf-8?B?N3ZzQnlLRnRtQVA4bEZGK0pnekp3bU5LSTA3cUNLRTlOMDZNVWlTMFpZN05y?=
+ =?utf-8?B?cGJ5NXZob0cvaVcxUUY2aGFWYUpMaFZTNHFmSUMyejJwZjFReXNNREdqWUxy?=
+ =?utf-8?B?azN3SFE5MzBmZ09QYml4QmMrcnpzWnR4SDdxbGx6UkU4MVREdmN3bU1QUHI2?=
+ =?utf-8?B?UzFZVnlDY3VNOW5qd3lNZVdLL1NVZENpRmU3a2IrOWhVWXFITHN4ZTBSdytN?=
+ =?utf-8?B?Vjk4NGVWYi92TmQzR2lWaHRpK3pGbVVFZXdkajJFVXhtSlYvVjFibGRKSHhy?=
+ =?utf-8?B?TE9aSnhtRTY5eVdPSDJhYXgrdjZOT1RzaVRRSEx4YnlqYUgzdUpZZGdubFpF?=
+ =?utf-8?B?Z2l4Z1N4MlhBeEczTm5pM3JPeXhZYmpDcmtmQjVBZjdocTJKR3hjbmR1Qmtp?=
+ =?utf-8?B?YWg5YVdvQlVIbkxleTF4aGRZaTduN083bmNEUnJvcUJqWDNCdHplRWJ0YXBi?=
+ =?utf-8?B?T25TeHdsdmJVbG9KRmIxaS9xR2pvQmcrclBnYWl3WFJLUlEyNnBXRnRZVExh?=
+ =?utf-8?B?NVRqKzZTdmJ0MVpkUTVrVGdIazRQelNxb2pjTlBjSEk5VWVRU0NTN01RMVZU?=
+ =?utf-8?B?MndjODJYbHJtWXBoYVlkUEM1cHV4RHo0RHp6QitqSnczdDFPQ0hjQW9OVjA1?=
+ =?utf-8?B?dnF2VlIvRHJtbmNhVDAzekF0dDdCdEFyQ1JVRG5FWDBQRHphUFVvd3BTQnBw?=
+ =?utf-8?B?OEhSWDJyeW5VdnRPcGl1dlNJWTFSMTgrclZnbC9IQTJZYy9TQ0RHMkdidHUy?=
+ =?utf-8?B?TVNCZjlIeURjVEV5aDJmVmw3WDJLRWJ1SjUxMEdNQitZN05VQ0pPMkNoRXEr?=
+ =?utf-8?B?eTB0Rjk5YTZDemljekFvVklONXlCM1lCaDhRMEdlL2tBZ2FYNG5pekMyVWtq?=
+ =?utf-8?B?eE8wUCs1TDNoK1RMNDVPMWt6ak1rNXp1QTlDNGpDUGFFYTZZSDVKRHZxazZW?=
+ =?utf-8?B?UWI1UnVhbTVaN3ZqdjZLM0JGL1V1KzhVOEo3WHh2c3B5eDlUckZ2YjFsUDJo?=
+ =?utf-8?Q?eREMN8QRzG3ZKebURz?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: cf739b49-f493-4e31-a969-08df38e87e1e
+X-MS-Exchange-CrossTenant-AuthSource: PH7PR12MB5685.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Nov 2026 13:52:11.0837
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: Yad+RD9Svb4hOML9IswF3mL7R72ighP3dBewQbiIgWaRJdSDPOEjJaL7Ao3+wbpt
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR12MB8348
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: E275D4000A
+X-Stat-Signature: 5dkqx7p71x3a59nhz5qw4iihtjcyy7bf
 X-Rspam-User: 
-X-Rspamd-Queue-Id: A906580005
-X-Stat-Signature: b1mr1eqe53rr3xdwdhh7ox3q6am9c83u
-X-Rspamd-Server: rspam01
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
-X-HE-Tag: 1793627346-430469
-X-HE-Meta: U2FsdGVkX1/X3aN/RzIEchfbAyOAatq3CVLY23It2fyrEGHDX3za5OG51oUfhUNIfom/o19Hyb5oQhmEsk7oCVpuYphEEtX/Z9d/vYt7B8ML0d2yzy0PrXCcB/6+S9K8J19qQYFHEuQC3lvCQLr29pqxPEi9+se93NcX6ihQP3xf00GSAyCg3bc7jAgNS9xtsO+PjtV4bRsgdzRueM9EAK/rED3IYUGBqCdaepNWBQG4vVPgxgPM8UJr2Lp0BJ/7Xw87sC9TX5VSd4f/zgx+TD5+TPtvhh3Miv5XngQHM9HhC2I9stqtQD6XzExACtWwavYx7P6GEAphRQ1ltjzfxI+E6gdzcutfpV+9ymiLxaC/MQwGnKcnjz0X74ulsuhN6+tMmXu9ZEZAQB2igaKjUFJ8QC/JJhtpPTMXL+yZE/a2tgHd7qAKuMQpr7PsCk9CF/62D+1xupwuGTkGLcI9fgOxhl9B63UfVrVVeJD5qFNKNOEeeoSc54SAKN0RiLrrws73xWfMeMK0soUCV4OVAbALvHFq5s0otxtJR3Oxp5HtKqwRk2Cv+lzk3Boub3KNv21h1u06VDxwSAT3505YgXJMmRN52E2DAbeiucRCLQPOhzQtNpCkK9NcHogeCN65eRAl1ZAtkq62ObmoqGmrhB0gLOmBSZlVjetUkxpxe393EUxWTAUXNvjQUw0AczIZYdIqB6rAggWFqqUK5Q5CjvyO3yZ6/cJL8N1yCm7m9P4vwzljqkvXxQwscfFuM8yFg+IpYMVJ4s9JgNW4TvOfK41oAeW1d46Uq6qSUwEHgkBZdeJG5LFWL4l6NPa0ccb3HbnK6GjvfYbgzJZqVmxxPWaqCPY8bAGgV35N6B+EoReTuKj7a4dfFgmhyWs+pb8WTdJtpPIF2DS9MLi53BYto/rUZDS557yaO3xz0s++hrSY226JSW0u82veFQpf+KSA8rBuQMpSFX0BaigAIiP
- 2CfgQkDh
- eL8Tib4tdPkRTcZCReQXH+emehq1FmEH384odDSMI+aKsRA9R5+x1+7IL4vhQVOBWrVqq/aWnzzawaeKIfE/StD9JN63F/tssbxF1pS0MFHCMUiQ0RBeqw2Q9L+GGfvUSn3Z0JrZGctIbg4Fo77TXGgF3gUXMhNRMyVGhpM5iTmr2ApnPGTh8WUHKuW5LVr9/oSBbg5zQjLtYsXEr7R7uIynxHtH58PDNUjylgyNrbwaL7g9lowsjtzrZLsdcbaZ82kMWCbP3UGd0IsivZOlUIcqSU5hRhnlxRBYbJVv0XS+hsPzdgh0/wyos/2+k5TyfzQfmaqQnnLFhFamD0xLudvsJi9OM/i1xHZZ3TtX5v33IYJz65LCdXkPS8RRElRkTqFogHgTaS/ncBoVUlHWVt9ecu7o2Mejs+ZXL3j9GHK+SYGSORcDnabFwdA==
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
+	autolearn=no autolearn_force=no version=4.0.1
+X-HE-Tag: 1793627537-651866
+X-HE-Meta: U2FsdGVkX19LrjcIuxSlzU4GuH4sM0XXB9WzOZPw3piiWePMFPfli1Z/EHucF5wIGzzKv0IqqMlklD5ePrI7wyA7hrg8qr8XN4piGuXuANw21O0/JlVJmV0plVfw2REGmmVxds4Pk2jMkyb0He7tqWt4W2+wvD0D/1PDAWcUyXftcLRvhXwYH3frGyK9daEkdZyxIFgaHWr9/lmGQ96NxFhHtygddhXdoEnPGri3fn0m3L/YHyfGQz4SAv6KAcmbgo7+3FbxxSgv141pP+Ph/7tvtXrgTaofDglM2xAORgV2WD4AA8Sk/vRz29PmZ7RCsVqjK0CUvwIu6JVy0Hhpm0z8qlUayBptnt9X9V8Rm+v9HkcHZU/ORQ5gBq55cODbvtri9L21HFkLDPA/HInz195xaoISto0T7608Hu5cc6bFjlnhc0Zf0UUZ0JoALyaQ7nAjkXekODA2NCQx4QYPyM7/yPgw+EYMkNE+QQh1r4ddG6/0/6tyrZmVECM+JIKbWWF+f6/xHBnUVJi1gZm1zepNDtOlCLSS2AyUr2sreg70F+Pax8xi1geF2ryjRFjsxEFBD54WP0reucGCmz+b7JH2wgyYN9iJ7fZVpBgNr4r7NB8z7eh3RPpzeZo3GFWAZ+PTDKUTKiG+kENgyHRVuToOjYHmBDrtl+kxjBKl3up4FQJDAZx/KuUjs+aMxDvhz6lJSxZFCPCh9prlTcCX0WGUeR/ATLpYklU3S1UW1Wk4sg1GNsJuSdKKqjo2Ma0RMCv9nuYw03GuxYWkGRwiFOLdGIy0Qiyq5VhfTVoQ+jO8le203LVfDtv+9oqu5zrVvoTc6j+5zdQUYwlS4sRQ7rikwon3V2TO6snB4pNHE3sLAM9udUNYfnS5oQkWQddQ0oXg+0tTPDcjK7QGbRNQtrtBeFzhigyALxGcwdXTL4hiS8Uf6/l6vYDUuSeAPC+cJEMS0ZHFVxtKbWOzjsW
+ wuaTVfvQ
+ p2OLinf7NG8Fqf2eFLGzBpphJNjmNva6KXJhLPRezNUyAd2UIqsp0GlBqQSn8STvicocjAoFlYy/R0u31mUTGrRRRrf9ZX5XHZbVGCrdIHOIHH1SRVWJ2XzfMq61pH/bMFQ/+yiqpf+n/1wxjX1g4VZ69eCDoH0KVaPNPZrNkCtfW39/kAJpeotBgomBDsY6cD7CpuHEaPPI9t4LDWQBz1typAjTakPqwDwiCkyqlBGZivMaRc26d37421/0RbM7KwRACWsEYgGr2GOiF/N9JVTlFqlgYeUmm64Zu2Y0iGq2BFnEywGlu7KORL25ZFzWqvDpnz9M6VHtJ7C4ftk743lZZ8EOBi86hiJ97w9ygFdwkNUAFdAmHXufTcoTqAyf9aVBHjJ/Yc5BBeW39D9MLFLrLrSq2R8fcF/GYtaIFcvsKX6pmHv6KSup4TLbiy3D8cGG7Oyb8dChtRcX6djP8+N7UHg7lHKuKGKrGxlwpu2ZXpzhzMWRZpKen6S+TKOMyrL24S8gjbOVDmtx8U6OzpyUJuB0bcAlbdVCFoO0h+iODgK5UEa464gh3Sg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,246 +200,69 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Mon, Nov 2, 2026 at 2:12=E2=80=AFPM Muchun Song <muchun.song@linux.dev> =
-wrote:
->
->
->
-> > On Nov 2, 2026, at 11:52, sashiko-bot@kernel.org wrote:
-> >
-> > Thank you for your contribution! Sashiko AI review found 1 potential is=
-sue(s) to consider:
-> > - [High] mm: hugetlb_vmemmap: uninitialized tail page read in vmemmap_o=
-ptimize_pte()
-> > --
-> >
-> > commit 32511c4a4d8ec3d45e0f629f89666a78dc9372ee
-> > Author: Muchun Song <muchun.song@linux.dev>
-> >
-> > mm: hugetlb_vmemmap: simplify shared tail page handling
-> >
-> > This commit removes the vmemmap_tail field from struct vmemmap_remap_wa=
-lk and
-> > updates vmemmap_optimize_pte() and vmemmap_restore_pte() to derive the =
-shared
-> > tail page directly from the folio being processed.
-> >
-> >> diff --git a/mm/hugetlb_vmemmap.c b/mm/hugetlb_vmemmap.c
-> >> index 5e84004db4b87..d0af251aa533c 100644
-> >> --- a/mm/hugetlb_vmemmap.c
-> >> +++ b/mm/hugetlb_vmemmap.c
-> >
-> > [ ... ]
-> >
-> >> @@ -213,53 +211,53 @@ static struct page *vmemmap_dup_page_from_list(c=
-onst struct page *src,
-> >>      return dst;
-> >> }
-> >>
-> >> -static void vmemmap_optimize_pte(pte_t *pte, unsigned long addr,
-> >> -                             struct vmemmap_remap_walk *walk)
-> >> +static inline struct page *folio_vmemmap_shared_tail_page(const struc=
-t folio *folio)
-> >> {
-> >> -    struct page *page =3D pte_page(ptep_get(pte));
-> >> -    pte_t entry;
-> >> -
-> >> -    /* Remapping the head page requires r/w */
-> >> -    if (unlikely(walk->nr_walked =3D=3D 0)) {
-> >> -            struct page *head;
-> >> +    return vmemmap_shared_tail_page(folio_order(folio), folio_zone(fo=
-lio));
-> >> +}
-> >>
-> >> -            VM_WARN_ON_ONCE(!PageHead((const struct page *)addr));
-> >> +static int vmemmap_optimize_pte(pte_t *pte, unsigned long addr,
-> >> +                            struct vmemmap_remap_walk *walk)
-> >> +{
-> >> +    const struct page *page =3D (const struct page *)addr;
-> >> +    const struct folio *folio =3D page_folio(page);
-> >> +    struct page *src =3D pte_page(ptep_get(pte)), *dst;
-> >>
-> >> -            head =3D vmemmap_dup_page_from_list(page, walk->vmemmap_p=
-ages);
-> >> -            entry =3D mk_pte(head, PAGE_KERNEL);
-> >> +    if (likely(vmemmap_optimizable_pfn(page_to_pfn(page), folio_order=
-(folio)))) {
-> >> +            dst =3D folio_vmemmap_shared_tail_page(folio);
-> >> +            if (!dst)
-> >> +                    return -ENOMEM;
-> >>      } else {
-> >> -            VM_WARN_ON_ONCE(!PageTail((const struct page *)addr));
-> >> -
-> >> -            /*
-> >> -             * Map the shared tail page writable. A lockless get that=
- read
-> >> -             * a non-zero refcount before the remap can still do its
-> >> -             * cmpxchg after it. The refcount is zero, so the cmpxchg
-> >> -             * fails and leaves the page unchanged.
-> >> -             */
-> >> -            entry =3D mk_pte(walk->vmemmap_tail, PAGE_KERNEL);
-> >> +            dst =3D vmemmap_dup_page_from_list(src, walk->vmemmap_pag=
-es);
-> >>      }
-> >
-> > [Severity: High]
-> > Can calling page_folio(page), folio_order(folio), and
-> > folio_vmemmap_shared_tail_page(folio) on every PTE in vmemmap_optimize_=
-pte()
-> > read uninitialized tail struct pages for bootmem gigantic hugepages?
-> >
-> > During early boot in alloc_bootmem_huge_page(), gigantic hugepages mark=
- all
-> > tail pages [pfn + 1, pfn + nr_pages) with memblock_reserved_mark_noinit=
-(), so
-> > memmap_init_reserved_pages() skips initializing their struct pages:
-> >
-> > mm/hugetlb.c:alloc_bootmem_huge_page() {
-> >    ...
-> >       if (hugetlb_vmemmap_optimizable(h))
-> >               hugetlb_vmemmap_optimize_bootmem_page(pfn, huge_page_orde=
-r(h));
-> >    ...
-> >       memblock_reserved_mark_noinit(PFN_PHYS(pfn + 1),
-> >                                     (nr_pages - 1) * PAGE_SIZE);
-> > }
-> >
-> > When a bootmem gigantic hugepage is not aligned to PAGES_PER_SECTION (f=
-or
-> > example, when nr_pages < PAGES_PER_SECTION, such as on 64-bit LoongArch=
- with
-> > 16KB base pages where SECTION_SIZE_BITS is 29 and PMD_SHIFT is 25 with
-> > CONFIG_ARCH_FORCE_MAX_ORDER=3D10), section_set_compound_order_range() r=
-eturns
->
-> This issue does not occur with the default LoongArch configuration. For
-> 16KB base pages, LoongArch defaults ARCH_FORCE_MAX_ORDER to 11, which
-> matches HUGETLB_PAGE_ORDER.
->
-> The reported case requires manually overriding CONFIG_ARCH_FORCE_MAX_ORDE=
-R
-> to 10 while keeping HugeTLB enabled. This creates an **invalid configurat=
-ion**
-> that Kconfig currently permits:
->
-> HUGETLB_PAGE_ORDER      =3D 11
-> MAX_FOLIO_ORDER         =3D 10
->
-> LoongArch does not select ARCH_HAS_GIGANTIC_PAGE, so the generic MM code
-> assumes that folios cannot exceed MAX_PAGE_ORDER. The forced configuratio=
-n
-> violates that assumption and is already diagnosed by:
->
->         WARN_ON(order > MAX_FOLIO_ORDER);
->
-> in hugetlb_add_hstate().
->
-> Therefore, this is not a regression in a supported LoongArch configuratio=
-n,
-> and I don't think this series needs to handle it. The proper fix is a sep=
-arate
-> LoongArch Kconfig change preventing ARCH_FORCE_MAX_ORDER from being set b=
-elow
-> the HugeTLB order when HugeTLB is enabled.
-Yes, this isn't a regression, the problem existed before this series.
+Hi Aveline,
 
-I suggest change BUILD_BUG_ON_INVALID(HUGETLB_PAGE_ORDER >
-MAX_FOLIO_ORDER) to MAYBE_BUILD_BUG_ON(HUGETLB_PAGE_ORDER >
-MAX_FOLIO_ORDER) in mm/hugetlb.c, which cause a build error
-immediately for invalid ARCH_FORCE_MAX_ORDER configurations.
+On 11/2/26 13:23, Aveline Noir wrote:
+> Hi all,
+> 
+> On Sun, 01 Nov 2026 19:58:21 +1100 Aveline Noir wrote:
+> 
+>> Oh, I missed that. I'll try to fix it.
+> 
+> While working on this, I found that the fix reaches well beyond
+> mm/hmm.c and would likely need rework in several subsystems, so I'd
+> like to hear your views before going further. v1 shouldn't be applied
+> as is.
+> 
+> amdkfd holds svms->lock and prange->migrate_mutex across
+> hmm_range_fault(), and svm_migrate_to_ram() needs both, so it can't
+> migrate the page for the validating task. Migrating under those locks
+> can deadlock, since do_swap_page() waits for the device page lock, which
+> a concurrent CPU fault can hold while waiting for svms->lock.
 
-Huacai
+Yeah those issues are already known.
 
->
-> Cc LoongArch maintainers.
->
+Because of that AMDs KFD team is in the process of replacing the self made KFD based SVN handling with the drm_gpusvm module which is also used by Intels XE driver.
+
+> From
+> reading the code, amdkfd also maps such read-only pages writable today,
+> as it takes GPU write permission from the VMA rather than from
+> HMM_PFN_WRITE, so GPU writes after fork() would be visible to the child.
+> I haven't been able to confirm this on hardware.
+
+That is a new issue as far as I know.
+
+> One option I tried is an opt-in HMM flag that returns -EDEADLK and the
+> page address instead of faulting, so amdkfd can drop its locks, fault
+> the page and validate again. It works with test_hmm, but the amdkfd
+> side grew to about 550 lines across the GPU fault handler, the restore
+> worker and svm_range_set_attr(), and is only compile-tested. Read-only
+> entries also come from NUMA hinting scans and mprotect(), so pages that
+> aren't shared would be moved out of VRAM too, and Xe and nouveau would
+> see their pages migrated in the same cases.
+
+I don't think we should try to fix the KFD SVM code, as said we are already in the process of ditching it because of those problems.
+
+> Would you prefer an opt-in interface like this, a change to the amdkfd
+> locking so that migrate_to_ram() can run during validation, or
+> something else? I can post the amdkfd part as an RFC if that helps.
+> 
+> I also found a few smaller related issues, and I'll send fixes for them
+> separately.
+
+There is also https://gitlab.freedesktop.org/drm/amd/-/work_items/6003 which I'm not sure how to properly handle.
+
+Current AMD GPUs don't have dirty tracking in their GPUVM, so it doesn't really make sense to set the PTE or struct page dirty from the MMU notifier (both data pointers are not around there any more).
+
+We also can't set the page dirty directly after calling hmm_range_fault() because we don't own a page reference and so it could change at any time.
+
+At least for the GFX CS path it would make most sense to set the pages dirty in hmm_range_fault(), not sure about the SVM use case.
+
+Regards,
+Christian.
+
+> 
 > Thanks,
-> Muchun
->
-> > early without setting section->compound_page_order:
-> >
-> > include/linux/vmemmap-optimization.h:section_set_compound_order_range()=
- {
-> >       unsigned long section_nr =3D pfn_to_section_nr(pfn);
-> >
-> >       if (!IS_ALIGNED(pfn | nr_pages, PAGES_PER_SECTION))
-> >               return;
-> >    ...
-> > }
-> >
-> > In that case, sparse_init() allocates regular vmemmap pages via
-> > memmap_alloc(), leaving them uninitialized (or filled with 0xff under
-> > CONFIG_DEBUG_VM).
-> >
-> > Later, gather_bootmem_prealloc_node() initializes only the first
-> > VMEMMAP_OPTIMIZATION_NR_STRUCT_PAGES struct pages (covering only the fi=
-rst
-> > vmemmap PTE), and prep_and_add_bootmem_folios() defers initializing the
-> > remaining tail struct pages until after hugetlb_vmemmap_optimize_folios=
-()
-> > runs and fails:
-> >
-> > mm/hugetlb.c:gather_bootmem_prealloc_node() {
-> >    ...
-> >               hugetlb_folio_init_vmemmap(folio, h,
-> >                                          VMEMMAP_OPTIMIZATION_NR_STRUCT=
-_PAGES);
-> >               init_new_hugetlb_folio(folio);
-> >
-> >               if (vmemmap_optimizable_order(pfn_to_section_compound_ord=
-er(pfn)))
-> >                       folio_set_hugetlb_vmemmap_optimized(folio);
-> >    ...
-> > }
-> >
-> > mm/hugetlb.c:prep_and_add_bootmem_folios() {
-> >       /* Send list for bulk vmemmap optimization processing */
-> >       hugetlb_vmemmap_optimize_folios(h, folio_list);
-> >
-> >       list_for_each_entry_safe(folio, tmp_f, folio_list, lru) {
-> >               if (!folio_test_hugetlb_vmemmap_optimized(folio)) {
-> >                       hugetlb_folio_init_tail_vmemmap(folio, h,
-> >                                       VMEMMAP_OPTIMIZATION_NR_STRUCT_PA=
-GES,
-> >                                       pages_per_huge_page(h));
-> >               }
-> >    ...
-> > }
-> >
-> > Previously, __hugetlb_vmemmap_optimize_folio() derived vmemmap_tail upf=
-ront
-> > from the initialized head folio, and vmemmap_optimize_pte() checked
-> > walk->nr_walked =3D=3D 0 without inspecting tail struct pages.
-> >
-> > With this change, on the second and subsequent PTEs (where addr >=3D
-> > vmemmap_start + VMEMMAP_OPTIMIZATION_SIZE), page->compound_info in the =
-tail
-> > struct page at addr has not been initialized by prep_compound_tail() ye=
-t:
-> >
-> > 1. If the raw vmemmap backing pages are zeroed, page_folio(page) return=
-s page
-> > itself rather than the head folio, folio_order(folio) returns 0, and
-> > vmemmap_optimizable_pfn() returns false. vmemmap_optimize_pte() then fa=
-lls
-> > back to vmemmap_dup_page_from_list(src, walk->vmemmap_pages) for every =
-tail
-> > PTE, rotating the displaced vmemmap pages across the tail PTEs instead =
-of
-> > mapping the shared tail page, while leaving HPG_vmemmap_optimized set s=
-o
-> > prep_and_add_bootmem_folios() skips hugetlb_folio_init_tail_vmemmap().
-> >
-> > 2. If CONFIG_DEBUG_VM is enabled, page_init_poison() fills the uninitia=
-lized
-> > tail struct pages with 0xff. _compound_head(page) then evaluates to the
-> > poisoned tail page itself, and folio_order(folio) reads 0xff, leading t=
-o an
-> > out-of-bounds shift in vmemmap_optimizable_pfn() and an out-of-bounds
-> > node_zones access in folio_zone(folio).
-> >
-> > --
-> > Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261102032525.=
-3597743-1-songmuchun@bytedance.com?part=3D7
->
+> Aveline Noir
+
 
