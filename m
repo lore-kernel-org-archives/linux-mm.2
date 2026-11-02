@@ -1,98 +1,98 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EA42606BA45
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 15:08:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BA4A60A6C24
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 15:08:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Ag3K53I0
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=XrZQnn4C
 Received: by kanga.kvack.org (Postfix)
-	id D0CA76B05D8; Mon,  2 Nov 2026 10:08:08 -0500 (EST)
+	id 851E66B05D9; Mon,  2 Nov 2026 10:08:09 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CBD586B05D9; Mon,  2 Nov 2026 10:08:08 -0500 (EST)
+	id 803766B05DA; Mon,  2 Nov 2026 10:08:09 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BF9976B05DA; Mon,  2 Nov 2026 10:08:08 -0500 (EST)
+	id 718C16B05DB; Mon,  2 Nov 2026 10:08:09 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 9892D6B05D9
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 10:08:08 -0500 (EST)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 37ED3A6BD5
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 51B0A6B05D9
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 10:08:09 -0500 (EST)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id E17971C1C65
 	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 15:08:08 +0000 (UTC)
-X-FDA: 85390509456.25.1DC3A7E
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 9780C40010
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 15:08:06 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ag3K53I0;
+X-FDA: 85390509456.04.01B8CFC
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 37C1018000C
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 15:08:07 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XrZQnn4C;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf27.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+	spf=pass (imf24.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793632086;
+	s=arc-20220608; t=1793632087;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=awuxY1FvzsoS1AnamJJIhHpAk0A733zuvxu39gKku+U=;
-	b=KmtnnS++RXUUDfgxaGX6TOB8zNJPvNBhWwv0Pq5gQPoC8tBq8jJd7TjUl5ULYVGWsWn+km
-	Ft2qg89urEFGS+fiIZ7KqHtme/DuOGIzH3R6Cr8poio55jjJbVRjcNyKMpHaVN8FhkhPYz
-	muOYVBqnCkckMHOQP9RtkFBDYdN1NfU=
+	bh=6b6oFi/epwMKMYOCvMcLX5SixjsFrg88HIyGcM89GbU=;
+	b=o8MJZGA3g9yGiJCV8Lv9zF+CFma/bSf4jYCodGpdx6qI5NA3VyNi9zzVWO2yCzIypndOQu
+	XDKnNIJmzU6+gyDQ3trsuL21Q3NSDsyb0NvM8IuUPKh9jnCED+2DASkfKQY8B5ANBy8lSq
+	52nkU2ekTINNPlmm6Khb3JQOW8eT898=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ag3K53I0;
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XrZQnn4C;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf27.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+	spf=pass (imf24.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793632086;
-	b=a06zzE2b4JotMM4wF7CMyKwECkhGKi3Ej+dVlx5pU2CNoiS061yDTwHMUP8wSEG/qhBTqW
-	N4UAmfwr0fx9ox0dCVUsT6Z5jqBdPLFBUG6g5iEi8E/epXKc82NAVMdrNBFZVqh5Iv4FtS
-	1rX+pnwScZgJ6gkngZjlXTL/DwWYEYo=
+	t=1793632087;
+	b=i/4nnZuyiLRXZjKpax6XepxfPnThBS4Ajp+tb+XeYuXjCsxsxpayHIOoDr0L2vYzANPDP6
+	4t3eyABuRcjr38sJ2LpDeUGO8Zbko+Nd0lU3sFRqkpMi60loVaQ36crl0JLkfRctLYkG+Y
+	B9tarTZKCUzMxuBfr4WFbswsdE3idCE=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 395996060F;
+	by sea.source.kernel.org (Postfix) with ESMTP id 882CC413AD;
 	Mon,  2 Nov 2026 15:08:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B9AF1F00A1D;
-	Mon,  2 Nov 2026 15:08:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17A241F00A2A;
+	Mon,  2 Nov 2026 15:08:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793632085;
-	bh=awuxY1FvzsoS1AnamJJIhHpAk0A733zuvxu39gKku+U=;
+	s=k20260515; t=1793632086;
+	bh=6b6oFi/epwMKMYOCvMcLX5SixjsFrg88HIyGcM89GbU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Ag3K53I0Csd3ikdmc6KReqMvi/VyGvfqEHpgseRbEL1brw4iXQitfE5arNES3VbsB
-	 50u+rHAwCPanrp577miARyXu7d0J14BF952So/jncCy8Mhbj8Slb4Zp3jio3RV86J9
-	 KT6Da6cOMPynOo0CwHrzLzWzlkV5G0lkfD0oURrHQFrzocfDppWxqL4fzxf7mfqJ1k
-	 tiYd1ZTjd5hJqzG4DbnOP0+oKwfr3APif41tdiQPYW/8hGFFijtfUpz9/oK37+DQJI
-	 39a6lz78YeIT5IZMmNOwIheYMUhGOg1jPy5GXwM8FcxmHA0e6wjVve3INVygwZ7ckA
-	 qQr3r9LchhW/g==
+	b=XrZQnn4CsywSn7qcJI5WSFd6QsTFCkiSXKgVSrtcHW7w3BEPDx2Ei2g0dIeCyp/ho
+	 IELSsBOsA8xgkDWQFCYeCfw/LMll3OC63RXdWKfROfoZiFSISwpziClYJ6Aw3p/2+S
+	 WbH8KnZWq21CEEu9lwvPaL3X1rm/odickrCYAjwXWggL7LQ2G4l+gVJSU+aagHAnHf
+	 fS+e+YShp6GqAAMioEpvJMbOOkjDMCL5lJU/cfxkdiUbSHkjm1yKeXDESlp0fJMfht
+	 iSG23szz+J/DgIdXs8WA/oxAW9kQJfVI1Asn/Vq8H4BGIaKmQGVpSeIQwRK4sFO8y6
+	 RCpEUe885QO8w==
 From: SJ Park <sj@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
-Cc: "Shubhang Kaushik (Ampere)" <sh@gentwo.org>,
+Cc: Aveline Noir <jm5905938@gmail.com>,
 	Fernand Sieber <sieberf@amazon.com>,
 	Leonard Foerster <foersleo@amazon.de>,
 	SJ Park <sj@kernel.org>,
 	SeongJae Park <sjpark@amazon.de>,
 	Shakeel Butt <shakeel.butt@linux.dev>,
+	Shubhang Kaushik <sh@gentwo.org>,
 	damon@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	Aveline Noir <jm5905938@gmail.com>
-Subject: [PATCH 2/9] mm/damon/ops-common: align MMU notifier range when clearing PTE young bit
-Date: Mon,  2 Nov 2026 07:07:49 -0800
-Message-ID: <20261102150757.93058-3-sj@kernel.org>
+	linux-mm@kvack.org
+Subject: [PATCH 3/9] mm/damon/ops-common: align MMU notifier range when clearing PMD young bit
+Date: Mon,  2 Nov 2026 07:07:50 -0800
+Message-ID: <20261102150757.93058-4-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20261102150757.93058-1-sj@kernel.org>
 References: <20261102150757.93058-1-sj@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 9780C40010
-X-Stat-Signature: qgorb5ji98u7si8ij4qhdsoenwibgrfc
+X-Rspamd-Queue-Id: 37C1018000C
+X-Stat-Signature: patgo31p4t79qygtnsrccdi66k78o6ex
+X-Rspamd-Server: rspam06
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1793632086-435357
-X-HE-Meta: U2FsdGVkX1/BiXmXv3ElFx8Q7nh1C1dDEp8piEy05ppd9Vn3nEFuBf71Drj78MuAsqPon4Ysv+AkNWpefaTBHzaM72ObLU7trcNOdPCvRbH+0uaH8cmGd54pSBHEC1rQlGYAAL8D6ZFcniP3q3HGgBclpjEIMwvpjv0YETC+aTihlXSALLG3OL3s2xKkLMTfTiS3BMkSJ+fUM31C70ZfktdW2Zv9UHriTifF87hO7YQ5EUJMFA5mJhxO+upjZ2szppfNProSdbk3tfMFkbxtxybcznXCgwW33Ys/zEjLtsyJOAAQs8Pq0U1jEKgss5Axs0O8CTIaWqkD+gof3eOfY19ehx2Ibjud4mcS6rZSlc1JProdDE2f3LOOjrF05jw+b2NxCeowaRCbm7/J48zcQxlCNNJHEa/MYgXUlGlo9PQ181QWJEqI+S1ma8tJ9KbWcBBA5ztDi1S+IExpg8e7HcFsIlv/WFGePn2PFptOmCxknON0SOTbcIUD5AnZ5NnQz/zgXHx4wxZwHUuj5aFhNXL86LuQ/b1EiR1zP9/nJ8vi/BbwOV5+N9aUg75S0rNavy3uXHTbcmFf0FeY1FrxtwZJY1capmxz83RYFlxqcndcLkAJIdgFQzd4ohS/606A+0U526AsJY4UE3npcgZQndrNGlBuW2s8ZMHQFDsIvSaQMphqpu49DMPC266/xKt1vjL2uX9tiLzUXDIx5fqGaTnUPDYOM0a92h0d3vcvzwt+qSHUiyfsOlSxLd3UT1cs1Gv5rF5NfnvKfvtmYi/GuBcEcuklub7pccZiqrDjrSO94Wb11Mz3aJ8TPanbp6eN00ahZBEjGWlCl5bHQixTKr4T49EOvyXQRDfrraVToCPZO6vwrK5oLbft5AV///ZJyP2R7AY5Vj4gST0TJ9dghpjFKFUvYXQEa2Sib1dvBQSXrd86gDbTgLsLPYfBSjRnonjgQianRYbedq47Qnv
- 7xU1pcrB
- dsqiT3cQejvSd0NgzQ4b9/M6u+llyrUx+H1nATB8H8S+chf8QeewRjCKhOhXLpuzGTgMqRzLSzBGxFrArFw3l6k4m5ws0oE653IYYYb8tWgjixAIngfvfE83qF2oBBIUblZYDefSU2H4m1J42zw5QC9p+kp/RkiWoxox2W/cf2Ob4P1Zrb8zg7MBasJZFKpYHLsTJ7p1HHSPHn1gY4KImhFTUbR8VT8E+fpf21zDA110VU+dBbxhDa4+jLbRImb9ULn8txOvUpemxO4Hxyj4C2Xq7DnecZy28ZaFCSd/1NKoZke6fRdDHeDhyig==
+X-HE-Tag: 1793632087-362989
+X-HE-Meta: U2FsdGVkX18k9rTed9FJSHOsBHvmN5QHz+JOmGd9LFDH/TQwKxEOwTcbtavV1pQZgxTCqZDopLl5TfkrZ5J+VJZKR8eRBKJpf2lBq9CTiKPUc9nsA6IzwYAYodcSqD9jVwaMF6ij7iaxtLkSbKm6g850wqX87aReXEOe7Yw+Ow0HqP+d4pIlJe4BcjlR/9x+lK/4PzoB/rSigzkTnI4oXb8Q+CyxvobuUSM7C70af0Z/jxI58E8RenmdHbG2esV8bBt3+ALP8i0HQn/m+HR1UnhflYWTF4bIiChHnZqkdG5GsLpjLNdf8tTs2v8Rwr6q/4Z1dl7oe1Fg3bj0iX73wRwyKn6WTo1xQU89vSibIV/R/3zTYbRGxYLjzxH5Zswe+uQeChsj1OnUOmNgQHr+wfa1tfGLKzWTnECvfUg3Vy3G/4JOW2A4FaqTc1WJUhvXsxnAATZexXzR05UVXO9DpoJrz57MPH0Bg4Q3AbKnjL0WTGjItTfpI7GV3IlQGujFh/iqKPu0KZ+2/R9PrrF69EHX/Fm3lcJmBLewvYG6OlLtrzSMuezz2fzRtCLi+rFf6CILa4YACFh8Nih3gZlEihr10YufPWChBPZCyGuWbcIwgaHYz45y2UMP2X1zPqxddzP913y+DykoyVnRBU6IxQHydke4Pq+mMeTr5z381kmGImvQxbkxBcD4eusm9N75Ys93N0N2wKb15cDm2ZtAXwT5aJMfBbyDiBG+hKJN1qAOxxgDKPBidxz0/kTV1nQtcxUm33CNxmIP4WhtAV584ef99//jRLUSRxeb/Ms08RmZ8WkcCuf+sz0Hm7Lh6jndL1znqd6HF1APUfJju8/n9SEMBimJNcS+hDB7u4fFTgM8XBnJBgQPp71mgUHt2srreaLc+MsFPHryymY7QWpxc60t9VBruyy4bbYA5QkoSeQttkBsmv8hx/JaoxnOOdQx7FfRmwuAcR9MYSG3UhU
+ 31mV0k+q
+ g/4CskShWwr33oSXWrdUczbQkAqxqNfXZKh/KEBRGrodOzRFoMEmTqvKQeLkRLcIq9TD8aMHAtL9C9TzyGG6SMIRK3m0AyxZej9LuKV/wpvCr5wMnXl5t2kG0sHj5CiXBnq1acDSkziYS/dd4LwwFYh6SAkL1jBUSxfLH+Oy1q9lXYMnaShT3eNoUPvtLM17zIZMHS+AQe2RS0/BHWG9F6Kkn8dauB+kmJOZ33FKiIGv2p9T/0tzbDNiv3KCu2gceUpmJ9WFBovk6H4AlBGVKNXeNek5/Ib6UN3RagWA+fXhsthvj2Am1iwY0zQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,60 +101,44 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-From: "Shubhang Kaushik (Ampere)" <sh@gentwo.org>
+From: Aveline Noir <jm5905938@gmail.com>
 
-DAMON selects a byte-granular sampling address.  damon_ptep_mkold()
-clears the young bit of the PTE covering that address, but passes the
-unaligned range [addr, addr + PAGE_SIZE) to MMU notifiers.
+damon_pmdp_mkold() clears the young bit of a PMD but notifies
+[addr, addr + HPAGE_PMD_SIZE), where addr can be an unaligned sampling
+address. This can miss part of the sampled huge page and age secondary
+mappings in the next one.
 
-For an unaligned address, that range extends into the following page.
-KVM ages every guest page intersecting the notifier range, so it can age
-a secondary mapping for the following page although DAMON cleared only
-the sampled page's primary PTE.
-
-Align the address before both the primary PTE operation and the
-MMU notifier call so that they cover the same page.
+Align addr to HPAGE_PMD_MASK so both operations cover the same huge page.
 
 Fixes: 3f49584b262c ("mm/damon: implement primitives for the virtual memory address spaces")
-Signed-off-by: Shubhang Kaushik (Ampere) <sh@gentwo.org>
-Reviewed-by: Aveline Noir <jm5905938@gmail.com>
-Tested-by: Aveline Noir <jm5905938@gmail.com>
+Cc: Shubhang Kaushik (Ampere) <sh@gentwo.org>
+Signed-off-by: Aveline Noir <jm5905938@gmail.com>
 Reviewed-by: SJ Park <sj@kernel.org>
 Signed-off-by: SJ Park <sj@kernel.org>
 ---
 Changes from v1
-- v1: https://lore.kernel.org/20261021-damon-align-pte-young-notifier-v1-1-d0365ac45b66@gentwo.org
+- v1: https://lore.kernel.org/r/20261021-damon-align-pte-young-notifier-v1-1-d0365ac45b66@gentwo.org/
+- Drop Link: tag.
 - Collect R-b: from SJ.
-- Collect R-b: and T-b: from Aveline.
 - Update subject prefix.
 - Rebase to latest mm-new.
 
- mm/damon/ops-common.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ mm/damon/ops-common.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
 diff --git a/mm/damon/ops-common.c b/mm/damon/ops-common.c
-index 2f3bf86a221be..f88c6fd189fca 100644
+index f88c6fd189fca..b9571f53e538c 100644
 --- a/mm/damon/ops-common.c
 +++ b/mm/damon/ops-common.c
-@@ -64,6 +64,8 @@ void damon_ptep_mkold(pte_t *pte, struct vm_area_struct *vma, unsigned long addr
+@@ -102,6 +102,8 @@ void damon_pmdp_mkold(pmd_t *pmd, struct vm_area_struct *vma, unsigned long addr
  	bool young = false;
  	unsigned long pfn;
  
-+	addr = PAGE_ALIGN_DOWN(addr);
++	addr &= HPAGE_PMD_MASK;
 +
- 	if (likely(pte_present(pteval)))
- 		pfn = pte_pfn(pteval);
+ 	if (likely(pmd_present(pmdval)))
+ 		pfn = pmd_pfn(pmdval);
  	else
-@@ -83,8 +85,7 @@ void damon_ptep_mkold(pte_t *pte, struct vm_area_struct *vma, unsigned long addr
- 		 * Arch implementation of ptep_test_and_clear_young() may
- 		 * require aligned @addr
- 		 */
--		young |= ptep_test_and_clear_young(vma, PAGE_ALIGN_DOWN(addr),
--				pte);
-+		young |= ptep_test_and_clear_young(vma, addr, pte);
- 	young |= mmu_notifier_clear_young(vma->vm_mm, addr, addr + PAGE_SIZE);
- 	if (young)
- 		folio_set_young(folio);
 -- 
 2.47.3
 
