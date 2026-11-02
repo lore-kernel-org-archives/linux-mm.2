@@ -1,74 +1,74 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2AB166084424
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 15:05:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C606608557C
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 15:05:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=PWJB1/iB
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=GwaRh4oG
 Received: by kanga.kvack.org (Postfix)
-	id 259A26B05BB; Mon,  2 Nov 2026 10:05:00 -0500 (EST)
+	id 2F5A46B05CC; Mon,  2 Nov 2026 10:05:18 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 231D46B05CB; Mon,  2 Nov 2026 10:05:00 -0500 (EST)
+	id 2CCC66B05CD; Mon,  2 Nov 2026 10:05:18 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 16DF66B05CC; Mon,  2 Nov 2026 10:05:00 -0500 (EST)
+	id 20B3E6B05CE; Mon,  2 Nov 2026 10:05:18 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id EA1886B05BB
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 10:04:59 -0500 (EST)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 6F6E114015C
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 15:04:59 +0000 (UTC)
-X-FDA: 85390501518.26.1197965
+	by kanga.kvack.org (Postfix) with ESMTP id 00F2F6B05CC
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 10:05:17 -0500 (EST)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 841D780176
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 15:05:17 +0000 (UTC)
+X-FDA: 85390502274.11.034E92B
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 9CC9C40019
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 15:04:57 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="PWJB1/iB";
-	spf=pass (imf01.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	by imf10.hostedemail.com (Postfix) with ESMTP id D57CEC0009
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 15:05:15 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GwaRh4oG;
+	spf=pass (imf10.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793631897;
-	b=lzltermSCgpU6IOux3/bX3XsfqSKkqlDFgm0L9k0pxLg7W6k8QWGAhEbF6sGQUAvRzzVz9
-	7sJxopGHVPKlCVwmLzP9IdUBauUFGtuTDh9WXbqCmfR6IaipEeiPD9bt3U+tl9SEteVz9j
-	fJWyhqwQhMLe3FWJJL4CrxEGDHi2bZw=
+	t=1793631915;
+	b=USFUM+Jm7ZjqtSIm+NH1AQJKvQoIFMB00Y2X8QXKdGAH97kEu06GcqSyPazhfBU+ABxLdM
+	MVQlGpvRl/ts8xlRb3a1CLfDZvX9qgHUPqWUUEwjhp10u84gNxcEgfbg1sm8R1dNmFJco9
+	CjjsfOVDLQhkwInkVWJbbJ/YnTZL4yA=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="PWJB1/iB";
-	spf=pass (imf01.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GwaRh4oG;
+	spf=pass (imf10.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793631897;
+	s=arc-20220608; t=1793631915;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7nrFZB8SEXLZU/mzbmWvrr/UMB/DFOM38jlkmOKcofA=;
-	b=asB1vX+iwFBcdo0sQmanaasbB/ifSONzrwEu1sfS94cHAav65ZVhjoQDWFeQc0PbzYSvO4
-	bwTiElHMHPyG1ixniASGgAZpEGgLjRdQ8o7St7vjuX6ZElRH3DX0Le08mozpx3nYmJV40b
-	SJ/mmJlyi07i4L+yNTAZiOnwVjLl2a0=
+	bh=/usm8OdHJAbA2hfj2koEwGvMkvG3A+8dTBDDaCx7vxs=;
+	b=Bf24LKXdVMlTbE7w/StlM2OWz6T6vmobU+NzyNHYdSqT2JLzrqZ5xIS7JDskKWygDLs0ZU
+	+axLxDIsZ4F17UaZivHn9QztUGOGt8glU+J1IeAQcjoIJ7y4x9iUpv627XJQE+DAZvdei0
+	06NetHK4+qBhjlWw9ZnB0RGb/xYmaSw=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 1D1816061A;
-	Mon,  2 Nov 2026 15:04:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C841D1F00A16;
-	Mon,  2 Nov 2026 15:04:43 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 6C414605C8;
+	Mon,  2 Nov 2026 15:05:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E1171F00A1B;
+	Mon,  2 Nov 2026 15:05:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793631896;
-	bh=7nrFZB8SEXLZU/mzbmWvrr/UMB/DFOM38jlkmOKcofA=;
+	s=k20260515; t=1793631915;
+	bh=/usm8OdHJAbA2hfj2koEwGvMkvG3A+8dTBDDaCx7vxs=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=PWJB1/iBfhOBGJhYFAN08DibMR52AbswEVevpOPJlFFd/6YKCBFk0rjdPQlcIsJCu
-	 M7wETxh7POrPS2R+Bxe8GmEN+ztbrfn17IFousp5Q45SpUKBKeMwCZa4HLCkdaAMTL
-	 nGuwpeu7tYiAoCalRJnwkfTozxEROSln5Zntfv5jW4jL6w1IaglXpEtlA1N+4XsaUQ
-	 ixKM+Nu24AeZWPtukuV1DIGkbYg3XlqbEgIkFveiguvX3I5APXV8ea+vTsUzrvxLhH
-	 oQKy6vg2GUEAk0BT3S3W863rpi7gQfQhWY1o71BBu5E6HzUMTMlRLe2ZVsoDsvf6bw
-	 X9nFDARzygnDg==
+	b=GwaRh4oGylUX6g6CEqPXd69Ibpr3KQmakI0Nld+n+JLGApofu8ygx4WwNRI60EvYf
+	 DSOWIV++3VospwIjrvRsrg0mfaY7gRgUeihp43Au6D6HgV7Xv8KolBhRU7xFnfQdC1
+	 T7WNrsjJHzUGFZHB3CY8jnJ95TWdIrLVspjluFdHIKRvTNa2WFPvdVn+u5eXib/14W
+	 9Mf7AL8v6CpiYBfwScgPVzymR7ApEayesBtx54t9q1NbuhjbVtR1b4mKqnuDg4Wxmn
+	 KCXgiDmRsG7or4q0U1UicO9HEaUHCZVEQAI8u1qAq9b4HgJ4PMYdAOqXF8iMKD4/CK
+	 FsxoDOM8JDDag==
 From: Christian Brauner <brauner@kernel.org>
-Date: Mon, 02 Nov 2026 16:01:37 +0100
-Subject: [PATCH RFC 10/22] sparc: led: let procfs copy in writes
+Date: Mon, 02 Nov 2026 16:01:38 +0100
+Subject: [PATCH RFC 11/22] um: let procfs copy in writes
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261102-work-procfs-arch-v1-10-c9492ab08480@kernel.org>
+Message-Id: <20261102-work-procfs-arch-v1-11-c9492ab08480@kernel.org>
 References: <20261102-work-procfs-arch-v1-0-c9492ab08480@kernel.org>
 In-Reply-To: <20261102-work-procfs-arch-v1-0-c9492ab08480@kernel.org>
 To: linux-fsdevel@vger.kernel.org
@@ -104,19 +104,19 @@ Cc: Linus Torvalds <torvalds@linux-foundation.org>,
  "Christian Brauner (Amutable)" <brauner@kernel.org>, 
  Chuck Lever <cel@kernel.org>
 X-Mailer: b4 0.17-dev
-X-Stat-Signature: xp9x93qr6b4aunagobtycuxyfmo9dg5y
+X-Stat-Signature: ttznmku4hcqt1kuthnoqycbka5rged4b
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
 	version=4.0.1
 X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 9CC9C40019
+X-Rspamd-Queue-Id: D57CEC0009
 X-Rspam-User: 
-X-HE-Tag: 1793631897-402326
-X-HE-Meta: U2FsdGVkX1/QA1Y6e9reagJczUXQK4tpEB4AantmGnQ4gPzxIXucwAc6wBWOTIV6raLsajLI3QIIGM+Po+wvjSxZC7a55uKQBPhA1i8hJ3V7xjhVsnKMzuKfYKpJA40Phaz1eJwNFUhX3ik0W76Lv2J7eqQUhUuxCOXYc78Qs/euoSlOzfkXoKsEUncHOz49Zj3wOb6T+Ac7DWl3fJ9AoXhe7pKGmD6ji/tum13HWfArPeFY8JPYAggWcP+ISO9GOFaQB8bTo1ENV2oUHKa4RVEr0+DkV2XzQnsHhF+jCPwOHIU1KgI+5AdZLQw9eG915425rZNmqcuDdVOVLeznEkj5UFqyxv4u3AQJp0PuHgqbapnxuO19QV3grEBSsgKvP+wiViwhEBx4qdiDlwjYkS4G4QcigU8YUUDOh/rNM8hBxpSgY3bMdEQjyS9J7lciRAjkPuqCpppn9snlZ4j2SLstks/8y+fgOpmx7b8gGT4pCfjdMxx/rQb884dEUCVF97LCnUFcs/MnzZ4aw+rgd307e0Q10YRXr90Nr3/Qh4E1v7DNo6t/TAirwTztjvhnAFYmnsaHpk3XjJH4OM/nbf1yjfa7AxyzheHC8MHwlpxQLF68eCOr7MrrPDhaaG2vg36nTc8I9DsVqduH89drG4FiLfJbdudPnD1IO5QowjfzSAzuH69TCxeGeqVtHFDe8cZl0NpRHP5wQmfU9JNJxFogjmf5NTvDU8oVlWG36Y6PnsNkCq5+beSp6MiylNnSgoGao03PWJILL5SjJotxAWfzAMeYzkyY5OI1ohVdc0XliecxRRAeOSflxqZZTt5uJ6N5NC5Vk8WdIz1r7eTYRsmpPpQVxY3i50JFzlM3Z88aH3zAjrQDSJtVC+GEwvzfm9n2ZgorpVVr6w9Cg3E8TQlu1Fzvp6s75slvZCSdCL0TQzXeBWTvPI6/Dot3r/S1MmLXDzWXU8HoqQF+AGC
- 0o/aJTM0
- 4Q6K8ESNFXTFmBqdPBXsoVFVahcOOdvt+OB/qgAiM9aHQyXj2/23bEgOgzjQvfwwFr6Sx98G+ZPj/zQyeCHNSnxUngrifoDuo0qg4pHRAGt5B7ASNFuGJIx9ooXkBXh1k2a9B5IPfOIHaxPnNlHAgfQvokPCggM3+PA38vt1pkLMErOn5BMKb2KDjIMchat4mW1CKS7AmVydxSgAIh59TSnpePhj9q+b3l6wqdli0+g9ULzHIPEIjrsGufx8rwNlgwM/2JRZOCT+UbgwJWv4+Q/HjxA==
+X-HE-Tag: 1793631915-261110
+X-HE-Meta: U2FsdGVkX18U4HYEGQfq1qp7+8fbgzIQEcdti9QL5voijJpj61pxNLedcLbeds7CvWmrO+owWLnzv5EY7FwF2XRcKXpxHXqRUxOtP50y+Niu73hFUlZtnFqy3qKnLxEAFd2HCAilDokzw2kpHEebmJSMH5EnKzqHeW4mH7eypLIQ853Ro0U8Fw1emFc91C5LpiUI+ye+Etr2sKfbOzJrsmFsOcF294MKGT4/oX1edPNZ9VQtgoiNQqr4Gr8SU4mhLKwA71Q/GU8dDgdvSmMoaqJig3h1zGaGvm4qUaORI4nHuXILVHVg8yp3sESPjZTSEbvtQuNE2HA5u+iavSLnUA09pSxTaISvFR7dDQDjAdC3UuehqdPPf6kjbWXKkizZYlPKQvrOu21fDAsjc0fKHhzFZR/VifWL812s5dbb3RcOOAkJQXEnwYA03VcnWep4SwhDiaWnffqNVhQ0Ekh8HCPmSXPfnrf0v9it9MkO/y6wngtvBn9oBrcypfKWY+wuBKTOWpF0GTSHivyBHjom1ZaGW3auWK9MXy6R/YvWCxKkMezzdaV0CXrdEo6WhEueWr0LjbeeXAhRSOLmh6nwC9VCW/75cq7prUmrnZKkR8qwOEpA3CSmf3jGOQ7jXt4M/4XhzKv4VRlLS4jlROsXfdz9NkzP92Qoi6H3mMwsremawzaaG1NxRrF2hIZxPITVnVmpJuxl1HgL7qs0vGYdeWUf6AM6Qw8D0C9uThoSBdfzkAUy+RbDMl3cT7IgJFzcOXriNGc0lBnbihnuYH/o8Pa4wL2ju82HVkvvPfh0TNS1uRxdhXuU92KbywHq8RH/fKkMPGxKIoun0OM0e+ctBNtZJZWUwmO7rFsFOriorYu48yUhqErFHFsSZ7ml8zjL5XoJ7dIwQOzuiaHqPkpuoTtIQBwgLOzQ4+NKVbqkBKgpmuCfl0Q/2eXt5pyAXSlgkbY45CMgtMBb83g3+Xe
+ kX1JPLmu
+ US11IuOOq7+OlG95moP+IXqvcP6f8ABr9lMSs6mzZzt80MLqNbQErjGq96kmXkjYEKGdR+PBSqs20hE9Jbk4UWU8aNt+hC/4+HsJxxDnaFgBbKZtlipo52DuWEaf4u3usJuc+sOEM5psQom8a/aBX/flys6HLxEDD8+TKrsT9KdHgz6m87SieS77hhp4qO6UV2VVMmPMTeU6iCQrv0fDkGXvRq7YJWFJs+3bU07VXKGoIgtYWoNI7EqfjVZKKb6lKyn2FboygJv/mwWSPlUvIx6K0qA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -125,55 +125,82 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Implement ->proc_write_buf() so procfs copies in what is written to
-/proc/led before it pins the entry, and parse the command from that
-copy. Writes larger than PAGE_SIZE - 1 bytes fail with -EINVAL now.
+Implement ->proc_write_buf() for the mconsole and exitcode files so
+procfs copies in what is written before it pins the entry. Writes larger
+than PAGE_SIZE - 1 bytes fail with -EINVAL now.
+
+exitcode parses procfs' copy as is, so it no longer stops at the first
+six bytes of what is written.
 
 Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 ---
- arch/sparc/kernel/led.c | 13 +++----------
- 1 file changed, 3 insertions(+), 10 deletions(-)
+ arch/um/drivers/mconsole_kern.c | 11 ++---------
+ arch/um/kernel/exitcode.c       | 14 ++++----------
+ 2 files changed, 6 insertions(+), 19 deletions(-)
 
-diff --git a/arch/sparc/kernel/led.c b/arch/sparc/kernel/led.c
-index 12400bb59ab8..01449b056cdd 100644
---- a/arch/sparc/kernel/led.c
-+++ b/arch/sparc/kernel/led.c
-@@ -60,17 +60,12 @@ static int led_proc_show(struct seq_file *m, void *v)
- 	return 0;
- }
+diff --git a/arch/um/drivers/mconsole_kern.c b/arch/um/drivers/mconsole_kern.c
+index f01b7d8a07bc..a4370470286f 100644
+--- a/arch/um/drivers/mconsole_kern.c
++++ b/arch/um/drivers/mconsole_kern.c
+@@ -769,21 +769,14 @@ static int __init mconsole_init(void)
+ __initcall(mconsole_init);
  
--static ssize_t led_proc_write(struct file *file, const char __user *buffer,
-+static ssize_t led_proc_write(struct file *file, char *buf,
- 			      size_t count, loff_t *ppos)
+ static ssize_t mconsole_proc_write(struct file *file,
+-		const char __user *buffer, size_t count, loff_t *pos)
++		char *buf, size_t count, loff_t *pos)
  {
--	char *buf = NULL;
--
- 	if (count > LED_MAX_LENGTH)
- 		count = LED_MAX_LENGTH;
+-	char *buf;
 -
 -	buf = memdup_user_nul(buffer, count);
 -	if (IS_ERR(buf))
 -		return PTR_ERR(buf);
-+	buf[count] = '\0';
- 
- 	/* work around \n when echo'ing into proc */
- 	if (count > 0 && buf[count - 1] == '\n')
-@@ -95,14 +90,12 @@ static ssize_t led_proc_write(struct file *file, const char __user *buffer,
- 		auxio_set_led(AUXIO_LED_OFF);
- 	}
- 
--	kfree(buf);
 -
+ 	mconsole_notify(notify_socket, MCONSOLE_USER_NOTIFY, buf, count);
+-	kfree(buf);
  	return count;
  }
  
- static const struct proc_ops led_proc_ops = {
- 	.proc_show	= led_proc_show,
--	.proc_write	= led_proc_write,
-+	.proc_write_buf	= led_proc_write,
+ static const struct proc_ops mconsole_proc_ops = {
+-	.proc_write	= mconsole_proc_write,
++	.proc_write_buf	= mconsole_proc_write,
+ 	.proc_lseek	= noop_llseek,
  };
- #endif
  
+diff --git a/arch/um/kernel/exitcode.c b/arch/um/kernel/exitcode.c
+index c71657df38f5..8f76e3b20c18 100644
+--- a/arch/um/kernel/exitcode.c
++++ b/arch/um/kernel/exitcode.c
+@@ -32,18 +32,12 @@ static int exitcode_proc_show(struct seq_file *m, void *v)
+ }
+ 
+ static ssize_t exitcode_proc_write(struct file *file,
+-		const char __user *buffer, size_t count, loff_t *pos)
++		char *buffer, size_t count, loff_t *pos)
+ {
+-	char *end, buf[sizeof("nnnnn\0")];
+-	size_t size;
++	char *end;
+ 	int tmp;
+ 
+-	size = min(count, sizeof(buf) - 1);
+-	if (copy_from_user(buf, buffer, size))
+-		return -EFAULT;
+-	buf[size] = '\0';
+-
+-	tmp = simple_strtol(buf, &end, 0);
++	tmp = simple_strtol(buffer, &end, 0);
+ 	if ((*end != '\0') && !isspace(*end))
+ 		return -EINVAL;
+ 
+@@ -53,7 +47,7 @@ static ssize_t exitcode_proc_write(struct file *file,
+ 
+ static const struct proc_ops exitcode_proc_ops = {
+ 	.proc_show	= exitcode_proc_show,
+-	.proc_write	= exitcode_proc_write,
++	.proc_write_buf	= exitcode_proc_write,
+ };
+ 
+ static int make_proc_exitcode(void)
 
 -- 
 2.53.0
