@@ -1,140 +1,94 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A6F160A383A
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 12:49:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E24AD60A3828
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 12:50:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=MMPJjA4n
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=AtILWUY5
 Received: by kanga.kvack.org (Postfix)
-	id 949DA6B00EF; Mon,  2 Nov 2026 07:49:10 -0500 (EST)
+	id 15D4E6B05B1; Mon,  2 Nov 2026 07:50:36 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8FB036B05B1; Mon,  2 Nov 2026 07:49:10 -0500 (EST)
+	id 135AB6B05B2; Mon,  2 Nov 2026 07:50:36 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7E95A6B05B2; Mon,  2 Nov 2026 07:49:10 -0500 (EST)
+	id 073566B05B3; Mon,  2 Nov 2026 07:50:35 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 4B3026B00EF
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 07:49:10 -0500 (EST)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id D211E40D01
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 12:49:09 +0000 (UTC)
-X-FDA: 85390159218.17.B27DF36
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id DC08E6B05B1
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 07:50:35 -0500 (EST)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 6CC51120CBE
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 12:50:35 +0000 (UTC)
+X-FDA: 85390162830.14.91C2D6E
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 0BA97140008
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 12:49:07 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MMPJjA4n;
-	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793623748;
-	b=jvj4ufD2MTsZRp23qO9KjM17IVados98ZNNWe5UGLcq/aQ+dXQnGa8taBShosNXmEmNOkK
-	W72cHf14BOMxhWlc++eQZw/SW6xbHupzfct2EfB0XbUZX5dV2GAzJyMbizRu+QfiW7tmNt
-	Jv6P08YoRg23zIMWV48njonIPU1713Y=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MMPJjA4n;
-	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf19.hostedemail.com (Postfix) with ESMTP id C18AD1A0007
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 12:50:33 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AtILWUY5;
+	spf=pass (imf19.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793623748;
+	s=arc-20220608; t=1793623833;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=yJLZmPBZv+CycFtwzr5pSIbvk5UEpxdi0CgzoRsWvzw=;
-	b=xpw7hFYBD17y/8KWEGU4k4onHGUtrIIXcFyaD6sNUUOyuV4DSy69pfayrKxM3aIRECQkXB
-	MZ7k1qUSqznUjI6zsGnxxX6qIvHnVbp995GK8Tr6Y73mgwzLqkJtpYQGgfYTC+zDy3lPFN
-	vDIt89YgqwZ14ot8twnV+hQKsjW7xes=
+	bh=97k+e4o91hVS9qTh0dt39z8aEg6Tzz29+YtF2wcbbgQ=;
+	b=QKt4KFCVKDAEa18p3xQgYwr+3Sm6g/h+9Ct1h7x1wUZ/Vnt//8EHY6WfQEjaiErXQmjxT/
+	sIKuwiHt4mnGs07en+oHbpRDUWWabWBr9mDSUX4ct1z93zReYz6f5vXvDbgDoqY34wYNHH
+	AEHmp4Hv43N4tcM1qUrSl7b1s2wWd/A=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AtILWUY5;
+	spf=pass (imf19.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793623833;
+	b=IdxTiYNbweUDH3ms+WERYyFyXbcJ6tQQ4w/Q9rI4EzjMZBk7xJGY9Dlo+W2TE2i4pYaJle
+	uVEs4Yv/nOdH1D/Gezp6XRxjnmx7J1GD9Ny6eqHAigdUbtg55+kELFX1Rh+IQxFNQ7+ri2
+	xGFamCDKCtFX/YB7+k/iFQkh1bD2pwY=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 0EC2D402E6;
-	Mon,  2 Nov 2026 12:49:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3C4F1F00A16;
-	Mon,  2 Nov 2026 12:49:04 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 031EA41F24;
+	Mon,  2 Nov 2026 12:50:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51E611F00A16;
+	Mon,  2 Nov 2026 12:50:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793623747;
-	bh=yJLZmPBZv+CycFtwzr5pSIbvk5UEpxdi0CgzoRsWvzw=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=MMPJjA4na183XXSB/egQ9V5ON4+8CaoBH9DPVdEWUHbIAMBb04H9NjYoh9ROfyUbn
-	 3pxOf7dLjNDEHak6Ud5YERJgeEe5E9Qf6D6/drb9lpM+YqWN0nPKhpZ81h1/DSCxrM
-	 kyCVvJO4dp130ffKnTQDY6VKVTmASgwZw535cMSHQltvaTEMqXeclFU1VczrKrOf8r
-	 pOrZd/Ui6t37y6G/6TmpRitEfUg9mNGuxA4kTijCkQgBYqQDYhBSFfksoo7ufUVBfQ
-	 65L5YXuwcPAK9CLNF2gIJx2KZmh4+OAevQcAA5Mnd1bLaKSdC158CDdWNrITIDb2Rj
-	 ojzlCG5UIafdw==
-Message-ID: <54e20549-ca49-4d86-90fd-9f5e483d362d@kernel.org>
-Date: Mon, 2 Nov 2026 13:49:02 +0100
+	s=k20260515; t=1793623832;
+	bh=97k+e4o91hVS9qTh0dt39z8aEg6Tzz29+YtF2wcbbgQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=AtILWUY5mIyFfXVHZZaMeNlTRaC2KwUhu0hD8VnlvyFSwdU2U5A/xQ0ALr3MsnQFM
+	 8ZeQHoUza99Mhfc2+tOUwCI5VTf8eyaOzi0yPy/CXApVpW5D2zaG8gxReKXCiTJ+M4
+	 K1yLSKzWKE9omc2nQg2mWJM5SI4tldOftcDqRp9JTu6gj0QePp+mMqc7+CS05twCXT
+	 ez1OpyhpBTBgtCScS0autEhUeeUpxfyzbif/uD4HF03RLlPLf3QSxSln88hA+vpxlk
+	 adNtmnDK1Y3CC0YMNFcVCijWH5MvSLSh05Rf5zzVuXStZ3oF08Qc3JKxwsfIK1+2IK
+	 7PkEAA6TPwAmg==
+Date: Mon, 2 Nov 2026 12:50:27 +0000
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: Josef Bacik <josef@toxicpanda.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, David Hildenbrand <david@kernel.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
+	Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, linux-mm@kvack.org, 
+	stable@vger.kernel.org
+Subject: Re: [PATCH 0/6] mm/mremap: report a failed split before moving
+ anything
+Message-ID: <auiGqsbwuRhIfhvj@gremlin>
+References: <20261030-b4-mremap-pre-split-v1-0-c1829811aed0@toxicpanda.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/ksm: avoid unsafe anon rmap dereference in KSM merge
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>, Xu Xin <xu.xin@linux.dev>,
- Chengming Zhou <chengming.zhou@linux.dev>,
- Andrew Morton <akpm@linux-foundation.org>, Rik van Riel <riel@redhat.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- Zhao Gongyi <zhaogongyi@bytedance.com>
-References: <20261102-ksm-anon-rmap-fix-v1-1-68962acfb59b@kernel.org>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
- dBrn+lhhOYjjNefFQou6478faXE6o2AhmebqT4KiQoUQFV4R7y1KMEKoSyy8hQaK1umALTdL
- QZLQMzNE74ap+GDK0wnacPQFpcG1AE9RMq3aeErY5tujekBS32jfC/7AnH7I0v1v1TbbK3Gp
- XNeiN4QroO+5qaSr0ID2sz5jtBLRb15RMre27E1ImpaIv2Jw8NJgW0k/D1RyKCwaTsgRdwuK
- Kx/Y91XuSBdz0uOyU/S8kM1+ag0wvsGlpBVxRR/xw/E8M7TEwuCZQArqqTCmkG6HGcXFT0V9
- PXFNNgV5jXMQRwU0O/ztJIQqsE5LsUomE//bLwzj9IVsaQpKDqW6TAPjcdBDPLHvriq7kGjt
- WhVhdl0qEYB8lkBEU7V2Yb+SYhmhpDrti9Fq1EsmhiHSkxJcGREoMK/63r9WLZYI3+4W2rAc
- UucZa4OT27U5ZISjNg3Ev0rxU5UH2/pT4wJCfxwocmqaRr6UYmrtZmND89X0KigoFD/XSeVv
- jwBRNjPAubK9/k5NoRrYqztM9W6sJqrH8+UWZ1Idd/DdmogJh0gNC0+N42Za9yBRURfIdKSb
- B3JfpUqcWwE7vUaYrHG1nw54pLUoPG6sAA7Mehl3nd4pZUALHwARAQABzS5EYXZpZCBIaWxk
- ZW5icmFuZCAoQ3VycmVudCkgPGRhdmlkQGtlcm5lbC5vcmc+wsGQBBMBCAA6AhsDBQkmWAik
- AgsJBBUKCQgCFgICHgUCF4AWIQQb2cqtc1xMOkYN/MpN3hD3AP+DWgUCaYJt/AIZAQAKCRBN
- 3hD3AP+DWriiD/9BLGEKG+N8L2AXhikJg6YmXom9ytRwPqDgpHpVg2xdhopoWdMRXjzOrIKD
- g4LSnFaKneQD0hZhoArEeamG5tyo32xoRsPwkbpIzL0OKSZ8G6mVbFGpjmyDLQCAxteXCLXz
- ZI0VbsuJKelYnKcXWOIndOrNRvE5eoOfTt2XfBnAapxMYY2IsV+qaUXlO63GgfIOg8RBaj7x
- 3NxkI3rV0SHhI4GU9K6jCvGghxeS1QX6L/XI9mfAYaIwGy5B68kF26piAVYv/QZDEVIpo3t7
- /fjSpxKT8plJH6rhhR0epy8dWRHk3qT5tk2P85twasdloWtkMZ7FsCJRKWscm1BLpsDn6EQ4
- jeMHECiY9kGKKi8dQpv3FRyo2QApZ49NNDbwcR0ZndK0XFo15iH708H5Qja/8TuXCwnPWAcJ
- DQoNIDFyaxe26Rx3ZwUkRALa3iPcVjE0//TrQ4KnFf+lMBSrS33xDDBfevW9+Dk6IISmDH1R
- HFq2jpkN+FX/PE8eVhV68B2DsAPZ5rUwyCKUXPTJ/irrCCmAAb5Jpv11S7hUSpqtM/6oVESC
- 3z/7CzrVtRODzLtNgV4r5EI+wAv/3PgJLlMwgJM90Fb3CB2IgbxhjvmB1WNdvXACVydx55V7
- LPPKodSTF29rlnQAf9HLgCphuuSrrPn5VQDaYZl4N/7zc2wcWM7BTQRVy5+RARAA59fefSDR
- 9nMGCb9LbMX+TFAoIQo/wgP5XPyzLYakO+94GrgfZjfhdaxPXMsl2+o8jhp/hlIzG56taNdt
- VZtPp3ih1AgbR8rHgXw1xwOpuAd5lE1qNd54ndHuADO9a9A0vPimIes78Hi1/yy+ZEEvRkHk
- /kDa6F3AtTc1m4rbbOk2fiKzzsE9YXweFjQvl9p+AMw6qd/iC4lUk9g0+FQXNdRs+o4o6Qvy
- iOQJfGQ4UcBuOy1IrkJrd8qq5jet1fcM2j4QvsW8CLDWZS1L7kZ5gT5EycMKxUWb8LuRjxzZ
- 3QY1aQH2kkzn6acigU3HLtgFyV1gBNV44ehjgvJpRY2cC8VhanTx0dZ9mj1YKIky5N+C0f21
- zvntBqcxV0+3p8MrxRRcgEtDZNav+xAoT3G0W4SahAaUTWXpsZoOecwtxi74CyneQNPTDjNg
- azHmvpdBVEfj7k3p4dmJp5i0U66Onmf6mMFpArvBRSMOKU9DlAzMi4IvhiNWjKVaIE2Se9BY
- FdKVAJaZq85P2y20ZBd08ILnKcj7XKZkLU5FkoA0udEBvQ0f9QLNyyy3DZMCQWcwRuj1m73D
- sq8DEFBdZ5eEkj1dCyx+t/ga6x2rHyc8Sl86oK1tvAkwBNsfKou3v+jP/l14a7DGBvrmlYjO
- 59o3t6inu6H7pt7OL6u6BQj7DoMAEQEAAcLBfAQYAQgAJgIbDBYhBBvZyq1zXEw6Rg38yk3e
- EPcA/4NaBQJonNqrBQkmWAihAAoJEE3eEPcA/4NaKtMQALAJ8PzprBEXbXcEXwDKQu+P/vts
- IfUb1UNMfMV76BicGa5NCZnJNQASDP/+bFg6O3gx5NbhHHPeaWz/VxlOmYHokHodOvtL0WCC
- 8A5PEP8tOk6029Z+J+xUcMrJClNVFpzVvOpb1lCbhjwAV465Hy+NUSbbUiRxdzNQtLtgZzOV
- Zw7jxUCs4UUZLQTCuBpFgb15bBxYZ/BL9MbzxPxvfUQIPbnzQMcqtpUs21CMK2PdfCh5c4gS
- sDci6D5/ZIBw94UQWmGpM/O1ilGXde2ZzzGYl64glmccD8e87OnEgKnH3FbnJnT4iJchtSvx
- yJNi1+t0+qDti4m88+/9IuPqCKb6Stl+s2dnLtJNrjXBGJtsQG/sRpqsJz5x1/2nPJSRMsx9
- 5YfqbdrJSOFXDzZ8/r82HgQEtUvlSXNaXCa95ez0UkOG7+bDm2b3s0XahBQeLVCH0mw3RAQg
- r7xDAYKIrAwfHHmMTnBQDPJwVqxJjVNr7yBic4yfzVWGCGNE4DnOW0vcIeoyhy9vnIa3w1uZ
- 3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
- CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
- qIws/H2t
-In-Reply-To: <20261102-ksm-anon-rmap-fix-v1-1-68962acfb59b@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: qin5zmfg6rqugobmge7zdhmcnxugmepm
-X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
-	version=4.0.1
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 0BA97140008
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261030-b4-mremap-pre-split-v1-0-c1829811aed0@toxicpanda.com>
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: C18AD1A0007
+X-Stat-Signature: zoub3r3twzwfcr8pph8mc3qnrqgbt9am
 X-Rspam-User: 
-X-HE-Tag: 1793623747-91861
-X-HE-Meta: U2FsdGVkX1+PBDAmKtwNijF/58rCEyGESAFcKjy0Rx5fMNG6TyXMS36mGiE7uxAX28M/wkGgIAUEqwJFXB4ydaCrsJeHJ8WdOuRp4Q1FpAQwhLQ8tkikWTEowhDQGw4498XMwib027Ivc1Upcgj5ocdVQn2jwxmYvgggiyzx7SY6ORiv4Aclq+863kz1ltQvPxojbu5756rgYi5JKOhzwSIG+h7k+cjrrIY5C70KTVyKh3zHp2UDIbdJ9b+9X/7+P69RrOrIY3QYcQrCzj81V8WOOWDh+6e5gspf5jpJ5/h/Bl7Sbz4TYmCkoWYExbOQf4uF3T5TJFZSUrxyAySKbzH8II7wXSrzC4uWdleCqak6KByOOtUL+0aiwoOhmjv1It4VeWVX/FHZYmV0hC/TlYW4n1I+AH+lbRuCdamtmic7VO84JNsjdVgqqqP0MR9z75MBPz9o6izebSElouuiY1emHFT6ZG/KFjm1OwLrx6xH8MlhAm9np0F5mZ+6v25j3p1upTjiRZ/7HQsMotaWXois49d78yu0Vli0mg02knfQBt8ZMp/VkTDnSVXwfc4apgGrlwWMqCG+ydhx5Z1vI07DXfzp74zJWvbrIDrM0H1W3xYYIdddbbLLTJAj046TB6SHtRvKGEZ8KtAQTu1URmCBvmtG7N2X+nv+JdsV/Jt6t0Z2ljrCHAdp+yQxPU/LafdelfdQ4evLWQn1pWmIp158d022LCGZx6snrQMjtnZSwuroikD+6pJQVNVdb2aMo9yOO7oprYucMx0g90kE/8ZNGQX1KjK8zodeNCcSibPLxeX9TrEnI/liGozDODb68CZC5KPTjnOYRM+xjpWxObxZfwVBw35NiVk4xOO+RC8uPvr6atXWa2nPzzpwYvODbXUU/F2w1tDwlps6KdazagsBjz36hhPHqmSK9ae+Ch9KvLRADCPnY650KYT1oS9gPE22oI497BfYqWMqPrN
- cxC4fv4L
- LUyZJSJ8JKiSfRsU7EAMMCPHN3gWK0ZSfKtXLO5Qmo8PssDs2C3XaJhSuX76WAwbjP37v80okNUE5xXRtipkaHJjmInDmNT6Vt+7mEhu1CV7+IbkK1L7cH4GGmRhnDzsiqqwq2+LaiuDFpTp3W9oRgFenEiPt4iucH8L0/xl196kW0wS1EVKWpqKiHPcUK5piktHmChtQojiHAbkmE7FFaxTYaHdOAl79I6NThwV8Bl8MwdRGx9WQDnh8FiELGw62F3j16G5vY6KxVmLFrOvUuHRcUJWFBjMRVB58sKpylvVcODpKrLrA9F8IPg==
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1793623833-947156
+X-HE-Meta: U2FsdGVkX19ImSuX8I1MxQMdquGexjB4bcAx7WmLY31uOKc+X8v+O1btFvtrqXNqtilemtsAI/yns32N1Bikq0ghVQ8wiafHCG4dSdICfIF708sqryusfDnuWWoWn1wifkVXC2WlrPRy+eaM8M308FxKeVUB7P/0NNySPkwB1+NdGdHhVd6h+z9RkpsXIkjytNAbBDSNlwtcp0v5FeLmhickhQYQwmB48XqNM3WWYO5TKx3OScL96xfdp0ft3SS7wk447nYi2Y/uLQkdZ2d/3ZrQPKlRdTrol3nmPWLvBMEvjdCZF4I3g62WSlFuNPMq4pZvwtf3kiOXj/kAbbbfD3q3ARaaeoVcY8we5BH3XKgVsa8dlG16zwprylOzYoyAUDACOIzcB+1seF1NluzV/Ct+h1jFmUDc4D9EcWTfVO9gwTrSkc1nzBW7o7JnJqxpp4ZGBuKjuxMXgcvNtcuFOjF6NhpgGfGrJ0mr/5nGRIxKkKq7OI3ZFuX6W68TVCpGihn5f/YHnSrLrC4YfJ2nuTHDtCRubOZ8AH+Is7jUTZTt9xdYFW/eIPcB7zJnLXhHmHCHhI50m11J2K1xSHm5w9zxH2hgKzt3rWz4U8xHIwGdV3nnwp2fKdwUUO8gtr6EVQ+wh7+UXM7O2xFKpgy8CuBPm3BBfzaSGuq8bB00N/tk2an7P2Pvmf/2ILpwPRDPheoBSPkp/Rum7kP35yNkxusGbudsAoj2xPKbxBZQ0tDSmJIqvVhurqDMk1V6sNJUuoP/cKNftoTYmj+mSGJrQBuKBE5FNFG/OuN4O5mvdelqchZYZpX2OgfkBwQ1nuydR6L9WS3lZyC9d00lr6yAGENg6dATA1UjWQRjR+LxUL4VS1jzt4zCNhyHoUlt2AFkUT5FT/v7pf6f4lI0mabthPBoVqJzqz6PQMSPRXToCyWqbWGg3gyzzU9ZWeSB6fIJpuzUcvyLuq0o1fAJ7R/
+ +Bn1df5d
+ lLj31EuefFc45b33UsNmPSA++E+rV1Lv44JBGY+r/KwmJ2OE0ME67MM9/BAcuUjIZfcfrL6SNZOAp5BxcHu9nUUTxdutPaRWrXJ9l5hh5FwOaAuIY7/vTew/GXwVlk5SOSj6Die5Yz8k5tYSp1QuB3k1LuWu4cKQvoXXbcGVtbzxjM6UiyhyT/VsHQ9TCfPZyo7gkzVN4bS7MeI0p+Hxz//WOiVP4Mlsz3Cn2O+WRSO47zUrav4/Ut0opbKOjE9rAEtai
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,118 +97,73 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/2/26 13:32, Lorenzo Stoakes (ARM) wrote:
-> When KSM examines candidate VMAs in scan_get_next_rmap_item(), it
-> accumulates (mm, address) pairs in ksm_rmap_item objects, assigning them
-> via get_next_rmap_item(), pinning folios via a page walk in
-> ksm_next_page_pmd_entry().
-> 
-> Throughout this operation, scan_get_next_rmap_item() holds mmap read lock,
-> which it drops afterwards.
-> 
-> After the mmap lock is dropped the VMAs might be freed and remapped where
-> the VMA belonging to the folio was previously mapped.
-> 
-> mremap()'s ability to change where anon folios are mapped is dealt with by
-> KSM by essentially avoiding the problem - prep_move_vma() unshares KSM
-> folios, and the scanning logic is tolerant of concurrent remaps, discarding
-> stale ksm_rmap_item objects and allocating new ones at the new address.
-> 
-> This doesn't account for a new VMA being mapped over an old one where a
-> folio was previously mapped, so KSM accounts for this by checking things at
-> the page table level.
-> 
-> However, once an anon_vma's reference count reaches zero, it is freed, but
-> nothing clears folio->mapping, which is where the KSM pin interacts badly
-> with the current KSM implementation.
-> 
-> page_address_in_vma() is consistently used to look up the folio's address,
-> but page_address_in_vma() explicitly states:
-> 
-> "It is the caller's responsibility to check the page is actually within the
-> VMA."
-> 
-> And KSM violates this, as it cannot know this to be true. This results in
-> this function performing a use-after-free:
-> 
-> 		struct anon_vma *anon_vma = folio_anon_vma(folio);
-> 
-> 		...
-> 
-> 		if (!vma_has_anon_rmap(vma) || !anon_vma ||
-> 		    vma->anon_vma->root != anon_vma->root)
-> 			return -EFAULT;
-> 
-> As anon_vma->root is dereferenced when anon_vma can already have been
-> freed.
-> 
-> This is currently benign in practice, as anon_vma's are slab-allocated
-> objects so this will always be within the direct mapping and arbitrary
-> memory will be treated as if it were a pointer to be compared.
-> 
-> This either results in an -EFAULT or a spurious match, which will be
-> rejected at the page table level.
-> 
-> However we mustn't UAF even if it's harmless, and KASAN rightly flags this.
-> 
-> It turns out we don't even need to use page_address_in_vma() as we already
-> know the folio's address, it simply needs to be passed through.
-> 
-> This change therefore updates KSM to do this, sidestepping the issue
-> altogether.
-> 
-> Explicitly check for KSM folios in try_to_merge_one_page(), which are
-> already merged, and by definition never have an anon_vma.
-> 
-> This was previously handled implicitly by page_address_in_vma() as
-> folio_anon_vma() returns NULL for those.
-> 
-> In many cases cmp_and_merge_page() will reject these, but it's possible for
-> KSM folios to fall into the unstable tree there, so eliminate that
-> possibility by checking for that early.
-> 
-> This maintains existing behaviour.
-> 
-> The bug was introduced by commit 21d0d443cdc1 ("rmap: resurrect
-> page_address_in_vma anon_vma check") which first dereferenced
-> folio->mapping unsafely, but commit b8c8ba73c68b ("slub: Introduce
-> CONFIG_SLUB_RCU_DEBUG") made it visible with CONFIG_SLUB_RCU_DEBUG enabled.
-> 
-> Fixes: 21d0d443cdc1 ("rmap: resurrect page_address_in_vma anon_vma check")
-> Reported-by: Zhao Gongyi <zhaogongyi@bytedance.com>
-> Closes: https://lore.kernel.org/all/20261031182256.40205-1-zhaogongyi@bytedance.com/
-> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+On Fri, Oct 30, 2026 at 02:42:45PM +0000, Josef Bacik wrote:
+> Hello,
+>
+> I went through the callers of __split_vma() to see who can't cope with
+> it failing, and mremap() is the bad one.  If you move part of a VMA we
+
+Yeah, what's frustrating there is that, AFAICT, the only really relevant
+case is DAX.
+
+But maybe hugetlb somehow raises its ugly head as you allude to.
+
+> don't split it until the very end, when we unmap the old range.  By then
+> the page tables have moved and there's nothing to go back to, so we fix
+> up the accounting and return success with the old range still mapped.
+>
+> Lorenzo recently added a way to split ahead of the move for the mlock()
+> + MREMAP_DONTUNMAP case.  This series uses that for every move that
+
+MREMAP_DONTUNMAP is another real horror show for bugs. Candidate for
+'should have never been merged'...
+
+> unmaps its source, so a split that fails is reported before we've done
+> anything.
+>
+> Doing that turned up a real bug in hugetlb.  We take the reservation map
+> away from the whole old VMA before the part that's moving is split off,
+> so the parts that stay never give their reservations back.  That fix is
+> the first patch so it can go to stable by itself, and the second patch
+> is a selftest for it.
+>
+> The next two fix the accounting for when the unmap at the end does fail,
+> we either charged memory that was never accounted or lost track of the
+> charge for the whole VMA.  That gets a lot harder to hit with the last
+> patch but it's still possible.  There's also a test for an old size of
+> 0, which nothing covered.
+
+I feel like the charging logic needs to be reworked anyway. This whole
+'drop VMA_ACCOUNT_BIT' hack is extremely stupid.
+
+>
+> I tested this with the mm selftests and with a loop that fails each
+> allocation inside mremap() in turn and checks that we either moved or
+> didn't.  The numbers for moving part of a mapping don't change.  Thanks,
+>
+> Josef
+
+Anyway, thanks for these, will go through.
+
+>
 > ---
-> David - this seems benign in practice, so I'm not sure whether a backport
-> is required here.
+> Josef Bacik (6):
+>       mm/mremap: fix hugetlb reservation leak on partial move
+>       selftests/mm: test a partial mremap() of hugetlb memory
+>       mm/mremap: reaccount on unmap failure only if accounted
+>       mm/mremap: restore VM_ACCOUNT if the unmap fails
+>       selftests/mm: test mremap() with an old size of 0
+>       mm/mremap: split first so a failed split is reported
+>
+>  mm/mremap.c                                 | 55 +++++++++++++++++++++++------
+>  tools/testing/selftests/mm/hugetlb-mremap.c | 52 +++++++++++++++++++++++++--
+>  tools/testing/selftests/mm/mremap_test.c    | 52 ++++++++++++++++++++++++++-
+>  3 files changed, 145 insertions(+), 14 deletions(-)
+> ---
+> base-commit: cd1d0b147afa81f80927f9711e53401703964217
+> change-id: 20261030-b4-mremap-pre-split-13a3d54d6dbd
+>
 
-Ok, thanks. Is there a similar problem as with the other anon_vma->root issue
-where a false positive match could be problematic?
-
-I suspect not.
-
-In that case I would pick this for the next merge window after a couple of days.
-
-[...]
-
->  {
->  	struct folio *folio = page_folio(page);
->  	pte_t orig_pte = __pte(0);
-> @@ -1515,7 +1507,7 @@ static int try_to_merge_one_page(struct vm_area_struct *vma,
->  	if (page == kpage)			/* ksm page forked */
->  		return 0;
->  
-> -	if (!folio_test_anon(folio))
-> +	if (!folio_test_anon(folio) || folio_test_ksm(folio))
->  		goto out;
-Okay, that makes sense. We don't have to check under the folio lock as KSM
-doesn't merge concurrently.
-
-Do we want to assert in write_protect_page() that we are not getting called with
-a KSM folio, similar to what we do with large folios in there?
-
--- 
-Cheers,
-
-David
+--
+Cheers, Lorenzo
 
