@@ -1,133 +1,138 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D5C960A8C3E
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 16:58:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD79C607BDFE
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 17:03:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=cmpxchg.org header.i=@cmpxchg.org header.a=rsa-sha256 header.s=google header.b=QuxLbK/Z
+	dkim=pass (2048-bit key, unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=google header.b=Nln1Wx70
 Received: by kanga.kvack.org (Postfix)
-	id A32BC6B00EF; Mon,  2 Nov 2026 11:58:32 -0500 (EST)
+	id CD28B6B00EF; Mon,  2 Nov 2026 12:03:52 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9E04B6B05B4; Mon,  2 Nov 2026 11:58:32 -0500 (EST)
+	id CAB296B05B1; Mon,  2 Nov 2026 12:03:52 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8D8446B05B5; Mon,  2 Nov 2026 11:58:32 -0500 (EST)
+	id BC2066B05B4; Mon,  2 Nov 2026 12:03:52 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 5DA6A6B00EF
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 11:58:32 -0500 (EST)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id DD4B0C0191
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 16:58:31 +0000 (UTC)
-X-FDA: 85390787622.13.C3DDCAB
-Received: from mail-yw1-f169.google.com (mail-yw1-f169.google.com [209.85.128.169])
-	by imf26.hostedemail.com (Postfix) with ESMTP id CA8BF140008
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 16:58:29 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b="QuxLbK/Z";
-	spf=pass (imf26.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.128.169 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
-	dmarc=pass (policy=none) header.from=cmpxchg.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 962FF6B00EF
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 12:03:52 -0500 (EST)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 1C4321401CF
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 17:03:52 +0000 (UTC)
+X-FDA: 85390801104.16.2B48ECD
+Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 0E05B180002
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 17:03:49 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=Nln1Wx70;
+	spf=pass (imf06.hostedemail.com: domain of mhocko@suse.com designates 209.85.221.46 as permitted sender) smtp.mailfrom=mhocko@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793639030;
+	b=XJvZ1qY60prkOjsovqwdlHMf385c+IKBUu8cisxMtHuyKt0nVnDTgkVR537lOWqLAfNAW6
+	B1YKQ0nPVY+JmSa2M2SEkp+uKYzHrRSfxkaEaBW0KNZeJAQsFfva784SyfLKzLgtjFZ3X0
+	N143fZRKWgr6KqT5S/FxnubFb/falgg=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=Nln1Wx70;
+	spf=pass (imf06.hostedemail.com: domain of mhocko@suse.com designates 209.85.221.46 as permitted sender) smtp.mailfrom=mhocko@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793638710;
+	s=arc-20220608; t=1793639030;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=cCxj1N9WBg3v8QOr/cS7tYQ7iVjrM26lFVbbv3e0EmA=;
-	b=KXWytbakn7DR0Q+8mjz/cw9tmWmUkN7K4NsDOtsb+2UH/VawEr3XO5cOguFeI1dHhQeuhP
-	0ynoXYJ0ZHNdgdEiM3p8yVuf9tyHIqsRGtTDP3+NrZOewZ6Rg21Fh+NDVvLSbN5ur8xI1p
-	qs5Rm/Q9yd/DT8ksZoNqgh0DSVe/5+I=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793638710;
-	b=Fk0DcCH5J/0P3gqI1dd0KZNBywIQhRS5BeX/9iTOAzd2WoleNm6ak9DIpDLPB98Mb7kjlU
-	TK0ecaeE/jFoa0dmNiqdo9adPVTClxxZKMSyiKkOdQih51Sg1L20bTDlZZGTIXfN/kGMEB
-	mf6hGZjgDHOMhPoQk4z3Tj/kyQoLs7I=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b="QuxLbK/Z";
-	spf=pass (imf26.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.128.169 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
-	dmarc=pass (policy=none) header.from=cmpxchg.org
-Received: by mail-yw1-f169.google.com with SMTP id 00721157ae682-8ac4806e210so26719127b3.1
-        for <linux-mm@kvack.org>; Mon, 02 Nov 2026 08:58:29 -0800 (PST)
+	bh=zKVeSOmmrsl8lwum3t0s5Z+f2k9HnKnqrEKpVB5PY4I=;
+	b=aR9Z/EwnvRomSSLAKTKQDcBKGmrhd0g/zUxOr0xeLSBayhGsHbjCAbnol9FbFgzyzmQ7qi
+	TZcn7+G4ayw+THg0Fhl498rXm+zwvyiunIOeAnCDKX6zOTyj1/Po2FM4kLP15s40ZbkTlR
+	O0/MME0FNxizeYjpfEBm22knZHCPnrs=
+Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-48e3b22e971so1645502f8f.0
+        for <linux-mm@kvack.org>; Mon, 02 Nov 2026 09:03:49 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cmpxchg.org; s=google; t=1793638709; x=1794243509; darn=kvack.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=cCxj1N9WBg3v8QOr/cS7tYQ7iVjrM26lFVbbv3e0EmA=;
-        b=QuxLbK/ZN44w+RSiJ+jHp8YuAQedDT9EthLMrbNJztguPpkrr5fjE31pYp8iJell5r
-         jrvhM+bxxOy+rqUvnx4rFZ+WgHDBUOwKdVYnkd2flTVdeTjUDqYZ5GWy6LTAB8Qm2C0A
-         88eCvwJdXLKls019fDP5WtwKWoI9C+7XKyA9s2sBq8fkxIHpFYAx+e1IQRcT3CDIHfR0
-         Llxt0Yr+icuzRGulTEQnLJw0oFcY3Tg9yK/uCGoMySozWPKaoOTtusX2Mbvv9tJkaq2N
-         85XGiU2xhaqJPAb3pgs0heZGd02wLLB0PPTyNHrVhlkH7ktU6FcNFEkCHVUbJFwgJGCW
-         BYZA==
+        d=suse.com; s=google; t=1793639028; x=1794243828; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=zKVeSOmmrsl8lwum3t0s5Z+f2k9HnKnqrEKpVB5PY4I=;
+        b=Nln1Wx70Xz9HId/F4pvFXqLTkPtL8nujXCdALjdaDCQ0p5P0oeBA8nXeoE5+xl9fD9
+         mb+SWu+QiorvRHvx3ZbhoBccvSCr1dzWAZA18gUiMFUgwDkCvPce2QWWwOWdmsnw3k2z
+         lqoKIz1MJj3WqY+eeC4R2m6ph6qVA6rq2EI+uYmNiVxTANF3x5c52AdC+2NxihT3MRbT
+         DqFWwHZlcVm7Pm7BCJmqMUhkj2pGA59YRaEuW7PasHu/Tfjnbrg3zPeygDA3OO2zsCY6
+         XZt7hUuDUqisIZMkgpRyKqTrq8BydgBnfCy8q9gFxMO6W6oUjQEusod3vkZ8fDI+oCov
+         Mi7Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793638709; x=1794243509;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=cCxj1N9WBg3v8QOr/cS7tYQ7iVjrM26lFVbbv3e0EmA=;
-        b=DNauE9VdGoOS89nplpxTL4d7lYReHWHyDlPsZsDG5ZHOIJqM0cLkrTzFvvOV/PrFKs
-         JHFTnjVHd2WIG7CrMNiK3UlWDFlMIjl8JH3ziSAgM/RVR0fJOhxEiuRPfbQLuwqkl9VS
-         eAL2ly9apf+2rRib8MEZpmEpP2NRSV5YfOHQLZtRgPVeyuFR45cDrzgkilFv0txYVbI7
-         nZlm0JYtL6sFK0haCUIhcaHu97jfuynvpyJNK9lLkdi+i2Iwp50z1ndvtyyvSSh/HrOc
-         8Eed+E3X75p7PUfhi1BRprEE9IJ7W3sA1yUdWhjWEdqviHfVhc0f7VSKc3w75A7F2VHE
-         eVpQ==
-X-Forwarded-Encrypted: i=1; AKwUvBx9+DdOch3t0lqo4rqc5RqZDNKr7jxyfIL471R016SKFZIBV06KuI2GzAtB9+5/WcoG2HQ0czuVxg==@kvack.org
-X-Gm-Message-State: APuU4Z/I8XKaNyrh6dEGVk15wX6BN9+K+bfX3gZsk0Bcqan2xKQGKZr+
-	5YKCG0smnfAG4E93Lqo8kf0K/9NZVNx8dvPPhZ3zIul8DeESZDpjEhQEA82zt7lV9UA=
-X-Gm-Gg: AYBFou2ygv0iIyk7G3UXVo09p9I7AWEzrm4p8CbFvrXUl8ipPC6CGgmr1W1kNV3Rrx9
-	/OQ3Yzk36NLySndC3xc2x9jc5jzB63RKPY+Cl0GG5GOqM22WfwpgqloVXeumskhLLBaCmEk0t6H
-	axNfxGBgDMHehCcqmvDfRetee0e1OVB6YGkTGTVLRg1KRXWqxRsLUt5jYIjWZhhJtw4VSnzcdXu
-	XDC7gfmRjU0ZVT4YnHE/npnMGhj0OJTRpwgkfwmXqYfSkbN6NulVeLNtZYkXpJSThE/SMVCVO5y
-	J5oDvDrmtCzhmI//2FMkgQr7+sWhukShpreKKzPOVcCE+eiiYIjsXczkjVQ4ZAYuglrPZ+fCHNk
-	X+0tHRSnCoxjPDR1GY2nJuh4z/zD+gq27a/PDy2p1G2ZjDiNGPU4+80v1oFHa65PttvQyDOHeWX
-	ywb+FC/dTVOzX2r6bo66NS6I1G2uM8HuABF6+YuN6pCJNu7IWgo/WgyY2kzmEWagyTdlUWEWNk0
-	9h8iBrZTeQfb5XzM+kJj30xRm70kHJ/6AqLV+USFgsBk4vWtSmtbWgCZehYkXf7/AVOEGMT8cgF
-	Zgy4LO/1jykY9g8pQmRIyxpSAXys
-X-Received: by 2002:a05:690c:6d81:b0:8b2:e0c3:1f4d with SMTP id 00721157ae682-8b2e0c31f7fmr27946947b3.37.1793638708798;
-        Mon, 02 Nov 2026 08:58:28 -0800 (PST)
-Received: from localhost ([2605:8600:200:14e3:365a:60ff:fe62:ff29])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-8b2b7194217sm56780477b3.35.2026.11.02.08.58.26
+        d=1e100.net; s=20260707; t=1793639028; x=1794243828;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=zKVeSOmmrsl8lwum3t0s5Z+f2k9HnKnqrEKpVB5PY4I=;
+        b=oosqVSq3y8KTDpM9WOayjb1CQn4cbAonKropke3k/xLog75Ww6OAvBExd/sHHP4D2W
+         lJJwCWFseD4shyVXWt7qxliHHqEXfSofFGZhC6tg03VyXovkd/hVoLt8atstJKeuWGMD
+         6pmbfPUdxvSDFs2YSRtAqUL+9IrZg9r8ck9yfYJLVZczA1rxQIhvi2J8fKODdJaBJm5V
+         W9ddYELXpPHoS1Ti6XrSI79uvtxBvOWmh3MUuknXdAEm+sYOXXV0rsBLOY84rQhsd0kN
+         KIgvPBcIqtcOmVcKwc8Qael6inF7qrFouudkGiQn++NjQMq3U+wY2PzoFEjy25KRoIoi
+         Dekw==
+X-Forwarded-Encrypted: i=1; AKwUvBzuSch6O8CfDO9lL3CyLj/Ea0dc/UzYzuoFDrYSmKxGPPTLb5c2uzOkobGuckvqV2Oa+U+jAeZ4jg==@kvack.org
+X-Gm-Message-State: APuU4Z+tqOfBLqQgW0gID8xUGulthTlFguDgOhcgHp9LlSld4IIKfMhC
+	v9iA6HCFHkfX8SYG3/JvKVI6+pqX7LdVKxpHzl6wQz8yQMTzwfnKw7B97KUZz/bd15U=
+X-Gm-Gg: AYBFou0WZAFJ8UcIE7DQ9qJ3t9DQc+sAIdo2PZ8m/o/vDW5xWoGpufUe81DXhB/v1wc
+	kapJPFNfoAL7zshzbajIIb1G65skaadRofsDI86MMzlGNpJEYtDBC3+jc9lmEmyh8a9nnElKsOW
+	CZ4nwxSTVI6T7bfuvJdwacLusyB6zYBv69IwNVgEW1fEUJE6/Z5c/S5oMBNNYC8zXj2Tt1oDAii
+	Pn7cipMRI+BZioLNO4oZ6wAbpU05FPh4vydB1CD2Ah1y3ZRvtjicqfnd/U5DumOaR+CWvas4UfN
+	mr0dFifeoPmKGL1bx42yy2TphpGYaDyepRGU6a52PDgsWyCyihKQBje80ghDMxjOZbpwXM+gOhs
+	y+u18SmD7RDEm0btu5i60fc1FmBm0sovy6Rbr3GtzvYXjy7/rH7T56TZTFhmFVQgR7lt7nr+t06
+	i1dizwWEYofLwZwqN33nloVM/wfP5Szz8k01uTEybcUQR64CAigv+TaqNuDVb1FdwBtvXdj7Kqd
+	8wgKSiP7c7XjoyXzEtz/6145i97RJYli0SnOZRGXoB2m7gbF3IioOMWnBzEwfJba8HwjVivj8K/
+	rLLOD4/ousJcpi/UxZdrGCJ/T8E08ElwgYA62/Y=
+X-Received: by 2002:a05:6000:71b:b0:48e:68d5:81b1 with SMTP id ffacd0b85a97d-48e6e4fcfbbmr22771632f8f.48.1793639028313;
+        Mon, 02 Nov 2026 09:03:48 -0800 (PST)
+Received: from localhost (109-81-32-81.rct.o2.cz. [109.81.32.81])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e71b7270asm21084674f8f.11.2026.11.02.09.03.47
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 02 Nov 2026 08:58:27 -0800 (PST)
-Date: Mon, 2 Nov 2026 11:58:26 -0500
-From: Johannes Weiner <hannes@cmpxchg.org>
-To: Yosry Ahmed <yosry@kernel.org>
-Cc: Kaitao Cheng <kaitao.cheng@linux.dev>,
-	Dave Chinner <david@fromorbit.com>, Qi Zheng <qi.zheng@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>,
+        Mon, 02 Nov 2026 09:03:48 -0800 (PST)
+Date: Mon, 2 Nov 2026 18:03:46 +0100
+From: Michal Hocko <mhocko@suse.com>
+To: Joshua Hahn <joshua.hahnjy@gmail.com>
+Cc: Shakeel Butt <shakeel.butt@linux.dev>,
+	Johannes Weiner <hannes@cmpxchg.org>,
 	Roman Gushchin <roman.gushchin@linux.dev>,
-	Nhat Pham <nphamcs@gmail.com>,
-	Chengming Zhou <chengming.zhou@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, Kaitao Cheng <chengkaitao@kylinos.cn>
-Subject: Re: [PATCH] mm/zswap: fix double decrement of the LRU node count on
- writeback
-Message-ID: <aujBMrk-nFaVtPsB@cmpxchg.org>
-References: <20261028113619.38752-1-kaitao.cheng@linux.dev>
- <CAO9r8zP15iW3ECW2Bs0rfyZrifeisDunLa6qJC43M1RcE16wWQ@mail.gmail.com>
- <auJkvb-Lq0M5Enkz@cmpxchg.org>
- <2bd4f0df-80c7-4d32-ab50-1225681ff6be@linux.dev>
- <CAO9r8zPuDtn1S0g8rDnXNfSdZ6uuH1geXALDN5-X_SZpM_W+wg@mail.gmail.com>
+	Muchun Song <muchun.song@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R . Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Maarten Lankhorst <dev@lankhorst.se>,
+	Maxime Ripard <mripard@kernel.org>,
+	Natalie Vock <nat@pixelcluster.dev>, Tejun Heo <tj@kernel.org>,
+	Michal Koutny <mkoutny@suse.com>,
+	Oscar Salvador <osalvador@suse.de>, cgroups@vger.kernel.org,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+	kernel-team@meta.com
+Subject: Re: [PATCH v7 0/5] mm/page_counter: move stock from mem_cgroup to
+ page_counter
+Message-ID: <aujCcqKKyio7oZ0x@tiehlicka>
+References: <aui3TJqadHUv-4RW@tiehlicka>
+ <20261102163014.237806-1-joshua.hahnjy@gmail.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAO9r8zPuDtn1S0g8rDnXNfSdZ6uuH1geXALDN5-X_SZpM_W+wg@mail.gmail.com>
-X-Stat-Signature: mrgxra7r81zwzz79rp9yw93w1njg1jas
-X-Rspamd-Queue-Id: CA8BF140008
+In-Reply-To: <20261102163014.237806-1-joshua.hahnjy@gmail.com>
+X-Stat-Signature: 54eswm683ydm717qoobgcdcjr6zun57b
+X-Rspamd-Queue-Id: 0E05B180002
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
+X-Rspamd-Server: rspam11
 X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
 	autolearn_force=no version=4.0.1
-X-HE-Tag: 1793638709-737032
-X-HE-Meta: U2FsdGVkX1+4M/rycIJQB9tRRthWyR6IA1rxTZdQwFc7wHQQUm3cyqa0ViP7//N57q4choaN/cd+Cy6dFuZV4TQRpG3jxNEc/gtJvMgs/utLYRvW6xuOiyx4Uu3qNX10QGus5DOwn8nDMjJ7soThBarn/6uISCmuCZrNp0Modtf1izKpLzRiTUb8rlKqNYS/hqy49NmRwK3VBQ6uBdJS8v8luZwUFo7gDthA2bModUOmOUJekKcyNIFQZEtWAmwLG34/hSF/LxqcKsmJcP5WMY7TP7FFr0BATXcsyidopTXshAW8vxSGqCR6K2MW1l1FgTdbrtLq/gZeNjPrqxCPNJ+Gp0ES4O1TMJbVt7ZN+5Yn/A6zMppB43OrE5w5WMygn84qXcM+z+tVDi+U1T6FSQhBVH49HOszhT9JIXkXhA0UOwQai9VuC3AGuaBn9Y3R4gcuEXbAuMUUSyARQ7f5QKW67cI2MmP3OIDOTNbQKToPbpTaPkbFiYKKIFH0RpziiGvwBd2rLgT2ym4uptpqXOzdvSkJalgkJB2qreYjdMNqNfLn/1fU1vp1MULwQvZWthivpdt4RWJPjF2MJEoq5OHjLSEl+p+jqYmRxpcpCDhGn1Iao06yX9OIPkPSZbwEwxWjxfiQwcxz/YIJtnbhBbeavnECCkLmVuub265alPrL9lxguCUq0nKw7b4NMHAG8rU/afy/EqZ4JCjlldSWBrmvJucB2Lq9pLsH1ZjojFx7q2aYSbSNTF4T4gR5ozqCgpoLEFSoMAp3GLvcj74+4YXofHxMKBl//SKHMqjVlT7B+qjJxn/mBs3ql4juIq7Llb1YpwePa01WUa9xgVqq8ksgpJ9brXdia8yznWXORJWvZYrMxT3u/W1zDJWTUeqs4NrM7WraR89zoy5qFbYbVQSZ4kTpe+4t61Up/am2L11PyUnzUhDOwA1CqVZ27FLjFqqEp4twSR0D1tOSdzT
- 4giRN+w8
- UB2uzeV3O0yZR/S6ZV5pG1HBu89vhEdH9C4q/1N2rgUmexaKEoTLKopWby+kDsXquswYa5rn9BaDTV2fwRKLetqfC/YCt7FhUCpAsL/5H5PLmlpEPwwGX0Z8Da58A8vKc7PG+9RPhR4CB8feOcWlU8BUKenwWRmPkI2DRIAc8S9tulIfkof4E07rpljFP2NjfwFx7JsUi2QinLtKHUXDuoMO/gQPqydoXPQzU5X0/odSNiTgTEB/ol6LAnbAdmcuckE0Z9OawpPm4dS9+be8N7pbYP6YH+otzLl4Dne67bcaYEt3iFtPjTDAmNnHtTqv6VQLqd/iRvO9yUZKTz4hJNG9En92jG2jl9N/Ju+5Yh2Iq1R0CLcuG8KgxVo+LXioR/nypeFwXg71977FmmlonuyFulFala1aSWBLkgTCFwovBkqGmR2gkhIAvCA==
+X-HE-Tag: 1793639029-127384
+X-HE-Meta: U2FsdGVkX18UN+8BUDaQNNgBJrX0YWIbm66GQsowX7nAr9UrywZ9kNBfemb0UET5uyv41KBH/GWvfPYqHljHJEy1JFrO6ZCvuoV7iWy1FfN3+GRnO+6e80F9NFdvy8cOcjlDGo2eTn0aenK3v4tOkWTf+gy5LvUW1UJF0dUBZsQ8Y8POdtowIy0oBuyczognJiG946DH0lWXGQ0cJ4TxGCOYvzfmhUgHlU9PDgmfltTamEG24IUEn52F9PNeGj1xC2AkYLTQIugMFOWoFX8Wr8i3n2UnRpUsczN3mK1gAcirPunhWj/sCkVGlutcwCcCEwWLJkbIzJ2qL9GMq2N04rITSyrfujd54nuUnSRdtcAuMaYCZYIwd6RIMUaGJAGmxj7Prfom2JLMChlfHE/M6LlCxIf7prshACyJOgZy89Wg4mPAKmNgZhi3j4iIhQTWgGqRloYAdA6b7cd34LZwEm7AdaCfz0piTMsE//QdDW4GlCEJUyvNxXTFm7wO6tVDxzsgq2fwfJML0+Lv/rU+7CPnGdozpFwC3P4ZV2cMPxyCIqvsVogVHWxM7PZV71dN5zevNRimGZUSo2tTKpwQ1DETQfdKuPy2MUoC1X54BG56VW0GnwPGXdxsiZeez3qxHrfVGuGMpXHbszJHh9xOB72wNc48IPkOWWicNoM1wmeJQBcCtF42QnXg9zagl4KRyuXJD44sL1twvpZqZfGXkxzt6uvltYm73EMbB6TQJ3Hu0l63DJLIIEjW5oaAtiRHVB+Fyyi1M7Gwcw2V3UEu7aeFLSkP5A6ZhH7F92JV6P0W+W2wMgLx7cD1u3XeB3KONaYsz0my0P3MwefwxuZJiAWQt569sCeX19umHHPyvLWlXxhQOpCWEYh1KXtfCm4zDNHIcmJRiQLb8lAd4ey8g7otpyh+44Pn4vfhfZPm0DhVCUbR595tGnS89/ErvKu8LH6yLHIt604RALbQOgp
+ kuszwZ+b
+ a29vOwOF2G43szXSaXU0T1xPnp4qqVtlKucEJGz6qNC0w7pbd8jDPi3z6QHpvHljhC9ZVL3tfHD2jM1a7AMSCq/lgMmFUO5YFFkFga7smAK9UubI68PMckCBXSRfkvQYKFd9VRoBdIyPhqn4GhjYLZbjVJu1HPI/LWgve1cKNbpKBVZmrIqJwY2Wxw3XKJ98geJ6hMWJXXVHOYLaa/EoiVGnMCjewiXc/LYi55ZBGFFdxlgUKlI99B4BTwXrV3usTzRwvPfZ2hpU7gDjVomDAPiVfVjZkE0YeHvEbFv6NZjjjSZxyB1XhjuK2iIC7TEtCa3C50tfL3jphXiBWyao9ThCithKSn2AWK8eSL877T5pNx3FqzS2mLPxW02DFfjU2xPx0R6hdxETQBg/JtWHPcPbM8IIM+Pqv9MWVjYwvFKkTZJl3RWMUISGvJeRD3Y/Y8T9kOC6q1k9QK2LcyQn5PGcb9zIdAx8HzQAKC83E04pPwyxPpy9uRay+dxQLSTDUeXP7/3ObeqZkr4j3sspv5AKVhLDvateIap8BkW/+7Rvq5Yal4D76eZo1NFi+UTiylVp9yJLlGNVpi/4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -136,63 +141,106 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Thu, Oct 29, 2026 at 08:10:54AM -0700, Yosry Ahmed wrote:
-> On Wed, Oct 28, 2026 at 9:23 PM Kaitao Cheng <kaitao.cheng@linux.dev> wrote:
-> >
-> >
-> >
-> > 在 2026/10/29 05:10, Johannes Weiner 写道:
-> > > On Wed, Oct 28, 2026 at 12:22:43PM -0700, Yosry Ahmed wrote:
-> > >> On Wed, Oct 28, 2026 at 4:36 AM Kaitao Cheng <kaitao.cheng@linux.dev> wrote:
-> > >>>
-> > >>> From: Kaitao Cheng <chengkaitao@kylinos.cn>
-> > >>>
-> > >>> Successful writeback calls zswap_entry_free(), which removes the entry
-> > >>> from the LRU and decrements both the sublist and node item counts.
-> > >>> shrink_memcg_cb() then returns LRU_REMOVED_RETRY, causing the LRU walker
-> > >>> to decrement the node count again.
-> > >>
-> > >> I wonder if we have a valid use case for adding LRU_REMOVED_COUNTED or
-> > >> LRU_DELETED instead to simply avoid the decrement.
-> > >
-> > > It bugs me that it's the walker, not the callback, that adjusts the
-> > > count. That composes poorly with the normal list manipulation API.
-> > >
-> > > How about pushing the accounting into the isolation callback, which
-> > > can then simply use __list_lru_del()?
-> > >
-> > > The tradeoff is that more things need to be passed into the isolation
-> > > callback, but that seems reasonable. It does make the change noisy,
-> > > however, and we might want something like Kaitao's change as a
-> > > backportable fix first regardless.
-> >
-> > I tried three approaches.
-> >
-> > The first was "pushing the accounting into the isolation callback", as
-> > Johannes Weiner suggested. However, as Johannes's example below also shows,
-> > this would require extensive changes across multiple subsystems. I doubted
-> > that such a broad change would be accepted, so I dropped this approach.
-> >
-> > The second was to add a new flag to enum lru_status, as Yosry Ahmed suggested,
-> > to handle cases like zswap where the callback has already decremented the
-> > count. However, the incorrect lru->node[nid].nr_items value in zswap is only
-> > an accounting issue: I could not find any code that reads this counter for
-> > zswap. Changing a generic interface to fix an accounting error with no
-> > apparent functional impact did not seem worthwhile.
-> >
-> > The third approach is the one implemented in this patch. It keeps the changes
-> > within zswap and fixes the accounting issue, so I think it is appropriate.
+On Mon 02-11-26 08:30:14, Joshua Hahn wrote:
+> On Mon, 2 Nov 2026 17:16:12 +0100 Michal Hocko <mhocko@suse.com> wrote:
 > 
-> I honestly think it's a problem with the list_lru API, as Johannes
-> said, walkers compose poorly with the API. So I prefer we either take
-> Johannes's suggestion or add LRU_DELETED, unless there's strong
-> objection to both ideas.
+> > > > > > > We get an added benefit of simplifying try_charge_memcg(), which now
+> > > > > > > has all the stock management handled transparently within the
+> > > > > > > page_counter layer.
+> > > > > > 
+> > > > > > This is quite a large change and I believe it will be really benefitial
+> > > > > > to have some high level design overview in the cover rather than trying to
+> > > > > > chase it in respective patches.
+> > > > > 
+> > > > > Sounds good with me. I can add the call traces above which should
+> > > > > explain my thought process a bit more. Hopefully the problem I am
+> > > > > trying to solve is evident there.
+> > > > 
+> > > > I believe I follow where you are heading. I am not sure this is the
+> > > > right path but that is a separate discussion. I would focus on whether
+> > > > moving cache to the counter makes sense on its own (without that future
+> > > > work) at this stage.
+> > > 
+> > > If I'm being honest, most of the generic benefits that exist beyond that
+> > > work were in the other part of this series that I got rid of to scale
+> > > down the scope of this version. But to explicitly name the generic
+> > > benefits, it would be unbounded memcg stock caching per-cpu, eliminating
+> > > random evictions, (like you mentioned above as well) limiting stocks
+> > > to leaf memcgs only, etc.
+> > 
+> > limiting cache to leaf memcgs makes a lot of sense and addresses a big
+> > concern I had. How exactly does this work?
 > 
-> FWIW, we don't need a minimal fix for backports, I don't think this
-> needs to be backported at all. As Kaitao said, I don't think the wrong
-> list_lru count is being used anywhere for zswap.
+> It's not a big change, actually. This was the implementation from the
+> origianl RFC of the series:
+> 
+> https://lore.kernel.org/all/20260410210742.550489-8-joshua.hahnjy@gmail.com/
+> 
+> The idea is that you treat a cgroup as a leaf until it becomes a parent,
+> at which point you drain the stock. Stock can land on the parent due
+> to hierarchy walks, but I can also write another part to this that
+> prevents stock from getting cached when a cgroup has children.
 
-Good point.
+OK, makes sense.
 
-Ok I will send a proper patch and we can discuss it from there.
+> > > I think there was a proposal to make the number of memcg stocks per cpu
+> > > even lower than it already is, because the author wanted to include
+> > > additional fields into the stock that would make 7 no longer fit into
+> > > a single cacheline. I feel like we are reaching some limits with that
+> > > side as well, so the "unbounded" portion seems to be quite opportune.
+> > > 
+> > > But I believe those benefits that we would like to see are made better
+> > > by this series, which makes the stocking transparent such that the new
+> > > optimizations don't make the existing memcg charging code any more
+> > > complex than it is. By abstracting away this mechanism, we can make sure
+> > > that memcg just handles the logical charging semantics, and page_counter
+> > > handles the implementation-level details of stock management.
+> > 
+> > Yes, these are all good arguments. Especially when clarified that this
+> > leaf only feature. I have to say I was struggling to see how caching on
+> > all levels of the hierarchy would work in practice.
+> 
+> Sounds good. If it makes sense to you then, I can fold in the
+> leaf-only caching into this series to maintain more parity with the
+> existing code. How does that sound? 
+
+good
+
+> > > Personally I am a big fan of how try_charge_memcg looks after this
+> > > series, what do you think? 
+> > > 
+> > > > Quite honestly I am still not convinced this move
+> > > > is the right thing but I would like to fully understand the mechanics
+> > > > first. Having discrepancies among different counters just sounds like a
+> > > > potential source of future problems.
+> > > 
+> > > I hope that I can present a good argument for why this is not as
+> > > concern as it may seem initially.
+> > > 
+> > > My first point is that the memory usage counters were always fuzzy, as
+> > > specified in the memcg v1 documentation too: 
+> > > 
+> > > usage_in_bytes ... doesn't show 'exact' value of memory (and swap)
+> > > usage, it's a fuzz value for efficient access.
+> > > 
+> > > Secondly, the raw value of the usage is actually always accurate. It is
+> > > just the stock portion that overcharge the memory at times, making it
+> > > seem like there is a discrepancy. Flushing the memcg stock immediately
+> > > bring the counters to their real values (like what happens right now).
+> > > 
+> > > Finally, this is a change that is only limited to cgroup v1 users.
+> > 
+> > Right but is there any actual point in adding caching for memsw charges
+> > now? If you have a way to opt-in to caching then you can simply disabled
+> > that for memsw counter altogether. Fewer problems to deal with, explain
+> > etc...
+> 
+> I think the problem actually still exists, unfortunately. In fact I
+> think the issue becomes bigger if you remove stocking for memsw.
+
+Yes, you are right. We do actually cache memsw through the charging path
+which charges both mem and memsw with the batch. 
+-- 
+Michal Hocko
+SUSE Labs
 
