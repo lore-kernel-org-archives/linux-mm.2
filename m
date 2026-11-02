@@ -1,139 +1,143 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D418F606D813
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 21:47:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AF85606D839
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 21:47:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=lAoHfyq2;
-	dkim=pass header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=9N+2PTBS;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=lAoHfyq2;
-	dkim=neutral header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=9N+2PTBS
+	dkim=pass (1024-bit key, unprotected) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=wlGuuBra;
+	dkim=pass header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=YFal0Hsu;
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=wlGuuBra;
+	dkim=neutral header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=YFal0Hsu
 Received: by kanga.kvack.org (Postfix)
-	id D36D36B05B2; Mon,  2 Nov 2026 16:47:02 -0500 (EST)
+	id 82BF46B05B4; Mon,  2 Nov 2026 16:47:07 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D0D3D6B05B3; Mon,  2 Nov 2026 16:47:02 -0500 (EST)
+	id 7DC696B05B5; Mon,  2 Nov 2026 16:47:07 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C23B06B05B4; Mon,  2 Nov 2026 16:47:02 -0500 (EST)
+	id 6F30A6B05B6; Mon,  2 Nov 2026 16:47:07 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 919466B05B2
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 16:47:02 -0500 (EST)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 1175416023B
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 21:47:01 +0000 (UTC)
-X-FDA: 85391514642.20.BF0AE40
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf18.hostedemail.com (Postfix) with ESMTP id E508D1C0002
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 21:46:58 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=lAoHfyq2;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=9N+2PTBS;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=lAoHfyq2;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=9N+2PTBS;
-	spf=pass (imf18.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 3C42B6B05B4
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 16:47:07 -0500 (EST)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id D12E71A01FE
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 21:47:05 +0000 (UTC)
+X-FDA: 85391514810.12.BBFBB31
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 4659C140003
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 21:47:02 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=wlGuuBra;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=YFal0Hsu;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=wlGuuBra;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=YFal0Hsu;
+	spf=pass (imf23.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz;
+	dmarc=none
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793656023;
+	b=6I+w+yTaqdcd4OOprjZ8GhUk8VCsBLXQwngm9mYS17ZZGiFxThR0sXYL05z+X0pYWbq3Xc
+	h+3Iok61r7fR9bJT5kxSu/XnIQE0/femk0gwHYkqAD5Dr0nzPvZ2MVPYMao8k/47tOYzuF
+	12slXzNYijBhFzjhaVYnWhDyScr2zFg=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=wlGuuBra;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=YFal0Hsu;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=wlGuuBra;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=YFal0Hsu;
+	spf=pass (imf23.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz;
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793656019;
+	s=arc-20220608; t=1793656023;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xqTp4LSWoKogSLXQV1jsC4CAleeL27EeFUzHSOi+Tkg=;
-	b=Ji6Cl00LatVXrve3Pl/77Q65sFbrOamdx8H5HjNrhBOiLifA6YWetIEt0Akqi47qkTQzRd
-	mZVd247DQUzrCQmhtbfK+K7d38DsfGeCcZEE9qyyLF+PXF4H3cPjFYmdVvscmM/rv3qxJG
-	5EnVDxKf2XH2fUT42F4aVjalIH8G7hk=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793656019;
-	b=7Lx1Vq5u0wsfCVIi7En/UEqLNuGTr8INwAux3PxNvllcgNdd/+g42i8XtT0E28vjayAuo/
-	LTd6fQdvY0DwMHh3SXFtkmrrMRDGqy6pEpNsq97hO9LR7lbWItuSgIvb21q4fd7JCeNJqa
-	x1f5oVYJGZ3Hc97WizhuiNdha2Q/Xco=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=lAoHfyq2;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=9N+2PTBS;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=lAoHfyq2;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=9N+2PTBS;
-	spf=pass (imf18.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
-	dmarc=none
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	bh=umkgUxq2rfgJ8NLFTrV8RBmSaYpLglNk+AEj6kYyfO8=;
+	b=1WFoHZYFqPQZDsYD57RQeP4IUdlsI3bukDNSo19VIjgeJSJEJNa4PKz9QGzjsbcgLeQhoV
+	kEt92OPVxd1gQrRUwttuWJn+toiZXz1tGUKrDa5tPv6zGAMhh7SR3GkYrkRcUbmfpPi/Kp
+	DGadm3g7Foq0PHes2RdbpvGQBm96XPM=
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 99A0721F8E;
-	Mon,  2 Nov 2026 21:46:57 +0000 (UTC)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 34C491FB0B;
+	Mon,  2 Nov 2026 21:47:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1793656017; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1793656021; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=xqTp4LSWoKogSLXQV1jsC4CAleeL27EeFUzHSOi+Tkg=;
-	b=lAoHfyq2YEWUia7YxQQobuDYwLg2VBOPGnIkdJZWeK6RLGQBYdE9i9p1mY89wd30XI88hL
-	Iu6DjvsLIQps/2WZ9hsFEp8hXDVdMHfiUeZj+NjqmSY+C00PYTvcayX8OgcFPMHuwGhkYU
-	ULMHtgBAaa47J6c0eTzYAmV+UdFwzwU=
+	bh=umkgUxq2rfgJ8NLFTrV8RBmSaYpLglNk+AEj6kYyfO8=;
+	b=wlGuuBraz5HKRr2tw/43UB5Yuv+PiOe6oD78Gy2DExn6MmnICbnFIL0hnqgIYj55NjFn/h
+	yyNAE+HMDOBWohS7eneAyQu3M3yJPh1DXvz6fU2T9cVx3MdCm0YO+JqxDaderAQlrU5YJ7
+	Rm6CzGphWaw1sRyMOTjs0kKdzvKH8lM=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1793656017;
+	s=susede2_ed25519; t=1793656021;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=xqTp4LSWoKogSLXQV1jsC4CAleeL27EeFUzHSOi+Tkg=;
-	b=9N+2PTBSCsTMROOcsHH7pk6wxwSC+Lge5ZM6Z9MOo14iVbHCPxrR3BTfDi/D3VqfUMzxv9
-	rLnddyXEVM+DKrDQ==
+	bh=umkgUxq2rfgJ8NLFTrV8RBmSaYpLglNk+AEj6kYyfO8=;
+	b=YFal0HsuhA7TGhN4xzisVTmXdG7rgPHRTH67cFJF8HNhqCyqL7LPenFhPQ38Z6J/GDyOGc
+	UXLd6y0VlguRo7Aw==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1793656017; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1793656021; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=xqTp4LSWoKogSLXQV1jsC4CAleeL27EeFUzHSOi+Tkg=;
-	b=lAoHfyq2YEWUia7YxQQobuDYwLg2VBOPGnIkdJZWeK6RLGQBYdE9i9p1mY89wd30XI88hL
-	Iu6DjvsLIQps/2WZ9hsFEp8hXDVdMHfiUeZj+NjqmSY+C00PYTvcayX8OgcFPMHuwGhkYU
-	ULMHtgBAaa47J6c0eTzYAmV+UdFwzwU=
+	bh=umkgUxq2rfgJ8NLFTrV8RBmSaYpLglNk+AEj6kYyfO8=;
+	b=wlGuuBraz5HKRr2tw/43UB5Yuv+PiOe6oD78Gy2DExn6MmnICbnFIL0hnqgIYj55NjFn/h
+	yyNAE+HMDOBWohS7eneAyQu3M3yJPh1DXvz6fU2T9cVx3MdCm0YO+JqxDaderAQlrU5YJ7
+	Rm6CzGphWaw1sRyMOTjs0kKdzvKH8lM=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1793656017;
+	s=susede2_ed25519; t=1793656021;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=xqTp4LSWoKogSLXQV1jsC4CAleeL27EeFUzHSOi+Tkg=;
-	b=9N+2PTBSCsTMROOcsHH7pk6wxwSC+Lge5ZM6Z9MOo14iVbHCPxrR3BTfDi/D3VqfUMzxv9
-	rLnddyXEVM+DKrDQ==
+	bh=umkgUxq2rfgJ8NLFTrV8RBmSaYpLglNk+AEj6kYyfO8=;
+	b=YFal0HsuhA7TGhN4xzisVTmXdG7rgPHRTH67cFJF8HNhqCyqL7LPenFhPQ38Z6J/GDyOGc
+	UXLd6y0VlguRo7Aw==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 7134C134B3;
-	Mon,  2 Nov 2026 21:46:57 +0000 (UTC)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 08F12134B3;
+	Mon,  2 Nov 2026 21:47:01 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id ns86E9EE6WqEAQAAD6G6ig
-	(envelope-from <jack@suse.cz>); Mon, 02 Nov 2026 21:46:57 +0000
+	id DOPMN9QE6WqLAQAAD6G6ig
+	(envelope-from <jack@suse.cz>); Mon, 02 Nov 2026 21:47:01 +0000
 Received: by quack.suse.cz (Postfix, from userid 1000)
-	id 17FACB16D; Mon, 02 Nov 2026 22:46:53 +0100 (CET)
-Date: Mon, 2 Nov 2026 22:46:53 +0100
+	id A9A36B16F; Mon, 02 Nov 2026 22:46:56 +0100 (CET)
+Date: Mon, 2 Nov 2026 22:46:56 +0100
 From: Jan Kara <jack@suse.cz>
-To: daejun7.park@samsung.com
+To: Qiliang Yuan <odys.yuan@gmail.com>
 Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, Ryan Roberts <ryan.roberts@arm.com>, 
-	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm/readahead: keep at least half of the async window
- when aligning it
-Message-ID: <747jhqta3plrrx3bfikceoltsewshdpejdei2qjpn3onnvtu3p@cptmb4phbn54>
-References: <20261030-mm-readahead-async-align-v1-1-109dea6851fc@samsung.com>
+	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, Hugh Dickins <hughd@google.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
+	Jan Kara <jack@suse.cz>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org
+Subject: Re: [PATCH] mm/shmem: remove truncated folios from the page cache in
+ batches
+Message-ID: <dru32b7k62tbur7kmk6vv52zd6jnglnzzz4pvhlsqez6smcjip@gjuh6fud4nir>
+References: <20261029-bug-mm-shmem-undo-batch-v1-1-59b34212fe78@gmail.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261030-mm-readahead-async-align-v1-1-109dea6851fc@samsung.com>
+In-Reply-To: <20261029-bug-mm-shmem-undo-batch-v1-1-59b34212fe78@gmail.com>
+X-Spam-Score: -11.30
 X-Spam-Level: 
-X-Rspamd-Action: no action
-X-Spam-Score: -13.01
-X-Rspamd-Server: rspam06
-X-Stat-Signature: tdneirh9bdmdefmjwku8ofh5cxn1fewn
+X-Stat-Signature: 6puejrf1xzr4uy7t8bjdrdjbor15j439
+X-Rspamd-Queue-Id: 4659C140003
+X-Rspam-User: 
+X-Rspamd-Server: rspam11
 X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: E508D1C0002
-X-Rspam-User: 
-X-HE-Tag: 1793656018-273793
-X-HE-Meta: U2FsdGVkX1/ferYVZn/+iYKPR/Qaw4o2sAj1UKTuO01ggLOB/DLRgzMenhvLY0uXISsLLwFZKTSBHOPW79fcUCXFTwRkurHI86vyn60WgOjTwHfzfVDzwlWobqDebzn5O5nMBDcUd0UUurcRrmRHXZoZgNmeTs89k+hc0GVJfd0k0qyRzg3SJVLUkFvAx6rLn08AjJ/ELL6amgwxdWN2NN0yl+Qfc0YYY2pyHGkWLCFJcLq1qX9Z0FeB1OrVtZyuLJ/Xp/TGMwqgaRBsJyYekh5qiVI9KZDb6nap+kzTUuFQ9vDh62jZEZuGvdUIOXThr5G3SCA0MybUXTMeeUHwce8wEZ04H5szNWGfCDLDtMeesG8M6422XSUuKIZoMSmh9SrRqC6/rv0GviyxUomyO4oKjHjU3tMUcjQ0YwripTEJRt+c9Y1SQd7fUY7CsXyvRXyb7aQb7X1FSqhXkxLCWV+5b+VMhAzUu+DOgE+3fORPCWA0kXCzmA1MMdzJrkV6dG0uu5o+819nCU5RtBa8V266E9/3joJa8eEKUwELwyNESMa6yFADPJVRjlCC0F5B2pzv3mKsO43ObOJaPOSapBFKeg/g2j8ox9JUnL2vTjFQxvDyn9/+lMXE8FU95coZb465aboeUhOvu3dy5d6mkufuZiyZWAiyKK/iA/Q01GGI62t3JWTsDC3tgg0yN+A8EcI0Nvvh+93USEH6Aap4rna8yHLV2SuGCvXBYi9GpWSsjpVhmO14Jg7vB6q4mXRqewk5C4UrLEIDiZvimosdH1ajROP+qbS2Dur2OPjaLD2OU6mwOoWPtZZ5OABDxPEJ++64oWJChnxUQSkQ5IMVMi1pZ7qY1Z+htKSEqEevt2KVfHaJo2WBryBObu73R3vX746Ito7eoNjmwUcKOY/KN1zLoRnrJwdwGKP0MnECgmbbgSiUH2g0PDmObgAQceyWQIDeiUY4o1CJOBm+CCH
- TI4il+Yh
- uJSFXl0+SMe7iKs4da6S4MTXcXt0CN+8l1YornOGOD8iXrZumEJaFu62DCIUlwV6uAWS7+y5xsLiNhZeI2Ir6NkkGtQX4bhcnFruofH513ru59EY03qKQia7nQcYeXj8XsjXAgnCNQJXDD8wmj/TtidYwh1OYhpvfygY4qC/zdv7AAiTCHMeehiw2mXeza4S4RoIn2tDklvQYQME0Iodxosn0l1ePxY1eJT3rAxKoaPOjQYuGoyU8I1m3836hStn/mL0J4neQde2qZnqt45Xpz1LgADLvv0L226pfsM8LnJ9m9U9AiDBjHUi5vEUqOMhfdNXKR154hXo2hP46k2M74BG6VkzdWv/E7bTxIv8pQnEr74o=
+X-HE-Tag: 1793656022-514725
+X-HE-Meta: U2FsdGVkX1/hRPS4tdMc98ZFTUVQiYk4NNbuqffU/f13te6b6z7FjAPL4ev6XzR044NAfInwAcQA2feci89OUdbf6COlUp7DHRRKw2unfubUVrIpnr0BAg7ERYuNuWpoXTi17bQAIYksijuUfdIBG3oQCk2eEmhyVf3xgNaQGs2FCJsdxt0tYwwdQjJiC8bDoztEjCxiaV7PIGJLtI00vfM6ZpLxBPweTQT605ETnxOlgiCIikA0uI0rkalWOld1OTkSiylPF62TxmLF51D0ILePUQMA2ljWcQrGxe7EtRxQNXT88/EkIKlhGIa39Z9HuqAcLOCnSY0zAdnmT/ILuY6VeS9xviG5DJN82KMKEvu0XUCiRpBaggzRx1jnSTPRorEE1EceKHgqWsMJ9EiaKHs658sXjWQs7UkqJaA7La7uYDUBoc3tybv5Grig19BbtxW72u2/T+NOxR920ZUgTSqn11QxB2KsQa/pfUZDqGPjQgW10Xw2ZcGrfCbygFi0fNnscT5h42oItDVecgn59ekKhmApRz3T07oSmOCFVHLXNE724iG0juE5dFlEnXE4RDP07M+gDvsBMkVZFM1d6PQ5HoMlF56nmcKj8hqLO+JoHUL7Xu/snWECMwm8juVoE+vIU01LSFrM76IgVmnT9xJR39wpr+e/BCMqzoxRmtlSYHImUVhNxI3QqfQfaPet/JPNGJajbOzp+7CCP0TXyEPZ68lGWYng+IufG07UY0J9hymzDOA+eircLUO6OaVj8I+vLqZJPrqVjitq2aSQrr8GyykV5r+GNf87d5LfJvtJvzQG/rbHPRHMHMduT/gHE1xU8Sjyrqz9bj7n3vMxUnJQen021ukhaVX/9n8S6JWmTfCj0aPLefocG+7CubuhbRehSZORf32OXxPe7Nxe2QAJvJ6vQYEcEIMKaj9GQhHIzU+tW3IvqIxdf5c9rRg8n0HbAVtA9K6w7pM5JFH
+ MHnbddhr
+ DYBjBWpXLB9fDZLzgXJygDxl2UjbhDEGdR05jg71ZzLRS8nK8rHyLtPKFc0YoM9IaLJVk34yshOITb/UpsR6g/wk0CcaG7efahqTBSwBu04WU85T3JcLencylpf9l+J5rdicQaEtwIojBy99RCHaq7Q7vPGHJUcYpnDrXY/NY+pUxnnSCTg0TpboCFKcCrsVhgsBWHPruROfaw+mI6XkqMrYToivJfHNk6YNsaRhpS89egHX/Cjb8q5/IUYl8SP6xMRggN66Uwt1IF2Mjk/QMqNx54e6kfHYbMVVZivQmHJnW6bv5llE0AB0vAdnX40JWCMP/NvSAB+UdzZuwAgVriO/HUZK4hGFbelHSPOsHyKhcyYeEX6mlPrXPLWF82r8s0zMDTGrxdu6Y9GJBXjYpjdovTI1YHlkCB6GA5SwEWD4gW40UVmL+85hIlg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,103 +146,78 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Fri 30-10-26 12:52:57, Daejun Park via B4 Relay wrote:
-> From: Daejun Park <daejun7.park@samsung.com>
+On Thu 29-10-26 23:44:57, Qiliang Yuan wrote:
+> truncate_inode_pages_range() takes the folios it finds out of the page
+> cache with delete_from_page_cache_batch(), which takes the inode's
+> i_lock and the i_pages lock once for each batch of up to
+> FOLIO_BATCH_SIZE folios.
 > 
-> page_cache_async_ra() trims the end of each new window to a multiple of
-> 1 << ra->order pages. A window that starts just below such a boundary
-> keeps only a few pages. With read_ahead_kb=128 and max_sectors_kb=512,
-> 1 MiB reads after a 4 KiB read at offset 0 hit this on about one window
-> in three. They issue three times as many device reads.
+> shmem_undo_range() calls truncate_inode_folio() on each folio instead,
+> so filemap_remove_folio() takes and drops both locks once per folio.
+> Truncating, punching or freeing a tmpfs file or memfd made of small
+> folios, such as a large /dev/shm segment, pays for that on every page.
 > 
-> Halve the alignment until the trim keeps at least half of the window.
+> Clean each folio up as truncate_inode_folio() does, collect the ones to
+> remove and take them out with delete_from_page_cache_batch(), which
+> needs truncate_cleanup_folio() outside mm/truncate.c. Swap entries, and
+> the folios kept when undoing a failed fallocate(), stay out of the
+> batch. Dropping an 8 GiB file of 4K folios, median of five runs,
+> averaged over two boots of each kernel, in a 32 vCPU VM:
 > 
-> Fixes: 18ebe55a9236 ("mm/readahead: terminate async readahead on natural boundary")
-> Signed-off-by: Daejun Park <daejun7.park@samsung.com>
+>                         before    after
+>   ftruncate() to 0     1163 ms   913 ms
+>   hole punch           1155 ms   914 ms
+>   close() of a memfd   1161 ms   914 ms
+>   unlink()             1162 ms   916 ms
+> 
+> Files of PMD-sized folios take 20-25 ms with or without this change.
+> 
+> Signed-off-by: Qiliang Yuan <odys.yuan@gmail.com>
 > ---
-> Tested on mm-new in a QEMU guest with XFS on an emulated NVMe,
-> read_ahead_kb 128 and a cold cache.
+> To see it, fill and remove a large /dev/shm file:
 > 
-> - max_sectors_kb 512, median of 5 runs: reading a 512 MiB file this
->   way takes 0.247 s before and 0.180 s after. The device sees 3329 and
->   1032 reads.
-> 
-> - Other reads with max_sectors_kb 512: without the 4 KiB read, and with
->   64 KiB reads, the times do not change. Random 4 KiB and 64 KiB reads,
->   two interleaved streams on one file, and 2 MiB reads at random
->   offsets also take the same time. They read the same amount from the
->   device, within 0.3%.
-> 
-> With the device's transfer limit at 2 MiB:
-> 
-> - max_sectors_kb 256: 512 KiB reads after the 4 KiB read take 0.626 s
->   before and 0.322 s after. The device sees 6147 and 2056 reads.
-> 
-> - max_sectors_kb 1024 or 2048: 1 MiB reads are not trimmed.
-> 
-> - max_sectors_kb 2048, 3 MiB reads: the device sees 343 instead of 271
->   reads. The time is 0.120 s instead of 0.118 s, the median of 40 runs.
->   The interquartile range is about 0.10 to 0.13 s for both. The window
->   stays at 3/4 of the maximum, off the 2 MiB boundary. mm-new reaches
->   that boundary by trimming deeply.
+>   fallocate -l 8G /dev/shm/f && time rm /dev/shm/f
 
-OK, I can see how it easily happens once that we trim the readahead
-significantly due to alignment. I'm not fully clear how it happens
-periodically. Is it that you do 1 MiB misaligned reads and so we
-periodically end up triggering async readahead from positions that are not
-aligned to the current value of ra->order?
+Looks sensible. Just one nit below. Otherwise feel free to add:
 
-Anyway, what we want is to align the readahead so that we avoid creating
-folios of unnecessarily small order at the end of the readahead window (and
-I actually miss evaluation how order of folios changed after your change
-because that's also an important metric for this logic). I think the
-problem might be that the attempt to align in page_cache_async_ra() is
-actually not reflecting what page_cache_ra_order() will end up doing 
-(it may reduce ra->order based on readahead size, starting index, etc.) so
-the alignment we do in page_cache_async_ra() may be unnecessarily large.
-Instead of trying to second-guess the logic of page_cache_ra_order() in
-page_cache_async_ra() I think we could pass a flag to it in ractl telling
-it it's allowed to shrink the window instead of allocating small folios
-and then handle the alignment in page_cache_ra_order(). Hum?
+Reviewed-by: Jan Kara <jack@suse.cz>
+
+> @@ -1352,6 +1352,9 @@ static void shmem_undo_range(struct inode *inode, loff_t lstart, uoff_t lend,
+>  	index = start;
+>  	while (index < end && find_lock_entries(mapping, &index, end - 1,
+>  			&fbatch, indices)) {
+> +		struct folio_batch remove;
+> +
+> +		folio_batch_init(&remove);
+>  		for (i = 0; i < folio_batch_count(&fbatch); i++) {
+>  			folio = fbatch.folios[i];
+>  
+> @@ -1363,9 +1366,16 @@ static void shmem_undo_range(struct inode *inode, loff_t lstart, uoff_t lend,
+>  				continue;
+>  			}
+>  
+> -			if (!unfalloc || !folio_test_uptodate(folio))
+> -				truncate_inode_folio(mapping, folio);
+> -			folio_unlock(folio);
+> +			if (!unfalloc || !folio_test_uptodate(folio)) {
+> +				truncate_cleanup_folio(folio);
+> +				folio_batch_add(&remove, folio);
+> +			}
+> +		}
+> +		delete_from_page_cache_batch(mapping, &remove);
+> +		for (i = 0; i < folio_batch_count(&fbatch); i++) {
+> +			folio = fbatch.folios[i];
+> +			if (!xa_is_value(folio))
+
+You can move this loop after folio_batch_remove_exceptionals() and drop
+this condition.
+
+> +				folio_unlock(folio);
+>  		}
+>  		folio_batch_remove_exceptionals(&fbatch);
+>  		folio_batch_release(&fbatch);
 
 								Honza
-
-> ---
->  mm/readahead.c | 11 +++++++++++
->  1 file changed, 11 insertions(+)
-> 
-> diff --git a/mm/readahead.c b/mm/readahead.c
-> index 6e55632902..f4da9b4606 100644
-> --- a/mm/readahead.c
-> +++ b/mm/readahead.c
-> @@ -713,6 +713,17 @@ void page_cache_async_ra(struct readahead_control *ractl,
->  	align = 1UL << min(ra->order, ffs(max_pages) - 1);
->  	end = ra->start + ra->size;
->  	aligned_end = round_down(end, align);
-> +	/*
-> +	 * Keep at least half of the window when aligning its end. A
-> +	 * window that starts just below a large boundary would otherwise
-> +	 * shrink to a few pages and cap the folio order. Use a smaller
-> +	 * alignment instead.
-> +	 */
-> +	while (aligned_end > ra->start &&
-> +	       2 * (aligned_end - ra->start) < ra->size) {
-> +		align >>= 1;
-> +		aligned_end = round_down(end, align);
-> +	}
->  	if (aligned_end > ra->start)
->  		ra->size -= end - aligned_end;
->  	ra->async_size = ra->size;
-> 
-> ---
-> base-commit: 9c449f885765cf8d80b2c60b1971e774bba51a3f
-> change-id: 20261029-mm-readahead-async-align-e491b3dc16a6
-> 
-> Best regards,
-> -- 
-> Daejun Park <daejun7.park@samsung.com>
-> 
-> 
 -- 
 Jan Kara <jack@suse.com>
 SUSE Labs, CR
