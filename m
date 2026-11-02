@@ -1,71 +1,71 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CD4C606A32C
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 11:21:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34F8260A2617
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 11:21:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=nbJ29IH6
+	dkim=pass (1024-bit key, unprotected) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=sGQxrLj2
 Received: by kanga.kvack.org (Postfix)
-	id 54AA36B05B7; Mon,  2 Nov 2026 06:21:46 -0500 (EST)
+	id 549446B05B8; Mon,  2 Nov 2026 06:21:52 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4FA4F6B05B8; Mon,  2 Nov 2026 06:21:46 -0500 (EST)
+	id 4FA7A6B05B9; Mon,  2 Nov 2026 06:21:52 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3EA0E6B05B9; Mon,  2 Nov 2026 06:21:46 -0500 (EST)
+	id 3E8E16B05BA; Mon,  2 Nov 2026 06:21:52 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 1A4316B05B7
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 06:21:46 -0500 (EST)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id A9F28A87D9
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 11:21:45 +0000 (UTC)
-X-FDA: 85389938970.04.D2447A6
+	by kanga.kvack.org (Postfix) with ESMTP id 1B1D16B05B8
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 06:21:52 -0500 (EST)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id A5DBB140C22
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 11:21:51 +0000 (UTC)
+X-FDA: 85389939222.13.828553B
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 9093E1A000B
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 11:21:43 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=nbJ29IH6;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf19.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com
+	by imf04.hostedemail.com (Postfix) with ESMTP id 9EC8B40003
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 11:21:49 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=sGQxrLj2;
+	spf=pass (imf04.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793618504;
+	s=arc-20220608; t=1793618509;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Kp/z3MU7YGBqtXkYJdrZFPtXjtQiMfjPy6zAGRI75f8=;
-	b=J/hOzmKILB1/vTtMzfA/x/ZvATMbsxOrNXYgnak4m6ul/epbYcZhcQfEw6aXTKTBp//xoa
-	aKQKfSi7cUoUIRd+Wlk3V3rLLUBYPnk07Pe/h3P1eH2LxxHC18AzFscvArJrJ0VE83tmoq
-	qZy36fa6WW1TpotGlPyudeLxbIgQPyY=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=nbJ29IH6;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf19.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com
+	bh=iPgeco6QWHwjQByiNB9RkhOOleyP2xs/e2xCzbuUZiE=;
+	b=avd2mW/dZuPNMnFeMcfh8Iq8FUaz/drQdBZu9cRdVnV1P9VvjJKQmvsq1D/KxuMLM/HX+P
+	JHkalOV4ctS3bJXbXBnZkmDf2DYU4sve7Zabq+kJwRoQuYPIH8uAawwnLbBcxjcWg8+W7Y
+	85eBUabfiBOMZ7f4gyuYIkxqqxEnTpk=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793618504;
-	b=Ve7RU/YNrHItBskCOrdatZBbeACZ4knKBI2l3UzvIb/FiPuEhCJyOmAQK2EqJWiONiZA30
-	sjb+t0xWZ7LNCXUFr0/OQRPLvhgECgHtaJSsXAYVVKO+GusUU3LivmFciI72OBCJuGSbnX
-	DtxWVCZ6IFAyZ2FM9Jaf0wtulZ3Xmig=
+	t=1793618509;
+	b=GOKeLVLs3ZzwykM7xw3hv6HHQHwF5oc93BIVT83GRTCNm7zaTu4KyahNBM4xnPI746LB5l
+	5l4l/UovkdeHiEfaSqi9Ni/DX1dAcnXdVqgjemyBkP6Qz2JDj6U9ELxqYWJouBCdXf4uWE
+	S3Mg9SY8OawzMRRF7VWFzWUjpP4xlT8=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=sGQxrLj2;
+	spf=pass (imf04.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 505DE2A31;
-	Mon,  2 Nov 2026 03:21:39 -0800 (PST)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 98BB5293B;
+	Mon,  2 Nov 2026 03:21:45 -0800 (PST)
 Received: from e129823.arm.com (e129823.arm.com [10.2.213.3])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 638CC3F632;
-	Mon,  2 Nov 2026 03:21:36 -0800 (PST)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id ABBBC3F632;
+	Mon,  2 Nov 2026 03:21:42 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1793618502; bh=vEzrqCWaH6sVkcTMp6OI/QOpWZT9yXWBiNbXxiv6lmA=;
+	t=1793618508; bh=MWIk55sq3Xl5IhFPSCZgQqnLya5ldzX0H6ZlzYM7l/s=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=nbJ29IH6dzX4ajlSXZsYxUhN1Lgz7qI7Kf5XaxQjBx/xo9v7XPDH8Ju+9BXJRBPse
-	 e8oLA7buAWAo7aZl1xI9J9NpPa0gvVM1iZGlL9vD4OwU9kc5aWCdjj4sVHMsz5gOdC
-	 kzyj1pP43iYB3WNlRCyithRJP5str24lHrOCdHmc=
+	b=sGQxrLj2PAVQM5fHkHevqVIfVin1ll/3g3ae4t/g8HEOkurxB70lXF0DZTL/IljQ5
+	 rHKZXsGBRrFJanBWMs+pRElUxUB2BOmIRgyPg/tZXyH7V1J+xZrJnVL8vDsgkjLlnk
+	 oes83MtSFez0CJt//3pZ8TBKJnbeTFU4waApKUA8=
 From: Yeoreum Yun <yeoreum.yun@arm.com>
-Date: Mon, 02 Nov 2026 11:21:14 +0000
-Subject: [PATCH RESEND v2 01/21] ARM: mm: make nommu pgd_t a scalar
+Date: Mon, 02 Nov 2026 11:21:15 +0000
+Subject: [PATCH RESEND v2 02/21] ARM: mm: make 2-level pgd_t a scalar
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261102-dummy_ptxp3-v2-1-78840b2ec73c@arm.com>
+Message-Id: <20261102-dummy_ptxp3-v2-2-78840b2ec73c@arm.com>
 References: <20261102-dummy_ptxp3-v2-0-78840b2ec73c@arm.com>
 In-Reply-To: <20261102-dummy_ptxp3-v2-0-78840b2ec73c@arm.com>
 To: Russell King <linux@armlinux.org.uk>, 
@@ -98,31 +98,31 @@ Cc: linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
  kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org, 
  linux-openrisc@vger.kernel.org
 X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1081; i=yeoreum.yun@arm.com;
- h=from:subject:message-id; bh=ODmKgHrv0SlU2okc3grPddikJ1BO4DLAINSWVDYQruI=;
- b=owEB7QES/pANAwAKAW3Vw9FaxTEzAcsmYgBq6HIvGLS699hx7hG7O/gmI78xbHdrhwDkf+7I9
- DWzP3L/JCaJAbMEAAEKAB0WIQQtg+CS3QUzuFh1pJ1t1cPRWsUxMwUCauhyLwAKCRBt1cPRWsUx
- M3LaDACfxss2j2NeE3BbTwwhokaDiCVaW/H2/Mn+uUenKG2jgF/kgodnvVS74EsJjBiO+N61g8k
- jWQPIwa3DH8V2Bt7Ff/0DyErPtKYiTAgNkr0bTxKT8vl3v5bJYwh2f8oMpNlskDhO5YF9ajXEFZ
- 4ER8DxM8Y0Bot9aN/p+GNwx5V7S7M+ZxGwyoFmLXbIMo8frKb97sxPDAfsQWhXc/21AGoZR07PA
- INOCEo64nIFS15biXbqjKkhz6Cg9u4ZiO2+9vVuGSmKykqv/EuGUfHOmt969sV+myhOj6IOf9Y7
- Pm5ViXArvK4RfqS7EjpzDiY+Ijjv+sJGjYyXgNxNfnVM57alioKTkUndEkuHX0dCDAOx2+PcrCg
- 3E0y/PCa4svejSAe9h8r+1ip3k9DsHNUK382M6HKF32gPu7Wr7WsSAR4RGYgAKC+6k2G0Iy/yKt
- 3AY/4iUvtbWQKzfONYzBUemon4pM3LwvK4VOQ4z77hFiMuT2j+pbqBBod0/uxLBwdhzPQ=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2019; i=yeoreum.yun@arm.com;
+ h=from:subject:message-id; bh=4Z0osGAP3S0civxPu6dKKFX1qsd70Ol0fauRungSauY=;
+ b=owEB7QES/pANAwAKAW3Vw9FaxTEzAcsmYgBq6HIvrNf0zi5GZGBTyShCkosyjcm/ve62Hffev
+ ytAlT3j/TaJAbMEAAEKAB0WIQQtg+CS3QUzuFh1pJ1t1cPRWsUxMwUCauhyLwAKCRBt1cPRWsUx
+ M12BC/9v/yOQz+XWwbdtR0EhCi2ksiI4sjutQ/bwS5HN1By936VSeN3wcUH0K1fKV0O4ZIiW+s2
+ SfJf6SpaQEfPzplAyvkiXQnqW09aHWhOdT1UwkkxMNSsHXdfqi1M4FHRSWPCkb6K0FI12tyXCNB
+ h4nuW6sYscec7ovrm5iXzQbZ18FdIgFk4raQqVHNTwmq+NydXKk3z4z1PKr6pQr9LF/IibhywF4
+ XjnF1eu4DGG5cokFCAkzEPmLAy7JprIb56giiRaum8uQRFE4AQ+Cp1WSXeJ2dYh0gtBvPfSBIC/
+ mxl4TgYzuAab+dAvT/qiL8ektFPYyYhHDUvtnnvaYZd7YDgQ3WVoVaWuqwj0VkGu2Zkeaqp0uR9
+ 2vHpxiZK4KVn3Mm9K7SZrbcjdZUCchSWx3i9Tlu4I8WUFQY0nxAPvoTQsduekKtvwMxY20rvnhs
+ Tv4dNY9GxHesD3XthpSYqMK/OdNippbv5S3PTdRLmqElgGJKdAMoOXuZeIn1q0haCDfG0=
 X-Developer-Key: i=yeoreum.yun@arm.com; a=openpgp;
  fpr=2D83E092DD0533B85875A49D6DD5C3D15AC53133
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 9093E1A000B
-X-Stat-Signature: 9z9pn8fowicx6hu9f8ysg3g8a3y3gd1o
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 9EC8B40003
+X-Stat-Signature: w1ut6m7ecjm1cewibx1xao3stukmtmff
+X-Rspam-User: 
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspam-User: 
-X-HE-Tag: 1793618503-395796
-X-HE-Meta: U2FsdGVkX18u9Y8bjBeDQj87X6e15RsuFOw2Z2TUP6W4/zeG6N8AXNRSe7FOX+31/UEmX8vqjq3A5FZSAnd7XqAkZsts+Cz3RJLiKak4nyikl79olgCY33P6+4tR1QdVC+lu0GQdoxe2zxDN6DE5RLyVMKJ9YaMbRe4XUcADvVM+3DkkgJteZ7GI3tbrIzzl8kFIufb0CuUV0TvSC/Sa0YtyXZFOIF/R4DizGbVEdkG0eEaJKdkD3GbG2MOP8hDAIG16rB7G1DpmA1RkWJcpI4vTrVywAbGIJKQS/I4iAr7ag+yf7LPh2WN/sCWHfSi3Mxq0iBa4k6TL/56ucXDTyKjgsi2O5xD3YbMRKX+U4ssJBbMm0+VkjxM22jgOV08sz/K5v0YcPqYe9NtKVwJGiJz2psYHyawYQaGtft0MLUsKU4d00Nk4I8/gXW4eFR5K9whwfhAHJ/XysEEqZOVxmR8u45KWEnAxBYDNGfLb0zmGc7N3YmyJd7WcHQPv+TNzCXwEC08mPGUAr/G4GZNE7NXiWI2fp7xkxJcCvCPVRYgTUMV8h0mQSTBkvEoMST4oS1qvhmD5FYAf5qkLv6jv5GYQvTlTRVVeWK35iWenYzUfu82LSEoNbMj1REfDHXn6iIj7CEsXFWaXmSdqZl2uopbI6oapInIRYZIge3w9/n2I+AAWH1UnWs4+55FhjwxbVYs7S9D61TKYdMBxhEHIkqmfTapm422WwkVLE5aMmXmJFpQ2CEPTITOXjoXlPcACuV23Mq8v95Xt7NB+0IF44OYjxz3vjh7E4mSrcPqv6E+9JX5GnG4E4Fyh0q+QDyPob9mUDF5u2gY8oC3zmAAzm4mPuaFjnioG4Cd4M6y2Bns9Vn2PJEAf+Sco5wE/4dCIJgnLXf8DwUpG8MVjVw6NiB4spUhxTxCZH1qqz/hEhsHrxRdXM19a19Irm1kA/vKF2NFyzwFpjSu/TOarQhM
- RWdtjXyL
- NINNpiJYl2M0l1KkrmZjeXyosv5CI4tc3GBNbkB70bqb+5FDwhEp685sIJF3wt0HVGghVEf/174A+IQjycBa1dMe5zBUZsJXqVbNoKYJkICA2T0m4PHlF36h4THuLHwpiqadTQ4G6slH998/Cpz9FRuMYciO3YIe3Fno73184Vbz4gPY/uxV2z5zphO2Hk/KV5n3J+HzHN4SacYx6iFAALzxEhC7IW+L7aKmMXlaFQoyWy7zYFBRG/m3PfKhmJo4WVvOb8zqVU5H92Xg=
+X-HE-Tag: 1793618509-741747
+X-HE-Meta: U2FsdGVkX18dWbzVZmA9dVfpgaox/xteVhKekV/WD5sFptqfqRIopKBLCuBxZedCT7d9Pl4miOa1Rd5AbpjSiqwu0EyJR5d5xl3Do9oOV4o1CLHQeUFLM9Uan58zyLycYnUeq7HI1saGVKq0XeAvgax6wsKzBmoWzHN+ZVoMUGRzIqjtIzFkdo8lWN5BxCZV8Ke3ET/QpDLaGbzdQuCMJkRKwo5jdC+TpoA2ALRwNm877DM5QYQz8Y+CK0NoNw2rzNMkmO/tHLAYWRezZUE6onEWfU77O3owFqR7zazHRjZZlKNMta1RTCwazhbMdck4wIvtPZNgT1bji4JhPf/YaC/DoqmVs5YoBr7WuAu8BiA97F42K2OfgxMH3j90k2Ib79Ugs7LAL+uDpSk/A+KSJPKdftomaENTDOHrXYt0g4oVYmi58awJEfUoL0vhLS/XhQ68OGqN2eENdGl8IixIuh1DenOsMfxyXj1h3GMCQZvF4Yd5/tXuRq9cj7YQbedc5fyjy2pYevyjX2DSpCe0VjiyHFpUWeD5dKhX2lgR7hmTOwgn91mxggeGRD6gwuIQU/gP5vJe6SxSheBsNo2pqz0DjkHsAQkTyKgU/YcSyN1ip+qdsa0oz/xCZuPF3os8MVYiDXei9fUOUbP2Cha7Fh168pa4jUQ25gTnvT7Ae8o+yZ6LQjxkUowyVdhAVicMOql/0OdC3omSngzlPrVOAZWXjzWwAOyLAThTVsVOew8TGbW+sTPW2Rhf5b0M1qnq4xbJvMOgNGtiBXV/atTTBpMA5ktuoGurSV5LLmv6oQpY83DlizmiSxqv5OD1OgkSoGv50cQi+3CufuMFFYrNnxMe1qMFOsnTbH5kEb4ICvDbXLhza9JjC/gw6/cLyYbS9jsMEVYtKZyH3LcpXNgJe4ijo/YdJoIyh5ZaQ02uyC7PMbJf4c1Uf1eB2qplLG1MpcDTnvb2GrdZcz4EWAH
+ sQNetxYt
+ J4sTKs9iPmBdBpL4Md/tfcj7HyFLx8nvT9A/1jMA26SIWqgCww5ehTda/6DnH6uryjcGwpSFgtKc6AFUKBusYSdTUDPMnLrGz+p3oTMfrDqrF7h0lxrkZM4MSj4Q+vsLMXhTBsMx18k4ww7JLqxj+swdyBysI/UjIqFvmwp4751dWnE/+qpjG7LZi7kQOGJfhj5OalVChNpfula+oElXP29+pKsH/H+V5Fv8nI4QxQCHGXREa/s8tMjzLkKwf3ZT2gLI98tuAa3zW80k=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -133,36 +133,63 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 
-As pgd_t is returned  from a function, like pgdp_get(). pgd_t shouldn't be
-an array.
+As pgd_t is returned from a function like pgdp_get(), pgd_t shouldn't
+be an array.
 
-There is no need to match the actual arm page tables, because with nommu
-there are no page tables. It's all just in place to make the compiler
-happy. Making it a scalar will make the compiler happy.
+So, just use an u64, and extract the right 32bit value in pgd_val().
 
-So let's just use an u32.
+Leave the STRICT_MM_TYPECHECKS case alone for now.
+
+As an alternative, the STRICT_MM_TYPECHECKS approach could be used here
+as well, but using an u64 looks conceptually cleaner, even though
+pgd_val() gets a bit more involved.
 
 Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 ---
- arch/arm/include/asm/page-nommu.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/arm/include/asm/pgtable-2level-types.h | 20 +++++++++++++++++---
+ 1 file changed, 17 insertions(+), 3 deletions(-)
 
-diff --git a/arch/arm/include/asm/page-nommu.h b/arch/arm/include/asm/page-nommu.h
-index e74415c959bea..88659b38e2364 100644
---- a/arch/arm/include/asm/page-nommu.h
-+++ b/arch/arm/include/asm/page-nommu.h
-@@ -18,12 +18,12 @@
+diff --git a/arch/arm/include/asm/pgtable-2level-types.h b/arch/arm/include/asm/pgtable-2level-types.h
+index 650e793f41429..805044ea315b7 100644
+--- a/arch/arm/include/asm/pgtable-2level-types.h
++++ b/arch/arm/include/asm/pgtable-2level-types.h
+@@ -25,7 +25,7 @@ typedef struct { pteval_t pgprot; } pgprot_t;
+ 
+ #define pte_val(x)      ((x).pte)
+ #define pmd_val(x)      ((x).pmd)
+-#define pgd_val(x)	((x).pgd[0])
++#define pgd_val(x)      ((x).pgd[0])
+ #define pgprot_val(x)   ((x).pgprot)
+ 
+ #define __pte(x)        ((pte_t) { (x) } )
+@@ -36,14 +36,28 @@ typedef struct { pteval_t pgprot; } pgprot_t;
+ /*
+  * .. while these make it easier on the compiler
   */
- typedef unsigned long pte_t;
- typedef unsigned long pmd_t;
--typedef unsigned long pgd_t[2];
-+typedef unsigned long pgd_t;
- typedef unsigned long pgprot_t;
++typedef u64 pgdval_t;
++
+ typedef pteval_t pte_t;
+ typedef pmdval_t pmd_t;
+-typedef pmdval_t pgd_t[2];
++typedef pgdval_t pgd_t;
+ typedef pteval_t pgprot_t;
  
  #define pte_val(x)      (x)
  #define pmd_val(x)      (x)
 -#define pgd_val(x)	((x)[0])
-+#define pgd_val(x)      (x)
++
++static inline pmdval_t pgd_val(pgd_t pgd)
++{
++	/*
++	 * A PGD entry actually corresponds to two PMD entries in the PMD table.
++	 * Both PMD entries point to PTE tables residing in the same physical page,
++	 * but at different offsets. See include/asm/pgtable-2level.h for details.
++	 *
++	 * Historically, pgd_val() has returned the lower of the two PMD entries.
++	 */
++	return (*(pmdval_t (*)[2])&pgd)[0];
++}
++
  #define pgprot_val(x)   (x)
  
  #define __pte(x)        (x)
