@@ -1,133 +1,95 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82E63606A324
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 08:11:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCC1D606A32C
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 08:19:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=Mb0y4r0n
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=AZDzOl1W
 Received: by kanga.kvack.org (Postfix)
-	id F0C986B05B6; Mon,  2 Nov 2026 03:11:55 -0500 (EST)
+	id BBFE56B00EF; Mon,  2 Nov 2026 03:19:42 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E48136B05B7; Mon,  2 Nov 2026 03:11:55 -0500 (EST)
+	id B704C6B05B1; Mon,  2 Nov 2026 03:19:42 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C72976B05B8; Mon,  2 Nov 2026 03:11:55 -0500 (EST)
+	id A5FE26B05B2; Mon,  2 Nov 2026 03:19:42 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 847F26B05B6
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 03:11:55 -0500 (EST)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 8EEF140C92
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 08:11:54 +0000 (UTC)
-X-FDA: 85389460548.09.02ED8C3
-Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
-	by imf01.hostedemail.com (Postfix) with ESMTP id C3B8040005
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 08:11:52 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=Mb0y4r0n;
-	spf=pass (imf01.hostedemail.com: domain of azpijr@gmail.com designates 209.85.128.50 as permitted sender) smtp.mailfrom=azpijr@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 72E1E6B00EF
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 03:19:42 -0500 (EST)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 64E03C0BD8
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 08:19:41 +0000 (UTC)
+X-FDA: 85389480162.14.C141EAB
+Received: from mta0.migadu.com (out-164.mta0.migadu.com [91.218.175.164])
+	by imf20.hostedemail.com (Postfix) with ESMTP id F382B1C0005
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 08:19:37 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=AZDzOl1W;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf20.hostedemail.com: domain of hui.zhu@linux.dev designates 91.218.175.164 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793607112;
+	s=arc-20220608; t=1793607579;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Skgy5VZxk2gILLHcPLrF17iQzssiYgUtpst1TmBVQUQ=;
-	b=cYnPyBfvhV6JYDRt/OaKCC0LqLPpCThd4L9mwYtK6n/Qa6wuCkmcSEOQSpnIJU8Bd5QKjM
-	/mT9swIObHJ7a3Ql0BTT7ORyb+4bZ2UA6rwWIEJ+eHDziDu4y3uy8Qy/QxWlpvudHJnYNy
-	hr/IR5M96hGmnW29EPGwnIFiEFAgdnA=
+	 in-reply-to:references:dkim-signature;
+	bh=6LIgKMD8dHTd4WojjokCcwg495C76eo9u3xZtsqzS+k=;
+	b=z0ZF7qIGqSH40WMZQH520RWnYfadj+Ptcx4ikVIYInGQZIZUZr1IRoSQQ6E/653tAD5sHq
+	aBgGGNsKfT0U/VmFLmc6YnUaQb4LN9cTE/dC3iSxd9Q/bmiWbPdeBzhYFxXh3y0cdbukyR
+	tU3K+xBwmHFpzRnMyHVNj6sO04KpSN8=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=Mb0y4r0n;
-	spf=pass (imf01.hostedemail.com: domain of azpijr@gmail.com designates 209.85.128.50 as permitted sender) smtp.mailfrom=azpijr@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	imf20.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=AZDzOl1W;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf20.hostedemail.com: domain of hui.zhu@linux.dev designates 91.218.175.164 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793607112;
-	b=aevxgcVyBWJyANSa9mhmGXh43R8ZZgwVX935Rq+cYW/5YWgK3b6qj4goPv4IF/pFbBrWG6
-	JANaMhrtTvDIaqAmSfn5kC7LR+XP9jVxjnmE+MxOx/GbGyJ+uQgFqYc4T26aBBK4MGCWgp
-	L2JleSUCNw4auYlI/42wgJuCjx2K/Y8=
-Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-4a60f9474c4so28305465e9.0
-        for <linux-mm@kvack.org>; Mon, 02 Nov 2026 00:11:52 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793607111; x=1794211911; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=Skgy5VZxk2gILLHcPLrF17iQzssiYgUtpst1TmBVQUQ=;
-        b=Mb0y4r0nV93Z0vurJriK676T+VQj7jCWpC5DcY7RJfm65RSu39LybzcZlEDerUKbHl
-         8ScGN3uNIZ8P7RaZrxs46uJtsxs3wTsSnNEipsWx3d4xve0hFrUoXqTYfONKDIYCrKe4
-         AtxkyV53/op3WM3IC5IVV+KHtrmTL5UAM/sH9+29gBPIGpmPRficBDmYNYzUcss2s99O
-         vlcsQwnHQVccshnmXAZgxDv1RfLb8rcfkmH2cdz19Zol5wXJhRm7cfE6RjpI73Yh1Hk1
-         AaYnadS0cNAatMQOr6MVOJnWAJJacUi7G7uAQo7czLLa4Ya3dBgEOTXiKnAUVDxVoC5o
-         YRrQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793607111; x=1794211911;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=Skgy5VZxk2gILLHcPLrF17iQzssiYgUtpst1TmBVQUQ=;
-        b=DjsYSx2ga+09/TUqL7evK+H5+M51yCY8kBzjNBeP+IIC4qT2ilaxtEIvR3mYh1aK4g
-         Y9wm837XEhiED6DNbBjYfrfPEf/DXJdczanM7w6Xu8XnIS6zfYDO/CSNEkG5xSiAVYyB
-         b1AjRfVDCj/DKxulaH20c/olCPfJ/VVPgwdSEiK8hGllkZuz/5u+Km8yI5IxRlqLOgJC
-         Ph7RGFEooGeHM1/BzmMmXqOnNtZHGl7ECRm4K8kcNjF2vUbBNeunLM0JacgnMgBIIt/A
-         +TRCW6MdLhsttCq7AlDWlInTAyA8/BF54FCmEsIOr8VSoy7P2/JThSfUIUFT7qjXh9VY
-         NzkQ==
-X-Forwarded-Encrypted: i=1; AKwUvByWY4m6ZGW172tyghh3F2ZPN+5RvvaF6V4rMGaROSeEdsDcV3pXYqa6WD7/gnwwhls+altOdkKbjQ==@kvack.org
-X-Gm-Message-State: AFq9FYL6asd9OFmp9Iof2eYI9XblxrzRDYHvDnJ8tIkWqERVJnaf4tjf
-	F1s+nFpGMSXVskhmawjDmkgjRwchGyqYNLqoXYvCqUBo3Yx97UpwsBqN
-X-Gm-Gg: AYBFou1fh8uPAoKQv2Tq1Xa6+H4p8SPtil+d9kDgIlTay/+jO8vuLTOKfqJjjrxtqPS
-	RoBPnWejGVQpvNLCz2Rf6ak9OdXLX4YMD+Q21MPZ644Tw6tZKaYVZDH4SA+vcc1yAr+W60UADDZ
-	50nVYXTMPWjae7cc2SynKkEO/uBHhEa7dUc6Gxvx1v0lCckUSGIZdnnExrH7Sej9PLJ0MaME+1O
-	pstApbqgvGBi97I6zDojM/33x0UjLVLYpt6YJkanuUI7OUmAKTtLI5XVbOwE042xxeL5gGqq3t9
-	GyOc0VS6WsMouQ2+JqK7RVbJg0S0ltLBZo7faqlkyJaZMyZqMqPLk40uIdEIlPNXLvUcZwr5rLQ
-	HchssCgvUyJ14QK8oG15Xm48cLzGBaGOk3QGQzrT+XwoWnS8AJ/JCh7AyrWCXGux1L/uQ7g3hcy
-	JTujMNInNImMX4hMna6xvGotqUMWNXKEWoyF18PmFAhbFtEK6hIpmPzlfkymNbK5L6YUK8zGs4a
-	cjIURDrOjEVMxIk09onW9BrfXQNn1lmLteXCaJja+X2wVEzZP8++CKJ/0dvVoecdsuxrJPSz3AF
-	HM4xSv2wVgnE2g==
-X-Received: by 2002:a05:600c:46d1:b0:4a1:df52:3e36 with SMTP id 5b1f17b1804b1-4ac17b2cdc2mr215325315e9.27.1793607111269;
-        Mon, 02 Nov 2026 00:11:51 -0800 (PST)
-Received: from nobara ([83.231.69.9])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4aa8213ead6sm333331005e9.14.2026.11.02.00.11.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 02 Nov 2026 00:11:50 -0800 (PST)
-From: "Jose A. Perez de Azpillaga" <azpijr@gmail.com>
+	t=1793607579;
+	b=GunffWdT/mFWgYCkZ68OINLrm4Lhjk0RyY7XkO2CrIRzVZHd//a0ZEvod5c8L9QPUnYc5z
+	R78Bivwg2kXZxpRbQ7JScdu51nH4vuL3md3raIrcLf3alCaBIV5hnReBKC+2EaXBqSdFY2
+	RZgdZY0I5+Z9ryW2zv0cSDfHpZ27Jd8=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=EBKM40GcqovOdTmepBxoC9IiuiPwdTEdquc/inXuQmU=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1793607576; v=1; x=1794212376;
+ b=AZDzOl1WlM0ZM+HlRBWP8R2eySrKpGJIpSlS84qhwFCPdwO3z0lg0x+ioEPVsR71T3wegNd2
+ FCRPfwrNebKHsirn2PZKLgRXt8rmNSW5PyoK2LjoDTv+I5vIqg5MzMEhk1VHm5VDo0BHzEb0piK
+ Yt4ws4hq3JjvhVFChcDlxgy8=
+X-Envelope-To: linux-mm@kvack.org
+Received: by mta10.migadu.com with ESMTPS id 684001e98352b0ca;
+	Mon, 02 Nov 2026 08:19:36 +0000
+X-Mizu-Trace-ID: 684001e98352b0ca
+X-Migadu-Flow: FLOW_OUT
+From: Hui Zhu <hui.zhu@linux.dev>
 To: Andrew Morton <akpm@linux-foundation.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	David Hildenbrand <david@kernel.org>,
-	Shuah Khan <shuah@kernel.org>,
-	Peter Xu <peterx@redhat.com>
-Cc: Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
 	Vlastimil Babka <vbabka@kernel.org>,
 	Suren Baghdasaryan <surenb@google.com>,
 	Michal Hocko <mhocko@suse.com>,
+	Brendan Jackman <brendan.jackman@linux.dev>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Zi Yan <ziy@nvidia.com>,
 	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>,
-	"Jose A. Perez de Azpillaga" <azpijr@gmail.com>
-Subject: [PATCH v2 2/2] selftests/mm: add a uffd test for re-registering during UFFDIO_COPY
-Date: Mon,  2 Nov 2026 09:11:31 +0100
-Message-ID: <20261102081140.201987-3-azpijr@gmail.com>
-X-Mailer: git-send-email 2.56.0
-In-Reply-To: <20261102081140.201987-1-azpijr@gmail.com>
-References: <20261102081140.201987-1-azpijr@gmail.com>
+	linux-kernel@vger.kernel.org
+Cc: Hui Zhu <zhuhui@kylinos.cn>,
+	stable+noautosel@kernel.org,
+	Dev Jain <dev.jain@arm.com>
+Subject: [PATCH v3] mm/compaction: annotate data race for zone->free_area[order].nr_free
+Date: Mon,  2 Nov 2026 16:19:18 +0800
+Message-ID: <20261102081919.80625-1-hui.zhu@linux.dev>
+X-Mailer: git-send-email 2.43.0
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: C3B8040005
-X-Stat-Signature: dgqcecuyzuosarfnf7mcfaxrsok3ndn8
+X-Rspamd-Queue-Id: F382B1C0005
+X-Stat-Signature: htni81aw74qnk8baqkafftyszisb8a1t
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
-	autolearn_force=no version=4.0.1
-X-HE-Tag: 1793607112-469742
-X-HE-Meta: U2FsdGVkX1/qNld5PUNr+Tu+QnV+J8SDbPBGdHqL4QVefnz5tQiFhKRWNBLUu1a4i6KBOoaUN/9is7KZfj/maN3rNSIMIvxFxVnALPjwpjw6xoLLTLih5hT4tkxuycrO5gJWWNOAr1yUsPuHFcLdSAQ60m4zUXmyeV/K9rupbQ4E2lfrXkkYuahZkASr+AdyZm7DhUqXIDVhHlw+WkmEAsKajY9MXMiyVwe1xp6OteR5obHJDuTnIIKZgd27cyGAMUxdF6A0EZVriTmJ4olUhglazAgPO6oI+nyDk/obh8FauGxMqViue3WHwwA5HgCrZsf5iPIbpCu/hRAnVFvQlHAu0dHodjGKDrxWjKQ58xzECcf85h6edo463rNqvcv4VELW+BcW53COfUDVDwrU7JX/oSgJMNbXmLQ8qQ+scvPesiAnevgtwPDOcstCdZ2/qVHIx9KazNATuhDcun12pRvWE8QlAD05IfeKP+rvS5zfUXbjut+7n3FNFW0JMg27GiyBpoR+tkmrzC33QFvXDZ2iScBKgqOeaDM1hVolNzf1cLUG41kvXoQ/4zQGwY6f1Jckgd/IuXJRK8ZeIGONqCW1Dpmk1mYT39hf20M4qZTK4OAyVHMXC9W7wfuVrYXonU+I1znzTzOYkOREvz/89Kvjd5LLlE6irw95P6HBHMccIicLS++AGQD2VkKWXBA6rGEYvSVRqg2l1Jikx0q1JhQZ17HMTp2VTl9JIMG/X8r7VaUZ0WXYP2da/aZdTGXjcfWGgnn2EN6oj0xTmCZSkqtpCAoNUurbJfXUAAvLsUN57K+qXOfGSVOaV5g+g1HaD3rhhOszKokTVG3vytb8g3ulVlnjwQZybtWgIK5eey1BWRRc9H+8pE9WheHV+4/vPoQOw/GWu0nOnFElRU67ZIvUWKPt63EiOVijqeBSIfNBk/GUZ0P0C4yJdUVHnJeCx1/QOqQnI3adu9UaYjH
- v8SQHZKN
- fJjeNdBm7wBzoDQmzeJMI4Z5mzdBJiPwlNRu3q0HRMisBSNZONXfFVSpLz1Q8Dy/KikQsmrrxflh9GhWAT6FjoxxYd2/dy+ewqQCs/BXkr+/j77Awlg2egS94R/KNcWxmRx6SFV0jN8yf/nnueXOBcDjWiF8bX72cQQJoP1g5cJZg3J3ABcAuMjcNrzs9UyW5L5A7kk6sMiDPnd7QwTYfwfpjQRZ/gsHp2XU8RLIs1ITpVhXACXAyaoaOQMKJzd6X8QOcRuYur1QmaLrfUDz+9Y28AeW3aMHaO6He4hBErGgo4wgBN6tALnMeKVFhtsl6ZPf4gTN0HaFTfjYc+UuR8kjN29qC92/AMhgbWWqJPG/l134/FGDVP0Ik0hFHnzoi6UDMx8b3cz8gFCuof+1csmMk33Y+4Zg3IHqJref7pKRKdI+ZfNr7CxCJ0UW4MUlHvjDH9/cFI3NJhfi3ugGJpgkV0J3TsuW4lPgOBzAv78mtib0=
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1793607577-792868
+X-HE-Meta: U2FsdGVkX1/HSBqnyz4MsulZJcMxQkJgXuKPezxCxWd3gZbzP7MeC8va8sNzN1QXa52/C1p8it8nZrhaZIcGoWGFVYOxOtFkHTbKncRCexgm/QhDB38qbcxmVqCejOgZ/oWvjB0TPc6OIeQNMW5mIMY7LIdLWwpP1pZRxpDx9/4JNhiCscfTLLs877fjbLnByhiagL/BXZsfPxz6TDg9z79tzd3wFi0t4dxT04CEHxfmwfrxJLrM5fZGL5+S1FW2UCOJWdCMPaefPJIeUyXZWJ3EmHwfpWR66NmNGHz3Z+IsOWGKeCwmh7LW4yO+IqFLOe7uoKcCqeVIRFIuSCJNSYIv2tX6LDHdVwzsP22mAlM4X+saJkddafDr8AyNW2uHhwZj8I+qfJxZN5HdvbWWDmC1bPUUdOiOFDtc7nnswYaPIbJKtdlEr8BdRFedJK+EAS2OKiD/S1IS/lEVkq5skVc6l/qGIMPa09ncWI6cCrTPXZoKdtqXPWnNC/wLvDpHlGyE1xxPe86UJPtVkRImlA/28T5/GqoJVlHm0sfibr1s/Rl4IcyE3LVwor1578uQv+aRuU7NtFDL0ke6Xqup5Ag0x1EI/Uun4yYEJAQS6EPrUg2NRMkJHj91UyH5/+Us5qHxawI8wUZINyUdGvCaaDacUZKjbRFOzrfzf9nZGiXXrauSVDjFbGMg/YAuIDrhzZgykCtl7vfsnLF7H8qDcVh28R7aV8OfG5U0r5O+nCCQFuQbIHhyJsQoyqbGbiAd69oMgYB/Y7KZ+KX5VjYpLxdaFfb6LNX9QRO0GxDRkbHxEP2SjgqRpUek04/Md/4Qg0vbdapjSRdxk/algCr7GcPvo4NL+/9lt6uEmqFNK5B50hA7XIFn5n5IpbSvrRcdqLowm2aM3kcd0EiqYnpIR9Z22Q14RZFrcFw1QElBLzhbgoWlYArpW2GIrXCpxvPMV8aH/017NOxZkNHHhU9
+ Jj0LTBEY
+ nMVw2m5Uo1vVkJnqbUaoDmHkketiYnqXvphMmx5tLIhQs17Pwpd9JI0HOPE9CrqjBm8ZbdRDUwcsBhpv1Tg+FTc2E2fd1FRo1F3aVqHa78Csydw4buhIiYGc7REX0VACGpQ5RgCWPeHn3xq6ZuE50fAedUUsjPdfMFgGqaRXeEUbn8hTA6LQfru+i1BCKzQdlxvKFEZfbPDCZYu8jeVptGeKoMcKSHSXbm38QRA6OWEwQkU0FNG2hQZLrZE5eemA4YECjMwVALJbyju1RV4Rivb0q9Rn2X0gLgwKfG+A5+QI+Kn++i4OnVSny46XEHFg+SQC+XUrnqujPZWNv1UBXmDyrVdxepoCNWpveSJWnzmZWbCzCCEq+ZEhWVB1Az/YgPrIGP6bb2l4IN59OCOzPt3DGSih6UVLkSGttt4tt8CSayVClpub1OuwX+1BBjDTfnHmZCZ2JHJwBgs8PTSrNPtxK1qCYDt5qC4RJ6pAz5+bjWsnnzsY9WF6FAg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -136,145 +98,106 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Re-register the destination without WP while a UFFDIO_COPY_MODE_WP copy
-waits for its source page, then check that the copy fails with -EINVAL
-and leaves no uffd-wp bit behind. This covers all memory types.
+From: Hui Zhu <zhuhui@kylinos.cn>
 
-Signed-off-by: Jose A. Perez de Azpillaga <azpijr@gmail.com>
+KCSAN reports a data-race on nr_free which also exists on mainline:
+
+  BUG: KCSAN: data-race in fast_isolate_freepages+0x284/0x1550 mm/compaction.c:1589
+
+  race at unknown origin, with read to 0xffff9894ff3dcb60 of 8 bytes by task 179078 on cpu 12:
+   fast_isolate_freepages+0x284/0x1550 mm/compaction.c:1589
+   isolate_freepages+0x52/0x650 mm/compaction.c:1722
+   compaction_alloc_noprof+0x36e/0x3e0 mm/compaction.c:1850
+   compaction_alloc+0x21/0x30 mm/compaction.c:1880
+   migrate_folio_unmap+0x7f/0x820 mm/migrate.c:1177
+   migrate_pages_batch+0x37e/0x1200 mm/migrate.c:1762
+   migrate_pages_sync+0xce/0x560 mm/migrate.c:1928
+   migrate_pages+0x8c6/0xc20 mm/migrate.c:2037
+   compact_zone+0x539/0x10b0 mm/compaction.c:2660
+   compact_zone_order+0x1b8/0x230 mm/compaction.c:2795
+   try_to_compact_pages+0x20b/0x630 mm/compaction.c:2851
+   __alloc_pages_direct_compact+0x98/0x2b0 mm/page_alloc.c:3722
+   __alloc_pages_slowpath.constprop.0+0x452/0xdf0 mm/page_alloc.c:4401
+   __alloc_pages_noprof+0x28a/0x2d0 mm/page_alloc.c:4794
+   alloc_pages_mpol_noprof+0x1b1/0x470 mm/mempolicy.c:2270
+   alloc_pages_noprof+0x7a/0xe0 mm/mempolicy.c:2347
+   io_mem_alloc_compound io_uring/io_uring.c:2848 [inline]
+   io_pages_map+0xb9/0x330 io_uring/io_uring.c:2892
+   io_allocate_scq_urings+0x231/0x300 io_uring/io_uring.c:3933
+   io_uring_create+0x29c/0x9c0 io_uring/io_uring.c:4091
+   io_uring_setup+0xb6/0x100 io_uring/io_uring.c:4203
+   __do_sys_io_uring_setup io_uring/io_uring.c:4230 [inline]
+   __se_sys_io_uring_setup io_uring/io_uring.c:4224 [inline]
+   __x64_sys_io_uring_setup+0x66/0xe0 io_uring/io_uring.c:4224
+   x64_sys_call+0x1816/0x1d90 arch/x86/include/generated/asm/syscalls_64.h:426
+   do_syscall_x64 arch/x86/entry/common.c:51 [inline]
+   do_syscall_64+0x70/0x2a0 arch/x86/entry/common.c:81
+   entry_SYSCALL_64_after_hwframe+0x76/0xe0
+
+  value changed: 0x00000000000002f4 -> 0x00000000000002f5
+
+nr_free is only updated with zone->lock held, but fast_isolate_freepages()
+and fast_find_migrateblock() read it locklessly to skip an order that has
+no free pages.  page_alloc.o is excluded from KCSAN, so the writer is not
+instrumented and the report is of unknown origin.
+
+The race is benign: a stale zero only skips the order for this round, and
+a stale non-zero just finds an empty MIGRATE_MOVABLE freelist under the
+lock.  Annotate both reads with data_race(), following commit
+af1c31acc853 ("mm/vmstat: annotate data race for zone->free_area[order].nr_free"),
+and say at each site why both stale directions are harmless.
+
+No functional change intended.
+
+Fixes: 70b44595eafe ("mm, compaction: use free lists to quickly locate a migration source")
+Fixes: 5a811889de10 ("mm, compaction: use free lists to quickly locate a migration target")
+Cc: stable+noautosel@kernel.org # KCSAN annotation only, no functional change
+Signed-off-by: Hui Zhu <zhuhui@kylinos.cn>
+Reviewed-by: Dev Jain <dev.jain@arm.com>
+Acked-by: Zi Yan <ziy@nvidia.com>
 ---
-Changes in v2:
-- "all memory types" in the commit message
-- rename copy to result
+Changelog:
+v3:
+Reword both comments to explain why a stale read is harmless (Vlastimil).
+v2:
+Real name in Signed-off-by, add Fixes: and Cc: stable+noautosel tags.
 
-v1: https://lore.kernel.org/20261029221129.89068-3-azpijr@gmail.com
+ mm/compaction.c | 14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
 
- tools/testing/selftests/mm/uffd-unit-tests.c | 105 +++++++++++++++++++
- 1 file changed, 105 insertions(+)
-
-diff --git a/tools/testing/selftests/mm/uffd-unit-tests.c b/tools/testing/selftests/mm/uffd-unit-tests.c
-index 2a97ba1d6feb..cc22b4cde621 100644
---- a/tools/testing/selftests/mm/uffd-unit-tests.c
-+++ b/tools/testing/selftests/mm/uffd-unit-tests.c
-@@ -375,6 +375,104 @@ static void uffd_wp_unpopulated_test(uffd_global_test_opts_t *gopts, uffd_test_a
- 	uffd_test_pass();
- }
+diff --git a/mm/compaction.c b/mm/compaction.c
+index f1b2060eb2016..426563acf7acf 100644
+--- a/mm/compaction.c
++++ b/mm/compaction.c
+@@ -1601,7 +1601,12 @@ static void fast_isolate_freepages(struct compact_control *cc)
+ 		unsigned int order_scanned = 0;
+ 		unsigned long high_pfn = 0;
  
-+struct wp_copy_args {
-+	uffd_global_test_opts_t *gopts;
-+	char *src;
-+	__s64 result;
-+};
-+
-+static void *wp_copy_thread(void *data)
-+{
-+	struct wp_copy_args *args = data;
-+	struct uffdio_copy copy = {
-+		.dst = (unsigned long)args->gopts->area_dst,
-+		.src = (unsigned long)args->src,
-+		.len = args->gopts->page_size,
-+		.mode = UFFDIO_COPY_MODE_WP,
-+	};
-+
-+	ioctl(args->gopts->uffd, UFFDIO_COPY, &copy);
-+	args->result = copy.copy;
-+
-+	return NULL;
-+}
-+
-+/*
-+ * UFFDIO_COPY drops its locks to fault in the source page.  Re-register the
-+ * destination without WP while it waits there: the MODE_WP copy must then
-+ * fail instead of leaving a uffd-wp bit in a VMA that no longer has WP.
-+ */
-+static void uffd_wp_copy_reregister_test(uffd_global_test_opts_t *gopts,
-+					 uffd_test_args_t *args)
-+{
-+	struct uffdio_api api = { .api = UFFD_API };
-+	struct wp_copy_args copy_args = { .gopts = gopts };
-+	unsigned long len = gopts->page_size;
-+	struct uffdio_zeropage zeropage;
-+	struct uffd_msg msg;
-+	struct pollfd pfd;
-+	pthread_t thread;
-+	uint64_t value;
-+	int pagemap_fd;
-+	int src_uffd;
-+
-+	/* The source fault comes from the kernel, so no UFFD_USER_MODE_ONLY */
-+	src_uffd = uffd_open(O_CLOEXEC);
-+	if (src_uffd < 0) {
-+		uffd_test_skip("cannot open a kernel-mode userfaultfd");
-+		return;
-+	}
-+	if (ioctl(src_uffd, UFFDIO_API, &api))
-+		err("UFFDIO_API failed");
-+
-+	copy_args.src = mmap(NULL, len, PROT_READ | PROT_WRITE,
-+			     MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
-+	if (copy_args.src == MAP_FAILED)
-+		err("mmap() failed");
-+
-+	if (uffd_register(src_uffd, copy_args.src, len, true, false, false))
-+		err("register src failed");
-+	if (uffd_register(gopts->uffd, gopts->area_dst, len, true, true, false))
-+		err("register dst failed");
-+
-+	if (pthread_create(&thread, NULL, wp_copy_thread, &copy_args))
-+		err("pthread_create() failed");
-+
-+	/* Wait until UFFDIO_COPY blocks on the source page */
-+	pfd = (struct pollfd){ .fd = src_uffd, .events = POLLIN };
-+	if (poll(&pfd, 1, 10000) != 1)
-+		err("no fault on the source page");
-+	if (read(src_uffd, &msg, sizeof(msg)) != sizeof(msg))
-+		err("read() failed");
-+
-+	if (uffd_unregister(gopts->uffd, gopts->area_dst, len))
-+		err("unregister dst failed");
-+	if (uffd_register(gopts->uffd, gopts->area_dst, len, true, false, false))
-+		err("re-register dst failed");
-+
-+	zeropage.range.start = (unsigned long)copy_args.src;
-+	zeropage.range.len = len;
-+	zeropage.mode = 0;
-+	if (ioctl(src_uffd, UFFDIO_ZEROPAGE, &zeropage))
-+		err("UFFDIO_ZEROPAGE failed");
-+
-+	if (pthread_join(thread, NULL))
-+		err("pthread_join() failed");
-+
-+	if (copy_args.result != -EINVAL)
-+		err("UFFDIO_COPY returned %lld, expected %d",
-+		    (long long)copy_args.result, -EINVAL);
-+
-+	pagemap_fd = pagemap_open();
-+	value = pagemap_get_entry(pagemap_fd, gopts->area_dst);
-+	pagemap_check_wp(value, false);
-+	close(pagemap_fd);
-+
-+	munmap(copy_args.src, len);
-+	close(src_uffd);
-+	uffd_test_pass();
-+}
-+
- static void uffd_wp_fork_test_common(uffd_global_test_opts_t *gopts, uffd_test_args_t *args,
- 				     bool with_event)
- {
-@@ -2403,6 +2501,13 @@ uffd_test_case_t uffd_tests[] = {
- 		.uffd_feature_required =
- 		UFFD_FEATURE_PAGEFAULT_FLAG_WP | UFFD_FEATURE_WP_UNPOPULATED,
- 	},
-+	{
-+		.name = "wp-copy-reregister",
-+		.uffd_fn = uffd_wp_copy_reregister_test,
-+		.mem_targets = MEM_ALL,
-+		.uffd_feature_required = UFFD_FEATURE_PAGEFAULT_FLAG_WP |
-+		UFFD_FEATURE_WP_HUGETLBFS_SHMEM,
-+	},
- 	{
- 		.name = "minor",
- 		.uffd_fn = uffd_minor_test,
+-		if (!area->nr_free)
++		/*
++		 * Opportunistic lockless check.  A false non-zero is fine, we
++		 * inspect the freelist under the lock.  A false zero is fine,
++		 * we just miss this order.
++		 */
++		if (!data_race(area->nr_free))
+ 			continue;
+ 
+ 		spin_lock_irqsave(&cc->zone->lock, flags);
+@@ -2031,7 +2036,12 @@ static unsigned long fast_find_migrateblock(struct compact_control *cc)
+ 		unsigned long flags;
+ 		struct page *freepage;
+ 
+-		if (!area->nr_free)
++		/*
++		 * Opportunistic lockless check.  A false non-zero is fine, we
++		 * inspect the freelist under the lock.  A false zero is fine,
++		 * we just miss this order.
++		 */
++		if (!data_race(area->nr_free))
+ 			continue;
+ 
+ 		spin_lock_irqsave(&cc->zone->lock, flags);
 -- 
-2.56.0
+2.43.0
 
 
