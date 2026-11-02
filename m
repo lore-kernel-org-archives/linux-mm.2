@@ -1,106 +1,108 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6744C606A326
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 01:15:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAF60606A324
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 01:37:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=iryWmJIG
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=EIUPFzWs
 Received: by kanga.kvack.org (Postfix)
-	id 6FE616B00EF; Sun,  1 Nov 2026 20:15:25 -0500 (EST)
+	id BBBB36B00EF; Sun,  1 Nov 2026 20:37:14 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6AFC66B05B1; Sun,  1 Nov 2026 20:15:25 -0500 (EST)
+	id B6C3B6B05B1; Sun,  1 Nov 2026 20:37:14 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5C5BF6B05B2; Sun,  1 Nov 2026 20:15:25 -0500 (EST)
+	id A34D06B05B2; Sun,  1 Nov 2026 20:37:14 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 357B56B00EF
-	for <linux-mm@kvack.org>; Sun,  1 Nov 2026 20:15:25 -0500 (EST)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id C00F9140B19
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 01:15:24 +0000 (UTC)
-X-FDA: 85388410968.16.28A4143
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf28.hostedemail.com (Postfix) with ESMTP id D5B53C0006
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 01:15:22 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iryWmJIG;
-	spf=pass (imf28.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 774306B00EF
+	for <linux-mm@kvack.org>; Sun,  1 Nov 2026 20:37:14 -0500 (EST)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id C35E11A0BFF
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 01:37:13 +0000 (UTC)
+X-FDA: 85388465946.20.29D5289
+Received: from mta0.migadu.com (out-154.mta0.migadu.com [91.218.175.154])
+	by imf31.hostedemail.com (Postfix) with ESMTP id B41CF20002
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 01:37:12 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=EIUPFzWs;
+	spf=pass (imf31.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.154 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793582122;
-	b=XN5TkeD8iZr/rnuTuaP2G+tDTOZiCR2c22IyU7PwsUHIHi/1k50Bs2PuvVaoolsb5NW0H8
-	KpBtCDZ7f9V7+zxUxhpUncUcifgvES8zQeLzSVQgLg6UhRsOxfUGLrMJRWZ9VacAYq6dDG
-	NWt2mvI8CdMEq+IdvlwzDv3W32XTbeM=
+	t=1793583432;
+	b=zzYPbQsfVHNaEskJKXUZ9aCaoznxWcGwSD/hjxqi3zh34EvPKF/nBIKked8T4QQ6aH25kU
+	g8/7imqKsa7+vLP8bJQgfY+a+oRSbXC16sJQSLF8Sxmv8b0nNppFkMEuS3rr4JgJgHLPpH
+	0IxUshL1X5PqTFpvWy5EjGDW6rCU4cI=
+ARC-Authentication-Results: i=1;
+	imf31.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=EIUPFzWs;
+	spf=pass (imf31.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.154 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793582122;
+	s=arc-20220608; t=1793583432;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=c1ydNhXZkrpIcDabsUGByAbljSA1UVTJnknGaWqA0AQ=;
-	b=uwBXR1c+uAtj+M1bs+kq6zIFPwP9mvxZW+5soJH+jLYG33nN+cR5NoRGXpnSlkk6cjCH5s
-	l9LONbKJEdTPyqFj00sR0lc2vtIWB95Julw5x5bFsVqNZhNmGEH7p/3QG1qq0Q81RvOYIN
-	y8BOjYYhJqLVrx5rfGKsMDFKeJzOo9k=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iryWmJIG;
-	spf=pass (imf28.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id C224043EA4
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 01:15:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A81A91F00A1A
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 01:15:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793582121;
-	bh=c1ydNhXZkrpIcDabsUGByAbljSA1UVTJnknGaWqA0AQ=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=iryWmJIGRW5NS4sFryfzJ4j4sdDUtwitKp/D3zJtiRlmVvaUVim+9Ll8MzJDSJKgQ
-	 l1L0z+jki3FUEaJZrc51kek2uw7n8BKlJG4Hi7zmv7LzUE9YhkfrzEMAoLQvXEsGgj
-	 2c/nl4rTr4bMzbAh5wprHaqDos0QEcZZJAcVoK86mXwqrua+5g8jQPTdCrL3oIi2uC
-	 fkre5HfooVMlenoUWif6nF5bUbJ6pZzzR3IVlmCpksgnuOHhVUuhIxO92ql9CTrAbk
-	 nl58p31kTAU9MGwpyhL9WEz+vMYeTktpVB13Rsh9M5H5ZSU1p3Kc+H4BzT0SWIZNsz
-	 k1t10Cyc2qExg==
-Received: by mail-qk1-f179.google.com with SMTP id af79cd13be357-93cc1ab5f6cso305934385a.0
-        for <linux-mm@kvack.org>; Sun, 01 Nov 2026 17:15:21 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AKwUvBz2ct+4RTchB4MPLVNGdt1GYeEI5d39/y+e+Cc7WOVgMlm1isN5GTW9R7oE0/GR7hY4B0sa61QkMQ==@kvack.org
-X-Gm-Message-State: AFq9FYJ/QM2Q7sjCWqMQGX6pL6b/3iGOpwcXi+xg/fnB/N73SdPMtaXH
-	cCzkLYU+f+2JOUn4/GSXS6QBgYowmTGmLWQD7AvaV6wv/lrG7WNN0o39Jvb0KHJctmpvM/HIHjj
-	aNIr+gAp0wfTOJBmrFIrYwFlAtyz691U=
-X-Received: by 2002:a05:620a:2709:b0:93f:571b:c72c with SMTP id
- af79cd13be357-944216b818bmr1410541785a.46.1793582120965; Sun, 01 Nov 2026
- 17:15:20 -0800 (PST)
+	bh=60rYsd/AjRckt1lyvYj4vtHp2+NMHTUyTXpQRwJ1gH8=;
+	b=oWcwgiICYzyhcyAyYmyUPo1vNa0NQOPCHjiaQyTdfqCsE5SLHvEOAAAqeaPjlbW17GwayA
+	nbV0jM1/uB4nEXEcMT0zRdqpGDAL/bDiTu9ZQfDc4uV02mrHWeUzsG8JWoswKmwrHyriqx
+	AuG/PsfBw2ueWVD0TRrDp2glDFvOmjk=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=mF5HCW1rYzYU+/byn7lpiTMdUmKESV7ryiW//mc/fP0=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1793583429; v=1; x=1794188229;
+ b=EIUPFzWsp6gKLfS2+RhRYiXCqrdqUabhe/sOw3lewqSPsFfLEKGo9dyTZGA7Fc4FdWkDngVW
+ uOkrdFdJBaFlmqIFKOqBFznjvBuCiH2Cw7P/jUJ9wqaqdfkQFktp6gO2FhQKyvT23ovTOEAd0zB
+ cctPkGPMsGXw39Hy7JgaCc8I=
+X-Envelope-To: linux-mm@kvack.org
+Received: by mta10.migadu.com with ESMTPS id 7b95e43db45818e8;
+	Mon, 02 Nov 2026 01:37:09 +0000
+X-Mizu-Trace-ID: 7b95e43db45818e8
+X-Migadu-Flow: FLOW_OUT
+Date: Mon, 2 Nov 2026 09:37:05 +0800
+From: Baoquan He <baoquan.he@linux.dev>
+To: Ridong Chen <ridong.chen@linux.dev>
+Cc: Steven Rostedt <rostedt@goodmis.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Michal Hocko <mhocko@kernel.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Dave Chinner <david@fromorbit.com>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Muchun Song <muchun.song@linux.dev>, Qi Zheng <qi.zheng@linux.dev>,
+	Kairui Song <kasong@tencent.com>, Barry Song <baohua@kernel.org>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>, linux-kernel@vger.kernel.org,
+	linux-trace-kernel@vger.kernel.org, linux-mm@kvack.org,
+	"open list:CONTROL GROUP - MEMORY RESOURCE CONTROLLER (MEMCG)" <cgroups@vger.kernel.org>,
+	"open list:BPF [MISC]:Keyword:(?:b|_)bpf(?:b|_)" <bpf@vger.kernel.org>,
+	Ridong Chen <chenridong@xiaomi.com>
+Subject: Re: [PATCH v5 2/6] mm/vmscan: move vmscan tracepoints to a local
+ header
+Message-ID: <aufpQS0XL-CD9YW_@bogon>
+References: <20261031090041.58574-1-ridong.chen@linux.dev>
+ <20261031090041.58574-3-ridong.chen@linux.dev>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-References: <20261012205447.2717801-1-max.kellermann@ionos.com> <20261012205447.2717801-6-max.kellermann@ionos.com>
-In-Reply-To: <20261012205447.2717801-6-max.kellermann@ionos.com>
-From: Barry Song <baohua@kernel.org>
-Date: Mon, 2 Nov 2026 09:15:09 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4wbQtQ8zfokd44_QM39J_02xDVJoeTK20+jo03_NxAx8Q@mail.gmail.com>
-X-Gm-Features: AclHuK9whBgQrct_OeJcyHaK0NXW_FaGiSG_xFHphpXJFrXesDxcsJ6xBdY9ow4
-Message-ID: <CAGsJ_4wbQtQ8zfokd44_QM39J_02xDVJoeTK20+jo03_NxAx8Q@mail.gmail.com>
-Subject: Re: [PATCH 5/5] mm/mglru: reschedule between memcg reclaim attempts
-To: Max Kellermann <max.kellermann@ionos.com>
-Cc: akpm@linux-foundation.org, kasong@tencent.com, qi.zheng@linux.dev, 
-	shakeel.butt@linux.dev, axelrasmussen@google.com, yuanchu@google.com, 
-	weixugc@google.com, baoquan.he@linux.dev, baolin.wang@linux.alibaba.com, 
-	david@kernel.org, ljs@kernel.org, liam@infradead.org, vbabka@kernel.org, 
-	rppt@kernel.org, surenb@google.com, mhocko@suse.com, hannes@cmpxchg.org, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, rcu@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: wkaze7tmd9z4bd4xqcx1k7xw46qngt3k
-X-Rspamd-Queue-Id: D5B53C0006
-X-Rspam-User:
-X-Rspamd-Server: rspam12
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
-	autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1793582122-153787
-X-HE-Meta: U2FsdGVkX1+LVYQW7mdiFNLhAWm8R8fr26YyDjke/SvB37Bc7yJXMb5iKyn+U/+aixzG8SvoUP/dx0APDgYSUUrdWs2ngLFgugvsfg5T91zNBvGAGxZtoZjtpwkoWiZdOSVAxJcO4fFsBZ1Kks/ik5mCbohFX0ADPG8XMfkC6vIGTyoj93vutZliJTxdDEONtzmkWXXKIg3T0DcUstcTfUiy3uUOpWVRA7XDYCOEgtNmzyeVD4vvAQJgCNx9x8842ORBj0ENp/PGnuexxiWS76gr4cGIufNNcLc0zfxo0TV/skTM8rOzv4k+ByUpypzpmwOmid4rPsPoNXcbnFo5xIkGup9cV+jFmSmh1IUxWMwRLyEjMv1p1RTW6mXKrZNZxIgGpctw4YprvsvTPZe++PQwa2s4ExzXlxldbNXPnpig+vcZJRTcdLmSWAok30ETju89bRDEibDZZzwOIq84bnMmzSk1kabcei10bAQrQULdaMmrj1PVvoN1h07FDDeGhJ/cQ7cgYBjsjIxXAdBsrTmxW2IEyl/4dIXcnnfijgxMJTgSHbnpJ3YkVAr+yaENVz/Lh2S1xWkRP9pomaRUn8vCr+v98mucbEIcHoOEwqtUZcaR4g8WOH585KHw4p82UzBE82GF9pnd1OCCtagGcTPbcXU0h5tubYSzZkdzxYKVxmGfh8Ft3D1Tp86Js5xuMYJLvMeMtzh3KHthYWksPCKhxhdge6bo9KhDLW7c41rpUcQTbu8YbSaZpTv16IOcop2VZ7L424sI0LTioouywiGAJi3rf2ZOULT0khmxc673oEK47nWMLuzX0nxHTK53j03fXDUtCW77BwZ9cCGGh5nHE6bOyudlCbbLWn2HX+4guSiUfVrF05Zmgh1m+RVqnt+0qx49ckxdO34FrjlW4lNxtZWmHN+Fnlomvw++QyodeQYpvgLk7aqZtHgK7LU+lepEFQ7jb8+8Yaa7RFq
- EinVX9YJ
- KpAYkqklSKfVYYm/TtuC03F0NfpKOAtmtdzL2QsoVJZuxnCmK34MkEkAdGRkdWxA6N1q/ReBKiYO9M90yM09UP0lS9hxulPg6KtpckLXmYMh9Yo6oxzfQGe/fO+VSLqk6nNnyRCjEpv6w9kvEMzLVJWkeRwz+p6y2C/FzoJgktcKJpZCmcpEae2pv+1zqXT02f4Vrhk7el27k/uapDBq2TT3Q55vq2/H/0ShmyBnkVQaSLLOG4spZ4m2U40p7gr8Kqxqdp1B0oM4mg1v4EuDbt9tWL3C9u3U/PvkILtvV4ISnn0LP7bHaXarp15fHolQtFFGkk38yjVPYuekyj7P4TyIXCGcQyyaqJ2ImDlHnwlVtf3xuj55w126n7LNYccbTgQWyhRwr9TjL/4L8XxUa4hAaBv8EC3Lap6EGTZDbHY+OiX0s4jb0oOa+7ysUskrZClr+V3IYvbthUKML0osff44UAw==
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261031090041.58574-3-ridong.chen@linux.dev>
+X-Stat-Signature: o8n674yf7xo3qc39s534hsc3uxm8xs58
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: B41CF20002
+X-Rspam-User: 
+X-HE-Tag: 1793583432-650252
+X-HE-Meta: U2FsdGVkX19ohSk4sTssLYHZWTg6Z7kYL5WVOgiUNNSCurMH4TctrvfxcasUmohcJ7lAVOJuQdOjTcd02+CrpwZ+b2II7myY81/YgQHu3A6gwuhk1CUTEl2OsLgn3eJ3nyvwIM2kFuxztLYriDPyrMDN/NsurL36/9qQAeeSqGpe5u5zgr+PVDCAQmW4nfbCavBeIvLKCaVLW1OhsxNTO3SbWLry8KAeq+okE/9uzj1N01h+VrqphxH3j46qWN9sdspvojSLNIkFzqNaXyT/8+bo5UfGBi0geMjHv7yEYCQYljrZrJCvSuRLzq7BhumbZ0Uu8FsDjJgrEmIXaBGzPAyo9wII0PZaoRUzMnZSroHGcfRU7ZX0I5Bay0jhaFRPdYMQZlAAlxF0WzxjpPux31axQO3CqWBD7CZN5kZJQn2DfcftPirqBlGKm3WV1RFC/51/bkhFIocQVdJahoDuOLy8dbCdzlNH5JpirL1T2LekU6HaI06dUsqrXAVXLe4uFgCMPZqteUR3BdYUHR2rglv+9Xo+pZ7zffT2P7+IGKZ0oaTjcvgReP6Ccthj41yh+wT+j02GqjOwWUhX4FpNbPkXi/DFBNPjGCxK1gt7jVKFJfVHOv+XjTmbwbneMqHA2A+9CYG6QUEEG8bX56Zce9owsgyj7znIE7Xp/4I4t8fTTNn1zuwi6t0UBqflUx3N/bSjfDgk+9Gi3Y1lUSS3vxyYUoBym0V3W8xZSz628ejkV2AeyRXbFkDk5044BAqKAHeQUy5yW4isdt9f17A9Th3nXkJNdmCm+LIeLCab3jaUWv0yhTZVS6+o7Lq1UogAAveU61iUN8qYnsSfC+oBl/SR6DMfyJkVqIePlHbtovTwQ+nh4EyC0SkBn/moL68ucfFAb6wbu0TxGN6SwNRmwgzS1m5ipUdT3eK1ouS6T6Drd5ozVKaAw7U0GgOQqVYVh+S0q1Z/awlxUnEYDgs
+ j7WQkZ/y
+ APW/RVDQZ81STsnZRl6D4Uz4dUH873vu9YtM+P4NXTeToHIHHFQEMdnjsp5c3Z8d0uI2JL24TG4JFoFH1ENRsjgVxuycWFno3GiZJO35U5D+/D1dIvUZVO5LsHMVPrlMhSj2aIUkS08D0Bw5BxTLi3c23r2wS3nSZBdhi7hUe8qEkK3Oxw+ky+X92Mf9+FxIGGDxfW3IsXeUpk1vOnEDBqKAAz2BNK/PIwlrJSPvlEP9jgIKuWMnty0vo3kPFsq7x5OmsH1RKACvXgpKGhcqOfhgOnzizHZAlo2a0IGrdY4IhB6nimWTt08v9TkDhEf02NhqQPX6QGQi0SzVF9WUSy63ZubI03JeTwf2jTysrmFSRCFmdUoiNgcd1bQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,36 +111,121 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Tue, Oct 13, 2026 at 4:55=E2=80=AFAM Max Kellermann <max.kellermann@iono=
-s.com> wrote:
->
-> shrink_one() can return immediately for empty or protected memcgs, and
-> try_to_shrink_lruvec() can break out before reaching its
-> cond_resched().  A scan through many memcgs can repeatedly rotate
-> entries without giving other runnable tasks a scheduling opportunity.
->
-> Call cond_resched_tasks_rcu_qs() (as the existing shrink_lruvec() loop
-> does) after shrink_one(), while the memcg reference still pins the
-> cursor and before reacquiring the RCU read lock.  Also call it between
-> bins and nulls-marker retries, covering scans that skip every entry.
+On 10/31/26 at 05:00pm, Ridong Chen wrote:
+> From: Ridong Chen <chenridong@xiaomi.com>
+> 
+> Move include/trace/events/vmscan.h to mm/trace_vmscan.h so that the
+> tracepoints can be extended to reference vmscan-internal structures such
+> as struct scan_control, which is not visible outside mm/.  This mirrors
+> what several other subsystems already do with their trace headers (e.g.
+> fs/fuse/fuse_trace.h, fs/gfs2/trace_gfs2.h, fs/lockd/trace.h).  As they
+> do, set TRACE_INCLUDE_PATH to "." and add mm/ to the include path of
+> vmscan.o, the only user that defines CREATE_TRACE_POINTS.
+> 
+> No functional change.
+> 
+> Signed-off-by: Ridong Chen <chenridong@xiaomi.com>
+> Reviewed-by: Barry Song <baohua@kernel.org>
+> ---
+>  MAINTAINERS                                        | 2 ++
+>  mm/Makefile                                        | 1 +
+>  mm/shrinker.c                                      | 2 +-
+>  include/trace/events/vmscan.h => mm/trace_vmscan.h | 4 ++++
+>  mm/vmscan.c                                        | 2 +-
+>  5 files changed, 9 insertions(+), 2 deletions(-)
+>  rename include/trace/events/vmscan.h => mm/trace_vmscan.h (99%)
+> 
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index aaf2825ac945..2ad01107fa05 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -17653,6 +17653,7 @@ F:	Documentation/admin-guide/mm/multigen_lru.rst
+>  F:	Documentation/mm/multigen_lru.rst
+>  F:	include/linux/mm_inline.h
+>  F:	include/linux/mmzone.h
+> +F:	mm/trace_vmscan.h
+>  F:	mm/vmscan.c
+>  F:	mm/workingset.c
+>  
+> @@ -17802,6 +17803,7 @@ R:	Shakeel Butt <shakeel.butt@linux.dev>
+>  R:	Lorenzo Stoakes <ljs@kernel.org>
+>  L:	linux-mm@kvack.org
+>  S:	Maintained
+> +F:	mm/trace_vmscan.h
+>  F:	mm/vmscan.c
+>  F:	mm/workingset.c
+>  
+> diff --git a/mm/Makefile b/mm/Makefile
+> index 2a3ec53d62ee..277b97f7f8d7 100644
+> --- a/mm/Makefile
+> +++ b/mm/Makefile
+> @@ -32,6 +32,7 @@ KCOV_INSTRUMENT_vmstat.o := n
+>  KCOV_INSTRUMENT_failslab.o := n
+>  
+>  CFLAGS_init-mm.o += -Wno-override-init
+> +CFLAGS_vmscan.o += -I$(src)
 
-I'd appreciate it if you could provide more details in the
-changelog. Without this patch, are we seeing an RCU stall,
-a soft lockup, or something else, right?
+One nit:
 
-Also, as Andrew asked [1], does this patch alone fix the
-problem?
+Does it really need the above line? It affects mm/shrinker.c too, did your
+shrinker.o building fail?
 
-I assume patches 3/5 are needed for the performance
-improvement, but patch 5/5 is also needed as a quick fix
-for the stalls.
+Seems it's redundant because kbuild adds -I$(src) -I$(obj) for every object
+in the directory since commit cdd750bfb1f7 ("kbuild: remove 'addtree' and
+'flags' magic for header search paths"). Please correct me if I am
+wrong.
 
-[1] https://lore.kernel.org/linux-mm/20261101135047.61fc3f209b3235ed6fc9618=
-3@linux-foundation.org/
+Other than the nit, this patch looks good to me,
 
->
-> Signed-off-by: Max Kellermann <max.kellermann@ionos.com>
+Reviewed-by: Baoquan He <baoquan.he@linux.dev>
 
-Best,
-Barry
+Thanks.
+>  
+>  mmu-y			:= nommu.o
+>  mmu-$(CONFIG_MMU)	:= highmem.o memory.o mincore.o \
+> diff --git a/mm/shrinker.c b/mm/shrinker.c
+> index 4fb424e721bc..4fbdade6d2f6 100644
+> --- a/mm/shrinker.c
+> +++ b/mm/shrinker.c
+> @@ -3,7 +3,7 @@
+>  #include <linux/rwsem.h>
+>  #include <linux/shrinker.h>
+>  #include <linux/rculist.h>
+> -#include <trace/events/vmscan.h>
+> +#include "trace_vmscan.h"
+>  
+>  #include "internal.h"
+>  
+> diff --git a/include/trace/events/vmscan.h b/mm/trace_vmscan.h
+> similarity index 99%
+> rename from include/trace/events/vmscan.h
+> rename to mm/trace_vmscan.h
+> index 8a872990b4be..ad90f0e9bf2e 100644
+> --- a/include/trace/events/vmscan.h
+> +++ b/mm/trace_vmscan.h
+> @@ -648,4 +648,8 @@ TRACE_EVENT(mm_vmscan_kswapd_clear_hopeless,
+>  #endif /* _TRACE_VMSCAN_H */
+>  
+>  /* This part must be outside protection */
+> +#undef TRACE_INCLUDE_FILE
+> +#undef TRACE_INCLUDE_PATH
+> +#define TRACE_INCLUDE_PATH .
+> +#define TRACE_INCLUDE_FILE trace_vmscan
+>  #include <trace/define_trace.h>
+> diff --git a/mm/vmscan.c b/mm/vmscan.c
+> index 9959ca158ce8..79d2d614afd0 100644
+> --- a/mm/vmscan.c
+> +++ b/mm/vmscan.c
+> @@ -71,7 +71,7 @@
+>  #include "swap.h"
+>  
+>  #define CREATE_TRACE_POINTS
+> -#include <trace/events/vmscan.h>
+> +#include "trace_vmscan.h"
+>  
+>  struct scan_control {
+>  	/* How many pages shrink_list() should reclaim */
+> -- 
+> 2.43.0
+> 
 
