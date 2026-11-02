@@ -1,74 +1,74 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DC2C608E0A1
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 15:11:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACE616076FB1
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 15:11:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=JEtEk3Xg
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=cxCVzhBy
 Received: by kanga.kvack.org (Postfix)
-	id 4D5226B05F1; Mon,  2 Nov 2026 10:11:00 -0500 (EST)
+	id CEBC76B05F3; Mon,  2 Nov 2026 10:11:16 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 485656B05F2; Mon,  2 Nov 2026 10:11:00 -0500 (EST)
+	id C751F6B05F4; Mon,  2 Nov 2026 10:11:16 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3C2AC6B05F3; Mon,  2 Nov 2026 10:11:00 -0500 (EST)
+	id B8C3A6B05F5; Mon,  2 Nov 2026 10:11:16 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 1A3296B05F1
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 10:11:00 -0500 (EST)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id AE9F612013D
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 15:10:59 +0000 (UTC)
-X-FDA: 85390516638.22.FFE20D4
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 9653D6B05F3
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 10:11:16 -0500 (EST)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 40E5A160165
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 15:11:16 +0000 (UTC)
+X-FDA: 85390517352.21.639C95D
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf04.hostedemail.com (Postfix) with ESMTP id BF8B14000D
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 15:10:57 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JEtEk3Xg;
+	by imf26.hostedemail.com (Postfix) with ESMTP id 809FC140006
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 15:11:14 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cxCVzhBy;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf04.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org
+	spf=pass (imf26.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793632257;
+	s=arc-20220608; t=1793632274;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gEfU3T2fMjgdZUubap6/Nt8I8xKTHWl/++QTJaSUEcE=;
-	b=CCfUwYFQI8YZGi3MH5Zyia7gt4G4tQYIqrHoGRA9t/4Z6FYi4avMteVY3Ew1Y7xjKEzbAV
-	5jHOKLgE78RiD9KPtPy+j4Bubk+T5L/f4kRaJ8UIvZkDPhk8dVQ8lpDMPxtEorEWXQGLiw
-	KNu9JKmizsKIt7vfrlBI+oH83GI0CCo=
+	bh=vqkxnch8qakIwUVP+9QJA5QeGLg7HpbhcDTmIF75pEs=;
+	b=xgtiWL91tiAw90kZC4yd8UZ2QU7wVWxqa798qV8r1pSDsCe32eDmanBzwV1vRBVS9tdlU3
+	d/S67hRuvy82bRvQ+h3X8msehpY7xMX3lPq21zE86C/WBHI72pyB8JA3Hy2MrqU55aNOxQ
+	J5vDQh6//s0XB+lJSsHbloXibKUpyeM=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JEtEk3Xg;
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cxCVzhBy;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf04.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org
+	spf=pass (imf26.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793632257;
-	b=l8KijqdVjUdhKC8imBJ0deRF+1WhYNOVt7qoA6wJQ4yINPHkd6Z1Z04JHauQpXcFyWjRJg
-	0KEBx0CjMwnIsRash2DQVOnxIXFbs7QTU/hzXhofqNlLgYscj3P10+o3QMY5ITLKGN73YB
-	3nKiW1BBqx+M7JznobNBFy2ZNWGs4fM=
+	t=1793632274;
+	b=2T4f+foBB+3mLi6Qhxl0/NslYNTucgxKxOigr08z5R6afnejxmeEriqbFztg/0z+Xe2LR0
+	hrVuKDicyBYmpUzzlzEWtlwsfYqHKqyCbPPU/SHJmxTJEinBnqM5uvt1Y6cClb/jVfcS7g
+	ZDb08XGeKWBqdWIg6nheY0N59nRfXgI=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 600A660924;
-	Mon,  2 Nov 2026 15:10:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAFB91F00A18;
-	Mon,  2 Nov 2026 15:10:43 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 182B8609CE;
+	Mon,  2 Nov 2026 15:11:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9C151F00A16;
+	Mon,  2 Nov 2026 15:11:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793632257;
-	bh=gEfU3T2fMjgdZUubap6/Nt8I8xKTHWl/++QTJaSUEcE=;
+	s=k20260515; t=1793632273;
+	bh=vqkxnch8qakIwUVP+9QJA5QeGLg7HpbhcDTmIF75pEs=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=JEtEk3XgkB7h/KCKSpjSx/GQWpU/P/7tvtCdnnzCxrDpIn594psdLHFTrmfuke6dM
-	 slBqHYXHnT54x/QPrsmxH3yeqxfZQPD2y0pgY1+PEiyIIJsHQEmrStcSZUBzYnriXr
-	 z1cAZ9kaI1mij4Fc3B7DH9EC4k1fIQp6BDZOK3UL5awrKforvD4qmdeHd8pveKvbcx
-	 iZMvCpnYB/tvXMP/UoxQpEd6uLwjQn9oT2yIsRi+8s3j66mGWx98OAk1gVJO1c+yd/
-	 xAonphmuY1qwZTlY+D0zGjvzNIJDEogTrjTuIG2qL99CLq6eIn2OG7zpSiKwd/V4oF
-	 8+lGx05vpGPgQ==
+	b=cxCVzhByWu3o4NPMXdI664xNWkShTHR36O9m/09VZ9+jFA9OG6kKc4h3juX9pF4hG
+	 KES/99TyZfxZMZsILDCBbUPiL2m0c7yvku8def0K3xyx1BZSfmHoibrjV4xOJY9TRv
+	 aRQUlDzCSvfjdbS81rVindZYNfHG/n3/STb1D5KKMtjDWOzG48TPwOOda5MyUodL1/
+	 sl6+1c+KcBwatTkHqiITxDL+ifFRuErDfWC3t7wYwV8vzWLwDTzNDzYcITGLDruDX/
+	 CBg0J86Rpsxds6f1vNXAUOdjLXrIDS/33ZjvCLz1gmlcS3YhkDRMkNQrIFMIeovXK6
+	 qXYbgPdy439+w==
 From: Christian Brauner <brauner@kernel.org>
-Date: Mon, 02 Nov 2026 16:07:09 +0100
-Subject: [PATCH RFC 02/23] zorro: let procfs copy out reads
+Date: Mon, 02 Nov 2026 16:07:10 +0100
+Subject: [PATCH RFC 03/23] PCI/proc: let procfs copy in config space writes
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261102-work-procfs-drivers-v1-2-a994bd4d3b1a@kernel.org>
+Message-Id: <20261102-work-procfs-drivers-v1-3-a994bd4d3b1a@kernel.org>
 References: <20261102-work-procfs-drivers-v1-0-a994bd4d3b1a@kernel.org>
 In-Reply-To: <20261102-work-procfs-drivers-v1-0-a994bd4d3b1a@kernel.org>
 To: linux-fsdevel@vger.kernel.org
@@ -104,27 +104,27 @@ Cc: Linus Torvalds <torvalds@linux-foundation.org>,
  "Christian Brauner (Amutable)" <brauner@kernel.org>, 
  Chuck Lever <cel@kernel.org>
 X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1540; i=brauner@kernel.org;
- h=from:subject:message-id; bh=0V4WXwhQL5pRZKlAhpvNvMMTbS/E9DKCsIQEEH9Ob/I=;
- b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS9WG7AIbrx5h2jApOfJWsWGW9hzDP7Z1n71GbDkhKjd
- 1G75+1S7ShlYRDjYpAVU2RxaDcJl1vOU7HZKFMDZg4rE8gQBi5OAZjI/UaG36wcDIusu3nPOnFM
- /P+8oNKCR/ZZrpFyDV/sHU9NRa7UTIb/YfZNrhe7BR60inb8XH12tpIKe1zQvdmbziyrv3LhEYc
- VLwA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3416; i=brauner@kernel.org;
+ h=from:subject:message-id; bh=FHhIortRJiKYhZazrarBsz8LKuG1O3uAWYPgQRTjmaQ=;
+ b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS9WG4Q5v+r4smER+KNHzUv/1vj6ThP4Dffzpik1rx7S
+ Ye2i2bmdJSyMIhxMciKKbI4tJuEyy3nqdhslKkBM4eVCWQIAxenAEzk62VGhs6XkTMTRfwbPBQL
+ /x4Lzpj+wfz/1vf3Y5U2mfjmTS4+wc7wz+JImkaMBv+rn36HnuYuOOJ748u9kLuro6932ZoynGx
+ 15wQA
 X-Developer-Key: i=brauner@kernel.org; a=openpgp;
  fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: BF8B14000D
-X-Stat-Signature: rouc385qj3boft75w6994q7k1tpbcffd
+X-Rspamd-Queue-Id: 809FC140006
+X-Rspam-User: 
+X-Stat-Signature: zdiouct9xxcxts17nbe4cyixxnjhkdg8
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
 	version=4.0.1
-X-Rspam-User: 
-X-HE-Tag: 1793632257-607472
-X-HE-Meta: U2FsdGVkX192WvBq64glzFoNAI+ilcY0pP3kZxOk4wFSOsADku26zK3Agi52ipRVaZMS1HHgi7Hh31SLsq6C8Xvyk1sype0Gvtak2YQkPlQfiJQ5oak3nH1n1h8Kd21r9kWK9JaTOKro0+Bx7CbtMbK3wxoRDpBYH9IC025PMalM8BwkPiU02d04mek2r68bypMOZUpXKvGVp5kbn2Qdqxlrd0bKe8Mk0WH7TVOQqz3vtffzOWT923MAiA21bvVtvrscPQQBC1XHrbzx+ZqJoRjeZpujnkJk0+RjlrglcpzSnhxaXtCD92gSUUbvX37XkWHUTsirr9FSPudBcVCPyFrIi6Ns9m9Dswlresash7dlioSmQFwxCjgR7FACVe7x31o/IprTSCrqgE+cQ1MovhwqPoW6IqI6vf0nmajZiub/q3+zpA4TaSDiNFY98Qn2cyzTDEfGvAhjEva0jGr3KpEkI/oSq8nCoprcucFASxS+WrWkmsJz3ij1euNnhJpQGw0VHjnRJxH8ej8Q1mY18oGcSxqp9G5Zq/Jmxh1bkxvLZz5MZgY0RRX3XjfeYb7N7g24beMds7HSUfEwkFUm7+HtHaVTnfUH3uD1FBxMD1ltXBdtCxar4vkLRtJ/Ljr7b16BsV8XiB6GIapwjmP/0OIvuZhVwZUFGbLQ70TwUmWkpnu5hlfF7NGlluCWHuq2VX9TvekAn5/kAb46P+Cqe3++OnvXSiAcp+5+Fis3e5tS/6ylZ9LXbyz5vRXawUP2KV1rrlTen10BiP4Hxqn6WnJlfa9E23/REOz/kL8yCzvM4bYQIbJ6FekqyVMrOm0Bg7lySreN+yDQeNW81Zyfc0kdzxO/tWZ6bUfHr2TqqXJvaqSdq/NeEB89J+nPCbP2iz7YGoI9dlhQ7Y/cYMZfNN4g4A0BKNeAZHOGNyAEMKsUSyaRxvR043yxgUCIuXeP9XdFUu9/0QMzCTr323t
- ymQvogQj
- nFDlPYEh8ilz+AE/Bkj5/t3uwyNcs/EMf8ie+6ejp+lvFpqf3xlOqpk+FsNoS4kkaDVsAPiDzwRMDHK+aqiZLNtGYQZ8+sATI3q64+dzwI64yiS1Q9Irn6ECWGVn8zMP2gob6hQK2y6+rDvbcWz6hM1QaosNSepnf9iOuzuTJQX5re1Da3tYgR2gojP/y68J1hdUY69CgK6NRVNR+dC0AJ6nOHUNVPjM95lgTgg5BLHkJ9YYob03n2fRl5SHwWIBlF2RTtda10u6sf71BMHfUD+3Nk7+V8lKKqKNR
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1793632274-42063
+X-HE-Meta: U2FsdGVkX19VuyD/WE6DEpzyGBw+/8kZ0qp+Eeg0zbSI/jpR5WuUbnExxrssypZzlaLZb3wcYrUaDPY5HiNQmkYukvw0dE8+/ldNqSIa2uRCO/AeQuLolavkwoktB6TwkroWcyDrzqjUfWcrh4NU5RVelOnEZFZvbt1p6u67V1L9f4wFMRQ831lX5/Hp3YQRBB8DIgW0AjyIXAewuBfjI6hp3A5o8NGp+MWapSWgv90/0WuaYhhEUGBjPqr+9c0a2LnmN2BCDDBloBMMFtxRj0VwckH2Y8x3rYek4vxtXChiV36tANh7nCgMmH9sW8I3O/7SoAbkg/ddt46GRz7xAv06t+jIhe8Y1POnGF48Zm6ZprJiHjIIwwEYhfHft8L7ukBgdRvtS1c7LClKU5dbRxdIy/TC72XQDNrdbP5+g8r7b6LyV384kDSCUi4qs8ZdNvuUgWgguR4qGQKxHYxLXNobKURrdMsWyNndCeBTAA7eFPsAFcEjdrL4Lnpdr1aSp2drY82N1V8kWth3PZTWQosMNgIqGfMTcZB1ehmYoZbxELadROTOGxzcpu78rDXwvnbX48aYif+6mO/zLEWODDCOWkIpG5hSUG9ueQMMl5az7YdxpwMcUIchdUhtWdI5kjfZRzJ8eCNFtl2aaU6SbB6yO2mxOohsyyTgkH8v4TAXa6T4amTEvC4wJaxfzQ6BRbTiYDfyq9lRsXfIG7+WdSeGxI+q0xTMni03GTIH3OLV1Gje0sSrQ7d1FjAtNzvzZ/LyX632r0eWbiRFmauq6g4SkF4qtCrcPNAuo/yVkW5ezfaznjzNpNPYGMR0X8ePX2haw6JmC7uaTFRiV2fEm5CZkNZHabAnLkG/2RHRvIwDk3l5wLU778uMYipVhcW9s5SFkVrN1JdwTdzwEF2uoJFfGiv/OtoXCMlYnb2MfJ6tdB0XrUd3jWT006LIy9twZD4b3qeiUlFlWcj0CRF
+ UX4RBzOB
+ V0fdxEbOfBFlN8FU9pClfOWYlMSaIOJ2uywmONID5NU0Ol/VR4kNGy5l+7Ktp8DhWe88kz0NjeFTgIzPNq1dkhDPT7tfgI1uToenBKSCs9hmbAjt5cfrgM0I3l7uCAxzQCmfYOW9UzhC329kQpvw6bEyerYY8R7qeePSLRmdkrR7UaxNSsJ27pAg4ZEkz4i+ojaUwE4AER5gTVPnNiJ/ZibDpulP2EjrguNH6nQ9Cx+cLd605iU0lIZMztayI4HtXwSMIAdmUi+lX0OHakfEKjkBuc7c3/dKqkKKAYd7IitHQTZcgXh36Djz27bVZ038bL3Ai
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -133,46 +133,115 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Implement ->proc_read_buf() so procfs copies what is read from
-/proc/bus/zorro/<slot> to userspace after it unpinned the entry.
+Implement ->proc_write_buf() so procfs copies in what is written before
+it pins the entry, and write the config space from that copy with
+get_unaligned_le16() and get_unaligned_le32() instead of get_user().
+
+The copy holds at most PCI_CFG_SPACE_EXP_SIZE bytes. Larger writes come
+up short with PROC_ENTRY_SHORT_WRITES, like they did before because
+they were cut at the end of the config space.
+
+A buffer that can't be read used to write zeroes to the config space and
+report success. It fails with -EFAULT now and nothing is written.
 
 Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 ---
- drivers/zorro/proc.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ drivers/pci/proc.c | 32 +++++++++++---------------------
+ 1 file changed, 11 insertions(+), 21 deletions(-)
 
-diff --git a/drivers/zorro/proc.c b/drivers/zorro/proc.c
-index f916bf60b312..4e4ba04752ea 100644
---- a/drivers/zorro/proc.c
-+++ b/drivers/zorro/proc.c
-@@ -28,7 +28,7 @@ proc_bus_zorro_lseek(struct file *file, loff_t off, int whence)
+diff --git a/drivers/pci/proc.c b/drivers/pci/proc.c
+index e0dc70123f82..d420353ee2b3 100644
+--- a/drivers/pci/proc.c
++++ b/drivers/pci/proc.c
+@@ -16,6 +16,7 @@
+ #include <linux/security.h>
+ #include <linux/panic.h>
+ #include <linux/sched.h>
++#include <linux/unaligned.h>
+ #include <asm/byteorder.h>
+ #include "pci.h"
+ 
+@@ -114,8 +115,8 @@ static ssize_t proc_bus_pci_read(struct file *file, char __user *buf,
+ 	return nbytes;
  }
  
- static ssize_t
--proc_bus_zorro_read(struct file *file, char __user *buf, size_t nbytes, loff_t *ppos)
-+proc_bus_zorro_read(struct file *file, char *buf, size_t nbytes, loff_t *ppos)
+-static ssize_t proc_bus_pci_write(struct file *file, const char __user *buf,
+-				  size_t nbytes, loff_t *ppos)
++static ssize_t proc_bus_pci_write(struct file *file, char *buf, size_t nbytes,
++				  loff_t *ppos)
  {
- 	struct zorro_dev *z = pde_data(file_inode(file));
- 	struct ConfigDev cd;
-@@ -49,8 +49,7 @@ proc_bus_zorro_read(struct file *file, char __user *buf, size_t nbytes, loff_t *
- 	cd.cd_BoardAddr = cpu_to_be32(zorro_resource_start(z));
- 	cd.cd_BoardSize = cpu_to_be32(zorro_resource_len(z));
+ 	struct inode *ino = file_inode(file);
+ 	struct pci_dev *dev = pde_data(ino);
+@@ -145,51 +146,38 @@ static ssize_t proc_bus_pci_write(struct file *file, const char __user *buf,
+ 		nbytes = size - pos;
+ 	cnt = nbytes;
  
--	if (copy_to_user(buf, (void *)&cd + pos, nbytes))
--		return -EFAULT;
-+	memcpy(buf, (void *)&cd + pos, nbytes);
- 	*ppos += nbytes;
+-	if (!access_ok(buf, cnt))
+-		return -EINVAL;
+-
+ 	pci_config_pm_runtime_get(dev);
  
- 	return nbytes;
-@@ -58,7 +57,7 @@ proc_bus_zorro_read(struct file *file, char __user *buf, size_t nbytes, loff_t *
+ 	if ((pos & 1) && cnt) {
+-		unsigned char val;
+-		get_user(val, buf);
+-		pci_user_write_config_byte(dev, pos, val);
++		pci_user_write_config_byte(dev, pos, *buf);
+ 		buf++;
+ 		pos++;
+ 		cnt--;
+ 	}
  
- static const struct proc_ops bus_zorro_proc_ops = {
- 	.proc_lseek	= proc_bus_zorro_lseek,
--	.proc_read	= proc_bus_zorro_read,
-+	.proc_read_buf	= proc_bus_zorro_read,
- };
+ 	if ((pos & 3) && cnt > 2) {
+-		__le16 val;
+-		get_user(val, (__le16 __user *) buf);
+-		pci_user_write_config_word(dev, pos, le16_to_cpu(val));
++		pci_user_write_config_word(dev, pos, get_unaligned_le16(buf));
+ 		buf += 2;
+ 		pos += 2;
+ 		cnt -= 2;
+ 	}
  
- static void * zorro_seq_start(struct seq_file *m, loff_t *pos)
+ 	while (cnt >= 4) {
+-		__le32 val;
+-		get_user(val, (__le32 __user *) buf);
+-		pci_user_write_config_dword(dev, pos, le32_to_cpu(val));
++		pci_user_write_config_dword(dev, pos, get_unaligned_le32(buf));
+ 		buf += 4;
+ 		pos += 4;
+ 		cnt -= 4;
+ 	}
+ 
+ 	if (cnt >= 2) {
+-		__le16 val;
+-		get_user(val, (__le16 __user *) buf);
+-		pci_user_write_config_word(dev, pos, le16_to_cpu(val));
++		pci_user_write_config_word(dev, pos, get_unaligned_le16(buf));
+ 		buf += 2;
+ 		pos += 2;
+ 		cnt -= 2;
+ 	}
+ 
+ 	if (cnt) {
+-		unsigned char val;
+-		get_user(val, buf);
+-		pci_user_write_config_byte(dev, pos, val);
++		pci_user_write_config_byte(dev, pos, *buf);
+ 		pos++;
+ 	}
+ 
+@@ -337,9 +325,11 @@ static int proc_bus_pci_release(struct inode *inode, struct file *file)
+ #endif /* HAVE_PCI_MMAP */
+ 
+ static const struct proc_ops proc_bus_pci_ops = {
++	.proc_flags	= PROC_ENTRY_SHORT_WRITES,
+ 	.proc_lseek	= proc_bus_pci_lseek,
+ 	.proc_read	= proc_bus_pci_read,
+-	.proc_write	= proc_bus_pci_write,
++	.proc_write_buf	= proc_bus_pci_write,
++	.proc_write_size = PCI_CFG_SPACE_EXP_SIZE,
+ 	.proc_ioctl	= proc_bus_pci_ioctl,
+ #ifdef CONFIG_COMPAT
+ 	.proc_compat_ioctl = proc_bus_pci_ioctl,
 
 -- 
 2.53.0
