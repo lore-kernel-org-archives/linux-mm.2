@@ -1,96 +1,123 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE31960703B2
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 14:46:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 808CD6070D9E
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 14:46:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=MXj3RDV8
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=k68ttWG6
 Received: by kanga.kvack.org (Postfix)
-	id 803026B05B6; Mon,  2 Nov 2026 09:46:39 -0500 (EST)
+	id 8792B6B05BB; Mon,  2 Nov 2026 09:46:55 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7B3896B05B7; Mon,  2 Nov 2026 09:46:39 -0500 (EST)
+	id 850316B05BC; Mon,  2 Nov 2026 09:46:55 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6C8C06B05B8; Mon,  2 Nov 2026 09:46:39 -0500 (EST)
+	id 766A56B05BD; Mon,  2 Nov 2026 09:46:55 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 400BC6B05B6
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 09:46:39 -0500 (EST)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id B9A0C80141
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 14:46:38 +0000 (UTC)
-X-FDA: 85390455276.30.6EFCFE0
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 4966F6B05BB
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 09:46:55 -0500 (EST)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id CDC664013F
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 14:46:54 +0000 (UTC)
+X-FDA: 85390455948.16.86155FE
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 30C6A20011
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 14:46:37 +0000 (UTC)
+	by imf13.hostedemail.com (Postfix) with ESMTP id 2ADFA20006
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 14:46:53 +0000 (UTC)
 Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MXj3RDV8;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf13.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793630797;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nxdFwnzJ2ILCyC6+9MxA+NGU4Ptz9IG819jn1r5qFOg=;
-	b=ShXvmwzs+aJ9pQGrWJ5XmO9hIr/kNpN/PdacdqsRPAGsJCB/4mqvyE0tLi4YL2LXm7sZeZ
-	i1iO6YgkdtxN4ljH1bzBwqPwtp7HYriazfL6OzleF4VS0EbcF4sXdWY35HCXNfozNpJQCf
-	SoNdGVGzX2x5zvskaEmiQbY3fi+8nlc=
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=k68ttWG6;
+	spf=pass (imf13.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793630813;
+	b=y1OrkmM60e/2zCt3EYMpQsvgaJtbpY5a5Wp0JN9FWiA+Ojq56GjvJlpCnvZyCFhbOSxle7
+	HplQWuRJX7pcN53hrLTMZ571lYUboQoT1/sy1nqTCxmpySfyC+/kBoKLnyTSkb4p7lt9wq
+	0rNlzksBPX29lIopQ/K743HFjRGOX4Y=
 ARC-Authentication-Results: i=1;
 	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MXj3RDV8;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf13.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793630797;
-	b=zsBFn7F1wRFaN7GsbtD5Tk8FmwQLSJhLz3pUyLKoJBv0TnSBjlDFeeN8iDuSAW8pBHfTtN
-	gHU+1l7TKAbuaWeKv5bCU7Y0jfrdev4EF+wjv32rn1NamTjuH3d0v1MXxfQQQ7uDPBFwY2
-	3aeSIvTFJH+u0Xb2KC9Dc2ToCcjVA7c=
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=k68ttWG6;
+	spf=pass (imf13.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1793630813;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=gGh9qQAToZE5wrWgcgjg72Buy8fnK2LgswQGjbfg87A=;
+	b=BuuIIo2xAiasQpMt2qAlqpnHE9bjJQiMZjNrl8I3nwRJfi+FvNwiKguUQNdF23mLrMb8mU
+	EWQ8pJAG3kNqrdOkbiJ6veL4zOb21B8A7PL1+jBEaF3HKfBxdQr/m/Qhjm5uhu408uucNJ
+	WoNhZnl9YQmOmOYXR2rE3Q42rIxZbJs=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id CB2326021E;
-	Mon,  2 Nov 2026 14:46:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A2F51F00A16;
-	Mon,  2 Nov 2026 14:46:36 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id B3FC46020C;
+	Mon,  2 Nov 2026 14:46:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3FD21F00A1B;
+	Mon,  2 Nov 2026 14:46:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793630796;
-	bh=nxdFwnzJ2ILCyC6+9MxA+NGU4Ptz9IG819jn1r5qFOg=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=MXj3RDV81dKUrDy0quCLVlKxNcw//TUhE3A/qQuHALE5D3lK87wijaCmLzlKvZotw
-	 gwP4tPkl40dLdllRhvDfmwVkKLIcm+mbGXHry37PS0045N5i7TUAXL3XUOS3PKZllY
-	 V4UBulTRfGU9FwjHk8elo62wgWxbWtsxDtRnvEKVOQ1AkeeNGyqYM3V14MRiPUbm7/
-	 vmHfK/LjaAYxvbQV/pbbcQM7AEy+Y2QqyhKdJK9jAzR3RR3Xceh09PFAOR1GaWKOIU
-	 jxeNqSp4ghTFEyR6KgwX3dn+evqDC3eN7iZpIkwxm8mx/flTmwFTHIRa5j42KfLJH0
-	 gbv6tdlElgm8g==
-From: SJ Park <sj@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: SJ Park <sj@kernel.org>,
-	stable@vger.kernel.org,
-	Shuah Khan <shuah@kernel.org>,
-	damon@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	linux-mm@kvack.org,
-	Aveline Noir <jm5905938@gmail.com>
-Subject: [PATCH mm-hotfixes-unstable 3/3] selftests/damon/sysfs_memcg_path_leak: define ksft_skip
-Date: Mon,  2 Nov 2026 06:46:26 -0800
-Message-ID: <20261102144627.88843-4-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20261102144627.88843-1-sj@kernel.org>
-References: <20261102144627.88843-1-sj@kernel.org>
+	s=k20260515; t=1793630812;
+	bh=gGh9qQAToZE5wrWgcgjg72Buy8fnK2LgswQGjbfg87A=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc;
+	b=k68ttWG6wR2uYUNWQI+ECVf+fO/XJ0eqvyJRIGqlTdn3SeSK5FwYTdTBaVjsoBsYJ
+	 kJXwecLDVVqkc0QtPna5nnmOaGhEH6lV2p3+n4SMeLLTjqLfMHRMfS6+IdU5FeP6Ex
+	 EEbVMiiZNLXMTNclGmw6p8mC8yLNPYuUSTnCtn6ZR27qjgY9RaX2RJuHLWLPx9jmMt
+	 9JJmAL/6SUvZypF7nop8NC5qp7LgJYP8eJFNNtNBvtdk7y2N5+2qF+LGhO9FlXYxla
+	 LSU+v/oAHtst3btNP9gxZgyUrKBFNLcCwNm+jD4+mesxl+NmeCWqzBEWi80sNRNQ/1
+	 Y+2ZOSQK06ITw==
+From: Christian Brauner <brauner@kernel.org>
+Date: Mon, 02 Nov 2026 15:43:28 +0100
+Subject: [PATCH RFC 37/38] proc: don't pin a symlink's entry while
+ readlink() copies it out
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 30C6A20011
-X-Stat-Signature: doz7edksby8nxf1n5h1rpj6t3e85nzx8
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20261102-work-procfs-bugfixes-v1-37-59422ed3e465@kernel.org>
+References: <20261102-work-procfs-bugfixes-v1-0-59422ed3e465@kernel.org>
+In-Reply-To: <20261102-work-procfs-bugfixes-v1-0-59422ed3e465@kernel.org>
+To: linux-fsdevel@vger.kernel.org
+Cc: Linus Torvalds <torvalds@linux-foundation.org>, 
+ Jann Horn <jannh@google.com>, Josef Bacik <josef@toxicpanda.com>, 
+ Chris Mason <mason@kernel.org>, Jeff Layton <jlayton@kernel.org>, 
+ NeilBrown <neil@brown.name>, Eric Dumazet <edumazet@kernel.org>, 
+ Thomas Gleixner <tglx@kernel.org>, Al Viro <viro@zeniv.linux.org.uk>, 
+ Jonathan Corbet <corbet@lwn.net>, Christoph Hellwig <hch@lst.de>, 
+ Greg Kroah-Hartman <gregkh@suse.de>, 
+ Joel Granados <joel.granados@kernel.org>, Kees Cook <kees@kernel.org>, 
+ Jan Kara <jack@suse.cz>, Jan Kara <jack@suse.com>, 
+ linux-kernel@vger.kernel.org, linux-nfs@vger.kernel.org, 
+ linux-acpi@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+ linux-s390@vger.kernel.org, linux-scsi@vger.kernel.org, 
+ linux-um@lists.infradead.org, linux-wireless@vger.kernel.org, 
+ linuxppc-dev@lists.ozlabs.org, netdev@vger.kernel.org, 
+ ntfs3@lists.linux.dev, platform-driver-x86@vger.kernel.org, 
+ coreteam@netfilter.org, kexec@lists.infradead.org, 
+ linux-pci@vger.kernel.org, linux-sound@vger.kernel.org, 
+ netfilter-devel@vger.kernel.org, dri-devel@lists.freedesktop.org, 
+ ibm-acpi-devel@lists.sourceforge.net, jfs-discussion@lists.sourceforge.net, 
+ linux-alpha@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+ linux-cifs@vger.kernel.org, linux-fbdev@vger.kernel.org, 
+ linux-hwmon@vger.kernel.org, linux-mm@kvack.org, linux-sh@vger.kernel.org, 
+ linux-usb@vger.kernel.org, samba-technical@lists.samba.org, 
+ sparclinux@vger.kernel.org, linux-m68k@lists.linux-m68k.org, 
+ linux-doc@vger.kernel.org, linux-serial@vger.kernel.org, 
+ linux-atm-general@lists.sourceforge.net, Takashi Iwai <tiwai@suse.de>, 
+ linux-input@vger.kernel.org, linux-raid@vger.kernel.org, 
+ linux-ext4@vger.kernel.org, linux-modules@vger.kernel.org, 
+ linux-debuggers@vger.kernel.org, 
+ "Christian Brauner (Amutable)" <brauner@kernel.org>, 
+ Chuck Lever <cel@kernel.org>, stable@vger.kernel.org
+X-Mailer: b4 0.17-dev
+X-Rspam-User: 
+X-Rspamd-Queue-Id: 2ADFA20006
+X-Stat-Signature: sy85epcmz5mixkd5j4bmedg1dxeeznyh
+X-Rspamd-Server: rspam01
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1793630797-90021
-X-HE-Meta: U2FsdGVkX18I8Ig5web3GJyS4Y6TsVsJQtSEN0P+Qsl0VMo5Ni/8ImKW6As5dNQcCKYNx2xLp+2ELmRiPsobYXjfw6XwyTpErWjsl4ZPmMqwNFo/gmlruDwdBAiiWlIUetL665tDWerAVzdA5RPlzGzdn49ZdNXluq3u0QGQL7u0BGayAI/0U6ZdmBM5e4UCYx1shAMMo748o7L6a6AFCI/pVMNO4O4he33tWo43ZQZ/jaKSWdYY0+F7MixKq4Z6mQNfRr51dL+PWxUio1NXlGzbGGx2ISvlmeJHPhd283UMJk5z6EFMiRhNmx8agYyBI12FPOpDzGc0e9mkkKMIRgrW6siaiZPJ0mFyM5j5pvS993p/0AIQuJqEPiq21qTE2BUa4Ki1ElKFyYu+r0naAo9pO827DNRRje7VSUeZaAZUpzGL5sX972iAXMx9XQ29JinHGOf3RGeUff80iXoGZ58WieUlWXW2JYlBRi2TtOqan0wErKaAQGFKMn41kRamSSIiTLehO1RmotTrwwTDxkfzxnujCig4bZ69CeegLA+qWw6cBtolSUS/qGUrYcleDK6KRTibxpOrRTvgaR6YmQtOlopUrHv7QdIsC7pW68N2OitVSeBkyEwrHFfDhcjvXbDXXA2k+vHA9AKHeqxSdXhlSUoefPk8jfQaBZTN/0Ny8adtxfz9V8l3xU2uOE17A1p8++1PDQXnzam4h8pgE8NgwTzcDpi259cAC2JeBWFf9TIiMvBmd3ZJSO4R+fpdoYMmlRuhUO8QG8f2v/IOc3QZWYeEnftESFQmeqWzb/bygwrod2glRK6hHuKVABYXGpeASWD7VLV5JxnA4c+ctNjo1uK0Lyy4c7+LhaPXRgEjZ3jFJf9QRzAXwOiUSCdRKsB0Fb1IMtpOGcsNQxkSHQLK1OpMRCF1btc9v+ItsCWkIcU+U92yp5pCJVi957Cwm/QPTYF7l41h7Skigfc
- 26wPBF3B
- LZgJcyFm9O4N4Nv8W6k7plaVqLvOAt3k02MdErt00O4cF/5PrGw7wKiObxklfWfcPVIQK1gzOoIOKdICe7Zi85GiBv8THrqngQCXYNHEoesp1PNn3GIS175A94+NuzF4t+I/vD41Oec6NnmpSJbYM5om7jtN8c5y9+lJS7qiCtWFgMSsXUKqVNwTlxoEP5wxzr/Tc2tD/ffhC2Gim6vVydN2nOtFN2v5qVA6s3VS66DcjUcWdGEmd6jiGStTwOGO3VvrrZhCNW1IiUhrdO+m8uL409Two4TayxGJV2cDgUosnE7Qtds1biy+71f9atdtkAA3WJgi7S68Ce28jxFD077UBDtxeobqsr+FD20ffLv8OxJw=
+	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
+	version=4.0.1
+X-HE-Tag: 1793630813-333161
+X-HE-Meta: U2FsdGVkX1/+4S74v1Oanct6loKrvJR+ED/XBXmKN4Igil+neMxoNqKg02deSDmDA6eiB0YsC/cpu9tOeFq4UbNjDzPCk7N7bPEKOFLtPuNmxS5z/Jj91jHZ8ZtQ4pmuH8at7oSlY/58VCbkKAfZXDropfQiwbR8DfJ65vdairAFHckbZ+btjKEO12wm8qWcCYTCvPDsA/+2Glf/s0Ld7xe4AenmROjUZWlWWtoTDtRt+Ii+1nM5KV8kckHqHsWV9Gfh3C/lr5PuvlnhMd5tKid1uV/Y99rQNIVLmM35Wr0YIiK85dCxcq3RFelem6uOiKGi4UCQelBmY6zkiwVViKv3JFP706N37P/7DO69apaEgeJrqzgozmDILQHJoDYV9u7Ou3hvz/5vPbFZdEu8oXNFQsrbu1E1JobSC+Typ5fKicUF1ZgH6F7EtjgUtXi/YDnZEPBsdAMFcifL5s18OC49W/1vmgujx3gbM18VqvevMByh4ZSp22AR+gKkKGGIpbIOnfsUt3it93/I801e+LJB57RoUdN7UxIyrYUIGkSfFeBLEYcppyrrlVU7jvzK0ZL0xeEDAOaq6K8D9qeL8oSt5FgpasbifW3XyZ3Yt0MOKrKt+7dU0BJt+BG4Hyi1rMq+NRmAcqGA/mN+YDOqtZHVhoDgEopbQe0IWgsU+9Mwx6kp+kPSY/QST6Rk5ejEEnJ6KF46NtSSVa8dlWKXaR9HCcW1Br/ziJXAaXBntI+gYWSQkY2X21IqcpubYOeyAo30gR8zLzISALE2h/zxAyExtPIKDxbZpgSXdw/yLL6YRfnNr1LEwM2HrAwb6cEYGz1VYE0ia/Whl1MlW/0o0oTtevWg+LNXag4QeE3b7OgbecjXPaKPAnPUjf8M2I9tprz//ZxyUWBD3A2d6LOzvyTtJHNsMNZnYazk6aWIjZGgTMKaSo1+0o2YZZe8oiEccqfAMFGj1ueupIWxP1t
+ wNKATHs+
+ VEN9Owz31HrY0Txd6/jkGfXcznk5ox9geVbhtX0sp+Z6GnYy1BWqNz00nlheh3xtT7M6udFO6AcgMmEosecixUFNa64GlMx4uHakpZ73LLaiDm4QVEX98tOILyPTPK37j+Pg6LYpg8jR+NnmRjq89vw0orVlVrGZ8sdkF/9ZNW9UHddu24pP9GtNFkEoVfQzw5RsAn+GNXON8gpNaHTM0g3zzHiP0CLXKDgqb5jcBfDyqqsKAtmh9tMA5SivN0/GGq4pdqLHde2w7i2X8VK3D6JZqXa2qEmuvLiPp91+d0SZON626unkpMgHtEbU44idv5RDT
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,54 +126,60 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-sysfs_memcg_path_leak test uses $ksft_skip without defining it.  As a
-result, the test is marked as passed while it was skipped, like below.
+proc_get_link() pins the entry with use_pde() and the delayed call
+unpins it. vfs_readlink() copies the link to userspace in between. So a
+page fault in that copy holds up remove_proc_entry() just like the
+copies of reads and writes do, and the callers hold locks while they
+wait. /proc/asound/<id> is removed with snd_card_mutex and info_mutex
+held when a card changes its id.
 
-    $ ./sysfs_memcg_path_leak.sh
-    Run as root
-    $ echo $?
-    0
+The pin doesn't keep anything alive. proc_symlink() copies the target
+and pde_free() frees it with the entry, and the inode holds a reference
+to the entry. What the pin does is keep a removed symlink from being
+followed. So check ->in_use instead and drop the delayed call. That
+also takes an atomic pair off every traversal of /proc/net and
+/proc/mounts.
 
-Users who run the test could therefore wrongly believe the test was run
-and passed while it was skipped.
-
-Define the value at the beginning of the test.  After this patch, the
-exit code reflects the skip.
-
-    $ ./sysfs_memcg_path_leak.sh
-    Run as root
-    $ echo $?
-    4
-
-Fixes: dfa3cf0bc018 ("selftets/damon: add a test for memcg_path leak")
-Cc: <stable@vger.kernel.org> # 6.17.x
-Closes: https://sashiko.dev/#/bug/linux-a0456336-0608-4fec-ac22-0ee61d1d6a91
-Reviewed-by: Aveline Noir <jm5905938@gmail.com>
-Tested-by: Aveline Noir <jm5905938@gmail.com>
-Signed-off-by: SJ Park <sj@kernel.org>
+Fixes: 7e0e953bb0cf ("procfs: fix race between symlink removals and traversals")
+Cc: stable@vger.kernel.org
+Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 ---
-Changes from RFC
-- RFC: https://lore.kernel.org/20261030044643.157105-1-sj@kernel.org
-- Drop RFC tag.
-- Rebase to latest mm-new.
+ fs/proc/inode.c | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
- tools/testing/selftests/damon/sysfs_memcg_path_leak.sh | 3 +++
- 1 file changed, 3 insertions(+)
-
-diff --git a/tools/testing/selftests/damon/sysfs_memcg_path_leak.sh b/tools/testing/selftests/damon/sysfs_memcg_path_leak.sh
-index 34c37129c49fe..d407dddb879ec 100755
---- a/tools/testing/selftests/damon/sysfs_memcg_path_leak.sh
-+++ b/tools/testing/selftests/damon/sysfs_memcg_path_leak.sh
-@@ -1,6 +1,9 @@
- #!/bin/bash
- # SPDX-License-Identifier: GPL-2.0
+diff --git a/fs/proc/inode.c b/fs/proc/inode.c
+index 9933f03ab9fb..2d65f3c8ec03 100644
+--- a/fs/proc/inode.c
++++ b/fs/proc/inode.c
+@@ -629,19 +629,19 @@ static const struct file_operations proc_iter_file_ops_compat = {
+ };
+ #endif
  
-+# Kselftest framework requirement - SKIP code is 4.
-+ksft_skip=4
+-static void proc_put_link(void *p)
+-{
+-	unuse_pde(p);
+-}
+-
+ static const char *proc_get_link(struct dentry *dentry,
+ 				 struct inode *inode,
+ 				 struct delayed_call *done)
+ {
+ 	struct proc_dir_entry *pde = PDE(inode);
+-	if (!use_pde(pde))
 +
- if [ $EUID -ne 0 ]
- then
- 	echo "Run as root"
++	/*
++	 * No pin. The link lives with the entry, which the inode holds, and a
++	 * reader could fault while vfs_readlink() copies it out. Just don't
++	 * follow a removed one.
++	 */
++	if (unlikely(atomic_read(&pde->in_use) < 0))
+ 		return ERR_PTR(-EINVAL);
+-	set_delayed_call(done, proc_put_link, pde);
+ 	return pde->data;
+ }
+ 
+
 -- 
-2.47.3
+2.53.0
+
 
