@@ -1,72 +1,72 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1549A606B393
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 11:23:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56079606B3B3
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 11:23:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=OL6q65xC
+	dkim=pass (1024-bit key, unprotected) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=S6G8eANt
 Received: by kanga.kvack.org (Postfix)
-	id 350D86B05C8; Mon,  2 Nov 2026 06:23:02 -0500 (EST)
+	id 797DB6B05CA; Mon,  2 Nov 2026 06:23:08 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 300C16B05C9; Mon,  2 Nov 2026 06:23:02 -0500 (EST)
+	id 71FCC6B05CB; Mon,  2 Nov 2026 06:23:08 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1EF2C6B05CA; Mon,  2 Nov 2026 06:23:02 -0500 (EST)
+	id 60F7D6B05CC; Mon,  2 Nov 2026 06:23:08 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id F26A96B05C8
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 06:23:01 -0500 (EST)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 8710080721
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 11:23:01 +0000 (UTC)
-X-FDA: 85389942162.13.B6258BF
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 2B2CB6B05CA
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 06:23:08 -0500 (EST)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id BD9261A0CB7
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 11:23:07 +0000 (UTC)
+X-FDA: 85389942414.12.9DC7FC5
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf09.hostedemail.com (Postfix) with ESMTP id A23CC140002
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 11:22:59 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=OL6q65xC;
-	spf=pass (imf09.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+	by imf05.hostedemail.com (Postfix) with ESMTP id 037CA100008
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 11:23:05 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=S6G8eANt;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf05.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793618579;
+	s=arc-20220608; t=1793618586;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3lY+1ZzPRqoScYAMKyAN5RN/YFCIvuobO8x0DYvXDjE=;
-	b=35rJp8gS2R4sksIkpZp6TSn28+H2XD5g2dtTfi/F6dlb9+5gDNDFovBxsA52qVmngX+QAE
-	fObu+OSmdUcVByu1McjYv5CW5odo+7JfFVJ0xUFU3pPak73EDeYzE6OXNldPEhbOky8dl5
-	43NJxBBxCJSbUi+O4szyJKi1eRwNFcU=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793618579;
-	b=LHYNoSLfZw97Qk46zPwAz3lj7eZdf0W8FGqRNY1wONQUOim3x+XqrbVSkSHK5O4goULvwN
-	mkAfHgDRwfoZ11C7qHVIdYEdKw+bjnnFwbbgNOl0+JPIwR9Q/2Bykm0orTUL1z80q8YXnX
-	0s8a/+u19yXL4/BhWgQLiw0qD7vOwSs=
+	bh=eb9H+uxRvArRVVJKhsUr+93SDYJ1x6sKU3xCIma4RUU=;
+	b=A2ogKjP0Lab7in7SymxuBFUPw4vqu49uNvkLnNBoOCBeHWWUL8zIrW2SNMQdASewG91eVR
+	H7GALZe1abAJDS5ObzFdyav1WGXMBN2AJNBym5dbn2kq9JXq3sbO8VbyyvG8EKP71nkzDd
+	kkTODLsEHx8KcRw0LkDZIFpQWNy3kcE=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=OL6q65xC;
-	spf=pass (imf09.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+	imf05.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=S6G8eANt;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf05.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793618586;
+	b=IvdTx/GFr7hha2rt1tXScZazGgx7VYTAWNl0Djzraz1WTzhSzxizzSHREKGvZO2U3H6j9z
+	/8pDlUQDXlffoxnECxQ3/LSQjgW3VkZ/qymFzX6jNcW25ruDa1V0XA1BA15pyyGj0CZ9oH
+	QzSTA/RndlQBpCnd4A9G23UX9Kg/rQM=
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C05B22972;
-	Mon,  2 Nov 2026 03:22:55 -0800 (PST)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 2EBDA1691;
+	Mon,  2 Nov 2026 03:23:02 -0800 (PST)
 Received: from e129823.arm.com (e129823.arm.com [10.2.213.3])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 9B2FB3F632;
-	Mon,  2 Nov 2026 03:22:52 -0800 (PST)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 254863F632;
+	Mon,  2 Nov 2026 03:22:59 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1793618578; bh=bEX3sSqEnQKAQjL0B+MI6TFOYIMgpmFaiG2QcWnZ5UQ=;
+	t=1793618585; bh=zghhBXP63HUkMVsnVTW1BBI8m5GQHzJyarBmwmrVkLw=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=OL6q65xCnF2Tz4ITltDKgFLNBYVVrj82d5jxdji1GVBZb75n9gPi0z1tfCET6eB7u
-	 4s4rCEiwCIn3qlysbR++0NoFqJK82k/WXfZq11aTvIy0cVuMV3M4EHp2+WOGymGRhI
-	 8T0sz25bKGSqnXOGGxivwKApdCmjhFNLN3gptB4o=
+	b=S6G8eANtslFyveBpwPLZwAJIlHGPtPzLOZkPNUbQZrbf/e83nfgLtEhyRdEl+CKWq
+	 qbwPr2yNqC5ubwdh6TO7JSUkTYZQmq68VurvEE5YHy1zupilBrGF0jDnFDGjxNIWLR
+	 ZIyYkP1apZziEAVLn/pciEqxsStbIpEa7Hh9LprE=
 From: Yeoreum Yun <yeoreum.yun@arm.com>
-Date: Mon, 02 Nov 2026 11:21:26 +0000
-Subject: [PATCH RESEND v2 13/21] x86/mm: Introduce helper for checking
- direct map 1G page support
+Date: Mon, 02 Nov 2026 11:21:27 +0000
+Subject: [PATCH RESEND v2 14/21] x86: mm: use pgtable_level enum in
+ effective_prot_pXd()
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261102-dummy_ptxp3-v2-13-78840b2ec73c@arm.com>
+Message-Id: <20261102-dummy_ptxp3-v2-14-78840b2ec73c@arm.com>
 References: <20261102-dummy_ptxp3-v2-0-78840b2ec73c@arm.com>
 In-Reply-To: <20261102-dummy_ptxp3-v2-0-78840b2ec73c@arm.com>
 To: Russell King <linux@armlinux.org.uk>, 
@@ -97,34 +97,33 @@ Cc: linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
  loongarch@lists.linux.dev, linux-mips@vger.kernel.org, 
  linux-arch@vger.kernel.org, linux-mm@kvack.org, kvm@vger.kernel.org, 
  kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org, 
- linux-openrisc@vger.kernel.org, Yeoreum Yun <yeoreum.yun@arm.com>, 
- Sohil Mehta <sohil.mehta@intel.com>
+ linux-openrisc@vger.kernel.org, Yeoreum Yun <yeoreum.yun@arm.com>
 X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=5614; i=yeoreum.yun@arm.com;
- h=from:subject:message-id; bh=ArnDgja24P54ewtxWlKChMWDZmg5SmpxwVJZIltWfVo=;
- b=owEB7QES/pANAwAKAW3Vw9FaxTEzAcsmYgBq6HI1RIbrWXEKJzjwjPKklaXB5ULDRFe5CQCSy
- l3tJmaWOOyJAbMEAAEKAB0WIQQtg+CS3QUzuFh1pJ1t1cPRWsUxMwUCauhyNQAKCRBt1cPRWsUx
- M5ZHC/4tf/XkQKbv2sSjxw7u2qbrKs9afdYINdi0Ck9j09hNi8AocMbGW9v/Vi9jdTVJhqvjeM+
- 0sYVgbLZ7S1NsxmWc+vOyzpYCgCWM8FI1l7ZGEf/tFHGBxVsXiPh2p0/5rAlHtJmpZBBY45cONO
- yJ0kAXibS0A3hvLaJbkw6PSC3kLvxObC5zVc/nyVKFvByL2NL/jYQbYUtgZ/G8X7idCTR5++VqV
- 5FCMJ61PnZtwooqTgFZaz96tdLnXBgid9Tx5+ZQ1lySgDzMx2h5UE9MRTNLZOgaPd/QARaBHgER
- 9GeJyNqO+4m2xPCIhjFa9rk63IaIQ3oNhZxMaZFbnq8TlJ4mud1USfX8U/LQk8IVQw02LEOokQJ
- IVbwwNYeY+sXQc0PostpjU9MZCnD10kjbGu0XjEb1ifkhYYkn8eIiQNghYQZ0Aie5KTCSuT2hLO
- SuYDXUuJF3Zd1utQ8h1lmnOikT85YsrZp+E5Rb1mpROYDHK+aMhG5EmJyA/gSFehyrnws=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2497; i=yeoreum.yun@arm.com;
+ h=from:subject:message-id; bh=zghhBXP63HUkMVsnVTW1BBI8m5GQHzJyarBmwmrVkLw=;
+ b=owEB7QES/pANAwAKAW3Vw9FaxTEzAcsmYgBq6HI1tf/eYu583XiESkJqcFh0Ln97GwifsA4yJ
+ 5hjudYl5LCJAbMEAAEKAB0WIQQtg+CS3QUzuFh1pJ1t1cPRWsUxMwUCauhyNQAKCRBt1cPRWsUx
+ M7CXC/9fvtgv/f2rLKFCQe85Z/Wsksb1TC8gpZAQmESeMsNOLwhQJwTmCgEHPluLgWZmholGaYO
+ PnqbceUGyr1pcmOkepbh9WeQhL4X2VSfrEtz0/h20WYKiCUi6DjQ3COgz2a7ktLMFI97hvziCdm
+ bvP/6V7nAGdhgaX5vVjhY3R9ZwFtaoK1vBgC48ycNo9pXyZAfuFvBcRGqEYuq6LOBAI/hFZIZcH
+ xqCDdDYjQPSZH2av9CiYtQwZF5ykGASC3RunuGlgf5r27ykbJeWBfHvdzeoW2F3QkYqyH2l0vU0
+ Z0S7et8IybfbSLMVGkurx+pcnIm7053a78ucdXh1zT6HrolfrzEBXSYNJluRMeCZjjAIH2AV5sC
+ t8UzGaK5BaQLzP07023I0MrQcTZipUNmqyxr6TiuRmJaiSFAezEea6wC8bi5Jlni2CUujgPL+pY
+ 1hdZrIDSt+PFoWQZaFdmoxibu5GmrsqgFCoMZphc2Vn0XSC70lJ+vtovtimon2aZhoE9g=
 X-Developer-Key: i=yeoreum.yun@arm.com; a=openpgp;
  fpr=2D83E092DD0533B85875A49D6DD5C3D15AC53133
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: A23CC140002
-X-Stat-Signature: o5yqdc61uxmwcxkwcz5wjdxr7ox1pfbu
+X-Rspamd-Queue-Id: 037CA100008
 X-Rspam-User: 
+X-Stat-Signature: 9aaw7kpacjhownf6ycesioirygyzsxq8
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1793618579-299580
-X-HE-Meta: U2FsdGVkX184ulQ4y9kVDDMWdr+gWZi+55CfH8CfemOhDbH5cQwo3kFivSjlyXpSlOXfM/Z4ihVjb6vHbR2HxtPe0YkV3KExly+mltiIJJ9pMGKv63FdcGI1XUvaKaF1evXAAiqFZFBHRizro8HPYNWMDxZRJX71AD2BGY74CP+EqAoL/hrodX0nd/rf4wtFqO2FJYOnPDDQ1OMUzhTR960AcR9JA0EOUH1BI6RkhP/OFdrEPseMSYsCkQX6aZxHOKYzaA+boH5IZIx6D0OyqCFewBfx674DP7fQd6C4A6PjFXVi6BwoJKchUofINu1fFijbh/T8GboLIjAimWEUHwijHG5SAa938tYifG/bBnCAie+mUGfOWmFqi8qra1y9i8ImagIL25GZTUOOuSS639aL/QTermI2msYCWsPxI3sqC3XwVQZAkKNGpV+zFAorkO3CSx44I43MeOQ1Giz5U1S+QJYFOiWlw524P+mf73kL5s/1wqciPkKWJ8SOyQTTIN2I9Ng4mBAoaYwpCHxWF/c6CAISuce8vAVfmATtUgafpPj4cYdgS2xWmMWVKZE3uaZgbskX+tpZ85h3Qqi2+nOC3MPPukHaOAlH4qFyIDcluqSzVfqyaGdSkj5WE1vN4zbzbF9VXLHHz+Yrk/TK61ti4dxpfF7PptyMSgVFi6x9RDo4cN6e8/rxx19RfDpcNWci7ok/O6cdEuWA2dis+DX68d2zMFwXD2aLhFTgvcxt9WHUOw8nwXQjirpR8LFPVagYcM2uiH0B9OJ47n+bFa/CSKqBagbARfTNa5MIOl7rb7TOIlfTFHghzHUk/oomHY63P1/IxXrql8RUBlvMvbbVul1zPfUD/TqTeBuKjf4jy+ekkaaU/BK5Kdew3q7pgTxhMpPqsRy59n1aiwbFx1cDEhNLRKMfVHJH3YWyXmci8RAfho5U/HvWU4fOVDNcNYjBk0QYPzRWvCzCBcx
- NqKJ5gzT
- HHSquMjNE7wTBLT+tRd76OVYQYVBGPj9qKVD6vRJwmgP1fG5QdoOEueQjQMDxVdUWhwNSV42qT9NDVqYxyct55Wa66DUKGexxjYki8gKqfYRst8jUuzCUNxrx+xHiCl0tLxVLzbaIgdA4MlsRHTj64MV62kXkzPKfgA09OWICQZhu8vHE58vNhDRDHcdOc+H2cInrn5ae5hVtWYRGO6I4DFGf1M0g8Xv//TeyYTWQyTy2EQyjlGF1JmUAHzr3dbMReQ5eKk2F8Tiq1b6I9bmZ+Gox3FZJGjoBX20R0DRoqhJj6XI=
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1793618585-942158
+X-HE-Meta: U2FsdGVkX18h8HY29gF/4ef1C71xLGpMhsmh4Vc+yBYno2Lz+1n8crHlAnFl33mGgnyb7IeD/zfyvXeZhD2zCj38m7mZ5UWLFNQTSST8hjoCLUvePdS6FWWaAss0RNJP2uFWPVXS0kbNtspJC6P6D78k3VYXCY4N7m8G08LjxUOZF3glRb3PNqL6XyGvlAF1gUxOewNSCRVfZeTamjDzMUdHHMT3hycwFB2NwkbcnGbX8Dllu8aBicc0gQL1y+HXfTS17Hy4D+6e+Jse91HNifApugLZKn+Q/iqkpk2ofJp1lOc8npolcsamz9DA/E+tY4ILvuAemtXcne9JY9XRyXfHP9e3wrXxekM75fZ06tCboB4ij6wV4fCBgyAjODsSn1eonult2Uq6dr3UXyv+zufQA2Cxgx5JNlrPvGNg1J+ZFGXzO5l5KMuiXoB9E+LCKv86zu5AD2UAWzqP2jDR4C9g8edvW6ZsYKOXR2RLenw4YdTWUZbUtNi4uFyQFS5Tv1El6JJaWwstOoe16wGTLVucew/GmFcSktd4N9z/0hdgWFBcpZVAPDJwBFFPfa7uEFzd8OyEFgGfaaTZnqHIIJOCth8z3Z5HiwR1CMdsNYREJYLikPrwONMHGYcr46x71hfe+XqwriNfxa/MN6ICg1ncanUB3Fc1dFHRT1pGNPl6aL6zu1C3v3mFLKra2m7fITDpNCWBmuzmUXSUu5dJVSNgJTEQYhkRDiup4CaF+2J5vzgVtqSfkicAb1fESYhpjWcc47wb+DxNwXP6QQguzFf4/fN8J3Php1I7oc9e7xZIxT+TKLxKCoSSFtuDNfYzGV0h1gS/MNlOaasAZsM3bZG+aGork2w1FMg5KQGrctZ4dXByuzIp5pN5vdbQQX1u7nL+/YY8DYGwaOF7xo3iBIEe6e+V8LJPitO7MqpxPbLCNJi07G89ul+vaJhQhewEPjhl3fVkwFLHC0sQ9AI
+ wECPeBg7
+ MX94TWnKc96MbY7TN1oE4CtPZ1KNDbDrC03MRvXGGyz4EtfjvA71M5qxPTApxPmDZbYh9feu2an8zCTyWtVmyVoRsi4iHsUc9oiigS5qXzvZYzZdOjnYmLcpAS6hCcarjeJsT9MWdNClN1QR6v5/iNU+rId1RS7wiGrbHL9h5E3i4w/asajPxpa381gbapsvxx17mP5HLWRXwKlI+v8HKU1lZtemT57MostjiJxw8aXtF0pQ9FNXpEXqI23ODZmMFC0aFoQHsvm0M0757XxwR1QDz3S5uvRwjFoXmWDWaYWVZpQtJArirXkxv9hP4J/s97oMoY4BY85t/YfYyiMEz7d3UdqOP9eWbCZMT
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -133,151 +132,75 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-From: Dave Hansen <dave.hansen@linux.intel.com>
+Instead of using hard-coded integers in effective_prot_pXd(), use the
+page-table level enum so that architecture code does not need to know
+the numeric value of each page-table level, while also providing type
+safety.
 
-There is an existing variable (direct_gbpages) that says whether the
-kernel can and should use 1G pages in the direct map. It is driven
-by a bunch of other machinery. At least:
+This also prepares for using generic MM helpers, mm_first_pgtable_level()
+which use symbolic names for page-table levels rather than integers.
 
- 1. Hardware support for 1G pages
- 2. Kconfig support for 1G direct mappings
- 3. Kernel command line overrides
+There should be no functional change.
 
-Most code just checks the 'direct_gbpages' variable itself.  But there
-are cases where 1G mappings are compile-time disabled (via
-X86_DIRECT_GBPAGES) and 'direct_gbpages' is always 0. Unfortunately,
-that constraint is invisible to the compiler.
-
-This opacity has been historically functionally harmless; it only
-leaves a bit of dead code. But, there are plans to tigthen up the
-compile-time checks around folded page table levels. The build will
-break if that dead code appears reachable to the compiler. Making
-the compile-time config visible to the compiler fixes the build.
-
-Add a helper to replace 'direct_gbpages' checks. Check the Kconfig
-option and base CPU support before looking at the variable.
-
-This lets the compiler optimize things better, especially
-collapse_pud_page() where most of the function can now be optimized
-out when the PUD level is folded.
-
-Notes:
-
-Use boot_cpu_has() instead of cpu_feature_enabled(). There's no
-required/disabled features for 1G pages themselves
-(X86_DIRECT_GBPAGES is for kernel mappings only) and the
-static_cpu_has() infrastructure is just gets in the compiler's way.
-
-This makes 64-bit build marginally larger (20 bytes in one compile)
-and 32-bit builds less marginally _smaller_ (~700 bytes).
-
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Reviewed-by: Yeoreum Yun <yeoreum.yun@arm.com>
-Tested-by: Yeoreum Yun <yeoreum.yun@arm.com>
-Link: https://lore.kernel.org/all/20260902-dummy_ptxp3-v3-15-5d8f5b17c25c@arm.com/ [1]
-Reviewed-by: Sohil Mehta <sohil.mehta@intel.com>
+Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
+Acked-by: Dave Hansen <dave.hansen@linux.intel.com>
+Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
 ---
- arch/x86/include/asm/pgtable.h     | 14 ++++++++++++++
- arch/x86/kernel/cpu/common.c       |  2 +-
- arch/x86/kernel/machine_kexec_64.c |  2 +-
- arch/x86/mm/init.c                 |  2 +-
- arch/x86/mm/pat/set_memory.c       |  6 +++---
- 5 files changed, 20 insertions(+), 6 deletions(-)
+ arch/x86/mm/dump_pagetables.c | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/arch/x86/include/asm/pgtable.h b/arch/x86/include/asm/pgtable.h
-index 000fc6c1ca37c..a277082121878 100644
---- a/arch/x86/include/asm/pgtable.h
-+++ b/arch/x86/include/asm/pgtable.h
-@@ -1167,6 +1167,20 @@ static inline int pgd_none(pgd_t pgd)
- #ifndef __ASSEMBLER__
- 
- extern int direct_gbpages;
-+static inline bool direct_gbpages_enabled(void)
-+{
-+	/* Check the direct map config option: */
-+	if (!IS_ENABLED(CONFIG_X86_DIRECT_GBPAGES))
-+		return false;
-+
-+	/* Check the CPU feature: */
-+	if (!boot_cpu_has(X86_FEATURE_GBPAGES))
-+		return false;
-+
-+	/* Check the command-line and early setup variable: */
-+	return direct_gbpages;
-+}
-+
- void init_mem_mapping(void);
- void early_alloc_pgt_buf(void);
- void __init poking_init(void);
-diff --git a/arch/x86/kernel/cpu/common.c b/arch/x86/kernel/cpu/common.c
-index 9bd50c68cd7e5..12a51dba16627 100644
---- a/arch/x86/kernel/cpu/common.c
-+++ b/arch/x86/kernel/cpu/common.c
-@@ -2655,7 +2655,7 @@ void __init arch_cpu_finalize_init(void)
- 		 * Right now we don't do that with gbpages because there seems
- 		 * very little benefit for that case.
- 		 */
--		if (!direct_gbpages)
-+		if (!direct_gbpages_enabled())
- 			set_memory_4k((unsigned long)__va(0), 1);
- 	} else {
- 		fpu__init_check_bugs();
-diff --git a/arch/x86/kernel/machine_kexec_64.c b/arch/x86/kernel/machine_kexec_64.c
-index c3f4a389992da..0da0e89f2611a 100644
---- a/arch/x86/kernel/machine_kexec_64.c
-+++ b/arch/x86/kernel/machine_kexec_64.c
-@@ -257,7 +257,7 @@ static int init_pgtable(struct kimage *image, unsigned long control_page)
- 		info.kernpg_flag |= _PAGE_ENC;
- 	}
- 
--	if (direct_gbpages)
-+	if (direct_gbpages_enabled())
- 		info.direct_gbpages = true;
- 
- 	for (i = 0; i < nr_pfn_mapped; i++) {
-diff --git a/arch/x86/mm/init.c b/arch/x86/mm/init.c
-index 079f8c7e9e3cd..f0f4a06584c61 100644
---- a/arch/x86/mm/init.c
-+++ b/arch/x86/mm/init.c
-@@ -251,7 +251,7 @@ static void __init probe_page_size_mask(void)
- 		__default_kernel_pte_mask &= ~_PAGE_GLOBAL;
- 
- 	/* Enable 1 GB linear kernel mappings if available: */
--	if (direct_gbpages && boot_cpu_has(X86_FEATURE_GBPAGES)) {
-+	if (direct_gbpages_enabled()) {
- 		printk(KERN_INFO "Using GB pages for direct mapping\n");
- 		page_size_mask |= 1 << PG_LEVEL_1G;
- 	} else {
-diff --git a/arch/x86/mm/pat/set_memory.c b/arch/x86/mm/pat/set_memory.c
-index b1d5c5a0ffb41..f27811e6e00bd 100644
---- a/arch/x86/mm/pat/set_memory.c
-+++ b/arch/x86/mm/pat/set_memory.c
-@@ -130,7 +130,7 @@ void arch_report_meminfo(struct seq_file *m)
- 	seq_printf(m, "DirectMap4M:    %8lu kB\n",
- 			direct_pages_count[PG_LEVEL_2M] << 12);
- #endif
--	if (direct_gbpages)
-+	if (direct_gbpages_enabled())
- 		seq_printf(m, "DirectMap1G:    %8lu kB\n",
- 			direct_pages_count[PG_LEVEL_1G] << 20);
+diff --git a/arch/x86/mm/dump_pagetables.c b/arch/x86/mm/dump_pagetables.c
+index 2afa7a23340e9..a18a61e732c3d 100644
+--- a/arch/x86/mm/dump_pagetables.c
++++ b/arch/x86/mm/dump_pagetables.c
+@@ -248,13 +248,13 @@ static void note_wx(struct pg_state *st, unsigned long addr)
+ 		  (void *)st->start_address);
  }
-@@ -1355,7 +1355,7 @@ static int collapse_pud_page(pud_t *pud, unsigned long addr,
- 	pmd_t *pmd, first;
- 	int i;
  
--	if (!direct_gbpages)
-+	if (!direct_gbpages_enabled())
- 		return 0;
+-static void effective_prot(struct ptdump_state *pt_st, int level, u64 val)
++static void effective_prot(struct ptdump_state *pt_st, enum pgtable_level level, u64 val)
+ {
+ 	struct pg_state *st = container_of(pt_st, struct pg_state, ptdump);
+ 	pgprotval_t prot = val & PTE_FLAGS_MASK;
+ 	pgprotval_t effective;
  
- 	addr &= PUD_MASK;
-@@ -1737,7 +1737,7 @@ static int populate_pud(struct cpa_data *cpa, unsigned long start, p4d_t *p4d,
- 	/*
- 	 * Map everything starting from the Gb boundary, possibly with 1G pages
- 	 */
--	while (boot_cpu_has(X86_FEATURE_GBPAGES) && end - start >= PUD_SIZE) {
-+	while (direct_gbpages_enabled() && end - start >= PUD_SIZE) {
- 		set_pud(pud, pud_mkhuge(pfn_pud(cpa->pfn,
- 				   canon_pgprot(pud_pgprot))));
+-	if (level > 0) {
++	if (level > PGTABLE_LEVEL_PGD) {
+ 		pgprotval_t higher_prot = st->prot_levels[level - 1];
+ 
+ 		effective = (higher_prot & prot & (_PAGE_USER | _PAGE_RW)) |
+@@ -268,27 +268,27 @@ static void effective_prot(struct ptdump_state *pt_st, int level, u64 val)
+ 
+ static void effective_prot_pte(struct ptdump_state *st, pte_t pte)
+ {
+-	effective_prot(st, 4, pte_val(pte));
++	effective_prot(st, PGTABLE_LEVEL_PTE, pte_val(pte));
+ }
+ 
+ static void effective_prot_pmd(struct ptdump_state *st, pmd_t pmd)
+ {
+-	effective_prot(st, 3, pmd_val(pmd));
++	effective_prot(st, PGTABLE_LEVEL_PMD, pmd_val(pmd));
+ }
+ 
+ static void effective_prot_pud(struct ptdump_state *st, pud_t pud)
+ {
+-	effective_prot(st, 2, pud_val(pud));
++	effective_prot(st, PGTABLE_LEVEL_PUD, pud_val(pud));
+ }
+ 
+ static void effective_prot_p4d(struct ptdump_state *st, p4d_t p4d)
+ {
+-	effective_prot(st, 1, p4d_val(p4d));
++	effective_prot(st, PGTABLE_LEVEL_P4D, p4d_val(p4d));
+ }
+ 
+ static void effective_prot_pgd(struct ptdump_state *st, pgd_t pgd)
+ {
+-	effective_prot(st, 0, pgd_val(pgd));
++	effective_prot(st, PGTABLE_LEVEL_PGD, pgd_val(pgd));
+ }
+ 
  
 
 -- 
