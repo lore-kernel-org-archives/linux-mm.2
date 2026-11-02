@@ -1,94 +1,94 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB4DE606A339
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 13:14:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67DED606A326
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 13:17:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=EiwkCE7R
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=cSQN4V2+
 Received: by kanga.kvack.org (Postfix)
-	id 078CA6B05B5; Mon,  2 Nov 2026 08:14:21 -0500 (EST)
+	id 7364D6B00EF; Mon,  2 Nov 2026 08:17:50 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 051526B05B6; Mon,  2 Nov 2026 08:14:20 -0500 (EST)
+	id 70DBF6B05B1; Mon,  2 Nov 2026 08:17:50 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ED0646B05B7; Mon,  2 Nov 2026 08:14:20 -0500 (EST)
+	id 627F46B05B4; Mon,  2 Nov 2026 08:17:50 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id C5E326B05B5
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 08:14:20 -0500 (EST)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 597EC1C44B6
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 13:14:20 +0000 (UTC)
-X-FDA: 85390222680.10.545D5F3
+	by kanga.kvack.org (Postfix) with ESMTP id 411D96B00EF
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 08:17:50 -0500 (EST)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id CAAD7160284
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 13:17:49 +0000 (UTC)
+X-FDA: 85390231458.09.DC3E901
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf25.hostedemail.com (Postfix) with ESMTP id A97DFA0008
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 13:14:18 +0000 (UTC)
+	by imf25.hostedemail.com (Postfix) with ESMTP id 397DEA0006
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 13:17:48 +0000 (UTC)
 Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EiwkCE7R;
-	spf=pass (imf25.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cSQN4V2+;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf25.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793625258;
+	s=arc-20220608; t=1793625468;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4Pfk/Q2Uv6acPQS+IeiOKb9434MtyECcCVkBJIJJVKk=;
-	b=hRBMH6XB+DC/OaDtpb73j1cDvSIvuqAPLUb0g993m9yfX2vn6gHimYQe/W4VDoAtJIVPlf
-	zMyjE7P8U59dlVqkmZLnl1abZaO6RiWUQk/osNP8xRXUh/Uf2e3ZaOLDKWuobxebLYDi8q
-	cpVwRNS0NX4nCeGIfevNHvfWnJTjd5s=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793625258;
-	b=mKtINxLdixDLQYSaHcX5f+euJQKI5kiTA0LXcn5StGK7Aei6BvgVmfiJo9TcPHcPshMmDN
-	oRRcJFIsoqOiuK3IMrSrm4OLFtOFO6SuwnYw9DdOm3YM9w/4mALtqIEJcSB1GwbmktKZBE
-	C7t2osWgTmWe0LUMpUvQrofNZCpwOQg=
+	bh=0+T7ZvYRS+pHPYgUXbB4Cw+6ys3nmZ6chNNrmvp+ick=;
+	b=eHT+oNkovuSWmfPZI2tjXopSm+HVkWpJOm242tDLD3JCPvC7Wxe4QMGYRgonMZTk4m+vQk
+	21+4wHw8AzFHjgWBEkbh4PY4YtyY+7B+mIEvUrBUkvzOzkJEjo1RtOYq4bG8TIRJ7TG6O6
+	+cf67nWO/SR/Zq5sJVhC2mQMoLzzzic=
 ARC-Authentication-Results: i=1;
 	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EiwkCE7R;
-	spf=pass (imf25.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cSQN4V2+;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf25.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793625468;
+	b=lZdUDyKlVHXiVF6Iob44VDgnALocEVCIfLpSPGWuP1yf5JjQiTzVNpDboPXaHg0QC9S91U
+	iABXvSxXoZWFeFNE7czA0Byc5zUZqpverHKjdwWBIa4kJu1p59u4VgMY56BevjCrB2/8nD
+	HuHPl+H1Vb91kb+4SPcOYivo9dFCtWY=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 04A0F40391;
-	Mon,  2 Nov 2026 13:14:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C6731F00A16;
-	Mon,  2 Nov 2026 13:14:15 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 453D940229;
+	Mon,  2 Nov 2026 13:17:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C50921F00A16;
+	Mon,  2 Nov 2026 13:17:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793625257;
-	bh=4Pfk/Q2Uv6acPQS+IeiOKb9434MtyECcCVkBJIJJVKk=;
+	s=k20260515; t=1793625467;
+	bh=0+T7ZvYRS+pHPYgUXbB4Cw+6ys3nmZ6chNNrmvp+ick=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=EiwkCE7R/+2xPaA5RmPCUc6HDP5HSE+dlKRlXkpDhrCQR4d2Cpv1dUv8vU5JaH7Sk
-	 zjEeN/b1UnBx/Pk5xVcxncnffRzrjmwmOTnSzDi6fqiHs6TOxhV+qFYhjMOEk3bw0T
-	 h2a+beVgBETr4IdsY+QM5X4oPldeojTIZfjZp5+umwXyfve3f4/OPJHJJFKZT6AWYC
-	 U58lTf+RZdVng7mQdVEBq1GSiRNlBvaakdF2SlAW+6CU/ZwHxDb3gX9J+a33K1OuJq
-	 Ez2ggvPfSd95NJVkO+U6XTVEgS+u9tLDveBBc2JbgltmKtbRafzSJ4IVKTO3tiRhfv
-	 8pP7VQSMymWkw==
-Date: Mon, 2 Nov 2026 13:14:12 +0000
+	b=cSQN4V2+bvOQXrux35oSJ9g3kJC5fmmMIemuMDFXgcVYGeANQKwuMGP4g127ieOtL
+	 gJQETMwmAQRWOHVErJwBFql5UGfmTKpfWhCFjVBT2OiEM2ce5EsSEIecBaDCkzvdp2
+	 urdbZ72tXwh+VStL1khw+tZI5evwDJouyr8ac21S5OLlzEbVy3mX/gCUAR8w6Qac5C
+	 6+mB2DPRRVslrtk5/CrmaFJ4jPAmMaEK2Tku7oGky72l/QQJfJVHqS/X8yXwCBF1Xn
+	 /WM2Fc/hb0/gQeoAp4NgbYRThVUCqNPslgW96ne3YYFVfAyYnzt5inStfL4lrDtPeq
+	 jIeLMBkPEbtgw==
+Date: Mon, 2 Nov 2026 13:17:42 +0000
 From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
 To: Josef Bacik <josef@toxicpanda.com>
 Cc: Andrew Morton <akpm@linux-foundation.org>, 
 	"Liam R. Howlett" <liam@infradead.org>, David Hildenbrand <david@kernel.org>, 
 	Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
 	Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, linux-mm@kvack.org
-Subject: Re: [PATCH 2/6] selftests/mm: test a partial mremap() of hugetlb
- memory
-Message-ID: <auiMju345AXIBVGa@gremlin>
+Subject: Re: [PATCH 3/6] mm/mremap: reaccount on unmap failure only if
+ accounted
+Message-ID: <auiMsCn7gwbSjcxh@gremlin>
 References: <20261030-b4-mremap-pre-split-v1-0-c1829811aed0@toxicpanda.com>
- <20261030-b4-mremap-pre-split-v1-2-c1829811aed0@toxicpanda.com>
+ <20261030-b4-mremap-pre-split-v1-3-c1829811aed0@toxicpanda.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261030-b4-mremap-pre-split-v1-2-c1829811aed0@toxicpanda.com>
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: A97DFA0008
-X-Stat-Signature: maf7c1ttrz59m3a5wp7wg18q7i5y9yf7
-X-Rspam-User: 
+In-Reply-To: <20261030-b4-mremap-pre-split-v1-3-c1829811aed0@toxicpanda.com>
+X-Rspamd-Queue-Id: 397DEA0006
+X-Stat-Signature: iyhttrcoatn9sy7cnyxu9xb67zgja5j3
+X-Rspamd-Server: rspam04
 X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1793625258-786914
-X-HE-Meta: U2FsdGVkX1+a67I1MqvhdytObeJIQtyvEOt+48/01eYpnUE8X/GGc87WtWbNSF3AFeHwG+ESbmXorKJb0Yul6vCGXnrg14EYdvd949lrgPY4vckjH9auaG2fbL71rYtA6JXOSNMNtDUVxTkujC3s164XQw/Qq6PN02yUZrk//QZM6m/A5PO1eQI/gLFQ63/BdnaETWI4ok1rNdUCsMGimnvLH7gat6zq1mL4wyiTi+cYfhbJiijNIIwtIOOUd0jgTK9F3fq44uvwrbwrFQJJumc8DBuniTOtGwmWv9k4Ppy5jAwW+R5g7nbipukOQ7HxRt7Jr2bIzil38GnzKOj55wVhlLpTYxklonWTNlXto82NBgubKWYLZUX4cXgqfPCo50tQ4u13z0bYsG2R+RBjdbn4GeE68po6D30OtOP5T0TjUMelgwW11Tn/vXMbeN+NEQlWv2OErq9BwzcD1IRgxdaXNjG5qtHxMUPqECmF10BSvjkCnDUpKYSi/C3tJwFz4f8BPT8MpoXshROUyKnwgbFqR9etsI2flziUl9FIaAi/AUt4JnxJ6YjoypgIyW5qSAOR24MAagBm0T+cgP6YqGi0GCAcr7kb+gE/v42gdog61z/8hXD52BuqNfa9sR3RKB02O0YJv3MWz0xTHb7Tb4lh+oTjJeeBZ3NIT7KqIaEoDSLpd4oEmxxJpBFrxf5Wo5du4iCc3MnVbYUJbahrvUPUEWqkO4mNIv1nWY/SBGywY8+32sx4bTR6UJB8FvMlp02cotDBYmAnYbOWulMuigIqlbqpIq2GTYkFpgEw7S5eFByQjX12B3kxEyBZPsgKVfg3Dgc4wCgatG17XjEu7yz3z0dPzy8LRxOVgJIlVjGPb7x4mmgN32p1wzFdQl3KWUQM3SqEeUH7u/3OWwJeMCaW2uRUsYmq9cnBjscDrm/2bqixTu/hnwmGZKDu6Z89ornvgGYwlfV7Cc3MdGk
- Z7M3V4+C
- 0gR1A+NkpRTFFS85I+0ZE2lDcM/vVWCZGG1FUK+RwQlBDi5OvAfXQsnAgy0JnwpzyoPUbeKrTRPfTSdu8h/SXX4fRrbrXX/P+7vF3Yur9uFEaR914VYYNfkT2FhoAMGbvxNZeRwy4+pKEShIXxoz+kJrbv3sm32qaaxglUUgpkRrXDBx06PmnbmUA9A5UE8tAY0b5NE7GNv8CS0wJp6PamkfnxhaIJhxg5sjLpNLEyb7Tmn7iOD8yKepBCVF0hsCSKpRbrKI3qDedsdukTfGBvB2W1vOy4NOl3C+cAbKYflfFzMZrKtReyeAgWeavmPPs7vqconBONylT/LcZYLMwi4M+iw==
+X-Rspam-User: 
+X-HE-Tag: 1793625468-233614
+X-HE-Meta: U2FsdGVkX18ogR2Sud2v9pS46PdPHueifTYcK2MMaeYYAPLSlWd+tTku1/d9oEzzX5PA1oDGD4HsEt3lUdHFZzCZMN1WPuciPHbYjfLHC39ft1NphYhM6Y4xeq5TMN5J14hCZqmodkFS24cWn/5YXYU8np4TN9Ll5nEUogCRmsZIekpSyN4QmO8P5E1jXzUXOLTgwW0dQci4sSQcMMriSId+dFKjYtEbmjKjY68U1VzJC+pRu/eSKu5YfdaRHuNyMj/MgfNyo3i9jRNQn4A0QKgegXdLQY6uPbf0YDB3UXl1Uz8rXOLlR5wHCwtSkc4Vju/+HXNYVvzwlHyZwij+w82pzCHGQd03hb1M/4DXUur1rQmkxI2uj3Tk+iaXNmPyr48IctkPpBymhRtz7CwZH5EnsP73PTyGxr+bBlBmHo852w+C8si48OmmzUKjR11+WF7bepp37/NypFKa3GOs2mQjQmiuFppH67JfKYb3/MScg5f625zc9ypceAn1wEX90aIeb52LF0dtv7ZCTxXk8bRQDA4sRKz/725/0wE0tuISb93F7fZYqGWFF5dp5YgPoJ56uIpwQ2Elb2YHfjDI1fOyA9pk/LboifmPjmGp94Dng3iRIke+Vo8vz51u/d3kVk3mUfCHt9xpzDNY1Y0cpdBmuEMIEq9ZKkUO4knrcbPvArW/NdnXNpY6sJ6mrXrMRmDJQCze8E/7ddkN0FhwXc0HqAGmbccf0J+p5h0xwqnLvl/fqrJWtjXcyaU5938i3kQ+3j6tQTriTnCzvFvYqWW96KanimXtsGqgMrh28If1C8QQIc1K0xwqBhuj4rMgFefljd+fJcF1P2jrlX8dwOGBcxNm/KbJv7ee8qs4OQISHpdTaGGEA0SHeJhAKhSXJApZCTFrQTw95vWoPUDGbcJiyJlkBiQeu88kUiReq+/8/o0xRdXmOgtfnBgDKFMA4B5/TLsFFFMCCFyuOjM
+ ZoLST4P8
+ qi3elmSmSYIvjk+6mJ9416ZqtA4iTrs55f8a47Dcw6EojTB8vvaDb1mEHnuTFZRyCPF2/tqBwJ+NH/7jjD6sTsINWRTdL6Rx+dvyBv3pMzQkfhuwAwrJ1bmRavl+Z6mHcSvZVyKvw21HXZhYvia6WENkTKUMukUtLv3ueHKphRjN+e7Zbq6MjnR/5XFI19D2w36b2eVA8f0vkpHXxb9R1sA/Dk01VgqTOcpaR/g41+V4KVVDeAaCXgfMfAT1GvQ4jFIdQtE5UEvdhSnldXMxFk9XsyG7EHS3vfmlU6AOfU8bKYudMuU3FaOenuUz9S+Ivd3xrQR3R09YZy5WB1DE+bhWa7Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,99 +97,56 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Fri, Oct 30, 2026 at 02:42:47PM +0000, Josef Bacik wrote:
-> hugetlb-mremap only moves whole mappings, so it did not catch the
-> reservation leak of a partial move.
+On Fri, Oct 30, 2026 at 02:42:48PM +0000, Josef Bacik wrote:
+> When the unmap of the source range fails at the end of an mremap() move,
+> the length of the range is charged to vm_committed_as even if the VMA was
+> never accounted, for example a MAP_SHARED or MAP_NORESERVE mapping. Nothing
+> ever uncharges these pages, so each such failure permanently inflates the
+> committed memory count.
 >
-> Map four private huge pages without touching them, move the second one,
-> unmap everything, and check that the number of reserved huge pages is back
-> where it was.
+> This was reproduced with fault injection: each failure on a shmem mapping
+> left Committed_AS higher by the size of the moved range after everything
+> was unmapped.
+
+I'm guessing this wasn't noticed because it's nigh on impossible to hit these in
+reality and if you do the process is doomed anyway.
+
 >
+> Fix by charging the range again only when accountable_move is set.
+>
+> Fixes: b714ccb02a76 ("mm/mremap: complete refactor of move_vma()")
+
+Ugh, I definitely made some mistakes on that one :)
+
+I think this doesn't really need stable in practice as the only way you hit this
+in practice is extreme memory pressure + a fatal signal.
+
+And then the process is going away anyway...
+
 > Signed-off-by: Josef Bacik <josef@toxicpanda.com>
 
-Looks sensible so:
+LGTM so:
 
-Acked-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 
 > ---
->  tools/testing/selftests/mm/hugetlb-mremap.c | 52 +++++++++++++++++++++++++++--
->  1 file changed, 50 insertions(+), 2 deletions(-)
+>  mm/mremap.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
 >
-> diff --git a/tools/testing/selftests/mm/hugetlb-mremap.c b/tools/testing/selftests/mm/hugetlb-mremap.c
-> index 9b724af66e93..9f9d6905cd6d 100644
-> --- a/tools/testing/selftests/mm/hugetlb-mremap.c
-> +++ b/tools/testing/selftests/mm/hugetlb-mremap.c
-> @@ -95,6 +95,51 @@ static void register_region_with_uffd(char *addr, size_t len)
->  	ksft_print_msg("Registered memory at address %p with userfaultfd\n", addr);
->  }
+> diff --git a/mm/mremap.c b/mm/mremap.c
+> index cf746bafdee4..6f941aeb1b5f 100644
+> --- a/mm/mremap.c
+> +++ b/mm/mremap.c
+> @@ -1247,7 +1247,8 @@ static void unmap_source_vma(struct vma_remap_struct *vrm)
+>  	vrm->vmi_needs_invalidate = true;
+>  	if (err) {
+>  		/* OOM: unable to split vma, just get accounts right */
+> -		vm_acct_memory(len >> PAGE_SHIFT);
+> +		if (accountable_move)
+> +			vm_acct_memory(len >> PAGE_SHIFT);
+>  		return;
+>  	}
 >
-> +/*
-> + * Move one page out of the middle of a private mapping that has not been
-> + * touched, so that every page of it still holds its reservation.  Once all of
-> + * it is unmapped, all of the reservations have to be back in the pool.
-> + */
-> +static void test_partial_move(unsigned long hugepage_size)
-> +{
-> +	const int flags = MAP_PRIVATE | MAP_ANONYMOUS | MAP_HUGETLB;
-> +	const int prot = PROT_READ | PROT_WRITE;
-> +	const unsigned long nr = 4;
-> +	unsigned long resv = hugetlb_nr_resv_pages(hugepage_size);
-> +	unsigned long resv_after;
-> +	char *src, *dst, *addr;
-> +
-> +	/* The pages of the test before this one can still be in use. */
-> +	if (!hugetlb_setup_default(resv + nr + 1)) {
-> +		ksft_test_result_skip("Partial move: not enough free huge pages\n");
-> +		return;
-> +	}
-> +
-> +	src = mmap(NULL, nr * hugepage_size, prot, flags, -1, 0);
-> +	if (src == MAP_FAILED)
-> +		ksft_exit_fail_msg("mmap src: %s\n", strerror(errno));
-> +
-> +	/* The destination has to be hugetlb-backed, mremap() replaces it. */
-> +	dst = mmap(NULL, hugepage_size, prot, flags, -1, 0);
-> +	if (dst == MAP_FAILED)
-> +		ksft_exit_fail_msg("mmap dst: %s\n", strerror(errno));
-> +
-> +	addr = mremap(src + hugepage_size, hugepage_size, hugepage_size,
-> +		      MREMAP_MAYMOVE | MREMAP_FIXED, dst);
-> +	if (addr == MAP_FAILED)
-> +		ksft_exit_fail_msg("partial mremap: %s\n", strerror(errno));
-> +
-> +	munmap(addr, hugepage_size);
-> +	munmap(src, nr * hugepage_size);
-> +
-> +	resv_after = hugetlb_nr_resv_pages(hugepage_size);
-> +	if (resv_after != resv)
-> +		ksft_print_msg("Reserved huge pages: %lu before, %lu after\n",
-> +			       resv, resv_after);
-> +	ksft_test_result(resv_after == resv,
-> +			 "Partial move returns all reservations\n");
-> +}
-> +
->  int main(int argc, char *argv[])
->  {
->  	unsigned long hugepage_size;
-> @@ -102,7 +147,7 @@ int main(int argc, char *argv[])
->  	size_t length = 0;
->
->  	ksft_print_header();
-> -	ksft_set_plan(1);
-> +	ksft_set_plan(2);
->
->  	if (argc >= 2 && !strcmp(argv[1], "-h"))
->  		ksft_exit_fail_msg("Usage: %s [length_in_MB]\n", argv[0]);
-> @@ -170,5 +215,8 @@ int main(int argc, char *argv[])
->  	close(fd);
->
->  	ksft_test_result(!ret, "Read same data\n");
-> -	ksft_exit(!ret);
-> +
-> +	test_partial_move(hugepage_size);
-> +
-> +	ksft_finished();
->  }
 >
 > --
 > 2.55.0
