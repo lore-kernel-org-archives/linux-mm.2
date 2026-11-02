@@ -1,74 +1,74 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 447856072EDC
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 15:33:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B827608AC61
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 15:33:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=lY4jcv6k
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=VdcZ4QFp
 Received: by kanga.kvack.org (Postfix)
-	id 528916B0636; Mon,  2 Nov 2026 10:33:19 -0500 (EST)
+	id A0C456B05CE; Mon,  2 Nov 2026 10:33:58 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4D8536B0637; Mon,  2 Nov 2026 10:33:19 -0500 (EST)
+	id 9BC626B061D; Mon,  2 Nov 2026 10:33:58 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3A17E6B0638; Mon,  2 Nov 2026 10:33:19 -0500 (EST)
+	id 8AB6D6B0638; Mon,  2 Nov 2026 10:33:58 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 190E76B0636
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 10:33:19 -0500 (EST)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id E455BA597A
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 15:33:17 +0000 (UTC)
-X-FDA: 85390572834.05.27CA028
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 61B0F6B05CE
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 10:33:58 -0500 (EST)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id EAD311A017D
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 15:33:57 +0000 (UTC)
+X-FDA: 85390574514.26.C05B286
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 2E40840006
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 15:33:16 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lY4jcv6k;
-	spf=pass (imf07.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	by imf02.hostedemail.com (Postfix) with ESMTP id 35B0C80002
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 15:33:56 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VdcZ4QFp;
+	spf=pass (imf02.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793633596;
+	s=arc-20220608; t=1793633636;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=I87aXd9DKn5INMWxVGI3L3LJev8psccpA6qjKtl7++0=;
-	b=kF0T9+BEAWGONlAierrYnjOEOZS7veA9jZF6ryqeWdW2atFQYOIl5GgfrAASUoRup5YeDt
-	4+rlDLEK+V0ilJhZNKp5Xl6UJBUTMp8F1CLOLZ3boBnAmuaeyRDtNyWskzLrtXC+at5Jmq
-	v2hhJW4/U7a4GJlThJStGzoUj591k3I=
+	bh=TK360Q0J9loLLBJN1fCdf93Od8lfv7JQwcxqeqOSWBU=;
+	b=uno3GHFi7OvVGPczuhRGEY7UQ0bWmJ4eC4XaQoB8fClJwOjXVqmqHSdcvRaRf6OzjOsMOH
+	Ry2fBf2JQCEE4k7Vqpho1DFsW04HkKaMNND0UpIXOjwiCm7VfJBtwDZIzau2J6HfH8lKqX
+	VCIEoTHBK3fEQMAHH3wlnkYwAI//6ng=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lY4jcv6k;
-	spf=pass (imf07.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VdcZ4QFp;
+	spf=pass (imf02.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793633596;
-	b=jmtKHtuHhdYN0XQn3v0toV4HKESe0PGwX5KsefWcVzxhy/uquu3ZgVr810BUdh0L0XQ37l
-	/xgJY++e4LMFxyfCdO0Hwnh8O1lmZrkqPIa9F/w6vfcSAHDcHp6stzTNpeZpRDFkC/0KQU
-	Jr5lwDofdxWAPslvO/b/Ejepj8RWGzA=
+	t=1793633636;
+	b=wmnVS/SH6b+8MsstIhgniUzY+wKfdHe2oohynFmDCsllH1UerLrPKAZkJpHOo1awLU6gx9
+	62kHI1Za8HEWwNXicVNxFRMNHb+SY9x2Z07gVW8B2CcjgHg/yT7crosU/3encZzDhk5Hz+
+	kypBa0fJTJoFnqgEMUQ+VvqvP9e2j9g=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id C093E60612;
-	Mon,  2 Nov 2026 15:33:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A99BA1F00A17;
-	Mon,  2 Nov 2026 15:32:56 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id B911060625;
+	Mon,  2 Nov 2026 15:33:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C9631F00A16;
+	Mon,  2 Nov 2026 15:33:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793633595;
-	bh=I87aXd9DKn5INMWxVGI3L3LJev8psccpA6qjKtl7++0=;
+	s=k20260515; t=1793633635;
+	bh=TK360Q0J9loLLBJN1fCdf93Od8lfv7JQwcxqeqOSWBU=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=lY4jcv6krIB7tSgezJZ0V+JS72cdUlJSNkPro3CnXcMDEMbA71z5fLxOwnxG5iNkC
-	 rp3t+Brf19zrcUHbxB4mEw/GXvOdm1oi2xkw2hpPnVuKqF63DhYCdo+P7KrF0k9ySw
-	 q3WnWWnNPvOQjnIIlISDoS4h+NGj1NrV2Jh1P/jEmiGYv49kocMRPrjiUdBmefuqET
-	 1ShVqFtZ3SJTeboI3TL14lRgICjngxPE349v7hPpsjveDK6gezuIAK+69D9q6LdAv9
-	 73twS08QrRhGo6PjTHEfdslbb4r0jzOEE8UMiaU6s9+19ZD/+9Ub+CAZVV3kngpDqS
-	 WLDxb1Y0Pf41w==
+	b=VdcZ4QFphvz/aGivrbf7iePh6qXVUBStibznajyzqusVWBsrxcy0EcezsqqdXFTgw
+	 Tanj+pajzFQT1IcSiQwVY9ZF32/NB815X1E8niHSCQtrMcNmSJQoGopcmRQr+jm8Dc
+	 NY/X4yfjkgL9TTITZYZF8R43x6PS/zn9kAuwDXlY7N/+LREL5IIRSKVjJW+ZhgtZG+
+	 WKgH663rZrJFecmgkbpS0lrCfO660Tnz1keC9/Yr7gjUpWjGAkhB373EqJvMziyRLj
+	 5XaMNzWmZ65VAMr81aqdlEc9zjG/IDnaQuV+YpuDedYYCoO87rGXyvGaa3yJtqO2s6
+	 RolUHV3j7QlLw==
 From: Christian Brauner <brauner@kernel.org>
-Date: Mon, 02 Nov 2026 16:07:21 +0100
-Subject: [PATCH RFC 07/11] SUNRPC: let procfs copy in writes
+Date: Mon, 02 Nov 2026 16:07:22 +0100
+Subject: [PATCH RFC 08/11] SUNRPC: let procfs copy out reads
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261102-work-procfs-net-v1-7-982104a4f592@kernel.org>
+Message-Id: <20261102-work-procfs-net-v1-8-982104a4f592@kernel.org>
 References: <20261102-work-procfs-net-v1-0-982104a4f592@kernel.org>
 In-Reply-To: <20261102-work-procfs-net-v1-0-982104a4f592@kernel.org>
 To: linux-fsdevel@vger.kernel.org
@@ -104,27 +104,27 @@ Cc: Linus Torvalds <torvalds@linux-foundation.org>,
  "Christian Brauner (Amutable)" <brauner@kernel.org>, 
  Chuck Lever <cel@kernel.org>
 X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=6349; i=brauner@kernel.org;
- h=from:subject:message-id; bh=qIHvvtDF4hd5tLnMryapPJOuLcFfYH/7YZBGB4Dja6Y=;
- b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS9WG7CdjuxYNKH1PsxikWnjN8tZPqx7Tq7i8/lCrHdJ
- 97HOtSLdZSyMIhxMciKKbI4tJuEyy3nqdhslKkBM4eVCWQIAxenAExE8xXD/9jUmsqIIw9en38y
- Z8Vu48gvWjue7r2yq9U2dybrZ1vjReyMDFdXTv0uWTl90SWl4+aLZwnG1ttwHbg+V1jiwIy/pZo
- V97kA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=8375; i=brauner@kernel.org;
+ h=from:subject:message-id; bh=a9MpcCErAr+XLynuyr8Lv5es65Jw33sURzMgM9R8Toc=;
+ b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS9WG4i+70iJeNx8lGhqrxO33iFhgsTlQPuhnOvMPwd3
+ rh//YcNHaUsDGJcDLJiiiwO7Sbhcst5KjYbZWrAzGFlAhnCwMUpABPxO8/I8NR7wk6vqDbZy/ku
+ XlenMv+62MaQHdmwTUfhc+08KaEjxxn+lxik7rhoK8Z4eLFcQ+KD1ZsiV5WdCOGP0rh+MF5JWsW
+ OEwA=
 X-Developer-Key: i=brauner@kernel.org; a=openpgp;
  fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 35B0C80002
+X-Stat-Signature: rj5d7hejjike7imtsduwe7p7rr43p63o
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 2E40840006
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
 	version=4.0.1
-X-Stat-Signature: zttauwsu7x89uoqm8u8hbygmmedfq8o6
-X-HE-Tag: 1793633596-4589
-X-HE-Meta: U2FsdGVkX191oVhMY88GX0nbsfoy4H69aH/hTt6lni2Cx0ULNWI1W2YX7rl8detP/BNDaqgJiX0cNDCqWVO2M0YX1I7vdhH+KCtol2TeYs+cJMVnAhxOMLVDoyhD+s2IPOiuXd5CZXrqCyYe6UFLjko/LGbT7z3E3+rQ2L4kBkH+NrV3iFKaYCeYezaMNHgO843/0s2o5OIEYp6ACHQRujlphKUf0xFnySNhtXxh97ZFNn9MK85IRU3w7NHWULHLvF0NqY1UKlDCJzZ/q+s4mwygQOr7ChVmyA47HYq7THtkQDHgoCZiRNGrMH4WAjx3pfSs6HJ1cskP0MHF4MzEv3cZPQbY36cnN4g85CpLuSbHdOzjYVmsIIePIvqfjtgLA1ZrZ5CC7aZfQmH+oJe76cj1unwMja68NUNKfDqMTgzJUvOK+ghebrDVMzeOMRsyT3AfsBhX+9VWmy3g0RPgJcjXkxO4QsbPFH43/9uiEiHOfNscDfvDv4XtgKCvD/ZsmP6LZa1nC3+RtIxx65rX3cG0HDovWt/SOqSwZEDtuHpeMj06o69N9FV0IHajoTP6j429YDxVcnk3DUEgJTKgL10RWfjJeikez6a99elAGlq7pym4So5wM518dM/Qmk4DrKPP7AKQ6U//BAKv93rtH6GJtMin6xfhbkps/T0uAU3BNJmz7SEvG/CZ3ei3hjSgKiPbOQXB8rwSLYwsYEgizUQAxawKsV9c1Mzw7/SbXDgb2HV54P+2TUwoI2XoytXg7I+kMzMoNSTg8e92A7B+xWxsEKBsL7X6DjrOPaPoRl/KdQ2NO+xI/ODAkSABfiAxofvTT6rzNVCs1Mkw7E3gQ3AjlDlAzsXcC/q32P4JIQb45MkNkwoUssBmb5tKqMMsNuYkL6ty9jSo+/MnRnbRC74oOS8YBEwBJcuTuFJPl+gxgmIbFUWZTC+PmsHqvTZylwMMmv+IpbQlggcLtX3
- UJn5fx9D
- 1Nujle2jdFKuXsmnTdtBXJd9+XNuBl8xvjRNDrUPv/fDvMZZHR0J/L1ztG7X8SCJcknywV/o7KDRauUtouDEYEoqIXvR6/lpMDShVwRun4IhRhlsKJ4WQHB04m1/m+5AVp8fHDzXBBVMDO2fDv9Q+q0RhJJrpC6IZD0KYynTxgYURG7GEDZ5webKoGr1bwkAtOrY1lGOAFFEebVCPLnz16fd2dVsQuj3VYbAi9iWAcs1oK8oSTM1wKaSBUpPB4+gnWfuOD/Q5K7dufJ00vkSvWDhQtNAS5ab+NpOG
+X-HE-Tag: 1793633636-18125
+X-HE-Meta: U2FsdGVkX1/MigXZ4DGLtDpkDABlTlY2hOHkZ7oM7TYh2Lh5Z5scpJkWxz3Gk6cbzJSS1DWsiyxjQytt37GTgEhYaOEhc0NEolJVSzWUqGw1KDRITx/r6afxMjdecouX3NQKpZzTyL1heknr2wYmGF9eR2P07+xGcXCYNGOx3LQfb53HtIROHBbVCaytkp6qDJ9Q+fbGFoTNlApTat8SQ3KdCrQD5ekq1Ok2zHSlAYuix4dXlt28kuFeI5dtXMe3Yja4cMHbpHM7uUbxYM3xA1x0f2848j9SXE2MkzgntQmPs7arjItoOg7xHmJfKIc7Mw1rreQwWj4lq7Bx8m37graeyR3yWiNUdvS9lgnJDDeMS4+R6zTxrt3Y6gN2zxCgHuXnSnQ966/SF43KSIrHCxyCV7+odEll2SQ0vEjYEGIjp9lsAeTfgu+tN33AfiPkvf7qxe6C8FyM6skiZmBjEJclBYBhwVS9o+3MTFCjHhCZ+Jo74kDLgJ8t68ArlEDgSYAqS1K7G8PsPWFWMTEOv+ag7VxHzk9kEqeh0SxfJxKpnMKSBoIDUU/2mA7DZxiEzjWK4NL92oZfIG0LQE8UgbippUocyXm+845qEsd1w/UPVxCItx/VndMJt4M4IyS0u55o3nrO48YR0HpiO7/Zr8RVMB1YdgWxYTTI1G1g81LRw5WBHax4YSNLJQkeZEn292TzI5Zu3Lq7MEfcoLEuzeCcLjvqD4IXCd7aqICIVjB6S5e1F7oy+/+g9i1gi4W1XulkPhsKl/WaGrQ91puUGFD9JK5IyEGuj3gtankE7VZ5XDPpjd4BWE9t0dbjwGSxwbzZ0GJN7Tgodb6y9xtn7Hk9uhfY5ODIBf1tioZEXli/qsZas0Nr4wuDPBYLyTJ7WgoemD0qwO0V7sr2slVtImnXZFvUE9dCvreO5qDvmUyjqd03NQvo11dxdWls5XvpG5lKGZMIXtKay6i91Dh
+ QEaG9PbF
+ YOhqpdi2IElyK1fXdfjMt6XRhWUWto+ND6s3GtZGzd6theo5kRk7fhLy9E3Z+pf4mEoKqKPJDfaI+n26fEb/z6x60Q4sDNUKF9Ozq8IjsJlbdl8ZHaIT9JXNRvxw3CH6yn1sd78gZvKKFII5CgAgdOylyTPhOBjskmTi7vDZ7AS5+FHB4UeK0VhtPFiCP/9gpZZGPJnfkeRIIgNulVx86Kue4cFFK5ntt31JrZ5IrL7wgZu2+GRCjK3fCzey2pENEFFqK//s/tipZ26ReVyKSMsNrlcR8ErR2ANMm
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -133,189 +133,231 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Implement ->proc_write_buf() for the procfs channel, flush and
-use-gss-proxy files so procfs copies in what is written before it pins
-the entry. The channel file parses the downcall from that copy and the
-flush files share the parsing with rpc_pipefs in do_write_flush(). The
-rpc_pipefs files keep copying in themselves.
+Implement ->proc_read_buf() for the procfs channel, flush,
+use-gss-proxy and gss_krb5_enctypes files so procfs copies what is read
+to userspace after it unpinned the entry.
 
-CACHE_DOWNCALL_MAX and CACHE_FLUSH_MAX name the limits both sides
-enforce, procfs through ->proc_write_size. The procfs files are removed
-when the network namespace goes away and that no longer waits for a
-writer that faults on its buffer.
+cache_read() takes an iov_iter now. The rpc_pipefs channel file passes
+one for the user buffer and behaves like before. The procfs one passes
+one for procfs' buffer, and a read still hands out at most one request.
+A reader of the procfs channel file whose copy out fails, a readv()
+with a bad later segment included, loses what was handed out, since the
+request moves on before procfs copies it out. If that was only part of
+a request the next read returns the rest of it. Both flush files share
+flush_time_text().
+
+The procfs files are removed when the network namespace goes away and
+that no longer waits for a reader that faults on its buffer.
 
 Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 ---
- net/sunrpc/auth_gss/svcauth_gss.c | 10 +++----
- net/sunrpc/cache.c                | 63 +++++++++++++++++++++++++++------------
- 2 files changed, 48 insertions(+), 25 deletions(-)
+ net/sunrpc/auth_gss/svcauth_gss.c | 24 ++++++-------------
+ net/sunrpc/cache.c                | 50 +++++++++++++++++++++++----------------
+ 2 files changed, 36 insertions(+), 38 deletions(-)
 
 diff --git a/net/sunrpc/auth_gss/svcauth_gss.c b/net/sunrpc/auth_gss/svcauth_gss.c
-index 43839e805531..8d105cd900d4 100644
+index 8d105cd900d4..67e086a7127c 100644
 --- a/net/sunrpc/auth_gss/svcauth_gss.c
 +++ b/net/sunrpc/auth_gss/svcauth_gss.c
-@@ -1408,8 +1408,8 @@ svcauth_gss_proc_init(struct svc_rqst *rqstp, struct rpc_gss_wire_cred *gc)
- 
- #ifdef CONFIG_PROC_FS
- 
--static ssize_t write_gssp(struct file *file, const char __user *buf,
--			 size_t count, loff_t *ppos)
-+static ssize_t write_gssp(struct file *file, char *buf, size_t count,
-+			  loff_t *ppos)
- {
- 	struct net *net = pde_data(file_inode(file));
- 	char tbuf[20];
-@@ -1418,9 +1418,7 @@ static ssize_t write_gssp(struct file *file, const char __user *buf,
- 
- 	if (*ppos || count > sizeof(tbuf)-1)
- 		return -EINVAL;
--	if (copy_from_user(tbuf, buf, count))
--		return -EFAULT;
--
-+	memcpy(tbuf, buf, count);
- 	tbuf[count] = 0;
- 	res = kstrtoul(tbuf, 0, &i);
- 	if (res)
-@@ -1468,7 +1466,7 @@ static ssize_t read_gssp(struct file *file, char __user *buf,
- 
- static const struct proc_ops use_gss_proxy_proc_ops = {
- 	.proc_open	= nonseekable_open,
--	.proc_write	= write_gssp,
-+	.proc_write_buf	= write_gssp,
- 	.proc_read	= read_gssp,
- };
- 
-diff --git a/net/sunrpc/cache.c b/net/sunrpc/cache.c
-index 007521e8a57f..a257598768fa 100644
---- a/net/sunrpc/cache.c
-+++ b/net/sunrpc/cache.c
-@@ -924,6 +924,9 @@ static ssize_t cache_do_downcall(char *kaddr, const char __user *buf,
- 	return ret;
- }
- 
-+/* 32k is max userland buffer, lets check anyway */
-+#define CACHE_DOWNCALL_MAX	(32768 - 1)
-+
- static ssize_t cache_downcall(struct address_space *mapping,
- 			      const char __user *buf,
- 			      size_t count, struct cache_detail *cd)
-@@ -931,7 +934,7 @@ static ssize_t cache_downcall(struct address_space *mapping,
- 	char *write_buf;
- 	ssize_t ret = -ENOMEM;
- 
--	if (count >= 32768) { /* 32k is max userland buffer, lets check anyway */
-+	if (count > CACHE_DOWNCALL_MAX) {
- 		ret = -EINVAL;
- 		goto out;
- 	}
-@@ -1508,19 +1511,15 @@ static ssize_t read_flush(struct file *file, char __user *buf,
- 	return simple_read_from_buffer(buf, count, ppos, tbuf, len);
- }
- 
--static ssize_t write_flush(struct file *file, const char __user *buf,
--			   size_t count, loff_t *ppos,
--			   struct cache_detail *cd)
-+/* longest number the flush files take */
-+#define CACHE_FLUSH_MAX		19
-+
-+static ssize_t do_write_flush(char *tbuf, size_t count, loff_t *ppos,
-+			      struct cache_detail *cd)
- {
--	char tbuf[20];
- 	char *ep;
- 	time64_t now;
- 
--	if (*ppos || count > sizeof(tbuf)-1)
--		return -EINVAL;
--	if (copy_from_user(tbuf, buf, count))
--		return -EFAULT;
--	tbuf[count] = 0;
- 	simple_strtoul(tbuf, &ep, 0);
- 	if (*ep && *ep != '\n')
- 		return -EINVAL;
-@@ -1551,6 +1550,20 @@ static ssize_t write_flush(struct file *file, const char __user *buf,
+@@ -1442,32 +1442,22 @@ static ssize_t write_gssp(struct file *file, char *buf, size_t count,
  	return count;
  }
  
-+static ssize_t write_flush(struct file *file, const char __user *buf,
-+			   size_t count, loff_t *ppos,
-+			   struct cache_detail *cd)
-+{
-+	char tbuf[CACHE_FLUSH_MAX + 1];
-+
-+	if (*ppos || count > CACHE_FLUSH_MAX)
-+		return -EINVAL;
-+	if (copy_from_user(tbuf, buf, count))
-+		return -EFAULT;
-+	tbuf[count] = 0;
-+	return do_write_flush(tbuf, count, ppos, cd);
-+}
-+
- static ssize_t cache_read_procfs(struct file *filp, char __user *buf,
- 				 size_t count, loff_t *ppos)
+-static ssize_t read_gssp(struct file *file, char __user *buf,
++static ssize_t read_gssp(struct file *file, char *buf,
+ 			 size_t count, loff_t *ppos)
  {
-@@ -1559,12 +1572,21 @@ static ssize_t cache_read_procfs(struct file *filp, char __user *buf,
- 	return cache_read(filp, buf, count, ppos, cd);
+ 	struct net *net = pde_data(file_inode(file));
+ 	struct sunrpc_net *sn = net_generic(net, sunrpc_net_id);
+-	unsigned long p = *ppos;
+ 	char tbuf[10];
+ 	size_t len;
+ 
+-	snprintf(tbuf, sizeof(tbuf), "%d\n", sn->use_gss_proxy);
+-	len = strlen(tbuf);
+-	if (p >= len)
+-		return 0;
+-	len -= p;
+-	if (len > count)
+-		len = count;
+-	if (copy_to_user(buf, (void *)(tbuf+p), len))
+-		return -EFAULT;
+-	*ppos += len;
+-	return len;
++	len = snprintf(tbuf, sizeof(tbuf), "%d\n", sn->use_gss_proxy);
++	return memory_read_from_buffer(buf, count, ppos, tbuf, len);
  }
  
--static ssize_t cache_write_procfs(struct file *filp, const char __user *buf,
--				  size_t count, loff_t *ppos)
-+/* procfs copied in what was written */
-+static ssize_t cache_write_procfs(struct file *filp, char *buf, size_t count,
-+				  loff_t *ppos)
+ static const struct proc_ops use_gss_proxy_proc_ops = {
+ 	.proc_open	= nonseekable_open,
+ 	.proc_write_buf	= write_gssp,
+-	.proc_read	= read_gssp,
++	.proc_read_buf	= read_gssp,
+ };
+ 
+ static int create_use_gss_proxy_proc_entry(struct net *net)
+@@ -1494,7 +1484,7 @@ static void destroy_use_gss_proxy_proc_entry(struct net *net)
+ 	}
+ }
+ 
+-static ssize_t read_gss_krb5_enctypes(struct file *file, char __user *buf,
++static ssize_t read_gss_krb5_enctypes(struct file *file, char *buf,
+ 				      size_t count, loff_t *ppos)
+ {
+ 	struct rpcsec_gss_oid oid = {
+@@ -1512,7 +1502,7 @@ static ssize_t read_gss_krb5_enctypes(struct file *file, char __user *buf,
+ 		return 0;
+ 	}
+ 
+-	ret = simple_read_from_buffer(buf, count, ppos,
++	ret = memory_read_from_buffer(buf, count, ppos,
+ 				      mech->gm_upcall_enctypes,
+ 				      strlen(mech->gm_upcall_enctypes));
+ 	gss_mech_put(mech);
+@@ -1521,7 +1511,7 @@ static ssize_t read_gss_krb5_enctypes(struct file *file, char __user *buf,
+ 
+ static const struct proc_ops gss_krb5_enctypes_proc_ops = {
+ 	.proc_open	= nonseekable_open,
+-	.proc_read	= read_gss_krb5_enctypes,
++	.proc_read_buf	= read_gss_krb5_enctypes,
+ };
+ 
+ static int create_krb5_enctypes_proc_entry(struct net *net)
+diff --git a/net/sunrpc/cache.c b/net/sunrpc/cache.c
+index a257598768fa..81a3f0068f36 100644
+--- a/net/sunrpc/cache.c
++++ b/net/sunrpc/cache.c
+@@ -28,6 +28,7 @@
+ #include <linux/workqueue.h>
+ #include <linux/mutex.h>
+ #include <linux/pagemap.h>
++#include <linux/uio.h>
+ #include <asm/ioctls.h>
+ #include <linux/sunrpc/types.h>
+ #include <linux/sunrpc/cache.h>
+@@ -837,9 +838,10 @@ cache_next_request(struct cache_detail *cd, u64 seqno)
+ 	return NULL;
+ }
+ 
+-static ssize_t cache_read(struct file *filp, char __user *buf, size_t count,
+-			  loff_t *ppos, struct cache_detail *cd)
++static ssize_t cache_read(struct file *filp, struct iov_iter *to,
++			  struct cache_detail *cd)
+ {
++	size_t count = iov_iter_count(to);
+ 	struct cache_reader *rp = filp->private_data;
+ 	struct cache_request *rq;
+ 	struct inode *inode = file_inode(filp);
+@@ -878,7 +880,7 @@ static ssize_t cache_read(struct file *filp, char __user *buf, size_t count,
+ 		if (rp->offset + count > rq->len)
+ 			count = rq->len - rp->offset;
+ 		err = -EFAULT;
+-		if (copy_to_user(buf, rq->buf + rp->offset, count))
++		if (copy_to_iter(rq->buf + rp->offset, count, to) != count)
+ 			goto out;
+ 		rp->offset += count;
+ 		if (rp->offset >= rq->len) {
+@@ -1499,16 +1501,11 @@ static int release_flush(struct inode *inode, struct file *file,
+ 	return 0;
+ }
+ 
+-static ssize_t read_flush(struct file *file, char __user *buf,
+-			  size_t count, loff_t *ppos,
+-			  struct cache_detail *cd)
++/* what reading the flush files returns */
++static size_t flush_time_text(struct cache_detail *cd, char *tbuf, size_t size)
+ {
+-	char tbuf[22];
+-	size_t len;
+-
+-	len = snprintf(tbuf, sizeof(tbuf), "%llu\n",
++	return snprintf(tbuf, size, "%llu\n",
+ 			convert_to_wallclock(cd->flush_time));
+-	return simple_read_from_buffer(buf, count, ppos, tbuf, len);
+ }
+ 
+ /* longest number the flush files take */
+@@ -1564,12 +1561,15 @@ static ssize_t write_flush(struct file *file, const char __user *buf,
+ 	return do_write_flush(tbuf, count, ppos, cd);
+ }
+ 
+-static ssize_t cache_read_procfs(struct file *filp, char __user *buf,
+-				 size_t count, loff_t *ppos)
++static ssize_t cache_read_procfs(struct file *filp, char *buf, size_t count,
++				 loff_t *ppos)
  {
  	struct cache_detail *cd = pde_data(file_inode(filp));
-+	struct inode *inode = file_inode(filp);
-+	ssize_t ret;
++	struct kvec kvec = { .iov_base = buf, .iov_len = count };
++	struct iov_iter to;
  
--	return cache_write(filp, buf, count, ppos, cd);
-+	if (!cd->cache_parse || !count)
-+		return -EINVAL;
-+
-+	inode_lock(inode);
-+	ret = cd->cache_parse(cd, buf, count);
-+	inode_unlock(inode);
-+	return ret ? ret : count;
+-	return cache_read(filp, buf, count, ppos, cd);
++	iov_iter_kvec(&to, ITER_DEST, &kvec, 1, count);
++	return cache_read(filp, &to, cd);
  }
  
- static __poll_t cache_poll_procfs(struct file *filp, poll_table *wait)
-@@ -1599,7 +1621,8 @@ static int cache_release_procfs(struct inode *inode, struct file *filp)
+ /* procfs copied in what was written */
+@@ -1620,7 +1620,7 @@ static int cache_release_procfs(struct inode *inode, struct file *filp)
+ }
  
  static const struct proc_ops cache_channel_proc_ops = {
- 	.proc_read	= cache_read_procfs,
--	.proc_write	= cache_write_procfs,
-+	.proc_write_buf	= cache_write_procfs,
-+	.proc_write_size = CACHE_DOWNCALL_MAX,
+-	.proc_read	= cache_read_procfs,
++	.proc_read_buf	= cache_read_procfs,
+ 	.proc_write_buf	= cache_write_procfs,
+ 	.proc_write_size = CACHE_DOWNCALL_MAX,
  	.proc_poll	= cache_poll_procfs,
- 	.proc_ioctl	= cache_ioctl_procfs, /* for FIONREAD */
- 	.proc_open	= cache_open_procfs,
-@@ -1653,19 +1676,21 @@ static ssize_t read_flush_procfs(struct file *filp, char __user *buf,
- 	return read_flush(filp, buf, count, ppos, cd);
+@@ -1668,12 +1668,15 @@ static int release_flush_procfs(struct inode *inode, struct file *filp)
+ 	return release_flush(inode, filp, cd);
  }
  
--static ssize_t write_flush_procfs(struct file *filp,
--				  const char __user *buf,
--				  size_t count, loff_t *ppos)
-+static ssize_t write_flush_procfs(struct file *filp, char *buf, size_t count,
-+				  loff_t *ppos)
+-static ssize_t read_flush_procfs(struct file *filp, char __user *buf,
+-			    size_t count, loff_t *ppos)
++static ssize_t read_flush_procfs(struct file *filp, char *buf, size_t count,
++				 loff_t *ppos)
  {
  	struct cache_detail *cd = pde_data(file_inode(filp));
++	char tbuf[22];
++	size_t len;
  
--	return write_flush(filp, buf, count, ppos, cd);
-+	if (*ppos)
-+		return -EINVAL;
-+	return do_write_flush(buf, count, ppos, cd);
+-	return read_flush(filp, buf, count, ppos, cd);
++	len = flush_time_text(cd, tbuf, sizeof(tbuf));
++	return memory_read_from_buffer(buf, count, ppos, tbuf, len);
  }
+ 
+ static ssize_t write_flush_procfs(struct file *filp, char *buf, size_t count,
+@@ -1688,7 +1691,7 @@ static ssize_t write_flush_procfs(struct file *filp, char *buf, size_t count,
  
  static const struct proc_ops cache_flush_proc_ops = {
  	.proc_open	= open_flush_procfs,
- 	.proc_read	= read_flush_procfs,
--	.proc_write	= write_flush_procfs,
-+	.proc_write_buf	= write_flush_procfs,
-+	.proc_write_size = CACHE_FLUSH_MAX,
+-	.proc_read	= read_flush_procfs,
++	.proc_read_buf	= read_flush_procfs,
+ 	.proc_write_buf	= write_flush_procfs,
+ 	.proc_write_size = CACHE_FLUSH_MAX,
  	.proc_release	= release_flush_procfs,
- };
+@@ -1795,8 +1798,10 @@ static ssize_t cache_read_pipefs(struct file *filp, char __user *buf,
+ 				 size_t count, loff_t *ppos)
+ {
+ 	struct cache_detail *cd = RPC_I(file_inode(filp))->private;
++	struct iov_iter to;
  
+-	return cache_read(filp, buf, count, ppos, cd);
++	iov_iter_ubuf(&to, ITER_DEST, buf, count);
++	return cache_read(filp, &to, cd);
+ }
+ 
+ static ssize_t cache_write_pipefs(struct file *filp, const char __user *buf,
+@@ -1886,8 +1891,11 @@ static ssize_t read_flush_pipefs(struct file *filp, char __user *buf,
+ 			    size_t count, loff_t *ppos)
+ {
+ 	struct cache_detail *cd = RPC_I(file_inode(filp))->private;
++	char tbuf[22];
++	size_t len;
+ 
+-	return read_flush(filp, buf, count, ppos, cd);
++	len = flush_time_text(cd, tbuf, sizeof(tbuf));
++	return simple_read_from_buffer(buf, count, ppos, tbuf, len);
+ }
+ 
+ static ssize_t write_flush_pipefs(struct file *filp,
 
 -- 
 2.53.0
