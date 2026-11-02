@@ -1,97 +1,123 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 164A6606B1CD
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 15:08:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E3BF606B1CB
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 15:08:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=oyLAaRP3
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=eyNIQCxY
 Received: by kanga.kvack.org (Postfix)
-	id 5E1E06B05E1; Mon,  2 Nov 2026 10:08:12 -0500 (EST)
+	id 015FD6B05E5; Mon,  2 Nov 2026 10:08:30 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 56A7C6B05E2; Mon,  2 Nov 2026 10:08:12 -0500 (EST)
+	id F2F376B05E6; Mon,  2 Nov 2026 10:08:29 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 480506B05E3; Mon,  2 Nov 2026 10:08:12 -0500 (EST)
+	id E6C966B05E7; Mon,  2 Nov 2026 10:08:29 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id E81336B05E1
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 10:08:11 -0500 (EST)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 3D283120164
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 15:08:11 +0000 (UTC)
-X-FDA: 85390509582.08.78BF395
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id B89296B05E5
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 10:08:29 -0500 (EST)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id AB06140138
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 15:08:28 +0000 (UTC)
+X-FDA: 85390510296.30.AB44423
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 76D5A18001A
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 15:08:09 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=oyLAaRP3;
-	spf=pass (imf24.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793632089;
-	b=OM7CNcA6GUTX/f7lfrgizaaQaFrRbiufLdy8w+aD9pGU+vGIEfqOkKjoUYZUgX63qiDim6
-	QY/5OBlI1faB4GZoDGV45lwPJzM5Ne8woUI2CWZWCm3rlHp39iTi5l3IgLhsZqjGdw7VDb
-	lsA+dXTnIlHnbZX+3twdCzK3wRk47S0=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=oyLAaRP3;
-	spf=pass (imf24.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf13.hostedemail.com (Postfix) with ESMTP id E72972000F
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 15:08:26 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=eyNIQCxY;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf13.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793632089;
+	s=arc-20220608; t=1793632107;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kvp3OkVy+SszLWIFkSYWY+dzg8k2mauBxngEG2KoUsA=;
-	b=aFJVyH+/GJBzZG69S3GO8fxXu/dEsKL2RssB8pe44CjlQ0VkJFOFtzENrMsknXDA7WaLt4
-	v+2goI2JFR9hvwRnpBTABkHUZkCXlIhVGBVd20XIH3a5fSFp+4Hpf2hzV/Kv18em6kFZaD
-	Cgk2joJNFJtaX19kK4Y6ZYQXfGoU2s8=
+	bh=Dp7sSooWMguSrSQWYm7n5WBM775aoRxhTJFL+eJzfGM=;
+	b=ALltzrwwfcSSPOANCdolqKeKFpgXb3jk40F7G2gG6yrQia0chutyb0oaOzutxW0z8fOXFn
+	9LWKPjlTCon089RARICIPImn/g6rU72rfWpVCq8bevKQ7ykoKbaBwurA7JDzkGsHr8Nf0u
+	0ZVYEN2s7/7BwPMFIpXiXb0cmyk8dVg=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=eyNIQCxY;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf13.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793632107;
+	b=dLJmKXMH1C+8/Xlvafk5YgnC4rWw4Tr6TJdALRQml9MP9SWCwL2Vop60LgsQrp8nqVJlw8
+	VWYFvU/q7yA/ZBw8PZBibLeISEG6VqIwBZMjAaCfcPL8AWTaw4/O2LZXrUyH5oKQyZpHiA
+	EsAKsIoK8o/HxrSWmSsRPcNgA1gD82Y=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id A3BEA43D93;
-	Mon,  2 Nov 2026 15:08:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39A1B1F00A1B;
-	Mon,  2 Nov 2026 15:08:08 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 39FC443A0A;
+	Mon,  2 Nov 2026 15:08:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79E931F00A20;
+	Mon,  2 Nov 2026 15:08:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793632088;
-	bh=kvp3OkVy+SszLWIFkSYWY+dzg8k2mauBxngEG2KoUsA=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=oyLAaRP3btENumHrPX+z5xEXxdOZy/pbIuW1M7gRdMClADSjHftUTdFQVTHd6hMzx
-	 lQruDhXPqS6HtZoJ/AS++mGj2vX2HHiTS8EN3GusMgiLvdXCe2LyDNg9yFWNyWW/q2
-	 QKfAA/X2jroapwUQKX9br3DZHeICSCAIdW1KhIyYGSzj38xPmT5tpZtf0IE3biQ/Zm
-	 8/2Z93d1VpMCbaYgjWh3xQacoJ7PIe8uozlQmxvjzE+E+lmG8E1xzyH+7mCkbM+u3C
-	 b0ywrUC+hmI8O7NnKmTL6WyRTJ0Yup5MbVyzkIU/3yF0LueXd9oWJAZnL09UKztDh+
-	 cHpyUwtYwcsAA==
-From: SJ Park <sj@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Manuel Ebner <manuelebnerli@mailbox.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	SJ Park <sj@kernel.org>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	damon@lists.linux.dev,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [PATCH 8/9] Docs/admin-guide/mm/damon/lru_sort: fix grammar and stlye
-Date: Mon,  2 Nov 2026 07:07:55 -0800
-Message-ID: <20261102150757.93058-9-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20261102150757.93058-1-sj@kernel.org>
-References: <20261102150757.93058-1-sj@kernel.org>
+	s=k20260515; t=1793632106;
+	bh=Dp7sSooWMguSrSQWYm7n5WBM775aoRxhTJFL+eJzfGM=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc;
+	b=eyNIQCxYEcRLLrGyZcPtIprIvg2rkuSpaKrMvW58hJQxt/VyWt7hS3Qal6zoUQ/gl
+	 0f9cCCPMX1bOMUh9BIWeFK5f4ATpN0EM/aPUrffzJ9XwWlsu4eKD6ZgzUlwDjfLjwL
+	 Uvn00wNomN8/SMqh9jXER44dMwsdR9yWd6JSqBhqRXPHK14atBxuYmQ+rYaoEBUKUD
+	 vDmMOPV29JIfjjL6fBW6U6eWYBA/B7Lc6f6IJGDxAZNs993WFUAYbhkuu/ueCEe0L/
+	 Yqu69q4QgN/VaqD5PYjScQjBFfvU4mejG6swjL58FVzjyKA2XiENQnp0sJJnQeShIQ
+	 zmvRe7kDYECMg==
+From: Christian Brauner <brauner@kernel.org>
+Date: Mon, 02 Nov 2026 16:01:47 +0100
+Subject: [PATCH RFC 20/22] platform/x86: toshiba_acpi: let procfs copy in
+ writes
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: jqhacujssdunswgj396kkfrmeurk3dzg
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20261102-work-procfs-arch-v1-20-c9492ab08480@kernel.org>
+References: <20261102-work-procfs-arch-v1-0-c9492ab08480@kernel.org>
+In-Reply-To: <20261102-work-procfs-arch-v1-0-c9492ab08480@kernel.org>
+To: linux-fsdevel@vger.kernel.org
+Cc: Linus Torvalds <torvalds@linux-foundation.org>, 
+ Jann Horn <jannh@google.com>, Josef Bacik <josef@toxicpanda.com>, 
+ Chris Mason <mason@kernel.org>, Jeff Layton <jlayton@kernel.org>, 
+ NeilBrown <neil@brown.name>, Eric Dumazet <edumazet@kernel.org>, 
+ Thomas Gleixner <tglx@kernel.org>, Al Viro <viro@zeniv.linux.org.uk>, 
+ Jonathan Corbet <corbet@lwn.net>, Christoph Hellwig <hch@lst.de>, 
+ Greg Kroah-Hartman <gregkh@suse.de>, 
+ Joel Granados <joel.granados@kernel.org>, Kees Cook <kees@kernel.org>, 
+ Jan Kara <jack@suse.cz>, Jan Kara <jack@suse.com>, 
+ linux-kernel@vger.kernel.org, linux-nfs@vger.kernel.org, 
+ linux-acpi@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+ linux-s390@vger.kernel.org, linux-scsi@vger.kernel.org, 
+ linux-um@lists.infradead.org, linux-wireless@vger.kernel.org, 
+ linuxppc-dev@lists.ozlabs.org, netdev@vger.kernel.org, 
+ ntfs3@lists.linux.dev, platform-driver-x86@vger.kernel.org, 
+ coreteam@netfilter.org, kexec@lists.infradead.org, 
+ linux-pci@vger.kernel.org, linux-sound@vger.kernel.org, 
+ netfilter-devel@vger.kernel.org, dri-devel@lists.freedesktop.org, 
+ ibm-acpi-devel@lists.sourceforge.net, jfs-discussion@lists.sourceforge.net, 
+ linux-alpha@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+ linux-cifs@vger.kernel.org, linux-fbdev@vger.kernel.org, 
+ linux-hwmon@vger.kernel.org, linux-mm@kvack.org, linux-sh@vger.kernel.org, 
+ linux-usb@vger.kernel.org, samba-technical@lists.samba.org, 
+ sparclinux@vger.kernel.org, linux-m68k@lists.linux-m68k.org, 
+ linux-doc@vger.kernel.org, linux-serial@vger.kernel.org, 
+ linux-atm-general@lists.sourceforge.net, Takashi Iwai <tiwai@suse.de>, 
+ linux-input@vger.kernel.org, linux-raid@vger.kernel.org, 
+ linux-ext4@vger.kernel.org, linux-modules@vger.kernel.org, 
+ linux-debuggers@vger.kernel.org, 
+ "Christian Brauner (Amutable)" <brauner@kernel.org>, 
+ Chuck Lever <cel@kernel.org>
+X-Mailer: b4 0.17-dev
+X-Rspamd-Queue-Id: E72972000F
+X-Stat-Signature: xgsrgqkkehw4uti1mh99zybgp79b7pdg
+X-Rspamd-Server: rspam04
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 76D5A18001A
+	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
+	version=4.0.1
 X-Rspam-User: 
-X-HE-Tag: 1793632089-352406
-X-HE-Meta: U2FsdGVkX1+SIwFCYtyUSBcxzgldQxTE0hVRZ3a1SwT8I6tUmC9xkb48QGR+OW7q/y3NQn9EQNcxTSvVKghpq6UEjySVJQtzZQisAl5OeETpM2K9itpEHcXUieH3ACmz1v1IS/8Kz20iSRrJtckhIP5Vze4W2HPD4znIUdqzERZ7Qi4EFY67LEF7bWn5Bj9tIR2NklIfB+epr4unxjnCzcZWug/GDEIH0t3k5taTgqsi7FMLe7sd7KDrJdY0YktM/4wB+iLMqPwU/61bcjnQBQcax9tsK/3B/cnEsEnwJ2t+rRiuJevGMowyFQiJLezBtGtJzivjvU8aJetbZtogkMhpGK6hktracesHC6U7BkayyEnDertGVoTNhOKlkuGgNbf8phjCSymDWvXFefqNvyBziw6IJ05vLr5JKR5Qm6gId7czR8SFmlhssiBvx/Ugk2cPnVMplHLLQSZWZItV2ZSdboP5FHF199SLl75wN/TWTbqsPJv3zyH14r+LDTHWVeLbjoLcEHK/ytG3JHDuytynFqAVLfWevIc4xJ7h5NNZux5dyk5RiFphYvQqsZlBa5Ka2zGNX09PsM4nkKTTdzD0EMyA0LZ+FhF+TJrLtrwcshjkAHGWEv3fm7Zxr7YGCcFQ6DTX+wzW3lzCBHlMwzZp7ZyvIxa029/r+tjmQ9kybE7lSc2RF47ApPu5ghimIalRBKDnDCkz93mGB9RdCCfFqcp4HT5/r+dVI1e3+0u41cjW1FKanUo3ydL+ydpQosGJ/9YIUWZszOUAoIarKXr927cUmraIf9EhzsPtjlVsO4mMHY+mi/dnfA++G2OScwR2iGmCLbHh/YQe3t68qILsiIIZGNNSspA7Z93TEkqWUtOXYKEJADgYaa6Mz0H0gzI6r9Aeii2ww6xY61hGWxjqHqe38iLo92oRUoQzWE8ZYCsAbZNFt8UnQ5IAUWjmdqSfC4uBB31XibVrz0n
- naYRSxhu
- USzSb8AzCssvZE6WgF6jJAUolaW6MibP9m6i+EpBfuyVxb5glFIdpy/82ixlMAXQ/rZj5Vw0+Dhcv3X6GoCX2Rj+EE1ZBXppdDZyL/WFG8n4fHWrMP0xDR8Y6JyqOaoW15R5Z8Uj6Gt+vhgAGBZDzbJDhC7K0GELvpeyLapJfQx0BN2kmI10TgxIy/d5uBbw6nYK6m2AKkH5D6vjeC8lYxaBta9wYvaNq6PcngNJpYz3mfn+4gsGmBqduB2vYDE2qbchsmzJoewJKHmTPx+JSsYGsF9k5qbQ8ZgBRBXBN3HOTTJ1RpDFTHuj/PFL9us2ELspf6Mrw5mfhvCgeQ+rPCUnkkw==
+X-HE-Tag: 1793632106-237813
+X-HE-Meta: U2FsdGVkX19GdUM/4gfzNu6G/SR8VDlCETkgavQSdT7veu6EqPg5KB1PPhM2nc4te3xVouaRoFyg2q5UlALW+rdZH9nVoqWBYLuzTBytZWphs3u5P/5Ja38QScRib9ng/2stAHI8wTMlqH416MeXZKS56PXrsLOBYCd1lRnk6uF/rjlqsLOEe1QgoPB0/ThvMJh5aBV3lcDDbi0RxHBPiBOVZw9yvb+s6aozRXSFMszMhrKtNSuAGt1zGA9OejoQPUx9w51fgCtr+TfEk0O7qyCZtYZOq/FcNkiV6GddM2aZmLc7eaOsUDhWyGbI2JlMkufBxi5PTJv5OVe9uNzgKHetn0chSkDYQ0csE2XPBjrcALf7Y7KNR3ic8WgIMtvtYtfOhx0eb4nnvyLzWZLVfoIZUr+7fB8+8rnrPUSIRD5AfvXCXKr+nj+5s8DC7/l+2OwAcevTF8opz5ibiLBka8cAWAYQOiYmZZk2oOY9/D/D3yXTcZHh2+Yk4p1/Hx2Affz25Md1ju+DHpmkU/57d01ZWEokMiysD4brIoIJdp2ZZH2lLEP3n5CYj+4LWVLnYNCTE7ZeBe2F8eLqY6WgGhrQlGAfjy0d/6+CRHxpHmO2HNUvXHofeNDbkAYTYsVe72dSnkIki3Q9GsIncQ/4Re/z3Gjb93ORuol9UBKs94c8GRJywf6UArQtc4PUpAFmAxo13r/MWQPufSXCFib2N3YcoUC6SnM8B7UgV9PQ9rN3V9OUYCmBNXJQn2PgtZ9rRkk4lq3bG1/0ykdbTgkxK05a7ZBuwcOCLA1FkX91muw9A6YGAgKXLOB7aKMkGmO2P+o0ZTYGTX6RzUAvY+H832twLkx4AnIN+RK0828qwnoXFv1+IL3t4UyCLoMftrUwDAefjUYn7pC/C9irDqGS/V08zTWnum6lx+hM+Ph5Zdy6sH0qQJ2dYBSysRNAhMkBhx2rVoRheZVb156lyO+
+ ujv2ChxC
+ qe6Zvtgz0jYUXuzDWqVTY9ye5aFY7pSth5aGWkOl9H6ycR4a8dLiX8qWcObZVD0QR5pOXQ7zEkshwCyXIYo9UrgfADeaD/S0DAXHaOd/6KgdA/GsHfiTGTM92axoGp7TdCi9NRudTj+WBADdY8xuAHXMLQMBrLNKB2ZmdzkQ9qEK4EH44s7Ar61iI16QO2f+2DynHiyLvOrcWTU9cXJAzV+0/yOsCxKuceQPC0fpTFj2PuZclFs+yKeA3VQ6pulFwOwY13LVWSEamR/9FKyM3vMrumTa9miiI4QiRo7KHcna0Ga+L/2dQfyhnf2W/KP0e/mRqxJvB9NKXA6g=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,198 +126,151 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-From: Manuel Ebner <manuelebnerli@mailbox.org>
+Implement ->proc_write_buf() for the files in /proc/acpi/toshiba so
+procfs copies in what is written before it pins the entry, and parse
+what was written from that copy. Commands longer than PAGE_SIZE - 1
+bytes are rejected now.
 
-Fix tenses. Split long sentences thereby imporove readability.  Replace
-'set as' with 'set to'. Replace [] with () to make the file uniform.
-
-Signed-off-by: Manuel Ebner <manuelebnerli@mailbox.org>
-Reviewed-by: SJ Park <sj@kernel.org>
-Signed-off-by: SJ Park <sj@kernel.org>
+Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 ---
-Changes from v3
-- v3: https://lore.kernel.org/20261017083535.1261388-2-manuelebnerli@mailbox.org
-- Rebase to latest mm-new.
+ drivers/platform/x86/toshiba_acpi.c | 36 ++++++++++++------------------------
+ 1 file changed, 12 insertions(+), 24 deletions(-)
 
-[v3]
- Split long line
- Fix path in subject / One-line summary
+diff --git a/drivers/platform/x86/toshiba_acpi.c b/drivers/platform/x86/toshiba_acpi.c
+index 560e62da05a9..895e321ada03 100644
+--- a/drivers/platform/x86/toshiba_acpi.c
++++ b/drivers/platform/x86/toshiba_acpi.c
+@@ -1478,7 +1478,7 @@ static int set_lcd_status(struct backlight_device *bd)
+ 	return set_lcd_brightness(dev, bd->props.brightness);
+ }
+ 
+-static ssize_t lcd_proc_write(struct file *file, const char __user *buf,
++static ssize_t lcd_proc_write(struct file *file, char *buf,
+ 			      size_t count, loff_t *pos)
+ {
+ 	struct toshiba_acpi_dev *dev = pde_data(file_inode(file));
+@@ -1488,8 +1488,7 @@ static ssize_t lcd_proc_write(struct file *file, const char __user *buf,
+ 	int value;
+ 
+ 	len = min(count, sizeof(cmd) - 1);
+-	if (copy_from_user(cmd, buf, len))
+-		return -EFAULT;
++	memcpy(cmd, buf, len);
+ 	cmd[len] = '\0';
+ 
+ 	levels = dev->backlight_dev->props.max_brightness + 1;
+@@ -1505,7 +1504,7 @@ static ssize_t lcd_proc_write(struct file *file, const char __user *buf,
+ 
+ static const struct proc_ops lcd_proc_ops = {
+ 	.proc_show	= lcd_proc_show,
+-	.proc_write	= lcd_proc_write,
++	.proc_write_buf	= lcd_proc_write,
+ };
+ 
+ /* Video-Out */
+@@ -1541,24 +1540,17 @@ static int video_proc_show(struct seq_file *m, void *v)
+ 	return 0;
+ }
+ 
+-static ssize_t video_proc_write(struct file *file, const char __user *buf,
++static ssize_t video_proc_write(struct file *file, char *buf,
+ 				size_t count, loff_t *pos)
+ {
+ 	struct toshiba_acpi_dev *dev = pde_data(file_inode(file));
+-	char *buffer;
+-	char *cmd;
++	char *buffer = buf;
+ 	int lcd_out = -1, crt_out = -1, tv_out = -1;
+ 	int remain = count;
+ 	int value;
+ 	int ret;
+ 	u32 video_out;
+ 
+-	cmd = memdup_user_nul(buf, count);
+-	if (IS_ERR(cmd))
+-		return PTR_ERR(cmd);
+-
+-	buffer = cmd;
+-
+ 	/*
+ 	 * Scan expression.  Multiple expressions may be delimited with ;
+ 	 * NOTE: To keep scanning simple, invalid fields are ignored.
+@@ -1577,8 +1569,6 @@ static ssize_t video_proc_write(struct file *file, const char __user *buf,
+ 		} while (remain && *(buffer - 1) != ';');
+ 	}
+ 
+-	kfree(cmd);
+-
+ 	ret = get_video_status(dev, &video_out);
+ 	if (!ret) {
+ 		unsigned int new_video_out = video_out;
+@@ -1602,7 +1592,7 @@ static ssize_t video_proc_write(struct file *file, const char __user *buf,
+ 
+ static const struct proc_ops video_proc_ops = {
+ 	.proc_show	= video_proc_show,
+-	.proc_write	= video_proc_write,
++	.proc_write_buf	= video_proc_write,
+ };
+ 
+ /* Fan status */
+@@ -1644,7 +1634,7 @@ static int fan_proc_show(struct seq_file *m, void *v)
+ 	return 0;
+ }
+ 
+-static ssize_t fan_proc_write(struct file *file, const char __user *buf,
++static ssize_t fan_proc_write(struct file *file, char *buf,
+ 			      size_t count, loff_t *pos)
+ {
+ 	struct toshiba_acpi_dev *dev = pde_data(file_inode(file));
+@@ -1653,8 +1643,7 @@ static ssize_t fan_proc_write(struct file *file, const char __user *buf,
+ 	int value;
+ 
+ 	len = min(count, sizeof(cmd) - 1);
+-	if (copy_from_user(cmd, buf, len))
+-		return -EFAULT;
++	memcpy(cmd, buf, len);
+ 	cmd[len] = '\0';
+ 
+ 	if (sscanf(cmd, " force_on : %i", &value) != 1 ||
+@@ -1671,7 +1660,7 @@ static ssize_t fan_proc_write(struct file *file, const char __user *buf,
+ 
+ static const struct proc_ops fan_proc_ops = {
+ 	.proc_show	= fan_proc_show,
+-	.proc_write	= fan_proc_write,
++	.proc_write_buf	= fan_proc_write,
+ };
+ 
+ /* Fan RPM */
+@@ -1707,7 +1696,7 @@ static int keys_proc_show(struct seq_file *m, void *v)
+ 	return 0;
+ }
+ 
+-static ssize_t keys_proc_write(struct file *file, const char __user *buf,
++static ssize_t keys_proc_write(struct file *file, char *buf,
+ 			       size_t count, loff_t *pos)
+ {
+ 	struct toshiba_acpi_dev *dev = pde_data(file_inode(file));
+@@ -1716,8 +1705,7 @@ static ssize_t keys_proc_write(struct file *file, const char __user *buf,
+ 	int value;
+ 
+ 	len = min(count, sizeof(cmd) - 1);
+-	if (copy_from_user(cmd, buf, len))
+-		return -EFAULT;
++	memcpy(cmd, buf, len);
+ 	cmd[len] = '\0';
+ 
+ 	if (sscanf(cmd, " hotkey_ready : %i", &value) == 1 && value == 0)
+@@ -1730,7 +1718,7 @@ static ssize_t keys_proc_write(struct file *file, const char __user *buf,
+ 
+ static const struct proc_ops keys_proc_ops = {
+ 	.proc_show	= keys_proc_show,
+-	.proc_write	= keys_proc_write,
++	.proc_write_buf	= keys_proc_write,
+ };
+ 
+ static int __maybe_unused version_proc_show(struct seq_file *m, void *v)
 
-[v2]
- https://lore.kernel.org/20261015072947.802821-2-manuelebnerli@mailbox.org
- Collect R-b: from SJ.
-
-[v1]
- https://lore.kernel.org/20261013191327.663331-2-manuelebnerli@mailbox.org
- Wordsmith commit message.
- Fixup a few trivial wording.
-
- .../admin-guide/mm/damon/lru_sort.rst         | 61 +++++++++----------
- 1 file changed, 30 insertions(+), 31 deletions(-)
-
-diff --git a/Documentation/admin-guide/mm/damon/lru_sort.rst b/Documentation/admin-guide/mm/damon/lru_sort.rst
-index b93ca9b0853d2..f1eeb6389c377 100644
---- a/Documentation/admin-guide/mm/damon/lru_sort.rst
-+++ b/Documentation/admin-guide/mm/damon/lru_sort.rst
-@@ -5,20 +5,19 @@ DAMON-based LRU-lists Sorting
- =============================
- 
- DAMON-based LRU-lists Sorting (DAMON_LRU_SORT) is a static kernel module that
--aimed to be used for proactive and lightweight data access pattern based
-+aims to be used for proactive and lightweight data access pattern based
- (de)prioritization of pages on their LRU-lists for making LRU-lists a more
- trusworthy data access pattern source.
- 
- Where Proactive LRU-lists Sorting is Required?
- ==============================================
- 
--As page-granularity access checking overhead could be significant on huge
--systems, LRU lists are normally not proactively sorted but partially and
--reactively sorted for special events including specific user requests, system
--calls and memory pressure.  As a result, LRU lists are sometimes not so
--perfectly prepared to be used as a trustworthy access pattern source for some
--situations including reclamation target pages selection under sudden memory
--pressure.
-+As page-granularity access checking overhead could be significant on huge systems,
-+LRU lists are normally not fully nor proactively sorted but rather partially
-+and reactively sorted for special events.  These events include specific user requests,
-+system calls and memory pressure.  As a result, LRU lists are sometimes not
-+suitable to be used as a trustworthy access pattern source.  These situations
-+including reclamation target page selection under sudden memory pressure.
- 
- Because DAMON can identify access patterns of best-effort accuracy while
- inducing only user-specified range of overhead, proactively running
-@@ -28,9 +27,9 @@ pattern source with low and controlled overhead.
- How It Works?
- =============
- 
--DAMON_LRU_SORT finds hot pages (pages of memory regions that showing access
--rates that higher than a user-specified threshold) and cold pages (pages of
--memory regions that showing no access for a time that longer than a
-+DAMON_LRU_SORT finds hot pages (pages of memory regions that show access
-+rates that are higher than a user-specified threshold) and cold pages (pages of
-+memory regions that show no access for a duration that is longer than a
- user-specified threshold) using DAMON, and prioritizes hot pages while
- deprioritizing cold pages on their LRU-lists.  To avoid it consuming too much
- CPU for the prioritizations, a CPU time usage limit can be configured.  Under
-@@ -63,10 +62,10 @@ enabled
- 
- Enable or disable DAMON_LRU_SORT.
- 
--You can enable DAMON_LRU_SORT by setting the value of this parameter as ``Y``.
--Setting it as ``N`` disables DAMON_LRU_SORT.  Note that DAMON_LRU_SORT could do
-+You can enable DAMON_LRU_SORT by setting the value of this parameter to ``Y``.
-+Setting it to ``N`` disables DAMON_LRU_SORT.  Note that DAMON_LRU_SORT could do
- no real monitoring and LRU-lists sorting due to the watermarks-based activation
--condition.  Refer to below descriptions for the watermarks parameter for this.
-+condition.  Refer to below descriptions of the watermarks parameter for this.
- 
- commit_inputs
- -------------
-@@ -74,9 +73,9 @@ commit_inputs
- Make DAMON_LRU_SORT reads the input parameters again, except ``enabled``.
- 
- Input parameters that updated while DAMON_LRU_SORT is running are not applied
--by default.  Once this parameter is set as ``Y``, DAMON_LRU_SORT reads values
-+by default.  Once this parameter is set to ``Y``, DAMON_LRU_SORT reads values
- of parameters except ``enabled`` again.  Once the re-reading is done, this
--parameter is set as ``N``.  If invalid parameters are found while the
-+parameter is set to ``N``.  If invalid parameters are found while the
- re-reading, DAMON_LRU_SORT will be disabled.
- 
- Once ``Y`` is written to this parameter, the user must not write to any
-@@ -86,37 +85,37 @@ violate this rule, the kernel may exhibit undefined behavior.
- active_mem_bp
- -------------
- 
--Desired active to [in]active memory ratio in bp (1/10,000).
-+Desired active to (in)active memory ratio in bp (1/10,000).
- 
- While keeping the caps that set by other quotas, DAMON_LRU_SORT automatically
- increases and decreases the effective level of the quota aiming the LRU
--[de]prioritizations of the hot and cold memory resulting in this active to
--[in]active memory ratio.  Value zero means disabling this auto-tuning feature.
-+(de)prioritizations of the hot and cold memory resulting in this active to
-+(in)active memory ratio.  Value zero means disabling this auto-tuning feature.
- 
- Disabled by default.
- 
- autotune_monitoring_intervals
- -----------------------------
- 
--If this parameter is set as ``Y``, DAMON_LRU_SORT automatically tunes DAMON's
-+If this parameter is set to ``Y``, DAMON_LRU_SORT automatically tunes DAMON's
- sampling and aggregation intervals.  The auto-tuning aims to capture meaningful
- amount of access events in each DAMON-snapshot, while keeping the sampling
--interval 5 milliseconds in minimum, and 10 seconds in maximum.  Setting this as
--``N`` disables the auto-tuning.
-+interval to 5 milliseconds in minimum, and to 10 seconds in maximum.  Setting this
-+to ``N`` disables the auto-tuning.
- 
- Disabled by default.
- 
- filter_young_pages
- ------------------
- 
--Filter [non-]young pages accordingly for LRU [de]prioritizations.
-+Filter (non-)young pages accordingly for LRU (de)prioritizations.
- 
- If this is set, check page level access (youngness) once again before each
--LRU [de]prioritization operation.  LRU prioritization operation is skipped
-+LRU (de)prioritization operation.  LRU prioritization operation is skipped
- if the page has not accessed since the last check (not young).  LRU
- deprioritization operation is skipped if the page has accessed since the
- last check (young).  The feature is enabled or disabled if this parameter is
--set as ``Y`` or ``N``, respectively.
-+set to ``Y`` or ``N``, respectively.
- 
- Disabled by default.
- 
-@@ -235,7 +234,7 @@ max_nr_regions
- Maximum number of monitoring regions.
- 
- The maximum number of monitoring regions of DAMON for the cold memory
--monitoring.  This can be used to set upper-bound of the monitoring overhead.
-+monitoring.  This can be used to set the upper-bound of the monitoring overhead.
- However, setting this too low could result in bad monitoring quality.  Please
- refer to the DAMON documentation (:doc:`usage`) for more detail.  1000 by
- defaults.
-@@ -268,7 +267,7 @@ This parameter is for setting and getting the :ref:`address unit
- 
- ``monitor_region_start`` and ``monitor_region_end`` should be provided in this
- unit.  For example, let's suppose ``addr_unit``, ``monitor_region_start`` and
--``monitor_region_end`` are set as ``1024``, ``0`` and ``10``, respectively.
-+``monitor_region_end`` are set to ``1024``, ``0`` and ``10``, respectively.
- Then DAMON_LRU_SORT will work for 10 KiB length of physical address range that
- starts from address zero (``[0 * 1024, 10 * 1024)`` in bytes).
- 
-@@ -291,22 +290,22 @@ If DAMON_LRU_SORT is enabled, this becomes the PID of the worker thread.  Else,
- nr_lru_sort_tried_hot_regions
- -----------------------------
- 
--Number of hot memory regions that tried to be LRU-sorted.
-+Number of hot memory regions that were tried to be LRU-sorted.
- 
- bytes_lru_sort_tried_hot_regions
- --------------------------------
- 
--Total bytes of hot memory regions that tried to be LRU-sorted.
-+Total bytes of hot memory regions that were tried to be LRU-sorted.
- 
- nr_lru_sorted_hot_regions
- -------------------------
- 
--Number of hot memory regions that successfully be LRU-sorted.
-+Number of hot memory regions that were successfully LRU-sorted.
- 
- bytes_lru_sorted_hot_regions
- ----------------------------
- 
--Total bytes of hot memory regions that successfully be LRU-sorted.
-+Total bytes of hot memory regions that were successfully LRU-sorted.
- 
- nr_hot_quota_exceeds
- --------------------
 -- 
-2.47.3
+2.53.0
+
 
