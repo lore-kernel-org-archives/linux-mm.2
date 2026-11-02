@@ -1,131 +1,109 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87D87606A326
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 10:42:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D1D2606A327
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 10:46:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=FXXOQLqo
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=QYtjFkK8
 Received: by kanga.kvack.org (Postfix)
-	id 96A3D6B05BD; Mon,  2 Nov 2026 05:41:59 -0500 (EST)
+	id 8603F6B05B4; Mon,  2 Nov 2026 05:46:18 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 940ED6B05BE; Mon,  2 Nov 2026 05:41:59 -0500 (EST)
+	id 838246B05B5; Mon,  2 Nov 2026 05:46:18 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 857D06B05BF; Mon,  2 Nov 2026 05:41:59 -0500 (EST)
+	id 74E9E6B05B7; Mon,  2 Nov 2026 05:46:18 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 481486B05BD
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 05:41:59 -0500 (EST)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id C841480C13
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 10:41:58 +0000 (UTC)
-X-FDA: 85389838716.04.8A5EB32
-Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
-	by imf12.hostedemail.com (Postfix) with ESMTP id EAF6840003
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 10:41:56 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=FXXOQLqo;
-	spf=pass (imf12.hostedemail.com: domain of umangpokhriyall@gmail.com designates 209.85.214.172 as permitted sender) smtp.mailfrom=umangpokhriyall@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id 413A46B05B4
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 05:46:18 -0500 (EST)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 4918FA7EE3
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 10:46:17 +0000 (UTC)
+X-FDA: 85389849594.26.4922E13
+Received: from mta0.migadu.com (out-60.mta0.migadu.com [91.218.175.60])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 1AE008000A
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 10:46:14 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=QYtjFkK8;
+	spf=pass (imf30.hostedemail.com: domain of ridong.chen@linux.dev designates 91.218.175.60 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793616375;
+	b=jdeamGBKVjEK9Vd36IBjRMgcshYtN9egXMoKJ6fnpkXzj80O0ZfUtb97B4U+D++q+H7jin
+	7C8jLJEBVAE9Xc2lTSnbCcp/ENDTJljrwpCb2yDwS5+up6sGm/YwlcIMUpsq/ysJPeoLU+
+	GcYb9c8H4696fCJJSvz6eM3BXcYUCnI=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=QYtjFkK8;
+	spf=pass (imf30.hostedemail.com: domain of ridong.chen@linux.dev designates 91.218.175.60 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793616116;
+	s=arc-20220608; t=1793616375;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=OJg1Na+PMAE5RwVgjsfjwULctd8zKBeuPkayvvN7fUg=;
-	b=B4Yx9Ci939wbUb3wF55I9KV1l24i81haGLF5RRYQCs7ZSkRF97B7ZwygARB3FS/ZftY2x+
-	phObOujnL9lRgjpSgQ+5S3VBzYWBixhGyDu5KkK+e87d4+XgRt8OvNN0NzP3kUzYjJtR9f
-	rWdIKcN1IK7WY8VciLC7lpZTG2C04gE=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=FXXOQLqo;
-	spf=pass (imf12.hostedemail.com: domain of umangpokhriyall@gmail.com designates 209.85.214.172 as permitted sender) smtp.mailfrom=umangpokhriyall@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793616117;
-	b=DrE9GYUAYrwy1omUFQyT60m0lkWRSm+iCzLpgDVf2ZZ6Vwo3rsOb2ref38NJaYA9V9eYXB
-	V3KUG9EX8Sgaq5H6ELP/My4p0X5E8FAJCzKieGb6CPATyP2gavyBUaBooUler3nEhzYl0X
-	XdBSK9EF7wowCAXLq7qVA2nmMiC53EM=
-Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2e99b1e5b4cso16789575ad.0
-        for <linux-mm@kvack.org>; Mon, 02 Nov 2026 02:41:56 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793616116; x=1794220916; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=OJg1Na+PMAE5RwVgjsfjwULctd8zKBeuPkayvvN7fUg=;
-        b=FXXOQLqo7usc8yoiupVQ/cNQSTzLy3FzIKHHr10E3xrG7GsteRKVJDm8TkLhlEn9Sr
-         L+ZBFMAx4MxT8PVrtKnskA7lYVovOLJl6KCfkmRTUtXzOjY4qUtYf1b/19zJD2m4U1ff
-         oJFaSL1wT3aZXm/rmU2ESBMe/0LXEKZSTWKY4yfd09nq+WXv38N2sX+wsOW2WCcv1P9i
-         9wHXZYhWLFP0RMuuOgncNDXM634KT7bdQ2VM2g1aRm+kpNV9fSVpDlio21d+MKz9pNy2
-         jET4dtlAl9xOdvT7cnfZWQ5NBbSzDt5eCjnY4O1+1FQSOOl00oPkOpID1tMEdv+ul47D
-         ZRIA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793616116; x=1794220916;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=OJg1Na+PMAE5RwVgjsfjwULctd8zKBeuPkayvvN7fUg=;
-        b=MMfsoR99Zj98G2jV/SStwSHRycrQr++iakZKyv6LlclvBLe3pzv935hu+Kic/Xf3eI
-         IHtz8mPjqjgbVgX+izM5BSX9i19pTPE3mBPpeLoBaCPpFtKdkwMkIBU+BmNfwHC3rbB7
-         WVyJuFjplSvpJklpV4cTH0nCuaywl6cLtVlI2LAFOSaAn845jXJfrpFSmZ7gsCfXU6Sj
-         +iVzcX+g66kVxSsN97WNSu3jfwiwPj1tHRLR9VpE7bOhP3XKzbZQH1agW8rqq35jHWM4
-         zlVEC3zxLyQgnzX56ABXYoLy8oYQvknXyr5pKpk5d/sodayru+bna0XudG/l1teCOkf/
-         l98A==
-X-Forwarded-Encrypted: i=1; AKwUvBwzHA9WQZP7EEeg/gqvJ8MUXkTj88eoTNFQx2Q0bsD/cxDrWV50W966CKFt6Bna89ZEl5zurSzQaQ==@kvack.org
-X-Gm-Message-State: APuU4Z+HlmebHzQAoDRcYjZhtVUA9uDgZ4EZv2vEjHnG8F0fNakz6nCB
-	a9SMA2AWBPnoEjIiBF2b4CGrO1HcqWOIQkx+q2rPSa0uxtQb2FdPZMeb
-X-Gm-Gg: AYBFou2wkjbIhuBDl7KaRRHoZoLbU03gFOMG6bEMg3RlyfQHL5xfpf/qoRf4EC5wO/J
-	PLwaj1/5Qio/Rln018sTVXZMLEKtFvwQbFZbse4x0/tMWdxh/SsA1QMV2HWyEDnF4VTBmQfSwTi
-	yYBs1Io0qpKf8vZvRtgeKJsqS8djXQuH+pr+7FDeCk/3gGcdvpoaexUE4D0vAIKNBGtSEBYPB0u
-	cXSC7sWXwsqDTdU6yIFmrLfLtVRRggan98+w76496+1hdXguvOvROZ7L5xlp+XkerS+vP/Er6Q6
-	BHVmWhQmJJ2fmEm6vyVnqXkmROyoVbkKrOx1poYmGXFtYWTY8jvtlP6fld9NuRY8CTJTEqb3ggr
-	8WhUW63wI8rluOvcBaVPnof32MoizliOuz+Bj75bEujscfLOc9POszA7rMe6hYeI5AwSeF0yzi5
-	z7T+x7x4i85JBBD5xcK0dJ5GdzLGeliVMV8ICrQmK4nrulu3GDK1FJBeLXaeCOYiQ9mxjUkiGzU
-	OYrpv1fzwG+TsHvmsBYPQOaspff9I8qcPw73UBET1hDq/w5DRvRZVuItZv2/hXuYtvD10iKDAWN
-	O/4cjkN5UQckbIbW40XFdWDIeNylXUxQl/hzHoclIMLvADXRLMg5
-X-Received: by 2002:a17:902:f691:b0:2df:8b09:93bb with SMTP id d9443c01a7336-2eb3648b69fmr89524235ad.10.1793616115753;
-        Mon, 02 Nov 2026 02:41:55 -0800 (PST)
-Received: from umang-Inspiron-3501 ([2401:4900:1f3a:7c59:eeec:de7d:b077:9b9f])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2eb3925ff38sm25195465ad.36.2026.11.02.02.41.41
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 02 Nov 2026 02:41:54 -0800 (PST)
-From: Umang Pokhriyal <umangpokhriyall@gmail.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Mike Rapoport <rppt@kernel.org>,
-	Peter Xu <peterx@redhat.com>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R . Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Shuah Khan <shuah@kernel.org>,
-	linux-mm@kvack.org,
-	linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Umang Pokhriyal <umangpokhriyall@gmail.com>
-Subject: [PATCH 2/2] selftests/mm: test a uffd write-protect range with an unregistered page
-Date: Mon,  2 Nov 2026 16:06:21 +0530
-Message-ID: <20261102103621.156928-3-umangpokhriyall@gmail.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20261102103621.156928-1-umangpokhriyall@gmail.com>
-References: <20261102103621.156928-1-umangpokhriyall@gmail.com>
+	bh=lxWH9yX4Vl4mKtXKvGkvQaa05rH5ZKTvpkSa847Tggg=;
+	b=Y/2wS7fLuv+wNdthOnaR+HRcJmt2rDUWra11AGIZUKn6vb/uGxoZgSZixcA+GRQDljv9X8
+	wLM9u1KVu0T9k2vlyNyDoq+IxluxdPjnzvED4HeqKedBBiiN23bZkzudWezXUYgsTl6XP3
+	/FwOfG27auRYobKYwwlOn7pWylGH7FI=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=JxbpZPWbvfuRPXcn2jrt5kFSz35KdLS4+oLLTN6f2mY=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1793616373; v=1; x=1794221173;
+ b=QYtjFkK8hdk8uOiuA9MT2L7rULzj6PvZ/woEcPBaMxFOK9IyGKXj46if9X4hA8tRUNGFiCjg
+ C7HPhZDSQMLBvF21fWEp+ecXXpS1KL5mc/FMg6wEgebAVov0Exmd0UzZGDodA18lK0sjro9d8Eg
+ Qor1mDKFyw2GLZhqJ7x4CPwc=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id 92e7062bea360beb;
+	Mon, 02 Nov 2026 10:46:13 +0000
+X-Mizu-Trace-ID: 92e7062bea360beb
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <2f272a9b-ea83-4157-8968-0081990cb709@linux.dev>
+Date: Mon, 2 Nov 2026 18:46:00 +0800
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 2/6] mm/vmscan: move vmscan tracepoints to a local
+ header
+To: Baoquan He <baoquan.he@linux.dev>
+Cc: Steven Rostedt <rostedt@goodmis.org>,
+ Masami Hiramatsu <mhiramat@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Shakeel Butt <shakeel.butt@linux.dev>, Dave Chinner <david@fromorbit.com>,
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Muchun Song <muchun.song@linux.dev>, Qi Zheng <qi.zheng@linux.dev>,
+ Kairui Song <kasong@tencent.com>, Barry Song <baohua@kernel.org>,
+ Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
+ Wei Xu <weixugc@google.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
+ David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
+ linux-mm@kvack.org,
+ "open list:CONTROL GROUP - MEMORY RESOURCE CONTROLLER (MEMCG)"
+ <cgroups@vger.kernel.org>,
+ "open list:BPF [MISC]:Keyword:(?:b|_)bpf(?:b|_)" <bpf@vger.kernel.org>,
+ Ridong Chen <chenridong@xiaomi.com>
+References: <20261031090041.58574-1-ridong.chen@linux.dev>
+ <20261031090041.58574-3-ridong.chen@linux.dev> <aufpQS0XL-CD9YW_@bogon>
+From: Ridong Chen <ridong.chen@linux.dev>
+In-Reply-To: <aufpQS0XL-CD9YW_@bogon>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: EAF6840003
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
-	autolearn_force=no version=4.0.1
-X-Stat-Signature: xxbjs8e1486zh5w7w8fscumubqhzssb8
-X-HE-Tag: 1793616116-484610
-X-HE-Meta: U2FsdGVkX1+//NHe0DD/WI1aJunKr/jFg1MS/yTm+Hh/J4Yy1t4w0nc7pIxS5hAWUE/HTDdvEfnzMQqscLD6U7lWoXmhSPPxyjTZnguC8ErLMqog8cexfnnT6ptT14Xl2P2/UzmD7anoxnByT9FL44q9NVgqmcgfPf9YPGC1WooKOXuI2PBYLEJisVEr7Zz1WUH3t3sV4BUBrDunx8HzN6FkiEl+8APXIwNvFofwWwLnslpWQZ73i2OQXxTdQeDNDZOCBE3WE/75jjEdhuWXu4MHTR40kvpAsRag3cysIx7z7dfpAuet2itSp5+tB3NUG8INcUsa8hn4I6o4f76rJposB+rgFRLriOWBnPqUFJqtFdW8S7NtRFf5qh1wvzchsmF5Nw7t+d34cIYVkNMBwVD6P9wU5a5pB9FAtvoi0E//EF6RNcx5gTNsTtTnyhnlWoWBdFzYpv4Mkk4EBV1TI9XCqSAkAcXBWfk1pJTI6bWe6kmYY1jiySdpReTeyosZnRDCame4FaFNWsnWMA16t4W2mjBwyPEv39Unpe24QjkDtwXgmNE5SNjX6rswDizc8ZijhM2Mdvxel3s2QTHpoDVDfyhmDJdl51Lt84SE+zd32xzB9U0E8heAV/L/kHa+DBTvWOR1HOsu+C6vzFzUMSKUgB9bu3Q7mzFWnGIIuyyEhILz9X1ahlNTAtRxG9YYrg2fb78UdHOHsBUY8l0pUzH3Zv1bedwWsHiWNoY87/7gkQ07+lDqTidRrXAtgV1i8QHlzyi3ARzfUiu8DSs4jLLIitksaoPMYdAANtRevHGl3a5ik6oRswy3dNIiyT+IWIsAD6S5IlQvnmILw9g/G19X+ZfsUjEQ0tdvLJHMMyoJbrrfJ0ECm/RsIDY6TVqKO7kUlrMcQwCctHSrCwNgQZNTnGF74CIUCT4xgrtFyzjUMSihDSVVKRWN/p5eNxtLQScThnN9i7gXzatD3E8
- bbPlW8vH
- ZldI2cZfy7kDulkJRnLdgKVeMo0iGJiZCWYRuinz45LVrqjF5lofwI8Ls8QdIuZW3MOrP+qJXLgvPH5uRn//75nutCvRnoUW/sfruvUugGKUXoSQ7hQw6wIzT4FhtKsXLx2j+svP2TRayc+YDvSM/usX5TFhDE9Gwp4PUT47smpr2UgHLpTRVJPhdmGU9v4V6/W4dCl7x/oSDySwGKNXN1oxXZ7MUpBQEIBrqSq4FBfap33fxHTAGOxIxwNuc0T+OC1H9Z/k2J/XT0UHJhOPrMBg0aYYVDqUKZQQX0jSCxI12E8maCVNRVb8Rd9fZsjRnoPUlVvJpcA8R3c3xkP8TJCiqByqT9ed+EW/YqEw8fYWSe7BFk989SKEmq8EHmpKnHMEQhmmpKCxdw4DvEM6Cx4IUPKUBFXfkL0hxZAULFhOU4eg=
+X-Rspamd-Queue-Id: 1AE008000A
+X-Stat-Signature: pwt63btfeng7z9r639y7exh4ype5nuo9
+X-Rspamd-Server: rspam01
+X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
+	version=4.0.1
+X-HE-Tag: 1793616374-434806
+X-HE-Meta: U2FsdGVkX19Q0yunC6CfDR8EpAd+naqzMofjn9W9Qs9YbnJEDUeqah+nn5c7aT3PnxZVO50AM/Ln5Cp8G7Ub/U0q2dxZkRed01hxjfgPfeMDhTu9v+utuFe2k14OyX6tFeejWyfOXKgSdg6DV9/gh1L6XSPpCoF7OafTKPOQJ2RLqdcUcHLO+9sjfP1i8n9kFU4WPDi2RvgYw3IM7IFJg4AjjtmQfCdjmijJHv5WU4cjb1Iy/iwOXL4q/DncXQ0aP626TgopM63TeU1OxZ9Ac+v3zAWtFP45xiEMZ7JZyJAlMyYvt4ooOtiqwRP9DvvfPuVQgf41Tr6lCk9Wz4CVDVpWMU0UoF4IYtGng6HDSunNDk/Dh2WfyJ2wCWClRf8xQOrVKgKdT9oTnn2cRjYbTEXqR4w+89KQa9eTpZ6f+r03U7Bo+Y7banXTQZuX3Fz3Z0uN6W4W2AmtqCM/yNG0c/17oHHuip5IBUf8XDWWSzrDk5dAMyjVW6aOoOQpJVoaIMqwnPpVJ7FUUHgwBNMMGomHnyq1bh5VVj84U9tiUefZoVvafIXRawwEG4dNg2pBj1RZGp46KikCYa1Mtzs4VsDrSYbI8jScBAxlbJjkIWp5D2Srl7wXv22hnkZatMnVJN/rgaCAO87qk9FdLUc+r1tUcqmPZs5LFkgao73elMnVAx+bZHRHwkLD0xv6mWOPz/yALNxPuROLlw34Y3ofUrObM018uGx4ySRFFf/mAJLdXGqi2Fp4BCNFd7/VgFelRygqa+Q1JxYIGzXYtQnkyWbRZILZ8gTRJM0Uoj2d7GJhsmo/ZGTUPhrkb+mlDXUQ9W4FGn4P9VvXZcDTgzxGeHKh8LpyA8KM94QpDjKpf+U14vUXmCsqBdEA/ikRE/mBh7rV/+og0XG1yoaLH35I2c1jX+4ihx4kTVRobwhL59fUWmrN1WFc+KlbwBaWJhd0QS1lYQwgCySYPn7oTNx
+ dpU1iJSB
+ WrqmuHmGHX3M+IEcsK3QRrx8N8FJNKalrFnxkd44t/XeMJVYKKhTMtR7tLjBubEH41od9qHUv1x8aKFByLrgqUUQAqp1C3Onh0YoTteyOSAZP0JDKGXTDX1u/tCVLtUtWHQK+mpA6z3i8Z/prxy5eRdPQMvNubSTrDze/DpUhou2M/Rd4NebpuqKfeREj9rZxzlpg88//l/hqaJlyNd30eubTKziua2zZ2cVdYrTDif0eD8poFv6kIyMnuIn0YwQ5r+UttuQxfeFUxrVKeWlT/Wjb2rLYSngiDs/8Fx+oXJyEWxr7B9VxCX9jA0tcRrmBwtbmrMAemqMYgCyUi4hMXx1l99K/X8DJzCybsMJ8MxBmpYXEyER218YBQJVEPAveD/bG
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -134,90 +112,172 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Register only the first of two pages and check that UFFDIO_WRITEPROTECT
-over both pages fails with ENOENT without changing the first page, when
-protecting and when unprotecting.
 
-Signed-off-by: Umang Pokhriyal <umangpokhriyall@gmail.com>
----
- tools/testing/selftests/mm/uffd-unit-tests.c | 56 ++++++++++++++++++++
- 1 file changed, 56 insertions(+)
 
-diff --git a/tools/testing/selftests/mm/uffd-unit-tests.c b/tools/testing/selftests/mm/uffd-unit-tests.c
-index 298609544..57e442fd2 100644
---- a/tools/testing/selftests/mm/uffd-unit-tests.c
-+++ b/tools/testing/selftests/mm/uffd-unit-tests.c
-@@ -375,6 +375,56 @@ static void uffd_wp_unpopulated_test(uffd_global_test_opts_t *gopts, uffd_test_a
- 	uffd_test_pass();
- }
- 
-+/*
-+ * UFFDIO_WRITEPROTECT over a range whose second page is not registered must
-+ * fail without changing the first page, in both directions.
-+ */
-+static void uffd_wp_partial_range_test(uffd_global_test_opts_t *gopts,
-+				       uffd_test_args_t *args)
-+{
-+	struct uffdio_writeprotect prms = {
-+		.range.start = (uint64_t)gopts->area_dst,
-+		.range.len = 2 * gopts->page_size,
-+	};
-+	uint64_t value;
-+	int pagemap_fd;
-+
-+	/* Only the first page is registered; the second is a separate VMA */
-+	if (uffd_register(gopts->uffd, gopts->area_dst, gopts->page_size,
-+			  false, true, false))
-+		err("register failed");
-+
-+	pagemap_fd = pagemap_open();
-+	*gopts->area_dst = 1;
-+
-+	prms.mode = UFFDIO_WRITEPROTECT_MODE_WP;
-+	if (!ioctl(gopts->uffd, UFFDIO_WRITEPROTECT, &prms) || errno != ENOENT) {
-+		uffd_test_fail("protect over an unregistered page did not fail with ENOENT");
-+		goto out;
-+	}
-+	value = pagemap_get_entry(pagemap_fd, gopts->area_dst);
-+	if (value & PM_UFFD_WP) {
-+		uffd_test_fail("failed protect changed the first page");
-+		goto out;
-+	}
-+
-+	wp_range(gopts->uffd, (uint64_t)gopts->area_dst, gopts->page_size, true);
-+	prms.mode = 0;
-+	if (!ioctl(gopts->uffd, UFFDIO_WRITEPROTECT, &prms) || errno != ENOENT) {
-+		uffd_test_fail("unprotect over an unregistered page did not fail with ENOENT");
-+		goto out;
-+	}
-+	value = pagemap_get_entry(pagemap_fd, gopts->area_dst);
-+	if (!(value & PM_UFFD_WP)) {
-+		uffd_test_fail("failed unprotect changed the first page");
-+		goto out;
-+	}
-+
-+	uffd_test_pass();
-+out:
-+	close(pagemap_fd);
-+}
-+
- static void uffd_wp_fork_test_common(uffd_global_test_opts_t *gopts, uffd_test_args_t *args,
- 				     bool with_event)
- {
-@@ -2403,6 +2453,12 @@ uffd_test_case_t uffd_tests[] = {
- 		.uffd_feature_required =
- 		UFFD_FEATURE_PAGEFAULT_FLAG_WP | UFFD_FEATURE_WP_UNPOPULATED,
- 	},
-+	{
-+		.name = "wp-partial-range",
-+		.uffd_fn = uffd_wp_partial_range_test,
-+		.mem_targets = MEM_ANON,
-+		.uffd_feature_required = UFFD_FEATURE_PAGEFAULT_FLAG_WP,
-+	},
- 	{
- 		.name = "minor",
- 		.uffd_fn = uffd_minor_test,
+On 11/2/2026 9:37 AM, Baoquan He wrote:
+> On 10/31/26 at 05:00pm, Ridong Chen wrote:
+>> From: Ridong Chen <chenridong@xiaomi.com>
+>>
+>> Move include/trace/events/vmscan.h to mm/trace_vmscan.h so that the
+>> tracepoints can be extended to reference vmscan-internal structures such
+>> as struct scan_control, which is not visible outside mm/.  This mirrors
+>> what several other subsystems already do with their trace headers (e.g.
+>> fs/fuse/fuse_trace.h, fs/gfs2/trace_gfs2.h, fs/lockd/trace.h).  As they
+>> do, set TRACE_INCLUDE_PATH to "." and add mm/ to the include path of
+>> vmscan.o, the only user that defines CREATE_TRACE_POINTS.
+>>
+>> No functional change.
+>>
+>> Signed-off-by: Ridong Chen <chenridong@xiaomi.com>
+>> Reviewed-by: Barry Song <baohua@kernel.org>
+>> ---
+>>   MAINTAINERS                                        | 2 ++
+>>   mm/Makefile                                        | 1 +
+>>   mm/shrinker.c                                      | 2 +-
+>>   include/trace/events/vmscan.h => mm/trace_vmscan.h | 4 ++++
+>>   mm/vmscan.c                                        | 2 +-
+>>   5 files changed, 9 insertions(+), 2 deletions(-)
+>>   rename include/trace/events/vmscan.h => mm/trace_vmscan.h (99%)
+>>
+>> diff --git a/MAINTAINERS b/MAINTAINERS
+>> index aaf2825ac945..2ad01107fa05 100644
+>> --- a/MAINTAINERS
+>> +++ b/MAINTAINERS
+>> @@ -17653,6 +17653,7 @@ F:	Documentation/admin-guide/mm/multigen_lru.rst
+>>   F:	Documentation/mm/multigen_lru.rst
+>>   F:	include/linux/mm_inline.h
+>>   F:	include/linux/mmzone.h
+>> +F:	mm/trace_vmscan.h
+>>   F:	mm/vmscan.c
+>>   F:	mm/workingset.c
+>>   
+>> @@ -17802,6 +17803,7 @@ R:	Shakeel Butt <shakeel.butt@linux.dev>
+>>   R:	Lorenzo Stoakes <ljs@kernel.org>
+>>   L:	linux-mm@kvack.org
+>>   S:	Maintained
+>> +F:	mm/trace_vmscan.h
+>>   F:	mm/vmscan.c
+>>   F:	mm/workingset.c
+>>   
+>> diff --git a/mm/Makefile b/mm/Makefile
+>> index 2a3ec53d62ee..277b97f7f8d7 100644
+>> --- a/mm/Makefile
+>> +++ b/mm/Makefile
+>> @@ -32,6 +32,7 @@ KCOV_INSTRUMENT_vmstat.o := n
+>>   KCOV_INSTRUMENT_failslab.o := n
+>>   
+>>   CFLAGS_init-mm.o += -Wno-override-init
+>> +CFLAGS_vmscan.o += -I$(src)
+> 
+> One nit:
+> 
+> Does it really need the above line? It affects mm/shrinker.c too, did your
+> shrinker.o building fail?
+> 
+> Seems it's redundant because kbuild adds -I$(src) -I$(obj) for every object
+> in the directory since commit cdd750bfb1f7 ("kbuild: remove 'addtree' and
+> 'flags' magic for header search paths"). Please correct me if I am
+> wrong.
+> 
+
+Hi Baoquan,
+
+Thanks for the review.
+
+The line is needed for vmscan.o, and mm/shrinker.c is fine without it,
+because the two files include trace_vmscan.h in different ways.
+
+mm/shrinker.c only does a plain #include "trace_vmscan.h". The lookup
+starts from mm/, where the header lives, so no -I is needed.
+
+mm/vmscan.c defines CREATE_TRACE_POINTS before including the header.
+In that case <trace/define_trace.h>, included at the end of
+trace_vmscan.h, includes the header again to generate the tracepoint
+definitions:
+
+#include TRACE_INCLUDE(TRACE_INCLUDE_FILE)  /* -> "./trace_vmscan.h" */
+
+This #include is in include/trace/define_trace.h, so the lookup starts
+from include/trace/ and only finds the header through -I. Without the
+flag, vmscan.o fails to build:
+
+./include/trace/define_trace.h:118:42: fatal error: ./trace_vmscan.h: No such 
+file or directory
+
+As for cdd750bfb1f7, it doesn't add -I$(src) for every build. kbuild
+only adds -I$(src) -I$(obj) automatically when building with O=
+(see "ifdef building_out_of_srctree" in scripts/Makefile.lib). So
+with O= the line is indeed redundant and vmscan.o builds fine without
+it, but a plain in-tree "make" fails with the error above. The
+explicit flag keeps both working.
+
+To be honest, I had the same worry at first: I thought every .c file
+that includes the header would need a Makefile change. That's why v3
+used a relative TRACE_INCLUDE_PATH (../../mm) instead. Steven corrected
+me and pointed out that the proper way is TRACE_INCLUDE_PATH "." plus
+-I$(src) for the one object that defines CREATE_TRACE_POINTS [1]. That
+turned out to need only this one line. Thanks again to Steven for
+that.
+
+[1] https://lore.kernel.org/all/20261014124914.21c21559@gandalf.local.home/
+
+
+> Other than the nit, this patch looks good to me,
+> 
+> Reviewed-by: Baoquan He <baoquan.he@linux.dev>
+> 
+> Thanks.
+>>   
+>>   mmu-y			:= nommu.o
+>>   mmu-$(CONFIG_MMU)	:= highmem.o memory.o mincore.o \
+>> diff --git a/mm/shrinker.c b/mm/shrinker.c
+>> index 4fb424e721bc..4fbdade6d2f6 100644
+>> --- a/mm/shrinker.c
+>> +++ b/mm/shrinker.c
+>> @@ -3,7 +3,7 @@
+>>   #include <linux/rwsem.h>
+>>   #include <linux/shrinker.h>
+>>   #include <linux/rculist.h>
+>> -#include <trace/events/vmscan.h>
+>> +#include "trace_vmscan.h"
+>>   
+>>   #include "internal.h"
+>>   
+>> diff --git a/include/trace/events/vmscan.h b/mm/trace_vmscan.h
+>> similarity index 99%
+>> rename from include/trace/events/vmscan.h
+>> rename to mm/trace_vmscan.h
+>> index 8a872990b4be..ad90f0e9bf2e 100644
+>> --- a/include/trace/events/vmscan.h
+>> +++ b/mm/trace_vmscan.h
+>> @@ -648,4 +648,8 @@ TRACE_EVENT(mm_vmscan_kswapd_clear_hopeless,
+>>   #endif /* _TRACE_VMSCAN_H */
+>>   
+>>   /* This part must be outside protection */
+>> +#undef TRACE_INCLUDE_FILE
+>> +#undef TRACE_INCLUDE_PATH
+>> +#define TRACE_INCLUDE_PATH .
+>> +#define TRACE_INCLUDE_FILE trace_vmscan
+>>   #include <trace/define_trace.h>
+>> diff --git a/mm/vmscan.c b/mm/vmscan.c
+>> index 9959ca158ce8..79d2d614afd0 100644
+>> --- a/mm/vmscan.c
+>> +++ b/mm/vmscan.c
+>> @@ -71,7 +71,7 @@
+>>   #include "swap.h"
+>>   
+>>   #define CREATE_TRACE_POINTS
+>> -#include <trace/events/vmscan.h>
+>> +#include "trace_vmscan.h"
+>>   
+>>   struct scan_control {
+>>   	/* How many pages shrink_list() should reclaim */
+>> -- 
+>> 2.43.0
+>>
+
 -- 
-2.53.0
+Best regards
+Ridong
 
 
