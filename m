@@ -1,96 +1,128 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C27AE606A90F
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 14:48:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E3216087A14
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 14:49:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=KdaVBd+L
 Received: by kanga.kvack.org (Postfix)
-	id BFF036B05BF; Mon,  2 Nov 2026 09:48:46 -0500 (EST)
+	id 918BC6B05C1; Mon,  2 Nov 2026 09:49:04 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BD6456B05C0; Mon,  2 Nov 2026 09:48:46 -0500 (EST)
+	id 8F0AF6B05C2; Mon,  2 Nov 2026 09:49:04 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B134C6B05C1; Mon,  2 Nov 2026 09:48:46 -0500 (EST)
+	id 82E8C6B05C3; Mon,  2 Nov 2026 09:49:04 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 7FBA96B05BF
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 09:48:46 -0500 (EST)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 741CB40154
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 14:48:45 +0000 (UTC)
-X-FDA: 85390460610.23.7BCACC8
-Received: from relay4-d.mail.gandi.net (relay4-d.mail.gandi.net [217.70.183.196])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 7922520004
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 14:48:43 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=none;
-	spf=pass (imf13.hostedemail.com: domain of alex@ghiti.fr designates 217.70.183.196 as permitted sender) smtp.mailfrom=alex@ghiti.fr;
-	dmarc=none
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793630923;
-	b=bP6dbSQUxf7eU0u+RzPKtsOOY1sL0lPiQ4EgeC1iew1xYQtpYs9X+xQraymVbsQwf20INg
-	7KTUcLJKQkIbXnZ7+5jHhCNh8y4hkg3km5/3g9dcM1dfMgJxA1FaGPu+/KX8q5m756i2tf
-	yLaryUkxTC06FGx0dB/KxxQ/66FO2+4=
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 514976B05C1
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 09:49:04 -0500 (EST)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id DB282A580F
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 14:49:03 +0000 (UTC)
+X-FDA: 85390461366.16.233FC92
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 1D64918000F
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 14:49:01 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KdaVBd+L;
+	spf=pass (imf24.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793630923;
+	s=arc-20220608; t=1793630942;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references; bh=A7RZxz/I0QQefvJdIeMSwQGON5LaCpoKNCQaVHVvIWI=;
-	b=KXWxCc0554Gz4fNDOKM4kUGsJVCIydowMPDSDt2JE+x9jxyyPOBFGTIvcO69/cpU8ZYJLT
-	kXilGVMoJG9WcGXvIwHF9IahKpnW1OlEpx6e2BqvGU6jUOreakx/PaVhHvKtVWnDH5OsAE
-	kwQ8L7lUBu51mJweyCUWCHO0v3UprFs=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=8jrSUs1NekCcqSC9vvFrLSxyeMYzE04YL21WWGf4M1s=;
+	b=2vxSOAHjAUvnmWG5WxrcA9NnvukXiJsHKNuOiIm/wU/yjTQNNsDkiCuNxz7qy5Ld+New6p
+	kJnifg0yCaAwlfQczfUiRDXrtvTZDyQGfVl9jAxK/sZfQYCOMvIRM3QRanin1f7QVwZdd9
+	d/YEMm64wutKYMp8F5sK6t1bgiQy2ew=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=none;
-	spf=pass (imf13.hostedemail.com: domain of alex@ghiti.fr designates 217.70.183.196 as permitted sender) smtp.mailfrom=alex@ghiti.fr;
-	dmarc=none
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 8350E3E9B1;
-	Mon,  2 Nov 2026 14:48:37 +0000 (UTC)
-From: Alexandre Ghiti <alex@ghiti.fr>
-To: akpm@linux-foundation.org,
-	hannes@cmpxchg.org,
-	yosry@kernel.org,
-	nphamcs@gmail.com
-Cc: shikemeng@huaweicloud.com,
-	baoquan.he@linux.dev,
-	youngjun.park@lge.com,
-	chengming.zhou@linux.dev,
-	david@kernel.org,
-	ljs@kernel.org,
-	liam@infradead.org,
-	vbabka@kernel.org,
-	rppt@kernel.org,
-	surenb@google.com,
-	mhocko@suse.com,
-	kasong@tencent.com,
-	ryncsn@gmail.com,
-	chrisl@kernel.org,
-	baohua@kernel.org,
-	usama.arif@linux.dev,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Alexandre Ghiti <alex@ghiti.fr>
-Subject: [PATCH v4] mm: bypass swap readahead for zswap
-Date: Mon,  2 Nov 2026 15:48:22 +0100
-Message-ID: <20261102144835.304017-1-alex@ghiti.fr>
-X-Mailer: git-send-email 2.56.0
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KdaVBd+L;
+	spf=pass (imf24.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793630942;
+	b=SItYS2H7EpgCMvNk4mDw6fsQFj5Gji2ZItkrQGkBbrpeqZ/i6zQlp/5Un1r9eDJYQl8dVM
+	oRLZPSv5qzCbeUY0lfQ2q8Y+ivot8iqesZdVq7nbxKcQ3v2pBPEMkkZepmNGO8yO5KdbYm
+	aY39VsLhWnDyw3T0DsinLtK1UEtNEm4=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 7BF566022A;
+	Mon,  2 Nov 2026 14:49:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0000C1F00A17;
+	Mon,  2 Nov 2026 14:48:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793630941;
+	bh=8jrSUs1NekCcqSC9vvFrLSxyeMYzE04YL21WWGf4M1s=;
+	h=From:Subject:Date:In-Reply-To:References:To:Cc;
+	b=KdaVBd+LR6dYrZOwxkALP6csVexgpTI17X0oGeUCg9cBeFTUgiR94zL6IyLoxq3GZ
+	 aQIkaCOUsB8Oj/VUFcyqtDjBTHM3GgcvmUMOBZk0ZHCAJ2h41NDOZ+peUAbAsjobsF
+	 zM0SFZ6wizhatH0BU12+Ioe1vUILWF6E1PDa0Tf8A/4th4qQcCELh9uSBD2k61TxFY
+	 6DJtyWMTqO1JSRuci+enS4ZGiVJraiPNydbCuB9pH27FOcPP2tfaKhcNesGf3tTGPM
+	 Mj1aPT7WKn91KKayYyS6um+HvRncQzg65nW7VPnUHihTaWl5PXPZv6N7VacBwj9V5+
+	 0bdrkd3Bl9Nsg==
+From: Christian Brauner <brauner@kernel.org>
+Subject: [PATCH RFC 00/16] proc: let procfs own the data path
+Date: Mon, 02 Nov 2026 15:48:40 +0100
+Message-Id: <20261102-work-procfs-core-v1-0-75df35e4f8b8@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-GND-Sasl: alex@ghiti.fr
-X-GND-Score: 0
-X-GND-Cause: dmFkZTEn/q8sunT7bW5dEEtI0bfp6C6rTfBoIVEjxCEHyQnVAxmMTuOAIrObB44eZJeesNyl0ks30kY2r3pvGySGGWMBRmEb8tey4fqQ1BhOxB4/IWQ2PVyPcF/B4x1dRySUj8USOUS4u0LeF4R9bzqQxyhzOwE99ylh/ARU30lm15V8ItjadwcmrqDcK59bSiB5mXUKro/kYfjW5Fbcn/yRJ7SBOA+OOzJJ1QvbbO5V8eZVbCNFOdhuzzYVZXH5CRSe6w3RqyWcNpL8zF6HnvnUXlQfENTuyq95sUWZud37HmwNw0zcOSeSDXhPLe664qZc4N/1S4vtq2SLPzfGoFCoL38UfmgD+egBa5sBO/lNw5zufRTe4/J2CUF1zqOEluHxDvrS2eDY4UfsT0oMD4q3WjeHGn7iY302qL9P5jT50msHE8xJ/60J35VokfqMcmVMN1vxYmQg6a5Yv0JtMq7WoHnxX0ttQHR2DV7QDJi8NQ1y9Zk2E+W/WNs7GaFwdZPRTi34n3CzW2xPBhdUHYbjgbbvhHTyTWeeTA+1VrMvGFLtYuM8J6gsFna3H6R2QLcg/GzDuRy4OQv1EGoZ38PDp5ZmJatq3GoLzBxX1behhKpr2PhgkoSnaSobOKygz1tZfxIxydsEKeBAVtO/iKMPFpaQENgUSnM2kzwsSnjfYHhW5g
-X-GND-State: clean
-X-Stat-Signature: r88tzbrdnbhbjt1fkuc7s7e1kzz4gxcr
-X-Rspamd-Queue-Id: 7922520004
-X-Rspam-User:
-X-Rspamd-Server: rspam12
-X-Spam-Status: No, score=-16.8 required=3.0 tests=BAYES_00,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
-	autolearn_force=no version=4.0.1
-X-HE-Tag: 1793630923-353521
-X-HE-Meta: U2FsdGVkX18UtiUGydq8J8oBpaw/1LQnhFWzy86dIjmPvAg+rSbjO0h6SvGoItYpvQSVuDkDEad8qtma8KBS2H9/eufB5nm+YfUqAlR52g1ve6b7xDIu4yIrwCFnVfarIAMANPROonMgOkE0CI1J48kJPVZ9osfguXW9ROWoon82yAnXS9iGGRfLs5ZKcFmR+TqVy+IPi+vCqSMr2pZSrz4gV1k1U2g2LepktOfiIxUlQFT+CAwoJcFITtbwNidcDQu1Wj2wdIXG8sG/2BwGcXeCIdM7GNMzpuVB5PrNGUI0b0KExK9NUZ/qhI+ltKPplFtaEnrFNcHFzDDWizJY2XDxgxaktNataxKhC9uwu4qA7PsfE/6K8KjzauAVuHp/qa2uiWp00fC+OfsW8sH/HJNJ5bpdCokOHnuq5yO92JWYRT6dQjXcsuYtz8neSsFZF0t6VdHcfxHJ5gi1B1yQxV9HC38aGD2a3deArufBa7wFFLEib6Poj6SZso5q8rW+nmJK1JBI9hCIopwnkxdXfat9svy7JlAamY7482/JUq1QPxK+orZh3Wre5VRB5C7ZZzr7SzKZ3lnPbCzorBUWAj8PkeUPTLs6/n78NUZgwe/kP5OTHYVCpKnmSPmhtdPi4Rmr/WWoZheLLDrqu8iZrhDmWR+q7mwC39Wf8VxVAU4ULNm/MkY25sDxsn9g8xxMa/s7G/Q/yJIWuPnuFkYRsb3vcGs5lhcyFsTuCQpiLnDS2M0llZRNgj/6L78wK31gXXj6M8hKOQttwJfii8poWaKajp1jHHEs60Ce3p2JXVAnDeaV3v58fiU0NChjehe9WB2K8lthA+uQy17lC+7qH85sceHJeMXJPaihLSO7lsV4RcUYiSYomRVvwUZRe18VtNiDKKa7qim97Kn7eu2CLTTd82t/yLVl0q+0UyZi7dps2bj8iXYkyP6NWkSz1FAIc/8YeFQMl0/kt176zEK
- 9iIWm+CM
- y1dFN0NGnRmuCu6gdNPSA/Qy6/3MZ+Pq6vcfrvYAe1eAgmBHnBPMV0Z1IUQ==
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/22Owa7CIBBFf6WZtRigtGK3Jn6AW+MChkHRWBRaN
+ TH+u631uXrLezPnzH1CphQoQ1M8IdEt5BDbIYhZAXgw7Z5YcEMGyWUtBBfsHtOJXVJEnxnGREx
+ 7o4zySkj0MGCXRD48PsotbNYr2E1l7u2RsBtl45k1mZhNpsXDWI3a+aSd234/GSYw0bUfdnVf5
+ W9WU/w76o9mvFKOcy61WormJn5PMZ7PoWuKurJG+1IRal0TLqSVyBfOoUZfOi0qLKWulw52r9c
+ bgbcrXCgBAAA=
+X-Change-ID: 20261101-work-procfs-core-8fa4a4f412cf
+In-Reply-To: <20261102-defizit-jobaussicht-kurios-7016c6e67442@brauner>
+References: <20261102-defizit-jobaussicht-kurios-7016c6e67442@brauner>
+To: linux-fsdevel@vger.kernel.org
+Cc: Linus Torvalds <torvalds@linux-foundation.org>, 
+ Jann Horn <jannh@google.com>, Josef Bacik <josef@toxicpanda.com>, 
+ Chris Mason <mason@kernel.org>, Jeff Layton <jlayton@kernel.org>, 
+ NeilBrown <neil@brown.name>, Eric Dumazet <edumazet@kernel.org>, 
+ Thomas Gleixner <tglx@kernel.org>, Al Viro <viro@zeniv.linux.org.uk>, 
+ Jonathan Corbet <corbet@lwn.net>, Christoph Hellwig <hch@lst.de>, 
+ Greg Kroah-Hartman <gregkh@suse.de>, 
+ Joel Granados <joel.granados@kernel.org>, Kees Cook <kees@kernel.org>, 
+ Jan Kara <jack@suse.cz>, Jan Kara <jack@suse.com>, 
+ linux-kernel@vger.kernel.org, linux-nfs@vger.kernel.org, 
+ linux-acpi@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+ linux-s390@vger.kernel.org, linux-scsi@vger.kernel.org, 
+ linux-um@lists.infradead.org, linux-wireless@vger.kernel.org, 
+ linuxppc-dev@lists.ozlabs.org, netdev@vger.kernel.org, 
+ ntfs3@lists.linux.dev, platform-driver-x86@vger.kernel.org, 
+ coreteam@netfilter.org, kexec@lists.infradead.org, 
+ linux-pci@vger.kernel.org, linux-sound@vger.kernel.org, 
+ netfilter-devel@vger.kernel.org, dri-devel@lists.freedesktop.org, 
+ ibm-acpi-devel@lists.sourceforge.net, jfs-discussion@lists.sourceforge.net, 
+ linux-alpha@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+ linux-cifs@vger.kernel.org, linux-fbdev@vger.kernel.org, 
+ linux-hwmon@vger.kernel.org, linux-mm@kvack.org, linux-sh@vger.kernel.org, 
+ linux-usb@vger.kernel.org, samba-technical@lists.samba.org, 
+ sparclinux@vger.kernel.org, linux-m68k@lists.linux-m68k.org, 
+ linux-doc@vger.kernel.org, linux-serial@vger.kernel.org, 
+ linux-atm-general@lists.sourceforge.net, Takashi Iwai <tiwai@suse.de>, 
+ linux-input@vger.kernel.org, linux-raid@vger.kernel.org, 
+ linux-ext4@vger.kernel.org, linux-modules@vger.kernel.org, 
+ linux-debuggers@vger.kernel.org, 
+ "Christian Brauner (Amutable)" <brauner@kernel.org>, 
+ Chuck Lever <cel@kernel.org>
+X-Mailer: b4 0.17-dev
+X-Rspam-User: 
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 1D64918000F
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
+	version=4.0.1
+X-Stat-Signature: xzejqnj9soj7i5itwanxggppc43y8rwe
+X-HE-Tag: 1793630941-37622
+X-HE-Meta: U2FsdGVkX18QNhN4LNirXxX4sESyibA0TMLDMR7WP+pxsP39xN7XNEfPr+cgsMbA9k3Y0UfJXoQ5YQ7c5db8nCcgflk0gZG4583GQkRaVJirMxzAJ/JZJCnrZqFSJuR6o2cxPCsfRphxih8+g2fwe6vIviFLg4QwHeQvlB1vVzCFN67Jw/G4ZFQckV8FSDRjY6FJboOQlSfBv7pn9l+VI4eBiRpEgmFncbM/uhkhHbFmqMi1m1fk7dRjUMGdchoQN2CjsXr0NxGs+7w91ES5Wx2+L25HYsS0WuMuHWuTGdA6NAMoVERw7z0RJzVCrG6pxsLa/sc6YUwk/hjqpRoeF4izWz1GqYFWuP+a9j/V5SERBAtGaMXJZwvxKqzCoCf2sdG5TL5RawAvKzwHYXxIf/Tgi7ZHtbWe/GGtSEpd9p/GIE6kvv6PY18z973dySb98IP6UACt5OL2slyhig3iNvBXtFLgEaceFPJ0xH2eEVlES9rvivb7pNEAvvRVbABo76/d/J4bjae4orNsAQEZ34JZleyJpYL6bRUZb+miH1l1RkF3UU8jkfpD2qVKoy/g3iNUA6ZvQkHTaABv4dNq5oVZflE76FXUbKTFE9p+tIzvnD4lNwbS0QK5u0f1B3uP8V9TajpoMCdZqBIWihb2KKhf1x1IDRevtMBEqjSfW6KsDIuGvpxEFk01fA2hjtsTm8Bw5uE8iuvFxB1lrEBlSkfIaWRp2J1apE1y/m65g58wEAEHDd1MX//3Y1lRd0NJRNqsl1maeRmh4hcqI0+fZZ6h0mS/99ckP5+XmLilKB5YxbI7inINpjvqNIltnyOCCTyxtBKU4pWiWAlwZz1qNgtOrEgZlO2uH/oJHf9sU4zKs8r9sBokq81BNRQlUUvhe6oOW+aollYXdhSUcZ+Cz98AwS2eETnNHm5m30AdaexYfuIet7zAD4x6tbGCwhxZvJMJocyKtgQhsWRqh1s
+ VuW90cse
+ fcoligyTd2zX5AU1EhPTyHSlxQNsVo5RNT8y4Rm4HDh65U9wj/2lJCvAAQaaiSCutpPQMZLVmnz5uxakGdjHlPsGPDx/bzzffpSPJJ2ctBVqXzxmvQPVZfrRCBMNQC5G6b0Sn6u45iBfOVibJkoxn3P48hZQ/GRLigPsvPUxRqpkNCFJi90/N6Nvm0gzgfz6rDvMAbZ73r9eJEgVQ2auckrP8RM8kNvfCytZ46Vi8hhMZACtpk9YqRFYyGqTc2rtJohrH9MTL3Y0h/87yKNOPoUfJB2oNLPL93N1W
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,197 +131,199 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Commit 0bcac06f27d7 ("mm, swap: skip swapcache for swapin of synchronous
-device") made SWP_SYNCHRONOUS_IO devices (e.g. zram) skip swap readahead.
+remove_proc_entry() waits until every call into the entry has returned.
+For a seq_file entry that's all of seq_read_iter() including the copy
+to userspace. For everything else it's ->proc_read(), ->proc_write()
+and ->proc_ioctl(), which copy to and from userspace themselves. A
+reader or writer can make a page fault in that copy take as long as it
+wants, e.g. with userfaultfd or by punching holes into a memfd over and
+over. And callers of remove_proc_entry() like to hold locks while they
+wait. addrconf holds RTNL when it removes /proc/net/dev_snmp6/<dev> and
+xt_hashlimit holds hashlimit_mutex which is shared by all network
+namespaces.
 
-zswap is the same kind of in-memory, synchronous backend as zram, not a
-swap device flagged SWP_SYNCHRONOUS_IO so it still goes through
-swapin_readahead().
+An earlier AI generated version bounced the text through a second buffer
+in seq_file so the copy to userspace could happen with the entry
+unpinned. That second buffering is really nasty and complicates
+everything unnecessarily. So after chatting with Jann a bit I decided to
+do what kernfs does instead: the entry's code only ever runs with the
+entry pinned and never touches userspace memory. This series is the
+procfs side of that. The entries are converted in four series on top of
+it, one per area of the tree, which don't depend on each other, and a
+last one drops the __user methods.
 
-Here are the results from bypassing readahead for zswap too: it was
-measured with a kernel build (make -j16) in a memcg, zswap=zstd, shrinker
-off, on Sapphire Rapids and 3 iterations.
+seq_file reads: procfs owns the seq_file and only calls into the entry
+with it pinned. An entry declares its seq_operations, or just a show
+function, and the size of its private state in struct proc_ops. procfs
+opens and frees the seq_file and reads and seeks through seq_file
+directly. ->proc_open() and ->proc_release() only deal with whatever
+the entry needs on top of that. proc_create_seq() and friends already
+keep the seq_operations in the entry so they're switched over in one
+go here. That covers most of /proc/net. The open coded single_open()
+and seq_open() users that don't do anything else are converted with a
+coccinelle script, also here. A nice side effect is that opening one of
+these entries no longer allocates a pde_opener, they have no
+->proc_release() of their own anymore.
 
-  768M memcg (sustained swap thrash):
-    metric                 mm-new    + bypass    delta
-    build time (s)          405.0       341.7    -15.6%
-    zswap-in (GB)            79.5        53.0     -33%
-    zswap-out (GB)          144.8       115.6     -20%
-    swap readahead (pages)  6.79M       0.45M     -93%
-    swap_ra hit (%)          72.1        89.9     +18pp
+Writes: procfs copies in what is written before it pins the entry and
+hands the entry a NUL-terminated kernel copy through ->proc_write_buf().
+The copy is capped at PAGE_SIZE - 1 bytes unless the entry asks for
+more in ->proc_write_size, which is what proc_simple_write() always
+did. Entries that take binary data in pieces, the PCI config space,
+ALSA's data entries, cio_ignore and the rtas flash files, ask for
+PROC_ENTRY_SHORT_WRITES and their writes come up short. Since procfs
+copies in the whole write first, a write that is too large or whose
+buffer can't be read fails before the entry's own checks now,
+permission checks included.
 
-  1G memcg (light pressure, build not memory-bound):
-    metric                 mm-new    + bypass    delta
-    build time (s)          177.7       176.0    ~same (no regression)
-    zswap-in (GB)            10.2         7.5     -26%
-    zswap-out (GB)           27.7        25.1      -9%
-    swap readahead (pages)  1.07M       0.08M     -93%
-    swap_ra hit (%)          68.6        87.2     +19pp
+Reads that don't go through seq_file: an entry fills a kernel buffer in
+->proc_read_buf(), procfs copies that to userspace after unpinning the
+entry and only moves the position if that copy worked, like
+kernfs_file_read_iter(). The buffer is a page unless the entry asks for
+more in ->proc_read_size, and like with kernfs a larger read comes up
+short. Entries whose readers want all of a large file in one read,
+/proc/vmcore, /proc/config.gz and ALSA's data entries, ask for
+PROC_ENTRY_FULL_READS and procfs fills their reads in pieces. These
+entries are read through ->read_iter() now, so sendfile() and splice()
+work for them.
 
-Similar gains were observed on an AMD EPYC 7D13 host.
+ioctls: the command number doesn't reliably say what an ioctl copies.
+The PCI ioctls aren't encoded at all, i8k's encode the wrong sizes and
+esas2r uses a range of plain numbers. So an entry lists its commands in
+->proc_ioctl_args with what goes in and what comes back out, like DRM's
+ioctl tables. procfs copies the argument in before it pins the entry,
+calls ->proc_ioctl_buf() with that copy and copies it back out after
+unpinning the entry. A command that isn't in the table fails with
+-ENOTTY. 32-bit tasks go through the same table, so the compat hooks go
+away.
 
-All the results above use the default page-cluster=3 and
-vma_ra_enabled=true. Setting page-cluster to 0 gives the same gain on a
-zswap-only system, but page-cluster is global: it also disables readahead
-for the asynchronous swap backends that other tenants of the same host
-may use.
+The limits of reads and writes are remembered in the entry when it is
+registered, the proc_ops go away with the entry and procfs shouldn't
+have to pin it just to look up a number. An entry that declares a
+seq_file and a read or seek method of its own, or one of the new
+methods next to the old one it replaces, fails to register.
 
-The gain is from no longer prefetching pages that are pointless for an
-in-memory backend: readahead inflates anon residency and thrashes the
-page cache (file pages get evicted and re-read), lengthens each fault by
-synchronously (de)compressing a cluster of neighbours, and adds
-compression traffic when those extra pages are reclaimed.
+Entries that are never removed, kcore, kmsg, the kpage files and
+/proc/profile, keep reading straight into userspace. procfs never pins
+those, so nothing can wait for them. The last series enforces that.
 
-Bypassing swap readahead for zswap therefore makes sense.
+What this doesn't cover is mmap(). procfs pins the entry around
+->proc_mmap() only and a page fault into the mapping runs the entry's
+vm_ops unpinned. kernfs wraps those. That's for another day.
 
-Suggested-by: Usama Arif <usama.arif@linux.dev>
-Signed-off-by: Alexandre Ghiti <alex@ghiti.fr>
-Reviewed-by: Barry Song <baohua@kernel.org>
-Acked-by: Yosry Ahmed <yosry@kernel.org>
+On a KASAN and lockdep kernel the reader selftest fails without the
+series and passes with it. The other proc selftests behave the same
+with and without the series and so do the entries converted here that I
+could get at in a VM.
+
+This is on top of "proc: fix a few old bugs in /proc handlers".
+
+Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 ---
-Changes in v4:
-- Mention page-cluster in the changelog (Barry)
-- Add Barry's Reviewed-by and Yosry's Acked-by
-- Rebase on mm-new
+Christian Brauner (16):
+      proc: drop the compat file operations
+      proc: add pde_pin() and pde_unpin()
+      proc: make room for more entry flags
+      proc: let procfs own the seq_file of seq_file entries
+      proc: let procfs own the seq_file of proc_create_seq() and friends
+      proc: let procfs own the seq_file of DEFINE_PROC_SHOW_ATTRIBUTE() files
+      treewide: let procfs own the seq_file of simple proc entries
+      selftests/proc: check that a faulting reader doesn't hold up removal
+      seq_file: add seq_preallocate()
+      proc: let procfs own the seq_file of /proc/stat
+      proc: let procfs copy in writes before pinning the entry
+      proc: copy in writes to the network namespace entries before pinning
+      proc: let procfs copy out reads that don't go through seq_file
+      fs/proc/vmcore: let procfs copy out reads
+      proc: let procfs copy ioctl arguments in and out
+      Documentation: seq_file: describe how a /proc file uses seq_file
 
-Changes in v3:
-- Go back to the RFC's single patch: readahead windows that mix zswap
-  and disk entries will be dealt with later, the priority is to merge the
-  zswap readahead bypass
-- Move the check into a swap helper, swap_entry_synchronous(), instead
-  of open-coding it in do_swap_page() (David)
-- Bail out early when zswap was never enabled or the tree is empty, so
-  disk-only systems pay a static branch (Kairui, Nhat)
-- Reuse zswap_is_present() rather than adding zswap_present_test()
-  (Yosry)
-- Rebase on mm-new
-
-Changes in v2:
-- Keep readahead, but overlap the decompression of zswap neighbours with
-  the disk I/O of the window, and bypass it when the target needs no
-  disk I/O (Yosry, Nhat, Barry)
-
-v3: https://lore.kernel.org/all/20261007153915.53429-1-alex@ghiti.fr/
-v2: https://lore.kernel.org/all/20260722163536.773166-1-alex@ghiti.fr/
-RFC: https://lore.kernel.org/all/20260624075700.751467-1-alex@ghiti.fr/
-
- include/linux/zswap.h |  6 ++++++
- mm/memory.c           |  4 ++--
- mm/swap.h             | 25 +++++++++++++++++++++++++
- mm/zswap.c            |  5 ++++-
- 4 files changed, 37 insertions(+), 3 deletions(-)
-
-diff --git a/include/linux/zswap.h b/include/linux/zswap.h
-index df6cafbe95dc..94746fb71bb6 100644
---- a/include/linux/zswap.h
-+++ b/include/linux/zswap.h
-@@ -35,6 +35,7 @@ void zswap_lruvec_state_init(struct lruvec *lruvec);
- void zswap_folio_swapin(struct folio *folio);
- bool zswap_is_enabled(void);
- bool zswap_never_enabled(void);
-+bool zswap_is_present(swp_entry_t entry, unsigned int nr);
- #else
- 
- struct zswap_lruvec_state {};
-@@ -73,6 +74,11 @@ static inline bool zswap_never_enabled(void)
- 	return true;
- }
- 
-+static inline bool zswap_is_present(swp_entry_t entry, unsigned int nr)
-+{
-+	return false;
-+}
-+
- #endif
- 
- #endif /* _LINUX_ZSWAP_H */
-diff --git a/mm/memory.c b/mm/memory.c
-index 5aec0dbc17be..0c9ed04528d8 100644
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -5034,8 +5034,8 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
- 	if (folio)
- 		swap_update_readahead(folio, vma, vmf->address);
- 	if (!folio) {
--		/* Swapin bypasses readahead for SWP_SYNCHRONOUS_IO devices */
--		if (data_race(si->flags & SWP_SYNCHRONOUS_IO))
-+		/* Swapin bypasses readahead for SWP_SYNCHRONOUS_IO devices and zswap */
-+		if (swap_entry_synchronous(si, entry))
- 			folio = swapin_sync(entry, GFP_HIGHUSER_MOVABLE,
- 					    thp_swapin_suitable_orders(vmf) | BIT(0),
- 					    vmf, NULL, 0);
-diff --git a/mm/swap.h b/mm/swap.h
-index d5bf21f517dc..b8181bd056ee 100644
---- a/mm/swap.h
-+++ b/mm/swap.h
-@@ -94,6 +94,7 @@ static inline int mem_cgroup_swappiness(const struct mem_cgroup *memcg)
- 
- #ifdef CONFIG_SWAP
- #include <linux/swapops.h> /* for swp_offset */
-+#include <linux/zswap.h> /* for zswap_is_present */
- #include <linux/blk_types.h> /* for bio_end_io_t */
- 
- static inline unsigned int swp_cluster_offset(swp_entry_t entry)
-@@ -336,6 +337,24 @@ struct folio *swapin_sync(swp_entry_t entry, gfp_t flag, unsigned long orders,
- void swap_update_readahead(struct folio *folio, struct vm_area_struct *vma,
- 			   unsigned long addr);
- 
-+/**
-+ * swap_entry_synchronous - check if @entry is read synchronously
-+ * @si: the swap device of @entry
-+ * @entry: the swap entry
-+ *
-+ * SWP_SYNCHRONOUS_IO devices and zswap complete a read in the faulting
-+ * context, so swap readahead has no asynchronous I/O to overlap.
-+ *
-+ * Context: The caller must hold a reference on @si. The answer is a hint: the
-+ * entry can be written back from zswap or freed concurrently.
-+ */
-+static inline bool swap_entry_synchronous(struct swap_info_struct *si,
-+					  swp_entry_t entry)
-+{
-+	return data_race(si->flags & SWP_SYNCHRONOUS_IO) ||
-+	       zswap_is_present(entry, 1);
-+}
-+
- #else /* CONFIG_SWAP */
- 
- static inline struct swap_cluster_info *swap_cluster_get_and_lock(
-@@ -423,6 +442,12 @@ static inline void swap_update_readahead(struct folio *folio,
- {
- }
- 
-+static inline bool swap_entry_synchronous(struct swap_info_struct *si,
-+					  swp_entry_t entry)
-+{
-+	return false;
-+}
-+
- static inline int swap_writeout(struct swap_io_ctx *ctx, struct folio *folio)
- {
- 	return 0;
-diff --git a/mm/zswap.c b/mm/zswap.c
-index 7660f19ed5bf..37d217860a6b 100644
---- a/mm/zswap.c
-+++ b/mm/zswap.c
-@@ -1695,12 +1695,15 @@ bool zswap_store(struct folio *folio)
-  * change under it.
-  * Return: true if at least one slot in the range is in zswap.
-  */
--static bool zswap_is_present(swp_entry_t entry, unsigned int nr)
-+bool zswap_is_present(swp_entry_t entry, unsigned int nr)
- {
- 	pgoff_t offset = swp_offset(entry);
- 	struct xarray *tree = swap_zswap_tree(entry);
- 	unsigned long index = offset;
- 
-+	if (zswap_never_enabled() || xa_empty(tree))
-+		return false;
-+
- 	/*
- 	 * A pinned range is at most SWAPFILE_CLUSTER slots and is aligned to
- 	 * its own size, so one tree covers all of it and a single lookup is
--- 
-2.53.0-Meta
+ Documentation/filesystems/seq_file.rst             |  42 +-
+ arch/alpha/kernel/srm_env.c                        |  10 +-
+ arch/arm/mm/alignment.c                            |  10 +-
+ arch/powerpc/kernel/rtas-proc.c                    |  50 +--
+ arch/powerpc/platforms/pseries/lpar.c              |  20 +-
+ arch/powerpc/platforms/pseries/lparcfg.c           |  10 +-
+ arch/sh/mm/alignment.c                             |  10 +-
+ arch/sparc/kernel/led.c                            |  10 +-
+ arch/um/kernel/exitcode.c                          |  10 +-
+ drivers/acpi/proc.c                                |  12 +-
+ drivers/hwmon/dell-smm-hwmon.c                     |  10 +-
+ drivers/input/input.c                              |  24 +-
+ drivers/macintosh/via-pmu.c                        |  10 +-
+ drivers/net/wireless/intel/ipw2x00/libipw_module.c |  10 +-
+ drivers/platform/x86/lenovo/thinkpad_acpi.c        |  10 +-
+ drivers/platform/x86/toshiba_acpi.c                |  40 +-
+ drivers/pnp/pnpbios/proc.c                         |  10 +-
+ drivers/s390/block/dasd_proc.c                     |  10 +-
+ drivers/s390/cio/blacklist.c                       |  13 +-
+ drivers/scsi/scsi_devinfo.c                        |  10 +-
+ drivers/scsi/scsi_proc.c                           |  21 +-
+ drivers/usb/gadget/function/rndis.c                |  10 +-
+ drivers/video/fbdev/via/viafbdev.c                 |  70 +---
+ fs/jfs/jfs_debug.c                                 |  10 +-
+ fs/ntfs3/super.c                                   |  20 +-
+ fs/proc/cpuinfo.c                                  |  10 +-
+ fs/proc/generic.c                                  | 126 +++---
+ fs/proc/inode.c                                    | 457 ++++++++++++++++-----
+ fs/proc/internal.h                                 |  54 ++-
+ fs/proc/proc_net.c                                 |  44 +-
+ fs/proc/stat.c                                     |   6 +-
+ fs/proc/vmcore.c                                   |  14 +-
+ fs/seq_file.c                                      |  36 +-
+ fs/smb/client/cifs_debug.c                         |  79 +---
+ fs/smb/client/dfs_cache.c                          |  10 +-
+ include/linux/proc_fs.h                            |  91 +++-
+ include/linux/seq_file.h                           |  11 +-
+ kernel/irq/proc.c                                  |  30 +-
+ kernel/latencytop.c                                |  10 +-
+ lib/dynamic_debug.c                                |   6 +-
+ mm/slab_common.c                                   |  10 +-
+ net/core/pktgen.c                                  |  30 +-
+ net/sunrpc/stats.c                                 |  10 +-
+ .../selftests/proc/proc-remove-slow-reader.c       | 133 ++++++
+ 44 files changed, 837 insertions(+), 792 deletions(-)
+---
+base-commit: 65ba8f34ec886ec72b2c07ddc8cf3d815c32869d
+change-id: 20261101-work-procfs-core-8fa4a4f412cf
+prerequisite-change-id: 20261101-work-procfs-bugfixes-054d00028491:v1
+prerequisite-patch-id: 0474af12959624910718795bf86684383664c685
+prerequisite-patch-id: 540aa9ea28adcbc54d8264f66314e29e3b8c9d49
+prerequisite-patch-id: 2f7139d1c972c4439dccca610caa5f1288987a3d
+prerequisite-patch-id: b0031a7c4855b7ec38259c59f30f65101a8fc4b5
+prerequisite-patch-id: 0b7f226abf2b9ff41873a1aa55cf97747647d56b
+prerequisite-patch-id: f63e345f897619af54813958046617c655fb7daf
+prerequisite-patch-id: c0e21e762a2960e3324c5ab04634a7035e515fa6
+prerequisite-patch-id: fd59c71eadd8f39c58b3baea93567bc093bc9b0e
+prerequisite-patch-id: 5d52cc8a5c73e4c5ba16b8e24f51408c17583bf9
+prerequisite-patch-id: 1f9179284e2f3314d4b46ac5e989089a21c7576c
+prerequisite-patch-id: 10397bbf696bee16dc71eb79fff6c5e73842bcbc
+prerequisite-patch-id: 9b44279dcf08912238d2f6438a3328a778a79a0c
+prerequisite-patch-id: 16854b621a3a71dfc365aaf7abaa7f65adfe9f7e
+prerequisite-patch-id: ca42eea21fae1fd1cd3518ab057c74b61ffd68fe
+prerequisite-patch-id: 23255dc2be76b0479c083dbd4c897bfbb533aed5
+prerequisite-patch-id: 82129c687ebf0a41b369893b92f2c038420ab801
+prerequisite-patch-id: 56ad57a99a5bda075a9f4e844368974296744934
+prerequisite-patch-id: 288b3cbaa11e01a778cc3d7beb6c0549aacf59f2
+prerequisite-patch-id: a163b1549608652bfa5bd9ff93efa55b541010c4
+prerequisite-patch-id: 78f067c343177e52d49ddfe9ee2992e602549869
+prerequisite-patch-id: 19c12bc6e3fbed35acc1f657196b1a997f48cdfe
+prerequisite-patch-id: 5800c3076694bad719954b2ad4d7448c6e013bfd
+prerequisite-patch-id: 2a2f63d8843b159594b9eee6ddea028ce76a6270
+prerequisite-patch-id: 40a1951d57906c4a1b98a4bd96a814b80339b9c5
+prerequisite-patch-id: e2141077e69f20a2b27fab69c8d61d0686682f53
+prerequisite-patch-id: c4d6018c26c40dc549d88330d23ce48f872c2b7f
+prerequisite-patch-id: 6de8ec17746031bc6d1d9ac262c5be0f905fcd79
+prerequisite-patch-id: b87bcb167884605bff1fd0f2ed8a88942d07efd5
+prerequisite-patch-id: cfa9a8b4c67e20cfd22d77035bfd21ee96ab3298
+prerequisite-patch-id: abf3482ed2399b7b2e1ee72e937af05bb9200667
+prerequisite-patch-id: 02c175b2dee565a85b3308ecf2ec8e3c9a029e0f
+prerequisite-patch-id: 4ed6b3d3d45de49d4967e88ba4e7f03372775f55
+prerequisite-patch-id: dbe02fe3f784776fda5e7ae99f077bef0cd4b48d
+prerequisite-patch-id: 53edc9a95afff57c4acba40095a8054924261ea2
+prerequisite-patch-id: cf9ce0099005fd3bc31a1e15131d48e315ac3bee
+prerequisite-patch-id: 16a657a5d0046068dbace29e7ea046ac1441f46f
+prerequisite-patch-id: efeb2d6f7df71d5dede2c1d12fe999a28e38aab9
+prerequisite-patch-id: e6ffe2a5c3ee5645f56c8366b568fbc9f140848c
 
 
