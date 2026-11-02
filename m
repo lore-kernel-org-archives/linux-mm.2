@@ -1,72 +1,72 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 063BE606A8B6
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 11:22:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0084460A2635
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 11:22:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=RsFLsyf1
+	dkim=pass (1024-bit key, unprotected) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=KZZ2pULE
 Received: by kanga.kvack.org (Postfix)
-	id 4B01E6B00EF; Mon,  2 Nov 2026 06:22:49 -0500 (EST)
+	id 80B436B05C7; Mon,  2 Nov 2026 06:22:55 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 411A26B05C8; Mon,  2 Nov 2026 06:22:49 -0500 (EST)
+	id 7BB726B05C8; Mon,  2 Nov 2026 06:22:55 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2DA106B00EF; Mon,  2 Nov 2026 06:22:49 -0500 (EST)
+	id 634DE6B05C9; Mon,  2 Nov 2026 06:22:55 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 07B6B6B05C7
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 06:22:49 -0500 (EST)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 95362160C4F
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 11:22:48 +0000 (UTC)
-X-FDA: 85389941616.13.D0F364E
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 3E6556B05C7
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 06:22:55 -0500 (EST)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id D193A40CC0
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 11:22:54 +0000 (UTC)
+X-FDA: 85389941868.04.86A9763
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf28.hostedemail.com (Postfix) with ESMTP id C577BC0002
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 11:22:46 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=RsFLsyf1;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf28.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com
+	by imf13.hostedemail.com (Postfix) with ESMTP id 205A820006
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 11:22:52 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=KZZ2pULE;
+	spf=pass (imf13.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793618573;
+	b=PrrqWeYRq8uiUtWUKBfVhFbTLOFuCiRapgnYsbWp1IWAch1YgF4EtQ26Q3zSLgqtH59DFE
+	8Jz7bNvBL7uzAAYGu86sl9AF+hO+LCVaXot43DZZPYktLkkpGnD1gyw1C/lRCercDq823l
+	KlC7gm9NU+cR5NGw752/BM5FUtdxsqk=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793618566;
+	s=arc-20220608; t=1793618573;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JQeg6N8tF3c2ZKXl0aeVJdIb4rnpiEyWbh6rBzOCUVQ=;
-	b=gTE9Pq7cy6hPytV9lCRooWr+83RHCUkG2OZh73HXszLAWoLsLRm7oKXoxuKW+AA6mjBBWE
-	bUh9pMhbzkgzW1S2gqIGO0ogzAgqdvxDjx2amR6EJZmxrF7BZZdZNADFGRyUBYy/l9mFnH
-	oCdsRgfpTnUyM9+m22ql6f1Y6G+WY1o=
+	bh=Tsb7ch0fkVycRE8l4lzI8CP6E88GuMX71rxiGXcRyD0=;
+	b=qCxlCDYuTcv8p/cu8GgWftQgOP29gUEp4fTALjVZiH3CnuDjWmwwH/EiY2yFft816BN7jx
+	B4HBVnD5O87e16oyC7WhcuG/q+nCq0tZ2MsUAsSrnkve8X1Z1+jdfi1UU4Oh6jTN/x/hBr
+	+1YAX8Jv+6MUFRFuk8UeNYBz2+zJyY8=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=RsFLsyf1;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf28.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793618566;
-	b=FOFPUu6Bgkh9SaLlsOsC5SvvjfynfqONms45cuJiDeYcPULSDt1oyN3yerqrCfa9jbmJqj
-	xHumEKAbauYIKnl226ooY31shkFA6cNDQiPQCmohTrqe6AZU/cLcP+PETwAA5gMeJFDTf8
-	HrMjgQfZll0dB1UyBXvDd8Sz2wHS1h8=
+	imf13.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=KZZ2pULE;
+	spf=pass (imf13.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id D37871691;
-	Mon,  2 Nov 2026 03:22:42 -0800 (PST)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 42E7A2A31;
+	Mon,  2 Nov 2026 03:22:49 -0800 (PST)
 Received: from e129823.arm.com (e129823.arm.com [10.2.213.3])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id C7FCA3F632;
-	Mon,  2 Nov 2026 03:22:39 -0800 (PST)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 37B4F3F632;
+	Mon,  2 Nov 2026 03:22:46 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1793618565; bh=uF4DfWzXa9EkGf1I0Bn2aL3RfBnTbP81TBjbavbJ8QQ=;
+	t=1793618572; bh=60Xa9B2iUtyR3r8ioE+XTXe+blj+2dKI9yzxVIZr1t0=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=RsFLsyf1Ata7d0KOtqzPB7spCrIFhZHbMA0SSIsc3J50ctwBwFtCV0Z2YINZYuYl1
-	 axvMSatrzTWBN5HpeQBgg1ibhRlgnvCAtI4rJkD/9rMna30Ury4ZYSO33jBiVAAtlf
-	 YwBemrzcCZNlPsQc3YLM94WSry4c46hzaYal8oLs=
+	b=KZZ2pULEBctEsGAXVrvXT+Vel6lV2ylQM7v0lus5odxyD77t9mWOEHrZc49tBaniz
+	 nQ+V1k58GA0+D6TwKZwG0X5N6Rgew97i5ygFK83+IXfvCKtCKCzyF/kY02GLCg4Hkk
+	 VwkyuVCUKrSmbbb+nsizpCRap0p4iBkAG7tU2GwE=
 From: Yeoreum Yun <yeoreum.yun@arm.com>
-Date: Mon, 02 Nov 2026 11:21:24 +0000
-Subject: [PATCH RESEND v2 11/21] riscv: mm: use proper set_pXd() for
- generic compile-time folded patable in vmalloc_fault()
+Date: Mon, 02 Nov 2026 11:21:25 +0000
+Subject: [PATCH RESEND v2 12/21] mm/pgtable: redefine PGTABLE_LEVEL enum
+ with ascend order from PGD
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261102-dummy_ptxp3-v2-11-78840b2ec73c@arm.com>
+Message-Id: <20261102-dummy_ptxp3-v2-12-78840b2ec73c@arm.com>
 References: <20261102-dummy_ptxp3-v2-0-78840b2ec73c@arm.com>
 In-Reply-To: <20261102-dummy_ptxp3-v2-0-78840b2ec73c@arm.com>
 To: Russell King <linux@armlinux.org.uk>, 
@@ -99,31 +99,31 @@ Cc: linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
  kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org, 
  linux-openrisc@vger.kernel.org, Yeoreum Yun <yeoreum.yun@arm.com>
 X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3753; i=yeoreum.yun@arm.com;
- h=from:subject:message-id; bh=uF4DfWzXa9EkGf1I0Bn2aL3RfBnTbP81TBjbavbJ8QQ=;
- b=owEB7QES/pANAwAKAW3Vw9FaxTEzAcsmYgBq6HI0EhHemhFZT76+hkFEHBElBSQOBJI6GP7jl
- ZStUURgzUeJAbMEAAEKAB0WIQQtg+CS3QUzuFh1pJ1t1cPRWsUxMwUCauhyNAAKCRBt1cPRWsUx
- M84jC/9S9/aAhhSrKviCbj48B1rRZZrYq4NqcKgkdwxZVfhy+7gtmxs99D6rhsaJdl68LkLYoQ6
- VyH1mb7ItqGWTah++FtNBeXOorhLS2mYEFR/1jKSDb62UfF4DimM3s3wrPH2+G4W8vvlAvA9RE0
- vr0L8mQ6lrGmyqUgbKu8GrSpaYgd9J8fM6EZpFE4KhVkJqxOe3/Mthnaa+nc/wTvPsTP2HZG9aP
- uFtGA4pIhDaYRHFox7AQfkAggATajLnNd/gKUF11QNNhxNNbQAcKOkf8XVo3/CqE5rLVNR7FIN9
- X3jUHSsR4I1853YVKxn9Y6y2Cp9ckjoZXCZL8WtyyAUe+43XVI3EL0dADQQ1EIrjm0Xjd2VgmyC
- nnkYstSWKwOQigSOlu+TvlKk/0yA8Xn9AdXJ5rXSOb6e0D5pYbVuIhtyLEjNUQpYzjDKKfKfoLm
- Vx9lj3xIhnAxthINB3ejIGFbqbn5Os3x2fKnddFMK2B19loCvjy5L66p6hupOcw5yRg5U=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1282; i=yeoreum.yun@arm.com;
+ h=from:subject:message-id; bh=60Xa9B2iUtyR3r8ioE+XTXe+blj+2dKI9yzxVIZr1t0=;
+ b=owEB7QES/pANAwAKAW3Vw9FaxTEzAcsmYgBq6HI0QV4ojpgcFbw7NYJO5M3UEa0V4ttsQ5fcX
+ PLtIuFXA9+JAbMEAAEKAB0WIQQtg+CS3QUzuFh1pJ1t1cPRWsUxMwUCauhyNAAKCRBt1cPRWsUx
+ M5ZvDADXVkFHHBDnee5VQHc1URqbVSLnRmZQGtwzLqlg+CacOzVx4f7Diht4dzRAiiK+1m9UF01
+ wRfNSyqT67w0dI1bwZt6KHNKRN+XFKnks05m3unYkdsH3JMDguBAe8SXxh/WUsURKuHCFf/9FHS
+ JE5HMbsaUR8G6yz3LC36b96W0UCpRr/7EQOLZ6PHOYoCayzJauK/OB58CtSVxuWSzi2sNEjL164
+ 3edL/DfNEjgvKH6m2eaH35w6admU/hQvZmWxMa6KbJN8bT5DZyzVo3tNRhmJGQkqGAaAW4egus2
+ Ew8qNAr2sofw58ojK3Wec9idGsNAMVs5eaDhV/V+4XtuXB9aUY4wNVPUTouQtD+hOIM7bgv5msO
+ M7P5Xb6PZcHXVtsDFOZFKgoj69nU3EGPXYrfSQ7shRw9Mc+7k0eqPaSEEIlD1mUn0Cs9peZCsro
+ zWNQBVLh7Nn3TSK8C1Y/FKdh3N26DPsAkAb/jVrnq8PoxftkHncsqMLPSsZNp68ShBSVE=
 X-Developer-Key: i=yeoreum.yun@arm.com; a=openpgp;
  fpr=2D83E092DD0533B85875A49D6DD5C3D15AC53133
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: C577BC0002
-X-Stat-Signature: ounqxyewd7prq1wa1fkad3b93m8g3szm
+X-Stat-Signature: ytjd5nrswpp34ofip1pwuydch3u65ww7
+X-Rspamd-Queue-Id: 205A820006
+X-Rspam-User:
+X-Rspamd-Server: rspam12
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspam-User: 
-X-HE-Tag: 1793618566-33027
-X-HE-Meta: U2FsdGVkX1/IfeF1FP/7WG2IfSx6L9Do3tk/OJwyOrOaQbkVi6CUQ8PtlxiCfXybXWDiHWVPa/sJf+z6WoCcotxVG0buOlSDdxcuKtICDr9gxgTwhFdfFNZ/bvC9XUTS6IelHcYneZuIDSm6cK28b1TqeQq7dmaF1xPA5M4dykGeRGTm7n+5UOmgUoJc2r9Y8hDZdbRk5G+TvbH4fFnnODtfID71vqSXS6rmKFmZ3D7jeKP7FUy9oXoyGqviTXWPqPXpNZpLNC7LNPM7IlLNuhf5g3o5cenynXnXqUfluQ3GECuWPc4AGQL1C6YLYUEqklAjMWegK7iVfaFHWK9ji0HkQ8woEkOkKiRnylZj/tu+xO5tCjVon3nG43047eZQehMwf0V0iuC37H33BhYg4Bb0aSJFUeNveWS5hSUAwkneZeCSx4BFwWF+t5ghCQE2ltFBhCxPDthxk+YAwhpUlM0Q+BIHF/nvIBRdYt7uv9IyaOtffkhkZ1Ixj71mH23jJEmLHv5rmX0ZZqfKCsB1xlhj9xrPMa2eAcGn/nidbQAdcBKrZUgAmR9SvNduiGyBCm5AotxzjvV1D5icgUCxLZHcTelXoIL07cfYnUk3cVOCGUXayE+FbwFu8myy0lQ7AtBI46X+766akgnJluBIvdSZiBjWOCxMmsKhYRILxErqVyEUUU4FyIR355zVT9OUVSXcZ30/A3FW8bH9kD8L3pw3ZtK2a49cOTXfuCdBNS7GZc5jLFWD94YUiwkeaPhD5aM9UAa3268H1CHpL/uN3cmt81ZNe9yu1mChRnRbDPE/Rdce60d9Ijs/kkJGn8YRRP9Twf05KNBHR6reMKPVYlcxXjHNWO3HrlXhatt+F95MWO6uJIGbm4XTycMiYEHQHWH9o7XPA3po8BmswsNiuKlIJOqmSEagI0lYyTQTNw+H9SNlRW7CpO44tfy0N0663A/rdhzDf2crdNBRKda
- 62/Wik/C
- kFl8yKebA16aihnVaSADR5/n9pcH+8BqQ3XGZlV+6pD+zg3qa9gYAwvtlC3SJv4ObmaRagOFR5MLZCfk+mUN2vIs5DlsnWovksJKvM+vz7waWF9DF53zCK4slKEBHhwxXNBRIBe0lq3q9woagtqD++wcTJmAuvDwo703JyWzWT1qRx74YRHKR5a1+U/yhu9KseqSKUXG1VFC3lGT6YrMBCnk+oafXuGfNxJ2FSlD4CvCk3YrQ04FbeKzM8rZLW+jsstE/aQit2l8zhNIuANZcuHhW3QnrhkqG5sjfcqMeumkHar4=
+X-HE-Tag: 1793618572-493528
+X-HE-Meta: U2FsdGVkX19/DD8UIotYVIXCROsGQYd6amPJ+PSmAhtqc6lK17jYYP7WniBpTISprbmkKXINzpnJq6aSH5qZaXqgvwQ2UV3bP9kquL0rlbw57eQ1ufqgLLEloyirMr4DngMmq3WPdAl+WoB2YFOOxDNzrnM72A7YwA1kDPaPC80BnHub9VET5b88sfox6n4qSdL/p/M/gqIzuml6rqdFBmV0zk7ihe1ldG40ckbg+65ngduvPnsSc2KGqFK8LO+hJWpLy3OLi8NZG/Ak1X7vBddsSTrNLMhu4y+BvoE53AaOv39mL86r7Mzj4WVsXr+7Ao5a/tTaR5ub1yzW8s8dz7xbVOXP+afcsFRE7Jj7xu3kFkDC/i1ggALlUu4yV0xqm4qch6GuXROJpvl5qs6ShzZ5silkdEAAa0A1DKiCaoLz2gx6W8S7OuIskOUhTct126a1P4zqUdaGseXpVJAHIEuaLTTsquc1RCpb4j/yfekF1VkZnoD6s1/3k6RyeRnh5N2NKKDQiCcA+rVUxGR2oNHvaUyyDJl+O/6e8UtmBwden4VrrW4mMa68LSwB8Rm3ULO+uNv+EpYV7EsS3DQ0AyjCKkgqBeHgsJC5XqeVhWPPobYAv8As62EQgutlsnyT5PbUP7E97SjAra+6065u20SHh9ICJmCrBrcXNIUZRAnnM2oBDVjeJlQvmdEa49wcI34YA9p1LYwa9pSgO2VkV/w52KbkAA76FZN/hLbDv80pwWgkSU5h1bECueuWFIhx42+EfjRUUjiKIfx3xH7uVIAqdsOJ4nuT9wM8MhZOvla185xZN/okV7EpPVGSihQeCn3rYjIhZubVOm8LMWiVPUk5sZs2DDSUA0yyhAWPXjb87WvjY27/g73GHuwPhNFIw/jI0iYCbzP3xhyLtay/InWgwgBcMu19szBGSooDCmahDYJyqhf5gjbX50tNWUVcRoGp8o+JyfNlLisug8K
+ k1iD30EJ
+ wtDAytwmSoLo0FPREu30XKip3kbuUWQXu80S/r0fl0rcpu1dYxKUdtXfJiwOLWwg5ljjM3ZY0Uqph40eS07EQ1pvCZqgQGCmudK7VYJCTS+sAroQm531JCc0ZcM7BZ1GnSxEInGzKJ7oydgZHkCEa2RvF7LFGPuyVSJZiuZYacxACcz5xpexez0KJilhZYJjB/4vswaEWhocIbdFy9/iJjqikY3d6akDFVpuBHjqg65ddoy/GXDPj17GxQGfzj+BmJQ6zwUiLR53kXnCrHW34NZnjbXO4fyRVxj6AZ/sUYrXXJyR1MMQfvp/oKkfML1UTxHPCczS5BVPl68pxZr9pqtKQ4BdOMDIOtVTFO26x91YjTdobzmForI3mKg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -132,127 +132,44 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-The behaviour of pXdp_get() will change with generic compile-time folded
-page tables, making it invalid to use set_pXd() with the result of
-pXdp_get(). Instead, the appropriate first-level set_pXd() must be paired
-with the corresponding pXdp_get().
+The PGTABLE_LEVEL enum values appear to be ordered in the opposite direction
+from their intended usage.
 
-Therefore, call the appropriate set_pXd() for generic compile-time folded
-page tables so that vmalloc_fault() continues to handle folded entries
-correctly when checking pXd_present().
+Intuitively, higher page table levels should have smaller enum values,
+but PTE is currently assigned 0.
 
-There should be no functional change.
+For consistency and cleanup, reverse the enum value ordering.
 
-Since most architectures use a similar pattern to handle vmalloc fault
-by syncing the faulted entry, it would be worth cleaning this up by
-introducing a common helper in the near future.
+Since there is no current user relies on these numbers to be ascending from
+PTE->PGD, so it can be changed to be ascending from PGD->PTE, in the
+direction of the page table walk.
 
+Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
 Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
 ---
- arch/riscv/mm/fault.c | 52 ++++++++++++++++++++++++++++++++-------------------
- 1 file changed, 33 insertions(+), 19 deletions(-)
+ include/linux/pgtable.h | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/arch/riscv/mm/fault.c b/arch/riscv/mm/fault.c
-index 04ed6f8acae4f..b2bcaf10d13f1 100644
---- a/arch/riscv/mm/fault.c
-+++ b/arch/riscv/mm/fault.c
-@@ -167,14 +167,16 @@ bad_area(struct pt_regs *regs, struct mm_struct *mm, int code,
+diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
+index 780fe849ff8b7..a032f95943357 100644
+--- a/include/linux/pgtable.h
++++ b/include/linux/pgtable.h
+@@ -2288,11 +2288,11 @@ static inline bool arch_has_pfn_modify_check(void)
+ typedef unsigned int pgtbl_mod_mask;
  
- static inline void vmalloc_fault(struct pt_regs *regs, int code, unsigned long addr)
- {
--	pgd_t *pgd, *pgd_k;
--	pud_t *pud_k;
--	p4d_t *p4d_k;
--	pmd_t *pmd_k;
--	pte_t *pte_k;
-+	pgd_t *pgdp_k, *pgdp, pgd_k;
-+	p4d_t *p4dp_k, *p4dp;
-+	pud_t *pudp_k, *pudp, pud_k;
-+	pmd_t *pmdp_k, *pmdp, pmd_k;
-+	pte_t *ptep_k;
- 	int index;
- 	unsigned long pfn;
+ enum pgtable_level {
+-	PGTABLE_LEVEL_PTE = 0,
+-	PGTABLE_LEVEL_PMD,
+-	PGTABLE_LEVEL_PUD,
++	PGTABLE_LEVEL_PGD = 0,
+ 	PGTABLE_LEVEL_P4D,
+-	PGTABLE_LEVEL_PGD,
++	PGTABLE_LEVEL_PUD,
++	PGTABLE_LEVEL_PMD,
++	PGTABLE_LEVEL_PTE,
+ };
  
-+	BUILD_BUG_ON(CONFIG_PGTABLE_LEVELS != 5 && CONFIG_PGTABLE_LEVELS != 2);
-+
- 	/* User mode accesses just cause a SIGSEGV */
- 	if (user_mode(regs))
- 		return do_trap(regs, SIGSEGV, code, addr);
-@@ -189,39 +191,51 @@ static inline void vmalloc_fault(struct pt_regs *regs, int code, unsigned long a
- 	 */
- 	index = pgd_index(addr);
- 	pfn = csr_read(CSR_SATP) & SATP_PPN;
--	pgd = (pgd_t *)pfn_to_virt(pfn) + index;
--	pgd_k = init_mm.pgd + index;
- 
--	if (!pgd_present(pgdp_get(pgd_k))) {
-+	pgdp = (pgd_t *)pfn_to_virt(pfn) + index;
-+	pgdp_k = init_mm.pgd + index;
-+
-+	pgd_k = pgdp_get(pgdp_k);
-+	if (!pgd_present(pgd_k)) {
- 		no_context(regs, addr);
- 		return;
- 	}
--	set_pgd(pgd, pgdp_get(pgd_k));
-+	if (CONFIG_PGTABLE_LEVELS == 5)
-+		set_pgd(pgdp, pgd_k);
- 
--	p4d_k = p4d_offset(pgd_k, addr);
--	if (!p4d_present(p4dp_get(p4d_k))) {
-+	p4dp = p4d_offset(pgdp, addr);
-+	p4dp_k = p4d_offset(pgdp_k, addr);
-+	if (!p4d_present(p4dp_get(p4dp_k))) {
- 		no_context(regs, addr);
- 		return;
- 	}
- 
--	pud_k = pud_offset(p4d_k, addr);
--	if (!pud_present(pudp_get(pud_k))) {
-+	pudp = pud_offset(p4dp, addr);
-+	pudp_k = pud_offset(p4dp_k, addr);
-+
-+	pud_k = pudp_get(pudp_k);
-+	if (!pud_present(pud_k)) {
- 		no_context(regs, addr);
- 		return;
- 	}
--	if (pud_leaf(pudp_get(pud_k)))
-+	if (pud_leaf(pud_k))
- 		goto flush_tlb;
- 
- 	/*
- 	 * Since the vmalloc area is global, it is unnecessary
- 	 * to copy individual PTEs
- 	 */
--	pmd_k = pmd_offset(pud_k, addr);
--	if (!pmd_present(pmdp_get(pmd_k))) {
-+	pmdp = pmd_offset(pudp, addr);
-+	pmdp_k = pmd_offset(pudp_k, addr);
-+
-+	pmd_k = pmdp_get(pmdp_k);
-+	if (!pmd_present(pmd_k)) {
- 		no_context(regs, addr);
- 		return;
- 	}
--	if (pmd_leaf(pmdp_get(pmd_k)))
-+	if (CONFIG_PGTABLE_LEVELS == 2)
-+		set_pmd(pmdp, pmd_k);
-+	if (pmd_leaf(pmd_k))
- 		goto flush_tlb;
- 
- 	/*
-@@ -230,8 +244,8 @@ static inline void vmalloc_fault(struct pt_regs *regs, int code, unsigned long a
- 	 * addresses. If we don't do this, this will just
- 	 * silently loop forever.
- 	 */
--	pte_k = pte_offset_kernel(pmd_k, addr);
--	if (!pte_present(ptep_get(pte_k))) {
-+	ptep_k = pte_offset_kernel(pmdp_k, addr);
-+	if (!pte_present(ptep_get(ptep_k))) {
- 		no_context(regs, addr);
- 		return;
- 	}
+ static inline const char *pgtable_level_to_str(enum pgtable_level level)
 
 -- 
 2.43.0
