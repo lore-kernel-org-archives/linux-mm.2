@@ -1,92 +1,127 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 208B0606A327
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 18:37:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E030B606A324
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 18:51:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=WxpkZ1cy
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=KzAjMyKS
 Received: by kanga.kvack.org (Postfix)
-	id 03BF66B00EF; Mon,  2 Nov 2026 13:37:14 -0500 (EST)
+	id B067B6B00EF; Mon,  2 Nov 2026 13:51:57 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F2F206B05B1; Mon,  2 Nov 2026 13:37:13 -0500 (EST)
+	id AB8FA6B05B1; Mon,  2 Nov 2026 13:51:57 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E49776B05B2; Mon,  2 Nov 2026 13:37:13 -0500 (EST)
+	id 9AC196B05B2; Mon,  2 Nov 2026 13:51:57 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id AC8826B00EF
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 13:37:13 -0500 (EST)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 2E1E416020E
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 18:37:13 +0000 (UTC)
-X-FDA: 85391036346.22.B7C3CBC
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 7DE7B40003
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 18:37:11 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WxpkZ1cy;
-	spf=pass (imf27.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id E12006B00EF
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 13:51:56 -0500 (EST)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 9C6B0C01CD
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 18:51:55 +0000 (UTC)
+X-FDA: 85391073390.04.60924D0
+Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
+	by imf01.hostedemail.com (Postfix) with ESMTP id BDDE94000D
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 18:51:53 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=KzAjMyKS;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf01.hostedemail.com: domain of ampr.mhd@gmail.com designates 209.85.221.41 as permitted sender) smtp.mailfrom=ampr.mhd@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793644631;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	s=arc-20220608; t=1793645513;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qDKFQDXPG+iBZS2vDWMkMnQLcy7Gc9+loqT8Y69xRHs=;
-	b=kb3Zqu4robOlPgQT8MZTwzAJgL6Xs56GdTra6n2amPneBmImLQmLC3zQURnTe3giOzFbx6
-	hyshy7SBYHlrS759hkcVaTZeOxobfSerNCWYZgf9sTJaCpxFPvMi30y30F3z7iYvXig73T
-	0kWRq4eGuYDJEI8jvGlcM6wmSgmGf7c=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793644631;
-	b=GB8g9M90favCjbBxB288nWY3NmmgkrwVgcvVP2tddBaXsfN7anFiw7vyB7862WE3IUD81+
-	N9ue0TGuJOg48ILsCGiQ6IBpuSM+m1IKQuPVRoi7EINJG5irfReMbIkCo1LV5T1YEh8Ydj
-	SLtfcrc0Ka9fUeG2H58J5embaZfG2x8=
+	bh=jUhK5m1lvTjtdfmztu+bilD4B6b4ERUK5SOg2m81DN4=;
+	b=bk9LHHL7rXA0Wqn2hYS6bHt7cS+yargSjxSS+QDztuK/abxiK18qE0w9gRyqBridJ2Q7iK
+	Z6n6qo44X4Xn0EhemC9QT8RRW9suNkpQuUCZrbxKsa32dmDN8B4s+e7jBX6fn3sKECYoSg
+	peOwA7PXkE87iGr+SjSJdgvjWM7DNQI=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WxpkZ1cy;
-	spf=pass (imf27.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id E849B41B2D;
-	Mon,  2 Nov 2026 18:37:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5187F1F00A16;
-	Mon,  2 Nov 2026 18:37:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793644629;
-	bh=qDKFQDXPG+iBZS2vDWMkMnQLcy7Gc9+loqT8Y69xRHs=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=WxpkZ1cyZ6Q7rZo65XP2VV8z5wya3l9GeTOaUf/QlMLk4WGFsSAZGoH0//7wf8j2t
-	 ROcAM4N9btzawEaVAYqsIXSAEb2qwO9uvoHq1wRx1St6oTX64NpNO/IGu4A4mhyfNl
-	 86X58ggVim9hb4Cl5oLytzt6VLzdeSCqof/17F8PxC2HJ5e/NeDo2EBHzrXqSn6ZA7
-	 xNl32Zx+LDYiSxCEc2FUfqBc66oKCRitBa+2K/qSX99Utge9bpfrSGj9yWkLUbFU6s
-	 ok+0YSMD8vwlnaYC+nESP6ZLWH3ZSMM1s/vQ1p11sD1zV62T+l5/Onzi0uzK8nk0YN
-	 aeS1f9yofo23Q==
-Message-ID: <sashiko-outbox-193951@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH] mm/memory-failure: set PG_hwpoison of a non-hugetlb
- page under hugetlb_lock
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Mani Tofigh" <mt4022@columbia.edu>, "Muchun Song" <muchun.song@linux.dev>, "Oscar
- Salvador" <osalvador@suse.de>, "Miaohe Lin" <linmiaohe@huawei.com>, "Andrew
- Morton" <akpm@linux-foundation.org>
-Cc: "David Hildenbrand" <david@kernel.org>, "Naoya Horiguchi" <nao.horiguchi@gmail.com>, "Kiryl
- Shutsemau" <kas@kernel.org>, "Mike Rapoport" <rppt@kernel.org>, linux-mm@kvack.org, tz2294@columbia.edu
-In-Reply-To: <20261101-hwpoison-hugetlb-ro-v1-1-a42d6411cb65@columbia.edu>
-References: <20261101-hwpoison-hugetlb-ro-v1-1-a42d6411cb65@columbia.edu>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Mon, 02 Nov 2026 18:37:08 +0000
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 7DE7B40003
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
-X-Stat-Signature: o7tcuuxahkc1qf6ny5crza4j7m83f9m9
+	imf01.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=KzAjMyKS;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf01.hostedemail.com: domain of ampr.mhd@gmail.com designates 209.85.221.41 as permitted sender) smtp.mailfrom=ampr.mhd@gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793645513;
+	b=z/vSRXMSeXmlhZVhr4aC8EnWuwp0Ev8uogpGLoeeSwVuoMK3NmbcvKYoIzp5KsDdRgdSia
+	vOyCOJS47JXgl4WUzKd/bwCCN/RRsU4RQa30PeUvzDCL4ytedE9t3wg60iivGzCq5l3Lrj
+	74YtcUVymyWRNVgeLrBrMEnhL5BYXEA=
+Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-48df4e9d2d4so1789141f8f.3
+        for <linux-mm@kvack.org>; Mon, 02 Nov 2026 10:51:53 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1793645512; x=1794250312; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=jUhK5m1lvTjtdfmztu+bilD4B6b4ERUK5SOg2m81DN4=;
+        b=KzAjMyKSy4LedzB3w48ogctz1+bDlOwpSv9f4FhFa+77oexDm2WYQcEN+zqQ3jDJKd
+         vMnUBo1JOEzqIFOhSMaFj5p5Izeo79hen1gOFaJoPc3ayD25HQwizxTuWjOdjD5Ma2lF
+         Rq06IF1mOeZsJBqaaw5f75IBNUCg4ViHu/8BvgIPqyoC+3BuTdwThKUIBMyUVov8avIN
+         FqQ7/k7j9FpWu2AgArZwNX/5OV0ZwYg839kOntHHj22AYqTuAVR39RP2NdqqfO09dKRY
+         LyVXgai+WWH/wCJTe1VJX97O2rnMLqgSNEAgEOYNyHoV7F3fY/lY9neCyplRAFeiT809
+         uX3g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793645512; x=1794250312;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=jUhK5m1lvTjtdfmztu+bilD4B6b4ERUK5SOg2m81DN4=;
+        b=oAHsBZzQFRzFgpMVW2ibcSRWgmWa2E5g7NR6s7aiC3a3yqTRF+S+AzYZWsSM2Id4Ta
+         Q+7b4cx2eXM02RtM/Rq4KgBY3NaX+sn3wjvTYKqG7Kyl0XgWx2RuVavFyEzahKXNzusw
+         3+nbzDnXZuUKRE0+Fu0uqI6VvFIN9MTEt0m+/ZGTDANnmLjXPIpIc4+FBdUV0I6erthp
+         +4rvFkBT8AlmugLvp9G7rPmRFqMWU67b76/d2AVvPPI7R9PgtNj8mTcbja6yhBsWHY24
+         JHpgfPEnuS4xPyzQdQvraxThV+cvVnmU4ORPMh+aMNByVG2oT58j1Do3Eflxa55z/fB7
+         mwbA==
+X-Forwarded-Encrypted: i=1; AKwUvBxvk3eL18KnIXpdZgiOsMV8DCDu7FtNs8GH1ZzqCXKVEszSkisJn667JpHYNrr8rZkfKCqWHJVIBg==@kvack.org
+X-Gm-Message-State: APuU4Z9toXWqrwnDkDuTyR3NEM35WhhbMMXHl6wNX9r9nIZcgHKbrGyG
+	4/8q99a2EWytAoFYNDKvZaDVAbj8DSWSdSa9qICOKhg1QySWasgr/GXmMRKmFTVWqaUKi7Nf
+X-Gm-Gg: AYBFou2zSGBY11u/326bins/qr7fzBKpNVR2YhBvQjX+w9cio+4vHTcPPIJDiyVY9Sz
+	5Whi2ahgtHPZl8kcjgfWntXIK5Zqhk9yl8RzebhCgL0njzYYtj2o3TqZSka1Kw4NM+8xJeHHITm
+	63nng8oy4sgPsGtGhe8P6L5T26dg6oyrS8kCEbHwqv3hARjYEgXZDZHiCMuFv/9lLBAQF4R3qqX
+	0X62JlemEHpmgjx/ghUEtYp5j7ZLqSagqkXXt8CwIQoQBqqXh+aTij9U/89oT42cgcOh8yQK/2p
+	ndP0sU/v0YXCBEuq2YSR5qnsko0wezWo5Dw9M4oLAawQrcmyLK+SRnj8Vz6Iy6vQ8b8YTmiYVZl
+	4Xcz5V9SxfM+1Co4B/t/xbCgihPfxh3Fnth2kmkbe8WgN8VoJMAD0LgC+apIdGLd0+swU0nHpFk
+	ufWGdJvqFuGomEwCnnlyA3S4Xgpg/D7ehdcpqE08PHClpikS1hiNO11AoK9krQoTr0w/djub9of
+	DzgiIjQ2RI8fONM1Ck4M442l43XUgL1hMgOJVkMa2/xlBxQhRVhYVsRw5KLCKVAWsok2sf+XOG8
+	Es3Zkll8sLWxMhOhRGkLYVU=
+X-Received: by 2002:a05:6000:4559:b0:488:79d6:a4a6 with SMTP id ffacd0b85a97d-48e6e2bc780mr16125799f8f.8.1793645512031;
+        Mon, 02 Nov 2026 10:51:52 -0800 (PST)
+Received: from fedora ([2a02:4540:28:4cc2:7f6a:92cc:ff40:8b84])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e71b728f9sm21260812f8f.10.2026.11.02.10.51.45
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 02 Nov 2026 10:51:51 -0800 (PST)
+From: Muhammad Mahdi Amirpour <ampr.mhd@gmail.com>
+To: kas@kernel.org
+Cc: akpm@linux-foundation.org,
+	david@kernel.org,
+	shuah@kernel.org,
+	linux-mm@kvack.org,
+	linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	yeoreum.yun@arm.com,
+	ziy@nvidia.com,
+	Muhammad Mahdi Amirpour <ampr.mhd@gmail.com>
+Subject: [PATCH v2] selftests/mm: handle child status safely in khugepaged
+Date: Mon,  2 Nov 2026 22:21:30 +0330
+Message-ID: <20261102185130.30504-1-ampr.mhd@gmail.com>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <auhvkuDO8cP9Pip4@thinkstation>
+References: <auhvkuDO8cP9Pip4@thinkstation>
+X-Archived-By: <archiver.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: BDDE94000D
+X-Stat-Signature: dp1zopd5q8sd3eejcbhnjm31sz5qefze
 X-Rspam-User: 
-X-HE-Tag: 1793644631-379824
-X-HE-Meta: U2FsdGVkX1/V2NQJeBPHvRkwbbbKwaCKv3f+nUWMlMcAaCe8A8ejqsrQw1vD6Lez1j202Wth4r1QBpb/MDzYLyausnYB5f9dcPTlPWPMxp8HSOpe3KB/Rotc9sLGJzaSI8lJV8RZ/3H+A/kSE1ypu/46AFAWCoKJUHWcd/Q56zztuz+02DZdwOXAZPUPyFPjW8qrAcyfasGlDDGr725ddig4KLzONOf1OIQADNmi0DswvMj313Q9rkBB6uyoDPXqv/FFBktQ2+1vxlYZmdxkcaxn7ChQe1+94RwIQdjXv4Y3NRxkdZuCCGRlJw1GEScEZ0TwNPBM4mCdJA/VH3jVlNZoPy0yUu3f9a3DPL1oC8ImgFJXVuAEn37TMRawL/b235Pd+OrU7P4wyEJlgJXnnW4wQeHuk0MDen/Idw9nBLBTmxtI7AVu9aY8HhY+FSKBQegW6gcS770r/Lw+KufiyoyUcU7TA70SL1yUr/3B9KpovjhKsg7iG80N58aICaPZwbuQqHRH3gkReU30abe+h3Q8KkDkgJOUMZxVYTApYqNvQ6f0DcV5fYVyJpbol6QgCWq7n01SS4YTIuOwBs99MgCVyeAUCrlphZjG9OSXL7L2aSgIj89xfNuvPqhdk/ryt72A/HOOfzPR0Fqr/3zfoczpjezUFz6P2xQzv6O6f8kgA9XitPwcxWP0A8nD2naDSiPLwDBNL96e3XgGbjeuY6LwJSITKtBwVqhcFTfhkNOMmF+SMYlbbvlScB3ioxjDL6/xauaKPHCwSSFi2hq0QcMplRLGIhY3a5EFQUwz5huhXpXRWDW2xWPOAOW0S07J1Oocbp/SmTqw5EO45ep28gSU96tjhKIXWz/cFWYEKKdmQFB2TL4wPqT/LoVOMfnSUBEvFOggs7N+dtZs48enNJ03clmKqutH1sByrMoCO8ufqbCe1cSfHWSSAKbm6yvH4/rXuHHygkUA1LWYqI7
- qMn7g5Di
- IBMUgdgMbfGoWXSqk9bGfjzxum6jIoJKaqwhGyxfLdLk4tOJ77OdGLfF7QiOLpTrfaA0zPUB3dzUVW5rgaZGL563lvnljVZJzI0H1yLa4d8mLj30AYFNKA05HUqFCC4AchTqyOqlcBPzS+4L5+OgBHoEdJ9kPG7QDjS3kfQIfZpFWxZ2YDmbcjCct3/2CwwMsDm5PcaYpL6n4MLnlQyUPGE8GlBUTeF0axTgcu73TCoqtRMGO4MMgAPzgb9hjBWExp0mcacVA75g8efqMwn6oz+6FBfKvFfiQiVXzhqIkxePlEv400Giz+Ofuy0C6COCyt62yiQDKr4cmeAj3eZz5Pu4L4vuGfPRRsR0jUfTMgFjQh9Wo3tWioP0Wle2knQ+4qxMXsrkwj/Oag6wpbeGD9CzIjqOQD5qeTtHNtKVdkf3ileCp70NuWXbmieqpOGXJKAR4ZaA099mUSNEhvyUYiOzox046gXwufglY23tphcIJY0qB7bu2HRcpP36ZUfsnCwEZI2D5O5nEPhrZVvPuh9x0kN+BEpMQ1KF07EYGX4GIjYbBOwdE9xE3Et/dubyBvGUxqxIaEe8r6ETRHbqjDiUgLqZqrkiRHW8yQ7H6Rp4M+WChDfu5NXXwRXm2XklXzk5NWjHhlPLnTTp/15FwkokbGkKFkWC9ZvFAneBphs2Q/tymvnVhPBCZjw==
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1793645513-345129
+X-HE-Meta: U2FsdGVkX1+IowK+dLpOyG5kO8NTSSlzeEbRkLXnBozK25DpIMve5avKXLJBQMLeG0b1VLnDEltC3W4Vh6uymyUAIoeNgCyYwKzY2xrXToCTfeXRMEu4fRIEgAAUDhpbvHWst0lzjwqtXYKXV1XFUtAAiwSs1J3NpmbPmeUDBmgzP2IXJsOX2/34Gif59AHJakGzHPXEczswiBdRWMELSkzHNGxVsGZOUSP5sIAE2S37mHGaNRzhafO2h9fTDUqgz6aIbNQ6b5kBosr5gyVZuE8HUEG7fe36oglhLjh7U4pYHNfZEVHgiwtNlwz4qLg9m0tZ/32O3DMRk7MgXbAkfRtDyXnjau257zX88wgpw3m9Nep6BYiP4n0re4VLbsRUr4QIEmO/kQsOTjhduiZgxqrwzao9c4TTfrINE6M4OMB2563992wDxOr5dD7GtJD69NK3aDVP3J3SFfh/4aHE1ChLRYjJfjQp3o/9YJSsDNL3m5mWlE4KJDXHjdwfSdJ3KbIJ1s9gFDRikZ0+p3JyJ71I/dBQogZfozKsDrgvFJGGw10Nqvd8iqz0oybQ76ShR9CjrKVoWLd78+yKkRWuOp/l6DcSBFbv+ct5PpysicsCCx6hYjuCYf4Dvty9dPYr8wl6i3kTorTdytzpcec6IwpoYkBxbS2BwvbGVSVfZTc+mYBANLvpaI92DT/ExV0cT4dLSp6co0mwdLxI3l9YHvq7MWCZswY0Mp4kYEbx/QmjBhzpP/RMv2jfUeH6alD1k7F2fqz5cg53HxcpHAMOZwiHcqNhcV4hjexemYwLE14QOa2c8VKELwrg/6VtBVPpylGjYuoPsT77corPAFP8yXpxLjguDgh+jtZlcvtc5nchUoTnO58lvCmX+4EcneGHybrXBZFFKeUlVcIWD5nd5k5uIb39rDbpvhA3N0oQ4sP8EaELHPaPl0X1mu+ZAOI+e2TYAc6YuBFk39jdMJd
+ 7Mw0+iOZ
+ ZUbzXzLJJY6WXyuFoJMfKkyf/mZLTo+n7Na44eNHu1EFY7JLszMS7661da+kYELe9017bm4kgtM/lNbSStwELqNvaZql2J3negjRH4o1uEWgkeUkyTR/pRnTMT07/uYTpIdfdS1sSriUn4DgOezIrOisbbztYNR5wseUKuYpz/reykAtwKXtrwvKh+sspeO/kW1QOEKnlP4klw44T+4LaE+PpwAtfB+YAyyfq+3Nvgx3WptzQBiOHoYWx7NOAlIELsFnK9ZctY4mo8FRK1r4TkeNao9HZf4Hr2fiUfUejUkdtogook6KtNL5ZmdYVYjBjGwU9ova5MOlS7tkeCyTTCp9e7CM7E1zvhMzckqhy0mtAvQvnx8rt/8Qg9II0Ec4GZQrYLDX27qiD/7iMIRkmcCuobI7v6E4L5DgOvJEUJwtuLRlLd+cPoaP4m3cjsJr/5xV3EUVKjz1xKyl8vUUILJSCNCxT4e7ffSzXlQqRqPZaCverv5dIq8T9gQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,180 +129,160 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
-X-Archived-By: <archiver.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
-s) to consider:
-- [High] mm: clear_non_hugetlb_hwpoison() leaves PG_hwpoison set and breaks=
- retry
-- [High] mm: race before init_new_hugetlb_folio() loses PG_hwpoison or skip=
-s retry
---
+collapse_fork(), collapse_fork_compound() and
+collapse_max_ptes_shared() take the child result from
+WEXITSTATUS() without checking WIFEXITED(). For a child
+killed by a signal WEXITSTATUS() is 0, which is KSFT_PASS:
+the parent runs its own checks and the test reports ok even
+though the child crashed.
 
-commit 031004fbe7e0ec6720c8987fdb6bdfbeb3ef7d90
-Author: Mani Tofigh <mt4022@columbia.edu>
+Fail the test when the child did not exit normally, and print
+the signal that killed it. Also fail when fork() fails,
+instead of reading an uninitialised status.
 
-mm/memory-failure: set PG_hwpoison of a non-hugetlb page under hugetlb_lock
+Use get_child_status() in all four fork tests, and use
+wait_for_child() to handle fork() and waitpid() in the
+three blocking-wait tests.
 
-This commit sets the hugetlb flag on newly initialized hugetlb folios and
-sets PG_hwpoison on non-hugetlb pages while holding hugetlb_lock. This is
-intended to prevent a race where memory_failure() sets PG_hwpoison on a tail
-struct page after hugetlb vmemmap optimization has remapped it to the shared
-tail page.
+Fixes: bd212a7dbdb1 ("kselftest: mm: return fail when child test result is fail in khugepaged")
+Signed-off-by: Muhammad Mahdi Amirpour <ampr.mhd@gmail.com>
+---
+ tools/testing/selftests/mm/khugepaged.c | 61 +++++++++++++++++++------
+ 1 file changed, 48 insertions(+), 13 deletions(-)
 
-> diff --git a/mm/memory-failure.c b/mm/memory-failure.c
-> index b705f9f97f420..087b385aa0604 100644
-> --- a/mm/memory-failure.c
-> +++ b/mm/memory-failure.c
+diff --git a/tools/testing/selftests/mm/khugepaged.c b/tools/testing/selftests/mm/khugepaged.c
+index 1bc7acc66a46..b90daf008239 100644
+--- a/tools/testing/selftests/mm/khugepaged.c
++++ b/tools/testing/selftests/mm/khugepaged.c
+@@ -1004,9 +1004,44 @@ static void collapse_compound_extreme(struct collapse_context *c, struct mem_ops
+ 	ksft_test_result_report(exit_status, "%s\n", __func__);
+ }
+ 
+-static void collapse_fork(struct collapse_context *c, struct mem_ops *ops)
++static int get_child_status(int wstatus)
++{
++	char buf[64];
++
++	if (WIFEXITED(wstatus))
++		return WEXITSTATUS(wstatus);
++
++	if (WIFSIGNALED(wstatus)) {
++		snprintf(buf, sizeof(buf), "Child killed by signal %d",
++			 WTERMSIG(wstatus));
++		fail(buf);
++	} else {
++		fail("Child terminated abnormally");
++	}
++
++	return KSFT_FAIL;
++}
++
++static int wait_for_child(pid_t pid)
+ {
+ 	int wstatus;
++
++	if (pid < 0) {
++		fail("fork() failed");
++		return KSFT_FAIL;
++	}
++
++	if (waitpid(pid, &wstatus, 0) == -1) {
++		fail("waitpid() failed");
++		return KSFT_FAIL;
++	}
++
++	return get_child_status(wstatus);
++}
++
++static void collapse_fork(struct collapse_context *c, struct mem_ops *ops)
++{
++	pid_t pid;
+ 	void *p;
+ 
+ 	p = ops->setup_area(1);
+@@ -1019,7 +1054,8 @@ static void collapse_fork(struct collapse_context *c, struct mem_ops *ops)
+ 		fail("Fail");
+ 
+ 	ksft_print_msg("Share small page over fork()...");
+-	if (!fork()) {
++	pid = fork();
++	if (pid == 0) {
+ 		/* Do not touch settings on child exit */
+ 		if (ops->check_huge(p, hpage_pmd_size, 0, hpage_pmd_size))
+ 			success("OK");
+@@ -1035,8 +1071,7 @@ static void collapse_fork(struct collapse_context *c, struct mem_ops *ops)
+ 		_exit(exit_status);
+ 	}
+ 
+-	wait(&wstatus);
+-	exit_status = WEXITSTATUS(wstatus);
++	exit_status = wait_for_child(pid);
+ 	if (exit_status == KSFT_FAIL)
+ 		goto out;
+ 
+@@ -1053,12 +1088,13 @@ static void collapse_fork(struct collapse_context *c, struct mem_ops *ops)
+ 
+ static void collapse_fork_compound(struct collapse_context *c, struct mem_ops *ops)
+ {
+-	int wstatus;
++	pid_t pid;
+ 	void *p;
+ 
+ 	p = alloc_hpage(ops);
+ 	ksft_print_msg("Share huge page over fork()...");
+-	if (!fork()) {
++	pid = fork();
++	if (pid == 0) {
+ 		/* Do not touch settings on child exit */
+ 		if (ops->check_huge(p, hpage_pmd_size, 1, hpage_pmd_size))
+ 			success("OK");
+@@ -1085,8 +1121,7 @@ static void collapse_fork_compound(struct collapse_context *c, struct mem_ops *o
+ 		_exit(exit_status);
+ 	}
+ 
+-	wait(&wstatus);
+-	exit_status = WEXITSTATUS(wstatus);
++	exit_status = wait_for_child(pid);
+ 	if (exit_status == KSFT_FAIL)
+ 		goto out;
+ 
+@@ -1104,12 +1139,13 @@ static void collapse_fork_compound(struct collapse_context *c, struct mem_ops *o
+ static void collapse_max_ptes_shared(struct collapse_context *c, struct mem_ops *ops)
+ {
+ 	int max_ptes_shared = thp_read_num("khugepaged/max_ptes_shared");
+-	int wstatus;
++	pid_t pid;
+ 	void *p;
+ 
+ 	p = alloc_hpage(ops);
+ 	ksft_print_msg("Share huge page over fork()...");
+-	if (!fork()) {
++	pid = fork();
++	if (pid == 0) {
+ 		/* Do not touch settings on child exit */
+ 		if (ops->check_huge(p, hpage_pmd_size, 1, hpage_pmd_size))
+ 			success("OK");
+@@ -1146,8 +1182,7 @@ static void collapse_max_ptes_shared(struct collapse_context *c, struct mem_ops
+ 		_exit(exit_status);
+ 	}
+ 
+-	wait(&wstatus);
+-	exit_status = WEXITSTATUS(wstatus);
++	exit_status = wait_for_child(pid);
+ 	if (exit_status == KSFT_FAIL)
+ 		goto out;
+ 
+@@ -1248,7 +1283,7 @@ static void collapse_fork_cow_race(struct collapse_context *c, struct mem_ops *o
+ 	for (; i < n; i++)
+ 		ip[i * stride] = i + 0xbeef0000;
+ 	/* A child that died reading the racing pages is a failure, not a zero */
+-	child_status = WIFEXITED(wstatus) ? WEXITSTATUS(wstatus) : KSFT_FAIL;
++	child_status = get_child_status(wstatus);
+ 
+ 	ksft_print_msg("Check the parent sees only its own writes...");
+ 	for (i = 0; i < n; i++)
+-- 
+2.55.0
 
-[ ... ]
-
-> @@ -2060,7 +2061,11 @@ static int get_huge_page_for_hwpoison(unsigned lon=
-g pfn, int flags,
->  	spin_lock_irq(&hugetlb_lock);
->  	folio =3D page_folio(page);
->  	if (!folio_test_hugetlb(folio)) {
-> -		ret =3D MF_HUGETLB_NON_HUGEPAGE;
-> +		/* Mark it before it can become part of a new hugetlb folio. */
-> +		if (TestSetPageHWPoison(page))
-> +			ret =3D MF_HUGETLB_NON_HUGEPAGE_POISONED;
-> +		else
-> +			ret =3D MF_HUGETLB_NON_HUGEPAGE;
->  		goto out_unlock;
->  	} else if (flags & MF_COUNT_INCREASED) {
->  		ret =3D MF_HUGETLB_IN_USED;
-
-[ ... ]
-
-> @@ -2189,10 +2197,24 @@ static int try_memory_failure_hugetlb(unsigned lo=
-ng pfn, int flags)
->  	return identify_page_state(pfn, p, page_flags);
->  }
-> =20
-> +/* Keep the flag if the page has become hugetlb in the meantime. */
-> +static void clear_non_hugetlb_hwpoison(struct page *page)
-> +{
-> +	spin_lock_irq(&hugetlb_lock);
-> +	if (!folio_test_hugetlb(page_folio(page)))
-> +		ClearPageHWPoison(page);
-> +	spin_unlock_irq(&hugetlb_lock);
-> +}
-
-[Severity: High]
-If the page becomes part of a new hugetlb folio before the retry path runs,
-does skipping ClearPageHWPoison(page) in clear_non_hugetlb_hwpoison() break
-the subsequent retry in try_memory_failure_hugetlb()?
-
-On the first pass, get_huge_page_for_hwpoison() sees
-!folio_test_hugetlb(folio), calls TestSetPageHWPoison(page) on p, and retur=
-ns
-MF_HUGETLB_NON_HUGEPAGE. Because memory_failure() holds mf_mutex and exits
-immediately on -EEXIST, reaching the retry path guarantees that this
-invocation of memory_failure() is the one that set PG_hwpoison on p.
-
-If p is concurrently allocated as the head page of a new hugetlb folio
-(p =3D=3D &folio->page) and take_page_off_buddy(p) returns false,
-clear_non_hugetlb_hwpoison(p) sees folio_test_hugetlb(page_folio(p)) is true
-and leaves PG_hwpoison set on &folio->page. When memory_failure() jumps to
-try_again:
-
-  memory_failure()
-    try_memory_failure_hugetlb()
-      get_huge_page_for_hwpoison()
-        hugetlb_update_hwpoison()
-          folio_test_set_hwpoison(folio) -> returns true
-            returns MF_HUGETLB_FOLIO_PRE_POISONED
-
-get_huge_page_for_hwpoison() then aborts to out_unlock, and
-try_memory_failure_hugetlb() reports MF_FAILED and returns -EHWPOISON witho=
-ut
-dissolving a free hugetlb folio via __page_handle_poison() or unmapping and
-recovering an in-use hugetlb folio via hwpoison_user_mappings() and
-identify_page_state().
-
-Similarly, if p becomes a tail page whose struct page is not remapped to the
-shared vmemmap tail page (such as tail pages in the first vmemmap page when
-HVO is enabled, or any tail page when HVO is disabled or has not run yet),
-skipping ClearPageHWPoison(p) leaves PG_hwpoison set on that tail struct pa=
-ge,
-where neither folio_clear_hugetlb_hwpoison() nor unpoison_memory() will cle=
-ar
-it.
-
-> +
->  #else
-
-[ ... ]
-
-> @@ -2506,7 +2529,7 @@ int memory_failure(unsigned long pfn, int flags)
->  			} else {
->  				/* We lost the race, try again */
->  				if (retry) {
-> -					ClearPageHWPoison(p);
-> +					clear_non_hugetlb_hwpoison(p);
->  					retry =3D false;
->  					goto try_again;
->  				}
-
-[Severity: High]
-Can a page still become a tail page of an HVO-optimized hugetlb folio after
-get_huge_page_for_hwpoison() marks it, and then miss this retry path
-altogether?
-
-In only_alloc_fresh_hugetlb_folio(), alloc_buddy_frozen_folio() and
-alloc_gigantic_frozen_folio() allocate and prepare the compound page before
-calling init_new_hugetlb_folio(folio):
-
-  only_alloc_fresh_hugetlb_folio()
-    alloc_buddy_frozen_folio() / alloc_gigantic_frozen_folio()
-    /* window before hugetlb_lock is taken */
-    init_new_hugetlb_folio(folio)
-      spin_lock_irq(&hugetlb_lock)
-      __folio_set_hugetlb(folio)
-      spin_unlock_irq(&hugetlb_lock)
-
-If get_huge_page_for_hwpoison() runs in that window (or while p is still in
-the buddy allocator when page checking is not enabled, or during
-alloc_contig_frozen_range_noprof() which ignores check_new_pages()'s return
-value), folio_test_hugetlb(folio) is still false. get_huge_page_for_hwpoiso=
-n()
-sets PG_hwpoison on p's pre-HVO struct page and returns -ENOENT.
-
-The allocating task then runs init_new_hugetlb_folio(folio) and
-hugetlb_vmemmap_optimize_folio(), which frees p's tail vmemmap page and los=
-es
-the PG_hwpoison flag that was just set on p.
-
-When memory_failure() then calls get_hwpoison_page(p, flags), the retry blo=
-ck
-is only reachable when get_hwpoison_page() returns 0 and is_free_buddy_page=
-(p)
-is true:
-
-1. If the new hugetlb folio is placed on the hugetlb freelist (HPG_freed),
-   get_hwpoison_page() returns 0, but is_free_buddy_page(p) is false becaus=
-e p
-   is now a hugetlb page rather than a buddy page. memory_failure() takes t=
-he
-   MF_MSG_KERNEL_HIGH_ORDER (MF_IGNORED) branch without retrying, leaving t=
-he
-   corrupted folio unpoisoned in the hugetlb free pool.
-
-2. If the new hugetlb folio is still in HVO initialization (!HPG_freed &&
-   !HPG_migratable), get_hwpoison_page() returns -EIO and memory_failure()
-   exits via the default MF_MSG_GET_HWPOISON (MF_IGNORED) case without
-   retrying.
-
-3. If the new hugetlb folio has already been allocated to a user and marked
-   HPG_migratable, get_hwpoison_page() pins the folio and returns 1.
-   memory_failure() then proceeds into the non-hugetlb recovery path on a
-   hugetlb folio, where hwpoison_filter(p) can call ClearPageHWPoison(p)
-   without hugetlb_lock or folio_test_large(folio) will call
-   folio_set_has_hwpoisoned(folio) and try_to_split_thp_page() on the huget=
-lb
-   folio.
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261101-hwpoison-h=
-ugetlb-ro-v1-1-a42d6411cb65@columbia.edu?part=3D1
 
