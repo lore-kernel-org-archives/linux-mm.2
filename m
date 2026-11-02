@@ -1,149 +1,145 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74354606A332
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 08:26:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95460606A32E
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 08:27:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=ionos.com header.i=@ionos.com header.a=rsa-sha256 header.s=google header.b=jHVPKcEh
+	dkim=pass (2048-bit key, unprotected) header.d=ionos.com header.i=@ionos.com header.a=rsa-sha256 header.s=google header.b=Un+5pL9w
 Received: by kanga.kvack.org (Postfix)
-	id 8C0156B05B3; Mon,  2 Nov 2026 03:26:34 -0500 (EST)
+	id A96D56B05B8; Mon,  2 Nov 2026 03:27:38 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 897F76B05B6; Mon,  2 Nov 2026 03:26:34 -0500 (EST)
+	id A6E066B05B9; Mon,  2 Nov 2026 03:27:38 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7868A6B05B7; Mon,  2 Nov 2026 03:26:34 -0500 (EST)
+	id 984766B05BA; Mon,  2 Nov 2026 03:27:38 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 517096B05B3
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 03:26:34 -0500 (EST)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id C27631C400E
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 08:26:32 +0000 (UTC)
-X-FDA: 85389497424.27.587662A
-Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 7C12F140004
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 08:26:30 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=ionos.com header.s=google header.b=jHVPKcEh;
-	dmarc=pass (policy=reject) header.from=ionos.com;
-	spf=pass (imf26.hostedemail.com: domain of max.kellermann@ionos.com designates 209.85.218.44 as permitted sender) smtp.mailfrom=max.kellermann@ionos.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 69A616B05B8
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 03:27:38 -0500 (EST)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id DE320A893D
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 08:27:37 +0000 (UTC)
+X-FDA: 85389500154.30.4826F1A
+Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
+	by imf12.hostedemail.com (Postfix) with ESMTP id A3E7440004
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 08:27:35 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=ionos.com header.s=google header.b=Un+5pL9w;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf12.hostedemail.com: domain of max.kellermann@ionos.com designates 209.85.218.46 as permitted sender) smtp.mailfrom=max.kellermann@ionos.com;
+	dmarc=pass (policy=reject) header.from=ionos.com
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793607990;
+	s=arc-20220608; t=1793608056;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dcE/5rnGxKA55YKLDJm0k2JZRyvDK8vL0G/XzycxiFE=;
-	b=e54rUzamGWrl3bEPsvkXx8OPR3NiyqLGq3kR7sMQWqRtoFFy9VbMwW27rNi97rC8Jz/Zwp
-	Sk9K5SKRhwh2lQttBujPs3U9blVI4hOI32eAff7gjQEi0MkTKI8dwDc2+OfyWg5s7NCMW3
-	NWSn0/CKByZwxctkcbvjTZNyuF6IqSs=
+	bh=ryxS+aXyH1s0wbz8aqQ7n2ujPhXRrOEtxD9s5b9+KhA=;
+	b=V925KbmTlt2f/Ib4xDvVJ3xvJNCGuKtqeUVbr7/mGzsTztmBY8JJppiAgMIRjJJ32xOiLM
+	KqkRDGYg7Y29cBPYCq336MK9pTABmwAfeaVZptUGzisSNmk2YBVWJC0j1EziZpywJAPjpv
+	D9rWj9PsxQhfxq1neW1eXrSoNf3BGsE=
 ARC-Authentication-Results: i=2;
-	imf26.hostedemail.com;
-	dkim=pass header.d=ionos.com header.s=google header.b=jHVPKcEh;
-	dmarc=pass (policy=reject) header.from=ionos.com;
-	spf=pass (imf26.hostedemail.com: domain of max.kellermann@ionos.com designates 209.85.218.44 as permitted sender) smtp.mailfrom=max.kellermann@ionos.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
+	imf12.hostedemail.com;
+	dkim=pass header.d=ionos.com header.s=google header.b=Un+5pL9w;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf12.hostedemail.com: domain of max.kellermann@ionos.com designates 209.85.218.46 as permitted sender) smtp.mailfrom=max.kellermann@ionos.com;
+	dmarc=pass (policy=reject) header.from=ionos.com
 ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1793607990;
-	b=SvlIx2pr3qMXAdnNQ0lUfvnvxwqkGjWNhGHkAzk5GKt35NXXvEKv9oVCA98F4wt2qN5UEU
-	WGRfm9P/gcK2L5yWKe/OdrfKhX1cSOD308zofrihCMzaUd6CEwFAzHqmECJnGVf/ART0vY
-	FmnAeCS8YPZRGrTR8aNebyYhg01uLXU=
-Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-c3f8d72d7ceso443064166b.3
-        for <linux-mm@kvack.org>; Mon, 02 Nov 2026 00:26:30 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1793607989; cv=none;
+	t=1793608056;
+	b=iZ+1osKB2zZ4qkJ+614gBXPX+alQPDWQzgODgIdZ7IkmeIHrx8obMXPHjGhvvGvxFncVst
+	bQT0c0xYiUyDhkESBps3r9TrYno3rRMHkC5PNguo5iSesmO5+mv+1nOJ6qUy63mURgSW/W
+	jmVrp5SIfKmVq/mClGkYGeqp1DgJBBY=
+Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-c4395d31228so415060266b.1
+        for <linux-mm@kvack.org>; Mon, 02 Nov 2026 00:27:35 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1793608054; cv=none;
         d=google.com; s=arc-20260327;
-        b=r71QKQKui5DtNimkgwYCA0Cs8GfrDn4ujcARnXFlYW6zzSLvn4g3MzpDSHxr3IKwb+
-         A20qExOkwdtvizJkLX8XHCjW7QUKiWZxzTQOUVa5niOAALHCmBzL+rAW40i3prVezpnH
-         wK6Ift8Btt4rL6XXsJ6KLpiCFdVpY6g5w+tVAxJ77djgKthRIsnl45bw6Fqqdzhkxe1Y
-         cy2/2YqH1BBJeDnnvyiQVmZNkfpGDcZYzopjjfhtpmeA61of9dcUDqdTiSgv+BpxgAqV
-         OHpVWCODWTx8xtuhQIQaa7jO/+GNxirbeCghPsEBxxcbyWkTMg09H/Tl80QmbFAFLmZJ
-         AJww==
+        b=PoCgvA/JvF5z9bUiOA+8bfqQWpyu5c8LNW+714pOCdJxABPTKnBogEmZSHhd2cxEqo
+         t2WRdeYhMzidHdBbkjTFi6ioRZZy0CY3K9EV+FKZojvu9SeBxXBoS75NRMYOSM7uZxrH
+         tfWE3p7rrWpBtmmvzNEynqVjL05po0WsxPOAGz/QVEyiuPNvPqXf/e99yCUtUwNyMd0+
+         sPLHWfsopFgWX6/srj3NWhHyetM/RUlK0iS7/JkvPHJkIf+dcfImzN4RIERO9QLw4WR5
+         ZOsG0O6ZvZ23btJ50RP8nBz7sOh19fmsdNtCJGFSN+dNumngd7y1eRs92Hev5Q+BdvXZ
+         vcQA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=dcE/5rnGxKA55YKLDJm0k2JZRyvDK8vL0G/XzycxiFE=;
-        fh=xhMvn0QKa7w9yWCrbGMtFlwwDa/8XH+J4L9/4xKyRAY=;
-        b=m8qZcJTwupG03q9eeFSaQ0g4/o9bh2vbiFf2bteLMe0dZ9NS0tQ6E6jH/86hkjRIBE
-         fjOlOZx9BAy4h7Gsq+FnGFlGptgz8vy/EGhxS4k1GPcGxJc2XkZfTSb3bt/QcHPwTNzk
-         zO6kWrUQZ35PYsbsnxDpkFp5cTRLL7NWMX+sy4b6XekkB2UpEZ8C+rLENvR3c9x+t/zM
-         yrjVgyrdwMG/+/W5mLTmHmuWLUthQ+6x6BaeXDX2uItLBCq4nMmEB+dzdk5qnlRurfaU
-         SLz79m/D6DglsEDXie417bDzVcGdmi3Pi4y+VsuMg+QMM7Hu4xH47lO/X/QGhMD5d/+l
-         AQKg==;
+        bh=ryxS+aXyH1s0wbz8aqQ7n2ujPhXRrOEtxD9s5b9+KhA=;
+        fh=BCxZcqJo3lcMNl439aFfve1wfRWdGXoBMKNnQR4Qtqs=;
+        b=Wxg+3agvCRQTnJKAYH1mcJq4SOh9YPFroQr2QmUPQgK7h6g8T/Ndt3DjaYSYCP31D0
+         f5izDaKIzURfU/CpsHhSa47ZkURC+3aDFtDkC/sSgLi5N6pg1Iv3GpGwLCFpEISozZfX
+         Jm7EyeoYcluTCoWqBio6nQt9ACVo/8OphkhdjH0OngMZhRYnMRCUuIp6BhRxK4WJY7Sm
+         mK0QrLhN1dlXzvq62RftamYssnwZaFlnkpx1Ies2gLmb5B0IPICTDQq9+XSjCnXNXONI
+         TeIF1KohaT/FFlUtw+pe8YcEFDEYAlRS/AcyTsxGy4SkNVtoRSKTisPMvuOcXfuqKDQo
+         XHUA==;
         darn=kvack.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ionos.com; s=google; t=1793607989; x=1794212789; darn=kvack.org;
+        d=ionos.com; s=google; t=1793608054; x=1794212854; darn=kvack.org;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=dcE/5rnGxKA55YKLDJm0k2JZRyvDK8vL0G/XzycxiFE=;
-        b=jHVPKcEhnVEjXkkMENGUaSRyZgdZomGMnCcRmtL3osCliWh6SaNvlhhW2J5EsAONSA
-         uqSfFB/pp1fzdRYdylEOGe3EQFHMQsQRpxY6zdxa2rKPn1p+RCyTjlOA6Q9XmHdJG+Wv
-         nSKghBL0l4QKP6botLK4WW9L8MjNwcHA2vzZ6LjfoAYen8KIRoLg+7X6Xg4gL1ZbtUiy
-         HTn5LpsLg5ZuUlThFc9nj3A+hfr6+avKC2bG9USkV1ABCLQnFbwfbMexccYEppDe5zre
-         uhIpZDY287fD/7b5aCctU1Cmr5E97TFQNZf3TeH643deqfxaZgMk8fLO666suO6QdbvH
-         u/Og==
+        bh=ryxS+aXyH1s0wbz8aqQ7n2ujPhXRrOEtxD9s5b9+KhA=;
+        b=Un+5pL9wiNMUBBdPeTkxr8+6pLOmqbuhVFcPTQtlpjQYl4dn0gqDRzYj/IlYy1FAxq
+         mOPtXD51ILX14zpN0DvY5kpRjELQvXwMgifLj9Wdydvl0YVH6NfGKYFzx14NdBsd6cC6
+         OuRc+VmD+izgwH/j3U+ngOZ0LtX7o2ov2sHr6PtHqPnK2uDJ1f1HlXj20h3VHTFjYzMN
+         l64YptL/wpWHpPlEJOUduwcOAGRxSytD2Cytp5Qrhl0fxI+y0wCqfCuILF1qf9xJ5GgV
+         rx8GkaLTpZ39RrrCoiy2OQ9D2jGWFsZJJTjYLfaB/IbrdsvgaAGIo/uQxxrHPEGk/7+4
+         aWNQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793607989; x=1794212789;
+        d=1e100.net; s=20260707; t=1793608054; x=1794212854;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=dcE/5rnGxKA55YKLDJm0k2JZRyvDK8vL0G/XzycxiFE=;
-        b=Zo6slHCR3CQ01OhfMIcaNpkQ4SuHtVTuydIAUkWWWPcEY2gUyCq/wwfo877x1MglNM
-         r/JAwldvj9EaNOCunz4DDh/QxZAVS/i9y2hRJTe4ZazVtispJNZOJ6Wn4AWPblPqVuHN
-         PhQ/Bm+g48YsnnJ9XGi/KmEgFM/J/Yn97BZkzVPUn3+CbWBtCLF3ZhiCA1sM+QuenzZp
-         mdx8xA8l9PSh/5eYhvmks1RyMObk1kictaMnkcwwdaKDlNtoGKtVIxFMxTSL5x5YJVA9
-         f9a3J77ydPLxci/AqGZi1rBgB+g04wCwuJ46E3ay0Q9CyeTCAFTXNxTtoMe1NPG6Rt46
-         ebpw==
-X-Forwarded-Encrypted: i=1; AKwUvBz2ntDz+9A9QVmMYlIpx+WGBBObQ/86kgTz3ioBO2y7UU50NqaRVVwxnpJTx+1Z6awin+cdTMNmxA==@kvack.org
-X-Gm-Message-State: APuU4Z926SMJ0sgxkLS+8Ve3fj57gUNZf1dxM4Vhw6hXY57ylp5lszVq
-	Za8uuX/2RHZZ4TnZu/yUEwqlQWa2wVHlxAYzWQZ6eaxd+GLvvgaLzC/o7PAVOjt9EGzVji/REn5
-	5jl/J3uHksnTa6ZcgGlm8nlVA3t3phaabgkpa7aYRRg==
-X-Gm-Gg: AYBFou1zQdOCVvY4H9cY56W9j+1181jZwG0pLzXlA+WXo2LwzmLTyHnatTEY92l/r8x
-	pmjPDKig7hJ67DOQlqKBQhW8g4vWDZpi+oEE5DGCD2Aqd9lr71BPSNcgmWah4HXXCi8sRziZG3B
-	QewXGximGDw3zWrv4/Dw6h5hbPwTI3Jkbr1emDgyX3AzGBRAJPKNp3AgLBnpWYRBk998cgW7C1O
-	mikYP3oi9DUdHiI5rXU/h7KGSbO+nL8LX3AB59rpEWNsMCn5lIFEOA/z0itwAVdWmCfVKBoT4S4
-	SmhuNi87+bcrQ1i3WHOvnABVf3FCzNTN05Ru8Ddd3GAd9ifCR0bFnnUTyH5NIeocuS1NFQvrTpK
-	M9wuBpMNILLDYYyG1VTTYZ1pBL3/G5splVhaAq0THPO3+6Nvc39LV89oPalf7yUVrzlpMjivgBc
-	IZMhzfULjGPLXo
-X-Received: by 2002:a17:906:ef0b:b0:c33:923b:ad66 with SMTP id
- a640c23a62f3a-c4ca7acfb4cmr790165266b.43.1793607988903; Mon, 02 Nov 2026
- 00:26:28 -0800 (PST)
+        bh=ryxS+aXyH1s0wbz8aqQ7n2ujPhXRrOEtxD9s5b9+KhA=;
+        b=AK2CCJ2RqpAeFvTpKylWmzyF7lZvmSTiCc0XlxkdJdc5q6FGiVZIdmMgvaJB+y/D8Y
+         XRX4pzHw5mgB1A3/RiGgwwcQoMP3+J61NNe2PKxDRy/rXecaz0nNJ3CrbdfWKGb6dS7y
+         tB2c4GCZubdMr1pRHDNvXo1EAlznC4r/lX+GU9Ik2UHqrKChSKMuMXwFWTinKNhpXno/
+         fbH9sR1SbA05XEyczDs415Rt/vCWp5J1qDayZA5HwmfK/tJ6Wxqfo3steVLQCx9F1IrI
+         16hdTvW98wQ87heu4q/dTbie3TmDszfABvfs6ovtLhLBdbcwgsP5AIQENJkPnqLXxDF9
+         TVXQ==
+X-Forwarded-Encrypted: i=1; AKwUvBySLR48ev1UzrsJZBLVj/n6DUKG+InN4WzV3LX1zeifVbu2NIWr1Qgj4LLfPhRYKWpzPaiTuJxNog==@kvack.org
+X-Gm-Message-State: AFq9FYI8P7Y87oTPnpNhE3yfPr0tUCPAE6S75PPWCjbSJoeN0q76DW5y
+	iuobIB1WY7iGSaMojwIsZ8EQFsRuRLniMhIuW+tALctmLG1ZfHf6Rl+HhfdI6WDjFsKYBYptXzt
+	v4LByXINs/aEnMyjQZfXPnisp3hoTynO9GSixdkRQYw==
+X-Gm-Gg: AYBFou3nUnOh1hK5BazI94MQlquuBdey2tcGLQhQ9nNKc7/ofF87ur07WwpQaWYp7F9
+	aDrc+cDqCi0hjxlvJ4vNPwqZnJOf42FAr27pDAd3yTi+PrR4GYFdVPmD2w2yh+midvyfXKv3w39
+	aKtPQb9st5XyBVkfKAtCzBcPw/RrvO72dtAbWt0owPHYzD2b23YqKiAWz/cFTOH3IDpcA/LabHA
+	FKeHI4Iyx7dNjftI0au+2EZLMd0pFptuX+pOmheY38nN7f16knlQ4VinCbLyQnnJXo6DlVB6Ibu
+	ipgAdBDRSidKg61QDHxIe7KAYzh2jrD93vB6hTeJOsNV66vdW25/RE8oijGvUszEgf2ugJij3Cv
+	5pRhAH7YMuMVU+JkXYd+rLZgqo8led1xJOeL7puMkuZHPO/MwRgAxT2wVkWFGXoFjdw==
+X-Received: by 2002:a17:907:e84a:b0:c49:901c:d9f with SMTP id
+ a640c23a62f3a-c4ca7ad1408mr835701366b.49.1793608054397; Mon, 02 Nov 2026
+ 00:27:34 -0800 (PST)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 References: <20261012205447.2717801-1-max.kellermann@ionos.com>
- <20261012205447.2717801-4-max.kellermann@ionos.com> <a64f6a98-de70-4004-aac0-312cb05aaf92@linux.dev>
- <CAKPOu+83bH2CRtiAio+1VTTQrYFF9th5XfG5wL45ujEavPS3Dg@mail.gmail.com> <20261101135047.61fc3f209b3235ed6fc96183@linux-foundation.org>
-In-Reply-To: <20261101135047.61fc3f209b3235ed6fc96183@linux-foundation.org>
+ <20261012205447.2717801-3-max.kellermann@ionos.com> <CAGsJ_4zQh9HrvgaqD32_A=bSdqmPqP4oV_SxMXMEDBrHe4jjhg@mail.gmail.com>
+In-Reply-To: <CAGsJ_4zQh9HrvgaqD32_A=bSdqmPqP4oV_SxMXMEDBrHe4jjhg@mail.gmail.com>
 From: Max Kellermann <max.kellermann@ionos.com>
-Date: Mon, 2 Nov 2026 09:26:17 +0100
-X-Gm-Features: AclHuK--3PTuMj8RZeBQA28BApSOQ09xugBp4TxqQtGO5WmzRMN0zBosAEwqtzc
-Message-ID: <CAKPOu+-e4uPhjSj2KxWojDKJ6GsK51HrWMOwN9-SAnqi2gMW_Q@mail.gmail.com>
-Subject: Re: [PATCH 3/5] mm/mglru: cache the last memcg node, make tail
- insertion constant time
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Ridong Chen <ridong.chen@linux.dev>, kasong@tencent.com, qi.zheng@linux.dev, 
-	shakeel.butt@linux.dev, baohua@kernel.org, axelrasmussen@google.com, 
-	yuanchu@google.com, weixugc@google.com, baoquan.he@linux.dev, 
-	baolin.wang@linux.alibaba.com, david@kernel.org, ljs@kernel.org, 
-	liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, surenb@google.com, 
-	mhocko@suse.com, hannes@cmpxchg.org, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, rcu@vger.kernel.org
+Date: Mon, 2 Nov 2026 09:27:22 +0100
+X-Gm-Features: AclHuK-DaFHs4ZKgRnNWfWDrr2HTqoXucqchR8x0CYIHHdv-rb94RL4ugZac0MU
+Message-ID: <CAKPOu+_coR4Z=cbsWOG6zgbSWGvmp4=9=uUphkC3TWTTGn0Pqw@mail.gmail.com>
+Subject: Re: [PATCH 2/5] mm/vmscan: move code to lru_gen_{add,del}_memcg()
+To: Barry Song <baohua@kernel.org>
+Cc: akpm@linux-foundation.org, kasong@tencent.com, qi.zheng@linux.dev, 
+	shakeel.butt@linux.dev, axelrasmussen@google.com, yuanchu@google.com, 
+	weixugc@google.com, baoquan.he@linux.dev, baolin.wang@linux.alibaba.com, 
+	david@kernel.org, ljs@kernel.org, liam@infradead.org, vbabka@kernel.org, 
+	rppt@kernel.org, surenb@google.com, mhocko@suse.com, hannes@cmpxchg.org, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, rcu@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 7C12F140004
-X-Stat-Signature: 1amu5nehpyancjwyehx1qh7jriezh8ct
-X-Rspamd-Server: rspam06
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: A3E7440004
+X-Stat-Signature: h98n53ts7sd7h64711k56z6uxeathgji
+X-Rspam-User: 
 X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
 	autolearn_force=no version=4.0.1
-X-Rspam-User: 
-X-HE-Tag: 1793607990-390989
-X-HE-Meta: U2FsdGVkX19MIcQSj7DzR2Q5rsBZ4V+xTDGjO+f9/Vxcn5rt6meArKJEIEGPflh+aVIiqh28F/9EqHUy2YwJX9L4eSZxPCdgxcYxehM9DeORdYhRLHSSCZgSEV2O7JTSSW1Vx7G4vSpUzSvhBoT3OxyaM+ZfM1s/STGvcbszleRrpmPi17XCyrn46t7ddimIrG4o+Lv2Pq5CEElDng8WfRIsrIkJ1wQDoh9lNpr7av6XRuacCUDVA8qxZ5yzo2kK+6OxP1Nl9nUeG3TcfberesZlXiAcV812j3WXWv1WF+bxw0aQoGgWQxMozkVq2m2oy4aKGkGBG3GR811M8IxTch+E5i4/3FSnwjku9tkplPYbwQLM1301xR/iG5aFpf7sHgRvkrW5Mzp3B3zQl6rLrxfzrYn6kCMzEoXnq42uNQ9ZnV08zx7I7pbycrbCvwxNCVN1WEEyaYMG4Z2JLJFptG5wHMTvh9GtRTJsSKRqOIGzXx1t53Kis87S4rZbdegXIXaEPTUOcqZoZplO9lRQEMPSI2jc2RIrzVPYVI5N3Tcs0wmO6oWjaA7tG3zNwYwKsLXH1sMF4qvEEgdymJiaqg+DEk6Z+6UE8aL3PufZR2GSMYQuHaOYNhFn0augsWI6YQBytHCOfzyD8zyH0tsk4Vz7iUasi65TbnNn1lOmwYgP0L7nZqlb8m6NSq87rCxsXB2SUivRnKNq4EYjREj6JH9rn745uTUKdTw3kT7DlYHImZ4DDQyKCg6pB754lwCZUVHWDUm3Ac9P0lcD46+sWJURcxbhljzaQabTvhblH47t+/JPMSZuEY6EVBTPFqFFxRnJRjmRH20aPOhzz7ZZIFpkqVWgXH8csQueuNWIaPgqL8iSFqt3S9b6EHwZO7wqEHgrJmDo2ylA4W7SNU/pBG02XzVRLwEDCJiOL1BUNrXbqSEYdl3M986tVqZQGKoAyffWO7SN8+pXkiEtQ9b
- BjwPSug2
- omfoO6ZL1YPMRqW8PtrlUBeXqkvE+z0rhoex1junTIghOvPU3zlbMNVMoyI29QYaEENtJyAtawdooUSLu129DU9GzxstKfJt90DevAvuqjdLWKVKEYvoMMh9heOZk8plYBbyOA2WFQRZSIfxstGiuGAyYWxHgRCvk8Y9gnsswVWEtS70no7X2/SrZBaHnKrj8is6Zh5GoAP4EW59E8xunbSSflkzxC1eYegvoW8K1cBHpqcTi6nyhGGNOB6xbX2WfrwVja5mZdAty6+tZYwdlPLdV5gQT710ssY8e9RGAg+iRj00a+T5Mst/ZMfjU4AtoPd3bz4Rjce2I9j5iHtibFd1LpiJ3iLKGcgRQ
+X-HE-Tag: 1793608055-666174
+X-HE-Meta: U2FsdGVkX1+wASXuMt5pOaHJlDAoBPesxQ5SpSkYVMosGRP0jCifvwXzd8hh+lcZblEQ3H6RC1bX3ecJXZto7WsjQZbljjN0xnx39bAZTjSjt1Hql+IvYHmXsPw1GlI/kJLAVhbk9EwkYeSlSrQXBE7n75pUS8BkvUpXayOiHC4cKqA9NqmCZy1i40xPsx31E07H6oF/PgMvkHAv65+LeGo1JX9DL/4gGQvP6WMPq4qIdNv8tMMY8EoHwvZyv6wYeQjVk6f2EH+tOmCskr2OX274TY/bmZdevAZSyMAlS+t6yHLT92bFurB5HPQsiq40bmDxXi6EatCXQelqPQbTPRCvIxpiV9m8R/ycUaqnfOkcRs4/iffelewjtHa1otaCsE7tW8wwACKyYZNE3UvZNu5mvEA4S7TSgTPwptyqZLLkQ8DhJkhMfWDLBLUYXnxneq2ajR53/83rL6yNwRo6ifESr+145iog22DUBNXPzAfXOq0XDVkDnSIMbrSYAmQ5Kg1V1l7w2NX77yYizD5c4xPUahe2tdUO9gVKHqnBbgLoRlxrIfh12tfjobF+Vml8oLzSIGihKUsSD9HHfRdec/eJH09orf6qBjagSH/4ytJVcbnymCPZZIQ3sqlAPj0ZEHcf9dNswe1butVlwlRfe0MXcyFSdcmLiuHIg2+jskfl6ZmRDn81eqemHP4gWFoap9PXPdA7kv2eBx3xnSR/s57kpvgX6f+QFWcuMXTdsHUGz0u/TGBOAcftzQMli1tQYUu+h14H/M4+/hskIVYCbZA7vgzrzYppReM7dkeHqbMYN8Nnn7BRUVIW14J2zh/cdAyaAU2zU7YKubf2UmEV4yjXup7aESiyagkn7QERW+OFSAWg7cLT4H61oNwiM3jHdzhyJazzPeb5H+x4HFH5l9d3Bg9K7kj01pYdVnRR9uX+GtfQDph+bLNF9DSuSiGrl2HIobHxhZ9M/yz0XvB
+ fyNNkb+M
+ jQLCeWxIIGavZlhINlwAkgLa/Bieh6LGRS3+OuDa5YgvW4vGCxseOcn71Mwg2aKYeD3Y9plB5oce/ROuBgGhFqwR5J1Oh9nAdw/ie0uxFazp+fc13O7BHJQJFtJzOuuyNzBtoR1ZusKboP8W4q0pHLgbpAiL+Se/52B5SaRpuhA6CnzdyTZgNlgB2t1jzc/KABOCRd7yvQTu+6NlqroZoyRoY7BG6FNEKqqMA8v/rpQ+53G91I2SLMao5hKQBhQMIHL74+YWokGPk4QnESWU9YNK6q0FSAvBZfzyNvfN8qCyMymHnaxYaLQWVlYVsA0GQc+wAjb0a1rbqJFJT/24imbuLWADGNAXZwHIjrXU00zf48Tk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -152,48 +148,11 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Sun, Nov 1, 2026 at 10:50=E2=80=AFPM Andrew Morton <akpm@linux-foundatio=
-n.org> wrote:
-> So.  Can someone please propose a nice simple quick-fix which we can
-> backport into the -stable stream while we work on the larger
-> rearchitecting projects?
->
-> I think that might be Max's [5/5]?  Max, do you know whether that patch
-> alone will fix up 6.18.x, or do we also need to addressed that lengthy
-> spinlocked tail insertion?
->
-> If you think [5/5] is sufficient for -stable then please propose that as
-> a standalone cc:stable thing then we can look at the broader changes on
-> top.
+On Sun, Nov 1, 2026 at 10:03=E2=80=AFPM Barry Song <baohua@kernel.org> wrot=
+e:
+> T.J. series[1] removed MEMCG_LRU_OLD, i guess you will need some rebase.
 
-Depends on your definition of "sufficient". I guess [5/5] will make
-the symptom go away (the stalls), which is a good thing, but I see
-this as a minor incremental improvement that doesn't solve any real
-problem.
-
-The real problem is the degenerate performance due to a silly linked
-list insertion algorithm (traversing the whole list each time). So
-with just [5/5], you'd still have hanging processes and abysmal
-performance, no progress anywhere, but nothing would be logged. On the
-positive side, not stalling RCU would at least not pull the rest of
-the kernel down with it...
-
-I repeated my benchmark, this time with Linux 6.18.60 and an isolated
-run with just [5/5]:
-
-                       No patches    Only 5/5    All patches
-  Requests/s                 5.28        3.20          50.91
-  Mean latency (ms)          1494        2463            154
-  Max latency (ms)           3932       10467           1685
-  CPU time/request (ms)      1494        2452            153
-
-Patch [5/5] does not improve the underlying performance problem,
-there's even a regression in this run which might be noise.
-(My micro-benchmark does not reproduce RCU stalls and thus does not
-prove the RCU stalls are gone.)
-
-If you believe [5/5] should alone should be a stable bugfix, I'll
-resubmit it to stable@.
+Aye, will do if you decide the series is worth merging.
 
 --=20
 Max Kellermann
