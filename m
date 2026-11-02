@@ -1,107 +1,105 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73198606A32C
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 22:56:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B9F5606A327
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 23:06:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=BwlS+ODd
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ojb3Czh8
 Received: by kanga.kvack.org (Postfix)
-	id 8600C6B05B3; Mon,  2 Nov 2026 17:56:23 -0500 (EST)
+	id 715DC6B05B8; Mon,  2 Nov 2026 18:06:29 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 811AD6B05B4; Mon,  2 Nov 2026 17:56:23 -0500 (EST)
+	id 6C6516B05BA; Mon,  2 Nov 2026 18:06:29 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 701F26B05CF; Mon,  2 Nov 2026 17:56:23 -0500 (EST)
+	id 5DC1E6B05BB; Mon,  2 Nov 2026 18:06:29 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 457196B05B3
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 17:56:23 -0500 (EST)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id C51871202C1
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 22:56:22 +0000 (UTC)
-X-FDA: 85391689404.14.0D60AB5
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf09.hostedemail.com (Postfix) with ESMTP id EC4D6140006
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 22:56:20 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BwlS+ODd;
-	spf=pass (imf09.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793660180;
-	b=dmeThnCCTbKJrxuzhFpPayo82yOjYPxsmtBbF9fkUX5Bvko550Tv+ijrk5SWJLcoY0ANOU
-	UZ0YO4Be0vpXHr+qPfsZfO/8Kh2VLv26fXGPYYrhXmKXIpuAiMyIp+T6CiPTkLg8Z1x7jK
-	wHMUF35F6qPU+vWwCRf+rKzwd7ivLDk=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BwlS+ODd;
-	spf=pass (imf09.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 298BB6B05B8
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 18:06:29 -0500 (EST)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 337AEA7ACA
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 23:06:28 +0000 (UTC)
+X-FDA: 85391714856.06.9C88DA1
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 8241EC000D
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 23:06:26 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ojb3Czh8;
+	spf=pass (imf28.hostedemail.com: domain of helgaas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=helgaas@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793660180;
+	s=arc-20220608; t=1793660786;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=cFYQ0d2h0844nhQw4x0ZMieOCXHXgxHX+w5eXcpQbAM=;
-	b=sSonJBGlyrS1kiI5lYKYzSY9v9arqSBHxPaPHI6s5WM6AStg9EVc1+VMZy3T6KM9KKz2ct
-	omi0vjje+rQA5a4vkmZG59uA7/uIhH8MUXh/alla4i2w0W8rJABdNDHfoAbhAMXvE1Skv7
-	p1UWv/uwRa7UZjpeZnFDBp4z5cze+us=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:dkim-signature;
+	bh=adIUxbBUAhPoTEgVJ2ZdQQ0sIkUjRLbD7ye6beWxzTc=;
+	b=iRG2IXXUZ6iwJgg6jVCSN33Ro6zX1kVKm7KGxUPo7xEsXBle9TVu6esyKfypd4M0QOVAK2
+	qKfUrqX2Wb4FYB9AStdidOeVj0O92Z9tLo426zhT4hOaUmbStqPbm5E+tpvWj0va3ZVEPT
+	1X/szaiRxjJquXD5/qANT1+LQp0NQmU=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ojb3Czh8;
+	spf=pass (imf28.hostedemail.com: domain of helgaas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=helgaas@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793660786;
+	b=Z2SA3FqqSbKT5bE6m6SQpZy8buRZTZTxPuQ+OgQ+sF4qjsdwCE+nlnrgcfeUHsmkgdkOw5
+	1FcBh1YS2QT/06ajbxOm/KaeV5A6CAP+639gAIitytre1Sv+vH2Z5JWovCkAYBKcuFfUtH
+	6pz38vQVCNnerVcsrrUiGF6+s8p9d/E=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 741DE6022E
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 22:56:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B4791F00A1B
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 22:56:20 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id BA06040482;
+	Mon,  2 Nov 2026 23:06:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B1F21F00A16;
+	Mon,  2 Nov 2026 23:06:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793660180;
-	bh=cFYQ0d2h0844nhQw4x0ZMieOCXHXgxHX+w5eXcpQbAM=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=BwlS+ODdUdt0siIbyOLdnHsFImrxeLmqStw9m/xBBplYc9zMvwzEbcN/gAQUkTsWu
-	 SmuQLkKbhgoe0nVXDEE7k8qzUUXhaSTUIkYRliC34SFtT7UMCHlqwt+p4BWUIqebsl
-	 vQV4TPC4H2hBww1lm8aWqF4y328VCJnUBu1ZlvrwPZTZDxJOYzejW2ZaOELjFdXFSB
-	 X+jVTemvcF8j0tJajy/CK+MZ3zC89zWIH8igB3jShGDM25mYp/iDL1gcac/NovwW3O
-	 VANVCLdDy8AddHhabBrjNTT2ngCKjbLs/4fgjEsnVdQzMdJKl5hMkUR3WMkrRVVkI2
-	 VkmMi0STm7RwQ==
-Received: by mail-qv1-f53.google.com with SMTP id 6a1803df08f44-91befbcad6dso62573566d6.3
-        for <linux-mm@kvack.org>; Mon, 02 Nov 2026 14:56:20 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AKwUvBxzVToGqwkm6s3h2kcfHpfrkz6IZ+Wcv3HPcDAMTE07v7tWUBTRVh9air/6DKkeGYjXH0P+PxiODQ==@kvack.org
-X-Gm-Message-State: AFq9FYIS4k68PR0/DBsqAN/2Ak4pCS5YD6iaBRRtSX4W4/Cl7p4xq39N
-	9rEDdiJtHxNmNmLTjY1/ls7H+35mQtCwACKxnbSXEbI0PJ0qQLqENEWdz0U/btj03T/EGIfcNHA
-	BYUJrJLX/uy+Z6FRxVXKdTG/VtOwt2PA=
-X-Received: by 2002:a05:620a:2556:b0:93a:2150:ec06 with SMTP id
- af79cd13be357-944217430a2mr1904131085a.31.1793660179584; Mon, 02 Nov 2026
- 14:56:19 -0800 (PST)
+	s=k20260515; t=1793660785;
+	bh=adIUxbBUAhPoTEgVJ2ZdQQ0sIkUjRLbD7ye6beWxzTc=;
+	h=Date:From:To:Cc:Subject:In-Reply-To;
+	b=ojb3Czh8KMIoL/VvdgllPD/Rn4ll3vpd8bSHNaVcp9Gk0+6ToD6NDryr4AR11vpi1
+	 XUxes3z4YCAm3nOVrM3z7fdOjZ+HdIJ58YE/s2Bvb3wYsSit40e6UpvA6SIWF3sftX
+	 Jc3/DQgmwFDC5HZv5EWJ0QdlR3mDmib6RntK/oytFM9qo31kP5HL6/YpxOxRsFiyEb
+	 YKTj6bbE/tAD2kBNwtfYEJPKAnI40oa2cJi9+zwtSQdFyTroKpSGQHcGuNo68X+NyM
+	 mmbQ8UKB15V9j5BA3mPSpinaIx19MwiqSRLws1EJRYkagmH16Q9QXcp38qBD646Zhd
+	 Jwbd2cKRXDFHQ==
+Date: Mon, 2 Nov 2026 17:06:24 -0600
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Vipin Sharma <vipinsh@google.com>
+Cc: kexec@lists.infradead.org, linux-kernel@vger.kernel.org,
+	linux-doc@vger.kernel.org, kvm@vger.kernel.org, linux-mm@kvack.org,
+	linux-kselftest@vger.kernel.org, linux-pci@vger.kernel.org,
+	ajayachandra@nvidia.com, alex@shazbot.org, amastro@fb.com,
+	ankita@nvidia.com, apopple@nvidia.com, bhelgaas@google.com,
+	chrisl@kernel.org, christian.koenig@amd.com, corbet@lwn.net,
+	dmatlack@google.com, graf@amazon.com, jacob.pan@linux.microsoft.com,
+	jgg@nvidia.com, jgg@ziepe.ca, jrhilke@google.com,
+	julianr@linux.ibm.com, kees@kernel.org, kevin.tian@intel.com,
+	leon@kernel.org, leonro@nvidia.com, lukas@wunner.de,
+	mattev@meta.com, michal.winiarski@intel.com, parav@nvidia.com,
+	pasha.tatashin@soleen.com, praan@google.com, pratyush@kernel.org,
+	rananta@google.com, rdunlap@infradead.org, rientjes@google.com,
+	rodrigo.vivi@intel.com, rppt@kernel.org, saeedm@nvidia.com,
+	schnelle@linux.ibm.com, skhan@linuxfoundation.org,
+	skhawaja@google.com, vivek.kasireddy@intel.com, witu@nvidia.com,
+	yanjun.zhu@linux.dev, yi.l.liu@intel.com
+Subject: Re: [PATCH v6 05/27] PCI: liveupdate: Add helpers to preserve struct
+ pci_saved_state
+Message-ID: <20261102230624.GA1038787@bhelgaas>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-References: <20261026202313.63122-1-sidchintamaneni@gmail.com> <20261026202313.63122-3-sidchintamaneni@gmail.com>
-In-Reply-To: <20261026202313.63122-3-sidchintamaneni@gmail.com>
-From: Barry Song <baohua@kernel.org>
-Date: Tue, 3 Nov 2026 06:56:07 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4zGmtvOApjFH_-V9z_zNWWQnrBX9q0_iWtbqzENCetfgw@mail.gmail.com>
-X-Gm-Features: AclHuK9iKml0mqB9U10W06jkrcvQ3DU6aATh74iQjCSlMOo7Q2XN81V-z79dfX4
-Message-ID: <CAGsJ_4zGmtvOApjFH_-V9z_zNWWQnrBX9q0_iWtbqzENCetfgw@mail.gmail.com>
-Subject: Re: [PATCH v2 2/2] mm: multi-gen LRU: remove get_lruvec()
-To: Siddharth Chintamaneni <sidchintamaneni@gmail.com>
-Cc: akpm@linux-foundation.org, hannes@cmpxchg.org, david@kernel.org, 
-	mhocko@kernel.org, qi.zheng@linux.dev, shakeel.butt@linux.dev, ljs@kernel.org, 
-	kasong@tencent.com, axelrasmussen@google.com, yuanchu@google.com, 
-	weixugc@google.com, baoquan.he@linux.dev, baolin.wang@linux.alibaba.com, 
-	yuzhao@google.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	apais@microsoft.com, rlmenge@gmail.com, 
-	Hardik Garg <hargar@linux.microsoft.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: ofwqhkmrsupzp3ncndcdw1qyj9whyu1i
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261102153656.1431701-6-vipinsh@google.com>
+X-Stat-Signature: ccjqo4nsfjwj5cmnrow3zpm6j8oqghfs
+X-Rspamd-Server: rspam01
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: EC4D6140006
 X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
-	autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1793660180-232525
-X-HE-Meta: U2FsdGVkX18IRgeeCvyRFXQ/cKDA773xFx64HZzbzmsfmCBX9LsEq8F1uFwMAiKZrpYegoMKVVX4542N1P8POE/tgh1crXl42QVSro83WJM34TZZXJtaAq4qioyMOJHSDxehXnQBeVcJvpAU0CX5MSAeHmYZgTtQB3aE8KHAadS0fidcoORmJ8m3y9g3sbi2j83i25KsAKRbvAYYgzRN/n/Fiui2yfjEgx1KBeceCrf3j9hnOUaVOsSt6JFtvnIp7+KRnGIvn2uhXStD4b+anizpprcxE/ZEH3pSjCPxs0XWdfRi3ebIjg5Exh2JOwL+GLC+1XmODTLI6pBoM4sjiNz/mLC6CO9+GWo9AK1ob6gqQFmK0rM3sok9/skQjkUWaNEjd9HB5CubLUNdoso9rWo3JvdESRr4VIlSvxBKjSgIE0YPI9JMFuv3U1S7F8e/TwO2T5LkkJPAZvpDWRVRH5Iz4uiwcUhZYaklk1UyFiuwpxDE60w19wI7bxypvskcd515Um8WqhOKMhhLb+ye+FjBuWhhTAdo3sMPeMgqSjQAaVwTOD5Xs3LglpeWU8OPHdmo62bOfWIkCcbyJCE5uYtR5/i9uHBAg1ennhRmpGbW8tnjXRQRkuu2QoQ5a6YOrsfmUV3WOAw26M1gjtILs/GgseC9fUlpaPy+KLqnQzpqrO+X3Q374AS93c4Q358dBVetCwa/FzZNa8w+D72qc9ni9PSB2hylyrHPqbwtjh2TaAqse7hBBCttUhRCE2qACI/w16i5EEinzO+xeCDwOa/mN1Z0ZkmrThkQxAa1uCCq3EG2oMpOMJ8L7krUylCRgKjEaLt4vlU8SNb23XjZEUHqDDAnNxSKA/lsy7x9P4p1IucZvLgWBWMOWKSnZSTSsn26PwrXZk8OBfnlT9bXneoictjYmsguX287Sx8phwAyiy+X5eYVRi3CGWtIWS8km0EvedjQTNervTJfV/h
- S4oCGiWI
- 2QFT0cwZPpJzAE+QX/aD9pewrsG+OBXvSPUDalmVPsNBkKh6cvgaCOm6e/8xQbdvMxm2CzCipSyaWBDQSQbFwyTMRSi0VSnwKMZEPWcz5A4GYzf2C1lKk7l7nBy03myIl2YFISymelvg5tiG8BMSWyqiNaBCY/5BoW48TSY1yvi//WxJUv6hBbbjK47WVf0jrAxVWsT210xVX3DMSFI0YEZZNXTHPAE8gz6i/tC8SL9NSsaEv/pvP3wvIMp9E0FCJ/HaL1+WIA4rKZIJbRSaos0YTxHqbIz3zb0adyvRiTo0JRgMWJz0EVGr6bjFuC4ZCNjuelVUvxMhdOO2K8wzDs19yiKVPtEvbdbYOAiaKv5YIwF1jMDhSqomGIh/HPRVd+IgUVP3Efso0mavdrh+/jTtFkhZVwVJOi1Z8UDnIXdABA5k=
+	autolearn=unavailable autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: 8241EC000D
+X-HE-Tag: 1793660786-944012
+X-HE-Meta: U2FsdGVkX19McwAZPMVtFX8qrqDiIW0522/gbL93NM3u/rGhB3lC10zoeE+sbU2BaL5hJOOPGhnvkHuiyXpiU3+qofBHhB3dP2GTcgXFtsaky3n4IKJyntBqoHDsC5Gn4dEMA6YXfHRT8XOqgel+k3LFSjOTg/YEdAGkK6Mm5HfsBnKi8ocRnGGDtTQAbfiP7msomir+FNNoaVuYdfMjbvko2V/77cjZoUCZudEIZ+MXuQYCk1523AHxxCLADKjvTtRzoAiL/ZQx0s60E4HOVUicgtod8N+Cmr9RH2L1jamQGHu84QVOMHFyXVtlD4MNDjK4YEoCcIXIvw85OsDgcyywni2eWneEO/MLSG8lbtOWLYF9TqqbYuqm+kNBTfrTulk5GcOI2JYRHBE3q0goSsn0hdFD+1E7klbdai5KbEADdwQwBy7m3Qef8GZb7B/AEjAujgXkccI2k8Wu2uB3WwZvagqSjtzXizhiTu6KP7wTVtNCLNDGsUadIIgMFLbfn0cZBxnZZmzSpac/TmvGv39Dh3OjajnMASyRUZQf027IunjBiOmjgktH8gjww34rVly+KT7xPov/NgGKh9/4DSrNJD6g6wA/uiSkiQ3oUIPObCtqBsrVIRuTNEbwLfrRWGDntDWvkRBPLel5SHJT6sKN/26uwPMEDBFrjEdBckUlpa/Q6fISLFHw3Hv4bLumy8ITHDLa2YwP8KJk14jQxhXBlv72TwNr8lED6n+p1SxtzcJd9/NopbfHS+ZpCu8j+GDeCkf2WmOt9ahlaPO6xbeU6iJljmNAPpml8t75GhpFDLN62mj1ULgZtZk4JKnogwhTLPCIjlnFP/KR/tg3UJiB2nTxCkbkT1GxN/81nLp5z5ekkQmm+nCehHvP82gTMd+12OEK6hknCNXs9REAQ+d1/R6j20fZL+rFmwGlvFVvkLIlFYn1SRTZ0g6r2BhKXpDoaRm43Ve0DK4SLpa
+ 1Y93IQ3m
+ t2rpLfddQGxYYnQMqdcT3SbWGTILpxq8N8uUApyviRAGwbCqWmzeEywR7z1eSmOwA2ErRf/IBdbPsaM3n5jNXF3AgjLnBWN7gPdwDVk9yX+YjhEEwwkL4NRNMZwPr9oxdmTFcsekNqfTPwmVFFihEhIrWBYXxZj0DWufwjt3v2g6LioEqq77vJn+dwa4Q9f74Bx3lvAPj/D4oP/0ykQPVjCS+HigIk05IBCz+mwGhT88KHpv+i/RvTU/25ERRamcf/Mjj2m0IXioxWt3XKLSBkT1KaNZU+Ig5UaUHW8tefvUaEBAut3LK8qAWHwnvJeCd0WDjMb99W0dJ6fU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,29 +108,97 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Tue, Oct 27, 2026 at 4:23=E2=80=AFAM Siddharth Chintamaneni
-<sidchintamaneni@gmail.com> wrote:
->
-> get_lruvec() was originally introduced in commit ec1c86b25f4b ("mm:
-> multi-gen LRU: groundwork") to guard against NULL NODE_DATA(nid) on
-> uninitialized NUMA nodes (`return pgdat ? &pgdat->__lruvec : NULL;`).
-> After commit 09f49dca570a ("mm: handle uninitialized numa nodes
-> gracefully") and commit 931b6a8b36a2 ("mm: multi-gen LRU: remove NULL
-> checks on NODE_DATA()"), that NULL check was removed, leaving
-> get_lruvec() as a thin wrapper around mem_cgroup_lruvec().
->
-> Remove get_lruvec() and call mem_cgroup_lruvec() directly at all call
-> sites.
->
-> Suggested-by: Barry Song <baohua@kernel.org>
-> Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-> Signed-off-by: Siddharth Chintamaneni <sidchintamaneni@gmail.com>
-> Signed-off-by: Hardik Garg <hargar@linux.microsoft.com>
-> ---
+On Mon, Nov 02, 2026 at 07:36:34AM -0800, Vipin Sharma wrote:
+> Drivers that keep a device running across Live Update need to hand the
+> state they captured with pci_store_saved_state() to the next kernel,
+> since the next kernel never sees the device in that state. VFIO, for
+> example, captures it at first open and uses it to restore the device
+> when the last user closes it.
+> 
+> struct pci_saved_state is private to the PCI core and its in-memory
+> layout is not a stable ABI. Add helpers to serialize it into a
+> caller-provided buffer and rebuild it in the next kernel with a stable
+> struct pci_saved_state_ser ABI. Using caller-provided buffers allows
+> drivers to embed the serialized saved state directly in their own
+> KHO-preserved data with a single allocation and lifetime.
+> 
+> Validate the serialized buffer and verify that the saved standard
+> configuration header matches the live device before rebuilding the
+> state: the vendor and device IDs must match, only Type 0 (Normal)
+> headers are accepted, and BAR0-5 and the expansion ROM BAR address must
+> equal the current hardware values. This ensures that restoring the
+> saved state cannot write stale BAR addresses if resources were
+> reassigned in the new kernel. Only the address bits of the ROM BAR are
+> compared, since its enable and validation status bits may legitimately
+> differ.
+> 
+> Signed-off-by: Vipin Sharma <vipinsh@google.com>
 
-It's great to see the MGLRU-specific get_lruvec() gone. Thanks!
-Hopefully, we can get rid of more MGLRU-specific code,
-such as get_swappiness().
+Acked-by: Bjorn Helgaas <bhelgaas@google.com>
 
-Reviewed-by: Barry Song <baohua@kernel.org>
+A few nits below.
+
+> +static const struct pci_cap_saved_data *pci_saved_cap_next(const struct pci_cap_saved_data *cap)
+> +{
+> +	return (const void *)cap + sizeof(*cap) + cap->size;
+> +}
+> +
+> +/**
+> + * pci_liveupdate_saved_state_ser_size() - Size needed to serialize a saved state
+
+Wrap to fit in 80 columns (75 or so is even nicer because it's a
+little more relaxed to read and typo fixes are less likely to rewrap).
+
+> + * @state: Saved state returned by pci_store_saved_state(), or NULL.
+> + *
+> + * Return: Number of bytes needed by pci_liveupdate_serialize_saved_state(), or
+> + * 0 if @state is NULL.
+> + */
+> +size_t pci_liveupdate_saved_state_ser_size(const struct pci_saved_state *state)
+
+I think pci_liveupdate_saved_state_ser_size() is connected with
+pci_liveupdate_serialize_saved_state() and
+pci_liveupdate_deserialize_saved_state().
+
+Would be nice if that were obvious from the names.
+
+They're also pretty long, which makes prototypes and uses very likely
+to wrap in awkward spots.
+
+> + * struct pci_cap_saved_data_ser - A saved capability in a struct pci_saved_state_ser
+> + * @cap_nr: Capability ID (PCI_CAP_ID_* or PCI_EXT_CAP_ID_*).
+> + * @extended: 1 if @cap_nr is an extended capability ID, 0 otherwise.
+> + * @size: Size of @data in bytes, never 0.
+> + * @data: The saved registers.
+> + */
+> +struct pci_cap_saved_data_ser {
+> +	u16 cap_nr;
+
+Maybe "cap_id" to avoid confusion with "nr_caps" or indexes into
+"caps[]" below?
+
+> +	u16 extended;
+> +	u32 size;
+> +	u8 data[];
+> +} __packed;
+> +
+> +/**
+> + * struct pci_saved_state_ser - Serialized struct pci_saved_state
+> + * @size: Size in bytes of this struct, including all entries in @caps.
+> + * @flags: Features a kernel must support to restore the state. None defined.
+> + * @nr_caps: Number of entries in @caps.
+> + * @config_space: The saved standard configuration header.
+> + * @caps: @nr_caps struct pci_cap_saved_data_ser entries.
+> + */
+> +struct pci_saved_state_ser {
+> +	u32 size;
+> +	u32 flags;
+> +	u32 nr_caps;
+> +	u32 config_space[16];
+> +	u8 caps[];
+
+I think it would be helpful if the names of "config_space[]" and
+"caps[]" hinted at the connection between them (both are in config
+space).  "config_space[]" by itself suggests it's complete, which it's
+not, so maybe there's a place for "hdr" or similar in it.
 
