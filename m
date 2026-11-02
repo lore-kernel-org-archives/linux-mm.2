@@ -1,74 +1,75 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86A536088B1C
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 15:21:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68A2C60804BA
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 15:21:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=DbhUJFDn
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=lzeuR62X
 Received: by kanga.kvack.org (Postfix)
-	id 9F2E66B05C1; Mon,  2 Nov 2026 10:21:15 -0500 (EST)
+	id 86BF16B05C0; Mon,  2 Nov 2026 10:21:36 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9A3296B0617; Mon,  2 Nov 2026 10:21:15 -0500 (EST)
+	id 8436D6B0617; Mon,  2 Nov 2026 10:21:36 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8B9026B0618; Mon,  2 Nov 2026 10:21:15 -0500 (EST)
+	id 7598D6B0618; Mon,  2 Nov 2026 10:21:36 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 690F66B05C1
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 10:21:15 -0500 (EST)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 05DE714017F
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 15:21:15 +0000 (UTC)
-X-FDA: 85390542510.04.4DC7941
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 35C6740014
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 15:21:13 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DbhUJFDn;
-	spf=pass (imf04.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	by kanga.kvack.org (Postfix) with ESMTP id 56D526B05C0
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 10:21:36 -0500 (EST)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 276C7140190
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 15:21:35 +0000 (UTC)
+X-FDA: 85390543350.18.790C0DA
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 6ECC140004
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 15:21:33 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lzeuR62X;
+	spf=pass (imf12.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793632873;
-	b=8DIA4+p/2TJR56Qyb8DyHZhsVzQbOXujTkwEY2/BApqGjLNLVGTaQIznQRcks73NJ+lWNN
-	raiOXk5nIoLeXp4KttvYvKxRS40xNw2E42aoWsSgWC3oP/JstcHk1j+NgOMHO6W5jbXEqc
-	yHhTKANAiluh0rmfRRloJqED44nuqTo=
+	t=1793632893;
+	b=j9/3AvDM/6KUspCs07l9QPisQj2ikyVCBPnwT8nJ1N69AVyuGPTIxUOpP6vPKmYBQDy96k
+	P2Tb6wE9Tu/Le6YofkmSjSMi7IV82iOFk18sLNIOAOtXDXdZHKYBMRh8VvjLqQF4LKNBxV
+	SeR6TSlCZB55tJ11dxgwxjY6f1HTk8o=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DbhUJFDn;
-	spf=pass (imf04.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lzeuR62X;
+	spf=pass (imf12.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793632873;
+	s=arc-20220608; t=1793632893;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Qv+c+5TDu4Q/teEIdzSpkmAL+eEuuwslAw9ahtaZFXA=;
-	b=5ZXO/t1KH3TZZ2O3I/j47rbwr3VqG6bMwr1en/ibtLYIdqqrQjjxwiqmJe/7R0FvMD821T
-	g9KlqONnCAVEkwyObbLhSYBwsE6iZ9jE+tCrajsmT/Tw22ykk/4RHuUDeX4KBiJyrc1KWa
-	LlFkkb34L26Lw2Wgy8fTnQ7dtnxAEHk=
+	bh=u/RXCBD8nlX7BDzbpngWHwWfgPDQj7BVrPXrBF7wCv8=;
+	b=42/xQvfovoLRzdMhy57KLLs3Xk4rv6XrSPlyI0jQOhhXTKiJX6oruUJH8CG+yJl3GBnuaJ
+	sT7E1KlHJdFd7yPPixvcF1tZl95HDQYgRuXMBrCT3IQgcw5DVGvsYSxtnpPX4001g5xB1z
+	P+LloH0bMofr9i703Zd2biVee+DSOQ8=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 8D6D94132F;
-	Mon,  2 Nov 2026 15:21:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D31E81F00A1A;
-	Mon,  2 Nov 2026 15:20:53 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 0575160620;
+	Mon,  2 Nov 2026 15:21:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9FC41F00A16;
+	Mon,  2 Nov 2026 15:21:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793632872;
-	bh=Qv+c+5TDu4Q/teEIdzSpkmAL+eEuuwslAw9ahtaZFXA=;
+	s=k20260515; t=1793632892;
+	bh=u/RXCBD8nlX7BDzbpngWHwWfgPDQj7BVrPXrBF7wCv8=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=DbhUJFDnO++WjegqV6sjnyS3otcl2/2sebZdDMTR095f4hFRZkMTGJyBlkuj94zIa
-	 oSP3D1Ac7j4cfaoTs/YOZ/3HD4OntLtKpa0LwpNCh1+JLKi4UfYnGiwu0CoVUtic+M
-	 /EOwTs/jPaQwpILuGPGbb/lTH5xfB3ImCVRAHdrO8lvkKmi+OSz4QkxvnUntYfmDLy
-	 qsb4GyhuZqoOiqLcQKRlgK+Q8Z7rBL8ybky3VU6Bckc3xoq03qdnURR13NFJolGiGN
-	 NMeI9G1ZGK8/Pa0iYX2UzAKoC/oKZ8aXViZ1ZRVWwt4iYelFx979KqrM1W3LPfQRZF
-	 /OPD4WdSZcZVw==
+	b=lzeuR62XFqOGUep6G0u/OgAm/OWRPnnvn8erL4ZU4coYsOJSODUSp+a+2jQzM89Na
+	 wls04y7KzCTFwf5dsKwoGQq4HsQJB+8Q/tyIUmNqi21phOIu62KpYImTlB0ls6aGae
+	 miRfVbxr3JZPL8lWk8CynKdRTAwmaRBTeg+t7O77J1JsURjyW/dH2I6mYOgaUrqxwj
+	 7KTrFfx3AkzJndWmhJ/H+my8YK+kelSQ4n+wOAuAD5nl7vHyDdtVgll57DDfY53FmE
+	 lZ2Bqq8ccnEcF5eVt6EqwlmszCQGg+ZSpjDAYPYr+Ujd6ANt6wT/4OLvqxEhsJ83lT
+	 c5mbm06d3Q7qw==
 From: Christian Brauner <brauner@kernel.org>
-Date: Mon, 02 Nov 2026 16:07:15 +0100
-Subject: [PATCH RFC 05/27] nfsd: factor out setting up the exports seq_file
+Date: Mon, 02 Nov 2026 16:07:16 +0100
+Subject: [PATCH RFC 06/27] nfsd: let procfs own the seq_file of
+ /proc/fs/nfs/exports
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261102-work-procfs-fs-v1-5-d09a996317b3@kernel.org>
+Message-Id: <20261102-work-procfs-fs-v1-6-d09a996317b3@kernel.org>
 References: <20261102-work-procfs-fs-v1-0-d09a996317b3@kernel.org>
 In-Reply-To: <20261102-work-procfs-fs-v1-0-d09a996317b3@kernel.org>
 To: linux-fsdevel@vger.kernel.org
@@ -104,27 +105,27 @@ Cc: Linus Torvalds <torvalds@linux-foundation.org>,
  "Christian Brauner (Amutable)" <brauner@kernel.org>, 
  Chuck Lever <cel@kernel.org>
 X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1686; i=brauner@kernel.org;
- h=from:subject:message-id; bh=YYADF9o+HT3otr/TqTwRIyIlVsvmHiIwO/9qKSxr7WM=;
- b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS9WG74im2vw/SLgkcF9xwvCrAujmja3vZs6iUted4PB
- lv0d6u4dJSyMIhxMciKKbI4tJuEyy3nqdhslKkBM4eVCWQIAxenAEyk8jPDP8N52YHHueeITrga
- lFLZpu2/1M/v9c0uN21dk5DSny1CfowMx1f09ARf2fUkLZKFdYNHzvT2UqEvnn+41f65szhZbrL
- iBAA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1348; i=brauner@kernel.org;
+ h=from:subject:message-id; bh=Og6i2j2RItYkKcPNuUOPBq0fveLG9Ax2TG7f5E6VSxk=;
+ b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS9WG7kVLY5MLm6OZ2xjUVJp9EoIqQs8Har0dvS4Du/G
+ zkXh5h3lLIwiHExyIopsji0m4TLLeep2GyUqQEzh5UJZAgDF6cATCTOhZFh8mS2HN0Vqp439x5e
+ 2xeUd91V5e/Pzuqia7+Lj7wzdlPPYWTYZ8Q7MynkzsRjgb7VR/ifa84RfBwlO7dAjOFb++Stxc7
+ 8AA==
 X-Developer-Key: i=brauner@kernel.org; a=openpgp;
  fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
-X-Stat-Signature: 4jks1t636bztjjrst8yxtujatkbn7apn
+X-Stat-Signature: at1944dsbnz8ezpo15qfku9nk6yrc4wr
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
 	version=4.0.1
 X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 35C6740014
+X-Rspamd-Queue-Id: 6ECC140004
 X-Rspam-User: 
-X-HE-Tag: 1793632873-65577
-X-HE-Meta: U2FsdGVkX18hQjUz+4onV7bQE9uPGoL+I9r45nb9xPcYyxBBCq7Man8TQ51blBoeblkMZZvb3AWQsv40xT4ma79DVd8hrS9T9lbDx/BMjpnD58NHPdi3PzKqprG+yQCzm+uunra3Aw0RHYFC3PvsrJ8U6w5SRMk3HhNE4z+e0E3X/jBO0etcMT4w3OollefKHD3wtFzrvzGssXsCYzF0zZsWwZbhuR3fcrFs6P9/LOv8PmRQnsmiS4upqCsrYJk7D2gPSTxo5hZK9lgRWvaWJmKcDTNsi9svTPUeSqLhqWuYUNINVcg1yG2A07qLNL4qoHVkp36Z5gw1+LVmCnBerrhzHV1OIZ3Ph0wFh2AJfFaDlrbn2UEzR+ygXw/1vwchulMdQFynKKio+erExHs5EGg4CcgNXr4GWPFL9Ng2dEguLASInj8IxpJ357dilTds5JRs8NaMqd5IMsKVTc2gJRcYCamS5md82zoiLhQB/7E0SO4p/3DFXjbgOs2Df7hPPQJIBhze4p7it1jrV9aOFeR9JVihfGVf8NKx8Qj8oELcCIVlPGH8Ophdx6yyGvXMzzJPzevA19nAc8kxQYcBseeCTQql+Tg4WPXTiy3Xf4Svt6LGWJFer6d7h8dTg463s0mfewDgr6a+RN9aSfU+fxTgpKUdOf3zdF+sdTj7TcKYJyxkCEay1tpZxVRc+phDauYtjuFZsXaZuGE2FBSCFDisk/50np7cZjakaASYFwNZDTioglLRiPjfnm56NBfLQsJA52XrbuLDvjuBD0fRbFJuk8+NC/MiwMGJxn3+OULULEC0fZCthkUCSLMgrH9HNgBAc1ZFZv+8sBfKQOqR5s0fLkveD3DFEkQu7OcXgS5D7RyqduWZ/Tc5XnVb5ib9iMI7ai+Ay6VOvPZLN7XCRtLVrGs5UTRzujwVDZcIu1LyBpbwu3gu2co7Z6z3JKWPFMjY+GmQtQPm1t/Ssv7
- LMiRE5a8
- Kun23TkIWAQKt6E4Pu0hAK7qz7RH8BWJSHPT0Lx33T7P2lvFFJl7CxQr3zIoRgbYlwbKHnBrbFqpUm2NqLwknHW9WEfvoJQDdV0TxROLYTZNj9JN56Z23Z2JToeL8TzRuS0+97VpwrjAVViiq/KHR3jbIBLRVj/BamYW9fip9PAD7XTLHVtMYB1vb8npmxW14PGEFUjr2a11V9auXiuxJgWF+6PybNwaxcjSr/GEM4XQd9CMLJpm6w9+Xp38NrB0dKTdewLo/t+vbtgsiaa05hpZ1FP6/2sytEpxMBT6QUMWmIyU7zd/3V/bVFyHgr3Lp+v2LHdpGQNk5BYI=
+X-HE-Tag: 1793632893-787288
+X-HE-Meta: U2FsdGVkX19hnIXu9mOktsslEKlKyXWDzssfQmRjXOFdxSuQDdra/T0J9fEsBNdxtVqqxhp30/4B7yr/gYFKu2u7EYbiN/YqKLpiraDUjrsalHS2kKJgnILeacmeMV98p64XrliIvxtdb/rTg7J1rZE0aXKOjQLTLLdoDHYr5KDw+DUwB1UO/LaqC44j1FUXvqVSnBf185Y2lOHMpdIbvekCtsy4O+YrHFs8GWIjHE/oaPQjQ0vxRxT51ENnd/yC0onnvq2Ah6mvmIBqWO4DBtYNOXXguty+ihQh4KW+mkAWBAvj9JQveIoq6NpVufiBlu9OcIe9PEwtW1BJys39kR/IL1ZLzAeTAHjzyPtDodJ07j+8Quki80K3THrlBcEteSNqkS+tG7qQGSerhgmuJeCq2kIoEuXQdU4qm0RF54+Tv8VCZ45L/5WUmsf5GY8YrJK48dMKMb7A1N1TCPfuGavbNVTT/MVTG+iA6ZDgLNa3vs3yG28MoSNDO9Tad6AUNY5XXrPhgWAr+F/1IkfcZ3bVznawEIsjFgOZxr5dfivecjCrX8rsNfpuqBmWf4mYnFC8BVgIcXaGYbE6iNmwGLAQ0H+pQB0lG0RA+RKKdYmAkOC3ND6eeEpe9cN+9SetzLEuDJZjgS9u6dlgylXbtzLZ98yaDuk8KjgE15hWJBvna/ZFRlRrISXMW59Mrfv8bOJDCBYfDRe1lVnkiCN0ihpua83ccdMls5PRObo0zb1bmaVBLqr7zY0ec/GV28PUSiX4xhDpWIQ3ByK1KveBi9+a52tdT2aD0brbgB8I9upgNrCaTiwjwyf1QhaRrmUawWqVGsPHrFZOx2/rhikyjoWSR1jMCrk2IBwvAJ06KYyt42tCgvPLri2YjChSTJ29XJ68Fc7vH/3ML4Y/eNvcGpDU/gP+Usy7fI0b2zdUSKmq5/h5nTn5jT1iXg0JMlC48HD4gmkYFG6i8WTd4oa
+ ycFe7FpS
+ MRugbXt+d2JU4o73wkQwWODivn+oIMYSohXI+bxEbQJZ6hzh6tdXKG/bagds8+MngcgDGYd2FAAnWLCe8fio2aT0xwkM/Bbb/aVhhesjTXo0V0wE94kXKE3fUiF6l9JWJRXHhS/eAcnWha41f/JAnLS/YvRdNFOCAVklesKV9EVx56eYcJiMMQsyBu2uGjz/+GoYrZ+AthyPFk7VFNgAOPngjWWV0dTgk1axuRq1ztsj+COM3xYIeWPakvObRLvwdDHnjKKcMCdNVSfdIVPeDcsAGeCHHogwnuP5Iuk8I5OxCPu1ocl1jul0nWQkc6ffkdnNlLU1g6b7lV9c=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -133,68 +134,48 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Move setting up ->private and taking the reference to the network
-namespace into exports_net_init() and dropping it into
-exports_net_put(). The procfs file needs them without the seq_open()
-and seq_release() around them.
-
-No functional changes.
+Declare the seq_operations and let procfs open and free the seq_file.
+->proc_open() and ->proc_release() only set up ->private and take and
+drop the reference to the network namespace now. Reading the file then
+no longer holds up its removal.
 
 Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 ---
- fs/nfsd/nfsctl.c | 26 +++++++++++++++++---------
- 1 file changed, 17 insertions(+), 9 deletions(-)
+ fs/nfsd/nfsctl.c | 15 +++++++++++----
+ 1 file changed, 11 insertions(+), 4 deletions(-)
 
 diff --git a/fs/nfsd/nfsctl.c b/fs/nfsd/nfsctl.c
-index f32311f2d7cf..f8ce3c0fb077 100644
+index f8ce3c0fb077..5b2782f9dbbd 100644
 --- a/fs/nfsd/nfsctl.c
 +++ b/fs/nfsd/nfsctl.c
-@@ -143,28 +143,36 @@ static const struct file_operations transaction_ops = {
- 	.llseek		= default_llseek,
+@@ -1407,16 +1407,23 @@ MODULE_ALIAS_FS("nfsd");
+ 
+ #ifdef CONFIG_PROC_FS
+ 
++/* procfs opens the seq_file */
+ static int exports_proc_open(struct inode *inode, struct file *file)
+ {
+-	return exports_net_open(current->nsproxy->net_ns, file);
++	exports_net_init(current->nsproxy->net_ns, file->private_data);
++	return 0;
++}
++
++static int exports_proc_release(struct inode *inode, struct file *file)
++{
++	exports_net_put(file->private_data);
++	return 0;
+ }
+ 
+ static const struct proc_ops exports_proc_ops = {
++	.proc_seq_ops	= &nfs_exports_op,
+ 	.proc_open	= exports_proc_open,
+-	.proc_read	= seq_read,
+-	.proc_lseek	= seq_lseek,
+-	.proc_release	= exports_release,
++	.proc_release	= exports_proc_release,
  };
  
-+static void exports_net_init(struct net *net, struct seq_file *seq)
-+{
-+	struct nfsd_net *nn = net_generic(net, nfsd_net_id);
-+
-+	seq->private = nn->svc_export_cache;
-+	get_net(net);
-+}
-+
-+static void exports_net_put(struct seq_file *seq)
-+{
-+	struct cache_detail *cd = seq->private;
-+
-+	put_net(cd->net);
-+}
-+
- static int exports_net_open(struct net *net, struct file *file)
- {
- 	int err;
--	struct seq_file *seq;
--	struct nfsd_net *nn = net_generic(net, nfsd_net_id);
- 
- 	err = seq_open(file, &nfs_exports_op);
- 	if (err)
- 		return err;
- 
--	seq = file->private_data;
--	seq->private = nn->svc_export_cache;
--	get_net(net);
-+	exports_net_init(net, file->private_data);
- 	return 0;
- }
- 
- static int exports_release(struct inode *inode, struct file *file)
- {
--	struct seq_file *seq = file->private_data;
--	struct cache_detail *cd = seq->private;
--
--	put_net(cd->net);
-+	exports_net_put(file->private_data);
- 	return seq_release(inode, file);
- }
- 
+ static int create_proc_exports_entry(void)
 
 -- 
 2.53.0
