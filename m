@@ -1,93 +1,138 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FE28606A911
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 16:13:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F9B16082BF1
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 16:16:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=lwn.net header.i=@lwn.net header.a=rsa-sha256 header.s=20201203 header.b=hLSFEKNp
+	dkim=pass (2048-bit key, unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=google header.b=GqtzFb0P
 Received: by kanga.kvack.org (Postfix)
-	id 747366B05C0; Mon,  2 Nov 2026 11:13:06 -0500 (EST)
+	id 3F0856B05B9; Mon,  2 Nov 2026 11:16:18 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 71E786B05C5; Mon,  2 Nov 2026 11:13:06 -0500 (EST)
+	id 3A2916B05BE; Mon,  2 Nov 2026 11:16:18 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 65BCD6B05C8; Mon,  2 Nov 2026 11:13:06 -0500 (EST)
+	id 26B316B05BF; Mon,  2 Nov 2026 11:16:18 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 42B256B05C0
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 11:13:06 -0500 (EST)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id D2B974016B
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 16:13:05 +0000 (UTC)
-X-FDA: 85390673130.12.8FD62BB
-Received: from ms.lwn.net (ms.lwn.net [45.79.88.28])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 1CF0A40003
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 16:13:03 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=lwn.net header.s=20201203 header.b=hLSFEKNp;
-	spf=pass (imf12.hostedemail.com: domain of corbet@lwn.net designates 45.79.88.28 as permitted sender) smtp.mailfrom=corbet@lwn.net;
-	dmarc=pass (policy=none) header.from=lwn.net
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793635984;
-	b=JHplWLN0UeyfOTNYaQyQ2yoCPt30qCJoQOTAQS1rzxfMh5fI/dYqaz8ENA2n7gfP73XeCl
-	vBGbx4ZHUEiQPS1JVbMBzXHd/Oc7/4MtlaDl3HeGTE7zUC7lZYZFrnB7OZ0X3u+mCRkOI/
-	O/mPBGJ2n5lgKfSk80o955+OfHmPiL8=
+	by kanga.kvack.org (Postfix) with ESMTP id EFBAB6B05B9
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 11:16:17 -0500 (EST)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 1B2264017E
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 16:16:17 +0000 (UTC)
+X-FDA: 85390681194.28.C2C8EEE
+Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
+	by imf18.hostedemail.com (Postfix) with ESMTP id F2C421C000F
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 16:16:14 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=GqtzFb0P;
+	spf=pass (imf18.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.41 as permitted sender) smtp.mailfrom=mhocko@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793635984;
+	s=arc-20220608; t=1793636175;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=AkkqOJ23j/1w9aDcgkUObIGtTrhMiGUiSVpJap6HkIo=;
-	b=33PIUUpyEqTiwUQqqy7uYXoJB7m0BFhFhxojb0MsTz7FXZa2buCVuj+xr7hZAqADcb+ZlG
-	1oiXBzO2B5GKL95KK0bDZuGz/9ACZIBXO2/G8mucxIW8dlAlw8ACzpGHeAbseI6oKRqSjt
-	wyfuy0Llva7l7YW+VTYdCT0uhf5L8a0=
+	bh=ypRec8Xh5wIqvkQ4ITkAuTU3Yz1Vsg+897P5Sxky53s=;
+	b=mRPLfQO/ulnWXJDM/zhduLvKruXZKvXKjAZvBtzZB1rjMeEqgGj25Mk08gzb0VpFpFpy61
+	Pi5hYN/+IXBS3FZK54q/CWifdZEG7qI0ZciXkrsvVUI7zLm/WfWLDjl3rJIxlMnVNEGCN3
+	Twv9dfMRJ1lhWXNQGW+5PtiJa9ripDI=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=lwn.net header.s=20201203 header.b=hLSFEKNp;
-	spf=pass (imf12.hostedemail.com: domain of corbet@lwn.net designates 45.79.88.28 as permitted sender) smtp.mailfrom=corbet@lwn.net;
-	dmarc=pass (policy=none) header.from=lwn.net
-DKIM-Filter: OpenDKIM Filter v2.11.0 ms.lwn.net EC7A640430
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lwn.net; s=20201203;
-	t=1793635982; bh=AkkqOJ23j/1w9aDcgkUObIGtTrhMiGUiSVpJap6HkIo=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=hLSFEKNpfg/XZfeCCVabwTQY4KLKJZpZnQMd0k8s0ZmJXqkulDhzQsOZN1r3zsA/h
-	 BZjjkR3F/UmzE4Bl4RiJANXHV95ZYme5S8CgBOVhj6VUXJ18evdyi8aB1XiE9IMZIn
-	 3TXB2h2GpYVuV/05iNUnthJNjOIox8kINMUWHcEXnvjsc74cycEBTxf8ZcvwfWF3MU
-	 VD1guXy43nB978u4gj3/5tgHG8YljzYIBeXrMwp8hAFBUNsoOboggIg21W5T242RK3
-	 4e/sG9XhaA+2dDyGxshco46r9512ysh8V1aHE1J3hx18PKfmqPEARjSRIzBjmkDE00
-	 MK8wcjKlDBUFw==
-Received: from localhost (mdns.lwn.net [45.79.72.68])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
-	(No client certificate requested)
-	by ms.lwn.net (Postfix) with ESMTPSA id EC7A640430;
-	Mon,  2 Nov 2026 16:13:01 +0000 (UTC)
-From: Jonathan Corbet <corbet@lwn.net>
-To: Atanas Kunchev via B4 Relay
- <devnull+atanaskunchev.proton.me@kernel.org>, Shuah Khan
- <skhan@linuxfoundation.org>, Randy Dunlap <rdunlap@infradead.org>, Kees
- Cook <kees@kernel.org>
-Cc: linux-doc@vger.kernel.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, Atanas Kunchev <atanaskunchev@proton.me>
-Subject: Re: [PATCH] binfmt_misc: fix typo in "auxiliary vector"
-In-Reply-To: <20261023-binfmt-typo-v1-1-459d4ae4c15f@proton.me>
-References: <20261023-binfmt-typo-v1-1-459d4ae4c15f@proton.me>
-Date: Mon, 02 Nov 2026 09:13:01 -0700
-Message-ID: <87y0bbciuq.fsf@trenco.lwn.net>
+	imf18.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=GqtzFb0P;
+	spf=pass (imf18.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.41 as permitted sender) smtp.mailfrom=mhocko@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793636175;
+	b=T0g7OsK7H35oyHybJIdQVaWDRUYhkxniCmuA6xLn8oVYDau3jZWNPv3puAh0tE88EdluPH
+	4u9y7EYqti4JglPbrQZplgRGPiBCgKS3CcLhoBU4qMJfMqIXDJJQ8I/O1gdoFNDKEuvOUt
+	zApL+tYk6SkX96Qj9iH99ie1hiV3ueo=
+Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-4a214af2076so24593565e9.0
+        for <linux-mm@kvack.org>; Mon, 02 Nov 2026 08:16:14 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1793636173; x=1794240973; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=ypRec8Xh5wIqvkQ4ITkAuTU3Yz1Vsg+897P5Sxky53s=;
+        b=GqtzFb0PThNIwGC8pI5DDzBN3xk5LDEm0lpqiGbFEHpSIhxmWvre8ab37hlEaZifGG
+         WTNPkYpv/PHNwoCBL7izbPb0cgHlmlBujUs6eMwWCB7ZhmNa5jbO3p6L4foi4SZOm3gB
+         Kfw/VHA1sHhjhuHHv4wxZ27WDGWxSuahWBNTjdG0zAXOxlxirysHM7Iq1FJD9tlvOcsF
+         pnJB8MP2SfAOM+zRH7rozJGK4++hnXL3nfzdWfxsfXqaDBx3Y5fv1lawkesoWamD4uYI
+         a+7PSDhTjLKAcLH1nEQHyUdBVpxnRqyxeOBZuh9ZT8BpmyGDPELIGyoozBbTasSYxhDE
+         THig==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793636173; x=1794240973;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=ypRec8Xh5wIqvkQ4ITkAuTU3Yz1Vsg+897P5Sxky53s=;
+        b=0jO4RIhBn7hKsLSrcJy4Jk2RDqJkLFpi7Tf8ntV81GQ1wd/QBP5a1sZoM+QjGZE6DU
+         9QNzNswhMpIR0z8Wz1RMNPD8To3rVy0e4MSTMWwjVTpdAxtk0wQ/Wtc/1pxa3z/yZBGa
+         tMoY1bASIGtUSwGR3msmIP+1xgyBxH8lpKnzJwErxCQ8FQkxMLRPxNNb7haQqp7fU3PN
+         j1ziqGWqRvQ8gmz/eDUqq93SYnmHBHPNo6kb9eyfZZIx/THLsE4D1ThGEMkfHRvn3QRW
+         PBHG3WYTBSWc5IKzhBH6GXwukV+AJREHHGVzVQnRV/bXgksHBeYGg99pEMtJ+9LbFC5D
+         tw9A==
+X-Forwarded-Encrypted: i=1; AKwUvBxyxV9crwuRY8xB8VI+zOh+duvyxR9N/b60hgw5gQAAuwup49czQV1/i6RYAs1Qnoc6MUwScF1tPg==@kvack.org
+X-Gm-Message-State: AFq9FYI2GpAYScFNjnGu/GQvSaPZQ8L1BK8NRo8M4wTUYWggOsvyVzIt
+	ynM3TgHwrpVs6M7AHOERz6ChRxe/4Tw1fArXF79PJNZYH4YVuoVu49l3hBjZ3TDLaVI=
+X-Gm-Gg: AYBFou2HJuM9F+yJP2EHN/oV2dm7nhE4W80sGCPUm0+VsXcx/8zu/hv2n2tsshv2eZ2
+	oPCPctBM5wD7hsGWPO/AajS2dbr10XYqKHIWMziXLeb1uZm5ZNg6EQEZxzMWuPnv4y0bUSjcQdl
+	+iCLOw9Y+1qWBygliBpT7/ka+jdD8P2iYvO0st1oyHjzCo7ngL03VQKmq4PuriEAneSgDdke+gq
+	mLZV2XrVJ+13m5emFq/2cWXW2ovx9/URtqDBW1eUcAj3QeWstDyKilLWR1JOIQb3Rsaesli88Fd
+	r3f84o3eTaxCTnvhpDSrzCr7NFNOEdHuDxKbgWrq0pUXEzwBW9lZyuq9rxOBLyakAWz2Mr50anV
+	R6oWIqAHUj0ohza4VWnOIIxRynRxoA2cr3vdS7/XEIZHMxhAGYYCmx/SPsbMqs5jBBlDwyTbuA5
+	K5DB3yuZYHT+/jxIygQ02XMrZILDLeBVneLSCwXPqdyPRkih+Xi1fIk1R6rMTafhv7Pw9BqvCFH
+	bWuJkLaMW4SaBDN6IgKloQaul04fpqR8EExugZJPU1pZRgficXEj+xDKOVfU69NDfX2QMIADMgL
+	fAeqVJOnwXE8lsOVjR1DfYQnKHjBhvuCEA8QWQ4=
+X-Received: by 2002:a05:600c:b8a:b0:4ab:c447:49df with SMTP id 5b1f17b1804b1-4ac182dca8emr234675195e9.23.1793636173515;
+        Mon, 02 Nov 2026 08:16:13 -0800 (PST)
+Received: from localhost (109-81-32-81.rct.o2.cz. [109.81.32.81])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e71b9a3b1sm22666963f8f.44.2026.11.02.08.16.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 02 Nov 2026 08:16:13 -0800 (PST)
+Date: Mon, 2 Nov 2026 17:16:12 +0100
+From: Michal Hocko <mhocko@suse.com>
+To: Joshua Hahn <joshua.hahnjy@gmail.com>
+Cc: Shakeel Butt <shakeel.butt@linux.dev>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R . Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Maarten Lankhorst <dev@lankhorst.se>,
+	Maxime Ripard <mripard@kernel.org>,
+	Natalie Vock <nat@pixelcluster.dev>, Tejun Heo <tj@kernel.org>,
+	Michal Koutny <mkoutny@suse.com>,
+	Oscar Salvador <osalvador@suse.de>, cgroups@vger.kernel.org,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+	kernel-team@meta.com
+Subject: Re: [PATCH v7 0/5] mm/page_counter: move stock from mem_cgroup to
+ page_counter
+Message-ID: <aui3TJqadHUv-4RW@tiehlicka>
+References: <auiBOBfRIiup8Aob@tiehlicka>
+ <20261102152018.2773572-1-joshua.hahnjy@gmail.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Stat-Signature: 349dhcucgc47d4i9wbd5ynh6jit6j95m
-X-Rspamd-Queue-Id: 1CF0A40003
-X-Rspam-User:
-X-Rspamd-Server: rspam12
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261102152018.2773572-1-joshua.hahnjy@gmail.com>
+X-Rspam-User: 
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: F2C421C000F
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1793635983-649975
-X-HE-Meta: U2FsdGVkX19bcrLxY1VYlNdgQHDB15e0f6khY+TI+BzRXrZGIDxS+FVodJWU0ZLcUV5cSYPM5xE3qw39HHBPZHy9DQcsJ5XzhI1DJaFPTk9dCIdKAzyF3nCgh6SV9aFXX6NCuebLH7aYGTNRiUvNBvcuwcPOaq1R5p8Uq14+Q69dyU9plDIqQrtvHLvdVzcbrICkzAqsD3j4jtx1ND+vSW6z/wo/nJDTn7xHkvY6LADfPHOOBkcYvS1cA33blDRi/KVLDmV18ZJdE9Pod2cbmxT4raZKV7gkFo9Ov9q1GQecGBzzq17FYBtuQdUlHf2RjexuJWUcFUgBpltGXY9MbfMsbaCgeSDeemAhEqKV3Wid+U0o9MMp6tE4LpzGQngBmU3B762ZhqxMI+Xc4U4oZK1TwX493VUv8hoit9bVtbGex78qUWxUgVt3kN9IB10rCdmBi55tXbAEBL4pI6s1MPCSjLNNiIgl9MSYkHga4+27dMnwdI0Z2+gh2SUKsGPs50j7Hy8hAPNY1Fk7a0K/VI2t+smeIN/t7smLx+jkSSlYxU54t6I3fOC/Ksjn9I0lU/lpkp5R4qbvMI4pVvAxHaIsot5WKogSXBS5OpwrBLtod1d+709ZyAXa4SImeWzmOGOzVGDr4FYdd7DQ2vGwQ097gB+VjoESeU/849fNUFGRiBtZGbKJWuiykyNIWMqPGGgCif9fnVfxiuOcVEThqSdQxTnO5ngIO1mIQk9xuUzL/JT5eiFf2U9Q407jWmBMEaA0hdSNzHdrKUR9Vho8o+VE2sBFdhgcaVE451PGZT3w3KW71iuXYIkp2VQUqiCVYCf/qd3/GimzD6znOwJOGdlowfrn578lTV7BM/jP/uREyc+ujxS0UX5MoQQ9uljjgy0ouPElVnjuk67pHVhx9XcK63NNFGrSjYXzrkIVXxLZjPxffPN/HYuDU5v8/Eejmupj2BMK1iZlrWFR+Qk
- Zp917T/H
- 6jzxhw45Se/xwwPneDgjm8E+5FBgNmLCtV5+y4D9qpalDncIt1bh1zPxIiBlVhzp77a4J4e/ByA6oitrLD0uEonZiiK2ETrLvlNNnKrORxifIEWBRWf3PC2N/xv+roz/GvKf38L9L+i6RYJ/VlTg2V1SbaewjovmHoW/LWMLM2S0BGhKQmJ6h2btlzB0HFOb/N2usnGIg/rGDjUKV/vg34GI2iAZ9eN6h4aXXWD83O8u1f7GGQjOCJZo6oXQcgWDPsweswQ3lhRwEP6UPzeRhcWMY6RWIwvQ+dbY+vDT1AgXhsK+zq4bReKufpYxXe6KDsLXkSNwsO5Go79upu6HFTFpnHJqLQJiGToKNw096G7lmUfxcI3Hb7X1IE0kSBiFeygeTeTgAVACEIMihLJoyZD8pIMR2ezAG8Il1HxgFi+7Nz3wduPh09+Zef24LHCtlQ6bd5Z8zl+jgeUbttwn/5iemCUkl6z0d0ycaTTt7jSmTtIJJVypyYBNYaBj62469RMKaN5Klwz2xnJT6yZ6dq4bVvtXzDCHVJ6zaflva4Xy1Pmp7/CoBJ73tGg55FivjHT7vZzYT7A4Ekhos727exirwMQ==
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
+	autolearn_force=no version=4.0.1
+X-Stat-Signature: 6tpqwr35wssjojddcq4kpip3d6ckxcd3
+X-HE-Tag: 1793636174-179872
+X-HE-Meta: U2FsdGVkX18MOXNfqV9fiTzgn2wTAocRtVPrhFUksQeDGbn6QoYFbwucgOhKKdAfu3hxfqlI5hNyjjCfU++JUznLwGDxPzb7CesixTq3AsYyxDBFXAJB47a3Ca2yNqsP+7OgttJcOEYdzjXjqHZI9mOp5HIm43Opp9cgGVT3bdMG54aTbvfA2CgPy+ElwygV3Yb9kRari9c5fQhmhDJTAZkaSq+uq6h86JF0773hOIrI9P4FbM+T79dD+nhrXvuX5BIzeO2o8nStrSeJX/2sz06jN4EsWfwqLnMVfLQDI9F9sz0qm4j7iWJGTKHClDzRZwWOpdAOWFOtrmWQ6oGwktZRwLF+BOpqQxLWs++pZmvhMxIVXZIDwDAyhiVqFckEltHHoFMVyrcw6K82gOGwAOzmq/4wgox3k97xLDzDiYo/f79pZmvN7oLHOMlkWXYYGPbSX4lBf+C4CiwSC4iH9uzIEGUrbn5zsJPTzWN1O79nMCJ+0BplfARY4LHpUx6n8RO7+rC/+4mZCFCIU20PHXxSe46Wa3v1J5FMBFLbnC53uoNg78eDQd1WyzBPmDMdSKl6MoaUePrBeo5qtBbAKW5LdmTN5sxWz3LUbotzhYX/g2kj3zD8JO3qknRyX2eEpEQqhHm2RSEiYmCJkoh1Cxb2h1h57X6QJP/+UHpAisLOwwNNGI3PGyVErhkEk6a5JA2kR5+ryqqM/C1urgKFtnfI4eFEZ6I8+OhJFQqOeHQI567LvqLFVxhUaJBjQVrYERASpokvD3wyhNjImwF0KuRzqST1kDOAVC0R0hQBt4mOgBqMB8Tr2metFaq2GkHXMg310kh0lfveKJ4if4KanjujtBX4lNBLlyMFuOgacpxv8Rpl7gM74dlmiHjNLO6V7anSvkm50itkXaV+6VoBCkwt39pyvjqGf8fEwVhnPyI4pMggcfDfQbCaK/xo9uQD1IWQp3zitTSSM8Fny2O
+ uxOrhQoJ
+ qIahzpPFUWs7bCezeYVkHTEX9IFoGpyErIPe1DBKW8HaYxIjS2sUG+u4vgXUqZfnbkVmA9SOoE9ffsXjy1qP0/IaE4OE+lC4rb4/s/IcyIbt+8la8fUqXuWmU+D9p6xJmAlhm3sJaY6bMSDORteenovgpUkBegs05FagRjhsojbqUTrfPwaK5nxJdFaCmYljJmjbmj/AZHKnFkkWt4atusHbf9hJLzZlUqXIoGN7tUP0Na7fDGAKBau1WzaIVQx8nBUVha07tRP+4747f/TbSb6MUAijgvkM6yTlsAiwUaLBeKDtDK/K8GdM6Uok4uYfWbzuI01nbbAU7UILXeKLtrAMRgUjYwxENeF9l5iovPspAgYmnew0FK/R+FqCmqk6uFm3yhwWDDEWKfSR6O1PVfkUKSxNzA/tIIAMcSDfzwrpmLiPI3QuBwc9WbOKP5W3MqVYOm0dtC6PlojKxRJAbWFJg5fAFppRMZ6A+uSQd5aEeGNDuxV8qhrkiGpWZhHcySwmfIoZ90bueBlac7pApwogR5/l/cRDxhEyt
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,33 +141,110 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Atanas Kunchev via B4 Relay <devnull+atanaskunchev.proton.me@kernel.org>
-writes:
+On Mon 02-11-26 07:20:17, Joshua Hahn wrote:
+> On Mon, 2 Nov 2026 13:25:28 +0100 Michal Hocko <mhocko@suse.com> wrote:
+> 
+> > On Mon 26-10-26 08:59:37, Joshua Hahn wrote:
+> > I guess I still do not understand what you mean by opting-in to the
+> > caching.
+> 
+> Reading my original cover letter again, yeah. It does feel a bit strange
+> to call it "opt-in"... I guess I just meant that not all page_coutners
+> will be getting it, it would only really be the memory page_counter
+> (and memsw page_counter for cgroup v2). I'll change the wording in the
+> next version.
 
-> From: Atanas Kunchev <atanaskunchev@proton.me>
->
-> Fix "auxilary" -> "auxiliary".
->
-> Signed-off-by: Atanas Kunchev <atanaskunchev@proton.me>
-> ---
-> Fix a spelling mistake in the binfmt_misc documentation.
-> ---
->  Documentation/admin-guide/binfmt-misc.rst | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/Documentation/admin-guide/binfmt-misc.rst b/Documentation/admin-guide/binfmt-misc.rst
-> index 9e84b877d06d..e37668371453 100644
-> --- a/Documentation/admin-guide/binfmt-misc.rst
-> +++ b/Documentation/admin-guide/binfmt-misc.rst
-> @@ -73,7 +73,7 @@ Here is what the fields mean:
->  	    Legacy behavior of binfmt_misc is to pass the full path
->              of the binary to the interpreter as an argument. When this flag is
->              included, binfmt_misc will open the file for reading and pass its
-> -            descriptor into the auxilary vector with the key "AT_EXECFD", thus
-> +            descriptor into the auxiliary vector with the key "AT_EXECFD", thus
->              allowing the interpreter to execute non-readable binaries. This
+OK, that makes it clear to me now.
 
-Applied, thanks.
+[...]
+> > > > > We get an added benefit of simplifying try_charge_memcg(), which now
+> > > > > has all the stock management handled transparently within the
+> > > > > page_counter layer.
+> > > > 
+> > > > This is quite a large change and I believe it will be really benefitial
+> > > > to have some high level design overview in the cover rather than trying to
+> > > > chase it in respective patches.
+> > > 
+> > > Sounds good with me. I can add the call traces above which should
+> > > explain my thought process a bit more. Hopefully the problem I am
+> > > trying to solve is evident there.
+> > 
+> > I believe I follow where you are heading. I am not sure this is the
+> > right path but that is a separate discussion. I would focus on whether
+> > moving cache to the counter makes sense on its own (without that future
+> > work) at this stage.
+> 
+> If I'm being honest, most of the generic benefits that exist beyond that
+> work were in the other part of this series that I got rid of to scale
+> down the scope of this version. But to explicitly name the generic
+> benefits, it would be unbounded memcg stock caching per-cpu, eliminating
+> random evictions, (like you mentioned above as well) limiting stocks
+> to leaf memcgs only, etc.
 
-jon
+limiting cache to leaf memcgs makes a lot of sense and addresses a big
+concern I had. How exactly does this work?
+ 
+> I think there was a proposal to make the number of memcg stocks per cpu
+> even lower than it already is, because the author wanted to include
+> additional fields into the stock that would make 7 no longer fit into
+> a single cacheline. I feel like we are reaching some limits with that
+> side as well, so the "unbounded" portion seems to be quite opportune.
+> 
+> But I believe those benefits that we would like to see are made better
+> by this series, which makes the stocking transparent such that the new
+> optimizations don't make the existing memcg charging code any more
+> complex than it is. By abstracting away this mechanism, we can make sure
+> that memcg just handles the logical charging semantics, and page_counter
+> handles the implementation-level details of stock management.
+
+Yes, these are all good arguments. Especially when clarified that this
+leaf only feature. I have to say I was struggling to see how caching on
+all levels of the hierarchy would work in practice.
+
+> Personally I am a big fan of how try_charge_memcg looks after this
+> series, what do you think? 
+> 
+> > Quite honestly I am still not convinced this move
+> > is the right thing but I would like to fully understand the mechanics
+> > first. Having discrepancies among different counters just sounds like a
+> > potential source of future problems.
+> 
+> I hope that I can present a good argument for why this is not as
+> concern as it may seem initially.
+> 
+> My first point is that the memory usage counters were always fuzzy, as
+> specified in the memcg v1 documentation too: 
+> 
+> usage_in_bytes ... doesn't show 'exact' value of memory (and swap)
+> usage, it's a fuzz value for efficient access.
+> 
+> Secondly, the raw value of the usage is actually always accurate. It is
+> just the stock portion that overcharge the memory at times, making it
+> seem like there is a discrepancy. Flushing the memcg stock immediately
+> bring the counters to their real values (like what happens right now).
+> 
+> Finally, this is a change that is only limited to cgroup v1 users.
+
+Right but is there any actual point in adding caching for memsw charges
+now? If you have a way to opt-in to caching then you can simply disabled
+that for memsw counter altogether. Fewer problems to deal with, explain
+etc...
+
+> This entire series actually has no effect at all on cgroup v2 users,
+> which I think is a nice perk. Obviously I'm not out here trying to
+> make cgroup v1 unusable, but I wonder if anyone is still using the
+> legacy feature.
+> 
+> I hope this wasn't too much of a brain dump on you. Thanks for your
+> feedback Michal. Please let me know if there is anything I can do to
+> clarify my intent.
+> 
+> Would you prefer if we continud the discussion here, or if I sent out
+> a new series with just the cover letter changed? (I don't anticipate
+> any code changes, based on sashiko review or anything else that I see).
+
+Let's just iron out things first.
+-- 
+Michal Hocko
+SUSE Labs
 
