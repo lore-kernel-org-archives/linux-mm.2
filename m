@@ -1,105 +1,131 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27B21606A32C
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 08:07:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA8AD606A32E
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 08:09:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=tnmzTSqr
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=qxJ8HCof
 Received: by kanga.kvack.org (Postfix)
-	id DA52B6B05B1; Mon,  2 Nov 2026 03:07:48 -0500 (EST)
+	id DCFCF6B05B3; Mon,  2 Nov 2026 03:09:18 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D7C2D6B05B2; Mon,  2 Nov 2026 03:07:48 -0500 (EST)
+	id DA6F86B05B4; Mon,  2 Nov 2026 03:09:18 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CC3EC6B05B3; Mon,  2 Nov 2026 03:07:48 -0500 (EST)
+	id CBC376B05B5; Mon,  2 Nov 2026 03:09:18 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id A7FEC6B05B1
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 03:07:48 -0500 (EST)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id A5EB91C3A99
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 08:07:46 +0000 (UTC)
-X-FDA: 85389450132.12.E96C74A
-Received: from mta1.migadu.com (out-48.mta1.migadu.com [95.215.58.48])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 7DC174000C
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 08:07:44 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=tnmzTSqr;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 9E41D6B05B3
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 03:09:18 -0500 (EST)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 2A756A8439
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 08:09:18 +0000 (UTC)
+X-FDA: 85389453996.01.E240E45
+Received: from mta0.migadu.com (out-53.mta0.migadu.com [91.218.175.53])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 9DDB1180004
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 08:09:14 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=qxJ8HCof;
 	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf01.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.48 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev
+	spf=pass (imf06.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.53 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793606864;
+	s=arc-20220608; t=1793606955;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=RmW9W+b2NUCMbTNqn6LeM8cKiTUqHkz3gaeuB+SxxjQ=;
-	b=CsotPpFdGiXlhAKd7PA+rlqCeueXF9d15yfKCewoqfCYsyQ49fKAPUVafqKWGLhGcjntaR
-	stzJw4ysfCG8tfAzdcav1J6pL3nkL8fcknMsHYBdr9oRRR/k2EH+mnUI8ubZNQO5EQiwDa
-	YX/69oEeyFNZpeAhQZP0Pd8LBb+VScw=
+	bh=Ua9j3chuGLeYY0btIyoz40p0xgL7yj+uIcM50lwlwKs=;
+	b=Z+tGyi/Mznq84vp5j6FUys4lpX647KzlvUt60JBXZ56a78tNU2tIWqmF22DfybrVrS0rbe
+	jXWY6X8hEl6Ev1/JWwVTLVhik/GXqVijPj4HPB9HnwlezjyGaHNL5e7yp+UWOdglVRwFML
+	R/0iPOjCfDACJ5ZtTXZ7d2XvPqJNYU0=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=tnmzTSqr;
+	imf06.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=qxJ8HCof;
 	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf01.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.48 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev
+	spf=pass (imf06.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.53 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793606864;
-	b=7FvUPe8wyPDZAKfLS26VMjeEsnKcO5qllIlNQ8kpnKze1u7PncepW69rIoG9JWQEs8zZaU
-	Nf/7ho0CdwaOgqogn390bgqcUCISlf2kRVFzNmj6w9yFy3C3KC8W+lrpndzb0GmeTCxZCN
-	WSTZvUlVeZ6K7cEDpiSS1PVo7ANa3EQ=
+	t=1793606955;
+	b=4M0hoFsdLH+dvum5f+c1Zqitf7dQnUCQ75nB+IJbOI6fwPwJQAy70pikfStzdgGJ6hufYd
+	Wo9A0+MYqaV6HLjCYG4Hw+wfymetMBL7Jc1Y85+/5WAt+oBsvvl0UPRx3LehLzgydLTqRq
+	uJzzLyUwsdOcAQuIrBpcP7kL409Zm+4=
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=VFK7vMxbPR50n7fFLwXWLZ6ZPyv6K4TCi+2Re4RLgtA=;
+DKIM-Signature: a=rsa-sha256; bh=AJzTmqiEw66QyrrtTwvf2v4Wxl2wkr7mScJNfEWS5L4=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1793606862; v=1; x=1794211662;
- b=tnmzTSqrsxUQkb2Ygb/cunZg4/OUqK6lMcAvJ0bQ7Es69dTB9ZtIaSWepDAbbVg70L7cpC6f
- V1JdH5YEhU0YdyJOo/OdoN6Kk3QzYgnGNo5mWmNFybxDGnbMDNC8TevzmkvMqfTctpYJT0lpmgr
- g9XjIsaSGBn+f1SHLI0M2a+k=
+ t=1793606949; v=1; x=1794211749;
+ b=qxJ8HCofo4rfUF1gSK/co9lCPJ9MFuCXHgOd98rdkqmIUsARH9XzuI7qtTqUG7ftdjuPzgGL
+ mbt2I/nICtNl8FYp0d98GdB5efQorqTfwGF/wOCWskxBI7uubraROUrtHI460R8K3W6nvL5cQJQ
+ 3+kR+7R3oUUa0soLBB4XPKDE=
 X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id ab74e95e87cc3cd0;
-	Mon, 02 Nov 2026 08:07:42 +0000
-X-Mizu-Trace-ID: ab74e95e87cc3cd0
+Received: by mta12.migadu.com with ESMTPS id 54617e5f3eb6591b;
+	Mon, 02 Nov 2026 08:09:09 +0000
+X-Mizu-Trace-ID: 54617e5f3eb6591b
 X-Migadu-Flow: FLOW_OUT
-Message-ID: <a857f808-1988-43bf-9300-86e24a01436b@linux.dev>
-Date: Mon, 2 Nov 2026 16:07:33 +0800
+Content-Type: text/plain;
+	charset=us-ascii
 X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/3] mm/hugetlb: Preserve persistent flags when
- returning folios to the pool
-To: Kaitao Cheng <kaitao.cheng@linux.dev>, Muchun Song
- <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
- David Hildenbrand <david@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>, Mike Rapoport <rppt@kernel.org>,
- Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Shakeel Butt <shakeel.butt@linux.dev>
-Cc: Mani Tofigh <mt4022@columbia.edu>, Zi Yan <ziy@nvidia.com>,
- Mike Kravetz <mike.kravetz@oracle.com>,
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3901.200.71.1.16\))
+Subject: Re: [PATCH 12/15] mm/hugetlb: keep surplus folios that are reserved
+From: Muchun Song <muchun.song@linux.dev>
+In-Reply-To: <20261028-fixes_hugetlb-v1-12-a0a033db180f@kernel.org>
+Date: Mon, 2 Nov 2026 16:08:46 +0800
+Cc: Oscar Salvador <osalvador@suse.de>,
+ Naoya Horiguchi <nao.horiguchi@gmail.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Mel Gorman <mgorman@suse.de>,
+ Andy Whitcroft <apw@canonical.com>,
+ Miaohe Lin <linmiaohe@huawei.com>,
+ Michal Hocko <mhocko@suse.com>,
+ Rik van Riel <riel@surriel.com>,
+ Hugh Dickins <hughd@google.com>,
  Baolin Wang <baolin.wang@linux.alibaba.com>,
- Miaohe Lin <linmiaohe@huawei.com>, Naoya Horiguchi
- <nao.horiguchi@gmail.com>, Frank van der Linden <fvdl@google.com>,
- Chris Down <chris@chrisdown.name>, Joshua Hahn <joshua.hahnjy@gmail.com>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, cgroups@vger.kernel.org,
- Kaitao Cheng <chengkaitao@kylinos.cn>
-References: <20261102024910.31486-1-kaitao.cheng@linux.dev>
- <20261102024910.31486-3-kaitao.cheng@linux.dev>
-From: Qi Zheng <qi.zheng@linux.dev>
-In-Reply-To: <20261102024910.31486-3-kaitao.cheng@linux.dev>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 7DC174000C
-X-Stat-Signature: ary46mzhcp6p8dx3oq78mspg5brogk9y
-X-Rspamd-Server: rspam04
-X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+ Vivek Kasireddy <vivek.kasireddy@intel.com>,
+ Dave Airlie <airlied@redhat.com>,
+ Jason Gunthorpe <jgg@ziepe.ca>,
+ Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R. Howlett" <liam@infradead.org>,
+ Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>,
+ Jonathan Corbet <corbet@lwn.net>,
+ Shuah Khan <skhan@linuxfoundation.org>,
+ Randy Dunlap <rdunlap@infradead.org>,
+ Peter Xu <peterx@redhat.com>,
+ Breno Leitao <leitao@debian.org>,
+ Will Deacon <will@kernel.org>,
+ "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
+ Nick Piggin <npiggin@gmail.com>,
+ Peter Zijlstra <peterz@infradead.org>,
+ Heiko Carstens <hca@linux.ibm.com>,
+ Vasily Gorbik <gor@linux.ibm.com>,
+ Alexander Gordeev <agordeev@linux.ibm.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Sven Schnelle <svens@linux.ibm.com>,
+ Arnd Bergmann <arnd@arndb.de>,
+ linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org,
+ Gerd Hoffmann <kraxel@redhat.com>,
+ linux-doc@vger.kernel.org,
+ linux-arch@vger.kernel.org,
+ linux-s390@vger.kernel.org,
+ Chris Mason <mason@kernel.org>,
+ stable@kernel.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <C4D9D9B7-F875-4A05-B3A4-DBD0BD496EA5@linux.dev>
+References: <20261028-fixes_hugetlb-v1-0-a0a033db180f@kernel.org>
+ <20261028-fixes_hugetlb-v1-12-a0a033db180f@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+X-Mailer: Apple Mail (2.3901.200.71.1.16)
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 9DDB1180004
+X-Stat-Signature: xfuxii83y6cds4zcwza1wpad3g1yqn4s
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
-	version=4.0.1
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
+	autolearn=ham autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-HE-Tag: 1793606864-143737
-X-HE-Meta: U2FsdGVkX19RiH2MufnurED65L/vynRtDU/77XtRPW+qUYQslSthDwBzvyooG4WRwfAIsUOOOdLpU8mGIPwTM7qTGyeTojeogpow7hKdjNC3EY3u8rGdlLpdLuIrWnBZtP0HMfGucbxKBYEeTrJ9R6oGwxQ/3AXFb1RBMN9muFW0PnUVzoULFGK20Quk9z+15rwKUAvABzUBjldkGgbQVPLC7ghiY6Atc8Y/6lHSRNHRsJ5SdCrKHwAZHrn9aLMoLBZ6SMS9O9j3aydc8nG4y5Rd0mT870nCmPO/L3hIseH5oROjv2MKbM7jj5m93da0LbgFiN9cBG11QOxmtLgqmtLzAC+OR1cFedNgCAck0iQifbJuBCqYrhQIF+Cc1tj8KEKa0ivR5E9xGeVEb6eFMWW3SI1Sqj7RgnL1GNgZ0oieZjWBN8/TMBZg1HyL6ts08W0oBGtxHuZWssv+hDrIKQ9tCLdHXmWZ+Vfwm/yotCY5/Vp30KaScwRGHFiJWpVSt9fLSx2HqIiGhco9rlxGf4FOmFJwUMPm78wuXOC7V5FESf4jNDYZmrOrMC7424rGtgS5+mUO/i4J9OmeAwyGojPZqIwkvybGeoLN6M65Jbp7U69AktVgwXaFcTFKmnW1gqmoB/NgEsWzdl1VspncTK9Ryy/H8v5C+zMhYxvSQlN4EVzgV6jEzYKYZcOm3LHQLU3yx+wd2E3ICM412CD/o4r3fOOCE3D9ar4KFYNtok0iMLWPuBxszZVarvNSkGeNnMyu7xzGP6xZESOhIOB9I5ckbLlAQiF9cmd/B6yvnEtBfX9zaNRGhYTnmigEFzwo4pnkGpbLzp6hF64z00eEwwMd2OQwR7HOj/dEc+jISLnQDduecVUsReQWAlWYWD18u2Y40mbixe4t94Mu61AA1b6czZMcgjcmes5MfBDSfXA/4bnVwlvxd6rwibBz+nBLYHrd+9kpJkbgbQUDaS7
- yN41iJ6K
- kFFbYgwoFvio5k5e90e4cd+xieYArCwvk8Jp7nCTDnPYmQMOUl/FptWfAcrsO+Bum7clinqCya77GsP1zjbaMqjU8mCLWXDHih8q0PPgba/FRt8WXPMxhw7ltfzCW1gzKgqjVy+SvR8+aZH4T1BZQIhRzHJ4wrX5C0S4NJdm3vfmBa45JC3zwPJzBLBI30/JOi3yiT+Z4d29XzrRPTEhlp4CoKsbCCJN6NihnGGKz97fIxmS6Nk7WSYmF+yjgdkgAst2MfOmXlA0+xWCx/7ETfqqndJWkuR4vGKKttatFR3KzP5orzA8LMoAE/cm6WZ1LTJOiUxMkiwzp3Msj8sEX55FhzTWzfPCl0uBj0xCh3qiDH3gfPoEOP91xOwYupNePd4LR/81x75Dc8a0CvGMQYUlQKaiRkgNFMvCoNxKtt4t1JuLzg2YbGlsW6b6ycqWCN+mzlZpHt3Twsio=
+X-HE-Tag: 1793606954-748352
+X-HE-Meta: U2FsdGVkX18PwWtBB8BlQ1r98jlwECQ22wu7ymUyytoaeXGRIx7aEm4/Flh05d8xgFkhv7A2i/GaK8JWBucRrtaaO7maF3FP9mCMc+FMJyLkfy87k6DsYPwWLzUzTN5TMNN9LBMFrxGCXD7ngGN1RUwx3KGKEXjqySxN6tK2IdQgQ4d5Pbj9EBVNU353/xcqoWjMTWZB1KPQFNDV67wtaC4MrBsvX0x8dh2R60nW36h6rLu8cjPm5kGFRWbmglozbnpjMT4AY+Z5z+kRCdQRyQYvAdsylpKz0Dl8k81GJIDR3ch55EMomoYrzsFcO2iI13FL57vjSGxDMtV8xsvtgwoUfx6s4VTgiXGXVn+u4/sQdGZj8XOXqEb1EjuLrHJuki3I8yj6seC3nns0OsLRge0OyFIPm75Pg80Thv3PmkUqor86LmIwD0CebI/UMOjkI4fubucJI0GbRWoLTLvgdT78Pq1VHaveW5z9woSjs19NRM3UdVh+7A/a4DLTXJgxpYJCs9XS7kpNVvaBBO6EvnqMG1RJDRuBa9ZkRKzJcCJt6lGF/C5WYF/HyMyf64YBsSF7Cou/A6l3Ett7bh7chZXIn+/Ou1GmpTdI1Vq8oATiu5TpmLXI7lucoHr/DTYIwpdKKRd/2S7i2sPv8CdN7MomMu8po0XJ7i3H4sodhpo6Q/WMBKgpxFzlNxFGFdTqBwF9OOsd5RPBbornCBJxEI7FGUQm/Nqzaa58lJ+1RqFP78+fUv5++eCbB75axhwsOZFJEQBASIJ1RzobiiCmGusBIu1lXo4KQVujwHTmXCxGdn47s6dBMSqgZ8a1xoE8Hk7dQ6fG/X9803FVOUaCPVdmzP5KO3zV2vJ76yC8+d1V2BajRno5IrIMdWSz8ljm2bbq/F1oWH6WQCXLSaPP4qxvcsZh+COt8wf+IdZvZRrrHRe0SnXPcPyqkUGfP9MJmUpi11u3eA1Uc8zXNWf
+ iT+IbL3/
+ BzOeTWXVhHdEMNHxV1x7C+aVo1Q3nuZISP6ZGIh8a2KH4hPCp8xTZ9nKIgQBxYezpQuJVfk3V0XLyyMdt3uJ1qgho/w09Jw8Vbv4xpRGO3Ggl9gY0w/1r09DAJBTeTjf+Fe4qFju+ES4duNxYKQGvUS+51plpwhSelbefubV7e0Nk2IO+IcJvz4m8+5p6nP3vtPvFpIvTiiChMsx21fbSP3cu2HfEERcZamgrrDi9f52QggI0SDiTsJdpd4KtZxFKZiexQSFvtrCZTN1I4AQ8h/yWS/mAQbl8VSQfgcCPMPlg0EoHZiV1lDXQ607CwVRFmlOImvvDkCzbR7E0dEwwHthTd4/rI647gsBK00QIvClk/9/yPBMomK6KUu0Lc6A6JAonsBr5fXJ4nNZyvQA6yfdOmg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,41 +136,44 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 
 
 
-On 11/2/26 10:49 AM, Kaitao Cheng wrote:
-> From: Kaitao Cheng <chengkaitao@kylinos.cn>
-> 
-> add_hugetlb_folio() returns a folio to the HugeTLB pool when vmemmap
-> restoration fails. It clears folio->private and restores only
-> HPG_vmemmap_optimized, losing other flags that must survive the rollback.
-> 
-> Clearing HPG_cma causes a later free to bypass the CMA release path,
-> leaving the CMA allocation bitmap set. Clearing HPG_raw_hwp_unreliable
-> loses the indication that the locations of poisoned subpages are unknown,
-> undermining the checks that prevent freeing or unpoisoning such folios.
-> 
-> Preserve the existing flags instead of resetting folio->private. Callers
-> already clear HPG_restore_reserve, HPG_migratable and HPG_freed before
-> returning a folio to the pool. Clear HPG_temporary in free_huge_folio()
-> before attempting to free a temporary folio, so a failed vmemmap restore
-> does not leave that flag set on a folio returned as surplus.
-> 
-> Add a VM_WARN_ON_ONCE_FOLIO() check for flags other than
-> HPG_vmemmap_optimized, HPG_raw_hwp_unreliable and HPG_cma to detect
-> incomplete transient flag cleanup.
-> 
-> Fixes: 161df60e9e89 ("mm, hwpoison, hugetlb: support saving mechanism of raw error pages")
-> Fixes: d2d786714080 ("mm/hugetlb: enable bootmem allocation from CMA areas")
-> Closes: https://sashiko.dev/#/bug/linux-5363eb09-9c3c-4f8b-9f3c-a998a8c4b258
-> Suggested-by: David Hildenbrand <david@kernel.org>
-> Suggested-by: Muchun Song <muchun.song@linux.dev>
-> Suggested-by: Zi Yan <ziy@nvidia.com>
-> Signed-off-by: Kaitao Cheng <chengkaitao@kylinos.cn>
-> ---
->   mm/hugetlb.c | 10 +++++++---
->   1 file changed, 7 insertions(+), 3 deletions(-)
+> On Oct 29, 2026, at 04:13, David Hildenbrand (Arm) <david@kernel.org> =
+wrote:
+>=20
+> From: Chris Mason <mason@kernel.org>
+>=20
+> free_huge_folio() may restore a reservation, but still returns the =
+folio
+> to the page allocator if its node has surplus huge pages.
+>=20
+> For example, start with no hugetlb folios and allow one surplus 2 MiB
+> folio:
+>=20
+>  1. Mount hugetlbfs with pagesize=3D2M,min_size=3D2M. This allocates =
+and
+>     reserves one surplus folio: free=3D1, reserved=3D1.
+>  2. Create a 2 MiB file and write to a shared mapping of it. The fault
+>     consumes the folio and its reservation: free=3D0, reserved=3D0.
+>  3. Unmap the file and truncate it to zero. The mount's reservation is
+>     restored, but the surplus folio is freed: free=3D0, reserved=3D1.
+>=20
+> Besides losing a hugetlb folio that is required for a reservation, =
+this
+> can also make available_huge_pages() underflow and cause other issues.
+>=20
+> Keep the folio in the pool if it is needed to cover reservations,
+> including any reservation we just restored.
+>=20
+> Fix generated by an LLM and sent by Chris Mason in private.
+>=20
+> Fixes: 07443a85ad90 ("mm, hugetlb: return a reserved page to a =
+reserved pool if failed")
+> Cc: stable@kernel.org
+> Signed-off-by: Chris Mason <mason@kernel.org>
+> [ david: simplify comment and description ]
+> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 
-Acked-by: Qi Zheng <qi.zheng@linux.dev>
+Acked-by: Muchun Song <muchun.song@linux.dev>
 
-Thanks,
-Qi
+Thanks.
+
 
