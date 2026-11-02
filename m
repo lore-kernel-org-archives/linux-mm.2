@@ -1,162 +1,180 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5A55606A32D
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 09:46:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2510D606A32C
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 09:47:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=NMkdta0l
+	dkim=pass (2048-bit key, unprotected) header.d=meta.com header.i=@meta.com header.a=rsa-sha256 header.s=pps82601-s2048-2026-q3 header.b=cSGNuTn1
 Received: by kanga.kvack.org (Postfix)
-	id B52F06B05BC; Mon,  2 Nov 2026 04:46:08 -0500 (EST)
+	id 1B8486B05B1; Mon,  2 Nov 2026 04:47:18 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B03CC6B05BD; Mon,  2 Nov 2026 04:46:08 -0500 (EST)
+	id 169906B05B2; Mon,  2 Nov 2026 04:47:18 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9CB6E6B05BE; Mon,  2 Nov 2026 04:46:08 -0500 (EST)
+	id 0325A6B05BD; Mon,  2 Nov 2026 04:47:17 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 6E10D6B05BC
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 04:46:08 -0500 (EST)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 090C71A0C47
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 09:46:08 +0000 (UTC)
-X-FDA: 85389698016.21.93FF4B9
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 8652340002
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 09:46:05 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=NMkdta0l;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf01.hostedemail.com: domain of aesteve@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=aesteve@redhat.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793612765;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id CB7226B05B1
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 04:47:17 -0500 (EST)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 47DB4120C10
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 09:47:17 +0000 (UTC)
+X-FDA: 85389700914.04.86019B3
+Received: from mx0a-00082601.pphosted.com (mx0a-00082601.pphosted.com [67.231.145.42])
+	by imf07.hostedemail.com (Postfix) with ESMTP id B1CC140005
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 09:47:14 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=meta.com header.s=pps82601-s2048-2026-q3 header.b=cSGNuTn1;
+	spf=pass (imf07.hostedemail.com: domain of "prvs=97666edd39=alexghiti@meta.com" designates 67.231.145.42 as permitted sender) smtp.mailfrom="prvs=97666edd39=alexghiti@meta.com";
+	dmarc=pass (policy=reject) header.from=meta.com;
+	arc=reject ("signature check failed: fail, {[1] = sig:google.com:reject}")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=fail;
+	t=1793612834;
+	b=Eb+4eFh6auXJh88db1e7Y/dHRIb6IBOjhfL4enkYBNGyG7pdXTslhMAk388xOUxUbbvrty
+	1UWI+uhGOAZuCjGS/4RdGIWrOMTlUeN0FXqxoiJNmLPVBR6oyVEoFcjj/wu2XyYHf8uMtr
+	4tZv/cwSMH5zQcNZa7VfuIFNmf0Hu0I=
+ARC-Authentication-Results: i=2;
+	imf07.hostedemail.com;
+	dkim=pass header.d=meta.com header.s=pps82601-s2048-2026-q3 header.b=cSGNuTn1;
+	spf=pass (imf07.hostedemail.com: domain of "prvs=97666edd39=alexghiti@meta.com" designates 67.231.145.42 as permitted sender) smtp.mailfrom="prvs=97666edd39=alexghiti@meta.com";
+	dmarc=pass (policy=reject) header.from=meta.com;
+	arc=reject ("signature check failed: fail, {[1] = sig:google.com:reject}")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1793612834;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=DGADPf1s/Hceud+YrgbPtgRU1aDRhCryTUpted2/1fo=;
-	b=hNPdyKF+obAEwT+KQueH7tNVphy0pdFZcaKx+KkO6TkpCPODKREe9iBAkzPhBoOyXxDFT4
-	kcW61BYHBhl75+4gP/us8v37M/jNnBD/qo0VgoLa2amr+rik5IxHALOumemkZGj0gEwwYq
-	g4DPzJIkGrfWhV4eKdxnWC2lDGfyoUk=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=NMkdta0l;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf01.hostedemail.com: domain of aesteve@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=aesteve@redhat.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793612765;
-	b=zSG73lVXYn6lvGTLykSCVktnS2OlAJ6C9dEiUTFUTH1NEX5GyvSpoNmiWU96Sb/V3j/MCE
-	KMzZxi9Df+iuYSPJXXqs58J3p2zWpGp5lGnP54HzNJCv0NfJLDWS2VJA1xdOpQUrxSwNwx
-	oNUmzikRtkszueT6n8lSQcarWdanI/8=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1793612764;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=DGADPf1s/Hceud+YrgbPtgRU1aDRhCryTUpted2/1fo=;
-	b=NMkdta0lyH41Rxq3tnKy8AgTP7fIj4Y77rATaldCKbr65ksjnvMLfGh9Xftt+rwk7kZPb7
-	tUpHmapjlRK6GW2WY86jgxJ09mz106CZFJXZ2hj1dCLl6AuCp+EE+yJqjoN23iNuA5JEbC
-	SrlshVU5kfJQTlQhs9epZqoA5vlFQ7I=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-106-AYQGhI4aNPG39DFgaG7iuw-1; Mon, 02 Nov 2026 04:46:01 -0500
-X-MC-Unique: AYQGhI4aNPG39DFgaG7iuw-1
-X-Mimecast-MFC-AGG-ID: AYQGhI4aNPG39DFgaG7iuw_1793612760
-Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-48e17d30a79so1373680f8f.3
-        for <linux-mm@kvack.org>; Mon, 02 Nov 2026 01:46:01 -0800 (PST)
+	bh=OIisd8STYt04AoWykShpx5GEMDUc3yZT54lWYvDNDAU=;
+	b=oXZ3SftAJR46rVcpQ1Bx56LZdYoVRn8FkCAXUORG7cw9baoZTlOoNFcziDNriTpPAWVGSR
+	eE2s5eU09dRlh/lSh7ycE6YUozsF+BMoqf3og0y0sgEPm3AyHDOa581/V2Sjo5fQM3en6y
+	QLmRwSEqjYPAFDzszY61NA7yfltmdog=
+Received: from pps.filterd (m0109334.ppops.net [127.0.0.1])
+	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6A29AdD03100663
+	for <linux-mm@kvack.org>; Mon, 2 Nov 2026 01:47:13 -0800
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=
+	pps82601-s2048-2026-q3; bh=OIisd8STYt04AoWykShpx5GEMDUc3yZT54lWY
+	vDNDAU=; b=cSGNuTn1vtxd3/KBJVATRlzaQN6/oJ2kAZiiwxMONYPaC2LoEOenq
+	rRsT4iyAubqcsqfzexrMZAJBoviyClccUYZH+DOD8ByWpv4c8T53f90jbaZuhqI/
+	Yu1yz7ROW4ttnJlagtNqzEgVXtHK88nCiJ6suIe7B7QoFkyAMt2MX0dbKcuRfx1t
+	Ow0rFGcLH85xjdSf7PTPSMKk2QOd9fAbYOATFpw9VatOd4SOOu2EUUX+IPK0J+1n
+	fSec19CFqNiSjpgT9e3gLzP2sXheg619GLaLtAKkQozT3K5MGmDF0+eZFegNFX8F
+	DsHdtoxjg3xgxOEhmCxRohaQDBi0I2KzQ==
+Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com [209.85.208.72])
+	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 4hnfmh06td-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <linux-mm@kvack.org>; Mon, 02 Nov 2026 01:47:13 -0800 (PST)
+Received: by mail-ed1-f72.google.com with SMTP id 4fb4d7f45d1cf-6a615ab0c06so2684110a12.2
+        for <linux-mm@kvack.org>; Mon, 02 Nov 2026 01:47:13 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1793612832; cv=none;
+        d=google.com; s=arc-20260327;
+        b=NcnXoveZiPjnaRQdljhrRsN1JnbmfnbnEZg1ZQTxGRrEezo7qi5Kh+xwYbstcfkZEw
+         sE9I02WlovhMIEYA8P8HhCWu96p7IxRpEwpN81vfdO0QQHtKaJSY9hBA2LUJyLg4ZmE2
+         L3CgQEv04oL8htDdTQrBVrRPhGisCRH9R10QqqLzNQ5D1CaJ/jrUINSnM5+AQARZHEO3
+         BwpR5SzyOUoDZJ8on47Alw0EECKg3+wMYma8ZE7MBpQm1SHL0aDsUF37L+Vude4i7bLR
+         ipzdLujrvWifuvcNtb7m5NZikD6w6wQWSa/i8Cqwf/cGcGD1qJa/vZCxBZxGdEnNXB/J
+         eAZg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version;
+        bh=kZFBqubIT/3DwescEkGovUV5S5nOjNIYh8rKkcY3QR0=;
+        fh=INnkUzkWYqfVkvl+SE5McEJbtlxjuWRbyvG5klTkN9A=;
+        b=pP8Zy/WGsc8dkw7sgOM0H6h1Nrr0IPIEPzKhp5sTQT1ARRkMlHhizVC6aSRjntpMNc
+         AYGMiUcqQK1Jt5/KbVf/4gRgva0vOO39SqvX9b508X3SoVFOdpC06gN8Ld9iJdfrSRY+
+         GYQ2oB9cn8i0nxUWUnwkMXz1kucRQjcyJ8cpJpfPEJI1sGvOeY2YnWqwA8zQficoza2k
+         njycbUWY3sRVtKg6ztZ0i3Tfc8SNA2dgv5EXelO2ELqKZe0D0d3mfnghXduu+w8AMCa5
+         410QuwH5sMsxu/zXpk1NBEpWPauBhStCq45cMBW6MWsTKL1C9W7beK8GjNbIBL2XllCn
+         gNcg==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793612760; x=1794217560;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=DGADPf1s/Hceud+YrgbPtgRU1aDRhCryTUpted2/1fo=;
-        b=aT/OlHZEf6094f5UROkPBR86thmcmGzPMPhVnJSA7JjMou2KtUEjDt4HS1EKRavobN
-         b2GQ69XYMJhaH2o3nsmGJ9CMcgxKGEfahFvU10ndO9XdmVJ6bBjDUYhDcykrMPF5/ksY
-         VFPpev1530qsy7umAzux2AaPKjhrwnomK2KN+ZJdgZLVza4Wk4YNUNy0b1U3pyadCUrM
-         LARl33yHzbBUExTOJZ1sm7twu9j7iZ9g7mVnJJYXFL9CeiDHaUd2ofg+T6Bskb2zMT9S
-         saLYbzHVGxR6eIl99Pq0LmqfXJ2afBppCzstoq2t+IsSydNrmjhwPFhbeU+2kCvj3GD3
-         7Omw==
-X-Forwarded-Encrypted: i=1; AKwUvBzxYylnk+SIezFpYFf1LQyFDbvZVt8qKOuD+wee6Nio1vqTdcLhZ/RTcFCau19LMmcCuvriV9xqEw==@kvack.org
-X-Gm-Message-State: AFq9FYJ2+7N9QU+nm2N2vy6cbiGnJv6bNIqNmjKT2F5M8Zwf4nmJ14MA
-	F0bX1vvrSjL30xF7sSZXa+ysFsRjL2TynLGTkaF6Sinr3h/P80URrLOygS6dEO8n1NTW+tru8+m
-	xUZy8xyTwiqe6FVUCapJPNgnRR4Tv7HuYfvRtmypY3ke4qgaec4ID
-X-Gm-Gg: AYBFou1V3sirjOZxFOE5PvkxhOKmvJb7emsfoAkW31bdwd229PGJ7PACAMSPzWWCD0C
-	jZJZo6RlhE1mohM3UwPkwhLoxXdS21n+i3gpE/D6eD04RW+eEH2I5KqiunSeQr1IBAytaeFXJ0x
-	AD/LoQuzbYm3RN5yhSAapqsBTkdD0K2Mk+tZND9X4Mui7hMCMjoqEzVmlcqfftKeG9xA7CkwmYl
-	5TjjKQyugk3+FmnEfzNqIILxmQphVSacTN1OFW6g0Wm5oL6shbj/gat822s6NaeksKA/U1FOo9Y
-	SK0qUqbIJ/t2rlgYPbXGcQ31yOqW2B7fo6A/iyoKriE1TJd4JOJ410zu3qh9kjb+q4TCQFRBqtT
-	kRXw+UMDAxPKgJvcbNZoF58EmTBtUeceZVh9M+tTkWg==
-X-Received: by 2002:a05:600c:3b88:b0:4a1:cf60:dcc3 with SMTP id 5b1f17b1804b1-4ac187a6ffcmr228127015e9.29.1793612760244;
-        Mon, 02 Nov 2026 01:46:00 -0800 (PST)
-X-Received: by 2002:a05:600c:3b88:b0:4a1:cf60:dcc3 with SMTP id 5b1f17b1804b1-4ac187a6ffcmr228126125e9.29.1793612759656;
-        Mon, 02 Nov 2026 01:45:59 -0800 (PST)
-Received: from localhost ([139.47.30.142])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e77409821sm15084520f8f.0.2026.11.02.01.45.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 02 Nov 2026 01:45:58 -0800 (PST)
-Date: Mon, 2 Nov 2026 10:45:57 +0100
-From: Albert Esteve <aesteve@redhat.com>
-To: Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>
-Cc: Tejun Heo <tj@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>,
-	Michal =?iso-8859-1?Q?Koutn=FD?= <mkoutny@suse.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Sumit Semwal <sumit.semwal@linaro.org>,
-	Michal Hocko <mhocko@kernel.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Benjamin Gaignard <benjamin.gaignard@collabora.com>,
-	Brian Starkey <Brian.Starkey@arm.com>,
-	John Stultz <jstultz@google.com>,
-	"T.J. Mercier" <tjmercier@google.com>,
-	Christian Brauner <brauner@kernel.org>,
-	Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>,
-	"Serge E. Hallyn" <serge@hallyn.com>,
-	Stephen Smalley <stephen.smalley.work@gmail.com>,
-	Shuah Khan <shuah@kernel.org>, Randy Dunlap <rdunlap@infradead.org>,
-	Ondrej =?utf-8?B?TW9zbsOhxI1law==?= <omosnacek@gmail.com>,
-	Jens Wiklander <jenswi@kernel.org>,
-	Sumit Garg <sumit.garg@kernel.org>, cgroups@vger.kernel.org,
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org,
-	linaro-mm-sig@lists.linaro.org, linux-mm@kvack.org,
-	linux-security-module@vger.kernel.org, selinux@vger.kernel.org,
-	linux-kselftest@vger.kernel.org, op-tee@lists.trustedfirmware.org,
-	echanude@redhat.com, mripard@kernel.org
-Subject: Re: [PATCH v3 7/8] dma-buf: transfer memcg charges via
- DMA_BUF_IOCTL_XFER_CHARGE
-Message-ID: <auhb1W6CRi0vo0Tq@aesteve-thinkpadp1gen8.rmtes.csb>
-References: <20261027-v2_20230123_tjmercier_google_com-v3-0-78d2c4cb8647@redhat.com>
- <20261027-v2_20230123_tjmercier_google_com-v3-7-78d2c4cb8647@redhat.com>
- <d76d8bfe-e955-4e90-9f5f-e3e914c0869c@amd.com>
- <auIeQU0nAnOLdKUB@aesteve-thinkpadp1gen8.rmtes.csb>
- <9ebce3f2-f7a0-46a9-bad7-39059b99423f@amd.com>
- <auNzHjhT5xezyZ4I@aesteve-thinkpadp1gen8.rmtes.csb>
- <08705a7a-86aa-4b43-a22a-e80a572010f2@amd.com>
+        d=1e100.net; s=20260707; t=1793612832; x=1794217632;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=kZFBqubIT/3DwescEkGovUV5S5nOjNIYh8rKkcY3QR0=;
+        b=ZWezD0CM5R3U4kVJw0z8r1Tjy3/fbd8Y5XrPXt5SqaNhtPiw+GRcRS+yEdWc41uHCI
+         3c1TxvoCq+NTYr6SPOZdPlwbQ/uApDh6CVkYG0zyOCj9XsRAfu+xgmjvl/J/9YH/NyqG
+         9lnUlS7SUS9pIUFVxZQNLu7CeihKmDlqLSKYQAh7tbpZrK/SbROcbggsVx3IYFZkBKaz
+         uC2hGHfHvserdvOEBD8FiBddH1MlrDIgaFG6CyKA2p9UtlpAVFHxiOV+p8+kfh60rWi9
+         o/5wbSoYJ05n/fausqxC0jJU8zL209OU3IZd60WOJQDNcAIsx6jnfj/vALygb1AJtebS
+         8uUA==
+X-Forwarded-Encrypted: i=1; AKwUvBzk6w0OrV79TxXlzaq/ttpSBywUhuvQ5O2K1X8vjrc72kD2qjC4FYtSfZP0OF7mZoIoYx//7Hq9iA==@kvack.org
+X-Gm-Message-State: APuU4Z+CWMSJ83MAN7CQbQx99K/mz1mfhsYksTKp2/JqrYDizmvlyKx9
+	TosOPApCzJvHAlHlQC9lLi8sdjdfwKZjG7kGcw4Eu5U8RLhcZP2cK+O2FEBEw88gEXL4O6M9imr
+	ACdzSMRwN29Dcv4nr8WWI5lm1SFUirgFX4Afe/MvYmfZTmpd3hFUNrqe2bBNMHakLVHXwcJW/X2
+	Hpxhfxfh/tnZP8G9LEcvObupH7SQ==
+X-Gm-Gg: AYBFou3ZjL1SNho/ij6esDI4iO2KnwTwVvOPNP7SnZgfbOgTdvDOybmaG6C5KnM/x+P
+	fVSc2lDBAoLW67vOWLLPxRe4shHFvPRo3NcVutVYElS/SMIOyvfpyEJJnGRD6L26Mlx3uFVcHQl
+	qMoSajh6853ZdoWCXV3QWZZIvDZ+aJk1SWRv6RPa4gSIf/hgY3fABYGU6CdBST2Ajz4B69hekWN
+	UK0WMGuSCb9EHQwSA==
+X-Received: by 2002:a05:6402:223a:b0:6b1:827c:af27 with SMTP id 4fb4d7f45d1cf-6b4d42901d5mr4309426a12.14.1793612831695;
+        Mon, 02 Nov 2026 01:47:11 -0800 (PST)
+X-Received: by 2002:a05:6402:223a:b0:6b1:827c:af27 with SMTP id
+ 4fb4d7f45d1cf-6b4d42901d5mr4309412a12.14.1793612831129; Mon, 02 Nov 2026
+ 01:47:11 -0800 (PST)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <08705a7a-86aa-4b43-a22a-e80a572010f2@amd.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: qizZc4XMRURIH8oXPYK9irVzU1lMk5XFE1O4Ipc1pMA_1793612760
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 8652340002
-X-Stat-Signature: wrq5683q1676u4heyjmtqkuri6j9j8z6
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+References: <20261022145615.2184343-1-alex@ghiti.fr> <20261022145615.2184343-2-alex@ghiti.fr>
+ <CAKEwX=NWVVXXU76H3V0DWsH=VDbPmGUHZXeaN1_vkz8kwJCxbw@mail.gmail.com>
+In-Reply-To: <CAKEwX=NWVVXXU76H3V0DWsH=VDbPmGUHZXeaN1_vkz8kwJCxbw@mail.gmail.com>
+From: Alexandre Ghiti <alexghiti@meta.com>
+Date: Mon, 2 Nov 2026 10:46:59 +0100
+X-Gm-Features: AclHuK-ko45jzQMTgG1sK5WUixbYj1ZnPkcnclUm_aBbtUmll1u_bLeL7VlXfck
+Message-ID: <CAEmasaUBKwmTv4oj1V1yR+5FLMvEi+-oqzqH753N1xdm5-aP1w@mail.gmail.com>
+Subject: Re: [RFC PATCH 1/1] mm/swap: allocate contiguous swap slots for a
+ reclaim batch
+To: Nhat Pham <nphamcs@gmail.com>
+Cc: Alexandre Ghiti <alex@ghiti.fr>, Andrew Morton <akpm@linux-foundation.org>,
+        Kairui Song <kasong@tencent.com>, Barry Song <baohua@kernel.org>,
+        Chris Li <chrisl@kernel.org>, Kemeng Shi <shikemeng@huaweicloud.com>,
+        Baoquan He <baoquan.he@linux.dev>,
+        Youngjun Park <youngjun.park@lge.com>,
+        Johannes Weiner <hannes@cmpxchg.org>, Hugh Dickins <hughd@google.com>,
+        Baolin Wang <baolin.wang@linux.alibaba.com>,
+        David Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@kernel.org>,
+        Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
+        Lorenzo Stoakes <ljs@kernel.org>,
+        Axel Rasmussen <axelrasmussen@google.com>,
+        Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
+        linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTAyMDAzOCBTYWx0ZWRfX9vzpeyJX3WyL
+ GPXSxi2xau/cTyermr5htAKUgaF4wo2CcHMj39AUgECjlyEp7JVxfMGUXMCLMU+IvnDm6HrEKoP
+ PZ1/2y7cMdVy3XznJ5r/7/3m/rJe24lG66BZEPUMzGAAQKLgGTl9p+bTMpr1FnHWNHhI19cus2N
+ RSSFdIEp1nDRluIS1Xp1PNRhV6vJ4bO0YvpdOLLkxJJZKNVl9t2oiFoCOGFeKS9tz8h+KP/bcIs
+ uU2GwlQeOV66kUzopbeY/QnWXZAu1z6jo18qk+GZsd6pjGTwiOoOsQ5AIyIS8S98sDB6ecup5eW
+ mTZ1Dt0RFJMqeYK1X4SWqgML8HKlN2GPcwsRsADnlU3Cix/CdNXlvJ5tu3q6c44KPl5+0NPodZy
+ BBwwEmYBNQWdJ2CG5NTQuJVYu5ypedMlTo/v3V+i+E64I/KAOZU9s7jfkp6Gjcm5lcE11HivHfL
+ oIFU74q0OPieTU+p3Pw==
+X-Proofpoint-GUID: 2Ne46Pd3o3rz88LuypJzPukObqWR8ZTg
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMTAyMDAzOCBTYWx0ZWRfXyNHMFeVacTPF
+ Bv5tkrAIqxFsV87j484DoNz1NaF42nAApPXNwJjxuKCO4m8TehyBEYEn6yFnTHmlj5q+uOoG6Lk
+ G6g0nSoaPS9s0q2JROn1hNXi5MYbnT4=
+X-Proofpoint-ORIG-GUID: 2Ne46Pd3o3rz88LuypJzPukObqWR8ZTg
+X-Authority-Analysis: v=2.4 cv=da8VTnXe c=1 sm=1 tr=0 ts=6ae85c21 cx=c_pps
+ a=DTy5UCxgudPLKrSn28m7Kw==:117 a=IkcTkHD0fZMA:10 a=zJRp6_cAMcgA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=7x6HtfJdh03M6CCDgxCd:22 a=crHB47gyY4rKiduisYu9:22
+ a=pGLkceISAAAA:8 a=Byi6NZyOV6eMvFsYz34A:9 a=QEXdDO2ut3YA:10
+ a=VzYV69SsQLkmnS9OQLw-:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
+ definitions=2026-11-02_03,2026-10-21_02,2025-10-01_01
+X-Stat-Signature: sm9e71wn8bujddwd89pommofsmqhsj9j
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: B1CC140005
 X-Rspam-User: 
-X-HE-Tag: 1793612765-979042
-X-HE-Meta: U2FsdGVkX1/T4/wgffwzC24eZadwx5WDKH0BdbRYzi3Qz9DmapaoUFgmVMb1LtfLkS/kFoMYyeHn8OSjx/NpUE16VUCEMD/qllNU5QZEwubcPto9HFeBb7xQ1vlUo4qDbbfBtx+qHqaDo3UItfkvDRqMZNfJS2M8rWR037Jpd71sj9eb7rLOAKBQgL6dYEj+1a21DFCaIxAZluEVSVIeA2f2vcsjNWKzo7XjiYZiIDjmQe0Ko1rtgerhnRArVwTOWxz68JJmcCZ3VT4J4bc4Jiu9DHuV8aD+Rf3KylbwiCxZlDwHfE34xHHTtvNGjXsFyNcO8l16HQvUJkEB7hJx5eBVYqib1h6VvljAEj9ixvUdM4vQxTmuaTxxEDGkgUJwrJK/P86+jaWq/2dK/WJR8DNdlgATZfOMFRIxiWOoc1psoC6n0rprAUyrWvPm/TjSt3Le8FUTn4kBin/5aSQ8oUpWa9u5usvV2iCgs61oCczAofhe4vjJTgDKT1LG/BrRUbjYl20kppkuT7yJaIHZ7AMqssd0a/RurJ58tUmd12TrUkjfXyG0oMZpsnkiuA0qyWZADFuR6n+rYx+zlLOmT2dti4QHwYGf3/G4KOLhsdjrElHE3vqnQytpVMgM2oA0Vtvt5TzWYuT8TkS+hWWn/i7gW+7VfXjZUdzRjZGwb1dTib1AxlsiSHcAG1m8btgwh7WXTbTje42Qs9Z0haCJQM/mcE9I43fKMz64wO1leKpOxz19Dsx76Bbd5v0uStq2jVKveNxtqsW5E0S3F/tyc0lvbiELQ6XKLaddxUL0gH67b5vb+noYHSO+qtwQsUN9/ZpzR+o5Xkaq/KRdHLjBvkxbjM4cSyE63LIVQUmmTy51QmW1Q/4R2VGboEguUB2Sm6yETZZn4NFyUrykbvi1fnEHZhUHVkhceJXEZvJk3G+b3h4QT0S0fJViOIQUOmYgWkQ5wBHFLYKhxbWVGCe
- +oBdnIOR
- ivorPu/5eWwOMS7+74gqQmpkI+LLymzUiHJXrvafOC9tQjjwK1ti7cLgF6ZT83MqqqO/by6145V6C9fDu9iDY0M5cvsutg6MFYjaE+StA9hn5gNI8Wp1/9q2prVNGPTcmRuJPpbIJK8Zy/EQJaNNs51mAIg8GoHmlewdJFlOcmSd2cFzqzYOgmYXSiM+K1rXSOeoXEBdzteDxUz9g4ZX3DTXsPwzKDaNuOK7569+YTQVZWpWsOLc5+Uc28hPGAASTDJcxgvSfuF0QKqI1bt+1TX2NCzFmLZxABiILQF1kmuok+7+CtvfYtcB5guHmdGDPzc4GFgKM2swRazN83z8ZlLP5aBJVdjRslX45v30cpFf8UtUoWWUm7dT1jWl8gKz4aX6v9+pX1G708z2OLM8A9czzcQaz5O5xq6ls1LyNJqvUGkxgups5K91xicDg5XJJGAX91SdbrgHtdU2Bv9Bgxdzx44Q861JH2YiCHdp5cgHa9LLupfOImvF1GA5aIko0HALN
+X-HE-Tag: 1793612834-345436
+X-HE-Meta: U2FsdGVkX18JxSxBoPHYNOsy4cHCrBNb7YYPVsa8cSTEhS/uLN+CRUqp8+t+NJfBJfDS9ZRwbdTzg8h85xXjbyB9bf5u+9xJkpfILtWArRVajITx1ExJHLEpVQ02q5q/P0hmCDGAnw3gyvQ4NylP+OiPQzZwRTp5DxiEdn9W2HkmAIrgrRtSEFUtm/Tgn7cPFQDK7uhf6quHWmyx0qbk+yf/XHFUNRgP3UcPTpAYR56yvu8p/QCQ5RxS6IX04gJn4QMJ2vLu71ArqRIfX0702DQ1FCYHU5bj805O4KdUVE2kbt556x1v4/OpynhieDOW7kHb9xn4OARIXYaRZl6LQtjDyZYtWU2uUf5yx7pZQ0omF0vBWxAVjD9YNt9PlTJ7vekam+8zeFx/K/jHiXpZbdx209XMxmV97aDsmMZBadEMdVmnKU0XARVUhSG6MoGqp6F22fvlGa2uMB64jq/54Nawvts8Dh1/AcA6VIikNS/njlZRjG13c+Q9pp4K5UBWHU4PecDvG0XUDsKbgFgg3qQ0PWx8HOqLPSE6yS37ibdki5I0ojF2kxulHFNfBBp87lqxq0MKldbHoxP9UxWyxmIiXYQFHmzZIHcGttc0Tdr0Mv1ajmiSYEJrkiNyghf5GHIhH+7ek8Y9CF/8O+StNBWvjgPC6H4dAleuL9Z17hpXUunBRbcG5d6KbGpcAhrTyzPnSYNRXHyzAQqcjEygeIR9VhJ2v+r+yYi2q+Lmrr5PoyI8kf/+WLMJJR95sU8X5KSjnAg1Tl7trxwoYc3bFDsjgxR9Hz7JAxZVl0HvaDKnQQJn6tYaxXBfz/Z+/PesYLPbarGUwlU7PvzrWyZPIQLdWv+7UtUrf81shs2gohQLCbRq2ktaIlJB+CEjL1R3Os7xSndtfwNdu22x473Ox/dbk4ngjqxCi4QWYZrxjDNSy3u+fwacjKL/2S+yA1yU07uTziHwHuWM8ozhpWJ
+ 6o/vXHxK
+ XSEEwCZtASrkKCHGOejM95p43r1865tYuO986Bp/q74j0dIHYitmJ8qYtkfYjVCofhDRYmPLitfPulCRuNlBML3v3GRT9FUJ+CBgtl2hT9LJ2wKkM1PsH1lPXxyU5oAeUjXjWPakqSWj4Wae1zwb8liVCpeuWD96xTD9qyscmuSvp9706EVHZwO6XqNf/yFrH48+hr+a8oJs7wSyAUcuVOwUYzCiUOdbr5rcZZwPQQCjM1N9SdzVea7C+Xy/jw4W93AVDgzehGYkd5ngcuwwp64AJPJnuV6HeqMgaCpNx+k9KOaUmhtdupjbg760tjQdEuZUo10Dw2kp9Y6xkCxBiEWqfXNDgE/rIR7eR2RJ/kLOevcjRkotWlLszP0uHxogu6JMw1+o3i48OlircPJQ0EwDwQ0x7u8mbltC+3Ynwvg+OFgt2019xPVIQhzi8ehUXVGEv7AFTFaMOaIJJXNJc+XJbeI8t6vg6VijepPagRDHbnopniFg9UBfWVdnGKbyRa8uWMpDpd5d0dq69i+AvDfGjrBAnIMU26kl0+wI0HUSkPaAM/YwoqDKPfOqr1Sjwfb6QrhHaiys3malII3LNMymuGw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -165,406 +183,362 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Fri, Oct 30, 2026 at 11:14:50AM +0100, Christian König wrote:
-> On 10/29/26 17:23, Albert Esteve wrote:
-> > On Thu, Oct 29, 2026 at 03:16:12PM +0100, Christian König wrote:
-> >> On 10/28/26 17:09, Albert Esteve wrote:
-> >>> On Wed, Oct 28, 2026 at 10:08:19AM +0100, Christian König wrote:
-> >>>> On 10/27/26 16:02, Albert Esteve wrote:
-> >>>>> dma-heap already supports charging a specific cgroup at allocation
-> >>>>> time via charge_fd in DMA_HEAP_IOCTL_ALLOC. However, dma-bufs can
-> >>>>> originate from any exporter (DRM, V4L2, etc.), and the allocator may
-> >>>>> not know the final owner at allocation time.
-> >>>>>
-> >>>>> Add DMA_BUF_IOCTL_XFER_CHARGE to transfer a dma-buf's memcg charge
-> >>>>> to a different cgroup after allocation. The target is identified by
-> >>>>> charge_fd, which may be a cgroupfd or a pidfd.
-> >>>>>
-> >>>>> The transfer charges the new cgroup before uncharging the old one,
-> >>>>> preserving the original charge on failure. An atomic cmpxchg on
-> >>>>> dmabuf->memcg prevents races with concurrent transfers.
-> >>>>>
-> >>>>> Not all dma-buf exporters back their buffers with reclaimable system
-> >>>>> memory. Some represent device registers, VRAM, or carved-out pools
-> >>>>> where size is not a meaningful memory cost. Add a memcg_account flag
-> >>>>> to dma_buf_export_info that exporters set when their buffers should
-> >>>>> participate in memcg accounting. The xfer ioctl returns -EOPNOTSUPP
-> >>>>> for buffers that do not set the flag. Currently only the system heap
-> >>>>> sets it, other exporters can opt in as needed.
-> >>>>>
-> >>>>> Usage example:
-> >>>>>   int cg_fd = open("/sys/fs/cgroup/clients/app1", O_RDONLY | O_DIRECTORY);
-> >>>>>
-> >>>>>   struct dma_buf_transfer_charge xfer = {
-> >>>>>       .charge_fd = cg_fd,
-> >>>>>   };
-> >>>>>   ioctl(dmabuf_fd, DMA_BUF_IOCTL_XFER_CHARGE, &xfer);
-> >>>>>   /* charge now on app1's cgroup */
-> >>>>>   close(cg_fd);
-> >>>>>
-> >>>>> Signed-off-by: Albert Esteve <aesteve@redhat.com>
-> >>>>> ---
-> >>>>>  drivers/dma-buf/dma-buf.c           | 43 +++++++++++++++++++++++++++++++++++++
-> >>>>>  drivers/dma-buf/heaps/system_heap.c |  1 +
-> >>>>>  include/linux/dma-buf.h             |  5 +++++
-> >>>>>  include/linux/memcontrol.h          |  9 ++++++++
-> >>>>>  include/uapi/linux/dma-buf.h        | 26 ++++++++++++++++++++++
-> >>>>>  mm/memcontrol.c                     | 41 +++++++++++++++++++++++++++++++++++
-> >>>>>  6 files changed, 125 insertions(+)
-> >>>>>
-> >>>>> diff --git a/drivers/dma-buf/dma-buf.c b/drivers/dma-buf/dma-buf.c
-> >>>>> index f31f49ebd0af..07513ecedc10 100644
-> >>>>> --- a/drivers/dma-buf/dma-buf.c
-> >>>>> +++ b/drivers/dma-buf/dma-buf.c
-> >>>>> @@ -540,6 +540,45 @@ static long dma_buf_import_sync_file(struct dma_buf *dmabuf,
-> >>>>>  }
-> >>>>>  #endif
-> >>>>>  
-> >>>>> +/* Transfer a dma-buf's memcg charge; see struct dma_buf_transfer_charge */
-> >>>>> +static long dma_buf_xfer_charge(struct dma_buf *dmabuf,
-> >>>>> +				const void __user *user_data)
-> >>>>> +{
-> >>>>> +	struct dma_buf_transfer_charge arg;
-> >>>>> +	struct mem_cgroup *memcg;
-> >>>>> +	int ret = 0;
-> >>>>> +
-> >>>>> +	if (copy_from_user(&arg, user_data, sizeof(arg)))
-> >>>>> +		return -EFAULT;
-> >>>>> +
-> >>>>> +	if (!IS_ENABLED(CONFIG_MEMCG))
-> >>>>> +		return 0;
-> >>>>> +
-> >>>>> +	if (arg.flags != 0)
-> >>>>> +		return -EINVAL;
-> >>>>> +
-> >>>>> +	if (!dmabuf->memcg_account)
-> >>>>> +		return -EOPNOTSUPP;
-> >>>>> +
-> >>>>> +	memcg = mem_cgroup_get_from_fd(arg.charge_fd);
-> >>>>> +	if (IS_ERR(memcg))
-> >>>>> +		return PTR_ERR(memcg);
-> >>>>> +
-> >>>>> +	if (dmabuf->memcg == memcg)
-> >>>>> +		goto skip_transfer;
-> >>>>> +
-> >>>>> +	if (!mem_cgroup_transfer_dmabuf_charge(dmabuf, memcg)) {
-> >>>>> +		ret = -ENOMEM;
-> >>>>> +		goto skip_transfer;
-> >>>>> +	}
-> >>>>> +
-> >>>>> +	return 0;
-> >>>>> +
-> >>>>> +skip_transfer:
-> >>>>> +	mem_cgroup_put(memcg);
-> >>>>> +	return ret;
-> >>>>> +}
-> >>>>> +
-> >>>>>  static long dma_buf_ioctl(struct file *file,
-> >>>>>  			  unsigned int cmd, unsigned long arg)
-> >>>>>  {
-> >>>>> @@ -590,6 +629,9 @@ static long dma_buf_ioctl(struct file *file,
-> >>>>>  		return dma_buf_import_sync_file(dmabuf, (const void __user *)arg);
-> >>>>>  #endif
-> >>>>>  
-> >>>>> +	case DMA_BUF_IOCTL_XFER_CHARGE:
-> >>>>> +		return dma_buf_xfer_charge(dmabuf, (const void __user *)arg);
-> >>>>> +
-> >>>>>  	default:
-> >>>>>  		return -ENOTTY;
-> >>>>>  	}
-> >>>>> @@ -750,6 +792,7 @@ struct dma_buf *dma_buf_export(const struct dma_buf_export_info *exp_info)
-> >>>>>  	dmabuf->size = exp_info->size;
-> >>>>>  	dmabuf->exp_name = exp_info->exp_name;
-> >>>>>  	dmabuf->owner = exp_info->owner;
-> >>>>> +	dmabuf->memcg_account = exp_info->memcg_account;
-> >>>>
-> >>>> The initial charging should probably be done here as well.
-> >>>>
-> >>>> This way DMA-buf heaps only needs to pass in the charge_fd and we can re-use the functionality for other DMA-buf exporters as well.
-> >>>
-> >>> The problem with doing the charge here is that it happens too late.
-> >>> That is the reasoning for this proposal to move all the charging logic
-> >>> into heap allocators before pages are allocated.
-> >>
-> >> Oh, that is a really good point we need to talk about.
-> >>
-> >> DMA-buf heaps is actually a rather simple use case, but we have way more complex things.
-> >>
-> >> For example in some use cases the backing store of a DMA-buf is only allocated on first use and only then it needs to be comitted to it's memcg or dmem.
-> > 
-> > Yes. The idea is focus on heaps for now. But the uAPI is actually
-> > agnostic of the time when the charge happens. When we deal with
-> > lazy-allocation in the future we can just call the reserve/cancel
-> > helpers wherever is more appropiate. As long as the pages are not
-> > allocated, exporters do not set dmabuf->memcg, and XFER does not
-> > work (returns -EOPNOTSUPP).
-> 
-> Yeah exactly that's the reason why I'm raising this topic. That approach won't work in all cases.
-> 
-> See userspace is not aware that the kernel is delaying allocation or that the kernel is allocating the backing store asynchroniously in a background worker for example.
-> 
-> So returning -EOPNOTSUPP when the backing store is not allocated yet and might be allocated later on is rather questionable uAPI because that is racy by design.
+Hi Nhat,
 
-Ah! I see what you meant now.
+On Fri, Oct 23, 2026 at 6:05=E2=80=AFPM Nhat Pham <nphamcs@gmail.com> wrote:
+>
+> >
+> On Thu, Oct 22, 2026 at 7:57=E2=80=AFAM Alexandre Ghiti <alex@ghiti.fr> w=
+rote:
+> >
+> > Reclaim allocates swap slots one folio at a time and only then batches
+> > the writes, merging folios whose slots happen to be contiguous. Order-0
+> > allocations scan the nonfull clusters before taking a free cluster, so
+> > once frees have left holes in otherwise full clusters, a batch of LRU-
+> > adjacent folios is scattered over those holes and written with many
+> > small requests. Since swap slots are freed on exclusive write faults,
+> > this happens with any workload that rewrites swapped out memory.
+> >
+> > Before swapping out a batch, record how many pages of each small order
+> > need a slot, and make those allocations follow contiguous free slots,
+> > SWAP_CLUSTER_MAX at a time: in a nonfull cluster if one has them,
+> > otherwise in a free cluster. When neither has them, the rest of the
+> > batch fills the holes as before. Nothing is reserved.
+> >
+> > Signed-off-by: Alexandre Ghiti <alex@ghiti.fr>
+>
+> Thanks for looking into this! There are still workloads that benefit
+> more from disk swapping than compression swapping... We should make
+> the swap subsystem work for them.
+>
+> I haven't read the code too closely, as it's an RFC meant to show the
+> general idea. So I'll just make some comments and ask some questions
+> about the idea:
+>
+> >  static bool __swap_cluster_alloc_entries(struct swap_info_struct *si,
+> >                                          struct swap_cluster_info *ci,
+> >                                          struct folio *folio,
+> > @@ -1042,6 +1079,59 @@ static unsigned int alloc_swap_scan_list(struct =
+swap_info_struct *si,
+> >         return found;
+> >  }
+> >
+> > +/* Larger folios already make large enough write requests on their own=
+ */
+> > +#define SWAP_BATCH_MAX_ORDER   (ilog2(SWAP_CLUSTER_MAX) - 1)
+>
+> Ah so we don't invoke this heuristics for folio larger than certain
+> orders? Makes sense.
 
-> >>
-> >> I don't mind implementing it for DMA-buf heaps first, but we should have the uAPI and it's handling so solid that it also works for future use cases.
-> > 
-> > Agreed. I think we should cover all usecases with the current status.
-> > Your feedback helped a lot in getting there!
-> 
-> I mean we can postpone that until we finally need it, but essentially we need to be able to distinct between charging, e.g. making sure the cgroup has enough free limit, and committing, e.g. allowing the resource to be reclaimed.
-> 
-> And then it is possible that when the memcg of a DMA-buf changes that only the charging changes, but there isn't any comitted backing store yet...
+Yes, large folio get their own allocation scheme, here the idea is to
+"pack" small folios, I'll add that to the changelog.
 
-Right. That would need adding a specific flag for committed pages or
-a similar solution. When transfering an uncommited dmabuf only the
-charge moves (limit reservation and dmabuf->memcg), the stat is
-untouched. Once the backing store exists, the exporter commits, it
-sets the flag and bumps MEMCG_DMABUF stat. For memory where its
-backing store can go away (e.g., dynamic dma-buf sharing), it can
-have a mirror function that drops the stat but keeps the charge.
-That would resolve the -EOPNOTSUPP thingy, as transfer succeeds
-when dmabuf->memcg is set even for uncommitted pages.
+>
+> > +
+> > +static inline unsigned int swap_batch_contig(unsigned int left)
+> > +{
+> > +       return min_t(unsigned int, left, SWAP_CLUSTER_MAX);
+> > +}
+> > +
+> > +/*
+> > + * Like alloc_swap_scan_list(), but only allocate at the start of @nr_=
+contig
+> > + * free slots. Order 0 clusters without them move to the frag list unt=
+il a
+> > + * slot is freed, larger orders stay nonfull as the folio may still fi=
+t.
+> > + */
+> > +static unsigned int alloc_swap_scan_list_contig(struct swap_info_struc=
+t *si,
+> > +                                               struct list_head *list,
+> > +                                               struct folio *folio,
+> > +                                               unsigned int nr_contig)
+> > +{
+> > +       unsigned int found =3D SWAP_ENTRY_INVALID, order =3D folio_orde=
+r(folio);
+> > +       struct swap_cluster_info *ci;
+> > +       unsigned long start, offset;
+> > +       LIST_HEAD(skipped);
+> > +
+> > +       while ((ci =3D isolate_lock_cluster(si, list))) {
+> > +               start =3D cluster_offset(si, ci);
+> > +               offset =3D SWAP_ENTRY_INVALID;
+> > +               if (SWAPFILE_CLUSTER - ci->count >=3D nr_contig)
+> > +                       offset =3D cluster_find_free_contig(ci, start,
+> > +                                                         start + SWAPF=
+ILE_CLUSTER,
+> > +                                                         1 << order, n=
+r_contig);
+> > +               if (offset =3D=3D SWAP_ENTRY_INVALID) {
+> > +                       if (order)
+> > +                               move_cluster(si, ci, &skipped,
+> > +                                            CLUSTER_FLAG_NONFULL);
+> > +                       else
+> > +                               relocate_cluster(si, ci);
+> > +                       swap_cluster_unlock(ci);
+> > +                       continue;
+> > +               }
+> > +               found =3D alloc_swap_scan_cluster(si, ci, folio, offset=
+);
+> > +               if (found)
+> > +                       break;
+> > +       }
+> > +
+> > +       if (!list_empty(&skipped)) {
+> > +               spin_lock(&si->lock);
+> > +               list_splice_tail(&skipped, list);
+> > +               spin_unlock(&si->lock);
+> > +       }
+> > +
+> > +       return found;
+> > +}
+> > +
+> >  static void swap_reclaim_full_clusters(struct swap_info_struct *si, bo=
+ol force)
+> >  {
+> >         long to_scan =3D 1;
+> > @@ -1109,6 +1199,7 @@ static unsigned long cluster_alloc_swap_entry(str=
+uct swap_info_struct *si,
+> >         struct swap_cluster_info *ci;
+> >         unsigned int order =3D likely(folio) ? folio_order(folio) : 0;
+> >         unsigned int offset =3D SWAP_ENTRY_INVALID, found =3D SWAP_ENTR=
+Y_INVALID;
+> > +       unsigned int left;
+> >
+> >         /*
+> >          * Swapfile is not block device so unable
+> > @@ -1129,7 +1220,14 @@ static unsigned long cluster_alloc_swap_entry(st=
+ruct swap_info_struct *si,
+> >                 if (cluster_is_usable(ci, order)) {
+> >                         if (cluster_is_empty(ci))
+> >                                 offset =3D cluster_offset(si, ci);
+> > -                       found =3D alloc_swap_scan_cluster(si, ci, folio=
+, offset);
+> > +                       /* The batch's contiguous slots are used up */
+> > +                       if (likely(folio) &&
+> > +                           this_cpu_read(percpu_swap_cluster.batch_lef=
+t[order]) &&
+> > +                           !cluster_slots_free(ci, offset, 1 << order))
+> > +                               swap_cluster_unlock(ci);
+> > +                       else
+> > +                               found =3D alloc_swap_scan_cluster(si, c=
+i, folio,
+> > +                                                               offset);
+> >                 } else {
+> >                         swap_cluster_unlock(ci);
+> >                 }
+> > @@ -1148,6 +1246,21 @@ static unsigned long cluster_alloc_swap_entry(st=
+ruct swap_info_struct *si,
+> >                         goto done;
+> >         }
+> >
+> > +       /* Keep a reclaim batch on contiguous free slots, not in small =
+holes */
+> > +       left =3D likely(folio) ?
+> > +              this_cpu_read(percpu_swap_cluster.batch_left[order]) : 0;
+> > +       if (left && order < PMD_ORDER) {
+> > +               found =3D alloc_swap_scan_list_contig(si, &si->nonfull_=
+clusters[order],
+> > +                                                   folio, swap_batch_c=
+ontig(left));
+> > +               if (found)
+> > +                       goto done;
+> > +               found =3D alloc_swap_scan_list(si, &si->free_clusters, =
+folio, false);
+> > +               if (found)
+> > +                       goto done;
+> > +               /* No contiguous slots left, allocate the rest of the b=
+atch as usual */
+> > +               this_cpu_write(percpu_swap_cluster.batch_left[order], 0=
+);
+> > +       }
+> > +
+> >         if (order < PMD_ORDER) {
+> >                 found =3D alloc_swap_scan_list(si, &si->nonfull_cluster=
+s[order], folio, true);
+>
+> So we prefer non-full clusters with contiguous slots, over free
+> clusters, over other nonfull clusters.
+>
+> I think this part makes sense to me FWIW. We do skip fast path and go
+> for slow paths more often, so do make sure we're not paying with too
+> much lock contention, especially as the swapfile fils or get more
+> fragmented (which this patch series does nudge us towards). But FWIW,
+> we pretty much go back to the old behavior the moment we fail to find
+> contiguity for the first time in the batch, so I think we'll be
+> fine...?
 
-My question would be if all exporters know when memory is committed.
-For those that only get, e.g., a firmware handle and cannot observe
-the allocation, I guess the buffer can just remain reserved without
-even being committed. Or in case of protected memory like OP-TEE
-they would not even opt-in to begin with.
+I'll check the lock contention, thanks.
 
-I do not mind adding that for next version, or leaving it for when
-lazy exporters actually opt-in. It is not a big change either way.
-Although, it may look weird while the system heap is the only user
-and commits right away. But either way I can try to document the
-flag / explain this discussion in the commit.
+>
+> >                 if (found)
+> > @@ -1390,7 +1503,15 @@ static bool swap_alloc_fast(struct folio *folio)
+> >         if (cluster_is_usable(ci, order)) {
+> >                 if (cluster_is_empty(ci))
+> >                         offset =3D cluster_offset(si, ci);
+> > -               alloc_swap_scan_cluster(si, ci, folio, offset);
+> > +               /* The batch's contiguous slots are used up */
+> > +               if (this_cpu_read(percpu_swap_cluster.batch_left[order]=
+) &&
+> > +                   !cluster_slots_free(ci, offset, 1 << order)) {
+> > +                       swap_cluster_unlock(ci);
+> > +                       this_cpu_write(percpu_swap_cluster.offset[order=
+],
+> > +                                      SWAP_ENTRY_INVALID);
+> > +               } else {
+> > +                       alloc_swap_scan_cluster(si, ci, folio, offset);
+> > +               }
+> >         } else {
+> >                 swap_cluster_unlock(ci);
+> >         }
+> > @@ -1729,6 +1850,86 @@ static int swap_dup_entries_cluster(struct swap_=
+info_struct *si,
+> >         return err;
+> >  }
+> >
+> > +static void swap_alloc_prepare(unsigned int order, unsigned int nr)
+> > +{
+> > +       unsigned int nr_contig =3D swap_batch_contig(nr);
+> > +       struct swap_cluster_info *ci;
+> > +       struct swap_info_struct *si;
+> > +       unsigned long offset;
+> > +       bool keep =3D false;
+> > +
+> > +       local_lock(&percpu_swap_cluster.lock);
+> > +       if (nr <=3D (1 << order)) {
+> > +               this_cpu_write(percpu_swap_cluster.batch_left[order], 0=
+);
+> > +               goto out;
+> > +       }
+> > +       this_cpu_write(percpu_swap_cluster.batch_left[order], nr);
+> > +
+> > +       /* Keep the cursor if enough free slots follow it */
+> > +       si =3D this_cpu_read(percpu_swap_cluster.si[order]);
+> > +       offset =3D this_cpu_read(percpu_swap_cluster.offset[order]);
+> > +       if (si && offset && get_swap_device_info(si)) {
+> > +               ci =3D swap_cluster_lock(si, offset);
+> > +               if (cluster_is_usable(ci, order)) {
+> > +                       if (cluster_is_empty(ci))
+> > +                               offset =3D cluster_offset(si, ci);
+> > +                       keep =3D offset % SWAPFILE_CLUSTER + nr_contig =
+<=3D
+> > +                              SWAPFILE_CLUSTER &&
+> > +                              cluster_find_free_contig(ci, offset,
+> > +                                                       offset + nr_con=
+tig,
+> > +                                                       1 << order,
+> > +                                                       nr_contig) =3D=
+=3D offset;
+> > +               }
+> > +               swap_cluster_unlock(ci);
+> > +               put_swap_device(si);
+> > +       }
+> > +       if (!keep)
+> > +               this_cpu_write(percpu_swap_cluster.offset[order],
+> > +                              SWAP_ENTRY_INVALID);
+> > +out:
+> > +       local_unlock(&percpu_swap_cluster.lock);
+> > +}
+> > +
+> > +/**
+> > + * folio_alloc_swap_prepare - prepare swap allocation for a reclaim ba=
+tch
+> > + * @folios: list of folios reclaim is about to swap out
+> > + *
+> > + * Record how many pages of each small order the batch will swap out, =
+so
+> > + * that their slots are allocated contiguously. Nothing is reserved.
+> > + */
+> > +void folio_alloc_swap_prepare(struct list_head *folios)
+> > +{
+> > +       unsigned int max_order =3D min(SWAP_BATCH_MAX_ORDER, SWAP_NR_OR=
+DERS - 1);
+> > +       unsigned int nr[SWAP_BATCH_MAX_ORDER + 1] =3D {};
+> > +       struct folio *folio;
+> > +       unsigned int order;
+> > +
+> > +       if (!total_swap_pages)
+> > +               return;
+> > +
+> > +       list_for_each_entry(folio, folios, lru) {
+> > +               if (!folio_test_swapbacked(folio) || folio_test_swapcac=
+he(folio))
+> > +                       continue;
+> > +               order =3D folio_order(folio);
+> > +               if (order <=3D max_order)
+> > +                       nr[order] +=3D 1 << order;
+> > +       }
+> > +
+> > +       for (order =3D 0; order <=3D max_order; order++)
+> > +               swap_alloc_prepare(order, nr[order]);
+> > +}
+> > +
+> > +/**
+> > + * folio_alloc_swap_split - account for a large folio split by reclaim
+> > + * @nr_pages: number of order-0 folios the split produced
+> > + */
+> > +void folio_alloc_swap_split(unsigned int nr_pages)
+> > +{
+> > +       local_lock(&percpu_swap_cluster.lock);
+> > +       this_cpu_add(percpu_swap_cluster.batch_left[0], nr_pages);
+> > +       local_unlock(&percpu_swap_cluster.lock);
+> > +}
+> > +
+> >  /**
+> >   * folio_alloc_swap - allocate swap space for a folio
+> >   * @folio: folio we want to move to swap
+> > @@ -1771,6 +1972,12 @@ int folio_alloc_swap(struct folio *folio)
+> >         local_lock(&percpu_swap_cluster.lock);
+> >         if (!swap_alloc_fast(folio))
+> >                 swap_alloc_slow(folio);
+> > +       if (folio_test_swapcache(folio)) {
+> > +               unsigned int left =3D this_cpu_read(percpu_swap_cluster=
+.batch_left[order]);
+> > +
+> > +               this_cpu_write(percpu_swap_cluster.batch_left[order],
+> > +                              left > size ? left - size : 0);
+> > +       }
+> >         local_unlock(&percpu_swap_cluster.lock);
+> >
+> >         if (!order && unlikely(!folio_test_swapcache(folio))) {
+> > diff --git a/mm/vmscan.c b/mm/vmscan.c
+> > index ea2d4c8d1890..86245036872c 100644
+> > --- a/mm/vmscan.c
+> > +++ b/mm/vmscan.c
+> > @@ -1175,6 +1175,8 @@ static unsigned int shrink_folio_list(struct list=
+_head *folio_list,
+> >         memset(stat, 0, sizeof(*stat));
+> >         cond_resched();
+> >         do_demote_pass =3D can_demote(pgdat->node_id, sc, memcg);
+> > +       if (sc->gfp_mask & __GFP_IO)
+> > +               folio_alloc_swap_prepare(folio_list);
+> >
+>
+> Some general questions:
+>
+> 1. How many pages in folio_list typically do get reclaimed? There can
+> be quite a few with references, which we rotate/promote, when we scan,
+> right? Would constantly overshooting the estimate create problem down
+> the line?
+>
 
-> 
-> >>> What we could do is fill the dmabuf->memcg field when the flag is set
-> >>> (i.e., committing into the dmabuf in the patch semantics). But for that
-> >>> we'd need adding the memcg we want to charge it to into exp_info in
-> >>> order to support charging to cgroups other than the allocator's (for
-> >>> the common case would be simpler as we can just look at current).
-> >>> Maybe that's what you meant?
-> >>
-> >> At least for the DMA-buf heaps use case that sounds reasonable for now.
-> > 
-> > Thanks! Next version will have the flag removed and just use
-> > dmabuf->memcg as indicator, set within dma_buf_export().
-> > Also, `nr_pages` will be computed within dma_buf_export(), the
-> > contract being that exporters setting exp_info.memcg assert that
-> > size reflects actual system memory bytes.
-> 
-> Thinking more about it I would also put changing dmabuf->memcg under the dmabuf->resv lock instead of doing it with cmpxchg.
-> 
-> We don't need it currently, but the dmabuf->resv lock is used for all state changes of the DMA-buf object and this operation is not performance critical in any way possible.
-> 
-> If there is a problem with locking order we at least get lockdep screaming at us very early and not when we want to extend the functionality in the future.
+I need to trace some live hosts, I'll get back with numbers.
 
-Sure, will do.
+> (This is one of the few places where indirection (vswap) would have
+> helped - we can collect a batch of pages after unmapping, then pass
+> them to the phys swap allocator (after checking zswappability, etc.).
+> Maybe we can solve it better after it's landed, and accept an
+> imperfect solution for now?)
+>
+> 2. Should we skip this heuristics for cgroups that enables zswap (and
+> maybe zram)? Contiguity matters less there... unless it help at
+> writeback time? Hard to say without experimentation - maybe you can do
+> the same check you did for your zswap writeback batching patch series?
+>
 
-BR,
-Albert.
+I was wondering the same, I'll check how it impacts zswap + writeback.
 
-> 
-> Regards,
-> Christian.
-> 
-> > 
-> >>
-> >> Regards,
-> >> Christian.
-> >>
-> >>>
-> >>>>
-> >>>>>  	spin_lock_init(&dmabuf->name_lock);
-> >>>>>  	init_waitqueue_head(&dmabuf->poll);
-> >>>>>  	dmabuf->cb_in.poll = dmabuf->cb_out.poll = &dmabuf->poll;
-> >>>>> diff --git a/drivers/dma-buf/heaps/system_heap.c b/drivers/dma-buf/heaps/system_heap.c
-> >>>>> index adeea8cd328b..a764167167ba 100644
-> >>>>> --- a/drivers/dma-buf/heaps/system_heap.c
-> >>>>> +++ b/drivers/dma-buf/heaps/system_heap.c
-> >>>>> @@ -479,6 +479,7 @@ static struct dma_buf *system_heap_allocate(struct dma_heap *heap,
-> >>>>>  	exp_info.size = buffer->len;
-> >>>>>  	exp_info.flags = fd_flags;
-> >>>>>  	exp_info.priv = buffer;
-> >>>>> +	exp_info.memcg_account = true;
-> >>>>>  	dmabuf = dma_buf_export(&exp_info);
-> >>>>>  	if (IS_ERR(dmabuf)) {
-> >>>>>  		ret = PTR_ERR(dmabuf);
-> >>>>> diff --git a/include/linux/dma-buf.h b/include/linux/dma-buf.h
-> >>>>> index 23ec0ff23fba..ac0ec88cab93 100644
-> >>>>> --- a/include/linux/dma-buf.h
-> >>>>> +++ b/include/linux/dma-buf.h
-> >>>>> @@ -433,6 +433,9 @@ struct dma_buf {
-> >>>>>  
-> >>>>>  	/** @memcg: the cgroup to which this buffer is currently attributed */
-> >>>>>  	struct mem_cgroup *memcg;
-> >>>>> +
-> >>>>> +	/** @memcg_account: account buffer memory to cgroup */
-> >>>>> +	bool memcg_account;
-> >>>>>  };
-> >>>>>  
-> >>>>>  /**
-> >>>>> @@ -505,6 +508,7 @@ struct dma_buf_attachment {
-> >>>>>   * @flags:	mode flags for the file
-> >>>>>   * @resv:	reservation-object, NULL to allocate default one
-> >>>>>   * @priv:	Attach private data of allocator to this buffer
-> >>>>> + * @memcg_account:	account buffer memory to cgroup
-> >>>>>   *
-> >>>>>   * This structure holds the information required to export the buffer. Used
-> >>>>>   * with dma_buf_export() only.
-> >>>>> @@ -517,6 +521,7 @@ struct dma_buf_export_info {
-> >>>>>  	int flags;
-> >>>>>  	struct dma_resv *resv;
-> >>>>>  	void *priv;
-> >>>>> +	bool memcg_account;
-> >>>>>  };
-> >>>>>  
-> >>>>>  /**
-> >>>>> diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
-> >>>>> index 6b30baa79fa9..36fddafbef4e 100644
-> >>>>> --- a/include/linux/memcontrol.h
-> >>>>> +++ b/include/linux/memcontrol.h
-> >>>>> @@ -679,6 +679,9 @@ bool mem_cgroup_reserve_dmabuf(struct mem_cgroup *memcg, gfp_t gfp,
-> >>>>>  void mem_cgroup_commit_dmabuf(struct dma_buf *dmabuf, struct mem_cgroup *memcg,
-> >>>>>  			      unsigned int nr_pages);
-> >>>>>  
-> >>>>> +bool mem_cgroup_transfer_dmabuf_charge(struct dma_buf *dmabuf,
-> >>>>> +				       struct mem_cgroup *new_memcg);
-> >>>>> +
-> >>>>>  void __mem_cgroup_uncharge(struct folio *folio);
-> >>>>>  
-> >>>>>  /**
-> >>>>> @@ -1206,6 +1209,12 @@ static inline void mem_cgroup_cancel_dmabuf(struct mem_cgroup *memcg,
-> >>>>>  {
-> >>>>>  }
-> >>>>>  
-> >>>>> +static inline bool mem_cgroup_transfer_dmabuf_charge(struct dma_buf *dmabuf,
-> >>>>> +						     struct mem_cgroup *new_memcg)
-> >>>>> +{
-> >>>>> +	return true;
-> >>>>> +}
-> >>>>> +
-> >>>>>  static inline void mem_cgroup_uncharge(struct folio *folio)
-> >>>>>  {
-> >>>>>  }
-> >>>>> diff --git a/include/uapi/linux/dma-buf.h b/include/uapi/linux/dma-buf.h
-> >>>>> index e827c9d20c5d..ea957f4b1d38 100644
-> >>>>> --- a/include/uapi/linux/dma-buf.h
-> >>>>> +++ b/include/uapi/linux/dma-buf.h
-> >>>>> @@ -168,6 +168,31 @@ struct dma_buf_import_sync_file {
-> >>>>>  	__s32 fd;
-> >>>>>  };
-> >>>>>  
-> >>>>> +/**
-> >>>>> + * struct dma_buf_transfer_charge - Transfer a dma-buf's memcg charge
-> >>>>> + *
-> >>>>> + * Any holder of a dma-buf file descriptor can perform a
-> >>>>> + * DMA_BUF_IOCTL_XFER_CHARGE to attribute the buffer's memory
-> >>>>> + * cost to a specific cgroup, or move it from one cgroup to
-> >>>>> + * another.  The ioctl charges the new cgroup before uncharging
-> >>>>> + * the old one atomically.  On failure the original charge is
-> >>>>> + * preserved.  If the buffer has no existing charge, a new
-> >>>>> + * charge is established.
-> >>>>> + */
-> >>>>> +struct dma_buf_transfer_charge {
-> >>>>> +	/** @flags: Reserved, must be zero */
-> >>>>> +	__u32 flags; /* unused for now */
-> >>>>> +	/**
-> >>>>> +	 * @charge_fd: File descriptor identifying the target cgroup.
-> >>>>> +	 *
-> >>>>> +	 * May be either a pidfd, in which case the charge moves to the
-> >>>>> +	 * memory cgroup of the referenced process, or a cgroupfd obtained
-> >>>>> +	 * by opening a cgroup v2 directory, in which case the charge moves
-> >>>>> +	 * directly to that cgroup's memory controller.
-> >>>>> +	 */
-> >>>>> +	__u32 charge_fd;
-> >>>>> +};
-> >>>>> +
-> >>>>>  #define DMA_BUF_BASE		'b'
-> >>>>>  #define DMA_BUF_IOCTL_SYNC	_IOW(DMA_BUF_BASE, 0, struct dma_buf_sync)
-> >>>>>  
-> >>>>> @@ -179,5 +204,6 @@ struct dma_buf_import_sync_file {
-> >>>>>  #define DMA_BUF_SET_NAME_B	_IOW(DMA_BUF_BASE, 1, __u64)
-> >>>>>  #define DMA_BUF_IOCTL_EXPORT_SYNC_FILE	_IOWR(DMA_BUF_BASE, 2, struct dma_buf_export_sync_file)
-> >>>>>  #define DMA_BUF_IOCTL_IMPORT_SYNC_FILE	_IOW(DMA_BUF_BASE, 3, struct dma_buf_import_sync_file)
-> >>>>> +#define DMA_BUF_IOCTL_XFER_CHARGE	_IOW(DMA_BUF_BASE, 4, struct dma_buf_transfer_charge)
-> >>>>>  
-> >>>>>  #endif
-> >>>>> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-> >>>>> index 7b841b905759..3adc84fe6668 100644
-> >>>>> --- a/mm/memcontrol.c
-> >>>>> +++ b/mm/memcontrol.c
-> >>>>> @@ -5786,6 +5786,47 @@ void mem_cgroup_cancel_dmabuf(struct mem_cgroup *memcg, unsigned int nr_pages)
-> >>>>>  		refill_stock(memcg, nr_pages);
-> >>>>>  }
-> >>>>>  
-> >>>>> +/**
-> >>>>> + * mem_cgroup_transfer_dmabuf_charge - move a dma-buf charge
-> >>>>> + * @dmabuf: buffer to transfer charge
-> >>>>> + * @new_memcg: target memcg; caller must hold a reference
-> >>>>> + *
-> >>>>> + * Transfers the charge for @dmabuf to @new_memcg and, on
-> >>>>> + * success, stores @new_memcg in @dmabuf->memcg.
-> >>>>> + * Returns %true on success, %false if the charge against @new_memcg
-> >>>>> + * failed or a concurrent transfer raced on @dmabuf->memcg.
-> >>>>> + * On failure the caller retains its reference to @new_memcg.
-> >>>>> + */
-> >>>>> +bool mem_cgroup_transfer_dmabuf_charge(struct dma_buf *dmabuf,
-> >>>>> +				       struct mem_cgroup *new_memcg)
-> >>>>
-> >>>> I would make that more generic instead of dmabuf specific. E.g. something like this:
-> >>>>
-> >>>> bool mem_cgroup_transfer_charge(struct struct mem_cgroup **ptr_memcg, struct mem_cgroup *new_memcg, enum memcg_stat_item item, unsigned int nr_pages)
-> >>>
-> >>> Ah yes, I like this generalization. And the implementation remains
-> >>> mostly the same. Thanks!
-> >>>
-> >>>>
-> >>>>> +{
-> >>>>> +	struct mem_cgroup *old_memcg = READ_ONCE(dmabuf->memcg);
-> >>>>
-> >>>>> +	unsigned int nr_pages = PAGE_ALIGN(dmabuf->size) >> PAGE_SHIFT;
-> >>>>
-> >>>> This way we can also document in the DMA-buf caller that this conversation must be ok when memcg_account is true.
-> >>>>
-> >>>> Regards,
-> >>>> Christian.
-> >>>>
-> >>>>> +
-> >>>>> +	if (mem_cgroup_disabled())
-> >>>>> +		return true;
-> >>>>> +
-> >>>>> +	if (!mem_cgroup_reserve_dmabuf(new_memcg, GFP_KERNEL, nr_pages))
-> >>>>> +		return false;
-> >>>>> +
-> >>>>> +	mod_memcg_state(new_memcg, MEMCG_DMABUF, nr_pages);
-> >>>>> +
-> >>>>> +	if (cmpxchg(&dmabuf->memcg, old_memcg, new_memcg) != old_memcg) {
-> >>>>> +		mod_memcg_state(new_memcg, MEMCG_DMABUF, -nr_pages);
-> >>>>> +		mem_cgroup_cancel_dmabuf(new_memcg, nr_pages);
-> >>>>> +		return false;
-> >>>>> +	}
-> >>>>> +
-> >>>>> +	if (old_memcg) {
-> >>>>> +		/* Uncharge old cgroup */
-> >>>>> +		mod_memcg_state(old_memcg, MEMCG_DMABUF, -nr_pages);
-> >>>>> +		mem_cgroup_cancel_dmabuf(old_memcg, nr_pages);
-> >>>>> +		mem_cgroup_put(old_memcg);
-> >>>>> +	}
-> >>>>> +
-> >>>>> +	return true;
-> >>>>> +}
-> >>>>> +
-> >>>>>  /**
-> >>>>>   * mem_cgroup_uncharge_dmabuf - uncharge a dma-buf from its memcg
-> >>>>>   * @dmabuf: buffer to uncharge
-> >>>>>
-> >>>>
-> >>>
-> >>
-> > 
-> 
+Thanks!
 
+Alex
 
