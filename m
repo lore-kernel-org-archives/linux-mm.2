@@ -1,175 +1,123 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BD57606F3FE
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 14:41:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C79E606C543
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 14:46:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=zKHZnZ6s
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=XWvDNXOE
 Received: by kanga.kvack.org (Postfix)
-	id A93D26B05B9; Mon,  2 Nov 2026 09:41:55 -0500 (EST)
+	id 9B1706B05B2; Mon,  2 Nov 2026 09:46:35 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A6B026B05BA; Mon,  2 Nov 2026 09:41:55 -0500 (EST)
+	id 988646B05B3; Mon,  2 Nov 2026 09:46:35 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 95A076B05BB; Mon,  2 Nov 2026 09:41:55 -0500 (EST)
+	id 89E3E6B05B4; Mon,  2 Nov 2026 09:46:35 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 6FF2A6B05B9
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 09:41:55 -0500 (EST)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 028124013F
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 14:41:54 +0000 (UTC)
-X-FDA: 85390443390.01.CD7CB73
-Received: from CY3PR05CU001.outbound.protection.outlook.com (mail-westcentralusazon11013043.outbound.protection.outlook.com [40.93.201.43])
-	by imf26.hostedemail.com (Postfix) with ESMTP id F139614000A
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 14:41:51 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b=zKHZnZ6s;
-	spf=pass (imf26.hostedemail.com: domain of Pankaj.Gupta@amd.com designates 40.93.201.43 as permitted sender) smtp.mailfrom=Pankaj.Gupta@amd.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	dmarc=pass (policy=quarantine) header.from=amd.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1793630512;
-	b=nmyy7xQ6m/a4msngEjNnWcEpYVZa2VIMdb0nT4ha4bl/CuT8url38E0KdBeol6GfBPnRyX
-	sme9+h7Mm9zcFk7hNs7B09JHYOf5LgbxXi1SwKMBFin2RLrbtQoYC3EMAm10dQAlLzyQe0
-	8HAVoLKl5/FIBGPjtBvb/ysXTx+KgZg=
-ARC-Authentication-Results: i=2;
-	imf26.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b=zKHZnZ6s;
-	spf=pass (imf26.hostedemail.com: domain of Pankaj.Gupta@amd.com designates 40.93.201.43 as permitted sender) smtp.mailfrom=Pankaj.Gupta@amd.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	dmarc=pass (policy=quarantine) header.from=amd.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793630512;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 5EAEF6B05B2
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 09:46:35 -0500 (EST)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id D0B9D8014B
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 14:46:34 +0000 (UTC)
+X-FDA: 85390455108.23.F832BEC
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 33E4E20003
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 14:46:34 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XWvDNXOE;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf31.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1793630793;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7ysebPoIuADTMQKwvAlLfSrcuB4ffwXZxRsIMtoP4LM=;
-	b=crqjdEf+IQpXHfiMbdeSLzBN4o8v2PQ6iC8uMZrBGVc/EsXya2fTmwWF9Dog9R/Eg9/nTM
-	kUPZbV6XFzCMA7WGCs6EVKf4AuF6PbEQM7g98A7IALnXukr07mg98jo5pLbW9G/FwmnqfK
-	ICcG0Ri9oyPa/59brzm8vM3hWG0cyBU=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=rC1xrT16hUWz7dg58cSAsV/p1WxzmRWChlAtwnAXZTA9hEeaxwneCL5AfgwszeqYjmdvBoDkH5CXla+cobgL8+IByEMxVuRhydx5U0gLDu4LI/7jVpOUHQyIccRvpZP0AvYeDW0gvpudDtnmuPwz1ykOn797bnH5p+GujVQmGwAdJDGZq8h5TmQO0SIhdUl/YRb//dEmGQ9HwgR5lQZRHu4tAqE6F3/QU8n+YJnQMK+4vir5MYSGR1R4cAyRPTxBovLuEada9jtpPiPkIgxhYi9//UbttdiWcnBgckckEAciE5+5Qi+PQIbJEdIMdNYihUYLhHvT8urGj7Fi18Ianw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=7ysebPoIuADTMQKwvAlLfSrcuB4ffwXZxRsIMtoP4LM=;
- b=k8AAtYYdCGZmUqoNMt9iPz1bubURZ/qIO72rOAiFAckYHAApoaLsWWkx/p1RzO5ZLBZXP1HY+U4sKFrKTgob7u8NkH0XxjKQBWpkjqzjw3jUgbs9A+Vhi5owXMskwfraFqw7PW0l1Vd+XvUynQI1GdoAbyXo3erOWUXNXpg2VSSL9+hHrcQQKtwHHBqkqY2csbEZd5T8ptiYqoQ1evige6eJB1zDLZkScMWlM6jePmlhi9qQVjlqMJ0A9vD/5ki5owmzUHNatUgWB3AR6b8rAH0w4nuuDLYwm4EA8mMMV7y70W1BslKRFAHE09fQ4wl1R55nKcC45NR0vph4U5EkUg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=7ysebPoIuADTMQKwvAlLfSrcuB4ffwXZxRsIMtoP4LM=;
- b=zKHZnZ6s6xkb9mWj93X1BRinHkGbyY3ddQAUKbTbGhUBAtpvQEg4+bqkgwwIDk9pt4ITyAmIHsmXJuZZYNRBzbkprtm+3Ngpib4F5y0R7JZYh848mmC+WvipYTAqb44byxF5ntsxy1961AFUrwBO2dIBK3vWSR+sPEJwza9cDjo=
-Received: from DS0PR12MB7771.namprd12.prod.outlook.com (2603:10b6:8:138::6) by
- MN2PR12MB4271.namprd12.prod.outlook.com (2603:10b6:208:1d7::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.569.12; Mon, 2 Nov
- 2026 14:41:48 +0000
-Received: from DS0PR12MB7771.namprd12.prod.outlook.com
- ([fe80::9a3e:791f:33b6:3d8c]) by DS0PR12MB7771.namprd12.prod.outlook.com
- ([fe80::9a3e:791f:33b6:3d8c%4]) with mapi id 15.21.0569.010; Mon, 2 Nov 2026
- 14:41:48 +0000
-Message-ID: <37a625b6-45b5-4bfc-878b-ffc16784b0f1@amd.com>
-Date: Mon, 2 Nov 2026 15:41:43 +0100
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/2] mm/cma: accept memory of CMA areas reserved with
- memblock_reserve()
-To: "Mike Rapoport (Microsoft)" <rppt@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>
-Cc: Kiryl Shutsemau <kas@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
- Lorenzo Stoakes <ljs@kernel.org>, Michal Hocko <mhocko@suse.com>,
- Suren Baghdasaryan <surenb@google.com>, Vlastimil Babka <vbabka@kernel.org>,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org, stable@vger.kernel.org
-References: <20261029-cma-multi-v1-0-2cbced8b5cb7@kernel.org>
-Content-Language: en-US
-From: "Gupta, Pankaj" <pankaj.gupta@amd.com>
-In-Reply-To: <20261029-cma-multi-v1-0-2cbced8b5cb7@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: PA7P264CA0218.FRAP264.PROD.OUTLOOK.COM
- (2603:10a6:102:374::11) To DS0PR12MB7771.namprd12.prod.outlook.com
- (2603:10b6:8:138::6)
+	bh=8OUC3OpgPcYXff2v4b0WbdSVZE7XWpoJGNZRHA3e5A4=;
+	b=IF/3Y2pc+09cm9lWv76xs7vAwz81VlcMvl5aiEXel58c7a4OMUO5yrDDrpgcaPflzk7UpP
+	PDjMfRqSOCcGKC3Lu6OqhQyHOD2CUmWC3sH3+kdv1P0ZCOQCHwCfj+LcWeiWRmkvp83KSb
+	OWCHFk3Sy/wk/U0OQCyDRpESY6VToK0=
+ARC-Authentication-Results: i=1;
+	imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XWvDNXOE;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf31.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793630793;
+	b=xYXc4dnmEATgIhlKmldlCCcgoOGsRm76qZyUFD3HS0oZfQDWQThrd9rVfPSrxF8WXmM/TH
+	wSG5eHR6ils98IPsA2cBCjUbhuAq/SlJNq/WP2Jb6C32o7txP/+tZoH0HEDT1YMVYaUDRB
+	HV3UUY4M7WDyB3af006TT9NvHcp9t/0=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 5947B41AB5;
+	Mon,  2 Nov 2026 14:46:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5ACC31F00A1C;
+	Mon,  2 Nov 2026 14:46:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793630792;
+	bh=8OUC3OpgPcYXff2v4b0WbdSVZE7XWpoJGNZRHA3e5A4=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc;
+	b=XWvDNXOEbgzkyZSZLEEf/fLDGQTJKwF0ltSxY/EL3lo82Mkr/aDxZgyoDMPnEDdLr
+	 5p9X0oQCHCkY63MlXypffIH/FgWzMKVYCEo4i3pEbfJuBXE7iGAORsSWwgE8jxQhAy
+	 4NKKegcYQITsSSiB9ubx16WR7JIBFMAtYwmdkdE/Zzf6jzzLfZ7rDbpHNZ3omVKKWs
+	 5YTo9uoKH3WQgJg5iglu6NkXshnM4oNeVvav8v5ihPYSLjDC/W/Dnb3rFkAiPkdkb/
+	 knAVm1KzmCTPRmBb4tIwPxCsIua2TX2REoD5qySaeeWkURDqxkkuEp88D6dK5T0/43
+	 GCmlt6X8Ltfhw==
+From: Christian Brauner <brauner@kernel.org>
+Date: Mon, 02 Nov 2026 15:43:27 +0100
+Subject: [PATCH RFC 36/38] selftests/proc: check that faulting sysctl
+ accesses don't hold up removal
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS0PR12MB7771:EE_|MN2PR12MB4271:EE_
-X-MS-Office365-Filtering-Correlation-Id: 508b0a1b-af65-426c-e912-08df38ef6c79
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|1800799024|23010399003|376014|7416014|11063799006|56012099006|261009223027099003|261021121427099003|261026121527099003|10067099003|261102123227099002|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	4kw+089uckEdJ4x9jSdjGzJmfpaDQ83psVYELfpdIsJPsNsJsSn7dpAktHx8RVHDnr1Z6yxU/7+JcSITvAoM4UE07vh8wIz3VfuwYIA7PJFUXBg8WHdsQuDBHB9bSGVghS9jusfzigCWmIQKEXUhMFThm1Rp0sRhlP+q+pXjOFhjzISkgheRgWBegQOoCNx4tWhW1PwjNy21g5qU4IQdBoAw3CNVXUtdLuizu9Fd9c0GSXFcQsRKVes9vQDJz8LwMvgr/I0WbUJjZkjg4L7hGF58vFEn2F6IP+3cSiwLSXqAMf/3C5QQNBWs6b9m5pb39UBrCuT9XIZScqdU6crsbK3tpwnsiodegwmMx9c5GhsUDtpWWQf6Djnlld1ncXBLwgNBYU0YlkFJFirhf5PLnj9xA7SGZN96uhOf0l+6yx58x+8DiwslAXYbzh5Xezmog0MePO8F7T9vHCqD9ycSoD60Pnb3zEgJSIwiaHt4uBKzI6ghlEYn+35eotBLjBNnH5nSSYd8jfu/O6hGXStxxLMErp9OvCqRXiVR8whLxLfX9Ez+0wjY6fqSq/Ij5tUpKg1nm5HEJZM4Biaj0JZ1WRjiEqdWEH61BPyneZ7uRcaL+iRqCGs25yh1162pee42WtBwKc2hlkzidFA9Z4723O9UOKw8lEGtBMCUQjMAHwo=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR12MB7771.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(23010399003)(376014)(7416014)(11063799006)(56012099006)(261009223027099003)(261021121427099003)(261026121527099003)(10067099003)(261102123227099002)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?c0VSb0JsY2ZNN0lrTCtKaTIxMC9OMlVGREZvMUpUeUdBeEkxbld0SDZmcXQz?=
- =?utf-8?B?LzQvQjJXNmFWaHVPSHNHYWh2cm81cDB6UDhqSUNkL0hmS3V3dVdWaHFQay9s?=
- =?utf-8?B?RDgwRDBiQXVFOVF4QTdyeHR1N1d3UVB2WjlmalgzRjRMTHZXcmUxWCtNUUF4?=
- =?utf-8?B?ZmdCWUJtRTVKWS9FbFcxcGUrVDRWTm95RDV3d0NVUWRLUTNyREdkTHNqRk16?=
- =?utf-8?B?bWlOaklkd25yVmc3MnRlTlI4QWF2YzlsUzhFbStSSHBWZTlCWE1QcXFDaXFU?=
- =?utf-8?B?ak91T01oZGVDbGRaWFFGT3BORmpkeXJwdjJXNzZweWtJQXVGanlST3loTTh5?=
- =?utf-8?B?R1hWODJ5OHdjQ293Z2MreHpnOEdPVVU4U1BGM3N0YWVHN0JiMmF1REdQMEhU?=
- =?utf-8?B?QWx0OWxFcmlmK201NXI0dHVzeC8rdysvT2lCOVh1bFNQcTRaOVVFNEtGTzVN?=
- =?utf-8?B?VEdlYS9yMkhXejZETXhPV3NWaHhXZGN3OHlNWnJkNEpZWmRLMWN6c1FwYTA2?=
- =?utf-8?B?QW94N0VyemQvaVBqQ2srSERaaTB5eFdhQ2duNUpKdTREUE43clJDdWZkK3FG?=
- =?utf-8?B?cEtWYWRpYVVTUGRNNlY0WXBncFZNZi9PN29pYzhXN0YwK05MRFZMa2dRYW83?=
- =?utf-8?B?U2o0SkhHTjY0QTVzbmtTcVROWDFqOVRGK3NYYXJyZDVEbzZ6QWdneEFhemVa?=
- =?utf-8?B?WldwV2l0QXNETnJFUTlUeCtOZTNSUXAxUE91T1FsUlJvbjNuUVY5d1VaNXpJ?=
- =?utf-8?B?eDZ3bDQ3UDlvL2Y0bFpweS9DNVp3TE9HazdsVnBOZnRIUjJVK3BTc1ZUZk5z?=
- =?utf-8?B?d0xvRjNoK095SVFzNmQrUngveCtUMk83MW5ISUJSbWpTdm5haERUUlVkYUp4?=
- =?utf-8?B?ZkdnQjB4N1E3S3htekFxT3dqaWg4NnJKYjgybnQrZU1VZDdzVWhyMEFKK0JW?=
- =?utf-8?B?dUJCZ2JRd2poSUxEOWs5YU1LQlZOMm9OMG5hMFJiNmJUQzFuc3ByalNNOExr?=
- =?utf-8?B?OVM5MGNxT0lWS25UMGxPazBhU0FDQTZJWnJ5MklRK2hZNzZwcG9rOG1mZHUv?=
- =?utf-8?B?QVJ3YWc0MnpGZyt2MExCV016ZzR2VkRyUEhjdXJnZHQxQi95TjZDdFpPVzA0?=
- =?utf-8?B?SlUveWJjQmtZb2Q2dDRzSjA2V3NZd1c5eENsc1VtbEI1WFZRVE1zaXUwNUxH?=
- =?utf-8?B?TTl3STZEUFJyYTkxNVBFb1JTWTZPZkxQS2p3WG1CM0R4TU5nU2NhUGFsYkRT?=
- =?utf-8?B?aEJaODJXclJzWGNJaVBoblUzUjVabWtkSHlVZElnUEJJNUE0WVJaVTY4R2lD?=
- =?utf-8?B?bzg5NzJQZ2pxZ25GemNOaUc4c3RHUjVQcGx6ZFNKZnBXVVk4WWZFR2pTaCtq?=
- =?utf-8?B?Q3Q3WnpHam5kaytNaHpERThHUStTRGxPUHVwQ1F5cnFmZFVKTkRCWW51T1Rj?=
- =?utf-8?B?L1BhWjM2Q0xQeENQMDNtRllGTWdpbVNWc1RmUnJDN1hjeXJQcWVUdUV2VU5W?=
- =?utf-8?B?THNlUG51dklac1Btd1Z6cEFPSGMrQ0NsT051UFcwY2ZuNUIrendyb09teTA4?=
- =?utf-8?B?cFlNYmVMSmRkWFllSG5kcGo1dSttcnl3ZUNFOUdvMGpsNzE5TkFPcGpjOGtV?=
- =?utf-8?B?YU1FYXFZNUhZcmJpeXJNVC9oS0FIcW9ScjB0WVpjc0lQNGxMa21pclpaem45?=
- =?utf-8?B?THMrTHpxSWlrWUlqbnIyeHZ3V0hhejJJbWRpYWd1RE9hbmdERVRoZ1ZZdy9z?=
- =?utf-8?B?QW8yUmRoWUZhYlR3ZGlFM0wwOERmOXMvN1U4UHU5Y2Z0RUxoRUhHL3FySFdZ?=
- =?utf-8?B?WkxFTWRRQlBmSkI1TlR6aGxES0tyd2hEcytmcld3RkFjNnZUTHI3V1FoRFZl?=
- =?utf-8?B?V2tuaFZ4WkhDclN2TFNKMVJhTzhpYksyQ0Z2cGo3RnFkaVgzaGZYTDJsbURE?=
- =?utf-8?B?YkIvV05YT2srTm9wWHUrUmNrNUNMam16dWcvZDZ1ODBoTzZoTmhWY2pjQnNn?=
- =?utf-8?B?NEdINVRMSSs0RWhoOUFrcE9UYVFCcWtEUURnSVV5TXVnZWF4NDhGZXBsVzlT?=
- =?utf-8?B?di9ySklFcDhvaVEwMkw4VW1tcDVHZnFsZlgya1hGN05zdEwxcUVRTGlhTUg4?=
- =?utf-8?B?UFpTM3dUVDF2ZnJpSTUyMU45S2RWRU9DZFgyT0dTcnhKZi9hR21LSklEQS9z?=
- =?utf-8?B?WnVSWGk0OHlVdUpVY0VEczhQWXVsQUx3MUFlVjdlODZzd1ByQ2U4Rzk0UmtF?=
- =?utf-8?B?aGUxNkhKcW5lSmJqN2YyT1VXcDE4TDBtQ1BaSmhtV2xUeGxHektVci9mODlH?=
- =?utf-8?B?L1lYYk5OaXRVVHpWZkswVjNDQ3dlYmNQNXd1djhMZmNBOWhWcHZBZz09?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 508b0a1b-af65-426c-e912-08df38ef6c79
-X-MS-Exchange-CrossTenant-AuthSource: DS0PR12MB7771.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Nov 2026 14:41:48.0552
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: XH4mhu5JttJ8SX/ecYCOcwHk3t9uBz8/Wg4luEgPDyPEEiBe3r37gqL+pxOMl26hQDcczYi5mkPEpf0Kf2EIFg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR12MB4271
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20261102-work-procfs-bugfixes-v1-36-59422ed3e465@kernel.org>
+References: <20261102-work-procfs-bugfixes-v1-0-59422ed3e465@kernel.org>
+In-Reply-To: <20261102-work-procfs-bugfixes-v1-0-59422ed3e465@kernel.org>
+To: linux-fsdevel@vger.kernel.org
+Cc: Linus Torvalds <torvalds@linux-foundation.org>, 
+ Jann Horn <jannh@google.com>, Josef Bacik <josef@toxicpanda.com>, 
+ Chris Mason <mason@kernel.org>, Jeff Layton <jlayton@kernel.org>, 
+ NeilBrown <neil@brown.name>, Eric Dumazet <edumazet@kernel.org>, 
+ Thomas Gleixner <tglx@kernel.org>, Al Viro <viro@zeniv.linux.org.uk>, 
+ Jonathan Corbet <corbet@lwn.net>, Christoph Hellwig <hch@lst.de>, 
+ Greg Kroah-Hartman <gregkh@suse.de>, 
+ Joel Granados <joel.granados@kernel.org>, Kees Cook <kees@kernel.org>, 
+ Jan Kara <jack@suse.cz>, Jan Kara <jack@suse.com>, 
+ linux-kernel@vger.kernel.org, linux-nfs@vger.kernel.org, 
+ linux-acpi@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+ linux-s390@vger.kernel.org, linux-scsi@vger.kernel.org, 
+ linux-um@lists.infradead.org, linux-wireless@vger.kernel.org, 
+ linuxppc-dev@lists.ozlabs.org, netdev@vger.kernel.org, 
+ ntfs3@lists.linux.dev, platform-driver-x86@vger.kernel.org, 
+ coreteam@netfilter.org, kexec@lists.infradead.org, 
+ linux-pci@vger.kernel.org, linux-sound@vger.kernel.org, 
+ netfilter-devel@vger.kernel.org, dri-devel@lists.freedesktop.org, 
+ ibm-acpi-devel@lists.sourceforge.net, jfs-discussion@lists.sourceforge.net, 
+ linux-alpha@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+ linux-cifs@vger.kernel.org, linux-fbdev@vger.kernel.org, 
+ linux-hwmon@vger.kernel.org, linux-mm@kvack.org, linux-sh@vger.kernel.org, 
+ linux-usb@vger.kernel.org, samba-technical@lists.samba.org, 
+ sparclinux@vger.kernel.org, linux-m68k@lists.linux-m68k.org, 
+ linux-doc@vger.kernel.org, linux-serial@vger.kernel.org, 
+ linux-atm-general@lists.sourceforge.net, Takashi Iwai <tiwai@suse.de>, 
+ linux-input@vger.kernel.org, linux-raid@vger.kernel.org, 
+ linux-ext4@vger.kernel.org, linux-modules@vger.kernel.org, 
+ linux-debuggers@vger.kernel.org, 
+ "Christian Brauner (Amutable)" <brauner@kernel.org>, 
+ Chuck Lever <cel@kernel.org>
+X-Mailer: b4 0.17-dev
+X-Rspamd-Queue-Id: 33E4E20003
 X-Rspam-User: 
-X-Rspamd-Queue-Id: F139614000A
-X-Stat-Signature: xfu7sas9k61r1rkc7ygyuonogqfxsrd1
-X-Rspamd-Server: rspam01
-X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Stat-Signature: izhmtpm9dgkt63ots7sod7cmgawbyo1h
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
+	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
 	version=4.0.1
-X-HE-Tag: 1793630511-779014
-X-HE-Meta: U2FsdGVkX19RM/s02ewjrSRqcd1RmUbeA6Jl0AgzvGm/pLJRXJCbhfnrB0JjAOr7DXfEhVtXGykF0CIFpHHNhqlGEy7hMYDSJGRGF4l999BZkjB3pVx5vawC3kbi0ULLcs5WE2fAkF3VPWopo6xjJAc43vbVmhsoVIS+krzFIxht6Nkgn5JZCSIJ9v3RnfkOMBSRvc1jN6FMC+khhCeWefkww6R8BriIvHKUtiTLF1l9FYK24PMW/q42LtBkYCycQzTLdzWX3Fj+zsRET1XpacOYDXIeNhyQ6gpvwFrzY6v1rGUuR5t5MlFQP1fP60o7SCj7/EYgWi/uA8NtylbsAV+kOW4ayA3C4UNV/my3hKtaQEI24AdIArnNxuPmp6fxSyMNfF/HoLMliXmnaZIRO7skxWEG9Eb0LnE0ziRgXTw9AxJ9kAEev6OAG3O6D/p2h1TwYEeqmNsHA10Bybcmeui3wCwITvpPntTIEbajBNqgfr7Itstoj5DMUlv/iTygqttXGkm2wkSqxVucpfLJ6Ty4TPc8bDKIyVL7ob42mVWZReGOGjbRfXer/KqXr+gt17l1m+PBp+aAESOzp233Ju3ZJYvECQKy6QhE+/nDbnxHqfdJ3xYXAtz/LlYp5AIomPWiGHrfLOqA8hC2NjRiT6ghC8gFB0UudoIfGTMIypEoUMc1PTBEqZhzpUytAyx9R5Zi87XhosNM5Qn0vtUKemYVJl73cxAgtHoa4TE+lUUh/DUHOD11J4DyV/6+BuLuOAGhgxbjiPwWJCuu8/VXcq9zpLpUXhv8rWQ9G2dbYPCD1oizlgObl2G5mgPDFzm42SKTKaSs6gBTh0kC0Gab4EElWOSJ1jL3DmUsWYS2IMTDmtTnGsb4wgW8Es2s6GSNZY0pnKlgrMuhKlwaNG84QL1BtthuSi7xDoIRAMH5XrzGAZtnGqSKHfKmiVVEwSloM6SNwSc9vtumaACewRb
- eWx8jQGV
- ZRc3OlmT8043/S6bMT5f51SIgsuBmSber8j9LBNp98chldT6IlSX4DCd8PCNgPv9WN0eQGo+ihVQQPvvqqhEAf+HVtIasVEisV5vydX9Ks+dCs5QjYkjA2NBaFWKvWIcHliQTLqRd3MOfUeNhHBjtVmG9CG7/DD2I2ngjsjOq/B4biDxTob7gmMIatM66x8WGiQ11dGwXtHWdMNhhpkjpAdmb5GfO5trUnkJA+3KmLez7d8J+bpp8zV9O4rDAgIiqZFbMgSvnMjq0FtSHHjhLzwijj7U1Ft4xHnLaFRMMurnAJKga2alNTVPeoBLwO0N1CKxPJzT9eMi9b8D9jLdRtdxbgRvxaoMGRcrkK0PxIBIwWeu3rh2vTNByzFIEodce2qGfSo1WRnzoHeZvmfNS+xEaPDfHun1F67iSvm5a+JOTo/2eHvSxfne6zoMmdjZwtcbJ+mHDmg8DR1gLvggCkyLr2qcvo3We7JkywNq5ajWqTi32fUd+BFtcQW1I6ST1V+RP
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1793630794-384838
+X-HE-Meta: U2FsdGVkX19nd5aFSlCt7LDyCtEQsz4pZy61GZdPSERghEP4QJdIH3WyoiIi6oOFvRyYkt3Cby5kY/tU9O5Lo1Yv4w/wYdwRz4vfgFYGrswn3ZN74ihnkGGegSep1mewg/A2x+QkLR/Cm59hOW5IlTtH9hw5luHdGfx/yT+fJFhI9sJm0B1ylAXR+eE+e+D1hiH/kgG4ZN821lHnHDuptz0fTIuFwMm1Bv6eU7Sx+3XGOgnlbKmwj6g+bUob+IvkR9zYfXrpdbNK0HuOJGCTzgr2OScVFtpWtyE4Zw33/J2xJPNV7fV9VdOEXMb/BTYgTKjPBlPMqCoQ0S+STVQOfFWTkZWPdm5e0F1c0/8K8ejcLjipu1iHv9PSPOqC/k0gGnqS98eOc3RNbX5/J/qUSdgwFvi8pOj1X69QtfPHnu7BS5CXNF60IZM62//Wc5zLDvSQJT1mjGQRfOxHlFnaJJW94hXV//W+R1OQ8U0//iXsnN2d1Jrw9h59hgGlmrQ7b90lVgVcihmtsuzm80yOr3aSxlffW3hsOL6xf+facgG+y09gGHtK6ISO6HS7DMW5OAKvLkkR8C10MOEGMbUYYVE74VnrxjHdo7bapuPCwRlAGC7025qd7EWWPsVCx6NzPURUWpe7WbpUWOHTT9BfeX78uSXbU0kf7KwgB3y9OWRfbPR3ne4tWBmlTBc/fmOLknxXOELAmfCjlS0NhMt2k8J7geGvx0AGI7+HObfwOnX8zaRCaCdVMfX4t7uFo1rtCS9Yl+lGHfTWT+OGatxC9EG/3UWcGkMOpFKK9NTIB7n92r/Pl56pvvKdu3dUOHJdm9NfW7/HmxWRN06IChmYd6K9GFVELHbG1hnfSYV9Sx1FfccbqCWEiA3fi+lUkBEemd384nWavcUtNnDP/DRlPHsPD/EzB9QujnwHySeNKG0zaPZOX1AGiA5/WN04S4SpzelW9eFJ+tZs+zdSCXF
+ gYRanEwJ
+ EfKRBaYp+xLgJKIUD0ViINYu3cTQ+Wr+HkvXVbedrfhmNuAZ4mTc9Hjc9t8/WxchFN+tAf1FUW8s6QPlsFuNbeySMtwZiB6wkCwh6rSGRUpkI2m2P32IQTlvmwxijy2yZzS74FfBCXKQyk6k47na2VMDz/wELslo6fSdmk/FgOrfRdUfuzlUtpq9dkxdRaxi8KEvDAjLB0FBRGolig1ZU3hbInEvac9zOS+u+vNxGhSNL4CGta6fAoCbox3X5srUzK5zVxogtVw3bjq4+mu3UkEbXBTlZHrl5Mk5s
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -178,45 +126,285 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
+Read, write and list /proc/sys/net/ipv6/conf/<dev>/ of a tun device
+with a buffer whose first page is backed by userfaultfd and remove the
+device while the task sleeps in its copy from or to userspace:
 
-> Pages of allocated CMA areas are released to the buddy allocator with
-> __free_pages(), which does not check for unaccepted memory.
->
-> This usually works because memblock accepts the memory it allocates.
->
-> However, multi-range CMA areas, used by hugetlb_cma, and fixed CMA areas
-> requested with cma=<size>@<base> are reserved with memblock_reserve() and
-> their memory is never accepted.
->
-> On TDX and SEV-SNP guests the first access to such a page is fatal.
->
-> To ease the backporting, each case is addressed by a separate patch:
-> - patch 1 accepts the memory of multi-range CMA areas
-> - patch 2 does the same for the fixed CMA areas
->
-> The second patch won't apply cleanly to 6.6 and 6.12, but I believe the
-> stable team LLMs will take care of that :)
->
-> ---
-> Mike Rapoport (Microsoft) (2):
->        mm/cma: accept memory of multi-range CMA areas
->        mm/cma: accept memory of CMA areas reserved at a fixed address
+- unregistering the table doesn't wait for a faulting read(), write()
+  or getdents64()
 
-For the series:
+- the read still gets the value that was produced before the removal
+  and the next read fails with -ENOENT
 
-Reviewed-by: Pankaj Gupta <pankaj.gupta@amd.com>
-Tested-by: Pankaj Gupta <pankaj.gupta@amd.com>
+- the write is copied in after the removal and fails with -ENOENT
 
->
->   mm/cma.c | 4 ++++
->   1 file changed, 4 insertions(+)
-> ---
-> base-commit: 5b0764a53235d3c77e1ed674e836e1b3fe1a4b1f
-> change-id: 20261029-cma-multi-97fd4e58aa08
->
-> --
-> Sincerely yours,
-> Mike.
->
->
+- getdents64() still lists what it looked up before the removal and
+  fails with -ENOENT afterwards
+
+The tables are unregistered under RTNL, so a regression stalls each
+test for five seconds before it fails.
+
+Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
+---
+ tools/testing/selftests/proc/.gitignore            |   1 +
+ tools/testing/selftests/proc/Makefile              |   1 +
+ tools/testing/selftests/proc/config                |   3 +
+ .../selftests/proc/proc-remove-slow-sysctl.c       | 213 +++++++++++++++++++++
+ 4 files changed, 218 insertions(+)
+
+diff --git a/tools/testing/selftests/proc/.gitignore b/tools/testing/selftests/proc/.gitignore
+index 5b5e24e39cbd..7b8133492782 100644
+--- a/tools/testing/selftests/proc/.gitignore
++++ b/tools/testing/selftests/proc/.gitignore
+@@ -21,6 +21,7 @@
+ /proc-uptime-001
+ /proc-uptime-002
+ /proc-pidns
++/proc-remove-slow-sysctl
+ /read
+ /self
+ /setns-dcache
+diff --git a/tools/testing/selftests/proc/Makefile b/tools/testing/selftests/proc/Makefile
+index dae09f333455..bce6beca7274 100644
+--- a/tools/testing/selftests/proc/Makefile
++++ b/tools/testing/selftests/proc/Makefile
+@@ -32,5 +32,6 @@ TEST_GEN_PROGS += proc-multiple-procfs
+ TEST_GEN_PROGS += proc-fsconfig-hidepid
+ TEST_GEN_PROGS += proc-sysctl-readdir-churn
+ TEST_GEN_PROGS += proc-pidns
++TEST_GEN_PROGS += proc-remove-slow-sysctl
+ 
+ include ../lib.mk
+diff --git a/tools/testing/selftests/proc/config b/tools/testing/selftests/proc/config
+index 68fbd2b35884..3edd3c437fe4 100644
+--- a/tools/testing/selftests/proc/config
++++ b/tools/testing/selftests/proc/config
+@@ -1 +1,4 @@
+ CONFIG_PROC_FS=y
++CONFIG_IPV6=y
++CONFIG_TUN=y
++CONFIG_USERFAULTFD=y
+diff --git a/tools/testing/selftests/proc/proc-remove-slow-sysctl.c b/tools/testing/selftests/proc/proc-remove-slow-sysctl.c
+new file mode 100644
+index 000000000000..e1b1fd19a07a
+--- /dev/null
++++ b/tools/testing/selftests/proc/proc-remove-slow-sysctl.c
+@@ -0,0 +1,213 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * A read(), write() or getdents64() of /proc/sys that faults while copying
++ * from or to userspace must not hold up unregistering the sysctl table.
++ * /proc/sys/net/ipv6/conf/<dev>/ of a tun device is unregistered under RTNL
++ * when the device's file is closed.
++ */
++#define _GNU_SOURCE
++#include <errno.h>
++#include <fcntl.h>
++#include <linux/if.h>
++#include <linux/if_tun.h>
++#include <linux/userfaultfd.h>
++#include <poll.h>
++#include <pthread.h>
++#include <sched.h>
++#include <string.h>
++#include <sys/ioctl.h>
++#include <sys/mman.h>
++#include <sys/syscall.h>
++#include <unistd.h>
++
++#include "../kselftest_harness.h"
++
++#define TUN_NAME	"procslow0"
++#define CONF_PATH	"/proc/sys/net/ipv6/conf/" TUN_NAME
++#define MTU_PATH	CONF_PATH "/mtu"
++#define BUF_PAGES	16
++#define TIMEOUT_MS	5000
++
++enum sysctl_op {
++	SYSCTL_READ,
++	SYSCTL_WRITE,
++	SYSCTL_GETDENTS,
++};
++
++struct worker {
++	enum sysctl_op op;
++	int fd;
++	char *buf;
++	size_t len;
++	ssize_t ret;
++	int err;
++};
++
++struct closer {
++	int tun;
++	int done;
++};
++
++static void *work_thread(void *arg)
++{
++	struct worker *w = arg;
++
++	switch (w->op) {
++	case SYSCTL_READ:
++		w->ret = read(w->fd, w->buf, w->len);
++		break;
++	case SYSCTL_WRITE:
++		w->ret = write(w->fd, w->buf, w->len);
++		break;
++	case SYSCTL_GETDENTS:
++		w->ret = syscall(__NR_getdents64, w->fd, w->buf, w->len);
++		break;
++	}
++	w->err = errno;
++	return NULL;
++}
++
++static void *close_thread(void *arg)
++{
++	struct closer *c = arg;
++	ssize_t ret;
++
++	close(c->tun);
++	ret = write(c->done, "x", 1);
++	return (void *)ret;
++}
++
++FIXTURE(proc_sys_slow) {
++	int tun;
++	int uffd;
++	char *buf;
++	long psz;
++};
++
++FIXTURE_SETUP(proc_sys_slow)
++{
++	struct uffdio_api api = { .api = UFFD_API };
++	struct uffdio_register reg = {};
++	struct ifreq ifr = {};
++
++	if (unshare(CLONE_NEWNET))
++		SKIP(return, "unshare(CLONE_NEWNET): %s", strerror(errno));
++
++	self->tun = open("/dev/net/tun", O_RDWR | O_CLOEXEC);
++	if (self->tun < 0)
++		SKIP(return, "/dev/net/tun: %s", strerror(errno));
++	strncpy(ifr.ifr_name, TUN_NAME, IFNAMSIZ - 1);
++	ifr.ifr_flags = IFF_TUN | IFF_NO_PI;
++	ASSERT_EQ(ioctl(self->tun, TUNSETIFF, &ifr), 0);
++	if (access(CONF_PATH, F_OK))
++		SKIP(return, CONF_PATH ": %s", strerror(errno));
++
++	self->uffd = syscall(__NR_userfaultfd, O_CLOEXEC | O_NONBLOCK);
++	if (self->uffd < 0)
++		SKIP(return, "userfaultfd: %s", strerror(errno));
++	ASSERT_EQ(ioctl(self->uffd, UFFDIO_API, &api), 0);
++
++	/* Only the first page of the buffer goes through userfaultfd. */
++	self->psz = sysconf(_SC_PAGESIZE);
++	self->buf = mmap(NULL, BUF_PAGES * self->psz, PROT_READ | PROT_WRITE,
++			 MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
++	ASSERT_NE(self->buf, MAP_FAILED);
++	reg.range.start = (unsigned long)self->buf;
++	reg.range.len = self->psz;
++	reg.mode = UFFDIO_REGISTER_MODE_MISSING;
++	ASSERT_EQ(ioctl(self->uffd, UFFDIO_REGISTER, &reg), 0);
++}
++
++FIXTURE_TEARDOWN(proc_sys_slow)
++{
++}
++
++/*
++ * Let @w sleep in its copy from or to the first page of the buffer, then
++ * close the device. Unregistering the table must not wait for @w.
++ */
++static void stall_and_remove(struct __test_metadata *_metadata,
++			     FIXTURE_DATA(proc_sys_slow) *self,
++			     struct worker *w)
++{
++	struct closer c = { .tun = self->tun };
++	struct uffdio_zeropage zero = {};
++	struct uffd_msg msg;
++	struct pollfd pfd;
++	pthread_t wt, ct;
++	int done[2];
++
++	w->buf = self->buf;
++	ASSERT_EQ(pthread_create(&wt, NULL, work_thread, w), 0);
++
++	pfd = (struct pollfd){ .fd = self->uffd, .events = POLLIN };
++	ASSERT_EQ(poll(&pfd, 1, TIMEOUT_MS), 1);
++	ASSERT_EQ(read(self->uffd, &msg, sizeof(msg)), sizeof(msg));
++	ASSERT_EQ(msg.event, UFFD_EVENT_PAGEFAULT);
++
++	ASSERT_EQ(pipe2(done, O_CLOEXEC), 0);
++	c.done = done[1];
++	ASSERT_EQ(pthread_create(&ct, NULL, close_thread, &c), 0);
++	pfd = (struct pollfd){ .fd = done[0], .events = POLLIN };
++	EXPECT_EQ(poll(&pfd, 1, TIMEOUT_MS), 1) {
++		TH_LOG("unregistering " CONF_PATH " waited for the faulting task");
++	}
++
++	zero.range.start = (unsigned long)self->buf;
++	zero.range.len = self->psz;
++	ASSERT_EQ(ioctl(self->uffd, UFFDIO_ZEROPAGE, &zero), 0);
++	ASSERT_EQ(pthread_join(wt, NULL), 0);
++	ASSERT_EQ(pthread_join(ct, NULL), 0);
++}
++
++TEST_F(proc_sys_slow, read)
++{
++	struct worker w = {
++		.op	= SYSCTL_READ,
++		.len	= BUF_PAGES * self->psz,
++	};
++
++	w.fd = open(MTU_PATH, O_RDONLY | O_CLOEXEC);
++	ASSERT_GE(w.fd, 0);
++	stall_and_remove(_metadata, self, &w);
++
++	/* The value was produced before the table went away, then nothing. */
++	EXPECT_GT(w.ret, 0);
++	EXPECT_EQ(read(w.fd, self->buf, self->psz), -1);
++	EXPECT_EQ(errno, ENOENT);
++}
++
++TEST_F(proc_sys_slow, write)
++{
++	struct worker w = {
++		.op	= SYSCTL_WRITE,
++		.len	= 5,
++	};
++
++	w.fd = open(MTU_PATH, O_WRONLY | O_CLOEXEC);
++	ASSERT_GE(w.fd, 0);
++	stall_and_remove(_metadata, self, &w);
++
++	/* The table went away while the value was copied in. */
++	EXPECT_EQ(w.ret, -1);
++	EXPECT_EQ(w.err, ENOENT);
++}
++
++TEST_F(proc_sys_slow, getdents)
++{
++	struct worker w = {
++		.op	= SYSCTL_GETDENTS,
++		.len	= BUF_PAGES * self->psz,
++	};
++
++	w.fd = open(CONF_PATH, O_RDONLY | O_DIRECTORY | O_CLOEXEC);
++	ASSERT_GE(w.fd, 0);
++	stall_and_remove(_metadata, self, &w);
++
++	/* What was looked up before the removal still arrives, then nothing. */
++	EXPECT_GT(w.ret, 0);
++	EXPECT_EQ(syscall(__NR_getdents64, w.fd, self->buf, self->psz), -1);
++	EXPECT_EQ(errno, ENOENT);
++}
++
++TEST_HARNESS_MAIN
+
+-- 
+2.53.0
+
 
