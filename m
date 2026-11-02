@@ -1,99 +1,145 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF5BD606A324
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 12:08:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3914606A33D
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 12:10:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=kEe5aCO2
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=aTRgtmOz
 Received: by kanga.kvack.org (Postfix)
-	id 097BC6B00EF; Mon,  2 Nov 2026 07:08:56 -0500 (EST)
+	id C5BE56B05B1; Mon,  2 Nov 2026 07:10:30 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 049126B05B1; Mon,  2 Nov 2026 07:08:55 -0500 (EST)
+	id C338F6B05B2; Mon,  2 Nov 2026 07:10:30 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E7A8F6B05B2; Mon,  2 Nov 2026 07:08:55 -0500 (EST)
+	id B49D06B05B3; Mon,  2 Nov 2026 07:10:30 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id B12676B00EF
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 07:08:55 -0500 (EST)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 41877A0C38
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 12:08:55 +0000 (UTC)
-X-FDA: 85390057830.19.1815907
-Received: from mta0.migadu.com (out-63.mta0.migadu.com [91.218.175.63])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 342D920002
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 12:08:53 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=kEe5aCO2;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf31.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.63 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 86FD46B05B1
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 07:10:30 -0500 (EST)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 281B640CFE
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 12:10:30 +0000 (UTC)
+X-FDA: 85390061820.29.30500DC
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 6A69440005
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 12:10:28 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aTRgtmOz;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793621333;
+	s=arc-20220608; t=1793621428;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fjJ92/YRxESOcxXg0+jeJTGUWnllnz8alEghdzFizqI=;
-	b=wU7E8248CXpiDfSNYdjdIkIbdUAH0EdYzgjaht/gq7oHsWqcXqlNMTiw9Bw75+XDHI+7pX
-	Ta/YBmQAdkei5ws98tMnUF2lhHaJwiD0qMUOxU5W2zL46YZc5ausi7LSRlss8f6gtOtFlB
-	3r2lih9+pq4fnhW8EAhxaMwECvkGprI=
+	bh=3utIN8YKJONR4bZfSrqvEFZtlbFS+VytSozFfR8XdPY=;
+	b=eajjUNtEdMZGreLj1yurHCqrJ/eCrPzu2k7QUbP0kUbcDZc94K2QjfEReKpa7BkJqUsHVq
+	TAhhE1dBWb9+PmWXj/NfCzDxFoYzWdEtre6+6Oudrv7VgUnbET7tmVkBeu91bBKQxKDUhp
+	OqDRdBi5rdpqqxzDnwESk98K3kmVg0c=
 ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=kEe5aCO2;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf31.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.63 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aTRgtmOz;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793621333;
-	b=uH1ya42JvSTspbpBStK3fPbe8WIaeVhS5n+9qS9LKZEpZBGkSeYokdcpDoYAodHISvw1yX
-	2Tr+5c41qzQQZZRV33WkarMrHaydy0isSHPciqUTR6shxzUpOh50+GZfrTQVdinoZUZNWR
-	i8Wx2C756o1X4dJbwf0GlpZUb6Cm4zY=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=US3qDO+m6nnJUa6wwuAwT58HZ7ZuIJyUtTEfmDSqGeU=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1793621331; v=1; x=1794226131;
- b=kEe5aCO2JsQo+97qDxlgZ1i1ViIAMSsI/r9uG7vMQ8ecygtGsiSiGfpTfs3SdogDROKkVWmk
- Vbw9slbHR5eGIc8yT/XEf5zDXEMd/t+yXIUusCgkOZ6qej6LvPIyvff7cS/CFhkLeBWQJWODB+b
- BdAzKRQH2DUmLkk/cQ6aUj9g=
-X-Envelope-To: linux-mm@kvack.org
-Received: by mta10.migadu.com with ESMTPS id 087bf30dbcb0ba0b;
-	Mon, 02 Nov 2026 12:08:51 +0000
-X-Mizu-Trace-ID: 087bf30dbcb0ba0b
-X-Migadu-Flow: FLOW_OUT
-From: Muchun Song <muchun.song@linux.dev>
-Message-Id: <C625F98E-9008-499B-A05C-12C1944330A7@linux.dev>
-Content-Type: multipart/alternative;
-	boundary="Apple-Mail=_DC0F39B8-148E-4EDD-86B5-1A6F95887C3B"
+	t=1793621428;
+	b=c/TvW65Od+4/NMK4MLw3rgS9c3RXZI7R5iOjC0ytCx+Kt3kprmw2EWr5Io3ycpkJ5HVG1q
+	IY7Jn661jaxxYKCEhZjuj93ISV4mWcUvinkNfKyr60wVDIaJ2jlkWGmjLtb3ROvdn1MRgs
+	vSZS2fbLoOA9HsGzqCkSM20tjWdrsLw=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 6B21860DC0;
+	Mon,  2 Nov 2026 12:10:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40A701F00A16;
+	Mon,  2 Nov 2026 12:10:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793621427;
+	bh=3utIN8YKJONR4bZfSrqvEFZtlbFS+VytSozFfR8XdPY=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=aTRgtmOzmbjZMD8o/Yfhau75xpDuPVwSjbUdT9/1ddYs0vxkVN5gfVtfa6AeHugJE
+	 6p0EjfwBz1QCy7cUFXbxSMmd++Zuci3wL9KZY9HkNjNqA6RZ6fWvzK9WWwXPLIt5P+
+	 nTlCWkKdvpHWsmQc6PNH2XYPgh1VnpFf6WTmaREU8N0AM/gEvaSqYRinEK4MoBqs32
+	 1b69rW65aABhTvPO0WcTzb5fPeQCqUqUbgkFL7DkjSLSiw9b8mWGjPm2os0u/kfsHI
+	 PNzZ8QlmuNnlfL0+s7C277kCdDO1OzsZ+sr/ypd7OPV6snYJo7/9p9Iac8Rkb//PrI
+	 n+SfqjJzKjj1w==
+Message-ID: <85c4a87b-2c8b-4ef5-bb30-6518080f8be0@kernel.org>
+Date: Mon, 2 Nov 2026 13:10:21 +0100
 X-Archived-By: <archiver.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3901.200.71.1.16\))
-Subject: Re: [PATCH v2 04/12] mm: hugetlb_vmemmap: generalize vmemmap page
- allocation
-Date: Mon, 2 Nov 2026 20:08:31 +0800
-In-Reply-To: <179361471104.1337633.3959715900505206111.b4-review@b4>
-Cc: Muchun Song <songmuchun@bytedance.com>,
- Oscar Salvador <osalvador@suse.de>,
- Andrew Morton <akpm@linux-foundation.org>,
- Qi Zheng <qi.zheng@linux.dev>,
- Lance Yang <lance.yang@linux.dev>,
- James Houghton <jthoughton@google.com>,
- David Hildenbrand <david@kernel.org>,
- linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-To: Mike Rapoport <rppt@kernel.org>
-References: <20261102032525.3597743-1-songmuchun@bytedance.com>
- <20261102032525.3597743-5-songmuchun@bytedance.com>
- <179361471104.1337633.3959715900505206111.b4-review@b4>
-X-Mailer: Apple Mail (2.3901.200.71.1.16)
-X-Rspamd-Queue-Id: 342D920002
-X-Rspam-User: 
-X-Stat-Signature: ohqfmmxq1sjy684mac5k8jfqcj6atzf9
-X-Spam-Status: No, score=-12.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,HTML_MESSAGE,
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 2/4] mm: internal: fix inconsistent in
+ folio_pte_batch_flags() for shadow stack
+To: Yeoreum Yun <yeoreum.yun@arm.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, Lorenzo Stoakes <ljs@kernel.org>
+Cc: Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
+ Peter Xu <peterx@redhat.com>, "Liam R. Howlett" <liam@infradead.org>,
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Rik van Riel <riel@surriel.com>,
+ Yuan-Hao Hsu <aa9736195201@gmail.com>
+References: <20261102-refactor_gup_fast-v2-0-bc1ac018c834@arm.com>
+ <20261102-refactor_gup_fast-v2-2-bc1ac018c834@arm.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20261102-refactor_gup_fast-v2-2-bc1ac018c834@arm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 6A69440005
+X-Stat-Signature: d38mmdfsxxje7pqq3si3fkzetsum3t1f
+X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1793621333-431749
-X-HE-Meta: U2FsdGVkX196hQd+2frBzNpju1Xr67kBwCWDMWm17n09SeFUygpuH1E1BP/jP3GG76tLtmXP7dmxacrgDcGG4mio96Flvf0gzEufCWnJ1wqcADi8RIPQdIATPcGqo3YQouhMVezzOAjeUe59xPOL7Kp8ANrD0kahEzlOBS6ElrRIIdC67J92OHqfN9BrGM9bs5XCto2AeqVJ2djYRl6WZ8oN9mOivp0TSEtKmdydo/YA+skYMnWsi5VX17Xg7i6A6/B9po/0jQm0YQJnu5mb2TXTNEiuH/YCNu8cO8oRdahF8zg1gq5NKIBcbAgTMj9GAPUr38AdBij4McXDTDKSI6EzVRZrV+QvtfQ0DZhiKgC5fOTkuO0odGAi178CgismhVhPmRtIJzr5C6fWEFrNt78ccnk9XGqO7flDrqmij9tEEzsWBOM3Y3i0vKYt0SCTMK108wcVIwDHLp/d+UCW1mWENAqR5ECRxfSNFOLxHiNRT8PxVpYpW8qgE6FkN9RwzmFcEgtpdnnEnRJ8OqifFECCqMbfFkuVBXJPmTuATwrYQklOvHqhZeNjbzPK0ZmuwuX5OOi0hAfM2XxlzEHCl/M7CxyztHd9CtzG0z3fTqorrwsE2VTzi+lqbzuUWR+3NFo2uw8im3chctm/YgmQuDOOMl0NnID7MS44rTBAdMHqFZ25ZPhV2MrZnkYKQk3A23rk+yYNtfl3po4RwXrB9xY7d21Z9zEou2tU1HP3nHjUiYSwPnMw/Ju3se4pUcyRMLx+LPowkcbnr9w3lwdGg+yqucz5LlatAZ2Op/oVSh+bwo/mu+33JQS5NbE+/WU1SF1ZX7+rFaMrHyIifRfVTwzDukuE0MIreJHuzGzEZC3a40cCJMcHub+Ow3KXhPb5SoMZpQHjaWagqfB3Y4fZWZQhQP1aJiv38xRQ8p+gBhrMYygn9x+uGHZFJP1RS0QxryUE2nZMrckg1NshPk6
- WkIHDZNr
- YaQMmz9GzHcN1bQx2S6jwUjjMybq6P3/vh20XxPY1SBeFcVpTjpFd9p/h4RyqhG/KjZTL82PYn/g8Ot7w6pQePc3ZrZ05+4jzyKJuuBA8q79TIDdG+2rPVuJm3i55wDduV0Ly8dZADtAlrOWby8nQqVdLxwJOVrC68ovMwmMg5AkmC2mQrrYf0ajFbEtzkXxplPxux7GaBm20pMn4LUK/ZKEPsF/8oSOboggpo1rvW3GHMvnP3q72oIdhncC14kzsM+WWLE76KhBed4v7ZeJId0Vx7hyk/qln5X1wtbrErxq1qN7aflOPcWCClvsmgVN5XN2R/EmwlClm1TSCDJdfnkDwzzM07MTXitL+I7qeoUNlrvLRPVU1FT0Bqroy6EVt/WaGctiyZXpAwJ0S1HqlYBvoCgVc4qkfjTnEPf/BJF6OSpJezm+cVE6jQxjqyvYIV0EHagJrB97/1jFSZa8IYqSDfA==
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
+	version=4.0.1
+X-Rspam-User: 
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1793621428-64769
+X-HE-Meta: U2FsdGVkX1+4cjR4p4RrYzAnRIB3whuqzvX60BxBIWcyHtKKXT7sXG9g0x8UJI51ytn7oUQmJu77R6eV1DLuNdChSHukvTFpLCNvULL+3yZzZuXJ/KE/mDRwop3ejo6U57wGVgn0vpUV4dGy8SPoSqn7Ttjdm2JURRCmk22QgJs2Ctu3ECGynOwd4C1MZTa8puG4izIs2uvQLStBVItqWyz1vuRRXyx7jH3qc6tTvfZl54Ae/ZVUT7tMwa6fkU347Ood1hGIXO3+9yBL8j4l0aVzpZxSbK4F9ChDShH66mnAvbGGXCFRwVB6AQ07b99YZbU8tCOrMF1HI6p1xF5hLCLz636Hz/AIL6XyEUaZxvj5Rbevy93kW2sMGYCwl03agywYzZrGNjEM4gyMWIAjJm+BPxNqPdKmk5wKYpaHBYz8uMJ1/OX+a4yr0sTcrKBRPaev5o41/WYD3U/JUqKnXkE+n99k0dvbVkkZTKVCUk+mVMSuu7tYOcb2nUeJ6STVvhU0zpGbUHbdKcgYhRrGuVElQZpG9LBCP3n+npqenKuntSh9fbQEO8uuhfWdWZ0OjsjOvi1tyaY5nJU/kheP7I9yHKQPJQegA6E8FVGrJl5muLJJEQc6/w5k4qVYo1aZzZJfTVp6IC7UHenJoscunSUnRxl7FIEU0vY25sM9XjxIq9fE2rpZeACGInKcIte7Sh4Q/d6RoOfxjWaKb+ak5YpDaY5eOb5TWOtsZwSPQfQ+9w9NktgkN5m5JIFeQP6F/Iut271eC2gSuiVgE2I3eObn4l9VkuqWN1+8lfmpFOKP1uXpp3j9lWlrDtiAkeBENCSK+XAKI8IKOnNMFVHcruTqRkEIZqe4tg8R7M1O+WIMYH1ujbyqBVOXZZF9UmkLzGRz6N1MFLWtch6VwIGe4itJE49qP+69N56q2JaibcLLVPoN9hZXmuQp/PKMDlApa6qTszLAcX/QNWk6j+/
+ 3wMPIofo
+ +ITL3kTCpCgUyxr/ySrAYwSUyUeV/QjcbhSkPvaijGxk6C5duViV1hgPLsVu1U+zkPETci9DXZZS0LGF/BfDPjFVR6wawBft1s3dKUl3yngt0ZwOgrPMOEldQxaqdnTD5HcSm0Cm9XMAfjsTs8eaduADsjX8MmaxZpP/jxM8KRiXv4K3f1/0XrJp4Lw9X/PWY/hHRENGEn8KxdV8lrRvDMlYDwQ09NepYtdr/zEX7HHJSoqYynWCzbGx57hHnm/PD2sxVkdorp5Zck07sE6yeuZlpGTwJV6xQFPooaCIojYfhpJ7IHftoZDz2FQGNZ6akxBSAE5+szridkwQ7Vxin3ZmkB0g0CtOnaBY1WD5pDXzJYeY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,480 +148,104 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-
---Apple-Mail=_DC0F39B8-148E-4EDD-86B5-1A6F95887C3B
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain;
-	charset=utf-8
-
-
-
-> On Nov 2, 2026, at 18:18, Mike Rapoport <rppt@kernel.org> wrote:
->=20
-> Hi Muchun,
-
-Hi,
-
->=20
->> Vmemmap page allocation is currently tied to restoring a virtual =
-range
->> and assumes an empty destination list.  These constraints prevent it =
-from
->> being reused when pages are requested independently of a vmemmap =
-range or
->> appended to an existing list.
->>=20
->> Generalize the allocator and give it an all-or-nothing list contract =
-so
->> the restore and optimization paths can share the same allocation =
-policy.
->> This also allows HVO head-page allocation to fail gracefully under =
-memory
->> pressure without triggering the OOM killer.
->>=20
->> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
->> Reviewed-by: Lance Yang <lance.yang@linux.dev>
->> Reviewed-by: Qi Zheng <qi.zheng@linux.dev>
->> ---
->> v2:
->> - Collect Reviewed-by from Lance Yang and Qi Zheng
->> ---
->> mm/hugetlb_vmemmap.c | 39 ++++++++++++++++++---------------------
->> 1 file changed, 18 insertions(+), 21 deletions(-)
->>=20
->> diff --git a/mm/hugetlb_vmemmap.c b/mm/hugetlb_vmemmap.c
->> index 0e5b2b182d1bf..4b20a8efc0678 100644
->> --- a/mm/hugetlb_vmemmap.c
->> +++ b/mm/hugetlb_vmemmap.c
->> @@ -334,28 +334,26 @@ static int vmemmap_remap_free(unsigned long =
-start, unsigned long end,
->> 	return ret;
->> }
->>=20
->> -static int alloc_vmemmap_page_list(unsigned long start, unsigned =
-long end,
->> -				   struct list_head *list)
->> +static int alloc_vmemmap_page_list(struct list_head *head, unsigned =
-int nr_pages,
->> +				   int nid)
->=20
-> Please indent with two tabs, like David likes :)
-> Applies throughout the series.
-
-Sure. Should we update scripts/checkpatch.pl in the future for MM,
-since this script seems to favor the alignment approach?
-
->=20
->> {
->> -	gfp_t gfp_mask =3D GFP_KERNEL | __GFP_RETRY_MAYFAIL;
->> -	unsigned long nr_pages =3D (end - start) >> PAGE_SHIFT;
->> -	int nid =3D page_to_nid((struct page *)start);
->> -	struct page *page, *next;
->> -	int i;
->> +	LIST_HEAD(local);
->=20
-> Can we use a better name here please? E.g new_pages?
-
-Yeah, make sense.
-
->=20
->>=20
->> -	for (i =3D 0; i < nr_pages; i++) {
->> -		page =3D alloc_pages_node(nid, gfp_mask, 0);
->> -		if (!page)
->> -			goto out;
->> -		list_add(&page->lru, list);
->> +	for (unsigned int i =3D 0; i < nr_pages; i++) {
->> +		struct page *page;
->> +
->> +		page =3D alloc_pages_node(nid, GFP_KERNEL | =
-__GFP_RETRY_MAYFAIL, 0);
->> +		if (!page) {
->=20
-> I think goto err_do_cleanup is cleaner than ad-hok cleanups
-
-I=E2=80=99ll use goto style. Either is OK for me.
-
->=20
->> +			memmap_pages_add(i);
->=20
-> This is confusing. Updating counters only to use
-> free_vmemmap_page_list() seems worse choice than walking the list and
-> __free_page().
-
-I think the memmap accounting should be done right after each successful
-allocation =E2=80=94 that way, using free_vmemmap_page_list() becomes =
-more natural
-and simple.
-
-Somthing like:
-
-diff --git a/mm/hugetlb_vmemmap.c b/mm/hugetlb_vmemmap.c
-index c04f53f708d2..cab9ec14873d 100644
---- a/mm/hugetlb_vmemmap.c
-+++ b/mm/hugetlb_vmemmap.c
-@@ -207,14 +207,13 @@ static int alloc_vmemmap_page_list(struct =
-list_head *head, unsigned int nr_pages
-=20
-                page =3D alloc_pages_node(nid, GFP_KERNEL | =
-__GFP_RETRY_MAYFAIL, 0);
-                if (!page) {
--                       memmap_pages_add(i);
-                        free_vmemmap_page_list(&local);
-                        return -ENOMEM;
-                }
-+               memmap_pages_add(1);
-                list_add(&page->lru, &local);
-        }
-        list_splice(&local, head);
--       memmap_pages_add(nr_pages);
-=20
-        return 0;
- }
-
-Thanks for your review, Mike.
-
-Muchun
+On 11/2/26 12:30, Yeoreum Yun wrote:
+> In x86, shadow stack PTE is marked with PAGE_RW=0 and PAGE_DIRTY=1.
+> If the shadow stack pte entry is consequence with the read-only pte
+> like PAGE_RW=0 and PAGE_DIRTY=0, folio_pte_batch_flags()
+> with FPB_RESPECT_WRITE without FPB_RESPECT_DIRTY considers both are
+> the same.
+> 
+> To address this, save the first pte's writable and compare subsequence
+> pte's writablity with pte_write() when FPB_RESPECT_WRITE is set
+> without FPB_RESPECT_DIRTY.
 
 
->=20
-> --=20
-> Sincerely yours,
-> Mike.
+I think this should be patch #1 and likely carry a Fixes: tag.
+
+I think we can already create an inconsistency by using a mixture of
+
+* MADV_HUGEPAGE (overwrite for nohugepage for shadow stack)
+* MADV_DONTFORK + fork() + MADV_DOFORK
+* FPB_RESPECT_WRITE users
+
+Not that it would matter in practice.
+
+> 
+> Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
+> ---
+>  mm/internal.h | 13 ++++++++++++-
+>  1 file changed, 12 insertions(+), 1 deletion(-)
+> 
+> diff --git a/mm/internal.h b/mm/internal.h
+> index 35016b1afc8bf..b4d0df4c35adf 100644
+> --- a/mm/internal.h
+> +++ b/mm/internal.h
+> @@ -418,7 +418,7 @@ static inline unsigned int folio_pte_batch_flags(struct folio *folio,
+>  		struct vm_area_struct *vma, pte_t *ptep, pte_t *ptentp,
+>  		unsigned int max_nr, fpb_t flags)
+>  {
+> -	bool any_writable = false, any_young = false, any_dirty = false;
+> +	bool any_writable = false, any_young = false, any_dirty = false, writable;
+>  	pte_t expected_pte, pte = *ptentp;
+>  	unsigned int nr, cur_nr;
+>  
+> @@ -438,6 +438,7 @@ static inline unsigned int folio_pte_batch_flags(struct folio *folio,
+>  
+>  	nr = pte_batch_hint(ptep, pte);
+>  	expected_pte = __pte_batch_clear_ignored(pte_advance_pfn(pte, nr), flags);
+> +	writable = !!pte_write(pte);
+>  	ptep = ptep + nr;
+>  
+>  	while (nr < max_nr) {
+> @@ -446,6 +447,16 @@ static inline unsigned int folio_pte_batch_flags(struct folio *folio,
+>  		if (!pte_same(__pte_batch_clear_ignored(pte, flags), expected_pte))
+>  			break;
+>  
+> +		/*
+> +		 * x86 shadow-stack PTEs encode writability as RW=0, DIRTY=1.
+> +		 * Without FPB_RESPECT_DIRTY, __pte_batch_clear_ignored()
+> +		 * considers shadow-stack PTE as the same with subsequent
+> +		 * ordinary read-only PTEs. Therefore, check whether pte writable.
+> +		 */
+
+That information doesn't really belong in here in that detail level.
+
+"/* pte_mkclean() can remove the writable bit in some cases. */"
+
+> +		if (unlikely((flags & (FPB_RESPECT_WRITE | FPB_RESPECT_DIRTY)) == FPB_RESPECT_WRITE &&
+> +			     writable != !!pte_write(pte)))
+
+It might be nicer and more efficient to track if any was readonly/not-writable and
+
+	any_unwritable = !pte_write(pte);
+
+And checking once after the loop.
 
 
---Apple-Mail=_DC0F39B8-148E-4EDD-86B5-1A6F95887C3B
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/html;
-	charset=utf-8
+I checked and we cannot really fix x86 without an additional sw bit to remember
+"shadow stack PTE".
 
-<html aria-label=3D"message body"><head><meta http-equiv=3D"content-type" =
-content=3D"text/html; charset=3Dutf-8"></head><body =
-style=3D"overflow-wrap: break-word; -webkit-nbsp-mode: space; =
-line-break: after-white-space;"><div dir=3D"auto" style=3D"overflow-wrap: =
-break-word; -webkit-nbsp-mode: space; line-break: =
-after-white-space;"><br =
-id=3D"lineBreakAtBeginningOfMessage"><div><br><blockquote =
-type=3D"cite"><div>On Nov 2, 2026, at 18:18, Mike Rapoport =
-&lt;rppt@kernel.org&gt; wrote:</div><br =
-class=3D"Apple-interchange-newline"><div><meta charset=3D"UTF-8"><span =
-style=3D"caret-color: rgb(0, 0, 0); font-family: =
-JetBrainsMonoNL-Regular; font-size: 13px; font-style: normal; =
-font-variant-caps: normal; font-weight: 400; letter-spacing: normal; =
-orphans: 2; text-align: start; text-indent: 0px; text-transform: none; =
-white-space: normal; widows: 2; word-spacing: 0px; =
--webkit-text-stroke-width: 0px; text-decoration: none; float: none; =
-display: inline !important;">Hi Muchun,</span><br style=3D"caret-color: =
-rgb(0, 0, 0); font-family: JetBrainsMonoNL-Regular; font-size: 13px; =
-font-style: normal; font-variant-caps: normal; font-weight: 400; =
-letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; =
-text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; =
--webkit-text-stroke-width: 0px; text-decoration: =
-none;"></div></blockquote><div><br></div><div>Hi,</div><br><blockquote =
-type=3D"cite"><div><br style=3D"caret-color: rgb(0, 0, 0); font-family: =
-JetBrainsMonoNL-Regular; font-size: 13px; font-style: normal; =
-font-variant-caps: normal; font-weight: 400; letter-spacing: normal; =
-orphans: 2; text-align: start; text-indent: 0px; text-transform: none; =
-white-space: normal; widows: 2; word-spacing: 0px; =
--webkit-text-stroke-width: 0px; text-decoration: none;"><blockquote =
-type=3D"cite" style=3D"font-family: JetBrainsMonoNL-Regular; font-size: =
-13px; font-style: normal; font-variant-caps: normal; font-weight: 400; =
-letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; =
-text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; =
--webkit-text-stroke-width: 0px; text-decoration: none;">Vmemmap page =
-allocation is currently tied to restoring a virtual range<br>and assumes =
-an empty destination list. &nbsp;These constraints prevent it =
-from<br>being reused when pages are requested independently of a vmemmap =
-range or<br>appended to an existing list.<br><br>Generalize the =
-allocator and give it an all-or-nothing list contract so<br>the restore =
-and optimization paths can share the same allocation policy.<br>This =
-also allows HVO head-page allocation to fail gracefully under =
-memory<br>pressure without triggering the OOM =
-killer.<br><br>Signed-off-by: Muchun Song =
-&lt;songmuchun@bytedance.com&gt;<br>Reviewed-by: Lance Yang =
-&lt;lance.yang@linux.dev&gt;<br>Reviewed-by: Qi Zheng =
-&lt;qi.zheng@linux.dev&gt;<br>---<br>v2:<br>- Collect Reviewed-by from =
-Lance Yang and Qi Zheng<br>---<br>mm/hugetlb_vmemmap.c | 39 =
-++++++++++++++++++---------------------<br>1 file changed, 18 =
-insertions(+), 21 deletions(-)<br><br>diff --git a/mm/hugetlb_vmemmap.c =
-b/mm/hugetlb_vmemmap.c<br>index 0e5b2b182d1bf..4b20a8efc0678 =
-100644<br>--- a/mm/hugetlb_vmemmap.c<br>+++ b/mm/hugetlb_vmemmap.c<br>@@ =
--334,28 +334,26 @@ static int vmemmap_remap_free(unsigned long start, =
-unsigned long end,<br><span class=3D"Apple-tab-span" style=3D"white-space:=
- pre;">	</span>return ret;<br>}<br><br>-static int =
-alloc_vmemmap_page_list(unsigned long start, unsigned long =
-end,<br>-<span class=3D"Apple-tab-span" style=3D"white-space: pre;">	=
-</span><span class=3D"Apple-tab-span" style=3D"white-space: pre;">	=
-</span><span class=3D"Apple-tab-span" style=3D"white-space: pre;">	=
-</span><span class=3D"Apple-tab-span" style=3D"white-space: pre;">	=
-</span><span =
-class=3D"Apple-converted-space">&nbsp;</span>&nbsp;&nbsp;struct =
-list_head *list)<br>+static int alloc_vmemmap_page_list(struct list_head =
-*head, unsigned int nr_pages,<br>+<span class=3D"Apple-tab-span" =
-style=3D"white-space: pre;">	</span><span class=3D"Apple-tab-span" =
-style=3D"white-space: pre;">	</span><span class=3D"Apple-tab-span" =
-style=3D"white-space: pre;">	</span><span class=3D"Apple-tab-span" =
-style=3D"white-space: pre;">	</span><span =
-class=3D"Apple-converted-space">&nbsp;</span>&nbsp;&nbsp;int =
-nid)<br></blockquote><br style=3D"caret-color: rgb(0, 0, 0); =
-font-family: JetBrainsMonoNL-Regular; font-size: 13px; font-style: =
-normal; font-variant-caps: normal; font-weight: 400; letter-spacing: =
-normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: =
-none; white-space: normal; widows: 2; word-spacing: 0px; =
--webkit-text-stroke-width: 0px; text-decoration: none;"><span =
-style=3D"caret-color: rgb(0, 0, 0); font-family: =
-JetBrainsMonoNL-Regular; font-size: 13px; font-style: normal; =
-font-variant-caps: normal; font-weight: 400; letter-spacing: normal; =
-orphans: 2; text-align: start; text-indent: 0px; text-transform: none; =
-white-space: normal; widows: 2; word-spacing: 0px; =
--webkit-text-stroke-width: 0px; text-decoration: none; float: none; =
-display: inline !important;">Please indent with two tabs, like David =
-likes :)</span><br style=3D"caret-color: rgb(0, 0, 0); font-family: =
-JetBrainsMonoNL-Regular; font-size: 13px; font-style: normal; =
-font-variant-caps: normal; font-weight: 400; letter-spacing: normal; =
-orphans: 2; text-align: start; text-indent: 0px; text-transform: none; =
-white-space: normal; widows: 2; word-spacing: 0px; =
--webkit-text-stroke-width: 0px; text-decoration: none;"><span =
-style=3D"caret-color: rgb(0, 0, 0); font-family: =
-JetBrainsMonoNL-Regular; font-size: 13px; font-style: normal; =
-font-variant-caps: normal; font-weight: 400; letter-spacing: normal; =
-orphans: 2; text-align: start; text-indent: 0px; text-transform: none; =
-white-space: normal; widows: 2; word-spacing: 0px; =
--webkit-text-stroke-width: 0px; text-decoration: none; float: none; =
-display: inline !important;">Applies throughout the series.</span><br =
-style=3D"caret-color: rgb(0, 0, 0); font-family: =
-JetBrainsMonoNL-Regular; font-size: 13px; font-style: normal; =
-font-variant-caps: normal; font-weight: 400; letter-spacing: normal; =
-orphans: 2; text-align: start; text-indent: 0px; text-transform: none; =
-white-space: normal; widows: 2; word-spacing: 0px; =
--webkit-text-stroke-width: 0px; text-decoration: =
-none;"></div></blockquote><div><br></div><div>Sure. Should we update =
-scripts/checkpatch.pl in the future for MM,</div><div>since this script =
-seems to favor the alignment approach?</div><br><blockquote =
-type=3D"cite"><div><br style=3D"caret-color: rgb(0, 0, 0); font-family: =
-JetBrainsMonoNL-Regular; font-size: 13px; font-style: normal; =
-font-variant-caps: normal; font-weight: 400; letter-spacing: normal; =
-orphans: 2; text-align: start; text-indent: 0px; text-transform: none; =
-white-space: normal; widows: 2; word-spacing: 0px; =
--webkit-text-stroke-width: 0px; text-decoration: none;"><blockquote =
-type=3D"cite" style=3D"font-family: JetBrainsMonoNL-Regular; font-size: =
-13px; font-style: normal; font-variant-caps: normal; font-weight: 400; =
-letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; =
-text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; =
--webkit-text-stroke-width: 0px; text-decoration: none;">{<br>-<span =
-class=3D"Apple-tab-span" style=3D"white-space: pre;">	</span>gfp_t =
-gfp_mask =3D GFP_KERNEL | __GFP_RETRY_MAYFAIL;<br>-<span =
-class=3D"Apple-tab-span" style=3D"white-space: pre;">	</span>unsigned =
-long nr_pages =3D (end - start) &gt;&gt; PAGE_SHIFT;<br>-<span =
-class=3D"Apple-tab-span" style=3D"white-space: pre;">	</span>int nid =3D=
- page_to_nid((struct page *)start);<br>-<span class=3D"Apple-tab-span" =
-style=3D"white-space: pre;">	</span>struct page *page, =
-*next;<br>-<span class=3D"Apple-tab-span" style=3D"white-space: pre;">	=
-</span>int i;<br>+<span class=3D"Apple-tab-span" style=3D"white-space: =
-pre;">	</span>LIST_HEAD(local);<br></blockquote><br style=3D"caret-color:=
- rgb(0, 0, 0); font-family: JetBrainsMonoNL-Regular; font-size: 13px; =
-font-style: normal; font-variant-caps: normal; font-weight: 400; =
-letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; =
-text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; =
--webkit-text-stroke-width: 0px; text-decoration: none;"><span =
-style=3D"caret-color: rgb(0, 0, 0); font-family: =
-JetBrainsMonoNL-Regular; font-size: 13px; font-style: normal; =
-font-variant-caps: normal; font-weight: 400; letter-spacing: normal; =
-orphans: 2; text-align: start; text-indent: 0px; text-transform: none; =
-white-space: normal; widows: 2; word-spacing: 0px; =
--webkit-text-stroke-width: 0px; text-decoration: none; float: none; =
-display: inline !important;">Can we use a better name here please? E.g =
-new_pages?</span><br style=3D"caret-color: rgb(0, 0, 0); font-family: =
-JetBrainsMonoNL-Regular; font-size: 13px; font-style: normal; =
-font-variant-caps: normal; font-weight: 400; letter-spacing: normal; =
-orphans: 2; text-align: start; text-indent: 0px; text-transform: none; =
-white-space: normal; widows: 2; word-spacing: 0px; =
--webkit-text-stroke-width: 0px; text-decoration: =
-none;"></div></blockquote><div><br></div><div>Yeah, make =
-sense.</div><br><blockquote type=3D"cite"><div><br style=3D"caret-color: =
-rgb(0, 0, 0); font-family: JetBrainsMonoNL-Regular; font-size: 13px; =
-font-style: normal; font-variant-caps: normal; font-weight: 400; =
-letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; =
-text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; =
--webkit-text-stroke-width: 0px; text-decoration: none;"><blockquote =
-type=3D"cite" style=3D"font-family: JetBrainsMonoNL-Regular; font-size: =
-13px; font-style: normal; font-variant-caps: normal; font-weight: 400; =
-letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; =
-text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; =
--webkit-text-stroke-width: 0px; text-decoration: none;"><br>-<span =
-class=3D"Apple-tab-span" style=3D"white-space: pre;">	</span>for (i =3D =
-0; i &lt; nr_pages; i++) {<br>-<span class=3D"Apple-tab-span" =
-style=3D"white-space: pre;">	</span><span class=3D"Apple-tab-span" =
-style=3D"white-space: pre;">	</span>page =3D alloc_pages_node(nid, =
-gfp_mask, 0);<br>-<span class=3D"Apple-tab-span" style=3D"white-space: =
-pre;">	</span><span class=3D"Apple-tab-span" style=3D"white-space: =
-pre;">	</span>if (!page)<br>-<span class=3D"Apple-tab-span" =
-style=3D"white-space: pre;">	</span><span class=3D"Apple-tab-span" =
-style=3D"white-space: pre;">	</span><span class=3D"Apple-tab-span" =
-style=3D"white-space: pre;">	</span>goto out;<br>-<span =
-class=3D"Apple-tab-span" style=3D"white-space: pre;">	</span><span =
-class=3D"Apple-tab-span" style=3D"white-space: pre;">	=
-</span>list_add(&amp;page-&gt;lru, list);<br>+<span =
-class=3D"Apple-tab-span" style=3D"white-space: pre;">	</span>for =
-(unsigned int i =3D 0; i &lt; nr_pages; i++) {<br>+<span =
-class=3D"Apple-tab-span" style=3D"white-space: pre;">	</span><span =
-class=3D"Apple-tab-span" style=3D"white-space: pre;">	</span>struct =
-page *page;<br>+<br>+<span class=3D"Apple-tab-span" style=3D"white-space: =
-pre;">	</span><span class=3D"Apple-tab-span" style=3D"white-space: =
-pre;">	</span>page =3D alloc_pages_node(nid, GFP_KERNEL | =
-__GFP_RETRY_MAYFAIL, 0);<br>+<span class=3D"Apple-tab-span" =
-style=3D"white-space: pre;">	</span><span class=3D"Apple-tab-span" =
-style=3D"white-space: pre;">	</span>if (!page) {<br></blockquote><br =
-style=3D"caret-color: rgb(0, 0, 0); font-family: =
-JetBrainsMonoNL-Regular; font-size: 13px; font-style: normal; =
-font-variant-caps: normal; font-weight: 400; letter-spacing: normal; =
-orphans: 2; text-align: start; text-indent: 0px; text-transform: none; =
-white-space: normal; widows: 2; word-spacing: 0px; =
--webkit-text-stroke-width: 0px; text-decoration: none;"><span =
-style=3D"caret-color: rgb(0, 0, 0); font-family: =
-JetBrainsMonoNL-Regular; font-size: 13px; font-style: normal; =
-font-variant-caps: normal; font-weight: 400; letter-spacing: normal; =
-orphans: 2; text-align: start; text-indent: 0px; text-transform: none; =
-white-space: normal; widows: 2; word-spacing: 0px; =
--webkit-text-stroke-width: 0px; text-decoration: none; float: none; =
-display: inline !important;">I think goto err_do_cleanup is cleaner than =
-ad-hok cleanups</span><br style=3D"caret-color: rgb(0, 0, 0); =
-font-family: JetBrainsMonoNL-Regular; font-size: 13px; font-style: =
-normal; font-variant-caps: normal; font-weight: 400; letter-spacing: =
-normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: =
-none; white-space: normal; widows: 2; word-spacing: 0px; =
--webkit-text-stroke-width: 0px; text-decoration: =
-none;"></div></blockquote><div><br></div><div>I=E2=80=99ll use goto =
-style. Either is OK for me.</div><br><blockquote type=3D"cite"><div><br =
-style=3D"caret-color: rgb(0, 0, 0); font-family: =
-JetBrainsMonoNL-Regular; font-size: 13px; font-style: normal; =
-font-variant-caps: normal; font-weight: 400; letter-spacing: normal; =
-orphans: 2; text-align: start; text-indent: 0px; text-transform: none; =
-white-space: normal; widows: 2; word-spacing: 0px; =
--webkit-text-stroke-width: 0px; text-decoration: none;"><blockquote =
-type=3D"cite" style=3D"font-family: JetBrainsMonoNL-Regular; font-size: =
-13px; font-style: normal; font-variant-caps: normal; font-weight: 400; =
-letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; =
-text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; =
--webkit-text-stroke-width: 0px; text-decoration: none;">+<span =
-class=3D"Apple-tab-span" style=3D"white-space: pre;">	</span><span =
-class=3D"Apple-tab-span" style=3D"white-space: pre;">	</span><span =
-class=3D"Apple-tab-span" style=3D"white-space: pre;">	=
-</span>memmap_pages_add(i);<br></blockquote><br style=3D"caret-color: =
-rgb(0, 0, 0); font-family: JetBrainsMonoNL-Regular; font-size: 13px; =
-font-style: normal; font-variant-caps: normal; font-weight: 400; =
-letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; =
-text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; =
--webkit-text-stroke-width: 0px; text-decoration: none;"><span =
-style=3D"caret-color: rgb(0, 0, 0); font-family: =
-JetBrainsMonoNL-Regular; font-size: 13px; font-style: normal; =
-font-variant-caps: normal; font-weight: 400; letter-spacing: normal; =
-orphans: 2; text-align: start; text-indent: 0px; text-transform: none; =
-white-space: normal; widows: 2; word-spacing: 0px; =
--webkit-text-stroke-width: 0px; text-decoration: none; float: none; =
-display: inline !important;">This is confusing. Updating counters only =
-to use</span><br style=3D"caret-color: rgb(0, 0, 0); font-family: =
-JetBrainsMonoNL-Regular; font-size: 13px; font-style: normal; =
-font-variant-caps: normal; font-weight: 400; letter-spacing: normal; =
-orphans: 2; text-align: start; text-indent: 0px; text-transform: none; =
-white-space: normal; widows: 2; word-spacing: 0px; =
--webkit-text-stroke-width: 0px; text-decoration: none;"><span =
-style=3D"caret-color: rgb(0, 0, 0); font-family: =
-JetBrainsMonoNL-Regular; font-size: 13px; font-style: normal; =
-font-variant-caps: normal; font-weight: 400; letter-spacing: normal; =
-orphans: 2; text-align: start; text-indent: 0px; text-transform: none; =
-white-space: normal; widows: 2; word-spacing: 0px; =
--webkit-text-stroke-width: 0px; text-decoration: none; float: none; =
-display: inline !important;">free_vmemmap_page_list() seems worse choice =
-than walking the list and</span><br style=3D"caret-color: rgb(0, 0, 0); =
-font-family: JetBrainsMonoNL-Regular; font-size: 13px; font-style: =
-normal; font-variant-caps: normal; font-weight: 400; letter-spacing: =
-normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: =
-none; white-space: normal; widows: 2; word-spacing: 0px; =
--webkit-text-stroke-width: 0px; text-decoration: none;"><span =
-style=3D"caret-color: rgb(0, 0, 0); font-family: =
-JetBrainsMonoNL-Regular; font-size: 13px; font-style: normal; =
-font-variant-caps: normal; font-weight: 400; letter-spacing: normal; =
-orphans: 2; text-align: start; text-indent: 0px; text-transform: none; =
-white-space: normal; widows: 2; word-spacing: 0px; =
--webkit-text-stroke-width: 0px; text-decoration: none; float: none; =
-display: inline !important;">__free_page().</span><br =
-style=3D"caret-color: rgb(0, 0, 0); font-family: =
-JetBrainsMonoNL-Regular; font-size: 13px; font-style: normal; =
-font-variant-caps: normal; font-weight: 400; letter-spacing: normal; =
-orphans: 2; text-align: start; text-indent: 0px; text-transform: none; =
-white-space: normal; widows: 2; word-spacing: 0px; =
--webkit-text-stroke-width: 0px; text-decoration: =
-none;"></div></blockquote><div><br></div><div>I think the memmap =
-accounting should be done right after each =
-successful</div><div>allocation =E2=80=94 that way, using =
-free_vmemmap_page_list() becomes more natural</div><div>and =
-simple.</div><div><br></div><div>Somthing =
-like:</div><div><br></div><div><div>diff --git a/mm/hugetlb_vmemmap.c =
-b/mm/hugetlb_vmemmap.c</div><div>index c04f53f708d2..cab9ec14873d =
-100644</div><div>--- a/mm/hugetlb_vmemmap.c</div><div>+++ =
-b/mm/hugetlb_vmemmap.c</div><div>@@ -207,14 +207,13 @@ static int =
-alloc_vmemmap_page_list(struct list_head *head, unsigned int =
-nr_pages</div><div>&nbsp;</div><div>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; =
-&nbsp; &nbsp; &nbsp; page =3D alloc_pages_node(nid, GFP_KERNEL | =
-__GFP_RETRY_MAYFAIL, 0);</div><div>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; =
-&nbsp; &nbsp; &nbsp; if (!page) {</div><div>- &nbsp; &nbsp; &nbsp; =
-&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; =
-memmap_pages_add(i);</div><div>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; =
-&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; =
-free_vmemmap_page_list(&amp;local);</div><div>&nbsp; &nbsp; &nbsp; =
-&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; return =
--ENOMEM;</div><div>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; =
-&nbsp; }</div><div>+ &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; =
-memmap_pages_add(1);</div><div>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; =
-&nbsp; &nbsp; list_add(&amp;page-&gt;lru, &amp;local);</div><div>&nbsp; =
-&nbsp; &nbsp; &nbsp; }</div><div>&nbsp; &nbsp; &nbsp; &nbsp; =
-list_splice(&amp;local, head);</div><div>- &nbsp; &nbsp; &nbsp; =
-memmap_pages_add(nr_pages);</div><div>&nbsp;</div><div>&nbsp; &nbsp; =
-&nbsp; &nbsp; return =
-0;</div><div>&nbsp;}</div><div><br></div><div>Thanks for your review, =
-Mike.</div><div><br></div><div>Muchun</div><div><br></div><div><br></div><=
-/div><blockquote type=3D"cite"><div><br style=3D"caret-color: rgb(0, 0, =
-0); font-family: JetBrainsMonoNL-Regular; font-size: 13px; font-style: =
-normal; font-variant-caps: normal; font-weight: 400; letter-spacing: =
-normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: =
-none; white-space: normal; widows: 2; word-spacing: 0px; =
--webkit-text-stroke-width: 0px; text-decoration: none;"><span =
-style=3D"caret-color: rgb(0, 0, 0); font-family: =
-JetBrainsMonoNL-Regular; font-size: 13px; font-style: normal; =
-font-variant-caps: normal; font-weight: 400; letter-spacing: normal; =
-orphans: 2; text-align: start; text-indent: 0px; text-transform: none; =
-white-space: normal; widows: 2; word-spacing: 0px; =
--webkit-text-stroke-width: 0px; text-decoration: none; float: none; =
-display: inline !important;">--<span =
-class=3D"Apple-converted-space">&nbsp;</span></span><br =
-style=3D"caret-color: rgb(0, 0, 0); font-family: =
-JetBrainsMonoNL-Regular; font-size: 13px; font-style: normal; =
-font-variant-caps: normal; font-weight: 400; letter-spacing: normal; =
-orphans: 2; text-align: start; text-indent: 0px; text-transform: none; =
-white-space: normal; widows: 2; word-spacing: 0px; =
--webkit-text-stroke-width: 0px; text-decoration: none;"><span =
-style=3D"caret-color: rgb(0, 0, 0); font-family: =
-JetBrainsMonoNL-Regular; font-size: 13px; font-style: normal; =
-font-variant-caps: normal; font-weight: 400; letter-spacing: normal; =
-orphans: 2; text-align: start; text-indent: 0px; text-transform: none; =
-white-space: normal; widows: 2; word-spacing: 0px; =
--webkit-text-stroke-width: 0px; text-decoration: none; float: none; =
-display: inline !important;">Sincerely yours,</span><br =
-style=3D"caret-color: rgb(0, 0, 0); font-family: =
-JetBrainsMonoNL-Regular; font-size: 13px; font-style: normal; =
-font-variant-caps: normal; font-weight: 400; letter-spacing: normal; =
-orphans: 2; text-align: start; text-indent: 0px; text-transform: none; =
-white-space: normal; widows: 2; word-spacing: 0px; =
--webkit-text-stroke-width: 0px; text-decoration: none;"><span =
-style=3D"caret-color: rgb(0, 0, 0); font-family: =
-JetBrainsMonoNL-Regular; font-size: 13px; font-style: normal; =
-font-variant-caps: normal; font-weight: 400; letter-spacing: normal; =
-orphans: 2; text-align: start; text-indent: 0px; text-transform: none; =
-white-space: normal; widows: 2; word-spacing: 0px; =
--webkit-text-stroke-width: 0px; text-decoration: none; float: none; =
-display: inline =
-!important;">Mike.</span></div></blockquote></div><br></div></body></html>=
+As discussed, the simpler alternative would be to just disallow large folios in
+shadow stacks entirely for now, given that vm_mmap_shadow_stack() already
+disables large folios explicitly.
 
---Apple-Mail=_DC0F39B8-148E-4EDD-86B5-1A6F95887C3B--
+diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+index 4b71d010b2aff..9a2dc90ef9690 100644
+--- a/mm/khugepaged.c
++++ b/mm/khugepaged.c
+@@ -367,6 +367,9 @@ int hugepage_madvise(struct vm_area_struct *vma,
+ {
+        switch (advice) {
+        case MADV_HUGEPAGE:
++               /* PTE batching doesn't work reliably. */
++               if (vma_test_single_mask(vma, VMA_SHADOW_STACK))
++                       break;
+                *vm_flags &= ~VM_NOHUGEPAGE;
+                *vm_flags |= VM_HUGEPAGE;
+                break;
+
+-- 
+Cheers,
+
+David
 
