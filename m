@@ -1,72 +1,72 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E19C060A260B
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 11:22:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50F7860A261F
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 11:22:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=YdZ50qos
+	dkim=pass (1024-bit key, unprotected) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=NGzAi2YU
 Received: by kanga.kvack.org (Postfix)
-	id 042956B05BF; Mon,  2 Nov 2026 06:22:30 -0500 (EST)
+	id 7E3926B05C1; Mon,  2 Nov 2026 06:22:36 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F349C6B05C0; Mon,  2 Nov 2026 06:22:29 -0500 (EST)
+	id 7941C6B05C2; Mon,  2 Nov 2026 06:22:36 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DFC936B05C1; Mon,  2 Nov 2026 06:22:29 -0500 (EST)
+	id 635146B05C3; Mon,  2 Nov 2026 06:22:36 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id BFBA46B05BF
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 06:22:29 -0500 (EST)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 68FE01A0CC1
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 11:22:29 +0000 (UTC)
-X-FDA: 85389940818.23.E28B0A4
+	by kanga.kvack.org (Postfix) with ESMTP id 3EC0A6B05C1
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 06:22:36 -0500 (EST)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id CC06B40C6A
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 11:22:35 +0000 (UTC)
+X-FDA: 85389941070.04.4BAC092
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 7C116C0003
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 11:22:27 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=YdZ50qos;
+	by imf16.hostedemail.com (Postfix) with ESMTP id F2486180009
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 11:22:33 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=NGzAi2YU;
 	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf10.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com
+	spf=pass (imf16.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793618547;
+	s=arc-20220608; t=1793618554;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8hJ1iPHVTbYTDAq/C1HnaYE5+XA4A6mgYVB8Pyb4aLM=;
-	b=wkdOTUjnH+kHSYiSd6GBdrPoYHqwVv/1pp/O6yguX+nw1IPSxzbJayBACMdPgNYxSrRE6k
-	K2VtdgWXhQP3dSlIoEd2xnaCnOH8ybmMeXs+1P8IkeZV2CX2J5c4TxhHvDnBHQjL+vZFIh
-	xmT1ioCm1Y+c0wEn3zlip3argwRl4gk=
+	bh=HLNvHrR0Fpj6ftr47GYXDwUrEMv6CUTbezLhLSAnnFs=;
+	b=1jwfZMDTXQIo9fLoJAtZizf/F+xozFtNBToqFqfx5Qcs4w8D2R3/I1loGn/lnmeHnYDgqb
+	4j9/2KGjmLBZGtGtQPSLgtkQ4Muo/ZFXOvCy1SD74Lcfn1EGnZkLRUu0JQZIqbh2J7sjAK
+	jf41X/zFq/trGMrCVE+MatvQBAIGUSA=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=YdZ50qos;
+	imf16.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=NGzAi2YU;
 	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf10.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com
+	spf=pass (imf16.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793618547;
-	b=dSh13CujTExAOQ3+DpGgdODBCm6GGvi3j7tLYKwG8ThCIhgwh91Pi3yOACPq53sGfRL8A4
-	349TkU4OOH94M2az5wWjSOvsjWtl8/YglZACg2bQk7jr4GKZuGy3MhhtBwHF9xAirXbJac
-	+GOn4xX53kLJDtg/HTbmboFmo1wdxAY=
+	t=1793618554;
+	b=vta5W2bpIGYfQIoLbLmgMGK73DmjdMj6u0xhbjAW9Gu3BPclJAFv/TktpZgEOnpl5HBXXV
+	iEgC97UADKoSskPoTbjwx0hk8MHOfSrNMpWxnWhd2HDkxoJbFpJgHvwTv5zAYjTuxKKCIY
+	6aa+RwOon0mrxojfTllThKrlt9QnJi8=
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 9987E1691;
-	Mon,  2 Nov 2026 03:22:23 -0800 (PST)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 092802A68;
+	Mon,  2 Nov 2026 03:22:30 -0800 (PST)
 Received: from e129823.arm.com (e129823.arm.com [10.2.213.3])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 7612A3F632;
-	Mon,  2 Nov 2026 03:22:20 -0800 (PST)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 00DBA3F632;
+	Mon,  2 Nov 2026 03:22:26 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1793618546; bh=/Ssd4kAdbyYc2WVWtdpRP5Vxi5IuwO7Iv1puKU0SNto=;
+	t=1793618553; bh=QYmfwdLe215hLGuFdCj5safJ8gxdq3zlW1ht1LiurFo=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=YdZ50qos+A3w9ZaM+D9UJ7oLQBvwyhsBU/ruoPIHunkF9HB8/GvUZPOFwIhq0hj+b
-	 XMmZmMiyF5M+zRGKttEOthHofyTIfdOb6kRAKiJfrH27FTrj7aQ3tXK4ZJ1L2PFzo+
-	 h5y+NPPSkIndHx1iv7x0/IC7DPBuyoL72xdV5wCE=
+	b=NGzAi2YUuhqkVXhnAdJL2xqwg1sWWuNnmUOJc6WYMvcZsOaHYodWzzAQDylogAHGF
+	 sAlnvTGEoaWaY/k2K8WvP84MmxrLyH3UL6M62DxDMZKwAFnAf1wnmUlSt9sVt9I0mu
+	 Q2N9zAaDmNiAxl2O123nlIpmLVp78QCa6wl12pEo=
 From: Yeoreum Yun <yeoreum.yun@arm.com>
-Date: Mon, 02 Nov 2026 11:21:21 +0000
-Subject: [PATCH RESEND v2 08/21] mm: vmscan: remove stack copy address of
- pud/pmd pass in walk_pud/pmd_range()
+Date: Mon, 02 Nov 2026 11:21:22 +0000
+Subject: [PATCH RESEND v2 09/21] loongarch: kvm: remove stack copy address
+ of pXd in pXd_offset()
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261102-dummy_ptxp3-v2-8-78840b2ec73c@arm.com>
+Message-Id: <20261102-dummy_ptxp3-v2-9-78840b2ec73c@arm.com>
 References: <20261102-dummy_ptxp3-v2-0-78840b2ec73c@arm.com>
 In-Reply-To: <20261102-dummy_ptxp3-v2-0-78840b2ec73c@arm.com>
 To: Russell King <linux@armlinux.org.uk>, 
@@ -97,34 +97,33 @@ Cc: linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
  loongarch@lists.linux.dev, linux-mips@vger.kernel.org, 
  linux-arch@vger.kernel.org, linux-mm@kvack.org, kvm@vger.kernel.org, 
  kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org, 
- linux-openrisc@vger.kernel.org, Muhammad Usama Anjum <usama.anjum@arm.com>, 
- Yeoreum Yun <yeoreum.yun@arm.com>
+ linux-openrisc@vger.kernel.org, Yeoreum Yun <yeoreum.yun@arm.com>
 X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1374; i=yeoreum.yun@arm.com;
- h=from:subject:message-id; bh=/Ssd4kAdbyYc2WVWtdpRP5Vxi5IuwO7Iv1puKU0SNto=;
- b=owEB7QES/pANAwAKAW3Vw9FaxTEzAcsmYgBq6HIyfn2gL02dSTH4U1Digx7JtPpPj8Bgyn8x9
- UoFtdHycjSJAbMEAAEKAB0WIQQtg+CS3QUzuFh1pJ1t1cPRWsUxMwUCauhyMgAKCRBt1cPRWsUx
- Mz/2C/42LrIml4kwQBW+YjAT4YcNn/U4Nb8+hQWZ9x0kXwPAdxvb9J43k+UVxO9ahHOIk6g6HIT
- XtZL/MTOK7/jgTNkxXqFVeYK8VyzWEiqpibgZjNpiX9XLh6Z8cmnp8G47IUvXkJP0wA+Hmakv3A
- 9myK1wyAcp0SHF/i/sVsHm7iyIbMyGfGc6Z5CBiWiTjnDvafMkvBazMphB0j5dU46MUuWd+W7qy
- GwEdURQVvkAFrul/krfqIl8qyLzn4vPYYBCRYUd4SCIlcw5QjS3Qthc6ED7WMnukAn35Yx6W0oL
- oPVAV5N01l94+aU9yml7y7eXDNrR6dgu0Ocio3vbsU2eTqNw/dYDJL0PD+h2rPLcEwUkPmIQlTt
- o0ewlFkj/UUYwiFIUbO3PGph11XhYzVDb++4zdSLnOfSYG/ZBB9EGVS2GVUt55QTEBEc3tRmB+f
- YQCEfFaDjsnzZBrd0gL/KZqDv8WqDSWqrGeR2W82At20bHA5Qs1wSXjJiIn3cDFFKuyPg=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2052; i=yeoreum.yun@arm.com;
+ h=from:subject:message-id; bh=QYmfwdLe215hLGuFdCj5safJ8gxdq3zlW1ht1LiurFo=;
+ b=owEB7QES/pANAwAKAW3Vw9FaxTEzAcsmYgBq6HIzqxNaFzhvjoxpWT/tFvwVycvQLXxje++RP
+ KuCMEyxm3SJAbMEAAEKAB0WIQQtg+CS3QUzuFh1pJ1t1cPRWsUxMwUCauhyMwAKCRBt1cPRWsUx
+ MwUIDACW8rDfN4PXoaycRrecOSJ5P2sV/Skn8cOJ9F/ArQxVMCOkJHu/jozzrN/5ZWRoyfVV6qI
+ hDxzX47bfW4GqsHO5E1uaj6xJ9OnTVdhFE4l/Z+UE2LIN2XI1Bin4FtP4AUH6tjSrIcQmyrNuOY
+ XpIxrn+T3hDCqyoo51zdCIbgMvWpEbTre5IJV1a6Mqp1c9cAMKvBQOnCovyb5XsRcbIXCK8GBUL
+ 2aP3pPNFUvXRH3QTlxhUPhWul1wCFo4bQXDbwm3jT1xU3N3aXNrX3vH+jBPPeM7le+WT+nLhcpw
+ JPwBBCr35AoUF9s0nSKAF8CEAIqpWUI4RFhNipztYZBEkGzzdx93KCdMunXOhPaOscVKbSwRRW1
+ mKOv00ylFBZKNhssbxn6+dLKmk1it/0MZ4POP9C9XuNAa2KUbJdt9fNpzJ29FeV5L8d5guM5A+f
+ InDzrZ916vWbbdE91pO/GFYPPVhW3wBYZ+/6ONFGYaYRLD9E0AY3bJ6iH3q3dxINcdz1c=
 X-Developer-Key: i=yeoreum.yun@arm.com; a=openpgp;
  fpr=2D83E092DD0533B85875A49D6DD5C3D15AC53133
-X-Rspamd-Queue-Id: 7C116C0003
-X-Stat-Signature: d4k635j3f8cf7d538iokx7xzronizs9x
-X-Rspamd-Server: rspam06
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: F2486180009
+X-Stat-Signature: b6sdw3hmu77ofeo4xz6cgw1q5ni5bcct
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-HE-Tag: 1793618547-475654
-X-HE-Meta: U2FsdGVkX1/Qn5uyFrkmJ3zYOpSxLiNKqQ1eV1o7uxHSXJSZZ+1uMNVdnHzJLEgLIrGkHRwACBiUiQxY4NzXjhw5tXrNxmRUG1pF+PkKXSO5HtG/d03pCyxQELDRYGeUtf32qt5LTfCJAAVuU3LsOzf3/6c87FTiCF40gp1SESInabwe4Xg6VVaVFqd8CI5vlOiW960Lg4vgGy3/FJHNexZX7zB6OaDnJ3HU5VACfZGy4lmO5PyPPSCQuu95tdjaDKsw18qS4HtoS2QstHY+KTkQ4YC/S385p0ctjBIQZbq6LjK7P2wHufOPh5PAoFHnRvcoirkA8Tp4bxG9Tvs8S4ovNXIJGQsmIqzCtupLTrieItgy+4lCj2S4GJSJXdjmVOpKXN8PDAeqkh8WSNTaFwSJiV4vQgY4i6IVUNdeTgtRAo1vtSEMYWTUoYzxMAkZ0PkCbA1P6M7QeKG49N+q2/bNhSlaSCAw6F/L7/+Sz2oGQ0Z66G4XMa5ucFYEXA7QDDg0BogdszbO9H3V3KvEBXTdRdMUfJf3Wv4wE9/0wC/Xs2Ne38rZfMAaVu3GDHaIkyHEZcZC2l4G7nc7wchLJBbL8DHpTmA00Me7TtcwOZuydR+VDVDkjwoxH1KLV++W3LbTBgHNlNGo5wc2VFDTQJVwPwDq7fRq/AfdfW4uBt9Hoif4eMJij16KBJbu4Ry5S0lHZ30VbL0uyRvoWxRXYV4hWHJJk9qGHW3EOY65mallMZ9FqRIHsJqp4p90SZMXVJynDDvy0oNv+JPpukGGvlYiW3VJ2NI3bR4jLSMDTrYYf6eNn8BYpoAM5M9SiSVD8K5Uu5NkWlX2bTHAh5Rj5tvs6vx+It6XttexWT8FPPj2TAgSNnLemTh6ws4kdrRLyZYK2sYx8AkMrnrmChh4y1jQDLIuBJzFvCVvMM2ky9WgP9kKjuU/ucV2i2+ZpfJqPm6NNxqN18plJnLBKD9
- CxyY0WGd
- aa18tVJjA+iX0c5adohOQ6OT76iExPEiiygaXWOoxj3mDFPtXzMV7YBSOHOFORmFfMqhFSMDXlQEmvLglmhqQCuIjpOfPIO1bVLFqK0Sv8EPWXqTI4ufdymHiQUHWnI1WL6RflwnZFE6EQORqO/hl/pYqESmoDp8ni2aQSPe7tOGr59pPSON+yUh3vde26D1k7LiOIufS2EISvPrZv0IijF792d8syAG9MJM4jchMs5e5giS/66MGx1bOxtetzOY7v96JJ6ArTw2979wUz/oLCiQ2SkBK5inBvfYSZR8pXr/PGkQ=
+X-HE-Tag: 1793618553-195557
+X-HE-Meta: U2FsdGVkX1+xZY1VgpEzdxQVx4+DaZsiSIjIQZHzdmMMAAkCfD2UUvLUanNo5s+Yond7jSxF6TAHmgsG3C3/WDdiuZitz8ZsVQuMbG71k9tC0CCNfZAo1yZANfO9wStpddGur9q++VpeqKrkSaBgLeuwRg2ZY0PgJaVAJaJOyIdZPn4pU0Wl1lL7w3dEmOC8KmMB5npalJ5fGyyuATJV9dpy2/0ZXLIKeRHyZEnUxPe/39iT43l9KVsblhFTlb8kvVDI89TuW6R5Wi/Piz2P3yWLFg31VQXzeLG7H2zgj/1N5fHjxHHGVKiDUvTJhk1cuwQQ1fbjg6YFcZLGtmLNYgpEPH5VGSiFlVqvMhZE+kvzpIHa/ZstuMU6qFBmOURSrDZ3a1DKPYUNTV1Eqc79WjzWHGyiGR491hSdJQQ57XopUDl4UEd7eXVYH9/cyjHiGLck/DnxiVDKkuHHuDdOQB8VpuXLNHf/tsAcXEWDVEY6k6FueYYsMerXx96j0ia0l0Rxe4MSW0iSuLyMspv81metOkAeXvZkZqkemy/aH6iv3HwpZNi94F3OTC7vzmvh4zRb54byGE7GO7B6gLK4Tcw7g+/Cy7a7qvDiUDbCYULG76jH/eTCx/IUiscaDqKEGNknKlGsaNqRgNaLh2xonW/ruEq8yQIbg6gVfbOAHNHVjtdIiPxC7N3hyieXOZOxADN2UavD7Hpyymb+qVsaTwgjKmvRgEYe8VFUZUbTH9mEZos631jb+S+qANBJbNrTPYsPd5f1rln8P+wTIO+IQKquJ8gHvvL0gEg6t0VADuzG+ac64QDuJMJqdUgKQ/ruzRoMrgz4ocJkEiZkwwEpDgowpv/rP3Dtst+N6GRlRnIq0vflG2qTnSgAC6T3TrjODgmlhl7cf6itbpxRJEjhRcapPuAe/9clPA5bPis3SorBzpgO37o4r0zAM6/X9oCxU7PG1vUUyjEx7FPbHuM
+ NrnouyJG
+ fywWKajZYlMakY7Uj26V/L4NxtCJJ23swyiPwBjaswj0ePjdf7gY4uzd3IvxOHMumC+TeeajEvHIUVeq6jVcgZUidNR8WFv261fkLCGqQaGbTwBo9ZhMIpBAyDDTNwPJmciwEOvGQ+dsnzBOODQgoOM/+j7ydEibbnmpK1DO3POA8XqWIdnFCDb9ObKqiyoCEo+V1qSXKaWQ5otBoxyZXoqCLgG9RC/iUiz2utX2Hz5ueDY55epLm+g8cLG0t5GdM874SW1qgmpKwFFY2OY+fyvo81tIsTnHLnfzSSe3U8NPWj1NIZHpVqJc5bl4ebjdo8mOLegrd3W/dWNA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -134,40 +133,66 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
 The behaviour of pXdp_get() will change with generic compile-time folded
-page tables. To prepare for that, replace passing the address of a stack
-copy of a pud/pmd to walk_pmd/pte_range() with passing the pud/pmd pointer
-directly so that makes allowing folded entries to be ignored and
-check the concurrent access proeprly otherwise pXd_same() would return
-always true.
+page tables. To prepare for that,  rework host_pfn_mapping_level() to avoid
+use of a stack copy of a pXd and pass it as argument to pXd_offset() so that
+the folded entries value is ignored.
 
-Reviewed-by: Muhammad Usama Anjum <usama.anjum@arm.com>
+Replace direct uses of stack-based pXd values with pXd_offset_lockless().
+And there should be no functional change.
+
+Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
 Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
 ---
- mm/vmscan.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/loongarch/kvm/mmu.c | 20 ++++++++++++--------
+ 1 file changed, 12 insertions(+), 8 deletions(-)
 
-diff --git a/mm/vmscan.c b/mm/vmscan.c
-index 9959ca158ce83..6a1af9b92349f 100644
---- a/mm/vmscan.c
-+++ b/mm/vmscan.c
-@@ -3911,7 +3911,7 @@ static void walk_pmd_range(pud_t *pud, unsigned long start, unsigned long end,
+diff --git a/arch/loongarch/kvm/mmu.c b/arch/loongarch/kvm/mmu.c
+index 64fddd9f0ada1..ab0a06b73e8d3 100644
+--- a/arch/loongarch/kvm/mmu.c
++++ b/arch/loongarch/kvm/mmu.c
+@@ -679,10 +679,10 @@ static int host_pfn_mapping_level(struct kvm *kvm, gfn_t gfn,
+ 	int level = 0;
+ 	unsigned long hva;
+ 	unsigned long flags;
+-	pgd_t pgd;
+-	p4d_t p4d;
+-	pud_t pud;
+-	pmd_t pmd;
++	pgd_t *pgdp, pgd;
++	p4d_t *p4dp, p4d;
++	pud_t *pudp, pud;
++	pmd_t *pmdp, pmd;
  
- 		walk->mm_stats[MM_NONLEAF_FOUND]++;
+ 	/*
+ 	 * Note, using the already-retrieved memslot and __gfn_to_hva_memslot()
+@@ -708,19 +708,23 @@ static int host_pfn_mapping_level(struct kvm *kvm, gfn_t gfn,
+ 	 * value) and then p*d_offset() walks into the target huge page instead
+ 	 * of the old page table (sees the new value).
+ 	 */
+-	pgd = pgdp_get(pgd_offset(kvm->mm, hva));
++	pgdp = pgd_offset(kvm->mm, hva);
++	pgd = pgdp_get(pgdp);
+ 	if (pgd_none(pgd))
+ 		goto out;
  
--		if (!walk_pte_range(&val, addr, next, args))
-+		if (!walk_pte_range(pmd + i, addr, next, args))
- 			continue;
+-	p4d = p4dp_get(p4d_offset(&pgd, hva));
++	p4dp = p4d_offset_lockless(pgdp, pgd, hva);
++	p4d = p4dp_get(p4dp);
+ 	if (p4d_none(p4d) || !p4d_present(p4d))
+ 		goto out;
  
- 		walk->mm_stats[MM_NONLEAF_ADDED]++;
-@@ -3947,7 +3947,7 @@ static int walk_pud_range(p4d_t *p4d, unsigned long start, unsigned long end,
- 		if (!pud_present(val) || WARN_ON_ONCE(pud_leaf(val)))
- 			continue;
+-	pud = pudp_get(pud_offset(&p4d, hva));
++	pudp = pud_offset_lockless(p4dp, p4d, hva);
++	pud = pudp_get(pudp);
+ 	if (pud_none(pud) || !pud_present(pud))
+ 		goto out;
  
--		walk_pmd_range(&val, addr, next, args);
-+		walk_pmd_range(pud + i, addr, next, args);
+-	pmd = pmdp_get(pmd_offset(&pud, hva));
++	pmdp = pmd_offset_lockless(pudp, pud, hva);
++	pmd = pmdp_get(pmdp);
+ 	if (pmd_none(pmd) || !pmd_present(pmd))
+ 		goto out;
  
- 		if (need_resched() || walk->batched >= MAX_LRU_BATCH) {
- 			end = (addr | ~PUD_MASK) + 1;
 
 -- 
 2.43.0
