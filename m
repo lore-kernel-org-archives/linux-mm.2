@@ -1,75 +1,75 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19C7A6073644
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 14:50:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07E4360A34F5
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 14:51:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=E+Ez+r/w
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=HAfEog47
 Received: by kanga.kvack.org (Postfix)
-	id 2DA646B05C9; Mon,  2 Nov 2026 09:50:44 -0500 (EST)
+	id 23F396B05CB; Mon,  2 Nov 2026 09:51:04 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 264436B05CA; Mon,  2 Nov 2026 09:50:44 -0500 (EST)
+	id 1EF586B05CC; Mon,  2 Nov 2026 09:51:04 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 12CBA6B05CB; Mon,  2 Nov 2026 09:50:44 -0500 (EST)
+	id 0DF806B05CD; Mon,  2 Nov 2026 09:51:04 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id DD6216B05C9
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 09:50:43 -0500 (EST)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 2CB5540121
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 14:50:43 +0000 (UTC)
-X-FDA: 85390465566.01.5423DBC
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 7242A180005
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 14:50:41 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="E+Ez+r/w";
-	spf=pass (imf16.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id DFDE56B05CB
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 09:51:03 -0500 (EST)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 8EA2A1A012F
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 14:51:03 +0000 (UTC)
+X-FDA: 85390466406.18.09946B3
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf02.hostedemail.com (Postfix) with ESMTP id F3FDC80009
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 14:51:01 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HAfEog47;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf02.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793631041;
+	s=arc-20220608; t=1793631062;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Y5WGF4nYEFlZEICsyJ9kBee66sAEV9dY/9UPORxJKAY=;
-	b=Bb4YADBS6g4gD5debR+m3P8wR2aWBepwbPqOoOoxUTCgFTaR2omr3hYqZ3qar2WC2DGPpm
-	kZJyRzuMjcK2YXc+IRw90clpsX/3bHSn1mhxjP2uYZwYAT0M9ebLfOtT1Nw3EplDnY2hGY
-	atsmZL5MTI/7HDMeO5Uw58PHuL825pU=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793631041;
-	b=UfcuW6gSvNaFsbBKt2xHB8Zqq5wh0FQQ/0uYpHUgdt+s2Rl8EXYH0lJqasGEJXklyxRI8X
-	TAnR5G6V4s8LQWGDB4S8LKMxzoCt/6IqimkDewnTbIX0OSHZQgybCC5ubk2wJ9OYeEE7gy
-	XP970w2FA0sXBcpWnGCpCvBhzCz2DnY=
+	bh=iNga88T+PVpZfmycjurDSPkD9sK5xR0SX7kfbe+Tx54=;
+	b=eKeQBL4yHWnsB2bI9f6ZBrLmNZnDZY/Pmy0pZ9bIRgllNjcDO2oU+TAjDpROfoEmUPn2Cq
+	SAzPC6Aizy0Uq817M0gA0lYOIjOcPQ2ZoMu4ePCv2uLhzXPNFCvYnTk6H0Ll8Xne64ZX43
+	JX+F2+OluLyaOeg0sMsbfMbv7azH8P8=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="E+Ez+r/w";
-	spf=pass (imf16.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HAfEog47;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf02.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793631062;
+	b=JoBsXr7fiCN8sUpmAtkiFtI0PtzCYCoX+TRz2KDiOFIhq+NRGmQXuLeW/rNxZrFjISRUgc
+	6W3ElHiGG1NHn14Z5tQukedrTiCanzNlZcy5JRo7IxErUztrlQXls4fWUEOVYw4yYEZemI
+	oaDvEv4s/QqBxSALlfGzJJSXNSvue3w=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id A76E8401F1;
-	Mon,  2 Nov 2026 14:50:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E72A1F00A1D;
-	Mon,  2 Nov 2026 14:50:25 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 7725E6025A;
+	Mon,  2 Nov 2026 14:51:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F0841F00A20;
+	Mon,  2 Nov 2026 14:50:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793631040;
-	bh=Y5WGF4nYEFlZEICsyJ9kBee66sAEV9dY/9UPORxJKAY=;
+	s=k20260515; t=1793631061;
+	bh=iNga88T+PVpZfmycjurDSPkD9sK5xR0SX7kfbe+Tx54=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=E+Ez+r/wxzU2Gtcf5D8LdDilirwAFUov5C06lfDFwMgTzQVfbxMtt8fKYuGRsMRh4
-	 Ckk9DN/UFiXuxu9YL3fuJE1EWmK9hRCH3J9jOkyAoKEzOflfONYsx3P9+qRLeFxGDS
-	 /40M8mqyFHF8oYbXu1Q4J7JKbzxQEJ1GkgOZm6vz5wKg3rhpJPRpykA8y0NgnKZQ/l
-	 mpendCXxg/qj9vJFA6Ul5z1piuGWhxjd1u4ugCdjQbkV4cRv9KN+exxYsD+XXDuRdm
-	 smu4R2wbuW2Omoi0r7pRXtoIQkEdgbLO333wdPaf0nMrT2B0lmnYWO+uXkuGHKxxCT
-	 tADO5izDMPJ4Q==
+	b=HAfEog47xda8zTdFMvaAY8UduaibQbmV5xxRBJ0191OlQqt2XydHGZFtrSXUNbS58
+	 AFtT00ZqBbfVJ/H/XjgGtIZDGDle82Pa+tLqZ8FQyxzXDykVFW4+gDpHKY+tRzFlIw
+	 YK6e8OsM0kDvZDoN8nl4W7r6Syhu+TVQ07b4x+H0xeJkJuUzcBSQBDtmTErPW6xGGD
+	 OXD3SZC4tYwy0PvCMkPLOtkiB76JNpNZOV81oGLnAyA/hYKEjzUYYgs5lsCvafcDSS
+	 XOjHy+nXg5pWeHaWMYPWeuKt5azway4LiOnI7RzIv1EzsUvbR06rvuDChMCv/TCU6X
+	 LHOWdM7kjMyMQ==
 From: Christian Brauner <brauner@kernel.org>
-Date: Mon, 02 Nov 2026 15:48:45 +0100
-Subject: [PATCH RFC 05/16] proc: let procfs own the seq_file of
- proc_create_seq() and friends
+Date: Mon, 02 Nov 2026 15:48:46 +0100
+Subject: [PATCH RFC 06/16] proc: let procfs own the seq_file of
+ DEFINE_PROC_SHOW_ATTRIBUTE() files
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261102-work-procfs-core-v1-5-75df35e4f8b8@kernel.org>
+Message-Id: <20261102-work-procfs-core-v1-6-75df35e4f8b8@kernel.org>
 References: <20261102-work-procfs-core-v1-0-75df35e4f8b8@kernel.org>
 In-Reply-To: <20261102-work-procfs-core-v1-0-75df35e4f8b8@kernel.org>
 To: linux-fsdevel@vger.kernel.org
@@ -105,19 +105,19 @@ Cc: Linus Torvalds <torvalds@linux-foundation.org>,
  "Christian Brauner (Amutable)" <brauner@kernel.org>, 
  Chuck Lever <cel@kernel.org>
 X-Mailer: b4 0.17-dev
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 7242A180005
-X-Stat-Signature: qaqq9me3158jkukq73qu31dyjs3zx87q
-X-Rspam-User: 
+X-Rspamd-Queue-Id: F3FDC80009
+X-Stat-Signature: 7twdcj5anjtgnfask9x7diqiwmzm6syw
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
 	version=4.0.1
-X-HE-Tag: 1793631041-327038
-X-HE-Meta: U2FsdGVkX1+eJr8K822UNT2h6XTBTa/qnmoI04zgT1Z8JlGaGuGHLf15+N00Y8hFzBLRNFdnoEklMggmf5G9CAHLC0E+V8vQeu9QaaCSXo8DiVyND3fj6XgdfDIGqEico0YjYmRM8uGsVB+ZuuFEKkz5tRNYV9n1br6Sr4dE9cj1t13fBRp0VFd9k0an4uGVAbB2vn0m3BBJIunjPaqIsAz+KaRKvaCsD5WYTyXNMBGKT9x3pUwuvrJCcrzqKtVMu1NY0nNITYImp2rD95Dfw7Yb9l2x413w8A5uY1sCplhFwd/ggKJqv354ZzSQL1Wq+MHzxJuztMd9yr5LPI/iC5ynh19jKQNmjzENUP5wKZQI1w0hIuuJ3HTQrYyi2WgYbHqiiRldNdSIOGIku0Vgs9kQf+g9gKLkUOvQFHqvYSzRhJF9Q6JDEoNQTZRaidFFLijwWbBOBUVU1/ZglZjn7R3SekqZ9O/sd8Sq3fVyARyAYs+kmIMaJEjebmn21Lq+1iSWDd+M9uI/roGiDWz9VUdULP4mgomhK4NbNgqc7dh5yc2vS/VZ4M56szhITEgdbJxMqxa+WFpKePySBxyt3r/MtJzonH/Z6jMjMoL96+53Xmz7wEfLgT1jAwtTlnigpaNq6sqzo2KXcNkuP3q38/rWL79ZXTO6fG4Jiypk45s5eVl3MncR8RrHBogfo5rHcT4Vybv5I1crAjhuMRR2Mb99HQBi7uLcvTRO8c23fv8eayjCYRYGaK21LRhO+Q+TRF74CIgAiFgFXbwKsr1I5Jws6FIHx6XoOVKRX+tAtINLAHeOUMyOCS4jFkzhA6ArTDqhCDORxxDp2BIkalIWtEw0uqjt8xGPerxAJJVkfNXjFQa0q2BpdEUlS8plbk9ODNsNyAl4z2ciaUlAamj9JFsvkL3gjeB/UMZIf82EU4uowaxYaXgcCAAbhT+pHdcdNg5gGun2ngI+2kYll+2
- 8VRe2bIL
- nQWdcrf6/dc9r3uVdUM75YUUgFjuaUR2yoH9jG3KMTDXRzH1fwMOO3qpNBfGTqMQc5kwF+Ga92y/LKchTq8NvyQ8Rz+OxTxCmYPN9Xd6Vj60DZrhf3QltJ6H7LnjD9TgwB+yw/hBBV2Tmsd5YlNnS4dgQkPAGlm1/xjHpPO+oea2zayXhUqyJ+VMRTyDIP+qYkfUX0yOU1KRPLSfMfzixM8Qr428R+H/Ns2mkKFTYh20ttiHanBe4xTbyos8qRf5/uyBjGwXGWGFszk7peYqNWCIUMGE9WYK5PK1Wx0S6f4mxN33thEKsprMpVlkMKTjY0GQtGD+LDc7kDK0=
+X-Rspam-User: 
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1793631061-804145
+X-HE-Meta: U2FsdGVkX1/OaNjnU8Ip8cLCk/DZ3yyM15K7sc54ep3DsU6fvyGAm2KfTBOy+bbec9pWIsZAPCcUOhqr38s/SwU1MNkF8XNjyZvDnRu0IvsEQzFK9od3NpeoG67cLHUR4sKxfRApeSQl7tPQKlsqT0fJd97mFeX69GgEccCL6PG3JzlUw0XVuHwXHriRJM1fwCzMfDIoNTC5XQyk5HBrblTeIiW1IKQRzpzTUDIzSzKdUWZz3S1ZNpDp016jkC6Ircixn83FaQ5kDUwA5bFSwd5zO7IVqnInT1cNuIhBpnTT9zgDAoFjGlbKo0YJrXLT6UJoSefmNP/cZUsNZ0Gk4qBpo4uCjPAjGra0KD7IpOV6yOcT/gOd/OQHjpQxb/NFGEcridlTsBNUNbokdayECfFZ3Evhvww3qLnZxFw4XJw/LbiWMojAYzKKSQLblmOiNCsxTGXjLPNs1AKiHUBmNN4rvajzYl8Oj4T9bX67zjuFkADOwUgHAHT+jOrfl3+BnWk+kOdjNJ1GVqDNi68HlHCVsSVlA0E87yqKGcgvQW+Qhb9iGf12+Bw6ho2Z/ZKVfv55RWDObmLLxrKNdArpZatYIQLCxgc7wJnwxaejdtTNp/epEBow9OB3xKJIqtIUbLprR4+e37WD1tAavkYdD9wy/k+BobQJhUzSjB3dzXJo5PJ833BgoDVzAaj+/vqHFHR6k6gEMXowOxvOoMvIx06B8Zq6WFheZBdNdla5esJcZtC7mpm6N5+bw+3KSvIqMrcgPJ4qChd6tVC+Qg5U/pONM60o7J9MCZlTuyu+bU7+2Qr01JzxxwZ8/rJjQ6nxw43EmFPLI+dEFiebT8bUr0P/0e8LyjpQlyalnFxvQ7l/nj2t3XU1ajFpTa1rSdJeqTx1SzvQfB9QttJASOjHBuIFnFwvyVBOxH6bxZUIY5LlYnoYWliFyQv0WFUu7FpCcXPPO0ebLYDbGGqTrvB
+ MNN7V+gC
+ ZChCeX+EdGw6COR01WP95aJxurppmIsZpIOp0XXD52XcjhdkvEMJ07Ycxc5yaamZB8TpBFIqixu0bEqlP38xkWXeNul/orRAD96qbZGsquSI54ToR7lx2ntYeGG5oi+Hbl6Nrynz5jYIBkTlH0CcouyFT/4DT+Ph+f2oK24E+xoQCZpSJ/8ojukuf/SX+RI7FPvg0bgdz1S9qe2wapCtHvmbDCmk8fAoTp4DMLaVg0MYZQ0CfQBtD41EDaGA8+jZ9CBCEORczFDBRCX0U1D9pSRxfGOVQL8HvWMuomw7ryIXc5qnxoRqXDibwIrHj/OeiN+C2ybTZzlXXbUA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -126,222 +126,35 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-proc_create_seq_private(), proc_create_single_data() and their network
-namespace variants keep the seq_operations or the show function in the
-entry already. Let procfs own the seq_file for all of them. For the
-network namespace variants ->proc_open() and ->proc_release() keep
-taking and dropping the reference to the network namespace.
+Declare the show function and let procfs open the seq_file.
 
-That's most of /proc/net, among them the files of xt_hashlimit and
-/proc/net/dev_snmp6/<dev>. A reader that faults on its buffer no longer
-holds up their removal.
-
-Reported-by: Chris Mason <mason@kernel.org>
-Fixes: 786d7e1612f0 ("Fix rmmod/read/write races in /proc entries")
 Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 ---
- fs/proc/generic.c  | 42 ++++--------------------------------------
- fs/proc/proc_net.c | 40 +++++++++++++---------------------------
- 2 files changed, 17 insertions(+), 65 deletions(-)
+ include/linux/seq_file.h | 10 +---------
+ 1 file changed, 1 insertion(+), 9 deletions(-)
 
-diff --git a/fs/proc/generic.c b/fs/proc/generic.c
-index eff5c38e2219..6ed8bc313db0 100644
---- a/fs/proc/generic.c
-+++ b/fs/proc/generic.c
-@@ -694,30 +694,9 @@ struct proc_dir_entry *proc_create(const char *name, umode_t mode,
- }
- EXPORT_SYMBOL(proc_create);
- 
--static int proc_seq_open(struct inode *inode, struct file *file)
--{
--	struct proc_dir_entry *de = PDE(inode);
--
--	if (de->state_size)
--		return seq_open_private(file, de->seq_ops, de->state_size);
--	return seq_open(file, de->seq_ops);
--}
--
--static int proc_seq_release(struct inode *inode, struct file *file)
--{
--	struct proc_dir_entry *de = PDE(inode);
--
--	if (de->state_size)
--		return seq_release_private(inode, file);
--	return seq_release(inode, file);
--}
--
-+/* procfs owns the seq_file of these, see pde_seq_ops */
- static const struct proc_ops proc_seq_ops = {
- 	/* not permanent -- can call into arbitrary seq_operations */
--	.proc_open	= proc_seq_open,
--	.proc_read_iter	= seq_read_iter,
--	.proc_lseek	= seq_lseek,
--	.proc_release	= proc_seq_release,
- };
- 
- struct proc_dir_entry *proc_create_seq_private(const char *name, umode_t mode,
-@@ -732,25 +711,11 @@ struct proc_dir_entry *proc_create_seq_private(const char *name, umode_t mode,
- 	p->proc_ops = &proc_seq_ops;
- 	p->seq_ops = ops;
- 	p->state_size = state_size;
-+	p->flags |= PROC_ENTRY_proc_seq_ops;
- 	return proc_register(parent, p);
- }
- EXPORT_SYMBOL(proc_create_seq_private);
- 
--static int proc_single_open(struct inode *inode, struct file *file)
--{
--	struct proc_dir_entry *de = PDE(inode);
--
--	return single_open(file, de->single_show, de->data);
--}
--
--static const struct proc_ops proc_single_ops = {
--	/* not permanent -- can call into arbitrary ->single_show */
--	.proc_open	= proc_single_open,
--	.proc_read_iter = seq_read_iter,
--	.proc_lseek	= seq_lseek,
--	.proc_release	= single_release,
--};
--
- struct proc_dir_entry *proc_create_single_data(const char *name, umode_t mode,
- 		struct proc_dir_entry *parent,
- 		int (*show)(struct seq_file *, void *), void *data)
-@@ -760,8 +725,9 @@ struct proc_dir_entry *proc_create_single_data(const char *name, umode_t mode,
- 	p = proc_create_reg(name, mode, &parent, data);
- 	if (!p)
- 		return NULL;
--	p->proc_ops = &proc_single_ops;
-+	p->proc_ops = &proc_seq_ops;
- 	p->single_show = show;
-+	p->flags |= PROC_ENTRY_proc_show;
- 	return proc_register(parent, p);
- }
- EXPORT_SYMBOL(proc_create_single_data);
-diff --git a/fs/proc/proc_net.c b/fs/proc/proc_net.c
-index df5484813d5d..fa485581d05e 100644
---- a/fs/proc/proc_net.c
-+++ b/fs/proc/proc_net.c
-@@ -37,13 +37,13 @@ static struct net *get_proc_net(const struct inode *inode)
- 	return maybe_get_net(PDE_NET(PDE(inode)));
+diff --git a/include/linux/seq_file.h b/include/linux/seq_file.h
+index dc0e8c62d9e0..b813b7e63d89 100644
+--- a/include/linux/seq_file.h
++++ b/include/linux/seq_file.h
+@@ -233,16 +233,8 @@ static const struct file_operations __name ## _fops = {			\
  }
  
-+/* procfs opened the seq_file and allocated its state, see pde_seq_ops */
- static int seq_open_net(struct inode *inode, struct file *file)
- {
--	unsigned int state_size = PDE(inode)->state_size;
--	struct seq_net_private *p;
-+	struct seq_net_private *p = ((struct seq_file *)file->private_data)->private;
- 	struct net *net;
- 
--	WARN_ON_ONCE(state_size < sizeof(*p));
-+	WARN_ON_ONCE(PDE(inode)->state_size < sizeof(*p));
- 
- 	if (file->f_mode & FMODE_WRITE && !PDE(inode)->write)
- 		return -EACCES;
-@@ -51,12 +51,6 @@ static int seq_open_net(struct inode *inode, struct file *file)
- 	net = get_proc_net(inode);
- 	if (!net)
- 		return -ENXIO;
--
--	p = __seq_open_private(file, PDE(inode)->seq_ops, state_size);
--	if (!p) {
--		put_net(net);
--		return -ENOMEM;
--	}
- #ifdef CONFIG_NET_NS
- 	p->net = net;
- 	netns_tracker_alloc(net, &p->ns_tracker, GFP_KERNEL);
-@@ -77,18 +71,13 @@ static void seq_file_net_put_net(struct seq_file *seq)
- 
- static int seq_release_net(struct inode *ino, struct file *f)
- {
--	struct seq_file *seq = f->private_data;
--
--	seq_file_net_put_net(seq);
--	seq_release_private(ino, f);
-+	seq_file_net_put_net(f->private_data);
- 	return 0;
+ #define DEFINE_PROC_SHOW_ATTRIBUTE(__name)				\
+-static int __name ## _open(struct inode *inode, struct file *file)	\
+-{									\
+-	return single_open(file, __name ## _show, pde_data(inode));	\
+-}									\
+-									\
+ static const struct proc_ops __name ## _proc_ops = {			\
+-	.proc_open	= __name ## _open,				\
+-	.proc_read	= seq_read,					\
+-	.proc_lseek	= seq_lseek,					\
+-	.proc_release	= single_release,				\
++	.proc_show	= __name ## _show,				\
  }
  
- static const struct proc_ops proc_net_seq_ops = {
- 	.proc_open	= seq_open_net,
--	.proc_read	= seq_read,
- 	.proc_write	= proc_simple_write,
--	.proc_lseek	= seq_lseek,
- 	.proc_release	= seq_release_net,
- };
- 
-@@ -125,6 +114,7 @@ struct proc_dir_entry *proc_create_net_data(const char *name, umode_t mode,
- 	p->proc_ops = &proc_net_seq_ops;
- 	p->seq_ops = ops;
- 	p->state_size = state_size;
-+	p->flags |= PROC_ENTRY_proc_seq_ops;
- 	return proc_register(parent, p);
- }
- EXPORT_SYMBOL_GPL(proc_create_net_data);
-@@ -170,6 +160,7 @@ struct proc_dir_entry *proc_create_net_data_write(const char *name, umode_t mode
- 	p->proc_ops = &proc_net_seq_ops;
- 	p->seq_ops = ops;
- 	p->state_size = state_size;
-+	p->flags |= PROC_ENTRY_proc_seq_ops;
- 	p->write = write;
- 	return proc_register(parent, p);
- }
-@@ -177,32 +168,25 @@ EXPORT_SYMBOL_GPL(proc_create_net_data_write);
- 
- static int single_open_net(struct inode *inode, struct file *file)
- {
--	struct proc_dir_entry *de = PDE(inode);
--	struct net *net;
--	int err;
-+	struct net *net = get_proc_net(inode);
- 
--	net = get_proc_net(inode);
- 	if (!net)
- 		return -ENXIO;
--
--	err = single_open(file, de->single_show, net);
--	if (err)
--		put_net(net);
--	return err;
-+	((struct seq_file *)file->private_data)->private = net;
-+	return 0;
- }
- 
- static int single_release_net(struct inode *ino, struct file *f)
- {
- 	struct seq_file *seq = f->private_data;
-+
- 	put_net(seq->private);
--	return single_release(ino, f);
-+	return 0;
- }
- 
- static const struct proc_ops proc_net_single_ops = {
- 	.proc_open	= single_open_net,
--	.proc_read	= seq_read,
- 	.proc_write	= proc_simple_write,
--	.proc_lseek	= seq_lseek,
- 	.proc_release	= single_release_net,
- };
- 
-@@ -218,6 +202,7 @@ struct proc_dir_entry *proc_create_net_single(const char *name, umode_t mode,
- 	pde_force_lookup(p);
- 	p->proc_ops = &proc_net_single_ops;
- 	p->single_show = show;
-+	p->flags |= PROC_ENTRY_proc_show;
- 	return proc_register(parent, p);
- }
- EXPORT_SYMBOL_GPL(proc_create_net_single);
-@@ -261,6 +246,7 @@ struct proc_dir_entry *proc_create_net_single_write(const char *name, umode_t mo
- 	pde_force_lookup(p);
- 	p->proc_ops = &proc_net_single_ops;
- 	p->single_show = show;
-+	p->flags |= PROC_ENTRY_proc_show;
- 	p->write = write;
- 	return proc_register(parent, p);
- }
+ static inline struct user_namespace *seq_user_ns(struct seq_file *seq)
 
 -- 
 2.53.0
