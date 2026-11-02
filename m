@@ -1,146 +1,133 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDA99607B456
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 16:57:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D5C960A8C3E
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 16:58:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=cmpxchg.org header.i=@cmpxchg.org header.a=rsa-sha256 header.s=google header.b=sECKCBUK
+	dkim=pass (2048-bit key, unprotected) header.d=cmpxchg.org header.i=@cmpxchg.org header.a=rsa-sha256 header.s=google header.b=QuxLbK/Z
 Received: by kanga.kvack.org (Postfix)
-	id 80C4D6B05B2; Mon,  2 Nov 2026 11:57:27 -0500 (EST)
+	id A32BC6B00EF; Mon,  2 Nov 2026 11:58:32 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 796526B05B3; Mon,  2 Nov 2026 11:57:27 -0500 (EST)
+	id 9E04B6B05B4; Mon,  2 Nov 2026 11:58:32 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6372B6B05B4; Mon,  2 Nov 2026 11:57:27 -0500 (EST)
+	id 8D8446B05B5; Mon,  2 Nov 2026 11:58:32 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 3391A6B05B2
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 11:57:27 -0500 (EST)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 69C2BA0135
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 16:57:26 +0000 (UTC)
-X-FDA: 85390784892.02.1297887
-Received: from mail-yw1-f178.google.com (mail-yw1-f178.google.com [209.85.128.178])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 4D8E31C000B
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 16:57:24 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b=sECKCBUK;
-	dmarc=pass (policy=none) header.from=cmpxchg.org;
-	spf=pass (imf21.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.128.178 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 5DA6A6B00EF
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 11:58:32 -0500 (EST)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id DD4B0C0191
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 16:58:31 +0000 (UTC)
+X-FDA: 85390787622.13.C3DDCAB
+Received: from mail-yw1-f169.google.com (mail-yw1-f169.google.com [209.85.128.169])
+	by imf26.hostedemail.com (Postfix) with ESMTP id CA8BF140008
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 16:58:29 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b="QuxLbK/Z";
+	spf=pass (imf26.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.128.169 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
+	dmarc=pass (policy=none) header.from=cmpxchg.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793638644;
+	s=arc-20220608; t=1793638710;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Od7mWefqtV3mjxyxY9z/4vRU5fSlhS8dN/ywhpTdKVc=;
-	b=3GFLoTulw/WWEKHU1EJX5gRKnDiUOOqoZ0eQd0bR9R5EPAk9MawJajE9B7qz9qlFm7ocCy
-	cY7Jo4CKpsT7kKhzJyKBIjmjk/CD2r5Xmh4Gd5qlgz4hkH8fCPnAgr3Ky+7dwTXrM198er
-	rzJ5wyti/+bJQEvEuqFVyfZrnrNQF6g=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b=sECKCBUK;
-	dmarc=pass (policy=none) header.from=cmpxchg.org;
-	spf=pass (imf21.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.128.178 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org
+	bh=cCxj1N9WBg3v8QOr/cS7tYQ7iVjrM26lFVbbv3e0EmA=;
+	b=KXWytbakn7DR0Q+8mjz/cw9tmWmUkN7K4NsDOtsb+2UH/VawEr3XO5cOguFeI1dHhQeuhP
+	0ynoXYJ0ZHNdgdEiM3p8yVuf9tyHIqsRGtTDP3+NrZOewZ6Rg21Fh+NDVvLSbN5ur8xI1p
+	qs5Rm/Q9yd/DT8ksZoNqgh0DSVe/5+I=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793638644;
-	b=I9rBtFiER10e0/lErLcZiAN3K3gifjrhLeOAGO7NfziszNTA5x/uvVoTWPcbVSvtPrlpDI
-	X3GMxayVxxk1Ri/FrD6uYBjx1+PF5orIlNHJ97CzdrBcUPdBUN3xmvIBkddDT8t0SyJgCf
-	4aFfvbgDhvBvzBoRua5GvD4pPudHXp0=
-Received: by mail-yw1-f178.google.com with SMTP id 00721157ae682-8aea7b7ca0cso27856677b3.2
-        for <linux-mm@kvack.org>; Mon, 02 Nov 2026 08:57:23 -0800 (PST)
+	t=1793638710;
+	b=Fk0DcCH5J/0P3gqI1dd0KZNBywIQhRS5BeX/9iTOAzd2WoleNm6ak9DIpDLPB98Mb7kjlU
+	TK0ecaeE/jFoa0dmNiqdo9adPVTClxxZKMSyiKkOdQih51Sg1L20bTDlZZGTIXfN/kGMEB
+	mf6hGZjgDHOMhPoQk4z3Tj/kyQoLs7I=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b="QuxLbK/Z";
+	spf=pass (imf26.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.128.169 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
+	dmarc=pass (policy=none) header.from=cmpxchg.org
+Received: by mail-yw1-f169.google.com with SMTP id 00721157ae682-8ac4806e210so26719127b3.1
+        for <linux-mm@kvack.org>; Mon, 02 Nov 2026 08:58:29 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cmpxchg.org; s=google; t=1793638643; x=1794243443; darn=kvack.org;
+        d=cmpxchg.org; s=google; t=1793638709; x=1794243509; darn=kvack.org;
         h=in-reply-to:content-transfer-encoding:content-disposition
          :content-type:mime-version:references:message-id:subject:cc:to:from
          :date:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=Od7mWefqtV3mjxyxY9z/4vRU5fSlhS8dN/ywhpTdKVc=;
-        b=sECKCBUKiV6XECJVOZEzEyhnEzkb7ZFcB4PfcofU389u8C+YpnCKrBHsksuATQTtkD
-         /Ncl8nlt5o9zPuhm3Ps40f6BYxhSZU2K4bNw+lkfNOCSSG5DK8k89Tpa1WX7WJHjJXBB
-         AW5xN0M5ZhwyhR+WpIP4Y7QGiX3Ce5ZAgHAKsYNL1f+veefcXcERzpT1jKeRY3a2eT4j
-         Tzu0XKQmt+1VIZwPzW5i2D++pU1fWpy+MJ67t+vLZtcHIqN7OIgOqdVNXjkNhYvkBpCH
-         CNouGxszhFHbXkBJ2O5FIjqZLaLPQkS46HSFwj0K1FBW6dtDn2Vb7Z4MFkp43QhID/zj
-         mRoA==
+        bh=cCxj1N9WBg3v8QOr/cS7tYQ7iVjrM26lFVbbv3e0EmA=;
+        b=QuxLbK/ZN44w+RSiJ+jHp8YuAQedDT9EthLMrbNJztguPpkrr5fjE31pYp8iJell5r
+         jrvhM+bxxOy+rqUvnx4rFZ+WgHDBUOwKdVYnkd2flTVdeTjUDqYZ5GWy6LTAB8Qm2C0A
+         88eCvwJdXLKls019fDP5WtwKWoI9C+7XKyA9s2sBq8fkxIHpFYAx+e1IQRcT3CDIHfR0
+         Llxt0Yr+icuzRGulTEQnLJw0oFcY3Tg9yK/uCGoMySozWPKaoOTtusX2Mbvv9tJkaq2N
+         85XGiU2xhaqJPAb3pgs0heZGd02wLLB0PPTyNHrVhlkH7ktU6FcNFEkCHVUbJFwgJGCW
+         BYZA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793638643; x=1794243443;
+        d=1e100.net; s=20260707; t=1793638709; x=1794243509;
         h=in-reply-to:content-transfer-encoding:content-disposition
          :content-type:mime-version:references:message-id:subject:cc:to:from
          :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to:content-type;
-        bh=Od7mWefqtV3mjxyxY9z/4vRU5fSlhS8dN/ywhpTdKVc=;
-        b=p5vq1KXHGmBbK73cMbvQYUX+x9JFOOaZTO81K89tCq0Lbs3b0KMft+CKTQbACLUL9F
-         9SSfSEqiudiosH+S7tv6K8y9GqzJBxnFcx/LQ3NP+RHhDyMkqCdCoytov+V8ELplm7eU
-         Z3DOYnbbsQXNemeWfkK7B3qkrc8Cf3x0LpHUV6mjPn6fCFBxhQcYiEf+Sbi0Je6zRLCo
-         mGdm+Nf7BZyy4UmLOkNYdW/p5YVkUiejXGCNpmjGHNoyRwluG8VV4pzGmIfhXU0doFKL
-         J6ZPXVUVJIYu6I5DjE8vLSwpWmltScuFaHcyImAFjuKVJXAMUgjuvw3DgDP5e9HoTAdO
-         /5mA==
-X-Forwarded-Encrypted: i=1; AKwUvBwZZytSA59SLgygPJvV8/bSlntbyBbN1KxnzMCKfCUbBfuFDZrNPM3L+D6wXGRHNYwtHBuBPCn6vQ==@kvack.org
-X-Gm-Message-State: APuU4Z9NN1QHcTpbeqCWNHYs/y4yDxNCUkrMgfK0MhgJhosisyuSJjUR
-	Q7Q+b5PIX0I9klkbqanEOzmkZc9ukHlXk5pdPfz92S1VZ0NMos1nOsWHbBoZ4sfBwk0=
-X-Gm-Gg: AYBFou03MwlabzeHDsJvLd2rlLRPiCSwVaCdPlPO6SWAeRRFTSuiCg+tUXEMNdLbhew
-	XbXQAr+X+B2EJbA9LOAonenQ6AYlAVLwbLEood5OaEXesEir5wYEO07BwcOvglRHrfdtbui6dQT
-	fhjoJsQ/o6oWSV9sEvU5GCmb6oR1gHkVIuYApm6F0Nx/cPRNZxCD6MrW8fEPmpo93Orx+22TWsR
-	TOZJiszA+OBAqvM642SWwvKAlganOanFWwqCjckGQj10K4snopQk+MRz9XT1+k4yEw043glW4L0
-	OB15RRd6L0Hny5wU5MN7YFv/atE+NSapzH2fADEDv5JXl+w/U2VK4SV7RnPBcK2yEjzXTPEz6lv
-	9NRiPq91oeS5rgH6BcjJwyfTsU/b4VVqYD3wmk6ywt92EzAu0kabdrgaUgTGmOvB1BhifjzC8Cq
-	2kn9vVRQ6/71JQlFzn9Tge2ocafqlOkca2exnMTPIimEdq5HC4PgRDWusoZjNn/TP2BQYkss4/h
-	fTswmoQCOTBXgI+0L486b5k8T6taWVq7+5OpHQIdrrPA9KO9p46u0CebeChqw3/5cZKsFwVIGR+
-	xVPl+DeDAWLLVxt3WyTO/5jONdBEfW/O2rs5ppKLB+gfSVyG
-X-Received: by 2002:a05:690c:397:b0:8b0:c673:993c with SMTP id 00721157ae682-8b2b66ce40fmr59394677b3.21.1793638643157;
-        Mon, 02 Nov 2026 08:57:23 -0800 (PST)
+        bh=cCxj1N9WBg3v8QOr/cS7tYQ7iVjrM26lFVbbv3e0EmA=;
+        b=DNauE9VdGoOS89nplpxTL4d7lYReHWHyDlPsZsDG5ZHOIJqM0cLkrTzFvvOV/PrFKs
+         JHFTnjVHd2WIG7CrMNiK3UlWDFlMIjl8JH3ziSAgM/RVR0fJOhxEiuRPfbQLuwqkl9VS
+         eAL2ly9apf+2rRib8MEZpmEpP2NRSV5YfOHQLZtRgPVeyuFR45cDrzgkilFv0txYVbI7
+         nZlm0JYtL6sFK0haCUIhcaHu97jfuynvpyJNK9lLkdi+i2Iwp50z1ndvtyyvSSh/HrOc
+         8Eed+E3X75p7PUfhi1BRprEE9IJ7W3sA1yUdWhjWEdqviHfVhc0f7VSKc3w75A7F2VHE
+         eVpQ==
+X-Forwarded-Encrypted: i=1; AKwUvBx9+DdOch3t0lqo4rqc5RqZDNKr7jxyfIL471R016SKFZIBV06KuI2GzAtB9+5/WcoG2HQ0czuVxg==@kvack.org
+X-Gm-Message-State: APuU4Z/I8XKaNyrh6dEGVk15wX6BN9+K+bfX3gZsk0Bcqan2xKQGKZr+
+	5YKCG0smnfAG4E93Lqo8kf0K/9NZVNx8dvPPhZ3zIul8DeESZDpjEhQEA82zt7lV9UA=
+X-Gm-Gg: AYBFou2ygv0iIyk7G3UXVo09p9I7AWEzrm4p8CbFvrXUl8ipPC6CGgmr1W1kNV3Rrx9
+	/OQ3Yzk36NLySndC3xc2x9jc5jzB63RKPY+Cl0GG5GOqM22WfwpgqloVXeumskhLLBaCmEk0t6H
+	axNfxGBgDMHehCcqmvDfRetee0e1OVB6YGkTGTVLRg1KRXWqxRsLUt5jYIjWZhhJtw4VSnzcdXu
+	XDC7gfmRjU0ZVT4YnHE/npnMGhj0OJTRpwgkfwmXqYfSkbN6NulVeLNtZYkXpJSThE/SMVCVO5y
+	J5oDvDrmtCzhmI//2FMkgQr7+sWhukShpreKKzPOVcCE+eiiYIjsXczkjVQ4ZAYuglrPZ+fCHNk
+	X+0tHRSnCoxjPDR1GY2nJuh4z/zD+gq27a/PDy2p1G2ZjDiNGPU4+80v1oFHa65PttvQyDOHeWX
+	ywb+FC/dTVOzX2r6bo66NS6I1G2uM8HuABF6+YuN6pCJNu7IWgo/WgyY2kzmEWagyTdlUWEWNk0
+	9h8iBrZTeQfb5XzM+kJj30xRm70kHJ/6AqLV+USFgsBk4vWtSmtbWgCZehYkXf7/AVOEGMT8cgF
+	Zgy4LO/1jykY9g8pQmRIyxpSAXys
+X-Received: by 2002:a05:690c:6d81:b0:8b2:e0c3:1f4d with SMTP id 00721157ae682-8b2e0c31f7fmr27946947b3.37.1793638708798;
+        Mon, 02 Nov 2026 08:58:28 -0800 (PST)
 Received: from localhost ([2605:8600:200:14e3:365a:60ff:fe62:ff29])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-8b2b719b19bsm56552457b3.38.2026.11.02.08.57.21
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-8b2b7194217sm56780477b3.35.2026.11.02.08.58.26
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 02 Nov 2026 08:57:21 -0800 (PST)
-Date: Mon, 2 Nov 2026 11:57:17 -0500
+        Mon, 02 Nov 2026 08:58:27 -0800 (PST)
+Date: Mon, 2 Nov 2026 11:58:26 -0500
 From: Johannes Weiner <hannes@cmpxchg.org>
-To: Kairui Song <ryncsn@gmail.com>
-Cc: Christoph Hellwig <hch@lst.de>,
-	Kairui Song via B4 Relay <devnull+kasong.tencent.com@kernel.org>,
-	linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
-	Chris Li <chrisl@kernel.org>,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>,
-	Barry Song <baohua@kernel.org>,
-	Youngjun Park <youngjun.park@lge.com>,
-	Yosry Ahmed <yosry@kernel.org>,
+To: Yosry Ahmed <yosry@kernel.org>
+Cc: Kaitao Cheng <kaitao.cheng@linux.dev>,
+	Dave Chinner <david@fromorbit.com>, Qi Zheng <qi.zheng@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Nhat Pham <nphamcs@gmail.com>,
 	Chengming Zhou <chengming.zhou@linux.dev>,
-	Usama Arif <usamaarif642@gmail.com>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, Chuanhua Han <hanchuanhua@oppo.com>,
-	Mani Tofigh <mt4022@columbia.edu>, linux-kernel@vger.kernel.org,
-	Josef Bacik <josef@toxicpanda.com>
-Subject: Re: [PATCH 2/3] mm/swap: account synchronous swap reads as memory
- stall
-Message-ID: <aujA7X0IPvtRTmFG@cmpxchg.org>
-References: <20261030-swap-fixes-v1-0-73f73a59f2fc@tencent.com>
- <20261030-swap-fixes-v1-2-73f73a59f2fc@tencent.com>
- <auOz00OGB_8dgniC@cmpxchg.org>
- <CAMgjq7BYgXLheXDyc=p2mNgxdP3+92v2WHGiXiweDrsiYQ0u2g@mail.gmail.com>
- <auSWtJzFQ7KdElKL@cmpxchg.org>
- <CAMgjq7AJ0uajpVM+Kva5=_EXtmaawYR8TJQ6RdhrP7+NUZDx=w@mail.gmail.com>
+	Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, Kaitao Cheng <chengkaitao@kylinos.cn>
+Subject: Re: [PATCH] mm/zswap: fix double decrement of the LRU node count on
+ writeback
+Message-ID: <aujBMrk-nFaVtPsB@cmpxchg.org>
+References: <20261028113619.38752-1-kaitao.cheng@linux.dev>
+ <CAO9r8zP15iW3ECW2Bs0rfyZrifeisDunLa6qJC43M1RcE16wWQ@mail.gmail.com>
+ <auJkvb-Lq0M5Enkz@cmpxchg.org>
+ <2bd4f0df-80c7-4d32-ab50-1225681ff6be@linux.dev>
+ <CAO9r8zPuDtn1S0g8rDnXNfSdZ6uuH1geXALDN5-X_SZpM_W+wg@mail.gmail.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAMgjq7AJ0uajpVM+Kva5=_EXtmaawYR8TJQ6RdhrP7+NUZDx=w@mail.gmail.com>
+In-Reply-To: <CAO9r8zPuDtn1S0g8rDnXNfSdZ6uuH1geXALDN5-X_SZpM_W+wg@mail.gmail.com>
+X-Stat-Signature: mrgxra7r81zwzz79rp9yw93w1njg1jas
+X-Rspamd-Queue-Id: CA8BF140008
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 4D8E31C000B
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+X-Rspamd-Server: rspam08
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: k1r691jygdkm9o8wzgxwuwpwwnu3qwiw
-X-HE-Tag: 1793638644-262378
-X-HE-Meta: U2FsdGVkX19Y9u9gZtHfREg9L2tqNqE/N4bt547SlRXiZrs1Eprmhdg0cZClJd2HS5CpfsROyOcNBfcFkAfmgPU0IA/lA1w3FGlNdWJaFx6An0umHDfjNc5jM2KuLqgJOcLyiYsmvPzEH81yr/8qUJWLd4mQX2OWRoKqzS5KBc1WkkXd2Hd05D04LFyhgK2IuxPvZtNXpeTnEo2YTTPEeqf4Ysg6FrOQrUHhTZUWaV/2aUJ3AT4rNRN+sw5RW9wmDqtChLJqEUa5dAWTe4quA2JVbsP2FAEXhhdeBxvdjQMm4iSo1ZjKVFREu8pWJdVQKNUvCGHAr6Bod96lU7OA4y2WvcRHA8oc6T3yQpietfcgZQq5D/T0Y4eUMOzAs131YclVpKDmZB80imSnKiPicLWHsHoyKeAAPTeKUuVNthKGLUQlfsxjMl/H7pUbApbXwTN4z0vURKeGcRD6it10x/9/GK/JjKhADKYFSSY/jjjdS9ukp3E7kTim0PC50KE+Ds41edN2Lh4ou7a8K//YbAWw0wYhSd4+6Cjmgq+HG/x8LxXenDX7CmZw4IkN2TJoafwaeURW0zzQ2VgiD+mGvO4PBayX0CXgOFjzwRVtyvI4HbjjYcSfzySpaSyTr9l0MxgAs1i6n5faUvylMv8BpRIAwfWQ3j+h1CW9rKPq5XREFr9tXrwpWwPT/OOzov9agaRCNsvDUi1fnjPyxsTkdODdn2FnjU9fmcCBjRqZiWWNuzv2wwlKvtQ81zySK0NKDkrAP584LmQSsSm89QMYTXKUa6gPTFmwUuZfUc5WoiaMerX9v+Gs8OCvthSDHqSWWTvxTAfw99U9nuaeuoeV4WoLmmLR3f0hNFMvgpPLxx2wWxAqD/gRA429aEZ0nnWftVSM8Odyvc68yU66ykHheABeRkY4X7cNaYPXzeZyki8vf7r92tUKrD57OmHjOyYdMkWPECkqw2eQAgrh5YW
- Vt15fvZ2
- sq4GHzhgeXX5VoFYQ77NDGibJUzDxXqY1L3VSsubK2dCsP+6ASWGt1v2V8p+rcAypziUT5KFJFVlNJ/X9KR4YzWeeVRbMz2v//A3f5EvXWaAlv64rMYfJ1r4RNEBYk/0A8biIUVv1gvrQ0fAO4iHpSb16Ar/iif8ufpEAW+i5V+iAw2H7rIs8cfSLtZzqVpq2rO6tvJREP2CD7eFL1ex0zS8uTOyPDm3uIN/yudHFRL2stRWzDy5v55W61cSLzqhyM3jHf9pNE1ZveINKSZ70uq2kjVoXvcgDu7lxur/phndDyCO/XjDUzx84Hvf5f6Jz9eC9nftuBzuOcHBebTz+XDMVVe3bdXkaTkmCN4ORisBijg8Y59y0FqLzsg3iRMPK/jOJzMUL8M8s6URHl9Xs0wrbRzxvEvL5AvVqMZEIR6FE2LjdCPsi6X/KaTRrG73ItF/XH5z4RnOaPJ7WxVFuxV1AQL076fOysabR3zIf233A2DPEsgLpJh0XrLAnocbWXLmUEsbNdX+2nilbL1qqVxHH1IbRRkIgaEAtZBXrAZ59JCjiv1LwNH1Dpwec39QPbFfyJskuZy3ELEWJjmClhEStulvQlTOgWhSnwHkpvZJ15aVtGzfiMPtFmHRXSpozuzJEzoJHdi+3oVTqMVZBh8cQy6x3G3dCMrLm3fHkQsruqJm7xz6xvxShpO0vD/pEwtq8
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1793638709-737032
+X-HE-Meta: U2FsdGVkX1+4M/rycIJQB9tRRthWyR6IA1rxTZdQwFc7wHQQUm3cyqa0ViP7//N57q4choaN/cd+Cy6dFuZV4TQRpG3jxNEc/gtJvMgs/utLYRvW6xuOiyx4Uu3qNX10QGus5DOwn8nDMjJ7soThBarn/6uISCmuCZrNp0Modtf1izKpLzRiTUb8rlKqNYS/hqy49NmRwK3VBQ6uBdJS8v8luZwUFo7gDthA2bModUOmOUJekKcyNIFQZEtWAmwLG34/hSF/LxqcKsmJcP5WMY7TP7FFr0BATXcsyidopTXshAW8vxSGqCR6K2MW1l1FgTdbrtLq/gZeNjPrqxCPNJ+Gp0ES4O1TMJbVt7ZN+5Yn/A6zMppB43OrE5w5WMygn84qXcM+z+tVDi+U1T6FSQhBVH49HOszhT9JIXkXhA0UOwQai9VuC3AGuaBn9Y3R4gcuEXbAuMUUSyARQ7f5QKW67cI2MmP3OIDOTNbQKToPbpTaPkbFiYKKIFH0RpziiGvwBd2rLgT2ym4uptpqXOzdvSkJalgkJB2qreYjdMNqNfLn/1fU1vp1MULwQvZWthivpdt4RWJPjF2MJEoq5OHjLSEl+p+jqYmRxpcpCDhGn1Iao06yX9OIPkPSZbwEwxWjxfiQwcxz/YIJtnbhBbeavnECCkLmVuub265alPrL9lxguCUq0nKw7b4NMHAG8rU/afy/EqZ4JCjlldSWBrmvJucB2Lq9pLsH1ZjojFx7q2aYSbSNTF4T4gR5ozqCgpoLEFSoMAp3GLvcj74+4YXofHxMKBl//SKHMqjVlT7B+qjJxn/mBs3ql4juIq7Llb1YpwePa01WUa9xgVqq8ksgpJ9brXdia8yznWXORJWvZYrMxT3u/W1zDJWTUeqs4NrM7WraR89zoy5qFbYbVQSZ4kTpe+4t61Up/am2L11PyUnzUhDOwA1CqVZ27FLjFqqEp4twSR0D1tOSdzT
+ 4giRN+w8
+ UB2uzeV3O0yZR/S6ZV5pG1HBu89vhEdH9C4q/1N2rgUmexaKEoTLKopWby+kDsXquswYa5rn9BaDTV2fwRKLetqfC/YCt7FhUCpAsL/5H5PLmlpEPwwGX0Z8Da58A8vKc7PG+9RPhR4CB8feOcWlU8BUKenwWRmPkI2DRIAc8S9tulIfkof4E07rpljFP2NjfwFx7JsUi2QinLtKHUXDuoMO/gQPqydoXPQzU5X0/odSNiTgTEB/ol6LAnbAdmcuckE0Z9OawpPm4dS9+be8N7pbYP6YH+otzLl4Dne67bcaYEt3iFtPjTDAmNnHtTqv6VQLqd/iRvO9yUZKTz4hJNG9En92jG2jl9N/Ju+5Yh2Iq1R0CLcuG8KgxVo+LXioR/nypeFwXg71977FmmlonuyFulFala1aSWBLkgTCFwovBkqGmR2gkhIAvCA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -149,123 +136,63 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Sat, Oct 31, 2026 at 04:00:22AM +0800, Kairui Song wrote:
-> On Fri, Oct 30, 2026 at 9:08 PM Johannes Weiner <hannes@cmpxchg.org> wrote:
+On Thu, Oct 29, 2026 at 08:10:54AM -0700, Yosry Ahmed wrote:
+> On Wed, Oct 28, 2026 at 9:23 PM Kaitao Cheng <kaitao.cheng@linux.dev> wrote:
 > >
-> > On Fri, Oct 30, 2026 at 07:16:51PM +0800, Kairui Song wrote:
-> > > On Fri, Oct 30, 2026 at 5:00 AM Johannes Weiner <hannes@cmpxchg.org> wrote:
-> > > >
-> > > > On Fri, Oct 30, 2026 at 02:31:42AM +0800, Kairui Song via B4 Relay wrote:
-> > > > > From: Josef Bacik <josef@toxicpanda.com>
-> > > > >
-> > > > > Swap-ins from SWP_SYNCHRONOUS_IO devices such as zram are no longer
-> > > > > counted in PSI memory pressure or in the swapin and thrashing delays of
-> > > > > delay accounting.  Refaults of the workingset from zram, the main input
-> > > > > to userspace OOM handlers like lmkd and systemd-oomd on zram systems,
-> > > > > become invisible in /proc/pressure/memory.
-> > > > >
-> > > > > swap_read_folio() opens the accounting window with
-> > > > > psi_memstall_enter() and delayacct_swapin_start() and, per its comment,
-> > > > > means to count the submission time.  For synchronous devices the
-> > > > > submission is the entire read: swap_bdev_submit_read() does
-> > > > > submit_bio_wait() and completes the folio.  Since reads are batched in
-> > > > > a swap_iocb, swap_read_folio() only queues the folio with
-> > > > > swap_add_folio(), and the bio is submitted later by swap_read_submit()
-> > > > > in the caller, e.g. swapin_sync(), after the window has been closed.
-> > > > > By then the folio is uptodate and unlocked, so the fault does not wait
-> > > > > on the folio lock either and the read time is not counted anywhere.
-> > > > >
-> > > > > Found by code inspection; not reproduced.
-> > > > >
-> > > > > Fix by submitting synchronous reads from within swap_read_folio(), as
-> > > > > was done before the batching, rather than from the caller.  This gives
-> > > > > up batching of readahead for synchronous devices, which do their I/O
-> > > > > inline anyway, in exchange for keeping the accounting simple and in one
-> > > > > place.
-> > > > >
-> > > > > Fixes: dda8fb68b590 ("mm/swap: also use struct swap_iocb for block I/O")
-> > > > > Assisted-by: LLM
-> > > > > Signed-off-by: Josef Bacik <josef@toxicpanda.com>
-> > > > > Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
-> > > > > Signed-off-by: Kairui Song <kasong@tencent.com>
-> > > >
-> > > > Hm, this isn't a complete fix to the problem described. IO throttling
-> > > > happens at submission time, so there can be significant delays on
-> > > > async devices too that are no longer tracked since the culprit change.
+> >
+> >
+> > 在 2026/10/29 05:10, Johannes Weiner 写道:
+> > > On Wed, Oct 28, 2026 at 12:22:43PM -0700, Yosry Ahmed wrote:
+> > >> On Wed, Oct 28, 2026 at 4:36 AM Kaitao Cheng <kaitao.cheng@linux.dev> wrote:
+> > >>>
+> > >>> From: Kaitao Cheng <chengkaitao@kylinos.cn>
+> > >>>
+> > >>> Successful writeback calls zswap_entry_free(), which removes the entry
+> > >>> from the LRU and decrements both the sublist and node item counts.
+> > >>> shrink_memcg_cb() then returns LRU_REMOVED_RETRY, causing the LRU walker
+> > >>> to decrement the node count again.
+> > >>
+> > >> I wonder if we have a valid use case for adding LRU_REMOVED_COUNTED or
+> > >> LRU_DELETED instead to simply avoid the decrement.
 > > >
-> > > Yeah you are right! Thanks for the heads up, not only a sync isssue
-> > > indeed, async devices are affected too :(, throttled swap fault also
-> > > went unaccounted.
+> > > It bugs me that it's the walker, not the callback, that adjusts the
+> > > count. That composes poorly with the normal list manipulation API.
 > > >
-> > > > How about keeping the accounting window open across the batch? Opens
-> > > > on first read, closes on submission. A batch with at least one
-> > > > workingset folio is "contaminated" and the whole sequence and
-> > > > submission becomes a stall. Would need to pull the !can_merge flush
-> > > > out of the batch-add function to get the accounting window right but
-> > > > that seems reasonable.
+> > > How about pushing the accounting into the isolation callback, which
+> > > can then simply use __list_lru_del()?
 > > >
-> > > Won't this cause an amplified PSI reading if only one folio in a batch
-> > > is workingset? Maybe not a big issue though.
+> > > The tradeoff is that more things need to be passed into the isolation
+> > > callback, but that seems reasonable. It does make the change noisy,
+> > > however, and we might want something like Kaitao's change as a
+> > > backportable fix first regardless.
 > >
-> > Hm, I think the only option to avoid this would be to split the batch
-> > and flush more frequently, which I'm not sure is worth it. The batch
-> > size is only 32 folios...
+> > I tried three approaches.
 > >
-> > diff --git a/mm/page_io.c b/mm/page_io.c
-> > index 22e5ac1d298f..806cfe633a95 100644
-> > --- a/mm/page_io.c
-> > +++ b/mm/page_io.c
-> > @@ -207,6 +207,8 @@ static bool swap_can_merge(struct swap_io_ctx *ctx, struct folio *folio,
+> > The first was "pushing the accounting into the isolation callback", as
+> > Johannes Weiner suggested. However, as Johannes's example below also shows,
+> > this would require extensive changes across multiple subsystems. I doubted
+> > that such a broad change would be accepted, so I dropped this approach.
 > >
-> >         if (ctx->sis != sis)
-> >                 return false;
-> > +       if (rw == READ && ctx->workingset != folio_test_workingset(folio))
-> > +               return false;
-> >         return sis->ops->can_merge(folio, prev_folio, prev_folio_size, rw);
-> >  }
+> > The second was to add a new flag to enum lru_status, as Yosry Ahmed suggested,
+> > to handle cases like zswap where the callback has already decremented the
+> > count. However, the incorrect lru->node[nid].nr_items value in zswap is only
+> > an accounting issue: I could not find any code that reads this counter for
+> > zswap. Changing a generic interface to fix an accounting error with no
+> > apparent functional impact did not seem worthwhile.
+> >
+> > The third approach is the one implemented in this patch. It keeps the changes
+> > within zswap and fixes the accounting issue, so I think it is appropriate.
 > 
-> We are in a dilemma with this change: if it fires frequently it breaks
-> batching but improves PSI accuracy.  If it doesn't fire frequently, it
-> has no negative effect on batching and performance, and it isn't helping
-> with PSI accuracy either :/
+> I honestly think it's a problem with the list_lru API, as Johannes
+> said, walkers compose poorly with the API. So I prefer we either take
+> Johannes's suggestion or add LRU_DELETED, unless there's strong
+> objection to both ideas.
 > 
-> But after a second thought, maybe we can live with it by having both this
-> posted patch merged as it is and appending your suggested fix: the two
-> kinds of devices end up differently.
-> 
-> For sync devices the batch is now always one folio, so there is nothing
-> fancy, everything is accurate.  Readahead batching for them only happens
-> on the MADV and swapoff walks, so the cost is limited.
-> 
-> For async, the window covers submission.  That cost grows only mildly
-> with the folios in the bio, block layer and dispatch work, unlike a
-> synchronous read.  And the previous per folio accounting was not
-> exact either: in a single threaded task, the throttle or cost of
-> a non-workingset readahead folio pays is also holding up the workingset
-> folio's refault, since the task cannot start the next submission until
-> that one returns.  Same story for delayacct.
+> FWIW, we don't need a minimal fix for backports, I don't think this
+> needs to be backported at all. As Kaitao said, I don't think the wrong
+> list_lru count is being used anywhere for zswap.
 
-That sounds reasonable to me. Zero benefit to batching on these
-devices, so no point in taking the fuzz factor that comes with it.
+Good point.
 
-> And we are missing the completion wait either way: if a fault finds the
-> folio in the swap cache with its read still in flight, it blocks in
-> folio_lock_or_retry() in do_swap_page(), which no window covers.
-
-It's there, if you drill down to folio_wait_bit_common():
-
-	if (bit_nr == PG_locked &&
-	    !folio_test_uptodate(folio) && folio_test_workingset(folio)) {
-		delayacct_thrashing_start(&in_thrashing);
-		psi_memstall_enter(&pflags);
-		thrashing = true;
-	}
-
-> So perhaps we can live with it for now by having your suggested fix
-> on top of this posted patch? Some comments could be helpful here and
-> maybe some further improvement is needed.
-
-Yes, I think that plan works.
-
-Want me to send a proper patch with changelog on top of Josef's?
+Ok I will send a proper patch and we can discuss it from there.
 
