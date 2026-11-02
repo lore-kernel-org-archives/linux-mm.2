@@ -1,74 +1,74 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53F1A606D80A
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 14:52:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64C666078258
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 14:53:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=gkL6dVH3
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=YC9ApXUw
 Received: by kanga.kvack.org (Postfix)
-	id 6AF286B05D1; Mon,  2 Nov 2026 09:52:35 -0500 (EST)
+	id 8AC1C6B05CF; Mon,  2 Nov 2026 09:53:00 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 65F3B6B05D2; Mon,  2 Nov 2026 09:52:35 -0500 (EST)
+	id 85BD76B05D2; Mon,  2 Nov 2026 09:53:00 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 54EAF6B05D3; Mon,  2 Nov 2026 09:52:35 -0500 (EST)
+	id 74B606B05D3; Mon,  2 Nov 2026 09:53:00 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 26DB56B05D1
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 09:52:35 -0500 (EST)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id BB65D40121
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 14:52:34 +0000 (UTC)
-X-FDA: 85390470228.15.E596B5D
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf29.hostedemail.com (Postfix) with ESMTP id F0F3612000C
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 14:52:32 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gkL6dVH3;
-	spf=pass (imf29.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793631153;
-	b=gOFvEZOO3LfvIuIFhZ5XuwkH9UcmlIARCtqIXmQ0f/BQjh3i9UMeHW3v0ShV09ANflca7D
-	cMRsSmmv+Jo+uR878Ymm55ArU7QUfIwKkKza+SbbKQ7femIf3Lh14eM9pFugSt369ka/Kn
-	BG8swLOjN1O2vhau4KJsNdo7TtMemcY=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gkL6dVH3;
-	spf=pass (imf29.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 4E3986B05CF
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 09:53:00 -0500 (EST)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id C6C7FC013E
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 14:52:59 +0000 (UTC)
+X-FDA: 85390471278.08.230FA93
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 0EF4940005
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 14:52:57 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YC9ApXUw;
+	spf=pass (imf01.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793631153;
+	s=arc-20220608; t=1793631178;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=t7CXhIggcklIY3xO5IiO5lA9eZblBCQpzIpV4iqWwIs=;
-	b=R9XvlHgjGyRlBq5K37V7CXePQTfZuIUMtR5AeEhwXr9rbLJJfnkmfcb1FVdMmuAm/unZyW
-	BPj9MKVDhf1cSGTPzHn6E/yY3oCnMm6JlhCY78FAOnJrajID4SDrseEarenV7Bn16N120i
-	Ok0s+1erz2LfK69Wgijp4tM8Ebxl8Wk=
+	bh=z15Uq40RTWsSdyyx7OaN0bxQRP62XbWMWxAG8tgRqsc=;
+	b=TT6OkZIqXKzmTUh7z6k7SPsRqtVZL1rmzYEGksQpNAGxe5O+fHDuyMKS87EjOXN0DssozD
+	6PKqEDyvXvVt9W7qDnFK8QfQRQAXal5YhvcPYuWYqSPg/qtaj5/W1wNnfZ3rOY2Efhv898
+	y3HiosPqiFmp0xFvUV1KRifzQlbUas4=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YC9ApXUw;
+	spf=pass (imf01.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793631178;
+	b=8DzpGcA5LPNvdmCPNKJKmzNJHXeQHLIeWpsSRhaeZL3YQSTYFyRhxj7SQaW7BXTkmR5+sr
+	baZrhowoiUuTVL1FCDK3I+zDFCqPR4gFgxpmGdshgf91q0MHCDASZw1d2qq//FN2pKIYzc
+	jUBlH64r3MYc7P2QI0FBMdrFbYOSUYQ=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 90F5A60200;
-	Mon,  2 Nov 2026 14:52:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 943F01F00A18;
-	Mon,  2 Nov 2026 14:52:10 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 162C643ACE;
+	Mon,  2 Nov 2026 14:52:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED4BF1F00A17;
+	Mon,  2 Nov 2026 14:52:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793631152;
-	bh=t7CXhIggcklIY3xO5IiO5lA9eZblBCQpzIpV4iqWwIs=;
+	s=k20260515; t=1793631177;
+	bh=z15Uq40RTWsSdyyx7OaN0bxQRP62XbWMWxAG8tgRqsc=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=gkL6dVH3qeZTZTEUa5gJkjb3DNPVL8n5WP7/jOyBtnyh2kByZfYEWHf2I4V1dxI/p
-	 MRJ7Cw4L3gZu5jux1vQS4dO9q+KH6eZstOXSKpu3hAjg1a2jYzTILzigEgrHxnw7a+
-	 i+t8SHRQhy99x5vtc69Wd2RooVfSrGTh0BlmU//CeRIHSUWS8Rx6aYeOu7JZwe1YT/
-	 PvpClFllL3x0bHydSz1hKBiSwFXahsk/lqsUAX5OXvNypfMaPi/I/xtwDZZXht4OD1
-	 TjstHlA2Hp9ENKs7XrHGkLPp/n8NK6zuyN2Fg1CTZaD1iWdK7fJJWkqOfluwSEGTxl
-	 kopkZdZ+WBiqA==
+	b=YC9ApXUwYHXdh7Oe3VkjE39wJ3Qg7gCObz/rTOq48xo1JAMB5WL5rAv5ZOVJS8qqZ
+	 ynnExq4rKiMg+GmAmkH9n8AzdYfTlEHmZ/fOsTnE53ISdXH1WVlbQFy7hO/CdAQSYn
+	 4JbQf/FIJ657tBcgXmsRiDHSQsBBt84kHCnQ3pca44VTjgoKmBvJxiGyOKjK34ikx2
+	 /LNlDgNsznisNZc5MkevQj1M+4bf1MamMBIardSrDk1sWSAOiPvR03vBw4J+ZC6wk0
+	 R7UEuNIvdf3X8fF/lS/cfHuoxA8HStGxldAahOLTER+k7KMNib4+Ih4XKO3zJT65eL
+	 9MJrEIEx2zC9Q==
 From: Christian Brauner <brauner@kernel.org>
-Date: Mon, 02 Nov 2026 15:48:49 +0100
-Subject: [PATCH RFC 09/16] seq_file: add seq_preallocate()
+Date: Mon, 02 Nov 2026 15:48:50 +0100
+Subject: [PATCH RFC 10/16] proc: let procfs own the seq_file of /proc/stat
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261102-work-procfs-core-v1-9-75df35e4f8b8@kernel.org>
+Message-Id: <20261102-work-procfs-core-v1-10-75df35e4f8b8@kernel.org>
 References: <20261102-work-procfs-core-v1-0-75df35e4f8b8@kernel.org>
 In-Reply-To: <20261102-work-procfs-core-v1-0-75df35e4f8b8@kernel.org>
 To: linux-fsdevel@vger.kernel.org
@@ -104,19 +104,19 @@ Cc: Linus Torvalds <torvalds@linux-foundation.org>,
  "Christian Brauner (Amutable)" <brauner@kernel.org>, 
  Chuck Lever <cel@kernel.org>
 X-Mailer: b4 0.17-dev
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 0EF4940005
+X-Stat-Signature: d1ew9a3gixmtmz197e1c8ryhtariqjnf
 X-Rspam-User: 
-X-Rspamd-Queue-Id: F0F3612000C
-X-Stat-Signature: w56uopr64z61y96aasbbcs7kxbgkm1m3
-X-Rspamd-Server: rspam01
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
 	version=4.0.1
-X-HE-Tag: 1793631152-390821
-X-HE-Meta: U2FsdGVkX18gxYM8VvkZZQN5zGFYO9k704+krVxEJKybdrufPBnpry94gbh+DTTCi1VD5M7O21B9RmnxxzdRsbGVh5kuBWhj5Rf4UL8As5gkB6m3bUpP3SvsFjHTb8TffSmhcA6P9RVz8SbxHrACBMyPngueYNKGNx/blxfJ1GfRhopZDLfcN2XPXup4KCn1vOLTKElopNSXtZqzCjGlPw7W8E2ZFeSF9fapAm61r9ipS6GItzDsPCqov00bNwVOOUI+UwJBCb1O5dxLbxFgw29+2v+SeE2l4sOPHProlbzLxcM19OUO4oU3oI0UvbTddshRrbBK/hi4XQAT+5XpNxH/uO2kHXiAR3O/1qwMYFFBjShMvYnhjehoFkp/YYzqpZc++6VoWcI/7ygt53Ab08oDSfYR/TE8lOMfOepHj1uPN6B2EN+hWlmfaSdY3Riqod2RNDaYWGxiJM6MPwCSyxIYSP1ou8x8O7p0/BIIAJBDYrfEaik9hDEWoZqX36PL1WFS+OJfiZgHN5lJb9dac0UR+JipnGGnX6jQ7DKDrObCmdxyKbRHAr/Sg+hRACL0e4gZ9q+cKBvfofiGJcGman5rJux27W5MLcan62fL61uDdhs55KeV6C7zFCHMtOR6b6W8rOsgsU4FUV159dYRMEhs1LRkoLzFr0Zyg1wV4dLFIPZA7NID2ewVWz8EDdmUU1lTXu0yiFVj87lo/Y9/2pOWlmvXIXAe5xc49B6iTsFUpQkShZPEv5/PDL0V1z45e1XEeTyUhhWmaHuLE7rbRXILVLapxcH3aqBxL5cNCOcL/BmEsYSTFNe+9r5ydAmP43lpSVIjgbGvz40a93aLwRHn2RoDJbUyHNEE1A1Es3jcR3ohSt4QslZQZ4X91fHb37+AYVKtx3WLmm6uo+LG5Y7z1WfALbZcywASpcEsfZWmxICLCpddS9JJJpzL6Dgz9WaYMEvl7N4jiTdMZMH
- gxeNfQ/5
- WetpJqkLy/6+aaQhpd3x8Rw7hD6ZjeU1k1iQJwz9pOtdqL2EYRwvg+lgdj5NhabEj2oQ2N04f9JZrNRfEbA3yhdZjf63j1nGtEQKXlUWGpxQTT+apjOqDuebazEFgHmy1d4Yx2Na2Fr5P3T3mT2qiigRhru5T1MtmayFiBVduge5rfZtjzn4TrSpFvfz6yZKUUtOSarhYVMFD9MOTojMKKffjK+ZiUIfaLAF3qXOBIgTV8DV2GhA89qrgMJGsCCE5HCUPkh1VxEnhKk08Iw/Uz1XcKn+H5m57YOkI6TZyYMMS4ZLoaSlpeENvuSg/bQCGac9sfaiEcALNxa4=
+X-HE-Tag: 1793631177-445234
+X-HE-Meta: U2FsdGVkX1/5ijBWGgumKgsCt9u6wDTCq2skU3lo/7QIIrxKDumEgqbIf14oCzl27+mnYAS5Rq4++sFFZWAoJr3lcSMt6zCZmnukhjMNVvDThBRCSuBn1lWy7B+bmfbYKhj4QtzCVk73OaikIGRRrFlE9o5gcvlALg8fz4J792QoDX0ol2pSXcohqfWiObx1A1f5GYuC+Ag6NbeyycSat/z8mxVxG1pVMRoH9YkMqENvATqamJJdj6+iE3dd3A7Min/dbWsAX/jyMgNVRqq8IgeWH44A0p3a3d+SL8QTQ0p3/X7PlXGofGRI2o0rWzm4r0C54LKXWDalxntF+09PxZQGNcpPtHrM/Q6930SEvjeEm2gp4N7shfrjsyzI73KogYtd8C8ja+DmYwroyEvQ6KEBIeC5hJazrB9j1gAZgKK/WDi0r1KfNUtHJZnVZWD+9Qj9QS4az3h7tq+/fUzt99gzO1skAE7LKcs9zechDrJ3Fs2DnDmHoRnQESwTGwQeiZJDdIWb61LBoqW7ScBbH1chvFfrTA4tCBPjcJi6kkkzzk6kX15tcjtgIAwhzpeHG3+YRz9+xRdWIeAyBzZ8NMDP3M9QJ7Jr/dQnwYLjjVt76Ms8aIPm0nLbMRr1rKdbh2PBVnbECKo4dz9VM4WSheBahmjYYKbREnbfFU3L1dsi4NLamGmeW+jexY6uF+tgynwGNs8DN4MytjIkSxwgTLUDdKwmNUpCU1PaTjeh2itYxdulBpXBJX0+vqenLh64tznt9f3mBVHheVRO+gXj9OdG86YKIFTUL5fbzpe+b7lGMg5s+Si5aCbBPZl2DQXs2R6u1lwnoCAzSZeIxDWOaXB2KgDUSA1eb5nPeIzbLVKxGZzodgdWLwyUmU7fxYLj9pF5SmtcBuevOGamhNCzl/tdtZxUcn4HopWCxMw7GhOw+vWVfg/h/VWmDlmoK9orXYqBkssS2chZv1j9bz0
+ wy+6Fj6Q
+ MiXtcS7+E81LdauqAlanvDUtfeGaLOvQeUuhVJgugVHQIH2dwr5BgsjXMapRRM9nWFph8++syfM9/VlC2yzQx4q70iiWfKmY739vxLLMEZ9eMHOjLsssZEPpX5psuYSR//Tc82bopViiU/EC+vNK25R3gbHYeVJs39RFCO8Wkr7Mk/z+Ky7pglIh0SQzAXT4ysOYojyuHAJvye8HctoFlt92Wz3xAlUJt+TRjoi+m5T80lsgKZTSXIs8ijH5YgnvfTtoZWeX47ogQBb7AAti1rx1bSMvqW9bBr7kiTTKym2ce1b1JStLuV5v6FlZO2TPW9cTaIZJdajLqj5c=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -125,85 +125,36 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-single_open_size() allocates the buffer itself because it does the
-single_open() too. A file whose seq_file is opened by somebody else,
-like procfs does now, needs to do that after the fact. Add
-seq_preallocate() for that and use it in single_open_size().
-
-No functional changes.
+Declare the show function and let procfs open and free the seq_file.
+->proc_open() only preallocates the buffer now.
 
 Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 ---
- fs/seq_file.c            | 36 ++++++++++++++++++++++++++++--------
- include/linux/seq_file.h |  1 +
- 2 files changed, 29 insertions(+), 8 deletions(-)
+ fs/proc/stat.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/fs/seq_file.c b/fs/seq_file.c
-index 456c78719fd0..a4644cdda7e6 100644
---- a/fs/seq_file.c
-+++ b/fs/seq_file.c
-@@ -590,21 +590,41 @@ int single_open(struct file *file, int (*show)(struct seq_file *, void *),
- }
- EXPORT_SYMBOL(single_open);
+diff --git a/fs/proc/stat.c b/fs/proc/stat.c
+index 79b42f2bfd00..3bfb79edc0f6 100644
+--- a/fs/proc/stat.c
++++ b/fs/proc/stat.c
+@@ -161,15 +161,13 @@ static int stat_open(struct inode *inode, struct file *file)
  
--int single_open_size(struct file *file, int (*show)(struct seq_file *, void *),
--		void *data, size_t size)
-+/**
-+ *	seq_preallocate -	start out with a buffer of @size
-+ *	@m: the seq_file, before it is first read
-+ *	@size: the size of the buffer
-+ *
-+ *	For files whose records don't fit into a page, so that the first read
-+ *	doesn't have to work its way up to the right buffer size.
-+ */
-+int seq_preallocate(struct seq_file *m, size_t size)
- {
- 	char *buf = seq_buf_alloc(size);
--	int ret;
-+
- 	if (!buf)
- 		return -ENOMEM;
-+	kvfree(m->buf);
-+	m->buf = buf;
-+	m->size = size;
-+	return 0;
-+}
-+EXPORT_SYMBOL(seq_preallocate);
-+
-+int single_open_size(struct file *file, int (*show)(struct seq_file *, void *),
-+		void *data, size_t size)
-+{
-+	int ret;
-+
- 	ret = single_open(file, show, data);
--	if (ret) {
--		kvfree(buf);
-+	if (ret)
- 		return ret;
-+	ret = seq_preallocate(file->private_data, size);
-+	if (ret) {
-+		single_release(file_inode(file), file);
-+		file->private_data = NULL;
- 	}
--	((struct seq_file *)file->private_data)->buf = buf;
--	((struct seq_file *)file->private_data)->size = size;
--	return 0;
-+	return ret;
+ 	/* minimum size to display an interrupt count : 2 bytes */
+ 	size += 2 * irq_get_nr_irqs();
+-	return single_open_size(file, show_stat, NULL, size);
++	return seq_preallocate(file->private_data, size);
  }
- EXPORT_SYMBOL(single_open_size);
  
-diff --git a/include/linux/seq_file.h b/include/linux/seq_file.h
-index b813b7e63d89..834daff48b7d 100644
---- a/include/linux/seq_file.h
-+++ b/include/linux/seq_file.h
-@@ -175,6 +175,7 @@ int seq_path_root(struct seq_file *m, const struct path *path,
- void *single_start(struct seq_file *, loff_t *);
- int single_open(struct file *, int (*)(struct seq_file *, void *), void *);
- int single_open_size(struct file *, int (*)(struct seq_file *, void *), void *, size_t);
-+int seq_preallocate(struct seq_file *m, size_t size);
- int single_release(struct inode *, struct file *);
- void *__seq_open_private(struct file *, const struct seq_operations *, int);
- int seq_open_private(struct file *, const struct seq_operations *, int);
+ static const struct proc_ops stat_proc_ops = {
+ 	.proc_flags	= PROC_ENTRY_PERMANENT,
++	.proc_show	= show_stat,
+ 	.proc_open	= stat_open,
+-	.proc_read_iter	= seq_read_iter,
+-	.proc_lseek	= seq_lseek,
+-	.proc_release	= single_release,
+ };
+ 
+ static int __init proc_stat_init(void)
 
 -- 
 2.53.0
