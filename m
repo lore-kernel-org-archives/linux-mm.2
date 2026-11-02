@@ -1,75 +1,75 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DB82606C3E8
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 14:28:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61DE6606C3F1
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 14:29:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=eTKJcNWG
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ccK9IwZ2
 Received: by kanga.kvack.org (Postfix)
-	id BD9936B05E4; Mon,  2 Nov 2026 09:28:45 -0500 (EST)
+	id 8A6536B05E6; Mon,  2 Nov 2026 09:28:59 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B89AC6B05E5; Mon,  2 Nov 2026 09:28:45 -0500 (EST)
+	id 87DB96B05E7; Mon,  2 Nov 2026 09:28:59 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AC70E6B05E6; Mon,  2 Nov 2026 09:28:45 -0500 (EST)
+	id 76CC96B05E8; Mon,  2 Nov 2026 09:28:59 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 8B9436B05E4
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 09:28:45 -0500 (EST)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 340F5A0136
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 14:28:45 +0000 (UTC)
-X-FDA: 85390410210.15.DE09C29
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 5532D120009
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 14:28:43 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 47CB36B05E6
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 09:28:59 -0500 (EST)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id DF70CA6285
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 14:28:58 +0000 (UTC)
+X-FDA: 85390410756.14.77E13B8
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 2FD89120007
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 14:28:57 +0000 (UTC)
 Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=eTKJcNWG;
-	spf=pass (imf29.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ccK9IwZ2;
+	spf=pass (imf29.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793629723;
-	b=TBxbAsgpsJlNaJEuXrIsGxyV1+10GY+JicJMLn+f+Tj3t7X5tk/uuu7dE1m9W/k/kDypw4
-	OzsJyt23c9gTizqFoqBBMRSZ7r4TMSGG9/WWXzhulHVQGWZ1uwKSfAA5ynm9DpJEsw8CMu
-	5SMlw61OZrZrEWxCb4FEWZ3u0XgV61I=
+	t=1793629737;
+	b=g/sGn5bFdL1Tl23jJsJu/k4fbTFv7kCSE0gqnWGNWyGYHpdGWRHALtZ7oFf2kWVogAi8BH
+	vVDHrRasu5Z8ssSXzlXVp1hUqqotLJZo5w1de6/cLSV2tqbF72fgOdlQ60Qm4gvU+RlQVb
+	NXaWejPO5OVlEL0L4LrZZSG2axBCSf8=
 ARC-Authentication-Results: i=1;
 	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=eTKJcNWG;
-	spf=pass (imf29.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ccK9IwZ2;
+	spf=pass (imf29.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793629723;
+	s=arc-20220608; t=1793629737;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8QCucuYZDNmVJaqyrDFn0TUDlr5eGhlHKy/r+vN8wLA=;
-	b=pKpfWZeKKOoDxyFUh3igvyRjpZ1Fw1iNC3QOOXhLL1whtoLSHJlI803BQ/15qom3U8PZib
-	vXrOz+kZWanwTufuCDoqtApE6O5MvpCttYnQoqwavY87ghN/N12CZ6eGW7s4gGTf7y88L5
-	KQuAzFXVeUPafaDEk/veMkS5LGq/yfI=
+	bh=XiY4DYbDFOQzsur4dsXe00fq74GEf+50WHY2d0xcL1w=;
+	b=kFnUnbFZPF5TkdQk2rYU+wjmJe6nTO4aOCPsmb6stDTLx0yXhnsuXSYjzq3CpCK4C5f0iV
+	nB5VBHW3ljmZqzD4o410AwI2EI7zn46E4/RolMupTQwfTRSlmXsd7HqN7isbgtkYmUy1/q
+	54+Cb5HNoFHGqKKx7OdfyzufeH7u8MA=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 90DC74386B;
+	by tor.source.kernel.org (Postfix) with ESMTP id AF324605ED;
+	Mon,  2 Nov 2026 14:28:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF4581F00A16;
 	Mon,  2 Nov 2026 14:28:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDA321F00A18;
-	Mon,  2 Nov 2026 14:28:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793629722;
-	bh=8QCucuYZDNmVJaqyrDFn0TUDlr5eGhlHKy/r+vN8wLA=;
+	s=k20260515; t=1793629736;
+	bh=XiY4DYbDFOQzsur4dsXe00fq74GEf+50WHY2d0xcL1w=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=eTKJcNWGC9V6irm/9DKKTQuZ13M+/P1en2BQ55yGY+lnmUDRqciw/Rf2PsHx9OoY0
-	 buVb9lCjc5j1j+zVE00+8lE+7EIBrkA/7gY7pAiXO36HsFOR8TPuUiDrZTExwthr5Q
-	 g2ntrsvA0FRDkX0DqkVI2R0zq637sI1kyS8+kikVTIf/hcY+oSRxJ/YR+1Xg+xR/Sp
-	 aqNRXFGzdUJn5XBZWThM4MbuyB2ZEPnFIDc98ztB3FY2A2pzEfLhWTVFohA37ZdeKD
-	 CBtYkQwAlSwOguLYUrqoxdDzbhzJby7zBKRKI64hRz0r7REL/5ePc9HqUQM4L5ULRF
-	 akeGwQAgSlDqQ==
+	b=ccK9IwZ2RL3c7Hy5HZzwdHvXaNaGEP1ChdB7VM84tsCaQ/e8r1nS4+9u7d7e0yAEX
+	 o5/ZDGPl9K4GuclD+kk90STbN5FxtWo+gUSw2mvruWyBftbc9DQWq4rFNfC2tz9RhT
+	 ZK6VIgyDlWShu/QH9u3X2Kw1zgWsfkqIyhYGecDGydGGid39AAHco88m05Wppl8aTe
+	 ccS57hTC3taUO0J/byUbxA0h7x/ybz6vqMXDyE5opv6i4PNG4GiLmyriRl5XKf0pqQ
+	 vVsMOApctetsDaa7KIpt9Pkcr4GpedPJlr79XxSiDLZAUjs4BN9QKFACzOXnnO6P1j
+	 F2Bry1T1wFZTQ==
 From: Christian Brauner <brauner@kernel.org>
-Date: Mon, 02 Nov 2026 15:21:45 +0100
-Subject: [PATCH RFC 30/38] powerpc/pseries/lparcfg: return h_get_ppp()'s
- status as a long
+Date: Mon, 02 Nov 2026 15:21:46 +0100
+Subject: [PATCH RFC 31/38] proc: sysctl: resume readdir after the last name
+ it returned
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261102-work-procfs-bugfixes-v1-30-59422ed3e465@kernel.org>
+Message-Id: <20261102-work-procfs-bugfixes-v1-31-59422ed3e465@kernel.org>
 References: <20261102-work-procfs-bugfixes-v1-0-59422ed3e465@kernel.org>
 In-Reply-To: <20261102-work-procfs-bugfixes-v1-0-59422ed3e465@kernel.org>
 To: linux-fsdevel@vger.kernel.org
@@ -105,27 +105,27 @@ Cc: Linus Torvalds <torvalds@linux-foundation.org>,
  "Christian Brauner (Amutable)" <brauner@kernel.org>, 
  Chuck Lever <cel@kernel.org>, stable@vger.kernel.org
 X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1639; i=brauner@kernel.org;
- h=from:subject:message-id; bh=KaAFx5Z9JEYFTwMkBWfFQWs2ORbRuBTJUi5MCRtyyf4=;
- b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS9mJOTxjOPK/q1b2ZgvpS2omCxgaLdOpGttm2Lmc8Xv
- BU/7jG7o5SFQYyLQVZMkcWh3SRcbjlPxWajTA2YOaxMIEMYuDgFYCJJ7xgZGrU/qMj0nPKcWMLS
- d31xjeSx7XF/+lkE6y6zn7F2uXs3h5Hh2IQtWpWPJy1y5bu073hy0q9fd7PiLBl/7MisOXdm0pI
- kLgA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=6760; i=brauner@kernel.org;
+ h=from:subject:message-id; bh=uVHmiW/kcnqfpMjVEbqExYuffumnSnR0NdR9kllvaCA=;
+ b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS9mJNzU5YpvSPCj1uM2UPakevStcYsHqNsvqO1Art+s
+ 3+bsPxaRykLgxgXg6yYIotDu0m43HKeis1GmRowc1iZQIYwcHEKwETClzEynPA9d/Cr/asOT6nq
+ Cy/j74k9mbZAb9YXNanby29PWFm5lp2R4WHo9q1CpdazUjk8ZXPOOG6pZeyTv+X/rVF0Auu3H/f
+ +MQEA
 X-Developer-Key: i=brauner@kernel.org; a=openpgp;
  fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 5532D120009
-X-Stat-Signature: yw1crw7ogyd7gu5szamqrx4in4u9brdf
+X-Rspamd-Queue-Id: 2FD89120007
+X-Stat-Signature: bfnsqo65mztagncfonndmhzbq5ea8s5m
 X-Rspamd-Server: rspam01
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
 	version=4.0.1
-X-HE-Tag: 1793629723-691226
-X-HE-Meta: U2FsdGVkX19QBEJobfIVbCCun7mynJE/s6a2VKG3sy5GxERb+LOEKp3dNFRVYDZFgK5hbZm2XjDcNatgjzWWMQOaAVN1+ClP3IlSMYGBshyuAeVdXb6+XtDekn8WR5PhcZqF9tj5Ky2Ji8WjqDlwXGEhPwXwxF4qBljgbH+yR8PsDXZfNvBDzru0tszzvph2QLP2iNJe4rjvX1Qxs4h2jlaTkv5ZvlBbVhWbqCqNOFVRz2FKE4fOeT+8iqIHkw7WgsDbnNQCrND+CDVNY+loyklBVjMQsvAl7COgvLucs67iyheVMgqqLabR5NXaGlu/by6ypbka+x1sR2tijOGv5z9MXzQ7pLC2D5kX9V+kkriInHYgda8d1kQ+yNdCI5Rbf3QO4eu+zBGjiV2hNg7a5R5AATmyh8M+eNW22tff8Nlg0sAzlcI8U7qFwe7pxLzvoIwif5ivuMSgk0rEnxaRf0kIQJxFxAABNSw5hx0yFAPOJPPEs0UVfIxeCtfkNQs1tiC20IUimzlMQO+nHd8vlNV2S9uJgukpJOBvEeklcZoFaL9Eh12MhUzizrk7WoEmC1CO+3+6VfKDOOwoIo2J7HQBNLQa9z1Y9nALwITUIJbfB69cLdNugQfOybIM9vtkbUdXSdQJ2eqEHHA92bMuqST3HCIO6pz4erPKSunfhzOVOCvNBstr9cIrtMbpUXoI0tMw+kzfVSeLUjDVtldejM7fAcyhztWvw81R9e5utbaAF2eoAlBHShnXFmq3KYjmi1EW4Jy1ulMYCSctX6OGdQ+bW6bMmQGWLmhOjIrwo77OnqbCBh7C905Lg0Kmy+aivN+fvLIJebj+YfHyNpLFMiqMOTpK3GzIrCpSAbXygCQRvQ5zxkQKvTcc1K//uSnRcHqDUKbOEDXB53cH5culIJlu9Bm0z5MvqSnZ5vnMRDv1oBpy9utiNK9OzsH8Mbw4+2fe3tJgTGc08RgxQeM
- gBSd41oy
- L2NG56ErRjjaphgF6scT/kc5+/d4dPyjbcosx9O15N8rvL0dPxHWy9wB0Ogtrn8ayA7ZBmwUxycz79ot0V42y4nZGGU2hfXzLu7WDTYy4xQVRvn+kvKXcecNHT9aQqjlQ48jayld8EPcGtBQ3mE3r+oRFPlvCS29joHzJO1n4Br10DOUAejxsry3lfNlfInI0lspN1QE22xD3L5+hicTsz7TbEPKuWg92lM26lff8+wYvM9TjNpfLXNG+W1/cZBNN/mRQX4Z9tekYWwtvWx+jHnGCE6pcbpZ4ZooQrctHD794VTeBajcLvd66jeWSNj73ClTCKLwFkd6P8BU=
+X-HE-Tag: 1793629737-671675
+X-HE-Meta: U2FsdGVkX1/bWZsJY/oEkjgcItDrUq5wZkNdI5j3Nb5VcsyxYZrnakp+zmWM6kf7n/UHAiZADtany+RRFtdyFONE6We69udKQH3crZxohIdrsKGm5cOKcFCEAoTUKlns7dYcATR6FVm6GHnlR2bWZLxmntLslGAv8SUQ7FYR+fs3fOT5ziV8HVinL6kDCLlGZkamZlPF5FE45ddfUh2nQZV3sokZUB2wDKvz8N7xXudDalCH6zl8rhcUgFDOy2sC1i+baAWqv7pcxcH8Z7/CT3MW6T7RtKV6ybQCokbwPOd+tX7+PBvepibY0WgxdO8FkvNryrAVBHJW1RPOyhD4AsO/mRpe0zdVpagxe+mKWeoh+AVA4it7V+4q+j0Iq17NaPgdVrucrdcxBGHCMF1W4czkD8vcobRHxPSizgrpdfpxZxKrc3QBD6q/eObNOpUZaRuL51/9matzYj55TUWie3B+qmATtWFOSwPDoB7ILf0oNp83Q5Xhx9T9UCSWXfpv9lro4hzXenPm0wqhuWdr2TahYF5pQS3BXEbyqzMpdtzfky+u/MhC3VZfiGsVvOF19EWALlS9e+C5GquTVq7sP+XUm9AWJ/tS880BiJoonDjn2dTenusctFD5bymP3O9zqk6OPwbjybvApms6ZoX9fTIp6Q8yCtvimUutj7Wzqy89+0OOnP1CYcxzW/+6Y+SOWJhcj2coGA4q1Gc/R97t/+YAquOC22hgMDrJ/OXZEnYHT01jtc2o7HyInN5KNP/avwS9Tl3/eL/cnaLqru8G8HPlMt8zf9AgewYdoPuUOO3xufSuhHfZcVFTMv28Gaqns/5AOc5xX+On/HxV4d+1jL54w55zApHCUWSy17/ljwy74XKXDlEo3X7OhUPI1RThGx9qv7dMZNXKa9VzLeSsf0dlEHrdR+ex2OA/oRBkOGd734ULX19f1gQkLqnZF2TkpcLKFDN0vWUbS52DvfB
+ vRZ4/bJE
+ zJsn8jGaiGcNIk1oFSqMSrBjeXQg8XR2bF4N1X0SPehbhX0Bo+OQ+sJ8f471gE/Iu72/zZajqIID9URO/0Jac2HHQ/6Oc9jtDE6oZ10kMIgOHr881L8aIdGHymG9szCR33Inoz7hu6Z+hgi/OW9TPj8zYeOjGn5GGun7bTrxS9ISqVY3fZZgpNFV+4RHmGglYySFllrDat469iagTF06wl6lbERWn6oEw/x//R6aES+i1GbK0aATftqNmo5dGtX1ilKOko6yOigYd/NzSxHwnU86z0pcc1xPWmeLx
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -134,40 +134,197 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-h_get_ppp() returns the status of the H_GET_PPP hcall as an unsigned
-int. update_ppp() hands it on as its ssize_t result, and
-lparcfg_write() turns the hcall statuses it knows into an errno and
-returns anything else as it is. So when H_GET_PPP fails, say with
-H_PARAMETER (-4), the status comes back as 4294967292 and a write to
-/proc/powerpc/lparcfg reports that many bytes written.
+proc_sys_readdir() counts the entries of a directory and resumes a
+listing at the number getdents64() stopped at. The entries are sorted
+by name, so one that is registered or unregistered in between shifts
+everything behind it by one. Listing /proc/sys/net/ipv4/conf with a
+buffer that holds ".", ".." and "all" and registering a device whose
+name sorts before "all" makes the next call return "all" a second time.
+Unregistering one that sorted before the position makes it skip an
+entry instead. So a listing that takes more than one call shows a name
+twice, or not at all. Even the 64k buffer of ls needs a second call to
+find the end of the directory, so a device that comes up right then
+repeats the last entry.
 
-Return the status as the long it is. lparcfg_write() then treats it
-like the status of H_SET_PPP and an unknown one is at least negative.
-Before commit 11529396ea31 ("powerpc/pseries: Split processor
-entitlement retrieval and gathering to helper routines") a failed
-H_GET_PPP turned into -EIO.
+So remember the name of the last entry a call emitted in the file and
+resume at the first usable entry after it, like kernfs resumes after
+the node it stopped at. The entry itself can't be pinned across calls,
+unregistering waits for that. If the position was moved by a seek in
+between the listing counts from the start like before, seeking to an
+arbitrary position has never been better than that.
 
-Reported-by: Chris Mason <mason@kernel.org>
-Fixes: 11529396ea31 ("powerpc/pseries: Split processor entitlement retrieval and gathering to helper routines")
+That also takes one walk down the tree to resume instead of a walk over
+every entry in front of the position with a round trip through
+sysctl_lock for each of them.
+
+Fixes: 77b14db502cb ("[PATCH] sysctl: reimplement the sysctl proc support")
 Cc: stable@vger.kernel.org
 Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 ---
- arch/powerpc/platforms/pseries/lparcfg.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/proc/proc_sysctl.c | 106 ++++++++++++++++++++++++++++++++++++++++++++++++--
+ 1 file changed, 103 insertions(+), 3 deletions(-)
 
-diff --git a/arch/powerpc/platforms/pseries/lparcfg.c b/arch/powerpc/platforms/pseries/lparcfg.c
-index 3280b7968cab..aa9b5b141434 100644
---- a/arch/powerpc/platforms/pseries/lparcfg.c
-+++ b/arch/powerpc/platforms/pseries/lparcfg.c
-@@ -113,7 +113,7 @@ struct hvcall_ppp_data {
-  *	          XXXXXX - Entitled procs capacity % available to the
-  *			   partitions pool.
-  */
--static unsigned int h_get_ppp(struct hvcall_ppp_data *ppp_data)
-+static long h_get_ppp(struct hvcall_ppp_data *ppp_data)
+diff --git a/fs/proc/proc_sysctl.c b/fs/proc/proc_sysctl.c
+index 6c0859c66563..38b61887b59c 100644
+--- a/fs/proc/proc_sysctl.c
++++ b/fs/proc/proc_sysctl.c
+@@ -417,6 +417,54 @@ static void next_entry(struct ctl_table_header **phead, const struct ctl_table *
+ 	*pentry = entry;
+ }
+ 
++/*
++ * The first usable entry of @dir after @name, or the first one at all for a
++ * NULL @name. The entries are sorted by name, so that is where a listing
++ * resumes when entries in front of it came or went in between. -ENOENT if
++ * the directory is being unregistered.
++ */
++static int entry_after(struct ctl_dir *dir, const char *name, int namelen,
++		       struct ctl_table_header **phead,
++		       const struct ctl_table **pentry)
++{
++	struct ctl_table_header *head = NULL;
++	const struct ctl_table *entry = NULL;
++	struct rb_node *node, *after = NULL;
++	struct ctl_node *ctl_node;
++
++	spin_lock(&sysctl_lock);
++	if (unlikely(dir->header.unregistering)) {
++		spin_unlock(&sysctl_lock);
++		return -ENOENT;
++	}
++	if (!name) {
++		after = rb_first(&dir->root);
++	} else for (node = dir->root.rb_node; node;) {
++		const struct ctl_table *table;
++		struct ctl_table_header *h;
++
++		ctl_node = rb_entry(node, struct ctl_node, node);
++		h = ctl_node->header;
++		table = &h->ctl_table[ctl_node - h->node];
++		if (namecmp(table->procname, strlen(table->procname),
++			    name, namelen) > 0) {
++			after = node;
++			node = node->rb_left;
++		} else {
++			node = node->rb_right;
++		}
++	}
++	ctl_node = first_usable_entry(after);
++	spin_unlock(&sysctl_lock);
++	if (ctl_node) {
++		head = ctl_node->header;
++		entry = &head->ctl_table[ctl_node - head->node];
++	}
++	*phead = head;
++	*pentry = entry;
++	return 0;
++}
++
+ /*
+  * sysctl_perm does NOT grant the superuser all rights automatically, because
+  * some sysctl variables are readonly even to root.
+@@ -675,6 +723,36 @@ static __poll_t proc_sys_poll(struct file *filp, poll_table *wait)
+ 	return ret;
+ }
+ 
++/*
++ * Where the next readdir resumes. The entries are counted, so one that is
++ * registered or unregistered in front of the position would shift what
++ * the next call returns. The name of the last entry emitted doesn't move.
++ */
++struct sysctl_cursor {
++	loff_t pos;			/* the position behind the entry */
++	int len;
++	char name[NAME_MAX + 1];
++};
++
++/* If this can't remember the entry the next call counts from the start. */
++static void sysctl_cursor_set(struct file *file, const char *name, int len,
++			      loff_t pos)
++{
++	struct sysctl_cursor *cursor = file->private_data;
++
++	if (len > NAME_MAX)
++		return;
++	if (!cursor) {
++		cursor = kmalloc(sizeof(*cursor), GFP_KERNEL);
++		if (!cursor)
++			return;
++		file->private_data = cursor;
++	}
++	cursor->pos = pos;
++	cursor->len = len;
++	memcpy(cursor->name, name, len);
++}
++
+ static bool proc_sys_fill_cache(struct file *file,
+ 				struct dir_context *ctx,
+ 				struct ctl_table_header *head,
+@@ -753,8 +831,11 @@ static int scan(struct ctl_table_header *head, const struct ctl_table *table,
+ 	else
+ 		res = proc_sys_fill_cache(file, ctx, head, table);
+ 
+-	if (res)
++	if (res) {
+ 		ctx->pos = *pos;
++		sysctl_cursor_set(file, table->procname, strlen(table->procname),
++				  ctx->pos);
++	}
+ 
+ 	return res;
+ }
+@@ -762,6 +843,7 @@ static int scan(struct ctl_table_header *head, const struct ctl_table *table,
+ static int proc_sys_readdir(struct file *file, struct dir_context *ctx)
  {
- 	unsigned long retbuf[PLPAR_HCALL9_BUFSIZE] = {0};
- 	long rc;
+ 	struct ctl_table_header *head = grab_header(file_inode(file));
++	struct sysctl_cursor *cursor = file->private_data;
+ 	struct ctl_table_header *h = NULL;
+ 	const struct ctl_table *entry;
+ 	struct ctl_dir *ctl_dir;
+@@ -775,9 +857,20 @@ static int proc_sys_readdir(struct file *file, struct dir_context *ctx)
+ 	if (!dir_emit_dots(file, ctx))
+ 		goto out;
+ 
+-	pos = 2;
++	/*
++	 * Resume after the last entry the previous call emitted. Only a seek
++	 * that moved the position away from it counts from the start, like
++	 * seeking to an arbitrary position always did.
++	 */
++	if (cursor && cursor->pos == ctx->pos) {
++		entry_after(ctl_dir, cursor->name, cursor->len, &h, &entry);
++		pos = ctx->pos;
++	} else {
++		first_entry(ctl_dir, &h, &entry);
++		pos = 2;
++	}
+ 
+-	for (first_entry(ctl_dir, &h, &entry); h; next_entry(&h, &entry)) {
++	for (; h; next_entry(&h, &entry)) {
+ 		if (!scan(h, entry, &pos, file, ctx)) {
+ 			sysctl_head_finish(h);
+ 			break;
+@@ -788,6 +881,12 @@ static int proc_sys_readdir(struct file *file, struct dir_context *ctx)
+ 	return 0;
+ }
+ 
++static int proc_sys_dir_release(struct inode *inode, struct file *file)
++{
++	kfree(file->private_data);
++	return 0;
++}
++
+ static int proc_sys_permission(const struct mnt_idmap *idmap,
+ 			       struct inode *inode, int mask)
+ {
+@@ -867,6 +966,7 @@ static const struct file_operations proc_sys_dir_file_operations = {
+ 	.read		= generic_read_dir,
+ 	.iterate_shared	= proc_sys_readdir,
+ 	.llseek		= generic_file_llseek,
++	.release	= proc_sys_dir_release,
+ };
+ 
+ static const struct inode_operations proc_sys_inode_operations = {
 
 -- 
 2.53.0
