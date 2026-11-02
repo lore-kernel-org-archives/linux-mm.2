@@ -1,140 +1,95 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1416E606A32F
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 21:47:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BF9A606A32C
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 22:47:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=fUzE4Bey;
-	dkim=pass header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=KVNiJYe5;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=fUzE4Bey;
-	dkim=neutral header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=KVNiJYe5
+	dkim=pass (1024-bit key, unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=MRV2sBPE
 Received: by kanga.kvack.org (Postfix)
-	id DABAB6B05B5; Mon,  2 Nov 2026 16:47:48 -0500 (EST)
+	id E1B946B05B2; Mon,  2 Nov 2026 17:47:19 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D84A86B05B8; Mon,  2 Nov 2026 16:47:48 -0500 (EST)
+	id DCBDD6B05B3; Mon,  2 Nov 2026 17:47:19 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C9AE06B05B9; Mon,  2 Nov 2026 16:47:48 -0500 (EST)
+	id CE4356B05B4; Mon,  2 Nov 2026 17:47:19 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 928EE6B05B5
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 16:47:48 -0500 (EST)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 12379140221
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 21:47:48 +0000 (UTC)
-X-FDA: 85391516616.20.265F9A0
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf21.hostedemail.com (Postfix) with ESMTP id F2E5E1C0004
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 21:47:45 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=fUzE4Bey;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=KVNiJYe5;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=fUzE4Bey;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=KVNiJYe5;
+	by kanga.kvack.org (Postfix) with ESMTP id A5F6E6B05B2
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 17:47:19 -0500 (EST)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 0F5EEA7432
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 22:47:19 +0000 (UTC)
+X-FDA: 85391666598.22.45B7EB0
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 4D593100002
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 22:47:17 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=MRV2sBPE;
 	dmarc=none;
-	spf=pass (imf21.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz
+	spf=pass (imf14.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793656066;
+	s=arc-20220608; t=1793659637;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Hm+ytWjWmjwRRRqkaZgxMRCNpo3ZO0Yg6C7lgInlKnY=;
-	b=5I01661TCDp4Z8A+8zYjMFYkdzERDduuBbK+dVDO1LuEL2ECbYs7lKeI1/Rsq71T+5VdVE
-	WReuvpxjH94yzELHy4NfMRJMPxv1TagthNZBsyDS8SkQBAbXsHZuFhJhjxx17Rg+3wVEMc
-	kdbhQLlaIidA5bb38JhmURsthGHA3ig=
+	bh=hhnYenLPchaIZ6Yph4cMhkOetysqy2rVFXLn4BDMBPk=;
+	b=txTBjmeK0X/nP+g4W4z+dWQmUdLGzbPrzCZxiHXDpWIf4ZAECC9ARzA+QiGXTlbWQtyF3U
+	LJQ0Fa1sdV/l7hUbdcG3exrEIYJgP0XvncQpDdmsmzG2A9IwAoFMju9c95PFxOin3zVi12
+	kpxQL2xg3nSBwmJyuAPgoZe0q/dr1eg=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=fUzE4Bey;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=KVNiJYe5;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=fUzE4Bey;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=KVNiJYe5;
+	imf14.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=MRV2sBPE;
 	dmarc=none;
-	spf=pass (imf21.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz
+	spf=pass (imf14.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793656066;
-	b=m/qd732dI/FEr2N8BM78fojlSeQ+v4I7ikgEy06IPSM0YMKYdoa5QgW7ZnV8c05KnEGZ71
-	+RAsqUAaEKv8VcX7dhjjlYZZOIAL48UprjVeNhDAQ0+C/hQnKz4VXGypObqNJHkTn8ux0s
-	S775nSsCBFSeOu2vzLlA3mkUHj4hfWw=
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 66BC021FAA;
-	Mon,  2 Nov 2026 21:47:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1793656064; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Hm+ytWjWmjwRRRqkaZgxMRCNpo3ZO0Yg6C7lgInlKnY=;
-	b=fUzE4Beyy/9uaHzBHgm0a/0E9WDXX2YUGoq3mmbuxpzbD76cPpX00HGegTJTQvIUeu3aSX
-	9QaCFiOtAFIK+PsS3+jgF4iHKXlM3uWZtzXjDVna3uRaFKqtH1Tm2I8CDtW2ZPP8mRHMOw
-	wnRnssT1EZOqce3XIy2EwC4Riq8usXQ=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1793656064;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Hm+ytWjWmjwRRRqkaZgxMRCNpo3ZO0Yg6C7lgInlKnY=;
-	b=KVNiJYe5dBXqQS0Zoj5dO/MULZaRCLCLai/0Rde7pMHM3IPbvZnP6m6jmT1uffD6SNnlxa
-	omPZYJIG1NVqnFCg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1793656064; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Hm+ytWjWmjwRRRqkaZgxMRCNpo3ZO0Yg6C7lgInlKnY=;
-	b=fUzE4Beyy/9uaHzBHgm0a/0E9WDXX2YUGoq3mmbuxpzbD76cPpX00HGegTJTQvIUeu3aSX
-	9QaCFiOtAFIK+PsS3+jgF4iHKXlM3uWZtzXjDVna3uRaFKqtH1Tm2I8CDtW2ZPP8mRHMOw
-	wnRnssT1EZOqce3XIy2EwC4Riq8usXQ=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1793656064;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Hm+ytWjWmjwRRRqkaZgxMRCNpo3ZO0Yg6C7lgInlKnY=;
-	b=KVNiJYe5dBXqQS0Zoj5dO/MULZaRCLCLai/0Rde7pMHM3IPbvZnP6m6jmT1uffD6SNnlxa
-	omPZYJIG1NVqnFCg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 3DDF1134B3;
-	Mon,  2 Nov 2026 21:47:44 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id vkdUCQAF6WplAgAAD6G6ig
-	(envelope-from <jack@suse.cz>); Mon, 02 Nov 2026 21:47:44 +0000
-Received: by quack.suse.cz (Postfix, from userid 1000)
-	id E6688B17D; Mon, 02 Nov 2026 22:47:39 +0100 (CET)
-Date: Mon, 2 Nov 2026 22:47:39 +0100
-From: Jan Kara <jack@suse.cz>
-To: "Jose Fernandez (Anthropic)" <jose.fernandez@linux.dev>
-Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
-	Jan Kara <jack@suse.cz>, Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, Krystian Kaniewski <krystianmkaniewski@gmail.com>, 
-	stable@vger.kernel.org
-Subject: Re: [PATCH v2] mm/filemap: stop fault-around when the walk steps back
-Message-ID: <kppowwph3bjl6qnbzmoq5zdjplt5eebiuweuvrm7wa7dqfhgt7@sj7kyq2ja3nh>
-References: <20261031-jf-mm-filemap-map-pages-lower-bound-v2-1-21029744e589@linux.dev>
+	t=1793659637;
+	b=A/+oWhdIyRjumEnsPJCs29gsKOaxcSBi+3iNuvMnMcZLIRkbSKgiIbA5qjeiyxWMFdc5mL
+	6wsbj3KeWm085kqJVK6QjG54jjLlkQOjVMnGO70imAxdXQZd9Qjdhp5Pytz9RieDcKJ7so
+	Qd5cyqwDmDHvaQ7ubws21E5Fr2Lfroc=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id D3211600D1;
+	Mon,  2 Nov 2026 22:47:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 228DD1F00A17;
+	Mon,  2 Nov 2026 22:47:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux-foundation.org; s=korg; t=1793659635;
+	bh=hhnYenLPchaIZ6Yph4cMhkOetysqy2rVFXLn4BDMBPk=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=MRV2sBPEspQQWDNjJ99bHpS62MisyPj7BJnLOAeDJ3P42iiVnwGuP4BT+RZ6z6oRC
+	 q5mMLS4KFoYYgVug0Dc4v2IupABuRcM8KOkoxwciuMw2PtTi0L6aYUvhUklXVoKoqG
+	 CDgO8mlCnVjm/hp6jQQ2gRFtN9VCr4VYjW8Hf+lA=
+Date: Mon, 2 Nov 2026 14:47:14 -0800
+From: Andrew Morton <akpm@linux-foundation.org>
+To: "Jose A. Perez de Azpillaga" <azpijr@gmail.com>
+Cc: Mike Rapoport <rppt@kernel.org>, David Hildenbrand <david@kernel.org>,
+ Shuah Khan <shuah@kernel.org>, Peter Xu <peterx@redhat.com>, Lorenzo
+ Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, Vlastimil
+ Babka <vbabka@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal
+ Hocko <mhocko@suse.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, Muchun Song <muchun.song@linux.dev>, Oscar
+ Salvador <osalvador@suse.de>
+Subject: Re: [PATCH v2 0/2] mm/userfaultfd: recheck WP registration in the
+ hugetlb UFFDIO_COPY retry
+Message-Id: <20261102144714.5a6fc7817b11a5d9add8a5cc@linux-foundation.org>
+In-Reply-To: <20261102081140.201987-1-azpijr@gmail.com>
+References: <20261102081140.201987-1-azpijr@gmail.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261031-jf-mm-filemap-map-pages-lower-bound-v2-1-21029744e589@linux.dev>
-X-Rspamd-Action: no action
-X-Spam-Score: -13.01
-X-Spam-Level: 
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 4D593100002
+X-Stat-Signature: 1ip9igc7jwcxyk1fd7k3s8mu4fopz3wp
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: F2E5E1C0004
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+X-Spam-Status: No, score=-7.6 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: 7gpo1mwroeootsuf4kbayor8qybifxxm
-X-HE-Tag: 1793656065-686922
-X-HE-Meta: U2FsdGVkX18xxMqtHfCD1jtQ2McDGiz6PZirpzOb+yx05eu661u7QwMxVEC2L0qeszXb7ZyuZvgNfhbcln9PXZOpkQGCFe1VpXwV6qv46mngHjKU7oykMMwvQ99rPEd4Zzo/NE91ev+/aZu1oruq/OCJVUfNqjoAhGzrRdnx+6CCdbCR51CFzjBOIWGwWmzCKRrGbwvdJpiffA+x5Z75tGTSkhQ37oPWUxk1OfK8mEp4wgXj/umJxaoIUrs0pOru9qsRDeY5kPqrrtlVsH/vJ+gTmERTpdV/BCCkZSqV6NnRLNUM+ILXlfv+k+wGP5A6OrRFawgs28oZMHdTRU+B63LmpQW7dcZWc+wt8UjPUYDiFz/HKQmWp2HkQN4r1h63cfsI1YXK5XK5mXSgrBaeUTk90Squ5CCIX4v1TPxfgqlDm6uchXKUG+HuI/IpqvhtBTRlSKefUjTrcmwhllEC25IgiAdkkygMuNdPA8eMMqHVu939x/7VvRNJ6DH3FhplnW8rWaBDWeYVM7Q4nboASNYaLXM9dAL+oxcarjXxigvfzd7e300o4/0MAEEqvNpIkJcBEBh/ycuyfza1VSQUCE5ZDLVVz9Z+mdzqsTzFF1xyYOR+It4dDwgU3YQP5r2YbfANMcNXf86g+TOnP6fKnUzk1uw8djRcFExnoCHGknK1ibx9Fs1pSZyz4itLwRi5I8auEJhdQzDU7qT8R6SM/3AuxRNtc25ANqvKyV3ay66aYBuU1oNzW+JppBllH1pOE90Q2HXBmMmvraMzUC5UwHcV99KsC7Ke1vK6YwMJbOwTACBQFY5mU9eAGG066gDYdaInZM4Wj6EbfKeB/nfcxoivpXlo7Fi1GJRs0mAG0yLOmzikPXYbu73ExIcLo3WODO922YsjdT++EqpphUSRiH20jHInRZGKEY9cHhT2k2ZuWhH5bdCfnlUeKecuOBrOmIFoTDqJf8sJ9+fdpd/
- JWOIhn8w
- vFBgp8jxHGhijgq8GSV7oRjwypLtD7luJ8deum7vlnhvc62jxFhHp/cPez4RYAGpsqH0Q/JMabwt4PzdCcMmzl5jvFgNbYDAdaxfO3JHd+7kjkQIv3aUaftpDnkOy4kCf0Q1W6pCiAx/FAcoH0yq+YvjkWWF1LuhrH58oKwwQO5OpdgIjhjnBLLf7lTQiH4iddjGv7xLnBe1yH6aTEEOmrZRNneMYDvArlYR/eCtHA0hgrKFYn58Wlak8nAtr5QpDtYFlWAa/SQ7FL2Q4hPgZTwqcXuFj4f/pOSrkucMY/ofXdDUvVBi8v1mSY0ecz2HPdTP9VXw+U8I/axUXgfnuVKQ/lxSCSYSbV4btUbW5dp0TU9w0fgrEwir0ES0BQLP376uNsm90Ik0KpaWexV5wuJNdRLNZJgCYgvLuFqr06Jkokaex96qJCdUWhGfYxE1PI+mpmkxxi7h8ETM8wTHb5w8+og==
+	MAILING_LIST_MULTI,NICE_REPLY_A,SPF_HELO_PASS,SPF_PASS autolearn=no
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1793659637-731650
+X-HE-Meta: U2FsdGVkX19TFpi87NgVJtOBcXkGvdzHlT9i/i3V7dXzh4YSbZp00rwd/KA8K8vt+pvdIlDEVi7kgb2DprbtpG1jtb4ltmWawdeSv5Ng3UNwtjfv+zO8WhQitduzGOzV2QVmB+RuD0lsouattioCJ0F/jgIvNJxM0hh9cVpuUnPS0rKUh6KQFRODSvOuDJ35YSYAN3HY8+NVqWVxhGD5vZXMdqZHPXWo0+tzjEDQDZgWj2iroSpk/uswI0LhD8h6b7PwSwf4z5sAmNkVXt/TsGkJjGTbBhAKYiiFLdEUH4FG3Vb9OveFwzOpVeHXkUiDlkczWw7xhueZDiQ5/k8cLXMm5wyfWo5ccDaX36oBAzZPeakhiNDKMnKy8UU+1HjBSxVaVTV6fBEfToRDh4s+vwP4o6yNQVtpne1khZhJPD7+htZy7AYJXwDIqbq6Q8Tmk8cQ8XTVqub/4u2I+R2kgwpRHvmmesANWuiPo7FZGb8HgMGMkqpaaNKlPl6HiBkxzsZBImMiOQtrIylZhxWTMjVOkZ5S/hkLV3jf9PIInaMe4cNBH+L8SsArtR9pOBM0gfrJFqJlqPx3fzpg1Fmk/DJiAo9whOtNkOVH0238TYS/gSVf9fn91J3g/q9cZrQLcBBlr5/6AIal3eAh5sVn5y5asmk3VKlg9C2hGRKLKMa9z/PKDxOItObWuKcmX3Y2lTBUpJKuORdzOedMiGyIHznr6bDCyWEd1+SnFhkCsS9RA+yVhWeuWEG3qY1GUSSRGqsWFSJ5BcC2l0nPcs9Hi/PALj6zDxC6cci2+9OnPlzGwprmUl50H0ocljLLY0k33w3lFY5zMv0sGa0n+7xwwTzse8MNmjjDc7gE48ANs0fIBsWwCt0l8xLhPbcwURsZROjBVzGee55QF8EzokOX3izHDp5h/3QixcxER55rgLSSpfSXRx8zmLLg7JgvozjKdNqzfU6bqnV1O0T56lT
+ WFAfNJmB
+ de1R0C2AwZMMST5Y9TnYFbT5R92ObZc36ME2YkxNdJAs2FpFPNx/BOq98TL5eW5jaXPf+8Uf97/yz8a1H/nW1UjYOnRNkAPto1uDfVVhX1Rugm4xtTqoHiaPO/GI9fGh2zp0YqvtwHPyIeOQn3WA8OmzSY1iFj2C0zgKYE5vkd5SIi9lYUufnvPZz/NM02z0ADY4X6jgpoltdW2xNFaLUQrmn8dUoXhNd/+Id5pZ3La7Ca0H3ix2tFLHEjn3TA5pB+VYmr8q03WiPSrKf8bw+LuEfgG9VLB84U8RE94mdUEJS9wgWqdodCAvqm92muVtFgq4+PoYrABJJYbDA5Id8wxtDMrLnDSF3Q1634UpGCkUKr9T7zTr8hju1eLbiKNkSVlbi
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,69 +98,32 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Sat 31-10-26 04:33:59, Jose Fernandez (Anthropic) wrote:
-> filemap_map_pages() can dereference a PTE pointer outside the page table
-> it locked. KASAN has reported this as a use-after-free read [1]. The
-> same path can also write out of bounds. When the stray entry reads as
-> none, the fault-around loop maps a page there with set_pte_range().
-> 
-> Its fault-around loop walks the page cache and moves vmf->pte by the
-> change in index. A lower index moves it back. xas_find() can step back
-> to a lower index when a multi-index entry is split during the walk.
-> 
-> [1] fixes xas_find(), but the loop still relies on the walk never
-> stepping back. Stop the fault-around when the walk steps back. ->fault()
-> maps the faulting page if the loop did not.
-> 
-> Link: https://lore.kernel.org/20260904121301.200049-1-krystianmkaniewski@gmail.com [1]
-> Fixes: 6b24ca4a1a8d ("mm: Use multi-index entries in the page cache")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Jose Fernandez (Anthropic) <jose.fernandez@linux.dev>
+On Mon,  2 Nov 2026 09:11:29 +0100 "Jose A. Perez de Azpillaga" <azpijr@gmail.com> wrote:
 
-Looks good. Feel free to add:
+> The urgent fixes made hugetlb_fault() tolerate uffd bits left in VMAs
+> that are no longer registered for them, and asked for follow-ups that
+> remove the sources [1]. This is one: a hugetlb UFFDIO_COPY_MODE_WP copy
+> that has to fault in its source page doesn't recheck the WP registration
+> before retrying, so re-registering the range without WP in that window
+> leaves a uffd-wp PTE behind.
+> 
+> Patch 1 adds the missing check. Patch 2 adds a uffd-unit-tests case for
+> it, which fails on hugetlb without patch 1.
+> 
+> The other source 6/10 of [1] mentions, UFFDIO_COPY in MODE_WP racing
+> with UFFDIO_UNREGISTER [2], is closed by "mm/userfaultfd: write-lock the
+> VMA before waking waiters when unregistering" [3].
 
-Reviewed-by: Jan Kara <jack@suse.cz>
+Thanks.
 
-								Honza
+Sashiko isn't entirely happy:
+	https://sashiko.dev/#/patchset/20261102081140.201987-1-azpijr@gmail.com
 
-> ---
-> Changes in v2:
-> - Add Fixes: and Cc: stable tags, and say in the message that the loop
->   can also write out of bounds (David Hildenbrand).
->   https://patch.msgid.link/0a1ad7d2-ff0e-4248-8f03-2a64a9134aae@kernel.org
-> - Link to v1: https://patch.msgid.link/20261028-jf-mm-filemap-map-pages-lower-bound-v1-1-0bf126e876d4@linux.dev
-> ---
->  mm/filemap.c | 7 +++++++
->  1 file changed, 7 insertions(+)
-> 
-> diff --git a/mm/filemap.c b/mm/filemap.c
-> index b74bc1e5015c..1df776907140 100644
-> --- a/mm/filemap.c
-> +++ b/mm/filemap.c
-> @@ -3968,6 +3968,13 @@ vm_fault_t filemap_map_pages(struct vm_fault *vmf,
->  		unsigned long end;
->  		vm_fault_t map_ret;
->  
-> +		/* A lower index could move vmf->pte out of its page table. */
-> +		if (unlikely(xas.xa_index < last_pgoff)) {
-> +			folio_unlock(folio);
-> +			folio_put(folio);
-> +			break;
-> +		}
-> +
->  		addr += (xas.xa_index - last_pgoff) << PAGE_SHIFT;
->  		vmf->pte += xas.xa_index - last_pgoff;
->  		last_pgoff = xas.xa_index;
-> 
-> ---
-> base-commit: 65ba8f34ec886ec72b2c07ddc8cf3d815c32869d
-> change-id: 20261028-jf-mm-filemap-map-pages-lower-bound-a623ed8a81c9
-> 
-> Best regards,
-> --  
-> Jose Fernandez (Anthropic) <jose.fernandez@linux.dev>
-> 
--- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+Also, for those who believe uffd is now defect free:
+
+: Separately, mwriteprotect_range() checks the WP flag but not which
+: userfaultfd owns the VMA. With two userfaultfds in one mm, unprotecting
+: B's range through A can clear B's WP but wake A's queues, leaving B's
+: writer asleep. mrwprotect_range() has the same ownership-check omission.
+: This is older and deserves a separate fix.
 
