@@ -1,74 +1,75 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB04A6083610
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 15:03:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6A29606AB94
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 15:04:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=gH1uQceN
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=hg5z4oUZ
 Received: by kanga.kvack.org (Postfix)
-	id D53266B05B2; Mon,  2 Nov 2026 10:03:50 -0500 (EST)
+	id C1C1A6B05B3; Mon,  2 Nov 2026 10:04:26 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D2B2C6B05B6; Mon,  2 Nov 2026 10:03:50 -0500 (EST)
+	id BF39D6B05B6; Mon,  2 Nov 2026 10:04:26 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C416F6B05CB; Mon,  2 Nov 2026 10:03:50 -0500 (EST)
+	id B09D96B05BA; Mon,  2 Nov 2026 10:04:26 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 9D0446B05B2
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 10:03:50 -0500 (EST)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 1B7C38016F
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 15:03:50 +0000 (UTC)
-X-FDA: 85390498620.11.7ECC954
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 63DFE40005
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 15:03:48 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gH1uQceN;
-	spf=pass (imf12.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	by kanga.kvack.org (Postfix) with ESMTP id 96DCF6B05B3
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 10:04:26 -0500 (EST)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 3E60880172
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 15:04:26 +0000 (UTC)
+X-FDA: 85390500132.29.A745531
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 717E42000E
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 15:04:24 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hg5z4oUZ;
+	spf=pass (imf03.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793631828;
-	b=cELsMI/Xl92s/RUHpCyGvBnFUngthvUTvx7gxMW8jJa3F9W79ewkPR9cgNHQeYZoCE1MwQ
-	L4b7xOIGqAwMXQ76qK9jd96NtSJGNLPU5uPvb/eBPHVhewvlwyKMz8ErRcFI4jHF5F5Q0O
-	Pqk7kJDkNRqCPCFct/eIs7W848pV0C0=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793631828;
+	s=arc-20220608; t=1793631864;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=glw1dCbJy4In8cXqUP53v95R3+j+o1Gb2tGtrZFmQOQ=;
-	b=ktcMG3Do6L+g1Q2ZdCTKy0NiVnc+zV8RnGxXCvkYX1dD1KDndpzQqwYBE/1gtqub5tkhWy
-	hTiTEddWzPkHsiTKNvRy7a3zC57sCOy8EaI4EipWRy16mx77esfFqtwhhyRsdKIAIqFKxd
-	M6xF9eolb2KqNLWTv+xWZX2rv5OTCPY=
+	bh=K/nPdp0KTrkO/JWfX0DeaffmMq6r1stKUZ+oHzzOxP0=;
+	b=WqLqUq9jsk3VEmuazbPWW/Sgf4r7LkOSvFbJPdxSZ7se6ZthNohH/Pp6OsMkrZ6MnGQ4T4
+	WITvE7ZASkDLkzbd8MeI3EC+aAVA5DIwqiMp5MaJVfLiD+73RpNp9kZEsP+g9sVP9boj9c
+	sqQdBahFHmpHQVOX6S4s03xK+fpLl0g=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793631864;
+	b=waJqyZslk6uQ1a2K+azuvY/8986eeMKNuXmky6xS6ox1AfwraZSRacbR4kh5SqyHufMOi3
+	AVBaK3tiRxvmZ2sVhQuze7Co026RlPm6Pb0MEJJhm98/VhZhxzRPdJbx0T5C8XH1v3P10s
+	yod4xMVoD3Id1AAeeDGazYNsDJwdbXk=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gH1uQceN;
-	spf=pass (imf12.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hg5z4oUZ;
+	spf=pass (imf03.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 00178605D4;
-	Mon,  2 Nov 2026 15:03:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DB191F00A1A;
-	Mon,  2 Nov 2026 15:03:35 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id BC5AE43C16;
+	Mon,  2 Nov 2026 15:04:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50CD51F00A18;
+	Mon,  2 Nov 2026 15:04:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793631827;
-	bh=glw1dCbJy4In8cXqUP53v95R3+j+o1Gb2tGtrZFmQOQ=;
+	s=k20260515; t=1793631863;
+	bh=K/nPdp0KTrkO/JWfX0DeaffmMq6r1stKUZ+oHzzOxP0=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=gH1uQceNT0pe04RugL3tkndtCg/BNWtt8gjyfjkjxpxrv4DD5Kj/ry0K4iVOfTu0T
-	 XyqCfm2AIZe63dMJyEouauqLimhfpL7Ahx9TJUWfLtSMlGm6wbGGbzqxmjJDCoGvoi
-	 8bXwyOHcBtFikAWlZHrtqTOUm7T60Rc1rGMBhy6wte8Tc2C2WHnRkyW6FZfLwJcAlt
-	 QIxSWGPq1Pt9aUCZFw5Fr8TfPzVXromMNqTo4BfW3zJS3GdVdZxJ1jiE4RlzKmMIbu
-	 NMgDHlNBEuimzLNekTMW7U7s+08uLY2Cp7ql1hPbJQuDeycC8awPE3b+o47F+6OePW
-	 BX1NU0ZbhTSrg==
+	b=hg5z4oUZuRz8N20Z5C+Q8yL18Y5yCw7qLkDhvSa3q8JNmsjPQwjzQ+mMuPQCiWUbZ
+	 Y7Lf4C3jcwYkPZM9FYjlQwVMt+IVrZBJileSjZkYaIPS9b5zUXk14WIw+JVn7EsOU4
+	 X4PnMaia2Uw5JRPK0Y/IeoZ5Ktq3pARrGiaVdYugzvHIRDhsmeS/p/quiqvdz+vWfE
+	 AUGhD3c15oSYVACYkUFkJnNm0xAkDzUFjRuKB9ZEAXO17dJeJqcdRtoI5OGF1GhbZ7
+	 YQIqxbvutG2Qq9CRYrtQhXVKgITYMloJ1QVm1bR6wQ8dUbiyrra8iSth/icVuFpZ8E
+	 UfEtn5MBXe+5g==
 From: Christian Brauner <brauner@kernel.org>
-Date: Mon, 02 Nov 2026 16:01:34 +0100
-Subject: [PATCH RFC 07/22] powerpc/pseries: let procfs copy in writes
+Date: Mon, 02 Nov 2026 16:01:35 +0100
+Subject: [PATCH RFC 08/22] powerpc/procfs: let procfs copy out reads of
+ /proc/powerpc/systemcfg
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261102-work-procfs-arch-v1-7-c9492ab08480@kernel.org>
+Message-Id: <20261102-work-procfs-arch-v1-8-c9492ab08480@kernel.org>
 References: <20261102-work-procfs-arch-v1-0-c9492ab08480@kernel.org>
 In-Reply-To: <20261102-work-procfs-arch-v1-0-c9492ab08480@kernel.org>
 To: linux-fsdevel@vger.kernel.org
@@ -104,19 +105,19 @@ Cc: Linus Torvalds <torvalds@linux-foundation.org>,
  "Christian Brauner (Amutable)" <brauner@kernel.org>, 
  Chuck Lever <cel@kernel.org>
 X-Mailer: b4 0.17-dev
-X-Stat-Signature: p474cabd174owasswqsmh91m9d4t4mpj
-X-Rspamd-Queue-Id: 63DFE40005
-X-Rspam-User:
-X-Rspamd-Server: rspam12
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 717E42000E
+X-Stat-Signature: tzeq4tjf731gqd9j81iawapzqstxtamt
+X-Rspam-User: 
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
 	version=4.0.1
-X-HE-Tag: 1793631828-440341
-X-HE-Meta: U2FsdGVkX182/i5V0QkrIMUyoepOukC8mvc/At8gmr+sgmk69WQj3YrsvNrcLUVamA26dXe7lxHkd1I6wqPFR8kaowXCpynGkMCS1IVMMe55qJVQ8RI0TFdyXHyghIHwl2ytWgAKR9glQEexMbPqbSxSaebNFmfJXJ9D/ZuMbmUyQwaQjASTjoKLLVsBK8rm7W0acyosK+3wB/MswxoUdw2GVEwYPHhPcUFsy3oTC0z+jFyT1LJIYoYp86wRed3g9mwyU+Cj3zJBtoU6CGbi4bcC+uRulgzgCoUcbX4I4rHOxxGVzl4EofA5KonB6T/MKhrdhIi9HxtGbQCKFrAB17EV+DKnsMryNgFxCMmsXg4DNY4bACzc1Y1bN3x4js/+4FOIx+cY6yCjbEL80CXA/LawEd01LmOzfiSHPA7jD7gyRD+Tr8ZMNlyWyni9PSTSMlSQHDKj1Go+Mcl5gJi9nkWo0AM0/HnBVyhPPQ130PfmmQHh01Gz5B9W9Mza6F2i7rSbWqeGDJFbsMGCMBAnSuqnyzmib3F9sVNhuFO1lwqJ8s/z5xidvzW4WQCj/IU5+4tpOfltuzMDAO314NsTu+yr0x3z8lPx093GW1Hq/A9cHOng1WINi6XNu2dMUGnDP87KtyQUjam9VauGjZLtRuUFYpb3i6kivCjYD/h5upzLVjccG8XINnnRZTn4PtPPEgQ1KU/gPx51EgGG1+xEMftDKDIeWZT29+460+JaLzpsKVrM+uBVsGLr/Sdfdj2P3yUtChHQWg6aj0turQnxIgfFW2ss2z/1zW3rS6oA5SE7lDeu7RULp1oaCCF1rj4Up5BibNtUUopmPfeSgtS+Xh1FY7+f0NJSjAdRZhodapFj6nRjTf2DbvAAYJ5HYkbJcgsOcJ/zFXejlgPvlRyMYE/gdHJkPUqECI8AF0qoAQDT3ihq45rql7slewsYbfnvmgTtSa227c5pwI1v0nk
- ssyXSUlH
- +sMRvHBgoi+JE+F69iPf31mtH6w6FHBPJHdrphNTtSArK3B1uliKkrzmcJXkQhyru/EhIMVaUCPHCSFcIhszFPKfrvhlJJfKBZzk/lcUSEbN1R/O5k9fcssSeht7qiShTrKoMukVEc0yrWYgtwJstCWFUp4p5OIpTJxPz1thyBeYMk3WjGBG7VgY5vUNtW2/T8Z1TZussJSn5HI6B1Vwk/QVcVgy1u0BOLOVpzc7mW3PzUzvCEiPWexBUFmiQsadIHEaUjIarud3ZRofzkMB2cGneIyrg4ivxj58fNApLiYeaz8Wl/6f/RgrcjMCRCk0zAr1zr7GS0GkA0d8=
+X-HE-Tag: 1793631864-627776
+X-HE-Meta: U2FsdGVkX1/34gl6xiLmAljx6DZjvzBgn8wJ5IdpyDaZZ6pW3+gr42XDea6v/FTvetgX2DAF8O2vCI25yARWXliXay6PKCRfw/07oSbuI0WRyZcSOx0Fl4HP8MgW7XcC000BVeTYof5uBv6b9hvdxjl+8j+9RnTRQ5imfd72PQr02m5ZO8vWrMHnRSfRRgLxVRptQr2vMEa3KQWfPUaE9eirw97e+juOXqF0WJuX3j0hC5O7YzXXrNd2g3lyqp0q3SChkq/bnbxKgBYKtrWasat8PPOzOqAZrEGuokBpKH9ifpuZfVNqkD4/MtkSjNKlMs68Ki05ut2pW87lQbcwti3RXOLVHxlUUSdAGzfK1g/NfhkVf6HEv+hvWMQanpp46r659X7Ku04422iRVV+iSv7n5UTNFI9+XJms/t2g4gi9uYQYs5NAMVNQT1mrWPR9rvh+TOJ2bjxWBJqWnpUFktuhvQDwRpvRfiBmgpbjrMlOZQN0mgjLuO3NPOqZd4/2RmQ5S4Q5IYkTiUq/PpE0gQsfzELnSaWNzmHDd+KSsl2DQwYaicczK2zbkYjejZPl2WAP+/+NRR6dHQj6/yf5KnqfR9uhHLH4ze8VwPpshHVWtS1vNIPpzlBXu8irw0nfmV5G/6q216faYkVuNKyTijTEZiJhRqx77C9Ky7ywHELpVw7xeGJWdW/n7RXZzwqHWcrYZverpghxPL5bxbSiM53y3spE2taRZgkHz0S1CPw4g4Djm7f1vrzmMxbm+pLeV9H7F5G0CtH+AIWhHeXQ++fYZa11+d01Xi/C0vd1ZRgHVR7VS8RvgabHpC0Wg9YygYHHF5UNLM9ojkP3OLAyeMHDKs2z+mhtGJdjCediCM6QjWCv986nOvotgnXSxW7MYUtBgS5BLJPTb+AKSrIM1g/eNf+SDu13fqceQWzJlVmd2d6ml5K59NCjCSHcATS4bUbSrrbkivdtzmAE1od
+ IWTAp+rU
+ Bu+t14gEWvI5If56Z8t5oAIyaRJPPA5fL2Vpi1csfm4Q6rKCa91vIbg4QBAc+sSoH8OvEfjL7Fgx2JkZfjaHm2hbqjd0mO1eJp9I+RcYweSvTu2Mo67CSQL9r5Jhu3cEMWrkyBdOrAwlhCFGiTA+BS5krxOf+2T6bxXTETeElkKphwKi12Pa91fD/7v8lndyvuagozlVXvY4188znaA5dhmnbQOYymS6QiZV5pTupptiWN/F8GpMiKG+RvGh1JOHE7F5xgtViFMI+eaesgQZLkW/mCcKpoPEaEui6
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -125,166 +126,38 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Implement ->proc_write_buf() for lparcfg, ofdt and the vcpudispatch
-files so procfs copies in what is written before it pins the entry, and
-parse what was written from that copy. ofdt takes as much as
-memdup_user_nul() could copy before since device tree updates can be
-large.
+Implement ->proc_read_buf() so procfs copies what is read to userspace
+after it unpinned the entry.
 
 Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 ---
- arch/powerpc/platforms/pseries/lpar.c     | 14 ++++++--------
- arch/powerpc/platforms/pseries/lparcfg.c  |  7 +++----
- arch/powerpc/platforms/pseries/reconfig.c | 22 ++++++++--------------
- 3 files changed, 17 insertions(+), 26 deletions(-)
+ arch/powerpc/kernel/proc_powerpc.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/arch/powerpc/platforms/pseries/lpar.c b/arch/powerpc/platforms/pseries/lpar.c
-index 48fe0be71a89..dfd027cc9047 100644
---- a/arch/powerpc/platforms/pseries/lpar.c
-+++ b/arch/powerpc/platforms/pseries/lpar.c
-@@ -498,7 +498,7 @@ static void dtl_worker_disable(unsigned long *time_limit)
- 	up_write(&dtl_access_lock);
+diff --git a/arch/powerpc/kernel/proc_powerpc.c b/arch/powerpc/kernel/proc_powerpc.c
+index d083b4517065..46bc914d74b9 100644
+--- a/arch/powerpc/kernel/proc_powerpc.c
++++ b/arch/powerpc/kernel/proc_powerpc.c
+@@ -24,10 +24,10 @@ static loff_t page_map_seek(struct file *file, loff_t off, int whence)
+ 	return fixed_size_llseek(file, off, whence, PAGE_SIZE);
  }
  
--static ssize_t vcpudispatch_stats_write(struct file *file, const char __user *p,
-+static ssize_t vcpudispatch_stats_write(struct file *file, char *p,
- 		size_t count, loff_t *ppos)
+-static ssize_t page_map_read( struct file *file, char __user *buf, size_t nbytes,
++static ssize_t page_map_read( struct file *file, char *buf, size_t nbytes,
+ 			      loff_t *ppos)
  {
- 	unsigned long time_limit = jiffies + HZ;
-@@ -509,8 +509,7 @@ static ssize_t vcpudispatch_stats_write(struct file *file, const char __user *p,
- 	if (count > 15)
- 		return -EINVAL;
- 
--	if (copy_from_user(buf, p, count))
--		return -EFAULT;
-+	memcpy(buf, p, count);
- 
- 	buf[count] = 0;
- 	rc = kstrtoint(buf, 0, &cmd);
-@@ -586,11 +585,11 @@ static int vcpudispatch_stats_display(struct seq_file *p, void *v)
- 
- static const struct proc_ops vcpudispatch_stats_proc_ops = {
- 	.proc_show	= vcpudispatch_stats_display,
--	.proc_write	= vcpudispatch_stats_write,
-+	.proc_write_buf	= vcpudispatch_stats_write,
- };
- 
- static ssize_t vcpudispatch_stats_freq_write(struct file *file,
--		const char __user *p, size_t count, loff_t *ppos)
-+		char *p, size_t count, loff_t *ppos)
- {
- 	int rc, freq;
- 	char buf[16];
-@@ -598,8 +597,7 @@ static ssize_t vcpudispatch_stats_freq_write(struct file *file,
- 	if (count > 15)
- 		return -EINVAL;
- 
--	if (copy_from_user(buf, p, count))
--		return -EFAULT;
-+	memcpy(buf, p, count);
- 
- 	buf[count] = 0;
- 	rc = kstrtoint(buf, 0, &freq);
-@@ -622,7 +620,7 @@ static int vcpudispatch_stats_freq_display(struct seq_file *p, void *v)
- 
- static const struct proc_ops vcpudispatch_stats_freq_proc_ops = {
- 	.proc_show	= vcpudispatch_stats_freq_display,
--	.proc_write	= vcpudispatch_stats_freq_write,
-+	.proc_write_buf	= vcpudispatch_stats_freq_write,
- };
- 
- static int __init vcpudispatch_stats_procfs_init(void)
-diff --git a/arch/powerpc/platforms/pseries/lparcfg.c b/arch/powerpc/platforms/pseries/lparcfg.c
-index a6a137ce44ce..43af7f820fab 100644
---- a/arch/powerpc/platforms/pseries/lparcfg.c
-+++ b/arch/powerpc/platforms/pseries/lparcfg.c
-@@ -687,7 +687,7 @@ static ssize_t update_mpp(u64 *entitlement, u8 *weight)
-  * This function should be invoked only on systems with
-  * FW_FEATURE_SPLPAR.
-  */
--static ssize_t lparcfg_write(struct file *file, const char __user * buf,
-+static ssize_t lparcfg_write(struct file *file, char *buf,
- 			     size_t count, loff_t * off)
- {
- 	char kbuf[64];
-@@ -702,8 +702,7 @@ static ssize_t lparcfg_write(struct file *file, const char __user * buf,
- 	if (count == 0 || count > sizeof(kbuf))
- 		return -EINVAL;
- 
--	if (copy_from_user(kbuf, buf, count))
--		return -EFAULT;
-+	memcpy(kbuf, buf, count);
- 
- 	kbuf[count - 1] = '\0';
- 	tmp = strchr(kbuf, '=');
-@@ -799,7 +798,7 @@ static int lparcfg_data(struct seq_file *m, void *v)
+-	return simple_read_from_buffer(buf, nbytes, ppos,
++	return memory_read_from_buffer(buf, nbytes, ppos,
+ 			pde_data(file_inode(file)), PAGE_SIZE);
  }
  
- static const struct proc_ops lparcfg_proc_ops = {
--	.proc_write	= lparcfg_write,
-+	.proc_write_buf	= lparcfg_write,
- 	.proc_show	= lparcfg_data,
- };
+@@ -43,7 +43,7 @@ static int page_map_mmap( struct file *file, struct vm_area_struct *vma )
  
-diff --git a/arch/powerpc/platforms/pseries/reconfig.c b/arch/powerpc/platforms/pseries/reconfig.c
-index b41c5db726c9..f406e826a03e 100644
---- a/arch/powerpc/platforms/pseries/reconfig.c
-+++ b/arch/powerpc/platforms/pseries/reconfig.c
-@@ -349,7 +349,7 @@ static int do_update_property(char *buf, size_t bufsize)
-  * ofdt_write - perform operations on the Open Firmware device tree
-  *
-  * @file: not used
-- * @buf: command and arguments
-+ * @kbuf: command and arguments
-  * @count: size of the command buffer
-  * @off: not used
-  *
-@@ -357,26 +357,19 @@ static int do_update_property(char *buf, size_t bufsize)
-  * whole nodes along with their properties.  Operations on individual
-  * properties are not implemented (yet).
-  */
--static ssize_t ofdt_write(struct file *file, const char __user *buf, size_t count,
-+static ssize_t ofdt_write(struct file *file, char *kbuf, size_t count,
- 			  loff_t *off)
- {
- 	int rv;
--	char *kbuf;
- 	char *tmp;
- 
- 	rv = security_locked_down(LOCKDOWN_DEVICE_TREE);
- 	if (rv)
- 		return rv;
- 
--	kbuf = memdup_user_nul(buf, count);
--	if (IS_ERR(kbuf))
--		return PTR_ERR(kbuf);
--
- 	tmp = strchr(kbuf, ' ');
--	if (!tmp) {
--		rv = -EINVAL;
--		goto out;
--	}
-+	if (!tmp)
-+		return -EINVAL;
- 	*tmp = '\0';
- 	tmp++;
- 
-@@ -392,13 +385,14 @@ static ssize_t ofdt_write(struct file *file, const char __user *buf, size_t coun
- 		rv = do_update_property(tmp, count - (tmp - kbuf));
- 	else
- 		rv = -EINVAL;
--out:
--	kfree(kbuf);
-+
- 	return rv ? rv : count;
- }
- 
- static const struct proc_ops ofdt_proc_ops = {
--	.proc_write	= ofdt_write,
-+	.proc_write_buf	= ofdt_write,
-+	/* what memdup_user_nul() could copy in */
-+	.proc_write_size = KMALLOC_MAX_SIZE - 1,
- 	.proc_lseek	= noop_llseek,
+ static const struct proc_ops page_map_proc_ops = {
+ 	.proc_lseek	= page_map_seek,
+-	.proc_read	= page_map_read,
++	.proc_read_buf	= page_map_read,
+ 	.proc_mmap	= page_map_mmap,
  };
  
 
