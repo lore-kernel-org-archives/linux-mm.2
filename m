@@ -1,75 +1,75 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EABA060A2622
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 14:23:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D033606B91B
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 14:23:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kvHRMzqf
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=FLfR5DFe
 Received: by kanga.kvack.org (Postfix)
-	id EDBFF6B05BA; Mon,  2 Nov 2026 09:23:01 -0500 (EST)
+	id 4CAA96B05BC; Mon,  2 Nov 2026 09:23:18 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EB3786B05BB; Mon,  2 Nov 2026 09:23:01 -0500 (EST)
+	id 4A1A56B05BD; Mon,  2 Nov 2026 09:23:18 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DA2956B05BC; Mon,  2 Nov 2026 09:23:01 -0500 (EST)
+	id 3B78A6B05BE; Mon,  2 Nov 2026 09:23:18 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id B25576B05BA
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 09:23:01 -0500 (EST)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 39C0CC011B
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 14:23:01 +0000 (UTC)
-X-FDA: 85390395762.29.446DBA6
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 122EE6B05BC
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 09:23:18 -0500 (EST)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 90AEC80125
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 14:23:17 +0000 (UTC)
+X-FDA: 85390396434.01.C0667FD
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 7795FA000A
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 14:22:59 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kvHRMzqf;
-	spf=pass (imf25.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	by imf02.hostedemail.com (Postfix) with ESMTP id 80EA88000D
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 14:23:12 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FLfR5DFe;
+	spf=pass (imf02.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793629392;
+	b=cCr3EquCciqaxvYCO0cfSEvtMMhZAH8TlflB4eTQu7KxEk/tyH+zgCybycuV6xhKh7zXiD
+	C6rwQFqjuCwMSblq4jXS/FaGlK6+KFj3+gwNiARz9rci+7QgPQNSeAhr4ksAyGc+qeiYrz
+	fL/K9zifwMjeZPb6U+oWZaZt1wD4A2Q=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FLfR5DFe;
+	spf=pass (imf02.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793629379;
+	s=arc-20220608; t=1793629392;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WXeWRtHDTvlcvQqGcGXKpHSOkC75TIYAS6cttW7V/+A=;
-	b=Aoc8zDR5N7OPTZBoCQjIAl48uGrStiG7Or1zL3Tm0uaeFD37mV0vrfniWPYLddOyFWIbci
-	FbYBWcW43UO0U+eaLt9hstci4XrMlveBomGupZg3+d0Pbwa8XIC9BZ6qpumMDJYM10vTMS
-	wmZwOj9qjdmB+85dhGOO/aE0iTL/tBg=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793629379;
-	b=kIeQXEMELyf39YPmFuSrP/9VpggPzkFQbObMMld03oGiFFjcRtFBbyjBflJgO0JB3OhGzE
-	m24s9kf6waCyI1hVh1Hz/stSC29s9CN/K1nkxdv85xVGbQraFz5MPYXmqHBVwtSxp0tQvV
-	iVk9N0Yvq/p7qMCD1qUifBGVSrS9pfE=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kvHRMzqf;
-	spf=pass (imf25.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=MVs7ALsfOLkn53l0kYUUme/SDUyhPHOVCY6QDFUmXzg=;
+	b=raIEeV0lIS89a5m2jCHTw9ef5Nf470LEXnV3T0SbqaKzqxolNvxnhr+h9ddiW7pY+XiLxH
+	4dLtzbZ8DhePYrBg0eaQ9lF8V02OYrhQpioh6DBMqQ4ISfKk/3Zr3YfzBDE/JxQG6Zjrve
+	2KCTPwKjKtwgbKJ25pDT5XbaCZFGL8k=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 09D3C602C4;
+	by tor.source.kernel.org (Postfix) with ESMTP id 192116060C;
+	Mon,  2 Nov 2026 14:23:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38CDA1F00A16;
 	Mon,  2 Nov 2026 14:22:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66AA61F00A17;
-	Mon,  2 Nov 2026 14:22:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793629378;
-	bh=WXeWRtHDTvlcvQqGcGXKpHSOkC75TIYAS6cttW7V/+A=;
+	s=k20260515; t=1793629391;
+	bh=MVs7ALsfOLkn53l0kYUUme/SDUyhPHOVCY6QDFUmXzg=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=kvHRMzqfiFxfaykdXJncqNCKytFOYdWEA6z2XKwrpx1cXAUWC/1f6IelPxZz69lt3
-	 bZzGsPY7tAF+nhMSErY6rPc/3QL/4TA7hlVU8tM89mYfPX9Z6KS6p4IW1PsDrhG0OQ
-	 bkcIKIyEY1GGRPu5UaBXvghHdY/CIfOPJbzAJZHTg7fVeaIOTOcs6v9yzyjdbAXIjO
-	 eLo1eYZ4IN84HHP6CrAMeFl9oPgWiHXBV4hrBwe2eZenA/caTo8Hx2CSrazCqEHP19
-	 DS3uVg+WucdQObp90U98MCzPe1bAhdyoN7eZZYLpOUglkgctnTto/e3gh/m1uyI5m1
-	 KND/LIH3rUy8Q==
+	b=FLfR5DFeQsSly/cabaQC7e9iY2bQ9zaa9/+MREBD4BU88eN1Xx3KqTRtm3qYQYpfl
+	 kCDavrMTvPYKs/rYn9gptjjElebcf4yPuRmKH7HVcqjqazHfqUR/Htiq7M6QYbzt4U
+	 zWa4rzDSZK1q8pK7OQVMGrLrU+xIoyILoyQv+YpF94q5kGFQx5QO63A+aw0aYwigp7
+	 8QwH/5quUO5K2fuIJpTTFlJf5GF8Ltsg0OQYaZW1HbdncmCkutEph8u81EsuVQiORQ
+	 PSv2MLOMncLKFj4vxCZCl4sIAOggQ39Y2OGr1AHxp6406Vqv9fSst95zy3PsIJt0ea
+	 Hqf1VPSexzNvw==
 From: Christian Brauner <brauner@kernel.org>
-Date: Mon, 02 Nov 2026 15:21:20 +0100
-Subject: [PATCH RFC 05/38] platform/x86: toshiba_acpi: reject malformed
- brightness and fan writes
+Date: Mon, 02 Nov 2026 15:21:21 +0100
+Subject: [PATCH RFC 06/38] xtensa: simdisk: don't read the file name
+ without the lock
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261102-work-procfs-bugfixes-v1-5-59422ed3e465@kernel.org>
+Message-Id: <20261102-work-procfs-bugfixes-v1-6-59422ed3e465@kernel.org>
 References: <20261102-work-procfs-bugfixes-v1-0-59422ed3e465@kernel.org>
 In-Reply-To: <20261102-work-procfs-bugfixes-v1-0-59422ed3e465@kernel.org>
 To: linux-fsdevel@vger.kernel.org
@@ -105,27 +105,27 @@ Cc: Linus Torvalds <torvalds@linux-foundation.org>,
  "Christian Brauner (Amutable)" <brauner@kernel.org>, 
  Chuck Lever <cel@kernel.org>, stable@vger.kernel.org
 X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1850; i=brauner@kernel.org;
- h=from:subject:message-id; bh=dBPyRrfA4AE5uU+SDwP01KQAXBYhly7L9ZsRpXHhzrM=;
- b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS9mJP1X33fLpsJXpWBaifTEsT2SLto6RSE/d33f+fli
- mfvjj3d3lHKwiDGxSArpsji0G4SLrecp2KzUaYGzBxWJpAhDFycAjCRafMYGSYH7L886UKoRuDq
- G9c+FRp4acs2loQbL5Kbz/ZCoj25bhYjw/4HhzpE/VP23N4kdd2x9P4SBZmAjRbxpyfu2bkqlD9
- 1GTMA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1811; i=brauner@kernel.org;
+ h=from:subject:message-id; bh=VTDmn8Fj5UlymIH+0OFfDD9d3Id2xocQBgXcavnnib4=;
+ b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS9mJP1/VRcytoDLK0ufy3WLzr3+sXFE+dzGyTVYqofd
+ O+7u3tWckcpC4MYF4OsmCKLQ7tJuNxynorNRpkaMHNYmUCGMHBxCsBEUkQZ/rs27hJY5+amu8Rq
+ WoJCkbXlpumL4jqiOpe4HNF66TkndBkjwwvt4L3fvCaeXKnVx7hb7eIq/dqmQN78dydXJQe4lqT
+ uZgEA
 X-Developer-Key: i=brauner@kernel.org; a=openpgp;
  fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 7795FA000A
-X-Stat-Signature: q7588qgf184fh1qqk1hgghueipyekzpt
 X-Rspam-User: 
+X-Rspamd-Queue-Id: 80EA88000D
+X-Stat-Signature: w18b6w5b8hrqknxu654nom4stpb6qebi
+X-Rspamd-Server: rspam01
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
 	version=4.0.1
-X-HE-Tag: 1793629379-492449
-X-HE-Meta: U2FsdGVkX1/7v0fmO4J9Q5PIPuOzlxulsA64tlGqTy9X5dRhzmnXwywpe9LIbPdeSbKGB9QyrvUOhNbJSqyDX//J49RtaPXjhCCYvPbyMsPpx3QgtbAyyXsRNkDD9Y5IcyFxKMIsV7XRd70tS2nPUtU9fDbR0AsQdp2E60xOJqp2KgTchpr/9+R4xYflgx7qW3ZFpmHmwa4uvUkgd78TqwQoDgujkROoWfAnQ8NeBrY5ya+Xg1eP4BPZVCplkNYpNoVY1BzjYFF0GxnLmIZ7r8fL5BC6HbXxgwUeRSvpyt8jskR/ctbnnXlVFkPRmMfbkQXI5W6FJycVw+VeaDSBelXClZRB2osHWKf5EM/xXn4R0t9k3w9PjRsgNgZ7/7blAJCM+PWVZmLdoS92VlkqKCBUTCv3uM8x4ailT+p0/PkV1AhlVpSVuiUtI534pmb78tuDxMjeRW1ImmaUC/oEPSMREXp5bg05GnrAUpkHT0XH3eg88c1hYPzAyyxBQhryAwkxdF8p5hGbzuSuR4SwHVBm7IO+lFCtuD34WsWZqVHs2KxZDm+ZIG+LcLazfAUMrgDWmBT3c/vErhUOmK27W8AgUPopkWI5ooyPDaKDWeyM3JJZMsdjqA/7sWErBp//Y2160kK8JwKCBW0JGLdCrlCzgoiYt2fggGjp4tJEip3xbUoQWMh4s3StM5I61Gm7r9Q9e8gAh9n2YA6FRPz64k+rN8SnWOjURGuavH5MjRbu1CgYa0gtZ9jBLCj/CIkEKvquJDnBkRFK/avVkrCrWfuPhICtSLxHZ3/r8eUU0NPVVyN4ProPvalJZRD99WuHOZUBOnEYlVx5QaGsh30y9af+BALJygTdl1gUc2U/L0WZK5kX5updnyYOqoC+i76v55S0UP0TaoNyF6+1PMt4lqmNy0Dj4gndqXTWNf8aIeXT3Ct2/Bo2ReHfCAsl9l0FQS6MTU5r8JiX5g0LZ8H
- d+yZ1x+z
- LdJ4vaw45gGyMjSmQ1KXp14bBMRmyuFetGZUyMauaacyPT4yjtKSrby1oZVFW/3PChsruYlC+AiMPYRCLHOecIZhxEDLj9y9DH7O4BKUl4Jxbn00/my4j7BUkHXL/rcPOxBjzAvE4ZbYhyeySikHQsIwpNKiipQ+5uuUUYov0+T0eRnT2fFzQ+rMtma/EkiWZWXiwB2YAocBgDtmGxxSE++lPiR6ti/O5ehPyAVIdnXCzalBlhAOZU2OsvbXAyd8r3nEpMQp7TJGXSBHXvGz57n08rhkSZ/sQDfN8YTKXS3oaXCAKCKhy1xrVKpqTbWMPks25YIyuadYGA5I=
+X-HE-Tag: 1793629392-633632
+X-HE-Meta: U2FsdGVkX19gceMTAtfq0tT62YNGfM0DexuJ1T6bD/ADaflpN3QOdKZAxiL1ND+JBR32anzRSHajqjeQeGnboxKUed3lNrh+O3EG9Qu/OvkR/VhgOCNTpmwDjtimmF9HWZVeZ2lJZeRsuFhgxY4Kwwe4CJVqeTAWqarLn4MJaN5OuPNsSRFqxmiNNyJk3tKXSr71o6gZMbfxVVoqC1mYO4p4opAOSiq2F1CVCkL1fIQPxvP7ebKDMD+1uiBPxsQiLoxEOrJ73o+lIl0KwPhMTRSdYF0UvOMvrfuz7Dn4UV9cIxdf7LSFkaKFnsTst6ZMib8WGakZT0o/y74tG+BDwqovRb88VUwXbL5MoQasC1zKgGsoMv4sx+8IZu5ygF3b2eyaMs8xjE0GsaJyf/GoclbStkfPug2GgGwkgmLh5IFv77mmgoTEYI2goaMkOWIUEnahDYQEAKftzCTp3mkSDhb1wJSEaRaZdhQDIoJbXHJcphDhlK99jKgrA9dujkcmdTn2cEM9JoRCZA47blcxrW4ruv4TJoeVevbRtP22vkqE32sjO2aOl3XVriRJLE6pNTsIVqjBRqZKQGX08pI4K5Oc/rJQQ5SaAyJFXs/l4C7d1WO+WoEjHuQjCM9qSpJREexLsmMY7Ug/0Slblij2bpw2nfEF7wY7lCxV01FRSdLnbdN2DD+DknSlkfVAIjMblDWxOKrNk6NrlT6Rdd2swccu63i1AYb/8u8HP0e+N9gZ31TT/hocGpIu8GxltjGNQccK48Fjg9qfVX90kCms819Gk6uOwEF7ufojbs+UcqaFE3wT4SZq3kShvhBoUujHOgNg3fQ7kWfGQJNID9UyzAVt6OqMEMVRGdnFp4mgsZmHDTpgvkZdEpPkw1py/EI2Ooay+/8ZI5y7/DdTlYPtL1zucQuO/kVARotRTgSxMhoGD80h+t/pexHRdX43EmYb3eNe/xYYfJgcYbbZwHt
+ zaMY2QB7
+ uCRmM8mIh9KtgCy7OaedF/QdXSiCMrxwa/Fby+MHM1H+c45lbFVqc8p5uDoJ4C9WS9MdnRu71h/ibJTnRd8Nrrn+OiIBegN3nE6xN9fTevBuT3b2pMAY6s8WnsFkoksmi3/BXKriYYKM0fk33jSVAmSJG3acB1AHMlr9uTo6RgXT80HuZx4zRhPMyNkqEAE75LNVp53hp4SmelvLUn8SDC676TCmElmgXaIaSGiULdwhVvaR0ng84yhWjbs2ZRzeAZufu2OywjcFbocF+B5x35HFA6Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -134,49 +134,57 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-When lcd_proc_write() and fan_proc_write() were refactored their checks
-were inverted but the && stayed. They only fail if sscanf() didn't
-parse anything and the value is out of range at the same time, and for
-the brightness value < 0 && value > levels can't be true at all. So an
-out of range brightness or fan setting is passed on to the hardware,
-and so is the uninitialized value if nothing could be parsed.
+proc_read_simdisk() looks at dev->filename without holding dev->lock. A
+write to the same file detaches the disk and frees the name under the
+lock, so a concurrent reader can copy out freed memory. Copy the name
+with the lock held.
 
-Restore the checks as they were before the refactoring.
-
-Fixes: e1a949c1b988 ("toshiba_acpi: Refactor *{get, set} functions return value")
-Fixes: 3e07e5baa2af ("toshiba_acpi: Add set_fan_status function")
+Fixes: b6c7e873daf7 ("xtensa: ISS: add host file-based simulated disk")
 Cc: stable@vger.kernel.org
 Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 ---
- drivers/platform/x86/toshiba_acpi.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ arch/xtensa/platforms/iss/simdisk.c | 25 ++++++++++++-------------
+ 1 file changed, 12 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/platform/x86/toshiba_acpi.c b/drivers/platform/x86/toshiba_acpi.c
-index a0b8060836d0..9eb8f1e5aeda 100644
---- a/drivers/platform/x86/toshiba_acpi.c
-+++ b/drivers/platform/x86/toshiba_acpi.c
-@@ -1498,8 +1498,8 @@ static ssize_t lcd_proc_write(struct file *file, const char __user *buf,
- 	cmd[len] = '\0';
+diff --git a/arch/xtensa/platforms/iss/simdisk.c b/arch/xtensa/platforms/iss/simdisk.c
+index a2ddb49c269d..7b115e023de9 100644
+--- a/arch/xtensa/platforms/iss/simdisk.c
++++ b/arch/xtensa/platforms/iss/simdisk.c
+@@ -238,22 +238,21 @@ static ssize_t proc_read_simdisk(struct file *file, char __user *buf,
+ 			size_t size, loff_t *ppos)
+ {
+ 	struct simdisk *dev = pde_data(file_inode(file));
+-	const char *s = dev->filename;
+-	if (s) {
+-		ssize_t len = strlen(s);
+-		char *temp = kmalloc(len + 2, GFP_KERNEL);
++	ssize_t len;
++	char *temp;
  
- 	levels = dev->backlight_dev->props.max_brightness + 1;
--	if (sscanf(cmd, " brightness : %i", &value) != 1 &&
--	    value < 0 && value > levels)
-+	if (sscanf(cmd, " brightness : %i", &value) != 1 ||
-+	    value < 0 || value >= levels)
- 		return -EINVAL;
+-		if (!temp)
+-			return -ENOMEM;
++	/* a write sets at most a page, see proc_write_simdisk() */
++	temp = kmalloc(PAGE_SIZE + 2, GFP_KERNEL);
++	if (!temp)
++		return -ENOMEM;
  
- 	if (set_lcd_brightness(dev, value))
-@@ -1678,8 +1678,8 @@ static ssize_t fan_proc_write(struct file *file, const char __user *buf,
- 		return -EFAULT;
- 	cmd[len] = '\0';
+-		len = scnprintf(temp, len + 2, "%s\n", s);
+-		len = simple_read_from_buffer(buf, size, ppos,
+-					      temp, len);
++	spin_lock(&dev->lock);
++	len = scnprintf(temp, PAGE_SIZE + 2, "%s\n", dev->filename ?: "");
++	spin_unlock(&dev->lock);
  
--	if (sscanf(cmd, " force_on : %i", &value) != 1 &&
--	    value != 0 && value != 1)
-+	if (sscanf(cmd, " force_on : %i", &value) != 1 ||
-+	    value < 0 || value > 1)
- 		return -EINVAL;
+-		kfree(temp);
+-		return len;
+-	}
+-	return simple_read_from_buffer(buf, size, ppos, "\n", 1);
++	len = simple_read_from_buffer(buf, size, ppos, temp, len);
++	kfree(temp);
++	return len;
+ }
  
- 	if (set_fan_status(dev, value))
+ static ssize_t proc_write_simdisk(struct file *file, const char __user *buf,
 
 -- 
 2.53.0
