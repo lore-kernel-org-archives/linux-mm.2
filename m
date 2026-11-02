@@ -1,75 +1,75 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14B8A60703B4
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 14:30:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E371460716CD
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 14:30:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=RW+vtAzi
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=N/zg5Ona
 Received: by kanga.kvack.org (Postfix)
-	id 23ED86B05EB; Mon,  2 Nov 2026 09:30:01 -0500 (EST)
+	id 1552F6B05ED; Mon,  2 Nov 2026 09:30:18 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1EF446B05EC; Mon,  2 Nov 2026 09:30:01 -0500 (EST)
+	id 0DEF26B05EE; Mon,  2 Nov 2026 09:30:18 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0DE896B05ED; Mon,  2 Nov 2026 09:30:01 -0500 (EST)
+	id EE8CC6B05EF; Mon,  2 Nov 2026 09:30:17 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id D95356B05EB
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 09:30:00 -0500 (EST)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 6FC0D1C085F
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 14:30:00 +0000 (UTC)
-X-FDA: 85390413360.26.645005F
+	by kanga.kvack.org (Postfix) with ESMTP id C1ABD6B05ED
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 09:30:17 -0500 (EST)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 5ED9C1C0B81
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 14:30:17 +0000 (UTC)
+X-FDA: 85390414074.29.47E9F17
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf26.hostedemail.com (Postfix) with ESMTP id A983B140007
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 14:29:58 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RW+vtAzi;
-	spf=pass (imf26.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	by imf19.hostedemail.com (Postfix) with ESMTP id CC7A51A0016
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 14:30:14 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="N/zg5Ona";
+	spf=pass (imf19.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793629814;
+	b=A7RNqYFIiZLyoUhcZylvh/Gk/LcxRi1282tKt9L9MTlipMISFZvwxhlTleqho+KYQ/muuf
+	AjC21GV294V5Vyw4D2RzysmaoUqJG9SWWjk4/p6WpZUQJj7kMVRvwdiBT341Ve8z+EgDTk
+	oDAdSyb5UFYqh1d7aKRd+FJaRU9YiUA=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="N/zg5Ona";
+	spf=pass (imf19.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793629798;
+	s=arc-20220608; t=1793629814;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=SA3lGiy6S79OdVacoNeeNA0LWGoA0p1Ppo9PoyQO2Ks=;
-	b=PwokY3Kncr3FBWuSLiLLJPF9gZi+xvGzm+J7tEZkPOjRvEwIPmHmsORHbAAVy3K4CSo1H9
-	3I26Bwhls3UHH0Mp7riUAo43CwdQkiblv9tMhBtV/6sXQ/DntYVy2j6+iGzDEE9mLdb1o5
-	nt4iNEkR+wKoiX5qNFt2immEoS7JXj8=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RW+vtAzi;
-	spf=pass (imf26.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793629798;
-	b=u0djOUNWNo4fHNiy1VqY2r7HvUtstzfYVHZml8mEC6Q1MkbyC79noeRvc5lTLMy/PBeCvN
-	Pnuzj4BVxXJ8yRymi+H12mxUfOqXfE2IrJhOEJPeAXrVNWh1/u+ZjtEEnLJ4LuFxHpLuEE
-	9FWPJWjM5D1Nubkh9S2mbnmC0gIgvOU=
+	bh=3411hkdZbwQNMzi0U+XOI7Na8s43TyvUoc5wijeirGE=;
+	b=TXqlxnkCZI89ODx4bvABNJYzFtHV5uo4Wjjm4cO0oB1am7OVoh19Ay4x53xSRVBhW+E8Fx
+	CqBHSj9BurgKa0PDVZMUASwwvZO7bFklzQT1w0FiairV2KbYHZt12vr7NtU0D2zK6u4OMy
+	F+i7mM/y95W1ssCOciyN3Sxmii5b+0Y=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 4C06F60618;
+	by tor.source.kernel.org (Postfix) with ESMTP id 4BA2360610;
+	Mon,  2 Nov 2026 14:30:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 798041F00A16;
 	Mon,  2 Nov 2026 14:29:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E3171F00A17;
-	Mon,  2 Nov 2026 14:29:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793629798;
-	bh=SA3lGiy6S79OdVacoNeeNA0LWGoA0p1Ppo9PoyQO2Ks=;
+	s=k20260515; t=1793629814;
+	bh=3411hkdZbwQNMzi0U+XOI7Na8s43TyvUoc5wijeirGE=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=RW+vtAzixHFdftAw+FFf7X1DqyjNjrm5rXJzLqMgENvUyh6lxSop0zLX2+vQS8q3U
-	 qRZVYZNACtSOXvDQAbomlArmJKHhYUFIBB2YrfNds0mv1wfARpxrZIlRmEwlYwFopc
-	 5VdZGPqAWRIGCJ/WjNt4zJr1epJ29nqoWmRFqTaIbIhCMRcObitFsIcVlAgJcZod0r
-	 ACWF7EpwiUSzD42RWAztKJAwpw5HeZTLOr4cdHEhkz65HDjFGe1NQmquxEr2sddSYL
-	 RwpzOOV7W3I2TVeiKdqC8qxeUtM4wH2oSQalOWqHC31war9q1hlS5ta/ceFelklXjl
-	 B3xNbX+COlrjQ==
+	b=N/zg5OnaHcMDjHdzYbR6QvnFai7hOwNAnTt2NkY9jA2RApvWKfwTn6mchyUme/onF
+	 ieOMSfn7EOjxy9D5u0vGcVfX6ixkzrWuP14BEk8Dqq6sJoYrNLzk3E0OYlhnVId4pr
+	 18pXAmt3n5kLL/zuxe0A97wY4IR5i4aoPTqrBac5O7Y9xuTkc8NN4MFD1wYjeoqM6/
+	 c2p7xPOe1nl/kZjzUE3FLMYkSrfUbtJT2EygAmFEqgAW+X5RFTbYC1NWxTMeQ+fkhv
+	 Bb1GsbVLMeUTFDG1989JYHy8ooD6KHyoYwdBzXmxmZUmpttNpFOQ3+lzmxFMxqRZuZ
+	 /erP9IfNldJYw==
 From: Christian Brauner <brauner@kernel.org>
-Date: Mon, 02 Nov 2026 15:21:49 +0100
-Subject: [PATCH RFC 34/38] proc: sysctl: look at the table under
- sysctl_lock when creating an inode
+Date: Mon, 02 Nov 2026 15:21:50 +0100
+Subject: [PATCH RFC 35/38] proc: sysctl: don't hold the tables while
+ readdir copies to userspace
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261102-work-procfs-bugfixes-v1-34-59422ed3e465@kernel.org>
+Message-Id: <20261102-work-procfs-bugfixes-v1-35-59422ed3e465@kernel.org>
 References: <20261102-work-procfs-bugfixes-v1-0-59422ed3e465@kernel.org>
 In-Reply-To: <20261102-work-procfs-bugfixes-v1-0-59422ed3e465@kernel.org>
 To: linux-fsdevel@vger.kernel.org
@@ -103,29 +103,29 @@ Cc: Linus Torvalds <torvalds@linux-foundation.org>,
  linux-ext4@vger.kernel.org, linux-modules@vger.kernel.org, 
  linux-debuggers@vger.kernel.org, 
  "Christian Brauner (Amutable)" <brauner@kernel.org>, 
- Chuck Lever <cel@kernel.org>
+ Chuck Lever <cel@kernel.org>, stable@vger.kernel.org
 X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2783; i=brauner@kernel.org;
- h=from:subject:message-id; bh=C8EYtx2R+lYWtFHGeY0iXNf5hNAMg0s7P8pl3m1iKgk=;
- b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS9mJOj8UzGeLUCc9+ZM2pvbvxebnnhmpE+g+SSXWobN
- Dosy223dJSyMIhxMciKKbI4tJuEyy3nqdhslKkBM4eVCWQIAxenAEzk5QVGhrYU5dR7fIy37FMe
- 6+iy+10qiYvReZc66/8Z5ztf76fa+DEynFt/fqvi+l16ifbTVh5Z/+J12e1rnoUitwqfWIbW8FV
- OYgQA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=15345; i=brauner@kernel.org;
+ h=from:subject:message-id; bh=awE7OtuLocwwLuG73C7KoqdSIZd97jAzgPGBLfGeaBs=;
+ b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS9mJOT3hscVVlXMb28cnGS9POEl1M5Z225d2zCpfU2r
+ VExHzkWd5SyMIhxMciKKbI4tJuEyy3nqdhslKkBM4eVCWQIAxenAEzkaCTDf5dUdg1T519xexnC
+ NONPiIm2inxrCY2e4v2AQUfiaOWF+YwMD1qNZt6cez3sz76H+Vwh+/ekzE3YYKvrHnRy7vT5ERO
+ +sgAA
 X-Developer-Key: i=brauner@kernel.org; a=openpgp;
  fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: A983B140007
+X-Rspamd-Queue-Id: CC7A51A0016
+X-Stat-Signature: yag15khsxk9ajgntmy7smjz9kwigk1em
+X-Rspamd-Server: rspam01
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
 	version=4.0.1
-X-Stat-Signature: jsqrtqwgk8hqfxo98u4yxq31br3pp3ij
-X-HE-Tag: 1793629798-761809
-X-HE-Meta: U2FsdGVkX1+4gRtHR6DaCIiDHruJrdE/SAnT/tZDaPXIY3Qk65v5d7cF3vhD8+i9idZDUjMDEiz2J2mwSLRWULqaEq6xAAv1NrLHG/gzw/QKtdy2C5mpdZndYc9yqSguIP1PdyPNz/xvZNaEi5qxhOo1p/vb3WMJVnY7GdEU01XzyvI6m7gx7pGg208y/5zbOBeGRPLyAR/qafGTg8HX4u7cwd5cBigobvAWI3eSvudyBB+X/yim83bA6pZm+kGNWv0PK5rYIR8f3q1WSSIUwzdIo5mD+hEkiKVj70Cxn2PDIeHMc9m2iQBpW8w62MDPDWfBPNR/tBt3wl7jg1xdhcgnaQsivxGuHAH8CJ+7S65IAvE3efAPeEi8KHOf5qJ9hxM2VbK+AjEdQkXHnMb8yYJPZtU5SQvkFRqfOf3kbA5yc8CaMURf7FjP0Myza+Ryh+BCCIlc1RRMgm6CwAzBqrPJQPshP9EkBIUHWtEVBXOHlmC6ERP2RvMfof02CX51fQobpv+qgIKIx1HOLRu8gAe3lpforvMrUxBt31Prnql3OwC1AfCEmlPGDT/IJ75qTqfEAHrkO3cts16lqjf87PPmos6gldz/GfQqeeWBMA4o9rHKQkFSec+Jprl0o4lSt1GMqn9c6krSoH3ArBp3DH9KZeB1fOHI4GdKtgViAaFwh0rQ5go4vHC/dL8qV+PiBUBrZJ/NrWu3yWtw6aQwg5ew+32zWBuUXDe4MryeCRp25+5Zc2g08y4FZjE3173N6oGgPJIWcp1zPhXgpcuB7sw+WofGhumjFiI/3BnvkElpXlJjMn/lyZJGX24dm+jaTk9jtNQCdFaikLD5aNMKIp4ue/iZp8AMdWKobmC+uWJu1OkWJWREI6AzyiKVpaqINTGRVG5hC4alhGR96CnG4tHcKSw/UrZGYbyIkx90NUbQDigC11CKjYtxEKK6tEv3Zvht1zmB/A3yN32RG5Q
- jp0yGyqf
- l6BEq9WH9wrUKSwRwY35JclUgJHxCz6plMjnBZalFtVmAaf+Bx6bX0v30cFlo0P8Ka38qo/3I50laepcep8w42Lk0EXFXyOSTUuQ57lNQnjO58LVe93QiGpvRd9mgE/vjfjStZ90FXMeF08gkjMxzH8C7h7VH3E2n6AT0Zi6ijcw6cRMM9eLa2QwOrH29PKb/bUourI15U7STNpVoAtFLL3DaYHryKVF4CsCwtsPsb1FfKjmvlK+8nMDA9JsBl9ausiSoaSX3g1ew/fwXhk08HgvrnM0E3sMYiBo6wkU0/sOvsY1E89oMs/SK7pIKsvAiCSAb7f4tm7+NQJQPapvRK6FADP4AYYPTsFzyce6mYxB8kQ0=
+X-HE-Tag: 1793629814-88985
+X-HE-Meta: U2FsdGVkX1++YYwKA+9J69NcxLQkEB/yebT3+sg/dqpkEo5ZL3iF96I+M11/tRcR7Su5h8Nqe85ZFXR4O4/Qy7c0tXGV5tfq9oW8QAYLQ0ecCAekMS1eBJ1k8Bz7J8g+tCRTIZuz0UQ2DHFU1a2vfGx6oiFiL1Z9mQugFRzyaC9Hb0tmxulWUfJqISdtueReZ7iy6cAekMellj28nvAzwJJMs/PMxiR8euLymW03BWVZV1o5k1JfmlOeYs5BU2rgFWm03uYwVYIKm9m/XgVw8PJ5IjqybtrheWJ4oQ8jogL17jZZFJdBXxraupkeQY45lqwsqkg/qCudvtvzhPyd8XNE4BsXNVojpcoBrFlGAdDLn9Zk5QEYEg0B8IDlwcMijWEDYKTs9HbXU7dMb4o2JpYj5CrCLE5efomGXgy7OG0XVeW7u9Z65TE1YflDFT5GdoCwXpic0s3WAqVKZON0suXhJoX2jahNK+LJ9nUKXXwEU3YuAOvcMjLdD8pAK6YJGb40McG7kx1T3J3TU1Ba+exvYqX67imWzMEKXjt0bdikfnCBeuSlWPKqy4JukH+8FBKokMg4yu7HUejV2fotg956FLC7avhqy4yWLXYsL67gMNIamnjbhi28zyw9tEeJF+pxCBuOOn937fv9dVt8vh2ImT5+OrgZxoRWS1y5hLtdRJ/v6BdMBY3TRkLZBQPEGZg4UZeEBlIYsdaniIiDZTe3H3vCEcikFDbN1xr1/MLwtRzJ/brxxxSslLTbBw7gEOM228wR8xJUJv+E3K5y/RyY1zjBbf0TY29QR8nJW0+mQJnUxChDhBu/kaNn7RnUgDFuHeqwXSiibk2uFrxDj3VqKnMlFfA0N4GWxH+db2ArsVk3bdlYfyzv2O8BLvIpa+jMFfbQzdCnVlbIuDKoHIlAwsYyJssAw0pHtzj2PKrnK65z0wkpQg8Lke7A4FQsrEhSLIjLg6bLsDlEnOZ
+ noptbaLP
+ rieIVU83QAavWZjV5PRG8dM1c2v+7Zke53c/xcU0gBtX+L9QfZ8Mln0QMIu2FWDB6Ngi8JZFz69TE3sshJs12bwUAa65abOht5v3MiWRsnj4kVvOq1SYVxhBZ+chTj/KEPhosBaN9mUgDOs55UobBSbNrHs9WVTbmiHCy8w1nupyt0LeieSSdBAzXdYlKcrJVv7y7K+xn/2afAeIBmbce7kSyhUFg751OiQTVthWW8dhx8VG1Dj7JxNK3ER8bYWwnqWNNG9kos9o9K3y+bedfES23IOITEUJt2bcHyx1AWKVgAGJkNeiBtfmZFw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -134,80 +134,458 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-proc_sys_make_inode() checks under sysctl_lock that @head isn't being
-unregistered, lets go of the lock, and then reads the mode of @table
-and calls ->set_ownership() with @head. That's fine as long as the
-caller holds @head in use, which keeps unregistering from getting past
-that check. The next patch has a caller that only pins the memory of
-@head. For that one the table, and whatever the owner of the header
-keeps behind it, is only there for as long as nobody unregisters the
-header, which happens under sysctl_lock. So read the mode and set the
-ownership before letting go of the lock. The ->set_ownership()
-callbacks only look up ids in a user namespace.
+proc_sys_readdir() holds the directory's table for the whole readdir
+and the table of each entry while dir_emit() copies its name to
+userspace. Unregistering a table waits until nobody uses it anymore. So
+a getdents64() whose buffer faults for as long as it wants keeps
+unregister_sysctl_table() waiting, just like a stalled read() does.
+Listing /proc/sys/net/ipv6/conf/<dev>/ that way holds up the removal of
+the device under RTNL.
 
-No functional changes.
+So don't take any table into use for a listing. A header counts what
+refers to its memory, the inodes made for it, and unregistering doesn't
+wait for those. readdir takes one of those references on the entry it
+is at instead, which keeps the header around and nothing else. Under
+sysctl_lock, where unregistering erases an entry, it finds the entry,
+copies its name and mode, follows a link to the entry it stands for and
+pins that. Then it looks the dentry up, creates the inode if there is
+none, which checks for itself under sysctl_lock that the table is still
+registered, and emits the entry with nothing held at all. The next
+entry is the first live one after that name, which is where a listing
+resumes between calls since "proc: sysctl: resume readdir after the
+last name it returned" anyway. kernfs_fop_readdir() and
+proc_readdir_de() work the same way, a reference on the entry and the
+lock only to find the next one.
 
+While the entry is still registered its node is still in the tree and
+the next one is right behind it, like kernfs_dir_next_pos() continues
+from the node it holds. Only once it went away, and to resume, is the
+next entry found by name. That's one trip through sysctl_lock per entry
+like before, and the link entries of /proc/sys/net no longer take two
+more. The directory isn't
+taken into use either, an entry keeps its directory registered while
+it is used and readdir looks at the directory under the lock. So the
+dots don't wait for anything, a directory that went away lists them and
+then fails with -ENOENT. A seek to an arbitrary position counts the
+entries from the start like before, one trip per entry.
+
+Fixes: 77b14db502cb ("[PATCH] sysctl: reimplement the sysctl proc support")
+Cc: stable@vger.kernel.org
 Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 ---
- fs/proc/proc_sysctl.c | 20 +++++++++++++-------
- 1 file changed, 13 insertions(+), 7 deletions(-)
+ fs/proc/proc_sysctl.c | 307 +++++++++++++++++++++++++++-----------------------
+ 1 file changed, 166 insertions(+), 141 deletions(-)
 
 diff --git a/fs/proc/proc_sysctl.c b/fs/proc/proc_sysctl.c
-index 2150cf842919..a1242247f492 100644
+index a1242247f492..0b7a1e487ed6 100644
 --- a/fs/proc/proc_sysctl.c
 +++ b/fs/proc/proc_sysctl.c
-@@ -500,6 +500,7 @@ static struct inode *proc_sys_make_inode(struct super_block *sb,
- 	struct ctl_table_root *root = head->root;
- 	struct inode *inode;
- 	struct proc_inode *ei;
+@@ -91,6 +91,8 @@ static void drop_sysctl_table(struct ctl_table_header *header);
+ static int sysctl_follow_link(struct ctl_table_header **phead,
+ 	const struct ctl_table **pentry);
+ static int insert_links(struct ctl_table_header *head);
++static struct ctl_table_set *lookup_header_set(struct ctl_table_root *root);
++static struct ctl_dir *xlate_dir(struct ctl_table_set *set, struct ctl_dir *dir);
+ static void put_links(struct ctl_table_header *header);
+ 
+ static void sysctl_print_dir(struct ctl_dir *dir)
+@@ -367,86 +369,97 @@ static const struct ctl_table *lookup_entry(struct ctl_table_header **phead,
+ 	return entry;
+ }
+ 
+-static struct ctl_node *first_usable_entry(struct rb_node *node)
+-{
+-	struct ctl_node *ctl_node;
++/*
++ * What readdir takes along for an entry between the trips through
++ * sysctl_lock: the header pinned, which keeps its memory and nothing else,
++ * the entry, its name and mode. For a link the header and entry are the
++ * ones it stands for in the caller's set.
++ */
++struct sysctl_dirent {
++	struct ctl_table_header *head;
++	const struct ctl_table *table;
++	struct ctl_node *node;		/* the entry's node in the directory, NULL for a link */
++	ino_t ino;
++	unsigned int type;
 +	umode_t mode;
++	bool skip;
++	int len;
++	char name[NAME_MAX + 1];
++};
  
- 	inode = new_inode(sb);
- 	if (!inode)
-@@ -509,12 +510,22 @@ static struct inode *proc_sys_make_inode(struct super_block *sb,
+-	for (;node; node = rb_next(node)) {
+-		ctl_node = rb_entry(node, struct ctl_node, node);
+-		if (use_table(ctl_node->header))
+-			return ctl_node;
+-	}
+-	return NULL;
++/* A reference on the memory of @head, like an inode made for it holds. */
++static void sysctl_pin(struct ctl_table_header *head)
++{
++	lockdep_assert_held(&sysctl_lock);
++	head->count++;
+ }
  
- 	ei = PROC_I(inode);
- 
-+	inode->i_uid = GLOBAL_ROOT_UID;
-+	inode->i_gid = GLOBAL_ROOT_GID;
- 	spin_lock(&sysctl_lock);
- 	if (unlikely(head->unregistering)) {
- 		spin_unlock(&sysctl_lock);
- 		iput(inode);
- 		return ERR_PTR(-ENOENT);
- 	}
-+	/*
-+	 * The table, and whatever the owner of the header keeps behind it,
-+	 * is only there for as long as nobody unregisters the header, which
-+	 * happens under sysctl_lock. So look at them before letting go of it.
-+	 */
-+	mode = table->mode;
-+	if (root->set_ownership)
-+		root->set_ownership(head, &inode->i_uid, &inode->i_gid);
- 	ei->sysctl = head;
- 	ei->sysctl_entry = table;
- 	hlist_add_head_rcu(&ei->sibling_inodes, &head->inodes);
-@@ -522,8 +533,8 @@ static struct inode *proc_sys_make_inode(struct super_block *sb,
- 	spin_unlock(&sysctl_lock);
- 
- 	simple_inode_init_ts(inode);
--	inode->i_mode = table->mode;
--	if (!S_ISDIR(table->mode)) {
-+	inode->i_mode = mode;
-+	if (!S_ISDIR(mode)) {
- 		inode->i_mode |= S_IFREG;
- 		inode->i_op = &proc_sys_inode_operations;
- 		inode->i_fop = &proc_sys_file_operations;
-@@ -535,11 +546,6 @@ static struct inode *proc_sys_make_inode(struct super_block *sb,
- 			make_empty_dir_inode(inode);
- 	}
- 
--	inode->i_uid = GLOBAL_ROOT_UID;
--	inode->i_gid = GLOBAL_ROOT_GID;
--	if (root->set_ownership)
--		root->set_ownership(head, &inode->i_uid, &inode->i_gid);
+-static void first_entry(struct ctl_dir *dir,
+-	struct ctl_table_header **phead, const struct ctl_table **pentry)
++static void sysctl_unpin(struct ctl_table_header *head)
+ {
+-	struct ctl_table_header *head = NULL;
+-	const struct ctl_table *entry = NULL;
+-	struct ctl_node *ctl_node;
 -
- 	return inode;
+-	spin_lock(&sysctl_lock);
+-	ctl_node = first_usable_entry(rb_first(&dir->root));
+-	spin_unlock(&sysctl_lock);
+-	if (ctl_node) {
+-		head = ctl_node->header;
+-		entry = &head->ctl_table[ctl_node - head->node];
+-	}
+-	*phead = head;
+-	*pentry = entry;
++	lockdep_assert_held(&sysctl_lock);
++	if (!--head->count)
++		kfree_rcu(head, rcu);
+ }
+ 
+-static void next_entry(struct ctl_table_header **phead, const struct ctl_table **pentry)
++/* the first entry from @node on whose table isn't being unregistered */
++static struct ctl_node *first_live_entry(struct rb_node *node)
+ {
+-	struct ctl_table_header *head = *phead;
+-	const struct ctl_table *entry = *pentry;
+-	struct ctl_node *ctl_node = &head->node[entry - head->ctl_table];
+-
+-	spin_lock(&sysctl_lock);
+-	unuse_table(head);
++	struct ctl_node *ctl_node;
+ 
+-	ctl_node = first_usable_entry(rb_next(&ctl_node->node));
+-	spin_unlock(&sysctl_lock);
+-	head = NULL;
+-	if (ctl_node) {
+-		head = ctl_node->header;
+-		entry = &head->ctl_table[ctl_node - head->node];
++	lockdep_assert_held(&sysctl_lock);
++	for (; node; node = rb_next(node)) {
++		ctl_node = rb_entry(node, struct ctl_node, node);
++		if (!ctl_node->header->unregistering)
++			return ctl_node;
+ 	}
+-	*phead = head;
+-	*pentry = entry;
++	return NULL;
+ }
+ 
+ /*
+- * The first usable entry of @dir after @name, or the first one at all for a
+- * NULL @name. The entries are sorted by name, so that is where a listing
+- * resumes when entries in front of it came or went in between. -ENOENT if
+- * the directory is being unregistered.
++ * Fill @d with the entry of @dir behind the one it holds, letting go of that
++ * one, or with the first live entry after @name, or the first one at all for
++ * a NULL @name. While the entry @d holds is still registered its node is
++ * still in the tree and the next one is right behind it. Once it is gone the
++ * entries are found by name, they are sorted by it, so that is also where a
++ * listing resumes when entries in front of it came or went in between.
++ * 1 with the next entry pinned in @d, 0 at the end of the directory and
++ * -ENOENT once @dir itself is being unregistered.
++ *
++ * Everything that reads the tables happens under sysctl_lock, where an entry
++ * is erased when it is unregistered, since nothing holds the tables in use.
+  */
+-static int entry_after(struct ctl_dir *dir, const char *name, int namelen,
+-		       struct ctl_table_header **phead,
+-		       const struct ctl_table **pentry)
++static int sysctl_dir_next(struct ctl_dir *dir, struct sysctl_dirent *d,
++			   const char *name, int namelen)
+ {
+-	struct ctl_table_header *head = NULL;
+-	const struct ctl_table *entry = NULL;
+ 	struct rb_node *node, *after = NULL;
++	struct ctl_table_header *head;
++	const struct ctl_table *entry;
+ 	struct ctl_node *ctl_node;
++	bool by_name = true;
++	int ret = 0;
+ 
+ 	spin_lock(&sysctl_lock);
++	if (d->head) {
++		if (d->node && !d->head->unregistering) {
++			after = rb_next(&d->node->node);
++			by_name = false;
++		}
++		sysctl_unpin(d->head);
++		d->head = NULL;
++	}
+ 	if (unlikely(dir->header.unregistering)) {
+-		spin_unlock(&sysctl_lock);
+-		return -ENOENT;
++		ret = -ENOENT;
++		goto out;
+ 	}
+-	if (!name) {
++	if (!by_name) {
++		/* behind the entry @d held */
++	} else if (!name) {
+ 		after = rb_first(&dir->root);
+ 	} else for (node = dir->root.rb_node; node;) {
+-		const struct ctl_table *table;
+-		struct ctl_table_header *h;
+-
+ 		ctl_node = rb_entry(node, struct ctl_node, node);
+-		h = ctl_node->header;
+-		table = &h->ctl_table[ctl_node - h->node];
+-		if (namecmp(table->procname, strlen(table->procname),
++		head = ctl_node->header;
++		entry = &head->ctl_table[ctl_node - head->node];
++		if (namecmp(entry->procname, strlen(entry->procname),
+ 			    name, namelen) > 0) {
+ 			after = node;
+ 			node = node->rb_left;
+@@ -454,15 +467,56 @@ static int entry_after(struct ctl_dir *dir, const char *name, int namelen,
+ 			node = node->rb_right;
+ 		}
+ 	}
+-	ctl_node = first_usable_entry(after);
+-	spin_unlock(&sysctl_lock);
+-	if (ctl_node) {
+-		head = ctl_node->header;
+-		entry = &head->ctl_table[ctl_node - head->node];
++	ctl_node = first_live_entry(after);
++	if (!ctl_node)
++		goto out;
++	head = ctl_node->header;
++	entry = &head->ctl_table[ctl_node - head->node];
++
++	d->len = strlen(entry->procname);
++	if (d->len > NAME_MAX) {
++		ret = -ENAMETOOLONG;
++		goto out;
+ 	}
+-	*phead = head;
+-	*pentry = entry;
+-	return 0;
++	memcpy(d->name, entry->procname, d->len);
++	d->mode = entry->mode;
++	d->skip = false;
++	d->node = ctl_node;
++	if (unlikely(S_ISLNK(entry->mode))) {
++		/* the entry it stands for in the caller's set, or nothing */
++		struct ctl_table_root *root = entry->data;
++		struct ctl_table_set *set = lookup_header_set(root);
++		struct ctl_dir *xdir = xlate_dir(set, head->parent);
++		struct ctl_table_header *xhead = NULL;
++		const struct ctl_table *xentry = NULL;
++
++		if (!IS_ERR(xdir))
++			xentry = find_entry(&xhead, xdir, d->name, d->len);
++		if (!xentry || xhead->unregistering) {
++			d->skip = true;
++		} else {
++			head = xhead;
++			entry = xentry;
++		}
++		d->node = NULL;
++	}
++	sysctl_pin(head);
++	d->head = head;
++	d->table = entry;
++	ret = 1;
++out:
++	spin_unlock(&sysctl_lock);
++	return ret;
++}
++
++static void sysctl_dir_done(struct sysctl_dirent *d)
++{
++	if (!d->head)
++		return;
++	spin_lock(&sysctl_lock);
++	sysctl_unpin(d->head);
++	spin_unlock(&sysctl_lock);
++	d->head = NULL;
+ }
+ 
+ /*
+@@ -765,29 +819,29 @@ static void sysctl_cursor_set(struct file *file, const char *name, int len,
+ 	memcpy(cursor->name, name, len);
+ }
+ 
+-static bool proc_sys_fill_cache(struct file *file,
+-				struct dir_context *ctx,
+-				struct ctl_table_header *head,
+-				const struct ctl_table *table)
++/*
++ * The inode number and type of the entry @d holds, instantiating its dentry
++ * if there is none. Needs the header pinned, proc_sys_make_inode() checks
++ * for itself that the table is still registered.
++ */
++static int proc_sys_fill_dirent(struct file *file, struct sysctl_dirent *d)
+ {
+ 	struct dentry *child, *dir = file->f_path.dentry;
+ 	struct inode *inode;
+ 	struct qstr qname;
+-	ino_t ino = 0;
+-	unsigned type = DT_UNKNOWN;
+ 
+-	qname.name = table->procname;
+-	qname.len  = strlen(table->procname);
++	qname.name = d->name;
++	qname.len  = d->len;
+ 	qname.hash = full_name_hash(dir, qname.name, qname.len);
+ 
+ 	child = d_lookup(dir, &qname);
+ 	if (!child) {
+ 		child = d_alloc_parallel(dir, &qname);
+ 		if (IS_ERR(child))
+-			return false;
++			return PTR_ERR(child);
+ 		if (d_in_lookup(child)) {
+ 			struct dentry *res;
+-			inode = proc_sys_make_inode(dir->d_sb, head, table);
++			inode = proc_sys_make_inode(dir->d_sb, d->head, d->table);
+ 			res = d_splice_alias_ops(inode, child,
+ 						 &proc_sys_dentry_operations);
+ 			d_lookup_done(child);
+@@ -795,79 +849,41 @@ static bool proc_sys_fill_cache(struct file *file,
+ 				dput(child);
+ 
+ 				if (IS_ERR(res))
+-					return false;
++					return PTR_ERR(res);
+ 
+ 				child = res;
+ 			}
+ 		}
+ 	}
+ 	inode = d_inode(child);
+-	ino  = inode->i_ino;
+-	type = inode->i_mode >> 12;
++	d->ino = inode->i_ino;
++	d->type = inode->i_mode >> 12;
+ 	dput(child);
+-	return dir_emit(ctx, qname.name, qname.len, ino, type);
+-}
+-
+-static bool proc_sys_link_fill_cache(struct file *file,
+-				    struct dir_context *ctx,
+-				    struct ctl_table_header *head,
+-				    const struct ctl_table *table)
+-{
+-	bool ret = true;
+-
+-	head = sysctl_head_grab(head);
+-	if (IS_ERR(head))
+-		return false;
+-
+-	/* It is not an error if we can not follow the link ignore it */
+-	if (sysctl_follow_link(&head, &table))
+-		goto out;
+-
+-	ret = proc_sys_fill_cache(file, ctx, head, table);
+-out:
+-	sysctl_head_finish(head);
+-	return ret;
+-}
+-
+-static int scan(struct ctl_table_header *head, const struct ctl_table *table,
+-		unsigned long *pos, struct file *file,
+-		struct dir_context *ctx)
+-{
+-	bool res;
+-
+-	if ((*pos)++ < ctx->pos)
+-		return true;
+-
+-	if (unlikely(S_ISLNK(table->mode)))
+-		res = proc_sys_link_fill_cache(file, ctx, head, table);
+-	else
+-		res = proc_sys_fill_cache(file, ctx, head, table);
+-
+-	if (res) {
+-		ctx->pos = *pos;
+-		sysctl_cursor_set(file, table->procname, strlen(table->procname),
+-				  ctx->pos);
+-	}
+-
+-	return res;
++	return 0;
+ }
+ 
++/*
++ * Unregistering a table waits until nobody uses it anymore and a copy to
++ * userspace can take as long as userspace wants. So a listing doesn't take
++ * any table into use. It pins the memory of the entry it is at, finds the
++ * next one under sysctl_lock and emits with nothing held, like
++ * kernfs_fop_readdir() and proc_readdir_de() do. Between calls a listing
++ * resumes after the name of the last entry it emitted.
++ */
+ static int proc_sys_readdir(struct file *file, struct dir_context *ctx)
+ {
+-	struct ctl_table_header *head = grab_header(file_inode(file));
++	struct ctl_table_header *head = PROC_I(file_inode(file))->sysctl;
+ 	struct sysctl_cursor *cursor = file->private_data;
+-	struct ctl_table_header *h = NULL;
+-	const struct ctl_table *entry;
++	struct sysctl_dirent d = {};
+ 	struct ctl_dir *ctl_dir;
+-	unsigned long pos;
+-
+-	if (IS_ERR(head))
+-		return PTR_ERR(head);
++	int err;
+ 
++	if (!head)
++		head = &sysctl_table_root.default_set.dir.header;
+ 	ctl_dir = container_of(head, struct ctl_dir, header);
+ 
+ 	if (!dir_emit_dots(file, ctx))
+-		goto out;
++		return 0;
+ 
+ 	/*
+ 	 * Resume after the last entry the previous call emitted. Only a seek
+@@ -875,21 +891,30 @@ static int proc_sys_readdir(struct file *file, struct dir_context *ctx)
+ 	 * seeking to an arbitrary position always did.
+ 	 */
+ 	if (cursor && cursor->pos == ctx->pos) {
+-		entry_after(ctl_dir, cursor->name, cursor->len, &h, &entry);
+-		pos = ctx->pos;
++		err = sysctl_dir_next(ctl_dir, &d, cursor->name, cursor->len);
+ 	} else {
+-		first_entry(ctl_dir, &h, &entry);
+-		pos = 2;
++		loff_t pos = 2;
++
++		err = sysctl_dir_next(ctl_dir, &d, NULL, 0);
++		while (err > 0 && pos++ < ctx->pos)
++			err = sysctl_dir_next(ctl_dir, &d, d.name, d.len);
+ 	}
++	if (err < 0)
++		return err;
+ 
+-	for (; h; next_entry(&h, &entry)) {
+-		if (!scan(h, entry, &pos, file, ctx)) {
+-			sysctl_head_finish(h);
+-			break;
++	while (err > 0) {
++		if (!d.skip) {
++			err = proc_sys_fill_dirent(file, &d);
++			if (err)
++				break;
++			if (!dir_emit(ctx, d.name, d.len, d.ino, d.type))
++				break;
+ 		}
++		ctx->pos++;
++		sysctl_cursor_set(file, d.name, d.len, ctx->pos);
++		err = sysctl_dir_next(ctl_dir, &d, d.name, d.len);
+ 	}
+-out:
+-	sysctl_head_finish(head);
++	sysctl_dir_done(&d);
+ 	return 0;
  }
  
 
