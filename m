@@ -1,66 +1,67 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F08E5606A324
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 02:01:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73105606A324
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 02:04:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=Wr/qaLu9
+	dkim=pass (1024-bit key, unprotected) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=w05zkXPg
 Received: by kanga.kvack.org (Postfix)
-	id C5D966B00EF; Sun,  1 Nov 2026 21:01:51 -0500 (EST)
+	id 425CF6B05B2; Sun,  1 Nov 2026 21:04:49 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C0EE96B05B1; Sun,  1 Nov 2026 21:01:51 -0500 (EST)
+	id 3D6C56B05B3; Sun,  1 Nov 2026 21:04:49 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B00D26B05B2; Sun,  1 Nov 2026 21:01:51 -0500 (EST)
+	id 2F12D6B05B4; Sun,  1 Nov 2026 21:04:49 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 8963D6B00EF
-	for <linux-mm@kvack.org>; Sun,  1 Nov 2026 21:01:51 -0500 (EST)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id EF823A85E3
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 02:01:50 +0000 (UTC)
-X-FDA: 85388527980.24.5F43CB1
-Received: from out30-100.freemail.mail.aliyun.com (out30-100.freemail.mail.aliyun.com [115.124.30.100])
-	by imf04.hostedemail.com (Postfix) with ESMTP id A2D9F4000B
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 02:01:46 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b="Wr/qaLu9";
-	spf=pass (imf04.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.100 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id EFAAC6B05B2
+	for <linux-mm@kvack.org>; Sun,  1 Nov 2026 21:04:48 -0500 (EST)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 30F5BC0BE3
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 02:04:48 +0000 (UTC)
+X-FDA: 85388535456.27.88F8AA6
+Received: from out30-118.freemail.mail.aliyun.com (out30-118.freemail.mail.aliyun.com [115.124.30.118])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 3C0F2180003
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 02:04:44 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=w05zkXPg;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf16.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.118 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793584909;
+	s=arc-20220608; t=1793585086;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jhak0MmZxZsDBp8302xnXT/xyZGUloAlWeCi+dxqbB8=;
-	b=hnDq95+WchbIgbUtdaYYbBSFrioQztc/nOKmjNWjgeVRwRu1jKbROuZI6dsXvDW4XcGKKI
-	hBgH+YeG3jmRYVR1Up0tQHTiXrH6qLxhh0sp3COaM87hcxcyzCfx7mB8MNLnM1xoRaZTq1
-	HP0G4mw80xSaNwW6F87/wrwk9b3Mx0U=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793584909;
-	b=v+d6b/zkvc5oBJAqMUHTNkCdxn4xSoRTLwWbErF/6ARDMqkMaV0+XdJjjiQxjj5Xnpoz2U
-	vb/PLYT+nGMbvSMDdo3W9rpmdNC8zTieBuNAnnFZyfYI8WH2Etc+dYasfBRiw8W0hPfY3/
-	8//u47OysfS6chVd/Ua99Q8bIJU/fk8=
+	bh=4SoV6Ie/u/kLwdZ8E6uFvG3ADmBAEd2i0jYO5Qw9CmA=;
+	b=QNpp432wAGbVD1aDgmd/uie8Z76BJJzhxrbwa+/5+jdjJ+KV5oNTPsGs9ZhuvORWwsu1XC
+	HCg8vX3Q8EUu535EjNFgH40gO4pMJQeiqvqQ1CPqCuL8z9C5uc30baSZDo7g5qcXCw+qnl
+	oSas+kdh836AD3crQ0wScpLIZvul3E8=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b="Wr/qaLu9";
-	spf=pass (imf04.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.100 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+	imf16.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=w05zkXPg;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf16.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.118 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793585086;
+	b=5BQkplGE6hWF2o5oj/CXFnB82nm64Hui9NC5KoVrtQyFei6HNS/4Q59OUTgWBW3C0ONtfR
+	csvxHCNsgC4rLWP7bTPCf9ipGOWsDfVhuHNM7ABrQ+k8/uITIYgI0rsXYbb2WRDP4T+XFZ
+	zTCxWdt6istI/J5TEQ/CvjAnt7tfQJ4=
 DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=linux.alibaba.com; s=default;
-	t=1793584903; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=jhak0MmZxZsDBp8302xnXT/xyZGUloAlWeCi+dxqbB8=;
-	b=Wr/qaLu9mKfMdVJgeg8uBCdh7AgeBjSK/lXooIgsS5JzhzixX76QdKTV9v7pxjlBS44NIMGQ9SHKbFsc7C4QQsiDP7c1X/NfL9dsIcOttiiQFO8DhOL6nhA/g/qwpvytsM1yVpA3ATTkfP9QOnaC0fZumb4FMbjrKT+Xi4FujXw=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R131e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033045133197;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=61;SR=0;TI=SMTPD_---0XDrTDBs_1793584898;
-Received: from 30.74.144.167(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0XDrTDBs_1793584898 cluster:ay36)
+	t=1793585081; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=4SoV6Ie/u/kLwdZ8E6uFvG3ADmBAEd2i0jYO5Qw9CmA=;
+	b=w05zkXPg6tFH59wFxmHdYqrzt6gRR5EvvFayQ1HH78v5DI82qZuXvn8U8hxONa4AF9xfS49hvmMc1+4lHFS7nbQmdmPrahm0e7POP/hr3x+D9ggAhJKQHN/+7UDnuSjqyXHo6G+PLnTRzBZxiz83euxWjSn8+e5l8+kYbu/3wtQ=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R381e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037026112;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=61;SR=0;TI=SMTPD_---0XDraKLa_1793585074;
+Received: from 30.74.144.167(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0XDraKLa_1793585074 cluster:ay36)
           by smtp.aliyun-inc.com;
-          Mon, 02 Nov 2026 10:01:40 +0800
-Message-ID: <1b7b47aa-8523-4029-971f-ec59b667c7f9@linux.alibaba.com>
-Date: Mon, 2 Nov 2026 10:01:37 +0800
+          Mon, 02 Nov 2026 10:04:36 +0800
+Message-ID: <4a797511-2e56-468e-ab88-5ae855439144@linux.alibaba.com>
+Date: Mon, 2 Nov 2026 10:04:33 +0800
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/7] MAINTAINERS: TMPFS (SHMEM FILESYSTEM) updates
+Subject: Re: [PATCH 3/7] MAINTAINERS: add Zi Yan as co-maintainer for MEMORY
+ MANAGEMENT - THP
 To: "David Hildenbrand (Arm)" <david@kernel.org>,
  Alistair Popple <apopple@nvidia.com>,
  Andrew Morton <akpm@linux-foundation.org>,
@@ -96,24 +97,24 @@ To: "David Hildenbrand (Arm)" <david@kernel.org>,
  Jason Gunthorpe <jgg@ziepe.ca>
 Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org
 References: <20261030-maintainers-v1-0-97278f8a5f54@kernel.org>
- <20261030-maintainers-v1-2-97278f8a5f54@kernel.org>
+ <20261030-maintainers-v1-3-97278f8a5f54@kernel.org>
 From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <20261030-maintainers-v1-2-97278f8a5f54@kernel.org>
+In-Reply-To: <20261030-maintainers-v1-3-97278f8a5f54@kernel.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: A2D9F4000B
-X-Stat-Signature: qijd7rsnqowmknokjcwjxd88hgxkadih
-X-Rspam-User: 
+X-Rspamd-Queue-Id: 3C0F2180003
+X-Stat-Signature: dwr7anhu541f4xosqga36gmgpzijbwr1
+X-Rspamd-Server: rspam04
 X-Spam-Status: No, score=-19.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
 	UNPARSEABLE_RELAY,USER_AGENT_SANE_1,USER_IN_DEF_DKIM_WL autolearn=ham
 	autolearn_force=no version=4.0.1
-X-HE-Tag: 1793584906-654994
-X-HE-Meta: U2FsdGVkX19mAFTjysd5iyNLCuvBfws1mOC0H23T6M7z9TCmClnaqlp8fxnRN4eSYs6bcpocfbLMaug4cLdv87fOuakyaMuIVq8FNnK3cc1NiB53nti7CFvFIb01MY55EBszxMISMQlLugovRhhhBDlMRrYv6AhU0UiOMGIrUeAVrpy0xVrLKyyFUpe/E1jQlQEHG9zKAKAwJZlGZRRVr6mzaDg98RoKGSIWl6ns16ADAt3OSlfh2w57kL6vJU8ItzErgs5Yj2l1cRS6T0N9uTn+6SScgbVvlD3tB60a2c6RoMmhd1Nx2zbw5VwjhalG1yMuJS70CGHBlu1CjwfWEgQmv99q074m4myPQeUjOYRijKKPHC4Z4fCFehjqG942rJZdaGhjYYP+d7Gy/h513liZZF/H83wzPS+hZsHI61m9ZgcxeHoup3tgoLrUFnRbktB4xe2Ma37FSAMYksZaOHk+i0ZFt/lumo41PnnTfun73o5esYOZArVUyo1vjj74gFlomeUAtFVOS1OwXEWPEwqMEN5Vpg5EP0OrzOXTw4msfgQsttwwN/81POl3KuWJy3xinn1F6Zx3wzCGKnBEo50LqbL7uWarVATK2PLLTyIUKMh1F8++1hnZW4BC4vJGxAMy9wp2BIQItsluwoOSKm5p0HegWnMPt/DbRXkOitkFbJER+BbSvpptd6TF0NNe06eEFo4ja88HaAtLp7oXp7j0jKwAQuHl7AXfDnFrkl+DmaYarAlsdRrHau3L11Qc8hVsehhWBk/r3HyojomZgWDAdrIxXd1ZpvX93XKhUJOossc2oOO0YuCb2z4oJJrCO53tbS57kpXnJ2pT5W3peZ7QvF9kCoZS1n6MzzeEcE1LdfRwYjt3Rp7cyQK5zu9OcHQVRiUl2I1Q4e53yhvy/GGhf58gL6rMa6bKpRyoXaAyNImBfe/HnIZVwo0Nf2afOtprMbfMxpDbOoVIaa2
- Cz9ZuaPk
- UTAieA75dVmIMg3xrdZ7dHQP8Y+FvB7GhljPj5FB4jvZxHXd4hWBgQuwl3muRRBJOysdI0MKgtdnlloCQUex8ojcq9BTGv/CSLMtNeOeYavUkMxguWdwt6CElrEdO/T1MLvAgsxCDjTET3Z6ofEnDXfpr5MRb91PgTwzXfKe5E/Fa6+4LXaAstl6DwV3p/w1pjDxeAd+A25y6i0nJLCDru3u/H+fV9NTyXa67z8iHKbTD1zkiDyNqL/2ANnamrxNT40THgvzVvVJCh3kdgz7Z9ygyR9w6qwm99AtEw+hPOQMm74AQBVIRxR8Eh7EsTqopwLGft797VVoR/oqgqOkes5kLrMQDpvnkPufK1Luk8ZyQNaETsCr5y9dB38undbT3I3pgkmxqx66FD548VJFQmEBoig==
+X-Rspam-User: 
+X-HE-Tag: 1793585084-691815
+X-HE-Meta: U2FsdGVkX1+hMpSCvddCqDWJf/8YoNW9kJIGxzeiFMCtzJjQmLUCa9NlR6NeA68yoovKbiuPFOIoy3yVdR7ZIInTeGtR1LggmRbIDfckj+GsLsgfjwV/vChSRegrs2QtoQ5JnYkjz7b0LTg3LLJp31oJT/UydoLxZPPGopt3FKyvEv+330nwRkMnJoKbCg6GjZYSFlZzEYg+Zr0lj308nd3arMGmvngiF94q24TspS8EAMX9ohQJnR5XG7Ixvj/Or2Gbiz/vgCB0mU0/Wn4aSE+/4xwrBIxZYnqDLH1sDlKhFqH9Cm+k/jTiCUll2ug8cEMV4005Bj5C4lC+axy5oKJ5W3L9sbZRAh2OKgI8OP4ku/5xwddZlxn0yJv/ydNxKa2RLPBZBV/eEoGqfKiJyBIeXFSL68CA4ts8Np5171RuYVGbYmKXWGwzytUuYLWlN1v4FD80tvMYXlL1fjir/QnBa8DnZ8XWE1VuWZHi3AriQuLvaz3eF7fj2v3KYtqr+aoO3M3/GHwtmfSrX6RKgzN2iJAKd2Af4DxISSapY5W+s1rvODMQWmM/oM66nAzUDSL5yEYLeey7k/7dLkLz89e+yYZ7jgPEQPNjPY/TaxUValqA7PVBJ6utktEy7X209wb/BY4LWZHuI/qVOedYohfKyuY7xwopqGpPYDsCEKamNZAk4Skcp8mQ81v98A4vicWKarXf2/SZxOVX929znYpeCTK/RO5DoRR8tqPyO67lfa3cxwBZ9SPTWZngdWSCT2uCZL+eVNTBKOp6d9vet8a6IfvJJMDrnyKNS/mgij/nW8QFOKckhiFYayvLLY97Sgt5sjLE6Gb8tcxQtaYbiEaJ47hKDyWF2F0IdsQeXtpSxHPmKgyTGlQZhwykx4Urgp8QGniEp//DdgGMMB0pg6nH/bXKBPf8tDCj4g8xzRoF+7etjz/ENbMh7gSoXR8Ej2eRPTIWZw5f/5BhluD
+ 3MyRzQ6w
+ AVhK7lq8BmSiJj+rZoZeni3YLGGVDHCdPadKSV1uCy+YUZdJ2hP4pp6b3pPCSKfWzAQs9SRAZVk22R60jw/sp25rzwX6m8zcQBfuAYZ5zYpgBm8mtp5gbvZ6lJBD+xYFEMA3T7qghb8BuN12u39mMT40kl0PhV/vMRCT/0WPdwcYsatYWh7ZtMqudJlZRGLJKMtXoq9P9x1UMFH89CxvtxuKAtU4zYupaqmFVWwsS/ej7BQkBcyha9jQ4HX6AsaUtMOL3IORMQknF0wz7b8doPCasR8u5gahm3sD+3VOi4VotaGF9/Nm2Uuo25H3OehDN8EM8tHwX97VcI/pbH7YLnkX5VgfL/WDAYz5TlvZDwG3ODRzqmZB4siZ7vjdSVRjyd/aIXM6Nq074MJX8U21cb+OSVA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -125,29 +126,20 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 
 
 On 10/31/26 5:34 AM, David Hildenbrand (Arm) wrote:
-> I am not really the best shmem/tmpfs/memfd expert around, but it should
-> be good enough to judge when something is ready to be picked up, to then
-> pick it up. I'll have to heavily rely on Hugh and Baolin on judgment
-> for the more involved and more controversial bits.
+> Zi has been contributing to THP consistently and reliably over many
+> years and is considered one of our most valuable THP experts. As THP is
+> an especially active area lately, having a single dedicated THP maintainer
+> is not sustainable.
 > 
-> Rename "TMPFS (SHMEM FILESYSTEM)" to "MEMORY MANAGEMENT - SHARED MEMORY
-> (SHMEM/TMPFS/MEMFD)" and move it accordingly. Add myself as a MAINTAINER
-> so people know whom to CC.
+> Fortunately, Zi volunteered to take on more responsibility by stepping
+> up as a THP co-maintainer. So let's do exactly that.
 > 
-> Add mm/core.git as the target git tree. Once shmem becomes a high volume
-> component we can dedicate it a separate tree and have dedicated people
-> pick it up.
-> 
-> While at it, add some more shmem/tmpfs/memfd related files+directories
-> we missed so far.
-> 
-> There is also "kernel/pid_sysctl.h", which includes some of the pid
-> namespaced sysctl vm.memfd_noexec. But that's really more of a proc/
-> namespace thingy, so it's not a good fit here.
+> His placement in the MAINTAINERS entry is very convenient to perform
+> this change :)
 > 
 > Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 > ---
 
-Thanks.
+Thanks for Zi's great work!
 Acked-by: Baolin Wang <baolin.wang@linux.alibaba.com>
 
