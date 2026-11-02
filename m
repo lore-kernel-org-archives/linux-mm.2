@@ -1,129 +1,155 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50F7860A261F
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 11:22:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EC6160A381A
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 11:22:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=NGzAi2YU
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=dNl8kU2Z
 Received: by kanga.kvack.org (Postfix)
-	id 7E3926B05C1; Mon,  2 Nov 2026 06:22:36 -0500 (EST)
+	id C4F9E6B05C2; Mon,  2 Nov 2026 06:22:40 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7941C6B05C2; Mon,  2 Nov 2026 06:22:36 -0500 (EST)
+	id C000C6B05C3; Mon,  2 Nov 2026 06:22:40 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 635146B05C3; Mon,  2 Nov 2026 06:22:36 -0500 (EST)
+	id AA1566B05C4; Mon,  2 Nov 2026 06:22:40 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 3EC0A6B05C1
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 06:22:36 -0500 (EST)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id CC06B40C6A
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 11:22:35 +0000 (UTC)
-X-FDA: 85389941070.04.4BAC092
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf16.hostedemail.com (Postfix) with ESMTP id F2486180009
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 11:22:33 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=NGzAi2YU;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf16.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com
+	by kanga.kvack.org (Postfix) with ESMTP id 8A3966B05C2
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 06:22:40 -0500 (EST)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 2BF4C40CDB
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 11:22:40 +0000 (UTC)
+X-FDA: 85389941280.28.032F4A5
+Received: from mta1.migadu.com (out-148.mta1.migadu.com [95.215.58.148])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 7CA0F180009
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 11:22:36 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=dNl8kU2Z;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf24.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.148 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793618554;
+	s=arc-20220608; t=1793618558;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HLNvHrR0Fpj6ftr47GYXDwUrEMv6CUTbezLhLSAnnFs=;
-	b=1jwfZMDTXQIo9fLoJAtZizf/F+xozFtNBToqFqfx5Qcs4w8D2R3/I1loGn/lnmeHnYDgqb
-	4j9/2KGjmLBZGtGtQPSLgtkQ4Muo/ZFXOvCy1SD74Lcfn1EGnZkLRUu0JQZIqbh2J7sjAK
-	jf41X/zFq/trGMrCVE+MatvQBAIGUSA=
+	bh=rlYYUg5m282yLIStEKkIHTozLzxeQHV9wO/ECVNrg9o=;
+	b=qGvKIqLqHn3ZbtnH2BtUaH9gDpJcNB8gG75ln/NLRwBrOmTyctJQyEn4GxB9QNxr0JqzHD
+	fyWP+A8MHqRjjhxQtfJ8nitiLAHMjXEQCM+Nkp9i8QkY8rvZgozEPT+OKT1T/M6QeirPrC
+	UdAYin6l6pFRnHHdveXMDHW2HjMNMmA=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=NGzAi2YU;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf16.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com
+	imf24.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=dNl8kU2Z;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf24.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.148 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793618554;
-	b=vta5W2bpIGYfQIoLbLmgMGK73DmjdMj6u0xhbjAW9Gu3BPclJAFv/TktpZgEOnpl5HBXXV
-	iEgC97UADKoSskPoTbjwx0hk8MHOfSrNMpWxnWhd2HDkxoJbFpJgHvwTv5zAYjTuxKKCIY
-	6aa+RwOon0mrxojfTllThKrlt9QnJi8=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 092802A68;
-	Mon,  2 Nov 2026 03:22:30 -0800 (PST)
-Received: from e129823.arm.com (e129823.arm.com [10.2.213.3])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 00DBA3F632;
-	Mon,  2 Nov 2026 03:22:26 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1793618553; bh=QYmfwdLe215hLGuFdCj5safJ8gxdq3zlW1ht1LiurFo=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=NGzAi2YUuhqkVXhnAdJL2xqwg1sWWuNnmUOJc6WYMvcZsOaHYodWzzAQDylogAHGF
-	 sAlnvTGEoaWaY/k2K8WvP84MmxrLyH3UL6M62DxDMZKwAFnAf1wnmUlSt9sVt9I0mu
-	 Q2N9zAaDmNiAxl2O123nlIpmLVp78QCa6wl12pEo=
-From: Yeoreum Yun <yeoreum.yun@arm.com>
-Date: Mon, 02 Nov 2026 11:21:22 +0000
-Subject: [PATCH RESEND v2 09/21] loongarch: kvm: remove stack copy address
- of pXd in pXd_offset()
+	t=1793618558;
+	b=UyAreaKUfAIOf497sNht8CqOPghGEaDAnzXxX+HRD5hxctE/WB4f+aYkEmreFnnsnKxNkD
+	rdG0bnOK3MJs/S/dBfZd2pgNoGwfk8eVIB1AYuOsai+8xJwFWwiqK02uVKINiBpvU2Y9J3
+	VwcN+RexijOQVR9B2JJW8ldCywVKaQo=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=rlYYUg5m282yLIStEKkIHTozLzxeQHV9wO/ECVNrg9o=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1793618553; v=1; x=1794223353;
+ b=dNl8kU2ZZnY7p+1AZb5FkPRPxnYNE0pNnRkYzfMXhsQ6nzU8z5o/GWyH69JI2jndGu8pOXov
+ iCXfD2V18rj7VtN0dm54SEJgnoT8r9LSk12pObDE1JIpBZph6bgTHoxZAQEPzv45DOvyDH48795
+ PK/VAB0uVps+jfwrxgnpYmZo=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id 0a735c2090dc6b54;
+	Mon, 02 Nov 2026 11:22:32 +0000
+X-Mizu-Trace-ID: 0a735c2090dc6b54
+X-Migadu-Flow: FLOW_OUT
+From: Lance Yang <lance.yang@linux.dev>
+To: david@kernel.org
+Cc: akpm@linux-foundation.org,
+	hannes@cmpxchg.org,
+	mhocko@kernel.org,
+	qi.zheng@linux.dev,
+	shakeel.butt@linux.dev,
+	ljs@kernel.org,
+	kasong@tencent.com,
+	baohua@kernel.org,
+	axelrasmussen@google.com,
+	yuanchu@google.com,
+	weixugc@google.com,
+	baoquan.he@linux.dev,
+	baolin.wang@linux.alibaba.com,
+	liam@infradead.org,
+	vbabka@kernel.org,
+	rppt@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	kees@kernel.org,
+	peterz@infradead.org,
+	jannh@google.com,
+	pfalcato@suse.de,
+	hughd@google.com,
+	pasha.tatashin@soleen.com,
+	pratyush@kernel.org,
+	willy@infradead.org,
+	jack@suse.cz,
+	ziy@nvidia.com,
+	lance.yang@linux.dev,
+	riel@surriel.com,
+	harry@kernel.org,
+	apopple@nvidia.com,
+	nico.pache@linux.dev,
+	ryan.roberts@arm.com,
+	dev.jain@arm.com,
+	usama.arif@linux.dev,
+	kas@kernel.org,
+	matthew.brost@intel.com,
+	jhubbard@nvidia.com,
+	peterx@redhat.com,
+	will@kernel.org,
+	aneesh.kumar@kernel.org,
+	npiggin@gmail.com,
+	osalvador@suse.de,
+	minchan@kernel.org,
+	muchun.song@linux.dev,
+	xu.xin@linux.dev,
+	chengming.zhou@linux.dev,
+	chrisl@kernel.org,
+	shikemeng@huaweicloud.com,
+	nphamcs@gmail.com,
+	youngjun.park@lge.com,
+	gourry@gourry.net,
+	joshua.hahnjy@gmail.com,
+	rakie.kim@sk.com,
+	ying.huang@linux.alibaba.com,
+	jgg@ziepe.ca,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	kexec@lists.infradead.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-arch@vger.kernel.org,
+	linux-cxl@vger.kernel.org,
+	mason@kernel.org,
+	stable@vger.kernel.org,
+	skhawaja@google.com,
+	usama.anjum@arm.com
+Subject: Re: [PATCH v3 20/47] mm/gup: fix clearing folios in memfd_pin_folios()
+Date: Mon,  2 Nov 2026 19:22:27 +0800
+Message-ID: <20261102112227.62593-1-lance.yang@linux.dev>
+X-Mailer: git-send-email 2.49.0
+In-Reply-To: <20261031-fixes_core-v3-20-d6437171ecc3@kernel.org>
+References: <20261031-fixes_core-v3-20-d6437171ecc3@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261102-dummy_ptxp3-v2-9-78840b2ec73c@arm.com>
-References: <20261102-dummy_ptxp3-v2-0-78840b2ec73c@arm.com>
-In-Reply-To: <20261102-dummy_ptxp3-v2-0-78840b2ec73c@arm.com>
-To: Russell King <linux@armlinux.org.uk>, 
- Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>, 
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>, 
- Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
- Arnd Bergmann <arnd@arndb.de>, Andrew Morton <akpm@linux-foundation.org>, 
- Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>, 
- Shakeel Butt <shakeel.butt@linux.dev>, Barry Song <baohua@kernel.org>, 
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
- Wei Xu <weixugc@google.com>, Johannes Weiner <hannes@cmpxchg.org>, 
- David Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@kernel.org>, 
- Lorenzo Stoakes <ljs@kernel.org>, Tianrui Zhao <zhaotianrui@loongson.cn>, 
- Bibo Mao <maobibo@loongson.cn>, Anup Patel <anup@brainfault.org>, 
- Atish Patra <atish.patra@linux.dev>, Paul Walmsley <pjw@kernel.org>, 
- Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
- Alexandre Ghiti <alex@ghiti.fr>, Dave Hansen <dave.hansen@linux.intel.com>, 
- Andy Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
- Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
- Borislav Petkov <bp@alien8.de>, x86@kernel.org, 
- "H. Peter Anvin" <hpa@zytor.com>, "Liam R. Howlett" <liam@infradead.org>, 
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
- Jonas Bonn <jonas@southpole.se>, 
- Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>, 
- Stafford Horne <shorne@gmail.com>
-Cc: linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
- loongarch@lists.linux.dev, linux-mips@vger.kernel.org, 
- linux-arch@vger.kernel.org, linux-mm@kvack.org, kvm@vger.kernel.org, 
- kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org, 
- linux-openrisc@vger.kernel.org, Yeoreum Yun <yeoreum.yun@arm.com>
-X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2052; i=yeoreum.yun@arm.com;
- h=from:subject:message-id; bh=QYmfwdLe215hLGuFdCj5safJ8gxdq3zlW1ht1LiurFo=;
- b=owEB7QES/pANAwAKAW3Vw9FaxTEzAcsmYgBq6HIzqxNaFzhvjoxpWT/tFvwVycvQLXxje++RP
- KuCMEyxm3SJAbMEAAEKAB0WIQQtg+CS3QUzuFh1pJ1t1cPRWsUxMwUCauhyMwAKCRBt1cPRWsUx
- MwUIDACW8rDfN4PXoaycRrecOSJ5P2sV/Skn8cOJ9F/ArQxVMCOkJHu/jozzrN/5ZWRoyfVV6qI
- hDxzX47bfW4GqsHO5E1uaj6xJ9OnTVdhFE4l/Z+UE2LIN2XI1Bin4FtP4AUH6tjSrIcQmyrNuOY
- XpIxrn+T3hDCqyoo51zdCIbgMvWpEbTre5IJV1a6Mqp1c9cAMKvBQOnCovyb5XsRcbIXCK8GBUL
- 2aP3pPNFUvXRH3QTlxhUPhWul1wCFo4bQXDbwm3jT1xU3N3aXNrX3vH+jBPPeM7le+WT+nLhcpw
- JPwBBCr35AoUF9s0nSKAF8CEAIqpWUI4RFhNipztYZBEkGzzdx93KCdMunXOhPaOscVKbSwRRW1
- mKOv00ylFBZKNhssbxn6+dLKmk1it/0MZ4POP9C9XuNAa2KUbJdt9fNpzJ29FeV5L8d5guM5A+f
- InDzrZ916vWbbdE91pO/GFYPPVhW3wBYZ+/6ONFGYaYRLD9E0AY3bJ6iH3q3dxINcdz1c=
-X-Developer-Key: i=yeoreum.yun@arm.com; a=openpgp;
- fpr=2D83E092DD0533B85875A49D6DD5C3D15AC53133
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: F2486180009
-X-Stat-Signature: b6sdw3hmu77ofeo4xz6cgw1q5ni5bcct
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 7CA0F180009
+X-Stat-Signature: y9gnbhtstfdrfq7xwdmx67xboscwsygs
+X-Rspamd-Server: rspam04
+X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-HE-Tag: 1793618553-195557
-X-HE-Meta: U2FsdGVkX1+xZY1VgpEzdxQVx4+DaZsiSIjIQZHzdmMMAAkCfD2UUvLUanNo5s+Yond7jSxF6TAHmgsG3C3/WDdiuZitz8ZsVQuMbG71k9tC0CCNfZAo1yZANfO9wStpddGur9q++VpeqKrkSaBgLeuwRg2ZY0PgJaVAJaJOyIdZPn4pU0Wl1lL7w3dEmOC8KmMB5npalJ5fGyyuATJV9dpy2/0ZXLIKeRHyZEnUxPe/39iT43l9KVsblhFTlb8kvVDI89TuW6R5Wi/Piz2P3yWLFg31VQXzeLG7H2zgj/1N5fHjxHHGVKiDUvTJhk1cuwQQ1fbjg6YFcZLGtmLNYgpEPH5VGSiFlVqvMhZE+kvzpIHa/ZstuMU6qFBmOURSrDZ3a1DKPYUNTV1Eqc79WjzWHGyiGR491hSdJQQ57XopUDl4UEd7eXVYH9/cyjHiGLck/DnxiVDKkuHHuDdOQB8VpuXLNHf/tsAcXEWDVEY6k6FueYYsMerXx96j0ia0l0Rxe4MSW0iSuLyMspv81metOkAeXvZkZqkemy/aH6iv3HwpZNi94F3OTC7vzmvh4zRb54byGE7GO7B6gLK4Tcw7g+/Cy7a7qvDiUDbCYULG76jH/eTCx/IUiscaDqKEGNknKlGsaNqRgNaLh2xonW/ruEq8yQIbg6gVfbOAHNHVjtdIiPxC7N3hyieXOZOxADN2UavD7Hpyymb+qVsaTwgjKmvRgEYe8VFUZUbTH9mEZos631jb+S+qANBJbNrTPYsPd5f1rln8P+wTIO+IQKquJ8gHvvL0gEg6t0VADuzG+ac64QDuJMJqdUgKQ/ruzRoMrgz4ocJkEiZkwwEpDgowpv/rP3Dtst+N6GRlRnIq0vflG2qTnSgAC6T3TrjODgmlhl7cf6itbpxRJEjhRcapPuAe/9clPA5bPis3SorBzpgO37o4r0zAM6/X9oCxU7PG1vUUyjEx7FPbHuM
- NrnouyJG
- fywWKajZYlMakY7Uj26V/L4NxtCJJ23swyiPwBjaswj0ePjdf7gY4uzd3IvxOHMumC+TeeajEvHIUVeq6jVcgZUidNR8WFv261fkLCGqQaGbTwBo9ZhMIpBAyDDTNwPJmciwEOvGQ+dsnzBOODQgoOM/+j7ydEibbnmpK1DO3POA8XqWIdnFCDb9ObKqiyoCEo+V1qSXKaWQ5otBoxyZXoqCLgG9RC/iUiz2utX2Hz5ueDY55epLm+g8cLG0t5GdM874SW1qgmpKwFFY2OY+fyvo81tIsTnHLnfzSSe3U8NPWj1NIZHpVqJc5bl4ebjdo8mOLegrd3W/dWNA=
+X-HE-Tag: 1793618556-376630
+X-HE-Meta: U2FsdGVkX1+hRWKeaV82U5BqXW9hJZ0QvRWplPiarLt8YG01LqqNpdIuXm3Tq5/z4+L0Qv7GBDNSOumBLEB0auyfVnfXLvdxuJrK7WiWKw6tULvDFhed3jymKEZFaMFM8zRHybmJoHf1kuQdGXUCh0tQdoXIH13EqToUg4+qoOyhqqxE0mUAhg+LXBNY2kQ8fL6A6wzXuZebF7mTrgIePvdoCbYWeg8PURNR33dNlVwl3mqa2xkxaWV1Ld5oyrVbSamDs6M/pA+mZR4WUidHU6h3oD03Euc6SJzlVOA1fbE5Ve+ZzOUlI7GscI5VGJN0e5CaceA5OxXkYc6JbvOzTp3HtJkSVvrgOQk0VORrajdWjruHdvxfl6LQ0V511reCmWEp+mmOP0CM70vX+6UsuQ8N+V5rtmpph4F1FmFg4jMYu0b7dpucfXe7V4ROUF/w9uonW1WOYDe0uALCGa7HMbIcjIk4sNwE5ZS2uepRnACpjKY60zOlGayw5YVyvuZGWJjxqiccA+khEe6j1KoFTtaFzr+yyXIrA0WNEPinq4csYj+c4lZjtDmlqKZaw5hyxySH6BaXD14txpCrvAbSYUA+DBKWAfcNc78+/a2DOEGNfbdDpRPovbQ5a58ovypF0hEV/2rwbKI9c9qzrjalLa+zI1n/dK8DiQCvyxWe72li8zbRH8rNvyj2R3PSRs8Xf+zR4W+aFbRLie3+tnZ6nBNBrib7ifCDJ8EqMOpH6vBk5u8rMRBmp0+hcMcO8APBQtOtISe+HPZ0pJ656IuG4kkgNWcbUh7ucM0p6nzZfGkMqKHxlbCJqYFs0I/undy44mt8r76Mvu3yhkxFuctOH6pB0mSzwu4nY6WzDJaIMhTAtIKA2peDBYmH+wGFmwVas072GG1HDiR208A6o74oIulry4CF88I94ID8Zlv3rV9xEqgjiJrq/JPJg6gyguuAJvfg+2XTTCvX78KeouA
+ kcGaUWaj
+ 7AxV7IINdqUL8ar4y27rMkhkSkgktC0S0NbFFpCdj38A55rUsNU6iY9LL6WZgY9wQS5UuR0y371w8bDDifOesOJO5dwkP7ZnQ54QOHr+JdP+9FJScxZ8lrMUvUTVwRy5HnZo84bxoqn7QnrPFqr2vt6hR4qFbktVtj+iMPzW6EizZbckoYe0czc40Mu8Sfrm41D+TZLT7elmCdazpBOPHx1/EUyQeQw6jZaWadZ55awcW0oL9y4DBsrtJFxkkqJr6IoDhFaM9sl0OIv2hlH05QI2yXdwsjc4ewsXJEbPOR4E3MAhdQJMjvAOpJAowpZfQSbQsWe0wqmgevfTDMrYksBcbt9dprP1JRlnj1gdHcuEC9yPlnWo+xyt6LdRQh7mo7Cc1ffEz6CxYpt4nxqMY67F+u/D5DnKxMd1/8ZTLxFw0qLXQmei3bGCRrQHxCJJHbYDop9WZXj25cxbPTsAXHF05ng==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -132,69 +158,35 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-The behaviour of pXdp_get() will change with generic compile-time folded
-page tables. To prepare for that,  rework host_pfn_mapping_level() to avoid
-use of a stack copy of a pXd and pass it as argument to pXd_offset() so that
-the folded entries value is ignored.
 
-Replace direct uses of stack-based pXd values with pXd_offset_lockless().
-And there should be no functional change.
+On Sat, Oct 31, 2026 at 10:39:49AM +0100, David Hildenbrand (Arm) wrote:
+>From: Chris Mason <mason@kernel.org>
+>
+>memfd_pin_folios() pins folios obtained directly from the page cache
+>without checking whether they are uptodate. However, shmem fallocate()
+>can leave newly allocated folios uncleared and not uptodate. Callers
+>such as udmabuf can then expose uninitialized memory to userspace.
 
-Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
-Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
----
- arch/loongarch/kvm/mmu.c | 20 ++++++++++++--------
- 1 file changed, 12 insertions(+), 8 deletions(-)
+Right, just make sure the folios are initialized before handing them to
+callers. They shouldn't have to care whether shmem deferred the clearing ;)
 
-diff --git a/arch/loongarch/kvm/mmu.c b/arch/loongarch/kvm/mmu.c
-index 64fddd9f0ada1..ab0a06b73e8d3 100644
---- a/arch/loongarch/kvm/mmu.c
-+++ b/arch/loongarch/kvm/mmu.c
-@@ -679,10 +679,10 @@ static int host_pfn_mapping_level(struct kvm *kvm, gfn_t gfn,
- 	int level = 0;
- 	unsigned long hva;
- 	unsigned long flags;
--	pgd_t pgd;
--	p4d_t p4d;
--	pud_t pud;
--	pmd_t pmd;
-+	pgd_t *pgdp, pgd;
-+	p4d_t *p4dp, p4d;
-+	pud_t *pudp, pud;
-+	pmd_t *pmdp, pmd;
- 
- 	/*
- 	 * Note, using the already-retrieved memslot and __gfn_to_hva_memslot()
-@@ -708,19 +708,23 @@ static int host_pfn_mapping_level(struct kvm *kvm, gfn_t gfn,
- 	 * value) and then p*d_offset() walks into the target huge page instead
- 	 * of the old page table (sees the new value).
- 	 */
--	pgd = pgdp_get(pgd_offset(kvm->mm, hva));
-+	pgdp = pgd_offset(kvm->mm, hva);
-+	pgd = pgdp_get(pgdp);
- 	if (pgd_none(pgd))
- 		goto out;
- 
--	p4d = p4dp_get(p4d_offset(&pgd, hva));
-+	p4dp = p4d_offset_lockless(pgdp, pgd, hva);
-+	p4d = p4dp_get(p4dp);
- 	if (p4d_none(p4d) || !p4d_present(p4d))
- 		goto out;
- 
--	pud = pudp_get(pud_offset(&p4d, hva));
-+	pudp = pud_offset_lockless(p4dp, p4d, hva);
-+	pud = pudp_get(pudp);
- 	if (pud_none(pud) || !pud_present(pud))
- 		goto out;
- 
--	pmd = pmdp_get(pmd_offset(&pud, hva));
-+	pmdp = pmd_offset_lockless(pudp, pud, hva);
-+	pmd = pmdp_get(pmdp);
- 	if (pmd_none(pmd) || !pmd_present(pmd))
- 		goto out;
- 
+>Clear non-uptodate folios and mark them uptodate under the folio lock
+>before returning them to the caller.
+>
+>Fix generated by an LLM and sent by Chris Mason in private.
+>
+>Fixes: 89c1905d9c14 ("mm/gup: introduce memfd_pin_folios() for pinning memfd folios")
+>Cc: stable@vger.kernel.org
+>Signed-off-by: Chris Mason <mason@kernel.org>
+>[ david: simplify description and comment ]
+>Reviewed-by: Pratyush Yadav (Google) <pratyush@kernel.org>
+>Reviewed-by: Samiullah Khawaja <skhawaja@google.com>
+>Tested-by: Samiullah Khawaja <skhawaja@google.com>
+>Tested-by: Muhammad Usama Anjum <usama.anjum@arm.com>
+>Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+>---
 
--- 
-2.43.0
+LGTM!
 
+Reviewed-by: Lance Yang <lance.yang@linux.dev>
 
