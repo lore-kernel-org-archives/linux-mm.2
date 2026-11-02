@@ -1,93 +1,128 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0236B606D83C
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 17:27:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B3EC6072C78
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 17:29:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=hCGUwl5E
+	dkim=pass (2048-bit key, unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=google header.b=O0dhtEKU
 Received: by kanga.kvack.org (Postfix)
-	id 7334D6B05B2; Mon,  2 Nov 2026 12:27:55 -0500 (EST)
+	id 53B5B6B05B4; Mon,  2 Nov 2026 12:29:48 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6E3C66B05B3; Mon,  2 Nov 2026 12:27:55 -0500 (EST)
+	id 4ECCA6B05B5; Mon,  2 Nov 2026 12:29:48 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5FB1B6B05B4; Mon,  2 Nov 2026 12:27:55 -0500 (EST)
+	id 3E0E26B05B6; Mon,  2 Nov 2026 12:29:48 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 34D336B05B2
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 12:27:55 -0500 (EST)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id B60F51401F7
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 17:27:54 +0000 (UTC)
-X-FDA: 85390861668.21.E3FF912
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf20.hostedemail.com (Postfix) with ESMTP id F009C1C000F
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 17:27:52 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=hCGUwl5E;
-	spf=pass (imf20.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 124726B05B4
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 12:29:48 -0500 (EST)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 890CBC01C0
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 17:29:47 +0000 (UTC)
+X-FDA: 85390866414.28.906AE46
+Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 803E3180005
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 17:29:45 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=O0dhtEKU;
+	spf=pass (imf06.hostedemail.com: domain of mhocko@suse.com designates 209.85.221.42 as permitted sender) smtp.mailfrom=mhocko@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793640473;
+	s=arc-20220608; t=1793640585;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=leKsCN/AW0CIMV0Z58FExykl0a+UkP/KW/e3nsnHLQM=;
-	b=FBjWT8aFg52wIAOeK3EVBV3eAtTSIwpey2jn4cG72d9ttsBXwIn9owPMYGU48Qn1uChYVi
-	gsnIpHt1FPAe3LFafaKD0D2Z+dBO/xW7YosexzoqBhorwTQ0kqjhLez1NsMSQ8jHCUht+a
-	oRqJUUe7ySbLy+Q61i8PWHHb/Kw4HR4=
+	bh=lBnwm37qIsrm7xDbTxm53J3mLY9DT6w/4rBjRvoMZdE=;
+	b=TLHu1BtPlL0edMHO7nBfd0WOLW+muoppG5a6SkicnQg3gXef+UesA5DeC7H5g7o0r1cMHu
+	/ybWe35IWidtRfVQzn3mvFBaWdfZPeN4wKWVa649KGiowHKK6Z4WRv+HQOMxYcka7W+Vf9
+	0hkmAtY/aofQ+yETE9RVca7c+aot+zE=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793640473;
-	b=pTDhRPSZgaKqNh44hnnO428AdhicRC1dIdlycfgTdaZwV50epIvhA3XUqdBf9fNOQIvxlh
-	gjdKsMv3dONKpxZOV5vfrLltPR36en/fR2PvaM1bpyi7xjO3MFPC2r0Y0ONncvbe4wPwVM
-	CinfN4LVBtJXianexy0NdNgGG5bYVO8=
+	t=1793640585;
+	b=xEIn0sPpYZXZxI7jFIh37yh9ne2bjnb/NUwxIy3oTnzp+XITEU+EfX+edsObx9KwwMd5lW
+	WmVyT5S5S9k3GTO4a909zILcKmZ2TIDmVJphzevUMtD9icz/4aOtIX+tz0O62BnRz8aWy8
+	AuchgVUhutcpy8BMWUnqRRzlo5HVxDE=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=hCGUwl5E;
-	spf=pass (imf20.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 2198D60621;
-	Mon,  2 Nov 2026 17:27:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D29A1F00A17;
-	Mon,  2 Nov 2026 17:27:51 +0000 (UTC)
+	imf06.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=O0dhtEKU;
+	spf=pass (imf06.hostedemail.com: domain of mhocko@suse.com designates 209.85.221.42 as permitted sender) smtp.mailfrom=mhocko@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
+Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-48afbd2c386so1933991f8f.3
+        for <linux-mm@kvack.org>; Mon, 02 Nov 2026 09:29:45 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1793640471;
-	bh=leKsCN/AW0CIMV0Z58FExykl0a+UkP/KW/e3nsnHLQM=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=hCGUwl5E2q8xC3fuwYjC4VbJ0KmGUnWBIucbBnmAQ1vd3ngEy7yXbM4BCpaxwfXNj
-	 IhAZLA/WXHfX9ARMw69lYseQ7Vc5+vSFUh7v+FhlXPadvqEAr2T9l+RQI1sK8KSBM6
-	 PseChT1NMSI3bz7QCXmm5cSTyDOiG6BIlu/XVPuQ=
-Date: Mon, 2 Nov 2026 09:27:50 -0800
-From: Andrew Morton <akpm@linux-foundation.org>
-To: "Jose Fernandez (Anthropic)" <jose.fernandez@linux.dev>
-Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara
- <jack@suse.cz>, David Hildenbrand <david@kernel.org>,
- linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, Krystian Kaniewski
- <krystianmkaniewski@gmail.com>, stable@vger.kernel.org
-Subject: Re: [PATCH v2] mm/filemap: stop fault-around when the walk steps
- back
-Message-Id: <20261102092750.e53073b2c7b872f9d70c0711@linux-foundation.org>
-In-Reply-To: <20261031-jf-mm-filemap-map-pages-lower-bound-v2-1-21029744e589@linux.dev>
-References: <20261031-jf-mm-filemap-map-pages-lower-bound-v2-1-21029744e589@linux.dev>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+        d=suse.com; s=google; t=1793640584; x=1794245384; darn=kvack.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=lBnwm37qIsrm7xDbTxm53J3mLY9DT6w/4rBjRvoMZdE=;
+        b=O0dhtEKUri/gHfAcwNxOyPqVY4+cQXkUHRKi2jyMraRAqXLD4FBLjuGTwZdDN7YE0P
+         t5Ti6uMJ+tkWh8sv3JUWxFddpvtEzDUWALZ7KB1TDBkKdtWRp3nPFOvnJGR+Jzz626PY
+         ILaclFTl+sHXfFKG933hJCt4+qZtJIOGsglBqI8a1Km9JEhXENFFZKR+dpP/p+HiMwRK
+         rYo8ASDflthEKy1GDTKvtp7zJFTlA/K5YrHL3bRYjwDgeT2LKngUgyaElkko6DeVJSt7
+         RW8TqTxqWkZUnGwfcD6w/zA1PTBd5sdci1dhR2x3G1ONFERfi6feubS+ovFZdXlPYNPz
+         vxhQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793640584; x=1794245384;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=lBnwm37qIsrm7xDbTxm53J3mLY9DT6w/4rBjRvoMZdE=;
+        b=TIUHCZweHuHzzNr4VYON4qfirYzLLQ8pOidGrWC6d8i91pI+acqn853Dn56/xawiTe
+         pQxeYYfafBGH8PTMVInmyDjcy2WBsTI+zL0TiquSAqe9NppQtaQVnzqIvMlH56KBuBAj
+         c52te1rOZltiVihYvwOW67/bFApgpGo0G8M14arrStqBvRsmeCDQ59xLojPgPJ92r1NX
+         hRfTlkYwmFtXV52GjvYH0SwQy0hksBKH14HKz57X5wTSfGNldv6IEe+Uq9l5IRBNOuvH
+         l6cbYWe87dW85da+Z1eOBoT4oYirhWfTjBTTtA0zF6gjUhxHHobCJLr7k4cBc7xsNe6S
+         MTGA==
+X-Forwarded-Encrypted: i=1; AKwUvByuwCxbTRsf8ncBL9j8OJOgxQXNMJIxHZ4WB3OGQdEnG0VbZbJww0r6oS6nF6/vplNYeuPFq6HtgQ==@kvack.org
+X-Gm-Message-State: APuU4Z8hPQXWWvjHf+jEHx209E0fLn6FDnTFk3GjVei/FQxKlrrNlyR8
+	PMnk/1Bd6wzzbns8oRfCXmS7MTaLl6JzS/KPpXjihtomobvyJX97V1UtXSuCHzxSI9c=
+X-Gm-Gg: AYBFou2qFb4jU2dKeEmFPTFkAq21o3xeko9umz01TUvKyitsk9HzANXacxHcwtUtwTp
+	18KhOF5jEpDeQPeeUVlJLMImh4qShijt4WYtuK1xuD2nDBZk/jGOHOfDYcbI2llUxnLJhOate3i
+	JXKWTubgYLTXRw3IRpbzdOjaIMmHnMoSUbEORBr+9a0rFwuC0+EbfErqAiIaWgzTIIs00FPVhxE
+	BgPB59UOXmb5Cmdp5ptLYVQuEajdywn0GjDKBdwVzGGlESz1aHngBQtaWVayMRD0xKPkmdOsf8S
+	oWxZq7Its72iSLXVnLVhPXUEA4vSSE4um/0Ph7g8CeMplDO7q7nZplUeUMso/nWOHOuxPJvyI3g
+	ye6nxTY3tULPg7ljjXTz7vQDS5VT1IIvb62sWfevQxaKosEvpSK5ATkhs9bzggRCnrCIG+4YB0K
+	er5I5JWoUyfytkyAPdbU6s0t7fkwM54HVPKlvsuapYv6E4sGlSPce+TIuO3UUNxiD0YfW14zgVj
+	2ghDcfoJs8GUrqMxRw3XSdY6dwflt0ZRvM8iQAioJa0CSqvGhvF9cqOvBMP2kMyqTfOXErxZlYP
+	M96RQQbMcI5mdVYTKA43lDJA5guvkGPiEMNBjJ4=
+X-Received: by 2002:a05:6000:4b04:b0:48d:f391:5c45 with SMTP id ffacd0b85a97d-48e6e4f8ae4mr26540418f8f.42.1793640584164;
+        Mon, 02 Nov 2026 09:29:44 -0800 (PST)
+Received: from localhost (109-81-32-81.rct.o2.cz. [109.81.32.81])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e71b80306sm22600959f8f.33.2026.11.02.09.29.43
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 02 Nov 2026 09:29:43 -0800 (PST)
+Date: Mon, 2 Nov 2026 18:29:42 +0100
+From: Michal Hocko <mhocko@suse.com>
+To: Roman Gushchin <roman.gushchin@linux.dev>
+Cc: Tao Cui <cui.tao@linux.dev>, Johannes Weiner <hannes@cmpxchg.org>,
+	Shakeel Butt <shakeel.butt@linux.dev>, muchun.song@linux.dev,
+	cgroups@vger.kernel.org, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, Tao Cui <cuitao@kylinos.cn>
+Subject: Re: [RFC PATCH 0/3] mm, memcg: isolate deprecated v1 state from
+ struct mem_cgroup
+Message-ID: <aujIhsampHnzcl_5@tiehlicka>
+References: <b36ab4a7-b692-49e8-92b5-1dc4d76dee00@linux.dev>
+ <0BEF7489-16EC-44EE-847B-A6AA380BE11F@linux.dev>
+ <32e80536-64e4-4ae3-a7da-4a37ed415f0a@linux.dev>
+ <7ia41p9341lv.fsf@castle.c.googlers.com>
 X-Archived-By: <archiver.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <7ia41p9341lv.fsf@castle.c.googlers.com>
 X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: F009C1C000F
-X-Spam-Status: No, score=-7.6 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+X-Rspamd-Queue-Id: 803E3180005
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,NICE_REPLY_A,SPF_HELO_PASS,SPF_PASS autolearn=no
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
 	autolearn_force=no version=4.0.1
-X-Stat-Signature: w5nubxnw3rf11geu67ne7sq7m4wy5z8z
+X-Stat-Signature: a3opuzxb16gz4amtpityp9d4pdckia7u
 X-Rspam-User: 
-X-HE-Tag: 1793640472-951023
-X-HE-Meta: U2FsdGVkX18T11nZOHEF6B6ggTbId+RzYFZSWzWYXMPl3kDu+UQfO6VqqkKH3eWkWMbPx2ZPEuIfKiFYyrCXEUFIWGchUV1pIEjXV4xoxvfLvS+hILS6/p2FjzDvwa0Z9IW+t/MGLStHYkStjQm6KKW22b+OW4matTCUJ/3qxJVtL+CwG1hOAWUTeqP5m0Ztt/x/Y/U9OdEZHVwQDJaDmi2/9G8EN+lccjt6hC7BNirOD2azgpLQARlv3WV08foBnyTTJokDmsRKrtd5/y337w0IYQkxCur7JGenNFSDBGL+adDgbIC9qugKS4kEyNPI+5Z1dhBpzEoA2tlS+VMNSMnH7xI00jovvFKg/MtREOT3Axx3rM4rldCPUBRbfZseh2nAivnBdfWMGXn2FTMOwAxif2gXdNRrSGKMaQ++S/vfQ0dlgaThCVUIPKfVi2sBZ/j3vZeu8xBwrhYUfVQNAHni0QzKdIcu+6IJfquSn0qCVQ3KgHloHFgzDBSmWdpA48MMYj557gbvOetCKyDRlm6QdmiUhIWqgun7BzUPsfmNDXUkcFv8rR2DbVei8VzsP+QpPplm6/u4KT1curALw9Q9JnjXXtrWdLPbtNCPUqHHxyp2BMoM58q0fu5yIHaCzYdpyqONQG3CAU51fZI8VF+XjhBOOO40xG2HU9Y1YAOJ83WMzajRbWcP807F2QIcdv7pXRnQJjN5YU67RRTmeN93z82V2TCmIFec9bRGjVIT6qPsjIpSN3prJ/SL9VQhfcWRsryEJBRBanpCQlif7QtN63BjDqYkzcavLsYbmqimV+WQopWjuyzWphxIIwk/srZSxwt0EONnsMypxTuLq9bf8nRprkaU8CH9rU3WeaF47dptWvOV6rjgI54JqTdbpbPBkJAs8ODZy1zvIQCFgLfKApLbRv8hnxOQsttWrGhQ5nZJYPOsnVxMUmLWusznzaF56zAUMJoDjB8+eeM
- d7oSwrSu
- dQrgbVEi3WMNi8OLehBlAH4rk0FZY6A89w2dwxjW012s56vuPvlKUIQKE3X2e0nTU38hjwrFBtr1C7DVPzPs1gVFyiaTg3/7vv++fKq1EqM9LZf4gnl46s1uEKmmO2K9oAsJflsQLXlATnzjYqOq4WG0KiRj74YdtVXUt0TO3b6awGku5am2zs28ee5Q25Q8WP72hhQr5AIVd/8VE6IA1g6EmKPSY61RVQv+ymX/S6UwQu3nel2Vf4Vp9kFNtjxcr0+TwOjKurrPhkrmNMoXBx3t2YF5P3zwEHl5PnAV+k8G2bK0sJFQGpSiKfhx9gQWmQEAr
+X-HE-Tag: 1793640585-743915
+X-HE-Meta: U2FsdGVkX1/Yz1sPEOtahH/S8Bl4r8+2stJNuNthNNUwaqyB3axDUgPa5Hg4vCMmQ3n1dMyTsd80Z+0AH5QarW1MB91g/D9mKSB/mrWisoD6InL23F2yNDOil2pWr4HejbBn1U1v+NdDU9tMCb/YXfiIe3w2hetK86CqgW0fN1RtrcP0OvxE2F5iaGqBm9oDyroiw3zPwKbOv+2cWA0wL1kwLO/oPeKL24YyDFxjNXpU+evKR2jqPAOhdh2wqp37nAA7ikxDR95L+UhbJM0ph1Zgxp6UUYMr0R+/MQyQL2WEYxEijZbjTVpEzliblgd7fXN7A6EhJV/0F88YeHH21OCgvHX7WJg5i+aW5/8gLY/32PMy31rYglgs8O76CUhg2SbIt9Q1hu+tAHswpKLAWvQPUHdLh5fV47EcU8aq5wSO1PUrKu34EOKTRAiLp7o1xfXSSKOUtrS9ognQYoaQPo5rsemVCPhaT4blWSYkPYJskmRN+pMz8PC/9fgyqR2I53cw0Mkmzm6odWHTvuW+iZDiTeDy1xaL7jJEfkStgMg2RxFrae7BRnL9vr3+ryPZ1lUm60RTI/3VnrEUCmKACpOR63pveFjnK9QeJITYZpMFFOY/1M3Nr3c2t7VgqcAXjOSXAaoS3xwwl4MzlDEoPJzDeal8X4hQPagES+hVScLVP2aG19VRARVGeNkWKEZLl2OkykH46HQuWf6uRO0lJ9875slcIDR03RMkBG+pPaZ96AZeoKsifw5NDSf4q8vIIx6KpDexR7xKoUbrQs3lufALbIFFxkojwL2VKEYgHqn5fun7v2b6rawXqTVwNN6Vv0HP0oFj9KYcypFHVQ+/Qv/Ac1KZP3MWXDcD9sDthvOrAAK6kBVP0LL1pOG28ojQ58MgfUrsXgIoWwvk5ZnZhRxGfiFSqR0gsp7UNf/TzI9g1IL2gm32Asy+fQgwMCqaZfSXeNHKcH9In8ygj/7
+ hL0uyYZw
+ smEBeaQcRbZO9xhv+pMeSTXl+WPmM6nq+oYTUFh9iMLlSGjWOTgNz2t0wfdiTQWqGJycmnDQCpI8kRWuC3iXFZq6dyTR4tuMjTXkPoQLFrr2d4Vw6Trw/Kmbt+AKCulPigJjQJOcAuwKXE0YiFYLQBa/FRrVEJpicUG3LQgnfOI4INWrs7dKzZzqWVhq9kO+X2R0G49ulgFNfYrHNUD885pozF+lRAaPPCyvUEi1xRdh+FAtlYqwWjHBpn0RLyESwYet5COLK+QvPUTuxJcv5U/8lR89mUNY1d5yQbdFso8U7Xvr6giFCGseIniM1E6I3x7gVQGH7P9WnHSEZjM9iDPiehIf8ScFhQhv5c1kwydD5nTkJd+uiukMHSboztSSqA7YYunH2Cjmd8p03jJAdQaCnGqP3U3U756RCD2bHIV7FGio=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,27 +131,45 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Sat, 31 Oct 2026 04:33:59 +0000 "Jose Fernandez (Anthropic)" <jose.fernandez@linux.dev> wrote:
-
-> filemap_map_pages() can dereference a PTE pointer outside the page table
-> it locked. KASAN has reported this as a use-after-free read [1]. The
-> same path can also write out of bounds. When the stray entry reads as
-> none, the fault-around loop maps a page there with set_pte_range().
+On Mon 02-11-26 16:52:44, Roman Gushchin wrote:
+> Tao Cui <cui.tao@linux.dev> writes:
 > 
-> Its fault-around loop walks the page cache and moves vmf->pte by the
-> change in index. A lower index moves it back. xas_find() can step back
-> to a lower index when a multi-index entry is split during the walk.
+> > Hi Roman,
+> >
+> > 在 2026/10/30 14:05, Roman Gushchin 写道:
+> >> I believe we want to delete this code sooner than later, why would we rewrite it before that?
+> >> 
+> >
+> > My assumption was that v1 would still be maintained for some time
+> > before its eventual removal, and the goal was to reduce the coupling
+> > between the remaining v1 code and the shared core structures during
+> > that period, rather than to rewrite the implementation for its own
+> > sake.
 > 
-> [1] fixes xas_find(), but the loop still relies on the walk never
-> stepping back. Stop the fault-around when the walk steps back. ->fault()
-> maps the faulting page if the loop did not.
+> I understand. But personally I don't see big issues with the current
+> code caused by the v1 stuff. Maybe I miss something...
+> 
+> The proposed changes on the other hand create difficulties for those
+> who use v1 and maintain some local changes or simple backport upstream
+> fixes. Of course, it's not a reason to not change the upstream code if
+> it's justified, but in this case I'm hardly convinced.
+> 
+> > If the expectation is that the remaining v1 implementation will be
+> > removed in the near future, then I agree this work becomes much harder
+> > to justify.
+> >
+> > Am I being too optimistic about how long the remaining v1 code is
+> > expected to stay around?
+> 
+> Well, Idk, it was considered deprecated for quite some time already,
+> so maybe announcing that it will be deleted in a year is reasonable?
+> 
+> Shakeel, Johannes, Michal, wdyt?
 
-Thanks.
+As I've said up in the thread I am not really convinced this is
+something we should merge.
 
-Can I add your tested-by to [1]?
-
-> Link: https://lore.kernel.org/20260904121301.200049-1-krystianmkaniewski@gmail.com [1]
-
-"xarray: fix index jumping backwards in xas_find()".
-
+-- 
+Michal Hocko
+SUSE Labs
 
