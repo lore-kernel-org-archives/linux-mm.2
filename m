@@ -1,138 +1,152 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2273F606A329
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 10:36:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C29BA606A327
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 10:39:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=n4K1m0W4;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=cDqlMQ6/;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=n4K1m0W4;
-	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=cDqlMQ6/
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=kjuHoq7Z
 Received: by kanga.kvack.org (Postfix)
-	id 2F6116B00EF; Mon,  2 Nov 2026 05:36:10 -0500 (EST)
+	id DAABA6B05B8; Mon,  2 Nov 2026 05:39:23 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2A6A96B05B1; Mon,  2 Nov 2026 05:36:10 -0500 (EST)
+	id D33AC6B05B9; Mon,  2 Nov 2026 05:39:23 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 195D26B05B8; Mon,  2 Nov 2026 05:36:10 -0500 (EST)
+	id BD4B66B05BA; Mon,  2 Nov 2026 05:39:23 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id EC6546B00EF
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 05:36:09 -0500 (EST)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 801C080BEF
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 10:36:09 +0000 (UTC)
-X-FDA: 85389824058.02.BBB4B57
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 73415C0005
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 10:36:07 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=n4K1m0W4;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="cDqlMQ6/";
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=n4K1m0W4;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="cDqlMQ6/";
-	spf=pass (imf22.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793615767;
-	b=MaivgCobVeZ6uICqZ0YImWUSDp5rKD5025N5ZgWMuzr83cOU8wGwHIZc6EAFaF6G1dDiQg
-	KncvIwxexjBO9DIz15mG2IfimjsqCaDiB0+Xa4wtjud+86i1KRAkGbW3JAz9O5QHyYjcKj
-	l3mAVLRAZDYM1ML1sCpDGusF+Ge+c+k=
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 924546B05B8
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 05:39:23 -0500 (EST)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 2320440C38
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 10:39:23 +0000 (UTC)
+X-FDA: 85389832206.12.EE61828
+Received: from mta0.migadu.com (out-177.mta0.migadu.com [91.218.175.177])
+	by imf13.hostedemail.com (Postfix) with ESMTP id BFD2420004
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 10:39:20 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=kjuHoq7Z;
+	spf=pass (imf13.hostedemail.com: domain of xu.xin@linux.dev designates 91.218.175.177 as permitted sender) smtp.mailfrom=xu.xin@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793615767;
+	s=arc-20220608; t=1793615961;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=TRhzeJj1YK8/7h9dIIOem89RRPtC49dqxALnXhljlDo=;
-	b=qk61oNQWFJa1TWSCoESEv0XTji3k8WaduMg7rf8xmOd38QAl7YcDc87CQP9g+u4jz5asll
-	OjzHvetxScWljin5SJ0rOJvKi0oN0TWrd4ldLx9zDcHW3Q1HdOQ7gWzFCMSvar63Zw49pB
-	0Zoni86lnBDvS/tu3vlSMpLD0XnKgQA=
+	bh=SXPkduc5HmvcD4JbyCflilxUkIbcOVZyKgcYfnLDPdM=;
+	b=5Z3cYbK1FzJPb1fG5npYYSYQ4nDCwhhLuvjZJ0lqre8ObU07L4LHOCUM6d7lF5BZP3kiyV
+	1KaE+drwG8zhWW3oOdE6Ca/DQb42gKoFV54vcqVIkEHvNtSWtJFFn+eQk7Pba8gvpidRtG
+	etDd+HIK0zlWkfBni0rSq420X1Y7OEs=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=n4K1m0W4;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="cDqlMQ6/";
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=n4K1m0W4;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="cDqlMQ6/";
-	spf=pass (imf22.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 154E121F64;
-	Mon,  2 Nov 2026 10:36:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1793615766; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=TRhzeJj1YK8/7h9dIIOem89RRPtC49dqxALnXhljlDo=;
-	b=n4K1m0W4gEt+08pZ/ke7ocpeaWfykHo95r7XJVroWkyjbiT4hlZ8tSZkZ2CW8G+0uB/pcD
-	Aso+EIUrHnHFdEysbLOTX6wVNdgNWeaoy4+l/tktODMKf5ksKAxcl7dTaQgfNTRiPn3agK
-	MpkvITq2jcJNlb4zq4Kk8RL96nTyZNQ=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1793615766;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=TRhzeJj1YK8/7h9dIIOem89RRPtC49dqxALnXhljlDo=;
-	b=cDqlMQ6/px5ct/Lw6LJDpmI34aSvq3eKoIaCh8tYokTGUyPVgmMIL91f/zDsWFcoQRneaN
-	BGawnmfF710E+uDA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1793615766; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=TRhzeJj1YK8/7h9dIIOem89RRPtC49dqxALnXhljlDo=;
-	b=n4K1m0W4gEt+08pZ/ke7ocpeaWfykHo95r7XJVroWkyjbiT4hlZ8tSZkZ2CW8G+0uB/pcD
-	Aso+EIUrHnHFdEysbLOTX6wVNdgNWeaoy4+l/tktODMKf5ksKAxcl7dTaQgfNTRiPn3agK
-	MpkvITq2jcJNlb4zq4Kk8RL96nTyZNQ=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1793615766;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=TRhzeJj1YK8/7h9dIIOem89RRPtC49dqxALnXhljlDo=;
-	b=cDqlMQ6/px5ct/Lw6LJDpmI34aSvq3eKoIaCh8tYokTGUyPVgmMIL91f/zDsWFcoQRneaN
-	BGawnmfF710E+uDA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 22684134B8;
-	Mon,  2 Nov 2026 10:36:05 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id p7mnOJRn6GrtOwAAD6G6ig
-	(envelope-from <pfalcato@suse.de>); Mon, 02 Nov 2026 10:36:05 +0000
-Date: Mon, 2 Nov 2026 10:36:03 +0000
-From: Pedro Falcato <pfalcato@suse.de>
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Jann Horn <jannh@google.com>, "Kiryl Shutsemau (Meta)" <kas@kernel.org>, 
-	"David Hildenbrand (Arm)" <david@kernel.org>, Lance Yang <lance.yang@linux.dev>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, syzbot+10e72ea5747737bcd2ad@syzkaller.appspotmail.com, 
-	Songsen Yang <yangsongsen@insta360.com>
-Subject: Re: [PATCH] mm/vma: read anon_vma carefully in validate_mm()
-Message-ID: <auhnfQg8aS30V70B@pedro-suse.tail5790ac.ts.net>
-References: <20261102-fix-validate_mm-v1-1-5c309614ef15@kernel.org>
+	imf13.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=kjuHoq7Z;
+	spf=pass (imf13.hostedemail.com: domain of xu.xin@linux.dev designates 91.218.175.177 as permitted sender) smtp.mailfrom=xu.xin@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793615961;
+	b=lIEumWCHorfJh8clG4vhL6W5QL4pw2k7Wt/EB9qMxYv9kJjuinXPdbMXOtMSl5uylvZ8lE
+	DVrdsuJv/tlrA6lGymEjcwAtVJxQfT6TUip3/BHvmr/bIREU2de3+t8PhyGSR7n3mCIGeQ
+	3W/jYTnA0LwZ5bqMCPrwlcmC/pg7gyE=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=g/mOLxr73xiPzfSEauykXJcCVgHJm2aXb9jWqKek3jg=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1793615948; v=1; x=1794220748;
+ b=kjuHoq7Z7WInoWQjvZyWXCq6fLcyusxA/wCxez4d8Pyx+CwmRFc4uUR3ShfNvGhGHMUT3+HP
+ /G1fYZPWIznutntr52aGAg2slMISGBWg0BtWi9p7pPPh9X8UUm5MJAgIMWouR/qsesR6a5zHsUA
+ 2kKl7WCLwMIhiRGwVbPnT1pQ=
+X-Envelope-To: linux-mm@kvack.org
+Received: by mta10.migadu.com with ESMTPS id 8bbf69835e69a785;
+	Mon, 02 Nov 2026 10:39:08 +0000
+X-Mizu-Trace-ID: 8bbf69835e69a785
+X-Migadu-Flow: FLOW_OUT
+From: xu.xin@linux.dev
+To: david@kernel.org
+Cc: akpm@linux-foundation.org,
+	aneesh.kumar@kernel.org,
+	apopple@nvidia.com,
+	axelrasmussen@google.com,
+	baohua@kernel.org,
+	baolin.wang@linux.alibaba.com,
+	baoquan.he@linux.dev,
+	chengming.zhou@linux.dev,
+	chrisl@kernel.org,
+	dev.jain@arm.com,
+	gourry@gourry.net,
+	hannes@cmpxchg.org,
+	harry@kernel.org,
+	hughd@google.com,
+	jack@suse.cz,
+	jannh@google.com,
+	jgg@ziepe.ca,
+	jhubbard@nvidia.com,
+	josef@toxicpanda.com,
+	joshua.hahnjy@gmail.com,
+	kas@kernel.org,
+	kasong@tencent.com,
+	kees@kernel.org,
+	kexec@lists.infradead.org,
+	lance.yang@linux.dev,
+	liam@infradead.org,
+	linux-arch@vger.kernel.org,
+	linux-cxl@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	ljs@kernel.org,
+	matthew.brost@intel.com,
+	mhocko@kernel.org,
+	mhocko@suse.com,
+	minchan@kernel.org,
+	muchun.song@linux.dev,
+	nico.pache@linux.dev,
+	nphamcs@gmail.com,
+	npiggin@gmail.com,
+	osalvador@suse.de,
+	pasha.tatashin@soleen.com,
+	peterx@redhat.com,
+	peterz@infradead.org,
+	pfalcato@suse.de,
+	pratyush@kernel.org,
+	qi.zheng@linux.dev,
+	rakie.kim@sk.com,
+	riel@surriel.com,
+	rppt@kernel.org,
+	ryan.roberts@arm.com,
+	shakeel.butt@linux.dev,
+	shikemeng@huaweicloud.com,
+	stable@vger.kernel.org,
+	surenb@google.com,
+	usama.anjum@arm.com,
+	usama.arif@linux.dev,
+	vbabka@kernel.org,
+	weixugc@google.com,
+	will@kernel.org,
+	willy@infradead.org,
+	xu.xin@linux.dev,
+	ying.huang@linux.alibaba.com,
+	youngjun.park@lge.com,
+	yuanchu@google.com,
+	ziy@nvidia.com
+Subject: Re: [PATCH v3 39/47] mm/ksm: reset the unstable trees of all nodes
+Date: Mon,  2 Nov 2026 18:38:39 +0800
+Message-Id: <20261102103839.225014-1-xu.xin@linux.dev>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20261031-fixes_core-v3-39-d6437171ecc3@kernel.org>
+References: <20261031-fixes_core-v3-39-d6437171ecc3@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261102-fix-validate_mm-v1-1-5c309614ef15@kernel.org>
-X-Spam-Level: 
-X-Spam-Score: -11.80
-X-Stat-Signature: 67eumb1u33y8nwp85korr4pxf33g6yqj
-X-Rspamd-Queue-Id: 73415C0005
-X-Rspam-User:
-X-Rspamd-Server: rspam12
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: BFD2420004
+X-Stat-Signature: 64ww56jmi5cb4g13iquq9u7snmyoenkt
+X-Rspam-User: 
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
-	autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1793615767-532830
-X-HE-Meta: U2FsdGVkX1+9BfvcctKkgTRiiAWs1f0lvjmg/+jtPTJQTpx6ORFwIqxoXpVJQ2r8L/D2MlKcQzQPcqLDIcu5r/hTe8nqhByKPQHmTWSIKagEF7jWkYi1mPGskW95D/KiXzR7mTJtnwwFq8qFtgvoLkKKfh37lPA7bK74rEIUxGtLu/+3kR+CjIcasYognPB104JNx3Hy8VFlsVwbjgFot0WeNh3YefB9Z8FRNVB4W2afOMirsMe0kPmBYI7tJZelNKhczuJcc5jtM3BX48XQXImmeHArQeMOjBtM1tIpBMzXwqMs+iMmPxH8rCrAEioPHbmsp2+gT+P2uznciMRctONbE3kjLDFeaff+1v3hk2Hj0LsbrVEa45ZbcN/XgiUTzrni0QXFX+uZt7xMpSzUoKstfQWNdGzdamEvGI4AgUxYQvOV70QXcrynkincOVMb9xGIrH6+hYZQN2CyhxjnnqDLXVoCGDPjLQnEBbzTQj9XAo6kok2p6sW8PzFOMVwsiT2cRbSXY2cOmN47jTuST40Ecm4kEhFk3YcLb//6f1us7IID0iZHmK7TDPfqBeByU6R3i06co/zZk9ZkdpoSFMj0Lq0vUhLTeA8Vt7Js1iJbGkYHzywcRjLw+v8l4yl7EkvYFPlWGSOO/9WynCBOn35ZQkukZKxB2y0ejXPbF5McsQn9Fcmet7pAmWS17gTCMIURqmmgS15H3gh7g8wK1MOFYol7Pu10LdnM10D0+umGS6SWQwy6TKdCs4GBymPpZ68I+aA8zDMTgmyynMfJibT/wxy+x8k0nPIes4X6l069qjDbeQ554dzWfYGQgwKUNdWnmne5k1OAMnM+vc6P4oYFmMPJYpZr3T3WYrQiPeFPYhXX0p94HOUkT3+ZaK9kKOADs1bGpB6HJj5v6PkuOharWCudCrROj26qJeI7srt1zGbLMx3tLIi/T9pkhohrZ0AVWk889zxZ+t497t4
- 9bKVC2BO
- jcWiRLBcp9XYizxZseiHaxp0zvnix1dcRLOf4TdWWgQTxzeX+Z0XubrsI0ECrjBDdgujsElYyghFLOjpfNn5q7xE6fKTS+gBEVzxUKfdMqQquxmJ6RRADgI5gM/iW3Kxeh9W6ZJK+krFQg+PEwknOr1HOzt+Yr7NA8SHW8EUU8g3bP7J/XP8zfjLP67PqH3c2lpovOdQTBlJx+fcPje5RolwONXAd7DP7uHJgDi3ARfWuJvBrGVvg3ypDOWv0sZBhe4+U70GCcN1iTTDDrCEdhT8kMgGMdrxrmNRRkDUL6n4TmUbs87H0G8M+Vs5LbXgY3C87VbADCa9BaXCkoECbB1fOi5z0NQUcsy49kad3rxrY2Ib4xkBMoJK/AYU5LWC+tQz0mGnnH2WdAS3foyTZVQTW5eWYE5KdM9CNjvBgQfrpqUuw0qYW73pBPxHxQQ4lMXIOQ7APKJWfK7ns1A0wjAg3vmWJqNcuq41ru8F8i6cjTppk8K7wMuKiPh5cNE0hpBY9Tsm1ZFO4y1DYHThICDkIN8/QzzlG4YxdnSJeoftexTVIy3WpeTxoNK2kjN4Vt+ePBCpJZwnp/ipa5o3iQzDWD1Qwjl7MJ1lh2Cekqne6ERfL4qnFeYRnkwYtbws0jfFUAvYluHlxJexQAGv1hd5I1g==
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1793615960-490590
+X-HE-Meta: U2FsdGVkX1+18dHQopYnSWkrb1Em/zTMdhUCAurmgwUe0M6/SxWK10vx8x8FJFG+ojjPXw61bjBg+xIGTcN7cv8qsQydAK5z8aqqtm8+6AgB/iZOeUI3tUhZBRGSBfFUxUMydXXO8ae2jA7Pkhjk8tjbchJmLeTfMtw6Id4RiC4n1fPMccGxQoF+AEQig87YGbhWpFiOzAtkMv9+671BKVYAYlVnnUjm2ctYyzMgocwtqe0yANp0k8BnyFird4cFdxpd811+ju+yaF6PSLDlMNOiwYfeZDBcuWyCEG9KX009ARC0EwqeWDbvt84e5tOpO3fFtkRrFRVCOvBSZ807LCrtFDWIPpF5J0lWnywpXBtEr0damcgRqMLv3bGaYO6zI8N2ZBEjPAVgXBjHhjIEILL7mS3Y/3+t3uJAZlv8VApuLnabxU9sh5XzvFmNzqPK9CKFzNRv5iXbz7TpJJf246eSBQF/j26hH9ANm4eUFdXUm3Ogd2ZVWgOUeFWDJEjKe1mQRWpzN345brk0lmmBzC4cMMKU6vsrMsC+JIW8h3fweSPnvRDUmdBxw4Jw8uHYp2B0NVbHZfSIMavan4UF9tnLZgolST9Vn9QubgFTFE1qcW6buKBBJv/G3DD2rwUbl+qLv36aHF6WlVOyZEQqxqnAhcENam/BgbUZehfSs8BjtD19jTdPZMSsZrLzjYb6RLeuzQzJfJ3gisfxYfC6yn0l00wv2ZLyeSJS2ly1JxIciCjdQv7vKWG1VDkXKF3sciK5OGWEPMsuJzGK0pRARbBl0Ihh+37vfA340D9V6JZFKvpSkUu/qli/kexaFq41YcjyEMmA+oTZ3IMT8BIH9LMWvgr6lpwTXXaPuGZwqZkM7pfcRM6GOqOLCANtdRp64ybfzSSvmRz3E5wbRsWTl1jp/ClokrD4Qt71HQ4xT68rGS2ULt0l5a22iENVPsN6wMJPv1Wa55zhYRxoKBk
+ 5Rcely7z
+ VURQm5ZzHIrkbJTIqYMoRiLq7gKsCD3IUefV2v5MzngxA7B8H7a8PmY2ddtz5FW0dSIoFocovAeHwj4omcsCsNHEaZz9xEKzbr0spKoTVSlmELFE5nwkzGy/P9ucm4q8VePZzoEKpRoAAFzdTj8+okubY7lSjfuW8se0H9q5koUJ0foqLlvaDK3cGNI8e6zSf1ESOw8OElp30NMzZyVOpM9SG4VLpJjXLN4YYD+OXwubJ9LMnKkUj1U8084zrjrZbV/h7ZmOzhAnF9+q6Hh75d15+prOMsDrAP92sc0Wdk/TFyeKenKsLbO7WiJAr1FjKkPMmNwmulKe41sBAmW1eoqxzFvNrF3rUgmr4WRRTZwckFA3BCYstQRgNuhtg2/Zupiui/HZlwQQEZuxfm9Rgb7fwNozkxJNGHsthcmCGo5jEZXwFPdpuI6ooDkmNg5iYX58AEgS5+Xp2cRSphZMwE2x8nk3UXsI0GI0sQi/IGXODunexJTfGXlmDiw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,32 +155,65 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Mon, Nov 02, 2026 at 10:25:20AM +0000, Lorenzo Stoakes (ARM) wrote:
-> Commit 38564710f443 ("mm: implement and use vma_has_anon_rmap(), silence
-> KCSAN") rather clumsily converted the read of vma->anon_vma into a
-> vma_has_anon_rmap() without accounting for the separation between
-> assignment of anon_vma and later use of it.
+> Each full scan resets ksm_nr_node_ids unstable tree roots. Enabling
+> merge_across_nodes resets this count to 1, even if per-node roots were
+> previously allocated.
 > 
-> vma_has_anon_rmap() is intended as an optimistic check, so doesn't need to
-> protect against a torn read in vma->anon_vma. The caller is expected to
-> take care of this themselves if they then in fact access the field.
+> So when toggling "merge_across_nodes" 0 -> 1 -> 0, a scan that starts
+> while the setting is 1 and continues after switching back to 0 can
+> encounter stale unstable tree roots, resulting in UAF.
 > 
-> validate_mm() does indeed then reference the field, so resolve the issue
-> via READ_ONCE(), and simplify the code by separating this into a new
-> function validate_mm_anon_rmap().
+> Only root is allowed to change "merge_across_nodes", and the documented
+> sequence is: "merge_across_nodes setting can be changed only when there
+> are no ksm shared pages in the system: set run 2 to unmerge pages first,
+> then to 1 after changing merge_across_nodes, to remerge according to the
+> new setting."
 > 
-> Finally, add a vma_assert_stabilised() to make it clear the required state
-> of the VMA.
+> Let's fix it by tracking in ksm_nr_node_ids the actual number of
+> allocated tree roots.
 > 
-> Fixes: 38564710f443 ("mm: implement and use vma_has_anon_rmap(), silence KCSAN")
-> Reported-by: syzbot+10e72ea5747737bcd2ad@syzkaller.appspotmail.com
-> Closes: https://lore.kernel.org/all/6ae78418.6552420f.2a0efc.005c.GAE@google.com/
-> Reported-by: Songsen Yang <yangsongsen@insta360.com>
-> Closes: https://lore.kernel.org/all/20261102074414.10902-1-yangsongsen@insta360.com/
-> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+> remove_all_stable_nodes() and ksm_check_stable_tree() will now scan
+> more tree roots (skipping the empty ones), which is harmless.
+> 
+> Fixes: ef53d16cded7 ("ksm: allocate roots when needed")
+> Cc: stable@vger.kernel.org
+> Reported-by: Josef Bacik <josef@toxicpanda.com>
+> Acked-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+> Reviewed-by: Pasha Tatashin <pasha.tatashin@soleen.com>
+> Tested-by: Muhammad Usama Anjum <usama.anjum@arm.com>
+> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+> ---
+>  mm/ksm.c | 6 +++---
+>  1 file changed, 3 insertions(+), 3 deletions(-)
+> 
+> diff --git a/mm/ksm.c b/mm/ksm.c
+> index dbfb8f98b1892..9c51925825cbf 100644
+> --- a/mm/ksm.c
+> +++ b/mm/ksm.c
+> @@ -475,6 +475,7 @@ static void advisor_stop_scan(void)
+>  #ifdef CONFIG_NUMA
+>  /* Zeroed when merging across nodes is not allowed */
+>  static unsigned int ksm_merge_across_nodes = 1;
+> +/* Number of allocated stable and unstable tree roots. */
+>  static int ksm_nr_node_ids = 1;
+>  #else
+>  #define ksm_merge_across_nodes	1U
+> @@ -3636,14 +3637,13 @@ static ssize_t merge_across_nodes_store(struct kobject *kobj,
+>  			else {
+>  				root_stable_tree = buf;
+>  				root_unstable_tree = buf + nr_node_ids;
+> +				ksm_nr_node_ids = nr_node_ids;
+>  				/* Stable tree is empty but not the unstable */
+>  				root_unstable_tree[0] = one_unstable_tree[0];
+>  			}
+>  		}
+> -		if (!err) {
+> +		if (!err)
+>  			ksm_merge_across_nodes = knob;
+> -			ksm_nr_node_ids = knob ? 1 : nr_node_ids;
+> -		}
+>  	}
+>  	mutex_unlock(&ksm_thread_mutex);
 
-Reviewed-by: Pedro Falcato <pfalcato@suse.de> 
-
--- 
-Pedro
+Reviewed-by: Xu Xin <xu.xin@linux.dev>
 
