@@ -1,105 +1,105 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC40C606A324
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 23:46:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 811A6606A324
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 23:46:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=toxicpanda.com header.i=@toxicpanda.com header.a=rsa-sha256 header.s=google header.b=rdciyy0H
+	dkim=pass (2048-bit key, unprotected) header.d=toxicpanda.com header.i=@toxicpanda.com header.a=rsa-sha256 header.s=google header.b=b5bKrowq
 Received: by kanga.kvack.org (Postfix)
-	id EDF376B05B3; Mon,  2 Nov 2026 18:46:28 -0500 (EST)
+	id 9D5E96B05B5; Mon,  2 Nov 2026 18:46:33 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EB6696B05B4; Mon,  2 Nov 2026 18:46:28 -0500 (EST)
+	id 987216B05B6; Mon,  2 Nov 2026 18:46:33 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DCD596B05B5; Mon,  2 Nov 2026 18:46:28 -0500 (EST)
+	id 875096B05B7; Mon,  2 Nov 2026 18:46:33 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id ADB146B05B3
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 18:46:28 -0500 (EST)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 4A80A802F7
+	by kanga.kvack.org (Postfix) with ESMTP id 60A216B05B5
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 18:46:33 -0500 (EST)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id B4AA0A7C19
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 23:46:30 +0000 (UTC)
+X-FDA: 85391815740.20.065FA90
+Received: from mail-qk1-f181.google.com (mail-qk1-f181.google.com [209.85.222.181])
+	by imf28.hostedemail.com (Postfix) with ESMTP id C49BCC0003
 	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 23:46:28 +0000 (UTC)
-X-FDA: 85391815656.26.B7092E5
-Received: from mail-qt1-f175.google.com (mail-qt1-f175.google.com [209.85.160.175])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 41C26140007
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 23:46:26 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=toxicpanda.com header.s=google header.b=rdciyy0H;
-	spf=pass (imf09.hostedemail.com: domain of josef@toxicpanda.com designates 209.85.160.175 as permitted sender) smtp.mailfrom=josef@toxicpanda.com;
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=toxicpanda.com header.s=google header.b=b5bKrowq;
+	spf=pass (imf28.hostedemail.com: domain of josef@toxicpanda.com designates 209.85.222.181 as permitted sender) smtp.mailfrom=josef@toxicpanda.com;
+	dmarc=none
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793663188;
+	b=BbbjfGmHqldNFgPsop3gU/KlF3FqXNi0jMrJX462tsPEjlW7pslVKui525rikDgHMbuG4b
+	O0mUvM0+dnFpsPYmYi/RXufuFh1r92XKGJLGFNi+8MV8ioyI34cT2W0dn+B/m1G9QOhD4/
+	r7zZh3Bsy1rMEb9RbdMSXgOA6rGAuLU=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=toxicpanda.com header.s=google header.b=b5bKrowq;
+	spf=pass (imf28.hostedemail.com: domain of josef@toxicpanda.com designates 209.85.222.181 as permitted sender) smtp.mailfrom=josef@toxicpanda.com;
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793663186;
+	s=arc-20220608; t=1793663188;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Hriumy7DI4YANVX5f2MdDA/+HkJn0Fptt5/VQcqGvTE=;
-	b=8nxqPouoTQvwsqJGNHAyasg7gVjwU3Jd77Qz2rBCdM0IqPX9REWOEgWPzAvVS+qTQF9pl0
-	r5F4ajLnYSxLOrUgHDGFTg/xoijm8bbCbOTI+ONCKY+07Z0l8yXjU2eHjZ3hrSx5cXyIsT
-	z/ERrq7n7jiuUuIevYL7bJOc8rkCMb0=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793663186;
-	b=flJQu6GbGJqbQVLXP6MmmiSQBYrn1p1iQMYC0Sy+USeL9ml5jktBEeFA9b0eBpD08qSsrW
-	big3FgObGNTuJjVLJEqoomU1FlYmcvaV54QFj+DqiZWsoxHakvoBseoKfx4+yrFXikmwd3
-	ALgw4K7FZY8kYH0zjFcecszJwgfi2mc=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=toxicpanda.com header.s=google header.b=rdciyy0H;
-	spf=pass (imf09.hostedemail.com: domain of josef@toxicpanda.com designates 209.85.160.175 as permitted sender) smtp.mailfrom=josef@toxicpanda.com;
-	dmarc=none
-Received: by mail-qt1-f175.google.com with SMTP id d75a77b69052e-533778ab0bdso51741141cf.3
-        for <linux-mm@kvack.org>; Mon, 02 Nov 2026 15:46:26 -0800 (PST)
+	bh=cVsB8WaU+J768xlFM3Tj/5btoY4EDvTplUzUOE/dQq8=;
+	b=8GZy4UFvMJxgzKpqB9MUQvGq7xce3Oy6/Sd4e8taoQ20gE7nfBXw5mm5S31WCjLmtJzZ5o
+	ftRmnKyk0ellfujmvq9N7+v5Vam4lubhK54xfis4NoF/wy2Id4YSLwq1FfyPPNXNF7rq4N
+	ckR8/YLKkI3SVILVmMgPjU/3kXf9oL0=
+Received: by mail-qk1-f181.google.com with SMTP id af79cd13be357-93f269e335eso470902485a.3
+        for <linux-mm@kvack.org>; Mon, 02 Nov 2026 15:46:28 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=toxicpanda.com; s=google; t=1793663185; x=1794267985; darn=kvack.org;
+        d=toxicpanda.com; s=google; t=1793663188; x=1794267988; darn=kvack.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :content-type:mime-version:subject:date:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=Hriumy7DI4YANVX5f2MdDA/+HkJn0Fptt5/VQcqGvTE=;
-        b=rdciyy0H0nvVYXUmckZFSUCULodhnh8LFNVI2ayo1evNn5rAwY8L4xcVgd7pwZ+VfG
-         Fn+nWDZWtzyYi8QQ6sPqqlBQZVncGaBPEctALDZLmzxyMQ5/Hk3hvIODWSA7THXPzJxr
-         V76czfP5GA6fkcs/tdbYBjMigiu6/C9VLMsBIXnXVJUJg6w2/3HKwqzbBrsMEW+xy9QM
-         0C2N6uOuzvAFDLgo2e6r8q3y2mur4WxuErvghceMkCbtRShjP1Uxm+vk2Sf9g2h7rFVo
-         EIhKpF606OJ7eJXGcsx4LfK6RGOhHntljyWX5D1e7juNoENvEb7oCpIwwjVXCmrinxFJ
-         kb6Q==
+        bh=cVsB8WaU+J768xlFM3Tj/5btoY4EDvTplUzUOE/dQq8=;
+        b=b5bKrowqcZanjnTQKxEnaCnNx1Wfra+uvZqTjftbpMUC2GF4HCkxM+P9Hjf5+OsWaR
+         aFdV0kHmIQ3GnFClz/EEsgSpoKumkl0/vxpjhu/wHOHeFIV482sLosCsC7mGeKFIF2T6
+         dhGdo9IdXa1C8JyEV4EtePIjdFmpyVp4U5BSslai/Ws8Yy8WJKsgLkXwDooF27KI5lMG
+         AspoSevbA/md7/14SE3r7gHLodvYaG0FVTVWc+wu6mrit73YLu24g6vwJVZ5v9opW9gG
+         D/dIkSqvb+kYaxO8NL21tcI3VhiGm43gq/vl0vPwyuAQbBQ9FsHf/yWlxfddczDNc44/
+         +iMw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793663185; x=1794267985;
+        d=1e100.net; s=20260707; t=1793663188; x=1794267988;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :content-type:mime-version:subject:date:from:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=Hriumy7DI4YANVX5f2MdDA/+HkJn0Fptt5/VQcqGvTE=;
-        b=lb9h9TshemW590nBRC+NA7dYkJVJXEP9D3OeYpw60leoDqUCUFMMWKOOR5/BSh8WvK
-         zO1A3dRX0juKB3ODbHQ8PLZD+JbG5j3PsoN8tChCnTwUZb6yHgDmZNS1Vc4nRf9oCTPl
-         nlT1DAYszpJYj7lGsEeb88BHkFopFxVm0T5mZwIwwCxIJGLkJ7Cf4i69EL69X+gi7i6f
-         k1ma8qCVGFku2pCeBx7TsPJjBp3DjRhIyBPiC3nI9mhdees0yYqE/qvthk93pc0o69lb
-         8cyadzCXRWYeZizMpeqNF35yaxChUE1T09RVAh+vT9URC83aD9XPECVrpHU1egZOgaic
-         Lhyw==
-X-Forwarded-Encrypted: i=1; AKwUvBxEXZD1xtdf9d44xZgo+pIyPllnTjIQf3V7y1kgTDoiQYpmONc9s7aMRXhOouAuBc/nUxOhHPgw9Q==@kvack.org
-X-Gm-Message-State: AFq9FYKhdgTM57TO2aBX6UGyu8FwjWcZEN3VdhvQtZ2YRG55FRUTJoJP
-	VhQutlf3JdbOUCL2S0ujVPWFf8oYFbxUBnOtlmynlgLJ5qiur8n4Gfi1JKGINNKsthU=
-X-Gm-Gg: AYBFou2xm1dCIIxtXR030Kb10K1IcVPc0iRWKOW39+YJorDvT0OzULOyVt7PnyzS7eG
-	REzjcXfwxtlvzLSEgALskZSW/n5eZ2Mb//cYd666FWOdW97Avn3An947l1Up0rN8sxY6WcOwWZx
-	pyWQbCwikVWyd7Sq2TfmTYeK053zBhicqBFc9SJgD7B9XpvLXnnpZ8MLqmiqw5hl9/FezYWBkyA
-	GGLBD9sRYMJd+PJg84nZb6cXM4PzyshmJIolfohj3ZEBvU47lTufIXalZtjdTeh+LE6dlRgq3kU
-	UFYEgSf1k3GLQkDzUekQujfBXk4II+o3+b5Rb6MpQ++KTz0tmZiv6qUYl2yLt8JaP8WAuijjGM4
-	49x68c3NTRUS6WFTCWLzSwxO3VP9ZOizlTQQ0V06ALugfa8dCWdcKSEQxaYFZD+kq+bbJb4VhdR
-	EPfpZrcLYHznGOHuK9cVMiyLrKQ55Sqx0kviv8Ndz97bzhez36DCfpUs0/fXxDfdyA3cv9rBHvD
-	yIV4nQLLZVw3cZay+0gV7BIvXUygLtHZAPzGLvWmDrnRHuL7YMFWtDcyQ4x9Vis0dymmNdP5Hvv
-	zBKghjLoGWEHOPpdHPawSpvQbHefr3KCaTIpyzafPqi62A==
-X-Received: by 2002:a05:622a:17ce:b0:535:a5f8:a5bf with SMTP id d75a77b69052e-542b7c0ae69mr212737751cf.63.1793663183377;
-        Mon, 02 Nov 2026 15:46:23 -0800 (PST)
-Received: from toxicpanda.com ([153.61.196.247])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-5498c37a7eesm10714791cf.20.2026.11.02.15.46.21
+        bh=cVsB8WaU+J768xlFM3Tj/5btoY4EDvTplUzUOE/dQq8=;
+        b=LndO7KLfCxmmlQqTXkmtqUWi7qoB0PMP6ow9qt1mxpVepoqQDuzZntsRAnD5Kb1wOO
+         uaOPOf3uZpEuu5PS7ulW82e29PrwtoKlCmo6NTb//ZkLpv8rjtTPa17hpHkzXGH4QFnl
+         RFNXPTHPNZJNOYx6uAt5NtV61B9eaem8nHXe/nsWW7OCWVQsUFqgF5R96bdbVzICqgPm
+         3gz2pi0heZl20ocu34brIpjxraBbQCUActALCA6MiQiB1/UyM82ddiY2KeHoxK62nRKd
+         nRALOKXTRChJGs/aoCTaqHPpMGeWJaEib/iaZ4irNLClyrLeXgO4GHDV6WbRVCdEbeS7
+         1IJg==
+X-Forwarded-Encrypted: i=1; AKwUvBwpbgv5C/03pB+fEdkswmPFjRwd2kN1fx079ay92Z8WSPFHh8ir2LaKdd0FhDZayd6P5y9wF9a0qA==@kvack.org
+X-Gm-Message-State: AFq9FYL6noZ2Rw/LPeBrUm2uDJODX4Z+EliYTIDi9mzKm4AcrZwNEUSZ
+	XSzsZ2yXHeWGG/3WRymQIOzsfCo3RrmFy3kzpeUgjMJAQ9+XxW2FQpXbMAgzKjr35EQ=
+X-Gm-Gg: AYBFou09PvUE7FOTCJtMFeaUpvOD1+JnBB5Bo6BjUiOVbd88ByQWZgu0On9GqPtfHMT
+	HskoXK6pUQzJN84FBMNyXEjvyYWIXiGsUklhZRuO5FZouk0rt7PPwojFjzLQ1CPhW4hAS84qF56
+	Bu2ObnzRsi+RDZmcO5khytUlirNrUNfBr8GVE0ka+SkFrqk+7aeEGA0lOiOxbw0ZAcXY9z/IFmu
+	otM07st0P/j2K3es02APGng2sokx6EgPvR2KRrZXpTxupbY91P0KnS1yx58fXKsQgF4cOqgwmta
+	RZ/Px4VEaw1WmDdd0CPsbuiN9JOoSfSpblZLA8ttEpPna13lLx/4zTxMpI9xk2mzmh5n2AuQmva
+	7P/ikz1YGC7WDQnOnmA9RT8Bj3E73nbyaccZzEmkuviBZRFCnDCu5kHHr0O9RU1HJ2QUh/p5D3J
+	CR8bNlJio27SzS+iF29QKDqRpPOQuEJjnWdQF731TJ3Awtiq2n92kRHgSvrgRfnbNLXPrwHtwHa
+	JAxlU4Hf18tzCcW+6P632g2JjYCSPjyp23RakV46j53iEaenOqPcqdLi29fPV17qpK3B4FLhkSS
+	MGG30wOJdgxR0WaYEUAuD50j7tP9zK19Ez7Z1p8iOgWDOw==
+X-Received: by 2002:a05:620a:468e:b0:944:d7b:e7a with SMTP id af79cd13be357-944216e8791mr1922571185a.52.1793663187720;
+        Mon, 02 Nov 2026 15:46:27 -0800 (PST)
+Received: from toxicpanda.com ([153.61.196.255])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-94425ae643dsm940964985a.43.2026.11.02.15.46.26
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 02 Nov 2026 15:46:21 -0800 (PST)
+        Mon, 02 Nov 2026 15:46:26 -0800 (PST)
 From: Josef Bacik <josef@toxicpanda.com>
-Date: Mon, 02 Nov 2026 23:45:59 +0000
-Subject: [PATCH v2 3/5] mm/mremap: reaccount on unmap failure only if
- accounted
+Date: Mon, 02 Nov 2026 23:46:00 +0000
+Subject: [PATCH v2 4/5] mm/mremap: restore VMA_ACCOUNT_BIT if the unmap
+ fails
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261102-b4-mremap-pre-split-v2-3-d281dd11ad7d@toxicpanda.com>
+Message-Id: <20261102-b4-mremap-pre-split-v2-4-d281dd11ad7d@toxicpanda.com>
 References: <20261102-b4-mremap-pre-split-v2-0-d281dd11ad7d@toxicpanda.com>
 In-Reply-To: <20261102-b4-mremap-pre-split-v2-0-d281dd11ad7d@toxicpanda.com>
 To: Andrew Morton <akpm@linux-foundation.org>, 
@@ -111,27 +111,27 @@ Cc: Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>,
  "Jose A. Perez de Azpillaga" <azpijr@gmail.com>, linux-mm@kvack.org, 
  Josef Bacik <josef@toxicpanda.com>
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=openssh-sha256; t=1793663165; l=1268;
+X-Developer-Signature: v=1; a=openssh-sha256; t=1793663165; l=3038;
  i=josef@toxicpanda.com; h=from:subject:message-id;
- bh=mIckdpbckk76R6ZJ+l1B7uF23/C/RMo6KhccLOZarUQ=;
+ bh=hejmPjmhMSSdGHARM6cFYeryiimQU+IQcD7zLm8TXxQ=;
  b=U1NIU0lHAAAAAQAAADMAAAALc3NoLWVkMjU1MTkAAAAgUBr36M/n0nWN0DNbnxwzIiCZez6MG
  JiruuNaSCI/zXsAAAAGcGF0YXR0AAAAAAAAAAZzaGE1MTIAAABTAAAAC3NzaC1lZDI1NTE5AAAA
- QDdilLug2fc6t39F6F1geyoXH9rzFBQmMKdmXqBH+bbTXBQLoZeTCYMQVEMwGRu8+hhIli9FPGQ
- v9HdpndA0hQM=
+ QFtkQRwHHmXutBWwulu883BomkjhRXC3jiAuIqAW0TROZJAzNff2reNlyeD+kDnK0g//fFGgz1p
+ jjynoVsultwQ=
 X-Developer-Key: i=josef@toxicpanda.com; a=openssh;
  fpr=SHA256:C8kOX2QUJCMqnCX+KEeoqRAjLo9L+ELOSH2NSAJHqGA
-X-Stat-Signature: j1gzbsq8bgs3kp6fiepipfc5wf85z7n3
-X-Rspamd-Queue-Id: 41C26140007
+X-Stat-Signature: thoqn5dr785ksi6tm8r44t1p78aik5uo
+X-Rspamd-Queue-Id: C49BCC0003
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
+X-Rspamd-Server: rspam11
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1793663186-956700
-X-HE-Meta: U2FsdGVkX1+sbuwo10Sqlg663vmPnKWXxeziSBKFk+clRteSH8Mr49xjsKUVcsTIptrMcRhyIPpkOs4LdtU+QddOOCu2L06CDwnuTx1l5xBS7Mdo8dS9K5Mz/NwwE+ctg0jN8Ii4wPsBHmHc1HeSstjRpRpGr5yqMAFNoenukhDDP1NNFhorjHDqW8vf9qSJqQMIKyzXYfRy6M7xlEJuLqqzq2kR3W+7Q3e0ERDY/hVhfyXvZiWNK+hWgy+INmC6Rq72f2sMSb1F6S7ixUHotLQtFtmHYJRHCtxfSv/NxY6RBuOIC2Afvw7Ky1nk4qCIIuZGSERXZM5Tvc7PFqBDS/+x+eJ7+1gYd53OoUimOL+ckgLKN3xTvw0fAnhkep8ebjkc8Rmg5f9ZR4SqcFGiAlBxUJwNGUFKh1DaaDja2JJwfnx6hdwC3jQfgPi3oxtea1gNaihMYyrG4qfHu8aeiN74x6rtE/7twyOCknntb9eCoqWzlUbF8RXYCJPY/yM6nHhCd2omjUDvOSkWwAnrlRRxCWKh8ulOaCtO5/tuxJLPAo5MpzA8vMtoPaC+zBYAWqCqBmaAdqIADxNnDV+DyMaELpXH/zKgFaPRMfEP8iDknqy6tFmsDtjq+t52bH6BkebcLUIcYKyKjDEMOyuNmsZ5oPQcquNzHtFyr66PrztDQeKTzHQdnocyVk7/laNoffBRtN0wEkzAJ4cgQ+u2CoJ+bnoOpVXCMO3r1U/Qem3ZmDFqd+AIZSQeR1+W87Hd2oncuvAjDZNsrl60LGGgFwlElr389qUu0vUcH6WFWGBVizxSoVRingD/bvcGb52JtrTcWuJjXiEWT3ORuBztkgq4c3jrnE3s4AzPt9EoTtQCfDFEUNiTRVcNI7SzejpLLI88v3SuJNfMe90eHAlKmDr38HMf8xG5BXYdNP7YNOhFRHckYtRhQjN60k4XaFd/tSWZDViAzrhyxKXPMod
- ALZPmROh
- K25mL+KIEsFI6m2Asd/BGmWaHkN7pizzm5n8L/Vj8k9BeCIWigXXULD9gUhW9lV2ixRcfQUaje1R+9OU/gzfltcks1UFtVX/cO9Mg6P8vQAF82iPPU9jlX+XrVTJwRXDrqYJHNBd/KiaEfIgTdb7yp/kvfvdA/1Iu3cXAKRDV9a0NlajdDkAGI7Cc5qcClSpmVzLw/vxgSDLgj1Hkigg6bnySRP7xd6+hpoK1ZNCBf8Frz7WL7eOIuIVyOEcd0i+dx5MqVLSWclZ77ejUwGt8RZtht36VYuQ/Pky7x/7y99beUZTqOz3cpmXcqFkbxnaMuRGXIxW/hvLW7xryDiEku7qSXnrIiIfKmwUmq0T20l438dk=
+X-HE-Tag: 1793663188-699001
+X-HE-Meta: U2FsdGVkX1/DWsJK6V2viRGflMGsXCA4w0oB1l5tTNWRxtcGA08KfFy49BhW4Qt5g8lS8l+U+RJgUfL1E0j285p5CbVIrV4Q2Z9xjZCUw9+H2h9EyWrD1g2GwcV+5vaDRrkZ2rh93SCLPVXHa7BBqf7rVBU1XLTEa1PNhM2tIBB+f9ZdTKuiig8jSdd2UxLkaP4mic+cVeGQOg522cFtoiaDBx7Kgg8u7P4uwrvhAeKt/QHpcYBwQQKLru0DM6r29Af1DKZAzB9kGAXchy2Oht3C6mAXh13P0WYuEAFFk3r9vbrKCLgX+g3woYvF4Ma5I6kS8HjO8fvs5LnZIVJb0obihp6Sf3kBegz/msLvePmGjsD0UcxC3Sosf+FFUhoaHFB2OXunZSzQJYK8fkDYlesQjN5q7MOQohKkzlhczwjThWZZsTpeq63I3AQ4wolv2fhvIP4NJ9m08KFpu48MLiD5cNxQR1H0YmKykA93XJnPkGhMG9ocQyXK2ZQ8/E5HmZIbuqRg+2XPCT6rB0HHC6NnWD2wefqgwihgQKpStNv4ge/eAndksQtt6mQrNiRlZoyZ0YsrqMRX4O1Xh0k4yjsMwf6KwsP6H7HSNmGoCmUSpTNx70cQNjrFzbbXD3m8Nn+hC1YnlsGFpML04gjsXqQex6Gd0u5p2GugByT3sZ9z3GWpw0yqImemyKdvMh/rHa6Cvi8AhHNXLTsuH0lcevoA0/c0XZLaTqYd+neFWUvYxljCuamuBYZ2iQLqBHSw1pUw1zp74E2ynVOCBs1AkVXCqLBJ2Nj8Sm+Nwe7qMoeNZpSLlhLcJLiAGRsfP20EbalEE6kQmKhx+dQ1YLKpMC+mKT9CsMSeeQ7maXAP9cQuMbCfnC5Mb1VXG3z50EFPT9JBkHDDtwO9eSOwIUnJtLET1FPPS/L7Q+altVoSt5qckKdxVyX6vN9Qmo6qo5ZJOiFF9TvFtgVYjsesavK
+ usQLJbhB
+ RCHd7VEJ01vsStz+KRVLg24ekmNGhVr2mCteHbArcEdRnUpB8WigcG6etLzLMFfkvx5OjwcPIouTfitfkPhTGIFue6wAq6svdNld2B1cZ+Fypw32XqMMEpVktjQCOXUyXKLkWVT3S9F9AhPuUuRuaiPkne6W4Dt8cmhMV+gfa6828Ed3eGfFRkCr08q6CpMXXBFBRc4cMsu8fCtRKrYELH9mbt4NnGu7i5sNQTTB2cmgOYtNwVkrDZjtgt/cOfdIz/7VQkAav6/Tddk8cmOi/06ucw6zB4ZAWc15LHwkuY17BPsyyFMB/NOIEZjDL6FiDFYy0kskX+NMOif8pbU0cDBnCDEZekxcRLqU18OTPiMf8/EkhVLLEXGOWncBD4SFM38RMJXQeNRG+UgqAn0WeE1LMu1sxhwT4o+as
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -140,40 +140,97 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-When the unmap of the source range fails at the end of an mremap() move,
-the length of the range is charged to vm_committed_as even if the VMA was
-never accounted, for example a MAP_SHARED or MAP_NORESERVE mapping. Nothing
-ever uncharges these pages, so each such failure permanently inflates the
-committed memory count.
+If the unmap at the end of an mremap() move fails, the source VMA stays
+without VMA_ACCOUNT_BIT. Neither munmap() nor exit_mmap() uncharges it
+then, so the charge for all of its pages stays in vm_committed_as after
+the process is gone.
 
-This was reproduced with fault injection: each failure on a shmem mapping
-left Committed_AS higher by the size of the moved range after everything
-was unmapped.
+unmap_source_vma() clears the flag on the whole source VMA before the unmap
+and sets it again on the remaining parts afterwards, but its error path
+returns without doing so.
 
-Fix by charging the range again only when accountable_move is set.
+This was reproduced with fault injection: each failure on an anonymous
+mapping left Committed_AS higher by the size of the whole VMA after
+everything was unmapped.
 
-Fixes: b714ccb02a76 ("mm/mremap: complete refactor of move_vma()")
+Fix by setting the flag again on everything in the range of the original
+VMA, on both paths, with a new helper. A failed unmap may have split the
+VMA already, so the helper walks the range.
+
+Fixes: 51df7bcb6151 ("mm/mremap: account memory on do_munmap() failure")
 Signed-off-by: Josef Bacik <josef@toxicpanda.com>
-
-Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 ---
- mm/mremap.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ mm/mremap.c | 41 +++++++++++++++++++----------------------
+ 1 file changed, 19 insertions(+), 22 deletions(-)
 
 diff --git a/mm/mremap.c b/mm/mremap.c
-index 5926ecdb31e9..71c9f335bea8 100644
+index 71c9f335bea8..4d1e446620e2 100644
 --- a/mm/mremap.c
 +++ b/mm/mremap.c
-@@ -1246,7 +1246,8 @@ static void unmap_source_vma(struct vma_remap_struct *vrm)
+@@ -1189,6 +1189,19 @@ static unsigned long prep_move_vma(struct vma_remap_struct *vrm)
+ 	return 0;
+ }
+ 
++/* Set VMA_ACCOUNT_BIT on all VMAs in the range [start, end). */
++static void vma_range_set_account(struct vma_iterator *vmi,
++				  unsigned long start, unsigned long end)
++{
++	struct vm_area_struct *vma;
++
++	vma_iter_set(vmi, start);
++	for_each_vma_range(*vmi, vma, end) {
++		vma_start_write(vma);
++		vma_set_flags(vma, VMA_ACCOUNT_BIT);
++	}
++}
++
+ /*
+  * Unmap source VMA for VMA move, turning it from a copy to a move, being
+  * careful to ensure we do not underflow memory account while doing so if an
+@@ -1246,8 +1259,10 @@ static void unmap_source_vma(struct vma_remap_struct *vrm)
  	vrm->vmi_needs_invalidate = true;
  	if (err) {
  		/* OOM: unable to split vma, just get accounts right */
--		vm_acct_memory(len >> PAGE_SHIFT);
-+		if (accountable_move)
-+			vm_acct_memory(len >> PAGE_SHIFT);
+-		if (accountable_move)
++		if (accountable_move) {
+ 			vm_acct_memory(len >> PAGE_SHIFT);
++			vma_range_set_account(&vmi, vm_start, vm_end);
++		}
  		return;
  	}
  
+@@ -1271,28 +1286,10 @@ static void unmap_source_vma(struct vma_remap_struct *vrm)
+ 	 * | A |     | B |
+ 	 * |---|     |---|
+ 	 *
+-	 * The VMI is still pointing at addr, so vma_prev() will give us A, and
+-	 * a subsequent or lone vma_next() will give as B.
+-	 *
+-	 * do_vmi_munmap() will have restored the VMI back to addr.
++	 * So reinstate the flag on whatever is left of the range.
+ 	 */
+-	if (accountable_move) {
+-		unsigned long end = addr + len;
+-
+-		if (vm_start < addr) {
+-			struct vm_area_struct *prev = vma_prev(&vmi);
+-
+-			vma_start_write(prev);
+-			vma_set_flags(prev, VMA_ACCOUNT_BIT);
+-		}
+-
+-		if (vm_end > end) {
+-			struct vm_area_struct *next = vma_next(&vmi);
+-
+-			vma_start_write(next);
+-			vma_set_flags(next, VMA_ACCOUNT_BIT);
+-		}
+-	}
++	if (accountable_move)
++		vma_range_set_account(&vmi, vm_start, vm_end);
+ }
+ 
+ /*
 
 -- 
 2.55.0
