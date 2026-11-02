@@ -1,152 +1,91 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C798606A32D
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 07:04:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B40C7606A326
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 07:05:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=QiYgY6HB
+	dkim=pass (2048-bit key, unprotected) header.d=bytedance.com header.i=@bytedance.com header.a=rsa-sha256 header.s=2212171451 header.b=OiWWvGUc
 Received: by kanga.kvack.org (Postfix)
-	id 71D996B00EF; Mon,  2 Nov 2026 02:04:41 -0500 (EST)
+	id C298A6B05B7; Mon,  2 Nov 2026 02:05:41 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6CED16B05B1; Mon,  2 Nov 2026 02:04:41 -0500 (EST)
+	id C00A56B05B8; Mon,  2 Nov 2026 02:05:41 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 597A96B05B6; Mon,  2 Nov 2026 02:04:41 -0500 (EST)
+	id B3EC26B05B9; Mon,  2 Nov 2026 02:05:41 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 37BC86B00EF
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 02:04:41 -0500 (EST)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id B0339160BC3
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 07:04:40 +0000 (UTC)
-X-FDA: 85389291120.05.D293251
-Received: from mta1.migadu.com (out-31.mta1.migadu.com [95.215.58.31])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 63F5D1A0006
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 07:04:38 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=QiYgY6HB;
-	spf=pass (imf19.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.31 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 850E46B05B7
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 02:05:41 -0500 (EST)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 02AC2A0BE0
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 07:05:40 +0000 (UTC)
+X-FDA: 85389293682.21.E6C694D
+Received: from va-1-115.ptr.blmpb.com (va-1-115.ptr.blmpb.com [209.127.230.115])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 128B780005
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 07:05:37 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=OiWWvGUc;
+	spf=pass (imf30.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.230.115 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793603139;
+	b=uUmylUAmZzjmYwmp9w801j6aFqXHldo/SozORM3wdx5gMgoNP5+q6msggGIFPQGHQu3ahJ
+	DdaAWKx3Zz4MGyfnyp/ewkw5GNjABtQFPgoIR735zLQQphg6ED95L1y9q//toPIFcHzfE7
+	8xavK2YpkjK+GKimARp6x6f5K5Nputs=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=OiWWvGUc;
+	spf=pass (imf30.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.230.115 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793603078;
+	s=arc-20220608; t=1793603139;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HKrmzfM/lfs87w6cnTmZ3Teou0HRxUok6ugK+JqAXis=;
-	b=8BlKlvGolmXy9EyVTKAYJPZOMFSHzzqqRW6ojTKNCJKZFPvGb2JY8eeeY6HVtZaqR7ZF+M
-	y7pwsWW0KCKRXZa8/lSDM+j4OGAIp04GED3kD2VsvIN4SNbKZ9SRD5/20MrIsGWx18iVA6
-	u/Y+68Lp8VXONayoYnCt9NW0U/5FTnM=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793603078;
-	b=oGPVjhFVJpixsWMPy0+PFO7QYAbdUFXtwcF9ttVKKIEXv1Dj5Y5DnNzarKlQ2P5BOEwC6D
-	m+DZunK9jXW+aQvnlGLBuk8ZylP02S+x48pyOoxWRk6Xc0Qjb15gyaKg316qbGXlsWPirc
-	lvMsF7lPVHGF2oE4ELl+nnf85ZVm41o=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=QiYgY6HB;
-	spf=pass (imf19.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.31 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=HKrmzfM/lfs87w6cnTmZ3Teou0HRxUok6ugK+JqAXis=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1793603076; v=1; x=1794207876;
- b=QiYgY6HB1mW5E+FEecHdTmLFOegmRB/0Kx7ma4l5h/2qjPvozuRb5Nl7U8kxuJgGo8EsEZWR
- S5bpb779UuW1wWS0WUl/cAtINpj6P6ikL5UuxKgEg2su2eVSGCz8y+cgiDg7di06ITDFb3kKKxx
- BUsNdjRhR6pc39oxlYQF3xEk=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 4b82456d18ca3934;
-	Mon, 02 Nov 2026 07:04:35 +0000
-X-Mizu-Trace-ID: 4b82456d18ca3934
-X-Migadu-Flow: FLOW_OUT
-From: Lance Yang <lance.yang@linux.dev>
-To: david@kernel.org
-Cc: akpm@linux-foundation.org,
-	hannes@cmpxchg.org,
-	mhocko@kernel.org,
-	qi.zheng@linux.dev,
-	shakeel.butt@linux.dev,
-	ljs@kernel.org,
-	kasong@tencent.com,
-	baohua@kernel.org,
-	axelrasmussen@google.com,
-	yuanchu@google.com,
-	weixugc@google.com,
-	baoquan.he@linux.dev,
-	baolin.wang@linux.alibaba.com,
-	liam@infradead.org,
-	vbabka@kernel.org,
-	rppt@kernel.org,
-	surenb@google.com,
-	mhocko@suse.com,
-	kees@kernel.org,
-	peterz@infradead.org,
-	jannh@google.com,
-	pfalcato@suse.de,
-	hughd@google.com,
-	pasha.tatashin@soleen.com,
-	pratyush@kernel.org,
-	willy@infradead.org,
-	jack@suse.cz,
-	ziy@nvidia.com,
-	lance.yang@linux.dev,
-	riel@surriel.com,
-	harry@kernel.org,
-	apopple@nvidia.com,
-	nico.pache@linux.dev,
-	ryan.roberts@arm.com,
-	dev.jain@arm.com,
-	usama.arif@linux.dev,
-	kas@kernel.org,
-	matthew.brost@intel.com,
-	jhubbard@nvidia.com,
-	peterx@redhat.com,
-	will@kernel.org,
-	aneesh.kumar@kernel.org,
-	npiggin@gmail.com,
-	osalvador@suse.de,
-	minchan@kernel.org,
-	muchun.song@linux.dev,
-	xu.xin@linux.dev,
-	chengming.zhou@linux.dev,
-	chrisl@kernel.org,
-	shikemeng@huaweicloud.com,
-	nphamcs@gmail.com,
-	youngjun.park@lge.com,
-	gourry@gourry.net,
-	joshua.hahnjy@gmail.com,
-	rakie.kim@sk.com,
-	ying.huang@linux.alibaba.com,
-	jgg@ziepe.ca,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	kexec@lists.infradead.org,
-	linux-fsdevel@vger.kernel.org,
-	linux-arch@vger.kernel.org,
-	linux-cxl@vger.kernel.org,
-	usama.anjum@arm.com
-Subject: Re: [PATCH v3 18/47] mm/khugepaged: check if PTE table is empty in try_collapse_pte_mapped_thp()
-Date: Mon,  2 Nov 2026 15:04:26 +0800
-Message-ID: <20261102070426.45406-1-lance.yang@linux.dev>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20261031-fixes_core-v3-18-d6437171ecc3@kernel.org>
-References: <20261031-fixes_core-v3-18-d6437171ecc3@kernel.org>
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=9pzLVpw5HDbiXA/WRKY+RZLeQwbQg9GRKfExmkQd1tQ=;
+	b=3Gkdr6ldDpDW8RbkdxURRMYdLq0jP7ka0ImGo1SqjuU/9b5QekFxlfK/XkWWLfjjA82gD5
+	pThCYRSi8aV8FWQl52zIXFpi4geZO4ZAzO1VeasaJHaT5+YChphxvFWWpnuOgDZdl7jOKK
+	AlpG1iVeUX2g09toUdfOeG/PuXldW1g=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ s=2212171451; d=bytedance.com; t=1793603129; h=from:subject:
+ mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
+ mime-version:in-reply-to:message-id;
+ bh=9pzLVpw5HDbiXA/WRKY+RZLeQwbQg9GRKfExmkQd1tQ=;
+ b=OiWWvGUcycVItn39v4uVvnI+CgrbskeFEVGfmLnJm8FRtFz4mV/5O5XyplvZBV5nLWrdDn
+ vDb4TJZtomzPX6EyE7D5p99nQ42GDZ6fgrfPjh+n9BlQ3cVBliRv3Naj5ngrkuKBh8uopH
+ glO/5JlMiH7T9fgwivgDp0pqa9RGN61Mu2chU9Jnc79cL6F3ZiNThw9MCjEpSzFnzH+e9A
+ VyaXCNJZ3ZEMY0mGpvhCSWl49xYDFM1NrboDXAtGgwO85HMQBHYRKNyR4maqjrFvKBCYnH
+ ShaC3aFbBohHBdBfsluhvfoV5hcENXCYVfBvt5tHKi4+LQGZ5LLMbLMIImsaHg==
+X-Lms-Return-Path: <lba+26ae83637+2d29d9+kvack.org+lizhe.67@bytedance.com>
+From: "Li Zhe" <lizhe.67@bytedance.com>
+Date: Mon,  2 Nov 2026 15:04:39 +0800
+X-Mailer: git-send-email 2.45.2
+X-Original-From: Li Zhe <lizhe.67@bytedance.com>
+Cc: <cgroups@vger.kernel.org>, <linux-doc@vger.kernel.org>, 
+	<linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>, 
+	"Li Zhe" <lizhe.67@bytedance.com>
+Subject: [RFC v2 0/1] mm: add source selector to memory.reclaim
 X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
+Mime-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 63F5D1A0006
-X-Stat-Signature: kk5xk1f1uhmkcbm5781aoqo4kikxppog
+To: <akpm@linux-foundation.org>, <david@kernel.org>, <gourry@gourry.net>, 
+	<joshua.hahnjy@gmail.com>, <ljs@kernel.org>, <mhocko@suse.com>, 
+	<muchun.song@linux.dev>, <rakie.kim@sk.com>, <roman.gushchin@linux.dev>, 
+	<shakeel.butt@linux.dev>, <weixugc@google.com>, 
+	<ying.huang@linux.alibaba.com>, <ziy@nvidia.com>
+Message-Id: <20261102070440.16262-1-lizhe.67@bytedance.com>
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
+X-Rspamd-Queue-Id: 128B780005
+X-Stat-Signature: wmrzai8kggh4c69ise8o95t7ghxz6y9g
+X-Rspamd-Server: rspam01
 X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1793603078-512324
-X-HE-Meta: U2FsdGVkX1/vQ1+XWhePdGy+r779z0P+7AXwP6qRacyjAY00U3u+ME62jbOfeQmCO16mX54pPUpXaq92oOsrdn7MQ2z2J5gTFHOYXeXSM0/YMtguOdvFVvtWYPWZKY9T1/zY5b5rbQ85dAsJ1EKUTdzbPlEPGD13FksPTnM4Wm6Owk/nR+n2Na0Zgi85jPtedl1mc5qstwibJtzqymJAFn+dN35QPSoB517+2rPuyJldMJL7RQzBjkiJK7D0m86MsM5vwHTt9Z0jpBXxRk4hbmDeNvlT94TKTM3cnItmmRPnuKwZaS9eMP2M3P4srx7SbgpV46jT0d/bFsGLx/Qs5VmKSqMbkHoElpaC6vljETNDNtgYD2M+hR6aDpAIRWo3DzzCdzM5Kb4EtXL/2vmBDSqbpE3UGq8PM55otaep/NqTRO6iqC1VyEyKCIHGBvHm0DXfe63cLZG8B674/rHhN0sitR+Eqp4eufEd/k+efJEAqht1jjHXZtR/ksJk+em5PqPwJx6GBlmB3J2g6LuAtYaskOi+ZRLIO4VCkq2nIlJnBk3xdV2nfQ60YJ1ZX3RlkszVuMfMaYX5XP5vgbSYI43HPoouTjYjfoQ2b/PGuzjeYPOS4aHDG5cnllwxFoDxnyJpDKAYmFnUNyG+EBIuAKpFKEvLJW9j5SWLmvNh1ty0hnnsWoJZhwz2q94TeYnoOvYUXAXHxw7JbL1JExIl38sQPN1IcnvcbWyyTAOsDhw0zYj82c16t4Yhbxe/Rz9ksor4CVxl4P38Mt7x0x69dcTo9Adf9qbPGgVd5cScC5uZd5eQoJ2iSNor8Jah6plVXuGv07z7ZfrF6dMWkwcO6UVzYO0BMBPTXDPGA53Xg4G8ZYD3yPiw11JL+A2phVEqMGkEvUlLtF+vp+rZzoBwRVw8cuzT2XUF44m/CtLM3TqUrTbcZPho6X307Q7BfjGoY6gvBVtiiPultt8TdXW
- r9iLLvSg
- ab+V6XtdRvGZPmMpqFhVkeNdslP3isnV5UfjBo1wqoW3s3IThz6CF8gTJmACPYpiSC9CuCUJ550DR9VStxDEkUxTD0/P1qDw90tjgSPLb+hMxnQS3G2M0hmGp4KFz0/QhLMfUn2XmhMISreXt7LD6rxQcv/2VkaYMzHp6BPc4OrcjNTDVV87TPtxGet1wLkOu89WJFi5lnGaJOHhPFsl/CZmW9yl9UOV9HzWSzXacfyEgMUGK/meSsl5XdfirOOi5kPXUsCb/F1QHiB9WvD1OCzncL8beeBmabzEZ5GV93ARDGJgVe3rMy7OkYrUbzsJ1so8/2dhji/CGoNq079SkVx7AFxBLFfPBgQW2QcgfhTalKSEAaLGEpW9pI6DHPTLNMK84GQdaNeh6DCQtZHDxYDb8kiO4gplqkz1Izme/dFtu6AHem0R1PEXn28+czFvrxIOGRskd2M9Jq2m+N6rT6VgFWrtDvusnWn8R/h7DKPY1p2Ukvm8R9p1fLw==
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1793603137-754763
+X-HE-Meta: U2FsdGVkX19iQNBdTJLXOUciFfNkqA/vIld/skmKzomz7qQuW4hMNdQjrgwbLYVjhBf8tgAVjlPL9QO6qZ7CiQ85mov6pqUpS/RvRR/49eWF1Obvm3wfbslqy4LluXiqY2sfZJVIIJzIf91cvfT03/hlVBOZs/ONj2LJFQgLIjW6LxBB9Pl92jVwt5s9CbkUHnkfvAKHG1Xae4vJZ2R+PM1WnWsHpl/xtfCHz+mthenGwZuyLR7pVZa0FakKhvixkqE8QKEwGg8mrbRciTFvWnK41SUo7XDtrGyneJnHrKrIcKQmv2A8fv26O4b0Ptpam4KzCFKSaygJChKPq/J4pliWg7lomiS8x0eG2d7MgdwzcfQgwmHwpKWuQ7McQtccHKHLrZjOiZzhTMO2CdiTYGFJWqcM64+PrIjnIkZ28cMltzc0WnBI4Gu4NF8+mFLDO7YGFBBL/OcLtR9I0H6vF1y+TY2yf2wixzRQNcfm6M3JteUGefH/weBEk4Ir7rVoinXS/7cvIBD09oHkXlg1Y3D7phE5VE8qhvjwJru722cMIlP4psqzq1/Gyuy4Pfvd9FokXWXRHg3D/Vut594Atketv9KgOxyEr9mkukuofYsyUr01OPKPilTwWBAG4gDDk4L++2xEkH1vxu5gSSsybcDbXj1+f6hHPIVDuY4fg8dADfJpp1E22fcbIb69U7FRLl0kOhy4Hpqr0+meewklnOKLukrHpeVgBvAcflRfgNqUazfNgyyXbesVTvzNZ5iWqZQeIyt/zGYidw4ToxLE7HoMuNhJGuVhBYXVuBLzWRDz3aJEqwWvUvbNK9WFA9MWwf/h1g9FVjtClR5yoXwLTp6L9yOjPuyC/VCC41gwBTGDQkdXK0xlTrC2nc2kTj2rB2kYiAAEwdSsT4Gcyzs0iYkLX3nFlK7QFCc2ihUx6FJvc6F/eyfxvLU263qKrZnmcsT/zzeoQhjgquujmkb
+ NS+OUtGg
+ T/StdCtkNr+DbkrqQ3BV+dvrOW69gXzLqyOUH/X26ARyE2BV+YI+5EdCEt1Rw7TaCIAtSVZ6koL5xOvdcZ5kQFH3VTI7KkWBwTvobZEvrhpBaCQv6S7dh0a0KJyC+Y0YTpX0hD63h+ID1UXQN1LqenkZ+9dJnOH6OrZsAiusPgXcQIkc9hK5RGwpdhkN+wuQPZPYQLiMpjdrJxm4fQWRYXGG2nJwvNui3kpUnl3UWTdZYrOyYMtV8j4XTHC3m5c0oD0hxkIU9t9LHZ68RcY2G4EWcUAQ7Rjvqh7cvdaKWOk6eO4OEH8pcryDi9uO9IigNi22hDoLTgRKtq28pu+xg1kmOSz7LogVO1sUY8ZagCm329kyQGZLatj5QNmDA4DAexSgk
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -155,41 +94,237 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
+memory.reclaim is a useful proactive reclaim interface for memcgs, but
+tiered memory makes "reclaim N bytes from this memcg" underspecified for
+userspace controllers that manage memory placement across tiers. The
+kernel reclaim path may demote some folios and evict others. Without a
+way to declare where reclaim pressure should be applied, userspace can
+only reclaim from the memcg as a whole and observe one aggregate progress
+value.
 
-On Sat, Oct 31, 2026 at 10:39:47AM +0100, David Hildenbrand (Arm) wrote:
->The existing code is rather horrible and already resulted in bugs in the
->past: we special-case UFFD inserting anonymous folios by grabbing the PMD
->lock early, but ignore any other markers (guard, poison through uffd) that
->could have been inserted into the page table in the meantime, effectively
->dropping them.
->
->Let's just unify and simplify the locking: try to grab the PMD table
->lock and if that fails, flush the TLB, drop the PTE lock, take PT locks in
->the right order and check if the page table is still empty.
+There is prior history here [1]. The old nodes= proposal tried to let
+memory.reclaim scan selected NUMA nodes, but the discussion left several
+ABI questions unresolved:
 
-Yep ;)
+- nodes= did not clearly say whether the mask was a source selector, a
+  reclaim domain, or a demotion-target constraint.
+- The implementation did not apply the mask to the whole reclaim path,
+  so demotion could allocate outside the mask. If userspace interpreted
+  the mask as a domain or target constraint, the ABI did not provide
+  that.
+- Selecting top-tier nodes could become an implicit way to request
+  demotion without uncharge. That would make userspace depend on a
+  particular reclaim policy and could make future policy changes hard.
+- The separate completion-accounting question remained: demotion can
+  count as reclaim progress even though memory.current is not reduced.
 
-Taking the PMD lock up front would make the locking easier to follow, though
-we'd hold it across all the PTE zapping ;)
+This series takes a narrower approach. It adds a typed source= key which
+declares only the resident source to which the existing memory.reclaim
+path should apply pressure. It is not a demotion target selector, not a
+demotion-only goal, not an eviction-only goal, and not a change to the
+existing completion accounting. Leaving source unspecified preserves the
+existing memory.reclaim behavior.
 
->We still perform the heavy lifting (zapping the folio ptes) under PTE table
->lock only.
->
->Include <linux/hugetlb.h> for now, as x86's flush_tlb_range() macro
->depends on hugetlb helpers. This dependency needs a separate cleanup.
->
->Both issues this fixes are rather corner cases. Let's not CC stable for
->now.
->
->Fixes: f807123d578d ("mm: allow guard regions in file-backed and read-only mappings")
->Fixes: 1043173eb5eb ("mm/khugepaged: collapse_pte_mapped_thp() with mmap_read_lock()")
->Tested-by: Gregory Price (Meta) <gourry@gourry.net>
->Reviewed-by: Gregory Price (Meta) <gourry@gourry.net>
->Tested-by: Muhammad Usama Anjum <usama.anjum@arm.com>
->Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
->---
+In that sense, this series extends node-scoped reclaim pressure to the
+memcg memory.reclaim interface. The existing node memory_reclaim
+interface can apply pressure to a node, but it is not scoped to a
+particular memcg. This series lets userspace apply the same kind of
+source-scoped pressure to a cgroup's resident memory on selected nodes,
+while still using the normal memcg reclaim path.
 
-LGTM!
+The typed source= form also follows a direction that has recently been
+discussed for memory.reclaim. In the zswap proactive writeback series,
+the interface was changed from a one-off zswap_writeback_only key to
+source=zswap so that other reclaim sources could be selected in the
+future [2][3]. This series uses the same extensible key shape, but
+defines a different source class: resident NUMA nodes. source=zswap
+bypasses ordinary reclaim and performs zswap writeback; source=nodes:
+<nodelist> only constrains where the normal memcg reclaim path applies
+pressure.
 
-Reviewed-by: Lance Yang <lance.yang@linux.dev>
+The main benefit of this series is to give userspace a steering knob for
+per-node memory placement control. A tiering controller can still build
+per-tier policy on top of it by translating a tier to its node list, for
+example from /sys/devices/virtual/memory_tiering/memory_tierN/nodelist.
+It can then apply reclaim pressure to the nodes that should be relieved.
+For example, it can apply pressure to top-tier nodes so that, under the
+existing tiering policy, cold folios can usually be demoted to lower
+tiers. Another controller may first reclaim from lower-tier nodes so that
+later top-tier reclaim has room for demotion. A controller can also
+reclaim from terminal-tier nodes when it needs actual charge reduction.
+
+The existing memory.reclaim interface cannot express this. It applies
+pressure to the memcg as a whole, so on a multi-tier system the kernel
+may make progress in a tier different from the one userspace is trying
+to control. That makes a userspace feedback loop for tier ratios
+ineffective: the controller can observe that a specific node or tier is
+over its desired resident footprint, but it cannot direct the next
+reclaim request to the corresponding source nodes.
+
+This version only adds source=nodes:<nodelist>, which is the basic
+source selector. More convenience selectors can be considered later, but
+the tier use case is already expressible by resolving a tier's current
+nodelist in userspace and passing that nodelist to
+source=nodes:<nodelist>. Starting with the node-based interface keeps the
+ABI smaller while preserving the source= namespace for future selectors.
+
+The remaining issues from the old discussion are intentionally left out
+of this series. If userspace needs to control demotion targets, that
+should be a separate target/demotion-policy ABI rather than folded into
+source=. If userspace needs a strict "bytes actually uncharged"
+completion mode, that should be discussed as a separate accounting or
+goal extension because it would change the observable meaning of
+memory.reclaim progress. This series only adds source selection for the
+existing reclaim policy.
+
+Testing:
+
+I ran a simple userspace feedback controller on a CXL test machine. The
+machine had nodes 0-2 as the DRAM tier and node 3 as the CXL tier. The
+basic matrix used node 0 as the DRAM source and node 3 as the CXL
+source for the target memcg, with fio and stress-ng as the load
+generators. The controller:
+
+- read anon/file bytes from memory.numa_stat by node;
+- aggregated them into DRAM and CXL resident bytes;
+- targeted a 1:1 DRAM:CXL resident ratio for the target memcg;
+- selected the side above 55%;
+- wrote memory.reclaim with source=nodes:<selected nodes>; and
+- slept for the configured control period before the next sample.
+
+The controller loop was approximately:
+
+while running:
+        stat = read_memory_numa_stat()
+        dram = resident_bytes(stat, dram_nodes)
+        cxl = resident_bytes(stat, cxl_nodes)
+        total = dram + cxl
+
+        if dram > total * 0.55:
+                source_nodes = dram_nodes
+                excess = dram - total / 2
+        else if cxl > total * 0.55:
+                source_nodes = cxl_nodes
+                excess = cxl - total / 2
+        else:
+                sleep(period)
+                continue
+
+        bytes = clamp(excess * gain, min_step, max_step)
+        write(memory.reclaim,
+              "$bytes source=nodes:<source_nodes>")
+        sleep(period)
+
+The requested reclaim size was proportional to the excess bytes, with
+per-workload min/max bounds. I tested 1G, 5G, 10G, 20G and 50G
+workloads with 1s, 2s, 5s and 10s control periods. A run was considered
+within target when max(abs(dram_ratio - 0.5), abs(cxl_ratio - 0.5)) was
+not greater than 5 percentage points.
+
+Basic feedback-controller matrix, final deviation from the 1:1 target:
+
+The 1s, 2s, 5s and 10s columns are controller periods.
+
+The file-cache-CXL-high case used fio under numactl to create about 25%
+DRAM and 75% CXL page cache. It reached within 5% by at most the
+eighth control cycle, and all 20 runs ended within 5%.
+
+size  1s     2s     5s     10s
+ 1G   3.96%  3.96%  4.45%  3.96%
+ 5G   2.65%  2.75%  2.65%  2.65%
+10G   2.65%  2.68%  2.65%  2.69%
+20G   2.65%  2.66%  2.66%  2.64%
+50G   4.31%  4.31%  4.31%  4.31%
+
+The anon-DRAM-high case used stress-ng under numactl to create
+anonymous memory on DRAM and used swappiness=max so that the normal
+reclaim path could demote or reclaim anonymous memory. It reached
+within 5% by at most the seventh control cycle, and all 20 runs ended
+within 5%.
+
+size  1s     2s     5s     10s
+ 1G   0.15%  0.02%  0.16%  0.02%
+ 5G   3.16%  3.13%  3.14%  3.13%
+10G   3.13%  3.13%  3.15%  3.12%
+20G   3.12%  3.13%  3.12%  3.12%
+50G   1.88%  1.88%  1.88%  1.88%
+
+For comparison, I also ran the same controller and workloads without
+the source=nodes selector. The controller still chose the side above the
+target and computed the same request size, but wrote plain
+memory.reclaim without a source constraint.
+
+case                  final <=5%  reached <=5%  worst deviation
+file-cache CXL high        1/20          1/20     50.00%
+anon DRAM high            20/20         20/20      5.00%
+
+This shows why the source selector matters for placement control. In
+the file-cache-CXL-high case, plain memory.reclaim could not reliably
+control the target ratio without source=nodes. In the anon-DRAM-high
+case, plain memory.reclaim worked well. This is likely because, in this
+setup, the whole-memcg reclaim walk reached DRAM nodes before CXL nodes,
+so it already applied pressure to the over-target DRAM side first for
+this workload.
+
+I also ran a disturbed case with external reclaim and demotion activity.
+The target memcg used stress-ng under numactl to create about 25% DRAM
+and 75% CXL anonymous memory. NUMA demotion and zswap were enabled, and
+watermark_scale_factor was raised to 3000 so background reclaim became
+visible in a short run. A ballast cgroup kept DRAM free memory low, and
+a separate CXL-heavy cgroup kept reclaim activity present on the CXL
+tier. The result below was measured on the target memcg.
+
+During the matrix, pgdemote_kswapd increased in 16/20 runs. The
+CXL-free-down/DRAM-free-up/pgdemote pattern appeared in 13/20 runs.
+Even with that external activity, the target memcg controller still
+drove its own DRAM:CXL resident ratio toward 1:1.
+
+Disturbed case, final deviation from the 1:1 target. The 1s, 2s, 5s and
+10s columns are controller periods:
+
+size  1s     2s     5s     10s
+ 1G   1.18%  1.11%  1.11%  1.42%
+ 5G   2.14%  2.06%  2.14%  2.14%
+10G   2.13%  2.10%  2.15%  2.11%
+20G   2.15%  2.23%  2.15%  2.43%
+50G   4.87%  4.87%  4.89%  4.87%
+
+All 20 disturbed runs reached within 5% by the third control cycle and
+ended within 5%. This does not make memory.reclaim a one-shot footprint
+guarantee, but it shows that source=nodes can act as a useful
+feedback-loop actuator.
+
+References:
+[1] https://lore.kernel.org/all/Y5bsmpCyeryu3Zz1@dhcp22.suse.cz/
+[2] https://lore.kernel.org/all/20260629112032.20423-1-jiahao.kernel@gmail.com/
+[3] https://lore.kernel.org/all/20260629112032.20423-5-jiahao.kernel@gmail.com/
+
+Li Zhe (1):
+  mm: add source selector to memory.reclaim
+
+ Documentation/admin-guide/cgroup-v2.rst |  9 +++++
+ mm/bpf_memcontrol.c                     |  3 +-
+ mm/internal.h                           |  3 +-
+ mm/memcontrol-v1.c                      |  6 ++-
+ mm/memcontrol.c                         | 11 ++++--
+ mm/vmscan.c                             | 49 +++++++++++++++++++++++--
+ 6 files changed, 70 insertions(+), 11 deletions(-)
+
+---
+v1: https://lore.kernel.org/all/20261019141401.11927-1-lizhe.67@bytedance.com/
+
+Changes since v1:
+- Reworded the cover letter and documentation to describe the interface
+  as applying reclaim pressure to a selected resident source.
+- Added the lower-tier use case where userspace reclaims from a lower
+  tier first so that later top-tier reclaim has room for demotion.
+- Dropped patch 2, the tier convenience selector, for now. Tier-aware
+  userspace can resolve a tier to a nodelist and use source=nodes.
+- Added references to the zswap proactive writeback discussion, which
+  also uses the typed source= form to keep memory.reclaim extensible.
+- Added CXL feedback-controller test results using fio and stress-ng
+  load generators, including a no-source baseline.
+
+-- 
+2.20.1
 
