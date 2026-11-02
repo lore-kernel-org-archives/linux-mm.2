@@ -1,99 +1,96 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A30E606A324
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 02:25:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B7B7606A329
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 02:40:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=RddVEMc0
+	dkim=pass (1024-bit key, unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=V5EY1ZP8
 Received: by kanga.kvack.org (Postfix)
-	id 276206B00EF; Sun,  1 Nov 2026 21:25:04 -0500 (EST)
+	id 37C346B00EF; Sun,  1 Nov 2026 21:40:42 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 226696B05B1; Sun,  1 Nov 2026 21:25:04 -0500 (EST)
+	id 32CF16B05B1; Sun,  1 Nov 2026 21:40:42 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 13C4A6B05B2; Sun,  1 Nov 2026 21:25:04 -0500 (EST)
+	id 2434D6B05B2; Sun,  1 Nov 2026 21:40:42 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id DE33E6B00EF
-	for <linux-mm@kvack.org>; Sun,  1 Nov 2026 21:25:03 -0500 (EST)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 35D0340BDE
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 02:25:03 +0000 (UTC)
-X-FDA: 85388586486.22.B11FCC4
-Received: from mta1.migadu.com (out-149.mta1.migadu.com [95.215.58.149])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 19D97C0004
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 02:25:00 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=RddVEMc0;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf28.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.149 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
+	by kanga.kvack.org (Postfix) with ESMTP id E766A6B00EF
+	for <linux-mm@kvack.org>; Sun,  1 Nov 2026 21:40:41 -0500 (EST)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 7004E40C2C
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 02:40:41 +0000 (UTC)
+X-FDA: 85388625882.27.815E2A5
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 85F0840003
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 02:40:39 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=V5EY1ZP8;
+	spf=pass (imf17.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793586301;
+	s=arc-20220608; t=1793587239;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2mnsyMY9o09dxT12b5diRUF6Cicg8w6KasRAQlIeI/I=;
-	b=UH18FIdw4upPOPTWDFOzMysKF2AI2WG5b0rYwHfG143oM44GpWybnSkHtkrxOcc4rl77py
-	IkKbeye4YgJqjgSqpdrv9VgYU5Ru12myBgKLJJKc6TrG2O+SfQSpQ9jHxhEVAQ4lWLIsOz
-	7uUE5xRFCexUuMD+yH7fPK0tmDdMJRk=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=RddVEMc0;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf28.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.149 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
+	bh=9MZi1hD6WqJcKS3km0Z8C+kRXVD/0KRLDA2g4HTFty0=;
+	b=OkW52wRsb4V3G+n697Ej3ZfUOK6JZCRGT+tyTEdUvndHBNMhpVwfZ5Opbxqs6QH2u+uZ4y
+	R9cAeSJT3hvX8+c2UUDDPKLZyp8Z8zn4/958OunSodd2wD1E+3OUbLJNq/jju21EOMUTru
+	+N3OJYP1lJkqZedsCcM84Zu67JBZYyE=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793586301;
-	b=t7i/9dTaYkd+1KMbym//0GZZzRSEyn8h+TE9t7YwxihwKcW3f7KuzkDcq6xqCDGRcOWnR8
-	TN9RBkf6vzhu+pb57nOBEBoiwwbwxT280fFMlb03dZhqMcEqRu+mUOeOlEG14nK9PzJIUq
-	E0ooNZ9fsqwnAiUl8ejoj7vd1xy5i/M=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=9MWJaTq44xn+tvTxU7mQ3vu6AIJLcPaBU+1NzYl4ghk=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1793586296; v=1; x=1794191096;
- b=RddVEMc0Nc6NAvlP05NTHE/hYX6XO7jCA5N64VxWF8G/+V12NHaXseYCOduZ0SctWX3A7uDu
- L+u9fua1pQ5u2i6+Vm7RredncvQPNGs4PAdTii9cVvi5XHeCVlBVbfXRwIe4gik+HI9JdH4yyKr
- KjWpVYrcR93TY51p6/OHadUw=
-X-Envelope-To: linux-mm@kvack.org
-Received: by mta10.migadu.com with ESMTPS id 112a86c3f0c26040;
-	Mon, 02 Nov 2026 02:24:56 +0000
-X-Mizu-Trace-ID: 112a86c3f0c26040
-X-Migadu-Flow: FLOW_OUT
-Content-Type: text/plain;
-	charset=us-ascii
-X-Archived-By: <archiver.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3901.200.71.1.16\))
-Subject: Re: [PATCH v3] hugetlbfs: move hugetlbfs_free_inode tracepoint to
- ->destroy_inode()
-From: Muchun Song <muchun.song@linux.dev>
-In-Reply-To: <20261101-b4-hugetlbfs-trace-v3-1-051b716f490f@gmail.com>
-Date: Mon, 2 Nov 2026 10:24:38 +0800
-Cc: Oscar Salvador <osalvador@suse.de>,
- David Hildenbrand <david@kernel.org>,
- linux-mm@kvack.org,
- Andrew Morton <akpm@linux-foundation.org>,
- Hongbo Li <lihongbo22@huawei.com>,
- linux-fsdevel@vger.kernel.org,
+	t=1793587239;
+	b=dRQ3YdhxB8xuUZhl1sv8GFXwRZ5Ab+Yc9bbO6kw3h4IYgOKPDgc3Un8ax/JAtuvmSGcE/q
+	liFZu9z2+JX2d0MYyT58g3DTnrqOvNWVlNwAqyAzhx8syS4KP+IKBs7d2bahHIvfSGzoBT
+	P16JjX67XmQo1u6aMfONPSOSDCUtigE=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=V5EY1ZP8;
+	spf=pass (imf17.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 6140443D3D;
+	Mon,  2 Nov 2026 02:40:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0D451F00A16;
+	Mon,  2 Nov 2026 02:40:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux-foundation.org; s=korg; t=1793587238;
+	bh=9MZi1hD6WqJcKS3km0Z8C+kRXVD/0KRLDA2g4HTFty0=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=V5EY1ZP8wlTtErpAj4wIIH2pjK5+yBnubEbEeMgLYjUfOKwx8kblJ7Z2Z4o3TYYt1
+	 9/AoT4bhgHjfeNuDZ4H1MEqk88MkqBy+TuLNOwKAyLd9GbB3LJbgLfJ/gjsRZDqjc9
+	 ah4YNs8AOkLHGA5usNB2fmwsr41n1qzW6/p2a00w=
+Date: Sun, 1 Nov 2026 18:40:37 -0800
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Muchun Song <muchun.song@linux.dev>
+Cc: joasantonio108@gmail.com, Oscar Salvador <osalvador@suse.de>, David
+ Hildenbrand <david@kernel.org>, linux-mm@kvack.org, Hongbo Li
+ <lihongbo22@huawei.com>, linux-fsdevel@vger.kernel.org,
  linux-kernel@vger.kernel.org,
  syzbot+91e1fc35f51774c479b2@syzkaller.appspotmail.com,
  stable@vger.kernel.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <6FC96012-76AA-483B-BDA4-8E1C1ABB5FFE@linux.dev>
+Subject: Re: [PATCH v3] hugetlbfs: move hugetlbfs_free_inode tracepoint to
+ ->destroy_inode()
+Message-Id: <20261101184037.5398ecf4c8348462a70b3968@linux-foundation.org>
+In-Reply-To: <6FC96012-76AA-483B-BDA4-8E1C1ABB5FFE@linux.dev>
 References: <20261101-b4-hugetlbfs-trace-v3-1-051b716f490f@gmail.com>
-To: joasantonio108@gmail.com
-X-Mailer: Apple Mail (2.3901.200.71.1.16)
-X-Rspamd-Queue-Id: 19D97C0004
-X-Stat-Signature: f9tmimgk8otza5csw7d3o8pmo5bj17ir
-X-Rspamd-Server: rspam04
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+	<6FC96012-76AA-483B-BDA4-8E1C1ABB5FFE@linux.dev>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+X-Archived-By: <archiver.kernel.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 85F0840003
+X-Stat-Signature: ju1bd3dyrumw49yai5y56j3zm8cjs3xj
 X-Rspam-User: 
-X-HE-Tag: 1793586300-886783
-X-HE-Meta: U2FsdGVkX1+I+56u0dZnF7DhQVrxwelnaML0LaLVLNUtnnNTRHoCLSWUF7PTb1kDk2jh4YEX62v+MTGLJRhVeuJHQIEBXqpqJFKkoRJEbDkjyxozyrja3tfDISmD0V+6ZXxQFE92hHXm+xGhGC1CESZwaLPC2PoW70VFMaQe78LRH82zQFgav4tY4fY1m+rEpu9Jfh6ybjlwWlflyDsUookmW6T43rYdTL2ucEHCKlAOxhWTzN3tMvVH92rd1GuOCfQFQbDqVPBDrXu4+pUK+TykMhJxPnhu3Zp1R2Zl8PGe1uPP6ODJdXBKji9xBezAiHMqrdwbGAcxeDm1APSe/5mwPdeVnKQMEUeSSJiCk8/G4zKbjJ+ilg4r3KeWMloef9Y05vbNoR9mcmcRshEPhAAvtUSmNjGZJ/+qo82jV6Fqhvz/Qv0Oj+1pCX1h0Ypg+PZfx2PXCu3lGriFDbGWyrePvyxOauXEopC0bPEzKhkhZh0PPEx3QhoTt+MluwWxTHwIpdDcqT8CKJlSNgoT0fe//8XeuybyqEsk8GTbU4GIC2xVBchZ0Bha0f4fhh0STXi0R1b2znu8IKRqlXhN3BojVeFbUsZCFGbYCykJ6pkWTOxXV8XW3N/J+Z4UhKha9pw18Dh5mFrsYhO+uveajo/JpDPeB4gBIRnkRJgduiLUN/Igb3ZOUZewUO0cZtp3+gooETgZ5Wtlmn62LyKPfd45CfCwjapUAilDiGVBYWoO9DDU9C+BpssGCiHgmhNgFCrx/pHZtoLjmIB+gDFTn5ACUlXdhDSFVQKgBrhkeyu1LTM6x3HTEDBf59QR/orcx40qeqobLq0za2ouv2u6AKw33NL/D5lsF61H8ECHhl2IsF3NdQ55227cYbzVtFASTq1iZF+jEpCJNB7i77GP1hHIbv2KqUCvy1LYq+uFoyUVRa+72H92FjmMX1PSK6B+RZhQrPKKmmNObvwXylB
- qk/n+oxF
- jFdOVwQ+gyhiTdgnXEu8xwhgvPIeSY4Sq9oL2TW/7vPl7iBreOxDOe0svobEMdJlu5uwjK5uaikrpaSh/tffS0YROpcTH4ap3coBAcaWalrjkCWunTNbsFBvRGtIg+kYmx9uy61FPDLte8FglunkmyTsF3DKaxfB3YN/vKeE74FamgDVxOVTQYMlntjj3DlGs/dQ8e62Yr+6VTcfWM31jlNDpgsJEoDLTbtIk4V4zjeqUdCZWcvlW7SWs00NcBI4nqwLPfYaz2j+v4gBH/Zo8D2LluEqcaaD2Mefxlp0jpFGVi2pJ2OE7TI/BPBYhuuQSzw0JKOYOoA9Mx4Lk4z4Cw+xOuRUcxoO7kYwzWlUMWBtQHAwZLXMy0bBeHQUHmOYCJ8KHziO4IOTtChmI+UlUrO8csnrS+tGnGEhlVG3NLjgGAAeNlgQKqD4Uf/tDua/M0WtHsQKIEPMlgYgqtE0gsMVw2xst40Yvk5PJRzwuaRu7SpBqMOmVsbEQ+5Ii3m3aS330T5yqaCq//49nBVKardNLgtr5MHDkcmUUmRAlly9zK5yVSZLyKYdxkNbLlhYnNyhT
+X-Spam-Status: No, score=-17.6 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,
+	NICE_REPLY_A,SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no
+	version=4.0.1
+X-HE-Tag: 1793587239-457350
+X-HE-Meta: U2FsdGVkX19rzHscBIfNs27/xF9qXRxPqx2FjAiIFf8exk7PLyl7372p9Fjr3E2zTK4ZMFXq6JZ1DX7uk0mHQPUGV9hG4dXdRaj88g7i8luJSfkdwZBHgRd3mn+mlHs9MdR5sXIc7T/Yn44YlFygkMSiprjCc9ecp1VZ+yYSA4z5K2JkeBDBbw0oRVLs6sV0bkhDyUEaCtXRIFDXVtkmC50yH9Z08AdakWUiOsSla08isrYjI6bSmQ9b/0CcOxNp1pCu6kF+nKlNp8/iKpLEGUoBXnzlHLyDZ3W/9xpX2ch/GBxKG5iKWcQ1xPhlxgKG/Upr2EGcLPJwj8Fqxzhk/+vi+MXyYZGaoveELT0yZrga9sAsiZE3kYnKEJ/NCmNvz+Q1CBDKhu+2MjTq70dI12hVRJhsCTeOT29MlvYFqWP6zIXmxO68DGYDiLJ+bEFG6rdEFfGVoOhpNQpnXOcDV+sfCers03yCl89ml9r0wjMML2oLZzoN4dH7uGhTWQpUOR53iPJlWLz6x/6ntgNnJ6AAVA+Jj4veUspNEaMEEh2RuDM2WtAUsE0i5hUWrwvgE4+m6EoWcbZ0G6tVXHgmDGP4oa7u5puG8U/aYrrYwyV0gnhdP2kcNEjNzocCzGm5+M0u6ub9H1xgokpPHsM/agczHMy42KyhTyGxVMbdLfOhO+4VLzrlmZspMgrhVktjijUOUmuUswfD25XhDgz5aLAn8pgfe1M91O0MXwkqi2CTKXbcAFjWyF/qNyugz7ksuG5mf0jITdNx0eXp0VQ/zCvyb/Px4i14JKe6hfdw4vRwt/qkFlBgVkgLWU7iBRqYVwYV8ULtDXW4ns5nLCI0Pr5FAETPsL64aqS3wcQIhW53bTA0YMVv3G8UUzdCtbdInAipH4PWHqXHFwWVlHjmTAmIj93c5TwQ5UwFO/hJEHlZaNrpnRHpaJ9ToIz0SlgJxMPSa93lbIw8TcyxHHS
+ RZYzu8lT
+ BtP/vd+nMYMxrUH3KogGyAR2S1O38QGmPxz3vcL5OzG+nZ7lXcmKAqVj6D/vGxGI+0zGSD+VLpTcEoMppfTgnLrpB41/1F/UtJuMZts2zITb3ROvWWJIukq17r3vLC4Vcl/gDXmaG5axKWrTaV9g6lESKf9eyMAdfz6xK801epfTJ5U08Ibhwz90qVgqkeUOvGVHsPQzjQ3mfSrNNbfNHDdpAJVXnwmJ6k2WoFEF/uDNFcbmtNzm4mCPlI679UvTRUAnsQJeQFkG/rL2Lkp65PXHN1zajOmSBT2tCpVfR85kdlZ6Zo1ZoY8a0XHqrQnApEUTceaiNmTLbZVVggnTiZJXLL46IiAB/FKjTF+Y4G/08/ENY35dGf055D/WZxR/BKwbfOKaAF9RDEIMR5bEKkzSOu3BAFhF2EeG4dvCtmBulpiuDsByPeI86vsac3QMNPEZsWwcHgvvkakA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,150 +99,34 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
+On Mon, 2 Nov 2026 10:24:38 +0800 Muchun Song <muchun.song@linux.dev> wrote:
 
+> > static void hugetlbfs_destroy_inode(struct inode *inode)
+> > {
+> > +	/*
+> > +	 * Not in ->free_inode(): that runs from an RCU callback, when the
+> > +	 * superblock the event reads may already be freed.
+> > +	 */
+> 
+> Since the trace point name has already been changed, the comment here
+> doesn't seem to serve much purpose anymore, as there isn't any ambiguity.
+> 
+> With the comment removed:
+> 
+> Reviewed-by: Muchun Song <muchun.song@linux.dev>
 
-> On Nov 1, 2026, at 21:48, Joas Antonio dos Santos via B4 Relay =
-<devnull+joasantonio108.gmail.com@kernel.org> wrote:
->=20
-> From: Joas Antonio dos Santos <joasantonio108@gmail.com>
->=20
-> hugetlbfs_free_inode() calls trace_hugetlbfs_free_inode(), and the
-> hugetlbfs__inode event class records inode->i_sb->s_dev.  =
-->free_inode()
-> runs from an RCU callback (destroy_inode() queues i_callback() with
-> call_rcu()), and Documentation/filesystems/porting.rst says that this
-> callback "is *NOT* ordered wrt superblock destruction; as the matter =
-of
-> fact, the superblock and all associated structures might be already
-> gone".  put_super() frees the superblock with call_rcu() followed by a
-> workqueue item (destroy_super_rcu() -> destroy_super_work()).  syzbot
-> hit this with the event enabled:
->=20
->  BUG: KASAN: slab-use-after-free in =
-trace_event_raw_event_hugetlbfs__inode+0x45b/0x4c0 =
-include/trace/events/hugetlbfs.h:36
->  Read of size 4 at addr ffff888038850010 by task syz-executor952/6134
->   hugetlbfs_free_inode+0x15e/0x1f0 fs/hugetlbfs/inode.c:1182
->   i_callback+0x46/0x80 fs/inode.c:317
->   rcu_do_batch kernel/rcu/tree.c:2650 [inline]
->   rcu_core+0x5f0/0x1220 kernel/rcu/tree.c:2919
->  Allocated by task 6134:
->   alloc_super fs/super.c:326 [inline]
->   sget_fc+0x1ba/0x1f60 fs/super.c:874
->   hugetlbfs_get_tree+0x1e7/0x2b0 fs/hugetlbfs/inode.c:1431
->  Freed by task 855:
->   kfree+0x22b/0x6d0 mm/slub.c:6923
->   process_one_work+0xac7/0x1b10 kernel/workqueue.c:3495
->=20
-> Emit the event from hugetlbfs_destroy_inode() instead.  =
-destroy_inode()
-> calls ->destroy_inode() synchronously, before it queues the RCU
-> callback, while the superblock is still alive; =
-hugetlbfs_destroy_inode()
-> already dereferences inode->i_sb there.  ->free_inode() is left with
-> only the kmem_cache_free().
->=20
-> Since the event no longer fires from ->free_inode(), rename it to
-> hugetlbfs_destroy_inode so that its name matches where it is emitted,
-> as suggested by David and Muchun.
->=20
-> Found by syzbot; analysed and tested with the syzbot C reproducer on =
-an
-> arm64 KASAN kernel.
->=20
-> Fixes: 014ad7c42a69 ("hugetlbfs: use tracepoints in hugetlbfs =
-functions.")
-> Reported-by: syzbot+91e1fc35f51774c479b2@syzkaller.appspotmail.com
-> Closes: =
-https://lore.kernel.org/all/6ae27525.5451848c.f7707.0001.GAE@google.com/
-> Suggested-by: David Hildenbrand <david@kernel.org>
-> Suggested-by: Muchun Song <muchun.song@linux.dev>
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Joas Antonio dos Santos <joasantonio108@gmail.com>
-> ---
-> Andrew, this replaces
-> hugetlbfs-emit-hugetlbfs_free_inode-from-destroy_inode.patch in
-> mm-hotfixes-unstable.
->=20
-> Tested with the syzbot C reproducer (adjusted for the new event name)
-> on an arm64 KASAN kernel: no splat in 3 of 3 boots, and
-> hugetlbfs_destroy_inode events are recorded.
->=20
-> Tool-use note: the analysis and testing were done with help from an
-> LLM-based assistant; I reviewed the change and ran the tests myself.
-> ---
-> Changes in v3:
-> - Rename the tracepoint to hugetlbfs_destroy_inode in the same patch,
->  so its name matches where it now fires (David, Muchun).
-> - v2 was the resend with the Assisted-by trailer dropped; it should
->  have been marked v2 in the subject, sorry about that.
-> - Link to v2: =
-https://lore.kernel.org/r/20261031-b4-hugetlbfs-trace-v1-1-4ec8d02a30cc@gm=
-ail.com
-> ---
-> fs/hugetlbfs/inode.c             | 6 +++++-
-> include/trace/events/hugetlbfs.h | 2 +-
-> 2 files changed, 6 insertions(+), 2 deletions(-)
->=20
-> diff --git a/fs/hugetlbfs/inode.c b/fs/hugetlbfs/inode.c
-> index 01c4d6f44e..095b7fceee 100644
-> --- a/fs/hugetlbfs/inode.c
-> +++ b/fs/hugetlbfs/inode.c
-> @@ -1179,12 +1179,16 @@ static struct inode =
-*hugetlbfs_alloc_inode(struct super_block *sb)
->=20
-> static void hugetlbfs_free_inode(struct inode *inode)
-> {
-> -	trace_hugetlbfs_free_inode(inode);
-> 	kmem_cache_free(hugetlbfs_inode_cachep, HUGETLBFS_I(inode));
-> }
->=20
-> static void hugetlbfs_destroy_inode(struct inode *inode)
-> {
-> +	/*
-> +	 * Not in ->free_inode(): that runs from an RCU callback, when =
-the
-> +	 * superblock the event reads may already be freed.
-> +	 */
+Thanks.  I've added a note-to-self to track this, but I've left the
+patch in-place as your observation doesn't invalidate ongoing testing.
 
-Since the trace point name has already been changed, the comment here
-doesn't seem to serve much purpose anymore, as there isn't any =
-ambiguity.
+I always do this!  But this doesn't appear to to be widely known :(. 
+My fault, really.
 
-With the comment removed:
+My notes-to-self are mastered in
+https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/pc/devel-series,
+so the overly-curious can always look up status in there.
 
-Reviewed-by: Muchun Song <muchun.song@linux.dev>
-
-Thanks.
-
-> +	trace_hugetlbfs_destroy_inode(inode);
-> 	hugetlbfs_inc_free_inodes(HUGETLBFS_SB(inode->i_sb));
-> }
->=20
-> diff --git a/include/trace/events/hugetlbfs.h =
-b/include/trace/events/hugetlbfs.h
-> index 8ba72c1d4f..a7932e0db0 100644
-> --- a/include/trace/events/hugetlbfs.h
-> +++ b/include/trace/events/hugetlbfs.h
-> @@ -72,7 +72,7 @@ DEFINE_EVENT(hugetlbfs__inode, =
-hugetlbfs_evict_inode,
-> 	TP_ARGS(inode)
-> );
->=20
-> -DEFINE_EVENT(hugetlbfs__inode, hugetlbfs_free_inode,
-> +DEFINE_EVENT(hugetlbfs__inode, hugetlbfs_destroy_inode,
->=20
-> 	TP_PROTO(struct inode *inode),
->=20
->=20
-> ---
-> base-commit: c339f4010dea8b0d754f84ace70cd1b089878ef8
-> change-id: 20261031-b4-hugetlbfs-trace-341b338ab57b
->=20
-> Best regards,
-> --=20
-> Joas Antonio dos Santos <joasantonio108@gmail.com>
->=20
->=20
+If a patch has a note, I won't progress it until that note has been
+cleared away.  This often involves sending annoying private emails to
+people, or fixing stuff myself.
 
 
