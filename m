@@ -1,75 +1,74 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BDE7606F230
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 15:17:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8769606F236
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 15:18:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=OQ/4og82
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=FmbTyM8z
 Received: by kanga.kvack.org (Postfix)
-	id 9C4CF6B05C9; Mon,  2 Nov 2026 10:17:55 -0500 (EST)
+	id B9AD36B0611; Mon,  2 Nov 2026 10:18:14 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 99C806B0610; Mon,  2 Nov 2026 10:17:55 -0500 (EST)
+	id B71176B0612; Mon,  2 Nov 2026 10:18:14 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 88B956B0611; Mon,  2 Nov 2026 10:17:55 -0500 (EST)
+	id A3A986B0613; Mon,  2 Nov 2026 10:18:14 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 6265E6B05C9
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 10:17:55 -0500 (EST)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 03EF3120147
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 15:17:54 +0000 (UTC)
-X-FDA: 85390534110.25.D93AFC0
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 795566B0611
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 10:18:14 -0500 (EST)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 01CB514016C
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 15:18:13 +0000 (UTC)
+X-FDA: 85390534908.24.E6EE723
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 492AE2000D
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 15:17:53 +0000 (UTC)
+	by imf03.hostedemail.com (Postfix) with ESMTP id 3D10720015
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 15:18:12 +0000 (UTC)
 Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="OQ/4og82";
-	spf=pass (imf03.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793632673;
-	b=iZOf5MoJb0eo6vYAcpXBCnSY7u6BuR6A9+gYJO91kMMySb0QoHdaiqM9XI/mi9u/y9NVl2
-	u9WngHFEbtSpBcEgO6827kj4RQfeqDCR5FrJoYeKhXrTTT81UCvc85LLSQ4UC7fM8LV18t
-	+HrM4Jcnd22BlQV50g1ziqUYFOsKI4w=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="OQ/4og82";
-	spf=pass (imf03.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FmbTyM8z;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf03.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793632673;
+	s=arc-20220608; t=1793632692;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qZN/E0hKCQd7OXCbkpVH+SDzGVUVvjPXCiNKFmCsSbY=;
-	b=B8IQcHPJBJDi2K/3MjcM+mQd+9zJAdI50Xd8/ByMpa/maPDrpDWjsOD6rvFtmlt3AlX5az
-	ulQ+xRsxJ5BnoK6RYTUBqbLxj+Bln+6SbuycJITuMAczK2rclJvn3A+0Ce4cFnFZyMqwZd
-	MIhvHwWalm+PnJkwDTsfggeqtwZAYVc=
+	bh=mH3Z8P6UMOfE8MLC9SlyxmstA5/0uIySkJ7otw3RGiw=;
+	b=UwuOZUVr2amAu/sAY5ta8jGleeA7D2fJYK6Dq8ttsUyumedoJPPYj86HJ+zT6UtHlMh/8z
+	+N7/1QGWfH4sqG9Nf0ds7Oa7xM7ZjQENvwO3GdITdD59h1/4B35Lgoy6nLVuo+aeRwbCWv
+	BCmxsJNWZn9j9GuDtKhLc4t2glEeGFU=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FmbTyM8z;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf03.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793632692;
+	b=Gtem6GXsJewnVpv85QVt/QS7xdbu2w35uuMlLFRpkaWqlNfoz+Rp0B5Q5tVelJjinQZCfB
+	FgwNk192OFvzofAKsxHmcx7aoH8sQr1vlkIeDEZt8dsa90aGkzjVX64/zdRPqKPrQZUf5T
+	wdXh5ZIkjwvQxM4Q3loIrwWLKByt+A8=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id BD6CD6053D;
-	Mon,  2 Nov 2026 15:17:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9321F1F00A16;
-	Mon,  2 Nov 2026 15:17:35 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id D00C160229;
+	Mon,  2 Nov 2026 15:18:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0E081F00A1C;
+	Mon,  2 Nov 2026 15:17:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793632672;
-	bh=qZN/E0hKCQd7OXCbkpVH+SDzGVUVvjPXCiNKFmCsSbY=;
+	s=k20260515; t=1793632691;
+	bh=mH3Z8P6UMOfE8MLC9SlyxmstA5/0uIySkJ7otw3RGiw=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=OQ/4og82Ht0aNZAQGurqlMIUKahbiaOSO5PTnwZlTZ+/ocmR8RnGh+7BqWAnUwmxI
-	 a4dmFM3OxaWot8+GB3b3K0aXXnMYg0FXhwxmSedCs/lUK1ucuE9GCf57/Pd8Xkf+6J
-	 ElkfN7bSwR+MP1p88q2Pe3ymWklXBBOZVT8Nbt//crP+X++/9/zskErTDjhfe2URMg
-	 EXRG4OhrQzBcqZyIUIoWocgzsoWWtT1MqjtF8N4Boij64fy0LA9RXEtYTDghtiYwDk
-	 8GI+MaMSHQl01ZUfoGNTF/MXZJ0ymMlkEauyjMW0ZXyiugQTjA5EHpamAXZhZjHzzA
-	 jmk4uEa8lPOQw==
+	b=FmbTyM8zGqwanNFhJmHE+yr345sASMDz0Mkpx6EKJNZbLXUFdS3A7he2CNilS55cT
+	 HQLgGFvjHb74xJ0qV2rY4+XnnSY6xn3ltD8mfNZMp4qmkB2OqkKB+56zAOIVhSO3Wf
+	 lYsaZHiIeUWPxkOVGTOeUA/sEyrMrtZIZhapM00yvHz93y8CqvQNS09wICF9TSpolD
+	 YpUUbIwRVlVNt5U0ywXbIAT+Rq71iwQnR6R9ZUh5jMkZ536CigxXKID+/DHQSFOW4K
+	 uiZxdfeZMTu/1RXCAO1wfJAgPRht25qNR14pehV6NMY2ktyBg+92l/1LWlkwVNI0lf
+	 g3WTgTzSXS/GA==
 From: Christian Brauner <brauner@kernel.org>
-Date: Mon, 02 Nov 2026 16:07:29 +0100
-Subject: [PATCH RFC 22/23] ALSA: info: let procfs copy out reads of data
- entries
+Date: Mon, 02 Nov 2026 16:07:30 +0100
+Subject: [PATCH RFC 23/23] ALSA: info: drop the ioctl hook of data entries
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261102-work-procfs-drivers-v1-22-a994bd4d3b1a@kernel.org>
+Message-Id: <20261102-work-procfs-drivers-v1-23-a994bd4d3b1a@kernel.org>
 References: <20261102-work-procfs-drivers-v1-0-a994bd4d3b1a@kernel.org>
 In-Reply-To: <20261102-work-procfs-drivers-v1-0-a994bd4d3b1a@kernel.org>
 To: linux-fsdevel@vger.kernel.org
@@ -105,27 +104,27 @@ Cc: Linus Torvalds <torvalds@linux-foundation.org>,
  "Christian Brauner (Amutable)" <brauner@kernel.org>, 
  Chuck Lever <cel@kernel.org>
 X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=13379; i=brauner@kernel.org;
- h=from:subject:message-id; bh=W5FVoTEiqLzpH4N1OnkJ9iOTklCDyiLp/vkBPrzU6TM=;
- b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS9WG74e1cUT59imXn2wS9vLSss/xW7H1bLfLHb2Oq0k
- r3RaptNHaUsDGJcDLJiiiwO7Sbhcst5KjYbZWrAzGFlAhnCwMUpABMxW8/IMNcnSWZVy6L/54Ou
- iPK+3X6QRy3wzTJhi9jMEF47LpGLPgz/U7U/nLie/X+/R7rbpmsrL7lGFa54eTjHTO1EEvP556p
- LuAE=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1977; i=brauner@kernel.org;
+ h=from:subject:message-id; bh=iw+78SbfmRHzz9M2dcStkryZcXwy9rThc4PTL74QmD8=;
+ b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS9WG64bWn0iafHzi8yfCYkfqLHV0Ex89N3u7Mzj7zJj
+ 6zynxn8r6OUhUGMi0FWTJHFod0kXG45T8Vmo0wNmDmsTCBDGLg4BWAijYoMf0W1mtRmR4iVHZdc
+ bbd++jy7BYYtKZN9Zkmotp5ZdMllwkVGhj/V/87UX7dc/WRD/I3Eo9+sdlz7NWtXVqCfMQu3cvU
+ 2RV4A
 X-Developer-Key: i=brauner@kernel.org; a=openpgp;
  fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
-X-Stat-Signature: 7jaek1ihz6a7icxjjj6thwph9u143g1k
+X-Rspamd-Queue-Id: 3D10720015
+X-Rspam-User: 
+X-Stat-Signature: bhzhma71tih748seodndzwi4sfp6hhuk
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
 	version=4.0.1
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 492AE2000D
-X-Rspam-User: 
-X-HE-Tag: 1793632673-521556
-X-HE-Meta: U2FsdGVkX1+RW2uqTu5EnTZiIO3KwkhBg7qyJVCEAqXM6Cw/uTA8XoOrsdPDj0/dX/hzP2EpyMknvvXMeWi218/Lsf8WKJED6F+slf8fzQiEC/OmyB+0a6SAN7sdaGqXeSZT8g+TPeFmSssWhk4N+2xCJBYJFGLvP1K6qakwwOIZgUL4yqIxxfJK06pxLZ23HCp7zBrCpUDwcBrskUWvGqWc15Jcfk646MiFz2W8Yk/1YlWrrt0s3545jHizI1qIusjbnasY83e03leq4mcjcEVIjP/f4SMUnk+WsIZJkKW7RnQaYzASvJVwVsIEGm88RWCP9J0iRkQuaoB3+CK2j5R9UAq7aao6t3h6j1hM8vrYWG4ffWtFmOSysLtOeJKB8XZH6/KMF/GacsBXylvCGjadJ1sogG6zB2BTjaricBpA0EDKRbMboxjMmx4u5lzwX8Y8ZrExF2t1B49CKced/8CTCqOBFAWVVWARDSk+iRzuVfU/CBoofMlXO+Ee1BN8CnD2am0p5u/eAODT7+lZbLFOWf7I0u+5jUbas942Myod+kunhcxgkPpEFmL2RG/v1w+qlxtbMqvtUFstFxNnSeIJ+N0R4mEsoBdCo6wvvbrNRHBGxXCuh9z4A9Fsfq2xGAJAjfKesffPBOwOOiHMmin0oMdv/WZW3dObo5/JeREwFfVOA6O2gtgksFOz6/El91UO6ZXZz1UkX0Ygf/iGh/jW1/eQAZX46RcySSSeClz1ihuQJtzxf5LXvdFkFSz/FW7XXRlPFJ5SE9+tXHyH0mJMZnxwHU+v9nJNK8dtbsPMsbE43qCBu/Et6SMLNX+CI8129Y6AEs7af4Yj8rwq46uQkx1JHAyID0A+qgGshr6Ot6Gg08ANmgSd4yLKtXABoSRWP8tvxi03Wvt8IBe3KWBe+7x9uZb0nkG0o6RgXZ5TFIPHS8CvIkC9DHXVCO7IzdGKCM0/VdE8Hr4hrPu
- N04p47i0
- 19F7TPM8KM9ON+2eco5IOFez8ono8JZa4NGTaGLXj/WuCDm4pZPlFvtH9MjtJJ2U2/QqXujCX4M6qaTpSURiccxRwdpDxXyJtednlMnSXAvIr23npuXLzvgz0KtTwkoaA4rElxQyOrMG5eYEwotdh+iFC1k2TiNlsvjot1XQW+BMN9LJSPpDboBkZ6kt0l/D9zFv5RbYMLLmgRTZcWIvbrC5NhAxVoc/C/IWi0FfejPNNeezu9r6z0YTrwYEGTN69SnT+zOlg/3fKgpsfMtlRRwQiyUE2MnBOKx+k
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1793632692-252562
+X-HE-Meta: U2FsdGVkX1/qFcywATPbRNiicEVn71XfxBFvhQyfu2j35b1HJcnAhlZFZoYYArn/lRiTxz9rvHi5zvWg6edZMHZjM9ECTnPU+aE8OMsWKaIzNE/xXcwgmLs8dR7SQSfbY4szO1d2Ye/GxbDzKqMFiJ418lvJEt06Vcow/SnlW7x3aO73PVFlSYlq4HlHutk/mQ1dEmfCvND7UODgvEEwbcKftEucvMmCktS8sYlOLLsk3YddMiX0y8gCt9tecyNz0OrDincTDNL/LxbeDw563WtF3QyCQeJfBLCvFV1I+71lA7QvatKcfbVSySBrJ1gDbj93QMJKMSshWQVQmxf8Oicuk7MHEXITngAjrlf+ToCzIvjxEMNbLgfk6TEn/1JRwElk7Gt11R95oXIIjhF6qstzUfg0TCL9/+1pMzOSHlThocV4AmJ5h7jzXghsBCeznpxILS0mel1TSt+BuBvNZhYi4vx2lPc3iuazVVgX7FShDZtcfhPDBqqZigNvqXqFyqf1H0YXJRI6f9Aw29p9HEeV8+2BuS06YWe00Imkq9ag53H3+SXFO7D+5jkZ2i190j+AwNeYFPkylXaCRbgs6AAD53CpqSovf9LMz/uXSTNq2xa3vrJa3X4OVfQIHTHPUWnWRBQK9M3dedqR+mkMw6S0xgDxzfYO6GNmUILHhmXcTxro8Hc3hKvs99dtYfe8qtLYAM//40EFJteuejXxXAaj1qTkpi+A7oGBEEAWzo0eBquW51cwgCLSi6GZr/o7W7Ei1jSFkSGbZXmdiTl9GfvRhX1I7WUBPNWeWbJw5jZsF55Wq4u9/UEDvKENo+EURXzXV9/swpuYAc8kSJrgQpat3QFcyQJylUc+IdZlRJ1iaD55j9mfhhMq6WGMJkDCWh6Rujl+2LAxINx/ksHXi+yLfuTLg26OmytHxnB3qd/iHIBKOEbkJYnvNhxVFYdjy79mHcEo/HC38xP0uVN
+ pQ3iEzhW
+ Fu/B8zcnEnDCLrSgBg1H/VjC8qkZZ8kLzIJ3PpnPHzOFtncX3D/cD3EzhjPVKq8FZX1fUX5h6FTHg3y5h3deCdJQxSSlHa/LJdbX10LyGi195UB6xe6J7anZN5je7NE1hpCiD2YESnVg/N0J/aCk/OMGq2On4pjz2ls5DaNbkXyuZMGgZB/ogzinGFalNPlrRHdBCtzih9kySTCfICBAvThCgWzRCdIjFyyIBhxk8HTfRFt2p6pBvBdItgz6zucFMzKZXh0xGQHt3tsjobxiu5xwBozJSkVqF8Xpq
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -134,353 +133,58 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Implement ->proc_read_buf() for data entries so procfs copies what is
-read to userspace after it unpinned the entry. ->read() of struct
-snd_info_entry_ops fills procfs' buffer now. opl4 reads the sample
-memory into it without a vmalloc() buffer of its own, gus, cs46xx,
-emu10k1, scarlett2, cs4281 and mixart copy into it instead of to
-userspace. The driver guide still told raw callbacks to copy to and from
-userspace, so update its example as well. Data entries ask for
-PROC_ENTRY_FULL_READS so that reading all of an entry at once keeps
-working. A read that faults on its buffer in a later piece returns the
-pieces before it now instead of failing with -EFAULT.
-
-Unbinding a card then no longer waits for a reader that faults on its
-buffer.
+No driver implements ->ioctl() of struct snd_info_entry_ops.
 
 Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 ---
- Documentation/sound/kernel-api/writing-an-alsa-driver.rst | 10 +++++-----
- include/sound/gus.h                                       |  2 +-
- include/sound/info.h                                      |  2 +-
- sound/core/info.c                                         |  6 +++---
- sound/drivers/opl4/opl4_proc.c                            | 12 +-----------
- sound/isa/gus/gus_dram.c                                  |  7 +++----
- sound/isa/gus/gus_mem_proc.c                              |  2 +-
- sound/pci/cs4281.c                                        | 10 ++++------
- sound/pci/cs46xx/cs46xx_lib.c                             |  5 ++---
- sound/pci/emu10k1/emuproc.c                               |  8 +++-----
- sound/pci/mixart/mixart.c                                 | 10 ++++------
- sound/usb/mixer_scarlett2.c                               |  9 ++++-----
- 12 files changed, 32 insertions(+), 51 deletions(-)
+ include/sound/info.h |  2 --
+ sound/core/info.c    | 13 -------------
+ 2 files changed, 15 deletions(-)
 
-diff --git a/Documentation/sound/kernel-api/writing-an-alsa-driver.rst b/Documentation/sound/kernel-api/writing-an-alsa-driver.rst
-index 86b64de03140..d4b4753879b6 100644
---- a/Documentation/sound/kernel-api/writing-an-alsa-driver.rst
-+++ b/Documentation/sound/kernel-api/writing-an-alsa-driver.rst
-@@ -3679,9 +3679,10 @@ For raw data, ``size`` field must be set properly. This specifies
- the maximum size of the proc file access.
- 
- The read/write callbacks of raw mode are more direct than the text mode.
--You need to use a low-level I/O functions such as
--:c:func:`copy_from_user()` and :c:func:`copy_to_user()` to transfer the
--data::
-+They get a kernel buffer that procfs copies to or from userspace, so they
-+just copy the data. The buffer holds at most a page and isn't zeroed, so
-+a read callback must return exactly what it copied into it; a larger
-+read comes back for the rest::
- 
-   static ssize_t my_file_io_read(struct snd_info_entry *entry,
-                               void *file_private_data,
-@@ -3690,8 +3691,7 @@ data::
-                               size_t count,
-                               loff_t pos)
-   {
--          if (copy_to_user(buf, local_data + pos, count))
--                  return -EFAULT;
-+          memcpy(buf, local_data + pos, count);
-           return count;
-   }
- 
-diff --git a/include/sound/gus.h b/include/sound/gus.h
-index 3feb42627de1..1b504f516ebf 100644
---- a/include/sound/gus.h
-+++ b/include/sound/gus.h
-@@ -594,7 +594,7 @@ void snd_gf1_uart_resume(struct snd_gus_card *gus);
- /* gus_dram.c */
- int snd_gus_dram_write(struct snd_gus_card *gus, char __user *ptr,
- 		       unsigned int addr, unsigned int size);
--int snd_gus_dram_read(struct snd_gus_card *gus, char __user *ptr,
-+int snd_gus_dram_read(struct snd_gus_card *gus, char *ptr,
- 		      unsigned int addr, unsigned int size, int rom);
- 
- /* gus_timer.c */
 diff --git a/include/sound/info.h b/include/sound/info.h
-index 32fc608d056c..b4b5bdd6898d 100644
+index b4b5bdd6898d..f32e81ef0c8f 100644
 --- a/include/sound/info.h
 +++ b/include/sound/info.h
-@@ -39,7 +39,7 @@ struct snd_info_entry_ops {
- 	int (*release)(struct snd_info_entry *entry,
- 		       unsigned short mode, void *file_private_data);
- 	ssize_t (*read)(struct snd_info_entry *entry, void *file_private_data,
--			struct file *file, char __user *buf,
-+			struct file *file, char *buf,
- 			size_t count, loff_t pos);
- 	ssize_t (*write)(struct snd_info_entry *entry, void *file_private_data,
- 			 struct file *file, const char *buf,
+@@ -50,8 +50,6 @@ struct snd_info_entry_ops {
+ 	__poll_t (*poll)(struct snd_info_entry *entry,
+ 			     void *file_private_data, struct file *file,
+ 			     poll_table *wait);
+-	int (*ioctl)(struct snd_info_entry *entry, void *file_private_data,
+-		     struct file *file, unsigned int cmd, unsigned long arg);
+ 	int (*mmap)(struct snd_info_entry *entry, void *file_private_data,
+ 		    struct inode *inode, struct file *file,
+ 		    struct vm_area_struct *vma);
 diff --git a/sound/core/info.c b/sound/core/info.c
-index 09d4420202e5..9665600ca5ac 100644
+index 9665600ca5ac..639554bb17c8 100644
 --- a/sound/core/info.c
 +++ b/sound/core/info.c
-@@ -138,7 +138,7 @@ static loff_t snd_info_entry_llseek(struct file *file, loff_t offset, int orig)
- 	return offset;
+@@ -201,18 +201,6 @@ static __poll_t snd_info_entry_poll(struct file *file, poll_table *wait)
+ 	return mask;
  }
  
--static ssize_t snd_info_entry_read(struct file *file, char __user *buffer,
-+static ssize_t snd_info_entry_read(struct file *file, char *buffer,
- 				   size_t count, loff_t * offset)
+-static long snd_info_entry_ioctl(struct file *file, unsigned int cmd,
+-				unsigned long arg)
+-{
+-	struct snd_info_private_data *data = file->private_data;
+-	struct snd_info_entry *entry = data->entry;
+-
+-	if (!entry->c.ops->ioctl)
+-		return -ENOTTY;
+-	return entry->c.ops->ioctl(entry, data->file_private_data,
+-				   file, cmd, arg);
+-}
+-
+ static int snd_info_entry_mmap(struct file *file, struct vm_area_struct *vma)
  {
- 	struct snd_info_private_data *data = file->private_data;
-@@ -277,9 +277,9 @@ static int snd_info_entry_release(struct inode *inode, struct file *file)
- 
- static const struct proc_ops snd_info_entry_operations =
- {
--	.proc_flags	= PROC_ENTRY_SHORT_WRITES,
-+	.proc_flags	= PROC_ENTRY_SHORT_WRITES | PROC_ENTRY_FULL_READS,
- 	.proc_lseek	= snd_info_entry_llseek,
--	.proc_read	= snd_info_entry_read,
-+	.proc_read_buf	= snd_info_entry_read,
+ 	struct inode *inode = file_inode(file);
+@@ -283,7 +271,6 @@ static const struct proc_ops snd_info_entry_operations =
  	.proc_write_buf	= snd_info_entry_write,
  	.proc_write_size = PAGE_SIZE,
  	.proc_poll	= snd_info_entry_poll,
-diff --git a/sound/drivers/opl4/opl4_proc.c b/sound/drivers/opl4/opl4_proc.c
-index bdcae02a4dc2..b8b282cb0a02 100644
---- a/sound/drivers/opl4/opl4_proc.c
-+++ b/sound/drivers/opl4/opl4_proc.c
-@@ -5,7 +5,6 @@
-  */
- 
- #include "opl4_local.h"
--#include <linux/vmalloc.h>
- #include <linux/export.h>
- #include <sound/info.h>
- 
-@@ -33,21 +32,12 @@ static int snd_opl4_mem_proc_release(struct snd_info_entry *entry,
- 
- static ssize_t snd_opl4_mem_proc_read(struct snd_info_entry *entry,
- 				      void *file_private_data,
--				      struct file *file, char __user *_buf,
-+				      struct file *file, char *buf,
- 				      size_t count, loff_t pos)
- {
- 	struct snd_opl4 *opl4 = entry->private_data;
--	char* buf;
- 
--	buf = vmalloc(count);
--	if (!buf)
--		return -ENOMEM;
- 	snd_opl4_read_memory(opl4, buf, pos, count);
--	if (copy_to_user(_buf, buf, count)) {
--		vfree(buf);
--		return -EFAULT;
--	}
--	vfree(buf);
- 	return count;
- }
- 
-diff --git a/sound/isa/gus/gus_dram.c b/sound/isa/gus/gus_dram.c
-index 50fe738ee3ea..98b94db8e819 100644
---- a/sound/isa/gus/gus_dram.c
-+++ b/sound/isa/gus/gus_dram.c
-@@ -45,7 +45,7 @@ int snd_gus_dram_write(struct snd_gus_card *gus, char __user *buffer,
- 	return snd_gus_dram_poke(gus, buffer, address, size);
- }
- 
--static int snd_gus_dram_peek(struct snd_gus_card *gus, char __user *_buffer,
-+static int snd_gus_dram_peek(struct snd_gus_card *gus, char *_buffer,
- 			     unsigned int address, unsigned int size,
- 			     int rom)
- {
-@@ -67,15 +67,14 @@ static int snd_gus_dram_peek(struct snd_gus_card *gus, char __user *_buffer,
- 			while (size2--)
- 				*pbuffer++ = snd_gf1_peek(gus, address++);
- 		}
--		if (copy_to_user(_buffer, buffer, size1))
--			return -EFAULT;
-+		memcpy(_buffer, buffer, size1);
- 		size -= size1;
- 		_buffer += size1;
- 	}
- 	return 0;
- }
- 
--int snd_gus_dram_read(struct snd_gus_card *gus, char __user *buffer,
-+int snd_gus_dram_read(struct snd_gus_card *gus, char *buffer,
- 		      unsigned int address, unsigned int size,
- 		      int rom)
- {
-diff --git a/sound/isa/gus/gus_mem_proc.c b/sound/isa/gus/gus_mem_proc.c
-index 04c212882718..c939bfd5a966 100644
---- a/sound/isa/gus/gus_mem_proc.c
-+++ b/sound/isa/gus/gus_mem_proc.c
-@@ -18,7 +18,7 @@ struct gus_proc_private {
- 
- static ssize_t snd_gf1_mem_proc_dump(struct snd_info_entry *entry,
- 				     void *file_private_data,
--				     struct file *file, char __user *buf,
-+				     struct file *file, char *buf,
- 				     size_t count, loff_t pos)
- {
- 	struct gus_proc_private *priv = entry->private_data;
-diff --git a/sound/pci/cs4281.c b/sound/pci/cs4281.c
-index b831f1d50750..1444e39fdbc1 100644
---- a/sound/pci/cs4281.c
-+++ b/sound/pci/cs4281.c
-@@ -1104,25 +1104,23 @@ static void snd_cs4281_proc_read(struct snd_info_entry *entry,
- 
- static ssize_t snd_cs4281_BA0_read(struct snd_info_entry *entry,
- 				   void *file_private_data,
--				   struct file *file, char __user *buf,
-+				   struct file *file, char *buf,
- 				   size_t count, loff_t pos)
- {
- 	struct cs4281 *chip = entry->private_data;
- 	
--	if (copy_to_user_fromio(buf, chip->ba0 + pos, count))
--		return -EFAULT;
-+	memcpy_fromio(buf, chip->ba0 + pos, count);
- 	return count;
- }
- 
- static ssize_t snd_cs4281_BA1_read(struct snd_info_entry *entry,
- 				   void *file_private_data,
--				   struct file *file, char __user *buf,
-+				   struct file *file, char *buf,
- 				   size_t count, loff_t pos)
- {
- 	struct cs4281 *chip = entry->private_data;
- 	
--	if (copy_to_user_fromio(buf, chip->ba1 + pos, count))
--		return -EFAULT;
-+	memcpy_fromio(buf, chip->ba1 + pos, count);
- 	return count;
- }
- 
-diff --git a/sound/pci/cs46xx/cs46xx_lib.c b/sound/pci/cs46xx/cs46xx_lib.c
-index 797a5f09cade..2a4910e5b497 100644
---- a/sound/pci/cs46xx/cs46xx_lib.c
-+++ b/sound/pci/cs46xx/cs46xx_lib.c
-@@ -2741,13 +2741,12 @@ static inline void snd_cs46xx_remove_gameport(struct snd_cs46xx *chip) { }
- 
- static ssize_t snd_cs46xx_io_read(struct snd_info_entry *entry,
- 				  void *file_private_data,
--				  struct file *file, char __user *buf,
-+				  struct file *file, char *buf,
- 				  size_t count, loff_t pos)
- {
- 	struct snd_cs46xx_region *region = entry->private_data;
- 	
--	if (copy_to_user_fromio(buf, region->remap_addr + pos, count))
--		return -EFAULT;
-+	memcpy_fromio(buf, region->remap_addr + pos, count);
- 	return count;
- }
- 
-diff --git a/sound/pci/emu10k1/emuproc.c b/sound/pci/emu10k1/emuproc.c
-index f6186b5be049..acacce976415 100644
---- a/sound/pci/emu10k1/emuproc.c
-+++ b/sound/pci/emu10k1/emuproc.c
-@@ -382,7 +382,7 @@ static void snd_emu10k1_proc_acode_read(struct snd_info_entry *entry,
- 
- static ssize_t snd_emu10k1_fx8010_read(struct snd_info_entry *entry,
- 				       void *file_private_data,
--				       struct file *file, char __user *buf,
-+				       struct file *file, char *buf,
- 				       size_t count, loff_t pos)
- {
- 	struct snd_emu10k1 *emu = entry->private_data;
-@@ -415,10 +415,8 @@ static ssize_t snd_emu10k1_fx8010_read(struct snd_info_entry *entry,
- 		}
- 		tmp[idx] = val;
- 	}
--	if (copy_to_user(buf, ((char *)tmp) + (pos & 3), count))
--		res = -EFAULT;
--	else
--		res = count;
-+	memcpy(buf, ((char *)tmp) + (pos & 3), count);
-+	res = count;
- 	kfree(tmp);
- 	return res;
- }
-diff --git a/sound/pci/mixart/mixart.c b/sound/pci/mixart/mixart.c
-index f451554cff5f..c44001f0d320 100644
---- a/sound/pci/mixart/mixart.c
-+++ b/sound/pci/mixart/mixart.c
-@@ -1110,14 +1110,13 @@ static int snd_mixart_free(struct mixart_mgr *mgr)
-  */
- static ssize_t snd_mixart_BA0_read(struct snd_info_entry *entry,
- 				   void *file_private_data,
--				   struct file *file, char __user *buf,
-+				   struct file *file, char *buf,
- 				   size_t count, loff_t pos)
- {
- 	struct mixart_mgr *mgr = entry->private_data;
- 
- 	count = count & ~3; /* make sure the read size is a multiple of 4 bytes */
--	if (copy_to_user_fromio(buf, MIXART_MEM(mgr, pos), count))
--		return -EFAULT;
-+	memcpy_fromio(buf, MIXART_MEM(mgr, pos), count);
- 	return count;
- }
- 
-@@ -1126,14 +1125,13 @@ static ssize_t snd_mixart_BA0_read(struct snd_info_entry *entry,
-  */
- static ssize_t snd_mixart_BA1_read(struct snd_info_entry *entry,
- 				   void *file_private_data,
--				   struct file *file, char __user *buf,
-+				   struct file *file, char *buf,
- 				   size_t count, loff_t pos)
- {
- 	struct mixart_mgr *mgr = entry->private_data;
- 
- 	count = count & ~3; /* make sure the read size is a multiple of 4 bytes */
--	if (copy_to_user_fromio(buf, MIXART_REG(mgr, pos), count))
--		return -EFAULT;
-+	memcpy_fromio(buf, MIXART_REG(mgr, pos), count);
- 	return count;
- }
- 
-diff --git a/sound/usb/mixer_scarlett2.c b/sound/usb/mixer_scarlett2.c
-index ed5fe746d438..48557235c389 100644
---- a/sound/usb/mixer_scarlett2.c
-+++ b/sound/usb/mixer_scarlett2.c
-@@ -9763,7 +9763,7 @@ static ssize_t scarlett2_devmap_read(
- 	struct snd_info_entry *entry,
- 	void                  *file_private_data,
- 	struct file           *file,
--	char __user           *buf,
-+	char                  *buf,
- 	size_t                 count,
- 	loff_t                 pos)
- {
-@@ -9785,7 +9785,7 @@ static ssize_t scarlett2_devmap_read(
- 	while (count > 0) {
- 		/* SCARLETT2_USB_GET_DEVMAP reads only on block boundaries,
- 		 * so we need to read a whole block and copy the requested
--		 * chunk to userspace.
-+		 * chunk out of it.
- 		 */
- 
- 		__le32 req;
-@@ -9800,7 +9800,7 @@ static ssize_t scarlett2_devmap_read(
- 					 block_size,
- 					 entry->size - block_start);
- 
--		/* size of the chunk to copy to userspace */
-+		/* size of the chunk to copy out of the block */
- 		size_t copy_size = min_t(size_t, count, read_size - offset);
- 
- 		/* request the block */
-@@ -9810,8 +9810,7 @@ static ssize_t scarlett2_devmap_read(
- 		if (err < 0)
- 			return copied ? copied : err;
- 
--		if (copy_to_user(buf, resp_buf + offset, copy_size))
--			return -EFAULT;
-+		memcpy(buf, resp_buf + offset, copy_size);
- 
- 		buf += copy_size;
- 		pos += copy_size;
+-	.proc_ioctl	= snd_info_entry_ioctl,
+ 	.proc_mmap	= snd_info_entry_mmap,
+ 	.proc_open	= snd_info_entry_open,
+ 	.proc_release	= snd_info_entry_release,
 
 -- 
 2.53.0
