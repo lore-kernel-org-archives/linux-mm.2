@@ -1,75 +1,74 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97F23606A920
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 14:25:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 581BC606B1D2
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 14:25:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=GZiOx3qz
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=JDsGn/hF
 Received: by kanga.kvack.org (Postfix)
-	id BF9AF6B05C8; Mon,  2 Nov 2026 09:25:06 -0500 (EST)
+	id 7DB346B05CA; Mon,  2 Nov 2026 09:25:21 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BD19C6B05C9; Mon,  2 Nov 2026 09:25:06 -0500 (EST)
+	id 7B49F6B05CB; Mon,  2 Nov 2026 09:25:21 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B0E286B05CA; Mon,  2 Nov 2026 09:25:06 -0500 (EST)
+	id 6F0ED6B05CC; Mon,  2 Nov 2026 09:25:21 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 947736B05C8
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 09:25:06 -0500 (EST)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 2F433120136
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 14:25:06 +0000 (UTC)
-X-FDA: 85390401012.27.13A3E14
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 5A6AE100006
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 14:25:04 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GZiOx3qz;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 535746B05CA
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 09:25:21 -0500 (EST)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id C993B16012E
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 14:25:20 +0000 (UTC)
+X-FDA: 85390401600.25.6F3C311
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf01.hostedemail.com (Postfix) with ESMTP id EFE0F4000D
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 14:25:18 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="JDsGn/hF";
+	spf=pass (imf01.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793629519;
+	b=ZwTPi4UiKjaMumZHIVjaj4fvm6M2etqkHCAynaxiy1Pwo1xLWnHKIbRH1avmsQQj+0ZaaP
+	8QvWO+3P9NMsRT5AmBs+VpQeTuY0tkkz6G1tbKp+lAJlXiemjVTGGR8o6m2x7lYuflQfID
+	5KpNcZuJUf3Zb2UnyXdemHXH+sxzmEU=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="JDsGn/hF";
+	spf=pass (imf01.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793629504;
+	s=arc-20220608; t=1793629518;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=yb3WLcVokXU6BuV8DQIS3cnoxrtkXR+HXTNSt4lhnr4=;
-	b=sHBqtV6mtbqoslloKdq0Qbq+2Iwhrf0Sqh8MSSB7pX6E0OgDpeXFJVTBGtCbdb3GHGt+CD
-	6SXXPGsnd7VWY5miiEdNusqZjCbKKEnDWsHtg7XcxMBQbIZyYz2qL1LMTOMQykvI5TkGhl
-	ggK6M4SAS+1Ffn4jWI1LgkTl/meMQCE=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GZiOx3qz;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793629504;
-	b=8CBqPow275RBl+83Hfgn/3bnCTnkqHCEEC1cW6S3/4yhkiAsguxe+dlDD2miJH9RLzGKfG
-	V4A4OmAtj1jgTgGzYPU9neNwmuipSVkKn4gxUbZnhmUm1KFNeOtm2lKeGpKla9E0n/NAhI
-	+1AvweTchIwa0U5tRc9kZcIvc924NtQ=
+	bh=JNpsr2x/IJiEDPfvFWvunpncxqTaLkfXU09AZqKel44=;
+	b=m//2avGvD93mKUS21zPJBN+44C2C4f5wUg7tVp92UAqlqgEmAagzZJhzhvmk0PrBVvqcQG
+	9fyF4Rh7OuvRBq/xZ/B6SoKqYcj4FtPAy3nC4Qc/Gw6QdaHsXSCMdhLLjQxc9c6NqaUj+q
+	GTUtes4jf9DNvsmusp1qKWFtsq4PjrQ=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 988FC41838;
+	by tor.source.kernel.org (Postfix) with ESMTP id 8678160234;
+	Mon,  2 Nov 2026 14:25:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C3D51F00A1B;
 	Mon,  2 Nov 2026 14:25:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 514531F00A16;
-	Mon,  2 Nov 2026 14:24:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793629503;
-	bh=yb3WLcVokXU6BuV8DQIS3cnoxrtkXR+HXTNSt4lhnr4=;
+	s=k20260515; t=1793629518;
+	bh=JNpsr2x/IJiEDPfvFWvunpncxqTaLkfXU09AZqKel44=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=GZiOx3qz574i7G4sq7Qj5FW+poGzHx4xdod9v+c0wQs044ndbo8YtJuzjzz+Le7ql
-	 5cTxXE9CzWg6EPV4MxszbcLp2C6ZsWzp9oeVP6uoHj7upUPwwroLqNsh41Sz3JVXM5
-	 yckoX19xo0T3oBfUMO+m7+UdClsC4AicPeSVsnbkVWlzvS64GY4fx7NtE/3cBm/jGz
-	 ZM9+DG2Es/IdFoi9n/atozhLfqSzs42elqcEif/j8WN8Ox6UI8UdLXG/RdqSvOSB81
-	 382CcANAMk/or+82KJJBXqoD4yYyV3R1x7/mjd7dPFt85mMcg0lpgdBZ0yY6v8VJOz
-	 OgF1Yl254onGQ==
+	b=JDsGn/hFVn3jJgZZN+vxWeK27seUWBPs1wVOE+JNEu0HLhYAOJ2nqrTO6haz/TYj6
+	 YNU6ClCHb69/Mwz3VGSMP1SqtEUNb1kZQxwlphv0C3QTgmSWa3hvL0K6Nkv8/dDbQg
+	 lIAyZ/SG/ZBazLbZqMfdobAk/no6q8xju7R/ZEgKZSmu4XDjIlEdZse+5kbC/M3ZOb
+	 YtyZc+thQ9HPKnmDmp1ArUqwC6t6Rtew7taSAiLHDbNBCUSXLpeUtxzb4vHo6JVhmo
+	 9ttgQP7T/cJcSArxgsr9Ra6D/o7FD6CAOwSHHtHKTQ6QSDDqKkrHmSX0e7L0CksocJ
+	 AnCPlWoxZKPDA==
 From: Christian Brauner <brauner@kernel.org>
-Date: Mon, 02 Nov 2026 15:21:29 +0100
-Subject: [PATCH RFC 14/38] um: NUL-terminate what is written to
- /proc/exitcode
+Date: Mon, 02 Nov 2026 15:21:30 +0100
+Subject: [PATCH RFC 15/38] ntfs3: don't warn when a huge label is written
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261102-work-procfs-bugfixes-v1-14-59422ed3e465@kernel.org>
+Message-Id: <20261102-work-procfs-bugfixes-v1-15-59422ed3e465@kernel.org>
 References: <20261102-work-procfs-bugfixes-v1-0-59422ed3e465@kernel.org>
 In-Reply-To: <20261102-work-procfs-bugfixes-v1-0-59422ed3e465@kernel.org>
 To: linux-fsdevel@vger.kernel.org
@@ -105,27 +104,27 @@ Cc: Linus Torvalds <torvalds@linux-foundation.org>,
  "Christian Brauner (Amutable)" <brauner@kernel.org>, 
  Chuck Lever <cel@kernel.org>, stable@vger.kernel.org
 X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1042; i=brauner@kernel.org;
- h=from:subject:message-id; bh=wRElBRQ5ywf1BhvCA77KtICLks8yyr6GFoKnZLCCyMo=;
- b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS9mJOdsKVmvtvqn+l+CqJcqhVTz8/M753i1MLdtPdJz
- RS2GwlqHaUsDGJcDLJiiiwO7Sbhcst5KjYbZWrAzGFlAhnCwMUpABN5E8LI8LBw7tKUPiXhmasU
- BGdI++krPrfymz85hq3qxbk0wQO2RowMt9ZWzojz1tO+4XPUNkxeX7nqYWvpvKrUmfx7rnks+Nv
- HBQA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1211; i=brauner@kernel.org;
+ h=from:subject:message-id; bh=hEYNyHmJEt75byF8qjmUEc5I4mCCp/IJRi5GCVbZqjw=;
+ b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS9mJO9tzXzBHuGhvXirewzzGdVv+3VvLvcMMAstP/LI
+ s3O1W3PO0pZGMS4GGTFFFkc2k3C5ZbzVGw2ytSAmcPKBDKEgYtTACZit4nhv0u6nc6mlExVhhyr
+ oJCt899GB1UJL32g2bLt+sHUcj+ddob/CXvLet7P7ZCO8VCLPuikff9GTLZ8i9e6xds2/Ct79T6
+ KFQA=
 X-Developer-Key: i=brauner@kernel.org; a=openpgp;
  fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
-X-Rspamd-Queue-Id: 5A6AE100006
-X-Stat-Signature: kty6ysbhuqd8j7g1861tqchzjabg3ir3
-X-Rspamd-Server: rspam04
+X-Rspam-User: 
+X-Rspamd-Queue-Id: EFE0F4000D
+X-Stat-Signature: b7enq67sndqakpzpqm6aju6qnkz6k3xg
+X-Rspamd-Server: rspam01
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
 	version=4.0.1
-X-Rspam-User: 
-X-HE-Tag: 1793629504-149361
-X-HE-Meta: U2FsdGVkX18mS06QmCmKM5HziAYwjZktWFLDRAOXrOeO+nBm7ze7WORx3Y0mcbJmHH6Z8aV+schsc1LfCFkyKFJ4HuJ6CRy1NZFF9ANY9ea94mQkhjRJ/RECqesWmS+hAaa6VDeKWb+OEaUDEgq/WSEV+fCNfLBRNiFU3lTvyrzt4eAc0cqZ8CVbTgGmp5MS302vgeYj6NXMGqRT9rLVAKAVxNJnjVRDdUVzRYSnl+2cNkI3zr9l1PBuJ6jzCXla2LzL3Zx8rpu3gUztsHpvhsXJIYlIQGKdgz6BWtvGOxR2WZwKjQEkVy5AlmKX/djaP2SfxIlvPmbsKguL5zzltamDF91mc6bwjpzEjiY4jKmeGU8GaNJlx0wGeCM9qt1Lgk9wPLm6A60Wut1HoorUWeyKwLljbKoPvEvbf068Z2XzQ9Qur0j2EwO7H4ZUuodn7P4Rag7CYv+eJtR/jvsBeW4i8lBeNN0lGrA/qkCgxRwdNWLfoCcvep2Z11lJBtgB/Hc8W78RHMr4xGIOcfY2trYoJpvba+A0zdg2hvWp6Lxcrf0ehW6VUezLQwW9nRWhRJZeTYhBO/Zm6VGt8JqqPx9QRUmTfxqILpXqxTW7oXL4fgoy0CEVBexyKUpCvsi7BtU97gwFjTFcuYK7n3KGD+zDquc1FQhpvPAm7CG6ilFj7WGihE8MZFZQHFuKT8jJ8/eNF/RGB9XaTPOQlUH5nKb1owACAWZ3LRWtaa5DrNkpootqGm9LrhQ2HDFKhanzXMXxTuw4CK6whNizsU9fJqhF+aOmh8I/CrZZRXJf1nK43pmKtk+h+H5bOcPnUyV5M/Smo/eq4qBr8jHGaOVvaUN4W3llWfQLBAASaf5KLoTXE9D9PwZTaqZCrQ2z+tQtHJpvEZfaeruJ6Kat/cbKLZOlqTYZxwIYu0rqvq0GYzqLE36NvAHdtT5sZ1gQLjZ5lQvE+0anXZWQ079d6mp
- SETwKtvZ
- LdbNrMDYugHJ2YZ9PCBPkWnJdVsKro/5uVRwm/ObzzG0MDLp0X6Lguw9U+jenn7oBbJ/8LACJpKvzNz7+bkrolWj57fUqPvqjNdxGPnk84NdAiU6zJJMtr6G3tzqQLuX65Ju2dvrgbtiix5pRGUWMHhAGcMzdFqlLU/EIVPjua5rd2z5PMY2rjfVwUIm9VXFdKozTEimfVKllAau7P5JzQ1Jn2mBoHRWH2cDltC47d9hmdr77m3W7L6XT9RGfHZgdGJi/ZvWWMIPFIaxAi8YmxsMUAy6sF5WA0RFF
+X-HE-Tag: 1793629518-596745
+X-HE-Meta: U2FsdGVkX1+924hQGHW0gwrF0SPR5u/aohAFa45QXU0C1vhjAznNr1mXeyP0FzxdgDqRWEjgubuBXwH16zZnLaXiJwe1n65HBQPLJYUKiQfLgMuA45pCiyjQjEVZ4EzzqOZAk+5jcGNsyaixsMVc25XQ41QUELcRZ6oJr/u4jCSQvebYEbPcuKtSEgbik+2GXHvP7CwTnDM4Mdvj8IuZde3GGhZ6PNfoccRkaDpkDywwmC7ULaZJfSFGApT+ealHSCEZdkObaEszbeo0iKkorL6wz6HJbWqQUCSYvNXJP7Rpapf6dQPpAUy9c/GIBb0Pem4u26mEwVlWQWjaIYKVo9zJhDCbblpj6y7z3MgAVGS2vnuXTA068L4h/Zdsyn3u2c4ki35+dl0Is4rGz+n2rQjNpOF38ca1BOuw0Wf2Mz48he2AqH1g/gwGrUWmXmPVtaTNvKKLTz8ySLaUH2ogU0Gz1v28+4r9e/9nBLv+9pY7A1CiWeweUfdTpOm/rP6cAp7Nnky3W81bWrIXzr4ePG5cAEp6QddxR3vCHkQrq9eYQUf6z0UarqJBCm4VqmeFMuxpWWj8CXTh7el6dG9xX29ucvONDfvNYIFvSfdv0bMpy0KHxDMfj/y8CqTbcefW+aPMtglV1mVZWf5yLg6ItVQdQUo/ZUYDfcaagJU6kO0tIUqWEvWxi986Ra6ZwmtxhYnxkcL+LfyGSPf6euNJlp5DqlJSWhd4WeNQxpuH+FzNf7LbgkfD6IRy9O9+vMbf7NfIyDVlXhBsNdv5q8+1cEb1PgVFDM2mId3TSVfpTdjJNhGJa7vWMHWZm4HsTbPBRXkynSfcE8cb4qeQyKphEcJsMneoVWZ4mpo6grcf9eJTqaBnBL43QAuR1ZR8Lz7hEcCe4C+6WIBT4jBvevUvlG9pYkz6tdWFMrauFHOhcp2pzDqA3s+m1ieISKB3k5EhJ7nOyCuLbK6yMbF5s7o
+ gTWukCIW
+ I0Ih26UkMBk+HH36hneJphW8JFgdcuBs0OLdFouM1Tb8TV0spY6STM8pSlVXEo5rd8SM7TPsC/eOO0EoNOexjIHykHLrkPT229rBfhoEVaSKQFbR3VWyv0OIzV0kEW9YNuVfYphve4i17WX4ASoy7O9PdwlqFUkiu9nPpKBC0sfVboMTw7xPjjLQP7W/YG0AMlsvSSjvg3C3knedO154m2VReoxh0LdrisyABmAzNZhFZ7ejb/oyd1jLIAJ7KFby2/4Md9s323ab2U7dgYVcHXm9CDoHKzWA9Fv1T
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -134,34 +133,42 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-exitcode_proc_write() copies up to sizeof(buf) bytes of the write into
-buf and hands it to simple_strtol() without terminating it. So
-"echo -n 5" parses whatever the stack held after the '5', and a write of
-seven bytes or more reads past the end of buf. Terminate the copy.
+ntfs3_label_write() allocates as many bytes as are written with plain
+kmalloc(). A write that is larger than what kmalloc() can hand out then
+trips the page allocator's warning, which panics a panic_on_warn kernel.
+Use memdup_user(), which fails such an allocation quietly with -ENOMEM
+like before.
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Fixes: 7832e123490a ("fs/ntfs3: Add support /proc/fs/ntfs3/<dev>/volinfo and /proc/fs/ntfs3/<dev>/label")
 Cc: stable@vger.kernel.org
 Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 ---
- arch/um/kernel/exitcode.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ fs/ntfs3/super.c | 11 +++--------
+ 1 file changed, 3 insertions(+), 8 deletions(-)
 
-diff --git a/arch/um/kernel/exitcode.c b/arch/um/kernel/exitcode.c
-index 43edc2aa57e4..0230354f4812 100644
---- a/arch/um/kernel/exitcode.c
-+++ b/arch/um/kernel/exitcode.c
-@@ -43,9 +43,10 @@ static ssize_t exitcode_proc_write(struct file *file,
- 	size_t size;
- 	int tmp;
+diff --git a/fs/ntfs3/super.c b/fs/ntfs3/super.c
+index 58ef6be3286b..b4479cd6bd65 100644
+--- a/fs/ntfs3/super.c
++++ b/fs/ntfs3/super.c
+@@ -552,15 +552,10 @@ static ssize_t ntfs3_label_write(struct file *file, const char __user *buffer,
+ 	if (sb_rdonly(sb))
+ 		return -EROFS;
  
--	size = min(count, sizeof(buf));
-+	size = min(count, sizeof(buf) - 1);
- 	if (copy_from_user(buf, buffer, size))
- 		return -EFAULT;
-+	buf[size] = '\0';
+-	label = kmalloc(count, GFP_NOFS);
++	label = memdup_user(buffer, count);
++	if (IS_ERR(label))
++		return PTR_ERR(label);
  
- 	tmp = simple_strtol(buf, &end, 0);
- 	if ((*end != '\0') && !isspace(*end))
+-	if (!label)
+-		return -ENOMEM;
+-
+-	if (copy_from_user(label, buffer, ret)) {
+-		ret = -EFAULT;
+-		goto out;
+-	}
+ 	while (ret > 0 && label[ret - 1] == '\n')
+ 		ret -= 1;
+ 
 
 -- 
 2.53.0
