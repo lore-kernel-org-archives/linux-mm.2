@@ -1,75 +1,75 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91558606EE9C
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 14:27:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72D75606F201
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 14:27:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=hvt3N63R
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=RVwyyj26
 Received: by kanga.kvack.org (Postfix)
-	id B62306B05DA; Mon,  2 Nov 2026 09:27:36 -0500 (EST)
+	id 967046B05DB; Mon,  2 Nov 2026 09:27:49 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B39A06B05DB; Mon,  2 Nov 2026 09:27:36 -0500 (EST)
+	id 93E4D6B05DC; Mon,  2 Nov 2026 09:27:49 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A777C6B05DC; Mon,  2 Nov 2026 09:27:36 -0500 (EST)
+	id 87B706B05DD; Mon,  2 Nov 2026 09:27:49 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 88C9C6B05DA
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 09:27:36 -0500 (EST)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 2E3CCA013F
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 14:27:36 +0000 (UTC)
-X-FDA: 85390407312.24.ACD3863
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 6F2E86B05DB
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 09:27:49 -0500 (EST)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 1712F80122
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 14:27:49 +0000 (UTC)
+X-FDA: 85390407858.17.6830D19
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 5A84C8000C
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 14:27:34 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hvt3N63R;
-	spf=pass (imf02.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf26.hostedemail.com (Postfix) with ESMTP id 5BCD3140008
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 14:27:47 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RVwyyj26;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf26.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793629654;
+	s=arc-20220608; t=1793629667;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=v5t8qKNo68SCWoforDimF8hL2ZYL+p0Okj8bWoZ1JT0=;
-	b=GgOP/5J/XvBhRWLidSbQjSQsdZKdIV/zfpncOe7OR6lH9eNgk6p8bt+RxHFOWy5oGmxnkj
-	ckD/uuWla3SSiWrQ/D8VIanwHCOcU+Z019kiXSNj0Y1XO5qqB/PY6i79rWuVyWUI6dCl44
-	62HFq9FkO9S4Izl+iY8W2UZ/aN9NlGg=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793629654;
-	b=jA69f0VOq6VTJ61X5Sn7DrFfaj40/hms6vROky5KLrA4cio9ZxAMRx+ryAWWgJRy8VaEif
-	DazE3aSnh5hV85OckW9dASujRd0bSqrloXqvyL7XGnmjdp6/Tq+8fn3Di02GzNdoh7BZ4A
-	PYCHKSpWtFb069v+ouvR7r3ZJUvEkTU=
+	bh=a3x3EcOd04d3k5+O3dMfsGmWB77s9fU2q2h860UaVdk=;
+	b=dNLU9RE7YYmQ8Q8X7axFb829wwhWF77UTU0qqYfKt57hYWBFLy5IdprXIaFaGlRyMcfB7j
+	E5DvQmT62+NXff2aynpa60q+lRNH0ZHinuOqHb+AFzXOdRPhp31P6fAZ6jzlaPseCUGqdz
+	S5Y2hVc2AQ2oSv3+NV7TDF+ibMCCZ6M=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hvt3N63R;
-	spf=pass (imf02.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RVwyyj26;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf26.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793629667;
+	b=HICoHAiDOvACzClBzikAm0hDwYkU29Uo0HwZf3Z5+m4wBQyNpDjJnOuezaIu5xgQ2XcDZT
+	nY5ujvGK3XMBBO2/qFiciviqaMhlJCHZYDK26ojjxNYYd4oQuDfSLLJnlQ4VMhkuyUUznO
+	1ZK6gyKh3emD7yAmWaUYGnQtMlXTV+Q=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id D7D6A60238;
+	by tor.source.kernel.org (Postfix) with ESMTP id E2296601F1;
+	Mon,  2 Nov 2026 14:27:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D5CA1F00A16;
 	Mon,  2 Nov 2026 14:27:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFFDE1F00A1A;
-	Mon,  2 Nov 2026 14:27:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793629653;
-	bh=v5t8qKNo68SCWoforDimF8hL2ZYL+p0Okj8bWoZ1JT0=;
+	s=k20260515; t=1793629666;
+	bh=a3x3EcOd04d3k5+O3dMfsGmWB77s9fU2q2h860UaVdk=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=hvt3N63R16p2fDZtChXjcMwdKVbvtxfkoL2k4OxbkJ9NXiN3sUvoI90Anz8tghLzV
-	 tw7TRLB1mJI+ndKzKgYA8EusdDfCEFHDNDNB81AIW3QjjgCwg/TU6I079wNwJuekME
-	 GgYfwUhSITW0rfvdsRQDJf8rj9zB05fpKjF8xVxdybjPcer/CH1qH37gxEgqe+026Q
-	 OuFUuk+WcD3uSGWDc90qsgO7GgFfaxkgSrLrqyeXVxjbcarjoj5jc97EhboLO3/3O0
-	 KcAvyFsBb08Hf5sOjHYp74WBf8FtRIs604ayotkQgHKNOSX4SCmldQ2ODja09nMv8N
-	 2p+DzdlRSt69w==
+	b=RVwyyj26nRGz0YAa3qJjLMbMcY59GFv7k2/Yo4WgpVWb59sfMb8Zl9naRaGYP0rou
+	 MMpo/iaTuwZ+wi6sRL6CWH+xBh8p8Hh0LzLpasPr6e/4udRG/oCcZ29xKchnIx3/p+
+	 B3Jo+wFAlApWU/ThwP5etPS2jmB2GKh3nFbyeKDeBWGAaYO2fqeijfiRa42kJVjmo5
+	 eE8+TH9zCGeavvC5T8ODN/DYi8pcd4vmfSKYG4AUNTrxGouYTZAQo3PNclBsTunvuS
+	 i1W58HX+mcpImcnTaTchfOLoReuEjUSRmdexvU8N4yNjatMl7C5uOyxR6YUyGiu2Qj
+	 eJ8cshD06UL+w==
 From: Christian Brauner <brauner@kernel.org>
-Date: Mon, 02 Nov 2026 15:21:40 +0100
-Subject: [PATCH RFC 25/38] powerpc/crash_dump: check ioremap_cache() in
- copy_oldmem_page()
+Date: Mon, 02 Nov 2026 15:21:41 +0100
+Subject: [PATCH RFC 26/38] powerpc/crash_dump: recover from a machine check
+ in copy_oldmem_page()
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261102-work-procfs-bugfixes-v1-25-59422ed3e465@kernel.org>
+Message-Id: <20261102-work-procfs-bugfixes-v1-26-59422ed3e465@kernel.org>
 References: <20261102-work-procfs-bugfixes-v1-0-59422ed3e465@kernel.org>
 In-Reply-To: <20261102-work-procfs-bugfixes-v1-0-59422ed3e465@kernel.org>
 To: linux-fsdevel@vger.kernel.org
@@ -105,27 +105,27 @@ Cc: Linus Torvalds <torvalds@linux-foundation.org>,
  "Christian Brauner (Amutable)" <brauner@kernel.org>, 
  Chuck Lever <cel@kernel.org>, stable@vger.kernel.org
 X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1312; i=brauner@kernel.org;
- h=from:subject:message-id; bh=2dbZnDPFapx3dAW5qeN54CL6hHWBvjsrs28L3h6tsIk=;
- b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS9mJOT3t4mUyCor3Li661vsa/yObLOB7XeUji6boXCC
- secScIdHaUsDGJcDLJiiiwO7Sbhcst5KjYbZWrAzGFlAhnCwMUpABPh7WFkeC/LwqiVxiMX6PN4
- IXM3/4WNlnf/rlkw4SVrp5CBfEGgISND+4Gm4KSDXU7MDmLZHq5y5z4dYP+8p+ODD1PYa4mTduu
- YAA==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2160; i=brauner@kernel.org;
+ h=from:subject:message-id; bh=46QTFCl18GYq9rYmjhc3/nfnECuPknUgrDKXTEluZq8=;
+ b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS9mJNjfd/SLtTaSr/hcs8Or+rV/z323q+aevR7v4GS5
+ AXFwhMXOkpZGMS4GGTFFFkc2k3C5ZbzVGw2ytSAmcPKBDKEgYtTACYyv5Xhf9Ujn1e//n02s36h
+ 97fg8AGx5+WqXD/VJ1+ZtszhE6fMyz2MDAuiVhYyzznyU29ZeOz86L3bl/VWxVxten6I87kdz7q
+ Q9ZwA
 X-Developer-Key: i=brauner@kernel.org; a=openpgp;
  fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 5A84C8000C
-X-Stat-Signature: 3qhchgwzik7nkmei7gmjgd59jpdhay9z
-X-Rspam-User: 
+X-Rspamd-Queue-Id: 5BCD3140008
+X-Stat-Signature: 99f8xm4guiqpzx3rcsw3tou13s43djds
+X-Rspamd-Server: rspam06
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
 	version=4.0.1
-X-HE-Tag: 1793629654-393007
-X-HE-Meta: U2FsdGVkX1+7Dt9FiAsZILCuATROotoq+jUzYdRUoWk60D+padOIYes6Ua4czpdeBncxzKAGOxUUklpetZkW2cjBmR5HcWBTlJaTywPsV4GoYvYefPpu/1HMJ9AqNisfHvPsnv7RxXjyfcXieDUcvy/pn8pfPJv+0OegizVkSl8RnKuV2Xs+ap4V3etv1W51y/mtev1fa9z0iNpwdbI1vN+dkJf3+IhbAJancVhPdu3eHg1jqOet73kNkjFuY1CFUGcGR2S1WpT7+WCB1WtH9FgnrNQqjrzNuetIeZXC5QBiqSQhy2wAZJ6dfxFM0IlN7miR8iveNexEuoEpXsauL2v5tB8uLUFDvkE9WpBxIkUGS6bfuXlQY5Fgw7eTrJYKkmGx6HGK6ob2Dh3JCfP3liiyUr7LeTJ+K2+PHmyFoGO2TA6f7ZuTYSY58/uq3cuBi6ThiUdx0P8EzrYKjyUt4fD9ZL3ltO+mzCguvZp7aGuKA2yxv6ccnc1bPOOorrROMkAxUZl7h3AWNhO9H5ajMxx3PXpcOyCaOH1P49uyZ8gPikGTH05McHsq6QFz5jyRnrKwT4BOEowYgMMvXuD1BghhJY3Y1uKVE3tQQ0z8mOKRubZDPtqFW386AYPh4fNmHoj/TK/xzr9/rKhh0aP9AyLr7+ziS6edluhteBWkkG8qcfVVZSK0G70g14LHTPJEApUwuNevqMggRVrzLwE5JDhTJ8ntVfz2eiA2mrscJs5pdJs1qJLS3ajFGmJNuCBOKyMAZ+f4RxqEnzU9YB+cUKpby0wW5BaixlyDlI/2Zn4HBqvFjfvzZWcT9PSq3VMX4VlRuowgMf15h2bf4WB3jUICSCy+M/jrnBUN2FkUNfuYRQYGYGPT5EH62xCrNMJwPmBOkz4R2Ngfv59fQ+q/JUMOhvparcIMVQMoK7CRjtRXhV2se/jHBfTTZz66lIsgpAzxfe7V+N8hmzHDREJ
- Uk4HUoK1
- 9ZH+yb4HN3g/Iv/qRFqLlWAX4bLpgY1tethJOH2vY7FP6lRZZQncn8Gr3Q7/Y8OzShsUyzYZ/sL2dergHFvrzbFIQwWPF0sR1phzEPMEq9y0d9HAcIQjOXfbvoTWPAUVzyayvc/P+PDKNUXX/YEMb2S6+xedZnOpiPi332vT9Mv/S+sgxTyZ6KxabLCbLPQgVrbvftqvDI5yzfwMEPRhFY62R+Irr/E8ij13SIiX18FKRLuV3KxoZiikpp+RXkpMqKi0os1ogmwdXY/KGaA2Dyr0NatAH9JRC9wJMG3q+yogYSwZnQ8jZTqfXgDujORu562LxvRx5uhYT5qE=
+X-Rspam-User: 
+X-HE-Tag: 1793629667-695602
+X-HE-Meta: U2FsdGVkX19reXJWaq6vOfY/FrGC0ziB/oxGNbPQ4nhdCsUFEOYYmcXxbRzE6jIe3J4UIMMMhJCZqPY+/Cbk0rBSDAUQ0umChVW3qOeGbL9WUPE0/khjLpgjXspFovfhcVnjN/RrZ1YLXeLr3uthwwzZ0rcdlAksmr2SUctreIF319M/4pvpRR2EfKwWeAcAeqDEzy0VG3Q1JYX1fwt9/Mn0qevX0mvYFvdZfXpDLr2C4tHB1dHlIAvG+gSQCZ12Id4nNCApMztZcwc0g7ObdzKqMNZVqDfYlhQLaI9YTgv6PxRANYQ7caugzvBY+S+GhFG4ZeM+TLtKz0rMBPZM8/dNdPjUhTymMCgJvRg6N3i1hh72n3/F/9bhIMB5JvmELIvYYse+y8OTJE03VBlHcE0aN/kCx0axLreahAKY/lvT+o5uHXsAR/m6IKBX1f4Vl4ubb4hicAISr/8V07v9qDy6K8ksIrqlsVawpajZWDKOdjlEdIxv9S3EX4zXqZ/b0/bq0gv+/dLVq3SkVG+S+EJv2NwqTEmLrIdbMfQxjI48BvedHw2csvxdLTbakS9d/XRQGDC7LaFMBn3HrdW9WtLAd1Kk+xBPqJEuEVDk7UPQkAY+CP1+Op482XdQNmYA0EckpBrYVdQGjniatbYJyuKIJtzKcuqUo96RsyeM/TyRlHadgQo7H8vboyQgvcSuVouw0o7LOBSf2mv2VfSEKSqpbv/vG5hJ9ZfgCqataWr5y5hZpm6Pbi4AzZIG5ULh9IQaNc9r6fR5lGoq8OcrzCr3zncOhvRpsgNDk4AU3UjZ1GKFNnrNQ8gn0nSvJfpeMJ7ZDRZl+N8f/nPHD+lSvUMuzLOcLmh67M3DhitfwTX/syZ2nZ+IJy5+ciffOV9kSxG2eV4rH7qFpNnRupH0/XY9MNuGkTZ4Y9iSLFZ6tPCNmyDKAnQP5wvRQCw6Hc7XP/vYOML2B9xLwmlsZMf
+ tfMMkf8D
+ H+O4+2F6qk8QjpznPccWSO32oEuwuRghDmnvPfvLrRK+9ax+XHt6v/px3ut7w+zLdNugSUzhOpbv9hAxSe9b8IISuVv6VJZO4Niu1ZCUMHwWxhV01c0vvF4g4aueLgrXgmqvE1DoWyR85Umfb78HMw5X3+PZPNXz6n3GtwjlbOjCJFeYfWFNSzIbLrUYSZ/2DH0Wk7q8dTEeFnEg+Lm9pLxcZSMosiHYcY0vZ90/13pUbBt/O6Gg0Af83bLN/pdndjXPgU1kB1Tzb0tooBRpemr+LfHuqbyBU0tpWF3XUqYx2M+zrcPk2EBsQksCq5JWROC6D9J4px/4pHZc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -134,36 +134,53 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-copy_oldmem_page() maps a page of the old kernel that isn't in the
-linear mapping with ioremap_cache() and copies from it without checking
-whether the mapping worked. If it didn't, the copy reads from an offset
-into the NULL page. That oopses unless the copy happens to be a user
-copy, whose exception table entries turn the fault into a short copy.
+A capture kernel reads the memory of the crashed kernel, and that memory
+may well have uncorrectable errors. On powerpc a machine check in the
+kernel is only recovered from if the instruction that took it has an
+exception table entry (cf. mce_common_process_ue()). copy_oldmem_page()
+copies with copy_to_iter(). For a read() of /proc/vmcore that is a user
+copy, all of whose loads have exception table entries, so the machine
+check turns into a short copy and read_from_oldmem() returns -EFAULT.
 
-Return -ENOMEM like the other architectures do. read_from_oldmem()
-turns that into -EFAULT like any other short copy.
+But since commit 4a22fd20379c ("vmcore: convert __read_vmcore to use an
+iov_iter") /proc/vmcore can be spliced too, and splice(), sendfile()
+and copy_file_range() copy into kernel pages with memcpy(), which has
+no exception table entries. A machine check there panics the capture
+kernel. The same goes for the reads of the ELF headers and notes that
+vmcore does itself.
+
+Copy with _copy_mc_to_iter() instead. PPC64 selects ARCH_HAS_COPY_MC
+and there it uses copy_mc_generic() for kernel and user destinations
+alike, which has the exception table entries. Everywhere else it is
+_copy_to_iter().
 
 Reported-by: Chris Mason <mason@kernel.org>
-Fixes: 54c32021eb6f ("[PATCH] powerpc: Add arch-dependent copy_oldmem_page")
+Fixes: 4a22fd20379c ("vmcore: convert __read_vmcore to use an iov_iter")
 Cc: stable@vger.kernel.org
 Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 ---
- arch/powerpc/kernel/crash_dump.c | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/powerpc/kernel/crash_dump.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/arch/powerpc/kernel/crash_dump.c b/arch/powerpc/kernel/crash_dump.c
-index 103b6605dd68..1543917bd3e1 100644
+index 1543917bd3e1..ca7e019ae3e9 100644
 --- a/arch/powerpc/kernel/crash_dump.c
 +++ b/arch/powerpc/kernel/crash_dump.c
-@@ -86,6 +86,8 @@ ssize_t copy_oldmem_page(struct iov_iter *iter, unsigned long pfn,
- 		csize = copy_to_iter(vaddr + offset, csize, iter);
+@@ -83,12 +83,12 @@ ssize_t copy_oldmem_page(struct iov_iter *iter, unsigned long pfn,
+ 
+ 	if (memblock_is_region_memory(paddr, csize)) {
+ 		vaddr = __va(paddr);
+-		csize = copy_to_iter(vaddr + offset, csize, iter);
++		csize = _copy_mc_to_iter(vaddr + offset, csize, iter);
  	} else {
  		vaddr = ioremap_cache(paddr, PAGE_SIZE);
-+		if (!vaddr)
-+			return -ENOMEM;
- 		csize = copy_to_iter(vaddr + offset, csize, iter);
+ 		if (!vaddr)
+ 			return -ENOMEM;
+-		csize = copy_to_iter(vaddr + offset, csize, iter);
++		csize = _copy_mc_to_iter(vaddr + offset, csize, iter);
  		iounmap(vaddr);
  	}
+ 
 
 -- 
 2.53.0
