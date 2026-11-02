@@ -1,94 +1,132 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BBD8606A32E
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 02:57:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C83CF606A324
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 02:58:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=bytedance.com header.i=@bytedance.com header.a=rsa-sha256 header.s=2212171451 header.b=ic5dd+V2
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=iM19STD2
 Received: by kanga.kvack.org (Postfix)
-	id 82D9D6B00EF; Sun,  1 Nov 2026 21:57:04 -0500 (EST)
+	id C01FB6B05B6; Sun,  1 Nov 2026 21:58:31 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7DE536B05B1; Sun,  1 Nov 2026 21:57:04 -0500 (EST)
+	id BD9A76B05B7; Sun,  1 Nov 2026 21:58:31 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6F4276B05B6; Sun,  1 Nov 2026 21:57:04 -0500 (EST)
+	id ACB8C6B05B8; Sun,  1 Nov 2026 21:58:31 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 469F66B00EF
-	for <linux-mm@kvack.org>; Sun,  1 Nov 2026 21:57:04 -0500 (EST)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id C63A41A0B78
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 02:57:03 +0000 (UTC)
-X-FDA: 85388667126.29.4B0F35B
-Received: from va-2-112.ptr.blmpb.com (va-2-112.ptr.blmpb.com [209.127.231.112])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 615E4180006
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 02:57:00 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=ic5dd+V2;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com;
-	spf=pass (imf24.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.231.112 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 7A2736B05B6
+	for <linux-mm@kvack.org>; Sun,  1 Nov 2026 21:58:31 -0500 (EST)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id E1A65120B27
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 02:58:30 +0000 (UTC)
+X-FDA: 85388670780.03.A01FA17
+Received: from mail-dy1-f175.google.com (mail-dy1-f175.google.com [74.125.82.175])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 0A78FA0006
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 02:58:28 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=iM19STD2;
+	spf=pass (imf25.hostedemail.com: domain of xueyuan.chen21@gmail.com designates 74.125.82.175 as permitted sender) smtp.mailfrom=xueyuan.chen21@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793588221;
+	s=arc-20220608; t=1793588309;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=f6eZQaYDZXMgf+0isykjo7ZZmLKawkQEHO01TtOhj3Q=;
-	b=YUWXysFCqA0Q9Dtahrqy90dYOpqrgFlvRLJThMEL5fHfJznLSHgw9PTHrlz4Ar3cw80gSc
-	PQlziCUg4gBCm8dZxBuQuUb4+E8u33UuTKx90duZkfeZ+ijxZZR/vKiq2iYoa34PuqEdre
-	kS6Kr+ZZlLnDGqQfwHCGrH8r77c3Fss=
+	bh=vbhM51MkwqyzYIK/l0MrHOeAdqnx2rbbHcfO8pxxmSY=;
+	b=nZ7UqkXXCf+tL9gtuVSS8SzA8p9EHlgMeP0cfJrqo7OB9ZTyrJxzU2KdInSbNUyAi10Y8m
+	UW7juDerDVPRG9MJ+0Lwc6TgtTqvVMcj844PwlyrJ5p0bqx2KiOZl1MBcY7kwAZC8C7Mcb
+	5eU6oh0jbOMxspdfDbeoPWVKVP0n+d8=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=ic5dd+V2;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com;
-	spf=pass (imf24.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.231.112 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com
+	imf25.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=iM19STD2;
+	spf=pass (imf25.hostedemail.com: domain of xueyuan.chen21@gmail.com designates 74.125.82.175 as permitted sender) smtp.mailfrom=xueyuan.chen21@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793588221;
-	b=J9ns/98QIUP7NLfWQMC/YlTJQCi4ydNEQLCAvQSXAUZC0xPR/28S6Efj9ywiFnN5NcK8mD
-	kw76n7EkaXRTdzX0IXBJX5FS85HIWxjAU2xj8pvOwnuw24EuDyZ0tRNJSbgNpNBc8vSrvG
-	f4vRhna3WUs5WVcPy3+RJ9OSbSWIKDk=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- s=2212171451; d=bytedance.com; t=1793588214; h=from:subject:
- mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
- mime-version:in-reply-to:message-id;
- bh=f6eZQaYDZXMgf+0isykjo7ZZmLKawkQEHO01TtOhj3Q=;
- b=ic5dd+V2JV+cpanb/cyp3CBWM6Wb9T4m0EmoVJjCjw46iu6xdht76Xmsgo5ce13LyhYDYp
- tg6P6gESqvyi+PGpJG5TiLZWVa7IdnhKWjCuDzJK6LuDyI7wQpTMKZKvYA+lgGcmlby1xS
- yAR3QmU7cT/arIuzoqMDjZXEu7J0Uux+DQaXaUClRSDfO5WwIHR6+mJLkTME7mthiZ3BdF
- KgS6N5gugzDr7/24xKuRrz0V5qYgWfYev2nsQRG9+r5OL7BvmwciNj004/mKEC2kVkuH2Q
- OZhdW3r1K+zyyZsJY/OaBdnvtIRrmxp27b7EKOyucwLxRnUjBItnB9qFTCCW8Q==
+	t=1793588309;
+	b=G0NfaeOc+GQldkz4fT3owmHtJ7H5ThIp8Eb7iultFe8zlNmQiT5P4VpKRiQmT7KWawPj/d
+	aGkVy4JKTDA0a+fAE/hAVKnW4PEDRe+WzhGEVZLG9TEATWdZHedWQb5eJch3E1rM87cQ09
+	ZQetVxOm4ZHA736UJUwE1ceH7zt2Zew=
+Received: by mail-dy1-f175.google.com with SMTP id 5a478bee46e88-36a6ee9c59aso45132eec.3
+        for <linux-mm@kvack.org>; Sun, 01 Nov 2026 18:58:28 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1793588307; x=1794193107; darn=kvack.org;
+        h=message-id:date:references:in-reply-to:cc:to:from:subject
+         :content-transfer-encoding:content-type:mime-version:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=vbhM51MkwqyzYIK/l0MrHOeAdqnx2rbbHcfO8pxxmSY=;
+        b=iM19STD2j2TmhZ69YVfDVvCyOqvV7rcbLPyz3TxS7y0APanP2pZwm+v8EYFehBT6rK
+         fMbA6YGvnU90mkMJZ4OaKFmQyYPm3dOahtzkrJYgYDeqQWR8cQe+zLYrYdGad4+pzhQ9
+         vPHsCCR5ViuGhg5JkjMv2EsM2MzsZmmU4oQsZHtDUp1PA7f1/SyITqqiQDeFu+COxh6M
+         MWclS3C/FdLFgoabojTJY86ukd4i/W08qGhQs2WZrFCj1FFTuOfWWKsZ2Ck2BcVw8CQp
+         Mvq0n59GSxSzOPoSUPPbq50Bn6KbZLz7ydNprqd4kDqfmRZDcbsDs6PMjgbehJdIj9qk
+         vlcQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793588307; x=1794193107;
+        h=message-id:date:references:in-reply-to:cc:to:from:subject
+         :content-transfer-encoding:content-type:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=vbhM51MkwqyzYIK/l0MrHOeAdqnx2rbbHcfO8pxxmSY=;
+        b=kq2PUm7EVp6EHF5yeL+W9aDPlcK9oC6ISxd//4hmf9PxU/DxqPKQ7fVAprvxFPjP+U
+         zZclj9OyxBeXkxrVZmKjgw+d7kdNR0osqvWcSnVLmBsb9sOD4dXXWQsOvTLHfR7czc2G
+         PZvniJUyWzJ83bkDbt5D+IJfefG7qwwTLPetv+qyYAo3w8Pg17IGhoOvSqkUe9BDMgtj
+         DayNkKR0++vm2rI/JTcT8/egTsyv6AzBGvfGpT+h1AuveJ9LTzaWOd51AcSv2xFUvNlo
+         kuVhXcYxQ56LvDdWkgsxShAKLJb1CCtK0/Ms0cRPQNx0yEYu69JCjL+0cbpHoni3mcyG
+         1r5A==
+X-Forwarded-Encrypted: i=1; AKwUvBx32Rryd49/lSQg1ktPIaXm126R9sVVOeCaP26ewJCxGByi9FiK+K9lrao2LtPkrxWrc7QXX0odfQ==@kvack.org
+X-Gm-Message-State: AFq9FYIb88AQrx+bdtJZCDxasmtGQuoTRsnnRzXI0Xtc9iM+/wJsrAtK
+	qCBumSyurMuG6kyWVTSwu/c06F/aL6SSNjEfmLFiBJAq3oyg8q82GUim
+X-Gm-Gg: AYBFou0zXm1CtJ7RJItTpEwhs7O7ow79WmBNh3YwdI5wouED9+1U0yN7K+7nt/SFeND
+	v/O90cAOZTsRviBUFAGt/zJsxr5DefMS4m94TeN/5yg0QZNqpS0zempHaFGwVHnAUzQ5X/iODZG
+	4xYf/xGdBbY66rmqpaGiS2U/6+dx8wRcc13Qv8z3cZgEnmXrQ42/2X7F1L1Z2pssEXOv92JBhac
+	MqQwAw2u1N1+VFTMskNxGoqkz5na5nrftg4pPlefLUB2WRkRKObeLv8wFgoCtoNpizkUcm+M3UQ
+	OKh0NrBYqTDmKfqHMq3crN2a31v8Zcxl4VP2E8EM94sTUYRwoYSkNrwE30sGi1uQz6qbE+iQh12
+	BEeVBVjmLRbIMtzcAfTUrR8RmNoenbqo1q3gpIsfDxBG9PdfcidZzEZWJdwhFyiCxHz6aGw35Tj
+	E1xjRgEXwCXK0uudtXSoquBIPR3b6i6lVicu0HID7rMg/8THFWZGeUneGWaseLrszgeAb+agp2H
+	ylJPmJtQps/INCFPT74fR8T3cgjIaq94sFKJktvGZXgH33XSbgJUluM3DFfmKlgmcKJbRBr2jeE
+	1t/FMfpv8NtoNJ4j1s/2gWVz0tE/w5EWrMRUfMDhPu805VvfmE9vxdMrCCF0kcz+Cdfc
+X-Received: by 2002:a05:701b:2302:b0:183:d275:cf76 with SMTP id a92af1059eb24-1ac59dd0e2emr19891581c88.2.1793588307274;
+        Sun, 01 Nov 2026 18:58:27 -0800 (PST)
+Received: from o6.lan ([2602:fce1:44f:115e::])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1ac1abcf67csm29779410c88.21.2026.11.01.18.58.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 01 Nov 2026 18:58:26 -0800 (PST)
 X-Archived-By: <archiver.kernel.org>
-Mime-Version: 1.0
-X-Original-From: Li Zhe <lizhe.67@bytedance.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-In-Reply-To: <c9cf96bf-f3b1-47da-b22a-9600b5fb01be@amd.com>
-X-Lms-Return-Path: <lba+26ae7fbf4+b5498a+kvack.org+lizhe.67@bytedance.com>
-From: "Li Zhe" <lizhe.67@bytedance.com>
-Content-Type: text/plain; charset=UTF-8
-Cc: <linux-doc@vger.kernel.org>, <linux-kernel@vger.kernel.org>, 
-	<linux-mm@kvack.org>
-References: <20261028041253.74839-1-lizhe.67@bytedance.com> <20261028041253.74839-2-lizhe.67@bytedance.com> <0676993f-c04c-4e4e-9f8d-1650c8fd6d6e@amd.com> <010b2b6c-8f1b-4c3b-913f-cc2e8b957759@bytedance.com> <a6bcd771-fcf7-4fe4-8c21-5e65bd579de7@amd.com> <1bab234e-8914-4694-b0aa-f265fa49c6d3@bytedance.com> <c9cf96bf-f3b1-47da-b22a-9600b5fb01be@amd.com>
-To: "Bharata B Rao" <bharata@amd.com>, <akpm@linux-foundation.org>, 
-	<bsegall@google.com>, <david@kernel.org>, <dietmar.eggemann@arm.com>, 
-	<gourry@gourry.net>, <joshua.hahnjy@gmail.com>, <juri.lelli@redhat.com>, 
-	<kprateek.nayak@amd.com>, <ljs@kernel.org>, <mgorman@suse.de>, 
-	<mingo@redhat.com>, <peterz@infradead.org>, <rostedt@goodmis.org>, 
-	<vincent.guittot@linaro.org>, <vschneid@redhat.com>, <ziy@nvidia.com>
-Subject: Re: [PATCH v2 1/3] sched/numa: make free-space tiering promotion bypass configurable
-Date: Mon, 2 Nov 2026 10:56:27 +0800
-Message-Id: <3318a7f7-4dec-431b-9284-ec7c2807151c@bytedance.com>
-User-Agent: Mozilla Thunderbird
-X-Rspamd-Queue-Id: 615E4180006
-X-Stat-Signature: nkcir75drmr1fs8gqh4f4r84iocyzeu8
-X-Rspamd-Server: rspam06
-X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
-	autolearn=no autolearn_force=no version=4.0.1
+Subject: Re: [RFC PATCH 0/2] mm: zsmalloc: make shrinker compaction
+ budget-aware
+From: Xueyuan Chen <xueyuan.chen21@gmail.com>
+To: Sergey Senozhatsky <senozhatsky@chromium.org>
+Cc: Nhat Pham <nphamcs@gmail.com>, Xueyuan Chen <xueyuan.chen@vivo.com>, 
+ Barry Song <baohua@kernel.org>, Yosry Ahmed <yosry.ahmed@linux.dev>, 
+ Johannes Weiner <hannes@cmpxchg.org>, Brian Geffon <bgeffon@google.com>, 
+ Minchan Kim <minchan@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, xueyuan.chen21@gmail.com
+In-Reply-To: <auKlTdFbOZmAuheo@google.com>
+References: <cover.1786003779.git.xueyuan.chen@vivo.com>
+ <anVWZVOt-xeD0dMH@google.com>
+ <47ed45b5-de67-41aa-aa21-a3ba3479a7cc@vivo.com>
+ <anXJ-5_vO7-toSe1@google.com>
+ <CAKEwX=Mm2tXcen-quRXHf1Y2qSHYvpEUe4xiw-mHYaJnRUR-EA@mail.gmail.com>
+ <auKjuiRxQwtsZF_0@google.com> <auKlTdFbOZmAuheo@google.com>
+Date: Mon, 02 Nov 2026 10:58:21 +0800
+Message-Id: <179358830137.300028.11084163850071476613.b4-reply@b4>
+X-Mailer: b4 0.16.0
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 0A78FA0006
+X-Stat-Signature: q7dfqnnt78x5xj6q3zthhtidi7z4z8gj
 X-Rspam-User: 
-X-HE-Tag: 1793588220-961131
-X-HE-Meta: U2FsdGVkX1/fYGXjSLeI8HG2YBjXFPmxxMr2lAmCtNXUpCxDAhYwUE0ZMJxr2UkAMevwQt0fD3b+cZtjZl1ASKhtXqxoMjO1VdXHog3iWBQj84M04E4tkGqlQSOMxTWldaGRle13Xm89t4wK8KckwMxbrRRvWm/IraL+SnSmlkzBk8O55fetjOAik53ojXH0xZgyg3gszHNQtMZfcWTDn5QKu8Y0SDYYA9oakJ2kiFQIKsgKiK92+Ydi4KNxO4HBBzJqjXNSQEl/Z0R0AVbofQcpQ5QtEIBxKBHv0vwrOjKi5SvueH5TCBlnmACjw4aKg1W7UU7o8He1/+3es4G1zIPJ9B2sfWs1hceWsb8nxklo9GS7kVLlFEK9VHjt8BRDO2mFlZX8PnQsdD3H1bdvrzgF2WygjCou6QfW5jX2Lu2M80bI9Tgzz/xkotcyDBLdflymTWFnyxK2cGyuag2QUdsDvqgnfuLpWH7RRw7438MPmqi8Bhd9xeqwh2snVo3mZXQkXY7EJF18fzN0P3gojoM4APNvtk524X47c1ltYJrtNbuuPtpkxstA9Xwygwk4GWL7ovpUh++8mllCqcqH5wN93YKhzibt6KS2VJP6Ilxd/nVrGOt6v+pObuGCS8lDvapmJvxdp8in4oamywSO1zktS7PTYQ0pHBN2n0qFWVygHdUYD26REYSQH/VpL7IQhf1juH+YBgc70RpRe7+YAijF2jBdZCyW73nrKi7X0nPIw2ysa02iN4COh6RRujkjUtRqzn4rhyTatcsYv6D9KApYFZ1P988jzKJ1eFATgr81MzZpWQThab7qmNj3W8q7aeTwXffFlVrO+c2bRWbDeL2/YvwSiAn3Au2ECCnZqZbdt6PiZ8pFW+S9FR6HnTEIbMJyoeHuE/zytZf9RSF/yOwKxKN+SokYDt9QTJ6oWvQEAcnd/B3UQ0ZTlKedrqJiIDZOPEPj984il5Ekusn
- +YTArS/N
- 1l3fI+UP6DWOVVwsCD1PIBB3H0LUyi+pA4ERBanKJzkTomwbWowlSMxPhNVNhzOb07cOFAwowbExGa7FGRA2L0dAQuXWbGqL+2mHzRsHc2w7JCprSQWxepMuSkAV4C5w7tTrYLTOSs/enSoO+A1xjr/SVGciZMPiM1KUGbQw34+uIgaerFNWC1cKZZem+B4BfojlhOJ00j1iMZX3qKK00oevBDUiSa5QsXvv6v/sQ9hl7byTmHxrBpwIq5MFqrhpOFfwVj5UvH/BeWTVVXK9MzpdwQ6R39/EF6xMn6VwZWZ8xw+roEbw98dD9ks/olloo+ZZ74hPnM4Qokhr3RHsKZzoHXj4EBwFtC/nyzeP5Ag4mKWEtoYzrYHUZjcIhI/U3JAun
+X-Spam-Status: No, score=-4.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,HK_RANDOM_FROM,MAILING_LIST_MULTI,
+	SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=no autolearn_force=no
+	version=4.0.1
+X-HE-Tag: 1793588308-660755
+X-HE-Meta: U2FsdGVkX19+Hg2JKCVvxi+hSGMAeNGOAmis8Seu921ATYUNAGhdQjjJwXH5Qkrguwr4Ss4JwPesOB1WaEiBrqNlcYZX8kdfeyopEGjqOABma8D2YSSBIDAHzFPx0UZ+W4UsfT1Qv+05cQA7Yq6TSXKAf+o6UDtser9KyFV3h+gF0YmDZADBDU9AZXNm8J9dgUww3D0Zq7e28XtxH7HsAFdjlQQzp1YT99MAQmAFceDSOeH4OWZL+nDoEjs1qmIJBjRQws4ty1SzxZFnqqwQR/S7ycizvvDzYuTEPBSvdnr8bU4LmM6EmeLskVHCZexHanBjUTE5YcegbSimekHEaOz82z45tDrBGMo9Rice3twWREqKw4AfnLoSrhs+4geXMqBRLJMhoywQGaWDtjIBh0or5MKA+yEux9N1PrF20HhgckMc4v1RgLn4fzNJzwTusbv1r1BSdBNl37OeAuG22DLBGS5cjlBKEBh1iYYmAnsA5itygD4PV1b+LHJ4orrWLz6w/0Ehz/lsGHVY3d0tIhjF1hT9ijEJt2JoTYzRFXnEIw84UcXeZomdpVu9DAsJ57WIsQuV/e94hTxGY/sJXrwx2NsbI+aVWMDQ+/Rjv1NtW959IUNIbuJb4QJmzNGbv+Zz4JGE1hTNvT5W0nyxWmKS8BJZNpaicxKNggEBX+yVVnfIcvwxEV/vJzwzkVLWoBy2nzbAi/KCPQpYLKvmQm5qg+ykoMj9Onp/Md4aAxgnV9WBcVSfrKQRTjBIha7w7nbtHVIGjWYO+5caGBm//fzFNsX6Ac6ziL4DnNl6aqaqiPztLs2OSOH4L9mMOALBa53IMlTrQlCcSD2F+nr4K7YaP4Ouzc3sEG4NetsVQFV/dTGC+4A6T/VcGypVyuLtvYDE6n29eFkGgXn5geC/4w5b1286lZxHFboFkQunRnpbdaSG5El7oNhwF6rKsrYoO3/czLmkZ403jojNhoM
+ eKSgBuiC
+ jxv9Nn46gYsMmmcSVXvkStwnrepZveVnpglrpA/Gd2cL7hUnCNG5iiMG8yYAJfApXjD0Uj6VTY99jANzpkRv0AXC433qnrSqRXdXjUFzhgZixZ/9hylFs6Lvfr1fjtygy+AvERq5VUwQ4bJL6TbsAwz4MYPCQu9G3Nibyuw4UKdsWzglOCZRfJe/2Y6qXD7Ukj1ZM1NA5Et+sv/Jc/fVIewp42LtuKzGuPohNjn3FfbPG0+LxPDyvw1hCwL7NNUJyR7a6fq2tMd3GYMyyVS+w1I8y0d2Nq1PY/plTHkNZvTX6rE0cqhdzvOZtUiG8K7HOvmeDtzgbzhv+oSg11RZVXDG23U6nByd8qOtYwZpf220Qiv4jgezEttrFY5foIkdsi2rnu1F72FVsDaPVcWgVyuUEQWq2xgYLjnaRlzrrcSxhSljIEKncKIWhdlmCFvj1xDKOTLLL/MLGqZA/33TvqntMkZvVQyPmKX/nnOA9WERmA77d8Y6zUfeUJ+DkyjjKK0KL
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,35 +135,45 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 10/30/26 11:44 AM, Bharata B Rao wrote:
-> On 29-Oct-26 5:03 PM, Li Zhe wrote:
->> Yes, the case I am trying to cover is closer to the non-overcommitted
->> case.  We do have deployments where memory is intentionally placed across
->> DRAM and CXL memory, instead of relying only on natural spillover from a
->> full top tier.
->>
->> For example, the orchestration layer may want a cgroup to use a planned
->> DRAM/CXL ratio, so that DRAM capacity remains available for later
->> placement decisions or other workloads.
->>
->> In such setups, the top tier can still have free space, but we may not
->> want short cold accesses to refill it simply because the free-space
->> bypass is available.  The intent of this patch is to let those
->> deployments keep using the existing hotness and rate-limit checks even
->> when there is top-tier headroom.
-> Thanks for this information about the deployment model. This is a useful
-> conclusion to reach.
+On 2026-10-29 10:48 +0900, Sergey Senozhatsky wrote:
+> On (26/10/29 10:43), Sergey Senozhatsky wrote:
+> [..]
+> > > Hmm we'd need to collect more data in our workloads to determine, but
+> > > if we can compute compactable ratio (freeable_pages / total_pages) on
+> > > a per size class basis, can we just skip the size class whose ratio is
+> > > too bad? Would that at least cut down on the vast majority of
+> > > fruitless memcpys and lock acquisitions etc?
+> > > 
+> > > I'm always a bit hesitant to over-rely on userspace, especially when
+> > > kernel has information to do something smart about it. It might not
+> > > react in time, and many proactive reclaiming schemes back off under
+> > > heavy memory pressure.
+> > 
+> > Apologies for the delay.
+> > 
+> > The thing about shrinker compaction is that it's sort of on the
+> > wrong end.  It doesn't trigger compaction when memory is plentiful,
+> > no matter the internal fragmentation rate, and start firing compaction
+> > scans when memory pressure hits.  The problem with this is that, now
+> > compaction moves objects (if can compact zspages) and releases empty
+> > zspages, in parallel with potentially heavy swapping out activities,
+> > which can simply allocate those released pages back.  Which seems like
+> > a useless exercise and needless memcpy-s.  So I was thinking about
+> > either putting it under config or just removing it (this might be a
+> > harder decision).
+> 
+> In embedded (android/bookOS/etc.) there is a daemon, that triggers
+> various zram activities.  We can wire in pool-compaction (once under
+> memory pressure), which is a zram sysfs device attribute, instead
+> of pondering zsmalloc with scan callbacks.
+> 
+
+What triggering policy do you have in mind for the daemon?
+
+If compaction is still triggered when the system is under memory
+pressure, wouldn't it still overlap with heavy swap-out? The shrinker
+can already run from kswapd, so moving it to a daemon alone would not
+necessarily change that timing.
 
 
-Thanks, Bharata.
-
-I would appreciate further maintainer feedback on whether this series
-looks acceptable.
-
-Thanks,
-Zhe
-
->
-> Regards,
-> Bharata.
 
