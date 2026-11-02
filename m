@@ -1,94 +1,101 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E54160A2627
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 14:46:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA39F60A381C
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 14:46:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=U4HZd+4W
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=UzgLpTAs
 Received: by kanga.kvack.org (Postfix)
-	id 8A0406B05B3; Mon,  2 Nov 2026 09:46:38 -0500 (EST)
+	id E6B206B05B4; Mon,  2 Nov 2026 09:46:38 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8768E6B05B4; Mon,  2 Nov 2026 09:46:38 -0500 (EST)
+	id E1C0E6B05B5; Mon,  2 Nov 2026 09:46:38 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 765DC6B05B5; Mon,  2 Nov 2026 09:46:38 -0500 (EST)
+	id D58496B05B6; Mon,  2 Nov 2026 09:46:38 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 59B516B05B3
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id ABFA96B05B4
 	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 09:46:38 -0500 (EST)
 Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id EDD2C4012B
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 14:46:37 +0000 (UTC)
-X-FDA: 85390455234.07.C0107E5
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 32FA34000D
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 31CAAA0121
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 14:46:38 +0000 (UTC)
+X-FDA: 85390455276.07.706E6D8
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf18.hostedemail.com (Postfix) with ESMTP id AFF941C000F
 	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 14:46:36 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=U4HZd+4W;
-	spf=pass (imf27.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UzgLpTAs;
+	spf=pass (imf18.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1793630796;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rCtrAnJviulqez0+JTPRdagoIh7IeZsTjrVmURq9iV0=;
-	b=q51kzuu9MhWAWT7Gv6IrVIbAkCp37klxR76ggEiMdYors8xNRg4w01w1382qvo8Ulb81W5
-	BLa9daSPo6O67uMK5EbJ3HV9MmM74g/X9bhQENhkM1ERt2a+8pGTDQCRdjzzZ2+CatxSCi
-	MZgvUY/RXcwfWwENhisGf4w5iR4NG28=
+	 in-reply-to:references:dkim-signature;
+	bh=+CbOy/w4oZmoVyUdrE5PFeUUqcG8Qy13cgKPirYGonw=;
+	b=q1F7tiTRKVRvOwXRPIPMfdFAY/lRZFyMWEZRZgys0ec7Nfi6RDLHzulrjl09DksUsTqO0l
+	ZVdFGgKt4rWTBQ9ATVGqGlaWqRVA3gOk10BQZ2o4kp3n7xe4qWoT54knmhXAYnJL/PFiFV
+	JL2jhwtTLVgEJsXcM1eoSoRYmudpw14=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=U4HZd+4W;
-	spf=pass (imf27.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UzgLpTAs;
+	spf=pass (imf18.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
 	t=1793630796;
-	b=jVdPOw6NkIiHRxP6/vXXQHGvy3um2j7xlRl/dpkF7VKj3ESilQSQJ3kKGk2+DqkJ5Wb0oz
-	BOWQNlZfNRrzGd7nfxcw+o8dG3/Tk4ZgZ7ZrK9dSuhv7m+ee9FlldVAXhwEG7TjG1x5l+M
-	XAP4gsFu9FjCxsHm+oNYr+bAQEELr94=
+	b=lqPZTh9Zg6f8YBeHIDO5h4ycgI+dw6G2ZKicW30pz+DKlA0Uno6TP0vxRTy1yJKa3SZ7oW
+	Aay03IqG0RlzgZWJY0CMMF7vgNKLUDX8xRfDHHXl7qdxDSX6TZ7G9lLPacJBt/wpDwxMhV
+	1qtahIgHCuxf0cSxaTQjIv61OsKNW3w=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 7C88B444E9;
+	by tor.source.kernel.org (Postfix) with ESMTP id 4CBFA6020C;
 	Mon,  2 Nov 2026 14:46:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29ED81F00A2D;
-	Mon,  2 Nov 2026 14:46:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 735601F00A18;
+	Mon,  2 Nov 2026 14:46:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
 	s=k20260515; t=1793630795;
-	bh=rCtrAnJviulqez0+JTPRdagoIh7IeZsTjrVmURq9iV0=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=U4HZd+4W6Pf3UVe/MGTpV9jp2TFzuGLQQAhPFC68075Wo8dHMtqMo5Y4Fh8nxp5Qh
-	 3EApXUcedvjXzWfbAhUPrGms3NRdpkfiHqxym5bMR87QRmB5iWx6OipKELl6UJN1XZ
-	 r3u45gEBFq1RGa/V13bozPYdrkPTARCASrS+ph7S4w+dDE2cvq5cfY49TLM8QYL8nN
-	 8xACTcgMaF9BWeG1IrJHLFJ9NqLTj8XZsXexq1SU3vXXAC/ZQ9rtBL/InawXTqBhHM
-	 Y1eugorTDD4/gXU+p8bpwbgGZ3e5DwEXeNxMfIYb6k4zeN3ZEu4gJPKMgjKqaWA5zu
-	 6C1AzMtEt4zdA==
+	bh=+CbOy/w4oZmoVyUdrE5PFeUUqcG8Qy13cgKPirYGonw=;
+	h=From:To:Cc:Subject:Date;
+	b=UzgLpTAsh/8b2lAuCsP4MmQBFlTwq27nXfldudYpUFO9wJWmkv9UIHFAXDDexAlif
+	 iO1Q0+qe6cHXAUlIT+U3r4HyjZYBl4HukMhSEITaTw4So/C+I1yS3Syg7C5sIxDZPG
+	 5S0ZNudLwPF0WmqBgUtsD6evmUSs8XzPvMYhh9Bl1eVwPb+BqphU2ASIGP7YiG/TJe
+	 ZGwuEjboJWhAA6PG6w3PUOPbiFKqwfO9qGu2VmKADh+w6P2mhbFyIdU7jmBJpgBnal
+	 IG0ZgOE6r9qhpaa0kScLQ3/QfF4TUP+ddUJtSY/QX/sgQfDsbHDsuF3Ku34F0iemg5
+	 EEcdLIA1YJTXQ==
 From: SJ Park <sj@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Aveline Noir <jm5905938@gmail.com>,
+Cc: SJ Park <sj@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
 	stable@vger.kernel.org,
-	SJ Park <sj@kernel.org>,
+	Brendan Higgins <brendan.higgins@linux.dev>,
+	David Gow <davidgow@davidgow.net>,
+	Michal Hocko <mhocko@suse.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Shuah Khan <shuah@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
 	damon@lists.linux.dev,
+	kunit-dev@googlegroups.com,
 	linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [PATCH mm-hotfixes-unstable 1/3] mm/damon/core: reset watermark wait state on each iteration
-Date: Mon,  2 Nov 2026 06:46:24 -0800
-Message-ID: <20261102144627.88843-2-sj@kernel.org>
+Subject: [PATCH mm-hotfixes-unstable 0/3] mm/damon: fix watermark state, kunit pid leak and selftest fake pass
+Date: Mon,  2 Nov 2026 06:46:23 -0800
+Message-ID: <20261102144627.88843-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20261102144627.88843-1-sj@kernel.org>
-References: <20261102144627.88843-1-sj@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 32FA34000D
-X-Stat-Signature: 8m6q6w7e143zqeik61yyx4eawqmqb69r
+X-Rspamd-Queue-Id: AFF941C000F
+X-Stat-Signature: 4r5qio1wjqtmpu6eumdkt4eo9q66qg9w
 X-Rspam-User: 
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1793630796-902548
-X-HE-Meta: U2FsdGVkX1+zY4WUqiHca2VwuIpgqagM1/VXfvve3durBvvhGyN0rwa2q9XOYcG0QJfwfrkoeSh3pFUJKtaWACzCU0pIvp9DIeDjoNvVREMNrgWT0eha6EU1KcrHnaCLK9qyGAFsVVy2/4abfx48sY5IY+p8/7sCfRYJnEJmbGIkia9sYOonRs7vgLMjuK99wYjuhLeGKGdltvoAB2ADCaeFQTY5OxyYGFExIj/+J9I89D5cdx9bVQGrmnTmd5UZzffY6nGTsI7BjVCcF1PjI2UAcH7RA/5djiNlczCGl8q3r7cUKKO3W1ti0xkZfXQjB+j8fEaMHEqJ/X/cUpI+m+Ce717bG72YbX3g6Y/Bv20QMSFLryoeZvE8oTAZabRa7XjdwdqYCSxR7x9v4za/Tv2Lnyxos75DBRWIfuMF4fVUSuem8gmUvpBT6kdpyNiNBCIDgb6JVLRgZNPljITEnfHOK2uN7UDqXyb5ULElEQiHTRX4HaB4P7ZspYGvfp7qaU2meS7yi6CMHjUNUnw+X3f6HIcurO8HbTjJcdEmir8vE9LOHe4QTBgazebaiSVgyLvSEnw/qJwu3noLSHBpTFoF4XL4upfqjxdKD33S0Kc9Gjekfdji5P7NcA/k0FDhSzpAJ/E51cMNJndH5iH57AgZvOim6co6kLIriAMosRsYIna34sNzDj/tVtQ9AFlnzxOp6brmw3pG5Bzcdxt/q5jUnEo1VEFDNW/dRXAUqt12OjwpYE/IP4GSulqwBiGP+1mJ2q3GNd0Rhj1fTgOM4I2hHEToPVjfOf0eEa3NO78PI+0Sh3mxvtyIm1K12XWT/V6z80KYSbffxlZCkybFGyoW1a8tJneIq9acBOy/SW6dgA+pnPynCxnfpSiXEzhX+PBB4SIYU+xKyRbfaWomRDoc5buC8ZTC7PL+jCCOmJPZdumO/+Nmk+P3ceDhQdTwa2YOsrvrCF5pgRnB58/
- 9FjYxfLl
- uTt8YjHH1ou9JtTurgyHdHJo7Rg8o5tORQwqAAjf4M5gSBrWDY+hYKe44ORLhydFBBEwAG9shj44+1i7CQDnYnhxAA75ktLX5urba1EkQjsDk6pSfhDLXK7jDzzMdaPQrpjkmn7DwYymTmU983FAWj32ldyGkcPxVRpE0nR7J9ztxht+bpd9ZI/YkaE4d5YdNWCrQy6sjEXpLbU90mFgZQhk3NEvAHZPuWKBBs3hyeYeIQIkDEa5a3bGJDfCfSSXpMyk3
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1793630796-233549
+X-HE-Meta: U2FsdGVkX18O/O7/8malPacql1nvVuMJyohHX+LX3BLyMdvnvk9IleAj0ghmFTiAxx3/RQO9Ww1YQtN9xB91Y/BaHRlPQESovHyFETsICj7lfKMVTZPvtZEJm7nVkPLEvu28e6j1DSoyGDeOLmNJZF/VBo2zGi8xgZIFbEshJbsU1kIE8qvDuTvSIcz7NuGaKWxp6lejVvf9e8LWj7QB6bbc8ujk2+rtxk+bpl7IiAp4/GiEZJ4LzT9iB531VpxtiSQYg12rnn0ENSqRk8v5iQHlmSe/fKyszKZ5DcKevX2V8j5Axli11KOxakTAFZV3gWdzhr5Um7w0lbEGA7wAAAsKqbqsMj3xRDn3l5y/49nVlRwunU9tgK2lWVDnWAkrOJB/WORKeAmk3++htgmUJ5CZnicEMcZJ25qIJHjy0Kh4jL//tzPacmEEl1rfd4pEfcQr20kkyytzQgHA4BiX/d1bOw+qlUaf/uSkcj3Qzz6yrx2P4P+a2zaJd1CI8OUxp3fyu+XDnXG8Rripvw2+6gaDFq4QFJFepXeH/NY75Zxl+G2hbzlVtTPmWDREI+mga8SYl92tHbOomMDQi+Xlbt84cSVxlperqh6JEiig+ZRAVUHvilatfw6KU6TXzguULgrxB82aGILFp2/R8NUkLzgCEbdaBWb/yIxqLjcVUclSwGepEDr73m6w01URo25TUzSaCEpsbVAQ+rgpChqjTUqCe402R+DXCRLGWlty3uEkFP0Yu1aTrvREwlxFk/JDYjLYPQ0JTXcH/eGOGjNVD3+Q39yufvA/5N5vBm43zIVEHeXA+rcCUVgtRagDNDoRjOd0kzoSW3Ug8ioDkaSJaFLcfmYU18i+NzAqZJDQn4hmvTffAbibBYNtQ5b+slPM3O/SaHo3DQtt3jY9PxtiWCVYBNcvdgrZ0yXmGqfeYUkoyoem23tHZ0Eu+7U3VUqh0AQr3A4afNzUHYabVD9
+ 6y6Ht3sH
+ sXt16URKV/p9vlkVNydpk7IBHK+IFwAdGXVcTfpjbbITC0L9EbovcJ+Vb/AdNHQYSlC0kDuMrf8ajLwvwVTxE4dD9sy4b9rHHJi9KaVW+0PFrNxUmfoMfKjGh3L8v8N3EoVSz56pbSzjOtYyuqvcT8JSQvABgyJpY0paPmWqb0oTWw5FnXqMErEdxG6hMgdFH5Rqu2Grd00Fwlvw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,57 +104,31 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-From: Aveline Noir <jm5905938@gmail.com>
+Three hotfixes for core, kunit and selftest.  Fix kdamond deactivation
+from missed watermark reset with patch 1.  Fix pid leak in kunit test
+with patch 2.  Fix a selftest wrongly passing when it should skip, with
+patch 3.
 
-Found while reviewing the DAMON source code that if an online commit
-removes all schemes while kdamond is waiting for watermark activation,
-the scheme loop becomes empty but min_wait_time keeps the previous
-positive value.  kdamond then keeps sleeping instead of resuming
-monitoring without schemes.
+Note for reviewers.  This series is a collection of fixes that were
+initially developed by different people.  Changelog is in each patch.
 
-The way to wake up the kdamond again without DAMON is bit complicated.
-Install a scheme having watermarks that can activate the kdamond again,
-and remove the scheme again.  Doable but cumbersome and complicated.
+Aveline Noir (1):
+  mm/damon/core: reset watermark wait state on each iteration
 
-Initialize min_wait_time and init_wait_time on each loop iteration so
-the wait is calculated from the current schemes and an empty scheme
-list resumes monitoring.
+SJ Park (1):
+  selftests/damon/sysfs_memcg_path_leak: define ksft_skip
 
-Fixes: da87878010e5 ("mm/damon/sysfs: support online inputs update")
-Cc: <stable@vger.kernel.org> # 5.19.x
-Assisted-by: LLM
-Signed-off-by: Aveline Noir <jm5905938@gmail.com>
-Reviewed-by: SJ Park <sj@kernel.org>
-Signed-off-by: SJ Park <sj@kernel.org>
----
-Changes from v1
-- v1: https://lore.kernel.org/179277129124.2.16132047926074873101.damon-empty-schemes@gmail.com
-- Collect R-b: from SJ.
-- Add how to work around the problem.
-- Update Fixes: and add Cc: stable@.
-- Rebase to latest mm-new.
+Wang Xiaolei (1):
+  mm/damon/tests/sysfs-kunit: fix leaked pid reference in add_targets
+    test
 
- mm/damon/core.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ mm/damon/core.c                                        | 5 +++--
+ mm/damon/tests/sysfs-kunit.h                           | 9 +++++++++
+ tools/testing/selftests/damon/sysfs_memcg_path_leak.sh | 3 +++
+ 3 files changed, 15 insertions(+), 2 deletions(-)
 
-diff --git a/mm/damon/core.c b/mm/damon/core.c
-index 73b571b429cb3..7441cdea57dc5 100644
---- a/mm/damon/core.c
-+++ b/mm/damon/core.c
-@@ -3976,10 +3976,11 @@ static int kdamond_wait_activation(struct damon_ctx *ctx)
- {
- 	struct damos *s;
- 	unsigned long wait_time;
--	unsigned long min_wait_time = 0;
--	bool init_wait_time = false;
- 
- 	while (!kdamond_need_stop(ctx)) {
-+		unsigned long min_wait_time = 0;
-+		bool init_wait_time = false;
-+
- 		damon_for_each_scheme(s, ctx) {
- 			wait_time = damos_wmark_wait_us(s);
- 			if (!init_wait_time || wait_time < min_wait_time) {
+
+base-commit: 395206c0e287bdd981918e033a2b1621ea6a3b9a
 -- 
 2.47.3
 
