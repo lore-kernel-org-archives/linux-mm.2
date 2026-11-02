@@ -1,122 +1,172 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8778D606A326
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 07:25:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BEB5606A327
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 07:42:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=nGRjMej1
+	dkim=pass (2048-bit key, unprotected) header.d=meta.com header.i=@meta.com header.a=rsa-sha256 header.s=pps82601-s2048-2026-q3 header.b=Y6Vrek0Y
 Received: by kanga.kvack.org (Postfix)
-	id 8A2C56B00EF; Mon,  2 Nov 2026 02:25:28 -0500 (EST)
+	id 42E1F6B00EF; Mon,  2 Nov 2026 02:42:15 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 853C46B05B1; Mon,  2 Nov 2026 02:25:28 -0500 (EST)
+	id 405526B05B1; Mon,  2 Nov 2026 02:42:15 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 74C7B6B05B2; Mon,  2 Nov 2026 02:25:28 -0500 (EST)
+	id 31AC56B05B2; Mon,  2 Nov 2026 02:42:15 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 452E06B00EF
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 02:25:28 -0500 (EST)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 8FD1FA8A1B
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 07:25:27 +0000 (UTC)
-X-FDA: 85389343494.15.7EED131
-Received: from out30-110.freemail.mail.aliyun.com (out30-110.freemail.mail.aliyun.com [115.124.30.110])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 69C97A0005
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 07:25:22 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=nGRjMej1;
-	spf=pass (imf25.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.110 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793604325;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 061A06B00EF
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 02:42:14 -0500 (EST)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 9E2DC40C88
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 07:42:13 +0000 (UTC)
+X-FDA: 85389385746.06.6EC9131
+Received: from mx0a-00082601.pphosted.com (mx0b-00082601.pphosted.com [67.231.153.30])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 3B663100009
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 07:42:11 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=meta.com header.s=pps82601-s2048-2026-q3 header.b=Y6Vrek0Y;
+	spf=pass (imf05.hostedemail.com: domain of "prvs=97666edd39=alexghiti@meta.com" designates 67.231.153.30 as permitted sender) smtp.mailfrom="prvs=97666edd39=alexghiti@meta.com";
+	dmarc=pass (policy=reject) header.from=meta.com;
+	arc=reject ("signature check failed: fail, {[1] = sig:google.com:reject}")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1793605331;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FpzobxBA97ERHDZ10JHwpxS0fLfapgQK42Ay+O68OEA=;
-	b=6NPrBRa+4aGLKZBBR3v3vPr03+GHXb98paZTzKGWiG7eIbdKvzuMCn2UwL/mZUTy2gRNow
-	9S0ZSwnNIKz7Kjl9vcPzrj0GCrzpMTAM1ci/PHLVNUqYhhRBaeYQ+kYAjQWGaJGpYZroXR
-	C0jL8/3wfY3zWwcssnz6jxeFw09pGHE=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=nGRjMej1;
-	spf=pass (imf25.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.110 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793604325;
-	b=DFpIFyTJdT/Q7Vhsgm/b9v80Vg40uMPZ76p7w3ovRrWK8BQe768e3/gIZgLin5T23SvRzv
-	1kXi5NqLS8CAOjohe1R33vY4JfwV7eL1gDVkRBRI23/291XmTZCygPQirm28HcsicVO2UN
-	uKE6mwjYa9WLlHW5TTdyl0vAdlJxfhQ=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1793604319; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=FpzobxBA97ERHDZ10JHwpxS0fLfapgQK42Ay+O68OEA=;
-	b=nGRjMej1VDjnviom9WxFvndQXutI4zAe7Kodx32ER39v/tArfi7sxKcpniFiQkS+zhEguCk0pc35Fobq3y5pwrl+Y4YZHpzpDr9AtWUHx5IDRUGognlcBYE5qYA/JqANrXhssR2EGLCcjuf376b+0PeKGHUUFNZ6ZXLDacgTlJU=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R171e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam011083073210;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=66;SR=0;TI=SMTPD_---0XDv5rjy_1793604311;
-Received: from 30.74.144.167(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0XDv5rjy_1793604311 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Mon, 02 Nov 2026 15:25:13 +0800
-Message-ID: <17e9d4c6-6ea4-4c3f-986f-a3775c591da3@linux.alibaba.com>
-Date: Mon, 2 Nov 2026 15:25:10 +0800
+	bh=5mFBSTRr0j5MiHbKH9taC4fPcpaGn0/BbSg2iUW7YhM=;
+	b=xX2cPv1MQGSLhM3rTqd2xCN9a+e9JWHnha1xmm6RZWueXJU8grpxi/nLb1tGE2eME7ByFa
+	7AKrEk3Og+WCJQlli+i5oW2/FiNXMY490OFA4ZKkG8ORP/nLWqKwh/oJuXq0oNvES8qMJQ
+	g4E56GX4h1G4i1PNbRcvQd1ZqU+w2UI=
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=fail;
+	t=1793605331;
+	b=vqDIVvpgNlmCKN17cWwV7CuT11g3IIVvyoZOAvrEu2bkr8y1Co09JoZ3UJGx12TvsYFTmX
+	r5ZDGZUQaiSXQe83zO2KcNnql8J897N9IPc/aMBasDEwKro72yGZMEBMC+5U8B7qllyNHV
+	WlVRxZvB3XcPL61HwtJh7lHR/uVkKng=
+ARC-Authentication-Results: i=2;
+	imf05.hostedemail.com;
+	dkim=pass header.d=meta.com header.s=pps82601-s2048-2026-q3 header.b=Y6Vrek0Y;
+	spf=pass (imf05.hostedemail.com: domain of "prvs=97666edd39=alexghiti@meta.com" designates 67.231.153.30 as permitted sender) smtp.mailfrom="prvs=97666edd39=alexghiti@meta.com";
+	dmarc=pass (policy=reject) header.from=meta.com;
+	arc=reject ("signature check failed: fail, {[1] = sig:google.com:reject}")
+Received: from pps.filterd (m0001303.ppops.net [127.0.0.1])
+	by m0001303.ppops.net (8.18.1.11/8.18.1.11) with ESMTP id 6A248Sq7121247
+	for <linux-mm@kvack.org>; Sun, 1 Nov 2026 23:42:10 -0800
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=
+	pps82601-s2048-2026-q3; bh=5mFBSTRr0j5MiHbKH9taC4fPcpaGn0/BbSg2i
+	UW7YhM=; b=Y6Vrek0Yn8jcVvuIJhYfiBagoJU+Keb+3UHoIkoh7evxP3APa+2/O
+	YCJWv9Z9AJNZZ+HRspxLIVpjpc6hwAjZOc/PuaqFkQjdUFwoOd2f89WJsGfPndaA
+	pf4fJi7PUKY+Y20Pc2ZrwP1UrY1tMEbI1QGn2a+4UW5WZj9Pt3P3mhCkMyublN+I
+	I4F2hTZTgksKUXtxVaC+699KEdxa6VX7lXu+zc/2AzzriG5dBMlkJYdBDawbmUYd
+	SD2un/gGNphjKTiCF88XEDsQXgNQEu3Ca/fnQ9nYHJ6/vF5u7FAFq4hu5Jjv6Qml
+	rFu0qyWSCHTPt7lz6l/2+azJz96bLa4+Q==
+Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com [209.85.208.70])
+	by m0001303.ppops.net (PPS) with ESMTPS id 4hnc09fxmv-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <linux-mm@kvack.org>; Sun, 01 Nov 2026 23:42:10 -0800 (PST)
+Received: by mail-ed1-f70.google.com with SMTP id 4fb4d7f45d1cf-6aff6a8ee69so3046561a12.1
+        for <linux-mm@kvack.org>; Sun, 01 Nov 2026 23:42:09 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1793605329; cv=none;
+        d=google.com; s=arc-20260327;
+        b=WmXh1nbaHkBs2ccHNca2hN+4oZY9PoTVqYpE2fz1yp5TyOC1AqpwYQfuXUCQnqckPR
+         Jznwap5mtgfZtLgKej5ADrXtnLcWFYkU0G8OWiHkTJ4+goaOsDtYPSo70V9fgVkj/lfK
+         xyZEYJzz47514EQOaAYF8g/vFpSmEsFx3X3PYZitZ/tNoE4iHPn8KAdwRV3J3xwPwgWA
+         RBJk2FRGeLFhITHvmvCJhA+DCTqk4TV8FNM033PgQngad/4kA8gmKyIi183CkREBvpgI
+         LykMQRuJpARpHlyCxEn6umxCUrnswF0jNBnEaU2eFPizv/HCldjGIcP9vy45Bs275ygs
+         YpRg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version;
+        bh=/tISQoeOPy1BAFDyFldAVc3RuvTUszXOOf5Ksc60ZGs=;
+        fh=qBjWG4IYdpx2vpqKnWP5A/IFoM6r9lHwcVt+5hDPXBU=;
+        b=XooMLSsljSvfYshqJBOR2Rvy198d1t7oRJghws7PP2kCsHL/hwJmKbUIkFe8gvAOug
+         9FfNrhRE+NPRdQDLBBJM95SHfBdRcOkiXyAWuTJYR9lY4bt51q9uwpOFPxkyGHiQFNO6
+         hF1hRta+WuFhV2bYjHx8wkPE65UPmzR3TEBVJYzWCP3f3Ksyplsmkl8FTKyE+VXrrgZ6
+         EGmbmOCi7aWu6UYE9KHj3vpFXgIlq3zmZ2AoQQMPhzHd6KaT/YAyfg2Z2wiNwvuSw1nr
+         iTnntms3KjTw0O+szHWnQexbubXBYn/aS7Z8LcrGfmGRvBhxdkk6kQEKy7bnCDzf26sH
+         X0Iw==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793605329; x=1794210129;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=/tISQoeOPy1BAFDyFldAVc3RuvTUszXOOf5Ksc60ZGs=;
+        b=HzarGRYBropuBxhSC1XRhm5SufSr5xN4yaCw2g72HMW443WhGLyXXN7bBPwl/gy9e/
+         X+BddM27p6ynk4b+cwNBMA5kwJnPjRq2DGX958w95v0xLAMU+mG1foHESaGCi+7F/edR
+         qY/NZYwEfRP1LfOI/QOOdiyiDUVOVZ3CTQuKdCcvLqbtwNmDrwglaABXv/Paj12P6aJD
+         gHBfzcAthh364d+RpVWph4/JcnApZwlxGzViHYZ2lLCKsokRqDpKtXwmU752ot4Hiy95
+         dpSfyx5yGkX/8BUSMQQitQE2hEuyGJAlcX9QbZ/LIlhdC7/uXDLlVgVJ75+egEnGeGRm
+         X9pA==
+X-Forwarded-Encrypted: i=1; AKwUvBw9piiG50lRQ5+UfJr+uUMgqpz9tsetnKTKxVyaw6vKYT/rwc6lponoEKk5NWtswgMlmL5IfvgHnw==@kvack.org
+X-Gm-Message-State: APuU4Z/z2v0FVy7AZWVkUHgf/NTBlUPxbJmIdjppAsw0MQc6mRBk1bKD
+	WIxKEbdwb+0zGk1wg1Zt/6+iZJ1PS991tjyyX1pxYcidSBx55QNs6wxMki8O5ft+H2DZ5DYxb/V
+	vJTCi56Y7HuopMyAAZCnDXykLslzLUu2g5v1gK/I4M6Z+VAKOMdfXRIe0RRg9afLfQX93i/aDMT
+	G2O6LmKpeXwKBVaexeuvIKRMq6LA==
+X-Gm-Gg: AYBFou2AC58OIlLk0kR4TH3x1/BbG9fpKPVMP1Xn53XYADFMnpiHDC80tKIAhKGHuuh
+	Z1sY+ZXk9ZVbKRkt7qdLgcHSbiQweYIwSJAoePwivA8lu3uSgpplTg2FBEj2/HlFvE6yr4wRx0z
+	4YuiQ4XLJzeiosAGjnezUewnpnfmxr74KQS8KbMNE/fS+yuk/3hEDlat9dMqeQxODsy4ZGWVbFs
+	uMMeTyC+Cz78h3i+A==
+X-Received: by 2002:a05:6402:c9:b0:6b4:12df:8243 with SMTP id 4fb4d7f45d1cf-6b4d468ad29mr4577805a12.20.1793605328779;
+        Sun, 01 Nov 2026 23:42:08 -0800 (PST)
+X-Received: by 2002:a05:6402:c9:b0:6b4:12df:8243 with SMTP id
+ 4fb4d7f45d1cf-6b4d468ad29mr4577778a12.20.1793605328346; Sun, 01 Nov 2026
+ 23:42:08 -0800 (PST)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 17/47] mm/khugepaged: preserve dirty bits when
- collapsing PTE-mapped THPs
-To: "David Hildenbrand (Arm)" <david@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
- Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
- Lorenzo Stoakes <ljs@kernel.org>, Kairui Song <kasong@tencent.com>,
- Barry Song <baohua@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>,
- Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
- Baoquan He <baoquan.he@linux.dev>, "Liam R. Howlett" <liam@infradead.org>,
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Kees Cook <kees@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
- Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>,
- Hugh Dickins <hughd@google.com>, Pasha Tatashin <pasha.tatashin@soleen.com>,
- Pratyush Yadav <pratyush@kernel.org>,
- "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>,
- Zi Yan <ziy@nvidia.com>, Lance Yang <lance.yang@linux.dev>,
- Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>,
- Alistair Popple <apopple@nvidia.com>, Nico Pache <nico.pache@linux.dev>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>,
- Matthew Brost <matthew.brost@intel.com>, John Hubbard <jhubbard@nvidia.com>,
- Peter Xu <peterx@redhat.com>, Will Deacon <will@kernel.org>,
- "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Nick Piggin
- <npiggin@gmail.com>, Oscar Salvador <osalvador@suse.de>,
- Minchan Kim <minchan@kernel.org>, Muchun Song <muchun.song@linux.dev>,
- Xu Xin <xu.xin@linux.dev>, Chengming Zhou <chengming.zhou@linux.dev>,
- Chris Li <chrisl@kernel.org>, Kemeng Shi <shikemeng@huaweicloud.com>,
- Nhat Pham <nphamcs@gmail.com>, Youngjun Park <youngjun.park@lge.com>,
- Gregory Price <gourry@gourry.net>, Joshua Hahn <joshua.hahnjy@gmail.com>,
- Rakie Kim <rakie.kim@sk.com>, Ying Huang <ying.huang@linux.alibaba.com>,
- Jason Gunthorpe <jgg@ziepe.ca>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- kexec@lists.infradead.org, linux-fsdevel@vger.kernel.org,
- linux-arch@vger.kernel.org, linux-cxl@vger.kernel.org,
- Chris Mason <mason@kernel.org>, stable@vger.kernel.org,
- Muhammad Usama Anjum <usama.anjum@arm.com>
-References: <20261031-fixes_core-v3-0-d6437171ecc3@kernel.org>
- <20261031-fixes_core-v3-17-d6437171ecc3@kernel.org>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <20261031-fixes_core-v3-17-d6437171ecc3@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+References: <20261007153915.53429-1-alex@ghiti.fr> <CAKEwX=M6G3NPOrGJg7Sz68BDSjzrF4R-tTjcX07L9oZ0GK4Upw@mail.gmail.com>
+In-Reply-To: <CAKEwX=M6G3NPOrGJg7Sz68BDSjzrF4R-tTjcX07L9oZ0GK4Upw@mail.gmail.com>
+From: Alexandre Ghiti <alexghiti@meta.com>
+Date: Mon, 2 Nov 2026 08:41:57 +0100
+X-Gm-Features: AclHuK_ZBjm071ukvNbDmfZJEnuL9tpwTpRPlzedYNA1H7fjxQBxYf7Dj8f29uQ
+Message-ID: <CAEmasaV0jxQVTGRi6vfwuZbm6kcnxJcn7xJmT7aHHKf+Ad3bPQ@mail.gmail.com>
+Subject: Re: [PATCH v3] mm: bypass swap readahead for zswap
+To: Nhat Pham <nphamcs@gmail.com>
+Cc: Alexandre Ghiti <alex@ghiti.fr>, akpm@linux-foundation.org,
+        hannes@cmpxchg.org, yosry@kernel.org, shikemeng@huaweicloud.com,
+        baoquan.he@linux.dev, youngjun.park@lge.com, chengming.zhou@linux.dev,
+        david@kernel.org, ljs@kernel.org, liam@infradead.org,
+        vbabka@kernel.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com,
+        kasong@tencent.com, ryncsn@gmail.com, chrisl@kernel.org,
+        baohua@kernel.org, usama.arif@linux.dev, linux-mm@kvack.org,
+        linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Proofpoint-ORIG-GUID: EbA4m-p7FEjuWc8I8hVBWdtiBJ2SEouw
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMTAyMDAzMCBTYWx0ZWRfX+nYQMRGg/+XD
+ M4tI2H2WL7GTaWHQr2QqfGQHEy6LeIuAueFhMOVZthgGxcpOWBhGw2sjkEH6tcy2n7U87mG0r4N
+ JPWOi/4Kd3vQHDFWL0l/BQ5NfLjxjWg=
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTAyMDAzMCBTYWx0ZWRfXzFJzcMU+DJ+D
+ n4DoKexqbZBopy/otpLJvnSO5e8fHTweLgk+JbFM6+WeXFI+qM6pOo5SqcRFEXe3M1YJDOpzZPO
+ V8m5DjqLjoatLjnnvJ77SO4tjfMQ2yMWImlZJIGOMre/GHv87UugheNOxJhRBFe62t4IyrCnanY
+ kqWmrN/UG1GR2u97HIZkXT+PacUpFesh6l/RmLK/lFd1M9MUdZsYNPWlcPjDYFi4zE/vu3gha8Z
+ K2z/+Lrhv/9lcFBlh+RmTnHyeOSfpGyIsvzmPuHtfoqgfvZbZBirQ9BJLGBEi9giqsvbzmd9FAE
+ Uz6580R3F3z4VeHF7GMdLMLmD61leP2CzffDzX2g0+mdANLvT8Kd/+yyyJISMi1HHifgDNW9K8N
+ 9/9+vMU+vFTafD9mwM7/uyEE9aAwZ0S1j/SJRsaGYMgOLcmoDrg06Lw0qco0Q913/TLkE52EKRO
+ WVC+mZrE1WCYzftahAA==
+X-Proofpoint-GUID: EbA4m-p7FEjuWc8I8hVBWdtiBJ2SEouw
+X-Authority-Analysis: v=2.4 cv=OYcNnRTY c=1 sm=1 tr=0 ts=6ae83ed2 cx=c_pps
+ a=CYpx6mtW7qE8U/l5VCnCPQ==:117 a=IkcTkHD0fZMA:10 a=zJRp6_cAMcgA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=7x6HtfJdh03M6CCDgxCd:22 a=_78whYxrdx1mplLwxq1U:22
+ a=pGLkceISAAAA:8 a=h8lhBcyy4TMpjp85FJYA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
+ definitions=2026-11-02_02,2026-10-21_02,2025-10-01_01
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 3B663100009
+X-Stat-Signature: pt1ak4x9nr41xaamdr1136wyri8f7poe
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 69C97A0005
-X-Spam-Status: No, score=-19.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	UNPARSEABLE_RELAY,USER_AGENT_SANE_1,USER_IN_DEF_DKIM_WL
-	autolearn=unavailable autolearn_force=no version=4.0.1
-X-Stat-Signature: aoo14neipy743t73di17cthw5hmffz47
-X-HE-Tag: 1793604322-973320
-X-HE-Meta: U2FsdGVkX19xEYeFezbk1jeXMNnyrFr38SAKz0oGiJhe3OWtqDushZzc1ER+vn7x9APWmXcnw7WvWhzhW2XKuW+htj8A25hitQy4OAhxFUaVn3TetohviOpsZzMkMc57B6FC61C/XyYM2vYqDz8+pb5Bv/1z88qaju7xLydr9DfPd4UpNvkNbqv0g4QvhLld6Fsa2ClrE6LMRewuCJf29gZulrR6FVGs+JDi8FqyIGf33bLICCvqGy/fqGLRnpVw0c8RyfmddRJ+9xed2erU+8oJSbkYvbXskKATWr0MsE1rAaP5Nr3DZgbC5ixjeD7qn6t4/Ens/GpkuU/xC2a3JBMBdQoDn1snfkZfWtf1n22NmjHLKB+LLRJZf8gm+ZFYCeIcm5FgFSWzTFzm46EfgIaU6BQNxWTArAgioTPqE2BnUfvQh2y0xBkDHc4TaanldAS5iKYWeunFcNBVcRW+mqFJsg99Euz7lBbdiLseYuJ5s84VDZ86KzJO2Lc3MhDmcpV+yhZxd1cBSMLQLO9cB3MhMxpMULkWxWco9XuldUqMLNk7M//RBCn7IevhMFUlreHDskL8kiLwCn5oVXC0K2I0hZ+t8zJEwLS9L15F6jjnw/+ZTycspNGFDn5DwcH+Maxsx6s8SXFI4pJK0p1mVg9S+c9Vl5KtaPd3udxPqlOplp0F3sHl+oE87AJtnow9NhmnYLLO/6IX1A6W4p8JvfeyIgqC3VWAOVWwe9TbwL1lQ2PsL7x1nxJC8pQN354gGGbXNme99ClF5uP99jH3NeWn7evyC87o0Tkciu0YQoN8+Znyk34PvoPq/1CgqXV9ET++bTp+eCEKQklBHxT1bM6RElvT9D3g0cf2g9eHD1FKUtcZCluWckVVguXuXFF5GovP/EbeJ7vglHRnBoeG3Hx8ZgBeveu9TfkPiv54jWBfVQbhwH0rjxMIqSL0Yuy40BDSk8KRooZRHpND1RE
- L+zpeUI0
- 0CI+NW1wYVJ8hTPj92yxzFNUvC6O/uev7eBZYJZwpnph+z1U+TXKvNbI3BX882C6OUdgHp2l3TXuZA+wiLwG6eAkF4mU759LHMby9aFjeqk5Uqxy6epzL6o57CXkxtagl3DguPAUSKKaE338Oae6J06RVH2HYllFIoC6p/YEDvqCK+WUWi+VsttQjrYUEaPX1TRpJ823c1GxOSyIXu+PYPUABTdH/04ZNuOd6FcPzTluR8BaoTkqZJAWdRCxftnrGvB05ofU4BXdehc5Wp4P+PF95HXSCgc8BWz6enAQsRcWCmudsRXwEp7041blknZCm2Bgh3on7ResEQXhZoeezRBVS96tnhIg0a2/MBXe3Owt0LG8jf6nJl7IhDWSj9VF1iSPfKjbspw87DFE5kDSAk+mEhOjWB45PNWk5i0mNiE8AXs7Q4iey/YL8HL8WopulOBX2RM+L16aX6jiDjXd9NvRCnFsjo8rG4ycgpA0bD0neVkrMONhi004p1/04qrWPMf+MOGnT0gdjduw=
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
+	autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1793605331-623483
+X-HE-Meta: U2FsdGVkX1+o/+IoHgbw9C904nEcEskL6URokUknuRpXTK6Ro29m3+bjyzVrTvVWpoTxfYRpwUvF5hoornXNhQ1cCsSRLpHUHwG8AzQXOOjC6B4jzIAcajRruqymcA5kUSmUUjsUSoCpKwL3OHfHVd+f0LNki2m22/2Qb2SV1Sg57lRb8lLq4NpE9LoGXsxQnS1ZLBuLOZIB/nAOslcBgHbJ064HweV7+RuP2gEFSiUSRHjTK6ZH17u9SitDgit4cOh5mYU/KOcwZsn4GnjujjGEgIvKeXt/Dv1sPSxoXe5mam5jg/d9iSJ0Y8kSf8RQa9szDlHs4b8bAjJTLLYNaJbjefkPSe6/vB8nYeSLD8hAZW7rRU4FtNE4784TzbmLnp1JKIanpiGN/4UVy6E79B+2PB1fG7QrlG7TtpXH2O8Jj8Esyjyjg5BvVaySmHsgcPmta8P+/pb9WZjWllm7ShYI2tB5eWN09VmvAwIFkrdy8rO1qLRXw5/XpXNjoZqWRMR9Ad9C5OF2K3lYQ966xSVG5mWzE9Qo1A+Vxg0V9qKzp0gWUQ/CmuAZBNoXlNeBK8i7XeeTnCDoYVSyMyIzV+Vih54KZfXy7GAv5s5nneXFMs13I/0LqC9VI5S5SqG/1CeIO4+FOtCNM2xi11PXnAeYLSArIzCklwmSGrDPgQK0gZV+AHnJ9RYgwbauBN8EDVOWEwWdc5EN4HeEpcOeVC2f3dBeKeBkh8fg9HFv+cyBbmwhBZq9YFupifo0R7Mc48Ndt7arHEWcBOZULbJzsJ1/YRsctJmRmhXBl86qjbSxxwY+P2C9Lwd5BsqdmwY5PeGqleFtuOyNkAa5RQOsyaGcOvDgSZips6jGyxDggHbL5cTKbksIDoK4g0helz0KXzkDQ/f0Seqt+HiegVFOTITZuyDVtVu1n/z8S8P9AsXWcsLAyDDmLGDxCdnIJAIjr65XsIXsGbKjMKrpY8O
+ 4hOEpFuQ
+ AzP14teVazzVE5bRyvdybPDqj96N311L8xdfBoeV6ixIje6hoi5DEczsGnAaZL6F7odjsFKFC1WECDIooqgXZpZ766Xl5rgi9Ww5XifE+vcubJgYDX8CybikrtjnPtPo3XfkgwGhuP9I2Q+ec34fYyrvQQ4SIkapsbfSLTIcWoeNnPBC23/WCsVHnsBmoliQwY9kljwYjGUGA9skhxhox5po+ESWaVaLlAtpdfI6BRMDKakKOkFSTdn5CVqEU4tyS6pw2UWvY0bs1PDr04N91+zY/H9VzTsC7mDGCav2sFJ21eHknxu22Yj9py9SAlkhZ6E+BcMefbq4HSescGuu0JUjk7E4ZsstRjs71383nq1sO3hs/6fKtupYoTrs8+AE5FUOPnKaLeyWQO5kwUC6i0aA1Y9aRkqLEu7YyvzKKoFD+WWdPQM73cijoYYAADKSdUD+bJrmRXr92qjXbAuQHxsTlvNPDcaH4a9Jpiu7N326X2LmpiNm9LlmwX3vBmurlqtIwPoSPM5js3Yc2vBq18JDW73Ezzs4mTLVGlrXGy5VkKhP3Snvn3VLm5Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -125,42 +175,78 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
+Hi Nhat,
+
+Sorry I missed your answer.
+
+On Fri, Oct 16, 2026 at 6:19=E2=80=AFPM Nhat Pham <nphamcs@gmail.com> wrote:
+>
+> >
+> On Wed, Oct 7, 2026 at 8:39=E2=80=AFAM Alexandre Ghiti <alex@ghiti.fr> wr=
+ote:
+> >
+> > Commit 0bcac06f27d7 ("mm, swap: skip swapcache for swapin of synchronous
+> > device") made SWP_SYNCHRONOUS_IO devices (e.g. zram) skip swap readahea=
+d.
+> >
+> > zswap is the same kind of in-memory, synchronous backend as zram, not a
+> > swap device flagged SWP_SYNCHRONOUS_IO so it still goes through
+> > swapin_readahead().
+> >
+> > Here are the results from bypassing readahead for zswap too: it was
+> > measured with a kernel build (make -j16) in a memcg, zswap=3Dzstd, shri=
+nker
+> > off, on Sapphire Rapids and 3 iterations.
+>
+> Would there be regression with shrinker on, when we have mixed zswap
+> and disk swap backends?
+
+Readahead won't happen if the faulting entry is in zswap but it keeps
+happening when the faulting entry is on disk. But if a zswap fault
+does not bring its disk neighbours, we will incur the latency of the
+disk read on the first disk neighbour that faults.
+
+It's hard to say if this would regress, it must depend on the
+distribution. v2 deals with that so would you like me to resurrect it?
+That would be in addition to this patch as I'm about to send to the v4
+so it gets merged.
 
 
-On 10/31/26 5:39 PM, David Hildenbrand (Arm) wrote:
-> From: Chris Mason <mason@kernel.org>
-> 
-> try_collapse_pte_mapped_thp() clears PTEs without transferring their dirty
-> bits to the folio. A shmem read fault can map a clean folio writable, so
-> a later store only dirties the PTE. Losing that dirty bit allows reclaim
-> to discard modified data.
-> 
-> The assumption that regular files are read-only is also obsolete since
-> commit 1b6444331bebb ("mm/khugepaged: enable clean pagecache folio collapse
-> for writable files"). In any case, transferring PTE dirty bits to the folio
-> when removing mappings (and while the folio is still mapped) is the right
-> thing to do.
-> 
-> Use get_and_clear_ptes() to collect the dirty bits and mark the folio
-> dirty before unmapping it. Update the comment.
-> 
-> This was reproduced with shmem using MADV_COLLAPSE followed by
-> MADV_PAGEOUT.
-> 
-> Fix generated by an LLM and sent by Chris Mason in private.
-> 
-> Fixes: 27e1f8273113 ("khugepaged: enable collapse pmd for pte-mapped THP")
-> Fixes: 1b6444331bebb ("mm/khugepaged: enable clean pagecache folio collapse for writable files")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Chris Mason <mason@kernel.org>
-> [ david: adjust comment; simplify description; cover file-thp as well ]
-> Reviewed-by: Pedro Falcato <pfalcato@suse.de>
-> Reviewed-by: Gregory Price (Meta) <gourry@gourry.net>
-> Tested-by: Gregory Price (Meta) <gourry@gourry.net>
-> Tested-by: Muhammad Usama Anjum <usama.anjum@arm.com>
-> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
-> ---
+>
+> >
+> >   768M memcg (sustained swap thrash):
+> >     metric                 mm-new    + bypass    delta
+> >     build time (s)          405.0       341.7    -15.6%
+> >     zswap-in (GB)            79.5        53.0     -33%
+> >     zswap-out (GB)          144.8       115.6     -20%
+> >     swap readahead (pages)  6.79M       0.45M     -93%
+> >     swap_ra hit (%)          72.1        89.9     +18pp
+> >
+> >   1G memcg (light pressure, build not memory-bound):
+> >     metric                 mm-new    + bypass    delta
+> >     build time (s)          177.7       176.0    ~same (no regression)
+> >     zswap-in (GB)            10.2         7.5     -26%
+> >     zswap-out (GB)           27.7        25.1      -9%
+> >     swap readahead (pages)  1.07M       0.08M     -93%
+> >     swap_ra hit (%)          68.6        87.2     +19pp
+> >
+> > Similar gains were observed on an AMD EPYC 7D13 host.
+> >
+> > The gain is from no longer prefetching pages that are pointless for an
+> > in-memory backend: readahead inflates anon residency and thrashes the
+> > page cache (file pages get evicted and re-read), lengthens each fault by
+> > synchronously (de)compressing a cluster of neighbours, and adds
+> > compression traffic when those extra pages are reclaimed.
+> >
+> > Bypassing swap readahead for zswap therefore makes sense.
+> >
+> > Suggested-by: Usama Arif <usama.arif@linux.dev>
+> > Signed-off-by: Alexandre Ghiti <alex@ghiti.fr>
+>
+> Code looks solid to me otherwise! Nice job.
+>
 
-LGTM.
-Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+Thanks!
+
+Alex
 
