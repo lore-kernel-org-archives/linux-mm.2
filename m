@@ -1,113 +1,144 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD323606A326
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 23:13:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23B59606A324
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 23:17:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=virtuozzo.com header.i=@virtuozzo.com header.a=rsa-sha256 header.s=relay header.b=OpKQ1FQA
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=OfdM3aj3
 Received: by kanga.kvack.org (Postfix)
-	id 12EAD6B05B1; Mon,  2 Nov 2026 18:13:49 -0500 (EST)
+	id 46CC06B05B3; Mon,  2 Nov 2026 18:17:34 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0BAB36B05B2; Mon,  2 Nov 2026 18:13:49 -0500 (EST)
+	id 3F6406B05B5; Mon,  2 Nov 2026 18:17:34 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F120E6B05B3; Mon,  2 Nov 2026 18:13:48 -0500 (EST)
+	id 297376B05B6; Mon,  2 Nov 2026 18:17:34 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id BAA8C6B05B1
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 18:13:48 -0500 (EST)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 36EF614014C
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 23:13:48 +0000 (UTC)
-X-FDA: 85391733336.30.5222352
-Received: from relay.virtuozzo.com (relay.virtuozzo.com [130.117.225.111])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 4BA3C140004
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 23:13:46 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=virtuozzo.com header.s=relay header.b=OpKQ1FQA;
-	spf=pass (imf23.hostedemail.com: domain of khorenko@virtuozzo.com designates 130.117.225.111 as permitted sender) smtp.mailfrom=khorenko@virtuozzo.com;
-	dmarc=pass (policy=quarantine) header.from=virtuozzo.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793661226;
+	by kanga.kvack.org (Postfix) with ESMTP id 02A616B05B3
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 18:17:33 -0500 (EST)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 8023C1402A6
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 23:17:33 +0000 (UTC)
+X-FDA: 85391742786.22.E821129
+Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 9BD5FC0006
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 23:17:31 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=OfdM3aj3;
+	spf=pass (imf22.hostedemail.com: domain of abhishekbapat@google.com designates 209.85.214.178 as permitted sender) smtp.mailfrom=abhishekbapat@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1793661451;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Lj7aGfdx9PDf82bctHONzhhanDhKc0G2d51SLeBZGW4=;
-	b=lazLqv5k05E3QhFeKEJaykllKpFdr8aSBtb7XRdjREMF+okN43aJA+KAEczwCWCICgqJsx
-	Pe6Tj3ETIR4a0fcXSNwe/ZSIJLma4W8CX2dYeeNakCzy+ozRHG/hDoabXGLZAMBlCl8VSm
-	W/Um9JKRFqsJGGGVqVqtQgdfecL2WLE=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793661226;
-	b=zge0oihVo1JZvi8j7YTtlQ3rs7gNADUcsOxH5uxGnAEqXjtJRD7qJlaIlFdyhSltKMIEuM
-	G5uS12WG1DIxFdy9VVuTXHLbw+enq2+s8F+Cuzq089n9biL/UPAzxoPIHVJSjHDemzvLHE
-	SAFkfO5tiPhhxMKjyx7R4EUFx5Oj5sw=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=virtuozzo.com header.s=relay header.b=OpKQ1FQA;
-	spf=pass (imf23.hostedemail.com: domain of khorenko@virtuozzo.com designates 130.117.225.111 as permitted sender) smtp.mailfrom=khorenko@virtuozzo.com;
-	dmarc=pass (policy=quarantine) header.from=virtuozzo.com
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=virtuozzo.com; s=relay; h=Message-Id:Content-Type:MIME-Version:Subject:Date
-	:From; bh=Lj7aGfdx9PDf82bctHONzhhanDhKc0G2d51SLeBZGW4=; b=OpKQ1FQAAtnQm4DcisH
-	OxLkTvwm4bsXDiphSs7yYIEjUz6N9dryyyh578aC1rbhMx1oeRC3sjMBDcd+/+ie9DlRSnxD173HM
-	7tw4yRDlvUh3uP3hNzhMljj2qi6RR9ALFBCwuHppJOK9Cuk8b/8rbD5WV3we5wkmYhgS4Iz6kCNka
-	eijQbnZvTYDMIkp+w3lWtI1VpfNP/Jj/k6nloWcEvXHUuIl8MWvShu5J9fmWgh9tpZQu/C9gjjQWB
-	2SYDuLUA7T/J2PoqxGMwjyBxWHXOYjLP+meWBVloX/ZkZReZPWxDr8TGHQ3/jBWX5LnSoZfn7FP1O
-	GnC1ewHFaZlDQNw==;
-Received: from ch-demo-asa.virtuozzo.com ([130.117.225.8] helo=f0.sw.ru)
-	by relay.virtuozzo.com with esmtp (Exim 4.96)
-	(envelope-from <khorenko@virtuozzo.com>)
-	id 1xO19a-00Ael5-38;
-	Tue, 03 Nov 2026 00:13:20 +0100
-From: Konstantin Khorenko <khorenko@virtuozzo.com>
-Date: Tue, 03 Nov 2026 00:13:19 +0100
-Subject: [PATCH v2 1/2] mm/shrinker: keep the per-memcg shrinker units in
- an xarray
+	bh=xKD9YvpeuRe/dGg9UOpRwAfoOUMyefhjGpw4KelDrg4=;
+	b=eY1lu73H6qqgP3LrxI5UpRQLMnp2tKReRVf2jeTeU+BywoNJOgWbI9w3gq7sdlU3NkbaHU
+	PYf6uNofTW/Y/4iYI0zhEh+Z4heO0s6MRPsDw5KsDVd7u3+o5Cu8dXX5hQFLQ+RMQaoXHM
+	sKAsnZoPlXICh6OaBG1waQKUS+tK+hw=
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1793661451;
+	b=HVi0nVchQj5yA4bJRgoeHnzFIJzjIeVxkTp6QlLSV0gJ4ILOLcN4UcvaD90qp4Q0qLWdOR
+	QaykMvp+TUalJGPZ79IyhjPozIGZRx+qxu0G82JVdFVJOyIhyrJwaeA1SoqUSCpO5ochZJ
+	HumT7wSQ4eTvHGGCTb/XMEyLUM5hQCc=
+ARC-Authentication-Results: i=2;
+	imf22.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=OfdM3aj3;
+	spf=pass (imf22.hostedemail.com: domain of abhishekbapat@google.com designates 209.85.214.178 as permitted sender) smtp.mailfrom=abhishekbapat@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-2e8d6fcbba0so7145ad.1
+        for <linux-mm@kvack.org>; Mon, 02 Nov 2026 15:17:31 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1793661450; cv=none;
+        d=google.com; s=arc-20260327;
+        b=P2jvqhM3TvX29KmGIyOVAFUTJye6mYaf2q5vvA/zAba93o7Kc0HbueIXEN1Jc+eOmc
+         gBqfimZ4srqT7Xj5q4pxcsww5Z6au9Ik3DlsFKpXMTkdHpLsKcMRZ6UnaKSKjqWG7E0h
+         upDplKCLcAjBdpd5/AA7bWCmuQesNthzH9tGPa6rCowYcC3l50Nvl8yecJo6bP3wfe9N
+         Hi5cvGHuNhX5T92AxfiRFTTq6dRSubHUPE98wwo+wyZ6Z3h+uepoNmivsnijV253HmkG
+         FIqovRvYvyGZDIX7qBj0PjZCvGJ4rUMXZUlcJksOIszLR3l1tAfMqnsPXJsvOwDfWi+o
+         Xulg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=xKD9YvpeuRe/dGg9UOpRwAfoOUMyefhjGpw4KelDrg4=;
+        fh=uUn7CAwQbdHQnE2gK+Yxx8rbEswFoROIYVR9/wyd6uA=;
+        b=IEPa13Jm+EL9vIgTXp+K45fcKSag6YuIQXqlOArvyfwegfu0j3+RFTLeIluiQ6oPjc
+         BtqamLcP+InfvRYcYe2gXzhbxARLS7HaOkR4OBgUFRLMS8VCGz+BPGIlIiAPqC0l61sH
+         YDkv4MiRIoMv9P1vkKNaxyHTPSmeFS894u0hzhuL7j0nl1ylD1sdzFdL4wZK1AMc4Y5s
+         PnbWUhINW5d+U5ovPMWVLcNE840FsTBZXL0RVuHZHiSH6z0tNTAT6ZKJdESY+2MJlOss
+         UBjezrD681zRW/1FknkA/DnN2Lzz9s/ak+JFVH9bSiMEHaKs29UcF/fdk//5wMcLhlnE
+         hpFw==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20260707; t=1793661450; x=1794266250; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=xKD9YvpeuRe/dGg9UOpRwAfoOUMyefhjGpw4KelDrg4=;
+        b=OfdM3aj3p2FMT8zXM3TW+ri1Q62SvlV2lp61a1beVwZjh2s7nnOXDFRRMwTICt7aMJ
+         nR5p+qJhOt1EaiE7y6Fl7oSpTotVQgXNF/G10YDr3EYuRYAroBDXzx5dH6ab0yW35RN4
+         rThc+9k/nxEjrFFKtvKHPqSFPjemIu7slUlRZ6J4tw+iMTzwqqAtvrzAFGrJ6OYrEY3v
+         xsWfJBYUm/FUkmvpUNDAf3Sq0OFZeO+beSo57e9sp8BbAXDE8+Uk13oWqsNzZ/1wa2ix
+         MduidL8omoP6bhyGTZ/Nx9vcghW2RiAWsjwF9OsbCFohUXX/gN30QlCX7YDYWXHjF5Ps
+         Ss7Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793661450; x=1794266250;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=xKD9YvpeuRe/dGg9UOpRwAfoOUMyefhjGpw4KelDrg4=;
+        b=WhNkInvn4+Ne9WRqcE9stKETQXFQJrxUt2iJsT1dlxqJM+Nk8tptHZb5W3QKIq8Ehm
+         eQemcTM0lPC1fJb83LSNeXA52l6cm0FC/W+r+b63aOyG3La6i7Spx+s7QQ+QuX42yin3
+         iw1xHiMyzaMK8pbVK9OshBesGvxYVAekR6uXb86OeBeF0pyoqqK1ElVNO90LAwCg9Iy+
+         yObhvKok0j4xnkpLQ12P2U6v9Vx2x6vLnYl9BZvRQ8OqoexeBg5OW0B7VLmkglSGm10Z
+         tUkwZwsq2I+OpHglvoGdmxlBjUvU4VuC/NbWFI9nQ7aUSRo7igWxfKsz9Gh9oTg/UAmu
+         jQhw==
+X-Forwarded-Encrypted: i=1; AKwUvByrsg6CN06mYYY8BkSIPJcVl+SlO+z6ADp01kRSMxjwivPg+8JhW4Cd1MomgZCkuSS7mXYicGsG+Q==@kvack.org
+X-Gm-Message-State: APuU4Z/+WDncrb/qC/Pv5paORE9+UyyW0Gfcrw2xwa+wwurwf3eUx0hI
+	C/DCzsRR9wHcNEtYPHZUV8SrHm6pSiD3xCjEG2iCOgxTpIS9eTPGfluS7oGYYjQuI7HpXN710pP
+	6LmwcVQk0Gxq282dw2NfgSfHE357m1tXWaq1hZuo4
+X-Gm-Gg: AYBFou0VkPVYqj50meXZtTrVA/c+6iMe9ZzF6rNnjmUNoW86j5AinO+l2mrISLmSBaF
+	3acX7uJYk+MC0sI9uLtGSFpVUzoVxc8TQEOiLM0NDkYdjbxkQztnfIgropLaADuqQSWvnkRDwQR
+	JrvY3Vs3IJYu2Z3U0lrK1RlZpIXJQjIB+2LTshHPUn/NsCDHw1yDljXl0reAIiAjh6PxkfODs6I
+	6W/qdt2ZBv1URJzMATNDp0h2nNNpenbO8wrpj64hn7d3rRk6+FCXzqHPqNrtvwS2jhVZSi+eY91
+	uFiNS2hF/60fuoVdU9ecjaNzIcJ0ACuw4s9rFSiHl/QfphS6CRKFjuj+T3lYv0MIlzsil2JkL/B
+	hX47w+hTzzJqwOmn4Pb7GSAx0z6TFUTqznmvleJSrfiEIHE5pTdwykUFyG/frM+y09Ss=
+X-Received: by 2002:a17:902:cf0d:b0:2c7:f0cc:dafa with SMTP id
+ d9443c01a7336-2ecee02a602mr1319195ad.5.1793661449821; Mon, 02 Nov 2026
+ 15:17:29 -0800 (PST)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261103-b4-prep-vstor-144717-per-memcg-shrinker-units-on-demand-xarray-v2-1-cf9b836859c5@virtuozzo.com>
-References: <20261103-b4-prep-vstor-144717-per-memcg-shrinker-units-on-demand-xarray-v2-0-cf9b836859c5@virtuozzo.com>
-In-Reply-To: <20261103-b4-prep-vstor-144717-per-memcg-shrinker-units-on-demand-xarray-v2-0-cf9b836859c5@virtuozzo.com>
-To: Andrew Morton <akpm@linux-foundation.org>, 
- Dave Chinner <david@fromorbit.com>, Qi Zheng <qi.zheng@linux.dev>, 
- Roman Gushchin <roman.gushchin@linux.dev>, 
- Muchun Song <muchun.song@linux.dev>, Johannes Weiner <hannes@cmpxchg.org>, 
- Michal Hocko <mhocko@kernel.org>, Shakeel Butt <shakeel.butt@linux.dev>, 
- Harry Yoo <harry@kernel.org>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
- cgroups@vger.kernel.org, Konstantin Khorenko <khorenko@virtuozzo.com>
-X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=17526;
- i=khorenko@virtuozzo.com; h=from:subject:message-id;
- bh=ce93Ru5g8bcYpI8VGcVSC/ia92KZeXtJha+bnr7Xtd8=;
- b=owEBbQKS/ZANAwAKAVGWCkf5YVwqAcsmYgBq6RkXd3gzqUkgFY16Fsf6HBPCGM5S7b/vv6zMX
- mUlzj9fhkeJAjMEAAEKAB0WIQRWD23IPcXT0GO9CCxRlgpH+WFcKgUCaukZFwAKCRBRlgpH+WFc
- KsdsD/9+1IEmWHZjhtazZC5wlxpRalOhQOS24F41AP2F4wYMdSjb9XH98276Ag0MZHh5B1SROM7
- Yjm9fKpyms3Rd1igA00YzVLYJQkVPvfyUEaGnkFrNun4O0RiB+mpDNUYln4WGU2UvA5ihZMPXuS
- P6v8hWasxky/PcHD8AaOoYWUC27qknuHLJ1r31ZELp1G8gZZQ80HB58uoOTUsVmLFiwySG+JsNW
- vd5q8tAQzkj9mZW/3UW1c1b/qBx9bAw19TDS28QY06INzEkIuHsW9Lcz5+/7BzlP+XIsWk/pP5e
- 9h+70A4elESOetcpNIXPqUZQW1QpK5XPrKXLEz7Sy9dFQLxmfgX7Ez2k4nFrwVaGuobFRHN1G/E
- zRXpYK1LiUimCdoRlSuFPzZi+IR6jnrEgx3l9pC18SRuN4P5zd5r9LhLBV0+p0WIQMipUnx0UbW
- yKFDTmgbV7zu00bqBs8+QBiZYFMKnLYdiwpxzOec8cEPmoIClpE1MreiCkB2puAaKNC0yA26vNj
- 0ECu/j7175kTBtIZHDim+ElkokhuG+fI59XmiOtzm/CRFos6qOhEEroWe4QD/TyqoUf0oc1NLK5
- I+fk/+EpsB0BEfrFyLxLc+J2Swsy60os36F4Vip9i4Hdqn15Wu+37eMNFX3pDgxMQPl33xbPJI/
- mki0jTc6CkLzJwg==
-X-Developer-Key: i=khorenko@virtuozzo.com; a=openpgp;
- fpr=560F6DC83DC5D3D063BD082C51960A47F9615C2A
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam09
-X-Stat-Signature: whctd143nh1eknzq6sygfumk8uywwjoa
-X-Rspamd-Queue-Id: 4BA3C140004
+References: <cover.1792690544.git.abhishekbapat@google.com>
+ <f577c773058265f0eb7fe2c10fb6aa4003445a00.1792690544.git.abhishekbapat@google.com>
+ <sashiko-outbox-183008@kernel.org>
+In-Reply-To: <sashiko-outbox-183008@kernel.org>
+From: Abhishek Bapat <abhishekbapat@google.com>
+Date: Mon, 2 Nov 2026 15:17:18 -0800
+X-Gm-Features: AclHuK-hHejKvvLFEoGswR0AFCGtiaitOOypnWQKOfKmeT59R1ag4cCR_-OpHjQ
+Message-ID: <CAL41Mv64927fy+w4FVzROTS2iNjRqZc8Ss=dZxuk-WqmJpoh8A@mail.gmail.com>
+Subject: Re: [PATCH v4 3/4] alloc_tag: Extend allocinfo_filter to support
+ tracing queries
+To: sashiko-reviews@lists.linux.dev
+Cc: Suren Baghdasaryan <surenb@google.com>, Hao Ge <hao.ge@linux.dev>, 
+	Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, 
+	linux-trace-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 9BD5FC0006
+X-Spam-Status: No, score=-18.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_IN_DEF_DKIM_WL autolearn=ham autolearn_force=no version=4.0.1
+X-Stat-Signature: bdquorwwuh33oyzd6aufzydan7w1ugor
 X-Rspam-User: 
-X-HE-Tag: 1793661226-864099
-X-HE-Meta: U2FsdGVkX1/toImV0VOz6uwsHCXEatIbBi3cobm6WU/9LsdncU1oMI+htJzKODmp/JojV08oerg+pX6V+ag7LJNuR8J4q0sb8S3okG1dDysKp3Z/9O3g4uW6AxH0FUCsdpGe8ZyfIv2l0ZQ7nuxZ20fuLYXIXAb6F4yf8FpvuRrT9JxAhB1LAHHUZWFnB9laS1zh/wUUYP+IeW8EIWR7Z0rtX6vG2Xc4XEi7uytvmu6GIpzVzjj85LOcfsVy+zV+i/YcLdJZ9H6Z25ZuvybPvxZB+9XyaU0RXvgisvE3MUBmrPDlb5grlBcCxCAtrQsdgfH2O0sJirxtehFjFgGVHlFXoqjwkr4BSdnOKlZD6yIOsnyodUagHCdbN++qlHjpFFpJtbdu8wB6u//7xAMlbCuzkTuvRX35w4kFv08jJ1r8hH5UvtOLUiUirPDgnwuKrx6R0L1A2J+xwf8mWlJZD7+SEq3eTsXsLlvVFsXq/AqSwoFMnndSIVERcGe0AFHO6cIzyv05zIbE8cwCOPtuxEBUZkFnwL45lfb9Q35dBOh+Fpq8+R+1ZqSEe0tSbdBqYZE/I1sM0ywr0nSkckDOUKt30uOxL//ZqRwepEKHFpr1O13OiTgGUWUhVIMSct1dXbdw/MxezBwAu9vdn/gYD33Pd866KNNdQyVSrjfSQokhLzhLSXq5TpQbvw8OWqQKZxh98HrPtDI/CQ7uAI85eRI/CEUeipGY+shMPDhlOjrIwvHJxK0/01E6Xi9MGNIBSQVpLN0FCE+FXwtql++XPSpUg/BNTDIhIiTUtsUZJgoeBfmrndAATYF12TOZOcroGuydUIy5Y0bmiQ1Aq9V0dr9peu+jR6j3nFaNd+mq6onu4esYcYY2jaYT3ProXbdvPfuwP1GBCaNP3qlQzEqtsigtmDILJeNVmY/InonJH4Kdk0021YPoSic6TrurCUksLWuNOHmxeQ3hRU1TGPN
- 3S4WtZqT
- bVHpHEBvXObHlITwFSj9DZI4M0C7B/pvL5S+zQkVijKPV1utvfvFjzs/4ql95BHQeOqzbIyizySaL/ibR0jXaf1UJERGcui2T4VL+vQbXc9nK8FuGx0yy7N1w76G7i9E1odmGICge0tFR+wZp68xOga6/mcUgj/iaVniMYeScgOHZfEDxKOuhgm2XLZtsOShjmUeA6ceooa1ZkibgZICufUD06a1lz/IhgES8M9+/IdR/C6Drx1tiEmaN1+QVrc/XW5a3bl4dIzHpMMV78BCvt1xRbsXTC9+Q5/yc
+X-HE-Tag: 1793661451-909315
+X-HE-Meta: U2FsdGVkX196LiuUdBlNCelZHSVX2zIMxF87g2d/1t/utu1IPx3gBxvrtuZUJOd5oTQt8IqxTZWlmMEjrxX31lLDftyoor+UAVqI6pzPmvKCKa2O92C1BUGfkaXaw0l+F8zBKLjc8rJ2mHmtrZfeXz3cfBXIxUb6QaPCxaMDNrRyA4/zSrIli1MaPa4BTlJfdWJW31ZjZT9v7Q83HxaavoBA/IS8XmJEj0cB9a8XoJ/i39P8xD1nqv9ttyzGDjXeWFgn0ff3ahPx23YNCQVOPHFcpC+T82r8xI+ZsWQn88pwr/Kd5JwFAcTSDRy60bck2817NsWY6xNTDSOo9L30evVuJhFAiVnIbfQNejy4TGnUrj/k+oIn+PNuMoOaUN4GgPVApO91E+bulC5z/88WjxsN7cNG1EFwrnmSa0c5GL/c6F9aotUACscq4BxuANo2zsvBtZ82lhnlAGhrACxKzQQX8AvVXkD3z6JnK2/Zav+I8farQ9ySpJBq6REgiSCCNp6mgDMSuYh+HFnrGhDBv7QpmQuzG3B+Y5OVm8MX+K4PuQxCGjJUekqFMKOzNlnFl8ZneHUE/DLndmzm/OOjc5PmPTX/9HNfpwWtPXsZLealDKR14C0piCGgkLLfS3g6oSZmSEF3TYG1/mldatPXsitMT9m0VJmo7+ZYCMI/uCFpAJqTmL2jVy2w66QaAtYIFVpCU8vDEQzG2W5Pg9nuKtVAtYoBpxnA9sYUYydz8u9eP4gtbHb1MnqCrKOi89xSsXC6upu0LjLnW+2JniylRlmG15Xcc/gQe+DebtkD5IAzrtyCRWLd0x6KZoFJzb6q/uwj31WCGP8doXxAZFuQFUvq8knP8vYC0gJ0TKaZESglu8+HgWi0vsPRrusrm1pnNXOAlW72pAdwy/ZLh8wlf7hnVVHHXGgYKXOzPSosl5GZKqA/+mEG6NizvpuLJ7MHPo1oRGbWQCDEU8k/6Il
+ DrlD4ow3
+ MhrgQcsCQkNi3iocpdz+Qo8VwBSow9/8twUka2ul9qXS0C/3Y0mK5cZ4HXOuH1PplajW/WSuUTcMtp7UYkn1bQRMEPiwRJIoObu+nMc9xDwjII+5e7XFgS2NIuZr+BBi/ePfDUSUF+uDbX1Ltp1wsUqXitEAvcjbxeUXlD+qrIIqUqyY0pAgGuZbWmcy44TdDE8yVw/Z9DOh0qTNuUfM6umo194cOtaZSZiAvfWUs/bTjdI0jCYa/d6c9UjiF0ezgYPDX7UhfVXIMU0bhqxjDjDHQpCNgeScmLXTgH2XGAAcEGEa9Xh9IWft4Q1cT0qLx0bdXX0Urkfg0gSUPuxtuCLHd41tJsVWf++hvgpbJzhndQB3fBqdRUmc3z1tZ6HjGbg6k
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -116,532 +147,120 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Every memory cgroup keeps, per NUMA node, an array of pointers to its
-shrinker_info_units, sized for shrinker_nr_max ids. shrinker_nr_max is
-the highest memcg-aware shrinker id ever handed out; every superblock
-takes one, and it never comes down.
+On Fri, Oct 23, 2026 at 10:38=E2=80=AFAM <sashiko-bot@kernel.org> wrote:
+>
+> Thank you for your contribution! Sashiko AI review found 1 potential issu=
+e(s) to consider:
+> - [High] alloc_tag: UAPI breakage in ALLOCINFO_IOC_GET_AT from growing al=
+locinfo_filter
+> --
+>
+> commit b1243e6bc8216f5fe9d8786ec8ca3a597c41681f
+> Author: Abhishek Bapat <abhishekbapat@google.com>
+>
+> alloc_tag: Extend allocinfo_filter to support tracing queries
+>
+> This commit extends struct allocinfo_counter and struct allocinfo_filter =
+in
+> the alloc_tag uapi header to report whether tracing is enabled on a tag a=
+nd
+> allow filtering tags by their trace state.
+>
+> > diff --git a/include/uapi/linux/alloc_tag.h b/include/uapi/linux/alloc_=
+tag.h
+> > index dafcba2f7e2c1..a96054ac22376 100644
+> > --- a/include/uapi/linux/alloc_tag.h
+> > +++ b/include/uapi/linux/alloc_tag.h
+> > @@ -38,7 +38,8 @@ struct allocinfo_counter {
+> >       __u64 bytes;
+> >       __u64 calls;
+> >       __u8 accurate;
+> > -     __u8 pad[7];
+> > +     __u8 trace_on;
+> > +     __u8 pad[6];
+> >  } __attribute__((aligned(8)));
+> >
+> >  struct allocinfo_tag_data {
+> > @@ -54,7 +55,8 @@ enum {
+> >       ALLOCINFO_FILTER_INACCURATE,
+> >       ALLOCINFO_FILTER_MIN_SIZE,
+> >       ALLOCINFO_FILTER_MAX_SIZE,
+> > -     __ALLOCINFO_FILTER_LAST =3D ALLOCINFO_FILTER_MAX_SIZE
+> > +     ALLOCINFO_FILTER_TRACE_ON,
+> > +     __ALLOCINFO_FILTER_LAST =3D ALLOCINFO_FILTER_TRACE_ON
+> >  };
+> >
+> >  #define ALLOCINFO_FILTER_MASK_MODNAME                (1 << ALLOCINFO_F=
+ILTER_MODNAME)
+> > @@ -64,6 +66,7 @@ enum {
+> >  #define ALLOCINFO_FILTER_MASK_INACCURATE     (1 << ALLOCINFO_FILTER_IN=
+ACCURATE)
+> >  #define ALLOCINFO_FILTER_MASK_MIN_SIZE               (1 << ALLOCINFO_F=
+ILTER_MIN_SIZE)
+> >  #define ALLOCINFO_FILTER_MASK_MAX_SIZE               (1 << ALLOCINFO_F=
+ILTER_MAX_SIZE)
+> > +#define ALLOCINFO_FILTER_MASK_TRACE_ON               (1 << ALLOCINFO_F=
+ILTER_TRACE_ON)
+> >
+> >  #define ALLOCINFO_FILTER_MASKS \
+> >       ((1 << (__ALLOCINFO_FILTER_LAST + 1)) - 1)
+> > @@ -75,6 +78,7 @@ struct allocinfo_filter {
+> >       __u64 max_size;
+> >       /* filter criteria only; see allocinfo_counter.accurate for actua=
+l accuracy */
+> >       __u64 inaccurate;
+> > +     __u64 tracing;
+> >  };
+>
+> [Severity: High]
+> Does appending the tracing field to struct allocinfo_filter in
+> include/uapi/linux/alloc_tag.h break existing userspace binaries calling
+> ALLOCINFO_IOC_GET_AT?
+>
+> While struct allocinfo_counter consumes a byte from pad[] to keep its siz=
+e
+> unchanged, growing struct allocinfo_filter by 8 bytes shifts the data fie=
+ld
+> in struct allocinfo_get_at and changes sizeof(struct allocinfo_get_at):
+>
+> include/uapi/linux/alloc_tag.h:
+> struct allocinfo_get_at {
+>         /* inputs */
+>         __u64 pos;
+>         struct allocinfo_filter filter;
+>         /* output */
+>         struct allocinfo_tag_data data;
+> };
+> ...
+> #define ALLOCINFO_IOC_GET_AT            _IOWR(ALLOCINFO_IOC_BASE, _ALLOCI=
+NFO_IOC_GET_AT,        \
+>                                               struct allocinfo_get_at)
+>
+> Because ALLOCINFO_IOC_GET_AT encodes sizeof(struct allocinfo_get_at) via
+> _IOWR(), and allocinfo_ioctl() -> allocinfo_ioctl_get_at() in mm/alloc_ta=
+g.c
+> matches only the new command value and copies sizeof(struct allocinfo_get=
+_at),
+> won't userspace binaries built against the previous uapi header fail with
+> -ENOIOCTLCMD (-ENOTTY) when invoking ioctl(fd, ALLOCINFO_IOC_GET_AT, &par=
+ams)?
+>
+> [ ... ]
+>
+> --
+> Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/cover.1792690544.=
+git.abhishekbapat@google.com?part=3D3
 
-Keep the units in an xarray per memcg and node instead. Every memcg
-then holds just the units it has, not an array sized for the host,
-and growing shrinker_nr_max touches nothing that already exists.
+Hi all,
 
-The units are still allocated for every memcg up front.
+I recently discussed this with Suren and we realized that the IOCTL is
+in v7.3 so this UAPI breakage is a legit concern. However, we have a
+workaround for this. We are going to convert the inaccurate uint64_t
+to "flags" where the bit 0 would be a check for accurace and bit 1
+would be a check for tracing. This allows us to extend this UAPI
+without breaking the previous versions. I will send out a v5 patchset
+with this change soon.
 
-Signed-off-by: Konstantin Khorenko <khorenko@virtuozzo.com>
----
- include/linux/memcontrol.h |   5 +-
- include/linux/shrinker.h   |   6 -
- mm/memcontrol.c            |   3 +-
- mm/shrinker.c              | 312 +++++++++++++++------------------------------
- 4 files changed, 107 insertions(+), 219 deletions(-)
-
-diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
-index 69e1bcc67c588..61dd6d06897d8 100644
---- a/include/linux/memcontrol.h
-+++ b/include/linux/memcontrol.h
-@@ -24,6 +24,7 @@
- #include <linux/page-flags.h>
- #include <linux/shrinker.h>
- #include <linux/irq_work_types.h>
-+#include <linux/xarray.h>
- 
- struct mem_cgroup;
- struct obj_cgroup;
-@@ -83,14 +84,14 @@ struct mem_cgroup_reclaim_iter {
-  * per-node information in memory controller.
-  */
- struct mem_cgroup_per_node {
--	/* Set when the memcg is created, then only read. */
-+	/* Set when the memcg is created, then mostly read. */
- 	__cacheline_group_begin_aligned(memcg_pn_read_mostly);
- 	struct mem_cgroup	*memcg;		/* Back pointer, we cannot */
- 						/* use container_of	   */
- 
- 	struct lruvec_stats_percpu __percpu	*lruvec_stats_percpu;
- 	struct lruvec_stats			*lruvec_stats;
--	struct shrinker_info __rcu	*shrinker_info;
-+	struct xarray			shrinker_units;
- 	struct obj_cgroup __rcu		*objcg;
- 
- 	__cacheline_group_end_aligned(memcg_pn_read_mostly);
-diff --git a/include/linux/shrinker.h b/include/linux/shrinker.h
-index 1a00be90d93a9..2eae68a7ff6c5 100644
---- a/include/linux/shrinker.h
-+++ b/include/linux/shrinker.h
-@@ -18,12 +18,6 @@ struct shrinker_info_unit {
- 	DECLARE_BITMAP(map, SHRINKER_UNIT_BITS);
- };
- 
--struct shrinker_info {
--	struct rcu_head rcu;
--	int map_nr_max;
--	struct shrinker_info_unit *unit[];
--};
--
- /*
-  * This struct is used to pass information from page reclaim to the shrinkers.
-  * We consolidate the values for easier extension later.
-diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-index a05d9a8baa1b6..1d4cab2e3f369 100644
---- a/mm/memcontrol.c
-+++ b/mm/memcontrol.c
-@@ -4219,6 +4219,7 @@ static bool alloc_mem_cgroup_per_node_info(struct mem_cgroup *memcg, int node)
- 	INIT_LIST_HEAD(&pn->objcg_list);
- 
- 	lruvec_init(&pn->lruvec);
-+	xa_init(&pn->shrinker_units);
- 	pn->memcg = memcg;
- 
- 	memcg->nodeinfo[node] = pn;
-@@ -5925,7 +5926,7 @@ static void __init memcg_struct_check(void)
- 	CACHELINE_ASSERT_GROUP_MEMBER(struct mem_cgroup_per_node,
- 				      memcg_pn_read_mostly, lruvec_stats);
- 	CACHELINE_ASSERT_GROUP_MEMBER(struct mem_cgroup_per_node,
--				      memcg_pn_read_mostly, shrinker_info);
-+				      memcg_pn_read_mostly, shrinker_units);
- 	CACHELINE_ASSERT_GROUP_MEMBER(struct mem_cgroup_per_node,
- 				      memcg_pn_read_mostly, objcg);
- 
-diff --git a/mm/shrinker.c b/mm/shrinker.c
-index 4fb424e721bca..74fc6f64459f0 100644
---- a/mm/shrinker.c
-+++ b/mm/shrinker.c
-@@ -19,48 +19,66 @@ void __init shrinker_unit_cache_init(void)
- 	shrinker_unit_cachep = KMEM_CACHE(shrinker_info_unit, SLAB_PANIC);
- }
- 
--static inline int shrinker_unit_size(int nr_items)
-+static inline int shrinker_id_to_index(int shrinker_id)
- {
--	return (DIV_ROUND_UP(nr_items, SHRINKER_UNIT_BITS) * sizeof(struct shrinker_info_unit *));
-+	return shrinker_id / SHRINKER_UNIT_BITS;
- }
- 
--static inline void shrinker_unit_free(struct shrinker_info *info, int start)
-+static inline int shrinker_id_to_offset(int shrinker_id)
- {
--	struct shrinker_info_unit **unit;
--	int nr, i;
-+	return shrinker_id % SHRINKER_UNIT_BITS;
-+}
- 
--	if (!info)
--		return;
-+static inline int calc_shrinker_id(int index, int offset)
-+{
-+	return index * SHRINKER_UNIT_BITS + offset;
-+}
- 
--	unit = info->unit;
--	nr = DIV_ROUND_UP(info->map_nr_max, SHRINKER_UNIT_BITS);
-+static struct shrinker_info_unit *shrinker_unit_get(struct mem_cgroup *memcg,
-+						    int nid, int shrinker_id)
-+{
-+	return xa_load(&memcg->nodeinfo[nid]->shrinker_units,
-+		       shrinker_id_to_index(shrinker_id));
-+}
- 
--	for (i = start; i < nr; i++) {
--		if (!unit[i])
--			break;
-+/*
-+ * A memcg is visible to expand_shrinker_info() before it goes online, so
-+ * a unit may already be there from either side.
-+ */
-+static int shrinker_unit_install(struct mem_cgroup *memcg, int nid, int index)
-+{
-+	struct xarray *units = &memcg->nodeinfo[nid]->shrinker_units;
-+	struct shrinker_info_unit *unit;
-+	int ret;
- 
--		kmem_cache_free(shrinker_unit_cachep, unit[i]);
--		unit[i] = NULL;
-+	if (xa_load(units, index))
-+		return 0;
-+
-+	unit = kmem_cache_alloc_node(shrinker_unit_cachep,
-+				     GFP_KERNEL | __GFP_ZERO, nid);
-+	if (!unit)
-+		return -ENOMEM;
-+
-+	ret = xa_insert(units, index, unit, GFP_KERNEL);
-+	if (ret) {
-+		kmem_cache_free(shrinker_unit_cachep, unit);
-+		if (ret == -EBUSY)
-+			ret = 0;
- 	}
-+
-+	return ret;
- }
- 
--static inline int shrinker_unit_alloc(struct shrinker_info *new,
--				       struct shrinker_info *old, int nid)
-+static int shrinker_units_install(struct mem_cgroup *memcg, int start, int end)
- {
--	struct shrinker_info_unit *unit;
--	int nr = DIV_ROUND_UP(new->map_nr_max, SHRINKER_UNIT_BITS);
--	int start = old ? DIV_ROUND_UP(old->map_nr_max, SHRINKER_UNIT_BITS) : 0;
--	int i;
--
--	for (i = start; i < nr; i++) {
--		unit = kmem_cache_alloc_node(shrinker_unit_cachep,
--					     GFP_KERNEL | __GFP_ZERO, nid);
--		if (!unit) {
--			shrinker_unit_free(new, start);
--			return -ENOMEM;
--		}
-+	int nid, index, ret;
- 
--		new->unit[i] = unit;
-+	for_each_node(nid) {
-+		for (index = start; index < end; index++) {
-+			ret = shrinker_unit_install(memcg, nid, index);
-+			if (ret)
-+				return ret;
-+		}
- 	}
- 
- 	return 0;
-@@ -68,18 +86,18 @@ static inline int shrinker_unit_alloc(struct shrinker_info *new,
- 
- static void __free_shrinker_info(struct mem_cgroup *memcg)
- {
--	struct mem_cgroup_per_node *pn;
--	struct shrinker_info *info;
-+	struct shrinker_info_unit *unit;
-+	unsigned long index;
- 	int nid;
- 
- 	lockdep_assert_held(&shrinker_mutex);
- 
- 	for_each_node(nid) {
--		pn = memcg->nodeinfo[nid];
--		info = rcu_dereference_protected(pn->shrinker_info, true);
--		shrinker_unit_free(info, 0);
--		kvfree(info);
--		rcu_assign_pointer(pn->shrinker_info, NULL);
-+		struct xarray *units = &memcg->nodeinfo[nid]->shrinker_units;
-+
-+		xa_for_each(units, index, unit)
-+			kmem_cache_free(shrinker_unit_cachep, unit);
-+		xa_destroy(units);
- 	}
- }
- 
-@@ -92,82 +110,22 @@ void free_shrinker_info(struct mem_cgroup *memcg)
- 
- int alloc_shrinker_info(struct mem_cgroup *memcg)
- {
--	int nid, ret = 0;
--	int array_size = 0;
-+	int ret;
- 
- 	mutex_lock(&shrinker_mutex);
--	array_size = shrinker_unit_size(shrinker_nr_max);
--	for_each_node(nid) {
--		struct shrinker_info *info = kvzalloc_node(sizeof(*info) + array_size,
--							   GFP_KERNEL, nid);
--		if (!info)
--			goto err;
--		info->map_nr_max = shrinker_nr_max;
--		if (shrinker_unit_alloc(info, NULL, nid)) {
--			kvfree(info);
--			goto err;
--		}
--		rcu_assign_pointer(memcg->nodeinfo[nid]->shrinker_info, info);
--	}
-+	ret = shrinker_units_install(memcg, 0,
-+				     shrinker_id_to_index(shrinker_nr_max));
-+	if (ret)
-+		__free_shrinker_info(memcg);
- 	mutex_unlock(&shrinker_mutex);
- 
- 	return ret;
--
--err:
--	__free_shrinker_info(memcg);
--	mutex_unlock(&shrinker_mutex);
--	return -ENOMEM;
--}
--
--static struct shrinker_info *shrinker_info_protected(struct mem_cgroup *memcg,
--						     int nid)
--{
--	return rcu_dereference_protected(memcg->nodeinfo[nid]->shrinker_info,
--					 lockdep_is_held(&shrinker_mutex));
--}
--
--static int expand_one_shrinker_info(struct mem_cgroup *memcg, int new_size,
--				    int old_size, int new_nr_max)
--{
--	struct shrinker_info *new, *old;
--	struct mem_cgroup_per_node *pn;
--	int nid;
--
--	for_each_node(nid) {
--		pn = memcg->nodeinfo[nid];
--		old = shrinker_info_protected(memcg, nid);
--		/* Not yet online memcg */
--		if (!old)
--			return 0;
--
--		/* Already expanded this shrinker_info */
--		if (new_nr_max <= old->map_nr_max)
--			continue;
--
--		new = kvzalloc_node(sizeof(*new) + new_size, GFP_KERNEL, nid);
--		if (!new)
--			return -ENOMEM;
--
--		new->map_nr_max = new_nr_max;
--
--		memcpy(new->unit, old->unit, old_size);
--		if (shrinker_unit_alloc(new, old, nid)) {
--			kvfree(new);
--			return -ENOMEM;
--		}
--
--		rcu_assign_pointer(pn->shrinker_info, new);
--		kvfree_rcu(old, rcu);
--	}
--
--	return 0;
- }
- 
- static int expand_shrinker_info(int new_id)
- {
- 	int ret = 0;
- 	int new_nr_max = round_up(new_id + 1, SHRINKER_UNIT_BITS);
--	int new_size, old_size = 0;
- 	struct mem_cgroup *memcg;
- 
- 	if (!root_mem_cgroup)
-@@ -175,13 +133,11 @@ static int expand_shrinker_info(int new_id)
- 
- 	lockdep_assert_held(&shrinker_mutex);
- 
--	new_size = shrinker_unit_size(new_nr_max);
--	old_size = shrinker_unit_size(shrinker_nr_max);
--
- 	memcg = mem_cgroup_iter(NULL, NULL, NULL);
- 	do {
--		ret = expand_one_shrinker_info(memcg, new_size, old_size,
--					       new_nr_max);
-+		ret = shrinker_units_install(memcg,
-+					     shrinker_id_to_index(shrinker_nr_max),
-+					     shrinker_id_to_index(new_nr_max));
- 		if (ret) {
- 			mem_cgroup_iter_break(NULL, memcg);
- 			goto out;
-@@ -194,38 +150,20 @@ static int expand_shrinker_info(int new_id)
- 	return ret;
- }
- 
--static inline int shrinker_id_to_index(int shrinker_id)
--{
--	return shrinker_id / SHRINKER_UNIT_BITS;
--}
--
--static inline int shrinker_id_to_offset(int shrinker_id)
-+void set_shrinker_bit(struct mem_cgroup *memcg, int nid, int shrinker_id)
- {
--	return shrinker_id % SHRINKER_UNIT_BITS;
--}
-+	struct shrinker_info_unit *unit;
- 
--static inline int calc_shrinker_id(int index, int offset)
--{
--	return index * SHRINKER_UNIT_BITS + offset;
--}
-+	if (shrinker_id < 0 || !memcg || mem_cgroup_is_root(memcg))
-+		return;
- 
--void set_shrinker_bit(struct mem_cgroup *memcg, int nid, int shrinker_id)
--{
--	if (shrinker_id >= 0 && memcg && !mem_cgroup_is_root(memcg)) {
--		struct shrinker_info *info;
-+	unit = shrinker_unit_get(memcg, nid, shrinker_id);
-+	if (WARN_ON_ONCE(!unit))
-+		return;
- 
--		rcu_read_lock();
--		info = rcu_dereference(memcg->nodeinfo[nid]->shrinker_info);
--		if (!WARN_ON_ONCE(shrinker_id >= info->map_nr_max)) {
--			struct shrinker_info_unit *unit;
--
--			unit = info->unit[shrinker_id_to_index(shrinker_id)];
--			/* Pairs with smp mb in shrink_slab() */
--			smp_mb__before_atomic();
--			set_bit(shrinker_id_to_offset(shrinker_id), unit->map);
--		}
--		rcu_read_unlock();
--	}
-+	/* Pairs with smp mb in shrink_slab() */
-+	smp_mb__before_atomic();
-+	set_bit(shrinker_id_to_offset(shrinker_id), unit->map);
- }
- 
- static DEFINE_IDR(shrinker_idr);
-@@ -270,52 +208,44 @@ static void shrinker_memcg_remove(struct shrinker *shrinker)
- static long xchg_nr_deferred_memcg(int nid, struct shrinker *shrinker,
- 				   struct mem_cgroup *memcg)
- {
--	struct shrinker_info *info;
- 	struct shrinker_info_unit *unit;
--	long nr_deferred;
- 
--	rcu_read_lock();
--	info = rcu_dereference(memcg->nodeinfo[nid]->shrinker_info);
--	unit = info->unit[shrinker_id_to_index(shrinker->id)];
--	nr_deferred = atomic_long_xchg(&unit->nr_deferred[shrinker_id_to_offset(shrinker->id)], 0);
--	rcu_read_unlock();
-+	unit = shrinker_unit_get(memcg, nid, shrinker->id);
-+	if (WARN_ON_ONCE(!unit))
-+		return 0;
- 
--	return nr_deferred;
-+	return atomic_long_xchg(&unit->nr_deferred[shrinker_id_to_offset(shrinker->id)], 0);
- }
- 
- static long add_nr_deferred_memcg(long nr, int nid, struct shrinker *shrinker,
- 				  struct mem_cgroup *memcg)
- {
--	struct shrinker_info *info;
- 	struct shrinker_info_unit *unit;
--	long nr_deferred;
- 
--	rcu_read_lock();
--	info = rcu_dereference(memcg->nodeinfo[nid]->shrinker_info);
--	unit = info->unit[shrinker_id_to_index(shrinker->id)];
--	nr_deferred =
--		atomic_long_add_return(nr, &unit->nr_deferred[shrinker_id_to_offset(shrinker->id)]);
--	rcu_read_unlock();
-+	unit = shrinker_unit_get(memcg, nid, shrinker->id);
-+	if (WARN_ON_ONCE(!unit))
-+		return 0;
- 
--	return nr_deferred;
-+	return atomic_long_add_return(nr, &unit->nr_deferred[shrinker_id_to_offset(shrinker->id)]);
- }
- 
- void reparent_shrinker_deferred(struct mem_cgroup *memcg)
- {
--	int nid, index, offset;
--	long nr;
- 	struct mem_cgroup *parent = parent_mem_cgroup(memcg);
--	struct shrinker_info *child_info, *parent_info;
- 	struct shrinker_info_unit *child_unit, *parent_unit;
-+	unsigned long index;
-+	int nid, offset;
-+	long nr;
- 
- 	/* Prevent from concurrent shrinker_info expand */
- 	mutex_lock(&shrinker_mutex);
- 	for_each_node(nid) {
--		child_info = shrinker_info_protected(memcg, nid);
--		parent_info = shrinker_info_protected(parent, nid);
--		for (index = 0; index < shrinker_id_to_index(child_info->map_nr_max); index++) {
--			child_unit = child_info->unit[index];
--			parent_unit = parent_info->unit[index];
-+		struct xarray *parent_units = &parent->nodeinfo[nid]->shrinker_units;
-+
-+		xa_for_each(&memcg->nodeinfo[nid]->shrinker_units, index, child_unit) {
-+			parent_unit = xa_load(parent_units, index);
-+			if (WARN_ON_ONCE(!parent_unit))
-+				continue;
- 			for (offset = 0; offset < SHRINKER_UNIT_BITS; offset++) {
- 				nr = atomic_long_read(&child_unit->nr_deferred[offset]);
- 				atomic_long_add(nr, &parent_unit->nr_deferred[offset]);
-@@ -485,9 +415,9 @@ static unsigned long do_shrink_slab(struct shrink_control *shrinkctl,
- static unsigned long shrink_slab_memcg(gfp_t gfp_mask, int nid,
- 			struct mem_cgroup *memcg, int priority)
- {
--	struct shrinker_info *info;
--	unsigned long ret, freed = 0;
--	int offset, index = 0;
-+	struct shrinker_info_unit *unit;
-+	unsigned long index, ret, freed = 0;
-+	int offset;
- 
- 	if (!mem_cgroup_online(memcg))
- 		return 0;
-@@ -495,51 +425,17 @@ static unsigned long shrink_slab_memcg(gfp_t gfp_mask, int nid,
- 	/*
- 	 * lockless algorithm of memcg shrink.
- 	 *
--	 * The shrinker_info may be freed asynchronously via RCU in the
--	 * expand_one_shrinker_info(), so the rcu_read_lock() needs to be used
--	 * to ensure the existence of the shrinker_info.
--	 *
--	 * The shrinker_info_unit is never freed unless its corresponding memcg
--	 * is destroyed. Here we already hold the refcount of memcg, so the
--	 * memcg will not be destroyed, and of course shrinker_info_unit will
--	 * not be freed.
-+	 * A unit is only freed together with its memcg, and the caller holds
-+	 * a reference to the memcg, so the units found by xa_for_each() stay
-+	 * valid without the RCU lock and do_shrink_slab() may sleep.
- 	 *
--	 * So in the memcg shrink:
--	 *  step 1: use rcu_read_lock() to guarantee existence of the
--	 *          shrinker_info.
--	 *  step 2: after getting shrinker_info_unit we can safely release the
--	 *          RCU lock.
--	 *  step 3: traverse the bitmap and calculate shrinker_id
--	 *  step 4: use rcu_read_lock() to guarantee existence of the shrinker.
--	 *  step 5: use shrinker_id to find the shrinker, then use
--	 *          shrinker_try_get() to guarantee existence of the shrinker,
--	 *          then we can release the RCU lock to do do_shrink_slab() that
--	 *          may sleep.
--	 *  step 6: do shrinker_put() paired with step 5 to put the refcount,
--	 *          if the refcount reaches 0, then wake up the waiter in
--	 *          shrinker_free() by calling complete().
--	 *          Note: here is different from the global shrink, we don't
--	 *                need to acquire the RCU lock to guarantee existence of
--	 *                the shrinker, because we don't need to use this
--	 *                shrinker to traverse the next shrinker in the bitmap.
--	 *  step 7: we have already exited the read-side of rcu critical section
--	 *          before calling do_shrink_slab(), the shrinker_info may be
--	 *          released in expand_one_shrinker_info(), so go back to step 1
--	 *          to reacquire the shrinker_info.
-+	 * The shrinker is found by id under the RCU lock, and
-+	 * shrinker_try_get() pins it before the lock is dropped;
-+	 * shrinker_put() wakes up the waiter in shrinker_free() by calling
-+	 * complete() when the last reference goes. The next shrinker comes
-+	 * from the bitmap, not from this shrinker, so nothing else is needed.
- 	 */
--again:
--	rcu_read_lock();
--	info = rcu_dereference(memcg->nodeinfo[nid]->shrinker_info);
--	if (unlikely(!info))
--		goto unlock;
--
--	if (index < shrinker_id_to_index(info->map_nr_max)) {
--		struct shrinker_info_unit *unit;
--
--		unit = info->unit[index];
--
--		rcu_read_unlock();
--
-+	xa_for_each(&memcg->nodeinfo[nid]->shrinker_units, index, unit) {
- 		for_each_set_bit(offset, unit->map, SHRINKER_UNIT_BITS) {
- 			struct shrink_control sc = {
- 				.gfp_mask = gfp_mask,
-@@ -594,12 +490,8 @@ static unsigned long shrink_slab_memcg(gfp_t gfp_mask, int nid,
- 			freed += ret;
- 			shrinker_put(shrinker);
- 		}
--
--		index++;
--		goto again;
- 	}
--unlock:
--	rcu_read_unlock();
-+
- 	return freed;
- }
- #else /* !CONFIG_MEMCG */
-
--- 
-2.43.0
-
+Thanks,
+Abhishek.
 
