@@ -1,40 +1,30 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CDDC606A333
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 06:06:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B58CF606A332
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 06:06:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=mnLeKo3J
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=opLyUe7j
 Received: by kanga.kvack.org (Postfix)
-	id 6D4BC6B05B6; Mon,  2 Nov 2026 01:06:02 -0500 (EST)
+	id 9E27A6B05B5; Mon,  2 Nov 2026 01:06:02 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 65DED6B05B8; Mon,  2 Nov 2026 01:06:02 -0500 (EST)
+	id 992886B05B7; Mon,  2 Nov 2026 01:06:02 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4D8396B05B7; Mon,  2 Nov 2026 01:06:02 -0500 (EST)
+	id 881D36B05B8; Mon,  2 Nov 2026 01:06:02 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 265586B05B5
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 53DC36B05B5
 	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 01:06:02 -0500 (EST)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id A2C73A0645
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id C2E2B160BB3
 	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 06:06:01 +0000 (UTC)
-X-FDA: 85389143322.01.9646CE5
-Received: from mta1.migadu.com (out-178.mta1.migadu.com [95.215.58.178])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 79FB420005
+X-FDA: 85389143322.05.967DEB1
+Received: from mta0.migadu.com (out-89.mta0.migadu.com [91.218.175.89])
+	by imf25.hostedemail.com (Postfix) with ESMTP id A7ADEA0003
 	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 06:05:59 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=mnLeKo3J;
-	spf=pass (imf03.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.178 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793599559;
-	b=mGkLpXzwvLoq37bdFzgmenkT2cx2Y+dp01M0XlnmMo37u8lqWPpHChCz6ylYjl3Q3xiYha
-	IQCOpA+pUbE18iH84uXL7uLKQZkvOSsl1tFvEzs3azE7SwVzqclhmyHdjA1Akm669YDIky
-	R3IkOhqQmeSyO8DKXni5sfyqiR1qHKk=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=mnLeKo3J;
-	spf=pass (imf03.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.178 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=opLyUe7j;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf25.hostedemail.com: domain of hao.ge@linux.dev designates 91.218.175.89 as permitted sender) smtp.mailfrom=hao.ge@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1793599559;
 	h=from:from:sender:reply-to:subject:subject:date:date:
@@ -42,113 +32,77 @@ ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+yuFDhrhf3kM/PO/AnTTpZJjMtV5tAkK8200L66uGl8=;
-	b=Z2QKBIf33I/v14ZYqUMMG0RUnMD6XdgORwDVZ88rS8Vi0l8AEJ5powgmRzh/Gt1Y0/d6zv
-	et3ZAJHKAlVKO2FwyCHNEe8c+q128/HtTLSN2mwso2AMz19cVvDLia9SWKyskRCB9Ja9Xj
-	/fMlnVH36zMipcr/tLvbkPuKLSIEqms=
+	bh=h1VSrMby2SX5eM2E4NxQctXhVt0Tc6AaUP5veYJ4paM=;
+	b=RFBblyxwLuwZk7fM4lERD90Fh2CxWb28VumgRR2Ae7fSlE/IV2k1PmBOCimQNaeg6zKJvr
+	/BmKC3hJ731dlfE9tHyxCkd5zdq6j3iKYco+KAkhl+fqniBSaDJR++CylP+QbfIq0QSv95
+	/Nu3kfGKwfmc5QoojouMB87liPfyN48=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=opLyUe7j;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf25.hostedemail.com: domain of hao.ge@linux.dev designates 91.218.175.89 as permitted sender) smtp.mailfrom=hao.ge@linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793599560;
+	b=Kfuob0mZoVRFwLh/XYOtu11XN55nr7DOIcstc1HkOJFM39rmlNb0K1ZYi+IcZhR+5/za/n
+	JFjQag2rLhttQWLvMfQPHJkhU1ETHUy8svGrHihs6UXCD/7DLEqN0cQL1EH0kkhNytWqTa
+	d72SxYqY75Ui+nMD9dxoDwW6RRW4K8E=
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=ex0bR+wqY48y7Ys0l1lS/C4xyqfg/lqStx93s8K9wXI=;
+DKIM-Signature: a=rsa-sha256; bh=m9NFSN0c8k/rqWtXM6UCsQER/s2DqAk40a8du6haVV4=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1793599557; v=1; x=1794204357;
- b=mnLeKo3JIlrjZ0v8csYIXQvs0MqjNYBAaha6FI+GsXgzsTBscKhu47xfdxei1GstkYX55TtU
- s7+ijDrBsSQikbWr4RhQIABec//XfnZQfXcLKbZqgwK2XEUTDJ36HqPkKEIRh6O+ifRMQgl5bW3
- ABiUUGhU4PsBaXEJa27dL80Y=
+ t=1793599558; v=1; x=1794204358;
+ b=opLyUe7jGCNX/Ks2Wfw0GvCvGymVCVFY2l4AjF+DjnJkuDGtnq5w8qUxEBVGRbjNMihUgh2p
+ N2WbiyMNueHHPSHUSGE/VxojS8kqzm1uSC+IpGtAVRaUN87GTq88H0oOGL1Su97yAdfj0UCXL5R
+ lWXN8dhDPTy0Vq7auiEh+2BU=
 X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 85932c5ab249e449;
-	Mon, 02 Nov 2026 06:05:56 +0000
-X-Mizu-Trace-ID: 85932c5ab249e449
+Received: by smtp.migadu.com with ESMTPS id b978153f13cb2e16;
+	Mon, 02 Nov 2026 06:05:58 +0000
+X-Mizu-Trace-ID: b978153f13cb2e16
 X-Migadu-Flow: FLOW_OUT
-From: Lance Yang <lance.yang@linux.dev>
-To: david@kernel.org
-Cc: akpm@linux-foundation.org,
-	hannes@cmpxchg.org,
-	mhocko@kernel.org,
-	qi.zheng@linux.dev,
-	shakeel.butt@linux.dev,
-	ljs@kernel.org,
-	kasong@tencent.com,
-	baohua@kernel.org,
-	axelrasmussen@google.com,
-	yuanchu@google.com,
-	weixugc@google.com,
-	baoquan.he@linux.dev,
-	baolin.wang@linux.alibaba.com,
-	liam@infradead.org,
-	vbabka@kernel.org,
-	rppt@kernel.org,
-	surenb@google.com,
-	mhocko@suse.com,
-	kees@kernel.org,
-	peterz@infradead.org,
-	jannh@google.com,
-	pfalcato@suse.de,
-	hughd@google.com,
-	pasha.tatashin@soleen.com,
-	pratyush@kernel.org,
-	willy@infradead.org,
-	jack@suse.cz,
-	ziy@nvidia.com,
-	lance.yang@linux.dev,
-	riel@surriel.com,
-	harry@kernel.org,
-	apopple@nvidia.com,
-	nico.pache@linux.dev,
-	ryan.roberts@arm.com,
-	dev.jain@arm.com,
-	usama.arif@linux.dev,
-	kas@kernel.org,
-	matthew.brost@intel.com,
-	jhubbard@nvidia.com,
-	peterx@redhat.com,
-	will@kernel.org,
-	aneesh.kumar@kernel.org,
-	npiggin@gmail.com,
-	osalvador@suse.de,
-	minchan@kernel.org,
-	muchun.song@linux.dev,
-	xu.xin@linux.dev,
-	chengming.zhou@linux.dev,
-	chrisl@kernel.org,
-	shikemeng@huaweicloud.com,
-	nphamcs@gmail.com,
-	youngjun.park@lge.com,
-	gourry@gourry.net,
-	joshua.hahnjy@gmail.com,
-	rakie.kim@sk.com,
-	ying.huang@linux.alibaba.com,
-	jgg@ziepe.ca,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	kexec@lists.infradead.org,
-	linux-fsdevel@vger.kernel.org,
-	linux-arch@vger.kernel.org,
-	linux-cxl@vger.kernel.org,
-	mason@kernel.org,
-	stable@vger.kernel.org,
-	usama.anjum@arm.com
-Subject: Re: [PATCH v3 17/47] mm/khugepaged: preserve dirty bits when collapsing PTE-mapped THPs
-Date: Mon,  2 Nov 2026 14:05:47 +0800
-Message-ID: <20261102060547.39942-1-lance.yang@linux.dev>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20261031-fixes_core-v3-17-d6437171ecc3@kernel.org>
-References: <20261031-fixes_core-v3-17-d6437171ecc3@kernel.org>
+Message-ID: <72d1b1d7-2fb6-402f-a557-0eaa767d6f86@linux.dev>
+Date: Mon, 2 Nov 2026 14:07:18 +0800
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 03/10] mm/vmalloc: clamp an unaligned range in
+ vunmap_pte_range()
+To: Dev Jain <dev.jain@arm.com>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+ kasan-dev@googlegroups.com, linux-mm@kvack.org,
+ Sashiko <sashiko-bot@kernel.org>,
+ "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+ Shrikanth Hegde <sshegde@linux.ibm.com>,
+ Alexander Potapenko <glider@google.com>, Marco Elver <elver@google.com>,
+ Dmitry Vyukov <dvyukov@google.com>, Andrew Morton
+ <akpm@linux-foundation.org>, Dennis Zhou <dennis@kernel.org>,
+ Tejun Heo <tj@kernel.org>, Christoph Lameter <cl@gentwo.org>,
+ Uladzislau Rezki <urezki@gmail.com>, Suren Baghdasaryan <surenb@google.com>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
+ "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
+References: <20261026080329.140244-1-hao.ge@linux.dev>
+ <20261026080329.140244-4-hao.ge@linux.dev>
+ <99f529e8-06f7-4a20-a60b-0330c5d3d91c@arm.com>
+ <5452d555-82f9-45a6-b443-ee732b1874ba@linux.dev>
+ <e8a2a42d-e424-4366-8a68-e39167f62276@arm.com>
+Content-Language: en-US
+From: Hao Ge <hao.ge@linux.dev>
+In-Reply-To: <e8a2a42d-e424-4366-8a68-e39167f62276@arm.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspam-User: 
-X-Rspamd-Queue-Id: 79FB420005
-X-Stat-Signature: 6e5biwfeh46upx6ucqxw59a6iu4w4rba
-X-Rspamd-Server: rspam01
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: A7ADEA0003
+X-Stat-Signature: zocitrt9aeahdedy3jsxzzdynsxdx1wa
+X-Rspamd-Server: rspam06
+X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1793599559-539109
-X-HE-Meta: U2FsdGVkX1/z3KuFmh1N3zIVQ+oXSHt+NgX9AIQQqTrRIciSfwMUCYhbU77t2JABEYaaJXvWJM3vXtBlIK9obX5MKmqybpM052/ixRNAH8Ya+D4a2H1Irw3M3wu901jjrKiZbJ5q1ZG/9qmjANSFjTR/IIJUSiE2hkTBJU7UNKYHZezbDENX+k2f6eWUn4rrJ0aQJ5amm3EXlnugR3q/p1nptkBgfQU5nqqicM2qxLENE2AlToQzK1VyLrzmzR7wbGzXifiPCygS0ySoNXXpB7nESPLzVp7dXH+5Hp+8+nE+569dXetzCQk90hxtKf0wljDPURQitM1sCI5Iz3Zd4tRL6HarcxKJ3U+NxL7iTchGRts5Y0rdwoj2ARa7zuB22pbNukvh9DkI5Mc9CecdXOOBtBBwafUYV86Xl4SpQ5573udt0pCI3V6/qywUHWkXuAglVJ2lqjGXrIkVSKgL75cNr208hR+9UtlozQ8FF+qTwUPCg/P0oKNqJkY3PNugjD7ZgbCLDRgfQpjesNddMVdojJXaKV9dgGwgM262ZsHby8jPBo6Ck+xDvD9k1f9FsEvNRe3nQ2fF6I4WrQfnmKIRkCwLvra6Ra37wmRKVziNehW5MmDaKXl4JqfJzrhmWLoYenU0JeM31i6+MUWY9nzhmEOcOiVfvL301OlYRRHium17tHaqYLHKNxN7EVGKdZilNOIOGufg5rTBirJTcsLKursXBlAVKSDMqTfLqsjZMFjAIYw7IXLOEEi5/3mxubO0a22PQzHCQq9ZUavmOTkn48Cex05drbD2pWH9ShuPnM3yQBmLkWhfEJbKLkcRkzgIl31u2oJwdRu45pyL3+gx/bwqfXWMy2GSh+8JVsXH0ibansVladEPoGDyAUmwzk//qWcBNc65mU6vAwoMrL0Qmx32GVEhKKj+X85UQ1uft2WVItIwQVBo6xRxAFS5pOvwyrY98l5g2qeqQmU
- Mofm/t36
- E3fdk1+HK15YDfy8yDetwv0+zP8R2lY/i4ZS3Z8GG7e7YpSQjuPSgmpG7cL9iW4SmeUOqtmPKWxVPvTpRpXn83j43+hmK+uwxmnyqIQcnY6WOHnzfOAho/A9dCEVxGxZNz5uVEeV/eAOhzyjMKydWuKJ03VTglaoGuNz7elWaBNsZYZ+SNV5ZKku26R9j2gzMkos9U54tZSYTQTnHikKqRT7MftsottiwXJP1xJVZZcJzt5o/0cUNVl4ofMuhPF9P6kJMPblZBSRMTiKEz69d1pZXf5v5q1NV49mCc1VPA44bhMfacaBa13ZYoL7OffrVoXQHaILRN7OnmVenWayKLdjBO88XrMZIDSWTwdN+z8aZwXtbc00LM4pvLHz0DJ589uWRWoQNWXc04tyDVHaTlidsJRJJdirZg23W+r469KbGQWCeMVHeDWCDIY+JobDIRlxUhZvyS/DHTr0=
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
+	version=4.0.1
+X-Rspam-User: 
+X-HE-Tag: 1793599559-647061
+X-HE-Meta: U2FsdGVkX1+8tEWM4rfd/OdZgtzNWvumQJa/fKhBBoRgPXgz9ZOVJdvPoQPiZk8Izo/eki58h7d115VcE/iysylUazxqCAjwiuh+y2o+/qUpQ+AMvj3ARv70KaNF0kffQtU11G1Wjh/2pS2IxA2t92KVPoIxT0le3fp0iv6ucOqFL2YRrWhBxxe5rc06mNyLm7vaGjdsEOmJbfikQl1YfxI9dT8y+zsn+rk9STjlTGEa871kK70xSEAhGNjVF1h1CmrqyE5Z4THG67YLU6BYrTTP9cQCd03mrGS/y/v3emopUv7JEZKdhvJ/sP00GdwiiHE+ypzF8L69TszQVVIXjL7R7VNDhh5LIqg104ApkS8204MfrxSLPz80uDHcALYLKUNbG+SMMAGc4u4G6TZDRydk/g7XUvpIOye/qfwQ2xZx7LQNfSwzea4SBfKgceoPt8QChoqdpGnf5AumdqAfVrZ9wSWODfq7PksoYJSwfuO1MdSWDcIKNA/a6L7nMcarIe5hV+0tJEb6z1K8z7MTvDiu2+XUhEGu41QCicTY4fm+JpDCLf9TvXvxiJAaULUJDs8+MnwGtP4JSjsR18mQmibYAJkZzwstPnYL0RoLp2/hW5lEnPZUhnqbipgDFK/ywfYm3Erktr9fr4U6fufmS33haIAHN1agFWH1ggtwi1E5wzvNbfUH4YzjHKs/GNlEcsJC6uaw0iokQCCX3D/ylQ7kVZBuKZs/o+hvqmBlzTxoxiOPGiRLe/V/x64BsB09VrD8jy6wFDJeoponwCucyT/1AvOM1lqMqREkc8rpgEXLXQNrseo+ltA4zODUYshpnS3tVRV4F7c11YzZJ+AvF4J5x4Q2vCYAMJj6JNDGmcoa9LmJSllBOdi2Z9Dt2oEbiTCGCSWelC2q80vIA4aDf1giCFFhOWz6wVg8APt/Hjoa9Rc4eRoHHbXfhRCYnxrWoP0nuHiM/DR5WL+Y2Ln
+ AFsz1x04
+ o3mW8Q8KGrb5OBCQ4p1Trtb98F4tThkQ67p60XD4JzcGOrSDRIvAwlAxwAHm/RZY6lqaQAhj1e/h4zjVthHYljFVfE78zbft0UyJbM1BgagBopwfjoA7xT7bLGtnpSiW1m1pMlbaTq9ElPvsLxgkZkvJHwiZ+H6t91Mi8E+1wYNKlOXcKBTQDfow4kwKBryg71taZ/BChkRoQKKknG6hg+WiPw3ipBSp+hDBdcKJAbhfj373se6OvciLBjtUUPQD0/bAMKuucegJIq3XJ/f6f+zNdbJ3IBlnTCHVEjfSFpewshvHX2sRYTgY/c/IOlZzsTajz50CY9gfAkvpA+fT9IEmzydX5wAb1Dxr1MWLYikDmNpE9Uyyum2lPSwTUKsia0c/SAVZCpYVXlk6Q1RwyiQslBBMiK5El2FaeKe9glEjCZZU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -158,71 +112,134 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
 
-On Sat, Oct 31, 2026 at 10:39:46AM +0100, David Hildenbrand (Arm) wrote:
->From: Chris Mason <mason@kernel.org>
->
->try_collapse_pte_mapped_thp() clears PTEs without transferring their dirty
->bits to the folio. A shmem read fault can map a clean folio writable, so
->a later store only dirties the PTE. Losing that dirty bit allows reclaim
->to discard modified data.
->
->The assumption that regular files are read-only is also obsolete since
->commit 1b6444331bebb ("mm/khugepaged: enable clean pagecache folio collapse
->for writable files"). In any case, transferring PTE dirty bits to the folio
->when removing mappings (and while the folio is still mapped) is the right
->thing to do.
->
->Use get_and_clear_ptes() to collect the dirty bits and mark the folio
->dirty before unmapping it. Update the comment.
->
->This was reproduced with shmem using MADV_COLLAPSE followed by
->MADV_PAGEOUT.
->
->Fix generated by an LLM and sent by Chris Mason in private.
->
->Fixes: 27e1f8273113 ("khugepaged: enable collapse pmd for pte-mapped THP")
->Fixes: 1b6444331bebb ("mm/khugepaged: enable clean pagecache folio collapse for writable files")
->Cc: stable@vger.kernel.org
->Signed-off-by: Chris Mason <mason@kernel.org>
->[ david: adjust comment; simplify description; cover file-thp as well ]
->Reviewed-by: Pedro Falcato <pfalcato@suse.de>
->Reviewed-by: Gregory Price (Meta) <gourry@gourry.net>
->Tested-by: Gregory Price (Meta) <gourry@gourry.net>
->Tested-by: Muhammad Usama Anjum <usama.anjum@arm.com>
->Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
->---
-> mm/khugepaged.c | 5 +++--
-> 1 file changed, 3 insertions(+), 2 deletions(-)
->
->diff --git a/mm/khugepaged.c b/mm/khugepaged.c
->index 34ebb37c862c0..ce794d9760a87 100644
->--- a/mm/khugepaged.c
->+++ b/mm/khugepaged.c
->@@ -1995,9 +1995,10 @@ static enum scan_result try_collapse_pte_mapped_thp(struct mm_struct *mm, unsign
-> 		/*
-> 		 * Must clear entry, or a racing truncate may re-remove it.
-> 		 * TLB flush can be left until pmdp_collapse_flush() does it.
->-		 * PTE dirty? Shmem page is already dirty; file is read-only.
-> 		 */
->-		clear_ptes(mm, addr, pte, nr_batch_ptes);
->+		ptent = get_and_clear_ptes(mm, addr, pte, nr_batch_ptes);
 
-I went through get_and_clear_ptes() as well. It merges dirty bits across
-the batch, so we're covered even when the first PTE is clean and a later
-one is dirty.
-
-LGTM!
-
-Reviewed-by: Lance Yang <lance.yang@linux.dev>
-
->+		if (pte_dirty(ptent))
->+			folio_mark_dirty(folio);
-> 		folio_remove_rmap_ptes(folio, page, nr_batch_ptes, vma);
-> 		nr_mapped_ptes += nr_batch_ptes;
-> 	}
+On 2026/10/30 22:20, Dev Jain wrote:
+> 
+> 
+> On 30/10/26 2:00 pm, Hao Ge wrote:
+>> Hi Dev
+>>
+>> Thanks for your review.
+>>
+>> On 2026/10/30 15:14, Dev Jain wrote:
+>>>
+>>>
+>>> On 26/10/26 1:33 pm, Hao Ge wrote:
+>>>> commit a739e6b557af ("mm: vmalloc: WARN_ON if mapping size is not
+>>>> PAGE_SIZE aligned") made vmap_pte_range() warn and bail out when the
+>>>> size is not a multiple of PAGE_SIZE. That loop steps in page
+>>>
+>>> Why are we checking the alignment so late into vmap_pte_range? Why not
+>>> simply do
+>>>
+>>> if (!IS_ALIGNED(addr, PAGE_SIZE) || !IS_ALIGNED(end, PAGE_SIZE))
+>>> 	return; (or return -EINVAL);
+>>>
+>>> at the start of vmap_range_noflush and vunmap_range_noflush?
+>>
+>> I think adding that check at the entry of vunmap_range_noflush()
+>> goes against its design intent. Its job is to tear down the mappings
+>> of the given VA range, so even when the caller passes a size that is
+>> not page-aligned, we still have to unmap whatever is mapped within
+>> that range.
+>>
+>> So the patch clamps end down to the last full page and keeps
+>> clearing. A buggy caller still gets its mapping torn down as far as
+>> it goes, and nothing is left behind. The check here is just for
+>> protection. 
+>>
+>> This is just my preliminary understanding; I may be mistaken.
+> 
+> Hmm I get you, but this is very ugly. We are trying to tolerate
+> a blatant bug in the caller with not-so-nice code. But see below.
+>>
+>> Thanks
+>> Best Regards
+>> Hao
+>>
+>>
+>> But that's just my understanding, happy to be corrected.
+>>
+>>
+>>>
+>>>
+>>>> multiples and stops only at addr == end; with an unaligned size addr
+>>>> never lands on end, so the loop cannot terminate and walks off the
+>>>> end of the page table.
+>>>>
+>>>> vunmap_pte_range() has the same loop without any guard, so an
+>>>> unaligned range would clear PTEs past end without ever stopping,
+>>>> walking off the end of the page table.
+>>>>
+>>>> Add the check there too. The range is clamped down to the last full
+>>>> page rather than dropped, and the loop is skipped when nothing is
+>>>> left, so a buggy caller still gets its PTEs cleared as far as they
+>>>> go.
+>>>>
+>>>> Reported-by: Sashiko <sashiko-bot@kernel.org>
+>>>> Signed-off-by: Hao Ge <hao.ge@linux.dev>
+>>>> ---
+>>>>  mm/vmalloc.c | 5 +++++
+>>>>  1 file changed, 5 insertions(+)
+>>>>
+>>>> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+>>>> index 44e0eb32708f..7131f60d1a8e 100644
+>>>> --- a/mm/vmalloc.c
+>>>> +++ b/mm/vmalloc.c
+>>>> @@ -393,6 +393,11 @@ static void vunmap_pte_range(pmd_t *pmd, unsigned long addr, unsigned long end,
+>>>>  	pte_t ptent;
+>>>>  	unsigned long size = PAGE_SIZE;
+>>>>  
+>>>> +	if (WARN_ON_ONCE(!PAGE_ALIGNED(end - addr)))
+>>>> +		end = addr + PAGE_ALIGN_DOWN(end - addr);
+> 
+> For simplicity assume PAGE_SIZE is 4, start is 3, end is 10.
+> With your code we will get
+> 
+> addr = 3, end = 3 + ALIGN_DOWN(10 - 3) = 3 + 4 = 7.
+> So the range becomes [3, 7) clearing only two ptes, the one covering
+> [0, 3], the second covering [4, 7]. I feel we should rather make
+> the range from [3, 10] to [0, 11], clearing three ptes.
 >
->-- 
->2.43.0
->
->
+
+Thanks for the example. Looks like I nearly introduced a new bug while
+guarding against the old one, good thing you caught it.
+
+> So, at the start of vunmap_range_noflush we could basically
+> WARN_ON on non-alignment, and then clamp the start down, and clamp
+> the end up to PAGE_SIZE.
+
+I'm wondering whether we should simply BUG_ON for non-aligned ranges here.
+Because the unmap could silently clear mappings at adjacent addresses, which
+may not even belong to the caller, and this kind of problem is really hard to
+track down afterwards. Say [0, 3) is in use by someone else, with PAGE_SIZE=4
+an unmap starting at 3 still begins with the pte covering [0, 4), since the loop
+clears page by page, so that owner loses his mapping without doing anything wrong,
+and only sees the damage much later when he touches it again.
+
+WDYT?
+
+> 
+> And with this also throw in a patch to bring the -EINVAL bailout
+> in vmap_pte_range to the top, in vmap_range_noflush and check
+> both start and end alignment.
+
+For the vmap_range_noflush() check, fully agreed.  The current check
+is indeed too late, the range is only found to be bad after part of
+it has already been mapped. 
+
+Looking forward to your valuable comments.
+
+Thanks
+Best Regards
+Hao
+> 
+>>>> +	if (end == addr)
+>>>> +		return;
+>>>> +
+>>>>  	pte = pte_offset_kernel(pmd, addr);
+>>>>  	lazy_mmu_mode_enable();
+>>>>  
+>>>
+> 
 
