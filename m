@@ -1,145 +1,138 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B41FC606D24C
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 12:23:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D12B606D251
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 12:25:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Sn38Pua9
+	dkim=pass (2048-bit key, unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=google header.b=RyRQg0yN
 Received: by kanga.kvack.org (Postfix)
-	id E20DF6B05B1; Mon,  2 Nov 2026 07:23:19 -0500 (EST)
+	id 9B9776B05B3; Mon,  2 Nov 2026 07:25:34 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DD1926B05B2; Mon,  2 Nov 2026 07:23:19 -0500 (EST)
+	id 9697F6B05B4; Mon,  2 Nov 2026 07:25:34 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C72CF6B05B3; Mon,  2 Nov 2026 07:23:19 -0500 (EST)
+	id 830ED6B05B6; Mon,  2 Nov 2026 07:25:34 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 99C976B05B1
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 07:23:19 -0500 (EST)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 53FFF6B05B3
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 07:25:34 -0500 (EST)
 Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 1D2EA160C5A
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 12:23:19 +0000 (UTC)
-X-FDA: 85390094118.10.CFBCD4E
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 4FCE2100013
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 12:23:17 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Sn38Pua9;
-	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id D68ECA8B55
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 12:25:33 +0000 (UTC)
+X-FDA: 85390099746.10.75F4946
+Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
+	by imf12.hostedemail.com (Postfix) with ESMTP id D84A240003
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 12:25:31 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=RyRQg0yN;
+	spf=pass (imf12.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.41 as permitted sender) smtp.mailfrom=mhocko@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793622197;
+	s=arc-20220608; t=1793622332;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=li9rdtwFeFEI907CKymYxoxqt6E52soBIe74zDvChPY=;
-	b=fauZ4jCNc3Go6tuq8QKDner6p5JiBTZKU3bQBAkwDWyWaiiMh4ZHGKnjmGsNLF50pWqla/
-	ZoYG31teIsisoppdQ4ekZjxPsfhGS3h9QbPQiSzoU3/vjwq9fQdzIOkuOTq3cdi0TLltTW
-	JdA3dUAKL0+4K/qAMeUxHIvJ15/SQn4=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793622197;
-	b=BcjnQyhXO+IIPO0jmpj96ate8T3W+2Wodp46Myspak6drjoiMCbC/wnMNwJ86QN3dt1/gg
-	xZ1oBoupqcVEssFiqlT3LHAO/coKJyjw3q8UZSPGO0J3V4onqnU6juW+MWoS8LsNgs3UqH
-	Ae+8Af+kHYXpgD2sAh7QMLcgoU88WXY=
+	bh=l+OOSIpi3LwKea2AwltHwR3lhfsf+u1HzeM7nFR6cqc=;
+	b=f99/vOw9npadUU25VSMs9BuchStbfhVGdsgHqAV90wpsMgTkDD197girdJqEKFF1ds2FtD
+	ypXwu2FYOsdhsIr0u06g5X+ppbKOalgHpsMwjkWFNZorkEiuobhTca0EvFkGEVd60fTDox
+	KECdNkqD3dSSyEFkNPoMgHeRndextIQ=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Sn38Pua9;
-	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id C113A60619;
-	Mon,  2 Nov 2026 12:23:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 935861F00A17;
-	Mon,  2 Nov 2026 12:23:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793622196;
-	bh=li9rdtwFeFEI907CKymYxoxqt6E52soBIe74zDvChPY=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=Sn38Pua9rV7W527YONSvg8EOeoe21NRVadTNMAE+Z3XemtkQsub6vqQfGdkX01x5M
-	 MOIhConomswlo1fkXRSOUOFOfSJtqXMvUJqkkGONdlJYve5aowRZzUSPIOzrbYEsTu
-	 4rcTL7z2MlBCiHcTLQZFKzKfgB7ISwjtD2TU4IIuUFoLKp6g/B4EeCB2nVJe45jaqB
-	 NwcHMAJa2uhvTM2lExWSoiiPkCXLGYNOtsblsQk4zNxZGJiJ9MKwWeiCjRq+aa4MQQ
-	 HLywUOptpCxfwl+Sdaba7b2X9BZoWMDpB9gi67UarljvvraX2804Hg/Jsozuojt8BO
-	 7xuWawvf1CuoQ==
-Message-ID: <bcf69c05-279f-4a2b-a762-3dfb4ce2bb7e@kernel.org>
-Date: Mon, 2 Nov 2026 13:23:11 +0100
+	imf12.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=RyRQg0yN;
+	spf=pass (imf12.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.41 as permitted sender) smtp.mailfrom=mhocko@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793622332;
+	b=zGkeFZ3tNL1qc5ZYpWopzCd2RcdaL4Laq2LJ+TSvkpNJQJlZkaqczeGJsLqWZGaz8e1/O9
+	2jwUA6By4nGdCVsAfGi+3Av457fiTIHr95HFY/N2RV3+jSt9Y1IgdlhIa2ThUasuwYSL6e
+	qUlljQPIODTEzr2xtO/BVGBzbmvtNxU=
+Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-4a35ac4475dso20300825e9.2
+        for <linux-mm@kvack.org>; Mon, 02 Nov 2026 04:25:31 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1793622330; x=1794227130; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=l+OOSIpi3LwKea2AwltHwR3lhfsf+u1HzeM7nFR6cqc=;
+        b=RyRQg0yNrDLWFuodCt/Wh3LF9JT1zWlTcxhpusg0Zq9u8HaR6qyLNuneNl+pTAt5lF
+         0z7ohGyX/3F9vXBMmJkm+hoG/tLKa1BwSX3jZHz9XTxZO8ncQbtcIjp3HCkAiomlM5ap
+         5V5Uatx/tqosGT4De2M5w4i4EeyVRYaTP52BPhfJEWjpzEx9adWId/2mhvVs/kkgSwfd
+         HpZhCKB2iJjhyL2+RZnxE9L8xThw1DAwl0714j97tBsxPV4O1/yTThtLEXXpf3z6+EcY
+         IZcrVkTuLoXSRlXP73QRpnuZDIOgQ1yS9RgLdKTqzSYITxiWG8tHAvLpXeC/rMqA9PeX
+         yVSw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793622330; x=1794227130;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=l+OOSIpi3LwKea2AwltHwR3lhfsf+u1HzeM7nFR6cqc=;
+        b=o0GVpddI5z4KZ3bTzV98N5En5AK74/sngEek9yXnV8cxdyqiDhDcMiNSg+Lnn2vbWd
+         wCcvdN56x/OC8aIQWArGuRH+iR0L9zR5UkVtY9G2v0M8QQ45UbmguoooxEMtC7gWtpGS
+         A+JxF3Q2JqgVlvGUFxLZ6bmy1b595A4oxQvFnkUCm6AH2d3lG5pDyXGxxxkxA7xnduay
+         7GtWrjASzrWWrNU9flJ1XJQnrVMTZM0zECoWiM5bxFSCphHp3XgTUAV5QAomhtQZgfQL
+         ORlXoLOgF41RAObv0V7p8pB9RvUsuR0pwwVCGCsVMf2pWpcmubdgxYaMPsMnf69T35K8
+         2WPQ==
+X-Forwarded-Encrypted: i=1; AKwUvBx87RBPgd41BVI21qBWTB6b0mG1AtQE9Wt72JLfIaFNXSwNV/rvXUa5b4LeOnW8Nf7umyFn+fg71g==@kvack.org
+X-Gm-Message-State: APuU4Z+5kOWGrcZVaAKOJQ8QGrrMXRXtPVrbXRzxYXY6PmMkeH713T2V
+	Zy8E+hqMolPAHqWpA8PiF+Pl8yTrBg2TOee+lWrHDrPTk6jULc0aJ5RVQY0isjG/5Pw=
+X-Gm-Gg: AYBFou3BIY0ceIhL1JEgzINJfbKXCCw1UDjRFvg39L/xxTVZHlbxANYoBpRHYSKoDFB
+	z5OEAflk7XWp+eLVr8YLKV8EYq/LSID85mkrfbHzUyoMgsjlHH6pqJq8q5X026h+I6qNsH6jv2Z
+	PdFiFf8kSX7V4R8W3OAvZ+9cvM3ihcpUNHtzx9YrkYkzp37gS7uOWIZdlf/7DOizD7iWDTJinOg
+	pNYTdpzk60rbPaQBk/+GuEOghB8+bhYJCD0eIOdB++qZaZGlRIWFWlcKoWJMxmSgz7AvRMlhSCD
+	6aVOBg2uqGF6tYsnaxpb1BKJ7Jt7yrMgOA1W8LgPhjUxrgj+AC2QFrnjrc7l9/uZpxmn9L13KKH
+	3pZh7pI9wfHGZyP3393iGMMmzhuohE2UPuI0iCIXfI4OWunfIu3V2esu37CaFR1MbWebSQx/ESz
+	6rLyghXTNW3jRdJ998XyIl5RE6lPHpcyPIohS1DxXkgvMmNJuLBa1B6mhhEOklA/EV1xXMoccSU
+	S7JW4V3Fb/IpGy+kh1qASVlPbs0NiE4S7bBFAZyEXQKPnmB4Mb6c/dnh7H9z+aMIG/6ZGscaV2H
+	d1K8vHvHpdF/Cv2OmmUZM6jNrHwmlHG78XJVMcvGC3AF/erPWB9lLqgk7yKx
+X-Received: by 2002:a05:600c:3554:b0:4a1:f7f4:7cf2 with SMTP id 5b1f17b1804b1-4ac1737c474mr214634185e9.17.1793622330354;
+        Mon, 02 Nov 2026 04:25:30 -0800 (PST)
+Received: from localhost (109-81-32-81.rct.o2.cz. [109.81.32.81])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4aa820492cesm371193245e9.13.2026.11.02.04.25.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 02 Nov 2026 04:25:29 -0800 (PST)
+Date: Mon, 2 Nov 2026 13:25:28 +0100
+From: Michal Hocko <mhocko@suse.com>
+To: Joshua Hahn <joshua.hahnjy@gmail.com>
+Cc: Shakeel Butt <shakeel.butt@linux.dev>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R . Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Maarten Lankhorst <dev@lankhorst.se>,
+	Maxime Ripard <mripard@kernel.org>,
+	Natalie Vock <nat@pixelcluster.dev>, Tejun Heo <tj@kernel.org>,
+	Michal Koutny <mkoutny@suse.com>,
+	Oscar Salvador <osalvador@suse.de>, cgroups@vger.kernel.org,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+	kernel-team@meta.com
+Subject: Re: [PATCH v7 0/5] mm/page_counter: move stock from mem_cgroup to
+ page_counter
+Message-ID: <auiBOBfRIiup8Aob@tiehlicka>
+References: <at8XfoqWwe9HSL9y@tiehlicka>
+ <20261026155937.1235453-1-joshua.hahnjy@gmail.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 3/4] mm: internal: introduce FPB_LOCKLESS for
- folio_pte_batch_flags()
-To: Yeoreum Yun <yeoreum.yun@arm.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-Cc: Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
- Peter Xu <peterx@redhat.com>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Andrew Morton <akpm@linux-foundation.org>,
- Rik van Riel <riel@surriel.com>, Yuan-Hao Hsu <aa9736195201@gmail.com>
-References: <20261102-refactor_gup_fast-v2-0-bc1ac018c834@arm.com>
- <20261102-refactor_gup_fast-v2-3-bc1ac018c834@arm.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20261102-refactor_gup_fast-v2-3-bc1ac018c834@arm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 4FCE2100013
-X-Stat-Signature: khdfjcgdkg6q3erti7wqphxci5a6gjf1
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261026155937.1235453-1-joshua.hahnjy@gmail.com>
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: D84A240003
+X-Stat-Signature: uxuykau3t9ems68fnaobos6e9cotgqbu
 X-Rspam-User: 
-X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
-	version=4.0.1
-X-HE-Tag: 1793622197-238863
-X-HE-Meta: U2FsdGVkX1/5HGWN7DLG75aQDC/IXQrsEzgRJoIBhxQck/xUU9IlZ5eXA1Tj7HmfYo+r7pPgHw5YbBHciDrDmFGMnVsRncBGR4Q7vghSeG7+plL/BmNjkDbcGi6MNa58d0OaYFTUklpWlhzHSmsXZyTwGP8g7M1510DOf7BS6eqwCYJMg1ISZWE26RqoFDmGVCl2lBK9+kNkETEHdRfUd5Qj/ewQ1JfU8Qw/Tx4Gf9sK8j3kLE+EIROu8CIdT23IWpc2XyNPfy3xsROfdTdofMd4eHoKNdsYV2t0EVRF2mhYgcCGRT6q2zoGDyXreMDem/AavdsXH2FcbbN5HGrRqs+CqYYGDRrpCdnb7BmYknrQOX7fXG00m/d0uLk29pCrG1uBMDobyc6vLYbNZ9zbueVrXnBObpi7xNZUdRCm5eIpu1ayxo8oBDlNBgXK/2hbD+WSVaMeOQVzDm2oFd0oWWEHv+qLJxZx9OzAIg6hREzYS9Vz585I526gyfWF5/gfIzOP2Y0RGjDo22rl2E6h050E36ClD95n/o5REX1I01zT4lZIjaF4HF+TS7rRAXxSpXOI6YyLabuRDUZH9dSCrLd31xjjUlDKf0KeQvdzvyJhRAX7vLbewcpvV2lHDDjardkMYLWulsG7yxxJMdKFbpzcY3JaYDl8WXopx34quKL50Nby2rH2Jelh2m47H8Ku0GVBhrjfC/mjJ33Oth7ltDv6GwzLXJnLp2Yqjh+pWcQRhRC7vL1NcrAy/Uf7zcgtIRHiAy0R1tdk5uMz5ety/+qc1WeeOKWAmf0ZNNT4KYSnxxO+qxcmRXu2DJpGbcnfh4tpGAwLreijG/l21MeFPUgiJJ0LnIaAq8LDo5cisJ8EdNfQIwFhPZ3B3lWaCuyeAC9ZZEvp9JVBxjok7eTuvBMC7FBeObURPAyOJRWgSMVyw/v50zd3w5oMa1M6OQB/TsE5H53WjEVRklA36li
- SYZsmgJk
- E+A87GGnKqlYbDluvvqoA3tL7gY9je08gI5QsKZKGj+sNF95VISj5eYjckP9Mq22zw/qzlOAYV4yd93ExCqA3CVhrYyq1HA9Rlqp9Pqi0TeFOt1p0KVWYH0JIzUvhU7ZyjGQAgjsZ//c7bzjuTu0fjDeA07v6sCBpOWg6ZJYp3OFMdgKQTbsEKp1HEn2ExT7ygroYwsjJ5GV/m2nFEf+7MJZqR9Ro23E3Yo3C8a6iwrO64yCONQnv4m/FJDMhxueHLpGdTwtKR7Fq3xwSQRbdjOpoiR4jUDzVgxuFVoShT6FbTZAOoohRjgajvXXmkFmpC9tQQw7hz0vwZJLuhnBR4tDeuymUy+6PbQCNiCTDffpLdNgnaZ2+dO8h+z+cRAGtMzDpfFhv1KAz0n3qsgu5UnpG6rq2Qtly7eq7
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1793622331-23699
+X-HE-Meta: U2FsdGVkX1+bwHD/y4nGjD8biIWKWSX48Hr91R5at3Dx1Rry9JMblKD3Xc3ohUXzShqO+nOYxyatMNRMUCFEW0wk+zZ8h0peqYsuZkFfg5hn1NdNOWMPUA4DbjRU1D7RcMKafvVn9OQz/P/WMQpuXgLxnJpQ3dIWzskLuigqc1eZqoF+L5YoJkfb6DRUqJpjKbCmT+SjISIcYNmSoUbBXka0U2Q+GThxHmwrcNJThORUDUUFNHRSc0c+YbVfSJgytwbnV4p9zB27mcqOxPKgBL5SKmLWREx1+46XE7Gm77BSBR6JqxarfGzlh9oAW+lhaogakqmCFMRludxNo2Aj4P5Bbv2tHCR7rEyNp7eYP8LghMaqA5fdO4RJrtmT6E9aW7C9QkqHxo6tsYd/aMaUUx26DTC6Q/r1suHCenpoDZeJe4XEhZywIL9Bwf0MfIJWmysTim9ckJIAe8rwaFPQA8aWsCbU92KKGH7NK41lpIOr7vN2V9IOvnzdhqYgoE8yqob8K80JDEsb1E+OMbWGGP244+z6s+dTsnb4LOGBBGFbCuLomNQ/+Zb31kUTef52hStIFJJGcw32WYAwEWQBwHrP/bOO8sISzqAwLIpNxT7L8qbR0/koNSLibwvxLKyfa2k5Ek6Pt37ERQOo4FXB2E//M+YplYOLiorwAZtxMfudZWs2aRwExW+u22GEJdlGOoq1UZTUUTYLFlOtqaqLtRLU1swz1BcdVrektwoQZ9pjPn//o2mA6dX5cpMJJzsRkqCCfaNM59wMWWGh+8QwTIVDkrM4ybW9Ml5OzjHkAAY+3+h4/2nuBTxGaj8dumFs2XZr+9oUnh0f8nfpNd6rGWMkaUc9RYh5Bjw49h1a/XY10RuAVK5GgEQU1pzGVWL/LDhv2WWoelZH915LxG0cWG5uS3UTCQwP3W5EhB0I80MqG1CRY10BwJH7ujo1QEdL4aQ9bdK2eti3L/GpiNq
+ UC/yyFtn
+ HHoJ6eVG/1eQcYrgvuSzGOYTdxS+6A1+2KRzTGkEhk850Y+Uk+8mPXB81OOCfkabC+TXCkEImSiwbkCYhXhGGh+6S5KAAjdRQyN/fEERioInX97SzVJKXbyUaemdIoaoUVaZwgPNVO1GbCgOHexjd7BPiDks3Ci+9pRIbfqSfQMIM4lFQ0AO2ZI6w70R9HPsOW3fkIdP/JCzljv2ZoeK6n+Y/bjCKY2O9wCQbW+8u3+16HM7pYyx9M9LDm8B/vORiFukKcyZKgEvw5WhJv8ZfRLp7gvICah6lWHVb/NBBL0/Sh6lq/+DXzWWquDabC2o3VikfAFetRh+F6gC5r6yMeDP4QYTWrHk6lB0ZmJwEf0Qv/MJ0ihKWrt32rRW5uyqA4FqLIzu9X033bb2AK+ZStT9SYKR2aOyhjjYVm7jd803itHh0Hp8wqTGa5BwakZT5pCtL98A9jYUcl2uzxByhuUy1KsfkaVn8pCRXXqXn7V8Hsq6D537xTOmqr2Jmvrrgg6tr9n2PczhMDHlvOrOm2e73wSb53ePjcs5b
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -148,54 +141,116 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/2/26 12:30, Yeoreum Yun wrote:
-> From: Yuan-Hao Hsu <aa9736195201@gmail.com>
+On Mon 26-10-26 08:59:37, Joshua Hahn wrote:
+> On Mon, 26 Oct 2026 10:03:58 +0100 Michal Hocko <mhocko@suse.com> wrote:
 > 
-> Add support for calling folio_pte_batch_flags() in GUP-fast context when we are
-> not holding the PT lock. Instead of reading PTEs through ptep_get(), we have to
-> use ptep_get_lockless().
+> > [Sorry for coming to this really late]
 > 
-> Specify the new behavior through a new flag FPB_LOCKLESS. We'll make use of this
-> functionality for batching PTEs in gup_fast_pte_range() next.
+> Hi Michal, no worries at all : -) Thanks for taking a look!
 > 
-> Signed-off-by: Yuan-Hao Hsu <aa9736195201@gmail.com>
-> Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
-> ---
->  mm/internal.h | 8 +++++++-
->  1 file changed, 7 insertions(+), 1 deletion(-)
+> > On Wed 21-10-26 15:55:09, Joshua Hahn wrote:
+> > > v6 --> v7
+> > > =========
+> > > - Preserve two cgroup v1 proprerties that previously followed implicitly
+> > >   from sharing a stock:
+> > >   - memory.usage_in_bytes <= memory.memsw.usage_in_bytes
+> > >   - Reclaim does not swap when memory and memsw have equal limits.
+> > > - Wordsmithing commit messages for 4/5 and 5/5 to document the
+> > >   cgroupv1 divergence (bounded) between memory and memsw caused by
+> > >   independent stock.
+> > > 
+> > > INTRODUCTION
+> > > ============
+> > > Memcg keeps a per-CPU stock of precharged pages so that small, frequent
+> > > allocations do not walk the page_counter hierarchy every time.
+> > > Today, the stock implementation is within memcontrol code, even though
+> > > the operation it caches is a page_counter charge. This makes it
+> > > difficult to add new page_counters to a memcg and preserve the fast
+> > > path behavior.
+> > > 
+> > > This matters for future work like my tiered memcg limits series [1]
+> > > which introduces multiple new page_counters to memcg. Without making
+> > > stock a page_counter-level property, it means that every memcg charge
+> > > now goes through multiple page_counter hierarchy walks, instead of
+> > > being able to cache these charges.
+> > > 
+> > > To make future page_counters scalable and performant, move stock from
+> > > mem_cgroup to page_counter so that each page_counter can opt into its
+> > > own per-CPU cache of pre-charged pages.
+> > 
+> > What does it mean that each counter can opt into its own per-cpu
+> > caching?
 > 
-> diff --git a/mm/internal.h b/mm/internal.h
-> index b4d0df4c35adf..c1824b0193f4d 100644
-> --- a/mm/internal.h
-> +++ b/mm/internal.h
-> @@ -373,6 +373,12 @@ typedef int __bitwise fpb_t;
->   */
->  #define FPB_MERGE_YOUNG_DIRTY		((__force fpb_t)BIT(4))
->  
-> +/*
-> + * Read the page table entries with ptep_get_lockless(): the caller does not
-> + * hold the page table lock (e.g, GUP-fast).
-> + */
-> +#define FPB_LOCKLESS			((__force fpb_t)BIT(5))
-> +
->  static inline pte_t __pte_batch_clear_ignored(pte_t pte, fpb_t flags)
->  {
->  	if (!(flags & FPB_RESPECT_DIRTY))
-> @@ -442,7 +448,7 @@ static inline unsigned int folio_pte_batch_flags(struct folio *folio,
->  	ptep = ptep + nr;
->  
->  	while (nr < max_nr) {
-> -		pte = ptep_get(ptep);
-> +		pte = (flags & FPB_LOCKLESS) ? ptep_get_lockless(ptep) : ptep_get(ptep);
->  
->  		if (!pte_same(__pte_batch_clear_ignored(pte, flags), expected_pte))
->  			break;
+> So right now for cgroupv2, there's kind of a 1-1 mapping between
+> page_counter and memcg. I say "kind of" because there still is a
+> page_counter for swap, but it takes a completely different charging
+> path (i.e. not try_charge_memcg).
 > 
+> This means that currently stocking charge for memcg is equivalent to
+> stocking charge for the memcg->memory page_counter.
 
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+correct
+
+> However, one of the series that I'm currently working on [1] adds new
+> page_counters to struct memcg to track the usage of memory
+> per-memcg, per-tier. The goal is to (1) track how much memory of a
+> cgroup lives on which tier, and (2) to limit the usage so that a single
+> cgroup doesn't use up all the fast tier memory alone, and shares it
+> fairly with all the other cgroups on the host.
+
+Right. I guess you have layed down your motivation quite well in your
+original cover letter.
+
+> When adding a new per-tier page_counter to struct mem_cgroup that gets
+> charged for every memcg_charge, I cannot use the stock fastpath since
+> the stock does not distinguish where the memory resides. It would
+> essentialy boil down to this pattern:
+> 
+> try_charge_memcg
+>    \__ page_couner_try_charge(memcg->tier[0])
+>    \__ consume_stock()
+> 
+> Where every path still has to do a hierarchy charge to the tier it's
+> charging to, whereas this patch gets us:
+> 
+> try_charge_memcg
+>    \__ page_counter_try_charge(memcg->tier[0])
+>           \__ consume_stock(memcg->tier[0])
+>    \__ page_countertry_charge(memcg->memory)
+>           \__ consume_stock(memcg->memory)
+> 
+> So that we can avoid the hierarchy walk for most charges.
+> 
+> I'd be happy to submit a new cover letter which better explains this
+> idea!
+
+I guess I still do not understand what you mean by opting-in to the
+caching. I believe you should focus less about what you plan to do and
+rather explain what _this_ patchset achieves and how it works.
+Also focus on describing why do we need to keep caches on all layers of
+the hierarchy.
+
+> > > We get an added benefit of simplifying try_charge_memcg(), which now
+> > > has all the stock management handled transparently within the
+> > > page_counter layer.
+> > 
+> > This is quite a large change and I believe it will be really benefitial
+> > to have some high level design overview in the cover rather than trying to
+> > chase it in respective patches.
+> 
+> Sounds good with me. I can add the call traces above which should
+> explain my thought process a bit more. Hopefully the problem I am
+> trying to solve is evident there.
+
+I believe I follow where you are heading. I am not sure this is the
+right path but that is a separate discussion. I would focus on whether
+moving cache to the counter makes sense on its own (without that future
+work) at this stage. Quite honestly I am still not convinced this move
+is the right thing but I would like to fully understand the mechanics
+first. Having discrepancies among different counters just sounds like a
+potential source of future problems.
 
 -- 
-Cheers,
-
-David
+Michal Hocko
+SUSE Labs
 
