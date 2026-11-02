@@ -1,146 +1,116 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C15B606B0DE
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 17:40:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8A06606B1C9
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 17:43:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=LvGjbVxP
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=B71LjEG0
 Received: by kanga.kvack.org (Postfix)
-	id 8AC286B05B1; Mon,  2 Nov 2026 12:40:49 -0500 (EST)
+	id 1AAAE6B05B4; Mon,  2 Nov 2026 12:43:40 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 85DA96B05B3; Mon,  2 Nov 2026 12:40:49 -0500 (EST)
+	id 183BC6B05B5; Mon,  2 Nov 2026 12:43:40 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 749D66B05BA; Mon,  2 Nov 2026 12:40:49 -0500 (EST)
+	id 072E36B05B6; Mon,  2 Nov 2026 12:43:40 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 52F0E6B05B1
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 12:40:49 -0500 (EST)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id CDF14A019C
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 17:40:48 +0000 (UTC)
-X-FDA: 85390894176.13.6CF44E8
-Received: from mail-ua1-f50.google.com (mail-ua1-f50.google.com [209.85.222.50])
-	by imf04.hostedemail.com (Postfix) with ESMTP id E58314000E
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 17:40:46 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=LvGjbVxP;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf04.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.222.50 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793641246;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id CF5A26B05B4
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 12:43:39 -0500 (EST)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 779EA401E5
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 17:43:39 +0000 (UTC)
+X-FDA: 85390901358.22.518E88D
+Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com [209.85.214.199])
+	by imf25.hostedemail.com (Postfix) with ESMTP id C3CA2A0008
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 17:43:37 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=B71LjEG0;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf25.hostedemail.com: domain of 3yMvoagYKCGERD9MIBFNNFKD.BNLKHMTW-LLJU9BJ.NQF@flex--seanjc.bounces.google.com designates 209.85.214.199 as permitted sender) smtp.mailfrom=3yMvoagYKCGERD9MIBFNNFKD.BNLKHMTW-LLJU9BJ.NQF@flex--seanjc.bounces.google.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1793641417;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=TlWIVwA/UXKyoa6jSw1HPI+XreVDEaVcyeg+VBHTtLE=;
-	b=fA7S3ZzDHgLEM4JfdPjG/dRNMD74TEAcBwe8qvrQf2oD76U3/AL7mhv8PS+HA9HZjhxxET
-	uSe2Nysky9vbhR3DJWeIlL9Df+qQPam+FfspGvst/5IuD1/sUQpNkB90xodrpFPLsmh2Z7
-	JoAgYiSGS+8mCk2yXep732A/rzzmjEQ=
-ARC-Authentication-Results: i=2;
-	imf04.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=LvGjbVxP;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf04.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.222.50 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1793641246;
-	b=4ljkdN2+hnY5hNIhB4WPeXYrHQd/mFMopOn8f66hKhLX6gRFmDB14hjsglVtKtHPfvPXTg
-	+Chj5cq26/UA0nEj3hyPWPQbEq4Pqb6yVNBAq+VTeyak4M6T8Do2L3vIedc2uTgoSaV/mw
-	OpqHQwNc8GlP7OFfQg4frJeDENXBXEM=
-Received: by mail-ua1-f50.google.com with SMTP id a1e0cc1a2514c-97ccbba8e86so768656241.3
-        for <linux-mm@kvack.org>; Mon, 02 Nov 2026 09:40:46 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1793641246; cv=none;
-        d=google.com; s=arc-20260327;
-        b=PtrHCjWWigSqMb/+jGE4m3Cq8oYM07sYyu/ga9K5P1r4Koxb4i+bAm3DGCIbKOzFWv
-         qJDDoamvhiY8i9axzMBGcsoQBGOqMgIvQN171qCKVV2j2r48Q/lAwMXKZkoYqL3779xV
-         YV8W+ddM+7+jmU1NE2miMQM2SgcaZZMNsREA/oj3h7EXCZSmvepUXZ3dlTgv9ZOIV6mL
-         EbEUtA2u1tSSt3nlY7aPTlhe3Nvf4xXMunNanhAymbi3tmR1/W8T8p/f1Ll9dtbgC4bY
-         /b5MMyBb//Xu3GyhYo958n+YR9N8ZWIEabnqq6IG6Lbl5sR6vwnXk9vOJjnjYr6OLnd7
-         ONVQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=TlWIVwA/UXKyoa6jSw1HPI+XreVDEaVcyeg+VBHTtLE=;
-        fh=iST0seGqYSw6zDL86dOT6T/cB9EV/40+o/p/Ycrmntc=;
-        b=KfRQNlBWQQhQBwlg0WhfBUnFxeL+wXDDMHGY7D4GZX+j6eYfppF8cyQQI1hSwhmncs
-         HeJHQOxVHDqhS5Jj6p4NVoe9uQ9yeRC/sCqSdLoPhbd8dHlTUuakDT6eXHnKoxAWTF0R
-         N6wRkfn1YkgegzBmOxxkHd2MrWFlIYH++77QiZX91wPK/LPmLU1vgLczAaMuhfbhW+jZ
-         aoGgnZztwunZbn3zGHcbNSym6DbFJ7S28D15j+T6zPapO8q8ixe0pJBoZK/1Ur7IxU4Z
-         G3NC9UtCGBr3i0aHLS11eODfn6s3ae8g22vA6hhVDg3l3kwhVyvnHQGF50yGzj7q+1pQ
-         RQow==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	bh=raeJlK9yYBGSF7+QYGBqsG5Ux8i2znTMcBRplAhhHPo=;
+	b=7yb53bG8gFxtsyJfIWveCVaWxSSGjDV9IEqUciY3Px62sZLzNbowB9on9MRlcaxT3ZdcA/
+	J0oFzaHUcad4ArtzUtDat7Jt9FjgtQsi+8VfwkDWdjQZgc+o2nTSsLaNxQnb4VBDYyMrlw
+	VGBCCV3CeYdTKfTod0Ec3sKdz+xH9xI=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793641417;
+	b=0upc7COZyTobK/8ARPmQtOiIZXumlg2uyyQImAhWZ2dTZYp2gRWmVKOSehh4fe9y1GcVH8
+	KY5quqHk1udJlZQXLqYH2GZyoGe+Dd44tBx/8A1MxPF94Gvmz4PDoxOD55B0bCGPptCnpR
+	gfHMpNGYszc/G1pBhQC7aGdHOqKDw4o=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=B71LjEG0;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf25.hostedemail.com: domain of 3yMvoagYKCGERD9MIBFNNFKD.BNLKHMTW-LLJU9BJ.NQF@flex--seanjc.bounces.google.com designates 209.85.214.199 as permitted sender) smtp.mailfrom=3yMvoagYKCGERD9MIBFNNFKD.BNLKHMTW-LLJU9BJ.NQF@flex--seanjc.bounces.google.com
+Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-2e869e00005so51783095ad.2
+        for <linux-mm@kvack.org>; Mon, 02 Nov 2026 09:43:37 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793641246; x=1794246046; darn=kvack.org;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+        d=google.com; s=20260707; t=1793641417; x=1794246217; darn=kvack.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=TlWIVwA/UXKyoa6jSw1HPI+XreVDEaVcyeg+VBHTtLE=;
-        b=LvGjbVxPBlyf96ccj+nNW3dETlhhvIH/ZH7cafWfF74YLLp7kJ7xP5AP5IbKyrW3ci
-         8ORuJH8CVUL9WTS9SmNLnp2JnPZWG/b09Y4Bvt013rmN21mg5+EbUGT1aajIX2ah5/Fr
-         +ojr1q8Oh1WM88QPChwCuR94rwtFjQJOhEDzi6FEBQ4hSdSvW6ppQgyJY1m+S56EdurW
-         gETh7lYcYQRrzaQiGVdQWidyqdzc4+oQRSxQEpXcFostwyWmTKB69/AKgE/iZcvf4+jU
-         I3nTNLLSJ2ABSLr71VCZ/zVTlOU53o+1aIWufRPZIXHSPwAfIZihheBTJChOOtH7SlbB
-         rw7g==
+        bh=raeJlK9yYBGSF7+QYGBqsG5Ux8i2znTMcBRplAhhHPo=;
+        b=B71LjEG0zACe4SHG6h+kIEI5HjEsshaqVSy9ITaE4fEkkzepcOs3N3EEEMbP0S6UIq
+         IP8Fy0EEKLh4tOHS/4CRmIEUyzYDqAM2kPRg8/0j3upwsNPpyAwGsM97BSXVYnSAOrkB
+         Q0E3YwJGrj1boHfryThRW5G04Sa1F9MPhgVolSrkiSVfuUp3TmShDC7mlpSIG+v2vl44
+         CT0w+IhFLEc5j5VFzfIZnDssi37XnBs6CeHTa2oNbRctfCdzAPk+oHbmB9/cTjUvCac6
+         1LyvHRNuWahw9dJxO+rB0X10e4XNP+8JQtStfqsFwiNlbXJVABVf1WnSxMhCCixrN/lG
+         pwPQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793641246; x=1794246046;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=TlWIVwA/UXKyoa6jSw1HPI+XreVDEaVcyeg+VBHTtLE=;
-        b=Sk8mbNXxSKGjvmi4ypYUagX9p6zm/EEFn7r0a4Ewb74XpIWLO8Bjwa44nGJzsXj+vx
-         MdM84sqocuK2go0WuDnJ3z4Ny9JlGQ72suqYCPtOR7HY+Jh01Tb53fUSXmgULXk1a0/e
-         tb1OWPA7Tc/WBtK4UJaY4VxJCZquaBSrx4nbYjhAgmDqqjW1OU9Lwi/OrADbR/EAzuvO
-         gLPX/nlZjPBHWbiYisu/oZhc+JihMLy8poSfYVjEZHr3ohMu/sl40gs5NZTc55O9x1M7
-         nXmivfXsLxujy4MWWICThKRdD8mV3u9eCZvQQ3RF6QiTcZt8FJb4+N+krN/9AkiSnazA
-         11Qg==
-X-Forwarded-Encrypted: i=1; AKwUvBwo1giI3AJScVjVQ+J94KjR9SYbfRHORCE6YtCDTWRqFq9Hyb144rP0q8MXYUbcC5A+LGkVLXDg9Q==@kvack.org
-X-Gm-Message-State: APuU4Z8Gs98j+ITpDKO2+z4z8EwSYDeaYmuqNwH1f2/aqqwPCjewOrSf
-	vXsjN2CyzaBHsVHMmGJRCz5fwyjI8PZTmvLmhs1+l1D4zNuyMZWB4yaMWZMW3AcJ/3ckVArENN5
-	1zkwpK1P3jM2CmernYksnLAfqXsEJiBc=
-X-Gm-Gg: AYBFou0J8/AEUmx0IGaHXwZACEqcNZzbWRcwgRZ4ZNV4dJjcb3QYGTJgWto8eoPd0Ja
-	9T7meh4ki+SWEB2y975AHKUcpD2KAPSoWQhKAmF060QyoTtPqX+34cW+81xPlXbEDar7bSfj47x
-	JWIMXlr0nq8g8FdofUWXfS31Yin5Ng3teIKU/N4ruFvaIaZ3yLRS97aqn7nHQ7PyOA7/RaXFuI5
-	C0C1sIf5r3voWSgp3vSOhNvJvk9M+dfHa62B1qN/r6g1EyGcvRhA/4hhSuUTejDeg+SddwpeZGW
-	5suFaUJNlInLTRddCIJElf1PbiUAvAKBbrojexHA0wrvNkC+VhOmwmcWRzPUNr3RKN/zD/Y9+pi
-	ClSP9lLoHFwkTJ/o4gtTd1x0ByxRyAMAb5lBGX9jdX8x0QgHH32XZCY0co72ums6GUe3uf0lkMl
-	x16jZVGjQ=
-X-Received: by 2002:a05:6102:6cc:b0:7b5:7cd5:2a1b with SMTP id
- ada2fe7eead31-7d072634fbamr3742461137.10.1793641245530; Mon, 02 Nov 2026
- 09:40:45 -0800 (PST)
+        d=1e100.net; s=20260707; t=1793641417; x=1794246217;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=raeJlK9yYBGSF7+QYGBqsG5Ux8i2znTMcBRplAhhHPo=;
+        b=0SaS29UkxYImKWr8fyslE5cq9X4LgAW/1LkqKrw8WENGoV5xTWx3KwTKOj99jClUxN
+         3DWBQsojAVONvX0Fu9x7c0DzrVettI+Mdv3XKM1XxPNF2FHjZYcW2Hf1WTz2oIJtRSyt
+         0qPKldDAyd4kxfdMXfyWIVqX2gKRc4vq9+e5SCpbXCEONU0ILA2TdZreKo429ahRHHJB
+         404FxrrD5gqK6s3wE8VQwhBte3eoGJ6z2+8HwK25d9xrH0JtQxlwuT5RZzUoqXFx9SlX
+         n0tejRkTTwqSc0t5yVLLpiMHIVAsGK/jppMtiNbnMGJnh+swnsgitI3y1Odh84y6sVB5
+         6TDQ==
+X-Forwarded-Encrypted: i=1; AKwUvBxh9JzYp5LuUQeYq/9nerG7MfHImGZavOx7EWmxatWrVToRhjwrE+nH08qholIjhZYaqHHvABHbbw==@kvack.org
+X-Gm-Message-State: APuU4Z8pf3Ge/NKRIxY8IHZ0VkffyD6KQ1CiUA73DYp9Alfs5Ydh00Pn
+	AMEwi5mMocGX01MqeLyOXRGxVDFzszLfcocFvtY+s165DHSoO6Dg2phpfilC3hDteA6id4wlG8N
+	c90Q9YQ==
+X-Received: from plkg13.prod.google.com ([2002:a17:903:19cd:b0:2e8:1f84:7c18])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:ea0d:b0:2e8:1d5c:f6f9
+ with SMTP id d9443c01a7336-2eb364715ddmr105628745ad.46.1793641416165; Mon, 02
+ Nov 2026 09:43:36 -0800 (PST)
+Date: Mon, 2 Nov 2026 09:43:35 -0800
+In-Reply-To: <20261027163929.2bb28d5b@gandalf.local.home>
 X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-References: <aui3TJqadHUv-4RW@tiehlicka> <20261102163014.237806-1-joshua.hahnjy@gmail.com>
- <aujCcqKKyio7oZ0x@tiehlicka>
-In-Reply-To: <aujCcqKKyio7oZ0x@tiehlicka>
-From: Joshua Hahn <joshua.hahnjy@gmail.com>
-Date: Mon, 2 Nov 2026 12:40:33 -0500
-X-Gm-Features: AclHuK8Kcc-o5KfW3KwHQal0BbNJdxHPlCZpE8gC1XELnC_g5cw3VrvhXhvc0MA
-Message-ID: <CAN+CAwOwRJUDXHj0RMr4p2+sdA1V9bX-OgOH1PpER+u_cB2fAg@mail.gmail.com>
-Subject: Re: [PATCH v7 0/5] mm/page_counter: move stock from mem_cgroup to page_counter
-To: Michal Hocko <mhocko@suse.com>
-Cc: Shakeel Butt <shakeel.butt@linux.dev>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, Muchun Song <muchun.song@linux.dev>, 
-	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
-	Lorenzo Stoakes <ljs@kernel.org>, "Liam R . Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Maarten Lankhorst <dev@lankhorst.se>, Maxime Ripard <mripard@kernel.org>, 
-	Natalie Vock <nat@pixelcluster.dev>, Tejun Heo <tj@kernel.org>, Michal Koutny <mkoutny@suse.com>, 
-	Oscar Salvador <osalvador@suse.de>, cgroups@vger.kernel.org, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, kernel-team@meta.com
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0
+References: <6adf2939.67317f00.38c4bc.00ae.GAE@google.com> <20261026224305.1254-1-hdanton@sina.com>
+ <auCucDdZb8mig7UZ@google.com> <auDvUyfzg6nLtVox@thinkstation> <20261027163929.2bb28d5b@gandalf.local.home>
+Message-ID: <aujLx1FOc12E72rF@google.com>
+Subject: Re: [syzbot] [kvm?] WARNING: locking bug in __refill_objects_node
+From: Sean Christopherson <seanjc@google.com>
+To: Steven Rostedt <rostedt@goodmis.org>
+Cc: Harry Yoo <harry@kernel.org>, Hillf Danton <hdanton@sina.com>, Boqun Feng <boqun@kernel.org>, 
+	syzbot <syzbot+f11512d1e5878ba5e60e@syzkaller.appspotmail.com>, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, 
+	Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>, syzkaller-bugs@googlegroups.com, 
+	Vlastimil Babka <vbabka@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, Hao Li <hao.li@linux.dev>, 
+	Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org, 
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>, Clark Williams <clrkwllms@kernel.org>, 
+	linux-rt-devel@lists.linux.dev, Paolo Bonzini <pbonzini@redhat.com>
+Content-Type: text/plain; charset="us-ascii"
+X-Stat-Signature: 73t9ccnnd3duz14cdr7rptiaqcgmkm6p
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: E58314000E
-X-Spam-Status: No, score=-2.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=no autolearn_force=no version=4.0.1
-X-Stat-Signature: 7mw6gbrtkamn7sf3yg3cryoi1ne4dyqt
-X-HE-Tag: 1793641246-969461
-X-HE-Meta: U2FsdGVkX18mnFyNQXnv8cEIy1GqO8H9+3hRkFTF7RFr13buzRzCJ3LFsaOFE3TDwDyx37qWIhJrISLHyG/bFFm9gYQqI9cq/XxYOTDeJumqRo9uAaQIcCfSDw1uWUh2oAs1IXnC04Y1uDsmQRQ8UihCEN2cjL87Y2olca17r9nN4sgLDp0H/bwQJ0kjtdnpObjSJpIv1foitQbmF75T07Us3OwrEsYcgXcYBUGjWx1N7udKDWrl/fH8mfIPYveJN0Xir3bBvtyitOsjoMxbJGHKsY/dRf25mkdhFvQmS7+raFJrnaBYMYgWjvnC5ZoaVOUK/oxH+iJRQAfnUzIf4gt6c8zhHEjFWHBLp44ljN4Wje3XAzQkwG7nhpcWXgOHsZx3zmAGZtpja+AeEMdYzfnaMJ62djuggI7NTFBHCymXag0xn3CmUikZL4j1m95819tkqOzwr6jN/yBS8p5zW54HAdk+gOZ9TwWuDOX0vAy9wR9sWJftl1TmRIzs3RpbJ5uZmDAdC4bN26nXdXvXIdRuufEQjg3XdO9F5UOTOHFp35aLP1CITDbFGd5KzKfiQYkKPm0/JoTzFccXVwfzj2uUzn4AcPCPyCTG0DU5TtjKu1y6QWt1l3yKaN7uv9YZy+AbYBoKfOxYTRxIPt9fFTy/ENXtt+CB1GduMhWmNjqNa8+0zrmsZNDZJkerDWF2T169bkMeSaI477I0IFooYJDzeczG3Jf6jOyXYmhQTga5E/HPtC1yry2DrgXJW1VP7FAz1yd9juOTgV15JHX6apNtwTDk7airLfb6TZVO/m7S5WyZ2f3vSqAaMFJh+WOZECQ5rV/AR36ovtty9+NCo5C9FV5dlAVkatRYQpqoZUnwOfRBor2+be0PbAMqRT4kXMUgaIBhoaIbjsRqe/ZCX0EfUXQXqINdOzDODLlfGmN6ez+1aSujypbwcYSJFnHmrIw0o64DEHb7ATceCOq
- 9ZvqlVNB
- utBXTfAiohhnXK+YcHQPerSnvushMi6RBdgcw7xS37wKkhlgO6zH2RriZIKPz4RK/U1jpfr/zAn9KM6bHx7tbsMbx40fdUug+nbxdy8aTyxZJ8zsJrmzkJNEFUUC3xF3fv5UQWbOBwG75Cp+9ESF/Z/YxCs8S1QoxDfMe1qONN5gFTT8mnLwXfxvRlEFF6Z6pMnoTCs5kGsMYtE491mjE9uYssltv2XXOfrznuubtm2sdgXiWu/Jl2X41UWYl3D67yCKh5RKlkVYIdiOrylywR+EzwOjbdCIwPEfyGYpDhzASCPV1ICFer6Qajv05Soi6NZfbKINLDrj9ujfa+sIZPmGa6XI28/g85W62JLb2g/qfyli1LpMyknbAry6Dmu4lWZ70mbNOFBsgaCUlMXGgHfKh05rTZmEkA/Bn6DHDo7KC31Ik4b+77+ZUZ9xWlzQvQxEpXyHwzSDPmaF+K4VsoLBT4eC7OABAyr/mNoBwe+xPz4A=
+X-Spam-Status: No, score=-18.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_IN_DEF_DKIM_WL autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: C3CA2A0008
+X-HE-Tag: 1793641417-667160
+X-HE-Meta: U2FsdGVkX1/X6sKvtMtb1zxSLNx6YPsoq8W9Hzs/elOhwuyiVpgZseA8UamcOpsXEIzb+IGJ+BDiRLyyGGQwMuYfSVCbrCnbK9vZdJZJi733uHAlZZreFFPrb+savI8JVVdBzU4gM1gThQ3p9cDN1Hc0W1PPwjAEWse/JB3WZXtXYTmlKkeahc/JftSulapDUsO01OzUyQJmgDaq9SwaHcPuHsn0xjm95IICPrRkMTaEcC5/kxk8y8001t0TNKCu6yMf/ei+OiNZy86b5GOUWiszB5Ly0xqRcxPY6Rj93MqeJWZgDSaLCZ0NHxZrKtNVhAU/qWphALxPKSJewmq/DFizFUTQUFmLusVMWveY45kmaA10my4sDSDEzBY0mgOx11Bfy92C6boTnIux4qhJqnq1jDq6R/Q41DMn40unsbEOlvD6TM3GYsx9LfkrGXeAho6FeE/sYBRood+cD9hOy4vMOpH3+8eQzKa0LtFsv3UxZ3fGAjCpISNslx85bn6n8Eyhpv3l4DGpwEcoPLFKoESIfpNz8gtJdvI9c/bYcVg21v8uM1ewNa/9yUkSp0tA70S03goMXeXqJj9EtjlWGosq7Yavrvi0YVOnarItaURnEJ6s93gGUdUSOI+66pujMn7/L0zdYtkUOq4PIfPVzhARBYglk3dJ1g2z1IGMWd5jn882Dc29i9mgsP8R+m4CT6NGudQXMLA1vQtfXBopqmYmR1k4uf8vIMDmr02FqqJbqCAbgyv9699t/ET+7xbf/0VQODRp8oDKEfkzK1QR9HkgTSC2dBkSOtWUZPwdO5EdUZIilbwCk5x8jH56BaFKlTW4/Yx91mSbPBBozHR8Armjj3JqXWNhPOQ6KmbKNoM2qpOGpyVfkMpVpptbk4KQPgI807TElzPThV+fj39I9iagpl1oXtEa8rQ7bDyBQLmT/0vQfDmlA6t11T0c3sfrvDxe8VECdze670l+LmL
+ G/1GP9hz
+ 8dcuq3Rhk7nPpx8PDcR9O2MT+qK++SwTECl1LQ1+QhDM0zDzHr4y8ourW4F0bXiorhSPNkWrBVy7lT1QwqAqwzLrmZAmiUKH1F8cDCk8WQItPCZzrSlnIBm4i+wuecsDtvl9rSEbv49vxdaPPBqJ3euRhyx6juX6EXLQGRDTYVUwree8azWXlX3HBQ5lp8nWQszUYldpKk9c3wYrcmzbU51elerpsRXph38G0sMkFs2r/piyNmUWRR8ApW55REl+7NyjDFJEYLScjKJnnihhpsP5B5pZgeYxtSOKVZ3Yy4N9DNaKPbC8CqzqSWyaF+oNHq0vZ4EnY7c9Waty+Ki1lzvInjXEi1WLyPBFNHLj/Y2WLBoitn82abFtG5Cx3fnA0PTOKdYVAbQdpb4LBVDkmzxtOCfqHSPLQnw6K4tTd56Wqcr5VNgdtnQ0iZXzIdMjxPSguWcRLwsbpOtoj5d/RjP2uVmRxclgfS0WntTtiLs7BDBkWgjQBBZdf2RienLJIJz/NiuF9pnz7BoK4Hpt2MoAZMamZYCUj1OxAbwzYkCRvtgFvoSFftTVNIJh2sbZFUC5aaaToe4zleYFQ6BgUwO0QPR2V4bN/jLKYzNW8tHvd9CBdQhOZ+a7vZARjbmDQZrSgiS/O8LKJxnCDbkx0Mke/XwR+xPHE1aGnqvCRoHroE3DG5SOZHXQNEo2on1hHof2Sx941jbdMV7uytTpsBmfneAt7/02hP/X25uCRv7rnW2QcEiCHuozDeMv7DHcyH6230+9DgW5YoVIuob9nTDvs49RnTqrAD6sPUoH7J8/K1T+0rE51NvwEQmo0ZbPM4NQd3iZiVFby4lewV6dFPf1zfw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -149,50 +119,135 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-> > > > Personally I am a big fan of how try_charge_memcg looks after this
-> > > > series, what do you think?
-> > > >
-> > > > > Quite honestly I am still not convinced this move
-> > > > > is the right thing but I would like to fully understand the mechanics
-> > > > > first. Having discrepancies among different counters just sounds like a
-> > > > > potential source of future problems.
-> > > >
-> > > > I hope that I can present a good argument for why this is not as
-> > > > concern as it may seem initially.
-> > > >
-> > > > My first point is that the memory usage counters were always fuzzy, as
-> > > > specified in the memcg v1 documentation too:
-> > > >
-> > > > usage_in_bytes ... doesn't show 'exact' value of memory (and swap)
-> > > > usage, it's a fuzz value for efficient access.
-> > > >
-> > > > Secondly, the raw value of the usage is actually always accurate. It is
-> > > > just the stock portion that overcharge the memory at times, making it
-> > > > seem like there is a discrepancy. Flushing the memcg stock immediately
-> > > > bring the counters to their real values (like what happens right now).
-> > > >
-> > > > Finally, this is a change that is only limited to cgroup v1 users.
-> > >
-> > > Right but is there any actual point in adding caching for memsw charges
-> > > now? If you have a way to opt-in to caching then you can simply disabled
-> > > that for memsw counter altogether. Fewer problems to deal with, explain
-> > > etc...
-> >
-> > I think the problem actually still exists, unfortunately. In fact I
-> > think the issue becomes bigger if you remove stocking for memsw.
->
-> Yes, you are right. We do actually cache memsw through the charging path
-> which charges both mem and memsw with the batch.
++Paolo
 
-Thanks, Michal! So it seems like we are in alignment on everything
-except the cgroup v1 implications for fuzziness. FWIW I think nothing
-really changes from the userspace POV. memsw and memory usage has
-always been fuzzy due to stocking, so all this series does is to
-change "why" and "when" the stocking becomes fuzzy.
+On Tue, Oct 27, 2026, Steven Rostedt wrote:
+> On Tue, 27 Oct 2026 18:48:28 +0000
+> Harry Yoo <harry@kernel.org> wrote:
+> 
+> > [+Cc RT folks]
+> > 
+> > On Tue, Oct 27, 2026 at 07:00:16AM -0700, Sean Christopherson wrote:
+> > > +slub folks
+> > > 
+> > > On Tue, Oct 27, 2026, Hillf Danton wrote:  
+> > > > Ask the locking people to shed light on the warning.  
+> > > 
+> > > get_partial_node_bulk() is waiting on a non-raw spinlock while in hard IRQ context,
+> > > and it looks like __refill_objects_node() would do the same later on.  On PREEMPT_RT,
+> > > those spinlocks become sleepable locks, which is what triggers the splat.
+> > > 
+> > > The alloction coming from KVM-as-a-guest code is GFP_ATOMIC, so I think that wonky
+> > > code is fine.  
+> > 
+> > But memory allocation w/ GFP_ATOMIC is fine only on non-RT?
+> 
+> Correct. GFP_ATOMIC is meaningless on RT. It still cannot be called with
+> preemption disabled. Most places that disable preemption in the non-RT case
+> do not disable it in the RT case. For example, spin_lock() disables
+> preemption on non-RT but does not in RT. Same for interrupt handlers, as in
+> RT interrupt handlers are run in task context.
+> 
+> That is, in RT only "special" places disable preemption for real.
 
-What do you think about this? The other alternative would be to remove
-stocking for cgroup v1 users completely. But I am not sure that is a
-good solution either. For the record, I tried making the stock tied
-together so that they refill together, but that was a nightmare in
-terms of added complexity.
+...
+
+> > > > > =============================
+> > > > > [ BUG: Invalid wait context ]
+> > > > > syzkaller #0 Tainted: G S                 
+> > > > > -----------------------------
+> > > > > syz-executor177/6041 is trying to lock:
+> > > > > ffff88801d040618 (&n->list_lock){-.-.}-{3:3}, at: get_partial_node_bulk mm/slub.c:3831 [inline]
+> > > > > ffff88801d040618 (&n->list_lock){-.-.}-{3:3}, at: __refill_objects_node+0x104/0xab0 mm/slub.c:7279
+> > > > > other info that might help us debug this:
+> > > > > context-{2:2}
+> > > > > locks held by syz-executor177/6041: 1, last CPU#1:
+> > > > >  #0: ffffffff9090b438 (tomoyo_ss){.+.+}-{0:0}, at: srcu_lock_acquire include/linux/srcu.h:198 [inline]
+> > > > >  #0: ffffffff9090b438 (tomoyo_ss){.+.+}-{0:0}, at: srcu_read_lock include/linux/srcu.h:305 [inline]
+> > > > >  #0: ffffffff9090b438 (tomoyo_ss){.+.+}-{0:0}, at: tomoyo_read_lock security/tomoyo/common.h:1112 [inline]
+> > > > >  #0: ffffffff9090b438 (tomoyo_ss){.+.+}-{0:0}, at: tomoyo_check_open_permission+0x169/0x3c0 security/tomoyo/file.c:772
+> > > > > stack backtrace:
+> > > > > CPU: 1 UID: 0 PID: 6041 Comm: syz-executor177 Tainted: G S                  syzkaller #0 PREEMPT(full) 
+> > > > > Tainted: [S]=CPU_OUT_OF_SPEC
+> > > > > Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+> > > > > Call Trace:
+> > > > >  <IRQ>
+> > > > >  __dump_stack lib/dump_stack.c:94 [inline]
+> > > > >  dump_stack_lvl+0x100/0x190 lib/dump_stack.c:120
+> > > > >  print_lock_invalid_wait_context kernel/locking/lockdep.c:4874 [inline]
+> > > > >  check_wait_context kernel/locking/lockdep.c:4946 [inline]
+> > > > >  __lock_acquire+0xfcc/0x1f40 kernel/locking/lockdep.c:5238
+> > > > >  lock_acquire kernel/locking/lockdep.c:5942 [inline]
+> > > > >  lock_acquire+0x1d1/0x380 kernel/locking/lockdep.c:5899
+> > > > >  __raw_spin_lock_irqsave include/linux/spinlock_api_smp.h:155 [inline]
+> > > > >  _raw_spin_lock_irqsave+0x3a/0x60 kernel/locking/spinlock.c:181
+> > > > >  get_partial_node_bulk mm/slub.c:3831 [inline]
+> > > > >  __refill_objects_node+0x104/0xab0 mm/slub.c:7279
+> > > > >  refill_objects+0x58/0x410 mm/slub.c:7405
+> > > > >  refill_sheaf mm/slub.c:2885 [inline]
+> > > > >  __pcs_replace_empty_main+0x35e/0x650 mm/slub.c:4774
+> > > > >  alloc_from_pcs mm/slub.c:4850 [inline]
+> > > > >  slab_alloc_node mm/slub.c:4984 [inline]
+> > > > >  __kmalloc_cache_noprof+0x4f4/0x6d0 mm/slub.c:5559
+> > > > >  _kmalloc_noprof include/linux/slab.h:991 [inline]
+> > > > >  _kzalloc_noprof include/linux/slab.h:1312 [inline]
+> > > > >  kvm_async_pf_task_wake arch/x86/kernel/kvm.c:224 [inline]
+> 
+> Hmm, this part is OK:
+> 
+>                 if (!dummy) {
+>                         raw_spin_unlock(&b->lock);
+>                         dummy = kzalloc_obj(*dummy, GFP_ATOMIC);
+> 
+> As it releases the raw_spin_lock() before calling kzalloc_obj().
+> 
+> So something else must have disabled preemption/interrupts.
+
+Heh, yeah, the IRQ that kicked all of this off.
+
+> > > > >  __sysvec_kvm_asyncpf_interrupt+0x334/0x610 arch/x86/kernel/kvm.c:338
+> 
+> DEFINE_IDTENTRY_SYSVEC(sysvec_kvm_asyncpf_interrupt)
+> {       
+>         struct pt_regs *old_regs = set_irq_regs(regs);
+>         u32 token;
+>                 
+>         apic_eoi();
+> 
+>         inc_irq_stat(HYPERVISOR_CALLBACK);
+> 
+>         if (__this_cpu_read(async_pf_enabled)) {
+>                 token = __this_cpu_read(apf_reason.token);
+>                 kvm_async_pf_task_wake(token);
+>                 __this_cpu_write(apf_reason.token, 0);
+>                 wrmsrq(MSR_KVM_ASYNC_PF_ACK, 1);
+>         }
+> 
+>         set_irq_regs(old_regs);
+> }
+> 
+> 
+> Is that run in hard interrupt context?
+
+Yep.
+
+> If so, we need to make that a thread for RT kernels if you want to call
+> kzalloc_obj().
+
+Eww.  I can't imagine there's a sane usecase for memory overcommitting a real-time
+guest.  I'd rather just disable PV async #PF support, e.g.
+
+diff --git a/arch/x86/kernel/kvm.c b/arch/x86/kernel/kvm.c
+index 6b0a5861ccb8..b14b03720525 100644
+--- a/arch/x86/kernel/kvm.c
++++ b/arch/x86/kernel/kvm.c
+@@ -51,7 +51,7 @@
+ 
+ DEFINE_STATIC_KEY_FALSE_RO(kvm_async_pf_enabled);
+ 
+-static int kvmapf = 1;
++static int kvmapf = !IS_ENABLED(CONFIG_PREEMPT_RT);
+ 
+ static int __init parse_no_kvmapf(char *arg)
+ {
 
