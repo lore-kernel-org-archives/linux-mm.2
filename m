@@ -1,124 +1,153 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A18CE606A326
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 11:41:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4851606A32D
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 11:44:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Dd8o8v0P
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=Zb1GeGbo
 Received: by kanga.kvack.org (Postfix)
-	id C75526B05B5; Mon,  2 Nov 2026 06:41:51 -0500 (EST)
+	id 12FBB6B05B8; Mon,  2 Nov 2026 06:44:56 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C25F86B05B6; Mon,  2 Nov 2026 06:41:51 -0500 (EST)
+	id 0E1226B05B9; Mon,  2 Nov 2026 06:44:56 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B154B6B05B7; Mon,  2 Nov 2026 06:41:51 -0500 (EST)
+	id F115C6B05BB; Mon,  2 Nov 2026 06:44:55 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 909DC6B05B5
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 06:41:51 -0500 (EST)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 9E6C7C0CB9
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 11:41:50 +0000 (UTC)
-X-FDA: 85389989580.15.AEF100F
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 8260820008
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 11:41:48 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Dd8o8v0P;
-	spf=pass (imf03.hostedemail.com: domain of ardb@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ardb@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id D0E456B05B8
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 06:44:55 -0500 (EST)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 70A8E80C29
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 11:44:55 +0000 (UTC)
+X-FDA: 85389997350.30.88A95A1
+Received: from mta1.migadu.com (out-47.mta1.migadu.com [95.215.58.47])
+	by imf04.hostedemail.com (Postfix) with ESMTP id B9E1E40004
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 11:44:51 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Zb1GeGbo;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf04.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.47 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793619708;
+	s=arc-20220608; t=1793619893;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=EcOIUSoIkDrR2MmVp76uBcwR+fAQFhKVpcenocx2Urw=;
-	b=PmcL8HWGSa9RUKlITJC4vV0HIjdcxH11GoFcbCX5iaegAiPe2kUpTz8EKQS+9yrI+5q9DT
-	Lg2JhAQWiQvoQ8UGojhoEAI9sZnZJlqvcu+yJgUKnL8I8T6NY1baU2AAp3adW1jrmvKMfk
-	+io8EpPnvrNAGlG+h9Hbn1dR53vP5Fc=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793619708;
-	b=P+CKC344LhQp+AuSDfp8dp8PLvxreLFuba0ehbveXE7TiNLxUdB602u7/lDn2vgBtgePHH
-	yElysXkXanzQfn1xnT2D+6fUfDzjvS2tU4XGtb5OT9K2qtY4BUjci4ED4RDipy4Yx2Aklb
-	/K6lmIIAhBVyfWfBDV6S0Y1pj3vT3T8=
+	bh=who8ZKKpx/jTygdDf46XygrUGTNQ5Ti9QGrea7MK2kQ=;
+	b=voIO0edwZihhaNEYT/cjMfLhE1fHIJgvJ0cBzI1kUTIs5ueyqpVgc94THBPtbD9qr9AvvW
+	P7Rp+LiDsxXq+JAsN7gYZaANERmnHM/YP7bo+ghKhHAXMvWxdRXGx/RXKNC5LtefYrtM3b
+	Rr5V7rcJBIQX+bRM+RRDqm/t6mQg1nU=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Dd8o8v0P;
-	spf=pass (imf03.hostedemail.com: domain of ardb@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ardb@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 9682B43D79;
-	Mon,  2 Nov 2026 11:41:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6A861F00A1F;
-	Mon,  2 Nov 2026 11:41:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793619707;
-	bh=EcOIUSoIkDrR2MmVp76uBcwR+fAQFhKVpcenocx2Urw=;
-	h=Date:From:To:Cc:In-Reply-To:References:Subject;
-	b=Dd8o8v0PKp+YnhT1suzhHh0E1X/oM8YUd+J5zO5xPfYbaYF3AUrUKOYoLdZSE6iKz
-	 xi8A0830WcyrJbkQITJoUviNIQQCM6mLXmKx/czLVE1v8g39lT+MWyn5Xp8cu522sR
-	 HQnjPm660/XhxPKN0tTnUHtIjQawGZc+fGuzUtefE1HOjsniA2Jup7Ym4PcSVJej75
-	 LYOHeFObr0QP85etofGe4gxgmx4IQm3QvXYoGJuc0cL1OrTjuCu/YX2QRtEfS0OYef
-	 y1ul4H1HLIQFbvMDEFF2cDILRg633vgb0GQ7179TmndORP61lG+x5BKQwDfCFk/M8c
-	 +SRMZus5aHZ9Q==
-Received: from ams-compute-02.internal (ams-compute-02.internal [10.64.2.62])
-	by mailfauth.ams.internal (Postfix) with ESMTP id 172711980047;
-	Mon,  2 Nov 2026 06:41:44 -0500 (EST)
-Received: from ams-imap-11 ([10.64.2.31])
-  by ams-compute-02.internal (MEProxy); Mon, 02 Nov 2026 06:41:44 -0500
-X-ME-Sender: <xms:9Xboam1x2t5fmiuHk1RoTGl8n8SuGSnjwJxb-vo4nUc1NsQmT8_jGw>
-    <xme:9Xboaj4N9RaxPQY9G6pdWMzYPH_WsVCewc8in2HOAMdhc4e3F4aSRCKIr9-f_rFTJ
-    LdGg6zlkHpA9s3UcpR1MSsOrAGNdHaTkSeOX1PNlIYPtIeNaJnW6Oml>
-X-ME-Proxy-Cause: dmFkZTFf50Wbq4h86zaJrTMqckRnKO2KyVsZwVOocW/1Ty5E/45rVJCvNTCTfuTlKl1kA7
-    Q2cP2VbcVryauLzt1ykhJc+tEbXNkl6yxBjN79m7rMBBW4J4XxyE+gPyhGA2jwUh1opYQ/
-    rFWEGGSV7tFN0A5LeYVwhLx+Sx2PrlR8+VpJFbHFmTDRa1Sf9gcttVM456A0USxbDDf4A2
-    1Yj9G+yJkfQ/S4gigj6ZG/HDTIVII3DPZNAbl534R+fCDvEQg1Ryj9huNrxF8YHsnlc6xF
-    aApKjum6CjVqCyRlkSNhoL06nhdLCmw6II6or1U94pwyeNEjxQ5UCFSFWHnbc0BzP5yNqv
-    lcrTjW7fFx7uJun6Nwv1yf9/ignsRr4tjp0lBBZ9VOwGUSH84QeE0+MJ33nOCBjpV10c9m
-    Vpz/wNlJl4OUO1F0FDWH9ns5jtic5f3sfv/devFUcsRCkl2PcXOTCkXOMEbNcWKYQWCn2o
-    XTeVymvUP57VrsypfdveqreC9kbVfnxn72jnrP6ya7/JErkLLycsA8xgav1UKVwv4fCDui
-    +6LJUIaYFVqhpCXU1jzNwxCG9l+sKA6J4ois7YXV0KLhjLujJ8cC1JI0Ir781tqVYpTRTE
-    aXe7adyO061dR4My6afCGSjJnvNUNttCz2UIsmrwkQwIBz+LKsOcRfITuN7w
-X-ME-Proxy: <xmx:-HboaoOaeYO6QxqGwYukEsS829rqwdkuj_TinhjEE8GTqWt_I8hSJA>
-    <xmx:-HboanFNW3Fxt_ab2IXF0yZANxmykM-7TTjSW2wj9jaXRTIYEa5XnA>
-    <xmx:-HboauyMOHexpHnmzDcTNZ0Wjj14i9Q0igz-O4nWl7Be6tlorep4HQ>
-    <xmx:-HboagqHqnWBKElaLgDtNLNNrttOHW1ydOfNElACoLkg_CBV_poUMA>
-    <xmx:-HboasmcFvWt_H2qoV6Yd_wSGzhbJd9puFPmiXidxb6sq2OMgZoxC_d2>
-Feedback-ID: ice86485a:Fastmail
-Received: by mailuser.ams.internal (Postfix, from userid 501)
-	id 92F85F8008E; Mon,  2 Nov 2026 06:41:41 -0500 (EST)
-X-Mailer: MessagingEngine.com Webmail Interface
+	imf04.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Zb1GeGbo;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf04.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.47 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793619893;
+	b=XZt6asPeKw/rxr/RBHiTlhTUvvjWK48aNUBpPjwx9ecgyd6+fcCmZtnFtvpDRt4h4CzQcX
+	QST4tyK0tJtKRzeR6hPvsA7pMzBOULlFj/VB1T8mjjWi8yjIYDO5SXNoaKs+LDQxxn9e53
+	o9BsWGnc2s3mTbRd6ul3bwHG1m4Y3IE=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=fgRhZQDSEmJFZyIgGkSRYKnhjZ4Z1l5m8LV8w/ZXnHw=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1793619890; v=1; x=1794224690;
+ b=Zb1GeGbojxXveT3cZxDPn//4R8A7h+RMO72HLl435m67FVvM9SHf44yaVVp55n3SAPWWoirq
+ Hz8XE56QJlzs5IpeJmF7MvIRESwEWtyXzDq/oA5mLYy34SDIJOr+HdZ4EG3OGTtz9aHGD3cJfWY
+ yqj/TBZodxsUUHX+M5Y8plAE=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id 6ed161f8dd0a3c59;
+	Mon, 02 Nov 2026 11:44:49 +0000
+X-Mizu-Trace-ID: 6ed161f8dd0a3c59
+X-Migadu-Flow: FLOW_OUT
+From: Lance Yang <lance.yang@linux.dev>
+To: david@kernel.org
+Cc: akpm@linux-foundation.org,
+	hannes@cmpxchg.org,
+	mhocko@kernel.org,
+	qi.zheng@linux.dev,
+	shakeel.butt@linux.dev,
+	ljs@kernel.org,
+	kasong@tencent.com,
+	baohua@kernel.org,
+	axelrasmussen@google.com,
+	yuanchu@google.com,
+	weixugc@google.com,
+	baoquan.he@linux.dev,
+	baolin.wang@linux.alibaba.com,
+	liam@infradead.org,
+	vbabka@kernel.org,
+	rppt@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	kees@kernel.org,
+	peterz@infradead.org,
+	jannh@google.com,
+	pfalcato@suse.de,
+	hughd@google.com,
+	pasha.tatashin@soleen.com,
+	pratyush@kernel.org,
+	willy@infradead.org,
+	jack@suse.cz,
+	ziy@nvidia.com,
+	lance.yang@linux.dev,
+	riel@surriel.com,
+	harry@kernel.org,
+	apopple@nvidia.com,
+	nico.pache@linux.dev,
+	ryan.roberts@arm.com,
+	dev.jain@arm.com,
+	usama.arif@linux.dev,
+	kas@kernel.org,
+	matthew.brost@intel.com,
+	jhubbard@nvidia.com,
+	peterx@redhat.com,
+	will@kernel.org,
+	aneesh.kumar@kernel.org,
+	npiggin@gmail.com,
+	osalvador@suse.de,
+	minchan@kernel.org,
+	muchun.song@linux.dev,
+	xu.xin@linux.dev,
+	chengming.zhou@linux.dev,
+	chrisl@kernel.org,
+	shikemeng@huaweicloud.com,
+	nphamcs@gmail.com,
+	youngjun.park@lge.com,
+	gourry@gourry.net,
+	joshua.hahnjy@gmail.com,
+	rakie.kim@sk.com,
+	ying.huang@linux.alibaba.com,
+	jgg@ziepe.ca,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	kexec@lists.infradead.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-arch@vger.kernel.org,
+	linux-cxl@vger.kernel.org,
+	stable@vger.kernel.org,
+	usama.anjum@arm.com
+Subject: Re: [PATCH v3 30/47] mm/mremap: use pudp_huge_get_and_clear() when moving huge PUDs
+Date: Mon,  2 Nov 2026 19:44:42 +0800
+Message-ID: <20261102114442.65682-1-lance.yang@linux.dev>
+X-Mailer: git-send-email 2.49.0
+In-Reply-To: <20261031-fixes_core-v3-30-d6437171ecc3@kernel.org>
+References: <20261031-fixes_core-v3-30-d6437171ecc3@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Date: Mon, 02 Nov 2026 12:41:21 +0100
-From: "Ard Biesheuvel" <ardb@kernel.org>
-To: "Pankaj Gupta" <pankaj.gupta@amd.com>,
- "Thomas Gleixner" <tglx@kernel.org>, "Ingo Molnar" <mingo@redhat.com>,
- "Borislav Petkov" <bp@alien8.de>,
- "Dave Hansen" <dave.hansen@linux.intel.com>, x86@kernel.org
-Cc: "H . Peter Anvin" <hpa@zytor.com>,
- "Tom Lendacky" <thomas.lendacky@amd.com>,
- "Kiryl Shutsemau (Meta)" <kas@kernel.org>, linux-kernel@vger.kernel.org,
- "Mike Rapoport" <rppt@kernel.org>, linux-mm@kvack.org
-Message-Id: <bd56cfa0-6fdc-4e83-b571-f2abf647afa2@app.fastmail.com>
-In-Reply-To: <20261102113127.161823-1-pankaj.gupta@amd.com>
-References: <20261102113127.161823-1-pankaj.gupta@amd.com>
-Subject: Re: [PATCH] x86/unaccepted_memory: Do not accept ranges that are no longer
- E820 RAM
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 8260820008
-X-Stat-Signature: n6qdcfzgaoi1q5tfaft5ffc4yffyozfr
-X-Rspam-User: 
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: B9E1E40004
+X-Stat-Signature: aycsrrp6h73o7f1rx68gk91qyocsw1fp
+X-Rspamd-Server: rspam06
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1793619708-270751
-X-HE-Meta: U2FsdGVkX1/py5gEyaFkVYP6gjSFMri/EWKmVx6WdvJXE/1jSYtIrUP+2PicY31W7PhOWA1LmoNYJ+bq4qjcf7RuIUL27pDjs3Ti/kjpLgEoZ0/2fSyQYVvcxSX99ru+65he4dr4hwaFgwLq49aoG5eOH63uP8UPl5+ch6C9lG2/QKHB3f9OxEwFy5NmgBzueSWYrYX8Mhg972rZnQMb5kcj4j5lT8NsJ90uMYhSTSRrOyXx9s0W3SFVyB+F3i10jKiJUVDu+E26jx8sCRoiVUL6VJGkUIZCUfFM3IvD4/cJM//MqhNpW76rcemvg4zXrZ5s3aDpa2Pyo1UtvuurVOFA2UMpXZZDSvPF9qwXtg18yvnJc85LCcSMrbBgwF0Fv8rRX9Y4NxG3I80jliI8DmpiYE2sBd9AfX+TEn3yVUYX8tuGqP9oASe8fpoMyejdHvFZwS08UNuTfAKslQ9Jh4koJuqdsIgb+W6aDL0YGhf+TIvhXpUdEETZ+5i5lWHqemalINvkuTMswSD0DEXwE/QntTZgRDMz4e8NpS2pgn45RjnFW0V/4FKoSdDl3vCtaRvCKDde7nRs/fLAYueyuiIAatXOSL8PZ6iNh0o+47PZ6eke+ojN8ek7N8GVEIYLE/iUb3kPfo3F0kDCkU7Qy5H1vKPVEzSVQYhJqlXW08JVrtngx/VapiSdIzBCVBNI3bD6TqD83lx79APKuHpstcTCaQoDkOFCgeKUw/FsdPvCIq9rKjaGWMnH3pPP1U7bjoB0WsrY1Y+Kz+kl/wKVWhafk5K9wFPa3kPaj25jkA/Hs4e1Gq4crnGorGoKdNuS+EksSV9rQWWqwEpq7Gy7fN4Nhi0qwk3DssfucX5AMqmsH0ut8y9RcGnzKQa8vhnwyeSZPQruM3a8EnzYFiCUwSElyN9XQW2RzBBECAvh0PGspTBq7XfqvBSwQ4TgIpgABTm+kSrp6tGXsfQ2RZO
- UksWF6m/
- 0EQotA5lQ0Yre0HEvsXO39vowOgj2XoFGF9GBZAu9S9cFnvKQT+eWy57HJTlMShXXRETY/XSNIqwCjZGE+TCsejWflcomBEVjdmg9sv6+t0ADYXNosc1nUgIdSYwJrRuaWJd/HYjy0eSqtnYxYwpQvSiFIS+quflPyTK5Qwd1rxDn8iOlyVwieqlGEpyExJM5tiIGj2MxUosXC2YGpdmpwxZKAsrJsw4Gjnj8BT/IqSTkb74mfFzYD8QjR+6jZF6IgKNedrRfCMDCbVt+TJR2QMcd/EdqXtoVXTjEFsBi0htjDKE=
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-Rspam-User: 
+X-HE-Tag: 1793619891-372287
+X-HE-Meta: U2FsdGVkX19C2dbjsUGuBdq6H+cZ2BDHbwpcwyNtaoZWWR7bjqCDXvEn4pyDWGeDgZUUefojOOAAJ9nutHq+UZbmGJSaSrtYYNQF78MUP3hjc5Mt8PV/kOcbhLxMdJOHvaDZrPAqpjyFBzpWASHVeYkmY67rHqSqCzz9xnVqeOc/IED7iXBbxtXjahq6nZ6JgO1h7fHTiU2DBzQrUgr/8QOaIHjrTm/vp79mkKYayvbQxfCEdUb4i1f5SoXlMG9di6yywkCrUi92JkSeBP5xO4IkXxCfZHmA+iQQ93WmKLsOeCDyhkg/JuYgI/vUXUmIZA2uXcSpGBc4lD8u1+u3EUg7UTp7Oqpc9vZ/hYeYP6hG8wAUbaAfuM16u78rQIYZcQpt9NSSQIcGel9zHGJglHqTvoCyhRwGl0X17Xg5174AdMBsZrowSVP7K+uTnQbiqoa5Y+fg7QrVan8BiXqY+fRN/XVneG0MBo24eaAt9R0Cs2enc0nAHByrSUZ6fEXPigiNowvFErk7i0dqNm4JufOcwu82Kv/sG0HoYbkFTbFYNB4NmjdbwqWGXu6lWECHvLeLy2YwkvF6fyGWoKYSAqbLohm4gkuKtfcSAQeYRPN1ZZWmQvS1wSwITm+b0BdGDxemOogknbqS7FYe36VTKwSQq4YodPfh2uRL+QOXljXzni5xUk8FCYz033w6lqH6qFQR/ZXUesGFS9gsbVYKmZ1dRz+YgWZW+RzrmTBtp67eMnVI/R7fwKOmMlgAvVhwAEbysj3sRiaYu3ET8AiLJdETZwu7AZvZuLVpgiYZUldg+fJoWqr8/nd7QTUCPUnh9x47e5QmEyZ1JMgWBrStX2yzJdbdAaVPiqzdWYXr2AwDHoF52gHFK9PQL/T5GiO+ULdrHHidLTva4aQS0unyEJlO0HwWMN2+bv9PPANAtBysCXqNzMCtQLssia4NyvOviyfXNWzGDPGMKuzSt8S
+ SC5ewRt4
+ uZtWuxzRSgSUInXVGItwvJ1ifb7LJ5dwp0EfndpoRY6uxCKafu6K3JgjB4f3xY7D5uJdTGgO2c28e/kTA3Tg1z0eTyuX34+ZWKNbhQUZI5dkeCkKm0mf5tiCGQ7PhWHKFfGfuDL+a1R8GmkBOIhNbJcixCtN4lfkVc3cMLhqUPEtKVH/DUaDAmbHbrj+QMsgXT4ISk9SRUxf1Vq90wemC2dnMgZ8+7BhWbEDnQGLlD+PbqID4DGFjcQ0yu7tGdk2vWjBv5TRpVyFzH6ZDYIBfdzY6YgfjAU4ZeW1YbdxRja3bQPSdgKYUXLpAa6cxOWiMbE4lmvrsRf2etFdRbiHEgLtC+nM9MDWljDKmtpyyt3cGbrWPIc+WuHqXTUjrV942RKXKgqe75V9d4zCDYUR5kuq7BeiKxmHPSb/N5JouTLYJUPAVryi8Tnc6mA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -127,37 +156,51 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Hello Pankaj,
 
-On Mon, 2 Nov 2026, at 12:31, Pankaj Gupta wrote:
-> The EFI stub builds the unaccepted memory bitmap before the kernel parses
-> its command line.  Option memmap=<size>$<addr> removes RAM from the E820
-> map while its bits are still set in the bitmap.
->
-> The removed range, such as a memmap=...$... hole, is then still treated as
-> unaccepted RAM and accept_memory() tries to accept it.  The hole is not
-> mapped, so on SEV-SNP the PVALIDATE faults and the guest crashes early in
-> the boot:
->
->   BUG: unable to handle page fault for address: ffff8a14bfe00000
->   RIP: 0010:pvalidate_pages+0xc0/0x250
->    set_pages_state+0x41a/0x440
->    snp_accept_memory+0x3e/0x50
->    accept_memory+0x186/0x260
->    __free_pages_core+0xd2/0x240
->    memblock_free_pages+0x1b/0x30
->    memblock_free_all+0x275/0x2d0
->
-> This was seen with memmap=2M$0x1ffe00000, a 2 MiB hole in RAM, on a 19 GiB
-> SNP guest with lazy acceptance.
->
-> Fixes: 2053bc57f367 ("efi: Add unaccepted memory support")
-> Signed-off-by: Pankaj Gupta <pankaj.gupta@amd.com>
-> ---
->  arch/x86/include/asm/unaccepted_memory.h | 23 ++++++++++++++++++++++-
->  1 file changed, 22 insertions(+), 1 deletion(-)
->
+On Sat, Oct 31, 2026 at 10:39:59AM +0100, David Hildenbrand (Arm) wrote:
+>move_huge_pud() reads the old PUD and clears it in separate operations.
+>Hardware accessed or dirty updates between those operations can be lost
+>when the saved entry is installed at the new address.
 
-Can we just disallow memmap= when running in a confidential VM?
+Yep. HW can still update the A/D bits while the PUD lock is held :)
 
+>The raw pud_clear() also bypasses page_table_check_pud_clear(), while
+>set_pud_at() accounts for the destination mapping. This leaves the
+>checker counts unbalanced for mappings tracked by page table checking.
+>
+>To fix it, simply use pudp_huge_get_and_clear().
+>
+>Fixes: 7d846db7d0e2 ("mm/mremap: convert huge PUD move to separate helper")
+>Cc: stable@vger.kernel.org
+>Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+>Reviewed-by: Pedro Falcato <pfalcato@suse.de>
+>Reviewed-by: Dev Jain <dev.jain@arm.com>
+>Tested-by: Muhammad Usama Anjum <usama.anjum@arm.com>
+>Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+>---
+> mm/mremap.c | 3 +--
+> 1 file changed, 1 insertion(+), 2 deletions(-)
+>
+>diff --git a/mm/mremap.c b/mm/mremap.c
+>index 0d06d7f37f19a..16e736c72d9cb 100644
+>--- a/mm/mremap.c
+>+++ b/mm/mremap.c
+>@@ -509,8 +509,7 @@ static bool move_huge_pud(struct pagetable_move_control *pmc,
+> 		spin_lock_nested(new_ptl, SINGLE_DEPTH_NESTING);
+> 
+> 	/* Clear the pud */
+>-	pud = *old_pud;
+>-	pud_clear(old_pud);
+>+	pud = pudp_huge_get_and_clear(mm, pmc->old_addr, old_pud);
+
+Reviewed-by: Lance Yang <lance.yang@linux.dev>
+
+> 
+> 	VM_BUG_ON(!pud_none(*new_pud));
+> 
+>
+>-- 
+>2.43.0
+>
+>
 
