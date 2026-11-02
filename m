@@ -1,47 +1,47 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26B6A606A7BC
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 12:26:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 543A0606A33B
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 12:26:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C29F66B05BA; Mon,  2 Nov 2026 07:25:54 -0500 (EST)
+	id 9E0286B05BB; Mon,  2 Nov 2026 07:25:55 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BB9456B05BB; Mon,  2 Nov 2026 07:25:54 -0500 (EST)
+	id 947CB6B05BC; Mon,  2 Nov 2026 07:25:55 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A539E6B05BC; Mon,  2 Nov 2026 07:25:54 -0500 (EST)
+	id 80A956B05BD; Mon,  2 Nov 2026 07:25:55 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 78A0C6B05BB
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 07:25:54 -0500 (EST)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 0218180C28
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 12:25:53 +0000 (UTC)
-X-FDA: 85390100628.18.0952668
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 5B6E26B05BB
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 07:25:55 -0500 (EST)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id D347C40C76
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 12:25:54 +0000 (UTC)
+X-FDA: 85390100628.01.C02DF76
 Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 1F43E180002
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 12:25:50 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	spf=pass (imf06.hostedemail.com: domain of husong@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=husong@kylinos.cn
+	by imf28.hostedemail.com (Postfix) with ESMTP id D1ED0C0005
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 12:25:51 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	spf=pass (imf28.hostedemail.com: domain of husong@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=husong@kylinos.cn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793622351;
+	s=arc-20220608; t=1793622352;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=N/e8F7vO1qlhJjWmiyga+ERkoaVaWC5pSbm4ZBAVLeM=;
-	b=DWqY2Zzp84LGr+z5xcHayqYU90k8WI+d30p+Va9owx9H2QAaWHQlMwRYsc+d5T4vepnWcT
-	1j1o34btzzsj9GWzkZH+jwg8DKYl4MOD2B8Q7sgipAcgaDx2Js0/lvsJ/zy4tfS5DZa1TD
-	REsPj4OOGti+JaajXXN2cc3vRWFOJoc=
+	bh=LMJynhb5MPftogfmT9tk2MR+IArvvhmjJkMrR0rvjaw=;
+	b=mH4ne1wiTbHXJqQgobByvBq5xQjH8AINTtcmNtgoOf+rU91SJsGmlSYTtyiHc9yWflVK6G
+	vqCry22apx5MGK7kutGyqSNfObP03/ava3t5tYZ5jXM0G4p+nDqd6LQcTx3vL2XXArQF0G
+	IfhCphEioY4+7jkMxnWwQVTU56W52Yg=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
+	imf28.hostedemail.com;
 	dkim=none;
 	dmarc=none;
-	spf=pass (imf06.hostedemail.com: domain of husong@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=husong@kylinos.cn
+	spf=pass (imf28.hostedemail.com: domain of husong@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=husong@kylinos.cn
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793622351;
-	b=daablKIAwBMIf59iQ0/A1kC9mlRgFyipRVXOcq3LbBAxcnlhC0ZU20gUgn6hoM5BvM996h
-	rTp1A+UISoa3uMo6xGAavSVacaEmLb0VkUOx9BEchkFMT3rf9c+C/piiIRF0c/lxZLngeJ
-	wIwEUEmK9sphmci8JCdl54hj6eOmXVc=
-X-UUID: 858d10bed6b811f19a56ed5b684f684d-20261102
+	t=1793622352;
+	b=sz0djGa9LYTpO/utY0mTmeeVb1hr+UGGyvLxQdZO2YwZwQoItdana60Y1pC5Xq4tZEhL/G
+	wlWsDOGvMLl0amoPUSbek/kBhQO8kvcg/RHcZvdZojvfi8DIb6KVNX0m6ja6YVC16bu11M
+	GvbDM3Rj8cSFbXsHCO1br8o20mnMOxg=
+X-UUID: 86323e2cd6b811f19a56ed5b684f684d-20261102
 X-CTIC-Tags:
 	HR_CC_COUNT, HR_CC_DOMAIN_COUNT, HR_CC_NAME, HR_CC_NO_NAME, HR_CTE_8B
 	HR_CTT_MISS, HR_DATE_H, HR_DATE_WKD, HR_DATE_ZONE, HR_FROM_NAME
@@ -52,27 +52,27 @@ X-CTIC-Tags:
 	CIE_GOOD_SPF, GTI_FG_BS, GTI_RG_INFO, GTI_C_BU, AMN_GOOD
 	ABX_MISS_RDNS
 X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.19,REQID:c03703fe-cec2-447d-b4f6-b032501b1e87,IP:10,
-	URL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION
-	:release,TS:10
-X-CID-INFO: VERSION:1.3.19,REQID:c03703fe-cec2-447d-b4f6-b032501b1e87,IP:10,UR
-	L:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:r
-	elease,TS:10
-X-CID-META: VersionHash:7db8b62,CLOUDID:ba1fe32e8b8323372cef97d932a82e0e,BulkI
-	D:261102202546DIMLN7R4,BulkQuantity:0,SF:17|19|38|66|78|81|82|102|127|136|
-	153|865|898,TC:nil,Content:0|15|50|99,EDM:-3|-100,IP:-2,URL:0,File:nil,RT:
-	nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:
-	0,BRR:0,BRE:0,ARC:0
+X-CID-O-INFO: VERSION:1.3.19,REQID:4e2633df-6343-43c4-8e5e-81c356af623c,IP:10,
+	URL:0,TC:0,Content:0,EDM:25,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTIO
+	N:release,TS:35
+X-CID-INFO: VERSION:1.3.19,REQID:4e2633df-6343-43c4-8e5e-81c356af623c,IP:10,UR
+	L:0,TC:0,Content:0,EDM:25,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
+	release,TS:35
+X-CID-META: VersionHash:7db8b62,CLOUDID:77a413587497340d9a585fb3ded6dfa9,BulkI
+	D:261102202547G39DAL8J,BulkQuantity:0,SF:17|19|38|66|78|81|82|102|127|153|
+	865|898,TC:nil,Content:0|15|50|99,EDM:5,IP:-2,URL:0,File:nil,RT:nil,Bulk:n
+	il,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BR
+	E:0,ARC:0
 X-CID-BVR: 2,SSN|SDN
 X-CID-BAS: 2,SSN|SDN,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_FAS,TF_CID_SPAM_FSD
+X-CID-FACTOR: TF_CID_SPAM_FAS,TF_CID_SPAM_FSD,TF_CID_SPAM_SNR
 X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: 858d10bed6b811f19a56ed5b684f684d-20261102
+X-UUID: 86323e2cd6b811f19a56ed5b684f684d-20261102
 X-User: husong@kylinos.cn
 Received: from ctao-book [(114.244.3.119)] by mailgw.kylinos.cn
 	(envelope-from <husong@kylinos.cn>)
 	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
-	with ESMTP id 1779435450; Mon, 02 Nov 2026 20:25:42 +0800
+	with ESMTP id 1357426714; Mon, 02 Nov 2026 20:25:43 +0800
 From: Song Hu <husong@kylinos.cn>
 To: hannes@cmpxchg.org,
 	mhocko@kernel.org,
@@ -87,27 +87,27 @@ Cc: tj@kernel.org,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
 	Song Hu <husong@kylinos.cn>
-Subject: [PATCH 3/4] samples/cgroup: arm the inotify watch before reading the baseline
-Date: Mon,  2 Nov 2026 20:25:27 +0800
-Message-ID: <20261102122528.1498193-4-husong@kylinos.cn>
+Subject: [PATCH 4/4] samples/cgroup: don't let dirname() clobber the monitored path
+Date: Mon,  2 Nov 2026 20:25:28 +0800
+Message-ID: <20261102122528.1498193-5-husong@kylinos.cn>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20261102122528.1498193-1-husong@kylinos.cn>
 References: <20261102122528.1498193-1-husong@kylinos.cn>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 1F43E180002
-X-Stat-Signature: w1forwzhjqdhwiizirk3ehnh7n45w3ik
+X-Rspamd-Queue-Id: D1ED0C0005
+X-Stat-Signature: xed6o9qq3w5crqm97ixtdf9kdcrjee51
 X-Spam-Status: No, score=-16.8 required=3.0 tests=BAYES_00,
 	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
 	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,UNPARSEABLE_RELAY,
 	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
 X-Rspam-User: 
 X-Rspamd-Server: rspam09
-X-HE-Tag: 1793622350-73532
-X-HE-Meta: U2FsdGVkX18yxG5DCbv+02pZJOaVEaZyadcbTL3xa9LjFEAovzc0Oegn1WKsKlFiQw4XebfDhZQn5GD6xK6ef2mFapODaoDo9nL+LfypTDJBhMxgNZY7Szr20NsCgZhwUvTq2zMrFMM1SAc85AW8jGbS/ADGZXH1imlWXmkjMyf8uXYhsUJ3Gv3Amc9hZpqXaTNNO42UKslwV+KAKhG5O4Qj2DJhOtKWzTb3lIJn81RP9vvEfHV+ukenEsM1+h2nMngmYlnTqGb2oWDNLQO4bk0G9Q2dRbqMkBawYWcof/B2t4mzRzGa7vRccAljp0WC9GiOMwEBd4oTi0HXzLXZo7SzJFOQt/306i2kjVOr5/czWFTx7c/AruAPEtOkhVUYH83+hgqdrG1/hcvSB9CW2zs03d06tVarV/nc1kABrKW9r7WZ/sb5T5/V1GAC2lS2skqskkGLrvn+zCkD3EUeB79DoohEFENs0tAc+oUpK6N3nFa9E0iQrJ7wFWccz3ZsUtNTKkk3xu1juh0mfHv5M7Fybd/VDueROBYOjdPu4hlToIv1hL0TQQCvNAKI+OWe39hkKkSCRWEAxhCxPro/jIVZ29e935rP4CZOGQ9E9zhqHbHR0krh2sIhHSKfToNRxyl+aSDIrzNKBe22TQOqeebq2P1XwH0iLyMuE2fAs1jz2BdOHHKjJWx5SjN89nwmgRXK56RDfgndx4gnZ3GcQk7Sog0V+gl34reBU6bBCwJ01LR50flOPag3crrFAYxUn58z62Ho431uqPetLBllWtR4IhcNIE2O0bzQRsxSAj5Z/0M8Et7z3qKQsE9mZk8073VI3GH1TZyTQLIGzSbhsuJGPrnFXqNSXnDFSB1/Z1AaWBg++xMzAlZ/SOKB973dCxuJFNPqnUT3Putwgk9KQ93iuIkeSXP2JTSb0qx1SunX1gcBBJIfqbDHg5Mu3I9wxxhx44xn2iGb39Rn3dh
- ZjU7di7A
- 58Fb8
+X-HE-Tag: 1793622351-478000
+X-HE-Meta: U2FsdGVkX1/z4AyI2Yxl+J/7/RfVxEAhMgU8WT+LxYbUTpsXmT4nUDiBkNhTkGPlRItvauQOtUiJJ6PXfdGhvVcGP9Nznhy6yEmR26XMneACrDfLQSOOJbo850GCfQixDK2t5A4Goar8IeXtiC8kLtvn/LpEwJ9uKIa0Gt98BXBhGAzlkNxZJOyQVRwod7eOk6EnjJO6IwCiU56az3/PbbODt31LLNaiuODYMc9ND5biQacWS1Wvy5SPWefmrWWmZ4A553QaqDaQnG9TYCBWZhEvtu9zstmAt+oh+1awliFi7Ka0VOq46rIMY6j0LgMm6cowCIP3TL+RLw9h+gyxz77vtdguoOeak2OmodxgtQlXVHC1yqxO9x7ybRSbqtRlbe5GoOHruc6Y/zKDawqFSb1H9c/xJNNBck/mCHORbrstIcqH6RCwemzFtb6Gd3Ng+MdwmHZN+U8wKo9udWRS+PT8y5o90H8Lslg66vgz3eyPGsD1Rk0YKzp+qnCxGTOz0GVBu2wW+XhGBqjkmgqARqh5NFfvKi8+4HtCOsErHbL72Ep1WPgbYhDX45ErwQnvWME3D6YlA+B/CflyDkROJlRHLMbxHeIgs5ZEHLsbpTN7QEJKlUV534AlQ942Xfu85+ML3fF8PfDCTr6AiHyVhTRtlNSdkFGdM8BlSKXaTybaipAY2zdnaCXzQUkPvuDFI1kiRLbzBTL+iothgBSoxIbWMjT+MMoBcefmUDx5dRrnx0ld8s2LwY/ykbA3xLVsEWHK3g72Gn73h5jjMi1T+lr79TIX4/OXiHDtb/aWvHd44hQTkDaXNKbYsgH38IpGKXkeZQAOQEY/wFLGgRckRxhYLvbnt91XMKLU/mqyQj6EPr9yc7z5my7Q5i9rti2qnhYICT4Wx888BAbJd+mYgpwgRWHtKRMr78JXioNYX+4ZwVplCvhX/GZfbd6YYKMc1/OOlZpifbu1lFt6Pe+
+ pR8JNjlg
+ 24k5g
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -116,53 +116,67 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-The listener reads the initial counter state first and arms the
-inotify watch afterwards, so any event firing in between is lost:
-it is already included in the baseline (no diff will ever be reported)
-and no watch existed to queue a notification.
+dirname(3) is allowed to modify its argument in place, and the libc
+implementations do: after building event_control_path, argv[1] has
+been truncated to the parent directory.  Every subsequent "crossed"
+event line therefore reports the cgroup directory instead of the
+monitored file, and the two-listener setup taught by
+Documentation/admin-guide/cgroup-v1/memory.rst (usage_in_bytes plus
+memsw.usage_in_bytes) produces indistinguishable output lines.
 
-Arm the watch first, then read the baseline.
+Work on a strdup() copy so event reports keep naming the monitored
+file.
 
+Fixes: 60433a9d038d ("samples: introduce new samples subdir for cgroup")
 Signed-off-by: Song Hu <husong@kylinos.cn>
 ---
- samples/cgroup/memcg_event_listener.c | 17 +++++++++++------
- 1 file changed, 11 insertions(+), 6 deletions(-)
+ samples/cgroup/cgroup_event_listener.c | 18 ++++++++++++++----
+ 1 file changed, 14 insertions(+), 4 deletions(-)
 
-diff --git a/samples/cgroup/memcg_event_listener.c b/samples/cgroup/memcg_event_listener.c
-index 996bf6fb117c..c23af43bf6cc 100644
---- a/samples/cgroup/memcg_event_listener.c
-+++ b/samples/cgroup/memcg_event_listener.c
-@@ -293,12 +293,6 @@ static int initialize_memcg_events(struct memcg_events *events,
- 		return ret;
- 	}
+diff --git a/samples/cgroup/cgroup_event_listener.c b/samples/cgroup/cgroup_event_listener.c
+index 3d70dc831a76..308cacec80a8 100644
+--- a/samples/cgroup/cgroup_event_listener.c
++++ b/samples/cgroup/cgroup_event_listener.c
+@@ -26,17 +26,27 @@ int main(int argc, char **argv)
+ 	int event_control = -1;
+ 	char event_control_path[PATH_MAX];
+ 	char line[LINE_MAX];
++	char *path;
+ 	int ret;
  
--	ret = read_memcg_events(events, /* show_diff = */false);
--	if (ret) {
--		warnx("Failed to read initial memcg events state (%d)", ret);
--		return ret;
--	}
--
- 	events->inotify_fd = inotify_init();
- 	if (events->inotify_fd < 0) {
- 		warn("Failed to setup new inotify device");
-@@ -313,6 +307,17 @@ static int initialize_memcg_events(struct memcg_events *events,
- 		return -EIO;
- 	}
+ 	if (argc != 3)
+ 		errx(1, "%s", USAGE_STR);
  
+-	cfd = open(argv[1], O_RDONLY);
 +	/*
-+	 * Read the initial state only after the watch is armed, so no
-+	 * event can slip through the window between the baseline read and
-+	 * the watch creation.
++	 * dirname(3) may modify its argument in place; work on a copy so
++	 * argv[1] still refers to the monitored file when events are
++	 * reported.
 +	 */
-+	ret = read_memcg_events(events, /* show_diff = */false);
-+	if (ret) {
-+		warnx("Failed to read initial memcg events state (%d)", ret);
-+		return ret;
-+	}
++	path = strdup(argv[1]);
++	if (!path)
++		err(1, "Cannot duplicate %s", argv[1]);
 +
- 	printf("Initialized MEMCG events with counters:\n");
- 	print_memcg_counters(&events->counters);
++	cfd = open(path, O_RDONLY);
+ 	if (cfd == -1)
+-		err(1, "Cannot open %s", argv[1]);
++		err(1, "Cannot open %s", path);
  
+ 	ret = snprintf(event_control_path, PATH_MAX, "%s/cgroup.event_control",
+-			dirname(argv[1]));
++			dirname(path));
+ 	if (ret >= PATH_MAX)
+ 		errx(1, "Path to cgroup.event_control is too long");
+ 
+@@ -76,7 +86,7 @@ int main(int argc, char **argv)
+ 		if (ret == -1)
+ 			err(1, "cgroup.event_control is not accessible any more");
+ 
+-		printf("%s %s: crossed\n", argv[1], argv[2]);
++		printf("%s %s: crossed\n", path, argv[2]);
+ 	}
+ 
+ 	return 0;
 -- 
 2.53.0
 
