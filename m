@@ -1,147 +1,134 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 470DA606A331
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 14:21:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADD8E60A3819
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 14:21:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=i0H9lG0B
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=JJ7f2k4c
 Received: by kanga.kvack.org (Postfix)
-	id 625116B00EF; Mon,  2 Nov 2026 09:21:03 -0500 (EST)
+	id DA19F6B05B2; Mon,  2 Nov 2026 09:21:52 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5FCC86B05B1; Mon,  2 Nov 2026 09:21:03 -0500 (EST)
+	id D793C6B05B3; Mon,  2 Nov 2026 09:21:52 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 513526B05B2; Mon,  2 Nov 2026 09:21:03 -0500 (EST)
+	id C8EBB6B05B4; Mon,  2 Nov 2026 09:21:52 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 278956B00EF
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 09:21:03 -0500 (EST)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id B69791A0136
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 14:21:02 +0000 (UTC)
-X-FDA: 85390390764.20.3382A87
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 00C0920009
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 14:21:00 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=i0H9lG0B;
+	by kanga.kvack.org (Postfix) with ESMTP id A287A6B05B2
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 09:21:52 -0500 (EST)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 2E2374011E
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 14:21:52 +0000 (UTC)
+X-FDA: 85390392864.12.B871297
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 4100F1C000B
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 14:21:50 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JJ7f2k4c;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf13.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org
+	spf=pass (imf18.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793629261;
+	s=arc-20220608; t=1793629310;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=AMQhAUoLjC1OsRhPIF0X/aZZvhoGLtnfpHmE2nV4Wn8=;
-	b=qS1drdT7AC6LIEfaoHakJ6eROvpPS3kRfIowJCjUJ7vnAW8GfTAk2bSDvWQzJsIRalgqkI
-	e31Zb5DMk5N/Ar81VH3qhQdTCJw3NCMR2udCNcYN4HPKpy6qwnGxXpm5gdLfMQu6X58prt
-	A52lNccyuHKgucX9h8hPwwiHCRY3xIQ=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=AKjVXDS7/7G3ahe8DshU2hjAAldvYiNw9Ybpn/C9WsE=;
+	b=Z85pYVrxZjWHM5nfrcPNQ87XKFHRkkCh7DuXGjmIS/t33YIPl8mtPYxzs/lZkxVboVoXeR
+	hBCAx/DkF8Q/a/3NH6GHmkzN7P86VCiqDaIzZM6IEieWS9VwqjeIkjBT8iHu7w7BlfEAwD
+	4hPHAyvMW6X+x5ODq5B2Fco1yX2/ucc=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=i0H9lG0B;
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JJ7f2k4c;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf13.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org
+	spf=pass (imf18.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793629261;
-	b=xLkyJxAjlgMDoOQoB0uPTM7WtspeilHHMK4s5Etbm78vu2chmMmmbF3JKrEKSIWqb5uN+J
-	8RSqdVdYFGElSLRmA2hZmSQQYXN6uQbeqrieW2r+q2WGiT2AbOZSUpXvQpMH8iG0n6K1p6
-	gyZlM/sw2t1SsaSJtTECJ6gQagoC1Sc=
+	t=1793629310;
+	b=M6Ra5Fo1onMqzEaqShdJcRro1F6LlW7lMTi9yX0zj69bND10W/eRlj010bT93kwLsP2jIo
+	g+Btd5opSgrBix3NxSkx2N5Qxv2UOH2cXWWUY94vWha0+YFYThhI+8WMNTc4ZpMJmGbbTL
+	0fTqfO6gJrW6p8NkM2z56aZKcNtkFU0=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 34216406CA;
-	Mon,  2 Nov 2026 14:21:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EED4A1F00A24;
-	Mon,  2 Nov 2026 14:20:46 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id A903860051;
+	Mon,  2 Nov 2026 14:21:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 035EC1F00A16;
+	Mon,  2 Nov 2026 14:21:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793629260;
-	bh=AMQhAUoLjC1OsRhPIF0X/aZZvhoGLtnfpHmE2nV4Wn8=;
-	h=From:To:Cc:Subject:Date;
-	b=i0H9lG0Be05TEfu/3sSSx1mNu2tXsbt81HU4VhWr1YaNjWqP1nbmV2PU6N9fCZNuw
-	 nivi01r4yhBVK5q6ZZ/2sNWNfeS1/SVvtod3GB/cMk9XHlaJxrROzU9uNyaCbwueWN
-	 AE/rw/aIukHRd/bUpfVF3u6Oo+d1/1nWu8xicACG8hfScuBzUWJR1oSKGUI3TT1yza
-	 I6qw7gNhliBS+HPnhAgAxa3M/VUpvB8uzbr6ovyo5O6M56NbveIxMw0j6pJhZqxruk
-	 pALxbTScur8TNXplk3A0Y4Q0gW4y8sE5l288k+10HrKs8+OO7WmnOZctFatwni3om7
-	 HzOPbsKYJ2AYQ==
+	s=k20260515; t=1793629309;
+	bh=AKjVXDS7/7G3ahe8DshU2hjAAldvYiNw9Ybpn/C9WsE=;
+	h=From:Subject:Date:In-Reply-To:References:To:Cc;
+	b=JJ7f2k4cU68wTicZeWKzQQfGVbEpkmDNTGKl80Agj5AqJZIHH3qRQfknBhjtLKc1k
+	 s1fzxvLI1AqeAkCrA+g+8xX46AJ7KI81t8y1TTE7Xd0uWW1SNPwSJ6UNbtkzT3Lmtq
+	 LwrFkz4F+CUYrvsN+m8f3T/ImxRrsSZFh057F3Z+EnaX30skxqBw16sluoqM0My/bK
+	 u46Nwmm9Jd+2p/bFOTUuv8UEqUSUdyHdjWkHRiez9aqYTw6SDGdxR6S9l9cLSinNCP
+	 V0sM+LfmNUdi0jKrnLUdT+ZNCbr1YhzpvdrAig/9QetGb9j+/Y+jmnYs2KokrkIu1Y
+	 1DcsE8HgrAaiw==
 From: Christian Brauner <brauner@kernel.org>
-To: linux-fsdevel@vger.kernel.org
-Cc: Christian Brauner <brauner@kernel.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Jann Horn <jannh@google.com>,
-	Josef Bacik <josef@toxicpanda.com>,
-	Chris Mason <mason@kernel.org>,
-	Jeff Layton <jlayton@kernel.org>,
-	NeilBrown <neil@brown.name>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Thomas Gleixner <tglx@kernel.org>,
-	Al Viro <viro@zeniv.linux.org.uk>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Christoph Hellwig <hch@lst.de>,
-	Greg Kroah-Hartman <gregkh@suse.de>,
-	Joel Granados <joel.granados@kernel.org>,
-	Kees Cook <kees@kernel.org>,
-	Jan Kara <jack@suse.cz>,
-	Jan Kara <jack@suse.com>,
-	linux-kernel@vger.kernel.org,
-	linux-nfs@vger.kernel.org,
-	linux-acpi@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	linux-s390@vger.kernel.org,
-	linux-scsi@vger.kernel.org,
-	linux-um@lists.infradead.org,
-	linux-wireless@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org,
-	netdev@vger.kernel.org,
-	ntfs3@lists.linux.dev,
-	platform-driver-x86@vger.kernel.org,
-	coreteam@netfilter.org,
-	kexec@lists.infradead.org,
-	linux-pci@vger.kernel.org,
-	linux-sound@vger.kernel.org,
-	netfilter-devel@vger.kernel.org,
-	dri-devel@lists.freedesktop.org,
-	ibm-acpi-devel@lists.sourceforge.net,
-	jfs-discussion@lists.sourceforge.net,
-	linux-alpha@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-cifs@vger.kernel.org,
-	linux-fbdev@vger.kernel.org,
-	linux-hwmon@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-sh@vger.kernel.org,
-	linux-usb@vger.kernel.org,
-	samba-technical@lists.samba.org,
-	sparclinux@vger.kernel.org,
-	linux-m68k@lists.linux-m68k.org,
-	linux-doc@vger.kernel.org,
-	linux-serial@vger.kernel.org,
-	linux-atm-general@lists.sourceforge.net,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Takashi Iwai <tiwai@suse.de>,
-	linux-input@vger.kernel.org,
-	linux-raid@vger.kernel.org,
-	linux-ext4@vger.kernel.org,
-	linux-modules@vger.kernel.org,
-	linux-debuggers@vger.kernel.org
-Subject: [PATCH RFC 0/7] proc: move procfs to what kernfs does
-Date: Mon,  2 Nov 2026 15:19:15 +0100
-Message-ID: <20261102-defizit-jobaussicht-kurios-7016c6e67442@brauner>
-X-Mailer: git-send-email 2.53.0
+Subject: [PATCH RFC 00/38] proc: fix a few old bugs in /proc handlers
+Date: Mon, 02 Nov 2026 15:21:15 +0100
+Message-Id: <20261102-work-procfs-bugfixes-v1-0-59422ed3e465@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-X-Developer-Signature: v=1; a=openpgp-sha256; l=6321; i=brauner@kernel.org; h=from:subject:message-id; bh=DeFgfcqlv/TY20j7H/EH1gPUF0B7m3TaniK1kcChAz8=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS9mGNqL7pz+vPzk4KWfT6wfNmBh/f/+az2dnquniC7r OfbdVtpkY5SFgYxLgZZMUUWh3aTcLnlPBWbjTI1YOawMoEMYeDiFICJLNFkZJi9z+Wc51MV9sWG KyZ0i3EcLl3135Rh1V/p2TenWEnnPCln+F99gMWOyX62xk4Du399RQ9XTQsXMmEy4ArfuSn16RK 3R1wA
-X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 00C0920009
-X-Stat-Signature: 9ergco3sgcpqh841frxixikxxaimaugt
-X-Spam-Status: No, score=-8.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yWMwQrCMBBEf6Xs2S1JqKJehX6AV/GQpNs2CknZt
+ SqU/ruJPc6bmbeAEAcSOFcLML2DhBRz0LsK/GjjQBi6nMEoc9BaafwkfuLEyfeCbh768CVBtW8
+ 6pZQ5NicN+Tox/Yv8vMG1vcB9gzK7B/lXEZaZs0Lo2EY/FlTU9aauSwXr+gNYyfSLoAAAAA==
+X-Change-ID: 20261101-work-procfs-bugfixes-054d00028491
+In-Reply-To: <20261102-defizit-jobaussicht-kurios-7016c6e67442@brauner>
+References: <20261102-defizit-jobaussicht-kurios-7016c6e67442@brauner>
+To: linux-fsdevel@vger.kernel.org
+Cc: Linus Torvalds <torvalds@linux-foundation.org>, 
+ Jann Horn <jannh@google.com>, Josef Bacik <josef@toxicpanda.com>, 
+ Chris Mason <mason@kernel.org>, Jeff Layton <jlayton@kernel.org>, 
+ NeilBrown <neil@brown.name>, Eric Dumazet <edumazet@kernel.org>, 
+ Thomas Gleixner <tglx@kernel.org>, Al Viro <viro@zeniv.linux.org.uk>, 
+ Jonathan Corbet <corbet@lwn.net>, Christoph Hellwig <hch@lst.de>, 
+ Greg Kroah-Hartman <gregkh@suse.de>, 
+ Joel Granados <joel.granados@kernel.org>, Kees Cook <kees@kernel.org>, 
+ Jan Kara <jack@suse.cz>, Jan Kara <jack@suse.com>, 
+ linux-kernel@vger.kernel.org, linux-nfs@vger.kernel.org, 
+ linux-acpi@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+ linux-s390@vger.kernel.org, linux-scsi@vger.kernel.org, 
+ linux-um@lists.infradead.org, linux-wireless@vger.kernel.org, 
+ linuxppc-dev@lists.ozlabs.org, netdev@vger.kernel.org, 
+ ntfs3@lists.linux.dev, platform-driver-x86@vger.kernel.org, 
+ coreteam@netfilter.org, kexec@lists.infradead.org, 
+ linux-pci@vger.kernel.org, linux-sound@vger.kernel.org, 
+ netfilter-devel@vger.kernel.org, dri-devel@lists.freedesktop.org, 
+ ibm-acpi-devel@lists.sourceforge.net, jfs-discussion@lists.sourceforge.net, 
+ linux-alpha@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+ linux-cifs@vger.kernel.org, linux-fbdev@vger.kernel.org, 
+ linux-hwmon@vger.kernel.org, linux-mm@kvack.org, linux-sh@vger.kernel.org, 
+ linux-usb@vger.kernel.org, samba-technical@lists.samba.org, 
+ sparclinux@vger.kernel.org, linux-m68k@lists.linux-m68k.org, 
+ linux-doc@vger.kernel.org, linux-serial@vger.kernel.org, 
+ linux-atm-general@lists.sourceforge.net, Takashi Iwai <tiwai@suse.de>, 
+ linux-input@vger.kernel.org, linux-raid@vger.kernel.org, 
+ linux-ext4@vger.kernel.org, linux-modules@vger.kernel.org, 
+ linux-debuggers@vger.kernel.org, 
+ "Christian Brauner (Amutable)" <brauner@kernel.org>, 
+ Chuck Lever <cel@kernel.org>, stable@vger.kernel.org
+X-Mailer: b4 0.17-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=11786; i=brauner@kernel.org;
+ h=from:subject:message-id; bh=sL1UI5hX39uHLdvK3RtrVQfZyGYI6aerMTpxK73Q95s=;
+ b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS9mJPlpxzv8ehF0vpZEwJuZaifZ1Z+PNf929HM+wHfc
+ nsaP90w7yhlYRDjYpAVU2RxaDcJl1vOU7HZKFMDZg4rE8gQBi5OAZjILxOG/2lTitXz5e6suHX6
+ TNNrz7a29SuvnT+z614/47KmDU9imqwYGWa8eKda8/PBrtdcwYKHDZYXFuuZJLpueRwrmnw7/Iq
+ ZCjsA
+X-Developer-Key: i=brauner@kernel.org; a=openpgp;
+ fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
+X-Rspamd-Queue-Id: 4100F1C000B
+X-Stat-Signature: 3r5gpc1uip57goef6gsbbpuds1dztz8x
+X-Rspamd-Server: rspam04
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT
-	autolearn=unavailable autolearn_force=no version=4.0.1
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
+	version=4.0.1
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1793629260-168112
-X-HE-Meta: U2FsdGVkX1+1QoTB8FVID7dHYRCB7DRY7gZj1TjsJMSgXunnZaztYJMy3YeYMmNkgfbazrKNWcK4N4cjau83zQnHvsXCcGeuCnmr8S82LLYDbQzvZLMPGvkhmwjNyPOaGK//LwzK+/o4q6tGcsT2UGWxWhO3FuMYON0sribGH6cN6Yy4MtNB/x2QhFgsxss18Yxsmfxjt5J003ivBjc6/cYHK53VtBtgAFahY7EVzj7V4y5k5LJTwXs6my/fucjPLijDCRaeAFV15s4pwTzMnej0GcjBu2atE91HgNFVcZkORsCva4LK/es3vAeO91lV8/sX1wSL2awf/H8svHecRncnv3M3y3dJ4bg4NA4JZRo9W83sO3LENSSlOy2ShQVqiH2UhugTMxutYZS9XBuJzPmbsSEluESNxlPI5RyXvypSKaYl7V0RMVcUqKYky/E4P8QccysvsbsPuP47PmZg5Svq3MBHsCHG9i+N3rTQckIsgozzpoTL8DRS6bezp1WesEo51cNqIsXlQokSTQvNbjsRqSTm6IkmvEonk2DZffLamimfpOigeJ5OceLNKFNiua29zrHZFXJ5DIYXR4e2ude9ygqKhLW2up/UwG+HGDRJLHiVSkTrNZRaTmXlTJIq9pa1SRDP1FLZQmr/Dh5btcXHKIoolOum3yfkYsBbCVoQjXLGJJetMJtEqoo2EeELH7RsKyl71grnVC7GAVVVqQzdcyHbkVODnP5WipIFzMvRZoUdg2taBCDxRU/VXaqGcYMKovYoy8lACsz46xiw0M5xUdPP0dA7LHuh1sGNh4piTaPjsCoMhTlmjYuQejXhVxkiK9uOLCPT2gXFDvvZY5R7wNnqACO43RYxJf2R35bvEDJ5HLheIAMZCFObfEZp+Zslhze8t6C3o74kQ1b2ijAoeWUCuSZbdf8z54ddS+XhzICTo0TfOcfY8JLXaIzqxEi1pkQRmVEkUTPlUcj
- muHtoJR4
- PKR8APd0d+aZQOOAYKZ4l5xZy40q6l71fabZR3d7cIvtwSaVvq1O5EC9DE25fQlAkLU4CnPOL4L7K+nVG6s8aWeQF4n/pFt9B/ilm1m97DCMtZT8IBu3siqVQImVeky8Yoykkx9/r4Uu6CmJMT8Wc9agy1GERB0JSsEg7v0KrjN8C4YgrkgQmjmVa7hPDCjuce3L3n5i79UwGhXGd0Pu7AgdCOj3+qo9P5Gef2V4ITv+8Cbdl98JVWcof28wzEmGlrODypKQDRm4+DwPtTt4QMVvn7ZzJQ0m5NdigBdsP67zMglnTRXO9gDk+o3axnwr/8zPSdnKFXmjj2xsRs4Vku0YbHL3u+oP2hVqW9Bfir4LTJTbNZJ2DVZ6wy4sMhOobgjZ9NzQ67fpaPs7ihKAsQ51C+I4K1egeQ144
+X-HE-Tag: 1793629310-432975
+X-HE-Meta: U2FsdGVkX1/230FDflRFZZ4xSnNRyHHbU67IIYLjLpBPy5gXnNfMFchYX1PJqJU5qnC4Af/CwVA42CPaUvYMWfF/FQluLqfBRsqO8Z+SnXvr2rl4M/UOFBW72elbVAOU3vsQyW3iFs7gd3CY3xxh+CqfQhhYffh/13rmE2F6ZLAYpN+kKOVxFFz0pwmqArIAatfi+wASRg/162G/qFytKYpVRxeXWgZAxfEu8tEbkn5Fcz08wok6HP6+GXEI3wQ3bCtPbYfsurw/WKX2nQcbSxWR5hm+ItytKMYUOs2EbfNvjj7jIUHaVaQXeOsTEZUWSt5leECUKCY7gXqNrLGJUA1H12BuxZVjpX+XjVdwAInuX8TJuPYg5b+jXz6B/weyTqmHlbboCTtv3DYrIX6s4cxaGtAmi1lxXGmK62SUu41pcf1Dm3fnTBnq6hAwPDMtX2Fkz3TV1RnQ+b/UI5YP4ovOaBP1k5vVLhdparyUWiV2DET3C+9W7lYzm4Q6XQDPSPECoPGFiNJOQ/2BT9YFdbjV8e1SOjAMABXRGXFYMpyPHjaJw3L363NAZy6bgKrnG5mQjRebHf8mfCdrDnTVXvm9g6X7NiDWW1KIQ040w1PVc7N9Xhisxr3jvJ3ytzzjaMZdd1ZZ5kv/Xphcq2ZdKywF7PtlGx5/w42OfKICYgPbkMhaeadPCnFKY0gP/ZR3arkRI6Ce1KS7GJC5LjpkNk9s7gsgilTLd8XePS6GBNoTK4BeSNVD4serBlCXrmoOT6Zrtn3FSgLQK50z9sdAHN06xNxixnjn5G+v/rDswhnWbe9vA7srNFVCz4SwLNO5q5iRJsBgzcbmuIlyGQUNuFSya2e4ZnyYBxKGEQ2IX9gAtcMTlsMgbWSR66E634WS7AcXShYXZIdgNBOpTF48lKPbACH0E+JL6udDzD3PPXE9GjmWyceEdOQsdj0oZkjKCjcQWSRzAkpdaClwDL0
+ H2gQc1Vf
+ Te2f+JIIvQhdSFNCqISH/1OhDTW90qcd6w/+TTWtljIYLUBptqpQQIgfzb7pOq0srkxBh3xUCghmWNAfOTkmOLplwufOwqklkVSiu0HU01Qp608cxsm4+jCbf6soob2h+kuzx1JccnvAdfPaW8xjI/KYuMqfC41ZsVeo+37Py+wcFqqarFX5hYJYs7AQR4I4E3iIf3g94RBJSiDO/fLHTrixPvtogpGL762cUThTPXiCW7wxWR5G7hUKUSQIjlPIhpWgm9sFqqCqoFHYMl6NhRx9Kc/zXsRMUAmPH
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -150,125 +137,215 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Ok, as mentioned off-list I have an RFC version of getting rid of page
-fault induced stalls in procfs when removing entry which plagues
-networking devices among others.
+Moving procfs to what kernfs does touches just about every
+->proc_read(), ->proc_write() and ->proc_ioctl() in the tree. Reviewing
+that turned up a bunch of bugs that have nothing to do with the
+conversion and are a lot older. They're fixed here first so they can go
+to stable on their own and the conversion doesn't have to carry them.
 
-There was a hackish very narrow AI solution to a part of this bug class
-that was floated off-list. It used a second buffering mechanism on top
-of seqfiles which was really nasty. Plus, it didn't fix the whole bug
-class, it only eliminated a small portion. If we want to get rid of the
-whole page fault issue we need a bigger hammer. So I tried to work
-through that over the last couple of weeks. The series in a shape where
-it's not totally insane to have someone else look at it. So here it is.
+Two of them matter for the conversion itself:
 
-I understand it's big but I thought it's probably nicer to look at the
-end result than just making a promise of what it might end up looking
-like.
+- proc_bus_pci_write() truncates the file position to an int. A
+  pwrite() at an offset like 0xfffffc00 makes it negative and the loop
+  then writes a lot more than it was handed into config space at
+  negative offsets. Once procfs hands it a kernel copy of the write
+  that's a heap out-of-bounds read, so this has to be fixed before the
+  PCI conversion:
 
-It's not super polished yet and I haven't gotten into sorting out all
-the warts as there were some really gnarly bugs in there like the whole
-readdir mess that repeated entries or terminated early. I think we could
-go a lot further there if we wanted to but I think that blows this out
-of proportion and at some point it becomes difficult to grasp the scope.
-So I'd rather delay that until I have a sense of how acceptable this all
-is.
+    BUG: KASAN: slab-out-of-bounds in proc_bus_pci_write+0x528/0x5c0
+    Read of size 4 at addr ff11000112103b20 by task pci-check/241
+    Call Trace:
+     proc_bus_pci_write+0x528/0x5c0
+     proc_reg_write+0x2d7/0x730
+     vfs_write+0x1cd/0xfa0
+     __x64_sys_pwrite64+0x191/0x250
 
-remove_proc_entry() waits until every call into the entry has returned,
-and most of those calls copy to or from userspace with the entry pinned.
+  isapnp has the same bug on the read side.
 
-A reader or writer can make a page fault in that copy take as long as
-it wants, with userfaultfd or by punching holes into a memfd over and
-over. And the callers of remove_proc_entry() like to hold locks while
-they wait. addrconf holds RTNL when it removes /proc/net/dev_snmp6/<dev>
-and xt_hashlimit holds a mutex that all network namespaces share.
+- xt_recent removes the proc entries of its tables with a spinlock held
+  when a network namespace goes away. remove_proc_entry() waits for the
+  readers and a reader takes that very lock. That's a deadlock.
 
-Every network device with IPv6 gets a /proc/net/dev_snmp6/<dev> that
-everyone can read, and addrconf_ifdown() removes it with RTNL held. So
-any local user can keep RTNL for as long as their read stays stalled.
-Until then no device can be registered, removed or renamed and no
-network namespace can be created or torn down.
+/proc/sys readdir resumes a listing at a counted position. The entries
+are sorted by name, so a device that comes or goes in front of that
+position shifts them and the next getdents64() repeats an entry or
+skips one. Even ls needs a second call to find the end of a directory.
+It resumes after the name of the last entry it returned now, the way
+kernfs resumes after its last node, and a selftest lists a directory in
+two pieces around a device coming and going. That one is first, it
+goes to stable on its own.
 
-Without privileges a FUSE mount in a user namespace whose daemon never
-answers is enough to stall the copy. Killing the reader ends it, but
-until then whoever removes the file sits in D state.
+/proc/sys also has the bug the conversion fixes for the rest of /proc.
+proc_sys_call_handler() copies what is read and written and
+proc_sys_readdir() copies the names of the entries to and from userspace
+while the sysctl tables are in use. Unregistering a table waits until
+nobody uses it anymore. So a read(), write() or getdents64() whose
+buffer faults for as long as userspace wants keeps
+unregister_sysctl_table() waiting. addrconf unregisters the ipv6 sysctls
+of a device under RTNL, so that stalls every RTNL user. The handler
+copies in before it grabs the table and out after letting go of it.
+readdir doesn't take the tables into use at all anymore. It pins the
+memory of the entry it is at, which unregistering doesn't wait for,
+finds the next one under sysctl_lock and emits with nothing held, the
+way kernfs_fop_readdir() and proc_readdir_de() work. That's the same
+one trip through sysctl_lock per entry as before. A selftest covers all
+three.
 
-xt_hashlimit removes the proc file of a table with hashlimit_mutex
-held. Every rule insert in every network namespace takes that mutex and
-so does network namespace cleanup. cleanup_net() runs on a single
-workqueue with pernet_ops_rwsem held, so a stalled reader also stops
-every later network namespace teardown and every module load that
-registers pernet operations. xt_recent does the same with recent_mutex.
+/proc symlinks have it as well. proc_get_link() pins the entry and
+vfs_readlink() copies the link to userspace before the delayed call
+unpins it. ALSA removes /proc/asound/<id> with snd_card_mutex and
+info_mutex held when a card changes its id, so a faulting readlink()
+holds those up. The pin keeps nothing alive, the inode holds
+the entry, so it goes. A selftest covers that too.
 
-And it's not specific to networking. remove_proc_entry(), proc_remove()
-and remove_proc_subtree() have over 200 callers and plenty of them hold
-locks. A stalled reader of /proc/fs/ext4/<dev>/options holds up the
-unmount of that filesystem with s_umount held, and every sync(2) with
-it. The same goes for PCI hot-removal, for freeing IRQ descriptors,
-which CPU bring-up waits on, and for unplugging a USB sound card.
-syzbot has hit removal under locks before (cf. [1]), and the xt_recent
-deadlock fixed in (1) below is another one.
+Chris' review of the conversion turned up more old bugs, in procfs
+itself and in its users. Those are here as well:
 
-Stalling the kernel in a copy to or from userspace is a well-known
-exploitation primitive. It's why unprivileged userfaultfd can't do it
-by default anymore since v5.11 (d0d4730ac2e4), and FUSE has been used
-the same way.
+- __xlate_proc_name() walks through whatever it finds for the
+  components of a name, regular files included, and pktgen hands it the
+  names that the writer of "add_device" picks. So an unprivileged user
+  in namespaces of its own can hang an entry below another file and get
+  it freed behind pktgen's back. procfs doesn't walk through anything
+  but directories anymore and pktgen refuses names with a '/'.
 
-kernfs doesn't have that problem. The code of a kernfs file only ever
-runs with the node pinned and never touches userspace memory, kernfs
-copies in and out itself. This moves procfs over to the same scheme.
+- SUNRPC moved the waitqueue that poll() and epoll use for its channel
+  files into the cache_detail of a network namespace. That's freed when
+  the namespace goes away, but procfs leaves the waiters of a removed
+  file queued. That's a use-after-free an unprivileged user can trigger
+  too. It goes back to a single static waitqueue. procfs should really
+  own the waitqueues of its files like kernfs does. I'll do that
+  separately, it's nothing for stable.
 
-sysfs has only held its active reference around ->show() and ->store()
-since v2.6.23, the same release that made remove_proc_entry() wait for
-the entry's callers. A copy to userspace couldn't be stalled for long
-back then. userfaultfd only came in v4.3 and FUSE in user namespaces in
-v4.18. configfs moved its copies out of its active reference in v5.3
-and DRM copies ioctl arguments in and out around the driver's handler
-the same way. debugfs still holds its reference across the copies,
-ran into a deadlock with wifi drivers because of it and grew an API to
-cancel operations instead (cf. [2]).
+- proc_register() WARNs when a name is already registered, and pktgen
+  lets userspace pick names that collide with its own files. It reports
+  the duplicate with pr_warn() and a stack dump now, like sysfs does.
 
-That touches just about every ->proc_read(), ->proc_write() and
-->proc_ioctl() in the tree, so I've split it up into seven series. They
-go out as replies to this mail:
+- proc_readdir_de() resumes at a counted position just like /proc/sys
+  and on top of that ends a listing early when the entry it is emitting
+  goes away. It resumes after the last name now too, and a selftest
+  covers both.
 
-(1) proc: fix a few old bugs in /proc handlers (38 patches)
+- proc_remove() removes by name, so removing an entry that is already
+  gone can take out a different one. It removes the entry it's given
+  now. And procfs warns about entries that a dying network namespace
+  leaves in /proc/net instead of silently freeing their parent.
 
-    Bugs in the handlers and in procfs itself that are a lot older than
-    the conversion and that reviewing it turned up. Most of them are for
-    stable. They come first so they can go there on their own and the
-    conversion doesn't have to bother with that crap.
+- On NOMMU every /proc file can be mapped privately, which reads it with
+  nommu_region_sem held, and reading /proc/maps takes that lock too. Any
+  user can hang the machine with that. procfs files can't be mapped on
+  NOMMU anymore.
 
-(2) proc: let procfs own the data path (16 patches)
+- esas2r takes the lengths of its HBA, SMP and firmware ioctls from
+  userspace without checking them against the buffer they're copied
+  into, through a file everyone can open.
 
-    The procfs side. procfs owns the seq_file of an entry, copies in
-    writes, copies out reads and copies ioctl arguments in and out, and
-    only calls into an entry with it pinned. proc_create_seq() and
-    friends and the plain seq_file users are switched over here too.
+- vmcore_cleanup() can run twice at once. powerpc's copy_oldmem_page()
+  doesn't check ioremap_cache() and only recovers from a machine check
+  for read(), not for splice() or vmcore's own reads. The pseries ofdt
+  parser can read past its input and lparcfg reports a failed hcall as
+  a huge write.
 
-(3) proc: convert the arch and platform entries (22 patches)
-(4) proc: convert the driver entries (23 patches)
-(5) proc: convert the fs, kernel and mm entries (27 patches)
-(6) proc: convert the net entries and the kfifo samples (11 patches)
+The rest is small: dasd looks in front of its buffer on an empty write,
+toshiba_acpi's input checks can't fail, simdisk reads the file name
+without the lock that protects it, rtas_flash can read past its message
+buffer, rtasd hands out whatever vmalloc() left in its log buffer,
+ALSA's info layer doesn't clamp writes past the end of a data entry,
+BusLogic, ips and libipw return 0 from writes so stdio writers spin
+forever, the scsi host files and um's exitcode parse what is written
+without NUL-terminating it, and ntfs3 warns when a huge label is
+written.
 
-(7) proc: drop the __user methods (5 patches)
+The PCI, xt_recent, sysctl, readdir, readlink, pktgen, SUNRPC,
+duplicate name and /proc readdir bugs reproduce on a KASAN and lockdep
+kernel in a VM and are gone with the series. The rest is build tested
+only.
 
-    Drops the old methods for every entry that can be removed and gives
-    the new ones the names kernfs uses, ->proc_read(), ->proc_write()
-    and ->proc_ioctl(). This needs all four conversion series.
+The procfs conversion is on top of this, starting with "proc: let
+procfs own the data path".
 
-The series should all indicate cleanly what dependencies they have so b4
-should be able to pull it for review. But I could be wrong.
+Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
+---
+Christian Brauner (38):
+      PCI/proc: don't truncate the position of config space accesses
+      PNP: isapnp: don't read past the end of the buffer on a large pread()
+      netfilter: xt_recent: don't remove the proc entries under a spinlock
+      s390/dasd: don't look in front of the buffer on an empty write
+      platform/x86: toshiba_acpi: reject malformed brightness and fan writes
+      xtensa: simdisk: don't read the file name without the lock
+      powerpc/rtas_flash: don't read past the validate message
+      powerpc/rtasd: zero the error log buffer
+      ALSA: info: don't write past the end of a data entry
+      scsi: BusLogic: don't return 0 from writes to the proc file
+      scsi: ips: don't return 0 from writes to the proc file
+      wifi: libipw: don't return 0 from writes to debug_level
+      scsi: core: NUL-terminate what is written to the host proc files
+      um: NUL-terminate what is written to /proc/exitcode
+      ntfs3: don't warn when a huge label is written
+      proc: don't walk through a non-directory when resolving a name
+      net: pktgen: reject device names with a '/'
+      proc: don't WARN about a name that is already registered
+      proc: resume readdir after the last name it returned
+      selftests/proc: check a /proc listing while entries come and go
+      proc: let proc_remove() remove the entry it was given
+      proc: warn about entries left in /proc/net of a dying namespace
+      proc: don't let NOMMU map procfs files
+      proc/vmcore: don't let vmcore_cleanup() run twice at once
+      powerpc/crash_dump: check ioremap_cache() in copy_oldmem_page()
+      powerpc/crash_dump: recover from a machine check in copy_oldmem_page()
+      sunrpc: make queue_wait a global wait queue again
+      scsi: esas2r: bound the lengths of the HBA, SMP and firmware ioctls
+      powerpc/pseries: bound the lengths in the ofdt property parser
+      powerpc/pseries/lparcfg: return h_get_ppp()'s status as a long
+      proc: sysctl: resume readdir after the last name it returned
+      selftests/proc: check a sysctl listing while entries come and go
+      proc: sysctl: copy to and from userspace without holding the table
+      proc: sysctl: look at the table under sysctl_lock when creating an inode
+      proc: sysctl: don't hold the tables while readdir copies to userspace
+      selftests/proc: check that faulting sysctl accesses don't hold up removal
+      proc: don't pin a symlink's entry while readlink() copies it out
+      selftests/proc: check that a faulting readlink() doesn't hold up removal
 
-With all of it on a KASAN and lockdep kernel the removal selftests of
-every part pass, the proc, pktgen and allocinfo selftests behave like
-without it and the bugs from (1) that reproduce in a VM are gone. Every
-patch builds on its own on x86_64 and i386, and with W=1 on the
-architectures it touches.
+ arch/powerpc/kernel/crash_dump.c                   |   6 +-
+ arch/powerpc/kernel/rtas_flash.c                   |   2 +-
+ arch/powerpc/kernel/rtasd.c                        |   2 +-
+ arch/powerpc/platforms/pseries/lparcfg.c           |   2 +-
+ arch/powerpc/platforms/pseries/reconfig.c          |  18 +-
+ arch/um/kernel/exitcode.c                          |   3 +-
+ arch/xtensa/platforms/iss/simdisk.c                |  25 +-
+ drivers/net/wireless/intel/ipw2x00/libipw_module.c |   2 +-
+ drivers/pci/proc.c                                 |  15 +-
+ drivers/platform/x86/toshiba_acpi.c                |   8 +-
+ drivers/pnp/isapnp/proc.c                          |   6 +-
+ drivers/s390/block/dasd.c                          |   2 +-
+ drivers/scsi/BusLogic.c                            |   2 +-
+ drivers/scsi/esas2r/esas2r.h                       |   2 +-
+ drivers/scsi/esas2r/esas2r_ioctl.c                 |  41 ++-
+ drivers/scsi/esas2r/esas2r_main.c                  |   3 +-
+ drivers/scsi/ips.c                                 |   2 +-
+ drivers/scsi/scsi_proc.c                           |   1 +
+ fs/ntfs3/super.c                                   |  11 +-
+ fs/proc/generic.c                                  | 174 ++++++---
+ fs/proc/inode.c                                    |  38 +-
+ fs/proc/internal.h                                 |   1 +
+ fs/proc/proc_net.c                                 |   7 +
+ fs/proc/proc_sysctl.c                              | 389 ++++++++++++++-------
+ fs/proc/root.c                                     |   1 +
+ fs/proc/vmcore.c                                   |   5 +
+ include/linux/sunrpc/cache.h                       |   1 -
+ net/core/pktgen.c                                  |   4 +
+ net/netfilter/xt_recent.c                          |   4 +-
+ net/sunrpc/cache.c                                 |  12 +-
+ sound/core/info.c                                  |   2 +
+ tools/testing/selftests/proc/.gitignore            |   5 +
+ tools/testing/selftests/proc/Makefile              |   5 +
+ tools/testing/selftests/proc/config                |   6 +
+ tools/testing/selftests/proc/proc-readdir-churn.c  | 236 +++++++++++++
+ .../selftests/proc/proc-remove-slow-readlink.c     | 191 ++++++++++
+ .../selftests/proc/proc-remove-slow-sysctl.c       | 213 +++++++++++
+ .../selftests/proc/proc-sysctl-readdir-churn.c     | 147 ++++++++
+ 38 files changed, 1342 insertions(+), 252 deletions(-)
+---
+base-commit: 65ba8f34ec886ec72b2c07ddc8cf3d815c32869d
+change-id: 20261101-work-procfs-bugfixes-054d00028491
 
-[1]: https://lore.kernel.org/r/000000000000f24f4705b6988f3e@google.com
-[2]: https://lore.kernel.org/r/20231109212251.213873-7-johannes@sipsolutions.net
-
--- 
-Christian Brauner <brauner@kernel.org>
 
