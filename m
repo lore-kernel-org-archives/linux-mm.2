@@ -1,75 +1,74 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B0886072C58
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 15:34:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4B7C60A0CA7
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 15:34:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=I3018NSM
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=d9QGwQro
 Received: by kanga.kvack.org (Postfix)
-	id 52A846B0610; Mon,  2 Nov 2026 10:34:21 -0500 (EST)
+	id C092E6B0612; Mon,  2 Nov 2026 10:34:41 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4DA6C6B061D; Mon,  2 Nov 2026 10:34:21 -0500 (EST)
+	id BBA366B0613; Mon,  2 Nov 2026 10:34:41 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3A3596B0638; Mon,  2 Nov 2026 10:34:21 -0500 (EST)
+	id AA84B6B061D; Mon,  2 Nov 2026 10:34:41 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 17EA16B0610
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 10:34:21 -0500 (EST)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id AD487A4D19
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 15:34:20 +0000 (UTC)
-X-FDA: 85390575480.26.F8DD579
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 86CBE6B0612
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 10:34:41 -0500 (EST)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 0AE40120122
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 15:34:41 +0000 (UTC)
+X-FDA: 85390576362.14.435850A
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf07.hostedemail.com (Postfix) with ESMTP id F0A3C40003
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 15:34:18 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=I3018NSM;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf07.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org
+	by imf18.hostedemail.com (Postfix) with ESMTP id 425841C000E
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 15:34:39 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=d9QGwQro;
+	spf=pass (imf18.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793633658;
+	s=arc-20220608; t=1793633679;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qehvQbejNsYpKxVFyBI5cuXL4HJf/COjdUqE20q/KJk=;
-	b=UHEh7PoJsbk2Lxtkdnq+T2+qzb39im9xRSgBgGkt5p2AMWt/w8011Ze3vf0B6n6v63LCUC
-	1pBEmzstyfLWPRok864A3rftuSqXKT7sz05wwGjjw18CihHjmVwBQWO3sJXiddEqeHkqhY
-	lJOHINcGnETxJuYLFXvuUzjc9LTdyWo=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=I3018NSM;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf07.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org
+	bh=pmnFGMOE2v1+F0PJGOHw4Gdli7q7gPuktrXwX9LNfoQ=;
+	b=lY59b+39EhTSzKnyA6gPqp5B6EmZPMRMfjBOSla/PnahKAa+MeKsCzz4lJ6x9AR8G/pCrB
+	jvY3GsSn9PgocJD8fEUcHUDY+HOypfRudfJiLAwbt3gRqtiCh94gVkLmtM2lw9PDHoG0qH
+	AHHTXeGLTuzhuJgvyp1519vHUX9w7fw=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793633658;
-	b=ymKpVLBfg22akc3iwoKsGlAuxckKG7CjVFH/3+uz1Q02lCAr1SPlVpRI6+0SHGkg1qk7Py
-	mSpaC0FGBihNVxxBzpKocbLoLUNX+EHRxgvm9MF0MJw4f/s7E8v8MyG82JyYMnTXdrDylr
-	af8/3ZCY/EFuPZWfGWhyJwEGexr6gtI=
+	t=1793633679;
+	b=ImztTRYDF+D2qs408Tnw+kUW5+peQOvovSYYpwHmlxJxjGZXYB1Vv3Q0UoKy96YCIL3cFp
+	uAIzwMB54+eVh3Qi4ExOIU+DIChF0Iw+WOm0qoIg9MdUPn4zIAnm2Ls8JK7GlkMbuswMp2
+	Ted9J+rGh9lrpGIhjnnwCODwSC602SI=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=d9QGwQro;
+	spf=pass (imf18.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 85AB76060E;
-	Mon,  2 Nov 2026 15:34:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 145791F00A18;
-	Mon,  2 Nov 2026 15:33:58 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id DB41B609D2;
+	Mon,  2 Nov 2026 15:34:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCFFB1F00A17;
+	Mon,  2 Nov 2026 15:34:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793633658;
-	bh=qehvQbejNsYpKxVFyBI5cuXL4HJf/COjdUqE20q/KJk=;
+	s=k20260515; t=1793633678;
+	bh=pmnFGMOE2v1+F0PJGOHw4Gdli7q7gPuktrXwX9LNfoQ=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=I3018NSMJ3JeeEZNHYpZOzTSTVjGE8V8mC3rxWyFrnFm/O6e0BQPqvYOSnqdWvMzS
-	 FhRSnHG1Pz7M0jO3MB5OdMthxumcYZHGwgiesNL3clkwgcHDbIz9ja6O+6lu5gGJLA
-	 PzRRVogMLoBdbC/vCygybRlSjZMHZHAZaGNWRN3uCoSd+5c4+7VtRVNL7l73qL+q+I
-	 R83v2alIXJL0sOz6U1nmnu9cdG/yNEzCQaZx+lsQYDDUzsXFMYUp8cWRAgyEt0tsOr
-	 4L2nbLK8eTjSuQksbl4N5zsJeumCILIO4kqk140gii9/aZ6MFm+VMeLb271ZSnrk1N
-	 d4I4WeWG/J0hg==
+	b=d9QGwQrotLscF4xo8DU9S109UjfAgcN4a46hjwVSf3SjqQgEaO4Rv1AEyP5dT4O5y
+	 xhGnDHnb/jFSk8D7qKuO+39L5VOpMdQp+GEPoALOWTv2sAj3bbh7bn9Ca6T4Zctpcj
+	 fNImnpjl37D5rGo6ytZAGYcvcU7Hs6e2nTEg5V2aQ/mC4G0yjxmcpG1Hu5e0aBYP77
+	 YqqQjJjSh1N4cnNNEz/pCqHHyFFMtbDFf9uvFYMyEZgjLi1JBmongPZBS4PXj3B4fR
+	 cGUqecnhkpX6QHjYWkx5oNKUT3XrFn+eoX8EGZYKiM0ZGpeR++e3aBl28Ylp4YaymR
+	 Z4/Or8kbU/uIg==
 From: Christian Brauner <brauner@kernel.org>
-Date: Mon, 02 Nov 2026 16:07:23 +0100
-Subject: [PATCH RFC 09/11] SUNRPC: drop the ioctl of the procfs channel
- files
+Date: Mon, 02 Nov 2026 16:07:24 +0100
+Subject: [PATCH RFC 10/11] samples/kfifo: let procfs copy in writes
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261102-work-procfs-net-v1-9-982104a4f592@kernel.org>
+Message-Id: <20261102-work-procfs-net-v1-10-982104a4f592@kernel.org>
 References: <20261102-work-procfs-net-v1-0-982104a4f592@kernel.org>
 In-Reply-To: <20261102-work-procfs-net-v1-0-982104a4f592@kernel.org>
 To: linux-fsdevel@vger.kernel.org
@@ -105,27 +104,27 @@ Cc: Linus Torvalds <torvalds@linux-foundation.org>,
  "Christian Brauner (Amutable)" <brauner@kernel.org>, 
  Chuck Lever <cel@kernel.org>
 X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1522; i=brauner@kernel.org;
- h=from:subject:message-id; bh=Ud9Y4QQyL+X4JWta5uPxcGegk5a98S++PodDMQ4oF1M=;
- b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS9WG7S/nf10r1xa3IYtmm0TBAouXddfcmhZUb+it52U
- 20nX9pxoKOUhUGMi0FWTJHFod0kXG45T8Vmo0wNmDmsTCBDGLg4BWAi4WcYGXpLayZN/hhya+/z
- ysCf6/y1yhbKurD+W7OU58ipKVLTDMUYGc6eCmt4GKApJHKg5Ubmioa6i3H1f+olLqZ4VW318Nh
- xigUA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3950; i=brauner@kernel.org;
+ h=from:subject:message-id; bh=wqPh89nrehb8eXTwTved41pSSj+cx0NGgazKeJSdQJg=;
+ b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS9WG5SKeDGcNhJw++9Z7LY3JTfuwQ+VK2efenXodN77
+ 51lStK62FHKwiDGxSArpsji0G4SLrecp2KzUaYGzBxWJpAhDFycAjCRuBCG/z6xtYb3b823yGzs
+ EFIryW+ZU83Lc9Vb497sqedPcyic+MvwP/CknED65Xe3rd5zTJCoDZgg+Puey5sJtRciovqzWZV
+ mcQMA
 X-Developer-Key: i=brauner@kernel.org; a=openpgp;
  fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
-X-Rspamd-Queue-Id: F0A3C40003
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 425841C000E
+X-Stat-Signature: 1f9yhpkoaspbpj84znonwbf95wartosx
 X-Rspam-User: 
-X-Stat-Signature: d7gmqh4yrgzr6we8wzyyr1f9i54tow7b
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
 	version=4.0.1
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1793633658-149848
-X-HE-Meta: U2FsdGVkX197LvJ49DBZTUuTvDAfiXaCGKQy8p3hIFcWQRdZHAO75SwG73XzdRcG1B4md7fnkpVvSqnJpD0NU/EqKQE+FIKyGGC8bjusfd+4JMDBKKHmOb8thNmfCkEhk59kvGuNX+UzUBHKqrWg36KIzyleH41G/CmXPqWq/xCs7BHOh8jfxyosa2LrAF+w++z0YP4V4n/NOKON3uiUqsQ4NUlOcuzKVQ1qup/CdUJPHhbAxujN0LJsMD1ARg6wMyRx85aGY2IGWJcct5gpRnPC+m3BWvdLxgrNBI3o2cHsCp/XfBDUotvue07YTdZLA4vgS1hrRKYtHwZvjd6EeL4NuHkVjwEHmlTHaSpo4w21+kTOWfPsnw/2jsRjh4pKL6EE6RUTBGi6SVcIPU755Kl9n2B67EeR5p9+W9TeFQP4iM/j5Z2Y2PhBAOO7Mlu6z+7nxDXsFJZnhcO18TTl5Zp1Phi5lr4kLnltXdi1kWDDE3kUy2FYTMmkRHrgvSXh51C2uFXMbEHrp9IbeqS/pPF5TrV46FHvdzNJBZBEVXQhxumRB5Nb+bzV5inzVscfiIGPuj18Lnl9guKNsYrqQS/fmIlkF0h2bDZcY6YmOiLEn1soJqkjd1d4xZ9BkPHGNORTpxERpcQLbNNwa1n5HMAnkmauZQ6far1HCRoqw/bBCXWFG9MeqcQefiu/x/uJc2IYmGeKs0mILC2Bq1glNp592egxv/xW3pZsP4bYXK55yyQPKGaJanlUQDc3Rpytet3W9g+QSOCuSr4d+6iilbKVfnhKRAKLktiVKtPsHRSd1F8JMORhLREIQuO+5WamnKV7ZMFuwN4vVWx5dCoMv9ep26D/KpEwW1DSKAVI5SlrxOXXSunVQT6XMx9ZImIhIKbdzZy9EohuC0QjQeHk/uq/1K0L6w+EHoATdDNMKxTOzh7icYJ1wRk0qLh8lLYlfE1hVaeeMJ9y0IjSPan
- UuL7Lxa2
- MaKDbZ9fkosWUbBU7Pe7XSJAuVEc57q/twqrx2iAUkg8SofjhxqtXauwHHhUOe2nGs4mRLt0sNPfBxAXq3Wt1gqz4EtCVwFmsmSsbOLMRAa4Ao7zMSoRo5+V9+uoDt9rp72cvpsA4nFMqrKjubEAzVzGp12gjcL5/qTNrvTUiGe1/MoWyk3m1pCbqrfrlqe0Ut+e9Cm7Xwm/APbHjnqXFnFI/eRkdaHG28HNuXQPVYZHCMd7lfRq3FPD6ikvXLUUi5lW+5h1iWHelP1gt52pJCQvXC2FBLY0MhISo
+X-HE-Tag: 1793633679-535804
+X-HE-Meta: U2FsdGVkX19AbEt4B8ejN40Bh0KKY2U33DC1QNsdiaeCEpj4MSnb/pHMX9rjBPNx8/eZs1Bc78IRuHsRIptLLhNKWC0jTFqwJ2bI+jl+OxwZarFXTqmpOymlCyydIptF6xFvKiXRLB0hCoZBu4sMLa44KZfk8mo817DrcO+TwFuUUK+dtTw1R7FEGKAKFyds4TfyLUT0blR5Q8GpfrxHFLBVneYV+UW+kCReHIAmwENq9MmjBp1qNWLnZEliWVnA7oOBCXFOMLcMOvjFm6377o5Jd3xlSI74F32E+UDmuXF4Xb8SwTy232mfiGgiv5JiU+5/95OyimniylPpyoc1NxltT8HE67hK3c3o+upB+TpL+pJSPuVbf03Qm+tdBi6NpTZ5WNsQMmTsyL0vkHSmqP316KuUHrslFsgvNNTZwN56Ma4QtkszV8OX2qAQUi3NBelQUsP21ju5e3Nkv+Sru2COr1h4urjnPhp+4OcaDYZrwGGOVnme0jIHgZxSB7jC8P8jEF63tbG/xQCl7J7bYYjWO/rqIoC2eOnCEMGQ5Buvl6IQEJK0XGTEkmycidNEy6eOTeckLGTKtNmLpX5pbjDITk4q6VQ1rvOtCX43E6hZRRkjzjLpM8zLtiKySUnH8Hmoh+8ueAEhG4z5LSB/FKaLdV2fHd8UzPXkjp8FUMP8P9YWytvyrR0hLY/YDAaFa6qJj5w/hDuD+u8WntIeApPJS0wCzneGwC1l7RkO+eip/zFLUte4HGB3CRBGMqGCVYZ0Lg4X4tOmmUofGqWWwW7TpwCZ8uewHIR+wxCj1Ki2Tk451Q4bDmqJUv1gK8Xxremro835UKjyz+Myfygn/FapG7ImknGg/JxJz2SoRpv4biKKP0JXV4REYDcDmUqbglUKBaj2hv4LFpxYjoWFA044aYFrl+hAD+rFEgojsgrjb5fQZe5Zw+FXl1E+XkdTIugk3Zm855NTP/EIHWU
+ kFA45HOM
+ 5zFqjuVT13UX0mCs0icKfqLs3R66umbg9I4nAVxkMVtCNkfByvl3gT/fS9xTViOv4rmCbVYajUsBHYpl/0D41gvbnr+6189xRPWxA6qU9gI6zbVLyslCQoTJq9I20UGzi/x+ylFZzDp2I4Lf+nj9fYPPbSrkdhEhAhZkZ/wUUTMceQqb8mPUN4Qwh8edrwJgqKJfL7IylTGfLPD2EfmRql5BqE1XdyvlgOxYS4hiMh2ilTSmqcZzfpjTwnKk0je4l6xderhfQDGjZSNttg5eKggEHoj2ujLUKOkmL
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -134,47 +133,133 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-do_vfs_ioctl() answers FIONREAD for regular files with i_size - f_pos
-before it gets to the file's ->unlocked_ioctl(). The channel files are
-regular files, so cache_ioctl_procfs() has never seen FIONREAD and only
-ever failed other commands with -EINVAL. Drop it. Other commands fail
-with -ENOTTY now.
-
-The rpc_pipefs channel files are regular files as well.
+Implement ->proc_write_buf() so procfs copies in what is written before
+it pins the entry, and put that copy into the fifo with kfifo_in()
+instead of kfifo_from_user(). Writes larger than PAGE_SIZE - 1 bytes
+fail with -EINVAL now. kfifo_from_user() cut a record to 255 bytes,
+what the one byte that holds its length can say, so the record sample
+keeps doing that with PROC_ENTRY_SHORT_WRITES.
 
 Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 ---
- net/sunrpc/cache.c | 10 ----------
- 1 file changed, 10 deletions(-)
+ samples/kfifo/bytestream-example.c |  9 +++------
+ samples/kfifo/inttype-example.c    | 10 ++++------
+ samples/kfifo/record-example.c     | 12 ++++++------
+ 3 files changed, 13 insertions(+), 18 deletions(-)
 
-diff --git a/net/sunrpc/cache.c b/net/sunrpc/cache.c
-index 81a3f0068f36..d242b6f33cbc 100644
---- a/net/sunrpc/cache.c
-+++ b/net/sunrpc/cache.c
-@@ -1596,15 +1596,6 @@ static __poll_t cache_poll_procfs(struct file *filp, poll_table *wait)
- 	return cache_poll(filp, wait, cd);
+diff --git a/samples/kfifo/bytestream-example.c b/samples/kfifo/bytestream-example.c
+index 4ae29a12cc8a..8c58fb46a2bf 100644
+--- a/samples/kfifo/bytestream-example.c
++++ b/samples/kfifo/bytestream-example.c
+@@ -110,20 +110,17 @@ static int __init testfunc(void)
+ 	return 0;
  }
  
--static long cache_ioctl_procfs(struct file *filp,
--			       unsigned int cmd, unsigned long arg)
--{
--	struct inode *inode = file_inode(filp);
--	struct cache_detail *cd = pde_data(inode);
--
--	return cache_ioctl(inode, filp, cmd, arg, cd);
--}
--
- static int cache_open_procfs(struct inode *inode, struct file *filp)
+-static ssize_t fifo_write(struct file *file, const char __user *buf,
++static ssize_t fifo_write(struct file *file, char *buf,
+ 						size_t count, loff_t *ppos)
  {
- 	struct cache_detail *cd = pde_data(inode);
-@@ -1624,7 +1615,6 @@ static const struct proc_ops cache_channel_proc_ops = {
- 	.proc_write_buf	= cache_write_procfs,
- 	.proc_write_size = CACHE_DOWNCALL_MAX,
- 	.proc_poll	= cache_poll_procfs,
--	.proc_ioctl	= cache_ioctl_procfs, /* for FIONREAD */
- 	.proc_open	= cache_open_procfs,
- 	.proc_release	= cache_release_procfs,
+-	int ret;
+ 	unsigned int copied;
+ 
+ 	if (mutex_lock_interruptible(&write_access))
+ 		return -ERESTARTSYS;
+ 
+-	ret = kfifo_from_user(&test, buf, count, &copied);
++	copied = kfifo_in(&test, buf, count);
+ 
+ 	mutex_unlock(&write_access);
+-	if (ret)
+-		return ret;
+ 
+ 	return copied;
+ }
+@@ -148,7 +145,7 @@ static ssize_t fifo_read(struct file *file, char __user *buf,
+ 
+ static const struct proc_ops fifo_proc_ops = {
+ 	.proc_read	= fifo_read,
+-	.proc_write	= fifo_write,
++	.proc_write_buf	= fifo_write,
+ 	.proc_lseek	= noop_llseek,
  };
+ 
+diff --git a/samples/kfifo/inttype-example.c b/samples/kfifo/inttype-example.c
+index e4f93317c5d0..c5d16b815e73 100644
+--- a/samples/kfifo/inttype-example.c
++++ b/samples/kfifo/inttype-example.c
+@@ -103,20 +103,18 @@ static int __init testfunc(void)
+ 	return 0;
+ }
+ 
+-static ssize_t fifo_write(struct file *file, const char __user *buf,
++static ssize_t fifo_write(struct file *file, char *buf,
+ 						size_t count, loff_t *ppos)
+ {
+-	int ret;
+ 	unsigned int copied;
+ 
+ 	if (mutex_lock_interruptible(&write_access))
+ 		return -ERESTARTSYS;
+ 
+-	ret = kfifo_from_user(&test, buf, count, &copied);
++	copied = kfifo_in(&test, (const int *)buf, count / sizeof(int)) *
++		 sizeof(int);
+ 
+ 	mutex_unlock(&write_access);
+-	if (ret)
+-		return ret;
+ 
+ 	return copied;
+ }
+@@ -141,7 +139,7 @@ static ssize_t fifo_read(struct file *file, char __user *buf,
+ 
+ static const struct proc_ops fifo_proc_ops = {
+ 	.proc_read	= fifo_read,
+-	.proc_write	= fifo_write,
++	.proc_write_buf	= fifo_write,
+ 	.proc_lseek	= noop_llseek,
+ };
+ 
+diff --git a/samples/kfifo/record-example.c b/samples/kfifo/record-example.c
+index e4d1a2d7983c..dcc749247c64 100644
+--- a/samples/kfifo/record-example.c
++++ b/samples/kfifo/record-example.c
+@@ -117,20 +117,17 @@ static int __init testfunc(void)
+ 	return 0;
+ }
+ 
+-static ssize_t fifo_write(struct file *file, const char __user *buf,
++static ssize_t fifo_write(struct file *file, char *buf,
+ 						size_t count, loff_t *ppos)
+ {
+-	int ret;
+ 	unsigned int copied;
+ 
+ 	if (mutex_lock_interruptible(&write_access))
+ 		return -ERESTARTSYS;
+ 
+-	ret = kfifo_from_user(&test, buf, count, &copied);
++	copied = kfifo_in(&test, buf, count);
+ 
+ 	mutex_unlock(&write_access);
+-	if (ret)
+-		return ret;
+ 
+ 	return copied;
+ }
+@@ -155,8 +152,11 @@ static ssize_t fifo_read(struct file *file, char __user *buf,
+ 
+ static const struct proc_ops fifo_proc_ops = {
+ 	.proc_read	= fifo_read,
+-	.proc_write	= fifo_write,
++	.proc_write_buf	= fifo_write,
+ 	.proc_lseek	= noop_llseek,
++	/* kfifo_from_user() cut a record to what its length byte holds */
++	.proc_flags	= PROC_ENTRY_SHORT_WRITES,
++	.proc_write_size = U8_MAX,
+ };
+ 
+ static int __init example_init(void)
 
 -- 
 2.53.0
