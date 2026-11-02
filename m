@@ -1,122 +1,96 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C15C6070CAE
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 14:47:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ZfP/Kahw
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C27AE606A90F
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 14:48:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 740F56B05BD; Mon,  2 Nov 2026 09:47:16 -0500 (EST)
+	id BFF036B05BF; Mon,  2 Nov 2026 09:48:46 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 718AB6B05BE; Mon,  2 Nov 2026 09:47:16 -0500 (EST)
+	id BD6456B05C0; Mon,  2 Nov 2026 09:48:46 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 607BA6B05BF; Mon,  2 Nov 2026 09:47:16 -0500 (EST)
+	id B134C6B05C1; Mon,  2 Nov 2026 09:48:46 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 37CE96B05BD
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 09:47:16 -0500 (EST)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id BC30C140136
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 14:47:15 +0000 (UTC)
-X-FDA: 85390456830.16.C4F1AB6
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 08E8C1C0007
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 14:47:13 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="ZfP/Kahw";
-	spf=pass (imf21.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 7FBA96B05BF
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 09:48:46 -0500 (EST)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 741CB40154
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 14:48:45 +0000 (UTC)
+X-FDA: 85390460610.23.7BCACC8
+Received: from relay4-d.mail.gandi.net (relay4-d.mail.gandi.net [217.70.183.196])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 7922520004
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 14:48:43 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=none;
+	spf=pass (imf13.hostedemail.com: domain of alex@ghiti.fr designates 217.70.183.196 as permitted sender) smtp.mailfrom=alex@ghiti.fr;
+	dmarc=none
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793630923;
+	b=bP6dbSQUxf7eU0u+RzPKtsOOY1sL0lPiQ4EgeC1iew1xYQtpYs9X+xQraymVbsQwf20INg
+	7KTUcLJKQkIbXnZ7+5jHhCNh8y4hkg3km5/3g9dcM1dfMgJxA1FaGPu+/KX8q5m756i2tf
+	yLaryUkxTC06FGx0dB/KxxQ/66FO2+4=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793630834;
+	s=arc-20220608; t=1793630923;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HVagn+HE6BgGgxgbr+5XC5Y5Qcbb33m4Jb7EnpZPFUg=;
-	b=YVykqsrYKjqrFCTIlpevc0hd/m4aTz06YkRIIul/hdcsgWj6RxuQM6doOzhEJyJfcaBiSf
-	YCRrOk912dfV6AIGb2cLQb8GKACxML79JJ4LL0VLW8fNb9CylIMVSYf6nLydOCUbzcYANQ
-	bqEJNmsj2w8Ih9mo7bS8rNEa/EhxIME=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references; bh=A7RZxz/I0QQefvJdIeMSwQGON5LaCpoKNCQaVHVvIWI=;
+	b=KXWxCc0554Gz4fNDOKM4kUGsJVCIydowMPDSDt2JE+x9jxyyPOBFGTIvcO69/cpU8ZYJLT
+	kXilGVMoJG9WcGXvIwHF9IahKpnW1OlEpx6e2BqvGU6jUOreakx/PaVhHvKtVWnDH5OsAE
+	kwQ8L7lUBu51mJweyCUWCHO0v3UprFs=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="ZfP/Kahw";
-	spf=pass (imf21.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793630834;
-	b=udY8PKcy5cKxIVRrc+OVT7biUPoHfKh+IgzyFeTr05RZJuQ3lxz8ebulSsNn4FxUCfZHMX
-	zO1S9wxg3EYOs1mDMQQ4JLqhiTsjDR3XJcoHlC35EIW9Fn9nL2MQF9l2aOlArDXbITVOey
-	lbcqrbXH5he6wkBR2QDJUfr27e7Vzy4=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 5B079404CE;
-	Mon,  2 Nov 2026 14:47:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26EE81F00A1A;
-	Mon,  2 Nov 2026 14:46:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793630833;
-	bh=HVagn+HE6BgGgxgbr+5XC5Y5Qcbb33m4Jb7EnpZPFUg=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=ZfP/KahwDm10wm2TSGrtLVkg7xDUNnpz+rBBaInyM45cZNagos2iYqnrDed5HxIBA
-	 K+//mFWxDsWpOWe9Buj12+quSzkpcQzj2ngYZ9ZsEW0oSIiCRi7l1s6PLMfANxGQPz
-	 ES6j9Tp68ZCoex9QLLCdMUr2RP+/gA7nMafoF8zKWkoSoj6HU61hIGfIek8HtzVsMz
-	 WP7zxeoWb2ywthOOE6hEK8rHNlm6c5T599z/Oyvz7z8nNJFpq2Xxjua62S/Ez/3caV
-	 aKvdxGOQzTpkPCeB1AmIzk8MgvSvtRVAT8gs8GThhJQslYhMWBFvphDQuEoGKj/fJB
-	 b5NG8uh8YTrhw==
-From: Christian Brauner <brauner@kernel.org>
-Date: Mon, 02 Nov 2026 15:43:29 +0100
-Subject: [PATCH RFC 38/38] selftests/proc: check that a faulting readlink()
- doesn't hold up removal
+	imf13.hostedemail.com;
+	dkim=none;
+	spf=pass (imf13.hostedemail.com: domain of alex@ghiti.fr designates 217.70.183.196 as permitted sender) smtp.mailfrom=alex@ghiti.fr;
+	dmarc=none
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 8350E3E9B1;
+	Mon,  2 Nov 2026 14:48:37 +0000 (UTC)
+From: Alexandre Ghiti <alex@ghiti.fr>
+To: akpm@linux-foundation.org,
+	hannes@cmpxchg.org,
+	yosry@kernel.org,
+	nphamcs@gmail.com
+Cc: shikemeng@huaweicloud.com,
+	baoquan.he@linux.dev,
+	youngjun.park@lge.com,
+	chengming.zhou@linux.dev,
+	david@kernel.org,
+	ljs@kernel.org,
+	liam@infradead.org,
+	vbabka@kernel.org,
+	rppt@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	kasong@tencent.com,
+	ryncsn@gmail.com,
+	chrisl@kernel.org,
+	baohua@kernel.org,
+	usama.arif@linux.dev,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Alexandre Ghiti <alex@ghiti.fr>
+Subject: [PATCH v4] mm: bypass swap readahead for zswap
+Date: Mon,  2 Nov 2026 15:48:22 +0100
+Message-ID: <20261102144835.304017-1-alex@ghiti.fr>
+X-Mailer: git-send-email 2.56.0
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261102-work-procfs-bugfixes-v1-38-59422ed3e465@kernel.org>
-References: <20261102-work-procfs-bugfixes-v1-0-59422ed3e465@kernel.org>
-In-Reply-To: <20261102-work-procfs-bugfixes-v1-0-59422ed3e465@kernel.org>
-To: linux-fsdevel@vger.kernel.org
-Cc: Linus Torvalds <torvalds@linux-foundation.org>, 
- Jann Horn <jannh@google.com>, Josef Bacik <josef@toxicpanda.com>, 
- Chris Mason <mason@kernel.org>, Jeff Layton <jlayton@kernel.org>, 
- NeilBrown <neil@brown.name>, Eric Dumazet <edumazet@kernel.org>, 
- Thomas Gleixner <tglx@kernel.org>, Al Viro <viro@zeniv.linux.org.uk>, 
- Jonathan Corbet <corbet@lwn.net>, Christoph Hellwig <hch@lst.de>, 
- Greg Kroah-Hartman <gregkh@suse.de>, 
- Joel Granados <joel.granados@kernel.org>, Kees Cook <kees@kernel.org>, 
- Jan Kara <jack@suse.cz>, Jan Kara <jack@suse.com>, 
- linux-kernel@vger.kernel.org, linux-nfs@vger.kernel.org, 
- linux-acpi@vger.kernel.org, linux-kselftest@vger.kernel.org, 
- linux-s390@vger.kernel.org, linux-scsi@vger.kernel.org, 
- linux-um@lists.infradead.org, linux-wireless@vger.kernel.org, 
- linuxppc-dev@lists.ozlabs.org, netdev@vger.kernel.org, 
- ntfs3@lists.linux.dev, platform-driver-x86@vger.kernel.org, 
- coreteam@netfilter.org, kexec@lists.infradead.org, 
- linux-pci@vger.kernel.org, linux-sound@vger.kernel.org, 
- netfilter-devel@vger.kernel.org, dri-devel@lists.freedesktop.org, 
- ibm-acpi-devel@lists.sourceforge.net, jfs-discussion@lists.sourceforge.net, 
- linux-alpha@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
- linux-cifs@vger.kernel.org, linux-fbdev@vger.kernel.org, 
- linux-hwmon@vger.kernel.org, linux-mm@kvack.org, linux-sh@vger.kernel.org, 
- linux-usb@vger.kernel.org, samba-technical@lists.samba.org, 
- sparclinux@vger.kernel.org, linux-m68k@lists.linux-m68k.org, 
- linux-doc@vger.kernel.org, linux-serial@vger.kernel.org, 
- linux-atm-general@lists.sourceforge.net, Takashi Iwai <tiwai@suse.de>, 
- linux-input@vger.kernel.org, linux-raid@vger.kernel.org, 
- linux-ext4@vger.kernel.org, linux-modules@vger.kernel.org, 
- linux-debuggers@vger.kernel.org, 
- "Christian Brauner (Amutable)" <brauner@kernel.org>, 
- Chuck Lever <cel@kernel.org>
-X-Mailer: b4 0.17-dev
-X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 08E8C1C0007
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: jyouxpwp8fg7x9ezr3cdxf6u5mojmccf
-X-HE-Tag: 1793630833-607291
-X-HE-Meta: U2FsdGVkX18xA4f8ter1Sb1PwM9SnG0CD/ZTnPKbOJUUsLgRqUUOOujLqj4KTeRWHiu0vBHh658fVBsBi1GWgxxH7p6cVYGvnEwW62OtvCjc8klc02TB05wFHq/re7yBKveLZYAeqcTfkAtIxMGRS0jfaKr3Ls6CGvHJTgq2qak2PEevAXjzUevo4GpOxxHvSV6jg99+dokgSaN/Qtl5/DaT5tNzzDDxYGeGDeyuYw9yXUyv9voemZZQD1YgttnptIyp3nKQWn5J8BMmDxnevS/YK28vd00hUq/Uk9+q8rXKO7rWyi1HKI/N4mrHaOiDSrFnvyZBJfwoSRsFIbdFhS3d3KeAdLO3LEjXuT8Twn9Nsa1GztYakeeynr7eI7AXLvXQU9EsOlZwIL0kZFtDwRVs0HIeD64VFXqX750IWG+n0xrT4qUyuCfitW0CcKncNnNFuhqukNx6Kb0VgXCKqR+lnbthRegpKf6rqr6Q08LiHJ9oawsa8Q0GDVbD9rT+LBQrD8m4lSH+wlIWH2whTDvtP/uc0m27jRBCbWxnyqj8Gx2Wgu+sAvXd0O65pherXABGzghHvyXM6iEl8DvLsiQKlX5yB1htJL6sKAY0zkzeXavJpYkPBCYhCHVXRTNnucbeORVD4xf1fn/joVrCMRW3/mSdS6pVoLTQzjVgV9uAsrk2rDEDFuP+UrP4nbJnO7EKNcdmeFQ190dMKdHadwNHek89Pew/0qqq+JCgxGu5jSsISv8XL2VJC6oSn6Dr13d5263rQKM0mkKZdgLx7zo+bSGoTrD4ezeKu8zTenkukbn2qUNi9OEJHMUKNjjqBc6cXuIKfiO6S8VaJmuuSKNj2E0ADAPpZWRinQvj7J2awlO6MSGgz7rxrhkjmllZliuFhhgyDPu/x/q8x0uK1NmtmefCRttMVL7XJpe9vlholflpCtJnJ1hJDDOwVnfAY6CcH74GypQHQuX3/6r
- 4f9qqamR
- PzPWjdQ9+K4kf69bBROTI+VmmgEybLzCfvMgIzceUbwCDUuQUWMZ7gj3ELWKLUw+dpbHa1YDqrOWXp9OAjg1dYIb+N1f0DwyVNNGN/xyB7xORsL6uAaEGqOEVPGkVBsRHyCkcP4wPgDl9sM8jlzEwmZ9bTSIGbKDNHyMaQkMN+RINS5GLmx0ttcud9WfLjRWc+aUwWqkEpvIu/B1FzELA7WSmfFcRI7eJLA1WTZswbpoHuygZiNh3rLyb6ccjwbcwhc0pTnCaCVKdRNFX7odTgzwUsAfRXt/+KVXQ
+Content-Transfer-Encoding: 8bit
+X-GND-Sasl: alex@ghiti.fr
+X-GND-Score: 0
+X-GND-Cause: dmFkZTEn/q8sunT7bW5dEEtI0bfp6C6rTfBoIVEjxCEHyQnVAxmMTuOAIrObB44eZJeesNyl0ks30kY2r3pvGySGGWMBRmEb8tey4fqQ1BhOxB4/IWQ2PVyPcF/B4x1dRySUj8USOUS4u0LeF4R9bzqQxyhzOwE99ylh/ARU30lm15V8ItjadwcmrqDcK59bSiB5mXUKro/kYfjW5Fbcn/yRJ7SBOA+OOzJJ1QvbbO5V8eZVbCNFOdhuzzYVZXH5CRSe6w3RqyWcNpL8zF6HnvnUXlQfENTuyq95sUWZud37HmwNw0zcOSeSDXhPLe664qZc4N/1S4vtq2SLPzfGoFCoL38UfmgD+egBa5sBO/lNw5zufRTe4/J2CUF1zqOEluHxDvrS2eDY4UfsT0oMD4q3WjeHGn7iY302qL9P5jT50msHE8xJ/60J35VokfqMcmVMN1vxYmQg6a5Yv0JtMq7WoHnxX0ttQHR2DV7QDJi8NQ1y9Zk2E+W/WNs7GaFwdZPRTi34n3CzW2xPBhdUHYbjgbbvhHTyTWeeTA+1VrMvGFLtYuM8J6gsFna3H6R2QLcg/GzDuRy4OQv1EGoZ38PDp5ZmJatq3GoLzBxX1behhKpr2PhgkoSnaSobOKygz1tZfxIxydsEKeBAVtO/iKMPFpaQENgUSnM2kzwsSnjfYHhW5g
+X-GND-State: clean
+X-Stat-Signature: r88tzbrdnbhbjt1fkuc7s7e1kzz4gxcr
+X-Rspamd-Queue-Id: 7922520004
+X-Rspam-User:
+X-Rspamd-Server: rspam12
+X-Spam-Status: No, score=-16.8 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1793630923-353521
+X-HE-Meta: U2FsdGVkX18UtiUGydq8J8oBpaw/1LQnhFWzy86dIjmPvAg+rSbjO0h6SvGoItYpvQSVuDkDEad8qtma8KBS2H9/eufB5nm+YfUqAlR52g1ve6b7xDIu4yIrwCFnVfarIAMANPROonMgOkE0CI1J48kJPVZ9osfguXW9ROWoon82yAnXS9iGGRfLs5ZKcFmR+TqVy+IPi+vCqSMr2pZSrz4gV1k1U2g2LepktOfiIxUlQFT+CAwoJcFITtbwNidcDQu1Wj2wdIXG8sG/2BwGcXeCIdM7GNMzpuVB5PrNGUI0b0KExK9NUZ/qhI+ltKPplFtaEnrFNcHFzDDWizJY2XDxgxaktNataxKhC9uwu4qA7PsfE/6K8KjzauAVuHp/qa2uiWp00fC+OfsW8sH/HJNJ5bpdCokOHnuq5yO92JWYRT6dQjXcsuYtz8neSsFZF0t6VdHcfxHJ5gi1B1yQxV9HC38aGD2a3deArufBa7wFFLEib6Poj6SZso5q8rW+nmJK1JBI9hCIopwnkxdXfat9svy7JlAamY7482/JUq1QPxK+orZh3Wre5VRB5C7ZZzr7SzKZ3lnPbCzorBUWAj8PkeUPTLs6/n78NUZgwe/kP5OTHYVCpKnmSPmhtdPi4Rmr/WWoZheLLDrqu8iZrhDmWR+q7mwC39Wf8VxVAU4ULNm/MkY25sDxsn9g8xxMa/s7G/Q/yJIWuPnuFkYRsb3vcGs5lhcyFsTuCQpiLnDS2M0llZRNgj/6L78wK31gXXj6M8hKOQttwJfii8poWaKajp1jHHEs60Ce3p2JXVAnDeaV3v58fiU0NChjehe9WB2K8lthA+uQy17lC+7qH85sceHJeMXJPaihLSO7lsV4RcUYiSYomRVvwUZRe18VtNiDKKa7qim97Kn7eu2CLTTd82t/yLVl0q+0UyZi7dps2bj8iXYkyP6NWkSz1FAIc/8YeFQMl0/kt176zEK
+ 9iIWm+CM
+ y1dFN0NGnRmuCu6gdNPSA/Qy6/3MZ+Pq6vcfrvYAe1eAgmBHnBPMV0Z1IUQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -125,261 +99,197 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Add the symlink case:
+Commit 0bcac06f27d7 ("mm, swap: skip swapcache for swapin of synchronous
+device") made SWP_SYNCHRONOUS_IO devices (e.g. zram) skip swap readahead.
 
-- readlink() /proc/asound/<id> of a dummy card into a buffer backed by
-  userfaultfd
+zswap is the same kind of in-memory, synchronous backend as zram, not a
+swap device flagged SWP_SYNCHRONOUS_IO so it still goes through
+swapin_readahead().
 
-- change the card's id through sysfs while the reader faults, which
-  removes the symlink with snd_card_mutex and info_mutex held
+Here are the results from bypassing readahead for zswap too: it was
+measured with a kernel build (make -j16) in a memcg, zswap=zstd, shrinker
+off, on Sapphire Rapids and 3 iterations.
 
-- expect that to finish without waiting for the reader
+  768M memcg (sustained swap thrash):
+    metric                 mm-new    + bypass    delta
+    build time (s)          405.0       341.7    -15.6%
+    zswap-in (GB)            79.5        53.0     -33%
+    zswap-out (GB)          144.8       115.6     -20%
+    swap readahead (pages)  6.79M       0.45M     -93%
+    swap_ra hit (%)          72.1        89.9     +18pp
 
-Skipped without snd-dummy.
+  1G memcg (light pressure, build not memory-bound):
+    metric                 mm-new    + bypass    delta
+    build time (s)          177.7       176.0    ~same (no regression)
+    zswap-in (GB)            10.2         7.5     -26%
+    zswap-out (GB)           27.7        25.1      -9%
+    swap readahead (pages)  1.07M       0.08M     -93%
+    swap_ra hit (%)          68.6        87.2     +19pp
 
-Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
+Similar gains were observed on an AMD EPYC 7D13 host.
+
+All the results above use the default page-cluster=3 and
+vma_ra_enabled=true. Setting page-cluster to 0 gives the same gain on a
+zswap-only system, but page-cluster is global: it also disables readahead
+for the asynchronous swap backends that other tenants of the same host
+may use.
+
+The gain is from no longer prefetching pages that are pointless for an
+in-memory backend: readahead inflates anon residency and thrashes the
+page cache (file pages get evicted and re-read), lengthens each fault by
+synchronously (de)compressing a cluster of neighbours, and adds
+compression traffic when those extra pages are reclaimed.
+
+Bypassing swap readahead for zswap therefore makes sense.
+
+Suggested-by: Usama Arif <usama.arif@linux.dev>
+Signed-off-by: Alexandre Ghiti <alex@ghiti.fr>
+Reviewed-by: Barry Song <baohua@kernel.org>
+Acked-by: Yosry Ahmed <yosry@kernel.org>
 ---
- tools/testing/selftests/proc/.gitignore            |   2 +
- tools/testing/selftests/proc/Makefile              |   2 +
- tools/testing/selftests/proc/config                |   3 +
- .../selftests/proc/proc-remove-slow-readlink.c     | 191 +++++++++++++++++++++
- 4 files changed, 198 insertions(+)
+Changes in v4:
+- Mention page-cluster in the changelog (Barry)
+- Add Barry's Reviewed-by and Yosry's Acked-by
+- Rebase on mm-new
 
-diff --git a/tools/testing/selftests/proc/.gitignore b/tools/testing/selftests/proc/.gitignore
-index 7b8133492782..e2566cc0ae07 100644
---- a/tools/testing/selftests/proc/.gitignore
-+++ b/tools/testing/selftests/proc/.gitignore
-@@ -22,6 +22,8 @@
- /proc-uptime-002
- /proc-pidns
- /proc-remove-slow-sysctl
-+/proc-remove-slow-reader
-+/proc-remove-slow-readlink
- /read
- /self
- /setns-dcache
-diff --git a/tools/testing/selftests/proc/Makefile b/tools/testing/selftests/proc/Makefile
-index bce6beca7274..6a9bdc999f54 100644
---- a/tools/testing/selftests/proc/Makefile
-+++ b/tools/testing/selftests/proc/Makefile
-@@ -33,5 +33,7 @@ TEST_GEN_PROGS += proc-fsconfig-hidepid
- TEST_GEN_PROGS += proc-sysctl-readdir-churn
- TEST_GEN_PROGS += proc-pidns
- TEST_GEN_PROGS += proc-remove-slow-sysctl
-+TEST_GEN_PROGS += proc-remove-slow-reader
-+TEST_GEN_PROGS += proc-remove-slow-readlink
+Changes in v3:
+- Go back to the RFC's single patch: readahead windows that mix zswap
+  and disk entries will be dealt with later, the priority is to merge the
+  zswap readahead bypass
+- Move the check into a swap helper, swap_entry_synchronous(), instead
+  of open-coding it in do_swap_page() (David)
+- Bail out early when zswap was never enabled or the tree is empty, so
+  disk-only systems pay a static branch (Kairui, Nhat)
+- Reuse zswap_is_present() rather than adding zswap_present_test()
+  (Yosry)
+- Rebase on mm-new
+
+Changes in v2:
+- Keep readahead, but overlap the decompression of zswap neighbours with
+  the disk I/O of the window, and bypass it when the target needs no
+  disk I/O (Yosry, Nhat, Barry)
+
+v3: https://lore.kernel.org/all/20261007153915.53429-1-alex@ghiti.fr/
+v2: https://lore.kernel.org/all/20260722163536.773166-1-alex@ghiti.fr/
+RFC: https://lore.kernel.org/all/20260624075700.751467-1-alex@ghiti.fr/
+
+ include/linux/zswap.h |  6 ++++++
+ mm/memory.c           |  4 ++--
+ mm/swap.h             | 25 +++++++++++++++++++++++++
+ mm/zswap.c            |  5 ++++-
+ 4 files changed, 37 insertions(+), 3 deletions(-)
+
+diff --git a/include/linux/zswap.h b/include/linux/zswap.h
+index df6cafbe95dc..94746fb71bb6 100644
+--- a/include/linux/zswap.h
++++ b/include/linux/zswap.h
+@@ -35,6 +35,7 @@ void zswap_lruvec_state_init(struct lruvec *lruvec);
+ void zswap_folio_swapin(struct folio *folio);
+ bool zswap_is_enabled(void);
+ bool zswap_never_enabled(void);
++bool zswap_is_present(swp_entry_t entry, unsigned int nr);
+ #else
  
- include ../lib.mk
-diff --git a/tools/testing/selftests/proc/config b/tools/testing/selftests/proc/config
-index 3edd3c437fe4..7b0e1d9be1a2 100644
---- a/tools/testing/selftests/proc/config
-+++ b/tools/testing/selftests/proc/config
-@@ -2,3 +2,6 @@ CONFIG_PROC_FS=y
- CONFIG_IPV6=y
- CONFIG_TUN=y
- CONFIG_USERFAULTFD=y
-+CONFIG_SOUND=y
-+CONFIG_SND=y
-+CONFIG_SND_DUMMY=m
-diff --git a/tools/testing/selftests/proc/proc-remove-slow-readlink.c b/tools/testing/selftests/proc/proc-remove-slow-readlink.c
-new file mode 100644
-index 000000000000..3290225daecd
---- /dev/null
-+++ b/tools/testing/selftests/proc/proc-remove-slow-readlink.c
-@@ -0,0 +1,191 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * A readlink() that faults while copying out the link must not hold up
-+ * removal of the /proc symlink. Changing a sound card's id removes
-+ * /proc/asound/<id> with snd_card_mutex and info_mutex held.
+ struct zswap_lruvec_state {};
+@@ -73,6 +74,11 @@ static inline bool zswap_never_enabled(void)
+ 	return true;
+ }
+ 
++static inline bool zswap_is_present(swp_entry_t entry, unsigned int nr)
++{
++	return false;
++}
++
+ #endif
+ 
+ #endif /* _LINUX_ZSWAP_H */
+diff --git a/mm/memory.c b/mm/memory.c
+index 5aec0dbc17be..0c9ed04528d8 100644
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -5034,8 +5034,8 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
+ 	if (folio)
+ 		swap_update_readahead(folio, vma, vmf->address);
+ 	if (!folio) {
+-		/* Swapin bypasses readahead for SWP_SYNCHRONOUS_IO devices */
+-		if (data_race(si->flags & SWP_SYNCHRONOUS_IO))
++		/* Swapin bypasses readahead for SWP_SYNCHRONOUS_IO devices and zswap */
++		if (swap_entry_synchronous(si, entry))
+ 			folio = swapin_sync(entry, GFP_HIGHUSER_MOVABLE,
+ 					    thp_swapin_suitable_orders(vmf) | BIT(0),
+ 					    vmf, NULL, 0);
+diff --git a/mm/swap.h b/mm/swap.h
+index d5bf21f517dc..b8181bd056ee 100644
+--- a/mm/swap.h
++++ b/mm/swap.h
+@@ -94,6 +94,7 @@ static inline int mem_cgroup_swappiness(const struct mem_cgroup *memcg)
+ 
+ #ifdef CONFIG_SWAP
+ #include <linux/swapops.h> /* for swp_offset */
++#include <linux/zswap.h> /* for zswap_is_present */
+ #include <linux/blk_types.h> /* for bio_end_io_t */
+ 
+ static inline unsigned int swp_cluster_offset(swp_entry_t entry)
+@@ -336,6 +337,24 @@ struct folio *swapin_sync(swp_entry_t entry, gfp_t flag, unsigned long orders,
+ void swap_update_readahead(struct folio *folio, struct vm_area_struct *vma,
+ 			   unsigned long addr);
+ 
++/**
++ * swap_entry_synchronous - check if @entry is read synchronously
++ * @si: the swap device of @entry
++ * @entry: the swap entry
++ *
++ * SWP_SYNCHRONOUS_IO devices and zswap complete a read in the faulting
++ * context, so swap readahead has no asynchronous I/O to overlap.
++ *
++ * Context: The caller must hold a reference on @si. The answer is a hint: the
++ * entry can be written back from zswap or freed concurrently.
 + */
-+#define _GNU_SOURCE
-+#include <dirent.h>
-+#include <errno.h>
-+#include <fcntl.h>
-+#include <limits.h>
-+#include <linux/userfaultfd.h>
-+#include <poll.h>
-+#include <pthread.h>
-+#include <stdio.h>
-+#include <stdlib.h>
-+#include <string.h>
-+#include <sys/ioctl.h>
-+#include <sys/mman.h>
-+#include <sys/syscall.h>
-+#include <unistd.h>
-+
-+#include "../kselftest_harness.h"
-+
-+#define CARD_ID		"Dummy"
-+#define NEW_ID		"procslow"
-+#define LINK_PATH	"/proc/asound/" CARD_ID
-+#define TIMEOUT_MS	5000
-+
-+struct reader {
-+	char *buf;
-+	size_t len;
-+	ssize_t ret;
-+};
-+
-+struct renamer {
-+	const char *id_path;
-+	const char *id;
-+	int done;
-+	int ret;
-+};
-+
-+static void *readlink_thread(void *arg)
++static inline bool swap_entry_synchronous(struct swap_info_struct *si,
++					  swp_entry_t entry)
 +{
-+	struct reader *r = arg;
-+
-+	r->ret = readlink(LINK_PATH, r->buf, r->len);
-+	return NULL;
++	return data_race(si->flags & SWP_SYNCHRONOUS_IO) ||
++	       zswap_is_present(entry, 1);
 +}
 +
-+/* a new id removes the card's old /proc/asound/<id> link */
-+static int set_id(const char *id_path, const char *id)
+ #else /* CONFIG_SWAP */
+ 
+ static inline struct swap_cluster_info *swap_cluster_get_and_lock(
+@@ -423,6 +442,12 @@ static inline void swap_update_readahead(struct folio *folio,
+ {
+ }
+ 
++static inline bool swap_entry_synchronous(struct swap_info_struct *si,
++					  swp_entry_t entry)
 +{
-+	int fd, ret;
-+
-+	fd = open(id_path, O_WRONLY | O_CLOEXEC);
-+	if (fd < 0)
-+		return -errno;
-+	ret = write(fd, id, strlen(id)) < 0 ? -errno : 0;
-+	close(fd);
-+	return ret;
++	return false;
 +}
 +
-+static void *rename_thread(void *arg)
-+{
-+	struct renamer *r = arg;
-+	ssize_t ret;
+ static inline int swap_writeout(struct swap_io_ctx *ctx, struct folio *folio)
+ {
+ 	return 0;
+diff --git a/mm/zswap.c b/mm/zswap.c
+index 7660f19ed5bf..37d217860a6b 100644
+--- a/mm/zswap.c
++++ b/mm/zswap.c
+@@ -1695,12 +1695,15 @@ bool zswap_store(struct folio *folio)
+  * change under it.
+  * Return: true if at least one slot in the range is in zswap.
+  */
+-static bool zswap_is_present(swp_entry_t entry, unsigned int nr)
++bool zswap_is_present(swp_entry_t entry, unsigned int nr)
+ {
+ 	pgoff_t offset = swp_offset(entry);
+ 	struct xarray *tree = swap_zswap_tree(entry);
+ 	unsigned long index = offset;
+ 
++	if (zswap_never_enabled() || xa_empty(tree))
++		return false;
 +
-+	r->ret = set_id(r->id_path, r->id);
-+	ret = write(r->done, "x", 1);
-+	return (void *)ret;
-+}
-+
-+/* the sysfs id file of the card with @id */
-+static int find_card(const char *id, char *id_path, size_t size)
-+{
-+	struct dirent *d;
-+	int ret = -1;
-+	DIR *dir;
-+
-+	dir = opendir("/sys/class/sound");
-+	if (!dir)
-+		return -1;
-+	while (ret && (d = readdir(dir))) {
-+		char cur[32];
-+		FILE *f;
-+
-+		if (strncmp(d->d_name, "card", 4))
-+			continue;
-+		snprintf(id_path, size, "/sys/class/sound/%s/id", d->d_name);
-+		f = fopen(id_path, "r");
-+		if (!f)
-+			continue;
-+		if (fgets(cur, sizeof(cur), f)) {
-+			cur[strcspn(cur, "\n")] = '\0';
-+			if (!strcmp(cur, id))
-+				ret = 0;
-+		}
-+		fclose(f);
-+	}
-+	closedir(dir);
-+	return ret;
-+}
-+
-+FIXTURE(dummy) {
-+	char id_path[PATH_MAX];
-+	bool renamed;
-+};
-+
-+FIXTURE_SETUP(dummy)
-+{
-+	self->renamed = false;
-+	if (access(LINK_PATH, F_OK) && system("modprobe -q snd-dummy"))
-+		SKIP(return, "no snd-dummy");
-+	if (access(LINK_PATH, F_OK))
-+		SKIP(return, LINK_PATH ": %s", strerror(errno));
-+	if (find_card(CARD_ID, self->id_path, sizeof(self->id_path)))
-+		SKIP(return, "no sysfs id file for " CARD_ID);
-+	if (access(self->id_path, W_OK))
-+		SKIP(return, "%s: %s", self->id_path, strerror(errno));
-+}
-+
-+FIXTURE_TEARDOWN(dummy)
-+{
-+	if (self->renamed && set_id(self->id_path, CARD_ID))
-+		TH_LOG("couldn't name the card " CARD_ID " again");
-+}
-+
-+TEST_F(dummy, remove_while_readlink_faults)
-+{
-+	struct uffdio_api api = { .api = UFFD_API };
-+	struct uffdio_register reg = {};
-+	struct uffdio_zeropage zero = {};
-+	long psz = sysconf(_SC_PAGESIZE);
-+	struct renamer rn = {};
-+	struct reader r = {};
-+	struct uffd_msg msg;
-+	struct pollfd pfd;
-+	pthread_t rt, nt;
-+	int uffd, done[2];
-+	char *buf;
-+
-+	uffd = syscall(__NR_userfaultfd, O_CLOEXEC | O_NONBLOCK);
-+	if (uffd < 0)
-+		SKIP(return, "userfaultfd: %s", strerror(errno));
-+	ASSERT_EQ(ioctl(uffd, UFFDIO_API, &api), 0);
-+
-+	buf = mmap(NULL, psz, PROT_READ | PROT_WRITE,
-+		   MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
-+	ASSERT_NE(buf, MAP_FAILED);
-+	reg.range.start = (unsigned long)buf;
-+	reg.range.len = psz;
-+	reg.mode = UFFDIO_REGISTER_MODE_MISSING;
-+	ASSERT_EQ(ioctl(uffd, UFFDIO_REGISTER, &reg), 0);
-+
-+	r.buf = buf;
-+	r.len = psz;
-+	ASSERT_EQ(pthread_create(&rt, NULL, readlink_thread, &r), 0);
-+
-+	/* The reader now sleeps in the copy of the link to userspace. */
-+	pfd = (struct pollfd){ .fd = uffd, .events = POLLIN };
-+	ASSERT_EQ(poll(&pfd, 1, TIMEOUT_MS), 1);
-+	ASSERT_EQ(read(uffd, &msg, sizeof(msg)), sizeof(msg));
-+	ASSERT_EQ(msg.event, UFFD_EVENT_PAGEFAULT);
-+
-+	/* Renaming the card removes the link that is being read. */
-+	ASSERT_EQ(pipe2(done, O_CLOEXEC), 0);
-+	rn.id_path = self->id_path;
-+	rn.id = NEW_ID;
-+	rn.done = done[1];
-+	self->renamed = true;
-+	ASSERT_EQ(pthread_create(&nt, NULL, rename_thread, &rn), 0);
-+	pfd = (struct pollfd){ .fd = done[0], .events = POLLIN };
-+	EXPECT_EQ(poll(&pfd, 1, TIMEOUT_MS), 1) {
-+		TH_LOG("removing " LINK_PATH " waited for the reader");
-+	}
-+
-+	zero.range.start = (unsigned long)buf;
-+	zero.range.len = psz;
-+	ASSERT_EQ(ioctl(uffd, UFFDIO_ZEROPAGE, &zero), 0);
-+	ASSERT_EQ(pthread_join(rt, NULL), 0);
-+	ASSERT_EQ(pthread_join(nt, NULL), 0);
-+	EXPECT_EQ(rn.ret, 0);
-+
-+	/* The link was read before it went away. */
-+	EXPECT_GT(r.ret, 0);
-+	EXPECT_EQ(readlink(LINK_PATH, buf, psz), -1);
-+	EXPECT_EQ(errno, ENOENT);
-+}
-+
-+TEST_HARNESS_MAIN
-
+ 	/*
+ 	 * A pinned range is at most SWAPFILE_CLUSTER slots and is aligned to
+ 	 * its own size, so one tree covers all of it and a single lookup is
 -- 
-2.53.0
+2.53.0-Meta
 
 
