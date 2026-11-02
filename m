@@ -1,74 +1,75 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD5B560A44E6
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 15:36:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 023C460E1D4B
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 15:36:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=OooUTIri
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Eiaz82nw
 Received: by kanga.kvack.org (Postfix)
-	id C5B336B063B; Mon,  2 Nov 2026 10:36:20 -0500 (EST)
+	id 222056B063D; Mon,  2 Nov 2026 10:36:41 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C0B276B063C; Mon,  2 Nov 2026 10:36:20 -0500 (EST)
+	id 1D2146B063E; Mon,  2 Nov 2026 10:36:41 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AF9696B063D; Mon,  2 Nov 2026 10:36:20 -0500 (EST)
+	id 0C1CB6B063F; Mon,  2 Nov 2026 10:36:41 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 861BB6B063B
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 10:36:20 -0500 (EST)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 1D6661C1DFC
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 15:36:20 +0000 (UTC)
-X-FDA: 85390580520.18.F6F6D60
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 6EA271C0009
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 15:36:18 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OooUTIri;
-	spf=pass (imf20.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	by kanga.kvack.org (Postfix) with ESMTP id D722A6B063D
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 10:36:40 -0500 (EST)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 74F4D16015E
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 15:36:40 +0000 (UTC)
+X-FDA: 85390581360.19.ED40DA9
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 9A5AC14000A
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 15:36:38 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Eiaz82nw;
+	spf=pass (imf26.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793633778;
+	s=arc-20220608; t=1793633798;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=X6qJRwazLqAMPBxaQUbfUiKhNVd3swwk7S8hV3QbYLU=;
-	b=wjh6a3di7NMC9RXVUsgG7b+GNml9WeuC9R7WV857YnvcmUev34vnUzE/LQfEJ0I0u3E4KU
-	3VzEYajGAtR4z18X4xW3sSCdnMwW8qbtqJkpaxlQLwUH7L9YEPdxcRhLJ5ri0hbbp06nzP
-	xTYaTIMG+aFC14DX/QyA9h84Ik9Nsxk=
+	bh=Tjh/IxDo5Afl5YrOen/L0CU1drIc7ik7Sylp2/yruUs=;
+	b=O+rCaEUq2JkEGtmhOcC+wgTyWY6FF1Rj+jN0IN9rPx6DCf8iS/+H8M7RZ2D4NsaDYwi6a1
+	xgW/5OesOh4X0HYn+h/oOs8IH3GZnFx92DygUVODVMrX4YsahXZS4hLFOoyecTSOurKyQ/
+	V+ZMAN/fN9VIsnysHCR8JT8mWNsL+xo=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793633778;
-	b=qwhT1U/I+PejIzyk2MFT/TPAV4HEV6ZI2ofqzOKtcvF6fSN5BBTXfNTw5g0j0NvvW7sG7g
-	CmjDTatbi1U7B2cOJKUQxRvsz9qErZRj9S+5B8vkZR1L02q/5GYLhD9gP/UobxbJFCj3eX
-	cMq8o3uQ78xpNuMWzSczTntbbPv8aOY=
+	t=1793633798;
+	b=W+TamyNbvkBpxV6rOxsGq2e3hTbdHMPcCqU5dNvbZaCIPrc/RBXdga2jUmbxwJHgQYAX10
+	fA0Lwoj02iVmApxCoCyxKMU3bDYr4mrAmEq8LyZVnfuB6bAjAVdulAvViDULtDMMHbVuji
+	pxpqQ22uN9tjxLs6I/UN+p68qBj8AxU=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OooUTIri;
-	spf=pass (imf20.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Eiaz82nw;
+	spf=pass (imf26.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 04A8C609D4;
-	Mon,  2 Nov 2026 15:36:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B73BE1F00A18;
-	Mon,  2 Nov 2026 15:36:02 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id DC9AB42E57;
+	Mon,  2 Nov 2026 15:36:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51CC41F00A18;
+	Mon,  2 Nov 2026 15:36:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793633777;
-	bh=X6qJRwazLqAMPBxaQUbfUiKhNVd3swwk7S8hV3QbYLU=;
+	s=k20260515; t=1793633797;
+	bh=Tjh/IxDo5Afl5YrOen/L0CU1drIc7ik7Sylp2/yruUs=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=OooUTIrihLmaX0ecOMxc1pdtRBYajzq9meyXmQkeP0DiaQKyKrS+8sMUnwdr+7PiP
-	 5MgBgASfz4Cqs3pFNaXpJK7ZTjO7vgGI3My2/antPBnrI1+MOdSd1zj+qooiJ4ICaV
-	 BIJ52/VvF/FCa6hizbbV+uOwmFskzerAf8voVYGHnV3D1EZAmyEFP6IWX0i7Zr6339
-	 csbKCtxOQwMs8/SfLOFSVcNDZ361AMeNPRTONuJu2+JifqXyjyZKXaErhyFtf3w5kk
-	 F6scfOYl8JZcfW3ErmUit1d0hhKRBJNWMeoLXzwNFCNKHxlvWVpfIrrby5JjZ4oVDC
-	 ui/aihse0jGAw==
+	b=Eiaz82nwguW2Srh0jIhFPgXUQFrJ99MENrmffX1Dkd/hVvW3S2/Fim1j1/d+jOkt9
+	 xasO+DLDNpqy9GW3dR9MQ+CMA98ypToYHpyzqjiDwvtbu44rp0kDDMY91Jwxlw+4E1
+	 r9SanOw3MTpqH5hex7Scdb0BnwPziVv3zSd+695bRefvS1jwPfe4LvxX009B9+Chld
+	 tA4fGyfB+ynvbJPUI+R3RGzjA4qTrACv4xHX9A2s53poUuAP60b80zUi08gaiNbr5+
+	 6g/CYY+IE1hMVnb3EiQ/f/p1q1022JTLA12+EIacxtH3RvwXy/wsrwyjNOTj4wYE6a
+	 k1UbfOctr82WA==
 From: Christian Brauner <brauner@kernel.org>
-Date: Mon, 02 Nov 2026 16:15:54 +0100
-Subject: [PATCH RFC 1/5] proc: drop ->proc_write()
+Date: Mon, 02 Nov 2026 16:15:55 +0100
+Subject: [PATCH RFC 2/5] proc: drop ->proc_ioctl() and
+ ->proc_compat_ioctl()
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261102-work-procfs-cleanup-v1-1-c40014bc12f5@kernel.org>
+Message-Id: <20261102-work-procfs-cleanup-v1-2-c40014bc12f5@kernel.org>
 References: <20261102-work-procfs-cleanup-v1-0-c40014bc12f5@kernel.org>
 In-Reply-To: <20261102-work-procfs-cleanup-v1-0-c40014bc12f5@kernel.org>
 To: linux-fsdevel@vger.kernel.org
@@ -104,27 +105,27 @@ Cc: Linus Torvalds <torvalds@linux-foundation.org>,
  "Christian Brauner (Amutable)" <brauner@kernel.org>, 
  Chuck Lever <cel@kernel.org>
 X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2803; i=brauner@kernel.org;
- h=from:subject:message-id; bh=8NQNxLblfbpsxn3sguBDLl0w5nxAqb/wMxctobr9n4U=;
- b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS9WJn43XZq7IsLj08Wbz6eU7B1wmqjv5Fep+R5QvvLx
- JNEp7ErdJSyMIhxMciKKbI4tJuEyy3nqdhslKkBM4eVCWQIAxenAExktyQjw5pXjyzW+OzOmZdw
- vz7EubB41eJzrQUpTydtX64uY92vMIGRYe+JqY8NeiT1Qz9fThVgWbbFcKLF5tm1mj9TRJe9XyI
- dwgkA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3666; i=brauner@kernel.org;
+ h=from:subject:message-id; bh=VI/rJgkCNmarVQ2rvUsCUOnWkBPRxSnU+yfrm8hzjLU=;
+ b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS9WJn6rMTm44zjaqmfmpdMu8TJV2C0zJMxqVgg2eOsz
+ 5cv0Zd/dZSyMIhxMciKKbI4tJuEyy3nqdhslKkBM4eVCWQIAxenAExk2x5Ghl8NbrkbQqX3O2kb
+ f/i8x3/yMUXeK5vW+Zh+sl6fItSsp8vwP17wzrdTnj08oS8UUzfYLRfhCk0VnXDAY7vbm7tT9Rb
+ bcAIA
 X-Developer-Key: i=brauner@kernel.org; a=openpgp;
  fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
 X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 6EA271C0009
-X-Stat-Signature: imoykre87qsfkz9baqi9o9ffoygnmre5
+X-Rspamd-Queue-Id: 9A5AC14000A
+X-Stat-Signature: ec3t3en94nk9weqhs6t9ykwoijhijwdr
 X-Rspam-User: 
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
 	version=4.0.1
-X-HE-Tag: 1793633778-192813
-X-HE-Meta: U2FsdGVkX18Hxsm1xKvb9w3KU+j7EJmNMBkQ/7mv8YbO86ohL2rVmTpHHJq9C1yuLYhQxtUYcxVr8zYy1ORRgsPNv87X+BNegodnw7XFYLAdhO5vimgh0rBNW8LCtidZgcIo1bbW5fRb4RbrzCBMTsiuXLs4P6mW4YvsRIY0fNuXxVu5NI0v5H+SeZzItGba308uuQRYlTCfWl11sfhhmQoL0eoeZfqE1rnNegeTlDO3hdiB/SQqnZCu3XzJjFVyz2G2m/ywhUpgRHXKocnTNzQeu6OzezJCRMpWfv5egrIUWuG0FhuLRAyYc/5aKaGgGhJSAMBchcWPu6vf+Oo2dfKyZIlHany5cBBVYoVGg4IoSLmxx6/7vZMFCExgRSB8xWHGN8H9HWhG4XkZsZfscTwdQeMSagLwqkfjaooCgW1t2lA8kZpVX6Pawoi7z8MGfHgBN6h4CFThFfJn2KHJhKODN71NDhMvjPvVNPliHRQuiPAUJ57D/RxULdao+P4xPanP/7jGt0KTBuXlocVnJcgiF7t7QVhy6MdVoqFr9SgTziKdlZgcmJN9VepiQx1NYQtMx52okJxyI8Vu5oalQXC5ZsOg8iT1zFjVTMP6b6qaKWIXl/nOrHx+HrW9Y6JWarL+3AP0eWNx/4ofkD4uuuxB3/lsOIccAbrJas69egNLvQyW2W+lRQgAZx7D4J+2gUNhXUcSpDwguJr6sLc+2xPiPxIq/Jhy3v1Q51erO9cL52upy1m6A/GIEMOrhVjqd8UwIEcTU8rDlqc5mvpumr26Z+oLLg1XyakzbQ8D/KKs6ojLXG0t6Xwqm5/YjHfXN7/VleXsC7SZPnpxW1Nv+7EGmR4axkCoRj3Anp972UNrKuewjsfGJAcCx7piWHvFp5lAdlGVSxlNE4GaPYKlqkfHWWCCM6rCwB8lc7O1cpbqV1DJPm+faak7zQUj2/oeVHdWiFaB/YKIn966RGn
- n3lJVkz5
- G0bgRcwFjrgwXh2PClGbC7kU3imz1bATy6byP2RvwJHrHG7sz/emAzScoYWCzIbhnj1Lq/D9dvFAYaHukS6x8I+Xe8ojPu4NxZCrgNHbUsEOCHnI6rSHMWLCA/ZG3NR7BOTpGNJsKLGctFGsxyQ+jmkYueoncnJEyI+xY6UOg55vfSyT1U3MvJAImSExeH8RyPBcXTtTSISWDpXVx5yulIPy+LCniIlsqDKC/ouNgQWdvKu1zPY5TihJdlHe4wP+7+y0lkNImEbGN6ktk+1gBhMTwIjHEK1329XTOJDN2JOdoRz5plRYopjf2yF3JxjUujdAxurwTelzIQds=
+X-HE-Tag: 1793633798-583961
+X-HE-Meta: U2FsdGVkX1/EmXyjpWLB3GcAOEq2JZNfut+wQ8r7zVrce7nsZ5vN4PyOZ44M/dkEGtSV/sXW5D+YWOEMGILELr5bUzbqpIIeozqITnDH4LVjI6m+tkZ29dfRbe219XBdGOlNoZjzDGo2nNO5g8U9WkugVbh88o0kKHmBTcISOU+3rmlrBo39+t5EIrT/vkGYddtz2Xj41UfanXSj2C2rTB/J1oCl/MXgwfC+qNsF6q887cCoAq6j+RfM4ZIr8Uv/4rWSD5t/5ig7vBWh5CKy1rcz6ft2HeLzuvVQYHThu4JxV1bpzpPPNn24wtP2eM9WpO/j2YvHO0sP/Mrlm06OWKpCLkK4YzMyi7MjbrI2MpmAy0cMQLL4z/8nvqaXefp20kVLBGyArDSCjQa0rdNWir4IQJZmJLT+gvWXAuIKKi3RaSdkkB7fF9KQ4nxVCvzgvZQKI0sACCewdUxhLjmihiBgblsy1kJ0vG9Hl43veHvF3CKxXtWIexY1YCOQ+ysdsiqciW6ze0Zqkg7SSSG7l3jPmoOXUhnQSvYG14tqoIeR8UQt6Gpu98ORhL9iJqmEm6H3/HMYPm6pyhu9RvGyLNSa+wZHvtsyiQgLxi6b9fcHtSc7F+ZcBDGAns7w99fB/0sbzK6aRtOTqPqsvcfOTXASDVO65Rvp1iUtMKLlsrm+GH/1zOHNFQtig9eWReiPrex5g74oXU5FF09rinlrubmpZ10dkNeh2fbNZcMbObCkyJl2ldtaKU+07iEqmx03WEuTNSBmIsBkXacQNE4Jsr9Et7AggNFRzNwBj5AsF6xzKAHjocinIByCoNftRxmIK8YvdkRgTSar/PzJbYSD3vdbpPltVC2laTG65q5Yor7yjzggJhTOsFi7uhy6SQZYEgCypWBbUy2sTHM7KHdJOxpj9fNsbSn44TobBNJnOxxi6B9ScRkmI4nvGRBcRSPlronpJMyNkwP8wJ/DXaK
+ bsod5nMH
+ cImb5M03Q3QFfnBdMh56BT8DdtcdFPEv1hi35u2m/0TMSuPdpvVrJJepmWkIyDHNnmmxnKBPwCRx3FJ0e/s14vBDIDVIviGLRHMHKg9LrqCpeGSTwCaGLysq2KKwb2OACZSDJCtPnXBGI2X4qm7QYTea3r87D66gliq4+3ejkQ1dJq+zj5AgS7SknS+xyevY6MoOyiTi3rSO5/fjlwZvZNQdyshiJtFsH/q+cceRQRZqHNtqGny1fYWLrXdwWwIC5uFqA4hPePFU2/U/WMjeXZV+OOvMwYf9OOyhB+30aPiQKn7wMTuUKCdWlbXdbcAoHdLKQWjnrzUjPqYU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -133,78 +134,105 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Every writable entry implements ->proc_write_buf() now and procfs
-copies in what is written before it pins the entry. Remove
-->proc_write().
+Every entry with ioctls implements ->proc_ioctl_buf() now and procfs
+copies the arguments in and out around pinning the entry, for 32-bit
+tasks too. Remove ->proc_ioctl() and ->proc_compat_ioctl().
 
 Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 ---
  fs/proc/generic.c       |  2 --
- fs/proc/inode.c         | 15 +--------------
- include/linux/proc_fs.h |  1 -
- 3 files changed, 1 insertion(+), 17 deletions(-)
+ fs/proc/inode.c         | 30 ++----------------------------
+ include/linux/proc_fs.h |  4 ----
+ 3 files changed, 2 insertions(+), 34 deletions(-)
 
 diff --git a/fs/proc/generic.c b/fs/proc/generic.c
-index 35dd745a0357..7b2ed3c42d32 100644
+index 7b2ed3c42d32..413382efefc7 100644
 --- a/fs/proc/generic.c
 +++ b/fs/proc/generic.c
-@@ -469,8 +469,6 @@ static int pde_set_flags(struct proc_dir_entry *pde)
- 			pde->flags |= PROC_ENTRY_proc_lseek;
+@@ -484,8 +484,6 @@ static int pde_set_flags(struct proc_dir_entry *pde)
+ 			pde->flags |= PROC_ENTRY_FULL_READS;
  	}
- 	if (proc_ops->proc_write_buf) {
--		if (WARN_ON_ONCE(proc_ops->proc_write))
+ 	if (proc_ops->proc_ioctl_buf) {
+-		if (WARN_ON_ONCE(proc_ops->proc_ioctl))
 -			return -EINVAL;
- 		pde->flags |= PROC_ENTRY_proc_write_buf;
- 		pde->write_size = proc_ops->proc_write_size ?: PAGE_SIZE - 1;
- 		if (proc_ops->proc_flags & PROC_ENTRY_SHORT_WRITES)
+ 		/* the table says what procfs copies, see pde_ioctl_arg() */
+ 		if (WARN_ON_ONCE(!proc_ops->proc_ioctl_args ||
+ 				 !proc_ops->proc_nr_ioctl_args))
 diff --git a/fs/proc/inode.c b/fs/proc/inode.c
-index 7e4ca5751abb..dac5974d4652 100644
+index dac5974d4652..971f2aecc006 100644
 --- a/fs/proc/inode.c
 +++ b/fs/proc/inode.c
-@@ -491,14 +491,6 @@ static ssize_t proc_reg_read(struct file *file, char __user *buf, size_t count,
+@@ -551,14 +551,6 @@ static __poll_t proc_reg_poll(struct file *file, struct poll_table_struct *pts)
  	return rv;
  }
  
--static ssize_t pde_write(struct proc_dir_entry *pde, struct file *file, const char __user *buf, size_t count, loff_t *ppos)
+-static long pde_ioctl(struct proc_dir_entry *pde, struct file *file, unsigned int cmd, unsigned long arg)
 -{
--	const auto write = pde->proc_ops->proc_write;
--	if (write)
--		return write(file, buf, count, ppos);
--	return -EIO;
+-	const auto ioctl = pde->proc_ops->proc_ioctl;
+-	if (ioctl)
+-		return ioctl(file, cmd, arg);
+-	return -ENOTTY;
 -}
 -
- /*
-  * procfs copies in what is written before it pins the entry. A writer that
-  * faults on its buffer then doesn't hold up remove_proc_entry().
-@@ -533,15 +525,10 @@ static ssize_t pde_write_buf(struct proc_dir_entry *pde, struct file *file,
- static ssize_t proc_reg_write(struct file *file, const char __user *buf, size_t count, loff_t *ppos)
+ /* the table lives in proc_ops, which goes away with the entry */
+ static bool pde_ioctl_arg(struct proc_dir_entry *pde, unsigned int cmd,
+ 			  struct proc_ioctl_arg *arg)
+@@ -615,38 +607,20 @@ static long pde_ioctl_buf(struct proc_dir_entry *pde, struct file *file,
+ static long proc_reg_unlocked_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
  {
  	struct proc_dir_entry *pde = PDE(file_inode(file));
--	ssize_t rv;
+-	long rv;
  
- 	if (pde_has_proc_write_buf(pde))
- 		return pde_write_buf(pde, file, buf, count, ppos);
+ 	if (pde_has_proc_ioctl_buf(pde))
+ 		return pde_ioctl_buf(pde, file, cmd, (void __user *)arg, arg);
 -	if (!pde_pin(pde))
--		return -EIO;
--	rv = pde_write(pde, file, buf, count, ppos);
+-		return -ENOTTY;
+-	rv = pde_ioctl(pde, file, cmd, arg);
 -	pde_unpin(pde);
 -	return rv;
-+	return -EIO;
+-}
+-
+-#ifdef CONFIG_COMPAT
+-static long pde_compat_ioctl(struct proc_dir_entry *pde, struct file *file, unsigned int cmd, unsigned long arg)
+-{
+-	const auto compat_ioctl = pde->proc_ops->proc_compat_ioctl;
+-	if (compat_ioctl)
+-		return compat_ioctl(file, cmd, arg);
+ 	return -ENOTTY;
  }
  
- static __poll_t pde_poll(struct proc_dir_entry *pde, struct file *file, struct poll_table_struct *pts)
++#ifdef CONFIG_COMPAT
+ static long proc_reg_compat_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
+ {
+ 	struct proc_dir_entry *pde = PDE(file_inode(file));
+-	long rv;
+ 
+ 	if (pde_has_proc_ioctl_buf(pde))
+ 		return pde_ioctl_buf(pde, file, cmd, compat_ptr(arg), arg);
+-	if (!pde_pin(pde))
+-		return -ENOTTY;
+-	rv = pde_compat_ioctl(pde, file, cmd, arg);
+-	pde_unpin(pde);
+-	return rv;
++	return -ENOTTY;
+ }
+ #else
+ #define proc_reg_compat_ioctl NULL
 diff --git a/include/linux/proc_fs.h b/include/linux/proc_fs.h
-index 2ba4e4a39e13..f21dd826eaa6 100644
+index f21dd826eaa6..64242a9aa117 100644
 --- a/include/linux/proc_fs.h
 +++ b/include/linux/proc_fs.h
-@@ -74,7 +74,6 @@ struct proc_ops {
- 	int	(*proc_open)(struct inode *, struct file *);
- 	ssize_t	(*proc_read)(struct file *, char __user *, size_t, loff_t *);
- 	ssize_t (*proc_read_iter)(struct kiocb *, struct iov_iter *);
--	ssize_t	(*proc_write)(struct file *, const char __user *, size_t, loff_t *);
+@@ -81,10 +81,6 @@ struct proc_ops {
+ 	loff_t	(*proc_lseek)(struct file *, loff_t, int);
+ 	int	(*proc_release)(struct inode *, struct file *);
+ 	__poll_t (*proc_poll)(struct file *, struct poll_table_struct *);
+-	long	(*proc_ioctl)(struct file *, unsigned int, unsigned long);
+-#ifdef CONFIG_COMPAT
+-	long	(*proc_compat_ioctl)(struct file *, unsigned int, unsigned long);
+-#endif
+ 	int	(*proc_mmap)(struct file *, struct vm_area_struct *);
+ 	unsigned long (*proc_get_unmapped_area)(struct file *, unsigned long, unsigned long, unsigned long, unsigned long);
  	/*
- 	 * mandatory unless nonseekable_open() or equivalent is used, procfs
- 	 * seeks seq_file entries itself
 
 -- 
 2.53.0
