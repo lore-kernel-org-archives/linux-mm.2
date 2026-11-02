@@ -1,94 +1,94 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B38360A2620
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 10:41:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87D87606A326
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 10:42:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=j6EuI1Jx
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=FXXOQLqo
 Received: by kanga.kvack.org (Postfix)
-	id 76F9C6B05BC; Mon,  2 Nov 2026 05:41:38 -0500 (EST)
+	id 96A3D6B05BD; Mon,  2 Nov 2026 05:41:59 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 71F9E6B05BD; Mon,  2 Nov 2026 05:41:38 -0500 (EST)
+	id 940ED6B05BE; Mon,  2 Nov 2026 05:41:59 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 60F716B05BE; Mon,  2 Nov 2026 05:41:38 -0500 (EST)
+	id 857D06B05BF; Mon,  2 Nov 2026 05:41:59 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 2642B6B05BC
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 05:41:38 -0500 (EST)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 8709AC0C63
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 10:41:37 +0000 (UTC)
-X-FDA: 85389837834.16.FD2E1D3
-Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
-	by imf13.hostedemail.com (Postfix) with ESMTP id B6BD320009
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 10:41:35 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=j6EuI1Jx;
-	spf=pass (imf13.hostedemail.com: domain of umangpokhriyall@gmail.com designates 209.85.214.181 as permitted sender) smtp.mailfrom=umangpokhriyall@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 481486B05BD
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 05:41:59 -0500 (EST)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id C841480C13
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 10:41:58 +0000 (UTC)
+X-FDA: 85389838716.04.8A5EB32
+Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
+	by imf12.hostedemail.com (Postfix) with ESMTP id EAF6840003
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 10:41:56 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=FXXOQLqo;
+	spf=pass (imf12.hostedemail.com: domain of umangpokhriyall@gmail.com designates 209.85.214.172 as permitted sender) smtp.mailfrom=umangpokhriyall@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793616095;
+	s=arc-20220608; t=1793616116;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=w4LlOPP020au30EZIDHlk1alCgqnzjFeQiEleoj/jqY=;
-	b=LTUvKNtwNv30vamnyck8kIQCtTKehyRinavI4IHZbZaUaVsE2CfWBhAwS42AiyHgDd8xGL
-	tIDn6rvIo2+nBYkyLdFtT/0v3Zh/JOL0Zf0MtvYn09mtHq/DkPNWub4xAP6QwlYDLnXdMm
-	M/pJr5JNCzQuhQ7sacmpL6iLXL8jToQ=
+	bh=OJg1Na+PMAE5RwVgjsfjwULctd8zKBeuPkayvvN7fUg=;
+	b=B4Yx9Ci939wbUb3wF55I9KV1l24i81haGLF5RRYQCs7ZSkRF97B7ZwygARB3FS/ZftY2x+
+	phObOujnL9lRgjpSgQ+5S3VBzYWBixhGyDu5KkK+e87d4+XgRt8OvNN0NzP3kUzYjJtR9f
+	rWdIKcN1IK7WY8VciLC7lpZTG2C04gE=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=j6EuI1Jx;
-	spf=pass (imf13.hostedemail.com: domain of umangpokhriyall@gmail.com designates 209.85.214.181 as permitted sender) smtp.mailfrom=umangpokhriyall@gmail.com;
+	imf12.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=FXXOQLqo;
+	spf=pass (imf12.hostedemail.com: domain of umangpokhriyall@gmail.com designates 209.85.214.172 as permitted sender) smtp.mailfrom=umangpokhriyall@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793616095;
-	b=ZyTP+ueO5c0ny5JFkPcdiTYtRrfYAr1jtjwM62+z8Hn/VT2YR/PFH2FX3eSdcBGxk045Mt
-	SzJwIjpzPSyZ1w54M+gKkEtVKXNY9XuWFKpr58RVp1iJbl3QuMp4nNY2TlR6hJYSh90jsz
-	y5Tl7Dlk10i1Eha9S0d5odOF/KsxpWY=
-Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-2e8fe8e343fso18691975ad.2
-        for <linux-mm@kvack.org>; Mon, 02 Nov 2026 02:41:35 -0800 (PST)
+	t=1793616117;
+	b=DrE9GYUAYrwy1omUFQyT60m0lkWRSm+iCzLpgDVf2ZZ6Vwo3rsOb2ref38NJaYA9V9eYXB
+	V3KUG9EX8Sgaq5H6ELP/My4p0X5E8FAJCzKieGb6CPATyP2gavyBUaBooUler3nEhzYl0X
+	XdBSK9EF7wowCAXLq7qVA2nmMiC53EM=
+Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2e99b1e5b4cso16789575ad.0
+        for <linux-mm@kvack.org>; Mon, 02 Nov 2026 02:41:56 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793616095; x=1794220895; darn=kvack.org;
+        d=gmail.com; s=20260707; t=1793616116; x=1794220916; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=w4LlOPP020au30EZIDHlk1alCgqnzjFeQiEleoj/jqY=;
-        b=j6EuI1JxFO+awfY9Vhh56CP4EJgrvoQoXuwO4fOKpuc4bXNpYUtcNNrZVTI6o48YaM
-         CRc2Rdu6AgZiS8M0aXSzjDSUf5M/ADwUUW30UvqMe7gpbqOViaAWRTTEKkSYy5saN3Y4
-         UC1h/Tdegvmix2TE4aHeBdxKzC0NuvgOl4WysRBCkMfwTBSviouPTrH1q3fklR3kEx+b
-         cwztEYgT8k5Kmj4DEW6SnS0JTXEy7F3OT1v57E4EZRQJHIK4Y71glKbHxoV7qLTr2Zvd
-         XJWBlBrRln3pIecluTCRa5D5gHNJLM+osNsRPgpK0waJ1pejKd3+8nyTF98fMlO+B36E
-         sBPA==
+        bh=OJg1Na+PMAE5RwVgjsfjwULctd8zKBeuPkayvvN7fUg=;
+        b=FXXOQLqo7usc8yoiupVQ/cNQSTzLy3FzIKHHr10E3xrG7GsteRKVJDm8TkLhlEn9Sr
+         L+ZBFMAx4MxT8PVrtKnskA7lYVovOLJl6KCfkmRTUtXzOjY4qUtYf1b/19zJD2m4U1ff
+         oJFaSL1wT3aZXm/rmU2ESBMe/0LXEKZSTWKY4yfd09nq+WXv38N2sX+wsOW2WCcv1P9i
+         9wHXZYhWLFP0RMuuOgncNDXM634KT7bdQ2VM2g1aRm+kpNV9fSVpDlio21d+MKz9pNy2
+         jET4dtlAl9xOdvT7cnfZWQ5NBbSzDt5eCjnY4O1+1FQSOOl00oPkOpID1tMEdv+ul47D
+         ZRIA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793616095; x=1794220895;
+        d=1e100.net; s=20260707; t=1793616116; x=1794220916;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=w4LlOPP020au30EZIDHlk1alCgqnzjFeQiEleoj/jqY=;
-        b=ETN4E1RFxEFGSfNbOqr79VMCKQqdvk/OWM5vn3oqrx9MJ4ydqWh8fOODwqGteNEcGz
-         yAbZgRwatxM0UZ79dwNZsxcwsZMhIFjP5UjyKtaaeaWv3DrEuPH6GCRMUN1qMEXcbE3H
-         WL8wIZbWOxKzMHErz/1Los7ImT2ylDV2dYXhPUd3j7WahzkQcTvumrATnreiJbxICtb7
-         j9jzC14Ekm/tp4Rx1GzfjaqIlis72QSsHi3+SO3rxobtBbf6vkFahAJeVyV0iRVL2ULO
-         nKFS4EjIxl3mgTByVphFHMSFQVr/Tp7dB8ct4mvCWTHd+ePxfvEH/oCMjZzmJAhsl0SP
-         YRUg==
-X-Forwarded-Encrypted: i=1; AKwUvBxE1Ko9fiyXt/BC6gWx8LXCY45SIOBPyt8UhjYdQ6Ix9CvJepcVMRCyxVaPJfWwxwS1sICXW/9rqA==@kvack.org
-X-Gm-Message-State: APuU4Z/LdgxXn5/hqsZjn8RK5KcF8136UAVI/mFMRDohMKPefuJrYzRS
-	CkN5d3JDh0q7zKM14NF4sKQaJvchKcV/dyrNqqCW7YB/+tKL6FdJiOSl
-X-Gm-Gg: AYBFou21vB+C+HL/ADRGjdhzntNI4mPeQePDxMNuLqDoRAezlg+NC5UK/A4hdJxIOfS
-	HOBFo92FgAoPoUaPCQ88yV54a6jGyefk1iUzUR4wYB+wF04dJEaEN/9Yymq21wP5UpeiZI0SGRN
-	I0IstCixgatNuYWn0oT74enBGngQDAxPV2xmkApJB6C1192g06oL0q1mCKxdiUfKY0rBGb9mBR3
-	JFAWGWTU2QhIsquchpy/upk56UMHw5q9d9rrZ4XtQGGNH35e+exlur9BAXi4IR4aSjLa1Vk2tgM
-	lQhkyltCA4cERG8bWtGW3BVwyim0lFAemmSRUMHwMVSW4fq3uaCz89TG9AVx2ABzjoFTZXGLRmN
-	cCgqWs1ZAtvCBIWlxyvjCaG7fyd59dnm78hzr61G9vnAesprnKoIlNYK7dQoL1BWbvd1evDsdta
-	Unz7q+FtP3ZX+gR4YIAO8Duz6aO+XKOverjVRaP7/dgLUI9/MHpum0ZALHn0zIE+P32hQ6rfMvJ
-	oQGh96zJzkjuRBs4UeMbtna7I3/p6uyBYfu5MLESugC9Huv/0fJexHX89cq30/Ocd7PTxA8PwnB
-	RDFaZdBdKnu+Iy9E37Xr+kp88L2oCKODQq+bb7dbW0AN2XvEogw+
-X-Received: by 2002:a17:903:3bd0:b0:2e9:f354:e97f with SMTP id d9443c01a7336-2eb36482f5cmr79668765ad.60.1793616094571;
-        Mon, 02 Nov 2026 02:41:34 -0800 (PST)
+        bh=OJg1Na+PMAE5RwVgjsfjwULctd8zKBeuPkayvvN7fUg=;
+        b=MMfsoR99Zj98G2jV/SStwSHRycrQr++iakZKyv6LlclvBLe3pzv935hu+Kic/Xf3eI
+         IHtz8mPjqjgbVgX+izM5BSX9i19pTPE3mBPpeLoBaCPpFtKdkwMkIBU+BmNfwHC3rbB7
+         WVyJuFjplSvpJklpV4cTH0nCuaywl6cLtVlI2LAFOSaAn845jXJfrpFSmZ7gsCfXU6Sj
+         +iVzcX+g66kVxSsN97WNSu3jfwiwPj1tHRLR9VpE7bOhP3XKzbZQH1agW8rqq35jHWM4
+         zlVEC3zxLyQgnzX56ABXYoLy8oYQvknXyr5pKpk5d/sodayru+bna0XudG/l1teCOkf/
+         l98A==
+X-Forwarded-Encrypted: i=1; AKwUvBwzHA9WQZP7EEeg/gqvJ8MUXkTj88eoTNFQx2Q0bsD/cxDrWV50W966CKFt6Bna89ZEl5zurSzQaQ==@kvack.org
+X-Gm-Message-State: APuU4Z+HlmebHzQAoDRcYjZhtVUA9uDgZ4EZv2vEjHnG8F0fNakz6nCB
+	a9SMA2AWBPnoEjIiBF2b4CGrO1HcqWOIQkx+q2rPSa0uxtQb2FdPZMeb
+X-Gm-Gg: AYBFou2wkjbIhuBDl7KaRRHoZoLbU03gFOMG6bEMg3RlyfQHL5xfpf/qoRf4EC5wO/J
+	PLwaj1/5Qio/Rln018sTVXZMLEKtFvwQbFZbse4x0/tMWdxh/SsA1QMV2HWyEDnF4VTBmQfSwTi
+	yYBs1Io0qpKf8vZvRtgeKJsqS8djXQuH+pr+7FDeCk/3gGcdvpoaexUE4D0vAIKNBGtSEBYPB0u
+	cXSC7sWXwsqDTdU6yIFmrLfLtVRRggan98+w76496+1hdXguvOvROZ7L5xlp+XkerS+vP/Er6Q6
+	BHVmWhQmJJ2fmEm6vyVnqXkmROyoVbkKrOx1poYmGXFtYWTY8jvtlP6fld9NuRY8CTJTEqb3ggr
+	8WhUW63wI8rluOvcBaVPnof32MoizliOuz+Bj75bEujscfLOc9POszA7rMe6hYeI5AwSeF0yzi5
+	z7T+x7x4i85JBBD5xcK0dJ5GdzLGeliVMV8ICrQmK4nrulu3GDK1FJBeLXaeCOYiQ9mxjUkiGzU
+	OYrpv1fzwG+TsHvmsBYPQOaspff9I8qcPw73UBET1hDq/w5DRvRZVuItZv2/hXuYtvD10iKDAWN
+	O/4cjkN5UQckbIbW40XFdWDIeNylXUxQl/hzHoclIMLvADXRLMg5
+X-Received: by 2002:a17:902:f691:b0:2df:8b09:93bb with SMTP id d9443c01a7336-2eb3648b69fmr89524235ad.10.1793616115753;
+        Mon, 02 Nov 2026 02:41:55 -0800 (PST)
 Received: from umang-Inspiron-3501 ([2401:4900:1f3a:7c59:eeec:de7d:b077:9b9f])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2eb3925ff38sm25195465ad.36.2026.11.02.02.41.21
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2eb3925ff38sm25195465ad.36.2026.11.02.02.41.41
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 02 Nov 2026 02:41:34 -0800 (PST)
+        Mon, 02 Nov 2026 02:41:54 -0800 (PST)
 From: Umang Pokhriyal <umangpokhriyall@gmail.com>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: Mike Rapoport <rppt@kernel.org>,
@@ -103,30 +103,29 @@ Cc: Mike Rapoport <rppt@kernel.org>,
 	linux-mm@kvack.org,
 	linux-kselftest@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	Umang Pokhriyal <umangpokhriyall@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH 1/2] userfaultfd: validate the whole range before changing write protection
-Date: Mon,  2 Nov 2026 16:06:20 +0530
-Message-ID: <20261102103621.156928-2-umangpokhriyall@gmail.com>
+	Umang Pokhriyal <umangpokhriyall@gmail.com>
+Subject: [PATCH 2/2] selftests/mm: test a uffd write-protect range with an unregistered page
+Date: Mon,  2 Nov 2026 16:06:21 +0530
+Message-ID: <20261102103621.156928-3-umangpokhriyall@gmail.com>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20261102103621.156928-1-umangpokhriyall@gmail.com>
 References: <20261102103621.156928-1-umangpokhriyall@gmail.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: B6BD320009
-X-Stat-Signature: hep6fs3tg3fpdjzmx9h67ankbh4sin67
 X-Rspam-User: 
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: EAF6840003
 X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
 	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
 	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
 	autolearn_force=no version=4.0.1
-X-HE-Tag: 1793616095-5035
-X-HE-Meta: U2FsdGVkX1+rBxxttoX72AuaN3yBysYHf3ZRVKpH2r+IJSpICT+cVEDZPA9bXDpNVERThqEXMvfCvgm36iR+l6eHw+JXFKsZzvEq7U1RHWIRPxyLjEIMqM3v87Pusj/H5gk9pOjSN5gkVrSSpDh/PfGQPTLOH0wAoxnGwWwBYKdMpZqyYrnO/2uY7SWDLSVwcWcKl4y0yvfW7NG0+IG5uoqb7WzG4b+zq7NJ71P+7xUG0KLMV5FtHHPmezkcLIU8dtOnNav46eyHgLwaT8FpXHmuW7vJxwSjRfmqoo1lxHjvfSCYM79uw9BoAv/oHHel6pmqoIsFfYIBs+Q8foJm2Aouhx7vkuXzZCWaHvC0JR+elSzJNO5sxQTcnEw5sxfpix4X2QAb5XwbrCBky00YXXh21Vjy1GNJt2cdcHZB8NxKMuImKEh7QH3PBsPFKdPVvG3rY3prBjb9SyKnpPDx0GM79uE4R+rK5eLnH2++pEm6WjU9HXVO/9xb0BczW+lPRE3kbYzbMhyvMgSjCtCMkERqVsunw6hBWn/tBgF+HKTeH0b8cTrE408RiniRf8W/2NEce9xKvJZtYDM0HNYZEfD3yxOucP6m27JI3mCheazF/uss0kRmT1lGl5K5UmDg5XEk3swMxsk2Jz53Oo+w0xBPIeNuDjJS8EsULM9ru3Jo6E/xv/sJoSLHmh59nxXyW2kkmVt3yGyCuk4Vp2VF0mdG45z28DrWgq85jvsqmmIHZUwvV/5ddOCf0aInBbQNXWFuVegFwUtEWn2lGo/R9Dv11ICm8rg4J11PEZU/XoJyjQNil01tg12wqLNLuju+ObdaSsN3NTA91qClxDYVGA1u8RUQ6mpkEAebR0S1sygUI9jLB1pcEarHvLi3LkyhagDCfA0yTI6xMifbydm1BSokUdCsCvHvXls9rzfrkX/V4IHDESwoE57uKrzGb4k6axScwRrYqjlm7F2iOJo
- eN3tRos/
- nc3QEIn5kHSYtoToQusAmQGMpRrMNzoLO26Fj2ONRFGOqCyJwdWiV6qK8RsFxc8KIxFn54lRr+Q+gmasE79OtXNdmJXNcRs+R66/XQjRGMEnouyjEUvJw8+9COh14ylcF1EHx/d7nZITpUQ68jEcTnamjWjtBhpDecX++roANI+Ksh7yUVGQwpbrf/YkZ2PPnIiFIboOFcm6hohJ2Z8ugeMDdMd4FNu7p5wu25Qz1dMNDYAlwwsuypa26IleFAA363BJxlkMgOjeM5nMHe9R1xMbwy4NBdkRyAg6mo3WxYe5J97OmCUdP5o3Bp8JKJ9QMSPmwL/AYCfHf7R+5rtaqg8ygmS7vkaPwHIGatLiVbpUaTawiB/k8jLVkjAEaDEuMQjlF/D6yTcpA7czk7FhxypEgXA4gTSI8H4g+y1BfCI8MnEGB9R4kydZwU4DmEjtwoBtR
+X-Stat-Signature: xxbjs8e1486zh5w7w8fscumubqhzssb8
+X-HE-Tag: 1793616116-484610
+X-HE-Meta: U2FsdGVkX1+//NHe0DD/WI1aJunKr/jFg1MS/yTm+Hh/J4Yy1t4w0nc7pIxS5hAWUE/HTDdvEfnzMQqscLD6U7lWoXmhSPPxyjTZnguC8ErLMqog8cexfnnT6ptT14Xl2P2/UzmD7anoxnByT9FL44q9NVgqmcgfPf9YPGC1WooKOXuI2PBYLEJisVEr7Zz1WUH3t3sV4BUBrDunx8HzN6FkiEl+8APXIwNvFofwWwLnslpWQZ73i2OQXxTdQeDNDZOCBE3WE/75jjEdhuWXu4MHTR40kvpAsRag3cysIx7z7dfpAuet2itSp5+tB3NUG8INcUsa8hn4I6o4f76rJposB+rgFRLriOWBnPqUFJqtFdW8S7NtRFf5qh1wvzchsmF5Nw7t+d34cIYVkNMBwVD6P9wU5a5pB9FAtvoi0E//EF6RNcx5gTNsTtTnyhnlWoWBdFzYpv4Mkk4EBV1TI9XCqSAkAcXBWfk1pJTI6bWe6kmYY1jiySdpReTeyosZnRDCame4FaFNWsnWMA16t4W2mjBwyPEv39Unpe24QjkDtwXgmNE5SNjX6rswDizc8ZijhM2Mdvxel3s2QTHpoDVDfyhmDJdl51Lt84SE+zd32xzB9U0E8heAV/L/kHa+DBTvWOR1HOsu+C6vzFzUMSKUgB9bu3Q7mzFWnGIIuyyEhILz9X1ahlNTAtRxG9YYrg2fb78UdHOHsBUY8l0pUzH3Zv1bedwWsHiWNoY87/7gkQ07+lDqTidRrXAtgV1i8QHlzyi3ARzfUiu8DSs4jLLIitksaoPMYdAANtRevHGl3a5ik6oRswy3dNIiyT+IWIsAD6S5IlQvnmILw9g/G19X+ZfsUjEQ0tdvLJHMMyoJbrrfJ0ECm/RsIDY6TVqKO7kUlrMcQwCctHSrCwNgQZNTnGF74CIUCT4xgrtFyzjUMSihDSVVKRWN/p5eNxtLQScThnN9i7gXzatD3E8
+ bbPlW8vH
+ ZldI2cZfy7kDulkJRnLdgKVeMo0iGJiZCWYRuinz45LVrqjF5lofwI8Ls8QdIuZW3MOrP+qJXLgvPH5uRn//75nutCvRnoUW/sfruvUugGKUXoSQ7hQw6wIzT4FhtKsXLx2j+svP2TRayc+YDvSM/usX5TFhDE9Gwp4PUT47smpr2UgHLpTRVJPhdmGU9v4V6/W4dCl7x/oSDySwGKNXN1oxXZ7MUpBQEIBrqSq4FBfap33fxHTAGOxIxwNuc0T+OC1H9Z/k2J/XT0UHJhOPrMBg0aYYVDqUKZQQX0jSCxI12E8maCVNRVb8Rd9fZsjRnoPUlVvJpcA8R3c3xkP8TJCiqByqT9ed+EW/YqEw8fYWSe7BFk989SKEmq8EHmpKnHMEQhmmpKCxdw4DvEM6Cx4IUPKUBFXfkL0hxZAULFhOU4eg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -135,67 +134,89 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-mwriteprotect_range() checks each VMA as it walks the range.  When a later
-VMA is not registered for write protection, or is a hugetlb VMA the range
-is not aligned to, the call fails after the earlier VMAs were already
-changed.  When unprotecting, userfaultfd_writeprotect() then skips
-wake_userfault(), so threads blocked on those pages are not woken although
-the pages are writable again.
+Register only the first of two pages and check that UFFDIO_WRITEPROTECT
+over both pages fails with ENOENT without changing the first page, when
+protecting and when unprotecting.
 
-An unprivileged process can trigger this with a range that spans an
-unregistered VMA.  It hasn't been seen in practice; it was found while
-reviewing the userfaultfd range ioctls with an LLM.
-
-Validate the whole range first, as mrwprotect_range() already does.
-
-Fixes: a1b92a3f1498 ("mm/userfaultfd: support WP on multiple VMAs")
-Cc: stable@vger.kernel.org
 Signed-off-by: Umang Pokhriyal <umangpokhriyall@gmail.com>
 ---
- mm/userfaultfd.c | 20 +++++++++++++++-----
- 1 file changed, 15 insertions(+), 5 deletions(-)
+ tools/testing/selftests/mm/uffd-unit-tests.c | 56 ++++++++++++++++++++
+ 1 file changed, 56 insertions(+)
 
-diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
-index 87da92526..b8a9d9574 100644
---- a/mm/userfaultfd.c
-+++ b/mm/userfaultfd.c
-@@ -1105,21 +1105,31 @@ static int mwriteprotect_range(struct userfaultfd_ctx *ctx, unsigned long start,
- 	if (atomic_read(&ctx->mmap_changing))
- 		goto out_unlock;
+diff --git a/tools/testing/selftests/mm/uffd-unit-tests.c b/tools/testing/selftests/mm/uffd-unit-tests.c
+index 298609544..57e442fd2 100644
+--- a/tools/testing/selftests/mm/uffd-unit-tests.c
++++ b/tools/testing/selftests/mm/uffd-unit-tests.c
+@@ -375,6 +375,56 @@ static void uffd_wp_unpopulated_test(uffd_global_test_opts_t *gopts, uffd_test_a
+ 	uffd_test_pass();
+ }
  
-+	/*
-+	 * Validate every spanned VMA before changing any of them, so an
-+	 * invalid range is rejected without changing part of it.
-+	 */
- 	err = -ENOENT;
- 	for_each_vma_range(vmi, dst_vma, end) {
--
- 		if (!userfaultfd_wp(dst_vma)) {
- 			err = -ENOENT;
--			break;
-+			goto out_unlock;
- 		}
- 
- 		if (vma_is_hugetlb(dst_vma)) {
--			err = -EINVAL;
- 			page_mask = vma_kernel_pagesize(dst_vma) - 1;
--			if ((start & page_mask) || (len & page_mask))
--				break;
-+			if ((start & page_mask) || (len & page_mask)) {
-+				err = -EINVAL;
-+				goto out_unlock;
-+			}
- 		}
-+		err = 0;
++/*
++ * UFFDIO_WRITEPROTECT over a range whose second page is not registered must
++ * fail without changing the first page, in both directions.
++ */
++static void uffd_wp_partial_range_test(uffd_global_test_opts_t *gopts,
++				       uffd_test_args_t *args)
++{
++	struct uffdio_writeprotect prms = {
++		.range.start = (uint64_t)gopts->area_dst,
++		.range.len = 2 * gopts->page_size,
++	};
++	uint64_t value;
++	int pagemap_fd;
++
++	/* Only the first page is registered; the second is a separate VMA */
++	if (uffd_register(gopts->uffd, gopts->area_dst, gopts->page_size,
++			  false, true, false))
++		err("register failed");
++
++	pagemap_fd = pagemap_open();
++	*gopts->area_dst = 1;
++
++	prms.mode = UFFDIO_WRITEPROTECT_MODE_WP;
++	if (!ioctl(gopts->uffd, UFFDIO_WRITEPROTECT, &prms) || errno != ENOENT) {
++		uffd_test_fail("protect over an unregistered page did not fail with ENOENT");
++		goto out;
 +	}
-+	if (err)
-+		goto out_unlock;
- 
-+	vma_iter_set(&vmi, start);
-+	for_each_vma_range(vmi, dst_vma, end) {
- 		_start = max(dst_vma->vm_start, start);
- 		_end = min(dst_vma->vm_end, end);
- 
++	value = pagemap_get_entry(pagemap_fd, gopts->area_dst);
++	if (value & PM_UFFD_WP) {
++		uffd_test_fail("failed protect changed the first page");
++		goto out;
++	}
++
++	wp_range(gopts->uffd, (uint64_t)gopts->area_dst, gopts->page_size, true);
++	prms.mode = 0;
++	if (!ioctl(gopts->uffd, UFFDIO_WRITEPROTECT, &prms) || errno != ENOENT) {
++		uffd_test_fail("unprotect over an unregistered page did not fail with ENOENT");
++		goto out;
++	}
++	value = pagemap_get_entry(pagemap_fd, gopts->area_dst);
++	if (!(value & PM_UFFD_WP)) {
++		uffd_test_fail("failed unprotect changed the first page");
++		goto out;
++	}
++
++	uffd_test_pass();
++out:
++	close(pagemap_fd);
++}
++
+ static void uffd_wp_fork_test_common(uffd_global_test_opts_t *gopts, uffd_test_args_t *args,
+ 				     bool with_event)
+ {
+@@ -2403,6 +2453,12 @@ uffd_test_case_t uffd_tests[] = {
+ 		.uffd_feature_required =
+ 		UFFD_FEATURE_PAGEFAULT_FLAG_WP | UFFD_FEATURE_WP_UNPOPULATED,
+ 	},
++	{
++		.name = "wp-partial-range",
++		.uffd_fn = uffd_wp_partial_range_test,
++		.mem_targets = MEM_ANON,
++		.uffd_feature_required = UFFD_FEATURE_PAGEFAULT_FLAG_WP,
++	},
+ 	{
+ 		.name = "minor",
+ 		.uffd_fn = uffd_minor_test,
 -- 
 2.53.0
 
