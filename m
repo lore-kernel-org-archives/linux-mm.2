@@ -1,75 +1,75 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 106F4606A330
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 15:19:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C16D60810E6
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 15:20:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=FISzkgiD
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=gMV7oMe2
 Received: by kanga.kvack.org (Postfix)
-	id 338836B0615; Mon,  2 Nov 2026 10:19:52 -0500 (EST)
+	id 6E2A56B05EA; Mon,  2 Nov 2026 10:20:12 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 30F896B0616; Mon,  2 Nov 2026 10:19:52 -0500 (EST)
+	id 6BA596B05EB; Mon,  2 Nov 2026 10:20:12 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 226056B0617; Mon,  2 Nov 2026 10:19:52 -0500 (EST)
+	id 5D03A6B05ED; Mon,  2 Nov 2026 10:20:12 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id F40E36B0615
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 10:19:51 -0500 (EST)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 94FF9C0113
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 15:19:51 +0000 (UTC)
-X-FDA: 85390538982.25.2888C99
+	by kanga.kvack.org (Postfix) with ESMTP id 3782C6B05EA
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 10:20:12 -0500 (EST)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id AA0E3C013E
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 15:20:11 +0000 (UTC)
+X-FDA: 85390539822.12.0E57373
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf10.hostedemail.com (Postfix) with ESMTP id D0D1DC0007
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 15:19:49 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FISzkgiD;
-	spf=pass (imf10.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf06.hostedemail.com (Postfix) with ESMTP id E787A18000A
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 15:20:09 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gMV7oMe2;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf06.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793632789;
+	s=arc-20220608; t=1793632809;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=o8L0vvGY5Km24xgHgPbylEP8c5DuS625RCEauDmBOHw=;
-	b=JrWzlDSAOGW+b8ZCIw3HPRj9D7VfJc9percOGMhxhPD1q9wZI3uOfHwv9rX9v66DTblRD5
-	U5gy7djD1UOzCVqAjivLHM6paWRq2glWT7MJ/aHR6ZFpxvYlze1xS/Ji85Uas63i6VX3LY
-	KYTqtf+T3d/LORf2T+C91NzMkpvUlZg=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793632789;
-	b=mFPgaK0vINZ8SD80oIDmkrxezo0ihRspIpqIkOx56a/UNIpPbJPWlk5zHrRzuYbDimbyXv
-	4yQol/m4FA0SAM5n/ETBiOkfXJ6ffRj2QARTAh5gfWkeTTjC9FQk7P55mU75IRPc6iDLgh
-	7AOh8oBsFXZHIei1FLy+4acF5zCqOxk=
+	bh=gDybWaXH0yVqSHGh6cSao1kY+huQ+XTPXQ1Vld4D+UM=;
+	b=iC3UHGVulPp6o/+2oxPxpVdpRfADlQhWISuSpoxBlKnBDua9wB0IB1Ov1rfbqOmOEJz2Yf
+	Z690QyMmGmCEH/4pSnTbBDzHUnhbtYdwZa0lCgP8iVGWIL4Qja0LM+LIBPuqy4Rvp3I9Is
+	BIQVqCkWHbQtj4rjsD68wY4Iaza4zns=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FISzkgiD;
-	spf=pass (imf10.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gMV7oMe2;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf06.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793632809;
+	b=FoxHOUXww8uxKaD2RIWQ706DVuDRuFlC9In/NeHrEphPsg6c2qeXIIKZ7xTBPXlMrltX9m
+	j/PDH7k6HWvpd8RDIXqM4pwBcN545KSnRka7CEkWGxVJ8m4YUvfTP5TE0FRFvSnfly2pHz
+	k81v+eXLCdvb9kLeKBHLb1MzTSaZk+s=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 3FCFA60A4F;
-	Mon,  2 Nov 2026 15:19:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC6A21F00A1C;
-	Mon,  2 Nov 2026 15:19:30 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 81FDB6061F;
+	Mon,  2 Nov 2026 15:20:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 976621F00A1D;
+	Mon,  2 Nov 2026 15:19:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793632788;
-	bh=o8L0vvGY5Km24xgHgPbylEP8c5DuS625RCEauDmBOHw=;
+	s=k20260515; t=1793632809;
+	bh=gDybWaXH0yVqSHGh6cSao1kY+huQ+XTPXQ1Vld4D+UM=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=FISzkgiD/yGuvR5vmXFKZeW9WfMgEMNzsKuSLgjo5EcXuoWsQeOK9E+zoYez94iwP
-	 kd6gyDs+JBsqALh51n9A8+QTvp0EtTnI1VuAQVToT3JauFOAYWcitc4Ij8VOStoQHW
-	 HHtZ3oepjBq45VLaZrj+hF2sTz5wHN/lLPiI7eNqaF7rYYCqUQ/+mzk+bSyv7sw/P2
-	 0Gtuci3mXrlYHF3T4dLdAjX8+3RrsfMa0Ybz3rc2hywNaARmKsDWWKsP2DPHejgwhY
-	 CSyzQiOBTaMPhT4NH/NFnIcCftSoSwRNaEqIAiartqZhauq2wH7uX/8R0Gi2xJOmu4
-	 rQ5tXNgRbeYdA==
+	b=gMV7oMe2qdf0+aS9olfnOBAqn/OBe6DasxdwT9LImBIs7Pj7CDa/oA2a6B/8kY9pd
+	 QfSD+01vRhmQIdCiXlwTDyOpKHr/+vYVKI1GFm8wQR5ZwmzCN80Jrz/IWpqVDIWfYl
+	 3Bzlzk4aLDYzHqqx14bF+dEvwX8XoOta/BsfktGPBtManOh4//zemOTXkilWggqbhn
+	 W/RtVoTwiEMKAtL6JeSwBY8eTWp9GpOtjwbXtxAZExlQVzQlk62v23yj30uR9SnWUe
+	 jbKIL4QwYWDm+Xox3mBmfSoPFHGyBgWuJOAs5l7OErmCDLr8xRUVWg57VzoW07Bk1H
+	 D+JLNSysS0GGw==
 From: Christian Brauner <brauner@kernel.org>
-Date: Mon, 02 Nov 2026 16:07:11 +0100
-Subject: [PATCH RFC 01/27] jbd2: let procfs own the seq_file of the info
+Date: Mon, 02 Nov 2026 16:07:12 +0100
+Subject: [PATCH RFC 02/27] jfs: let procfs copy in writes to the loglevel
  file
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261102-work-procfs-fs-v1-1-d09a996317b3@kernel.org>
+Message-Id: <20261102-work-procfs-fs-v1-2-d09a996317b3@kernel.org>
 References: <20261102-work-procfs-fs-v1-0-d09a996317b3@kernel.org>
 In-Reply-To: <20261102-work-procfs-fs-v1-0-d09a996317b3@kernel.org>
 To: linux-fsdevel@vger.kernel.org
@@ -105,27 +105,27 @@ Cc: Linus Torvalds <torvalds@linux-foundation.org>,
  "Christian Brauner (Amutable)" <brauner@kernel.org>, 
  Chuck Lever <cel@kernel.org>
 X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2318; i=brauner@kernel.org;
- h=from:subject:message-id; bh=4wXeP/X63evRQ0XlRmaO+RfgvVw7qBYaC3PXgCgMk/I=;
- b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS9WG74e18U46btbmdaLFZySH/a4bJqy6EXrWETf+nEX
- czabLYjsqOEhUGMi0FWTJHFod0kXG45T8Vmo0wNmDmsTCBDGLg4BWAiiRcZfvz/JWB5uf7z1qfa
- eR5bDib8Y7/02ydhzb6jJ8MZJrVNc2VkmBYey/3mL2tK5+xlRYFcaYV+5zS/m7WkLC2MPxt0YDU
- PKwA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1370; i=brauner@kernel.org;
+ h=from:subject:message-id; bh=izEZyN2ciF2azWBwOiarD7rxdH5SrLb74RUgxhmuQ3M=;
+ b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS9WG7IJf+71NVUmNfmjuySXN5GYdHLr8WmWM125JvlY
+ 84Qs/VxRykLgxgXg6yYIotDu0m43HKeis1GmRowc1iZQIYwcHEKwES0PBgZHvWw/qhbNX2Pi9i5
+ F4F+xcfDMxt+ZB+X21+0fPH/f32bHBkZLj5bwyh982HI2kgp1W2/Husu5Fmlc+PU8aMTrX5F3I/
+ u5gEA
 X-Developer-Key: i=brauner@kernel.org; a=openpgp;
  fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: D0D1DC0007
-X-Stat-Signature: q3ng3ds9wd5meiszs6dz7nu7ut6tt6gi
-X-Rspam-User: 
+X-Rspamd-Queue-Id: E787A18000A
+X-Stat-Signature: axp58s4ytzu1rbnd5za9cnbryfuod6s6
+X-Rspamd-Server: rspam04
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
 	version=4.0.1
-X-HE-Tag: 1793632789-171733
-X-HE-Meta: U2FsdGVkX192IjHznmWqJQt1eudVT7WbGUcHoHkB7kewTx3gDWCnYwscWtXENFe0Qg3GIbjhcO4KsmHg/CyWa+bGMiPBoCVZ6obviErgwKv+ZVupGbTNcqCRvQWdK6U/kg6q2Hkf1rBLDFvB624eupEXgb8jz5O+manCoqms04+KGn3KTt8n5OKXVdOXr8oevm4IwjskOzQiu18zxUoobRj1zO3xIHIAhWeSx8mh0qKs3QGHbBm12ckGG8OhljZp9nkzrVqNqh1RaBCQW/CxyMnE93RpAzq8lD6JYdhjgTLWwFi1ACemiWmy73knkc0xS7l57v3wnL7yPY+2ZK0EOR+4d9XYg8BVT4Wa/cHLm9qwNhkp5T1tuL7xD2x+2YoGO/DJuZ1xSSqxzDdkFF/s5YZGpt3Ibg31C6H0uzmB9CIXY4ufmypcg6eE9Eqwk3V8zURaHVQrLVyX+8pxCQN8q5okDeSqX6WVvq/9TC8/4ZMH8F+s8KaIDTdmvs/HCioevV3c7gqehgcXmrkcTbIYqbpiDsaPwVeat3sm9gZRwFInnp0N5ivqsR12okO+X6EpEgzOJy2dIYi+xf5zge7/IvsZZ6wKyX3YXy3QOgory1R1rRMS4PqLqRhSIIUBXZIoohZut7oPklofsBVikQouu8Brtk1Y6W9sCoqrT1ds+zD/wnEKgIh8eciDZzB3F9jBtA2PJkKCBUJpksnNdoPMo+tdVV8XXt1yXe1bwDoJFHhF5tWBa11Cv/c78j9Z0QdefMlmDe5W5CDkHMSlL5Mb3EPr7gKrDICuZ1/8gEZYkes1itMl/EHl1ezDMDrrl33WfzjBUrkX18TUGERcbTwTTKvQj+psbQd6N1+K/pYLjBUnoQpbwlMvElwIHdF1XMC8S7XkMclMFD54NI1MZFM5JWR46PUo5E35fKI2CnJFUVW+9npoU0sS0Y5oGbVD+r5/6TDwOEKPX1dlqj9Qs//
- c0Fw4spN
- EANLSOrRml5cnz9mdCqhwJeUnkRz2UrxBhIYLTAmx5Mn1PW76oGUPQsPWG3TntPtqlNQ7wCOYI/l0guQyB/zGkJpHCjLGT33YAncvuxc+1fGYKHx3CotPUmAC+oclZAf5d2wFMyvOlqd/WMhVZJLajw1K0Z3Y8hzjYPktveHnHUX41KZ6Nfu+zWy8Sm3Rt0cHel3WSDWoncUUQw04s2Ro7um52Ub0lwhlHH6ECgn+MGbITgJYv73ETG12MknL4ihImq7TOK1+vm6N5EgGTLtLHd1YWgj5Em05JvuHkWg27zV6engiyRWJHtB68Os1miEYhlTjH6Fmu/7vG6E=
+X-Rspam-User: 
+X-HE-Tag: 1793632809-395237
+X-HE-Meta: U2FsdGVkX1+xp6XGVL0/tWB/uXoZJjhqfmmLj01qZHp1QPPraJLAz4efEft4wAgtmnhehdGyPpTxwiGRjrRd624YVkEMI0b1z6m96oxcCPyclUnunu2WfbUjwmsE4keZYq5bp5tDswOqLpzxP+a0Jc99mbjHNe/nrnphEyuL/SAzyxxzrz9bNyYSRJJxsywqqQTg9bLE2JWaDkdOPgS824PkqbSuz+m1esZ2jwQK7t60T9pems62zx9VwiBC0RVl54arpQXR7hb+zmdTmEpvhpagZ9hEpHTQzKOupHGXuVPovdySANLF2dIceuYiRzu39O7BLgAzSdBIdWw1gY7AFlU0vsptOmC0spUrm0LfieeCxjwNHw6ATNzGNKFcH6CIlCbxV1kfddTOtLklBt4oRMEv7vBEeLDlrNiMWxwdMKQg+8J43vvDwVMPKbtryRa1gglogYvnx+dpcAsxiD+OpAD4PW+mK7mg9TSbSFMvg53p9Zf+z11fJEs6Jyy9L2Rk3wvl8llrWDfXOMHCw2iFXMMejCtR1zSZ+t4PTif27MfE6wm+/DheKftOTfH3aAVIJRg8xPhR+eKqo5bKwXb/9npANheO3hN/bGMidbaBiwwTDoP5W0XU2Qv+ShNBQAXDLL5A+Utw8B7ZvfL1BPlS4dnkJVqIe7YLtN+CAuA8zC+cUFlSlEocPNR/JntYDTf8SzJUgO02OD+2KBiM56yKnWHFaA+qICQMPVa1f7aEijwctBLMxWCYSv1bdB+CNxxQXiWNzmulfexnm908hqv35VdT/IVj7oVmuLRhLbK8vYUL4ZgB0lnTTCs76iPR38NnKeFkCNqWCULHk/3Yi0A4G8fV19f5mpc/+ZUyZcI2RRxOLwAbfNlpHsOVQCZC1v5G8TBfhydNaw/k6qmt8+bvzKUc1PeniPaMfF7wXDal6mL89hy93c02zoLsNL9fsj0ysxpTV1uIi0DcoIleLoB
+ anEuPBL3
+ snwlkpkWun7O6aRNa99a3kNCn3roSLp60X87t6lM+dH4U03BfFVuFzb6CU6fBpPTWd8Vs9Qd6ZPFlJlryqrBnhXzdkWLXCuLwlsSc8/uiJQ3GRF6ChDh7gBsDmjqLorfzD8QLNYEkiiW5TnaM1mm0gv3AuADkSPnyBJqVwDmvRRO4AGseE1t0CAGRhrrPapIq5304JZe/Z9vWdkJn/rQ4s38SZwpcqu8uZ47cPmAttPRL7JzpfVA5m42HgFrOg2VA2NJvF5YupSmAg93oQ+k0TxBP2g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -134,81 +134,45 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Declare the seq_operations and the size of the session state and let
-procfs open and free the seq_file of /proc/fs/jbd2/<dev>/info.
-->proc_open() only takes the snapshot of the statistics now and
-->proc_release() frees it. Reading the file then no longer holds up its
-removal when the journal goes away.
+Implement ->proc_write_buf() so procfs copies in what is written before
+it pins the entry, and take the level from that copy. Writes larger than
+PAGE_SIZE - 1 bytes fail with -EINVAL now and so do empty writes, which
+looked at a byte that wasn't written before.
 
 Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 ---
- fs/jbd2/journal.c | 33 +++++++++------------------------
- 1 file changed, 9 insertions(+), 24 deletions(-)
+ fs/jfs/jfs_debug.c | 11 ++++-------
+ 1 file changed, 4 insertions(+), 7 deletions(-)
 
-diff --git a/fs/jbd2/journal.c b/fs/jbd2/journal.c
-index 3a4f3f613ead..1e4f4e95a00e 100644
---- a/fs/jbd2/journal.c
-+++ b/fs/jbd2/journal.c
-@@ -1173,51 +1173,36 @@ static const struct seq_operations jbd2_seq_info_ops = {
- 	.show   = jbd2_seq_info_show,
- };
- 
-+/* procfs opened the seq_file and allocated @s */
- static int jbd2_seq_info_open(struct inode *inode, struct file *file)
- {
- 	journal_t *journal = pde_data(inode);
--	struct jbd2_stats_proc_session *s;
--	int rc, size;
-+	struct jbd2_stats_proc_session *s = ((struct seq_file *)file->private_data)->private;
-+	int size = sizeof(struct transaction_stats_s);
- 
--	s = kmalloc_obj(*s);
--	if (s == NULL)
--		return -ENOMEM;
--	size = sizeof(struct transaction_stats_s);
- 	s->stats = kmalloc(size, GFP_KERNEL);
--	if (s->stats == NULL) {
--		kfree(s);
-+	if (s->stats == NULL)
- 		return -ENOMEM;
--	}
- 	spin_lock(&journal->j_history_lock);
- 	memcpy(s->stats, &journal->j_stats, size);
- 	s->journal = journal;
- 	spin_unlock(&journal->j_history_lock);
--
--	rc = seq_open(file, &jbd2_seq_info_ops);
--	if (rc == 0) {
--		struct seq_file *m = file->private_data;
--		m->private = s;
--	} else {
--		kfree(s->stats);
--		kfree(s);
--	}
--	return rc;
--
-+	return 0;
+diff --git a/fs/jfs/jfs_debug.c b/fs/jfs/jfs_debug.c
+index 5eb35b0d420f..e1c0211a6a32 100644
+--- a/fs/jfs/jfs_debug.c
++++ b/fs/jfs/jfs_debug.c
+@@ -23,13 +23,10 @@ static int jfs_loglevel_proc_show(struct seq_file *m, void *v)
+ 	return 0;
  }
  
- static int jbd2_seq_info_release(struct inode *inode, struct file *file)
+-static ssize_t jfs_loglevel_proc_write(struct file *file,
+-		const char __user *buffer, size_t count, loff_t *ppos)
++static ssize_t jfs_loglevel_proc_write(struct file *file, char *buffer,
++		size_t count, loff_t *ppos)
  {
- 	struct seq_file *seq = file->private_data;
- 	struct jbd2_stats_proc_session *s = seq->private;
-+
- 	kfree(s->stats);
--	kfree(s);
--	return seq_release(inode, file);
-+	return 0;
- }
+-	char c;
+-
+-	if (get_user(c, buffer))
+-		return -EFAULT;
++	char c = buffer[0];
  
- static const struct proc_ops jbd2_info_proc_ops = {
-+	.proc_seq_ops	= &jbd2_seq_info_ops,
-+	.proc_state_size = sizeof(struct jbd2_stats_proc_session),
- 	.proc_open	= jbd2_seq_info_open,
--	.proc_read	= seq_read,
--	.proc_lseek	= seq_lseek,
- 	.proc_release	= jbd2_seq_info_release,
+ 	/* yes, I know this is an ASCIIism.  --hch */
+ 	if (c < '0' || c > '9')
+@@ -40,7 +37,7 @@ static ssize_t jfs_loglevel_proc_write(struct file *file,
+ 
+ static const struct proc_ops jfs_loglevel_proc_ops = {
+ 	.proc_show	= jfs_loglevel_proc_show,
+-	.proc_write	= jfs_loglevel_proc_write,
++	.proc_write_buf	= jfs_loglevel_proc_write,
  };
+ #endif
  
 
 -- 
