@@ -1,182 +1,129 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35F32606D802
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 20:24:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3133606A32C
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 20:48:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=columbia.edu header.i=@columbia.edu header.a=rsa-sha256 header.s=pps01 header.b=CAq6ZRQu;
-	dkim=pass (2048-bit key, unprotected) header.d=columbia.edu header.i=@columbia.edu header.a=rsa-sha256 header.s=lionmail header.b=51tnYyCb
+	dkim=pass (2048-bit key, unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=google header.b=gEJqrs8P
 Received: by kanga.kvack.org (Postfix)
-	id 179B06B05B1; Mon,  2 Nov 2026 15:24:57 -0500 (EST)
+	id 093856B00EF; Mon,  2 Nov 2026 15:48:45 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0DCB26B05B2; Mon,  2 Nov 2026 15:24:57 -0500 (EST)
+	id 01D7C6B05B1; Mon,  2 Nov 2026 15:48:44 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EE6186B05B3; Mon,  2 Nov 2026 15:24:56 -0500 (EST)
+	id E51326B05B2; Mon,  2 Nov 2026 15:48:44 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id C18246B05B1
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 15:24:56 -0500 (EST)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 51A04120245
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 20:24:56 +0000 (UTC)
-X-FDA: 85391307792.14.0E46D74
-Received: from mx0a-00364e01.pphosted.com (mx0a-00364e01.pphosted.com [148.163.135.74])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 86430C0009
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 20:24:53 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=columbia.edu header.s=pps01 header.b=CAq6ZRQu;
-	dkim=pass header.d=columbia.edu header.s=lionmail header.b=51tnYyCb;
-	spf=pass (imf22.hostedemail.com: domain of mt4022@columbia.edu designates 148.163.135.74 as permitted sender) smtp.mailfrom=mt4022@columbia.edu;
-	dmarc=pass (policy=none) header.from=columbia.edu
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id B5D936B00EF
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 15:48:44 -0500 (EST)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 49D6816024B
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 20:48:44 +0000 (UTC)
+X-FDA: 85391367768.02.4110626
+Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 358F218000A
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 20:48:42 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=gEJqrs8P;
+	spf=pass (imf24.hostedemail.com: domain of mhocko@suse.com designates 209.85.221.42 as permitted sender) smtp.mailfrom=mhocko@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793651093;
+	s=arc-20220608; t=1793652522;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=pjN996BwASNbznAuXP1p4D7u6OJyM/x7QZnjkTw5jXQ=;
-	b=qKt1lqE8vpVBpXnmGPPB4jjxeIy8lnmAzJqrxzl005ocifE/yxsoRVWfEHD60XyBjeUtAJ
-	F3enJQLziGhq3zPWWztN1vKN17Gq/zG6yHNYLF3Z+MFUNb/Hd2rS762Gw96ecU18llP7Xb
-	fERrh/GTEbOHmDQPH6h1dksDFoIFbOQ=
+	bh=Tqk8hLSfa24lrMQkcg/49BjZeHEkNKhCmyNnUdkMSKA=;
+	b=mhLnZzqz1ipzsou3bVUFJamBuNH+mWQgW4UUd9kE371JvdTI7bBQkkltLvtvgZ2+r9vkkk
+	7rm9+2Xa4NqWRMqOngGhdvXERA8LvIK5vG79C2xjEjYyhUx85T3vToW3SHygvWxr2dgj40
+	zDeUD6VY8VEAAxgW6omyBBb9jV5jrIo=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793651093;
-	b=Ie0yf+d4GL88HGRhlAJ4CXr/f4mQloWUR5jmhSDIyXzjGmw+izAcnBg3flFqBQKIZGbQDd
-	RhKcA4XvKeBCau2HUmSZTOpLPIi4DFf/dAOPa3qNzhXpzWI+mJRqYVTDQtlm+slXs1nWh/
-	IS224ItUroT3nrykfv+g1SYza/sZl88=
+	t=1793652522;
+	b=zMvm5ctnri4Ng9TfoSo+su9vq9skMhCBO9dLFQWlvGS2qXv3XqlubsmuZb/UJ/oXjCddZy
+	x2nGIDQZUzQMVqnP+DsBYYikH/HouaF8BpmuNbUixgW0U5Md3tqTDYa8xpvbiETOkzEo6V
+	Vh0MKPCTFIC4ewagp5Hhqh/JR65azNY=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=columbia.edu header.s=pps01 header.b=CAq6ZRQu;
-	dkim=pass header.d=columbia.edu header.s=lionmail header.b=51tnYyCb;
-	spf=pass (imf22.hostedemail.com: domain of mt4022@columbia.edu designates 148.163.135.74 as permitted sender) smtp.mailfrom=mt4022@columbia.edu;
-	dmarc=pass (policy=none) header.from=columbia.edu
-Received: from pps.filterd (m0167068.ppops.net [127.0.0.1])
-	by mx0a-00364e01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6A2K2ukC3105945
-	for <linux-mm@kvack.org>; Mon, 2 Nov 2026 15:24:52 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=columbia.edu; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pps01; bh=pjN9
-	96BwASNbznAuXP1p4D7u6OJyM/x7QZnjkTw5jXQ=; b=CAq6ZRQuUFo0zsh4mT/I
-	kXvU0y3qR2UG9+MTAQ/cwGlvNgrwhTXqzfkTzKM5Ck9T7Mi+5ee3YL3NG/Ig/G7H
-	0DqFbU+Wl0NKah5Fp3RQcyC7TJQCtKrglJCY0K0RgslTWk0NiBk/Jtpcj18rlBY2
-	b533oHoAEEFNZlyqdTM7cyInrvE7p9cRK6BTOSPkfPD4C5txGSKteXpzy55kucRI
-	OmMuyeAfnuUWH0QEcoQI6UOdlOVW7lBxKyaAD44JUGcJy07NgP5KRrOXvNM+hY+/
-	P3nbhz0/vS6WEHu5hihdXVquScGiesCMD7Z4kjbC7FPy/Xhndn5PmPXHGqaQ54ma
-	cg==
-Received: from mail-qv1-f71.google.com (mail-qv1-f71.google.com [209.85.219.71])
-	by mx0a-00364e01.pphosted.com (PPS) with ESMTPS id 4hpvuvk12u-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-mm@kvack.org>; Mon, 02 Nov 2026 15:24:52 -0500 (EST)
-Received: by mail-qv1-f71.google.com with SMTP id 6a1803df08f44-91c861b562eso64575356d6.0
-        for <linux-mm@kvack.org>; Mon, 02 Nov 2026 12:24:52 -0800 (PST)
+	imf24.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=gEJqrs8P;
+	spf=pass (imf24.hostedemail.com: domain of mhocko@suse.com designates 209.85.221.42 as permitted sender) smtp.mailfrom=mhocko@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
+Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-48c5358fc28so2787339f8f.0
+        for <linux-mm@kvack.org>; Mon, 02 Nov 2026 12:48:41 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=columbia.edu; s=lionmail; t=1793651091; x=1794255891; darn=kvack.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=pjN996BwASNbznAuXP1p4D7u6OJyM/x7QZnjkTw5jXQ=;
-        b=51tnYyCbxsgKPiV0FBAn9SSuGw79vjlWSmcrMt8sd4npu7MwkLwW7yl7SLNMxKIKI4
-         ocOrcbJffqbwy2TY6Pp6Zg5IcsMFNJhDjxWer9a1rpdOgxa+A4YY9yRQE/xrEA7e5axw
-         0sI9K3lQcNLrZRk0ebiXQG5IFIlRbrmAa64KoaRxtcZpA1nPkkEvpY76KFvWWRN5WDAW
-         LrN4cMRf7H6jxCVAaWJAOPMstILaUbLwlIPjqG6srVwwDI0DQf6MjHOZgsSjzqiUnjdH
-         NQ81Ud6w2JiGsvl9ek0kZ/pR/7OpvKz5KHhMe9Jcy+iVJd0XCOX15w58r/Z37+ik0Geb
-         QdJw==
+        d=suse.com; s=google; t=1793652521; x=1794257321; darn=kvack.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=Tqk8hLSfa24lrMQkcg/49BjZeHEkNKhCmyNnUdkMSKA=;
+        b=gEJqrs8PY8Nb7Mjx9e1Yec3MjD4YnXS6XgrMvPDCrbEEKbEdPF9HXqMbRXy+PnXujs
+         hwDmiPHhZhIsN8j4p4Y7rBcO1xJKZYI0jk4jjj+RyLzocjpOF60s6nzWZWIX6ZPWr8lH
+         l6V2fbS/r/EfjS3NPjA5Z3K2Y86EqPSmDAiOxMB5NLK7/Sz+0/+cWr73KuHMXPd8ON1a
+         MxJo1Pu6K02U9Xsgqf8DX0yUCbJBI9AF7f2GoxdQYnGftoKESuwsZ8TiYwBNmRExNQzD
+         CdRmASimMJgDDWi6WQlN7wZWtnZw/cePRAaizc5Ug4hMWaLO+fSnxcLl4U2vpxcA95GE
+         RvlQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793651091; x=1794255891;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=pjN996BwASNbznAuXP1p4D7u6OJyM/x7QZnjkTw5jXQ=;
-        b=LcTDAcmEn1RApfFddGRDBiRVoaqnqX5IG5GyTAQiQbobrkaY74t4aWXL4kJg6Ke+Wa
-         mrAPu7MxL7ZjePgKFDLlY0Fhe4wgwZbc7rtmqxfLE8sPFB0UYR9Y5KzqcWqIwlgd68dX
-         8JgtIhuxpTydmO/IVc+NtrBgIFUWDaqDIZhrY1KZpIi7/fANukXNGOFuvh+YDLeRMzsX
-         qu/qkWY1n4kYyuMtv+reTcz1AwoiQIwkyusEsoehe/mCo08xY6nSY5gyZRpjGRRRS43v
-         zv4FtaNUWgGvk4LnIgpdRALGmlMvQ16TDPwmPrFHvm3aQTt071dB89qENW3hF2ZLU7hh
-         +dag==
-X-Forwarded-Encrypted: i=1; AKwUvByTu9FpWyz6yTEhco4dvF1NKhfz41lW7LB/gMZSWbiR9bGIS9q6Q/A7wGWhaluRxaqjHysLsT+plw==@kvack.org
-X-Gm-Message-State: APuU4Z+ok3vgC46QPTzME+VP3VFfyEOTFp/QoQMYJcJjbV5KsRLFG/5Y
-	MtVl6h1UXZ0Mko/axOqQQ3qeIjxcSklK9cWSkzZ1xWK9+Epd9RYSChIcB6XbXEjD5MWYYGsWx5C
-	9HtzWp8Qk/cBr39oNaQy0fbMNb0BI0jTgtp+2zrbDUma6DE40
-X-Gm-Gg: AYBFou3jl8ABjUmvzLiLDXBVrHmqKEWkrYsExY7xPeL1GrQ4q8WGD5pNsXi7RfBqelc
-	bJRFRgdrqg9dMjuESEaihQ8hAq5+psSzTv8v250tEvhJfUUIFZ2hE6C72PlR+htPpAH347Hmr48
-	Ab0hyiLHCkEqiSX6VVfbKYykUosXAq0fZOb13907iEVgqACE80rr72xFMpTdSwCqlecEhJ1gHgS
-	4iIZrrfd8H8g9OuZ6R9mPXl2fHJeOgQ0gPuQ7UK0pJtaQG5Z1zve5jQcmlFkncH8FG8u2BVrNey
-	LVeJLpYsFfSU05N1SJgdhWjHhJ1GzdZBO9ZkGZNO8HHiLEFOZ2uxrfX0kOclYH0oTWovWGn+h9d
-	4D2f94NUGiOZnJwhX3aewFQTh6as/8ak1gTGtrcUWuLGkvbS8rwLSA409UZZ53D0xWiUOosZzpP
-	Hzj99ZKjf8RN0zr9d+ZcnL7Ln+ANQtluOVUimBMr/zgXX7mb/nSpOXdcmb+cyXRpoT7Si8r2cnk
-	6maNEWkW5FhK/fFbphJ1wqvxGOfzFjOJSOhC0ocQ4ILIZWHC0IxLMXdJzmw6m6FZA==
-X-Received: by 2002:a05:6214:194e:b0:91c:9db1:f640 with SMTP id 6a1803df08f44-91ca4ad2ec7mr190777906d6.18.1793651091253;
-        Mon, 02 Nov 2026 12:24:51 -0800 (PST)
-X-Received: by 2002:a05:6214:194e:b0:91c:9db1:f640 with SMTP id 6a1803df08f44-91ca4ad2ec7mr190777626d6.18.1793651090838;
-        Mon, 02 Nov 2026 12:24:50 -0800 (PST)
-Received: from [10.206.225.113] ([129.236.229.128])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91ca7f252ffsm100371496d6.14.2026.11.02.12.24.50
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 02 Nov 2026 12:24:50 -0800 (PST)
-Message-ID: <5b5dbd0e-6f29-4573-bbc4-1d07fbcbf1fd@columbia.edu>
-Date: Mon, 2 Nov 2026 15:24:49 -0500
+        d=1e100.net; s=20260707; t=1793652521; x=1794257321;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=Tqk8hLSfa24lrMQkcg/49BjZeHEkNKhCmyNnUdkMSKA=;
+        b=DBCOmpgEiJSsVtQtp1f/bErql1UbV4zWkfj5T4FyPlmgkrz/ZY0mB0cilLzXAsshUA
+         ru3gL3pmNrXEN+6I7rmHS8777RuCjqk9nBm6Raq/jzEX9uV8zNuwdPE65hMcMltpfTI4
+         kRhmT+51BttSDIISFwtxr+7FuSHXG0pf48/SxwPNBIcF31Oe+6U2zIFqGsf8WuFtT0uV
+         leGhETZBkaM/4vIqjSwrQPbe+dGcrv0oQTjY9+gjQ9CNoLbfCG1utAu4m2kA3yRjSBRt
+         LRewDUFBhKj+PWpcj1FMxyLM93yzOwUt3XzgNNkDWdcmmcy9cxXlxnD4CpwxaP6vYWGS
+         pgGw==
+X-Forwarded-Encrypted: i=1; AKwUvBwy5eNJNbpLDOatpCnIuCAbDwvqrwkt+VEjjl+VayRHYNdvWQVevyZCzdFlIB/TR9H4FSRDPQz6SQ==@kvack.org
+X-Gm-Message-State: APuU4Z8D5AaXBGEQcN2Si42h0Nr3PhgP6PX+Nuc7WrVo1cMHCvOfxsQy
+	VBxa+RIRYUqKRztzIHL0stVEw5UK57xA8ZvgYAAeVHAyMGyENJXd/zIJ3A+ukcrO0BE=
+X-Gm-Gg: AYBFou1/ro5nARetXGm9avPNkctzyo1aWswt0XmZDOM3wYzupUVkdYNf3LWZlVfhT7L
+	n8ybHwATFoYI45jm4L4ZSN0tCDnJI8tdhIO3Ngz6ObX+jfDGeQw0Gpmvmr+QjrUd5tRQKR477/X
+	1odiBBzz3BUTXWLIGj1y0h3PRqsd9fSsGFvkw8x/HaDSmxchi+3XEBHqZ5WQp0vIm4eUuVsOS3T
+	+PNCjGOLWr1ECtxwAxL338QNlv6GTXAtsjC50hEVDEld7TnlQiDK1QHWlL6mFFMgeW6fpwupdCO
+	SeEWp14KExBKRCTtVaFKO9aP5y5wDkM8yx5ZWkGgsakUkpXveYgtluNJ0TYwvnoMmfRZcQuWvCF
+	lE1wRz9CZGkkQ5zx/hwl6Z9/c5CSVFdEDWrlMYWcilf6sCdEP63GzkCLBS8FquQhYGdj8/KIU+g
+	f9fHE1bxjfWGHnOXcvNOsljG7O4Qq6TT9F94bybARzcWWxVawhWTXDAhz/dmFry7erusNOr1EPb
+	ty79XA440xaleXL0UwFcHhi4L+GYxv+H4sGA4Rc0AgkS3LFZ+zxBrlK3z5QbK6SQztnp/UTmNAN
+	sARSpAvHbE0Gz0wu1Pw2BSp2Zfu3yVsiUEn2Llo=
+X-Received: by 2002:a05:6000:2889:b0:48e:f10:ceb8 with SMTP id ffacd0b85a97d-48e6e2e769amr23073454f8f.11.1793652520570;
+        Mon, 02 Nov 2026 12:48:40 -0800 (PST)
+Received: from localhost (109-81-32-81.rct.o2.cz. [109.81.32.81])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e71b80ecbsm22252091f8f.35.2026.11.02.12.48.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 02 Nov 2026 12:48:40 -0800 (PST)
+Date: Mon, 2 Nov 2026 21:48:39 +0100
+From: Michal Hocko <mhocko@suse.com>
+To: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Roman Gushchin <roman.gushchin@linux.dev>, Tao Cui <cui.tao@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>, muchun.song@linux.dev,
+	cgroups@vger.kernel.org, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, Tao Cui <cuitao@kylinos.cn>
+Subject: Re: [RFC PATCH 0/3] mm, memcg: isolate deprecated v1 state from
+ struct mem_cgroup
+Message-ID: <auj3JyE47UjKa3ek@tiehlicka>
+References: <b36ab4a7-b692-49e8-92b5-1dc4d76dee00@linux.dev>
+ <0BEF7489-16EC-44EE-847B-A6AA380BE11F@linux.dev>
+ <32e80536-64e4-4ae3-a7da-4a37ed415f0a@linux.dev>
+ <7ia41p9341lv.fsf@castle.c.googlers.com>
+ <aujhaEfimB0S5Msu@cmpxchg.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/hugetlb: clear the hugetlb flag before leaking a
- hwpoisoned folio
-To: Miaohe Lin <linmiaohe@huawei.com>
-Cc: Naoya Horiguchi <nao.horiguchi@gmail.com>,
-        Matthew Wilcox <willy@infradead.org>, Jane Chu <jane.chu@oracle.com>,
-        linux-mm@kvack.org, tz2294@columbia.edu, Zi Yan <ziy@nvidia.com>,
-        kaitao.cheng@linux.dev, sashiko-reviews@lists.linux.dev,
-        Muchun Song <muchun.song@linux.dev>,
-        Oscar Salvador <osalvador@suse.de>,
-        David Hildenbrand <david@kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>
-References: <20261028-hugetlb-hwpoison-leak-v1-1-77ce56002523@columbia.edu>
- <sashiko-outbox-189633@kernel.org>
- <0043912c-4225-4d2a-a8aa-d160c832e7eb@columbia.edu>
- <ae6058ae-3703-a1d5-d82f-4102b46f227b@huawei.com>
-Content-Language: en-US
-From: Mani Tofigh <mt4022@columbia.edu>
-In-Reply-To: <ae6058ae-3703-a1d5-d82f-4102b46f227b@huawei.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTAyMDA4MSBTYWx0ZWRfX6uGLphXVRqKp
- GALHJZwFeX0tyDqaipmG0hztbNEhpCOjZ0z2bnB+XMxjOAG991/HyCL4Hakv0mjl3v40clD72Iv
- P8A5PepOFwaO2bSIZ8/0M7nqQeLFvsSvT90/tq07PDsoVnzJWgab4O6RZ2NlytfmVKXJGUOvcH2
- qSwuu4RUuT/WARq/h1oyvYIaF02NSCf6L03Q0BcKIRv/kEIP6054HjNsplb9dH5vj8fTAw0/Zax
- 4ZEJhqSzxjyKzYUC+9csAzkzDGe5mQa5zCcpKiTJfSzNrZyk7skdll2P+oA3xAhUzQ8tQ6juRuF
- X3QZfQLe1sEeXdQ0MbZlqycmq+5fe6rQgnxrmVZvUgw1kIV8BMTxsELyIq+v4XMrCZyDAToNFLf
- qdNJ3zxG6KDw7CVWvcSe2YOi3Vbhne2jcBViA9Cylrw9ZsONJu2aPNMBkDkkocenLDxoukSOwEq
- Sr5R4U/CcUeQyNDMd6A==
-X-Proofpoint-ORIG-GUID: 3Oh5UXv0nXL5k-AYjp2ue03MQXvwEvBa
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMTAyMDA4MSBTYWx0ZWRfX0xUz2M8lzIqP
- ZiWdAM+zgjEH/BGABOhOhh9QTBawwLSBU6/ziidliMsmqqA+DYCfJDahNnwKjYZ5CogEGPlQ24d
- 3B8EbWfEfqVnmlwntpVcCqwswxmYgROXt0W4I57ZHWpSHMiAF3jO
-X-Authority-Analysis: v=2.4 cv=R7eWitRX c=1 sm=1 tr=0 ts=6ae8f194 cx=c_pps
- a=UgVkIMxJMSkC9lv97toC5g==:117 a=scx9rK10MffgfR8e+ftusg==:17
- a=IkcTkHD0fZMA:10 a=zJRp6_cAMcgA:10 a=x7bEGLp0ZPQA:10 a=A0y_DWxS2BwA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=Da8U98TiO7q1upZEImrf:22 a=usPcmh10W0ubT8QP8_c3:22
- a=5XypEgDptGhv7p-PtYcA:9 a=QEXdDO2ut3YA:10 a=1HOtulTD9v-eNWfpl4qZ:22
-X-Proofpoint-GUID: 3Oh5UXv0nXL5k-AYjp2ue03MQXvwEvBa
-X-Proofpoint-Virus-Version: vendor=nai engine=6900 definitions=11954
- signatures=596817
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=10 priorityscore=1501 spamscore=0 clxscore=1015 phishscore=0
- impostorscore=10 adultscore=0 malwarescore=0 lowpriorityscore=10
- suspectscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2610300000
- definitions=main-2611020081
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 86430C0009
-X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <aujhaEfimB0S5Msu@cmpxchg.org>
+X-Rspamd-Server: rspam06
+X-Stat-Signature: q4pc3q149ybyiprnkf78tbw937ohadnq
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
-	autolearn=no autolearn_force=no version=4.0.1
-X-Stat-Signature: fxhfssu1bcqeubx34dwiwzuoy4y4d5c5
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
+	autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: 358F218000A
 X-Rspam-User: 
-X-HE-Tag: 1793651093-904861
-X-HE-Meta: U2FsdGVkX1+AtTYs60QDiIEo0I70vZNB1ukbKHeK9/IKWFBSn3lgsSx6ajTNtkynxUyZYNJ8j019ZULe0gACpigU/M+UBFNmJbBxmZ5yvITCS38z8nZCCtCpvaCGsnGGyYaoYr65Yb3GHZwQrPeyo4NUK73cwdVYbsXWtXznUTpyYf4WIbKN0XtCZKajI0+grRRQrXYGzX9Ebh+iny772lSkfTjlReIq8Lz1DcPMSsfTsARAnf2VCKL+zbbqowY6jjlGyoN2MHUxjb0nv9+FqgJhaWj1qjTvAztOUZl6MX19hMTHTIoDXz6jEwN2r6XQzOgyuWLSTnBenjYf68fWGfOybEv4VDmmPxDWfwVH94pwJ6nVCEz6IsDgUsqY7WG5F5Nw01lpg49/Fl08/ePbq2Rh+ct8Wecbzxg6XlAu46xpoEAAI5Mru+JLfIr6FLGminDWalP2MhkBErD5buLTZBzUyAU3YXbFLrjENF9R1Q3XRVx7nXqRvzT7sqbpvEZ/0oGv1bzrrgLNRbo8DABv9/mokGsAF5MZOWgEWzJCV80mBKEBNeo5rRfyL75yXXeY4ip84vUeqemTMMW8ERonfVpU4ZdlPi3BRcPT5mHa5w/sA/gwZJVg9jcRErVyzkYhj8Ixb6TSO2GH1Fn8M84PBdC/lVf48RjtIEKmhKpoRdX2+4IllA05vzSR1y8uPRbsO1Mhg/LHiY2dFN27KPXxpec5BnF0ay6zp9RFJ5mg8bAJKyiqqcIvzTrrqbA/ofbiCpGYF2YxzYaTcUEvzSvNgCMyAmN8Y1AzWZnMwOr9eqkdJ1Zp2Fva1KCNnSQd2PQCjkxV0l5knLqWwpWPF6dOarhk1T2aA0bYvAPL8cTsuBe+4Gw+hNmMR/ab24KCGUZ9ONY0G2CshPXIXBG4kvifdn5r7L4qNRKnOKQarzitXnmAkeYXXT8oov/Ne2LYg4TG9AqSPJn0y2dAbLdFOQB
- 2Uq9CgTD
- Rpow0kUJYd59voG5ueovDP1HS7Hdjhgo8tWxFCEo0Vaiwg6CR7yqDTZvwrtzZMPFjvloRry1to9e1oaQA5ix9/5gOI2znfWbdxqYp6y0GcCsYriAD+nfXoMuJWtc3/40u6EqGE3jCMb5GLtFWh3k5ccfq05cu4VGFz9lLIkKdezXVdV1NSt0EF7GG9wS0wVjkLx+Mry/8sF54n45MwhrfJZXff/HqsHtcvymkkrfdFPxcUdZzwxAV/yY/duo+17Lzvw9XyDV2kTLOgd8WnPHxlbaSUD/m/4zQ2DrbIcnx0urCc2oA6KNCn8uzBVIZ9dBHsh41OuYRX3NNeXYO2JsHs2hCfqWttRrq9j1F/cIasL5q3iv6TDpmO17rCJLeF3fggTTKu1ISZdC2aCZ38nQAiSkKk9+sTDdwcDxRKg7v/QHAWF1CSxV3Rb9OE0re97GXscuup/VS72Pr8sPE//NDvgIkEjYoZ4he2LsQWp+QFF7eHEE=
+X-HE-Tag: 1793652522-51838
+X-HE-Meta: U2FsdGVkX1//yn+4TUJJgKOflSgaxLsDcU6kRg7oibkrWPkkxkd92gqlBvVWoil3jHB9KPMa301hGa0UJm3SDZyjvDW56IuV/TFC9eVSAqYgI7cxqvznB7rcj07Lb68XPNCtDgB2o5Hy+aOY1bMQ7UTm3UBKXaYQU8yPM5tAKRl7mjYCPHEYtWeb3ohy+35uJJhGdguy5GX8lUBFYofvGiMv0pP84rUpSA/EqeHCkT9EtmUSfSzf72IOgRyFLN0agX9SHVzBSjZDmbCV0I/wMLpWYJfgVLbPJa78nFgj0u1qsywHH/sFi77jHw60KFBLUuYL1E9ygOFVtGifDBnRett1FxTKXZxav3nahiSTD8bjM5n0ltYh+KWLi11q6wv653TRr/k6pM6ri1nhqtChIMkGs0LBbNUaHhBIZ6j0Rv2/6DiiMaFtiVItinVSdgZsVzSLd3l9mXEYZx84MjY+npa8OSgo4jXPm4+40n+wz2OlKhe0aiZZCCi0ifZuWzplUt39WqpL4vWRngRgloFBn3Joqo+ofElLLOL5qGN/f4RT1tTjI3HWoR6BfLnJ27YQzLghoRyY2Hf87oDC46i8EOEfOEbPTYBgQvG1x+A4xJ4nnMzB5Xscpe4zZalBrgLo92Da7s0GrI+PG5Zaixmt3AJ9vw7L171af1iT8w9SJBGthOofl5JlrSiKsuScO94xOUxb1gKvLf+rFeeyagGYLMEjbAUr/wtph6o+1aw97BFZV61GhfZf2et/US+UQOP/Uvma7BWm3wTmVWZI6aOED85gRlztPx/tcWW8LD2ypU9v4nw1iuF7Z153VgmNlfsCYgRlyiujuPMl+33mZf4CkMQUUXuqG9MREj14gjjwhyR724oDbEpBhTzkyqWXiGkcpywQj7RGWZyC5oUOmFOXKWN1NMz6QxT9YWlC4imnQ23ovCQrDWD/0cpMNlvqhYeobJaNoWpMnuv9lOS42bS
+ MK21rPuw
+ GAWXnKNl423XoIteRtd1dk0ZBF/+kuwy7EQdxkdrAktGFds8k1aFAq6p+JtUic6Q9hhL6UtXonfZ3m6RE62JE7V+/Y4Uhmw5hHj677E9s57464z/0EqoVr78bov3sEIQ1q5xOfoi9FHNhmrs2e95IWAvrjv+7gRyGvThoyn5yOH08bhUMaPau4XvpEGBsyONlp3O73cdMrK5o2Z03h3b+7xwteUrUGS2UoTbj8E7lTfUiwoEkZ00YhtejGlGybtTC58c4JFC1RVPvJxht898V5aSBdK4dL7c/k+pBl6AaXK3NJa4apIvke4AKikdZSTfCsvu/aVDvoBaY4vrhaUXAvaTl/QzyxwNJ0HjjBZS9RaStJcuvwvuNQrnNOxGsxwhfZgPwnC3xB2RpDQsN/TxYwuwl08Tgmfw+S1uFg8kg4Ba/+0U=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -185,41 +132,48 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/2/26 4:17 AM, Miaohe Lin wrote:
-> But it might still not be a good idea to add hwpoisoned hugetlb folio back to hugepage_freelists?
+On Mon 02-11-26 14:15:52, Johannes Weiner wrote:
+> On Mon, Nov 02, 2026 at 04:52:44PM +0000, Roman Gushchin wrote:
+> > Tao Cui <cui.tao@linux.dev> writes:
+> > 
+> > > Hi Roman,
+> > >
+> > > 在 2026/10/30 14:05, Roman Gushchin 写道:
+> > >> I believe we want to delete this code sooner than later, why would we rewrite it before that?
+> > >> 
+> > >
+> > > My assumption was that v1 would still be maintained for some time
+> > > before its eventual removal, and the goal was to reduce the coupling
+> > > between the remaining v1 code and the shared core structures during
+> > > that period, rather than to rewrite the implementation for its own
+> > > sake.
+> > 
+> > I understand. But personally I don't see big issues with the current
+> > code caused by the v1 stuff. Maybe I miss something...
+> > 
+> > The proposed changes on the other hand create difficulties for those
+> > who use v1 and maintain some local changes or simple backport upstream
+> > fixes. Of course, it's not a reason to not change the upstream code if
+> > it's justified, but in this case I'm hardly convinced.
+> > 
+> > > If the expectation is that the remaining v1 implementation will be
+> > > removed in the near future, then I agree this work becomes much harder
+> > > to justify.
+> > >
+> > > Am I being too optimistic about how long the remaining v1 code is
+> > > expected to stay around?
+> > 
+> > Well, Idk, it was considered deprecated for quite some time already,
+> > so maybe announcing that it will be deleted in a year is reasonable?
 > 
-
-Agreed, but that's already what happens to any hwpoisoned
-folio when the vmemmap restore fails, both here and in
-dissolve_free_hugetlb_folio(). dequeue_hugetlb_folio_node_exact() skips
-hwpoisoned folios so it never gets handed out, and a later dissolve 
-tries again.
-This patch only lets unreliable folios take the same path.
-
-
-> Also, with this patch applied, these raw_hwp_unreliable hugetlb folios can be successfully
-> unpoisoned now? IIUC, after hugetlb flag is cleared, hugetlb specific information can not be seen
-> in unpoison_memory, so they are wrongly treated as normal pages.
+> That might be tougher for v1 users than the member placement :-)
 > 
+> My understanding is that there are still a few heavy v1 users out
+> there. I'm not sure they can move within that timeframe. Personally I
+> think the cost of the v1 code now is kind of negligible now?
 
-Good catch, you're right. I'll make unpoison_memory()
-avoid this in v2.
-
-> One last thing, Can the problem described in the scenario below occur?
-> memory_failure -- VmemmapOptimized hugetlb folio but hugetlb flag is cleared
->    try_memory_failure_hugetlb -- It's not considered as hugetlb now.
->    TestSetPageHWPoison -- For subpages of VmemmapOptimized hugetlb folio, this could lead to problem?
-> 
-
-I don't think so.  The hugetlb flag is cleared only after
-hugetlb_vmemmap_restore_folio() succeeds, and if it fails the folio goes
-back on the freelist still as hugetlb.  So a leaked folio always has its
-full vmemmap, and TestSetPageHWPoison() on a subpage only touches that
-page's own struct page.
-
-
-Thanks for the review!
-
-Mani
-
+Fully agreed. 
+-- 
+Michal Hocko
+SUSE Labs
 
