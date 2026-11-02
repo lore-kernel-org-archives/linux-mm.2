@@ -1,77 +1,85 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3A28606A32D
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 13:59:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F424606A32F
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 14:01:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=FzcHPsnW
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=DmLoqufh
 Received: by kanga.kvack.org (Postfix)
-	id DEA736B05BC; Mon,  2 Nov 2026 08:59:04 -0500 (EST)
+	id C68956B00EF; Mon,  2 Nov 2026 09:01:39 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DC2546B05BD; Mon,  2 Nov 2026 08:59:04 -0500 (EST)
+	id C3FFF6B05B1; Mon,  2 Nov 2026 09:01:39 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CB1246B05BE; Mon,  2 Nov 2026 08:59:04 -0500 (EST)
+	id B2F746B05B2; Mon,  2 Nov 2026 09:01:39 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 9D3786B05BC
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 08:59:04 -0500 (EST)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 450241A00E8
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 13:59:04 +0000 (UTC)
-X-FDA: 85390335408.17.3F3E854
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 59499140008
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 13:59:02 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FzcHPsnW;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 889706B00EF
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 09:01:39 -0500 (EST)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 16D7DC0116
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 14:01:39 +0000 (UTC)
+X-FDA: 85390341918.10.39CE2F8
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 44318180011
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 14:01:37 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DmLoqufh;
+	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793627942;
+	s=arc-20220608; t=1793628097;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=z636TFZ8J/efy6KD/Zz0HvIWw5738nMcZMSYjKsuO7c=;
-	b=LzvNQvQmVveinR55ybTF4Fwhk6u6PKMv27S6bfMpFlNn0Ku752UqYQmJVpDUtqkuzrpZMe
-	kqWKxwOFhPkdxsPWcQeUA6RpbRuh79hIyGd/zpxjrpT8fsPklEQHkOZDKWmIFkNgqHZBP3
-	fcXdOsaUeJS7t/SdvoPwKPke/zyomjA=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FzcHPsnW;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	bh=/4jCg+TTQrWpSE1q7lJqNXq5XMu5l0cl2OjYGJlIyOU=;
+	b=BPlHKwowon5u1JbRSkPD0B4YlxW3af6uhASBbI1DJIOL/ceAbRoasd21lOypERJDio6cum
+	hCgVwWovFOdE7MKD13j3nvfPhPDLsYSlN9ltawWYf4jnmJ6QOUaN95a0wvtIiw8gs7aPmc
+	AYYQUOac7h3iqMMTqLw3sPCPKaEjNiA=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793627942;
-	b=cpBnQq8pZS7d0xPA2F1XItRrxGUFN2yn4DeF8WO8MYFkb46g0WcNdzYTOzsht3zhmpRvte
-	k0ofytN+NimSEWYhY7q5EOqvKC57kE3H3+O0NjTYIOdD+EKJl/BR3d4jefXz601w5E3Mei
-	GtqdMJSAkHokuRXuqpxq5+rgJMfRwcQ=
+	t=1793628097;
+	b=22j9eASj0I09qFVNFDB1xOu7lcmufupIz4zI8GSFs6xfw0Olnrzgg+kBZaDhAug+51FWkS
+	Rj4ULiDS/cFh1qHgFNugY2/zfuy23IRUcVG7+kDbHTtuy47Aw8NZUQcdDXoSvXukvOVB1M
+	HaURGuf04ZzXOJcjy9gUK3ifrBp2Hyw=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DmLoqufh;
+	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 75D4C40A6A;
-	Mon,  2 Nov 2026 13:59:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 937F81F00A16;
-	Mon,  2 Nov 2026 13:59:00 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id F0BC9600D4;
+	Mon,  2 Nov 2026 14:01:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED6C11F00A16;
+	Mon,  2 Nov 2026 14:01:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793627941;
-	bh=z636TFZ8J/efy6KD/Zz0HvIWw5738nMcZMSYjKsuO7c=;
+	s=k20260515; t=1793628095;
+	bh=/4jCg+TTQrWpSE1q7lJqNXq5XMu5l0cl2OjYGJlIyOU=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=FzcHPsnW3q2Ej26Y0zaezRttXCpKyXZgRQDIf+oVdbAVrSZaxa1hA/SK5uxM8Rvm1
-	 GlxTZeqVxaGdnr0YMOrx+aT+lopuJLxihXARc85ukL3YNWVWpR5L0XcmA7mfHXvCZY
-	 tR0thba+KGUt3MK+UIAJdOHxdOXhuLGy3yPb0X9eZIb8Lj82rNQAAWX+1xQ+6aiurr
-	 jatLzVB4HkltRc2BiHB220Su1xQU+VGmGNrXwa1B11UVDtNPJ5z3fkqPSMCWHAPuOk
-	 eOUNc1cJ+V201OX46HZdhjN17mVI15v6lKpWnyLaONRebUkhyD48rIgyeBRYlnCjcF
-	 G70TdC+KKv87g==
-Message-ID: <804d9f27-bfb0-4621-b394-fa88709a90d3@kernel.org>
-Date: Mon, 2 Nov 2026 14:58:58 +0100
+	b=DmLoqufh5ELvUtwkp16bb3dfV/76wbXROsCb9umDoBk9hrhWX4KYAFT3U90MNfd6j
+	 QIZXeVHMciHfCyNLQ60O4srl4nbQTrObsESoVEa5mJkkfRYoNcTexedD8Sd+QbhDcK
+	 CW1rTA32yFqdPg2KpZoNLbp2D38A3ve6nLhvNaxa0HADHZ1qf82D5q5mkSVvlZbL4Y
+	 9C4fAj2qYzenhrIbR6hfJiMkV7vUtCe/txvO/sz44N35ekAS5DgsUZj/JWbeoUats8
+	 zwS3pHOKtyCEjvyyQF3hCPvOOo3a5kBo2XY0BBlR0VZtFqiYBvRvRKuk8v/lDJJuGx
+	 2Yli94T3W7h5A==
+Message-ID: <9a67e7f6-0ec6-414d-8689-c70eeed6100c@kernel.org>
+Date: Mon, 2 Nov 2026 15:01:30 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: mm: tmpfs: huge=always Kconfig help understates severe space
- amplification
-To: Dmitry Ilvokhin <d@ilvokhin.com>, "Artem S. Tashkinov" <aros@gmx.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <b42192af-d9b6-4820-bff3-e3b6c6ce9bf2@gmx.com>
- <auiHxos_Dr1PXEB_@shell.ilvokhin.com>
+Subject: Re: [PATCH v2 2/4] mm: internal: fix inconsistent in
+ folio_pte_batch_flags() for shadow stack
+To: Yeoreum Yun <yeoreum.yun@arm.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ Lorenzo Stoakes <ljs@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>,
+ John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>,
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Andrew Morton <akpm@linux-foundation.org>,
+ Rik van Riel <riel@surriel.com>, Yuan-Hao Hsu <aa9736195201@gmail.com>
+References: <20261102-refactor_gup_fast-v2-0-bc1ac018c834@arm.com>
+ <20261102-refactor_gup_fast-v2-2-bc1ac018c834@arm.com>
+ <85c4a87b-2c8b-4ef5-bb30-6518080f8be0@kernel.org>
+ <auiI8jzumVHmmSV9@e129823.arm.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -118,21 +126,21 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <auiHxos_Dr1PXEB_@shell.ilvokhin.com>
+In-Reply-To: <auiI8jzumVHmmSV9@e129823.arm.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 59499140008
-X-Stat-Signature: 5ayzwf4z3deh6ne85smn1rm1ahz5ddr1
-X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
-	autolearn=no autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 44318180011
+X-Stat-Signature: x55sawd3mb19nqho5oy5m668wb6ymxr4
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1793627942-624965
-X-HE-Meta: U2FsdGVkX19K+DEiiIqGVYpZ+DhNoKFotwN6JQ7al6jxB5s+E7GPjOQA4WIjUx3Vdgd7IBQ1/4UFlcfuKgbZouipYDGfjdb5eaLjamRA0OmMePz/3N24FMzhOfLS7N5TFaILnPvUSKAmA/+vkidbpIcZMa9ZN9BN6fhmko5OAmAky7sr4VCbSNsjKvfCQ18L9/Ps7OdcRiTXF7H+pMbvYDXpR55FAqf3hSEyxHxsYXy5kOkzhKF1n88Vxdq4xIuvX4FMdrqBCQcSLuMs2Qt6/7gd6f+mbzmlLpr07JpOXFj2HAwyg9OFll1INX81aslqoqr2lRDE/7Yo+7bglUwuCpF5I5zClTVJTTfh6cjjVMpyiMaeNJRmJKpGGSgD/OcMXLYsKwzA4ImK5NAq+MjP6JNmsKIz1sjbBbosdR+n8Dczeih9ayaqiHHaHlpzYhNWwplQxmZKy6QUQy3A+lM7iDUiUjw4o1dO6vNrmwuzPQyhZRQ1s+WPITaOCVHscAFqAOBJI4JmjdNvziC2duNBU57RYsNVgqKXOKhtM/7UzPdyk+RJmW/Li2WvB6dHZtl4H/dq18PZnRjEY1f25FYdnGFN7woYZySlxBTNzw+gyu5DBU/zN0C83LM0terDV8O4GDZCO2nEA7vexN627tPjhd+miqYH2HT1X7DkqJKCccRpl2mkUJahA9unHyCgeIahvPHzIeeeswd8SDX7Bbi1R9kLgXT8v4IzURTSCID3AqWvG/6OJF7XdZezbOLUwqdNlEr+4S76VTw8/xYpLI01yJnZ9/VxgSZvxZlAZmngB4gKVCeTeWBbBHdvMuRS4eZMtCloDFffR/65nUxfPw045bTbMwSkRq9ck97nznkdZDySJvq2Dco7wfaV8EYmkjj7bAZvZKj07DpaLsaA7MjcOb7lnNw2rGIWqylGTfBzYnHe+PfCBHk2qwX0z9GIdhhkadIvgI/qApW8iN7bMDu
- C4SIOGQ8
- sd+xQg1ngpPjf9Z437RJ7MxaHqiods9qjCX5XpaydQaf7zhEjDh4CCbh9raBsVPp0Uj467aM786u1ChdNt7vxVQFjPqbubstEYZBRgpMpFumoAQQbGYzIfbgyDzR94nxHnIj30i7pc1PDWbyhsIZ58Q8yk9dFm7P1vHsZm82S9taB894d3oaecY5jI3gvILzi9zb3YhHIL0vrN/fWoKx0QhPpyCg4jMY33tCeubWpDhL6xOzh1r8x8/3P5SfwGRXm0H9x
+X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1793628097-926988
+X-HE-Meta: U2FsdGVkX1+v5B2LzxzMvgQO812H/tUs/UqSHXMbL3cf0Q+Qw615Ugf7wSG4+amVXl4yn/drRVtwWE152nqyAyY7+T1BCJgMu/j9bH6N45+TyZ9yO3QaKL5PZi5yC/9wETjZRetTh/55UtgZd/SWMQVIdf5HbgYjB+fbsxBv1c9BSIFS0kJt5m7vTatFU4trRjlkSfWxq/J3xhtAW4ff09ZfvPhvxAVrmqsODtdECbcYq6g9KelwXdBdEOPywEo/CKudrlnd2bh9L1t16joIcB5aE9M2wmgpjZ1O3S5RbPDOjL53t+ZdGsTuVVowU2IJBt4+i/HhrbnF2zyU5aqVjcIi+qVeFdb5VkqJycKYrHRyQkKL5W+pYtRCUx+zvaikjUD4uIygxd1CGCu/HN2BCg653O3j1/yFI7rsXDjTsELe9NkyPSRjlpX5EY5l0W0xTBYUKk6gg4Tf9Kg6H4Hr+UbwNud4zdJ0YruMVZhDtM4c0v9ozGrXXsfz+KzAn6iCboYtU37HoqjirpVgMc/HYXT77njZYxJZ2HWzYGcd0iTadHlerxU0/5Tn2FfQ6lMfiYnTSwT9+PAvSx+WFEmjxjkVzSrDMXNVmu69t2+QREzUWtmzfzIEM5ML9zpeI6KSV4YOWCNx5fWV2IMckhDxWvjuJFfgZtp3U/iNu1pRSPxEIlZoh20a+y633RHSfQQJZTSZfWtPwZco0j2wJZFczt6hIJ4DmEiRyuod0/m6UF+m+i8+plDdU5UDV74e5AJjLbrPPho/5vm0HwDs5vR+r+eKnd2StqickgFNKWkgv6xiE2rLHP7XPfpm3zbMMVBEKL4MDnjheWNlKcyFcF24oUGOeVmQq4RojTuXPmWvHKaS7Cu6YVigSeIVUlkgilrhySYs3whhbqk8FU+qftNGljLpoZbWYy3v/v4Q42evJbBx7TAQskoKv98HLLXVKteQKyKf/ilkiL6aiy7PQj2
+ PYRrtAM7
+ WgTZ58pBEdj6qpbqiJySZfXomfyxDgJjVvcfV2B6Dl6zejZbLgZCd7sEEa2qoA66zylmuIVYaJpiSaeq9TwzhElaCWLtr4lAZXFCu/wkN9069pW56AopWWAcUaYn9c1A2BK2A1lxrYm/gNXs4mR3NsWLIFx3Q+YZfJvOUGGkrQylpR0KRFn+bD1+4Jn86ox+7+nddpDNMXPLYf6SIz/qF1Csdg7xrsqGTOMCnJGYrHkDo1h0X4HS4E2XeubCwZRhzX8ZIX2mlYtCi6DQFNBw/jCT+hX9FElt8kPKoIHoTsxutqibH+9vcojPl2g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,107 +149,50 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/2/26 13:53, Dmitry Ilvokhin wrote:
-> On Sat, Oct 31, 2026 at 03:19:08PM +0000, Artem S. Tashkinov wrote:
->> Hi Dmitry,
+>>> +		if (unlikely((flags & (FPB_RESPECT_WRITE | FPB_RESPECT_DIRTY)) == FPB_RESPECT_WRITE &&
+>>> +			     writable != !!pte_write(pte)))
 >>
->> I'd like to raise a documentation issue with the Kconfig option introduced
->> by your patch:
+>> It might be nicer and more efficient to track if any was readonly/not-writable and
 >>
->>     mm: shmem/tmpfs hugepage defaults config choice
+>> 	any_unwritable = !pte_write(pte);
 >>
->> Specifically, CONFIG_TRANSPARENT_HUGEPAGE_TMPFS_HUGE_ALWAYS.
->>
->> The help text currently says:
->>
->>     Always attempt to allocate hugepage for tmpfs mount, can
->>     increase the memory footprint of applications without a
->>     guaranteed benefit but it will work automatically for all
->>     applications.
->>
->> I believe this substantially understates the potential consequences of
->> selecting this option, particularly on general-purpose systems where /tmp is
->> mounted as tmpfs.
->>
->> I recently encountered the following situation while extracting a Fedora
->> filesystem tree under /tmp on an x86-64 system running Linux 7.3.
->>
->> The tmpfs mount had huge=always enabled.
->>
->>     $ df -hT /tmp/Fedora
->>     Filesystem  Type   Size  Used  Avail  Use%
->>     tmpfs       tmpfs   48G   47G   925M   99%
->>
->>     $ du -sh /tmp/Fedora/usr
->>     45G     /tmp/Fedora/usr
->>
->>     $ du -sh --apparent-size /tmp/Fedora/usr
->>     1.4G    /tmp/Fedora/usr
->>
->> Even more strikingly:
->>
->>     $ du -sh /tmp/Fedora/usr/share/man/man3
->>     7.5G    /tmp/Fedora/usr/share/man/man3
->>
->>     $ du -sh --apparent-size /tmp/Fedora/usr/share/man/man3
->>     7.8M    /tmp/Fedora/usr/share/man/man3
->>
->> Thus, a directory containing just 7.8 MiB of apparent file data occupied
->> approximately 7.5 GiB of allocated space.
->>
->> The overall tree occupied approximately 45 GiB despite containing only 1.4
->> GiB of apparent file data.
->>
->> This is consistent with severe allocation amplification caused by
->> transparent huge pages, although I have not yet established the exact
->> breakdown of huge-page allocations and other tmpfs overhead.
+>> And checking once after the loop.
 > 
-> Yeah, I think one can expect up to 512 amplification on x86 in the
-> absolutely worst case, based on the ratio of pages sizes:
-> 2 MiB to 4 KiB.
-> 
-> I suspect the magnitude can be even bigger on aarch64.
-> 
-> [...]
-> 
->>
->> For example, the help might say:
->>
->>     Always attempt hugepage allocation for tmpfs mounts.
->>
->>     WARNING: This policy can substantially increase memory and
->>     tmpfs space consumption, particularly for workloads creating
->>     large numbers of small files. Allocated space may greatly
->>     exceed apparent file sizes, potentially exhausting tmpfs
->>     capacity even when relatively little file data is stored.
-> 
-> I would probably drop "WARNING", since there nothing to warn about yet.
-> Also, second sentence communicating the same idea as the first one, but
-> with different words.
-> 
-> Probably, something like this will be enough: "This policy can
-> substantially increase memory and tmpfs space consumption, particularly
-> for workloads creating large numbers of small files."
-> 
->>
->>     This setting does not guarantee improved performance and
->>     should only be selected when its memory overhead is
->>     understood and acceptable for the intended workload.
-> 
-> This part is already mentioned in the current wording: "increase the
-> memory footprint of applications without a guaranteed benefit".
-> 
-> Anyway, I think documentation edits are always welcome, please, submit a
-> patch :)
+> Sorry. But I couldn't follow. If we accumalate with any_unwritable
+> and check it out of loop once only, we couldn't properly nr value or
+> Am I missing something?
 
-Agreed.
+Ah. The idea was to simply reject the batch entirely if that happens. It would
+only matter if some folio PTEs are writable while others are not ... well, ok,
+there are some cases where that can happen, but it's not really the common case.
 
-BUT, one interesting detail:
+I think we should simply disallow ever getting large folios into shadow stack
+VMAs for now. So I'd prefer the fix below.
 
-On small files, the shmem unused shrinker shmem_unused_huge_shrink() should try
-reclaiming such THPs that expands beyond EOF to reclaim their memory.
+Thoughts?
 
-Artem, does that work in you scenario when there is actually memory pressure?
+>>
+>> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+>> index 4b71d010b2aff..9a2dc90ef9690 100644
+>> --- a/mm/khugepaged.c
+>> +++ b/mm/khugepaged.c
+>> @@ -367,6 +367,9 @@ int hugepage_madvise(struct vm_area_struct *vma,
+>>  {
+>>         switch (advice) {
+>>         case MADV_HUGEPAGE:
+>> +               /* PTE batching doesn't work reliably. */
+>> +               if (vma_test_single_mask(vma, VMA_SHADOW_STACK))
+>> +                       break;
+>>                 *vm_flags &= ~VM_NOHUGEPAGE;
+>>                 *vm_flags |= VM_HUGEPAGE;
+>>                 break;
+>>
+> 
+> Yeap. once we do this, we don't need to this fix patch anyway.
+> But I don't know whether there is practical case changing the
+> VMA_SHADOW_STACK with huge though it is initailised with NOHUGE.
+
+
 
 -- 
 Cheers,
