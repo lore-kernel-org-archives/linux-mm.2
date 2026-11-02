@@ -1,91 +1,133 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28C20606A324
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 19:41:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7ED4D606A327
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 19:54:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=E4AAeII1
+	dkim=pass (2048-bit key, unprotected) header.d=cmpxchg.org header.i=@cmpxchg.org header.a=rsa-sha256 header.s=google header.b=JyUTxH9Z
 Received: by kanga.kvack.org (Postfix)
-	id 40D0E6B05B4; Mon,  2 Nov 2026 14:41:17 -0500 (EST)
+	id 9CA8D6B05B1; Mon,  2 Nov 2026 14:54:24 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3BE1D6B05B5; Mon,  2 Nov 2026 14:41:17 -0500 (EST)
+	id 9A2316B05B3; Mon,  2 Nov 2026 14:54:24 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2D3E66B05B9; Mon,  2 Nov 2026 14:41:17 -0500 (EST)
+	id 8B7EF6B05B4; Mon,  2 Nov 2026 14:54:24 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 08C266B05B4
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 14:41:17 -0500 (EST)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 88136160270
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 19:41:16 +0000 (UTC)
-X-FDA: 85391197752.12.5B1A26F
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf03.hostedemail.com (Postfix) with ESMTP id D8E3F20003
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 19:41:14 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=E4AAeII1;
-	spf=pass (imf03.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793648475;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hkPWmaCky5W9ZtvBeQ8qvs6llvQ7sqyJvIYBj283GTg=;
-	b=5tcRBd3mjshpo13wozl+PpMsLY/mbwD5hUcTKJh6/QJluM+tNbdRe7nkFUO5fknA7CH7dV
-	mUXySqh/YJnu5k+qpU/1y3I8SAwevjwlVvjbaqCxLgnDPM3fJwkZcGC0LEoTZzxOMTj35Z
-	4tiDzrjVd2OKXrl3tC7lER7N7+f7HGc=
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 610516B05B1
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 14:54:24 -0500 (EST)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id ECC43A792F
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 19:54:23 +0000 (UTC)
+X-FDA: 85391230806.16.AA6D7BB
+Received: from mail-yw1-f182.google.com (mail-yw1-f182.google.com [209.85.128.182])
+	by imf06.hostedemail.com (Postfix) with ESMTP id D8FCD180003
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 19:54:21 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=JyUTxH9Z;
+	spf=pass (imf06.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.128.182 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
+	dmarc=pass (policy=none) header.from=cmpxchg.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793648475;
-	b=NFy3T6H6+DW9rBV1yFzJZpE35HGsS6sBrui48pGwkTGXDYlsp+DvXW2t8J8+sapE0WfuU/
-	j9qQFLuw1Xz46Hweus7OYGVbcR+9peGOMu6FUSazzC7R03kxdfVR9nUr+Lq/izUUX7WHjR
-	Cr2/PsoRYI9IKKJ6dwhH+lmm2K5S318=
+	t=1793649262;
+	b=iEQcoFEjp+vsbgLeqqGDkWq/CRLUkUtRiRJSiRbfoWPZ81fPsHCd5WFgrCJhNirSsCkZ73
+	hAmBKLvnEeKD358NwM6wGPnDjtTPEDBP/VCjQ9A7VX/5t1KBRojjwnYN71WJqJVwnNDdku
+	cqm8hm96O869TFHL/KBE+bSMl6WVZSs=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1793649262;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=PXm/uwD24jlxN0Wbjq3NylUh7A4E/RjzDePOTrROpJo=;
+	b=kxZpLeJPSqvjUgJN1c29as7Ov/UzRVXcEli6qBpORG9HP65AuCVd8lOm6syZaAop+5sixx
+	s3XqUQ78bieKdB6dNdqv5MdGMqe6mR03bBEKTBXocD0Yn00liQYe3zYwEOndq2Awt/PEAF
+	rCkDUvQmzi3QEasm/06Ag2AQb9P1RQk=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=E4AAeII1;
-	spf=pass (imf03.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id A341143754;
-	Mon,  2 Nov 2026 19:41:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01BDB1F00A17;
-	Mon,  2 Nov 2026 19:41:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793648473;
-	bh=hkPWmaCky5W9ZtvBeQ8qvs6llvQ7sqyJvIYBj283GTg=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=E4AAeII1KS1riiB887L0qFvZPCQ8+b2dATicts/b3r3eax4TmYosUy7OVfRCt0osL
-	 8iOymyMEPiYkT+CDFGd7pAuhRaa22heDtzJ+ellS/40LuBkBIwJi5oZzSj0rF0oGi1
-	 L/X0YF4x540L/3pY6fmIV1X2l5ZHjjWoT5A///eHbHrmAYDDIt4Wf9VYeuUDf4ojD1
-	 NnOA1/9ayRzJamq5+qEzq65+co0czMYwZbpIYuxSGJIh4g+KSyQ2aD9GcNFUDcn2KH
-	 KgDhK9aEQ4fUthkdLZOFk9l3uPEoQjHi2dio2b5Jb1SzuiSi/vAlFjYRN/kTXtU0oS
-	 294Fo0Rdfbhag==
-Message-ID: <sashiko-outbox-194015@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH] mm/memory_hotplug: don't offline a hwpoisoned page
- still in the page cache
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Mani Tofigh" <mt4022@columbia.edu>, "David Hildenbrand" <david@kernel.org>, "Oscar
- Salvador" <osalvador@suse.de>, "Andrew Morton" <akpm@linux-foundation.org>
-Cc: "Miaohe Lin" <linmiaohe@huawei.com>, "Naoya Horiguchi" <nao.horiguchi@gmail.com>, "Vlastimil
- Babka" <vbabka@kernel.org>, "Gregory Price" <gourry@gourry.net>, linux-mm@kvack.org, linux-cxl@vger.kernel.org, tz2294@columbia.edu
-In-Reply-To: <20261101-memhp-hwpoison-pagecache-v1-1-ed8785ca44eb@columbia.edu>
-References: <20261101-memhp-hwpoison-pagecache-v1-1-ed8785ca44eb@columbia.edu>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Mon, 02 Nov 2026 19:41:12 +0000
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: D8E3F20003
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
-X-Stat-Signature: d3tjj39sm884gzoa999e6od6kcooexd1
-X-Rspam-User: 
-X-HE-Tag: 1793648474-568249
-X-HE-Meta: U2FsdGVkX18ngPj00btsgHKc1jVJA4JYqmao5xqPz7sewPEc6+RCnkad2P61YIKM/5FonCT+VfLTK67Sa5Px+bP1Inop0YWf960ws/NcE9lTRggh4tmyqqT2o6/6kzZSdzFPbl/K62NB4CUDWb+t7UCTFar8YhTSIXyUVtTWlOqjsbKmuny+TKw5A8JpEzxfXcdyBIeY4wAjrPA8zR21OpNj4q5U7sy/Tnhbd4TnlGSQ+hF2yt5BRBF8X43jYJUvC2LcBi12GuyvzY57V+2CkBKg9fbtlekav06d5IHICVhgKV5PCNeR5ooCUlUp2MtebUlIuvUO0lhb432Y0rpg8LyBWsiNoOi+ywkkk0MzARHRms30LpX/QnN2W2xCcJ9I8w1lSG34HIF/JxZqETRlDCXH9DN1VYLUsU4L0AgO7NzFQfZUOD4zkzER6jwNRRxuSfw7RhBFta6FgZqExXbA6S/Gk1TrMAJpL3AapcHs2+oavrhadEhOmYmHIWH0YD1eaPyIb7VL06gzk6yzTulr8+jx+uP+PITFAxXgbgXdBJwEJLgwsJXOk9CP4mRVT6Adwt+6i8tM/cAKXyBHqGGIKlWBI8IC3aWfxBNAboLrwRab+OpvF9Myt8uUvY2LrR55eUa2FqT9/oXmCS1fQB+fVEeNcOnHDzgd4PGDJPxbBXQI0qqyypy/BXnEDaSsFqVczDdvT1L4TOdgIFXA2fhB8VP6uln3a5fnnzUfxEh6k54ifDRfbhLH2FJpwlUMs8I41MQ1SKB6QJH/9nagOoNNoWQH6siMdcvwi76GfhWbkFOkKfOABA7jmuZHeDgBAsJ4bFlpDd8e9v4CPswgDYMJkpAHdz8ICjBGCMQ9Qux3MRGT82H84Yjk8ig8VRv9XchcYeamZyP+pRGfF4uRgN7Ix0re+0+Z5/gMmwjFG23qjMCmjpmhcW4rI2v/FvwmElmI9WpqWeKuZkGTIP3IOEd
- yITvI/m+
- mqGCOpU72noWA4IQMN4+woc+Lbfnh6FrhnwDPNLpLWCCKJk4DsX5za8721youEpSxHjWreoM4oVerVztdeKTZfTOR6ElpLG8BCz1VQYECARN7c5AuG6zm8gLbYiDsX6NwuSpOhczccPIidZPEbVlZ/UUv6cQuD2vgi3SWjWYy/JJOgSthw+C6rlAtqG6qkuyrSorPQZk7e0MUoUsIhax59/jPM9xe6eKerHUVorlA/DZkXhDon7XC++G8IO1m7iPh80q8n93LFNTncL23H3suIeXyYQ53ru2e2zjVUoEKY7bdh5NQ9HCTPj7QIQxKwLt3UEHmvz/JnAsmNEohbhV6OpUvQKpVmkrHx/JCvSTQXn0UKuRdgSzfI+mEtxxZyJC2VbzPHmi2wZkq2scGYeaAbLqwAVk2WukevHwuW9Y62UeyGQZJZYWwNnQvTa97s94HL88vWNr93UCWjxj16VTiHwvbpb3CHK5NoJnqcwAHjD8jjah+OvfRi4NPANu3EtHakbKu+ub9iVszKLUI13dDTAj7O18UgirZs+efbXuUUnAhvwEgq4jOUuk5aEnj648CcExlFa2QJF4KZXuFaGetjrOecV2coJkOHsskjRtoRaq5wNLRnPRnBcNaq/eyYm0IrWf4N6SnKPKnt+7iBHNTjBPzji9YIrorTxH24RtwpqoXYeNWlUkSisIoYw==
+	imf06.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=JyUTxH9Z;
+	spf=pass (imf06.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.128.182 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
+	dmarc=pass (policy=none) header.from=cmpxchg.org
+Received: by mail-yw1-f182.google.com with SMTP id 00721157ae682-8b0f59a5fdeso28036407b3.1
+        for <linux-mm@kvack.org>; Mon, 02 Nov 2026 11:54:21 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cmpxchg.org; s=google; t=1793649261; x=1794254061; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=PXm/uwD24jlxN0Wbjq3NylUh7A4E/RjzDePOTrROpJo=;
+        b=JyUTxH9ZCcknM+53+8LeyZ2KIHWvxm6WzeTCCY0sgIHVdOgCup5bJUFC0+TOSs/MHW
+         YNJs/vLpNEeVr/AkI1WE/XEO6x22X0kf2HuRfb3FUvq4aoorSGzjcokdUkJAugnvfQ85
+         9b6Pe9As3cf3ORCxpCJIaw3n8mr0p5JhGQEeRhll0QS3CIGQOIPCQ0Agp8M/bS8JARkN
+         yq3oMy5Mx/UNrjn/m2EZtPT5xhCmaU4kz4npP6qgT8QGwLUIJfqbENrMjCHyNpQKy/Dw
+         0VvIcx6oT4Uo1mbOD0maVWSyiEMGHa/kr/U4BWdYX2u1HgANeW8bJxtsj6ahgJruyNiu
+         0xTA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793649261; x=1794254061;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=PXm/uwD24jlxN0Wbjq3NylUh7A4E/RjzDePOTrROpJo=;
+        b=v0gnZclJfmUEpC+WAQu/tokzZqAnkKeqkRS41vxl8VOtuvYj+KAE8RLsdQt2h/pNRB
+         WeIEUtYz270inpcm6sXBh8E5VVEkd9FUTy+ncIJSkBnhkaiK2MDb06BWsFdoHjBj6uhn
+         ZErA9MabWqrbolAEQ1eQ3ymCZm1G8bZvO5aSR5lhnWdOW43zMbqpqIHVf2wR8lGf4fXG
+         v2lQj2YHeHzYt0YLo0q/gK5MC7iqhof1rr5pw6FpQnRyGNVhAndMM+ENQfirY5sXK0yP
+         kCJQO0VbpJI02x4el/HiqaT/r0ttosqbnkFTw8fwFa6j00I0rAsWdQ5RG2hdADIRurFx
+         vIgw==
+X-Forwarded-Encrypted: i=1; AKwUvBxQ5UJ+LcXO0kbAk0D/1Os4UC59hmckHhgpFN5DA2vTrV/wYKPhehn3xAtiPh4f5lcAfBc75/Qnyg==@kvack.org
+X-Gm-Message-State: APuU4Z+aAS7hOUEnjTXBJV/cIPhlmw9RrYhoeBKOMpEeUwl4XBzzfKSA
+	/5zYnCWq5Nz+ezYLg7cV6v8URDTDQxCrF77HShRZWzdP0Txzv6jR4od4R3LOwqpEs/g=
+X-Gm-Gg: AYBFou0j87BrlltgpjwCcGJ8JfJpjoOACXOliVLoxZQc3gZ7iIgwAk6B92g9WoMqN3H
+	1lwG6ZBLM2j6KIAgWKRYOE8sj3QSdiHR/My2Traw76+KdA6iTOHxbn6nuuth6jlukoHhyzuMmch
+	5YDcW3eO4WixRAuS+/hwqXTkMGlE7Q8rEx9Csbu0hSRGOwR/n4W4ZlqWa5IR8P/G92Q1RCcOk0X
+	QGtErb5YzuSmXxIzS+W56lql0iLipGMDUeYOp/rWfedYwuhgrMYCG28H9FW54f1nmzvTz2QLG5K
+	rzqO65QerR+Ac//ArLcn+XuuApDxday4nj0Ro/y6ZM9i0WQrET4mijG/rfC/ATP6970ELsruMAE
+	e8fUXKCXKSirWUlLFKX5YqtQqlIU+GILi6+rBadns6YcRsXrMrYKkYWYGLydBoGd9QbKtiISBqg
+	LC5JhfS8mLNGhvCAYqWzZ27PqlyKtZ+8YYJRcLT4+ojZ229OXnEpAkDkGkRa/0VFDyW7qmhFJ2/
+	SvdPXWe8MiBEhTOrfYF1qQTTqCM3i6R0klrprF2EMN5kNkh2AmO3KYl1UodUubcVlEeQZQMK55Y
+	ItObrrVPAXCzSSSzohVoNga1Qko=
+X-Received: by 2002:a05:690c:348a:b0:88f:df4:1c8e with SMTP id 00721157ae682-8b2b66c5d61mr71635247b3.22.1793649260825;
+        Mon, 02 Nov 2026 11:54:20 -0800 (PST)
+Received: from localhost ([2605:8600:200:14e3:365a:60ff:fe62:ff29])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-8b2b7125371sm58207037b3.11.2026.11.02.11.54.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 02 Nov 2026 11:54:20 -0800 (PST)
+Date: Mon, 2 Nov 2026 14:54:19 -0500
+From: Johannes Weiner <hannes@cmpxchg.org>
+To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Harry Yoo <harry@kernel.org>,
+	Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>,
+	David Rientjes <rientjes@google.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Brendan Jackman <brendan.jackman@linux.dev>,
+	Zi Yan <ziy@nvidia.com>, "Liam R. Howlett" <liam@infradead.org>,
+	Lorenzo Stoakes <ljs@kernel.org>, Jann Horn <jannh@google.com>,
+	Pedro Falcato <pfalcato@suse.de>, Mike Rapoport <rppt@kernel.org>,
+	David Hildenbrand <david@kernel.org>,
+	Gregory Price <gourry@gourry.net>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org
+Subject: Re: [PATCH 1/2] MAINTAINERS: add Johannes as the page allocator
+ co-maintainer
+Message-ID: <aujqa-dA7Xa5SsIa@cmpxchg.org>
+References: <20261101-maint-page_alloc-update-v1-0-27e8c246b13d@kernel.org>
+ <20261101-maint-page_alloc-update-v1-1-27e8c246b13d@kernel.org>
+X-Archived-By: <archiver.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261101-maint-page_alloc-update-v1-1-27e8c246b13d@kernel.org>
+X-Rspamd-Server: rspam12
+X-Rspam-User:
+X-Stat-Signature: n5ikf1rzj5a77e64raehr4xwx5w7xun4
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
+	autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: D8FCD180003
+X-HE-Tag: 1793649261-49198
+X-HE-Meta: U2FsdGVkX192pnhxgKR4lkDMKb1Zav0vRVX1pilRiKXIPMFrlXY+LC+XEeUi+UfZ2cB4vYfYavqb7/dXLOHF3rndOB1M0dCvp4j06WygzpIQoH/KBPPQ1AZalG2jydc5dL1T9BXVwxRX3J9HlOSGvNG7j9gXH8b/yXxHe/FQZKJngMJjNmSYTBQKeNQ/qkNixdkB5qZ5iB3zE8BesPvbOXV2oW/J5quP4f5SkEkZ6Fw3E+ykaMO3gLVRDulqKgpKsx/3Pgn7Qm3ORUu6b/8V1C/gHIz4CvV5jNNuSUJtOl4Wtbfkl7PBfXdDxkGunGfOuSzG3/xmJYEEVASs1hDIp0BMTCVpTBKxv/ejJm1/v+0dOYPWj7RmJnoLK2gg5Wthb2Vo3/mOiho4rIEuSMevY/JU3tvNmcUAm+nD8SiVxJmWD3akyKv3fBngeIdhrvPQgwzmh8G3Z60w9JuTmBvaEMJeEwnAPjlIEqfq6Sybs/zB5T2HGVGJvI+/LvleoiihLizXChXzfGcEQHis8fCIFm7Qxxdjix9V/dLbeBVlzsuSDYVaxPHa2TuHMaR/6xeonyMtD6ey32Z05O84X1MXHHpdos1+rT3frxbhsXvpXQAUbxgXXsthM46Mz5d1eQuyAom1pkUPc9nuXq+jlSvwuOAMaGOE0NPsJN7gHPGGaIY28WclF55RyPj5LUUPu+qJBVdFTk5INcqTivAmTKDrkiG8QfdHS3CM/aM6N0RRz/FCCZsMA2V0c/49Gsrv1n39xO3gpG6ANLPktUnZyySc/+6OV2Axr2NXQmgARsdW/J/0nK+3fOi1xWr+SGbCitPszMpU5/l+DuTzbTMyRzs22XqM90sOqVknmXWudS7VIij1ShO6E/tCA7A9eqha2gKTBray2091ICKPArwhc/CIaFv76QBAm/TXrocYeci3xJkQjD+oDZT6NXz7hnOmlAfImcSanY4R+Hr8ZxEwQ1z
+ TiVTID/k
+ SGk3h2g05TqUlNTexQN+4hcWlbTpTfoV0gPlLHV2u5nJOKO1/rUeQSbVnyEeKqOsXUqMP37tf0S3jiS5yoEbrH8hhMr1K/xN7EGsHxa6pTDHCNCW0PcnShpkHNOcc5ssFGYNRf3NfWjejgiw97696IwTDsZ0aBr/xXtkBm9DjkjwO/qx5IXqy9ROSvYPOYZldlLK0MGjNyhCIPUCJ0PUMAw5PlxBEq4ik780nXsajll20cb4clJf1Oa80WdBFyCpFNVes1UptqllIoODF99mRZqeTqu2mt0NxsnSWkzhw7C+4Y3WtVxcRCy5qWNYEaSjuK2nrPqUKXK4TE2/RzXQiBZsAZRlyL5jwoCXEd2OSYF4yo0ex44Rh3RtqyDQchGqujmgooSq6zJRudRbZl+6gM5ifA7ljdQ1QeJyAFo8o2AeHgSnmN0usbUIEGeq8YlKFdWc9ga+VipCu+O+ClcmdTdhZ+JXXAOGNi1MJJ0SIop7xH/XySzIqjSyhMw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,152 +135,25 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
-X-Archived-By: <archiver.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
-s) to consider:
-- [High] mm/memory_hotplug: do_migrate_range() isolates busy hwpoisoned fol=
-ios from LRU
-- [High] mm/memory_hotplug: scan_movable_pages() misses poisoned tail pages=
- of folios
---
+On Sun, Nov 01, 2026 at 05:34:48PM +0100, Vlastimil Babka (SUSE) wrote:
+> Johannes is a long-time expert and reviewer for the page allocator and
+> has agreed to step up to a co-maintainer role, so do that. Thanks!
+> 
+> Additionally, page allocator is joining the MM transition, following the
+> MM core updates from David [1].
+> 
+> Patches will be collected in the mm/page_alloc git tree and integrated
+> via the mm/linux integration tree. To signify the change from Andrew's
+> mm tree, remove Andrew as M: - get_maintainers will continue CCing him
+> on most patches via the catch-all MM entry. David prefers not being
+> added for mail volume reasons.
+> 
+> [1] https://lore.kernel.org/all/20261030-maintainers-v1-7-97278f8a5f54@kernel.org/
+> 
+> Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
 
-commit 90624953bdb2c5ae02a7473ca37edfda72128f6d
-Author: Mani Tofigh <mt4022@columbia.edu>
+Thanks for your trust :)
 
-mm/memory_hotplug: don't offline a hwpoisoned page still in the page cache
-
-This commit prevents memory offlining from skipping hwpoisoned pages whose
-folios still have a page-cache or swap-cache mapping in scan_movable_pages()
-and __test_page_isolated_in_pageblock(). This avoids offlining memory while
-files or swap caches still reference poisoned pages.
-
-[ ... ]
-
-> diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
-> index c9cc42e54f05d..3d36f7f2e04b6 100644
-> --- a/mm/memory_hotplug.c
-> +++ b/mm/memory_hotplug.c
-> @@ -1820,6 +1820,8 @@ static int scan_movable_pages(unsigned long start, =
-unsigned long end,
->  		struct folio *folio;
-> =20
->  		page =3D pfn_to_page(pfn);
-> +		if (PageHWPoison(page) && !hwpoison_page_offlineable(page))
-> +			return -EBUSY;
->  		if (PageLRU(page) || page_has_movable_ops(page))
->  			goto found;
-
-[Severity: High]
-Does do_migrate_range() still isolate a non-offlineable hwpoisoned folio fr=
-om
-the LRU and leak its reference when another movable page precedes it in the
-range?
-
-In offline_pages(), scan_movable_pages() returns 0 as soon as it finds the
-first movable page, and offline_pages() then passes the entire remaining
-range [pfn, end_pfn) to do_migrate_range():
-
-mm/memory_hotplug.c:offline_pages() {
-    ...
-			ret =3D scan_movable_pages(pfn, end_pfn, &pfn);
-			if (!ret) {
-				/*
-				 * TODO: fatal migration failures should bail
-				 * out
-				 */
-				do_migrate_range(pfn, end_pfn);
-			}
-    ...
-}
-
-In addition, because memory_failure() does not hold mem_hotplug_lock,
-TestSetPageHWPoison() can run after scan_movable_pages() has already scanned
-past that PFN.
-
-When do_migrate_range() reaches the hwpoisoned page-cache or swap-cache fol=
-io
-while memory_failure() is waiting in get_hwpoison_page() on
-pcp_batch_high_lock, it isolates the folio from the LRU without checking
-hwpoison_page_offlineable():
-
-mm/memory_hotplug.c:do_migrate_range() {
-    ...
-		if (folio_contain_hwpoisoned_page(folio)) {
-			if (folio_test_large(folio) && !folio_test_hugetlb(folio))
-				goto put_folio;
-			if (folio_test_lru(folio) && !folio_isolate_lru(folio))
-				goto put_folio;
-			if (folio_mapped(folio)) {
-				folio_lock(folio);
-				unmap_poisoned_folio(folio, pfn, false);
-				folio_unlock(folio);
-			}
-
-			goto put_folio;
-		}
-    ...
-}
-
-On the next pass of the loop in offline_pages(), scan_movable_pages() reach=
-es
-the poisoned page and returns -EBUSY. However, folio_isolate_lru() has
-already cleared PG_lru and taken an extra reference on the folio that
-put_folio does not drop.
-
-When the waiting memory_failure() resumes in get_hwpoison_page() ->
-get_any_page() -> __get_hwpoison_page(), HWPoisonHandlable() sees
-!PageLRU(page) and fails with -EIO instead of truncating the folio, and the
-leaked reference from folio_isolate_lru() keeps the poisoned folio pinned in
-the page cache so subsequent offline_pages() attempts also fail with -EBUSY.
-
-Should do_migrate_range() also skip isolating the folio when
-!hwpoison_page_offlineable() is true?
-
-[Severity: High]
-What happens in scan_movable_pages() when a tail page of a large page-cache
-or swap-cache folio is hwpoisoned?
-
-PG_hwpoison is set per subpage whereas PG_lru is on the head page. Because
-scan_movable_pages() scans sequentially from start, it visits the head page
-of a large folio before any tail page. At the head page, PageHWPoison(page)
-is false and PageLRU(page) is true, so scan_movable_pages() takes the
-goto found branch at the head PFN without scanning the poisoned tail PFN.
-
-In do_migrate_range(), if PG_has_hwpoisoned is already set on the large
-folio (for instance, when memory_failure() could not split the large folio):
-
-mm/memory_hotplug.c:do_migrate_range() {
-    ...
-		if (folio_test_large(folio))
-			pfn =3D folio_pfn(folio) + folio_nr_pages(folio) - 1;
-
-		if (folio_contain_hwpoisoned_page(folio)) {
-			/*
-			 * unmap_poisoned_folio() cannot handle large folios
-			 * in all cases yet.
-			 */
-			if (folio_test_large(folio) && !folio_test_hugetlb(folio))
-				goto put_folio;
-    ...
-}
-
-do_migrate_range() skips the large folio without clearing PG_lru, and the
-do-while (!ret) loop in offline_pages() calls scan_movable_pages() again at
-the same head PFN, looping indefinitely while holding mem_hotplug_lock and
-pcp_batch_high_lock.
-
-Conversely, if memory_failure() on a tail page is blocked in
-get_hwpoison_page() before setting PG_has_hwpoisoned, do_migrate_range()
-advances pfn to the end of the large folio, sees
-folio_contain_hwpoisoned_page(folio) as false, and migrates the folio
-despite the poisoned tail page.
-
-Can scan_movable_pages() and do_migrate_range() check for poisoned subpages
-across the folio so that large folios with poisoned tail pages are handled
-consistently?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261101-memhp-hwpo=
-ison-pagecache-v1-1-ed8785ca44eb@columbia.edu?part=3D1
+Reviewed-by: Johannes Weiner <hannes@cmpxchg.org>
 
