@@ -1,129 +1,149 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3133606A32C
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 20:48:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6B66606A332
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 21:11:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=google header.b=gEJqrs8P
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=dytOCAJ8
 Received: by kanga.kvack.org (Postfix)
-	id 093856B00EF; Mon,  2 Nov 2026 15:48:45 -0500 (EST)
+	id 9C15D6B00EF; Mon,  2 Nov 2026 16:11:50 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 01D7C6B05B1; Mon,  2 Nov 2026 15:48:44 -0500 (EST)
+	id 94A2C6B05B1; Mon,  2 Nov 2026 16:11:50 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E51326B05B2; Mon,  2 Nov 2026 15:48:44 -0500 (EST)
+	id 7EDD26B05B2; Mon,  2 Nov 2026 16:11:50 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id B5D936B00EF
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 15:48:44 -0500 (EST)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 49D6816024B
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 20:48:44 +0000 (UTC)
-X-FDA: 85391367768.02.4110626
-Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 358F218000A
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 20:48:42 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=gEJqrs8P;
-	spf=pass (imf24.hostedemail.com: domain of mhocko@suse.com designates 209.85.221.42 as permitted sender) smtp.mailfrom=mhocko@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 4D31B6B00EF
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 16:11:50 -0500 (EST)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id C06F41A022E
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 21:11:49 +0000 (UTC)
+X-FDA: 85391425938.09.BAF350F
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf23.hostedemail.com (Postfix) with ESMTP id A98E3140005
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 21:11:47 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dytOCAJ8;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf23.hostedemail.com: domain of cel@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=cel@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793652522;
+	s=arc-20220608; t=1793653907;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Tqk8hLSfa24lrMQkcg/49BjZeHEkNKhCmyNnUdkMSKA=;
-	b=mhLnZzqz1ipzsou3bVUFJamBuNH+mWQgW4UUd9kE371JvdTI7bBQkkltLvtvgZ2+r9vkkk
-	7rm9+2Xa4NqWRMqOngGhdvXERA8LvIK5vG79C2xjEjYyhUx85T3vToW3SHygvWxr2dgj40
-	zDeUD6VY8VEAAxgW6omyBBb9jV5jrIo=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793652522;
-	b=zMvm5ctnri4Ng9TfoSo+su9vq9skMhCBO9dLFQWlvGS2qXv3XqlubsmuZb/UJ/oXjCddZy
-	x2nGIDQZUzQMVqnP+DsBYYikH/HouaF8BpmuNbUixgW0U5Md3tqTDYa8xpvbiETOkzEo6V
-	Vh0MKPCTFIC4ewagp5Hhqh/JR65azNY=
+	bh=xxWoHxsw4VPFqHPAqACZbusTmTkHUnFSnkXXJwnJ4WA=;
+	b=LK5Tdqout68cTLKr7n1ahZbEg11jjrNgDh914Vn526ywmWbjy1wwHcMuBzlyapo6T/ztbh
+	P/aa063jwraB/ArqINBNyy8uAKdUUME/TNFMTgs7AWUbFzED9DFs1Wdp3LkQX7EyJ8BtwI
+	mWkSV2X6NXJYsbJMcNDjVkMyLYMxxgk=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=gEJqrs8P;
-	spf=pass (imf24.hostedemail.com: domain of mhocko@suse.com designates 209.85.221.42 as permitted sender) smtp.mailfrom=mhocko@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
-Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-48c5358fc28so2787339f8f.0
-        for <linux-mm@kvack.org>; Mon, 02 Nov 2026 12:48:41 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1793652521; x=1794257321; darn=kvack.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=Tqk8hLSfa24lrMQkcg/49BjZeHEkNKhCmyNnUdkMSKA=;
-        b=gEJqrs8PY8Nb7Mjx9e1Yec3MjD4YnXS6XgrMvPDCrbEEKbEdPF9HXqMbRXy+PnXujs
-         hwDmiPHhZhIsN8j4p4Y7rBcO1xJKZYI0jk4jjj+RyLzocjpOF60s6nzWZWIX6ZPWr8lH
-         l6V2fbS/r/EfjS3NPjA5Z3K2Y86EqPSmDAiOxMB5NLK7/Sz+0/+cWr73KuHMXPd8ON1a
-         MxJo1Pu6K02U9Xsgqf8DX0yUCbJBI9AF7f2GoxdQYnGftoKESuwsZ8TiYwBNmRExNQzD
-         CdRmASimMJgDDWi6WQlN7wZWtnZw/cePRAaizc5Ug4hMWaLO+fSnxcLl4U2vpxcA95GE
-         RvlQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793652521; x=1794257321;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=Tqk8hLSfa24lrMQkcg/49BjZeHEkNKhCmyNnUdkMSKA=;
-        b=DBCOmpgEiJSsVtQtp1f/bErql1UbV4zWkfj5T4FyPlmgkrz/ZY0mB0cilLzXAsshUA
-         ru3gL3pmNrXEN+6I7rmHS8777RuCjqk9nBm6Raq/jzEX9uV8zNuwdPE65hMcMltpfTI4
-         kRhmT+51BttSDIISFwtxr+7FuSHXG0pf48/SxwPNBIcF31Oe+6U2zIFqGsf8WuFtT0uV
-         leGhETZBkaM/4vIqjSwrQPbe+dGcrv0oQTjY9+gjQ9CNoLbfCG1utAu4m2kA3yRjSBRt
-         LRewDUFBhKj+PWpcj1FMxyLM93yzOwUt3XzgNNkDWdcmmcy9cxXlxnD4CpwxaP6vYWGS
-         pgGw==
-X-Forwarded-Encrypted: i=1; AKwUvBwy5eNJNbpLDOatpCnIuCAbDwvqrwkt+VEjjl+VayRHYNdvWQVevyZCzdFlIB/TR9H4FSRDPQz6SQ==@kvack.org
-X-Gm-Message-State: APuU4Z8D5AaXBGEQcN2Si42h0Nr3PhgP6PX+Nuc7WrVo1cMHCvOfxsQy
-	VBxa+RIRYUqKRztzIHL0stVEw5UK57xA8ZvgYAAeVHAyMGyENJXd/zIJ3A+ukcrO0BE=
-X-Gm-Gg: AYBFou1/ro5nARetXGm9avPNkctzyo1aWswt0XmZDOM3wYzupUVkdYNf3LWZlVfhT7L
-	n8ybHwATFoYI45jm4L4ZSN0tCDnJI8tdhIO3Ngz6ObX+jfDGeQw0Gpmvmr+QjrUd5tRQKR477/X
-	1odiBBzz3BUTXWLIGj1y0h3PRqsd9fSsGFvkw8x/HaDSmxchi+3XEBHqZ5WQp0vIm4eUuVsOS3T
-	+PNCjGOLWr1ECtxwAxL338QNlv6GTXAtsjC50hEVDEld7TnlQiDK1QHWlL6mFFMgeW6fpwupdCO
-	SeEWp14KExBKRCTtVaFKO9aP5y5wDkM8yx5ZWkGgsakUkpXveYgtluNJ0TYwvnoMmfRZcQuWvCF
-	lE1wRz9CZGkkQ5zx/hwl6Z9/c5CSVFdEDWrlMYWcilf6sCdEP63GzkCLBS8FquQhYGdj8/KIU+g
-	f9fHE1bxjfWGHnOXcvNOsljG7O4Qq6TT9F94bybARzcWWxVawhWTXDAhz/dmFry7erusNOr1EPb
-	ty79XA440xaleXL0UwFcHhi4L+GYxv+H4sGA4Rc0AgkS3LFZ+zxBrlK3z5QbK6SQztnp/UTmNAN
-	sARSpAvHbE0Gz0wu1Pw2BSp2Zfu3yVsiUEn2Llo=
-X-Received: by 2002:a05:6000:2889:b0:48e:f10:ceb8 with SMTP id ffacd0b85a97d-48e6e2e769amr23073454f8f.11.1793652520570;
-        Mon, 02 Nov 2026 12:48:40 -0800 (PST)
-Received: from localhost (109-81-32-81.rct.o2.cz. [109.81.32.81])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e71b80ecbsm22252091f8f.35.2026.11.02.12.48.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 02 Nov 2026 12:48:40 -0800 (PST)
-Date: Mon, 2 Nov 2026 21:48:39 +0100
-From: Michal Hocko <mhocko@suse.com>
-To: Johannes Weiner <hannes@cmpxchg.org>
-Cc: Roman Gushchin <roman.gushchin@linux.dev>, Tao Cui <cui.tao@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>, muchun.song@linux.dev,
-	cgroups@vger.kernel.org, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, Tao Cui <cuitao@kylinos.cn>
-Subject: Re: [RFC PATCH 0/3] mm, memcg: isolate deprecated v1 state from
- struct mem_cgroup
-Message-ID: <auj3JyE47UjKa3ek@tiehlicka>
-References: <b36ab4a7-b692-49e8-92b5-1dc4d76dee00@linux.dev>
- <0BEF7489-16EC-44EE-847B-A6AA380BE11F@linux.dev>
- <32e80536-64e4-4ae3-a7da-4a37ed415f0a@linux.dev>
- <7ia41p9341lv.fsf@castle.c.googlers.com>
- <aujhaEfimB0S5Msu@cmpxchg.org>
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dytOCAJ8;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf23.hostedemail.com: domain of cel@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=cel@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793653907;
+	b=FhY+SQl9hRB24wPtc1l9HvCBiXWw7brmEIsm8Jl0Rh9pR8wiMcNPf/GmFlho/8JVxaxIpz
+	A7+dKMhrRqlvzv6FHpA4zLrE/6eX8e3llQtcY0mB4Xthfym1RZeKJvSmvRxBWKeRNED5b+
+	NVG0V+MfPxHdWd6qDxFHbPU2JonASmY=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 8A7F743D60;
+	Mon,  2 Nov 2026 21:11:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BC731F00A18;
+	Mon,  2 Nov 2026 21:11:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793653906;
+	bh=xxWoHxsw4VPFqHPAqACZbusTmTkHUnFSnkXXJwnJ4WA=;
+	h=Date:From:To:Cc:In-Reply-To:References:Subject;
+	b=dytOCAJ80VHiZ1OuHgOm2U1eYLbIsfTF1vQWmQotjAlcYPh3GK76v2x+nXUxkSisM
+	 rRSMnxpBhgTKN8qPsqtbMHMR1UcE5DT4mgUuhKJo4qXktvA3N/yVCLaVhqZ4M63hYH
+	 QbrscRO/3j+WrNfWqflniFd2/f4mJsHcE8FZW7CXPExB2Ibn6fo+J7vdNxA+QmucPj
+	 asTGnwJy3cojByhQ2o4smk8bCPPjZkdrGQJDXaJrz2GO4vpMh3YJ9pqlDgFCK3Aw3b
+	 4wFppyIBa3dGdCapF7WeNSk1Sr3UoL9HoLlYvJGsRNCyDrMBD3ag/9W+/du91VH57q
+	 5GRjihOJRtTyA==
+Received: from phl-compute-10.internal (phl-compute-10.internal [10.202.2.50])
+	by mailfauth.phl.internal (Postfix) with ESMTP id A6FA8F4006B;
+	Mon,  2 Nov 2026 16:11:44 -0500 (EST)
+Received: from phl-imap-15 ([10.202.2.104])
+  by phl-compute-10.internal (MEProxy); Mon, 02 Nov 2026 16:11:44 -0500
+X-ME-Sender: <xms:kPzoaoxuxxTdjPhQc-3C1zahFZ9aLPvFlowSXGC4R9C8GitGRfcHEQ>
+    <xme:kPzoanGt2jIbLsy47fOpg3WSZ6PY5cBPEClcODOsbon89QNyNk_IgDaAKQadQr2gv
+    uVji238fOMsmLse7Ab600gs9JzJ4DZGzIXqA8TonRFGYfmnT8t3fbcj>
+X-ME-Proxy-Cause: dmFkZTE7nCOuYmDhbapfq9wnjcJo8I33hiQgEa8gG2mpUd6SiuGVjxefYxNF6ts7apvhL2
+    O5TBTvvYo35j+hcPabsgTVdffpGt9MvK5vyw0ZMRJyC2vP2RybIncEIE31yiniEOHW+BGf
+    KJmARPQ+h8rxdMmbqHuWCrc+Rw3W1Pf0ttMp3mPjsGk8H3PuZMLxakWBNCayAXhn4arSzS
+    SZT0vmmbKnAjrINdR7jALY8t/GQLDesfw1v5pO7HM0aidEkcoMk/IX3mKuG96bBGSC44od
+    6j/8Jj2EeiKpBxuZiOuoARjnD/H7MmHLm4946WLbdldIeKehhGb+AjzJw7psiDGcN84+AT
+    fxd1ztnRd84WKFx7SmijybVrXSJKl1AR6Etu7r8JTz1E2IGG2rbVvLkvpR2IBVnXEcQUHC
+    r3GDkPNpHJrO1FrRX5A6DIGX8s2wqnE6WbRRhP/2UYux7WzU3qFcGt1leEKU+a12CXazx+
+    obllJ0NCoPjY5PVFTCgHM6NA+K8OAWAC3Y3QpVQ0GtrFfYBqHxRpcYNa889BVVJkMXM0Xx
+    NfAqx7SCTsESPLk/r6Zjs10FtyBDV2ONG987Ot6HPmAwX9PryQz/c+/GTZobKPftcCgNbF
+    dMjgQuUNaOpeJy2SLb+WxTNiYQx6H//DcXk9Eak51jjRY6pefZcEU0xUdZXw
+X-ME-Proxy: <xmx:kPzoakX1575s1xPK_eRnHKHwfrJs0dh41R1DNgFe6QjSA1GNvloQig>
+    <xmx:kPzoaucrAaHqLBPd5fXUJKW90uwtgM36P2rOCnTrC3gEediQhDxGvg>
+    <xmx:kPzoaq1brQHn036GXHRWgb2TJPEUtB4n80avLnuqxkDWgbKvmiH79A>
+    <xmx:kPzoakc8_jk9jC4iv-WEqTZu5jnNeZJxZR4JSbSaITEBNtWbgxkbuQ>
+    <xmx:kPzoau7BSrFGgoTyo_PA1CYGAey1sR943z5_XGLHZHfJ_ObFFdVmJ7Se>
+Feedback-ID: ifa6e4810:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id 7098678273B; Mon,  2 Nov 2026 16:11:44 -0500 (EST)
+X-Mailer: MessagingEngine.com Webmail Interface
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <aujhaEfimB0S5Msu@cmpxchg.org>
-X-Rspamd-Server: rspam06
-X-Stat-Signature: q4pc3q149ybyiprnkf78tbw937ohadnq
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
-	autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: 358F218000A
+X-ThreadId: AFgPYeWZplpR
+Date: Mon, 02 Nov 2026 16:11:23 -0500
+From: "Chuck Lever" <cel@kernel.org>
+To: "Christian Brauner" <brauner@kernel.org>, linux-fsdevel@vger.kernel.org
+Cc: "Linus Torvalds" <torvalds@linux-foundation.org>,
+ "Jann Horn" <jannh@google.com>, "Josef Bacik" <josef@toxicpanda.com>,
+ "Chris Mason" <mason@kernel.org>, "Jeff Layton" <jlayton@kernel.org>,
+ NeilBrown <neil@brown.name>, "Eric Dumazet" <edumazet@kernel.org>,
+ "Thomas Gleixner" <tglx@kernel.org>,
+ "Alexander Viro" <viro@zeniv.linux.org.uk>,
+ "Jonathan Corbet" <corbet@lwn.net>, "Christoph Hellwig" <hch@lst.de>,
+ "Greg Kroah-Hartman" <gregkh@suse.de>,
+ "Joel Granados" <joel.granados@kernel.org>, "Kees Cook" <kees@kernel.org>,
+ "Jan Kara" <jack@suse.cz>, "Jan Kara" <jack@suse.com>,
+ linux-kernel@vger.kernel.org, linux-nfs@vger.kernel.org,
+ linux-acpi@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ linux-s390@vger.kernel.org,
+ "linux-scsi@vger.kernel.org" <linux-scsi@vger.kernel.org>,
+ linux-um@lists.infradead.org, linux-wireless@vger.kernel.org,
+ "Linuxppc Dev" <linuxppc-dev@lists.ozlabs.org>, netdev@vger.kernel.org,
+ ntfs3@lists.linux.dev, platform-driver-x86@vger.kernel.org,
+ coreteam@netfilter.org, kexec@lists.infradead.org, linux-pci@vger.kernel.org,
+ linux-sound@vger.kernel.org, netfilter-devel@vger.kernel.org,
+ dri-devel@lists.freedesktop.org, ibm-acpi-devel@lists.sourceforge.net,
+ jfs-discussion@lists.sourceforge.net, linux-alpha@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-cifs@vger.kernel.org,
+ linux-fbdev@vger.kernel.org, linux-hwmon@vger.kernel.org, linux-mm@kvack.org,
+ linux-sh@vger.kernel.org, linux-usb@vger.kernel.org,
+ samba-technical@lists.samba.org, sparclinux@vger.kernel.org,
+ linux-m68k@lists.linux-m68k.org, linux-doc@vger.kernel.org,
+ linux-serial@vger.kernel.org, linux-atm-general@lists.sourceforge.net,
+ "Takashi Iwai" <tiwai@suse.de>, linux-input@vger.kernel.org,
+ linux-raid@vger.kernel.org, linux-ext4@vger.kernel.org,
+ linux-modules@vger.kernel.org, linux-debuggers@vger.kernel.org
+Message-Id: <7ee779f9-db3d-4829-bdd8-1d09e3f74c43@app.fastmail.com>
+In-Reply-To: <20261102-work-procfs-net-v1-6-982104a4f592@kernel.org>
+References: <20261102-work-procfs-net-v1-0-982104a4f592@kernel.org>
+ <20261102-work-procfs-net-v1-6-982104a4f592@kernel.org>
+Subject: Re: [PATCH RFC 06/11] SUNRPC: let procfs own the seq_file of the cache content
+ file
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: A98E3140005
+X-Stat-Signature: mxefzgseddwjyc1ytfs695ef799u8txz
 X-Rspam-User: 
-X-HE-Tag: 1793652522-51838
-X-HE-Meta: U2FsdGVkX1//yn+4TUJJgKOflSgaxLsDcU6kRg7oibkrWPkkxkd92gqlBvVWoil3jHB9KPMa301hGa0UJm3SDZyjvDW56IuV/TFC9eVSAqYgI7cxqvznB7rcj07Lb68XPNCtDgB2o5Hy+aOY1bMQ7UTm3UBKXaYQU8yPM5tAKRl7mjYCPHEYtWeb3ohy+35uJJhGdguy5GX8lUBFYofvGiMv0pP84rUpSA/EqeHCkT9EtmUSfSzf72IOgRyFLN0agX9SHVzBSjZDmbCV0I/wMLpWYJfgVLbPJa78nFgj0u1qsywHH/sFi77jHw60KFBLUuYL1E9ygOFVtGifDBnRett1FxTKXZxav3nahiSTD8bjM5n0ltYh+KWLi11q6wv653TRr/k6pM6ri1nhqtChIMkGs0LBbNUaHhBIZ6j0Rv2/6DiiMaFtiVItinVSdgZsVzSLd3l9mXEYZx84MjY+npa8OSgo4jXPm4+40n+wz2OlKhe0aiZZCCi0ifZuWzplUt39WqpL4vWRngRgloFBn3Joqo+ofElLLOL5qGN/f4RT1tTjI3HWoR6BfLnJ27YQzLghoRyY2Hf87oDC46i8EOEfOEbPTYBgQvG1x+A4xJ4nnMzB5Xscpe4zZalBrgLo92Da7s0GrI+PG5Zaixmt3AJ9vw7L171af1iT8w9SJBGthOofl5JlrSiKsuScO94xOUxb1gKvLf+rFeeyagGYLMEjbAUr/wtph6o+1aw97BFZV61GhfZf2et/US+UQOP/Uvma7BWm3wTmVWZI6aOED85gRlztPx/tcWW8LD2ypU9v4nw1iuF7Z153VgmNlfsCYgRlyiujuPMl+33mZf4CkMQUUXuqG9MREj14gjjwhyR724oDbEpBhTzkyqWXiGkcpywQj7RGWZyC5oUOmFOXKWN1NMz6QxT9YWlC4imnQ23ovCQrDWD/0cpMNlvqhYeobJaNoWpMnuv9lOS42bS
- MK21rPuw
- GAWXnKNl423XoIteRtd1dk0ZBF/+kuwy7EQdxkdrAktGFds8k1aFAq6p+JtUic6Q9hhL6UtXonfZ3m6RE62JE7V+/Y4Uhmw5hHj677E9s57464z/0EqoVr78bov3sEIQ1q5xOfoi9FHNhmrs2e95IWAvrjv+7gRyGvThoyn5yOH08bhUMaPau4XvpEGBsyONlp3O73cdMrK5o2Z03h3b+7xwteUrUGS2UoTbj8E7lTfUiwoEkZ00YhtejGlGybtTC58c4JFC1RVPvJxht898V5aSBdK4dL7c/k+pBl6AaXK3NJa4apIvke4AKikdZSTfCsvu/aVDvoBaY4vrhaUXAvaTl/QzyxwNJ0HjjBZS9RaStJcuvwvuNQrnNOxGsxwhfZgPwnC3xB2RpDQsN/TxYwuwl08Tgmfw+S1uFg8kg4Ba/+0U=
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
+	autolearn=unavailable autolearn_force=no version=4.0.1
+X-HE-Tag: 1793653907-645090
+X-HE-Meta: U2FsdGVkX181dqIoC3y7VOgxzDy7UOcpwFX9Wn3fTYb6kAvHNBiwWgpGn72BTcHj/VTiyDyjyS/Tuxzh4KBkt19r5b8VbcnvGJZTW3WYHZ39V1iNQRkqeRniaU6Ux0I3udZWnaoueqdEqkJdH8CVqXe1jtwi/XQSwA0P0YLrn4sEZMDRfS81Ey3UZBa16ZAcOkFjCo7nzlchOZXcv5dTiugKzi+WAP+PkeIEsK+WoZ0eLHexrdC3psownjCXFtF+qPxufhdxR+k2OM/MdQO5Oq9XJslGi7AnuzUWZAhnWFF//C+a6LqobgvaOGGG885qSzDubQiP45dVcEF0rPSPJ7oB7yRi9p18GO9BuhVFcIQqGM/vGt4IxSttspubXodbW+5EHtdv2YtOKEZLYqcOi/QrCNzcPA6osVNu7RvY6eeQmctqzkrn6uP2hG7Fi9BbEOHWY32II/oYAEF1XAup4eb6PkmWyqUkXr0g9Oxrp9aeZ2Tu7sFclU/e2GP8WgL+2gYZU6iCPGTHCHSTXOZgJp13r/rWMoFdU/n+snZxqwgm6l70JuxLvNpWJIgQD9FMXEiuQTYImUoJL8dbKWZtTR4F8wRkL5r3syIBC5DSjiDAhwXzvULrrROAC3rYP+dt8kyLslngmrSEaR/ugKdddzqnbgxszWt141nQXkCKl8zDPZ1H1Gz2SwWq773PQiQTUYG2ruHxvdtriJQVISe3hEMLJGP2Shwo93YBqw3gvDrvPLyxNrxtYZVANE8FbqfdlhjbySmOxO/K7ZeR6mG0aFQY84zM8wB5KeDZNCkPFe1iIYwNrc+gOp2KK4jRGuNrNV57TRNIT9TKV130qOoNn7qMJn5qkBgQUwwugY/LVanKHZfTY16N4QrOsUtZkEuugYxyrlJA4DBly5vO886mblrpLKS8fnanCa+p0RtjNvxcTdhjZfiX6UgeC/hJGL7gBQJRnIyjV3O2O1Eriad
+ 9C/uR8eV
+ ANETUPnlNVbk1e3ujJC0Ql7jB8RU/dUvwg+bf5/ZyljVcSx3i/Q+uJOg5arWpJXRt7FG8v1mwdl7Ne1jTQI6jeW3Aj+G9j0qhbzdG7BHzcSOn62tisvvWRQjH9svjYLpii2w8hdbJOPUOzfp7fF7yVAbBqrsNRmaALviqspUWCXqRiJOOe/d+aef03ZWW6gD6cyxW/yiP1QwPJdo1YlCBTnXzB1hE6apjFFPkrU5ALzuS4m1Je5tnJsLX+TJB1f4SVYqO467RblXC0r5f9DCgfFvO4OcvuIRfoaYBf7N6U+uREv3ANU+iuTEgRP/E2n62kHZ0/FsKh2qbtweo8F95QWleb3kDAtoc3X1zKAwzW8F6lS5qInN64muwVvY10sp2EcLl98B4icKfFVoh3nwM3em7Jw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -132,48 +152,20 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Mon 02-11-26 14:15:52, Johannes Weiner wrote:
-> On Mon, Nov 02, 2026 at 04:52:44PM +0000, Roman Gushchin wrote:
-> > Tao Cui <cui.tao@linux.dev> writes:
-> > 
-> > > Hi Roman,
-> > >
-> > > 在 2026/10/30 14:05, Roman Gushchin 写道:
-> > >> I believe we want to delete this code sooner than later, why would we rewrite it before that?
-> > >> 
-> > >
-> > > My assumption was that v1 would still be maintained for some time
-> > > before its eventual removal, and the goal was to reduce the coupling
-> > > between the remaining v1 code and the shared core structures during
-> > > that period, rather than to rewrite the implementation for its own
-> > > sake.
-> > 
-> > I understand. But personally I don't see big issues with the current
-> > code caused by the v1 stuff. Maybe I miss something...
-> > 
-> > The proposed changes on the other hand create difficulties for those
-> > who use v1 and maintain some local changes or simple backport upstream
-> > fixes. Of course, it's not a reason to not change the upstream code if
-> > it's justified, but in this case I'm hardly convinced.
-> > 
-> > > If the expectation is that the remaining v1 implementation will be
-> > > removed in the near future, then I agree this work becomes much harder
-> > > to justify.
-> > >
-> > > Am I being too optimistic about how long the remaining v1 code is
-> > > expected to stay around?
-> > 
-> > Well, Idk, it was considered deprecated for quite some time already,
-> > so maybe announcing that it will be deleted in a year is reasonable?
-> 
-> That might be tougher for v1 users than the member placement :-)
-> 
-> My understanding is that there are still a few heavy v1 users out
-> there. I'm not sure they can move within that timeframe. Personally I
-> think the cost of the v1 code now is kind of negligible now?
 
-Fully agreed. 
+
+On Mon, Nov 2, 2026, at 10:07 AM, Christian Brauner wrote:
+> Declare the seq_operations and let procfs open and free the seq_file of
+> /proc/net/rpc/<cache>/content. ->proc_open() and ->proc_release() only
+> take and drop the module reference and set up ->private now. The
+> rpc_pipefs file is unchanged. Reading the procfs file then no longer
+> holds up its removal when the network namespace goes away.
+>
+> Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
+
+Acked-by: Chuck Lever <cel@kernel.org>
+
+
 -- 
-Michal Hocko
-SUSE Labs
+Chuck Lever (Come to NFS bake-a-thon! https://nfsv4bat.org)
 
