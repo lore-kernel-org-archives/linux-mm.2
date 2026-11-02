@@ -1,75 +1,75 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA39F60A381C
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 14:46:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3431F6070DBD
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 14:46:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=UzgLpTAs
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=TqJySAjz
 Received: by kanga.kvack.org (Postfix)
-	id E6B206B05B4; Mon,  2 Nov 2026 09:46:38 -0500 (EST)
+	id 4AB8E6B05B5; Mon,  2 Nov 2026 09:46:39 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E1C0E6B05B5; Mon,  2 Nov 2026 09:46:38 -0500 (EST)
+	id 486546B05B7; Mon,  2 Nov 2026 09:46:39 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D58496B05B6; Mon,  2 Nov 2026 09:46:38 -0500 (EST)
+	id 2D2056B05B7; Mon,  2 Nov 2026 09:46:39 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id ABFA96B05B4
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 09:46:38 -0500 (EST)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 31CAAA0121
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 0D5046B05B5
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 09:46:39 -0500 (EST)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 8826140110
 	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 14:46:38 +0000 (UTC)
-X-FDA: 85390455276.07.706E6D8
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf18.hostedemail.com (Postfix) with ESMTP id AFF941C000F
+X-FDA: 85390455276.18.4483669
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf18.hostedemail.com (Postfix) with ESMTP id C77A31C0005
 	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 14:46:36 +0000 (UTC)
 Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UzgLpTAs;
-	spf=pass (imf18.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TqJySAjz;
+	spf=pass (imf18.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1793630796;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=+CbOy/w4oZmoVyUdrE5PFeUUqcG8Qy13cgKPirYGonw=;
-	b=q1F7tiTRKVRvOwXRPIPMfdFAY/lRZFyMWEZRZgys0ec7Nfi6RDLHzulrjl09DksUsTqO0l
-	ZVdFGgKt4rWTBQ9ATVGqGlaWqRVA3gOk10BQZ2o4kp3n7xe4qWoT54knmhXAYnJL/PFiFV
-	JL2jhwtTLVgEJsXcM1eoSoRYmudpw14=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=CF7ShlzIhzwBW+s3yeojdJySM8gPCUgFHqUvtGr8dsI=;
+	b=cxPmDrleWbiV3iHNxKoQM6kti6Pygco6DfGS662PCmTEvrI1FXFoJePUTE6gtKVFnUM6iL
+	6Odnv1JKPZ+fri5fYRl+Ki6vkq84ZYq70ugSL7Zsn3BDvNNkjccJdtvt+QZTGZHhwXo46M
+	EQk6YelOyEY0SPOhYgWNj7DOMhpScxY=
 ARC-Authentication-Results: i=1;
 	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UzgLpTAs;
-	spf=pass (imf18.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TqJySAjz;
+	spf=pass (imf18.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
 	t=1793630796;
-	b=lqPZTh9Zg6f8YBeHIDO5h4ycgI+dw6G2ZKicW30pz+DKlA0Uno6TP0vxRTy1yJKa3SZ7oW
-	Aay03IqG0RlzgZWJY0CMMF7vgNKLUDX8xRfDHHXl7qdxDSX6TZ7G9lLPacJBt/wpDwxMhV
-	1qtahIgHCuxf0cSxaTQjIv61OsKNW3w=
+	b=wBp9ZymhX3hDozTqj5Pasjz6Q58cwZgcdGKEOi+pMNhonI5JUn4igExQ/etkusOglWn0F1
+	vTUSSdG+krUoG+xECWf50Oaxcr9xL3kv4uM9q9MC18tRVNcli1loH+WWnMIwzjGAHzL1Ri
+	c7kx52RlK/N4XjkWiUk7l06fJaoQY0o=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 4CBFA6020C;
+	by sea.source.kernel.org (Postfix) with ESMTP id 3087843CB5;
+	Mon,  2 Nov 2026 14:46:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A1361F00A17;
 	Mon,  2 Nov 2026 14:46:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 735601F00A18;
-	Mon,  2 Nov 2026 14:46:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793630795;
-	bh=+CbOy/w4oZmoVyUdrE5PFeUUqcG8Qy13cgKPirYGonw=;
-	h=From:To:Cc:Subject:Date;
-	b=UzgLpTAsh/8b2lAuCsP4MmQBFlTwq27nXfldudYpUFO9wJWmkv9UIHFAXDDexAlif
-	 iO1Q0+qe6cHXAUlIT+U3r4HyjZYBl4HukMhSEITaTw4So/C+I1yS3Syg7C5sIxDZPG
-	 5S0ZNudLwPF0WmqBgUtsD6evmUSs8XzPvMYhh9Bl1eVwPb+BqphU2ASIGP7YiG/TJe
-	 ZGwuEjboJWhAA6PG6w3PUOPbiFKqwfO9qGu2VmKADh+w6P2mhbFyIdU7jmBJpgBnal
-	 IG0ZgOE6r9qhpaa0kScLQ3/QfF4TUP+ddUJtSY/QX/sgQfDsbHDsuF3Ku34F0iemg5
-	 EEcdLIA1YJTXQ==
+	s=k20260515; t=1793630796;
+	bh=CF7ShlzIhzwBW+s3yeojdJySM8gPCUgFHqUvtGr8dsI=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=TqJySAjzHxs1XsxoE6HX68+Lx9kxA0VsODxNDkN2aNx1ie4S+lOd/IUDbpnsK3xcJ
+	 BuZEeEKcNnFOBhAO/zxqRTc0Q5PyIGNVV2bdypcqOq4Ff68Dr4tvz6MfmRNvlR2s3u
+	 JTZQsnzeiLG6nWB1YqcjozpXGkG6f3FUkT+YqwfZ7pf3SaAxPOUYIkdJNzKDus9vD+
+	 XEzTQ+oe3vQI217NaRmyTT9O9eFjA0IMO+EwS70ITn4fVk6szbaVdNDXfVxiP190yL
+	 cYgwVNApXVOov1zQwkQvlYCneKUEh4r1eB6RloWpF4/aEkO3/yN7dGOvumW3npSz6k
+	 oICrkeRJi708A==
 From: SJ Park <sj@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
-Cc: SJ Park <sj@kernel.org>,
+Cc: Wang Xiaolei <xiaoleiwangxiaolei@gmail.com>,
 	"Liam R. Howlett" <liam@infradead.org>,
 	stable@vger.kernel.org,
 	Brendan Higgins <brendan.higgins@linux.dev>,
 	David Gow <davidgow@davidgow.net>,
 	Michal Hocko <mhocko@suse.com>,
 	Mike Rapoport <rppt@kernel.org>,
-	Shuah Khan <shuah@kernel.org>,
+	SJ Park <sj@kernel.org>,
 	Suren Baghdasaryan <surenb@google.com>,
 	Vlastimil Babka <vbabka@kernel.org>,
 	damon@lists.linux.dev,
@@ -77,25 +77,27 @@ Cc: SJ Park <sj@kernel.org>,
 	linux-kernel@vger.kernel.org,
 	linux-kselftest@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [PATCH mm-hotfixes-unstable 0/3] mm/damon: fix watermark state, kunit pid leak and selftest fake pass
-Date: Mon,  2 Nov 2026 06:46:23 -0800
-Message-ID: <20261102144627.88843-1-sj@kernel.org>
+Subject: [PATCH mm-hotfixes-unstable 2/3] mm/damon/tests/sysfs-kunit: fix leaked pid reference in add_targets test
+Date: Mon,  2 Nov 2026 06:46:25 -0800
+Message-ID: <20261102144627.88843-3-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20261102144627.88843-1-sj@kernel.org>
+References: <20261102144627.88843-1-sj@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: AFF941C000F
-X-Stat-Signature: 4r5qio1wjqtmpu6eumdkt4eo9q66qg9w
 X-Rspam-User: 
-X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: C77A31C0005
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1793630796-233549
-X-HE-Meta: U2FsdGVkX18O/O7/8malPacql1nvVuMJyohHX+LX3BLyMdvnvk9IleAj0ghmFTiAxx3/RQO9Ww1YQtN9xB91Y/BaHRlPQESovHyFETsICj7lfKMVTZPvtZEJm7nVkPLEvu28e6j1DSoyGDeOLmNJZF/VBo2zGi8xgZIFbEshJbsU1kIE8qvDuTvSIcz7NuGaKWxp6lejVvf9e8LWj7QB6bbc8ujk2+rtxk+bpl7IiAp4/GiEZJ4LzT9iB531VpxtiSQYg12rnn0ENSqRk8v5iQHlmSe/fKyszKZ5DcKevX2V8j5Axli11KOxakTAFZV3gWdzhr5Um7w0lbEGA7wAAAsKqbqsMj3xRDn3l5y/49nVlRwunU9tgK2lWVDnWAkrOJB/WORKeAmk3++htgmUJ5CZnicEMcZJ25qIJHjy0Kh4jL//tzPacmEEl1rfd4pEfcQr20kkyytzQgHA4BiX/d1bOw+qlUaf/uSkcj3Qzz6yrx2P4P+a2zaJd1CI8OUxp3fyu+XDnXG8Rripvw2+6gaDFq4QFJFepXeH/NY75Zxl+G2hbzlVtTPmWDREI+mga8SYl92tHbOomMDQi+Xlbt84cSVxlperqh6JEiig+ZRAVUHvilatfw6KU6TXzguULgrxB82aGILFp2/R8NUkLzgCEbdaBWb/yIxqLjcVUclSwGepEDr73m6w01URo25TUzSaCEpsbVAQ+rgpChqjTUqCe402R+DXCRLGWlty3uEkFP0Yu1aTrvREwlxFk/JDYjLYPQ0JTXcH/eGOGjNVD3+Q39yufvA/5N5vBm43zIVEHeXA+rcCUVgtRagDNDoRjOd0kzoSW3Ug8ioDkaSJaFLcfmYU18i+NzAqZJDQn4hmvTffAbibBYNtQ5b+slPM3O/SaHo3DQtt3jY9PxtiWCVYBNcvdgrZ0yXmGqfeYUkoyoem23tHZ0Eu+7U3VUqh0AQr3A4afNzUHYabVD9
- 6y6Ht3sH
- sXt16URKV/p9vlkVNydpk7IBHK+IFwAdGXVcTfpjbbITC0L9EbovcJ+Vb/AdNHQYSlC0kDuMrf8ajLwvwVTxE4dD9sy4b9rHHJi9KaVW+0PFrNxUmfoMfKjGh3L8v8N3EoVSz56pbSzjOtYyuqvcT8JSQvABgyJpY0paPmWqb0oTWw5FnXqMErEdxG6hMgdFH5Rqu2Grd00Fwlvw=
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-Stat-Signature: kx34pah9n1mg91p8u6eqzjcpyusash3a
+X-HE-Tag: 1793630796-977943
+X-HE-Meta: U2FsdGVkX18yt9reBJLv2Z3nTYHtSaOOyMmuxO8lWwgkTUKzbFPHlMewzsgIJzfmERz0Puqs5V3kO49/ugwizSqTOq5uPnRZviTnTLu2de8uYNTg4NP36K8eHpjhfRKiZraNPguazd6ojZcasDe+oz6AFzx2VIHFNNdhxQwmC0HnsQIeWzVQybFWu391/zCV9o7vL2yBwl1LpKUJAbgWB4rvowvGptHnHdGMQB6sAlJitTYJmuXtR8ncMqb5pXTVHkMlui4Mw8wybNrs0EtMGJrkVCHOR/TccetvgHv31BmmKCtfmcBL1JbqMeVxYxKP4GTVwFLmkuv46ZoQwluDOHfnuvtEZSUasdVPnHSzQmBp5L0dr3dC2BkW7gYHYPYU39EefKLCwPGczHtpMBeAx2zGh82BZRu7YEq5AvvgwfMS90deI0leLEmZtZZcN5UPYTTsPISAzznyJmKfYcN9EpaH5fZ9lTWJTITUMpb8uajWEcIOYC+DWtVAmMrqNs8Umokc0I00IaNssLvTYPp89UmlgAIpnYr0K0g0yxzHX1VitJPirWT0bdl/f7PEiYjoz4Gf0A9m1I8iuzJPcoEUHm1mq2lonfoyZV6ml94env8dbnod0xuqgaWnLU81YxVdVgg9rvlDHq1EUGoxYNkuaQXtNcvzwXt5T9sa0FCp5UCtuilEqrACA+/cQytm4QLNuXUt2pnZatGzdjXqgWd7PzNX+86bSQjo2MFJcniTf7kUYRr7LBuh8h+VnR3GBf+6SMI8PDWEHqwZr2ucsx4cSH96PK2sqLgs5ItxFXA4mfZlQX37KefsudD33aCaktt7D1DREA19mR/1Q3dB0wbA/UxNDFVnoxGkv4F/gdFeN943Zxm1xjumk/iXF8GSfrVuEBD3TINYbcVhWQ7JtljXUM1qdEV3aq0TWqhKQj9oMKbHXI9JyUrazzVpG7jFd4M4UyvWFA+dtoY8LCYRBwu
+ IsnAMLkl
+ 9opBALR5toLzPdvFZgWJjxmReU44dBEa5Qw0kIg5tKXylEsZKuFH1E5tAoGtUuOvkPRl7feOLVDN3DHt1Dk4+OGCfsYsHv7uCV9rxHNUBzCnTZOkEyn3szDsx6X27TyERu6mB6KwxuGY6VU+zHxwIMuAcqCHzC74V7cI3VE+BJmckLTlRpHroSuLEAuTWP7EgYxS7D553kaoT8cv9vrRnjhZRfdbBokUnShfNrdI6w8N4PlQ+nki7m+5FP534k02rUV/Dr8Hv4Xy/NRXRCMsZAT/o9Clvl1M7D1yljsNA8VbuDCB7XW+SWg9RXpv4aikUcsnPgEnIehUCB4jyN6YBhbC9Cqh3IBFRXuwiL/LOvYJFdePeY8dyW/OZZ77xeXISSLZNBgKOXmdBaTgpRS8yBsuueBW9EBCmgpZNKtHs/2X+IkJDtFCt8PVz3YBttb+Jh6pk
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,31 +106,70 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Three hotfixes for core, kunit and selftest.  Fix kdamond deactivation
-from missed watermark reset with patch 1.  Fix pid leak in kunit test
-with patch 2.  Fix a selftest wrongly passing when it should skip, with
-patch 3.
+From: Wang Xiaolei <xiaoleiwangxiaolei@gmail.com>
 
-Note for reviewers.  This series is a collection of fixes that were
-initially developed by different people.  Changelog is in each patch.
+damon_sysfs_test_add_targets() creates its monitoring context with
+damon_new_ctx(), which leaves ctx->ops zero-initialized.  Since
+DAMON_OPS_VADDR is zero, damon_target_has_pid() returns true for the
+context, and damon_sysfs_add_targets() therefore calls
+damon_set_target_pid() for each target it adds.  That function grabs a
+reference to the target's struct pid via find_get_pid().
 
-Aveline Noir (1):
-  mm/damon/core: reset watermark wait state on each iteration
+The test then tears the context down with damon_destroy_ctx(), which
+releases such a reference from ctx->ops.cleanup_target().  For the vaddr
+operations set that callback is damon_va_cleanup_target(), and it is the
+only place where the reference is put.  The test never selects an
+operations set, though, so cleanup_target is NULL and both references --
+one for each of the two damon_sysfs_add_targets() calls -- are leaked on
+every run of the test.  Running the test with CONFIG_DEBUG_KMEMLEAK
+enabled reports the leaked struct pid objects as unreferenced.
 
-SJ Park (1):
-  selftests/damon/sysfs_memcg_path_leak: define ksft_skip
+Fix this by selecting the vaddr operations set for the context before
+adding the targets, mirroring what the sysfs interface does.
+damon_select_ops() fails if the vaddr operations set is not registered,
+in which case the test cannot exercise the pid handling and skips
+itself.
 
-Wang Xiaolei (1):
-  mm/damon/tests/sysfs-kunit: fix leaked pid reference in add_targets
-    test
+Fixes: b8ee5575f763 ("mm/damon/sysfs-test: add a unit test for damon_sysfs_set_targets()")
+Cc: <stable@vger.kernel.org> # 6.7.x
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: Mike Rapoport <rppt@kernel.org>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: Vlastimil Babka <vbabka@kernel.org>
+Cc: "Liam R. Howlett" <liam@infradead.org>
+Signed-off-by: Wang Xiaolei <xiaoleiwangxiaolei@gmail.com>
+Reviewed-by: SJ Park <sj@kernel.org>
+Signed-off-by: SJ Park <sj@kernel.org>
+---
+Changes from v1
+- v1: https://lore.kernel.org/20261029075609.35661-1-xiaoleiwangxiaolei@gmail.com
+- Add Cc: stable@.
+- Collect R-b: from SJ.
+- Rebase to latest mm-new.
 
- mm/damon/core.c                                        | 5 +++--
- mm/damon/tests/sysfs-kunit.h                           | 9 +++++++++
- tools/testing/selftests/damon/sysfs_memcg_path_leak.sh | 3 +++
- 3 files changed, 15 insertions(+), 2 deletions(-)
+ mm/damon/tests/sysfs-kunit.h | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-
-base-commit: 395206c0e287bdd981918e033a2b1621ea6a3b9a
+diff --git a/mm/damon/tests/sysfs-kunit.h b/mm/damon/tests/sysfs-kunit.h
+index 138a4b8d14e73..16373ba751dbc 100644
+--- a/mm/damon/tests/sysfs-kunit.h
++++ b/mm/damon/tests/sysfs-kunit.h
+@@ -79,6 +79,15 @@ static void damon_sysfs_test_add_targets(struct kunit *test)
+ 		kunit_skip(test, "ctx alloc fail");
+ 	}
+ 
++	if (damon_select_ops(ctx, DAMON_OPS_VADDR)) {
++		damon_destroy_ctx(ctx);
++		kfree(sysfs_targets->targets_arr);
++		kfree(sysfs_targets);
++		kfree(sysfs_target->regions);
++		kfree(sysfs_target);
++		kunit_skip(test, "vaddr ops not registered");
++	}
++
+ 	damon_sysfs_add_targets(ctx, sysfs_targets);
+ 	KUNIT_EXPECT_EQ(test, 1u, nr_damon_targets(ctx));
+ 
 -- 
 2.47.3
 
