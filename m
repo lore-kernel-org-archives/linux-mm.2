@@ -1,75 +1,74 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAD9A606A329
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 14:26:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F8A9607A8BA
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 14:27:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kX8+D9NV
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=dcbte5hd
 Received: by kanga.kvack.org (Postfix)
-	id 2AF236B05D5; Mon,  2 Nov 2026 09:26:57 -0500 (EST)
+	id 790A36B05D6; Mon,  2 Nov 2026 09:27:10 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 285C46B05D6; Mon,  2 Nov 2026 09:26:57 -0500 (EST)
+	id 7689E6B05D7; Mon,  2 Nov 2026 09:27:10 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1C2AF6B05D7; Mon,  2 Nov 2026 09:26:57 -0500 (EST)
+	id 6A50D6B05D8; Mon,  2 Nov 2026 09:27:10 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id EC1A86B05D5
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 09:26:56 -0500 (EST)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 77CBC1A0137
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 14:26:56 +0000 (UTC)
-X-FDA: 85390405632.01.8FA5C51
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf29.hostedemail.com (Postfix) with ESMTP id BA9C712000A
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 14:26:54 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kX8+D9NV;
-	spf=pass (imf29.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793629614;
-	b=Z5jH5xPW67Le8ircJE9o/bPET9EJqeaJB6jQ+HDfBm+KpySLWaJU3LmH3V6dwt6I527KY7
-	peCDhqBABHCyDbB1ChzlZXwWubRN46xNagdO4gEbtLhayJ+iANNfCYEGuCtAbuSpwh6/nS
-	gJV4aiiUCSOdg6dMcRMbJ9wyOTtssPI=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kX8+D9NV;
-	spf=pass (imf29.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 43F606B05D6
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 09:27:10 -0500 (EST)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id CC27C14013B
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 14:27:09 +0000 (UTC)
+X-FDA: 85390406178.20.14CBFF7
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 0CCF916000A
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 14:27:07 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dcbte5hd;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf08.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793629614;
+	s=arc-20220608; t=1793629628;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9aVyOXB46BuISsBUhN38Gy53ksJP5B0VIb3fhsBGGRA=;
-	b=1EVGr5uM9Aat+8YEM17mtyvw3FpPipsqTCZOZ4T/b9S+3YtIbrYxpKWpSbtdFrvEL3b9tz
-	vBTcMc1VSBlsxeddsskqDr9V0zcfqNKQa8IDYdbH0zt+tLHvv0AvFhXW5WXE/XL82yXKdf
-	LBVSsrcelsIJf+k4XnU1pe7udZYJPR0=
+	bh=vzxa9WYWKU2hIPXRh8KIDL7iPDal71uWut2R3PeQ4Y0=;
+	b=JYv15Ir7ih1FYU3Xxa49864znVVtvHvluwL+mGbnxlHFeVdB4xXnJYpJn7QSTbADiXvi/F
+	onhuom106jUEpAOKHiKqfJvaGx971TKDOoTce5gGNxW0W4J+5BPSO+nT5tdO8u9Uaqf46U
+	9c6g/pBba/qoQFg9eayRIF4Vj/UyIC8=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dcbte5hd;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf08.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793629628;
+	b=lrzB2fGyiAASGETe+u8W8iI38tqCuoQvWBxxcpOBeHPpj9NNxs3jW+Zry1VfMx4u9Zp9QT
+	kWbSu8MQebBs8vkex71vn/n2tUEqLaRVoK9mfENmZYUDvAddMNcxZlv9+v7uQXKuvIdVkh
+	OPt3hsi7MM1rg5LPcC1t0zLfaosLMec=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 6384160252;
+	by sea.source.kernel.org (Postfix) with ESMTP id 47F0B41ADB;
+	Mon,  2 Nov 2026 14:27:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 929881F00A1A;
 	Mon,  2 Nov 2026 14:26:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7C131F00A16;
-	Mon,  2 Nov 2026 14:26:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793629614;
-	bh=9aVyOXB46BuISsBUhN38Gy53ksJP5B0VIb3fhsBGGRA=;
+	s=k20260515; t=1793629627;
+	bh=vzxa9WYWKU2hIPXRh8KIDL7iPDal71uWut2R3PeQ4Y0=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=kX8+D9NVfqUSc8gdnE5o7Q3Oq/uGaLH3xjedKLYih9wdsnnjGcjcRNyhrZaxgnxxx
-	 6mJPp78Dyw5jmgqKUNdlhpYQ/2Qf2LxAvvtdrBxj50iBxD11Dxk7n+iHGOSy2yxUdF
-	 FBfa3aXoeS07kk/77nHtewMxpER9ltz8Mj/fE7xHULINbv3mdMS1KJ84n3AWWtBdk/
-	 bya8kywSYeK0JZbU+HmtQD21/aGPUSusYBz+eyTQ4qL+4aq772xEp6pJWjXfU6i3HK
-	 oQcjHkwy6Nkk9N/kAx/z/L8sk7X6Lk8bFh4mVxNn8C/PKjrqbaPSzJA45GkFv8YnRt
-	 zK+G0svabDX1Q==
+	b=dcbte5hdW7xjuWRdXMJ9nUGRptVMxwMDxFZD2ZHCRvhATLFLbmCjO/p7ODwW6VkxD
+	 y7TF4q7FxSh3ont9POQCTTY0PwswUZV/ZqG4O8wvRMxs5F8284pF+mcGzm4MaK93NQ
+	 QpE3IepC7NC3BeKk4OMULpvVs62kxU/MrowPIKoZY6XO5y1lgBCb/ZkDGZhuIEq6NW
+	 CebUwpQ9Bu8ybMNIDU6UpP7VHTtt7ORw+YnjUGlgQRZHNtXQRbikAiiBKHiyiL/Vym
+	 Kt3ER8pjmFooN4uaNfApJD5LlOSUElugetgObusGmTVg7V6wXoTDdDCVHauOcLAVDL
+	 k6v5tGZIFoVqg==
 From: Christian Brauner <brauner@kernel.org>
-Date: Mon, 02 Nov 2026 15:21:37 +0100
-Subject: [PATCH RFC 22/38] proc: warn about entries left in /proc/net of a
- dying namespace
+Date: Mon, 02 Nov 2026 15:21:38 +0100
+Subject: [PATCH RFC 23/38] proc: don't let NOMMU map procfs files
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261102-work-procfs-bugfixes-v1-22-59422ed3e465@kernel.org>
+Message-Id: <20261102-work-procfs-bugfixes-v1-23-59422ed3e465@kernel.org>
 References: <20261102-work-procfs-bugfixes-v1-0-59422ed3e465@kernel.org>
 In-Reply-To: <20261102-work-procfs-bugfixes-v1-0-59422ed3e465@kernel.org>
 To: linux-fsdevel@vger.kernel.org
@@ -103,29 +102,29 @@ Cc: Linus Torvalds <torvalds@linux-foundation.org>,
  linux-ext4@vger.kernel.org, linux-modules@vger.kernel.org, 
  linux-debuggers@vger.kernel.org, 
  "Christian Brauner (Amutable)" <brauner@kernel.org>, 
- Chuck Lever <cel@kernel.org>
+ Chuck Lever <cel@kernel.org>, stable@vger.kernel.org
 X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1461; i=brauner@kernel.org;
- h=from:subject:message-id; bh=VO4WYvqdbdInF0wrRh04dkmiJiaJmigcn5WsH5ed6c4=;
- b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS9mJO9wixVJYzvlj178KfJTowVe+L0g7o9JBeHSb4ui
- OJO1MvqKGVhEONikBVTZHFoNwmXW85TsdkoUwNmDisTyBAGLk4BmMiaf4wMS+2vzm0vtpws3xjx
- Ms/u6ofZgus/vnESzThVVPxXfJGuFSPDjsrTjR0fyxMDjG7OlZnMcnPhiY11+Y35btcVvI932r1
- jBQA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3736; i=brauner@kernel.org;
+ h=from:subject:message-id; bh=z8wCFpT+9QBGZHOy3TWX3BTOUWtbXQrp/PYYpjal0N4=;
+ b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS9mJPtsd9LyTjxn8etT/1L5/2vmRnbF3jUb0ZGzE+VN
+ WutAza+7yhlYRDjYpAVU2RxaDcJl1vOU7HZKFMDZg4rE8gQBi5OAZiIwGxGhonbJLQPhS/4cP0g
+ 78WZUsuMuwP0t0uVRT6JrMjxPpyY/4WR4cI2pcs8h/Usw6/eF8xTrDD7dyb70sRAec7Qk5mztX6
+ 2cwAA
 X-Developer-Key: i=brauner@kernel.org; a=openpgp;
  fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
-X-Rspam-User: 
-X-Rspamd-Queue-Id: BA9C712000A
-X-Stat-Signature: 865wpd3jhcstzoe5yz7151cdcnoxqqoi
-X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 0CCF916000A
+X-Stat-Signature: g5hwqryotwje1et686n1f7xyyuj45g4x
+X-Rspamd-Server: rspam06
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
 	version=4.0.1
-X-HE-Tag: 1793629614-515244
-X-HE-Meta: U2FsdGVkX1/F+tYpXvLI1JvG7bFI5/w6OpnaaXJY4XUqPBsxMXcQcJDkQLY/aHBIEDFfMIkKD3a6CWmmBDfRsDk6EjZrefHH52ShqITgZ9vZNjGlN5+OeOcOmBiBW82I5fhqdHkP4W99Aqe/UrlvKTE4l9/wTkUu6h2gIq/eLna+COgxPE4v2YXOCpDYcHZ/JufPl+WPh9J/vC8rOy8nUIJVBh82p0vXJN/E8bN+JXic+/SdSTBcqSAwrtDcKFSpwJV9q0viIN4LO++/ijZQDuit5JxuPmBo+NH36p0qxv0uReopUEOqobQJwpFYr06DeeI29yjuXGZAuGpm+fEZAxhxv4tb/0vCLYBQsK6xN0iuNqFf9mSHxcIMYARpSlx+KnUUh4hwOPwDmJ0RpgM+05h0cU1z7rXryaf7rZ8p5zABolMpAn38RQfYhiU5DqV8WSKH/n0Op904ju6uHWca8GfDbynfLW/4osZX9GPN7orZiVpfY28btucFcacXOQtoxH/0R5b9H9WW6XxW6WSigj5KoRBxYxkZRt4JcloABr0n+8XQ+z1MfOM0OBvR1YE4pBoDK+dzp03vgu1J/WrMzIsVRxed5iv2M6RN1LU9wy32fL+PasAr5ksyLENX1AhLyZ2t3CCPJUYv9HUfR5FWo9JTq2Fir4aFO4Mk8FWCf8+6Pnjl36/godM0evU0ixWHoG2fflEcPWEkqLkfXp36zsZFhe8FG/0Bra0ZfzE4vaVZ6ES/xTHUqVzb2f90Ky4rJwg8g0ToUIvBH7j/LWEpMxR80YRevbWvWrnFrHyhDLtxSEJR3de5GkgmG3x6Kyhpg2QUuB8gvRXOMa/1CeIOT5lTnRK1w4e+k3Z+UIJi++P9Y/oqM46gogizi1NgMAMJUWOmbwW414s4XF+zhpycg0gb9G3rsTTFW2Y/rlOhRI0yaqX/Rhw1QbmJaihPDBsm2jcxqbxssNK7QCxt5j2
- Mc0PSL/q
- lUgZy6bENuvQo8B0VbW4Hx+9Y9VC2MQWQFfmJuK9/XKRRQlTnOj0xuUkILcpQCq8wqOjFFABtWTZ0t5nUef1w7xsB9A0sEhhxttwDVj7nu4DIcu2ljiRuvNbSEuckoSr9eceLtvizFWeVyNgrXjM86YtFZeGCIxtUYk5xQRoUBfsJDyfreVo2tJQPOh0nJQIUcVYur/yetxI2CxxPo2/7raaWzxN9ubXH6RNCdDnmgIYaZT8JxELlEHPwfk+3N8FG8y0SRgjTm9YOUr9Y1q8U3KgOdaYkNfJ4lcqnl+Z6ruU+XrLbhzwaB6PCtA==
+X-Rspam-User: 
+X-HE-Tag: 1793629627-316332
+X-HE-Meta: U2FsdGVkX1/qyUcCKV/JADYK+PsbO6QYUu6XVIPVD+yAn077o9tBE0t+UjvvwCWUIqcPvdgxbNYiEZt/5GZ1oerBot6JPryWIEfCmW1Q90kJTQYl1Uk3RCzh5MP3+QOhxEDBMTlAKQFfN9GB1ZqmexjR7qK85wqa6xV3zQTNOIpfcE/B2itoqrdv43WtEhHFbqf2XGs3rJj1Rs88uO7STF8+POBVKQEPmyYpLIYOo92UcmmX9K048GUk+enpHnYeV5hkwYKDW1wtJPj7slomNAGf5A3n3rF5ybhn1428czJlr/g9FVX25hyKu4V/iLVYbIi/RxyC1Eo+O+67sboJCeveGDWozKBE9nKAXbW8k+KiXfuYdgdp62qCox9arw7UPFCrCrJZMO0e5PVNmr3+tucsDlW5CBxy9i1QLH8ECpb7QIRXQAeXdjwS2k4Lrb0X0vaiU/FjyrdGD1GDsjduVYsxSsaRbUlZg4dT35gBPAXC28IfEJ0KZj9vARhruoZYdCtMSegscIdtV3IrFqDAVmh0dntneErJi7gKGUb/EszbWuA/Rp9ikstMG2K5E/h58/7Dnk0pHe4RWmaopFzUCc4CRXP0hKHqVHqWgeAtc+u2sTVAEs1Zo3ApumhgUHrbS7mZ6Qdb4LUAL322xsdCdynS4tJ7kdSkmGBH6EhPIBnahpLura5yNs1w7uGCDONhIjqrC2zqrd30UR4rzs9LSJqV7M6fXt/bIdBC5HGI0epifY2BmWG5hcW7H1wygQa5FtIjORst2qHIahu903Gw3d8IhFc0b3ZuqYlMRGSFmGGxhh+Mg+lDrQl9SfcOaki5xAblq5wfnGdZYN9qWPmpYRvFuPOB3o+FME4QYiIYgzarUbLt5S/q9SrPhDGcnuRINM8HZMhAyCpzLGgID1b1N9s1O72zdCPQQ5q2/IXOSZph6t94JObqwLtvTO8HsUTHGHtxAiT0gkPuQsKUv3E
+ WKyr0G8O
+ oeC8GnWdcdd2GaAlsa7XrfMxJdsfmQBWThnQSscHADBNa9cxmfNTyO/KJTUtDOQjpXDc+/EVQ7IlKUjuTxJlbtEBpr6h/AoMWK4DtoD3u7UY2zLw2RJA4r8PLHiyTPd8lSp5t03Kg3XzjvJ3PFULxPfXimfb4enFilRHycTvePdyG3UCm0XqsYcyrPeIQwvlpTSnDImOu4iwZp9UwJO77hFjMeUGRv6jSTSYrsdPyxOfmanJao34cEcpYuez+6jn7kvpYthFhbV0678s+j6a4zAyai1kPVTAvKWSt
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -134,41 +133,105 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-proc_net_ns_exit() runs after all the other pernet exits and frees
-net->proc_net right after removing "stat" from it. An entry that some
-pernet exit forgot to remove is left with a freed ->parent, and so
-PDE_NET() hands seq_open_net() and single_open_net() a freed struct net
-when the entry is opened through a file descriptor that someone kept.
+Every procfs file has a ->mmap since commit 786d7e1612f0 ("Fix
+rmmod/read/write races in /proc entries"), whether the entry has a
+->proc_mmap or not. On NOMMU validate_mmap_request() takes that to mean
+the file can be mapped. procfs has no ->mmap_capabilities so a regular
+file gets NOMMU_MAP_COPY, and a private mapping never calls ->mmap at
+all. Instead do_mmap() takes nommu_region_sem for writing and
+do_mmap_private() reads the file into the copy with kernel_read().
 
-There is no such entry in the tree that we know of, but nothing would
-tell us about one either. So warn about it like remove_proc_entry()
-does for a directory that isn't empty.
+Reading /proc/maps takes nommu_region_sem as well:
+
+  mmap(NULL, 4096, PROT_READ, MAP_PRIVATE, open("/proc/maps", O_RDONLY), 0)
+
+  do_mmap()                          // down_write(&nommu_region_sem)
+  -> do_mmap_private()
+     -> kernel_read()
+        -> seq_read_iter()
+           -> nommu_region_list_start()   // down_read()
+
+The task hangs for good, holding nommu_region_sem and its own mmap_lock,
+and every mmap(), munmap() and exit after that hangs behind it.
+/proc/maps is 0444 so any user can do that.
+
+Give the procfs files a ->mmap_capabilities on NOMMU that allows
+nothing. Mapping a procfs file then fails with -ENODEV, like mapping a
+file without ->mmap did before 786d7e1612f0. NOMMU never called
+->proc_mmap() for a regular file anyway, procfs never offered
+NOMMU_MAP_DIRECT.
 
 Reported-by: Chris Mason <mason@kernel.org>
-Fixes: e9720acd728a ("[NET]: Make /proc/net a symlink on /proc/self/net (v3)")
+Fixes: 786d7e1612f0 ("Fix rmmod/read/write races in /proc entries")
+Cc: stable@vger.kernel.org
 Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 ---
- fs/proc/proc_net.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ fs/proc/inode.c | 24 ++++++++++++++++++++++++
+ 1 file changed, 24 insertions(+)
 
-diff --git a/fs/proc/proc_net.c b/fs/proc/proc_net.c
-index dbcf87a257e1..df5484813d5d 100644
---- a/fs/proc/proc_net.c
-+++ b/fs/proc/proc_net.c
-@@ -410,7 +410,13 @@ static __net_init int proc_net_ns_init(struct net *net)
- 
- static __net_exit void proc_net_ns_exit(struct net *net)
- {
-+	struct proc_dir_entry *left;
-+
- 	remove_proc_entry("stat", net->proc_net);
-+	/* Whatever is left still points at net->proc_net and so at net. */
-+	left = rb_entry_safe(rb_first(&net->proc_net->subdir),
-+			     struct proc_dir_entry, subdir_node);
-+	WARN(left, "/proc/net: leaking at least '%s'\n", left->name);
- 	pde_free(net->proc_net);
+diff --git a/fs/proc/inode.c b/fs/proc/inode.c
+index b7634f975d98..9933f03ab9fb 100644
+--- a/fs/proc/inode.c
++++ b/fs/proc/inode.c
+@@ -466,6 +466,18 @@ proc_reg_get_unmapped_area(struct file *file, unsigned long orig_addr,
+ 	return rv;
  }
  
++#ifndef CONFIG_MMU
++/*
++ * NOMMU never calls ->proc_mmap() for a regular file. It reads the file into
++ * a private copy instead, with nommu_region_sem held for writing, which
++ * reading /proc/maps takes as well. Don't map procfs files at all.
++ */
++static unsigned int proc_reg_mmap_capabilities(struct file *file)
++{
++	return 0;
++}
++#endif
++
+ static int proc_reg_open(struct inode *inode, struct file *file)
+ {
+ 	struct proc_dir_entry *pde = PDE(inode);
+@@ -559,6 +571,9 @@ static const struct file_operations proc_reg_file_ops = {
+ 	.unlocked_ioctl	= proc_reg_unlocked_ioctl,
+ 	.mmap		= proc_reg_mmap,
+ 	.get_unmapped_area = proc_reg_get_unmapped_area,
++#ifndef CONFIG_MMU
++	.mmap_capabilities = proc_reg_mmap_capabilities,
++#endif
+ 	.open		= proc_reg_open,
+ 	.release	= proc_reg_release,
+ };
+@@ -572,6 +587,9 @@ static const struct file_operations proc_iter_file_ops = {
+ 	.unlocked_ioctl	= proc_reg_unlocked_ioctl,
+ 	.mmap		= proc_reg_mmap,
+ 	.get_unmapped_area = proc_reg_get_unmapped_area,
++#ifndef CONFIG_MMU
++	.mmap_capabilities = proc_reg_mmap_capabilities,
++#endif
+ 	.open		= proc_reg_open,
+ 	.release	= proc_reg_release,
+ };
+@@ -586,6 +604,9 @@ static const struct file_operations proc_reg_file_ops_compat = {
+ 	.compat_ioctl	= proc_reg_compat_ioctl,
+ 	.mmap		= proc_reg_mmap,
+ 	.get_unmapped_area = proc_reg_get_unmapped_area,
++#ifndef CONFIG_MMU
++	.mmap_capabilities = proc_reg_mmap_capabilities,
++#endif
+ 	.open		= proc_reg_open,
+ 	.release	= proc_reg_release,
+ };
+@@ -600,6 +621,9 @@ static const struct file_operations proc_iter_file_ops_compat = {
+ 	.compat_ioctl	= proc_reg_compat_ioctl,
+ 	.mmap		= proc_reg_mmap,
+ 	.get_unmapped_area = proc_reg_get_unmapped_area,
++#ifndef CONFIG_MMU
++	.mmap_capabilities = proc_reg_mmap_capabilities,
++#endif
+ 	.open		= proc_reg_open,
+ 	.release	= proc_reg_release,
+ };
 
 -- 
 2.53.0
