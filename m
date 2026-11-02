@@ -1,74 +1,75 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63C2F609B34D
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 15:26:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 136A56083617
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 15:26:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=aDk6OKCI
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=LPntUaej
 Received: by kanga.kvack.org (Postfix)
-	id 78ADB6B05FE; Mon,  2 Nov 2026 10:26:16 -0500 (EST)
+	id 2A9DD6B05FF; Mon,  2 Nov 2026 10:26:36 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 73C606B05FF; Mon,  2 Nov 2026 10:26:16 -0500 (EST)
+	id 282126B0600; Mon,  2 Nov 2026 10:26:36 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 651DC6B0600; Mon,  2 Nov 2026 10:26:16 -0500 (EST)
+	id 1702C6B0601; Mon,  2 Nov 2026 10:26:36 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 3E3756B05FE
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 10:26:16 -0500 (EST)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id D1264A6689
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 15:26:15 +0000 (UTC)
-X-FDA: 85390555110.28.0641DDD
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id EC2E26B05FF
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 10:26:35 -0500 (EST)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 8C12DC013E
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 15:26:35 +0000 (UTC)
+X-FDA: 85390555950.18.1E5311D
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 0A6F140002
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 15:26:13 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aDk6OKCI;
-	spf=pass (imf12.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793633174;
-	b=Ucd0A58BAzh+0qIAXxTeLXgbQrxv1LVG+iFZCcX+SbiiWPVi1QL8vIPUOOQQCFdlIiDYw5
-	nFO70VHHdIz93yzNBmWTwdmd7QBlZqZ+3imyWdtK3tK8R3jYu0DQax5qH3ZR5MtZRE2xuP
-	f4Y7AFLXEpA4oSn5QkgctYUSSUeiUq8=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aDk6OKCI;
-	spf=pass (imf12.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	by imf14.hostedemail.com (Postfix) with ESMTP id B47C710000D
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 15:26:33 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LPntUaej;
+	spf=pass (imf14.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793633174;
+	s=arc-20220608; t=1793633193;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=B1LcgTjI6osh59ZzieUt8cHCAfIdiXhMZk2FTOpmVb0=;
-	b=p3uMGqcVLX3x2TTMdo7cM4qv77hum4ErRdYQoo55hX3r13SFaQ0DixhTKHDLX5u/qoCyX1
-	Tes2gyG+QoMoXCAFCjM4weDGAAZHkDm1YAZ6ugylOSEJU6p35+afCRGhbxYZWDODAeSq6T
-	E8W21CDyAUy8yM2GscPMWGqY5Isd6OY=
+	bh=R1VqjUGL5+J0t5hj5seZeRe1Maiv3S9hp7Jj5OG0/0s=;
+	b=FHGDRu33VEnFJC7KBA3DOYPSAKYpRDRXuZEs9WvcQRlXmLY5pXIg/w7ervxpOAZD4MPJXR
+	ZM2fGSfZqP8Bc/HF5nzqVAyhSSnTLNJhfd7f66Rn9iqxghq8btEAXJm2ZWPEHgSuoXyKyI
+	qtXTC8Jov0mNyl0KVp5IDaAtw2IwUnM=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793633193;
+	b=h2Hllcr1FxRlYT7J5zm47Zt//dYf/+r2WziInejtSBFPOZICq3f+hXDk5pIGSbSK7DW5K8
+	UXJIm2HxmarFtiVppkxwub7vWEK9mCyskM5U1vOKkYsnumPS0T/09NTLNqJp8tkmyUNttB
+	JK6MWT/e/DXMCNFxRQcBPqBOHAGcTOc=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LPntUaej;
+	spf=pass (imf14.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 42BEC40A1D;
-	Mon,  2 Nov 2026 15:26:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72E611F00A16;
-	Mon,  2 Nov 2026 15:25:55 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 0F5CF419A5;
+	Mon,  2 Nov 2026 15:26:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D7DB1F00A16;
+	Mon,  2 Nov 2026 15:26:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793633173;
-	bh=B1LcgTjI6osh59ZzieUt8cHCAfIdiXhMZk2FTOpmVb0=;
+	s=k20260515; t=1793633192;
+	bh=R1VqjUGL5+J0t5hj5seZeRe1Maiv3S9hp7Jj5OG0/0s=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=aDk6OKCI0ar0R/BnCnovLiGiUgsQiS5cX2Iwq/bm/oxbS1/IImKGdug7FdOjvklfD
-	 64oCwGAK6j+ynLF1muOCW0FEO0ciDHlSkU3IC2ugiIhQRfFVM/NQ0oqazBDBhOY57h
-	 sJCWDt4wqHqEb5aSyBD/+EPtWOITuneefzTGQ8mUGHB8tDqm3gA+4PZZ3S4JIuMiZc
-	 GXmPDubR+xVQwezYvxsVrQArwRXqg2mHgtAgwVyPXxzSE4iifxjtpH179wLH+qs5l+
-	 IW4VUxjdneaQ8roktcSnrLzCGbyg0Xatn3vQmPJgGEy5D/5zzbKmwEEMZ7lOT8pEwl
-	 qwtHvgii6pE7g==
+	b=LPntUaejzzAUOTRvUNS0Y1GMbnPApCWQqcTwI13UUCKXze90UPLxxpRnGW90okaRN
+	 /SIo51jvsTdg8UsLHm4uePjBeYyLPk3KVJ4wuqLBYJhjSGrlhysCaMmn5I/CkJ1pd9
+	 ZHTI/3+dLOQ6JzTqFxt6SjCj+4pjEdhhbPGoo6W+bAjQGlPVV4SQHQDv7/I/vWQIJ6
+	 /fi/xyM0dOZwYg9ycwAhjjdk4lSHA97j+wFr9FXI3WUCvPAnDgHJoyNjjrjgyn1Ef4
+	 i8wvejafrNc0aiVo0X6lBeVv6XILV8EgxhSfBWL+BkF8M9XALmyKKUOR1IJtwGwMO0
+	 zz5ZY6ZT8QG2Q==
 From: Christian Brauner <brauner@kernel.org>
-Date: Mon, 02 Nov 2026 16:07:28 +0100
-Subject: [PATCH RFC 18/27] sched/psi: mark the pressure files permanent
+Date: Mon, 02 Nov 2026 16:07:29 +0100
+Subject: [PATCH RFC 19/27] kallsyms: let procfs own the seq_file of
+ /proc/kallsyms
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261102-work-procfs-fs-v1-18-d09a996317b3@kernel.org>
+Message-Id: <20261102-work-procfs-fs-v1-19-d09a996317b3@kernel.org>
 References: <20261102-work-procfs-fs-v1-0-d09a996317b3@kernel.org>
 In-Reply-To: <20261102-work-procfs-fs-v1-0-d09a996317b3@kernel.org>
 To: linux-fsdevel@vger.kernel.org
@@ -104,27 +105,27 @@ Cc: Linus Torvalds <torvalds@linux-foundation.org>,
  "Christian Brauner (Amutable)" <brauner@kernel.org>, 
  Chuck Lever <cel@kernel.org>
 X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2074; i=brauner@kernel.org;
- h=from:subject:message-id; bh=tXr5cu1BdmO0jHsjps1+bZ2IKVwDVWrseoizU64SWOY=;
- b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS9WG7kztYrxVWs4L7JrPOz+wSfbxdD3doWh3h9ivDfs
- j/t3nS+jlIWBjEuBlkxRRaHdpNwueU8FZuNMjVg5rAygQxh4OIUgIl8TmNk2OS7Of/7mXtnrpvY
- SWw+cDKm06eJnev5ArnA2Z7Kmpt18xn+O605/1eW86zoiteWxTHfRDjWzEmrUjjwJ+3Hhezzqf8
- qeAE=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1331; i=brauner@kernel.org;
+ h=from:subject:message-id; bh=X1hXUo+P6dAEkQI4HVxBka/iuP3neD063cymPGxvXEU=;
+ b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS9WG7E86Wn6bItX8PRGc932QRueyvG/7r7fdz1LQabT
+ jt31lYxdZSyMIhxMciKKbI4tJuEyy3nqdhslKkBM4eVCWQIAxenAEwkdQkjQ2/ojiqupX4S/zNi
+ eAuad2pzvL4hu4l32d2bRa7rPvysnMjIcOC061HJ9ce7zeXr+fWZln6azCZ4Zf56HXH9smbnqy8
+ vsQMA
 X-Developer-Key: i=brauner@kernel.org; a=openpgp;
  fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: B47C710000D
+X-Stat-Signature: awb5k4hsaojydm3j55uzycbxusm78g43
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 0A6F140002
-X-Stat-Signature: tiacyx7x9d8e4ugn9kht37376pehw9tj
-X-Rspamd-Server: rspam01
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
 	version=4.0.1
-X-HE-Tag: 1793633173-322055
-X-HE-Meta: U2FsdGVkX19PM+fD2Ha4g2r/GYOOhlaec68k8N+tZ9htKeP/OviDGBy/oqWUEWphDucVxf8ckTTNiOJNjId5m7hQN86bJAKlRb44oICnBZGnOZM+EYU+l6cWpujIHxFa4js478iA4fFs48kVQiS+BDAoSZff1lsOhef5nyE2Ogivu0tWm1thyptnAlTb65fRUGHROhOKSCvyQc4+jtyGnQgYRVh6TPmfmrcvotWgLHHouLMv1WOQ3P86qkT4xKt0yf3F2xCU0OC4Yjk/TraETAMHeWSsHeAikz1wNVSIOjQyGZyQqnGcxDsQ4kzTv/bW4KOLMmISzE+gcVXP7zGAqy+lUL7/Ox8O2PfHTLHHd3kIzMVASQuHGxkafgPsE6uJnP+2W0eXovPVRz8pHchhQROK2d196UFEGSD76nXuKkUCzZtCaBVJAzVBT0LqASlimrje82RBhHeV8RrGuC70LpLUyEPXBQVoBgr4lOroV7uobzMi2etHGnAbUosWoNuFKFMO2NWpevvVmHj2CBhKTewQOVwGaeNny6JlBwdelzOD7EqSaylNeyKqeNAwHszOuYKKxIpfRbSq1IAUkFdGZ6kPznkUXe1OnTXxVKyEmqN8m/3k0svGS7nDsB9mp0CN2D0l+q7sPK/bSG/gxoCVCYytO4FiNxnczLANfdqjWADLbTUt7Bw34iQuAgQjs2U7D3/b/g8n9/jTk7VDGrtlLPabHZ/m5X8vx3SgajeXF6DBqquQmOIjTqyTLhT8dklqwj0UiesZuZiAl3XPSEOtF4rFCfIzrjDDHQ5FjAybs4t9Zpmc32cx9qzp7riOqEGSRMpuo/SRUVUtLyTSQoWJdYf0TDBLhfM5d2dwO0eC33+gxiXSU4Wb/OzUqJ1ktoPhyAQDswxtY8lrfMoVgmC45n1MQiSNpOiulCKHHBBEeoskorjaEzTvFRxReXp+bd0UuW48mnRK0fTfKjC5r4o
- mF2QtaJS
- /WwTr50bsv4rPWWSGcbFUWHceT6Iw98fHd4+i4atIbzmHRqVvK1ucgcvXYyJqoEbxqEtt0JlLPkL0NntF3Nd+DQ6xJ+8SQkjT3+k36pnqXZUFF057Qft+3SkV+zqBoCXIY6tZC9ApdtZ55VnPMaC7Iira/f5X2IokLzWGXDVhklWlI0eg00BitW12oQLfDncoO7zopvErBtlXf8WxsoYsGQpnOtXU3L+8hRHTtDXPELmeY0RTyWX3JySQs1WGPmxU8OA+HgDeaLgpiWjLgOE63dDpyXOCdTh1A+eA
+X-HE-Tag: 1793633193-959111
+X-HE-Meta: U2FsdGVkX1+LLB2wP0O5UMhyZDeiESS+fc/HIDTjKk2meSEGX4cT2c/9z04f0H7cw2NlU2lEZ1W6BTKjpAIx0gkw/jua+UZN2RKlNZ739qZPWNCOgT9bJAjNb0ckCubE0hmuTM4A7phebRMIbuDMhjo+t4lDl9wlbsA2HfKg6azlxBJxjlYl65xQHGwajNNc5etpfMiwHD2P4v7x3uny0TQigRoZlcD9Li915k9zKGw8YtOiv5yKJ8+HMDTxpIXY/GAv4EZSlL1j1G2i8Tl++RjGoFUHFqRAupax9PEgkzgEzG6fLsty1h6QX5kuxrYNTnJxpet8MvhPisqoweT5Y/b2stwp4HWPsbtGRBzis7UIf3ixw8UnXjXDp7sito1Del8Lc4Yi1kBgEGNgF3WPQ5DFLelYaoLEvbqkSI4cSU5PfQEC0QIggxpo2/rKGfszt9BZJ0Z6rEBZOrC2EOBssnjXKuRU/Whgu8S5FoqCLcYAlA8TPWj0PpXHaM5Gvjcuqp3KRqYmfzOuBiSuewPh8cPIQVAUq5l9gMw/3SQ7hiMExxzIyq/LMcFmiPHguKbZ2t05iYX3Wjr5/TTKHy7CiQhAEphkpWMRDxZK2oe7402J3w3ZLAKV+zWJh2oPknCCXbD38B1M5njuSRxosVS9hVuXj6A+bA0Mn0fOd7rR3trUktjxQZyXsp5RHyuK8FQ5nAx84xJ8gri+30iev14JWf3R2L/kvXtTpIqmtM5KN6ILkNxdlqsgUBU7V8+UIRXXlTZGe6WB6hOipsmmgi/iJqJNzpV/oKxAFHJfIGkjks43dPHn9PIy1+rj/76I+/fCXhSyJf7uNgJmrWOuRSU+1Pa6dxw7unnbsh3ReXbRY7dRYwaHLRvRIyZ9xBpo0ERmiVY8A8SrGeiTLl6XUgSQBKnmAZ0th/3umS9SrrKnvd/2PRUO778UxJ4F968m4Q9U9lRz6OUbmtQqzpKUlYc
+ /qVmLMKs
+ bLdiZxdgbo1zaAXP/vZydLSsJ+MRpnoGo6GeNNLv4JPUgZ/OFwhrRoI9s+ykPdmWTgplLuyZrTuIdlaVNy6/gZFU+k9L/3e41I4qABfuUh1vm3FcYwC3QxDyR3fiIr45VXb5CIoUC+Lwoc3SbTLXPCxBDQsQau3vh3MczHo92FRXWIkU0n6ATXSNdafK/Fraa3QXt7+klPZS/CH9uiq2qsIaN6Lp0fBhYEKykGzdV2M2VMfh9EgD1EsCH+f/biDEZvZ3CJENkCZuVpxJk0tVz7RPkouKqlplfrI7yKG0JwPQWxHBTXaQVGWB5fa9mqjSavOdG/tA4kr2zt1U=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -133,59 +134,46 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-/proc/pressure/* are created when psi initializes and never removed.
-Say so with PROC_ENTRY_PERMANENT, procfs then calls into them without
-pinning them, like it does for /proc/profile.
-
-That also takes care of a rule the files bent. psi_write() takes the
-seq_file's lock to serialize the triggers. A reader holds that lock
-while it copies to userspace, and now that procfs owns the seq_file it
-does that with the entry unpinned. So nothing that runs with the entry
-pinned may wait for that lock, and psi_write() ran pinned. Nothing ever
-waited for it since the files are never removed, but with the files
-permanent nothing runs pinned at all.
+Declare the seq_operations and the size of the iterator and let procfs
+open and free the seq_file. ->proc_open() only initializes the iterator
+now.
 
 Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 ---
- kernel/sched/psi.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ kernel/kallsyms.c | 12 +++++-------
+ 1 file changed, 5 insertions(+), 7 deletions(-)
 
-diff --git a/kernel/sched/psi.c b/kernel/sched/psi.c
-index 3132105bf382..9811c3b705eb 100644
---- a/kernel/sched/psi.c
-+++ b/kernel/sched/psi.c
-@@ -1622,6 +1622,7 @@ static int psi_fop_release(struct inode *inode, struct file *file)
- }
+diff --git a/kernel/kallsyms.c b/kernel/kallsyms.c
+index aec2f06858af..2d309fcee730 100644
+--- a/kernel/kallsyms.c
++++ b/kernel/kallsyms.c
+@@ -888,10 +888,9 @@ static int kallsyms_open(struct inode *inode, struct file *file)
+ 	 * s_start from where we left off, so we avoid doing
+ 	 * using get_symbol_offset for every symbol.
+ 	 */
+-	struct kallsym_iter *iter;
+-	iter = __seq_open_private(file, &kallsyms_op, sizeof(*iter));
+-	if (!iter)
+-		return -ENOMEM;
++	struct seq_file *m = file->private_data;
++	struct kallsym_iter *iter = m->private;
++
+ 	reset_iter(iter, 0);
  
- static const struct proc_ops psi_io_proc_ops = {
-+	.proc_flags	= PROC_ENTRY_PERMANENT,
- 	.proc_show	= psi_io_show,
- 	.proc_write_buf	= psi_io_write,
- 	.proc_poll	= psi_fop_poll,
-@@ -1629,6 +1630,7 @@ static const struct proc_ops psi_io_proc_ops = {
+ 	/*
+@@ -923,10 +922,9 @@ const char *kdb_walk_kallsyms(loff_t *pos)
+ #endif	/* CONFIG_KGDB_KDB */
+ 
+ static const struct proc_ops kallsyms_proc_ops = {
++	.proc_seq_ops	= &kallsyms_op,
++	.proc_state_size = sizeof(struct kallsym_iter),
+ 	.proc_open	= kallsyms_open,
+-	.proc_read	= seq_read,
+-	.proc_lseek	= seq_lseek,
+-	.proc_release	= seq_release_private,
  };
  
- static const struct proc_ops psi_memory_proc_ops = {
-+	.proc_flags	= PROC_ENTRY_PERMANENT,
- 	.proc_show	= psi_memory_show,
- 	.proc_write_buf	= psi_memory_write,
- 	.proc_poll	= psi_fop_poll,
-@@ -1636,6 +1638,7 @@ static const struct proc_ops psi_memory_proc_ops = {
- };
- 
- static const struct proc_ops psi_cpu_proc_ops = {
-+	.proc_flags	= PROC_ENTRY_PERMANENT,
- 	.proc_show	= psi_cpu_show,
- 	.proc_write_buf	= psi_cpu_write,
- 	.proc_poll	= psi_fop_poll,
-@@ -1655,6 +1658,7 @@ static ssize_t psi_irq_write(struct file *file, char *buf, size_t nbytes,
- }
- 
- static const struct proc_ops psi_irq_proc_ops = {
-+	.proc_flags	= PROC_ENTRY_PERMANENT,
- 	.proc_show	= psi_irq_show,
- 	.proc_write_buf	= psi_irq_write,
- 	.proc_poll	= psi_fop_poll,
+ static int __init kallsyms_init(void)
 
 -- 
 2.53.0
