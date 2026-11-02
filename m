@@ -1,88 +1,108 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16E54606A334
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 08:54:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32C13606A332
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 09:07:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=yj4YR9oH
+	dkim=pass (1024-bit key, unprotected) header.d=qq.com header.i=@qq.com header.a=rsa-sha256 header.s=s201512 header.b=vFXb9/5h
 Received: by kanga.kvack.org (Postfix)
-	id 12CEB6B00EF; Mon,  2 Nov 2026 03:54:38 -0500 (EST)
+	id 47A406B00EF; Mon,  2 Nov 2026 04:07:15 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0DDF36B05B1; Mon,  2 Nov 2026 03:54:38 -0500 (EST)
+	id 42AB86B05B1; Mon,  2 Nov 2026 04:07:15 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F0EF16B05B2; Mon,  2 Nov 2026 03:54:37 -0500 (EST)
+	id 3408B6B05B2; Mon,  2 Nov 2026 04:07:15 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id BECCA6B00EF
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 03:54:37 -0500 (EST)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 03F3A1C46CE
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 08:54:36 +0000 (UTC)
-X-FDA: 85389568194.01.3230A25
-Received: from out30-100.freemail.mail.aliyun.com (out30-100.freemail.mail.aliyun.com [115.124.30.100])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 70EFC14000C
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 08:54:34 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=yj4YR9oH;
-	spf=pass (imf09.hostedemail.com: domain of tongweilin@linux.alibaba.com designates 115.124.30.100 as permitted sender) smtp.mailfrom=tongweilin@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 12B7E6B00EF
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 04:07:15 -0500 (EST)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 5CB241A0C8C
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 09:07:13 +0000 (UTC)
+X-FDA: 85389599946.29.CE53DC4
+Received: from out162-62-57-49.mail.qq.com (out162-62-57-49.mail.qq.com [162.62.57.49])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 813EC1A0002
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 09:07:10 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=qq.com header.s=s201512 header.b="vFXb9/5h";
+	spf=pass (imf19.hostedemail.com: domain of zhenghui.hao@qq.com designates 162.62.57.49 as permitted sender) smtp.mailfrom=zhenghui.hao@qq.com;
+	dmarc=pass (policy=quarantine) header.from=qq.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793610431;
+	b=d/KW/kvJ1yiRAT3MdTourHMWfciUj3Tq5jePFPJaU7Nxm+bD0aVBiVuwQoeNUzjweqDAoJ
+	kCMRq3sBObFxWnzCeXKYKvF9/WEUh7W97Iwscrheg20zFx1G6faxzUe9lbrfjzd63W3to4
+	JyuwgK+EJV/mYH4wpd0yJF1EEdQfZyE=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=qq.com header.s=s201512 header.b="vFXb9/5h";
+	spf=pass (imf19.hostedemail.com: domain of zhenghui.hao@qq.com designates 162.62.57.49 as permitted sender) smtp.mailfrom=zhenghui.hao@qq.com;
+	dmarc=pass (policy=quarantine) header.from=qq.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793609675;
+	s=arc-20220608; t=1793610431;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=VYmgVHZ+U4UM0cUUGa/+06lU+eYMGdR+rPvQ4FM59TY=;
-	b=t1ucK5+J222gPnxlXLx8C/b7qMNRPp4GbOZlufoJD4ZBcScxL/s7psmiSuyp5fjDvp7wyu
-	4mEMpc77pBvvJx89uzIOCkv+UkLHcQjt4NbyMfOYDAtMBlRosw9ePk/GaTJEjhB0TtuWeB
-	xop+FxTdAvl05hUA39uh1edBOECZEVY=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793609675;
-	b=3raflCOFSayfzh1OV7aCpap1veHjTvIAyjpcabVA6nLrKYSLfih2dR7wZmms22oOef/uFM
-	NHCUcosN1Y1ioaJVUkm49Y5pYxUcA9xmp+2o2UKHdZ5z8OV0cA4Od2lY3jCw2TZwXYs0i6
-	DojNlLsExDgML+2CmW5PAwtcwFQ244A=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=yj4YR9oH;
-	spf=pass (imf09.hostedemail.com: domain of tongweilin@linux.alibaba.com designates 115.124.30.100 as permitted sender) smtp.mailfrom=tongweilin@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1793609671; h=From:To:Subject:Date:Message-ID:MIME-Version;
-	bh=VYmgVHZ+U4UM0cUUGa/+06lU+eYMGdR+rPvQ4FM59TY=;
-	b=yj4YR9oH16T5F0LJttOnUnn//qEucbM7Y95uPVIf+vWmVzrq3o4rZj/ztBIZTKwxDMsPeeum0AkNQo3iPbDd+2+f2MuPX8SraeW271RSyQddyEE8+3ygjkf0CIoZW31B8hsOq4vTrdL66hpswfOklMYkEFs5e/LNltC8XiuKaGI=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R111e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033045098064;MF=tongweilin@linux.alibaba.com;NM=1;PH=DS;RN=6;SR=0;TI=SMTPD_---0XDwJN9y_1793609661;
-Received: from x31l07246.sqa.na131.tbsite.net(mailfrom:tongweilin@linux.alibaba.com fp:SMTPD_---0XDwJN9y_1793609661 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Mon, 02 Nov 2026 16:54:30 +0800
-From: Weilin Tong <tongweilin@linux.alibaba.com>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	Ryan Roberts <ryan.roberts@arm.com>
-Cc: David Hildenbrand <david@kernel.org>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	 in-reply-to:references:dkim-signature;
+	bh=zfkqqiDFD5IvY8N0pAIRMYYO8A2QXCw24tO2W4iaNrw=;
+	b=RutJC86RIldfP0gzF0+gqR+5i2hN+pJDRrZLth/uCYigd8w/1mQGW2fIwnaJ8UhSC1Naeq
+	q0hEafb/3NdoD7kowULw/3lFYrnNTlhG3HsSIgaguxco30jw7vg67R3CgWRuZ8KC+kTEWJ
+	C/9DNqHbkqL0OFqUNoDortFqegnsb2c=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
+	t=1793610424; bh=zfkqqiDFD5IvY8N0pAIRMYYO8A2QXCw24tO2W4iaNrw=;
+	h=From:To:Cc:Subject:Date;
+	b=vFXb9/5hHiTX/fb3/iL5Ejf7xwIzBkOlCNvmNJIlhxjlgxDAbmgDulBemUp81zL8j
+	 fMeyTmrQXVZnf3YzpLkXfvdwyWS+5IG+Gf+ByUfhS98g7LhtEcua1dRdbgpdP2WPkP
+	 Gi8TurbePCZHfPOmk2XEublT9kxr+ai22TUB8ctk=
+Received: from XJSH01426.meizu.com ([210.13.72.171])
+	by newxmesmtplogicsvrszb43-0.qq.com (NewEsmtp) with SMTP
+	id 1BAA426E; Mon, 02 Nov 2026 17:06:58 +0800
+X-QQ-mid: xmsmtpt1793610418taggzhqn8
+Message-ID: <tencent_869149E9C4305627F0ED654860AC4DDBC309@qq.com>
+X-QQ-XMAILINFO: MllZffuBkEb5NjUq5Tx4KGydF6yOXyo5PhibasoGLwdQeEcKbYlTnLK7kLmPvh
+	 9btrl9s30aYfWimMR9kRYjWbkag4SQSR4UcM9G872mRsZeKqs5dS62nLn6+GiniIZqWTKeGKf3Kr
+	 +DXkcgChp3C4xUszJBQGr3X5+ol41F8gKwbVcxBOidvZEaiqQ36/zBrW0cBPu2tnQGW2m11Fpms8
+	 sftN4M0WJN12FoICf1QCDpYKYVAZ0aAPhMjC7h/wWUjKZaAbxSuIcXYxi+M5TcJW4RVJcmxIlwDf
+	 w4A0m2tW7GxFgFVBSFpt4phszc78ZRPUx+48WtUVntxzH7qTggLAQfLk0F9Q5QD73RcLAvtqWrsy
+	 gOtuMNHHFzbHNu7WAMqb7BX2SOn+HVzdVbNlLarL9NLeFKXgZguvqtnKzChOziuc62tYCwdSbrwu
+	 KW5fEkPUEo1J9ur7YKCZ0vCszDtV2n9YDg4BTC6JdCTrbBhfprdwY222ttwTJsOcpA0XuG6gsn+H
+	 BE2HF9rjbMczIMlBOsa1t32tU9QTg4JPnPNTO38XxvFhFT28vPJnrkKfohUNKsUnKQNKOsZWXl5g
+	 Qm5ImE7Zr0giV2LgZoxS0xnFE8cxKYNCI5HlCb4RXid1KGxDtlg6d5eIaSDLaO2ntCmXlDMPkCma
+	 uZycLRr1UiAj4TpNPycILCcj+wMM9bnewHEyIBpPUMHlPETMcRv/2W3eCSryihhtNCPBQGOP7iBz
+	 oMueG0vb/IGV2quB2nhV1wMrwawYi3+3ZEFPE3gOKwdVpH/QasHUpoRY6GIOKNhrESRjawaucKP3
+	 X0IjREp7Bru+bZ2eIjyEsy3hJzQzW1VDziaIdN1G3LkvXsorX74Pa0EkIKbWg7qcP3JpKiZoO60l
+	 cjXh0pJtWc8Avxvg3w7XxXQFj86y039W/VhfyzIPtQWozaU+/xIagRYq61zjk4GQjpSmmyH2UjfJ
+	 vwnVk6VaFchFJ1up6cO9E9avoTpLVXaAGssguB1aGMgGKvHUdti5ROn/ho3GiPNFHcHrU6zwelNp
+	 ywad7nFUh1k660OpmiNkONaaCipSS+io/MF6/dPnPbOSBPnHzpPd/ZZFxq7JL/eOMTNFQNSQ==
+X-QQ-XMRINFO: OD9hHCdaPRBwH5bRRRw8tsiH4UAatJqXfg==
+From: Zhenghui Hao <zhenghui.hao@qq.com>
+To: akpm@linux-foundation.org
+Cc: vbabka@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	brendan.jackman@linux.dev,
+	hannes@cmpxchg.org,
+	ziy@nvidia.com,
 	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] tools/mm/thpmaps: handle carriage returns and non-UTF-8 filenames
-Date: Mon,  2 Nov 2026 16:54:19 +0800
-Message-ID: <20261102085419.696232-1-tongweilin@linux.alibaba.com>
-X-Mailer: git-send-email 2.43.7
-In-Reply-To: <20261101211644.c63a2028bbede0f763f41f80@linux-foundation.org>
-References: <20261101211644.c63a2028bbede0f763f41f80@linux-foundation.org>
+	linux-kernel@vger.kernel.org,
+	Zhenghui Hao <zhenghui.hao@qq.com>
+Subject: [PATCH] mm/page_alloc: release isolated freepages on compound range mismatch
+Date: Mon,  2 Nov 2026 17:06:44 +0800
+X-OQ-MSGID: <20261102090644.1135255-1-zhenghui.hao@qq.com>
+X-Mailer: git-send-email 2.53.0
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 70EFC14000C
-X-Stat-Signature: g9jfjj54ee53sew19g76iu3jrwjtxuys
 X-Rspam-User: 
-X-Spam-Status: No, score=-26.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,UNPARSEABLE_RELAY,USER_AGENT_GIT,USER_IN_DEF_DKIM_WL
-	autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1793609674-854521
-X-HE-Meta: U2FsdGVkX19RJhrR8UKLHuOJza+70On+d50RqLUXQkH3f5s4Pdxz49LKmhp3WjN4b/GFVvFQfLz8SfNtQQgCUcrmGVqsMTZ1/mp5SDx0eTarmNXsWeUzEvbZTyi92AFs9scKJMUS2n23Qz2uLzqVc4CoubbueEizAlkugsUnc8qtsRvn5nosJcIBC2HzKdcj3pBO3/4UgO5KY7aQ/qXoYEwU6lkn9q0qDN3VO/ampIIT2f9A3rngNclT9lxL2EnuiJlThRF7Kt1zId7cOSgxCMVtoNks+NCuCNii9WPurkwoVwt9DqTbdgufn18H/8QKLth4zbrWJ7NqQjCqQ2OgK/HlC1vGI8shwYKPox62hGUEkNeeep3OkVkT1INCHkmvTGijUSPS/yGll2MM27b/0lFAMl1+aT31jRL5eCJo1zyoVk2Hnpp22NUEZYsp1EL8utKtDi+Hew51O3HZ8KwnRzLysh03lpc+2CDOxE/XAAUvZgFAqsBiKVV2NXDGCoV7xVCkRoQV4Q/Y97E9J4aUGKqrhEupfC0zWdaIYRfqspW+wg1iwJ9++keKKgay07zGjrG5nIFKCrcri2b9d6cDWJXxQs1qprNP+mdEbomMtjVlgwBGe2qRCtNZbBbwIXeJT9vlt/VhooncYql0XRXO+kP78K7+fVs8yctWcksW0sZhVLek6QkRRBiwep7beHA6g/cB40oS16q1C6WjIGiEewkJ0mOtszuurMFtahNBjMTDgGW/hi4Cl6MKnZ7GNlam1Se9gS9DElUriG0xIqbPJHZsU/S8VUYXJbVKdDNQFq72Nm79HGqjzA372576oYBOrVAwrPrtRjY0M3gjup32N3gzgw95+anyxyP3lLJ/XNeQ+1lbsewKuXdoQf2agaBNBy8tGGCjuY1N5a/59B1mbnHellRl9WD+llUid6MTbCbxxaLQi83f9HebBaTSjBsY9D7WEN8ZoM93jnH7+1C
- M3eDAmO0
- IX4c1HaZZ+ihcFl4nqvdVVRzDHdEn1Vca4oT3WLY0tkhPXqbvJwuJFcY7T67Jz7GDtZ3otS5fZdzsfLmQjvFYKHimfv+7R+Qs7soPJ5MuDMyBr8/EjOcldeYKQjFbC+NJcWbg7BQhciL+ZLZKIZXBbGyhTOD+VScnsm1/gU1C1u02lUY6Hgxv/3WPFoVY55ZyZNcX1U+E+HBmAsx6NrpE8OuXzX9eFulfqiTqW5iaC2CVVYLIw+rN5HcvfAk/64DbAm3PlvvDddJ5eOVOyUkT2bCk9dCoNsLOM9NGwOXe1gFRhMpUuGQ4L8i0XF4Rdbjcwpd75Z+jqw1eDu8=
+X-Rspamd-Queue-Id: 813EC1A0002
+X-Stat-Signature: gjirrtzj9gixz6s9fozgr9uary64fes1
+X-Rspamd-Server: rspam01
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1793610430-776686
+X-HE-Meta: U2FsdGVkX1++yimJcAhxHE/P/oKZi7bsblY5cBSPpQuXpdJChYwamcmlDkqPuCbmZ6DDux9WDYTRa5HRHY5bpuygaf2mVI1MNOsJZEb+ql2++Y68Hd07g6+AXUP2XCzZL9qM5K1UIcrnlQIsVzRFANEUT6akUKp+q35ZEZGCxHOfch8HM1tg+QrwOTi4TNQogzcUwnGADgATxi3p0MYP0nqLR5Ac+UzhqUQxx3KN/ZdcN31n2OCbcHsKf97bwD9B1cVwof6w7aN0MRbNfP1REnVf5BN/sn3VfF9f7BtzF455O25u2AZjvZK75GkhqG2iUvXd53UnZ3IDmtuW2vfuaBTLPd1XkDoVH+s8HrmvOwTaEKrsvx3K7o985viyzu7l0vX+3YZxbewdxxB8mqfS7kQBsXQ4ZyU7lIyJNrFnVlgR4fhLH88mw05UXAf5br0e+15OMa04M6z/abpqtPRq0gcfC/yUuOp06C46CpOgTowDCpm+UDm2L+N4wZtZ7zy/+pDrx5VjUqznvhv+QMq9LxduJSxgHl+A6mdeat/bawJr4e47yXsaL8wcN8Od8d6ypmVYgp9QL2ruR9VW6JIhEho2oYmuTE5DqRsIEQoW/CQfj8rfN4/HanO3fyjdRHFcUdDov0YJDtefue3qnwYYU8HRgm1yyErdsBUEO/H8Ym4+Ca5lclqC6iBBBDmMwYPhhekHsSOJUUxzTXVwNRnfaeHZbRrdpYhJlH9Y/xZ8jmG9ZlaWb1r36qPdGpnA3XOjir2n0UkmJTnoQVIOmRhmfKa3DcvJWfdkwJgU3/l6/mYsDQPf/qulfRb3UqD4JiIHzOu79g/O2Beqag9DTMWwBxDV2jCIyc4t/mYSfntqvQqN/ETFtIZ8bre+zYKpgzeCfAxUtCOhKBAeIChjuUzd/JMTINDmOAU0l09pboZxQYgBwNtE9Os1cxDnt0Fia9ehGMzhf01uvc9DDOeugbo
+ SMNAGcVI
+ gMln4mFF8wMWdfrMjgnm75nLQMhdPXCns/NeQz7xRgZcLvTLge6rXbFVEOCZ/3LbG6KT2+xNeL4mV6ip0D6y8M/RJ3qobWLoUgOXc3M7aqUXTrJ0ZHfndNUO1gXUN4q5X0/9KAL+QJPluh4uF4I21aKSLBvm31l3Gfa1hlknGdu4E7uRUpoKtuqh7RfWz8LTFBFzJMH8vmm26xR7iMvGxXEXOElepmVQMOFJtujBaJ1F+HjxBCpnvcmRAjGIzh15vBRqUeOpM75oZXZpmsZJlvZL53qGcLuNEKoR1YTo3AXXyd+FtNOC6jYAg5g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,39 +111,79 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-VMAList opens smaps with universal newline handling and strict decoding.
-A carriage return in a mapped filename can split a header into multiple
-records, while non-UTF-8 bytes cause UnicodeDecodeError.
+alloc_contig_frozen_range_noprof() isolates [outer_start, outer_end)
+before checking whether a __GFP_COMP request exactly matches the
+allocated range.  If it does not, the function returns -EINVAL without
+releasing cc.freepages, leaking the isolated pages.
 
-Read LF-terminated records and use surrogateescape to preserve filename
-bytes.
+Call release_free_list() before returning -EINVAL, while the pageblock
+is still isolated, matching the cleanup already used when
+isolate_freepages_range() fails.
 
-Fixes: 2444172cfde4 ("tools/mm: add thpmaps script to dump THP usage info")
-Suggested-by: Andrew Morton <akpm@linux-foundation.org>
-Link: https://lore.kernel.org/linux-mm/20261101211644.c63a2028bbede0f763f41f80@linux-foundation.org/
-Signed-off-by: Weilin Tong <tongweilin@linux.alibaba.com>
+Use WARN_ONCE() as well: the condition is reachable through the exported
+API, and repeated invalid calls should not flood dmesg.
+
+Tested with an order-9 free pageblock and a one-page __GFP_COMP
+subrange:
+  before: free_buddy=0, leaked=512/512
+  after:  free_buddy=1, leaked=0/512
+
+Fixes: e98337d11bbdf ("mm/contig_alloc: support __GFP_COMP")
+Signed-off-by: Zhenghui Hao <zhenghui.hao@qq.com>
 ---
-This is a follow-up to "tools/mm/thpmaps: fix missing mapping names":
-https://lore.kernel.org/linux-mm/20261027074904.3328878-4-tongweilin@linux.alibaba.com/
+ mm/compaction.c | 2 +-
+ mm/internal.h   | 2 ++
+ mm/page_alloc.c | 9 +++++++--
+ 3 files changed, 10 insertions(+), 3 deletions(-)
 
- tools/mm/thpmaps | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/tools/mm/thpmaps b/tools/mm/thpmaps
-index a1a9bc30514f..f89568bd499e 100644
---- a/tools/mm/thpmaps
-+++ b/tools/mm/thpmaps
-@@ -196,7 +196,8 @@ class VMAList:
-     # instance to receive VMAs.
-     def __init__(self, pid='self', stats=[]):
-         self.vmas = []
--        with open(f'/proc/{pid}/smaps', 'r') as file:
-+        with open(f'/proc/{pid}/smaps', 'r', newline='\n',
-+                  errors='surrogateescape') as file:
-             for line in file:
-                 elements = line.rstrip('\n').split(maxsplit=5)
-                 if '-' in elements[0]:
+diff --git a/mm/compaction.c b/mm/compaction.c
+index f1b2060eb201..11ec991206bb 100644
+--- a/mm/compaction.c
++++ b/mm/compaction.c
+@@ -89,7 +89,7 @@ static struct page *mark_allocated_noprof(struct page *page, unsigned int order,
+ }
+ #define mark_allocated(...)	alloc_hooks(mark_allocated_noprof(__VA_ARGS__))
+ 
+-static unsigned long release_free_list(struct list_head *freepages)
++unsigned long release_free_list(struct list_head *freepages)
+ {
+ 	int order;
+ 	unsigned long high_pfn = 0;
+diff --git a/mm/internal.h b/mm/internal.h
+index 566cbd2dce48..364b288a0e2c 100644
+--- a/mm/internal.h
++++ b/mm/internal.h
+@@ -880,6 +880,8 @@ int
+ isolate_migratepages_range(struct compact_control *cc,
+ 			   unsigned long low_pfn, unsigned long end_pfn);
+ 
++unsigned long release_free_list(struct list_head *freepages);
++
+ #endif /* CONFIG_COMPACTION || CONFIG_CMA */
+ 
+ struct cma;
+diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+index a8cac5e01066..6913e0f94540 100644
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -7400,9 +7400,14 @@ int alloc_contig_frozen_range_noprof(unsigned long start, unsigned long end,
+ 		check_new_pages(head, order);
+ 		prep_new_page(head, order, gfp_mask, ALLOC_DEFAULT);
+ 	} else {
++		/*
++		 * isolate_freepages_range() has removed the pages from the buddy
++		 * allocator.  Put them back before undoing pageblock isolation.
++		 */
++		release_free_list(cc.freepages);
+ 		ret = -EINVAL;
+-		WARN(true, "PFN range: requested [%lu, %lu), allocated [%lu, %lu)\n",
+-		     start, end, outer_start, outer_end);
++		WARN_ONCE(1, "PFN range: requested [%lu, %lu), allocated [%lu, %lu)\n",
++			  start, end, outer_start, outer_end);
+ 	}
+ done:
+ 	undo_isolate_page_range(start, end);
 -- 
-2.43.7
+2.53.0
 
 
