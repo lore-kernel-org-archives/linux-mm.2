@@ -1,141 +1,93 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A994A606A32E
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 09:40:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9571160A260A
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 09:40:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kLQemQVy
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Jp7hWoRL
 Received: by kanga.kvack.org (Postfix)
-	id 9250F6B05B8; Mon,  2 Nov 2026 04:40:05 -0500 (EST)
+	id B963D6B05B9; Mon,  2 Nov 2026 04:40:12 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8FC9D6B05B9; Mon,  2 Nov 2026 04:40:05 -0500 (EST)
+	id B6DCD6B05BA; Mon,  2 Nov 2026 04:40:12 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 812AF6B05BA; Mon,  2 Nov 2026 04:40:05 -0500 (EST)
+	id A83CC6B05BB; Mon,  2 Nov 2026 04:40:12 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 548E36B05B8
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 04:40:05 -0500 (EST)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id E5A1BC0C80
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 09:40:04 +0000 (UTC)
-X-FDA: 85389682728.12.F5523A8
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 04FAB40003
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 09:40:02 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kLQemQVy;
-	spf=pass (imf27.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 8B95E6B05B9
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 04:40:12 -0500 (EST)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 12E34120C22
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 09:40:12 +0000 (UTC)
+X-FDA: 85389683064.07.C337D18
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 5EE4640008
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 09:40:10 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Jp7hWoRL;
+	spf=pass (imf01.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793612403;
+	s=arc-20220608; t=1793612410;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ZwnRUvz3SwxdgHBxrwlGXy0H9IEzMJS4UqyVR9mnGt4=;
-	b=Uf67g3Zc6GjvjP1e5IS6KeU7SHkmLZO8ywIwBBOBHUzWQs4nNpQXeAdjJoHoyrC4Er5QOH
-	1cxVeAch8HEkt6D0tjKegWWLVqCqtTCAfHnoOwd4W0Fxf50fM0Du4EkCGcGMvQQ3nLAYZn
-	HyJRYMAYwCJcgSlCXlWUcTjF1PQe13g=
+	bh=8aDvlOYrK7UWy4XuJN0OZX1n4c+MlDIjC9XuVai/qps=;
+	b=f5D0Kcr2aQg3vbR4CU+Yb7ZYOYQ8ZFz3w37uuvK0VLnvDv+FQ41mK5QBXhqOieKvNR7rs/
+	4cGip/LFGPlPx5jhVrzsNzuvP+7CKN+oPFaRVqH7mqhn2s1niZ3L6jUu1dBJcSRFh8HEyE
+	l5k+iucdmk6CXIi6djQqSVZwrUDq/vc=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793612403;
-	b=2Dq4/UISnRhp2IVjAo98Q9Q7c1C3kfkY9SzYtVMed1Aw+4yD7Ws+j0uKc1HgJfeudfUBAm
-	mkOo7Xd/vvhircSZMBG5zBODVuXmLmTTEwHMWn4XQ5ZOhvmL6iV18CVgSfNcXge5ltOu4P
-	YLM1lZVkTNBIlxfJiqagBmE069Irb7A=
+	t=1793612410;
+	b=FaqZgZhXLnuNyHNl2RcVEftgS8ufuZpKu6IeLAlrb+tZQ6NM0b8QSr2tQYf3gZymCNcK5t
+	G2llvXGqlrQDmiSF8r0nw5rcBt9fc8ZVADAEqzFQaDNgkg0/69oFZigEq6hbkFdqkNeMUj
+	W2l5Abt2DPfsIPcEzLiYzocRIE3axrk=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kLQemQVy;
-	spf=pass (imf27.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org;
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Jp7hWoRL;
+	spf=pass (imf01.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 7008360DD4;
-	Mon,  2 Nov 2026 09:40:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D34F1F00A1C;
-	Mon,  2 Nov 2026 09:40:00 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id B819143E3D;
+	Mon,  2 Nov 2026 09:40:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67EA51F00919;
+	Mon,  2 Nov 2026 09:40:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793612402;
-	bh=ZwnRUvz3SwxdgHBxrwlGXy0H9IEzMJS4UqyVR9mnGt4=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=kLQemQVynVju20euqViIiDt0YK9kwy2/kG2VtAwAvS/9wonG9TNhcnJM/Ok4OKAPv
-	 jSdb6f8Eo+N6JsL5pfTyznr8AjBoEIRCJvdRnbTiP6ei9X5h/NUEsyJsvwQrf9EZsK
-	 OIAtrszQFtsdPou4eDHRkbpW/SZZ6B+BebDJHsANeYOnTcsilFvYYI6ImzUWh7/xs5
-	 M7WNMLuRl7yLE8QdwDjxL6KBmI72Y+KH3ZoG67r84IcW13PWCc05zz4Zn67PIaFOLi
-	 zfNjdagDu0zqqDnDBRjlepUwVgP1Ynap1vH8F3Q8FO1B1oYhTZLlvg/7vxe8/zpU+V
-	 N/K5gU0zeWo8A==
-Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
-	by mailfauth.ams.internal (Postfix) with ESMTP id 8DF371980050;
-	Mon,  2 Nov 2026 04:39:56 -0500 (EST)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-01.internal (MEProxy); Mon, 02 Nov 2026 04:39:58 -0500
-X-ME-Sender: <xms:a1roav9K8JFD3toMZqmrFBA2yH_vLB0MHVevqWg85YdTlTcaUKovVA>
-    <xme:a1roasy_dTO0Ypu1aSOKeceLDLAU2Xl8Uj28aBErrWDAkyAKcG9WtH2Bter8GP-ht
-    -cFlXrjdEfoVuO-pCpUNb9x_JHRGPf4LavTwuVJuLqWpD-9rPIE_pFF>
-X-ME-Received: <xmr:a1roav_GC6L0cjYqq6XNL4SyK_wJtkKLVg1qWwPyTQ-6_yi8tVbm4bpFyuc>
-X-ME-Proxy-Cause: dmFkZTGPviSqm3YUI6GAME8zrCSvhUR5rBtNMH3Q6Juja8qKg1VfBKlS79iNDljkcrz+I3
-    rNfIvfS6fYoi+1178aVw+Y4CCEFxA/81t6V5pigg87ow+iFSpO4owYX+DTVhqm4DJGRhFm
-    Ex54iucggz3juJZje3Gdui3KypUVZYWqSzDUfarJzGVHyqjXlz4AeljWeOwj+Cq8LDsqe5
-    6ZZxnbrh9a6uqPVicD1xVkjHebUJj9SY0HDS2X/D14Onqm+7HQOU4tc8J+d5yFTXXWyg1b
-    27RFYBLd/xm8EStFnNTf2dfH+F5DmKEILnm4ckJVyRFvcufqe92/3wR3eO3brZrrnAeRgY
-    oMgr/aGqxA2otXk+Jc9DabZB5oAZm5xKNPMwWSqNPGzr7P51siwq0HNQ9d1Ft8JbpCfgIf
-    ocglp9ll4Zh+7GAvEvbK3o9Tu2tjfP00Rcf4JDsem23bFbM8WR2fKfel0xaivnGNOTP/IN
-    /UNz3UwSpkwwzjWFhj95SETM12w1lHPQyw2HTExMS8q0qLhkrgZBfqIUIKs4IiKP38YHdT
-    OXBHIOCZtj+ByyTu5W/g3OS0WH+dNVR65iP7eHePA+521R4FPkYXg3PjL8eDdHbQR7RrMf
-    O3DXl39jLEZACmQPdmFja0NrR5amHEPT8sg1IkOmkQbvvxUTBfPZ/bQI+lRg
-X-ME-Proxy: <xmx:a1roapIau3tr-1i7ij0Yu27xPtkXdzjmZcVby4bBMpauV7jAtd0u9g>
-    <xmx:a1roas83cgG6MT_Yz1GQLub1Ky1_jjLlFjXyy7KPhNjNE2LYePuH8Q>
-    <xmx:a1roatFV3pqZ_ewbYRvWXiH6oHfra2tB6izlVnXAIfHkLVmBoNXpJQ>
-    <xmx:a1roakOoNDeDawQ6RsRDO61go4mpgbxndS-__b6hpJWLv5Tj0Bya-Q>
-    <xmx:a1roakQIuvkbTbsKGrYn0jMgO4y8IYpdSxtEzfIUPa905MzzjxNXgrWP>
-Feedback-ID: i10464835:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 2 Nov 2026 04:39:55 -0500 (EST)
-From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	David Hildenbrand <david@kernel.org>
-Cc: "Kiryl Shutsemau (Meta)" <kas@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Brendan Jackman <brendan.jackman@linux.dev>,
-	Zi Yan <ziy@nvidia.com>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Qi Zheng <qi.zheng@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Kairui Song <kasong@tencent.com>,
-	Barry Song <baohua@kernel.org>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>,
-	Wei Xu <weixugc@google.com>,
-	Baoquan He <baoquan.he@linux.dev>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Dev Jain <dev.jain@arm.com>,
-	Harry Yoo <harry@kernel.org>,
-	Usama Arif <usama.arif@linux.dev>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	kernel-team@meta.com
-Subject: [PATCH v2 3/3] mm: vmscan: tell direct reclaim the allocation is ALLOC_NOFRAGMENT
-Date: Mon,  2 Nov 2026 09:39:36 +0000
-Message-ID: <20261102093939.3340540-4-kas@kernel.org>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20261102093939.3340540-1-kas@kernel.org>
-References: <20261102093939.3340540-1-kas@kernel.org>
+	s=k20260515; t=1793612409;
+	bh=8aDvlOYrK7UWy4XuJN0OZX1n4c+MlDIjC9XuVai/qps=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=Jp7hWoRLLokcBTU+Nh9VL2w2I6BUtr4iq9bzn3PgSAs2RQRE4xM/wzghX98yYTiks
+	 7yLXrGRh57e9iJHXwqsZJJy04V6H6x8rwnDp02ZUKV102rbUjZCsfQRHdYiDbfjYFh
+	 IzmWT7iLlB7Eo+n9mUqIiGMVU16MFLHwoI/vl2aDPXjVZ9qHrAlLziezBTW7Vrra0U
+	 MHPThO878vP0QvnEdV3yLlglh4Xe9OjxeNzp2SazHcSLkPj6k791X90HkrYQ4c9HEn
+	 nksRt79q2UbCJ8NMwOd0C2S70JZ8Vt0ogp8jMVDE7bPMwfM7pyDSG4xsWzcCqeXUAL
+	 GqlR/yYIsCr9Q==
+Date: Mon, 2 Nov 2026 09:40:04 +0000
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: Songsen Yang <yangsongsen@insta360.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	"Liam R . Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, syzbot+10e72ea5747737bcd2ad@syzkaller.appspotmail.com
+Subject: Re: [PATCH] mm/vma: fix NULL anon_vma deref in validate_mm() under
+ mmap read lock
+Message-ID: <auhYlOz1OmBSWLsx@gremlin>
+References: <20261102074414.10902-1-yangsongsen@insta360.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261102074414.10902-1-yangsongsen@insta360.com>
 X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 04FAB40003
-X-Stat-Signature: 4cm8dsgbyey95di74jcf4t7y54zhjeej
+X-Rspamd-Queue-Id: 5EE4640008
+X-Stat-Signature: jg3kso8jy5sekmdxhnznfueu5d1hj1cz
 X-Rspam-User: 
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1793612402-964729
-X-HE-Meta: U2FsdGVkX18pcS+PkHXe68IiKjB5x9E1Ah9TICW41zxIp5I2TBcvEM4Y+vV2SXFiMQtuAtqPnmiKGKxI9fEgurUMgPQLW383xaQ9tD2Qj7OvkmGohFnsdq8ew+g8ghghxmquZD8JBmBTRTOTkNMQGL6YrM82KIPyB53uZIvXsAIlLNEqRFMc3qeQVNE3cSwFAscCZybgiA9am7+MbBnS07UegOCKcDjUX8uBCzNRiBdFfFdsTdmRmsgxnPoB4wfTuuCVXzY10sQ62X0qqId5BDvrZTMAR0JAHNfaUpBVUfajGkqfOdNp0I7ZEswSJX+rDYVGUgFMb34ZTseMyK+IqkGtZ6XbmMsPmPE34oNdU4IQX/KJ9x7mR+tYc2rjtxR2aak1itBInC6S+hUZQs3cWtFRLw8cA7zDQP0ou/yhNaGayKuXnSzP5Jfc9on90s/UUFXXonhQoYXWq+N2vPMVIeJqcImuX3BllYcW8ZVdKwvsH61jHAETszz5BGiGVs/oPGoi/fn1NupYiwOkG3C1apswiKTYMFcY7Ph+p1OEkkUW9/Xy682iYbZuSqR/cmVJLKG63X8nhAdHVwdzsxQgGArU4+zKHXipdljn8hGZHMh3KWLZz1pjjfL+gi0v8ErvxugadGrVTuHmtD2AM1Vmnuw/quKT2o4h6PkaCh4UnZZyxvSj61Tlexu3G8qbNoWf57W6TkexVRmwFOvgEF4R/SrnNP6rX/kAHiIWr1G2GHPCvlbuD2mktA3xV/D7vE8Lgu13MQqgvC7xILW/cGZl943ruCtxw7oms8bcbvm6rg1yULdGoR7eqeEUxiwF3zGSFCuFv0cP/1ZJJwaAnk/WRvIVnP6BVQwBJV9mH0751dRyEK5uSB7NGX0WEiWIjZlyFBQMW4BKRDdMKFF17R1PleHnSJxaArLuDdb2sev7m0B0FnWvSUva47ucuuYltvyYZ5rEz0eMAJ8GUOAFRU6
- 8vM+DR+I
- /BxVw6VPUsNB/nYfc7HsN11lROJR68ggJtLEMUvwSyyf0PmktFmTLQTJcfOek4RZCcz+DkRkT9UarjO2+Od7/lQig0VXN8EISK+wNXX2fT6aGPJDeLGoPvTU5m1REOH0rh6N5U7FoHZUj1EyODHipQBGaupdYNCOJ808F90+iFbTZa3B7yFY3pnzftlOrfoCuIdpiuz3hioLo1/3d/qOMAINGn/bps8qaf/NiLqZeVxjzCil7nZfvC3E9f2wT1DsiBFKQgOaBKEk95xLwDzVxdyNyCeFNueBAC83UeUgKIcBEljEWh1Z7ngQfLQQ2BPbR+jkvaP+qQs8Bwx6QsNGDj0PuYBFmyTyNEIulXely2pQneE8=
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1793612410-190006
+X-HE-Meta: U2FsdGVkX1+NwwVkJrQdXVxViSz2PFIG5s1VvD5kF04R5Tq/p4x3ndkWvBz9nJPTy2qD/GwFQxWiKBGDgY12sOBjVuQ+DlAMf2r1V40wR70ZunjzFHCGMhHgyhctDIllvJO3WWbVyJdnfma62CYaxkkDiVNT1nChBa11CDLHVkLd5ZHC8FaZnjdCGDdWk00dyWLV4VkLvhF7A+BXbmLeqAkuxaN9rOISqc8ViufDboDqdpR1BD9eGHWRVhWKA33/GiFXEbkVBaNLshoGoADJ+M1zcdjQxHKGSpbdtv+dEU5BUfUAo15FNRhl7bYbogZc1fXrUs0UgC7rrZZ2fb/d1KEzRrIh8V2Oiuduvzc8K8XrVRpMCpzmqCV9AaWr3643FTAwtnTuQbH/o51a+sQ/bmProL343+pWeIThYZpRFqlRNbyoGN8KRaQnCzHk7425ZT0L/lZm54fF61UhnWbvg3neqaePKkXsOXGuJrg0SnAfYIpemNLCe95zrv4A8xMY/4tcBRnUrSi5wp8yYTfWVaJYAD9Ijqqo4kk6whe+HZ4moPymEvEWTjqiaw7ow7vwWI+AQ5wEa6+XNpPFWPCN72vVyCLlltuIRnbLhQhD4qvosry/FmNqUESHX9ypkCbpM2xq8y+wtI4g52EnBZacrhZqIO09wa6taxCeK/AJ/xBYuEEHu9pWYv7PgkagJcYLK9ESOyI9+/0Klmx8FLeEvsPmmcddWNJ+sb7s0c7+60YgyWL/AQjSQIPSQtWnifx7NK3DdHELKgIpaRQAAzNrGGwwDLg7dUuV+Q3CXPKFSdYyoK2SXH2OGk9lLJoWrzUemG3UCHXN3JxejpaFg6QP1gjxgerooXYAkWkLnlAy94MdJX9pi82C7olVtW4oUbYnHs3cOKhJMznK60RNpo+HFbNiz4SgN8fnR9OmV/J7rCc4O/3IfwQqzMEoUUcxcgDXBR7i7upe7hG+Ufm4Tvo
+ PMdo2d4F
+ E/czs9VfyENfgerrTUMB+Bi5Y++5U6V38ugrw9sOxzxsVBwRwFTr/ymXu9MuxNUc8bku7gXVu29CXPPssyG2UqFy/yId3EZgOcKCNhIpgeMar5CiA1nCnSr0mWQVbo1P1Rl4AuaEMBfpl9TGWLoJU4IgWSGI6HhNduhUyfzxLhPff0eIHQTMJZoUot+mWnuCstmlA+IAdo1oTStKb4v4+eLVe6Ndgz4F0GVKo3cEJKV2/ZYnQxFqCNaOd5PC5KSFkYml3hl8/hysW4EzNGxIly1k2CMO8TZawa+OLPq65BKCbsNywiVH16pOJ8z3o9yFpZ8r96ZYpVDqFnSrFRFqVkRmWEcLPLRajD+vaSl9Od9rsN/ElbVMj8zqQb+CWB0dk/Sc3d9nL7WAddTsyESAIdmDc39dpKv5HWVVjv8OvAgfAsxdzug3Rhy/2JHAdJPcugrffp+fir/sMk9KNgsOmcy0Zfs/fX1KX1MF3ahcyDOHbfMR3wjv48TXlweDJbT9SHCQVsMlgrCbGiL7hFkKr181NIqHZg/8w+2XpL5lH1MwAecpayv3LARMrvosvZ5SXvkYK0WX1NuVRM4rG3ewcnlPjMg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -144,159 +96,97 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Direct reclaim for a costly order stops as soon as the allocation could
-succeed.  compaction_ready() skips a zone and should_continue_reclaim()
-stops reclaiming when zone_watermark_ok() passes, and zone_watermark_ok()
-accepts a free page of any migratetype.
+On Mon, Nov 02, 2026 at 03:44:13PM +0800, Songsen Yang wrote:
+> Since commit 38564710f443 ("mm: implement and use vma_has_anon_rmap(),
+> silence KCSAN"), validate_mm() decides whether to walk a VMA's anon_vma
+> chain with vma_has_anon_rmap(), which re-reads vma->anon_vma, but still
+> locks the anon_vma pointer it cached at the top of the loop iteration.
+>
+> vms_complete_munmap_vmas() calls validate_mm() after downgrading the
+> mmap lock to a read lock. A page fault on another thread can then
+> install vma->anon_vma via __anon_vma_prepare() between the two reads.
+> The check sees a non-NULL anon_vma while the cached value is still
+> NULL, and anon_vma_lock_read() dereferences it:
+>
+>   BUG: kernel NULL pointer dereference, address: 0000000000000000
+>   RIP: 0010:validate_mm+0x143/0x2a0
+>   Call Trace:
+>    vms_complete_munmap_vmas+0x201/0x2d0
+>    do_vmi_align_munmap+0x285/0x2d0
+>    do_vmi_munmap+0xcb/0x190
+>    __vm_munmap+0xab/0x190
+>    __x64_sys_munmap+0x16/0x20
+>
+> Read vma->anon_vma once and use that value for both the check and the
+> lock, as the code did before. Under the mmap read lock vma->anon_vma
+> can only go from NULL to non-NULL, so a non-NULL value read here stays
+> valid until validate_mm() is done with it. Keep the data_race()
+> annotation that vma_has_anon_rmap() provided, since a concurrent
+> install is expected.
+>
+> Only CONFIG_DEBUG_VM_RB kernels are affected.
+>
+> Testing: on top of mm-hotfixes-unstable at commit 989bf98b512c
+> ("iov_iter: validate extracted segment for bvec alignment"), x86_64
+> under QEMU TCG with -smp 2 and CONFIG_DEBUG_VM_RB=y. The race window
+> is too narrow to hit with the syzbot reproducer under TCG in the time
+> available, so a debug-only mdelay(1) was added before the check to
+> widen it: without this patch the reproducer crashes with the splat
+> above in its first round; with this patch and the same mdelay(1) it
+> completes all rounds without any splat. The mdelay(1) is not part of
+> this patch. mm selftests were not run.
+>
+> This issue was analysed, and the fix, changelog and tests were
+> prepared, with the help of an AI coding assistant (Claude); the
+> submitter has reviewed the change.
+>
+> Fixes: 38564710f443 ("mm: implement and use vma_has_anon_rmap(), silence KCSAN")
+> Reported-by: syzbot+10e72ea5747737bcd2ad@syzkaller.appspotmail.com
+> Closes: https://lore.kernel.org/all/6ae78418.6552420f.2a0efc.005c.GAE@google.com/
+> Signed-off-by: Songsen Yang <yangsongsen@insta360.com>
 
-With defrag_mode, the allocation behind the reclaim is ALLOC_NOFRAGMENT
-and cannot take the free pages left in unmovable and reclaimable
-pageblocks.  Reclaim stops on them anyway, having freed little.
+This fix looks garbled.
 
-In Dev Jain's 64K mTHP benchmark, with the high-order watermark check
-already honouring ALLOC_NOFRAGMENT, an order-4 direct reclaim frees 16
-pages on average with defrag_mode and 45 without.  64K faults get a bit
-over half as many folios as without defrag_mode (medians of 15 runs):
+You've no guarantee of what is read and when, the ordering isn't a thing at
+all here. If that were an issue, you'd need to use a READ_ONCE().
 
-                              defrag_mode=0  defrag_mode=1  defrag_mode=1
-                                                            + this patch
-    64K faults allocated              20750          11538         19759
-    64K faults falling back to 4K       725           9945          1664
+The fix is also not correct. I'll take this over.
 
-Pass ALLOC_NOFRAGMENT from the allocation down to try_to_free_pages().
-Both checks then ask __zone_watermark_ok_mt() for a free page the
-allocation can take, and an order-4 direct reclaim frees 40 pages on
-average.
+> ---
+>  mm/vma.c | 10 ++++++++--
+>  1 file changed, 8 insertions(+), 2 deletions(-)
+>
+> diff --git a/mm/vma.c b/mm/vma.c
+> index 4672d4205..b674c69f7 100644
+> --- a/mm/vma.c
+> +++ b/mm/vma.c
+> @@ -679,7 +679,7 @@ void validate_mm(struct mm_struct *mm)
+>  	mt_validate(&mm->mm_mt);
+>  	for_each_vma(vmi, vma) {
+>  #ifdef CONFIG_DEBUG_VM_RB
+> -		struct anon_vma *anon_vma = vma->anon_vma;
+> +		struct anon_vma *anon_vma;
+>  		struct anon_vma_chain *avc;
+>  #endif
+>  		unsigned long vmi_start, vmi_end;
+> @@ -703,7 +703,13 @@ void validate_mm(struct mm_struct *mm)
+>  		}
+>
+>  #ifdef CONFIG_DEBUG_VM_RB
+> -		if (vma_has_anon_rmap(vma)) {
+> +		/*
+> +		 * Callers may hold only the mmap read lock, in which case a
+> +		 * concurrent fault can install vma->anon_vma at any time. Read
+> +		 * it once, so that the check and the lock use the same value.
+> +		 */
+> +		anon_vma = data_race(vma->anon_vma);
+> +		if (anon_vma) {
+>  			anon_vma_lock_read(anon_vma);
+>  			list_for_each_entry(avc, &vma->anon_vma_chain, same_vma)
+>  				anon_rmap_tree_verify(avc);
+> --
+> 2.50.1
 
-Fixes: e3aa7df331bc ("mm: page_alloc: defrag_mode")
-Reported-by: Dev Jain <dev.jain@arm.com>
-Closes: https://lore.kernel.org/all/4aa14b41-9b89-494c-8825-55fffd5a541c@arm.com/
-Tested-by: Dev Jain <dev.jain@arm.com>
-Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
----
- mm/internal.h   |  3 ++-
- mm/page_alloc.c |  8 +++++---
- mm/vmscan.c     | 24 +++++++++++++++++++-----
- 3 files changed, 26 insertions(+), 9 deletions(-)
-
-diff --git a/mm/internal.h b/mm/internal.h
-index 8e58e2db5e09..b43947818f9a 100644
---- a/mm/internal.h
-+++ b/mm/internal.h
-@@ -65,7 +65,8 @@ void folio_mark_lazyfree(struct folio *folio);
- /* mm/vmscan.c */
- unsigned long zone_reclaimable_pages(struct zone *zone);
- unsigned long try_to_free_pages(struct zonelist *zonelist, int order,
--				gfp_t gfp_mask, const nodemask_t *mask);
-+				gfp_t gfp_mask, const nodemask_t *mask,
-+				bool nofragment);
- unsigned long lruvec_lru_size(struct lruvec *lruvec, enum lru_list lru,
- 			      int zone_idx);
- 
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index d53fb2c67ae1..08f9bdcd3b9f 100644
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -4451,7 +4451,7 @@ static unsigned int check_retry_zonelist(unsigned int seq)
- 
- /* Perform direct synchronous page reclaim */
- static unsigned long
--__perform_reclaim(gfp_t gfp_mask, unsigned int order,
-+__perform_reclaim(gfp_t gfp_mask, unsigned int order, unsigned int alloc_flags,
- 					const struct alloc_context *ac)
- {
- 	unsigned int noreclaim_flag;
-@@ -4465,7 +4465,8 @@ __perform_reclaim(gfp_t gfp_mask, unsigned int order,
- 	noreclaim_flag = memalloc_noreclaim_save();
- 
- 	progress = try_to_free_pages(ac->zonelist, order, gfp_mask,
--								ac->nodemask);
-+				     ac->nodemask,
-+				     alloc_flags & ALLOC_NOFRAGMENT);
- 
- 	memalloc_noreclaim_restore(noreclaim_flag);
- 	fs_reclaim_release(gfp_mask);
-@@ -4487,7 +4488,8 @@ __alloc_pages_direct_reclaim(gfp_t gfp_mask, unsigned int order,
- 	int reclaim_order = ac->reclaim_compact_order;
- 
- 	psi_memstall_enter(&pflags);
--	*did_some_progress = __perform_reclaim(gfp_mask, reclaim_order, ac);
-+	*did_some_progress = __perform_reclaim(gfp_mask, reclaim_order,
-+					       alloc_flags, ac);
- 	if (unlikely(!(*did_some_progress)))
- 		goto out;
- 
-diff --git a/mm/vmscan.c b/mm/vmscan.c
-index 9959ca158ce8..54a16dbb84dd 100644
---- a/mm/vmscan.c
-+++ b/mm/vmscan.c
-@@ -142,6 +142,9 @@ struct scan_control {
- 	/* One of the zones is ready for compaction */
- 	unsigned int compaction_ready:1;
- 
-+	/* The allocation cannot fall back to other migratetypes' blocks */
-+	unsigned int nofragment:1;
-+
- 	/* There is easily reclaimable cold cache in the current node */
- 	unsigned int cache_trim_mode:1;
- 
-@@ -6316,6 +6319,17 @@ static bool in_reclaim_compaction(struct scan_control *sc)
- 	return false;
- }
- 
-+static bool allocation_can_succeed(struct zone *zone, struct scan_control *sc,
-+				   unsigned long mark)
-+{
-+	unsigned int alloc_flags = sc->nofragment ? ALLOC_NOFRAGMENT : 0;
-+	long free_pages = zone_page_state(zone, NR_FREE_PAGES);
-+	int migratetype = gfp_migratetype(sc->gfp_mask);
-+
-+	return __zone_watermark_ok_mt(zone, sc->order, mark, sc->reclaim_idx,
-+				      alloc_flags, free_pages, migratetype);
-+}
-+
- /*
-  * Reclaim/compaction is used for high-order allocation requests. It reclaims
-  * order-0 pages before compacting the zone. should_continue_reclaim() returns
-@@ -6354,8 +6368,7 @@ static inline bool should_continue_reclaim(struct pglist_data *pgdat,
- 		unsigned long watermark = min_wmark_pages(zone);
- 
- 		/* Allocation can already succeed, nothing to do */
--		if (zone_watermark_ok(zone, sc->order, watermark,
--				      sc->reclaim_idx, 0))
-+		if (allocation_can_succeed(zone, sc, watermark))
- 			return false;
- 
- 		if (compaction_suitable(zone, sc->order, watermark,
-@@ -6580,8 +6593,7 @@ static inline bool compaction_ready(struct zone *zone, struct scan_control *sc)
- 		return false;
- 
- 	/* Allocation can already succeed, nothing to do */
--	if (zone_watermark_ok(zone, sc->order, min_wmark_pages(zone),
--			      sc->reclaim_idx, 0))
-+	if (allocation_can_succeed(zone, sc, min_wmark_pages(zone)))
- 		return true;
- 
- 	/*
-@@ -6965,7 +6977,8 @@ static bool throttle_direct_reclaim(gfp_t gfp_mask, struct zonelist *zonelist,
- }
- 
- unsigned long try_to_free_pages(struct zonelist *zonelist, int order,
--				gfp_t gfp_mask, const nodemask_t *nodemask)
-+				gfp_t gfp_mask, const nodemask_t *nodemask,
-+				bool nofragment)
- {
- 	unsigned long nr_reclaimed;
- 	struct scan_control sc = {
-@@ -6978,6 +6991,7 @@ unsigned long try_to_free_pages(struct zonelist *zonelist, int order,
- 		.may_writepage = 1,
- 		.may_unmap = 1,
- 		.may_swap = 1,
-+		.nofragment = nofragment,
- 	};
- 
- 	/*
--- 
-2.54.0
-
+--
+Cheers, Lorenzo
 
