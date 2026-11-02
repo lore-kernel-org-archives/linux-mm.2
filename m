@@ -1,108 +1,99 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1140F606A33E
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 11:30:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA4A4606A327
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 11:30:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=COu7LGup
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=gQkuZo0J
 Received: by kanga.kvack.org (Postfix)
-	id 9C7586B05BA; Mon,  2 Nov 2026 06:30:40 -0500 (EST)
+	id CAE156B05BE; Mon,  2 Nov 2026 06:30:51 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 977E46B05BC; Mon,  2 Nov 2026 06:30:40 -0500 (EST)
+	id C37B46B05C1; Mon,  2 Nov 2026 06:30:51 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 83FD96B05BD; Mon,  2 Nov 2026 06:30:40 -0500 (EST)
+	id B26D76B05C7; Mon,  2 Nov 2026 06:30:51 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 4AAE36B05BA
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 06:30:40 -0500 (EST)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id C64F9140C18
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 11:30:39 +0000 (UTC)
-X-FDA: 85389961398.10.432536C
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf10.hostedemail.com (Postfix) with ESMTP id E4AFFC0002
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 11:30:37 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=COu7LGup;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf10.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 7D9F06B05BE
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 06:30:51 -0500 (EST)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 0D777A0C4E
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 11:30:51 +0000 (UTC)
+X-FDA: 85389961902.20.EB4B398
+Received: from mta1.migadu.com (out-55.mta1.migadu.com [95.215.58.55])
+	by imf15.hostedemail.com (Postfix) with ESMTP id D6F22A000D
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 11:30:48 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=gQkuZo0J;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf15.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.55 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793619038;
+	s=arc-20220608; t=1793619049;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kfBt7VegB4tPtF3aDF2xGVmaq4e8cZHrDQu6SY70Iyc=;
-	b=FIbIcVJb0SFkYhSJZBCTbyiTMbdFPNFUJ3P8BrAJWiJv9ZLVQBi8AxyjJ4lIwQg3U7dcXv
-	4ChudORQ3WUm2lYVCVdc24camefdjbvYJmFh9BRQQXo7qh5vS1LGvr7mLQdDXpNFEicCdz
-	ViIcnb6X8zG2zhRBulExzfEH7Ga05Vo=
+	bh=7KsuSSSsxD3YbZP/yKFBKTQlRuo5uz+LJ8kNZ6qxTkA=;
+	b=ontwTQ+AntGwPU+BYCxfW2559+UDj4qdH1TpDyU8R/WJtXYtPJwr2GKTaZsvYAqxtvh+aA
+	znrloUkId38v5KlNPdFsnBvCs6B+meP03lczUcDk/TRqJyZ9sp3VBf2t9cbCjH4O86o+kn
+	GNTRSMa974LjnzWHRa8A/C6wVG5+Z4g=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=COu7LGup;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf10.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com
+	imf15.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=gQkuZo0J;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf15.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.55 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793619038;
-	b=j/mMKl95E2athKEMfuUfYlXrZ9Czff0dqonDG3+fnqW4xbot8jerISFwAJ8QdqYEJsYcZW
-	jPPdGFh3IpsepVb7YbRo+Zmp2nwrtPqW+3E7R0CkCYTibTmORSaXOQ24s/onXe0H/Ki7kk
-	VflK/qqjbiuAl++bDR/Gyc5YMuTyvq4=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 134A71691;
-	Mon,  2 Nov 2026 03:30:34 -0800 (PST)
-Received: from e129823.arm.com (e129823.arm.com [10.2.213.3])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 4752E3F632;
-	Mon,  2 Nov 2026 03:30:35 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1793619037; bh=HwhV8AKXzh2IqLPyqcNAxm1ImdqPtq8zihoD7af5bxk=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=COu7LGup5ViKlHhc3bxi6DjIsFvy3kMLQHaT/Jiyam9PsLDnKZRsuOpW8N0HU7TDS
-	 aYi6zvYzU0a9NMzxYbUgeAxQf9SG0hS/qaHLmNjt32ZrkI6TZqbI7iJfrKXb0Atttr
-	 k6Z+b+vUG7rK/28SwaGHaJ45YoVGgzCMTKY+a3VU=
-From: Yeoreum Yun <yeoreum.yun@arm.com>
-Date: Mon, 02 Nov 2026 11:30:19 +0000
-Subject: [PATCH v2 4/4] mm: gup: batch PTE-mapped large folios in
- gup_fast_pte_range()
+	t=1793619049;
+	b=joIYRndOcivSZL2R89JTXHvQbkrcbjSlKWiKQY+/SdGJnPjGQeG+Sx4oGM8FOc8EPg99pl
+	OeFGa+Gb9fTsfRd3/596H8t49n21q6bEIrVpMktuzpVW1wNVhFKMyHYQxvkIKeV8/e7HzM
+	9iBbwL9fnoO5T8x7355XFMnIe3BLfU8=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=tNBisU1jDGaV5LYM3bdXrogdkDnLbwUWDMDBKdupMBU=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1793619047; v=1; x=1794223847;
+ b=gQkuZo0JI3m86pQETUHqViBtRNUkM3cHwmmIdJslBDlVpod1/XlFyJXJXzZFvzrZhurZIzcS
+ iGEFcWzgWMuqBRmRNIrAXwX4rhcOBSdIYtDyq+euhUOQBUuGyxvU+P5WnIF0zbPnigRE9ajHJRv
+ WUa6F6ASYGk99VhRGpvyQNg8=
+X-Envelope-To: linux-mm@kvack.org
+Received: by mta11.migadu.com with ESMTPS id 4e70c995d35ab05e;
+	Mon, 02 Nov 2026 11:30:47 +0000
+X-Mizu-Trace-ID: 4e70c995d35ab05e
+X-Migadu-Flow: FLOW_OUT
+From: Muchun Song <muchun.song@linux.dev>
+Message-Id: <5822BD89-A433-4EFD-B335-2B6206E6583D@linux.dev>
+Content-Type: multipart/alternative;
+	boundary="Apple-Mail=_D525DC28-58C3-412A-922E-1CBFDF01DE76"
 X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261102-refactor_gup_fast-v2-4-bc1ac018c834@arm.com>
-References: <20261102-refactor_gup_fast-v2-0-bc1ac018c834@arm.com>
-In-Reply-To: <20261102-refactor_gup_fast-v2-0-bc1ac018c834@arm.com>
-To: linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Cc: Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>, 
- Peter Xu <peterx@redhat.com>, Lorenzo Stoakes <ljs@kernel.org>, 
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
- Michal Hocko <mhocko@suse.com>, Andrew Morton <akpm@linux-foundation.org>, 
- David Hildenbrand <david@kernel.org>, Rik van Riel <riel@surriel.com>, 
- Yuan-Hao Hsu <aa9736195201@gmail.com>, Yeoreum Yun <yeoreum.yun@arm.com>
-X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=5969; i=yeoreum.yun@arm.com;
- h=from:subject:message-id; bh=HwhV8AKXzh2IqLPyqcNAxm1ImdqPtq8zihoD7af5bxk=;
- b=owEB7QES/pANAwAKAW3Vw9FaxTEzAcsmYgBq6HRSkyBgpfjrwbkgXjt7GwMRErEE2JyyT1SX3
- IWwNm/z/a+JAbMEAAEKAB0WIQQtg+CS3QUzuFh1pJ1t1cPRWsUxMwUCauh0UgAKCRBt1cPRWsUx
- M9GiC/9Q/g5vw/EFwaCW7oylk1YUQONETkxPRgb3R65xWYBUJgWSi6jzlOjGzUSOoj0zHD0K4Lt
- pJ2BVoxwO6zSrEL+fbd9OCT20BhtrX9gYf2+44sKzSL60W/EtXNH/qnxlQ+aqO68BRCcjFGU8wa
- bqYs5AdrT12pxMtiZG00yaeLHQUbR0M/2LuIzfnIIvKieBO6rbCLAjuP0w/+2DhlS3/D6FWGUho
- z1xofwt7YCQ+kllpFjhK8VHzPEAi7Aioh9Z6HH2cUlmCts4IAfvlp1jQO2FQndYl4WnPFP2GMau
- 1Wk8tXNtKg1YoXpl1HP0h109dLQxTM4PFLVOndF/vPEaWj7FaJLq2tFUD6tr3q4VefWsaWmgv6E
- L7eaRSIa5xZAsvZmaQfJUjZSzOPilESlZzoDmyOOvswW3y8AdcHQOPk26z8dodPcnbxZBxdgF4b
- GRvkneFh+4Bqd4y26R5kBuN0glVsw+ftlKB50GuZOl8Tw28qWlvTkZ+9vh6fxaLzcyjY8=
-X-Developer-Key: i=yeoreum.yun@arm.com; a=openpgp;
- fpr=2D83E092DD0533B85875A49D6DD5C3D15AC53133
-X-Rspamd-Queue-Id: E4AFFC0002
-X-Stat-Signature: kmucskyib9nsez81ghd4nxq8zte83bg5
-X-Rspamd-Server: rspam06
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3901.200.71.1.16\))
+Subject: Re: [PATCH v2 02/12] mm: hugetlb_vmemmap: unify
+ VMEMMAP_{SPLIT,REMAP}_NO_TLB_FLUSH
+Date: Mon, 2 Nov 2026 19:30:30 +0800
+In-Reply-To: <179361471103.1337633.14353990207430443405.b4-review@b4>
+Cc: Muchun Song <songmuchun@bytedance.com>,
+ Oscar Salvador <osalvador@suse.de>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Qi Zheng <qi.zheng@linux.dev>,
+ Lance Yang <lance.yang@linux.dev>,
+ James Houghton <jthoughton@google.com>,
+ David Hildenbrand <david@kernel.org>,
+ linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+To: Mike Rapoport <rppt@kernel.org>
+References: <20261102032525.3597743-1-songmuchun@bytedance.com>
+ <20261102032525.3597743-3-songmuchun@bytedance.com>
+ <179361471103.1337633.14353990207430443405.b4-review@b4>
+X-Mailer: Apple Mail (2.3901.200.71.1.16)
+X-Rspamd-Queue-Id: D6F22A000D
+X-Stat-Signature: 4adcxb4mcz8jndgpfxbtkot989h46ey3
+X-Spam-Status: No, score=-12.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,HTML_MESSAGE,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-HE-Tag: 1793619037-39945
-X-HE-Meta: U2FsdGVkX19tTX3/6yP5K7rvm1Ui5Lja6F8dFd2w0g4jVLjFh1La6aZEoc1HGRWjNHIaul2BCcTjRbI8XBl7qzwH7pJ42g7j7E9v/kJs0k4LruPG+8EsLTBJniUUT9CVWQKlRZ2vQ+82srlq+kE1GqJfzUASDN+7dGKpClK/GedYxZe+QLfkxRVlAu0PHKcWEggPuGgwrM/nynlPJ4N5nuUEokcOSnU0f5yziwAj5adjGtZxmujGPKW4hy0Ji3oq0KI4ei9nI0yOR/kgInlx9YkNqEJ5WOiZqnEjvwzeXE0VFu5hD2CBRop6FQ/nVvngu/qyj/sc3iQW1maEat2fz1OTXafblmSox5AQ4DyJrGu9vErks0sdHYan0jUiPc08XrM6jfSNbyG8VMok0uyPeVYzODQKVdq90mw0AbatbdM/qHtaRLGDsrVvoTFPDiNQh75pdEhVAZtSy5em/QCJ2i8o7KnzRueSv3TI0afSeOm2nkfwWw1i9k77uGmYRP2eo+CmmnXv7nc8OtVs7cYy9cjYb9op/s4bXV1h1X8EhwtrBd97ZHgQzSlpjYFxR0zwiMEVESsGXIMIGg+CkGT9furxtS1F8assa7aA8EZNvQAC+SU9MJeLBs4aBhfWFHRv1MvMtZ4paDG9PeItObvY/Z2jqLK6Ov1sieKhYXR1fWfHyu7hNPbZp44Rq+ZNOs2HcR6Ls3zlPHnxQuJVwtdl0yzI8XuczVRJE1FLNAt+H5Ox81Mr9OrpzqeLt09YbYnBMJ2Uo/k11bpelOnxYn2ScqffRNkrDitkxaL729txlFISlrCnnBSBugTBXkn1PGqiWq6Rjd8NWMHWI6LdKpH3cyMcq9MwL1J8X4PtGEcp24qpZvjhnhI884mkC4nsXuvEgRH5EYt3wUV63Mol1r/dnhVRdKLxqNh8xzwThYElAg5uZEhqNkLaLJpigaGHCU5VXC8is6ZSjt80JHRCqqe
- LO0Msqsl
- bIDv7uc+3DedTGv5fWnKdwFRu0bR2hucdNX3Ftovdjm7tFncRLpZ+SiwEdPG2SHFbtHyHzJUT+RMwv6mmqOLkwKTHecci6tmeG0JRAcGDwQLGR9GSDANMSxV7B6RURLP2lSV6q7YmfRx6qRLIDfgY1OdM9F6kKsrxAWBJyY6AKQEgYZwBlib/elZzsCW5yfvKSvm/wTFxX+CMjgM8puno750I80QwCliURYEn5IQOkLUdbARBeCUy+1n7x/UN5eXaOp9qAEavyPHjsVpZB11t+ZIS5n32oLeCRCV0vx3aEA9eDKcR7njbFY2A2Fono2phi+tlVl22LhBhZMY=
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1793619048-855368
+X-HE-Meta: U2FsdGVkX1/sWT0M/+aIRyIXfAn/KhYR7nkBYNitGGTNa4FDyQYx4nv9UI+DijiQG2iSeGU0yGGlCvaPrXMZY8UTeQwn0XfMnWmRnmyrw+KKU7exwOc73pRkVoKNLWF+VvucNcl4VjqlP0kL8zPrJRc+MGlQPmJTuYKsj/9PdS++S0PUGrFdjz1d2WtgN1tWHmN6UIzhSiN2Yq2ykOQOul8ALL2huMC55LBLNvjw2BDHbMZt3opkczOCBxKp8neJx1ltiH0jdD++dHn5e0X7Hyz2QetNo8JcE2qh5N6l8Gp4FMwSjYJtx+ZDwfq+cVjVuUEJwYjd5Csin1fPpyTCG4l4RKkpD47u8xVkQpF2XUhyl288GCg0BkslcPcnZ2j4+PSc9Jf5Xt8ra14DvsFfWIx+oCrtJc7IZXGIaRGmHIPD3civlS07nMg9a1HciPe8YqMtk+b6/Mm3Go3RsZrzPmb2yZIooT8QEaRqMo4jnpDwz/XV19m3lPUeX6lUCkC/yCuLUtYYg66LZcavHzFKjo4iuiUcGWoADBOnLvMbfUZC9XxL3J18UasO54UthFM+MVqu95AFlgBx5fUHCUAr1gyO7JT1JNZadV1Uz4+KMVXnMNhAkQgCJCi2h5g8/OCqAq1i2tZYwOi87LrBUocEfUKK0u+40BfsIRw/mLB4sM588Hvi0MfxLFbAL6CKXH0xWZRbOcye0HLKXxkYkMgaXvPvFyE4CEG+83P612HrzeXW1MwCFnZa1rcJFaeqqGZQy3B8evOudlnDVe9c5ilMPgtnz8aJCYzeTvqlN2g1qiqoU9rVA8fogbpyZ0zhtHX6GJMsvzmXMUReIxx5vIM7S5DO4iH05g/k3uC/VJNXAzO4gaZ/7qREEr8olYZOBFmAS3bOs3L8/624quGiRJ1CDhkAfhwEBFmgfcQAVARTrlanXkhb/4poTEFekriGGxGtd/IYFuy+QrryFCWw8oh
+ QHf9wBnA
+ ZSMi2JBddUoL+MZ8Sp13MSaggQqWfPZl74GqS1jFwrgZSM+8BvxBwzpl0+6fyaBhcqMgwyyPBY2HcXFp0MSp1NO5wuxZfi346k4vWUyQbtArbT80v9lHBLqVUHIniB+Y2JrgT2+Hg+7JO/wqVMAe8qZT6rBT6WZg69aHEmLaKFodsyb0mzEPYuqoqwZFFXW9QivB+EcblEzJYKnPJK4qOaUaWFr4tUIdlFlFKL25WkiWxVrOw740HKjTVjrsn6NCoLtT/SwqG+9PTyWeI0GQiGqUkrWZDM37HV6Y7NBBcUiFIMYaaSPdLl4VMq2h1T2tYX7RGYSuhJODoqMT4O/M4dyq9AjBzztB+zqbKYM4IYtPaaLgE8dRjIAFUdXmyLHXd3/gquJsltUbUAkSyR0/mTZWSb11zOg3OBrqErbiRurpoTK6X6M+XSYi0PwznCd1NXt03BcJ+PoGq+Ho=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -111,159 +102,311 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-GUP-fast grabs a PTE-mapped large folio one page at a time.  Every PTE
-costs a try_grab_folio_fast() (a refcount cmpxchg, plus the pincount
-atomic, a full barrier and a node stat update for FOLL_PIN), a
-gup_fast_folio_allowed() and a folio_set_referenced(), so a 64 kB mTHP
-pays sixteen of each and a PTE-mapped 2 MB THP pays 512.
 
-The users are the hot ones: iov_iter_extract_user_pages() pins every
-O_DIRECT buffer through pin_user_pages_fast(), io_uring registers its
-buffers through it, and so does RDMA memory registration.
-With mTHP those buffers are PTE-mapped large folios.
+--Apple-Mail=_D525DC28-58C3-412A-922E-1CBFDF01DE76
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain;
+	charset=utf-8
 
-After the head page has been grabbed and verified as before, extend the
-run to the following PTEs that map the next pages of the same folio
-with the same protection bits, take the remaining references for the
-run with try_grab_folio(), and fill pages[] from the run.
-The PTEs of the run are read while the reference on the folio is held,
-so the folio can neither be collapsed, freed nor split underneath the scan.
-A read-only run of an anonymous folio stops at the first page
-that gup_must_unshare() rejects, so the per-page exclusivity guarantee for
-FOLL_PIN is kept.
 
-folio_pte_batch_flags() does the scan.  It reads the entries with
-ptep_get(), which is not safe without the page table lock on
-CONFIG_GUP_GET_PXX_LOW_HIGH (x86 PAE, mips32, sh) or with arm64 contpte,
-and GUP-fast reads every PTE with ptep_get_lockless() for that reason.
-Add FPB_LOCKLESS to make the helper do the same; it is inlined per call
-site, so the other callers do not change.
 
-The order-0 path keeps its instruction sequence.  The folio flags are
-tested before folio_set_referenced() on purpose: a load of the flags
-right after that locked instruction cost about 25% on order-0 pages in
-the gup_test benchmark below, and reading them first brings that path
-back to the baseline.
+> On Nov 2, 2026, at 18:18, Mike Rapoport <rppt@kernel.org> wrote:
+>=20
+> Hi Muchun,
 
-gup_test ioctl over a 256 MB anonymous region, FOLL_WRITE, 65536 pages
-per call, median of 15 runs, two baseline boots / one patched boot, on
-an x86-64 VM:
+Hi Mike,
 
-                       get_user_pages_fast()   pin_user_pages_fast()
-                       before       after      before       after
-  4 kB pages           849/789 us   783 us     1174/1138 us 1094 us
-  64 kB mTHP           812/811 us   126 us     1215/1113 us  188 us
-  1 MB mTHP            799/774 us    59 us     1185/1077 us   64 us
-  2 MB THP, PTE-mapped 803/786 us    57 us     1159/1120 us   58 us
-  2 MB THP, PMD-mapped  42/40 us     40 us       46/41 us     42 us
+>=20
+>> VMEMMAP_SPLIT_NO_TLB_FLUSH and VMEMMAP_REMAP_NO_TLB_FLUSH do not
+>> describe fully independent choices. A split-only walk can defer the
+>> PMD-split flush to a later global flush, and a remap-only walk can
+>> defer the final remap flush. However, when a PMD split is followed
+>> by PTE remapping, the split flush must happen before the PTEs are
+>> changed, because stale large-page translations must not overlap with
+>> new small-page translations that map different physical pages.
+>>=20
+>> Replace the two flags with a single VMEMMAP_DEFER_TLB_FLUSH flag. The
+>> new name reflects that only safely batchable flushes are deferred. =
+Keep
+>> split-only walks able to defer the flush, but force the split flush
+>> whenever a remap_pte callback is present. Callers that batch HVO work
+>> can still defer the final remap flush and issue their own global =
+flush.
+>>=20
+>> Current callers keep the same flushing behavior.
+>>=20
+>> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+>> Reviewed-by: Lance Yang <lance.yang@linux.dev>
+>> Reviewed-by: Qi Zheng <qi.zheng@linux.dev>
+>> ---
+>> v2:
+>> - Rename the unified flag to VMEMMAP_DEFER_TLB_FLUSH and update its
+>>  comment (suggested by Qi Zheng)
+>> - Update the commit message for the new flag name
+>> - Collect Reviewed-by from Lance Yang and Qi Zheng
+>> ---
+>> mm/hugetlb_vmemmap.c | 23 +++++++++++++----------
+>> 1 file changed, 13 insertions(+), 10 deletions(-)
+>>=20
+>> diff --git a/mm/hugetlb_vmemmap.c b/mm/hugetlb_vmemmap.c
+>> index 4b73d6ec8dcea..63e899cfaac3a 100644
+>> --- a/mm/hugetlb_vmemmap.c
+>> +++ b/mm/hugetlb_vmemmap.c
+>> @@ -42,10 +42,8 @@ struct vmemmap_remap_walk {
+>> 	struct list_head	*vmemmap_pages;
+>>=20
+>>=20
+>> -/* Skip the TLB flush when we split the PMD */
+>> -#define VMEMMAP_SPLIT_NO_TLB_FLUSH	BIT(0)
+>> -/* Skip the TLB flush when we remap the PTE */
+>> -#define VMEMMAP_REMAP_NO_TLB_FLUSH	BIT(1)
+>> +/* Defer safely batchable TLB flushes to the caller. */
+>> +#define VMEMMAP_DEFER_TLB_FLUSH	BIT(0)
+>> 	unsigned long		flags;
+>> };
+>>=20
+>> @@ -85,7 +83,12 @@ static int vmemmap_split_pmd(pmd_t *pmd, struct =
+page *head, unsigned long start,
+>> 		/* Make pte visible before pmd. See comment in =
+pmd_install(). */
+>> 		smp_wmb();
+>> 		pmd_populate_kernel(&init_mm, pmd, pgtable);
+>> -		if (!(walk->flags & VMEMMAP_SPLIT_NO_TLB_FLUSH))
+>> +		/*
+>> +		 * Modern MMUs allow overlapping TLB entries with =
+different mapping
+>> +		 * granularities only if they map the same physical =
+address. So
+>> +		 * remapping must not proceed without first flushing the =
+TLB.
+>=20
+> Are we certain that *all* modern MMUs for *all* architecures that=20
+> support hugetlb are fine with skipping TLB flush after a split?
 
-fio O_DIRECT randread of a null_blk device (CPU bound) with the I/O
-buffer in 64 kB mTHP, median of 15 five-second runs:
+I think this is the case on architectures that currently enable
+ARCH_WANT_OPTIMIZE_HUGETLB_VMEMMAP. Of course, the point I want to
+further clarify is that the "skip" action here is not really a skip,
+but rather a "defer"=E2=80=94the TLB is subsequently flushed in a single =
+batch.
 
-  bs=1M psync                 126.2/125.6 GB/s  ->  220.6 GB/s
-  bs=1M io_uring, iodepth 16   71.2/71.6 GB/s   ->  112.1 GB/s
-  bs=64k io_uring, iodepth 16  50.2/50.7 GB/s   ->   60.1 GB/s
+Thanks for your review.
 
-IORING_REGISTER_BUFFERS of 1 GB, median of 15:
+Muchun.
 
-  64 kB mTHP           6179/5998 us  ->  1599 us
-  1 MB mTHP            5790/5801 us  ->   893 us
-  4 kB pages           7173/6741 us  ->  6763 us
+>=20
+> AFAIU, x86::set_memory always flushes TLBs after a large leaf is =
+split.
+>=20
+> --=20
+> Sincerely yours,
+> Mike.
 
-Signed-off-by: Yuan-Hao Hsu <aa9736195201@gmail.com>
-Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
----
- mm/gup.c | 46 +++++++++++++++++++++++++++++-----------------
- 1 file changed, 29 insertions(+), 17 deletions(-)
 
-diff --git a/mm/gup.c b/mm/gup.c
-index 49681f63950ec..94a9dc45e5953 100644
---- a/mm/gup.c
-+++ b/mm/gup.c
-@@ -2901,7 +2901,8 @@ static unsigned long gup_fast_pte_range(pmd_t pmd, pmd_t *pmdp,
- 		unsigned long addr, unsigned long end,
- 		unsigned int flags, struct page **pages)
- {
--	unsigned long nr_pages = 0;
-+	unsigned long nr_pages = 0, nr_batch;
-+	struct folio *folio = NULL;
- 	pte_t *ptep, *ptem;
- 
- 	ptem = ptep = pte_offset_map(&pmd, addr);
-@@ -2910,7 +2911,9 @@ static unsigned long gup_fast_pte_range(pmd_t pmd, pmd_t *pmdp,
- 	do {
- 		pte_t pte = ptep_get_lockless(ptep);
- 		struct page *page;
--		struct folio *folio;
-+		unsigned long i;
-+
-+		nr_batch = 1;
- 
- 		/*
- 		 * Always fallback to ordinary GUP on PROT_NONE-mapped pages:
-@@ -2937,19 +2940,21 @@ static unsigned long gup_fast_pte_range(pmd_t pmd, pmd_t *pmdp,
- 			goto pte_unmap;
- 
- 		if (unlikely(pmd_val(pmd) != pmd_val(pmdp_get_lockless(pmdp))) ||
--		    unlikely(pte_val(pte) != pte_val(ptep_get_lockless(ptep)))) {
--			gup_put_folio(folio, 1, flags);
-+		    unlikely(pte_val(pte) != pte_val(ptep_get_lockless(ptep))))
- 			goto pte_unmap;
--		}
- 
--		if (!gup_fast_folio_allowed(folio, flags)) {
--			gup_put_folio(folio, 1, flags);
-+		if (!gup_fast_folio_allowed(folio, flags))
- 			goto pte_unmap;
--		}
- 
--		if (!pte_write(pte) && gup_must_unshare(NULL, flags, folio, page)) {
--			gup_put_folio(folio, 1, flags);
--			goto pte_unmap;
-+		if (folio_test_large(folio))
-+			nr_batch = folio_pte_batch_flags(folio, NULL, ptep, &pte,
-+							 (end - addr) >> PAGE_SHIFT,
-+							 FPB_LOCKLESS | FPB_RESPECT_WRITE);
-+
-+		if (!pte_write(pte)) {
-+			nr_batch = gup_unshared_pages(NULL, flags, folio, page, nr_batch);
-+			if (nr_batch == 0)
-+				goto pte_unmap;
- 		}
- 
- 		/*
-@@ -2958,16 +2963,23 @@ static unsigned long gup_fast_pte_range(pmd_t pmd, pmd_t *pmdp,
- 		 * see Documentation/core-api/pin_user_pages.rst for
- 		 * details.
- 		 */
--		if ((flags & FOLL_PIN) && arch_make_folio_accessible(folio)) {
--			gup_put_folio(folio, 1, flags);
-+		if ((flags & FOLL_PIN) && arch_make_folio_accessible(folio))
- 			goto pte_unmap;
--		}
-+
-+		if (nr_batch > 1 && try_grab_folio(folio, nr_batch - 1, flags))
-+			nr_batch = 1;
-+
- 		folio_set_referenced(folio);
--		pages[nr_pages] = page;
--		nr_pages++;
--	} while (ptep++, addr += PAGE_SIZE, addr != end);
-+		for (i = 0; i < nr_batch; i++) {
-+			pages[nr_pages + i] = page + i;
-+		}
-+		nr_pages += nr_batch;
-+		folio = NULL;
-+	} while (ptep += nr_batch, addr += nr_batch * PAGE_SIZE, addr != end);
- 
- pte_unmap:
-+	if (folio)
-+		gup_put_folio(folio, 1, flags);
- 	pte_unmap(ptem);
- 	return nr_pages;
- }
+--Apple-Mail=_D525DC28-58C3-412A-922E-1CBFDF01DE76
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/html;
+	charset=utf-8
 
--- 
-2.43.0
+<html aria-label=3D"message body"><head><meta http-equiv=3D"content-type" =
+content=3D"text/html; charset=3Dutf-8"></head><body =
+style=3D"overflow-wrap: break-word; -webkit-nbsp-mode: space; =
+line-break: after-white-space;"><br =
+id=3D"lineBreakAtBeginningOfMessage"><div><br><blockquote =
+type=3D"cite"><div>On Nov 2, 2026, at 18:18, Mike Rapoport =
+&lt;rppt@kernel.org&gt; wrote:</div><br =
+class=3D"Apple-interchange-newline"><div><meta charset=3D"UTF-8"><span =
+style=3D"caret-color: rgb(0, 0, 0); font-family: =
+JetBrainsMonoNL-Regular; font-size: 13px; font-style: normal; =
+font-variant-caps: normal; font-weight: 400; letter-spacing: normal; =
+orphans: 2; text-align: start; text-indent: 0px; text-transform: none; =
+white-space: normal; widows: 2; word-spacing: 0px; =
+-webkit-text-stroke-width: 0px; text-decoration: none; float: none; =
+display: inline !important;">Hi Muchun,</span><br style=3D"caret-color: =
+rgb(0, 0, 0); font-family: JetBrainsMonoNL-Regular; font-size: 13px; =
+font-style: normal; font-variant-caps: normal; font-weight: 400; =
+letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; =
+text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; =
+-webkit-text-stroke-width: 0px; text-decoration: =
+none;"></div></blockquote><div><br></div><div>Hi =
+Mike,</div><br><blockquote type=3D"cite"><div><br style=3D"caret-color: =
+rgb(0, 0, 0); font-family: JetBrainsMonoNL-Regular; font-size: 13px; =
+font-style: normal; font-variant-caps: normal; font-weight: 400; =
+letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; =
+text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; =
+-webkit-text-stroke-width: 0px; text-decoration: none;"><blockquote =
+type=3D"cite" style=3D"font-family: JetBrainsMonoNL-Regular; font-size: =
+13px; font-style: normal; font-variant-caps: normal; font-weight: 400; =
+letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; =
+text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; =
+-webkit-text-stroke-width: 0px; text-decoration: =
+none;">VMEMMAP_SPLIT_NO_TLB_FLUSH and VMEMMAP_REMAP_NO_TLB_FLUSH do =
+not<br>describe fully independent choices. A split-only walk can defer =
+the<br>PMD-split flush to a later global flush, and a remap-only walk =
+can<br>defer the final remap flush. However, when a PMD split is =
+followed<br>by PTE remapping, the split flush must happen before the =
+PTEs are<br>changed, because stale large-page translations must not =
+overlap with<br>new small-page translations that map different physical =
+pages.<br><br>Replace the two flags with a single =
+VMEMMAP_DEFER_TLB_FLUSH flag. The<br>new name reflects that only safely =
+batchable flushes are deferred. Keep<br>split-only walks able to defer =
+the flush, but force the split flush<br>whenever a remap_pte callback is =
+present. Callers that batch HVO work<br>can still defer the final remap =
+flush and issue their own global flush.<br><br>Current callers keep the =
+same flushing behavior.<br><br>Signed-off-by: Muchun Song =
+&lt;songmuchun@bytedance.com&gt;<br>Reviewed-by: Lance Yang =
+&lt;lance.yang@linux.dev&gt;<br>Reviewed-by: Qi Zheng =
+&lt;qi.zheng@linux.dev&gt;<br>---<br>v2:<br>- Rename the unified flag to =
+VMEMMAP_DEFER_TLB_FLUSH and update its<br>&nbsp;comment (suggested by Qi =
+Zheng)<br>- Update the commit message for the new flag name<br>- Collect =
+Reviewed-by from Lance Yang and Qi Zheng<br>---<br>mm/hugetlb_vmemmap.c =
+| 23 +++++++++++++----------<br>1 file changed, 13 insertions(+), 10 =
+deletions(-)<br><br>diff --git a/mm/hugetlb_vmemmap.c =
+b/mm/hugetlb_vmemmap.c<br>index 4b73d6ec8dcea..63e899cfaac3a =
+100644<br>--- a/mm/hugetlb_vmemmap.c<br>+++ b/mm/hugetlb_vmemmap.c<br>@@ =
+-42,10 +42,8 @@ struct vmemmap_remap_walk {<br><span =
+class=3D"Apple-tab-span" style=3D"white-space: pre;">	</span>struct =
+list_head<span class=3D"Apple-tab-span" style=3D"white-space: pre;">	=
+</span>*vmemmap_pages;<br><br><br>-/* Skip the TLB flush when we split =
+the PMD */<br>-#define VMEMMAP_SPLIT_NO_TLB_FLUSH<span =
+class=3D"Apple-tab-span" style=3D"white-space: pre;">	=
+</span>BIT(0)<br>-/* Skip the TLB flush when we remap the PTE =
+*/<br>-#define VMEMMAP_REMAP_NO_TLB_FLUSH<span class=3D"Apple-tab-span" =
+style=3D"white-space: pre;">	</span>BIT(1)<br>+/* Defer safely =
+batchable TLB flushes to the caller. */<br>+#define =
+VMEMMAP_DEFER_TLB_FLUSH<span class=3D"Apple-tab-span" =
+style=3D"white-space: pre;">	</span>BIT(0)<br><span =
+class=3D"Apple-tab-span" style=3D"white-space: pre;">	</span>unsigned =
+long<span class=3D"Apple-tab-span" style=3D"white-space: pre;">	=
+</span><span class=3D"Apple-tab-span" style=3D"white-space: pre;">	=
+</span>flags;<br>};<br><br>@@ -85,7 +83,12 @@ static int =
+vmemmap_split_pmd(pmd_t *pmd, struct page *head, unsigned long =
+start,<br><span class=3D"Apple-tab-span" style=3D"white-space: pre;">	=
+</span><span class=3D"Apple-tab-span" style=3D"white-space: pre;">	=
+</span>/* Make pte visible before pmd. See comment in pmd_install(). =
+*/<br><span class=3D"Apple-tab-span" style=3D"white-space: pre;">	=
+</span><span class=3D"Apple-tab-span" style=3D"white-space: pre;">	=
+</span>smp_wmb();<br><span class=3D"Apple-tab-span" style=3D"white-space: =
+pre;">	</span><span class=3D"Apple-tab-span" style=3D"white-space: =
+pre;">	</span>pmd_populate_kernel(&amp;init_mm, pmd, =
+pgtable);<br>-<span class=3D"Apple-tab-span" style=3D"white-space: =
+pre;">	</span><span class=3D"Apple-tab-span" style=3D"white-space: =
+pre;">	</span>if (!(walk-&gt;flags &amp; =
+VMEMMAP_SPLIT_NO_TLB_FLUSH))<br>+<span class=3D"Apple-tab-span" =
+style=3D"white-space: pre;">	</span><span class=3D"Apple-tab-span" =
+style=3D"white-space: pre;">	</span>/*<br>+<span =
+class=3D"Apple-tab-span" style=3D"white-space: pre;">	</span><span =
+class=3D"Apple-tab-span" style=3D"white-space: pre;">	</span><span =
+class=3D"Apple-converted-space">&nbsp;</span>* Modern MMUs allow =
+overlapping TLB entries with different mapping<br>+<span =
+class=3D"Apple-tab-span" style=3D"white-space: pre;">	</span><span =
+class=3D"Apple-tab-span" style=3D"white-space: pre;">	</span><span =
+class=3D"Apple-converted-space">&nbsp;</span>* granularities only if =
+they map the same physical address. So<br>+<span class=3D"Apple-tab-span" =
+style=3D"white-space: pre;">	</span><span class=3D"Apple-tab-span" =
+style=3D"white-space: pre;">	</span><span =
+class=3D"Apple-converted-space">&nbsp;</span>* remapping must not =
+proceed without first flushing the TLB.<br></blockquote><br =
+style=3D"caret-color: rgb(0, 0, 0); font-family: =
+JetBrainsMonoNL-Regular; font-size: 13px; font-style: normal; =
+font-variant-caps: normal; font-weight: 400; letter-spacing: normal; =
+orphans: 2; text-align: start; text-indent: 0px; text-transform: none; =
+white-space: normal; widows: 2; word-spacing: 0px; =
+-webkit-text-stroke-width: 0px; text-decoration: none;"><span =
+style=3D"caret-color: rgb(0, 0, 0); font-family: =
+JetBrainsMonoNL-Regular; font-size: 13px; font-style: normal; =
+font-variant-caps: normal; font-weight: 400; letter-spacing: normal; =
+orphans: 2; text-align: start; text-indent: 0px; text-transform: none; =
+white-space: normal; widows: 2; word-spacing: 0px; =
+-webkit-text-stroke-width: 0px; text-decoration: none; float: none; =
+display: inline !important;">Are we certain that *all* modern MMUs for =
+*all* architecures that<span =
+class=3D"Apple-converted-space">&nbsp;</span></span><br =
+style=3D"caret-color: rgb(0, 0, 0); font-family: =
+JetBrainsMonoNL-Regular; font-size: 13px; font-style: normal; =
+font-variant-caps: normal; font-weight: 400; letter-spacing: normal; =
+orphans: 2; text-align: start; text-indent: 0px; text-transform: none; =
+white-space: normal; widows: 2; word-spacing: 0px; =
+-webkit-text-stroke-width: 0px; text-decoration: none;"><span =
+style=3D"caret-color: rgb(0, 0, 0); font-family: =
+JetBrainsMonoNL-Regular; font-size: 13px; font-style: normal; =
+font-variant-caps: normal; font-weight: 400; letter-spacing: normal; =
+orphans: 2; text-align: start; text-indent: 0px; text-transform: none; =
+white-space: normal; widows: 2; word-spacing: 0px; =
+-webkit-text-stroke-width: 0px; text-decoration: none; float: none; =
+display: inline !important;">support hugetlb are fine with skipping TLB =
+flush after a split?</span><br style=3D"caret-color: rgb(0, 0, 0); =
+font-family: JetBrainsMonoNL-Regular; font-size: 13px; font-style: =
+normal; font-variant-caps: normal; font-weight: 400; letter-spacing: =
+normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: =
+none; white-space: normal; widows: 2; word-spacing: 0px; =
+-webkit-text-stroke-width: 0px; text-decoration: =
+none;"></div></blockquote><div><br></div><div>I think this is the case =
+on architectures that currently =
+enable</div><div>ARCH_WANT_OPTIMIZE_HUGETLB_VMEMMAP. Of course, the =
+point I want to</div><div>further clarify is that the "skip" action here =
+is not really a skip,</div><div>but rather a "defer"=E2=80=94the TLB is =
+subsequently flushed in a single batch.</div><div><br></div><div>Thanks =
+for your review.</div><div><br></div><div>Muchun.</div><br><blockquote =
+type=3D"cite"><div><br style=3D"caret-color: rgb(0, 0, 0); font-family: =
+JetBrainsMonoNL-Regular; font-size: 13px; font-style: normal; =
+font-variant-caps: normal; font-weight: 400; letter-spacing: normal; =
+orphans: 2; text-align: start; text-indent: 0px; text-transform: none; =
+white-space: normal; widows: 2; word-spacing: 0px; =
+-webkit-text-stroke-width: 0px; text-decoration: none;"><span =
+style=3D"caret-color: rgb(0, 0, 0); font-family: =
+JetBrainsMonoNL-Regular; font-size: 13px; font-style: normal; =
+font-variant-caps: normal; font-weight: 400; letter-spacing: normal; =
+orphans: 2; text-align: start; text-indent: 0px; text-transform: none; =
+white-space: normal; widows: 2; word-spacing: 0px; =
+-webkit-text-stroke-width: 0px; text-decoration: none; float: none; =
+display: inline !important;">AFAIU, x86::set_memory always flushes TLBs =
+after a large leaf is split.</span><br style=3D"caret-color: rgb(0, 0, =
+0); font-family: JetBrainsMonoNL-Regular; font-size: 13px; font-style: =
+normal; font-variant-caps: normal; font-weight: 400; letter-spacing: =
+normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: =
+none; white-space: normal; widows: 2; word-spacing: 0px; =
+-webkit-text-stroke-width: 0px; text-decoration: none;"><br =
+style=3D"caret-color: rgb(0, 0, 0); font-family: =
+JetBrainsMonoNL-Regular; font-size: 13px; font-style: normal; =
+font-variant-caps: normal; font-weight: 400; letter-spacing: normal; =
+orphans: 2; text-align: start; text-indent: 0px; text-transform: none; =
+white-space: normal; widows: 2; word-spacing: 0px; =
+-webkit-text-stroke-width: 0px; text-decoration: none;"><span =
+style=3D"caret-color: rgb(0, 0, 0); font-family: =
+JetBrainsMonoNL-Regular; font-size: 13px; font-style: normal; =
+font-variant-caps: normal; font-weight: 400; letter-spacing: normal; =
+orphans: 2; text-align: start; text-indent: 0px; text-transform: none; =
+white-space: normal; widows: 2; word-spacing: 0px; =
+-webkit-text-stroke-width: 0px; text-decoration: none; float: none; =
+display: inline !important;">--<span =
+class=3D"Apple-converted-space">&nbsp;</span></span><br =
+style=3D"caret-color: rgb(0, 0, 0); font-family: =
+JetBrainsMonoNL-Regular; font-size: 13px; font-style: normal; =
+font-variant-caps: normal; font-weight: 400; letter-spacing: normal; =
+orphans: 2; text-align: start; text-indent: 0px; text-transform: none; =
+white-space: normal; widows: 2; word-spacing: 0px; =
+-webkit-text-stroke-width: 0px; text-decoration: none;"><span =
+style=3D"caret-color: rgb(0, 0, 0); font-family: =
+JetBrainsMonoNL-Regular; font-size: 13px; font-style: normal; =
+font-variant-caps: normal; font-weight: 400; letter-spacing: normal; =
+orphans: 2; text-align: start; text-indent: 0px; text-transform: none; =
+white-space: normal; widows: 2; word-spacing: 0px; =
+-webkit-text-stroke-width: 0px; text-decoration: none; float: none; =
+display: inline !important;">Sincerely yours,</span><br =
+style=3D"caret-color: rgb(0, 0, 0); font-family: =
+JetBrainsMonoNL-Regular; font-size: 13px; font-style: normal; =
+font-variant-caps: normal; font-weight: 400; letter-spacing: normal; =
+orphans: 2; text-align: start; text-indent: 0px; text-transform: none; =
+white-space: normal; widows: 2; word-spacing: 0px; =
+-webkit-text-stroke-width: 0px; text-decoration: none;"><span =
+style=3D"caret-color: rgb(0, 0, 0); font-family: =
+JetBrainsMonoNL-Regular; font-size: 13px; font-style: normal; =
+font-variant-caps: normal; font-weight: 400; letter-spacing: normal; =
+orphans: 2; text-align: start; text-indent: 0px; text-transform: none; =
+white-space: normal; widows: 2; word-spacing: 0px; =
+-webkit-text-stroke-width: 0px; text-decoration: none; float: none; =
+display: inline =
+!important;">Mike.</span></div></blockquote></div><br></body></html>=
 
+--Apple-Mail=_D525DC28-58C3-412A-922E-1CBFDF01DE76--
 
