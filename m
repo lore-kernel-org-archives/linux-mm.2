@@ -1,107 +1,119 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C17B606A32D
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 01:45:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F08E5606A324
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 02:01:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=IfBo6+HP
+	dkim=pass (1024-bit key, unprotected) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=Wr/qaLu9
 Received: by kanga.kvack.org (Postfix)
-	id 428AB6B05B5; Sun,  1 Nov 2026 20:45:02 -0500 (EST)
+	id C5D966B00EF; Sun,  1 Nov 2026 21:01:51 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3DA086B05B6; Sun,  1 Nov 2026 20:45:02 -0500 (EST)
+	id C0EE96B05B1; Sun,  1 Nov 2026 21:01:51 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2EF376B05B7; Sun,  1 Nov 2026 20:45:02 -0500 (EST)
+	id B00D26B05B2; Sun,  1 Nov 2026 21:01:51 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 02C3C6B05B5
-	for <linux-mm@kvack.org>; Sun,  1 Nov 2026 20:45:01 -0500 (EST)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id D862E1C44FB
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 01:45:00 +0000 (UTC)
-X-FDA: 85388485560.18.12463A1
-Received: from mta1.migadu.com (out-31.mta1.migadu.com [95.215.58.31])
-	by imf18.hostedemail.com (Postfix) with ESMTP id D79421C0006
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 01:44:58 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=IfBo6+HP;
-	spf=pass (imf18.hostedemail.com: domain of baoquan.he@linux.dev designates 95.215.58.31 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793583899;
-	b=Tric+awBqsy/U6CNGQrEtY5X3pDBc+RK2yD9PE97kruLHjPx9dNk2F+bumQxmjyxJVmgo2
-	Y+F21u2gsqDsC1NPKYFRK9yTfKJK067VlI5s800MiSd501qpF4KO3tdbUErhjjRtjrBPZJ
-	3T7j11Eo6TUjRQbFLISiPieaU8oXwD0=
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 8963D6B00EF
+	for <linux-mm@kvack.org>; Sun,  1 Nov 2026 21:01:51 -0500 (EST)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id EF823A85E3
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 02:01:50 +0000 (UTC)
+X-FDA: 85388527980.24.5F43CB1
+Received: from out30-100.freemail.mail.aliyun.com (out30-100.freemail.mail.aliyun.com [115.124.30.100])
+	by imf04.hostedemail.com (Postfix) with ESMTP id A2D9F4000B
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 02:01:46 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b="Wr/qaLu9";
+	spf=pass (imf04.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.100 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793583899;
+	s=arc-20220608; t=1793584909;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=OEkd9ETEU1H1/cSly+n00AuAS0WaAgvozTBt/yDaZw8=;
-	b=5kqgNkHU0QJrsjoeR1x7MBkDLnSO9SxOkgAbpuHrlBndPxPSAwfGc7+T9z2L4dxA+Sscz+
-	xt+tH+qBPmGtHfEQOXj5P2CoXijfyC7HC6ZmKekFKGCGup8PLjR5VUR3EQJ2MVLbUQJw1r
-	urSCqSGlfXv0kXkkWVIKGwH6tBn+AOw=
+	bh=jhak0MmZxZsDBp8302xnXT/xyZGUloAlWeCi+dxqbB8=;
+	b=hnDq95+WchbIgbUtdaYYbBSFrioQztc/nOKmjNWjgeVRwRu1jKbROuZI6dsXvDW4XcGKKI
+	hBgH+YeG3jmRYVR1Up0tQHTiXrH6qLxhh0sp3COaM87hcxcyzCfx7mB8MNLnM1xoRaZTq1
+	HP0G4mw80xSaNwW6F87/wrwk9b3Mx0U=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793584909;
+	b=v+d6b/zkvc5oBJAqMUHTNkCdxn4xSoRTLwWbErF/6ARDMqkMaV0+XdJjjiQxjj5Xnpoz2U
+	vb/PLYT+nGMbvSMDdo3W9rpmdNC8zTieBuNAnnFZyfYI8WH2Etc+dYasfBRiw8W0hPfY3/
+	8//u47OysfS6chVd/Ua99Q8bIJU/fk8=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=IfBo6+HP;
-	spf=pass (imf18.hostedemail.com: domain of baoquan.he@linux.dev designates 95.215.58.31 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=LDCglTFD9JJRIRS4upbDvcHxcWE5gfnfo+qT8Q0O0nI=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1793583897; v=1; x=1794188697;
- b=IfBo6+HPGHoCqWTW9d7FL3Mpzw7lVFltwm4e1CNHpRdpYX1/oO7kbHAbyScuoA30S2BusA2W
- cd8BbN3JXJ9mplCKX4Bc6UCX3qNxMIB68maKTGcggwzBi15S5TEKnwqE/7so3LsMq+EmyPo/kcI
- Qg0dC8Bj3teYPVCcfsZ650SE=
-X-Envelope-To: linux-mm@kvack.org
-Received: by mta11.migadu.com with ESMTPS id 672eb1f5ae80b659;
-	Mon, 02 Nov 2026 01:44:57 +0000
-X-Mizu-Trace-ID: 672eb1f5ae80b659
-X-Migadu-Flow: FLOW_OUT
-Date: Mon, 2 Nov 2026 09:44:53 +0800
-From: Baoquan He <baoquan.he@linux.dev>
-To: Ridong Chen <ridong.chen@linux.dev>
-Cc: Steven Rostedt <rostedt@goodmis.org>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Michal Hocko <mhocko@kernel.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Dave Chinner <david@fromorbit.com>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Muchun Song <muchun.song@linux.dev>, Qi Zheng <qi.zheng@linux.dev>,
-	Kairui Song <kasong@tencent.com>, Barry Song <baohua@kernel.org>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>, linux-kernel@vger.kernel.org,
-	linux-trace-kernel@vger.kernel.org, linux-mm@kvack.org,
-	"open list:CONTROL GROUP - MEMORY RESOURCE CONTROLLER (MEMCG)" <cgroups@vger.kernel.org>,
-	"open list:BPF [MISC]:Keyword:(?:b|_)bpf(?:b|_)" <bpf@vger.kernel.org>,
-	Ridong Chen <chenridong@xiaomi.com>
-Subject: Re: [PATCH v5 5/6] mm/mglru: add tracepoint for scan_folios()
-Message-ID: <aufrFRiP-PyWsCzs@bogon>
-References: <20261031090041.58574-1-ridong.chen@linux.dev>
- <20261031090041.58574-6-ridong.chen@linux.dev>
+	imf04.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b="Wr/qaLu9";
+	spf=pass (imf04.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.100 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1793584903; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=jhak0MmZxZsDBp8302xnXT/xyZGUloAlWeCi+dxqbB8=;
+	b=Wr/qaLu9mKfMdVJgeg8uBCdh7AgeBjSK/lXooIgsS5JzhzixX76QdKTV9v7pxjlBS44NIMGQ9SHKbFsc7C4QQsiDP7c1X/NfL9dsIcOttiiQFO8DhOL6nhA/g/qwpvytsM1yVpA3ATTkfP9QOnaC0fZumb4FMbjrKT+Xi4FujXw=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R131e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033045133197;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=61;SR=0;TI=SMTPD_---0XDrTDBs_1793584898;
+Received: from 30.74.144.167(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0XDrTDBs_1793584898 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Mon, 02 Nov 2026 10:01:40 +0800
+Message-ID: <1b7b47aa-8523-4029-971f-ec59b667c7f9@linux.alibaba.com>
+Date: Mon, 2 Nov 2026 10:01:37 +0800
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261031090041.58574-6-ridong.chen@linux.dev>
-X-Stat-Signature: yuiqi898xawxnik9dtk9b69gzekho9w8
-X-Rspamd-Queue-Id: D79421C0006
-X-Rspam-User:
-X-Rspamd-Server: rspam12
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/7] MAINTAINERS: TMPFS (SHMEM FILESYSTEM) updates
+To: "David Hildenbrand (Arm)" <david@kernel.org>,
+ Alistair Popple <apopple@nvidia.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
+ Baoquan He <baoquan.he@linux.dev>, Barry Song <baohua@kernel.org>,
+ Brendan Jackman <brendan.jackman@linux.dev>,
+ Byungchul Park <byungchul@sk.com>, Chengming Zhou
+ <chengming.zhou@linux.dev>, Chris Li <chrisl@kernel.org>,
+ Christoph Lameter <cl@gentwo.org>, Dave Chinner <david@fromorbit.com>,
+ David Rientjes <rientjes@google.com>, Dennis Zhou <dennis@kernel.org>,
+ Dev Jain <dev.jain@arm.com>, Gregory Price <gourry@gourry.net>,
+ Hao Li <hao.li@linux.dev>, Harry Yoo <harry@kernel.org>,
+ Hugh Dickins <hughd@google.com>, Jann Horn <jannh@google.com>,
+ Johannes Weiner <hannes@cmpxchg.org>, John Hubbard <jhubbard@nvidia.com>,
+ Joshua Hahn <joshua.hahnjy@gmail.com>, Kairui Song <kasong@tencent.com>,
+ Kemeng Shi <shikemeng@huaweicloud.com>, Kiryl Shutsemau <kas@kernel.org>,
+ Lance Yang <lance.yang@linux.dev>, "Liam R. Howlett" <liam@infradead.org>,
+ Lorenzo Stoakes <ljs@kernel.org>, Matthew Brost <matthew.brost@intel.com>,
+ Miaohe Lin <linmiaohe@huawei.com>, Michal Hocko <mhocko@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Muchun Song <muchun.song@linux.dev>,
+ Naoya Horiguchi <nao.horiguchi@gmail.com>, Nhat Pham <nphamcs@gmail.com>,
+ Nick Piggin <npiggin@gmail.com>, Nico Pache <nico.pache@linux.dev>,
+ Oscar Salvador <osalvador@suse.de>, Pedro Falcato <pfalcato@suse.de>,
+ Peter Xu <peterx@redhat.com>, Peter Zijlstra <peterz@infradead.org>,
+ Qi Zheng <qi.zheng@linux.dev>, Rakie Kim <rakie.kim@sk.com>,
+ Rik van Riel <riel@surriel.com>, Roman Gushchin <roman.gushchin@linux.dev>,
+ Ryan Roberts <ryan.roberts@arm.com>, Shakeel Butt <shakeel.butt@linux.dev>,
+ Suren Baghdasaryan <surenb@google.com>, Tejun Heo <tj@kernel.org>,
+ Uladzislau Rezki <urezki@gmail.com>, Usama Arif <usama.arif@linux.dev>,
+ Vlastimil Babka <vbabka@kernel.org>, Will Deacon <will@kernel.org>,
+ Xu Xin <xu.xin@linux.dev>, Ying Huang <ying.huang@linux.alibaba.com>,
+ Youngjun Park <youngjun.park@lge.com>, Zi Yan <ziy@nvidia.com>,
+ Jason Gunthorpe <jgg@ziepe.ca>
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org
+References: <20261030-maintainers-v1-0-97278f8a5f54@kernel.org>
+ <20261030-maintainers-v1-2-97278f8a5f54@kernel.org>
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+In-Reply-To: <20261030-maintainers-v1-2-97278f8a5f54@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: A2D9F4000B
+X-Stat-Signature: qijd7rsnqowmknokjcwjxd88hgxkadih
+X-Rspam-User: 
+X-Spam-Status: No, score=-19.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1793583898-452371
-X-HE-Meta: U2FsdGVkX18sLqV89zL6umW5gVqwzKx6jf4BGaS1X1G0mlqLtSdE732nYeYuBqaDfMvYQz87GABCBf6jrhePfJeiFSPWa9bcDhdbilqKRtjJYsJLepjau36hs3PSuyMIpE56TQsfnLsE58+CSm0K8WTsw4TuqLPYz01hExpyd49SXDZEKikU/mzTB9nnjV7cyDw2prT+UYahqF482vmd66Jp/Hwtu+bMP75mIuG0QW9Mddrl6UFS9EJIJ4iUkP9jMhsutHEE2ydDjBiwu36GDiHxPFRwI92cdGG7FYUBwtiw2YYFRSKjjfcsTTgIEH5tc2e3QZXekPpvjF49xIpTvE3kliRylukEQ27dPR1m4oJmaj4P5ZYhDhF+IT0sYpqW5bCMFJveTrbXG3f8+yhhF892MCFqch0J/dwqpEC9cqJbZomy2leIuWZrv76+fhxBPKLFnoOvbETHYBWUg08gSF/Mh3FGNBQKvDQ03XdeOl5vNCuyvAqKmaB8aq3S8H5Ht4ybW2qtZD5X+zC0+BtMKI9rVimk5SzHeFsrDpR2WLCpcBNj/+K1ojBlEn3UXLIDkh6kY9xDjXWw+zHkzQYzDcpwd+N5RYnqqc9mO15EiMK8GmeCx2ufZKWhLjS+xl2iTMICXBhs4iuLVXzcTbxOhr9gnURIJGRdLoWAypBcPPt68aM8t32Aqm9CH4Qu6S2h2K9LI36SKaQk06IeL0fK7/CUd4LuYylrjh7pjMZAYiN+WzH6aw+pHow2ILuKCOqQJtck6AqxhSFS+P4+AgG5Fg1QHaNZm/G0lc/WI7ojqNW7GpGm3ZUlfn1bYr4uLcKofT/eZnuVNKAlK7xJQa04ZoVxGm3ugv8zH7shxabJhTm0gFC2cECXmMcqcct9SggQ/2tmSZxwg4k8ydatWIaHKlUMuzp4F6G+PpuKjEeM57tRkRdyqejWzyQYVqsl/uUuJFimD+O7EJtW8TWLPJN
- A6q1Qp0b
- psUgjfZXJyjv2ua8HEj7n0MEf9E1Uh7rr+zLvKogcleF0v1Llk1crhWXgSHQwXxezPKB/U5uSXWRuJSPjo6CV+74hAT82sOilfC+X0H0YFv+8GesncblkYqgsrpsYv4nvNzi5TeD/aZ7IUBj4J1A8Powpr1+hJ4afStCYz5AqeJ4z7QJ0QfbFfAn6u4AgZamsA7Zzr3dJWVwKhJKsInqUW7OW4fhrEywB1ExwWdSMSbhVO51SS1Nk2N8X3Ah5H+mJ0+XQFtSonjhgxaONZ5VelgGh0h9cYUja8BXQfn0getknK4I5BxiiKtbWxzVOoFPTRUEnPhSty8Rs9AhKjgNEdU9AV0vReY5PBXAL1f7QMTpWAR07yfTFy4kEDNqe0bvSFTYYqiN76Rd/pkfxSNq7jCbtACowMoqQTLfy6SIiuRxVwTfURTR6BiqTZLu//GsGsLkS
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	UNPARSEABLE_RELAY,USER_AGENT_SANE_1,USER_IN_DEF_DKIM_WL autolearn=ham
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1793584906-654994
+X-HE-Meta: U2FsdGVkX19mAFTjysd5iyNLCuvBfws1mOC0H23T6M7z9TCmClnaqlp8fxnRN4eSYs6bcpocfbLMaug4cLdv87fOuakyaMuIVq8FNnK3cc1NiB53nti7CFvFIb01MY55EBszxMISMQlLugovRhhhBDlMRrYv6AhU0UiOMGIrUeAVrpy0xVrLKyyFUpe/E1jQlQEHG9zKAKAwJZlGZRRVr6mzaDg98RoKGSIWl6ns16ADAt3OSlfh2w57kL6vJU8ItzErgs5Yj2l1cRS6T0N9uTn+6SScgbVvlD3tB60a2c6RoMmhd1Nx2zbw5VwjhalG1yMuJS70CGHBlu1CjwfWEgQmv99q074m4myPQeUjOYRijKKPHC4Z4fCFehjqG942rJZdaGhjYYP+d7Gy/h513liZZF/H83wzPS+hZsHI61m9ZgcxeHoup3tgoLrUFnRbktB4xe2Ma37FSAMYksZaOHk+i0ZFt/lumo41PnnTfun73o5esYOZArVUyo1vjj74gFlomeUAtFVOS1OwXEWPEwqMEN5Vpg5EP0OrzOXTw4msfgQsttwwN/81POl3KuWJy3xinn1F6Zx3wzCGKnBEo50LqbL7uWarVATK2PLLTyIUKMh1F8++1hnZW4BC4vJGxAMy9wp2BIQItsluwoOSKm5p0HegWnMPt/DbRXkOitkFbJER+BbSvpptd6TF0NNe06eEFo4ja88HaAtLp7oXp7j0jKwAQuHl7AXfDnFrkl+DmaYarAlsdRrHau3L11Qc8hVsehhWBk/r3HyojomZgWDAdrIxXd1ZpvX93XKhUJOossc2oOO0YuCb2z4oJJrCO53tbS57kpXnJ2pT5W3peZ7QvF9kCoZS1n6MzzeEcE1LdfRwYjt3Rp7cyQK5zu9OcHQVRiUl2I1Q4e53yhvy/GGhf58gL6rMa6bKpRyoXaAyNImBfe/HnIZVwo0Nf2afOtprMbfMxpDbOoVIaa2
+ Cz9ZuaPk
+ UTAieA75dVmIMg3xrdZ7dHQP8Y+FvB7GhljPj5FB4jvZxHXd4hWBgQuwl3muRRBJOysdI0MKgtdnlloCQUex8ojcq9BTGv/CSLMtNeOeYavUkMxguWdwt6CElrEdO/T1MLvAgsxCDjTET3Z6ofEnDXfpr5MRb91PgTwzXfKe5E/Fa6+4LXaAstl6DwV3p/w1pjDxeAd+A25y6i0nJLCDru3u/H+fV9NTyXa67z8iHKbTD1zkiDyNqL/2ANnamrxNT40THgvzVvVJCh3kdgz7Z9ygyR9w6qwm99AtEw+hPOQMm74AQBVIRxR8Eh7EsTqopwLGft797VVoR/oqgqOkes5kLrMQDpvnkPufK1Luk8ZyQNaETsCr5y9dB38undbT3I3pgkmxqx66FD548VJFQmEBoig==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,137 +122,32 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 10/31/26 at 05:00pm, Ridong Chen wrote:
-> From: Ridong Chen <chenridong@xiaomi.com>
+
+
+On 10/31/26 5:34 AM, David Hildenbrand (Arm) wrote:
+> I am not really the best shmem/tmpfs/memfd expert around, but it should
+> be good enough to judge when something is ready to be picked up, to then
+> pick it up. I'll have to heavily rely on Hugh and Baolin on judgment
+> for the more involved and more controversial bits.
 > 
-> MGLRU's scan_folios() emits the classic-LRU tracepoint
-> trace_mm_vmscan_lru_isolate(), which predates MGLRU. It reports the
-> scan/isolate counts and the LRU type, but carries no generation or
-> memcg context, so a trace of an MGLRU run cannot tell which memcg a
-> given scan belongs to, nor how far reclaim has progressed through the
-> generations.
+> Rename "TMPFS (SHMEM FILESYSTEM)" to "MEMORY MANAGEMENT - SHARED MEMORY
+> (SHMEM/TMPFS/MEMFD)" and move it accordingly. Add myself as a MAINTAINER
+> so people know whom to CC.
 > 
-> Add mm_mglru_scan_folios next to it, reporting the same counters plus
-> nr_sorted (folios moved to a younger generation by sort_folio()) and
-> the context the classic tracepoint lacks: the node id and memcg id of
-> the lruvec, and the max_seq, tier and min_seq of the type being
-> scanned.
+> Add mm/core.git as the target git tree. Once shmem becomes a high volume
+> component we can dedicate it a separate tree and have dedicated people
+> pick it up.
 > 
-> Now that struct scan_control is visible to the trace header, pass sc,
-> lruvec, type and tier straight in and derive everything else in
-> TP_fast_assign(), so nothing is computed at the call site when the
-> event is disabled. The int fields are grouped at the end of the entry
-> to avoid padding on 64-bit.
+> While at it, add some more shmem/tmpfs/memfd related files+directories
+> we missed so far.
 > 
-> scan_folios() is the MGLRU-specific layer where folios are actually
-> scanned, so it has no classic-LRU counterpart. The existing tracepoint
-> is left unchanged.
+> There is also "kernel/pid_sysctl.h", which includes some of the pid
+> namespaced sysctl vm.memfd_noexec. But that's really more of a proc/
+> namespace thingy, so it's not a good fit here.
 > 
-> Signed-off-by: Ridong Chen <chenridong@xiaomi.com>
+> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 > ---
->  mm/trace_vmscan.h | 66 +++++++++++++++++++++++++++++++++++++++++++++++
->  mm/vmscan.c       |  2 ++
->  2 files changed, 68 insertions(+)
-> 
-> diff --git a/mm/trace_vmscan.h b/mm/trace_vmscan.h
-> index b2ad83e5f25e..8148b8224422 100644
-> --- a/mm/trace_vmscan.h
-> +++ b/mm/trace_vmscan.h
-> @@ -392,6 +392,72 @@ TRACE_EVENT(mm_vmscan_lru_isolate,
->  		__print_symbolic(__entry->lru, LRU_NAMES))
->  );
->  
-> +#ifdef CONFIG_LRU_GEN
-> +TRACE_EVENT(mm_mglru_scan_folios,
-> +
-> +	TP_PROTO(struct lruvec *lruvec,
-> +		 struct scan_control *sc,
-> +		 unsigned long nr_requested,
-> +		 unsigned long nr_scanned,
-> +		 unsigned long nr_sorted,
-> +		 unsigned long nr_skipped,
-> +		 unsigned long nr_taken,
-> +		 int type,
-> +		 int tier),
-> +
-> +	TP_ARGS(lruvec, sc, nr_requested, nr_scanned, nr_sorted, nr_skipped,
-> +		nr_taken, type, tier),
-> +
-> +	TP_STRUCT__entry(
-> +		__field(u64, memcg_id)
-> +		__field(unsigned long, nr_requested)
-> +		__field(unsigned long, nr_scanned)
-> +		__field(unsigned long, nr_sorted)
-> +		__field(unsigned long, nr_skipped)
-> +		__field(unsigned long, nr_taken)
-> +		__field(unsigned long, max_seq)
-> +		__field(unsigned long, min_seq)
-> +		__field(int, nid)
 
-Now it has nid printed out, it's cool. 
-
-This patch looks good to me, thanks.
-
-Reviewed-by: Baoquan He <baoquan.he@linux.dev>
-
-
-> +		__field(int, highest_zoneidx)
-> +		__field(int, order)
-> +		__field(int, lru)
-> +		__field(int, tier)
-> +	),
-> +
-> +	TP_fast_assign(
-> +		__entry->memcg_id = mem_cgroup_id(lruvec_memcg(lruvec));
-> +		__entry->nr_requested = nr_requested;
-> +		__entry->nr_scanned = nr_scanned;
-> +		__entry->nr_sorted = nr_sorted;
-> +		__entry->nr_skipped = nr_skipped;
-> +		__entry->nr_taken = nr_taken;
-> +		__entry->max_seq = lruvec->lrugen.max_seq;
-> +		__entry->min_seq = lruvec->lrugen.min_seq[type];
-> +		__entry->nid = lruvec_pgdat(lruvec)->node_id;
-> +		__entry->highest_zoneidx = sc->reclaim_idx;
-> +		__entry->order = sc->order;
-> +		__entry->lru = type ? LRU_INACTIVE_FILE : LRU_INACTIVE_ANON;
-> +		__entry->tier = tier;
-> +	),
-> +
-> +	TP_printk("nid=%d memcg_id=%llu classzone=%d order=%d nr_requested=%lu nr_scanned=%lu nr_sorted=%lu nr_skipped=%lu nr_taken=%lu lru=%s max_seq=%lu tier=%d min_seq=%lu",
-> +		__entry->nid,
-> +		__entry->memcg_id,
-> +		__entry->highest_zoneidx,
-> +		__entry->order,
-> +		__entry->nr_requested,
-> +		__entry->nr_scanned,
-> +		__entry->nr_sorted,
-> +		__entry->nr_skipped,
-> +		__entry->nr_taken,
-> +		__print_symbolic(__entry->lru, LRU_NAMES),
-> +		__entry->max_seq,
-> +		__entry->tier,
-> +		__entry->min_seq)
-> +);
-> +
-> +#endif /* CONFIG_LRU_GEN */
-> +
->  TRACE_EVENT(mm_vmscan_write_folio,
->  
->  	TP_PROTO(struct folio *folio),
-> diff --git a/mm/vmscan.c b/mm/vmscan.c
-> index 15e9184a580a..ff51fee872f8 100644
-> --- a/mm/vmscan.c
-> +++ b/mm/vmscan.c
-> @@ -4852,6 +4852,8 @@ static int scan_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
->  	trace_mm_vmscan_lru_isolate(sc, nr_to_scan,
->  				    scanned, skipped, isolated,
->  				    type ? LRU_INACTIVE_FILE : LRU_INACTIVE_ANON);
-> +	trace_mm_mglru_scan_folios(lruvec, sc, nr_to_scan, scanned, sorted,
-> +				   skipped, isolated, type, tier);
->  
->  	*isolatedp = isolated;
->  	return scanned;
-> -- 
-> 2.43.0
-> 
+Thanks.
+Acked-by: Baolin Wang <baolin.wang@linux.alibaba.com>
 
