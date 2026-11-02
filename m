@@ -1,152 +1,129 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C29BA606A327
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 10:39:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AEDF606A32F
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 10:41:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=kjuHoq7Z
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=uyENRyRq
 Received: by kanga.kvack.org (Postfix)
-	id DAABA6B05B8; Mon,  2 Nov 2026 05:39:23 -0500 (EST)
+	id 7449D6B05B6; Mon,  2 Nov 2026 05:41:10 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D33AC6B05B9; Mon,  2 Nov 2026 05:39:23 -0500 (EST)
+	id 71C986B05BA; Mon,  2 Nov 2026 05:41:10 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BD4B66B05BA; Mon,  2 Nov 2026 05:39:23 -0500 (EST)
+	id 6320F6B05BC; Mon,  2 Nov 2026 05:41:10 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 924546B05B8
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 05:39:23 -0500 (EST)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 2320440C38
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 10:39:23 +0000 (UTC)
-X-FDA: 85389832206.12.EE61828
-Received: from mta0.migadu.com (out-177.mta0.migadu.com [91.218.175.177])
-	by imf13.hostedemail.com (Postfix) with ESMTP id BFD2420004
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 10:39:20 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=kjuHoq7Z;
-	spf=pass (imf13.hostedemail.com: domain of xu.xin@linux.dev designates 91.218.175.177 as permitted sender) smtp.mailfrom=xu.xin@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 3BEF76B05B6
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 05:41:10 -0500 (EST)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id CA981A0C4B
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 10:41:09 +0000 (UTC)
+X-FDA: 85389836658.04.1A4D95D
+Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 232F01C0004
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 10:41:07 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=uyENRyRq;
+	spf=pass (imf20.hostedemail.com: domain of umangpokhriyall@gmail.com designates 209.85.214.169 as permitted sender) smtp.mailfrom=umangpokhriyall@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793615961;
+	s=arc-20220608; t=1793616068;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=SXPkduc5HmvcD4JbyCflilxUkIbcOVZyKgcYfnLDPdM=;
-	b=5Z3cYbK1FzJPb1fG5npYYSYQ4nDCwhhLuvjZJ0lqre8ObU07L4LHOCUM6d7lF5BZP3kiyV
-	1KaE+drwG8zhWW3oOdE6Ca/DQb42gKoFV54vcqVIkEHvNtSWtJFFn+eQk7Pba8gvpidRtG
-	etDd+HIK0zlWkfBni0rSq420X1Y7OEs=
+	 in-reply-to:references:dkim-signature;
+	bh=cBjUGHG8kbdoyzZbGr/iLJi2HGc+aHIvJeTBRuTSpM8=;
+	b=WvRS3auFja0cLK3YzOcBvvXo43CxRJF0gTKuOEYMR+h0xN7t8TjMI6YDi+XikBZnrhudbn
+	Yxa+cMRlG3Ujkj+hvAMuYIZ0inoJgtIiyxzo9A7JLJAHXXFOa6EKZ6dfQYHN2XqQopxBgL
+	fe5PcpBvJvQA2pKafgt4CRtKI6JXpfU=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=kjuHoq7Z;
-	spf=pass (imf13.hostedemail.com: domain of xu.xin@linux.dev designates 91.218.175.177 as permitted sender) smtp.mailfrom=xu.xin@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	imf20.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=uyENRyRq;
+	spf=pass (imf20.hostedemail.com: domain of umangpokhriyall@gmail.com designates 209.85.214.169 as permitted sender) smtp.mailfrom=umangpokhriyall@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793615961;
-	b=lIEumWCHorfJh8clG4vhL6W5QL4pw2k7Wt/EB9qMxYv9kJjuinXPdbMXOtMSl5uylvZ8lE
-	DVrdsuJv/tlrA6lGymEjcwAtVJxQfT6TUip3/BHvmr/bIREU2de3+t8PhyGSR7n3mCIGeQ
-	3W/jYTnA0LwZ5bqMCPrwlcmC/pg7gyE=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=g/mOLxr73xiPzfSEauykXJcCVgHJm2aXb9jWqKek3jg=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1793615948; v=1; x=1794220748;
- b=kjuHoq7Z7WInoWQjvZyWXCq6fLcyusxA/wCxez4d8Pyx+CwmRFc4uUR3ShfNvGhGHMUT3+HP
- /G1fYZPWIznutntr52aGAg2slMISGBWg0BtWi9p7pPPh9X8UUm5MJAgIMWouR/qsesR6a5zHsUA
- 2kKl7WCLwMIhiRGwVbPnT1pQ=
-X-Envelope-To: linux-mm@kvack.org
-Received: by mta10.migadu.com with ESMTPS id 8bbf69835e69a785;
-	Mon, 02 Nov 2026 10:39:08 +0000
-X-Mizu-Trace-ID: 8bbf69835e69a785
-X-Migadu-Flow: FLOW_OUT
-From: xu.xin@linux.dev
-To: david@kernel.org
-Cc: akpm@linux-foundation.org,
-	aneesh.kumar@kernel.org,
-	apopple@nvidia.com,
-	axelrasmussen@google.com,
-	baohua@kernel.org,
-	baolin.wang@linux.alibaba.com,
-	baoquan.he@linux.dev,
-	chengming.zhou@linux.dev,
-	chrisl@kernel.org,
-	dev.jain@arm.com,
-	gourry@gourry.net,
-	hannes@cmpxchg.org,
-	harry@kernel.org,
-	hughd@google.com,
-	jack@suse.cz,
-	jannh@google.com,
-	jgg@ziepe.ca,
-	jhubbard@nvidia.com,
-	josef@toxicpanda.com,
-	joshua.hahnjy@gmail.com,
-	kas@kernel.org,
-	kasong@tencent.com,
-	kees@kernel.org,
-	kexec@lists.infradead.org,
-	lance.yang@linux.dev,
-	liam@infradead.org,
-	linux-arch@vger.kernel.org,
-	linux-cxl@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
+	t=1793616068;
+	b=WQ8xPCFkZpPPdtL4FpAjdnwSbaIyz4sNaKuc1577u4RunJU6K+YU3qYPqvHSEVuuMH6p49
+	uEHlab5pp2O8/nfEZHE0JT55qtaHquZb4GLnhGYPqPIkgSLLOA4KLzO4Zrl1X9oMvvfPot
+	Hz3lCtmvm1eC3zYPxPjTn+odhTju730=
+Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-2e8f2c3ad6bso17039565ad.1
+        for <linux-mm@kvack.org>; Mon, 02 Nov 2026 02:41:07 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1793616067; x=1794220867; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=cBjUGHG8kbdoyzZbGr/iLJi2HGc+aHIvJeTBRuTSpM8=;
+        b=uyENRyRq6UhnC4xpYkC95x+AQU9ZI1fhrfkU+DSx62nE986cT3gIM2hX++jp2PV84M
+         nhnLE3phZg4yrOPGKpv90x4TX+sCO5BloVXwWd32gpU3YeDn6E0bzBx17RZUhEZCqKjN
+         AfiSsfrOvpksoE6neZawP9hLK5pIsz3CW5YrSuEaDSA7Uu3S/Gj/NrCqJ7FQOp32iYOC
+         1R5MuMspIXkzebUqx5OyPtUW2XkNn0ABTJkhCUJ2wO6Sys2rvk5y/HQU8AF8ymmmCQqy
+         OXgpT7QiSlSdsIk9i4yIQBLl3SPrSrXsnpIY7AC3qKj5XIBtsCy+UxO0CLA9D0TBJ/yb
+         F0gg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793616067; x=1794220867;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=cBjUGHG8kbdoyzZbGr/iLJi2HGc+aHIvJeTBRuTSpM8=;
+        b=2uOyFKRU0/HMvE4ZLUMzd9sPSQj+PyzT3Er7UeruReYEBqQiadmaTAIArgXDPcg/bv
+         +RjOEzB5ftLLO0Ml7/2GVDbSOix5GcPo1jKPLAdyY0JQ31uLjVzl4pOBWgEz2mH4GorK
+         OH/E8Gvhh288witXPnNnlDjji0aMsFHj5djVJP78b1kneznYtWGVz+nIeyW0e7GN2OGP
+         dQ5TnxpKOdBrA1D4Qx93qN3Dhn7U7kvM4TYkByGkSn1/5iBoPjRZztKYY/ao9h8IQ2n5
+         v/c5rVF1nOXodDL2NVp10Ink1hR6EpB0p9noToQna+abGXAHsISDnBcjm2VYSkm4SnGc
+         AQCw==
+X-Forwarded-Encrypted: i=1; AKwUvByJR5MpoVnN5lcnQ2ZFSg6nLGm+Aoui7ZotW2IuzcxEb2GKeafy5v0O3EteWnVy9nsCh9AxQ2BJ5w==@kvack.org
+X-Gm-Message-State: APuU4Z8mSsLrVI6FgEvcBwEh6/1stya2OZkf1kzjU9V3heuc5IcotmIF
+	+OD8k6YR3lu2lpYCUhxxlWWdJZry3RZj6Tj3pl4Ey75NnIIOpdE2O0OL
+X-Gm-Gg: AYBFou3oGTLg5Kaf+X6a/LVdZCCHES+jPPFlj+kadMaUMAu3wyZGVt6KaBHqIVqCDBO
+	re20augzzlYrhjqMctIhn55pOx7oqr08RzY7RXGasiXwjIJPZTGf4VvWKpc3bYqWVc4COKC28ox
+	oRT7QlQ1EYKsGWxzrQ7/U2SHfMEikN8G8YoMw3ssZM/FbWWnhIPj/wWBmCt1lr44mbz5xe7aax1
+	P2zHF4VrLx4mnHEWNKYx3YQWO8sdtzaZkm3Xw3jLhA1wlgvFSnZNAywknO+mHT9a3iKOMtC6BVE
+	9lIzV7fO41cYBmB7+Zc8ey2iEf+3Gxn/8hCjfLgLeWxvANKxnL6HiBrL+VuF5INsJAvozTEl/T0
+	U/2Xun5WerkJFJIzXJ+fqPqvYZIQUGipzhEIVTOEwxDm2PHOs2cEaLtRVleuB5LjBJOW2vlYawJ
+	PSCNF1uwqO8sh2cg2Lmd6MZ3won4dtbe74ws3QhJD7YDS+VELTdKLZfjsN3+qeHU/l+m28m74UL
+	itW4j3zPjXvgdb96tD+47qza9djgLmN8SuSbEMevayz+i86IgPZ3hGXpatv0CuAtI2l+gdB7uOd
+	8caw5o5irjANVhj0KN5f6FfFg0vG5v+7DzR09JxoEPJWqnc6msthzA8WSWRYOvO4mNgY2kUdkw=
+	=
+X-Received: by 2002:a17:902:f607:b0:2e9:4b32:fc66 with SMTP id d9443c01a7336-2eb3649be71mr94161175ad.10.1793616066876;
+        Mon, 02 Nov 2026 02:41:06 -0800 (PST)
+Received: from umang-Inspiron-3501 ([2401:4900:1f3a:7c59:eeec:de7d:b077:9b9f])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2eb3925ff38sm25195465ad.36.2026.11.02.02.40.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 02 Nov 2026 02:41:06 -0800 (PST)
+From: Umang Pokhriyal <umangpokhriyall@gmail.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Mike Rapoport <rppt@kernel.org>,
+	Peter Xu <peterx@redhat.com>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R . Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Shuah Khan <shuah@kernel.org>,
 	linux-mm@kvack.org,
-	ljs@kernel.org,
-	matthew.brost@intel.com,
-	mhocko@kernel.org,
-	mhocko@suse.com,
-	minchan@kernel.org,
-	muchun.song@linux.dev,
-	nico.pache@linux.dev,
-	nphamcs@gmail.com,
-	npiggin@gmail.com,
-	osalvador@suse.de,
-	pasha.tatashin@soleen.com,
-	peterx@redhat.com,
-	peterz@infradead.org,
-	pfalcato@suse.de,
-	pratyush@kernel.org,
-	qi.zheng@linux.dev,
-	rakie.kim@sk.com,
-	riel@surriel.com,
-	rppt@kernel.org,
-	ryan.roberts@arm.com,
-	shakeel.butt@linux.dev,
-	shikemeng@huaweicloud.com,
-	stable@vger.kernel.org,
-	surenb@google.com,
-	usama.anjum@arm.com,
-	usama.arif@linux.dev,
-	vbabka@kernel.org,
-	weixugc@google.com,
-	will@kernel.org,
-	willy@infradead.org,
-	xu.xin@linux.dev,
-	ying.huang@linux.alibaba.com,
-	youngjun.park@lge.com,
-	yuanchu@google.com,
-	ziy@nvidia.com
-Subject: Re: [PATCH v3 39/47] mm/ksm: reset the unstable trees of all nodes
-Date: Mon,  2 Nov 2026 18:38:39 +0800
-Message-Id: <20261102103839.225014-1-xu.xin@linux.dev>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20261031-fixes_core-v3-39-d6437171ecc3@kernel.org>
-References: <20261031-fixes_core-v3-39-d6437171ecc3@kernel.org>
+	linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Umang Pokhriyal <umangpokhriyall@gmail.com>
+Subject: [PATCH 0/2] userfaultfd: validate the whole range before changing write protection
+Date: Mon,  2 Nov 2026 16:06:19 +0530
+Message-ID: <20261102103621.156928-1-umangpokhriyall@gmail.com>
+X-Mailer: git-send-email 2.53.0
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: BFD2420004
-X-Stat-Signature: 64ww56jmi5cb4g13iquq9u7snmyoenkt
+X-Rspamd-Queue-Id: 232F01C0004
+X-Stat-Signature: qcenywcz8rpopimi7p5tt1ke5usn7sc5
 X-Rspam-User: 
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1793615960-490590
-X-HE-Meta: U2FsdGVkX1+18dHQopYnSWkrb1Em/zTMdhUCAurmgwUe0M6/SxWK10vx8x8FJFG+ojjPXw61bjBg+xIGTcN7cv8qsQydAK5z8aqqtm8+6AgB/iZOeUI3tUhZBRGSBfFUxUMydXXO8ae2jA7Pkhjk8tjbchJmLeTfMtw6Id4RiC4n1fPMccGxQoF+AEQig87YGbhWpFiOzAtkMv9+671BKVYAYlVnnUjm2ctYyzMgocwtqe0yANp0k8BnyFird4cFdxpd811+ju+yaF6PSLDlMNOiwYfeZDBcuWyCEG9KX009ARC0EwqeWDbvt84e5tOpO3fFtkRrFRVCOvBSZ807LCrtFDWIPpF5J0lWnywpXBtEr0damcgRqMLv3bGaYO6zI8N2ZBEjPAVgXBjHhjIEILL7mS3Y/3+t3uJAZlv8VApuLnabxU9sh5XzvFmNzqPK9CKFzNRv5iXbz7TpJJf246eSBQF/j26hH9ANm4eUFdXUm3Ogd2ZVWgOUeFWDJEjKe1mQRWpzN345brk0lmmBzC4cMMKU6vsrMsC+JIW8h3fweSPnvRDUmdBxw4Jw8uHYp2B0NVbHZfSIMavan4UF9tnLZgolST9Vn9QubgFTFE1qcW6buKBBJv/G3DD2rwUbl+qLv36aHF6WlVOyZEQqxqnAhcENam/BgbUZehfSs8BjtD19jTdPZMSsZrLzjYb6RLeuzQzJfJ3gisfxYfC6yn0l00wv2ZLyeSJS2ly1JxIciCjdQv7vKWG1VDkXKF3sciK5OGWEPMsuJzGK0pRARbBl0Ihh+37vfA340D9V6JZFKvpSkUu/qli/kexaFq41YcjyEMmA+oTZ3IMT8BIH9LMWvgr6lpwTXXaPuGZwqZkM7pfcRM6GOqOLCANtdRp64ybfzSSvmRz3E5wbRsWTl1jp/ClokrD4Qt71HQ4xT68rGS2ULt0l5a22iENVPsN6wMJPv1Wa55zhYRxoKBk
- 5Rcely7z
- VURQm5ZzHIrkbJTIqYMoRiLq7gKsCD3IUefV2v5MzngxA7B8H7a8PmY2ddtz5FW0dSIoFocovAeHwj4omcsCsNHEaZz9xEKzbr0spKoTVSlmELFE5nwkzGy/P9ucm4q8VePZzoEKpRoAAFzdTj8+okubY7lSjfuW8se0H9q5koUJ0foqLlvaDK3cGNI8e6zSf1ESOw8OElp30NMzZyVOpM9SG4VLpJjXLN4YYD+OXwubJ9LMnKkUj1U8084zrjrZbV/h7ZmOzhAnF9+q6Hh75d15+prOMsDrAP92sc0Wdk/TFyeKenKsLbO7WiJAr1FjKkPMmNwmulKe41sBAmW1eoqxzFvNrF3rUgmr4WRRTZwckFA3BCYstQRgNuhtg2/Zupiui/HZlwQQEZuxfm9Rgb7fwNozkxJNGHsthcmCGo5jEZXwFPdpuI6ooDkmNg5iYX58AEgS5+Xp2cRSphZMwE2x8nk3UXsI0GI0sQi/IGXODunexJTfGXlmDiw==
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,
+	SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no
+	version=4.0.1
+X-HE-Tag: 1793616067-599059
+X-HE-Meta: U2FsdGVkX1/55U//i6UAMRn2T7SfvL3tKmNiV5lBQWbKBrhHB6W4sVmh+WdRCZSeDin9iY7OymqCI3d4ODYk3oYUYnhvTNBvynwFwY+Lg2lYYcAthliUsRFkSeK5mtfBJVfArNOgb3lKkkSWHR2LuqkbzCzyzklS50lBBnGcZeLx6K7O7pAQoGN8JewNZmGk4+kbGIP6ha3tLu7j7jYyd60Fhg3cVt5/wyOI1FNRR12yfiVXk09orqH1QDzBrcgiCJWzx8IweMhiJhPhChmFUrUfaiZFDUYB6hoiNniDeHzPXjUNZh89y5xH2ybTIkz/v1cbVu9PJvz5ejVoNR3FAk/E31ai4JxvanbSyEOJvKR4lE+fLGq2iDhhKU8S0bHJfZ98MAs0IeIYn6AMlxiO/0MvLXY0gkFBwPpUf9mXaVRVwl7q4GxBes2UFFmt1MGg6vFvWaLkA/2r7jTZ6q4G83goVxGmNFyiTtOSiDotTL8gYjPZzVw3rJaLTTdrgjEsHf45TajMm8z5l8mntvep2aaYxDf3FF8/KcYzYyxDyUeaG7vRwaXF577OvZnJPv4bz5SLf0zePHO95OOJFKpPVxNFZxws31ukesD3l9H4m3OjzYpZGr7mvUC0IQS1XV9KzhDFTdkqcLzQc1dC6Bqib6WBTr24LR5TtNGst+Zs3Q7SHSWYBBuSskRaaS9yUokYjMTRGC6d3UXWDrLGxwdV4wPWzntTEj2xuZ3nmtkzMOvARM8zwkz7ykDt0jJdlIfimYD6hY11lTspyMInEXFJge0VHaZ0wXuwKrj1OEKY3esc3jNcWg2O/fsP5SGGALAPbWnimPNAc4UH34amZt//b4T6X6Fj8joOslRHcvrQHqWNi8HDotRO3otQKCyJXdjuHrJG1hC6W6MovVVtE9sNvIa4ycKqpMOP1GHVqQtioeP8br+jReO15muUnK+UZGHq5WMp4DaQJ+vPRPmqUVZ
+ QYzYXgt2
+ ohy9g/SwS1tgmYsNxozbu6YR0xjJNs5MVY3g6a47qu0mBvyAJYN65LvqYUUOpAwcW6nAxOUXOsfyywaR1kPLgP0RdAw1UYU5M06RkMCU93Kktp3ZqIy2inLbY5x7JWGEYU2IQwhEsYU0Faymu8XdQbozjEqgyxsZHlCu81fHrD3DhaYYXP4Ou6b21zWifDpizwSLnIoGf+kqNKuM2QJapSLru2voEuX6ba0zB7XLUWp3q3cVaP9tpOGjR0pMm/dxS1FwCz5YI67gvMWoykUBTi6n09v8wJIPPxsgI3ZEk1ZmM49ipTd/RPkRGXBmIgj1PHyJrmvaLbo6hadmNOwYDEVUox3HerNCt+W8lGuJ3HJZyY9XZKLA1sdk9+3Dt+zZQ+i/yaPQiofz7DvdORB3rSSu+9FeF5Ct/sYnSqNgEpQzpHGL+y65h4+W3hg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -155,65 +132,31 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-> Each full scan resets ksm_nr_node_ids unstable tree roots. Enabling
-> merge_across_nodes resets this count to 1, even if per-node roots were
-> previously allocated.
-> 
-> So when toggling "merge_across_nodes" 0 -> 1 -> 0, a scan that starts
-> while the setting is 1 and continues after switching back to 0 can
-> encounter stale unstable tree roots, resulting in UAF.
-> 
-> Only root is allowed to change "merge_across_nodes", and the documented
-> sequence is: "merge_across_nodes setting can be changed only when there
-> are no ksm shared pages in the system: set run 2 to unmerge pages first,
-> then to 1 after changing merge_across_nodes, to remerge according to the
-> new setting."
-> 
-> Let's fix it by tracking in ksm_nr_node_ids the actual number of
-> allocated tree roots.
-> 
-> remove_all_stable_nodes() and ksm_check_stable_tree() will now scan
-> more tree roots (skipping the empty ones), which is harmless.
-> 
-> Fixes: ef53d16cded7 ("ksm: allocate roots when needed")
-> Cc: stable@vger.kernel.org
-> Reported-by: Josef Bacik <josef@toxicpanda.com>
-> Acked-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-> Reviewed-by: Pasha Tatashin <pasha.tatashin@soleen.com>
-> Tested-by: Muhammad Usama Anjum <usama.anjum@arm.com>
-> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
-> ---
->  mm/ksm.c | 6 +++---
->  1 file changed, 3 insertions(+), 3 deletions(-)
-> 
-> diff --git a/mm/ksm.c b/mm/ksm.c
-> index dbfb8f98b1892..9c51925825cbf 100644
-> --- a/mm/ksm.c
-> +++ b/mm/ksm.c
-> @@ -475,6 +475,7 @@ static void advisor_stop_scan(void)
->  #ifdef CONFIG_NUMA
->  /* Zeroed when merging across nodes is not allowed */
->  static unsigned int ksm_merge_across_nodes = 1;
-> +/* Number of allocated stable and unstable tree roots. */
->  static int ksm_nr_node_ids = 1;
->  #else
->  #define ksm_merge_across_nodes	1U
-> @@ -3636,14 +3637,13 @@ static ssize_t merge_across_nodes_store(struct kobject *kobj,
->  			else {
->  				root_stable_tree = buf;
->  				root_unstable_tree = buf + nr_node_ids;
-> +				ksm_nr_node_ids = nr_node_ids;
->  				/* Stable tree is empty but not the unstable */
->  				root_unstable_tree[0] = one_unstable_tree[0];
->  			}
->  		}
-> -		if (!err) {
-> +		if (!err)
->  			ksm_merge_across_nodes = knob;
-> -			ksm_nr_node_ids = knob ? 1 : nr_node_ids;
-> -		}
->  	}
->  	mutex_unlock(&ksm_thread_mutex);
+A UFFDIO_WRITEPROTECT range that spans an unregistered VMA fails, but
+the VMAs before it are already (un)protected, and on unprotect no waiter
+is woken.  Patch 1 validates the whole range first, as
+mrwprotect_range() does; it is open-coded rather than shared with it so
+that it applies to stable kernels without RWP.  Patch 2 adds a uffd
+selftest.
 
-Reviewed-by: Xu Xin <xu.xin@linux.dev>
+The problem was found while reviewing the userfaultfd range ioctls with
+an LLM, which also helped write the patches.  Tested on mm-new in a VM:
+the new selftest and a standalone reproducer (both directions, and a
+misaligned hugetlb range) fail without patch 1 and pass with it, and the
+rest of uffd-unit-tests gives the same results with and without it.
+
+Umang Pokhriyal (2):
+  userfaultfd: validate the whole range before changing write protection
+  selftests/mm: test a uffd write-protect range with an unregistered
+    page
+
+ mm/userfaultfd.c                             | 20 +++++--
+ tools/testing/selftests/mm/uffd-unit-tests.c | 56 ++++++++++++++++++++
+ 2 files changed, 71 insertions(+), 5 deletions(-)
+
+
+base-commit: d42dfde37af766d1c272467352c0a56d3169ee58
+-- 
+2.53.0
+
 
