@@ -1,130 +1,99 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 691C5606A33D
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 13:45:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6848606A33F
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 13:46:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=dppISlYB
+	dkim=pass (1024-bit key, unprotected) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=ue1ws/Sc
 Received: by kanga.kvack.org (Postfix)
-	id 7B5AE6B00EF; Mon,  2 Nov 2026 08:45:28 -0500 (EST)
+	id DF90D6B05B9; Mon,  2 Nov 2026 08:46:04 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 76A676B05B8; Mon,  2 Nov 2026 08:45:28 -0500 (EST)
+	id DD0596B05BA; Mon,  2 Nov 2026 08:46:04 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 67C846B05B9; Mon,  2 Nov 2026 08:45:28 -0500 (EST)
+	id D0E506B05BB; Mon,  2 Nov 2026 08:46:04 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 3E66D6B00EF
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 08:45:28 -0500 (EST)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id C1FABC0B72
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 13:45:27 +0000 (UTC)
-X-FDA: 85390301094.05.B9A418B
-Received: from mail-wm2-f10.google.com (mail-wm2-f10.google.com [74.125.225.138])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 20F4220005
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 13:45:26 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=dppISlYB;
-	spf=pass (imf31.hostedemail.com: domain of alitariq45892@gmail.com designates 74.125.225.138 as permitted sender) smtp.mailfrom=alitariq45892@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793627126;
-	b=nO2kwyLh44Q8TtXUbsx0B4xtr/ThCsc8/TidlLo6gOBgmu00m2Rx+4gRX0wWnqfgJE+MDA
-	IPHCxxoOk94al4BcxaoAcylK8FnaBksIchXSVBwgprY+sCeKT6fVhIVhPlL0itHxXGVISv
-	DaHDgdfaIOlwA9RIrzmCqjqg7XnElt4=
-ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=dppISlYB;
-	spf=pass (imf31.hostedemail.com: domain of alitariq45892@gmail.com designates 74.125.225.138 as permitted sender) smtp.mailfrom=alitariq45892@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id AD09D6B05B9
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 08:46:04 -0500 (EST)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 3ACAF160C39
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 13:46:04 +0000 (UTC)
+X-FDA: 85390302648.18.453CEE2
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 56F04160010
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 13:46:02 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b="ue1ws/Sc";
+	spf=pass (imf08.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793627126;
+	s=arc-20220608; t=1793627162;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=UUcrbJLOOZAs9Qd9MyHCkEc9mio81RdYYZ8wU36Zvg8=;
-	b=XR8/CVwxoeGXGS+CP0aTNEvcck52UTMRyZExyDYnYUp1JoA1MKiLU1APHLcnvii/DJFbOk
-	67rHmNvFixX+phcKqk70c/9NffaJPaSr0EgNfpx276ELkdytqXYd9wh4Cq13W5Ar/qXqcA
-	Lg6lFi4RmKDdjkjFgQU0VEZfZOr7L9Q=
-Received: by mail-wm2-f10.google.com with SMTP id 5b1f17b1804b1-4a16dfb8fa6so16971825e9.1
-        for <linux-mm@kvack.org>; Mon, 02 Nov 2026 05:45:25 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793627124; x=1794231924; darn=kvack.org;
-        h=content-transfer-encoding:content-type:mime-version:message-id:date
-         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=UUcrbJLOOZAs9Qd9MyHCkEc9mio81RdYYZ8wU36Zvg8=;
-        b=dppISlYBDLhd10vRkXMicJ+lTRUTbE3cZ6zeaEvznvUEvWHvt9GoLQGsh2Obeqb1Kp
-         TjrRz/bXrYUPTksOnU6K2KY9oP965nCjKcIh57a5BXUBh2UAfCP0589cLg991tGQ2iNQ
-         jYHPQv+aMSk3ksufzKPAGusiVG/uazaWzp4PDJpYqA2hp3oMHSfXNL71yW+DU4tVIRNb
-         G358RQCIHqAd9tizQfWkv8zSC0o5o/AJVKW0TuByTEsX3NBkcricALbJ9p87Zh8op2jD
-         91lohkJb4gFF1YLj0oSPoVkeCcGv+NezdlvlMG+Z+damJIzvoriHoHSrWsac89cEX/Tb
-         pKTg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793627124; x=1794231924;
-        h=content-transfer-encoding:content-type:mime-version:message-id:date
-         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=UUcrbJLOOZAs9Qd9MyHCkEc9mio81RdYYZ8wU36Zvg8=;
-        b=Qno0wBDIZPKlH7jc3pAwOB9FwE7oNMALpGJd3TO9lVhAomhs4+GI/Y8r5c8heiq97l
-         7FWqS1XMi6LDUEPZZx7YJnVin+y1S39+Pvjyit87ijpsE/2ivoE0ErZEhGRBB71YXU03
-         J2pAdeOXKJPvMTJlqu6oKVJcvG+jsdlUxqsM1E7YgDdgcC3PcgTHmqJumsLaQ1iY5rL9
-         8FWjI6D97wIMPmr5R6qSGloX2eFboaMAs8xA2q8IquQMyGhKX9+NwR2rSVbvVZhtRD+g
-         mtTbelASt5Bltax5tZJG+reL93vPUbEgWrLoVjd8ayfi3vSKNJj9CLVuF35n6Xh7ODot
-         asoQ==
-X-Forwarded-Encrypted: i=1; AKwUvBzJ25kPx8SkU6xB2E+PteoHWxbACCsCmZedMSJlcIklAxfzhyXk/i+/ZiF29Bt6tdvP+6Qm6Ak3og==@kvack.org
-X-Gm-Message-State: AFq9FYJzLbpp3Vu+RgxwbPCO5jqjzyXSZWlfojFUyigSuse59mNyGZ/L
-	X8RIyoAlWjD/5xQCebC7iFIv3jPm+sO4iORnK/HwCwaqvoKLZ9tpOuIp
-X-Gm-Gg: AYBFou1/t5Kx2I8Q3boeToFJhnTe5s2ilSPhnvv/lpsAEQmHhKJ1LrhiQK3CuW8kfIU
-	Fbz3x90bkLT6VlxJWQaZHeveMA2m57FIitkaBOZMHemNMXHYC+NQ6AAhQ5EraqDsK9zJzMOB/r1
-	Gy5nhpDHk31K0U7L69q94u3JTSpEXYr/bRlWUcp4A6QNlVex6mSz5etIcECU3HJpbwL1CeucELS
-	ljPJmjfpKRNFGy/6579gB6VmL4AYN1RRV6y0WXkTNrx2IR6MdL2zOMSMkx07C64ObVUBbBsvFGd
-	Onroobl3VfPGmf7LNL2eTx6O0w/mEyVLGKePBiWfiNdAvkDmnP8hTPSSeHtZl0uUHdGPDg3N0Me
-	ZzidybbVaJX80Zr/L5kEAkIZia/SrIfjpwb7Uy5J/p61fzxY45AGYh6zs6ZX2shOR//7J7d00dp
-	0bAtykH6cbY3jEZ8z+UMa8npCiErGty+6n9uZa9q2rHQitK1mGVt3+nC/gaU5lEOMror/pvIuna
-	So1jyKXQ07+evh6RM8aCCxHKMgS7RYusMx4v+vUKgP3qmEvL4jYK9ZwMA1IYk0EIB03Whb+2zw8
-	MNUjITt9RydJtk8aXIcFKqPmKhXPv2qgAZpJSRXYhkn98CldTvFzVvs=
-X-Received: by 2002:a05:600c:1f87:b0:4a1:f68a:9736 with SMTP id 5b1f17b1804b1-4ac17b2be08mr233027865e9.26.1793627124284;
-        Mon, 02 Nov 2026 05:45:24 -0800 (PST)
-Received: from workstation.. ([110.93.227.81])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4ab61d8b9f4sm319164755e9.12.2026.11.02.05.45.20
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 02 Nov 2026 05:45:23 -0800 (PST)
-From: Ali Tariq <alitariq45892@gmail.com>
-To: Paul Walmsley <pjw@kernel.org>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>,
-	linux-riscv@lists.infradead.org
-Cc: Alexandre Ghiti <alex@ghiti.fr>,
-	Vivian Wang <wangruikang@iscas.ac.cn>,
-	Yunhui Cui <cuiyunhui@bytedance.com>,
-	Muchun Song <muchun.song@linux.dev>,
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=neXC6d4EWQwZ+yifS+fK2WFD0pggnBVqEPoox7vx5m8=;
+	b=qbHW2McQSPDzvf0OPe/G9fC2HdoI7jwen/c9Ow4IC+3cT6mbP/JpCp02AW1DZ9Oqx/WVEu
+	TUnnX4b2anT6MUhvfLHuKiD6lCR6oVDnmPt2X9ZqNCP2xupN+5p/qHZvISe50byCdn0hc1
+	uQLjZD6Ln3jE1rxDusMPQRLc4+4iNks=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793627162;
+	b=huZlJmpVUaTlfHojNxyfb2ADgtt5HHKn87UY+bS0WAgOaw1IQMDpa4bJjhLWO74E2jDmya
+	d7X+XcJXx8FT6miGmAWJOBt6ouWX+B8GUS8YkPuz8pYYt/StCPbijavLNn5bzgNKc92vkk
+	nXhmHCeABN0/ErLIWaFnvY9rLIdvh/4=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b="ue1ws/Sc";
+	spf=pass (imf08.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 30CED1595;
+	Mon,  2 Nov 2026 05:45:58 -0800 (PST)
+Received: from e129823.arm.com (e129823.arm.com [10.2.213.3])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id E530D3F673;
+	Mon,  2 Nov 2026 05:45:58 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1793627161; bh=fZSZ6MB08kTtvX/igX5bE0NKnkORa6wfmDq57AKqELQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ue1ws/Sc866Fc5NSmv5uMqfh2NjXn5xVtmwW/swW6t0NcN1vx+V6akc7yFu1ps1eQ
+	 /dN93sCWVLy/CBxjQu9aR9OXSElgm8jhlXl9zljN8QoiyniJBvqhuAsAUGfHKZiHYt
+	 C2GYimd4IBGjCzKIe/1k2Rake0VviytMRe6NXD6k=
+Date: Mon, 2 Nov 2026 13:45:56 +0000
+From: Yeoreum Yun <yeoreum.yun@arm.com>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Yeoreum Yun <yeoreum.yun@arm.com>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, Jason Gunthorpe <jgg@ziepe.ca>,
+	John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
 	Mike Rapoport <rppt@kernel.org>,
-	David Hildenbrand <david@kernel.org>,
-	kasan-dev@googlegroups.com,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Ali Tariq <alitariq45892@gmail.com>
-Subject: [PATCH] riscv: mm: Add KASAN shadow mapping to flush_cache_vmap()
-Date: Mon,  2 Nov 2026 18:44:21 +0500
-Message-Id: <20261102134422.610837-1-alitariq45892@gmail.com>
-X-Mailer: git-send-email 2.34.1
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Rik van Riel <riel@surriel.com>,
+	Yuan-Hao Hsu <aa9736195201@gmail.com>
+Subject: Re: [PATCH v2 1/4] mm: gup: introduce gup_unshared_pages()
+Message-ID: <auiUFIM_4Bk0gjwP@e129823.arm.com>
+References: <20261102-refactor_gup_fast-v2-0-bc1ac018c834@arm.com>
+ <20261102-refactor_gup_fast-v2-1-bc1ac018c834@arm.com>
+ <5feb82ef-a9bc-4ef3-b056-9732563e6225@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <5feb82ef-a9bc-4ef3-b056-9732563e6225@kernel.org>
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 56F04160010
+X-Stat-Signature: izas57ie8kb6qk5srdfqpw1tno4874ab
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 20F4220005
-X-Stat-Signature: rfx4j6ak7fbeqew3nintxfkbudcyksgy
-X-Rspamd-Server: rspam01
 X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
-	autolearn_force=no version=4.0.1
-X-HE-Tag: 1793627126-643124
-X-HE-Meta: U2FsdGVkX1/jA6i9mhO28JAZRLvgY2xsGqAujDWd4yK5/8F8uJRnmch/+1apfP88iwALd/A+QXsUUJL1J01pkBCnOShRD21vBmCbIJJGQlQlNB/clOrbECK05cirb6+lFLCqMXEaHfeRyWxfwvM75C/iOTZTHqH/1Gd9vE37lP3IkN4KxNU1AQVxMi1QmcFnjFAl0BSNuAr7iZtt1kNUsA9swS0mdi2Yvej7nHJWw8iFd3Hr+CZF6z7SvsIRkZCM9S5R/a3GmkwQYHekCXFAXnIM60izlaYwt46KGP7hYScTzLS3acMf24waYRb7onRz2q5NvLn4Eqz6VlMlNZsb+EaBx7VdeThjdHy+IPTdDUY8KD6ZMGh2Xf7DrWVsialuxw4PC183/jHHdZv+CmZHAVAADgSq+eBaSDz0CmNdmjKvkVxke8L799RPu9FHYPZdh+R/hH7FOS+1Vj79u+Z1rD5lmzUNPEXiHQlPHFWhjZYGEhyl9vOZanL9B4hYzRn8ixKhJIhEMeyHLVKFpj03DBCQJqs/evs3dN+3pWUepeiORw5079CT9kdh5eaYULoFXBX1Y6hymfdNAVfPhsfS0bOQtiwsQ+r3GRwxYciARPl4qCp30pr55a1TWsCdfCm/Ya3qBZnMSs0hbK4zAJOvt6/dYPqdI4EMZzL7dqbJfCisSFsFePPKYCczTMbLsdj3Jqe0vSjoyBx/s1dhWV9LpX/GGDVjcw7VD65HV7VY0JtRLJZheYk/v1uHbG09U+rArcurMU7/JuuMLxUxAvKBdLPWTL0d6P04lel8m62Oa7acHR7TZpzcmAJbooihfGhOfN9+dtKNyYqUzv2b0mOJN+oLbxwRCJOM2VyKa/6ZH/ADpkKPjEA0ATBDa+nrVz6l56evGQSzeCRFM/u5Ljdesumd+VgydwtsPyDD4w5WOT3YV1LWOtsSCx++rBNEmCc3xYnKffOaqarOQxY9gEg
- uh5VGMnM
- You5rrA8/rsYJPlzQ+vhva/FJEWV3v8ADo8Z0Ppkc6Yj8otVZhJcKv3J0pTVY812ShZq8xICKAmfalx+28CVUXfQicnw14CAH/H3JZsJCtrFopsZoQiAy+naOsCfJ0Z49wLQJgVmIKChCOZnsHPSsb2erzwciEeWmIp+4sTPfrwgRSNCB/IVUhoxt18MgAE3bOuqBWxeM1hCQIs3fJx3fH9GHNFAlnhBp9ThmlWm7eTD1lezKs46/mc5nuiuUhEo/av2XSkLf1JPVy3TV3k8Haa7flUpo3HsppTwRzRJmper4125bFgJ0FJqBZmxlVNru6XrUqbUNc7YWC8VS0EN2OnYCCQdMAU9Giswn1QkDLdE8m/hHlsYa4M0Mah6K2tYHIT3TACpWS3N367xIEZIqmrxcnSq/Ql2wih6GquM/oYAHcsVnEZaOE6U4pztpvTkCkQURQERv6p8z+T2AU4k9qmWfp08HpeN5PK5Bm0nah9VMR8eJmGtQPmrepZ+SQtqFsjmchqx+tckfcvpfKrYb6BY8RIhhwmLcrlLLS1kPHYNX3a3qDoQ3Ujtc1dIiUxVbkKnIDhPpwk/+63A=
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1793627162-606594
+X-HE-Meta: U2FsdGVkX19HQ7qrKjP46Qj5SRuMTsV/znK4EmDjH204T6wg+VVVIQQKgdfjboaXZoNr/96PWh+J7Tb7nxEB7GH7YlOprFNf0HxJeienOZ+oaKjXcYmBFcJl9c/xKcpT5gMS6dOAx6KWqlCL+JHOKNkREdKSc57T9oYBKwXTrzeiRZkvua3oSktrx4Dw5hepaoF04G9996fzUxsTx9SCJ8RY0fOWUG/yecOb1/JJbVQ2ewbk+FWgDJC47Hd26KB+Gv9et1CuGtzkS5vPdpmmvBmWrp1pEI7bsH+E4dACBEHDuIBBUMS/zz3LMSBdpRkmlXWKvlivq8nrD+0VYmAqMphF/90jyPNapLZl44wujBUS2BO93iwWp7YsJpuDSWaS1k2p+eq6Tqc/1faaubJSaOd4iWD3jBKzau7gajC0s/jNv+q/LzmZTicT/6mX80CRx35WkN6BdfTg9+TgWSS4+P5tLjpFlq+O9W8+wMbBDfHIz3lzmCo11p/SvpiGIYpp0Pk1XL20uB/Be6mDQmmjFh4zBR0PqREmF2RJbng8uh/07H1TGvbfVKmMDSN6Hj4Tr84DzPYkZQuwP7r/mJQ/VhOO31/OZz7L15sFROTLdt1Di6zDa5uWWUjrKFQcKjNKHx2n7fdym7vkZj4IEdbj9Mx3qS2HZrKCu0OfwH0foPbZllLektb7JaTPgSo9gbNWkdB4fVC4JdnYPnrSCVjamW2tmevLuMIN74MgNfpNzqj+2AmGgiGgIbgvCSfz+bUI6y/74ouAdiVQ3xXVwzvCm86O9GjcXMjZA2onM/Mammy5/z2x18tTw3LBeA+DKGBDZ6HS5uhHBcdm5BMC65LSc1MZVNGVVg/6Bu3Q2fD33zXpp3sDGYdwpCOtOgfBYPaEnag9D/KObUyJFtzxNI150t0AXXZ06TaG87lf/FcUjT+22DPN1cT6qbSzcQIkaFiiN3VpJ2v6Rxh0p9U9G/g
+ hg1GkX4r
+ dUwMAABAUk7jsME8A6vSMNVcvGL9lcPFTekI3eugMvu+jMjNlJP7lZwks6U9n1IHclkX9JE2rx9CEybO3M6RDKYknzFUAB07UhGsVee5N9q8EDAZ/t/x10qe6cCLfKgzMjP7BzBa6r6fgAaP+OLWokZXC5wKR7Wg3BA9V5TohQWxz9StVpVd/AnhWuuvZbF6c+C37AnaxHvG4FYNFhbsr8t9unU2IUGwmwoVyOmzTF/AT+8qSGAZNz8yqowOIninK7pwZiksyhhWYTeeXKDHwKw4lrDsGhiFwTGx+Xw21jAX3fK4xxeKe9eRRdvFJPaHgrnTvd8+D1DE8g1YQbZqNmSuaYQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -133,77 +102,250 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-flush_cache_vmap() sets a per-CPU flag, and a kernel page fault
-that finds the flag set gets an sfence.vma and a retry.
-flush_cache_vmap() only sets the flag for vmalloc, module and vmemmap
-ranges. kasan_populate_vmalloc() maps new shadow pages and calls
-flush_cache_vmap() on the shadow range, so no flag gets set.
-For vmap()-style areas, kasan_unpoison_vmalloc() writes
-the new shadow right away. If the CPU hasn’t seen the new entry yet,
-the store faults, and since there is no flag set, the kernel crashes.
+> On 11/2/26 12:30, Yeoreum Yun wrote:
+> > This is preparatory patch to make gup_fast_pte_range() batchable.
+> > 
+> > Introduce gup_unshared_pages() to count consecutive pages within a folio
+> > that do not require unsharing, and use it to implement gup_must_unshare().
+> > 
+> > Also add a folio argument to gup_must_unshare() so callers can reuse an
+> > existing folio and avoid the compound_head() call implicit in PageAnon().
+> > 
+> > There is no functional change.
+> > 
+> > Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
+> > ---
+> >  mm/gup.c      | 69 +++++++++++++++++++++++++++++++++++++++++++++++++++++------
+> >  mm/internal.h | 49 ++++++------------------------------------
+> >  2 files changed, 70 insertions(+), 48 deletions(-)
+> > 
+> > diff --git a/mm/gup.c b/mm/gup.c
+> > index 7d43ce717b246..49681f63950ec 100644
+> > --- a/mm/gup.c
+> > +++ b/mm/gup.c
+> > @@ -633,6 +633,59 @@ static struct page *no_page_table(struct vm_area_struct *vma,
+> >  	return NULL;
+> >  }
+> >  
+> > +unsigned long gup_unshared_pages(struct vm_area_struct *vma, unsigned int flags,
+> > +				 struct folio *folio, struct page *page,
+> > +				 unsigned long nr_pages)
+> 
+> Two tab indent.
 
-[    0.675216] Unable to handle kernel paging request at virtual address fffffff7c009a000
-Current swapper/0 pgtable: 4K pagesize, 39-bit VAs, pgdp=0x0000000004504000
-[fffffff7c009a000] pgd=000000009ff6e001, p4d=000000009ff6e001, pud=000000009ff6e001, pmd=00000000400e7401, pte=00000000403cb0e7
-status: 0000000200000120 badaddr: fffffff7c009a000 cause: 000000000000000f
-__memset+0x60/0xfe
-kasan_unpoison+0x26/0x4e
-__kasan_unpoison_vmalloc+0x20/0x2e
-__get_vm_area_node+0x1c6/0x276
-get_vm_area_caller+0x52/0x84
-vmap+0xf0/0x264
-dma_common_contiguous_remap+0xa0/0xd0
-atomic_pool_expand+0xb6/0x310
-__dma_atomic_pool_init.isra.0+0xf6/0x1c0
-dma_atomic_pool_init+0xf6/0x1aa
-do_one_initcall+0x134/0x928
-kernel_init_freeable+0x532/0x60a
-kernel_init+0x28/0x162
-ret_from_fork_kernel+0x82/0x94c
-ret_from_fork_kernel_asm+0x16/0x18
+Okay.
 
-The PTE is valid, so the mapping was in place when the CPU faulted.
+> 
+> 
+> This function should be static.
 
-Tested on Orange Pi RV2: without this patch 2 of 30 boots crashed,
-with it 50 of 50 booted.
+Acked.
 
-Add the KASAN shadow region to the ranges for which flush_cache_vmap()
-calls mark_new_valid_map(), as commit 4edd70ee6a7d ("mm/sparse-vmemmap:
-flush_cache_vmap() after hotplugging vmemmap") did for vmemmap.
+> 
+> As a prerequisite patch you should move gup_unshared_pages() into this file.
+> 
+> $ git grep gup_must_unshare
+> include/linux/rmap.h:    * gup_must_unshare().
+> include/linux/rmap.h:    * gup_must_unshare().
+> mm/gup.c:       if (!pud_write(pud) && gup_must_unshare(vma, flags, page))
+> mm/gup.c:       if (!pmd_write(pmdval) && gup_must_unshare(vma, flags, page))
+> mm/gup.c:       if (!pte_write(pte) && gup_must_unshare(vma, flags, page)) {
+> mm/gup.c:               if (!pte_write(pte) && gup_must_unshare(NULL, flags, page)) {
+> mm/gup.c:       if (!pmd_write(orig) && gup_must_unshare(NULL, flags, &folio->page)) {
+> mm/gup.c:       if (!pud_write(orig) && gup_must_unshare(NULL, flags, &folio->page)) {
+> mm/internal.h:static inline bool gup_must_unshare(struct vm_area_struct *vma,
 
-Fixes: 503638e0babf ("riscv: Stop emitting preventive sfence.vma for new vmalloc mappings")
-Signed-off-by: Ali Tariq <alitariq45892@gmail.com>
----
-Crash Log: https://kernelci.cloud-v.co/scheduler/job/541
----
- arch/riscv/include/asm/cacheflush.h | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+Might you want move gup_must_unshared() into gup.c from internal.h
+I'll do.
 
-diff --git a/arch/riscv/include/asm/cacheflush.h b/arch/riscv/include/asm/cacheflush.h
-index c2b0a2928f06..c95b2f6007fd 100644
---- a/arch/riscv/include/asm/cacheflush.h
-+++ b/arch/riscv/include/asm/cacheflush.h
-@@ -8,6 +8,8 @@
- 
- #include <linux/mm.h>
- 
-+#include <asm/kasan.h>
-+
- static inline void local_flush_icache_all(void)
- {
- 	asm volatile ("fence.i" ::: "memory");
-@@ -57,7 +59,9 @@ static inline void mark_new_valid_map(void)
- static inline void flush_cache_vmap(unsigned long start, unsigned long end)
- {
- 	if (is_vmalloc_or_module_addr((void *)start) ||
--	    (start >= VMEMMAP_START && end <= VMEMMAP_END))
-+	    (start >= VMEMMAP_START && end <= VMEMMAP_END) ||
-+	    (IS_ENABLED(CONFIG_KASAN) &&
-+	     start >= KASAN_SHADOW_START && end <= KASAN_SHADOW_END))
- 		mark_new_valid_map();
- }
- #define flush_cache_vmap_early(start, end)	local_flush_tlb_kernel_range(start, end)
+> 
+> 
+> I'm not 100% happy about the function name due to the !folio_test_anon()+!FOLL_LONGTERM
+> path, but cannot think of something better.
+
+True.
+
+> 
+> > +{
+> > +	unsigned int i;
+> > +
+> > +	/*
+> > +	 * FOLL_WRITE is implicitly handled correctly as the page table entry
+> > +	 * has to be writable -- and if it references (part of) an anonymous
+> > +	 * folio, that part is required to be marked exclusive.
+> > +	 */
+> > +	if ((flags & (FOLL_WRITE | FOLL_PIN)) != FOLL_PIN)
+> > +		return nr_pages;
+> > +	/*
+> > +	 * Note: PageAnon(page) is stable until the page is actually getting
+> 
+> You are not calling PageAnon() anymore.
+
+Yes. I'll remove it.
+
+> /* folio_test_anon(folio) is stable until folio gets freed. */
+> 
+> > +	 * freed.
+> > +	 */
+> > +	if (!folio_test_anon(folio)) {
+> > +		/*
+> > +		 * We only care about R/O long-term pining: R/O short-term
+> > +		 * pinning does not have the semantics to observe successive
+> > +		 * changes through the process page tables.
+> > +		 */
+> > +		if (!(flags & FOLL_LONGTERM))
+> > +			return nr_pages;
+> > +
+> > +		/* We really need the vma ... */
+> > +		if (!vma || vma_is_cow_mapping(vma))
+> > +			return 0;
+> > +
+> > +		/*
+> > +		 * ... because we only care about writable private ("COW")
+> > +		 * mappings where we have to break COW early.
+> > +		 */
+> > +		return nr_pages;
+> > +	}
+> > +
+> > +	/* Paired with a memory barrier in folio_try_share_anon_rmap_*(). */
+> > +	if (IS_ENABLED(CONFIG_HAVE_GUP_FAST))
+> > +		smp_rmb();
+> > +
+> > +	/*
+> > +	 * Note that KSM pages cannot be exclusive, and consequently,
+> > +	 * cannot get pinned.
+> > +	 */
+> > +	for (i = 0; i < nr_pages; i++) {
+> > +		if (!PageAnonExclusive(page + i))
+> > +			return i;
+> > +	}
+> > +
+> > +	return nr_pages;
+> > +}
+> > +
+> >  #ifdef CONFIG_PGTABLE_HAS_HUGE_LEAVES
+> >  /* FOLL_FORCE can write to even unwritable PUDs in COW mappings. */
+> >  static inline bool can_follow_write_pud(pud_t pud, struct page *page,
+> > @@ -668,7 +721,8 @@ static struct page *follow_huge_pud(struct vm_area_struct *vma,
+> >  	pfn += (addr & ~PUD_MASK) >> PAGE_SHIFT;
+> >  	page = pfn_to_page(pfn);
+> >  
+> > -	if (!pud_write(pud) && gup_must_unshare(vma, flags, page))
+> > +	if (!pud_write(pud) &&
+> > +	    gup_must_unshare(vma, flags, page_folio(page), page))
+> >  		return ERR_PTR(-EMLINK);
+> 
+> There is already another instance of page_folio(page) int his file. Use a local
+> variable and have one folio lookup. (that's the whole reason for passing a folio)
+
+Okay. I'll merge.
+
+> 
+> >  
+> >  	ret = try_grab_folio(page_folio(page), 1, flags);
+> > @@ -722,7 +776,8 @@ static struct page *follow_huge_pmd(struct vm_area_struct *vma,
+> >  	if (pmd_protnone(*pmd) && !gup_can_follow_protnone(vma, flags))
+> >  		return NULL;
+> >  
+> > -	if (!pmd_write(pmdval) && gup_must_unshare(vma, flags, page))
+> > +	if (!pmd_write(pmdval) &&
+> > +	    gup_must_unshare(vma, flags, page_folio(page), page))
+> >  		return ERR_PTR(-EMLINK);
+> 
+> Dito.
+
+Acked.
+
+> 
+> >  
+> >  	VM_WARN_ON_ONCE_PAGE((flags & FOLL_PIN) && PageAnon(page) &&
+> > @@ -846,7 +901,7 @@ static struct page *follow_page_pte(struct vm_area_struct *vma,
+> >  	}
+> >  	folio = page_folio(page);
+> >  
+> > -	if (!pte_write(pte) && gup_must_unshare(vma, flags, page)) {
+> > +	if (!pte_write(pte) && gup_must_unshare(vma, flags, folio, page)) {
+> >  		page = ERR_PTR(-EMLINK);
+> >  		goto out;
+> >  	}
+> > @@ -2892,7 +2947,7 @@ static unsigned long gup_fast_pte_range(pmd_t pmd, pmd_t *pmdp,
+> >  			goto pte_unmap;
+> >  		}
+> >  
+> > -		if (!pte_write(pte) && gup_must_unshare(NULL, flags, page)) {
+> > +		if (!pte_write(pte) && gup_must_unshare(NULL, flags, folio, page)) {
+> >  			gup_put_folio(folio, 1, flags);
+> >  			goto pte_unmap;
+> >  		}
+> > @@ -2969,7 +3024,8 @@ static unsigned long gup_fast_pmd_leaf(pmd_t orig, pmd_t *pmdp,
+> >  		gup_put_folio(folio, nr_pages, flags);
+> >  		return 0;
+> >  	}
+> > -	if (!pmd_write(orig) && gup_must_unshare(NULL, flags, &folio->page)) {
+> > +	if (!pmd_write(orig) &&
+> > +	    gup_must_unshare(NULL, flags, folio, &folio->page)) {
+> 
+> 
+> This only works because we don't have PMD mappings of things that are larger than PMDs.
+> 
+> While at it, pass the proper page.
+
+Okay. I'll change with pmd_page(orig).
+
+> 
+> >  		gup_put_folio(folio, nr_pages, flags);
+> >  		return 0;
+> >  	}
+> > @@ -3011,7 +3067,8 @@ static unsigned long gup_fast_pud_leaf(pud_t orig, pud_t *pudp,
+> >  		return 0;
+> >  	}
+> >  
+> > -	if (!pud_write(orig) && gup_must_unshare(NULL, flags, &folio->page)) {
+> > +	if (!pud_write(orig) &&
+> > +	    gup_must_unshare(NULL, flags, folio, &folio->page)) {
+> 
+> Dito.
+
+Acked.
+
+> 
+> >  		gup_put_folio(folio, nr_pages, flags);
+> >  		return 0;
+> >  	}
+> > diff --git a/mm/internal.h b/mm/internal.h
+> > index c53c369bf8b5d..35016b1afc8bf 100644
+> > --- a/mm/internal.h
+> > +++ b/mm/internal.h
+> > @@ -1282,6 +1282,10 @@ int migrate_device_coherent_folio(struct folio *folio);
+> >  int __must_check try_grab_folio(struct folio *folio, int refs,
+> >  				unsigned int flags);
+> >  
+> > +unsigned long gup_unshared_pages(struct vm_area_struct *vma, unsigned int flags,
+> > +				 struct folio *folio, struct page *page,
+> > +				 unsigned long nr_pages);
+> > +
+> >  /*
+> >   * mm/huge_memory.c
+> >   */
+> > @@ -1354,51 +1358,12 @@ enum {
+> >   * to fallback to the slow path just to lookup the vma.
+> >   */
+> >  static inline bool gup_must_unshare(struct vm_area_struct *vma,
+> > -				    unsigned int flags, struct page *page)
+> > +				    unsigned int flags,
+> > +				    struct folio *folio, struct page *page)
+> 
+> Whatever you touch, please also convert to two-tab indent.
+
+Okay.
+
+> 
+> -- 
+> Cheers,
+> 
+> David
+
 -- 
-2.34.1
-
+Sincerely,
+Yeoreum Yun
 
