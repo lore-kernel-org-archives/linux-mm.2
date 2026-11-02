@@ -1,132 +1,112 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C83CF606A324
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 02:58:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 142FA606A324
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 03:11:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=iM19STD2
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=n0k3Hqlr
 Received: by kanga.kvack.org (Postfix)
-	id C01FB6B05B6; Sun,  1 Nov 2026 21:58:31 -0500 (EST)
+	id ED7D56B05B1; Sun,  1 Nov 2026 22:11:12 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BD9A76B05B7; Sun,  1 Nov 2026 21:58:31 -0500 (EST)
+	id E890A6B05B2; Sun,  1 Nov 2026 22:11:12 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ACB8C6B05B8; Sun,  1 Nov 2026 21:58:31 -0500 (EST)
+	id D77CD6B05B3; Sun,  1 Nov 2026 22:11:12 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 7A2736B05B6
-	for <linux-mm@kvack.org>; Sun,  1 Nov 2026 21:58:31 -0500 (EST)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id E1A65120B27
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 02:58:30 +0000 (UTC)
-X-FDA: 85388670780.03.A01FA17
-Received: from mail-dy1-f175.google.com (mail-dy1-f175.google.com [74.125.82.175])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 0A78FA0006
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 02:58:28 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=iM19STD2;
-	spf=pass (imf25.hostedemail.com: domain of xueyuan.chen21@gmail.com designates 74.125.82.175 as permitted sender) smtp.mailfrom=xueyuan.chen21@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id A9AAF6B05B1
+	for <linux-mm@kvack.org>; Sun,  1 Nov 2026 22:11:12 -0500 (EST)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 053F4160651
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 03:11:11 +0000 (UTC)
+X-FDA: 85388702784.22.692310D
+Received: from mta1.migadu.com (out-125.mta1.migadu.com [95.215.58.125])
+	by imf23.hostedemail.com (Postfix) with ESMTP id E9B2C140005
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 03:11:09 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=n0k3Hqlr;
+	spf=pass (imf23.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.125 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793588309;
+	s=arc-20220608; t=1793589070;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vbhM51MkwqyzYIK/l0MrHOeAdqnx2rbbHcfO8pxxmSY=;
-	b=nZ7UqkXXCf+tL9gtuVSS8SzA8p9EHlgMeP0cfJrqo7OB9ZTyrJxzU2KdInSbNUyAi10Y8m
-	UW7juDerDVPRG9MJ+0Lwc6TgtTqvVMcj844PwlyrJ5p0bqx2KiOZl1MBcY7kwAZC8C7Mcb
-	5eU6oh0jbOMxspdfDbeoPWVKVP0n+d8=
+	bh=HDhZoiU2k7hzH5EQ8QltiF8pnal5BaZYHkxarnC+U5E=;
+	b=VJ/LPVYi4C744SJwzP8ZMxlx75njo8F/F2l9187c0GivdSoxvbIFBhLC+s7foRtOXmKofH
+	A6NXEjrQ26p/oucrdh3Ur8EwcPieo+f6KFXfRRU6y3zD+sHb/PAQjc6itDSgZffKj+9twC
+	PlekZpsqtYa5r43sYpyz3VpNGeDaQMs=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=iM19STD2;
-	spf=pass (imf25.hostedemail.com: domain of xueyuan.chen21@gmail.com designates 74.125.82.175 as permitted sender) smtp.mailfrom=xueyuan.chen21@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	imf23.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=n0k3Hqlr;
+	spf=pass (imf23.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.125 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793588309;
-	b=G0NfaeOc+GQldkz4fT3owmHtJ7H5ThIp8Eb7iultFe8zlNmQiT5P4VpKRiQmT7KWawPj/d
-	aGkVy4JKTDA0a+fAE/hAVKnW4PEDRe+WzhGEVZLG9TEATWdZHedWQb5eJch3E1rM87cQ09
-	ZQetVxOm4ZHA736UJUwE1ceH7zt2Zew=
-Received: by mail-dy1-f175.google.com with SMTP id 5a478bee46e88-36a6ee9c59aso45132eec.3
-        for <linux-mm@kvack.org>; Sun, 01 Nov 2026 18:58:28 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793588307; x=1794193107; darn=kvack.org;
-        h=message-id:date:references:in-reply-to:cc:to:from:subject
-         :content-transfer-encoding:content-type:mime-version:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=vbhM51MkwqyzYIK/l0MrHOeAdqnx2rbbHcfO8pxxmSY=;
-        b=iM19STD2j2TmhZ69YVfDVvCyOqvV7rcbLPyz3TxS7y0APanP2pZwm+v8EYFehBT6rK
-         fMbA6YGvnU90mkMJZ4OaKFmQyYPm3dOahtzkrJYgYDeqQWR8cQe+zLYrYdGad4+pzhQ9
-         vPHsCCR5ViuGhg5JkjMv2EsM2MzsZmmU4oQsZHtDUp1PA7f1/SyITqqiQDeFu+COxh6M
-         MWclS3C/FdLFgoabojTJY86ukd4i/W08qGhQs2WZrFCj1FFTuOfWWKsZ2Ck2BcVw8CQp
-         Mvq0n59GSxSzOPoSUPPbq50Bn6KbZLz7ydNprqd4kDqfmRZDcbsDs6PMjgbehJdIj9qk
-         vlcQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793588307; x=1794193107;
-        h=message-id:date:references:in-reply-to:cc:to:from:subject
-         :content-transfer-encoding:content-type:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=vbhM51MkwqyzYIK/l0MrHOeAdqnx2rbbHcfO8pxxmSY=;
-        b=kq2PUm7EVp6EHF5yeL+W9aDPlcK9oC6ISxd//4hmf9PxU/DxqPKQ7fVAprvxFPjP+U
-         zZclj9OyxBeXkxrVZmKjgw+d7kdNR0osqvWcSnVLmBsb9sOD4dXXWQsOvTLHfR7czc2G
-         PZvniJUyWzJ83bkDbt5D+IJfefG7qwwTLPetv+qyYAo3w8Pg17IGhoOvSqkUe9BDMgtj
-         DayNkKR0++vm2rI/JTcT8/egTsyv6AzBGvfGpT+h1AuveJ9LTzaWOd51AcSv2xFUvNlo
-         kuVhXcYxQ56LvDdWkgsxShAKLJb1CCtK0/Ms0cRPQNx0yEYu69JCjL+0cbpHoni3mcyG
-         1r5A==
-X-Forwarded-Encrypted: i=1; AKwUvBx32Rryd49/lSQg1ktPIaXm126R9sVVOeCaP26ewJCxGByi9FiK+K9lrao2LtPkrxWrc7QXX0odfQ==@kvack.org
-X-Gm-Message-State: AFq9FYIb88AQrx+bdtJZCDxasmtGQuoTRsnnRzXI0Xtc9iM+/wJsrAtK
-	qCBumSyurMuG6kyWVTSwu/c06F/aL6SSNjEfmLFiBJAq3oyg8q82GUim
-X-Gm-Gg: AYBFou0zXm1CtJ7RJItTpEwhs7O7ow79WmBNh3YwdI5wouED9+1U0yN7K+7nt/SFeND
-	v/O90cAOZTsRviBUFAGt/zJsxr5DefMS4m94TeN/5yg0QZNqpS0zempHaFGwVHnAUzQ5X/iODZG
-	4xYf/xGdBbY66rmqpaGiS2U/6+dx8wRcc13Qv8z3cZgEnmXrQ42/2X7F1L1Z2pssEXOv92JBhac
-	MqQwAw2u1N1+VFTMskNxGoqkz5na5nrftg4pPlefLUB2WRkRKObeLv8wFgoCtoNpizkUcm+M3UQ
-	OKh0NrBYqTDmKfqHMq3crN2a31v8Zcxl4VP2E8EM94sTUYRwoYSkNrwE30sGi1uQz6qbE+iQh12
-	BEeVBVjmLRbIMtzcAfTUrR8RmNoenbqo1q3gpIsfDxBG9PdfcidZzEZWJdwhFyiCxHz6aGw35Tj
-	E1xjRgEXwCXK0uudtXSoquBIPR3b6i6lVicu0HID7rMg/8THFWZGeUneGWaseLrszgeAb+agp2H
-	ylJPmJtQps/INCFPT74fR8T3cgjIaq94sFKJktvGZXgH33XSbgJUluM3DFfmKlgmcKJbRBr2jeE
-	1t/FMfpv8NtoNJ4j1s/2gWVz0tE/w5EWrMRUfMDhPu805VvfmE9vxdMrCCF0kcz+Cdfc
-X-Received: by 2002:a05:701b:2302:b0:183:d275:cf76 with SMTP id a92af1059eb24-1ac59dd0e2emr19891581c88.2.1793588307274;
-        Sun, 01 Nov 2026 18:58:27 -0800 (PST)
-Received: from o6.lan ([2602:fce1:44f:115e::])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1ac1abcf67csm29779410c88.21.2026.11.01.18.58.23
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 01 Nov 2026 18:58:26 -0800 (PST)
+	t=1793589070;
+	b=opyBoN56VgTDtbxyKXKGYHm6qtqTaEXy+We2dKJcZ3TsYwAAQsf4JPPkFbE4gvxwidMtTZ
+	8TmMC9jFLH1/J/BHrbxSEQ2i0bJI8aKwtPW1pcexHFxGSo0VjD8WmXfuqCCr0Kxlma9fNz
+	ZYbZf+wltV1/ohD8BM+ppEoKUK51stc=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=2ep7chL4yiYBSxOtKkATYD7E9Kan5MnJyt74PbsbY2s=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1793589067; v=1; x=1794193867;
+ b=n0k3HqlrjwV2Tsu/afxxjlV4pD44YtWJfaVfNxqkf9f5BRb34TxDBhYIPNPv3UVWsbdtWpzv
+ nDY1ZRbtXmCXX/EiHWE91drrqkdYXLA1t2WmPrqsfw75Lx6z5Vd+3cOAqiCXrqIBDsAChjqAXdA
+ 0N4xoivwgBDZlGU5lKOUjChM=
+X-Envelope-To: linux-mm@kvack.org
+Received: by mta10.migadu.com with ESMTPS id 13887cf09f90baa8;
+	Mon, 02 Nov 2026 03:11:07 +0000
+X-Mizu-Trace-ID: 13887cf09f90baa8
+X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain;
+	charset=us-ascii
 X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Subject: Re: [RFC PATCH 0/2] mm: zsmalloc: make shrinker compaction
- budget-aware
-From: Xueyuan Chen <xueyuan.chen21@gmail.com>
-To: Sergey Senozhatsky <senozhatsky@chromium.org>
-Cc: Nhat Pham <nphamcs@gmail.com>, Xueyuan Chen <xueyuan.chen@vivo.com>, 
- Barry Song <baohua@kernel.org>, Yosry Ahmed <yosry.ahmed@linux.dev>, 
- Johannes Weiner <hannes@cmpxchg.org>, Brian Geffon <bgeffon@google.com>, 
- Minchan Kim <minchan@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, xueyuan.chen21@gmail.com
-In-Reply-To: <auKlTdFbOZmAuheo@google.com>
-References: <cover.1786003779.git.xueyuan.chen@vivo.com>
- <anVWZVOt-xeD0dMH@google.com>
- <47ed45b5-de67-41aa-aa21-a3ba3479a7cc@vivo.com>
- <anXJ-5_vO7-toSe1@google.com>
- <CAKEwX=Mm2tXcen-quRXHf1Y2qSHYvpEUe4xiw-mHYaJnRUR-EA@mail.gmail.com>
- <auKjuiRxQwtsZF_0@google.com> <auKlTdFbOZmAuheo@google.com>
-Date: Mon, 02 Nov 2026 10:58:21 +0800
-Message-Id: <179358830137.300028.11084163850071476613.b4-reply@b4>
-X-Mailer: b4 0.16.0
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 0A78FA0006
-X-Stat-Signature: q7dfqnnt78x5xj6q3zthhtidi7z4z8gj
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3901.200.71.1.16\))
+Subject: Re: [PATCH v2 2/3] mm/hugetlb: Preserve persistent flags when
+ returning folios to the pool
+From: Muchun Song <muchun.song@linux.dev>
+In-Reply-To: <20261102024910.31486-3-kaitao.cheng@linux.dev>
+Date: Mon, 2 Nov 2026 11:10:47 +0800
+Cc: Oscar Salvador <osalvador@suse.de>,
+ David Hildenbrand <david@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Mike Rapoport <rppt@kernel.org>,
+ Johannes Weiner <hannes@cmpxchg.org>,
+ Michal Hocko <mhocko@kernel.org>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Shakeel Butt <shakeel.butt@linux.dev>,
+ Mani Tofigh <mt4022@columbia.edu>,
+ Zi Yan <ziy@nvidia.com>,
+ Mike Kravetz <mike.kravetz@oracle.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Miaohe Lin <linmiaohe@huawei.com>,
+ Naoya Horiguchi <nao.horiguchi@gmail.com>,
+ Frank van der Linden <fvdl@google.com>,
+ Chris Down <chris@chrisdown.name>,
+ Joshua Hahn <joshua.hahnjy@gmail.com>,
+ linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org,
+ cgroups@vger.kernel.org,
+ Kaitao Cheng <chengkaitao@kylinos.cn>
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <80F17A68-8C3B-4BA5-9E70-838846BFAAB2@linux.dev>
+References: <20261102024910.31486-1-kaitao.cheng@linux.dev>
+ <20261102024910.31486-3-kaitao.cheng@linux.dev>
+To: Kaitao Cheng <kaitao.cheng@linux.dev>
+X-Mailer: Apple Mail (2.3901.200.71.1.16)
 X-Rspam-User: 
-X-Spam-Status: No, score=-4.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,HK_RANDOM_FROM,MAILING_LIST_MULTI,
-	SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=no autolearn_force=no
-	version=4.0.1
-X-HE-Tag: 1793588308-660755
-X-HE-Meta: U2FsdGVkX19+Hg2JKCVvxi+hSGMAeNGOAmis8Seu921ATYUNAGhdQjjJwXH5Qkrguwr4Ss4JwPesOB1WaEiBrqNlcYZX8kdfeyopEGjqOABma8D2YSSBIDAHzFPx0UZ+W4UsfT1Qv+05cQA7Yq6TSXKAf+o6UDtser9KyFV3h+gF0YmDZADBDU9AZXNm8J9dgUww3D0Zq7e28XtxH7HsAFdjlQQzp1YT99MAQmAFceDSOeH4OWZL+nDoEjs1qmIJBjRQws4ty1SzxZFnqqwQR/S7ycizvvDzYuTEPBSvdnr8bU4LmM6EmeLskVHCZexHanBjUTE5YcegbSimekHEaOz82z45tDrBGMo9Rice3twWREqKw4AfnLoSrhs+4geXMqBRLJMhoywQGaWDtjIBh0or5MKA+yEux9N1PrF20HhgckMc4v1RgLn4fzNJzwTusbv1r1BSdBNl37OeAuG22DLBGS5cjlBKEBh1iYYmAnsA5itygD4PV1b+LHJ4orrWLz6w/0Ehz/lsGHVY3d0tIhjF1hT9ijEJt2JoTYzRFXnEIw84UcXeZomdpVu9DAsJ57WIsQuV/e94hTxGY/sJXrwx2NsbI+aVWMDQ+/Rjv1NtW959IUNIbuJb4QJmzNGbv+Zz4JGE1hTNvT5W0nyxWmKS8BJZNpaicxKNggEBX+yVVnfIcvwxEV/vJzwzkVLWoBy2nzbAi/KCPQpYLKvmQm5qg+ykoMj9Onp/Md4aAxgnV9WBcVSfrKQRTjBIha7w7nbtHVIGjWYO+5caGBm//fzFNsX6Ac6ziL4DnNl6aqaqiPztLs2OSOH4L9mMOALBa53IMlTrQlCcSD2F+nr4K7YaP4Ouzc3sEG4NetsVQFV/dTGC+4A6T/VcGypVyuLtvYDE6n29eFkGgXn5geC/4w5b1286lZxHFboFkQunRnpbdaSG5El7oNhwF6rKsrYoO3/czLmkZ403jojNhoM
- eKSgBuiC
- jxv9Nn46gYsMmmcSVXvkStwnrepZveVnpglrpA/Gd2cL7hUnCNG5iiMG8yYAJfApXjD0Uj6VTY99jANzpkRv0AXC433qnrSqRXdXjUFzhgZixZ/9hylFs6Lvfr1fjtygy+AvERq5VUwQ4bJL6TbsAwz4MYPCQu9G3Nibyuw4UKdsWzglOCZRfJe/2Y6qXD7Ukj1ZM1NA5Et+sv/Jc/fVIewp42LtuKzGuPohNjn3FfbPG0+LxPDyvw1hCwL7NNUJyR7a6fq2tMd3GYMyyVS+w1I8y0d2Nq1PY/plTHkNZvTX6rE0cqhdzvOZtUiG8K7HOvmeDtzgbzhv+oSg11RZVXDG23U6nByd8qOtYwZpf220Qiv4jgezEttrFY5foIkdsi2rnu1F72FVsDaPVcWgVyuUEQWq2xgYLjnaRlzrrcSxhSljIEKncKIWhdlmCFvj1xDKOTLLL/MLGqZA/33TvqntMkZvVQyPmKX/nnOA9WERmA77d8Y6zUfeUJ+DkyjjKK0KL
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: E9B2C140005
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-Stat-Signature: 4dbz6wjkxq4dxknc4wmhmfp9xirj46pf
+X-HE-Tag: 1793589069-786012
+X-HE-Meta: U2FsdGVkX1+MTSEKAmN0nI84fHXKMxF/aPjUh208bJtufHuAfQX5/HQ0dAK3FSPch/jKyJnr77Gmio2+SYCAeml738QUZellHsn2sa0rrtR59SVf3FmlYaSwzfY0AacZU/sP/Hclvpvxb7c0V4MKLI8ynZr/qFf2bjmPY/GXl5F18KQlzzBj+Yij0ElhbOAdgzNqMGo9sXZHX/DhK3JqgDqYklnzR8ry1QALblxvgZxDDTxLxgEAHolOjhFwd70Ao/+1FMq+4pLhCNxUH3bNxbPoJG3+NOV4n337K5KSpIznuATSYUiQMCT0c8P7WJTjlEPNnmMKpZbSM8ZRp1sAnhgmnnaH0xpauTaFjZHhKWJn+e2+phKBcBTvQpdWv+oYj4ljJ62771Wk4ch4i5RgXNEIIq7u40ugFpQPilUKDyCG+Mc5oTP605/xj5BpgDwsx9dPPSwNfCE8rTcbcb8C4j8pufhlaM1S+0ztVaEOLgHYdGlHqaww9hiLFHQuexeXkdcFAcHOkV4rYx+zUWIr9bzYn5FdZXr72RuU5oymEV4/Yc4L2SVPHXAveeDwv1GkyYhKklZFM34UscYUi+fyMbY1KYD5xkusv34iK+PUFgaD2Q8iBRMlcEuEQuQrMsbth7Zib7t+Gy0nwg97poLgp4ne84UYBIAKHxeRePVXUwQTgzKSI2ba157t/89qCXnryCkijus2EMokr67et6ksf8frGV3D/ae1ULcKw5F1tCYJcU0SPvKKVi0W/AfENVHpRtRmGz8rlom3qFNiGQsfXZdPq4tj/7h/WIt0grRpenS8AG5XCZAKsnLITOQto3O6Ls8wiH89BUybRGYOg9QV4SvzwyP1MO3EGgN2CD1PhudX8e3sRrXEhj5iXO+t8ETMqOnvHcKxC1NKx/CgdssnAXWTpw/xMmmsOanjc7auTOTKJ/r5lI2b1LGJHblf1HV/tbSQ7Tl9pXzVqHFixql
+ BfeLAYma
+ E2ITYrrMZgLcb+0RJKhXsSO80DLXT5NWea6ggpYJDPb1rcXBoG1kmTg4507RD3Az/clOXQysS/gYTiPJoqrITGzBktJla1vN58xEbB0jbBFbtGO5Row+tp7FeCRhkwxAFENvaTUMVM/HDnjyY0UDrA1AihG7n7lv1neeecUqjlOqOakJ9U6TeYLnLsQGnqkl9vBfoldwaIJv+UzaAJ+hpbmNCnpnMTohJ3m1REwHtK5s3boyxYO2b1xz5vKh4XNVLL9he3Aul4pCVHQL0QKJedVotF4WCqpTUoR/zLYGcL/REEYb0+qocXxmhmbkZXkouIWmzbO+sRDinyAF9j38amaH02MeMC1NvN6BpCGx3agW8zaeEGFZfpdG+quS3tGjgLTICWNat79FK/HLiQbqly7HPUB+NU3/0X+TjEQpgGoTsbczZa9f8NxgRt/0/lDxZLEej
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -135,45 +115,102 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 2026-10-29 10:48 +0900, Sergey Senozhatsky wrote:
-> On (26/10/29 10:43), Sergey Senozhatsky wrote:
-> [..]
-> > > Hmm we'd need to collect more data in our workloads to determine, but
-> > > if we can compute compactable ratio (freeable_pages / total_pages) on
-> > > a per size class basis, can we just skip the size class whose ratio is
-> > > too bad? Would that at least cut down on the vast majority of
-> > > fruitless memcpys and lock acquisitions etc?
-> > > 
-> > > I'm always a bit hesitant to over-rely on userspace, especially when
-> > > kernel has information to do something smart about it. It might not
-> > > react in time, and many proactive reclaiming schemes back off under
-> > > heavy memory pressure.
-> > 
-> > Apologies for the delay.
-> > 
-> > The thing about shrinker compaction is that it's sort of on the
-> > wrong end.  It doesn't trigger compaction when memory is plentiful,
-> > no matter the internal fragmentation rate, and start firing compaction
-> > scans when memory pressure hits.  The problem with this is that, now
-> > compaction moves objects (if can compact zspages) and releases empty
-> > zspages, in parallel with potentially heavy swapping out activities,
-> > which can simply allocate those released pages back.  Which seems like
-> > a useless exercise and needless memcpy-s.  So I was thinking about
-> > either putting it under config or just removing it (this might be a
-> > harder decision).
-> 
-> In embedded (android/bookOS/etc.) there is a daemon, that triggers
-> various zram activities.  We can wire in pool-compaction (once under
-> memory pressure), which is a zram sysfs device attribute, instead
-> of pondering zsmalloc with scan callbacks.
-> 
 
-What triggering policy do you have in mind for the daemon?
 
-If compaction is still triggered when the system is under memory
-pressure, wouldn't it still overlap with heavy swap-out? The shrinker
-can already run from kswapd, so moving it to a daemon alone would not
-necessarily change that timing.
+> On Nov 2, 2026, at 10:49, Kaitao Cheng <kaitao.cheng@linux.dev> wrote:
+>=20
+> From: Kaitao Cheng <chengkaitao@kylinos.cn>
+>=20
+> add_hugetlb_folio() returns a folio to the HugeTLB pool when vmemmap
+> restoration fails. It clears folio->private and restores only
+> HPG_vmemmap_optimized, losing other flags that must survive the =
+rollback.
+>=20
+> Clearing HPG_cma causes a later free to bypass the CMA release path,
+> leaving the CMA allocation bitmap set. Clearing HPG_raw_hwp_unreliable
+> loses the indication that the locations of poisoned subpages are =
+unknown,
+> undermining the checks that prevent freeing or unpoisoning such =
+folios.
+>=20
+> Preserve the existing flags instead of resetting folio->private. =
+Callers
+> already clear HPG_restore_reserve, HPG_migratable and HPG_freed before
+> returning a folio to the pool. Clear HPG_temporary in =
+free_huge_folio()
+> before attempting to free a temporary folio, so a failed vmemmap =
+restore
+> does not leave that flag set on a folio returned as surplus.
+>=20
+> Add a VM_WARN_ON_ONCE_FOLIO() check for flags other than
+> HPG_vmemmap_optimized, HPG_raw_hwp_unreliable and HPG_cma to detect
+> incomplete transient flag cleanup.
+>=20
+> Fixes: 161df60e9e89 ("mm, hwpoison, hugetlb: support saving mechanism =
+of raw error pages")
+> Fixes: d2d786714080 ("mm/hugetlb: enable bootmem allocation from CMA =
+areas")
+> Closes: =
+https://sashiko.dev/#/bug/linux-5363eb09-9c3c-4f8b-9f3c-a998a8c4b258
+> Suggested-by: David Hildenbrand <david@kernel.org>
+> Suggested-by: Muchun Song <muchun.song@linux.dev>
+> Suggested-by: Zi Yan <ziy@nvidia.com>
+> Signed-off-by: Kaitao Cheng <chengkaitao@kylinos.cn>
 
+Acked-by: Muchun Song <muchun.song@linux.dev>
+
+But,
+
+> ---
+> mm/hugetlb.c | 10 +++++++---
+> 1 file changed, 7 insertions(+), 3 deletions(-)
+>=20
+> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+> index 4a008afaedf9..931ca3a30773 100644
+> --- a/mm/hugetlb.c
+> +++ b/mm/hugetlb.c
+> @@ -1443,6 +1443,12 @@ void add_hugetlb_folio(struct hstate *h, struct =
+folio *folio,
+>=20
+> 	lockdep_assert_held(&hugetlb_lock);
+>=20
+> +	/* Callers must clear transient flags before returning to the =
+pool. */
+> +	VM_WARN_ON_ONCE_FOLIO((unsigned long)folio->private &
+> +			     ~(BIT(HPG_vmemmap_optimized) |
+
+It looks like the parameters aren't aligned. A space missing before "~"?
+
+Thanks.
+
+> +			       BIT(HPG_raw_hwp_unreliable) |
+> +			       BIT(HPG_cma)), folio);
+> +
+> 	INIT_LIST_HEAD(&folio->lru);
+> 	h->nr_huge_pages++;
+> 	h->nr_huge_pages_node[nid]++;
+> @@ -1453,9 +1459,6 @@ void add_hugetlb_folio(struct hstate *h, struct =
+folio *folio,
+> 	}
+>=20
+> 	__folio_set_hugetlb(folio);
+> -	/* Clear all folio->private flags except =
+hugetlb_vmemmap_optimized. */
+> -	folio->private =3D NULL;
+> -	folio_set_hugetlb_vmemmap_optimized(folio);
+>=20
+> 	arch_clear_hugetlb_flags(folio);
+> 	enqueue_hugetlb_folio(h, folio);
+> @@ -1743,6 +1746,7 @@ void free_huge_folio(struct folio *folio)
+> 		h->resv_huge_pages++;
+>=20
+> 	if (folio_test_hugetlb_temporary(folio)) {
+> +		folio_clear_hugetlb_temporary(folio);
+> 		remove_hugetlb_folio(h, folio, false);
+> 		spin_unlock_irqrestore(&hugetlb_lock, flags);
+> 		update_and_free_hugetlb_folio(h, folio, true);
+> --=20
+> 2.54.0 (Apple Git-157)
+>=20
 
 
