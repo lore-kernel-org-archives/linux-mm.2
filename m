@@ -1,62 +1,62 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD2B2606A32F
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 10:02:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6354606A324
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 10:02:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=AFH7tUh1
+	dkim=pass (1024-bit key, unprotected) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=Cj6s93ZI
 Received: by kanga.kvack.org (Postfix)
-	id E54D56B05B4; Mon,  2 Nov 2026 05:02:48 -0500 (EST)
+	id E7D696B05B6; Mon,  2 Nov 2026 05:02:56 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E2C996B05B5; Mon,  2 Nov 2026 05:02:48 -0500 (EST)
+	id E53F96B05B7; Mon,  2 Nov 2026 05:02:56 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CF4DA6B05B6; Mon,  2 Nov 2026 05:02:48 -0500 (EST)
+	id D6A056B05B8; Mon,  2 Nov 2026 05:02:56 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id A47666B05B4
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 05:02:48 -0500 (EST)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 3F6FD120C6D
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 10:02:48 +0000 (UTC)
-X-FDA: 85389740016.23.7DDB5A7
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id B61316B05B6
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 05:02:56 -0500 (EST)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 4BD921C46B9
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 10:02:56 +0000 (UTC)
+X-FDA: 85389740352.06.508D25F
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 67842100003
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 10:02:46 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=AFH7tUh1;
-	spf=pass (imf14.hostedemail.com: domain of sarthak.sharma@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=sarthak.sharma@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+	by imf18.hostedemail.com (Postfix) with ESMTP id 86B3B1C000B
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 10:02:54 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=Cj6s93ZI;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf18.hostedemail.com: domain of sarthak.sharma@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=sarthak.sharma@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793613766;
+	s=arc-20220608; t=1793613774;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=i4Em7Py7g4q0VGn8W2HCRonK/evyicnat7HWkjVfGeQ=;
-	b=xeiUR1o5p/v33sggQESFwp5cFQZjdJH9G4eeG4ci72pUuawoq2CFaq484X/dOzpvqFhNlY
-	2j+AhR2SuMnjOAfDfPHY/GGP2AEYwag3gdxNa39QqqAJp1kGQjzS6r/6bGyQXB7aGM8wEA
-	FZFMokKAhw02+2Xt4cn/Dqz1bHF/8i4=
+	bh=fS2c2C7KwS+6ZnSiJLsAY1EuAFU3bigFxhXvD4SjIqg=;
+	b=cuPh3THC0urGLGezxvdFMSSfpTPLGWks7mAmtBQDyTqbdoengB6JT9OIjc7NccrHZaCMfZ
+	dOfjzTMBwYd+8DiHzYdj2y4/leyidaF8/myDbClCxxLxwZ4D+ktlVkdoMD2gMofCNIKYki
+	R6lho/W47H9hsUTOMgHhrbWP9M8dyNA=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=AFH7tUh1;
-	spf=pass (imf14.hostedemail.com: domain of sarthak.sharma@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=sarthak.sharma@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+	imf18.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=Cj6s93ZI;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf18.hostedemail.com: domain of sarthak.sharma@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=sarthak.sharma@arm.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793613766;
-	b=6ZDRu9z3zoKM0x0dFwtvbXG17wRd4YXtXWzkDcmOQAVoiUYgULeELHTHduubW1iN3UcgCV
-	TUY/FXMpngcjWatAT+4pRRBfmrHhOdv62Y8jbY23e5vl7Hug03zzvOUvGc6YQIx6oQZGHw
-	cr5oZQOXLYWhd043KCCpXlBwEiDpn7U=
+	t=1793613774;
+	b=HcWJUv4jH92JrRadaCEO0J2JAJz2s/S7e7lOvawQ0eJFtwmEiEhbmQgS5Vt8cMZxN+nW3v
+	fKy0QQWAXk+gcGDRnqNPvYtubUULQa8tJ79L9WtzKruqxdeLiem4uCLWNktOMe2FoPvkxJ
+	Vr17EFxrrTWwUSg6PEq2LIVFIg6T4Gs=
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 6FBFB1595;
-	Mon,  2 Nov 2026 02:02:42 -0800 (PST)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 9A2D6293B;
+	Mon,  2 Nov 2026 02:02:50 -0800 (PST)
 Received: from a081061.arm.com (unknown [10.163.156.187])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 32D743F59E;
-	Mon,  2 Nov 2026 02:02:37 -0800 (PST)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 417313F59E;
+	Mon,  2 Nov 2026 02:02:45 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1793613765; bh=4thU010nDUqthwP71EjUPPcaPA4vWd28xw0e1Se/q+w=;
+	t=1793613773; bh=8wsfGgLEdsKEjl6cnefytFCOo2oRceki3G1+uaW7P0Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AFH7tUh17/igJI+PU3NpCguj2gqLFnslktS0xnrfE8IGjqLMMK7IercLlwfXxs9pR
-	 Ce25TkwLPR7wn7Sje93s/IXgJH8o1Er83jVJ4xZGbGSqjljynF8nXEZzTSlNDpI7PS
-	 r/NDt4VY5A8VqdlUAYrftBfXbfBX+nwwfw5ytzlg=
+	b=Cj6s93ZI5cOA9As6Jz4UP/a6fwDKPjsNH1FDr57csxvtGo3Tpf9DN/B6dbyINrW+k
+	 CyqhN2q+Smlfgo4haUaHe9GeO+Sx2ohv5eF363R2Fq3CFa+wXfa1CUDHLUkaF2wN3y
+	 o9hrGMIjtf3HF75L01kb0JKMV+E0xeh+d8Jnm6uE=
 From: Sarthak Sharma <sarthak.sharma@arm.com>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	David Hildenbrand <david@kernel.org>
@@ -75,27 +75,27 @@ Cc: Lorenzo Stoakes <ljs@kernel.org>,
 	linux-kselftest@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Sarthak Sharma <sarthak.sharma@arm.com>
-Subject: [PATCH RESEND v2 02/12] selftests/mm: mremap_test: drop munmap() checks from cleanup paths
-Date: Mon,  2 Nov 2026 15:32:01 +0530
-Message-ID: <20261102100211.141831-3-sarthak.sharma@arm.com>
+Subject: [PATCH RESEND v2 03/12] selftests/mm: mremap_test: simplify errno handling
+Date: Mon,  2 Nov 2026 15:32:02 +0530
+Message-ID: <20261102100211.141831-4-sarthak.sharma@arm.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20261102100211.141831-1-sarthak.sharma@arm.com>
 References: <20261102100211.141831-1-sarthak.sharma@arm.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 67842100003
-X-Stat-Signature: 1e67fc73ipait3rk11nkbcnnqb117b8w
+X-Rspamd-Queue-Id: 86B3B1C000B
 X-Rspam-User: 
+X-Stat-Signature: s9tp4f8owni4cafzx4opo1g8cs8rzowk
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1793613766-63373
-X-HE-Meta: U2FsdGVkX1+7+icln8bOy9bJ4zsipUbuCr5hJ7NCzCDyZXRCO/L8qQEfSghW0vyJSVHCKjoIsxTq6RDRNWqLCyQiJEqMbVIwPWeZB6o9eLwwIlLnfKeURZYdmKzy7p9g2gZg11mDNJyErDXBxEUoodJIwOEsbYspPSrUlnXKPoNC+S8vdXdDPRakA5KB6BpsunXt0DXAb7//DF3kH4goofS7TJK0QFBfjEOMUdcoZLsUXSkRfoLYe1Csk8PX/hedMyZKZTx6Lnve/8QqvFBTv2sRiYEyvnFD/lqBI0X2K19IODK9TexOpAPFsQYL4er7pOIulrH9Lf6FlZYB117I0ZdOdcDjQTRRISb1cpt9wjmSnrrVRMOuypiAMChbYG3xLeOz2wg90/8CGlSYq4yaZcQGpi6phLPYRZRlKPHs7qmNDAKuvqSUr5fVT5LKRWeelrzINig1VzbaGBxriktSUNNsU6tzOkghu4oW9W3BAiNE8j8aXnWtYg/3NtTEAkBcrYh5Pi3KnmAleJLe5i4VBLK0rzUGu5yBUUgJb+gDIn9tm0LOJzGMiAOoyJ1fpUjJCWcY4IIaLsUs8La8bkbYfMl6gX9HuGVAhxa8hT5SxqPDU1Ybwtm+tXhhlOwy9J8UeDMb7KKSHDCgf3rBWsOrqZF+l9LGLjlbuGszEetC9fHwA2JC/itpSg9ODbF11a7QCYIF1qQUa9SocRMh7tZhiIwayNUmf9LHGgC8kN8ufaMR9gs+FpD8B3Jzoq9EEZspW88XtIB5lgcYtWMnZthTHD1g0lmdnhbACZlRA9c0hVIa93pj6iwJReAoDZWVdEDUN6y4GONB82+tR4QD4KrbWBEQZNFTHv60Z4rZ7Q2NMpNs2xvcPvb0InSEZIuCPj1kidqPuf411fxWTosP1hlS6dGf6C9/nzalQqDVmmRmjv4P2lXDGKmISD6DvOWTpvZKnBnX1Lf6hQzzeMA9KIf
- bpq5P9vC
- pFUUi+Jgu4YtZfKWr82aJMCOSS1tJ04uPN9UCI1fOl1B+Isuy5lCz/MalGoD9TJw8m5H/bt5zRNFVZQ/XAGix/c09KwksThya/gWH8Kjuypz/knx8Txa1Z79JYZJVzDTs3zDLvwbgSwY+T31s40if4pWa1vSSfzJgMg8hr2IlQuIGuACmTMOU02xjVWtrrGHzbDK9ZRbKS8sMalkDp//kflaLWKz6+Wlo+x5xePSUfaRXWFJNNHi/eTTgAV7HaNGJWL5vITnl9vl8T6rkEq2oPqwDrZ012XAf5Pdu7vMgX/I0ACA/06k7q7jcgfe3iY/Eux1Y
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1793613774-429525
+X-HE-Meta: U2FsdGVkX18oLqRck8s1pwGvFUpMNwBtZdHhmUlh3O8S5WhNBaRXWphFCjBi8qPTZfKx4RrA3bhRL38XXWK6d9Nstp0pUgvKg/hIltjAlZY5PMn/sVxbw2PhgQZHCj/dJ8HGu1lj9jBVZqAcQcENkZlNsg/EM21g2dTYtFaV00ZzjkUXkFclNW7pmKkF68trHz805XOkWjnvp77e4ga5ANHkWamEChb7/IkD/qCcFsKmqFUZqls1kpzdOxu1CoOPi9zyDByai2L+iviebnu51UbpdKXe5ZiwgdmsnHJ8Zk+pLZ44zelrTJn6Vm14vAorXUFfMT21ozHfbOgvzG+yWUkdBGWNGlG4nP3IIP/HuhdqDFxAv8t1mMjWTlqDVuScHcEJjvRqF8gQON22+WGjDhDByExv0prGUb8YNkxDPcA2ql3j8s/h5Yb5P9cscsAoM1xALQifl0gpD5t2TkxwB1GPxiO4SlxdG1TL/FH8kV+BvqKJJdlo7sbj58GGfauNj72JAW7+by97yPgClzJsReO8shXvczs5bYKsdMnPwN9qSNK3WvqAi87TP982CVwPWiRqde9djnAyfxvY7lKuqoxChr64y1n1zcdEipZ/k5NM3GPMMgTaq1P5QzOk/oq1sv+maz8zVvBLk3McU+YvCJPVakYAi5+agwQO/PpUYUfv2khe1NFLnnSmv+nzQnOj1xYz3K07tKynJeE16RQqL8tOtOVMd3cGFdxRHLOuh2H8QWuE3xxsjYFlA/x+wqILnT1JIk1JPwRed+itMpjKjx4TzpQ4bK4U4jdr009CqDmZxovUbrq4H0PmE6cD3sUMlvK5pkn3Z53qh7Atr+F6xjvxrt9gWIOAjFMqqpyKpzrUXNTqGNuG3T86LyvBym2Z6/kCn7LUf4NWmPIZoqDtXn2My1D0Z0MsG8kQbdWqr9XOAlOwL05KQ+AdC3PiSawV2gbJukl2P1ldd95U86e
+ mMuumIME
+ DDAlohCQiK1llaA5DP1V+KRODg8sWd/M8+u9NoVC6lE/3aQnVQuDNbQwlHV9CasjurF7DBnNdjX8d2y+u3K3SNghpaEuM68BYE0b6xNodVwK1IDXHMwMKCyINDbZbJN8ofXLGiXPsnlTuBbs0QP9aL0zdsVYsl1QHVyMmPBUzGUmYh9YS9Uu3QZMZm8+h2eCpcUzffj4P9xlj9zOLNKj6WRxQ/+IqKYnjadUqgfH7UBHS3biDFWo8W0Qq1QXqA5wvDqmd+hDa3PliUhNQfMo2nKhGesf0mZBc8txo1tATB4tUset9MdWqBLl18G5TCWDKDJdL
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,101 +104,96 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-mremap_test checks the return value of munmap() on some cleanup
-paths and prints an error when it fails. These failures do not
-affect the test result and there is nothing useful we can do
-about them during cleanup.
+mremap_move_multi_invalid_vmas() saves and restores
+errno around several checks even when no other function
+call can change it. Remove these instances and compare
+errno directly.
 
-Stop checking munmap() return value on cleanup paths.
+Also move perror() after the userfaultfd skip check
+to avoid printing an error when the test is skipped.
 
 Suggested-by: David Hildenbrand (Arm) <david@kernel.org>
 Signed-off-by: Sarthak Sharma <sarthak.sharma@arm.com>
 ---
- tools/testing/selftests/mm/mremap_test.c | 35 +++++++++---------------
- 1 file changed, 13 insertions(+), 22 deletions(-)
+ tools/testing/selftests/mm/mremap_test.c | 19 ++++++-------------
+ 1 file changed, 6 insertions(+), 13 deletions(-)
 
 diff --git a/tools/testing/selftests/mm/mremap_test.c b/tools/testing/selftests/mm/mremap_test.c
-index 15d8f7458251..ea1348a9532e 100644
+index ea1348a9532e..72e6e4c3bd87 100644
 --- a/tools/testing/selftests/mm/mremap_test.c
 +++ b/tools/testing/selftests/mm/mremap_test.c
-@@ -364,8 +364,7 @@ static void mremap_move_within_range(unsigned int pattern_seed, char *rand_addr)
+@@ -727,7 +727,7 @@ static void mremap_move_multi_invalid_vmas(FILE *maps_fp,
+ 	const size_t size = 10 * page_size;
+ 	bool success = true;
+ 	char *ptr, *tgt_ptr;
+-	int uffd, err, i;
++	int uffd, i;
+ 	void *res;
+ 	struct uffdio_api api = {
+ 		.api = UFFD_API,
+@@ -736,12 +736,11 @@ static void mremap_move_multi_invalid_vmas(FILE *maps_fp,
+ 
+ 	uffd = syscall(__NR_userfaultfd, O_NONBLOCK);
+ 	if (uffd == -1) {
+-		err = errno;
+-		perror("userfaultfd");
+-		if (err == EPERM) {
++		if (errno == EPERM) {
+ 			ksft_test_result_skip("%s - missing uffd", test_name);
+ 			return;
+ 		}
++		perror("userfaultfd");
+ 		success = false;
+ 		goto out;
  	}
- 
- out:
--	if (munmap(ptr, size) == -1)
--		perror("munmap");
-+	munmap(ptr, size);
- 
- 	if (success)
- 		ksft_test_result_pass("%s\n", test_name);
-@@ -510,10 +509,8 @@ static void mremap_move_multiple_vmas(unsigned int pattern_seed,
+@@ -810,14 +809,12 @@ static void mremap_move_multi_invalid_vmas(FILE *maps_fp,
+ 	 * time.
+ 	 */
+ 	res = mremap(ptr, size, size, MREMAP_MAYMOVE | MREMAP_FIXED, tgt_ptr);
+-	err = errno;
+ 	if (res != MAP_FAILED) {
+ 		fprintf(stderr, "mremap() succeeded for multi VMA uffd armed\n");
+ 		success = false;
+ 		goto out_unmap;
  	}
- 
- out_unmap:
--	if (munmap(tgt_ptr, 2 * size))
--		perror("munmap tgt");
--	if (munmap(ptr, size))
--		perror("munmap src");
-+	munmap(tgt_ptr, 2 * size);
-+	munmap(ptr, size);
- 
- out:
- 	if (success)
-@@ -590,10 +587,8 @@ static void mremap_shrink_multiple_vmas(unsigned long page_size,
+-	if (err != EFAULT) {
+-		errno = err;
++	if (errno != EFAULT) {
+ 		perror("mremap() unexpected error");
+ 		success = false;
+ 		goto out_unmap;
+@@ -863,14 +860,12 @@ static void mremap_move_multi_invalid_vmas(FILE *maps_fp,
+ 	 * first VMA, but no others, and report a failure.
+ 	 */
+ 	res = mremap(ptr, size, size, MREMAP_MAYMOVE | MREMAP_FIXED, tgt_ptr);
+-	err = errno;
+ 	if (res != MAP_FAILED) {
+ 		fprintf(stderr, "mremap() succeeded for multi VMA uffd armed\n");
+ 		success = false;
+ 		goto out_unmap;
  	}
- 
- out_unmap:
--	if (munmap(tgt_ptr, size))
--		perror("munmap tgt");
--	if (munmap(ptr, size))
--		perror("munmap src");
-+	munmap(tgt_ptr, size);
-+	munmap(ptr, size);
- out:
- 	if (success)
- 		ksft_test_result_pass("%s%s\n", test_name,
-@@ -713,10 +708,8 @@ static void mremap_move_multiple_vmas_split(unsigned int pattern_seed,
+-	if (err != EFAULT) {
+-		errno = err;
++	if (errno != EFAULT) {
+ 		perror("mremap() unexpected error");
+ 		success = false;
+ 		goto out_unmap;
+@@ -912,14 +907,12 @@ static void mremap_move_multi_invalid_vmas(FILE *maps_fp,
+ 	 * the last VMA, and report a failure.
+ 	 */
+ 	res = mremap(ptr, size, size, MREMAP_MAYMOVE | MREMAP_FIXED, tgt_ptr);
+-	err = errno;
+ 	if (res != MAP_FAILED) {
+ 		fprintf(stderr, "mremap() succeeded for multi VMA uffd armed\n");
+ 		success = false;
+ 		goto out_unmap;
  	}
- 
- out_unmap:
--	if (munmap(tgt_ptr, size))
--		perror("munmap tgt");
--	if (munmap(ptr, size))
--		perror("munmap src");
-+	munmap(tgt_ptr, size);
-+	munmap(ptr, size);
- out:
- 	if (success)
- 		ksft_test_result_pass("%s%s\n", test_name,
-@@ -948,10 +941,8 @@ static void mremap_move_multi_invalid_vmas(FILE *maps_fp,
- 	}
- 
- out_unmap:
--	if (munmap(tgt_ptr, size))
--		perror("munmap tgt");
--	if (munmap(ptr, size))
--		perror("munmap src");
-+	munmap(tgt_ptr, size);
-+	munmap(ptr, size);
- out_close_uffd:
- 	close(uffd);
- out:
-@@ -1146,11 +1137,11 @@ static void mremap_move_1mb_from_start(unsigned int pattern_seed,
- 	}
- 
- out:
--	if (src && munmap(src, c.region_size) == -1)
--		perror("munmap src");
-+	if (src)
-+		munmap(src, c.region_size);
- 
--	if (dest && munmap(dest, c.region_size) == -1)
--		perror("munmap dest");
-+	if (dest)
-+		munmap(dest, c.region_size);
- 
- 	if (success)
- 		ksft_test_result_pass("%s\n", test_name);
+-	if (err != EFAULT) {
+-		errno = err;
++	if (errno != EFAULT) {
+ 		perror("mremap() unexpected error");
+ 		success = false;
+ 		goto out_unmap;
 -- 
 2.53.0
 
