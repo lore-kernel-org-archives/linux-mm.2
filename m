@@ -1,75 +1,73 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9456460A2625
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 11:30:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64E7160A260F
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 11:30:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=pHJ9pM3A
+	dkim=pass (1024-bit key, unprotected) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=XLiXGnf0
 Received: by kanga.kvack.org (Postfix)
-	id B747D6B00EF; Mon,  2 Nov 2026 06:30:31 -0500 (EST)
+	id 755976B05B1; Mon,  2 Nov 2026 06:30:34 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B25AA6B05B1; Mon,  2 Nov 2026 06:30:31 -0500 (EST)
+	id 706956B05B4; Mon,  2 Nov 2026 06:30:34 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A3B216B05B4; Mon,  2 Nov 2026 06:30:31 -0500 (EST)
+	id 5D06A6B05B5; Mon,  2 Nov 2026 06:30:34 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 7D3EC6B00EF
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 06:30:31 -0500 (EST)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 1AC9B80C2D
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 11:30:31 +0000 (UTC)
-X-FDA: 85389961062.09.8A44151
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 35D2A6B05B1
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 06:30:34 -0500 (EST)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 563E840CED
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 11:30:33 +0000 (UTC)
+X-FDA: 85389961146.11.D640426
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 4170240007
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 11:30:29 +0000 (UTC)
+	by imf17.hostedemail.com (Postfix) with ESMTP id 7C0E140002
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 11:30:31 +0000 (UTC)
 Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=pHJ9pM3A;
+	dkim=pass header.d=arm.com header.s=foss header.b=XLiXGnf0;
 	spf=pass (imf17.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com;
 	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793619029;
+	s=arc-20220608; t=1793619031;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=InMeFNFjwhLZQCf3I7xrn9FEQa/179dGH7u0e06Suzo=;
-	b=ZJzZS31WlKNZ684KL8Pgh2L/browFk6Us827BNMjAFfP9bjBDDwr0cNygAtF5FBU437jHl
-	0uzYRJHdWO2mZz8XIjX+Yhytng7eqiY0BEt4NlARxgXegkz8eqOGdabave2Nfzs8Y4qTAf
-	GxAUic2tDSaSRd2FIBVuGWvnkROvRwU=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=CyfI2URWEEZSUDLYtQ8leAcYbuBDAQCTWOVugCAWeV4=;
+	b=5FK6TMVuYtn3P3OEWqfUQUwfXqKFBBoHnT/Q2x3f2wIjC2mnrjhBSTJVjvAaNmkWiRQCte
+	YNblwxvxnOQusDuRIHr2Sus8qRGHCvlLF96EO9Sdq0kijPsjf4UBspQ4bNrbGGyQiFe7q3
+	MuOKXVqQmGM0ouX1wMQ7xf2nsJgsT14=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793619029;
-	b=l+HXPeHaP/n0vtM47e5nwkBMUFsRJtO5jDuXU5AHnbiru2ZAQ1gWDTjFMe6uvNQD6AYe2C
-	jbkn7ysWeltoqkT2BDmpcvKoTH9JGCHIsjvyJZSAJX59hY+OA/QH0mlPvPEhOjY1a9NYZ3
-	eWvBDtA6QdFXWkooDN8QjrIpGOIPWmM=
+	t=1793619031;
+	b=T/eboZBcpy4gZsfSgpS6EjwDfTwifKRqo+5PHtC0p8W7PfadbixH9aIQUL3naP+7xAZ20G
+	XSe+D7EZIT3cg2ROmWkIXqA0LZXjqxsvnFCZCrNUQQB1D70cgQs/6DMnqv2bznaaQsHcwb
+	xIV5KUOZSj9n9iogjR+8z3XRVGaMw1A=
 ARC-Authentication-Results: i=1;
 	imf17.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=pHJ9pM3A;
+	dkim=pass header.d=arm.com header.s=foss header.b=XLiXGnf0;
 	spf=pass (imf17.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com;
 	dmarc=pass (policy=none) header.from=arm.com
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 686671691;
-	Mon,  2 Nov 2026 03:30:25 -0800 (PST)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 8F147293B;
+	Mon,  2 Nov 2026 03:30:27 -0800 (PST)
 Received: from e129823.arm.com (e129823.arm.com [10.2.213.3])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 97F1C3F632;
-	Mon,  2 Nov 2026 03:30:26 -0800 (PST)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id C15DD3F632;
+	Mon,  2 Nov 2026 03:30:28 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1793619028; bh=D3Vf1PsT2DwtrXV9xY5TZ0/AQoE6JjmwaFHA7vLMNzo=;
-	h=From:Subject:Date:To:Cc:From;
-	b=pHJ9pM3APBFr6bQUnqzxTZjWVOKOX1gu79gJ5/9Fuwjzbx5Q0LTupSjjfEpgwHJBs
-	 t6FbePj4JW5hCwqFUIo3vOnbzudfXnxDoK8SLLEg+VK3+GRBz9fyzhsRQYDAUe6uKX
-	 zRD7KyRedgu793bFJB3IdfxdrmPsCBNfAQ5Dm89s=
+	t=1793619030; bh=GEgao3jfAi97/KvYK2veDWTPC1m/gdO7DW7bwurZlRM=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
+	b=XLiXGnf00xkvKIUafAQUeHYdENhmgL4sxUWBXisxFXljYCO44sut8T7qDwvsOxxpb
+	 sIWIbr7lPBZMIZWQd2Oxk5ctUvHKihU3LQZpuyIqA1tyS/aG0FHnWFCQ3pteULiCRL
+	 kZDGGQG5b9TQzqESoOpXQqrE/udOKrQKwki/Gotk=
 From: Yeoreum Yun <yeoreum.yun@arm.com>
-Subject: [PATCH v2 0/4] mm: gup: batch PTE-mapped large folios in
- gup_fast_pte_range()
-Date: Mon, 02 Nov 2026 11:30:15 +0000
-Message-Id: <20261102-refactor_gup_fast-v2-0-bc1ac018c834@arm.com>
+Date: Mon, 02 Nov 2026 11:30:16 +0000
+Subject: [PATCH v2 1/4] mm: gup: introduce gup_unshared_pages()
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAEd06GoC/32Pyw6CMBBFf4V0bU0fmQKu/A9DSClT6IJHWiQaw
- r9bMHGjuLyTe87NLCSgdxjIJVmIx9kFN/QxiFNCTKv7BqmrYyaCCcUZB+rRajMNvmzuY2l1mGg
- FgNJCLmsjSOTGWHGP3XkrYm5diP3nPjHz7frPNnPKqESOFiBVmbJX7buzGbpN/eYEO+KMzVPBc
- 10raX5w/IhjDLSW8Q3g8M3Jwz3F0iplErIo/3DFuq4vBujeUFgBAAA=
+Message-Id: <20261102-refactor_gup_fast-v2-1-bc1ac018c834@arm.com>
+References: <20261102-refactor_gup_fast-v2-0-bc1ac018c834@arm.com>
+In-Reply-To: <20261102-refactor_gup_fast-v2-0-bc1ac018c834@arm.com>
 To: linux-mm@kvack.org, linux-kernel@vger.kernel.org
 Cc: Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>, 
  Peter Xu <peterx@redhat.com>, Lorenzo Stoakes <ljs@kernel.org>, 
@@ -79,31 +77,31 @@ Cc: Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
  David Hildenbrand <david@kernel.org>, Rik van Riel <riel@surriel.com>, 
  Yuan-Hao Hsu <aa9736195201@gmail.com>, Yeoreum Yun <yeoreum.yun@arm.com>
 X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3915; i=yeoreum.yun@arm.com;
- h=from:subject:message-id; bh=D3Vf1PsT2DwtrXV9xY5TZ0/AQoE6JjmwaFHA7vLMNzo=;
- b=owEB7QES/pANAwAKAW3Vw9FaxTEzAcsmYgBq6HRQWD+A5zA3eTJ38mRGoA6BKnrD69H999el1
- MHyVxSeVZuJAbMEAAEKAB0WIQQtg+CS3QUzuFh1pJ1t1cPRWsUxMwUCauh0UAAKCRBt1cPRWsUx
- M80gDADYr9b8OAg2TMoX4hf6iIaHO7YXrgUNwirzE5g4a4TFYCYVnwwY9CnO2sv5IqfIvNCSISD
- 9dnjL29vcgNLXEy1A66vCIqOZsNY/XTeoMGOsXtDO38L2/774YPCZjfA2GnR5AeksySSTL7uI8p
- BsMmkRe3Jrujlu59Nzwvp/Rj5Y+MpFjkKqj0mweas9j2Qv5OrfcWP8W+rckZQPs7S5uyODsR5Hy
- VUb4U1ZhA8q1F8KC9uNOEMBaDh0WQbBUTxZqvRihm0L6SyKNki8rpxqEiQOLbALBxLd/tsBPx/u
- 9ZzJJVk10GAAYp2rjhB8Jk15mZN8HebJ772pobuRAXJ4J3Vh2DFOreRAO2Y/XbUuV28H3ySvgUO
- mMzWHjTvtcM9OvFULpBaCnhGNkaUxZeHyDVJ9+rr1AhM7UeENNtkAioVWWEZ67HbRlYgZZyXOvj
- sTYvaJjOqazluzb/wft5tIVA6m4WcAy1Sza8E56E2HO3zP9H639TtwHni3FpDQFzO18Sg=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=6819; i=yeoreum.yun@arm.com;
+ h=from:subject:message-id; bh=GEgao3jfAi97/KvYK2veDWTPC1m/gdO7DW7bwurZlRM=;
+ b=owEB7QES/pANAwAKAW3Vw9FaxTEzAcsmYgBq6HRQmVkVyCjC+EeXYi6E21LfeXEwU749jq1po
+ RzHY3/yzC+JAbMEAAEKAB0WIQQtg+CS3QUzuFh1pJ1t1cPRWsUxMwUCauh0UAAKCRBt1cPRWsUx
+ MyHIC/0TxjuZnMQ+FNmQwTWYDFrWseD9LL5B6jSB905GLvi/7KGxw7skPmQqkQu5xKbtNF/XJAI
+ 2G7Cjwouc2XmpheH3wLDURh8oiJUhTGH2h2aPbAw2WB7KVM4oeZXvXMUZILv/UkqzqOgUGOFvp7
+ EWy86UIT+pV3QeESX/QQPcv14whSYkuBpbyrxB3E7pzld0cYQlIYo4riV9+ApJ82PWgkPOv+i8Q
+ be4S9c77HHZ+Ekal3eeEK7Keijfm/IpHANwCT9JZBUjhX7GrczoOHP8I8u9OKi65DYvUI5FkssN
+ awsXgiKUS7A9c8xdSRq3MaRLbGlxsYjn7PyFCRMBhtjQ5mzV/SKhtVEhz8Sb6PDpVcZgZ1E7To+
+ n8cZXN7eOw/ZlE1ZhhoUCrHNbw3VlZGhU1OG07Cy6dOl1eOBwNYR9L8jVSZt3nrsSOHkwlYjoye
+ IDlkL+b3wL3lkzaf9yI62QymzNsFauRbhlGYmoyTR+7oqT6zfA80JfLq8YgnzAXwkwhbQ=
 X-Developer-Key: i=yeoreum.yun@arm.com; a=openpgp;
  fpr=2D83E092DD0533B85875A49D6DD5C3D15AC53133
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 4170240007
-X-Stat-Signature: 5iembqts887supbdrz763da1mia8j78e
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 7C0E140002
+X-Stat-Signature: 3siwuz4fh1pm8gt6hn5qstaap3csoqxc
 X-Rspam-User: 
-X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
-	autolearn_force=no version=4.0.1
-X-HE-Tag: 1793619029-711743
-X-HE-Meta: U2FsdGVkX19STgt/vDjWufE4xnBMyQsE8zeEjuJ8bRSsXEvFVv+9P0eGi4it1iFogtHFvkVB+yx2D8bVpPwoZOT2JLE0yZbk2HReaEFnCLSMoKx+Uv4gj1p8owReJDAgeTr2AG7UvwiZJTSXliuUD/YzSnvdM1t41t8Aa8iwoPLXLvIXCm57tRFg65OMRB3fS9cAhmHi3of1UKj7DXoQOWrfysWicTzmKccMOZ618JKf107ZywXMYFEm+Dc8UQ461xleCjPTBRzE88vglACJDJN4DfEy4SMSuu5LKa3R4VvhxtV2B25oM58nbOrQwBxpfm2gjrzJ8I7hSM5S8ot/OXlC1OtWbVDlZ8+ZFER6opw6L7oN4RawHJNCL4bS4kAOzDyexYiHylFYbLtl2XozsmWiXeutynwSxMG8hrGALgPz51993WSk4Cf/Z1MdLyBKiDQJ/mrqKN3tBUgcr6lIvEukrbGGyTI1nOk15xsREsvJq5Prju/qPTXWgnHukJngGVZFIqt38xDB3w0ARKgF4GhZ2bWMEuMDcDdOZihEyGZMjQWiK51DE5+tL7R+TWiqQ0En01+Mp89GkV4qeQp9BblljNMg7awA/huHmma8+9WO9m6AMYeIjPmHlcTZuXHm7+gQNx01LJJwiBhNnNdCjyK3oYP14PCA1oy0DXj+VLmjZmaK5oLbSsM83VYJG3YeMGcRDKiyojjrXIO3wbOBaRKUftUa7uoUMo6PlQXmmWp/ffLmRSecICW2GqbIGydgHUNN9m4dwGetgGZciQOVJfNBKDNEJDP6CZNBnAPL80hOsbDPOIKGUPkjJ7atceoUY0qjsIATl40BZddEjawU/lrhgHoR7iUL0JcQc6SGZaqHIQyNsfs1Oe8mweKcRLgO1/4XGaA3Bh8nVFTQtKBqyxCJiEX4sAv2H7uUXJnBvtk7DadJFCFqICWrVSwcdop28GoaC/1g7IDFFYggz7m
- 42ib9mld
- +AOWHtnov0DQA5LAmuRuA7zQkOmHgPtt6vvWUWVaHXnuMHiniha6vRkmu4AdFvrOFbxugbvL4KI57p0uwPyRfu2nVs2umOIz4umogCDE+uwsiQqJ04zAjX8FBXWclaSZcNYRns63aNCh6TPhsU3+rFJh5K9i768ApmYXrRRj4ccBf4B+yN7PUqv/AaJbW1wyQldeXI3Or8yodzE3B8Y41An+FWDrZIoGRopRM+9FgBncGVlzF4P/G0rTXP0ICIWBCpFkhmTAVHijww4Of1r+H6nHK0EoJqBETxChM
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1793619031-83275
+X-HE-Meta: U2FsdGVkX1/mDOB57WkB3fmjlbZVkIbJYw4W0kBZrPe7aO//gBsIMB72TS3TeenJkt7jv4cFmocPsuZ8IEet07i+HsQqk4sKJY7YMsyt3nRZyBg3W9I047kIqZaj65PcMEGrFF+uHZzCc5dKChouWifk0dHQVVOrgCbNUC5AiV1gJpND3ikBUWiMhqsjOku7p9nNIUgAOyzitccEs3VbGkUdN71Vp+Xa0/xEtHxjOFs84ZesWocKYXWfYgGqBzz1bABfG3IqJeiDuqDIulGbj63LVXH2f7lm1rKYnNArzpxXo683pCR6EmJIJPeKNZTsRVsQXlJv4/FZcvymcr5Q6hWVTJ1+zVgBq8UF9XYoApfUqpNATXjV94DvpI99H7nNvcubf1brGF1jePWlqzPsFQ0Ar4+3WTYnraO9dYDcTVji6DY6Yp0NnheMCw1sgRlKitkUWnUac8mv+9ScAJnyXF2cM7DCd/bjJvraPeGEXOYSeAq3m8qpqEUUbSrMB+8EM1AEDfGHkQ2VTsSSvkihSkYVWh/SzKxiqM2K+W1ILFTfR4VREgAINlDpaQStUqB+aY4tW0qFE++BlHFA1CLZKcClOmIWhtrYRMOFPumKCBm30c0xUxxmlwY10FKjFaFT+aqlqukOO0tPBE1KzYnXRx4add0IH9KhO+j9ermw6Dh1wDH2bHrSTo4tiSzQ6mKjF01MnsH4kTkI8tCDNjJAl8SDLjhgBV0BibS0CCm85V2BCRMinueqS8IobURt0CKb3kGFfv7v5mYGsLTYm9dqlQEACdD9+tfstlUl5WSmFcmRtlcPJUjuV/s/kdcb6pjSFanxbSTGvWB1J1pNW7JVN2/r+5zt0qoyTfa3bn1qggb/6PRDOXndtH3hxonDYlgzw+n/iHfGmTKqD3b1ptTYqFCVVLIQEpiKp7VdWOa0/p07fdhH31+f95bffAhK23YNSvYstuX6nJ/Yk+h0jue
+ BT9unCpy
+ rsXMlZsciLK2coiNtmjo2+2CM4KeUD0avRuxjK1UAiqns+PryG+XefGtM+pK4YsA0BfAjMpTfTC6WzYWxO8KhvEQZ+BDaYpj1l+yuCSLMTB2Ax5z0V3b2djuvtxhMFrtI7eFXOt3I36+d6YxUPBrLRJ9z5O7ux7T9syPZIHumG0aU7d5XPd0uzuJxWqnxw8zaDdO8gxuRd7UnbkaR9K8nqFaCxliCV7jyyeN9ZU4c5RFUPEEYF9ZkXhjkvnoC/9O8N2B1H21S+Te/v/Ivt18iRNvhWfV3yeCVPqOHaDHE5jxj+yI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -112,91 +110,216 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-GUP-fast grabs a PTE-mapped large folio one page at a time.  Every PTE
-costs a try_grab_folio_fast() (a refcount cmpxchg, plus the pincount
-atomic, a full barrier and a node stat update for FOLL_PIN), a
-gup_fast_folio_allowed() and a folio_set_referenced(), so a 64 kB mTHP
-pays sixteen of each and a PTE-mapped 2 MB THP pays 512.
+This is preparatory patch to make gup_fast_pte_range() batchable.
 
-The users are the hot ones: iov_iter_extract_user_pages() pins every
-O_DIRECT buffer through pin_user_pages_fast(), io_uring registers its
-buffers through it, and so does RDMA memory registration.
-With mTHP those buffers are PTE-mapped large folios.
+Introduce gup_unshared_pages() to count consecutive pages within a folio
+that do not require unsharing, and use it to implement gup_must_unshare().
 
-After the head page has been grabbed and verified, extend the run to the
-following PTEs that map the next pages of the same folio with the
-same protection bits, take the remaining references for the
-run with try_grab_folio(), and fill pages[] from the run.
-The PTEs of the run are read while the reference on the folio is held,
-so the folio can neither be collapsed, freed nor split underneath the scan.
+Also add a folio argument to gup_must_unshare() so callers can reuse an
+existing folio and avoid the compound_head() call implicit in PageAnon().
 
-A read-only run of an anonymous folio stops at the first page that
-gup_must_unshare() rejects, so the per-page exclusivity guarantee for FOLL_PIN
-is kept.
+There is no functional change.
 
-folio_pte_batch_flags() does the scan.  It reads the entries with
-ptep_get(), which is not safe without the page table lock on
-CONFIG_GUP_GET_PXX_LOW_HIGH (x86 PAE, mips32, sh) or with arm64 contpte,
-and GUP-fast reads every PTE with ptep_get_lockless() for that reason.
-Add FPB_LOCKLESS to make the helper do the same; it is inlined per call
-site, so the other callers do not change.
-
-The order-0 path keeps its instruction sequence.  The folio flags are
-tested before folio_set_referenced() on purpose: a load of the flags
-right after that locked instruction cost about 25% on order-0 pages in
-the gup_test benchmark below, and reading them first brings that path
-back to the baseline.
-
-gup_test ioctl over a 256 MB anonymous region, FOLL_WRITE, 65536 pages
-per call, median of 15 runs, two baseline boots / one patched boot, on
-an x86-64 VM:
-
-                       get_user_pages_fast()   pin_user_pages_fast()
-                       before       after      before       after
-  4 kB pages           849/789 us   783 us     1174/1138 us 1094 us
-  64 kB mTHP           812/811 us   126 us     1215/1113 us  188 us
-  1 MB mTHP            799/774 us    59 us     1185/1077 us   64 us
-  2 MB THP, PTE-mapped 803/786 us    57 us     1159/1120 us   58 us
-  2 MB THP, PMD-mapped  42/40 us     40 us       46/41 us     42 us
-
-fio O_DIRECT randread of a null_blk device (CPU bound) with the I/O
-buffer in 64 kB mTHP, median of 15 five-second runs:
-
-  bs=1M psync                 126.2/125.6 GB/s  ->  220.6 GB/s
-  bs=1M io_uring, iodepth 16   71.2/71.6 GB/s   ->  112.1 GB/s
-  bs=64k io_uring, iodepth 16  50.2/50.7 GB/s   ->   60.1 GB/s
-
-IORING_REGISTER_BUFFERS of 1 GB, median of 15:
-
-64 kB mTHP           6179/5998 us  ->  1599 us
-  1 MB mTHP            5790/5801 us  ->   893 us
-  4 kB pages           7173/6741 us  ->  6763 us
-
+Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
 ---
-Changes in v2:
-- fix exceptional case for shstk on x86.
-- remove redendant check for pmd change in each pte barch.
-- Link to v1: https://lore.kernel.org/all/20260917083747.786-1-aa9736195201@gmail.com/
+ mm/gup.c      | 69 +++++++++++++++++++++++++++++++++++++++++++++++++++++------
+ mm/internal.h | 49 ++++++------------------------------------
+ 2 files changed, 70 insertions(+), 48 deletions(-)
 
----
-Yeoreum Yun (3):
-      mm: gup: introduce gup_unshared_pages()
-      mm: internal: fix inconsistent in folio_pte_batch_flags() for shadow stack
-      mm: gup: batch PTE-mapped large folios in gup_fast_pte_range()
+diff --git a/mm/gup.c b/mm/gup.c
+index 7d43ce717b246..49681f63950ec 100644
+--- a/mm/gup.c
++++ b/mm/gup.c
+@@ -633,6 +633,59 @@ static struct page *no_page_table(struct vm_area_struct *vma,
+ 	return NULL;
+ }
+ 
++unsigned long gup_unshared_pages(struct vm_area_struct *vma, unsigned int flags,
++				 struct folio *folio, struct page *page,
++				 unsigned long nr_pages)
++{
++	unsigned int i;
++
++	/*
++	 * FOLL_WRITE is implicitly handled correctly as the page table entry
++	 * has to be writable -- and if it references (part of) an anonymous
++	 * folio, that part is required to be marked exclusive.
++	 */
++	if ((flags & (FOLL_WRITE | FOLL_PIN)) != FOLL_PIN)
++		return nr_pages;
++	/*
++	 * Note: PageAnon(page) is stable until the page is actually getting
++	 * freed.
++	 */
++	if (!folio_test_anon(folio)) {
++		/*
++		 * We only care about R/O long-term pining: R/O short-term
++		 * pinning does not have the semantics to observe successive
++		 * changes through the process page tables.
++		 */
++		if (!(flags & FOLL_LONGTERM))
++			return nr_pages;
++
++		/* We really need the vma ... */
++		if (!vma || vma_is_cow_mapping(vma))
++			return 0;
++
++		/*
++		 * ... because we only care about writable private ("COW")
++		 * mappings where we have to break COW early.
++		 */
++		return nr_pages;
++	}
++
++	/* Paired with a memory barrier in folio_try_share_anon_rmap_*(). */
++	if (IS_ENABLED(CONFIG_HAVE_GUP_FAST))
++		smp_rmb();
++
++	/*
++	 * Note that KSM pages cannot be exclusive, and consequently,
++	 * cannot get pinned.
++	 */
++	for (i = 0; i < nr_pages; i++) {
++		if (!PageAnonExclusive(page + i))
++			return i;
++	}
++
++	return nr_pages;
++}
++
+ #ifdef CONFIG_PGTABLE_HAS_HUGE_LEAVES
+ /* FOLL_FORCE can write to even unwritable PUDs in COW mappings. */
+ static inline bool can_follow_write_pud(pud_t pud, struct page *page,
+@@ -668,7 +721,8 @@ static struct page *follow_huge_pud(struct vm_area_struct *vma,
+ 	pfn += (addr & ~PUD_MASK) >> PAGE_SHIFT;
+ 	page = pfn_to_page(pfn);
+ 
+-	if (!pud_write(pud) && gup_must_unshare(vma, flags, page))
++	if (!pud_write(pud) &&
++	    gup_must_unshare(vma, flags, page_folio(page), page))
+ 		return ERR_PTR(-EMLINK);
+ 
+ 	ret = try_grab_folio(page_folio(page), 1, flags);
+@@ -722,7 +776,8 @@ static struct page *follow_huge_pmd(struct vm_area_struct *vma,
+ 	if (pmd_protnone(*pmd) && !gup_can_follow_protnone(vma, flags))
+ 		return NULL;
+ 
+-	if (!pmd_write(pmdval) && gup_must_unshare(vma, flags, page))
++	if (!pmd_write(pmdval) &&
++	    gup_must_unshare(vma, flags, page_folio(page), page))
+ 		return ERR_PTR(-EMLINK);
+ 
+ 	VM_WARN_ON_ONCE_PAGE((flags & FOLL_PIN) && PageAnon(page) &&
+@@ -846,7 +901,7 @@ static struct page *follow_page_pte(struct vm_area_struct *vma,
+ 	}
+ 	folio = page_folio(page);
+ 
+-	if (!pte_write(pte) && gup_must_unshare(vma, flags, page)) {
++	if (!pte_write(pte) && gup_must_unshare(vma, flags, folio, page)) {
+ 		page = ERR_PTR(-EMLINK);
+ 		goto out;
+ 	}
+@@ -2892,7 +2947,7 @@ static unsigned long gup_fast_pte_range(pmd_t pmd, pmd_t *pmdp,
+ 			goto pte_unmap;
+ 		}
+ 
+-		if (!pte_write(pte) && gup_must_unshare(NULL, flags, page)) {
++		if (!pte_write(pte) && gup_must_unshare(NULL, flags, folio, page)) {
+ 			gup_put_folio(folio, 1, flags);
+ 			goto pte_unmap;
+ 		}
+@@ -2969,7 +3024,8 @@ static unsigned long gup_fast_pmd_leaf(pmd_t orig, pmd_t *pmdp,
+ 		gup_put_folio(folio, nr_pages, flags);
+ 		return 0;
+ 	}
+-	if (!pmd_write(orig) && gup_must_unshare(NULL, flags, &folio->page)) {
++	if (!pmd_write(orig) &&
++	    gup_must_unshare(NULL, flags, folio, &folio->page)) {
+ 		gup_put_folio(folio, nr_pages, flags);
+ 		return 0;
+ 	}
+@@ -3011,7 +3067,8 @@ static unsigned long gup_fast_pud_leaf(pud_t orig, pud_t *pudp,
+ 		return 0;
+ 	}
+ 
+-	if (!pud_write(orig) && gup_must_unshare(NULL, flags, &folio->page)) {
++	if (!pud_write(orig) &&
++	    gup_must_unshare(NULL, flags, folio, &folio->page)) {
+ 		gup_put_folio(folio, nr_pages, flags);
+ 		return 0;
+ 	}
+diff --git a/mm/internal.h b/mm/internal.h
+index c53c369bf8b5d..35016b1afc8bf 100644
+--- a/mm/internal.h
++++ b/mm/internal.h
+@@ -1282,6 +1282,10 @@ int migrate_device_coherent_folio(struct folio *folio);
+ int __must_check try_grab_folio(struct folio *folio, int refs,
+ 				unsigned int flags);
+ 
++unsigned long gup_unshared_pages(struct vm_area_struct *vma, unsigned int flags,
++				 struct folio *folio, struct page *page,
++				 unsigned long nr_pages);
++
+ /*
+  * mm/huge_memory.c
+  */
+@@ -1354,51 +1358,12 @@ enum {
+  * to fallback to the slow path just to lookup the vma.
+  */
+ static inline bool gup_must_unshare(struct vm_area_struct *vma,
+-				    unsigned int flags, struct page *page)
++				    unsigned int flags,
++				    struct folio *folio, struct page *page)
+ {
+-	/*
+-	 * FOLL_WRITE is implicitly handled correctly as the page table entry
+-	 * has to be writable -- and if it references (part of) an anonymous
+-	 * folio, that part is required to be marked exclusive.
+-	 */
+-	if ((flags & (FOLL_WRITE | FOLL_PIN)) != FOLL_PIN)
+-		return false;
+-	/*
+-	 * Note: PageAnon(page) is stable until the page is actually getting
+-	 * freed.
+-	 */
+-	if (!PageAnon(page)) {
+-		/*
+-		 * We only care about R/O long-term pining: R/O short-term
+-		 * pinning does not have the semantics to observe successive
+-		 * changes through the process page tables.
+-		 */
+-		if (!(flags & FOLL_LONGTERM))
+-			return false;
+-
+-		/* We really need the vma ... */
+-		if (!vma)
+-			return true;
+-
+-		/*
+-		 * ... because we only care about writable private ("COW")
+-		 * mappings where we have to break COW early.
+-		 */
+-		return vma_is_cow_mapping(vma);
+-	}
+-
+-	/* Paired with a memory barrier in folio_try_share_anon_rmap_*(). */
+-	if (IS_ENABLED(CONFIG_HAVE_GUP_FAST))
+-		smp_rmb();
+-
+-	/*
+-	 * Note that KSM pages cannot be exclusive, and consequently,
+-	 * cannot get pinned.
+-	 */
+-	return !PageAnonExclusive(page);
++	return gup_unshared_pages(vma, flags, folio, page, 1) != 1;
+ }
+ 
+-
+ static inline bool vma_soft_dirty_enabled(struct vm_area_struct *vma)
+ {
+ 	/*
 
-Yuan-Hao Hsu (1):
-      mm: internal: introduce FPB_LOCKLESS for folio_pte_batch_flags()
-
- mm/gup.c      | 113 ++++++++++++++++++++++++++++++++++++++++++++++------------
- mm/internal.h |  70 ++++++++++++++----------------------
- 2 files changed, 117 insertions(+), 66 deletions(-)
----
-base-commit: 34f88a114888c9dba49e45f2b0c2a3e83c4c871c
-change-id: 20261015-refactor_gup_fast-b55e3f593dc2
-
-Best regards,
 -- 
-Sincerely,
-Yeoreum Yun
+2.43.0
 
 
