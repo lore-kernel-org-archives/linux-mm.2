@@ -1,122 +1,104 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC868606A32C
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 06:08:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34358606A329
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 06:12:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=GJ1by412
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=hxlz7XXs
 Received: by kanga.kvack.org (Postfix)
-	id E2C776B05B2; Mon,  2 Nov 2026 01:08:26 -0500 (EST)
+	id 4976A6B05B5; Mon,  2 Nov 2026 01:12:24 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DDC756B05B8; Mon,  2 Nov 2026 01:08:26 -0500 (EST)
+	id 447D26B05B9; Mon,  2 Nov 2026 01:12:24 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CA4656B05B9; Mon,  2 Nov 2026 01:08:26 -0500 (EST)
+	id 336886B05BA; Mon,  2 Nov 2026 01:12:24 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id A6D9B6B05B2
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 01:08:26 -0500 (EST)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 215AD40C4E
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 06:08:26 +0000 (UTC)
-X-FDA: 85389149412.17.7F5C5E5
-Received: from out30-113.freemail.mail.aliyun.com (out30-113.freemail.mail.aliyun.com [115.124.30.113])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 9925220003
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 06:08:22 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=GJ1by412;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf31.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.113 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 0E6876B05B5
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 01:12:24 -0500 (EST)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 71DF3120C01
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 06:12:23 +0000 (UTC)
+X-FDA: 85389159366.10.33737AE
+Received: from mta0.migadu.com (out-182.mta0.migadu.com [91.218.175.182])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 5537F160003
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 06:12:21 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=hxlz7XXs;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf08.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.182 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793599702;
+	s=arc-20220608; t=1793599941;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hBHoVDgYosEEjwFENvnqm8RfVk+ydgr5qWMoLpA4mck=;
-	b=ITUBa/LOi4hEClzV3gGCT2ktPX3Dw+cq/PZIZHoBEf17g6Zrs4GsDHB8/TqxszZb1JCBe/
-	ihmxEW8BTckFLVT/QPO44/dNf66Noi43wKU3JZIDPHrSD2KZSUSWbvCE5liAv3PbhRyk5n
-	vfur3NjFJASos7dnHZGvDEGy+MQyx30=
+	bh=kBdUvAVYcdKk5QVxJUldi/DhSvfwVlDkctl8DfLD0/A=;
+	b=o2OO3ZdmAV0es+ALjh38cPknthGlfX6dLqVGjbftUQjxN0m26blTKJPWHp82YLwz2eT4qx
+	0g7xUHReunBtMSP/QpHVCX832xpD79+0a27LPo7/MmdbMnHrSL5idMgcclFMblp/OM8N1f
+	0GYxXcae+XkQqzdhlO8QpY27qPk6sN4=
 ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=GJ1by412;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf31.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.113 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
+	imf08.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=hxlz7XXs;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf08.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.182 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793599702;
-	b=b3wut/yqqZbIePGAcdZULOvPiO+GGtLJYw181x+1+pK+ulpgD8z4WTQ8AVBO1/heabgV97
-	BdqCq7duQM4OmuSAdUmHVvvZCJZ8+0RsGBISP5Wtc6kDAJWw2cxnMFgfoUCCA1/C5DnpA+
-	AoqkgYZ3+gpiq4vyZdUvjeq4uX9u3vk=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1793599698; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=hBHoVDgYosEEjwFENvnqm8RfVk+ydgr5qWMoLpA4mck=;
-	b=GJ1by412moRZ6W4++R7MQlnF8bfdOd5lXuKNlwjM4rOoHQ7ujW9WzOulGfOAuZ5p9qjZp9m8wJ2NOJJK/vil+aNodwGljl3Bou6qSff38F1hhM0aSJS53jpA14O7/n4QNuTe8dJbZHN5PHACs32okRyLYFrjsChh9Emt6TWwAhw=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R801e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037033178;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=66;SR=0;TI=SMTPD_---0XDuTEnB_1793599690;
-Received: from 30.74.144.167(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0XDuTEnB_1793599690 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Mon, 02 Nov 2026 14:08:12 +0800
-Message-ID: <dda009fe-abda-4745-810c-da02d8440b3c@linux.alibaba.com>
-Date: Mon, 2 Nov 2026 14:08:10 +0800
+	t=1793599941;
+	b=qXx09xoBFZXDVMr3+J6neMRy/d2y7M3GpyHKdI7MHuhJvKB2c3wGo4W9tn5CWNnCJ9xHI7
+	s7y+GP/h7YNoy06uMCm400Qtizh+eaJnto4EKMFkYbG2ZqCc7lW6JWzrWEGy6z/hhvXFqT
+	Uktz1HoRt6GWZ5AwtTpYtIqIx7CV8UY=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=oN0aDS5mKLXYjcaeH2SoZP3k/lf0JjHKzCpOCJOldLE=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1793599939; v=1; x=1794204739;
+ b=hxlz7XXsV0ogw2O4VuVzvxGgRDF+00OBVAG+l7S/K7JVMWKHwSrbkMIDP1fxT+jTiMViMjvl
+ qmuDNF5MOEf1B2PD5KgWxipcAWZb3bWhyItcH6+BOSvr6GymVjsalr9Ji1aryVowcZReFtmoLOu
+ Uv4zmKKrruuXVMr3KPmCbBoQ=
+X-Envelope-To: linux-mm@kvack.org
+Received: by mta10.migadu.com with ESMTPS id 7c2610fa89c3b119;
+	Mon, 02 Nov 2026 06:12:19 +0000
+X-Mizu-Trace-ID: 7c2610fa89c3b119
+X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain;
+	charset=utf-8
 X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 09/47] mm/rmap: handle device-exclusive entries in
- folio_referenced_one()
-To: "David Hildenbrand (Arm)" <david@kernel.org>,
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3901.200.71.1.16\))
+Subject: Re: [PATCH v2 07/12] mm: hugetlb_vmemmap: simplify shared tail page
+ handling
+From: Muchun Song <muchun.song@linux.dev>
+In-Reply-To: <sashiko-outbox-192874@kernel.org>
+Date: Mon, 2 Nov 2026 14:12:00 +0800
+Cc: Muchun Song <songmuchun@bytedance.com>,
+ Oscar Salvador <osalvador@suse.de>,
  Andrew Morton <akpm@linux-foundation.org>,
- Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
- Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
- Lorenzo Stoakes <ljs@kernel.org>, Kairui Song <kasong@tencent.com>,
- Barry Song <baohua@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>,
- Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
- Baoquan He <baoquan.he@linux.dev>, "Liam R. Howlett" <liam@infradead.org>,
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Kees Cook <kees@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
- Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>,
- Hugh Dickins <hughd@google.com>, Pasha Tatashin <pasha.tatashin@soleen.com>,
- Pratyush Yadav <pratyush@kernel.org>,
- "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>,
- Zi Yan <ziy@nvidia.com>, Lance Yang <lance.yang@linux.dev>,
- Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>,
- Alistair Popple <apopple@nvidia.com>, Nico Pache <nico.pache@linux.dev>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>,
- Matthew Brost <matthew.brost@intel.com>, John Hubbard <jhubbard@nvidia.com>,
- Peter Xu <peterx@redhat.com>, Will Deacon <will@kernel.org>,
- "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Nick Piggin
- <npiggin@gmail.com>, Oscar Salvador <osalvador@suse.de>,
- Minchan Kim <minchan@kernel.org>, Muchun Song <muchun.song@linux.dev>,
- Xu Xin <xu.xin@linux.dev>, Chengming Zhou <chengming.zhou@linux.dev>,
- Chris Li <chrisl@kernel.org>, Kemeng Shi <shikemeng@huaweicloud.com>,
- Nhat Pham <nphamcs@gmail.com>, Youngjun Park <youngjun.park@lge.com>,
- Gregory Price <gourry@gourry.net>, Joshua Hahn <joshua.hahnjy@gmail.com>,
- Rakie Kim <rakie.kim@sk.com>, Ying Huang <ying.huang@linux.alibaba.com>,
- Jason Gunthorpe <jgg@ziepe.ca>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- kexec@lists.infradead.org, linux-fsdevel@vger.kernel.org,
- linux-arch@vger.kernel.org, linux-cxl@vger.kernel.org,
- stable@vger.kernel.org, Josef Bacik <josef@toxicpanda.com>,
- Muhammad Usama Anjum <usama.anjum@arm.com>
-References: <20261031-fixes_core-v3-0-d6437171ecc3@kernel.org>
- <20261031-fixes_core-v3-9-d6437171ecc3@kernel.org>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <20261031-fixes_core-v3-9-d6437171ecc3@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 9925220003
-X-Stat-Signature: gebaz15jiusqzr11xwhyj9byewmkd1ee
-X-Spam-Status: No, score=-19.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	UNPARSEABLE_RELAY,USER_AGENT_SANE_1,USER_IN_DEF_DKIM_WL
-	autolearn=unavailable autolearn_force=no version=4.0.1
+ Mike Rapoport <rppt@kernel.org>,
+ Qi Zheng <qi.zheng@linux.dev>,
+ Lance Yang <lance.yang@linux.dev>,
+ James Houghton <jthoughton@google.com>,
+ David Hildenbrand <david@kernel.org>,
+ linux-mm@kvack.org,
+ Huacai Chen <chenhuacai@kernel.org>,
+ WANG Xuerui <kernel@xen0n.name>,
+ loongarch@lists.linux.dev
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <2D6DE4F4-8DB1-45D4-B076-36FE6714C575@linux.dev>
+References: <20261102032525.3597743-1-songmuchun@bytedance.com>
+ <20261102032525.3597743-8-songmuchun@bytedance.com>
+ <sashiko-outbox-192874@kernel.org>
+To: sashiko-reviews@lists.linux.dev
+X-Mailer: Apple Mail (2.3901.200.71.1.16)
+X-Rspamd-Queue-Id: 5537F160003
 X-Rspam-User: 
-X-HE-Tag: 1793599702-808965
-X-HE-Meta: U2FsdGVkX1/35LNuV/hBoq0YPEViBw+5LJKRAlTShIZZYHIE2HufpTD5MNFTah4oJz9/ZDNUKMDZ2mM6MARPRcWmpu0Ja9OIzAzR1HGQFZF9spUfoa+EpwvFi8o4FzIHV/nNAVIu6VPMECk2nCqfskLBayCYJ/jJ4kJEfNc6ec6qJDx6Dpq6LhBvLL7LkXfV1P+uOYXZt4D+s5nLN49xOpXZStcV08J0jbEQtMwPcJ6wKaiXBUD6T4yTHtG3TQI52I5GItV7BWBWf5Mzt+fVsBqGKEDFCVpfrcp/SuEfKRlhX3iH3kQm/cnZ2kaNg1OBIcGc0gI9RJ38/38hbHkMjdBKdPcBm/CNhxdn2dXfTbF7JstXNXhnsW+f0dol7ZBsb7s8IXM9ky986n7vYqAsAFohmMH4ibDxb4273mCweoto2GC/KKooKqGwSYt27bqLgX4NixgC6x+FD4LWMLOqo0iv+6JWlxl4OND8X9bqeQjDW36cFKtz8m2HrP5iiqKreACOduWGF5VfYF//A8A+nX69eS8VjwtfIURSkLI1RucPcAbteDjeKi0TBbQeoapynl2zGvjWQnm8L+15F1k8m0yCue9xFj9Zf03tk8EBnsuPAXX5l6tlrs2dxCDnMLtk6go/UORTw0TZM8o30TKzbZiAwPZ9TgkUbmPFjGdb7vccyDkYMNmp/wEpwZNjYRIE4Dw/NFz/2x3GC4W8t7rdz1gwAkE0R0rjVxniVAo4MiuXph2vQ4BXRvvQB4JvrKCiQSovWkRsp6RI7FicOCLx0Ucujb1eExV5V7BnzAxS3MpvxR+EZ3T1OPnHYJlI4ldwbL4Lt31vXPuSb6TVcG/0WniiVDtKILbsAzohGUhNcw1JbkUS7tTpiEp2NHNNvdJaNqztZf6YGdkL4Dw2jHJeZvUNDcIOHvxeLAq2m709YoBvdzVGdfRSVpjHX17PvMIiByzbMsLH2IfxYPfjeFn
- TXcpJ5bg
- fegPlxh3Pmi7fbSb32RYf43e8qDSvZ9O/S6nbUuuWZhaQKbe+ig1uXTzFa8U579isi/cdKEF3UjEtKr2Ixbh/Gadqa7QaiL5bpF1mQoxvv/x1AeHU866FYJdaLcEu2GLUQP6Z6QMo3Q0862c/QLXZRgZ0usMkzaOxgEyvfyrkxnV2pSl5mk2G8faGnUOWITxtXQ6LLgAltozTqYD61xvbt+KzS8PgZG/0ilTh3J95/Z07+s6R3ZwZqRUCiRtfSjElE3H4F6hABQ3pZbvfg9bj6VczP7q2Lr0/b5Ya6/7F0bpaZT4s2ysFok4vxq7ldS3ETcNMdsTEil4x00Z3CvJc7qIQf325a0+QLmRBpLvBX5M6cQ5sEoyh+8xkBsV7Ejsd6GoUMiIqoNqRTCA+HIkemPs5KONwOMwOowtQTKXmVwbs3s3bxGhd9JTm4l7OYdDszElBNeDN98BFSCoRflE/aYLBusBNPuKD4c0wSqcP3QUcFXPKiKmqRAdb/gWAWi8NoL1qdgFOE631LBwPRZnfCht8FokzOgl16CteetQrugBymDEdf1FZfVwM/g==
+X-Stat-Signature: anmgfw5rbiaygy6j6fjjj1be3im1yfix
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1793599941-878895
+X-HE-Meta: U2FsdGVkX1/CWgA+TaavQkWczfHIx9zUBfznrPwkrynMdr/AFY9c5Na4JrZ4P16fjnITihthDQPiv4D+Nuc7zPv/377fpfbpbhnP2QCQtoeSAMsaCX03qqQYlAacURa8UHGIKdLJVOmFu7xXfvPSRYpe4QEMJ+vIKDr+gPOXRq87Pd+OVojPQbBa67d5HtukdzqmLS85o3HEidqkakgapev1kSmvU7u5/hKpRgP4aWhda2+CNnn1ghVELx2KNRQ0iDi8nlISDX1r4QuIP74t5Nol7dHacooDJFcv1+SpjDxWIv92JHF2nvjYf6IV/wWiCct7oCx/sLudbN+P+Nt6Vbkybb112//+7te89TCHAhQ0AY8OWhtABhBH17+Tla6i5epRHQFtnI8QDwn+vaetBQatX0tClrjjxaUnhFH1kCMYypntGM2UaG3aE2rpgEZNsnrRfKY1mw3XMX7a5I59kW5A+ZqZ3IY5BmSoy8yTCPaDN6+nfYBZqwHpYMqRaAp3Rrfi1iP/NCAAK2C8br3OkKL0sY+7iebsCuEzDXHowZ0yLoX8gKxBnYEoZZJMUQIbK4KS0TkDQ51ejtYPsQzhnfekPUT2VFtZflTnyYFBFSj7uSG7pk1qt/3UcniPd+mWdfmZScQjGmQowQxlaMcqdZfAEcf0LLdnN4TSNtfp1tJ0f+5WcCGz3xl8/45KZmNCs8Z71DkTAEf+d06xLj7FqsLUOpzQDiGoNAzFQnEf/+FOpQZH+BxaiUNyr6a6cbr5mZHzPwePisV6k7Ed4MzmfGaKw+kvHQKA7Sb4KCIJMVvx/eAjnY/8uSPmgdRTnjQhJX8FmnuC6TsHZakCShUCPl7vevYQBEcU5OZn+J0qI9Lep+P5iTXseXCTKzm0lT8WFTVNNNcVq1nGhWS/j4OkhQCKKvABWU/ijhKJn+fqFis/M16VJ7Pprc7DEvxOeQTTTs1g7v2vvKwQJkqZJf9
+ FoUYhhk+
+ FoMnXRsEJzRYvFAQA0WyEoMJUy9ERnral4crcBegnlKzBeaUS2e3vMANmHrdMGS1hefD6AbgrPIH7g5FXPBonX4X0qnEWee0sAT4DMA3Q6pY9ckJ8b4a9NPIV5W+x+QA8t+oduElTvJv8YpFMlQMKbj+SN54ATnu/z6iUreDp3E6ZuX+ypzHiVvkiLmMdZrJQZGbPOMEZaXnNkz5BAeVQE7IXs1XvSzEq40q5Eo2axM/81Lw37DbQv+xVuwoBjvI2k44GR/k7YfpmWcG3CDo8TMlFuuqAxpXBcNSwk6lodk64w6FmqImTTYolB1apv6Hx8o8LPuuzanzkyLO36iOvLgjdIY2bCZqxT7TjPpUJuF/aLgjDs2g4jLeSU0PTTkayqV9zzBJWigoJC+ZXjHEMsHjxctvdqH/LTs6z
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -127,37 +109,237 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 
 
 
-On 10/31/26 5:39 PM, David Hildenbrand (Arm) wrote:
-> page_vma_mapped_walk() can return non-present device-exclusive entries,
-> but folio_referenced_one() passes them to PTE young-bit accessors that
-> require present PTEs.
-> 
-> We must neither call clear_flush_young_ptes_notify() nor
-> folio_pte_batch() with non-present entries. For example, clearing the
-> young bit on non-present PTEs can corrupt the entry: on arm64
-> PTE_AF overlaps the swap type, so clearing it turns a device-exclusive
-> entry into an ordinary swap entry.
-> 
-> folio_pte_batch() will VM_WARN_ON_FOLIO.
-> 
-> Apply the same approach as the previous fixes to e.g., damon_ptep_mkold():
-> treat these entries as old from the CPU's perspective and obtain their
-> young state through the MMU notifier.
-> 
-> Skip PTE batching and MGLRU look-around for non-present entries, and
-> don't modify non-present PTEs.
-> 
-> Fixes: b756a3b5e7ea ("mm: device exclusive memory access")
-> Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-> Cc: stable@vger.kernel.org
-> Reported-by: Josef Bacik <josef@toxicpanda.com>
-> Reviewed-by: Harry Yoo (Meta) <harry@kernel.org>
-> Reviewed-by: Barry Song <baohua@kernel.org>
-> Reviewed-by: Dev Jain <dev.jain@arm.com>
-> Tested-by: Muhammad Usama Anjum <usama.anjum@arm.com>
-> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
-> ---
+> On Nov 2, 2026, at 11:52, sashiko-bot@kernel.org wrote:
+>=20
+> Thank you for your contribution! Sashiko AI review found 1 potential =
+issue(s) to consider:
+> - [High] mm: hugetlb_vmemmap: uninitialized tail page read in =
+vmemmap_optimize_pte()
+> --
+>=20
+> commit 32511c4a4d8ec3d45e0f629f89666a78dc9372ee
+> Author: Muchun Song <muchun.song@linux.dev>
+>=20
+> mm: hugetlb_vmemmap: simplify shared tail page handling
+>=20
+> This commit removes the vmemmap_tail field from struct =
+vmemmap_remap_walk and
+> updates vmemmap_optimize_pte() and vmemmap_restore_pte() to derive the =
+shared
+> tail page directly from the folio being processed.
+>=20
+>> diff --git a/mm/hugetlb_vmemmap.c b/mm/hugetlb_vmemmap.c
+>> index 5e84004db4b87..d0af251aa533c 100644
+>> --- a/mm/hugetlb_vmemmap.c
+>> +++ b/mm/hugetlb_vmemmap.c
+>=20
+> [ ... ]
+>=20
+>> @@ -213,53 +211,53 @@ static struct page =
+*vmemmap_dup_page_from_list(const struct page *src,
+>> 	return dst;
+>> }
+>>=20
+>> -static void vmemmap_optimize_pte(pte_t *pte, unsigned long addr,
+>> -				 struct vmemmap_remap_walk *walk)
+>> +static inline struct page *folio_vmemmap_shared_tail_page(const =
+struct folio *folio)
+>> {
+>> -	struct page *page =3D pte_page(ptep_get(pte));
+>> -	pte_t entry;
+>> -
+>> -	/* Remapping the head page requires r/w */
+>> -	if (unlikely(walk->nr_walked =3D=3D 0)) {
+>> -		struct page *head;
+>> +	return vmemmap_shared_tail_page(folio_order(folio), =
+folio_zone(folio));
+>> +}
+>>=20
+>> -		VM_WARN_ON_ONCE(!PageHead((const struct page *)addr));
+>> +static int vmemmap_optimize_pte(pte_t *pte, unsigned long addr,
+>> +				struct vmemmap_remap_walk *walk)
+>> +{
+>> +	const struct page *page =3D (const struct page *)addr;
+>> +	const struct folio *folio =3D page_folio(page);
+>> +	struct page *src =3D pte_page(ptep_get(pte)), *dst;
+>>=20
+>> -		head =3D vmemmap_dup_page_from_list(page, =
+walk->vmemmap_pages);
+>> -		entry =3D mk_pte(head, PAGE_KERNEL);
+>> +	if (likely(vmemmap_optimizable_pfn(page_to_pfn(page), =
+folio_order(folio)))) {
+>> +		dst =3D folio_vmemmap_shared_tail_page(folio);
+>> +		if (!dst)
+>> +			return -ENOMEM;
+>> 	} else {
+>> -		VM_WARN_ON_ONCE(!PageTail((const struct page *)addr));
+>> -
+>> -		/*
+>> -		 * Map the shared tail page writable. A lockless get =
+that read
+>> -		 * a non-zero refcount before the remap can still do its
+>> -		 * cmpxchg after it. The refcount is zero, so the =
+cmpxchg
+>> -		 * fails and leaves the page unchanged.
+>> -		 */
+>> -		entry =3D mk_pte(walk->vmemmap_tail, PAGE_KERNEL);
+>> +		dst =3D vmemmap_dup_page_from_list(src, =
+walk->vmemmap_pages);
+>> 	}
+>=20
+> [Severity: High]
+> Can calling page_folio(page), folio_order(folio), and
+> folio_vmemmap_shared_tail_page(folio) on every PTE in =
+vmemmap_optimize_pte()
+> read uninitialized tail struct pages for bootmem gigantic hugepages?
+>=20
+> During early boot in alloc_bootmem_huge_page(), gigantic hugepages =
+mark all
+> tail pages [pfn + 1, pfn + nr_pages) with =
+memblock_reserved_mark_noinit(), so
+> memmap_init_reserved_pages() skips initializing their struct pages:
+>=20
+> mm/hugetlb.c:alloc_bootmem_huge_page() {
+>    ...
+> 	if (hugetlb_vmemmap_optimizable(h))
+> 		hugetlb_vmemmap_optimize_bootmem_page(pfn, =
+huge_page_order(h));
+>    ...
+> 	memblock_reserved_mark_noinit(PFN_PHYS(pfn + 1),
+> 				      (nr_pages - 1) * PAGE_SIZE);
+> }
+>=20
+> When a bootmem gigantic hugepage is not aligned to PAGES_PER_SECTION =
+(for
+> example, when nr_pages < PAGES_PER_SECTION, such as on 64-bit =
+LoongArch with
+> 16KB base pages where SECTION_SIZE_BITS is 29 and PMD_SHIFT is 25 with
+> CONFIG_ARCH_FORCE_MAX_ORDER=3D10), section_set_compound_order_range() =
+returns
 
-LGTM.
-Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+This issue does not occur with the default LoongArch configuration. For
+16KB base pages, LoongArch defaults ARCH_FORCE_MAX_ORDER to 11, which
+matches HUGETLB_PAGE_ORDER.
+
+The reported case requires manually overriding =
+CONFIG_ARCH_FORCE_MAX_ORDER
+to 10 while keeping HugeTLB enabled. This creates an **invalid =
+configuration**
+that Kconfig currently permits:
+
+HUGETLB_PAGE_ORDER	=3D 11
+MAX_FOLIO_ORDER		=3D 10
+
+LoongArch does not select ARCH_HAS_GIGANTIC_PAGE, so the generic MM code
+assumes that folios cannot exceed MAX_PAGE_ORDER. The forced =
+configuration
+violates that assumption and is already diagnosed by:
+
+	WARN_ON(order > MAX_FOLIO_ORDER);
+
+in hugetlb_add_hstate().
+
+Therefore, this is not a regression in a supported LoongArch =
+configuration,
+and I don't think this series needs to handle it. The proper fix is a =
+separate
+LoongArch Kconfig change preventing ARCH_FORCE_MAX_ORDER from being set =
+below
+the HugeTLB order when HugeTLB is enabled.
+
+Cc LoongArch maintainers.
+
+Thanks,
+Muchun
+
+> early without setting section->compound_page_order:
+>=20
+> =
+include/linux/vmemmap-optimization.h:section_set_compound_order_range() =
+{
+> 	unsigned long section_nr =3D pfn_to_section_nr(pfn);
+>=20
+> 	if (!IS_ALIGNED(pfn | nr_pages, PAGES_PER_SECTION))
+> 		return;
+>    ...
+> }
+>=20
+> In that case, sparse_init() allocates regular vmemmap pages via
+> memmap_alloc(), leaving them uninitialized (or filled with 0xff under
+> CONFIG_DEBUG_VM).
+>=20
+> Later, gather_bootmem_prealloc_node() initializes only the first
+> VMEMMAP_OPTIMIZATION_NR_STRUCT_PAGES struct pages (covering only the =
+first
+> vmemmap PTE), and prep_and_add_bootmem_folios() defers initializing =
+the
+> remaining tail struct pages until after =
+hugetlb_vmemmap_optimize_folios()
+> runs and fails:
+>=20
+> mm/hugetlb.c:gather_bootmem_prealloc_node() {
+>    ...
+> 		hugetlb_folio_init_vmemmap(folio, h,
+> 					   =
+VMEMMAP_OPTIMIZATION_NR_STRUCT_PAGES);
+> 		init_new_hugetlb_folio(folio);
+>=20
+> 		if =
+(vmemmap_optimizable_order(pfn_to_section_compound_order(pfn)))
+> 			folio_set_hugetlb_vmemmap_optimized(folio);
+>    ...
+> }
+>=20
+> mm/hugetlb.c:prep_and_add_bootmem_folios() {
+> 	/* Send list for bulk vmemmap optimization processing */
+> 	hugetlb_vmemmap_optimize_folios(h, folio_list);
+>=20
+> 	list_for_each_entry_safe(folio, tmp_f, folio_list, lru) {
+> 		if (!folio_test_hugetlb_vmemmap_optimized(folio)) {
+> 			hugetlb_folio_init_tail_vmemmap(folio, h,
+> 					=
+VMEMMAP_OPTIMIZATION_NR_STRUCT_PAGES,
+> 					pages_per_huge_page(h));
+> 		}
+>    ...
+> }
+>=20
+> Previously, __hugetlb_vmemmap_optimize_folio() derived vmemmap_tail =
+upfront
+> from the initialized head folio, and vmemmap_optimize_pte() checked
+> walk->nr_walked =3D=3D 0 without inspecting tail struct pages.
+>=20
+> With this change, on the second and subsequent PTEs (where addr >=3D
+> vmemmap_start + VMEMMAP_OPTIMIZATION_SIZE), page->compound_info in the =
+tail
+> struct page at addr has not been initialized by prep_compound_tail() =
+yet:
+>=20
+> 1. If the raw vmemmap backing pages are zeroed, page_folio(page) =
+returns page
+> itself rather than the head folio, folio_order(folio) returns 0, and
+> vmemmap_optimizable_pfn() returns false. vmemmap_optimize_pte() then =
+falls
+> back to vmemmap_dup_page_from_list(src, walk->vmemmap_pages) for every =
+tail
+> PTE, rotating the displaced vmemmap pages across the tail PTEs instead =
+of
+> mapping the shared tail page, while leaving HPG_vmemmap_optimized set =
+so
+> prep_and_add_bootmem_folios() skips hugetlb_folio_init_tail_vmemmap().
+>=20
+> 2. If CONFIG_DEBUG_VM is enabled, page_init_poison() fills the =
+uninitialized
+> tail struct pages with 0xff. _compound_head(page) then evaluates to =
+the
+> poisoned tail page itself, and folio_order(folio) reads 0xff, leading =
+to an
+> out-of-bounds shift in vmemmap_optimizable_pfn() and an out-of-bounds
+> node_zones access in folio_zone(folio).
+>=20
+> --=20
+> Sashiko AI review =C2=B7 =
+https://sashiko.dev/#/patchset/20261102032525.3597743-1-songmuchun@bytedan=
+ce.com?part=3D7
+
 
