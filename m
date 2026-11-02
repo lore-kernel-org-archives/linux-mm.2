@@ -1,67 +1,67 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 083F6606A326
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 07:14:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8778D606A326
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 07:25:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=pZZwpvVO
+	dkim=pass (1024-bit key, unprotected) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=nGRjMej1
 Received: by kanga.kvack.org (Postfix)
-	id 079B76B05B2; Mon,  2 Nov 2026 02:14:19 -0500 (EST)
+	id 8A2C56B00EF; Mon,  2 Nov 2026 02:25:28 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 02A396B05B5; Mon,  2 Nov 2026 02:14:18 -0500 (EST)
+	id 853C46B05B1; Mon,  2 Nov 2026 02:25:28 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E33AA6B05B7; Mon,  2 Nov 2026 02:14:18 -0500 (EST)
+	id 74C7B6B05B2; Mon,  2 Nov 2026 02:25:28 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id B87AA6B05B2
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 02:14:18 -0500 (EST)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 39B9B120A26
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 07:14:18 +0000 (UTC)
-X-FDA: 85389315396.26.427A95F
-Received: from out30-99.freemail.mail.aliyun.com (out30-99.freemail.mail.aliyun.com [115.124.30.99])
-	by imf06.hostedemail.com (Postfix) with ESMTP id C90E6180003
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 07:14:15 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=pZZwpvVO;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf06.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.99 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 452E06B00EF
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 02:25:28 -0500 (EST)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 8FD1FA8A1B
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 07:25:27 +0000 (UTC)
+X-FDA: 85389343494.15.7EED131
+Received: from out30-110.freemail.mail.aliyun.com (out30-110.freemail.mail.aliyun.com [115.124.30.110])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 69C97A0005
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 07:25:22 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=nGRjMej1;
+	spf=pass (imf25.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.110 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793603656;
+	s=arc-20220608; t=1793604325;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Qm2rnyse/ykhHOoe09sGuMes6K54FQWZVf+H4ljHjfM=;
-	b=u26jUC4RR3wQXfxdePMDEjvLAaxllpx0dFOcPMg1Npv0V8bEyqe0BA8dxf175+EVr0k1u8
-	cv41Y8yATlewIiJ8zhiumfPCxKVCta0Q4oWy7rrGh4YwhII0068RZekGlajfi2O8T+skLJ
-	xezot824FrFsbQ2aPpOtBkf8on4ky0I=
+	bh=FpzobxBA97ERHDZ10JHwpxS0fLfapgQK42Ay+O68OEA=;
+	b=6NPrBRa+4aGLKZBBR3v3vPr03+GHXb98paZTzKGWiG7eIbdKvzuMCn2UwL/mZUTy2gRNow
+	9S0ZSwnNIKz7Kjl9vcPzrj0GCrzpMTAM1ci/PHLVNUqYhhRBaeYQ+kYAjQWGaJGpYZroXR
+	C0jL8/3wfY3zWwcssnz6jxeFw09pGHE=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=pZZwpvVO;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf06.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.99 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
+	imf25.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=nGRjMej1;
+	spf=pass (imf25.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.110 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793603656;
-	b=GyhyMFL8dVKRf5hEtNj3k1NsAKfGNm3au87JZttWECNIaTWN/alV4hG9V+BP3BzyhevMIX
-	5UfS3BR7ehovEadPJrWnL8oMqfJXz/WDU0DTkubpbAfEHEXl+ME3WKateVcrRU8IyqTbZ/
-	GV7J12z97dbxFoyXlwwd96WFZadmHTc=
+	t=1793604325;
+	b=DFpIFyTJdT/Q7Vhsgm/b9v80Vg40uMPZ76p7w3ovRrWK8BQe768e3/gIZgLin5T23SvRzv
+	1kXi5NqLS8CAOjohe1R33vY4JfwV7eL1gDVkRBRI23/291XmTZCygPQirm28HcsicVO2UN
+	uKE6mwjYa9WLlHW5TTdyl0vAdlJxfhQ=
 DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=linux.alibaba.com; s=default;
-	t=1793603653; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=Qm2rnyse/ykhHOoe09sGuMes6K54FQWZVf+H4ljHjfM=;
-	b=pZZwpvVOA+uj8Hey3gxKpg914FcxtBCprAFnla7zr3dyAQUuxzoqHrpe26MhbQDCNPM8yoFXpIDWMoyD7pMs/tnTGW5+AV+MRJF7a5OSZwLpbbcuoyBfN66Z17SkJJv5tFYMy0aVFPpkwNEqiU3RWweXPl9HVpCG0EckPfQji5U=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R101e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037009110;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=66;SR=0;TI=SMTPD_---0XDv-BWP_1793603647;
-Received: from 30.74.144.167(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0XDv-BWP_1793603647 cluster:ay36)
+	t=1793604319; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=FpzobxBA97ERHDZ10JHwpxS0fLfapgQK42Ay+O68OEA=;
+	b=nGRjMej1VDjnviom9WxFvndQXutI4zAe7Kodx32ER39v/tArfi7sxKcpniFiQkS+zhEguCk0pc35Fobq3y5pwrl+Y4YZHpzpDr9AtWUHx5IDRUGognlcBYE5qYA/JqANrXhssR2EGLCcjuf376b+0PeKGHUUFNZ6ZXLDacgTlJU=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R171e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam011083073210;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=66;SR=0;TI=SMTPD_---0XDv5rjy_1793604311;
+Received: from 30.74.144.167(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0XDv5rjy_1793604311 cluster:ay36)
           by smtp.aliyun-inc.com;
-          Mon, 02 Nov 2026 15:14:09 +0800
-Message-ID: <72c3964c-1355-4272-b61c-5767f5591f43@linux.alibaba.com>
-Date: Mon, 2 Nov 2026 15:14:06 +0800
+          Mon, 02 Nov 2026 15:25:13 +0800
+Message-ID: <17e9d4c6-6ea4-4c3f-986f-a3775c591da3@linux.alibaba.com>
+Date: Mon, 2 Nov 2026 15:25:10 +0800
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 16/47] mm/khugepaged: fix PMD table lock leak in
- try_collapse_pte_mapped_thp()
+Subject: Re: [PATCH v3 17/47] mm/khugepaged: preserve dirty bits when
+ collapsing PTE-mapped THPs
 To: "David Hildenbrand (Arm)" <david@kernel.org>,
  Andrew Morton <akpm@linux-foundation.org>,
  Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
@@ -96,27 +96,27 @@ To: "David Hildenbrand (Arm)" <david@kernel.org>,
 Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
  kexec@lists.infradead.org, linux-fsdevel@vger.kernel.org,
  linux-arch@vger.kernel.org, linux-cxl@vger.kernel.org,
- Josef Bacik <josef@toxicpanda.com>, stable@vger.kernel.org,
+ Chris Mason <mason@kernel.org>, stable@vger.kernel.org,
  Muhammad Usama Anjum <usama.anjum@arm.com>
 References: <20261031-fixes_core-v3-0-d6437171ecc3@kernel.org>
- <20261031-fixes_core-v3-16-d6437171ecc3@kernel.org>
+ <20261031-fixes_core-v3-17-d6437171ecc3@kernel.org>
 From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <20261031-fixes_core-v3-16-d6437171ecc3@kernel.org>
+In-Reply-To: <20261031-fixes_core-v3-17-d6437171ecc3@kernel.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: C90E6180003
-X-Stat-Signature: u3ut6m67aojpxwwwknknf1izxgrtdeyc
+X-Rspam-User: 
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 69C97A0005
 X-Spam-Status: No, score=-19.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
 	UNPARSEABLE_RELAY,USER_AGENT_SANE_1,USER_IN_DEF_DKIM_WL
 	autolearn=unavailable autolearn_force=no version=4.0.1
-X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1793603655-821719
-X-HE-Meta: U2FsdGVkX19iiY3DY448w4AWSniFZHxOljrZD1CttOBsWU9gqHS8a4lH7VfiWyL9er35Bi+MJJzMeWhbQYyORNlxaPk84o8vUl8NOKERr3vuhjGCOkGJ0+CxTwVbUW3mUN6a3Dq3TFUL2zv/Fsh9C4Sm6hiItFNjJUe/of1qyF92nCLRNaKDyj8WHIB/dwXGwEjYw8i184+5jKvqOFlX8PT7gWhzGf4FNFMOtKT0wVyLDCBOklGjJh73rWjnSLSuBbMNM0fUOdGrGFh2CfK+zc8HCL8r5197UvgAsyWxl2dfqNrlrR1B9aCwJ2dNB9iTFCbmKQppUM27lg/5uctZjsurQfV040xKBFPkfC1MOIzP5481Giz2q3vQY3mHOzbDeDgjxP0fwJT8dkCwx4exaK1k4b0RFnOB8tc0VX5/Hmeoe7ABwGvif8eNddN3ssR23zvo+H9X5IRRaRk1DWphFRgS2WKk7F9222gn+ni2OXXYKZSuUvNTHXxXcw38H8Bjahp65wUgNupp6HjO739uqzwguAzGcG9e4bc9yrFbNOSMlDXhT0xeKxJejCRGrTusq4AKtzZ10TAEOKid9ypaw2YG+spINzfdcSrJ7uwLCZBu0Ee0zQsUDZMtu48w0mJjw3t12eRoKRMCeQ5IxZPWMi0sUqI7JaZQjmL9GbyVewX2Gbuj03MgXE95qBbGGy4l5c+kaVq+ACgnapSbt9ThRE9BE9WAuwqNy7ytkWM+n8Y9dOftybWM/gdi7z6Qr8Tuf3Jd/8vALl9hSSrsweP+IHR+YKIo4jgO+Avs047mbo0AZUQNdRrt6tTeHG634NLP7Do0/8skyPsurAXz/65VsWFowGZDt0Q9EF8l1mSOUkIAcQB6rEUvL2Vx4HRWpVpPYJ+LUOdqP4j6WGxCfNGL1tUPzZ1xPY2LhDyIYA5b2AGUrSlpoFo4wsGbSHJJH7rEoxIzbJK5LisE9EnmhjP
- bP6CLjPt
- V+zymrAWew8gm2EgCYFJzihztG+H89jlpkXCOL+18ZPjPl0Ytk2HeKT04lr/ldNgSmI8M8NVvNJDEoe2PDr4gyAq6EWefu8sgc6uWuFCKb9TgxJrz02Lto06qoELDUxpDDYxQyVvN79/y4HRbWaQXz6eDuM+XrgdbLZVjEAhFN4uXaNbQYlihHJbQ+cjmwLB9ue7GL7WqdXctk9D1ouCaK2umJMO2hDzp7kpYeNzh1fwOjC4obOTqiiJyGTCyUaklCJb8xTWKvQbWqSlF3ToXSVQV/orJsBfG9U5KAk/xYuBx4kQtSvYCwTIT04f50+7VunUvdIHOv+FpML9hZpYdh5W9FEa5AY8OJvWKKUCtwbpA24SbsqEC/eMS9yunHRYpQ9nWczRXfddPkAVUhckztFLMhaNC8iGspzSV9FLQgRNPUCzjXuPNocRTV5a8Tv2O59i124uIPR3qI3mipEO6WzLmxzylalZykIlxLXxsroboPXLZbasM0mlx5ULQIFiao0YuB4N71vEhBJKx/j5EpYyhDrbtnhtkftKkLAR8Hs9JDW0TEVhk9UCxejVbiaYAaxfRgp9l6MPKnYKMxK4RPJ9v8ukbR4eg3N1OyZYRhS4/UYikIjz6NK6VKQ==
+X-Stat-Signature: aoo14neipy743t73di17cthw5hmffz47
+X-HE-Tag: 1793604322-973320
+X-HE-Meta: U2FsdGVkX19xEYeFezbk1jeXMNnyrFr38SAKz0oGiJhe3OWtqDushZzc1ER+vn7x9APWmXcnw7WvWhzhW2XKuW+htj8A25hitQy4OAhxFUaVn3TetohviOpsZzMkMc57B6FC61C/XyYM2vYqDz8+pb5Bv/1z88qaju7xLydr9DfPd4UpNvkNbqv0g4QvhLld6Fsa2ClrE6LMRewuCJf29gZulrR6FVGs+JDi8FqyIGf33bLICCvqGy/fqGLRnpVw0c8RyfmddRJ+9xed2erU+8oJSbkYvbXskKATWr0MsE1rAaP5Nr3DZgbC5ixjeD7qn6t4/Ens/GpkuU/xC2a3JBMBdQoDn1snfkZfWtf1n22NmjHLKB+LLRJZf8gm+ZFYCeIcm5FgFSWzTFzm46EfgIaU6BQNxWTArAgioTPqE2BnUfvQh2y0xBkDHc4TaanldAS5iKYWeunFcNBVcRW+mqFJsg99Euz7lBbdiLseYuJ5s84VDZ86KzJO2Lc3MhDmcpV+yhZxd1cBSMLQLO9cB3MhMxpMULkWxWco9XuldUqMLNk7M//RBCn7IevhMFUlreHDskL8kiLwCn5oVXC0K2I0hZ+t8zJEwLS9L15F6jjnw/+ZTycspNGFDn5DwcH+Maxsx6s8SXFI4pJK0p1mVg9S+c9Vl5KtaPd3udxPqlOplp0F3sHl+oE87AJtnow9NhmnYLLO/6IX1A6W4p8JvfeyIgqC3VWAOVWwe9TbwL1lQ2PsL7x1nxJC8pQN354gGGbXNme99ClF5uP99jH3NeWn7evyC87o0Tkciu0YQoN8+Znyk34PvoPq/1CgqXV9ET++bTp+eCEKQklBHxT1bM6RElvT9D3g0cf2g9eHD1FKUtcZCluWckVVguXuXFF5GovP/EbeJ7vglHRnBoeG3Hx8ZgBeveu9TfkPiv54jWBfVQbhwH0rjxMIqSL0Yuy40BDSk8KRooZRHpND1RE
+ L+zpeUI0
+ 0CI+NW1wYVJ8hTPj92yxzFNUvC6O/uev7eBZYJZwpnph+z1U+TXKvNbI3BX882C6OUdgHp2l3TXuZA+wiLwG6eAkF4mU759LHMby9aFjeqk5Uqxy6epzL6o57CXkxtagl3DguPAUSKKaE338Oae6J06RVH2HYllFIoC6p/YEDvqCK+WUWi+VsttQjrYUEaPX1TRpJ823c1GxOSyIXu+PYPUABTdH/04ZNuOd6FcPzTluR8BaoTkqZJAWdRCxftnrGvB05ofU4BXdehc5Wp4P+PF95HXSCgc8BWz6enAQsRcWCmudsRXwEp7041blknZCm2Bgh3on7ResEQXhZoeezRBVS96tnhIg0a2/MBXe3Owt0LG8jf6nJl7IhDWSj9VF1iSPfKjbspw87DFE5kDSAk+mEhOjWB45PNWk5i0mNiE8AXs7Q4iey/YL8HL8WopulOBX2RM+L16aX6jiDjXd9NvRCnFsjo8rG4ycgpA0bD0neVkrMONhi004p1/04qrWPMf+MOGnT0gdjduw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -128,27 +128,33 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 
 
 On 10/31/26 5:39 PM, David Hildenbrand (Arm) wrote:
-> From: Josef Bacik <josef@toxicpanda.com>
+> From: Chris Mason <mason@kernel.org>
 > 
-> For a private mapping with userfaultfd, try_collapse_pte_mapped_thp()
-> takes the PMD table lock before it maps the page table for the second time.
-> If that (pte_offset_map_rw_nolock) fails, because the page table vanished
-> in the meantime due to concurrent page table reclaim, it leaves through
-> the abort label, where the PMD table lock is unlocked if it differs from
-> PTE table lock.
+> try_collapse_pte_mapped_thp() clears PTEs without transferring their dirty
+> bits to the folio. A shmem read fault can map a clean folio writable, so
+> a later store only dirties the PTE. Losing that dirty bit allows reclaim
+> to discard modified data.
 > 
-> In case the PMD table lock and the PTE table lock match, which is the
-> case without CONFIG_SPLIT_PTE_PTLOCKS after pte_offset_map_rw_nolock()
-> failed, we miss to unlock the PMD table.
+> The assumption that regular files are read-only is also obsolete since
+> commit 1b6444331bebb ("mm/khugepaged: enable clean pagecache folio collapse
+> for writable files"). In any case, transferring PTE dirty bits to the folio
+> when removing mappings (and while the folio is still mapped) is the right
+> thing to do.
 > 
-> To fix it, forget the PTE table lock when we unmap+unlock the PTE table.
+> Use get_and_clear_ptes() to collect the dirty bits and mark the folio
+> dirty before unmapping it. Update the comment.
 > 
-> Fix generated by an LLM and sent by Josef Bacik in private.
+> This was reproduced with shmem using MADV_COLLAPSE followed by
+> MADV_PAGEOUT.
 > 
-> Fixes: 6375e95f381e ("mm: pgtable: reclaim empty PTE page in madvise(MADV_DONTNEED)")
+> Fix generated by an LLM and sent by Chris Mason in private.
+> 
+> Fixes: 27e1f8273113 ("khugepaged: enable collapse pmd for pte-mapped THP")
+> Fixes: 1b6444331bebb ("mm/khugepaged: enable clean pagecache folio collapse for writable files")
 > Cc: stable@vger.kernel.org
-> Signed-off-by: Josef Bacik <josef@toxicpanda.com>
-> [ david: move the ptl = NULL handling; rewrite description, drop wrong comments ]
+> Signed-off-by: Chris Mason <mason@kernel.org>
+> [ david: adjust comment; simplify description; cover file-thp as well ]
+> Reviewed-by: Pedro Falcato <pfalcato@suse.de>
 > Reviewed-by: Gregory Price (Meta) <gourry@gourry.net>
 > Tested-by: Gregory Price (Meta) <gourry@gourry.net>
 > Tested-by: Muhammad Usama Anjum <usama.anjum@arm.com>
