@@ -1,140 +1,95 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 477C360A260D
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 13:04:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75114606A32D
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 13:13:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=KMTrcZLa
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=JO/gGD9e
 Received: by kanga.kvack.org (Postfix)
-	id 56E466B00EF; Mon,  2 Nov 2026 08:04:01 -0500 (EST)
+	id 92AA86B05B2; Mon,  2 Nov 2026 08:13:32 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5462D6B05C1; Mon,  2 Nov 2026 08:04:01 -0500 (EST)
+	id 8DBB26B05B3; Mon,  2 Nov 2026 08:13:32 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 45BE36B05C2; Mon,  2 Nov 2026 08:04:01 -0500 (EST)
+	id 7F0D16B05B5; Mon,  2 Nov 2026 08:13:32 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 230FB6B05C1
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 08:04:01 -0500 (EST)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 075AEC0CDD
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 13:04:00 +0000 (UTC)
-X-FDA: 85390196640.28.80CD912
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 051F620019
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 13:03:57 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KMTrcZLa;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf13.hostedemail.com: domain of devnull+joasantonio108.gmail.com@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+joasantonio108.gmail.com@kernel.org;
-	arc=pass ("kernel.org:s=arc20260519:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793624638;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	by kanga.kvack.org (Postfix) with ESMTP id 574B36B05B2
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 08:13:32 -0500 (EST)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 2F9FEC0CDE
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 13:13:31 +0000 (UTC)
+X-FDA: 85390220622.17.11EFE59
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 766481C0002
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 13:13:29 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="JO/gGD9e";
+	spf=pass (imf20.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793625209;
+	b=Sey7aAU9JN0PnkWCFeFqqKKQxeFY9q3jq6wi4bNck7T0omIyXNeJ4iHkoEFnot80NKdwu4
+	7gNDAz08kd/5HPbOv5PEAzh1wtq7qhhx/FhHDmjNGkpKhFMoRV0sCU+Z3FL47d4pOguIB9
+	+hgs+dnzZrWhzxvHy2B1Rtwe93gaK/k=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="JO/gGD9e";
+	spf=pass (imf20.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1793625209;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=gXkbMf8DM0d4yvmmrUjI+zueCqEc0hq6YJ+3++B1KPQ=;
-	b=rVooEio0fMIabdQ0wDyXRwRq+z5wSCZNdc5DyKFX8Hau8S66BnKK21gXxssmzA6io3aEFU
-	hCd6/XQjR+SMLnXFPcFodOX+edx6CE7nhrTpiubUCAx+2pdPTE9zFTQBINEVzypsHZPgTa
-	TmxtE0edG4cSyYRYaasDC7h0+2MAqps=
-ARC-Authentication-Results: i=2;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KMTrcZLa;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf13.hostedemail.com: domain of devnull+joasantonio108.gmail.com@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+joasantonio108.gmail.com@kernel.org;
-	arc=pass ("kernel.org:s=arc20260519:i=1")
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1793624638;
-	b=vnxwh6xZXQESVY5LO1h+D7LDv6HzEiH5ZOzUODqpNsS3HDoWGLq/0NhiNcrAwbVUYkf3uf
-	iE29zavHEisEo+ZVJg0eSKQ9jph3OyOBYwYz9lui4wVzE8u1sFYHNGJ7CGOE8NGUBoe24o
-	gJ6ZfDT9pdfOc6eKwSHNsx2UJDDrqko=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=Yvtg7UEHcDn0BhPld9BffcD6kymWDnPG5L08CfILpNQ=;
+	b=FCUf1ia16fh/ogmFT7oZq9Am05oeM1zOK0W70xyY+VsbZ0y/6km351hOxMR57VoL9GQlc2
+	0Bal6Aybh66eOqSTtQRYMUTXp7XsgmumTsa8bV70JHvQOvzqiI4soBL/CQE6P9QX7Z8DUQ
+	HWizFUDTZf5M0ZWXNjOipFj6m1S9FPE=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 757ED605ED;
-	Mon,  2 Nov 2026 13:03:57 +0000 (UTC)
-ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
-	t=1793624637;
-	b=Apk0F0l0z+Age4lGkpc5dfN+nye073H5lX7We+tbrmg8MlaIUFR6TC0CSfvrYlKMEHlE
-	 CyXTOOpR8Yt06QzTrbxPxo2l+e2rl82d5UQsTpjBfVueEpwfibIKmFkUygU1zpR1sTXST
-	 iyfDRE533PXac5O5PSCC03JYy8Xo6XvubuxN9NNKc0+EhSmf/Nqs9WscqxMOZJ1GUqWaP
-	 yzU9zcP+HDtDry0DG6lhf0oNVHITYM587tgH7urh0aHb/zoK0TviqcJIvprRcGmq6xu7a
-	 7nTfun2bnhzDVO5oGPOBq1/f2wYRfVRqz8dLl/pC5JKDJU6Hh0MU8sONR2ki9RkuLTA==
-ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
-	c=relaxed/relaxed; t=1793624637;
-	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
-	 Message-Id:X-B4-Tracking:To:Cc:X-Mailer:X-Developer-Signature:
-	 X-Developer-Key:X-Endpoint-Received:X-Original-From:Reply-To:
-	 Content-Transfer-Encoding;
-	bh=gXkbMf8DM0d4yvmmrUjI+zueCqEc0hq6YJ+3++B1KPQ=;
-	b=w11gawSgTHIpF9BnayxDICeTmn7bYnZGFONigLzMC43B9/Xq88Xyfxes0I7VAXYVYmBD
-	 gMhkGlQPApXLSJukQOJsUIUYc1lZUI0iHOlK8L/B6ei5XFpCKLrViAROCHg2vJ+Qq/0+c
-	 9w+Nu7itsuoZJ0KpTr7eysQof1p9d+NIGzb7tBFbDPn5FaokCPc9Kr4q4VoCXWFPoPHNj
-	 s1lSTBifAU9sC0IADpjeHp6pnrpY4uT5aC1xgRvlCgI46x5tBiVmHeV5+Anav9JtbH8PH
-	 Ljsniv7iESZUyEH6cqUkyds2EpKp4J5Jth02u9Jt6gKE5fcyQzXzTpfsWW3OpHxGEaA==
-ARC-Authentication-Results: i=1; smtp.kernel.org; 
-	arc=none smtp.remote-ip=100.80.115.77
-Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
-	(No client certificate requested)
-	by smtp.kernel.org (Postfix) with ESMTPS id 8737D1F00A16;
-	Mon,  2 Nov 2026 13:03:56 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 9C68C40B4F;
+	Mon,  2 Nov 2026 13:13:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDE751F00A16;
+	Mon,  2 Nov 2026 13:13:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793624637;
-	bh=gXkbMf8DM0d4yvmmrUjI+zueCqEc0hq6YJ+3++B1KPQ=;
-	h=From:Date:Subject:To:Cc:Reply-To;
-	b=KMTrcZLa4EeOwDolpCOhtcMcHP5jE5HJhdIPmS6cnZyPV8Milyuags4BU/g9SAWkk
-	 P8E2iZWKuSA7v26xrtPm7D8wkBSiAxGfWQBV9HMHROFr+g5ZIUU7C8lXh3PVfqJMxm
-	 lC9UIzkQ8DA5IGsSUWWUyDjncjxFLVas4xYS1w0PMJtoxWYhel15jJD9WOzyk1mkAC
-	 a4KdzQByr6WnzSXQ3xx5iauSebUUxG2kKqgZjSq2Jc6F4TKylgMC+t8vCdfJaJz9W7
-	 wqh+gvQ4BFfxcBMvUlW59DVc8fTknRTISzDCwrUQvN40xW23mKxaKyriNMAydYrcQ3
-	 040YnrD9KgGnw==
-Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
-	by lkml.kernel.org (Postfix) with ESMTP id D66F746519;
-	Mon,  2 Nov 2026 13:03:55 +0000 (UTC)
-From: Joas Antonio dos Santos via B4 Relay <devnull+joasantonio108.gmail.com@kernel.org>
-Date: Mon, 02 Nov 2026 13:03:56 +0000
-Subject: [PATCH v4] hugetlbfs: move hugetlbfs_free_inode tracepoint to
- ->destroy_inode()
+	s=k20260515; t=1793625208;
+	bh=Yvtg7UEHcDn0BhPld9BffcD6kymWDnPG5L08CfILpNQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=JO/gGD9ewHyz2SLuQSnWnv5SkRYnjW6Jlif4kKehidqN1K7Ls90VV+U9KAKZIAX7q
+	 I68srTMzUM/97p9GI4YCKRv+h2VcTO1HFSKU5iLgqQH/1KhZn/bImVB8RnGEUwGkuR
+	 j9ZuAHOca+gT5pcdFkG2v1PqNoqpqWzgQzUa892tURhDbsdXJ4vWvXEL9swBYlIdCm
+	 ygLFkZxPMK+1eDYPrerqdItygGbXfPvJDCRnSR+bQOxzPIbDTuMSv7T0uf6cUMwaVz
+	 Q3MNvnI4nJxN/nWFEqeuQGh1hU6ksvsx4fD01hsq0nNa2P59pjXg3az+vM/YmLn7gP
+	 A7qEIsD2DHJ3A==
+Date: Mon, 2 Nov 2026 13:13:23 +0000
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: Josef Bacik <josef@toxicpanda.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, David Hildenbrand <david@kernel.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
+	Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, linux-mm@kvack.org, 
+	stable@vger.kernel.org
+Subject: Re: [PATCH 1/6] mm/mremap: fix hugetlb reservation leak on partial
+ move
+Message-ID: <auiJW4jzNs76F90O@gremlin>
+References: <20261030-b4-mremap-pre-split-v1-0-c1829811aed0@toxicpanda.com>
+ <20261030-b4-mremap-pre-split-v1-1-c1829811aed0@toxicpanda.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Message-Id: <20261102-b4-hugetlbfs-trace-v4-1-72371825bb5e@gmail.com>
-X-B4-Tracking: v=1; b=H4sIADuK6GoC/33Nyw7CIBCF4VdpWIuZKfSiK9/DuAA6tCS9GKhE0
- /Tdpd3owrj8TzLfLCyQdxTYOVuYp+iCm8YU8pAx06mxJe6a1CyHvEQQyLXk3aOludc28NkrQ1x
- I1ELUSheVZunw7sm6545eb6k7F+bJv/YfEbf1LxeRI5dk6gZyJcCYSzso1x/NNLCNi+JDIPwmR
- CKgQF1haeUJ7Dexrusbr4LkXfcAAAA=
-To: Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
- David Hildenbrand <david@kernel.org>
-Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
- Hongbo Li <lihongbo22@huawei.com>, linux-fsdevel@vger.kernel.org, 
- linux-kernel@vger.kernel.org, 
- syzbot+91e1fc35f51774c479b2@syzkaller.appspotmail.com, 
- stable@vger.kernel.org, Joas Antonio dos Santos <joasantonio108@gmail.com>
-X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1793624635; l=4611;
- i=joasantonio108@gmail.com; s=20261031; h=from:subject:message-id;
- bh=KamqvAmHDg6o0N+fTVEMDXuwIqsclHfnbjLf5BnFAeI=;
- b=6KI19Vg+bAxiED0JqPw6cBQwYlbwj43osrwBDrFjsM/YfY07REwyxhqBR4n5b2oqe015nw9Cy
- T6PsmCPy7HUCpwFtBSgbCWDiiT3HPmtT6UUve/QpoSglPtcB7gNcinv
-X-Developer-Key: i=joasantonio108@gmail.com; a=ed25519;
- pk=ZxAznJT/FcPPdzLrDDFJQm4LLjjHVGBBqDSG3TXS23w=
-X-Endpoint-Received: by B4 Relay for joasantonio108@gmail.com/20261031 with
- auth_id=1371
-X-Original-From: Joas Antonio dos Santos <joasantonio108@gmail.com>
-Reply-To: joasantonio108@gmail.com
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 051F620019
-X-Stat-Signature: bbjeni7fmedf1kjm3qze95pazonkeyp9
-X-Rspamd-Server: rspam06
-X-Spam-Status: No, score=-16.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,FREEMAIL_REPLYTO_END_DIGIT,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
-	autolearn_force=no version=4.0.1
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261030-b4-mremap-pre-split-v1-1-c1829811aed0@toxicpanda.com>
 X-Rspam-User: 
-X-HE-Tag: 1793624637-291488
-X-HE-Meta: U2FsdGVkX182ydNyyJifv+nhz0tDv83MAE/DDVXN3LWbbGbnzEkuU6Rdhf3Hzm3tVsB3Yg6X72DY6r1KvM+rv+5GqekcU/kq7OKg37e3Ehc2iFCAWNPQKIfCyqYNvUs1FdWsDOdIG9vRt7ayduKab0nUAFh16b8h64KK3ZZukK1qRBMxVdR8dwKhoD3mDikkaeca37o69zYYBXhIYYJKWuI61ILLql/q7T5GEXzs9lgKiQsGbRW2PwbceWerXOL9CZpbMHyW5fv1dl5bJ+hV9RBaZi5WTUQLVfjKFuLOhoLLFf+zEdOWDC6wL7Wu9xzFL79qDsHapAWvAjX8DzNUyD9owRm18zKKb4yZaDfEBIdSzOAblMxV8RtJQUsTERRc9u9IP5LGs41buvUfHpg3UiG/JndSiO0TWktU09228E3nKW1Xf86sbD9JJdbPUdvXkkQ+1MhMkMXfHALwrVkRR1haxbTF3FaEYjsV7zySayDDPECsUE2gOXiuYA0gId2wyT4vc0oVzeadgl4acF7AUtxNpG1HcsDNvPHVHnTsY02I57DYSnBQ8tH0XD8w1b2JpBe0S2uaMzXhKWZXdRYnFW+n4Hdh7Cck8hT9Jd7KaWZ7/8DSH7kB1tFVmiQXJtPk/rlaDYeGkL4n4WvHTzMQouy87HgKZrXWhSbXY2gszJ9ylhrgCwdTjXJ3kwx4MhNmq80elG1vMvneQSorQcTmQNhsLBf06LER3HEehzqJhS3v9wUswvHiOlP5HPy8VD77RJ/W7z73g7lcgIXsYzpDjN7p5u+h4H7bnqGyrNcqfAthHnMPsOdH4jBVolzzA3MSgtZt0ds27vFMrZlg9qRO4bW8SwXRRGJrK2i0xRiADvicyZgHi5cRFzYjtYj1c9Ii8NIYMiF2AZE4FtdaYJPkqVZbAQ263wC/oTfO7mIRa3mludP1KUF7WACenUQrlhcPQ4ZveigBZgMq3hZohyp
- 9swPatxp
- BoCX5bY+pCKPSJe4irtiavT5zMocnM1UGZ0N4wG/V2sBAkbCM3fyatf6SLZP6FmZgxqYVLfkvV8TOlBNUiIBliS9Iz5wjQObScpPExkHPf54BrvJUy2HSORPPaHUwW0voatPQqXd5t3y6eJ51PqicYy7tqnNUBOYNilQLtuXRbPCK75fi+yvR9OyKMivvEFD2ACUUyoSJGpY2Pr6ClBUC4IndNwppOAj6wJfVqgs5BOi9L6kF3P5cWkWSN2fOz+X7V4yZEpkfENvDEd9jjsMISJnM21oNvf+TmCaM0Ihs8TJs/shFZ72NlPCJLTSsplv8qJjtgwcz6pczhpgXPxCPL3rSfEQoOywP9xF3FLKaJYjgb48OXOv3SqCBYy+InKLDyp7WCtomi6ebdrkIpQIulwgf75omTk1kFGl9/9KyBm6xUmzbx+2+t6aWh2FzeRT9NYyibDRAENkDGJodaU41bHC0idtItcwlYhrcfKeuRGZdLmqT//1zZ4obdiI7vnaFCNPUZX/mKh9MDbO36nG1So6fXS9606y+HSIDmEacXa3yowsMZ2+WHLgAq9SMR5ngB8Goaj5N2YORRBzQGDwXlTqAC+tZGMQLnyzNsLoAQr3q3C4b+RhsKorUam9lq/2c0AJWacTinsCCm5Y5mV0vd05Mtv7wzKxjSDvHMWr2uG+OYoxTluNoDyEvWmb8Na5CnqMuNsNKNDwhZVJ81fqj3Lhmq6WnscTDPmgMgyz8UfT4jtrxIYOh0Lmu8Kn+Ua21DESe2PO2cBXE2CNKE2Hjdep9vWY7LQ7X6aqw9slgPTF88nMM0oFdy4wfmAYZHYL+uOB2
+X-Rspamd-Queue-Id: 766481C0002
+X-Stat-Signature: ueha8u3hkdutrxbozwd5yfrdaceipiq1
+X-Rspamd-Server: rspam01
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1793625209-368251
+X-HE-Meta: U2FsdGVkX1+UXfurNLiZmJO7ar9/WD7kWGiHY9Srq7H3TeqSYwNeVyQ12blG5bAKzcdxSxXZmDl5RHL788S/JdBcOYvcVfBl3wYzpoe0/9/DNdsaV3gt8FOFq2wQ+XdbpS5gG2Wh7r1ZGb7EwzNqR6LtapsTMhMQZB+KrNgzhxoI0GMuRtvgPJkr8OE6vcRgjSp1WVywV6kDhgazlm4Mvw8BwKtXtE4ID1nMXdWlP0dp7qXx61J7MwBeC3Yd71CJoA157FKOa+Yz5v767rqkkZEy1LJVVUuZ1g74LnTIZS6FW7i5lLenGwx/u+2axeYyF09VNAROrZtVXwXK1M2aLn1MnwpVadZ2xtg2WlUgRAONKsk+IxP4AO0n6TYeKNzvc1i4d0bW+SR1c73qtX9QAMKBZ2ZwF7jbHpWt4woKJ5FWegU5V2oS/XdzEZ9qdoHWjEs3kWlVlqGPJQ3QQTVW44c6HdoN0T8q1snBiYt9r4gQhrWSNhGNkM6IdIyR8dThMcb7r17YJVo7L1WfNvcL4nDZ65Kg3oiqxfUdKCIHgV6BpH22KE3CQDBbPKU31dTQuChoALcpXKHwbQLwSdA/GzDxxhc8QlgRfHzsSfhEm86G33dKoOmSVP7dJGWb4g6KR4PKQVWCXbrT5iLFjjmIUmdBEoNHlA2v4x7oEJt0O6vBaqL4ewBD4Ijba9K4o7QRW/nb/LzF4+02fhhlJf71VA52eJa3J+x44S0zyBIfnyOKjz7iQaJTtV51u4Va6sm3Gk5rl+ydLjhIWwNqROiX5ES/b/iCSwGIhnEZLUlcG6wTeCl60pENLscJHVF9HlRrfbkC4vk2r3XFseB3YMul1PL2gN3yGA7ZAYGqCiRfglutOcUUuxdEUTcqP8J8SXfWe2jkMB09th+Q/gqiUoLErOHG18ss1kwxZdzO1aB1+lHr3tXGI1oAcbeXe4skiTOwC2h7AOsygqPmCLcUPMD
+ qUN075uX
+ VO4ULuKrdPA9VUrMdASn29tKgdPcBJji9qDe6ru1q+iLUu/bMFbHqBIqF0K4hsXRg22MOeNYZJNx5qjjS9bOBMS0ORVDHUldfUlJV3GXWDnQiR+rP0Rop0+pujEofbiROGS4bdX82NWz6dczoX6WCp2bZHdB8tg+gChBWmnXcvhOH7WQIn3faL5vhQHrW3NyzWEQFnJQsQMhqv510O0ip0Zco06uGOpzEvPTZVCvh8G0gqEERJ8QtMRjwTwGZ41EJCLujtWYUEEjHw5DIKEiJ9XV+5mo3bVLjDFv2f7M33jF76NsJO+RAw6HiUvk3Lg37UpngHRSHwrlrhaNFEuUCA7lsKQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,120 +98,128 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-From: Joas Antonio dos Santos <joasantonio108@gmail.com>
+On Fri, Oct 30, 2026 at 02:42:46PM +0000, Josef Bacik wrote:
+> Moving a part of a private hugetlb mapping with mremap() leaks the huge
+> page reservations of the parts that stay. They are not returned when the
+> mapping is unmapped, when the process exits or when the pool is resized.
+>
+> fixup_hugetlb_reservations() takes the reservation map away from the old
+> VMA while that VMA still spans its whole range, because the moved part is
+> only split off by the unmap at the end of the move. hugetlb_vm_op_close()
+> then finds no map in the parts that remain and returns nothing for them:
+>
+>     mmap() of 4 pages, MAP_PRIVATE | MAP_HUGETLB    HugePages_Rsvd: 4
+>     mremap() of the second page to a new address    HugePages_Rsvd: 4
+>     munmap() of all of it                           HugePages_Rsvd: 3
+>
+> The source is unmapped in this case, so the number of VMAs ends up where it
+> did before and the check against sysctl_max_map_count stays as it is.
+>
+> Fix by splitting a hugetlb VMA in prep_move_vma() before a part of it is
+> moved, as commit 597e4b9ab48a ("mm/mremap: fix locked_vm leak by splitting
+> VMA for MREMAP_DONTUNMAP") does for an mlock()'d VMA. A backport needs that
+> commit, which is tagged for stable itself.
 
-hugetlbfs_free_inode() calls trace_hugetlbfs_free_inode(), and the
-hugetlbfs__inode event class records inode->i_sb->s_dev.  ->free_inode()
-runs from an RCU callback (destroy_inode() queues i_callback() with
-call_rcu()), and Documentation/filesystems/porting.rst says that this
-callback "is *NOT* ordered wrt superblock destruction; as the matter of
-fact, the superblock and all associated structures might be already
-gone".  put_super() frees the superblock with call_rcu() followed by a
-workqueue item (destroy_super_rcu() -> destroy_super_work()).  syzbot
-hit this with the event enabled:
+Ack, that one goes back to 5.7 in theory, this one 5.16 so all good.
 
-  BUG: KASAN: slab-use-after-free in trace_event_raw_event_hugetlbfs__inode+0x45b/0x4c0 include/trace/events/hugetlbfs.h:36
-  Read of size 4 at addr ffff888038850010 by task syz-executor952/6134
-   hugetlbfs_free_inode+0x15e/0x1f0 fs/hugetlbfs/inode.c:1182
-   i_callback+0x46/0x80 fs/inode.c:317
-   rcu_do_batch kernel/rcu/tree.c:2650 [inline]
-   rcu_core+0x5f0/0x1220 kernel/rcu/tree.c:2919
-  Allocated by task 6134:
-   alloc_super fs/super.c:326 [inline]
-   sget_fc+0x1ba/0x1f60 fs/super.c:874
-   hugetlbfs_get_tree+0x1e7/0x2b0 fs/hugetlbfs/inode.c:1431
-  Freed by task 855:
-   kfree+0x22b/0x6d0 mm/slub.c:6923
-   process_one_work+0xac7/0x1b10 kernel/workqueue.c:3495
+>
+> Fixes: 550a7d60bd5e ("mm, hugepages: add mremap() support for hugepage backed vma")
+> Cc: <stable@vger.kernel.org>
+> Signed-off-by: Josef Bacik <josef@toxicpanda.com>
 
-Emit the event from hugetlbfs_destroy_inode() instead.  destroy_inode()
-calls ->destroy_inode() synchronously, before it queues the RCU
-callback, while the superblock is still alive; hugetlbfs_destroy_inode()
-already dereferences inode->i_sb there.  ->free_inode() is left with
-only the kmem_cache_free().
+Some nits below but LGTM, so:
 
-Since the event no longer fires from ->free_inode(), rename it to
-hugetlbfs_destroy_inode so that its name matches where it is emitted,
-as suggested by David and Muchun.
+Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 
-Found by syzbot; analysed and tested with the syzbot C reproducer on an
-arm64 KASAN kernel.
+> ---
+>  mm/mremap.c | 28 +++++++++++++++++++---------
+>  1 file changed, 19 insertions(+), 9 deletions(-)
+>
+> diff --git a/mm/mremap.c b/mm/mremap.c
+> index 0d06d7f37f19..cf746bafdee4 100644
+> --- a/mm/mremap.c
+> +++ b/mm/mremap.c
+> @@ -1038,7 +1038,7 @@ static void vrm_stat_account(struct vma_remap_struct *vrm,
+>  }
+>
+>  static bool __check_map_count_against_split(struct mm_struct *mm,
+> -					    bool pre_split,
+> +					    bool source_stays,
+>  					    bool before_unmaps)
+>  {
+>  	const int sys_map_count = get_sysctl_max_map_count();
+> @@ -1092,14 +1092,15 @@ static bool __check_map_count_against_split(struct mm_struct *mm,
+>  	 */
+>  	map_count += 2;
+>
+> -	/* If pre-split, the -1 observed above doesn't apply. */
+> -	if (pre_split)
+> +	/* If the split off source stays, the -1 observed above doesn't apply. */
+> +	if (source_stays)
+>  		map_count++;
+>
+>  	return map_count <= sys_map_count;
+>  }
+>
+> -static bool needs_pre_split(struct vma_remap_struct *vrm)
+> +/* Is the source range split off its VMA, to then stay mapped? */
 
-Fixes: 014ad7c42a69 ("hugetlbfs: use tracepoints in hugetlbfs functions.")
-Reported-by: syzbot+91e1fc35f51774c479b2@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/6ae27525.5451848c.f7707.0001.GAE@google.com/
-Suggested-by: David Hildenbrand <david@kernel.org>
-Suggested-by: Muchun Song <muchun.song@linux.dev>
-Cc: stable@vger.kernel.org
-Reviewed-by: Muchun Song <muchun.song@linux.dev>
-Signed-off-by: Joas Antonio dos Santos <joasantonio108@gmail.com>
----
-Changes in v4:
-- Drop the comment in hugetlbfs_destroy_inode(), the new event name
-  makes it clear where it fires (Muchun).
-- Add Muchun's Reviewed-by.
+NIT, but slightly awkward wording. Honestly I think we can just do without a
+comment here, the name self-documents, and the hugetlb 'stuff' is documented in
+the comment below.
 
-Andrew, this replaces
-hugetlbfs-move-hugetlbfs_free_inode-tracepoint-to-destroy_inode.patch in
-mm-hotfixes-unstable; the only code change from v3 is the removed
-comment.
+> +static bool split_source_stays(struct vma_remap_struct *vrm)
+>  {
+>  	/*
+>  	 * An MREMAP_DONTUNMAP of a mlock()'d VMA needs to unlock the
+> @@ -1109,11 +1110,23 @@ static bool needs_pre_split(struct vma_remap_struct *vrm)
+>  		vma_test(vrm->vma, VMA_LOCKED_BIT);
+>  }
+>
+> +static bool needs_pre_split(struct vma_remap_struct *vrm)
+> +{
+> +	/*
+> +	 * fixup_hugetlb_reservations() takes the reservations away from the
+> +	 * source VMA.  The parts of it that do not move have to keep theirs.
+> +	 */
 
-Changes in v3:
-- Rename the tracepoint to hugetlbfs_destroy_inode in the same patch, so
-  its name matches where it now fires (David, Muchun).
+If only we could swear in comments... :)
 
-Tested with the syzbot C reproducer on an arm64 KASAN kernel with the
-renamed event enabled: no splat in 3 of 3 boots, and
-hugetlbfs_destroy_inode events are recorded.
+> +	if (vma_is_hugetlb(vrm->vma))
+> +		return true;
+> +
+> +	return split_source_stays(vrm);
+> +}
+> +
+>  /* Do we violate the map count limit if we split VMAs when moving the VMA? */
+>  static bool check_map_count_against_split(struct vma_remap_struct *vrm)
+>  {
+>  	return __check_map_count_against_split(current->mm,
+> -		needs_pre_split(vrm), /*before_unmaps=*/false);
+> +		split_source_stays(vrm), /*before_unmaps=*/false);
+>  }
+>
+>  /* Do we violate the map count limit if we split VMAs prior to early unmaps? */
+> @@ -1162,10 +1175,7 @@ static unsigned long prep_move_vma(struct vma_remap_struct *vrm)
+>  	if (err)
+>  		return err;
+>
+> -	/*
+> -	 * To account mlock()'d pages correctly in the MREMAP_DONTUNMAP
+> -	 * case perform any split ahead of time for an mlock()'d VMA.
+> -	 */
+> +	/* Perform any split ahead of time if the source VMA has to be distinct. */
 
-Tool-use note: the analysis and testing were done with help from an
-LLM-based assistant; I reviewed the change and ran the tests myself.
+Nice reduction in comment size too :)
 
-v3: https://lore.kernel.org/all/20261101-b4-hugetlbfs-trace-v3-1-051b716f490f@gmail.com/
----
- fs/hugetlbfs/inode.c             | 2 +-
- include/trace/events/hugetlbfs.h | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+>  	if (needs_pre_split(vrm)) {
+>  		VMA_ITERATOR(vmi, vma->vm_mm, old_addr);
+>
+>
+> --
+> 2.55.0
+>
 
-diff --git a/fs/hugetlbfs/inode.c b/fs/hugetlbfs/inode.c
-index 01c4d6f44ebe..f0be8edb3517 100644
---- a/fs/hugetlbfs/inode.c
-+++ b/fs/hugetlbfs/inode.c
-@@ -1179,12 +1179,12 @@ static struct inode *hugetlbfs_alloc_inode(struct super_block *sb)
- 
- static void hugetlbfs_free_inode(struct inode *inode)
- {
--	trace_hugetlbfs_free_inode(inode);
- 	kmem_cache_free(hugetlbfs_inode_cachep, HUGETLBFS_I(inode));
- }
- 
- static void hugetlbfs_destroy_inode(struct inode *inode)
- {
-+	trace_hugetlbfs_destroy_inode(inode);
- 	hugetlbfs_inc_free_inodes(HUGETLBFS_SB(inode->i_sb));
- }
- 
-diff --git a/include/trace/events/hugetlbfs.h b/include/trace/events/hugetlbfs.h
-index 8ba72c1d4f4d..a7932e0db0f8 100644
---- a/include/trace/events/hugetlbfs.h
-+++ b/include/trace/events/hugetlbfs.h
-@@ -72,7 +72,7 @@ DEFINE_EVENT(hugetlbfs__inode, hugetlbfs_evict_inode,
- 	TP_ARGS(inode)
- );
- 
--DEFINE_EVENT(hugetlbfs__inode, hugetlbfs_free_inode,
-+DEFINE_EVENT(hugetlbfs__inode, hugetlbfs_destroy_inode,
- 
- 	TP_PROTO(struct inode *inode),
- 
-
----
-base-commit: c339f4010dea8b0d754f84ace70cd1b089878ef8
-change-id: 20261031-b4-hugetlbfs-trace-341b338ab57b
-
-Best regards,
--- 
-Joas Antonio dos Santos <joasantonio108@gmail.com>
-
-
+--
+Cheers, Lorenzo
 
