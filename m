@@ -1,150 +1,140 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51428606A92D
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 18:05:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78169606A324
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 18:11:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=google header.b=WyKhbaEO
+	dkim=pass (2048-bit key, unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=google header.b=ZTAz20uq
 Received: by kanga.kvack.org (Postfix)
-	id BC1D76B00EF; Mon,  2 Nov 2026 13:05:55 -0500 (EST)
+	id 7FB436B00EF; Mon,  2 Nov 2026 13:11:16 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B4B256B05B1; Mon,  2 Nov 2026 13:05:55 -0500 (EST)
+	id 7AC126B05B1; Mon,  2 Nov 2026 13:11:16 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A12006B05B2; Mon,  2 Nov 2026 13:05:55 -0500 (EST)
+	id 69CB36B05B2; Mon,  2 Nov 2026 13:11:16 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 7277F6B00EF
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 13:05:55 -0500 (EST)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id EC45AA01CE
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 18:05:54 +0000 (UTC)
-X-FDA: 85390957428.07.199B2AF
-Received: from mail-lf1-f47.google.com (mail-lf1-f47.google.com [209.85.167.47])
-	by imf17.hostedemail.com (Postfix) with ESMTP id B40E34000D
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 18:05:52 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=google header.b=WyKhbaEO;
-	spf=pass (imf17.hostedemail.com: domain of torvalds@linuxfoundation.org designates 209.85.167.47 as permitted sender) smtp.mailfrom=torvalds@linuxfoundation.org;
-	dmarc=none
+	by kanga.kvack.org (Postfix) with ESMTP id 402EF6B00EF
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 13:11:16 -0500 (EST)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id BEBD4A01EE
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 18:11:15 +0000 (UTC)
+X-FDA: 85390970910.10.89C9ED7
+Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
+	by imf03.hostedemail.com (Postfix) with ESMTP id E217B2000A
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 18:11:13 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=ZTAz20uq;
+	dmarc=pass (policy=quarantine) header.from=suse.com;
+	spf=pass (imf03.hostedemail.com: domain of mhocko@suse.com designates 209.85.221.41 as permitted sender) smtp.mailfrom=mhocko@suse.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793642752;
+	s=arc-20220608; t=1793643074;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/vXXDZI2TLqXD/tqTZGHj/cF0YcMq0fXP1TpWYkM2ME=;
-	b=PJfBlnoSvAnqoS3JufhY0eZaKnZNZr9idXWBkB0xJGS0xx000vwaN+9HDGXXV3x6fgYf5l
-	G1Sxnv9Ygpko2AIOf/9OFVy2aWzNqyvCIdRh85f3M/RL3fbpduPSJ7+1VvNsV8OYI6tDHF
-	ULSqxIU6MehbU4pW6AADfbrbJDQbtbI=
+	bh=aQruTCC5hEy9EJEA7VtNTy/+BSL1Xc1NZBa6W4LKkR0=;
+	b=xZR3NdORrmFV2Nsx4e4VSNELXbjRbLhwFUTTC3oVjgU+7t6NzePDT16J0Nisv3vsu9oVIU
+	OWvK+DaJuCrAXJYMnL6qVlY+HxboZ39xta7n0DqQuJ5VkMEesgGg0T3Avcgaut1StqYAr2
+	ezYbp2JgGfsJL0INKdQn2upeyL5R13g=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=google header.b=WyKhbaEO;
-	spf=pass (imf17.hostedemail.com: domain of torvalds@linuxfoundation.org designates 209.85.167.47 as permitted sender) smtp.mailfrom=torvalds@linuxfoundation.org;
-	dmarc=none
+	imf03.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=ZTAz20uq;
+	dmarc=pass (policy=quarantine) header.from=suse.com;
+	spf=pass (imf03.hostedemail.com: domain of mhocko@suse.com designates 209.85.221.41 as permitted sender) smtp.mailfrom=mhocko@suse.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793642752;
-	b=Cewp9/o1GVJwydXgJg4rWH+A1fs4Kyyk3pNsAJB9HQdcBt4ldeGgw0bIur5lnRX2AUbkmn
-	OFhN9UF6yp3rFIMvoJ/4qpJ8yE9jxx5kqOgsMMQPDJX0lD1XFukoPGszJ6GvXE6mGke3Oh
-	LK2zXG51LRRkVYxKxe/kjDw5zN/HoYA=
-Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-5be4fea434bso3801937e87.1
-        for <linux-mm@kvack.org>; Mon, 02 Nov 2026 10:05:52 -0800 (PST)
+	t=1793643074;
+	b=RbKqfA0uzyAKc+fQZqmkrE1VT5CUjrrV/75B+h0T1zjTkGfZOp/9zUAzahlUEdiBFEa7j1
+	hZ/VqpffcA8Pluya08IDTZm8N1CgZ6DnV5ttzToWx5DqtDxCzgsJ8TuovXNx/pmNr44J+V
+	ulKl+HAJa8+EKIKo/CR3vVNId+S4WE4=
+Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-48c5358fc28so2684899f8f.0
+        for <linux-mm@kvack.org>; Mon, 02 Nov 2026 10:11:13 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google; t=1793642751; x=1794247551; darn=kvack.org;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=/vXXDZI2TLqXD/tqTZGHj/cF0YcMq0fXP1TpWYkM2ME=;
-        b=WyKhbaEOz8ve03eYKn+AIsIfjS3BWGT5b2wQZ2v7UMDLkNPkJv5u5uk8Jeg0p/KUYV
-         M+fT3+fB+CsCkMBDPPFqKx0f72udMGM4U7/sy1jPNYzZZyuYb/TK8bufZojhVW769X3f
-         oEsR6M+sTmyVCDWP3GAdodW1oMi2tSteXvpcM=
+        d=suse.com; s=google; t=1793643072; x=1794247872; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=aQruTCC5hEy9EJEA7VtNTy/+BSL1Xc1NZBa6W4LKkR0=;
+        b=ZTAz20uqDpdTYhCMB1jHJTpf/QFdR9zhUItG1Osnmd3eInlxlKxt9wllq0hEtr2tZV
+         6/w6LD19Mckj6i7g7IA0xz2Tu/USaXJ7zZowjcJEI+ZBAe7BtuBb/o1Vv6njc25Gs1dg
+         Zpeuh4D5qaEaJZ0YXA64jyMju/UVYQfGkbdSOZZ4zEjMFnKx+qR0qqjWvcv9yMv4JYxo
+         /91Kz1n8bHAlIYUIaUkFpMu0NucBvwE++egGw0ndIbPKsvGYMiTY83lRHt7Sjma4Nay9
+         t8+DwFcpU99WbWz1L6ypCkLHoZo34icq3F8dpXmaTAYvJEzBXXEvggVv8H+/OY3HPiqE
+         KMtA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793642751; x=1794247551;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=/vXXDZI2TLqXD/tqTZGHj/cF0YcMq0fXP1TpWYkM2ME=;
-        b=j3Og3WyOq0ywtqzD4qHDVi0k1A2Y4zCZOIVvWcffYPTBNd4UiXEn5PhtVSHiuhAR0S
-         n0pL1nWnRE3B9/O1E/Uvb53+52hcXy/54c4jUdxwtYCb0iXnG4zCQYhPQevtn9RbhaJg
-         Qmijbda+u+TCXLQgMoA7iqVBi5FsJQo9fOwybsOVtfq7DG7BhuCMIUHRpDbvPF9UylQe
-         VO4p7Dd5HkQjhXSLnmSuMBjc7EeFNwgWuWj/4sNKAOgZeQggClCjTnyzRppkfV5c6o7h
-         4oDhFJKseGzw43B6QNmyg4Vq53oOaQKcGm3o2mYzSQMMqShu1wwGyExpnk3R1FHFd7VE
-         1fDQ==
-X-Forwarded-Encrypted: i=1; AKwUvByVAxCIOA6TTFRY6o4Frhzg82mUrf0NXYwTWt8P+QZwGxvq71NIvVRXnj9Y1AZGOrzYRyKxM5lIiA==@kvack.org
-X-Gm-Message-State: APuU4Z/MR7h0hxIlLHcwZef1nH4qEiZlAPZz2IKrqQsDI2kB8O8836CN
-	mW2vxlJ9riaC45urRnPli5IYxdtfz3+yICljBJ5ZcRoU6HYbUi2nfvsAkw94dpvDU+exJmslXHs
-	IOfyOSJjY+g==
-X-Gm-Gg: AYBFou35x225BLaf7NRnwo0z/gjTnVALUuKDfKCGx2g3lDBmxVD7/BfMNIjn2t9yfIC
-	hnjyHz5Rs73xZfYpvtS+UJSt2hiRvXJkOfAk0DLgOtAHOunc+sZAYonIzoPT/FaP5POvg5bNbyn
-	px5FIwCybOAFfB4+ntyzYndSq380K3wHs0Bd5KnRgyVseo3ir1A5dzflv6DLnHw28WN8+HUGojx
-	cRM+xYKt5/icETm0Ns8u8h470aELjLjFjpOPtQ8Lowa1Kcrcx6SVMheRH58uBKtWyJ7c/LIjoq7
-	MDArNokcEBsjNeXf/pEP924p0VAOYzB5Z/25dV9jQeo41+qxnUcMvw46SWrd0OcH9IgdtNDpH62
-	OjWjs9owa084IXIPp0GdGyCA6EUEb/fsLNfQFp5IuTGFYtoaEyvFsVyIi+X1cJXZ7JL5Rha3XAd
-	jyq4k1o21tpjA8b9fldH3D6xUJzc5e+fSA2fmQ0m9ONsiCG81k3CynY2PD2NakNt5z6Z3MWbcp0
-	iO+nBwqEvTUnA4Wg/DRhGxhT/9E9ma/Kuc+fVqNNcPc79B8YTwn/2lcMrG/51oPSOCakkLXGcK+
-	pK3MRzKfCgqu0gcITtXmJmAf6viQEtct2a6ZXcua7WVbuwr8XzQ9tUsSlsmRmcjmty+bIAnBXUJ
-	QQQ==
-X-Received: by 2002:a05:6512:620b:b0:5bf:d9c1:58d9 with SMTP id 2adb3069b0e04-5bfd9c15916mr2636272e87.23.1793642750721;
-        Mon, 02 Nov 2026 10:05:50 -0800 (PST)
-Received: from mail-lf1-f46.google.com (mail-lf1-f46.google.com. [209.85.167.46])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5bfe9856894sm759225e87.5.2026.11.02.10.05.50
-        for <linux-mm@kvack.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 02 Nov 2026 10:05:50 -0800 (PST)
-Received: by mail-lf1-f46.google.com with SMTP id 2adb3069b0e04-5be4fea434bso3801932e87.1
-        for <linux-mm@kvack.org>; Mon, 02 Nov 2026 10:05:50 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AKwUvBxlPgz9bvuRqZ5eAUSqSIdenqSNNHlK3N3Yi+doMIF8KMdWMS+zs2E9D15k+RvsuSv/bAvynHxz3w==@kvack.org
-X-Received: by 2002:a17:907:d94:b0:c2d:c80e:8366 with SMTP id
- a640c23a62f3a-c4ca7426f6emr874452266b.0.1793642348398; Mon, 02 Nov 2026
- 09:59:08 -0800 (PST)
+        d=1e100.net; s=20260707; t=1793643072; x=1794247872;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=aQruTCC5hEy9EJEA7VtNTy/+BSL1Xc1NZBa6W4LKkR0=;
+        b=0vD1CqY5is0pDxaEmDTqKTLIZDHLvQv+E0vEnKUvUrl3MqOHoWyUlo0i/p9C/F9zIw
+         3xij3FzmWTSg07HCgMIPJ7wySXg4bMaTxE8a+esF/lfj8ZpVUEdnNF/h9qM3oAXf9CoS
+         KxG5mGnMA6qNF5MWX1kABfitbj2eqbw618Tfx64Dwm/8AGKNrMHQc3UJRvy4IVwsMPFK
+         8aj71N6fkbML0XI3DAwg8egtadtxLMvEXAsmROGKvsg3yJKdumDPze2SyNkgGuoQ1ZUM
+         qUfC2mCKlKU7uHJ85hFceNT+l5gL+/jCbOuaRV55Xu77Xm2/CBtGTHWLa4d61CZpleMy
+         zL7w==
+X-Forwarded-Encrypted: i=1; AKwUvBwgARWfOLwncfjCYXJuSgBHnbaUSXt0Muju5PqTPig+HeOAxg4uIUqnmAjDiWMiG+T2Sw00d1U/lA==@kvack.org
+X-Gm-Message-State: AFq9FYJ6nL+PW1YPN3epKwJ4b1ZiuAkj9D2i1xZaytcRzZL385OJjwLs
+	tciVx4b6B5lrP1+ap1QGG1rFFdibtQd0eacJ+yVg+ANntpCADfUn/eBMAf0AiM8vRg8=
+X-Gm-Gg: AYBFou2j7ZzoTqYKq6K5Gz8afAttqFvKhdZbaOEKLSSeql+JmAOVGtTarjnAnKDNLSL
+	kEA9pajbnkYg0gqZ7T0Pz1fUGO2BkK7OpjFOBEzNfQBh5eyMImIu9IsdP2IKCi5ZUQN4i4HBdDN
+	MD84nDs5O8ZojlOZlcsCAY1yYIQgvwwzyN3DRhNMcLRJyWGT/grW7Jfh0P7dIDao3vZBBRg1any
+	TTs9ixXuuw9T9wNryshghKBkw0Ig1JbVt1Uq01tQDRvvSozG3CunrginYJVNyOROAgsuwMuGbLp
+	+UxRr5U8g+lx/rRCc8kqG4xlJZ2Iv6T5WD9c5xX+iLx/tdD8jl2f+ZH2L5pAIYBivyO4OtvfGDP
+	leSs1fP1eyMGXXJ42z2weWJu3+E99AMuteXYaWamX0myeyKQepSw95ZBGfJxXWaiEbgjwJDr6Nj
+	sQgRcR20e254dLJIViWLxRIaWgrvTWx0vonHSnkv1mji7hFAVYpO6/1qLtCTe3DTVToi0Gv6sbw
+	Iv5cRS5VFwW9tMYRQ5QhXAj3S6a4wmHkKLiaD0u9QL6UqFaFP1lNxaT2aX6rHnzmJBYt3SDzvoB
+	mi+pAZqMLwS+okeqiSxY/GG8FZ049Nj0OWvSjGs=
+X-Received: by 2002:a05:600c:1c0f:b0:4a2:150f:1601 with SMTP id 5b1f17b1804b1-4ac1709a7bdmr254417725e9.12.1793643072380;
+        Mon, 02 Nov 2026 10:11:12 -0800 (PST)
+Received: from localhost (109-81-32-81.rct.o2.cz. [109.81.32.81])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4b2a82cebc1sm5836795e9.1.2026.11.02.10.11.11
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 02 Nov 2026 10:11:12 -0800 (PST)
+Date: Mon, 2 Nov 2026 19:11:11 +0100
+From: Michal Hocko <mhocko@suse.com>
+To: Joshua Hahn <joshua.hahnjy@gmail.com>
+Cc: Shakeel Butt <shakeel.butt@linux.dev>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R . Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Maarten Lankhorst <dev@lankhorst.se>,
+	Maxime Ripard <mripard@kernel.org>,
+	Natalie Vock <nat@pixelcluster.dev>, Tejun Heo <tj@kernel.org>,
+	Michal Koutny <mkoutny@suse.com>,
+	Oscar Salvador <osalvador@suse.de>, cgroups@vger.kernel.org,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+	kernel-team@meta.com
+Subject: Re: [PATCH v7 0/5] mm/page_counter: move stock from mem_cgroup to
+ page_counter
+Message-ID: <aujSP_sfbasQaKu7@tiehlicka>
+References: <aui3TJqadHUv-4RW@tiehlicka>
+ <20261102163014.237806-1-joshua.hahnjy@gmail.com>
+ <aujCcqKKyio7oZ0x@tiehlicka>
+ <CAN+CAwOwRJUDXHj0RMr4p2+sdA1V9bX-OgOH1PpER+u_cB2fAg@mail.gmail.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-References: <20261102-work-procfs-bugfixes-v1-0-59422ed3e465@kernel.org> <20261102-work-procfs-bugfixes-v1-1-59422ed3e465@kernel.org>
-In-Reply-To: <20261102-work-procfs-bugfixes-v1-1-59422ed3e465@kernel.org>
-From: Linus Torvalds <torvalds@linux-foundation.org>
-Date: Mon, 2 Nov 2026 09:58:51 -0800
-X-Gmail-Original-Message-ID: <CAHk-=wiSA7-mqmAjTQDaU7UjUyWt0TxYwXHafL8ZAPudy+B_uQ@mail.gmail.com>
-X-Gm-Features: AclHuK_qZTBVsLQIdymgRHScSFenC6XsGggUDmcuOugjrSTbuVkeASUmC_hYPZo
-Message-ID: <CAHk-=wiSA7-mqmAjTQDaU7UjUyWt0TxYwXHafL8ZAPudy+B_uQ@mail.gmail.com>
-Subject: Re: [PATCH RFC 01/38] PCI/proc: don't truncate the position of config
- space accesses
-To: Christian Brauner <brauner@kernel.org>
-Cc: linux-fsdevel@vger.kernel.org, Jann Horn <jannh@google.com>, 
-	Josef Bacik <josef@toxicpanda.com>, Chris Mason <mason@kernel.org>, 
-	Jeff Layton <jlayton@kernel.org>, NeilBrown <neil@brown.name>, Eric Dumazet <edumazet@kernel.org>, 
-	Thomas Gleixner <tglx@kernel.org>, Al Viro <viro@zeniv.linux.org.uk>, 
-	Jonathan Corbet <corbet@lwn.net>, Christoph Hellwig <hch@lst.de>, Greg Kroah-Hartman <gregkh@suse.de>, 
-	Joel Granados <joel.granados@kernel.org>, Kees Cook <kees@kernel.org>, Jan Kara <jack@suse.cz>, 
-	Jan Kara <jack@suse.com>, linux-kernel@vger.kernel.org, linux-nfs@vger.kernel.org, 
-	linux-acpi@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	linux-s390@vger.kernel.org, linux-scsi@vger.kernel.org, 
-	linux-um@lists.infradead.org, linux-wireless@vger.kernel.org, 
-	linuxppc-dev@lists.ozlabs.org, netdev@vger.kernel.org, ntfs3@lists.linux.dev, 
-	platform-driver-x86@vger.kernel.org, coreteam@netfilter.org, 
-	kexec@lists.infradead.org, linux-pci@vger.kernel.org, 
-	linux-sound@vger.kernel.org, netfilter-devel@vger.kernel.org, 
-	dri-devel@lists.freedesktop.org, ibm-acpi-devel@lists.sourceforge.net, 
-	jfs-discussion@lists.sourceforge.net, linux-alpha@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-cifs@vger.kernel.org, 
-	linux-fbdev@vger.kernel.org, linux-hwmon@vger.kernel.org, linux-mm@kvack.org, 
-	linux-sh@vger.kernel.org, linux-usb@vger.kernel.org, 
-	samba-technical@lists.samba.org, sparclinux@vger.kernel.org, 
-	linux-m68k@lists.linux-m68k.org, linux-doc@vger.kernel.org, 
-	linux-serial@vger.kernel.org, linux-atm-general@lists.sourceforge.net, 
-	Takashi Iwai <tiwai@suse.de>, linux-input@vger.kernel.org, linux-raid@vger.kernel.org, 
-	linux-ext4@vger.kernel.org, linux-modules@vger.kernel.org, 
-	linux-debuggers@vger.kernel.org, Chuck Lever <cel@kernel.org>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Stat-Signature: p1nedkf7bux78wu1r34k5muonnjkrhyn
-X-Rspamd-Server: rspam01
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAN+CAwOwRJUDXHj0RMr4p2+sdA1V9bX-OgOH1PpER+u_cB2fAg@mail.gmail.com>
 X-Rspam-User: 
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: E217B2000A
 X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
 	autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: B40E34000D
-X-HE-Tag: 1793642752-703931
-X-HE-Meta: U2FsdGVkX19f5t7XZYbCaA/R6I9D8VvRf8wWnvJ0k7d4sfhMnl8x66cgCjOznAj/Gr5aTullRb5+NpamcmiBgmCjiFjwLKb9ZS/Q85/8XYoA6I49BvXpOK8FMsahW/1YfobQkl/GyPr0R347Ch7CzLBWIe6PqRPIb8F8oORHqh2kOXAJnCtuthds22gZCFWfSEzMa0T37pctaWxzlsRWCoYGD8+OhWqeYFcyyiyjvbgNB4yoKIqTTs0e/SXxcFxxX8aglXBDfsHFHyMVz9nx4G2XcTuIo3be+Z/IHYwBkyFyvvsmt6b3Maz2Xg9ghQ+9mfK2voOrasDeacN9iOznjRZhglnb6dW3GYyvI2/mJwZzg0i0uqaVNqsDNECrgpfRqzy/PzFnE+sDhAT7HjSb34jWhBB9nfDBkEr23lxTMuvr5/cxXagI04kbDqI2V4KOljgbo1Mm6ascS2ZuWUunxMfZ7ep0LUFOr27EgVMdqOom+R3/+DLlsn9mVfk993UutTFr5zr+Yn2226bWehavtTugylMAI2HYOVV5F/vFg65ayYhXhkBFSdZwhMaU5Lm6ChXcZpFvEBvAT8/Hen8YC4dvh0Le/jhMB8QHgAhezKUq/RsXHDCGwt6cThsxsInv39DlW0Aq5XTCaWs5Nqkp/cbYTCqsHoNIg+TZ/HJmEQjuzpRNTvognRj8aK5AoCGmBWI7o2EFSJGZUvP9T7fYRxG3AnntVA5guk1Pvt+OIjHTflFIz+P76yAT0eau98aklSpMR5u5MO4S8ogbeLDlWf2bztrrYgy6Y0upEzpil7Q3FwCbPTHnjNsl82dIDRIl9G89y5NeyGu70NrrqFkO6NIwNCgU0nQ38p+1p7eYI0/YA9dFFNRrR1LU0BcSfggz0hhRb8JW3ikid9KOiuUWw9CwThddTRGPw1H8OYyKjmItb7o1FX8FR8UHcIRF/nNEY3paMogQG/kbc0rwiYK
- GxPSje/C
- ATS/cluMPex0YjSYDLhsiw3hmKxny3TA1IzgeMjEe4aRCziQikUTKnZRwMl9R2X7acJ4Rs9jcHlTsoqg9uPDnA7tjY+k3VhecQoseN907+CxQ+ZzgwexKmKo1wwOgfzJk+hiCyA8Tkm1ndvHEveKfgDS9/cqKSPRSrhLsoL1OShxHlkOlNCTFZshyTGftamRZEtJPZm2LNf83IXhUXfPdp0CBPxkqVQfi3uTUvSr2uccvPCF9uWJq18GGFn7hu9bj9MGHF+AegmY9OUK62PWmjgEMlgn7g0oeP3F+QJjyvjYY8N4rNoNKnXzQjWQYkhvdI2Rctu/WYHjMV3JKCn2T307pph1AOgWtVHxMBNSeNShu78SqGiRUpJlOMbFwdy1YFJR/0RDA5eKLbatjyCN4xvclhP+tS7ma9AKprLiKUt54KevTfSA1w7CWAcVQnk7L4JzP5mYNB3fqTL0Pw6oJmvXzWYWoAQDvWiVP2CUM1s5ugdv0K0XBjjAIUb4/RK/XwEDjhT2t8rZOXQV2N5+SyKkUblzMKaHe1K+kt7BkXMk1sCy6CtoNMIZAfJujvn8uD7GRwCmf30gXsUOIJyC5peeA++xt7BRDQmpv
+X-Stat-Signature: cyecia1yw68rmq9h8t34zxpakkifgb8f
+X-HE-Tag: 1793643073-679235
+X-HE-Meta: U2FsdGVkX1+RKyknA4rMG8bzbALp1yM5u79mgjNasMxf+n1nmjgNKdF0iVMgFLsyttxlMRbPIpgwuM1GxWKps7PWSVuQ1Tk1zlhAKP1MhiL9hARgPJ2wPDjih4Q8/8jF3CRAxoSQzPqiUDW74dwVYyT9HZG7HqM+INjhgBUxME+NCldmZVO8iNJShuIITaiUYPJ4+NIbm6tXt8GL3vacrtbTb1DrOjlinrXS7SrJCHb62ClGrx9hqVybb2Kzod9CosSxxtXoEEHt39TbIt/jDKJX0by2IZza0M1RzfXHLbu0iKWM00lCVpB6LpErEp4sxl/cliErLELs+2DC91EXmYS2VytsTqZF3V5hA2Nw9/TPaL+WN3+tYuHIXmHPyXpfdqNMf6L75IKT59K0WZ1cdJ7o4Oh2wXnAwUA6zZ4vhuEfXsmbFXyFb5k45LylJunZIA5rSTi+KdixolB2qVLxBe3ZamQUIubXbzPiZQRlh3PcCXCbsYu9douuZrRCakqs6PZkNhoqSy83MMkBu/QOkMSsy/AXt4gNfZV924CCu/rEtIChTA7ZLUE/FZFoW56rg2O4xXeZ2ut0dYp+2NFaKDh4LJscK/iKumyPlKIEdBRb45nwhKmJltxrtUtootuw9Grp/dSzSOOob94ERFej9t8NdY4EbC0DINYmPwZqU6NfuQDQ92BuP9Q67IpEF7A3g9pNo0HjBpaGylPw0ld9z9gQnvRJ0uwYezXL53S30tiRMPW0ou6QnFDxJTBTFrxSsp4sWk+hp2ivDojXw1ggsSdgWxfJBYmHRasu/gFcWpe/UcOCiC5El4tRll9fgOvbum+1cPWlgdrNyXq6Jc3WGrfovK1wnNe342LIA3vZTfi8+f/s18EUhga+k8zCmyifNeQwFUOATNetdBEtGj+8J2XLy4sDZlGGhZKKEKsMT2jBWQye+CR2BfqhsS9Utb4RX9dMi+7oEA67av2ywCU
+ 1KZAAxrO
+ 7faR44/2R8YhNanSQ6azUDAJVuAAdSyfGphQCeKr9L0XIFKmDy9NeesOjoJ3m+ZBcOlHWgLWe2uOCPR8aJzpyECyDzffPA6muHZd57ZTCUvcOrq0RGwZ5a4Nq/oLbvzOte4c+qJoIeLLJeQNj/ZaAqXhi7S7ONBbWF9PcY7fjP4qBkO0qTA52wr6Y/0FtkOAgjj7R2foQQjSk5R0tlmlxAdEsZNgBNljGCHjkiBXDDHABLjHXxsjt48GkoX8E7Cy0IAMjUnBXy+zRc3lpQXTAZly+QieT1g/4obalgpbleROqxlnNPPmZO8/hPEHZ6EP2AhR6XKs2e6EDqAY+bTxAs4iCOM1gD8gIkYibEzPwN1SxRZutituD6s0pIzb453jxD7/4JXvK9zD96koq4s4HvXxeChk4xt1bx8Qbg9cLuKs6ZvWtD5d09Wjho2O30pUPyI+rI8ylTuwJ6VUDr7WXhBu1+BGWaG7VoOHd
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -153,24 +143,62 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Mon, 2 Nov 2026 at 06:22, Christian Brauner <brauner@kernel.org> wrote:
->
-> proc_bus_pci_write() truncates the file position to an int. A pwrite()
-> at an offset like 0xfffff000 turns it negative [..]
+On Mon 02-11-26 12:40:33, Joshua Hahn wrote:
+> > > > > Personally I am a big fan of how try_charge_memcg looks after this
+> > > > > series, what do you think?
+> > > > >
+> > > > > > Quite honestly I am still not convinced this move
+> > > > > > is the right thing but I would like to fully understand the mechanics
+> > > > > > first. Having discrepancies among different counters just sounds like a
+> > > > > > potential source of future problems.
+> > > > >
+> > > > > I hope that I can present a good argument for why this is not as
+> > > > > concern as it may seem initially.
+> > > > >
+> > > > > My first point is that the memory usage counters were always fuzzy, as
+> > > > > specified in the memcg v1 documentation too:
+> > > > >
+> > > > > usage_in_bytes ... doesn't show 'exact' value of memory (and swap)
+> > > > > usage, it's a fuzz value for efficient access.
+> > > > >
+> > > > > Secondly, the raw value of the usage is actually always accurate. It is
+> > > > > just the stock portion that overcharge the memory at times, making it
+> > > > > seem like there is a discrepancy. Flushing the memcg stock immediately
+> > > > > bring the counters to their real values (like what happens right now).
+> > > > >
+> > > > > Finally, this is a change that is only limited to cgroup v1 users.
+> > > >
+> > > > Right but is there any actual point in adding caching for memsw charges
+> > > > now? If you have a way to opt-in to caching then you can simply disabled
+> > > > that for memsw counter altogether. Fewer problems to deal with, explain
+> > > > etc...
+> > >
+> > > I think the problem actually still exists, unfortunately. In fact I
+> > > think the issue becomes bigger if you remove stocking for memsw.
+> >
+> > Yes, you are right. We do actually cache memsw through the charging path
+> > which charges both mem and memsw with the batch.
+> 
+> Thanks, Michal! So it seems like we are in alignment on everything
+> except the cgroup v1 implications for fuzziness. FWIW I think nothing
+> really changes from the userspace POV. memsw and memory usage has
+> always been fuzzy due to stocking, so all this series does is to
+> change "why" and "when" the stocking becomes fuzzy.
 
-I think this would actually be better with rw_verify_area() just
-checking a per-file maxbytes.
+Right. The discrepancy was not so obvious but I agree that this change
+doesn't fundamentally change the picture.
 
-We already have that logic for lseek and friends - using that fairly
-hacky combination of s_maxbytes and !unsigned_offsets().
+> What do you think about this? The other alternative would be to remove
+> stocking for cgroup v1 users completely. But I am not sure that is a
+> good solution either. For the record, I tried making the stock tied
+> together so that they refill together, but that was a nightmare in
+> terms of added complexity.
 
-We should combine s_maxbytes and unsigned_offsets() at file open time
-into f_maxbytes and check that not just at lseek but in
-rw_verify_area.
+Nah, that seems overreaching without much added value. While we do not
+support new features in v1 we shouldn't cripple performance for those
+users unless there is no other way around.
 
-And then things like proc_bus_pci could set it's size limit in one single place.
-
-Hmm?
-
-                   Linus
+-- 
+Michal Hocko
+SUSE Labs
 
