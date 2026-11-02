@@ -1,220 +1,115 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79325606A335
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 20:12:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33357606EE89
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 20:24:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=fCxM4P/Z
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=Vd2jCMsG
 Received: by kanga.kvack.org (Postfix)
-	id 83F126B00EF; Mon,  2 Nov 2026 15:12:16 -0500 (EST)
+	id 2FF886B00EF; Mon,  2 Nov 2026 15:24:54 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7F05A6B05B1; Mon,  2 Nov 2026 15:12:16 -0500 (EST)
+	id 2B0926B05B1; Mon,  2 Nov 2026 15:24:54 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 692236B05B2; Mon,  2 Nov 2026 15:12:16 -0500 (EST)
+	id 1C7A06B05B2; Mon,  2 Nov 2026 15:24:54 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 3274A6B00EF
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 15:12:16 -0500 (EST)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 898D7A0280
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 20:12:15 +0000 (UTC)
-X-FDA: 85391275830.12.F2EC765
-Received: from relay.hostedemail.com (unirelay02 [10.200.18.65])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 7C3311A000A
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 20:12:12 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	arc=pass ("hostedemail.com:s=arc-20220608:i=3")
-ARC-Message-Signature: i=4; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793650332;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=BjDOfNesHUvUYdnemATt3QpEnFnBaEWBJAu+ke/IeV8=;
-	b=l6DRkO051q19JVuRMuCQNrtOEwE9+yivhRPNxg8UoEwYZ3Jrjb2OsYovkGiWvYn0d1bdEy
-	8hSboTr8BWxw+NQi4tDmPnVU0Ev8YRRi4zpCJ45L9BJ8xlbzKt+YKWBV7E9gJ1ki/zDSXE
-	I4s80PVq7dMJsrpXdmPtYygVmoaxX3E=
-ARC-Seal: i=4; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1793650332;
-	b=z0nHboeA9wuDJEuzGl2SfiywEfL+rFnpS+jPQuKwSue61kDsl5XAj1uAL8nD9fzDud1D/Q
-	fmcO/R3Ge0GTiTVyeYi4Yfy7eiYcT74A3lSxjfiZcGDmJbrLdo3tS+VtS+5m33ewM3RDMw
-	kMe6SlCFKo96m7RkdJXzTlMatqIRUXs=
-ARC-Authentication-Results: i=4;
-	imf19.hostedemail.com;
-	arc=pass ("hostedemail.com:s=arc-20220608:i=3")
-Received: from relay.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 1044D12010C
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 20:12:12 +0000 (UTC)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id D1B47120260
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 20:12:11 +0000 (UTC)
-X-FDA: 85391275662.02.400CF92
-Received: from relay.hostedemail.com (unirelay06 [10.200.18.69])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 22B501C0007
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 20:12:08 +0000 (UTC)
-ARC-Seal: i=3; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1793650329;
-	b=4nCm7K/i6ohDideU3OzG2A34pdMuLKCDI/kD1TroaZMXfDjVeknKPH/dswgVS0OqYClexu
-	N4jsjCayKw3gyDemcX2rTh027HkbZcQQlXKCmZ1YskbAphj7CrMZASKb8iQtzqkDUl6+vk
-	yhmSM8yeJu6jfqdKy545bRvIcFRYLOg=
-ARC-Authentication-Results: i=3;
-	imf20.hostedemail.com;
-	arc=pass ("hostedemail.com:s=arc-20220608:i=2")
-ARC-Message-Signature: i=3; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793650329;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=BjDOfNesHUvUYdnemATt3QpEnFnBaEWBJAu+ke/IeV8=;
-	b=fHJhnijFOzh2sSq6YFeSfTiA9IprjlN6CXJRMWC4pYrzEizPfObBlndTHslPtV7ZNe2hYj
-	K/cpy3fcD/X38V7cEh294ARb3Phllibx5RGuBpMG1kf8qaAb1CqvkUkvyp5tN+TkiI3O6Y
-	hRES+XUOHyVRTTL+C4BCyzRIQFznwZg=
-Received: from relay.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 7273DA6BE5
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 20:12:08 +0000 (UTC)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 423FE1601E4
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 20:12:08 +0000 (UTC)
-X-FDA: 85391275536.11.91B2EF0
-Received: from relay.hostedemail.com (unirelay07 [10.200.18.70])
-	by imf11.hostedemail.com (Postfix) with ESMTP id E62404000C
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 20:12:05 +0000 (UTC)
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793650325;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=BjDOfNesHUvUYdnemATt3QpEnFnBaEWBJAu+ke/IeV8=;
-	b=5GrQ9ZauymPkfrE4Du9W+FdGQgZlcNCJjVe9Qij0hqMVWl7QDWGPHnotJu/z0X95lq8Tzz
-	WWrQFztFQH0/tg0O9F/SGGmSOt+YdFSxuT2v+0awY5EmUeMOlxrunwSf2pklH0lD/V7Ev2
-	AmvvFesnojB/iDsfCiF7jYG7iunAxuU=
-ARC-Authentication-Results: i=2;
-	imf11.hostedemail.com;
-	arc=pass ("hostedemail.com:s=arc-20220608:i=1")
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1793650325;
-	b=ekURkyf+TKU8vGrxv5D/MmdXcr9QH5dip3N6GHskksR+i2hFf7FAZhRa+8cufcRGmfR8yb
-	HCUfyAsfCf/f1uURPNPcjT2nPrQX2cHphqp3whElfJA2CCjM3hQi8miHp7xulqMg3fNcpd
-	efMPorL0aw6eb9ertMEjxj7F8lUN1qg=
-Received: from relay.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 7D4CE1601E4
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 20:12:05 +0000 (UTC)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 4BDC080196
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 20:12:05 +0000 (UTC)
-X-FDA: 85391275410.23.54305A3
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 7634440005
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 20:12:03 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id EDF2E6B00EF
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 15:24:53 -0500 (EST)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id E849D1A0277
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 20:24:51 +0000 (UTC)
+X-FDA: 85391307582.22.14E100A
+Received: from mail-dy1-f200.google.com (mail-dy1-f200.google.com [74.125.82.200])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 3692B18000A
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 20:24:50 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=Vd2jCMsG;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf16.hostedemail.com: domain of 3kPHoagwKCHUVakblpblXfTgZhhZeX.Vhfebgnq-ffdoTVd.hkZ@flex--chriswiseman.bounces.google.com designates 74.125.82.200 as permitted sender) smtp.mailfrom=3kPHoagwKCHUVakblpblXfTgZhhZeX.Vhfebgnq-ffdoTVd.hkZ@flex--chriswiseman.bounces.google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793650323;
+	s=arc-20220608; t=1793651090;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=BjDOfNesHUvUYdnemATt3QpEnFnBaEWBJAu+ke/IeV8=;
-	b=3lWgPxbLxnekwdEE4W/FJbeT9CMW1bCkUPAVW8M+oHVWoU43j2m1LZPPF1QsFRhJZ0Mp1c
-	qIMZMUqm5i35SE+tB/vwiJjjcYbxmuGH02NhNpPGiATr+hicQ7g0C7kFiNF2w1UdiDxqbk
-	4EW386VHK81aaStcTF9+SVDqZUEBYlw=
+	bh=x1SeODRoO7yM05Fi9Ezs7mCvp430XVHwDnUStx58P80=;
+	b=TToqrLnDb3dhVHmmHz/4ptd804zgdK3sKC2JzYm38PPFQbzzS4y+3cWOI2IwzKiCl43pK4
+	w1+kLjv/SYOilEtiFoWbeVpUAYryu6FvCCiPxqFNFWoMjq4V2q4/bzo04ZqqAxbd9sYhLv
+	76XFwNVpiNzfFaYSX752YgRgurp+GAU=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793650323;
-	b=Xw8Hg3wZHig/aFtBS2p0YwQ4cB4C06fueTWf8uqnktTCPJtqFtTehPFdKVP/MpLoxwhExH
-	WEYbZGqxHEfJBO1uRMQ3+LycfqDMGC38AcvTJTdm3r/EtTL3h5e8b/e2HOx6R7zbmYLsH/
-	Rz1TivLs/Zjb/8kQIAAHogxnsuvicD8=
+	t=1793651090;
+	b=eh3oKTdKmvsJGbOO42tc3MGYUYasS4O1jKlCAPA2o+y64viAzOcIopM3nwznEEO6nAFnm4
+	P5RG1V4JX3vE8YyFFsXAxP+4HpUbAAYVTTPD5cEcbRqPvCdBYTkXFl7YVJeLapEozhR/2Q
+	ZnPzGHFuCqO/GypViRub2O/Ul0Ntzq0=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="fCxM4P/Z";
-	spf=pass (imf17.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 54B6B602C2
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 20:12:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A2261F00A25
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 20:12:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793650322;
-	bh=BjDOfNesHUvUYdnemATt3QpEnFnBaEWBJAu+ke/IeV8=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=fCxM4P/Z77JCfIGz5fMLuOcLnuT1agPgyAWc6xu2TroXoThnXAKIo865OA4e3Atv3
-	 Xkbwhl0CojTtI2yoq5c7Ln2KnHGFmGHgwzv6SP3jZiYjGo05bpiahvSpZvouEqDM1B
-	 rvqYc/e+G6siNDWSVM6h3lJqavfaFQiVLKyFwINS1Vkb13+CyUgFRYin3AIZAZzbOD
-	 mWQknHNoyjII2fneg/H+qwzDuHAE6uAHVcoEayLt2p2bHySptfg8+s2a1IeQepo9V2
-	 sE1VX0Fqw64Kk1PPou/Tb3RUpSk/a3yHnCuZLrY9FbX08LvaQsS19YXd7j9hMua/Fd
-	 wH3o5lWXSGCVA==
-Received: by mail-qk1-f180.google.com with SMTP id af79cd13be357-93ece7a73b9so461127385a.3
-        for <linux-mm@kvack.org>; Mon, 02 Nov 2026 12:12:02 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AKwUvByJh6nAMZj/nG6+kIkFwNiaWf6SLkc6uFhHX27dTD+PJIzrckIMFnT5oAa26zhsjtalBF+qsb9F4A==@kvack.org
-X-Gm-Message-State: AFq9FYLf7e2T1q9z4DsIWz1b4Ty54AAeaOzitin/CM3drTday9bSXAgV
-	Twd1OhaXyVgIDKYNJjNjXsJd1IP84uoCm1ldSSTxWWDO2520tvR/UrU04obog4nodsTR7fqp+Jl
-	I1IvyNvpBSFXtH9W2vXqcv9by2MIAd7M=
-X-Received: by 2002:a05:620a:2614:b0:93f:baf:279e with SMTP id
- af79cd13be357-94421588032mr1947387285a.8.1793650320775; Mon, 02 Nov 2026
- 12:12:00 -0800 (PST)
+	imf16.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=Vd2jCMsG;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf16.hostedemail.com: domain of 3kPHoagwKCHUVakblpblXfTgZhhZeX.Vhfebgnq-ffdoTVd.hkZ@flex--chriswiseman.bounces.google.com designates 74.125.82.200 as permitted sender) smtp.mailfrom=3kPHoagwKCHUVakblpblXfTgZhhZeX.Vhfebgnq-ffdoTVd.hkZ@flex--chriswiseman.bounces.google.com
+Received: by mail-dy1-f200.google.com with SMTP id 5a478bee46e88-36a223755e4so13944473eec.0
+        for <linux-mm@kvack.org>; Mon, 02 Nov 2026 12:24:49 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20260707; t=1793651089; x=1794255889; darn=kvack.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=x1SeODRoO7yM05Fi9Ezs7mCvp430XVHwDnUStx58P80=;
+        b=Vd2jCMsGD57+NOKlAxDxOf1IsfilvI1BArh1XLLR/QAisvezS4ZTWdFsorxOljoKbM
+         0J1QuJ/MWv85tn15U4U6D1IFqX9utATN669LOPZ5Fgi0TXrZiecJcjd1Nh78qDFohVhO
+         fRTmqBTvJWdk8jJIKQWXe61JkkB0LH6mMWVJ6WB4kTbW5x2whqIH/KTG6XXfIVT5VozP
+         b+oyoiBxy5RwxLMrEFvwYYom+m1/nyWebOUcsSHNzkGJZgEIgJW7NL8zo4S78PRit9Lm
+         r9Go+QgRWgatxTpAk7akQ1A4C+DEic0cKWC2QhHNKlbevP9hAozxyQ3mqx8SkiPfvazN
+         Tg9Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793651089; x=1794255889;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=x1SeODRoO7yM05Fi9Ezs7mCvp430XVHwDnUStx58P80=;
+        b=XA4kYVagAK2Ex/iuzzYk7UXwbFcE9axTcqhMy54EyhB7EwgGILiTHVADWwNfr4gvoz
+         Mo/nzUIn/ZrEl2uWNIkBAiRDq76d+DEQVime7CMXLUzD8SR4KmEbg2rAh8LVOaWs75cS
+         MNaGxkvTPc3TlUgDio2Dqwem517R8f1MmpeM0JMMoRcwWhdhLprB3kGHvo9tOMIzLg9y
+         fqC38tZH7H51WvhZcdaO1/4jLlUB5V5YLrqjczP3oKSZ5MkfzYBbagV2NMEsQSRreEY6
+         tDfMnj1QfgnIvrgbGLyYwFvmgzwH8Lw96FN2tWnWYlyxF1XZ4ZzawCKHDZuyY4IuKyoG
+         26Jw==
+X-Forwarded-Encrypted: i=1; AKwUvBzfV688FLN5jf8ihX9bmXlh7fzNxYYpMQVDKaZcfVB/FnBYsj/KqP89+gHPJIVg9GBESXsbunNjHw==@kvack.org
+X-Gm-Message-State: APuU4Z+1jIl7TZgyXnmS91PGf0c668UIuBy6Dhffvn55z+Yfut6b7Niv
+	BRyJUJW5GfDeeDbeX7h0/oqsNfZ9pLjtJ1eJogyOzsSm7UhrbbKt/BWc4zAbLRXdBPwabn7tC1N
+	ooGL6lhgn2RpVd+rJSD0njqnzuGMk6g==
+X-Received: from dycui21.prod.google.com ([2002:a05:693c:6015:b0:358:2c8e:30e3])
+ (user=chriswiseman job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:693c:895a:20b0:366:c497:610c with SMTP id 5a478bee46e88-36a423fd087mr17250916eec.33.1793651088420;
+ Mon, 02 Nov 2026 12:24:48 -0800 (PST)
+Date: Mon, 02 Nov 2026 20:24:47 GMT
+In-Reply-To: <aufPMirl4cD7tz0X@google.com>
 X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-References: <6FACF8FF-F943-45C8-BDFD-3AFB5C060E0A@linux.dev>
- <20261031055838.60138-1-lance.yang@linux.dev> <a704d458-ad60-43bf-a0ce-3b128b218d88@kernel.org>
-In-Reply-To: <a704d458-ad60-43bf-a0ce-3b128b218d88@kernel.org>
-From: Barry Song <baohua@kernel.org>
-Date: Tue, 3 Nov 2026 04:11:47 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4wjGjDoFPz3qWHqW8WTv31AkR_zrY14ON0dLbTZNsohWQ@mail.gmail.com>
-X-Gm-Features: AclHuK_rJzE5Yay_lHuYFvz2Gw1cEWyIS737R4EkfHxGw2G6SeGPSgpipiW_eIU
-Message-ID: <CAGsJ_4wjGjDoFPz3qWHqW8WTv31AkR_zrY14ON0dLbTZNsohWQ@mail.gmail.com>
-Subject: Re: [PATCH v2 01/47] mm/mglru: don't use stack pointers when walking
- PUD and PMD tables
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Lance Yang <lance.yang@linux.dev>, muchun.song@linux.dev, kasong@tencent.com, 
-	ridong.chen@linux.dev, sj@kernel.org, hannes@cmpxchg.org, mhocko@kernel.org, 
-	qi.zheng@linux.dev, shakeel.butt@linux.dev, ljs@kernel.org, 
-	axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com, 
-	baoquan.he@linux.dev, baolin.wang@linux.alibaba.com, liam@infradead.org, 
-	vbabka@kernel.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com, 
-	kees@kernel.org, peterz@infradead.org, jannh@google.com, pfalcato@suse.de, 
-	hughd@google.com, pasha.tatashin@soleen.com, pratyush@kernel.org, 
-	willy@infradead.org, jack@suse.cz, ziy@nvidia.com, riel@surriel.com, 
-	harry@kernel.org, apopple@nvidia.com, nico.pache@linux.dev, 
-	ryan.roberts@arm.com, dev.jain@arm.com, usama.arif@linux.dev, kas@kernel.org, 
-	matthew.brost@intel.com, jhubbard@nvidia.com, peterx@redhat.com, 
-	will@kernel.org, aneesh.kumar@kernel.org, npiggin@gmail.com, 
-	osalvador@suse.de, minchan@kernel.org, xu.xin@linux.dev, 
-	chengming.zhou@linux.dev, chrisl@kernel.org, shikemeng@huaweicloud.com, 
-	nphamcs@gmail.com, youngjun.park@lge.com, gourry@gourry.net, 
-	joshua.hahnjy@gmail.com, rakie.kim@sk.com, ying.huang@linux.alibaba.com, 
-	jgg@ziepe.ca, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	kexec@lists.infradead.org, linux-fsdevel@vger.kernel.org, 
-	linux-arch@vger.kernel.org, linux-cxl@vger.kernel.org, josef@toxicpanda.com, 
-	stable@vger.kernel.org, usama.anjum@arm.com
+Mime-Version: 1.0
+References: <cover.1786003779.git.xueyuan.chen@vivo.com> <anVWZVOt-xeD0dMH@google.com>
+ <47ed45b5-de67-41aa-aa21-a3ba3479a7cc@vivo.com> <anXJ-5_vO7-toSe1@google.com>
+ <CAKEwX=Mm2tXcen-quRXHf1Y2qSHYvpEUe4xiw-mHYaJnRUR-EA@mail.gmail.com>
+ <auKqt6b4AxCLziIH@google.com> <aufPMirl4cD7tz0X@google.com>
+Message-ID: <18e4542967ebdd10.3137322e32332e3235332e313736.1dfc41.0000sendgmr@google.com>
+Subject: Re: [RFC PATCH 0/2] mm: zsmalloc: make shrinker compaction budget-aware
+From: Chris Wiseman <chriswiseman@google.com>
+To: Sergey Senozhatsky <senozhatsky@chromium.org>
+Cc: Nhat Pham <nphamcs@gmail.com>, Xueyuan Chen <xueyuan.chen@vivo.com>, 
+	Barry Song <baohua@kernel.org>, Yosry Ahmed <yosry.ahmed@linux.dev>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Brian Geffon <bgeffon@google.com>, 
+	Minchan Kim <minchan@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, xueyuan.chen21@gmail.com, 
+	Chris Wiseman <chriswiseman@google.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-HE-Meta: U2FsdGVkX1+O4HQiVZ51HMqbFKf5L1iW4DxJmaQ9vyZi9/xcudyzwTzwjt9/b6mpcvOwJzn50dpjQuSMm4Ffc0xWTFo9j0rkVWRyABUkqRjle3j+iheDnU1piZJXfUzqvMTPgCUIS1z7vMMJOYVmw0C5ae7obwDbp2cOuAA+2cN3hVu17sxs9YzyufmVucXgxWyK8wgkbV82i+HGxEuvYOtvt6aM4PjJNWPIYtpZvJyQfJXwWQSzi6nt66tso5zTHBL6kLSAToUXbhmnsIWBnliQBxHuGdMWgpQKVHFvMs0RCXpP3Xg8aIVfpWHquVT5NQRpJUbptxs9f52J7DBx/QuB6pQMA1ElFkbMj/L3vK4x/784lMSpLhtwwqe44XrOXmsAT+vO2xfVis4K5tQ+hcywV8yl7M4JQmefqvXReU+gnUxMQ0KVWmSd95bhpvXqMt41dLKck5226NR6+eAv+yMrINyynhtc41MAf4sb7+UiKJgG4F+BmwSFq0UOShWWPpHRolODp4YtJKKnmgPMs9plh2RDjrF9su+0hL4APeWMRUnkjVtlRmPIzPcP37QoByG8fcim7IX3SBQwicD1tT8KDZHeO5a56RN5lxxYvTdMesP9/oRX6Tk3hgfbcVsP4p5onT5axJgwahYSty8WNeF/W/gaHBS0QyJgfmuG9swStOzAqulKPfDvlgy8wDJs88BHYLgenkYxg7TYrUzbHXxFNqz6bTD2KG3PbUqKUHqhNbxMbsxZ57vJ/BI74LvW3SHlvZSEhOFj1gnClSBUqY/k7SXmc2j7fv92J4ije5Qsbh88mj7c5NyVB21yvjUMDLO6wDhO4YIAKHFSiAwujbMlycWh90uFKvzHXw/9lZ2nKM0zB7mKDJdaBU4mHFt2Gojp1sv3IPm9yLhn3c09sll56EtTAxl7AQRBjSDO8mRLWyqNb5ziL4eIErnKtbL+vy0+Uma7GluzWo26z4F
- BMGK8mI9
- wZxoRmXtarn1vi4+6QlO4Pk9rEFpwRTm34DkUki6IcZQkk7iu2tRh2cgGhJalBsxqPFys7z3+eB799xBPc9X9HsoyRys03VdP+GLv9kIlu9PyAthQA8+FxirTIVL9HXw/lzPMhlgd1CGe/Eukg3O5D7jG5FJoCQ44l3L6eqrd6MguDecw+0kO2vfIIXiEV9nDGfocQyFMemkKIufKvkLuXBwf4pQjY/IoNresCWsLasmd/97cIvGiWB3cz0Bjh9KcnPscyMnsFZN4J9XbtdEXF2vAawnzX2xauUIOzj1+eqjSo0w/62NzunAqMpdwSzqPuCrLAv7UYJrd/Vbw3fwXjWoqFMz7zlGtHOxlDkNu7xsLpnjes4qk2kBgU3uKKZTk7Uye
-X-HE-Tag-Orig: 1793650323-939436
-X-HE-Meta: U2FsdGVkX1/GOhBizWW9pAjwCO3hgd66L80SyhjQL3Sue1nPds2qm8mcNd1oc5xWn//vkdrS0Hgn0qKSCbLhN1vVYMHXyvuHSXCmjcorR4+BzqewEYc8q69S8wjikOG4FuaQU9tXqLRXz6Qxzzc5c/9ri3I2OdwbfLR8k8eWl1ryqaTNcgtEGSnLMqh6LvGHKDdH070K3ORDI94qeByJZZmAKCyge1Kf8Gc5XhZFLwzIYf01eLhtN05wdT2X3OYr3XLV691ghKPlui1pseNcSZ8emqY9QsIE/0Hk7hFQwf46KOBt+NvDI4kO+EtBTSmM05VA0ZxGcHH8xzE87OzlOKjgsxEkfT0nNvCCxt2oQnoZriKh/owCbvvMKRxTC79mSZQADZY1wJ2ycdBdGqaTvsFD+TNDiqEuAenUQoInWQqHF1+uHKkL1YVasl0zquJfV+xgyzXAsmcmCcpjlJGSw+aUEt0v8X+rGwBfRHcJf1U0P3OP6n2hL2WMWGI4Kr5pmev0HLBHbRqzclwunhcdYfAPagW8TF4c7UBdkRC3gam4StIVY3fbnRvHSjZPTq3f3mEFeaMJyUio2kOC4nI56BcCgvdnsSEdlBNtKf+uxzH0p4S2RaY0SPDMh1/RACCIKDBZS8YpdyaTdw2zs2lPyjF8HSK3/LWj5phom5kf8LO/Rja3N5ojrO+pavoO+KtGd7tJL6fE7AzO6YNzZVd3fqieF8+OakV23hhbnedeinIOfXeL+mYqsqZe7D1W02Flfztko227j3t8Wsug+wtnxI8pnLJYM9jGWmnKU38vxqCm/wNcCNDrENiNRrXNrfJdAVouuC+9453hbZjcICpPDtElcUYA2ilegL55mzRXcY97hSaSH50tfNmaDQQ/o8m66wi/whpCDGreztKuEqH1QE0FfGKHUGJgF2L+CT40biwyOGOlCOwpFYYqtiEtV5BEQVWi2pJpl/6r4D3PyEd
- YbUAGOGW
- 31ZhTw7lJTjTa45pr9fkBLtKSGpRh+hTUIIbNrDlhMdIGbK9Keo4d+oKO635X+p2w64IN/3fX7Zs2L2IDqS8S4R8Obl23FWFjoxhZOi4lmlSFOYgsEA4MaQ7St7QNX1Fm8KidsB3seRLgEOznwnu5eAlczS433Bcj6a6d5egKQtTw+8ICsnHd7kXjso39iexPx9kWz4bTkaOX6M0R0X0Zy0d5INwPN1WlGoskUlsR4hrE73Nfnbv6XZ1gYXFz84GHbRYP3ddeq5ZYah8eaNl+OBYLxhQW5Nqh33rLJjNCL9G7FsOoGQXsDWgmSRJfHPgS56XnRarqIknMOPfp6hdk0E4zYA==
-X-HE-Tag-Orig: 1793650325-671015
-X-HE-Meta: U2FsdGVkX19/NlDmj6za3yot52EUkMELvRk+K/zR/92Tphi2DGBQse7yO9FsHffOAi/xFXwkCdGnOFoR0NOHJtPBT5BPnEHVpWtTmlU7lU6tamSRePG/wbaNLEZBYLTFHHiT3iIXbWrkZ0PtTHAl9iMPBPBnxKFvHQVV6G3bvPLOLAqdWgrcWeGHulYylVH4snpFr7VfBjzkXL+JDbWitWhXpM/GzT21qOFN18Rsgf6E9pKYugH7T0jQkUBkw/qtd1LwY5vRrXAhN0ILU42CuONrT0JVh3/3S+JJ8WrodtS1SIeezn6qanOYl81SJZtjqrCVff6Q72ZcMfPfo3pSsWmKV9wAXejDK91D2y8tvohIePm7cY+b3wMIrQXb/94YuRr9Z+xUVq5MU2MQWUcZ6AagDcz6G4C/lsf+GxN/Tl5lcYjEuhSrNsIp2zGhatBCG395O4Bt4gAbXJfv9+Bd1F5lwcs55cqVGBHeb0TVJeNzdzWbUdPW7Tp5kB8cBC020B5eU3SWv24Mznr9rh4aPDSjkMrB68v9oxQCkCAB6hNP7GGa1+ImdgQtX5DFrbeUK1SbV6l9ck4kz7GFsucZ/R4djgNQguRIk2vMVKaa/kLbbjjMNTZzJQpyJP3fWcMyZpx2c0a357NFC/jwqgdOKxuPu2RxAu64qg0sS7K4IRknqk4Lw+dZIwzgUen2UFAikKGV5TOFtCbvSCUJSuvSKJ4XrcnsaN0eW36vLzUr6SaYW0ZO8WBVxb96b0ZDHoeCkXTbKR750cNJMgJtnUDSI69DNlPq/x9nMJ2moliZDX5SHtR0AAUYGvM1NYoLCxCBHcf8EcVSmMzF/kzZIrqoBAnNMsnRQkPNBt5Oq+gT27UstS4e32bUqpjfgeKOp16A94c6pUfPNGjY+B//MnunKrIyZyWPjUR5VGGV+3HB2HHOhPdODxim+f3X/fLb9Sbwd932OG3agkAotPgVXSG
- PipobgNb
- R8giXWeKVOABKQWmwelCN7HzXfBME2hp4qeUMk4KIZ/b+WPTVxJFUsIpb8sKb3hImgDMZesO3Ci4cg19DyefBBdggi/5IzwXsSyz1RExUSer/D56Il9TE3krPOMnH1wawJJB2vyG44DlCMNJR75QVMNylIa1gKqcdKPEwxaCauw5D3rcJczoX5vOdmg8QAwManCvjPl59vtUGhr7oY54wu8hhDw618tA093qnlSVpmwRsfAYcCfN5DehOQD3PChTg6A1UhFKubqtheHSi1DPOXJmQjdPK1LlcJx7duW/3f/EMy6GLW4gvbweVgvccUcBk1qDa11Ex4F4Kgk8ek3IsmGQ7PZwUdx0x/cpV
-X-Rspamd-Server: rspam06
-X-Stat-Signature: ozth13rt1q3qdkuxjkgzduxrirzume3f
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
-	autolearn_force=no version=4.0.1
-X-HE-Tag-Orig: 1793650328-108202
-X-Rspamd-Queue-Id: 7C3311A000A
+X-Stat-Signature: br7niwm4jqkeayc5axxrr7wiox5s4bfk
 X-Rspam-User: 
-X-HE-Tag: 1793650332-185840
-X-HE-Meta: U2FsdGVkX1+O7g4BPSMa1m0KAzVQpf1/fzf8XikT9GD8psLD4cwCQFmqZPDRK1aSu29CZGhHL6Qu9qzFIdVsiEBNQrR3dGNJ/Xq2sJlJpflofThkNxeMbQA57Ft+MM+6SBMXZd42Q5klXDPjCGJzWJghRF82r/heWyHwQALaGPWWnPeXJqIMhOF3dp7AB93CuSGDnRIM1tJ0Qwz1kyArAmVS9r3DjfyT6RBpkHRAM34RZ0qYvYCgsY+kAe15BhNSphQg2e+/JFPT8dVSEZTqeCdZHzJuIf4rs5via7H6ZK2QReTVdzgdEHz8RBbjTjm7PbSvkQbKbiIif7B1eQDYTNjbf6T5HUhrxnwY51qqwJMwxeFV9bjrrpeBQ0K6mi4K7rdqqfzKaLXOcG4xHXPyGmF0N2CAj3ZAb1M+97VXNKILZnYvNloAdIMnLZqPPToDZSZc+z6U+6nYkhyC5TEB6xrOe84da5pDo20GiRd5exGfV9/RXX1Z2dlc0WYdRdbTpb5YivimGQIhfgD3yexuOI9wBQ6Lbw9VKnafUSp5XYqvayXgJRF1xTskGGAYPuYj7SAwO9i8QoI1wlUAS+iVO89YFfv39yOKC2unG2JgcHlwCu8YNNcvFQg3Q/MvfnCYe+qebQS0GeV8R9CbBR8vxYQWV/uMfqI40OT+K3jTcloh9hHYLMlHLDxOZwCZh57gqNJhleU3vGGm1BdwdfkcOnBkvqbf5MQgMwfB3n8wIsDEF8FZ22peNI0Sw5EHTSrUSbYSFkGeTLSCtTu4Bz+cATnv6Qs81ahFF233lRiiFKmEvqxp94otg3YMDTM0agAk8yQdAufDc5MC8JH0K76t7HmGYey1VWZXdBszIWBt5yAa3qZii4L0Y83ZSO90vROF8hUB8osHHWB6p1qEPlmoRXovNiHbipuc1c2/zB3DHYc7VdV7il39b03PYaWqtquxNTQQrsP+fnjmIBYV5qt
- tdNRbfus
- 70kt4/Fm5mBOgbDA5F262/B252+Pq0/hMMnyYHazbXEtBUQ3K/kB87gWYnqg4ISSoVcqHxPv0PxESkzFbTa3v6ogSK0bduGKal00O3NqB3z6sXxysdRwKSsHvUPsHyOjhueqeqFz9cdH2o9aoWAd7CxMQb0YMEF5QVsDPNzOkZrymuvdUxndZplGEByl/fJQebZ8WuadpMzCNuL6Fwvgz8PZHHGEyuny3YcaL8XB7V0T4boYvFZGFl6bmoytzXp4Q++EMB31pIN17L6jGcmD9MiY6TkH/HgeG+DXEUz9irqMY1DiyJn1gj98lzR+ohkHbE4wSCW/K1hrCzwyWROq2W6CbI6L5EK4jYF0Y
+X-Spam-Status: No, score=-13.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_IN_DEF_DKIM_WL
+	autolearn=no autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 3692B18000A
+X-HE-Tag: 1793651090-135912
+X-HE-Meta: U2FsdGVkX1/wbnieoNUUKTAnD4Lrtws/xvdTEW8nsmx9gWY6pVYO+wyym2mUnb99guw5aM0Vhz2yYrkxCz85c/IcPa4iK7SLC+Kyp/guzCqXk+hTs912DmtWZDpTVKfNEzaUEj15YEAgL1PIp4S52WAOrRgPF7M5z+VMiRerpLXRZHtLVD/JA2fAzMaIqvpNyIChEB4SwZVcRDQyh59BngHrKNUliRCy3wV1SeYS44EBntqZQri1biR8tDVXj5kBc2pWBJuWQSo1FlhvCkUyUet3YvMuoNHJ3I6q6QHWFaQE9vY5XfLYekSGdL7K9vr6sq4yEEb3Qga5QFAP+lqGBDm6JEel/ZJwMN52nzukSxlr0LEw2fMfFV1xecgE2NTihhHMr6ubff1gelAQeDIUIokp/yDLGXaOU48Jlm6UjOxDSXrcXQiZVwc4ZKvFzpCDgbYjnZmcQaQgtEJh/CEHJ99tddLc/RkvtfXvIb9WpexmT3IL0GccEut5kWs6+otqzmp8SxvMPADiLdVSbI7L4Up1GRtbsGvpi6co1QCRfQjbAGMT317rY0HHND/yCn+sDXniR/prCdePLdL5dMmvUaUXQEeLE/pdZgDyATPpeTIQBWjn6b0nl3swML6XprjWjpN84YjA34qtwbQQQf0UVbxhHliS83YMAdLZBa5KFgwWbOskxcQVtHuB2Li0pI3KaSRSCptfGjJK3yyDJgN3mTskB8R+Ns9e34PYQr89Z0UZLkQMTpbvXgyNlvsREd0BMlvxbdn9ZY/GLVBczmKJjw2CgvUgwdLF2R7c+nEJDW73gwgWgRw6DkoS/x2soY5+NV8Ee75XumBmqH76kVEDEiRqulazv311PBotGlNb8+iJdrU0EvcEKE/8cCSsT6fqfqB8QJfbSnRWOCIdKZ4P9pclLOAgXgt8YkqozGSJBXrW0bEdMugDEky4eajLusTjZmBn7mVGwrZjV8oDeBj
+ kNaURBee
+ Hg7+WALr002uwNvJw3tIKlqTG/JeSKSrz4qlNIvFWkB9nt+wmorxrdDYFUjRr4i55NSmIEJHWRiAhPUjYngd4yz/7fLxILcKZ/7pmOw2iXIVzEH5zdV7UmfBjcJjzFU7C7jJuQFLJyOR7PUts9zOikNV/hNOjl4xgwP3Z+QiZpDP4JtK+3iYmCieHjlgBu78HuwIcmcxDySK1cJXBg+wWBKk7pDIzYRri3MLyE9/EXiEAyOWaFD/jwI0am+Shzv4yTHv0NrZa5q9+dKALRE/O4eapLjL1SMR0nYnJJJ96v/iMmzJYeBDczAvOGJFvIQ7511iYVsaivYiMinFS7ACzhiz64CXUhRhRWSHw6N0kKs1FmH24U1FowYyMJa6WDJpTso6dOdYMAK+6ObJFNbnzyFvPI0VFKgTXQmLw8+IrK660eJsX8qbrKVBTrCqr49RE2Oph6h23o8L4HNnu0QZoZ3IC1iXmUcbHxpHPeSg5ICuXSYJvYv2m9LcwQ11O37FfVuqqVC2ucEBoFAI9xe/OU5bTM1LN5GhBR+n0zQpsK6eT87eNQGdHaBOlKcHuzIuYEThVHRpV6TcI/ZjDWgWv1Idok2tQm+fPlwq7C3Eu+ly9ZzxkjOZSmGFuY6IA4dlpHU1CcRxmqLCXvDXplGU68HCr/icYA4Q0Jb+hmcUPuLAh612Q2GsXB+JyR1LGomf/bm00NYiei5ALavM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -223,60 +118,46 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Sat, Oct 31, 2026 at 5:42=E2=80=AFPM David Hildenbrand (Arm)
-<david@kernel.org> wrote:
->
-> On 10/31/26 06:58, Lance Yang wrote:
-> >
-> > On Sat, Oct 31, 2026 at 09:46:37AM +0800, Muchun Song wrote:
-> >>
-> >>
-> >>>
-> >>>
-> >>>
-> >>> Agreed. FWIW, I think Barry Song and Kairui Song would be good candid=
-ates
-> >>> for the maintainer role.
-> >>
-> >> +1
-> >>
-> >> It would be great if they could take this over.
-> >
-> > +1 from me too ;)
-> >
-> > They both have been really active on MGLRU and doing great work for qui=
-te
-> > a while. No doubt they'll continue to do so :D
->
-> Fully agreed, we really need some people familiar with this code to help
-> maintain it, and Kairu and Barry have most experience on this.
+On (26/11/02 08:47), Sergey Senozhatsky wrote:
+> Adding Chris for visibility
 
-Thanks to Ridong, Muchun, Lance, and David for all the
-kind words. Your encouragement is truly inspiring!
+Thanks for looping me in, Sergey.
 
->
-> Just a note that I also don't want to pressure into such a role (which co=
-mes
-> with responsibility).
+I tested your CONFIG_ZSMALLOC_SHRINKER=n patch in ARM64 QEMU (7.3.0+, 16
+boots per arm) by fragmenting zram0, triggering a manual compaction pass
+at pressure onset via /sys/block/zram0/compact, driving ~240 MB of
+swap-outs under memory pressure, and running a post-swap manual
+compaction pass.
 
-It would be a great pleasure to work for the MGLRU
-community.
+Your theory holds up: with the shrinker enabled, the kernel compacted
+2,218 pages (~9 MB) in the middle of the swap-out, only for incoming
+swap-outs to immediately reuse those pages.  With
+CONFIG_ZSMALLOC_SHRINKER=n, mid-swap compaction dropped to 0 and zram
+pool memory was identical both during the swap-out (120.9 MB vs
+121.0 MB) and after manual compaction (110.9 MB vs 111.2 MB).
 
-Over the past few months, we've seen many active
-contributors join the MGLRU effort. It feels like MGLRU
-has never been this popular. I'm really glad to see the
-community growing.
+I also tested adding the unlocked zs_can_compact() pre-check in
+__zs_compact() on top of CONFIG_ZSMALLOC_SHRINKER=n, which cuts each
+userspace /sys/block/zram0/compact scan from 97 us to 27 us:
 
-I may have missed someone, but besides Kairui and me, I'd
-like to mention Baoquan, Baolin, Hui Zhu, Ridong, Kunwu,
-Maxim, T.J., Siddharth, Xiang Liu, Bingfang Guo, Shakeel,
-Zicheng, and many others.
+                                  Shrinker ON   Shrinker OFF   Shrinker OFF + pre-check
+  -------------------------------------------------------------------------------------
+  Pages compacted mid-swap              2,218              0                          0
+  zram mem_used_total (mid-swap)     121.0 MB       120.9 MB                   121.1 MB
+  zram mem_used_total (post-compact) 111.2 MB       110.9 MB                   111.1 MB
+  /sys/block/zram0/compact scan time    96 us          97 us                      27 us
 
-It's great to see so many people contributing to MGLRU!
+Representative /sys/block/zram0/mm_stat snapshots:
 
-Best,
-Barry
+BASE (CONFIG_ZSMALLOC_SHRINKER=y)
+  pre_onset:         184553472  58747279   82350080  0   82374656  0      0   0   0
+  onset_compact:     184553472  58747279   60456960  0   82374656  0   5345   0   0
+  after_swap_out:    334196736 107289761  120946688  0  120946688  0   7570  29  29
+  post_compact:      334749696 107472834  110907392  0  120946688  0  10016  29  29
 
-
-
+PATCHED (CONFIG_ZSMALLOC_SHRINKER=n)
+  pre_onset:         184553472  58747279   82350080  0   82374656  0      0   0   0
+  onset_compact:     184553472  58747279   60456960  0   82374656  0   5345   0   0
+  after_swap_out:    334372864 107347183  120922112  0  120922112  0   5345  29  29
+  post_compact:      334995456 107550158  111009792  0  120922112  0   7767  29  29
 
