@@ -1,75 +1,74 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 544DB6079934
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 15:14:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB37E6093F75
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 15:14:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=aoFGcx0p
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=QHFOrs5T
 Received: by kanga.kvack.org (Postfix)
-	id 5C5C46B0601; Mon,  2 Nov 2026 10:14:22 -0500 (EST)
+	id 096F56B0603; Mon,  2 Nov 2026 10:14:39 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5761A6B0602; Mon,  2 Nov 2026 10:14:22 -0500 (EST)
+	id 04F9D6B0604; Mon,  2 Nov 2026 10:14:38 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 465616B0603; Mon,  2 Nov 2026 10:14:22 -0500 (EST)
+	id E78576B0605; Mon,  2 Nov 2026 10:14:38 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 0FE4E6B0601
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 10:14:22 -0500 (EST)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 8BF6C40150
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 15:14:21 +0000 (UTC)
-X-FDA: 85390525122.24.7729507
+	by kanga.kvack.org (Postfix) with ESMTP id A555C6B0603
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 10:14:38 -0500 (EST)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 31BE01A014D
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 15:14:38 +0000 (UTC)
+X-FDA: 85390525836.19.5FAF419
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 0A76540015
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 15:14:18 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aoFGcx0p;
-	spf=pass (imf27.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	by imf03.hostedemail.com (Postfix) with ESMTP id 7063320008
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 15:14:36 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QHFOrs5T;
+	spf=pass (imf03.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793632459;
+	s=arc-20220608; t=1793632476;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=CTj8vGUhriHCrFXvGM0jGNx3xl9ERozaQgV9GXGsY38=;
-	b=vMXtFO6gsuMgDNO5lhEeOPIXmTcINFBMlK4VuEVWX/whBR1G62rpYJX1seE9gaCoA8HgFC
-	ElmrB4zF09xP0dhDbNauiw78FmPDkvWmePjX7VRG0HMnF9O83RnikfH6IpOx0CwNqzLtXw
-	uZtW2sj6caxk4ajrLaGUHWeiGuF2qmQ=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aoFGcx0p;
-	spf=pass (imf27.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=ClNRz/kRlLxFCzx32+9FVAcbIhgPE+GVqUynSQSCrm4=;
+	b=Kkynze9sckqsHzHBPyno5ESOp/dio8OFWGqMmMKN8TYRHsDSGUklHrlWfAPGcfhozKbxVk
+	gqgxvNRqxKdOylwYrRq6s8rOJca5OHNyN0mfhQKXJF+FFh0zZru5+WTwJMPh0OGvLf2Pyp
+	2CBUquwnj3dMr8U71Y6bXxRZb+E2JNo=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793632459;
-	b=etxaHeKGqxko+UrL18wVZBWRRjVg2/9W8iDQalkWZgNGZQ5nmrH6/zkIuE6dbJ95uBIhbP
-	tFHX0IinKpNzmNhNPgFOuoneycN8vS3PLvWskX/q79K6Byf6YZzskWMsrKZbBNrkB867Yz
-	6xf7jN4Moy+7p3BVOcBxsDxVrXJWUmI=
+	t=1793632476;
+	b=IKjBLo1kFlF4XzIlUfzTDo+sPZjmeUyfKsEtixGFefEw0Z06AvU+Brg+Eag6e8lIb/afbD
+	aRFpeM6ZTXPP3sugTedwooAVZSAcmkTAlYHIeCuJBWwhmfIAjF2n8hKL0e5FxGgL6wkWpy
+	HyneL1jqCSw07nYIhJwDwUupZ6snPQU=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QHFOrs5T;
+	spf=pass (imf03.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 89AA960230;
-	Mon,  2 Nov 2026 15:14:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8441C1F00A1D;
-	Mon,  2 Nov 2026 15:14:01 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 0D82A60627;
+	Mon,  2 Nov 2026 15:14:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E51E61F00A17;
+	Mon,  2 Nov 2026 15:14:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793632458;
-	bh=CTj8vGUhriHCrFXvGM0jGNx3xl9ERozaQgV9GXGsY38=;
+	s=k20260515; t=1793632475;
+	bh=ClNRz/kRlLxFCzx32+9FVAcbIhgPE+GVqUynSQSCrm4=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=aoFGcx0pELaJ5RYWtke+xC5t7aNB65DB/8p1Zyd+Mct0qYV4hXDTpFdt2jN92OjLm
-	 cm9P26FLH82HHv9uw3dBZcgwAFDEPF2a3BUk5VP4UipyUvYMQBZsfzU8GWvk6Denxt
-	 E+8h+vKxlfMsymem4bXtYNAdw6PVC20yhamxn7bhY3LAKScGG+UHFtjCsk/SsEKeLw
-	 mKt9GtlF0fXNneJBDl1wbvMAkvsv60mfPqz6Wg5a7kgDUDRlelGwablxe1YjuJDu/A
-	 zVy69YNLIhqAiQvfFY8ZlaEu8v/NK9WoKplt79CxDhcQu2uFCnSjhECk0F4Ds7DT4j
-	 Xm4j29KusNR9Q==
+	b=QHFOrs5TpHpo0M5R/FfZ1ou8JGe4vsZ6cA/Hi393fx1BxX5IT5o4flelNXsYEXbE9
+	 vynnBOwvEgghDbKEFxBD372pa+SwW8x0NGdMYbCse3kzzNveXnPAdVohl8yxS5NJs4
+	 3excMQXr6T5ACjipWAjM243eKSbSoi6d16BYCMEK6QVhsklDRevfPXj3KIgQmn5uPJ
+	 LZb4wVnkhoqe1laPMLMGYfVrzfbSiC1JXQPw3VBhRO6fCYMUcXexMRS4g13lbVrz81
+	 DepT7s422YBCQXEEEk7d+FgsSC3stLOiMHy9D0lHpcwxe4kj0+zJyTLCnY18Ca9szE
+	 Xhc9IT8ucAXuw==
 From: Christian Brauner <brauner@kernel.org>
-Date: Mon, 02 Nov 2026 16:07:19 +0100
-Subject: [PATCH RFC 12/23] scsi: sg: let procfs own the seq_file of
- allow_dio and def_reserved_size
+Date: Mon, 02 Nov 2026 16:07:20 +0100
+Subject: [PATCH RFC 13/23] scsi: sg: let procfs copy in writes
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261102-work-procfs-drivers-v1-12-a994bd4d3b1a@kernel.org>
+Message-Id: <20261102-work-procfs-drivers-v1-13-a994bd4d3b1a@kernel.org>
 References: <20261102-work-procfs-drivers-v1-0-a994bd4d3b1a@kernel.org>
 In-Reply-To: <20261102-work-procfs-drivers-v1-0-a994bd4d3b1a@kernel.org>
 To: linux-fsdevel@vger.kernel.org
@@ -105,27 +104,27 @@ Cc: Linus Torvalds <torvalds@linux-foundation.org>,
  "Christian Brauner (Amutable)" <brauner@kernel.org>, 
  Chuck Lever <cel@kernel.org>
 X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3098; i=brauner@kernel.org;
- h=from:subject:message-id; bh=i7XPA6oQ9lTisv2fJhwkVTww2SSinfY9aqbIviKN0Rk=;
- b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS9WG6Qf8grL/vRBPOFfc2hW3RiHI9mZiQELndpn9khL
- RHPWBrfUcrCIMbFICumyOLQbhIut5ynYrNRpgbMHFYmkCEMXJwCMBH+LIZ/Znxfdj0svxz/x0KW
- cdfJXz/uVP2z5WL92Rx27MvazyK/WhgZXtf0pV+c73nSVO8zu/lFWSMbjbVtv7ecN4xQ/S9ns82
- bDwA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2854; i=brauner@kernel.org;
+ h=from:subject:message-id; bh=JvNn9BiAujB73ykVLFuVWE/fT8/HBZYijRncXc4d9K0=;
+ b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS9WG7QvpbRg3P21cqJ8ja/jDbycj3eZxhYsFFhyvyCU
+ 9Jr5m792VHKwiDGxSArpsji0G4SLrecp2KzUaYGzBxWJpAhDFycAjCRezmMDGdFpl5cZz2xV6VK
+ 67ro+4sRqiHvTXWiV/ytnnPXy7w9S4mR4UuS786S182/LwXZn3kWWap7OH/GKcMfobE/OF7euZe
+ 9ihEA
 X-Developer-Key: i=brauner@kernel.org; a=openpgp;
  fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 0A76540015
-X-Stat-Signature: 8xtbpt4h1cffwbqiq6y8ubi7pwzwhhbm
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 7063320008
+X-Stat-Signature: pp61i735z6r4e57n74a9tgyzp3bia4fc
 X-Rspam-User: 
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
 	version=4.0.1
-X-HE-Tag: 1793632458-272314
-X-HE-Meta: U2FsdGVkX18ytZFt0CBRfEtlHt73FsizLTfI5bSnmN2JhFRBRfNQALiSzK78KlQiTX75iACEK+7v1j3yvJvkV/3tSehE3ZUl9NvhY+MVcB0e5Ni6pzaLlqbshAx/Mhrlt7GCv1PC99Kh6Fhbfiv7rgz9vTAGhlC50B8V8Fd4BxYFEQ6HRvfYafp2dr0fEqrvEjFMG/jiIJuX5FfSd4IcQ0pDN4kbVYr0cGTQghrkB7qOqHxu77Hj4VDG/b2B0PXfKmoVGk1vluZcJ1o3JxueyVs3bvyYEdBh46zh7TeKpi6EvCw3vCqiL8ibGsKbPwP6vJTbVhtTzHSC7WNQkAzeybvhJWeDzXk73IghuQA78IQjCoiO5kRT8GiqWrjrL3qtL1OXWEuBt5YXloAYjqDDGE6WNkpT+Opc22728Nk95aSXK+aa17LNvNw973DdEgKBbX8hpyK2Ob0SWuDZdpiykDukZ4QFg1hoR7NSBK480oWTDrNChE5Guaw+hcWTeAg+VQpkCKSJBxfDP/ZFsUL59N2W+fy/ISmpyo4+3Dib71ouWHdmFZVHRSCQxaIpZCCvax5tK0N6rkBhF8vM9K7RGqku41uxgvK1xadOX00PNS5krAI+yIdIwAeLd7Oz77bbpFeF3e4WFM17/968Pzd3rPVZpssdJGz1Ko1j1bUH9qHqkhwHmtya5WmXFy7oWx6rPJaHylkHHfQU2w24PlK56lD1mFZB6s038sx4u8Smc/sCJURgnIAr6mje0dRnzVgiEEF8C4268EfzUd1dLA1G3KFeocDh4/0cydqu/PE717I2HRRQV/ZrBy8zVke4fk8U128Py2LEh3+TEskTmzZ3ZIFxF6uKJfGo4beMfN04T3utpFQRkjwlqTbRowka8wwnpQHMNnKM/yWEpFo9H3F6kFffFbw0SFDsYVhAhUzlFPhz6yrVF7f+P3j0c46zR2OHPSe5Pz+dMC+BzcJssWc
- kJWmm/Id
- +O1/t26bUcwhRFIlxl4uzzDaHZOdnUqmHk/QwULejh8Uv6PVOEJbZbJbMCb7oGWWCda+NMN3Izs0lbPu6WsJwDV8y4FS9tXBYYIKvfPp1pmb6RD5NUhPfsmV1L2WeZ1knie0j2TAltKM3x8oX2Z46r68plS8uznjsLrGNl53iI1IE/7h0Wkah/SKZjzUfkIYaygA8RCJITRK/4bNBdtdHgO15Fe5jEPk67UDM0yyGicjJ0zrJOHHgTZcwm+Brl4+oSTj4lDlR5WpfLVjBreqT9qRxVIYkURa9pJQFqZeW7NuY3rXmRzl9r9RSetxssOgaNAGOIP0/qqOgV2E=
+X-HE-Tag: 1793632476-463757
+X-HE-Meta: U2FsdGVkX19k9M7PqJADdxkgOrcZNk5pDnGPc3TCKS91gq/9Yz5pqquLiHmwGIXLo1FJkDxvWMRBG79jYzrCiSaqDXEKuwgf+Fg+5EHZemiAGrUc8ff5M8clkLoGUjN62K/qAuKXHSsDSxvnM+dySJAXFZNWXbACHmnU2MjYPONoRdlEB0ii6p1bMWYHuuti776aitXp3gJWBC6DY5+WUXK+bEaxu0IlpSIeP447aYhphTglzdcxmlVSuAPbLn3QNg+3hT1XhPIj65lpuiBzhL1Cxt019I0NYtTD9MrFarHdohdf3k0KVztfVNOqp8m2qeqpqq4ITkBqMRgIdGng2k0iBTn+utWMKxNM+lk7Kxo01DFfNPaiieR+jsBuioMv6JWY76rQ2TTUF7+CBSzR8MvxaNuPS6EN1kAgzyHowtsfMFHw02rYuGxeOyJCJ4iEWWKWcZib9Czxv4K7Rk5FONJjZM2wlkB8IMN4YOJ8MaW0anZWC606AmuLXlkVgtae9HcG/dDjr774Pmwlmizl4NmbpsG1qfV5g5FSE/a8gxZSeiG+BZ8DkFdxNv7E4VYExIcLGUcdnXaqzE53buHLgpdHBnodbqmFblrclRAhPqzZ+uC8hnHzw5+pnLVfc78TH97LKQrXUvAEDQqQFuyQmN8txFTlFts5O3rspW6cbGWLxpcrgdrnw3b1ieo4FP2thXurwwAMWoZ2tFlEJCVA7CYZVB7QrsMxtRTrpvrtk+NM0QfLVo8IoBSIAKGI9zxVeq0NrA+D60BibPiPU2Z+NvkqjBk4lKmR7b8HptK7SdnIlmIjkzBGrikUU3Mr6ctbE3j1VTVGOCRViz0sHVEcgiPrm7wmrmYJvcwRyNfh4lwxt9I93hatriRnT/wPOKuixDn4ZZnkFpSrGrVYG/e6dvoe0W2Hlw6KYF9SXfVEAnWyrdd2Ej2JB980RRUWkuJT8adu/GEE8pk1Uz1z9vc
+ PD5vyDLC
+ BDJGf9dXYokBGjRjSrun6orYRcZYYnPucHZMYioGdala9+w8CeAFdZUZOrX9SXufM1doYrqpqDTW22nmfwOCNY9jKGpwjatpH+XX970ZakdRLyfKZFILaxOv/BB3S3Wxpe2H9CrkPLnWFzJwjU4JcgDJaf1XjmhqbM9VPOMfkAYzZyLosaXki2K+n9bIYA5LFr19tSNrRnliG0NQ8DuktzjnLrGnFAYs7I+MukFM2wSGubeJSGG6siJUV946vo8Pj2QQPiepyIoId5BOH3n/Hnt7NZrWkdDWNBFhc
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -134,86 +133,83 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Pass the integer they show as the data of the entry and declare the
-show function, procfs then opens and frees the seq_file. That makes the
-open functions unnecessary.
+Implement ->proc_write_buf() for allow_dio and def_reserved_size so
+procfs copies in what is written before it pins the entry, and parse
+the number from that copy.
+
+kstrtoul_from_user() looked at the first 66 bytes of whatever was
+written. Now the whole write is parsed, and anything larger than
+PAGE_SIZE - 1 bytes fails with -EINVAL from procfs before the
+capability check.
 
 Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 ---
- drivers/scsi/sg.c | 28 ++++++----------------------
- 1 file changed, 6 insertions(+), 22 deletions(-)
+ drivers/scsi/sg.c | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
 diff --git a/drivers/scsi/sg.c b/drivers/scsi/sg.c
-index 3f9e08725602..c7386fbe5580 100644
+index c7386fbe5580..87569e302f26 100644
 --- a/drivers/scsi/sg.c
 +++ b/drivers/scsi/sg.c
-@@ -2287,26 +2287,18 @@ sg_get_dev(int dev)
+@@ -2287,18 +2287,18 @@ sg_get_dev(int dev)
  #ifdef CONFIG_SCSI_PROC_FS
  static int sg_proc_seq_show_int(struct seq_file *s, void *v);
  
--static int sg_proc_single_open_adio(struct inode *inode, struct file *file);
- static ssize_t sg_proc_write_adio(struct file *filp, const char __user *buffer,
+-static ssize_t sg_proc_write_adio(struct file *filp, const char __user *buffer,
++static ssize_t sg_proc_write_adio(struct file *filp, char *buffer,
  			          size_t count, loff_t *off);
  static const struct proc_ops adio_proc_ops = {
--	.proc_open	= sg_proc_single_open_adio,
--	.proc_read	= seq_read,
--	.proc_lseek	= seq_lseek,
-+	.proc_show	= sg_proc_seq_show_int,
- 	.proc_write	= sg_proc_write_adio,
--	.proc_release	= single_release,
+ 	.proc_show	= sg_proc_seq_show_int,
+-	.proc_write	= sg_proc_write_adio,
++	.proc_write_buf	= sg_proc_write_adio,
  };
  
--static int sg_proc_single_open_dressz(struct inode *inode, struct file *file);
  static ssize_t sg_proc_write_dressz(struct file *filp, 
- 		const char __user *buffer, size_t count, loff_t *off);
+-		const char __user *buffer, size_t count, loff_t *off);
++		char *buffer, size_t count, loff_t *off);
  static const struct proc_ops dressz_proc_ops = {
--	.proc_open	= sg_proc_single_open_dressz,
--	.proc_read	= seq_read,
--	.proc_lseek	= seq_lseek,
-+	.proc_show	= sg_proc_seq_show_int,
- 	.proc_write	= sg_proc_write_dressz,
--	.proc_release	= single_release,
+ 	.proc_show	= sg_proc_seq_show_int,
+-	.proc_write	= sg_proc_write_dressz,
++	.proc_write_buf	= sg_proc_write_dressz,
  };
  
  static int sg_proc_seq_show_version(struct seq_file *s, void *v);
-@@ -2347,9 +2339,11 @@ sg_proc_init(void)
- 	if (!p)
- 		return 1;
- 
--	proc_create("allow_dio", S_IRUGO | S_IWUSR, p, &adio_proc_ops);
-+	proc_create_data("allow_dio", S_IRUGO | S_IWUSR, p, &adio_proc_ops,
-+			 &sg_allow_dio);
- 	proc_create_seq("debug", S_IRUGO, p, &debug_seq_ops);
--	proc_create("def_reserved_size", S_IRUGO | S_IWUSR, p, &dressz_proc_ops);
-+	proc_create_data("def_reserved_size", S_IRUGO | S_IWUSR, p,
-+			 &dressz_proc_ops, &def_reserved_size);
- 	proc_create_single("device_hdr", S_IRUGO, p, sg_proc_seq_show_devhdr);
- 	proc_create_seq("devices", S_IRUGO, p, &dev_seq_ops);
- 	proc_create_seq("device_strs", S_IRUGO, p, &devstrs_seq_ops);
-@@ -2364,11 +2358,6 @@ static int sg_proc_seq_show_int(struct seq_file *s, void *v)
- 	return 0;
+@@ -2359,7 +2359,7 @@ static int sg_proc_seq_show_int(struct seq_file *s, void *v)
  }
  
--static int sg_proc_single_open_adio(struct inode *inode, struct file *file)
--{
--	return single_open(file, sg_proc_seq_show_int, &sg_allow_dio);
--}
--
  static ssize_t 
- sg_proc_write_adio(struct file *filp, const char __user *buffer,
+-sg_proc_write_adio(struct file *filp, const char __user *buffer,
++sg_proc_write_adio(struct file *filp, char *buffer,
  		   size_t count, loff_t *off)
-@@ -2385,11 +2374,6 @@ sg_proc_write_adio(struct file *filp, const char __user *buffer,
- 	return count;
+ {
+ 	int err;
+@@ -2367,7 +2367,7 @@ sg_proc_write_adio(struct file *filp, const char __user *buffer,
+ 
+ 	if (!capable(CAP_SYS_ADMIN) || !capable(CAP_SYS_RAWIO))
+ 		return -EACCES;
+-	err = kstrtoul_from_user(buffer, count, 0, &num);
++	err = kstrtoul(buffer, 0, &num);
+ 	if (err)
+ 		return err;
+ 	sg_allow_dio = num ? 1 : 0;
+@@ -2375,7 +2375,7 @@ sg_proc_write_adio(struct file *filp, const char __user *buffer,
  }
  
--static int sg_proc_single_open_dressz(struct inode *inode, struct file *file)
--{
--	return single_open(file, sg_proc_seq_show_int, &def_reserved_size);
--}
--
  static ssize_t 
- sg_proc_write_dressz(struct file *filp, const char __user *buffer,
+-sg_proc_write_dressz(struct file *filp, const char __user *buffer,
++sg_proc_write_dressz(struct file *filp, char *buffer,
  		     size_t count, loff_t *off)
+ {
+ 	int err;
+@@ -2384,7 +2384,7 @@ sg_proc_write_dressz(struct file *filp, const char __user *buffer,
+ 	if (!capable(CAP_SYS_ADMIN) || !capable(CAP_SYS_RAWIO))
+ 		return -EACCES;
+ 
+-	err = kstrtoul_from_user(buffer, count, 0, &k);
++	err = kstrtoul(buffer, 0, &k);
+ 	if (err)
+ 		return err;
+ 	if (k <= 1048576) {	/* limit "big buff" to 1 MB */
 
 -- 
 2.53.0
