@@ -1,72 +1,72 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0113E60A263C
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 11:22:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3050A60A263F
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 11:22:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=A7rQE586
+	dkim=pass (1024-bit key, unprotected) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=PsZ/xV55
 Received: by kanga.kvack.org (Postfix)
-	id 23D866B05BD; Mon,  2 Nov 2026 06:22:17 -0500 (EST)
+	id 5E7546B05BE; Mon,  2 Nov 2026 06:22:23 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1ED5B6B05BE; Mon,  2 Nov 2026 06:22:17 -0500 (EST)
+	id 597086B05BF; Mon,  2 Nov 2026 06:22:23 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 08E906B05BF; Mon,  2 Nov 2026 06:22:17 -0500 (EST)
+	id 4866B6B05C0; Mon,  2 Nov 2026 06:22:23 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id DE5726B05BD
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 06:22:16 -0500 (EST)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 85B341A0C5D
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 11:22:16 +0000 (UTC)
-X-FDA: 85389940272.02.7DC1E49
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 26C896B05BE
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 06:22:23 -0500 (EST)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id BA09C1C4712
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 11:22:22 +0000 (UTC)
+X-FDA: 85389940524.28.08BF1D3
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf28.hostedemail.com (Postfix) with ESMTP id B1D56C0006
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 11:22:14 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=A7rQE586;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf28.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com
+	by imf31.hostedemail.com (Postfix) with ESMTP id 0604B20009
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 11:22:21 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b="PsZ/xV55";
+	spf=pass (imf31.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793618541;
+	b=qqE7Q9bBs02xY4WkSOeCUXk2FUeiGXCsWI+xF78IqJ/k+sG6xNPYvXX3ZjnSIrfxZxuvp1
+	CQkIsK/IOtNBIA4YjF/oJWhGHMSVKBSQDiS1Wy/uzMD2CGUrHNjPokU/qMxYbEtrnNIcBE
+	JKXrJDuSAoP1j7r0bCPbahmGsNkgyVg=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793618534;
+	s=arc-20220608; t=1793618541;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1XXfVIkNP4nITGpfyLSUIpM9B8UBbVvkEA7ohODjLRw=;
-	b=7C73Dn0NmO0g6hvcZ6l2dh0qn6XOwB0XxDcxDFBwMyDIYZRP/suCIkZFejJE2efcBZbSJj
-	PQV7YaSgtqL94l/Uz8uw4ffGutykKjfEzXVdT3KGrkV9sF+iDzxq+8fsy92o2NxYYeB23S
-	CuTShHQtdq0YLjzvjrLvG7xJw+Fnl2g=
+	bh=AhZPH2Id1V3UJZ0PUDk/Q6jSjnsEPYgfRRz51ht6Rp4=;
+	b=Pcs6gYsvripHoDcPxCB2tdmAkxOgvfE8uXg8geeisd7SgmB4wKZGEnWdJPwJQSM+LduiLF
+	a+91dtHwhjn2gq/9PQaRCgTuQQ9ua+97mAY0e7N20rC55I+J42NrhLO75MPv5P+k2ct2W8
+	EW6mfNRgbB+fp076S5mr3+Jg1UQUwvo=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=A7rQE586;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf28.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793618534;
-	b=il6+lyLjv77NoP06UHjnd/bIOcygMPYvVIuBUvzxhvlqnBziwmrgcbvpMOgiuRNSafh6vW
-	RGN1MQfYWFwClpFGKT06Ee/PjVxwa7IN/caJ84gVHXL5AZvLQT+EcFjYXp1HkYmIvWXGbC
-	tbz+0QLdo1vK3oN60bEEVs7iGULV/bw=
+	imf31.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b="PsZ/xV55";
+	spf=pass (imf31.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C90D9293B;
-	Mon,  2 Nov 2026 03:22:10 -0800 (PST)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 1E6232972;
+	Mon,  2 Nov 2026 03:22:17 -0800 (PST)
 Received: from e129823.arm.com (e129823.arm.com [10.2.213.3])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id D99E73F632;
-	Mon,  2 Nov 2026 03:22:07 -0800 (PST)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 2DD373F632;
+	Mon,  2 Nov 2026 03:22:14 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1793618533; bh=evfeL7lk1yM+NSCKYrKsUpK8FtfFqKH2c2v1uANMiZA=;
+	t=1793618540; bh=iAKWhkLBUL8Dbje3w+lN/zrtNjFP/+2E4XMbJAzkSwE=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=A7rQE586SxmeYhdbuDjgGojrf+yFdXKkVJvIWE3/CkvAh47B/hi7pieq8pgJx6OPd
-	 7+IdQ9YxhSeIZpcu39Tq98FmLu1Q3ge8+e61N66fuaQUSiCZLJB7SxbfiAp/g9FEqC
-	 pD/C97hYRDBX9CkJO435UP1+7vyxZpzRkF237Vvg=
+	b=PsZ/xV55JWI15/OuGGIzIxarKfdNw1USnk6yd5/qGxAT2iQNKUyjmZiknVsIG9EAM
+	 FHVIK/r0dSwZlieqJ6i4Ub47uuLajcoviLMk9DLJUT8YpfdyuFurfnAbmwFqi15Qes
+	 azpHEA/ThKpZh5kfXCYp/IH1C3ruHlJgAZacMHks=
 From: Yeoreum Yun <yeoreum.yun@arm.com>
-Date: Mon, 02 Nov 2026 11:21:19 +0000
-Subject: [PATCH RESEND v2 06/21] mm/pgtable: define (pgd|p4d|pud)_leaf()
- for folded page tables
+Date: Mon, 02 Nov 2026 11:21:20 +0000
+Subject: [PATCH RESEND v2 07/21] mm/pgtable: define
+ (pgd|p4d|pud)_offset_lockless() for folded page tables
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261102-dummy_ptxp3-v2-6-78840b2ec73c@arm.com>
+Message-Id: <20261102-dummy_ptxp3-v2-7-78840b2ec73c@arm.com>
 References: <20261102-dummy_ptxp3-v2-0-78840b2ec73c@arm.com>
 In-Reply-To: <20261102-dummy_ptxp3-v2-0-78840b2ec73c@arm.com>
 To: Russell King <linux@armlinux.org.uk>, 
@@ -99,31 +99,31 @@ Cc: linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
  kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org, 
  linux-openrisc@vger.kernel.org
 X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2651; i=yeoreum.yun@arm.com;
- h=from:subject:message-id; bh=MsUi6fKiy4C8DH1qxUfB7PhJ8/xMmbWjYscC+NJ7HZ8=;
- b=owEB7QES/pANAwAKAW3Vw9FaxTEzAcsmYgBq6HIxIVd8yfHE+3CA9LTpZi1gUI+XMCzgs5U2Q
- BHJBi3iXj+JAbMEAAEKAB0WIQQtg+CS3QUzuFh1pJ1t1cPRWsUxMwUCauhyMQAKCRBt1cPRWsUx
- M/V2C/9ItyCxgxlMh10fHR69tVgw9EuphM40QYD/mSrn4nLbxqXwGeoRCXJD/CQZjbzhVqNLqD8
- 4pI+P8VaiZD1ROaf98yDqlm38MdDfJo/nXweMu2XCSuy8bvJOZ5akdNLIqOCNL/Kky/4vAvfA7y
- g/DN2CQi8iHcZmgFZENpatEkLXDT+irkdH/T8momUPL2iU/gMe9+PBe83/sjStUInekkPY+48fS
- tQ4YbgN0JI0jsnh5HfL7yHY0zHyLhvoIlmUPykZRIofr+KodLXQYFHAKOkD2khVIs/r2bFJxKJM
- 7EZ9zMN52ptWFsHpkIIDhVoEnRhnj2vRlH6U7Y8kV9ZSGk2CzFCTZuWrT3cGyiZ4sRJ2z/gLRS+
- DXMtq/JtOP08ZaADSQRymmkYRKA9PLkrAtBZXZKwEO/gg81uxE4KT+wj8pXddgbXPnOWNxmpGA0
- MxTCMq+1KtHR5HFt8aTkW7OiLozCLtwsA62FVhYXV48+piX5IjzAgVxuzgBp34DGCh8VI=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4366; i=yeoreum.yun@arm.com;
+ h=from:subject:message-id; bh=u76iVQJbWCdkEbiJ5jZQxWZGCtfm9Pp2msKkXET/qwE=;
+ b=owEB7QES/pANAwAKAW3Vw9FaxTEzAcsmYgBq6HIypEb9aXVoCMG7pxsrAGeq/LTHoW1uWXEBM
+ pIwPB40LByJAbMEAAEKAB0WIQQtg+CS3QUzuFh1pJ1t1cPRWsUxMwUCauhyMgAKCRBt1cPRWsUx
+ MzzkDADQPtRN+DQ0QdZ/E5ulISLF3JkAQe33ZVd/+S87WO+Sy3zOmf/s77mek/A86gwCB52rGz6
+ NsFtjGs+ALYco+k3aCZaOJ+4OI+GsRLUJBA8kK1l/X00CILC9t0qmJGYamB8dsPxPMO+M21DwVI
+ /rk19ar+YAisNFKK7f0r5JRGn1r6rtA/zTelmesjg8qXXW2d3R/orYzgSRJNRVGfHplzMvW5WF7
+ 2SV4kMDEQq/4kLJUcVebxdFAS9HJCf3XrJTRtiDgy0aEVXoT+q2DWd2LJKPSA+QL6zMvxFgIt8D
+ t6P+wsuF+ihqujWnCZw/I+PE5C+Jd11Rk9vGE3JKnMrNmMnR1Sp2jL30ZQcG/HwQ7coqXiYVVSk
+ vhNQdA4aQ9WI4ceztWVvVzhXt1frhLl1HR8P0NGGqLVFaAJL3L+M+HjZBrU9dMhkbtwMTx/1+S9
+ SzYhL7QXCQWSjEax1AfhVDQ8sPZIqGPWAtZQ/BR8IPZRp8AoNMk/iHqhsX16+teiHOk3Y=
 X-Developer-Key: i=yeoreum.yun@arm.com; a=openpgp;
  fpr=2D83E092DD0533B85875A49D6DD5C3D15AC53133
-X-Rspamd-Queue-Id: B1D56C0006
-X-Rspam-User: 
-X-Stat-Signature: sj7hf56bbqyr6eyzgsbmy8h5xkjwncss
+X-Stat-Signature: nkfmcjd7nh1fuyarm83su5mftpfbudjo
+X-Rspamd-Queue-Id: 0604B20009
+X-Rspam-User:
+X-Rspamd-Server: rspam12
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1793618534-558914
-X-HE-Meta: U2FsdGVkX1+QprqU+tAfn4cQUHNODDyg8vDNoItozx3/KaNekH8gKEvDUlVu+Onsi2e1hKU5e1cOJzlaxtJdjezseCOd0USo9gsgB9D7VfVpq3qVI8CNGUM65HJCSFx1l3bXkqSBlH/DORqIpF/AnFU3LnLWFDfbzu0yCIDznpE39skNd4EJAo8RyqEF2pmo3mKI0rDzzLWSo2bPfHYoxPVcg9UH7F/Mr7zCcZ1cZa9UZp7iqrIJ8uD4l7w9ZF+NGxrEigidgIht/HrrrWjA2yoqhB+bpKf4DK0lf7H0htAVV3Hdx2ddkLmjZjW0N/bsy4zYXWe0VayUsdrn7R9YLqY0EUPMbBbumg+4U/M71VvsyJUyhTT2RDjEMl0XIcUfuI9415ScTfrluubjs/H6OR1x+oBYSmBF5vKiK02lpm4zeE1C5rh9u3PFr6XnXB0gCZuEPPJep0mNxpabbhknswjYd7aSV0KGfrQ5Ql1yjcra6yEsusuNLLpPGFX0Rna2+OaaCSU+bQDY9s8njIatPJ4IhdRtMhrZnDn3ad9geTroL4l6L8U3ddwSp7X4JBqlgUQ0cG3kW9qFH5f3xkLLE8vWNGMPVy6VJmWYNIyHSq+tNh+ibbTFNcoGJBrzPZ2yd5KQ/KxWNUwS3ZmQpx/iGjWhP8acubmKKOAcnV5hDVrg3wXmx169l/RH9mDTX3Zou8ALoiIsH93wjr/oWL579Hikvc1bj2ipRtRRptoBBoZ7N5EjBNjWktZQhGatluXl7qC3WsVs7FKP2I7ahVStuYLrcI2enUfvoiR4+xH/m/oR/QF137qtF5ao9+Umy+8Rp7aW3BJCHe5XRnlTpKvomSY2xMJ4SHyZ/mDa1YYBziiMF8O9TueJO3M/GhhR000nxVj8wdvWs+fBtwDXfeyKfoelsapTEUIJhd0DO/EuMFU6iQLFbpR7uMG1rD0vBhjt8b5kqq1Tgqmb40CARZV
- 3C0itQe6
- W45JgVzP6W39m6apxxvvQGaDRdVZTiLF9KO3koBpFONMz0apxyJ7Oa2rOIGJujDWIIoC4pkgqfrCdU04U1wi6UU8oPVFU/fkga94qaV6T+vcFiz34ckHYfkPCktuxxA/Y8Wql/bvYM7J6X1/P1gCP9OhC8Ll35SBgfxQJuldthOH+gTfcEvBrjld4eGoyT2CNhpBiX6gct1QhC6aFPimtboRt5kHq41+kanmf8MaRxQlPNemheEdNbiCIFyFroJQQUdTAV71eor5nyTE=
+X-HE-Tag: 1793618541-731377
+X-HE-Meta: U2FsdGVkX1+OtfwYI+ZjxGjfAR9Z6yqF3Pc2XvEOV9icJLglsvZfDckEbTRKT3I6cnnFij+yuPi/JB/BX5BpH4HJaiokHshngu3U1G9Rd9YZs5MojEJ3pqhKzDRmKwZ9hC6JeGCrfdB5a2941BsXqOursi7dTRhRIb3zcFE58syZkmqn1oo9rJYKNnKMffjWiy1wLlT+XLz4NBoc4+Tq5KWVbQkrJbO0ykNdXECNFlDx028hT2wb4Brms0TGwrbsb5VSneeuDFDpOgclDEuOWQW1re9tRUcwB1FQM/W9Wf9GSC+8HBDTdamkAU00hSLLoxeyfSN2iQHAyu6QXEG0qw+XkJ+4Gcn8EvohKLwqOk4nIOm3XosFKpgiEJNrb15uxWyXnqMM0GIhCSEBGSWQ85uWgMNXqWmAPoLX84jqH94W9YYRNWZ+bGIHDwm4MIaH/4iwY1jGumgJ8ZMh4maGGx3aGWm1W8jp1zDekMVFGa3Yl9cjuQ5MiNct8ynIiaLcdAKveUOsBimEjrBA36PwfM/ZL1cS8GoCOQX9fQJbp6FpC2+PKsMvgdA45RHnTJFRqeuEi/6OQO2EJGnL4CA61b9Q6Xw5SAtnEcJTCpoUfP+rXZpD4VQs7R35fbWXw4ePHQzTc62hn6QSLSXW+v/5ZFMTIFUuHLA1f2U6Iv5epIQHHvWkhHYDZWn5PcZW60tt7dlsteNDoDX1RlISYFxkGrIuwp/v52YuzrOg9E7PFaWHkDZabhrg6RgmNmxQdQiJj6DugjS9hvJxaLMksgY5lnysW0IA7aUUbRBpWHEhpP5UfTdHkXNGS6HMz5Oio4SJJDx6MH858Fgn0tU7xb/qFyXbfYqr5Jbo26jy4hDK80Dl6/upfvjcCaBydw9iQDXg4wO0AiucE/7iBtbU9Hi2cf0U0Ye6057EbNDNsRhswYwMw7svV6YAMu2MwRilBM7Geac/1uASjJp5RoYqClE
+ NE8+cxfj
+ xRuW/9LI2AKOqPzSQRZoW8+vaAeDIiCIaTsDtyrhBxUUGDf9OXxcxCqfExlLzIlWZzKUlzM50avKn5jjXXSy2cQX9eCwSYte07dlXhDLGIOiQHPuP2aW6jKjsjsugrXB7mNYRSefh7HLuP8V8yPdXfyQxpBLksuUNxhTkEgyUTCX3Dq8DUD2/2Abp7qzn0PoNjffy1kgGmV+li2TnpOua2QF8VtDDCNTQ5rKsYOI1lxOq2nuJIHoemPPhpA61TLNE3RvMk1Vm909aiuxeBTuE7Jb/9dqUfd+tiGLnqtkmpoHVNKs89VqZNw33ow==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -134,62 +134,119 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 
-Define (pgd|p4d|pud)_leaf(), hard-coding it to "false". Note
-that it's missed to define pud_leaf() before, allowing architectures to
-unknowingly overwrite it.
+The default helpers fallback to pud_offset(), passing a pointer to the
+stack value.
 
-Still use static inline functions (type checking), and while at it, just
-use "bool" as a return value.
+Let's provide variants that do exactly what (pgd|p4d|pud)_offset() do,
+but ignore the passed pgd_t/p4d_t/pud_t, consequently not working on a
+pointer to the stack value like the default handlers would.
+
+With this patch, Drop the arm64 custom variant that did that. As it documents:
+
+	Note: reusing the original pointer means that it may be
+	dereferenced the same (live) page-table entry multiple times.
+	This is safe because it is still only loaded once in the
+	context of each level and the CPU guarantees same-address
+	read-after-read ordering.
+
+Do not document this, as the double read will be removed in the next patch.
 
 Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 ---
- include/asm-generic/pgtable-nop4d.h | 3 +++
- include/asm-generic/pgtable-nopmd.h | 3 ++-
- include/asm-generic/pgtable-nopud.h | 3 +++
- 3 files changed, 8 insertions(+), 1 deletion(-)
+ arch/arm64/include/asm/pgtable.h    | 23 -----------------------
+ include/asm-generic/pgtable-nop4d.h |  7 +++++++
+ include/asm-generic/pgtable-nopmd.h |  7 +++++++
+ include/asm-generic/pgtable-nopud.h |  7 +++++++
+ 4 files changed, 21 insertions(+), 23 deletions(-)
 
+diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pgtable.h
+index 763c5a411d64e..b391f325670f8 100644
+--- a/arch/arm64/include/asm/pgtable.h
++++ b/arch/arm64/include/asm/pgtable.h
+@@ -1141,29 +1141,6 @@ static inline bool pgtable_l5_enabled(void) { return false; }
+ #define p4d_clear_fixmap()
+ 
+ #define p4d_offset_kimg(dir,addr)	((p4d_t *)dir)
+-
+-static inline
+-p4d_t *p4d_offset_lockless_folded(pgd_t *pgdp, pgd_t pgd, unsigned long addr)
+-{
+-	/*
+-	 * With runtime folding of the pud, pud_offset_lockless() passes
+-	 * the 'pgd_t *' we return here to p4d_to_folded_pud(), which
+-	 * will offset the pointer assuming that it points into
+-	 * a page-table page. However, the fast GUP path passes us a
+-	 * pgd_t allocated on the stack and so we must use the original
+-	 * pointer in 'pgdp' to construct the p4d pointer instead of
+-	 * using the generic p4d_offset_lockless() implementation.
+-	 *
+-	 * Note: reusing the original pointer means that we may
+-	 * dereference the same (live) page-table entry multiple times.
+-	 * This is safe because it is still only loaded once in the
+-	 * context of each level and the CPU guarantees same-address
+-	 * read-after-read ordering.
+-	 */
+-	return p4d_offset(pgdp, addr);
+-}
+-#define p4d_offset_lockless p4d_offset_lockless_folded
+-
+ #endif  /* CONFIG_PGTABLE_LEVELS > 4 */
+ 
+ #define pgd_set_fixmap(addr)	((pgd_t *)set_fixmap_offset(FIX_PGD, addr))
 diff --git a/include/asm-generic/pgtable-nop4d.h b/include/asm-generic/pgtable-nop4d.h
-index 1cf739ee38aa1..c6a5a43899b50 100644
+index c6a5a43899b50..019c3f074b771 100644
 --- a/include/asm-generic/pgtable-nop4d.h
 +++ b/include/asm-generic/pgtable-nop4d.h
-@@ -22,6 +22,9 @@ static inline int pgd_none(pgd_t pgd)		{ return 0; }
- static inline int pgd_bad(pgd_t pgd)		{ return 0; }
- static inline int pgd_present(pgd_t pgd)	{ return 1; }
- static inline void pgd_clear(pgd_t *pgd)	{ }
-+static inline bool pgd_leaf(pgd_t pgd)		{ return false; }
-+#define pgd_leaf pgd_leaf
-+#define p4d_ERROR(p4d)				(pgd_ERROR((p4d).pgd))
+@@ -39,6 +39,13 @@ static inline p4d_t *p4d_offset(pgd_t *pgd, unsigned long address)
+ 	return (p4d_t *)pgd;
+ }
  
- #define pgd_populate(mm, pgd, p4d)		do { } while (0)
- #define pgd_populate_safe(mm, pgd, p4d)		do { } while (0)
++static inline p4d_t *p4d_offset_lockless(pgd_t *pgdp, pgd_t pgd,
++		unsigned long address)
++{
++	return (p4d_t *)pgdp;
++}
++#define p4d_offset_lockless p4d_offset_lockless
++
+ #define p4d_val(x)				(pgd_val((x).pgd))
+ #define __p4d(x)				((p4d_t) { __pgd(x) })
+ 
 diff --git a/include/asm-generic/pgtable-nopmd.h b/include/asm-generic/pgtable-nopmd.h
-index ff4235cf84d77..4e5aaf253b6a5 100644
+index 4e5aaf253b6a5..1dd5b165234be 100644
 --- a/include/asm-generic/pgtable-nopmd.h
 +++ b/include/asm-generic/pgtable-nopmd.h
-@@ -31,7 +31,8 @@ static inline int pud_none(pud_t pud)		{ return 0; }
- static inline int pud_bad(pud_t pud)		{ return 0; }
- static inline int pud_present(pud_t pud)	{ return 1; }
- static inline int pud_user(pud_t pud)		{ return 0; }
--static inline int pud_leaf(pud_t pud)		{ return 0; }
-+static inline bool pud_leaf(pud_t pud)		{ return false; }
-+#define pud_leaf pud_leaf
- static inline void pud_clear(pud_t *pud)	{ }
+@@ -49,6 +49,13 @@ static inline pmd_t * pmd_offset(pud_t * pud, unsigned long address)
+ }
+ #define pmd_offset pmd_offset
  
- #define pud_populate(mm, pmd, pte)		do { } while (0)
++static inline pmd_t *pmd_offset_lockless(pud_t *pudp, pud_t pud,
++		unsigned long address)
++{
++	return (pmd_t *)pudp;
++}
++#define pmd_offset_lockless pmd_offset_lockless
++
+ #define pmd_val(x)				(pud_val((x).pud))
+ #define __pmd(x)				((pmd_t) { __pud(x) } )
+ 
 diff --git a/include/asm-generic/pgtable-nopud.h b/include/asm-generic/pgtable-nopud.h
-index eedee8e3ad68f..6c9bca78047c4 100644
+index 6c9bca78047c4..5a2b0a81ae197 100644
 --- a/include/asm-generic/pgtable-nopud.h
 +++ b/include/asm-generic/pgtable-nopud.h
-@@ -29,6 +29,9 @@ static inline int p4d_none(p4d_t p4d)		{ return 0; }
- static inline int p4d_bad(p4d_t p4d)		{ return 0; }
- static inline int p4d_present(p4d_t p4d)	{ return 1; }
- static inline void p4d_clear(p4d_t *p4d)	{ }
-+static inline bool p4d_leaf(p4d_t p4d)		{ return false; }
-+#define p4d_leaf p4d_leaf
-+#define pud_ERROR(pud)				(p4d_ERROR((pud).p4d))
+@@ -47,6 +47,13 @@ static inline pud_t *pud_offset(p4d_t *p4d, unsigned long address)
+ }
+ #define pud_offset pud_offset
  
- #define p4d_populate(mm, p4d, pud)		do { } while (0)
- #define p4d_populate_safe(mm, p4d, pud)		do { } while (0)
++static inline pud_t *pud_offset_lockless(p4d_t *p4dp, p4d_t p4d,
++		unsigned long address)
++{
++	return (pud_t *)p4dp;
++}
++#define pud_offset_lockless pud_offset_lockless
++
+ #define pud_val(x)				(p4d_val((x).p4d))
+ #define __pud(x)				((pud_t) { __p4d(x) })
+ 
 
 -- 
 2.43.0
