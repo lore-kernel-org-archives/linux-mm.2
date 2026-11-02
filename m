@@ -1,62 +1,62 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C07B260A262C
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 10:03:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D227F606A327
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 10:03:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=HSbNQsQX
+	dkim=pass (1024-bit key, unprotected) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=b8EjWOy3
 Received: by kanga.kvack.org (Postfix)
-	id E7CFD6B05BB; Mon,  2 Nov 2026 05:03:20 -0500 (EST)
+	id EA51C6B05BD; Mon,  2 Nov 2026 05:03:28 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E55596B05BC; Mon,  2 Nov 2026 05:03:20 -0500 (EST)
+	id E7BE26B05BE; Mon,  2 Nov 2026 05:03:28 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D92176B05BD; Mon,  2 Nov 2026 05:03:20 -0500 (EST)
+	id DB9E16B05BF; Mon,  2 Nov 2026 05:03:28 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id B663C6B05BB
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 05:03:20 -0500 (EST)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 4D4D7A8AE6
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 10:03:20 +0000 (UTC)
-X-FDA: 85389741360.04.E842679
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id B978E6B05BD
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 05:03:28 -0500 (EST)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 5AC03C0C2C
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 10:03:28 +0000 (UTC)
+X-FDA: 85389741696.05.29D85CF
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf06.hostedemail.com (Postfix) with ESMTP id B2E9418000B
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 10:03:18 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=HSbNQsQX;
-	spf=pass (imf06.hostedemail.com: domain of sarthak.sharma@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=sarthak.sharma@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793613798;
-	b=YcQEDqwHWa00EZLX7PSyXBpfCZIeYf5cu9xK4R4AovYhskALcyTf0eLBlQsYDm/TMXvik+
-	Omx06rMwSi575to3W4NFE9zi76OOs6znxPP+s8ubOcmwbPFjPmA7SMEUqwoGLiAcQuF0vL
-	fllN6rraluTAOzlIeRneRV7c6UKXSjI=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=HSbNQsQX;
-	spf=pass (imf06.hostedemail.com: domain of sarthak.sharma@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=sarthak.sharma@arm.com;
+	by imf10.hostedemail.com (Postfix) with ESMTP id C1295C000C
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 10:03:26 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=b8EjWOy3;
+	spf=pass (imf10.hostedemail.com: domain of sarthak.sharma@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=sarthak.sharma@arm.com;
 	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793613798;
+	s=arc-20220608; t=1793613806;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=D8izb9PqMMklTelG/61RmKlhnMnD7pxGRQkRjnQiPA8=;
-	b=khsbSZapwcgl6uZ0pGI79jbH32sCp1xfTc2nA79+hlJue4fWjOM1CuWgvgEAE3C7hCOsPG
-	5s1m9vdMTyEHtJg4DcNAKApq0xUMG2a55AVBFeZCMjEyiV6Mq/0JKOuQsD4HRLf4e0jurt
-	AQG0NveoW2HHmTRFWHyBKvpcNi25/lA=
+	bh=qsWUhK3u8xxsdLOp7S4PeHirDge8KSgZCNYY2BYGink=;
+	b=PgI5ucQh1svhpyHm19ASfvlhfIOPRbiXiyvyXrbawUepMRJAg5an0cabsi4GUGIasp9yBc
+	ifZCpKzjKXCh7PKo8IXLjiY5CgBtCd57Yt40TGn1SB4rw9d3neVtx+gtnA5b+PCjXDFIvz
+	Myekdiqzv61K1PjDOPhPjKCoCUAkIC4=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=b8EjWOy3;
+	spf=pass (imf10.hostedemail.com: domain of sarthak.sharma@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=sarthak.sharma@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793613806;
+	b=pcAYL4K9MjDFWFLn+4CwMloJN3yGzX0bMESAUPQW05GI8I7FdSDmUiJdWbJtimOFh1TWZD
+	yZCVPY6eN9+qFXELPaXLX0MXI8/HQS/IRNbp859F2XawYPPuRJ6S1w37es50X+cyj8UFjd
+	tLoOfzHXPezctZFoMxwFxTROV6a7CPk=
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id D61141595;
-	Mon,  2 Nov 2026 02:03:14 -0800 (PST)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id ED9851762;
+	Mon,  2 Nov 2026 02:03:22 -0800 (PST)
 Received: from a081061.arm.com (unknown [10.163.156.187])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 7EB403F59E;
-	Mon,  2 Nov 2026 02:03:10 -0800 (PST)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id B23643F59E;
+	Mon,  2 Nov 2026 02:03:18 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1793613797; bh=oSxZOGxLsR5uqrMDGNEtoYyQjxBFtNAV737u1zMG5mY=;
+	t=1793613806; bh=HON1k1mBTpdlmMMiPcmWNkUSmFAOD7DShtnrwNyZsw0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HSbNQsQXgcbaVwap0bQgZKzq64AEwJIOoHUKDagnDKOxKb5pju8OFQ8PV6pUYWOXA
-	 c1ZP646n16SLOVpvdDLPzMb9yZFAUKrVth7pr5t944JugwHSFOm3eHXss4Bv/H5tTS
-	 rNg7v8RxjAdpM3AXtUGfHh4r4GI80sn9vmmQo434=
+	b=b8EjWOy34JhDwaDUOj5cn+bmSD3XP+922StiAJYibForPcZSBJV6qentDC7RousFl
+	 JDXcNJrghYZEBK7VGzSDLxw0FtnACrI60F5ocfB/0O0JSuFAx3e0D/KcGRSkGjSJhE
+	 O/qlMSCzMTQZRQJekuUMfSqUKORwnDgl2eeCtt2A=
 From: Sarthak Sharma <sarthak.sharma@arm.com>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	David Hildenbrand <david@kernel.org>
@@ -75,27 +75,27 @@ Cc: Lorenzo Stoakes <ljs@kernel.org>,
 	linux-kselftest@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Sarthak Sharma <sarthak.sharma@arm.com>
-Subject: [PATCH RESEND v2 06/12] selftests/mm: mremap_test: fail unexpected mremap successes
-Date: Mon,  2 Nov 2026 15:32:05 +0530
-Message-ID: <20261102100211.141831-7-sarthak.sharma@arm.com>
+Subject: [PATCH RESEND v2 07/12] selftests/mm: mremap_test: fail on data corruption
+Date: Mon,  2 Nov 2026 15:32:06 +0530
+Message-ID: <20261102100211.141831-8-sarthak.sharma@arm.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20261102100211.141831-1-sarthak.sharma@arm.com>
 References: <20261102100211.141831-1-sarthak.sharma@arm.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: w9akjas4ioq4uzma4uahaw8hwiqqkneg
+X-Rspam-User: 
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: C1295C000C
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: B2E9418000B
-X-Rspam-User: 
-X-HE-Tag: 1793613798-499915
-X-HE-Meta: U2FsdGVkX1/2wsWMA0MkAUPwhYr3o8DonHrNsXLgLJ5u3S0qQ9oq7UM2eF+aMQjf9mC+Fi2wWmERrSfy2wap1diz6Go8EUwepZMUoMHvxJKHnQcik6+v7iSTkea9+bmeCBHUfdKvZUwfb+eKhiahjvDT7LZjwmZSEwKmWPLrKw1KEC3p0V7Bpfwc8IPANXy3ryFGkTFr+uTQKPb/cXIwB/GZEZwOuwGluRVuwx42xYgfIu8sDXuSykYL0gjFjaCPIMZ7AxCZQ91ARSQM7hDvsxkOmldq81vMqbXU69od2vKTpLkFN32GCEmYV08cnKTNwfiK+qjA+1AbA62HUBtFeWgCx/ESFJlYPsdMNN9sCVWdWtUnR1O+zsEpmB//SRbX3KuUSnc4cKDTPfiF0n7UXMgHI6lYUKo4MHHMznTOeO+z9y1GB3v/SZMdr8wfKCNxBUHBr9H1jVbIwmbZo5Xjg0PmFCkgHqCAdqvkyg6cKG0HZn0+ayDLPrx9OImwdM6ACUxr0KBDHzjbbFL4cbJ4EuSPXWbgHHwYpAFe0X76pUcEWeuSVC/hP/soAKrRk63KSu1fYlcJMrxxwusBy2TfLlmWRJrYuW/FsdqQeRg4mVT/O/Cw/Tl074GxdxLS7WDxaWsz5Mlav9USoIoxJaBtJSjXd0cDmecbU7Npi3YyVmsAHHbQQMe7QGyqPqRKjI1qFjdpiUIkzg2kfh+MWfloOpYkDqsg8VtUAG9phlZEIwkOutjDrw+SabYcS65R6v+jHwWU0TrngkZUGaiALARWXvbHDHyGBrjrMbKzSYJ+Mk1MEikamYlPjMU1w+PUeoKmOrx017QzS8iaqYEx5BT4GHZ/dpUMxWFbA+5/NtDId1u8WR5eGshgmlSCkELX8qHwHw7goOP2YaROJDySzjQgDNoxzYHnN0oxDgU1YQjqJHbETVgIqS47vmCCf2OH1SOnMUnzui2nEXFm+ydVeHf
- 0ldeLjH9
- BpnCeID+D547L0V+61E88C+kTexE7y9XvjREL6xkf/qsn/xVLinep6zKFeANm85lpPoNPR/n1Tp24qVdntiPezaCIwF3IqPLRRn+bghFfqJQxoFEEb8IEHOSm9SQHtLJCc4x9jhEvRRM9gKmCAucjGhLrzyTKYSKqZoJJrTdW8PUqDy/2oIxAx+WiExi5hselmx2DwTSDn4BExelEzsxUA3crjmOvAmwElBBDbtYO9Es8fOXxKTN+u3o3wLhX+2+hrwQBwpAbAQPn8ejklQES6mvr2beYFPluWc3FAtgkYn9bOMK/vRaoEsRFUp/+E3ljMXM0
+X-Stat-Signature: 6d1yz6wqfu3njhpyfc6qejzrx4pptp4m
+X-HE-Tag: 1793613806-685820
+X-HE-Meta: U2FsdGVkX18kWim1ZCSC/tRi9AlDawS94mZrmUogWCdcVhq3jnL4aOUP1YuYOFFFCjSPVLp6ZB8vuSUos30rpgv7cHDLLa/1OuKagCxsALfTnnidHhwEq0SgeY/zeLcVJXapKrOsM4U4iGo7iXqr7Rpm5WVZRjzpeaN+k0BR8n2GgP1MatKWJ3TcMuNa47Y+RKv8VlUHk6K/9UCVyORcGck2NvmAn40GKaC8qZv6hnkGY5YpOZVYur6co/dQx9N+sBYbN4sMufJxJjhhRbPSZmoRITnK9FAI0YF11uMa+lC2GQnYmm/rbrfINjCjLFkbnNnYYrkZ9bHDnOypmCgSzlxMJlV5mjezqbbu6X3MZ4T8EIwC0lY8/KYBvn2DJtlUaDj+PARXhKXxOWhgNcOd8j31oxyDnuyDWmLIY6T0JT9v7g3aa6pYaFfW2sxo312mIqAMhtmfS2yV4QBXlOshIKihhFag/gZakb16818rQFZnx94Vuusp/Gu2fWkmubpkR7OCKFYWA1UDeHMrSMR9MHA/j+1ZMb0Y9XyUO/TjZg4ZbJ+NROXGuWmDi+a5U8MmmBEy8Tv0lwC9FCN6WRXcFkv1VeRTiw11sCbeC/BHroYqsIG59uErF+6qwuuNWaALstAJPy2J3IvmiMn0sNMPw5DGJFtMInvj1gypyLQ+z8X+YKWqBROU0d9jpDWfyp04+3wJEmjc965mIV1/XhO5qpJ8lvYLGRrXhS+h5vRaifEHG15MIL7mdgB+uUnGp1zD+FOkEzOqgiv/KQIs5fhxO2pBXox+XfiDzEoK2UTAtd5iOA8ubP0tLhOgAybiPTuYrQcuUWxBk62HXxWp3DwQHACm/dlPeAF0j9uHmVeKwDhm8X7W3JX4IgcX/lTg5ndjiKvDZVIpkhS3nSiv0Nxe8qzDK4v+9BxSnfPoXzexGgbbdnuSeBj0X8AixeOewsUy7siS3w9Jrm0YiZPwX7T
+ YIux9pyZ
+ RrRp6rU2RdZ34ZyGKMB+wmq2AFqKxQcK5HO+TQJR79oaLmi1RVJau4ZRUYyR9y5oT9Kv0BSzpIECXuG0waM8W9sSoLjq5VXPwB8zrYji3QlveeB+Htul3d/u+/JoUUgBJeeYLONR/h4iG5Z8Dr7ObagHTkrh7XrM8WcfZNYJIC0Ees/Na3umXoCw07nqGEoFxj/rniJ1Wc9BxxDLRrinft+FOdgbnR0qD1dw6YVgspx1gaLA9aQR09u/m+yOdWiadFsW8l6/H9HaorNXqUxss9VPeBaXf73Jev99qHB+2+C4y1/PQNDK+aNXF9hw0i1fmB1my
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,42 +104,31 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-run_mremap_test_case() reports a test as pass when remap_region()
-succeeds. But if the test was expecting failure and remap succeeds,
-it should be treated as a failure and not a success.
+In mremap_move_multiple_vmas_split(), if data is corrupted
+after mremap, the control jumps to cleanup without marking
+the test as failed.
 
-Check test_case.expect_failure on the successful remap path. If
-it expected failure, report a failure instead of success.
+Set success to false before moving to cleanup.
 
-Fixes: 7df666253f26 ("kselftests: vm: add mremap tests")
+Fixes: 7d6597dfef11 ("tools/testing/selftests: explicitly test split multi VMA mremap move")
 Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 Signed-off-by: Sarthak Sharma <sarthak.sharma@arm.com>
 ---
- tools/testing/selftests/mm/mremap_test.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ tools/testing/selftests/mm/mremap_test.c | 1 +
+ 1 file changed, 1 insertion(+)
 
 diff --git a/tools/testing/selftests/mm/mremap_test.c b/tools/testing/selftests/mm/mremap_test.c
-index 5b3ab12c2207..111cc3414073 100644
+index 111cc3414073..514d2003b88d 100644
 --- a/tools/testing/selftests/mm/mremap_test.c
 +++ b/tools/testing/selftests/mm/mremap_test.c
-@@ -1124,12 +1124,15 @@ static void run_mremap_test_case(struct test test_case,
- 		else
- 			ksft_test_result_fail("%s\n", test_case.name);
- 	} else {
-+		if (test_case.expect_failure)
-+			ksft_test_result_fail("%s: unexpected mremap success\n",
-+					      test_case.name);
- 		/*
- 		 * Comparing mremap time is only applicable if entire region
- 		 * was faulted in.
- 		 */
--		if (threshold_mb == VALIDATION_NO_THRESHOLD ||
--		    test_case.config.region_size <= threshold_mb * _1MB)
-+		else if (threshold_mb == VALIDATION_NO_THRESHOLD ||
-+			 test_case.config.region_size <= threshold_mb * _1MB)
- 			ksft_test_result_pass("%s: mremap time: %12lldns\n",
- 					      test_case.name, remap_time);
- 		else
+@@ -682,6 +682,7 @@ static void mremap_move_multiple_vmas_split(unsigned int pattern_seed,
+ 			if (chr != buf[j]) {
+ 				ksft_print_msg("page %d offset %d corrupted, expected %d got %d\n",
+ 					       i, j, chr, buf[j]);
++				success = false;
+ 				goto out_unmap;
+ 			}
+ 		}
 -- 
 2.53.0
 
