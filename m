@@ -1,93 +1,92 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C541A60E40A5
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 15:37:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41E2B60E6020
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 15:37:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=MpXt7vzE
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=baGuBWSa
 Received: by kanga.kvack.org (Postfix)
-	id 6B5E96B0623; Mon,  2 Nov 2026 10:37:05 -0500 (EST)
+	id A137C6B0642; Mon,  2 Nov 2026 10:37:06 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 640AB6B0641; Mon,  2 Nov 2026 10:37:05 -0500 (EST)
+	id 9C2366B0644; Mon,  2 Nov 2026 10:37:06 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4B9556B0642; Mon,  2 Nov 2026 10:37:05 -0500 (EST)
+	id 83D6A6B0643; Mon,  2 Nov 2026 10:37:06 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 15B986B0623
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 10:37:05 -0500 (EST)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 487B7C0189
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 5CEC26B0641
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 10:37:06 -0500 (EST)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id F29FAA5C94
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 15:37:05 +0000 (UTC)
+X-FDA: 85390582410.18.A8286F8
+Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com [209.85.216.71])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 843792000B
 	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 15:37:04 +0000 (UTC)
-X-FDA: 85390582368.08.F46A585
-Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com [209.85.214.198])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 63A4918000E
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 15:37:02 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b=MpXt7vzE;
-	spf=pass (imf24.hostedemail.com: domain of 3HK7oagcKCHksfmfkpedlldib.Zljifkru-jjhsXZh.lod@flex--vipinsh.bounces.google.com designates 209.85.214.198 as permitted sender) smtp.mailfrom=3HK7oagcKCHksfmfkpedlldib.Zljifkru-jjhsXZh.lod@flex--vipinsh.bounces.google.com;
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=baGuBWSa;
+	spf=pass (imf31.hostedemail.com: domain of 3Hq7oagcKCHsuhohmrgfnnfkd.bnlkhmtw-lljuZbj.nqf@flex--vipinsh.bounces.google.com designates 209.85.216.71 as permitted sender) smtp.mailfrom=3Hq7oagcKCHsuhohmrgfnnfkd.bnlkhmtw-lljuZbj.nqf@flex--vipinsh.bounces.google.com;
 	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793633822;
+	s=arc-20220608; t=1793633823;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tWmkkGF65geeupdTZHwmY4vWlAPAJsehULkoIO9Oe60=;
-	b=ADdKp4g/GGzpXupO1uCzq6iObRvCwDArxxyLinla6Hvq4M7zmdda/6rklzZi7KCLVb2vz0
-	790gVO1aqM0L8Cp3Ba99oBcm/k6Ip+Mc2WzcKK6ZEKnmAWiYiYfbQj9wiEIxWlIbpLSFO1
-	or2jjm/gWxwR0uK4N7q6b3LQM7kioJo=
+	bh=Vop91WdATuHzNe6oB2d844wTZCMgIxCkWovun1wskQ4=;
+	b=6C0Hos8fmiCADzUME+cRdUU1pUAI7SxbHcwpXlnBCIzvXhil8byT+JbKXuMpTveC1ynZOp
+	hgaovxG+9GhPJHvVPbYASsDLGsYwUI+8D+6kp97/OszoLiyMDqK7q0+GsOZyYXrgQjPkLM
+	pJvtdJBVnAg6GppxumEyywO2ZiSu4dw=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b=MpXt7vzE;
-	spf=pass (imf24.hostedemail.com: domain of 3HK7oagcKCHksfmfkpedlldib.Zljifkru-jjhsXZh.lod@flex--vipinsh.bounces.google.com designates 209.85.214.198 as permitted sender) smtp.mailfrom=3HK7oagcKCHksfmfkpedlldib.Zljifkru-jjhsXZh.lod@flex--vipinsh.bounces.google.com;
+	imf31.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=baGuBWSa;
+	spf=pass (imf31.hostedemail.com: domain of 3Hq7oagcKCHsuhohmrgfnnfkd.bnlkhmtw-lljuZbj.nqf@flex--vipinsh.bounces.google.com designates 209.85.216.71 as permitted sender) smtp.mailfrom=3Hq7oagcKCHsuhohmrgfnnfkd.bnlkhmtw-lljuZbj.nqf@flex--vipinsh.bounces.google.com;
 	dmarc=pass (policy=reject) header.from=google.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793633822;
-	b=SvocAwN7Ayq4fyePCNLlJ4MjKNHy7hCAdvt+daButneWG40T4vkod9ArrBTunn31SB2GQZ
-	xeIWLFLpNinTAc/48JWyKkpVbE2WKJqgbXpi3QCgZZRfXA6H/nYEhHcJtaqW0SJLUyVRwE
-	62HCOctwph375/21u7KocvYdVsf2rgQ=
-Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-2ea71803effso33718495ad.3
-        for <linux-mm@kvack.org>; Mon, 02 Nov 2026 07:37:02 -0800 (PST)
+	t=1793633823;
+	b=5nDNUAKvJcmNM/7O5B6oeoEZ00DRuF2LlKOrt0fkp3Vo0y9m+H4rTQzIDivwPl0CKMi7IR
+	sdjL3mkj1eDLRzhWLYo+lIPlOfMvkY5RxmvNFxCnYBC9OfxiALvfgC/4ozZ23/rjrgfwFD
+	rJRcEkf/2hUaLfjy7eqvQdJXMapGAIA=
+Received: by mail-pj1-f71.google.com with SMTP id 98e67ed59e1d1-3acc98e3b3cso2498667a91.3
+        for <linux-mm@kvack.org>; Mon, 02 Nov 2026 07:37:03 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1793633821; x=1794238621; darn=kvack.org;
+        d=google.com; s=20260707; t=1793633822; x=1794238622; darn=kvack.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=tWmkkGF65geeupdTZHwmY4vWlAPAJsehULkoIO9Oe60=;
-        b=MpXt7vzEqfgSlc9ijd6WIrdgk9D/77GtxE4YQFKjUEeKo9DMNR/Tg80V0or7zwThat
-         lK7qzyxUX7SzZkcaL1D3XWavbVmrJ4ljT3c0Qj39h3A9ZI6RYplVXibABKVcco2CnIOo
-         S/OGK0d4l5tpWuJWdHpkSOqmR0NLounZDomB+fw8y9sK/lTTTy8TLIvd+CyqhW4Cumvs
-         IGnrxv+5ITlju3Gy4FHeVQKay7QBeoOp7BFB92Q73MG33DEJzVoDSmW9UhkAAb3TVP2N
-         2396+afuV/YzMjwIFgZKkFhqKJphryT+Wv1CyrXP1NATbzactN9mr5lPU5D+tZ/vpjZB
-         qRzg==
+        bh=Vop91WdATuHzNe6oB2d844wTZCMgIxCkWovun1wskQ4=;
+        b=baGuBWSaLby9CnLs33nmhLUDxdAGGb2TIuBNu/Kd2kN+Nd1Ew0FucooXZpC5jw9Eqx
+         88bbdz6D/Fpy4+EgL3vId4sCc8X57FTPacdUYPJsHzbABAeNqBldO4uJP3eYIPk6STPR
+         nZmdipCwzWSV7XH+tJe5jFKZE5sqWyyqZ63lHcw1vAZ/fWc8i3rW9Qjpsg/kLiSKscjs
+         mdMe6nwcmZm0Pyk+IevIa+bMV1mlXDI6d/Ui3UY2NEnHFioObwXSvMJ+RgKxWspD9o5P
+         q4if4A97wAXeR68aT/f6AAXq8QptOzS10CJcSzMXiQ+WoRKQfSPqRJbAbMraNrNt+JWd
+         QjnQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793633821; x=1794238621;
+        d=1e100.net; s=20260707; t=1793633822; x=1794238622;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=tWmkkGF65geeupdTZHwmY4vWlAPAJsehULkoIO9Oe60=;
-        b=XMtr15/BrRaJ0oAqRvywjsrEunD4Doalcy1ekl27zXzoSYhtZGtqbAr5cEAeBXkvaN
-         PAQRNO+3xBbWO/tJcFXDvrhrwvSQoGSmoVx/gekcOpIcJ4zaHjenyvGKuDmPbMBp1Dhi
-         3hrQorc0wMatgYLKFOgjAEYH9OlMijUk82UFD7tPByVZCgg7iI4KqH5uZP8j31T1PuyJ
-         hgsAiqY/83aggEj5g4km8RVWtGs1NB04iX0GUGQWRaQp9Hsfl6r29ZTyRQg4vslTDoC5
-         6paHm8JOJhhZNJshgj0I+/zTGkPemuOfd23RGOr4wZJfWRNvWdvC9sYtKowGi5tdllJm
-         C+kg==
-X-Forwarded-Encrypted: i=1; AKwUvBxgf/Qt/v6EYzHEwToA3wW+PljCHLOIJTk8wUz/BNquKNltMadx+OieEhdH/2PFQ0eaAjUMPS+vmg==@kvack.org
-X-Gm-Message-State: APuU4Z91hRK7s8NctcXqJbNBGgqYP8RfRBPxsg2Kygd2UP3QiumKjDwI
-	5jUbtIMwfFwb6FqCFBSfOJTTBwy6TXcM3WDN/VTbFrlTWXVuniCbKfRu6iw6gghpuM47SaWwhb0
-	aJY19FGL+DA==
-X-Received: from plblf11.prod.google.com ([2002:a17:902:fb4b:b0:2ea:7f9c:2ce])
- (user=vipinsh job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:390c:b0:2ea:778e:8652
- with SMTP id d9443c01a7336-2eb36496179mr99072185ad.14.1793633820958; Mon, 02
- Nov 2026 07:37:00 -0800 (PST)
-Date: Mon,  2 Nov 2026 07:36:30 -0800
+        bh=Vop91WdATuHzNe6oB2d844wTZCMgIxCkWovun1wskQ4=;
+        b=cvc4HLX7skjjThGNzPEFA1LYr94j8uHl0wzRkTA23o0ILfQmdmDivgFt0emRp2IWQp
+         +MBOAzZA//oDuJXYWKnRXOMdkx41BTPYBjQcU7MnrNS4aQyVOU0crrCU8SS6lRHqaYRk
+         0N40nSTDXbjfFN8wLRixeX3JDCWEO0i53vNs5nKZ+LzNwht+sNXx0GXMmUH1J04agP6Y
+         7U0joNpOXU34ymrLpWTVHXZFIsLNp1LqpZkuMpNIXt3D2/fP2b1rNklCt/3AqCOE+3a+
+         7hiQqPtyVShx8RUCVjsUsHeEFKVkEN8XJ58Xsre2M0P7FecQjeUpX5DYPFh8L/yDz2rw
+         jMqA==
+X-Forwarded-Encrypted: i=1; AKwUvByCndyfKeQkl8r+LUXDuE7tH+rviDTsU4d1ZEeJ1EY3pEvn5hZfYV4CtHebfQW4NyxVdM8Fb3vlPw==@kvack.org
+X-Gm-Message-State: APuU4Z+nasfcEo3A03Htl0/k3mFSUO3TTiD1kHSoCVHEGx3sdvHN08hb
+	8M+7LT5Caw89pWSrYg3w6yEq5AXyyVY5cLnkNrBmjqppqVw7A8pAN5fiHpWA/Gl6aBt/L26z8kj
+	CqYQE/ctHXw==
+X-Received: from pgr20.prod.google.com ([2002:a63:1154:0:b0:cd8:c6e9:7c0a])
+ (user=vipinsh job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:4a4d:b0:3ac:9e5e:d19c
+ with SMTP id 98e67ed59e1d1-3ae897ccc1emr8773759a91.17.1793633822052; Mon, 02
+ Nov 2026 07:37:02 -0800 (PST)
+Date: Mon,  2 Nov 2026 07:36:31 -0800
 In-Reply-To: <20261102153656.1431701-1-vipinsh@google.com>
 X-Archived-By: <archiver.kernel.org>
 Mime-Version: 1.0
 References: <20261102153656.1431701-1-vipinsh@google.com>
 X-Mailer: git-send-email 2.56.0.317.g454f8302e1-goog
-Message-ID: <20261102153656.1431701-2-vipinsh@google.com>
-Subject: [PATCH v6 01/27] vfio/pci: Factor out the reset logic in VFIO PCI
- device close path
+Message-ID: <20261102153656.1431701-3-vipinsh@google.com>
+Subject: [PATCH v6 02/27] vfio: Export various helpers from VFIO
 From: Vipin Sharma <vipinsh@google.com>
 To: kexec@lists.infradead.org, linux-kernel@vger.kernel.org, 
 	linux-doc@vger.kernel.org, kvm@vger.kernel.org, linux-mm@kvack.org, 
@@ -106,19 +105,19 @@ Cc: ajayachandra@nvidia.com, alex@shazbot.org, amastro@fb.com,
 	vipinsh@google.com, vivek.kasireddy@intel.com, witu@nvidia.com, 
 	yanjun.zhu@linux.dev, yi.l.liu@intel.com
 Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 63A4918000E
-X-Stat-Signature: w3431bkdy1u3u4aaew4z6pz3sa84zdx7
 X-Rspam-User: 
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 843792000B
 X-Spam-Status: No, score=-26.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT,USER_IN_DEF_DKIM_WL autolearn=unavailable
 	autolearn_force=no version=4.0.1
-X-HE-Tag: 1793633822-988171
-X-HE-Meta: U2FsdGVkX18/UI+TZDiZWb0+JS9r6wP/L+z/oLdOpZrDiVwEkZVXrghxT9N7ovojqzU1OqgWqGiN6IkuMwmFRmWr/3FiMUFJWu6EmC3GL9nv2VoT4SJmb1MZSFhgEcpbzyK9QQfm6ruoVlrDygI3NU/UrcLfloQ4CCFSyapksFjpWNIzQu1jSEMf5/aceqtnG9K03mUjF1SSB1M386k56OeeohJopdLf3dz/qhBRavAcvVR56TAyVN57mdP2aLODDmNNeMpA774c5B6sA+pp/orSnD+huV2cxgYbwCMWauwWtqq3+nC7x6KiEPp4avSY65YVlcZllii+AwYuq0T7LpP2fDW/h0NvbUefH8eZ+mIzENfNUvNiW+FCpB+WseiEvuC8Hg5Jhx/2TaDH+WIXr2Cp9LcK6m9kaKJiQtG2irv7vFB63+t/zUtrcsvTu8HWclsS8k5IhXhzOH19Fk6GQpLsISRkhp/GDqUGnyY1G28q/OLkakjIx0FRuKJiD8UDfEu194XhEHMn7ItB+L4/TPaUyhotoFfV+qOZDSzlYRnT25KVDh6jCYlQRHDusaiMadSEGmBfGQKpvA4gItoXlhDkuttRCaqkTgWzPxF26fzmvg9YpyPD9fB+AjQtlw7tb/O5RbnnK2C7JThA2c1F52iLiVQ2Whm131Lbtg61/hcnaFJikAnS4YIwzf/LzV7KY9k4tiwXqpDNgl/u0RAWQRgc847o1/sQigpdq2TLold55pXe2nFl5u1/YIlMSWLBP8aVTRa3WuxiAs9VkZEnKJrQkOn904i0F90PHWICNHY1kt+dHvDbG7mf6PdbcEHNYlnkgTfn791HCSTqtQ5e20Cy4fmj5szSsfmXYjds7gDbxbr5unWaW1hkOfUmx+r8gKjM3972KDduTAAUOrkuJO5TQppM8VgmbJkg8pPPcQd/zUoFLvJA0GZBqWBn6dEf1Bn46J+n4FqcOxu0b3a
- Jqs0UNeC
- dGDnBQXCwF0IGdBL7gQAncfAo5KCauhSBpzS1VNKJZ4FV59N/PQCw3KtOhkwRUJRdVz1M2WMXAgYJsYzWl7223XDM/5gJLfQhff041KIJCPjxNlnwkynxSC4SNcQ+PizJuVhjlQZdJnDj6UcchkvQiaHC1DMFJYRtAtjwuTXcQ7Q/U8juROwCg9hfzBtgAMwSShNVrt9bJJTuXCdayziJAl/GJFO0eFXAahVr+/QufS+7kauhhO9xfoBaGBwtYL0Fz//eHYr3lXFiLfLJOGyaARpZtsbm2/xiDwRyk4jQHMzWBBLINArjAf1DMCQcmOkcDJFqaD8ddsjs02kAFEOUwTGkXla8hn1ofrPdgkSyADiKcx97LxBV1TeOMRRSPmCmeCZJlx7am1GoXUkO9m9mLRVQEdMfI+coD4H3mXv8X+D2hmhm0KQiRjFJ/qhPGUZ/0I92BvkpSNVvECcbvAKaiqFxJhWp62bhh3XwPGu8SoyAZB2Jyt2xcXMaK9kY1doZ3XLsBzAXJr2Y8oBBsv3FmfAxUxXJdfOZn7e8WWC4kdYTziL1vWbS2Ij3DUjF83G71JJmCSfpX73MPCAGWpX8WEeCQ0ontKMnHL7MgY0bY/X0Bgg=
+X-Stat-Signature: 31jcu61mmhcxzute614i187kc1485uhs
+X-HE-Tag: 1793633824-42563
+X-HE-Meta: U2FsdGVkX1+Dityi+6yIZNzXdKUvD3juxOD8oKJKYcatyo9k07clbK5hhT8ORln6Co8QJAO1iR9WjODNwtjSeD+oheG8vOn0NCVstB9uihQbGPJnmrGA/NiJILC/laciF0DwJZRbCa0QVij4Ldgy+D+YZfOaQktSJNn9peNNy7XfiEmfdqt3pFPkhxcW2VHhshDymoum9H3MugqvgRBaQEnnLKFvdvGj4vFH70o5mq7IaA3TFZ75xYmVeXI54P6lfjOC7O8Ig+l0LLxaEuoEBair9JVF9yHgUNASe4rc8T49OPofi6CpzLgdTzmJ8qzS0gAr1PaIyqIppavKvGi4x6CjK1fH0RExSCIpMhxRPaOe2CfBqJCvDAQewZy+JkZAK03p92tDlWlYxJHGumHTnrthGQkOwiyDM6mF5Nt4loAgqYMWSBvVJC20ytWQ2rdRld4PvmraxjbjXlrqY5NplriHJDllUmnveZMxZB1etulK1X5ELvNFM6ZshUQYbKWmtcWS1mTTovfLGzvtFjeMT2pN1k1aIrIt3WXbLwkYJTP9pTJtvDX7v+bH8931icJCVRwrLVDvLa7Lcjg1aBx1VvyMc3ExuXXg7SXb4arKjUl4n3nN6Qq/cw8yuzz63rnEA3JMaZQKc0+3dwQY3sqZgjAQD62xcw0aJ54igTPRhwsxX0X64Fapy4YtcfhgwTaJVOxYFwpSVkZXrNyKZ00871rEeCHqbBATrgVuIz7bBuRsKXQxupQZSnXIbvBDBfhPQfakV7u+Bu48JfQZLihxJCma+RaX9/k9m7Kgfp+mcxbamjC5TRwlMUwKN4zxpW2GJ/ldD1CfWbjAgrz7FIvBOLowzuX7c/exdojZhfcUEoy9Oeuej+IlckIizBBYLWFwljy5kHLVpmy3OtcRzvQtGswXKyUMCgGfGP9gnejM70WaOicrKMKiTawTodeE63ui9NtLnnhfLT5PTyZXA1v
+ VSwbt1Wa
+ WFm8tASsY08LwyouWroRpvPLbRZkyBGmKVc0fY6yhuT5gw1KybrI6fv2H+KnPRKljjxQLgaRWeAIPbVV732k+3uHem0P79SD8nECpxcAGdmXDHxJhuVX78CxtZiC+3BikceWFwtM0HBdyxtfdHC/izqsWJX/s4lzzBQYjFLabYyHGGc3QfpY03eRCLcj9AEbkz4zIeg1EpYcwKKdRgLmOuUT/2r/bHEc78YhdFKMGw+N/HsWSEBHsK4o/rYUebqJj/jeX/T9DVMqHE2aZ9elm2GLkG8sgaJaXRdUdh2DKOLaCHh9p5z5uqBegPgURQyHogTtusPhYOAdS4hpCEdUv2QO/+68ZWJIdzAot5IjxOcRYaRI2MTbPceeb1H9p8TqgAeQYZ7Wg8nAtDf08MWExODgZS0M5DUgiE2c4C/xWGHr6hIZPwniB7BvwwOwAwqiwzQw0x9SV14gh3h5DqMcHSX5eYwCDyJxAxJv4AarOFpLT9vK6jQQf0c3PPQFc+fjgqpv4VuHEMFpg8Geh7UJ7gUCfCpPtfiJdhQMaAt0hOd6FluB4HxjeYuKyotEFZU1+fCJMv3DE8kYKB0pXabPV8aGU2Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -127,149 +126,83 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-vfio_pci_core_disable() is a very long function doing multiple things
-like exiting runtime power management, setting device to D0 power,
-clearing bus master, clearing irqs, freeing eventfds, releasing device
-regions, unmapping PCI bars, and performing device/bus resets.
+The upcoming VFIO live update feature needs to access various helper
+functions for its logic which are not exported by default.
 
-The upcoming VFIO Liveupdate feature will also need to utilize same
-reset logic.
-
-Extract device reset code to a new helper function,
-vfio_pci_core_try_reset(), and update vfio_pci_core_disable() to use
-this new function.
+Export vfio_device_from_file() for other modules to use it, and make
+vfio_pci_ops non-static so it can be accessed within the vfio-pci
+module. Remove static from their declarations and add them in
+include/linux/vfio.h and drivers/vfio/pci/vfio_pci_priv.h header files.
 
 No functional change intended.
 
-Co-developed-by: David Matlack <dmatlack@google.com>
-Signed-off-by: David Matlack <dmatlack@google.com>
 Signed-off-by: Vipin Sharma <vipinsh@google.com>
 ---
- drivers/vfio/pci/vfio_pci_core.c | 100 ++++++++++++++++---------------
- 1 file changed, 53 insertions(+), 47 deletions(-)
+ drivers/vfio/pci/vfio_pci.c      | 2 +-
+ drivers/vfio/pci/vfio_pci_priv.h | 2 ++
+ drivers/vfio/vfio_main.c         | 3 ++-
+ include/linux/vfio.h             | 1 +
+ 4 files changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
-index 6757054e9d87..7b003c3e5a3a 100644
---- a/drivers/vfio/pci/vfio_pci_core.c
-+++ b/drivers/vfio/pci/vfio_pci_core.c
-@@ -680,9 +680,60 @@ int vfio_pci_core_enable(struct vfio_pci_core_device *vdev)
+diff --git a/drivers/vfio/pci/vfio_pci.c b/drivers/vfio/pci/vfio_pci.c
+index 830369ff878d..2ec600768007 100644
+--- a/drivers/vfio/pci/vfio_pci.c
++++ b/drivers/vfio/pci/vfio_pci.c
+@@ -146,7 +146,7 @@ static int vfio_pci_init_dev(struct vfio_device *core_vdev)
+ 	return vfio_pci_core_init_dev(core_vdev);
  }
- EXPORT_SYMBOL_GPL(vfio_pci_core_enable);
  
--void vfio_pci_core_disable(struct vfio_pci_core_device *vdev)
-+static void vfio_pci_core_try_reset(struct vfio_pci_core_device *vdev)
+-static const struct vfio_device_ops vfio_pci_ops = {
++const struct vfio_device_ops vfio_pci_ops = {
+ 	.name		= "vfio-pci",
+ 	.init		= vfio_pci_init_dev,
+ 	.release	= vfio_pci_core_release_dev,
+diff --git a/drivers/vfio/pci/vfio_pci_priv.h b/drivers/vfio/pci/vfio_pci_priv.h
+index 4e7162234a2e..1634135de3f8 100644
+--- a/drivers/vfio/pci/vfio_pci_priv.h
++++ b/drivers/vfio/pci/vfio_pci_priv.h
+@@ -11,6 +11,8 @@
+ /* Cap maximum number of ioeventfds per device (arbitrary) */
+ #define VFIO_PCI_IOEVENTFD_MAX		1000
+ 
++extern const struct vfio_device_ops vfio_pci_ops;
++
+ struct vfio_pci_ioeventfd {
+ 	struct list_head	next;
+ 	struct vfio_pci_core_device	*vdev;
+diff --git a/drivers/vfio/vfio_main.c b/drivers/vfio/vfio_main.c
+index 423ead48aafe..73a5c4f3751c 100644
+--- a/drivers/vfio/vfio_main.c
++++ b/drivers/vfio/vfio_main.c
+@@ -1497,7 +1497,7 @@ const struct file_operations vfio_device_fops = {
+ #endif
+ };
+ 
+-static struct vfio_device *vfio_device_from_file(struct file *file)
++struct vfio_device *vfio_device_from_file(struct file *file)
  {
-+	struct pci_dev *pdev = vdev->pdev;
- 	struct pci_dev *bridge;
-+
-+	vdev->needs_reset = true;
-+
-+	/*
-+	 * If we have saved state, restore it.  If we can reset the device,
-+	 * even better.  Resetting with current state seems better than
-+	 * nothing, but saving and restoring current state without reset
-+	 * is just busy work.
-+	 */
-+	if (pci_load_and_free_saved_state(pdev, &vdev->pci_saved_state)) {
-+		pci_info(pdev, "%s: Couldn't reload saved state\n", __func__);
-+
-+		if (!vdev->reset_works)
-+			return;
-+
-+		pci_save_state(pdev);
-+	}
-+
-+	/*
-+	 * Disable INTx and MSI, presumably to avoid spurious interrupts
-+	 * during reset.  Stolen from pci_reset_function()
-+	 */
-+	pci_write_config_word(pdev, PCI_COMMAND, PCI_COMMAND_INTX_DISABLE);
-+
-+	/*
-+	 * Try to get the locks ourselves to prevent a deadlock. The
-+	 * success of this is dependent on being able to lock the device,
-+	 * which is not always possible.
-+	 * We can not use the "try" reset interface here, which will
-+	 * overwrite the previously restored configuration information.
-+	 */
-+	if (vdev->reset_works) {
-+		bridge = pci_upstream_bridge(pdev);
-+		if (bridge && !pci_dev_trylock(bridge))
-+			goto out_restore_state;
-+		if (pci_dev_trylock(pdev)) {
-+			if (!__pci_reset_function_locked(pdev))
-+				vdev->needs_reset = false;
-+			pci_dev_unlock(pdev);
-+		}
-+		if (bridge)
-+			pci_dev_unlock(bridge);
-+	}
-+
-+out_restore_state:
-+	pci_restore_state(pdev);
-+}
-+
-+void vfio_pci_core_disable(struct vfio_pci_core_device *vdev)
-+{
- 	struct pci_dev *pdev = vdev->pdev;
- 	struct vfio_pci_dummy_resource *dummy_res, *tmp;
- 	struct vfio_pci_ioeventfd *ioeventfd, *ioeventfd_tmp;
-@@ -757,54 +808,9 @@ void vfio_pci_core_disable(struct vfio_pci_core_device *vdev)
- 		kfree(dummy_res);
- 	}
+ 	struct vfio_device_file *df = file->private_data;
  
--	vdev->needs_reset = true;
--
- 	vfio_pci_zdev_close_device(vdev);
+@@ -1505,6 +1505,7 @@ static struct vfio_device *vfio_device_from_file(struct file *file)
+ 		return NULL;
+ 	return df->device;
+ }
++EXPORT_SYMBOL_GPL(vfio_device_from_file);
  
--	/*
--	 * If we have saved state, restore it.  If we can reset the device,
--	 * even better.  Resetting with current state seems better than
--	 * nothing, but saving and restoring current state without reset
--	 * is just busy work.
--	 */
--	if (pci_load_and_free_saved_state(pdev, &vdev->pci_saved_state)) {
--		pci_info(pdev, "%s: Couldn't reload saved state\n", __func__);
--
--		if (!vdev->reset_works)
--			goto out;
--
--		pci_save_state(pdev);
--	}
--
--	/*
--	 * Disable INTx and MSI, presumably to avoid spurious interrupts
--	 * during reset.  Stolen from pci_reset_function()
--	 */
--	pci_write_config_word(pdev, PCI_COMMAND, PCI_COMMAND_INTX_DISABLE);
--
--	/*
--	 * Try to get the locks ourselves to prevent a deadlock. The
--	 * success of this is dependent on being able to lock the device,
--	 * which is not always possible.
--	 * We can not use the "try" reset interface here, which will
--	 * overwrite the previously restored configuration information.
--	 */
--	if (vdev->reset_works) {
--		bridge = pci_upstream_bridge(pdev);
--		if (bridge && !pci_dev_trylock(bridge))
--			goto out_restore_state;
--		if (pci_dev_trylock(pdev)) {
--			if (!__pci_reset_function_locked(pdev))
--				vdev->needs_reset = false;
--			pci_dev_unlock(pdev);
--		}
--		if (bridge)
--			pci_dev_unlock(bridge);
--	}
--
--out_restore_state:
--	pci_restore_state(pdev);
--out:
-+	vfio_pci_core_try_reset(vdev);
- 	pci_disable_device(pdev);
+ /**
+  * vfio_file_is_valid - True if the file is valid vfio file
+diff --git a/include/linux/vfio.h b/include/linux/vfio.h
+index 45f08986359e..de3fa6e6bf2a 100644
+--- a/include/linux/vfio.h
++++ b/include/linux/vfio.h
+@@ -379,6 +379,7 @@ static inline bool vfio_file_has_dev(struct file *file, struct vfio_device *devi
+ bool vfio_file_is_valid(struct file *file);
+ bool vfio_file_enforced_coherent(struct file *file);
+ void vfio_file_set_kvm(struct file *file, struct kvm *kvm);
++struct vfio_device *vfio_device_from_file(struct file *file);
  
- 	vfio_pci_dev_set_try_reset(vdev->vdev.dev_set);
+ #define VFIO_PIN_PAGES_MAX_ENTRIES	(PAGE_SIZE/sizeof(unsigned long))
+ 
 -- 
 2.56.0.317.g454f8302e1-goog
 
