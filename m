@@ -1,93 +1,141 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCC09606A324
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 13:38:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70EAD606A32F
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 13:39:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kE3ByZ6H
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=d6GzueEm
 Received: by kanga.kvack.org (Postfix)
-	id E3A696B00EF; Mon,  2 Nov 2026 08:38:49 -0500 (EST)
+	id 958E36B05B1; Mon,  2 Nov 2026 08:39:26 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DEA6A6B05B1; Mon,  2 Nov 2026 08:38:49 -0500 (EST)
+	id 909756B05B3; Mon,  2 Nov 2026 08:39:26 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D00EF6B05B7; Mon,  2 Nov 2026 08:38:49 -0500 (EST)
+	id 81FF56B05B4; Mon,  2 Nov 2026 08:39:26 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id A3AA96B00EF
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 08:38:49 -0500 (EST)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 348C780C6E
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 13:38:49 +0000 (UTC)
-X-FDA: 85390284378.25.38FD6E4
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 61D1D6B05B1
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 08:39:26 -0500 (EST)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 04BD4120C80
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 13:39:25 +0000 (UTC)
+X-FDA: 85390285932.09.7B6ACB7
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 96BA71C000D
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 13:38:47 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kE3ByZ6H;
-	spf=pass (imf20.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793626727;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xVuV4v6n2XUh89lpYtmkE+io2T/w8S2Ccr/8/0fuilI=;
-	b=nBWi2ujeNsU8pQLz5yLfArnrPS8yj+Rh1rC+5fGQw2a2JjQQ/Doh2077yLVRbhKYQmbbqN
-	hNkdT9+PvhDl12KzrzyBDTuuWAV7qc5Mnj1Au+0Chw9AudESF/8wtoAxyy4Q2GE8AWA847
-	KiX5G2a3T7xIH5mgXeabSxBGgN6yzW0=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kE3ByZ6H;
-	spf=pass (imf20.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	by imf30.hostedemail.com (Postfix) with ESMTP id 36C2A80004
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 13:39:24 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=d6GzueEm;
+	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793626727;
-	b=oiLMWCOcPXExN9059NmufJuHu48Aji36jl5p5HzNiR+CrM6xD7OVuryEGd3q1EQV4NLCcu
-	EoXQnzwB2tnsEOJz1+bww7njUTNgFGxpv+dtt84e/C0h6c6fUaQxIhrCNB9RGvhurk0d0F
-	rpHTxgFbzvMd/jsP76oU33X9r4S9phw=
+	t=1793626764;
+	b=qc79bZOXDI1EVcB3owwWAgBN9ru96+kHaHNt/M2FYTt0QOk7TJGaxq00E4/BjosW/Mfo09
+	bOmB7mAcj1BWM+jrT6QjBd2R/F3adxzZw0do6cpF/92gKaD1O6VQ1QsAmPoBAzehh+aQ7r
+	u7z+OJD2OuuZeYI+9sNK8J3MHROHzJc=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=d6GzueEm;
+	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1793626764;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=R/MiW9VNy80Q9uOkhpysUgXCib54TiZt5zURlJeuqHs=;
+	b=hc/+EQT92ouQ7vDrfgy53aOqH7Gyky/MQXOpFWbq7x5lAUdhOhmO3Pa9RlAFwU+5sBajqd
+	nOlEdrIeYVVdiMP5ry8sY2zlohWQrXA90kQMpOJ0uHYSlRCkZGGsyLFF5W2k5msJWUXP8O
+	7AKdPGz1llkV8LwJpk4gkwq8AQpBY68=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id D5CA7605D4;
-	Mon,  2 Nov 2026 13:38:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FA001F00A16;
-	Mon,  2 Nov 2026 13:38:44 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id C720B60619;
+	Mon,  2 Nov 2026 13:39:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1786C1F00A1F;
+	Mon,  2 Nov 2026 13:39:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793626726;
-	bh=xVuV4v6n2XUh89lpYtmkE+io2T/w8S2Ccr/8/0fuilI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=kE3ByZ6HWhR04udaslk6PtqeinslZISISnUFBdoS5OVRZV4/a4J5e/XZJljlyZHM2
-	 c5t9OgQZdqPXmpPKOXeqkJkjoQ6AY1f+dU8/31CZWZpcNfCebP2uKNPHDQ6z51AYot
-	 K+xIt9G1ZveuQbllOUB3qJOAem1tRyNgJ6VyuGp3Iyg57i7IotD53zqP33r1QBh1sw
-	 dO4yOCGMgGcz8JVJ2z5sWO/ckxy9jw3xVeqfoRKYtnoI6jJOEne1BiU/yZ/FCYJ7yS
-	 sLcxE1BAm3GHCGfSOcHRm98yfzixEWBY8bKg54qwykA2iWQOtY+YAT3l/HGHHY4ZXL
-	 vWY1CVIrb+8yg==
-Date: Mon, 2 Nov 2026 13:38:41 +0000
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Josef Bacik <josef@toxicpanda.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, David Hildenbrand <david@kernel.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
-	Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, linux-mm@kvack.org
-Subject: Re: [PATCH 4/6] mm/mremap: restore VM_ACCOUNT if the unmap fails
-Message-ID: <auiNiMvxR8U36BTH@gremlin>
-References: <20261030-b4-mremap-pre-split-v1-0-c1829811aed0@toxicpanda.com>
- <20261030-b4-mremap-pre-split-v1-4-c1829811aed0@toxicpanda.com>
+	s=k20260515; t=1793626763;
+	bh=R/MiW9VNy80Q9uOkhpysUgXCib54TiZt5zURlJeuqHs=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=d6GzueEmMKMkMK7IGQLKu4z2aDrM1ElQKly5fKX1CcgzASh85t2PTWjmF/dTm95Bi
+	 Plo+StlOCBkHEkhQ3Rmxfsw7v4fC3zZ+gIu0Vexsenaw8l/f5lEvm7prcARz5CeWWV
+	 cN/axK8q93lO9gn6VbprsWVgP6SVoVDm/9wFnOThSHl3VR2up97iuvqJZTMqFfRTt3
+	 6zZiGOUepKl3XkMZIrtGi7bhyIKBIqHZ1AE30SqDA+lpu5J8Z/WXVKevcRTvr1l6sh
+	 lTnAIWB2Io3z5+x4OUz48h/q/nqMN2ptSp6rqEwmJrBqsho0WZeLq6lPsRYhmxcsu0
+	 /f5TqV5UF5GZg==
+Message-ID: <e06c0bdd-4d5c-4d08-8bbf-a26c4b38c6ae@kernel.org>
+Date: Mon, 2 Nov 2026 14:39:19 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261030-b4-mremap-pre-split-v1-4-c1829811aed0@toxicpanda.com>
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 96BA71C000D
-X-Stat-Signature: i96i8ykg1bkizc7mtfnsw3uen747nmig
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm/ksm: avoid unsafe anon rmap dereference in KSM merge
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Cc: Xu Xin <xu.xin@linux.dev>, Chengming Zhou <chengming.zhou@linux.dev>,
+ Andrew Morton <akpm@linux-foundation.org>, Rik van Riel <riel@redhat.com>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ Zhao Gongyi <zhaogongyi@bytedance.com>
+References: <20261102-ksm-anon-rmap-fix-v1-1-68962acfb59b@kernel.org>
+ <54e20549-ca49-4d86-90fd-9f5e483d362d@kernel.org> <auiHNPkbB0p7-2GI@gremlin>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <auiHNPkbB0p7-2GI@gremlin>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Rspamd-Queue-Id: 36C2A80004
+X-Stat-Signature: 5am7mgwzbtdxpdkdyhtm4z3u57cmz9ym
+X-Rspamd-Server: rspam01
+X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1793626727-261882
-X-HE-Meta: U2FsdGVkX1/sc0m1QU7xalNC/n8rBI4jVOIgIwPqLpbpn4WQlNDdfrziFMRd20/UDadL8M4SyjQSO5SUfWSuNbwLKEiLdIhYPRWArfk0hedPxWibU56N0Cd/6OX8QDyukq90K4US3e8uzxMXyXiSUnR4RkC03w/5IFEpj/ZfpX+EXOgM7eGoxL0TjYxbFJYcL44hkjz2/Ychqk1u26qK264qQQs5lX8EFIPlp2E5gSvkCH6LAvNMF3XVwxP36EpM6unMc/ADs4Bp8mxNSsiOEnSpbf+b88vtB23m1mHhmlnnaGzLGCU8ILBgygQkFBziZRRY5uyp/+ekxYNl20ZcNSPDJ8TRH8CkdoyA7mFdpzsNuPy2HMFlI62G7EIAEvKLCGaG75AINgDFU2NbvRpTxhTyN9nNujXYbJBqn79jDmBBI9ZjktOSurws7CwmJOCINNYXA+z/01Cx340K9mGSmtFN1jUzPVR02Gw9wArU+ByTHf1cmGubC/OCAMcGCXWHj6l6CTFJxW21OBu9R1Dmlpc8QTPqOJ1xbA5DKbT9dPwv+rr4LnHmr5ABcP5j1b6RAKbvf8H+Sn7CCoYdZbVvfXov4jgfuclF07c0hkG3CKzz4cJTmD/TLv60n4Z+Wei5Tx8VcVSSmikpjBrtWuVi9LAtgPmwZEJeuBj5QUfRkaKKYl9EM+lFzw0jHZmJfBIQg8mikZZP77Fl7ol5oQjeDyYF9D1xWGHHlpLSbpzJxh9VqvvzHwF9x+XEnHMiqdSAj/UaqwEvaV3nlxNa4plK4SGl/u+nzeVp/H/gLs9Wgtx6o2ya/Ye9k38tlnv+8Ul7IYSokFO6UIQb47pOIjKNeVg5axe9a2lnrsPsw1P+JZ8kdYHEKl1bUZjdUW03TwiFGMCR1QWqO2NEyTGAWN5vPCS7LVw5LwMC8LMBvWPhkweYOF3O+vIRqx5ZlYuznsVhQiUme/+lL4RVrdcxH49
- frUmHAWh
- jrdiOnCPScQc0PhrcdRRKZNQQlhR2WGE+Nsop9WG/cMzDJ5bZaE44zl2wRcBx/UOSJyMxWMzRcBdO2mN20iursULpQPS35/NxUz61sE4j9Zlmzk5b2vdMnhrajnjlw3UHs41EftS1Ejjt0nwir9GvoAYQnIv6XxO/HlsMh3qX0tKnOcxvA2MPPD1SzfJhJS+CaBmjkk9QiGpl0gEPd4Sf0S8v6ZsUzrKOo+aaM34rBPI4xYp/IBBgdHoSFni8n703X648AWOg3XAfO6gPIfGXycTGcs8dqpQyjfiBlOsPsneob0W5z5zPckDNmJSxnzKDPxBPx+ryKPLiciEeEkQ+HwDGOtEbAQFsISq1
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
+	version=4.0.1
+X-HE-Tag: 1793626764-400740
+X-HE-Meta: U2FsdGVkX1/lwiEwQPS2gVrQccAzA7cuDEP2i/JS9OogeiAV1E4uzc7QA0rjqIFHIn/IbIsfTUyWxOm18k2JMK5dZGnC3DVAEPugFgeUGU0E0AVpG1vjRzq340CqrUNUeULd41ClhKQ5aK1VWtrsn6OgnMJXxbQtetHjHpxEruXVyR1PpDzaydjzCtdtntCSC0bvV0W8JMrKcQMySmTHpbPVOFfbZXkMuCA17wmTvu2eMKsMNqZdWGigyeVwVU1y3C1yclUx+PTr6SMOS0zY1OuG+N1AG7s2U6/974jPJ9lWx72stnHWxrL+lGxbL3nNMIXSQ2epUqK0j4/KhBMkYpDvqEYDOluInWFK+zexu7eepqR+ehgKnKnXpStuzfgPdMZlG/dXidZ9XRbwimO9vFViw+jr1BTEF6Dmg4/LUj/jffmjGgJMmlYRrRvnetpjdrx9VoiNFSzs1JX7BFQeshDFZ3Olc3MDqQ/YPEXC9YgVmp4XLDSL3/Fqyz6nQcsuZEf/IKID5iXR/UGuzZMw+D3LPC2DNtf8g0sNYdHDTG0p8Aud7WcKTdB6nQvxmdGdkiWUBhQ1kfNXGLS+1ccnzUcBeQr+0Ry2JpAddWm/DQw8LxILULZRRgCw6xn+F2Cb15f9qMclkoWtHO8AS084a6XoO3nCDdw04v2AvGbCHI/163e8vFUMF1CZiyUJCnDrbz6Jn5eu8MBPK6Xcx96gnU92TfS56LauJJDilAHkYdXYJIRHgBRrUYV8CaMLIF71HUcGqnpVawYoEQdjxL5rFjV0cgGxGDxi4opw8x8PotZ8uVVL611FXZC9+cuTwPZCb6WPmRYqUi0OtjQ9xzmTh/whpYConNdTdcbT0zL6mQArSJeaoxGVxPTus15dv7oMZg2Ofy+5SDcxAwy4zcyc2ryb7Iw4A1fOJWBQF83mUrth8dPoe5vJ57LwU85GogBmignXAtb+pbiDeryBm7R
+ 80jXN9hr
+ GAYfpUzF5WSxgybnM33FL+apMPzKkG6erdN2MRoBccHxH734qEricHmpjVD5qqi0fU18i2anDNjowDLB/pmp+wg4qqu53juYqKR+rT3GU1+HIrWafJh1TbMCEKCSOGwkUnKwSKNo8fwmFaY3siWrorqnxlgfK2E53bFREvxnS7OvXukj4RVUigejkLYCESVQfIM0nAmYMNJxRC5D9V5gi9obd0t15fqgZbi2vyfO4T6m4BGfXDPaB4zGnzI0BpdqRbpWin+pN92Wo7O4w5Y7KDy5CwK920Yrx/JILXSD8x4F9tus=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,123 +144,137 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Fri, Oct 30, 2026 at 02:42:49PM +0000, Josef Bacik wrote:
-> If the unmap at the end of an mremap() move fails, the source VMA stays
-> without VM_ACCOUNT. Neither munmap() nor exit_mmap() uncharges it then, so
-> the charge for all of its pages stays in vm_committed_as after the process
-> is gone.
->
-> unmap_source_vma() clears the flag on the whole source VMA before the unmap
-> and sets it again on the remaining parts afterwards, but its error path
-> returns without doing so.
+On 11/2/26 13:55, Lorenzo Stoakes (ARM) wrote:
+> On Mon, Nov 02, 2026 at 01:49:02PM +0100, David Hildenbrand (Arm) wrote:
+>> On 11/2/26 13:32, Lorenzo Stoakes (ARM) wrote:
+>>> When KSM examines candidate VMAs in scan_get_next_rmap_item(), it
+>>> accumulates (mm, address) pairs in ksm_rmap_item objects, assigning them
+>>> via get_next_rmap_item(), pinning folios via a page walk in
+>>> ksm_next_page_pmd_entry().
+>>>
+>>> Throughout this operation, scan_get_next_rmap_item() holds mmap read lock,
+>>> which it drops afterwards.
+>>>
+>>> After the mmap lock is dropped the VMAs might be freed and remapped where
+>>> the VMA belonging to the folio was previously mapped.
+>>>
+>>> mremap()'s ability to change where anon folios are mapped is dealt with by
+>>> KSM by essentially avoiding the problem - prep_move_vma() unshares KSM
+>>> folios, and the scanning logic is tolerant of concurrent remaps, discarding
+>>> stale ksm_rmap_item objects and allocating new ones at the new address.
+>>>
+>>> This doesn't account for a new VMA being mapped over an old one where a
+>>> folio was previously mapped, so KSM accounts for this by checking things at
+>>> the page table level.
+>>>
+>>> However, once an anon_vma's reference count reaches zero, it is freed, but
+>>> nothing clears folio->mapping, which is where the KSM pin interacts badly
+>>> with the current KSM implementation.
+>>>
+>>> page_address_in_vma() is consistently used to look up the folio's address,
+>>> but page_address_in_vma() explicitly states:
+>>>
+>>> "It is the caller's responsibility to check the page is actually within the
+>>> VMA."
+>>>
+>>> And KSM violates this, as it cannot know this to be true. This results in
+>>> this function performing a use-after-free:
+>>>
+>>> 		struct anon_vma *anon_vma = folio_anon_vma(folio);
+>>>
+>>> 		...
+>>>
+>>> 		if (!vma_has_anon_rmap(vma) || !anon_vma ||
+>>> 		    vma->anon_vma->root != anon_vma->root)
+>>> 			return -EFAULT;
+>>>
+>>> As anon_vma->root is dereferenced when anon_vma can already have been
+>>> freed.
+>>>
+>>> This is currently benign in practice, as anon_vma's are slab-allocated
+>>> objects so this will always be within the direct mapping and arbitrary
+>>> memory will be treated as if it were a pointer to be compared.
+>>>
+>>> This either results in an -EFAULT or a spurious match, which will be
+>>> rejected at the page table level.
+>>>
+>>> However we mustn't UAF even if it's harmless, and KASAN rightly flags this.
+>>>
+>>> It turns out we don't even need to use page_address_in_vma() as we already
+>>> know the folio's address, it simply needs to be passed through.
+>>>
+>>> This change therefore updates KSM to do this, sidestepping the issue
+>>> altogether.
+>>>
+>>> Explicitly check for KSM folios in try_to_merge_one_page(), which are
+>>> already merged, and by definition never have an anon_vma.
+>>>
+>>> This was previously handled implicitly by page_address_in_vma() as
+>>> folio_anon_vma() returns NULL for those.
+>>>
+>>> In many cases cmp_and_merge_page() will reject these, but it's possible for
+>>> KSM folios to fall into the unstable tree there, so eliminate that
+>>> possibility by checking for that early.
+>>>
+>>> This maintains existing behaviour.
+>>>
+>>> The bug was introduced by commit 21d0d443cdc1 ("rmap: resurrect
+>>> page_address_in_vma anon_vma check") which first dereferenced
+>>> folio->mapping unsafely, but commit b8c8ba73c68b ("slub: Introduce
+>>> CONFIG_SLUB_RCU_DEBUG") made it visible with CONFIG_SLUB_RCU_DEBUG enabled.
+>>>
+>>> Fixes: 21d0d443cdc1 ("rmap: resurrect page_address_in_vma anon_vma check")
+>>> Reported-by: Zhao Gongyi <zhaogongyi@bytedance.com>
+>>> Closes: https://lore.kernel.org/all/20261031182256.40205-1-zhaogongyi@bytedance.com/
+>>> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+>>> ---
+>>> David - this seems benign in practice, so I'm not sure whether a backport
+>>> is required here.
+>>
+>> Ok, thanks. Is there a similar problem as with the other anon_vma->root issue
+>> where a false positive match could be problematic?
+>>
+>> I suspect not.
+> 
+> No, as it checks stuff at the page table level later.
+> 
+>>
+>> In that case I would pick this for the next merge window after a couple of days.
+> 
+> Yup, this is far from urgent.
+> 
+>>
+>> [...]
+>>
+>>>  {
+>>>  	struct folio *folio = page_folio(page);
+>>>  	pte_t orig_pte = __pte(0);
+>>> @@ -1515,7 +1507,7 @@ static int try_to_merge_one_page(struct vm_area_struct *vma,
+>>>  	if (page == kpage)			/* ksm page forked */
+>>>  		return 0;
+>>>
+>>> -	if (!folio_test_anon(folio))
+>>> +	if (!folio_test_anon(folio) || folio_test_ksm(folio))
+>>>  		goto out;
+>> Okay, that makes sense. We don't have to check under the folio lock as KSM
+>> doesn't merge concurrently.
+>>
+>> Do we want to assert in write_protect_page() that we are not getting called with
+>> a KSM folio, similar to what we do with large folios in there?
+> 
+> Sure could do. I wonder whether that existing check should just be a
+> VM_WARN_ON_ONCE() anyway, seems a bit silly to if (WARN_ON_ONCE(...)) return
+> err; there.
 
-Yeah this whole VMA_ACCOUNT_BIT removal/reinstatement is a total hack and I hate
-it.
+Just what I was thinking.
 
-The real long-term fix is to change that to something not terrible I
-think... :)
+> 
+> Do you want a respin for that or happy to add?
+I can fix that up when applying. If there are more requests for changes, let's
+do a resend.
 
->
-> This was reproduced with fault injection: each failure on an anonymous
-> mapping left Committed_AS higher by the size of the whole VMA after
-> everything was unmapped.
->
-> Fix by setting VM_ACCOUNT again on everything in the range of the original
+-- 
+Cheers,
 
-It'd be extremely pedantic to say 'VMA_ACCOUNT_BIT' here, but it's the
-kernel, so here I am being _that_ nitty ;)
-
-> VMA. A failed unmap may have split the VMA already, so walk the range.
->
-> Fixes: 51df7bcb6151 ("mm/mremap: account memory on do_munmap() failure")
-
-Again, this requires crazy memory pressure, fatal signal etc. etc. so yes,
-no cc: stable is valid.
-
-> Signed-off-by: Josef Bacik <josef@toxicpanda.com>
-
-Logically generally OK, but I want you to rework this as per below.
-
-> ---
->  mm/mremap.c | 15 +++++++++++++--
->  1 file changed, 13 insertions(+), 2 deletions(-)
->
-> diff --git a/mm/mremap.c b/mm/mremap.c
-> index 6f941aeb1b5f..256eac721a07 100644
-> --- a/mm/mremap.c
-> +++ b/mm/mremap.c
-> @@ -1246,9 +1246,20 @@ static void unmap_source_vma(struct vma_remap_struct *vrm)
->  	vrm->vma = NULL; /* Invalidated. */
->  	vrm->vmi_needs_invalidate = true;
->  	if (err) {
-> -		/* OOM: unable to split vma, just get accounts right */
-> -		if (accountable_move)
-> +		/*
-> +		 * OOM: unable to split vma, just get accounts right. Both the
-> +		 * old and the new range remain mapped, so charge the range a
-> +		 * second time, and reinstate the flag on all that is left of
-> +		 * the VMA so the charge is returned when it gets unmapped.
-> +		 */
-
-This is quite schloppy. I don't think we need this bit.
-
-> +		if (accountable_move) {
->  			vm_acct_memory(len >> PAGE_SHIFT);
-> +			vma_iter_set(&vmi, vm_start);
-> +			for_each_vma_range(vmi, vma, vm_end) {
-> +				vma_start_write(vma);
-> +				vma_set_flags(vma, VMA_ACCOUNT_BIT);
-> +			}
-> +		}
-
-I'd rather separate this out into its own helper. That also means you could
-share code with the bit at the end?
-
-Like:
-
-static void vma_range_set_account(struct vma_iterator *vmi,
-		unsigned long start, unsigned long end)
-{
-        struct vm_area_struct *vma;
-
-        vma_iter_set(vmi, start);
-        for_each_vma_range(*vmi, vma, end) {
-                vma_start_write(vma);
-                vma_set_flags(vma, VMA_ACCOUNT_BIT);
-        }
-}
-
-Then the above error path becomes:
-
-        if (err) {
-                /* OOM: unable to split vma, just get accounts right */
-                if (accountable_move) {
-                        vm_acct_memory(len >> PAGE_SHIFT);
-                        vma_range_set_account(&vmi, vm_start, vm_end);
-                }
-                return;
-        }
-
-And on success at the end of the function you can reduce that bit to:
-
-	/*
-	 * ...
-	 * do_vmi_munmap() will have restored the VMI back to addr.
-	 */
-        if (accountable_move)
-                vma_range_set_account(&vmi, vm_start, vm_end);
-
-Which is nice :)
-
-
->  		return;
->  	}
->
->
-> --
-> 2.55.0
->
-
---
-Cheers, Lorenzo
+David
 
