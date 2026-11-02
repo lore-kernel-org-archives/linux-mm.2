@@ -1,145 +1,137 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0265560D3C8A
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 15:30:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70A48606AEB5
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 15:30:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=ckVzeATP
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=JvJL3xSm
 Received: by kanga.kvack.org (Postfix)
-	id 262826B062A; Mon,  2 Nov 2026 10:30:00 -0500 (EST)
+	id 87DF46B062C; Mon,  2 Nov 2026 10:30:42 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 23A516B062B; Mon,  2 Nov 2026 10:30:00 -0500 (EST)
+	id 855676B062D; Mon,  2 Nov 2026 10:30:42 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 150776B062C; Mon,  2 Nov 2026 10:30:00 -0500 (EST)
+	id 76CA06B062E; Mon,  2 Nov 2026 10:30:42 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id E1D076B062A
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 10:29:59 -0500 (EST)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 879A1120159
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 15:29:59 +0000 (UTC)
-X-FDA: 85390564518.20.B50E60F
-Received: from mail-vs1-f46.google.com (mail-vs1-f46.google.com [209.85.217.46])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 96FF3140002
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 15:29:57 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=ckVzeATP;
-	spf=pass (imf09.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.217.46 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1793633397;
-	b=q1Cwbg/3Cof3L6JcgZyRR3iOv1KPcN+aADlKiho3G0PzhXKaElx3zFY9r/2ztqk/CSSTov
-	lX9SroKXCNktGCFmAI994wPhFyBJNuFVC+PqAgQ/KvMkNWT4UUsdYF+eoDwEuU9OMufiqr
-	TCk6wxoYAjaL/LNAjuHG/uCVjKcExRw=
-ARC-Authentication-Results: i=2;
-	imf09.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=ckVzeATP;
-	spf=pass (imf09.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.217.46 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793633397;
+	by kanga.kvack.org (Postfix) with ESMTP id 4A6976B062C
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 10:30:42 -0500 (EST)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id CC6C112017A
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 15:30:41 +0000 (UTC)
+X-FDA: 85390566282.03.59B27FC
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf05.hostedemail.com (Postfix) with ESMTP id BA25A100014
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 15:30:39 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JvJL3xSm;
+	spf=pass (imf05.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1793633439;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=P7oHHMkIM1swADUlplUIw0AliwJNApZ8BZBXp6ze1xc=;
-	b=n0hzw58EKyil8cgo72S/7HF3p+eHqDWGBey+a9CiTH95Sp2HkRHLWwpK3XJOvV4753+t5O
-	zZRCsWyHxOBiwmNRFAb1QPRorRdYGHEJJBWwTp/fzaPEdcfQ4iK/22koFcor+1O3AApm+r
-	zXlQTpJfwcycT3ww3JVed6r8h0Mo3xE=
-Received: by mail-vs1-f46.google.com with SMTP id ada2fe7eead31-78fb1fb9508so3547805137.1
-        for <linux-mm@kvack.org>; Mon, 02 Nov 2026 07:29:57 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1793633397; cv=none;
-        d=google.com; s=arc-20260327;
-        b=exmwB1UkBNKcgUov2AOBiWJKog9UzdtgziM6a6p3EAFCeL1RqSXK4QpkOHrqMEsQBi
-         78Laao9WJraUUN+Mlf43is9npLGO8AHWEVqHd5qAgaeHaD6adzvrhM7j/RR0s+sEEDxl
-         BbSXNu8NPwodrmn5okmRIg66AtAoQB84iQmHMepLq0KDRYmmoyUChByTz8FLuShLcz+k
-         xl4JlDK7rlZHvpwewJ9ZJLEVjstVczeiie8ZmvoKn5QUaHAj3ln9+xfGvFfB7h9iEVeo
-         8AO+30/IqrK92OSYqpug8o3QGYIQAmSA+xtjUDYtSq1FAQTy3auMGREWp1lbPO+sgpFk
-         Qnlw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=P7oHHMkIM1swADUlplUIw0AliwJNApZ8BZBXp6ze1xc=;
-        fh=KfPbj3K0mT/tCN+Wskksu7An6Bc4mmvCzRB90CCyW3Q=;
-        b=SIJrN5P/dL95XzSUHTLHBxzgi0rqAEFardaVJ0GJoa6KWNeCk39aYNvA/U+pR7qqjd
-         MJjONpb1/wRKQQgJ6eZD7jsB2fEYNjQjt0tAfjpvwBK5VXR3soT4y5WwquTJAxcc4XPe
-         XwUPdj6H9eOzpDBB0cxBjzg6UClEnzVg2m2+21m9VhIRBKUV1wLvYOzH03SA+D7+JtGp
-         62wY1d2LlkkK1cxP+r3yD2jCWXmxS+uLPCwJtbhZhT3ywxjWgYh2mAlB+AsAyljKNO1O
-         tYy6tSEVzHCC6u8QbJ4FkJcbiBio9di23bYaEbV6u1pKDgkd2AWhi2EzmsoX639SIKIC
-         L7Ug==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793633397; x=1794238197; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=P7oHHMkIM1swADUlplUIw0AliwJNApZ8BZBXp6ze1xc=;
-        b=ckVzeATPndApHHOnBvN6j8wpAmEaTc5omN/by8wQ7z3X852FyxQNDZyBABOh7OfpaW
-         t4VAdHE/o+KLYgXZ1wCQXwJnIOpWoPU0R3t3n7RC6goMpQVBhdqnhn6w/TRazp0te5ad
-         WhIPD/YFVGkwpj8OmWqNm9JkaSeUVhuLL9RuPK0f1vAJWmt24dWzsvTMQm23Feo9a7tF
-         JGK2BQ3jfLd54RbwvYjNObVG6eK2IsiTKBA/pCTSah7oOldlCllQg8+yE7NO5HLtWwOV
-         dKQJZvgQSvF/b8r3HwWBMzDntP/JB2t0ge23EDzH/6Thr8tnSI/wyhcPy2Trz4vfEOCl
-         zaZA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793633397; x=1794238197;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=P7oHHMkIM1swADUlplUIw0AliwJNApZ8BZBXp6ze1xc=;
-        b=eJyXAKNsLgGFZ6gF1jbzK/idrKwyUFrbK6A+BwHyvopXx662J1qcknTSCyNtF8JSLd
-         uuUja2YpXMJrIvtZ+zgN+XkZ6dumjPdWgUa39WWX4DZFuqgW1jqSXvvJYpiq56DWqFQr
-         6lEXInXTceBs3am6fcATcNQowsqs1RzWkITr3lhDafIUn52dICcCpX9HN3NRItSZaZVY
-         9/+7rLDOaWhqatSgOlqL2TyrY3DYLKEPm8jH7nHsCnJzJW9PZUC87HTXDQEOjADupjP2
-         ZZ+dkZ3ML4Z6iL8vPL/OyP9trjGDmMKa6gMsBRoEiBLqLmzA4lQp0z8iye7I1Lm1vkzL
-         qvgg==
-X-Forwarded-Encrypted: i=1; AKwUvBxo/0JbzGqTFHntXqtaKITdrUfjkLUSmi0oMH/KYLrxZ4ZlCQoLQo5yuwOa4FKvUFXlPD5FUFYaIw==@kvack.org
-X-Gm-Message-State: APuU4Z+3a5G58PPvWcUcEE2ch+89/XqTGvf9fltLSwFuDnQWvwkhqi+u
-	qeSlSO8ZeTiG/3Jtg5/tpm8CLkviPR3hKDgW5G71UWvjFIOxMMa1Nf9K+Hc7YFfAe309tu16pjz
-	ItCsb+W8J01cKfzRK+ApX/MvpkAmzQqc=
-X-Gm-Gg: AYBFou0C43+9GXUTWBvUNxiZ+BBnNy0FOoEyDUhuHBDc/HspdKHEF//fO8y4Q2ux6/1
-	51vxqxHaWiKKGZLkrZY1r2sRxCSq2020CyBr50VQw5N42qC28ehbaidJZq4gRQXP5BTHZFbQOND
-	m+n0YZRdSiGvrOpi9uk4YOOs5tMfIKInW8iAaH3GKYRSkpySi5ka6MkiPiM/dF/5IsNMHZ7sCYE
-	/Fvp63znlkjHOuNQJWiLuoG0Qh8JZ1DeIjWy9WIecwuDmH60FENvnmF/1lznWBGT9n5a2LRMgzY
-	ivBBIj/2lzWioqE7Y71xIDefxJUeSWOz6jIxQizo0H8dnQwIl0odQNyvhJiIPtK82/8tuntAxJG
-	OSpr9NMYkzwwi8vaeQ9IVx56vXAEEjxnXBe85aaiAeCxJL1rdg1enHn382BLX2jchBRf0znZAx1
-	CXELA54b0e
-X-Received: by 2002:a05:6102:5cc8:b0:7c3:874d:60bb with SMTP id
- ada2fe7eead31-7d072bc027emr2842138137.5.1793633396723; Mon, 02 Nov 2026
- 07:29:56 -0800 (PST)
+	bh=nWuCT5YfGLZKMaCIQ2u9uqZ5zT0FDhvi/3SVn3tmVzc=;
+	b=K9+D0oBJgJFb8sht07d/59WGxErrvponBOI0Gmwz7bPGKVWK8dKbpMUZzN4x67ygBRAMeg
+	lIP+sNIDFM5jhdhz7VNv0vRUVzxBZ7OXYqG2M3lD0mhxTOQuslS3NuWco9Tqnyul1J9QuS
+	5hO8zhMx7mUDrFUK518k/wKy0yCF738=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793633439;
+	b=1xZpY6UjcgtZ8g3eJcYVfCgsu+Xc/QBpS9duMp0uN9EYFDfd3/r9V6x+8uXDYwJUUFx/Pt
+	pH86GHJOqUeXbtUfhmvyoorZiCXangjpCjZfCsNnJ4Fp9H4wj++HEXUbOr3Wvl4S9cGkMV
+	Sa42rPNgnAxZ+2Hr7r89m9PnOf+1QaA=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JvJL3xSm;
+	spf=pass (imf05.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 45E2F60DB5;
+	Mon,  2 Nov 2026 15:30:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 577111F00A17;
+	Mon,  2 Nov 2026 15:30:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793633439;
+	bh=nWuCT5YfGLZKMaCIQ2u9uqZ5zT0FDhvi/3SVn3tmVzc=;
+	h=From:Subject:Date:In-Reply-To:References:To:Cc;
+	b=JvJL3xSmCx1jEXZXFgCWdABT0EtARcgIeWlliBcwjsQggtBY2gtJtPeeTuwFe1En3
+	 yghubbz+b6akUmjQFQundlEviJxzYnXvvJ10JOd1KMP0/nBgMjIkXwZ/XC5Z80/QRU
+	 TM3v1jZON2+8k+xpLjLlBV7eV9w+fBiVNw5CKH84T3Q2OzPSyUKXQM3m+Ax30lI93Y
+	 OyoOQjlKotkqtBU9MfoL0KIPG2osrCvKNSLQ40t0sUClpEBfOkQbyLQFLb27zpFu+Y
+	 n8mMnghA5U6ON/ROReGn5Up0EpOwUQn7lOK4akX5XlElTMVXhFxJ9ikuqMVKjPgINC
+	 iKJ2YSbzsjVGA==
+From: Christian Brauner <brauner@kernel.org>
+Subject: [PATCH RFC 00/11] proc: convert the net entries and the kfifo
+ samples
+Date: Mon, 02 Nov 2026 16:07:14 +0100
+Message-Id: <20261102-work-procfs-net-v1-0-982104a4f592@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-References: <20261030161234.1505367-1-gourry@gourry.net> <CAN+CAwN+OPMPpVdBA+XtQvFpDy+EOY2TAiusxMjYR+r0F+MPhw@mail.gmail.com>
- <20261030164303.02c5cce0521c3d6fd4ddf015@linux-foundation.org>
-In-Reply-To: <20261030164303.02c5cce0521c3d6fd4ddf015@linux-foundation.org>
-From: Joshua Hahn <joshua.hahnjy@gmail.com>
-Date: Mon, 2 Nov 2026 10:29:45 -0500
-X-Gm-Features: AclHuK-onw5mfffqhDCdUvG-akV0FfaPCDY7vf1GKDjU7CU-jXjuRXPuiw8F_m8
-Message-ID: <CAN+CAwOSz7BuPyd+u8KOitbDNFiDa0iNv+oFnQwbbt6kUw21PA@mail.gmail.com>
-Subject: Re: [PATCH v2] mm/mempolicy: recompute automatic interleave weights
- on memory hotplug
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: "Gregory Price (Meta)" <gourry@gourry.net>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	kernel-team@meta.com, david@kernel.org, ziy@nvidia.com, rakie.kim@sk.com, 
-	ying.huang@linux.alibaba.com, harry@kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/22OQQ6CMBBFr0JmbQ0tiJWtiQdwa1i00xmtBqoto
+ onx7oIaVy7/z/w37wGJoqcEdfaASINPPnRjkLMM8GC6PQnvxgwqV5WUuRS3EE/iHANyEh31wqK
+ 2SlJBzDmMq3Mk9vc3cQfbzRqaT5mu9kjYT6zpzJpEwkbT4WGqJur8Q51z+nIiXa6jUP+F/Xzq7
+ K8NhkhCsylNyaVUyPUgf68wtK3v66xaWKO5KAm1rgiXyirMl86hRi6clgsslK5WDprn8wWY6yG
+ oHQEAAA==
+X-Change-ID: 20261101-work-procfs-net-bc8b21e3eff0
+In-Reply-To: <20261102-defizit-jobaussicht-kurios-7016c6e67442@brauner>
+References: <20261102-defizit-jobaussicht-kurios-7016c6e67442@brauner>
+To: linux-fsdevel@vger.kernel.org
+Cc: Linus Torvalds <torvalds@linux-foundation.org>, 
+ Jann Horn <jannh@google.com>, Josef Bacik <josef@toxicpanda.com>, 
+ Chris Mason <mason@kernel.org>, Jeff Layton <jlayton@kernel.org>, 
+ NeilBrown <neil@brown.name>, Eric Dumazet <edumazet@kernel.org>, 
+ Thomas Gleixner <tglx@kernel.org>, Al Viro <viro@zeniv.linux.org.uk>, 
+ Jonathan Corbet <corbet@lwn.net>, Christoph Hellwig <hch@lst.de>, 
+ Greg Kroah-Hartman <gregkh@suse.de>, 
+ Joel Granados <joel.granados@kernel.org>, Kees Cook <kees@kernel.org>, 
+ Jan Kara <jack@suse.cz>, Jan Kara <jack@suse.com>, 
+ linux-kernel@vger.kernel.org, linux-nfs@vger.kernel.org, 
+ linux-acpi@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+ linux-s390@vger.kernel.org, linux-scsi@vger.kernel.org, 
+ linux-um@lists.infradead.org, linux-wireless@vger.kernel.org, 
+ linuxppc-dev@lists.ozlabs.org, netdev@vger.kernel.org, 
+ ntfs3@lists.linux.dev, platform-driver-x86@vger.kernel.org, 
+ coreteam@netfilter.org, kexec@lists.infradead.org, 
+ linux-pci@vger.kernel.org, linux-sound@vger.kernel.org, 
+ netfilter-devel@vger.kernel.org, dri-devel@lists.freedesktop.org, 
+ ibm-acpi-devel@lists.sourceforge.net, jfs-discussion@lists.sourceforge.net, 
+ linux-alpha@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+ linux-cifs@vger.kernel.org, linux-fbdev@vger.kernel.org, 
+ linux-hwmon@vger.kernel.org, linux-mm@kvack.org, linux-sh@vger.kernel.org, 
+ linux-usb@vger.kernel.org, samba-technical@lists.samba.org, 
+ sparclinux@vger.kernel.org, linux-m68k@lists.linux-m68k.org, 
+ linux-doc@vger.kernel.org, linux-serial@vger.kernel.org, 
+ linux-atm-general@lists.sourceforge.net, Takashi Iwai <tiwai@suse.de>, 
+ linux-input@vger.kernel.org, linux-raid@vger.kernel.org, 
+ linux-ext4@vger.kernel.org, linux-modules@vger.kernel.org, 
+ linux-debuggers@vger.kernel.org, 
+ "Christian Brauner (Amutable)" <brauner@kernel.org>, 
+ Chuck Lever <cel@kernel.org>
+X-Mailer: b4 0.17-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=6204; i=brauner@kernel.org;
+ h=from:subject:message-id; bh=Lm5+su7qsScEvEwR5OzG4cxYScUPPN8KO8cD1pJduAM=;
+ b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS9WG6sZzlnpdTObhHnrxsNnhcwhx7JdFJe6ZC4aXbLM
+ a/56SU2HaUsDGJcDLJiiiwO7Sbhcst5KjYbZWrAzGFlAhnCwMUpABPZ58vwP2FCTv7c1nPufxUn
+ rxVffbXetcGH6/Pd/nXCDCUSoTFLchj+WfEH5fmX5SrzarKvehro8vvd34Piq3/NKC07Jbo2ZmU
+ OMwA=
+X-Developer-Key: i=brauner@kernel.org; a=openpgp;
+ fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: BA25A100014
+X-Stat-Signature: zrxtuo4hmp77crx6saazs76yptx5ngsb
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 96FF3140002
-X-Stat-Signature: ut7ik8m7b786do5rmb6uexypy87stao9
-X-Rspamd-Server: rspam01
-X-Spam-Status: No, score=-12.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
-X-HE-Tag: 1793633397-238407
-X-HE-Meta: U2FsdGVkX19UekFY0Dn2qb4tZTRKFnyFWiEIFbR4w1N85qzS7opa3IrsLjEWWW7R1Ld+hCvLsL9C2DpHrs28eILdWTCvqLKe8mGzvhfq0bqTbABOQweqawPDpve1+PBZdy63Lhro3H1RiaCxlQ9AzwwhlFmdkWMgDTXUiCec1rg5iRY5qJjj7fXH3gL9LDDdf1C9brvrxz9Nl0gOpwiVgQZQMEeGyo98XAHFK1xrk+8eZRE39gp8FrOfYqhHTtJkCIrku5y2Z4ofJhqJtb0V1SjbWZCsbP+ce+1zzbsiJycexP0fS/62fet1UJsjSuf3f97FTtMX8epApcT2vayfqGN/6rAHBuGVyWVJmtNj70xu0O6D1nwTZ/Dzv3J7b0++hV9Z0A0gdsXZQYaAw5uj7zIkhOkdJN9mSs/w+EJ+8n4tcpTitLDNHO2g8oOi5fK/hXPoIgiumhK8xayIDbJAU1bVLdoVfHfUSUhKsLo/mTDZgpx0t6SImctfv4q8APbdN0iWoCjED1JFWk8qClsX4iJPWsI9PmJ+TLdohrGYmf8ZrdU8tH9R1lCo0XNxqztQsAzbGdCqghCasGjI4NCqjWilvDTsqBE3XN/iTS9jcgkxDaa76nGsEMaXYElMsp1kBXRnIEhawc/4zBIeilThqSl+DAFOlKnylwsoFBGgY+qCYtDhxi/BU6hU6IACLQ20rkPzsrE/enN+DiGtuW+TWRXY3YqtRm4cH1A/PUbPFJA8siDr3Pqe5IdNGyznxG5lpwx1K7tVfkXhw+7LKFUaTXmGkxhjvVde717pJg/Ns4MIOtfKqwFcjWtRz6jDq0lkIlTWvMAujLCqicMOHRyT0eFvse4v2ZujuwujeysMhCAH1sakGGvShz83U2CmXB7SeAfRFoAAr2IXVjx8viaOqAXAdvZ6gvT4I8qe5MxV7++XoKb8/NhNRv/gNnGyi6JYuFZ2HaO05NVi97/8kvB
- ryJjtuJh
- oFkbDnGhgs8ha8wnuI/I6wnGpH3Jq4KhWsgmFSkwGOZV+bap3kJv1Cv0xYOKEQ2IOcgRaKG2onRdkI2hG0/hRzKWmLCJRqyPqQMVGFPWldf4fz6HLWsIacS0+yB+5K9Y1xMk12vvnYK7G5nPjH2jjAUKmLL/HVzNVBolMujjMEDJjIJuvW7D6zaX6YT6RGLvxQyhKVXb2QHn280ckEkPEioD+o3DWdlVxiW4Dq+dZo/eSGo3KilFQOr2b/wgSa2e3Jdil7xUPGe7Z3WrWPFqwOl9Sqs2xU7wT7AIh3R0NmHDdcFojxpBE13SdLUcRJeBmmMBEnYl/yPkUfLxvXZvLcVB+DZO3OieueOhAf2SqBGwMgdH55nMP0aP3jUWQHJzbAX1Awz7+mfrhnsZ881B6fivEaf54iWX+PxgQI1YVyh0s6W9/+aE6uDbRGkTdqlJtcNbJ9Xvn/g8g0Z9E0HCytKinnJ8rD60hlBunt7ZCszaLZFoSskg5DOYH0zzqcYKi7Dv/T3Mjl6uUxlDQooODHPPFoKewcfQ+e6o8exNL0+MbOXGVJSP9ZrVyDwUx9QeVO91aB9DLnxWp0l8=
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
+	version=4.0.1
+X-HE-Tag: 1793633439-812178
+X-HE-Meta: U2FsdGVkX1/RIjOlsOtBnCrxV/LG0ei5LYoa54DP0nDUEn27zn1N0CNnYEBNzPiuQ7sDu2OK79GyTdCQ5CfFle3FuMjSNyZoL3h1cjsA5jEUlnLczavcE+UmyB/9rvVyCmYdZQxLhavPy7GKmJQ1rRRA7Zo20ryFaMkvlNgGwcWu24KI+9Pa72zeksxvxTSA0WaLjj1t7bGmg122YvG0scIoHzIfAzfq9YwaXVQJeW+chFO5Wc7QzG5Pahwk2V1sox9osHrN5PPaQO6q5EoKXzdg9SuXTPDsUCDWTfNcqzLUHI2fMk5XYH6y4ODHCvTRCBHSJFbsTEk144uw1SOYWHjcCYIJWSPo9G6nvvKucikSrU5fopCVb4zKF9qDUqn5NqMuLhnpsXIDL83lkR0U7VvTCADfJw25y5P1HR2L0g3qp7LnCz0SVTaodXm6iVrPOaPD/mz+Cvo5wCzI+QnHY8/xiHDUrKqagSpEE2wu7Ain3/o4Z+74zDdCHRqIjTxl2+NKPfE8gZKLiOgJfB2rgDASgU9LVs+16nhvF0Q+JcZ7qhPfXqVIcbfryl5ANEVOWuZLHTQGw5NLDoUYLLu+qj9cZ8Ptan2rWeQBwPb/3glGo5MExddm555KRZspMtVxUNsQcCq/NglmNGTp7F/0Jet2F9NyuMLRy2Myk661eYU7GJvm7QuuJ+vzgWjDuH8Nui/aA3qQPkTg8+C93WnYf+ubN66Q66q29px34YyZpWXrtcch5tLh7rUahcWJiz5ikItP7BKZd7PZr026x1Kw5xM0kKxZ+GkP1Y/fiIfEFkeXk564a+/ytsKhvb1JXspQ4a4fbUVmsvJub4Z4uTgrhlJFH/kRG5TzWZWlfjyTe5PhnhtADJqNerftb27Bzk7hOUfxIT4pg5P4VnQLEGroYFhINXY5zfRuOuZti9w1vYSFj4EmLAmNm0JMTpE1lPAGJXtgMnk0ax4qXJqS3lY
+ qfSIu+0e
+ 5mtPUsGYnOsqWugoQSre0nwCkR8lkfQZsXCHi9zUw6DlDgk5xaYBCepOANRF3AyuufgWiBGxUaTr88mxaO6kteLBqvgaNRYk461C21wn7OdA0cibliESnkYohdsV4IMrfu9j6v5skS31mgfGE0+sDHYFlgB5O5qmos7DLNxRT8cWYc/6uNW0rbPenygNWCI5K6wRkZSXAPat8c4urwDOOuQD4hxg2tzeVc8k54U/YZU0/pvBO7mZBeUEdQL23950AmFyDSE6oNJ45ILA8kH9iFP0Ag4YIjz0WgheF
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -148,120 +140,111 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Fri, Oct 30, 2026 at 7:43=E2=80=AFPM Andrew Morton <akpm@linux-foundatio=
-n.org> wrote:
->
-> On Fri, 30 Oct 2026 12:35:38 -0400 Joshua Hahn <joshua.hahnjy@gmail.com> =
-wrote:
->
-> > On Fri, Oct 30, 2026 at 12:12=E2=80=AFPM Gregory Price (Meta) <gourry@g=
-ourry.net> wrote:
-> > >
-> > > In auto mode, weighted interleave derives each node's weight from its
-> > > bandwidth, reduced over the nodes in N_MEMORY. HMAT and CXL report a
-> > > node's bandwidth once, when the node first gains memory, and nothing
-> > > else on the hotplug path recomputes the weights.
-> > >
-> > > This can result in a major skew in distribution and overload tiers
-> > > with more data than their respective bandwidth can support, resulting
-> > > in a performance regression.
-> >
-> > ...
-> >
-> > I think you may have dropped my review tag from the previous
-> > version!!! I believe the only thing that changes is the warn, so
-> > please feel free to add:
-> > Reviewed-by: Joshua Hahn <joshua.hahnjy@gmail.com>
->
-> Actually, quite a lot changed, so dropping the v1 tags seems
-> appropriate.
+This converts the proc entries of atm, l2tp, pktgen, xt_recent and
+sunrpc, and the kfifo samples, to what "proc: let procfs own the data
+path" set up: procfs owns the seq_file, copies in writes, copies out
+reads and copies ioctl arguments in and out, so the entries' code only
+ever runs with the entry pinned and never touches userspace memory.
 
-Hi Andrew,
-Ah, thank you for the catch. Looking through the code again, I think
-it still looks good to me so my review tag should stil stay. I'll be
-more careful about stuff like this in the future!
+One patch per subsystem and method, in the order seq_file, write, read,
+ioctl. The sunrpc channel files take 32k downcalls, which is what
+->proc_write_size is for, and their ioctl goes away: do_vfs_ioctl()
+answers FIONREAD for regular files before the file's ioctl ever sees
+it. The sunrpc channel and the kfifo samples are streams. They hand out
+what is read before procfs copies it out, so a reader that passes a bad
+buffer loses that part. Where a write that is larger than anything the
+entry parses now fails with -EINVAL from procfs I've called that out in
+the commit.
 
-> v1->v2:
->
->  mm/mempolicy.c |   36 ++++++++++++++++++++++++++++--------
->  1 file changed, 28 insertions(+), 8 deletions(-)
->
-> --- a/mm/mempolicy.c~mm-mempolicy-recompute-automatic-interleave-weights-=
-on-memory-hotplug-v2
-> +++ a/mm/mempolicy.c
-> @@ -261,7 +261,11 @@ static int wi_state_refresh(void)
->         mutex_lock(&wi_state_lock);
->         old_wi_state =3D rcu_dereference_protected(wi_state,
->                                         lockdep_is_held(&wi_state_lock));
-> -       /* NULL wi_state assumes auto=3Dtrue */
-> +       /*
-> +        * Hotplug events can arrive before any node reported its bandwid=
-th,
-> +        * leaving nothing to compute weights from. NULL wi_state assumes
-> +        * auto=3Dtrue.
-> +        */
->         if (!node_bw_table || (old_wi_state && !old_wi_state->mode_auto))=
- {
->                 mutex_unlock(&wi_state_lock);
->                 kfree(new_wi_state);
-> @@ -302,6 +306,28 @@ int mempolicy_set_node_perf(unsigned int
->         return wi_state_refresh();
->  }
->
-> +/*
-> + * HMAT and CXL report a node's bandwidth only when it first gains memor=
-y, so
-> + * recompute the weights whenever N_MEMORY changes.
-> + */
-> +static int wi_state_node_notifier(struct notifier_block *nb,
-> +                                 unsigned long action, void *data)
-> +{
-> +       struct node_notify *nn =3D data;
-> +       int err;
-> +
-> +       if (action !=3D NODE_ADDED_FIRST_MEMORY &&
-> +           action !=3D NODE_REMOVED_LAST_MEMORY)
-> +               return NOTIFY_OK;
-> +
-> +       /* The hotplug is done, failing the notification would not undo i=
-t */
-> +       err =3D wi_state_refresh();
-> +       if (err)
-> +               pr_warn_once("failed to recompute weighted interleave wei=
-ghts for node%d: %d\n",
-> +                            nn->nid, err);
-> +       return NOTIFY_OK;
-> +}
-> +
->  /**
->   * numa_nearest_node - Find nearest node by state
->   * @node: Node id to start the search
-> @@ -3424,6 +3450,7 @@ void __init numa_policy_init(void)
->         if (do_set_mempolicy(MPOL_INTERLEAVE, 0, &interleave_nodes))
->                 pr_err("%s: interleaving failed\n", __func__);
->
-> +       hotplug_node_notifier(wi_state_node_notifier, DEFAULT_CALLBACK_PR=
-I);
->         check_numabalancing_enable();
->  }
->
-> @@ -3910,15 +3937,8 @@ static int wi_node_notifier(struct notif
->         case NODE_REMOVED_LAST_MEMORY:
->                 sysfs_wi_node_delete(nid);
->                 break;
-> -       default:
-> -               return NOTIFY_OK;
->         }
->
-> -       /*
-> -        * HMAT and CXL report a node's bandwidth only when it first gain=
-s
-> -        * memory, so recompute the weights whenever N_MEMORY changes.
-> -        */
-> -       wi_state_refresh();
->         return NOTIFY_OK;
->  }
->
-> _
->
+Build tested per commit on x86_64 and with W=1 on the touched objects.
+The pktgen selftest behaves the same with and without the series and so
+do the entries I could get at in a VM.
+
+This is on top of "proc: let procfs own the data path". The other three
+conversion series don't depend on it and it doesn't depend on them.
+
+Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
+---
+Christian Brauner (11):
+      atm: let procfs copy out reads of the device files
+      l2tp: let procfs own the seq_file of /proc/net/pppol2tp
+      net: pktgen: let procfs copy in commands
+      netfilter: xt_recent: let procfs own the seq_file
+      netfilter: xt_recent: let procfs copy in writes
+      SUNRPC: let procfs own the seq_file of the cache content file
+      SUNRPC: let procfs copy in writes
+      SUNRPC: let procfs copy out reads
+      SUNRPC: drop the ioctl of the procfs channel files
+      samples/kfifo: let procfs copy in writes
+      samples/kfifo: let procfs copy out reads
+
+ net/atm/proc.c                     |   9 ++-
+ net/core/pktgen.c                  | 128 +++++++++++++----------------------
+ net/l2tp/l2tp_ppp.c                |  20 +++---
+ net/netfilter/xt_recent.c          |  19 ++----
+ net/sunrpc/auth_gss/svcauth_gss.c  |  34 +++-------
+ net/sunrpc/cache.c                 | 133 ++++++++++++++++++++++---------------
+ samples/kfifo/bytestream-example.c |  18 ++---
+ samples/kfifo/inttype-example.c    |  20 +++---
+ samples/kfifo/record-example.c     |  21 +++---
+ 9 files changed, 177 insertions(+), 225 deletions(-)
+---
+base-commit: 65ba8f34ec886ec72b2c07ddc8cf3d815c32869d
+change-id: 20261101-work-procfs-net-bc8b21e3eff0
+prerequisite-change-id: 20261101-work-procfs-core-8fa4a4f412cf:v1
+prerequisite-patch-id: 0474af12959624910718795bf86684383664c685
+prerequisite-patch-id: 540aa9ea28adcbc54d8264f66314e29e3b8c9d49
+prerequisite-patch-id: 2f7139d1c972c4439dccca610caa5f1288987a3d
+prerequisite-patch-id: b0031a7c4855b7ec38259c59f30f65101a8fc4b5
+prerequisite-patch-id: 0b7f226abf2b9ff41873a1aa55cf97747647d56b
+prerequisite-patch-id: f63e345f897619af54813958046617c655fb7daf
+prerequisite-patch-id: c0e21e762a2960e3324c5ab04634a7035e515fa6
+prerequisite-patch-id: fd59c71eadd8f39c58b3baea93567bc093bc9b0e
+prerequisite-patch-id: 5d52cc8a5c73e4c5ba16b8e24f51408c17583bf9
+prerequisite-patch-id: 1f9179284e2f3314d4b46ac5e989089a21c7576c
+prerequisite-patch-id: 10397bbf696bee16dc71eb79fff6c5e73842bcbc
+prerequisite-patch-id: 9b44279dcf08912238d2f6438a3328a778a79a0c
+prerequisite-patch-id: 16854b621a3a71dfc365aaf7abaa7f65adfe9f7e
+prerequisite-patch-id: ca42eea21fae1fd1cd3518ab057c74b61ffd68fe
+prerequisite-patch-id: 23255dc2be76b0479c083dbd4c897bfbb533aed5
+prerequisite-patch-id: 82129c687ebf0a41b369893b92f2c038420ab801
+prerequisite-patch-id: 56ad57a99a5bda075a9f4e844368974296744934
+prerequisite-patch-id: 288b3cbaa11e01a778cc3d7beb6c0549aacf59f2
+prerequisite-patch-id: a163b1549608652bfa5bd9ff93efa55b541010c4
+prerequisite-patch-id: 78f067c343177e52d49ddfe9ee2992e602549869
+prerequisite-patch-id: 19c12bc6e3fbed35acc1f657196b1a997f48cdfe
+prerequisite-patch-id: 5800c3076694bad719954b2ad4d7448c6e013bfd
+prerequisite-patch-id: 2a2f63d8843b159594b9eee6ddea028ce76a6270
+prerequisite-patch-id: 40a1951d57906c4a1b98a4bd96a814b80339b9c5
+prerequisite-patch-id: e2141077e69f20a2b27fab69c8d61d0686682f53
+prerequisite-patch-id: c4d6018c26c40dc549d88330d23ce48f872c2b7f
+prerequisite-patch-id: 6de8ec17746031bc6d1d9ac262c5be0f905fcd79
+prerequisite-patch-id: b87bcb167884605bff1fd0f2ed8a88942d07efd5
+prerequisite-patch-id: cfa9a8b4c67e20cfd22d77035bfd21ee96ab3298
+prerequisite-patch-id: abf3482ed2399b7b2e1ee72e937af05bb9200667
+prerequisite-patch-id: 02c175b2dee565a85b3308ecf2ec8e3c9a029e0f
+prerequisite-patch-id: 4ed6b3d3d45de49d4967e88ba4e7f03372775f55
+prerequisite-patch-id: dbe02fe3f784776fda5e7ae99f077bef0cd4b48d
+prerequisite-patch-id: 53edc9a95afff57c4acba40095a8054924261ea2
+prerequisite-patch-id: cf9ce0099005fd3bc31a1e15131d48e315ac3bee
+prerequisite-patch-id: 16a657a5d0046068dbace29e7ea046ac1441f46f
+prerequisite-patch-id: efeb2d6f7df71d5dede2c1d12fe999a28e38aab9
+prerequisite-patch-id: e6ffe2a5c3ee5645f56c8366b568fbc9f140848c
+prerequisite-patch-id: 117db27dcdef433de7c6be5e95973cac1e373927
+prerequisite-patch-id: a0844aa26ffb65ccb362b88ef6c2f4758e15edbf
+prerequisite-patch-id: 143fb91bddf33068b6ee11e205818c4c2815e23d
+prerequisite-patch-id: 6490e4da1cb2f543683bd164bc9a5a1c943057e7
+prerequisite-patch-id: cdefca57d3c552fb6f6b928699edd85f33be25fd
+prerequisite-patch-id: 2f0fdb970ddd760d85ff5d2caad0b96348270182
+prerequisite-patch-id: f2aa468ff5cbb1cabab3f70e1b8eeee0286cfb4a
+prerequisite-patch-id: 037030d95eeb7c49b1e43f638ec954f2cebbcfb1
+prerequisite-patch-id: 487141c49e2548310bfb6c2a0964a78f08b285a9
+prerequisite-patch-id: c3d3008819fa5629a18142ec9ba6d7024ade7fdb
+prerequisite-patch-id: ba15e7c86b60ccc2f0f7ee4c9bc99073068757bc
+prerequisite-patch-id: 9423f410b99853693db06c29f12f1c08278b050d
+prerequisite-patch-id: 4e7966978e4b11c4d843831f312cdcd5b848f00c
+prerequisite-patch-id: 3d24be1897a624d519ef144801f76d152c7528a9
+prerequisite-patch-id: 3b4d9fe7b26f6b7b9b3f7725ea333df357107c44
+prerequisite-patch-id: 7d9dd345428baeb88c862ef902612f7160dc1d8c
+
 
