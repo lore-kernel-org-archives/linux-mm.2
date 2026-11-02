@@ -1,62 +1,62 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD4AD60A2607
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 10:03:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11ACD606A32D
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 10:03:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=YbGeh5+y
+	dkim=pass (1024-bit key, unprotected) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=MbiEQKPA
 Received: by kanga.kvack.org (Postfix)
-	id E2FDA6B05BF; Mon,  2 Nov 2026 05:03:37 -0500 (EST)
+	id 297E56B05C1; Mon,  2 Nov 2026 05:03:47 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DE05B6B05C0; Mon,  2 Nov 2026 05:03:37 -0500 (EST)
+	id 248016B05C2; Mon,  2 Nov 2026 05:03:47 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D1DD16B05C1; Mon,  2 Nov 2026 05:03:37 -0500 (EST)
+	id 184CD6B05C3; Mon,  2 Nov 2026 05:03:47 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id AFAAC6B05BF
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 05:03:37 -0500 (EST)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 37E56A8AA3
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 10:03:37 +0000 (UTC)
-X-FDA: 85389742074.10.1DBE35C
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id E17DE6B05C1
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 05:03:46 -0500 (EST)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 6BE8AA0BEB
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 10:03:45 +0000 (UTC)
+X-FDA: 85389742410.19.FFAA5E8
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 917AF40003
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 10:03:35 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=YbGeh5+y;
-	spf=pass (imf17.hostedemail.com: domain of sarthak.sharma@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=sarthak.sharma@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793613815;
-	b=fyN/xb59ayRNgUdkKGf4fZno3g77q7KndI5erJXhY85msIETHASjb7y98oKau+dxv0XpeO
-	h810wRnyjC2yu6TBDOtNAKRm6K8CKniP9f93X1cT8grstwvtv1Q8qJ0nxwKC4VK+byYF2X
-	uioF6+IWSXv20/kjkbknNzv0+pIHobE=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=YbGeh5+y;
-	spf=pass (imf17.hostedemail.com: domain of sarthak.sharma@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=sarthak.sharma@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+	by imf22.hostedemail.com (Postfix) with ESMTP id B403CC000A
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 10:03:43 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=MbiEQKPA;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf22.hostedemail.com: domain of sarthak.sharma@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=sarthak.sharma@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793613815;
+	s=arc-20220608; t=1793613823;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XdnDmqlCH80gjvSxzbKE92AxnXNoFECvTQW6aAOAAUc=;
-	b=RcJBjPJe7GlrzI9pQg0TqV4oD+v7r++lFfIBXs2mFm+6S1tr0S2e7Hqy28XYyot98mJ8ej
-	2QALl51b7+k+QcnPQ9kcuupsPXgVn60Bc4MfCOjuAvqtHxLpFVZGPHc0ZcPQGdAhyv5kqk
-	q1un9g2tdHa5u+JLjOt5ZOFHeTVLlDo=
+	bh=Q0mRcK2bKQo+q66MkLAlKH/V2mp0o6C8AmD4irh5/SQ=;
+	b=elb+ry3zJMMniD4wfVv4p8KAyVXU5ERaihOBgn3CXpKug/Xj7uI6VpxSH6FD5zYZgk6+EC
+	R0k24MNQWde1EY6rUtgdg6cdKSV6S4odE4WTYI3CxXjlN40VAKiU99FnoJpU8z0cUHqB6x
+	6t75GJ5NRQ/eM1KQ8qfLnOgnShNA0wU=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=MbiEQKPA;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf22.hostedemail.com: domain of sarthak.sharma@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=sarthak.sharma@arm.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793613823;
+	b=ML0fSWCUjAL0ncQ9CKni45j8JSu33RTzSdQeV87xp+NVvQnS923w0GF5v3NTSZvpxdVGQ3
+	b8snWOmRAiBxAJw7YSoZClkFlKoRNrqhyNYexb2/dalyKvxKgOSp9ji6IfPMGqKMvvaOFa
+	DqF9SWxlUbDYjRLAmKvVNhZ8ndFI9kQ=
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 8C32D293B;
-	Mon,  2 Nov 2026 02:03:31 -0800 (PST)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id DB9D51595;
+	Mon,  2 Nov 2026 02:03:39 -0800 (PST)
 Received: from a081061.arm.com (unknown [10.163.156.187])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id B88CB3F59E;
-	Mon,  2 Nov 2026 02:03:26 -0800 (PST)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 6657D3F59E;
+	Mon,  2 Nov 2026 02:03:35 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1793613814; bh=h5dXF0m91cnxVDQONyXlGNTGhZvMDOX5pVEbRrsufFk=;
+	t=1793613822; bh=XoWrK/XFPSHrKoCJr1hb8lpBF7nrUDVvP6yJJO84omg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YbGeh5+yY/p2Pf0TkK8JgmGOFxk8huewbNvCL9C2KItaKajh1Y75ulaitXhXdVliD
-	 G/H/x/NrUUkFkvpeANJctSS3OYjmyc1EqfUJLCs0wG1DMupLaTVYvGg9vt9c9xBQJ1
-	 J0Kflxh+CdtIKZdCCkPi9fDjUSCUUCUmFdaHW2Z0=
+	b=MbiEQKPAwioHsY+oTq9XEBh9wl6T/SXLEbkOp0d1rHU3X0r6FnGj4M0e6q6SrIuV5
+	 8CNaAhOdahyRRYqjLg/E712Rr1XZIJUQpu1Li1F8DkLIxLWlI4jXaO5xjj0H7jBA8e
+	 2aZADk44Lbi6xCgAQJwt2Es++wvqtA7MKLbxfLNw=
 From: Sarthak Sharma <sarthak.sharma@arm.com>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	David Hildenbrand <david@kernel.org>
@@ -75,27 +75,27 @@ Cc: Lorenzo Stoakes <ljs@kernel.org>,
 	linux-kselftest@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Sarthak Sharma <sarthak.sharma@arm.com>
-Subject: [PATCH RESEND v2 08/12] selftests/mm: mremap_test: handle cleanup after mmap failures
-Date: Mon,  2 Nov 2026 15:32:07 +0530
-Message-ID: <20261102100211.141831-9-sarthak.sharma@arm.com>
+Subject: [PATCH RESEND v2 09/12] selftests/mm: mremap_test: remove perf tests and timing
+Date: Mon,  2 Nov 2026 15:32:08 +0530
+Message-ID: <20261102100211.141831-10-sarthak.sharma@arm.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20261102100211.141831-1-sarthak.sharma@arm.com>
 References: <20261102100211.141831-1-sarthak.sharma@arm.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: y1rot7m9xfw8efuwn681soyi6en69edm
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: B403CC000A
+X-Stat-Signature: yjsiy4zc5p6hmfpf1o7ttwbhfuw8k89c
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 917AF40003
 X-Rspam-User: 
-X-HE-Tag: 1793613815-3668
-X-HE-Meta: U2FsdGVkX18Vr3duffpO22Nt79W1Z4MO/ERAVSLI+zVLwHomY90FhcgzxR2QB1+f1cJk/AbpBoIu/zM1mwlqfTNstCgsJE306hFFZlFnTa75csonJB+jw3olpdstR07oBlF3Yw0n2ODQbM/mLS4pwY3TPU2MxolIfg6hGrq03vp3eQWvcQXbBXU+vWlJpwq5XEqdD/TcgMFOaVzh91npu6aH/G4x2MFSN6Ik5lblBGb1+YHbFZhCUbBpdN8kBvBicEzRLdJvCbAqYeguZ5ZPVY7U3CrB6MBbveL9N4e8RBTj4DZjYyWi2pqtAB2U0evKgXSqTKxLg/PNCz93bDWK+LxVwhWOfjZyaMadjFDvix9mtsIDeSA4uz8iYHWWqM4V/WGWXqzgyNRMlZuMKIzdREXKdeJ2nDowWGAUtaIywXCU9PeXmHtpC85h/sGEhLj7sYDir2tw1IiZpXzdJUS2DNWFGk/SsqYwEjc0rbA2J9Xot7HPOv0N6ArXEn8dulsc03OhyJ81mVfjtnSouSoMrwnjJJnCFJWqeTw/XR2whkq/Yau7dgtHTDxiQV2E6NWyMtFKWz4XwMZX036ChWV1Gf9+4YCQE9Mc9bKZVVZLzg1jOset/jtLVU2bpSIPPykWJdLlX0Idecwe5e5BuXLy8J7Ku0w8l+KfExA/IMz3nAGyZQYfQ2r8jiyfi0YY/uL5m1kAHNoyHo/CvRTWX4b77qSGfBMxTBOSP+5YawQutCAF90FuP7B1+gdAs66yInwZ6RCHi5VzQH9cslfnADDeWMPiC/uuhisVLJyhj4spC+5xNJ8U7kR+1ZYOGmay3Y3WCNwTcXPxUtwUgjSNkwCYPleIYN/obE7MVlfXCpT7huwa/X45y7M0+N2eeqEVVpFk/JtnHZ9GXCUn2MYHUDo/p6KKUybx792foKuQxDCrZlTuFnDc6v8wf2EyteuqfujG8y9vycegA2jLVyd0t9X
- ceC4KcsA
- jEeMUr9QrpGv9+Eb/UOiwoKjhneUk9ij38k1x4zL7Y/zTf2TOds+oEKwzowTEeYbDBSZvzd1yAmM+pVX1/hrXUSczD54fvicZjRjDESAzEWIFKNaeBJmGKLSVBhg4X7fgcQSLIUt8moimJHIxJGCXTyNPUi+EyLHPkBW/1I/C4OysE5mHo7zcHdlYLLclqb3aAdCD9W4crgiKqSsENhHDLeWs9ZRagu6SafUOMeB/FppbqvIHDcml97o1yiMzOcAV9bvuKdeEcjmn3YeCa1J3cokMfBVyj7cgSEkH
+X-HE-Tag: 1793613823-906091
+X-HE-Meta: U2FsdGVkX19OuR36svyRwpn4TcM7/5J1fc+AwQDFx/mLoAiaz2rMKsKTLsDqFOL3MT2UzpFsYotBKBe833g6ZWmm0jNt5qwfEZydBFACz0Uqh3h4cHP7/seJ1BVl86xfSOR9KI6KwhPgAx5P3rl1EQ4H0Sse9YRJjpBHWZvdErwyxFt5Wcfwvqnh5LNB3+sJR/Ig5A8uYMt96Hq1kDzhGw8aPtKuDD7EDEFYvIGfKWOq/nsu2h9uW24R1wz9Cf8iylabRFk+XPLvAVT5l+Je9GmlvtwHNxP8kWzxyrd6oEnW1susq9t3etCp8g6XPwFF7uKf0KY3JOW0sSVmweIUActs/uCkXlDoDoiRvV6ic1SHJz0vvlMHu7ao0OumtunHgGyK+sQzstXjy4jBjkWmRBL/7ultJ/oC/GedAjoCevVuUqMGCKS4tO6DSbSQMw1ZtZdhPefN+3AOjUDWMfgftD5Z+wGe1Bh3ijBTfCbWHXYbpcrY/Aj53IYnarea3FXClatNMZgmN6DotDgMyqZFW27cdr8UkzatT/mV6PQbrxx7yYfNkYhhwKAMZgxCRj3qe8nj8kHlFqE52rsDYPHYb5O5us3/5E349Z30bIElWcbG4k8b4x+7EiiBX3NRoGeLD8Q2C6AEXD85eonBq56d2DzQalwEd3GSTBIzTff/UOHMEne08x+esMpouvK2sVg0xcKCJZ0Uubl1hivQYfvTndNolCFd2wdjGiXwCP5/C6adjS/38wkFYsi0cS4fs98Y2GcysyfeipauzFwWanrGtWtWcHoGAxKRJM95SurYQExr5mInNTz6FwRjJfXwHQuuceZDbfrw8aFs55mGYvU6fQyJpwox4uvR05NIs71qgTnaZlwkSYGBus7Lu3TB8ZZ4jqT7RiVfnT3v1R2WRItwjRHrTDSkoU7NnVUJtDE+31rlWYGWXtK+yVFxQCLdtnt1zDqVOz1boxEF6T5qx7M
+ aw98cPua
+ RFcslh2/MhbJIiW5dtONxe1+6r9Po4fyxQC5Ol5SZ/O7gFHEDl6rOGjwdo+a3VU8kfUhcgO8T4RJXJhXVtFk/JaDZ0TJ/toUYaF633PXrVKoSt6YwE68CE4Kkd2JWHGh/sEGaQhxef6QIfsy8AOsyIMo0TKjz7JWCp1S1dXLs7w/Kov+eUUS1lRJD1ia3qfL/s4s/KAY8Jq3AyBPCU3+y774FzCd1LANWKQXnlnAFYJSoQJlRwKuzPGWBXCWkiPz0Eju0LCoqm3xtYl5F3AjRFTiixihmDS+7O7SAPnA/BbofVVaRcifu+NyMoeq/7U933LSB
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,113 +104,170 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-In several tests, when target mapping fails, we directly
-jump to the result handling, without unmapping the
-previously created source mapping. This leaks the
-source mapping. Unmap the source mapping when target
-mapping fails.
+mremap_test contains three perf tests that report the time
+taken to move 1GB mappings with different page table level
+alignments. Although they validate the remapped data,
+their main purpose is to report timing information. The
+recorded time also does not affect the test result. Also,
+they are not run with the default validation threshold.
 
-Also bypass munmap() when source mapping fails in
-mremap_move_within_range().
+Remove these tests and the timing infrastructure from
+mremap_test.c. The regular tests continue to cover PUD
+and PMD aligned remaps.
 
+Suggested-by: David Hildenbrand (Arm) <david@kernel.org>
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 Signed-off-by: Sarthak Sharma <sarthak.sharma@arm.com>
 ---
- tools/testing/selftests/mm/mremap_test.c | 18 +++++++++++-------
- 1 file changed, 11 insertions(+), 7 deletions(-)
+ tools/testing/selftests/mm/mremap_test.c | 64 +++---------------------
+ 1 file changed, 7 insertions(+), 57 deletions(-)
 
 diff --git a/tools/testing/selftests/mm/mremap_test.c b/tools/testing/selftests/mm/mremap_test.c
-index 514d2003b88d..63bf8a475fe6 100644
+index 63bf8a475fe6..bf825ffa29f6 100644
 --- a/tools/testing/selftests/mm/mremap_test.c
 +++ b/tools/testing/selftests/mm/mremap_test.c
-@@ -340,7 +340,7 @@ static void mremap_move_within_range(unsigned int pattern_seed, char *rand_addr)
- 	if (new_ptr == MAP_FAILED) {
- 		ksft_perror("mremap");
- 		success = 0;
--		goto out;
-+		goto out_unmap;
+@@ -22,7 +22,6 @@
+ #define EXPECT_FAILURE 1
+ #define NON_OVERLAPPING 0
+ #define OVERLAPPING 1
+-#define NS_PER_SEC 1000000000ULL
+ #define VALIDATION_DEFAULT_THRESHOLD 4	/* 4MB */
+ #define VALIDATION_NO_THRESHOLD 0	/* Verify the entire region */
+ 
+@@ -929,14 +928,13 @@ static void mremap_move_multi_invalid_vmas(FILE *maps_fp, unsigned long page_siz
+ }
+ #endif /* __NR_userfaultfd */
+ 
+-/* Returns the time taken for the remap on success else returns -1. */
+-static long long remap_region(struct config c, unsigned int threshold_mb,
+-			      char *rand_addr)
++static int remap_region(struct config c, unsigned int threshold_mb,
++			char *rand_addr)
+ {
+ 	void *addr, *tmp_addr, *src_addr, *dest_addr, *dest_preamble_addr = NULL;
+-	struct timespec t_start = {0, 0}, t_end = {0, 0};
+-	long long  start_ns, end_ns, align_mask, ret, offset;
++	long long align_mask, offset;
+ 	unsigned long long threshold;
++	int ret = 0;
+ 
+ 	if (threshold_mb == VALIDATION_NO_THRESHOLD)
+ 		threshold = c.region_size;
+@@ -996,10 +994,8 @@ static long long remap_region(struct config c, unsigned int threshold_mb,
+ 		memcpy(dest_preamble_addr, rand_addr, c.dest_preamble_size);
  	}
  
- 	/* Verify byte pattern after remapping */
-@@ -357,9 +357,9 @@ static void mremap_move_within_range(unsigned int pattern_seed, char *rand_addr)
- 		}
+-	clock_gettime(CLOCK_MONOTONIC, &t_start);
+ 	dest_addr = mremap(src_addr, c.region_size, c.region_size,
+ 			   MREMAP_MAYMOVE | MREMAP_FIXED, (char *)addr);
+-	clock_gettime(CLOCK_MONOTONIC, &t_end);
+ 
+ 	if (dest_addr == MAP_FAILED) {
+ 		ksft_print_msg("mremap failed: %s\n", strerror(errno));
+@@ -1022,16 +1018,6 @@ static long long remap_region(struct config c, unsigned int threshold_mb,
+ 		goto clean_up_dest;
  	}
  
--out:
-+out_unmap:
- 	munmap(ptr, size);
+-	start_ns = t_start.tv_sec * NS_PER_SEC + t_start.tv_nsec;
+-	end_ns = t_end.tv_sec * NS_PER_SEC + t_end.tv_nsec;
+-	ret = end_ns - start_ns;
 -
-+out:
- 	ksft_test_result(success, "%s\n", test_name);
+-/*
+- * Since the destination address is specified using MREMAP_FIXED, subsequent
+- * mremap will unmap any previous mapping at the address range specified by
+- * dest_addr and region_size. This significantly affects the remap time of
+- * subsequent tests. So we clean up mappings after each test.
+- */
+ clean_up_dest:
+ 	munmap(dest_addr, c.region_size);
+ clean_up_dest_preamble:
+@@ -1119,10 +1105,9 @@ static void run_mremap_test_case(struct test test_case,
+ 				 unsigned int threshold_mb,
+ 				 char *rand_addr)
+ {
+-	long long remap_time = remap_region(test_case.config, threshold_mb,
+-					    rand_addr);
++	int ret = remap_region(test_case.config, threshold_mb, rand_addr);
+ 
+-	if (remap_time < 0) {
++	if (ret < 0) {
+ 		if (test_case.expect_failure)
+ 			ksft_test_result_xfail("%s: expected mremap failure\n",
+ 					       test_case.name);
+@@ -1132,25 +1117,15 @@ static void run_mremap_test_case(struct test test_case,
+ 		if (test_case.expect_failure)
+ 			ksft_test_result_fail("%s: unexpected mremap success\n",
+ 					      test_case.name);
+-		/*
+-		 * Comparing mremap time is only applicable if entire region
+-		 * was faulted in.
+-		 */
+-		else if (threshold_mb == VALIDATION_NO_THRESHOLD ||
+-			 test_case.config.region_size <= threshold_mb * _1MB)
+-			ksft_test_result_pass("%s: mremap time: %12lldns\n",
+-					      test_case.name, remap_time);
+ 		else
+ 			ksft_test_result_pass("%s\n", test_case.name);
+ 	}
  }
  
-@@ -415,7 +415,7 @@ static void mremap_move_multiple_vmas(unsigned int pattern_seed,
- 	if (tgt_ptr == MAP_FAILED) {
- 		ksft_perror("mmap");
- 		success = false;
--		goto out;
-+		goto out_unmap_src;
- 	}
- 	if (munmap(tgt_ptr, 2 * size)) {
- 		ksft_perror("munmap");
-@@ -501,6 +501,7 @@ static void mremap_move_multiple_vmas(unsigned int pattern_seed,
+ #define MAX_TEST 15
+-#define MAX_PERF_TEST 3
+ int main(void)
+ {
+ 	unsigned int i;
+-	int run_perf_tests;
+ 	unsigned int threshold_mb = VALIDATION_DEFAULT_THRESHOLD;
  
- out_unmap:
- 	munmap(tgt_ptr, 2 * size);
-+out_unmap_src:
- 	munmap(ptr, size);
- out:
- 	ksft_test_result(success, "%s%s\n", test_name, dont_unmap ? " [dontunmap]" : "");
-@@ -529,7 +530,7 @@ static void mremap_shrink_multiple_vmas(unsigned long page_size,
- 	if (tgt_ptr == MAP_FAILED) {
- 		ksft_perror("mmap");
- 		success = false;
--		goto out;
-+		goto out_unmap_src;
- 	}
- 	if (munmap(tgt_ptr, size)) {
- 		ksft_perror("munmap");
-@@ -573,6 +574,7 @@ static void mremap_shrink_multiple_vmas(unsigned long page_size,
+ 	/* hard-coded test configs */
+@@ -1164,7 +1139,6 @@ int main(void)
+ 	int num_expand_tests = 2;
+ 	int num_misc_tests = 9;
+ 	struct test test_cases[MAX_TEST] = {};
+-	struct test perf_test_cases[MAX_PERF_TEST];
+ 	int page_size;
+ 	time_t t;
+ 	FILE *maps_fp;
+@@ -1254,22 +1228,7 @@ int main(void)
+ 				  "5MB mremap - Source 1MB-aligned, Dest 1MB-aligned with 40MB Preamble");
+ 	test_cases[14].config.dest_preamble_size = 10 * _4MB;
  
- out_unmap:
- 	munmap(tgt_ptr, size);
-+out_unmap_src:
- 	munmap(ptr, size);
- out:
- 	ksft_test_result(success, "%s%s\n", test_name, inplace ? " [inplace]" : "");
-@@ -605,7 +607,7 @@ static void mremap_move_multiple_vmas_split(unsigned int pattern_seed,
- 	if (tgt_ptr == MAP_FAILED) {
- 		ksft_perror("mmap");
- 		success = false;
--		goto out;
-+		goto out_unmap_src;
- 	}
- 	if (munmap(tgt_ptr, size)) {
- 		ksft_perror("munmap");
-@@ -690,6 +692,7 @@ static void mremap_move_multiple_vmas_split(unsigned int pattern_seed,
+-	perf_test_cases[0] =  MAKE_TEST(page_size, page_size, _1GB, NON_OVERLAPPING, EXPECT_SUCCESS,
+-					"1GB mremap - Source PTE-aligned, Destination PTE-aligned");
+-	/*
+-	 * mremap 1GB region - Page table level aligned time
+-	 * comparison.
+-	 */
+-	perf_test_cases[1] = MAKE_TEST(PMD, PMD, _1GB, NON_OVERLAPPING, EXPECT_SUCCESS,
+-				       "1GB mremap - Source PMD-aligned, Destination PMD-aligned");
+-	perf_test_cases[2] = MAKE_TEST(PUD, PUD, _1GB, NON_OVERLAPPING, EXPECT_SUCCESS,
+-				       "1GB mremap - Source PUD-aligned, Destination PUD-aligned");
+-
+-	run_perf_tests =  (threshold_mb == VALIDATION_NO_THRESHOLD) ||
+-				(threshold_mb * _1MB >= _1GB);
+-
+-	ksft_set_plan(ARRAY_SIZE(test_cases) + (run_perf_tests ?
+-		      ARRAY_SIZE(perf_test_cases) : 0) + num_expand_tests + num_misc_tests);
++	ksft_set_plan(ARRAY_SIZE(test_cases) + num_expand_tests + num_misc_tests);
  
- out_unmap:
- 	munmap(tgt_ptr, size);
-+out_unmap_src:
- 	munmap(ptr, size);
- out:
- 	ksft_test_result(success, "%s%s\n", test_name, dont_unmap ? " [dontunmap]" : "");
-@@ -738,7 +741,7 @@ static void mremap_move_multi_invalid_vmas(FILE *maps_fp,
- 	if (tgt_ptr == MAP_FAILED) {
- 		ksft_perror("mmap");
- 		success = false;
--		goto out_close_uffd;
-+		goto out_unmap_src;
- 	}
- 	if (munmap(tgt_ptr, size)) {
- 		ksft_perror("munmap");
-@@ -910,6 +913,7 @@ static void mremap_move_multi_invalid_vmas(FILE *maps_fp,
+ 	for (i = 0; i < ARRAY_SIZE(test_cases); i++)
+ 		run_mremap_test_case(test_cases[i], threshold_mb, rand_addr);
+@@ -1296,15 +1255,6 @@ int main(void)
  
- out_unmap:
- 	munmap(tgt_ptr, size);
-+out_unmap_src:
- 	munmap(ptr, size);
- out_close_uffd:
- 	close(uffd);
+ 	fclose(maps_fp);
+ 
+-	if (run_perf_tests) {
+-		ksft_print_msg("%s\n",
+-		 "mremap HAVE_MOVE_PMD/PUD optimization time comparison for 1GB region:");
+-		for (i = 0; i < ARRAY_SIZE(perf_test_cases); i++)
+-			run_mremap_test_case(perf_test_cases[i],
+-					     threshold_mb,
+-					     rand_addr);
+-	}
+-
+ 	munmap(rand_addr, rand_size);
+ 
+ 	ksft_finished();
 -- 
 2.53.0
 
