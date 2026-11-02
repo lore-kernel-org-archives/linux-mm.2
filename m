@@ -1,75 +1,75 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DD46606B0D6
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 15:07:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0950606B0E2
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Nov 2026 15:07:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=htIvLzE5
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kIoUwWZI
 Received: by kanga.kvack.org (Postfix)
-	id 6F1EE6B00EF; Mon,  2 Nov 2026 10:07:36 -0500 (EST)
+	id C982D6B05D5; Mon,  2 Nov 2026 10:07:52 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6C93B6B05D5; Mon,  2 Nov 2026 10:07:36 -0500 (EST)
+	id C6F2A6B05D6; Mon,  2 Nov 2026 10:07:52 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 606336B05D6; Mon,  2 Nov 2026 10:07:36 -0500 (EST)
+	id BAC976B05D7; Mon,  2 Nov 2026 10:07:52 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 4207A6B00EF
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 10:07:36 -0500 (EST)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id D62348016F
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 15:07:35 +0000 (UTC)
-X-FDA: 85390508070.14.78F55EF
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id A09356B05D5
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 10:07:52 -0500 (EST)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 33E9B16016F
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 15:07:52 +0000 (UTC)
+X-FDA: 85390508784.01.3CD563B
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 1482FC0005
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 15:07:33 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=htIvLzE5;
+	by imf15.hostedemail.com (Postfix) with ESMTP id 6E829A0011
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 15:07:50 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kIoUwWZI;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf28.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org
+	spf=pass (imf15.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793632054;
+	s=arc-20220608; t=1793632070;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Jqve5dom8G0YagWg0DUi21Qt2CUJnz11dMCfHhOCDkM=;
-	b=tRkoX08Wkw89HeCeIYMmbubVgzKy7Cy8R9IWNfm5/5Bk5xwRNudi3F4ACpNu0cgdeS7nUX
-	WMJBrhdBerU+X4vwJ8lWpWcEuB0gl3mxIO6ATwGubuRQEf9wkfd7FsgFqLqoYUzSuCV3JM
-	97wnmwSzx3QRRb2JGwa1NyH9lue/UJw=
+	bh=lzi0v2Iw6r5Nf2GLOsMSQBwdPNX93e2TzGzGfD3oQvk=;
+	b=TxVDMrcswEBFDZG5Zw3h4X6gz0wzaor0BzTpToJoyPTqxpT4tqP21QPrQxu6YF0Uv0Fkeo
+	2x3+oOdLVescAw4TLe8Yt9WI+DuBHRrdIsgq4MFk3f4KbDdbbl/GQwYyt0i9ts5lTqqxBF
+	uEe6jM8InbSYWqj6jw5O0Rpk3XZsPRo=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=htIvLzE5;
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kIoUwWZI;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf28.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org
+	spf=pass (imf15.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793632054;
-	b=S5tsLJl/GXLQc49q9jq2kTW7rgRYNA00R8qADt4IknWwhFPyOahJuH7M8hBIZwc+J4iCE6
-	hAkE8jahWoKtTy7z2YRcmYdcTTPtIPrbi8hrE+vAP7pGadN2NXcm534WtFiupO3Wpdo7VJ
-	CynKv/GWV2G92NGh2l6LMqWQWob8UWY=
+	t=1793632070;
+	b=FvU0uZOqSfG+H3HU0Y7vcYujxlt7ALdwc+Kx0XryJbVImRyqWsrZiUgpb7wrPBQU0sW66p
+	LiKLeAokDW8wxq8zBQKF9Ox368uLcQRhFpjfDmGoAzNPwhOky13jb9P/TWTc5dT6TVjSjK
+	QrPKQ+PBo07lNnCGnXha8FJ1+6gsLq0=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 44AD541132;
-	Mon,  2 Nov 2026 15:07:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEC3F1F00A16;
-	Mon,  2 Nov 2026 15:07:19 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id B1FD84378E;
+	Mon,  2 Nov 2026 15:07:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C6921F00A18;
+	Mon,  2 Nov 2026 15:07:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793632053;
-	bh=Jqve5dom8G0YagWg0DUi21Qt2CUJnz11dMCfHhOCDkM=;
+	s=k20260515; t=1793632069;
+	bh=lzi0v2Iw6r5Nf2GLOsMSQBwdPNX93e2TzGzGfD3oQvk=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=htIvLzE5mRDE3y0tqv1kyv8W5k1g/Ii7ANwuWhratSAOFS7tbxL3BToIPDpZE85DE
-	 FNEsXXzLmfR4qQugMxmA9eyhIHm6Q6dJAmTZKLeIUK1bHgaHB6rg72WkRZftlCgoe6
-	 E2QfeUCqIA0Nboam57Dh1SlJUtOEamqW0FpuXdYHq09VCiD2DRiKvdUgmVI6MwZESI
-	 HWhsjmhK16tI0mtjDz6fsLrdm37sQrZUo7icVQ6YX0Qr2rzi5YjsmWINl56IQd0nMx
-	 zqjv85Bp1EemyFNq5w6kuaSNgOUZ321NOGqFqL1mOki6ZfyR8nruUh1khBiylH7rMN
-	 bCkpWmWU3eNXw==
+	b=kIoUwWZIZJmPIDGcbCqUMn+ysgkkYH4B9KIOKwQcxHvHBenqGMDwfSExIyruQhbFw
+	 GSvSuGXqLlsS/+2bX4zY15r68FSJdvY7PhgxxV9bnP9Q3PrAcl12NmKthDnezkWdzA
+	 YQcdsHreaTBVFGkt5/ixU0O685iwRTrAmT2xH295OHXHJaGkHJFEIXEMqGqXCeqbKp
+	 nkpHGaPfZ7GY12qU7tMKJN88syBFW289W+duXDc1qru1IIyFkTan4orRc22NIVl3pP
+	 G9JHqYUFv0jVxFqVlQXSQgnsHBo0FeNBeFWC+sINyeJMsGIfziINB34GYCGOVyuJWO
+	 tkxpbHP0pDc6g==
 From: Christian Brauner <brauner@kernel.org>
-Date: Mon, 02 Nov 2026 16:01:44 +0100
-Subject: [PATCH RFC 17/22] ACPI: proc: let procfs copy in writes to
- /proc/acpi/wakeup
+Date: Mon, 02 Nov 2026 16:01:45 +0100
+Subject: [PATCH RFC 18/22] macintosh/via-pmu: let procfs copy in writes to
+ the options file
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261102-work-procfs-arch-v1-17-c9492ab08480@kernel.org>
+Message-Id: <20261102-work-procfs-arch-v1-18-c9492ab08480@kernel.org>
 References: <20261102-work-procfs-arch-v1-0-c9492ab08480@kernel.org>
 In-Reply-To: <20261102-work-procfs-arch-v1-0-c9492ab08480@kernel.org>
 To: linux-fsdevel@vger.kernel.org
@@ -105,19 +105,19 @@ Cc: Linus Torvalds <torvalds@linux-foundation.org>,
  "Christian Brauner (Amutable)" <brauner@kernel.org>, 
  Chuck Lever <cel@kernel.org>
 X-Mailer: b4 0.17-dev
-X-Rspamd-Queue-Id: 1482FC0005
-X-Stat-Signature: dhdiii5bbjwqmndyzfdcrxjrhyy91j1r
-X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 6E829A0011
+X-Rspam-User: 
+X-Stat-Signature: 9kmiad81nz9ckx8jsagz4e4seirc3kk4
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
 	version=4.0.1
-X-Rspam-User: 
-X-HE-Tag: 1793632053-147351
-X-HE-Meta: U2FsdGVkX1+JLs54FG66ucBzoiyE+OEx3WXXCgr9MgD6X0KVlWsqiMn6RrzNT3btPiBo53JOFrTFWKDVuJ/EXsQkpLZhpa+phnibbthkG4zf855gJRkxP27u0P+FSTdc49HEJQAXcTwA0EpLGxVDMGvfvvv6GFiP8JE9tp+aSvakMJhe6+Z4mBJ5TqvCZLgeRF9LGgDjxO68R9mBZvnX/0cM0ZuvQ5ON+vNQFMy+WgEZT4e0wfFhpGLOi5eEFbbpu0NQR207TWn/ggxOh1Q/SdwBlS5QPg0gsgxyoZdQzbNIvH6zARHIiVdt+KKJydk7J29raVuIWb/CzB2Yjqb6dua80E9ybU10doJfV7mXdZmtiw0cgD3r0nz50y9Ezzz3IIEJ9YlkZfuMyqp3EZQG/2S+nhSwMC+UsZRy/GnF5qkjaIU+TH4CR27AfjrvdOBLWT4WvNPQPq3Ux4rRjSdzBCchWM3+g0LP2ERNga/BBaQA2XONHp8ueDV8G0oZ7PH4LCaF82LNqEkT2porvhDxoVJhXZX2qBL4q/Szdx6OA8IQF2UoLWtuDv9f2yYTX4S6kwc/JDO8i95FFIBZdtHwMYw/JdZDHVlrhY0dOkt/e8A+c7USiS2ZtmbUZpns2s9CfCgRPvhQ+5E4BjEgTfziJi1Ckvu99B2iEYKDvzV4UQ02mAbX++4ujmH6Lk2jjNJvtifuOYpuVyhoNyAbefxu3CWPKCs0liKMvNjrFXL7zouq3SQPi2uJNoJoBMdKE3ChEEqpo9HGigm58AA183RA6v3kd+e/w9woDztFCcL3y7eZtDY6pSKJyscZnISHfnOuAoGT8IGFGtwfYkMH8bgiVOZFdPtU8ToYNeXQqePYQPrgR0yL//v94BENcJ4dLjmsz7pdVk0t/HhCsh9OOmN96Ouo8qaVtDgzCjSqIssGLRc/EqqM2Qla+vAMElwDaclAqN+vCuanWAhyt8glrbT
- RZTHt9fz
- nvJBv3t4t1rVS/hwVVRbrc+kV2MsAR7bxTSIo3wBlLycCbkrhOU8RIL9abJhXmr4J2nENT/bm0Jv/zby5QmjKPDq8MAAQkIBbn6+UkC5KNmM/jKO+q0TKA/sNuyfj3UqW+b7NcDcIeY847WGByI8wCFfaj3I/zhm3BWuSgWKtWZmQh8UmE4NWJu+awK/Y0q5Dbru+pX+hI3lNAa6a1DX+o7vwk4BczfT2xqolejiKhVamCSLwcgwIBTMlVfeKSaXrBPqRNKZZcnQyPO6C2pDYgf9vGmSF9CHqpCHT
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1793632070-899095
+X-HE-Meta: U2FsdGVkX1+daXWcX8onjBQg/FH4LA+ic6fU7DUNlLwl3tm4hM+ak+wMWZNCRnj/QJzKdvQqywecsTxziy/8Ond2BGSOAVJTS1W2UzfYO0v0mVK3enPKdm9+7WbPXKPqRIZbKfK9U/2JIPFDhyIUyS0D62PoFNEgTUEID4/jh/kwNMFhVZasnhRmPw6NrgCfM33OF+k7cVfqlrE6UHwNLe0tZIb/hmADc3mDFWRoPpvs/wiiOaCzZKFlJaKo2REoOcssa//80JO9O+/bXs+Qk42c/RGGuYPWFFRi+mxDF3yvM7gX6Ft6d/GJS/D5cR/baq/v6YMrT9KDrWnerO5JXPZEcy2Jt11xwYLCXC7sqBtRj4D6Yi3J5O5v6Yeir+e1QzkoIq40iHLznGRR8594qWmNp2hgxTA8au16Aa6S4CvLU0T+Qx6cp9s8feL8Kbw/5Z6uxIuxg2HYVE2WhpYQw/52FdsKsDm57BAir+gKFYJHx61ftcJE4J8mPsrs5kvZaVyy5pkL0NhaExd0xAawmxD0uKBfXlh2rHpe1pyW/BdmYkJYLipVpx2fsIbwUPqC2FidSH0ch0jqwCiKiP9hjAPmWsK7+Sp5BZvxry7DpPzIBJdHrO/h/MXXdGioX98kfLF1fK7k26cokgfZLc0FYyMLyoBXx7h5navWZpW53MON9Y72YZm80M+ZJrEtVT69IYz23QUZK+5ZgKHq6OWGPwUNkAWTrxQkA+OS/ittQBPGFiyGG1UltEBqmeYIMY+EgQGviT5Ob4eGBeWK6ygJSD57l4e1NodbdNrZDThl6Cp5vbnX8VMCiu3IaAhC92wj8XP+dVVxKJ62hrgxmW9W5mI666A2rCiXclAFq0DY4fVJDtWXVBuFv8XcA+26F+Dv3QwZpOYRKS1enECsNPZnK28kXpoiUVn61V2rv+UdZCmxdQBJGA0B7BtNpd1TU+/lPMdHlHmULujIjn77rSK
+ 7gMZjR5Y
+ tj+2KX2GZa6FYAk1LwIjMtFXpQfef2oM3ZBKa29M+oPqEHyWmkPfn8+XafxhIF4eaL/4p7+jFiyXbb2avxb5OFFtpTY2InhShN453eFDoPm5M8dAijBOkhz2Lgwtsyj+7MGD0SujuWzcFyziFhGydLL+SIpE8TV+SyeXSoGRo6qOIk6Rp85sbDE3fFjgLxY7+eFYXPLDyHQGK1r6j/bunB+yU66vowwZObK8ORQCO075aYPgztweiHdOWncLokbWF3apX5ZLX3gMvEmNJzTgDGkzqpDnkam/5onU1
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -127,46 +127,46 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
 Implement ->proc_write_buf() so procfs copies in what is written before
-it pins the entry, and take the device name from that copy. Writes
-larger than PAGE_SIZE - 1 bytes fail with -EINVAL now.
+it pins the entry, and parse the option from that copy. Writes larger
+than PAGE_SIZE - 1 bytes fail with -EINVAL now.
 
 Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 ---
- drivers/acpi/proc.c | 7 +++----
+ drivers/macintosh/via-pmu.c | 7 +++----
  1 file changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/acpi/proc.c b/drivers/acpi/proc.c
-index b8a0bd4580e0..feb8283fd855 100644
---- a/drivers/acpi/proc.c
-+++ b/drivers/acpi/proc.c
-@@ -86,7 +86,7 @@ static void physical_device_enable_wakeup(struct acpi_device *adev)
+diff --git a/drivers/macintosh/via-pmu.c b/drivers/macintosh/via-pmu.c
+index 49f929ae10e4..079c085be5d2 100644
+--- a/drivers/macintosh/via-pmu.c
++++ b/drivers/macintosh/via-pmu.c
+@@ -913,7 +913,7 @@ static int pmu_options_proc_show(struct seq_file *m, void *v)
+ }
  
- static ssize_t
- acpi_system_write_wakeup_device(struct file *file,
--				const char __user * buffer,
-+				char *buffer,
- 				size_t count, loff_t * ppos)
+ static ssize_t pmu_options_proc_write(struct file *file,
+-		const char __user *buffer, size_t count, loff_t *pos)
++		char *buffer, size_t count, loff_t *pos)
  {
- 	struct acpi_device *dev, *tmp;
-@@ -96,8 +96,7 @@ acpi_system_write_wakeup_device(struct file *file,
- 	if (count > 4)
- 		count = 4;
- 
--	if (copy_from_user(strbuf, buffer, count))
+ 	char tmp[33];
+ 	char *label, *val;
+@@ -923,8 +923,7 @@ static ssize_t pmu_options_proc_write(struct file *file,
+ 		return -EINVAL;
+ 	if (count > 32)
+ 		count = 32;
+-	if (copy_from_user(tmp, buffer, count))
 -		return -EFAULT;
-+	memcpy(strbuf, buffer, count);
- 	strbuf[count] = '\0';
- 	sscanf(strbuf, "%s", str);
++	memcpy(tmp, buffer, count);
+ 	tmp[count] = 0;
  
-@@ -123,7 +122,7 @@ acpi_system_write_wakeup_device(struct file *file,
+ 	label = tmp;
+@@ -958,7 +957,7 @@ static ssize_t pmu_options_proc_write(struct file *file,
  
- static const struct proc_ops acpi_system_wakeup_device_proc_ops = {
- 	.proc_show	= acpi_system_wakeup_device_seq_show,
--	.proc_write	= acpi_system_write_wakeup_device,
-+	.proc_write_buf	= acpi_system_write_wakeup_device,
+ static const struct proc_ops pmu_options_proc_ops = {
+ 	.proc_show	= pmu_options_proc_show,
+-	.proc_write	= pmu_options_proc_write,
++	.proc_write_buf	= pmu_options_proc_write,
  };
+ #endif
  
- void __init acpi_sleep_proc_init(void)
 
 -- 
 2.53.0
