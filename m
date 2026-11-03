@@ -1,129 +1,99 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A975606A335
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 11:59:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13348606A32D
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 12:01:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=R4hcP0fm
+	dkim=pass (2048-bit key, unprotected) header.d=mailbox.org header.i=@mailbox.org header.a=rsa-sha256 header.s=mail20150812 header.b=oCXj5qzc
 Received: by kanga.kvack.org (Postfix)
-	id 868676B05B2; Tue,  3 Nov 2026 06:59:18 -0500 (EST)
+	id 1DB776B05B4; Tue,  3 Nov 2026 07:01:16 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7EDC26B05B3; Tue,  3 Nov 2026 06:59:18 -0500 (EST)
+	id 1ABE76B05B5; Tue,  3 Nov 2026 07:01:16 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6B4AE6B05B4; Tue,  3 Nov 2026 06:59:18 -0500 (EST)
+	id 0A0F06B05B6; Tue,  3 Nov 2026 07:01:16 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 4385A6B05B2
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 06:59:18 -0500 (EST)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id CCCA916038D
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 11:59:17 +0000 (UTC)
-X-FDA: 85393662354.26.922317F
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
-	by imf11.hostedemail.com (Postfix) with ESMTP id E28D640005
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 11:59:15 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=R4hcP0fm;
-	spf=pass (imf11.hostedemail.com: domain of azpijr@gmail.com designates 209.85.128.44 as permitted sender) smtp.mailfrom=azpijr@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793707155;
-	b=r/tIb5+9s6evDFIEGjXYmPEi3pdPvOxOANPalYLNN/80ba4eLS/UCGqsyJAOpWpKWBpOYc
-	RpiSjqsNT1xQNk2p0XHs+4DX0C/es8qiKHMQjewZgQBHuTlgWdF2D7suiE/jv9U0s29Ihr
-	bo+RYkf8IpqIlO44VcaPAEw2HY8yhds=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=R4hcP0fm;
-	spf=pass (imf11.hostedemail.com: domain of azpijr@gmail.com designates 209.85.128.44 as permitted sender) smtp.mailfrom=azpijr@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id C60236B05B4
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 07:01:15 -0500 (EST)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 5F228403D7
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 12:01:15 +0000 (UTC)
+X-FDA: 85393667310.27.A8E4E9F
+Received: from mout-p-102.mailbox.org (mout-p-102.mailbox.org [80.241.56.152])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 7CAAF140008
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 12:01:13 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=mailbox.org header.s=mail20150812 header.b=oCXj5qzc;
+	spf=pass (imf26.hostedemail.com: domain of manuelebnerli@mailbox.org designates 80.241.56.152 as permitted sender) smtp.mailfrom=manuelebnerli@mailbox.org;
+	dmarc=pass (policy=reject) header.from=mailbox.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793707155;
+	s=arc-20220608; t=1793707273;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=oPfT2r0DJq5yqGsInZIZFg/Iplo7x3s5azqiGNXMZiY=;
-	b=N/5kOID9l5hl0dpHZss8eFd1aFlzDkdvmhtKXCi6P1LNv6lZ+L0VCYijL04Vez+hnsuBvf
-	yctmtneXBIqnzhnx77dR+37qfryDGK8V6LXClNQU3/EIBhTC6Fp8jr6SiTd+QJO0w5jwe/
-	UgzBuWRfGs9XNKtzGO0lR+5AMhpJzFE=
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-4a208d93758so43518995e9.3
-        for <linux-mm@kvack.org>; Tue, 03 Nov 2026 03:59:15 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793707154; x=1794311954; darn=kvack.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=oPfT2r0DJq5yqGsInZIZFg/Iplo7x3s5azqiGNXMZiY=;
-        b=R4hcP0fmib13afpxrWyhjQ/x+cbod3Jyb5yQlarOYim57RlkJlrDqQSNakP47mUBnz
-         NMYPKoi/F0dto2turo8vIBX1LZ3NNUPMYeusqj1VXX7mLTXFWxyOlEYMelN26S9yhOux
-         sCaTefYKkwKCvhXNENGbC2brWePnss8F7J4y9COrJmRyANYwaZvEsndiyMqERQWxcsfi
-         2DZ7VtM0/b7qw05+kejkiGKmr1IRT1lB+Ghr8f1JHDIaqad1IFEDtV8DQ2g0wQXhM8/T
-         bVqkbFJ0gKZMZIy6HbuNjbirAbHHRF60VsJjNDzuiOb0Kuyg5aT0gYQwHlCfDOGggEAr
-         7RyQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793707154; x=1794311954;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=oPfT2r0DJq5yqGsInZIZFg/Iplo7x3s5azqiGNXMZiY=;
-        b=XPVIO/RJ9VYe+fMxNbp66PeKggIO54hU86NSwbxxvjVoP4quIaxEsdUHdb9GPIORyF
-         K/YUiyMR1OIzmCbBD7zr/4QHmthpjANS7YuA0N6E3xYkYdPLK507TxPqEwyaC03BkF5D
-         ftOYyscRMel8K8I7oR890vmz+6NwstrmKXhpNwU9Gp6OXUhLupU+1ce2igQMdx2gMHc2
-         L9feaDCJ3YJxAxJFXefvbmLklLmMMDILnFz43emo396Cq6SsJBIhodkLLyGrg9pej/o4
-         CX2rluWjSLXLKCm5TOZhRmv6Rj8dC9GT3BC9aZ/fpaSzwx73hGYMrgDF7Ok7fRyC9P7X
-         96wQ==
-X-Forwarded-Encrypted: i=1; AKwUvBw66Xync0mElO9YEbS99qVBa1dSLF1cNlnORTwSOmhZ60BRPJS3NX1b8vaRBSdp2y2883fTmdEB1w==@kvack.org
-X-Gm-Message-State: APuU4Z8A8Yos/z+vq2bRwJd8x83KQESG27zmPFwtdUWk87x+9PGV+XwA
-	hbeB2Yv0H5veTcM9/wYdb/HUqhwcDyOGNcwpgeS6fqj6w+g5xYb/efWJ
-X-Gm-Gg: AYBFou05EgmJodYGIWiSZfmthOvS89SaL1FvLx4XC3hYPgq5pffVpVGU4LpfVebFDH9
-	/dWF5DZq8Y1fdqlNFCKkAKqyDfwkcu0VLyjKFICKQIzKetKMyDdk9XcmemNtwtsFot9KIIf0dIz
-	8szGFbAIfq/4cM8U0GsGQWS5hUEfizzi7RWRAPrk1f2qsriSrA8ODHdiQiaJqBYLyx+GdVSh6L6
-	LfyrKVnrcnG3QTwIaX7ldhdKZeJPfLHwVjjvYlcU3Y6ucNLLLy5kH8TPCv1xLVoY/IS11Hr9tOX
-	OrEwfeF+Ws9y8J4wTTaj/nWKPYeSbqvTxgPMEIV+GTsahbhO01fvAK8ORSOlHyWzAENeIHrFnOc
-	V6fBDKfAxGnrWYYjTMFPCSbkwCAsX9jHgq3dNTn2lJS53wkQvTvmrlHE5TtGHykZoX0CJQ5NLsh
-	NUM9BH8qvB29t5Yjstat743pmTaGwRkRgBm1bD1RJkxNUNQYNz3cJKcL1Mub9PFa0hd7kJ6nz5m
-	4dQkjFicoMPFcYKd1cmzT7tBqtQkzhndpMC5BZuUz4RKQM/quVgHgjPPfvgSXOOOdgrtsmonx2F
-	x8wZTQxy5Q8xVAqIp0wrf4I=
-X-Received: by 2002:a05:600c:c088:b0:4ac:da92:2bd4 with SMTP id 5b1f17b1804b1-4acda922e24mr201283785e9.1.1793707154535;
-        Tue, 03 Nov 2026 03:59:14 -0800 (PST)
-Received: from [192.168.1.22] ([83.231.69.9])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4b2a93232f0sm53255815e9.10.2026.11.03.03.59.13
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 03 Nov 2026 03:59:13 -0800 (PST)
-Message-ID: <41851e94-640b-418f-bdc9-45db3f9842ad@gmail.com>
-Date: Tue, 3 Nov 2026 12:59:12 +0100
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=O9atIHlIh/2xYLtt0bx0cLcke1aRGKizVOlpIySp6oE=;
+	b=bLNol+OfvK/HVMV2OEWlUaz7iYvKF+2G1R7mwDKwlS+OicgmY6aFU/AyXZGngV0ybpFhzH
+	p4CeqyWwMWuNpPybYtMeksmDr1WurQrIgQa/Zu22ON8NxLIhGrOF4S6H1v2kUCQx2Ey5Sy
+	Nju+BywMXSjc3HHvvWvdwOnJBUH2V00=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793707273;
+	b=0Yb3wa6bYmJPT1I5loP8Xdy9CpW0VSYFBf0n3MaBscs0ObzkPvliK6OkIio4VSYi7uRvMs
+	+6zW+Uo5RWahvziEgVRq/zItSc1zpBhv2sgqRDMs2+tGsHpBJdFDrxTvN7NvH9GF9wcj8L
+	NCRnom1bE+iiZOXaO4u5oj6V+ctPIC4=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=mailbox.org header.s=mail20150812 header.b=oCXj5qzc;
+	spf=pass (imf26.hostedemail.com: domain of manuelebnerli@mailbox.org designates 80.241.56.152 as permitted sender) smtp.mailfrom=manuelebnerli@mailbox.org;
+	dmarc=pass (policy=reject) header.from=mailbox.org
+Received: from smtp102.mailbox.org (smtp102.mailbox.org [IPv6:2001:67c:2050:b231:465::102])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519MLKEM768 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-p-102.mailbox.org (Postfix) with ESMTPS id 4jJnGY6bz6zKn9C;
+	Tue, 03 Nov 2026 13:01:09 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+	t=1793707270;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=O9atIHlIh/2xYLtt0bx0cLcke1aRGKizVOlpIySp6oE=;
+	b=oCXj5qzcbMvjvKJrNYqY/ioBLqSxBa8G++IgdAp07ig/AVYcNGqwEe4Y6mQkXYvgsKOXzJ
+	GybBTvDJS6n3WSv17sx/I5Uz8wOH9A8A2IBuUi8sAfhX2zu59xuiMdL82HRoN+Re+92qne
+	bjrHB2o1AL8uqVUQACYmtHtwZzP4pLb5Fp0+DBUy31knEtICxt+YnvkXsPoS9Q5ZizX2ee
+	ltWAOLhXw5fMVXOWuit38T+sgLCWqxhwE0ej6hVYjJY08Cwv1j6OPct5qPxeiUMItLS0FG
+	jhxCfU9CaCApLp3vMlNICA9dp6nymGO8ZJwpHQHRt4aO0WwsUZBG1HOz0vdjMQ==
+From: Manuel Ebner <manuelebnerli@mailbox.org>
+To: SJ Park <sj@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Randy Dunlap <rdunlap@infradead.org>
+Cc: Manuel Ebner <manuelebnerli@mailbox.org>,
+	Aveline Noir <jm5905938@gmail.com>,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v3] Docs/admin-guide/mm/damon/reclaim: improve language
+Date: Tue,  3 Nov 2026 13:00:42 +0100
+Message-ID: <20261103120043.100887-2-manuelebnerli@mailbox.org>
+X-Mailer: git-send-email 2.55.0
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/4] mm: hugetlb: skip CMA allocations under
- PF_MEMALLOC_PIN
-To: Muchun Song <muchun.song@linux.dev>, Qi Zheng <qi.zheng@linux.dev>
-Cc: osalvador@suse.de, David Hildenbrand <david@kernel.org>,
- akpm@linux-foundation.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- Qi Zheng <zhengqi.arch@bytedance.com>, stable@vger.kernel.org
-References: <cover.1793692578.git.zhengqi.arch@bytedance.com>
- <5bc00742fe249cf09a3095abccf8889d5fa71116.1793692578.git.zhengqi.arch@bytedance.com>
- <4EC5E593-7537-4659-879C-95ECC2224D2F@linux.dev>
-Content-Language: en-US
-From: "Jose A. Perez de Azpillaga" <azpijr@gmail.com>
-In-Reply-To: <4EC5E593-7537-4659-879C-95ECC2224D2F@linux.dev>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: oak56c9w7ic4dy6sprsoq6fi7ipkar5g
-X-Rspamd-Queue-Id: E28D640005
+Content-Transfer-Encoding: 8bit
+X-MBO-RS-META: gbwzquqe8o7tfnmr3pdwjcxfgqjuyrdj
+X-MBO-RS-ID: 2971e257b0a29a79e8f
+X-Rspamd-Server: rspam06
+X-Stat-Signature: r4d89f6uarpci3dmp7mhysmzhi6ifirn
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: 7CAAF140008
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Spam-Status: No, score=-4.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=no autolearn_force=no
-	version=4.0.1
-X-HE-Tag: 1793707155-197420
-X-HE-Meta: U2FsdGVkX19kuT+7mGRBsaLfcU1FEeifk53FPwT4aNpNumSLhBoLZj/0OK4TdbQ2Dc/4zna5Pnpg5uzuroywhI5M7O6zjxypgnygFPuRv/XYxmIzk7hXYQSOAbW7pu1Yy1oOl7Of7A0M/VUavsKixS/Bt4d1nyHTkoVI4CyN6tX8mN+1VULNcxezkHWjQMArZ6B7YtSNNTHLX4Wg0abS2MAFx0mIMQkgIouACaeZiQUIRiu7QaRfewX+7EbRNyD+ogT3PR4PibTb+/OKR4iLfW7Tx8whV1m5sB4ek2vmuF+I5MEOP+9VKB6z+Fd/s+3g0CrsshCjl17jNZwn/2BAQTsq/P5AKnQv4maocFGLcwXKm55IlZwtaGK9a63vDfdJHS0yuq18/Y3gJilzCqbLsigtDze1YRTqdSICQPhQy7YhKh7zlrJSlL3R/i9bXk8fIN2TcLPamd0lTChdzxCedAsrfzxz5MM6F6b6EmxWyiHFn2TiRouLxN3IJl4ARHQ6S6s1HcmpS/szS9d7I/xc77JeulUENhkXAl7uPFuUk4+ZC0TgltAXTVRKShI8c1D6DozSBDj7HnPXY6hY4dSGH9d8UnD71HJtbVEVNVp6iVze71HxN6BPOCmAOMlF5K69kUUZ4UMVPE6tzGaQh1UriWE9Ly6Gi+Ap1B6AAhmEn5cujOPs0F3iKA/XDI94Wwz84k/vvxus/cZ3FC3mnWCNGVG09dgdPP4MFCXoCRW7eSAcZONsS8LC9M8zUwbHJObyvzpncaC/HaFtNS853NU9PqPH7j3BPj8kLGi6IGISZvd8Ey7KQsNYcsVnChx9R5hxuDAseCR/qOAHqUmhDH+8BhYxElwd5BYWVEHpfgdQ1KvDlGiTY2Yd4nqR5hg8U4qd4gSWomnlyLKzO+/pA8+YrtsZE8nz2Fl0JVWgQUXTkAmQpF87QH3d5urtVl3jgWUjNV7tkcTOk8jg3LFmxJz
- hA66NnJQ
- CZuspX77olm6jP8k67rgXhXeoE/dWSbTBsp5X1JPhfE9oLe9wlafMXkDdWbe/tEDYIbgWuxRIwhuaw3UZNxMnggktbjdDCBu/ZQU8cNGmaEVuNDYU12WYYjf5J48TDEeGt9epFHLlkZTGwD28NQbFme+yMB7Vcf+2OpckT3FPGuxzdJWGVIV4ayAfGYmv2p4CRkvR51PAofbIuEer/lSsDw+h2ZOwV46s4tWmvKPE51Poe9wlzwcRfRUuid2NC+liHK/Dk866UTBf5P8CANIUay6Pxh0ek8Q3qg9UomhyJj9SDpWuIYct9KHnsuIGq7nzO0QmfibX4vj8YHRHyWL8TSaFU0ByDuGw5LC3K1zquobLxIs+G1KjOfO1Nbi4fS3r6B8Y5mMDbN6a+UN5SNkL9JOMmX1+bsHwl8CRHTCt/kGL80IzHeS+bykmaezfuegoTpFjioqJ9uW7KYrUsjJKb3SK49hHOTsMG2X8dZ4mdKimtSk7AhlaKpJw+XZoPoJkdsX1
+X-HE-Tag: 1793707273-460541
+X-HE-Meta: U2FsdGVkX185VRdUAL/pFyAt4mz5SxOp2+0fC6T1HBTE9F42QAnHBw6Wm6neVO3sM7K6gdCZvj4RT9dABfVeEc1laNYsP3Dap4D+SUK1x60hP7W0u8zoX5kQyMoIrhtE75+Vyexu5+OIxLRggIrjZ4NDPxTSJY1+gKPSi+d2S9cq6a57OHg7a1PKDJ2sQzSyrrSkSjJqYcpTjQDfGKBUR6Yxf+fLDx1E/FDwytOkJfs11AkLOo0dqnYxsn1jeWOeppbeH+h6wv6sFtm+0vHRjrSHsr4iNq1imZnshC6AA6C82hbQ6ChcPvj408cTFDTu5BKrm8w+afCLPC/j5d1lqWYRKthgJsAurTuGSlkLI4WzlVsUisKzhtDKkHZ2j+tiLPt6PTC3cUETeUoc3Dt0nOp6Iu2e/YWOhaFHUVSQzuz5YjkOuUXSCeeFyrr0P+OC8QlgqnaHM+pvihg8IqLL/D2XStHICMa3qlI+qk1b2EiC5+TQGzeO2a/4NDgp47TMhumoH87u8xecGCfAPkp7VJxCJanh2K7t39QdDB3N3Kq0P2pXpjXBpKTdivMnUoc4XzUv0zQGNs/tyw1bYd2UTdhXHMWYbVKtLv5JsPjfSG/jLx/YKhS0rhUK989TVy906XWsTgPpbJP3AVDakdLfJjAdpLL0IGzuRu7WjCayPrByOI1xwbegzPyk3vn/ubueeteDTznkItA5Ao/XhgDyIbjCqQ3K1pveMDL8z+nG1LfqoX1LWVOSFMP2j6gMjkzzgTlki1umbJXWKwXbAs72eSOck11vGArdCfDQjPOjhCV1mu4FN6PzWpIyEv+QzYjew07sU6IhefrTxC9n5OPVVQdZHZHQu1sRt3BBu21SKiPDClDlG1jLEjW1JRdilJY4I8oBBjsKTYHw68Lw68X6afH3/52u0OO6KQ/o78aCqBMQlOY72t0/RqMtk52F6Gp/2R0mMmK2GXxpNGNVB2m
+ 5Cev1ybB
+ TTxqQnL57lnGclDmOF10dYg8HRpcBa5qybqE4RboVjHDG1n58qShhcfu925lX+0seK4lnZRniGXcGgn6XNp9KzNkKawv27C5DOA3GcY1xp1yFyrYhKns2u8f4S9Cobh7uu2qT4zmlLVtU4gAvYOgr5V9wBxOfTXb1905LkrfYJmCVbwoQyg79TZzXGa5LXsjjvXzKID4YxqVfrYoCvFP9uWVwbC0wWGvbk+c4IQuA3RjrnruTRh5pkP/yNPq6xs+ud3tP2Nt17dAAofKEce1G0ZxFjBOf9JQ9wNH8TvvhUXg+aMFRp6Aevz2IJoALu9BknCFO1v5egCp0UltjBTNXGgxjXmJf2qSr9kRqhXl0Fu2LfMKshuhL87A8aA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -132,63 +102,152 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/3/26 11:56 AM, Muchun Song wrote:
-> 
-> 
->> On Nov 3, 2026, at 16:01, Qi Zheng <qi.zheng@linux.dev> wrote:
->>
->> From: Qi Zheng <zhengqi.arch@bytedance.com>
->>
->> With gigantic overcommit enabled, a fault during long-term pinning
->> can allocate a fresh HugeTLB folio from CMA despite PF_MEMALLOC_PIN.
->>
->> The folio must then be migrated before it can be pinned. However,
->> fresh gigantic migration targets are not supported, so pinning fails
->> when the HugeTLB pool has no suitable target, even if the original
->> fault could have allocated pinnable memory outside CMA.
->>
->> Honor PF_MEMALLOC_PIN in the HugeTLB CMA allocator so the fault can
->> try the non-CMA fallback, or fail when allocation is restricted to CMA.
-> 
-> Wait... I think my Acked-by got ahead of me here. :)
-> 
-> There seems to be a rather odd distinction that GUP is missing.
-> 
-> The usual reason long-term GUP must migrate a page out of a
-> MIGRATE_CMA pageblock is that the page was only borrowed from CMA by the
-> normal page allocator.  The corresponding CMA bitmap range is still
-> available, so a future CMA allocation relies on being able to migrate
-> that page away.  A long-term pin would prevent that.
-> 
-> However, a HugeTLB folio returned by
-> hugetlb_cma_alloc_frozen_folio() is different.  It is the actual CMA
-> allocation, not merely a movable page that happens to reside in a
-> MIGRATE_CMA pageblock.  Its range has already been marked allocated in
-> the hugetlb CMA bitmap.
-> 
-> Therefore, CMA cannot allocate that range again until the HugeTLB folio
-> is freed anyway.  Long-term pinning the folio does not seem to make the
-> CMA area any less available than keeping the HugeTLB folio mapped for
-> the same amount of time.
-> 
-> folio_is_longterm_pinnable() currently only sees MIGRATE_CMA and does
-> not distinguish these two cases.  In that light, rejecting
-> PF_MEMALLOC_PIN in hugetlb_cma_alloc_frozen_folio() looks like working
-> around an overly broad GUP classification.  It also means that
-> hugetlb_cma_only users will fail the fault, while other users may consume
-> a gigantic contiguous range outside the dedicated hugetlb CMA area even
-> when that area has free space.
-> 
-> Would it make more sense to fix the long-term GUP check instead, so that
-> an explicitly CMA-allocated HugeTLB folio is considered pinnable, while
-> ordinary pages merely borrowed from MIGRATE_CMA pageblocks remain unpinnable?
-> 
+Fix upper case.  Fix tenses.  Replace 'set as' with 'set to'.  Add space after
+sentence to make it double space.  Rewrite and refine complex sentences.
 
-makes sense to me. with hugetlb_cma_only=1 a 1G FOLL_LONGTERM pin can't
-succeed at all today, even on preallocated pages.
+CC: Aveline Noir <jm5905938@gmail.com>
+Signed-off-by: Manuel Ebner <manuelebnerli@mailbox.org>
+---
+That's the final version.
 
+[v3]
+ Combine both patches into one
+ Incorporate SJ's feedback
 
+[v2]
+ https://lore.kernel.org/all/20261027185938.2526259-2-manuelebnerli@mailbox.org/
+ Include suggestions from SJ and Aveline
+ Split [v1] into
+  [1/2 v2] Docs/admin-guide/mm/damon/reclaim: improve grammar and style
+  [2/2 v2] Docs/admin-guide/mm/damon/reclaim: rewrite complex parts
+ Fixed an upper case and a missing double space -> [1/2 v2]
+
+[v1]
+ https://lore.kernel.org/all/20261015080623.808458-2-manuelebnerli@mailbox.org/
+---
+ .../admin-guide/mm/damon/reclaim.rst          | 43 ++++++++++---------
+ 1 file changed, 22 insertions(+), 21 deletions(-)
+
+diff --git a/Documentation/admin-guide/mm/damon/reclaim.rst b/Documentation/admin-guide/mm/damon/reclaim.rst
+index e4e2ffa52e..789db7099d 100644
+--- a/Documentation/admin-guide/mm/damon/reclaim.rst
++++ b/Documentation/admin-guide/mm/damon/reclaim.rst
+@@ -4,7 +4,7 @@
+ DAMON-based Reclamation
+ =======================
+ 
+-DAMON-based Reclamation (DAMON_RECLAIM) is a static kernel module that aimed to
++DAMON-based reclamation (DAMON_RECLAIM) is a static kernel module that aimes to
+ be used for proactive and lightweight reclamation under light memory pressure.
+ It doesn't aim to replace the LRU-list based page_granularity reclamation, but
+ to be selectively used for different level of memory pressure and requirements.
+@@ -30,12 +30,13 @@ guests could mitigate this problem.
+ How It Works?
+ =============
+ 
+-DAMON_RECLAIM finds memory regions that didn't accessed for specific time
+-duration and page out.  To avoid it consuming too much CPU for the paging out
+-operation, a speed limit can be configured.  Under the speed limit, it pages
+-out memory regions that didn't accessed longer time first.  System
+-administrators can also configure under what situation this scheme should
+-automatically activated and deactivated with three memory pressure watermarks.
++DAMON_RECLAIM finds memory regions that have not been accessed for a
++specified period and attempts to page out those.  To avoid it consuming
++too much CPU for the paging out operation, a speed limit can be configured.
++Within the configured speed limit, it prioritizes regions that have been
++idle longer for reclamation.  System administrators can also configure under
++what situation this scheme should automatically be activated and deactivated
++with three memory pressure watermarks.
+ 
+ Interface: Module Parameters
+ ============================
+@@ -55,10 +56,10 @@ enabled
+ 
+ Enable or disable DAMON_RECLAIM.
+ 
+-You can enable DAMON_RECLAIM by setting the value of this parameter as ``Y``.
+-Setting it as ``N`` disables DAMON_RECLAIM.  Note that DAMON_RECLAIM could do
++You can enable DAMON_RECLAIM by setting the value of this parameter to ``Y``.
++Setting it to ``N`` disables DAMON_RECLAIM.  Note that DAMON_RECLAIM could do
+ no real monitoring and reclamation due to the watermarks-based activation
+-condition.  Refer to below descriptions for the watermarks parameter for this.
++condition.  Refer to below descriptions of the watermarks parameter for this.
+ 
+ commit_inputs
+ -------------
+@@ -66,9 +67,9 @@ commit_inputs
+ Make DAMON_RECLAIM reads the input parameters again, except ``enabled``.
+ 
+ Input parameters that updated while DAMON_RECLAIM is running are not applied
+-by default.  Once this parameter is set as ``Y``, DAMON_RECLAIM reads values
++by default.  Once this parameter is set to ``Y``, DAMON_RECLAIM reads values
+ of parameters except ``enabled`` again.  Once the re-reading is done, this
+-parameter is set as ``N``.  If invalid parameters are found while the
++parameter is set to ``N``.  If invalid parameters are found while the
+ re-reading, DAMON_RECLAIM will be disabled.
+ 
+ Once ``Y`` is written to this parameter, the user must not write to any
+@@ -88,7 +89,7 @@ identifies the region as cold, and reclaims it.
+ autotune_monitoring_intervals
+ -----------------------------
+ 
+-If this parameter is set as ``Y``, DAMON_RECLAIM automatically tunes DAMON's
++If this parameter is set to ``Y``, DAMON_RECLAIM automatically tunes DAMON's
+ sampling and aggregation intervals.  The auto-tuning aims to capture meaningful
+ amount of access events in each DAMON-snapshot, while keeping the sampling
+ interval 5 milliseconds in minimum, and 10 seconds in maximum.  Setting this as
+@@ -113,10 +114,10 @@ quota_sz
+ 
+ Limit of size of memory for the reclamation in bytes.
+ 
+-DAMON_RECLAIM charges amount of memory which it tried to reclaim within a time
+-window (quota_reset_interval_ms) and makes no more than this limit is tried.
+-This can be used for limiting consumption of CPU and IO.  If this value is
+-zero, the limit is disabled.
++DAMON_RECLAIM charges the amount of memory which it tried to reclaim within a time
++window (quota_reset_interval_ms) and stops trying to reclaim memory when this limit
++is reached.  This can be used for limiting consumption of CPU and IO.  If this value
++is zero, the limit is disabled.
+ 
+ 128 MiB by default.
+ 
+@@ -137,7 +138,7 @@ quota_mem_pressure_us
+ 
+ Desired level of memory pressure-stall time in microseconds.
+ 
+-While keeping the caps that set by other quotas, DAMON_RECLAIM automatically
++While keeping the caps that are set by other quotas, DAMON_RECLAIM automatically
+ increases and decreases the effective level of the quota aiming this level of
+ memory pressure is incurred.  System-wide ``some`` memory PSI in microseconds
+ per quota reset interval (``quota_reset_interval_ms``) is collected and
+@@ -219,7 +220,7 @@ monitoring.  This can be used to set lower-bound of the monitoring quality.
+ But, setting this too high could result in increased monitoring overhead.
+ Please refer to the DAMON documentation (:doc:`usage`) for more detail.
+ 
+-Note that this must be 3 or higher. Please refer to the :ref:`Monitoring
++Note that this must be 3 or higher.  Please refer to the :ref:`Monitoring
+ <damon_design_monitoring>` section of the design document for the rationale
+ behind this lower bound.
+ 
+@@ -263,7 +264,7 @@ This parameter is for setting and getting the :ref:`address unit
+ 
+ ``monitor_region_start`` and ``monitor_region_end`` should be provided in this
+ unit.  For example, let's suppose ``addr_unit``, ``monitor_region_start`` and
+-``monitor_region_end`` are set as ``1024``, ``0`` and ``10``, respectively.
++``monitor_region_end`` are set to ``1024``, ``0`` and ``10``, respectively.
+ Then DAMON_RECLAIM will work for 10 KiB length of physical address range that
+ starts from address zero (``[0 * 1024, 10 * 1024)`` in bytes).
+ 
+@@ -280,7 +281,7 @@ skip_anon
+ 
+ Skip anonymous pages reclamation.
+ 
+-If this parameter is set as ``Y``, DAMON_RECLAIM does not reclaim anonymous
++If this parameter is set to ``Y``, DAMON_RECLAIM does not reclaim anonymous
+ pages.  By default, ``N``.
+ 
+ 
 -- 
-cheers,
-jose a. p-a
+2.55.0
+
 
