@@ -1,105 +1,105 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 828E1606A32C
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 08:01:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBB91606A329
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 08:01:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key, unprotected) header.d=canonical.com header.i=@canonical.com header.a=rsa-sha256 header.s=20251003 header.b=aBXWkUP9
+	dkim=pass (4096-bit key, unprotected) header.d=canonical.com header.i=@canonical.com header.a=rsa-sha256 header.s=20251003 header.b=l+Xfiw/L
 Received: by kanga.kvack.org (Postfix)
-	id A6E0D6B05C8; Tue,  3 Nov 2026 03:00:59 -0500 (EST)
+	id F01ED6B05CA; Tue,  3 Nov 2026 03:01:10 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A45AE6B05C9; Tue,  3 Nov 2026 03:00:59 -0500 (EST)
+	id EB2AA6B05CB; Tue,  3 Nov 2026 03:01:10 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 934626B05CA; Tue,  3 Nov 2026 03:00:59 -0500 (EST)
+	id DC8926B05CC; Tue,  3 Nov 2026 03:01:10 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 708E36B05C8
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 03:00:59 -0500 (EST)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id E182C1C3362
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 08:00:58 +0000 (UTC)
-X-FDA: 85393061796.09.A7FC0F4
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id B7CBF6B05CA
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 03:01:10 -0500 (EST)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 4BD6C80336
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 08:01:10 +0000 (UTC)
+X-FDA: 85393062300.01.72C45A6
 Received: from smtp-relay-internal-1.canonical.com (smtp-relay-internal-1.canonical.com [185.125.188.123])
-	by imf12.hostedemail.com (Postfix) with ESMTP id BE11740004
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 08:00:56 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=canonical.com header.s=20251003 header.b=aBXWkUP9;
-	spf=pass (imf12.hostedemail.com: domain of matthew.ruffell@canonical.com designates 185.125.188.123 as permitted sender) smtp.mailfrom=matthew.ruffell@canonical.com;
-	dmarc=pass (policy=reject) header.from=canonical.com
+	by imf27.hostedemail.com (Postfix) with ESMTP id 1BC8240003
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 08:01:07 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=canonical.com header.s=20251003 header.b="l+Xfiw/L";
+	dmarc=pass (policy=reject) header.from=canonical.com;
+	spf=pass (imf27.hostedemail.com: domain of matthew.ruffell@canonical.com designates 185.125.188.123 as permitted sender) smtp.mailfrom=matthew.ruffell@canonical.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793692857;
+	s=arc-20220608; t=1793692868;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jaPQ34I/G6MMT2pb+dBcgiPAsdHes/QH+s/hJq1mQjw=;
-	b=vWNurNrZriugdeRSrz78now9Zv6QZg3GQmDy9vcBcrnMZXK/EyOx64urLolvVxBUtd8CsO
-	jZw5hxMEzWOxOSh2rh3VAtMJZ7Bgr1sWHAgxgRB0h0i85QfVPXd/BmuVH6i1OIq/xDN9Nl
-	1qex1INKzR7o9e5Nbuwz8k1BNTSiNqU=
+	bh=SqwVuuFMKCKR73bttjYygSAw+Vd4A3DCZlBKiSiMzKg=;
+	b=NMY28Km2c8FTE1CZTDAzvNVciKQo9Sd7Q3SIZISLF4RXi3w87dVxYe8s6X6DhItwvfvf1o
+	jgIRtPaFW4peHR6huzoRzsvnM1hrPSaGSXR9y8zdx/UfII2NPegKUYdEtEr8Jl0w9VQdWI
+	HmKFTi4+sg73LTKbaybrQZNMAd7jd1U=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793692857;
-	b=k+24S/FdLxnBnpAY9xcUR11JPmF3oZgYAfDYFFbRQzojet18sdYNkcoOZwCjay3exfT1Cb
-	XnfxIi4anHeisZTUDbDluCRuLRpdo6OtpfoQOJl5DxJieo/4sMBTTDujjskriHMjkWwMfZ
-	Uisoj2WElkj3HCKNumeUjvfhoWDk0uY=
+	t=1793692868;
+	b=1j+D8PIqZRT8uXnx5wvBFiZosdCi87+2WeJO++uJFP7GBYdSaz3alo0R/fXfvb9Sn5yQK0
+	yjsr9BDWfSsLiL9xGycUTLg2ZxKIlUAGtf1se9grJ5Z/qVjo0sSfm1Ev/24PlWuJBreqYR
+	+ThPHyl1ZTirh1SQpEcwwm0KwvAGFGo=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=canonical.com header.s=20251003 header.b=aBXWkUP9;
-	spf=pass (imf12.hostedemail.com: domain of matthew.ruffell@canonical.com designates 185.125.188.123 as permitted sender) smtp.mailfrom=matthew.ruffell@canonical.com;
-	dmarc=pass (policy=reject) header.from=canonical.com
+	imf27.hostedemail.com;
+	dkim=pass header.d=canonical.com header.s=20251003 header.b="l+Xfiw/L";
+	dmarc=pass (policy=reject) header.from=canonical.com;
+	spf=pass (imf27.hostedemail.com: domain of matthew.ruffell@canonical.com designates 185.125.188.123 as permitted sender) smtp.mailfrom=matthew.ruffell@canonical.com
 Received: from mail-dy1-f200.google.com (mail-dy1-f200.google.com [74.125.82.200])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-relay-internal-1.canonical.com (Postfix) with ESMTPS id C92F83F60D
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 08:00:55 +0000 (UTC)
+	by smtp-relay-internal-1.canonical.com (Postfix) with ESMTPS id 02A243F606
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 08:01:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
-	s=20251003; t=1793692855;
-	bh=jaPQ34I/G6MMT2pb+dBcgiPAsdHes/QH+s/hJq1mQjw=;
+	s=20251003; t=1793692867;
+	bh=SqwVuuFMKCKR73bttjYygSAw+Vd4A3DCZlBKiSiMzKg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
 	 MIME-Version;
-	b=aBXWkUP9q41s8F4rawwetX2HntceBR69rrDT+JIkZEmMbpRGvFQVMJsjQcH0JIgEX
-	 J5cRmXjo0XzXJGbQAwqLzwewAIS4mHk+K+17oC4Fptsk7bQDlZwlpxbV3MLNByAHCb
-	 8aTlqyP5Vd/BUHFsOU97+tb6PJJzyFZ4CBZwsNa/qZwBFm76YC7ytpc0opscAtRWzM
-	 KMVONE3pyqAn1iN/Wuix7mNrr23NlNYuLUuPUdPNABjEY4GiGVdna7SRLlojx2hotA
-	 a/3o9SNfwcjfyneXLgb01y5DjcCCB8mGzxFYBjMSwXE2xJH5dNQH5LgYguOJNrp44D
-	 zPsR35En38yAFkykjizzT4U8yIacJvLUTylIRAk1C41NFOGMX9jkCPrS0qM4IkQNR5
-	 rePvv4C8/oU7kiqCj2/KEJ5MHVMiVjED02lKtYpucF4Ram8siEvmCKPO+KTY3vmNKJ
-	 gUeCganuYdEhVo7AHv4R8NobPJLRwFlOBCJa6OeZ+JeIq+HL9EgWJYl/X5L7O2pMhA
-	 GCOUoHgchPTK9UVBlC/gbT1FgPM5yRFf08dAub7vDTZMfQBaK/w12CYN5MiY2Tfy2i
-	 EdjL60VCz5LTrd8JjBHMYkIrQiG2zbkI/ZxpII7j8Xq7xHbwtwWyRYlV6FSb9qZ+qL
-	 7x7kOUOXtbOdZu2zVwtIEghA=
-Received: by mail-dy1-f200.google.com with SMTP id 5a478bee46e88-35c3c370b17so6581585eec.0
-        for <linux-mm@kvack.org>; Tue, 03 Nov 2026 00:00:55 -0800 (PST)
+	b=l+Xfiw/L24Srq5FjemCXGKVkefl3tHkQINqwr+aMB5OdqKqC/+EbPdlJ6SGCgm1HU
+	 z8rT+9cpVlnSd4FTmNXnd1cAKH5Dst2kcoquY6EzBZXSX72KwwodLmQIqxvoF3K5tB
+	 vdOspHXlaoUrTDH1A4gGWA03MdflOK1naLFkieu0hFbBIREEqz5O0628+mfmxKCtF/
+	 w2xoOd+FRhiTTSJq7a1BCP9O4qMmq5+uyJA6dkLtk8q7vCiW+1BIMJ/CrNY/ooTq32
+	 XNqZun6KE9tS6LNZPDloviVP7LotBGJfFSF7cmFepxBXYRzsNsJ/WBL4bvRI6qrAt0
+	 ZFFssuVvgki+6jyQku3aInNmBqxDY9gs0uquQ+SDgTEgMqssdT0pjPCdCw2/NkXwF9
+	 6VaMcakq1TDopqZyXWky73OAGEReAdd5aO82oGeBY1ExBEsZBbK7Nnqi3BccfgMaNv
+	 F2sfXQbjOlTAH/6SfNyQO7t+kHnzivIk4DbP6WqzKC0PxFeoQ0iimNJCh+AsTgKhKr
+	 q2TUvnkkxZp/SxnyblilbOItT9kwcYTarLJN1FmB/BXgm3ufRl1xbfoCxENogX6wNP
+	 Zv/IPN2UBFk/vCk/i261gtLohhIDO3q3MEuNsJcdzai4CRrc/SxZD/LVRZ91ZPSShv
+	 hOFwQAfdKEgVNXD7obLIu6KA=
+Received: by mail-dy1-f200.google.com with SMTP id 5a478bee46e88-36a190c53a3so758567eec.0
+        for <linux-mm@kvack.org>; Tue, 03 Nov 2026 00:01:06 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793692854; x=1794297654;
+        d=1e100.net; s=20260707; t=1793692865; x=1794297665;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=jaPQ34I/G6MMT2pb+dBcgiPAsdHes/QH+s/hJq1mQjw=;
-        b=W3CO5okqLhiyq2ZZeF3k7Nql9LGRpzZNl5pk+99jkBNkkDhy1NC+OfJ0u4Ex+bnl9G
-         YVbemhjUccArcXvZOCx/e+NigpJkqUOm+TkW/s9H11mJqnSe0xNw2B+ECLihCpECXBdf
-         5MZrrniKfMkJlxQJqW77VoKf/MMJZFFtlvJ/Fny4F8dPrKXNAgrpUkGYELimXRyS5lUZ
-         7A586ppX4ku0ta2gYgnei0AngVXxJkTDxO0DZ6whVWOO1atTFk58KGpAyDQxP3XVnRHL
-         Q3DflqNAPrlya19DWFgTAWiHgQiHl16Zf6pCXYZxbS3t+lkuAA120RrsA+NU9+asc0CN
-         rFrg==
-X-Forwarded-Encrypted: i=1; AKwUvByLShX9iOGdK9ZvNw3pOfgvFmWaokj4EdTm/S227fLP8eedDxY/LPR4B9et2nfZ0tPrE2E7zN7JdA==@kvack.org
-X-Gm-Message-State: APuU4Z/GZ7t+KfOGOUMN8cEkf6pk7VTTHRsmbLiPEp5Xh1CkwYMWPaFJ
-	jLIZghqwxLpo8YHO8r7Xo82bhx3SeLziZ5yF5RxOpz4+XRshRCyTzn4iTQ0cmtfNh5hWOCfDUKM
-	Fs0ppj15U0c+r1Vfpp/j6YbjlZq/hl63Gy28v8iAssH+jdpHMcK7ay872udsuJ6pLLbsK
-X-Gm-Gg: AYBFou0tuQSK+ESx1gtx7cGbffF/9a1KQAQVS1dLbJbL+wQn58UbRZYtljaIyMGkXVt
-	SaQYLv0Nf5tyfrvNOxwHjuTZltnY21GliQKkNehiz4WPZlDqOQ95VhOA31K0YjU1l1VyVEtAloj
-	g9kzhVaXH8NU2pItZgAHrjr3IwukSi/P2PTkwiyKWRI1D9zjaNAIaG65CoNqraUcww+AzQNRybI
-	/01CkNiNcQEevaS8zrVtMb83qLqZ82K3PQSthN242Nsu3v+EmBpvqe2jkMyF9q0Wi+ExvWYOvq3
-	yLUIzfm06Oz1GgKZYairrrEcjqLZ75kGhogDJh9k9OrXr7QW6ehx3IjXsU6NfJcBYHAm4v3WDT7
-	r9pJfnVv6i584kz4tQ/RJPqDMGKIfBMu9TlVAACANxTGIobA32MFRL5POT4d1fEfXcXgaSiuAvk
-	Db0SUdwTjg5fWz0SGQIw==
-X-Received: by 2002:a05:7300:5988:b0:369:ef92:bd7b with SMTP id 5a478bee46e88-36a42426236mr18638142eec.41.1793692853878;
-        Tue, 03 Nov 2026 00:00:53 -0800 (PST)
-X-Received: by 2002:a05:7300:5988:b0:369:ef92:bd7b with SMTP id 5a478bee46e88-36a42426236mr18638097eec.41.1793692853176;
-        Tue, 03 Nov 2026 00:00:53 -0800 (PST)
+        bh=SqwVuuFMKCKR73bttjYygSAw+Vd4A3DCZlBKiSiMzKg=;
+        b=1L6JeuZJ6dKLExOWKyAsuy+zO9oqIC0hMcT9md6hAgDtLapyvBzF1EhqtIDTudA35c
+         6qbwEmOaxVAOKI7eaUxAosXLLYCYm7eTLBFvs6Q11nnmyWUEi3WpIbDPLilw/ZPTSyAr
+         pzV3VrzREwFoxMN7aUaxRWFfUZFRyRPPR3Phds5mjMaJTkRHVW2uSCX0+o+hEcfz+rNW
+         H/qHfkBMPa5KECdNc5wZB7EoOhJ+Hm1TlaIYAY/I18Z1hHY1kbpBF0/kaYxfu8xq7qE/
+         iiQuSzHLOqucO3ap+/D9fzV7AH/iUWo+/0KetF4c+PQOfsRme3hC8h7u3cWjnwmVhtBE
+         G77g==
+X-Forwarded-Encrypted: i=1; AKwUvBxoveZpgrdJFY6J9RhD1FNjJnE/k5rpQHYqwEfC/Jl4ukXfw3dS8gI+hPRA4LJDzrKkx5zmpC/Otg==@kvack.org
+X-Gm-Message-State: APuU4Z9041neWwy0sMJh8n4ld/V1ZH9vghMFejiZoXhw6g+QR3v3Al7T
+	T322fIoCbAWnGPRgXYhHgvVdp0bmeKP0F8L+cegA77TjasTLa0XBjCMpIOr4XP7sLI/gMWsnVGG
+	xx7TUpauZfOYtsVL/pIAbVgRQLhFSZBEhIjyJ3PK39+kCPCu04+vdMlClILvGT2V4dIgC
+X-Gm-Gg: AYBFou0+SRKtp41XGJQglOdxT1RsvE+pOY6c7krO5WUccnL3SV8TIFy1xODT27IZRtH
+	lQpIXP/2z3aUqk2+V/Y6o0Yd6iEqNLfEMHpWw3Ms8FrxG6cJUkPNeyC26Wm+p2ttIVC2XY5dMCB
+	JlHiCyDjiHtFadvUhKWRGa7taF6xcrb1MEdW5RlSuK0p7QEDGXerYUWy8R4Y5zKsL9Fb2JQxczK
+	gLZBDZ2BP3SWiDh+FBW8D20lwIsxHoP2uAJj3VigDQLNmnsZAnBiLmhAd/QtwzdWa4W4cnXswIQ
+	9qFEHaC2Wt0wqeKiaaPn4nfQYgUOfNX2ABRH1qRzvoNAhUCMkHLEMGfgo+0T+xzRefqoCgYXNrs
+	EFykgPScIjpM0Dg9BDMJCxFK8Ax2sLNkud1VZo11SZeAzog0ZaP0knUM046dGdJZ3q2SiYHkCBK
+	okBpnlqODbcnGtIJ7tfA==
+X-Received: by 2002:a05:7300:f587:b0:35a:3b98:b428 with SMTP id 5a478bee46e88-36a424011f5mr16276695eec.12.1793692865041;
+        Tue, 03 Nov 2026 00:01:05 -0800 (PST)
+X-Received: by 2002:a05:7300:f587:b0:35a:3b98:b428 with SMTP id 5a478bee46e88-36a424011f5mr16276664eec.12.1793692864506;
+        Tue, 03 Nov 2026 00:01:04 -0800 (PST)
 Received: from Garunix (122-58-163-222-fibre.sparkbb.co.nz. [122.58.163.222])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-36a428af4e6sm37885274eec.4.2026.11.03.00.00.42
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-36a428af4e6sm37885274eec.4.2026.11.03.00.00.53
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 03 Nov 2026 00:00:52 -0800 (PST)
+        Tue, 03 Nov 2026 00:01:03 -0800 (PST)
 From: Matthew Ruffell <matthew.ruffell@canonical.com>
 To: Waiman Long <longman@redhat.com>,
 	Frederic Weisbecker <frederic@kernel.org>,
@@ -132,27 +132,27 @@ Cc: Caron Wills <caron.wills@pulsar.com>,
 	cgroups@vger.kernel.org,
 	linux-mm@kvack.org,
 	Jay Vosburgh <jay.vosburgh@canonical.com>
-Subject: [PATCH 4/6] sched/isolation: Drain per-CPU LRU batches when CPUs become isolated
-Date: Tue,  3 Nov 2026 20:59:38 +1300
-Message-ID: <20261103075940.110308-5-matthew.ruffell@canonical.com>
+Subject: [PATCH 5/6] cgroup/cpuset: Don't wait for memory migration when cpuset.mems is written with O_NONBLOCK
+Date: Tue,  3 Nov 2026 20:59:39 +1300
+Message-ID: <20261103075940.110308-6-matthew.ruffell@canonical.com>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20261103075940.110308-1-matthew.ruffell@canonical.com>
 References: <20261103075940.110308-1-matthew.ruffell@canonical.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: BE11740004
+X-Stat-Signature: pta48jk7mjg165wzek9dg8ro14udjnhk
+X-Rspam-User: 
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: 7dwai77mkanxaj6ku59wodgm18dy7hjx
-X-Rspam-User: 
-X-HE-Tag: 1793692856-608768
-X-HE-Meta: U2FsdGVkX1+0GA0nJYSg986mOJSA4fx7IiKGGQ/PFp1TCAbfxQRy1Yls292obPPSJ9uCz+UPY+qrBSo2GzEM1qSBPgvUe62LLqxihfhYN93/Ghz+xuntgaQM6AvZh8h/0EJjcEVcptubuw77DxvRNp/I4R2xSVPzOZYD3exL0z1j/R2uXDmMzRdNoVLAIH+O8/Nmn6OL8lxgaPCSpyLuKHTB81sgskVnZcrFev7SCrkjno8266qM3F2VsQepUhD5r0Bb9K5UZkc+2j91G654A7ydDYb/ITSUWeYBW8EzPzVjGX4+435+/srzzWEeUUzm6QMu66zRMyccxSu0M4LHAoVeQ3hDS88iHFzWSO1Smr5alVBMdqP5pH5I6QJjNCoNBUby8/MuHrU2YBWf+6GFWc/n4mjon/9FmhKt1ZR1Bcr71WCxUOeQQwSAdRTbDbVntPXY0NvLewWPbi9QDyxGHcembQq61gcCNLSgepLJFQ5pQQE2BNjS9Gc7yj96zAquaXOhO7ihIwUXFDvFINC0NAxhZlgMMsIpHNTCyXicamxicCuTL0QVIEZwwudr2tArqPKODdSbq/y5G4sJ6TKtqOjYT4OiaMvWTkrKrrksLmixIdta/sKgZFUOMjcEn88/YIDXmS4hoNoDj73PjCaSLIDeTOAjpP8Yqhe9af/osWq3K7LKrSEWuqnJ2lw1a9fOBBR6SYnkEtTN09Z3qSbySVZg1TzukeZIR7MyNqKkTqnDKmTWOON1fUbjBkPwSXpKiZ0J8hYtyocCv0kc2u45NGd424o8+bbkuJIeerYoi14tgFSi9MWYPYOZfiQkfCn1CZG4Kd48g7eAQEy31ZWxumKhS1pBYCl6njWdOoyArvoUDSg5sZIX8hEfOKCU1GY+OV+qasHSMHNq5nTih0p/iJbrrJuSe6jqfiqu9VngXt2/uQafn/gPYpn100EDNmAtLONA2Ck3uUZUm/CyXoW
- a3SDtrK4
- oUo1MGjfM5QXF1q/MkaLxnWQ0sc2gTWhDHsIi2qLuN/8c8nCmZ8Falt9RxjCKbi/iiXqFvMyj5wYni2/EZtTGxTe6btObgir4rLyyDVbvhAJdItmWaQsKL/DJiZXb+Biw3vWkqm4a+5Ztl4Rb/nWSKukJREQ+49o5wp5yUjCgh0NroHToJsKfsn9GOVJvWC3Nj7QC1cIevCkhU1UDk3A2AyK5VkIeKK5IVwqOoLMdhGSIBW1p0ljvqliKbUTOm8Kr9sr2Q2+qY1u/0JGdDMXSUQwNPfmas+Zgzu+pf1EjASePDFDIoINflfOA2gdU3Ux+z1OvcGvtYfoSGPVAe48Pm0MsqnH4eqEknVZD/i+lADzI0OsF4m5fLWBY+Wo4ENXBU5PbNs22A51xoct7jgHCYHGT53X7jsJAMquUQfcSk3L5rb4=
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 1BC8240003
+X-HE-Tag: 1793692867-694752
+X-HE-Meta: U2FsdGVkX18Yv3YelQl9VA8yCLg9MHt0i2rPVNHcprFjBXVlz7nPtPiNDFH/supS3aEpFu+z/PlyMy4vP/IWcv4lDahcC76SRvf/z8BnGv7ETfkRpER4u/uveVH9fY86HCVCmeh4xUmBfOivVOMhHInc0sqwO3zFsyyewVTP3LqMhewan0uEJBUjfv0tRLVjV4SubpF2UvpdNUcVy5Wiqh6TL6IlBlqQDLZ91RUeymqV8jkjRI0N1mS4r1+FlQExWoNow0wsanIhYSelj5IyV2C2kuy8H73Wq4mv9DGpj+RxOMldwwAuzR1IMMQa+oG/ZLUT37l2ntTek3V1Wf+gu9IbDR2/8P6jkC8CckGAnr7nkCX/flphJwcViME1u8gmRPQFuy956mZ0+Vd3VMEyw1janhNw/14rVRX8GXRTbHU7nA3YQlHR1yIYzu9zHF95rwcpsN7QhlB07T00eS9V5TjBAD9JXWzOKeKg3ModN5I56JH3wgb71gTHx9Y+pg4iOaiO1Bsf+0mICM7LkSF20fhe8gIJMmg/54In0YWl+Do1LlMNLImui9xg8blgf82P0LsCIErS7vv1yGVxZEsrJsxTxmvwoEfSu6RBv6l/eAqkrc0y8FYPXapwOsYy42nRdVpOzlUDXpPdYzxNBLPd/rAl61wvjQZVjhGI3FSTrQA92fXJeB7+6Cjf2+YK51We9wvlzxdjXurkvedxH+ch0Hf7H0jHVvvM0yDvV6cTuAKBk4AV43e9hnc91l8TxTO1sdvWAmU2IQ1Hx556jfJaKDp3Vy/TB7GWfJwvJMsIyagthQ0Xs4EU1XedC/UwW2VMw09dUOi798fhuIVX4Ttz79aJQD8OvYFNUUKC/BGSpti+2gCK87pteCfyQxnDxv0vVuI3oQndodgzsnVWN91JI7DmTINm6wI/pcXS6pIB9jDsWAYq5b5zm3hDqt3VG1g7bhbaY/tfevcKGDnE5/2
+ ccX5/7zX
+ OHMd7G8YyKZin3p9eHoYHmwO2PvaBz9TOQHNOO0iB0Hj43lko/MeMrPedmiJo/5B6S19BKeigAP1ixfWLdCKq7GMl75OGcjkWYn6c3Kxc9au1fzbP1hvk5b7d8qJEh6was37HKuK1IYmDanJ3jsbiZrKl4mrmARZI7XF2le+gwvpRL5wl6O25joUbWgI+2ebvTM6r+WekQq3D6svtUedEDyqM/P9WuXSNYv9PH4e+a4H4Nz8DaEXtxC61Vf3qT+7XgzSmbqQTQcVn2C43/d06AdiGNsusOc9bHRlqX++0yP5WNMKY8Sd8yn//e/KqgqouyL9Hs3+Q2zP1V9Kke0YMYi/4OoIES3LfedAFhyrcbRxYpL7TCZ4S7Rz8Mbyp2IMWRrs/SBOOQvrbq0gXHD41ScAyZIf8JK/Lyx7fi2wPVVE2MfYlHXZFOi14MJCmGuCVIGQwYOfatr6LelsBIgElOF40bOA1wOUNiWae
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -163,53 +163,63 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 
 From: Caron Wills <caron.wills@pulsar.com>
 
-Isolated CPUs no longer batch folios in their per-CPU LRU caches, so
-that __lru_add_drain_all() never has to queue work on them. Boot time
-isolation (isolcpus=, nohz_full=) takes effect before any folio is
-batched, but a cpuset isolated partition can be created at runtime and
-the affected CPUs may still hold folios in their batches from before.
-Those would linger until the CPU happens to drain locally, and the next
-lru_add_drain_all() would fall back to queueing work on the now isolated
-CPU, which is exactly what must be avoided.
+Writing cpuset.mems migrates the memory of every task in the cpuset on
+the ordered cpuset_migrate_mm_wq, and since commit 3514309e0322
+("cpuset: Defer flushing of the cpuset_migrate_mm_wq to task_work") the
+writer flushes that workqueue from task_work before returning to
+userspace, so that the write appears synchronous (the design of commit
+e93ad19d0564 ("cpuset: make mm migration asynchronous")). The writer
+therefore sleeps in TASK_UNINTERRUPTIBLE for as long as all queued
+migrations take. On a system with isolated CPUs running SCHED_FIFO tasks
+that was measured at 2 to 10 minutes (LP: #2165410), and it is unbounded
+in principle: a migration blocked behind a starved kworker or a slow
+expedited grace period holds up every migration queued after it.
 
-Drain all batches once from housekeeping_update(), right after the
-HK_TYPE_DOMAIN mask has been updated and next to the vmstat and memcg
-workqueue flushes that exist for the same reason, so that newly isolated
-CPUs start out with empty batches.
+The writer is usually systemd. It applies AllowedMemoryNodes= from PID 1
+itself, and since v259 it opens every cgroup v2 attribute file with
+O_NONBLOCK precisely to opt into asynchronous semantics wherever the
+kernel offers them (src/basic/cgroup-util.c, cg_set_attribute(), citing
+the memory.max/memory.high behaviour of commit c8e6002bd611 ("memcg:
+introduce non-blocking limit setting option")). While PID 1 is stuck in
+the flush, logind cannot create sessions and SSH logins fail.
+
+Honour O_NONBLOCK the same way memcg does: skip the task_work flush when
+the file was opened non-blocking and let the migration complete in the
+background. Blocking writers keep the synchronous behaviour and the
+cgroup.procs attach path is unchanged.
+
+This does not make the migration any faster; it only stops the writer,
+in practice init, from being held hostage by it.
 
 Link: https://bugs.launchpad.net/bugs/2165410
 Signed-off-by: Caron Wills <caron.wills@pulsar.com>
 Signed-off-by: Matthew Ruffell <matthew.ruffell@canonical.com>
 ---
- kernel/sched/isolation.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ kernel/cgroup/cpuset.c | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/sched/isolation.c b/kernel/sched/isolation.c
-index 156025ef81b7..17d8171fe97b 100644
---- a/kernel/sched/isolation.c
-+++ b/kernel/sched/isolation.c
-@@ -10,6 +10,7 @@
- #include <linux/sched/isolation.h>
- #include <linux/llist.h>
- #include <linux/pci.h>
-+#include <linux/swap.h>
- #include "sched.h"
- 
- enum hk_flags {
-@@ -149,6 +150,13 @@ int housekeeping_update(struct cpumask *isol_mask)
- 	pci_probe_flush_workqueue();
- 	mem_cgroup_flush_workqueue();
- 	vmstat_flush_workqueue();
+diff --git a/kernel/cgroup/cpuset.c b/kernel/cgroup/cpuset.c
+index 3219f927c35e..439b55a310fe 100644
+--- a/kernel/cgroup/cpuset.c
++++ b/kernel/cgroup/cpuset.c
+@@ -3482,7 +3482,16 @@ ssize_t cpuset_write_resmask(struct kernfs_open_file *of,
+ 	free_cpuset(trialcs);
+ out_unlock:
+ 	cpuset_update_sd_hk_unlock();
+-	if (of_cft(of)->private == FILE_MEMLIST)
 +	/*
-+	 * Folios batched on the newly isolated CPUs before the update would
-+	 * otherwise linger in their per-CPU LRU batches, since isolated CPUs
-+	 * stop batching from now on (see lru_batching_bypassed()) and remote
-+	 * draining is exactly what must be avoided on them.
++	 * Memory migration runs on cpuset_migrate_mm_wq and the writer
++	 * normally waits for it before returning to userspace, so that the
++	 * write appears synchronous. A writer that opened the file with
++	 * O_NONBLOCK asks not to wait: let the migration finish in the
++	 * background, like memory.max and memory.high skip synchronous
++	 * reclaim for non-blocking writers.
 +	 */
-+	lru_add_drain_all();
- 
- 	err = workqueue_unbound_housekeeping_update(housekeeping_cpumask(HK_TYPE_DOMAIN));
- 	WARN_ON_ONCE(err < 0);
++	if (of_cft(of)->private == FILE_MEMLIST &&
++	    !(of->file->f_flags & O_NONBLOCK))
+ 		schedule_flush_migrate_mm();
+ 	return retval ?: nbytes;
+ }
 -- 
 2.55.0
 
