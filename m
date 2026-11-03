@@ -1,110 +1,93 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E6E6606A338
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 01:56:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5562606A32E
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 02:07:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=GR3b6Ou7
+	dkim=fail reason="signature verification failed" (2048-bit key, unprotected) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=CALEGwdc
 Received: by kanga.kvack.org (Postfix)
-	id 305876B05B4; Mon,  2 Nov 2026 20:56:37 -0500 (EST)
+	id D52B26B00EF; Mon,  2 Nov 2026 21:07:44 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2B56E6B05B7; Mon,  2 Nov 2026 20:56:37 -0500 (EST)
+	id CDCE66B05B1; Mon,  2 Nov 2026 21:07:44 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1CC5E6B05B8; Mon,  2 Nov 2026 20:56:37 -0500 (EST)
+	id BA3DE6B05B2; Mon,  2 Nov 2026 21:07:44 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id ED3CF6B05B4
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 20:56:36 -0500 (EST)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 6E2F81C2B4B
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 01:56:36 +0000 (UTC)
-X-FDA: 85392143592.27.A4DA123
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf03.hostedemail.com (Postfix) with ESMTP id D076720002
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 01:56:34 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GR3b6Ou7;
-	spf=pass (imf03.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 9673B6B00EF
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 21:07:44 -0500 (EST)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 276CD1C240B
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 02:07:44 +0000 (UTC)
+X-FDA: 85392171648.16.D79B5A4
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 86C7E140008
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 02:07:42 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=CALEGwdc;
+	spf=pass (imf26.hostedemail.com: domain of liam@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=liam@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793670994;
+	s=arc-20220608; t=1793671662;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=oG/UK1lpPVs0T+G/uex5I6y18oVty/cZKc6GhxA17CU=;
-	b=BV9lVR1SNLVyNsYwV2SGhmuQS02hCd8MEIdoovKM9Whu+7yxKkeZJsvsU8QBKiH2PoeDU1
-	M5CmZB9+BU4Ln1yij2DffzQhbrQHMPHjL9vnoydRsYp4BONHPilh14nL58+o7sRtm+IGdd
-	tf9P2Bc32pLfY61VLDBKWo9ZV2pXdtY=
+	 in-reply-to:references:dkim-signature;
+	bh=UCNW70wWpSOTe+qYE8btjgaS6NPKbF5U87PIw6GRK5A=;
+	b=xlyjfd93AsgBUGw3j1BB+dvP0vMZmi+6XI+mc47ILQ66OBK7j8KM0VtPTyR2IdLRqWn3aM
+	i2+7qKR5T1H/fk5c3t4xXY8gXV1Ojb8tLOPLtP8/1d2RSp8WwBPy4+JH3NmO+j25IuBoPL
+	1wcnuav6VSksODHMOPdGOjxLM4jTmm4=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793670994;
-	b=TEnoWj4/6KELNGe1/Mxsy1fxEVYuW7MgzbqgPowkd2qoFHZXKlhDUBmZX1olH8VoawXk8J
-	WrsQQh/dflhFbRAJTk5YEpvoRozjUqYs3Q9c1a2pixwEJWBNWCDDh+nu92RyVLEH2xzZGp
-	zY/BKGNXKdqyDvcUgAGIRmNieBv8J3U=
+	t=1793671662;
+	b=49zyXGqYYG48zA9wRcZBKHs2yFHLK9GN70Et0EyJBvHw+gbn27qusqUaZtLxKrTGNo+lX/
+	JtvUcrIVZ4c1jkLf0Ccgm7lZ7BkLv6X3UDJ0DRrosvRP1joHUjLqOTcP4duUKlWR8gSX9g
+	8lPw40M9muQZiC2Yz+VTv3d8OBWCVww=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GR3b6Ou7;
-	spf=pass (imf03.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 2F6ED43DE9;
-	Tue,  3 Nov 2026 01:56:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54E971F00919;
-	Tue,  3 Nov 2026 01:56:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793670994;
-	bh=oG/UK1lpPVs0T+G/uex5I6y18oVty/cZKc6GhxA17CU=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=GR3b6Ou7TomFWO0koV9WkroAduiPVKsmUD6/YPTpUoTzyGLMtkji7zWzVR8FrgiHI
-	 9OHvH5s3KGh9l5yDsvxYIDlr8ZoPQROdPIVZBp4enZcR6M6Ki3yQ1PYth8jSGKc7wK
-	 1pe/wtsBYyfAlR1F3athy4ymdpghRh7mbyufTTPDeVvJkilhfLOLKbMMS9zLpZMA2Q
-	 N0+G8PV1zOzmeTqB5KcF735yHW8kb+luK6FY3SIuSXL9J4kLjUYL45zIp9Jl858QVV
-	 3RiizWoZATPLgG/cfhePSC25t26uP3Bbu/ZJVtmbSVsg5uVAn0Z4AiykwGRiImF5Hd
-	 aJryq0kKDemug==
-From: SJ Park <sj@kernel.org>
-To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Cc: SJ Park <sj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Harry Yoo <harry@kernel.org>,
-	Hao Li <hao.li@linux.dev>,
-	Christoph Lameter <cl@gentwo.org>,
-	David Rientjes <rientjes@google.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Brendan Jackman <brendan.jackman@linux.dev>,
-	Zi Yan <ziy@nvidia.com>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Jann Horn <jannh@google.com>,
-	Pedro Falcato <pfalcato@suse.de>,
-	Mike Rapoport <rppt@kernel.org>,
-	David Hildenbrand <david@kernel.org>,
-	Gregory Price <gourry@gourry.net>,
-	linux-mm@kvack.org,
+	imf26.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=CALEGwdc;
+	spf=pass (imf26.hostedemail.com: domain of liam@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=liam@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
+	Content-ID:Content-Description:In-Reply-To:References;
+	bh=UCNW70wWpSOTe+qYE8btjgaS6NPKbF5U87PIw6GRK5A=; b=CALEGwdcQDVbA73bpGaOuE67Qg
+	k0OuzbETTSvvki/bgzXs+kXGUIY8LcKWUhQqaVM4FdqBiB2DXo7hZgbwGLyJxH1A0YFPW1NzLcFz3
+	r5fDIf6UfB6PTla1NaMBjqsGz1zSlc2hdqvLVqkHX9fYrqqhp5kfRmvV0JlkNyBoWxpM5ZM559/52
+	i+mth+Brijk152leS4KzvwT5+qXbLhKnib/B4TfYqnbMKEtbU86v0XMBig8+4Q5AutaFjyqhjBdv2
+	rIk4WVJCzsvsVjiNCh+I94vG3rK171dNbD9BfJUabV08jOBUI2XLjrd4ZApRO71Ly7i9QBifpPmBW
+	rFHieI/g==;
+Received: from [38.23.173.23] (helo=localhost)
+	by bombadil.infradead.org with esmtpsa (Exim 4.100.1 #2 (Red Hat Linux))
+	id 1xO3vt-00000000qsM-3jKy;
+	Tue, 03 Nov 2026 02:07:38 +0000
+From: "Liam R. Howlett (Google)" <liam@infradead.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org
-Subject: Re: [PATCH 0/2] MAINTAINERS updates for page and slab allocators
-Date: Mon,  2 Nov 2026 17:56:16 -0800
-Message-ID: <20261103015616.95465-1-sj@kernel.org>
+	maple-tree@lists.infradead.org,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Chris Mason <mason@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Andrew Ballance <andrewjballance@gmail.com>,
+	"Liam R. Howlett (Google)" <liam@infradead.org>
+Subject: [PATCH v2 0/3] maple_tree fixes for 7.3
+Date: Mon,  2 Nov 2026 21:07:21 -0500
+Message-ID: <20261103020724.2614498-1-liam@infradead.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20261101-maint-page_alloc-update-v1-0-27e8c246b13d@kernel.org>
-References: 
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: gq6y3yiwozitu366mrkpzn6ghf4f4st8
-X-Rspamd-Queue-Id: D076720002
+X-Stat-Signature: 3onek1mad5w66y81d1wxr3xobn8m86iu
+X-Rspamd-Queue-Id: 86C7E140008
 X-Rspam-User: 
 X-Rspamd-Server: rspam08
-X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1793670994-479969
-X-HE-Meta: U2FsdGVkX1+YTVlApXII9TCemqe2JwFjR+QTsqmXvbDjP/a9X7uApq2OpU+IpKUCZVM9HYY+bK43zgxSjBsWxuD75x8lJI84njUVh+ZqqpXDM2fJEvl6SfTikz2cRFDF9Ucu0paeZHRkOqE9z5cYdteav+oq581TEasEeJd2NzY7ztG6tfDI7YOiw8b6M2x1lS+9AZ1ijE58Ekz0DjSvJpEqThgh4RW9yB2HzBvwwFlkcBX+wlTmpNhLpMlAoiw5U1MqqeoocZywMUka+uo/nX6AcF7tHsx7l/shap5QN8J9qzozkkjvIja949W/5m/xGp1FPfJu8g3/htljG/OFUjUI2QCLZUs5PRGqE3pEGWrLJWfLYBTo7OOidXLd+vPeVpgTCdmW3RqxrYtX+rZYPKAYeMKDbVtb32i81bo8MSlAjC5CJq26J+cjOfEQBF33omRlkHFhYfiIJMBZ1mT8h23WFOJTBZwnxZ/epfgJN+FavDoTZgXqlUE73QF3y8OWxsCQQbiyQV/j1hHFmaz/FWjmuckUp6S7UPw14Rmf5hiY0YLLz6eVgG/tasVMdckPhLlQekCTGnaGO2ebIEq9NFhcBPKXAQXevd2tR0FxsZYrAbELRFESsGHw4z8mJacJczVccWblalVkDGqr9OTxKpoZ63QGNcw77PO8zA2W+Hrw14gS4tbdDdocdc1jXq4kHUTQDc0ZleAFJa9aCJw6JvsLLqsw3FLUvL+Do2ev+GYhJ77TC0wG+vlPgcvlnJ0a42G8dXv1ZDOy50OxmWKqbEDnliVUrXk/bZXZlaeLae+YZzyItG3IIgbbG5ELa0b3Dr3mHNHzDAv4UzO4TP1rGCHS2ItqNEfv8hN7W9Phn+PxbyCJ76XswDtK2JXiRlf6rm4rirgmNnZ9pyhXLrbmbOEY3iBPBBlmZzkVkssMFvJ7c7lD6j1KUteUpQPzvD1rehtuzFIrEMsyzf4Kc7a
- NWH/3EZA
- Vsj3GOC+X0ep2MlIcEVwxaOghr6k7nmLojGmaEzCiacwRGxOO1b/qED23LJ95Q5csXAErvTE+eox8TqwOkF2dIftyr0k3j9Z4SeFG85JtJkFSp1+ZsCE+tZ+HgAt7EVBBbglYTkfFv5z3UaIgvqgAZgyeFy4B7HMxUv8vdjOOR+OcLpgs13UiUSND5AY57MtwqCTve6gb9a1RgWFthtu7/Gb3zda5lv7RLKKZ4cXC/mYEQFI=
+X-Spam-Status: No, score=-11.6 required=3.0 tests=BAYES_00,DKIM_INVALID,
+	DKIM_SIGNED,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1793671662-1180
+X-HE-Meta: U2FsdGVkX1+7aZKPp5WAmhqFMyMqJdYND4JZETl7NItWqImtX+FjhC/bDBW7u0Tg2Ix82LFegO6fjmL+U3UxTRf/aZJJHhMVIi8ULREUk8a+NrA+1hAPaOtZcHTqTuTb9vjfFwgOL98Lo8vxEZGgju0jtiLD/WQd4opxboyVQeAn2dvkN0f9KBeOMXq7qNkiliQ02JGxCZQgwyMiV8MoopLoVFByM2oI8z8NpDhEtjCRXFZr7tXpqBNvi9jt26nXLsGdVyjKIlRybh5Irr1DSFEDD5IvgyLF7BvlUF4ApSkMGaJV5UtrN23LHDQNhicT71W9xRvq/KlsR7EO+dqhB9DlC/IDuwlwhg5Tm4pTxH9qzIyanmZnJnsHibCmM1xOZ3wQOcSeyCPibtwPZlyIOrbJAD2nUT6zG62D7/mVITnv6DWVBmxOIQMtRrR+LHi0nZCaPYQ2PgIuMdC7w/AHMghzaQpOtgqDbpy0bT7afr8L0/m0MQ6Kxau0OqzQevO+HmUZthFpZ9AMukuiR+p9OYphmlnLWx4bR2MgAUmaSy6egG5ljgmlIwPdz5lYi/3FI/zH0PS2vSLZdmjo4S8gPsGqmcC39Ewi6zgA2HXaAADWvjEmeaHG6/yAI5yJWy/I5aXgYuxw0xT1K408SzMwLwN5innGnOlH0AJdWoYJa0kb8C6AIaAfZxUsZZaQep06bKYdSVFPw+lZMyPb9sS2LbRQWrmUf2E5aNB08xcoLEVhDGt6KNSXl/EFpTT/Cooi3o+KnjGpHv2H5RyJRl3G0KvysMC2fvOljkmaW8WufKYaFbMK+7G9TOE/hpGPkb84KF8xVvD9yYSTWdyuWvDjPaOKAZSV7LJ9YzsV8QUxpxGv1HetLXLI3aM/wwBzRToxIq+iqzMl0+57AjKiKykyaMSB9GqKRumkmR2JRiQ7bL8ob6/GLeFeq2jbJ0TZx+1e/d535lmuAmACzivLKRz
+ 4itpGFeZ
+ OkJ206S+MOncMfmqasUC1YSFOWn+gvqC2leoR2nT16Ln72egD4opNkoEdmNSxAJOXKOpMJ1deJfPkM67Yow/JKzpOoqyV7IZmW/FV2OqZOiunpNmJNp7vPpQ06J410ye32V4+6e1K6lAJywQ77av9gx3Sw6paHPrfBVDED7O42GlRW42qVUwCSZrUT87O7lb1mGjdE20oNGo/i8mmTgz2YrJurWRI4TysYVhGqOwujLeo09TRYLUUa3ptnCWsvr/TszD6IRxUadbXfVJ5qvr7otmHKg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -113,27 +96,41 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Sun, 01 Nov 2026 17:34:47 +0100 "Vlastimil Babka (SUSE)" <vbabka@kernel.org> wrote:
+Two bugs found by an LLM review, and one problem Lorenzo Stoakes
+reported off list.
 
-> Following David's updates [1], perform similar updates for page and slab
-> allocators to indicate the MM process transition for these
-> subcomponents. Importantly, add Johannes as a page allocator
-> co-maintainer.
+An RCU reader that restarts after its node dies can dereference NULL if
+the tree was emptied, or holds a single entry in the root pointer.
+Patch 1 fixes it and patch 2 adds a test.
 
-Makes perfect sense to me.  Thank you for stepping up, Johannes!
+With CONFIG_DEBUG_MAPLE_TREE, MT_WARN_ON() and the other WARN macros
+print the tree and call dump_stack() rather than WARN(), so syzbot never
+sees them.  Patch 3 makes them WARN once per call site, after the dump,
+and makes the BUG macros BUG() after theirs.  The userspace tests make
+WARN() fatal to keep failing as they did on dump_stack().
 
-> 
-> [1] https://lore.kernel.org/all/20261030-maintainers-v1-0-97278f8a5f54@kernel.org/
-> 
-> Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+Changes since v1:
+- Drop rhashtable patch.  It is still undecided and will go to linux-crypto
+- A reverse walk from index 0 returned the new root entry a second time;
+  fixed and tested (Andrew's review bot)
+- Fixes tags point at the commits that introduced the problems
+- The WARN macros' once state is reset by clear_warn_once
+- WARN() is fatal in maple-shared.h (Lorenzo); the maple test exits
+  non-zero on a failure
 
-For the series,
+Liam R. Howlett (Google) (3):
+  maple_tree: Fix rcu reader NULL dereference after the tree is emptied
+  maple_tree: Test emptying tree while RCU reading
+  maple_tree: Update internal warning and bug_on code
 
-Acked-by: SJ Park <sj@kernel.org>
+ include/linux/maple_tree.h          |  48 ++++----
+ lib/maple_tree.c                    | 112 ++++++++++++++-----
+ lib/test_maple_tree.c               | 165 ++++++++++++++++++++++++++++
+ tools/testing/radix-tree/maple.c    |  13 ++-
+ tools/testing/shared/maple-shared.h |  33 ++++++
+ 5 files changed, 316 insertions(+), 55 deletions(-)
 
+-- 
+2.47.3
 
-Thanks,
-SJ
-
-[...]
 
