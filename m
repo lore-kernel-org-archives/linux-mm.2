@@ -1,141 +1,152 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D26BA606A32D
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 16:26:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1C2F606A32F
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 16:26:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=fAtHMJCT
+	dkim=pass (1024-bit key, unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=FcKrv1we
 Received: by kanga.kvack.org (Postfix)
-	id 3B4586B05CF; Tue,  3 Nov 2026 11:25:53 -0500 (EST)
+	id DC7CD6B05D2; Tue,  3 Nov 2026 11:26:18 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 392C56B05D1; Tue,  3 Nov 2026 11:25:53 -0500 (EST)
+	id D9F1B6B05D3; Tue,  3 Nov 2026 11:26:18 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 254406B05D2; Tue,  3 Nov 2026 11:25:53 -0500 (EST)
+	id C8F256B05D4; Tue,  3 Nov 2026 11:26:18 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id D4A236B05CF
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 11:25:52 -0500 (EST)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 4EF901A02DD
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 16:25:52 +0000 (UTC)
-X-FDA: 85394334144.01.7DA932A
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 0896A180003
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 16:25:49 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fAtHMJCT;
-	arc=pass ("kernel.org:s=arc20260519:i=1");
-	spf=pass (imf16.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1793723150;
-	b=C3RMV3i3fbPHLZM3B1qbIeQ0xwkudmZZbwDWPt56kzUqzY3NaQV+AQF00jjWQZ85ntoBmw
-	mTsyRIq6bMew1hBaZ3/G2SVIvRyJ1jEjKrb/tLxK0kEwpHdKjTW6iB3EQnyIesClLAgm1N
-	Ah10BLxPfGRJJZrNc0wXljEcksENhZM=
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id A87106B05D2
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 11:26:18 -0500 (EST)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 35EF8A7C5E
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 16:26:18 +0000 (UTC)
+X-FDA: 85394335236.27.EC23A05
+Received: from CH5PR02CU005.outbound.protection.outlook.com (mail-northcentralusazon11012066.outbound.protection.outlook.com [40.107.200.66])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 3BD864000A
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 16:26:15 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b=FcKrv1we;
+	spf=pass (imf27.hostedemail.com: domain of radhey.shyam.pandey@amd.com designates 40.107.200.66 as permitted sender) smtp.mailfrom=radhey.shyam.pandey@amd.com;
+	dmarc=pass (policy=quarantine) header.from=amd.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793723150;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1793723175;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=YrvLenOfUjR4xjaCoygKbKHPvPlEFGRZPhOnPcpMtlI=;
-	b=OUYnyTdgA/jkUTF9+l+Y7rG6KonOWL4GNtOBbVRp1qcN7894OJ8ij8MYIuTF9YtzNDCpbo
-	TarV81IxxOCmI+3JxUUOuWL2OjGxBd+dG4TtAu1CcBrD+qWk4fmxfHkfXs3rcG4kjM7LNN
-	n5DxoQiL8PqdcKAsTt9ti5fCDnJ1ujc=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=Pjvtisfj0ShIvEUhY1wqdXjIdnKALWvBB/aKcW/zekM=;
+	b=CQl/6YUUyF1+qV9UObxJkH/3KneVIsNX/ADa6Sow6GJ402slVqRBCFWECosQxHigDLluMO
+	cC/6yTBxh45l1eQScBrhxAMBQMhOjGFkcr+NTQxNT6pWtdVZ1Fs0J/uYL+p51PXPoev9I0
+	t6gfYan3KENOjFlQKaCGHY/2BTOCd1s=
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1793723175;
+	b=4MmhrwiFXt8EhkiG0jnkGJUN4d8p4jNVIL8gWKB6Ulzt86KOJN0BfwvcoiSDi9xgpEYKzt
+	mmZpHPX6/36DpURmWQM+x2wGQVku7DYxtbf+LCJl79XTpOFLaQrsfle8DfaaAweYk60mtp
+	BN1h2DKG/OV2FmJ/kvoibOQcc0kI4NA=
 ARC-Authentication-Results: i=2;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fAtHMJCT;
-	arc=pass ("kernel.org:s=arc20260519:i=1");
-	spf=pass (imf16.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 5942943875;
-	Tue,  3 Nov 2026 16:25:49 +0000 (UTC)
-ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
-	t=1793723149;
-	b=nOLT4jsZ0ggSgMevBeG/YvkQOz8HSWtgfgZ/q8UG4XOPBhYgkw5scqnoXk/BcW48nC44
-	 iYgV21K7qeVSjcryxa1bPgNzUOfY301WzdHCSafGHAnGhQoR+xdrO2xicgqOQszDOebgc
-	 DrFosH177DYw7zV1RA9qRPdrjzXTo0iuGCjkLORBdVQy23ncWeuPkY881N+lYHrmb5810
-	 kXvCXmOaLr7Qkx9gnU4uK0x5UJYiuNOvVhRxiOh9DkhTd2Jp8EYuNvZ3HBbltfFLdVmc4
-	 WvgBr5PWQC2LvCyV8j/cXvS9CDyT1/zAqQvgVqIcCkOlaplZGwdk6LidqcWmr4SnHxQ==
-ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
-	c=relaxed/relaxed; t=1793723149;
-	h=DKIM-Signature:Received:From:Subject:Date:Message-Id:MIME-Version:
-	 Content-Type:Content-Transfer-Encoding:X-B4-Tracking:X-Change-ID:To:
-	 Cc:X-Mailer:X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
-	 X-Original-From:Reply-To;
-	bh=YrvLenOfUjR4xjaCoygKbKHPvPlEFGRZPhOnPcpMtlI=;
-	b=jv2er5w6TZfQGMpEfpTzoHVRUroo+jyOzxCbHNYQD5gW2e8Zz4c6usGzKrfRAonlQOkF
-	 XD1+n4UcZ291YiIO1tAYYaVAn5oGby1eVN64QRplw5xYUSIqwDCq0czMhOd2ZQFhkyxiY
-	 71iBKY3VftqflDpjW1EPeynyaz6AlG5bfEMZJNKF4GoE+KFfoSdt5sJ/R9FP0lfS9auB2
-	 xVqOofUxstEkrLkFa65oMrxsMJGupFWBmJn1KBSfoCIKSEIx6vwLM1QwK8jO/txHJrLKI
-	 r3Y/xJQcKzbU35hSS1qrbCVMPdPn2pBybPPtLTuqg42jUcsuULfmTWZjVGyITu0VtWg==
-ARC-Authentication-Results: i=1; smtp.kernel.org; 
-	arc=none smtp.remote-ip=100.80.115.77
-Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
-	(No client certificate requested)
-	by smtp.kernel.org (Postfix) with ESMTPS id C8D6D1F00A02;
-	Tue,  3 Nov 2026 16:25:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793723149;
-	bh=YrvLenOfUjR4xjaCoygKbKHPvPlEFGRZPhOnPcpMtlI=;
-	h=From:Subject:Date:To:Cc:Reply-To;
-	b=fAtHMJCT1hpoD6RUCO03ORkfT3COYww7VWDwzMTSBEl+iIFeRXcdpHqWer+Yor2/7
-	 EdAEeA2RmhwZB+oLTmC6VGpig+BPy5PPu/71eEv31nPi4v8dT7bWFI0bfmcy8NBGrX
-	 CNf/qhCnWTcPEu+oEV3cwpGncnpbTet4SOOC5QSRZGvJU2gpLhETZ++qZtO5t5Uygq
-	 RB8Od3xXbbDf34el6f8h3VZpTJOlVJTZRlmJYS11Yfebt8Wc/Lo3je6Jv9PMXNyGYw
-	 Ls4ug+YW6iyB8vNO4Cp2lyg8iKGJNtOwhm+iuygETU5Kv2EqjCYx2iw0ttfAn9vyZ2
-	 GgSH8pkpeKCDA==
-Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
-	by lkml.kernel.org (Postfix) with ESMTP id 24C9C46A22;
-	Tue,  3 Nov 2026 16:25:47 +0000 (UTC)
-From: Kairui Song via B4 Relay <devnull+kasong.tencent.com@kernel.org>
-Subject: [PATCH v4 0/3] mm, swap: keep hibernation swap slots out of the
- swap cache
-Date: Wed, 04 Nov 2026 00:25:44 +0800
-Message-Id: <20261104-swap-hibernation-slots-v4-0-0ba9393609e1@tencent.com>
+	imf27.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b=FcKrv1we;
+	spf=pass (imf27.hostedemail.com: domain of radhey.shyam.pandey@amd.com designates 40.107.200.66 as permitted sender) smtp.mailfrom=radhey.shyam.pandey@amd.com;
+	dmarc=pass (policy=quarantine) header.from=amd.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=tQCmZpO1w8C+ZgQB2ZiEJIk0ZtEcGOVPzPXn6U86KtZEI9kthOiFUH0Nw3ln4BO5D/zz2DAoGMe9IJviTs2s6SCLb8ye4/75WWs/zYesUGaDnM6dotvRkd/LB8NeCYyvrOKRzpn0VWJSEvbSBE0JW4NBOFEA6errGcarplwbxcxqhAMuZeZE+W4jF/2/nF3edkFuvZyW3reooMBEjK4fgsmJ6WJz+/8cyvGTadwxvqZXC+thhT18RV3p4W17X77yS3NCnJDR2GpJH3WM4macc5821iL1BbamZjvcXc98xSemRgSjcOntJo8Ck0Bc09rDwAtaOPWbgAnUk5QSUY4bnA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Pjvtisfj0ShIvEUhY1wqdXjIdnKALWvBB/aKcW/zekM=;
+ b=kDrBI7eCg4iySzmFsUqEoakM4yE+AtS7Wo899pU2dUgf+wc9lAZR/eElF75UABltMNXjEyzKwUf1rFtcZSo0MA1NfupY4oeciG9PLmf1S9K9AlaXMJvuxVUbw5ULaYqMiIAIfxWlBHzOSmsykLlAlPe3ouXH8/eoN9cci6ismee0Uf3G72X75fNGI97tIKH3i9vxmA4SOkSagOxXnoOTE3fVUuXa43Bt79W0dLyOpM6jPqOJSLys0dUyZZ/0UlnorWzF6ypseKremxSVae69U5Tlgo8fwMf46hgOoGM7z7UlSaCuMx08mwv1U+v4FFQqIXEGDt7v1qvUPuoa2Mpy6A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=kernel.org smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Pjvtisfj0ShIvEUhY1wqdXjIdnKALWvBB/aKcW/zekM=;
+ b=FcKrv1weFrU9sJBRNR6566wrUgQUQQXHe2btKi5ykrcnyOMh08jWS9wbhR3daBe/NvaTb1z/7X0JSHkpVkNbUuGuVru6ykkA5AHzuLJyXc2Wwu+mvc3Yif5klwuKYz0G1sgyG8V+azWVKE4TBD+t0/H4E+pow/Emhy8w0a8lSug=
+Received: from SJ0PR03CA0003.namprd03.prod.outlook.com (2603:10b6:a03:33a::8)
+ by DS7PR12MB6336.namprd12.prod.outlook.com (2603:10b6:8:93::8) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.592.8; Tue, 3 Nov 2026 16:25:09 +0000
+Received: from MW1PEPF0001888E.namprd03.prod.outlook.com
+ (2603:10b6:a03:33a:cafe::36) by SJ0PR03CA0003.outlook.office365.com
+ (2603:10b6:a03:33a::8) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.569.12 via Frontend Transport; Tue, 3
+ Nov 2026 16:25:09 +0000
+X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
+ is 165.204.84.17) smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
+Received: from satlexmb07.amd.com (165.204.84.17) by
+ MW1PEPF0001888E.mail.protection.outlook.com (10.167.249.165) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.592.5 via Frontend Transport; Tue, 3 Nov 2026 16:25:08 +0000
+Received: from satlexmb08.amd.com (10.181.42.217) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.53; Tue, 3 Nov
+ 2026 10:24:57 -0600
+Received: from xhdradheys41.xilinx.com (10.180.168.240) by satlexmb08.amd.com
+ (10.181.42.217) with Microsoft SMTP Server id 15.2.2562.53 via Frontend
+ Transport; Tue, 3 Nov 2026 10:24:52 -0600
+From: Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>
+To: <robh@kernel.org>, <saravanak@kernel.org>, <akpm@linux-foundation.org>,
+	<david@kernel.org>, <ljs@kernel.org>, <liam@infradead.org>,
+	<vbabka@kernel.org>, <rppt@kernel.org>, <surenb@google.com>,
+	<mhocko@suse.com>, <m.szyprowski@samsung.com>, <robin.murphy@arm.com>,
+	<baoquan.he@linux.dev>, <pasha.tatashin@soleen.com>, <pratyush@kernel.org>
+CC: <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<linux-mm@kvack.org>, <iommu@lists.linux.dev>, <kexec@lists.infradead.org>,
+	Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>
+Subject: [PATCH 2/4] of: reserved_mem: keep the reservation when node_init returns -EBUSY
+Date: Tue, 3 Nov 2026 21:54:27 +0530
+Message-ID: <20261103162429.2053989-3-radhey.shyam.pandey@amd.com>
+X-Mailer: git-send-email 2.44.4
+In-Reply-To: <20261103162429.2053989-1-radhey.shyam.pandey@amd.com>
+References: <20261103162429.2053989-1-radhey.shyam.pandey@amd.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yWNwQ6CMBAFf8Xs2ZK2KIIn/8NwKLCFIrakW1BC+
- HcLHieZN28FQm+Q4H5aweNsyDgb4XI+Qd0p2yIzTWSQXGZC8JTRR42sMxV6q0KUGQ0uELsWOpM
- 3nTVFoyGOR4/afI/ws/wzTVWPddhru9EZCs4vx/Oc7t5xwnMhRColLxKZxyTPmWCLm2zbTzYZl
- X89hhaT2r2h3LbtB0oV1c7BAAAA
-X-Change-ID: 20261103-swap-hibernation-slots-59f627f6d9df
-To: linux-mm@kvack.org
-Cc: Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
- Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, 
- Baoquan He <baoquan.he@linux.dev>, Barry Song <baohua@kernel.org>, 
- Jianyue Wu <wujianyue000@gmail.com>, Youngjun Park <youngjun.park@lge.com>, 
- "David Hildenbrand (Arm)" <david@kernel.org>, 
- Kairui Song <ryncsn@gmail.com>, linux-kernel@vger.kernel.org, 
- Kairui Song <kasong@tencent.com>
-X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1793723146; l=4307;
- i=kasong@tencent.com; s=kasong-sign-tencent; h=from:subject:message-id;
- bh=R6H98dXtxG2Z2jromolKwbcKkJz42BJ5UcLj3L7np7k=;
- b=pCZlUKbzxhlgH5oldMolUwrYC95wl6NeIpN6alMrW4KT/RIxnUUNta7Gs+Bq63C1qEybExxRQ
- wheQielJf2iCXKl+H4uQiHjhNWxIfXv6K9pghFGGSHvvMktsqklSeWq
-X-Developer-Key: i=kasong@tencent.com; a=ed25519;
- pk=kCdoBuwrYph+KrkJnrr7Sm1pwwhGDdZKcKrqiK8Y1mI=
-X-Endpoint-Received: by B4 Relay for kasong@tencent.com/kasong-sign-tencent
- with auth_id=562
-X-Original-From: Kairui Song <kasong@tencent.com>
-Reply-To: kasong@tencent.com
-X-Rspamd-Server: rspam12
-X-Rspam-User:
-X-Stat-Signature: o5chuwf9rcq5kmf3zk5eecinjae3huru
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MW1PEPF0001888E:EE_|DS7PR12MB6336:EE_
+X-MS-Office365-Filtering-Correlation-Id: 1e1ee63c-3c51-45d5-0de9-08df39c70717
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|376014|23010399003|1800799024|82310400026|36860700016|921020|11063799006|5023799004|56012099006|261009223027099003|261028144727099003|261022105027099003|261022075727099003|261022115727099003|261102123227099003|261021121427099003|261026140227099003|261026121527099003|10067099003|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info:
+	P9wd7HB4gYRUgbfcn7PlGa9tGGWjmu7k7sHcL6iaBoH3vU1jYT1tEkabULr3w+zmntT1hm368I7v8oIC7k6tvnI7YbdirRhy/S8sr9+Z3f8XUGAeznnEVvxajZaRSAaAUzCgkgP1ybjyegY0WC4KFKkpHZcBMyIFVAnCqUVcZZ9BBDREtFiesmEa/Im8QSFPVGegj0szTsgsGit1h4QxmgsOJ6xdyGWAq7HI+Q8tb+vEoxKSZBGg8TrSA7p0Q5toeq47U03BN9TL5B7SZtuG+udgDZz3yv+RNE67YpT9oh9MQVNKDKMJatyqIfMleXnjgh/YzAzdYRvdKbjc47Khj4HCRXjChP/l5a9DtC/xEWHW8gQuE6oeiAUpwTeNjxh8z9unzRwIQDTJ0NTB2OnnyahQzEZ3pFk74NwWj08SrmO+rQDUSv6N9/f5sVUQ2pT02DDF8gZsS6EcIwQRlT95IkZGsitHlhCL82XdjVLcQ9T+BKPsgPSWAQ1tISnQtFmcckO/+cqXxEXKsU4lobgnJpUbHnm+E5gsfxOOHrOnUAoWCyDNkCi8HoUkARXhnbNsXCsm3h5OmDbXImtaaB/meJ60DV7SX5gAWjZ6/fJtSkul0oMQ/uWtbAKjHyMp5BgOJ5se0kebrqJX/dD53U5w2RiIHaQ+hSpy7Vq2IIxCgGBrDcchWJydaGSy/UX3nNfEUkVLdH5OVjACHjLYiWfr1jBQwLZeb0XO6eXRWZeYCSeh3t9sbxRDfOa2ljl9NboA
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(7416014)(376014)(23010399003)(1800799024)(82310400026)(36860700016)(921020)(11063799006)(5023799004)(56012099006)(261009223027099003)(261028144727099003)(261022105027099003)(261022075727099003)(261022115727099003)(261102123227099003)(261021121427099003)(261026140227099003)(261026121527099003)(10067099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	epOc018vOFBmUnxxl2d/BTdrKnAy7mD01BGD4uZ8zb7VmxcOdmQ/Q9mxTSb/mKs7+qjAbZ7Wal+MTRP79qjtbiZcenSNbXVR71Z2jk84piNQWRumdx5ZMxdz5yZ7BNxNfAOnkB3XaWUuf9BvM0/ecIMAK4jL9R9zu8dzX5JhWDHQV/iXmRmXVKi6KCQpa4sudSb8cu/jmHz3Q7F641SelpGsvjowba1C/9UPrJALtCVBHdn+3hXJtaAOTVr3g1lgjPeiA34+4dDKWdu7DVEqps4qIePzAs3QNNhhvPAIpBJpjoI4obIMDENOsCC8ERDfM6KULaKylae/CvfE4aZorRs+EeYlhn2+OXhC1QibwBVxLs4SuF0oxlVYkq06z7a3TbsoxFEMqMYomvYRWr4JHXv5QPq+kSducKD0t1xQBcnzLzlaZdhcZe8FmCitDmUi
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Nov 2026 16:25:08.9295
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1e1ee63c-3c51-45d5-0de9-08df39c70717
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	MW1PEPF0001888E.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR12MB6336
+X-Rspamd-Server: rspam06
+X-Stat-Signature: emhh95qyyweye6ezw3hmftmmmi6y4ajw
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: 0896A180003
-X-HE-Tag: 1793723149-354265
-X-HE-Meta: U2FsdGVkX18TMWlmQMJcXxBtj30iRUK0fJaX7K/gLf45m6qyEn4hlhPWgRMjrpISmF8F7d0MUPMOl8iG7o0+WnrZXj70FD2D5lYTeeTzG17fBSefdxdwn22gIGCG6SwnNMvGaky+qZ4F4TVAyVD+Ud3/+j85/k/dOyJ1FurrnsRdpvrkupPo0N1LOMg14NDT3GE9+xrg33DX87voujnL2Shj0ZnNfCd6ciM7/e0d1etza8MniZuahm9H1S5xZXozG93GmioSbYriR+rjXtRTO5yvAkqxd+xDHFH46DPJF11rybWoPmGBzk/VtGsGorm61tXCkDx5gzlvswh2bfC1sbyaV4iX1GnyZyMab7GNotEUWSYnwVd/saVLl+NQKULY4AB8aWPmFYDjfSEJiID3cpauq7n6owKgnt0zazYQjJ4ZhRMjLbLBj2DCDqPeMt6tb98mKbJaW68Himi7dDEzLOmRSumELbtJgo+M5xIbUDVkCFGc76h1oD6A2N4/ALEScf8m6+Tq8/hgBbf6bYxr3yj30yFewEhADKrUWZLM6wZP0uN2vUtgf1I7xlQvVh+MAAGvXUVdU+X1KmCTNhq6j/MB/fbfK5d4mLwvpOgX8Eurv39Nkh0hIJRjpCYnuFVagPUKeN6vc7PbY2c2/7aWfU7Gj7IAqbZKKGFzSlrNVzi0XwMgnQR0E3spi4PhVGOFsf/vxRBqGjCpxOlkvWZSu/mAGWAgZdE+0rwKif5hJJqypqs5iazTKeLF3PohxAcg2XzqaSEY57rHUy+YOqcV1XiAu44L9rJGFA9hKeqYG4ykhyylM/9PEvqpzK5iMzHN/KxJ7poGuT3qOYG9DHo4QNOabxbilxn6qksyE8N25WySvPRkpG5tXMFfADthy9VlSTZBbRFsiP805TxUEJKXedhVsFNWduK6hX6vsrq9HGkfHZbcgfYwkOFsu6sxiFejy441KSmiFVtp84s4GGJ
- 6hHOXIm5
- UF/en9HIto1iWOFRN5oVm9T6QhGiLOVf+IUQQfO2GizZ6LIXVglItzIKocM1e9sJQb2onvWd7lwJY5ulDWqgVwMqa+YG8rxWZB+jiqkbSOpZfN4BptvHscqTdtxe9SETUdOAZ/odvrYJlfDZmLqjQrxB4sg8C4IWJtvIEDeDgTvJETsem0QpjgudkgD83quT5eIXPxJeiVBQlpRKDakM6xv1oIbqehnhhbLN0L8SXipU2m2LXODuPgY3tP4STAIPNlACvrjTPyfhDvEeUMjp54OdzOUZZd+MFWhPG1Af8qc8Rxahm5KAjKyPoAd/9JV000xz+pv398Stobj3NpizXgVQayRpn60AqDgMu7JDQVFmJFViIRnmMgZ1KYabBfeHuiM3ez+7N8vGZzcgvVyiWiCZOLOLlZgCxn4PfyuCzLN/cpgrXzE97wdV0Yekbu7lyFKZmB6xt+qU//4E2yqT0jYzkYft6ltaOhIBTNKQWWPmOvVSKrbgycP8kavHXcZVgN+dYxbW23b6RkIOog/SL37FqIHI4yBkT3s2DEKFfxIXPyBh+pPgQ+It9UDPlYxBHsO5i4ykIkI4oTxHTxtAEfzhWp/rjehuqcrBzfDoa+Xyhtx5hqHp0GaKP20h2tlOASbjQwmUgvgLM1ZLLAXygOM17UA==
+	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
+	version=4.0.1
+X-Rspamd-Queue-Id: 3BD864000A
+X-Rspam-User: 
+X-HE-Tag: 1793723175-883745
+X-HE-Meta: U2FsdGVkX19k/QSVdt5kQWuG2YlhMGV4drNUUziwzfGonTWFRuuh2teYOQ2NmVJYt4ekD93ssgJbDgDi5pAypNX76DRwfJAYomCdJhBFR7hy2+SbDr7/WeDqRPSOkCLVDYJWt82Qe15MyMFLDSdG+dfZPUHqD2UZ5ca7WhHGsJnAeKIs3I2IIR32euMb0X4qdBEm3mB+zJvKMkSvXhNKFXgsvLU6VnTSQAZMOGg7W6a0jSRkTB3ITjVWJ10LS7gZ0Q/Lm9XEY4PsKHIyAc6h1T+DbrPNN1BBVcc5WtsretPq6smi/r8NynzQ5HHmEVOm7JKC1h+zfdOgdH9xSKobS5W1fze5oiqIEerfDVe5pmj/RtbU/pHAA7Sf+goHF0sstjf8U3mG9Ydp94f5CcezNyaQtEg2JHsbLAXcO8TirlfpiwAoGPQQ9Cs1rYpRWsHRu7vfgwuagbZduJ/2/AOEsjL2fg432k0CStJ6AFUgqvBvW1TbCbbIt8ZzgGzFwtaba2DavlYdv9k2z77UXO44cUWdOInUb4ZkGfGP2vPSQlVCVxbAh23ZEMpYbxMjf+HAJzKr6dsByswp4OGxbeFEzhmUB71C2rNd+TfowJN6cLUIynQnnTchFysZIxNt78CNwT0/viH4RE5jp+OWURyMqpWwcQqW2UTz/B/CJ+NxZ8ipCCHjOIUdvNB0HSbXCqWuizYITIPi8gl1uiCkNUkVnSL6KVzrtEJWLXe7nXo86j0ncIW0d1UQp2a+GXfeNZyoqNVE607GCfN8EeSxIJHGxxOjAwl8RT5EHpJGxYTF5gs13kL9D8hQ54Wzsu3OxnRgsj4uy7B/g/Soh7OyGGxTGplADQi11baRXWU620C9JSwTsEuUg2WX/10rpyAOoluSBLhptk4Wp5f1fISuvhfZiGtdWRwwokInuKEiGd0JZ43XH1QwJS1orRJNp0ygq0JMUwStUmpmK0bv3lTGgKV
+ DKE6LZvP
+ BnODgWnlE7F4n567dFhYsYvo514RPj8jsdL1JeB7NnCBg+IWZKpzjk6UbgdiUpZ/hU/Ity+f/RZhoLGKoRgekxunjgQ9RGBJDAAvukA9IH8NH3CXZGNAZjix8mJl1Zes8/hKS/a0Uec4wM0QBAx9iWXX1E71DGG2T8nunT/OnhZ9sJEpAQawwoqKe2b0ldIZfRlbk4S/n4BJx0UwyHpttdIs8M4X9uXRFKUSi3lJ7KkPcBqoOyRP2gZcB0Xxhnn3KMvfSi27At2BXZ9R9jo8wljQ5ZFkQ/AJb8Lh0ttcYGTGSuIqb65E+py6xHyfaSIJ58h2US21tH65J0LwnMq8M5Hb5H1jbYy+cgPonGWQ4NhLWcfXp43A/AmyFccpoDC73630NIe8jhCfkhD1gQcGHautKbyyVOXRJiC8zg4RdcSzqKJM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -144,91 +155,67 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-The original series is sent by YoungJun, now with a few nits fixed,
-rebased and re-send, dropping already merged one. Especially recently
-there is LLM code inspecting suggesting patch 1/3 of this resent is
-needed as it avoids reading into bad slots.
+fdt_init_reserved_mem_node() treats any error from a region's init function
+as "this node is unusable" and calls memblock_phys_free() on the whole
+range, although the range was reserved earlier during the FDT scan by code
+unrelated to that init function. Give -EBUSY the meaning "cannot be used as
+described, but must stay reserved" and skip the release for it. Nothing
+returns -EBUSY from node_init today. The next patch does, to refuse a CMA
+pool overlapping the kernel image, which without this would free
+[_text, _end) rather than protect it.
 
-Cluster readahead walks a raw page_cluster sized window of offsets around
-the faulting entry.  A hibernation slot looks like an ordinary swapped out
-slot, so __swap_cache_add_check() lets it in.  Readahead reads the offset
-off the device into a folio and puts that folio in the swap table where the
-hibernation entry was.  This has been possible for a long time.  It only
-wasted a folio and a read.
-
-That changed with commit 0d6af9bcf383 ("mm, swap: use the swap table to
-track the swap count").  A slot with a folio in the swap cache should only
-be freed when the folio leaves the cache.  swap_put_entries_cluster() still
-does that, but the conversion left swap_free_hibernation_slot() freeing the
-slot either way.  Nothing points at the folio after that, and when reclaim
-drops it later, it writes to the table entry at the old offset, which
-someone else may own by then.
-
-That one is fixed in v3 1/4, which is upstream as commit 10d9012e83ef
-("mm, swap: don't free a hibernation slot that is in the swap cache")
-already.
-
-What is left removes the cause.  Readahead should not touch these slots at
-all, so patch 1 lets only swapped out slots into the swap cache, which also
-puts back a bad slot check the swap cache rework dropped, patch 2 gives
-hibernation slots their own swap table entry type so that check covers them
-too, and patch 3 drops the guard and the reclaim in
-swap_free_hibernation_slot(), since no such folio can exist any more.
-
-For any of this a task has to hold hibernation slots while the system is
-still running.  The in kernel path does not, it allocates, writes and frees
-the slots with everything frozen.  Userspace hibernation is different.  The
-process writing the image is not frozen, and SNAPSHOT_ALLOC_SWAP_PAGE does
-not check that anything is frozen.  The swap device must also not be
-SWP_SYNCHRONOUS_IO, or swapin takes the direct path and never reaches
-cluster readahead.
-
-Tested with a debug patch generated by AI that counts hibernation slots
-through the swap cache paths.  virtio-blk swap, page-cluster 3,
-SNAPSHOT_ALLOC_SWAP_PAGE interleaved with MADV_PAGEOUT of a shmem region
-so the hibernation slots land in the readahead windows.
-
-                                unpatched   fix only   this series
-  hibernation slots allocated       2732       2732         2732
-  readahead landed on the slot      2731       2731         2731
-  admitted to the swap cache        2731       2731            0
-  reclaim found the folio              0       2731            -
-  slot left unfreed                    0          0            0
-  VM_WARN in the free path          2731          0            0
-
-The VM_WARN is the existing assertion in __swap_cluster_free_entries(),
-not something the debug patch adds.
-
-Changes in v4:
-- Drop the hibernation slot free fix, it is upstream since v7.3
-  (10d9012e83ef).  This revision is the three follow-ups only
-- Rename the swap table layout entry to HIB and reword its doc, pointed out
-  in the v3 review
-- Rebased onto mm-unstable
-- Link to v3: https://patch.msgid.link/20260811132209.2862708-1-youngjun.park@lge.com
-
-v3: https://lore.kernel.org/20260811132209.2862708-1-youngjun.park@lge.com
-v2: https://lore.kernel.org/linux-mm/20260809144559.2104856-1-youngjun.park@lge.com/
-v1: https://lore.kernel.org/linux-mm/20260806190636.446205-1-youngjun.park@lge.com/
-
-Signed-off-by: Kairui Song <kasong@tencent.com>
+Suggested-by: Pratyush Yadav (Google) <pratyush@kernel.org>
+Signed-off-by: Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>
 ---
-Youngjun Park (3):
-      mm, swap: only allow swapped-out slots into the swap cache
-      mm, swap: give hibernation swap slots their own swap table entry type
-      mm, swap: drop the swap cache guard and reclaim in swap_free_hibernation_slot()
-
- mm/swap_state.c | 11 ++++++++---
- mm/swap_table.h | 14 ++++++++++++++
- mm/swapfile.c   | 25 ++++++++-----------------
- 3 files changed, 30 insertions(+), 20 deletions(-)
+Changes since RFC:
+- New patch
 ---
-base-commit: 0ea6dc8c4a2192227ec25768625686b8fcd5cb09
-change-id: 20261103-swap-hibernation-slots-59f627f6d9df
+ drivers/of/of_reserved_mem.c    | 14 ++++++++++++++
+ include/linux/of_reserved_mem.h |  5 +++++
+ 2 files changed, 19 insertions(+)
 
-Best regards,
---  
-Kairui Song <kasong@tencent.com>
-
+diff --git a/drivers/of/of_reserved_mem.c b/drivers/of/of_reserved_mem.c
+index 0fd1683cba01..d67a2b3a4d44 100644
+--- a/drivers/of/of_reserved_mem.c
++++ b/drivers/of/of_reserved_mem.c
+@@ -621,6 +621,20 @@ static void __init fdt_init_reserved_mem_node(unsigned long node, const char *un
+ 
+ 	err = __reserved_mem_init_node(rmem, node);
+ 	if (err != 0 && err != -ENODEV) {
++		/*
++		 * The region was reserved before its init function ran, so it
++		 * is not ours to release. -EBUSY says the init function is
++		 * declining it for a reason that outlives this node; freeing
++		 * it would hand the range to the page allocator even though
++		 * something else still owns it.
++		 */
++		if (err == -EBUSY) {
++			pr_info("node %s init failed, keeping reservation\n",
++				rmem->name);
++			rmem->name = NULL;
++			return;
++		}
++
+ 		pr_info("node %s compatible matching fail\n", rmem->name);
+ 		rmem->name = NULL;
+ 
+diff --git a/include/linux/of_reserved_mem.h b/include/linux/of_reserved_mem.h
+index 49da515859f2..4bf32f80785c 100644
+--- a/include/linux/of_reserved_mem.h
++++ b/include/linux/of_reserved_mem.h
+@@ -21,6 +21,11 @@ struct reserved_mem_ops {
+ 	int	(*node_validate)(unsigned long fdt_node, phys_addr_t *align);
+ 	int	(*node_fixup)(unsigned long fdt_node, phys_addr_t base,
+ 			      phys_addr_t size);
++	/*
++	 * Returns 0 on success, -ENODEV if the node is not handled by these
++	 * ops, or -EBUSY if the region cannot be used but must stay reserved.
++	 * Any other error releases the region.
++	 */
+ 	int	(*node_init)(unsigned long fdt_node, struct reserved_mem *rmem);
+ 	int	(*device_init)(struct reserved_mem *rmem,
+ 			       struct device *dev);
+-- 
+2.44.4
 
 
