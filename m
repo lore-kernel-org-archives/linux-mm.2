@@ -1,79 +1,84 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60273606A326
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 16:50:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1DDA606A334
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 16:55:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=CtNTYGWH
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=c/ne9JZ6
 Received: by kanga.kvack.org (Postfix)
-	id 802236B05B4; Tue,  3 Nov 2026 11:50:57 -0500 (EST)
+	id B8E046B05B7; Tue,  3 Nov 2026 11:55:42 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7B3236B05B6; Tue,  3 Nov 2026 11:50:57 -0500 (EST)
+	id B65446B05B8; Tue,  3 Nov 2026 11:55:42 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6A22D6B05B8; Tue,  3 Nov 2026 11:50:57 -0500 (EST)
+	id A568F6B05B9; Tue,  3 Nov 2026 11:55:42 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 469A96B05B4
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 11:50:57 -0500 (EST)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id D1011A04BF
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 16:50:56 +0000 (UTC)
-X-FDA: 85394397312.30.192ACC0
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 756336B05B7
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 11:55:42 -0500 (EST)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 7B1A91C32FD
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 16:55:40 +0000 (UTC)
+X-FDA: 85394409240.02.D1B6102
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 206C920003
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 16:50:54 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CtNTYGWH;
-	spf=pass (imf03.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf28.hostedemail.com (Postfix) with ESMTP id C4ED6C0008
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 16:55:38 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="c/ne9JZ6";
+	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793724655;
-	b=U/GDGHM8Un6ER07rtNCIcK8jYhbLhr5T858uBMDhts3sbBI7LvFbS1DdP2zv8ANX7JlNLn
-	QkE6a/6kfgiQN5LvXF4urVhNgIjuWc3l8sCMl4Ic1lLRJg+u/qqEvphOdohWeLEmd42kNx
-	G8RUpRFBqpkIH7pnBQErhifdDTKLqs4=
+	t=1793724938;
+	b=UpOlT+84GzOvH/6tnfpQNh0Sx8HHemzj3VAdUqinpM/PlJjpRFo4nvGDzKfcdsCT1hWsXn
+	TfoJ9ePetTL8hJR0AaRIXdJQthclFiTAOGjHMaxwKkJShdf52QL1pxfoWDRKHqzEVAmlmz
+	8HuJ6yDMJ5tuK3Gduxp7/SEvfT3gouA=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CtNTYGWH;
-	spf=pass (imf03.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="c/ne9JZ6";
+	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793724655;
+	s=arc-20220608; t=1793724938;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=EtsuxpFaru5bCJVGsaTDOqLmkcEo7AgKuEWc5zgUH/c=;
-	b=WBHwTdH811KfNyHqJWHhzggaI4YP4tnqC6Ivly+cqv7F3faSXSKO8DnX3YdTuOBUMfehmV
-	hEghCDsDl1q1SiD3iTLaoX5pi1L8r5axjMypUSxSF6pNpN3Mh0oDW5RXkYt6SQm0nlflql
-	kHVN27hcNATqlR5QOzOb6TzA6DHH3I4=
+	bh=8YfZexZ1JYycRhSHeLVRER/xerbsZZLglZfGs4x8Tlc=;
+	b=M8I5L/4uOGn0qnUcT6DzblF7mfxO6fRbhiI7qFEVA7yUgZajQxQdgJWnAS0zAO0rxdOZ42
+	R6YsL277ZwWztgeBHF0DvqFph43jkg1RQV05XDXDWIb1zKklvFNLoHFlSx0B8NJ6K9UCsC
+	Co2YPVp4/dWO3Cs2LI4Cq9dbGMtpkqk=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id A017B609F9;
-	Tue,  3 Nov 2026 16:50:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 345BB1F0093A;
-	Tue,  3 Nov 2026 16:50:50 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 48A5B60A00;
+	Tue,  3 Nov 2026 16:55:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFBB31F000C1;
+	Tue,  3 Nov 2026 16:55:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793724654;
-	bh=EtsuxpFaru5bCJVGsaTDOqLmkcEo7AgKuEWc5zgUH/c=;
+	s=k20260515; t=1793724938;
+	bh=8YfZexZ1JYycRhSHeLVRER/xerbsZZLglZfGs4x8Tlc=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=CtNTYGWHPzRk14MitXVi1MzDjUGP5Rm6vsULElGy6l1XszG9eoY0hvO0ia8qJ+ERk
-	 hSoD0pQy+xuQeJvsDmlwJYaaot8dr1g69hDk/GtieK9SrkIuy6KbRU66IWza+63otD
-	 lURNrr8tHaShaZCvhubnoBBJG65sTdXacUiePyf+KTLieywfDCUNw3Rkkrx0HgYWz1
-	 /DQmm+heyD/iiwWLhBiilBhitBm3zwfIfW0lXVd7fG+qFMw98S/CTHPmLEgNPibZTA
-	 Y5xal+/1KVYPL3unucuzubdyh6mvUQYJnXW+CnYS+CbIFUsH76brKuClXLSPxtynvK
-	 t849VHMquTSsg==
-Message-ID: <bf910739-a85e-44aa-9f13-481e5b6c3336@kernel.org>
-Date: Tue, 3 Nov 2026 17:50:48 +0100
+	b=c/ne9JZ6JImyHkQVNBrOmaYf+pq+Dc1L6hkV9Qvgb32JqmLL0tRIDfheyHQhKFhs3
+	 xyHUpt33FhRGfUfyCa41jUM7K2bxIyoRC5v4Nj59XUeHVV+Stx+rJp8mdULx9o8kvw
+	 a1ejku2NyW6yatQu+Z4RkgSC5cDLvCJogCYZG+93FViEbPrajbY5yn6GVgkBlHWBoq
+	 2WU0Uiv0j9MJM1AHQFEeY7H2wmGjLn/K5CnazWecRhrDSus5D9Ao/7inwU5qIXD+Ys
+	 dSrrchgTP6ND/xS7zRF/gshnxLsm5zcmWVKybEWmcJ1vKUKvQn+kUnmQO0cvWk/5vU
+	 lCEgEzWsUgWaA==
+Message-ID: <1affac11-da98-40b3-8cc2-6e8374b5ab69@kernel.org>
+Date: Tue, 3 Nov 2026 17:55:31 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] mm/mempolicy: recompute automatic interleave weights
- on memory hotplug
-To: "Gregory Price (Meta)" <gourry@gourry.net>, linux-mm@kvack.org
-Cc: linux-kernel@vger.kernel.org, kernel-team@meta.com,
- akpm@linux-foundation.org, ziy@nvidia.com, joshua.hahnjy@gmail.com,
- rakie.kim@sk.com, ying.huang@linux.alibaba.com, harry@kernel.org,
- stable@vger.kernel.org
-References: <20261030161234.1505367-1-gourry@gourry.net>
+Subject: Re: [PATCH 8/8] mm/gup: batch contiguous same-folio PTEs into one
+ refcount grab
+To: Rik van Riel <riel@surriel.com>, linux-kernel@vger.kernel.org,
+ Yeoreum Yun <yeoreum.yun@arm.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Jason Gunthorpe
+ <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
+ Peter Xu <peterx@redhat.com>, Suren Baghdasaryan <surenb@google.com>,
+ Yuan-Hao Hsu <aa9736195201@gmail.com>, Christoph Hellwig
+ <hch@infradead.org>, linux-mm@kvack.org
+References: <20261102193026.3860700-1-riel@surriel.com>
+ <20261102193026.3860700-9-riel@surriel.com>
+ <fa017227-448b-468f-9797-33c02854f018@kernel.org>
+ <9d1572bd5e868d3c9d953aa5fae81967cc81ba55.camel@surriel.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -120,21 +125,21 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20261030161234.1505367-1-gourry@gourry.net>
+In-Reply-To: <9d1572bd5e868d3c9d953aa5fae81967cc81ba55.camel@surriel.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 206C920003
-X-Stat-Signature: srh7qfqgtwhz1c1oct43bj48ss9eci7d
+X-Stat-Signature: j779gu5ey9d35difpj1nb593rzby3q9h
+X-Rspamd-Queue-Id: C4ED6C0008
 X-Rspam-User: 
-X-HE-Tag: 1793724654-223364
-X-HE-Meta: U2FsdGVkX1+KSlboIbDezwhuB0SLMQYZHjggjj7INJpEZVFlI9pXyoRE7xx+8dOwGYwxz0dNgBlpO1qwXi7xJNJgynJ8wgC1CQgDvKYFuW7Vl3EQZ4qCsLL7P7fB3XmajG1N1/WsrG8LX9WTOOHcseJ4TFq2Q1KPWHIQQtVaCZNQCrZ9oh45wG2/Nrb4UAe/q/B0LCvqKqWphPHV2Z5zggdZ6J8vC3B0E8dyNQhp8EqZ2U6mGSCP61eUUuWn05Rng4l0TMLCJRYhpwL674q6r68frvDwy4MTfe0joaYE36WfEYFG/pVsel/omtdXGnttU5dHJu/BKy7Ddw+107ZRv2aonS+bZgwmIF7+Y7RZpJPhfjuIu1JMh0OqmvMmGkUBfVxqewZ8nvl9ZuEaHu3zeDhuyWo8cGCm585GSkm7GK8NrYUfc2VFAbbjA/pmG6WCREjr/FEMbU8X8bHAl0vJYdB2yhbbRY3zAKvXyqP9a3mchp6SoDwvwaMRj0ND4hqUXNfl7NRRzjCDHeHRkSuzto7icUD/SWkVS1sJ6fI8C5wx37a5CQkp7m2+KN5vqRdyaPx7G9F6TTsDjlt0qqrc6077gJUkcJVunGfsd8+GYfEuE+MaXBfV8THFEGOWg06WO0is+cvK3c1KfH/PHaaNdAxZuflW87/BlUvLcW+o2v/+p6IJja9qAMnWoQTdhGI3KF2FzNugYLuZvYqssjTttjujIZTP6XgZ0lQum7ndsOZrWL4BMjwiUyc7xy7UKymR4B8S4LIoHtU165r2C7EPKND7FthHA+SUp4uZJwcrw6tF1xKgdQsU/ytS3FulIjlQ8m1ztEXSvK3xXlF9/IvGXsDhvV0HL3XeNVFkRDtqOX9ogrEM90SCdDTEyL0bFg9Z5JczGeqpDWbz+Pd49PMlCBFQd4KRvJqoDnqcKN33onmuqxcoFI59Rt60r7/TnlfPYtNz4gFd9oN9MaS4tJF
- VJT9T4xT
- AaLv+7J0HnBmvdEvkH9eLb4+d3cZAzZSApSWQB430MhrO76V2p9Me0DidtgEXHyOOgIrUpuVQ7EsCbT+nlp1+cCe6azddTeJk35j/vhkxWljs7wdSdP0Pojpqns+8/x8qiYxA4aPO3NxXtaRDq1bhwdvfrcMIqMK0u+pYwsbJ3LeaETED8nBuNKMQ6rvgKJgFvPwqnFpdpebwnWnmtOPXJzMwdLLaM5itunRv60CIXOadKKvvIZXWFCkOrjlKMP1jV8Eh5bnSR/hzfeLa+ULLblXFGnCpx8WELWjfgL8EtG8LWhknyxVKWaBMbnKLxH6vB7JkC1ZbM+Ork/TQqfjQSVgyBQErTG2SbHUmZUxqFJag95yqd3yFpaoDVLNeatftvVPNlksvv5Qll6Zj6atqVcE8InQF5FxvhTCa
+X-Rspamd-Server: rspam11
+X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
+	autolearn=no autolearn_force=no version=4.0.1
+X-HE-Tag: 1793724938-569601
+X-HE-Meta: U2FsdGVkX18Ax+plj4t1N2CFFrJRmKxJO7IR8gpLZdNms0CtRkUA9kAdS/mNx1IVyY+BWh7bT7WmcYq9JpkcSTrsPhfFDNXapmsy7fRM0qJgnIq0Rs3cLWIWim5X4kCuvYffu6BiKMfTk6IreEl3jkRFg7zvKQSLjaUPwh9Rflie5fBF+dS7heQMvQt3PjarAyJUtQRVAx6vO+UnvHxkebDu2WMxNdeAk6bYrvkG2CoKfje5d8a8p/tskiY1jqpaD/qSlRn6VTLfQEPYe4mePiTuRqvzSaQXIg4QBX/kHZNNOP3mrANReTIM/GG5aKiC6kobL8chMptofgGewrIaLZwupfSESjne4O92zKeySxtOoGsHRm18sW1g9/eU7SW0Lk3v1gT6Ik+fSW1GqMjZSsFV6OhwnFALVJtfSk5sW5ElmInEXxtGxpWweNRsJU4Tj3AhkpDWm1CyGt1FKW3mOd/HKVQ0n5dloyjYZycCvleCVHLgNqbZn47Tf1cFZ8K+b2+OoWOCj/IlrwU2LysBUeJ+Dqt7EZQSubt0R0UcuXY7x6mEYi59qmC5MV6y99f9cxBER9KH2HiKuv6vybt5bklm37vW8K+Cgiw74b5Ne6W0qHDlMmucZLfdL79HiKSWRd1JU6geLlmw0EtHvbNowKGsmsUubc96T2E6nFJdleIuesVJVMOvBcuxiRY2WfWjC3TcsRMGRpA/SlXKdgSVm1uuN6G8p2riP/damkAsy/XqiiOCkCQLIDITh/w3iU2WdQv5ywtz75nUJEeNXQFpg8XQEC3jDVBUm9D2Kty3eZROT8ybjpBuaqpDQ9duq7LD/Gf9f7DyUWo+FY9jhYAeUYDdUEz27G5TPR3fS1TvgCavZoHzfbg1FpjbD186Tj/9cbOxg1Nuf7pg63eyRjoZEtpOp6vriFddRsBm5TJIsLnWJWGpUOG60OaWBwRIYLFwRHBSkTrbsqQG9kAXbOa
+ HFm2JU/M
+ C7/U8oecMVdeTgAfuevZC2ev5yPwYgmH9VCn/EzsUHGBix14UJM7rWhg1d8ziER5fiQpMnSiJ9IlbiHsImQ8+zhOBZ+jJBu8rr1RsVkBSbRU3lVGcwpQh1FrVmUECDQ868XRpOWNINTNGduIm72GCPh4DocXcHCeUVOcLImORM+nx8IpCw3XwqKtxD/mKGFe4EkJcgSRhLfhRA3S/lTQCxPjru0Zb0MX2uhBWLe3Y92UxKk3mKMnlo0UnLvcc1yNhWrms
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,49 +148,51 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 10/30/26 17:12, Gregory Price (Meta) wrote:
-> In auto mode, weighted interleave derives each node's weight from its
-> bandwidth, reduced over the nodes in N_MEMORY. HMAT and CXL report a
-> node's bandwidth once, when the node first gains memory, and nothing
-> else on the hotplug path recomputes the weights.
+On 11/3/26 17:42, Rik van Riel wrote:
+> On Tue, 2026-11-03 at 09:35 +0100, David Hildenbrand (Arm) wrote:
+>> On 11/2/26 20:30, Rik van Riel wrote:
+>>>
+>>> +/*
+>>> + * Return how many PTEs map consecutive pages of the same folio
+>>> and can be
+>>> + * committed as one run. Always at least 1.
+>>> + *
+>>> + * The write-fault and unshare checks in gup_lookup_pte() are per
+>>> PTE, but a
+>>> + * writable run needs no repeat: a writable anon page is
+>>> exclusive. A read-only
+>>> + * run under FOLL_WRITE or FOLL_PIN does need the per-page check,
+>>> so it stays
+>>> + * one page at a time.
+>>
+>> That's a clear indication that this needs more work.
+>>
+>> I'll try to get to it soon and see how it could be done in a cleaner
+>> way, likely
+>> it should be based on top of the gup-fast series where we will have
+>> helpers to
+>> check for required unsharing of multiple PTEs.
 > 
-> This can result in a major skew in distribution and overload tiers
-> with more data than their respective bandwidth can support, resulting
-> in a performance regression.
+> I'm all for sharing the same helpers.
 > 
-> With HMAT bandwidths of 100G for nodes 0-3, and 50G and 25G for kmem
-> nodes 4 and 5, weighted_interleave/nodeN reads:
+> How would you like to sequence things?
 > 
->   event             node 0-3   node 4   node 5
->   node 4 online         7         3        -
->   node 4 removed        7         -        -
->   node 5 online         7         -        1
->   node 4 back           7         1        1
->   Expected:             6         3        1
+> Do you prefer to merge both series separately,
+> and then get a follow-up series that merges
+> the helper functions?
 > 
-> Toggling auto off and on generates the correct result, but we should
-> detect this and fix it during hotplug. Recompute the weights from the
-> recorded bandwidth whenever a node gains/loses its first/last memory.
+> Would you like Yeoreum Yun and me to combine
+> the series, merge the helper functions beforehand,
+> and then send you one larger, combined series?
 > 
-> The notifier cannot fail the hotplug, which has already happened, so
-> warn once if the new weights cannot be allocated. The next recompute
-> starts from the full bandwidth table and corrects them.
-> 
-> mempolicy_set_node_perf() now only records the bandwidth and calls the
-> same helper, so the bandwidth is kept even if allocating the new weights
-> fails. wi_state_lock is dropped between the two steps, which should be
-> safe because racing writer simply causes it to run with newer state.
-> 
-> Fixes: e341f9c3c841 ("mm/mempolicy: Weighted Interleave Auto-tuning")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Gregory Price (Meta) <gourry@gourry.net>
-> ---
+> I have spent enough time in gup.c that I would
+> be happy to get rid of some more of that code.
 
-It's a good idea to spell out what changed (and why) to make review easier ;)
+My plan is to get the small series for gup-fast ready, stage that, and then
+build on top of it.
 
-@Andrew I can pick this for the next merge window, or do you want to merge this
-through your tree?
-
+By then I should have been able to dig through most of your series. The cleanups
+can stay part of this series.
 
 -- 
 Cheers,
