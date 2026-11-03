@@ -1,98 +1,108 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2B0A606A326
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 01:00:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27938606A324
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 01:00:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ipTdl5kK
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=BgGv8lJO
 Received: by kanga.kvack.org (Postfix)
-	id 6DF3D6B05B8; Mon,  2 Nov 2026 19:59:56 -0500 (EST)
+	id E34CC6B05BF; Mon,  2 Nov 2026 20:00:50 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 68FF06B05B9; Mon,  2 Nov 2026 19:59:56 -0500 (EST)
+	id DE4FA6B05C0; Mon,  2 Nov 2026 20:00:50 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 558416B05BA; Mon,  2 Nov 2026 19:59:56 -0500 (EST)
+	id D21E36B05C1; Mon,  2 Nov 2026 20:00:50 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 36E466B05B8
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 19:59:56 -0500 (EST)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 4DF9A14027B
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 00:59:54 +0000 (UTC)
-X-FDA: 85392000708.01.F86862D
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf31.hostedemail.com (Postfix) with ESMTP id D16C720002
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 00:59:53 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ipTdl5kK;
-	spf=pass (imf31.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id AA88A6B05BF
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 20:00:50 -0500 (EST)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 299B51C2A4A
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 01:00:50 +0000 (UTC)
+X-FDA: 85392003060.08.12EDE70
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 528591C0005
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 01:00:48 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BgGv8lJO;
+	spf=pass (imf20.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793667648;
+	b=vXnD0hjyUlhbw5p9GyRmP87r5ICKghDUK4GEoWyxcB5prPvi8PtgsH40rUqcXhyP5CRYbh
+	gvMmhaEGZaISjPvcciRUia449rChjG6P6n7n5nbgWAG26S1TBqGkOdYwkmSYUY91mA9GbY
+	bqIPT6C4ih7l3DVkdFKssYxTb1XUqig=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BgGv8lJO;
+	spf=pass (imf20.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793667592;
+	s=arc-20220608; t=1793667648;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0jLh+kpsC+u5aQYQiS3dDnOCEe0oaZ2yOrv+7RYFpbc=;
-	b=2CZ2Mac5ni1eTPAqP68i1/b0acvxpyY+ClfvR1pU7kmPiuyhjwLk1vn+Gewg199BwTIhkQ
-	OIxcsx5/GAb+1NyQ8GY3o7F32akcsUAI3giHqgRv8opz43+tafbAsAHw7PSOjyDjkxfV/H
-	SSmZBfKK/WEpV7VjhemuZbekciVmjmY=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793667592;
-	b=mv2i7GGHZeczIxi/3f5H96tupd4uGpskw5NGkYQhmPFrhrV/Uew9FDks0xfeJDyOuXh1vs
-	d/IyKigBqDMKbWH/W9dOXtIkNCCayqfpSuQNW1ViodCjPdCXnkkG3/OBWVth64OkRlD87c
-	YLnQbSqTQyuOjzYlse6YHHUYfaIhraY=
-ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ipTdl5kK;
-	spf=pass (imf31.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=4HQ3Qgd7i2dVNUMZQt7YfeVDy1gbBVil90g1I4doNFE=;
+	b=QXZZHlvN8QZFrgElDCCQNmfzApPc06G+9Z4WgCoxW+eP4uilX7LLuHXmL084TLBh6WSHs1
+	nUNChi2tPu6lkez+XoR5e9TjMo5wQz+d27j4eD34y0flvihrh7EPzHiyqO1J4o9n/GkMWs
+	cAO3i2qoTnfgVaj0HLC4J7Nscti32iY=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 1769443F67;
-	Tue,  3 Nov 2026 00:59:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94E161F0093A;
-	Tue,  3 Nov 2026 00:59:51 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id D603A605F0
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 01:00:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DCF31F00A1C
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 01:00:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793667592;
-	bh=0jLh+kpsC+u5aQYQiS3dDnOCEe0oaZ2yOrv+7RYFpbc=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ipTdl5kKhCfP7SX3k7MeP8+CdBr96NVy9euQ7+2RvQHPRvRtjpnDQ/GpY3Y+5Ao+I
-	 tln0MTWMcVnjkWzzw/1iqHZdSz9b1LE3XK6wsGV1UuRQbladcQRXMXM008z7VYdhey
-	 eaHUgBx50G3agLmZ6Iyl9K7xmKaec8ST41TSz0/qMzOoM8cRRk1xHzNGjnHSwKaUWm
-	 /JLZ1xh3nhjfPPhBBQVLdpvdCPTHdSP0uUmfKr5AaAIMdmODrX/21sWq2SytfSJ0qe
-	 OMzWRC6L/JUpAJI3bRTwBwa2esgacwR5C1FTI6HYhO8scdxKIF5ydFbeT9gi3lMG4r
-	 RZAJDXmcFTqmw==
-From: SJ Park <sj@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Aveline Noir <jm5905938@gmail.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Manuel Ebner <manuelebnerli@mailbox.org>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	SJ Park <sj@kernel.org>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	damon@lists.linux.dev,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [PATCH v2 7/8] Docs/mm/damon/maintainer-profile: fix subject-verb agreement
-Date: Mon,  2 Nov 2026 16:59:37 -0800
-Message-ID: <20261103005940.91432-8-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20261103005940.91432-1-sj@kernel.org>
-References: <20261103005940.91432-1-sj@kernel.org>
+	s=k20260515; t=1793667647;
+	bh=4HQ3Qgd7i2dVNUMZQt7YfeVDy1gbBVil90g1I4doNFE=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=BgGv8lJOHVEgop2gWiFbPShFWku0TCjm6MwzTYsrxTPTGPDILDl6x5fU6Q1UWKT2e
+	 MQNOpygshQ0/ofvQ10Q3ccG8DqHWbje392YnCG1S2tnxMi4Qgo9vaUQ0HSJQwxuM8J
+	 y0xc1HUsR9GiC4fAohVrc7jYr2h1hf00pZMGkMwuYMMHLCt+Xph6T+SGT7l5HfBv7w
+	 cm9UFAAqtTlUWYTt2GeUfwqpNZfNMfIiRfm4dwTsjyoqjBWPjFPz1ARLIBqrD4VGn0
+	 N0c4T5/GkF4pzmYOmcEubV/bs6fvsOa2gFk8mi7KeO4USRlFk5UTNJ8gCZPkVH5QxO
+	 mzDoMkXY1sn6g==
+Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-c4ced671398so51805766b.3
+        for <linux-mm@kvack.org>; Mon, 02 Nov 2026 17:00:47 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AKwUvBzM5jtJKUtmkjOOybxTTtNAgspq3MOIF0N3NEhL4nQ8BK4ENk7Z3fkPrKnyjng5UwJgrPtv91xojQ==@kvack.org
+X-Gm-Message-State: APuU4Z9fVmcjuNSuCGzFIo67a5OCa+lHv8dUoALvmeZNpmZIqc/bBnPy
+	CjY5oMXP9xfiXL4vVNV+A0DclYyTSvq0dV4eRWsLrSdMDhHqrjiZKMN4KZCbqNpnv36cv9vwIoP
+	uc3XGYnmPRMcSsqV7BSZPteTSsWWTpRc=
+X-Received: by 2002:a17:907:7fa5:b0:c40:eb1a:4c8b with SMTP id
+ a640c23a62f3a-c4ca7a6d245mr897957366b.29.1793667646429; Mon, 02 Nov 2026
+ 17:00:46 -0800 (PST)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam09
-X-Stat-Signature: 8mxe85qcuzwi4xj7pmrupt3akgrmzhbk
-X-Rspamd-Queue-Id: D16C720002
+References: <20261102225030.2743129-1-joannelkoong@gmail.com>
+ <20261102225030.2743129-3-joannelkoong@gmail.com> <CAO9r8zP87zRuoFqeKFcAJoCrOG8M+7HCtX6hvxwdLzuHUXD0Gw@mail.gmail.com>
+ <CAJnrk1bv-P_TQztAGiHYdfg=5hbj4GREML2M0Uxp5oC1R9J-Mw@mail.gmail.com>
+In-Reply-To: <CAJnrk1bv-P_TQztAGiHYdfg=5hbj4GREML2M0Uxp5oC1R9J-Mw@mail.gmail.com>
+From: Yosry Ahmed <yosry@kernel.org>
+Date: Mon, 2 Nov 2026 17:00:35 -0800
+X-Gmail-Original-Message-ID: <CAO9r8zMvofnW-6OsiasiocOBqoRbZuD71dp3RQE5746YGzamNA@mail.gmail.com>
+X-Gm-Features: AclHuK-Nd_GMyDmaw4iY6A-BMZy3XZnuaOJfkxR3X8uJTpecvIovrO_sqKDwyjY
+Message-ID: <CAO9r8zMvofnW-6OsiasiocOBqoRbZuD71dp3RQE5746YGzamNA@mail.gmail.com>
+Subject: Re: [PATCH v1 2/3] mm: memcg: read root lruvec LRU stats from the
+ node counters
+To: Joanne Koong <joannelkoong@gmail.com>
+Cc: akpm@linux-foundation.org, shakeel.butt@linux.dev, hannes@cmpxchg.org, 
+	mhocko@kernel.org, roman.gushchin@linux.dev, muchun.song@linux.dev, 
+	nphamcs@gmail.com, chengming.zhou@linux.dev, sj@kernel.org, david@kernel.org, 
+	ljs@kernel.org, linux-mm@kvack.org, cgroups@vger.kernel.org, 
+	damon@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: osjcmcnbjgg8izzgkqqedaioce17f8cg
 X-Rspam-User: 
-X-HE-Tag: 1793667593-984109
-X-HE-Meta: U2FsdGVkX1+5jFa2FXPeHKySvtiiSFHDPzATC9AiDP4qKj9Dd3x9G7t1OV1jWiHpQiWDmjtI9YIhEUlpHZhleMU6l3lF8nnZf6fKUqQusZE+yuGV0vOq2AZwjj6agOL6NgSCOTpKjW5krowbPuzPhR/myAIV0RjNsqBR9SFiM7qPY94JGmu2gR7p+TVvf2wOQJRmNLDwwOXY2PdpD4Jpa6vtnwz7EAsPUtYzpYp4xXCcChv9tVsMPMpuGBFaFDHXq8ekrwodZVpgjfpnmnHOq618fAfk9BM9JD88C/jAgwSml3rDRcrwQrfwW1bp95QpfAGfib/VAtFBzdxrmBmZX5p+hBYZi+ryFsCwe73/MhLU0TGHcilTiriaqR6wBnMPcsdN0pzFBnSSxhxTDDUR/LhSGvau2SNiZWhbPC9cSgunmMjhFwykYGirbwMAlZYM52KpobUj3kSKmQqL1qomiuhR4SxLjJhmNH/hhxilON3GPNdZxKdSkkM194xF2cbD6i9J5XMCjOZcIPt0ecTee5uq4ituLrCM5R0GVrI+aUNrN/KLe4ZLXIXbnp4Au7Mhn4v+fRHfcxAc4iYT/9cZbS3Ez+bLl0sWvRImjVKFzbQciHO6wvDrPdWRrUiTuC0GwahGDl10ECuAi9TxDUecsVKwxzvrTkmqBuAW85N1Fl0VIGj+d3fwu1vwrpIJUd4iLaBPKpFH6y4NJJmeC5jra6up1Y8Eeh/mHyrgYLXr0YUdqHBZbFVx/fvyBnTnuqRbS60belf90qRG/PcWdke7LQg6/KCgRp6oKOTPjiEKBj13Gvs7NzQBgwTw3uREbz0DUC3SmGftfprkfdlPBk6peziTvDT6m5A5No+R54VebTmDwf42exYCEQS+dWSfCbgUqsyQeJhZdAhmwRCLkXjdNbv/IRfBj+HeZxr/2cwjQi3UerRvGb997RQL6IcoHk867lf4DHc1RSNoYf5+NtA
- /YS82XZk
- LJyMeRilfnLcz/vbpbY3SFoKodbrvow5rR6iQF/ivjmUEpwQgN8CD2VJFREBHmMXKZ8QN+xICvS0qifMLkTLTwi6n7/vCHh1SmrQZbjJfAW9vaiw0e6mU75kd6hRDwx0oC9FLWeNUh60x48u3fdpsFTORn6kozNR6B1bAVQUwsC2qDYoI4OiYNfjhuyOyngzSrgaA4h9xt8aJdWlTVx7lRbbuXx35+JmuQaVi5lxeDYOnMpntmZqObDTIUZGBf+1pKfd07UqJXnJmLc5OTXJyrN6mNKRCmCfp3gj1YqesgkFMdif9l9D6qrfX330IaStOn/RMWX52sfj4rP1C/1FudZTGx6GAVyz+yQLcJ2Wj58OJH6MhJa3j8g4IgasfUcOu/tgRZUwNBXjW1AN5PFDEiiOyb5JxEKxU2/p7e8qvpYBwlpbSjIuNB3nZE6RYFfW5lo24DB9s/tsCa0/AQXhDXPn+EF7bE+2vlOOL20iJWDOdtZ1u8QZCfUO79g==
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 528591C0005
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1793667648-479698
+X-HE-Meta: U2FsdGVkX19xE4JQ6kYZPyXtLSYsPF/NrRNl2RL1qEcTm9f3bvSB0T9CP/xiIlp4uoX6PaOgZHKK0ARgXYCQV/bEwCrvcXqeM8LJQsLERwVwJzV1bIatGcp+tV1FvhvoYEbL8gtWVk/ZouyMIuLLjVvIgDc0ntc5nPdrZxm1m6iTeDLMXP/1E8kNJznKfrWXBBvtNjyjWbJzwTUewSq0KdjBjmJgrIKCcJmKbv9drbvb8wP6mS2rjY/boviX+9oZKt+nN/rRixa0GFOXOZ2Z2ZFhVd5v/a92EY5w5GIpg1b66VGucqC38pAlgh0Nn8AUSyvWlUHB3lIsvivs2ucmSyPq6TLjOg3PgOZBVKzk9CLKqMRVadkW3t1BwLnMo2n6HAN2HpLbiyByGnRayu0QYWzq4wDs1bX84R6dco+4xq4dRD2PVuFWjpNm4fvMHguFC+mdPTrfrCveqsNpI7KMu5JZt3QP7EtBkBF6bIDjlnnrFzmUE9C4ZXW6NaqkWQ0jbR5k/V8VHGkwfj5G9TZhyPlGFT6rA+MkwWG2zmpmE+vodzQQ9LsdhpT6AQBeDLMLo7rqSN1sy5IUymtMCXcrj1TL+DvFnxum+dD7UZ/fe8ebRYRFFDJBCSZIvrgL5IrDOIyPCJqUSDhh/2lxLNeXVQXXhCaUBg/TER/BrH4p+my8ziYxeQAS09sAMF/L293eQ23nfAQCfCHpij70/yvL/XHB2pcCVOt8MvVD00MnTu61QsT31fetj5w3WlQ2jVBhT0Zspv/i72S3xzeuCOMpz+r4hL68ycHCVHFmbTQ956v59KTXxb3sHYXzEhtkMA28V9IGHjkcM8oCzzb4MWa8zaB1pKSNExNQcPhpcCa1blFrxH7XRzesYvTdTrb7+iOnVUfJvlp7glFw8JD0myM9EfduDfd5XL3W4QhW+ndwdRZ8p/EAc7VqU31xOp/KF5AiZmuzWs0ypSHwmkfL04a
+ 1nSAwLQL
+ U9zmdlytH9NUYO4nOkGfffdCY1S3sx3aTrVTOn7zq0Uv5c81TWGQEwQIOq1JKhvjFe9NZi8RcY/5PrrufQ0r1GTvJTNEysPLHCC6y9oRMI0Zid7Q+iO588e3i7QSiayHC4bqX8pEYs8ulg5m6Pi630K3PqMD7kmze/aNC5vT+bfb/RXu6tJffRmtVH380meONuIwsKoUkbSOQp5XOe2Q8k1xg7GQmk9DVZyuEBrCe8J7OpbdbtxxqrrywFU8BsPFyxOT54mQyDG7DtU/RTKra0wf6Nwm5Bh5PHedexJjUPoFy0l0gF80FVwNT5LuD+RbOTBKQFNntC72bdsE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,34 +111,102 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-From: Aveline Noir <jm5905938@gmail.com>
+On Mon, Nov 2, 2026 at 4:34=E2=80=AFPM Joanne Koong <joannelkoong@gmail.com=
+> wrote:
+>
+> On Mon, Nov 2, 2026 at 3:29=E2=80=AFPM Yosry Ahmed <yosry@kernel.org> wro=
+te:
+> >
+> > > diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+> > > index ac6c43ea8c5a..938843346571 100644
+> > > --- a/mm/memcontrol.c
+> > > +++ b/mm/memcontrol.c
+> > > @@ -587,6 +587,50 @@ unsigned long lruvec_page_state_local(const stru=
+ct lruvec *lruvec,
+> > >         return x;
+> > >  }
+> > >
+> > > +static bool lruvec_is_root(const struct lruvec *lruvec)
+> > > +{
+> > > +       return !mem_cgroup_disabled() && mem_cgroup_is_root(lruvec_me=
+mcg(lruvec));
+> > > +}
+> > > +
+> > > +/**
+> > > + * lruvec_lru_page_state - read an LRU stat of an lruvec
+> > > + * @lruvec: the LRU vector to read from
+> > > + * @idx: the node_stat_item to read
+> > > + *
+> > > + * Like lruvec_page_state(), but for the root memcg the node counter=
+ is read
+> > > + * instead. For stats that only track memory charged to a memcg (LRU=
+ sizes,
+> > > + * workingset, rotation and reclaim writeback counts), the root memc=
+g's
+> > > + * hierarchical value equals the node counter. The root memcg can ju=
+st read the
+> > > + * node counter directly instead of going through rstat, which requi=
+res
+> > > + * flushing. Flushing the root memcg flushes every cgroup in the sys=
+tem.
+> > > + *
+> > > + * Use lruvec_page_state() for other stats (eg slab).
+> > > + */
+> > > +unsigned long lruvec_lru_page_state(const struct lruvec *lruvec,
+> > > +                                   enum node_stat_item idx)
+> > > +{
+> > > +       if (lruvec_is_root(lruvec))
+> > > +               return node_page_state(lruvec_pgdat(lruvec), idx);
+> > > +
+> > > +       return lruvec_page_state(lruvec, idx);
+> > > +}
+> > > +
+> > > +/**
+> > > + * lruvec_lru_page_state_monotonic - lruvec_lru_page_state() for del=
+ta sampling
+> > > + * @lruvec: the LRU vector to read from
+> > > + * @idx: the node_stat_item to read
+> > > + *
+> > > + * See lruvec_page_state_monotonic() and lruvec_lru_page_state().
+> > > + */
+> > > +unsigned long lruvec_lru_page_state_monotonic(const struct lruvec *l=
+ruvec,
+> > > +                                             enum node_stat_item idx=
+)
+> > > +{
+> > > +       if (lruvec_is_root(lruvec))
+> > > +               return node_page_state_monotonic(lruvec_pgdat(lruvec)=
+, idx);
+> > > +
+> > > +       return lruvec_page_state_monotonic(lruvec, idx);
+> > > +}
+> >
+> > Why not do this directly in lruvec_page_state() and
+> > lruvec_page_state_monotonic()? They already fallback to node stats if
+> > memcg is disabled, why not do the same for the root? Are there cases
+> > where the node stats are not the right thing to do?
+>
+> Hi Yosry,
+>
+> Thanks for taking a look at this series! I don't think we're able to
+> do this directly in lruvec_page_state()/lruvec_page_state_monotonic()
+> because I think there's still some places where the node stat and the
+> root memcg stat are not guaranteed to be equal.
+>
+> The stat I was looking at last week was slab's NR_SLAB_RECLAIMABLE_B
+> and NR_SLAB_UNRECLAIMABLE_B where for those, the node counter value
+> can contain memory/stats that wasn't actually charged to any memcg,
+> which I think means for these cases, the node counter values can be
+> larger than what reading the root memcg rstat value would give. The
+> functions I was looking at were account_slab() and
+> memcg_slab_post_alloc_hook() where the logic adds every new slab page
+> to the node counter but the memcg stats only get updated if specific
+> criteria are met (eg the cache had SLAB_ACCOUNT set or the allocation
+> had the __GFP_ACCOUNT gfp flag set and the allocation was not from a
+> root memcg).
 
-"The DAMON maintainer usually work" should be "works".
-
-Cc: Jonathan Corbet <corbet@lwn.net>
-Cc: Shuah Khan <skhan@linuxfoundation.org>
-Cc: Randy Dunlap <rdunlap@infradead.org>
-Cc: Manuel Ebner <manuelebnerli@mailbox.org>
-Signed-off-by: Aveline Noir <jm5905938@gmail.com>
-Reviewed-by: SJ Park <sj@kernel.org>
-Signed-off-by: SJ Park <sj@kernel.org>
----
- Documentation/mm/damon/maintainer-profile.rst | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/Documentation/mm/damon/maintainer-profile.rst b/Documentation/mm/damon/maintainer-profile.rst
-index a7c1352339378..c482690320249 100644
---- a/Documentation/mm/damon/maintainer-profile.rst
-+++ b/Documentation/mm/damon/maintainer-profile.rst
-@@ -63,7 +63,7 @@ management subsystem maintainer.
- Review cadence
- --------------
- 
--The DAMON maintainer usually work in a flexible way, except early morning in PT
-+The DAMON maintainer usually works in a flexible way, except early morning in PT
- (Pacific Time).  The response to patches will occasionally be slow.  Do not
- hesitate to send a ping if you have not heard back within a week of sending a
- patch.
--- 
-2.47.3
+If it's only the slab stats, it probably makes sense to special case
+those instead of the rest of the readers, right? It would be nice if
+the default behavior is reading the node stats that doesn't require a
+flush.
 
