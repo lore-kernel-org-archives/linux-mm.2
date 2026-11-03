@@ -1,127 +1,122 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13EF7606A31B
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 21:36:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1873606A32D
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 21:54:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=kIXyiyO/
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=jfGbh/HO
 Received: by kanga.kvack.org (Postfix)
-	id D734C6B05B6; Tue,  3 Nov 2026 16:36:27 -0500 (EST)
+	id E0AE06B00EF; Tue,  3 Nov 2026 16:54:34 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D4B1B6B05B7; Tue,  3 Nov 2026 16:36:27 -0500 (EST)
+	id DE2846B05B1; Tue,  3 Nov 2026 16:54:34 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C60F66B05B8; Tue,  3 Nov 2026 16:36:27 -0500 (EST)
+	id CF8186B05B2; Tue,  3 Nov 2026 16:54:34 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 9FD786B05B6
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 16:36:27 -0500 (EST)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id A273414053A
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 21:36:25 +0000 (UTC)
-X-FDA: 85395116730.14.0138EFF
-Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 0ACCC20003
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 21:36:24 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b="kIXyiyO/";
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf31.hostedemail.com: domain of olsajiri@gmail.com designates 209.85.221.47 as permitted sender) smtp.mailfrom=olsajiri@gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id AA5176B00EF
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 16:54:34 -0500 (EST)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 47630140532
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 21:54:34 +0000 (UTC)
+X-FDA: 85395162468.27.669007C
+Received: from mta1.migadu.com (out-132.mta1.migadu.com [95.215.58.132])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 1BC73140006
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 21:54:31 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="jfGbh/HO";
+	spf=pass (imf09.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.132 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793742872;
+	b=BPOwIkMNLSjSU0z7su3fwOuniesUiqh8yomiHei9Ve6bg2TZoPBDpH+bmx+9aBgjNDPt9m
+	LnKHhTzDjwShBtpw33Nd9FnUu4lVBgKp9P3at+jw7xm7g2K40ssNyH2zt1QPA50KXziYrV
+	XMhELiUjSVFqDIBkckTYGs1sx0pdq30=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="jfGbh/HO";
+	spf=pass (imf09.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.132 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793741783;
+	s=arc-20220608; t=1793742872;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Wiq41JYzn0rdt5xwEVgdCUgOHpCm+f2EZTVSBBYr7nc=;
-	b=j4h9inOXlq0VUyZhTO+OCMs08FxSriTM39BsQoT0WzHIRESL95CR4yIm+bZynobzT58WJK
-	uhgnqrI/yywVtLrfh2ePBbtVWYi6LjvXgYSCP4xS2c3200dIzHl/TSKHJeHlm3DSMW4qV1
-	hXbAIOrmTYPxOxF3xfWs4ZqmNTPdzy8=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793741783;
-	b=U1RjzGCg7AOnRE+vL1bnoOX6jMhGVG3kzYRtGs163OyV6ykz/zdzrZaI43rGi4aqs/7KX2
-	5Vwh+7bNiYrqioBRlHtTbK+ta8WpVZH0+UyzpOUwie2wI26guwMoEaJwyfWduAM/22KPd1
-	TIWodOYE8cx1V06JW3/KpG8pSqYadkk=
-ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b="kIXyiyO/";
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf31.hostedemail.com: domain of olsajiri@gmail.com designates 209.85.221.47 as permitted sender) smtp.mailfrom=olsajiri@gmail.com
-Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-48fbe12cfdcso29381f8f.2
-        for <linux-mm@kvack.org>; Tue, 03 Nov 2026 13:36:23 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793741782; x=1794346582; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:date:from:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=Wiq41JYzn0rdt5xwEVgdCUgOHpCm+f2EZTVSBBYr7nc=;
-        b=kIXyiyO/7KinOo7nZXZmDHz2wpAEiFYBewJi9Wr9oFSou7MxGa5UTn35S6losrWtzp
-         F7z99YS25R9y/p7HGyGBPHKc2zmVwR7RSppLomvOUzb82zOVqmj7rQE/fyoPaNFGPiTL
-         aBIp3nX+Pj+MKz2IGBL8NqTELiWwc3XzhejFp0rOeszNLAynPpqwYhi6MGdtpPJqAAb1
-         c9fBYfZW5Vmq9gGjjA/UaXf4E44eAEYmhE0C6HQueF9WCmbrCoAgsVvGM0Op7c3rlW/h
-         /GH8flPtNct2TCO3IaABfWrz0OSjW5BQNRvRsjPrTd/NIzjTh/iWpHllHV1hUrWS7G9p
-         yi+A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793741782; x=1794346582;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:date:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Wiq41JYzn0rdt5xwEVgdCUgOHpCm+f2EZTVSBBYr7nc=;
-        b=nI0iBOfZ+OT5+/MV4VLordwFtBdMwN32YIUXJbp3a7UfPOvwq40hAjXefkf8ME93fl
-         ycOnyg3BxskE4LYDf8yHIzWyxN2dly59107JxEY/uS/HNsq0NE+7I4Jc9JiHycnhQu9z
-         YCgOYXCwgb9yjxItoez8DioGz8lcgNa6DYjMlFFFJ+PzifLJNT8LL7+VvMWt14JIFuFG
-         zfgiIPTTTqFRdk6bmAzgdVNYijD73NcJab2/ktzyWsFBWjcm0d0FS02xBt5CDhIMdlja
-         DsrWlq2+5ixuxT3/lamL9Vwp5U+PFem/mLiX7BSfFfhbJ2f4MooPqoskhvW3o6eYV5Fz
-         ljJg==
-X-Forwarded-Encrypted: i=1; AKwUvBwecudl5H3AtZjHHwj+itBkhiBvRK3i9mlOqVhxGAgtkLWwqerwzhNyoWjFLxRo/+BldYc89h07WA==@kvack.org
-X-Gm-Message-State: APuU4Z8jhA4eokCMnX+4j1+f+66x16nyynqdUnbu/tJCXAuNLqIJske/
-	IUJhL4Yz6nrVMMexRTyXwzA0seq9a02Sq0PbISLXvuvajk9rw995pFC7
-X-Gm-Gg: AYBFou0ib2y4qQvjTzcO/eeqG2OxoXE//hdIabutib+fta8xtvJLC/k7IiDLOyjYsiS
-	vhQ9ztqOW3CKEj2jXyy7Ld2bNBrAbtmXtLyMvl8BIn/oTzv7RWj+i7Rtufym4adFebpEMrrOEaX
-	+h6GOerifD5w2j5avext+169+fc3T0GJnjlPzlY55rVQvmKgTfLNUgfThOxdSqVrD0WKAnTqyoe
-	eVL8g07ZazkuJDNmkIwK2DgRzUoy6cuyR2Oqzozbr1qMuG/+j6Gn/khb0WOtRZ1uSFgGxtD1PO7
-	dlFRcnHYGi1tb+8LchLTWz1n4qx3dzxZwXwaPcgJrt5ZoqM3OMrtGNo+m3+6EBUqDoXiCTxBniQ
-	im21kYWdhAwhNo2ht8cbDg0wBcTn9UYbZEEKb/fefIyEQqESS51unGCJkDjCdPcPLaYFWlWGu0Q
-	VpOvVersLbeFuK9/ZhA1odfi6UsHQ1EU5Gp76wsuXd6cOnmQs4DWDi+vN07Pr5A6/YK0PypjnGt
-	BJubhf5MNxVo/rfdGDM0+wdhgAfxspgreLlMKTxB/muHdRIdekfmzZEEL6cW17l1rbnUtokxTnv
-	ddvg6Kf5UFGmER4=
-X-Received: by 2002:a5d:6f08:0:b0:48d:f877:3349 with SMTP id ffacd0b85a97d-48e6e4f8cf7mr30803501f8f.42.1793741782271;
-        Tue, 03 Nov 2026 13:36:22 -0800 (PST)
-Received: from krava ([176.74.159.170])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48fed0844e2sm120549f8f.28.2026.11.03.13.36.21
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 03 Nov 2026 13:36:21 -0800 (PST)
-From: Jiri Olsa <olsajiri@gmail.com>
-X-Google-Original-From: Jiri Olsa <jolsa@kernel.org>
-Date: Tue, 3 Nov 2026 22:36:20 +0100
-To: Alexei Starovoitov <alexei.starovoitov@gmail.com>
-Cc: Daniel Borkmann <daniel@iogearbox.net>, bpf@vger.kernel.org,
-	linux-mm@kvack.org, Andrii Nakryiko <andrii@kernel.org>,
-	Eduard Zingerman <eddyz87@gmail.com>,
-	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Federico Di Pierro <nierro92@gmail.com>
-Subject: Re: [PATCHv2 bpf-next 0/8] bpf: Add user memory kfuncs
-Message-ID: <aupT1C3SvA3Gxrkz@krava>
-References: <20261103075916.100050-1-jolsa@kernel.org>
- <DMLRZ4QCSGYY.3D2G6VQA28CBQ@gmail.com>
+	bh=pNIYfgovfeYUTnUWQVAULaUQM12WfGegAeKvV0ijU6k=;
+	b=pMcDUI9EQHsVfSkjBMFREo18aZyLpt0pMcRCAED+9NhwE8xzfUzS75o6r1ItFFKDFdrp+m
+	mRT1vvaN7E3KizznRixBUtn7mQirlOKC4AdWqB5/ZpURnGYMHMf3PHz/Y5VJB6IN8wvPBg
+	DJIWfvRm+zGEXKDTruhILD/hUVwXzN0=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=lzvO4MZjJaBVQmlohMoJ2wbpUm50n891PebbguUdryA=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1793742870; v=1; x=1794347670;
+ b=jfGbh/HOsOxsUSry2IPwFxi6NWyrWkFH+e42+sVp/RFdXSh06V1SmbSthalzB3AIH8ca9D66
+ vF9TykAblu8zQ2IAx8XCnn3bFD/jvEMWy2QIL/pPdATwExO3oGsf314SYjMFfA4ha1s0Ml1Lo0L
+ srd6w/fYsWxBAeHqu3MyTPE4=
+X-Envelope-To: linux-mm@kvack.org
+Received: by mta10.migadu.com with ESMTPS id 608ed53c19633f31;
+	Tue, 03 Nov 2026 21:54:30 +0000
+X-Mizu-Trace-ID: 608ed53c19633f31
+X-Migadu-Flow: FLOW_OUT
+From: Usama Arif <usama.arif@linux.dev>
+To: "Zi Yan" <ziy@nvidia.com>
+Cc: Usama Arif <usama.arif@linux.dev>,
+	"Andrew Morton" <akpm@linux-foundation.org>,
+	david@kernel.org,
+	chrisl@kernel.org,
+	kasong@tencent.com,
+	ljs@kernel.org,
+	linux-mm@kvack.org,
+	ying.huang@linux.alibaba.com,
+	"Baoquan He" <baoquan.he@linux.dev>,
+	willy@infradead.org,
+	youngjun.park@lge.com,
+	hannes@cmpxchg.org,
+	riel@surriel.com,
+	shakeel.butt@linux.dev,
+	alex@ghiti.fr,
+	kas@kernel.org,
+	baohua@kernel.org,
+	dev.jain@arm.com,
+	baolin.wang@linux.alibaba.com,
+	"Nico Pache" <nico.pache@linux.dev>,
+	"Liam R.Howlett" <liam@infradead.org>,
+	ryan.roberts@arm.com,
+	"Vlastimil Babka" <vbabka@kernel.org>,
+	lance.yang@linux.dev,
+	linux-kernel@vger.kernel.org,
+	nphamcs@gmail.com,
+	shikemeng@huaweicloud.com,
+	yosry@kernel.org,
+	qi.zheng@linux.dev,
+	luizcap@redhat.com,
+	kernel-team@meta.com,
+	"Thomas Gleixner" <tglx@kernel.org>,
+	"Ingo Molnar" <mingo@redhat.com>,
+	"Borislav Petkov" <bp@alien8.de>,
+	"Dave Hansen" <dave.hansen@linux.intel.com>,
+	x86@kernel.org
+Subject: Re: [PATCH v8 07/30] x86: mm: add PMD swap-exclusive helpers
+Date: Tue,  3 Nov 2026 13:54:22 -0800
+Message-ID: <20261103215423.104469-1-usama.arif@linux.dev>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <DLX6HZQ71WVN.1AIA7V63XWARY@nvidia.com>
+References: 
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <DMLRZ4QCSGYY.3D2G6VQA28CBQ@gmail.com>
-X-Stat-Signature: c3ysic9eknuc67ysg7x7fyqedqoznw5y
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: um3ogukmwbfd4569qfpaehftjrxus8rq
+X-Rspamd-Queue-Id: 1BC73140006
 X-Rspam-User: 
-X-Spam-Status: No, score=-1.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FORGED_GMAIL_RCVD,FREEMAIL_FORGED_FROMDOMAIN,
-	FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
-	SPF_HELO_PASS,SPF_PASS autolearn=no autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 0ACCC20003
-X-HE-Tag: 1793741784-139792
-X-HE-Meta: U2FsdGVkX18nDlxwm3CBZ2kGDu3qw6XsHy7cJbFjT29Fle2B3++LDP7VwhJpPciJQ3tFei+j4jhykVVJHnMfxARwL4BwlMRVGZlN/4vUgEHreFIhgUSRl8RwaxvBB6x+41d97p/xn/6XlFUfu5LE7yChnhi0keZt6qSF9PlfF729O0unEzV948KtllrVqgwxoP+BTwDjI8nx9nGONti4MWAxEj+JF2wNDyr7GvP3DlWo8cvEdQL2W8zgZLQDMcax0ygVUPaAickgwIOT5YNV54NDMgvhe2mV2puDPw4ePSzNH2gLuU9PttS69KGotgoYdFoXupjRyPKfly/vJPSVgUeFGB/M/l8Pnr+ddtY64rheNXvU72+etnAYx/BQkE+NoJTPWwCoLOVVFgOdPx35rNalQrBrCfVT4AO8jHmGZfzOE0YCLF54oZPwwSr/+7gn1VNGb5fSn7S5a29DJwKMZ8JHx2pkxVimG34OJUsUWyoyss+hQHxQ3OUfweP4t2Ot6HAWpC9Ddo64com5DGNp7a3cLr57fwMB3uZjKRfxM8D4l4L2aSlmUIJvrtT4/7UjXiDhvXT56ohxYxk5wRnIIn8G9Reb1CbZOau74jQ5hSIf8xwdrZ6Al+7atShu9DWbEhcPWp8mi9xNgP/9LjhGQQQihxCs5wuaqk6CzeY7JtqM/arScMtWccp/9fmzsOfTUk0mAlFuQm5UyfRC6BnouLTacfVyQ1bRfC4EPR5d4KoddIXwb8SvuUI35zrc/feBJ5j0H+/t8ZKZQwzMrbNMm2WA1tAQbhdGb+agutwDVN72A91SPpa/t8zS8q9Aci7d7LP358wYNoZ8TSRBg64i1n6PoBhyeWjScmnrzOkx/1LXu6aiMyc4RuDRUuvLapPu0orDXTPBdum/ntKkaRUQ0c99uB0bkBUyrUC3Q6PE6pxpl/xCMq2RWuLorLRWmw2esKqNty/Vh5tQ+apcztD
- I79KsjvW
- yDRLYDlcgIhtTf9C3bGroH/qseP2PuV7UUT9heVD8twYPjhcD6j2np+vgI0hs9pYrOofJtJ6Sx3eWzqj3KPBauX6NNgj9thAzKlFBiUNOBGA8GOGwSj5NY/vW6/LbLy9w60kYwZAZtZS2MWWBlM25FAURGLeDj0+99kylR0ylqYTVIZ81Xp0/CKnlLNw/faekaD67rK8w5jQcmf+fQoQdDz2GfW2uFVmdxCP7uaYb8iNAEudHC8SP6ekRUB6N/bToqv3Vgk9fbh+NpoC7q9OWtP5wO6dilRteI6+wNVcJ4NMndAfnE6r7fyCj0+BDv3EayfVgLuO5FLU4D931C1ztQrR3Z6cFkXNe99P6dcgwy67Bd3Ij3+UxE3FTuZ1i7BD/jY97ZpyGyyYcQs9NEtBgpFzWhRJUXgkGv7ecVjSiVe2nLXn4bwKK4allBpo1ffYr4mfD5eGJIf59yIkHiFFioKOKQp3Xup8JsH9iWLfEDuKIYRcq5yOvfuQVRcQEA1FWuSaHMB2fYocxp11uHhxYXputQ8LGPn3eDuyki7FBL4jrFyg=
+X-Rspamd-Server: rspam11
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1793742871-774754
+X-HE-Meta: U2FsdGVkX1+Hujrg1CzdK3kBGIGSPgQkqaT2d0KRaHom0V8pr1g9l4Coz71PN+3QiAtP4fFBufb0JO1oAEvlQmBUb3GxtLY1rfiAvYku4gx1V43kvwQbdTI3RCaCJY8ZjLz6burJF2OL739a1gPmeFm7/zDX/yPv3+do16aW3HU5+8x6ORZmEjQ8lUAYEfnBb62H1VqHUt/1Vhn/QS3NeUnPkx08f6LqKq98MoHvjjclXN/UVBb1hgmzgQEdGqC0M9u1hpwgWnXCAYo28QNzNEqoGaIvvPQWH1Z6Z/YqI1CfmDjd3lOAOobdnftpMezIsheQqWSiJv6uN/iobHQabOqchS3SH9rbpZIWWQwjzkt5zObXY3Xs3QruvDNpX767+g8WWHtjNrMx2q9qQwdPrd1Lwn1YKMGR0or5n7//yZZzitcyICRq9cAWvhipqPB70/tbw0tri85UBBsOUHTW0SXuYLfqhtgWh0JWdcI7mq+ZsWiZKOEdrdEdQ6qFR9iMljhLtuaWSsV4AESkzQBQYc0K42JUcQgYcIKdcSwQ2FMbzrARbNYrvn489R+N5176dt5Ole4D4p7oSLyePGhRcykBPq/OI595mjF9w4IOHEgQdCKIFCjeNU7kPSeS/11czwhlgZ1Mgl6D/XoY+KhkCydJGdcL4iPybfXnz0DOVfHEzByjwqY5dgxD2DoNe/rY4CNXnJtmeCkdKfGedq+GmcBglgQJ0OWZq1yDXZaKPeHLTm05h9V7cZxjwBdIomaXTtboXryvoQPABMQ2AK2RlZszhgwlqG2Xw70W8P/YAgcPbqEgRDCEmP3GkAl4QfRpiqJuq3wDDSQrb5DYUkNIF8DugmW/UfEK94xuiVDPcPLAK92V7SgxNK56QcfdEtEpEn2k47n0nPEq2whBCS5G6+8lJ2Duc/+lWgZQCnN7RDWhqyGAqn2jzEvaTWCJMWzEL303cv25/VacA8gsTZC
+ +ZPxJSps
+ 9Vx+hbuSwgWkJi6TqkY+uuAAkbZt2s+ks5O3oowALmbi7/bQuW20IkRyWy+dtHvE2KemVPXOXUZvDlo2xaOP4zI2SpW1fqmmxCU79/3gUMtsts2d8ouHCJVDiSzYoa5Q5q6b9jg3QsfMy+xJTwotA6n6ENqQUbRZ20X4iaaZ0dW/JG2AN/veEyScGpE9ssaGk9o9ISthTT4EzNETBbG2M7jn/bvzxl+aSHH/+xfEZ3zSEU8o5ktEuvFep2NuwAxF0xVd1o/KERfF+UhAJDM8idwA1YMX6leXlTjp1n0zQwUqkivjLJjMlbWxRAOJrMXtrtGwA
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -130,20 +125,91 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Tue, Nov 03, 2026 at 06:08:37PM +0000, Alexei Starovoitov wrote:
-> On Mon, Nov 02, 2026 at 11:59 PM Jiri Olsa <jolsa@kernel.org> wrote:
-> > hi,
-> > we have few use cases where having the ability to allocate normal or
-> > executable user space memory would help (like to replace function in
-> > live process or change environment variables).
-> 
-> Too abstract.
-> See
-> https://lore.kernel.org/bpf/20261016224310.3135990-1-alexei.starovoitov@gmail.com/
-> 
-> I don't see answers to these 5 questions.
+On Mon, 05 Oct 2026 16:14:52 -0400 "Zi Yan" <ziy@nvidia.com> wrote:
 
-nice, I missed that.. will add in next version
+> On Fri Oct 2, 2026 at 5:52 AM EDT, Usama Arif wrote:
+> > Prepare for keeping a PMD-mapped anonymous THP mapped by a PMD across the
+> > swap round-trip, which makes PG_anon_exclusive have to survive in a swap
+> > PMD and not just in a swap PTE.
+> >
+> > x86-64 encodes a swap PMD exactly like a swap PTE, so the new helpers reuse
+> > _PAGE_SWP_EXCLUSIVE, bit 3, which the swap-entry layout already reserves
+> > for PG_anon_exclusive. 32-bit x86 aliases that bit to _PAGE_PSE and does
+> > not select ARCH_HAS_PMD_SOFTLEAVES; assert that, because an exclusive swap
+> > PMD would otherwise be pmd_present().
+> >
+> > Cc: Thomas Gleixner <tglx@kernel.org>
+> > Cc: Ingo Molnar <mingo@redhat.com>
+> > Cc: Borislav Petkov <bp@alien8.de>
+> > Cc: Dave Hansen <dave.hansen@linux.intel.com>
+> > Cc: x86@kernel.org
+> > Signed-off-by: Usama Arif <usama.arif@linux.dev>
+> > Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+> > Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
+> > ---
+> >  arch/x86/include/asm/pgtable.h | 20 ++++++++++++++++++++
+> >  1 file changed, 20 insertions(+)
+> >
+> > diff --git a/arch/x86/include/asm/pgtable.h b/arch/x86/include/asm/pgtable.h
+> > index d551120a7c889..c35dfa6ceda05 100644
+> > --- a/arch/x86/include/asm/pgtable.h
+> > +++ b/arch/x86/include/asm/pgtable.h
+> > @@ -1525,6 +1525,26 @@ static inline pte_t pte_swp_clear_exclusive(pte_t pte)
+> >  	return pte_clear_flags(pte, _PAGE_SWP_EXCLUSIVE);
+> >  }
+> >  
+> > +#ifdef CONFIG_ARCH_HAS_PMD_SOFTLEAVES
+> > +/* 32-bit aliases this to _PAGE_PSE, making an exclusive swap PMD present. */
+> 
+> Is it better to say? Since the above comment sounds like 32-bit
+> specific, but the actual constraint is about not being _PAGE_PSE.
+> 
+> _PAGE_SWP_EXCLUSIVE cannot be _PAGE_PSE, otherwise making an exclusive
+> swap PMD present.
 
-jirka
+Updated the comment to:
+
+/*
+ * _PAGE_SWP_EXCLUSIVE must not alias _PAGE_PSE, which would make an
+ * exclusive swap PMD present.
+ */
+
+which I think is clearer.
+
+> 
+> > +static_assert(_PAGE_SWP_EXCLUSIVE != _PAGE_PSE);
+> > +
+> > +static inline pmd_t pmd_swp_mkexclusive(pmd_t pmd)
+> > +{
+> > +	return pmd_set_flags(pmd, _PAGE_SWP_EXCLUSIVE);
+> > +}
+> > +
+> > +static inline bool pmd_swp_exclusive(pmd_t pmd)
+> > +{
+> > +	return pmd_flags(pmd) & _PAGE_SWP_EXCLUSIVE;
+> > +}
+> > +
+> > +static inline pmd_t pmd_swp_clear_exclusive(pmd_t pmd)
+> > +{
+> > +	return pmd_clear_flags(pmd, _PAGE_SWP_EXCLUSIVE);
+> > +}
+> > +#endif
+> > +
+> >  #ifdef CONFIG_HAVE_ARCH_SOFT_DIRTY
+> >  static inline pte_t pte_swp_mksoft_dirty(pte_t pte)
+> >  {
+> 
+> Otherwise, LGTM.
+> 
+> Reviewed-by: Zi Yan <ziy@nvidia.com>
+
+Thanks for the review! And apologies for the late reply, I was away.
+
+> 
+> 
+> -- 
+> Best Regards,
+> Yan, Zi
+> 
+> 
 
