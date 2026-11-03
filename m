@@ -1,101 +1,154 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B38A606C86E
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 14:48:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61C26606EE96
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 14:49:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=PVuIrc17
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=QzuU3YVM
 Received: by kanga.kvack.org (Postfix)
-	id 3E6F66B05BF; Tue,  3 Nov 2026 09:48:51 -0500 (EST)
+	id 71F386B05C3; Tue,  3 Nov 2026 09:49:26 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3712A6B05C0; Tue,  3 Nov 2026 09:48:51 -0500 (EST)
+	id 6D1BF6B05C4; Tue,  3 Nov 2026 09:49:26 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1EDCF6B05C1; Tue,  3 Nov 2026 09:48:51 -0500 (EST)
+	id 5964F6B05C5; Tue,  3 Nov 2026 09:49:26 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id D5C656B05BF
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 09:48:50 -0500 (EST)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 0A0D01603FA
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 14:48:50 +0000 (UTC)
-X-FDA: 85394089620.08.9E54160
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 6E9FE14000D
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 14:48:48 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PVuIrc17;
-	spf=pass (imf09.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 2F8BA6B05C3
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 09:49:26 -0500 (EST)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id A4A4D120340
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 14:49:25 +0000 (UTC)
+X-FDA: 85394091090.13.1C6DFD4
+Received: from mta1.migadu.com (out-193.mta1.migadu.com [95.215.58.193])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 146BB20003
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 14:49:21 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=QzuU3YVM;
+	spf=pass (imf03.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.193 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793717328;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
+	s=arc-20220608; t=1793717363;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0V+CicgMBoN1QbZ4PU2bDKMr8pvOiaSaM7EPJ1DfD7w=;
-	b=FXTjZ9+SI+Sog1/81LFX2EWt0JbCrLST5ja9HTwwLC0PURnQhLgOwPzpIaxuwRCkd6cv/d
-	/Ox7VcotxhR61eJEX2tLYV8ZfjsjmgiIYW7dYSIor8oaV8+gVoJEVBvF44ep2URClx/k8c
-	vbIREmKd2k7V3qLtCPoVYDTaaCizVlE=
+	bh=0jU0FKXBVK1IwPB+pnplBif7xzGvyqeYd/rvs2r/ax0=;
+	b=B9Qz275AfmVWV+AUEx/2ICf+Z6L6O/gLQiHGF8IWgYpvoEf2wAadrS4eM2swKC1mC/tZE6
+	SOssa5zJukI9TsHOEoANZfjNYAc45AaxW9tsVwNmTLLqr6KzKHGBs5J2XzA5l7nJ6ja0c5
+	dL7KipJTaBbZw9Hg3gN7gSLeF/TjhKo=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793717328;
-	b=RQvxXRooMEysddEGhTTkmKsMD742t/cvTOaYzC5rwdCcafc+toyAGTMdIwqQioO2hQhgVT
-	GhwZC4NBbfDtxd1fHfGPUIgrN//sENsZ6cj5NGnivUrsvbm0vPIq9DlsYAx5DwizY1B8Mk
-	lcyU7fN0feagEudccIU41IorSdUsh3c=
+	t=1793717363;
+	b=5TKcawcGXle5A8XFDPSfgn8KrM8rxLHWNfUt+GocGrhDPcCRbqbHcUxjt3iIuy41tRFTHV
+	oIV2dIlr3x/VgQY1nQMzQvdPKS/S64bMI5AlZOt43XlnuaaDCekbjfWlLYd5GB+Oanq2q8
+	rBvNc/BHsNFJWHiEIFVsL2P/CGQU0Bw=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PVuIrc17;
-	spf=pass (imf09.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 04F2A60622;
-	Tue,  3 Nov 2026 14:48:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA0571F00919;
-	Tue,  3 Nov 2026 14:48:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793717327;
-	bh=0V+CicgMBoN1QbZ4PU2bDKMr8pvOiaSaM7EPJ1DfD7w=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=PVuIrc17XR1DR65SazgbGfICE7wjxOzqZgkY9U1rqo2UnB6kZRbNYqycjDbOYBHPI
-	 mtr+oI337If1hGZt23auaywjb3aFf3e8V7x2KLacnHZWCqxTNAHGtZLRjV/QTQa/U0
-	 2ZVG3QOmYYo3Vbue///pzGjX2fvcEVYSv1E5A4Nokf1yW93VnBHjLJNY9R0S7cKzna
-	 lEsPjbqB4XU52YaxjHh1FMLVvCbZQad8DMHktuK95ryZyb144WX0kMVeswfQ7MIXWT
-	 q6wVkMNqoNp3Q2h44ir/sz5Pqydvc1rrrcEksxS0NSkW2lL6OZFvuNnmSZDzSaqv1o
-	 ng7I2nNH/acPg==
-Message-ID: <sashiko-outbox-195510@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH RFC 38/38] selftests/proc: check that a faulting
- readlink() doesn't hold up removal
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Christian Brauner" <brauner@kernel.org>
-Cc: "Linus Torvalds" <torvalds@linux-foundation.org>, "Jann Horn" <jannh@google.com>, "Josef
- Bacik" <josef@toxicpanda.com>, "Chris Mason" <mason@kernel.org>, "Jeff
- Layton" <jlayton@kernel.org>, NeilBrown <neil@brown.name>, "Eric Dumazet" <edumazet@kernel.org>, "Thomas
- Gleixner" <tglx@kernel.org>, "Al Viro" <viro@zeniv.linux.org.uk>, "Jonathan
- Corbet" <corbet@lwn.net>, "Christoph Hellwig" <hch@lst.de>, "Greg
- Kroah-Hartman" <gregkh@suse.de>, "Joel Granados" <joel.granados@kernel.org>, "Kees
- Cook" <kees@kernel.org>, "Jan Kara" <jack@suse.cz>, "Jan Kara" <jack@suse.com>, linux-s390@vger.kernel.org, linux-scsi@vger.kernel.org, coreteam@netfilter.org, kexec@lists.infradead.org, linux-pci@vger.kernel.org, linux-sound@vger.kernel.org, dri-devel@lists.freedesktop.org, linux-hwmon@vger.kernel.org, linux-mm@kvack.org, linux-usb@vger.kernel.org, samba-technical@lists.samba.org, sparclinux@vger.kernel.org, linux-m68k@lists.linux-m68k.org, linux-serial@vger.kernel.org, "Takashi
- Iwai" <tiwai@suse.de>, linux-input@vger.kernel.org, linux-raid@vger.kernel.org, linux-ext4@vger.kernel.org, linux-modules@vger.kernel.org, "Chuck
- Lever" <cel@kernel.org>, tytso@mit.edu, dmitry.torokhov@gmail.com, "Petr
- Pavlu" <petr.pavlu@suse.com>, "Anna Schumaker" <anna@kernel.org>, yukuai@fygo.io, "Heiko
- Carstens" <hca@linux.ibm.com>, "Vasily Gorbik" <gor@linux.ibm.com>, "Alexander
- Gordeev" <agordeev@linux.ibm.com>, "Christian Borntraeger" <borntraeger@linux.ibm.com>
-In-Reply-To: <20261102-work-procfs-bugfixes-v1-38-59422ed3e465@kernel.org>
-References: <20261102-work-procfs-bugfixes-v1-0-59422ed3e465@kernel.org>
- <20261102-work-procfs-bugfixes-v1-38-59422ed3e465@kernel.org>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Tue, 03 Nov 2026 14:48:45 +0000
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 6E9FE14000D
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
-	autolearn=unavailable autolearn_force=no version=4.0.1
-X-Stat-Signature: tqtdi8ssprrmx6zcn9pf5uazmh76oqm8
+	imf03.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=QzuU3YVM;
+	spf=pass (imf03.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.193 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=dOHWqJbFAMJYJY9pYQ0G9QdWl3ff5fr4nC5HvUAG8+A=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1793717360; v=1; x=1794322160;
+ b=QzuU3YVMkybToy3jCx589JuXk6v7arOjZKVMIuzVTtcNW67BI2N1Sv/tO1vpXZew6+OWlgh+
+ BtzfOsvNi5KxLjRGGqGPhJtBN3VmFTvpgdWNR8NKH7Gp6SbMkzFQdncMIrRdzS1uk7Hz+9X+9N+
+ g3oq2Ln4/BioZxzKZymYhmOg=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id 632a76e6b0da1a08;
+	Tue, 03 Nov 2026 14:49:18 +0000
+X-Mizu-Trace-ID: 632a76e6b0da1a08
+X-Migadu-Flow: FLOW_OUT
+From: Lance Yang <lance.yang@linux.dev>
+To: david@kernel.org
+Cc: akpm@linux-foundation.org,
+	hannes@cmpxchg.org,
+	mhocko@kernel.org,
+	qi.zheng@linux.dev,
+	shakeel.butt@linux.dev,
+	ljs@kernel.org,
+	kasong@tencent.com,
+	baohua@kernel.org,
+	axelrasmussen@google.com,
+	yuanchu@google.com,
+	weixugc@google.com,
+	baoquan.he@linux.dev,
+	baolin.wang@linux.alibaba.com,
+	liam@infradead.org,
+	vbabka@kernel.org,
+	rppt@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	kees@kernel.org,
+	peterz@infradead.org,
+	jannh@google.com,
+	pfalcato@suse.de,
+	hughd@google.com,
+	pasha.tatashin@soleen.com,
+	pratyush@kernel.org,
+	willy@infradead.org,
+	jack@suse.cz,
+	ziy@nvidia.com,
+	lance.yang@linux.dev,
+	riel@surriel.com,
+	harry@kernel.org,
+	apopple@nvidia.com,
+	nico.pache@linux.dev,
+	ryan.roberts@arm.com,
+	dev.jain@arm.com,
+	usama.arif@linux.dev,
+	kas@kernel.org,
+	matthew.brost@intel.com,
+	jhubbard@nvidia.com,
+	peterx@redhat.com,
+	will@kernel.org,
+	aneesh.kumar@kernel.org,
+	npiggin@gmail.com,
+	osalvador@suse.de,
+	minchan@kernel.org,
+	muchun.song@linux.dev,
+	xu.xin@linux.dev,
+	chengming.zhou@linux.dev,
+	chrisl@kernel.org,
+	shikemeng@huaweicloud.com,
+	nphamcs@gmail.com,
+	youngjun.park@lge.com,
+	gourry@gourry.net,
+	joshua.hahnjy@gmail.com,
+	rakie.kim@sk.com,
+	ying.huang@linux.alibaba.com,
+	jgg@ziepe.ca,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	kexec@lists.infradead.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-arch@vger.kernel.org,
+	linux-cxl@vger.kernel.org,
+	mason@kernel.org,
+	stable@vger.kernel.org,
+	usama.anjum@arm.com
+Subject: Re: [PATCH v3 42/47] mm/vma: call ->may_split() before a partial merge
+Date: Tue,  3 Nov 2026 22:49:09 +0800
+Message-ID: <20261103144909.6138-1-lance.yang@linux.dev>
+X-Mailer: git-send-email 2.49.0
+In-Reply-To: <20261031-fixes_core-v3-42-d6437171ecc3@kernel.org>
+References: <20261031-fixes_core-v3-42-d6437171ecc3@kernel.org>
+X-Archived-By: <archiver.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_GIT autolearn=unavailable autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam09
+X-Stat-Signature: 7qg6fijg9b51asyen7ix7t81z9qizded
+X-Rspamd-Queue-Id: 146BB20003
 X-Rspam-User: 
-X-HE-Tag: 1793717328-707454
-X-HE-Meta: U2FsdGVkX1+X9puGdwrCxUFz5DW0Sbyo43uqLYDFmdZyZK7uGPml8QFuyhf/c+VmvMWCBKTBQKXM/UY8I4GgEXeeRbIH+0h6iMGI6bucc+i/n7WD9dUiy/Wyqj+/rHIN/kxPGZ0c6ic26oz70lR7sm/udqm4L79tHIYifHNMTt/we3TLfW3VRAOVIRYP2sKGDDC3sNoVFZbcZk13d4fpds0jT24wMcrRh2C3wvTV/fGGEOF9RlL0sM8GtUMpMVyGujum1oNwnXGZXpAmb7zn5fd31B3yH8qs3JFwmBFqlXCAL/plxU5prr2XbQYRYR9ti7/WOAy/Y5QsW15q8hIkbu/fQx16H3sg24m16OkQ42pkyd6GFK/dOJNYJB5/9VNfO8lm0pHEv/lsh+xWMy59Q6DAOwVOm1s7MPvQEOz/bLYNJ5kgkwpaLmZgeN0oxwjBgIKJ8g2fOnG0gNqmo/TXZ+xqxEK3QMR1mREruF1JBJve8D/WryOcT4TClIwa+NG9Wxr9Km/6zpNfkMSAu5QOG5O/Qso7LFKzWDH4/mIrViyp7AI/Es6BeQdpl/a3vYHuQPs047APrDXCTeN3gBtT3/fxUiIEx/N+o5FgSrU387iK5DEa30nS3vTFXxS4bh8Aep7KE8LdvV4CeOuLkNd+5H8UJCPExCT2C862tFyZ7otDt5snEqHWe2LevMhkhvWqZEXUUxdxSQTHzVyP8h09y+BLxFmW1XflvwoE7A/kjjdwQHxkptyP680U9fREQ4ee3mmJ/J1geezKK+AOCO7s1J8AwJrtqpcpW85mGVQiSmfF4lKJDMjPI7XQ68nRDRh3iJ2kxkeBKkZhIJSbJqU5Ot5zoOLjQLzt6lZmAjIa24RhN2RojlTZC1BUsKKj306yFVSOEkGJm9sD4h0QSraKG/h1RO3DDguKXxqqnSWIdKpTd93clAvjwUbBklGI7oPNcldWyzELPhloszYNx8V
- ftqfyssn
- gKQIP3lDAjSD0iWpi2KR40zTpxgOSJ8Dndffzbz1nGglweQMdCf/JYgd+nMD5rsa38hWpe26nr/mOct7WGNI0d6tMA/SrUw6aTcuL1YCdd+YyD0xO6ZOfm1BRZNQqqzELdlVIq/z6RmKHI0Eg1w9xI7h2w7j/EKH4t0Y6aD3m5i0M4T/IUbeOmqxa+45Xk8yERzqQrPf8pWM+AqMCExDcAa7YbrfNUM/5WdWOx8I35Ej0Rx7kDyn9U1uFnvzixQ1inVftSWjzX8FPxmNhv6nD3ethO/uoVeyy0b3oN8DNneiriZYSRC4vOY1mB6CIeUsD9uBiThguMeBorD1djHIDmtxu0SsdjWJowNKQ+PDuKbnTgBVnZRVd38NVQKoFSxaJuwEtgWryignp/hBVJDVpZX6QH268sa1huU3c8JLn9WFiuFDvXhb6+uhvh90uKaWsetnyRttlqeFaSSUeo5EjuNbY8KBG4vTPQ+d7gVN2N8T7Zc1uZqGjyaMd59tNqug5sZ8RhaA0RvehgTZiWryive+Dl1ZtX7SieLUpAdCZVa7ffHqK4B72pQshTNt2hB6NrDHo8afRyCOWNnRtJqvtqZfs5pDdHS6abADKnAD8fu/IKHQVqBQxHnNdcYHSPuSEaE4wiI7496DCTELLdQXAq1a1WQ075kLqPp/z
+X-HE-Tag: 1793717361-105515
+X-HE-Meta: U2FsdGVkX19ODPJ1Xs8zvXhDRO64uA6MWhDccKG/azD30AmTZmQA+v/xd7Ax+moNWGR0Ep9pTMaWVGrsL0qN1IumBLmsWyoS6xplZg0U/gFG9EacFPsAU3jy//uYp2znT9aDdYLPMoRAd/o1zgN8fuVwJ+JfwhQZZFHgCuSj26/ONNNwtIsf96jtWM1oWlDh9oBYuP7oUrWL3cD/fevtyYtqD7s8hnjzR/jj1af6xuw3+i32SyhUtyP/3fg1tV/l8pzyOIGuheHRkwXkIAfERwq4YtHWtBLq8nETu9wYo1c3bi2k4a9MElWtntety7ctgWIa1RW1z1VTSiivC+qR0+ubcdkvYrW88mQOFREAg43/WrGtmQnVUE5hxupKPZPP49Ks5Nt8jZ5jDrK56WJg8MUo+DoQG+/4A0nO/7yTyvQyVAl+Sw6AcWLKOzrXsLrPI3pScMf8ccEJ5LmCoj/HErDVeEv6b4kIyOIRsHbafOxWHFv3ENsKh4nEyCuoKurYIaCNmbqZlaGvbVOl9Ci76bBhUTTODIFnJDlpoLePO1Bo5KRGsowMXaLpUV7NvLHX4H7PZoLt83oQJz0lVpoNIP7tbPtsUYrOrVCTdTuqggFO6DNOM0HcYHo9cOTJMkRiuIem5ANWubsV16N5x3sns4jJV4iXMlYFviKAOdV7Bxj6B87712oAoaYvTQLGMhnwxXi0K0nvx6TSrVn2p173D9zP474J6wwYpCHtu/aV9qbyy3ddSVNsjGVLFpZ/BFvFiMZ8U1Fpj7ZkRbi/2DDnl6D2o5QF8spHYMUBkeZ5weUG24FW2LDVeGha4C4Ed6fvP089gd2NGrmQJfJ1EHoLbgNID0K2fCgXbt4u8gbewgscON+dVO+HViyRsMbQzSOYuH/Vo5/XbeP0KITD49BmO9QRCGHAawI/WW6TaiNRbQK2V5or5j5PkJSf3vXDx613M7sXADCyiRffzBRDlIo
+ yfDcJ/Yo
+ kBazpwavLx6OjaXvjpBylJDFn+gHSjZ5Z2lLG8VAB1kobDY5E7CAHI2KcPPTjw+0VVOXdtjXo6KD1nWwsFRcDzBxDfF0teKoUjCr3OyxXTu53+9S0U2NT9a6Ac2Kcifm2MojGi7EcH6yuG01Q9xw8sNlG7jeJ+BpWs7olNDLWWprwhIYNmRHg60VavQzCrcHAF2dGmBVl0/cxsDlFJsY2SYhji68WWcSUfP4YjglKdRJXVIX/dX9OfoBy7+A5M3kSpmtsh9rzODQbSayZ7Pdg+6FuANKIgYx060KJJx5tg+r/T4GgzX3Yoy4P1iBszuMYseL/AoI1Mcup8vWlNoZk5dZlPHl5xIdgzE4uCqHIP2vZJoQsvFRzQ9rlcmid1bPWwSIS1PQjGEQiU2O1OeJ/bpcnamI+UmEDMtv5/YnZOu5n5a6R/b2keQ8yuMcFfQJBd4Lrg9IMWMAFmWW7haSxKDC6vJxE7xK2ezQdLSeMPyY3Hjgzd7vojong5g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,62 +156,69 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
-X-Archived-By: <archiver.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [Medium] selftests/proc: Makefile adds nonexistent proc-remove-slow-reade=
-r target
---
 
-commit ac0073c08526e8690efa58576485d79bbd906522
-Author: Christian Brauner <brauner@kernel.org>
+On Sat, Oct 31, 2026 at 10:40:11AM +0100, David Hildenbrand (Arm) wrote:
+>From: Chris Mason <mason@kernel.org>
+>
+>A driver can use the ->may_split() hook to forbid a VMA boundary at
+>certain addresses.
+>
+>A device-dax device is a character device that gives raw access to a
+>range of memory through mmap(). device-dax refuses any address that is not
+>a multiple of the device's alignment through vm_ops->may_split.
+>
+>vma_merge_existing_range() can move boundaries, but does not call
+>vm_ops->may_split.
+>
+>If a range at the edge of a VMA gets the attributes of the adjacent VMA,
+>the function moves only that range over to the neighbour: one VMA shrinks
+>and the other grows. This is a partial merge, and vma_modify() tries it
+>before any split.
+>
+>Take a device-dax VMA that lies next to another VMA of the same file.
+>The user calls mprotect() on the one page of the first VMA that touches
+>the second VMA, and asks for the protection that the second VMA already
+>has. The result is a partial merge. It puts the boundary inside a 1 GiB
+>mapping, which is a single leaf entry at the PUD level.
+>
+>As part of the merge, the kernel looks for a huge PMD to split at the
+>new boundary. That code does not expect a PUD leaf:
+>
+>    vma_merge_existing_range()
+>      commit_merge()
+>        vma_adjust_trans_huge()
+>          split_huge_pmd_address()
+>            mm_find_pmd()
+>              treats the PUD leaf as a pointer to a PMD table,
+>              so the "table" is the device memory that the leaf maps
+>            __split_huge_pmd()
+>              reads a PMD that the user wrote to the device memory
+>              folio_put() on the folio that this PMD names
+>
+>Bad. While the code must at some point be taught to split PUD entries as
+>well, the issue here is that we move VMA boundaries such that they are
+>incompatible with the driver.
+>
+>Fix this by calling ->may_split() on the address that a partial merge
+>would move the boundary to, and by abandoning the merge if the driver
+>refuses. vma_modify() then tries the split, which fails with -EINVAL.
+>
+>Factor out existing split handling into check_split() and reuse it.
+>
+>Fix generated by an LLM and sent by Chris Mason in private.
+>
+>Fixes: 38607c62b34b ("fs/dax: properly refcount fs dax pages")
+>Cc: stable@vger.kernel.org
+>Signed-off-by: Chris Mason <mason@kernel.org>
+>Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+>[ david: improve description; cleanup the code ]
+>Reviewed-by: Gregory Price (Meta) <gourry@gourry.net>
+>Tested-by: Gregory Price (Meta) <gourry@gourry.net>
+>Signed-off-by: Gregory Price (Meta) <gourry@gourry.net>
+>Tested-by: Muhammad Usama Anjum <usama.anjum@arm.com>
+>Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+>---
 
-selftests/proc: check that a faulting readlink() doesn't hold up removal
-
-This commit adds a selftest verifying that a readlink() call faulting via
-userfaultfd on /proc/asound/<id> does not block removal of the /proc symlink
-when renaming a dummy sound card.
-
-> diff --git a/tools/testing/selftests/proc/.gitignore b/tools/testing/self=
-tests/proc/.gitignore
-> index 7b81334927820..e2566cc0ae079 100644
-> --- a/tools/testing/selftests/proc/.gitignore
-> +++ b/tools/testing/selftests/proc/.gitignore
-> @@ -22,6 +22,8 @@
->  /proc-uptime-002
->  /proc-pidns
->  /proc-remove-slow-sysctl
-> +/proc-remove-slow-reader
-> +/proc-remove-slow-readlink
->  /read
->  /self
->  /setns-dcache
-> diff --git a/tools/testing/selftests/proc/Makefile b/tools/testing/selfte=
-sts/proc/Makefile
-> index bce6beca72744..6a9bdc999f545 100644
-> --- a/tools/testing/selftests/proc/Makefile
-> +++ b/tools/testing/selftests/proc/Makefile
-> @@ -33,5 +33,7 @@ TEST_GEN_PROGS +=3D proc-fsconfig-hidepid
->  TEST_GEN_PROGS +=3D proc-sysctl-readdir-churn
->  TEST_GEN_PROGS +=3D proc-pidns
->  TEST_GEN_PROGS +=3D proc-remove-slow-sysctl
-> +TEST_GEN_PROGS +=3D proc-remove-slow-reader
-
-[Severity: Medium]
-Was proc-remove-slow-reader added to TEST_GEN_PROGS in
-tools/testing/selftests/proc/Makefile (and to
-tools/testing/selftests/proc/.gitignore) by mistake?
-
-This patch adds tools/testing/selftests/proc/proc-remove-slow-readlink.c, b=
-ut
-tools/testing/selftests/proc/proc-remove-slow-reader.c does not exist in the
-tree. Because the default all target in tools/testing/selftests/lib.mk depe=
-nds
-on $(TEST_GEN_PROGS), building the proc selftests fails with no rule to make
-target proc-remove-slow-reader.
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261102-work-procf=
-s-bugfixes-v1-0-59422ed3e465@kernel.org?part=3D38
+Reviewed-by: Lance Yang <lance.yang@linux.dev>
 
