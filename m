@@ -1,110 +1,92 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD1CE606A327
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 03:24:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48A19606A324
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 03:25:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=pg7DV0Uf
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=iI8p6WHO
 Received: by kanga.kvack.org (Postfix)
-	id D95436B05B4; Mon,  2 Nov 2026 22:24:18 -0500 (EST)
+	id 46F436B05B6; Mon,  2 Nov 2026 22:25:03 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D46CC6B05B5; Mon,  2 Nov 2026 22:24:18 -0500 (EST)
+	id 41FAC6B05BA; Mon,  2 Nov 2026 22:25:03 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C5C776B05B6; Mon,  2 Nov 2026 22:24:18 -0500 (EST)
+	id 362A66B05B6; Mon,  2 Nov 2026 22:25:03 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 9AAA36B05B4
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 22:24:18 -0500 (EST)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 20C2240317
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 03:24:18 +0000 (UTC)
-X-FDA: 85392364596.09.0D4466B
-Received: from mta1.migadu.com (out-224.mta1.migadu.com [95.215.58.224])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 0EA0F40005
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 03:24:15 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=pg7DV0Uf;
-	spf=pass (imf11.hostedemail.com: domain of baoquan.he@linux.dev designates 95.215.58.224 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793676256;
-	b=fciLecgz1hNu12DS00xo2orM2GoDSo7krpYX+/3Hkhtl523q66f/VzEK/OSgxOtUdty4Zp
-	jO8gRlKocrTQH8RU4zHWz9wZwqIKNiT9Cc2Oe1gALjAzMa9S6JoJSwHYpTIRJlA0rmG+i/
-	NyllwWSSJ3QIR16NxuSOTpp5+ff5MPk=
+	by kanga.kvack.org (Postfix) with ESMTP id 0E4906B05B6
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 22:25:03 -0500 (EST)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 953351A0317
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 03:25:02 +0000 (UTC)
+X-FDA: 85392366444.26.092DE74
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf12.hostedemail.com (Postfix) with ESMTP id DD36F40003
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 03:25:00 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iI8p6WHO;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf12.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793676256;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	s=arc-20220608; t=1793676301;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wp5wIsqhtLnbvTQSbQDkpP6Lf3VZf9FET+wJGcOPy6c=;
-	b=gkTgAVue0lOtQcsgbZ6PpOBGCHj1LEbEBSE0eeGsMzo8BFsQVa/EECquvcJXuxtoeJsl9v
-	sqo+UQwRBo96xUBqfwbBEFOHcckSOA3/OAIxUD6Hzj5saCNvphR95FZIo4z6horNekxEHI
-	+nLXN8nfxMpnh4W0fl1yekPmIp8ugdU=
+	bh=J5qDS/TF5jxCzBs7vCEnMNgqtroTkKKC/uyfYOW3A7M=;
+	b=TdltKLe0G5uz7HEANnfnoQ0S2Xe4rim23E66chSrlgLC9nm0Blyb8Xl9UhwYzFHcyG515m
+	WwBKWS6gww1cU8WHRavNaCiXzJ5avg+yUN5CZSxoAeelr2RMrmz4H1s4d2e9id0PNVRVxu
+	8a2kbVX/71HdBAac7HheoAruMolRPYM=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793676301;
+	b=5cp15kVoxafLRmidngoFznTHVCTmWjswKZpzQf45aykl34LnXgy8Hqj3tgJbOS/S9HiXNM
+	+7kjlotufvPP95khTfYBWMOBslUOnY1EPR+EowWnEZo5kCXaUrH57brvIqHE6shBFB/4Zp
+	cTD5CAcHBVoz5Mv1qB0/kyQT0nlssv4=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=pg7DV0Uf;
-	spf=pass (imf11.hostedemail.com: domain of baoquan.he@linux.dev designates 95.215.58.224 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=WfKCC0CPaetlNjBgBzLRFTMpxvJUSOO4JuL3J0g1AR0=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1793676251; v=1; x=1794281051;
- b=pg7DV0UfbU/4/aLLusRljQNxRNlkAqmaOmpsqc4y1d2UF3zLuDciHx5aDHN4Lc+F5klOhuVX
- XAwf/+2h8Iq9tlKh8V7EbQJzEAmHDi6WoaL42DY7jCdS+Y4YPSCKX3VSqV83ILCdoMJp1WzPs8R
- a+RI7qify95RqBGNqTwmYnhA=
-X-Envelope-To: linux-mm@kvack.org
-Received: by mta11.migadu.com with ESMTPS id 9e2c220236658063;
-	Tue, 03 Nov 2026 03:24:11 +0000
-X-Mizu-Trace-ID: 9e2c220236658063
-X-Migadu-Flow: FLOW_OUT
-Date: Tue, 3 Nov 2026 11:24:02 +0800
-From: Baoquan He <baoquan.he@linux.dev>
-To: Ridong Chen <ridong.chen@linux.dev>
-Cc: Steven Rostedt <rostedt@goodmis.org>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Michal Hocko <mhocko@kernel.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Dave Chinner <david@fromorbit.com>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Muchun Song <muchun.song@linux.dev>, Qi Zheng <qi.zheng@linux.dev>,
-	Kairui Song <kasong@tencent.com>, Barry Song <baohua@kernel.org>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>, linux-kernel@vger.kernel.org,
-	linux-trace-kernel@vger.kernel.org, linux-mm@kvack.org,
-	"open list:CONTROL GROUP - MEMORY RESOURCE CONTROLLER (MEMCG)" <cgroups@vger.kernel.org>,
-	"open list:BPF [MISC]:Keyword:(?:b|_)bpf(?:b|_)" <bpf@vger.kernel.org>,
-	Ridong Chen <chenridong@xiaomi.com>
-Subject: Re: [PATCH v5 2/6] mm/vmscan: move vmscan tracepoints to a local
- header
-Message-ID: <aulT0u_DOUufMrZZ@fedora>
-References: <20261031090041.58574-1-ridong.chen@linux.dev>
- <20261031090041.58574-3-ridong.chen@linux.dev>
- <aufpQS0XL-CD9YW_@bogon>
- <2f272a9b-ea83-4157-8968-0081990cb709@linux.dev>
-X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2f272a9b-ea83-4157-8968-0081990cb709@linux.dev>
-X-Rspamd-Server: rspam12
-X-Rspam-User:
-X-Stat-Signature: tmsp8cfnagp7p3mjkchiarow1rpocff4
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: 0EA0F40005
-X-HE-Tag: 1793676255-249252
-X-HE-Meta: U2FsdGVkX18JO2vbzfOQPiwNBS8EqhI626pmrE5zr1ec0/mw80U4ub/VXmGVLjcb88wyMLyhokZGwIRmuCPziDRTevY+h8SQVdaJ49X4hIBeTb5moYRmX8vFZJ8lvx1WQxQNB6/berF38yKxgX8DG2YKvnQllv4sAW5Hyyyojygvm3jvq952ckSSE07Q7q9WfuBHUZWRYdMqVpKaf+5idqUW/ukzX/yXn5dinqH9684OZiN5K8sXcEt/Zp2Y/P49XieQA1cn2B6M9n71G9qDEcfTO3NSQdX8anZgkj74NtNe4Kh6hWZrCOjFZiyKMm405U8QekNxZZQub2oOINaEsPzh6yupfYYoP26ftjmNyrfZV5OA4QGSOz0gDzh1w+BItqu2Nq38EX7smfPaV1b3kfD/o9ZldivUWhZooYpfd9fknFsbfhndM8EREgGusn2dZd8eHieCykfmMyTqnDR6BVP3MgYm9dnho50SkEtxXG8zbwGh4CJYsqOVcoupKHT55HTbl1PaPFLorXyHSPPmZo3VX/Zx9WQgiWPuUkrSmXbJZy8mOQHckTL3xPf5PWsdysdWMI/IYwsttdNzV90k7onfKkArZLdzqAGKSHhypAxVSaPi82p/IxNe81lD7/I28c05Sc84EkTEVkwjrfsFRCICZgdSaMteHMS5+oiin8sVYnYNahxE12kMlEJbvWwTV4Or63vrEGkOfQaYiLbB4mjQ2d3pocJbbg0CPCLALs2LfSEgkC1GDG2mr0Iq6wTyKz31Q1Ql4736lNay7leXsy0uRyz7htwFWc99sjLniy92oQ9t4/BU5/mA00Ht3+fRAe2y3AdKqxkoRhykbANUs7sjh4X2fBeJTOgGkSbLltoLsxo7Dw+cv3uPw4We5jn804/uDLbcs87OaD1gcvvq+12f1Txi5As0zn+9JAnfCXf+/PIPgCesim2B2YrADbyRBTRnyozlRn/0hU8Q5R7
- bc1wNnlw
- q6T4R7NYsSOEgiBKoj7dhPK1EEPaYAAzBfYywV+OpuheybwCm/pY5qp0MKBgLPbKHg1YuxQt0mOsIT5SA4Gl014UMsaNWZNV3mZQlp7Lgi4kPdLzO6sFlPHN1KyWEkpDaUfwnYvCQVqMeWQjNaThhiWMDXHkmBVjkZZF7IkWQpSezZ3YsDkdwNIM1oQISlHtgJC2kehk8DgWJwTrHibKbtkakzfbSowZIiXWGb3f50lHap5WXYV0Iu9AXdy3h+i8ux8y94JELz4/MtnK2cKf0f93GR81dYz25ouvTXlML0WeHRYz6Mn65fHO9Qn8NlB/mQ1OgdC6ZuwURYICpRPSevByXUOyB1e3dXvam2nyYkTQ6Wdkc0fgC6Ry9IYtjoRrJgg1DBWadZ6I1wDnzFVK2IsLwg3cozwAgkjRoqRsHXfnHwsblzhPqNTIQboVnGfy5ISSxAsib7oX/W8/mb5ex7Q6o/fZH9Tu5sCPK
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iI8p6WHO;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf12.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id D144C437C1;
+	Tue,  3 Nov 2026 03:24:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B4311F000C1;
+	Tue,  3 Nov 2026 03:24:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793676299;
+	bh=J5qDS/TF5jxCzBs7vCEnMNgqtroTkKKC/uyfYOW3A7M=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=iI8p6WHOgZAAgUjT4C1OOxNy3GkVmYlaM83TavYXRBjR69gceaPSoduq+QMi6PYoO
+	 i+eM24/ALfbOhchiY8gyqO854dh0/WWcWVz4t3pVvUgTsdUrLLQKafFqe2OCeqiXRl
+	 HHxbXojqYOBJRVeBWQNqf2eEWjhqYyddI1sKB145tbhH7zAQzJldYAtEzHsftzKev3
+	 n4zdg05PNVvuu37UsFe2Ow2c/tf79JexTz74I+kEFU1cG/2yvqGFpOsdJCxA++piPy
+	 89fEDUUIa/uEEtTA/mJ92sGTiUJBHU0Fgzq3BGqJb5W9s2F5L9v+FMauSJsRWGss2E
+	 8VWhh9shmUAgQ==
+Message-ID: <sashiko-outbox-194509@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v2 1/3] maple_tree: Fix rcu reader NULL dereference
+ after the tree is emptied
+Reply-To: sashiko-reviews@lists.linux.dev
+To: =?utf-8?b?TGlhbSBSLiBIb3dsZXR0IChHb29nbGUp?= <liam@infradead.org>, "Andrew
+ Morton" <akpm@linux-foundation.org>
+Cc: linux-mm@kvack.org, "Lorenzo Stoakes" <ljs@kernel.org>, "Chris Mason" <mason@kernel.org>, "Alice
+ Ryhl" <aliceryhl@google.com>, "Andrew Ballance" <andrewjballance@gmail.com>
+In-Reply-To: <20261103020724.2614498-2-liam@infradead.org>
+References: <20261103020724.2614498-1-liam@infradead.org>
+ <20261103020724.2614498-2-liam@infradead.org>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Tue, 03 Nov 2026 03:24:58 +0000
+X-Stat-Signature: e78e45ysfs3nmqp7o4hmnbrcu1am8wtj
+X-Rspam-User: 
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: DD36F40003
+X-HE-Tag: 1793676300-531481
+X-HE-Meta: U2FsdGVkX1++BxA7I1GRSU9nooadBHKRwvsOuVpvzFPHYbYkDIcmmN34kpj99nNirSRzs6lQhORXD3wHrIhGDRFiqRkixP897Puou+esymDFT7vmZrt9cPkqEs+j3rHI4scvreYqquIXG6Y/v7/uJTtKKFoztGeMfa+Wcp5V/EvujFoJ+mNPPp5/m+VGQt6dli9nx9wFmJuLqM/LWPgHrEsTnq9CXSRUUIkd4DJEYa/CGMWtAW9Zgy3VUC3dDu6n7rlxPyXQ+D1vwFIw+BLqwRYC5ijHGfxFCdbk05QloGSycmTvIef8wYNMztMFbt53PPNgpumuDBwYbmgYFKqcMUfqWSsmAbdNjPPHNx0gHW4DZPYLN3QxxVWaIrMff/PvgDjgFcMWsx4NzhbQX/bkNdmuYq9WviVlDC4d4+sUcqJPOLkYmomrjWnTUh3/OS0KtH3lPZklOB4tcd+MzHXbfqGDMuOFz1PRezsnyOg6S61JThBvhSrOK5v7HLGlmm+Z5lwCUYV3h+pGSYxMm24mT5+wY5mf5AdHBV510EhNTfekbh8ILAwWmOzceYcI6Yx2RreuhZIVAwWHf5Ifxhc2t3tixUwG1kDb3dQdaQA4GwZ8s2RU9ZdE1Si0vlNLPRrfURQveJ2S2EipBGwD7UC4leYsOAKsJO6JJcncvK6PVqIKDQjN6H8GdC0yf1RJNHIu/NUC92KmN6h48n+axTZ/6TYjTuz1fIYSQwaA13PXNBo5vdrfiPMvvMMI9D6Bbufysw0ppcAls9yX8A9cNcn6eqGVa4Uz0sGmL8NZU75cZaEPnHd3hkTDhHuhMIcmSWNNqbQoj/uUktmKC98dfNSg49+GEusSaMegcu1fIAHGd7lbYhfuYrOZrRY4aeW3wPmx+9vcIgRwEXSEvXzP62Z11j6dkAWK6sRCUGUIcBg1vELiaZkDlSS0qC24GA7cDoxQM95tyl9dTqRiy2ryehR
+ OF1M0qXE
+ CclkCu2m6TNbgf8ZYVZgBCMuZVPb3pggN6y1e3X8Ey6Mx/z+UsnUoVF2VEF13YwWLjXwF56sXWHUbDIOk2Zg5e6QVOzYNds7U6N5p9gY7t3NNGisR3SVN07OAsJlxsWXQRu4bHpDuie0wLXf9GksSwMeVR6DnkN1G6/je7rTDkF9ehFG+Io3CqRVyR8AP25uZXS+ny398yPA+01VH2m61xT3FLP34ywBCDFNWtHC/KBx5XH8aSVtDPzfiPSPmWs420cpTQZSgZk64M3ucokFcY1cseuZmiIcdmbNqCSG6SldgYTW9MXO0VPqsKfg7xLVd5fzEp6ZsZPAxF/L6DDQjV7YRen7yTXcm79wbIpWK5kv1wqGR9Zda826UbpdQzBJ/mpC/c//74bGAX80cTrtSsS6+R4BwjoNQYXHYVdy7qj8e0vW0RP40s80FP9P7k5G4xwgewDtSDde+TiLo7FxPi6+cKvGClYX9qKCQvjXYX2VcKJ80efnntf3IDisGoDMacrfto/tGp27Mn7BzPeiIi3oBxDb8+eSqFBuj37qsN8IfVnja/RaNAbuOrttKFhFr1HOPhDvvbncVM8zVDKcEo8dyxudNdO/YcTPWsnWJ1kitKDVc/AoDAimb4TKZURPdbd0oDQMy4AJONQvngGjJt9RUJsHfKMBk8ngyWSQl6YWG0ypYbU0Kd0piJACahhNL7yTDxuS1s0tWnSM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -112,169 +94,97 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
+X-Archived-By: <archiver.kernel.org>
 
-On 11/02/26 at 06:46pm, Ridong Chen wrote:
-> 
-> 
-> On 11/2/2026 9:37 AM, Baoquan He wrote:
-> > On 10/31/26 at 05:00pm, Ridong Chen wrote:
-> > > From: Ridong Chen <chenridong@xiaomi.com>
-> > > 
-> > > Move include/trace/events/vmscan.h to mm/trace_vmscan.h so that the
-> > > tracepoints can be extended to reference vmscan-internal structures such
-> > > as struct scan_control, which is not visible outside mm/.  This mirrors
-> > > what several other subsystems already do with their trace headers (e.g.
-> > > fs/fuse/fuse_trace.h, fs/gfs2/trace_gfs2.h, fs/lockd/trace.h).  As they
-> > > do, set TRACE_INCLUDE_PATH to "." and add mm/ to the include path of
-> > > vmscan.o, the only user that defines CREATE_TRACE_POINTS.
-> > > 
-> > > No functional change.
-> > > 
-> > > Signed-off-by: Ridong Chen <chenridong@xiaomi.com>
-> > > Reviewed-by: Barry Song <baohua@kernel.org>
-> > > ---
-> > >   MAINTAINERS                                        | 2 ++
-> > >   mm/Makefile                                        | 1 +
-> > >   mm/shrinker.c                                      | 2 +-
-> > >   include/trace/events/vmscan.h => mm/trace_vmscan.h | 4 ++++
-> > >   mm/vmscan.c                                        | 2 +-
-> > >   5 files changed, 9 insertions(+), 2 deletions(-)
-> > >   rename include/trace/events/vmscan.h => mm/trace_vmscan.h (99%)
-> > > 
-> > > diff --git a/MAINTAINERS b/MAINTAINERS
-> > > index aaf2825ac945..2ad01107fa05 100644
-> > > --- a/MAINTAINERS
-> > > +++ b/MAINTAINERS
-> > > @@ -17653,6 +17653,7 @@ F:	Documentation/admin-guide/mm/multigen_lru.rst
-> > >   F:	Documentation/mm/multigen_lru.rst
-> > >   F:	include/linux/mm_inline.h
-> > >   F:	include/linux/mmzone.h
-> > > +F:	mm/trace_vmscan.h
-> > >   F:	mm/vmscan.c
-> > >   F:	mm/workingset.c
-> > > @@ -17802,6 +17803,7 @@ R:	Shakeel Butt <shakeel.butt@linux.dev>
-> > >   R:	Lorenzo Stoakes <ljs@kernel.org>
-> > >   L:	linux-mm@kvack.org
-> > >   S:	Maintained
-> > > +F:	mm/trace_vmscan.h
-> > >   F:	mm/vmscan.c
-> > >   F:	mm/workingset.c
-> > > diff --git a/mm/Makefile b/mm/Makefile
-> > > index 2a3ec53d62ee..277b97f7f8d7 100644
-> > > --- a/mm/Makefile
-> > > +++ b/mm/Makefile
-> > > @@ -32,6 +32,7 @@ KCOV_INSTRUMENT_vmstat.o := n
-> > >   KCOV_INSTRUMENT_failslab.o := n
-> > >   CFLAGS_init-mm.o += -Wno-override-init
-> > > +CFLAGS_vmscan.o += -I$(src)
-> > 
-> > One nit:
-> > 
-> > Does it really need the above line? It affects mm/shrinker.c too, did your
-> > shrinker.o building fail?
-> > 
-> > Seems it's redundant because kbuild adds -I$(src) -I$(obj) for every object
-> > in the directory since commit cdd750bfb1f7 ("kbuild: remove 'addtree' and
-> > 'flags' magic for header search paths"). Please correct me if I am
-> > wrong.
-> > 
-> 
-> Hi Baoquan,
-> 
-> Thanks for the review.
-> 
-> The line is needed for vmscan.o, and mm/shrinker.c is fine without it,
-> because the two files include trace_vmscan.h in different ways.
-> 
-> mm/shrinker.c only does a plain #include "trace_vmscan.h". The lookup
-> starts from mm/, where the header lives, so no -I is needed.
-> 
-> mm/vmscan.c defines CREATE_TRACE_POINTS before including the header.
-> In that case <trace/define_trace.h>, included at the end of
-> trace_vmscan.h, includes the header again to generate the tracepoint
-> definitions:
-> 
-> #include TRACE_INCLUDE(TRACE_INCLUDE_FILE)  /* -> "./trace_vmscan.h" */
-> 
-> This #include is in include/trace/define_trace.h, so the lookup starts
-> from include/trace/ and only finds the header through -I. Without the
-> flag, vmscan.o fails to build:
-> 
-> ./include/trace/define_trace.h:118:42: fatal error: ./trace_vmscan.h: No
-> such file or directory
-> 
-> As for cdd750bfb1f7, it doesn't add -I$(src) for every build. kbuild
-> only adds -I$(src) -I$(obj) automatically when building with O=
-> (see "ifdef building_out_of_srctree" in scripts/Makefile.lib). So
-> with O= the line is indeed redundant and vmscan.o builds fine without
-> it, but a plain in-tree "make" fails with the error above. The
-> explicit flag keeps both working.
-> 
-> To be honest, I had the same worry at first: I thought every .c file
-> that includes the header would need a Makefile change. That's why v3
-> used a relative TRACE_INCLUDE_PATH (../../mm) instead. Steven corrected
-> me and pointed out that the proper way is TRACE_INCLUDE_PATH "." plus
-> -I$(src) for the one object that defines CREATE_TRACE_POINTS [1]. That
-> turned out to need only this one line. Thanks again to Steven for
-> that.
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [Medium] maple_tree: race in mas_prev_slot() when root is emptied after m=
+as_rewalk()
+--
 
-You are right, my nit was wrong. Learned it from you, thanks for the
-detailed explanation.
+commit edc2da191bb5cf8aae2a20e02f12ca0a680681ac
+Author: Liam R. Howlett (Google) <liam@infradead.org>
 
-> 
-> [1] https://lore.kernel.org/all/20261014124914.21c21559@gandalf.local.home/
-> 
-> 
-> > Other than the nit, this patch looks good to me,
-> > 
-> > Reviewed-by: Baoquan He <baoquan.he@linux.dev>
-> > 
-> > Thanks.
-> > >   mmu-y			:= nommu.o
-> > >   mmu-$(CONFIG_MMU)	:= highmem.o memory.o mincore.o \
-> > > diff --git a/mm/shrinker.c b/mm/shrinker.c
-> > > index 4fb424e721bc..4fbdade6d2f6 100644
-> > > --- a/mm/shrinker.c
-> > > +++ b/mm/shrinker.c
-> > > @@ -3,7 +3,7 @@
-> > >   #include <linux/rwsem.h>
-> > >   #include <linux/shrinker.h>
-> > >   #include <linux/rculist.h>
-> > > -#include <trace/events/vmscan.h>
-> > > +#include "trace_vmscan.h"
-> > >   #include "internal.h"
-> > > diff --git a/include/trace/events/vmscan.h b/mm/trace_vmscan.h
-> > > similarity index 99%
-> > > rename from include/trace/events/vmscan.h
-> > > rename to mm/trace_vmscan.h
-> > > index 8a872990b4be..ad90f0e9bf2e 100644
-> > > --- a/include/trace/events/vmscan.h
-> > > +++ b/mm/trace_vmscan.h
-> > > @@ -648,4 +648,8 @@ TRACE_EVENT(mm_vmscan_kswapd_clear_hopeless,
-> > >   #endif /* _TRACE_VMSCAN_H */
-> > >   /* This part must be outside protection */
-> > > +#undef TRACE_INCLUDE_FILE
-> > > +#undef TRACE_INCLUDE_PATH
-> > > +#define TRACE_INCLUDE_PATH .
-> > > +#define TRACE_INCLUDE_FILE trace_vmscan
-> > >   #include <trace/define_trace.h>
-> > > diff --git a/mm/vmscan.c b/mm/vmscan.c
-> > > index 9959ca158ce8..79d2d614afd0 100644
-> > > --- a/mm/vmscan.c
-> > > +++ b/mm/vmscan.c
-> > > @@ -71,7 +71,7 @@
-> > >   #include "swap.h"
-> > >   #define CREATE_TRACE_POINTS
-> > > -#include <trace/events/vmscan.h>
-> > > +#include "trace_vmscan.h"
-> > >   struct scan_control {
-> > >   	/* How many pages shrink_list() should reclaim */
-> > > -- 
-> > > 2.43.0
-> > > 
-> 
-> -- 
-> Best regards
-> Ridong
-> 
+maple_tree: Fix rcu reader NULL dereference after the tree is emptied
+
+This commit fixes a NULL dereference when RCU readers restart a forward or
+reverse walk from a dead node after the maple tree has been emptied or
+reduced to a single root pointer.
+
+> diff --git a/lib/maple_tree.c b/lib/maple_tree.c
+> index 0b0036c9f8489..a36dc20af84c4 100644
+> --- a/lib/maple_tree.c
+> +++ b/lib/maple_tree.c
+> @@ -3891,14 +3891,56 @@ static __always_inline void mas_rewalk(struct ma_=
+state *mas, unsigned long index
+[ ... ]
+> +static inline void *mas_prev_no_node(struct ma_state *mas, unsigned long=
+ index,
+> +		unsigned long min)
+> +{
+> +	mas->index =3D 0;
+> +	if (mas_is_none(mas)) {
+> +		mas->last =3D ULONG_MAX;
+> +		return NULL;
+> +	}
+> +
+> +	mas->last =3D 0;
+> +	if (!index || min)
+> +		return NULL;
+> +
+> +	return mas_root(mas);
+>  }
+[ ... ]
+> @@ -4063,6 +4103,17 @@ static void *mas_prev_slot(struct ma_state *mas, u=
+nsigned long min, bool empty)
+>  underflow:
+>  	mas->status =3D ma_underflow;
+>  	return NULL;
+> +
+> +dead:
+> +	mas_rewalk(mas, save_point);
+> +	if (likely(mas_is_active(mas)))
+> +		goto retry;
+> +
+> +	entry =3D mas_prev_no_node(mas, save_point, min);
+> +	if (unlikely(xa_is_node(entry))) /* The root changed again */
+> +		goto dead;
+> +
+> +	return entry;
+>  }
+
+[Severity: Medium]
+Can this leave mas in an inconsistent state if the root is concurrently
+emptied between mas_rewalk() and the mas_root() read in mas_prev_no_node()?
+
+When an RCU reader in mas_prev_slot() hits a dead node with save_point > 0
+and min =3D=3D 0, it jumps to dead: and runs:
+
+    mas_rewalk(mas, save_point)
+      -> mas_state_walk(mas)
+        -> mas_start(mas)
+
+If the tree holds a single pointer at index 0 at that moment, mas_start()
+sets mas->status =3D ma_root and returns NULL because mas->index > 0.
+
+Back in mas_prev_slot(), mas_prev_no_node() sees mas->status =3D=3D ma_root,
+sets mas->index =3D 0 and mas->last =3D 0, and performs a second RCU read v=
+ia
+mas_root(mas).
+
+If a concurrent writer finishes emptying the tree (setting ma_root to NULL)
+before that second mas_root(mas) read, mas_prev_no_node() returns NULL.
+Because mas_prev_slot() only checks xa_is_node(entry) to detect a concurrent
+root change, it returns NULL with mas->status =3D=3D ma_root, mas->index =
+=3D=3D 0,
+and mas->last =3D=3D 0 instead of mas->status =3D=3D ma_none and
+mas->last =3D=3D ULONG_MAX.
+
+Could this leave callers like mas_prev_range() or mas_find_range_rev() with
+a bogus [0, 0] range, or cause a subsequent forward walk on the same state
+to skip index 0?
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261103020724.2614=
+498-1-liam@infradead.org?part=3D1
 
