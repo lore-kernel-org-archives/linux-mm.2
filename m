@@ -1,100 +1,100 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17A01606A329
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 06:17:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41453606D80F
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 06:17:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=PAq6fX1Z
+	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Pg6ij7HY
 Received: by kanga.kvack.org (Postfix)
-	id 563976B05BA; Tue,  3 Nov 2026 01:17:17 -0500 (EST)
+	id 5AFB26B05BC; Tue,  3 Nov 2026 01:17:19 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5399C6B05BB; Tue,  3 Nov 2026 01:17:17 -0500 (EST)
+	id 561566B05BD; Tue,  3 Nov 2026 01:17:19 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 42AD76B05BC; Tue,  3 Nov 2026 01:17:17 -0500 (EST)
+	id 450106B05BE; Tue,  3 Nov 2026 01:17:19 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 243166B05BA
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 01:17:17 -0500 (EST)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id C01DA1A04D1
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 06:17:15 +0000 (UTC)
-X-FDA: 85392800430.18.B838475
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 1B3AA6B05BC
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 01:17:19 -0500 (EST)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 7B77A140380
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 06:17:18 +0000 (UTC)
+X-FDA: 85392800556.14.723A7CB
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 9230040002
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 06:17:13 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=PAq6fX1Z;
-	spf=pass (imf01.hostedemail.com: domain of mpenttil@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mpenttil@redhat.com;
+	by imf22.hostedemail.com (Postfix) with ESMTP id 46793C0002
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 06:17:16 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Pg6ij7HY;
+	spf=pass (imf22.hostedemail.com: domain of mpenttil@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mpenttil@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793686633;
-	b=rn3lB3pzQWVFW0cxw8WV5NlofxO0dTYuE16nt9g+GXlTXjsOIvlCxe30EOtnSXOiHwV/0b
-	0loSs9Iu4lE3q9YBl6Se5Ksmnsoj9ioAkkHLk95ZlbGprQFopKGt6sGH3qRh8mJYjlDBwv
-	ox4/nySbkDG3eR1G3VYnMWfx7ES0y0g=
+	t=1793686636;
+	b=qjIMuNd5X2TF6VB2OZA3Lf1fgB1QNxztgwjBbv7ka/gYP6YJI13DK+5OAqWjxYKKU9e4H9
+	x7wCTIiW9zYFEhVaD4YkKliqK1Co+W5q+vyXZZfwodKIBc2zyLr6mjcHExIxj8Y3fAqV9v
+	mIdOTx245GXULZZYWoZs54NW7jhxzWc=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=PAq6fX1Z;
-	spf=pass (imf01.hostedemail.com: domain of mpenttil@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mpenttil@redhat.com;
+	imf22.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Pg6ij7HY;
+	spf=pass (imf22.hostedemail.com: domain of mpenttil@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mpenttil@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793686633;
+	s=arc-20220608; t=1793686636;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gobpz7G2pF8eCW6Qy4GETlwPpa8+u249lV/gCTCXtkw=;
-	b=rap2lHxAfcbcBFMuHWtmN12qzdUV1Od3wkCQPw5h4r6r472ippM4c+Ov3qlj2BMSVqI4De
-	pSmXPrO4bb8V8b+dmcL8iIbVlm0zmHoj0ChPe2ZnViUwyJ8urrWK8VXSfXCu5mRg+c5e7q
-	rZd+mpgY4eMjKokOEUbZMsybzd/9pNc=
+	bh=jIc5h4IhkXIt4VgOmF6ym6QfRntQTchoUiwA4snRnC8=;
+	b=6fZz+Eq9w2Nw4pHqc+MJ5OSQobVq9ObS99UBGcixQLScvcS4GkOQuYKNk1kOZB+sGgwafM
+	govfPVe592SSzgb+PugaPUkiP99rNIB+LpOEDf9ru5HMsxpMzGxPpI2KuHfYqAwJWK5tec
+	vbV8t32ez+kpnk3zF+X9Kwu9AWu08dY=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1793686632;
+	s=mimecast20190719; t=1793686635;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=gobpz7G2pF8eCW6Qy4GETlwPpa8+u249lV/gCTCXtkw=;
-	b=PAq6fX1ZT9P1QemYQ7f1P5H3YjOpYDdFzLSp/mESvdWAiX/whUt2PfLB/4ScC46ACtrjfH
-	t45bqr1MrJz8RfY79S99sAi2rP9MrpwwHJy5RRyxWTp7LZcu6ivhQx20VHYV01cxUdB7uQ
-	AP79uowFPq6PIxIrtKoudXmVLvU15/Y=
-Received: from mail-lf1-f71.google.com (mail-lf1-f71.google.com
- [209.85.167.71]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=jIc5h4IhkXIt4VgOmF6ym6QfRntQTchoUiwA4snRnC8=;
+	b=Pg6ij7HYY463mRWPI3Cplb4CP61HWYdl3QT62t/Fm5yEFtPXCUFOxiQgN93tazHqCCwUgx
+	WYSvYBLP37SGr/lZvhV5nqXCR7PPKEOqLxw2rgPMMh1Ixu6iQqSdLXu3OYQyyG5NMm7Yj+
+	yNynJp87EWNE54eREvzz5fBSUzwqEqk=
+Received: from mail-lj1-f197.google.com (mail-lj1-f197.google.com
+ [209.85.208.197]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-532-rpYpgM9LMLSgA0ipcWqqCw-1; Tue, 03 Nov 2026 01:17:11 -0500
-X-MC-Unique: rpYpgM9LMLSgA0ipcWqqCw-1
-X-Mimecast-MFC-AGG-ID: rpYpgM9LMLSgA0ipcWqqCw_1793686630
-Received: by mail-lf1-f71.google.com with SMTP id 2adb3069b0e04-5bcf6b5224cso1923078e87.1
-        for <linux-mm@kvack.org>; Mon, 02 Nov 2026 22:17:11 -0800 (PST)
+ us-mta-690-WHuzYsoaMNCniz0av-qreg-1; Tue, 03 Nov 2026 01:17:14 -0500
+X-MC-Unique: WHuzYsoaMNCniz0av-qreg-1
+X-Mimecast-MFC-AGG-ID: WHuzYsoaMNCniz0av-qreg_1793686633
+Received: by mail-lj1-f197.google.com with SMTP id 38308e7fff4ca-3ab345bb334so17424121fa.3
+        for <linux-mm@kvack.org>; Mon, 02 Nov 2026 22:17:14 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793686630; x=1794291430;
+        d=1e100.net; s=20260707; t=1793686633; x=1794291433;
         h=content-transfer-encoding:content-type:mime-version:references
          :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=gobpz7G2pF8eCW6Qy4GETlwPpa8+u249lV/gCTCXtkw=;
-        b=iAd6II8ZyVwE+DLnwwInUpKJR9WLPXORD2g/dg1O388A9iAT2H+ee0GdusRWUp1rrR
-         QkXl4csyE9NNrTVsflv1xMaEb+JfrnNRpkKjCq8u/Dwb4XIhFoARMiZeWYY1I8ajKcvg
-         k5duO0l7iIgiVVDuR5HoPCtY6+Svniv33ETtRMjcu3zW9LgaToTKTOv8krw8P/v23dU9
-         lIyYIHzx1Tgxodw3FvyfEjMJoiYiuh0JIGUI/V4PdGPbHhFvYvdRHSMkc6cUzzTnWQdV
-         8nME3HQdU1olrCMBSvKofV0rU/5vZeaZE3iqzmM9sStphgVJy4KgsZHuYYikpeOiPn15
-         NAHg==
-X-Gm-Message-State: APuU4Z9Xuy2Hn3pj9Kvos8GDpOL0fYkniX9wKc13fjR5q9e2Yhbmp/Jh
-	YAdSaf9+fh4SJijTi+loS2p3r6BlZ+6kJWnYFLlqSMN7H34OM2Lx6i8xNjgpCWyzMt186qj6N4I
-	d14St3SSE6z4ZBetYn5zlaRrwVyp6qea9oqDPs1qYG74XWAMhTI+nHUu1kjRJC42JkEcEOFOi3o
-	XKFTKdymrijP16a5YDMHr7oxQSUNhpKXi/VNCGPQ==
-X-Gm-Gg: AYBFou3Uv4Olzfng7sNpz1BIYelIFKC9DT1TpE131AMEN53RwQja/Rmr1ikoROs1cre
-	UTJDeolTeqMlvcJDH8bdvgzTQujTMXEypWzsCz+sUtUkZ6q9L4/Ex/sw4sAkteZK/vSw5nr0ngh
-	shWlzUhKutkk1aF4u576+W9e+6z/Rj6v3kldD6BBUZ+OQxZ8kIhebvyYc14txc1GPnJUj9cMcXS
-	ptDN76EwML34ofSlLb6TqPLQM4qr3mqFhg+x54an9nRBeSA+GKp+b1qjDapyu3nB7cLDWPZT/sq
-	s0YZOFX+KzSe4Uu7Qd7A4HyuLaBwn14OJg8dnOVLRDegmCkcdnZZ0L6gie/UMInD8ss/n3q1Y4S
-	MvwTMzQjqpe6RKJqSglMIjIXFoxfRFJ/bBxetfUTtJTY+iJztDEq2F4vg0ntCgsaGmSb2+g==
-X-Received: by 2002:a05:6512:3f13:b0:5be:5dfc:864f with SMTP id 2adb3069b0e04-5bfd9599012mr3965236e87.50.1793686629781;
-        Mon, 02 Nov 2026 22:17:09 -0800 (PST)
-X-Received: by 2002:a05:6512:3f13:b0:5be:5dfc:864f with SMTP id 2adb3069b0e04-5bfd9599012mr3965125e87.50.1793686621536;
-        Mon, 02 Nov 2026 22:17:01 -0800 (PST)
+        bh=jIc5h4IhkXIt4VgOmF6ym6QfRntQTchoUiwA4snRnC8=;
+        b=V1Ae7qT1hqFUshHz8xebKkotiyVEI5GlnbeeSyLvS5hXxptVJFy9p8RWxr0dFylMG1
+         QmbmOuY6D8wx0f0j54ZKHOSeCLVhS+vRj4tK+e2jc27Mu2xcQ/FDavOy3/QZYkGzo0Cc
+         0Lu6WtfHxG10lBRCuj5TsRp5giOdvpLAVr9taBCCHs7WLTSYK5LemCzwBfMJfdPugxdS
+         pV6eJhdxNIFCA4McZfzsg5HApYIdGR93Ng99CXwBzvvqiEAMQuywwjZ8QLX7TZB3T7zo
+         //pO7+L3GcF2FaYsWKiw1lFCe7mnvyCp/l+pAtAMM9DHGEc/Vc+il90EPshqSI81Dn3P
+         THhg==
+X-Gm-Message-State: APuU4Z/gW4AHdEHj1kjuxRl1+Ds2dnjlO/aBEAwVD0zFAWXTpFvJgEH9
+	j7I0+P0oKpd0KwQfr4CzYRkEj/fUJp6V6T3ZjI+BzTkyMm4LdV5ciOR9FkCpbTPN7AkxblImtm6
+	GcwdfySPf8IvcXgMAhMRIUhOSQwFcX2OvKnUE+l6Xh9lsfabQ6RIZwUm7uAris9HxP4qUNA6lvm
+	fVNjE9nCE3sOnqxNJDUj34YZbtAYFovKx7asY/mA==
+X-Gm-Gg: AYBFou0x0grvwGSjs+GebtjDaMsdhB5b/YCzyRyeWF6wpclTP5c1ekHtYawRNhEZtRM
+	XsKCZO399FNtQ7TmSa0l/YAhdbU92gzzTLh7fC/EPBs5UIx3nN7RSBnlqzHfPG0zlU1f0miUICn
+	U7oSdZakObj4WZIungNrEzxaihDAU41ZjiADR0AGlzdEQoV07JwLoG7lOGhQTaYwBQvmHd7aGOS
+	GRd7e4gJMZwoXnXV+iNEICGy1RGJnZwoIgQZJxljEkfrYkCaFXy3xN/YsGroQTFLtl76fKteedP
+	r9c2Ae7+AT2JQLvcPDdoqjPP7maonWUsqo3JOcimLnvLAlUc0lKk54YAhpWuz8PpodpbV8Ki5+O
+	F85O0VJg633PFreTk1cLM3H41IfOIWjgM+JjPykqd3t3tV+QFPDhKEBJBwu2cO2YQZxTz+A==
+X-Received: by 2002:a05:6512:ac2:b0:5bf:e32c:51b with SMTP id 2adb3069b0e04-5bfe32c06cemr2651620e87.6.1793686633001;
+        Mon, 02 Nov 2026 22:17:13 -0800 (PST)
+X-Received: by 2002:a05:6512:ac2:b0:5bf:e32c:51b with SMTP id 2adb3069b0e04-5bfe32c06cemr2651592e87.6.1793686632449;
+        Mon, 02 Nov 2026 22:17:12 -0800 (PST)
 Received: from fedora (89-27-86-246.bb.dnainternet.fi. [89.27.86.246])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5bfe073e0f9sm1964634e87.54.2026.11.02.22.17.00
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5bfe073e0f9sm1964634e87.54.2026.11.02.22.17.11
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 02 Nov 2026 22:17:01 -0800 (PST)
+        Mon, 02 Nov 2026 22:17:11 -0800 (PST)
 From: mpenttil@redhat.com
 To: linux-mm@kvack.org
 Cc: dri-devel@lists.freedesktop.org,
@@ -117,16 +117,16 @@ Cc: dri-devel@lists.freedesktop.org,
 	Michal Hocko <mhocko@suse.com>,
 	Lyude Paul <lyude@redhat.com>,
 	Danilo Krummrich <dakr@kernel.org>
-Subject: [PATCH v17 07/12] mm/hmm: add lazy MMU mode support for migration in HMM pagewalk
-Date: Tue,  3 Nov 2026 08:16:24 +0200
-Message-ID: <20261103061629.972669-8-mpenttil@redhat.com>
+Subject: [PATCH v17 08/12] mm/hmm: implement rollback for device page migration in HMM pagewalk
+Date: Tue,  3 Nov 2026 08:16:25 +0200
+Message-ID: <20261103061629.972669-9-mpenttil@redhat.com>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20261103061629.972669-1-mpenttil@redhat.com>
 References: <20261103061629.972669-1-mpenttil@redhat.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: YvkMeiHBudCvL6hCUCvPGtLAWy_myd0XZ29GRG0BLEQ_1793686630
+X-Mimecast-MFC-PROC-ID: 5yKWKcn6-EkLzmc8dm7gmJXE_gAoOxecjuGTnUNLPr0_1793686633
 X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -135,13 +135,13 @@ X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
 X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 9230040002
-X-Stat-Signature: jar1nsiyx6zey3yq38w7g513oy8tbb1f
+X-Rspamd-Queue-Id: 46793C0002
+X-Stat-Signature: s1m6ss11zgnnnwqkownyuwriwzk71mjg
 X-Rspam-User: 
-X-HE-Tag: 1793686633-961455
-X-HE-Meta: U2FsdGVkX1/MvOtC67O0sBSmpLfUSu5t1B/oh/t7Nfrr4toxD0DbsO2lUsqPiNH4CkwqO1rTKFd+OjaVKrw25In/xeEz8TZp/gjGr04YAWQ2quVldJUJj74lo/T00aSZzwfEV3x84pMHBmflQpFMjEQ6iTep553/9g/zMdzRn2z41x+4tzdbi2tAWgYq4c7sKwL1rsSLCMP4/vwlTznn05fxGk/meAgi7nBnBRL2qsYLzRDeEECQ3RK5E7ofP1qXGJD7fO3uJt4SXaXwy97tfb1iFK/4/zaaNcyOCaSgxpew3vQckZCwvhYV+CD2AeePXtlf9cFMDnL+X5ZZIvtkE3RtqlSKH1ep49zBh00W9DM6yV3UUE1eOdxmMLzmkChF5tQLjtKXM55329jdeA1p4DQ3MlB9IfR+onlIkPZQfGD5g8p4vcZI72EnYvIHgKeYXzAWoW9GPSaXXZllpRstGw561nS/Dx5KrQMI5joHxjjDfscuC6NEBS6IoXK//Sf+zLj+oJq4d2IA+l7nS+/qswBs1hpTm9bl2BC8tCPb5R7eG3Ln93ZYEFCsE6Q1YhyuxzP+gHewsgcvlxkK72t/TlDwGKb04UxuoVKhEpscBn1+v0o7HHx4/K6TxNu2pQZtgaUqdIB+lJYEZ+PrFIHivTGXhNV0LV70qG7q6SGXndCauu/VSPKI9ByJ58CJYKmNM+VOWz5hCFa8MxzwrHveOk3gSz9oZnObwGcY85FwxIGo255XV9PTnXOj+iGpwUl3hEtbe6p4PP+TfbPrkPKyjawrkuB6NuqYzJrNACEs8FiPByuIEwrEoSAAnsUdgcnDpKGn7MFq1bXtxQLMeuVpUAccsJFcUhaidr7wrb4c3kRKtKiZ69+DaGwJPZ3TDLN/2TobdtApQUY/wkmu5XHmau4hGg8V9ydlBX6GsJP4J5wGfSlc8WvgyYewKY3fhYC3Z1nBMdv8vzt1vY4Nnbz
- 111XqDdh
- V0864zNopDUYEQ69s5EeTbxPz6rEOLEr8+U+0Y4YjVKH/MAdgW6wVd+FLKnGb2q/kU4cOkShLCCii6uWQ9cTeNG3eSdCJ+xsweBp+tE1cm8aTZP0s1oeCbj0uoiSC5WO6zoLkplwE64WiiXS9v8A59/s1Cx6/te0Fa2mPilji5+xxf2C/9oceas1KYLbFMSnWdMWUr9RPrf2nTioHYUDEhkyHGlBgM+PHGM3oKT75JIwcUokVr6Cc7I7o00NqEEOte0U8nOv80IS6gFsqWaJxNQeoq69fnUkBp1gB1HSq5NdVrA/SIbuX9tk0c0udOz1JlEPtKtjngUmFsw+0AUz/Ng+FOGEoKHHZkoaBlhOqeHs1PBLQJUK+I+CQkoFCwqsJOJRScq/Y02z1skLBoaTbmrSYThwzmdwRwcKd
+X-HE-Tag: 1793686636-396719
+X-HE-Meta: U2FsdGVkX1/d3QVTUcao7w5dlCztXmdTQz1P2jvuH93ZWsXfroUpX6m8UU7sYo4jPOH2htKVkLI1dp3z3qxFpvaBe4RM7+owgQcZQgMMV0CLls5qMFi+ADvXJsEjpSFp7nNh+/VL+D+Hfa2A7M7OQqierazkcgMq5dNs9b+zuwLSoZKEuPOsIuL9PZnZdH5JD40u9yC9SuGZTNvZIfqKWbkYNV9xtAKgBDXYnZ3KuP4j7YZDSn3uilaflnI5sj+EXaZkBtV9JtfATXhPgtYJIEPPuX5I2Zb7nG4pIsX1u8desfEf38mXo1yH6bJCxsb2fCBXEIi/Z4gR6fVr8vfnowKLz2MkBFMN/IlbVwHLsdWAB++EQm3gnfCph4r+OfhLIyw/wD6lpJjpviHkOuSjuxCklHv5UjIA3vPrTUn237hi0oNcQD4HANB8hcGnfyqHaqkh8H7jJLmrwarvAj5f9s308deYLOvodJLCyPUdNgfJ23RGMY+aIQQCNsJ/Vv0jFPVqo2NIoM0PTvXjnQKi6EMZlIHPwE7g07j3ZKL/3uGfB3O2XmZZsmsEk8tshRN+c/spjvs/8QgWmmthjrSLOBNU8Y/HYz9DQv5AKlh8oKRyDcdBNsOYPBSJjQtJiRt9XIUYKb7BQppeKKzIS7R/pY2wzas2YxPJqWhk4AYsAdDFVKNdLe+AEessk0Ib6xMGNBG5Fys0fi64rA1/vN6CgsPWYAzEftTCFS2lkhQtgH8ANC8D2iA+mbD6i2uniS3Xym6ytqUjsloesDVq0Uq79/GWu1lwoBF9bH5uXyWoqjytTH4wTdLt4+JxcMfXwM3BKxW+a1RTkbgL+0x5qfub5Hdb+OqUzEcgTTYlI7PU+BTZr2Yr0dU/gztW7n0OlthlVDsV1Ol2YEBcaJBuq4tOrHLsI3tbhsewHy02y/U7hadctgulxOaUh7wJBpsPMhaCD1wHIcq2dgJNvCMQpiw
+ gAF2Tkbc
+ MKNW6eHnYjf1LWRXfZNvL+ztHYuHTipmQzj1RP/hGGoYv3tE7CtN/vbvKg37kldkVK5S1MJNGij2nOi4sMTfHImpXcmh3qj4UZPI0mzRyyDbxT3HnPzT12BGidTwunUmozMWTZe34qbNQVZK62QWuac97MF6q+4n5CmW16Fr6OKDgf3PmlNYBT7cZUwymvjIsL50lLSyUxq11SoPHUzNiZKOCY6GIOCD3/ZDQf8JZt0TSOgN2y7UjazW35YRiR+sGfLxotbjNhkUC+egCAAeGlahjNk163fyKy7FKTYNHN1+6gpmeiklPPjnay4NwUhMMJNLhYKOPmFF5/RaIM+e4ovVemSC8B5m5z+RzI6q5jfpz3J9cfaxWkF/DroQFqTvKmDLMk6bCqUqGNMt4TbodPet/pW8Fqmwz5qCd
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -152,8 +152,20 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 
 From: Mika Penttilä <mpenttil@redhat.com>
 
-Add calls to lazy_mmu_mode_enable() and lazy_mmu_mode_disable()
-while doing migration.
+During the migration pagewalk, the PTE table could be cleared and/or
+changed into PMD leaf or even another PTE table while dropped locks.
+
+In these cases the possibly inserted migration ptes are gone. We have
+to however undo the collecting done so far, so unlock the folios and
+drop reference taken.
+
+During the pagewalk we notice such scenarios if going to recollect a pfn
+but have already committed to migrate the entry with HMM_PFN_MIGRATE, in
+which case do rollback. Rollback clears (HMM_PFN_VALID | HMM_PFN_MIGRATE)
+which is safe, as migration is entirely driven by default_flags.
+
+If we encounter migration ptes they are just skipped to allow for restart
+own walks.
 
 Cc: David Hildenbrand <david@kernel.org>
 Cc: Jason Gunthorpe <jgg@nvidia.com>
@@ -165,65 +177,286 @@ Cc: Matthew Brost <matthew.brost@intel.com>
 Suggested-by: Alistair Popple <apopple@nvidia.com>
 Signed-off-by: Mika Penttilä <mpenttil@redhat.com>
 ---
- mm/hmm.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ include/linux/hmm.h |  22 ++++++++
+ mm/hmm.c            | 127 +++++++++++++++++++++++++++++++++++++++++++-
+ 2 files changed, 148 insertions(+), 1 deletion(-)
 
+diff --git a/include/linux/hmm.h b/include/linux/hmm.h
+index 4f56f3419cb4..b08ebc1343dd 100644
+--- a/include/linux/hmm.h
++++ b/include/linux/hmm.h
+@@ -111,6 +111,28 @@ static inline unsigned int hmm_pfn_to_map_order(unsigned long hmm_pfn)
+ 	return (hmm_pfn >> HMM_PFN_ORDER_SHIFT) & 0x1F;
+ }
+ 
++/*
++ * hmm_pfn_collected() - is this pfn entry prepared for migration ?
++ * If collected the folio's refcount is increased and the folio
++ * is locked.
++ */
++static inline bool hmm_pfn_collected(unsigned long hmm_pfn)
++{
++	return (hmm_pfn & (HMM_PFN_VALID | HMM_PFN_MIGRATE)) ==
++		(HMM_PFN_VALID | HMM_PFN_MIGRATE);
++}
++
++/*
++ * hmm_pfn_rollback_collected() - undoes the collection of hmm_pfn
++ *
++ * Note for total rollback the folio's refcount has to be put
++ * and folio has to be unlocked.
++ */
++static inline unsigned long hmm_pfn_rollback_collected(unsigned long hmm_pfn)
++{
++	return hmm_pfn & ~(HMM_PFN_VALID | HMM_PFN_MIGRATE | HMM_PFN_COMPOUND);
++}
++
+ /*
+  * struct hmm_range - track invalidation lock on virtual address range
+  *
 diff --git a/mm/hmm.c b/mm/hmm.c
-index cbde004fd778..690b73908f34 100644
+index 690b73908f34..1c8a3fa29c4e 100644
 --- a/mm/hmm.c
 +++ b/mm/hmm.c
-@@ -377,6 +377,7 @@ static int hmm_vma_handle_pte(struct mm_walk *walk, unsigned long addr,
- 		/* Report error for everything else */
+@@ -95,6 +95,11 @@ enum {
+ 			      HMM_PFN_P2PDMA_BUS,
+ };
  
- 		if (hmm_vma_walk->ptelocked) {
-+			lazy_mmu_mode_disable();
- 			pte_unmap_unlock(ptep, hmm_vma_walk->ptl);
- 			hmm_vma_walk->ptelocked = false;
- 		} else {
-@@ -400,6 +401,7 @@ static int hmm_vma_handle_pte(struct mm_walk *walk, unsigned long addr,
- 	    !is_zero_pfn(pte_pfn(pte))) {
- 		if (hmm_pte_need_fault(hmm_vma_walk, pfn_req_flags, 0)) {
- 			if (hmm_vma_walk->ptelocked) {
-+				lazy_mmu_mode_disable();
- 				pte_unmap_unlock(ptep, hmm_vma_walk->ptl);
- 				hmm_vma_walk->ptelocked = false;
- 			} else {
-@@ -419,6 +421,7 @@ static int hmm_vma_handle_pte(struct mm_walk *walk, unsigned long addr,
++static void hmm_vma_handle_migrate_prepare_rollback(const struct hmm_vma_walk *hmm_vma_walk,
++						    unsigned long start,
++						    unsigned long end,
++						    unsigned long *hmm_pfn);
++
+ static int hmm_pfns_fill(unsigned long addr, unsigned long end,
+ 			 struct hmm_vma_walk *hmm_vma_walk, unsigned long cpu_flags)
+ {
+@@ -111,6 +116,8 @@ static int hmm_pfns_fill(unsigned long addr, unsigned long end,
+ 		}
+ 	}
  
- fault:
- 	if (hmm_vma_walk->ptelocked) {
-+		lazy_mmu_mode_disable();
- 		pte_unmap_unlock(ptep, hmm_vma_walk->ptl);
- 		hmm_vma_walk->ptelocked = false;
++	hmm_vma_handle_migrate_prepare_rollback(hmm_vma_walk, addr, end, &range->hmm_pfns[i]);
++
+ 	if (migrate && thp_migration_supported() &&
+ 	    (minfo & MIGRATE_VMA_SELECT_COMPOUND) &&
+ 	    IS_ALIGNED(addr, HPAGE_PMD_SIZE) &&
+@@ -239,6 +246,9 @@ static int hmm_vma_walk_hole(unsigned long addr, unsigned long end,
+ 			spin_unlock(hmm_vma_walk->ptl);
+ 			hmm_vma_walk->pmdlocked = false;
+ 		}
++		/* Entries collected from a vanished page table are gone */
++		hmm_vma_handle_migrate_prepare_rollback(hmm_vma_walk, addr, end,
++							hmm_pfns);
+ 		return hmm_record_fault(addr, end, required_fault, walk);
+ 	}
+ 	return hmm_pfns_fill(addr, end, hmm_vma_walk, 0);
+@@ -274,6 +284,9 @@ static int hmm_vma_handle_pmd(struct mm_walk *walk, unsigned long addr,
+ 	cpu_flags = pmd_to_hmm_pfn_flags(range, pmd);
+ 	required_fault =
+ 		hmm_range_need_fault(hmm_vma_walk, hmm_pfns, npages, cpu_flags);
++	/* Entries collected from a vanished page table are gone */
++	hmm_vma_handle_migrate_prepare_rollback(hmm_vma_walk, addr,
++						end, hmm_pfns);
+ 	if (required_fault) {
+ 		if (hmm_vma_walk->pmdlocked) {
+ 			spin_unlock(hmm_vma_walk->ptl);
+@@ -331,6 +344,15 @@ static int hmm_vma_handle_pte(struct mm_walk *walk, unsigned long addr,
+ 	if (!pte_present(pte)) {
+ 		const softleaf_t entry = softleaf_from_pte(pte);
+ 
++		/*
++		 * Our own migration entry, collected earlier in this walk:
++		 * keep the collected pfn, don't fault or roll it back.
++		 */
++		if (softleaf_is_migration(entry) && hmm_select_migrate(range) &&
++		    hmm_pfn_collected(*hmm_pfn) &&
++		    hmm_pfn_to_page(*hmm_pfn) == softleaf_to_page(entry))
++			return 0;
++
+ 		/*
+ 		 * Don't fault in device private pages owned by the caller,
+ 		 * just report the PFN.
+@@ -416,6 +438,9 @@ static int hmm_vma_handle_pte(struct mm_walk *walk, unsigned long addr,
+ 
+ 	new_pfn_flags = pte_pfn(pte) | cpu_flags;
+ out:
++	hmm_vma_handle_migrate_prepare_rollback(hmm_vma_walk, addr,
++						addr + PAGE_SIZE,
++						hmm_pfn);
+ 	*hmm_pfn = (*hmm_pfn & HMM_PFN_INOUT_FLAGS) | new_pfn_flags;
+ 	return 0;
+ 
+@@ -427,7 +452,19 @@ static int hmm_vma_handle_pte(struct mm_walk *walk, unsigned long addr,
  	} else {
-@@ -548,6 +551,7 @@ static int migrate_vma_split_folio(struct folio *folio,
- 	if (folio != fault_folio)
- 		folio_get(folio);
+ 		pte_unmap(ptep);
+ 	}
+-	/* Fault any virtual address we were asked to fault */
++	/*
++	 * This pte needs a fault, so it is not our migration entry: a pfn
++	 * collected here earlier is gone, roll it back before faulting.
++	 */
++	hmm_vma_handle_migrate_prepare_rollback(hmm_vma_walk, addr,
++						addr + PAGE_SIZE, hmm_pfn);
++	/*
++	 * Fault any virtual address we were asked to fault. When migrating,
++	 * only this page: later ptes may be our own migration entries or
++	 * caller owned device private pages, which must not be faulted.
++	 */
++	if (hmm_select_migrate(range))
++		end = addr + PAGE_SIZE;
+ 	return hmm_record_fault(addr, end, required_fault, walk);
+ }
  
-+	lazy_mmu_mode_disable();
- 	pte_unmap_unlock(ptep, hmm_vma_walk->ptl);
- 	hmm_vma_walk->ptelocked = false;
+@@ -454,6 +491,9 @@ static int hmm_vma_handle_absent_pmd(struct mm_walk *walk, unsigned long start,
+ 		if (softleaf_is_device_private_write(entry))
+ 			cpu_flags |= HMM_PFN_WRITE;
  
-@@ -1159,8 +1163,10 @@ static int hmm_vma_walk_pmd(pmd_t *pmdp,
++		hmm_vma_handle_migrate_prepare_rollback(hmm_vma_walk,
++							start, end,
++							hmm_pfns);
+ 		/*
+ 		 * Fully populate the PFN list though subsequent PFNs could be
+ 		 * inferred, because drivers which are not yet aware of large
+@@ -475,6 +515,10 @@ static int hmm_vma_handle_absent_pmd(struct mm_walk *walk, unsigned long start,
+ 				spin_unlock(hmm_vma_walk->ptl);
+ 				hmm_vma_walk->pmdlocked = false;
+ 			}
++			/* Entries collected from a vanished page table are gone */
++			hmm_vma_handle_migrate_prepare_rollback(hmm_vma_walk,
++								addr, end,
++								hmm_pfns);
+ 			return hmm_record_fault(addr, end, required_fault, walk);
+ 		}
+ 		else
+@@ -561,6 +605,51 @@ static int migrate_vma_split_folio(struct folio *folio,
+ 	return __migrate_vma_split_folio(folio, fault_page);
+ }
  
- 	if (minfo) {
- 		ptep = pte_offset_map_lock(mm, pmdp, addr, &hmm_vma_walk->ptl);
--		if (ptep)
-+		if (ptep) {
-+			lazy_mmu_mode_enable();
- 			hmm_vma_walk->ptelocked = true;
++/*
++ * Due to dropping ptl locks for splitting for instance, would we
++ * overwrite already collected pfns? This could happen when pmd
++ * pointing to a page table has vanished and been replaced with
++ * a leaf pmd, or another page table. In that case unref and unlock
++ * the folios, the pfns of which were collected from the disappeared
++ * page tables.
++ *
++ * Migrate mode drives fault/migration requests only via range->default_flags.
++ * (HMM_PFN_VALID | HMM_PFN_MIGRATE) denotes a collected entry and can safely
++ * be cleared from hmm_pfn[].
++ */
++static void hmm_vma_handle_migrate_prepare_rollback(const struct hmm_vma_walk *hmm_vma_walk,
++						    unsigned long start,
++						    unsigned long end,
++						    unsigned long *hmm_pfn)
++{
++	struct hmm_range *range = hmm_vma_walk->range;
++	struct migrate_vma *migrate = range->migrate;
++	struct folio *fault_folio = NULL;
++	enum migrate_vma_info minfo;
++	struct folio *folio;
++	unsigned long i;
++
++	minfo = hmm_select_migrate(range);
++	if (!minfo)
++		return;
++
++	WARN_ON_ONCE(!migrate);
++
++	fault_folio = migrate->fault_page ?
++		page_folio(migrate->fault_page) : NULL;
++
++	for (i = 0; start < end; start += PAGE_SIZE, i++) {
++		if (hmm_pfn_collected(hmm_pfn[i])) {
++			folio = page_folio(hmm_pfn_to_page(hmm_pfn[i]));
++			if (folio != fault_folio)
++				folio_unlock(folio);
++			folio_put(folio);
++			hmm_pfn[i] = hmm_pfn_rollback_collected(hmm_pfn[i]);
++
 +		}
- 	} else {
++	}
++}
++
+ static int hmm_vma_handle_migrate_prepare_pmd(const struct mm_walk *walk,
+ 					      pmd_t *pmdp,
+ 					      unsigned long start,
+@@ -731,6 +820,11 @@ static int hmm_vma_handle_migrate_prepare(const struct mm_walk *walk,
+ 	pte = ptep_get(ptep);
+ 
+ 	if (pte_none(pte)) {
++		hmm_vma_handle_migrate_prepare_rollback(hmm_vma_walk,
++							addr,
++							addr + PAGE_SIZE,
++							hmm_pfn);
++
+ 		if (vma_is_anonymous(walk->vma)) {
+ 			*hmm_pfn &= HMM_PFN_INOUT_FLAGS;
+ 			*hmm_pfn |= HMM_PFN_MIGRATE;
+@@ -783,6 +877,10 @@ static int hmm_vma_handle_migrate_prepare(const struct mm_walk *walk,
+ 		pfn = pte_pfn(pte);
+ 		if (is_zero_pfn(pfn) &&
+ 		    (minfo & MIGRATE_VMA_SELECT_SYSTEM)) {
++			hmm_vma_handle_migrate_prepare_rollback(hmm_vma_walk,
++								addr,
++								addr + PAGE_SIZE,
++								hmm_pfn);
+ 			/* Like pte_none(): only anonymous memory can be populated */
+ 			if (!vma_is_anonymous(walk->vma))
+ 				goto out;
+@@ -929,6 +1027,13 @@ static int hmm_vma_handle_migrate_prepare(const struct mm_walk *walk,
+ }
+ 
+ #else
++static void hmm_vma_handle_migrate_prepare_rollback(const struct hmm_vma_walk *hmm_vma_walk,
++						    unsigned long start,
++						    unsigned long end,
++						    unsigned long *hmm_pfn)
++{
++}
++
+ static int hmm_vma_handle_migrate_prepare_pmd(const struct mm_walk *walk,
+ 					      pmd_t *pmdp,
+ 					      unsigned long start,
+@@ -1068,6 +1173,16 @@ static int hmm_vma_walk_pmd(pmd_t *pmdp,
+ 			hmm_vma_walk->pmdlocked = false;
+ 		}
+ 
++		/* Our own migration entry, collected earlier in this walk */
++		if (minfo && hmm_pfn_collected(hmm_pfns_start[0]) &&
++		    hmm_pfn_to_page(hmm_pfns_start[0]) ==
++		    softleaf_to_page(softleaf_from_pmd(pmd)))
++			return 0;
++
++		/* Not ours: entries collected from a vanished page table are gone */
++		hmm_vma_handle_migrate_prepare_rollback(hmm_vma_walk, start, end,
++							hmm_pfns_start);
++
+ 		if (required_fault) {
+ 			/*
+ 			 * Someone else's migration: when migrating, wait in
+@@ -1171,6 +1286,10 @@ static int hmm_vma_walk_pmd(pmd_t *pmdp,
  		ptep = pte_offset_map(pmdp, addr);
  	}
-@@ -1205,6 +1211,7 @@ static int hmm_vma_walk_pmd(pmd_t *pmdp,
- 		flush_tlb_range(walk->vma, start, addr);
- 
- 	if (hmm_vma_walk->ptelocked) {
-+		lazy_mmu_mode_disable();
- 		pte_unmap_unlock(ptep - 1, hmm_vma_walk->ptl);
- 		hmm_vma_walk->ptelocked = false;
- 	} else {
+ 	if (!ptep) {
++		/*
++		 * The pte table is gone: re-walk from start, entries collected
++		 * from the old table are rolled back as they are revisited.
++		 */
+ 		addr = start;
+ 		goto again;
+ 	}
+@@ -1192,6 +1311,12 @@ static int hmm_vma_walk_pmd(pmd_t *pmdp,
+ 				flush_tlb_range(walk->vma, start, addr);
+ 				unmapped = false;
+ 			}
++			/*
++			 * The pte lock was dropped and the pte table may have
++			 * changed: re-walk from start. Our own migration entries
++			 * are kept, anything else collected is rolled back.
++			 */
++			addr = start;
+ 			goto again;
+ 		}
+ 		if (r) {
 -- 
 2.55.0
 
