@@ -1,109 +1,137 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AA27606A31B
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 19:33:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CF32606A334
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 19:38:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=S/1z4d1T
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=JSPiAl6Y
 Received: by kanga.kvack.org (Postfix)
-	id 654976B05BA; Tue,  3 Nov 2026 14:33:46 -0500 (EST)
+	id A01FE6B00EF; Tue,  3 Nov 2026 14:38:46 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6250E6B05BB; Tue,  3 Nov 2026 14:33:46 -0500 (EST)
+	id 9AF9A6B05B1; Tue,  3 Nov 2026 14:38:46 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 539F26B05BC; Tue,  3 Nov 2026 14:33:46 -0500 (EST)
+	id 8F03E6B05B2; Tue,  3 Nov 2026 14:38:46 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 1C3376B05BA
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 14:33:46 -0500 (EST)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 969C91C33D0
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 19:33:45 +0000 (UTC)
-X-FDA: 85394807610.27.988AE3A
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf18.hostedemail.com (Postfix) with ESMTP id A07561C0002
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 19:33:43 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="S/1z4d1T";
-	spf=pass (imf18.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793734423;
-	b=Ip6yGK44+eQI12FBD9mQVbkJOyIrcEpei6htv06wz4d666QUAR+mKwFwDIoLJmR5U1yyq4
-	B/UgYuw3+NQyBpe48JpkNPx/jUxBrWX8WgU2n7QHHOENj75Dx0Cd7GfruEW/W02k9RuBeR
-	10QLkwOApCs+fmVKZ/2mKShJVVRTZjA=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="S/1z4d1T";
-	spf=pass (imf18.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793734423;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 6CAE66B00EF
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 14:38:46 -0500 (EST)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 07D3A404A6
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 19:38:46 +0000 (UTC)
+X-FDA: 85394820252.07.AEC072B
+Received: from mail-oi2-f9.google.com (mail-oi2-f9.google.com [74.125.231.201])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 25FBCA0005
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 19:38:43 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=JSPiAl6Y;
+	spf=pass (imf25.hostedemail.com: domain of dennylin0707@gmail.com designates 74.125.231.201 as permitted sender) smtp.mailfrom=dennylin0707@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1793734724;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jRv7FYipiH4DqQ5+rCUwDRkUzjzUXk5k5BQEMlfi6u8=;
-	b=xr3yr9GahYrwo+J/A5NJVY1DGZU+dGc7I/7CpVlgjPe0Z3wVyLT0koew53wuwrwWo0GkFt
-	5Of8wEAMY0tO8Sc2icxWbE08XuqixOIpXbdP5Gha8Z6gFD8tfRcSi64KZPUPygpdzfvl7D
-	uf6bgKm1rrfvxJ8K9rQd/na3klzH+t4=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id B3F6F43C8F
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 19:33:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98FA71F00A1C
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 19:33:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793734422;
-	bh=jRv7FYipiH4DqQ5+rCUwDRkUzjzUXk5k5BQEMlfi6u8=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=S/1z4d1TPZ9AcH+itxhMJEsw7wWjDKsp1RhfAa1ULOi2R9gDWetOGvR2jk6/GEyRH
-	 fuBBzNAg2iz//ldqgURus9EkJ0S2wOSPk0v+MwwZnjCNcs8S+agrd7Fu6LnDbE2oAk
-	 pnEJNU9iKM9pUUSZcfrn2KxDeuzKOnexULXxOpZmOARDFmwKWqpSTtId4OnAo2oYed
-	 ZEijnUNo6yvORH37NXVEgJXnHTGb1KR23roqIh6FVzZyYpYX258TBIoVbBn1QL3pmz
-	 v4HecQOsrQPtceEMqj1L7Pv3n5hqbO0+g7Cfn/V9N1qSlxfc0qIxtLQKOVnBjVgwBC
-	 nl6sR03rPZKUg==
-Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-c4cac7a7d3cso579950166b.3
-        for <linux-mm@kvack.org>; Tue, 03 Nov 2026 11:33:42 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AKwUvBwF4VvssdeFeK4jCG8XdU+vKS9Ic7q00mN3HOp62J5Avf2jHik70Kr/ZUaozC2+Kk8w80bsbEuu0A==@kvack.org
-X-Gm-Message-State: APuU4Z/PGfOHnacBH6tXyxMFvCSIRN2FPXJySdxfRVhR6+E8km01KJc1
-	Mxy7YmuEwNyUFVlLpmiVGkQ33nmZu6/aNC7kH/7iFBaiO6Q/demu0e6KBVgnAZwzh2qzLF30eta
-	PqH503n0NmxM7seiVkJR3xCkullXckTk=
-X-Received: by 2002:a17:907:2d25:b0:c2d:c739:30e1 with SMTP id
- a640c23a62f3a-c4ca7a9fa75mr1143730166b.32.1793734421515; Tue, 03 Nov 2026
- 11:33:41 -0800 (PST)
+	bh=e7Nsfbgz2MsKS6ZGWF4RMYsYl2J//BDsVK2NQxPopKA=;
+	b=AZzeLPiqVm+V8N/p/myteZQOTkKzin5ljSDx/bbSuXkPsWhLXaEOYh0T69W0v3RHMyHVh/
+	h4MvXPTVlMvPLMG16z2nk0HcValuozctBX4Q1p4F89NW11wGgG6o/cBE+PPzVYwkb91AKk
+	z/WCZbVd09B93l27My9btdmTCnBJqJM=
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1793734724;
+	b=G2HKPhn6uppr+hyZP6pVRxCgvpnHK4zUnjDPfSi2MuW6jwPjo7NfI7fIdzYJtXEQ2xatds
+	5slHuTOUaSssyl07bfiQ0eX+aYQK1CV+wjeS9baGZDv1jxe6A08m1jZYMppKmceZH+9ywv
+	WwxS3sWn4tnRUL1MDpbw0XEfT3puIjo=
+ARC-Authentication-Results: i=2;
+	imf25.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=JSPiAl6Y;
+	spf=pass (imf25.hostedemail.com: domain of dennylin0707@gmail.com designates 74.125.231.201 as permitted sender) smtp.mailfrom=dennylin0707@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+Received: by mail-oi2-f9.google.com with SMTP id 5614622812f47-4f47feb5a15so870743b6e.1
+        for <linux-mm@kvack.org>; Tue, 03 Nov 2026 11:38:43 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1793734723; cv=none;
+        d=google.com; s=arc-20260327;
+        b=HwaAMLWRY7C7GiEHEW9GayBd0Ljrj3hDW2CvIErmgPnSL0/1II57VJ6Cy0Qt+kRWZ3
+         TO6lLznw0UMTwhPkWZVFDW8k0OMnSXUfLO90PMRscLz7uSS5quDkDbccYpk77pPF4gyw
+         bywcBAAjnrrvbLLSI7T2TbKsPyhOkoFYqboKD8YC22qYLo9+sd89tj1fepSvWWFjGX1s
+         6tbr1+89AhBM5IKpDjwYFaGai6xsBX2rYNXjE8ShKqh5wMUQu0Ew+4CIsna/DkvJIZnW
+         K7/WFVR91qhVLg5Ch2uVSFc3nIGvLh5oKYU7Z7SCZX3pkfzxP0iHeB8ZJae7PkVcOb8s
+         lBVw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=e7Nsfbgz2MsKS6ZGWF4RMYsYl2J//BDsVK2NQxPopKA=;
+        fh=4oyoX63FWr9J8tzd/1QU4zp0v1yez37Kf+RGjI+6CJU=;
+        b=qSl0+4Eq1F1Q1L+3PUPzk1DH3agK72Ndrz/solnKXiSdZJSlIBPkwZ7QNYRWp+ivER
+         b6T3Vt7/N56VreJcthf7pPqVMsnijQ5T27Q6c8xYrshW2FjH5NgxNOj965nzn3YFqUx3
+         4ui2Sjhq8LUd5qKtrQB/CQGi8IIW9ROeAZGKUQ4Ktzrq3IN8cSGKd+vrCgeFx22eV44y
+         0mVlDXGs6j2GNC4Zwc/ZYQJoAvpAv3Q/Ao7fs+W/01EO1oWADmM4X7/+5Kc1hRE4XQ5k
+         jP3flKavwZnDsyFPf8kuQVk2GJ/YT8Qi5blhnu643p7N7Fe/A+q5d++TnnF0z+yJnIiS
+         B54Q==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1793734723; x=1794339523; darn=kvack.org;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=e7Nsfbgz2MsKS6ZGWF4RMYsYl2J//BDsVK2NQxPopKA=;
+        b=JSPiAl6YGgny0hyxJ1GowqU97fL9FDHhzuL5xcJLDC8ENUBno/JytWdrKSI7DsCT3+
+         gfvyLponZhnUAGqDDbtQ19hCJBxL4it+lHnrhw/myrF+9FTKvkSMx/BnELHz+jh920gr
+         +3huR8GXkCBDY3KfNz0JWJKJ/DBfLEif/aQtEXLSohLeVSwapHR2SNu3MfFJKsXuifur
+         Sm2yh60Ie/JQEO0HQE4ngQbmbCNcXr+ahlNOj9uM2o62qdBmpqortp5hSbP+O6UESiUs
+         BeXgwBcMwIiQMcuj0cvbif+dxB64+YqHtIMbfAmln1GXBFBDYokBMDA0kpTKU72mjp1w
+         3rxA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793734723; x=1794339523;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=e7Nsfbgz2MsKS6ZGWF4RMYsYl2J//BDsVK2NQxPopKA=;
+        b=b+sBknkQsefB56663CNFuMjBeFnvR3HqAGx7UouRnOtWWv1HcIrBMCu4hax4xV1GMq
+         8AoadP0LJfrFYOFfPtHjCvpPHLDBzRZFV5jK4MDBpNtQJODIEu++W1g6CHk1YiI2+6Wg
+         ZZSC4VOBgcEbAj2pFGlEkFvqvyNgAB1EIiMwjBzrVuTb+PvQ0dlh9zzG/tECwDFlU4Ic
+         nobe4Hd6VEUl7wB6qMsP56EMI6n/4KOCcROIt2Aj/XOdWAN/YqncT+npAZkF0Lprt0kw
+         tVlvl/ZAEJN00/oIgGPGdQwucB+qdgzQ962aI2FLkrkBtNM/I9VNDW5LihysAkhlqEvE
+         yyKw==
+X-Forwarded-Encrypted: i=1; AKwUvBw7g3LWIWOovPlG0WCHyRqRUcHU9By8K0pFkJS0dO45IQrUcu7s/3UrgM6hfiSCfCSLigtM8sSc+Q==@kvack.org
+X-Gm-Message-State: APuU4Z8Uwaxrsckxzi6EYwBoc27A62fue31PUqU/h6OhhBnRjhpHJ4r9
+	Hr+pWOsiRYyiNy/klLx+mnHzRRhzhcysM7ZR2M0CR2M7qCC9ryBVhDYYcCM8lN2aFnshf5yWOUa
+	bIWTf/4GReS3hDetBzP3HF1chJku8zI0=
+X-Gm-Gg: AYBFou1uAQK7FN7+2T+nv65H6376AWKUseYXK/KoJ/oAC693KJPF47BaiieCQvMeMqc
+	BIo3B8Eh4f1vQptxKi+/5oqgcHWOXDKb3uRjAlA0ptvH3o5zJllVO7Sg+EgxZpGK/TLMDj76sIE
+	vyLVSJLkZZgDEZCNIfdL98Px63t/qqAdypkPkIrxSKZ7oq9OFC9rj3LLmBs9JDIXHv4WoggKxqB
+	mv86i+1cVD5R/TiX+EudTor+z5gkqQXHcR6DnrOj3H99RGNTuoACB0yzrxFl6R7mmZ6YaRAvLz3
+	YsAsZzWiogkvuP6h8QQkqfZYT0TuWPeG3nrYKnKEDSIV6tQATw8lxVkmqxDB+3T1ywoF0oCJzM0
+	NzEbgAC9YBMAltYQ69QPS4asmwrdSIVfkmQEgW1idYgzviiDTnATjVo6i5BoBLWFDE/W3
+X-Received: by 2002:a05:6808:f12:b0:4f7:d324:bc5e with SMTP id
+ 5614622812f47-5640de72cdfmr9400682b6e.58.1793734722850; Tue, 03 Nov 2026
+ 11:38:42 -0800 (PST)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-References: <20261102225030.2743129-1-joannelkoong@gmail.com>
- <20261102225030.2743129-3-joannelkoong@gmail.com> <CAO9r8zP87zRuoFqeKFcAJoCrOG8M+7HCtX6hvxwdLzuHUXD0Gw@mail.gmail.com>
- <CAJnrk1bv-P_TQztAGiHYdfg=5hbj4GREML2M0Uxp5oC1R9J-Mw@mail.gmail.com>
- <CAO9r8zMvofnW-6OsiasiocOBqoRbZuD71dp3RQE5746YGzamNA@mail.gmail.com> <CAJnrk1ZAz2ro0-8CC7n8mEjpuRQ64=v0rABtygaw5e2Aohq3=w@mail.gmail.com>
-In-Reply-To: <CAJnrk1ZAz2ro0-8CC7n8mEjpuRQ64=v0rABtygaw5e2Aohq3=w@mail.gmail.com>
-From: Yosry Ahmed <yosry@kernel.org>
-Date: Tue, 3 Nov 2026 11:33:29 -0800
-X-Gmail-Original-Message-ID: <CAO9r8zOa52hMRTXFQVnSWJPmijm+D-97AeZDH-MMK_-rGiSwMA@mail.gmail.com>
-X-Gm-Features: AclHuK9sBnbDrZh0YD95eyRdj4qiL2VNLTMVMO8HPo8s0hHhnjt9YDtLQC8vHkU
-Message-ID: <CAO9r8zOa52hMRTXFQVnSWJPmijm+D-97AeZDH-MMK_-rGiSwMA@mail.gmail.com>
-Subject: Re: [PATCH v1 2/3] mm: memcg: read root lruvec LRU stats from the
- node counters
-To: Joanne Koong <joannelkoong@gmail.com>
-Cc: akpm@linux-foundation.org, shakeel.butt@linux.dev, hannes@cmpxchg.org, 
-	mhocko@kernel.org, roman.gushchin@linux.dev, muchun.song@linux.dev, 
-	nphamcs@gmail.com, chengming.zhou@linux.dev, sj@kernel.org, david@kernel.org, 
-	ljs@kernel.org, linux-mm@kvack.org, cgroups@vger.kernel.org, 
-	damon@lists.linux.dev
+References: <20261027171753.1485-1-dennylin0707@gmail.com> <1bf7784c-49ee-4f18-b1fb-205dc064f40f@kernel.org>
+In-Reply-To: <1bf7784c-49ee-4f18-b1fb-205dc064f40f@kernel.org>
+From: Hungyu Lin <dennylin0707@gmail.com>
+Date: Tue, 3 Nov 2026 11:38:31 -0800
+X-Gm-Features: AclHuK_5l-1YFLgJ9g8HKWzH3b9QB7XYwWCMJBecbk-lPEygLtMhZDFMez7W0Qo
+Message-ID: <CAGEkeHcwUEQ0tAXZ5npAhPp1OPMqkmZcNPTU1OnRuNTrwkDJMQ@mail.gmail.com>
+Subject: Re: [PATCH] shmem: skip empty unmap ranges when punching holes
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: hughd@google.com, baolin.wang@linux.alibaba.com, akpm@linux-foundation.org, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: rc3qehphfaezdqyy1tahjmd7mgmjm55g
+X-Spam-Status: No, score=-2.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=no autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam09
+X-Stat-Signature: rxcip8rf4gqwm9bmfqcctpudj9ujd14z
+X-Rspamd-Queue-Id: 25FBCA0005
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: A07561C0002
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
-X-HE-Tag: 1793734423-134240
-X-HE-Meta: U2FsdGVkX1+00gVSTex1bzsLXxUQuc8rRbjaC9GfeZ1g4aDgMbL2/kb2dYUKjEcodDn4yAUk+ODw5ZJemS+OquTIUKYlZ1t3LvnnclybB513Fds6pVdu8+n4V080V8iBP8An79ZsKmaB7JedcXQ2jiiU8vPeOcpK9w/iT4gK6qcZtO44iXZjwAoZh5HfPPI8av8DksF+YOwExDratMCzEO4W+XmGtbDi5ikLSxBGeCjs0WYRQr/Oe3Rurkrd7J94b+ER8Em72VGBt+1Gv7QoApruE/NpgJ3agJ+oAhZrlpfUMvveySWEhkqFAUW9KZoxV3sJaeOeGXshpUhumq8S+CCP5p8F013Nag8wju3Vhzm6fMfVvPZcyoVPR/ZEUBVG2PJVzD/64CNitE2Gm5reJTo/wIa0PS56xd8yXN1iIGlEj0eY222Zd/TF9Dm2AZcS8Gnjq/+ClODfTWca4ci78Q2nUSrEQ/3pmoNoiRSheWdXartgOzYdDkyKjuRA6tQp1XoMmEQMdQ0fj9udIDOCHcv1qycpglpg1qjaqSgE4CTHQKJzZXT7xhjef1Kyg/3LcT1xYoNKxuI17rqwlL3NRMpUb9HHU8NV/vT7R9p9dslqmC9ripcfxHLdiY74T7xGgaZTe73pwiTTtZSLbFzv8+Ds3SC0uLxdLMCOh0HIyWPEgfTV7vpVlQnKM0KRzk2J57lCiiCdaapkGbUCd5Ub/bECwSYNABN8va7IbG+uD0No7PaRykHBNho83TmDrJAosNv2d+CKQayFZKZpGd8UAEfIQHfvcN385YI2YDTUJ/5ogj2iKGgVV75+ReYYJSUU+I48X/CWRofHC4SfbfHa30niPqPXcUDPJCayZvldGFtKs1sGsA1B7bC4j5bl6yo5gEovbpghokoeC0jrAJB4ja86ZqzvK97vadWvCAMX5M21JdSBRwaourzM1i4CoGfdoAuZlC/JnlZTGJhtHps
- +saUv9s/
- /K04PEqMSAAmhruYv44ac5WczKRW357ZY4ztG7P2tuziBBCLtK/74yziY2/2Cw/JjNNrs5+SHqye28YrCnYNFbdLRwm3loFybrN8fpGGx89jLZkI3xNW+Clh1XM4jLWPYmKhkwm/Wm35YOsUOomqfLE5k3LSEQOGrstdtbstIFcHs8H4Z1sUkbTtZPZNVPoJo/HooNMe2iyDoSRYv1Iu3Yd0hmuWr1nmoC/WhMV1ciChOYcUu7wO40dA7N3RBe9LIEegIuI5rhsbdNErnOfPzLyrglrQqrvskYwFRXCtKaPJfvcdyuip32DM8xu7eaj3V3oRsu9rn3EFPO0o=
+X-HE-Tag: 1793734723-77806
+X-HE-Meta: U2FsdGVkX18+9y0tt3y4XtAOXJCdju9BTHk6zgntFpRzFui0l8XOb5/wEu90CstM/YeEtkTiKs92kgB7zvFy9bMGFFHYyBzdQs0NyKyBPkJadloadEfR6xMQXcdFTMM2SyCU+K5eOH9B5LqnFLxPlBngpx4hbiNUK5Jh1EjxmSoW990V/sw4MJsy07jF5ajj3z+wNP4uiXKZmHyu4C4AjmIvdt4bcq5Y4Ru5wSTKlhuQbv+3NIZq7BWjpYgFotScabYjcCy1RzcH7tZkTqYYPAejizpokpG5VJbvkxUl1SoeqF5tYYAf/7yfa6Owu5+2YDs1Gtko84VCtXcHYjzhRQTHDhjih/9GUX3EZkBCrYxQgCCVMaETi4mXX5dxIeIobxfDr2NjGTsF2ykdVHfyY6TzYn5W2qT3FlyOGvhP+0n70X2ILoNflqqNkzPn/FV04e1tvc5hxBEXHzB3Zi1G2iToDtCPZPDX6Sfb1wzXqgvzbruwUmuiW0ylgGXZFQttp/6uN+lhkaxxFLqbgFw0KvZBQsit6Gap1Q7Dh+BjPw0pCNAUzWS/EJ1cbAyQuQEnwuO/mko9vJ2EMbG6OelFslEVgPOMt0ePVywc73I1fdyTMl3kSUT1LBzuzvGHWttnrgjgKdvuw57KuiI07mco9iXyXT/TuIPXF3OrC+/i64pzJKCcGkmo+fPgmAQL61rN6SMAI0PL690+/qAik9RDbmX9akBU2JrX63BzWqJs9Z4Y+LkgnsylpQQL3H4SuWpCOhmN/+36FFHNkVndJ+WfoVkfjDt2MgF1ZocfDD9bRXKr25W+/GwBhepL7EyX4l2H/YGXTNu5ZslmbVsI2ytH7vrx9yHbf2nHYbiLTMIhFCE+AijQ9Bq5iQFjm+T31HfD1erzYlBXreUMPubjrWPL0q1wYYPrhgbcQHf82EZaXh7tErxCLG13yEMkt56jVT8y+l9ziTc+Ly1hUYe+60X
+ hFdG/86w
+ Hz3lDgzY6ox9liwIqnapW5LeThdpmP0z/6+VLUVcHaOliv/dC83G8/a4ciRayCDBwE8BWp+7mdVskv0R8czTSsxGyLEf94jwFUtZMWa1BNlPt4wyUSLARTc4Hsgi9XrCj/HAwxsbxry1a7/KqxFiJbTj17AX122qpaHYd/Sknqy6MPpZb5EgM0RYNHEp1eDCOd/GIr5zPIbmtfPhZyjeT/ysrYvLpUI8gb4zsvIs6EUz8Spr1KObUk4axl12yDDOqIwo3hHzrkjsBlDD6R9NhwKvRGFAUDkI3NcPcL0qNGs/SEgTYi/wUKhDStMaQu4yy1Rp95PcoRLnU2eIawEeB4/6eKJ9AL0GR0DQzqtZ/iNqlMDBc6Q0laePWC893rmG1nlQftp4K0qUguZg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -112,137 +140,13 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Tue, Nov 3, 2026 at 11:28=E2=80=AFAM Joanne Koong <joannelkoong@gmail.co=
-m> wrote:
->
-> On Mon, Nov 2, 2026 at 5:00=E2=80=AFPM Yosry Ahmed <yosry@kernel.org> wro=
-te:
-> >
-> > On Mon, Nov 2, 2026 at 4:34=E2=80=AFPM Joanne Koong <joannelkoong@gmail=
-.com> wrote:
-> > >
-> > > On Mon, Nov 2, 2026 at 3:29=E2=80=AFPM Yosry Ahmed <yosry@kernel.org>=
- wrote:
-> > > >
-> > > > > diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-> > > > > index ac6c43ea8c5a..938843346571 100644
-> > > > > --- a/mm/memcontrol.c
-> > > > > +++ b/mm/memcontrol.c
-> > > > > @@ -587,6 +587,50 @@ unsigned long lruvec_page_state_local(const =
-struct lruvec *lruvec,
-> > > > >         return x;
-> > > > >  }
-> > > > >
-> > > > > +static bool lruvec_is_root(const struct lruvec *lruvec)
-> > > > > +{
-> > > > > +       return !mem_cgroup_disabled() && mem_cgroup_is_root(lruve=
-c_memcg(lruvec));
-> > > > > +}
-> > > > > +
-> > > > > +/**
-> > > > > + * lruvec_lru_page_state - read an LRU stat of an lruvec
-> > > > > + * @lruvec: the LRU vector to read from
-> > > > > + * @idx: the node_stat_item to read
-> > > > > + *
-> > > > > + * Like lruvec_page_state(), but for the root memcg the node cou=
-nter is read
-> > > > > + * instead. For stats that only track memory charged to a memcg =
-(LRU sizes,
-> > > > > + * workingset, rotation and reclaim writeback counts), the root =
-memcg's
-> > > > > + * hierarchical value equals the node counter. The root memcg ca=
-n just read the
-> > > > > + * node counter directly instead of going through rstat, which r=
-equires
-> > > > > + * flushing. Flushing the root memcg flushes every cgroup in the=
- system.
-> > > > > + *
-> > > > > + * Use lruvec_page_state() for other stats (eg slab).
-> > > > > + */
-> > > > > +unsigned long lruvec_lru_page_state(const struct lruvec *lruvec,
-> > > > > +                                   enum node_stat_item idx)
-> > > > > +{
-> > > > > +       if (lruvec_is_root(lruvec))
-> > > > > +               return node_page_state(lruvec_pgdat(lruvec), idx)=
-;
-> > > > > +
-> > > > > +       return lruvec_page_state(lruvec, idx);
-> > > > > +}
-> > > > > +
-> > > > > +/**
-> > > > > + * lruvec_lru_page_state_monotonic - lruvec_lru_page_state() for=
- delta sampling
-> > > > > + * @lruvec: the LRU vector to read from
-> > > > > + * @idx: the node_stat_item to read
-> > > > > + *
-> > > > > + * See lruvec_page_state_monotonic() and lruvec_lru_page_state()=
-.
-> > > > > + */
-> > > > > +unsigned long lruvec_lru_page_state_monotonic(const struct lruve=
-c *lruvec,
-> > > > > +                                             enum node_stat_item=
- idx)
-> > > > > +{
-> > > > > +       if (lruvec_is_root(lruvec))
-> > > > > +               return node_page_state_monotonic(lruvec_pgdat(lru=
-vec), idx);
-> > > > > +
-> > > > > +       return lruvec_page_state_monotonic(lruvec, idx);
-> > > > > +}
-> > > >
-> > > > Why not do this directly in lruvec_page_state() and
-> > > > lruvec_page_state_monotonic()? They already fallback to node stats =
-if
-> > > > memcg is disabled, why not do the same for the root? Are there case=
-s
-> > > > where the node stats are not the right thing to do?
-> > >
-> > > Hi Yosry,
-> > >
-> > > Thanks for taking a look at this series! I don't think we're able to
-> > > do this directly in lruvec_page_state()/lruvec_page_state_monotonic()
-> > > because I think there's still some places where the node stat and the
-> > > root memcg stat are not guaranteed to be equal.
-> > >
-> > > The stat I was looking at last week was slab's NR_SLAB_RECLAIMABLE_B
-> > > and NR_SLAB_UNRECLAIMABLE_B where for those, the node counter value
-> > > can contain memory/stats that wasn't actually charged to any memcg,
-> > > which I think means for these cases, the node counter values can be
-> > > larger than what reading the root memcg rstat value would give. The
-> > > functions I was looking at were account_slab() and
-> > > memcg_slab_post_alloc_hook() where the logic adds every new slab page
-> > > to the node counter but the memcg stats only get updated if specific
-> > > criteria are met (eg the cache had SLAB_ACCOUNT set or the allocation
-> > > had the __GFP_ACCOUNT gfp flag set and the allocation was not from a
-> > > root memcg).
-> >
-> > If it's only the slab stats, it probably makes sense to special case
-> > those instead of the rest of the readers, right? It would be nice if
-> > the default behavior is reading the node stats that doesn't require a
-> > flush.
->
-> If we were to special case it, it would need to exclude more than a
-> couple, I think. I asked a LLM and it says NR_KERNEL_STACK_KB,
-> NR_PAGETABLE, NR_SECONDARY_PAGETABLE, NR_VMALLOC, NR_HUGETLB,
-> WORKINGSET_NODERECLAIM would also need to be excluded.
+> Can this be >= ?
 
-Interesting. So for all these stats, root memcg stats (from
-memory.stat) is not the same as the node stat? They all draw a
-distinction between "accounted to root" vs "not accounted"? I wonder
-if this is intentional for all of them.
+I think we should keep > here, since unmap_end + 1 is the exclusive
+end. Equality would pass a zero length to unmap_mapping_range(),
+which means unmap to EOF. For example, with offset = 0 and len = 1,
+both sides are zero.
 
-> We could add
-> this special casing in, but we would need to make sure any new stat
-> that gets added in the future that belongs on the exclusion list gets
-> put on it. If it's missed, the failure would be silent whereas with a
-> separate helper, callers have to explicitly opt in. I'm happy to go
-> either way though, so if there's one way you prefer, I'm happy to do
-> that for v2.
-
-I think we probably want to first understand if these stats are
-supposed to be different between the root memcg stats and the node
-stats first. Personally, I think the default should be the majority
-behavior, which I think is that node stats and root memcg stats are
-the same, so I am leaning toward explicit opt-out. Let's also see what
-memcg folks think.
+Thanks,
+Hungyu
 
