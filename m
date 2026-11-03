@@ -1,75 +1,75 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDBD6606A7B3
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 14:48:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C7BF606B27C
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 14:48:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=EK0/vsNV
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=O77gfe8k
 Received: by kanga.kvack.org (Postfix)
-	id F31766B05B5; Tue,  3 Nov 2026 09:48:19 -0500 (EST)
+	id 8059D6B05B6; Tue,  3 Nov 2026 09:48:23 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EE2356B05B6; Tue,  3 Nov 2026 09:48:19 -0500 (EST)
+	id 741796B05B8; Tue,  3 Nov 2026 09:48:23 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DD2346B05B7; Tue,  3 Nov 2026 09:48:19 -0500 (EST)
+	id 62C046B05B6; Tue,  3 Nov 2026 09:48:23 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id ACC226B05B5
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 09:48:19 -0500 (EST)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 21CDB8047A
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 14:48:19 +0000 (UTC)
-X-FDA: 85394088318.01.1E26CE1
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 7F67F40004
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 14:48:17 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="EK0/vsNV";
-	spf=pass (imf12.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 31B386B05B6
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 09:48:23 -0500 (EST)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id B41A74046E
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 14:48:22 +0000 (UTC)
+X-FDA: 85394088444.28.0712F07
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 0451840005
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 14:48:20 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=O77gfe8k;
+	spf=pass (imf11.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793717301;
+	b=DszSpz37VdoJnVfZWM582p0ZPmOQtIXtscHF6hk3VeKuIcXYP/aeByr9QzYHMGA3QJxdpJ
+	qus8xsIea+CWERz0xGJyMQ+hFyeAkslxpOMcX3mcXm8zlo+IkogSg0B+ZBVg+UUb2MXxDZ
+	2zDoyvLuoA0QYko/TODinHU3cOm6XgI=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=O77gfe8k;
+	spf=pass (imf11.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793717297;
+	s=arc-20220608; t=1793717301;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0Td4JZi2w+id+C91r1df/3sYplbTy8QIwHQVkHMEd4Y=;
-	b=JdyJtO2oYNXd3+HLKBWUHfwmISfaX0AaFHv0iuFBoxy1sz7I6GHnfq0uHVPpmFMnPyxPtG
-	0Ba1LPb3bdY54h39SMrnnq8G7FJu1dDH/j5xHlQyRmz4PwcSTbGyh6AW1Mq8SOhNhKRzS5
-	b9JCELdKsYo8M3OqoaAuclgqcKeV5sQ=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793717297;
-	b=7Gk5f9vCOGXoFF24g6cGiNab6M2fZc1pCYfWPEcnNiemqg/jf0is1hwHkGy38p/S8iMtVM
-	oTdmbQ+Q1cnkbt69SuJQJrIx2enAPzMtSmlqTPUCm7GbMGZ3rCAJIxdvZTGhexhyGwnZ29
-	fwfVqELfSvpQWQo/doAmtk3ldGAZoaw=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="EK0/vsNV";
-	spf=pass (imf12.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=gD+JfyFsFqSMM5CGTKNOp21IwpvoIZuhMHjwjkhQ9Y4=;
+	b=RXlAlV1kW2EgoSb+Xk4gsydkXxyq2IxqW3c+majwFX7mlAvAjf96hj5QtgE5GeTuLBzo4h
+	8lTqeb6gJGkAJ3seGAZqCJqmwU1peG/lmiP/ZEhXSpkFEhcIbXslaJrgnZWl8Io9rkDtGQ
+	n9at/oTIuAmGkIxyVs3p3XZKY3+w9fM=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id B5E6D4389D;
+	by tor.source.kernel.org (Postfix) with ESMTP id 9AC0B609ED;
+	Tue,  3 Nov 2026 14:48:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0324C1F00A02;
 	Tue,  3 Nov 2026 14:48:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7231D1F00919;
-	Tue,  3 Nov 2026 14:48:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793717296;
-	bh=0Td4JZi2w+id+C91r1df/3sYplbTy8QIwHQVkHMEd4Y=;
+	s=k20260515; t=1793717300;
+	bh=gD+JfyFsFqSMM5CGTKNOp21IwpvoIZuhMHjwjkhQ9Y4=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=EK0/vsNVB13SfzCl1rZBecIZcse/4JBWehfYgBqwpmG5oqD+xXe18TpP62x6fmfzH
-	 hgIHV7c4uDapudMzSLqh8RVyG6f56qZJG58wnGntIv/hoPlUX1DrgfV0UrzJukmklC
-	 KgCKk0m1/PdVRvYiFKdcdEaYieBaFf8F8jlGNkaAAoGATsVZWVu1OqmuzQgMY4s332
-	 1sVrRaptCMgkDW7+sQN1y6UQh7XiYnQ8cYcGXCdRWzrzFO+FauFx2r7FxlUvV7cB+C
-	 SXapQUyyOAVlBK+Av20/qX3mpbtsU1AYwwpMjnZfBWq8IKxDoLJNSKqjtWQYBzEG5G
-	 8Y81ok+NYe1hA==
+	b=O77gfe8kp25hNoBGGIpC6DtRiBGmJPBhWTL/hDCA5+40SPpjiLXP+1QdEzJtXYuk8
+	 PGqiTX3BM5EwlBxY4d77MPivJkSwbOK9K8gWZKUCbRLj268RO5hcZWX2HEN/rpCv8m
+	 IQZe8dH2k2nvGSXI6U7HnXrlw3KVT5+4UuwqNblGOLfjAktu2xrAejReS/e+4O76ml
+	 uLIr3xHA+hTy6w/ig2jAXuCk0KXSr1iSqFdXByf+ozWqigWRvLaIggx4fsyICZvUXv
+	 /Rpc9v4Kn8Kw3JD2ei8tFnzdFKhVulxHaMnj5Z23rw21Ynd4QIva2GCVTVPgiY2LVG
+	 jaEOxNCbwa13Q==
 From: "Harry Yoo (Meta)" <harry@kernel.org>
-Date: Tue, 03 Nov 2026 14:47:52 +0000
-Subject: [PATCH for-next-fixes v2 3/5] mm/slab: call debug_locks and KCSAN
- checks in kfree_nolock()
+Date: Tue, 03 Nov 2026 14:47:53 +0000
+Subject: [PATCH for-next-fixes v2 4/5] mm/slab: fix a deadlock in
+ memcg_alloc_abort_single()
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261103-kmalloc-nolock-fixes-v2-3-19167cfe4779@kernel.org>
+Message-Id: <20261103-kmalloc-nolock-fixes-v2-4-19167cfe4779@kernel.org>
 References: <20261103-kmalloc-nolock-fixes-v2-0-19167cfe4779@kernel.org>
 In-Reply-To: <20261103-kmalloc-nolock-fixes-v2-0-19167cfe4779@kernel.org>
 To: Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
@@ -82,20 +82,21 @@ To: Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
  Sebastian Andrzej Siewior <bigeasy@linutronix.de>, 
  Clark Williams <clrkwllms@kernel.org>, Steven Rostedt <rostedt@goodmis.org>
 Cc: kernel-team@meta.com, cgroups@vger.kernel.org, linux-mm@kvack.org, 
- linux-kernel@vger.kernel.org, linux-rt-devel@lists.linux.dev
+ linux-kernel@vger.kernel.org, linux-rt-devel@lists.linux.dev, 
+ Sashiko <sashiko-bot@kernel.org>
 X-Mailer: b4 0.16.0
-X-Rspamd-Server: rspam06
-X-Stat-Signature: 99ei7dw7wcjumsgtft9ktyauamdd56di
+X-Stat-Signature: chkzmre551yjpw87fyrszscjgyhw66fk
+X-Rspam-User: 
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 0451840005
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: 7F67F40004
-X-Rspam-User: 
-X-HE-Tag: 1793717297-819338
-X-HE-Meta: U2FsdGVkX1+JBSkqc6CoFafQV86F4n23ik/IZW0WnSg8ZXdkmwKRojTIB9x1FEYlhWF70sCi8N1ieUFnOPnz+jkii9Eujzd6/I5/nmjdn0X7vK3qPUnYGbmKsqgMXWSmilju0FvxPpIJu6RrdcBAfuLNL47/Soo9ex+Xg6UqJ9ZxAk9bKYiaDcvThkCLMOVb+g6kllVDme3/3bihmSmf3Nt0yWw0Ide6KtB7y7mjpA8z4rcgUPOk86CQ3IIFklmZXSAS3LssZgCssqFdfDqbb9iilwq1UFIe4Pf22KtFgLLk66d6wZ/gma3p3F9WbXsOQDsXVVpAn5dFctQMffcmgXgr3VHRV9AFstSwX/18XAzlJINdcnN20KAgbKqXH7f2mtvYMPBPKBgvpzgNOcBvVMaAR5RjfjJ/tHJq13z1t0RoIq37V3wLRL7vHRAZwo2r3k3rIopo4YSRqLP9AU/YHn87XowI4JPT0bcOw6Bc+e6eWZVQIeZwO/9koI+G6ZZdWk93s9gZ+izb8sBX6nJGcfuXDIpbQpdZFELvDNXTc6SWUCFT90jZQQqpoSJnYtHo2gMjuu9CX6ZbugjaJmnpeFd7nX1dqql1AYgUp+R65Ihgou09N9xQmJhoNyaVwg+m3GMnfHAyOxG8YTqqHUPzAb+/guR4093ic9gd5BiOezb+xAtuWnHhyxQt7a7ZlLv/X+asZZTTUveokw9+CcjaqwZ7ZVaUqq4W0ht4e413pN8oruJL2tBAjG2GtZ0FBAkzJG+yZqC05SSTDNqJPbc5pRPx7Jj6MDwDWoZ7ZvcGIwlZvNSWV33YgYZBUqmHopgDKHwP2Mf+9EQT0rZNxeOMRyvJBaL3EZrLXBQKy8Ih4UuAGa9NAVlBjKmYA6kyHqasj2kA1rLe9M2oeTgmf+Z3R1DSxOblQaT5LyabogkkX/vmUM3zxkP5ATEnTNazjQDRQ/vjUkCg768Cv1rTJgR
- pPUk2Jgk
- 9PzE9dBNxvM1ffKsZjMU4jRpLw4/iWwOL+BuLcM9VMHvZfnsuXqvogjH4lB2Rd8E9p/rTBBTwCGfCWME5jbTblqhijTEQA7jmAv7UL16aL3iOR8q/bUuE/DzF5a8dbcwelVXU4TokvQgw1LHb9nK0KAkkUkO/SMRYiQKzYrQFGs+XbBJeJP7ozH1y3uHyKJhc7gmz+Fawnvb8dmG+wQeC2KTH7slo8dTvk/wvecBTjT3xFxaLsqQap5O2e+mGxxeMb6+v8Re0RTeTj4PSn30SO6lXyHMu1HSVi1IabVOKh1rBz+U=
+X-HE-Tag: 1793717300-133105
+X-HE-Meta: U2FsdGVkX1/6MkGAbvDYg7Z7JIYFM1oqKorvUYjPNMASDNAKqmXh5XtXD2TCsF9rFDc9m5YUglDg4+JO+nhJ6aUTF2QRT0tNNSybVLODSdg7xQL+03eEuJvSMJGAsf0nEkzUAHhhAXFdcc0xZGyXIOJywn1oO7ftdmnUULnt5iXPxk1/FzIqsSO1rUGSGPlPOpqac7va3c2E6f5tKWlgOUfjhCExwhOhJILJhhWUrzEzbrzl1q6Vp9NYFdWqJJlDSLaQsbVfACmdE8LxDJjY85qXhkCJt8RTpFjLhw9Z8DY3kq8jSbHPd+jyAdr9uWepv/McWrvihGZrzZI/Hk51kH2iV58ieZtvjlQICWc4xHbaIFBH4no5QjOm0PNXy+Q0Hsxsp6L9TbXpaHs7AvyVYlXWwAptOYvQhODtqIThcrsEadRXop7DUjU9jWsvyVuvcX72XkwQ5TzsZ0pE9bUZeXB0UypoBepM5ei7xs2bAZa+CTcj+PYIeq8hnC9cK7kqxc2h2mlhp9B7AHyGqwZnVCVMsgY4G00dLMejrYaFITRoe3UxLBT4rOoJn7h+KlR7VZTL1hBqT1w7aG3WuiVdWC+NXAy71Pm4OhTt6DDZfSWd0HeqKoSZAJut9O1CntJYpT6Sxh9IUVnXZ9uG1yUdBkn1KJ0P8pBywZhggal+amgIxFjMKeaqPEMN6nouL9S+uIRe8CVNOklgz5OMQPx98L7DyRzIDk5qnjbB2AzLnZ9ZogOGO7EGE3ClW8m20la/kYwxrvjCuZmP6wSlShmjdHarsCsNzV1HzlXfEaN5T90WIMqc1ayLa5VdRNaSrcMRFpOf/lm09q7tnIEtvuL4xnWcgSgkMg8G56USuHfQswdMO0fJyQ/4o/NC7uoMq/Xp1TUQrOFnfN1poMCGwCbVT6rsoyAaqDCcLy7JftOUIqfuzK5GVurL9hwUBZmLsACtbZh+YSShh7yumpudhrI
+ qRhT1Ps2
+ r6yqL6pODu6UUeD5aQo30AKwqHqA3YfgXNTialNt69gnhdzeA2nO+cLTorqtqkXX6i5MCC6UdXOb72Y/uxTRvxNRVJvSh2ir/Dtr0YGJ+y0Y0ITA1Qn/4joUhp6FGqj4T5WfJbZpsZmV1Y4bLPfeEuMCOmw1r6A9L2HCfuxuGLIsEhC3uk/Q4AAQYWNyh918VEW3kSrbyjrknnINTx0qiIn57k2LWO+DKBGubKnytVvsTZstY+rjiHabvC21qIaham6CYSYed0i4DqTYmyImR9P/X9+qOiqCyYY7m71cGJ4rjpbZkBs0xhF1MwaZnDxQD9k5ZOc2oFYAHlg3r6AZvyVfqgrMo66fg1TR3
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,74 +105,71 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-kfree_nolock() skips free hooks that may acquire spinlocks because it
-can be called from any context. debug_check_no_locks_freed() and
-__kcsan_check_access() are skipped as well.
+When kmalloc_nolock() successfully grabs a slab object but memcg aborts
+the allocation, the object is freed via __slab_free(). Calling
+__slab_free() in unknown context is not allowed and can lead to a
+deadlock.
 
-However, they acquire a spinlock only when they report a bug.
-debug_check_no_locks_freed() disables interrupts and walks
-current->held_locks, and reaches printk only when a held lock is inside
-the freed object. KCSAN takes report_lock only when it observes a race.
+Free the object via defer_free() when spinning is not allowed.
 
-Just like KASAN, take the risk of potential deadlock for bug reporting.
-Call debug_check_no_locks_freed() and __kcsan_check_access() regardless
-of allow_spin.
-
+Reported-by: Sashiko <sashiko-bot@kernel.org>
+Closes: https://sashiko.dev/#/patchset/20260610-slab_alloc_flags-v2-0-7190909db118%40kernel.org?part=9
+Fixes: af92793e52c3 ("slab: Introduce kmalloc_nolock() and kfree_nolock().")
 Signed-off-by: Harry Yoo (Meta) <harry@kernel.org>
+Reviewed-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
 ---
- mm/slub.c | 25 ++++++++++++-------------
- 1 file changed, 12 insertions(+), 13 deletions(-)
+ mm/slub.c | 17 ++++++++++++-----
+ 1 file changed, 12 insertions(+), 5 deletions(-)
 
 diff --git a/mm/slub.c b/mm/slub.c
-index 36e7bb93418a..48415f24e115 100644
+index 48415f24e115..6dfa8ca3c937 100644
 --- a/mm/slub.c
 +++ b/mm/slub.c
-@@ -2707,19 +2707,25 @@ bool slab_free_hook(struct kmem_cache *s, void *x, bool init,
+@@ -2533,7 +2533,8 @@ static inline void slab_obj_ext_has_codetag_init(void)
  
- 	kmsan_slab_free(s, x);
+ #ifdef CONFIG_MEMCG
  
-+	/*
-+	 * debug_locks, KCSAN, KASAN may acquire a spinlock to report a bug,
-+	 * but otherwise don't acquire any lock. Take the risk of deadlock
-+	 * for reporting.
-+	 */
-+	debug_check_no_locks_freed(x, s->object_size);
+-static void memcg_alloc_abort_single(struct kmem_cache *s, void *object);
++static void memcg_alloc_abort_single(struct kmem_cache *s, void *object,
++				     bool allow_spin);
+ 
+ static __fastpath_inline
+ bool memcg_slab_post_alloc_hook(struct kmem_cache *s, gfp_t flags,
+@@ -2551,7 +2552,9 @@ bool memcg_slab_post_alloc_hook(struct kmem_cache *s, gfp_t flags,
+ 		return true;
+ 
+ 	if (likely(size == 1)) {
+-		memcg_alloc_abort_single(s, *p);
++		bool allow_spin = alloc_flags_allow_spinning(ac->alloc_flags);
 +
-+	/* Use KCSAN to help debug racy use-after-free. */
-+	if (!still_accessible)
-+		__kcsan_check_access(x, s->object_size,
-+				     KCSAN_ACCESS_WRITE | KCSAN_ACCESS_ASSERT);
++		memcg_alloc_abort_single(s, *p, allow_spin);
+ 		*p = NULL;
+ 	} else {
+ 		kmem_cache_free_bulk(s, size, p);
+@@ -6663,16 +6666,20 @@ void slab_free(struct kmem_cache *s, struct slab *slab, void *object,
+ #ifdef CONFIG_MEMCG
+ /* Do not inline the rare memcg charging failed path into the allocation path */
+ static noinline
+-void memcg_alloc_abort_single(struct kmem_cache *s, void *object)
++void memcg_alloc_abort_single(struct kmem_cache *s, void *object, bool allow_spin)
+ {
+ 	struct slab *slab = virt_to_slab(object);
+ 	bool init = slab_want_init_on_free(s);
+-	bool allow_spin = true;
+ 
+ 	alloc_tagging_slab_free_hook(s, slab, &object, 1);
+ 
+-	if (likely(slab_free_hook(s, object, init, false, allow_spin)))
++	if (unlikely(!slab_free_hook(s, object, init, false, allow_spin)))
++		return;
 +
- 	/* Hooks that acquire locks or kmalloc_nolock() skips alloc hook counterpart */
- 	if (likely(allow_spin)) {
- 		kmemleak_free_recursive(x, s->flags);
--		debug_check_no_locks_freed(x, s->object_size);
++	if (likely(allow_spin))
+ 		__slab_free(s, slab, object, object, 1, _RET_IP_);
++	else
++		defer_free(s, object);
+ }
+ #endif
  
- 		if (!(s->flags & SLAB_DEBUG_OBJECTS))
- 			debug_check_no_obj_freed(x, s->object_size);
- 
--		/* Use KCSAN to help debug racy use-after-free. */
--		if (!still_accessible)
--			__kcsan_check_access(x, s->object_size,
--					     KCSAN_ACCESS_WRITE | KCSAN_ACCESS_ASSERT);
--
- 		if (kfence_free(x))
- 			return false;
- 	}
-@@ -2727,13 +2733,6 @@ bool slab_free_hook(struct kmem_cache *s, void *x, bool init,
- 	/*
- 	 * Give KASAN a chance to notice an invalid free operation before we
- 	 * modify the object.
--	 *
--	 * If KASAN finds a bug it will do kasan_report_invalid_free() which
--	 * will call raw_spin_lock_irqsave() which is technically unsafe from
--	 * NMI, but take chance and report kernel bug. The sequence of
--	 * kasan_report_invalid_free() -> raw_spin_lock_irqsave() -> NMI
--	 * -> kfree_nolock() -> kasan_report_invalid_free() on the same CPU
--	 *  is double buggy and deserves to deadlock.
- 	 */
- 	if (kasan_slab_pre_free(s, x))
- 		return false;
 
 -- 
 2.54.0
