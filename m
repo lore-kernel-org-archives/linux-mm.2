@@ -1,68 +1,69 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BB16606D80E
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 19:07:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 002C8606A331
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 19:08:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ngGMpUJa
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=BLyf66Bg
 Received: by kanga.kvack.org (Postfix)
-	id 8DDE06B00EF; Tue,  3 Nov 2026 14:07:57 -0500 (EST)
+	id 09F996B05B1; Tue,  3 Nov 2026 14:07:59 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8B5866B05B1; Tue,  3 Nov 2026 14:07:57 -0500 (EST)
+	id 050596B05B4; Tue,  3 Nov 2026 14:07:58 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 784416B05B4; Tue,  3 Nov 2026 14:07:57 -0500 (EST)
+	id E59FE6B05B5; Tue,  3 Nov 2026 14:07:58 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id DD1696B00EF
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 14:07:56 -0500 (EST)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id DE389A7D9E
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 19:07:54 +0000 (UTC)
-X-FDA: 85394742468.28.0DE6525
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 48B6F2000C
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 19:07:53 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ngGMpUJa;
-	spf=pass (imf03.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 9E5A96B05B1
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 14:07:58 -0500 (EST)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 0021640528
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 19:07:57 +0000 (UTC)
+X-FDA: 85394742636.05.24DBF0A
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 472C440007
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 19:07:56 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BLyf66Bg;
+	spf=pass (imf12.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793732873;
+	s=arc-20220608; t=1793732876;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Hj5sGf4zuQDzxKH9qB3EIUe2aXuw6LNNWfdi8I5hW/k=;
-	b=evvx4nbtGTBKKXJojxY3YIs3+erGsDzCDmWCrhl5sCkYl0U99qq2JshKU891Q1AW/9D0V6
-	n0zRzQjk1WYSQgkzP+/8ckaXaDmuddoHgBWBhX/VDj9OBQtJSmoiStkiE4wSWzt/ok6v68
-	lCeFOmIR85JpgZlvg6hhrzOqj335MYE=
+	bh=A8HtBIj+8UA4ApalLzQOjrxxVwWtafDT0U5NHOYSGZ4=;
+	b=hNwKHgrbp9Rd1Qsu4Bw3Ls3YOeXukDrOGXgSynpo7wmW7tkx61vkuOcSV/8Dp+bNWyxbe/
+	6Hfrk0Lo2FuytNz5XFWoe/Lii4QdCUeMBQ0CG56BWCqL2oed828NfgD5jJHAQrRXdMT4ap
+	5ITPpb5ATFWtM8RoBuUtyx/T0zeon+8=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793732873;
-	b=jKtnAmJ4Q0rnNvcP8tdr3yVx4AB5VujkvhWKbD6yNBCDhboOtuxneTmAaJr5NfmeRZkZlL
-	Y4VNpIYH+yB33+svJFTUttU+6OUJW0lui9STFUJhlXagLQ+iqgvPK4YUkGlmXqvwau9FSs
-	lvcSwHC+Eg4Nv1I67ykeqSUoeM3X3XA=
+	t=1793732876;
+	b=r+zce4bmd5LTuBxLxF10EJej0lKWHaN6EO90lWRD7YUH6rfisBajS6kJB93sGRgqQuK4cG
+	cC6o+7PR047HN6qJvyQ6IslFU3gz6+rF4PRNnOzA9kq1fqGqAYQz0vV7h1oACAPeb//3Yh
+	dmxN6Kks89zuc/o3Q55kzouGhTR7bK0=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ngGMpUJa;
-	spf=pass (imf03.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BLyf66Bg;
+	spf=pass (imf12.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id A65BD601EF;
+	by sea.source.kernel.org (Postfix) with ESMTP id 4E20040A39;
+	Tue,  3 Nov 2026 19:07:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7EAE1F00919;
 	Tue,  3 Nov 2026 19:07:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E8221F000C1;
-	Tue,  3 Nov 2026 19:07:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793732872;
-	bh=Hj5sGf4zuQDzxKH9qB3EIUe2aXuw6LNNWfdi8I5hW/k=;
+	s=k20260515; t=1793732875;
+	bh=A8HtBIj+8UA4ApalLzQOjrxxVwWtafDT0U5NHOYSGZ4=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=ngGMpUJa26AXpOYCLOj8Ws2TWAtRrkSUJNmAMWoILDJ/YqTAp7sZpQTVsoS1jSuN6
-	 2GzbPOEBiHxEnnKlesKpTlg3zLI6egZjPUSvDK/qL0DYBNlDHXBIBUyjl739WFA52M
-	 QGMIbVxGdSoz2RqEr5vKBT2KQXwgctslR2Rh9hgjjdxrXGLdtwLdF2RZSa0jcf9cKh
-	 g6GSjyKpKgu6gK7xAHo5EsfUzkMAZDls82BoEd8VdXwvDS5HtF81yMIaNcdWeMWjUk
-	 9DwCMnxXu3qOQr5th0d6Gz1UfZf1igpLEPpLT9F9iuKweOptfFcAJbx1zFBR/zL8j7
-	 cRLu58yPfANVg==
-Message-ID: <sashiko-outbox-195884@kernel.org>
+	b=BLyf66Bg4MDZlU9tb2muOvLe5UkZij27IYV6xhAPA0ep2kCD2FPvQ/7/ePAfdBylG
+	 gk0qlnzuFxiifl0+RdCwSxOOZVY6Ik8HGKZBGfOcYGFndCCQEfidiFHNnCTeC1HEPd
+	 OyOulLS47jp/EerKnj0NNDMDA5uaZy2EylXgTL8il6jZaQIZmKzcHy//zwjY16Vmbv
+	 NK6X2/iUw7iRe0oCjfua1n3e6nDdo1aTh0e0jcLDrkWz5Ap0cPV5Dp/2UjnzI4DkwH
+	 0+9g8dVeSto7rqo/jHYi/KFb/ovXApI4W90MmzUiXPb34UG83ok/y0AzkTltUhATJt
+	 scvzgGSXdo+GQ==
+Message-ID: <sashiko-outbox-195886@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [RFC PATCH v23 02/10] lib: test hierarchical per-cpu counters
+Subject: Re: [RFC PATCH v23 04/10] tools/testing/hpcc: add userspace test of
+ hierarchical per-CPU counters
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Mathieu Desnoyers" <mathieu.desnoyers@efficios.com>, "David Hildenbrand" <david@kernel.org>
 Cc: "Paul E. McKenney" <paulmck@kernel.org>, "Steven Rostedt" <rostedt@goodmis.org>, "Masami
@@ -87,24 +88,24 @@ Cc: "Paul E. McKenney" <paulmck@kernel.org>, "Steven Rostedt" <rostedt@goodmis.o
  Gorman" <mgorman@suse.de>, "Valentin Schneider" <vschneid@redhat.com>, "K
  Prateek Nayak" <kprateek.nayak@amd.com>, linux-trace-kernel@vger.kernel.org, "Jan
  Kara" <jack@suse.cz>, "Oleg Nesterov" <oleg@redhat.com>
-In-Reply-To: <20261102190708.1287100-3-mathieu.desnoyers@efficios.com>
+In-Reply-To: <20261102190708.1287100-5-mathieu.desnoyers@efficios.com>
 References: <20261102190708.1287100-1-mathieu.desnoyers@efficios.com>
- <20261102190708.1287100-3-mathieu.desnoyers@efficios.com>
+ <20261102190708.1287100-5-mathieu.desnoyers@efficios.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Tue, 03 Nov 2026 19:07:49 +0000
-X-Rspamd-Server: rspam06
-X-Stat-Signature: iukc5dwgufh1kpmas9po3ntb3q958arx
+Date: Tue, 03 Nov 2026 19:07:52 +0000
+X-Stat-Signature: fubgeyki7c4rg5o5dzhw9kau8m1ec4dh
+X-Rspamd-Queue-Id: 472C440007
+X-Rspam-User: 
+X-Rspamd-Server: rspam08
 X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
 	autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: 48B6F2000C
-X-Rspam-User: 
-X-HE-Tag: 1793732873-93999
-X-HE-Meta: U2FsdGVkX1+gRc8jbAvBNdAXgTNbDp1WWis21BiVHKwN5p/sNbzWVjNPFIf5UGRtRLbD16rNpTkP8KO5PCJexn/9w/uUnU6XALYFKnK7XM+0XFknKdconexXvgxlWft3Yvdr54ZAPjLOZhzVcMhnpfrMABwT9tJfg15l8RVKBI+l/lbS61UYZS9NZ6bJr40eehGCI9AVfkwK2dW4A4Op+0BequXD5ydR1iB0XWi0Z20QztdncV97h5McnjgRJ7ABNeAGMBoYkwHXhz8ah236Kk5NTNUvbJ2++mDfqypOL4h5Qz/Mzyq0ZoVNDuQdYGnVQsLzOomD0Pxrvdm4UnSlWYHXIS/fLCxsGjShqaY13y4GTXi3x3P8Qk/d2/o0Q03L7o6JJ7Jk9R7YSmssGLe87DHLbfco/SLU5Dwqj9D8wSGj0k3qJ5HzvU1BKawYnFoCMiRoA44MBWnxIbt79Pht+SRu+15L6QGgs/Zsvz3+TGimgjC9/koxjL87F2teRHIbvSGZMoQT0nIkZ07D3zap2SMboYLg8hLNBgJYL3w4M144A2X0v6LzSKKFqAol5FXQ5q6nfWjAF3aAdLv13hLZcOdfL2MownZxbHgnGTlwmdszdwWVRQRWymuTaiAVp/8an002Y9Zg85yk6v4J4v4UxzkU2a6ExN9MyhGCPfyCFjbjjdFtpSjh+kWR8wOfaTBmDhO8GUjW8WQaiIfpg0DgcsX5FQ7d4UCbEHXRYdoJ3cZjEVjAS7/a7xCMfxEisctqFrd87eX6XdE/AQxOE/fm/ePEFsYrb6Fy8Ua6w2YVQbGF58A5sx+27FjIo35omzCMND0VLsqLxxWfnfU3+0nOxoa6dqBJKzjIy8XVHnecy4pmAZF+rueF9Imm7Gf/0L84tZ/kf7hW10Iih/w1Tnpc8h6PS7BmWka4K2fBNhe6N7xAJqcQB0XLzQWex1ddZBRV6nZUom56nl7TJzpCVFf
- y7ff6MND
- JBrIJjsI1u9Qwp6bq3i5nfAU6GHA2uvdpCx+EtVLTYte/hORnjF9XbQ5b0i8lUkmyNXwq6joLpZyFyMwB7VLaIG4yucrhqJS/Np+u+h4PX2mmZ1w2z+CxqzY0IKSYja9V4o6teJc0zHWz5oX1Jz3ZHK+af354XhXDhK7617om46zO4jjEdFum01S05PZREL2flq/wEaqMYlcxXZwYWCI04lKpZjTrdciuQqBVQDg7RElu8aBaBeMtQMmlcdz8syJqQa2HCVLUGTI6oNJLbcOB8/ygX91CynsDm15Zbho2p5tVClKpmgcdcitxY4NvdCFliO5c6QIOuCmpDGFTiivtFeMlnvL4AbxmTSBUd9p5ks0/Q9QjR9ZhGXzRWAgSVNSpENbFK7AUbTGPJOUPk+Jp0K+pw2bunneo3Ufdo8DnPjQaKm36e+VZY96okBf0ZQiXfwiF39RpS+zXL4IEgUWMoxnY1fFt9r2E1g0JUzsH4A+U74XTKj4EJ/i78HOsMzophUVNADBJiFJYU/7Zu1yJvDYmLTwyJrLYLzgIwg0KKl+al/bnlDNNlfcV8BraE1H9kXQBKYpguqTDe0l9CXx46zzgbNLAIWLa2yaoOunwXTBHXLDsh0Sd7RHkyxjOrHKtELLWSxvsN2Tlha/BbphsqbJze+peo+Cdc8DlUNhpaX2E1rADDWC+LgvxfAa2vOzjmrz43IvuhI3A7PX+5vSlaeSxxQ==
+X-HE-Tag: 1793732876-192793
+X-HE-Meta: U2FsdGVkX1+rVBbAG1FQ+2oR304RaqpO+H6L30FV+29gYd8FQYO8pabno82HNwyaZ3aDqMoLZd/sb3i+7Qb9YAY81Hjr2f0SF2uDDhantcNSxgJEeDZejz5wSdYZ37NriFrArJilWK0+W73xQ2iDJJtHxxZIS7tphJpDwdDBkm98hCr4hiA/gpOHTY6daMnOmElcfPhXq00GTcx7lvbHNplGVt11y6v5Wn4KLeOKsfPMSAdISW6lBce2DpY8rmz87IZPu5e4zX5eW3qAbnhyTEpFpVXjXId7QrlIf456i8DTPcUenf1cGQ5bATLxxWUOhfVIIuK9FHb+5xcoaYdsvvRfZ2vz+rKm5PgAWb1X63c7BfayTXnI+Fz0abmDUcPgqpfmqOWl9LE0EFW+/iUzzC0lQmce8Wce3QdQMyhr4GbwDA7qfyPMCiOWPAknADrUp6p17zyaqXLosRwDd3ioDifolZliGkGFtdjbgFz3QUv7FHwG52Xygu2cZYhJ7gbi0vfNhe5JD1Gp32aQsIX6ttV7woTTjJ7cPHVFR/WC+68nQIBCiYkMXp/v74bmfA4U6T+sp5rlnUbPWQ7YG8JchHl16DeTESg6fliO0nM+ZXcf+oHpmFUKzvew+rkG4ALub9QDeNsN+zqSYTjtLyPvIcM+G5yJjc2TTOS6kSAdaplIbYOE1TZI98VM1vWIwJNU/rd5Vm4NCeQzCcUguJ9Bfn/AureZXGr3Mar3/SWacq9E/AE+12OvXQmY9RJSIhXGOVRcbRTuOoRcjaeVqr5TYzLT9jM3GC2u3e2QbR3nVZL+vxN+2/yfl/R8HGz+5ndC/OXimnIBLqAmoIFa7zWr17UOO303bml5qFzesZJPQfqFEgd5OfVugXb3/wdvVQqSw80m71FSRhxvsB+RJdExkOU8YCrlVbTh4qrW7xopNRJ/W7zmvLzxQCPYAvyW1ZjrwPAWmvRDD6HSE4tOM0k
+ Ad8SnulI
+ 3CPj9Ob+O4Lx+t4ah3WvpmD1LYF4cMTUEuzCEQ8xDIlQjazJi5oyVNq/92QaVoUuigT//E3/mSu/mA3zQAF6njIzp4OkRKihAwsN4xH3c5bOYsRB2FS2ohtZrmfTBWReGZZkXbYtBNetIBgBnDfkiqCVaI8m9CEFc3A7I8hxLq2ogNrpXUEUn7LgeN97Ccy0vD0oJcMrJ+5UKDfVzVxQlYhea/xHmiwjL30XLDiRipnRwWiSa6hvP6aNJkh9bOKH1zWCX0jyztYUbN1E7HZDLZjkx9TfcetF+sUK3kO03nRfIXApoimnwGIgw7uVy/E11jlPhouiFLb0xxHsBcdCGIDslR/0LpdNQ8t4h9sTx2ySDV6MbJtAdinfN/msEk3A88V7lWjYgcJBgxW0m8pwrnTS7PFELK1YGdVz6H+v7DXVnIYo79qUArybkFnT/QGBqT6rvOGyg3uSv8vdjEOaZDHsLBkonV9a1n03hWEQKfY/yq3xobkEvdLmqC9kDOkm2iXJmljdhobaL6E2haNRNrgOsw3h2n/7Z8VIWvdrrQkmrJtjfh9iRsWM0PQwcj+tTmmFaA/PfkUFzHoBzIsEMy0dy9gsTxoBC+9W7UMfK3VaJ62n8d+pDmliYz57xMdOmFLhkKE0tuQSo/WlrZNJZEGTJiSKNabNyJcOigt5GHY+MnY+DLWH30t/pZXx1yIJoC7oT
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -114,255 +115,75 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 X-Archived-By: <archiver.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 3 potential issue(=
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [Medium] lib/tests: unlocked cpu_online_mask read passed to work_on_cpu()
-- [Medium] lib/tests: missing release/acquire ordering on sh.started in con=
-tention test
-- [Low] lib/tests: unlocked num_online_cpus() check in do_hpcc_test_saturat=
-ed_compare()
+- [Medium] tools/testing/hpcc: counter leak in test_saturated() and test_ra=
+ndom_walk()
 --
 
-commit 48b3ce088047ee1ccff5c20155903c1a143e78df
+commit 503d613a781c32158eec55568b3137245d93fe15
 Author: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
 
-lib: test hierarchical per-cpu counters
+tools/testing/hpcc: add userspace test of hierarchical per-CPU counters
 
-Introduce KUnit tests for hierarchical per-CPU counters covering
-single-threaded updates, concurrent multi-threaded updates, contended
-carries, and saturated counter comparisons.
+This commit adds a single-threaded userspace test harness under
+tools/testing/hpcc that builds lib/percpu_counter_tree.c with a simulated
+topology to verify counter saturation, random walks, accuracy range
+contracts, and comparison functions across all supported CPU counts and
+batch sizes.
 
-Link: https://lkml.kernel.org/r/20260227153730.1556542-3-mathieu.desnoyers@=
-efficios.com
-
-> diff --git a/lib/tests/percpu_counter_tree_kunit.c b/lib/tests/percpu_cou=
-nter_tree_kunit.c
+> diff --git a/tools/testing/hpcc/main.c b/tools/testing/hpcc/main.c
 > new file mode 100644
-> index 0000000000000..58b2e488e3c6b
+> index 0000000000000..b707754aab0a7
 > --- /dev/null
-> +++ b/lib/tests/percpu_counter_tree_kunit.c
+> +++ b/tools/testing/hpcc/main.c
+> @@ -0,0 +1,413 @@
 
 [ ... ]
 
-> +static void do_hpcc_test_single_thread(struct kunit *test, int _cpu0, in=
-t _cpu1,
-> +				       enum up_test_inc_type type)
+> +static void test_saturated(unsigned long batch_size, long inc)
 > +{
-> +	unsigned long batch_size_order =3D 5;
-> +	int cpu0 =3D _cpu0;
-> +	int cpu1 =3D _cpu1;
-> +	unsigned long deadline =3D jiffies + SINGLE_THREAD_MAX_SECONDS * HZ;
-> +	int ret, i;
+> +	struct test_counter c, probe, exact;
+> +	unsigned long accuracy;
+> +	long approx, delta;
 > +
-> +	ret =3D init_counters(1UL << batch_size_order);
-> +	KUNIT_EXPECT_EQ(test, ret, 0);
-> +	if (ret)
+> +	if (test_counter_init(&c, batch_size) || test_counter_init(&probe, batc=
+h_size) ||
+> +	    test_counter_init(&exact, batch_size)) {
+> +		CHECK(0);
 > +		return;
-> +	cpus_read_lock();
-> +	for (i =3D 0; i < 10000 && time_before(jiffies, deadline); i++) {
-> +		struct single_thread_update u0 =3D { .counter_index =3D 0 };
-> +		struct single_thread_update u1 =3D { .counter_index =3D 1 };
-> +		long increment;
-> +
-> +		switch (type) {
-> +		case INC_ONE:
-> +			increment =3D 1;
-> +			break;
-> +		case INC_MINUS_ONE:
-> +			increment =3D -1;
-> +			break;
-> +		case INC_RANDOM:
-> +			increment =3D (long)get_random_long() % 50000;
-> +			break;
-> +		default:
-> +			WARN_ON_ONCE(1);
-> +			increment =3D 0;
-> +		}
-> +		if (_cpu0 < 0)
-> +			cpu0 =3D cpumask_any_distribute(cpu_online_mask);
-> +		if (_cpu1 < 0)
-> +			cpu1 =3D cpumask_any_distribute(cpu_online_mask);
-> +		u0.increment =3D increment;
-> +		u1.increment =3D increment;
-> +		work_on_cpu(cpu0, single_thread_update_fn, &u0);
-> +		work_on_cpu(cpu1, single_thread_update_fn, &u1);
-> +		check_counters(test);
 > +	}
-> +	cpus_read_unlock();
-> +	fini_counters();
-> +}
-> +
-> +static void hpcc_test_single_thread_first(struct kunit *test)
+
+[ ... ]
+
+> +static void test_random_walk(unsigned long batch_size, unsigned long nr_=
+steps)
 > +{
-> +	int cpu =3D cpumask_first(cpu_online_mask);
+> +	struct test_counter c[2];
+> +	unsigned long step;
 > +
-> +	do_hpcc_test_single_thread(test, cpu, cpu, INC_ONE);
-> +	do_hpcc_test_single_thread(test, cpu, cpu, INC_MINUS_ONE);
-> +	do_hpcc_test_single_thread(test, cpu, cpu, INC_RANDOM);
-> +}
-> +
-> +static void hpcc_test_single_thread_first_random(struct kunit *test)
-> +{
-> +	int cpu =3D cpumask_first(cpu_online_mask);
-> +
-> +	do_hpcc_test_single_thread(test, cpu, -1, INC_ONE);
-> +	do_hpcc_test_single_thread(test, cpu, -1, INC_MINUS_ONE);
-> +	do_hpcc_test_single_thread(test, cpu, -1, INC_RANDOM);
-> +}
+> +	if (test_counter_init(&c[0], batch_size) || test_counter_init(&c[1], ba=
+tch_size)) {
+> +		CHECK(0);
+> +		return;
+> +	}
 
 [Severity: Medium]
-Can cpu go offline before or between the calls to
-do_hpcc_test_single_thread()?
+Can these error paths in test_saturated() and test_random_walk() leak the
+already-initialized counters when a subsequent test_counter_init() call
+fails?
 
-Both hpcc_test_single_thread_first() and
-hpcc_test_single_thread_first_random() sample cpumask_first(cpu_online_mask)
-without holding cpus_read_lock(), and then pass that cpu across three
-separate calls to do_hpcc_test_single_thread(), each of which acquires and
-releases cpus_read_lock() on its own.
-
-Because _cpu0 >=3D 0 (and _cpu1 >=3D 0 in hpcc_test_single_thread_first()),
-do_hpcc_test_single_thread() never re-reads or validates cpu0 or cpu1 under
-cpus_read_lock() before passing them to work_on_cpu(), which requires the
-caller to ensure the target CPU cannot go offline.
-
-If CPU hot-unplug runs concurrently under CONFIG_HOTPLUG_CPU=3Dy, could
-work_on_cpu() be called on an offline CPU?
-
-[ ... ]
-
-> +static int contention_worker_fn(void *data)
-> +{
-> +	struct contention_data *cd =3D data;
-> +	struct contention_shared *sh =3D cd->sh;
-> +	int round;
-> +
-> +	wait_event(contention_wq, READ_ONCE(sh->started));
-> +	for (round =3D 1; round <=3D CONTENTION_NR_ROUNDS; round++) {
-> +		if (cd->coordinator) {
-> +			atomic_set_release(&sh->round, round);
-> +			contention_add(cd);
-> +			while (atomic_read_acquire(&sh->nr_done) < round * (sh->nr_workers - =
-1))
-> +				cond_resched();
-> +#ifdef CONFIG_SMP
-> +			if (percpu_counter_tree_check_residuals(&counter[0]))
-> +				sh->nr_errors++;
-> +#endif
-> +		} else {
-> +			while (atomic_read_acquire(&sh->round) < round)
-> +				cond_resched();
-> +			contention_add(cd);
-> +			/* Order the additions before the coordinator check. */
-> +			atomic_inc_return_release(&sh->nr_done);
-> +		}
-> +	}
-> +	complete_work();
-> +	return 0;
-> +}
-> +
-> +static void do_hpcc_test_contended_carries(struct kunit *test, unsigned =
-long batch_size)
-> +{
-
-[ ... ]
-
-> +	for_each_cpu(cpu, cpus) {
-> +		cd[cpu].sh =3D &sh;
-> +		cd[cpu].coordinator =3D first;
-> +		cd[cpu].seed =3D get_random_u32() | 1;
-> +		task[cpu] =3D kthread_create_on_cpu(contention_worker_fn, &cd[cpu], cp=
-u,
-> +						  "kunit_hpcc_contention/%u");
-> +		KUNIT_EXPECT_FALSE(test, IS_ERR(task[cpu]));
-> +		if (IS_ERR(task[cpu]))
-> +			break;
-> +		atomic_inc(&kernel_threads_to_run);
-> +		get_task_struct(task[cpu]);
-> +		wake_up_process(task[cpu]);
-> +		sh.nr_workers++;
-> +		first =3D false;
-> +	}
-> +	/* Start the workers once their number is known. */
-> +	WRITE_ONCE(sh.started, true);
-> +	wake_up_all(&contention_wq);
-
-[Severity: Medium]
-On weakly-ordered architectures, can the coordinator thread in
-contention_worker_fn() observe sh->started =3D=3D true before seeing all
-increments to sh.nr_workers?
-
-In do_hpcc_test_contended_carries(), each worker kthread (starting with the
-coordinator on the first iteration) is woken via wake_up_process(task[cpu])
-inside the loop while sh.nr_workers++ is still being incremented on
-subsequent iterations, and completion is published with
-WRITE_ONCE(sh.started, true).
-
-In contention_worker_fn(), if the already-running coordinator hits the
-wait_event(contention_wq, READ_ONCE(sh->started)) fastpath before
-wake_up_all() is called, it does not go through the waitqueue spinlock and
-there is no release/acquire pairing ordering the updates to sh.nr_workers
-before the coordinator reads sh->nr_workers in:
-
-	while (atomic_read_acquire(&sh->nr_done) < round * (sh->nr_workers - 1))
-
-Could this cause the coordinator to wait for fewer workers than were created
-and call percpu_counter_tree_check_residuals(&counter[0]) while other worke=
-rs
-are still updating counter[0]? Should sh.started use smp_store_release() and
-smp_load_acquire()?
-
-[ ... ]
-
-> +static void do_hpcc_test_saturated_compare(struct kunit *test, unsigned =
-long batch_size,
-> +					   long inc)
-> +{
-
-[ ... ]
-
-> +	cpus_read_lock();
-> +	for_each_online_cpu(cpu) {
-> +		work_on_cpu(cpu, saturate_worker_fn, &sd);
-> +		KUNIT_EXPECT_FALSE(test, sd.overrun);
-> +		if (sd.overrun)
-> +			break;
-> +	}
-> +	cpus_read_unlock();
-> +
-> +	precise =3D percpu_counter_tree_precise_sum(c);
-> +	approx =3D percpu_counter_tree_approximate_sum(c);
-> +	kunit_info(test, "batch_size=3D%lu inc=3D%ld precise=3D%ld approx=3D%ld=
- accuracy=3D%lu\n",
-> +		   batch_size, inc, precise, approx, accuracy);
-> +
-> +	check_residuals(test, c);
-> +	check_residuals(test, &probe);
-> +
-> +	/* Accuracy contract. */
-> +	KUNIT_EXPECT_GE(test, approx, precise - (long)accuracy);
-> +	KUNIT_EXPECT_LE(test, approx, precise + (long)accuracy);
-> +	/* Saturating every possible CPU reaches the accuracy exactly. */
-> +	if (num_online_cpus() =3D=3D nr_cpu_ids)
-> +		KUNIT_EXPECT_EQ(test, (precise - approx) * inc, (long)accuracy);
-
-[Severity: Low]
-In do_hpcc_test_saturated_compare(), what happens if a CPU is offline during
-the for_each_online_cpu() saturation loop and comes online after
-cpus_read_unlock()?
-
-Because num_online_cpus() =3D=3D nr_cpu_ids is checked after cpus_read_unlo=
-ck()
-is dropped, a CPU brought online in that window would make
-num_online_cpus() =3D=3D nr_cpu_ids true even though saturate_worker_fn() d=
-id not
-run on it, causing the KUNIT_EXPECT_EQ(test, (precise - approx) * inc,
-(long)accuracy) assertion to fail spuriously.
-
-Should num_online_cpus() =3D=3D nr_cpu_ids be recorded while cpus_read_lock=
-() is
-still held?
+Each test_counter_init() call allocates per-CPU level0 storage and tree
+items via percpu_counter_tree_init(). In test_saturated(), if
+test_counter_init(&c, batch_size) succeeds and test_counter_init(&probe,
+batch_size) or test_counter_init(&exact, batch_size) fails, the function
+records CHECK(0) and returns to run_case() without calling
+test_counter_destroy() on c (or probe). Similarly, in test_random_walk(),
+if test_counter_init(&c[0], batch_size) succeeds and
+test_counter_init(&c[1], batch_size) fails, c[0] is not destroyed before
+returning.
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261102190708.1287=
-100-1-mathieu.desnoyers@efficios.com?part=3D2
+100-1-mathieu.desnoyers@efficios.com?part=3D4
 
