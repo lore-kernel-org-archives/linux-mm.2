@@ -1,126 +1,113 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19BF3606A328
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 18:03:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=Tln2OY7A
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D52F606A32C
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 18:04:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id ECD7B6B05B2; Tue,  3 Nov 2026 13:03:27 -0500 (EST)
+	id C37D36B05B4; Tue,  3 Nov 2026 13:04:45 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EA4AF6B05B3; Tue,  3 Nov 2026 13:03:27 -0500 (EST)
+	id BE8616B05B5; Tue,  3 Nov 2026 13:04:45 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DBACF6B05B4; Tue,  3 Nov 2026 13:03:27 -0500 (EST)
+	id AFE8F6B05B6; Tue,  3 Nov 2026 13:04:45 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id B28006B05B2
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 13:03:27 -0500 (EST)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 299441A0527
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 18:03:26 +0000 (UTC)
-X-FDA: 85394580012.19.B20FE45
-Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 5DDEE40003
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 18:03:24 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=Tln2OY7A;
-	spf=pass (imf07.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.210.174 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 8AF806B05B4
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 13:04:45 -0500 (EST)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 368D88043D
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 18:04:45 +0000 (UTC)
+X-FDA: 85394583330.18.5502EE0
+Received: from mail-vk1-f172.google.com (mail-vk1-f172.google.com [209.85.221.172])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 3EA0916000D
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 18:04:43 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	spf=pass (imf08.hostedemail.com: domain of geert.uytterhoeven@gmail.com designates 209.85.221.172 as permitted sender) smtp.mailfrom=geert.uytterhoeven@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793729004;
+	s=arc-20220608; t=1793729083;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=QlGR/Z6huNBqf7qPxyYVqVaOp44Imd+irchLTr/i+qo=;
-	b=gvOOE5VVdxaJKnlxC2Y+jgj5/Br/67c6gpHgY79V91SFJxFGwM+i3WjQ9eToyvKYzjXUfj
-	yq4FQddbTE/Ts7nRRxCOn3X81IUpVk+O52QR8JJE9MLzH/1AYn2TJ/4jDtJwUJHEdxIIm+
-	i8hqIN97qGqmqzMFYmzzTmdzV7qkeyU=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=6s58Pb4hAe6Hy7/bwQYEC0q1H7BmJZKjEQo1aMto/nU=;
+	b=SIiU8b8xLnI846KSXe1yTB5Nf67KwL0nMQbyixHPpNoKdXsJVuAcccC3aEpCUeWvKKuNxR
+	2piROoUq/lQn83w5dQcW+BHQT1cavH5LGU4dwtPw5lHUz64JWUvZdPOdJuUN/QicNl38Ma
+	+dgtPjHJeCzF5WOfVV5b5r1G5jLRW9w=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793729004;
-	b=t69FTJFVj9rdBM7/Wtl9voE067JEdYcm+GKA9H80YGmsQPnDWYpe/2XGPlr2AIYElwe/0d
-	1851/Jnmm8iVYoE/oW5zGyCQZB+YWeBoaaGjQZlBnLOtfYpM+Yg9b46777x2bskZ6ALQe4
-	bPgn/pHZxH7ApP4yPmavp7gKt6BNW68=
+	t=1793729083;
+	b=ZYEO1t4cP7if6JnOySUy+j5h2cqaOuqkQV1OLj9ahIMuPYQKDT5Zx3zUK30sZKvVuc9MyW
+	vC1+SJ3N2v80q2eTwnVEAWSHhnWp362kEW2HMuiY80wSRbEn7HJ1QH57h1kKjkEwMgsPtK
+	wS721RfQ6BAuuoRvT6qtY30CS8LOjqU=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=Tln2OY7A;
-	spf=pass (imf07.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.210.174 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-8a07025cce4so2309006b3a.2
-        for <linux-mm@kvack.org>; Tue, 03 Nov 2026 10:03:24 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793729003; x=1794333803; darn=kvack.org;
-        h=mime-version:content-transfer-encoding:references:in-reply-to
-         :subject:cc:to:from:message-id:date:content-type:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=QlGR/Z6huNBqf7qPxyYVqVaOp44Imd+irchLTr/i+qo=;
-        b=Tln2OY7AtkyBEysZCrX7NfswB3Uqfoyt9f9AWpjA/NkFV0n/t3Q38HAJJxWpbGeW22
-         duxfwBKlCRKMaQwLduloPXv1MTFiIB4+IY6e1wPT24wlys+HM77mGvEwrOnrI5oV4TXU
-         jeDbWHnv1GGlaTT0LRtJidXy6oSXuISek5C7o1/Dysc/0pG6hmWPVAqJn1gLvXRBv4eg
-         F0iE8OZDV/w69cmDPIvjyzO2ppk63AV9DQhC3bnlLcjKAc6NDT252QIJY/TnV73a2Kao
-         yj23sba6YjzjI2Q7sMxWtge173/AcA9ttIL5NBMSWEOa7ilmBLJunMt6gKky+AlO1mFX
-         SLmQ==
+	imf08.hostedemail.com;
+	dkim=none;
+	dmarc=none;
+	spf=pass (imf08.hostedemail.com: domain of geert.uytterhoeven@gmail.com designates 209.85.221.172 as permitted sender) smtp.mailfrom=geert.uytterhoeven@gmail.com
+Received: by mail-vk1-f172.google.com with SMTP id 71dfb90a1353d-5ec20398b05so3106627e0c.1
+        for <linux-mm@kvack.org>; Tue, 03 Nov 2026 10:04:42 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793729003; x=1794333803;
-        h=mime-version:content-transfer-encoding:references:in-reply-to
-         :subject:cc:to:from:message-id:date:content-type:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=QlGR/Z6huNBqf7qPxyYVqVaOp44Imd+irchLTr/i+qo=;
-        b=SyLtMCMGUgEB18PeDO2r22AwGOSmSEAEvpWj+eRm5NbblP0xmwF9vso5qivTmOBjFC
-         RoOXjaJT1uWLj/krtlxqzFx/+S+28msMdXNTXrRNmpOJgubgpDKT2YJ/OQ1DqLvQI67v
-         3umGdpCc8IqNzoSiKMQuiYLSSIhGWgO9Op7dLTdJLVTghvylxRuGioOHW+z+bURXVvAY
-         VoNnXHc1fIZK1YrDzx56luMcw08Zb9rwkNy+Ejz9GTyhj9oLO6yqNKJFDEj3/ES/cBxN
-         hOa3+lZsKRnkG69QGzaijolb+2vTD9W2LC6EybdPhuq1x3pjMlrxoqZtpf0DjrvAgMdR
-         79cA==
-X-Forwarded-Encrypted: i=1; AKwUvBzzQ9NElwQwVp8tUOzeOsNLqAEltd3EiUhB7B8Rf0++Po/gf3855pDafEHg/eP0pI0LvjkO7Q9WtQ==@kvack.org
-X-Gm-Message-State: APuU4Z/6HRwOTLBTllnPi/DbOBS109G4gxxIMxRNJBbBNj8IiLAg7ARn
-	Qg1WJqENgziDHqPFjP/YFM+D00GqcvhUh5o2cTgdjxSPZDFSGsOOZ+sD
-X-Gm-Gg: AYBFou2UsJpGPB16F6JzX9ebb8VxqZ3chCvw8kIWaVOnDwo0iZQsDQYIEqde346QfyA
-	UwnRuEIXehHY3FmNXX/96TxEyjdDQUMMIFOnzAJdVVg2frxu3N+cM4JHJNPz+FNXLYsjGVNnpmc
-	+tkKrHKz2cWREwj7P1SvD/UiVEHCW6XktywjPpbdGyQa61egg5v0VTAoXK0FuuvIi27YERV7lUW
-	opQua6dcE/3gx9q3z++q/um0vFwvI6+FglUdyQp6gscm7goB/hxSzgC7QSnaLam9fihmo6B/jKz
-	BD0GNXrVg4DxTCXHwEv5XNVoC2YAAzH0WMSXHrrf6L+sfQOM4qd5ZgYrHO25KUZ9EcCM7LY5fFh
-	moaBgMOk28CMIOnUJq6SzxM4ZH3uyacyXd1+xaR8zkhkfb5udilbXyPX8wryCy+HkY74JCvsaXn
-	UtSqtNARxX0YpFEXzmsORaGdmehkdBeLmiNa9CSx+kI9BzLUd9gFsCTp3UlkWi5Iqi7wzudPnub
-	AY5h+V5l4af+P3O7jzOdEnwSJkuqq21cjSEVUukFQpnP2mcVo2eGnd8+9Zq5Hd53ZVJjKlaR+5Q
-	clDNzZz2nhfhUUPcNWH5alzy31oadn/HVC6jfxVB334q/f+55ZJ5HMKRBybSDQMJRh33y/cNHOJ
-	lJuP98soKfhwIUtlBf/mrLH3DF20UC3zNYg==
-X-Received: by 2002:a05:6a20:a111:b0:3e2:9dc2:d69f with SMTP id adf61e73a8af0-3e928a26e3emr12491551637.52.1793729002716;
-        Tue, 03 Nov 2026 10:03:22 -0800 (PST)
-Received: from localhost ([153.61.198.251])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8aad77fdb34sm3771979b3a.5.2026.11.03.10.03.21
+        d=1e100.net; s=20260707; t=1793729082; x=1794333882;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=6s58Pb4hAe6Hy7/bwQYEC0q1H7BmJZKjEQo1aMto/nU=;
+        b=LN78S9aBAsr7Mn3NP8hZiY3CNkd3ANoCsutPKSq95wZMWPbdgsOvrQ4xObZQZ7Y8/I
+         fFfzt2z9ufyfqb7IkjaciI3haP1Cgxy1hG4T34F5/9V7Mbga29/M8xBfBTjaVvR0pbMj
+         j5nZPdhSSm6UY5VNZ324DXmk4w3yL9xJLtvEuOwnJCzhG02mi7JLb0R7Pg40dXaf7iJg
+         W7/grV4amnVBh7P1mfVb0VQ5uSC1sBXgP6G7DPybLPFTGLJc77tQOSX5gz2HWaRJXUYZ
+         6EnlYJQYDk+Q4bRmtrcVp2uhcueszGJZbnFmt5AB2XxK8TSForpiJ9ukhdDjpNONKzdd
+         OEGQ==
+X-Gm-Message-State: APuU4Z97OG3ye0osEllRVUOaZxUhadl2gy53yqyjJQnFjzA8mzdCYotI
+	+A56vGdaxFcQV4m+Y3BQHcEdxyFMAES9L3l1fTSUEgbZWVmNoc9q6YvHBUUR9tdm
+X-Gm-Gg: AYBFou2wozaR9qAADLBlscvYHvnA9UkSJHl3T5Y7wXzAv62zmyhKn2j/WcunnSefH2s
+	WRtya1mjght3ekwgrD1CEf6r/U48cCzfK/tWz8y2H12LnyikFaBsKoKGd6hykCL3N0oMrtcKeQi
+	We5bcL1icidDxxBiYYQuFQ3B44itiBQxHAujN+JbaE2pLLL0vo7Q5LR8lRKHlIJf15A+crM/0VA
+	GQrocmS7PN1pzpNHWfUrup68h264L9Ie86rhkNhraZG+iqLeIXPsWzLHsqk0a/hvi4UeTeck6ax
+	097G2jGO2qn3UUTJkFhepe8DUflAaLC9NZsgFkglnbKx7KGptXPs38PETBhzexMDPxxurObXuOB
+	7J+ZOba6y0REMhFbF8f9AHQNy98hhx6QOCicuy6NQG1n3Hiipn4MZq4OMynHcU9/qHrKJrm6K8C
+	Kl/4cRbavK9BXVuUe1V9RhKO1wGWutTLO5jBJU2e3Se82MPJ/Sk1FbfwAyo7UoMsB6fWqk4NbBH
+	kYVmuS6L0VBrkKp2XDNZz2f0NjlCXo8pcat19Z92dljjguRhrh/Hvk6TD56KjRN0eeiiEBPGd+5
+	EKBhrqvKZar0OoBIpD3Ewrl14d5bb6Wp2ktkNvx+Mz9pte1wJMXoApJIaMae4lgE6A==
+X-Received: by 2002:a05:6122:2108:b0:5ea:be1b:1b24 with SMTP id 71dfb90a1353d-5ec68944fd6mr6043236e0c.13.1793729082245;
+        Tue, 03 Nov 2026 10:04:42 -0800 (PST)
+Received: from mail-ua1-f44.google.com (mail-ua1-f44.google.com. [209.85.222.44])
+        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-5ec69c5389dsm13274048e0c.12.2026.11.03.10.04.39
+        for <linux-mm@kvack.org>
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 03 Nov 2026 10:03:21 -0800 (PST)
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 03 Nov 2026 18:03:21 +0000
-Message-Id: <DMLRV3E28SC8.3FJZXLBLZI4DD@gmail.com>
-From: "Alexei Starovoitov" <alexei.starovoitov@gmail.com>
-To: "Jiri Olsa" <jolsa@kernel.org>, "Daniel Borkmann" <daniel@iogearbox.net>
-Cc: <bpf@vger.kernel.org>, <linux-mm@kvack.org>, "Andrii Nakryiko"
- <andrii@kernel.org>, "Eduard Zingerman" <eddyz87@gmail.com>, "Kumar
- Kartikeya Dwivedi" <memxor@gmail.com>, "Lorenzo Stoakes" <ljs@kernel.org>,
- "John Fastabend" <john.fastabend@gmail.com>, "Federico Di Pierro"
- <nierro92@gmail.com>
-Subject: Re: [PATCHv2 bpf-next 1/8] bpf: Honor const on generic kfunc memory
- arguments
-In-Reply-To: <20261103075916.100050-2-jolsa@kernel.org>
-References: <20261103075916.100050-1-jolsa@kernel.org> <20261103075916.100050-2-jolsa@kernel.org>
-Content-Transfer-Encoding: 8bit
+        Tue, 03 Nov 2026 10:04:40 -0800 (PST)
+Received: by mail-ua1-f44.google.com with SMTP id a1e0cc1a2514c-998749fe872so205873241.0
+        for <linux-mm@kvack.org>; Tue, 03 Nov 2026 10:04:39 -0800 (PST)
+X-Received: by 2002:a05:6102:14a3:b0:7a1:f951:664f with SMTP id
+ ada2fe7eead31-7d072ca34famr5656944137.22.1793729079166; Tue, 03 Nov 2026
+ 10:04:39 -0800 (PST)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-X-Stat-Signature: sf3dgnegybg4fbpe1dmdpgna4fyd5eb9
-X-Rspamd-Queue-Id: 5DDEE40003
+References: <CGME20261015082334eucas1p2a3bbf3650f279abbd39d05d63e35aba6@eucas1p2.samsung.com>
+ <20261015082315.56876-1-m.szyprowski@samsung.com> <20261015082315.56876-3-m.szyprowski@samsung.com>
+In-Reply-To: <20261015082315.56876-3-m.szyprowski@samsung.com>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Date: Tue, 3 Nov 2026 19:04:28 +0100
+X-Gmail-Original-Message-ID: <CAMuHMdXcM9yvwLBSi-aYRinG3omhu5aoeNVYynfFQsnDDWR-Hw@mail.gmail.com>
+X-Gm-Features: AclHuK_SLyopQmsKezfvIJp8vgdHBUR6jbYkiTzIVRA3K3sJMZtG6ZwxF0OVemw
+Message-ID: <CAMuHMdXcM9yvwLBSi-aYRinG3omhu5aoeNVYynfFQsnDDWR-Hw@mail.gmail.com>
+Subject: Re: [PATCH v3 2/2] of: reserved_mem: allocate and map the
+ reserved_mem array early
+To: Marek Szyprowski <m.szyprowski@samsung.com>
+Cc: linux-mm@kvack.org, devicetree@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Mike Rapoport <rppt@kernel.org>, 
+	Rob Herring <robh@kernel.org>, Saravana Kannan <saravanak@kernel.org>, 
+	Oreoluwa Babatunde <oreoluwa.babatunde@oss.qualcomm.com>, Wandun <chenwandun1@gmail.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, linux-riscv <linux-riscv@lists.infradead.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Stat-Signature: 81sytuxoip38atdcnqnfhsjdm14rko7g
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Spam-Status: No, score=-7.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,
-	SPF_HELO_PASS,SPF_PASS autolearn=no autolearn_force=no version=4.0.1
-X-HE-Tag: 1793729004-471451
-X-HE-Meta: U2FsdGVkX1+k4CY2VBZ3LixVubmca131BcM+wrOMO3WMTkfEzxtsaWCNsp4XlMvP6AcbdiRjbZHi1OppPLmPzoKpbz/DFuEa/PgX/PLJmqHem/XzZcy8vf/ha0rNbJCcnDTFx5+qrbZzZQG/rgsZ4xxDIZg/FP43gLKjEaIVV3jzxMx9aj2PYsWf4NGWIMvv0MfqRMmt8pKdjvXXlNWaKzHZ5hv/HW6sBjMBZCeZlutTovmuZJqFCli7Te1WgPkVWdFWo78YVQwdcjlwCjVTr3prUS5xuZgLm6v+mf5fzEGy+Jk9V6UMWolE9d/o/EvBph0X6kHxAuewKurkuoTEde5nodoGkCfN0AzjTmD/XE6tSLcMT3qS5kofQmVMwL+W6RaNLUHS/VKmzFOS0wfN5PrNNV303T0fLk3XXSc8wp0xt5aoeKpaFnOD3MH4MeJMH8yinWQl+I8Rp0q8gYKg5bb/EZPBM3DzzuN4BkxG7R1lnAMRiwuiKZvkVHO9FwVrwW+QgOfvB14apLhBinQHR78T6fxA3KaQI4DmnZLgM/XYCmhqVsMomybAPH48Kc8UvlX34Z+d11lc0EoqzXWH/NHQxQ5ivQ0fUM9Z2m55MAnWYt/wxS1J/XN01pS8o/lfFBZLB/NukM86tuYfPBu2RyyhTv20SkAAI44YYgAU3jngkX2Z3sAxuggXH872xhAHPqA6NjOLDEqnS6ldlp9YfBtdIqmO0ky20mB6ToG3ZIbPGe3o8+Z27Y/l/obvKHxuDO9Q3GC2WucbQPxnMZRyfn8epQXcTGjrkyDMJ/MBBtigoK7dhPilKaQsQX29QunY6z0lVb88IQAwjoO1cJYk4e5kHT8/bF3omlzyskgUnOAT4YXYhWSDnpuap//ziETtGKCPq/lQHuPa+denpfY/9I2UOVp7HeJq+JFlLCOzaoNi/2/1xiGRvkPnvCip+pB+cRpXNjcS3O3fRNnbOxF
- VWDTeoCW
- qVXTGOX4rikG26EYgJCG47LnxP8T9bKt/G6jQB4RCNyLmN8ppuby0YqZ2SO9ouTlqaAQMN+GGVMlUjY8pU3+gDuCjgnhJpmge1YQ7n3wasY9V19r3ICWc5bT02Q+eNf7QIID1SdXWJWrfKYQhicfxmma0uWERWGxpRzW9uoCgzJtkCindu9q8GpTyy6PjHyWpC+ii29oU3dEBS5/mYQwA6M0xZ4tCluydpoVE7TgOz6OAolhUAgeuxx0ZCfM5kmmNn7BzP8NEmk6Cd8tluU8/Eior0cfSJZjltPoW9oN5buA8MRjSB9y+xl9sQun1RxF/ivO47ySY/XTVCptgJPJp2P3RkPicIM1yvbKwOk69s6M01eiR7YyW21zQlNHfgkUuAqC3d+soHAfoAbzJNeBB8sAlm26m53zMwfaNXU7sm0InXWmJ+Jl0LciczTVCSkUKfY4+6Bw1MIK6gwRqQyN4DNJspk9DnQUF2mGi6LAwX0fYAEtcXUsuLE5sw4lkmAzsmrIhPE9/CoCk+Vxlj1jw3+CLfMvBCjrjeBCGlr4kTjcyEAbLBKs8P9bs+R8NtVZFV6Yw9Mdv5Q8qIkk=
+X-Spam-Status: No, score=-8.8 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,
+	SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 3EA0916000D
+X-HE-Tag: 1793729083-119272
+X-HE-Meta: U2FsdGVkX1+KybhGeWGl9FebQ7Pimt6HOm7oORXtYHrqf/VRxerAxhArRXOHSoqP2ZnH7GkwCFk/CR5z4pmY4RTOjgBYxPpg3F1xrdAEQVbmAC+wnqO/Yccq/WkZbZrVIctK6W/QPjeCL0XjfdGllwqh1qMT/g7Eod7XuHPonuyJb9LAN6C9dB8QdNpRPwXW/dXTprwT4gzvQPBATgSyZga2ketGggdTEAdkUxH3npfI1lRbTc/++g6sIQ4mhXeh/JlQYfcvX2N/KT0DUplb5uwRDXuWnusY3EmF9XRG7pr3LMBX5ID+L+8/TL1gJqcFgeAvShGFYj6xbCS6myc5u4JN+jkNd+1MsPPUIxbSLV56mURoqW7m/1Jjd5Px6k1VuGQZMnlNYgZQoiwgwa/YLNTuoxn2XK032kE+Rm4TKRqx2HCr5S6+6+SMyPRfY+re6LbTTZb1lDL8RJbRA2cNRRXxKWseHGJqHntV3/L8V0b2CvjuKC8zwRJqo5di0kPlew3CB5lTzfSZg28JSZihBCVm0EDjWFqSDgH3LHNCtwX72cvYFVXNMCACIbmMZXe7ZD68x8pPVtwoUBDuJGOGVxiDBeFFyjRi2Wd4WvCAbaGzzMp55UajEQWDlj3ub3yVAXG9v6q6QVkRkv+YS5XMxHOyeWpxaySZzqt227poC2byhwNhtz7d7iL/0vOBKhkPZJhdZHglzzEArZHlrYncSlGZY+KcjbfOXvJ0H3iHAHAjpB3PTXagZM7I15welYcj+C9R/tIc2vN4QE34s+zhrcAj9tguZzafKcldsmn1Nh8yTVFUA7kkc1QhQEBQv7RmoQ3MEeMcKR0bgq/cmHl2VrJSjoHFXshZs6xaYUQd4C0BpoEi02/+96dSfNKVZXYInCvgoc27aggU91vdBPn+/DtK2E1uR41T9Ba96F2EhIPQuKhxIhfD9K59J8aS//eBLGdw/5OwlrC/mMXROGh
+ aG/ArWLo
+ wUPjGS1adMVImtp5JPrnOyoah++EbTY6PL66QzEF58h0/UfytW7mYqWPGd2OHfHl/qCQGFYpCHPMSsSrOmQW/cJDY1swwRtUBOvMpcDm44IO32dZRFXaoEOFGS4hiCJ8VUSZdQgwgkMMuKXIr/HCrjceIOjqpsaUE770ZB9eRJbt0Y5UXZ+S6TYOgj4w8DdTQXtkayC5311Hrx6wkeJ7L5l5vm4TaqFm+dKIaFBN6+lVF3CbQu1heE0UnOHsHgMaBGUxj2BFebsgn5N4/5p+ZrOydMB59HnGKs678U1BBkA1FQOfZQIZvv7HhkSkdZ+KqaQjvh/sp+gYAapZo0pPTL0AhTwiLvuDFWaPVqrDxDki4W7KK80LcyshcakxiMHWVVgWJD0n4kCj8ypXHye9nE4JxOhsl6BSSHE/NoyDwQjmqsC+MgS1LaNaC8LSgMEOcbbV5X6BKOWAi4ZcfnCzJCfMkVbUkzCtzbgq0aQYUelUAIIhlqd5oRPOKbQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -129,100 +116,107 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Mon, Nov 02, 2026 at 11:59 PM Jiri Olsa <jolsa@kernel.org> wrote:
-> +	t = btf_type_skip_modifiers(btf, arg->type, NULL);
-> +	if (!btf_type_is_ptr(t))
-> +		return false;
-> +
-> +	t = btf_type_by_id(btf, t->type);
-> +	while (t) {
-> +		switch (BTF_INFO_KIND(t->info)) {
-> +		case BTF_KIND_CONST:
-> +			return true;
-> +		case BTF_KIND_VOLATILE:
-> +		case BTF_KIND_RESTRICT:
-> +		case BTF_KIND_TYPEDEF:
-> +		case BTF_KIND_TYPE_TAG:
+Hi Marek,
 
-My earlier feedback must have been lost ?
+On Thu, 15 Oct 2026 at 10:29, Marek Szyprowski <m.szyprowski@samsung.com> wrote:
+> Get rid of the static, limited-size reserved_mem array and replace it
+> with array allocated by memblock_alloc_raw() and accessed directly or
+> through a temporary early_memremap() mapping (depending on the
+> architecture support). Such mapping is needed for some architectures
+> (like ARM64), where linear map is not yet available during early boot
+> scan. The array is allocated from the bottom of RAM to avoid placing it
+> in highmem area, because some architectures (e.g. Xtensa, C-SKY, MIPS32)
+> set the memblock limit to the end of lowmem only after the early scan.
+> The early mapping is not used on PPC64, where the scan is done before
+> early_ioremap_setup(), but the memory allocated by memblock is already
+> accessible at that point.
+>
+> Having a single, writeable array with all reserved regions removes the
+> need to perform two step initialization introduced by commit
+> 8a6e02d0c00e ("of: reserved_mem: Restructure how the reserved memory
+> regions are processed"), so all regions can be processed during the
+> early scan again.
+>
+> The reserved_mem array is allocated only after all static (defined by
+> the 'reg' property) regions are marked as reserved or no-map, so it
+> cannot be placed in any of them. Errors of the early reservations are
+> not recorded per region, only the fact that some of them failed is
+> stored and a message asking to fix the device-tree is printed. The
+> region specific init functions for the static regions are then called
+> in a separate pass, once the array is available. Then all dynamically
+> allocated reserved regions are processed.
+>
+> Suggested-by: Mike Rapoport <rppt@kernel.org>
+> Link: https://lore.kernel.org/all/asc6brs_g0ky0wOM@kernel.org/
+> Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
 
-This switch is a copy of btf_type_is_modifier().
-All three callers already know that the arg is a pointer.
-t is never NULL.
-One helper of half the size is enough.
+Thanks for your patch, which is now commit aa05faf815836c47 ("of:
+reserved_mem: allocate and map the reserved_mem array early")
+in dt-rh/for-next.
 
+This causes an early crash on BeagleV Starlight Beta:
 
-The patch from the v1 thread, rebased (compile tested only):
+ [...]
+ earlycon: uart0 MMIO32:0x0000000012440000 (options '115200n8')
+ printk: legacy bootconsole [uart0] enabled
+ printk: debug: skip boot console de-registration.
+ efi: UEFI not found.
+-OF: reserved mem: 0x00000000fb000000..0x00000000fcffffff (32768 KiB)
+map non-reusable framebuffer@fb000000
+-OF: reserved mem: 0x00000000f9000000..0x00000000f9ffffff (16384 KiB)
+map non-reusable framebuffer@f9000000
+-OF: reserved mem: 0x00000000d0000000..0x00000000f7ffffff (655360 KiB)
+map non-reusable framebuffer@d0000000
+-OF: reserved mem: 0x00000000c9000000..0x00000000ccffffff (65536 KiB)
+map non-reusable framebuffer@c9000000
+-OF: reserved mem: 0x00000000fa000000..0x00000000faffffff (16384 KiB)
+nomap non-reusable dma-reserved@fa000000
+-Reserved memory: created DMA memory pool at 0x000000107a000000, size 16384 KiB
+-OF: reserved mem: initialized node linux,dma@107a000000, compatible
+id shared-dma-pool
+-OF: reserved mem: 0x000000107a000000..0x000000107affffff (16384 KiB)
+nomap non-reusable linux,dma@107a000000
+-SBI HSM extension detected
+-[...]
++Oops - store (or AMO) access fault [#1]
++Modules linked in:
++CPU: 0 UID: 0 PID: 0 Comm: swapper Not tainted
+7.4.0-rc1-starlight-00002-gaa05faf81583 #411 PREEMPT
++Hardware name: BeagleV Starlight Beta (DT)
++epc : __memset+0x68/0xfe
++ ra : fdt_scan_reserved_mem+0x3a4/0x80a
++epc : ffffffff8087fd88 ra : ffffffff80a313c8 sp : ffffffff81403c20
++ gp : ffffffff814dc6c0 tp : ffffffff8140cf80 t0 : ffffffc4fea38ff0
++ t1 : 0000000080200000 t2 : ffffffc4fec03008 s0 : ffffffff81403d10
++ s1 : ffffffffffffffff a0 : ffffffc4fea39000 a1 : 0000000000000000
++ a2 : 00000000000000f0 a3 : ffffffc4fea390f0 a4 : 0000000000000008
++ a5 : ffffffff8087fd88 a6 : 00000000000000f0 a7 : 0000000000001000
++ s2 : ffffffc4fec00000 s3 : 00000000000000f0 s4 : 0000000000000000
++ s5 : 0000000000002de0 s6 : 0000000000000006 s7 : fffffffffefefefe
++ s8 : ffffffc4fec02fd4 s9 : ffffffff8148e318 s10: fffffffffefefeff
++ s11: ffffffc4fea39000 t3 : ffffffff8150df00 t4 : ffffffff8150df00
++ t5 : ffffffff8150df00 t6 : ffffffff8150df78 ssp : 0000000000000000
++status: 0000000200000100 badaddr: ffffffc4fea39000 cause: 0000000000000007
++[<ffffffff8087fd88>] __memset+0x68/0xfe
++[<ffffffff80a2f63a>] early_init_fdt_scan_reserved_mem+0xa4/0x110
++[<ffffffff80a06c8e>] paging_init+0x17c/0x46a
++[<ffffffff80a046dc>] setup_arch+0xdc/0x584
++[<ffffffff80a009b8>] start_kernel+0x98/0x940
++Code: 0000 8793 00e7 8305 97ba 8782 b023 00b2 b423 00b2 (b823) 00b2
++---[ end trace 0000000000000000 ]---
++Kernel panic - not syncing: Fatal exception in interrupt
++---[ end Kernel panic - not syncing: Fatal exception in interrupt ]---
 
-diff --git a/Documentation/bpf/kfuncs.rst b/Documentation/bpf/kfuncs.rst
-index 73578a4..54d4ce2 100644
---- a/Documentation/bpf/kfuncs.rst
-+++ b/Documentation/bpf/kfuncs.rst
-@@ -137,6 +137,10 @@ argument as its size. By default, without __sz annotation, the size of the type
- of the pointer is used. Without __sz annotation, a kfunc cannot accept a void
- pointer.
+Reverting the commit fixes the issue.
 
-+The verifier checks such memory for read and write access. When the argument
-+is a pointer to const, like ``const void *mem``, the verifier checks it for
-+read access only, and read-only memory (e.g. ``.rodata``) can be passed.
-+
- 2.3.2 __k Annotation
- --------------------
+Gr{oetje,eeting}s,
 
-diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
-index 935b163..21dd273 100644
---- a/kernel/bpf/verifier.c
-+++ b/kernel/bpf/verifier.c
-@@ -13182,6 +13182,22 @@ static bool is_kfunc_arg_const_mem_size(const struct btf *btf,
- 	return btf_param_match_suffix(btf, arg, "__szk");
- }
+                        Geert
 
-+/* A kfunc only reads through 'const T *arg'. The compiler enforces it. */
-+static enum bpf_type_flag kfunc_arg_mem_flag(const struct btf *btf,
-+					     const struct btf_param *arg)
-+{
-+	const struct btf_type *t = btf_type_skip_modifiers(btf, arg->type, NULL);
-+	u32 id, ref_id;
-+
-+	btf_type_skip_modifiers(btf, t->type, &ref_id);
-+	for (id = t->type; id != ref_id; id = t->type) {
-+		t = btf_type_by_id(btf, id);
-+		if (btf_kind(t) == BTF_KIND_CONST)
-+			return MEM_RDONLY;
-+	}
-+	return MEM_WRITE;
-+}
-+
- static bool is_kfunc_arg_constant(const struct btf *btf, const struct btf_param *arg)
- {
- 	return btf_param_match_suffix(btf, arg, "__k");
-@@ -13550,7 +13566,8 @@ static int resolve_func_arg_type(struct bpf_verifier_env *env,
- 			PTR_ERR(resolve_ret));
- 		return -EINVAL;
- 	}
--	*arg_type = ARG_PTR_TO_MEM | MEM_FIXED_SIZE | MEM_WRITE |
-+	*arg_type = ARG_PTR_TO_MEM | MEM_FIXED_SIZE |
-+		    kfunc_arg_mem_flag(meta->btf, &args[arg]) |
- 		    (*arg_type & (PTR_MAYBE_NULL | MEM_UNINIT));
+-- 
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
- 	return 0;
-@@ -14102,7 +14119,7 @@ get_kfunc_arg_type(struct bpf_verifier_env *env, struct bpf_call_arg_meta *meta,
- 				reg_arg_name(env, argno), btf_type_str(ref_t), ref_tname);
- 			return -EINVAL;
- 		}
--		arg_type = ARG_PTR_TO_MEM | MEM_WRITE;
-+		arg_type = ARG_PTR_TO_MEM | kfunc_arg_mem_flag(meta->btf, &args[arg]);
- 	} else if (btf_type_is_struct(ref_t))
- 		/* A pointer to a struct without a size argument is classified as ARG_PTR_TO_BTF_ID */
- 		arg_type = ARG_PTR_TO_BTF_ID;
-@@ -14127,7 +14144,8 @@ get_kfunc_arg_type(struct bpf_verifier_env *env, struct bpf_call_arg_meta *meta,
- 			return -EINVAL;
- 		}
- 		proto->arg_size[arg] = type_size;
--		arg_type = ARG_PTR_TO_MEM | MEM_FIXED_SIZE | MEM_WRITE;
-+		arg_type = ARG_PTR_TO_MEM | MEM_FIXED_SIZE |
-+			   kfunc_arg_mem_flag(meta->btf, &args[arg]);
- 	}
-
- 	if (is_kfunc_arg_uninit(meta->btf, &args[arg]))
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
 
