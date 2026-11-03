@@ -1,91 +1,96 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FD3C606A324
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 07:44:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34605606A32F
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 07:59:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ZZPo1adm
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=bIrJ53fI
 Received: by kanga.kvack.org (Postfix)
-	id 71D5A6B00EF; Tue,  3 Nov 2026 02:44:52 -0500 (EST)
+	id 206706B00EF; Tue,  3 Nov 2026 02:59:26 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6A6BF6B05B1; Tue,  3 Nov 2026 02:44:52 -0500 (EST)
+	id 1B7C36B05B1; Tue,  3 Nov 2026 02:59:26 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 56F7B6B05B2; Tue,  3 Nov 2026 02:44:52 -0500 (EST)
+	id 0CD526B05B2; Tue,  3 Nov 2026 02:59:26 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 2D91D6B00EF
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 02:44:52 -0500 (EST)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id E5EE7A0331
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 07:44:49 +0000 (UTC)
-X-FDA: 85393021098.06.51E8970
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 4B98520006
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 07:44:48 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZZPo1adm;
-	spf=pass (imf13.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id DC6186B00EF
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 02:59:25 -0500 (EST)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 2B7F9140203
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 07:59:24 +0000 (UTC)
+X-FDA: 85393057848.28.AC9DBD8
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 98DEB140007
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 07:59:22 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bIrJ53fI;
+	spf=pass (imf09.hostedemail.com: domain of jolsa@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jolsa@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793692762;
+	b=7CdTi9kUFG9Q+uoqLxSq+rRDViUEm142uRZpw2f3aqiZof29z4oceAjAOyrjG0CTsR9Axe
+	ECGv6qVhHrHTuuhV6ANqiyAoIln1JGUomx9HV7g6lVSz1dyQOoHAnUcvUwvOmQ1KAYGmtL
+	1MBs2nk+HxlwJNqWcdSYqUZdTtzXR3E=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bIrJ53fI;
+	spf=pass (imf09.hostedemail.com: domain of jolsa@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jolsa@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793691888;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/BIhgQLv2NyDIwD8Fnq6KsXyaH2Z6fedue8NM/mTDEg=;
-	b=0lg8A/6jDmDbYC39SU/RXW43IZFVj53ncPEYU4e5sO3Y585pOMwq+y7pGt4BNDJHeTLnB6
-	FvVmtlQlx9383ClWdY7zThCnhMmt8B0JXekbyO75sQrR+CP8OruPOWcLnKxYBQAU33cqAB
-	+PFjW028OyFRP0pdBzvVC8jxZ6pBPuo=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793691888;
-	b=0Opoo8FlYdsjzAXrKUBI6UpRY2GOufL8NYJpMId8Bvu8fp3Dz2ZUuSfVpJhJzMcCKEgqAV
-	aaqyXp6MYP10ZIaNmvSpaxylz8uPw2rG213eSy57mfcqQ246GkGVIZQrIpk3PosFCkbJFp
-	VlV5e40tchVV4y/uM7nlFJEKfU7Obr8=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZZPo1adm;
-	spf=pass (imf13.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	s=arc-20220608; t=1793692762;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=HHd7MlRl5WO91ptnS5JcS/T/erAUMFbgJZKZpyddZqA=;
+	b=07cxPiWB/AAJXfHLlMDiYckscMj0jRmE5iuivSUKnrh4fibtS7i6Rk0l2kxIEQKkprXZ6M
+	Hf057o9OR/bi9SJJASXGb0geYqJqipLpuNTKOqOxmhBHmrcqnOuV2wm6fZ5xxoOr5kHgdI
+	Qpwn1LWLwgUfUdxW3FB8G4Wy4TUPz2I=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id AF3C540870;
-	Tue,  3 Nov 2026 07:44:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 296531F000C1;
-	Tue,  3 Nov 2026 07:44:46 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 76FDB60008;
+	Tue,  3 Nov 2026 07:59:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F4ED1F00A15;
+	Tue,  3 Nov 2026 07:59:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793691886;
-	bh=/BIhgQLv2NyDIwD8Fnq6KsXyaH2Z6fedue8NM/mTDEg=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=ZZPo1admf4fI5iGR1B2raC9RLxD+VfyTQfrpUNc3pMHo9Y5PNxI0vOf+Kv7Js1tWr
-	 QBHEIE8D3x5O0XrjA5pzEYoT+MRXtMaVkKMWRA6OGvVPM/jqSfkbgXV5fI7gTdvbYC
-	 FfIPOtCMCZkMqYApI2+aURYEoZMJEcZjhjEYo8l45FvDiIGWAldMM0s1n03T2Mton2
-	 gyOPpnn1eFszaKiu75e8ZftfXb83RT3m1uJwPTlK30mJE/4uP5/KSF00JU/Kce3KkT
-	 V9vD96oUsM3AUepe+1iDPaq1svCWo4uiYakWxpAt0N5oY7zpSUm3KB9m5/ZOrvMiWX
-	 eMSPRQlJVQQug==
-Message-ID: <sashiko-outbox-194732@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH] mm/vma: fix NULL anon_vma deref in validate_mm() under
- mmap read lock
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Songsen Yang" <yangsongsen@insta360.com>, "Andrew Morton" <akpm@linux-foundation.org>, "Lorenzo
- Stoakes" <ljs@kernel.org>
-Cc: "Liam R . Howlett" <liam@infradead.org>, "Vlastimil Babka" <vbabka@kernel.org>, "Jann
- Horn" <jannh@google.com>, "Pedro Falcato" <pfalcato@suse.de>, linux-mm@kvack.org, syzbot+10e72ea5747737bcd2ad@syzkaller.appspotmail.com
-In-Reply-To: <20261102074414.10902-1-yangsongsen@insta360.com>
-References: <20261102074414.10902-1-yangsongsen@insta360.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Tue, 03 Nov 2026 07:44:45 +0000
-X-Stat-Signature: nug3shaxmj1q3yi37wssh5rcweccs856
-X-Rspamd-Queue-Id: 4B98520006
+	s=k20260515; t=1793692761;
+	bh=HHd7MlRl5WO91ptnS5JcS/T/erAUMFbgJZKZpyddZqA=;
+	h=From:To:Cc:Subject:Date;
+	b=bIrJ53fILafaxb8rQHVqV7qorWHK5MHmDxuYeMzUQADfF6nMawp9Fc03hAk/0+3qO
+	 fw1g/Yn11camVugHMC0VIBW59vXDWAU+/zey6abhOQEgaKBsLmOzZFcJLtVh4ll1H0
+	 68C9YisbM2rdeUj6Cx6h8hhuAouqA84yoQfo0cCMvqQEEmCXcsV97lWPMXs3aASxZ8
+	 3tHBqLD+t9fH0384hUYi3ZGZwGIt5dIdG6axPQtm5ZIlkYu4i8+5uRUcTqpeguyt5D
+	 wAiFB8AS6BVqCi6KnWZ7yG5cmk9KMcMs/X0VlpA+HeaTsua0aa+6yrQFNxLv4rchQk
+	 d+zB5YlikaP+w==
+From: Jiri Olsa <jolsa@kernel.org>
+To: Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>
+Cc: bpf@vger.kernel.org,
+	linux-mm@kvack.org,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Eduard Zingerman <eddyz87@gmail.com>,
+	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Federico Di Pierro <nierro92@gmail.com>
+Subject: [PATCHv2 bpf-next 0/8] bpf: Add user memory kfuncs
+Date: Tue,  3 Nov 2026 08:59:07 +0100
+Message-ID: <20261103075916.100050-1-jolsa@kernel.org>
+X-Mailer: git-send-email 2.56.0
+X-Archived-By: <archiver.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: m7yjupo98a8ooezpu95nacdz1ofxh4qd
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 98DEB140007
+X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
-X-HE-Tag: 1793691888-192812
-X-HE-Meta: U2FsdGVkX18gmJZAjTkP5+RAr4wHt/gEF4GzfXu+Bu0rCpf5iqKZFq0UcZcYK1M8Kp+bL9G8A2NmY/pysuT6EIQVtbry2fuffqOePfsn8unwOQ1+7fC4GvfPjlzo5YCaLeBeXbeF1ZwDtqzquSzWrIZ8uDLpTF01x0afUxbf5xw6zVEYm/uXAxqHGDQysmgj3ngMQ5f5ZNjnxyTbiJocrtHCIUzvvDPN66Lwv3wL0PuPngRxAelfHsfsxm8urNi914y+YJlz8X2vUP5zREpOtrB84y5v2gpopN5w1UjWadEAkjrCpBrNArxqZDuDNNrUtS1SrVcMgOJ6g19Ijd0vlORJUD5Z0UHzgllq8NDJA6YitOm9+XEW7NXCjhSA23DE8nQHPzQ0Ry03fZg0dasl/qQh7FJeiexc5Nn0n/h73i4TJOd254WhPmTwGwtr3IGihZjFFJWq/aX18sisHLhykTFOP+dsSG2v19pI3dBHtg3A4RwV96uKYLJGqQ3r+o6WlUPqFKmodYyKIIBiCSKyJ8y7uTUXJhMAkIWTMWjqO7b+Aw9/Wl8bliQw2wc6IQy+dQHaoTaxtaDp2iNZZDqJsf1IsKWn2JZMwxSDFkzWmEAI9x3z0SOUm8EGNW/fsb7XhX4pDx0imUAeBf0o2Xai0KrfczVCLcLEvx1jjRGnr6D7I3nT/eT4/uiPQ/2xKIRBiM63aydmS3m26kr65a2S9+R54TkvP5nT8jAeARI7iMYrcPIclBewvdZ49mGj2h3Y7dOx1kcW3+gAN9KmIBHaYQB1CRtEn7kWA+8hieMNNrHsu6DJhQL139FwJk9GYo5i+Q6M/tC+es+prt48e2TMU/iv3pk/vwFbZqJxif69geaNTDMZxyFh4M0oFamUQqzlcKbftMMWhnkZAkpaHli8QM7zV94L7aM0fWS/adJaEpAKfp23iM7PDPww8lZ3A6eX9NWrNzHTx4fvIDHiV0x
- pqqqV6ij
- QmDNdccL6YRrd0jVAHOVxq1I4tV2nfjwv4QAHdRa5Y/+JEwLoDKBeJ19d7egDcbPMAIgjLvASY9G/2qq8MrOjiVPtFPU8N4oyB4PmdAQcNbevKF0u/eGJ4FpwWwvOBdIyfAUxVyYZFfzTcqT5HlXdanryLvjSdbSPpGiR6OYDQuzYOmclK7mcv/cy2PsdBPxud9oYMgkFr0JOQSmjAr3FdQTvMwwH1M1ZZ01NRQCPdErBNaldZpHEcSUyAdwdorJtLh4TWCIBefOJHYBRkh9cGtcqttHvxZhlFoDMkrEoQoAJmtmKRI9MWo+xx0PQWs2IR80zQ46YDJ3uwaa+fF+PTRy0UsBFXSXE0/W2XC47pltz4/+07Jy1ktFKvBm0vcfjFjQ04yIbIXrIuTiDlWyLdSL6a9LAugwwlKtuH493fcoMWqFZFJCXkXBXdkBlxCXF5gHu/EqaGYZ9LNvog1tYxtQQAeENj1EP/YIISmqrJFWGwZBjx86ROR1Pg0SBec/FZ0taIGgOALK71RuVY+xWRvg2mYcLEovXWLK+OUlxQ76J27CNVkBeHo0eouDNS09k+kytiaBaDQ96C4JwgKExLGopEvHXoIdkWmnA4p/3mPHgKmfkOfw2F+raYlmjQh3PufWmRadh7VU3A0Dnopw9IbUSgKKlKGjsKZ1fuy4aVy6yEVHS5flusBxStm4TqPAbND3gwOJ5M1iid4XuCqyJOfj18+qdVXiMeksESnaxOFpiop/ZMdSHRycZl+BtwoHdj1LN8ACLWLrbSxLqZcXTiHg7x0uuIKcDgiZ5ryU0hZqOw2U=
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1793692762-439747
+X-HE-Meta: U2FsdGVkX19qolWmwk2LQ8qu888YMCLAThrUL1vFuMg23eE5EZI9Q9Pzi6CvruNyPJ5E9fH3z8mG4qifQajH3txqS+xlRh2O3jGB5gSpZErZVlmosc3Xzne7gbLYd+kJ9R9iNvYBR+UxeN7pW8k8Mm5jMNq9p3+dV1sOShp92EV38JvgsZOaHZiac6gSk1TfINWMaOyNGh11xmE6yRUeisic3BX2MRuuXT7Ud8HxSdSgeOA7pkIiNrvuEfQa3T42tw5kLsA0+WpltR0RuGx8bFTLW0R0TUWsDRK6NUKIemn9tNAeFSajrlJ4tWRr8pZwZyda6RJxGwkDyCllsHHKM947jvqr1ejt5p1MkWThhnxnWguAnsj4L4oDBFAU8FdkwM+7VGa6/vXgXnWpDmojFv5+4fOuT4G5qoUD4Er3H4lcCYV5itDxwYENHt2M/yjuggn84YD3wL9yeiuZ7j54rIYw6cAUTkx7gyhbfECG3blqgCAieEoh5vr/Wrp3nOA1EUNqIi3dtwT/M/DQLFMIhgiQ+AgrakYecxkae24W3VsNcPvD1wrmu/1eSoHaow06P+5VfpZ0Vr5GEVlmmSlN+1G5Y8vZNGJUT4D/VQs75kwwxqlPs9Xo0G8fbO31RfdlGZprfxuPgmt0K0CbCKwa3wnBrac+3IQQpFW9KnnX7T9645wCIL5H4eyc0MXUxzOVdkQKtwjSMzwCG4ELvc6QJpB08fM6J8bgAblbRFc4PYRWN7vRyrGRRUK5PGIESEGzitIRckLL6FVEW3a5E+KJk5e5opBtHDnCOu9xRP9cLxDoBbquoMslFwTC2BIqg0BOSOgns7QUkAGhs7SSk9QpCj1MjyRtD14gehr+mMgBrEF2hxuKKQhc76XP/nctiM9Fx/Qdn0UyHu73RUt9gcYdfWvRRzPzAEYX+fsxPPEBAlL+ZShOiYsq02+r91pQhnA1anVb5+IXAQV0qVu0jo2
+ MupdQ8Xe
+ HW5eMnKEzUldh+6KNhcXqZhHG0wosX7/MDbuSDf9+RIiAULu7YRV1OhhN/w694zeUe1Nhljtzw9W37+bg8rVbjmOkEhqcspoAffcEIwtvjiRwDD8SpGR0oP3ccgQUsHESAUWjoetbq/ycwZsJo0aA5FU87i5++ibkAEvMXVOodKKOZRtkrGLlFAtoVOkd7TJs6f9QSMkqVGpjm29Hd5kPzSdzsO3QBCyAudEXJylUInF7A5cZb+kN+x7ap4mufRH0+qN3rfLrHxl8wiSwKVc5Ek5wSP3bYvEfcs2I0hd+qo/iTV5d2WeGEnfOtxNwXCxrP9LiIvUHFc0L/j6NmfzFlTzVag==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,108 +98,65 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
-X-Archived-By: <archiver.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [Medium] mm/vma: use of data_race() instead of READ_ONCE() in validate_mm=
-()
---
+hi,
+we have few use cases where having the ability to allocate normal or
+executable user space memory would help (like to replace function in
+live process or change environment variables).
 
-commit 3d1c343bc8c8b0bc43d0e0e2048a1459c107a3cf
-Author: Songsen Yang <yangsongsen@insta360.com>
+We also need writes to user memory to handle page faults, while the
+existing bpf_probe_write_user() helper disables faults during the copy.
 
-mm/vma: fix NULL anon_vma deref in validate_mm() under mmap read lock
+This series adds sleepable kfuncs for BPF programs to copy data into the
+current task’s address space and to create or remove private anonymous
+mappings with optional execute permissions.
 
-This commit changes validate_mm() to read vma->anon_vma into a local variab=
-le
-with data_race() before checking it and taking anon_vma_lock_read(), avoidi=
-ng
-a race where a concurrent page fault installs vma->anon_vma under the mmap
-read lock between a separate check and lock acquisition.
+rfc: https://lore.kernel.org/bpf/20261021195759.119421-1-jolsa@kernel.org/
+v1:  https://lore.kernel.org/bpf/20261029212551.56964-1-jolsa@kernel.org/
 
-> diff --git a/mm/vma.c b/mm/vma.c
-> index 4672d420521e3..b674c69f720c1 100644
-> --- a/mm/vma.c
-> +++ b/mm/vma.c
-> @@ -679,7 +679,7 @@ void validate_mm(struct mm_struct *mm)
->  	mt_validate(&mm->mm_mt);
->  	for_each_vma(vmi, vma) {
->  #ifdef CONFIG_DEBUG_VM_RB
-> -		struct anon_vma *anon_vma =3D vma->anon_vma;
-> +		struct anon_vma *anon_vma;
->  		struct anon_vma_chain *avc;
->  #endif
->  		unsigned long vmi_start, vmi_end;
-> @@ -703,7 +703,13 @@ void validate_mm(struct mm_struct *mm)
->  		}
-> =20
->  #ifdef CONFIG_DEBUG_VM_RB
-> -		if (vma_has_anon_rmap(vma)) {
-> +		/*
-> +		 * Callers may hold only the mmap read lock, in which case a
-> +		 * concurrent fault can install vma->anon_vma at any time. Read
-> +		 * it once, so that the check and the lock use the same value.
-> +		 */
-> +		anon_vma =3D data_race(vma->anon_vma);
-> +		if (anon_vma) {
->  			anon_vma_lock_read(anon_vma);
 
-[Severity: Medium]
-Should validate_mm() use READ_ONCE(vma->anon_vma) here instead of
-data_race(vma->anon_vma)?
+v2 changes:
+- infer read-only from constness of a pointer instead of srcptr
+  argument suffix [Andrii]
+- rename bpf_user_mmap to bpf_user_anon_mmap [Andrii]
+- use arch_validate_prot to validate prot argument in mmap
+- add the x86 compat mmap workaround
+- assorted small changes
 
-In include/linux/compiler.h, data_race() is a KCSAN annotation that evaluat=
-es
-its argument as a plain C expression without volatile semantics:
+v1 changes:
+- follow vm_mmap/vm_munmap design suggested by Alexei
+- allow user space write only to current process, because we don't
+  have remote task use case and it simplifies security checks
+- many changes in tests
 
-#define data_race(expr)							\
-({									\
-	__kcsan_disable_current();					\
-	disable_context_analysis();					\
-	auto __v =3D (expr);						\
-	enable_context_analysis();					\
-	__kcsan_enable_current();					\
-	__v;								\
-})
+thanks,
+jirka
 
-Because data_race() does not prevent compiler reloads, the compiler is still
-permitted to reload vma->anon_vma between the NULL check and
-anon_vma_lock_read(anon_vma).
+---
+Jiri Olsa (8):
+      bpf: Honor const on generic kfunc memory arguments
+      bpf: Add user memory kfuncs
+      selftests/bpf: Add get_procmap_info helper
+      selftests/bpf: Test const kfunc memory arguments
+      selftests/bpf: Test user memory mmap kfuncs
+      selftests/bpf: Test user memory page exec
+      selftests/bpf: Test bpf_copy_to_user kfunc
+      selftests/bpf: Test user memory kfunc errors
 
-In addition, when vms_complete_munmap_vmas() calls validate_mm() after
-downgrading the mmap lock to a read lock, a concurrent page fault in
-__anon_vma_prepare() publishes vma->anon_vma with release semantics after
-initializing anon_vma->root on a SLAB_TYPESAFE_BY_RCU slab:
-
-mm/rmap.c:__anon_vma_prepare() {
-	...
-		/*
-		 * Make anon_vma fields visible before anon_vma is published.
-		 * Paired with an address dependency in reusable_anon_vma().
-		 */
-		smp_store_release(&vma->anon_vma, anon_vma);
-	...
-}
-
-Unlike vma_has_anon_rmap(), which only tests whether the pointer is non-NUL=
-L,
-validate_mm() dereferences anon_vma->root->rwsem in anon_vma_lock_read() and
-anon_vma_unlock_read(). Without READ_ONCE(), as used by reusable_anon_vma()=
- in
-mm/vma.c:
-
-mm/vma.c:reusable_anon_vma() {
-	...
-		/* Paired with a memory barrier in __anon_vma_prepare(). */
-		struct anon_vma *anon_vma =3D READ_ONCE(old->anon_vma);
-	...
-}
-
-is the address dependency paired with smp_store_release() guaranteed when
-dereferencing anon_vma->root?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261102074414.1090=
-2-1-yangsongsen@insta360.com?part=3D1
+ Documentation/bpf/kfuncs.rst                               |  17 +++++
+ kernel/bpf/helpers.c                                       | 132 +++++++++++++++++++++++++++++++++
+ kernel/bpf/syscall.c                                       |  10 +--
+ kernel/bpf/verifier.c                                      |  38 +++++++++-
+ tools/testing/selftests/bpf/prog_tests/kfunc_call.c        |   2 +
+ tools/testing/selftests/bpf/prog_tests/user_mem.c          | 350 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ tools/testing/selftests/bpf/progs/kfunc_call_fail.c        |  10 +++
+ tools/testing/selftests/bpf/progs/kfunc_call_test.c        |  14 ++++
+ tools/testing/selftests/bpf/progs/user_mem.c               | 111 ++++++++++++++++++++++++++++
+ tools/testing/selftests/bpf/test_kmods/bpf_testmod.c       |  10 +++
+ tools/testing/selftests/bpf/test_kmods/bpf_testmod_kfunc.h |   2 +
+ tools/testing/selftests/bpf/trace_helpers.c                |  38 ++++++++--
+ tools/testing/selftests/bpf/trace_helpers.h                |   1 +
+ 13 files changed, 722 insertions(+), 13 deletions(-)
+ create mode 100644 tools/testing/selftests/bpf/prog_tests/user_mem.c
+ create mode 100644 tools/testing/selftests/bpf/progs/user_mem.c
 
