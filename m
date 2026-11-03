@@ -1,98 +1,114 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECEDB606BA02
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 15:02:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06EB1606BA14
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 15:03:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=OyTBjdX3
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=YIbN6ewn
 Received: by kanga.kvack.org (Postfix)
-	id 0F3F86B05BB; Tue,  3 Nov 2026 10:02:38 -0500 (EST)
+	id 2F2F66B05C1; Tue,  3 Nov 2026 10:03:37 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0A6316B05C0; Tue,  3 Nov 2026 10:02:38 -0500 (EST)
+	id 2C9ED6B05C3; Tue,  3 Nov 2026 10:03:37 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F25956B05C1; Tue,  3 Nov 2026 10:02:37 -0500 (EST)
+	id 1E0F86B05C4; Tue,  3 Nov 2026 10:03:37 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id D4DEE6B05BB
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 10:02:37 -0500 (EST)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 5CFED12045E
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 15:02:37 +0000 (UTC)
-X-FDA: 85394124354.12.DFAA57C
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf07.hostedemail.com (Postfix) with ESMTP id A8C9D40008
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 15:02:35 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OyTBjdX3;
-	spf=pass (imf07.hostedemail.com: domain of sashal@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashal@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 00AF96B05C1
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 10:03:36 -0500 (EST)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 8ECA0C048F
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 15:03:36 +0000 (UTC)
+X-FDA: 85394126832.07.53B0435
+Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com [209.85.216.69])
+	by imf06.hostedemail.com (Postfix) with ESMTP id B25FC180010
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 15:03:34 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=YIbN6ewn;
+	spf=pass (imf06.hostedemail.com: domain of 3xffpagYKCLoxjfsohlttlqj.htrqnsz2-rrp0fhp.twl@flex--seanjc.bounces.google.com designates 209.85.216.69 as permitted sender) smtp.mailfrom=3xffpagYKCLoxjfsohlttlqj.htrqnsz2-rrp0fhp.twl@flex--seanjc.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793718155;
+	s=arc-20220608; t=1793718214;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=U9IkzZm34rCCgwwxhYv9RGNAtGYJYLV1upi9Qm+KRR0=;
-	b=Kc+uH/a9XOlyPZ63fVAwuCBHGklsQvv2PPe/nCxibMpuONV3JPNh7I1mmIaYtcgc2XRz8U
-	cNG9eE5YavRxXCIZ/EA7raMR9XbXCM+zrR4OQ6DhXuVg1jFLOCtnLz1erJf8Qyi2u7eJ1b
-	tP/xeptTZ+9h1cRKwaU91o7Vjrq9hTE=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=U1cgiMD/xdrAAoWIqAxeQiqT29OTjecADPn89igAbnA=;
+	b=cHPg7NfntRO5RVQw1XWtQlvoDW4YnfwyICkVJLEA0ANGeyPwzW9wcC9pmhI/s1Yle8o7+0
+	YevleBPgHahHGLOf4531xzpIWbrPBi1HPjsf9SBB5hAIBokQb+d8wsz8z6ltMcUVnG+uGa
+	IDszK72qtRmdsbR39R0r6ENUNf8YKsc=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793718155;
-	b=EIMMcXkgeXNA3NZetfboczpBhOJu9cIXVTv2/Ya6s0cnhrXYw0DTK0x0EGkSshhjB4D4ZZ
-	Y8wAN4HAn17rg7+ShZ3CQ4WpINk43MUvSRPoTX5ypgjjkHj80vuxT53oCdjDXgHvH8Hifr
-	Jja4a+OQPCGZ+LjEStbGTNV0C7yWEPY=
+	t=1793718214;
+	b=6YXD782kGOcUbLQiqNRDY9r82gTKwb1oetcA4r8FJzQGn4vnLKDqCG81R0iu4KnTfuKzLb
+	iXClYDX+BlrztwG/+BIrkA58VX4GTRO/pTupAWwlM+C8wVVjJCHUdqMMBLELz1tgsJYldt
+	I/pE/sQM4NelwA5GOsHYC3z3dWbK1CY=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OyTBjdX3;
-	spf=pass (imf07.hostedemail.com: domain of sashal@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashal@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id D6E554195A;
-	Tue,  3 Nov 2026 15:02:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F9A91F000C1;
-	Tue,  3 Nov 2026 15:02:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793718154;
-	bh=U9IkzZm34rCCgwwxhYv9RGNAtGYJYLV1upi9Qm+KRR0=;
-	h=From:To:Cc:Subject:Date;
-	b=OyTBjdX3/O/77emKUjMIfGN3cKSCmukSiTZ752wiHDG9WLvrB9qQYKO8ht4WhajoF
-	 lYK8EDipEvLxf040Lpl+aK/97qdx5k8G0HT3MPO2br2dlKRCr3HiG9V/C5UR7Kzuqg
-	 D3ghy58HuzNyzHDB/Pt6recTVr0vY4GmIU0cp046a3QCtUQ8nevmVCL226WfgbqAIo
-	 ST+b79klpCXua6UBlbPduChw/aLJFLlzLkngz/GwVkfb/OaKr96nf1c+U7wV7TmIm3
-	 AQ63gllNewgdmm508klPOH/tbrcECb3c0iNLvxnhbTXZDfrHlhK2wAchkKLa8h+izX
-	 e0lT+ROJioH7A==
-From: Sasha Levin <sashal@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Mike Rapoport <rppt@kernel.org>,
-	Peter Xu <peterx@redhat.com>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Shuah Khan <shuah@kernel.org>,
-	linux-mm@kvack.org,
-	linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] selftests/mm: uffd-wp-mremap: keep the THP sizes in unsigned long
-Date: Tue,  3 Nov 2026 10:02:32 -0500
-Message-ID: <20261103150232.291827-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.53.0
+	imf06.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=YIbN6ewn;
+	spf=pass (imf06.hostedemail.com: domain of 3xffpagYKCLoxjfsohlttlqj.htrqnsz2-rrp0fhp.twl@flex--seanjc.bounces.google.com designates 209.85.216.69 as permitted sender) smtp.mailfrom=3xffpagYKCLoxjfsohlttlqj.htrqnsz2-rrp0fhp.twl@flex--seanjc.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-pj1-f69.google.com with SMTP id 98e67ed59e1d1-3ae6fda7a00so3831824a91.2
+        for <linux-mm@kvack.org>; Tue, 03 Nov 2026 07:03:34 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20260707; t=1793718213; x=1794323013; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=U1cgiMD/xdrAAoWIqAxeQiqT29OTjecADPn89igAbnA=;
+        b=YIbN6ewnZ9Dj4xQt9CnwX7Suw6x9a351q2rm2y8dRvpyYUi7QPRaNIaJD2cvxEqW3V
+         FZLvjrTOeTa3O7ukqixdKBANvDihILBU8N0qmqDiFmNklj+vCGQPbz+8DY/t1oVCQB7y
+         R3Bp6h+vlt7WNbpLV7Yh31INTfeyOW4j8XOL59MwMeOiaHFIHTtYl7pFuuqVCuN13pDj
+         6cEdlr1oE9qMINx68lPFarWBVuC7IAGeEVneVK3qUpAO5vZjpROavAzZklxwu47rPrrp
+         kfvniR9rSDuM7YLN7/2mFMBlx+POLdR0Q58Rl6ab5OhhaEKrHXANkTCBUDXWrXIqmlBx
+         s+AQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793718213; x=1794323013;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=U1cgiMD/xdrAAoWIqAxeQiqT29OTjecADPn89igAbnA=;
+        b=NIzXZ3A2MMK1z023AsJbEWnvfOARzEGAqsYVlQLNRhPxa9u8CjycAfixSOEMh/Yssk
+         SqpCG1v6GaYu+PONhOy+kAxQHpSaHVvKiCWJ7LIZGoVHlnXw0fMXFMa5dBDLHraoW/q3
+         0ca0s/W5J4XPUWctgOoeX4PIgybrFZEH6fvmobnS1onw5ijmXknxDrSY88NoIT57PnUe
+         kpzBsY1WjOndq7Fe/j7LLKhe9Ao2JmTr/dsYDNEMLkbq/Tx5Xe2uXCdj9AT54coFdGzv
+         8HWRgl6Cz78he13JLUMRWSj/MifyB3z6ow8YO8sc+Ulpw/L/2TZIx+dtHo69vtPkjYrc
+         6JAw==
+X-Forwarded-Encrypted: i=1; AKwUvBwCXxamvPChj0SuTU8sxPirjK24G9Rb6Z55wv9uXDO2DFOaNOFXNkMO7FHRXSbdr/pvJfklm1p3Cw==@kvack.org
+X-Gm-Message-State: APuU4Z/TDY2nOo6aCi4NVixDa9zRndpnqW0zuPVZAmZ4pU1e9z76m9n1
+	CHiuPWUK3MckdalYz037X52xdTqAHRCLE/b3uBohBtpJBdrcJWuUtHL8rYtXaaAZlzoqfhOr5qo
+	0hj8OMw==
+X-Received: from pjdn32.prod.google.com ([2002:a17:90a:2ca3:b0:3a8:837d:95c7])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:52c5:b0:3ac:a11a:7c79
+ with SMTP id 98e67ed59e1d1-3ae89776aebmr10680806a91.16.1793718213083; Tue, 03
+ Nov 2026 07:03:33 -0800 (PST)
+Date: Tue, 3 Nov 2026 07:03:31 -0800
+In-Reply-To: <b9ed9dd4-a1d0-466b-a6cd-89a4e70abed0@suse.de>
 X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+References: <20261029143336.390231-3-clopez@suse.de> <20261029175203.5bdd51d7@p-imbrenda>
+ <df9dc526-4275-4784-8a0c-2e4fa8e96402@suse.de> <20261030133939.630e29af@p-imbrenda>
+ <auis0SaMkRB6odsK@google.com> <b9ed9dd4-a1d0-466b-a6cd-89a4e70abed0@suse.de>
+Message-ID: <aun3w8gxwlmRy-GW@google.com>
+Subject: Re: [RFC PATCH 0/4] KVM: x86/mmu: don't zap secondary MMU on
+ permission upgrade
+From: Sean Christopherson <seanjc@google.com>
+To: "Carlos =?utf-8?B?TMOzcGV6?=" <clopez@suse.de>
+Cc: Claudio Imbrenda <imbrenda@linux.ibm.com>, kvm@vger.kernel.org, linux-mm@kvack.org, 
+	pbonzini@redhat.com, linux-s390@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: A8C9D40008
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Rspamd-Queue-Id: B25FC180010
+X-Spam-Status: No, score=-18.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: n88mzwyremj4dg5xguxu986q5bu9reob
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_IN_DEF_DKIM_WL autolearn=ham autolearn_force=no version=4.0.1
+X-Stat-Signature: u5drqzujgwmz1ce777egwfbibput9p6p
 X-Rspam-User: 
-X-HE-Tag: 1793718155-166648
-X-HE-Meta: U2FsdGVkX1+fV8P3b1OwV+19qf7/054/BWBdhEHERb1qurCkZri8+TNBAdGVdinXxtdZqK7x41Dkm62cBv5QemeBwZFiQ7rWt/erfB7GHUtM4HcM+jl/cgI4rTD/K8zsJciEDtgZonlYqbgYLjKSZDmP9oUc+seTSNxs6brA38gHf5qs2qnJZYJST3G9mQsDCUjvu0hNtnqH1HPu6e03gOTB7hJ7GLQCuOBQDZNij4uYIRynt8o8uIZMTGgkZzqLYUydqWny4iKNZmaASfNOUQEgiRq0ftxGcUq8NnQCwpjYemk+Lz+z2b5fCG6p/YneJbXcAW6f23eJln/+jLzJrccaKI9lMQsrcCETT9u8XPsyXYvFfzC3g2WgJ5DlcWnBYCCWyCiiog1LG3tnNB8fg5KvjuTHgzOrA5i0O42xLwXl/VXycvgA/9r3RnHv59Y3zBD4F5s/JMilaxLcNl1RLcms4T4/yhYxMNS7akZ7ATQLfhtpiyUXrV2u5aAHX6anysSf1KS8uw5HUZ2rbxXxy7TeJSv0xrwKh6YbSfNmPE6C2hiXqjEyo9aNRf8oQnRXkp7zyS0PZi9Zu2y6HuXjzhAbHZiH1IjapjUMw9xfEhNB1TlQJej+/LnN0RvHG8AJl0+u2BFa5+ugbUxus3SdSzW4CY7nHc4pioGO1Cy6dq/qW0sxe0lCtZ/30/ggc0A/ALOsTqptSzlACs5h/Szp9A3zBrXNmX+RUn1H4LyclXIRfkMSJVNeIIccNBYWxPsZqW4pq8ZpcznpSFNkl0pN4NcOcV3vQf8QYv85tTIo2kpqCEyIEKQ1KtUdYsY0ro5w2Z8RqmZKQPxEvWFD1xNGduG5jMCMlmP4mcDg8xnnN3FK5NaWgwnm2VQpLlNDfqX7Gc+ioEJlFUO6Rdd6r8cU5iLdCQnABzPnBR5VHZGh02IqobrtisS6ugDiq3i1EZywbGmNKkcrSIeX76xrOIy
- kF4JtFMU
- wLLZMNBk4KwFQUYAmHC5oE2zoIRFVSitUeduOGxNM4WtqMpafxFY/HmN7eI8uUC64Q1dDQw3av3z67hYEI0+MOE+joT3tWHIgpZ3Chqc81S++Y+SiEdM7mz6/cQxfb3VUklM2VTPZXVjgkm6qASPR+g52628jtZf/OeXwvIjU24omBaeECSp2THWfczlbW+B9KWp+NFM3AGJeML1N82Z58pR1+i9sI5FZMmzGK2GcmdxDv6g=
+X-HE-Tag: 1793718214-423299
+X-HE-Meta: U2FsdGVkX18VCrQPSNwpFA+w+XbYz4H/lIiLV6tuPaf2anE99bkzsYhBlrPVkgLP7qz9+ZcAujgzPzHuQoOC7oudeHPRwFlP1ex+a4Tu+mz8q/CwuD8wpqoT+N3BECUK4GpHuXMIMs0qFGInx7lXFYter7ObZAJpLvtFapAwKafKsYoxVfY+v64ag8uUCDZozt7240TvzpOv56U8/5ImjUqG9xf9AoNkHOnf0t83HL12UVJS6JWUqzODF6qDnAJmHsBs7DLB6xE+Sk/lbm1VhWP4TvHoDP+ZeYxQOQGJC+Mba6tNeAxy7XrJaOhDSNg9jhyWyV5CoiCuUxYFXjQ5kYDyeBSJfprwpqrRE+C49/mM+MdkRwyFPj6QvEITMdlPDA+WWi16CspdrASyHQ2HLOFz7XJKwvhbRgOGEzkdiqbCUYnayg6sRynyyjZ+ZK3+KegLMgf2/6rQjBuIk9vfRCkKRQc7SJFw+xcxCYDGcZPndSdN+JcZZteC/ZabzzsTAirFn/QmSqpewuLnS4BlBptSSvuGbwbvZOCTfe1X+uwTfupUG5tfCGNtjdxRwPuxKuglusuWOxAQC9HF7NvAIuMcrSyojm80yGL9oktN0tZ0DCjYI1gu1X8Kn17nRD40CeR+0C5jFhVY2pM3fWT1FeYmTfdxlrevjb4k4VWdrGfuvDh5LXcA7oCpQvLC2NisNm33NcBd+VxiS94n97KMuW2qXGlA0O9Op09PaSRQ4kRBg123MY3qhOgcBDKAKKVnrfEzV4DMMoR/x0aADKUWZ8jXOZtsH8s97vTKWDiu5+M7KROQyvIn3iYnpYgVwcu4K+/wKsf7oCRLUcUi7GdjhcAy6VuEnVvNGwsF+3EGjzkj8oNbCm0HO3f5ZZf0a5ZjJOd8YWPJdm7JoYsvpJGElvumfJwgLH1q62lnZ7HZWk1Io1K9omXf1wL4m2e7ZFwFzO5WQn7XJ9rBtno0Coy
+ dMVl7e1d
+ TCqY8wEYhYOmK6R5ySJyQ3Odad3xUmGDQfEwX2xQJQIfncWdUjHoL1hDL1jmQgSfmp2uRvt635g+Tqfa9Ho2tqjM8bCe+e2JnuhRrFeBhp4SjcfYhvVjvnhKEEe60FStd8J0x4uQV609ZPg8okdKNn8FDF+7i1RsyWSSU283RX1oqZzTw9aG9KOA0cY8K1I2xEtuqwYzQnU+72X5nNN39brOJdn3K9BQO5XEnXe+3HJzzEoy1A0unO3ug68HoxAU0M3//B3wYYaS2wn+Ff8Omp9zTcD0pB6Oz8QAGhZHLFYIMYlWpwoY6JcstsylaMcguP/LcOc6e6VwX8s/jkG1cSLygbFgLRgoQRL3b/tjRlXkE+NqKiamgSTdtfABX5nUnWFSjfCfzVDClMcBA66Gubrnmb33ksOGAarKTz3WjFgFJ6Yxje+foaiW4Eow/gAshL6H8KudFl9LHaT4bb6iUPVlwRUZ3b1072YX5kJl9Y9k+9oTOKuFtpHIL/frxe9WnFSZqS+r9rsnogTPuvwtb+CKD4eRWbBnc2tyNjIYzpIKwDjR9SyT5IXescEfEDBKMHTO4PErpn3cEPpPU65m9D1rYTfgDbKvcVettYbf1r/IjZMTj0GrW4M4HKQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,51 +117,122 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Commit 0020a1f5ca36 ("selftests/mm: hugepage_settings: use unsigned long
-in detect_hugetlb_page_size") changed the sizes of the test cases to
-unsigned long, but left thpsizes and detect_thp_sizes() with size_t. On
-32-bit architectures size_t is unsigned int, and gcc 14 rejects the test
-cases that point at thpsizes:
+On Tue, Nov 03, 2026, Carlos L=C3=B3pez wrote:
+> On 11/2/26 4:31 PM, Sean Christopherson wrote:
+> > On Fri, Oct 30, 2026, Claudio Imbrenda wrote:
+> >> On Fri, 30 Oct 2026 12:11:07 +0100
+> >> Carlos L=C3=B3pez <clopez@suse.de> wrote:
+> >>
+> >> [...]
+> >>
+> >>>> regarding this series:
+> >>>>
+> >>>> on x86 you don't care what the new permissions are, because you're
+> >>>> updating when re-faulting (if I understood correctly). =20
+> >>>
+> >>> Correct.
+> >>>
+> >>>> for s390 it might be beneficial to know what the new permissions are=
+;
+> >>>> of course we could look up the vma and find out, but since you are
+> >>>> already checking the permissions, maybe you can find a way to also
+> >>>> convey the new permission bits?
+> >>>>
+> >>>> that would make our life on s390 easier :) =20
+> >>>
+> >>> Right, getting the new bits from vma->flags should be trivially done
+> >>> from the MMU_NOTIFY_PROTECTION_VMA callsites. There'd be no users in
+> >>> this series though.  The rest of architectures still need the notifie=
+r to
+> >>> tell them if the change is an upgrade, since they don't have an easy =
+way
+> >>> to grab the old RWX bits. Passing the old RWX bits from the MMU notif=
+ier
+> >>> does not seem trivial to me either.
+> >=20
+> > But why is core MM even doing mmu_notifier_invalidate_range_{start,end}=
+() in the
+> > first place?  I.e. why add MMU_NOTIFIER_RANGE_PERM_UPGRADE?  Just skip =
+the
+> > "invalidation".
+>=20
+> I briefly mention this in the cover letter, but in short, denying other
+> users the notification seems like an overly intrusive change for KVM's
+> benefit.=20
 
-  uffd-wp-mremap.c:299:26: error: initialization of 'long unsigned int *' from incompatible pointer type 'size_t *' {aka 'unsigned int *'} [-Wincompatible-pointer-types]
+There are all of two other users:
 
-Use unsigned long for the THP sizes as well.
+  $ git grep -w "\.invalidate_range_start"
+  drivers/gpu/drm/nouveau/nouveau_svm.c:  .invalidate_range_start =3D nouve=
+au_svmm_invalidate_range_start,
+  drivers/infiniband/hw/hfi1/mmu_rb.c:    .invalidate_range_start =3D mmu_n=
+otifier_range_start,
+  virt/kvm/kvm_main.c:    .invalidate_range_start =3D kvm_mmu_notifier_inva=
+lidate_range_start,
 
-Fixes: 0020a1f5ca36 ("selftests/mm: hugepage_settings: use unsigned long in detect_hugetlb_page_size")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
-KernelCI's 32-bit arm kselftest builds hit this. Built the mm selftests
-with gcc 14 and gcc 16 -m32 (four errors in this file before, none
-after) and natively with gcc and clang (no change). An i386 build with
-clang runs and detects the THP sizes as before, up to the point where
-the test needs root.
+and AFAICT neither of them wants an invalidation even for protection upgrad=
+es
+either.
 
- tools/testing/selftests/mm/uffd-wp-mremap.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+> A flag allows users to opt in instead.
+>=20
+> It is also not clear to me that secondary MMUs are not relying on the
+> notification in some subtle way. In fact, Sashiko points out in reply to
+> patch 4 that the notification lets KVM retry the APIC access page reload
+> in case userspace shoots itself in the foot by calling
+> mprotect(PROT_READ) on it. This would require a really weird VMM,
 
-diff --git a/tools/testing/selftests/mm/uffd-wp-mremap.c b/tools/testing/selftests/mm/uffd-wp-mremap.c
-index c48eaab8e75cf..fb5582ec5b201 100644
---- a/tools/testing/selftests/mm/uffd-wp-mremap.c
-+++ b/tools/testing/selftests/mm/uffd-wp-mremap.c
-@@ -15,7 +15,7 @@ static int pagemap_fd;
- static int nr_pagesizes = 1;
- static unsigned long pagesize;
- static int nr_thpsizes;
--static size_t thpsizes[20];
-+static unsigned long thpsizes[20];
- static int nr_hugetlbsizes;
- static unsigned long hugetlbsizes[10];
- 
-@@ -30,7 +30,7 @@ static void check_uffd_wp_feature_supported(void)
- 		ksft_exit_skip("uffd-wp feature not supported\n");
- }
- 
--static int detect_thp_sizes(size_t sizes[], int max)
-+static int detect_thp_sizes(unsigned long sizes[], int max)
- {
- 	int count = 0;
- 	unsigned long orders;
--- 
-2.53.0
+s/weird/misbehaving
 
+> as it would need to go looking for the page's address, but breaking this
+> would be a "regression" nonetheless. I will address this in v2.
+
+Nah, there's zero chance any real VMM is doing mprotect() on the APIC acces=
+s page.
+
+More importantly, doing nothing if updating the mapping fails and APICv is =
+enabled
+is wrong.  KVM needs to ensure vmcs.APIC_ACCESS_ADDR is fresh when running =
+a vCPU
+with APICv enabled, even if that means putting the vCPU into an infinite lo=
+op.
+VMX doesn't support "inhibiting" the APIC access page, i.e. the memslot can=
+'t
+disappear while the VM is alive, and if userspace mucks with the VMA, then =
+KVM
+needs to prevent running the vCPU until the mapping is restored, irrespecti=
+ve of
+mmu_notifiers.
+
+diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
+index 464d6ed862d5..11b24a42e482 100644
+--- a/arch/x86/kvm/vmx/vmx.c
++++ b/arch/x86/kvm/vmx/vmx.c
+@@ -6928,8 +6928,10 @@ void vmx_set_apic_access_page_addr(struct kvm_vcpu *=
+vcpu)
+ 	 * APICv is enabled, but paranoia won't hurt in this case.
+ 	 */
+ 	slot =3D id_to_memslot(slots, APIC_ACCESS_PAGE_PRIVATE_MEMSLOT);
+-	if (!slot || slot->flags & KVM_MEMSLOT_INVALID)
++	if (WARN_ON_ONCE(!slot || slot->flags & KVM_MEMSLOT_INVALID)) {
++		kvm_make_request(KVM_REQ_APIC_PAGE_RELOAD, vcpu);
+ 		return;
++	}
+=20
+ 	/*
+ 	 * Ensure that the mmu_notifier sequence count is read before KVM
+@@ -6946,8 +6948,10 @@ void vmx_set_apic_access_page_addr(struct kvm_vcpu *=
+vcpu)
+ 	 * if APICv is permanently inhibited, i.e. the memslot won't reappear.
+ 	 */
+ 	pfn =3D __kvm_faultin_pfn(slot, gfn, FOLL_WRITE, &writable, &refcounted_p=
+age);
+-	if (is_error_noslot_pfn(pfn))
++	if (is_error_noslot_pfn(pfn)) {
++		kvm_make_request(KVM_REQ_APIC_PAGE_RELOAD, vcpu);
+ 		return;
++	}
+=20
+ 	read_lock(&vcpu->kvm->mmu_lock);
+ 	if (mmu_invalidate_retry_gfn(kvm, mmu_seq, gfn))
 
