@@ -1,64 +1,64 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5562606A32E
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 02:07:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1BA6606A329
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 02:07:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key, unprotected) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=CALEGwdc
+	dkim=fail reason="signature verification failed" (2048-bit key, unprotected) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=tqkDepCl
 Received: by kanga.kvack.org (Postfix)
-	id D52B26B00EF; Mon,  2 Nov 2026 21:07:44 -0500 (EST)
+	id 6261D6B05B2; Mon,  2 Nov 2026 21:07:47 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CDCE66B05B1; Mon,  2 Nov 2026 21:07:44 -0500 (EST)
+	id 5AF7C6B05B3; Mon,  2 Nov 2026 21:07:47 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BA3DE6B05B2; Mon,  2 Nov 2026 21:07:44 -0500 (EST)
+	id 452556B05B4; Mon,  2 Nov 2026 21:07:47 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 9673B6B00EF
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 21:07:44 -0500 (EST)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 276CD1C240B
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 02:07:44 +0000 (UTC)
-X-FDA: 85392171648.16.D79B5A4
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 0C0E86B05B2
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 21:07:46 -0500 (EST)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 90A27A7A2C
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 02:07:46 +0000 (UTC)
+X-FDA: 85392171732.13.32CD244
 Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 86C7E140008
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 02:07:42 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=CALEGwdc;
-	spf=pass (imf26.hostedemail.com: domain of liam@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=liam@infradead.org;
+	by imf30.hostedemail.com (Postfix) with ESMTP id E41448000A
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 02:07:44 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=tqkDepCl;
+	spf=pass (imf30.hostedemail.com: domain of liam@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=liam@infradead.org;
 	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793671662;
+	s=arc-20220608; t=1793671665;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=UCNW70wWpSOTe+qYE8btjgaS6NPKbF5U87PIw6GRK5A=;
-	b=xlyjfd93AsgBUGw3j1BB+dvP0vMZmi+6XI+mc47ILQ66OBK7j8KM0VtPTyR2IdLRqWn3aM
-	i2+7qKR5T1H/fk5c3t4xXY8gXV1Ojb8tLOPLtP8/1d2RSp8WwBPy4+JH3NmO+j25IuBoPL
-	1wcnuav6VSksODHMOPdGOjxLM4jTmm4=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793671662;
-	b=49zyXGqYYG48zA9wRcZBKHs2yFHLK9GN70Et0EyJBvHw+gbn27qusqUaZtLxKrTGNo+lX/
-	JtvUcrIVZ4c1jkLf0Ccgm7lZ7BkLv6X3UDJ0DRrosvRP1joHUjLqOTcP4duUKlWR8gSX9g
-	8lPw40M9muQZiC2Yz+VTv3d8OBWCVww=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=UUK6dMZMlyfLspx+cnvTRerB/rIYpcvguJ7fRvjfqkk=;
+	b=D+beFsG+RJEuH5Gz7hpzjj4cz0HqQMRNzizu2hypFgILTyJ1d8hLFxDn5KFzdfC0qfJGV6
+	rztBmhERHQBWh/1IkRb/YMfGf4WA8Y+uDQks96beYS/iMDAzKfTp2gxG61q50H3zHLgVKY
+	SVeQgQsFNrUEvnDq03Ru5aYnyrP7kO8=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=CALEGwdc;
-	spf=pass (imf26.hostedemail.com: domain of liam@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=liam@infradead.org;
+	imf30.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=tqkDepCl;
+	spf=pass (imf30.hostedemail.com: domain of liam@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=liam@infradead.org;
 	dmarc=pass (policy=none) header.from=infradead.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793671665;
+	b=zk0ggDDKCIjEhHvWxXX0nL7pPteMT8btHY/oyI8+VHrKxRj+/E2x53gUEypTbYpgX8AJAp
+	ZcFn+JcD0uqHU2E4cgl0JiKTVKjv08j49FZTyOSzmgmJjrfCkQ1dpQqB2VT9JgSh3L0r4V
+	YehEoo8u5aNbaNpizU/5LUrKvgA+phg=
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
-	Content-ID:Content-Description:In-Reply-To:References;
-	bh=UCNW70wWpSOTe+qYE8btjgaS6NPKbF5U87PIw6GRK5A=; b=CALEGwdcQDVbA73bpGaOuE67Qg
-	k0OuzbETTSvvki/bgzXs+kXGUIY8LcKWUhQqaVM4FdqBiB2DXo7hZgbwGLyJxH1A0YFPW1NzLcFz3
-	r5fDIf6UfB6PTla1NaMBjqsGz1zSlc2hdqvLVqkHX9fYrqqhp5kfRmvV0JlkNyBoWxpM5ZM559/52
-	i+mth+Brijk152leS4KzvwT5+qXbLhKnib/B4TfYqnbMKEtbU86v0XMBig8+4Q5AutaFjyqhjBdv2
-	rIk4WVJCzsvsVjiNCh+I94vG3rK171dNbD9BfJUabV08jOBUI2XLjrd4ZApRO71Ly7i9QBifpPmBW
-	rFHieI/g==;
+	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender
+	:Reply-To:Content-Type:Content-ID:Content-Description;
+	bh=UUK6dMZMlyfLspx+cnvTRerB/rIYpcvguJ7fRvjfqkk=; b=tqkDepClH/XB2WsLDTpGgw58pb
+	3eeCyZOft5L4ztsDzTWG20/8awVk6wfT6aRg17rcDsHisNbbn+7PC8/kEpm4aabx63xYTYcfw+FeF
+	CQ2vfIJSZRqwZaccLpenTU+0PR2sHFgImLl96QZpKeuTGLKMYtMO7l7TjEs2MhWwcT1I4J0H7HAkd
+	AYxy6Zed5EHvBTdJVphaqv5Ca6cpP5vtfFqh0sWl6GuPIeW3caY2FB98S5iT48cI4q91eP+6lM9J0
+	Ailm/TN3//XPMlEws2nIiW+Y0UMgqdsOufUQZTOcyvHWOcQeQuKx0vilvA70tVWMdiFAQPhCoxJ5a
+	vUO45uqw==;
 Received: from [38.23.173.23] (helo=localhost)
 	by bombadil.infradead.org with esmtpsa (Exim 4.100.1 #2 (Red Hat Linux))
-	id 1xO3vt-00000000qsM-3jKy;
-	Tue, 03 Nov 2026 02:07:38 +0000
+	id 1xO3w7-00000000qv2-0F0s;
+	Tue, 03 Nov 2026 02:07:43 +0000
 From: "Liam R. Howlett (Google)" <liam@infradead.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: linux-mm@kvack.org,
@@ -69,25 +69,27 @@ Cc: linux-mm@kvack.org,
 	Alice Ryhl <aliceryhl@google.com>,
 	Andrew Ballance <andrewjballance@gmail.com>,
 	"Liam R. Howlett (Google)" <liam@infradead.org>
-Subject: [PATCH v2 0/3] maple_tree fixes for 7.3
-Date: Mon,  2 Nov 2026 21:07:21 -0500
-Message-ID: <20261103020724.2614498-1-liam@infradead.org>
+Subject: [PATCH v2 2/3] maple_tree: Test emptying tree while RCU reading
+Date: Mon,  2 Nov 2026 21:07:23 -0500
+Message-ID: <20261103020724.2614498-3-liam@infradead.org>
 X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20261103020724.2614498-1-liam@infradead.org>
+References: <20261103020724.2614498-1-liam@infradead.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 3onek1mad5w66y81d1wxr3xobn8m86iu
-X-Rspamd-Queue-Id: 86C7E140008
+X-Stat-Signature: dqbwbhctxt8zzzk5sf3nf37dgpun4dde
+X-Rspamd-Server: rspam01
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Spam-Status: No, score=-11.6 required=3.0 tests=BAYES_00,DKIM_INVALID,
-	DKIM_SIGNED,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
-	autolearn_force=no version=4.0.1
-X-HE-Tag: 1793671662-1180
-X-HE-Meta: U2FsdGVkX1+7aZKPp5WAmhqFMyMqJdYND4JZETl7NItWqImtX+FjhC/bDBW7u0Tg2Ix82LFegO6fjmL+U3UxTRf/aZJJHhMVIi8ULREUk8a+NrA+1hAPaOtZcHTqTuTb9vjfFwgOL98Lo8vxEZGgju0jtiLD/WQd4opxboyVQeAn2dvkN0f9KBeOMXq7qNkiliQ02JGxCZQgwyMiV8MoopLoVFByM2oI8z8NpDhEtjCRXFZr7tXpqBNvi9jt26nXLsGdVyjKIlRybh5Irr1DSFEDD5IvgyLF7BvlUF4ApSkMGaJV5UtrN23LHDQNhicT71W9xRvq/KlsR7EO+dqhB9DlC/IDuwlwhg5Tm4pTxH9qzIyanmZnJnsHibCmM1xOZ3wQOcSeyCPibtwPZlyIOrbJAD2nUT6zG62D7/mVITnv6DWVBmxOIQMtRrR+LHi0nZCaPYQ2PgIuMdC7w/AHMghzaQpOtgqDbpy0bT7afr8L0/m0MQ6Kxau0OqzQevO+HmUZthFpZ9AMukuiR+p9OYphmlnLWx4bR2MgAUmaSy6egG5ljgmlIwPdz5lYi/3FI/zH0PS2vSLZdmjo4S8gPsGqmcC39Ewi6zgA2HXaAADWvjEmeaHG6/yAI5yJWy/I5aXgYuxw0xT1K408SzMwLwN5innGnOlH0AJdWoYJa0kb8C6AIaAfZxUsZZaQep06bKYdSVFPw+lZMyPb9sS2LbRQWrmUf2E5aNB08xcoLEVhDGt6KNSXl/EFpTT/Cooi3o+KnjGpHv2H5RyJRl3G0KvysMC2fvOljkmaW8WufKYaFbMK+7G9TOE/hpGPkb84KF8xVvD9yYSTWdyuWvDjPaOKAZSV7LJ9YzsV8QUxpxGv1HetLXLI3aM/wwBzRToxIq+iqzMl0+57AjKiKykyaMSB9GqKRumkmR2JRiQ7bL8ob6/GLeFeq2jbJ0TZx+1e/d535lmuAmACzivLKRz
- 4itpGFeZ
- OkJ206S+MOncMfmqasUC1YSFOWn+gvqC2leoR2nT16Ln72egD4opNkoEdmNSxAJOXKOpMJ1deJfPkM67Yow/JKzpOoqyV7IZmW/FV2OqZOiunpNmJNp7vPpQ06J410ye32V4+6e1K6lAJywQ77av9gx3Sw6paHPrfBVDED7O42GlRW42qVUwCSZrUT87O7lb1mGjdE20oNGo/i8mmTgz2YrJurWRI4TysYVhGqOwujLeo09TRYLUUa3ptnCWsvr/TszD6IRxUadbXfVJ5qvr7otmHKg==
+X-Spam-Status: No, score=-16.6 required=3.0 tests=BAYES_00,DKIM_INVALID,
+	DKIM_SIGNED,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: E41448000A
+X-HE-Tag: 1793671664-794776
+X-HE-Meta: U2FsdGVkX1/feGssTrb3qlQajmZxx1SYgwyMV/3fIPdK9KSaUFMAfw32xG422wLEvQEIx7vE+pITVlVIduJv9oEpGtZMLSGR4fHNpu2RqKSu4kQcsQgtAY2knKCFVu7De4Y2VcdVr7/9R+zkle2AZIA5pKLDfuFsFRtPB9zYEO1xhtyCREOyw3n0rob5foN/4/PWlwrqcbX6FWXeb6W37DadXgVEIQlLvEtnxmaP1AYbnJc5zOtFwr7GhEbB5MQj4iIP/ka+K+CqXhQqIgn0+doidQqzdAVa+4IC9uBk2f8u/3yrnGK/w5Us+4zIkV5GAbFhhJmWuxa+PHHDvEcLaljRKUqig27KrrfDDYpAj1z8GOV17kQ70NFikoQkdOUL/MnoYnQeUMQqXIEE7r1eUt2b0S1IOeM6tPjc3UMaDp2pHXUkJCvOXNYRhs7CqCLpPtVakWwHlQDbqsaNLwjQmYEkrCeG6KS3/YMGjFGQaQZXaSGHXoobAeY1eMxShnXriJgmTltHpJQHcZXz49MM+uDWOCAyCc7jrVnon5VTP71x6yvxDxlLVD0IAxSjkqOJM+E96HK46CDrXH8g97M49YGk5gSW2TU+7EA5e4tkccZMm96WIhefcFkQGy5O0Pt+694hy5VyjzEbiR4Y9QBrnpFCCChGdvk8ZYW1MbWYQ4cqc6TUH0BlIOKXyuZ+Rbzk6kHfOKRxcptTZl5nNPuBYeOOxI/mTG0O2Tv9J5hn7bbo/skO+OQ0S9AKVs15266Zl+WvICzaD6seXo68Ckw9w+baYlMWoEAvAMBsZMd+hTqMxHKJIGL90zHUu96g+9k+J3MlPzQVmW5JjAWPhfpk9HHgDUAlkvNr+UjTscfHAHhCX7xwVvg+oJQJFUwyS0VDT6QLeFbVoaSaHOwJun9kUaSQfqPrG9OG5Yspm56ss0Z68uJ30e0ypLPrFyqlYaT7T/hZyGSQJXVXWd5vjl2
+ 54KL0NhO
+ Sy3Ek+XrX5lqZvOfE4MT9eL1eeLhn7daNnb7QwQkm+VBFJ/LHiUhQKGmDE9hIxcQZ+NsamEcGx6aHet/UdDiuRUa/DGQa0R8SCDZAALynVB2NVLFCoBEyd5i7OQrOTIw4qYl7SX23LYJfsXrqV/QO3qlKhNnKUmyhmdW2GM2TFSxxtb133S7afKLYcmbUpbuccAekB5BqmvBhs8fj/7ybL+yqv/9NntCnW90HPx+2nOmJXu6i3Gv/GO/waZ4zBgZQ/HAc/po7xy180P0rsMfTouHCwSZwMwSi+AnAtNrvkEKjCMOWX71c1gmYzocaIf9I6TCXvIeMxvO/YzRb+OmT5b04hg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,40 +98,197 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Two bugs found by an LLM review, and one problem Lorenzo Stoakes
-reported off list.
+Add a test case for the rcu reader being restarted by emptying the tree.
+A reverse walk from index 0 must not return the new root entry.
 
-An RCU reader that restarts after its node dies can dereference NULL if
-the tree was emptied, or holds a single entry in the root pointer.
-Patch 1 fixes it and patch 2 adds a test.
+Signed-off-by: Liam R. Howlett (Google) <liam@infradead.org>
+---
+ lib/test_maple_tree.c | 165 ++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 165 insertions(+)
 
-With CONFIG_DEBUG_MAPLE_TREE, MT_WARN_ON() and the other WARN macros
-print the tree and call dump_stack() rather than WARN(), so syzbot never
-sees them.  Patch 3 makes them WARN once per call site, after the dump,
-and makes the BUG macros BUG() after theirs.  The userspace tests make
-WARN() fatal to keep failing as they did on dump_stack().
-
-Changes since v1:
-- Drop rhashtable patch.  It is still undecided and will go to linux-crypto
-- A reverse walk from index 0 returned the new root entry a second time;
-  fixed and tested (Andrew's review bot)
-- Fixes tags point at the commits that introduced the problems
-- The WARN macros' once state is reset by clear_warn_once
-- WARN() is fatal in maple-shared.h (Lorenzo); the maple test exits
-  non-zero on a failure
-
-Liam R. Howlett (Google) (3):
-  maple_tree: Fix rcu reader NULL dereference after the tree is emptied
-  maple_tree: Test emptying tree while RCU reading
-  maple_tree: Update internal warning and bug_on code
-
- include/linux/maple_tree.h          |  48 ++++----
- lib/maple_tree.c                    | 112 ++++++++++++++-----
- lib/test_maple_tree.c               | 165 ++++++++++++++++++++++++++++
- tools/testing/radix-tree/maple.c    |  13 ++-
- tools/testing/shared/maple-shared.h |  33 ++++++
- 5 files changed, 316 insertions(+), 55 deletions(-)
-
+diff --git a/lib/test_maple_tree.c b/lib/test_maple_tree.c
+index fb40e193a3cb7..10e5577ea0f19 100644
+--- a/lib/test_maple_tree.c
++++ b/lib/test_maple_tree.c
+@@ -3740,6 +3740,170 @@ static noinline void __init check_range64_in_rcu(struct maple_tree *mt)
+ 	rcu_barrier();
+ }
+ 
++/*
++ * A reader that restarts after its leaf died may find a tree without nodes:
++ * emptied, or emptied and then given a single entry at 0.  Each case starts
++ * from a tree with nodes, built by check_seq().  The stores run while the
++ * reader holds rcu_read_lock, so they use GFP_ATOMIC.
++ */
++static noinline void __init check_restart_no_node(struct maple_tree *mt)
++{
++	void *ptr = xa_mk_value(1234);
++	void *entry;
++	MA_STATE(mas, mt, 0, 0);
++
++	MT_BUG_ON(mt, !mtree_empty(mt));
++	mt_set_non_kernel(99999);
++
++	/* find: the tree is emptied */
++	mt_init_flags(mt, MT_FLAGS_USE_RCU);
++	check_seq(mt, 100, false);
++	rcu_read_lock();
++	mas_set(&mas, 0);
++	entry = mas_find(&mas, ULONG_MAX);
++	MT_BUG_ON(mt, entry != xa_mk_value(0));
++	MT_BUG_ON(mt, mtree_store_range(mt, 0, ULONG_MAX, NULL, GFP_ATOMIC));
++	entry = mas_find(&mas, ULONG_MAX);
++	MT_BUG_ON(mt, entry != NULL);
++	MT_BUG_ON(mt, mas.status != ma_none);
++	MT_BUG_ON(mt, mas.index != 0);
++	MT_BUG_ON(mt, mas.last != ULONG_MAX);
++	entry = mas_find(&mas, ULONG_MAX);
++	MT_BUG_ON(mt, entry != NULL);
++	MT_BUG_ON(mt, mas.status != ma_none);
++	rcu_read_unlock();
++	mtree_destroy(mt);
++	rcu_barrier();
++
++	/* next: the tree is emptied */
++	mt_init_flags(mt, MT_FLAGS_USE_RCU);
++	check_seq(mt, 100, false);
++	rcu_read_lock();
++	mas_set(&mas, 0);
++	entry = mas_find(&mas, ULONG_MAX);
++	MT_BUG_ON(mt, entry != xa_mk_value(0));
++	MT_BUG_ON(mt, mtree_store_range(mt, 0, ULONG_MAX, NULL, GFP_ATOMIC));
++	entry = mas_next(&mas, ULONG_MAX);
++	MT_BUG_ON(mt, entry != NULL);
++	MT_BUG_ON(mt, mas.status != ma_none);
++	MT_BUG_ON(mt, mas.index != 0);
++	MT_BUG_ON(mt, mas.last != ULONG_MAX);
++	rcu_read_unlock();
++	mtree_destroy(mt);
++	rcu_barrier();
++
++	/* find: the tree is emptied, then holds one entry at 0 */
++	mt_init_flags(mt, MT_FLAGS_USE_RCU);
++	check_seq(mt, 100, false);
++	rcu_read_lock();
++	mas_set(&mas, 0);
++	entry = mas_find(&mas, ULONG_MAX);
++	MT_BUG_ON(mt, entry != xa_mk_value(0));
++	MT_BUG_ON(mt, mtree_store_range(mt, 0, ULONG_MAX, NULL, GFP_ATOMIC));
++	MT_BUG_ON(mt, mtree_store(mt, 0, ptr, GFP_ATOMIC));
++	entry = mas_find(&mas, ULONG_MAX);
++	MT_BUG_ON(mt, entry != NULL);
++	MT_BUG_ON(mt, mas.status != ma_none);
++	MT_BUG_ON(mt, mas.index != 1);
++	MT_BUG_ON(mt, mas.last != ULONG_MAX);
++	rcu_read_unlock();
++	mtree_destroy(mt);
++	rcu_barrier();
++
++	/* find_rev: the tree is emptied */
++	mt_init_flags(mt, MT_FLAGS_USE_RCU);
++	check_seq(mt, 100, false);
++	rcu_read_lock();
++	mas_set(&mas, ULONG_MAX);
++	entry = mas_find_rev(&mas, 0);
++	MT_BUG_ON(mt, entry != xa_mk_value(100));
++	MT_BUG_ON(mt, mtree_store_range(mt, 0, ULONG_MAX, NULL, GFP_ATOMIC));
++	entry = mas_find_rev(&mas, 0);
++	MT_BUG_ON(mt, entry != NULL);
++	MT_BUG_ON(mt, mas.status != ma_none);
++	MT_BUG_ON(mt, mas.index != 0);
++	MT_BUG_ON(mt, mas.last != ULONG_MAX);
++	entry = mas_find_rev(&mas, 0);
++	MT_BUG_ON(mt, entry != NULL);
++	MT_BUG_ON(mt, mas.status != ma_none);
++	rcu_read_unlock();
++	mtree_destroy(mt);
++	rcu_barrier();
++
++	/* prev: the tree is emptied, then holds one entry at 0 */
++	mt_init_flags(mt, MT_FLAGS_USE_RCU);
++	check_seq(mt, 100, false);
++	rcu_read_lock();
++	mas_set(&mas, ULONG_MAX);
++	entry = mas_find_rev(&mas, 0);
++	MT_BUG_ON(mt, entry != xa_mk_value(100));
++	MT_BUG_ON(mt, mtree_store_range(mt, 0, ULONG_MAX, NULL, GFP_ATOMIC));
++	MT_BUG_ON(mt, mtree_store(mt, 0, ptr, GFP_ATOMIC));
++	entry = mas_prev(&mas, 0);
++	MT_BUG_ON(mt, entry != ptr);
++	MT_BUG_ON(mt, mas.status != ma_root);
++	MT_BUG_ON(mt, mas.index != 0);
++	MT_BUG_ON(mt, mas.last != 0);
++	rcu_read_unlock();
++	mtree_destroy(mt);
++	rcu_barrier();
++
++	/* find_rev: the entry at 0 is below the minimum */
++	mt_init_flags(mt, MT_FLAGS_USE_RCU);
++	check_seq(mt, 100, false);
++	rcu_read_lock();
++	mas_set(&mas, ULONG_MAX);
++	entry = mas_find_rev(&mas, 1);
++	MT_BUG_ON(mt, entry != xa_mk_value(100));
++	MT_BUG_ON(mt, mtree_store_range(mt, 0, ULONG_MAX, NULL, GFP_ATOMIC));
++	MT_BUG_ON(mt, mtree_store(mt, 0, ptr, GFP_ATOMIC));
++	entry = mas_find_rev(&mas, 1);
++	MT_BUG_ON(mt, entry != NULL);
++	MT_BUG_ON(mt, mas.status != ma_root);
++	MT_BUG_ON(mt, mas.index != 0);
++	MT_BUG_ON(mt, mas.last != 0);
++	rcu_read_unlock();
++	mtree_destroy(mt);
++	rcu_barrier();
++
++	/* find_rev: the reader is at 0 when the tree gets one entry at 0 */
++	mt_init_flags(mt, MT_FLAGS_USE_RCU);
++	check_seq(mt, 100, false);
++	rcu_read_lock();
++	mas_set(&mas, 0);
++	entry = mas_find_rev(&mas, 0);
++	MT_BUG_ON(mt, entry != xa_mk_value(0));
++	MT_BUG_ON(mt, mtree_store_range(mt, 0, ULONG_MAX, NULL, GFP_ATOMIC));
++	MT_BUG_ON(mt, mtree_store(mt, 0, ptr, GFP_ATOMIC));
++	entry = mas_find_rev(&mas, 0);
++	MT_BUG_ON(mt, entry != NULL);
++	MT_BUG_ON(mt, mas.status != ma_root);
++	MT_BUG_ON(mt, mas.index != 0);
++	MT_BUG_ON(mt, mas.last != 0);
++	rcu_read_unlock();
++	mtree_destroy(mt);
++	rcu_barrier();
++
++	/* find_range_rev: the reader is at 0 when the tree gets one entry at 0 */
++	mt_init_flags(mt, MT_FLAGS_USE_RCU);
++	check_seq(mt, 100, false);
++	rcu_read_lock();
++	mas_set(&mas, 0);
++	entry = mas_find_range_rev(&mas, 0);
++	MT_BUG_ON(mt, entry != xa_mk_value(0));
++	MT_BUG_ON(mt, mtree_store_range(mt, 0, ULONG_MAX, NULL, GFP_ATOMIC));
++	MT_BUG_ON(mt, mtree_store(mt, 0, ptr, GFP_ATOMIC));
++	entry = mas_find_range_rev(&mas, 0);
++	MT_BUG_ON(mt, entry != NULL);
++	MT_BUG_ON(mt, mas.status != ma_root);
++	MT_BUG_ON(mt, mas.index != 0);
++	MT_BUG_ON(mt, mas.last != 0);
++	rcu_read_unlock();
++	mtree_destroy(mt);
++	rcu_barrier();
++	mt_set_non_kernel(0);
++}
++
+ static DEFINE_MTREE(tree);
+ static int __init maple_tree_seed(void)
+ {
+@@ -4031,6 +4195,7 @@ static int __init maple_tree_seed(void)
+ 
+ 	check_range64_in_rcu(&tree);
+ 
++	check_restart_no_node(&tree);
+ 
+ #if defined(BENCH)
+ skip:
 -- 
 2.47.3
 
