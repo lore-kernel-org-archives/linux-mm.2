@@ -1,142 +1,147 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30A7D606A333
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 21:01:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0840F606A328
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 21:02:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=JyAzXQoE
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=q+dv8hpI
 Received: by kanga.kvack.org (Postfix)
-	id 6EEA06B05B4; Tue,  3 Nov 2026 16:00:55 -0500 (EST)
+	id 25BD46B05B7; Tue,  3 Nov 2026 16:02:17 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6CB2F6B05B5; Tue,  3 Nov 2026 16:00:55 -0500 (EST)
+	id 233DA6B05B8; Tue,  3 Nov 2026 16:02:17 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5648E6B05B6; Tue,  3 Nov 2026 16:00:55 -0500 (EST)
+	id 1620C6B05B9; Tue,  3 Nov 2026 16:02:17 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 2E8B06B05B4
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 16:00:55 -0500 (EST)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 14CE91404FC
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 21:00:54 +0000 (UTC)
-X-FDA: 85395027228.29.FB31A5B
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf20.hostedemail.com (Postfix) with ESMTP id CC7A21C0013
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 21:00:51 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JyAzXQoE;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	arc=pass ("kernel.org:s=arc20260519:i=1");
-	spf=pass (imf20.hostedemail.com: domain of devnull+mt4022.columbia.edu@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+mt4022.columbia.edu@kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id D79A86B05B7
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 16:02:16 -0500 (EST)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 6318F120564
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 21:02:16 +0000 (UTC)
+X-FDA: 85395030672.04.4EA96C1
+Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 676E914000A
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 21:02:14 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=q+dv8hpI;
+	spf=pass (imf23.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.128.44 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1793739734;
+	b=0ARpsAA68CwRp+VRe2n32KlWBskEAHaIn50N5MYOZMrD3H4bAuYXWnHV/YBs0vEdHMFZ76
+	xBrXyVYrhJwhzxOuNpcDc5uPzJGn9rhNIl/5AJiMYfjWSimXg59+ca8bDM0tNvxBZoUeA9
+	ENGt0YwHy57TKd2Nhi7jcGDtJ8SPKjQ=
+ARC-Authentication-Results: i=2;
+	imf23.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=q+dv8hpI;
+	spf=pass (imf23.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.128.44 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793739651;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1793739734;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=SAHyYVdxgXEikOMk1urxi7cb5S18I8Y179gtTzRwTU0=;
-	b=ZV6eB+ofp3sB/t2HHKTmFMVz5tA4WORwjO8yOUJpxAR8OxA1zLQpEg85ZiYzdqjayfF0JX
-	mXYpWQiUPkoMHMr6dBnvD+RIFDlmrHBl8Ujv8rGPaHjPlKuZpkXe7pAEjJa1kTszqvEAuN
-	/dTGx9qhxYsLhM+G/W3vng1o4/5fgvI=
-ARC-Authentication-Results: i=2;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JyAzXQoE;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	arc=pass ("kernel.org:s=arc20260519:i=1");
-	spf=pass (imf20.hostedemail.com: domain of devnull+mt4022.columbia.edu@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+mt4022.columbia.edu@kernel.org
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1793739652;
-	b=DpK7lrakwIEYW3a+f0v0TX5/rkPLMvk5hmZpowZY6+dF/pGdx+2/CnjgJ31RcF+yQ8sRFE
-	Tu0IYkm6N8EZ+D/bpGPXqT+gLgHmCfh/niUjH1k5VEiWsPA7zIrUyLePAXQBYdt9nccpaT
-	Nof07vLN6w14Lgjgh7wCx5ZLaPgC4Lk=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 2628C419B4;
-	Tue,  3 Nov 2026 21:00:51 +0000 (UTC)
-ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
-	t=1793739651;
-	b=17SeHNT7+EG8bbFzM8r35XCY62Xw2NeQd2KkLIvAZOm1QPFfSXSIgw+ZPlqFAiLHW60w
-	 31pwWsijGvU4JZU4VWYfWpnhyEQbsoEyjilQGXcphtX8KfROgCsPXf5A6mg8wcbNFvDZV
-	 gVGv7TSy0SqB/Y+hn10/PtkVlTTyMN5wgAomgf18uUE2fMAMc4tcrgMyoAwiLfcybHK3b
-	 IfzaIuI2KGsxjFZ0EjSi4d+889GReC5AVyEJRb/Z6yOEgeVPaihTKcQ31YFH2WcI/AdZk
-	 ciIEyOWABLrLqUfR4o34YxEtY8n8c1vA6Zi0AjkU6xPD+zHt6ICHfSZbtBLrIXs1AyQ==
-ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
-	c=relaxed/relaxed; t=1793739651;
-	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
-	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
-	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
-	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=SAHyYVdxgXEikOMk1urxi7cb5S18I8Y179gtTzRwTU0=;
-	b=vpc+b7F+MeoTj1DgX1FCgUD2etFnxmtfH71rp8u4wqW1s1ApOfOFhLvMbIH34EUMRxX5
-	 IXXYWqIY7uKzRhFtqk+o5Uecr2iBgMp00F+0ISLBmHgqhcYNr+AOr1GbJjY7+AInmSxna
-	 kG+cG0WxiZlTCfqrU4SsJmM8rus+5R3Y8ektNpr0/pPTt48K6MTmpr6Dx76VyH2Dix8Ah
-	 +Y0tswVZdON+xKmF7p/x2eX6orkpp3siDXH1wOefrYi0kQGm28BtQyryx9npcqTUMITLf
-	 9zJqZ4r8TEhFfCjhoNtoXLJQfCcKrL9yxieEUjeeTbnwqxJsKOxtcLCx2f6AtIOBsUg==
-ARC-Authentication-Results: i=1; smtp.kernel.org; 
-	arc=none smtp.remote-ip=100.80.115.77
-Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
-	(No client certificate requested)
-	by smtp.kernel.org (Postfix) with ESMTPS id EEF281F00A02;
-	Tue,  3 Nov 2026 21:00:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793739651;
-	bh=SAHyYVdxgXEikOMk1urxi7cb5S18I8Y179gtTzRwTU0=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To;
-	b=JyAzXQoELmfNVCI57CaFpnoNbuBgYwXPfuYbj9BZtpNuVo+eYLNs8EMpFEgsnN9QQ
-	 Rs79vNp6s7y6LYcjwDfX4Zgm3FQhXGZHH7YBg0/hWVPgHeo/AdJHMWcMBwsdslsKQG
-	 zBX+s/F7wGjfHPmIYK86Cett46ABNKdftmuU6bjJ+1CMeTt7EKvgXfZSUM6Drhe98c
-	 aB0qvTtT9eYnPnPJszQe7SG8qkGA8KYqn/Fs1IfZ1LqPx7y2D9ILELxSDidXSjE3CS
-	 MdM1V/m+cnQrR7b3shrmUG0aj2TKYF7LZb1pVlBHOByDhRsVTg/xZOpmVOBZjRivy1
-	 x/KxNdMet+ZrA==
-Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
-	by lkml.kernel.org (Postfix) with ESMTP id 6826146B21;
-	Tue,  3 Nov 2026 21:00:49 +0000 (UTC)
-From: Mani Tofigh via B4 Relay <devnull+mt4022.columbia.edu@kernel.org>
-Date: Tue, 03 Nov 2026 16:00:50 -0500
-Subject: [PATCH v2 2/2] mm/hugetlb: clear the hugetlb flag before leaking a
- hwpoisoned folio
+	bh=eLnVO73afvgaERjHXGPf5E6SbhMPv9R55TpDCQCEqgQ=;
+	b=PW8jIXP5UlsplAcstjVgsCibgcSqa19MvAtpkO+Ya8ROc3mSgxgKZVypDIezyiKk+4jTDC
+	QeAF85zHe8z+vKIDWkIWYmXmJKXqfRtLlm+V1dni5InFIpc0eeDY2WFg+SlDAoMdYHgK9F
+	2LqGiy6AANE70y7/Ig2TTVnSpd1oWcc=
+Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-4a207b02a2cso31284585e9.1
+        for <linux-mm@kvack.org>; Tue, 03 Nov 2026 13:02:14 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1793739733; cv=none;
+        d=google.com; s=arc-20260327;
+        b=F9YNHUKS8Ua4BnMu0pXHh+aO6VrrpN7u+6siZOGuXjVTLk6K7EtYtX6rpcow6v+exe
+         zqF4j4N+1K6Dcp3wLulh9bCOsfbrAdvDwXpd0m9/1sO5TIuV52kZGmHEUlLr+KES6QDO
+         ZhONRAgpxN0gghi8thQQ5UeLP6eCILK7WPCLUJAtEolGNuYXNOONsQ1+/NwViSzhvPug
+         YgBnQq0tYAodXIgrVkJN7VE1GN09pM9eHcz8ZGJuCIyXYd3XatVSWHnRNRch11vfkvk1
+         PSnlwudYzui2AtPAGqAZ4MB6XwRJ25s0fd+0aUOeH+m9AeKs247hUiTN4dKppSmgeG9c
+         ai2A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=eLnVO73afvgaERjHXGPf5E6SbhMPv9R55TpDCQCEqgQ=;
+        fh=5i3vk0+nDUDr3WXsy+7lhGdWzCh63HgwAOQ6fMOOnMs=;
+        b=gVXJtQDQGwunGEX42rgWqBKWzFM7tWyfw4YmSFGZDf2JClNo+k0tiLP7i85+d2Fxcg
+         dS9OL4N0jtlRuM4xv0q4gd+v+h4+VHF3gNrYbMvqVuMc3ofInOEaNxsvj/I2De9eVoGk
+         o09w6rbdQjI4ameC4z1AOcgLPZVJn8TOsSlROe+CsZ92lhME762ndoQB0Rg1axlTyko/
+         vg6oNbyoxoCA5Xomu1mhedFh3IhC6FmcFrv7nwux7CM5mdBb3+AwRCVHxF6+l4ou+H5X
+         Q6teMaVYGNmIpB+wKdmHKdhL94dXXvPhhtJyl73kByLmRPww6Iy5FfcAWiGf0Z5obmJk
+         LhJw==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1793739733; x=1794344533; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=eLnVO73afvgaERjHXGPf5E6SbhMPv9R55TpDCQCEqgQ=;
+        b=q+dv8hpIpVSMS2VV7fck+auRC+KM+Ri1tE4eNAGRlRUMyAfNju3QfSg1Zzx74levlQ
+         By+TyAzksmd6c46+UOS2wIg/lmnL0k1F9sefx8E3Q4D9HaijtpAFGWVQ24MaNdlmcjXi
+         fKiboXVx5VAUSjH/8Pe0mMFTnsh2Rq3HFStcWypJKfNXrhCAFfaPz4E3N3aUxhbVoe80
+         VAV94GUrAAgZg7UnIGjJVGWeUMy+sZmcY38vYkYDsLhhqYIW6oPWkEp/XRBKctUe7YQO
+         0++nG8XtSYgtveaOoVgT44XuGGH88ud3N88ZVqYlqSJB04dK7lqv3fZcARjEo/sydetf
+         9fGg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793739733; x=1794344533;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=eLnVO73afvgaERjHXGPf5E6SbhMPv9R55TpDCQCEqgQ=;
+        b=xZsRSPsFz+Xj3mvATQHMG5J4s/eCC4KosrdPIwt15uHOvixBtnG2HmujRCYhKgRWyK
+         q9irfQlJEwOLDEej7sq3EwAe/YT5vzjEjCSk6US/Z49i/++PnGc+0jg5rCYgrzmvV7Hj
+         Q+YLdpykBkt7Xyqq+uO7U+hk9+U/uKZf0726RJ6HWfUI3CqkRN/avLoEjDiuSUviKjlS
+         kFmldJBJ3lkOYFhjKJr6pCWHRN2Lt3JBjw82abJjUShIme94Qgdv1hYzB0XQg/NDju9h
+         BnbnSgZfVlz/j3Q+V3ibV+OQK8h5NJbR4U0meyx61cYmMrNKtyFFL4ftyQWbqFM2zyEG
+         GVOA==
+X-Forwarded-Encrypted: i=1; AKwUvBwgWC/8YUFZr/L2oJyZU59rwswr0aKp+B5ug28MUwj9e7w7Q/BGPac6MzAuKxbwFQzaoeS3yrwBpw==@kvack.org
+X-Gm-Message-State: APuU4Z8X4VWcam3t7lvd+Rl7lt+hOhPmJXeRzYf4A1T9nRjUB7U+IRMG
+	3SkaYIsalxIFub7uvzYcnMK663s++4uqE7J+V+GbFoRu8o1UaAKxfa0uERiGSdo49zIa3Px0NHK
+	kHyjndkgUnc2Ukx4G4Ux6D+iIy6cxFZk=
+X-Gm-Gg: AYBFou3zjtg25/ti9YcbaWMmhFRt3RwOLrAgiPFeRB2N5TmdJRfOsPa0OUbe+NPKWBZ
+	MRfo8lFLowJfLSXB9BQNsw2bsXM0SyvNTfJU3kRcxQrYX3BO2ex8/brmBXVbatbHPFyUIy8PYuf
+	mqqMefxQqpwOxP9Ii854hYfF6IlZu8pE/gF8OcPnySjVku8x3FwND8BtlcvyZgxXBVpynmPHXle
+	X0jb3VYOtyJAJjnjhujUkXtez8/QeeXjCxGj2AzKRpK1clifmp7nYJzrKAFxjxmvfAeBriFfqWa
+	F/Uci+ZZ01gcAEzFllnyKEZdeRNDy21RYRBh6vtUmYw038NxZ7NYsw/JeiwD6fX2ztFbvTAKduK
+	/KM7/FT1gnDr9bloZi2FRby3ESGax77Joqbbtm3xLVK7k8+nzN4HQ+vu68IqxiEWNm1pSPwttZI
+	ryFo85VGoX3CYQSjHh1++ZzzZM9w0cJTx4oFApjhEY5icSoRBf+jWtXw==
+X-Received: by 2002:a05:6000:2dc7:b0:48f:88ad:7b75 with SMTP id
+ ffacd0b85a97d-48f88ad7ed9mr6170165f8f.15.1793739731970; Tue, 03 Nov 2026
+ 13:02:11 -0800 (PST)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Message-Id: <20261103-hugetlb-hwpoison-leak-v2-2-98085750c145@columbia.edu>
-References: <20261103-hugetlb-hwpoison-leak-v2-0-98085750c145@columbia.edu>
-In-Reply-To: <20261103-hugetlb-hwpoison-leak-v2-0-98085750c145@columbia.edu>
-To: Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
- David Hildenbrand <david@kernel.org>, Miaohe Lin <linmiaohe@huawei.com>, 
- Andrew Morton <akpm@linux-foundation.org>
-Cc: Naoya Horiguchi <nao.horiguchi@gmail.com>, 
- Matthew Wilcox <willy@infradead.org>, Jane Chu <jane.chu@oracle.com>, 
- Zi Yan <ziy@nvidia.com>, Kaitao Cheng <kaitao.cheng@linux.dev>, 
- Mike Rapoport <rppt@kernel.org>, Mike Kravetz <mike.kravetz@oracle.com>, 
- Yu Zhao <yuzhao@google.com>, linux-mm@kvack.org, 
- linux-kernel@vger.kernel.org, tz2294@columbia.edu, stable@vger.kernel.org, 
- Mani Tofigh <mt4022@columbia.edu>
-X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1793739649; l=3741;
- i=mt4022@columbia.edu; s=20261026; h=from:subject:message-id;
- bh=p3cGeIhEss5lhmQM33p4Lp9XHqkwwMIQoTW5yzc7mbM=;
- b=PGA1VtdllP0dw4XcQ0InOdQX6BI+3QMcqOt1iWyGu2HdO7JdQSgJa7wvu5TUQOhX7H0SM+agA
- 32NCczq4qtNBwO7Lc2Rr5EVpRvJxUGwC1a8+OzEyFhLN8OhDW/zKXeg
-X-Developer-Key: i=mt4022@columbia.edu; a=ed25519;
- pk=gljCMQDuxyKPmd5y37CRpEJGSPXDV1MyAnHBhCgXl0I=
-X-Endpoint-Received: by B4 Relay for mt4022@columbia.edu/20261026 with
- auth_id=1322
-X-Original-From: Mani Tofigh <mt4022@columbia.edu>
-Reply-To: mt4022@columbia.edu
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: CC7A21C0013
-X-Stat-Signature: rjmz3guue64mxqp3ay6pjt9q3k63fe7z
+References: <20261103-swapin-large-unmapped-v2-1-87c70e597250@columbia.edu>
+In-Reply-To: <20261103-swapin-large-unmapped-v2-1-87c70e597250@columbia.edu>
+From: Nhat Pham <nphamcs@gmail.com>
+Date: Tue, 3 Nov 2026 14:02:00 -0700
+X-Gm-Features: AclHuK-dU-jDbeAA-AyxlAsBt3J5xyfKTDwVAoojWWH0SE7Uz8Xv3jSOSRyptrE
+Message-ID: <CAKEwX=Ow38Y9OK69Y+Eps7k_sdKdkLKuO=Lxn0xisVkuHVePLw@mail.gmail.com>
+Subject: Re: [PATCH v2] mm/swapfile: drop a large unmapped swap-in folio in unuse_pte()
+To: mt4022@columbia.edu
+Cc: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
+	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, 
+	Kemeng Shi <shikemeng@huaweicloud.com>, Baoquan He <baoquan.he@linux.dev>, 
+	Barry Song <baohua@kernel.org>, Youngjun Park <youngjun.park@lge.com>, 
+	Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, tz2294@columbia.edu, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-7.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,
+	SPF_HELO_PASS,SPF_PASS autolearn=no autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 676E914000A
+X-Stat-Signature: kzpsu71yc569kbbwmaxup64w73eyxus6
 X-Rspam-User: 
-X-Spam-Status: No, score=-23.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,
-	MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT
-	autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1793739651-869911
-X-HE-Meta: U2FsdGVkX1/b2Uuh9jb452ZSBuvNg9GtXmE3KVXC4Em6LNHvM1ea6iQYS3ULoGUgwG+zVr95GRfwa1GD2ENfjnwUIyyjy7W0Nbp1YrFtaZTXx7Cckzh8QhPHqm5L0znmcgI5txTSc3iuvR8SG3spt1wUjR/jIbEslq5eXfUS2nV1Bg3PLUVVl54Cz64iMY9c9JAEEDvNiDlZD1I45Rqpp6vIS7n3e+tnGMxl3OfPwvDXzUuQBnMBlGbQe1R0jemqNii77H1ZMx+TqlGQiSiq4NwbM0IUrg1f21+C9GYvrwFJun/xDH5OIICTm88kZzamPJJWSVxbiC1nVs4Uj1rmnrdAA1s7cRM2R5KR7D2ICpEu7nOrlMLCvgK+OhAjzsFSRCmlnDojWpAevPqjyXRyGZJuw3A3IoZRLr0E/zVA57obBxXHK3YIJwfqlZQZBCDxmzxsMnzZD0ILFpEbKF4qQ7CvJwl1xUG0APB+NntRyzhbJNDbCUVnreDDmpPeadRhdkDju4WNs+1Wp0/drWp0l4/siTQZLp1NqoLDEheTG230VhnO0SqbjkuOgQOkG+azIkuw/JOomwBOaNgqoBT49f6ZOnVcrm9Q5q2kORyX5yK0ySJiurRelOxBAMMvuaNpI4JvAhHgxJzf1E424FbcY/1691AxU3ySaXgOnOUjpln0xpe+GYm4d/lipwdmpk25JvSClMmuPXw3rk0bbsHRqphi3xShEMPcwdhOI6Q2CI8V06t8SZqmsak3osxl/ift6LhFXHShMSxvO1Ta0D85cH/1KbvwX6x93IA5B0pdpDuc69HZvDq6OEQJ43twDfC1IkD6oPD7+viNjehGUWD/e0njTOCspk3fnPKXtPTT1wy/C8bzuQQhf38upFfonecDHWg03QgR3eI1/UpCKADJHXsxPAnPPrEoWAg+Uli432vMG3UG5IbBM5X4/OlKlBXllvKZPhRUGW+XEjV8Rrm
- RBOJQ1X4
- HvS1pSojQDuTej6vwyu+GZUdL6iB+ne7exYKwYYrX3fsGPiqj+Vz9pP3pPyf7iydNbhYiUAzt3+TQKbMDWhlutQ65pTWb4hYyUc4X1OyvJO+4DAT3Z+LbmjVJE9pvo99yrJUx/jvORpDqvmfRHtfqPsuu/SeXSv1Urp+Jim6f0Z1h/7/OhyAQiJL+fxbR7Otw18C3d7H5zML+Geqiw/AXcQc+3HSl+jmvWLQHHReZEHMi3UaKNcnee+kvfwJ4RaOL1TFwkhjx/xqKkGpzoAxc4fTLogJ4WiqTmPon/RwyU3HaTH+m6OixFssyafMZPEjkyfaW1RvE4frmkRub/TrxRCmA0xF5ovAPYj/kXkgIqKG8vHRee4xtfj088QbhAbT4M71CsLgfMwMRZc5VEfUElxUuW47f5d77gxY9LGYkvrHJYsRC6Z+51lpjzbb3qYQMXOFYWeaKVGub5l/Oe7m8meN0h+NFy2NbjNhNUBZq5mlFBCnBDbcrAr/mO+k9udYXpcjJXeT2KARr9jVvdkYhVr+jz8l2VOa2eejxEmO8dMC2VvdIZ0SteFqiKu2vKamqgn3L4X2zqN9J6ZIEkZEL+9teyIYKI/ST0X7VhIXJwBUu5EWoiKEvdgq6KGMctXDS38zUB86FNj4HcTByzCXkQybOiQ==
+X-HE-Tag: 1793739734-148889
+X-HE-Meta: U2FsdGVkX1+Lfo/11MiPb76jXhFuCUmolYCk2MvX+Jm4MDAT7O7wJAu5BdJ2gqU7rsblb2tzJIztF7+ajc2Zas4OwGnkAy/Xe3QHqbl6nnjYWJs3IDKBJGh9ZtTZcBguv70QGLo/G18k3tKhqCgj/qUNfwzO0PgVwmIi4+pefeOGB5+xTeSnYB7EFWXVCabZ+LQcvBaJcni9InCIB/xM9y/Fc/nsxuGv36iHIaAVot8/4Cux/xjR3NSZZi7LTnYGsT/Q3o/6KIAU2MCfirn3LJH04b1fhVplRrhaJQjievAZh4iNqvs2krqpn0L19SwPqKJFkIE2THdo6V4odAzeswaNAFobyAO7ylAEXoxEFdu9HuSHNrYMi8ltjjD09nAtt3JpU7iXIXxpQF40E0xDALWeM30gZIBAmx1Cj38ekrNGCX1vGoUUlbh62CFzz4Wfhcc8Glt1JUqFFIDd2Qjw8NumCXKg5rB9PI6d1n0GlSv+F3gbpvqBBELbQrOAnX4XHIhcdcBdjY1/ecUqYxiJpfBKlwALIp7JIJMhkHIjXWr3awl1dOuV2YEg4n5rEdGxaMBOGYppoDoZUc0Lq6wI5CIOmE/fqo7RzP6jXhLWxDJbxBicu5Iz6OdvfQ3CxeCL3fBdkKj3rcpuM1M7FdS2MCiAQ/ac/AGxj92ewo+Arl7jR5ZmOQyIaeynWnNCdynUL5gIeVkqeE3Wc/qVB/aHxEBBHjTemlaQGHWDo11YILAlNPbV+SHYJv8h632ktlPX9RRfYUkQ6PYTj/VeUitX7mDE3E37paABqpuVwUxDWjTxlfEz+zVu4RTpU3Fmh3f307EVhMp+IyJLTtAmw48JYCplyB8nX9rjq4t+5tJ/pnqLJYzql79HZryp+MHs8JAAgeflLiFh2tt4BZeyis3+G7EEmPo4hDQEYdDsut6+rMlJrJFqeF84Jhvy5YHUtgiU5VdXzUsJSepppIbrSLo
+ 2KjH3Q7+
+ 9TNHFwuS8ifgO70xEr4c7LEhIYU4MxAusNXfIvTDYwFZ3DhbwRvvYZ3EW/T6nJTMvApsbp8TBtXcKHOlFSfvvNhTzpMwaCXc8t5ouiIjG8/kt+G5/PsiIB52Cj/yaQCtXNIHh/r4iHuBXHYjqGdPpZwajFhvEvCoj5K8SyAx46oC1aRJuoxveXoF1q/a3JX16N4frNPFD8BTR0OHzj0vUEfR/K3Hs152IUCrdprJb+TEyx6TH0Qr2gG7YACnkbNW/dmt0vffpfmvAxUFVVzK8fO2p8uSUz/4eb1FL0PgdjIjaD57c47rDvUYpfKLDzfSidM0pZqHOvnULsO7PGv17G32r1pE9B7k8Hx1rsCdbCQf1ZJJaaoo7nX8yg9Gkir+i04+FfqTVip3RWakbsgkpom8kVOPkS8wDt/CzHcLX/Fhs72hwdEDUdc2IWje32xODJEPZYXFGGDFPQFobp4/r6/6AWNcmTquEQ7z/miFgdCCiL9j59smBt5h3Cg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,96 +150,61 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-From: Mani Tofigh <mt4022@columbia.edu>
+On Tue, Nov 3, 2026 at 1:12=E2=80=AFPM Mani Tofigh via B4 Relay
+<devnull+mt4022.columbia.edu@kernel.org> wrote:
+>
+> From: Mani Tofigh <mt4022@columbia.edu>
+>
+> Since commit f1879e8a0c60 ("mm, swap: never bypass the swap cache even
+> for SWP_SYNCHRONOUS_IO"), a fault can read a swapped-out mTHP range into
+> one large folio in the swap cache.  The folio only becomes anon once
+> do_swap_page() maps all of it, so if the faulting PTE changes in the
+> meantime the folio stays in the swap cache while not being mapped or
+> anon:
+>
+>   Task A (fault)                       Task B
+>   do_swap_page()
+>     /* swaps in large folio F */
+>                                        madvise(MADV_DONTNEED)
+>                                          /* zaps the faulting PTE */
+>     /* PTE changed (F not mapped) */
+>
+> swapoff then maps it, which marks all of its pages as mapped and
+> exclusive, and the next fault on one of the other PTEs crashes in
+> do_swap_page():
+>
+>   [    6.424485] kernel BUG at mm/memory.c:5195!
+>   [    6.424503] Oops: invalid opcode: 0000 [#1] SMP KASAN NOPTI
+>   [    6.427654] CPU: 0 UID: 0 PID: 67 Comm: swapmthp Tainted: G        W=
+            7.3.0-17087-gd865f2677c44 #1 PREEMPT
+>   [    6.432665] RIP: 0010:do_swap_page+0x24eb/0x2fa0
+>   [    6.451035] Call Trace:
+>   [    6.451567]  <TASK>
+>   [    6.453841]  __handle_mm_fault+0x13b5/0x3b40
+>   [    6.458525]  handle_mm_fault+0x16f/0x480
+>   [    6.461143]  do_user_addr_fault+0x312/0xa30
+>   [    6.462044]  exc_page_fault+0x66/0xc0
+>   [    6.462846]  asm_exc_page_fault+0x26/0x30
+>   [    6.476708]  </TASK>
+>
+> do_swap_page() already drops such a folio from the swap cache when it
+> can't map all of it.  We move that check into a helper and use it in
+> unuse_pte() too, so swapoff drops the folio and swaps the entries in
+> again as small folios.
+>
+> Such a folio was never mapped, so it shouldn't be dirty.  If it is, the
+> helper warns and the folio stays in the swap cache.  unuse_pte() then
+> returns -EBUSY so swapoff fails instead of retrying forever.  With the
+> fix, the next fault doesn't crash anymore.
+>
+> This bug was identified and confirmed with the help of a deterministic
+> hypervisor currently under development.  The C reproducer below however
+> hits it within about 1s.
+>
+> Fixes: f1879e8a0c60 ("mm, swap: never bypass the swap cache even for SWP_=
+SYNCHRONOUS_IO")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Mani Tofigh <mt4022@columbia.edu>
 
-If hugetlb_update_hwpoison() fails to allocate a raw_hwp_page, the folio
-is marked raw_hwp_unreliable and __update_and_free_hugetlb_folio() leaks
-it intentionally.  With hugetlb_free_vmemmap=on, it's leaked before the
-hugetlb flag is cleared, since commit 32c877191e02 ("hugetlb: do not
-clear hugetlb dtor until allocating vmemmap") doesn't remove the flag
-until the vmemmap is restored.  The leaked folio is then a hugetlb folio
-with refcount 0 and on no list (the same state as a hugetlb folio that
-is being freed), but nothing is freeing it, and
-dissolve_free_hugetlb_folio() keeps retrying on it.  Offlining its
-memory block then never completes, even on SIGKILL, and other tasks
-block on the memory hotplug lock:
-
-  [    3.271255] Memory failure: 0x20007: recovery action for free huge page: Failed
-  [   41.729695] INFO: task hugeoffline:77 blocked for more than 20 seconds.
-  ...
-  [   41.733014]  get_online_mems+0xc1/0xd0
-  [   41.733026]  soft_offline_page+0xfd/0x9b0
-
-alloc_and_dissolve_hugetlb_folio() loops on it the same way.  The
-refcount is 0 since commit bd225530a4c7 ("mm/hugetlb_vmemmap: fix race
-with speculative PFN walkers").  Before that these paths failed with
--EBUSY.
-
-Check raw_hwp_unreliable after the hugetlb flag is cleared so that the
-folio is leaked as a non-hugetlb folio, as without vmemmap
-optimization.  unpoison_memory() keeps refusing to unpoison it.  With
-the fix, offlining retries as it does for any page it can't isolate,
-and stops on a signal.
-
-Fixes: 32c877191e02 ("hugetlb: do not clear hugetlb dtor until allocating vmemmap")
-Fixes: bd225530a4c7 ("mm/hugetlb_vmemmap: fix race with speculative PFN walkers")
-Cc: stable@vger.kernel.org
-Signed-off-by: Mani Tofigh <mt4022@columbia.edu>
----
-This relies on Kaitao's "mm/hugetlb: preserve persistent flags when
-returning folios to the pool" [1] (673b553e2bba in mm-new).  The check
-now comes after hugetlb_vmemmap_restore_folio(), so on a restore failure
-add_hugetlb_folio() must keep raw_hwp_unreliable.  It would be good to
-take [1] to stable along with this one.
-
-This changes the same lines as patch 07/15 of Matthew's "Use
-generic_file_read_iter() in hugetlbfs" series [2].  On top of that
-series, the check goes right after the folio_clear_hugetlb() call.
-
-[1] https://lore.kernel.org/all/20261102024910.31486-3-kaitao.cheng@linux.dev/
-[2] https://lore.kernel.org/all/20260805210557.1118966-8-willy@infradead.org/
-
-Reproducer: https://github.com/manitofigh/files/blob/main/linux-repros/hugeoffline.c
----
- mm/hugetlb.c | 15 ++++++++-------
- 1 file changed, 8 insertions(+), 7 deletions(-)
-
-diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-index 779b1de33c78..cdeb8923083f 100644
---- a/mm/hugetlb.c
-+++ b/mm/hugetlb.c
-@@ -1480,13 +1480,6 @@ static void __update_and_free_hugetlb_folio(struct hstate *h,
- 		return;
- 	}
- 
--	/*
--	 * If we don't know which subpages are hwpoisoned, we can't free
--	 * the hugepage, so it's leaked intentionally.
--	 */
--	if (folio_test_hugetlb_raw_hwp_unreliable(folio))
--		return;
--
- 	/*
- 	 * If folio is not vmemmap optimized (!clear_flag), then the folio
- 	 * is no longer identified as a hugetlb page.  hugetlb_vmemmap_restore_folio
-@@ -1514,6 +1507,14 @@ static void __update_and_free_hugetlb_folio(struct hstate *h,
- 		spin_unlock_irq(&hugetlb_lock);
- 	}
- 
-+	/*
-+	 * If we don't know which subpages are hwpoisoned, we can't free
-+	 * the hugepage, so it's leaked intentionally, but only once it is
-+	 * no longer a hugetlb folio.
-+	 */
-+	if (folio_test_hugetlb_raw_hwp_unreliable(folio))
-+		return;
-+
- 	/*
- 	 * Move PageHWPoison flag from head page to the raw error pages,
- 	 * which makes any healthy subpages reusable.
-
--- 
-2.53.0
-
-
+Reviewed-by: Nhat Pham <nphamcs@gmail.com>
 
