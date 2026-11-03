@@ -1,117 +1,130 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2818E606A335
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 11:01:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E5E5606B10E
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 11:08:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=debian.org header.i=@debian.org header.a=rsa-sha256 header.s=smtpauto.stravinsky header.b=ioYjiNwj
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=l+HuCZJQ
 Received: by kanga.kvack.org (Postfix)
-	id 9AA616B00EF; Tue,  3 Nov 2026 06:01:51 -0500 (EST)
+	id 8F2826B00EF; Tue,  3 Nov 2026 06:08:45 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 95A8C6B05B2; Tue,  3 Nov 2026 06:01:51 -0500 (EST)
+	id 8A3E46B05B1; Tue,  3 Nov 2026 06:08:45 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 849B66B05B3; Tue,  3 Nov 2026 06:01:51 -0500 (EST)
+	id 792496B05B2; Tue,  3 Nov 2026 06:08:45 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 56A3F6B00EF
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 06:01:51 -0500 (EST)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 53D8E6B00EF
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 06:08:45 -0500 (EST)
 Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id D162E1C3A47
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 11:01:49 +0000 (UTC)
-X-FDA: 85393517538.15.E6AE259
-Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
-	by imf10.hostedemail.com (Postfix) with ESMTP id DB795C0014
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 11:01:47 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=ioYjiNwj;
-	spf=pass (imf10.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
-	dmarc=pass (policy=none) header.from=debian.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793703708;
-	b=QX2gOtNNLkvUidhj4jyRwqawNhFDbR4JC0AcwvMWyWxVpGQKmRm1RBLj/QuJQMMbreMD0Q
-	iY+KQEjUWYz1ZQ6E0nnB5HlskA+29XS+Q3hQt7k19fbyM0zCK8jEkKjgVUVXfKt8Pirte0
-	JdfT/1+B4gyFJXSwOB3aDVEM+x3LaKw=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=ioYjiNwj;
-	spf=pass (imf10.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
-	dmarc=pass (policy=none) header.from=debian.org
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id DABA314036A
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 11:08:44 +0000 (UTC)
+X-FDA: 85393534968.15.C356E45
+Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
+	by imf18.hostedemail.com (Postfix) with ESMTP id E9A391C0002
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 11:08:42 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=l+HuCZJQ;
+	spf=pass (imf18.hostedemail.com: domain of azpijr@gmail.com designates 209.85.221.44 as permitted sender) smtp.mailfrom=azpijr@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793703708;
+	s=arc-20220608; t=1793704122;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=i4BuV+xJDMpt+a6aM2LeHcLbdcGLw4EpHreAM8/xql8=;
-	b=OuuCkpOkD7xBA/W9aZFp9BHM5P+dNtDfrVLL09cMgV7m2XtKXV1KCjOnnA+0Jz9NSoR8T5
-	PgrGjl/hAHO/wk9cWGk8SK8cQS6ffWC3g4L8iDpeK0Xcgr7QnyUu+OOVx0sAMnf1PNKG//
-	LMpDJCWxpFb/ubo+eTRqVHu8zyDeBb4=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:Cc:To:Message-Id:
-	Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:From:
-	Reply-To:Content-ID:Content-Description:In-Reply-To:References;
-	bh=i4BuV+xJDMpt+a6aM2LeHcLbdcGLw4EpHreAM8/xql8=; b=ioYjiNwjwOSAdJFv5Po50A1bYx
-	doVgFk1ctwHpdDQO+z+sNnAm7LWzJPDrauq6gPShnjatYu9jowV6PvokkkKn8AwyWrM7/HlVfdxrE
-	5wFOetJ7vF8wt0+Ljy1ffAGy3qXWthdXmjSGY1QzaTJq664DmLWeao7B3fKL+chHfaL2Mypalisx8
-	R13F8XIGJOzvtCTYPiuzvMM0bLRRTOssy1zuITm81LJA7EoocCOx2fGTKAU9XxU/oYMsGMR3iwQcS
-	OahRqcibjmlH9pdwIjU2OEHqPhRFxtWLlCJ07vP9OMEMMou0IyV/YrXsxGxbap/sl80Ij3RBbpL9r
-	pO9g7E0Q==;
-Received: from authenticated-user
-	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.96)
-	(envelope-from <leitao@debian.org>)
-	id 1xOCGf-006t2e-2J;
-	Tue, 03 Nov 2026 11:01:29 +0000
-From: Breno Leitao <leitao@debian.org>
-Date: Tue, 03 Nov 2026 03:01:24 -0800
-Subject: [PATCH] stackdepot: don't WARN when the depot runs out of pools
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=AloFYWUzIqAhdMvN8K6X8VlvrRNVo6qD2kbJJy05K7U=;
+	b=NplIc9MToOnosLhlhnNpT4+D7fmH56IKAMUk+OsMbJi0CS5tNy5hAYR7+HL615HAhWUegr
+	XM4feaQo3kiy47zz96ihNkUbrKs9oIxfdc3hts4X9+NiG+wPHNkpoUhirJUXw5SxlTF5Jz
+	A4MpY/oFbmw92ciKWWfTH22Ph6RX3KQ=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=l+HuCZJQ;
+	spf=pass (imf18.hostedemail.com: domain of azpijr@gmail.com designates 209.85.221.44 as permitted sender) smtp.mailfrom=azpijr@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793704122;
+	b=AtAnIioTsW9woNtlVMYB3U5YhTgCyUE/W8p7KrYXdb2giHAKfcIyykWD1d2BhRgCM6Qocx
+	VcYiuQsQxSuJT3Oos8Wcc0U2eNWgcePYU+oybNrp+H7yjIx6qBnSP/V/76LYhHJ6EKRdjj
+	+tAoFq5ekyQ4P1nCswSUeewWcEjRkk4=
+Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-48e0d1da913so450781f8f.1
+        for <linux-mm@kvack.org>; Tue, 03 Nov 2026 03:08:42 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1793704121; x=1794308921; darn=kvack.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=AloFYWUzIqAhdMvN8K6X8VlvrRNVo6qD2kbJJy05K7U=;
+        b=l+HuCZJQT+KH8gDijxRwPFS+zux9yvDluWzIu8sp/P1ywr1oP5PTyqQ7y3dmqNFgvK
+         YnKm2w/+3KvtnC2nv796V26vlneLVBG0DQtcEv4I5jLRmlz5u4iT4qZenz/be5ZDFm1r
+         Bh2wO7xjt7NRwGqmTuADnG40l1qHON4iBmWRwvP4/R7o+L9WnUP6Z+KLmpsa9OE4N5FH
+         IHO/JFbPpjPV+Ldc+pMorkyyiVa+M1vUhjH3ZIm1MAAdyJ/D4eWTyEd563nW13ubWnS+
+         0kdwh3RBMnHEB0wuvBygZ6fSbRh28jS2JeTA+eg7NFO080W7q/tAPOihP9DfQ/sZfyzZ
+         HGmQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793704121; x=1794308921;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=AloFYWUzIqAhdMvN8K6X8VlvrRNVo6qD2kbJJy05K7U=;
+        b=q+KFpW3LBQC2krVf08Eh1m6nSDyMMlLw/DqJYLsNth74hs+kCwh42VzoK6Wcf4z4Er
+         YN9l+8hGpH0AEHTPrjnSHYj7HvsxiROkl0D9oYjjK3P68px+KDxs/YQs/opR0E9JMOBe
+         dF4naOFzYM+XhW4z490/FCgLYPp/tVPEshnyimX8jN2iNdTvHhEURejEg65Qzpzr9ySn
+         YVjwTpi3kuVPToWD9knU42Niv/OoH8i9MNAK7uOxXhmRJlOZVA9skXNy9bn6IyiuqTTQ
+         OYaZNtgA2a8Ljd31R4fP9c2oLNc47cRqeEIwa6zpb5DeEdI/eV1R7NqOLYhwinrfeRmx
+         8ThA==
+X-Forwarded-Encrypted: i=1; AKwUvBxbKNNbOB0ePAIspIWFsOgUgLFDMa5Gdd+B0IxhcvGJfYu7glAshnDvNgvfqjv3o/Yf5+FJyjBYXA==@kvack.org
+X-Gm-Message-State: APuU4Z/CJsdqOPQO43Y4mIsE1vRgiNWtbg/Ock1UJeqwGjy8Q6TIUGCQ
+	2GHq+h3RVYpLLsleRTYbqjm4yN0hjKhgIYBnQe+UZ8ow2BzqlyKUWVNn
+X-Gm-Gg: AYBFou27X7MwyizlvRqR+jVVmdo9WbTtTf/qxX77wRO+nRpmSDDsTC6yAVnlQW2nv5T
+	kAG5GsvbrTLw3N2VnEnArd19CVfGQvRjFax5gq8OnN2k7uFAWGkLFKfyIYYm2fhc9UF7vxluTnm
+	fJOFGC/bAbQboDe/InlfInNtKttq55JkMdJQuBBPZ7uyFde4mXNeNYTfxgSnNtDZtGqbmN5h2Dw
+	gaug7M2O4TjtaORW6WSQCg9uqNpZ5Qb8mjwYX4W7R1xiy6kENx+Wg+Lyah1SV3zh0S0KSpekc+c
+	xbZohUO/KMy+AyxUegS7FdxaY2LqKQKBNQ7rArDtPh8f5oDXEg3U67+ZBdBA2sCweXjQP2JQKhM
+	A7YtFS6mSrc1fqFu3JVMSAj95yRo9rBOgQbyBRwIq5q0d89l0o1vda6gZXEbM6mxHrQfagkloAZ
+	bjmSQ/hzY6VJEssOa5Uc29gfoVrWq8pm5dWr6IcHkuu+4C4ETVpv+QLe53pHqppp2CVO7jQwn3S
+	Jf+tmXRif10hI+UbKpk1qUWXgOD2WlvbJNAarootbMuUaxVHHMjZimc9olLFuiABrLy3Nv8I3rD
+	ITs1D1Lx+ATcLI3Ro/XyJeQunAuhlGtEKWqR3DBVO7rc
+X-Received: by 2002:a5d:584e:0:b0:48e:6669:fefb with SMTP id ffacd0b85a97d-48e6e2e2369mr30210705f8f.22.1793704121330;
+        Tue, 03 Nov 2026 03:08:41 -0800 (PST)
+Received: from [192.168.1.22] ([83.231.69.9])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e71b8011csm27509475f8f.31.2026.11.03.03.08.37
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 03 Nov 2026 03:08:38 -0800 (PST)
+Message-ID: <9ffda863-507e-4911-8d4e-dbb7f0e26544@gmail.com>
+Date: Tue, 3 Nov 2026 12:08:36 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 4/5] mm/mremap: restore VMA_ACCOUNT_BIT if the unmap
+ fails
+To: Josef Bacik <josef@toxicpanda.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R. Howlett" <liam@infradead.org>, David Hildenbrand <david@kernel.org>
+Cc: Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>,
+ Pedro Falcato <pfalcato@suse.de>, Muchun Song <muchun.song@linux.dev>,
+ Oscar Salvador <osalvador@suse.de>, linux-mm@kvack.org
+References: <20261102-b4-mremap-pre-split-v2-0-d281dd11ad7d@toxicpanda.com>
+ <20261102-b4-mremap-pre-split-v2-4-d281dd11ad7d@toxicpanda.com>
+Content-Language: en-US
+From: "Jose A. Perez de Azpillaga" <azpijr@gmail.com>
+In-Reply-To: <20261102-b4-mremap-pre-split-v2-4-d281dd11ad7d@toxicpanda.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261103-stackdepot-full-warn-v1-1-41f1fc651b64@debian.org>
-X-B4-Tracking: v=1; b=H4sIAAO/6WoC/yXMQQ6CMBBA0auQWTsJrdFYr2JcDO1UR0khnYImh
- LtTcfkW/y+gnIUVrs0CmWdRGVKFOTTgn5QejBKqwbb2bEx7RC3k34HHoWCc+h4/lBN21pELFxc
- NnaCmY+Yo3317u/+tU/diX34vWNcNn4LwQ3gAAAA=
-X-Change-ID: 20261103-stackdepot-full-warn-b29a9d89f1a5
-To: Andrew Morton <akpm@linux-foundation.org>, 
- Alexander Potapenko <glider@google.com>, 
- Andrey Ryabinin <ryabinin.a.a@gmail.com>
-Cc: Marco Elver <elver@google.com>, Andrey Konovalov <andreyknvl@gmail.com>, 
- Dmitry Vyukov <dvyukov@google.com>, Vlastimil Babka <vbabka@kernel.org>, 
- John Ogness <john.ogness@linutronix.de>, Petr Mladek <pmladek@suse.com>, 
- kasan-dev@googlegroups.com, linux-mm@kvack.org, 
- linux-kernel@vger.kernel.org, kernel-team@meta.com, 
- Breno Leitao <leitao@debian.org>
-X-Mailer: b4 0.15-dev-47773
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2785; i=leitao@debian.org;
- h=from:subject:message-id; bh=jwKDCBiNKXRhEaThEtOoJhCUew+ugIivFnvIfhhvW7Q=;
- b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBq6b8GPtCfeSXEGwKr/Xa7cW/D666cXD6f+3aqD
- 0wnhqL4Ge2JAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCaum/BgAKCRA1o5Of/Hh3
- bVVVEACRZ4nT5VoeolUZDwdLgwk6XlE5pHtEM/hoUYB0ZwuZRy+EGwFeozpNhqbQ5W3YMoV/wGx
- C6FNk75KD2U9qMefo006+JxeuLOteH2B1sLXVnGcBLZtgAUlZIE97m6T0n/mLRbDveh2Ml0agXm
- UkRSjPf414rufLQpCxGZm43KW5B47kyb/VxMxAohW5SBEhF9NVXR57Bq2igDC4TqheCXZN2tuDZ
- FQPQg4H/bl+wl8USDLA3OX9JMAhbsbs4wC2Vz274Ta1jPNcr0qu0CK261jC66mima6k8tNCTiFs
- ip5tAyx0KVDQYCe8/AoJWfq6xAE9GjKQxgb+bVsdO7TSuc6A2ikc1CE38NPxTtfrJBnhJOHh6oJ
- 5B71JiFyXhQoAOPvZU4nm2NrvtwiJQGbhTRiSCrs5PbNK7bxUXfO3xU/ECr55M7TMyadaRSabsi
- /C9Z6hLCCQkYrQbEZRfqkRQZbF5qbayw8itsdIZ3swqTM2IqydSafD57oo5Kn4vym4zJXw5Mby3
- 9DF9l/EMDoKA6lATVyxK5eypBM/57ObceO5+PjBvb8fVuMnS90zkYzAgxJXoHMhg/jINSlzr0PR
- OCkwJhBzdMAvqIPyCgp32/UgQ/4/Yrjf6YdByGJetfseoa8haMMJSyix6CTgqYLrBgNWOAnFPo3
- 3OploLkI7DYpHvQ==
-X-Developer-Key: i=leitao@debian.org; a=openpgp;
- fpr=AC8539A6E8F46702CA4A439B35A3939FFC78776D
-X-Debian-User: leitao
-X-Stat-Signature: q4bfxdzr5chitg4a77tsyfpkda6gjzk4
+X-Stat-Signature: uceunkp14my6fdy6ps51ka5o1fubhren
+X-Rspamd-Server: rspam01
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: DB795C0014
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1793703707-455612
-X-HE-Meta: U2FsdGVkX1+UQQqzsqI3QUQn3byKgE4D9HQFRb+nFruRga5tMont7aRg37RFuIajcszvDyy7EUbYVpqne+uTaWaKAhjhsCsjmAzUrlBATBndHxlolB9nCOI5aOERajWI2nXhKgAyIU4g1cl4cU4JJlgWj27kE5poiq98BXfiV9NBmqvMGNGC3vZIBZe/m/nSuZmU8ErdYF0ymWlx6kWFvS/rBG29KiaqYigBRlBj6odxuFY4W10Ds1XBrhQpxBNskP7IuHNKQx2Z8V4sSpZILhVH5h5bUN46GjFQycZIJBurbCbgk1Q2uJ/zQPS3KAyB0jjm3iEdroR6D4M42swedcw/pWvPZ0WM+6T3YnAWFaVyHLH1aNOW4mwW1nx2j5aTpiskXwEgtuiwhnRX7YMARBuuGTn1MQAF/5toQ26c9LEHYka+8/8FdS5VFhHBYyLxdzaAGKRvln0FPFepqXilPPkUdjRa0YW+GXBckIBqzadhWH7yDjT1vE9zHN9ZDg6eBW3PYOn2yJM+5tXgBHLL+Ge7hEIbSA/MyLHQFV8mbk1x8UFc02cvIDWopqGp9ntpC7oMXHs5mvtZZ7+h5bmljPvGvg2161RkY0R3lotOuxoDqBZ7JWEFQ+EcbMdswK6OR1Huacy3sZ8ossbv4NmiOIzeh1qF3kMQsyXi+imRoce6I0vDQhzjO3ETpkvRiVao+g42gKBVrPmvwksHSPaZifSZXFFZa3EB1O7Fk5p6KorS0Nvai7ePqy57YFAIJKAIiw49oqHo+jIQyce+ZCwzMwy4zxculXEdD/zzqaM/dL1GWtash1MCIMPcfoVTPO63pbmF8XOf3CuIx2YdFufBnGTYzN1sDVgS9j3stZMC2XQLafEZ24KfPb6bep41ekRIrtMPgJLjjAW7PnQyug+ED3ElVFOrt9L5K798QjLr6Dq8iyEieHTJtnLU6yAANg0YjzhQXLfZwTKn80fuZ0C
- bF/3ocL2
- S4GErYp+oB+d2zNVdvV3XT2qsyMYRE/oPpD/fN/cgJMFLqbHB2yyRqdgkoDjRujevF3FmP/6F/OYFLuh0sD9wz3K+47/BDlXi7ayLtHHx9ArMOLxaH2HVAMew1S2LHOx7g7qqtLtKI0cXRRtVxsZYttKpDMJQUOePA4+FrpFwHtUS7VgM13cMMTP3qFEJkj4ImILr7HKa8J1etpGYP0xr+Quj/5r6Mak18BcOKyP8a0DEcKbfJvBcwsNdQLbVPeClmvpE/b8nQJko81nXBmhfoc3FgOrGhJJRLWIvXq6hBFbQaQDlYzdcH7fWldinpJop3P26L5S1BGiPO9CTjGS2wLo/0zczs1od3XIz0DfP0PzIS5s=
+X-Spam-Status: No, score=-8.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FORGED_GMAIL_RCVD,FREEMAIL_FORGED_FROMDOMAIN,
+	FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
+	autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: E9A391C0002
+X-HE-Tag: 1793704122-70366
+X-HE-Meta: U2FsdGVkX18eqE10lrAnCQu+S6OwyyoDTl5/xN8g63u/FRhH7RuL/r9YYijJ96kqfije8MHcZmH6/C7axPk+DzrFTvY4XqAM58qbjB2cA3NQdxYJAtOkebpsR3KavXRR62br46OI+eJvuO6i/tsFyWZoJMyWEg7F6QgBeaRmUXoOlkm+LkYZVHtTlrpUS8Z0bM+9hr/QAdvqy4o72deK55Tc17SrBLgi36JPTCQwUkdeFw+uPqysEYPwnKYbHz/Y7BxXdy2Ph5vA1mjNixYCDIsb1t5CySgnRTvD8uZWo5h72N96rCtDGYZRmASaex/l/jW7gBtPvWKD4wNwoEmpP48ZbJZlbi1PMtK9szfcOV38yjYQW9Zz8Vv8KLxrU/KwQEI9NADSYoKCOCgWWB/j361WlFoViB1TCaVm0csQHr5CYEtR+G8xkNMA5hFmfqd1s7n8AJgL8LLN49XtIDsqJlbZfvYi2Q5XO8L/tXkQfkwbwKcOxCbvrk50EueT2UL+KIEchS+zdrLfBve1/mwCw2BNJseIwcX9yZs8uIBYwanQYMfKSblGeTnpDoQlwDdP9FSKprbpIyXVXgAnDSbiJ/F1lRCv/el80DhUtLjNnBpG0ZeuQP6LLWyeezlYPR9TZ0Stv1owbikYre2NIofQROTU7IG8Gy6Hi8XKvJFyLAR6lcPoUCqOq3IkM1m0JhylUJrVN79CcoKhfPX67rvLWjsjKILbGaW1RCKZDfXScqywoTYEUGP3wtp4vxq4LeCTxFznx6zU8tcWVm3tUpgA5EGSyJOrCWl/VzmcvrLJqNhHLAPR20MGIB8EWUtqMjZ2LJz1bkhSNgXNP/HTWrYUAmVMozqJ41n/FWVa8xzL00Mp8s3rBKuXzI056O95jc0nMLoO7UJv+s+cMZQZFxi+tXVxZQWNYaugsxyp6zNhExv6PXM8+ea7HGS0YD++UWBB8nzzsS7sZeuC9QmpDHy
+ ZLCc0hSZ
+ 8NgAy6/CBE4TgkjFuMHsa6BzCVYf7pxtHGaCNi7kEvJHuibWwNx6JVsJP5cD65LELSYDO3wOztkLyBDPubRIuACDk3MgvO5rWL8yXzM8IliT3YnA7nBFGCeRQW0rIUmScfBJ6MpM/wbvfo+vpkqMq/gFRL4oS9j8sL3oZL3PIxz03LdvXO3z/4jiAIWHR/fBfpbijVzHSV51lgEZvy6sHXB3XxDGiar2jGPY9zGrNetObJGtcpv1Lh2MOImh/I/Ghz6/v/Y+Ph1xrUvKKimB8vQiDauvGh6uy1zmTrXH4elkCB1rQpwjzWuvn353Q/JGisEsGVQok7e+wBImCIMhdHqXGLi+s8m8JYGSidqT81B4CCpL5wsVX/bB3nDaOJTE/QKVGXSNxlQb5pIHVqFXjUDzbQ4ZWR31TcS5h5lGHM+DEDnzj4ExUMaH/HQ+YPNdkn+h0aATez0q1MZmH24hCsI9RFR/JCF7ZmyomyET6sJSeKBmVLjkBMNkHSVN2N4/E2pH8x/rEuOPUnjBoirK+gWYD8IeW74VVaRmTZclpil1U1NW1kS05v2cFGiQSRWfKU3wv
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -120,68 +133,32 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-depot_init_pool() emits WARN_ONCE() when the depot runs out of pools.
-It runs with the raw pool_lock held and IRQs disabled, and
-stack_depot_save_flags() wraps that section in printk_deferred_enter()
-so that it does not print to the consoles with the lock held.
+On 11/3/26 12:46 AM, Josef Bacik wrote:
+> If the unmap at the end of an mremap() move fails, the source VMA stays
+> without VMA_ACCOUNT_BIT. Neither munmap() nor exit_mmap() uncharges it
+> then, so the charge for all of its pages stays in vm_committed_as after
+> the process is gone.
+> 
+> unmap_source_vma() clears the flag on the whole source VMA before the unmap
+> and sets it again on the remaining parts afterwards, but its error path
+> returns without doing so.
+> 
+> This was reproduced with fault injection: each failure on an anonymous
+> mapping left Committed_AS higher by the size of the whole VMA after
+> everything was unmapped.
+> 
+> Fix by setting the flag again on everything in the range of the original
+> VMA, on both paths, with a new helper. A failed unmap may have split the
+> VMA already, so the helper walks the range.
+> 
+> Fixes: 51df7bcb6151 ("mm/mremap: account memory on do_munmap() failure")
+> Signed-off-by: Josef Bacik <josef@toxicpanda.com>
 
-That deferral only applies to legacy consoles. ON nbcon WARN() puts the
-CPU in emergency mode, and in emergency mode printk() flushes all
-pending records to the nbcon consoles from the calling context. With
-a slow serial console (pl011 is an nbcon console) and a backlog of
-messages, that flush can outlast the hard lockup threshold, all of it
-with pool_lock held and IRQs disabled, while every other CPU that needs
-to save a new stack trace spins on pool_lock.
+nice!
 
-This was hit on an arm64 host running a KASAN and kmemleak enabled
-linux-next kernel under stress-ng:
+Reviewed-by: Jose A. Perez de Azpillaga <azpijr@gmail.com>
 
-   Stack depot reached limit capacity
-   WARNING: lib/stackdepot.c:302 at stack_depot_save_flags+0x6b0/0x6b8, CPU#56: stress-ng-dev/3466160
-   smp: csd: Detected non-responsive CSD lock (#1) on CPU#66, waiting 5000000030 ns for CPU#19 do_nothing+0x0/0x18(0x0).
-   smp: csd: Detected non-responsive CSD lock (#2) on CPU#4, waiting 5000000030 ns for CPU#61 ipi_mb+0x0/0x18(0x0).
-   watchdog: CPU53: Watchdog detected hard LOCKUP on cpu 54
-   Kernel panic - not syncing: Hard LOCKUP
-
-The rest of the WARN splat never made it to the log: CPU 56 was still
-flushing the console backlog from the "WARNING:" line when the hard
-lockup detector fired.
-
-Running out of depot space is an expected condition under heavy debug
-load, not a kernel bug, so report it with pr_warn_once() instead.
-
-At normal priority the nbcon consoles are printed by the printer
-threads, and the legacy consoles honour printk_deferred.
-
-This also keeps a full depot from crashing machines running with
-panic_on_warn.
-
-Fixes: cd11016e5f52 ("mm, kasan: stackdepot implementation. Enable stackdepot for SLAB")
-Signed-off-by: Breno Leitao <leitao@debian.org>
----
- lib/stackdepot.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/lib/stackdepot.c b/lib/stackdepot.c
-index 90c52f2e0d3f42..dea6338f73c1cd 100644
---- a/lib/stackdepot.c
-+++ b/lib/stackdepot.c
-@@ -299,7 +299,7 @@ static bool depot_init_pool(void **prealloc)
- 		/* Bail out if we reached the pool limit. */
- 		WARN_ON_ONCE(pools_num > stack_max_pools); /* should never happen */
- 		WARN_ON_ONCE(!new_pool); /* to avoid unnecessary pre-allocation */
--		WARN_ONCE(1, "Stack depot reached limit capacity");
-+		pr_warn_once("Stack depot reached limit capacity\n");
- 		return false;
- 	}
- 
-
----
-base-commit: 2637bdec0535a2044cd830eba9a79363651d9043
-change-id: 20261103-stackdepot-full-warn-b29a9d89f1a5
-
-Best regards,
---  
-Breno Leitao <leitao@debian.org>
-
+-- 
+cheers,
+jose a. p-a
 
