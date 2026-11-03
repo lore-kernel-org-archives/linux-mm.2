@@ -1,139 +1,145 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77F6C606A33E
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 20:00:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 732D3606A32F
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 20:12:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=igHBwi8Y
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Na2RL3bf
 Received: by kanga.kvack.org (Postfix)
-	id 607066B05B4; Tue,  3 Nov 2026 15:00:20 -0500 (EST)
+	id 8DA396B00EF; Tue,  3 Nov 2026 15:12:23 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5E6126B05B5; Tue,  3 Nov 2026 15:00:20 -0500 (EST)
+	id 88B5B6B05B1; Tue,  3 Nov 2026 15:12:23 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4F45C6B05B6; Tue,  3 Nov 2026 15:00:20 -0500 (EST)
+	id 779D86B05B2; Tue,  3 Nov 2026 15:12:23 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 2C2206B05B4
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 15:00:20 -0500 (EST)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 6C94F40548
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 20:00:19 +0000 (UTC)
-X-FDA: 85394874558.01.93A8181
-Received: from mail-oo2-f10.google.com (mail-oo2-f10.google.com [74.125.231.138])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 68EE0140007
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 20:00:17 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=igHBwi8Y;
-	spf=pass (imf26.hostedemail.com: domain of dennylin0707@gmail.com designates 74.125.231.138 as permitted sender) smtp.mailfrom=dennylin0707@gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 4C79D6B00EF
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 15:12:23 -0500 (EST)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id D2C721604DC
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 20:12:22 +0000 (UTC)
+X-FDA: 85394904924.20.6A40547
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf24.hostedemail.com (Postfix) with ESMTP id A4F62180007
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 20:12:20 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Na2RL3bf;
+	spf=pass (imf24.hostedemail.com: domain of devnull+mt4022.columbia.edu@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+mt4022.columbia.edu@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	arc=pass ("kernel.org:s=arc20260519:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793736017;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1793736740;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1RhPyP7MgK6kNq3ZvHFMegrhlLTeSt9fpqnn/iAW3AM=;
-	b=K+6LKcZ/M5TDqzAupsLxk9lNZ01y0tPJsZPqR7iw4/CXeE5daYhURSB4JWzwZBfMLbbU8g
-	TA3+kEMzCrzh/MZhGvb/2an7oFukPET2rGMczwwU4R7xhDLKYXY/g/DHcHb4ecrJwDbScV
-	Bnvny//ptSL/gvKxjg91BCVLw2bsz6M=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=LPXZxchUm5nge0v3DQkOxszRXEJTkRZa1rt6rKMK+JM=;
+	b=t4TL4xnTFyiJaW+4bHwd4dSKIQQVanJJ4io5JiSOATvzCacrbE+xrSZRDbLiomXu4a9Qut
+	5IWdYfjn/gu8/pUez7R7CNs7/KFoA7+SlohZl2EextFG5ctszyh85rcKZq5+bQibBt1mIg
+	wPfFW3YKXZly9/PXDRZzZs0D5/GuDI8=
 ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1793736017;
-	b=uiHA2641AKg92W5LzFHCG86lkk2BuTf4g/Ije5u9kuQ92LcMe8M7OhuO+vanU0/hwx+SRi
-	EkOJKL2tiD7Sh56k5jvcOsyE5faF6MRujqve06gBf2FG3qQKRVRMz3GTEDPiHcUfhhWRBi
-	3JzKbCmwKabV4n/0qvf6lOuzE5lM49Y=
+	t=1793736740;
+	b=2Dx9nI5wqVHD0n80/IrbGe1vGzwJfbt6xbArzfRd8IDmboIr6w1uh/wPSI2BjxElyNnrVO
+	Ofu7xaUpJucqKHjhV8BhdAgutteOfdQ8W29pwXPFvBELFR2qqqEkKyz7fTgnFpxBrN6H/d
+	xbbTMnA8WKLizniarjYrszT+tFp10G8=
 ARC-Authentication-Results: i=2;
-	imf26.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=igHBwi8Y;
-	spf=pass (imf26.hostedemail.com: domain of dennylin0707@gmail.com designates 74.125.231.138 as permitted sender) smtp.mailfrom=dennylin0707@gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-oo2-f10.google.com with SMTP id 46e09a7af769-85e1040ca0dso640137a34.0
-        for <linux-mm@kvack.org>; Tue, 03 Nov 2026 12:00:17 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1793736016; cv=none;
-        d=google.com; s=arc-20260327;
-        b=HNK9ELlPhd9+FKmFEQNp7ocFG+eU1QAS4475FGbCNIKJKNe6Ctgswsmp95/YPCVxEm
-         onvXI646KbWHGHBWb+BXCIvooy0BkhlZN3gY0pajPLctC84NqxC4ZrP4/bIi6sl7uuKJ
-         PStJn7hSMUnylUN2VhaE2o/CPa3S0My6Cf4AANNJ0SS4m1fjthRPWhtQCyrgTrpNZYtR
-         7+j4oCmJz7w2txDB1fJNlOt0MAhdUUSR6sRHAplk55YM9k9216RBlJ75gRG3KN5BlO/c
-         bzmMFngCSI+yv+x1poc1Zf4rTEoqnWefA+4e0jmeTLdkD+Se12MidQwqFtvhhEYg/MEQ
-         aMwg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=1RhPyP7MgK6kNq3ZvHFMegrhlLTeSt9fpqnn/iAW3AM=;
-        fh=u2+10SaUwKzOJR6bj6fyEBMCiSMuj01/aU8ZOUMns1U=;
-        b=Z4Ckkf89/dkxM7U1aGVkNKtQ5/nM1UiPhvsTpF81jZmQJ/sQ9j7OnGQAHSwFlccRxM
-         jKDZTsrNUj6nTCYWvhDc/2o2rw4XWODnef52CKm13sf9xQa7i3w0jUoVgVgwRu+3k/4+
-         BZYidMU8KYJZytyXAHWy3m8R5ptmNihslp/pvbquzg/3NnAzkELUPlvWjAZU3NR3PE83
-         Sq7Ck8OVnGwyApTbrKa9jt9Gw0CZZ9Ew946b/qxITcGvi/2VuVIAyz0Z8jLTvownmFBP
-         /IOTEyC144+3Y6HyIjg4xX5p5nArYFtgXPmBJXXQNbcbqvOXXz5RRSdPpukHWE98wyV3
-         TzqA==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793736016; x=1794340816; darn=kvack.org;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=1RhPyP7MgK6kNq3ZvHFMegrhlLTeSt9fpqnn/iAW3AM=;
-        b=igHBwi8YAGL3/eZ8WVTYfdmpMVQwavSKTsj4YIF1oOq5MsUrEGRQsT1Cf1611gz8bz
-         6JVMPgxjO+l/vEYx5S5x80hP7AEo8ZXKf7PyAQCqWd3oeR5Ay3X5GD9ucTco1W0o7y5c
-         ksh0WAz+b24KjzhMosXPaG0xwOs3GL7ZCLeRimH3BdzFC6ndbY0rr6fACNnH4knU07F7
-         /o7UH+4neQshLtXgw9h/cbVLaWsuinPXkR6vyL33RwcLWKuCqqkURqny/kWNF3jXOZuf
-         q0a3n94LO0KJM64nWb1+OFnw5rIMPLYeCBM5SelCTIQFrHZOwDKQWVwwzxGsHcnVQ2z7
-         K18A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793736016; x=1794340816;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=1RhPyP7MgK6kNq3ZvHFMegrhlLTeSt9fpqnn/iAW3AM=;
-        b=rauk2qr+mKyyuFIW9rCGqy3JiJWeSy/gfL+b4ep4sBsj8Yh5lOyiF6HM2MH8gRA1dm
-         bMufWYOk2kXQwgDPHGYLjE/EY92mQZ9xqF/4Vg3RbgRsgvcGg1IKjhLpwMX3hC8BWghn
-         vtIYi4ss0ydAT3lllHOXF+xaIyaetdTGSXMeMWNTppw+zVX44OpNIBIMWhxQTzRtnsmP
-         +H+a0jlo3xfB8gotHYiD5T7nuc9yvbwsqqXvPbrx8SbaeSaK8xABN4bbQYd4bFwuF5SW
-         zgQ6QoXrY0CcGHuFGSZW32EGHFHnoGE5XC5qNNnnWQ4JgcyfYFJFb84oCNSEuI8zhp3m
-         71vQ==
-X-Forwarded-Encrypted: i=1; AKwUvBy5kSOt8EWQS5v8Jmie2SLupu9J0kiYEd4LZh+XoT4aR1tkB/BeXU8DDqS0zANvb5CqJ0G3UALg9w==@kvack.org
-X-Gm-Message-State: APuU4Z/iNv6b81A9w/SnnVVicoTEk4X5n34WfoBuKB3OVXLrZSpcQJiQ
-	o4mNzgt8+lhakDuBrzAnFh/3fmQkBHx6cYnh7zMSDunrKZthv6ISp/3jfXH3Y36mIwGrUWfW/fu
-	rlBgnw4uEMLrBQQS6mjfeYPifZiAEBVw=
-X-Gm-Gg: AYBFou3yITkxd8nkUzF69QSQ1e2MZqOtpCSdmmESM1C21OByt+685jCGzjhvPDlVJrs
-	FQY0rkk+u61d2ygdjXWh5H3tvpsRQgxImhD/ri+294PNg8NWH6+YKqO1NU5PaBr2oFZuBzBl7Qf
-	HO01aN4hdvaMctz/p+E3RBpmyq3pnaqCqzCyAPTRbLG7WteowEUYva9C0JQTSTjH0z2N83JRorC
-	CtHmMZUTBTfMd5c8l6WO9dTH2DrFDqmAyFpW+JSNydXxXMA6e56tvana3iR9i0MWiH5pm6XEJzz
-	Jlr13Qjv/hGNNJ18c0B7fiPaePih/2LVyohm+KRcPqD5/oH2E8H/i9W9Q4hZGmBuaXnNjOfLzeM
-	NGYV0N4BoJyRDl2G0ppRK4nj1opI/rtSbE0JLZnNzfcb3KwnjUFSvliVduYToocv8ynmLxEmoKS
-	3N5Tfmbw0tkp2fqdUP6Fllakze9BgiWgDbT+5TUkeSRvDy+KGtdA==
-X-Received: by 2002:a05:6808:1989:b0:4d5:2b09:a6a7 with SMTP id
- 5614622812f47-5640df62911mr8844212b6e.65.1793736016272; Tue, 03 Nov 2026
- 12:00:16 -0800 (PST)
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Na2RL3bf;
+	spf=pass (imf24.hostedemail.com: domain of devnull+mt4022.columbia.edu@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+mt4022.columbia.edu@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	arc=pass ("kernel.org:s=arc20260519:i=1")
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id B25AE438DA;
+	Tue,  3 Nov 2026 20:12:19 +0000 (UTC)
+ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
+	t=1793736739;
+	b=ji4EYdjdTE8+f8dbQZfpPxgBBx1R6YgWnzSvsCmtyCBmOEEj0b197tajcWgnBluHxsGB
+	 8fpibcEeB/j62bqRbzHMY35TWPEVomuH+cEc93RJY9GwvkjDCikT2yEKrJRh/Iqg3rrLW
+	 +tXmhQoS5QJPv0VRjRRp+6jNE5GPUT0gQjnBn2cm09CeWfW2JlCCPCvaTMaDfKl8Ir7mj
+	 w3cSaBcpJWItxY2WEujD1fV5tht8RQygGKGpnk4CsjWhmvTH6phURP5SLpHix6rgXnV/f
+	 Lpsooi25DysPxElKabQELqlbL3c6KPS5U5/efrr+CmPhegPRJiFk+Al+vGYOcvleqzw==
+ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
+	c=relaxed/relaxed; t=1793736739;
+	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
+	 Message-Id:X-B4-Tracking:X-Change-ID:To:Cc:X-Mailer:
+	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
+	 X-Original-From:Reply-To:Content-Transfer-Encoding;
+	bh=LPXZxchUm5nge0v3DQkOxszRXEJTkRZa1rt6rKMK+JM=;
+	b=cmb0421mg3bmxy0sI04fFms24rqe3RUN8J+7rPYXRMufUPAq1z2NIPP7+ecKUX3SQucZ
+	 GFDo7xRLyUXwZQl01QBXZKOgfvxf4zkQk/7CdFjuwKDFDVyMRZaDyfmNTaFka2gRH6Eyu
+	 ZPqBGKN/oyARa8pCnI5qgCufXQGYSj5KL1yJ/PMQWnCRFuzLiHCcHbtsctOIqm3ntG91f
+	 Yw5gTpuXy1lm+NMg3weOA/cMZ+Bt/hc/e3E3TZv1aQhX9LQJLaNxdaPitcxDmsuKLJH/v
+	 S7+XaL7pppO/2kmReD73bXtgpGgpJSMNtlITji2064wIvU/NoAf7JsuAk3wdNTKgeFw==
+ARC-Authentication-Results: i=1; smtp.kernel.org; 
+	arc=none smtp.remote-ip=100.80.115.77
+Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	(No client certificate requested)
+	by smtp.kernel.org (Postfix) with ESMTPS id EEEA71F00919;
+	Tue,  3 Nov 2026 20:12:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793736739;
+	bh=LPXZxchUm5nge0v3DQkOxszRXEJTkRZa1rt6rKMK+JM=;
+	h=From:Date:Subject:To:Cc:Reply-To;
+	b=Na2RL3bfb20YvrgQB4657VuEeiqj/7j8/u9JoQCyvNC5wApVFkuuxS7VJNf+r4J9l
+	 eR73dDXBvo3g3ve3mn2jOcFZHZCaFzbpQmHx7Slyg59LPgncZ609yJm5h5hX25vzAb
+	 EKJwpr/T9FJnEgDWcS5eRzlw40wotBdjpyYuHjRsjKa2Mw7tDRqUSli2HjQiSqONZN
+	 gnHd/NqafuK5iRx4NDRrO7HO5EN7pgLwZAfiUr7cyWvm8iLM7GdAprxHzgyYkjHBNn
+	 i+mBvyT1ks02kpqfhqUzoyqwDq6ATtxVPk3YiZCysA71VFve35vyj7Cjj50/g6clxw
+	 /gqf6qiQPem3Q==
+Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
+	by lkml.kernel.org (Postfix) with ESMTP id 6F87246AF9;
+	Tue,  3 Nov 2026 20:12:18 +0000 (UTC)
+From: Mani Tofigh via B4 Relay <devnull+mt4022.columbia.edu@kernel.org>
+Date: Tue, 03 Nov 2026 15:12:18 -0500
+Subject: [PATCH v2] mm/swapfile: drop a large unmapped swap-in folio in
+ unuse_pte()
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-References: <20261027171753.1485-1-dennylin0707@gmail.com> <1bf7784c-49ee-4f18-b1fb-205dc064f40f@kernel.org>
- <CAGEkeHcwUEQ0tAXZ5npAhPp1OPMqkmZcNPTU1OnRuNTrwkDJMQ@mail.gmail.com> <675cfc9a-48ab-446d-9fd0-a1937dfeb0f4@kernel.org>
-In-Reply-To: <675cfc9a-48ab-446d-9fd0-a1937dfeb0f4@kernel.org>
-From: Hungyu Lin <dennylin0707@gmail.com>
-Date: Tue, 3 Nov 2026 12:00:01 -0800
-X-Gm-Features: AclHuK-BJ0yjRgrJipuFochA2hXCTEwqPffiASuKtCyUP3wwqOB-H0RMLhHi6Og
-Message-ID: <CAGEkeHey0fjkgqbrxyW=9JNX1KuD+OWzzEUwi-37ehD+07SR=w@mail.gmail.com>
-Subject: Re: [PATCH] shmem: skip empty unmap ranges when punching holes
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: hughd@google.com, baolin.wang@linux.alibaba.com, akpm@linux-foundation.org, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Stat-Signature: ju5g7s7w7ttaibjodywn1bntjyi7q51s
-X-Rspamd-Queue-Id: 68EE0140007
+Content-Type: text/plain; charset="utf-8"
+Message-Id: <20261103-swapin-large-unmapped-v2-1-87c70e597250@columbia.edu>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/4WNTQ6CMBBGr0JmbQ0FUtEV9zAsSjvIGChNS1FDu
+ LstHsDly/fzNvDoCD3csg0cruRpNhGKUwZqkOaBjHRkKPJC8LzMmX9JS4aN0sUsmElai5oJVfc
+ CxZXXooK4tQ57eh+/9/bHPnRPVEs6S42B/DK7zyFeeer9c6yccVZxrCSWlxqFatQ8hqkjeUYdo
+ N33/QvGuIcCzwAAAA==
+X-Change-ID: 20261030-swapin-large-unmapped-6c8f6e691864
+To: Andrew Morton <akpm@linux-foundation.org>, 
+ David Hildenbrand <david@kernel.org>, Chris Li <chrisl@kernel.org>, 
+ Kairui Song <kasong@tencent.com>
+Cc: Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, 
+ Baoquan He <baoquan.he@linux.dev>, Barry Song <baohua@kernel.org>, 
+ Youngjun Park <youngjun.park@lge.com>, Lorenzo Stoakes <ljs@kernel.org>, 
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+ Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org, 
+ linux-kernel@vger.kernel.org, tz2294@columbia.edu, stable@vger.kernel.org, 
+ Mani Tofigh <mt4022@columbia.edu>
+X-Mailer: b4 0.16.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1793736738; l=6340;
+ i=mt4022@columbia.edu; s=20261026; h=from:subject:message-id;
+ bh=Lm38oXbEJUXl/i24q7z5muDUs9iAOX8Ua2b7rdxhOzg=;
+ b=ko0BNXLXteVoQIhJcyCVhxe1a2+lBg/WU4R0hGskkUGY6phfCi+7xVH4iJejuhqQr+YMn3mJf
+ 4Zi9sXrKEgzC37xSgQL2HITElxMBpjxiDPYRWPQ11naL9T4dPOqIP5V
+X-Developer-Key: i=mt4022@columbia.edu; a=ed25519;
+ pk=gljCMQDuxyKPmd5y37CRpEJGSPXDV1MyAnHBhCgXl0I=
+X-Endpoint-Received: by B4 Relay for mt4022@columbia.edu/20261026 with
+ auth_id=1322
+X-Original-From: Mani Tofigh <mt4022@columbia.edu>
+Reply-To: mt4022@columbia.edu
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam06
+X-Stat-Signature: eoimp1bn4umy9csdtpexbbtwwq9rc5ca
+X-Spam-Status: No, score=-23.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,
+	MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT
+	autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: A4F62180007
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Spam-Status: No, score=-2.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=no autolearn_force=no version=4.0.1
-X-HE-Tag: 1793736017-181717
-X-HE-Meta: U2FsdGVkX18VCOdxdPmnjhC5YwwykwleR/nLuk9tLcCvLSo6nP8Y39rwrSSh9Nb2qYfMhHs04PFcQmSelPTOSXBlNU05W5JoswekGDXR21DZS5MsfXilYt99tm/7oIk27Lo2xZQRG4bMpnw3acV4k4wS+5V/lRNomV8K+m8tqJ+ESeFw/S0DO0BB1AOF2QBh6VNgR6BY17kfvFaEGQOih3ZvwLqOF2toRXjuPLIY8yYayJswi9ioBCBm4fF+sconJktZ6HOq7M+eT5Kg5dPTaql5atUpuxN67qrcsjpsJTEWUrXaxQKMqbNP1RZJlLjHrXGaWthtBfmlLoOgbdjTxnqBTisuDEw5rAqh0x3IfWfWHUnoT/W3CEqRrG9W1eckZeCsfJo8lLxa16q3ByB6cNstpmm0fe67TMJK7OuebnfR3tTWzEvJPuyFWJX09KsDsSU1uC5KcbGeseyDAkm3h3uwBQU7hbvrmNy8/pUWzUrzixTorKZkJdev8StPxots7Ot+rP6XNKwOs/YIzdHBPHMVI+pBgb/D1TB1eHok0CsTV567ZSxybntSi4BGgYw9dUBm5/XoU7wi+PIaOpF42hY+HxuOzqaPS19gAMNdT8i//bbQDuyckbbMb3U0Yz0JdHJm8mUT8HjpAUKIixwTLm20tiKTlcDieOcBYgz/bSgh1ZHf04odCV8lZ0Jr6zUHO9EDqFAm2rZXVBhRrBk96YkyCSKC13Dy+mui6DSSirSJRmEgn+CGq6bXAuoQZWXxVwSsyVrhisSpM/vdK1a6oJHQN77nEX4ARlv1Xp2dfhWSFfY55J+xj367MIHQBHc4Z/x0mHvREvAoKlyMzkT3vksrYMJvLpAWnGgRWP8PHZ7cYTgUMzENelrX2bmQZBRHMwFSisqVRmeWVpGdnVoaEOpt7Myg6Dg7+Xf6Phtl3GP4jDHXFuQoNVzCV4fB4n/oEHuJyPsW2uRJ5GLsy08
- QJSTjsJb
- OYdtGrbaoV00QHFLA74fvq9VK9OpUimbFAavLN0GVqRZw3t9JRECHHssGjntb7huaK//Fy6kK1/v3pFdZD4JFLJZivbvx1zctWuZvXntuzjTBGRb51AD3PTAS/1uFDVUsZSOPYz/eimVcTkmAuY6lLZad9EWFEH67PG2LmmPm51Asflqggi4L65YIEb8e/wBVq0snxqSU/xsCt8Dv/Qw5eEeJxJHs++8IAr0nuPrAuEA796Mqp8xppiOfi6XNnaudD8RMY2kJcCgYqpXl0H4EgXUU6c184zDZTeJ44YnIMNeeccUH5nIOx/PT4DICAbTTJdUv8p/EtEK2WAdi/+ph37MIMw/mxLvuWWGUgK3VMdPOs6XG7DXaW21MoM8n0AJzMR4oRsethZ+rs+YucWay7AFfgNJEd+XNjQw50idqRgNO6GI=
+X-HE-Tag: 1793736740-888534
+X-HE-Meta: U2FsdGVkX1/tGspgj2RJ80uL0fa7nOr0N3bVlHIbwKGWDpSTbGIgnidB4w2U4yVLiIRYjqjfreYkmKCGDcET4UDXlVBmhcpCeDLp1/2ifsYfrQ+A6yt4q0yFwVje6y1N5Fyg60lseHTrnrharkXCdLFDaDMvGk90tt5FTnA+tsuokmNf/02LuMtS7W9V1p6GdGW79OQQ2wCSufCq5aXyxSuzZMmtgwoO3yk9v+6dumZJ5YOrSyrlMSGWMNJnh34j9/sEH+xlvAXEj9viAC4hULNPNrSEo4g4kvXcpLaSjsDFSBv0Yz5727bv5hDlY+65xHfuJGQ8bBlZPVspJ3PexTHxv8BsoB/qnMIv15HaJRmG/XlzQFDZR7M58rQsztjotB0IQsD2cCBrojMwLhJlltgTkIC/+bf1WA32uh3uLKmhv9QeCks7p9EDy+Ko/qc1vjSaK9WAsxdqyklEY8EMMxhifleqreTCdod1rJlABPHmcmzkp/ibVmX/wSZ3P23wPoGr/BzwG8jut4B90b60iLn/pzQykSkLiJmtXg6MZ220RCCz8woFjddnDetrxge1b3ZEEaAu1ty2S9h9k5IIoBFIqFytJFujS6OBT2L0Lb8sLL6mbBsHNTomyiqAJDfd9fsau2qf5uBJP3ihjFnA1awido4Uqlt4deXGxvr13zvic57alrTFuE9YSAmK8p33aGO0m4TbU5sn+91ITNzDE58ErVehoWYWmDY4ALewucYPWX+WHCRXbnxuULhKP3HQlCSbVTplWX7yxiombcDKlq2BoDFoIePy+JgT2Ft4qOwf+1Cx2tTx7VYhVgv/ZX/HyCwnbDPMKlWerg67uTYJE0G4k0YhCeJEv+CZGMOkcgf7Yg3wjPC036UTCEBCOYC8L86R7C9cCdl6Lrri48y/Rb7suiYQJiCb/5M7WUhLB3d7O5TXB4AFY25/xU660YG8M8y2ZRmEjS5khhw4T6m
+ 5UBZ/Hs6
+ IfYjuvjvzHMA8Cf+dWMG19GwJ7DdZdL2O5xCc/WLUTFPc04xT1+6fLK0YfemXHipHwS/3abR8KFZLbZjBISvZYMk+ak52o7pI1OfXNHaIo4ydAlx9ScFijmolwOMzbMDUACqUtWpNdSikdzHrApV849WHxi/GMqr37EPQFB2zj44MxXy2k2Ndn9/mb08CdvWmATkL2MULpW8PVlvoDWLL62mGJLKScijpPj4SHwvV2HeYwUwK7QiJOVecq9qihvcw2h7VfvmVHGX2/iHxI+CJYmNdvstko7VzK+753dRyXSEzECqWJMM4lA0ZXm/Fqf1lBL8hqrQMiOqwHvPYP0inD3qDDdgZKF9NuC7aGYT2+6ZL9gV6+16QWJpbkSHF7V7xY3NbNYdurVqLiR6OkppGBzS81KZEZYeUiIB+PWSO6KNFgwwYY63jjXauV/CwI0SVtb/rHlmTQ07ZpOC9oIkimUKDA4oX5atfJPuNc3AF5wsa0Z2HqyYuGdvQOrcz3ufDhZS4eVLJj2eV9e4apF9ySBF7Z7rjVCf1ArOfR4YHVCZiQgiA4aQq0ENC6OAyfHri9RgXqw7Wwe+JQjkJcrJckj7fLZOXxygUs72bsWNRDJM1glA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,19 +148,163 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-> To be clear, I was asking whether we could do
->
->         if ((u64)(unmap_end) >= (u64)unmap_start)
+From: Mani Tofigh <mt4022@columbia.edu>
 
-Sorry, I misunderstood your suggestion.
+Since commit f1879e8a0c60 ("mm, swap: never bypass the swap cache even
+for SWP_SYNCHRONOUS_IO"), a fault can read a swapped-out mTHP range into
+one large folio in the swap cache.  The folio only becomes anon once
+do_swap_page() maps all of it, so if the faulting PTE changes in the
+meantime the folio stays in the swap cache while not being mapped or
+anon:
 
-With offset = 0 and len = 1, unmap_end is -1 and unmap_start is 0.
-Casting -1 to u64 makes this comparison true, so it still passes
-a zero length to unmap_mapping_range(), meaning unmap to EOF.
+  Task A (fault)                       Task B
+  do_swap_page()
+    /* swaps in large folio F */
+                                       madvise(MADV_DONTNEED)
+                                         /* zaps the faulting PTE */
+    /* PTE changed (F not mapped) */
 
-The +1 turns -1 into 0 before the cast, so the submitted check
-becomes 0 > 0 and skips the empty range.
+swapoff then maps it, which marks all of its pages as mapped and
+exclusive, and the next fault on one of the other PTEs crashes in
+do_swap_page():
 
-Thanks,
-Hungyu
+  [    6.424485] kernel BUG at mm/memory.c:5195!
+  [    6.424503] Oops: invalid opcode: 0000 [#1] SMP KASAN NOPTI
+  [    6.427654] CPU: 0 UID: 0 PID: 67 Comm: swapmthp Tainted: G        W            7.3.0-17087-gd865f2677c44 #1 PREEMPT
+  [    6.432665] RIP: 0010:do_swap_page+0x24eb/0x2fa0
+  [    6.451035] Call Trace:
+  [    6.451567]  <TASK>
+  [    6.453841]  __handle_mm_fault+0x13b5/0x3b40
+  [    6.458525]  handle_mm_fault+0x16f/0x480
+  [    6.461143]  do_user_addr_fault+0x312/0xa30
+  [    6.462044]  exc_page_fault+0x66/0xc0
+  [    6.462846]  asm_exc_page_fault+0x26/0x30
+  [    6.476708]  </TASK>
+
+do_swap_page() already drops such a folio from the swap cache when it
+can't map all of it.  We move that check into a helper and use it in
+unuse_pte() too, so swapoff drops the folio and swaps the entries in
+again as small folios.
+
+Such a folio was never mapped, so it shouldn't be dirty.  If it is, the
+helper warns and the folio stays in the swap cache.  unuse_pte() then
+returns -EBUSY so swapoff fails instead of retrying forever.  With the
+fix, the next fault doesn't crash anymore.
+
+This bug was identified and confirmed with the help of a deterministic
+hypervisor currently under development.  The C reproducer below however
+hits it within about 1s.
+
+Fixes: f1879e8a0c60 ("mm, swap: never bypass the swap cache even for SWP_SYNCHRONOUS_IO")
+Cc: stable@vger.kernel.org
+Signed-off-by: Mani Tofigh <mt4022@columbia.edu>
+---
+Changes in v2:
+- Move the check in do_swap_page() into a helper and use it in
+  unuse_pte() too (David)
+- Use VM_WARN_ON_ONCE() for a dirty folio (David, Kairui)
+- Keep a dirty folio and return -EBUSY from unuse_pte() instead of
+  dropping it, since dropping it would lose data (Kairui)
+- Rebase on mm/core.git for-next-fixes
+- Link to v1: https://lore.kernel.org/r/20261030-swapin-large-unmapped-v1-1-41e4ae378e6c@columbia.edu
+
+Reproducer: https://github.com/manitofigh/files/blob/main/linux-repros/swapmthp.c
+---
+ mm/memory.c   | 17 ++---------------
+ mm/swap.h     | 21 +++++++++++++++++++++
+ mm/swapfile.c | 11 +++++++++++
+ 3 files changed, 34 insertions(+), 15 deletions(-)
+
+diff --git a/mm/memory.c b/mm/memory.c
+index 91836d217d25..2e0dadbee382 100644
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -5166,21 +5166,8 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
+ 	BUG_ON(!folio_test_anon(folio) && folio_test_mappedtodisk(folio));
+ 	BUG_ON(folio_test_anon(folio) && PageAnonExclusive(page));
+ 
+-	/*
+-	 * If a large folio already belongs to anon mapping, then we
+-	 * can just go on and map it partially.
+-	 * If not, with the large swapin check above failing, the page table
+-	 * have changed, so sub pages might got charged to the wrong cgroup,
+-	 * or even should be shmem. So we have to free it and fallback.
+-	 * Nothing should have touched it, both anon and shmem checks if a
+-	 * large folio is fully applicable before use.
+-	 *
+-	 * This will be removed once we unify folio allocation in the swap cache
+-	 * layer, where allocation of a folio stabilizes the swap entries.
+-	 */
+-	if (!folio_test_anon(folio) && folio_test_large(folio) &&
+-	    nr_pages != folio_nr_pages(folio)) {
+-		if (!WARN_ON_ONCE(folio_test_dirty(folio)))
++	if (!swap_cache_folio_mappable(folio, nr_pages)) {
++		if (!folio_test_dirty(folio))
+ 			swap_cache_del_folio(folio);
+ 		goto out_nomap;
+ 	}
+diff --git a/mm/swap.h b/mm/swap.h
+index d5bf21f517dc..f045a384fe79 100644
+--- a/mm/swap.h
++++ b/mm/swap.h
+@@ -464,6 +464,27 @@ static inline void __swap_cache_replace_folio(struct swap_cluster_info *ci,
+ }
+ #endif /* CONFIG_SWAP */
+ 
++/*
++ * If a large folio from the swap cache already belongs to anon mapping, then
++ * we can just go on and map it partially. If not, and we can't map all of
++ * it, the page table have changed, so sub pages might got charged to the
++ * wrong cgroup, or even should be shmem. So the caller has to free it and
++ * fallback. Nothing should have touched it, both anon and shmem checks if a
++ * large folio is fully applicable before use.
++ *
++ * This will be removed once we unify folio allocation in the swap cache
++ * layer, where allocation of a folio stabilizes the swap entries.
++ */
++static inline bool swap_cache_folio_mappable(struct folio *folio,
++					     unsigned int nr_pages)
++{
++	if (folio_test_anon(folio) || !folio_test_large(folio) ||
++	    nr_pages == folio_nr_pages(folio))
++		return true;
++	VM_WARN_ON_ONCE_FOLIO(folio_test_dirty(folio), folio);
++	return false;
++}
++
+ extern const struct swap_ops swap_bdev_ops;
+ 
+ int shmem_writeout(struct swap_io_ctx *ctx, struct folio *folio,
+diff --git a/mm/swapfile.c b/mm/swapfile.c
+index 71ef9e2efb3a..fe2a00190806 100644
+--- a/mm/swapfile.c
++++ b/mm/swapfile.c
+@@ -2513,6 +2513,17 @@ static int unuse_pte(struct vm_area_struct *vma, pmd_t *pmd,
+ 	if (!folio_matches_swap_entry(folio, entry))
+ 		return 0;
+ 
++	/*
++	 * A large folio that a fault didn't map can't be mapped one PTE at a
++	 * time here, so drop it and swap in small folios instead.
++	 */
++	if (unlikely(!swap_cache_folio_mappable(folio, 1))) {
++		if (folio_test_dirty(folio))
++			return -EBUSY;
++		swap_cache_del_folio(folio);
++		return 0;
++	}
++
+ 	swapcache = folio;
+ 	folio = ksm_might_need_to_copy(folio,
+ 				       folio_file_page(folio, swp_offset(entry)), vma, addr);
+
+---
+base-commit: 71555ae8c7572fd99158013ca2e29187c5d2508d
+change-id: 20261030-swapin-large-unmapped-6c8f6e691864
+
+Best regards,
+--  
+Mani Tofigh <mt4022@columbia.edu>
+
+
 
