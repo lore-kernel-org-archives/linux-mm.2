@@ -1,105 +1,124 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF9A9606A33B
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 10:29:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A095C606C586
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 10:33:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=QQ1qfgqU
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=FYO7Z5RD
 Received: by kanga.kvack.org (Postfix)
-	id 219DD6B05C0; Tue,  3 Nov 2026 05:29:50 -0500 (EST)
+	id B274C6B00EF; Tue,  3 Nov 2026 05:33:50 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1EF6E6B05C1; Tue,  3 Nov 2026 05:29:50 -0500 (EST)
+	id AA9AE6B05B2; Tue,  3 Nov 2026 05:33:50 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 12D096B05C2; Tue,  3 Nov 2026 05:29:50 -0500 (EST)
+	id 9713D6B05BA; Tue,  3 Nov 2026 05:33:50 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id EBC866B05C0
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 05:29:49 -0500 (EST)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 8B70FA7E0F
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 10:29:49 +0000 (UTC)
-X-FDA: 85393436898.15.5EAB445
-Received: from mta0.migadu.com (out-99.mta0.migadu.com [91.218.175.99])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 6E936120006
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 10:29:47 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=QQ1qfgqU;
-	spf=pass (imf29.hostedemail.com: domain of dongtai.guo@linux.dev designates 91.218.175.99 as permitted sender) smtp.mailfrom=dongtai.guo@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 6C3DF6B00EF
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 05:33:50 -0500 (EST)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id E28F7C0397
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 10:33:49 +0000 (UTC)
+X-FDA: 85393446978.24.17AB969
+Received: from mail-pj2-f2.google.com (mail-pj2-f2.google.com [74.125.227.130])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 0DAE2140005
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 10:33:47 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=FYO7Z5RD;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf09.hostedemail.com: domain of jm5905938@gmail.com designates 74.125.227.130 as permitted sender) smtp.mailfrom=jm5905938@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793701788;
+	s=arc-20220608; t=1793702028;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9OSvScGRwha8A7Tb2tHR3R5F02sXRmMamVkr8+PRTWs=;
-	b=biaTD5CIx+wTorVN8epHHY/Ukbz7AAnwvWZSIfBJ3HC9UC8y1nX5HwAxXJ6kX7qqNYJUV/
-	8Cx9/QYhBWjvqIgFuy2GUAh4FxebIxG7kn4km3bUgecWUsx0ahRKW7E6DW5p7c+11xO/xn
-	eic6kkgqkFvS+lH1y8reRs+pR4ckaQA=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=QQ1qfgqU;
-	spf=pass (imf29.hostedemail.com: domain of dongtai.guo@linux.dev designates 91.218.175.99 as permitted sender) smtp.mailfrom=dongtai.guo@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	bh=BN9Z4rjr/QQvEFqoc3xGEEd37Gz2EGsQ1eWVAdfc5T0=;
+	b=QHBwIFfOf0uiRbTgEI2RJqTAHA/wOZkAjM8K8UA9pC0H1TNfvp7SxWg49SP9H+n7gxKnXo
+	aJ7Px7KHlkiMgFcGasDU5vOJKZFAk9ddaYfEandpaU7HTOWGKIDXKt0+uFabLEt92+qEy+
+	vVvmHq/UwD3OCUN17Ji76VB3N1qZzCc=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793701788;
-	b=wXyzf+ZrbHTH5QemIaxfXRYYZeXcKUsxjkNKzJ0MFgVMWDEe8YPHwcnWTd8Nm9mnQ+Hy+d
-	0tGAi0ze4fJcMQOyoHMaegGSjghNHgU6s2hHRZe/W1QjIwWKG5p4S8uyh06Zvf9NJA1xFQ
-	oEndPFuo2O5EEBMdcnkGubVvtZ3CCBM=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=9OSvScGRwha8A7Tb2tHR3R5F02sXRmMamVkr8+PRTWs=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1793701785; v=1; x=1794306585;
- b=QQ1qfgqUbGhGBerxeLuJhyNk7bgr29IpB6mdUWq7I5GBjwVxZyy1/52gPaY/7kXtM0GXHLCx
- 4RpcT2uiJ1ar4EFiI4YDe8tiB1L5f3BVfM1Orm01rf7eF0WUMSfamObsQPcMPJ6r1YAuC3tWkmp
- 0vu1Vhi7wZbuoThW/OWjzw8w=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 129eb9b76a2afe71;
-	Tue, 03 Nov 2026 10:29:45 +0000
-X-Mizu-Trace-ID: 129eb9b76a2afe71
-X-Migadu-Flow: FLOW_OUT
-From: George Guo <dongtai.guo@linux.dev>
-To: ardb@kernel.org,
-	pratyush@kernel.org
-Cc: rppt@kernel.org,
-	pasha.tatashin@soleen.com,
-	chenhuacai@kernel.org,
-	shuah@kernel.org,
-	ilias.apalodimas@linaro.org,
-	akpm@linux-foundation.org,
-	baoquan.he@linux.dev,
-	ruirui.yang@linux.dev,
-	guodongtai@kylinos.cn,
-	kernel@xen0n.name,
-	graf@amazon.com,
-	liukexin@kylinos.cn,
-	loongarch@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	kexec@lists.infradead.org,
-	linux-mm@kvack.org,
-	linux-kselftest@vger.kernel.org,
-	linux-efi@vger.kernel.org
-Subject: Re: [PATCH v6 1/8] efi: Pass KHO state to the next kernel in a configuration table
-Date: Tue,  3 Nov 2026 19:29:41 +0900
-Message-ID: <20261103102941.11087-1-dongtai.guo@linux.dev>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <2382a0ee-cb6d-4572-be6e-ce3cf4d006e5@app.fastmail.com>
-References: <2382a0ee-cb6d-4572-be6e-ce3cf4d006e5@app.fastmail.com>
+	t=1793702028;
+	b=nRpiCc/BVBMdDaBQ0oF6lSE8+jtiyHWt1HyZAINKlHrXrEH5hP58/YOtu41cZgilCV1nXU
+	SU1b6SMwb5DjezBVJprhPuAfOClEUKW5KD9PYlrHHCpgMWWfP/Dc0mGLzUehOjCcI5lnoR
+	lfFaUsFKT2HD5BZwJsC46Z7CZjhfVp4=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=FYO7Z5RD;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf09.hostedemail.com: domain of jm5905938@gmail.com designates 74.125.227.130 as permitted sender) smtp.mailfrom=jm5905938@gmail.com
+Received: by mail-pj2-f2.google.com with SMTP id d9443c01a7336-2ea19bc317dso35404175ad.1
+        for <linux-mm@kvack.org>; Tue, 03 Nov 2026 02:33:47 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1793702027; x=1794306827; darn=kvack.org;
+        h=references:in-reply-to:cc:to:message-id:date:from:subject
+         :content-transfer-encoding:content-type:mime-version:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=BN9Z4rjr/QQvEFqoc3xGEEd37Gz2EGsQ1eWVAdfc5T0=;
+        b=FYO7Z5RDLh/6GY6Nk0pwDxaOielzOrQ11+LJLGecZD8bG2/MWJSuZ3vbadrNGzYK+w
+         i9rY1KqWJ4nrn/v2O2506jPloua7MhBwmfW2OftpEFVZcqjlx3yVb8V6uvouFGQTZ5ql
+         fWqHtckugYhqZEQ7S7W5VTS1J8qYhuwXe0/zlrz49pUkis1um+FEQmN7iKE3TN8Gf68d
+         /y9YKFW3bD+G/IytO2htNMITB2C9OW1Q/dYtXRseqSEngEE4EMjLUMl2CZhKZISI4qn6
+         7yg+bpSR0HSpQCtXP0u4hBMBXevLUm3ajomgE7BVA4j4PUP/krgj1Zojllj1shppaoWh
+         PV4g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793702027; x=1794306827;
+        h=references:in-reply-to:cc:to:message-id:date:from:subject
+         :content-transfer-encoding:content-type:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=BN9Z4rjr/QQvEFqoc3xGEEd37Gz2EGsQ1eWVAdfc5T0=;
+        b=cPdyXe8lCELsk8rBnDP2Kf4hsX6iX84BLz6Fu+2ww+4IyoEnw3ricyoFq7FzdAOKNO
+         DXwdkjHkoVb7rbSnAaZb0jOhQC33qO/EOMWITICGBtF6EVa/jqnm3geLupUyFrPEF8LI
+         MJh92/C2CVOPBbMZ5gg5OykdP5aalYd3eoODW/SBEePLymIajwn+mzk3LS6FZAYKi61k
+         ptII3RUWyWzAhexATSzu7zu6a1Wq58p+DvwnLWyFVSg1lYqpd/11IQhwh4rrwqeVbqgv
+         4k/ic939AobTlRKwFznclciOdU1lBki4ZR2hKbfi8rK2C47HpM4pArMSkseBwng95+qa
+         FUKw==
+X-Forwarded-Encrypted: i=1; AKwUvByo1ak/WyLgvfWDBcxuDa2hICwHYKnXcXbTAV8p1kyi8wH9sQzMem2f/gDSwHE/ifyKw3AIsfPG4w==@kvack.org
+X-Gm-Message-State: APuU4Z/a4gDQv/bzoYB+W0NYByyPQbNsGOr9d65mXVYVHVVT7bDvvVRr
+	px0uahMcDI9sQl1PRV6RmzWeJk3u3IK5zc+PMrUPE5P6R3+98lJ3uV4H
+X-Gm-Gg: AYBFou1GVGfiZZYvQICt9SBGq1itpkcvLY1zqFk7Tg49DpYFw/+fqSuiIS8yldvzQSN
+	+ktUvaRyggeC5FJUwDLvX0nzN/mjeYPcmIIc9UNsiD6cmaGu3jrP+7M8HMYc+oFZy6/74F242Zr
+	1HNxMyQ5rG5mUDKR+V40FglE9avYO0JoOgDkhMhoU4xmCkWQv+J5x36iAAuonAcudLTuPrMt1Pc
+	b4oKKHk2JlJSUyyA0QkX+sIRon/thOmbW+bDgapUTkyT+mt94d73PBBPBr0e1uJ02Pdqu/2i3dI
+	99YYHD+/5NVjxsc8ac+slhMNwm8y4/V7J8jwi30y4lmSPN8Bb4uWQd8BgjCp630/0yKWuL88oxN
+	DFIEGtt83Zdp4lZl0IJnrL+ekIdKsOD9zt+LiNbn6MRXd5Y1tBbxO5TpDriv2VT8a+fvVBT7ixs
+	p3IFcLQbnQVv//LY18a0EeipzxztqsgWI4lXOSomoik6yY06EeTDBbFLK22oUI01zgfFJta2sO+
+	Tk6UjuEgQZ1CL/yzmlKDvwUEw+RcE3BV/GKKBWvLwC4z37vLS6XmnisgrA3qz0OA7J3CbYJ+Z1F
+	2kex+DSgo0akFHzXv+z6W8QN05Kp7hNWyQvoMW3e+VRqqoqGUyLx8VcxEVFkOmWz0x3B0CSAohB
+	p9/PBQj98rhZKjVLcEeCKRfRutMM=
+X-Received: by 2002:a17:903:3804:b0:2ca:e19c:97b with SMTP id d9443c01a7336-2eb36405304mr129374835ad.5.1793702026750;
+        Tue, 03 Nov 2026 02:33:46 -0800 (PST)
+Received: from localhost (n106-71-19-159.sun21.vic.optusnet.com.au. [106.71.19.159])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2eb3928d821sm38374845ad.56.2026.11.03.02.33.41
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 03 Nov 2026 02:33:46 -0800 (PST)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 1c5zob4mfq9q1qeka7dhdcghkpqbmhgg
-X-Rspamd-Server: rspam01
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH] mm/damon/core: use list_{next,prev}_entry() in
+ damon_{next,prev}_region()
+From: Aveline Noir <jm5905938@gmail.com>
+Date: Tue, 03 Nov 2026 21:31:41 +1100
+Message-Id: <179370190119.71013.18301574509097172702.b4-reply@b4>
+To: Enze Li <lienze@kylinos.cn>
+Cc: damon@lists.linux.dev, enze.li@gmx.com, linux-kernel@vger.kernel.org, 
+ linux-mm@kvack.org, sj@kernel.org
+In-Reply-To: <20261103100714.70742-1-lienze@kylinos.cn>
+References: <20261103100714.70742-1-lienze@kylinos.cn>
+X-Mailer: b4 0.16.0
+X-Stat-Signature: uuiwup89b3t9dgbndgw4j1rp9tezamen
 X-Rspam-User: 
-X-Spam-Status: No, score=-8.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT
-	autolearn=unavailable autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: 6E936120006
-X-HE-Tag: 1793701787-775435
-X-HE-Meta: U2FsdGVkX1/vvsVUJ5zLolhXLHyAhAM3tyyFt8C9c/UjD9pwXOqP/B9VcUWsJxtIUvDid3322/dSB65xRMw1HACESdzwzBT0fzk4+W+W4uasU7+FK+UtUZXnpz4cslzoshVhNat7u8oE/rjSbCtiDRV79QXxSZzj1oc8PLA+XYFfwbJyf4vhir5Yf981j/gxw8yA4IxQacylH6qf44OuxaToqjDM7mwd8jTAcTS2/cFxNbawY/V6n61JEyYIUmvXtIX9YIuk7i05fHkF7L06D/taXnoh/jh3KCbhYHpSt4KpjukzAzpk6NVc6fmrJQ0YZh/Igo9EU0SJXaDo5KL7uDc2+FADpTqfYmY8PmJxghwv7sFQ1OH6fkvSys+JEi80CpB+0L2wl1daAXiCokkWVdQu5VCqmEmKBjzfk32iUNbHjK2wjWQRRWCgfM408MX2aBQVCoDWVOsMwI7TT2sUT1wRDq6mbbXQsKLYSwMv1ipf7AeRikAwUDfAABqyubivZH8N47Z72kv36Yrw2EZjxAVeWOcv0KX866GYNCuJzaJwIrv9sAlWCdC+f3zD/BG+4jXiSZKOrUIcK3XIQojcm02Yu39hgorAKh0dY6MI+Q2qkimKL07dNU+ZQ+uZXNQivvpwCRLIqAA2lFPkK8JvYoXrvJV9/nD8vo3K2nQ0TfGlTQthGK9xfn3RvdSCVQAGTMeHRsg1xUWt0YVDpyTtFyro5Ai1/EkMev3J3+Xzi0z0aaJF9Y+8+WkBvZA2EicMauanx9y4dSuaBi0zWxJAeEMyALbbLCNWHJ7JFOelxYlesKBMAaZiZVw2U7pRdvWeHlPhnrjTa+6Ixw3Ve1XQk+Z12XCyuOWmjlgH/wLCewqwI7HXu6L+Hry1Ot5FiGQREqeTb5Wqa3a7bnA4l0pDRLxa8VZFvw4zsbosW1TNpMh8Dq4fb7uJuTULzA2yVDu9HxJciDkkY/LkHr4IYrq
- VIbqp/Xd
- 5Fnd6T7z1GfH+V1uY8s3qf2+CawJJvA9N3fS8IhEqihZ0sbm4Ozz6ri1HzNxnVX8TfLepi9QMjJlTcnuoEw4ZYlhhd87eVKWOrPAlruG8Ouo1kcU4skINEDvY3nBSD36AlXZsCTwgic1bC2GD4tBMHm7uW1jhbH4iYJyQW4WrcKkr2B+BaI+pnWSGMtYMxpjIy8Qlgs2IA0eThqhIJtF2z3m4TnNAGTsgC4FXzcjB8f/j16VprTlny//+9yTwdPQDEOpn
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=no autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 0DAE2140005
+X-HE-Tag: 1793702027-348393
+X-HE-Meta: U2FsdGVkX1/bVYzpNXxzqvwyV1xlfAae7mhnb0ycDyWrFoIBt4yYmDS4YoGqv7ou/T8UV6R6IAZp4W3d5tnx22ivNZxKamq9w2OTA+V3HMrRnJQ+Emvl0IBNQ8XMXbySS7pqFIr5l0J5OqyDbN7ZtYDTsrfLLy/NQuWSR8TVo05s36a5S8wOdLvc/pTowkWbb6zzoZ/Rgkwh+XoVHyWOWS311ib0LA/iCYVOnod5jv4iXHfKOXwZS0ZfPYEY/+R7ZVgUdzrNRA4uvt72P0HCbDAyknhStmzSY748Eaw3P4O0AqB3BDXHfhh3ne2HueSziTUKDCZXljCWBcNLdLBu5Gj85k0RTzdCgiYUn9aZ4qkApT+pxHbB3JD+po4xCZxfkLnG5J4bcBm3wR+zOqxg9jq1FGzau+x2y04NCq+WF9/TkVGtNuAfA5sK3UN6q7G8DzTl6ZBbmfU8kw2LDfKttPi6aNZJVi9M0+CGbjT/V26WGbiy31veeOxCM/62X7u4x98HmBTDbuvXUeXU3cWpke7m5+dKmvWGhpZr5KF7tWyRPDXgjRr58R7BepQKFLZmIKvkpf4YNwgp2+hcp9LJYSPW/O8OW+jplE32EZgTS1tKZ4uQwuMWv3eIh1/Rbmn91p+KcT1eSbvcKwMd3NPRWq8qY3hb3hL9ET9ef7oeaygWZ/OCzNyiEnDZg7813AyhSlBGAalqyZDn+Pf2Q863ju0szKJ6fTMRM52v4uMfGfK2NfBxRhOasooadL/hp2naSnrjKEDQIA3rWoYfrLRHAdjkZ4HGj7PAENEh6TgthatjztQPBNiS3sVzgoH1evEWMckwlifAnrIZcvYqUrXuBevqBRb0o+omTWqAy/+u32CmB/Gp2ibcDZ3dc47Ajux01rVya3OFw58xSCrJ/2d0DCvByGHMMsNuQvj+9WuMefEKHIcAB4zS/ELhXwreZ1iUpCbcsDmdTAqv1l27xcB
+ TTCNjOej
+ IazsxMv+ljppxXs0iuYNXkU7w4C2pvEYNzLiSHtG+sAMRPlfClVvyVtmcN+G6o/sisfkZBKY85w7Pm1Vj6Cb6qhqerO3KELDRyni/RtaX89wdrDQzJLnYQ1A4JjHyeEuTcc0Bl9q69EKjLSBA+exkcxI6rFhgDFSgPKqX8AZZpOwYMhDO3k7MgLjMfA7UEFjtjHm7yW4aKQLBhKnkChnu4Abl2i4lQvTjY0nmRu7dbNbDir/ng/XBUTHfTSRaLgPPhgwOmcdSxZIJGUqr7nSIQIdLR7mLGt4g7ZuOHd7HbxrHbIyxy/M/JHtLkCcJWyWTAiH568dqMxDG1BidytImOP6wbfgOMAtNtLgEVOlOuJwVq66JEXLfQbwY1ng0zeclIzmHoNj7gZqR5qdsfg6eP2JrUPoFlzm3t4lTCJq8GHMj4z/md2onMTuKdLXu/QBW6vDEJuYG7MgvBC8ZNSYlRkZhvHSRZCBxChyS+QoR2eV2jZM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,24 +127,25 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Hi Ard, Pratyush,
+Hi Enze,
 
-On Thu, Oct 29 2026, Ard Biesheuvel wrote:
-> Can we handle this as an arch table then, and handle everything in
-> the LoongArch arch code?
+On Tue, 03 Nov 2026 18:07:14 +0800 Enze Li wrote:
 
-Ard, LoongArch is currently the only user, so I understand the suggestion
-to keep the handling in the architecture code.
+> damon_next_region() and damon_prev_region() manually do container_of()
+> type casting to fetch the next and previous region from the linked
+> list.  Use the dedicated list.h helpers, list_next_entry() and
+> list_prev_entry(), as damon_first_region() and damon_last_region() do.
 
-My preference is to keep the table definition and handling common, given
-the potential for x86 to use it as Pratyush described in his reply, to
-replace setup_data once x86 gains EFI support. The table contains no
-LoongArch-specific fields, and only the LoongArch stub installs it. On
-systems without the table, the common code does nothing.
+The change looks correct to me.  list_{next,prev}_entry() expand to the
+same container_of() calls, so there is no functional change.
 
-Would that be acceptable, or would you prefer to keep the handling in
-LoongArch until a second architecture adopts it?
+That said, my understanding is that the kernel generally discourages
+changes made only for coding style, outside of other work on the same
+code.  Documentation/process/4.Coding.rst notes that "pure coding style
+fixes are seen as noise by the development community".
+
+SJ, what do you think about this kind of cleanup for DAMON?
 
 Thanks,
-George
+Aveline Noir
 
