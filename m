@@ -1,138 +1,131 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC856606A333
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 18:26:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D446F606A33D
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 18:27:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=cmpxchg.org header.i=@cmpxchg.org header.a=rsa-sha256 header.s=google header.b=Ujbfd4mm
+	dkim=pass (2048-bit key, unprotected) header.d=cmpxchg.org header.i=@cmpxchg.org header.a=rsa-sha256 header.s=google header.b=uju8lLv0
 Received: by kanga.kvack.org (Postfix)
-	id 0A18D6B05B8; Tue,  3 Nov 2026 13:26:33 -0500 (EST)
+	id 07C1C6B05B9; Tue,  3 Nov 2026 13:27:56 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 07FCF6B05B9; Tue,  3 Nov 2026 13:26:33 -0500 (EST)
+	id 02CD66B05BA; Tue,  3 Nov 2026 13:27:55 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ED1C86B05BA; Tue,  3 Nov 2026 13:26:32 -0500 (EST)
+	id E861B6B05BB; Tue,  3 Nov 2026 13:27:55 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id C460C6B05B8
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 13:26:32 -0500 (EST)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 5140BA0510
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 18:26:32 +0000 (UTC)
-X-FDA: 85394638224.03.F419E79
-Received: from mail-yw1-f169.google.com (mail-yw1-f169.google.com [209.85.128.169])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 3FC23160002
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 18:26:30 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b=Ujbfd4mm;
-	dmarc=pass (policy=none) header.from=cmpxchg.org;
-	spf=pass (imf08.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.128.169 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id C58656B05B9
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 13:27:55 -0500 (EST)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 5B9B61604B7
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 18:27:55 +0000 (UTC)
+X-FDA: 85394641710.14.6B5C03A
+Received: from mail-yw1-f177.google.com (mail-yw1-f177.google.com [209.85.128.177])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 5AD4E180003
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 18:27:53 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=uju8lLv0;
+	spf=pass (imf06.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.128.177 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
+	dmarc=pass (policy=none) header.from=cmpxchg.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793730473;
+	b=BGN1UFWTBjxNa9TObc81qDENtW/7L4wZ+ZHSrhfu3KutTIqdSIlfe9wgNQ+VN1nVff6kYB
+	fohXa8/Ct0nWvniVSBCSK3Er5sJ9H2LizY1jRN+h5AlMzlYsGXE7aLF7SzlD1XFD+7MkCQ
+	GDhCagGcLy3fmQPVuxDydVYvYo4gYNw=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793730390;
+	s=arc-20220608; t=1793730473;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kIGmBf8e1TRHzdHJsTtZA5MGm5kHZ3GW2cmzV+bXePs=;
-	b=vKcc2cKqmoynajwe1wlDbeUY9gxkQefIQ2F06KB5htgjGLgqre5/n1liBRt4YEInk2U0+X
-	E9n0tcUwdMRhbaAeZprKjhyfSZUFuyV5ZzrQjHQOrWy02LPysXVvei8NBERIGZh4n28SAU
-	HBiFMXI3FN9+ox0z874jJ8uLlBf6Er0=
+	bh=2mcfvA7HTlPKCM+/9sf/LvHh4ZPDiuqX0+xFv1eaGJc=;
+	b=iQIS2jcsCrKLaADGhvvtRWybthcWhl/KFPIc7cq+Iq2vGpCrGhY6o0qro80w70yanwVvym
+	JEsqoJ+5tdEBv6VhT9kVb9XhStKJOPKedVQNPD85phMvi1eSWjefhN+2GmMlUhzhz63cZ8
+	FEtahY5xhAztsxopXzHZdHwDwEnujV4=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b=Ujbfd4mm;
-	dmarc=pass (policy=none) header.from=cmpxchg.org;
-	spf=pass (imf08.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.128.169 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793730390;
-	b=BbTw9/ny3OYfnD56m79G4DPsSi7lYSUIwlX38KwKVgEH5CgQ2GKZHMfp+i0kEuPa4NNg4U
-	Xw90UW+FQXemTV9xImQOgIOkrjayNdRQqnKuQ2p46va9SdyHhB2A1szHaUrI1x48TAXq3s
-	afR51u6u4kqdbLUEeWlWh/FsmOIFnN8=
-Received: by mail-yw1-f169.google.com with SMTP id 00721157ae682-8b305e10ac7so5326917b3.0
-        for <linux-mm@kvack.org>; Tue, 03 Nov 2026 10:26:29 -0800 (PST)
+	imf06.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=uju8lLv0;
+	spf=pass (imf06.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.128.177 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
+	dmarc=pass (policy=none) header.from=cmpxchg.org
+Received: by mail-yw1-f177.google.com with SMTP id 00721157ae682-8b0db268bd8so29827327b3.1
+        for <linux-mm@kvack.org>; Tue, 03 Nov 2026 10:27:53 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cmpxchg.org; s=google; t=1793730389; x=1794335189; darn=kvack.org;
+        d=cmpxchg.org; s=google; t=1793730472; x=1794335272; darn=kvack.org;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=kIGmBf8e1TRHzdHJsTtZA5MGm5kHZ3GW2cmzV+bXePs=;
-        b=Ujbfd4mmQmKco260WvP/0xdlLuf6B1SCx+rdU8IkcAsbodkjaP6E/kDelEsLFVvwm9
-         OVnLPquqzXMif4ebMrAmnRXvqRl1AYQSrvrFDq7pl0qTYQkJo3JOmmmxyNuz/DRQpHv6
-         +IvG6E5OK848H/dzQIdpy6xj+n4YjhMAlxpgUkxT4LELVxpde5AqspJdSX2n+0UKmPN+
-         k2si2LUlfkWOybduQ2vgYXOHVjgbLtbUcwUMI/wR78ZNbCT60c2ZOBvowF3c8NMvyObi
-         BJv2I12ElDpvaTx4R1rqAa0jmKv22EfK1KQOTi/uMStRU/LHJ4I5o3+KHf+PTy0jBar6
-         gO4A==
+        bh=2mcfvA7HTlPKCM+/9sf/LvHh4ZPDiuqX0+xFv1eaGJc=;
+        b=uju8lLv044KAuOxtL6NCMUgRd4B7KUznxCFsz4CZSFpFvccwfeJGTTyRzu22sZWB2/
+         E4w2Kn79kJv/d+opj9n21Ji9n0bHywKjPUw1LMVR57Nj8/AFkUEgjNnmZqeBv4j2N/ub
+         O5vL17LmVbI7zS98hMzJzoAyjrnzpMooaPo9cUwP+Jl58LaVsf83TWEmtWNW8Hi9uenq
+         QYJJwUy6G6O4aUVPLSi6Fkrx+Z47TN92LjTImBsMZwKif4rYIGksO6wKLO2EC81feAcT
+         pbcdNSG30IqiONAPW+dsf/K9/jqEvyFlG5W9oEWVbAnAxmTpnclZ7+Hz+SRH8s9ouRyN
+         bG9w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793730389; x=1794335189;
+        d=1e100.net; s=20260707; t=1793730472; x=1794335272;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=kIGmBf8e1TRHzdHJsTtZA5MGm5kHZ3GW2cmzV+bXePs=;
-        b=MmCJLhPjxOOeZa+g3opDzCGeVLWBHxQ29kIBoHxtJ3tIL8jktUZSY3tpVwO2DFyYiD
-         V2jxLGaDbZkvKZDgxIWtQfkJMuPjdXzW6xzMD9SKFJoEP8h+MGONaAORpwkoklzsME/H
-         W6Bu6vhfeLPwLoBl5duzkVIO+CWXViKT7/BGy01CFheR7edDbyjxrfaMthzGWdMHtHUv
-         4+IMQwcWcw01QPX6mOLH7nsKDQ2eZvuHF4h0zNzHxnlJ9MoEL1A/9b4oh7nJts6ylc+X
-         /VIcOeHGcNlhkLakBjdbqeZRFU7es6ZLX8QBGPOwqUa1i3FcFc0n36iP2Z/MtQbzNKFT
-         9fAg==
-X-Gm-Message-State: APuU4Z8K521rZzkiS3qcQIe8yHeVPbOFsAWIz5z3qOI0aKyR5z+GxBGW
-	USsqKn8VdxLs6oWk9DddQIzklEHhIdm9m4NsmKHpLyAmb5RpX/W1v+Cvko2L85b0KUM=
-X-Gm-Gg: AYBFou3FPWRv+6pgv6ZIOaYr8rZZ88zKieRTJQoTncY4I67hHpirUrqy2jkHTPZghnP
-	HysCVXTeL2ZSzIYk1aXpRBtp7pKZmwBYgolys84ikry82cB2O1vjq7L+a/Rl62MghgG+2KTgaL8
-	NcY8+pGGj9mlEqiog0BRuRv8MO4b0InkqNiRfdyQ7kwffjfwrAVD8fqZxaxitIXpDK2rR4cXn/0
-	a2TpgHAO6huJQiFYiPZpdL1lWs2nOyGDkF+WdgMTy4NGUH1Aro2VqV1rdhNmoPgp7YyWr4pskoa
-	JuFCrtzmlYJmW2z+YIj6OuqkWj3uhu8GtX/MARThi73alOFVmABt287joYp8zBeSEyQyxGoG2Q4
-	cqxkEGm9kt/SrU3Saq0BoOJ377E9LKnNzowQINtBdebfoE7ygCL428gdm4/Va7qyNDcz3+N7e6L
-	NXbefhOVS079iSaDjZiILhWuoTTqa4FVzIJgcBMPEOlUa05PYskEa/5pSaXx7ToaDGskFQFZ8kO
-	qSWE6Wg3sbmle1IZZN60er22qiGzWiTQIA1Huo4ZYeiLj9TMRjA/qPcPew4W3yqSxAf2MHbwN9G
-	SwkEtaNlk7Xkm9WixYhHPxdrBYJPTH7DtPQVrusZLhoWpM/k
-X-Received: by 2002:a05:690c:60c7:b0:8a8:6fac:1525 with SMTP id 00721157ae682-8b2b67ab45cmr101459337b3.46.1793730389191;
-        Tue, 03 Nov 2026 10:26:29 -0800 (PST)
+        bh=2mcfvA7HTlPKCM+/9sf/LvHh4ZPDiuqX0+xFv1eaGJc=;
+        b=XKQOEv26pG7D2tHYRPEeKqikq2ZiJFsxGwZzMu5afdnWxW/lzSTEdB11F0cQQBrfLY
+         lczTL+h5rJWuXIui18zyajOa1KG/gwtVNhnz9Lw+xTMINtnHPis6d42WMjYLj1Wp9SDt
+         EJG0ubmzyJDxdWe/MU3asOZtinffxwJcp2+zcabb+qA3BoN2pShla0wb434D+48y1EYQ
+         DUM3gNZ7fIkWdAP+8oiqaYaGzYeVLEwY6iY9zq3ySooZ8G5cYZSf3MH8xz9ExSxqJrjR
+         dVCWG2UobL8FVZIVEOAZeBO+lYZJPY11DcthYrPNLnuZ5uts8MrbNw7oGsJi1VBT3l+c
+         3Kfw==
+X-Forwarded-Encrypted: i=1; AKwUvBwPFIs4hloxOnI3ylQwbgW3wNpN68D5HwvXqHVO6WTZR6ORefCPyMlRaSCVsZ65l0xA6KQd2tdMbQ==@kvack.org
+X-Gm-Message-State: APuU4Z/D0lK7alLzAKjK2qCF0LmylBuBxihBhLbke0XTUoY5fYZwuP8n
+	zoNXs4sGFkPdQzREA/+hA8jytnmkS9Y+JrICcczANUg58UYRhGaROirRIm6UkDHJUmY=
+X-Gm-Gg: AYBFou2CPdb3dzlGVtgO+Yf7Ztt2CHcMsMq0v9xNYa4bLRQEFyHtdapbeLKKAmZ0rOQ
+	2uHIbq+4THJcXhsMP7TpCjp8McSSc7HvqUk9FRbdskNmK9/Me0+U6R9wJ6glRv8HEoRL3jDR046
+	RfA9BUppEKZSE8rzAGvB/IxbDPDSE6p9ETEHq8j2NP2EEng7bfn/UQ8w51c6EseqQU8zDLjI+j9
+	1GZgceZuRqu22e9hRuOfJ31YIx6uMiLgPUnZm1XkzgWK8FWaVF2JwgLbEN8jy2/rELL8nZQarfc
+	5RmfAeS6b2tm+lEIAkkLchYTIQ0FtlsG5dSzj8LYiiuOtns0rQzI+j3+aRxHeFeGVqucnXplVIA
+	mnJ2KzSBZYI9+qFZix8R8TIM+DMHdYdteHOrb+8brAM3OjL5936eRIjZsQUs4uyOvrxiab9A0+Y
+	4ItMnH2NMtW2GfsKWBMx1wEtyUjGQQ1+AzPwbhnbnDP3VFE6+T2Rlpm9/ZRQcdiN3mIESFq2tl6
+	jieYZ9e3P4W/kXkFKWPISIESxD/Ou5Dnrwbuw+NU0WXuVvuKhIqDNP8I7S2x1wcKvLF+wc/1Ql9
+	3ZL9845XfVWwmJNCstqJ+a9Nbho=
+X-Received: by 2002:a05:690c:dd4:b0:8b0:a37a:b1d with SMTP id 00721157ae682-8b2b66fb17amr85926767b3.24.1793730472207;
+        Tue, 03 Nov 2026 10:27:52 -0800 (PST)
 Received: from localhost ([2605:8600:200:14e3:365a:60ff:fe62:ff29])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-8b309959603sm2328207b3.24.2026.11.03.10.26.27
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-8b3097117b3sm2529557b3.1.2026.11.03.10.27.49
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 03 Nov 2026 10:26:28 -0800 (PST)
-Date: Tue, 3 Nov 2026 13:26:24 -0500
+        Tue, 03 Nov 2026 10:27:50 -0800 (PST)
+Date: Tue, 3 Nov 2026 13:27:48 -0500
 From: Johannes Weiner <hannes@cmpxchg.org>
-To: Kairui Song via B4 Relay <devnull+kasong.tencent.com@kernel.org>
-Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
-	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>,
-	Barry Song <baohua@kernel.org>,
-	Youngjun Park <youngjun.park@lge.com>,
-	Usama Arif <usamaarif642@gmail.com>,
-	Chengming Zhou <chengming.zhou@linux.dev>,
-	Yosry Ahmed <yosry@kernel.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
+To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Cc: "Gregory Price (Meta)" <gourry@gourry.net>, Zi Yan <ziy@nvidia.com>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
 	Mike Rapoport <rppt@kernel.org>,
+	David Hildenbrand <david@kernel.org>,
+	Oscar Salvador <osalvador@suse.de>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
 	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, Chuanhua Han <hanchuanhua@oppo.com>,
-	Mani Tofigh <mt4022@columbia.edu>, NeilBrown <neil@brown.name>,
-	Christoph Hellwig <hch@lst.de>, linux-kernel@vger.kernel.org,
-	Josef Bacik <josef@toxicpanda.com>
-Subject: Re: [PATCH v2 3/4] mm/swap: account synchronous swap reads as memory
- stall
-Message-ID: <auonUGAjifyuWJDv@cmpxchg.org>
-References: <20261104-swap-fixes-v2-0-204be064be5b@tencent.com>
- <20261104-swap-fixes-v2-3-204be064be5b@tencent.com>
+	Michal Hocko <mhocko@suse.com>,
+	Brendan Jackman <brendan.jackman@linux.dev>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, Josef Bacik <josef@toxicpanda.com>,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v2 1/5] mm/page_alloc: clear ->private of deferred free
+ pages
+Message-ID: <auonpJVJancOit_c@cmpxchg.org>
+References: <20261103-pgalloc-ai-hotfixes-v2-0-e0d2890ab74f@kernel.org>
+ <20261103-pgalloc-ai-hotfixes-v2-1-e0d2890ab74f@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261104-swap-fixes-v2-3-204be064be5b@tencent.com>
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 3FC23160002
-X-Stat-Signature: di9zmgwhzjt3q7wmjer44xq8wb1iraie
-X-Rspam-User: 
+In-Reply-To: <20261103-pgalloc-ai-hotfixes-v2-1-e0d2890ab74f@kernel.org>
+X-Rspamd-Server: rspam12
+X-Rspam-User:
+X-Stat-Signature: fo3bux9hs1cyydsazwests1a8perwfch
 X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
 	autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1793730390-230900
-X-HE-Meta: U2FsdGVkX1/p5XZnLMczu1OO4e+uIx7DT946VYqLLtwQeVJDHdhyQqPVN3RrvMn1PJ5EIP91/VoMfZX16PGqVhKOCHhmiUPk/q7LyogDbpwjp2UI8Rxp8NPsvul9FqRsgi1ILdcgQGcMcPIGcoWTapo16AKTTAgDaDOfKK2hVoLBtA/rJpKGewIoD0DX54+1ezZz2ya3hDaOhPlrDph5J1aJ3lEUqhQSuL3tAbgfZLP1c15sy310LSpNsMdORj4tkp0uKFXd11CYkN3z71Cw0VN4rO3lhHtzhkrLRfpnsrwyYTOqpWxvwgR5N9M+DnxXKqq942DG7FH6XDOnvP9jxynEr8RoD3gNWsEofzZR14gEH22WBO8Qyksh0efzRiSCCKPhTvU9hugT4lQuQWMHRrT37HtucyWdJyM2DsZmCuGF9XalPG0WkzggkLFqtRGSIVLmRqYR/3Qu91ciTMl311i2v3ov6grXgUgCSSM2vaTvDCuwuSo68KjVG7hqk/FObuy+eOfRf4J9gp7wJMDuCQKdSYjqR7ZfgkWWlrZpaKYInwf2Qo/XJLBtsesaKWhvGSOtwhLuz0MziqIO+/o2tgm2/SRkQiniorjfD3FieV3jyHnHnP/IKnW27qD7a+hocSDkAIzeFfMQS3xcBQBhTAmho2Xglt/B8HStqQ1KyccCqB4U1DOiomjQT/CB6kaJ7QQ1vhLOM8puCySUU3lpyZPY0ZRvjmBEicTJ9+SZ0Ghl/yEnbVTmw1om01MCAkoMieuRGWQie1tbr2cjfMGyfRsoSsEPdDSYFPOwdW55Xg/jjnHeA/0Nvoa/SDY3NU6qaSXyO+XtseG3EecEgpKaMbDxXBkSLfJFhBgtlhBU/CwHpGY3+vcPBtQVdz54AS9vuXr1QYHKRIrK2Eq8sMzkEnD4kyg5v7c7TEoQqe2wsrrVcsQoM9QpsAdk2hbNCnXHBRrA28M1RwcMhgbWWTc
- Og06l+Bd
- 2iL9PcXiUqyjxhClS7fVa3J/sl+ukvWAtQQDE5m6Rz//BIij8V3WCv+bULr/s7VKWI6Js/QUQSyxT29LEb7gervc1F//fM+HgCO3lyEmrvLKAj7Uz2bL9JjKQ2/wJ6271wijBo/71s2pjzTJ+fQNhqSe1sBvmXKxvWrSbNRP6ZfRcZGeUPBEzVCd8+mgxVz/FrEV4KEf7rXDbcCROWW4rDNJzuOu+E7U8W25T7bw4PPMFr0CyqJ6txdUvCOrYZsaooZ7UxVruNHAwlyMzFQ+8qdQNYMQvXSn27yCo0lAtZN3mSYogxsMozqlSzZmLB1koayr7Y0JEDyp1+vWIOKPEkurLDvZViQEJ9ipB4GLJZzB7FHke9Q7VZKWZaXLz6Sn+JGjPCRgqWQxjMgRFcYenGSDVDknomdsS6ZC5YVCENyp0WnN6Wg2yuHOuA9YPmxT60MKcjsWkECl59jIoX6ZGUf/QUoa4pV+fFH9mqnS/YcBNq02VJxEM2vHNsCEbY+aVzMVYypZcKxvWxv5RoKUUmV/5NlrvpHdN4lZFpOQMa8ZUTjEJGLeWMrnrv7sdRDlV0DNsKzr2zkXtnZlgkfKptytHpLsIIfqgCZ3oWFgKwWJLf6La77x57m+yG4IxHe1IiY/HJOIj1PNuKeBaxpDQai+T7OK4y27ZzBmh
+X-Rspamd-Queue-Id: 5AD4E180003
+X-HE-Tag: 1793730473-37386
+X-HE-Meta: U2FsdGVkX1/V7tzqbZ9AIAHZVfl5Nv/c3WpyS8zUsEMpEPEdOVkJvfxSR+cH5dl3MNTLylNnF01yaHKWogTdqkar13uvzgnBzkdxrvRzya5OBXluwwk0lvbJwOEtVMdLSOPmrgOBDaDZ2GuCmx0bq3HZGachKUpuuslJdj5tlRAu4VGr8bVztlWuQMiV7Ty1Y15wiQHZlkXLKnOIP6Efxrye8VP+eYEr3CtZpAZL/25mXLp5kLMFu/aA1jxpWJTlLgJSt6d5zlqPXB2H+vETv5ZPI6FnQ7bNvYB/i9LqOBTy3R4+OoGxwMnPFVZU2hx5mOb44JSC0sBvpKUZaeK049sAkeJq3LWfVx5vNloxOBQ52gTHIgU78853ySUN5gMGnnf+NDK8+7FJDns2gSoS1gNvKTEPZ6fdCzLeUbtkWW9rtTFZD4jVmajua26sVzXqsw5a7kSfTHdUHClyy2PRfE2F8wOOi7g+5HFJ5jzmfw9wco9d4nLHGSUpcWqKOoOPhp0q0L1uRrCwWGVDDclMIhDvTrTaIrUSKBJ5YgYzpeCBcwQ9SPAtvC2SWla299y7KdVNDfP/qtoiuDbE1t/N0b9ybdURGE4gbjGO10PU8Dr7h11aWUuJ7dGiwKC2bAtxjsGjbH4cuwwzPlMIeCV34hc7IGJ9Oxlw77nZTnyBaCplVXkhwy0Ig2NHKikVgqsk2ONN/J6SOvzaOiTCO41AeKcOrHj66uHbKJEgaQq9zDgERoC9Ef/25MTeGVdrjPM8XoHYvKBiOGTRD3FxcMSynI9GEZUv2iRSQLG8h3pFWO9ErCO4mP2LD0xvd2g5g4M9DlnyNagw+HL7nWdsPeL/XGP6GrcmaJB+MK58o0sROXLOGKVpCm62MNUkJ40niVV3sDb7hZEo1tKlnr7eSxxkhuY0oP9Zl8Wj8xCJaIiGAHf/89IXPp73JmMadktHb9ZlrncqyZT2lRifnJaD87Q
+ OonXvSLL
+ 5LUS/SFq1Get7hWW7WS7p8scAtIWRXt84EBPUC9GrSLIzZPrLRWhC1IFabccJ9lBlvLoXaEQuQJuzQULtl4HDZpFJfR9hDqDXL/KbFJgiD+W85VBbYiKmuSchJDZDUFIzCbk5aWkJTjnpH00tXSvgFQG9vGFstl0+3a7dPRnWXGGLWFsqiGAD/hEBxVCifuz/TctFcMdree8vb0NUQbx8OUrLMdeBa1IpNOxoh0ORs0t/PxO0BBULEdEEUHHS2t/KPcU+NKl0DjHNpykX9BIwse8Skjb1YPcWBDiG2Oc/nbOr/CT8cn68BHd/Pp5ErVuhnfXtdF5KayEKTFCX0EZLsW04dg/IWH1vgRGsZf63yNQJ4udyGbikbmoPNfpPSip4C1AsaLRRmIUxC9WnO355uYWKhQOG5ryXo9yLmY/BQ4VJBjUTnydaOVgt3CPCqp2caAcBlEPhg0tJ5h2IIK/0XaH/jiw5j6ghxsgeWUXVzylX+WVKXdhOSSpArM0ydoPiDk88B4vPkKdGe9kLqhEhvYBGwAEjDMOxPJBH5fQVDxe1s6RwfrJmSZzpeb6yHNWmlIRms/9K44oHCO8gyVf0yAJuekkb8YSnCdGrqOGn+Uz0k8rCFtuU8p08SQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,37 +134,43 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Wed, Nov 04, 2026 at 12:18:16AM +0800, Kairui Song via B4 Relay wrote:
+On Tue, Nov 03, 2026 at 05:16:47PM +0100, Vlastimil Babka (SUSE) wrote:
 > From: Josef Bacik <josef@toxicpanda.com>
 > 
-> Swap-ins from SWP_SYNCHRONOUS_IO devices such as zram are no longer
-> counted in PSI memory pressure or in the swapin and thrashing delays of
-> delay accounting.  Refaults of the workingset from zram, the main input
-> to userspace OOM handlers like lmkd and systemd-oomd on zram systems,
-> become invisible in /proc/pressure/memory.
+> free_pages_nolock() and free_frozen_pages_nolock() put the page on
+> zone->trylock_free_pages if they get neither the pcp lock nor zone->lock.
+> add_page_to_zone_llist() keeps the order of the page in page->private.
+> The next free_one_page() which does get zone->lock passes these pages to
+> split_large_buddy() with ->private still set.
 > 
-> swap_read_folio() opens the accounting window with
-> psi_memstall_enter() and delayacct_swapin_start() and, per its comment,
-> means to count the submission time.  For synchronous devices the
-> submission is the entire read: swap_bdev_submit_read() does
-> submit_bio_wait() and completes the folio.  Since reads are batched in
-> a swap_iocb, swap_read_folio() only queues the folio with
-> swap_add_folio(), and the bio is submitted later by swap_read_submit()
-> in the caller, e.g. swapin_sync(), after the window has been closed.
-> By then the folio is uptodate and unlocked, so the fault does not wait
-> on the folio lock either and the read time is not counted anywhere.
+> __free_one_page() writes ->private of the head of the resulting free page
+> only. If the deferred page is merged with its lower buddy, it becomes a
+> tail of that free page and keeps the order in ->private.
 > 
-> Fix by submitting synchronous reads from within swap_read_folio(), as
-> was done before the batching, rather than from the caller.  This gives
-> up batching of readahead for synchronous devices, which do their I/O
-> inline anyway, in exchange for keeping the accounting simple and in one
-> place.
+> All other free pages which are not the head of a buddy have a ->private
+> of zero, and since commit 819bfbd47e49 ("mm/page_alloc: remove
+> set_page_private() in prep_compound_tail()") the allocator relies on it.
+> When the stale page is allocated again as a tail of a larger page:
 > 
-> Fixes: dda8fb68b590 ("mm/swap: also use struct swap_iocb for block I/O")
+>  - prep_compound_tail() hits VM_WARN_ON_ONCE(tail->private);
+>  - with the page checks enabled, __free_pages_prepare() reports
+>    "BUG: Bad page state", "nonzero private", and leaks the whole page;
+>  - without them the value is seen by whoever uses that page next, e.g. as
+>    folio->private of a folio which is split off a large folio.
+> 
+> Only pages of an order above zero are affected. Those can be freed
+> through _nolock() by the stack depot (order 2) and by SLUB (a new slab
+> which cannot be added to the partial list by kmalloc_nolock()).
+> 
+> Clear ->private when the page is taken off the list.
+> 
+> Fixes: 8c57b687e833 ("mm, bpf: Introduce free_pages_nolock()")
+> Cc: <stable@vger.kernel.org>
 > Assisted-by: LLM
 > Signed-off-by: Josef Bacik <josef@toxicpanda.com>
 > Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
-> Signed-off-by: Kairui Song <kasong@tencent.com>
+> Reviewed-by: Zi Yan <ziy@nvidia.com>
+> Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
 
 Reviewed-by: Johannes Weiner <hannes@cmpxchg.org>
 
