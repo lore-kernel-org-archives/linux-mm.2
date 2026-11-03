@@ -1,66 +1,66 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8512B606A33A
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 08:36:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FF0A606EE93
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 08:37:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Be6YHjgh
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=aUwUm4Yj
 Received: by kanga.kvack.org (Postfix)
-	id 904476B05C8; Tue,  3 Nov 2026 03:36:37 -0500 (EST)
+	id A3B8B6B05CA; Tue,  3 Nov 2026 03:37:30 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8DB8F6B05C9; Tue,  3 Nov 2026 03:36:37 -0500 (EST)
+	id A13536B05CC; Tue,  3 Nov 2026 03:37:30 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8195F6B05CA; Tue,  3 Nov 2026 03:36:37 -0500 (EST)
+	id 956766B05CA; Tue,  3 Nov 2026 03:37:30 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 622486B05C8
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 03:36:37 -0500 (EST)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id F19611A034D
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 08:36:36 +0000 (UTC)
-X-FDA: 85393151592.20.931D5FC
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 7A7F06B05CA
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 03:37:30 -0500 (EST)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 13D8C1C2708
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 08:37:30 +0000 (UTC)
+X-FDA: 85393153860.04.59D2562
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 4AC0E1C000E
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 08:36:35 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Be6YHjgh;
-	spf=pass (imf21.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf26.hostedemail.com (Postfix) with ESMTP id 7F47C140006
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 08:37:28 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aUwUm4Yj;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf26.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793694995;
+	s=arc-20220608; t=1793695048;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=of6BOSsOI/Xiz9OzswHQFf111MtWWN9/gW/+S2R1v+c=;
-	b=lfIO2cvnrf8oTsPvqmyCoDZEY2NWH40F8vvhiPXavSw3OccKvHm5ib060Cz7NMD+k8zvKq
-	XRdVIJ0uruS2MLV3HdE/u0ssq0uqU8Vdw41kVQSuGe5vzxz0+D8q8fAomBkUnLEFy3cAVg
-	03MRIPN5ascXcuXamtfDNMc4l0PZ+KU=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793694995;
-	b=JYZ8V71CzDJ8TISiSU3qTJ4hzpLAjOjBGkvvvfzN3dkxAyyQeU45Dp2OyEijLOniXbg07g
-	tXUk+n/YGBt2s8R3wdaxo1yFyr8dkKs0unBH282MqTfl1K/WJMdHvcv48oUEq+qgZj/CC3
-	QYlYef+A9sR1mO/gtQSfz/PsahOAPmQ=
+	bh=36ue9l0lxjyreF2KAgVZ/S2Q5NtWJdd1uqKRENrbVrc=;
+	b=LOkxb9kgcQxXWEQqT/voet32h81oFs+AGz9hBHaGXNKE9bPad1YxQtQqxC0aRDzJYBWVZ2
+	9gmkvJAWkfcOPCBaYQv2kTzwMAj1uPfvJOqr0kgHtlsngcrfbdZlbG012Y9L0migPlFJEh
+	CstQ4jc/PQpgQxF1EpxAK2G3iY+8fAU=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Be6YHjgh;
-	spf=pass (imf21.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aUwUm4Yj;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf26.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793695048;
+	b=8YCYMx0jlkDXPM2OXXskcwm7TokSFxKsO+huF1O85iTvDeEFQccPmauIW9ZwnytLCX1AuJ
+	Jkr8NnWgI2O8cjFtGmIerO8IcVAfsNtqLy4vmjEu8TnE21qYsnb7quSPvgua7IOUAhgg08
+	fZF0eFQFHIe70cEQ1F2pfVR7jOC+fxI=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id D166760008;
-	Tue,  3 Nov 2026 08:36:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35B0D1F000C1;
-	Tue,  3 Nov 2026 08:36:29 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 1F4A160098;
+	Tue,  3 Nov 2026 08:37:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C1721F01802;
+	Tue,  3 Nov 2026 08:37:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793694994;
-	bh=of6BOSsOI/Xiz9OzswHQFf111MtWWN9/gW/+S2R1v+c=;
+	s=k20260515; t=1793695047;
+	bh=36ue9l0lxjyreF2KAgVZ/S2Q5NtWJdd1uqKRENrbVrc=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=Be6YHjghGzdvhgIjQNRaWKGkvThokD5XwStMhOy/X4/2WeAxQUxmXqeQqTr2q1W0s
-	 K3BhntXqko+gaOnnd+3YhoJOAsosGn55owJ3OjiuH8UkcC4Ck/XcCf7FIwTly/U7dR
-	 i/NaE/q0HOVeZUYjeDVzOt2NwpXM9EUjoexg5sVlo2MCmEyITv2+HsIcLqLIAAF6XL
-	 kUT/uozqyuUM0p8vbGhaFrQ5d1xStDKRGaxIezMfytZuhaYZ5u79yhdmntHtGX6IJg
-	 Ic9SjLSnMuIprFl3Qa702HL+f+YZ8+hQVs1LKXp9Gnh6ht9+C7hcsEO87TxBdWGJUu
-	 L5NL5J2dN3USw==
-Date: Tue, 3 Nov 2026 08:36:26 +0000
+	b=aUwUm4YjE8yZ8DotXKncj8C+/v6y2l2qeBxMJD7QAKiAlCAfdY8kyLGH1ztvVMvyV
+	 sdOVKjuU7ve7ffcYq0mLG5F+l8VjouhdEEMOdvnZO5hsmN4mmhxVpT2IDhB6T6hwm7
+	 GHd5lNmqj6ppo+OChkh7KYRTE0/YRrlOiqkwS+oqX2ywjeNDN+iYPB04iugqbhlHtP
+	 NiVapLY/XPLWd1zEevrTBvrSKCiyN3x8cWPqww4zT32H+TT2+Mn8oyWsYENsn5Fbc5
+	 PhHT1uLMSfC8sCf6sVMyDL0ESyBMCEi4ercOoaNw5oxRvU+hEo+pr+laB7KB9zLawD
+	 YH4mrIgI6UIew==
+Date: Tue, 3 Nov 2026 08:37:19 +0000
 From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
 To: Tal Zussman <tz2294@columbia.edu>
 Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
@@ -74,27 +74,27 @@ Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>,
 	Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, 
 	Hugh Dickins <hughd@google.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
 	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 6/8] mm: remove find_lock_page()
-Message-ID: <aumc3fnNg1PK9wXP@gremlin>
+Subject: Re: [PATCH 7/8] mm: remove read_cache_page_gfp()
+Message-ID: <aumdHgUtiQzkNzs6@gremlin>
 References: <20261102-page-wrappers-v1-0-e7280bdb31f6@columbia.edu>
- <20261102-page-wrappers-v1-6-e7280bdb31f6@columbia.edu>
+ <20261102-page-wrappers-v1-7-e7280bdb31f6@columbia.edu>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261102-page-wrappers-v1-6-e7280bdb31f6@columbia.edu>
-X-Stat-Signature: o9qu9hfctcwmb973kba3hy1ix44o4mbj
-X-Rspamd-Queue-Id: 4AC0E1C000E
+In-Reply-To: <20261102-page-wrappers-v1-7-e7280bdb31f6@columbia.edu>
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 7F47C140006
+X-Stat-Signature: 3hcfr3cfa4ygdbqfzytheh7meqi3un8k
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
 X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1793694995-266345
-X-HE-Meta: U2FsdGVkX1+F8RhmHtgp6vW3e5hCzvwj4IcWf8zHvZtQEvqrGB5D91K0VcvhNF/C9zij9CY0d4lOGlwIt/SzDgrCeKF/CTfjCvBKIqeMUBxcyCUwukYpiH7IYmOVrC9l0nBxMYIXTQKDw2rkabwBPyDrIHaw0dzkCDOczm18Rcd9VOharr7WstQJU9cCXt8zhNcMYXQ7QOhutwGX+jUf1qiWMmkA+aUF9owpKcy0hFmXb1uFiqwZ6ybniC7V/GbEf1lQVZ/Fe5t/OctrJxIFWCP6At0Y5VbXRGVVfpSi5IG4Vq+WgR2Gmc93iSTOvXLo08pjUujIav18rNLChL1F+74d19bjvx1ln4y5gcP2teqg7ONfXp4Lk7EUhFaWkqJoBwuc/L/uQJ4kDyBZIjVhjpJHPBinS+uDWV/HCVs6bxli9Fp3vwDSe1RImSLLbLujnCQTN+rhD3mDy6Yec3BXU0hELe0qTThjEIQlamdivllRaPqSEsx0FMQc4pCZQqqG0Ma79M1m30w82QTVgly5J2IAKOdWN3UK0coA+nIYGydzLUCj6y3cAwH/5dZFJdKT9HfRTFDxL/bQp3oTSCdb+kzI6K/ge0sOms50cOOxg31gRwuxjLpMAxpTGJZCZsVygqTLsc0IqDTGY66WI+4jKixW7nlgPRJgbg45h/cKPEdnosMed+kmoox/82UeJnSZqU5Lbzw2XoMR4Js97DF8Fjv/FfHN9vXeBmcAUmITKsAGlzbOgRX/Fa9SkNVHNPSckWhV+5+xgQr/bmm+pYqYmmxrvunWvCTo2tboSGxVnCDg4KjpThRLzpZsaScYLTnU3R7X66G8IDK2oiK9OKyY30uuYYjiyQR/aFK955heMwC+veU2D8XFlPUqiCnK9y69+ubzFopeOD6m7TQwimA28Qg/XvKdUM9LoztLQ9/p59A21XhCPzL4KdMZFMXtQwkPD5VnejAxS1HY/hNjwpd
- 7A1ft3aD
- /VA0OzNoz9XT9oCx++QndhLHguW96OGjXThMTpp8oWLA3smRenS+Bi9vFcNX5197S3ZJXUVVpw78Xo77cdPfzoWDVsDF+sVHA2VQS6HuZOAynS3z7ljbnmoL7XxQohj3QNEfnP3GWtXrlEV79RA/tLDcAf3pxilA4ZknZifLV6BVpkOD/B6lx1ht57ddjZ08rd0nEWXusxQVC8V6E/wa4Qd3CRRal+d81QFDncT7V7u/oUU6sPpoMgeAuFEoUqqjwgJDFlz4sjIF7/TwdWc6xCwFxMV9FdHkYYCRN8qAf5YXb9r3wiLYCUamOZ2IivTfcpA9nP1ZApcyO4oQJWLhal8JhqSt2WmpZv787BVCNUaxpheKvQZ2md9DY6XPEtKZyP6VE57drwIbgmY/1krK/pdBuCQ==
+X-HE-Tag: 1793695048-786660
+X-HE-Meta: U2FsdGVkX1+OLKW/4AUbNNY2CB5urzhW58ZmF9R6rhCndVjyMEx++744+e0WqAKO7OETeuWkOKFbl6P9hrpiFUw/uDWXc8QRqCd2o+So98TdD6wfdVdxtP0E/JXpAl7M5EggwobmSySNjU7ZjrrXikCZDjDtUIE+pl1EF8nwWSs2AOa8wiMDjP2+vJhoR3Aw+rs/9WYJLU26KgZxi7azdsH8VTaSVCEHN5nsWTapHVW/DG1YYNhkxmOIQkaWyfelNfhxtiwadyztoGm3vwYLAhwCDiv3So/Rng+QhKEm6os8rLpXkfNKRHlAQQycqbwCyOLDYerGyuM3CnxlGfBd/8faqmi/nMhOwJS7nMt41AaUOIXT8Tqj4FkTU1MTOxItsjnd8SCkEyGFr/jM/PW6gqis5LvnfYEVB3+auU+Xz8nwwwPjQWUrNCRtFu7u/d0clbzUeJy14uOBTYtI4pFCBrtOAE+mjJx9eHulJ73VYo4t3hdzpKhlQm0PqewKJCGJ52y20LnMCtZviq4vh9i61pwPysiOPgQjEhR3O+dYCg4EBzSWRhuDyHE8OMOeTOWIz31az0l62KfsF8M0uZHhNppVqdJJokk2Lf4Me/Vn3d+7JJ5EwNYQoXrzI1jh4CkZ0LyWb8z6/MJc0HgmfLIp8NBybCUisdmWlBVuKQo964UJE4aVpKAeTBctYNDPQapxax4B70hxnhDQvA/tqwaj8P9s1GUgi3jCBjBuufSflGa6Kqhc5XtAHEM7CApSUCSMVgXchWmd1cItz9fqDURbE2vmrLbKE+3X+2L8VFfwgfuf1EZObLDUrCfFHWKhp+NmCAKkvkv2gIYFDn7zdOsTh8nZ1aowRUWAGiAnQjnRr+CBHQKmeHXhSChQW1BOSpRMguq+CXwCPn921XZjdhfqjLLu/W7ApJTL5p/5fV6DyKc7bA3GnOD2+bU7G1BipU5tFkY7oDWA/I9PGqrY1Zw
+ pQPj9jM+
+ kskmH/+UoIZtrhyl++VdvyIBc3QniqQrj4gTd8GX5Z2BdTciYL0IKAn20KjbPzxLAro/pkd7SE5qhCa5RvWXNTFx2CpKUhLMLWfdErzmy7ynghQj1kHbvnc9jbJDUvt8X5p8gG1SOEySuQkgb0MVPS5oJkKdvNGCntRDQpGV61h8gbKyREoBF9Wf0jq6W91vWS4RhVClkGvIhyQAei0epPB1vnQ0pHamYBfswtmSi4XVxuzq08falQcFEN3HZzrqnTAEccbjKoI6nCp6B99mc8mCjffcS4r3PSkYMI453DVzEa5OzEtEE3Re8F/yCGocyY3ToUxgS51kTimLiDm1Vw4ly2ZkVKegz1XWdvtxqGGe3/G/qdDQJpGg/Vkf4QJ5yeXATFmpyyxpsSqzcB4HeFCevlQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,13 +103,9 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Mon, Nov 02, 2026 at 05:54:11PM -0500, Tal Zussman wrote:
-> There are no callers left. Remove it. The name still appears in a
-> sample function graph trace in Documentation/trace/ftrace.rst, which
-> is recorded output and is left as it is.
-
-Yeah that's fair enough :)
-
+On Mon, Nov 02, 2026 at 05:54:12PM -0500, Tal Zussman wrote:
+> There are no callers left. Point the comment on shmem_read_folio_gfp()
+> at mapping_read_folio_gfp() instead.
 >
 > Signed-off-by: Tal Zussman <tz2294@columbia.edu>
 
@@ -118,39 +114,77 @@ LGTM!
 Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 
 > ---
->  include/linux/pagemap.h | 19 -------------------
->  1 file changed, 19 deletions(-)
+>  include/linux/pagemap.h |  2 --
+>  mm/filemap.c            | 23 -----------------------
+>  mm/shmem.c              |  4 ++--
+>  3 files changed, 2 insertions(+), 27 deletions(-)
 >
 > diff --git a/include/linux/pagemap.h b/include/linux/pagemap.h
-> index 00e32f96b459..a92329805acd 100644
+> index a92329805acd..305c99bad689 100644
 > --- a/include/linux/pagemap.h
 > +++ b/include/linux/pagemap.h
-> @@ -846,25 +846,6 @@ static inline struct page *find_get_page(struct address_space *mapping,
->  	return pagecache_get_page(mapping, offset, 0, 0);
+> @@ -962,8 +962,6 @@ struct folio *mapping_read_folio_gfp(struct address_space *, pgoff_t index,
+>  		gfp_t flags);
+>  struct page *read_cache_page(struct address_space *, pgoff_t index,
+>  		filler_t *filler, struct file *file);
+> -extern struct page * read_cache_page_gfp(struct address_space *mapping,
+> -				pgoff_t index, gfp_t gfp_mask);
+>
+>  static inline struct page *read_mapping_page(struct address_space *mapping,
+>  				pgoff_t index, struct file *file)
+> diff --git a/mm/filemap.c b/mm/filemap.c
+> index 1df776907140..2b724d9be94b 100644
+> --- a/mm/filemap.c
+> +++ b/mm/filemap.c
+> @@ -4258,29 +4258,6 @@ struct page *read_cache_page(struct address_space *mapping,
 >  }
+>  EXPORT_SYMBOL(read_cache_page);
 >
 > -/**
-> - * find_lock_page - locate, pin and lock a pagecache page
-> - * @mapping: the address_space to search
-> - * @index: the page index
+> - * read_cache_page_gfp - read into page cache, using specified page allocation flags.
+> - * @mapping:	the page's address_space
+> - * @index:	the page index
+> - * @gfp:	the page allocator flags to use if allocating
 > - *
-> - * Looks up the page cache entry at @mapping & @index.  If there is a
-> - * page cache page, it is returned locked and with an increased
-> - * refcount.
+> - * This is the same as "read_mapping_page(mapping, index, NULL)", but with
+> - * any new page allocations done using the specified allocation flags.
 > - *
-> - * Context: May sleep.
-> - * Return: A struct page or %NULL if there is no page in the cache for this
-> - * index.
+> - * If the page does not get brought uptodate, return -EIO.
+> - *
+> - * The function expects mapping->invalidate_lock to be already held.
+> - *
+> - * Return: up to date page on success, ERR_PTR() on failure.
 > - */
-> -static inline struct page *find_lock_page(struct address_space *mapping,
-> -					pgoff_t index)
+> -struct page *read_cache_page_gfp(struct address_space *mapping,
+> -				pgoff_t index,
+> -				gfp_t gfp)
+
+Also eliminates this very weird line-wrapping... :)
+
 > -{
-> -	return pagecache_get_page(mapping, index, FGP_LOCK, 0);
+> -	return do_read_cache_page(mapping, index, NULL, NULL, gfp);
 > -}
+> -EXPORT_SYMBOL(read_cache_page_gfp);
 > -
->  /**
->   * find_or_create_page - locate or add a pagecache page
->   * @mapping: the page's address_space
+>  /*
+>   * Warn about a page cache invalidation failure during a direct I/O write.
+>   */
+> diff --git a/mm/shmem.c b/mm/shmem.c
+> index de838dbb4df8..16b1cc3d8ac5 100644
+> --- a/mm/shmem.c
+> +++ b/mm/shmem.c
+> @@ -6190,9 +6190,9 @@ int shmem_zero_setup_desc(struct vm_area_desc *desc)
+>   * @index:	the folio index
+>   * @gfp:	the page allocator flags to use if allocating
+>   *
+> - * This behaves as a tmpfs "read_cache_page_gfp(mapping, index, gfp)",
+> + * This behaves as a tmpfs "mapping_read_folio_gfp(mapping, index, gfp)",
+>   * with any new page allocations done using the specified allocation flags.
+> - * But read_cache_page_gfp() uses the ->read_folio() method: which does not
+> + * But mapping_read_folio_gfp() uses the ->read_folio() method: which does not
+>   * suit tmpfs, since it may have pages in swapcache, and needs to find those
+>   * for itself; although drivers/gpu/drm i915 and ttm rely upon this support.
+>   *
 >
 > --
 > 2.39.5
