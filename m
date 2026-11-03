@@ -1,140 +1,125 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6B3D606D811
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 15:12:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B2E6606A33D
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 15:14:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Y8XX+R/3
+	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=GbC2K//K
 Received: by kanga.kvack.org (Postfix)
-	id 1F1416B00EF; Tue,  3 Nov 2026 10:12:31 -0500 (EST)
+	id 96E126B05B9; Tue,  3 Nov 2026 10:14:04 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1C89F6B05B6; Tue,  3 Nov 2026 10:12:31 -0500 (EST)
+	id 91F656B05BA; Tue,  3 Nov 2026 10:14:04 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0DF9C6B05B8; Tue,  3 Nov 2026 10:12:31 -0500 (EST)
+	id 835C56B05BD; Tue,  3 Nov 2026 10:14:04 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id DD3CD6B00EF
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 10:12:30 -0500 (EST)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 79C4540477
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 15:12:30 +0000 (UTC)
-X-FDA: 85394149260.25.F3B2380
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf15.hostedemail.com (Postfix) with ESMTP id BA969A0007
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 15:12:28 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Y8XX+R/3";
-	spf=pass (imf15.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 6205F6B05B9
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 10:14:04 -0500 (EST)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 03C2940467
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 15:14:03 +0000 (UTC)
+X-FDA: 85394153208.03.C53AED1
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf21.hostedemail.com (Postfix) with ESMTP id C3BF21C000D
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 15:14:01 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="GbC2K//K";
+	spf=pass (imf21.hostedemail.com: domain of longman@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=longman@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793718748;
-	b=EPl5wh1mLAvljBOJJkx/EnC2GCMSx3OEP+HA5RbhWCdfabAn6ekRF0YvIUWuR49xGRWGVo
-	VDzSjebq/qiiszBWoKHxOIJOkjZZfM2cvQhFo8pql5tvlefr/GlijJYO8r0UdjVmFAqk54
-	nS+Ej6dNs10LhGNW2R0CmFHu/bCsDa0=
+	t=1793718842;
+	b=lvqgCJTYKkQjJ9m0u/xg5eBjfGwAs5OecxClV0W6j2NWP56t0vBMkviKWexjDOFAzeI8nt
+	0IreRWk8sxEMDiHsOv0bq7Uyx3pv4+efV72X63PKtBXuYaNS/TiqK0zMRv3bcJHtgQ5eab
+	m+kcKldgkMtZ/SHTGq5fRc4+3PBH6Pk=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Y8XX+R/3";
-	spf=pass (imf15.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf21.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="GbC2K//K";
+	spf=pass (imf21.hostedemail.com: domain of longman@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=longman@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793718748;
+	s=arc-20220608; t=1793718842;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zV1T+I0M/X5fYajz5gf/61terI3BQ0fU42btgMq0usc=;
-	b=LrXQ0/AtXH+T2vMSRJCSG9tYOyw8e1N8XEosdnAyz5yrHWiXJVkbf7aqC8SOKx3uloEY3E
-	Nht2SrUTqtGmN45ejG9z/nvbYBkpxsYnBDjqUlE9Qawh2hnzxuUNHeTpMdvBbCOMDe1+SP
-	KU4r5EJizVwEUWoxdbdS3EJmYFeJ8+U=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id A999A60136;
-	Tue,  3 Nov 2026 15:12:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7E921F000C1;
-	Tue,  3 Nov 2026 15:12:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793718747;
-	bh=zV1T+I0M/X5fYajz5gf/61terI3BQ0fU42btgMq0usc=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=Y8XX+R/34RU2qrAch5IzWEomeYhJRgnOPmQV0c1P4ua7aD9u6KoBL27GfTNHLhW4b
-	 M+894MvjRu0FPV7UZqNf0BqBv+B3NPVLyYnLJEUvBvfNhTYzb/ZTgeFtmB8zxvqN1L
-	 f8DVezDosMAJUoosTpIUr7qnBX3vQNbpsLPOOfx1bEe1EEFPm8kBu30mbWU4I3dxko
-	 27z/yk6OveFo3E9sLlQLkZlcZpAGw3pxxon+OT0zrLkv7HhFxty/juVata4jEjgw0G
-	 4p6/HQn1Ufn0qLwAYZn70b/sNfSCjlnNRLDhQhgy1o9iXAPrvL/jsm3XC4EJgColuC
-	 3OGNqx1zKipNA==
-Message-ID: <6091a4d5-ded8-423e-a806-2c4b11f21e09@kernel.org>
-Date: Tue, 3 Nov 2026 16:12:20 +0100
+	bh=In5hDuKiBdou1zv+joOPBenp7vdBADvUYuAlqVBsoTA=;
+	b=s+3JZdgGifWTq1qBaqiYNA0dNoFiDTsJp3ab6L4Jv6mlOnWsZ3/Y5dySgeLOIamxV3POdJ
+	yM9/Lyb1fJ2n+FCpbhlF5nrHLv4HrkTfU4RPKdB5iwS9DgWdJU1J/CZDRP8Vk8FdW6tuqA
+	J75hJ7gU2PDWM0JzBMJvI5EoiucmXDM=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1793718841;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=In5hDuKiBdou1zv+joOPBenp7vdBADvUYuAlqVBsoTA=;
+	b=GbC2K//K1lT6scurzeuOu76aHSkhwX7ccuTW+v5hh4/n9v6aOaaFbfuoj0tc0Ig8Za/Vrj
+	Mh+pple2VROj06bl40WxTPw4b7rYacAHLleOQF82PYExGHgR7TNAJO8VxYt9hVlcEeStie
+	CapbWLNWOdTgDlgu7EtJhpzngu5iHwo=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-496-8_7V8QBKPBibu_MNcB0H3Q-1; Tue,
+ 03 Nov 2026 10:13:56 -0500
+X-MC-Unique: 8_7V8QBKPBibu_MNcB0H3Q-1
+X-Mimecast-MFC-AGG-ID: 8_7V8QBKPBibu_MNcB0H3Q_1793718826
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 37FD5180065E;
+	Tue,  3 Nov 2026 15:13:45 +0000 (UTC)
+Received: from [100.91.18.181] (headnet04.pony-001.prod.iad2.dc.redhat.com [10.2.32.116])
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id BF564195608C;
+	Tue,  3 Nov 2026 15:13:39 +0000 (UTC)
+Message-ID: <c9b24dd9-8c6a-4d35-8f68-07274f06299d@redhat.com>
+Date: Tue, 3 Nov 2026 10:13:38 -0500
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 4/6] mm/page_alloc: don't undo another isolation in
- alloc_contig_range
+Subject: Re: [PATCH 2/6] kthread: Keep unbound kthreads off nohz_full CPUs
+To: Frederic Weisbecker <frederic@kernel.org>,
+ Matthew Ruffell <matthew.ruffell@canonical.com>
+Cc: Tejun Heo <tj@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
+ Ingo Molnar <mingo@redhat.com>, Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>, Caron Wills <caron.wills@pulsar.com>,
+ Ridong Chen <ridong.chen@linux.dev>, Johannes Weiner <hannes@cmpxchg.org>,
+ =?UTF-8?Q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>,
+ Juri Lelli <juri.lelli@redhat.com>,
+ Vincent Guittot <vincent.guittot@linaro.org>,
+ Dietmar Eggemann <dietmar.eggemann@arm.com>,
+ Steven Rostedt <rostedt@goodmis.org>, Ben Segall <bsegall@google.com>,
+ Mel Gorman <mgorman@suse.de>, Valentin Schneider <vschneid@redhat.com>,
+ K Prateek Nayak <kprateek.nayak@amd.com>, Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R . Howlett" <liam@infradead.org>, Vlastimil Babka
+ <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>,
+ linux-kernel@vger.kernel.org, cgroups@vger.kernel.org, linux-mm@kvack.org,
+ Jay Vosburgh <jay.vosburgh@canonical.com>
+References: <20261103075940.110308-1-matthew.ruffell@canonical.com>
+ <20261103075940.110308-3-matthew.ruffell@canonical.com>
+ <aunpNqPV38FG94-f@localhost.localdomain>
+From: Waiman Long <longman@redhat.com>
+In-Reply-To: <aunpNqPV38FG94-f@localhost.localdomain>
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+X-Mimecast-MFC-PROC-ID: lsVoFtRjUs_wI0Xg5GK2XLomwSdKA6Vo5vYilfTI6LY_1793718826
+X-Mimecast-Originator: redhat.com
 Content-Language: en-US
-To: "Gregory Price (Meta)" <gourry@gourry.net>, linux-mm@kvack.org
-Cc: linux-kernel@vger.kernel.org, linux-cxl@vger.kernel.org,
- kernel-team@meta.com, akpm@linux-foundation.org, surenb@google.com,
- mhocko@suse.com, brendan.jackman@linux.dev, hannes@cmpxchg.org,
- ziy@nvidia.com, linmiaohe@huawei.com, nao.horiguchi@gmail.com,
- david@kernel.org, ljs@kernel.org, liam@infradead.org, rppt@kernel.org,
- osalvador@suse.de, muchun.song@linux.dev, iamjoonsoo.kim@lge.com,
- anshuman.khandual@arm.com, stable@vger.kernel.org
-References: <20261027042204.3741307-1-gourry@gourry.net>
- <20261027042204.3741307-5-gourry@gourry.net>
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Autocrypt: addr=vbabka@kernel.org; keydata=
- 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
-In-Reply-To: <20261027042204.3741307-5-gourry@gourry.net>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: qzxxftbb3qq9yfzz4r4qbci9j34eysp4
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: ncsqnqqssub318bsud6tnizobd6pb54z
 X-Rspam-User: 
 X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: BA969A0007
-X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Rspamd-Queue-Id: C3BF21C000D
+X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
-	version=4.0.1
-X-HE-Tag: 1793718748-858798
-X-HE-Meta: U2FsdGVkX1/BhJJKzN8/kLPOzMbClHc6152T9CA//Jj9DbcpfNeHZnoWT1zriuqJEA3pJYIk19GyKHnLKNd8/14B1j5isqvlpw6M/pc3O/FB1hhptIe79O+oPfkVVaj9bvlUIO9OFnAtskq/mxiDXHhveVGiE4N52FvCB+slSVOk+tE2n+hMx/+AMkNOiy6N9EfyRX6ZKqReYLi8UQ+VjFPGKdPaftY/PxZB6/kobDQCxRjqZdEctahZus3tANtlJPaAYQ5eBVI9QM55ELTgLOT65aLwQPQyMCox8Wsuvw2g57kHWjlfXy4dgitxcl7dq0AyrOlRZ4fd1ytL3KigGygbNe+CFSRBm/34XH5yM7lPAonjdL/tPQRkuqRnRJZ3kp2FZVQh5fvM9eYkXA7wG62rkIM+M7DRVWUC5wHPNXqN2touCNbX4Dl4jiHjTxgfUX8KMp9MQOgN2U/gugps75L4y2EVgX5xfhGNDIrysBTBLsrrDtwHWVtXmMHNJFvucKg/4/vBT24QsHCAynPlLIYL+1+SpqrGgDSMwwWGE8tOq2LjSpD+lRiD6IHqxEHZw6lX4+hUQIvfryBJiMEqtlW7u8rnFC3/T+Vyl0grzckSG4EwliP51hDhHQK77xJGJntTap4DxW4NcmDtqJ1ZtKTFwx+nEMEK8GlwEDyIxuhYErtv8jf+7zr0TnQzKTP86870QrLAWIeqz/6zKPVTwAcbjiAff7QhTqZs3W1UhtH5J3NUCOGGWmp2kor6RWGBaqk9Rh2Re9KU0BggcN4oSvozYfTADjW5/HryC54bhQcFEpwnAlPkjM0e4KD4mPtiZPj6GOlkdn6DgIhnIZbtIPbZ2JT8aOMLQdlLWi7Sur4AM9mgtCHbqfcLz/6YAR82Sl5iQAIMOG2MRTPg4F7oPTrZbQMrIdl/MDzHEcZ8CTiEHDA+fnNEgdL68pzzGjibTvwnkrVWGnn4aJ/HqwC
- RMBDk0Xu
- NXQKL9UMKM+/VcijTax4+T8BtbaVGK0mjRgkWAoMRy7RVP8qwiuJ75TrBKl6pdIiWHkazrMF9HvxvJETFiZGVTSWAn1odYdu5NGTG66mf0hSiYY+DVRRzxyQExoX8nOFTizRq0Xd9dBYjC9ue6btDstgfQDgMW6jv0I+jcN/tVxLljSnadY2gHZY/dabeNncGp6hnfsGnZ2q5gtrmPxWw8Lt9DuDIBvhewVop4r+m1++KPrJCV/WOESetT06jcb8TsYFL/zSex9B4YQI4z8RnUSihJ2j0Go083ai5RZCrkDUpmT8cFBnY0f4FmNR11Ce+cKMj/nSiRzBu/hw1sjSxcGKonbSNnx5xJBWmz0VuWVWTL9VuGnBINpWURsqZer6v59zw67sR3ItwRKOxL8uHIWDvtmegTyz2xPF0E15o3EBRAiXsna6uJd7M/Svyf9XZNZs0ONHf/oZDnUOQ9klnsOq/qA==
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
+	autolearn=no autolearn_force=no version=4.0.1
+X-HE-Tag: 1793718841-205797
+X-HE-Meta: U2FsdGVkX1/n8mEkVsjBJovUnnO7tvjdGoEpkTCkLBqo8jZCrNRoUrnpBJRGfJC7eETlUpUYn0s7ZNiT6syHwboOmpU1mI1QVhMda+NVcC4JeCPKqo0801R6dtZp55MzcQjb75/Cu0aJqw/Iq/mzC1dNetleaNpIYzSjAwTEs5v/ykxRuG74DApg/3cjtdgQEzz3Fb3dN2oeDEJYa15pOTrZAYmpVMZ3tY+pLDHNFLA0xUbtSC+dAXVF/Gv/gEqD+J4ev+rWdsaJdpY3NUK86ofvPwHpx59ws0ZX8yRdqvGU/+kZTF7yf1sQshhhiELq1nJKLjfapwl8xGVjgBNQ34vK65GwhcwANL6oC0lp70RcXvMNrer5ozY5vozQdj6VSQEd69adSW7ywyRXdSIxd69pWECmvYntHFeSAHZ3WlyfqsLMj138w8bIQmoV6WeKZfEvTKujkGddPmsjEQFmZh3F/N9kXjlUqDNal0Rj4dPjsqrDFbsImAJU0J+ELA8KzP3GdR3BStRGN9Du5CJ+y3dE1wP9irOb4/7Wm2y+g5vSknUa76DJVYhAyZe4/Pti7Fq7s4UPc2BkshJ2/xyOk+8ynVYOY/Rspkpvaf0kEQGcy7q4w6PbBmDtlY4MWAFU17jYwjQBf9qaQGXy7kkfCXSKjad+X+W68maQ6p6gFnXxF4dEQrGbeVDlCgcRIdQD+U2L7lWiOTAuhAX42bQcEf+iVQV/l9jfkYHnZgMG/ZtrBkj0VzDzxrszshjynCQcrFTjC24NbEFIpm1K3bytnMNRfGjS9/ZovRnULD94uYaPRnrUPtJeNkQyO5aU/9GfeYNw3CusckikaoVD6AeBxKs4/t+sRtO5uq7q8RyZmkHPGrDeURlCdHngi5ed3LiWMYXpXzR2vgN77DYlXS0IIiUdHfcNBaFUDsglsQJmwBOFGkm2WW5lCBpr7leoNpdf6zwTn9EIj4IKc25+oy4
+ XqcfY28R
+ ihurB5ZtNFzH9jTcI9h6/h7XfFjUqNixfaEew9zTC1NtaE5pLog3Ee3vvh6nNTCezTcA5XEiW6x+IYyC1cQoWZHMMb4nLHuuP+bHnqOChag4C2lmElgBUAnO3AqgePTn53oP1vOBjhiuM0sIUfdPwViIBknHktFjNjJCBLBptnx0VZ8eGlU4lvQc1p8yxvgjX7pLD1F5qQ9Jz2qtXA0zsYjZuPpZPS2uoqWMqSBB9J1HsjbvvCoqlAI8vvTBltvF2M9AW5SYfiKn7v8iKybxsffmWmSHsij+V8hXTJD24kR/rL0eA83Ufje0G0VPCI5WrZPOOQuZlNX5S2XeiU0Tz83n0bQSImmLtChWuXn/pR1+FxJ1q97g8uAPC5RixU6RDLzF8/4Go75hb1JZH7DE5EWNz1eBVl11EuetsOCweYgbq7hvcAscghRtZ01qX6xv+ptQ+rl21cmZJf2g=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,71 +128,36 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 10/27/26 05:22, Gregory Price (Meta) wrote:
-> An alloc_contig_range() that overlaps a block going offline can leave
-> the offline spinning until it gets a signal, holding the device hotplug
-> lock.  When isolation fails, alloc_contig_frozen_range() undoes it over
-> the whole range, clearing the offline's MIGRATE_ISOLATE too:
-> 
->   CPU 1 (offline_pages)               CPU 2 (alloc_contig_range)
->   start_isolate_page_range()
->     blocks are MIGRATE_ISOLATE
->                                       start_isolate_page_range()
->                                         -EBUSY on CPU 1's blocks
->                                       undo_isolate_page_range()
->                                         blocks are MIGRATE_MOVABLE
->   test_pages_isolated()
->     never succeeds again
-> 
-> start_isolate_page_range() fails only on a block someone else isolated,
-> after undoing its own, so this undo only ever clears another caller's.
-> Return directly, as before alloc_contig_range() went pageblock granular.
-> 
-> With offline_pages() parked after isolating a DIMM block and a 1G
-> hugetlb allocation made over it, the offline on base still loops 30s
-> later in 4 of 4 runs:
-> 
->   offline_pages+0x5b2/0x1570
->   memory_subsys_offline+0x17e/0x470
->   device_offline+0x250/0x340
->   state_store+0x88/0x110
-> 
-> With this patch the allocation still fails, and the offline completes in
-> 3 of 3 runs.
-> 
-> Fixes: b2c9e2fbba32 ("mm: make alloc_contig_range work at pageblock granularity")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Gregory Price (Meta) <gourry@gourry.net>
+On 11/3/26 9:01 AM, Frederic Weisbecker wrote:
+> Le Tue, Nov 03, 2026 at 08:59:36PM +1300, Matthew Ruffell a écrit :
+>> From: Caron Wills <caron.wills@pulsar.com>
+>>
+>> Since commit 041ee6f3727a ("kthread: Rely on HK_TYPE_DOMAIN for
+>> preferred affinity management") kthread_fetch_affinity() only removes
+>> domain isolated CPUs from a kthread's affinity, assuming that nohz_full
+>> CPUs are always domain isolated as well. Up to v6.13 every kthread
+>> inherited kthreadd's affinity to housekeeping_cpumask(HK_TYPE_KTHREAD),
+>> and from v6.14 the preferred affinity was filtered with HK_TYPE_KTHREAD,
+>> so nohz_full CPUs were always excluded.
+> This was done on purpose because on all setup we have met so far, it didn't
+> make sense to run nohz_full with load balancing. After all the point is to
+> run a pinned single task on a single CPU. We have seen too many misconfigured
+> CPU isolation workloads due to that constraint not being enforced since the
+> origins.
+>
+> I'm open to counter-arguments of course but you better have a good case.
 
-I've applied this single patch to page_alloc/for-next-fixes and will drop
-the version from Josef [1]. Also transferred Zi's R-b since it's the same
-code change (plus comment).
+I do see configurations where nohz_full/managed_irq CPUs are set at boot 
+time without isolcpus=domain. But these nohz_full CPUs are there as a 
+backup in case some latency critical workloads need a set of fully 
+isolated CPUs to run on. Right now, isolcpus=domain can be set 
+dynamically by using the cpuset isolated partition feature and they will 
+be used when the need arises.
 
-[1]
-https://lore.kernel.org/all/20261027-pgalloc-ai-hotfixes-v1-1-9c7d1aca801e@kernel.org/
+Matthew, is it possible for users to adapt their workloads to 
+dynamically domain-isolated the CPUs before running RT tasks on them?
 
-> ---
->  mm/page_alloc.c | 6 +++++-
->  1 file changed, 5 insertions(+), 1 deletion(-)
-> 
-> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-> index 55d3fc4b307f5..bb3c7e95f2ed4 100644
-> --- a/mm/page_alloc.c
-> +++ b/mm/page_alloc.c
-> @@ -7396,9 +7396,13 @@ int alloc_contig_frozen_range_noprof(unsigned long start, unsigned long end,
->  	 * put back to page allocator so that buddy can use them.
->  	 */
->  
-> +	/*
-> +	 * On failure this has undone its own isolation, and any other
-> +	 * isolated blocks in the range belong to someone else, e.g. offline.
-> +	 */
->  	ret = start_isolate_page_range(start, end, mode);
->  	if (ret)
-> -		goto done;
-> +		return ret;
->  
->  	drain_all_pages(cc.zone);
->  
+Cheers,
+Longman
 
 
