@@ -1,103 +1,114 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8001A606A326
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 01:30:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 862E6606A32E
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 01:35:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=R3cSXNEU
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=OuWOEBPE
 Received: by kanga.kvack.org (Postfix)
-	id 93C986B05B5; Mon,  2 Nov 2026 20:30:03 -0500 (EST)
+	id A56086B05B1; Mon,  2 Nov 2026 20:35:00 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8EC2D6B05B6; Mon,  2 Nov 2026 20:30:03 -0500 (EST)
+	id A0D9B6B05B8; Mon,  2 Nov 2026 20:35:00 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 82A1B6B05B7; Mon,  2 Nov 2026 20:30:03 -0500 (EST)
+	id 91D9C6B05B9; Mon,  2 Nov 2026 20:35:00 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 5E81A6B05B5
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 20:30:03 -0500 (EST)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id EAEA1C02F0
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 01:30:02 +0000 (UTC)
-X-FDA: 85392076644.02.22B2A13
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 594F920002
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 01:30:01 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=R3cSXNEU;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 744E06B05B1
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 20:35:00 -0500 (EST)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 059681C2712
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 01:35:00 +0000 (UTC)
+X-FDA: 85392089160.11.FB93DB0
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 9162720008
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 01:34:59 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OuWOEBPE;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf13.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+	spf=pass (imf31.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793669401;
+	s=arc-20220608; t=1793669698;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JL0qvT8ZjJjiuievn8oHTO+mTi5spxR1dpR3Ut9PSkc=;
-	b=xiXUWt7YZWvxPY6j6GPPlgOvx8Ovk/2X4qTthH9O1j8SgG5cA22CUCWdmUZnkR8i5e0Fm8
-	7nh7dPhF9mPrOYUW15z3wkqQH9Wty7kUjohi5Wt5NxrZZztsQFy7Q7D5K9oHXxoZHT2Z8J
-	7oCz2JYrP7VRN0kPevv+kjCX3kBsiJE=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=R3cSXNEU;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf13.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+	bh=56rap1o7worJIx5XKJcXXzxaY0FYuZMs60jrSq6DFxw=;
+	b=MIMWpFu5WkCJXsXY43g+8azgg8n3j7KbAhhO28q3/K1qnajJzbZK/S0LLHHoIobmoWr7JG
+	zyP4aDwGhZymd5LVc7p+pMTz/oA8h/kn7Zw+LzjES7sFVOmWhimpwAGlEFUKNYDNpv7aOc
+	kKp2i5uurcFwWr66FE149kN+w/hIZyQ=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793669401;
-	b=YlhQWy8G420Jgu3C9nv1kQHni5+ueLFoIdKkeKw6jRDLnhFt8zFz5GNMrrcZ69qBi0kK6H
-	+CpcvivMg4+G2s4tHexTtAw1VVJH512f+bKcbni+VB+16wD0BJTFLWsQWw/D7wrP3BKBlJ
-	xcZVgaxRCHviNp/UUEAO9kFGISomr40=
+	t=1793669698;
+	b=cbpoJKSrhyb5oEIT9rFXKI23SWna4A/CeHIPHZZVeZQavPoLEtiHKrr+k0FLn0XD46xJEb
+	FjMjv4yHJGA7S7A51hKNpcyymMfPLBHdwZTuRaVkgdJ0gSO1nEoKeavFfsT3zPX4rUKwIr
+	FxV1UmbJXAhjJwCxoWy4v8Jhwd6XVxQ=
+ARC-Authentication-Results: i=1;
+	imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OuWOEBPE;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf31.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id CC16040806;
-	Tue,  3 Nov 2026 01:29:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33B781F000C1;
-	Tue,  3 Nov 2026 01:29:59 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id EE73760008;
+	Tue,  3 Nov 2026 01:34:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C29F11F000C1;
+	Tue,  3 Nov 2026 01:34:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793669399;
-	bh=JL0qvT8ZjJjiuievn8oHTO+mTi5spxR1dpR3Ut9PSkc=;
+	s=k20260515; t=1793669697;
+	bh=56rap1o7worJIx5XKJcXXzxaY0FYuZMs60jrSq6DFxw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=R3cSXNEUgnb3K9YOWjnMQqFH+EiogBKNMMLkot4qCORp6kHRUaaVhX1jCsg7RTM0d
-	 F9nMpF9n9e76JMZcvCUeVOLI1GJJYz20/HE6P+rlUcTLBX9dz163Lz2Cr4WWcTBFJx
-	 SSc32ghlzCrYzhzdgN2qRpBfo0/MkVgKbE732CGSlcPVMc9HMy9RQqMNWD0PtwQ9tA
-	 +iz9py1Vw+1YdOefU9z+3YfR/JzCkfrw1PYU/yQLxxUSSO2E9lqbEkjVphHn3/lHcO
-	 Tn89iFq3+Isg31Pvh4tCnu2qmOz7o0YHdBHoINyTS9bCr4Z0PJak+1q/8AdYOZWwom
-	 Rs1wUnMZKdvEQ==
+	b=OuWOEBPEQbnyxrnhhRefJZallXrO2CFILZlBkI/exfpF1YdIQaHjTBy8NgtrRcNv9
+	 dlwMPJYGRhhadNj3olCdeIUMd3pEepnEGAkK3Sg9/k385MOStv3+y0tMa74pB6P33T
+	 1PvcqV4nt/qb96eyavODI4qydUoRHT1yHv1/jmRcoACCaroPfGdJZAYgmzwTT17lwa
+	 Ri/npoqchZfzYoGy9fziJf7Udljsa6F6ewwuPjKb8ZC9tN4k5ODq4qLZI1U1EkO9o7
+	 TTBAuA9/aldvTzZOuwrSTv1rtaEeJGdR1/li/lYHwnkaYXfLnpns+V9yoUxxdPKG06
+	 mXBbA8jRfHN/A==
 From: SJ Park <sj@kernel.org>
-To: Joanne Koong <joannelkoong@gmail.com>
+To: Tal Zussman <tz2294@columbia.edu>
 Cc: SJ Park <sj@kernel.org>,
-	akpm@linux-foundation.org,
-	yosry@kernel.org,
-	shakeel.butt@linux.dev,
-	hannes@cmpxchg.org,
-	mhocko@kernel.org,
-	roman.gushchin@linux.dev,
-	muchun.song@linux.dev,
-	nphamcs@gmail.com,
-	chengming.zhou@linux.dev,
-	david@kernel.org,
-	ljs@kernel.org,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Jan Kara <jack@suse.cz>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Zi Yan <ziy@nvidia.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Joshua Hahn <joshua.hahnjy@gmail.com>,
+	Byungchul Park <byungchul@sk.com>,
+	Gregory Price <gourry@gourry.net>,
+	Ying Huang <ying.huang@linux.alibaba.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	John Hubbard <jhubbard@nvidia.com>,
+	Peter Xu <peterx@redhat.com>,
+	Hugh Dickins <hughd@google.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	linux-fsdevel@vger.kernel.org,
 	linux-mm@kvack.org,
-	cgroups@vger.kernel.org,
-	damon@lists.linux.dev
-Subject: Re: [PATCH v1 3/3] mm/damon/core: use node counters instead of flushing the root memcg
-Date: Mon,  2 Nov 2026 17:29:51 -0800
-Message-ID: <20261103012952.93674-1-sj@kernel.org>
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/8] mm: remove wait_on_page_writeback()
+Date: Mon,  2 Nov 2026 17:34:49 -0800
+Message-ID: <20261103013449.93977-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20261102225030.2743129-4-joannelkoong@gmail.com>
+In-Reply-To: <20261102-page-wrappers-v1-1-e7280bdb31f6@columbia.edu>
 References: 
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 594F920002
-X-Stat-Signature: g81ubiqjhm8oqqzrzqguhjo7raj8qhah
+X-Stat-Signature: eksgqei65jef7e74oxf3qotp7j7u7abw
 X-Rspam-User: 
 X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
 	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1793669401-711392
-X-HE-Meta: U2FsdGVkX18wKdii3P1kdxq4Il0nxxzsyq8rhJmg+A6xibHnHy7BIvaNWU2gvlrjNiRUbDuOoN5tFUF95WAd1bHXx8JYg0cDrn+95hoCLPtmSCCcd7N3VqztArKHFa05kMm7pOhbbJ6PoXxMnFSbZK+ay9S1BRuy/kgWZM1qx5cB40gaqpU9rueA/BK8X6o2IcgSaPQoKHcrTOKr+NAxhcRbXgcu8hAodMEuRV6JzX+M+qs6b4x9wuCq5nD5F+OBtdOxSSl8V3//VL6P5KaX6go3ipDa450YLwZU5Amkx3Ypj6CRhDTLhq66eLo3g8QhSu/A5fJDJ+X/6N2kEM78Cw8zVoryC0qVv31pQaKuwuRxF9AM/MfxAjm7Qbu2V5d9V+6yuz+iv7a4hDEOuPZySrQHlMdz1nqeqzuqvZaApfcX7aaZBL9EQHeWKjat9gvqbXpd+Bq+AGHxIFlGI9IInuxqpTp9J8tco/BTx1WBhtAC8DRsp4lRgGuF4/Ex8kkfeJwhJl0Tt9kxfRWVkfv8mpZKMeA4W61Ow7iILRp0u1BoCNQl/wkL8afi11JpJ/eK5KFA6hjoXGHYgP98/S2zRD5NQqRTkGEGMBgMhIpl1KnN6ZneP8aWE97aBur16FjYCZVTgjXQku3YcbriUHcTK0lvVjKx9+CybCT/MX0a4svjYLQjweG3RY4L8QbN232ohxr4bdYZsoldZGDiuURaTyFHzfTK2GGKeEdVx4kDptB/3Lyxs4xcarAURa2vX6kUoumsZhfOsJ2Z/VkvDz9jxGa2aAo5Nh8TO6w+XRCWJyvM6ZDuUh0KDlpbZvOhiKDv6lX9+bikJOs4tHlGuQ1jIDVn4Y9oiyhcmK2y4uis94okqlfIWYBFbFQxJ5V0dqjgGyrpq/XFwZRzVZCF7EFn2rgNtlUyhekPRJZelR/eAkS0qZkrqRt1CliO+UuKiGcuZFPhrigQKSuDHQjel1A
- Z7M4s0N9
- ymhlJwEwlsObzL+uzJ+BFX6mR/6YUTi2X5Xqjs8pioO4kMYseytJ+fFYHl4OixD9egiMFZWqG8ybGAcAoxE7ocdYMa0LxYafgTB2L26QXG0dBbYqEecCVYFnRi/yoJunZjX27h0aSPHhCY52SV/wFQyWln9/XJZzQyHQjJPhNn+4uFWAUYGE3O96oufPAwnr+JA0tt0+MzQbJ/jXLw4hfJei1AzBjCQYJszcpxwFN/w5vSRwpn67Y6zF9PvZWjsHI/mnV2MQEZDqgNvuLWmPthUm3yA==
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 9162720008
+X-HE-Tag: 1793669699-392302
+X-HE-Meta: U2FsdGVkX181GUvymSheSRU8mVZas3gl+MinViK118Bf4nDZ3/XPUHEINd2GnOs26Z13RjuS+wmVnsGH81WRaK1kQw81BowiZMjKh2vBlf96ejzWL9CKZMi3EXWwRSMD9trczyHS5M9GoWcXCr2ZQWiH1xGyM4l6l2VmfEecszzxsCztEJjcr865CTdRFrmN9YcVwjWFF77q6x4q+DkhcHvj33CacLiI08RSkPTGguhBZ5Y+mUXh+3jWo49sQWkVR+kGQsEnC8gX5j+5Leidl6l4gewf+WBA1RA7U9Vx4otJ3j0kOr/0S+wdTQBO9y8cbCDPN8fbpkXRhDTJFV8pSiX5EfHjKVZ1fifUsk0kZbizLJzHcDQ2bXdT5bZkmXUvkWUD7yMe3E1hTsF+Zn/yeSJY+tHne2cnOGTKfruQvFNaqKPuFuqWL90h6h7e9Ayl1LReFXsd6gI87trDcmRqc8mpFja+WHrVIQgpn2awOwiFuY+fFsPjVll1Q2oS9yBT7AHQBtsH15FHl3c8z+B0QxdukmWYR9V294mJ1fYgXGmg48fxj4J5/cUiCysc7vJlpNRzQEszEXRtbNXKWZeAUmv58AiBgxTpCqO3gwWB8YK+/ubpWqNh04mXH9/gMRnAlxQywFBmsrCA7QdJA1vbeyEKFnH1yMfEpegTuSsyZDX6J3XMi460/MDOvOb1fjsVyg9q5wEcrAR7OqN5z+dyok9g68B2SerIBzNoz0AGMCtMpim7+5gS3ka23YBrzSqSsUgXtXkq4el+6F6nPFkq208ApcOr6VIa64InY8I8GwV8SiHQ8Mzw+xPHFVrUXz0HSXwf0ACqulgDsSWnHnmYPCx3Az/cz80iBMe72Ayd5iVclh2AOqtdx7Idc1C5yhzKEPPGMTZQMOoVtXA08+jRAoeO+lPdYsvjJ1q9NjeM+C2cQnGzAwW6V9QcOBikIUSzBlkGdE9vqsfz4t9rIHW
+ gpE3mFi1
+ 80b5Emghfjq3G1HMY1uyO732PoElx9eSLRcKIfwKJUci64X95NYmuKEgT7Q2fD76YhTxQZ/vkFOaF6e+6t8oBLc7L+K7rRwKOcRyjTiUwYzzZhPhjDNUdMqvVKVKOV0MCUr42SexDOz/IKJqP1LGnHj+dbtK56ejlaCMH0LT5xr62UUfr/+W7eEV8/nnm2ap7sLy3OB4RLjVHd6W8OqUIIf28k24pceojmGOHlkwWDw7G/2MtDZMaDHaBgpqlLQuMcW+fK3P/Uw217cF0NSSDCGNgO40cDy9u2thusbow74NZqw/e9SmhRfTyR75DYBp6MVnPlUgF5bwNvGARRMdEdvO7ka3/7K3J6QljZfewHiNsYrxxnrpNRpwbx/9dmBZwSVVI/FjW8UmxPR2pTg4FKlC2P9QMDUsYBC7H
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,40 +117,17 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Hi Joanne,
+On Mon, 02 Nov 2026 17:54:06 -0500 Tal Zussman <tz2294@columbia.edu> wrote:
 
+> The last caller was converted to folio_wait_writeback(), so drop the
+> wait_on_page_writeback() compatibility wrapper and its declaration.
 
-On Mon,  2 Nov 2026 14:50:30 -0800 Joanne Koong <joannelkoong@gmail.com> wrote:
-
-> damos_get_node_memcg_used_bp() flushes the memcg stats before reading
-> the LRU sizes of the goal's memcg on the goal's node. For the root
-> memcg, that flushes every cgroup in the system. The flush is not
-> ratelimited, which means it happens every time the goal is evaluated.
-
-Just thinking loudly.  damos_get_node_memcg_used_bp() is called only once per
-DAMOS quota reset interval.  It is usually recommended to set the interval to 1
-second.  So a sort of rate limiting is applied in common use cases.  That said,
-some users might using quite short interval.  And it is obviously better to
-avoid unnecessary flushes.
+Makes sense to me.
 
 > 
-> For the root memcg, the node counters hold the same LRU sizes as the
-> memcg rstat stats, and they are always up to date. Use
-> lruvec_lru_page_state(), which reads the node counters for the root
-> memcg, and skip the flush for the root memcg.
-
-Again, loud thought.  For root memcg, users might use
-DAMOS_QUOTA_NODE_MEM_{USED,FREE}_BP instead, which calls
-damos_get_node_mem_bp().  That said, some users might use
-DAMOS_QUOTA_NODE_MEMCG_{USED,FREE}_BP for root memcg (maybe it makes user space
-tool writing easier?).
-
-So, looks all good to me, thank you for this patch.
-
-> 
-> Signed-off-by: Joanne Koong <joannelkoong@gmail.com>
-
-Assuming the discussion on patch 2 concludes to have lruvec_lru_page_state(),
+> Reviewed-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+> Signed-off-by: Tal Zussman <tz2294@columbia.edu>
 
 Reviewed-by: SJ Park <sj@kernel.org>
 
