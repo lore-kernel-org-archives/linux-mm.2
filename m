@@ -1,94 +1,102 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA43F606A324
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 14:45:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E568960A5BDD
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 14:48:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ZY1WNr25
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=og5bCNnC
 Received: by kanga.kvack.org (Postfix)
-	id DCB3C6B05B1; Tue,  3 Nov 2026 09:45:43 -0500 (EST)
+	id 064126B05B2; Tue,  3 Nov 2026 09:48:09 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D55086B05B3; Tue,  3 Nov 2026 09:45:43 -0500 (EST)
+	id 0160E6B05B3; Tue,  3 Nov 2026 09:48:08 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C44096B05B4; Tue,  3 Nov 2026 09:45:43 -0500 (EST)
+	id E46036B05B4; Tue,  3 Nov 2026 09:48:08 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 7EDA56B05B1
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 09:45:43 -0500 (EST)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id BE3A812045B
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 14:45:42 +0000 (UTC)
-X-FDA: 85394081724.19.E3695DB
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 0DA0440004
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 14:45:40 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZY1WNr25;
-	spf=pass (imf17.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793717141;
-	b=5yRrpn4kFUJbxQaukC77fDDnCUK2s0eHWBfCGA5oE0EyrWe1hkqe7adHkECYjh0dzMTi58
-	m7/gmdY2wDVBpk0/KkV/OgnSunlxrddZSOt6nWK4NiEAaa0W2AzX7iNvJ7620e7rxgSF4+
-	FvJEK+T8uw7absLlwVseMJ0yl1t+b6g=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZY1WNr25;
-	spf=pass (imf17.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id C07DD6B05B2
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 09:48:08 -0500 (EST)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 5F17680482
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 14:48:08 +0000 (UTC)
+X-FDA: 85394087856.25.AA0CFB8
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 9E33840007
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 14:48:06 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=og5bCNnC;
+	spf=pass (imf12.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793717141;
+	s=arc-20220608; t=1793717286;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=BCL6ienR6vsHs1rddhFc4AKsyfVTg4cYiIABXe66O0M=;
-	b=DMmI8KFQNlt9yuCQ3nKF0HoDIWbYsT4eNtyIE/L+3/w9EclRkqzAimUYhmg3lcd/m5cUxk
-	SgJIo38CJYE8E/xKjT3COduVmOPbR3oU8gN/yaIPKDq21AQC7cbYGnVUB7QnNR8t42F9Od
-	ow1hD+qopF2kZbs3kQCU63iRevtWCEk=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=Wcfm4NJTkbtPoo0W4PeJYWfvmalPaASf+2pIVtyvhx8=;
+	b=QWM+quy9Px0brh35K6lYjHRYfR8qBcN2ZdniEmdZxdEHglgBabSGusT0BNIjAdOhgpeq8X
+	qGKx7sOIz/0ASfqYZtEx6BkwR8qhS3wXksw5mzxd+dzqtC/SykJb4GyCtIgImUBNBwyDnl
+	ulra3sJL+w1Ob5VshYSlh6ibQK0Gneg=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793717286;
+	b=A28WIFahGRothV/ZH7DivEBotzv872VS69hMHV8a+dc2aT3SMOjqHK3VLi90vDnJArMTzH
+	C+09X73pzBWRjUIeEI96iO9jtB+fJWjaZRpFap68SP4J6MOLIAt7Kl/uByj4h1RmlsiuHM
+	ZK+tOdA+LiVd9JYXzAO/iovpxonFjmM=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=og5bCNnC;
+	spf=pass (imf12.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 6F7A76022B;
-	Tue,  3 Nov 2026 14:45:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E123A1F000C1;
-	Tue,  3 Nov 2026 14:45:39 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id C1EE24055F;
+	Tue,  3 Nov 2026 14:48:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 478AE1F000C1;
+	Tue,  3 Nov 2026 14:48:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793717140;
-	bh=BCL6ienR6vsHs1rddhFc4AKsyfVTg4cYiIABXe66O0M=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ZY1WNr25RicuYSX/YFwdj8SN4PIN3yIx3Q5nv+2Ki/G1ymiibwii3bPyPf294f7TH
-	 H9qx7tBPdAIRSKB81305msBlTqyTu7f+RQdSm2gySplVyZ4bfpguGKVJkpweDMw8NX
-	 9V0bXu7zouY+vveCWfbmLwfQDTHcP4WDiWj2AJqeCuWKSxs+EuGM0fzk4xjnHLKURa
-	 UQEHlUrJoaldjBAnRnk7MqsJaj7FqPfOJ/4H2/8KjH/RxRvveyqx4Vr89RuJ+P9Dpf
-	 1IB3q0/a9XULP0BL2YuUjwuyLb8W25z20yA64cXEaumZPNq+uD5sZqtpiPaZN0Ir4z
-	 c2GjtjbqSrT+w==
-From: SJ Park <sj@kernel.org>
-To: Aveline Noir <jm5905938@gmail.com>
-Cc: SJ Park <sj@kernel.org>,
-	Enze Li <lienze@kylinos.cn>,
-	damon@lists.linux.dev,
-	enze.li@gmx.com,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: Re: [PATCH] mm/damon/core: use list_{next,prev}_entry() in damon_{next,prev}_region()
-Date: Tue,  3 Nov 2026 06:45:32 -0800
-Message-ID: <20261103144533.87946-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <179370190119.71013.18301574509097172702.b4-reply@b4>
-References: 
+	s=k20260515; t=1793717285;
+	bh=Wcfm4NJTkbtPoo0W4PeJYWfvmalPaASf+2pIVtyvhx8=;
+	h=From:Subject:Date:To:Cc;
+	b=og5bCNnCWypgCWUiGfXpt76OPxMNmpziIPcsV9Zs5WXVFaTldbfNdS4SVH5zwQHNz
+	 OjqAfGiEzma5i4WL0gLpzl24H9P8dQavzNaT5aaije6CnIww4V462jcJhFBBVmyTaF
+	 l1B+fIXqiY+axDuZBtkIDZMHCO2YItflbVfoiPhhhtNq/3u7V2qvVGQ8SwVaFjvzqs
+	 V4aaXA9o8YoZvc8DAtwx9fDkdYbvSQvVOR28KfbxWOdiaOF7qFNDSyyjdTI35uamTm
+	 HXE3+ZFWtyerrJw8EwjYQxymxyuwoxsAVAlzc+5WKGI0ivodCEhqOsxeH2g2jQf0W4
+	 X2/UXPsn5b30w==
+From: "Harry Yoo (Meta)" <harry@kernel.org>
+Subject: [PATCH for-next-fixes v2 0/5] memcg,slab: kmalloc_nolock() fixes
+Date: Tue, 03 Nov 2026 14:47:49 +0000
+Message-Id: <20261103-kmalloc-nolock-fixes-v2-0-19167cfe4779@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-8.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIABX06WoC/yWMwQ6CQAxEf4X0bBNSdBf9FeMB1wIV3DVbNCSEf
+ 7fCZZKXmTcLKGdhhUuxQOavqKRoQIcCQt/EjlEexkAludLREYdXM44pYEyWA7Yys2I4e+dPFdX
+ eV2DqO/NWmHmFNmWMPE/7Fm57r5/7k8P0/4Z1/QFNLHSfiAAAAA==
+X-Change-ID: 20260624-kmalloc-nolock-fixes-c97675328773
+To: Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
+ Roman Gushchin <roman.gushchin@linux.dev>, 
+ Shakeel Butt <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>, 
+ Andrew Morton <akpm@linux-foundation.org>, Harry Yoo <harry@kernel.org>, 
+ Alexei Starovoitov <ast@kernel.org>, Vlastimil Babka <vbabka@kernel.org>, 
+ Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>, 
+ David Rientjes <rientjes@google.com>, 
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>, 
+ Clark Williams <clrkwllms@kernel.org>, Steven Rostedt <rostedt@goodmis.org>
+Cc: kernel-team@meta.com, cgroups@vger.kernel.org, linux-mm@kvack.org, 
+ linux-kernel@vger.kernel.org, linux-rt-devel@lists.linux.dev, 
+ Sashiko <sashiko-bot@kernel.org>
+X-Mailer: b4 0.16.0
+X-Rspamd-Server: rspam06
+X-Stat-Signature: pbea8o6rea57cxf6ax6gtfp89r5mktia
+X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
-	autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 0DA0440004
-X-Stat-Signature: 7p563hsjn5co9g8q9h68esnjtcoxt9ww
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: 9E33840007
 X-Rspam-User: 
-X-HE-Tag: 1793717140-268863
-X-HE-Meta: U2FsdGVkX19mBVaW+t2da380LcjGSkE7fk6OsnqGu/nO6R1FK9BzLK9B+Orr6P6YZbXeJ5St8GJt+w0SkPKR+enp2eTlctCX/9KUV7/4Tm+KGzUFT/Nb2uEx/Whr+jwUMF4SrSGPCbuySFVI70lMqPLIAcHwONCcHYsOWbYCdMOwZqLkRhBLgFEAP8tahVOkJ6jeD68Qqh63MIZtBke4rCw9jSBf59YwdqAngtZP4qYttK5MnykIQR2esxUCtZlOqQTY1AKHmkvNl1OmIjMS/jey2Fvy3TneajiooKH2NyfVg+v+/VzNKpSmC5kUHuYRDZARtEP1lTYWiRYGuf3qxLZ4WrZOY+3TgyihkODf6r7JSlEeHrbEBPGpAmAvEUO4w7jW8vqC8Js9CJgQwevOrOr2eXAsOQTSnHM6Eodwg1v+WQ2MIsoi8aUEgRWEuLFuvB648cqcpY1uDrLrQckkgsT+u7ubFy9r8m2K/e9O1ypZn3Smsw9hLi44uD91yYXd+hqDDWLcBonE/SpSlqQaG8V5h6TIq0AqRH9Y6h8LKsB0laXe09Ob0Wm+1RupyQDa1TPZhNy9Wuq32d1GV7Tddsdo8N+Rxd/gkXgx/8dVkskq4jU4vUDRRLwj9GElxrPZZafNViuxMh2e2R2IGOp9XDViZEVfJhxSe4h3QXCh3dRw8jF/Hr1pb4Fly1GfZ5gFcxlKhmyJidIqW5exPHio1EPr/mCIReYAXqWrU9F7bGE7iixXIoC/0hdPKoORDmkOIo7GSNwdL6AlGbrpg/psC0pzZPqFwLCuZT9rY9BL3aimL7NSNmFL43nxDjWBT6VeveKUiXMO5JgOWq2XDpBHY4Yoo+rYWUtCho+DSaDx6MWrW4hsVsCDHiExXGPSPQw8h03QHri9BmoTgnBn5lVIycn3tyd6DVDOTCBL5MEJeTy+xk3UN3hFwKWDJNhN/J8X7TOOQ27QpbwvyoAcSKq
- nlLVLCTA
- NqmsEenydeiySCiLk/Rkp5BI7PpZhvaLbFf5clUZOJFroG8Y4Xc4O49B03vZTXohFPE4oM54B+QP2pd47liHMXDb3A7PEa2V95gYYRlME4uzY56u8r8N4N6Ou5/CHqCsz0WFP8Iz0NqmF2AcTFL/sXipGLQKGXXCyF4SEpxnNisPBIyX9nM49ulkFi/eutXGYrXaHjqkTY7ovIAGDo0j3Th+1gwSVUk9aqGoEDZ1HniFo1XHZ3+aEOo5yZrjcWkuEs3lterA2qqBmgI6hQHl9hjS1pw==
+X-HE-Tag: 1793717286-964502
+X-HE-Meta: U2FsdGVkX1+K0QgkRpaXXV3VV66m8JhZThNgJXxzewgqxHE4aeDrsDK3cdeiBnhiezw3ilrohn7LeDdl6+qhg2XEJPW7Vr9ioYkjRGfRuGDz2PmVeiDn8M2UiQUEDRKK6V73pEox7T3Ptt5gwSf6qhHuGpwF1wPnC8cwBaZKun0XyUraFOsdZQeKjeaX2/6p+bZTwzD+ZYdMCQP416TZIjxF+D+CosEe14jkUmLDcqR1VfmM5gSZkUiz+NyY3T4vXfk7mzxDhk3BhW+qsmb6kOtOtmdOIlKe9B/OA9gq68cMPe1j//4LUNw/DF7iza/a/pcs8Zow3sJCZag3SeOL0I802PpDjw+50zfJ1euQd9Xd+tazXSRjJqrX8wW9T5ErziTCyF12R9f+IWEiSf30wv02TjilzEticoGanS4GnQz0/OewTmmXkSPe7VOpjS9+/0ZKXk1KhBbfPLzYRf3EqeVypWn7gYgfWlk227vKgz0W9Ews2qv00ZDszVN0u/ECZp8Ha4DRp3SlbmaRcrTP96UUd1L8bKoztk96AfQEOUFESUw45aCu7YyECh/fFcUwYn3jbpAUBRMZR/jbdrbBZ5IgeYtCNS4DasPzBwtfdSq44kR0QFaff4q/yuG/7bGyVICNnEUuG6OyO4ut3qhwDgeOEjC+zzr+nhdN5ut/44Cxg0MqZUU/j+CekjBPmU81D28fhi0hblzPT+FJQHKOopzzLQDtKKgi3G8c/xtIQgJR90mzJO8zhgBVuLM0oFRAH+vX8pywCO4JEW0RKECZu0UpQ3N0sNVG5ojDFdZQTsDOlZV+w/6eBTahvXQRJ+2SqGMqLt4JWGzhdZCxKDoOI4xBZVZlIArDFgN27tTriKLtRP1RVE15Skuuts8AQfajGxSH7zI3ksh+EEdao6vvCRwpIdB5eBg2xftwcnMA/zlWIg9UWkG6JQFsNjuVduQDUUEGlPceVnfFGSYvfuY
+ 8y905Ctr
+ Nb8IMSz6Efxdq3WD06EoR9uFQImkyVqQan+/BjBfIh9OND7i1nH96b6PlNBSQBkXpKQSJ8xFGo9KsrLGvkqPpxLvtGMmOcT0BdoTSk452nl80EVCv1IJnsytdvE7r8Uh2AABcU0/C7NKu89A6fAAN+tms0uc7A0jA4+3Ievm3Gpt5l77k1gcEv958UmlVo5nwb8GQfYC6h7A+P4uukOc4/pCNCVeGD5MSogeggyRpodwsNbznBu1PaCzkmtKN9+tOU5K1Wu0a0iG7LAu3SNulyrx5ex8X1ETQ4MG0AFe/BSI6h3Cx3y3ao8ZwkioD6xwtUAZ1qw9bKmS+NwXI/4IwP+MS5Adg/q+CTUgh
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,41 +105,99 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Tue, 03 Nov 2026 21:31:41 +1100 Aveline Noir <jm5905938@gmail.com> wrote:
+This patchset fixes three kmalloc_nolock() bugs.
 
-> Hi Enze,
-> 
-> On Tue, 03 Nov 2026 18:07:14 +0800 Enze Li wrote:
-> 
-> > damon_next_region() and damon_prev_region() manually do container_of()
-> > type casting to fetch the next and previous region from the linked
-> > list.  Use the dedicated list.h helpers, list_next_entry() and
-> > list_prev_entry(), as damon_first_region() and damon_last_region() do.
-> 
-> The change looks correct to me.  list_{next,prev}_entry() expand to the
-> same container_of() calls, so there is no functional change.
-> 
-> That said, my understanding is that the kernel generally discourages
-> changes made only for coding style, outside of other work on the same
-> code.  Documentation/process/4.Coding.rst notes that "pure coding style
-> fixes are seen as noise by the development community".
-> 
-> SJ, what do you think about this kind of cleanup for DAMON?
+1. obj_cgroup_put() takes spinlocks in the release path when it drops
+   the last reference, but it can be called from any context.
 
-I think whether it is noise or not depend on each change and the volume of
-traffic.  Let's suppose a patch for a real trivial change and there are many
-patches for critical bug fixes waiting for reviews.  In the case, I think the
-trivial patch should be deprioritized, and we should discourage sending such
-patches while the urgent reviews are done.  If there are bandiwdth for review,
-it is no problem.  Nonetheless, I would dislike patches that making only
-trivial cosmetic changes that doesn't really improve maintainability.
+2. A spinlock may be taken in the following path and may lead
+   to deadlock:
 
-I feel like we have review bandwidth now, and this change looks like a
-meaningful code maintainability improvement to me.
+   kmalloc_nolock()
+   -> slab_post_alloc_hook()
+   -> memcg_slab_post_alloc_hook()
+   -> memcg_alloc_abort_single().
 
+3. irq_work_sync() is called without synchronization for rcuwait
+   (on PREEMPT_RT or some architectures), potentially causing a
+   hang.
 
-Thanks,
-SJ
+Bug 1 was reported by lockdep, and bugs 2 [1] and 3 [2] were
+reported by Sashiko.
 
-[...]
+Patch 1 only touches mm/memcontrol.c and no later patche depends on
+it, so it can go through to the memcg tree.
+
+Deferring obj_cgroup_release()
+==============================
+
+RFC v1 skipped the stock drain in __refill_obj_stock() when spinning is
+not allowed. Making sure "obj_cgroup_put() is not called in a restricted
+context that doesn't allow spinning." is easy to get wrong.
+
+v2 makes obj_cgroup_release() safe in any context instead (as mentioned
+in cover letter of the RFC v1). The release callback only queues the
+objcg (llist_add() + irq_work_queue(), both NMI-safe) and the release
+runs from irq_work.
+
+This also fixes a performance regression in RFC v1 in a free-heavy
+kmalloc_nolock() microbenchmark.
+
+Changes in v2
+=============
+
+- Rebased onto the latest slab/for-next-fixes.
+
+- Rebasing the series, writing patch 1 and 5, and verification was
+  assisted by AI and carefully reviewed by Harry Yoo.
+
+- Patch 1: replaced with the new approach described above.
+
+- Patch 2:
+  - Now introduces the allow_spin local variables itself
+    (previously added by the old patch 1).
+  - Addressed v1 review comments from Vlastimil (thanks!):
+    - restored the blank lines.
+
+- Patch 3 (new): call debug_locks and KCSAN checks in kfree_nolock()
+  regardless of allow_spin, as they acquire a spinlock only when
+  reporting a bug.
+
+- Patch 5 (patch 4 in v1): Introduce a mutex for
+  deferred_work_barrier() as it can no longer reuse slab_mutex. In v1
+  the only caller was kmem_cache_destroy(). The barrier is now also
+  called from kvfree_rcu_barrier() and friends, which are usable outside
+  mm where slab_mutex is not visible. Dropped Vlastimil's Acked-by
+  accordingly.
+
+- Dropped the Cc: stable tags to avoid intrusive backports for unlikely
+  issues in practice [3].
+
+- Link to v1: https://lore.kernel.org/20260624-kmalloc-nolock-fixes-v1-0-fdf4d17351dd@kernel.org
+
+[1] https://sashiko.dev/#/patchset/20260610-slab_alloc_flags-v2-0-7190909db118%40kernel.org?part=9
+[2] https://sashiko.dev/#/patchset/20260615-kfree_rcu_nolock-v3-0-70a54f3775bb%40kernel.org?part=5
+[3] https://lore.kernel.org/1816e94b-87e0-4276-8ff7-1fb651326ab3@kernel.org
+
+---
+Harry Yoo (Meta) (5):
+      mm/memcontrol: defer obj_cgroup_release() to irq_work
+      mm/slab: handle allow_spin in slab_free_hook() instead of open coding
+      mm/slab: call debug_locks and KCSAN checks in kfree_nolock()
+      mm/slab: fix a deadlock in memcg_alloc_abort_single()
+      mm/slab: serialize deferred_work_barrier()
+
+ include/linux/memcontrol.h |   2 +
+ mm/memcontrol.c            |  27 +++++++++--
+ mm/slub.c                  | 112 ++++++++++++++++++++++++++-------------------
+ 3 files changed, 91 insertions(+), 50 deletions(-)
+---
+base-commit: 03a176b9248c4513bb705ed3d931af3a7e9c2a08
+change-id: 20260624-kmalloc-nolock-fixes-c97675328773
+
+Best regards,
+--  
+Cheers,
+Harry / Hyeonggon
+
 
