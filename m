@@ -1,98 +1,177 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE7C4608363D
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 13:33:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C45F4606A326
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 13:42:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=iGos98CD
+	dkim=pass (2048-bit key, unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm2 header.b=KkN/+8PM;
+	dkim=pass (2048-bit key, unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=gsz0dw+7
 Received: by kanga.kvack.org (Postfix)
-	id C83766B05B7; Tue,  3 Nov 2026 08:33:08 -0500 (EST)
+	id C45326B05B2; Tue,  3 Nov 2026 08:42:23 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C59A66B05B8; Tue,  3 Nov 2026 08:33:08 -0500 (EST)
+	id BCED36B05B3; Tue,  3 Nov 2026 08:42:23 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B715D6B05B9; Tue,  3 Nov 2026 08:33:08 -0500 (EST)
+	id A70146B05B5; Tue,  3 Nov 2026 08:42:23 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 9AD136B05B7
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 08:33:08 -0500 (EST)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 30394A7F85
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 13:33:08 +0000 (UTC)
-X-FDA: 85393898856.13.174BF4A
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 89C381A000D
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 13:33:06 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iGos98CD;
-	spf=pass (imf19.hostedemail.com: domain of leon@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=leon@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793712786;
-	b=2+spBW45Ia30Y/n3YMTjnPn5oQTOqGG5wiXbwgNuyVHMMRyELf6YQ5GdS8tKlsAKsuQGpS
-	OEYhhvcnU893HYt+gKqT9jTZMpLBKGoZ4v0LFb7Ux2AEH2sGWIbfacvsrSdH/vVJgPaCkf
-	HDBSDOPLn+kpIZKClapf8TKx/sOjtCk=
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 793DA6B05B2
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 08:42:23 -0500 (EST)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id ECBEF40436
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 13:42:22 +0000 (UTC)
+X-FDA: 85393922124.04.84CDEE1
+Received: from flow-a2-smtp.messagingengine.com (flow-a2-smtp.messagingengine.com [103.168.172.137])
+	by imf06.hostedemail.com (Postfix) with ESMTP id BB15518000A
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 13:42:20 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=arndb.de header.s=fm2 header.b="KkN/+8PM";
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="g sz0dw+";
+	spf=pass (imf06.hostedemail.com: domain of arnd@arndb.de designates 103.168.172.137 as permitted sender) smtp.mailfrom=arnd@arndb.de;
+	dmarc=pass (policy=none) header.from=arndb.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793712786;
+	s=arc-20220608; t=1793713340;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=22QbouE8cQ/+KqBR8JqAf++7e526LrzApHVyHj4Hi0o=;
-	b=G/MtPgzzReqAQUz10rcPCsjqjVA6NnWbOlZy1BslkyiNT4twXGAL4eP2q5qefNyucpI7+H
-	gh07+D6mMHuQXD0wZnjidEcU2oBmjtCEDDCobkdvF3+2uhTw8fEe55io1JWbzRdAFcoxaZ
-	snYg5JM4NaOhqy9eZ7RSydOzFjQrdN8=
+	bh=C6BsRfaEgIRLQQWK6sElJj2ULb7RxiZTRv6a00pf8q4=;
+	b=XoqmW9DRLkEC16lGBDFWnsXuaxo6uqMtFyJO+QtFig9mTJsDa3qoQkmwPghBOQBTTlGLDj
+	ef1skBK84TRsd1F95PKrFeNZPwYyVM2V31n7LMjfxQEDsI09U+to6+kr4//rN+hIs7AnRp
+	RbdmlrijCyxYUy98xYoSAa2mllVBIiY=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793713340;
+	b=NFInWae1nFHS5Cn4he1gy9dTiTUU7fvcmQ2cHYCuHXSB4n4gww46X5n76+9W0fEsbbIQwE
+	lJY0qhdjSh+Idk+j2oW2R6C8tNG2uPutBDg/vGVgA1AAChNpxbvialghBqJtsOnjJADxT3
+	vMO9b2vIThfBghagGbZ8/MvEdNbj/0o=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iGos98CD;
-	spf=pass (imf19.hostedemail.com: domain of leon@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=leon@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 1D612609EB;
-	Tue,  3 Nov 2026 13:33:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FE9F1F00A1E;
-	Tue,  3 Nov 2026 13:33:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793712785;
-	bh=22QbouE8cQ/+KqBR8JqAf++7e526LrzApHVyHj4Hi0o=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=iGos98CDWJFnllXPkCf8GCsRc1D6heFPT8Ll+q6MHeLy0v8iW8HvOnABe+bnd/dY8
-	 Fj6xY0lnNvx0cLeybulsFMPH5PNYyIRtZaE/9+HQvcALFKBJF5CpZ9DqbKjMsCuEW4
-	 2TW1HpV2WXbtF9Oa7L4FtRe3U5R48bCtsBvt63QFKRjgrmkiXUi0ajC0sYkULz9nZp
-	 t/WF/tfglE4p/ZEak3bpvtrg+FjOIOPDTrQoV8xLABTyokXa+vv9dbyQZOKsn1GvnC
-	 6jTiDLxOEDzEByv212uS/1McM8X2HI0QUNmfWdbz7KAQriKAMzyv2n6EF1JN9nSZQ0
-	 GREHWwMO3yiyw==
-Date: Tue, 3 Nov 2026 14:25:42 +0200
-From: Leon Romanovsky <leon@kernel.org>
-To: Zi Yan <ziy@nvidia.com>
-Cc: "David Hildenbrand (Arm)" <david@kernel.org>,
-	Jason Gunthorpe <jgg@ziepe.ca>, linux-mm@kvack.org,
-	Lorenzo Stoakes <ljs@kernel.org>, Lance Yang <lance.yang@linux.dev>,
-	Kiryl Shutsemau <kas@kernel.org>, linux-rdma@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] RDMA/uverbs: Don't return the shared zero page from
- rdma_umap_fault()
-Message-ID: <20261103122542.GH264423@unreal>
-References: <20261025-fix-rdma_umap_fault-zero-page-v1-1-186255624f1f@nvidia.com>
- <78802ed9-9cc6-41c4-b131-7c7d38f7ff39@kernel.org>
- <DMEVZ5MU1YA9.2X3HCCHNQOIA7@nvidia.com>
- <829c448d-e6e2-4874-a166-7624e87489ef@kernel.org>
- <5E86E76B-F97A-4998-9EDB-8E450470FA4A@nvidia.com>
+	imf06.hostedemail.com;
+	dkim=pass header.d=arndb.de header.s=fm2 header.b="KkN/+8PM";
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="g sz0dw+";
+	spf=pass (imf06.hostedemail.com: domain of arnd@arndb.de designates 103.168.172.137 as permitted sender) smtp.mailfrom=arnd@arndb.de;
+	dmarc=pass (policy=none) header.from=arndb.de
+Received: from ams-compute-02.internal (ams-compute-02.internal [10.64.2.62])
+	by mailflow.phl.internal (Postfix) with ESMTP id 19E0613807C4
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 08:42:20 -0500 (EST)
+Received: from ams-imap-03 ([10.64.2.23])
+  by ams-compute-02.internal (MEProxy); Tue, 03 Nov 2026 08:42:20 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm2; t=1793713327;
+	 x=1793720527; bh=C6BsRfaEgIRLQQWK6sElJj2ULb7RxiZTRv6a00pf8q4=; b=
+	KkN/+8PMCJmN9+oJDv1PT2v8YZWiIx0HgEHZi/kgNA/HhDba5WP1BuWQNOZOURbV
+	Hrj/ZLB5gspp7ptXLCWd2/lcTCZvqc/UiLbYblYrtfSBf+oSCoLS9Yt3LCf1ulBj
+	lg1TYfpqS16gvfgfu4EHr85s4ixt1DDrbKFtPydgVIzB9cPvJ5BmeNYM3yNu9Z0n
+	FAXefH0FFZUkBX8NR+6WOj4j3rloPScdno3dG1HXBGsIv/fnPE3Kz/SGuwq3NtTI
+	dudCN7ANM/SRMQf6LVw2OntByOGKb8K3+NWBsyIZjE0fc1ImLBgPxjPKGQopgLDz
+	ruitXt5rpbx7Tq5bSgwmUw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1793713327; x=
+	1793720527; bh=C6BsRfaEgIRLQQWK6sElJj2ULb7RxiZTRv6a00pf8q4=; b=g
+	sz0dw+77oExHBK39kaNw32WrtTlwOJhqphNMVRGuWcrVG3KBO7SUns78QvkvuR1U
+	ovHSscfd8k54mBoeP2/T1l1J0pfxstu/JooCt1G1kXyu6s6J5TU8AxiTdQ3pztNo
+	1i83BBorBn5uaYx5ieRd3kmTsaIIqEDwSBmqZCXK479b2CQBdsSEVgAuXEhtj06g
+	f2xYXuraOvh+cMnFS+sOgVd8XZ+DN493zKM1YLf2pr4N61dfphFj15e8MHu2eCcD
+	er7TAc1AvgPhPTdWRzFFJc6ya0hvsc8C5ZOySQBplVAwy7Mlf3/XoaT+Yax0/SSF
+	OB5b7Wc9BHM4pI2uH/4+g==
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-08;
+	repo=github.com/dkim2wg/interop; date=2026-10-28; sw=lmtpprox;
+	action=sign d=arndb.de a=rsa-sha256;
+DKIM2-Signature: i=1; m=1; t=1793713327; d=arndb.de;
+	mf=PGFybmRAYXJuZGIuZGU+; rt=PGxpbnV4LW1tQGt2YWNrLm9yZz4=;
+	s=fm2:rsa-sha256:Hv+CKh9TWqI44gJcIUYYDQc8HGV55s5m8i2rD4TY2axvEWn
+	XPc5CPyrvN5gXGVhXkdVYh9MNBX1RW4SRAiC7F16u6Ar3x/mwr3E35VGLpfI9cVK
+	JGQTfsgjzvRT2Xxus7yrLogk38Qm/nJAZvKJoe/quH99Ij0jddS6DyYosELppLUw
+	ZkydAXl9LqWVMI7+QH5DckF67jhEoZiEhj/qzVF4IHc3SxRAMD6VLU77j754RXoi
+	G6tOQYFQzGKV+H0Bh1/JeM3ncVrGeqSyj4ihrJUo1LZk7RrGLTkclQfeSIOte9x4
+	JGRASHKcu+laTiGLwUTy+BciqBR/9Qs65e+u/ag==;
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-08;
+	repo=github.com/dkim2wg/interop; date=2026-10-28; sw=lmtpprox;
+	action=mi-m=1; hc=12;
+	hn=cc,content-transfer-encoding,content-type,date,feedback-id,
+	from,in-reply-to,message-id,mime-version,references,subject,to;
+Message-Instance: m=1; h=sha256:6lfwly49jdk/TRQzQzohVpgwjHD/wkTSstU+gGerY1o=:h/NM9bjvMaJEdmp3okr+dW8dFy0qHLVaOWeZgTL04zo=;
+X-ME-Sender: <xms:oeTpatWZDpRRNZMWjhAskAQCMLqYvau0PUyGwPOYFLY0pY6Y9njaiQ>
+    <xme:oeTpaoaxV4qoKNi5Ha6QuCd6u5HJZEERfSmA_tlbmn0FuwbNeMxgM4D80-yFTbUaX
+    1cbqN1e5bOFSx23ABc5q4LlDVGSq1-KR4WsXI6AIE_4tL5z2z-EtEx7>
+X-ME-Proxy-Cause: dmFkZTEA4KzNuwOsua5pffRMjkBOk8wzkxvQ/2CpeYBWTRKldBKNhQCsSJE8Uh9dEQ0Ef0
+    GZHbXMgWrOiuBvBaWlxEbzf5C4JmAB81c5UxCXTIHaP/8pbXByeVsb/te6GpmqZXZlblAg
+    cKGjztPo3uHjg+8wCId1LCLEttpHXAcoPDOOz/66xY7x28JRQSuiF2Kqea58r7ttfq13S3
+    vy/rynGbxesfWoFi0HCPVVWm9XxX9JVLVWEhx/hoN7T4hNR+A0wUjV33nFR6E5KwtUgHee
+    5HY5ePjyfCf2olwovw2KYth+I2fo+vLeN24GLXo3DbsdCMBSrrFPTbK5R3zN8lQ3nGBVRD
+    7A4WcGepoqTPXzuv6+agcCPg7oTJe9F+HWtlF7Z4ISIU5FI04YMIQrBBNBu3NmBVQwwxeh
+    kJlxgwLuCEvccGYTJOZI3KhHXSQfZ7r4qm8sFi73x/cP4J5H5gKnM2iNKfhWsNh3IDTvxP
+    YKkWDuvUXsg9aFQEUPRjj6Ks8b1xBqLIr2L56C3vMDoJ3IEwEtMX5enoas8JQFqZDr+yL4
+    yPtrobI2V9uesTkvFL1E3x0YPCUwvluj3uzHDLrERF0ZNYro2piN6RGU0NvkoUFSPSftdN
+    rB8URlSfV0C2tKh9aRLdepIKneucn81ERHwkoQmItOqAMOOnShSiRfl/ESBQ
+X-ME-Proxy: <xmx:p-TpampxcJCb0YP76X94qK88tf_J79dTHp214itTmMD_LbR71BcL0A>
+    <xmx:p-TpapGUWlOsHG7W7wuO7uNqAusEcz8_mP2VgpOYxjzS8xfhgmVa1A>
+    <xmx:p-Tpamic8G5a7o4akCQHtMOCub9DetJVBRrpWGFMVhanMfwGsFu4sA>
+    <xmx:p-TpajO0fKvscWeKk5uMiINqSqzFYwLlqKRDd6c50uDQ5K5IY-z27g>
+    <xmx:r-TpanHhEjtwrLSxgMyCywLuGWEPXQp6v4HPDY2KlB8m2jguXX7K5daW>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.ams.internal (Postfix, from userid 501)
+	id 31DC432A0097; Tue,  3 Nov 2026 08:41:53 -0500 (EST)
+X-Mailer: MessagingEngine.com Webmail Interface
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <5E86E76B-F97A-4998-9EDB-8E450470FA4A@nvidia.com>
-X-Rspamd-Server: rspam12
-X-Rspam-User:
-X-Stat-Signature: ra4utzmkwjqicjfrseiccmuuxr3zf9xw
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
+X-ThreadId: AHCvEt5753PB
+Date: Tue, 03 Nov 2026 14:41:32 +0100
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: "Sasha Levin" <sashal@kernel.org>, "Peter Zijlstra" <peterz@infradead.org>
+Cc: "kernel test robot" <yi1.lai@intel.com>, oe-lkp@lists.linux.dev,
+ "kernel test robot" <lkp@intel.com>, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, "Andrew Morton" <akpm@linux-foundation.org>,
+ "David Hildenbrand (Red Hat)" <david@kernel.org>,
+ "Liam R. Howlett" <liam@infradead.org>,
+ "Kirill A. Shutemov" <kas@kernel.org>, "Finn Thain" <fthain@linux-m68k.org>,
+ "Geert Uytterhoeven" <geert@linux-m68k.org>,
+ "Thomas Gleixner" <tglx@linutronix.de>, "Ingo Molnar" <mingo@redhat.com>,
+ "Borislav Petkov" <bp@alien8.de>,
+ "Dave Hansen" <dave.hansen@linux.intel.com>,
+ "Ard Biesheuvel" <ardb@kernel.org>, "H. Peter Anvin" <hpa@zytor.com>,
+ "Alexei Starovoitov" <ast@kernel.org>, "Andrii Nakryiko" <andrii@kernel.org>,
+ "Boqun Feng" <boqun.feng@gmail.com>,
+ "Daniel Borkmann" <daniel@iogearbox.net>,
+ "Dinh Nguyen" <dinguyen@kernel.org>, "Eduard Zingerman" <eddyz87@gmail.com>,
+ "Gary Guo" <gary@garyguo.net>, guoren <guoren@kernel.org>,
+ "Hao Luo" <haoluo@google.com>, "Jiri Olsa" <jolsa@kernel.org>,
+ "John Fastabend" <john.fastabend@gmail.com>,
+ "John Paul Adrian Glaubitz" <glaubitz@physik.fu-berlin.de>,
+ "Jonas Bonn" <jonas@southpole.se>, "KP Singh" <kpsingh@kernel.org>,
+ "Mark Rutland" <mark.rutland@arm.com>,
+ "Martin KaFai Lau" <martin.lau@linux.dev>, "Rich Felker" <dalias@libc.org>,
+ "Song Liu" <song@kernel.org>, "Stafford Horne" <shorne@gmail.com>,
+ "Stanislav Fomichev" <sdf@fomichev.me>,
+ "Stefan Kristiansson" <stefan.kristiansson@saunalahti.fi>,
+ "Will Deacon" <will@kernel.org>, "Yonghong Song" <yonghong.song@linux.dev>,
+ "Yoshinori Sato" <ysato@users.sourceforge.jp>
+Message-Id: <846703eb-111c-4376-a0ba-36bd3e13f632@app.fastmail.com>
+In-Reply-To: <e69e6690-cfc0-4ea8-83e1-5ad2d98b84d5@app.fastmail.com>
+References: <202611022259.def3e086-lkp@intel.com>
+ <20261103122647.GL1813469@noisy.programming.kicks-ass.net>
+ <20261103123508.3910990-1-sashal@kernel.org>
+ <e69e6690-cfc0-4ea8-83e1-5ad2d98b84d5@app.fastmail.com>
+Subject: Re: [linus:master] [atomic] 80047d84ee:
+ WARNING:at_include/linux/instrumented.h:#__split_huge_pmd_locked
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
 	autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: 89C381A000D
-X-HE-Tag: 1793712786-510418
-X-HE-Meta: U2FsdGVkX1+F53mWEFB3fFCKGpjPf+PwCUdhtVoIbcrN66e1UArlfrtNmX5b266YmsXtD9UV4TPoYI6e7kj0fIzRvesmEkQNR9dxwJsMR5mE3QMeEVjg0gmtgxANtBOM86xT/m9WM4RLY1aNoaFyPv6NeGPGXCfEPQrrEx3UXjxHADVRUKqhfiPfUpJNlSsX1YLryeyoL5SEAtkr+S2I7BoJWvh3dQuElynqKL0FtA4zIU73R9G4ueYghO4NfGTxS5mZJu5A0vJYXJCYPLDjqzf0VQo1MMMDiS2NmGJ8UctiQx+EtHBasgmyTncKo51+6csileC+2F7+5hSrRX6kAaAwH5phe/1bGW8VIjB9FkOCXZXDVJ/9L0FYyt6gBdZw65Jw+bAlEkXGOZXMuFoa8/pI6ToVbKr9bPHntOgi4FDoP4PzwO3P7l9ZicIwtV4zUs8dyWDHLX+WIKvCSmkeJ6hfK3zJAWfsmBY+qaOrlreXO46xmcdHz1bzokS10hVZSOG4vUN4NS4x5cg7eAIZ9rEQPYSp8/00iNpXFgiTSHdtfbQD57mexSlgY8OPc+ULj5Fjb2g6RRFaQOmbgXBywnwIVC6DtZCZsoD/b1UkSbg3cAyuGBF9pfBH1IASftSlj1MdsKbT7RaFOJbkdhUZxaz8Q2HE0qdhRv0OHKkFvy2E56zvH3zwmuLDTZ8NF50rrH6ha95WLdEa+/lvEUY3gdS/ciRthMJ8/FI5ksc5HrzQBf44zMfnLVK22b5ZISc516NWmklprulX7uCsUegX3FyUI/oqe267zJWJoO4NzxG0AiHh/vqwO7h3FCA/4utfWd/9l+s5hEWe1EvJH+BiSTb3F8l2hCeG2vqRqEdmD2NQERJQqxBuO1339pGWwEtdMLrQEIxzht3AADDYyAtrq01eAy0mgFIfterCgxbpJ/Xl4Fw76hUFvqokA45PyVVeizMfBe88HGdSa1wC2W2
- VB16j+bN
- wXBmlvPs2F11iyX/H133ocnl74IXP/3DMg3r9T52dJhikkV8/Uc0eAhePJaVy8cu4wjIOFcRE8DzyfHCuSN6zk2OozyMcDdmyfNyGWSMJtycvJ4qzFtHszh9CV51UYmgQDTXcSeQSuK8qIcQ9drU+IBJe0hJBF7EVsXuxeFmMTUxtqW3mCeL6URQAD5MQe3uwts3nRRgRz0VDBeZ4PoYMAtBsjOIyFCmFnIkGBLTdQ4BFYEEIYQnDcCh3hP5CxLN8vfyjTb3pE0vdM2wW3ycbkhtSX+NHltiEAxlgt/dYFBB6OlWijdcZtc6GLLk5or+pqIL1ZP5VcNkaRFk0ieh93WDVuw==
+X-Rspamd-Server: rspam09
+X-Stat-Signature: r8okseijtxkw3fx4wd5g85mq3b8b6izn
+X-Rspamd-Queue-Id: BB15518000A
+X-Rspam-User: 
+X-HE-Tag: 1793713340-318127
+X-HE-Meta: U2FsdGVkX19nbHm4pPkCiDYEBJJs4liMFXLGjk8CW3yJrTTgWjNONP7MKvTO2jFwetJ2giYEjL0aRXGbdmGKKgYFlGLByl+bvJ1MhkIBOsbw6s6DzVBe/ZXdSWqgeS2I7kZ/d2FaTmMk0LM4y5P4q/uTLoSTbTjsMTZXII8rVRebVGbGwF3io70ZC9txsTrBcDuMUr8Kc/ZQMSPrZX+qpvRjdPuwipzqjXcwyhCltZaKonFdBH41b7e2ff/8mEpPHt99801lhDGM2dwNm2zg4epMxBPOZQlXElFkJvZkI8+nHLYm7mhWgeRdOgebrQpFMXLq+q1KWeG6A+unMykHrPqODXViglQ6p5yUOE+49BUHt0tJwa8CS27ikPZRrCGufldE6qNslFBZpQfh1j6gwqsKAppucWSKmlJmyGODsozB6o6l0yV9foQfgQe7qUix3rJSJpnUlmOGp1A9+vXrO+H95a7bK57iB3ObmDtyvP92a9eThr2PxmQqd6gMhWo6H36v1EoXaZedXBQVO6mzNGdiAyZATyrqvJu1KeKs01MkIQ3nzVQejFq498rSpTiw4dDj7RdJLB+T1Fm3+U5ojmLvokmymtTCy2buqolb1GBIwRlQSdmxmlvVhN73RHaw2SbzA5r20mOubIddPC8y4dfucREgWIhvkWxvP6LlHwuDycqfkcJjir0hA4sk6IO4Gkqlxe5u1RvLc/t3qH7Lo2vtL86FW1O2ZJldpexUIWjpDWJ1l2bmfH0gzVWVic2s2woGC1dnY9ef0XkunsyYFrdJJ2iuyBsUyFxB2Lort+QwcZB5uUshvtvzlLsrE8Y9RCsNwlW/a2qhN8v+0fLt49H8Cd2ZwZhissP8WGTRqnP3MMIBR3tI5g3rfSmhOLkt5I3BtkRZiNLziVT2Ut/3RkpWVcjWpA4F9Rt3PjvwoRUg7M+9KKqd8S4FNZjt/oYXzkhn6V0tdluKEwUTOWe
+ AZJzazrJ
+ omkSYJS5wCxg8PCeGSl9WOsprW7sbjd4i0L4JN0TlDNmmP1q/Gc7m5JqenXhS31Yu3qwmSfIskv758/F3DkgFOmsxiHI2ODbCQgJDbGp4C7hD1c2P52fjLETaSSg0boPpdwoBhh1vNDaOXuicWUbTny1P4j+0M7utcuJd5diUxUOo4OK25cqRF2bjk3iXxhaTTjc/wnPKMzK4pYEAxmtDfZ3xcH6zA7RuQW2mS5/Qi7XYX/OzLo+xiFxSk3Mj/6ibUnb4S1JE7WlHr4lxa4rwNrXo8jRNRdPnPjD2/G9K8QFQG+tp2A9QJL47/8dUBgrbRhz4SgdWoyVPZBD13Dqcl62zKLFkzUZDTF6mEHWLhuyCgFZjQeMQAqOPTu0RUEoNDeviQ/ohjlXP6uvrorM/KfmTF1NUWLmCTGdt
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,60 +180,100 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Wed, Oct 28, 2026 at 01:49:23PM -0400, Zi Yan wrote:
-> On 28 Oct 2026, at 4:43, David Hildenbrand (Arm) wrote:
-> 
-> >>>> +	/*
-> >>>> +	 * VMAs that cannot become writable map the page as a raw pfn, like
-> >>>> +	 * the device memory it replaces. The page lives as long as the file.
-> >>>> +	 */
-> >>>> +	if (!(vmf->vma->vm_flags & (VM_WRITE | VM_MAYWRITE))) {
-> >>>> +		ret = vmf_insert_pfn(vmf->vma, vmf->address, page_to_pfn(page));
-> >>>> +		goto out;
-> >>>> +	}
-> >>>> +
-> >>>> +	/*
-> >>>> +	 * This VMA is forced to always be shared so this doesn't have
-> >>>> +	 * to worry about COW.
-> >>>> +	 */
-> >>>> +	vmf->page = page;
-> >>>> +	get_page(page);
-> >>>
-> >>>
-> >>> This split handling is pretty horrible TBH.
-> >>>
-> >>> In once case we take a reference in the other not?
-> >>>
-> >>> Why not perform a PFN mapping in any case?
-> >>
-> >> For writable path, a new vmf_insert_pfn_mkwrite() is needed, so it was
-> >> not fixed. I can fix that part as well.
-> >
-> > We should do that; returning kernel allocations from this function in ->fault is
-> > bad.
-> >
-> > How urgent is this fix here? (can it actually be triggered?Specific hardware?)
-> >
-> 
-> Not urgent. Like Jason said in another email, RDMA only runs on arch
-> with special PTE, so refcount, mapcount, rss are balanced. With DEBUG_VM,
-> zero_page checks in rmap will fire on the returned zero_page.
-> 
-> >>
-> >> The read-only zero page part might need more attention, since
-> >> we just prevented vmf_insert_pfn_prot() from using zero_page. Do we want
-> >> to add the support for rdma_umap_fault()?
-> >
-> > We just have to make sure that we cannot install it writable etc. But that's not
-> > a concern.
-> >
-> > Just have to be careful :)
-> 
-> There is one wrinkle, it does not work on
-> s390 + mm_forbids_zeropage() == true, where zero page is not present,
-> and a private zero page is needed.
-> 
-> Jason, is RDMA supported on s390? 
+On Tue, Nov 3, 2026, at 14:13, Arnd Bergmann wrote:
+> On Tue, Nov 3, 2026, at 13:35, Sasha Levin wrote:
+>>
+>> I tried the typedef change. It works, but gcc ends up realigning the
+>> stack in a lot of pte/pmd code (126 more functions with Arnd's version
+>> in a small config, 204 with yours), including handle_mm_fault(). Just
+>> aligning the two locals seems simpler:
+>
+> The question is how many of the other functions may be affected by the
+> same bug. I see a variation of the same code in vmemmap_split_pmd(),
+> and aligning the types is clearly the safer option here, especially
+> given that most 32-bit architectures already align u64 all the time
+> the same way that 64-bit ones do.
 
-Yes
+FWIW, I checked the other architectures that may be affected:
+
+- 32-bit arm has transparent hugepages and a 64-bit pmd_t with lpae,
+  but that type has natural alignment, and pmd_populate is a
+  simple assignment.
+
+- arc has transparent hugepages and a 32-bit pmd_t but a 64-bit
+  pte_t that is not naturally aligned. It probably should be
+  aligned, even though I don't see any actual bugs
+
+- sh has a 64-bit pmd_t on sh4a CPUs that is not naturally
+  aligned and probably should be, but there are no transparent
+  hugepages.
+
+All other 32-bit targets don't use transparent hugepages
+or 64-bit pmd_t. 
+
+We probably only need to align p?d_t though, not p?dval_t.
+How about the version below?
+
+    Arnd
+
+diff --git a/arch/arc/include/asm/page.h b/arch/arc/include/asm/page.h
+index 9720fe6b2c24..af5303459d56 100644
+--- a/arch/arc/include/asm/page.h
++++ b/arch/arc/include/asm/page.h
+@@ -65,7 +65,7 @@ typedef struct {
+ 
+ typedef struct {
+ #ifdef CONFIG_ARC_HAS_PAE40
+-	unsigned long long pte;
++	unsigned long long pte __aligned(8);
+ #else
+ 	unsigned long pte;
+ #endif
+diff --git a/arch/sh/include/asm/pgtable-3level.h b/arch/sh/include/asm/pgtable-3level.h
+index d1ce73f3bd85..6d5e2e3248f2 100644
+--- a/arch/sh/include/asm/pgtable-3level.h
++++ b/arch/sh/include/asm/pgtable-3level.h
+@@ -33,7 +33,7 @@ typedef union {
+ 		unsigned long pmd_low;
+ 		unsigned long pmd_high;
+ 	};
+-	unsigned long long pmd;
++	unsigned long long pmd __aligned(8);
+ } pmd_t;
+ #define pmd_val(x)	((x).pmd)
+ #define __pmd(x)	((pmd_t) { .pmd = (x) } )
+diff --git a/arch/x86/include/asm/pgtable-3level_types.h b/arch/x86/include/asm/pgtable-3level_types.h
+index 580b09bf6a45..061283293341 100644
+--- a/arch/x86/include/asm/pgtable-3level_types.h
++++ b/arch/x86/include/asm/pgtable-3level_types.h
+@@ -16,14 +16,14 @@ typedef union {
+ 	struct {
+ 		unsigned long pte_low, pte_high;
+ 	};
+-	pteval_t pte;
++	pteval_t pte __aligned(8);
+ } pte_t;
+ 
+ typedef union {
+ 	struct {
+ 		unsigned long pmd_low, pmd_high;
+ 	};
+-	pmdval_t pmd;
++	pmdval_t pmd __aligned(8);
+ } pmd_t;
+ #endif	/* !__ASSEMBLER__ */
+ 
+diff --git a/arch/x86/include/asm/pgtable_types.h b/arch/x86/include/asm/pgtable_types.h
+index 2ec250ba467e..5c028b3f59c4 100644
+--- a/arch/x86/include/asm/pgtable_types.h
++++ b/arch/x86/include/asm/pgtable_types.h
+@@ -292,7 +292,7 @@ enum page_cache_mode {
+ 
+ typedef struct pgprot { pgprotval_t pgprot; } pgprot_t;
+ 
+-typedef struct { pgdval_t pgd; } pgd_t;
++typedef struct { pgdval_t pgd __aligned(sizeof(pgdval_t)); } pgd_t;
+ 
+ static inline pgprot_t pgprot_nx(pgprot_t prot)
+ {
 
