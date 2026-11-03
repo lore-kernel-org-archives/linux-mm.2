@@ -1,130 +1,99 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4AF9606D825
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 10:53:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70ABD606F7E1
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 10:57:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=ZlYeFbhc
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=rRFP3lxz
 Received: by kanga.kvack.org (Postfix)
-	id EF2AD6B00EF; Tue,  3 Nov 2026 05:53:51 -0500 (EST)
+	id 890106B05B1; Tue,  3 Nov 2026 05:57:05 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EA3706B05B5; Tue,  3 Nov 2026 05:53:51 -0500 (EST)
+	id 840D86B05B2; Tue,  3 Nov 2026 05:57:05 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D6BD56B05B6; Tue,  3 Nov 2026 05:53:51 -0500 (EST)
+	id 7565A6B05B4; Tue,  3 Nov 2026 05:57:05 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id B2C9F6B00EF
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 05:53:51 -0500 (EST)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 4FDD840368
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 10:53:51 +0000 (UTC)
-X-FDA: 85393497462.16.C16E1E5
-Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 6802F40005
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 10:53:49 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=ZlYeFbhc;
-	spf=pass (imf11.hostedemail.com: domain of azpijr@gmail.com designates 209.85.128.41 as permitted sender) smtp.mailfrom=azpijr@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 53E046B05B1
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 05:57:05 -0500 (EST)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id F1A36A7E39
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 10:57:04 +0000 (UTC)
+X-FDA: 85393505568.05.B53D88A
+Received: from mta1.migadu.com (out-10.mta1.migadu.com [95.215.58.10])
+	by imf31.hostedemail.com (Postfix) with ESMTP id A4D2B20005
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 10:57:00 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=rRFP3lxz;
+	spf=pass (imf31.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.10 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793703229;
+	s=arc-20220608; t=1793703421;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MK9NWPvS6d1n21gUZXzgThjSx26OkyuSUa6tZ9qysAQ=;
-	b=553yIzIrlMcgsLFESPwFAcgpFO9d6vRDNVOkhFV9PoZEycYGY8gGrs1bXbxJX7T4XDYreD
-	bGRcQzP9/+8Ly1FhdCzwUgbA6VD7W/JYQD/6qFe4gIest9KEisznYgdkJg63lzQCrvrKEw
-	V2i28xjlhel178CokaweVHhR01zQyaQ=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793703229;
-	b=ztkPyUlRS7L6uRioOYqZUbz12sMsYjSCiNcJ1A6WvWc8qzI+mRM8DAKRtmCMdeEHInl6Dc
-	gDor97DuPqpny1AokKiADkKhPxd2/XxhQmlNNiAKOuWXQvbGFVrxmiQAKDIbrR8D/5tAEs
-	WG51wzaQ4QvLDlfwmDXqN75MfXoNqU8=
+	bh=GLCdQ7yyYZVSa1Z/8WV0HEWdcD0ZR8tpxoUJ6zf3iks=;
+	b=F3yQaxzgI1Bx7b2DbQXO+bjlXK7/EK6eyTOzV/BEf+OnQWf+gxhsjwbUBckjkHW9RmpkDs
+	q3yIPJLj+VWyyE7I9Z0DQtbm/IO48buJ+irorvTQTtecADPIWbO1LYKcknKV0SILcn6fnL
+	e2+KrTBcQc0LAFLi54cRdSZCEVUUlpk=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=ZlYeFbhc;
-	spf=pass (imf11.hostedemail.com: domain of azpijr@gmail.com designates 209.85.128.41 as permitted sender) smtp.mailfrom=azpijr@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-4a2167bd087so33762655e9.3
-        for <linux-mm@kvack.org>; Tue, 03 Nov 2026 02:53:49 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793703228; x=1794308028; darn=kvack.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=MK9NWPvS6d1n21gUZXzgThjSx26OkyuSUa6tZ9qysAQ=;
-        b=ZlYeFbhcdOqxsy9Xn+IpP/aK2qGBawPcNUYUmCasGi2cRAHA5oGkRnkDGJfXZlOuc6
-         bA3RCaURTGhAuhT3TtoFTd21+lIips8aJOuZPfCbs0BaBKQp5m31GYUDpPXW5B8TwHHn
-         JItzzcoM63+8cFAzpgar0oFzKYpp+B0JMri+LXEy3UD/l9lSyWqBXmJJjG6LB3+6UqqU
-         DpmR+KOV9XlVsDA9yI/lPzSxx052n7jQUL8Qs+yUFjq2Gxvtah3Nt7NyQsUTOyXURUOe
-         oyzi71oa6QGObR2g+SnyboBM4OrWeleM4g9sEz4FljQ0ykRyp6IUyzI/7xWFuSoRCBtc
-         CNWQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793703228; x=1794308028;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=MK9NWPvS6d1n21gUZXzgThjSx26OkyuSUa6tZ9qysAQ=;
-        b=h8LmOuMxN2XoPKF/M09vNTOXjC/FzYVeuoDwkqipgek4QC+UVHMH1bZd4TJ0iSwLA7
-         C9C+MZ8mlyRcBXT5ggxpgS2DWtGbLJEKO/q67jWLgHtMfdxI/R9RUaustnRCpPiRb/OV
-         FaWtWMqn1jleVQidfIJScyvBfz00II7qQHILUHd1kEC87LIkl29/1BiWAcmipVF437OI
-         P843Ib2IRCVpkzV1dqyB7wZLRs7Hdsom4R5Ki77LefMgHhKnfEsQ4qLuCfvODMK9Kg4h
-         x2POdyF3nGz2v0IGbXgMd8fkT/ZPLLzj/Ifu3tI81VSAQUglkgiQ3tat3ZMJwWKgdI2C
-         aCtg==
-X-Forwarded-Encrypted: i=1; AKwUvBxHWG19e463lL8ssasZ0SqusBTN4mTmcvVSKLGcZArcrSf8PlcifshufYPD67iRYAFNHv/5LX2r9g==@kvack.org
-X-Gm-Message-State: APuU4Z/hRPET6Gwwq/D/mqHIg9pgBQ8ovuaF4ezQXP5+LQkfvd/zbwiN
-	96kfJGt6M09aMISIFyfni+mNBqe2quU01a8dEcSJLmPQrwc5CgbcA7DHj9okIdDSUI4=
-X-Gm-Gg: AYBFou1q6kmWzHndGWhtjoNCQ8kd1A2LERBEM697XNMOSeTqa5jI6QScQTMCGBXgFf0
-	/+j9iNmUCTm1CPMJtZ9yB/ixBCGvvrKpg9KKQ59x5gXhjNdCmd3/k2qG7AAKENhYkQzYKpbnRLJ
-	wY4lYfiTxseh7FWQ+vkfSFlzaPNYUrCSeGkOky9zIr3LMpU5PcYE3rJBvLwClGKmwtIaJpX5MBU
-	5IsLIlewgggd3d8D/055y+A3ScG2yEoIJe9ATuCGDcSVMZZswZMSdjdeuZka+L7HdC1IsEIQJRH
-	vmQfsZzY49KPbE36mSGnWlT3bjOLzUaKCzH8f5ReDgnIhC2ekqIta/oRah4Wr42mFdmc3frMu9D
-	zytRVRgnHbPKbfNc4PBQXxyDw5TytWMJHrGpIQJ7vJzJuSHIIfuYnhQgraVda9Atn6/7q3WgUqx
-	UZMfZL9bQCWYKPZ3uRXmmoJ0Rpfp84tzncEampRnc3POvTa4ToO+dwY7fKNuWwPbAq4MdS0cOIN
-	/sjxVnTdmGur6K4nUZyhOXX3x1de4+UplQRonqzkHWrIUkXG3v169eeKKjkt/6Z2JQjUdUwOhQZ
-	PJS/1H/s1fa+7h1AmjtX8p6K/yW6wUm4g0PZDflJVVYi
-X-Received: by 2002:a05:600c:8b04:b0:4a1:fb01:13 with SMTP id 5b1f17b1804b1-4ac17a3683bmr296846775e9.18.1793703228040;
-        Tue, 03 Nov 2026 02:53:48 -0800 (PST)
-Received: from [192.168.1.22] ([83.231.69.9])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4b2aa5781c9sm52120315e9.8.2026.11.03.02.53.46
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 03 Nov 2026 02:53:47 -0800 (PST)
-Message-ID: <533f3f57-dc95-4a97-abb0-14b88a7e1018@gmail.com>
-Date: Tue, 3 Nov 2026 11:53:46 +0100
+	imf31.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=rRFP3lxz;
+	spf=pass (imf31.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.10 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793703421;
+	b=xLWXa7GHQA9uOkLP5HY2rgmlYGMtreRr1Ht/82O35sROpZOF4ZJOuUosTGahpfm/V6Nr5L
+	6cLggIpzEdXyt2WuUiLBrq65o31gcZLutOKCKYD7/A1h0K2NYiWTLN0I2zoBOCieS5h4K1
+	yi+U9fv/V4pxsCa3Zgg+0BMsW/Gt69M=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=xul2O4mVtDcfKlb1bMxbQAbRnQ4n0rOnY7nn3uF3ixE=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1793703411; v=1; x=1794308211;
+ b=rRFP3lxzLCcYhU4VXfCbVJsJ05pOZzeFkA+0X5P5/DPJeMX20yfCJYCkbtSsBWD7LKsjEYWl
+ 3ZQ9+CA9PS5L18NwiiQl0HFwqEJ8uucBsHNpVZ/AsmQyg0DuqQOsXEJuNxfntPIjoUAEOSKddLC
+ do5UpOPGNkdzCQh5o4cEOQ5s=
+X-Envelope-To: linux-mm@kvack.org
+Received: by mta11.migadu.com with ESMTPS id 6423a6be375d5d61;
+	Tue, 03 Nov 2026 10:56:51 +0000
+X-Mizu-Trace-ID: 6423a6be375d5d61
+X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain;
+	charset=us-ascii
 X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 3/5] mm/mremap: reaccount on unmap failure only if
- accounted
-To: Josef Bacik <josef@toxicpanda.com>,
- Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <liam@infradead.org>, David Hildenbrand <david@kernel.org>
-Cc: Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>,
- Pedro Falcato <pfalcato@suse.de>, Muchun Song <muchun.song@linux.dev>,
- Oscar Salvador <osalvador@suse.de>, linux-mm@kvack.org
-References: <20261102-b4-mremap-pre-split-v2-0-d281dd11ad7d@toxicpanda.com>
- <20261102-b4-mremap-pre-split-v2-3-d281dd11ad7d@toxicpanda.com>
-Content-Language: en-US
-From: "Jose A. Perez de Azpillaga" <azpijr@gmail.com>
-In-Reply-To: <20261102-b4-mremap-pre-split-v2-3-d281dd11ad7d@toxicpanda.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 6802F40005
-X-Spam-Status: No, score=-9.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,
-	SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1 autolearn=ham
-	autolearn_force=no version=4.0.1
-X-Stat-Signature: kj7yqcdqikgjqzka95inbgof5wm79ndp
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3901.200.71.1.16\))
+Subject: Re: [PATCH 2/4] mm: hugetlb: skip CMA allocations under
+ PF_MEMALLOC_PIN
+From: Muchun Song <muchun.song@linux.dev>
+In-Reply-To: <5bc00742fe249cf09a3095abccf8889d5fa71116.1793692578.git.zhengqi.arch@bytedance.com>
+Date: Tue, 3 Nov 2026 18:56:23 +0800
+Cc: osalvador@suse.de,
+ David Hildenbrand <david@kernel.org>,
+ akpm@linux-foundation.org,
+ azpijr@gmail.com,
+ linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org,
+ Qi Zheng <zhengqi.arch@bytedance.com>,
+ stable@vger.kernel.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <4EC5E593-7537-4659-879C-95ECC2224D2F@linux.dev>
+References: <cover.1793692578.git.zhengqi.arch@bytedance.com>
+ <5bc00742fe249cf09a3095abccf8889d5fa71116.1793692578.git.zhengqi.arch@bytedance.com>
+To: Qi Zheng <qi.zheng@linux.dev>
+X-Mailer: Apple Mail (2.3901.200.71.1.16)
+X-Stat-Signature: 9pwijo7u7aiyui8y8a9y1gbp6eykgcmh
+X-Rspamd-Server: rspam01
 X-Rspam-User: 
-X-HE-Tag: 1793703229-369412
-X-HE-Meta: U2FsdGVkX19GXISa8VpZ3GqIgPfotB/MDJjtf+4Tc2Tkqj82ZyLUW7o/Zur8uZVNZ73Ik1tqQ5QaFHHzaqGuvXoap0eoyElulukODFhP0WFg9F+BP2MgmY3jO9kdAiKfoxxv1qmoqSqNol7ttY94yeoD3JTpJnkg5HOExZoLBolXOsogjB839O2zZCdfOIT9iL3jqSkErFAG7x8agOk86itjyNMXaEb53tPk2YNphAaakVgedGUT5kqGXjHTz6lEcnXHPCunf6KBmksB0AL5b/cx6a7fh0vQgGFTbrSva93OllDoU6Fd8avhLKRtD4emu2xooqB7Ki4WTIjzxCzhjH4YI6cO2OL2Cfk8NMreyEbzBD9spH2hY6iGqXQL6lBfOw3ncP5lhaO5rSF6gB5P0rAdFLmU3mrnZYXl3VT87yyjMsoWrumzgaGAOhj9jIhpGvt8bChucJ+wrauTOGCJDOVs66YAtCsaYNq9gSHqwrkQEcWw5kvS4mZOwEU8BYRGkRbygwhbCScsXky9yyZjQ6USPzS96ZPa1R/KNYluTDFIb6v4iSKGS1vlIoPhC5wc6+xaa+600dTwS8iJLQmYir75MjrnpC/ptRs/OJWMsONcaNLSOej2qq2/2mW3sJa+zeL8OJ28tjSIDnvfuWuQr4Ms+wZDlc8HIXZxrV7w8ucIVi96ksS3h/7dOXX6/9B0i9V/tdsyTOKtYotdNeJTKCnQUNfNnIIjqGkFaYla2skJkOuLZq5P3EoLVPceEuloLR0xcB5zfO503EaKRxsrhVJP9s4uM336KKzrldyVW9vp/LBiuu3oTSBF3/wtYTeu5soGXAN2DNuuaHuxgqLt1XmMcA2OgxXqPqgwVRT8MDhZ62uyOFKC2Iurqy2O4H4ih9kvdQeb8Kc2ybDSjrzAOqNnZjjhbUJNyo+KFGkbApyV0botY9vzLvOcLiLBjqa030Zglj1m33oxnyO0aIu
- ztUpIAG8
- LxhFOlcHVg9H/R3cyU6HKOpw5te5xtuTRrUrcdL8/irLJGqNdx8euOS84zVamNg/fH+MK4Qe5HodJzK75nkdp8eyvBXvidmXMy6VjdGs7iNvpeBLrszUw+1HeLPIlp5mid3aiXorlKvmaicwRCKA5fLpFuh07Psv3DpVoD8jNNL4cMgNQ6CP1R0tzKZtXFaTNtgKmzj28Mc+HdQj+df7JsIh0ezHkHj/ROcJHFYP5+38HHj8UKpN3JvlR6FaPlBa+jW969kDJsmvbucYwthW34wzLKQaTI7NdQPeqSDg/EZUsVX6Vd0rum+GHASjSiE4BbWTahS2LPXtbUfdwlutPdK4mP2nmci47EIK3rDynWiGMO+FJSCY3RroRKWqhzwxFIwLDpJBze30tXL9iqIgdQFDUOT9i+TOOyrypaXAgVwDv1+XmYCWqt+k/kX6f29qdaIlRT5/d1MfNW/964iojJqhMuykTmmsWOx8qbMsKyAD8IrhiJxYSkgoyRvp1/FkOIk2Gzq8fck9VaBD1VQfeuiPKbZnrGfBwDb2gy/NVFvLw6R4=
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: A4D2B20005
+X-HE-Tag: 1793703420-714437
+X-HE-Meta: U2FsdGVkX19I9EhOc5QsHSHdy5nitrQxPEZy0vfYlhIrawAYwhyXtSzJVo4DNj7Djw9dX+5Qi8Qxn+ZNbrMWeGkojaUIKEDsGf7cbAETvd566cUAuUi8J4cCN8/BRi7I6GHaHNP1P27aqhK3x697Z/oKABw6IcdMNmVIFSFyhOPsjxIzyj8qihAc1nqJ2TdVzR2chEEQSvUpn6XRcjVMYW7cj461LL/VsJspMdkGrxzhmxEFDspdGa2TvN0f96QgI5BGTmk1DUBBz/i5qE5O42IiTUpESUMMy/CaHiAQtMWl9S9njxjSPa1gBHzzQ3/0Hy0QWRHLJR55iKbAcn3ORgQheHIj9Ab+0Ab6VWNUvby9sAlxxBAalmuH7rBWNyfUEv39jDYIfy4BeCrR+OHS5Cftj1r7rq6bURi8Pc4onDUfDgQ+sS2eHMvcWjQpQ0jtBez7rU/ygA2lKSu9FyNZ9DivEKBRSBcXhs/65f+MWGx6p+2RdoB2oC1WbHER3xUcMpvqTJyOaN4ghD0SUZhtK44WcEmOsZuydfACusqbSaB7qpdy2jgOgQoxPxcz6DY6Z/t99g0lDpuB2ebZRTjhWWsmBNJq2ELQBO1aWytQVFJMp89w/cmHBia0lq0YhnDFKO8+VmJeq65EvJ0G/b3YsADCF/+efYqsI038Ntg3jHDufghlJEi38wXO4uVEYXHjw9SsPW91h4rcDd41fZEyT1tGVA0fEEgUVzn+Jurt7T4/FuG/vmMMbypI5DZtISpsNKMvwi4eND66re2YHDtOHWZ9wpc6zsdtxT3bxiWaLS/SJ47DtPnHuDKiyhuY+y7yZ80apmIahxj2axrHyYeHQD/X3BNQgS6ij57rU7ZdgA7hguMNfadF08YXJ1ivC3s5wXENvI1j+BS9rfdBg+/rRcgi9Y8dJk77qNWUUdjZeSHu/GAqaiFBjfRkt+LyM57aYZqZCQuBu/6lwfTr5Ek
+ X7E8R2MA
+ 07Z2qOruNxcJxiIrkbxsu5vYRvi3m3EAG8MOjreokzH2l9LJiJ3IeSOpbNZhB9EljakiEd9kH28H+XAfORzoxnms1u8N2v/sxWB0AYDTyrMI6tGOeSJoPdN5AIfUXxFrY9xG9XvLInm+JL3FhjzdZpnZrpTcRzzrF3O/R4qyKdGgitNdsAcf/S58pel3Ugwca6Rj3n/5VAQLW72cko1dU83BHgsC+Qx6pdRwE5MeyYH1jrjfKU2xXmrXxlQ1Tj+j5aPTvx8kSgMHYWM4ZlcpId9pklLAZf0QqxOZN5GoOV2eZhXl3noNTcOUkfF7GUKOyzJ5eAU+FsV/lkBfLzLrnilHjZeS0OHLh8rACe6ESCohnkxA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -133,28 +102,88 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/3/26 12:45 AM, Josef Bacik wrote:
-> When the unmap of the source range fails at the end of an mremap() move,
-> the length of the range is charged to vm_committed_as even if the VMA was
-> never accounted, for example a MAP_SHARED or MAP_NORESERVE mapping. Nothing
-> ever uncharges these pages, so each such failure permanently inflates the
-> committed memory count.
-> 
-> This was reproduced with fault injection: each failure on a shmem mapping
-> left Committed_AS higher by the size of the moved range after everything
-> was unmapped.
-> 
-> Fix by charging the range again only when accountable_move is set.
-> 
-> Fixes: b714ccb02a76 ("mm/mremap: complete refactor of move_vma()")
-> Signed-off-by: Josef Bacik <josef@toxicpanda.com>
-> 
-> Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-LGTM:
 
-Reviewed-by: Jose A. Perez de Azpillaga <azpijr@gmail.com>
 
--- 
-cheers,
-jose a. p-a
+> On Nov 3, 2026, at 16:01, Qi Zheng <qi.zheng@linux.dev> wrote:
+>=20
+> From: Qi Zheng <zhengqi.arch@bytedance.com>
+>=20
+> With gigantic overcommit enabled, a fault during long-term pinning
+> can allocate a fresh HugeTLB folio from CMA despite PF_MEMALLOC_PIN.
+>=20
+> The folio must then be migrated before it can be pinned. However,
+> fresh gigantic migration targets are not supported, so pinning fails
+> when the HugeTLB pool has no suitable target, even if the original
+> fault could have allocated pinnable memory outside CMA.
+>=20
+> Honor PF_MEMALLOC_PIN in the HugeTLB CMA allocator so the fault can
+> try the non-CMA fallback, or fail when allocation is restricted to =
+CMA.
+
+Wait... I think my Acked-by got ahead of me here. :)
+
+There seems to be a rather odd distinction that GUP is missing.
+
+The usual reason long-term GUP must migrate a page out of a
+MIGRATE_CMA pageblock is that the page was only borrowed from CMA by the
+normal page allocator.  The corresponding CMA bitmap range is still
+available, so a future CMA allocation relies on being able to migrate
+that page away.  A long-term pin would prevent that.
+
+However, a HugeTLB folio returned by
+hugetlb_cma_alloc_frozen_folio() is different.  It is the actual CMA
+allocation, not merely a movable page that happens to reside in a
+MIGRATE_CMA pageblock.  Its range has already been marked allocated in
+the hugetlb CMA bitmap.
+
+Therefore, CMA cannot allocate that range again until the HugeTLB folio
+is freed anyway.  Long-term pinning the folio does not seem to make the
+CMA area any less available than keeping the HugeTLB folio mapped for
+the same amount of time.
+
+folio_is_longterm_pinnable() currently only sees MIGRATE_CMA and does
+not distinguish these two cases.  In that light, rejecting
+PF_MEMALLOC_PIN in hugetlb_cma_alloc_frozen_folio() looks like working
+around an overly broad GUP classification.  It also means that
+hugetlb_cma_only users will fail the fault, while other users may =
+consume
+a gigantic contiguous range outside the dedicated hugetlb CMA area even
+when that area has free space.
+
+Would it make more sense to fix the long-term GUP check instead, so that
+an explicitly CMA-allocated HugeTLB folio is considered pinnable, while
+ordinary pages merely borrowed from MIGRATE_CMA pageblocks remain =
+unpinnable?
+
+Thanks,
+Muchun
+
+>=20
+> Fixes: eb02f14c4a2b ("mm/hugetlb: allow overcommitting gigantic =
+hugepages")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
+> ---
+> mm/hugetlb_cma.c | 3 +++
+> 1 file changed, 3 insertions(+)
+>=20
+> diff --git a/mm/hugetlb_cma.c b/mm/hugetlb_cma.c
+> index 95fd2d190f0d2..dde1c866406fb 100644
+> --- a/mm/hugetlb_cma.c
+> +++ b/mm/hugetlb_cma.c
+> @@ -62,6 +62,9 @@ struct folio *hugetlb_cma_alloc_frozen_folio(int =
+order, gfp_t gfp_mask,
+> 	if (!hugetlb_cma_size)
+> 		return NULL;
+>=20
+> +	if (current->flags & PF_MEMALLOC_PIN)
+> +		return NULL;
+> +
+> retry_cpuset:
+> 	if (!nodemask) {
+> 		cpuset_mems_cookie =3D read_mems_allowed_begin();
+> --=20
+> 2.54.0
+>=20
+
 
