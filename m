@@ -1,123 +1,101 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFC52606A326
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 16:30:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13818606EE8F
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 16:39:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key, unprotected) header.d=surriel.com header.i=@surriel.com header.a=rsa-sha256 header.s=mail header.b=L4PUEs0T
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Ex4YsRzJ
 Received: by kanga.kvack.org (Postfix)
-	id 03BE26B05B6; Tue,  3 Nov 2026 11:30:27 -0500 (EST)
+	id 110776B05B2; Tue,  3 Nov 2026 11:39:14 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F07676B05B7; Tue,  3 Nov 2026 11:30:26 -0500 (EST)
+	id 0E75F6B05B4; Tue,  3 Nov 2026 11:39:14 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DF6536B05C8; Tue,  3 Nov 2026 11:30:26 -0500 (EST)
+	id F415C6B05B5; Tue,  3 Nov 2026 11:39:13 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id B2F306B05B6
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 11:30:26 -0500 (EST)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 729C5A8024
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 16:30:25 +0000 (UTC)
-X-FDA: 85394345610.02.E01AAA6
-Received: from shelob.surriel.com (shelob.surriel.com [96.67.55.147])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 0272A18000A
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 16:30:21 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=surriel.com header.s=mail header.b="L4PUEs 0";
-	dmarc=pass (policy=quarantine) header.from=surriel.com;
-	spf=pass (imf16.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com
+	by kanga.kvack.org (Postfix) with ESMTP id C5B8D6B05B2
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 11:39:13 -0500 (EST)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 3F97880497
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 16:39:13 +0000 (UTC)
+X-FDA: 85394367786.03.8BB8EE6
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 84483140011
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 16:39:11 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ex4YsRzJ;
+	spf=pass (imf09.hostedemail.com: domain of sashal@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashal@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793723951;
+	b=WZhglOHklsoMwL7q3IUD9RDjFH91SEQE1dFyrei5gs61DeY01EQU1+Hfgery5KWSnJ5uzS
+	Yl0YWqi+TljnOpQUe3iq/hGGpc7/KiEN4EX3oJ7eoLzok70gATNBBPd63+3PodOs/Y+3ZV
+	W14FEsZ0ceWuAvV45ikXQuTHMu+syM8=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793723423;
+	s=arc-20220608; t=1793723951;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5mB8ON6MEPW2r/RYWZ0r9GruKi5bPxioVzHjsVLGOro=;
-	b=5yrbULtyzE4boLFoj+FxM6RGVd3ynW90aBBSk2DhVKYev/IDvCRCRfO9uwNmFjqKlOB9y8
-	N2O4egxEX5jVkpeQvNaNOi4UX1A5tr1hLBFGW1zDek5IvYY7XeLVtsAQZ3Fa9mF2zOcc1T
-	TMUm3fZWbL0z+3HYCprAX+itD0MauCY=
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=35mBv4tgWZFCfO8rEfIy0BNvIMCfDsYv/F++fN9tP08=;
+	b=QdjW2qvNJa78aRoDtcw+c323g1drDAeWbxRiofMkDPWYZVB0N8wMjJRcCbIZogOq0OxiS2
+	M+hZXXmC0i1hDWbLBAYIjoahiW2D+gJHXAP9S556eQgF30ivPvYdULbto5QNCog19hNiLb
+	YRu136fcC0GHmgZbNKxkL+YyaE/CYFA=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=surriel.com header.s=mail header.b="L4PUEs 0";
-	dmarc=pass (policy=quarantine) header.from=surriel.com;
-	spf=pass (imf16.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793723423;
-	b=zFdoXzI44PDX0/fkdfZaFBqCpDJr1WrUwH7DLTCT0kpZKMVKH3qMAWaXGXNQc8NDPZM3Li
-	meXCPppn7w+XrJqj8bTwsOSHhFaVcrC4vCgpBGJIbPFc7rZI7RHassbp/7rcnsaR369Xld
-	nusixjxIPX4Th8w6qVS/etuqHRgMByQ=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=surriel.com
-	; s=mail; h=MIME-Version:Content-Transfer-Encoding:Content-Type:References:
-	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID; bh=5mB8ON6MEPW2r/RYWZ0r9GruKi5bPxioVzHjsVLGOro=; b=L4PUEs
-	0TG94wF9l4r0t2PR4te8DQN3Qs2zQOXhW+syyIhDqUNzTOU+0mwkLauDtvDobzC24CywcQsFvTTAe
-	xBbY8m72E/cP9VWOkau4UD/FwU5E4QaHXYF/U8+jcpYqrdKfvQyf64A1STi09gabk5DG2UOfIpdEj
-	+VVWpHFEKP3C/xhD4RSxGfm+iuAemmFerV2kA3AUP7VLJZvsRSthl8Lvt//X4n9jUJc0gFkoJkZoj
-	J9flX3xagZfg1VxZGNlsZAk9L6ebar5/j2EB9XNWEa60YlaxGjJjCX8yyEPIoGqIjYESgcrkmNrrP
-	rgR9cepYwK5KBw0vIpeh919QBlng==;
-Received: from [2601:18c:8100:a0e0:2541:b86e:2586:d219]
-	by shelob.surriel.com with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.99.5)
-	(envelope-from <riel@surriel.com>)
-	id 1xOHOM-00000001jbx-2YuO;
-	Tue, 03 Nov 2026 16:29:46 +0000
-Message-ID: <3a7d12b52a5de61277842f2cca0dd90d42728135.camel@surriel.com>
-Subject: Re: [PATCH 1/8] mm/gup: break out gup_fill_pages() helper
-From: Rik van Riel <riel@surriel.com>
-To: "David Hildenbrand (Arm)" <david@kernel.org>, 
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ex4YsRzJ;
+	spf=pass (imf09.hostedemail.com: domain of sashal@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashal@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id BC48A43CAD;
+	Tue,  3 Nov 2026 16:39:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C35A1F000C1;
+	Tue,  3 Nov 2026 16:39:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793723950;
+	bh=35mBv4tgWZFCfO8rEfIy0BNvIMCfDsYv/F++fN9tP08=;
+	h=From:To:Cc:Subject:Date;
+	b=Ex4YsRzJoX3M10+8NGJC036gk3TZclQS4l/wzCHNdk6UPuu9gRNUusSNQlLeMalzJ
+	 bTMPBCXlG26itlHVdmlwwAs5d0Z9e9cQSLUPs2DEob4u1SgrrdZfQZcugCt8zOT/dD
+	 HeC6VUOgCEfIRDcvt1/yYe7AC9pUr8ec+a95aXLBrDrS6aIhDi45HXDR6Yz/hA4FjT
+	 7LFwvaw+z1IbWhr5ChpFR06GV72qONLCyVQIeNv4Pzqo933Y7WDgEWhTOO4G3/fXoa
+	 bhUqa9xXFlsglm1/TtQWeg5EDDOfvCOcYDzEZxMC3kePOLLAAzoyt34cbJHpV69Fpk
+	 sNV0FeFN+RJXg==
+From: Sasha Levin <sashal@kernel.org>
+To: Jason Gunthorpe <jgg@ziepe.ca>,
+	Leon Romanovsky <leon@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>
+Cc: Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Shuah Khan <shuah@kernel.org>,
+	Peter Xu <peterx@redhat.com>,
+	linux-mm@kvack.org,
+	linux-kselftest@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Cc: Andrew Morton <akpm@linux-foundation.org>, Jason Gunthorpe
- <jgg@ziepe.ca>,  John Hubbard <jhubbard@nvidia.com>, Peter Xu
- <peterx@redhat.com>, Suren Baghdasaryan <surenb@google.com>,  Yuan-Hao Hsu
- <aa9736195201@gmail.com>, Christoph Hellwig <hch@infradead.org>,
- linux-mm@kvack.org
-Date: Tue, 03 Nov 2026 11:29:45 -0500
-In-Reply-To: <df9c504e-e62a-40c0-a513-e8b8c758dd57@kernel.org>
-References: <20261102193026.3860700-1-riel@surriel.com>
-	 <20261102193026.3860700-2-riel@surriel.com>
-	 <df9c504e-e62a-40c0-a513-e8b8c758dd57@kernel.org>
-Autocrypt: addr=riel@surriel.com; prefer-encrypt=mutual;
- keydata=mQENBFIt3aUBCADCK0LicyCYyMa0E1lodCDUBf6G+6C5UXKG1jEYwQu49cc/gUBTTk33A
- eo2hjn4JinVaPF3zfZprnKMEGGv4dHvEOCPWiNhlz5RtqH3SKJllq2dpeMS9RqbMvDA36rlJIIo47
- Z/nl6IA8MDhSqyqdnTY8z7LnQHqq16jAqwo7Ll9qALXz4yG1ZdSCmo80VPetBZZPw7WMjo+1hByv/
- lvdFnLfiQ52tayuuC1r9x2qZ/SYWd2M4p/f5CLmvG9UcnkbYFsKWz8bwOBWKg1PQcaYHLx06sHGdY
- dIDaeVvkIfMFwAprSo5EFU+aes2VB2ZjugOTbkkW2aPSWTRsBhPHhV6dABEBAAG0HlJpayB2YW4gU
- mllbCA8cmllbEByZWRoYXQuY29tPokBHwQwAQIACQUCW5LcVgIdIAAKCRDOed6ShMTeg05SB/986o
- gEgdq4byrtaBQKFg5LWfd8e+h+QzLOg/T8mSS3dJzFXe5JBOfvYg7Bj47xXi9I5sM+I9Lu9+1XVb/
- r2rGJrU1DwA09TnmyFtK76bgMF0sBEh1ECILYNQTEIemzNFwOWLZZlEhZFRJsZyX+mtEp/WQIygHV
- WjwuP69VJw+fPQvLOGn4j8W9QXuvhha7u1QJ7mYx4dLGHrZlHdwDsqpvWsW+3rsIqs1BBe5/Itz9o
- 6y9gLNtQzwmSDioV8KhF85VmYInslhv5tUtMEppfdTLyX4SUKh8ftNIVmH9mXyRCZclSoa6IMd635
- Jq1Pj2/Lp64tOzSvN5Y9zaiCc5FucXtB9SaWsgdmFuIFJpZWwgPHJpZWxAc3VycmllbC5jb20+iQE
- +BBMBAgAoBQJSLd2lAhsjBQkSzAMABgsJCAcDAgYVCAIJCgsEFgIDAQIeAQIXgAAKCRDOed6ShMTe
- g4PpB/0ZivKYFt0LaB22ssWUrBoeNWCP1NY/lkq2QbPhR3agLB7ZXI97PF2z/5QD9Fuy/FD/jddPx
- KRTvFCtHcEzTOcFjBmf52uqgt3U40H9GM++0IM0yHusd9EzlaWsbp09vsAV2DwdqS69x9RPbvE/Ne
- fO5subhocH76okcF/aQiQ+oj2j6LJZGBJBVigOHg+4zyzdDgKM+jp0bvDI51KQ4XfxV593OhvkS3z
- 3FPx0CE7l62WhWrieHyBblqvkTYgJ6dq4bsYpqxxGJOkQ47WpEUx6onH+rImWmPJbSYGhwBzTo0Mm
- G1Nb1qGPG+mTrSmJjDRxrwf1zjmYqQreWVSFEt26tBpSaWsgdmFuIFJpZWwgPHJpZWxAZmIuY29tP
- okBPgQTAQIAKAUCW5LbiAIbIwUJEswDAAYLCQgHAwIGFQgCCQoLBBYCAwECHgECF4AACgkQznneko
- TE3oOUEQgAsrGxjTC1bGtZyuvyQPcXclap11Ogib6rQywGYu6/Mnkbd6hbyY3wpdyQii/cas2S44N
- cQj8HkGv91JLVE24/Wt0gITPCH3rLVJJDGQxprHTVDs1t1RAbsbp0XTksZPCNWDGYIBo2aHDwErhI
- omYQ0Xluo1WBtH/UmHgirHvclsou1Ks9jyTxiPyUKRfae7GNOFiX99+ZlB27P3t8CjtSO831Ij0Ip
- QrfooZ21YVlUKw0Wy6Ll8EyefyrEYSh8KTm8dQj4O7xxvdg865TLeLpho5PwDRF+/mR3qi8CdGbkE
- c4pYZQO8UDXUN4S+pe0aTeTqlYw8rRHWF9TnvtpcNzZw==
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.60.2 (3.60.2-2.fc44) 
+Subject: [PATCH] selftests/mm: fix pointer width warnings on 32-bit architectures
+Date: Tue,  3 Nov 2026 11:39:07 -0500
+Message-ID: <20261103163907.640667-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.53.0
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 0272A18000A
-X-Spam-Status: No, score=-13.6 required=3.0 tests=BAYES_00,DKIM_INVALID,
-	DKIM_SIGNED,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
-X-Stat-Signature: qnj15ukau7ayq86njqrsc638rqypenrj
-X-HE-Tag: 1793723421-148003
-X-HE-Meta: U2FsdGVkX1+suxag2SaKRB/OFUJrFTrnMeixbETk8BIraMKuec/D4S9PzKAAlc3MzZAGnEzSl7sAL9LUBeApdXbBHQU9ckofEXU/omIfwIPjG+dSLPSmiOHERdtit7gREJvMpBJTVZv1HXYFa1L5BgcC3ouqa263ARcSkIYhPBdHT/aEn15eExBWoRCaufZ9YPqHUBrme93s9ifwXLke3aLeXH5Y8ELcBPKX1OzldM8Ub7vKJhPZ7UZdtYcyjHrLUHPo2aQC+05mLwedSfLJyUVZMO3YFNgrIM2hXyObXFI0QJ6eLm5Om6MU9e1tOT9nMv6vWPRtHz91DZwhn+QA8D9lcl9aR68ITOeImCiFN/UFyMED1rJpmmBT7OUBizLgVvIZbi3JX9B2gZVyd1RL2S5/fzC0CUcuBKGo28xh4rW9VcOwRJmHdrEOJC1Vxaca31kchfp1E+HnZdQZGd1Cp9//ZHpz5cP0eE8Xe3ElfwIuxErXXD+7w8PQCWFFuap2Hsj/4ZUIf3BYaO1MHqJ7GnvS9Bivrs7YJyT3naQ0DINVltjfJwdHC3Bge3R06CXZ2Nn/9BF4qVpSvUvktNdYVaK8Vu0oN4ZC3dhr4BhmkN25r4LS8cEt/WqAgfBUupff82dmNYPaJmRIuAxdKDwAYo3In7FeJGYj7SiLAcXwPeNn0W9hFYWKCQ/U0Jqm9GuWAPn4nZzcTKApYZFtlDIzNUGuhnaTx1Nhp9F7F7s3FcasvQInYD+dy2rthN5RqmqiHyaMkgUYVwVQbtt2GueCmrp+1NFMUmBICP0HWOdNml746hZwD6oWRQwQiOkKGo7mbVXBiB6YXus7l+Z83m1xK00URZM+KF2mDe/J6ZEa+qKnx1IBCfRVWoACpWoxRguj1hVq4WIktrR8xnnIWZeV91RONq8B2Bzct+ARD7awSDzzbN2xBEJMZV4MeM6UemGLpNjil1OsYUrGPjNKl+E
- K5A0613x
- MZcGZK9o6OVoGfvJeORx3wD2j3jee1WwOnLB3X2warSOLUueQvzx2EDz55qx3jjKNw4laKzT0EMfnP0IyfYI41S602Isk8G0DDq0qKeLpUQSlA/acztUNEvNl6s4bwQej/hQIc1YL6f1ovqk+tC9mA/sV6ic1xw8Cu7eSzkYTWp7Hrmd/bY9ywPohwlsONvMCU749Xl8bC4Y31Bedd9db6Ma7W5I4Ml6Q313R7eqVzT6fU2PpAJe1uvhobJqaP2MzEGdPLrlLygoY/wgfRA+YsugOLyZUpG9GOf/GWrnt3MyJXrF2TNLtiOfaKUSGl6Gw2UCYBIMmSJ5+ThKV0q7z3Y/p7/j44xdRCv6oGbsZxvgVWxRi01FJukdNbl57c7cm/RBU2hNWP6ZFBGuuL1Pqf4Z+lukGLYUIGMK5U1M73vG2bbPwa03j7uckBNdyDd3QX9xI0xviWuL7QQ95KZKvvBt5IuCXFEvrAqKkjtwWoK+Acuc=
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam12
+X-Rspam-User:
+X-Stat-Signature: r74qx3jzkt953j8cbii6k4tb1yn7z6qi
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: 84483140011
+X-HE-Tag: 1793723951-985184
+X-HE-Meta: U2FsdGVkX191HiX6D+YoJnma5/FG1FsrCXAGznWhjxYOVpeMxkm1tcCtPjLV0A6QSbzQMthP31ZvrD+P99cxrn8tVqVHbFjSyTsvJaOxfHQ79EOf9KpXMwpe7jjYc7H6Vud4JJOtqIniuI+EKGHHoIKpRXNR8pBvcRtUbMFehOi6qGgCK6OrSsvgWv/rhhLHKyZLmXZQiWcFWiXUylbnT8bmhCq4Ps9v5R7Cs0z4HDFwC3ZZ5svi4AcujrqeKV2jhM/iULtWW+0l1sDiPR5VXdb+Zux9oGHq3wF9SQ/hGyJgoqB3SBc7TCn2AMbjUvEMO5rYVsrBbm5mmbBDGoLtr5YOTtlfaQZ+6ZkumVrNnBLsrydxmf5tfKiZZ8P8f6myGc94pX9GKbRlRJ0o1HmAH51DuWHfkS9fVSFz8Hp5x3jECSlVGkBaIuIsd7Wb2s6yvcgIoT0WLn5cw4HwkKK4g8gls6WxVoTnYmeD3p0C6NOeZ9SNoLuKiTglCKVaHCPFhOIkuudGg+gBQohmcw+xf+mDKdqs/gW3Dw+vA4FPJ6FcTbZtLeJLvKFVPiWkQK4xni+oAhCY1HIy7sgUEm2JArfiVOXmePy2DxP1kFt5BlOf5su4XHgSjaFBWYcsAxfmwbf2AHFGqgrxTD+H1MR7tT4hW/Ln3+cdM0uXPa/zu81J7hhPfgplHbZJU+UVXmXFhNsz3IVqZDCnyospKMFE5PzJ4HH1nH7Up6QQvGnGm5vxzcexWgB68iRGrkKzSHICqqCvgAAvu9Caj4UnASgMX5R8I4CSFX1FbX4qR8rAOnc7d4BBhLP2piS6EUWnpVjQLlrgkp8wDogS1bBWsiJ/hrQ7THYyNd82UqvEiaGcFE2hnWE6TE0A5NYPJW03TyvagH/9mZxF06NguhQtkjVOwClA+eCzTSbXMPywhAIAhJ+CTqV2XG/oYi3R3NTC7Uu7ZppORQ+q0/9XGMIffTJ
+ syH52DJJ
+ zlFi6Yr48Xq6VnpgAo3v6cWNwuHQdoRi2gPFDoP7xfiK4TXF2X0A0W8puqOWeDgpzD2KMIZaGwmQgHNhceX60bb5iAVX9hxr0jXuxM69BgDvAm263hEvJhtCwqmo6JKCmzhUOQC1NMc2EneaF5SUr53faGmq1RkZITF2f306XWTv9y4L1ZK5VyTUtz5z6f2tAt9tChzM+3lDA0d3T+Xjy5ft17ERbCurk5XGU108bp6be0OPBkUc2CwYh+rlrEo6MVJ5jARdRVVHXOWgfxfz+q/1WNVA/IHJtsJub6SX4yelFIDWTAqrkva+Rcw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -126,182 +104,378 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Tue, 2026-11-03 at 09:43 +0100, David Hildenbrand (Arm) wrote:
-> On 11/2/26 20:30, Rik van Riel wrote:
-> > __get_user_pages() fills pages[] and flushes each page's caches in
-> > an
-> > open-coded loop.
-> >=20
-> > Move it into a gup_fill_pages() helper, which the
-> > follow_page_mask()
-> > call chain can then use to fill its own pages[] slots.
-> >=20
-> > No functional changes intended.
-> >=20
-> > Suggested-by: David Hildenbrand <david@kernel.org>
-> > Reviewed-by: Suren Baghdasaryan <surenb@google.com>
-> > Signed-off-by: Rik van Riel <riel@surriel.com>
-> > ---
-> > =C2=A0mm/gup.c | 27 ++++++++++++++++++---------
-> > =C2=A01 file changed, 18 insertions(+), 9 deletions(-)
-> >=20
-> > diff --git a/mm/gup.c b/mm/gup.c
-> > index 7d43ce717b246..cdbe2ed3e6442 100644
-> > --- a/mm/gup.c
-> > +++ b/mm/gup.c
-> > @@ -633,6 +633,23 @@ static struct page *no_page_table(struct
-> > vm_area_struct *vma,
-> > =C2=A0	return NULL;
-> > =C2=A0}
-> > =C2=A0
-> > +static void gup_fill_pages(struct vm_area_struct *vma, unsigned
-> > long address,
-> > +		struct page *page, unsigned long nr, struct page
-> > **pages)
->=20
-> unsigned long nr_pages ?
+Several mm tests convert between pointers and 64-bit integers with a
+plain cast, which warns on 32-bit architectures, and hugetlb-mremap
+passes 47-bit mmap() hints that don't fit in an unsigned long:
 
-Will do. Thank you.
->=20
->=20
-> > +{
-> > +	unsigned long i;
-> > +
-> > +	if (!pages)
-> > +		return;
->=20
-> Why is that check needed? Why should someone try filling something
-> that doesn't
-> exist?
+  uffd-unit-tests.c:344:31: warning: cast from pointer to integer of different size [-Wpointer-to-int-cast]
 
-faultin_page_range() and populate_vma_page_range
-both call the GUP code with a NULL pages pointer.
+Cast through uintptr_t where pointers meet the 64-bit UAPI fields and
+the 64-bit address arithmetic in mremap_test, and include stdint.h there
+for it. The hugetlb-mremap hints don't fit in a 32-bit address space, so
+only pass them when long is 64 bits.
 
->=20
-> > +
-> > +	for (i =3D 0; i < nr; i++) {
-> > +		struct page *subpage =3D page + i;
->=20
-> There is no such thing as a subpage as Willy keeps saying :)
->=20
-> Why not reuse "page" ?
->=20
-> 	for (i =3D 0; i < nr; i++, page++) {
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+Found with 32-bit builds of the selftests (gcc 16 and clang 21 with
+-m32, with and without -D_TIME_BITS=64 -D_FILE_OFFSET_BITS=64);
+KernelCI's 32-bit arm builds show the same warnings. The changed files
+build without them now, and the x86_64 builds don't change.
 
-Will do.
+ tools/testing/selftests/mm/hmm-tests.c       |  4 +-
+ tools/testing/selftests/mm/hugetlb-mremap.c  | 17 ++++---
+ tools/testing/selftests/mm/migration.c       |  4 +-
+ tools/testing/selftests/mm/mremap_test.c     | 13 +++---
+ tools/testing/selftests/mm/uffd-common.c     |  2 +-
+ tools/testing/selftests/mm/uffd-unit-tests.c | 48 ++++++++++----------
+ 6 files changed, 47 insertions(+), 41 deletions(-)
 
->=20
-> > +
-> > +		pages[i] =3D subpage;
-> > +		flush_anon_page(vma, subpage, address + i *
-> > PAGE_SIZE);
-> > +		flush_dcache_page(subpage);
->=20
-> Now I wonder why GUP-fast doesn't need any of that. Likely because
-> architectures
-> that support GUP-fast don't need any such magic.
+diff --git a/tools/testing/selftests/mm/hmm-tests.c b/tools/testing/selftests/mm/hmm-tests.c
+index e5f273ca84c10..2a8806a131a5b 100644
+--- a/tools/testing/selftests/mm/hmm-tests.c
++++ b/tools/testing/selftests/mm/hmm-tests.c
+@@ -196,8 +196,8 @@ static int hmm_dmirror_cmd(int fd,
+ 	int ret;
+ 
+ 	/* Simulate a device reading system memory. */
+-	cmd.addr = (__u64)buffer->ptr;
+-	cmd.ptr = (__u64)buffer->mirror;
++	cmd.addr = (__u64)(uintptr_t)buffer->ptr;
++	cmd.ptr = (__u64)(uintptr_t)buffer->mirror;
+ 	cmd.npages = npages;
+ 
+ 	for (;;) {
+diff --git a/tools/testing/selftests/mm/hugetlb-mremap.c b/tools/testing/selftests/mm/hugetlb-mremap.c
+index 9b724af66e938..531f270fabfb5 100644
+--- a/tools/testing/selftests/mm/hugetlb-mremap.c
++++ b/tools/testing/selftests/mm/hugetlb-mremap.c
+@@ -33,6 +33,11 @@
+ #define PROTECTION (PROT_READ | PROT_WRITE | PROT_EXEC)
+ #define FLAGS (MAP_HUGETLB | MAP_SHARED)
+ 
++static void *addr_hint(unsigned long long addr)
++{
++	return sizeof(long) == 8 ? (void *)(uintptr_t)addr : NULL;
++}
++
+ static void check_bytes(char *addr)
+ {
+ 	ksft_print_msg("First hex is %x\n", *((unsigned int *)addr));
+@@ -130,21 +135,21 @@ int main(int argc, char *argv[])
+ 		ksft_exit_fail_msg("Open failed: %s\n", strerror(errno));
+ 
+ 	/* mmap to a PUD aligned address to hopefully trigger pmd sharing. */
+-	unsigned long suggested_addr = 0x7eaa40000000;
+-	void *haddr = mmap((void *)suggested_addr, length, PROTECTION, FLAGS, fd, 0);
++	void *haddr = mmap(addr_hint(0x7eaa40000000ULL), length, PROTECTION, FLAGS,
++			   fd, 0);
+ 	ksft_print_msg("Map haddr: Returned address is %p\n", haddr);
+ 	if (haddr == MAP_FAILED)
+ 		ksft_exit_fail_msg("mmap1: %s\n", strerror(errno));
+ 
+ 	/* mmap again to a dummy address to hopefully trigger pmd sharing. */
+-	suggested_addr = 0x7daa40000000;
+-	void *daddr = mmap((void *)suggested_addr, length, PROTECTION, FLAGS, fd, 0);
++	void *daddr = mmap(addr_hint(0x7daa40000000ULL), length, PROTECTION, FLAGS,
++			   fd, 0);
+ 	ksft_print_msg("Map daddr: Returned address is %p\n", daddr);
+ 	if (daddr == MAP_FAILED)
+ 		ksft_exit_fail_msg("mmap3: %s\n", strerror(errno));
+ 
+-	suggested_addr = 0x7faa40000000;
+-	void *vaddr = mmap((void *)suggested_addr, length, PROTECTION, FLAGS, fd, 0);
++	void *vaddr = mmap(addr_hint(0x7faa40000000ULL), length, PROTECTION, FLAGS,
++			   fd, 0);
+ 	ksft_print_msg("Map vaddr: Returned address is %p\n", vaddr);
+ 	if (vaddr == MAP_FAILED)
+ 		ksft_exit_fail_msg("mmap2: %s\n", strerror(errno));
+diff --git a/tools/testing/selftests/mm/migration.c b/tools/testing/selftests/mm/migration.c
+index d1d0989ed2cad..1c5208ce048ee 100644
+--- a/tools/testing/selftests/mm/migration.c
++++ b/tools/testing/selftests/mm/migration.c
+@@ -236,7 +236,7 @@ TEST_F_TIMEOUT(migration, private_anon_thp, 2*RUNTIME)
+ 		MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
+ 	ASSERT_NE(ptr, MAP_FAILED);
+ 
+-	ptr = (uint64_t *) ALIGN((uintptr_t) ptr, pmdsize);
++	ptr = (uint64_t *)(uintptr_t)ALIGN((uintptr_t) ptr, pmdsize);
+ 	ASSERT_EQ(madvise(ptr, pmdsize, MADV_HUGEPAGE), 0);
+ 	memset(ptr, 0xde, pmdsize);
+ 	for (i = 0; i < self->nthreads; i++)
+@@ -270,7 +270,7 @@ TEST_F_TIMEOUT(migration, shared_anon_thp, 2*RUNTIME)
+ 		MAP_SHARED | MAP_ANONYMOUS, -1, 0);
+ 	ASSERT_NE(ptr, MAP_FAILED);
+ 
+-	ptr = (uint64_t *) ALIGN((uintptr_t) ptr, pmdsize);
++	ptr = (uint64_t *)(uintptr_t)ALIGN((uintptr_t) ptr, pmdsize);
+ 	ASSERT_EQ(madvise(ptr, pmdsize, MADV_HUGEPAGE), 0);
+ 
+ 	memset(ptr, 0xde, pmdsize);
+diff --git a/tools/testing/selftests/mm/mremap_test.c b/tools/testing/selftests/mm/mremap_test.c
+index 31b484517bda6..7e7ca67f7e94c 100644
+--- a/tools/testing/selftests/mm/mremap_test.c
++++ b/tools/testing/selftests/mm/mremap_test.c
+@@ -15,6 +15,7 @@
+ #include <syscall.h>
+ #include <time.h>
+ #include <stdbool.h>
++#include <stdint.h>
+ 
+ #include "kselftest.h"
+ 
+@@ -190,7 +191,7 @@ static void *get_source_mapping(struct config c)
+ 	if (addr < mmap_min_addr)
+ 		goto retry;
+ 
+-	src_addr = mmap((void *) addr, c.region_size, PROT_READ | PROT_WRITE,
++	src_addr = mmap((void *)(uintptr_t)addr, c.region_size, PROT_READ | PROT_WRITE,
+ 					MAP_FIXED_NOREPLACE | MAP_ANONYMOUS | MAP_SHARED,
+ 					-1, 0);
+ 	if (src_addr == MAP_FAILED) {
+@@ -206,8 +207,8 @@ static void *get_source_mapping(struct config c)
+ 	 * requested alignment of 2MB. This is done to reduce coincidental
+ 	 * alignment in the tests.
+ 	 */
+-	if (((unsigned long long) src_addr & (c.src_alignment - 1)) ||
+-			!((unsigned long long) src_addr & c.src_alignment)) {
++	if (((unsigned long long)(uintptr_t)src_addr & (c.src_alignment - 1)) ||
++			!((unsigned long long)(uintptr_t)src_addr & c.src_alignment)) {
+ 		munmap(src_addr, c.region_size);
+ 		goto retry;
+ 	}
+@@ -996,15 +997,15 @@ static long long remap_region(struct config c, unsigned int threshold_mb,
+ 	align_mask = ~(c.dest_alignment - 1);
+ 	/* Offset of destination address from the end of the source region */
+ 	offset = (c.overlapping) ? -c.dest_alignment : c.dest_alignment;
+-	addr = (void *) (((unsigned long long) src_addr + c.region_size
++	addr = (void *)(uintptr_t)(((unsigned long long)(uintptr_t)src_addr + c.region_size
+ 			  + offset) & align_mask);
+ 
+ 	/* Remap after the destination block preamble. */
+ 	addr += c.dest_preamble_size;
+ 
+ 	/* See comment in get_source_mapping() */
+-	if (!((unsigned long long) addr & c.dest_alignment))
+-		addr = (void *) ((unsigned long long) addr | c.dest_alignment);
++	if (!((unsigned long long)(uintptr_t)addr & c.dest_alignment))
++		addr = (void *)(uintptr_t)((unsigned long long)(uintptr_t)addr | c.dest_alignment);
+ 
+ 	/* Don't destroy existing mappings unless expected to overlap. */
+ 	while (!is_remap_region_valid(addr - c.dest_preamble_size,
+diff --git a/tools/testing/selftests/mm/uffd-common.c b/tools/testing/selftests/mm/uffd-common.c
+index a76851aced4d0..4188991fab245 100644
+--- a/tools/testing/selftests/mm/uffd-common.c
++++ b/tools/testing/selftests/mm/uffd-common.c
+@@ -488,7 +488,7 @@ void uffd_handle_page_fault(uffd_global_test_opts_t *gopts, struct uffd_msg *msg
+ 		 */
+ 
+ 		area = (uint8_t *)(gopts->area_dst +
+-		       ((char *)msg->arg.pagefault.address -
++		       ((char *)(uintptr_t)msg->arg.pagefault.address -
+ 		       gopts->area_dst_alias));
+ 		for (b = 0; b < gopts->page_size; ++b)
+ 			area[b] = ~area[b];
+diff --git a/tools/testing/selftests/mm/uffd-unit-tests.c b/tools/testing/selftests/mm/uffd-unit-tests.c
+index 2a97ba1d6feb1..2e4d1742f340b 100644
+--- a/tools/testing/selftests/mm/uffd-unit-tests.c
++++ b/tools/testing/selftests/mm/uffd-unit-tests.c
+@@ -341,17 +341,17 @@ static void uffd_wp_unpopulated_test(uffd_global_test_opts_t *gopts, uffd_test_a
+ 	pagemap_fd = pagemap_open();
+ 
+ 	/* Test applying pte marker to anon unpopulated */
+-	wp_range(gopts->uffd, (uint64_t)gopts->area_dst, gopts->page_size, true);
++	wp_range(gopts->uffd, (uint64_t)(uintptr_t)gopts->area_dst, gopts->page_size, true);
+ 	value = pagemap_get_entry(pagemap_fd, gopts->area_dst);
+ 	pagemap_check_wp(value, true);
+ 
+ 	/* Test unprotect on anon pte marker */
+-	wp_range(gopts->uffd, (uint64_t)gopts->area_dst, gopts->page_size, false);
++	wp_range(gopts->uffd, (uint64_t)(uintptr_t)gopts->area_dst, gopts->page_size, false);
+ 	value = pagemap_get_entry(pagemap_fd, gopts->area_dst);
+ 	pagemap_check_wp(value, false);
+ 
+ 	/* Test zap on anon marker */
+-	wp_range(gopts->uffd, (uint64_t)gopts->area_dst, gopts->page_size, true);
++	wp_range(gopts->uffd, (uint64_t)(uintptr_t)gopts->area_dst, gopts->page_size, true);
+ 	if (madvise(gopts->area_dst, gopts->page_size, MADV_DONTNEED))
+ 		err("madvise(MADV_DONTNEED) failed");
+ 	value = pagemap_get_entry(pagemap_fd, gopts->area_dst);
+@@ -366,7 +366,7 @@ static void uffd_wp_unpopulated_test(uffd_global_test_opts_t *gopts, uffd_test_a
+ 		err("madvise(MADV_DONTNEED) failed");
+ 
+ 	/* Test read-zero-page upon pte marker */
+-	wp_range(gopts->uffd, (uint64_t)gopts->area_dst, gopts->page_size, true);
++	wp_range(gopts->uffd, (uint64_t)(uintptr_t)gopts->area_dst, gopts->page_size, true);
+ 	*(volatile char *)gopts->area_dst;
+ 	/* Drop it to make pte none again */
+ 	if (madvise(gopts->area_dst, gopts->page_size, MADV_DONTNEED))
+@@ -389,7 +389,7 @@ static void uffd_wp_fork_test_common(uffd_global_test_opts_t *gopts, uffd_test_a
+ 
+ 	/* Touch the page */
+ 	*gopts->area_dst = 1;
+-	wp_range(gopts->uffd, (uint64_t)gopts->area_dst, gopts->page_size, true);
++	wp_range(gopts->uffd, (uint64_t)(uintptr_t)gopts->area_dst, gopts->page_size, true);
+ 	value = pagemap_get_entry(pagemap_fd, gopts->area_dst);
+ 	pagemap_check_wp(value, true);
+ 	if (pagemap_test_fork(gopts, with_event, false)) {
+@@ -430,7 +430,7 @@ static void uffd_wp_fork_test_common(uffd_global_test_opts_t *gopts, uffd_test_a
+ 	}
+ 
+ 	/* Unprotect; this tests swap pte modifications */
+-	wp_range(gopts->uffd, (uint64_t)gopts->area_dst, gopts->page_size, false);
++	wp_range(gopts->uffd, (uint64_t)(uintptr_t)gopts->area_dst, gopts->page_size, false);
+ 	value = pagemap_get_entry(pagemap_fd, gopts->area_dst);
+ 	pagemap_check_wp(value, false);
+ 
+@@ -469,7 +469,7 @@ static void uffd_wp_fork_pin_test_common(uffd_global_test_opts_t *gopts,
+ 
+ 	/* Touch the page */
+ 	*gopts->area_dst = 1;
+-	wp_range(gopts->uffd, (uint64_t)gopts->area_dst, gopts->page_size, true);
++	wp_range(gopts->uffd, (uint64_t)(uintptr_t)gopts->area_dst, gopts->page_size, true);
+ 
+ 	/*
+ 	 * 1. First pin, then fork().  This tests fork() special path when
+@@ -675,7 +675,7 @@ static void uffd_rwp_async_test(uffd_global_test_opts_t *gopts,
+ 		err("register failure");
+ 
+ 	/* RW-protect all pages (sets protnone) */
+-	rwprotect_range(gopts->uffd, (uint64_t)gopts->area_dst,
++	rwprotect_range(gopts->uffd, (uint64_t)(uintptr_t)gopts->area_dst,
+ 			 nr_pages * page_size, true);
+ 
+ 	/* Access all pages — should auto-resolve, no faults */
+@@ -739,7 +739,7 @@ static void uffd_rwp_sync_test(uffd_global_test_opts_t *gopts,
+ 		err("register failure");
+ 
+ 	/* RW-protect all pages */
+-	rwprotect_range(gopts->uffd, (uint64_t)gopts->area_dst,
++	rwprotect_range(gopts->uffd, (uint64_t)(uintptr_t)gopts->area_dst,
+ 			 nr_pages * page_size, true);
+ 
+ 	/* Start fault handler thread */
+@@ -816,7 +816,7 @@ static void uffd_rwp_pagemap_test(uffd_global_test_opts_t *gopts,
+ 			  nr_pages * page_size))
+ 		err("register failure");
+ 
+-	rwprotect_range(gopts->uffd, (uint64_t)gopts->area_dst,
++	rwprotect_range(gopts->uffd, (uint64_t)(uintptr_t)gopts->area_dst,
+ 			 nr_pages * page_size, true);
+ 
+ 	/* Touch first half of pages to re-activate them (async auto-resolve) */
+@@ -825,7 +825,7 @@ static void uffd_rwp_pagemap_test(uffd_global_test_opts_t *gopts,
+ 		(void)*page;
+ 	}
+ 
+-	uint64_t start = (uint64_t)gopts->area_dst;
++	uint64_t start = (uint64_t)(uintptr_t)gopts->area_dst;
+ 	uint64_t boundary = start + (nr_pages / 2) * page_size;
+ 	uint64_t end = start + nr_pages * page_size;
+ 
+@@ -844,7 +844,7 @@ static void uffd_rwp_pagemap_test(uffd_global_test_opts_t *gopts,
+ 	pm_arg.size = sizeof(pm_arg);
+ 	pm_arg.start = start;
+ 	pm_arg.end = end;
+-	pm_arg.vec = (uint64_t)regions;
++	pm_arg.vec = (uint64_t)(uintptr_t)regions;
+ 	pm_arg.vec_len = ARRAY_SIZE(regions);
+ 	pm_arg.category_mask = PAGE_IS_ACCESSED;
+ 	pm_arg.return_mask = PAGE_IS_ACCESSED;
+@@ -897,7 +897,7 @@ static void uffd_rwp_mprotect_test(uffd_global_test_opts_t *gopts,
+ 	if (uffd_register_rwp(gopts->uffd, gopts->area_dst,
+ 			      nr_pages * page_size))
+ 		err("register failure");
+-	rwprotect_range(gopts->uffd, (uint64_t)gopts->area_dst,
++	rwprotect_range(gopts->uffd, (uint64_t)(uintptr_t)gopts->area_dst,
+ 			nr_pages * page_size, true);
+ 
+ 	/* Round-trip mprotect(): PROT_NONE -> PROT_READ|PROT_WRITE */
+@@ -937,9 +937,9 @@ static void uffd_rwp_mprotect_test(uffd_global_test_opts_t *gopts,
+ 
+ 	memset(&pm_arg, 0, sizeof(pm_arg));
+ 	pm_arg.size = sizeof(pm_arg);
+-	pm_arg.start = (uint64_t)gopts->area_dst;
+-	pm_arg.end = (uint64_t)gopts->area_dst + nr_pages * page_size;
+-	pm_arg.vec = (uint64_t)regions;
++	pm_arg.start = (uint64_t)(uintptr_t)gopts->area_dst;
++	pm_arg.end = (uint64_t)(uintptr_t)gopts->area_dst + nr_pages * page_size;
++	pm_arg.vec = (uint64_t)(uintptr_t)regions;
+ 	pm_arg.vec_len = ARRAY_SIZE(regions);
+ 	pm_arg.category_mask = PAGE_IS_ACCESSED;
+ 	pm_arg.category_inverted = PAGE_IS_ACCESSED;
+@@ -982,7 +982,7 @@ static void uffd_rwp_gup_test(uffd_global_test_opts_t *gopts,
+ 	if (uffd_register_rwp(gopts->uffd, gopts->area_dst, gopts->page_size))
+ 		err("register failure");
+ 
+-	rwprotect_range(gopts->uffd, (uint64_t)gopts->area_dst,
++	rwprotect_range(gopts->uffd, (uint64_t)(uintptr_t)gopts->area_dst,
+ 			gopts->page_size, true);
+ 
+ 	if (pipe(pipefd))
+@@ -1045,7 +1045,7 @@ static void uffd_rwp_async_toggle_test(uffd_global_test_opts_t *gopts,
+ 		err("register failure");
+ 
+ 	/* Phase 1: async detection — RW-protect, access first half */
+-	rwprotect_range(gopts->uffd, (uint64_t)gopts->area_dst,
++	rwprotect_range(gopts->uffd, (uint64_t)(uintptr_t)gopts->area_dst,
+ 			 nr_pages * page_size, true);
+ 
+ 	for (p = 0; p < nr_pages / 2; p++) {
+@@ -1092,7 +1092,7 @@ static void uffd_rwp_async_toggle_test(uffd_global_test_opts_t *gopts,
+ 	set_async_mode(gopts->uffd, true);
+ 
+ 	/* RW-protect and access again — should auto-resolve */
+-	rwprotect_range(gopts->uffd, (uint64_t)gopts->area_dst,
++	rwprotect_range(gopts->uffd, (uint64_t)(uintptr_t)gopts->area_dst,
+ 			 nr_pages * page_size, true);
+ 
+ 	for (p = 0; p < nr_pages; p++) {
+@@ -1127,7 +1127,7 @@ static void uffd_rwp_close_test(uffd_global_test_opts_t *gopts,
+ 			  nr_pages * page_size))
+ 		err("register failure");
+ 
+-	rwprotect_range(gopts->uffd, (uint64_t)gopts->area_dst,
++	rwprotect_range(gopts->uffd, (uint64_t)(uintptr_t)gopts->area_dst,
+ 			 nr_pages * page_size, true);
+ 
+ 	/* Close uffd — should restore protnone PTEs */
+@@ -1169,7 +1169,7 @@ static void uffd_rwp_fork_test(uffd_global_test_opts_t *gopts,
+ 
+ 	/* Populate + RWP-protect */
+ 	*gopts->area_dst = 1;
+-	rwprotect_range(gopts->uffd, (uint64_t)gopts->area_dst,
++	rwprotect_range(gopts->uffd, (uint64_t)(uintptr_t)gopts->area_dst,
+ 			page_size, true);
+ 
+ 	/* Parent: verify uffd-wp bit is set before fork */
+@@ -1223,7 +1223,7 @@ static void uffd_rwp_fork_pin_test(uffd_global_test_opts_t *gopts,
+ 	}
+ 
+ 	/* RWP-protect: PTE is now PAGE_NONE + uffd bit. */
+-	rwprotect_range(gopts->uffd, (uint64_t)gopts->area_dst, page_size, true);
++	rwprotect_range(gopts->uffd, (uint64_t)(uintptr_t)gopts->area_dst, page_size, true);
+ 
+ 	pagemap_fd = pagemap_open();
+ 	value = pagemap_get_entry(pagemap_fd, gopts->area_dst);
+@@ -1332,7 +1332,7 @@ static void uffd_rwp_swap_cow_test(uffd_global_test_opts_t *gopts,
+ 	*gopts->area_dst = 0x11;
+ 
+ 	/* RWP-protect: PTE becomes PAGE_NONE + uffd bit (still exclusive). */
+-	rwprotect_range(gopts->uffd, (uint64_t)gopts->area_dst, page_size, true);
++	rwprotect_range(gopts->uffd, (uint64_t)(uintptr_t)gopts->area_dst, page_size, true);
+ 
+ 	/*
+ 	 * Swap the page out while it is still exclusive: a shared (forked)
+@@ -1498,7 +1498,7 @@ static int faulting_process(uffd_global_test_opts_t *gopts, int signal_test, boo
+ 						/* This is a WP request */
+ 						assert(steps == 2);
+ 						wp_range(gopts->uffd,
+-							 (__u64)gopts->area_dst +
++							 (__u64)(uintptr_t)gopts->area_dst +
+ 							 offset,
+ 							 gopts->page_size, false);
+ 					}
+-- 
+2.53.0
 
-These cache flushes seem to be common on architectures
-with virtually indexed caches, where the cache needs=C2=A0
-to be flushed if the memory is accessed through a=C2=A0
-different virtual address than where userspace might
-have written data.
-
-On 32 bit ARM, MIPS, and sh, the kernel seems to
-implement an actual cache flush here, but also
-claims to support GUP-fast.
-
-I don't understand how that would possibly be safe,
-since the pages returned by GUP-fast could be
-accessed under a different cache alias than where
-userspace accesses the memory.
-
-I think one reason GUP-fast can get away without
-a dcache flush is that most of the callers take
-care of that, for example by using raw_copy_to_user()
-to copy data using the user's virtual address, which
-takes care of VIVT cache aliasing.
-
-Likewise, drivers that do zero-copy DMA into user
-memory will get the cache flushed on VIVT architectures
-inside dma_unmap().
-
-The dcache flush inside GUP covers rarer cases, where
-the kernel accesses memory at a different address than
-where userspace wrote to that memory.
-
- cat /proc/<pid>/cmdline              KERNEL
- ----                                 -------------------
- read(buf=3DU)
-   -------------------------------->
-                                      get_mm_cmdline(mm, U):
-                                        access_remote_vm(mm, arg_start,
-                                          kbuf, len, FOLL_ANON):
-                                          get_user_page_vma_remote()
-                                          (slow GUP + its flushes)
-                                          kmap_local_folio(P)
-                                          memcpy(kbuf <- K)   // read
-                                          kunmap_local(K)
-                                        copy_to_user(U, kbuf) // write
-                                          through U itself
- read buf at U
-   ------>
-            clean: the final write to U went
-            through U. Same line. No hazard.
-
-In this case, the dcache flush in slow GUP ensures
-that data written before the GUP is visible to the
-reader.
-
-In the write path, e.g. for PTRACE_POKE, __access_remote_vm
-flushes after the write has been done, so the other
-process will see the data on the next read.
-
-It looks like process_vm_writev() might be missing that
-cache flush after a write, though.
-
-However, now we have a situation where:
-1) Only a few oddball callers of GUP need the dcache flush, and
-2) Those need to do their OWN flush after a write, and
-3) The dcache flush is not needed for most other GUP callers.
-
-We could do two different things here to solve the
-asymmetry.
-
-Either we could add dcache flushing to=C2=A0
-unpin_user_pages_dirty_lock(), and make sure all
-the callers that need to call that function, or
-we could move the cache flushing to the GUP callers.
-
-Then we have KSM, which uses GUP, and which would like
-to see the latest page contents...
-
->=20
-> Maybe we should in fact base this on the gup-fast batching series and
-> also use
-> the helper in there (passing vma=3DNULL)?
-
-I just moved this code out of __get_user_pages(),
-but if we can get rid of it completely by using
-a different helper, all the better.
-
-Which GUP-fast batching series are you talking
-about, here?
-
-In Yeoreum Yun's series, the batch filling seems=C2=A0
-to be done inline in gup_fast_pte_range(), and not
-in a helper:
-
-https://lore.kernel.org/all/20261102-refactor_gup_fast-v2-4-bc1ac018c834@ar=
-m.com/
-
-Should both paths be using the same gup_fill_pages()
-helper?
-
-The cache flushing part is broken out into its own
-helper function later in this series, so we could
-sequence those differently.
-
---=20
-All Rights Reversed.
 
