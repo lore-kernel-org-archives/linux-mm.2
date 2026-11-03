@@ -1,105 +1,138 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4899F606A327
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 16:08:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D8D2606A328
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 16:08:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Tpqnxk4v
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=XyTgdQWb
 Received: by kanga.kvack.org (Postfix)
-	id 653E76B00EF; Tue,  3 Nov 2026 11:08:34 -0500 (EST)
+	id AC01A6B05B2; Tue,  3 Nov 2026 11:08:38 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 604E66B05B2; Tue,  3 Nov 2026 11:08:34 -0500 (EST)
+	id A97666B05B3; Tue,  3 Nov 2026 11:08:38 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 519AD6B05B3; Tue,  3 Nov 2026 11:08:34 -0500 (EST)
+	id 9ADB36B05B6; Tue,  3 Nov 2026 11:08:38 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 3389A6B00EF
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 11:08:34 -0500 (EST)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id C1894A8026
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 16:08:33 +0000 (UTC)
-X-FDA: 85394290506.06.54C6B09
+	by kanga.kvack.org (Postfix) with ESMTP id 74B726B05B2
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 11:08:38 -0500 (EST)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 9E58F14049B
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 16:08:37 +0000 (UTC)
+X-FDA: 85394290674.20.953FA5C
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf25.hostedemail.com (Postfix) with ESMTP id B55A7A000B
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 16:08:31 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Tpqnxk4v;
-	spf=pass (imf25.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org;
+	by imf26.hostedemail.com (Postfix) with ESMTP id CF26D140004
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 16:08:35 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XyTgdQWb;
+	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793722111;
+	s=arc-20220608; t=1793722115;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=SvBxcU0JLNXA5MaTI7MCEmWVgzZuquV24Fb0g4m3Vl4=;
-	b=U9dowDshJMyslS9yUnAWr7bZKndKAzUFUAj37SW/Ptjt9JUIVGDP/nS1a/4EqYysZE7YZb
-	MVR9Yi9VQCeausgCpKVclBtQ40XOcaORYV36pyvjpDP4EuyhG6HAybFt48DMdomNFGHKUS
-	+wRNLsNeR/HKgNobpVGuQmS0JjJ+2TU=
+	bh=2UmsU380Tx/0AcknFjjF0B+jgdvRuMkPqh52dp469PY=;
+	b=q64Yycv2dIHC7a2bXLw7XXpo8rkEZqDQaYMoUQpULxKfb8j6y5IvoE5ReMZRiu/xELx/2C
+	tC58zdWFDB6LUkmTzV5ldFNFH8HhnHAWpa3siNnshX8S/r5WTSxZgrukKETtKWmx6L4/ed
+	4d49NYBvjGaseimHe0xZ1RvYJfh5JBA=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793722111;
-	b=rEqIKFbP24ITEHXK7Pf+3muDSDlBzCa2+cTbso1aUZhMWxwFbcPS0n8MRFSu3iKD6tJJaT
-	8RGXmLDp3pacn+IiMY4onZEhfrMGxT0LpTitSJR08JKB/DojvMj6zncL1kX0El5kxAhFl/
-	2isRV0hn+WINZ1aRQ+QAb9rVQagvVVw=
+	t=1793722115;
+	b=z7C2rt5Ilhv8nLlg1A3RMeGtMCXR2fSwV0Z1CdJoifpfCfkcvtuS5S9004BSaUaGa9RNyr
+	8xvUUI5dAVwzD73+3hduoAcR7bYvsi/awLiefLt3jR3OjKNq2lPaCbh88O3p/iMUN3mf9y
+	N7VSE0GLXIIPdkQMe7O9pSpACZekGG4=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Tpqnxk4v;
-	spf=pass (imf25.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org;
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XyTgdQWb;
+	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id D4B4A40762
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 16:08:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8DBF1F00A02
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 16:08:30 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 202A740762;
+	Tue,  3 Nov 2026 16:08:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DECD1F000C1;
+	Tue,  3 Nov 2026 16:08:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793722110;
-	bh=SvBxcU0JLNXA5MaTI7MCEmWVgzZuquV24Fb0g4m3Vl4=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=Tpqnxk4v7O7cDlHQSOIdarQW8h114qvCR4rA83k23tIgNGlLvZN5zU0JyBchOVxRJ
-	 7jUSpgD6p/qx//0BZh6qtlfmgxwzggxLfQXlqiTBOcmRYFWltQDNULbMDwZFjndek5
-	 SuFp7ypbGPHSG/qC3QGzdu4fiidAiWBqcozHMpX57iEytcwP7G0JFRMlExqeb7+9lj
-	 cqJdiIA4z+ClLUb4UFLxkIiuAAs4QCr8PvK2u0xUKfzzs3feE9HFJoycPKYbg4Sg/P
-	 tu1xaF73JnnS2WraaOze2v39F2kuFmRaaUHrRc1iwi/n2kkq0MgmGleJScNbOLNb9T
-	 L/ut3Ljl5Pl+w==
-Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-c434376dbebso202262366b.1
-        for <linux-mm@kvack.org>; Tue, 03 Nov 2026 08:08:30 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AKwUvBxPcWU8eGGRFgOBYZ1J5ocNr7SKJUh2Z2hjzOikBJe/yBe7AMAqqvOiP/j7/ZIDxb26kMtwVsowaQ==@kvack.org
-X-Gm-Message-State: APuU4Z9CYn+8Ztgaxwyh7awXX3VvZVhks7MIYxagV/esgUoPuJbRoxER
-	kleFuIEBUDEW+YkfRD/VjV6GlICRZ3ODkioKA8rwB51rquQvaFyFEPmjqNZIj0QPNyE3xCckrk0
-	1sZts1xfnk3qwWmuTKdI641ALZzzZp8Y=
-X-Received: by 2002:a17:907:869f:b0:c41:825d:ed8c with SMTP id
- a640c23a62f3a-c49d147e127mr1481901066b.26.1793722109538; Tue, 03 Nov 2026
- 08:08:29 -0800 (PST)
+	s=k20260515; t=1793722115;
+	bh=2UmsU380Tx/0AcknFjjF0B+jgdvRuMkPqh52dp469PY=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=XyTgdQWb9HCTddV1G3L44R58/3OaVtRDUWaTm0CzlSS5n3dfE0ttDE/QvABp3FcsB
+	 vtH5KDREUC6w7BI9UaeI4pnY0tNfWYXp5a8jpyPc7WeR2OTcy/YIybtY31beC564Yn
+	 w8eWzTCQTD+LBtoiI79mJN0Iq3gXd8R1rB02InO0eRmdjmpN9h6dFPLAb4JtEcu7Zm
+	 4vUfLXXMrEIQYdALapFWis9EBtp1WuZqAvbS76Id5vK6MhYCbYU72XNCa2zUrzkLzy
+	 vFLdMRN/+22sIPqtdU91ENyfBAMs/erPyfh1PSBFnQK5RxgrknuyomCTyWpsp9fsCc
+	 2TEtvGYKl9Slg==
+Message-ID: <1bf7784c-49ee-4f18-b1fb-205dc064f40f@kernel.org>
+Date: Tue, 3 Nov 2026 17:08:30 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-References: <20261103000313.13677-1-kanchanapsridhar2026@gmail.com> <sashiko-outbox-194595@kernel.org>
-In-Reply-To: <sashiko-outbox-194595@kernel.org>
-From: Yosry Ahmed <yosry@kernel.org>
-Date: Tue, 3 Nov 2026 08:08:18 -0800
-X-Gmail-Original-Message-ID: <CAO9r8zOdbbn0XGKoU_9ktNJJtn19oP8JxOX1uVs+-BLe0GdCTw@mail.gmail.com>
-X-Gm-Features: AclHuK9wS_mhc5Y-JGS88yPApAQKys0rl04uUxuRn3Xg8ICSN0ztaY2JRlrhkNo
-Message-ID: <CAO9r8zOdbbn0XGKoU_9ktNJJtn19oP8JxOX1uVs+-BLe0GdCTw@mail.gmail.com>
-Subject: Re: [PATCH v1 1/1] mm: zswap: Move the crypto_acomp to be per pool,
- instead of per-CPU.
-To: "Kanchana P. Sridhar" <kanchanapsridhar2026@gmail.com>, Barry Song <baohua@kernel.org>
-Cc: hannes@cmpxchg.org, nphamcs@gmail.com, chengming.zhou@linux.dev, 
-	akpm@linux-foundation.org, linux-mm@kvack.org, herbert@gondor.apana.org.au, 
-	davem@davemloft.net, linux-crypto@vger.kernel.org, 
-	sashiko-reviews@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] shmem: skip empty unmap ranges when punching holes
+To: Hungyu Lin <dennylin0707@gmail.com>, hughd@google.com
+Cc: baolin.wang@linux.alibaba.com, akpm@linux-foundation.org,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <20261027171753.1485-1-dennylin0707@gmail.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20261027171753.1485-1-dennylin0707@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
+	version=4.0.1
 X-Rspamd-Server: rspam09
-X-Stat-Signature: wj6nagbetf7kf9ebawprfrpnmzmrwjzy
-X-Rspamd-Queue-Id: B55A7A000B
+X-Stat-Signature: 19xmwreydt7inbbwh7d7wkaycargbj4b
+X-Rspamd-Queue-Id: CF26D140004
 X-Rspam-User: 
-X-HE-Tag: 1793722111-359247
-X-HE-Meta: U2FsdGVkX18c7gd8BNPGSs1p8TrWlQ7w9Oo5ppVTgVLnZgnb3d43IZF46u0hgqy0PGgAT42On6nlyvOo/Wg8e9KuKp+aB+Nd7KjbamWgzptMqd3MLqVLXcquHhwe3Lb57tRNmg82Zh80LlctVhMnIUxlCMjN0wNhu40+Nuqj3kLN6vrPvVSgGp9tOyr8QOiHDwEd1YSZckNmjneSKW6TGxKDv7IOhT30UG0fr/u39OpgrjE9GoBgSXcsHWREghp24KNOXhov4DSckLTEpsfoxACb81NgCSN/PtJqRDSG+8Cnmxe9ph+SSX0s1tkOmhXXqtyY0+6aBgf0NduQL6I0n1vIKx/OK+vM+xwrWRX/bD9zhBQHT+Aj5m18rgbZ7L/sZsQbdMCYb5Wbzqdzj0wvUhrkyOuQ/JED5toX3v7z1bUIUYIBJwcoeMskbcW3F12V5Fd73OBGRB0X51yjNtij+RA8wl9WGbf/E7oyXIV/kPvDXX6d3myGpZNoZ4UW26btpkw662sWZPO4oOnhfTYQyTZ7c3l43zMcfHrn3iyjjCkeBXEFkf+lQT3+ozQQuxWqnkKPSlCDlzP98oSYwU+fF30M+gu2JTOl3M1O1k5vFOc+YJ2mUxu9ISK+jp/swvy5cJGyRBCFPDwZaEtju0cJbSezlZFKpbHKwsuBebF8wsxp5NY7SmGaLxvJDFV09e3eIpZ/J6JyN6hCukB0XslpeKH2tflL6E4OZiLVr3xS1JXdSHZfgKSXAp75dtYptHoXgfUYxn10/sRtcc2gvOq2bCYnsKiLxfBWzVqJhJAJcFBSXN5G86LObQO4aq0IVVvNFoczJ/zkQd04asrLsjLQ98QM5G6ykYamw3vkrbkvA8gTUqwDLm62dSVFVYDFvHx7WrEbZmCgE1eAMxgbVxfB8F+o5S8BuAji0BzcDtzid2HMCBidgjH0YFzFl3K8OFRleAsVFJBjTDMdwNI0UnU
- SJVgEYab
- JAawah5KpR0BVtc5DaQffFze0NWC2VdmzOvhp0oypDiOi0Bg530KVctcuxIirKVXLGGo8BrdezMsjE/OHGQ5TzNJePpuXAiTMFlQRe4OPolB/BL97AY0L9oYkeJ4lJ7FiFlA+HxK48rl4UVY6HVzCG+mEpYc5PVh7EfsF8ddCByylevKPUHhEx6Gnhe2kxq74nAfZrUum5UkxpQvD05rxsjOSty0d8IXAY5yj4gqWZ1lwzf51lq+cpod51DrBcQm+JV9VkIG1LqkCw9p0j3V6bK6UlnFXOaiMTzlb97de5Nkd8R6uOeAMcLGpSJObEUIz5xqiV7HNuL7EwNdfZ6ZnG57uRZlC0FKPmzEXXTVaXHtDHLliNOuZBfLGjQFGFRzMTbZ6z3YUGwFd32TJ9Sv8Hdp20wI04tnjjaPHXMia/BimXkmcbi8zP0dbKg==
+X-HE-Tag: 1793722115-227652
+X-HE-Meta: U2FsdGVkX1/rN6EFICRCzFmmEnw9PXfkMqIzZ4bX5jhyD3x/e+8Pix++i2/JzcKN5oqNL+0imhrZbJFlK5PnwG+M72hBwSrx9TpkOdl8dytTCPSmdt7sG1bSatEBTbxSVxF61u77o9zyZZ0QRdE2+KaG4E2E1T7YXhjnqlyxpcIK1Rgzf94BUFoCkNBYImXKj1G9eS2ois5XuCemAm0labVmzDfX4zW+vWKy4SiGUJlAq3AEg9iWTcX8kbWmKHM8m7Jorty8+L8qtq9xH3w13yW95wm9vJ6Vq3dgWxcwwgDguZTWrwzwLK/bJJzoq6uP8k7GjbPK2OsmMufYzx+j2y7pQoqL6lt0FBg2FEEExHRYOSHhmqkgkjgdSzYciEcso2PJ5pWM5mX69KgrSWp1PgSen0X8tndmWC8MOylUsIjE0I5gQD02JzMC0Bgq9jTHJKXyupsRG27xDYXKHVNuwLZYYA0b+j8cvuUvLXlRuxSuNIstH8Okr5X/chOTOEXktu4VUvBJRSZmm+9WCkqXxDIvSVxVwIHrOObCH3+ziBAydDFnDPdVOTyRs3yjW3zVvROZ+7B1Ks7Wtt3wJMlYeP9oFRevlU7C0aKRA6kXTA11dOMVzWyngulv44Cb4z7OtA4gAI47+ojHL+iKKSh8/UT4GWvvrTmiw118vv9ecWndbEvFOXC6bL3YM9A13MyewLDG0n+8nIo9uIVHHX673qToMAO7BF5XJuGu1pFXUtqslAFmJp4OZ0PrTk3BKMWHFcqX1Jug4lPR+HE9iPY/h89LEywgPWRy0DpoI46Aubj/olJ3YSvdfaWhGP+7NuThPLuQrs6Zaue9G32DM2sTea+vtJZYwFSqOwcfvw9FdVvJGBCbbHwEy73NAbxD9l9M/Alu2+LKk8BBCJVHivP3juDp6Q9iV0qzvQ1jeTo/Aog1JbgMr2SNWCeVLhZDvy41GUapbZManGAr6nXqEz8
+ RV7tORgD
+ zgzuoLOAkUewyYabr5vEp/KWvg2UQOJ5J+6W1Jw6gcs3W789igIZYGepMzulgIW3vnT12+k60RsIgFmb1SLi/LxjlTlQhF26HposTRWw0E1vj9VccGMbuvScNeZhe5H/rAQq4c71rSseOK/kymwanAxUyUJupjMAAzEnh2ip0M62uKb10DYoLZvaZnxZBWAsP3w8+YSze72t/J0omeCZY8iUEA/WVuwhJ6SJcqpDBO8KDQCIdSSKnmAO7ImsYQjbQVF+LJWkYiyZv1pLQrFFk9XVEuQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,159 +141,53 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Mon, Nov 2, 2026 at 9:42=E2=80=AFPM <sashiko-bot@kernel.org> wrote:
->
-> Thank you for your contribution! Sashiko AI review found 1 potential issu=
-e(s) to consider:
-> - [Medium] mm: zswap: per-pool crypto_alloc_acomp() breaks NUMA and HW qu=
-eue scaling
-> --
->
-> commit 0abfb2c1c527ffcd5ca8df2224cd1c4533f5face
-> Author: Kanchana P. Sridhar <kanchanapsridhar2026@gmail.com>
->
-> mm: zswap: Move the crypto_acomp to be per pool, instead of per-CPU.
->
-> This commit moves the struct crypto_acomp instance from the per-CPU struc=
-t
-> crypto_acomp_ctx into the global struct zswap_pool, allocating a single
-> transform per pool in zswap_pool_create() instead of allocating one per C=
-PU
-> in zswap_cpu_comp_prepare().
->
-> > diff --git a/mm/zswap.c b/mm/zswap.c
-> > index 37d217860a6b2..a958b74d4425d 100644
-> > --- a/mm/zswap.c
-> > +++ b/mm/zswap.c
->
-> [ ... ]
->
-> > @@ -323,6 +313,17 @@ static struct zswap_pool *zswap_pool_create(char *=
-compressor)
-> >
-> >       strscpy(pool->tfm_name, compressor, sizeof(pool->tfm_name));
-> >
-> > +     /*
-> > +      * In case of an error, crypto_alloc_acomp() returns an
-> > +      * error pointer, never NULL.
-> > +      */
-> > +     pool->acomp =3D crypto_alloc_acomp(pool->tfm_name, 0, 0);
-> > +     if (IS_ERR(pool->acomp)) {
-> > +             pr_err("could not alloc crypto acomp %s : %pe\n",
-> > +                     pool->tfm_name, pool->acomp);
-> > +             goto error;
-> > +     }
->
-> [ ... ]
->
-> > @@ -841,34 +857,20 @@ static int zswap_cpu_comp_prepare(unsigned int cp=
-u, struct hlist_node *node)
-> >        * To handle cases where the CPU goes through online-offline-onli=
-ne
-> >        * transitions, we return if the acomp_ctx has already been initi=
-alized.
-> >        */
-> > -     if (acomp_ctx->acomp) {
-> > -             WARN_ON_ONCE(IS_ERR(acomp_ctx->acomp));
-> > +     if (acomp_ctx->comp.areq.req)
-> >               return 0;
-> > -     }
-> >
-> >       acomp_ctx->comp.buffer =3D kmalloc_node(PAGE_SIZE, GFP_KERNEL, cp=
-u_to_node(cpu));
-> >       if (!acomp_ctx->comp.buffer)
-> >               return ret;
-> >
-> > -     /*
-> > -      * In case of an error, crypto_alloc_acomp_node() returns an
-> > -      * error pointer, never NULL.
-> > -      */
-> > -     acomp_ctx->acomp =3D crypto_alloc_acomp_node(pool->tfm_name, 0, 0=
-, cpu_to_node(cpu));
-> > -     if (IS_ERR(acomp_ctx->acomp)) {
-> > -             pr_err("could not alloc crypto acomp %s : %pe\n",
-> > -                             pool->tfm_name, acomp_ctx->acomp);
-> > -             ret =3D PTR_ERR(acomp_ctx->acomp);
-> > -             goto fail;
-> > -     }
-> > -
-> > -     ret =3D zswap_acomp_req_init(&acomp_ctx->comp.areq, acomp_ctx->ac=
-omp);
-> > +     ret =3D zswap_acomp_req_init(&acomp_ctx->comp.areq, pool->acomp);
->
-> [Severity: Medium]
-> Does replacing the per-CPU crypto_alloc_acomp_node() call in
-> zswap_cpu_comp_prepare() with a single non-NUMA-aware crypto_alloc_acomp(=
-)
-> call in zswap_pool_create() cause a NUMA locality and hardware queue scal=
-ing
-> regression for hardware compression accelerators?
->
-> Previously, commits 7bc13b5b60e9 and 1ec3b5fe6eec allocated a dedicated
-> struct crypto_acomp per CPU on cpu_to_node(cpu) so that hardware compress=
-ion
-> drivers would allocate per-CPU, NUMA-local hardware queues.
->
-> While software scomp backends and Intel IAA select per-CPU streams or
-> workqueues at request submission time, other hardware acomp drivers bind
-> hardware queues, rings, and NUMA-local accelerator devices to the struct
-> crypto_acomp transform during initialization based on the transform's nod=
-e.
+On 10/27/26 18:17, Hungyu Lin wrote:
+> When a hole ends within the first page, shmem_fallocate() calculates
+> unmap_end as -1. Casting it to u64 makes the range check succeed even
+> though the hole contains no complete pages.
+> 
+> For example, punching one byte at offset zero calls unmap_mapping_range()
+> with a zero length, which means unmap to the end of the file. The file
+> contents are preserved outside the hole, but unrelated mappings are
+> removed and must fault back in. This can be reproduced with fallocate -p
+> -o 0 -l 1 on a mapped tmpfs file.
+> 
+> Compare the exclusive rounded end against the rounded start to skip
+> empty ranges. Keep the unsigned comparison so rounding the start near
+> the maximum file offset continues to be handled correctly.
+> 
+> Fixes: 83e4fa9c16e4 ("tmpfs: support fallocate FALLOC_FL_PUNCH_HOLE")
 
-Adding Barry here, I think this undos the optimization he previously added.
+I would pick this for the next merge window. Given that this issue is ... 14
+years old I don't think we need to Cc stable.
 
->
-> For example, in drivers/crypto/hisilicon/zip/zip_crypto.c,
-> hisi_zip_acomp_init() allocates one compression queue pair, one
-> decompression queue pair, and a per-transform request queue and spinlock =
-on
-> tfm->base.node:
->
-> drivers/crypto/hisilicon/zip/zip_crypto.c:hisi_zip_acomp_init() {
->         ...
->         ret =3D hisi_zip_ctx_init(ctx, COMP_NAME_TO_TYPE(alg_name), tfm->=
-base.node);
->         ...
->         ret =3D hisi_zip_create_req_q(ctx);
->         ...
-> }
->
-> Similarly, in drivers/crypto/intel/qat/qat_common/qat_comp_algs.c,
-> qat_comp_alg_init_tfm() binds the transform to a single hardware compress=
-ion
-> ring pair on tfm->node:
->
-> drivers/crypto/intel/qat/qat_common/qat_comp_algs.c:qat_comp_alg_init_tfm=
-() {
->         ...
->         inst =3D qat_compression_get_instance_node(node, alg);
->         if (!inst)
->                 return -EINVAL;
->         ctx->inst =3D inst;
->         ...
-> }
->
-> With a single pool->acomp allocated via crypto_alloc_acomp() (passing
-> NUMA_NO_NODE), won't all CPUs across all NUMA nodes share and contend on =
-a
-> single hardware queue or ring pair on one accelerator device while leavin=
-g
-> all other hardware queues and NUMA-local devices unused?
->
-> Also, if pool->acomp is shared across all CPUs, should the comment in
-> zswap_compress() be updated as well? It currently still states:
->
-> mm/zswap.c:zswap_compress() {
->         ...
->          * but in different threads running on different cpu, we have dif=
-ferent
->          * acomp instance, and compression and decompression use separate
->          * requests, so multiple threads can do (de)compression in parall=
-el.
->          */
-> }
->
-> --
-> Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261103000313.13=
-677-1-kanchanapsridhar2026@gmail.com?part=3D1
+Other opinions?
+
+> Signed-off-by: Hungyu Lin <dennylin0707@gmail.com>
+> ---
+>  mm/shmem.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/mm/shmem.c b/mm/shmem.c
+> index d97fc32e7c94..08d5336c27a0 100644
+> --- a/mm/shmem.c
+> +++ b/mm/shmem.c
+> @@ -3864,7 +3864,7 @@ static long shmem_fallocate(struct file *file, int mode, loff_t offset,
+>  		WRITE_ONCE(inode->i_private, &shmem_falloc);
+>  		spin_unlock(&inode->i_lock);
+>  
+> -		if ((u64)unmap_end > (u64)unmap_start)
+> +		if ((u64)(unmap_end + 1) > (u64)unmap_start)
+
+Can this be >= ?
+
+>  			unmap_mapping_range(mapping, unmap_start,
+>  					    1 + unmap_end - unmap_start, 0);
+>  		shmem_truncate_range(inode, offset, offset + len - 1);
+
+
+-- 
+Cheers,
+
+David
 
