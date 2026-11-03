@@ -1,65 +1,65 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34605606A32F
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 07:59:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5AF8606A329
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 07:59:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=bIrJ53fI
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=CPZ/ip1l
 Received: by kanga.kvack.org (Postfix)
-	id 206706B00EF; Tue,  3 Nov 2026 02:59:26 -0500 (EST)
+	id 0597C6B05B2; Tue,  3 Nov 2026 02:59:34 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1B7C36B05B1; Tue,  3 Nov 2026 02:59:26 -0500 (EST)
+	id 0098E6B05B3; Tue,  3 Nov 2026 02:59:33 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0CD526B05B2; Tue,  3 Nov 2026 02:59:26 -0500 (EST)
+	id E8AEC6B05B4; Tue,  3 Nov 2026 02:59:33 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id DC6186B00EF
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 02:59:25 -0500 (EST)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 2B7F9140203
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 07:59:24 +0000 (UTC)
-X-FDA: 85393057848.28.AC9DBD8
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 98DEB140007
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 07:59:22 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bIrJ53fI;
-	spf=pass (imf09.hostedemail.com: domain of jolsa@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jolsa@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id C81906B05B2
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 02:59:33 -0500 (EST)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 33A0C120303
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 07:59:33 +0000 (UTC)
+X-FDA: 85393058226.23.6251E8C
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 859CAC0006
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 07:59:31 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="CPZ/ip1l";
+	spf=pass (imf10.hostedemail.com: domain of jolsa@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jolsa@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793692762;
-	b=7CdTi9kUFG9Q+uoqLxSq+rRDViUEm142uRZpw2f3aqiZof29z4oceAjAOyrjG0CTsR9Axe
-	ECGv6qVhHrHTuuhV6ANqiyAoIln1JGUomx9HV7g6lVSz1dyQOoHAnUcvUwvOmQ1KAYGmtL
-	1MBs2nk+HxlwJNqWcdSYqUZdTtzXR3E=
+	t=1793692771;
+	b=Lkf1TIJE2WEgms5gxckwbkFzOHtGdAq3A/mYYn123FRufIKo/EanHa9ituC4IJo1iB/5DE
+	aHh0coogQB19U6rTQ/zyhfBQqJhfCevbgICtxtUymEHQLoGJHtM0q1J1wfkJ2VERA522BZ
+	CigwFHzrP5VS5xTGCJ4Wr4ninVPzd64=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bIrJ53fI;
-	spf=pass (imf09.hostedemail.com: domain of jolsa@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jolsa@kernel.org;
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="CPZ/ip1l";
+	spf=pass (imf10.hostedemail.com: domain of jolsa@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jolsa@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793692762;
+	s=arc-20220608; t=1793692771;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=HHd7MlRl5WO91ptnS5JcS/T/erAUMFbgJZKZpyddZqA=;
-	b=07cxPiWB/AAJXfHLlMDiYckscMj0jRmE5iuivSUKnrh4fibtS7i6Rk0l2kxIEQKkprXZ6M
-	Hf057o9OR/bi9SJJASXGb0geYqJqipLpuNTKOqOxmhBHmrcqnOuV2wm6fZ5xxoOr5kHgdI
-	Qpwn1LWLwgUfUdxW3FB8G4Wy4TUPz2I=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=cUf6B2WQBT+lXoY0m25EQ2J3rZ4cWPkyKm+cBrHh3T8=;
+	b=5eH2P7AU5lahlG9xJuA+dU9e96HzWOIqpTZqbqSzsfx/wr3hqpS+Q4YEO3ynpCmsEc/iW/
+	x2CJ90xGmsCuj9I71ueqZaL3U4oN1JTTYozzq6Pj9lfnRHl0QJz88m6ahMJUWbUp5MyAbP
+	AzA7uZwXFWSqM/8AaRxOk3jG9dgwJ0w=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 76FDB60008;
-	Tue,  3 Nov 2026 07:59:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F4ED1F00A15;
-	Tue,  3 Nov 2026 07:59:18 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id BF7A443BE4;
+	Tue,  3 Nov 2026 07:59:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 204E91F0093A;
+	Tue,  3 Nov 2026 07:59:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793692761;
-	bh=HHd7MlRl5WO91ptnS5JcS/T/erAUMFbgJZKZpyddZqA=;
-	h=From:To:Cc:Subject:Date;
-	b=bIrJ53fILafaxb8rQHVqV7qorWHK5MHmDxuYeMzUQADfF6nMawp9Fc03hAk/0+3qO
-	 fw1g/Yn11camVugHMC0VIBW59vXDWAU+/zey6abhOQEgaKBsLmOzZFcJLtVh4ll1H0
-	 68C9YisbM2rdeUj6Cx6h8hhuAouqA84yoQfo0cCMvqQEEmCXcsV97lWPMXs3aASxZ8
-	 3tHBqLD+t9fH0384hUYi3ZGZwGIt5dIdG6axPQtm5ZIlkYu4i8+5uRUcTqpeguyt5D
-	 wAiFB8AS6BVqCi6KnWZ7yG5cmk9KMcMs/X0VlpA+HeaTsua0aa+6yrQFNxLv4rchQk
-	 d+zB5YlikaP+w==
+	s=k20260515; t=1793692770;
+	bh=cUf6B2WQBT+lXoY0m25EQ2J3rZ4cWPkyKm+cBrHh3T8=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=CPZ/ip1lhzJFLM+8RWjyEPfV7rdK11FuXBSJ2QXCeuMIyOntG76LCmW3KSZdy4Hvm
+	 yUIM7KO/V0F/8dKMy29K4kYfOODoG2lwVggbZ6S9jSU46/UxEIBYX7o0NeyNEqmLc6
+	 1GXCBjRuohC69wTw/Q0hPoBaZEK+vKYTgpD9WSRJQTEAps6hUiNx5TqBfWQQJlisSD
+	 o7nqJ5H+sfx/8Eaf5xQzDVC28tsS/KBnSZ1poTGcpFev1Hsh1PgTjQBjiePPLURuxX
+	 k7DC2Xxz8myb5y/EMHDxbgKt7ao2qkjzote+eFCgw7OGPdRG4dWZc+jTjHuffMNJLi
+	 +GJQ8U2xRqMsQ==
 From: Jiri Olsa <jolsa@kernel.org>
 To: Alexei Starovoitov <ast@kernel.org>,
 	Daniel Borkmann <daniel@iogearbox.net>
@@ -71,26 +71,27 @@ Cc: bpf@vger.kernel.org,
 	Lorenzo Stoakes <ljs@kernel.org>,
 	John Fastabend <john.fastabend@gmail.com>,
 	Federico Di Pierro <nierro92@gmail.com>
-Subject: [PATCHv2 bpf-next 0/8] bpf: Add user memory kfuncs
-Date: Tue,  3 Nov 2026 08:59:07 +0100
-Message-ID: <20261103075916.100050-1-jolsa@kernel.org>
+Subject: [PATCHv2 bpf-next 1/8] bpf: Honor const on generic kfunc memory arguments
+Date: Tue,  3 Nov 2026 08:59:08 +0100
+Message-ID: <20261103075916.100050-2-jolsa@kernel.org>
 X-Mailer: git-send-email 2.56.0
+In-Reply-To: <20261103075916.100050-1-jolsa@kernel.org>
+References: <20261103075916.100050-1-jolsa@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: m7yjupo98a8ooezpu95nacdz1ofxh4qd
+X-Stat-Signature: j7x3z4mf6yf66ihsjocb1x5wucoe9r4g
+X-Rspamd-Queue-Id: 859CAC0006
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 98DEB140007
-X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Rspamd-Server: rspam11
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1793692762-439747
-X-HE-Meta: U2FsdGVkX19qolWmwk2LQ8qu888YMCLAThrUL1vFuMg23eE5EZI9Q9Pzi6CvruNyPJ5E9fH3z8mG4qifQajH3txqS+xlRh2O3jGB5gSpZErZVlmosc3Xzne7gbLYd+kJ9R9iNvYBR+UxeN7pW8k8Mm5jMNq9p3+dV1sOShp92EV38JvgsZOaHZiac6gSk1TfINWMaOyNGh11xmE6yRUeisic3BX2MRuuXT7Ud8HxSdSgeOA7pkIiNrvuEfQa3T42tw5kLsA0+WpltR0RuGx8bFTLW0R0TUWsDRK6NUKIemn9tNAeFSajrlJ4tWRr8pZwZyda6RJxGwkDyCllsHHKM947jvqr1ejt5p1MkWThhnxnWguAnsj4L4oDBFAU8FdkwM+7VGa6/vXgXnWpDmojFv5+4fOuT4G5qoUD4Er3H4lcCYV5itDxwYENHt2M/yjuggn84YD3wL9yeiuZ7j54rIYw6cAUTkx7gyhbfECG3blqgCAieEoh5vr/Wrp3nOA1EUNqIi3dtwT/M/DQLFMIhgiQ+AgrakYecxkae24W3VsNcPvD1wrmu/1eSoHaow06P+5VfpZ0Vr5GEVlmmSlN+1G5Y8vZNGJUT4D/VQs75kwwxqlPs9Xo0G8fbO31RfdlGZprfxuPgmt0K0CbCKwa3wnBrac+3IQQpFW9KnnX7T9645wCIL5H4eyc0MXUxzOVdkQKtwjSMzwCG4ELvc6QJpB08fM6J8bgAblbRFc4PYRWN7vRyrGRRUK5PGIESEGzitIRckLL6FVEW3a5E+KJk5e5opBtHDnCOu9xRP9cLxDoBbquoMslFwTC2BIqg0BOSOgns7QUkAGhs7SSk9QpCj1MjyRtD14gehr+mMgBrEF2hxuKKQhc76XP/nctiM9Fx/Qdn0UyHu73RUt9gcYdfWvRRzPzAEYX+fsxPPEBAlL+ZShOiYsq02+r91pQhnA1anVb5+IXAQV0qVu0jo2
- MupdQ8Xe
- HW5eMnKEzUldh+6KNhcXqZhHG0wosX7/MDbuSDf9+RIiAULu7YRV1OhhN/w694zeUe1Nhljtzw9W37+bg8rVbjmOkEhqcspoAffcEIwtvjiRwDD8SpGR0oP3ccgQUsHESAUWjoetbq/ycwZsJo0aA5FU87i5++ibkAEvMXVOodKKOZRtkrGLlFAtoVOkd7TJs6f9QSMkqVGpjm29Hd5kPzSdzsO3QBCyAudEXJylUInF7A5cZb+kN+x7ap4mufRH0+qN3rfLrHxl8wiSwKVc5Ek5wSP3bYvEfcs2I0hd+qo/iTV5d2WeGEnfOtxNwXCxrP9LiIvUHFc0L/j6NmfzFlTzVag==
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1793692771-620309
+X-HE-Meta: U2FsdGVkX1/HkpyU7xdB/C4v7cIpJOYdzBzb5/H724xas2VDFS46ugz3YNCFMJ08Jz7oNV4/ur5Wxz55GndschcvccVw6z+iPzrjhsobtV/tQmBpbIpwDJDepY5nVM+TK0n5/dLUUPRx0CqnRz1TI6iL1/kBWz82TuetYG9ABxPcAKmuA0SduziQtRNBxtn96ACysyJCPWQyaVI4CoBH1BQTMUnmdzaShaEp8bWEeubiWO6zZlFYjoyEDNlHLRUhYlCl+puJMhqdzny9RblqErKdx0b3khhOq3DA3m/RV7F1vVU4C/yyBLlo5NLaLKWK9WRUTeSR9bm7zTlDd686BaCshG7qcXz57+YCNmSwWaX/DzZEbbGksz69dsANFvhQSrYrzCkTJXhONgdPVqjZDe8BBo3QWLRlhLX5PofUaEJuDwT4iYZIJxb8y5W89UB5KNqpMIBp2gW7s3ZVJPHQ8vkl//gvGzsJGAKmPdnP6IgJbULIqjDDWiF1hD+1wdCsV27dXJqxe3cfNnE8rI/bqa3HRyghRFe56+nO9X/Y/7o7ar4YsJxJY0V8DcdWA0DoFrHomkoaLZDeNan+1bTos2iU3whKIzljqEd6EXcYXTwjPGPllmBQIuK5p58Zy3ys10OblLZMvLSxkhnVhMktZCYb2elrYE774M+h1T5yPCOzFC3RuJ/PlklWvGu4FcAe0JbUiZ723mHaS1k9VxXPMdplMQYaw9O8jchWaIXaayIh73SR32YbNf1N3jTAeUxFl/3Y7Mg34o3M0QowjwQJhqWPAqkwV89Uqy505litf0QvIb3Ntoi+LIlekdaqxUvo+7MNCYOQUkUKuoROOENafpv7NcZgWeUTtO2oux+NF5obnxAzdeVnHNinxwiKY3H2iwX2RGeQg9k97qmfJX1yEV440ZaqC1n97Kb+208UKm03kpiT7g0QJfd081WrTg+pycsRJIqI21wpq2UmEDk
+ +YWXVaih
+ JfPZ2TsqP8KNcCiSicQmHUiD1DEAsft3HME0n9DTXxIOwMdvSpbTjCRDxbzbxTQz8Pm6cgCKG7KU0dCdDnj9BCzz7LZozJyGb8PNfHXKYe5PxcdjnOloguXzBWdXkhMw7llbCKO8+C13BF8V5pgYGBzytI52M947IWsvv2vDTblqCC0ANQ41J0WNIoh9436W107PM9jo8ltzXgIEv2kJo+nLP2y7HDXKU+8CMJ+stFq2EV9E0YhXX5mAmbT/FAdNZEoYwOEc4f3fwnEjcWxGLwdKGGAovVf8YC2hTnnj04WXYjowCVb0CS9RSfA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,64 +100,86 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-hi,
-we have few use cases where having the ability to allocate normal or
-executable user space memory would help (like to replace function in
-live process or change environment variables).
+Mark generic kfunc memory arguments as read-only when their BTF pointer
+type points to const data. Preserve that access mode when resolving
+scalar structs to fixed-size memory.
 
-We also need writes to user memory to handle page faults, while the
-existing bpf_probe_write_user() helper disables faults during the copy.
-
-This series adds sleepable kfuncs for BPF programs to copy data into the
-current task’s address space and to create or remove private anonymous
-mappings with optional execute permissions.
-
-rfc: https://lore.kernel.org/bpf/20261021195759.119421-1-jolsa@kernel.org/
-v1:  https://lore.kernel.org/bpf/20261029212551.56964-1-jolsa@kernel.org/
-
-
-v2 changes:
-- infer read-only from constness of a pointer instead of srcptr
-  argument suffix [Andrii]
-- rename bpf_user_mmap to bpf_user_anon_mmap [Andrii]
-- use arch_validate_prot to validate prot argument in mmap
-- add the x86 compat mmap workaround
-- assorted small changes
-
-v1 changes:
-- follow vm_mmap/vm_munmap design suggested by Alexei
-- allow user space write only to current process, because we don't
-  have remote task use case and it simplifies security checks
-- many changes in tests
-
-thanks,
-jirka
-
+Signed-off-by: Jiri Olsa <jolsa@kernel.org>
 ---
-Jiri Olsa (8):
-      bpf: Honor const on generic kfunc memory arguments
-      bpf: Add user memory kfuncs
-      selftests/bpf: Add get_procmap_info helper
-      selftests/bpf: Test const kfunc memory arguments
-      selftests/bpf: Test user memory mmap kfuncs
-      selftests/bpf: Test user memory page exec
-      selftests/bpf: Test bpf_copy_to_user kfunc
-      selftests/bpf: Test user memory kfunc errors
+ kernel/bpf/verifier.c | 38 +++++++++++++++++++++++++++++++++++---
+ 1 file changed, 35 insertions(+), 3 deletions(-)
 
- Documentation/bpf/kfuncs.rst                               |  17 +++++
- kernel/bpf/helpers.c                                       | 132 +++++++++++++++++++++++++++++++++
- kernel/bpf/syscall.c                                       |  10 +--
- kernel/bpf/verifier.c                                      |  38 +++++++++-
- tools/testing/selftests/bpf/prog_tests/kfunc_call.c        |   2 +
- tools/testing/selftests/bpf/prog_tests/user_mem.c          | 350 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
- tools/testing/selftests/bpf/progs/kfunc_call_fail.c        |  10 +++
- tools/testing/selftests/bpf/progs/kfunc_call_test.c        |  14 ++++
- tools/testing/selftests/bpf/progs/user_mem.c               | 111 ++++++++++++++++++++++++++++
- tools/testing/selftests/bpf/test_kmods/bpf_testmod.c       |  10 +++
- tools/testing/selftests/bpf/test_kmods/bpf_testmod_kfunc.h |   2 +
- tools/testing/selftests/bpf/trace_helpers.c                |  38 ++++++++--
- tools/testing/selftests/bpf/trace_helpers.h                |   1 +
- 13 files changed, 722 insertions(+), 13 deletions(-)
- create mode 100644 tools/testing/selftests/bpf/prog_tests/user_mem.c
- create mode 100644 tools/testing/selftests/bpf/progs/user_mem.c
+diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
+index 935b163f81e4..5bc637a6fb13 100644
+--- a/kernel/bpf/verifier.c
++++ b/kernel/bpf/verifier.c
+@@ -13182,6 +13182,38 @@ static bool is_kfunc_arg_const_mem_size(const struct btf *btf,
+ 	return btf_param_match_suffix(btf, arg, "__szk");
+ }
+ 
++static bool is_kfunc_arg_const_ptr(const struct btf *btf,
++				   const struct btf_param *arg)
++{
++	const struct btf_type *t;
++
++	t = btf_type_skip_modifiers(btf, arg->type, NULL);
++	if (!btf_type_is_ptr(t))
++		return false;
++
++	t = btf_type_by_id(btf, t->type);
++	while (t) {
++		switch (BTF_INFO_KIND(t->info)) {
++		case BTF_KIND_CONST:
++			return true;
++		case BTF_KIND_VOLATILE:
++		case BTF_KIND_RESTRICT:
++		case BTF_KIND_TYPEDEF:
++		case BTF_KIND_TYPE_TAG:
++			t = btf_type_by_id(btf, t->type);
++			break;
++		default:
++			return false;
++		}
++	}
++	return false;
++}
++
++static int kfunc_mem_prot(const struct btf *btf, const struct btf_param *arg)
++{
++	return is_kfunc_arg_const_ptr(btf, arg) ? MEM_RDONLY : MEM_WRITE;
++}
++
+ static bool is_kfunc_arg_constant(const struct btf *btf, const struct btf_param *arg)
+ {
+ 	return btf_param_match_suffix(btf, arg, "__k");
+@@ -13550,7 +13582,7 @@ static int resolve_func_arg_type(struct bpf_verifier_env *env,
+ 			PTR_ERR(resolve_ret));
+ 		return -EINVAL;
+ 	}
+-	*arg_type = ARG_PTR_TO_MEM | MEM_FIXED_SIZE | MEM_WRITE |
++	*arg_type = ARG_PTR_TO_MEM | MEM_FIXED_SIZE | kfunc_mem_prot(meta->btf, &args[arg]) |
+ 		    (*arg_type & (PTR_MAYBE_NULL | MEM_UNINIT));
+ 
+ 	return 0;
+@@ -14102,7 +14134,7 @@ get_kfunc_arg_type(struct bpf_verifier_env *env, struct bpf_call_arg_meta *meta,
+ 				reg_arg_name(env, argno), btf_type_str(ref_t), ref_tname);
+ 			return -EINVAL;
+ 		}
+-		arg_type = ARG_PTR_TO_MEM | MEM_WRITE;
++		arg_type = ARG_PTR_TO_MEM | kfunc_mem_prot(meta->btf, &args[arg]);
+ 	} else if (btf_type_is_struct(ref_t))
+ 		/* A pointer to a struct without a size argument is classified as ARG_PTR_TO_BTF_ID */
+ 		arg_type = ARG_PTR_TO_BTF_ID;
+@@ -14127,7 +14159,7 @@ get_kfunc_arg_type(struct bpf_verifier_env *env, struct bpf_call_arg_meta *meta,
+ 			return -EINVAL;
+ 		}
+ 		proto->arg_size[arg] = type_size;
+-		arg_type = ARG_PTR_TO_MEM | MEM_FIXED_SIZE | MEM_WRITE;
++		arg_type = ARG_PTR_TO_MEM | MEM_FIXED_SIZE | kfunc_mem_prot(meta->btf, &args[arg]);
+ 	}
+ 
+ 	if (is_kfunc_arg_uninit(meta->btf, &args[arg]))
+-- 
+2.43.0
+
 
