@@ -1,95 +1,95 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99C8C606F609
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 15:18:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C83A606FCC7
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 15:18:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=chrisdown.name header.i=@chrisdown.name header.a=rsa-sha256 header.s=google header.b=N80RPvRy
+	dkim=pass (1024-bit key, unprotected) header.d=chrisdown.name header.i=@chrisdown.name header.a=rsa-sha256 header.s=google header.b=jq3Sr2Hc
 Received: by kanga.kvack.org (Postfix)
-	id BBD8D6B05C6; Tue,  3 Nov 2026 10:18:30 -0500 (EST)
+	id 4E2E96B05C8; Tue,  3 Nov 2026 10:18:47 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B71A46B05C7; Tue,  3 Nov 2026 10:18:30 -0500 (EST)
+	id 4BBDC6B05C9; Tue,  3 Nov 2026 10:18:47 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A60F96B05C8; Tue,  3 Nov 2026 10:18:30 -0500 (EST)
+	id 3D1546B05CA; Tue,  3 Nov 2026 10:18:47 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 82C0C6B05C6
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 10:18:30 -0500 (EST)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 27798403F7
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 15:18:30 +0000 (UTC)
-X-FDA: 85394164380.21.C27184E
-Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 46FB120009
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 15:18:28 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=chrisdown.name header.s=google header.b=N80RPvRy;
-	dmarc=pass (policy=quarantine) header.from=chrisdown.name;
-	spf=pass (imf13.hostedemail.com: domain of chris@chrisdown.name designates 209.85.214.170 as permitted sender) smtp.mailfrom=chris@chrisdown.name
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 1E4386B05C8
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 10:18:47 -0500 (EST)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id A34E2A043A
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 15:18:41 +0000 (UTC)
+X-FDA: 85394164842.17.ECD54C8
+Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
+	by imf05.hostedemail.com (Postfix) with ESMTP id B127710000F
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 15:18:39 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=chrisdown.name header.s=google header.b=jq3Sr2Hc;
+	spf=pass (imf05.hostedemail.com: domain of chris@chrisdown.name designates 209.85.210.178 as permitted sender) smtp.mailfrom=chris@chrisdown.name;
+	dmarc=pass (policy=quarantine) header.from=chrisdown.name
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793719108;
+	s=arc-20220608; t=1793719119;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=DEpA7EB35ETX+QEM+S0rPeRue+CXb/aqgZ9fcs/1WrA=;
-	b=Vzpk19P0+VYFfnuI5igHxKgs22ogRtTb4XbqCCUoNx7blO6gA4WS6yE4OfM7mWG2GfXzDi
-	AgXUR/L3fjfBkzXJEXzOp+YG2w882tXS+QksBNftcyoe+Q6Cj4DZegwZs00mK4JYKgvzB0
-	7r0rtK1J+bYRRnsMB9tOt2aAjzc3WgU=
+	bh=wslCY1XSUoR3v4P9N4tk1erDlQSR29c2WrcvV4W33z8=;
+	b=nMQQEqVik9TasAnjPxnJNsPomI35fBXbb/4jE3dA5tpMlm20E8jM0nV3eZMGny9Y/HSUTo
+	qikCNu5z6tXn/Eq/+Nv+EnqHY1sMCN7ZJI2SkUr9Myt4p05IP2uCLWhVTQfhCsF7I9mKEE
+	ZTEdIDq0nLCu+rpbN/ayug04ZM1SLiQ=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793719108;
-	b=7ZzIxYWWl5wN0xBPWpunuQAwZT4OEBDig2NQosOnjZaefBGGcrh6gdCx0zKhTVFTgXev2A
-	iqCW3Cc59AJW2aaDB1J+e4vC3B9IHhPpz7mXZqTDTZstM1lh/slEBl5vei9cvlaIjt65tR
-	ich4QJiM9WcZUqa2JBEItPEFzoH07wQ=
+	t=1793719119;
+	b=lo81iLbRro05XfTF6sIpvMFVhempJQSRZe+BYL7P4dLngnM28aduBxOt+VrXhonibjBDjd
+	GRsnSgcP0nS5aoC6TaqXy4omPUjvYz9tYuGwLM9ZQUHlxsARJX28emun+gJQOP22IliLzb
+	2/K2flF+4MQzZ/UhZ11xWNYRmry1f7c=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=chrisdown.name header.s=google header.b=N80RPvRy;
-	dmarc=pass (policy=quarantine) header.from=chrisdown.name;
-	spf=pass (imf13.hostedemail.com: domain of chris@chrisdown.name designates 209.85.214.170 as permitted sender) smtp.mailfrom=chris@chrisdown.name
-Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-2ea759cc9b6so17859865ad.3
-        for <linux-mm@kvack.org>; Tue, 03 Nov 2026 07:18:28 -0800 (PST)
+	imf05.hostedemail.com;
+	dkim=pass header.d=chrisdown.name header.s=google header.b=jq3Sr2Hc;
+	spf=pass (imf05.hostedemail.com: domain of chris@chrisdown.name designates 209.85.210.178 as permitted sender) smtp.mailfrom=chris@chrisdown.name;
+	dmarc=pass (policy=quarantine) header.from=chrisdown.name
+Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-8a070781f63so1783682b3a.1
+        for <linux-mm@kvack.org>; Tue, 03 Nov 2026 07:18:39 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chrisdown.name; s=google; t=1793719107; x=1794323907; darn=kvack.org;
+        d=chrisdown.name; s=google; t=1793719118; x=1794323918; darn=kvack.org;
         h=user-agent:in-reply-to:content-disposition:content-type
          :mime-version:references:message-id:subject:cc:to:from:date:from:to
          :cc:subject:date:message-id:reply-to:content-type;
-        bh=DEpA7EB35ETX+QEM+S0rPeRue+CXb/aqgZ9fcs/1WrA=;
-        b=N80RPvRyk3Pv/YTKJPasUQzQcdtuSAzWi3pbM5DReVyhrum2aIK5In3oaei9F1SSju
-         djm0VTaUhV1Yrpo1kLqW+FvMUswXKRL9kvc9aJqNL/6dRvMVexxsmrX2Sp1tva4fOBxh
-         bXq3i1NqP6GGHpBmfPogB4RfL/xjRTjlqKQa8=
+        bh=wslCY1XSUoR3v4P9N4tk1erDlQSR29c2WrcvV4W33z8=;
+        b=jq3Sr2HclyNXlGvGRCzODP4h78vABcYgjniGLwEchEk4+MynPb92IbTVDPH+4AUid2
+         XpbcU0Ssy0zBX5TTNtsU9M1vHxmSNTS+ErdCf9dhFTJmokc4+vn/AlRElyeeB2hK07Ca
+         JFKl2t2x4UAI0yRHoR9Bf+OGT2mPJ006fAnek=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793719107; x=1794323907;
+        d=1e100.net; s=20260707; t=1793719118; x=1794323918;
         h=user-agent:in-reply-to:content-disposition:content-type
          :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=DEpA7EB35ETX+QEM+S0rPeRue+CXb/aqgZ9fcs/1WrA=;
-        b=in8mSm6D3n+Dx92yXoBVsYCEgREs4b18LKpjkNOM032lvlpL5pabQAih1ujNiZ1ign
-         zZ7/Vo2HE28DMaFJEzyAsj+EQvr8ZXhAO8vs5G0GiHbCxyaeHLtaW1fsMmWXvRpZhPBN
-         34gl8gRbngOetUbkNJxYH0FspeXBQ6riqlDwc2e8IfweX+rVI0AMPTW4jVpuZcVX2NXK
-         nQwkIdma3AH/IDb9AfUfIffizrMjiHrFm7Y+yYanns/F9bPpE/iahF41dXyPiKcbdicS
-         i4BlmU1NJpXWWMUjtHglEtJSo7FTix0KO2xC30c2Q8ijZvIedwACT2p3ucaqqOVXfbRT
-         ZLkQ==
-X-Forwarded-Encrypted: i=1; AKwUvBy7KaB4R8T/D7XdxreaeBWLT8HkNtESF/CTpmBY/SVGdG1JdfRlz/KksUSMx88zPE/kXKlpRBxoXQ==@kvack.org
-X-Gm-Message-State: APuU4Z/ZtSgf5ZG6yH7JMeHQZMOsxMzCSJg/OYM0JhaQGA/gFiE1njDs
-	9oWKMbDeeu1YVgALrTd7gW63/VsxB0CH7Qml1XL8y87JXbcG5grBo9Vh9xCFf1vLrFA=
-X-Gm-Gg: AYBFou1k4Jtxd1eYaRrXJyXUcqM7ll1b2lFMZQQQuXuzt4+OapfIQ12vkzHvtMtFdzV
-	4hPPZfRzWvqRbJnBEwUbtz8mp/4fE1GjGFngd+GCUNxznGrKwf1eKRLSW2TPckv9a6J+XgTZJb1
-	OEvFj2MeRn91RNyvvnzNZAiisg2hhLw+P/Bm/hF8cEc56IyO5OkYv4zWZV8coo+xT3Uk5ZXfcNn
-	LwCqu/TpAwzLYw+z0k/xqiUg8fKjnilZI4RAfQfwKGo8yp5BabCTWnu8HmmAFaEu//KkXimUzJ6
-	BTz0bFTINx0LTrQSQer3t/nXzemdQm9v3xCpvbjXnSn3ECXdcLL3e739vEdksX/ompy+PBgM8Bt
-	XaOqSiSRJ/OWtpT4ER0ghb4cahAnbNd5aHYLPBWUXsFB1AlzX76pR++1vZXepUzQx1EldTGccBK
-	bOMCPJXDX4ilrRg5fsmYhsnlK6BWPhx8S3jRalM8wNHCb4JfetlAlkv8diKatGq1Ys9RT3839Ng
-	XD7bMoN67R1VA/S7hlVYf40JO1RKAMNxu7kCL9upSrT+QBHWAedkmRgdZdk2jfnDSUXR/ZUzHGR
-	NvtqwN95VJk7iM0vSlKbvch8ImNXHcUbvuXyNWxA9B/DjRQPc4HHBKwZEoJWr9+iZJ+m0obuCxX
-	g5eEP/FTUaldk22nII7oVLCCBBVMbau4XRDSKFO/6utPZ8S97Qt8DTIe6ddzqfnGk4VSpGvHj2/
-	O9sWJMX22LjM8ritPBC3Y=
-X-Received: by 2002:a17:903:1aef:b0:2e2:f2f9:b1ef with SMTP id d9443c01a7336-2eb364bc076mr131151785ad.39.1793719107092;
-        Tue, 03 Nov 2026 07:18:27 -0800 (PST)
+        bh=wslCY1XSUoR3v4P9N4tk1erDlQSR29c2WrcvV4W33z8=;
+        b=XisyOBJQ70xQkwHwbdxvJxT4jYPQLi0Toi0AUApvxEpUak7NPr5TRXIdgmX3jA3RyU
+         9uyuyYH0DxW0MDlomNeDjqENlkSLQQ9N9JmXTxGJ5AaKWQaaHBthoqLrk03MZcCMB6hW
+         V2oi5uGbwcYUz5q7sP4X5QioSIqQ/Lhb/WB7TcBkHXVQi689Afnu1fKFj9/6jOVpvUOS
+         J+qLDONnLd6uJa/As4E/kJeNWQ5KDK74LcZsRFeZH5X5iRpZlvMapd9k8n6acpXVN7Ed
+         v5LVeqVJZIHLuYL8Upd0GivhUQIC7JHRWZbIazo4uCAYwqy0DOYQgc3sOHOiSRWHzYbn
+         fnwA==
+X-Forwarded-Encrypted: i=1; AKwUvBzsKWKMtdfPTKYENjwuBT1i0JmCrJqLDxBMI+xSDaNIGUhRJUuN4jFYpQTlBSg8eotp8/47xUbtXw==@kvack.org
+X-Gm-Message-State: APuU4Z+jtJpvK8/p3btVhj4bM1ZDpfJSBt6uC/mV5cUvHNDvDIHvKdEU
+	DSHmmy/37HUqZEpFR50+rOhN2Kwewi1fkcyPJIvlBrD0NkrBMXrMM4lKsAYMmYr9HLc=
+X-Gm-Gg: AYBFou0PHHZaSJ0ptatOADWDKcXjotpUYwiE2gxWM4dT3SF52VFQxjuKtUkox0L72QR
+	WVo9fz87/91nNybuGp0mp9Ibffs2V9yLm8z6g5T7yqblwFyfy9aYuIWu/2yxH9eQP1luBVjSkn4
+	9NrE8vW+n0lba5J1d8HQQ67K/kvaPRuWQWMgi3+zuMQwgVXV7tRpW2K8lxyUsnpMBv+h88lAVbD
+	fAbGe9f/R5NM9eRWyj+G1jzyz6Ozex3/4MqwOscbYwYEI3bTmco1qXVyzx492nzjBOnw6M0KDSY
+	+px3edQwE94cYegm3cEBez4vOrbRMIJkX5FDBGNgq5yNLuuWVTvkSmQrDX2CHuL6Ze3WiU+PTFj
+	bFzo+DqcllM3W6OIS1JV/MTQnqE/atN0RiIwXXJPxKkwuq7mhnDZQm82cVd1Ru38d9QZxj9joHp
+	rAz81sDPjuNYxcEpZdSToohDcwrYT+oqNDDEnqYg0c1eXDly7KoSJOYYTht7LTM7bvZ0fcrWYvI
+	hpskwQwqaBMBRgrBqyt+M9QK/jCu0Otl+iRCpwNKpunWD59koZqbmUYbRDCRYewrJT7Wx2U1tNS
+	o7Mj7raVuX4lljUQPZNnl23OXk1+EQcpChOQT/T8tTcUoWq2GKRr3z4nOTNxHo6q07rHIqJag4h
+	OdNc+hK4tA6lAZBtvD/85Fp9eciz4E3sV53hOjIdaApV7AeV38xW8wLzdepkyMksQzQPaukQxNQ
+	jxgmvrNpKIo3sbo5KK3w==
+X-Received: by 2002:a05:6a20:914a:b0:3dd:a009:3182 with SMTP id adf61e73a8af0-3e928e2909amr12529216637.42.1793719118513;
+        Tue, 03 Nov 2026 07:18:38 -0800 (PST)
 Received: from localhost ([116.86.153.182])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2eb392613bbsm43426035ad.37.2026.11.03.07.18.25
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cdb362ab313sm1592131a12.0.2026.11.03.07.18.35
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 03 Nov 2026 07:18:25 -0800 (PST)
-Date: Tue, 3 Nov 2026 23:18:23 +0800
+        Tue, 03 Nov 2026 07:18:35 -0800 (PST)
+Date: Tue, 3 Nov 2026 23:18:33 +0800
 From: Chris Down <chris@chrisdown.name>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	"Liam R. Howlett" <liam@infradead.org>,
@@ -130,8 +130,9 @@ Cc: Jeff Xu <jeffxu@google.com>, David Hildenbrand <david@kernel.org>,
 	linux-arm-kernel@lists.infradead.org, loongarch@lists.linux.dev,
 	linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
 	linux-kernel@vger.kernel.org, kernel-team@meta.com
-Subject: [PATCH v2 4/8] mm/mseal: Move MSEAL_SYSTEM_MAPPINGS to mm/Kconfig
-Message-ID: <6d72b96fdd36c8870393d8d6e67a811a9bce9e4f.1793718940.git.chris@chrisdown.name>
+Subject: [PATCH v2 5/8] uprobes/x86: Leave sealed trampolines in place on
+ optimisation failure
+Message-ID: <eafd3da2cd2c3e2c4d137a46f50351dc6290c5ea.1793718940.git.chris@chrisdown.name>
 References: <cover.1793718940.git.chris@chrisdown.name>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
@@ -139,19 +140,19 @@ Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 In-Reply-To: <cover.1793718940.git.chris@chrisdown.name>
 User-Agent: Mutt/2.3.3 (9073d26d) (2026-06-12)
-X-Stat-Signature: o9f16pmqxyx5pg1saow4x1mmnz6t3rm7
+X-Stat-Signature: dp4qx948xxcubrp4pc688mwd3jbgxyzg
+X-Rspamd-Queue-Id: B127710000F
 X-Rspam-User: 
+X-Rspamd-Server: rspam08
 X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
 	version=4.0.1
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 46FB120009
-X-HE-Tag: 1793719108-266545
-X-HE-Meta: U2FsdGVkX1+JVEPofwFc9nK4usq7eCLK/93LGhZqAbqPPMuTxz7lfl8Idx96yKTHT71iwDw7GIoku1jJ6qpk1ILDa1Lt7XP9O8gb1BcMV58OxXBteoQxrikeyMURRYufs67MAW5IPCpqFbk5IjaJkfmncq1H579nyCQswtVBYmu24OJMAFOzGB1FtcSQU3oQ8THDSzvhwpd2wXRlvODe3lj/+nSqaJZvJn1XVeRrdMemKa0V4IYi5//wvPwGSxLeUKNvvi1T5UdI694N4UmtMeCkJXm2IDUp9NOJhLhDGNBqUvd/4Qlq0h8pA7WxEVdBhu921irnW/hVSSFLq7S5QHK0BpNrIRRbBalq+jSzxmYNWoGdcVA+9RwzZldQAB0xA5KJHAuxZ39n+YWUweduGx6eiAeC0D74rNKbRW5sYPd43/Kdi30eCL3fprQparx8joqiNWGNGau52yD6LsYkXJk6prBT//jP0BVpWKNpLonpq2AfzOAQNbwCFYoUMLnjsPimsYOBQo80z9qYmYAPDFcM41WkmkUrWjuuVbT5ZPcbG05+jMvdKkshNv4wE3fJcuFWeJ8vVt7gOux9BnKF3K/MLzjIYuAUOYBH8Lgr5Icb1knKA2iyxWzmu5FlQsFcXKcLE4ML7RzjvARDgGZkoQ0a8a7D3ka1/skGidXabdouJf22ESRbaoVr4Xn8HmaB0CJVedZx2oqDLCBncaVMjEJ9kkYsAObaWDGgMzMyUunHC6lZISpGqgoW9qQb8dAWnmMs8DnSTg9dnkVW4NRsw0F8bfndE+r4r4iJx7jZh4RkrKGtdQkP3YtBq2ogXU1pYPHlGiQsogDr/TASFF9w+I7D0ceXOFC/MRH+1e6DiIPEvdbFsUt9j7K2A5w290Ny83YiZM9iINucOh+8yU9LFWuXCEJSDCRpOOmbXsHIjW5v0mml66vVMxU+wyl0xfJwAuL8ou4UsVcOE7DRODJ
- HW1wqV0v
- rEBTWfttsw4A2xAWfgUKI7lEjRlsjePWP8SHDk63CyM6eWN/cH7mI4PCKS8Xi6jvpFx/rcbd8eVzBSqmVBpOg1RgZstD0OIlQJbL+vPyixDNYe9lYXOrw6QZppdWOJWwHLcJRe88Xp0ypvOIUEHbtnNSeLyN11LykVHaE2EJO+OxWUcUEfjTEjsA+YwH7oyv7CkvdDmojmMMpHmg7lxVlTgPoTPUljitV2RNowcguvKHNIBxNafdBeD3SRb0C3WQUpGd3uWBLU5Do3AMWOryu8Rmx06MGyhoAJyHRUX9Yc/TNBQmm3mMDq9bff5ivM6aopRNSpzvP5WtUxC+eIy/x3a9HRc/u7ybEu8FA98tnpJ08Al1QrECNxvcbTHB8HlpsRSuMGZCrC/DigBqUcH+Tv7bM+yXiLc2JP6tjJ/hQWbo/L7vhxRAJOk76LVSq243X8zIU4UVB3ZM8lRLJvjAjvsV656kbdWH4f2YnZSoHiQ4siyb3e775/7s1TOCt9kDb3D5OzOJCWW7h/e2yNQLjSeWyOLQ6CTlkE+P/
+X-HE-Tag: 1793719119-418810
+X-HE-Meta: U2FsdGVkX18w4UQP62tBhHTRdJK+ZprCbcZgfb7G+CiI5d97pKGgSolI0yC9H6qisC+zZPJUwv2L8ziPc7zIKHikgXxw+w22RDWR/aG3WWnIxjlDrox41fyCEwZvrB1x2Gs7yVODBGTxRWYM7dPnCzA3BTbpXkfL61qPeLo/yuIos9T7tHG8YOF2pFP7SJM6Ewby/C7veqxgMdF+7A6T6FjwnZjip/VEjdweSGlvGmCJy75h7UJXcU3vtmuTqj99MoukPu+TLRGR/o+v4u1nehkbqM2fwJrGmBqsCYVJr+iP/q/HsqYziYbzblMoOvtptCoocpb75i5AA3nXw3+qtv58g4IKMajJAN/8q2Nor+1lCzkI7wym/eHvtUgIJ6tp3EXeO717bI4xXorYi0P40y/8GCOu2AFg0YuYGxifMTstT+A608kbN+4/Hp7/UuPPGRfVOfBZ9Z3vrKKkB6G2YfTY3TNo/xO4eU5q1FuodrHqciDyQYiEjJ85uQxo9uL8JhQpNqNmxTyoVPZI03CFItIWnz/t9P9zvdWYjTuYMMq8L3oRoxEHedMfZnNvWK3b9Gvxw6tybBPj+0th7+GRcy/GBb1VY5fzUb8yc1rowrj0G/rkcEF7H54JMlrqYYIcID5JY3RrpQ1QIi1bo+LMX/YrSrlIw29/cdsOdyzT8lsEHHDqURia5h2eKOhz4m/Ixg4TbTOVU/9e8m1RCXUJgSIIuWd61Xyruz1cC10E5kFryCQ1mnGcGq8BAp1YFHsz3gTWCHrgPHfWe32wqLdbYaxbVcLFE0CYtOfpAA14akbemgQLO3nmgIz5vl+/IRXFZGKnHmRNA2RJFTqkKuaacsgvux1f4RLfkm78QGJiH+tTBqSrywza5D/PRxbbey1zSblS9KWKoHpGO40bYK8TzPsjtkILrMt7ZEhHky2kRKlovlZtQ4dvo8I1sEqncnI/vJ8OZEgdJcl7N4W/CmD
+ LlUA+mb7
+ iYdcvglsk7C5qngctmSmHd2itFwi4btf3R+3xugnzdZzLUgDzslaJqnknLDbYhpDEaMK0KeHvuDV2WzLIeYQIYeyr0fhWRYJ5x2Dh1y/2xwl05+2GGBviWMsm8JC1gmWU4HRBO+6I7gi8ezOnTtxGMK4h4LmaPl6lYz24sApD5en8fBY6U5nidcss/RZDTBAUwXdxSOZ0eQVB8qwpZGqRiINJPjhvMHKYaT9W0VrBaequ5ELQEbFPLttOu3XXwXMOoxA8ZYsxw1RFfYn9ZL+XZA8RZvxtsqzqJOvH3eo9mJxh8M32NWkkP5UCK23784IG93GLBrPg0vTiV4z8HbiGsu1jwsnYqv168m+vPexvpXKFG4/oGqxpMhcgOmI4IYSaRc1F2h8uhGPr7PvTKczMCSiB1AjPyr2QCgQd6ZstPtNECtLfmOo8ajn0bU1F9iXSGXT+4TZUbqyp5Dp0ejh6NEhtiQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -160,83 +161,35 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-MSEAL_SYSTEM_MAPPINGS is in security/Kconfig, but it's an mm feature,
-it's implemented in mm, and changes to it need to go past mm.
+If swbp_optimize() fails, __arch_uprobe_optimize() unmaps the
+trampoline it has just created. The next patch seals all special
+mappings when CONFIG_MSEAL_SYSTEM_MAPPINGS is enabled, which includes
+uprobe trampolines, and then this do_munmap() would fail with -EPERM
+and warn a second time.
 
-Let's move it to mm/Kconfig, next to the other VMA features. No
-functional change.
+Nothing is really leaked if we leave the trampoline mapped in that
+case, since get_uprobe_trampoline() reuses any existing trampoline
+which is in reach of the probe. So let's just leave it in place when
+it's sealed.
 
-Suggested-by: Lorenzo Stoakes <ljs@kernel.org>
 Signed-off-by: Chris Down <chris@chrisdown.name>
 ---
- mm/Kconfig       | 21 +++++++++++++++++++++
- security/Kconfig | 21 ---------------------
- 2 files changed, 21 insertions(+), 21 deletions(-)
+ arch/x86/kernel/uprobes.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/mm/Kconfig b/mm/Kconfig
-index afff1b25b543..40172787dfa7 100644
---- a/mm/Kconfig
-+++ b/mm/Kconfig
-@@ -1355,6 +1355,27 @@ config ANON_VMA_NAME
- 	  area from being merged with adjacent virtual memory areas due to the
- 	  difference in their name.
- 
-+config MSEAL_SYSTEM_MAPPINGS
-+	bool "mseal system mappings"
-+	depends on 64BIT
-+	depends on ARCH_SUPPORTS_MSEAL_SYSTEM_MAPPINGS
-+	depends on !CHECKPOINT_RESTORE
-+	help
-+	  Apply mseal on system mappings.
-+	  The system mappings includes vdso, vvar, vvar_vclock,
-+	  vectors (arm compat-mode), sigpage (arm compat-mode), uprobes.
-+
-+	  A 64-bit kernel is required for the memory sealing feature.
-+	  No specific hardware features from the CPU are needed.
-+
-+	  WARNING: This feature breaks programs which rely on relocating
-+	  or unmapping system mappings. Known broken software at the time
-+	  of writing includes CHECKPOINT_RESTORE, UML, gVisor, rr. Therefore
-+	  this config can't be enabled universally.
-+
-+	  For complete descriptions of memory sealing, please see
-+	  Documentation/userspace-api/mseal.rst
-+
- config HAVE_ARCH_USERFAULTFD_WP
- 	bool
- 	help
-diff --git a/security/Kconfig b/security/Kconfig
-index f7bf6cdc6229..1679e8d009c3 100644
---- a/security/Kconfig
-+++ b/security/Kconfig
-@@ -49,27 +49,6 @@ config PROC_MEM_NO_FORCE
- 
- endchoice
- 
--config MSEAL_SYSTEM_MAPPINGS
--	bool "mseal system mappings"
--	depends on 64BIT
--	depends on ARCH_SUPPORTS_MSEAL_SYSTEM_MAPPINGS
--	depends on !CHECKPOINT_RESTORE
--	help
--	  Apply mseal on system mappings.
--	  The system mappings includes vdso, vvar, vvar_vclock,
--	  vectors (arm compat-mode), sigpage (arm compat-mode), uprobes.
--
--	  A 64-bit kernel is required for the memory sealing feature.
--	  No specific hardware features from the CPU are needed.
--
--	  WARNING: This feature breaks programs which rely on relocating
--	  or unmapping system mappings. Known broken software at the time
--	  of writing includes CHECKPOINT_RESTORE, UML, gVisor, rr. Therefore
--	  this config can't be enabled universally.
--
--	  For complete descriptions of memory sealing, please see
--	  Documentation/userspace-api/mseal.rst
--
- config SECURITY
- 	bool "Enable different security models"
- 	depends on SYSFS
+diff --git a/arch/x86/kernel/uprobes.c b/arch/x86/kernel/uprobes.c
+index 0f60c0d076b6..fb895bfc09e0 100644
+--- a/arch/x86/kernel/uprobes.c
++++ b/arch/x86/kernel/uprobes.c
+@@ -1183,7 +1183,7 @@ static int __arch_uprobe_optimize(struct arch_uprobe *auprobe, struct mm_struct
+ 	if (IS_ERR(tramp))
+ 		return PTR_ERR(tramp);
+ 	ret = swbp_optimize(auprobe, vma, vaddr, tramp->vm_start);
+-	if (WARN_ON_ONCE(ret) && new_mapping)
++	if (WARN_ON_ONCE(ret) && new_mapping && !vma_test(tramp, VMA_SEALED_BIT))
+ 		WARN_ON_ONCE(do_munmap(mm, tramp->vm_start, PAGE_SIZE, NULL));
+ 	return ret;
+ }
 -- 
 2.54.0
 
