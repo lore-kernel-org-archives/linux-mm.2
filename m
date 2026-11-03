@@ -1,143 +1,132 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C73A606A324
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 21:09:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA60A606A331
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 21:11:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=IwhpBTM5
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=FM26aawt
 Received: by kanga.kvack.org (Postfix)
-	id 6FC726B00EF; Tue,  3 Nov 2026 16:08:59 -0500 (EST)
+	id E2CCE6B05B2; Tue,  3 Nov 2026 16:11:09 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6AD436B05B1; Tue,  3 Nov 2026 16:08:59 -0500 (EST)
+	id E05296B05B3; Tue,  3 Nov 2026 16:11:09 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 59BDA6B05B9; Tue,  3 Nov 2026 16:08:59 -0500 (EST)
+	id D1CB16B05B5; Tue,  3 Nov 2026 16:11:09 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 2A10D6B00EF
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 16:08:59 -0500 (EST)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id B17041C36FC
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 21:08:58 +0000 (UTC)
-X-FDA: 85395047556.07.F3B295B
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 9C73180008
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 21:08:56 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IwhpBTM5;
-	spf=pass (imf02.hostedemail.com: domain of devnull+mt4022.columbia.edu@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+mt4022.columbia.edu@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	arc=pass ("kernel.org:s=arc20260519:i=1")
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1793740136;
-	b=jMvpuEjc3pD5r5H2aTubFHGcrDmj99YRbCYJZTBybXH8BY80r9l+x4sgV1n2l1c+kFg05b
-	RcNDhQAj7DgGLwQNjCqPHcfy9OyVIySWk1zc/NJi4TiPKDkRQYLghxW9tZC1riHFGSwWpU
-	LUX/AcelNmIx4qvFriIUYgx8c9Xs9Qc=
-ARC-Authentication-Results: i=2;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IwhpBTM5;
-	spf=pass (imf02.hostedemail.com: domain of devnull+mt4022.columbia.edu@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+mt4022.columbia.edu@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	arc=pass ("kernel.org:s=arc20260519:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793740136;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	by kanga.kvack.org (Postfix) with ESMTP id B64D46B05B2
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 16:11:09 -0500 (EST)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 198C91C3DA9
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 21:11:08 +0000 (UTC)
+X-FDA: 85395053016.25.C11D453
+Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 4771420002
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 21:11:06 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=FM26aawt;
+	spf=pass (imf13.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.216.53 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793740266;
+	b=ybkPxRVBDd6wRUoh+GYTpaepEXkUQBRkZbkmstqeiybtkwhr8utOOWkYwUPYZ6XqBz2QMa
+	aNEnLLI+nOAYhhkI5ttBlN7YeQwwZ/dJ7vi9Bo5o+Uit8FQ3nH3K6o0sPU62QvazHBosUw
+	ubmX3a4jM5ax+V0RMHdwf8dkPmSyWG4=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=FM26aawt;
+	spf=pass (imf13.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.216.53 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1793740266;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=SHYGP7YdDrluRd4VWQyjYbq8NHSmfkSt9LBV7zxwYfU=;
-	b=P2UEMM9+rm6KALRN5Q6TNpj2tBTNYtNv0kMwgFluzT2chsDEnyop9IKXYfDQZHsJUMkin7
-	yFplaqh1jaEepYPPt8Ga8U6fLYMbYAAa5p5Y/hJfbjVRQpyOvUdM72NUFeRiSH+++Qk7cY
-	djsdntbEaiTPxgZ5nWU/kgHCUKBKYU4=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 0D78C60136;
-	Tue,  3 Nov 2026 21:08:56 +0000 (UTC)
-ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
-	t=1793740135;
-	b=VjuKyfetme59n3j4S0pM/xKGZzcwidq2leVyhd5lk1p63OkEV8bfLNNQ30+bkXnMljH6
-	 /fiY9LyKc5fZXs5xIvQ7Y1EN4akjTNG0FPjc2nmMNH+0LegSBO6lUQNfTZ5ziAFa3/1bA
-	 WQg8hWhvy0e8koaW1TXTuiCcXguCigOIY8laOi2ojFvo+9D/Rus3aQx2/hLOw/CraJ34J
-	 +8/Z5hrHWndCqHuAGxwFialTzLT8eM4CS9nckLfAm7cQcyTtL6Uq8TKQzs2ERAMfvRPkD
-	 XiCVHsEMbYSRyIAw5M8Fz/K2if0NWFvdmCgNBx3RswImDGLdeMeOJa/H3AhE4Pr1GqQ==
-ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
-	c=relaxed/relaxed; t=1793740135;
-	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
-	 Message-Id:X-B4-Tracking:X-Change-ID:To:Cc:X-Mailer:
-	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
-	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=SHYGP7YdDrluRd4VWQyjYbq8NHSmfkSt9LBV7zxwYfU=;
-	b=yHiC4T2WH6/Iy49TZUy77BaltArbJ8mcxISUT+F10o6PA5GRsEQSyiAFlFNfy8JJWmbT
-	 5v3zKtMWyLMCJgF4hZfBFdpoFsVwwj0/92SBo5tbf1Y5I1z7vtZ8pkl7aa5TtHJ9GHVbz
-	 xwDZj4zqlzXtVMGZizoEjphQMD5pApVe9OwULJ26ZLENaEZ0r0WLtMP7286a2OIKKLAIi
-	 h2Ya2mgTNfMVsn0NTvJsWuhEjTwb/RBy7cnhwKip34Oc5pW5LiE4Q6neMvW3yvkScelIi
-	 e/VVQP3rE/XRhAkDrNrBGwHFTkOfGn1yjg7b5cUb9Yu6oYRNlxzLw2XmSTs3MwYutMQ==
-ARC-Authentication-Results: i=1; smtp.kernel.org; 
-	arc=none smtp.remote-ip=100.80.115.77
-Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
-	(No client certificate requested)
-	by smtp.kernel.org (Postfix) with ESMTPS id 03E0C1F000C1;
-	Tue,  3 Nov 2026 21:08:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793740135;
-	bh=SHYGP7YdDrluRd4VWQyjYbq8NHSmfkSt9LBV7zxwYfU=;
-	h=From:Date:Subject:To:Cc:Reply-To;
-	b=IwhpBTM5K54K1iQEs/6DNB7oaPizr7IWrEaG0RdCtObNHrbuJXRvnxwEnSKePVtG0
-	 mN7Z87+gkRDlmkgsIWIxd5UDLwM/UMrEIFA4wXiJJZTLQvyhQl9HGZ3HFe8pffxVBd
-	 cmE8CAMbae6Lg5V+8B3eKigK+KnMuu85NF11/T7kZHTL9X6g3L9zb9kY9VAdrPnuPy
-	 U3WgiEvRTCv78kjphZzZN7IKF2jhaPSGB45RJbCc6s48squhl1gmUs+J5O6jijCg8K
-	 f80t0oFQPuICwVLjEK619RiPoCR6wCF8scLyTabmfaD2KJ96JWjQdrqguhDSFQVFdm
-	 YC9jjm0fSiAwA==
-Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
-	by lkml.kernel.org (Postfix) with ESMTP id 5450C46B12;
-	Tue,  3 Nov 2026 21:08:54 +0000 (UTC)
-From: Mani Tofigh via B4 Relay <devnull+mt4022.columbia.edu@kernel.org>
-Date: Tue, 03 Nov 2026 16:08:54 -0500
-Subject: [PATCH v2] mm/memory-failure: set PG_hwpoison of a non-hugetlb
- page under hugetlb_lock
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=Gwb0yhNA8ovJvghC21bfjrqEFSJ/3LvirO9QqnwCwDw=;
+	b=1TwFm98EOie6H3EtReXogkoK3W7IvAO/srEeEjGD5eWlT0Ki88DKe2f747emKWFzy7v6WK
+	GwVpCC4oabRpubcEbvEdexHbESXZDXTXzpXNXX9oagFGFgInEQWNWQLr8eVpAhd+FTvu4X
+	iiw4JuLJ610uoolXOU04ZQVJYQxPu7E=
+Received: by mail-pj1-f53.google.com with SMTP id 98e67ed59e1d1-3ac9f49b984so759417a91.1
+        for <linux-mm@kvack.org>; Tue, 03 Nov 2026 13:11:06 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1793740265; x=1794345065; darn=kvack.org;
+        h=mime-version:content-transfer-encoding:references:in-reply-to:to
+         :from:subject:cc:message-id:date:content-type:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=Gwb0yhNA8ovJvghC21bfjrqEFSJ/3LvirO9QqnwCwDw=;
+        b=FM26aawt+lvJKN6LLCKqk0nw8eFj2h1t37/90684rJtOQ6NSEktTVU3hecztKqUG2t
+         PyuQZTCwox+w9pMbzIhIlujJELb2IyNpUAKdRf5288HfsgRRR5F40famnq+EuTvFlYIm
+         t4/Qfg7tGEvNQLViZThsTk6+HxZ6Ylfg/sheUi/h9EXdnTmIi21D1QApij8CkdU0ne0S
+         j3aJnyTakxJCFXVuVgBR9dl2QxhzsS4GJ2B6QmcI91BNqcS+p58BHK3mHv9qvBcsjo7a
+         Mv+KEGcee7+FLQhVuBs5MTjMIDlO5/WXJPphDZDTjIIC9gNNDUhMbn6pt+JdIj/Xbe72
+         m2kQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793740265; x=1794345065;
+        h=mime-version:content-transfer-encoding:references:in-reply-to:to
+         :from:subject:cc:message-id:date:content-type:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Gwb0yhNA8ovJvghC21bfjrqEFSJ/3LvirO9QqnwCwDw=;
+        b=jyPR69vl7jKEaOCzGD/xm4pMDx0GqFmt1LH50qD64cWrnkpxAN0OH+UVn0XLPjfYJ8
+         5Xi0VF6jFPfabAY5dg2obsQUwP1h5rkHF7Q5K1gBQ51qJNnzzO01bwd41BWNjBIFwSCG
+         4ybHymeTd0sNDzIacz7AtmJESgiuF1FUVWgZ4GXVJy8tTWMLpl/j2zxcQ1ijjVZzNeMQ
+         Wu4Eh3fUNmOyUlRh6PKn1Si+5jrwA2VufkL5a+jLQ6hXm1b8QgkA8AwF2Oj4MFDsKCN3
+         NlU54Y06a6ZmYNKDDHie5m0QmrPgsTpitt9SGbtiClUIIw+Cog2nOpEDvj1imHCWBlWH
+         PbuQ==
+X-Forwarded-Encrypted: i=1; AKwUvBxejGYKfvWf5vsgTfYUUCElJGrzJngalY69Q9MvZGhxdkk4ZvVaPAtFvH06rFD7Veo84pTgf6dkuQ==@kvack.org
+X-Gm-Message-State: APuU4Z+IXEbx+ArTxQLouBaN2YhYZAktOlwip//7spd7n3ZIfHAtXb1q
+	q0ldnkJMguqfQxXdI2DytnI0LIgTKJoH3WnxZWDhgDQNMhQNkDYE/MzZ
+X-Gm-Gg: AYBFou3A5b/Wgn2sKQX96vR4P6hxxYvIIYGMpAazcbSEQm4MloY6i8yoBygP8RDmp2G
+	bEWZlV/TyKHutgeTcM3Y1S7J9zo5E8CEihCRQoLVJL4GAqD2fPs9az5E81gDJ658ZMOJSQClvU1
+	KhOvUqToKxuyLBf/AgiBtpm8IXM7VCYRXMczD2J0njdwECCdYBrWUp724W1HOxCDxp+CzS5Ko5+
+	uywLOZ4T/FOZdnay84s0trtUgV7PViMl2LIY/A5YFm2wC6RfnhpCoq3GihyXxmSRODZhBW8Veil
+	QL7YI7WnGmATQbddkV8Y/bcaeO2tx4kltcigqLTtg6LP9j/guTMN6D8b3+ciRB3uHBri0uAUyWn
+	qBfvBxK+2B5nqE7fYPYT6Z9X4GQtcF9s9Rnj8g/o+tA6uvMRJ2RxsE4jQkrO4g/aoWOoKB8DJ0U
+	G8pwUMrIsDUypwS5JFoD7bHA/qyF2fnJ+btq3Q5JNj0buWNuKIh7J1hu9lSqtrcFyiLMaqXidN3
+	0KDKdn0cgyYf7MhsJnB1V1Bxr5QNGABkPKHLLZFS6CmyPPIY+ClBA9CcmflH2wy9NY23Olg3vZQ
+	GbNgPNGFVzcUWp9R6A7snwA1l9rqvFuTwySc51uJT1kMBlTu12xqRajUwx2YvOrpZF4POxaTEaF
+	OYz94K59D/i2UuIsU5tDqD9+cmRSZgP6Utg==
+X-Received: by 2002:a17:90b:5624:b0:3ab:d26b:c2df with SMTP id 98e67ed59e1d1-3ae89758b67mr7781961a91.27.1793740264860;
+        Tue, 03 Nov 2026 13:11:04 -0800 (PST)
+Received: from localhost ([153.61.198.252])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b0944ee6easm336849a91.2.2026.11.03.13.11.04
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 03 Nov 2026 13:11:04 -0800 (PST)
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 03 Nov 2026 21:11:03 +0000
+Message-Id: <DMLVUTB5J1RJ.2QKOUW6UB04ZM@gmail.com>
+Cc: "Johannes Weiner" <hannes@cmpxchg.org>, "Michal Hocko"
+ <mhocko@kernel.org>, "Roman Gushchin" <roman.gushchin@linux.dev>, "Shakeel
+ Butt" <shakeel.butt@linux.dev>, "Muchun Song" <muchun.song@linux.dev>,
+ "Andrew Morton" <akpm@linux-foundation.org>, "Vlastimil Babka"
+ <vbabka@kernel.org>, "Hao Li" <hao.li@linux.dev>, "Christoph Lameter"
+ <cl@gentwo.org>, "David Rientjes" <rientjes@google.com>, "Sebastian Andrzej
+ Siewior" <bigeasy@linutronix.de>, "Clark Williams" <clrkwllms@kernel.org>,
+ "Steven Rostedt" <rostedt@goodmis.org>, <kernel-team@meta.com>,
+ <cgroups@vger.kernel.org>, <linux-mm@kvack.org>,
+ <linux-kernel@vger.kernel.org>, <linux-rt-devel@lists.linux.dev>, "Sashiko"
+ <sashiko-bot@kernel.org>
+Subject: Re: [PATCH for-next-fixes v2 4/5] mm/slab: fix a deadlock in
+ memcg_alloc_abort_single()
+From: "Alexei Starovoitov" <alexei.starovoitov@gmail.com>
+To: "Harry Yoo" <harry@kernel.org>
+In-Reply-To: <auo5G__ac1qA9JRs@thinkstation>
+References: <20261103-kmalloc-nolock-fixes-v2-0-19167cfe4779@kernel.org> <20261103-kmalloc-nolock-fixes-v2-4-19167cfe4779@kernel.org> <DMLSN9VHK0P3.2A97046A4YXGY@gmail.com> <auo5G__ac1qA9JRs@thinkstation>
+Content-Transfer-Encoding: 8bit
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Message-Id: <20261103-hwpoison-hugetlb-ro-v2-1-43876fc9eef1@columbia.edu>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/22Nyw6CMBBFf4V0bU2nQoOu/A/Doi0DHYOUtBQ1h
- H+Xx9blSe49Z2YRA2Fkt2xmASeK5PsV5Clj1um+RU71ykwKqUBcBHfvwVP0PXepxbEzPHheNGV
- ZglZCN1e2PoeADX1266M6OCbzRDtuqm3hKI4+fPfsBNvuKICAv4UJOHCdy1rlANao4m59l16G9
- BnrxKplWX6iq0beywAAAA==
-X-Change-ID: 20261030-hwpoison-hugetlb-ro-5f8881a60af9
-To: Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
- Miaohe Lin <linmiaohe@huawei.com>, 
- Andrew Morton <akpm@linux-foundation.org>
-Cc: David Hildenbrand <david@kernel.org>, 
- Naoya Horiguchi <nao.horiguchi@gmail.com>, Kiryl Shutsemau <kas@kernel.org>, 
- Mike Rapoport <rppt@kernel.org>, Mike Kravetz <mike.kravetz@oracle.com>, 
- Matthew Wilcox <willy@infradead.org>, linux-mm@kvack.org, 
- linux-kernel@vger.kernel.org, tz2294@columbia.edu, stable@vger.kernel.org, 
- Mani Tofigh <mt4022@columbia.edu>
-X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1793740134; l=7194;
- i=mt4022@columbia.edu; s=20261026; h=from:subject:message-id;
- bh=1F4vtxF/OETYZMMsAx/an9+en/AsTwNgpWrKWjVH9+s=;
- b=36qX1N4lsVP5MFwUZeAQ1y7uk2rexo4x3/XUNeYm0dqNg3zcPDbnsyeLp2sMTGDQolR+TJ8VC
- LT0k2JgrqVFAcMOQCxNNO6yyIUGyzrUXC/qdyEQtYC8Of1b6KxxvDHO
-X-Developer-Key: i=mt4022@columbia.edu; a=ed25519;
- pk=gljCMQDuxyKPmd5y37CRpEJGSPXDV1MyAnHBhCgXl0I=
-X-Endpoint-Received: by B4 Relay for mt4022@columbia.edu/20261026 with
- auth_id=1322
-X-Original-From: Mani Tofigh <mt4022@columbia.edu>
-Reply-To: mt4022@columbia.edu
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: 7n5goico1p64ir9emnyjr47pnqnao6ke
-X-Rspamd-Queue-Id: 9C73180008
+X-Stat-Signature: qjnccfh31eo3hsteq3kmbrr3in7adf3a
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Spam-Status: No, score=-23.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,
-	MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT
-	autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1793740136-137123
-X-HE-Meta: U2FsdGVkX1/GWNXEEVuUkPgiyszfbu/ghlVoI1xR50dh3WPrrEJI/a8RbSls5u0AxlcU3O7WN5G5axoGn9vKFJh1V+7uENdHtcKtWYwidKIj25TzqFeUAo+tGeQZiHX8ZaC0m7vWorecVwMUvpbnU3pRq2093UmeOO/MWZhPiaU65PcV5R9Xf5e/gs6DkUOuYSJGMIgyRvWq/1OSJIAJ0ltxctw7CNxcBgMvhXcDs+2kqedOB8//sLZYBlVW+BNPble/n/7czRnjzf6W7G1OJ0I9dKC4wSaq9fFArQN0VHFNTdXCQAhKn+zV85t/9DPGN1Jzqsk2gF74ZGGGSYuyKKzJXwpWT6H6xrVgUtGEZ64RMCSYFFjP1fox8Ns2SPVGXebfwTc8JI15YcBSY1tiygoRAnKvtQgOk1/w8iKPELh3IBbBKBHdGoBi+Z1kYM3JlqtHqwfIN7CZK1XbS1E1nWXUVoYYWAQiaVQCelmulJCxeNBes10pkeJEWYgnf+fBeY+TA4/fwpg1tgMQfIxgFXoQlNVkRk0AYuPbjIIdAYRSLhezyu9QmwX2cXINGT39ojMhZuxm5Y5WnYFosKUbN3KWGflKlVAFw7Uy8yXCVgvKyJTawIsCeK7rjufGiNuMk/dS575gj6fmDipwE0wd3hX2gpK4S6pnpRrjBdRQYKuBQ3MmxyV41Oy+P64bp0+Ipj50dWNbymrxh76ymAV3vbACECXeK89m98ih1limj6ymViqatQ6LZqeHh2NORXCM5aOaB1NkDF9QTnr9aNIsLjFK+WdVWuOVZ3iDvsErg/d8QrrRBncKizgU/pRMVsT7luzW6J8PYuiOjMIUOM+p75fonb4yIkppQOqXu4tXJPfQwSbwlNh8xDXrfM+mHcB7pdlrsoDJ3wfhqXI9bp3+2eMXVUnlDq9QIMYXh+Llmss1lHsLuk6M9YedhwbqiwNl3LrApXQtbe2C6YbKMtl
- ASgB5GTx
- T6Bi++f66whCJtxrhpiDlCkqbagzF05CRAU/76V1skP1LAmReHsO6NYRVls1vZ1o6bGtPmjQD9pO+syVo/x/tQgRmnuAMU2rDYbTYozGQL0T+F5SbW62BXByxI6M2TH3GMD4wMe25KkzIumxyJwqemshgLAjWQspep8djenNQL241VyawQeNfvVp9qBmkwANIlUsi/zBitaIQNpvjDZ8gNYGWHP8iIreSkar/zlDzOFQT6X+TIg68WFc+C2/2HNut9ipoNsbzq3kReFbzbxAwg5uwU2ZFWPd1EGAlIXcrgQmKocAMSZq7j0bGU41mW9ZajpGzKIDBTR19DxC/3osz/f9ceroj1af+SsRSHgXcWdkMEXeNAbeKbPLm+VyOAIXhVCUEhJolNxByirvm9q2//Pwq48WOwpD1pmt2rwzKsmx7LPDCpAOu1NBzPrbCi1vz788u1Y59YRzDwKX0uj7X9UeHlGF2ZBbbBVRhNCpfPR44Kle5JlzZ2zzRJQ9yQzYi9OdXR0bUoOjCqygVVHZVVLAhRvidjLwnkBnBF7sEkaUfn2/tWU14biAZ8rfQFbv85hhqBAW5U+azIww6nRYeXRNyEOQ21F+W78de7ki1PduJ5YKY/3zCi6v6RWIsvpB9/YUZdFKWjO7pp6/p98r1nBz9pNxJ4jY6zvmdKGYAXMi+auI9oGlo33YbIn6UuJBwo9PM+uj/fDKg0CFJ7a7qtN1cLs0/xyNM5cpI
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 4771420002
+X-Spam-Status: No, score=-2.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=no autolearn_force=no version=4.0.1
+X-HE-Tag: 1793740266-799628
+X-HE-Meta: U2FsdGVkX18U4uNM/P53PQAcVAi54I2U4RbSzk8OW/8zPwkkbB3jGCf7NAuA1kk9XXwieux8rAE4B1qNSlovkDWrCL38BBdi17XFCvGkZ3z/ZtYAYmkSuhPBYycJDewUqq410w24LbkUqMxjLpB4UqT0w13b26yTZ/x2Y2v+68bICg8sPXrhphSd/abNXsZMmSRRkaSelKM85WJfg1O1ymhC7iugpzL53h6ULpi21CiKl3UAAhFjZvhkh82XckAQiC4kbboEm8jm4+efPDw5BXckodsexVnZYbhSYVFkM82XhpEvnrDrLUwMVImhByWcncrXAPjv+ZoUi4fyaw9g6O97z46T7D30Fby9RcTvOCjhKnHZY4pAMSe9/6cQQhfOqd9Uf5QgATGKXSHu5CIEWGUqCqQwIADRBIaaVRY9r+s2Q3ebYIR11WtHwONZRxpiYV0eEeEacU3ri2EHg8G+rz6sRFOPfmnZq+4eB+uOX5tuHfuPchpgH6ZW/InJs7eA1Hv+BIR6auDJnVcX/oa7ERPv7uRpovEk/m8UD5UQmTt51/PDjRYAWwIg8rR0qkQNF9cfxYU5h+OnbrH/aeVI2b+3E6kLEG0ZNRWTQI0QWDKHdrKtWfiWtdvm29DEgxS58e8IFgumseBbq/NDchpW1fVIkRLSIeRnqH9E6H9dhmZiSRisipOg4iQMNy3FbuBZ6wh/p+rjdlb/Pckp6QysajEZuWSRK6PrbM1VfC2GVvsNsNWtMRWE/93Wrd422LehFPgeOZ0H8vaqXIUSJ8AAsMbYL5EQHdYE0+ddyC6un0LR6PgdPzlPBYfvQn1VifVvVmZbcC/pmI2f/u6rVbeDYXesiRXKi/GhnNPIvPWB/PG7MtztYm4POrTbELU2M9grnZ5gP7Ac0EcFhnebzXgdlGX5ac30W9gF1Olu+TJskPo66v8IykMtKsa7jx4+aVcxj3ZaLKvD+RzS6ydlmBA
+ pQKY9x2d
+ LESN3bNtl3Pne47fkt7NpFgg6xII89drmcxmhHNGaMyrgGhKXKww27xcIKMM7TUbRZ3wlz8gAJ0t8RXx+N1Wy7IOx1Rti5lHV4uhMBlDGkkiDfkzy1KzufagC5kgFO3YsDNzXhPrzJLiNL+O/08k6v0gftg3cuT3oSltTml8GUvAjQwnp8llvxJJS1Yhg9aX8XXC8ibOsMr1Xby9N+6ltWSiHtnrssEp6i+fdP1Dllc6Fn2LvdAXAUKSX90yvXfH57pGLBGNmkr2/p4+buOtZAnLt3RKr8SdqxGwihYgpY4yMo5cYSou2NylZRjJmfJE8b6gE6wViEO4vFL2d1DXWzd88lEuV5i/uuxALWpnGT8gaB9uyYqplRAuivZs8iPjPD8Viy+A8f2s/sJDTvoNvDavRBJywRtcfFmxVH0mqU3o/xHvSgOLOQQ2YFvEPVpQUp+mjbfiB2WIO5XpeaQfET+TjV9LhxMOBm0Uhaokkvkcbj1LwP8m9LhWCGnqix0OY9hWdR2o0ydtxulVM/rgbJnzvqPA6fNXsCkt4IsstD5osgKxQqBCIQiMwyH1k1tROBnCkdez8LiQIuC0QR6T9h/+OWw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -146,187 +135,33 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-From: Mani Tofigh <mt4022@columbia.edu>
+On Tue, Nov 03, 2026 at 12:21 PM Harry Yoo <harry@kernel.org> wrote:
+> While this is technically true, this relies too much on the current
+> implementation details and makes the code hard to follow.
 
-memory_failure() checks under hugetlb_lock that the page isn't part of
-a hugetlb folio and sets PG_hwpoison only after dropping the lock.  The
-page can become a tail page of a new hugetlb folio in the meantime.
-With hugetlb_free_vmemmap=on its struct page then lives in the tail
-page that all such folios in the zone share, so the flag lands on tail
-pages of every one of them:
+Fair enough. I don't insist.
 
-  Task A (memory_failure)              Task B (nr_hugepages write)
-  get_huge_page_for_hwpoison()
-    /* P not hugetlb */
-                                       alloc_fresh_hugetlb_folio()
-                                         /* P becomes a tail page */
-                                         hugetlb_vmemmap_optimize_folio()
-                                           /* P's struct page now in
-                                              the shared tail page */
-  TestSetPageHWPoison(P)
+> Patch 2 is an independent bugfix as-is already. We should really stop
+> open-coding slab_free_hook(). That ended up missing init_on_free handing.
 
-The error on P itself is ignored, while healthy pages of other folios
-stay marked and are never reused once their folio is freed.  After
-freeing the pool, /proc/kpageflags shows them as hwpoisoned.
+Right. No objection to patch 2.
+With patches 2 and 3 the !allow_spin side of memcg_alloc_abort_single()
+is an open coded kfree_nolock():
 
-This is the allocation side of the race that commit 32c877191e02
-("hugetlb: do not clear hugetlb dtor until allocating vmemmap") fixed
-for freeing.
+  kfree_nolock()                    memcg_alloc_abort_single(!allow_spin)
+  --------------------------------  -------------------------------------
+  memcg_slab_free_hook()            -
+  alloc_tagging_slab_free_hook()    alloc_tagging_slab_free_hook()
+  slab_free_hook(!allow_spin)       slab_free_hook(!allow_spin)
+  free_to_pcs()                     -
+  defer_free()                      defer_free()
 
-Set the hugetlb flag of a new folio under hugetlb_lock and set
-PG_hwpoison of a non-hugetlb page inside the locked check, so that the
-vmemmap can't be optimized in between.  The retry path clears it under
-the same lock, unless the page has become a tail page of a hugetlb folio
-in the meantime.  With the fix, no healthy page gets marked anymore.
+I don't insist on kfree_nolock() there,
+but can we try free_to_pcs() before defer_free() ?
+Like:
 
-This bug was identified and confirmed with the help of a deterministic
-hypervisor currently under development.  The C reproducer below however
-hits it within about 35s.
-
-Fixes: f41f2ed43ca5 ("mm: hugetlb: free the vmemmap pages associated with each HugeTLB page")
-Cc: stable@vger.kernel.org
-Signed-off-by: Mani Tofigh <mt4022@columbia.edu>
----
-Changes in v2:
-- In the retry path, also clear the flag if the page has become the
-  head page of a hugetlb folio, so that the retry doesn't take the
-  folio for already poisoned (Sashiko)
-- Rebase on mm-new
-- Link to v1: https://patch.msgid.link/20261101-hwpoison-hugetlb-ro-v1-1-a42d6411cb65@columbia.edu
-
-Reproducer: https://github.com/manitofigh/files/blob/main/linux-repros/hugetlbro.c
----
- mm/hugetlb.c        |  3 +++
- mm/memory-failure.c | 45 ++++++++++++++++++++++++++++++++++++++-------
- 2 files changed, 41 insertions(+), 7 deletions(-)
-
-diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-index 779b1de33c78..dd409d7f697e 100644
---- a/mm/hugetlb.c
-+++ b/mm/hugetlb.c
-@@ -1792,7 +1792,10 @@ static void account_new_hugetlb_folio(struct hstate *h, struct folio *folio)
- 
- void init_new_hugetlb_folio(struct folio *folio)
- {
-+	/* Pairs with get_huge_page_for_hwpoison(), see there. */
-+	spin_lock_irq(&hugetlb_lock);
- 	__folio_set_hugetlb(folio);
-+	spin_unlock_irq(&hugetlb_lock);
- 	INIT_LIST_HEAD(&folio->lru);
- 	hugetlb_set_folio_subpool(folio, NULL);
- 	set_hugetlb_cgroup(folio, NULL);
-diff --git a/mm/memory-failure.c b/mm/memory-failure.c
-index b215312f261b..80bac8d544d4 100644
---- a/mm/memory-failure.c
-+++ b/mm/memory-failure.c
-@@ -1956,6 +1956,7 @@ static unsigned long __folio_free_raw_hwp(struct folio *folio, bool move_flag)
- #define	MF_HUGETLB_FOLIO_PRE_POISONED	3	/* folio already poisoned */
- #define	MF_HUGETLB_PAGE_PRE_POISONED	4	/* exact page already poisoned */
- #define	MF_HUGETLB_RETRY		5	/* hugepage is busy, retry */
-+#define	MF_HUGETLB_NON_HUGEPAGE_POISONED	6	/* not a hugepage, already poisoned */
- /*
-  * Set hugetlb folio as hwpoisoned, update folio private raw hwpoison list
-  * to keep track of the poisoned pages.
-@@ -2040,7 +2041,11 @@ static int get_huge_page_for_hwpoison(unsigned long pfn, int flags,
- 	spin_lock_irq(&hugetlb_lock);
- 	folio = page_folio(page);
- 	if (!folio_test_hugetlb(folio)) {
--		ret = MF_HUGETLB_NON_HUGEPAGE;
-+		/* Mark it before it can become part of a new hugetlb folio. */
-+		if (TestSetPageHWPoison(page))
-+			ret = MF_HUGETLB_NON_HUGEPAGE_POISONED;
-+		else
-+			ret = MF_HUGETLB_NON_HUGEPAGE;
- 		goto out_unlock;
- 	} else if (flags & MF_COUNT_INCREASED) {
- 		ret = MF_HUGETLB_IN_USED;
-@@ -2091,7 +2096,8 @@ static int get_huge_page_for_hwpoison(unsigned long pfn, int flags,
-  * PageHWPoison) should be done in single hugetlb_lock range.
-  * Returns:
-  *	0		- recovered
-- *	-ENOENT		- no hugetlb page
-+ *	-ENOENT		- no hugetlb page, now marked hwpoison
-+ *	-EEXIST		- no hugetlb page, already marked hwpoison
-  *	-EBUSY		- not recovered
-  *	-EOPNOTSUPP	- hwpoison_filter'ed
-  *	-EHWPOISON	- folio or exact page already poisoned
-@@ -2110,6 +2116,8 @@ static int try_memory_failure_hugetlb(unsigned long pfn, int flags)
- 	switch (res) {
- 	case MF_HUGETLB_NON_HUGEPAGE:	/* fallback to normal page handling */
- 		return -ENOENT;
-+	case MF_HUGETLB_NON_HUGEPAGE_POISONED:
-+		return -EEXIST;
- 	case MF_HUGETLB_RETRY:
- 		if (!(flags & MF_NO_RETRY)) {
- 			flags |= MF_NO_RETRY;
-@@ -2169,10 +2177,32 @@ static int try_memory_failure_hugetlb(unsigned long pfn, int flags)
- 	return identify_page_state(pfn, p, page_flags);
- }
- 
-+/*
-+ * Keep the flag if the page has become a tail page of a hugetlb folio in
-+ * the meantime, as HVO may remap its struct page.  A head page is never
-+ * remapped, and keeping the flag there would make the retry take the
-+ * folio for already poisoned.
-+ */
-+static void clear_non_hugetlb_hwpoison(struct page *page)
-+{
-+	struct folio *folio;
-+
-+	spin_lock_irq(&hugetlb_lock);
-+	folio = page_folio(page);
-+	if (!folio_test_hugetlb(folio) || &folio->page == page)
-+		ClearPageHWPoison(page);
-+	spin_unlock_irq(&hugetlb_lock);
-+}
-+
- #else
- static inline int try_memory_failure_hugetlb(unsigned long pfn, int flags)
- {
--	return -ENOENT;
-+	return TestSetPageHWPoison(pfn_to_page(pfn)) ? -EEXIST : -ENOENT;
-+}
-+
-+static inline void clear_non_hugetlb_hwpoison(struct page *page)
-+{
-+	ClearPageHWPoison(page);
- }
- 
- static inline unsigned long folio_free_raw_hwp(struct folio *folio, bool flag)
-@@ -2450,12 +2480,13 @@ int memory_failure(unsigned long pfn, int flags)
- try_again:
- 	res = try_memory_failure_hugetlb(pfn, flags);
- 	/*
--	 * -ENOENT means the page we found is not hugetlb, so proceed with normal page handling
-+	 * -ENOENT and -EEXIST mean the page is not hugetlb and is now marked
-+	 * hwpoison, so proceed with normal page handling.
- 	 */
--	if (res != -ENOENT)
-+	if (res != -ENOENT && res != -EEXIST)
- 		goto unlock_mutex;
- 
--	if (TestSetPageHWPoison(p)) {
-+	if (res == -EEXIST) {
- 		res = -EHWPOISON;
- 		if (flags & MF_ACTION_REQUIRED)
- 			res = kill_accessing_process(current, pfn, flags);
-@@ -2486,7 +2517,7 @@ int memory_failure(unsigned long pfn, int flags)
- 			} else {
- 				/* We lost the race, try again */
- 				if (retry) {
--					ClearPageHWPoison(p);
-+					clear_non_hugetlb_hwpoison(p);
- 					retry = false;
- 					goto try_again;
- 				}
-
----
-base-commit: 74d73ffcffe03804f97e9fb82301dadf75671282
-change-id: 20261030-hwpoison-hugetlb-ro-5f8881a60af9
-
-Best regards,
---  
-Mani Tofigh <mt4022@columbia.edu>
-
-
+	if (likely(allow_spin))
+		__slab_free(s, slab, object, object, 1, _RET_IP_);
+	else if (!can_free_to_pcs(slab) || !free_to_pcs(s, object, false))
+		defer_free(s, object);
 
