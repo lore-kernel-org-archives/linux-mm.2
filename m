@@ -1,95 +1,121 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC81F606D814
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 08:01:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82DE2606D80D
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 08:04:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=uoMofLeV
+	dkim=pass (2048-bit key, unprotected) header.d=leemhuis.info header.i=@leemhuis.info header.a=rsa-sha256 header.s=key2 header.b=aYIqX3pq
 Received: by kanga.kvack.org (Postfix)
-	id 231416B05D5; Tue,  3 Nov 2026 03:01:41 -0500 (EST)
+	id AC2806B05D8; Tue,  3 Nov 2026 03:04:37 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 20AA56B05D6; Tue,  3 Nov 2026 03:01:41 -0500 (EST)
+	id A52586B05D9; Tue,  3 Nov 2026 03:04:37 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0AC126B05D7; Tue,  3 Nov 2026 03:01:40 -0500 (EST)
+	id 912F46B05DA; Tue,  3 Nov 2026 03:04:37 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id D36B86B05D5
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 03:01:40 -0500 (EST)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 5C7EFC0304
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 08:01:40 +0000 (UTC)
-X-FDA: 85393063560.11.A78B641
-Received: from mta0.migadu.com (out-111.mta0.migadu.com [91.218.175.111])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 55A0D20008
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 08:01:38 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=uoMofLeV;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf03.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.111 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 6EE1E6B05D8
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 03:04:37 -0500 (EST)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 0E070A7D51
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 08:04:37 +0000 (UTC)
+X-FDA: 85393070994.27.63A11A8
+Received: from relay.yourmailgateway.de (relay.yourmailgateway.de [46.38.247.119])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 820C2180002
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 08:04:34 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=leemhuis.info header.s=key2 header.b=aYIqX3pq;
+	spf=pass (imf16.hostedemail.com: domain of regressions@leemhuis.info designates 46.38.247.119 as permitted sender) smtp.mailfrom=regressions@leemhuis.info;
+	dmarc=pass (policy=quarantine) header.from=leemhuis.info
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793692898;
+	s=arc-20220608; t=1793693075;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JYQyQkhetD6ZOaLMew7rXre3mg1MOm9HF6woZrkOd8Q=;
-	b=F4TLevwCYJHjF8JluEpuSF03BE3qVELSj5jFXpRllWKdqgyDRMdtX0MeBk5nu5hDRdDzZ/
-	u85Wyp7SWK/FYOhmUIkV1KOPR7CvpxmLbSy5LnPEs5IU105V9jYP1SW11Idr3B3E/y+LYA
-	sGp5KOzSc9ALTdiMCpKGnIAHKcQp4rs=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=uoMofLeV;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf03.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.111 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev
+	bh=L4EcRlcPTyEkbIxRjhXJq9ZXvdXvVbjjYlySVR1wKYI=;
+	b=s9Y1KmabXR1eTOwKQ7iq+jOfSjFEOFKvepTGt4ksL5OP2u81A9pmpKO7GhmBXp/yU0gAep
+	Tzj5NHenhPTa99mZOXMZPM2zH79iazmIerT+EA6KUB+/W1RPYy/0wSJQMUUwknPvEuwlN1
+	eso9GiquE4sOnb2Wf/I1uzyBieIpC2g=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793692898;
-	b=tUUmYbb8r9cQcM2tV0PEPas1hx2NJJg0v8ruCKCExDvuJSACX4abowa9ra13i7dT0M9IMt
-	/a7whZohOpYzgEpkACAIN+AZs4Bp6GTcvxL9dwjGL/jWjVW7rKOCGON8ffouqZ5LzKhPfm
-	CMFHPSaru+uvgEY/jT31u818T2RldaQ=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=f4MZEPomACo+JF2HOCbhbkGFHnL8N31Hjwf6Gqd4q3w=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1793692897; v=1; x=1794297697;
- b=uoMofLeVG/Ky2QC9sXVRMsOMWQkkJWpYo9yF02Y4Nc1np6EnpTtjqxqU8685L+rM5SOrGNax
- QKzf9hQcjZGS5lqoAOiSLM8Zfma/Hl+Ol1bP7Tdv2opBrzAKUOi4CMoKBSVNrBGlA8AIN8bwH1h
- uDvrNRWnNVQtmX2DU3c2fQIo=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 25ecdb623a230149;
-	Tue, 03 Nov 2026 08:01:36 +0000
-X-Mizu-Trace-ID: 25ecdb623a230149
-X-Migadu-Flow: FLOW_OUT
-From: Qi Zheng <qi.zheng@linux.dev>
-To: muchun.song@linux.dev,
-	osalvador@suse.de,
-	david@kernel.org,
-	akpm@linux-foundation.org,
-	azpijr@gmail.com
-Cc: linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	Qi Zheng <zhengqi.arch@bytedance.com>,
-	stable@vger.kernel.org,
-	Lance Yang <lance.yang@linux.dev>
-Subject: [PATCH 4/4] mm: hugetlb: respect cpuset restrictions for surplus allocations
-Date: Tue,  3 Nov 2026 16:01:07 +0800
-Message-ID: <d1e41a65970ced879715a73ce2607de7ad102fb2.1793692578.git.zhengqi.arch@bytedance.com>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <cover.1793692578.git.zhengqi.arch@bytedance.com>
-References: <cover.1793692578.git.zhengqi.arch@bytedance.com>
+	t=1793693075;
+	b=WS7stLsBbvbvONO6s6upXSP4aQKDlxucC7WnTH+RjV5zvTOFb5prr8rgKzRPZH58iKwcAu
+	sLhU8rdM+OhUnm1hLoKB8NrU+1O4c9LoSBpQTpAijI3uDXOyHa6f3IpDLptQRYzkGRphj8
+	avTBR49JAe9MrCX794McCUH/NwMsu/w=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=leemhuis.info header.s=key2 header.b=aYIqX3pq;
+	spf=pass (imf16.hostedemail.com: domain of regressions@leemhuis.info designates 46.38.247.119 as permitted sender) smtp.mailfrom=regressions@leemhuis.info;
+	dmarc=pass (policy=quarantine) header.from=leemhuis.info
+Received: from mors-relay-8404.netcup.net (localhost [127.0.0.1])
+	by mors-relay-8404.netcup.net (Postfix) with ESMTPS id 4jJh1W0RNxz8RZt;
+	Tue,  3 Nov 2026 09:04:31 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=leemhuis.info;
+	s=key2; t=1793693071;
+	bh=yDjkuQhj8wqQW7sNON4Yy0/wXIldLBtFl12mMAzBTUA=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=aYIqX3pqZYRHgMXt1cl5PXhWOkl92PXD2HC6hwfkeTj6/5x0BIS58eaWF5pxMqatX
+	 TVnSDqeCxgty+xcfflRxnG1ulNDV9QNGlCz226C+cE4OTYTa6w5FTdhjnKiaV0s8vB
+	 9qt0yQ9MUlmKrBP3iyKHnGos5cN2NXvHDWS00056tenzilh0S+eC1VDxPrRBaP4ZT9
+	 4vch9kdtN0QLp1ainTkmtSOM5Pc9msZAPwhv6ZCLIkdA4P6YpHC3nuwMOV7jlX8tA2
+	 Wc3UVSBu6somilMB5IHRejzUz4jbtp0robDXbjk5Nohm8zHx37er5dizXinX/r8D1B
+	 9n7yKqY4L8Vaw==
+Received: from policy01-mors.netcup.net (unknown [46.38.225.35])
+	by mors-relay-8404.netcup.net (Postfix) with ESMTPS id 4jJh1V6qskz4xJ2;
+	Tue,  3 Nov 2026 09:04:30 +0100 (CET)
+X-Virus-Scanned: Debian amavisd-new at policy01-mors.netcup.net
+X-Spam-Score: -2.898
+X-Spam-Level: 
+Received: from mxe9fb.netcup.net (unknown [10.243.12.53])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by policy01-mors.netcup.net (Postfix) with ESMTPS id 4jJh1S5T0Mz8tgr;
+	Tue,  3 Nov 2026 09:04:28 +0100 (CET)
+Received: from [IPV6:2a02:8108:8984:1d00:a0cf:1912:4be:477f] (unknown [IPv6:2a02:8108:8984:1d00:a0cf:1912:4be:477f])
+	by mxe9fb.netcup.net (Postfix) with ESMTPSA id 5889D5FA02;
+	Tue,  3 Nov 2026 09:04:17 +0100 (CET)
+Received-SPF: pass (mxe9fb: connection is authenticated)
+Message-ID: <7a1cb587-7640-4da5-92d8-57553fd00ca4@leemhuis.info>
+Date: Tue, 3 Nov 2026 09:04:16 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] drm/gem-shmem: Install writable PTEs for write faults
+To: Thomas Zimmermann <tzimmermann@suse.de>,
+ Sergio Lopez Pascual <slp@redhat.com>
+Cc: Maxime Ripard <mripard@kernel.org>, David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>, Andrew Morton <akpm@linux-foundation.org>,
+ Konstantin Fastov <kfastov@gmail.com>, David Hildenbrand <david@kernel.org>,
+ dri-devel@lists.freedesktop.org, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, regressions@lists.linux.dev,
+ stable@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Boris Brezillon <boris.brezillon@collabora.com>
+References: <20260804140403.16337-1-kfastov@gmail.com>
+ <20260804162924.0268f80a@fedora-21.home>
+ <CABWhNekebS6dt=Ft+74iG4YpCq-5ZcV1EvvERNxT612VUOC9Ww@mail.gmail.com>
+ <18f0bae1-5cdb-460c-a147-33cd1fa2acdf@leemhuis.info>
+ <CAAiTLFXd=LK93e=f3PE1f6y5m15yVknqqVNBei5rLz2AnSJ4pQ@mail.gmail.com>
+From: Thorsten Leemhuis <regressions@leemhuis.info>
+Content-Language: de-DE, en-US
+In-Reply-To: 
+ <CAAiTLFXd=LK93e=f3PE1f6y5m15yVknqqVNBei5rLz2AnSJ4pQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 55A0D20008
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+X-PPP-Message-ID: <179369305797.899839.5052632304350013051@mxe9fb.netcup.net>
+X-NC-CID: 7sMBmLbKDQp9r384H0I/4YWHJCS0kWyZfxMwgublF8WzQF9lEXo=
+X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: otzktahziwpir69ed5obsb61fhzpm64d
-X-HE-Tag: 1793692898-367469
-X-HE-Meta: U2FsdGVkX19s3GoElbm8qRtHccULBIzOD3qUv/bakZF9EL8mFVx86uLrTBO7T3DMA0DVAFHa2/d7F8Q7NTmNvyW6NKkvmvPAnc9hfd5DX1Vs1KA4Dzz8I/PXKMIe5CBSEiCXR3WRMOLjZnu3s4iE5C4DQfBibQic9uu2iPuzGtQ1RBQFzlJZ6v/66mPly2g23vWgyZU2CuWhpx1gpPofX9fDbLhSyh+8/WgvFnEL34PCoKJ689PZy/AIigusDM6yN8Ni0YHP8m+l/3uCrTWrvaB0Kr+LTzIfzHbeLWAjT12IyxkwOv1Bh0xCCpXZTzkBdL21VATJP9N2BX+JWC8EncF1zpA6DnsVhKBweLAYGy2wPravy2STWCMGlGXA6LHxnS3ATnwstOt4iiXa9hLRTi/0BR2EcnHyd4+kjy6G+Q5lM2mjzwOvZGb690w8Z3O/QqUWfWpZ5KDW7Uk0JrwjlIsmVB0h3v57vpn/68I3/jkakPYUAvSr3yEGnd5AMQKCuzsdB2CAQ/LXXdkR1ffBgTPQY9iEauBEAOsP/gHDgXEFl25p1tkCkhW+w4HrwcBN7rRx+KnkitbeE2qfMlQV3zPlSr2IhO53sXZgCbHB3h7CI/K9huFa0R+Pl05I/fifj+0QYNHamisUmiY+9NNTtwab/Q8dadx+SdKrmVqXpKOKBPSV+HKnxwDsi6Vq8Ef4jWn456Yfd9SLLnVufennEfb2FrB1nOz+2S2L5RHSkr0/4Cn8M15cwUAecMYDWecfkKstwznBJyU7mY7HPPpPtGfKPWIXtXsGLa8fvONgr4ATq8yTsxg0Ui9STc9luYJKXLN8xDfJJDGwbD2YkTh5uudfS9altah5tPRkIP3iu7tp4ee+GVYua3Iip1Cq5SQhV09+yRo0VUpoI02ah4+FAtt1ouLcYEfhURAceez20TGXwerPc2sbsDbtf4sCYCS9O6bX211YOJIg3T7SoGT
- QlKfmliU
- UNmUFHnsBHBQGx04HGse+6X0NhsiecENdUeh5qls77WAUzKJVnWhdNu8mREiAdIH6c2TR0OAcEzPVBGsVkvaZ2G3nTLcOvwP55ujhsCng0VWYtTSPR4M+43XYhUKsq5BrNEJudfp/XpDBdLwQHrSQiDwDjfzD2+RGX3Cb+s0Ym51Ia+jYZLKVIbajqRSly5sbJo5uuSv4GFL4gnsSe+uEjaG2mB//uDLDs9H/BDWNUAtBN3c=
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
+	autolearn=no autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam09
+X-Stat-Signature: ey9pukyjprpxogyri5hjp63ri5qzu98u
+X-Rspamd-Queue-Id: 820C2180002
+X-Rspam-User: 
+X-HE-Tag: 1793693074-993791
+X-HE-Meta: U2FsdGVkX19KTHyg2q+a+6lRSDaXXYc5iaHVUgCkqEuOwikEMO4ao4CnMS6oKpwBRgOpdWtJFwGuUuWZQWNZcIcFZEjki2qU68i04vhRB5cXvyJsfknE0Lu5cC+fSCHLE9N+3ieQamGYeBbzBdnqEUBjjWln24KPTWeu1sm+DqbGRRZpZVeCHUoSVzHc/fYU6YgPFp/u0Lvg4CMduBY5zS5WXdwheTFOHvKL22dvAtvdtzpAzfr2gqjMfVtjN8Qtw+do0mhnNI3/8rqrBu6z1r3aqeKc5JUhJkgkSkUblS15IrtgEqiQk5WX93GMdPnkphN3VRd6BjT4J9GeJ89Ik2QFxpB5ZUuSFXBlv3nUAL1a899likH8fzCn5W89gwNxIt5e1CcPSdz6/PXNCQ8x7EsOhxG0lo9L8gW/xlkjpxdkk5Yj1OxDrGWZy8dnlviKF186FdfD+kM4y0SLBg2wiY2ZBdFfHnB7yWO+JBeaHGvPkJXBxckIx63qVKeF2NSwHFVjQJvcdN0K0o3hZBebvCJKe5qa1D1Zqg4GqhNdSEepw2cixVWnUgN+jLF6U0i9Tdc42H9QcNRDvhr6nqe/MBSGeJ5LxFBcNy9b8I6uLagdiU6DW5n+xJLylgk5HDnlopE2t51OWsayanpSknzbS7FqCl8kNE7RGviBG9Fzx0xEYdJniwV7w5oWWHtfpJDD50Ivms+I0lVHZZs1JAmARg7vnPLp2PjveL3/SIM6sObZxByv9bF/lwrTIBOxLFwSrG+Stg7UoLQ57VHViRiFc7+ANTAdtDmRGMm1zZ0QDBXGEQOVpS1ZfOGvu2lqxThESHAYejEQ+Sg8MQX2GZgzOde4YkURYr8zs++EtHC4rt3QPv9w1SNcLF0LkbXO0sfKnvpn2sa0z5ogD0n0EOiR4IUXydZ/PA4VfA05iVwa54QSnoX4D/iT33nwUe/QmOEzLZICaCUnAZDyz8ZiDgi
+ a+lKrpaA
+ BOlEpUvGMfl/XzQMWDmFBo76Mcm+XvtdjAfBdkG2nBWW88C1JT7jhgVh8wiu9eQEAShhO7PWwZdapZVECqse7AnRMo+KRh0K3xZgNgU5FbQFaL7VEm7Od24bziaGAUCLQQgtFb2ii1NrN+7BGUa24OdaIpNz7p5dyCrfrlxoAiQoqnTxbD8uoyrh7m3ci8Qs4wQ7WthJUestgP1eGP4K5tIuZHskcmz4lnMkahBIB27tCACFA8bpYSLfwXgfaJOWEtVuQL3nllC64TAmQb51SQ/dgXIyif5f8DIfeMClCQVURujcpC8tPoQmYZCueNfGW4pzbEXK4N/Ht7EZR3i8mB15PbecfEoO/w/vNR3fU5b2SQlXxbFnWlyJZ3m9d4h4Czm3UNd9qRX64nyDoiaDnNehdVE0rGcsvqphSCCS7vpATbTGHB+2VOxj9KfxRF9GZ9zT4y5aJ+YIXR+mYy7ZlNldHNrdnb3vp2MgfV0y1G/eXHU/QFJR5UcVjdxNblW7I+Rv4hlnoIILTWAL1HAiK7XrksoE3UvLzO/SnGtdKBWSERkwtLl3Tp79d1AMmrKi/kK3t9A81EZw1/70=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,110 +124,44 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-From: Qi Zheng <zhengqi.arch@bytedance.com>
+On 10/29/26 17:55, Sergio Lopez Pascual wrote:
+> Thorsten Leemhuis <regressions@leemhuis.info> writes:
+>> [CCing Paolo and Sergio]
+>> On 8/4/26 16:57, Konstantin Fastov wrote:
+>>> вт, 4 авг. 2026 г. в 17:29, Boris Brezillon <boris.brezillon@collabora.com>:
+>>>> On Tue,  4 Aug 2026 17:04:03 +0300
+>>>> Konstantin Fastov <kfastov@gmail.com> wrote:
+>>>>
+>>>>> Since the introduction of dirty tracking, drm_gem_shmem_vm_ops has a
+>>>>> .pfn_mkwrite handler.  Its presence makes vma_wants_writenotify() true,
+>>>>> so vma_set_page_prot() removes the write bit from vm_page_prot of
+>>>>> shared mappings, and the vmf_insert_pfn() call in the fault handler now
+>>>>> installs read-only PTEs even when serving a write fault.
+>>>> [...]
+>>>> The same issue is being discussed here [1].
+>>>> [...]
+>>>> [1]https://lore.kernel.org/dri-devel/20260804120529.1730187-1-pbonzini@redhat.com/
+> [...]>> FWIW, it seems that series takes a while to get polished and
+mainlined:
+>> https://lore.kernel.org/all/CABgObfYgZ87%3DW%2B6E%3DN%3DWwTuyYkaoKU3hqd84JDTSAvT3_9dh6w@mail.gmail.com/
+>>
+>> To quote: "It ballooned a bit and getting acks from everyone involved is
+>> hard... Either I or Sergio will get back to it."
+>>
+>> Is that something you/AsahiLinux/the world can live with?
+> 
+> Asahi still ships their own kernel with downstream patches, and have
+> backported Paolo's series. But for the rest of the world this is pretty
+> bad, as it means anything that requires virtio-gpu with blob mappings
+> (venus, native context, etc..) is broken.
 
-Gigantic surplus allocations can escape the faulting task's cpuset.
-CMA and the contiguous allocator trust the supplied nodemask without
-checking the current cpuset.
+Thx for this assessment, helped a lot!
+> Since the proper fix is going to take a while, I think having some form
+> of interim solution could be a good idea.
 
-For example, a shared HugeTLB VMA has MPOL_BIND={0,1}, and T is a
-non-leader thread. With surplus allocation enabled and no eligible free
-HugeTLB folio, the following sequence can occur:
+Sounds like it. Is there one that is in reach? Is reverting the culprit
+from Thomas and anything that depends on it an option? Boris patch this
+thread is about would not do the trick I assume?
 
-  CPU0 (cgroup v1 migration)       CPU1 (thread T)
-  -------------------------       ---------------
-  cpuset_attach_task(..., T)
-    T->mems_allowed = {0}
-    /* Non-leader: skip
-       mpol_rebind_mm(). */
-                                  /* Fault; VMA policy is still {0,1}. */
-                                  policy_nodemask()
-                                    /* {0,1} intersects {0}. */
-                                    nodemask = {0,1}
-                                  hugetlb_cma_alloc_frozen_folio()
-                                    /* node0 fails; node1 succeeds. */
-
-The 1 GiB folio is allocated on node1 despite T being restricted to node0.
-
-Intersect the interpreted policy with the current cpuset before surplus
-allocation, preserving MPOL_BIND and MPOL_PREFERRED_MANY fallback rules.
-Apply the restriction at the policy-aware entry point to preserve
-per-node pool management semantics.
-
-If the cpuset changes during allocation, rebuild the mask and revalidate
-any allocated folio against the current constraints. Keep it if it is
-still eligible: freeing an HVO-optimized folio can defer returning its
-range to CMA, so discarding a usable folio can cause a needless allocation
-failure. Only release the folio and allocate again if it is no longer
-eligible.
-
-Fixes: eb02f14c4a2b ("mm/hugetlb: allow overcommitting gigantic hugepages")
-Cc: stable@vger.kernel.org
-Reported-by: Lance Yang <lance.yang@linux.dev>
-Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
----
- mm/hugetlb.c | 38 +++++++++++++++++++++++++++++++-------
- 1 file changed, 31 insertions(+), 7 deletions(-)
-
-diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-index ce9c8e57b8e5c..6fd6e58ace869 100644
---- a/mm/hugetlb.c
-+++ b/mm/hugetlb.c
-@@ -2181,22 +2181,46 @@ struct folio *alloc_buddy_hugetlb_folio(struct hstate *h,
- 		gfp_t gfp_mask, struct mempolicy_interpreted *mpoli)
- {
- 	struct folio *folio = NULL;
--	nodemask_t *nodemask = mpoli->nodemask;
-+	nodemask_t alloc_nodemask;
-+	unsigned int cpuset_mems_cookie;
-+
-+retry:
-+	cpuset_mems_cookie = read_mems_allowed_begin();
-+	alloc_nodemask = cpuset_current_mems_allowed;
-+	if (mpoli->mode == MPOL_BIND && mpoli->nodemask &&
-+	    nodes_intersects(*mpoli->nodemask, alloc_nodemask))
-+		nodes_and(alloc_nodemask, alloc_nodemask, *mpoli->nodemask);
-+
-+	if (folio) {
-+		if (unlikely(read_mems_allowed_retry(cpuset_mems_cookie)))
-+			goto retry;
-+
-+		if (node_isset(folio_nid(folio), alloc_nodemask))
-+			return folio;
-+
-+		/* Balance free_huge_folio()'s decrement before caller accounting */
-+		lruvec_stat_mod_folio(folio, NR_HUGETLB, pages_per_huge_page(h));
-+		free_huge_folio(folio);
-+		folio = NULL;
-+	}
- 
- 	if (mpoli->mode == MPOL_PREFERRED_MANY) {
- 		gfp_t gfp = gfp_mask & ~(__GFP_DIRECT_RECLAIM | __GFP_NOFAIL);
- 
-+		nodes_and(alloc_nodemask, alloc_nodemask, *mpoli->nodemask);
- 		folio = alloc_surplus_hugetlb_folio(h, gfp, mpoli->nid,
--						    nodemask);
-+						    &alloc_nodemask);
- 
--		/* Fallback to all nodes if page==NULL */
--		nodemask = NULL;
-+		/* Fallback to all nodes allowed by the current cpuset */
-+		alloc_nodemask = cpuset_current_mems_allowed;
- 	}
- 
--	if (!folio) {
-+	if (!folio)
- 		folio = alloc_surplus_hugetlb_folio(h, gfp_mask, mpoli->nid,
--						    nodemask);
--	}
-+						    &alloc_nodemask);
-+
-+	if (unlikely(read_mems_allowed_retry(cpuset_mems_cookie)))
-+		goto retry;
- 
- 	return folio;
- }
--- 
-2.54.0
-
+Ciao, Thorsten
 
