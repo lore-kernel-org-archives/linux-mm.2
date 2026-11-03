@@ -1,129 +1,135 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECD0E606D809
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 11:17:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C01D606FAF7
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 11:19:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=k1e81ZKb
+	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=JUJ4cqvg
 Received: by kanga.kvack.org (Postfix)
-	id 24B006B05B4; Tue,  3 Nov 2026 06:17:41 -0500 (EST)
+	id 534156B05B2; Tue,  3 Nov 2026 06:19:09 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1FC5C6B05B6; Tue,  3 Nov 2026 06:17:41 -0500 (EST)
+	id 50C036B05B3; Tue,  3 Nov 2026 06:19:09 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0EB816B05B7; Tue,  3 Nov 2026 06:17:41 -0500 (EST)
+	id 422C76B05B5; Tue,  3 Nov 2026 06:19:09 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id D70446B05B4
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 06:17:40 -0500 (EST)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 8FE68A7CDB
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 11:17:39 +0000 (UTC)
-X-FDA: 85393557438.24.49FE128
-Received: from mail-pg1-f178.google.com (mail-pg1-f178.google.com [209.85.215.178])
-	by imf01.hostedemail.com (Postfix) with ESMTP id D868140002
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 11:17:37 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=k1e81ZKb;
-	spf=pass (imf01.hostedemail.com: domain of xiaoleiwangxiaolei@gmail.com designates 209.85.215.178 as permitted sender) smtp.mailfrom=xiaoleiwangxiaolei@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 20AFF6B05B2
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 06:19:09 -0500 (EST)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id C1953A0340
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 11:19:08 +0000 (UTC)
+X-FDA: 85393561176.21.DD860A0
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 544BA180006
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 11:19:06 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=JUJ4cqvg;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf06.hostedemail.com: domain of pbonzini@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=pbonzini@redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793704657;
+	s=arc-20220608; t=1793704746;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=rO8PyIeQTJjW9jZC3eDavQXhSeNQrxCH5KHGWPFOq/g=;
-	b=C5VI5MLP87V5g4j9IgXdIkAORJ5Ow1pW/k+yah4cit6huzXxcz1IUOePjs7zJnjXpMrpQy
-	tLR3o67rHTyinOUcse4nFBDAcjDT1fVpxTtpjVrKW6ePtrFj4Udl+06W9Wv2TXFwJjmbky
-	CiFRo7wwmeiy8sjZj9C+CXSyxdh/+7Y=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=GoGPgCpYCXIZ2TVcCltrAuHOCg1Xoc0aHaKBD0ahpDY=;
+	b=JdPSEz5EnPxh7emlEQZF34lxHFcoPrsH39HFaUAvuDPg4cuEsP3JoBpMh01ggLhF66aO43
+	Uf0XM9CB7/oQ69vFNNYp93LAZOTVXpGwGLfGXelDHy7TfD3hD5b9hVqLgJqnZJj9MMEzr7
+	gmKkrfDJXUwrvyL3auyhUTV8/mJZBVM=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=k1e81ZKb;
-	spf=pass (imf01.hostedemail.com: domain of xiaoleiwangxiaolei@gmail.com designates 209.85.215.178 as permitted sender) smtp.mailfrom=xiaoleiwangxiaolei@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	imf06.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=JUJ4cqvg;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf06.hostedemail.com: domain of pbonzini@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=pbonzini@redhat.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793704657;
-	b=b/Mia7t/tND/woHwn6JnzmIKUij0cWZGpECEF1z3HQoevJwZKPLpaX0xPOeB6YmN2swe5D
-	+nf4C//iv0+9MlTA8+umF2wMjkSUQIryK/DiQ7kaL9wP/78BQ0xS27QwYG2mjgNUjx1+MS
-	3N/ildmozcqMsjnE9S4fkCWfXCwDP68=
-Received: by mail-pg1-f178.google.com with SMTP id 41be03b00d2f7-cdac6d19ddaso1599470a12.2
-        for <linux-mm@kvack.org>; Tue, 03 Nov 2026 03:17:37 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793704657; x=1794309457; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=rO8PyIeQTJjW9jZC3eDavQXhSeNQrxCH5KHGWPFOq/g=;
-        b=k1e81ZKbmVr0kLedX98UeegqhxZH3If0VNtPHq1KzBgSwN9bv1G+OyHc77pN8tBoMX
-         +YpBeBzybc0iW4YC80/Ttxuc8sE5BgqFKlKkaFw3VNXyLkGaPHT0XBKM7QXTdwqd3BJZ
-         x5mQcV6V6misXQeNgaF2scKtM7PCQ65X8Q1zzFv+UN4Pauh4syG1f8NTbvhxMlgImXd8
-         CNvPSUYt9bJp6sNDaoZ9em+BCQyfUxNO/JdSKQlDggrOe14iNMh3frsV1d4sGRmt8QtW
-         az/Fh978TJWTlErhVg+Nl2kH+OeXtr2J0WOCCTHVtiftwKHHlxw2FhVxGVU16QjjTko5
-         yXxg==
+	t=1793704746;
+	b=MVX0Y2RHFCZCm9cIcCRg94yIqVE+DAlqu42eV+PKB0XtKcoy6LvU/4MibzRrloAJOtfZbQ
+	6tpG0lwoyjLWMajyayh6Q48Bl2mSBv95SYnQVWBdOMfJOMwADM7HOF5Plx/jJURHplqyg8
+	FjCs1kJhFOFPo5uwp33B6hjesmOYKyE=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1793704745;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=GoGPgCpYCXIZ2TVcCltrAuHOCg1Xoc0aHaKBD0ahpDY=;
+	b=JUJ4cqvg7HIxCd1RC5B4xEyWu5aBvq6keFe4Xvk50F1l1aVZuibSrLf8HMQ2a7WjLljRo2
+	b5G1vwTLHUEJxa7Ybp0QRRw3kKP8N52kIc5a0XaHn6kqqun6j2WeLsNN8tDfXz7Ehd2SV+
+	IVtfr5GsHCsWrVGSO/ZbeVySJ15V274=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-163-QDV-Hd6pPT6vimL90vTfyA-1; Tue, 03 Nov 2026 06:19:04 -0500
+X-MC-Unique: QDV-Hd6pPT6vimL90vTfyA-1
+X-Mimecast-MFC-AGG-ID: QDV-Hd6pPT6vimL90vTfyA_1793704743
+Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-48b01a74792so2733971f8f.0
+        for <linux-mm@kvack.org>; Tue, 03 Nov 2026 03:19:03 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793704657; x=1794309457;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=rO8PyIeQTJjW9jZC3eDavQXhSeNQrxCH5KHGWPFOq/g=;
-        b=vzcHP+Z2U8qDj2ID5lNWbEra5rjD3dBQPZtffKmMMcsYPkof+6b2CW7iazHq0RogCv
-         IhpIPmPqrOCm1woHR6+6VjIhYy5ov3bvJmGZOuyi22CWTmQbUPSwd6PJgTE8iERWGPkB
-         6OEr2MFAv2hY6oT9QgM4otXDDtX3aiKCVBNazs6HB3ozTg5Jd5LbQT8unNqNQM2lf+UZ
-         9KzF/sacjDKVwcoFwg/XtYi38c5emZE5lEGY4PozumLYkNINxMpIV8EIw5NFLz4bDFN+
-         MEnd/4cKKhXcB0mHi0WtlDNJq5zmf8uHtd1lb0n3AIqx15AuR5Nwv2J9LvCvrMJqlzLA
-         wawQ==
-X-Forwarded-Encrypted: i=1; AKwUvByfzEC71E+JKxMbEK6X7SEkLrQXItN2twzAGL7ascz5poyYVhrW1tOVVoKbgiLh0xyVYYVrfLUI4g==@kvack.org
-X-Gm-Message-State: APuU4Z9OcM36wLBQJEbvj9ng8Udxen15647q1o0St5t/UHZG897/wStt
-	mauEWX90T4aQd5GQUtiPo4VOQIDaxpBwX26kz5pKJ0zAoFO0Qo14ohJr
-X-Gm-Gg: AYBFou2qrMP5KG5ABdHceYpWZ+ekufidygyAVpxaxtCKXJapwrqZE9NyW4UFxZaJ4Xu
-	Dd5NjnnsUEI8SZnS3mhJWLvkn0F/Qq4wsl8WZ6gvYsAvrSRycxEeHybMak1blRd+ysgTkCZs0yu
-	wMJMI6eyHUuKwNyNWD9dMU+F12f5o1kFUJrxVEzVC8cwZYsnZskFJL9TUmrifre2XKsgSHkcPk5
-	UJkQ/nCROFvfM4nfBCHdpRooXijE8vEJsGt5eROT/evuWeziSLLJWQz36HmzimBY14SX02RnVIr
-	JaFlWfyQDxShLTZtrZcIofIf9JQZ5Cu5KHKUmJXKduLijKBFG/Vpi2YeZ7nFpfpL+9wWV/IqU6D
-	wL9WRC3nHcmsnbDGYmZUwyB1+RdUKYuIVUWzYiVeo/XLkwzEPLfyGfcl0brD9th1mmKzM5974Ih
-	B0NNqmh3ZpLSiTIuiPuAQ3Hks74kEOPqW2j3PnPEyUEFzOAfiSG6RrURo05fc14VTyx2yqnOB2Q
-	Ya+QPLWUh6EhV31GOGJC/nvrtwNnphuwme/xYBfQ9hMeS5pDDY5jtQ5jIWGXcnuZqtPQlPMWMZ8
-	9m4wJKqm21fdX+A17fBped8uuIAl5/s3fkKiKsfrQXSB0hFytlfIrE9YkWsLArWbxZTJ
-X-Received: by 2002:a05:6a21:3216:b0:3e2:ad49:b24f with SMTP id adf61e73a8af0-3e928e47524mr11186434637.68.1793704656472;
-        Tue, 03 Nov 2026 03:17:36 -0800 (PST)
-Received: from xiaolei-VMware-Virtual-Platform ([219.142.21.190])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8aadaf82a66sm3065147b3a.56.2026.11.03.03.17.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 03 Nov 2026 03:17:36 -0800 (PST)
-From: "Xiaolei Wang (Kaihong)" <xiaoleiwangxiaolei@gmail.com>
-To: sj@kernel.org,
-	akpm@linux-foundation.org,
-	david@kernel.org,
-	ljs@kernel.org,
-	error27@gmail.com,
-	xiaoleiwangxiaolei@gmail.com
-Cc: damon@lists.linux.dev,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Michal Hocko <mhocko@suse.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Vlastimil Babka <vbabka@kernel.org>
-Subject: [PATCH] mm/damon/core: reject empty access pattern intervals on scheme commit
-Date: Tue,  3 Nov 2026 18:54:18 +0800
-Message-ID: <20261103105418.362459-1-xiaoleiwangxiaolei@gmail.com>
-X-Mailer: git-send-email 2.53.0
+        d=1e100.net; s=20260707; t=1793704743; x=1794309543;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=GoGPgCpYCXIZ2TVcCltrAuHOCg1Xoc0aHaKBD0ahpDY=;
+        b=P7umDi60KvjF7bL6W+9L8ovStn8nfHcmfQF359IBZ90nUHL0vCdJY4jqdZWjVmZFEN
+         ikeq+vSx3lV2+2PvDEqcRtjq5sQ0t/rLXB4lYIqYq5mdJIGB3R61Ak7He9h84MlBI4TL
+         T4+GsgletR/zh+AWxEx3GcFsgt3zDlL8SivG4ZATnhtjXcnef4RpuURM4DNEJJH3IXKT
+         BgbQ48royyYJ8qoeNJhC7nEiOZWyGw8ZQIxoA32zRfW8Va4cS7jmIkJIj+5RHtNM14zS
+         MIkvQBnh8s+KfNHKSN/jlLmNWOzrZfwL+Jtic9WZqMoNmA8EFbJVilpiq/gqqtT9TdQv
+         fzoQ==
+X-Forwarded-Encrypted: i=1; AKwUvBzHHIy4y2VyG3WBSVgv8UThtMBp0BHRewedA10Ml+0tuTvOz/BNc7J/4a6pw2hTEz9AG1IllXjb+w==@kvack.org
+X-Gm-Message-State: APuU4Z82LRkjZn5Ohd4bTFVpPpX93vASRBSPprseM7SxhCBVZmBynrqe
+	yaowLGDvFv+NLJkt3uEhUgw9j/2njvgqoIhfpet1954sO6EoTXQMHM8v+AFV1CAvyAGAQ4HpkZ0
+	WkAlySZb0lxy709VJ6ZWqOsdKMGNrqtH5+YV211J2Apu4yvZDWnCat0ql+FkC6Ysh0G6KR9i8Ls
+	cFNwsLI1f1r9yFHFH+i06AEGdih7Q=
+X-Gm-Gg: AYBFou0D0JSM6qYp9z4a8wrat6s+fKjAqDdV3PpLJ7LpxOvLe0+XUca8yNg3Nr614RL
+	5B8BOXHwBhbh0zde67f1oMZfwDoa4AxJYwRNxhc96ENRkalqosZJ63623ldIZ+hDu+fkN9ED/pR
+	jK0+CH+mNZNN0m+KH/wnESYMDwArKOGQVwfhWlWChPToDYbsx4Uvcgwn6Hy6AdK4hznjxdZekZc
+	ppj3HYx3vOPZ/7VcCgAQQl122Ab8s+cXkPQdCFvjDi6JdeaetsbWq8mFqsj
+X-Received: by 2002:a05:6000:41c2:b0:48e:6f76:de9d with SMTP id ffacd0b85a97d-48e6f76f5e8mr28351838f8f.46.1793704742874;
+        Tue, 03 Nov 2026 03:19:02 -0800 (PST)
+X-Received: by 2002:a05:6000:41c2:b0:48e:6f76:de9d with SMTP id
+ ffacd0b85a97d-48e6f76f5e8mr28351800f8f.46.1793704742539; Tue, 03 Nov 2026
+ 03:19:02 -0800 (PST)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 3z3hn4jgpuhkzi1sp4tnt89eux1acuhy
-X-Rspamd-Server: rspam01
+References: <6adf2939.67317f00.38c4bc.00ae.GAE@google.com> <20261026224305.1254-1-hdanton@sina.com>
+ <auCucDdZb8mig7UZ@google.com> <auDvUyfzg6nLtVox@thinkstation>
+ <20261027163929.2bb28d5b@gandalf.local.home> <aujLx1FOc12E72rF@google.com>
+In-Reply-To: <aujLx1FOc12E72rF@google.com>
+From: Paolo Bonzini <pbonzini@redhat.com>
+Date: Tue, 3 Nov 2026 12:18:50 +0100
+X-Gm-Features: AclHuK9TCKz_SldDuFHKUBahl0dpObHDrm8b0qWMqlbehXg4DMpHhR2Dfu-OUko
+Message-ID: <CABgObfZ9mHj7Fsq7Z2S5vFy8R2Gkh2tHBATGJN2BpH=6Waks9w@mail.gmail.com>
+Subject: Re: [syzbot] [kvm?] WARNING: locking bug in __refill_objects_node
+To: Sean Christopherson <seanjc@google.com>
+Cc: Steven Rostedt <rostedt@goodmis.org>, Harry Yoo <harry@kernel.org>, 
+	Hillf Danton <hdanton@sina.com>, Boqun Feng <boqun@kernel.org>, 
+	syzbot <syzbot+f11512d1e5878ba5e60e@syzkaller.appspotmail.com>, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, 
+	Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>, syzkaller-bugs@googlegroups.com, 
+	Vlastimil Babka <vbabka@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, Hao Li <hao.li@linux.dev>, 
+	Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org, 
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>, Clark Williams <clrkwllms@kernel.org>, 
+	linux-rt-devel@lists.linux.dev
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: YugpOs_zHu6ZVl-JXoM1aC7ZcqnLYMGbc9CS2vANBxc_1793704743
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 544BA180006
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
 	autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: D868140002
-X-HE-Tag: 1793704657-804803
-X-HE-Meta: U2FsdGVkX18r4lXKRG24gHmjovtRbF70bMeSXQEKxUEIzE+mZQovP2Nikc1Wx2VXmff8oTAbUwaX+WiQOlseY+NNxg5gBlY/fPfadeN+AJQ5vi3ko5IMDzCx0ZSDbnF//OxWK5CHUQ5ik/bQ/Enrdq8/FY4HA7eDJt0ujrUSIJ2Zsk6QTh6e0y91i4fb+lCEdPfJ9RifCKDUmvhlwSgOBZWG0WrmwN7AsUoDopC0fBSeD29U39Kx8jO5f32Uq+OuxKBY2we4eXgY6OAWIuSD88ZWXB1Q19bNwDH+mAeym0tY1b59gWbzYuVV7bGfbUENDfcGv7Pb8npPS9T/+wwjaq4oyjyShPy+2mO85hYBpw34Ff71hmlvuMXBTloARashcV3eqaBEJUuAnydZRy9yb8kO+NE9mOZSaub52HoMWprvitEJUkPqk1Uky/tfXCI+S2FBrkSD4GjdIcx4oO9EpkOEyIoKoNXbz3TtoV7OU9bLL+m+/1k6jG5z8CyIJfSCPABF1oALdI7UV30Gzm+6nseCVazuW9DUJ8kjRZJPCkPH9wgEZfMsGI9QQuKceI7yvJUyO/kqvyQJjDkH4xBLpjTMoYJBDHoqiYfj4B77hyZrmGEy17aejKBl2pGpOD3gV6gqaTm5rF2+Pd1dVeAwde0A8NR2hKspPnvnQB5wNhRj5MWIFjytNoQKeBNlcr/n4KhOd6aOQJQOlNco8fm1bQ4+nmiHetNIoCcHez43OXF4ReELr7eFPXTiXCZiQ+3x8ZnhRLMVob8YogDIURor4lXFkdXxz0h2JQZoipJIQHtEZCVbRRClfvwC3L3IduCSwcTzb6Uui/udLqZeVz1lcKYQJy1qEE2kl7z8woFWy6is3XDyF/sRjLs1BRDRU+ubMH7+K6zj5X4FL0KwcdxitZMLSaJZ5xuVm/qi99Uh54NmarHFZ7g5TdWlmmecYTrhaZ+d7AvnwjXbv4h/leX
- aIdlmRUh
- Mqg/jmJ23mRK9+uEg9r/Lnyg4DH+7EoIDLejwVhn7gsHBFM0qPlRoyTsnLaP7NWr80wvVJH1nbmTwd6eQac0N4fdN/4wWIUMh8MAVGQj5qBHzQkjCMFtFdHnaLTExX3m5mWihf5Hplduj2I3bc4Ep8QrwJdxemSJid4U21hL3jRkOnZeLYAqCm6QJ10Ob8cVXjKA43WLdhmO0H9qtpLgJPpBV7hE55hgnDHgQXDOeMYvJwW5lybkORs7D50Q/Gj6BS8o9T/VqFtxy6PQxlfu7akf5dXmqEPbknDANFASZWX6lByW7JIK397sIjjHfHjlxuHwsokuU4roCsE1SLR1EScUXJxrVkRuASOcGudXaLM18hdzTIt7p2os/FrbmxFKrMwgHfTIA0DghD/OF/DWi9FPy4aAYJlXMSgSFBpjz4+dW7PwWaLM2CwBkrtfQ6Asy1kQuUT1ZMxxIVkd0Z9TrQI+d47xFSd4ZOst1o+pUpELfT9zK8akwbqOpo57khnQyegBbIAbGWLsV2DT+7bXTAFUMumf0wJpdgArQY0FQWl7JqGuBezD7fwHh1/UjlSBgNwapG1OaGJC56WI=
+X-Stat-Signature: 5omzbi1kuwobf8919wiidcw56j3q9a1q
+X-HE-Tag: 1793704746-801283
+X-HE-Meta: U2FsdGVkX1/kqRPcV+Ch58ccuh/uZYO49f0/+2G06mWWZOtvTHWdcNQhjkvpV59ji7fpmeSAvEakdRt2/iZPptVtwsch5HXEPggPjK+NnkQMD1CnWzAOFh/2g+A7uD+4jW4iQjQzT4ks5lLC+b8aKI4gWTw0wlw/78L4QGb9tHwXJ4uqzXk1mwt+FokddFWBC9nw89mBHMBcAt6O6ZyphdAiWT/wPeQakjF/5Oi2h+KYx64f74sEiRQEWfDqdm4iID+iOum/ZcvdH9sFfrVDsY465keQ9m1EdaEqHE1pWRMIRrIjsXAOKWvertyBwIty10+Y4vBVZijkPBVoV7BSo/hINyKaZW+BiF/rt2KT2Wv2SLiPpm7NwoyEaUtpqT3DT9EQhnqPmuGpmyFpjwnWVSng6ZI9YDzvKkak+aHdFYyZgTYu5AqI/0Yk+qLO1MEkik3r5DmatbPvoJ9zdPOVMM90+HpYLgv50WfmCOCDSuR77vUSr5xEc9ryjM+6/w0YBhjj63rHQkiYHDRbYbUPAV32c0fOOjcdGMwlObM3U6gBr5C01ukd8l0WhW3Qvkz6Niko4yxOFqlai2vxe7/+rtCFnimjdKr0YAOjkVOnCzbiqMzXM8c4TPgT/oIhlLyF53r+8RX3zcHxgb7TxSIvNzDFBmk4W+E0I9d3vk7Vo4nc/qCr5YKHt6f8O6VPZyYdj1voz67161ZNJu6yAUdEQmVqL8aNoOqrH7jy0gGGlP3mqbgXOUo8TmuhCtXAL9B5pJnSXmU434cGCkEM3U3AC1pkaKgGqBhNjtf4Toi0Y4XXYPBucxdJnZs6Q6rTspW10tpqY/cB8Zzmq9Jn6lngf3YmS4SO6gTwXDz2LnEYWLf+QnUzaesjiCT8RLT5eNp/BJovdYwQuREzueU8pIyKfdKdZtIc0Rv6oR0/ciMq+fhCW3waBNcVqdZe0WrPaEQU71dM1lGoe1fHMVaNJpa
+ GJ+aGvQ5
+ JAPy3KmHyBIVCcL9lSsuRtZmU3ppbt3VWESqN64f2TISgHdJtpvVAyC/pyHbe54ykz8Iz1d9EnIoLQ6yJ4kd879DxQAKrFGnOjWM3j/8jWPXXif5X9goOWOX3lIXCdh2mSakmpWxg7VcwuRnAkFiJ8vgk+cCm29bulNeu3GqthF4fTJK7+FVWz845spqdulRCclqX6D1yhDPRDuPz7rDIHFWZ9smX96CubSC4k376SycW3t0Ycggu/ZfjEelTjRnMIxKAP6PNWVz5G0emDyUfrlOciraDCicfAOafWtrdeOnFJQHO+XwIVB2Mjx5T8067l8yv9iD559OKv4yVT5eNCwFl9ZT6jyl6L9jotSXin8ETAi0eo8WxGXlNfVP+kDDJkqpj2aFdVmy91VT0FUyhXHj3vTIJK2veWRua86d0LgroCNd44i95HnCkB+raC3f2NsHDVQQKNjLOn68=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -132,75 +138,37 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-DAMOS schemes accept access pattern bounds with min > max (e.g.
-min_sz_region > max_sz_region).  No input path validates the bounds:
-damon_new_scheme() stores the pattern as is, and the sysfs ul_range
-stores are plain kstrtoul().
+On Mon, Nov 2, 2026 at 6:43=E2=80=AFPM Sean Christopherson <seanjc@google.c=
+om> wrote:
+> > If so, we need to make that a thread for RT kernels if you want to call
+> > kzalloc_obj().
+>
+> Eww.  I can't imagine there's a sane usecase for memory overcommitting a =
+real-time
+> guest.
 
-At runtime __damos_valid_target() evaluates "min <= x <= max" for each
-of the three pattern dimensions.  A reversed interval is an empty set,
-so every region fails the check and the scheme silently never matches
-anything: nr_tried stays zero forever while the kdamond keeps running
-normally.
+While I agree with the feeling, the dummy allocation path should be
+mostly dead, because page fault should never (?) enable interrupts
+before waiting:
 
-With such a reversed interval, damo starts normally (rc=0, kdamond
-state=on), but nr_tried and nr_applied stay zero forever and the target
-RSS does not drop.
+#PF interrupt gate
+  exc_page_fault()
+    kvm_handle_async_pf()
+      __kvm_handle_async_pf()
+        irqentry_enter()
+        kvm_async_pf_task_wait_schedule()
+          kvm_async_pf_queue_task() <- registers waiter
+          prepare_to_swait_exclusive()
+          local_irq_enable()
 
-The same holds for the watermarks thresholds, which must be monotonic
-(low <= mid <= high).
+The dummy allocation path is only reachable if it's an L1 hypervisor
+that is getting an async page fault while L2 is running, because it
+enables irq before the call to kvm_async_pf_task_wait_schedule(). I
+think we can drop the dummy allocation for good, which would be even
+better.
 
-Validate the access pattern and watermarks at the beginning of
-damos_commit(), through which both new schemes (damo start) and online
-updates (damo tune) pass.
+Whether you would still want to disable APF for RT kernels is up to you.
 
-Fixes: 1f366e421c8f ("mm/damon/core: implement DAMON-based Operation Schemes (DAMOS)")
-Cc: stable@vger.kernel.org
-Cc: Liam R. Howlett <liam@infradead.org>
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: Mike Rapoport <rppt@kernel.org>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: Vlastimil Babka <vbabka@kernel.org>
-Signed-off-by: Xiaolei Wang (Kaihong) <xiaoleiwangxiaolei@gmail.com>
----
- mm/damon/core.c | 19 +++++++++++++++++++
- 1 file changed, 19 insertions(+)
-
-diff --git a/mm/damon/core.c b/mm/damon/core.c
-index eb1fcdabc007..865627bda240 100644
---- a/mm/damon/core.c
-+++ b/mm/damon/core.c
-@@ -1566,10 +1566,29 @@ static struct damos *damon_nth_scheme(int n, struct damon_ctx *ctx)
- 	return NULL;
- }
- 
-+static int damos_validate_scheme(struct damos *s)
-+{
-+	struct damos_access_pattern *p = &s->pattern;
-+	struct damos_watermarks *wmarks = &s->wmarks;
-+
-+	if (p->min_sz_region > p->max_sz_region ||
-+	    p->min_nr_accesses > p->max_nr_accesses ||
-+	    p->min_age_region > p->max_age_region)
-+		return -EINVAL;
-+	if (wmarks->metric != DAMOS_WMARK_NONE &&
-+	    (wmarks->low > wmarks->mid || wmarks->mid > wmarks->high))
-+		return -EINVAL;
-+	return 0;
-+}
-+
- static int damos_commit(struct damos *dst, struct damos *src)
- {
- 	int err;
- 
-+	err = damos_validate_scheme(src);
-+	if (err)
-+		return err;
-+
- 	dst->pattern = src->pattern;
- 	dst->action = src->action;
- 	dst->apply_interval_us = src->apply_interval_us;
--- 
-2.53.0
+Paolo
 
 
