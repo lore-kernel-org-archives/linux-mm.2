@@ -1,149 +1,101 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D2BA606A339
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 15:01:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52725606EE90
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 15:01:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=d3K6pDSF
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=VEcq0ggu
 Received: by kanga.kvack.org (Postfix)
-	id 5368D6B05B2; Tue,  3 Nov 2026 10:00:59 -0500 (EST)
+	id 781226B05B9; Tue,  3 Nov 2026 10:01:12 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 510146B05B9; Tue,  3 Nov 2026 10:00:59 -0500 (EST)
+	id 758FD6B05D0; Tue,  3 Nov 2026 10:01:12 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 424086B05D0; Tue,  3 Nov 2026 10:00:59 -0500 (EST)
+	id 696686B05D1; Tue,  3 Nov 2026 10:01:12 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 1BFE56B05B2
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 10:00:59 -0500 (EST)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id A8FD21A0482
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 15:00:58 +0000 (UTC)
-X-FDA: 85394120196.15.D1A1012
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 4607B6B05B9
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 10:01:12 -0500 (EST)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id C509CC0460
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 15:01:11 +0000 (UTC)
+X-FDA: 85394120742.03.68E7FCE
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf23.hostedemail.com (Postfix) with ESMTP id CB0FC14000F
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 15:00:56 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=d3K6pDSF;
-	spf=pass (imf23.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	by imf05.hostedemail.com (Postfix) with ESMTP id D0E12100012
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 15:01:09 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VEcq0ggu;
+	spf=pass (imf05.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793718056;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
+	s=arc-20220608; t=1793718069;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=bA0DUmnnxVPUL6fKcA1U0PeMmih16OqQLXC+FqdAHTU=;
-	b=JVZX/SUadzCG23S6GJcYGtRtsXd8ZslKjQwu531Pp1jGP3oyhBIxEV+cGETl17BRB6ZUjB
-	giDuu2lxpiRLl7Rfkn47IQcIaV6S+ShWBzkO9mcAUL+L4+nlhfllxQx26CXIxUXJTx9Xs3
-	E4XV592DtMyP+NQwTaqtykru+yphGHE=
+	bh=BEajqQ35phGWaUcr3y1eTDvwsu33+Nn0Y7Ck4F/8MEY=;
+	b=7+4McUVNEvvuhhriVQ/F698Dm4yOudhMHbq5uqvPFZWuJxoGlBxNtkA2ynnk6KT6Pns3+n
+	EtMbGDIc0SfLwzMb4KBrZT23NSdVSTuf8Z2W4b7rm2qB3w9VZAtmllOdyuM6nJ50oHRxTb
+	/ytEW0PCsvwUPfz9BpJrWY6j035kYrI=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793718056;
-	b=TjhGQIygZBV4gpRFqrSFC7vbsdK/DJuy9GFsi/FmVoBVHTWuWrhKK4nd1t0O688giPszhB
-	grvGVeT1LKWSxNQBB2iNZ1+/rGua4DHvofEYQGuIr/smST/e4bMwqzJeCfuUjYpmmT0Sm5
-	sNXbdv4AN0dHA75hiDqN3vcpY1e7oyU=
+	t=1793718069;
+	b=gOC7oJxH9SWjUjJqWsdDZXJfKPoybqx41do5BxtifxaKfynmbHH5Py1AWJ9c2mLlBNGm+H
+	un5T8hzWvCbr2dlIg35mbeDmzSJgPX2feEPJO1mvMWGSSLsjl0esBtyfT7cYml6nZWpEDm
+	zxpPDio72WS6nBcrrpPcwBzr3mq9y78=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=d3K6pDSF;
-	spf=pass (imf23.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VEcq0ggu;
+	spf=pass (imf05.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 4FD516021D;
-	Tue,  3 Nov 2026 15:00:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 423AF1F000C1;
-	Tue,  3 Nov 2026 15:00:47 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 3FCE2609FA;
+	Tue,  3 Nov 2026 15:01:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFD2F1F000C1;
+	Tue,  3 Nov 2026 15:01:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793718056;
-	bh=bA0DUmnnxVPUL6fKcA1U0PeMmih16OqQLXC+FqdAHTU=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=d3K6pDSFh52zVCjIc/hBdsflRe5uFDEz0Fmn1nI+IKthHiXVq1OjvLBo8PS8Y7GfJ
-	 L6G5tw9QmaAoflgCwnDY08eRL/Ga120L9Q1f7tOGn94gVVV4Zdt/sQyCLyuZhP3Mxp
-	 UmONMR9peZ0sBrCDpOCrPthNxS+XUm5DPf7OZLwL9Rv3d3KK7VGugZs6A3VMEANKa9
-	 OivpMxXoXJ/30qchLqIfmTlrvWU2x1m87FS8C82zMIbmuXeYq2tYTDcslOIE+U1x35
-	 BgtTY9XjTURfxoHL+kKtzxrdkdqBnO9Ub7CK+2Z0a/9pA6XNBVVaMuIH942o52QY1U
-	 aLWb9/Wg3nTbA==
-Message-ID: <a5270059-e5a7-4c8a-9f04-96135f79ea72@kernel.org>
-Date: Tue, 3 Nov 2026 16:00:45 +0100
-X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 07/12] mm/mmzone: read each zoneref slot once when
- filtering by nodemask
-Content-Language: en-US
-To: Zi Yan <ziy@nvidia.com>, "Gregory Price (Meta)" <gourry@gourry.net>,
- linux-mm@kvack.org
-Cc: linux-trace-kernel@vger.kernel.org, linux-kernel@vger.kernel.org,
- kernel-team@meta.com, akpm@linux-foundation.org, david@kernel.org,
- ljs@kernel.org, liam@infradead.org, rppt@kernel.org, surenb@google.com,
- mhocko@suse.com, kasong@tencent.com, qi.zheng@linux.dev,
- shakeel.butt@linux.dev, baohua@kernel.org, axelrasmussen@google.com,
- yuanchu@google.com, weixugc@google.com, baoquan.he@linux.dev,
- baolin.wang@linux.alibaba.com, rientjes@google.com, rostedt@goodmis.org,
- mhiramat@kernel.org, mathieu.desnoyers@efficios.com, muchun.song@linux.dev,
- osalvador@suse.de, joshua.hahnjy@gmail.com, rakie.kim@sk.com,
- ying.huang@linux.alibaba.com, brendan.jackman@linux.dev, hannes@cmpxchg.org,
- bigeasy@linutronix.de, clrkwllms@kernel.org, nathan@kernel.org,
- ndesaulniers@google.com, morbo@google.com, justinstitt@google.com,
- Bessel.Wang@huawei.com, jiang.liu@huawei.com, mgorman@techsingularity.net,
- anshuman.khandual@arm.com, stable@vger.kernel.org
-References: <20261101021340.2251928-1-gourry@gourry.net>
- <20261101021340.2251928-8-gourry@gourry.net>
- <DML8OO28WT5O.3U6NG100XWKZP@nvidia.com>
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Autocrypt: addr=vbabka@kernel.org; keydata=
- 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
-In-Reply-To: <DML8OO28WT5O.3U6NG100XWKZP@nvidia.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	s=k20260515; t=1793718068;
+	bh=BEajqQ35phGWaUcr3y1eTDvwsu33+Nn0Y7Ck4F/8MEY=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=VEcq0gguO6/NoWa+wL6fwqCLqkldJUUFWXaU48FgopqIQWVInov4USQPNMlWECfku
+	 tjmmYgoSxJFwLb8AMyTRkOEe9RIAgKCTxUsnF6zQuC56KDIfRvxTZM6B4OGZ+0RxLb
+	 mh81fLroJS4nyQyOkcaBszjAOxkYEOtX3GkPZMu84uutLjUi79KxQ0Ta6LswLb4aME
+	 +9R/WJkvVhkvygnNcEPN9DxaCT6J3JtUHgSP8vKYwTs6rh6No+CNqGd39rP3s8vdpa
+	 CSPispydKapyfU9yanW1YMZNTbAP3BOy5UszvDaukMX2hst4qdOs00Vyn/j4PbSImA
+	 6uri+styQIxoQ==
+Message-ID: <sashiko-outbox-195531@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH RFC 04/16] proc: let procfs own the seq_file of seq_file
+ entries
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Christian Brauner" <brauner@kernel.org>
+Cc: "Linus Torvalds" <torvalds@linux-foundation.org>, "Jann Horn" <jannh@google.com>, "Josef
+ Bacik" <josef@toxicpanda.com>, "Chris Mason" <mason@kernel.org>, "Jeff
+ Layton" <jlayton@kernel.org>, NeilBrown <neil@brown.name>, "Eric Dumazet" <edumazet@kernel.org>, "Thomas
+ Gleixner" <tglx@kernel.org>, "Al Viro" <viro@zeniv.linux.org.uk>, "Jonathan
+ Corbet" <corbet@lwn.net>, "Christoph Hellwig" <hch@lst.de>, "Greg
+ Kroah-Hartman" <gregkh@suse.de>, "Joel Granados" <joel.granados@kernel.org>, "Kees
+ Cook" <kees@kernel.org>, "Jan Kara" <jack@suse.cz>, "Jan Kara" <jack@suse.com>, linux-s390@vger.kernel.org, linux-scsi@vger.kernel.org, coreteam@netfilter.org, kexec@lists.infradead.org, linux-pci@vger.kernel.org, linux-sound@vger.kernel.org, dri-devel@lists.freedesktop.org, linux-hwmon@vger.kernel.org, linux-mm@kvack.org, linux-usb@vger.kernel.org, samba-technical@lists.samba.org, sparclinux@vger.kernel.org, linux-m68k@lists.linux-m68k.org, linux-serial@vger.kernel.org, "Takashi
+ Iwai" <tiwai@suse.de>, linux-input@vger.kernel.org, linux-raid@vger.kernel.org, linux-ext4@vger.kernel.org, linux-modules@vger.kernel.org, "Chuck
+ Lever" <cel@kernel.org>, tytso@mit.edu, dmitry.torokhov@gmail.com, "Petr
+ Pavlu" <petr.pavlu@suse.com>, "Anna Schumaker" <anna@kernel.org>, yukuai@fygo.io, "Heiko
+ Carstens" <hca@linux.ibm.com>, "Vasily Gorbik" <gor@linux.ibm.com>, "Alexander
+ Gordeev" <agordeev@linux.ibm.com>, "Christian Borntraeger" <borntraeger@linux.ibm.com>
+In-Reply-To: <20261102-work-procfs-core-v1-4-75df35e4f8b8@kernel.org>
+References: <20261102-work-procfs-core-v1-0-75df35e4f8b8@kernel.org>
+ <20261102-work-procfs-core-v1-4-75df35e4f8b8@kernel.org>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Tue, 03 Nov 2026 15:01:06 +0000
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
-	version=4.0.1
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
+	autolearn=unavailable autolearn_force=no version=4.0.1
 X-Rspamd-Server: rspam09
-X-Stat-Signature: yag4enq6ypsb5myx3aonxdp4m8booh9c
-X-Rspamd-Queue-Id: CB0FC14000F
+X-Stat-Signature: dertopnzespnzwb4dexgfgy36giaghyp
+X-Rspamd-Queue-Id: D0E12100012
 X-Rspam-User: 
-X-HE-Tag: 1793718056-563149
-X-HE-Meta: U2FsdGVkX19vffRFv89eRQrO/ne751TEORrushPFOP0/kbgGsoBsvPb6hkZkhdwCI0xJV9xpMF8z9uLNJtA3OGJNuvqy7zqa3qpLupIyoDXs7Ve4XstmgJO77vTJ7jOthKyd2k0stgrTAN4t5VcseRMWRjN0Lf7GJ0p4IXaLCdPQbJFkz0prQvxezXI7oGlWdb1ce/WGMCPKEtBEEZHixdmK9UrK1RXrXLv4DO2HndfkXUfIlhhjM/xKR9GFRaTu4kQ+wtd2Iv1eUERgb7UDvNp4Z6yam7FFzN0QeZNBHMxbI3cTIJ7Mmj7JUZDnBXEgtmz/4cJEf/bbzpIuFSoUAepbXMpYfQ5/faNNhBHWq4N9M1223LYZ9tjnHU9Mnnf5UoR+JfxhTSHiPFbx4ojHFYpQtQwNGjCSHnk538j63B+0sYxMe4/i8din9bRtiERAfn2UkxqsAWV/Dbkb1NbBqsnJFcNqEs0QNs9ujyg8fCsSYUQFWkRbGevmDz1VtdSXR2VU1GM5Y/hbOUGISPvssC5iilohkFyEYYzBjBx2U/1YebCJ40t7IVgJsxQbfSbZaf8RnKJL05K5riOt8h63QvHEXAb3etMg5SqBe9sGLr7jkrCmoaMls8OTs2HGpac+hAtpHbwA3IwvxeR9+9Zy8clcpYLsyzOtx8GZj26fKhwj27SJtfxyB2fNCz2LL3QxeQyHtKgh92PTHwwuD8YEgvUb8J0S0ef0byaKmz+rirvNQYgHxQf1UcqrIyoHA31CEkcoEtmp+5rnW0vdEFT2OXFdfRrzlwnKO+Ro9zQ1+G3WpG6YDr2wafbWztwFcFwFYalEt9EBE/U/lXIYxNlg/jBDMRnDUbvXA9LmWmnGD6JEZkFE+0Q2V3rY7x4ZVlmg5FkdAjyh/NS+27RhZMBtUQolEdqxI3cwPPAllziKQjDervIVWYEUblgSZDXedgqbZy8GVp5S6/NzOwL13tX
- Y/6YPJgZ
- GhPPE5qKL2o6QSD9xT3UNz9VCKI5Qlb3YdP5yVvPYWrFDKA8cKES01jYHdCAvKmHCGNQk4Va3HZb1COxXGWA+0sQ9b4WYevK0V0MtnhiIHZPXsKtSXNM61h43fAdUunoFGbIFo/ul/TCnieiNqgGyYeBFwpAQkCj5eg6NbfgnS42nay1RoM9tMQlBlXFxkxb70ZpSwwwXCqaaid2+DCyZGg+3g6X9QyOK7Lq0PDWbodFKLSrTMZKIQrCOuWlvci/eNN+qLtecva/TZOMrcd1Ej35CacSRta5jPvqJ8u4xvHorEJOnlgfLmeEAurvS++zcn0Hipvw/Ju7Hb8EhsdXxPsl5eKIpEr7OpOAwzsgx+h1LFvXwtm071NefKcufb2b1IzUOTb4ZuTxUo4hFrEoZv3fJ6nyh5HG4VM6eQVQU2LJZQiRT0Ij93Ynsaw==
+X-HE-Tag: 1793718069-292473
+X-HE-Meta: U2FsdGVkX1/FtTOkgVYwlQvfJfzrj4q1rsvqudnQc9bIEnpOnLY/oDKyXV3qGoLmtr3SoE2nKvtgZi5sZdDJm1U4zyvoDks45K5wuP8cwSU6kmNbSsW61bpalhexIFP5ZhoG65ozs1X0kbawQ6RXm13TQY0QMx7nNIBEL1fvgJ5DsAPDcjkpBAkFKSZvPflLbmCfiDEwSCzA/pyLSf+ADfupvreLBKeSsn2UC3ViAf13tuftWUtoDFgA/jIyhgoeD1F2YG+xlqC+RalkdM6ACc2VcsGda9bd6QSzDKZBz8f9KGJIsOmXAU4ULBMXlEa6XlVeYQqe5iE8xsp2zM4LqoJoAFvgA03fe0k74dHSmC4tsWh53wHHS81J3svggHX5dXnTcgF/zKxpKCG8lTAzHGUGwihbfJd8mq/qkZsOfO36VpPeqvmFk7chwRDvktafeJxZWx9Nh9/QMjD+4WE4PkL8IL44rnMNGmx9gehM2jc0JkltNamGtBgGAl0TmWvIFnEvm8PvLK8P4i6FxFNgO0ZRj3e8/ysy+ibfkmvPIop7oS35Ty8OQuVEF0+HZWUrTrGCzeGV/0cZLBY7+60dt1fus5hGvB3S1keJde1zhnorVR6knPw1NL5ip/QJ4l5j9/WWVcAwN9kuiRqQDZwPjCnEX8JzxZ391TPYSrRTZGNqU9e1qmOyJsRbwlfiMzAU7ncgUEh9hWxLU+1pQbU/W+dk9ggUU+d4Hw3Wl1e62M3TnCPjEaKr+ytH7GGUnl4vBPAPj9QExtzxmUxfUioAhLCx/0bot46ZQdpgT9w+WWI4uENH7tqumcfDqnr6zyoD5SqALrzyvxaBiXeb1qgajNVN0w/3fTqeY9uWrzzGSfQ8k8V3NNni3wCQXUBrfbE+L0FbNXDmTyI9FKkppZSDEulW2Fxn0XowTKvSCltwU1oIN4WSnAWe3Ce4kyz83/X3HwVwBfQz/6AJgU6DaiF
+ OW5jJLWo
+ fM6YsRDUgDwpbENCdzWCiYAsdgdHIHEVth9wQrJXPiUmTBUTQ1Nw6WMqyRzfJ6Pz/3EKHh4joD3l+dvcbi1PX5UQW6Cxd7cvY+pjZY/thQjP+4HQx7RIrg7msFcJHAb0oMjmMO9WECfscbc9tys7bmc/RcfBI82BbqWU1czccfh48HWiWKFWqLopIEa4xpfx86y7tn8IHw/pv0jn81Gn8I3mvbr3WrdNUB2V1/rgtR5LkpC5OsL2m9QrTZuQwETJZIiP85pz9XcT+f1wdtKHWpsCMxsphLqJcIRqbkfV2CnuFo7nPpLUVflBSnQW0Bui5uGzjhBb+z4NfmUlwgOKOUR6tYTak0U3eArFdh4FZNJ3q4GNHKDkyB1fmOgnvUquHJD0Q4v/+E6yZRlbFVy19hQlDkDGeO66Nu+MpZFeoevK7DFbI89IhlzG5tcpjKy+jwpyqbryxd66LvForWbt4IVu+iTeNhGjapuFzSY9uxlPqEuzZB5XbP+rAuVZeksBT2l+S3SJ2BZagDNSmG6rDkihunfsheuLoC0vJ27lWqUSFY7BFOhmxrJj3TxfnyfkBkKfZ6qzyv/y36QGwU4c3X+T952InabwO8K6zK0crXFslrwhxFFK+RQjYJyF5Bgb35/ckyxqQEl/rNSMz4DviTN0S7d7gDpzG86WTWsChEBjmkILsoWPJUxQqzW4K4kG0vgxdSMjHERtQ7gQPl4g0OA2/RA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -151,62 +103,100 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
+X-Archived-By: <archiver.kernel.org>
 
-On 11/3/26 04:01, Zi Yan wrote:
-> On Sat Oct 31, 2026 at 10:13 PM EDT, Gregory Price (Meta) wrote:
->> __next_zones_zonelist() tests a slot's zone for NULL, then reads the
->> slot again to look up the zone's node. Offlining a zone's last block
->> rebuilds the zonelists in place, so the second read can return the
->> terminator:
->>
->>   CPU 0                             CPU 1
->>   __next_zones_zonelist(nodemask)
->>     zonelist_zone(slot 1) = NORMAL
->>                                     offline_pages()
->>                                       build_all_zonelists()
->>                                         [MOVABLE, NORMAL, NULL]
->>                                         -> [NORMAL, NULL]
->>     zref_in_nodemask(slot 1)
->>       zone_to_nid(NULL)
->>
->> Current GCC and clang merge the two reads, but nothing requires it.
->> With mm/mmzone.o built with -fno-inline -fno-ipa-sra, holding a
->> nodemask allocation between the reads while the node's last movable
->> block goes offline oopses every time:
->>
->>   BUG: kernel NULL pointer dereference, address: 0000000000000060
->>   RIP: 0010:zone_to_nid+0x0/0x10
->>   Call Trace:
->>    zref_in_nodemask+0x9/0x20
->>    __next_zones_zonelist+0x23/0x70
->>    prepare_alloc_pages.constprop.0+0x16c/0x190
->>    __alloc_frozen_pages_noprof+0xaf/0x330
->>
->> Read the slot once and test that zone. A NULL zone still ends the walk.
-> 
-> It is better to spell out the rename from zref_in_nodemask() to
-> zone_in_nodemask().
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [High] proc: unpinned dereference of pde->seq_ops->next in pde_seq_next()
+--
 
-Added:
+commit ae41131fe28a1e7fcf9c3b743e2a30697e315fe9
+Author: Christian Brauner <brauner@kernel.org>
 
-To achieve that, rename zref_in_nodemask() to zone_in_nodemask() and
-pass a zone instead of zoneref pointer.
+proc: let procfs own the seq_file of seq_file entries
 
-> 
->>
->> Fixes: 11cd8638c37f ("mm, page_alloc: remove stop_machine from build_all_zonelists")
->> Cc: stable@vger.kernel.org
->> Signed-off-by: Gregory Price (Meta) <gourry@gourry.net>
->> Reviewed-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
->> ---
->>  mm/mmzone.c | 11 ++++++-----
->>  1 file changed, 6 insertions(+), 5 deletions(-)
->>
-> 
-> Makes sense.
-> 
-> Reviewed-by: Zi Yan <ziy@nvidia.com>
-> 
-> 
+This commit allows procfs to own the seq_file for seq_file and single-show
+entries by wrapping their seq_operations and pinning the proc_dir_entry
+only around start, next, show, and stop callbacks rather than across
+userspace copies in seq_read_iter().
 
+> diff --git a/fs/proc/inode.c b/fs/proc/inode.c
+> index 66a3688757dd7..8425465aae5d7 100644
+> --- a/fs/proc/inode.c
+> +++ b/fs/proc/inode.c
+> @@ -218,6 +218,110 @@ static void pde_unpin(struct proc_dir_entry *pde)
+>  		unuse_pde(pde);
+>  }
+> =20
+
+[ ... ]
+
+> +static void pde_seq_stop_pinned(struct seq_file *m, void *v)
+> +{
+> +	struct proc_dir_entry *pde =3D seq_pde(m);
+> +
+> +	if (pde_has_proc_seq_ops(pde))
+> +		pde->seq_ops->stop(m, v);
+> +	pde_unpin(pde);
+> +}
+> +
+> +static void *pde_seq_start(struct seq_file *m, loff_t *pos)
+> +{
+> +	struct proc_dir_entry *pde =3D seq_pde(m);
+> +	void *v;
+> +
+> +	if (!pde_pin(pde))
+> +		return ERR_PTR(-EIO);
+> +	if (!pde_has_proc_seq_ops(pde))
+> +		return single_start(m, pos);
+> +	v =3D pde->seq_ops->start(m, pos);
+> +	if (v =3D=3D ERR_PTR(-EIO))
+> +		pde_seq_stop_pinned(m, v);
+> +	return v;
+> +}
+> +
+> +static void *pde_seq_next(struct seq_file *m, void *v, loff_t *pos)
+> +{
+> +	struct proc_dir_entry *pde =3D seq_pde(m);
+> +	loff_t old =3D *pos;
+> +
+> +	if (!pde_has_proc_seq_ops(pde)) {
+> +		++*pos;
+> +		return NULL;
+> +	}
+> +	v =3D pde->seq_ops->next(m, v, pos);
+> +	if (v =3D=3D ERR_PTR(-EIO))
+> +		pde_seq_stop_pinned(m, v);
+> +	/* seq_file would blame these seq_operations, blame the entry's */
+> +	if (*pos =3D=3D old) {
+> +		pr_info_ratelimited("buggy .next function %ps did not update position =
+index\n",
+> +				    pde->seq_ops->next);
+> +		++*pos;
+> +	}
+> +	return v;
+> +}
+
+[Severity: High]
+In pde_seq_next(), if pde->seq_ops->next(m, v, pos) returns ERR_PTR(-EIO)
+without advancing *pos, pde_seq_stop_pinned(m, v) is called before the
+if (*pos =3D=3D old) check.
+
+Since pde_seq_stop_pinned() calls pde_unpin(pde), which decrements
+pde->in_use and can complete pde->pde_unload_completion, a concurrent
+remove_proc_entry() waiting in proc_entry_rundown() can finish and allow a
+module to unload or free the memory backing pde->seq_ops before
+pr_info_ratelimited() dereferences pde->seq_ops->next and formats it with
+%ps. In addition, pde->seq_ops->stop(m, v) in pde_seq_stop_pinned() will
+observe the unincremented *pos value.
+
+Could the if (*pos =3D=3D old) check be moved ahead of the
+if (v =3D=3D ERR_PTR(-EIO)) check so that pde->seq_ops->next is only access=
+ed
+while the entry is still pinned and *pos is updated before ->stop() is
+called?
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261102-work-procf=
+s-core-v1-0-75df35e4f8b8@kernel.org?part=3D4
 
