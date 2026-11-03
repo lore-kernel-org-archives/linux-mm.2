@@ -1,120 +1,99 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C313606A31B
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 19:00:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68A7F606A329
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 19:05:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=LJZKrIFp
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Tm2Ms7AR
 Received: by kanga.kvack.org (Postfix)
-	id BDBEF6B05B2; Tue,  3 Nov 2026 14:00:22 -0500 (EST)
+	id 704C66B05B2; Tue,  3 Nov 2026 14:05:56 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B660B6B05B3; Tue,  3 Nov 2026 14:00:22 -0500 (EST)
+	id 6B5366B05B3; Tue,  3 Nov 2026 14:05:56 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A2D886B05B4; Tue,  3 Nov 2026 14:00:22 -0500 (EST)
+	id 5CC176B05B4; Tue,  3 Nov 2026 14:05:56 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 7EE926B05B2
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 14:00:22 -0500 (EST)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 04A28120511
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 19:00:21 +0000 (UTC)
-X-FDA: 85394723484.18.8558D98
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 3C6C66B05B2
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 14:05:56 -0500 (EST)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id C8F8F160517
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 19:05:55 +0000 (UTC)
+X-FDA: 85394737470.17.36FF3AB
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 67EA3140006
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 19:00:20 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LJZKrIFp;
-	spf=pass (imf09.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793732420;
-	b=U77AKn9bSxu3yVWqnYqOmZnhIw6a/X+okv8oQPMoAw5mnvrTiF9Em5L/Eg/GxrXC0JXeQK
-	N2YoQd1tJ5PtNDt9Q0H9BRdKWe6jW8VtcbfRalQ8e6MYHv0T8Rqsn5H0MgZqH6mu1DW/Ck
-	8VLL2e32CqLR59vO58mjKqC5naAd8xw=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LJZKrIFp;
-	spf=pass (imf09.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	by imf25.hostedemail.com (Postfix) with ESMTP id 46BFBA000E
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 19:05:54 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Tm2Ms7AR;
+	spf=pass (imf25.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793732420;
+	s=arc-20220608; t=1793732754;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=LaKapLJYP5++dFoozepE0lnkIHdswFBWdj5vNlVLQL4=;
-	b=dDnRnCGvkAv3wtvpwRLhgyyD0cnYQlM2BEQ3r9B1/S0WYD27BeyOVMMm08VBj1EGhCKW01
-	xdKa/q+whexxVAymGpCh8VnFdNSPWCK1CihNN5+8L8yj0DTeIzk98NnCOd8UfSzV0kC+nF
-	Pn5EulRtTN3x7K0BK1e/KX0FRvcLsPA=
+	bh=HeJNsa6cJ6QNpsjilhgs8PG10NtpxUmbMSyIykHPOow=;
+	b=JucB7byH2eel28KyvOU/pffa6e8Axbl79bvVtlk4J4t6c8ew89k83NC4V6an3Em/nEbqPv
+	hfh+2ch1cECL+g42OBHwAgSfvpx5H6Q9eLcQhN9m2K0Tm/V08vAryljEXQEapudYEYirB2
+	XR0K2wt9YhNOmFw+EVFOkHPcWgDKlBU=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793732754;
+	b=auFIiU8UELHRa64PomoHSlbovVDTZYaRpZV7p1LD6LZKT7e90Gj8X4sjmU/3t3ATtvaE7D
+	UKybNXF004x3HpVbs/vUN01IlBiFuK6MRTC9m0W/GxoKvnHzbFUTldIyFJ+k6IKPAWbj/k
+	PrI478uKHMu33BqVQ19RrKhuWsgE+MI=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Tm2Ms7AR;
+	spf=pass (imf25.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id E7533601FF;
-	Tue,  3 Nov 2026 19:00:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 615291F000C1;
-	Tue,  3 Nov 2026 19:00:03 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id C54B76020A;
+	Tue,  3 Nov 2026 19:05:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF4671F000C1;
+	Tue,  3 Nov 2026 19:05:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793732419;
-	bh=LaKapLJYP5++dFoozepE0lnkIHdswFBWdj5vNlVLQL4=;
+	s=k20260515; t=1793732753;
+	bh=HeJNsa6cJ6QNpsjilhgs8PG10NtpxUmbMSyIykHPOow=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=LJZKrIFpProYve6IpbPTPKXS0osYcR7LSfwpwWEti0f5L7GYgObXcdMpRXAruuFy0
-	 ykhywq6Ol+JkTewX3xD8MdK787dydcKQIZYtyRmlur1cLQkofvu+bILxkbyvZ7G2OQ
-	 bLwK0Z2jqCPTnCgQV4fCiYglEEMQ6m6jFwV8R3TX57kxToxTAYYHKxyleFKcS5rkni
-	 a0ttLb93BNHW70VZqvLeOTAbPOXqWJnsMDFCNGJmSmWEhDTWBEVso17CqnU4KWwA1A
-	 6WCOKh3oAvyN2aZS9G+yxLYSFjvXrLTj/9Yh5/YlbwTv9u8rSNnSa9JAKNHTmglXhJ
-	 8Phvh1cCmq5Wg==
-Date: Tue, 3 Nov 2026 20:59:59 +0200
+	b=Tm2Ms7ARRWfmr8ayv6N+1djm7L5xFdCVSz8tSi2mTXHAowcCDGbvK/lDyvmEqybsd
+	 YfDAVqXOvWa4BDymDjqjfclHOqtSr8ymzmt/0+WPxd2iF7sJ7/p3FXEjFN8WVgKilX
+	 i5Iiv2pQfvys9YvlFvxuZ1GCEyDMpBJqr8P3hSl17H4Frg1xvFViFFe0dCySAvB50L
+	 oUnoQyhIS1hdArWYWvLM8NYL+liPREMfvy6as1ttb2ndB2mzCduEvcwdrzYk21GksW
+	 gjlNL7ArZ32XovBSVOh8Ce4gWgYE1fqxdDx77occRhf9rMxbebHhcEQV9rZYSugPPx
+	 4RNHVFB4PRPsA==
+Date: Tue, 3 Nov 2026 21:05:46 +0200
 From: Mike Rapoport <rppt@kernel.org>
-To: Breno Leitao <leitao@debian.org>
-Cc: Ard Biesheuvel <ardb@kernel.org>,
-	Ilias Apalodimas <ilias.apalodimas@linaro.org>,
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
+To: Umang Pokhriyal <umangpokhriyall@gmail.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Peter Xu <peterx@redhat.com>,
 	David Hildenbrand <david@kernel.org>,
 	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
+	"Liam R . Howlett" <liam@infradead.org>,
 	Vlastimil Babka <vbabka@kernel.org>,
 	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, Miaohe Lin <linmiaohe@huawei.com>,
-	Naoya Horiguchi <nao.horiguchi@gmail.com>,
-	Oscar Salvador <osalvador@suse.de>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>, Mark Rutland <mark.rutland@arm.com>,
-	kas@kernel.org, kexec@lists.infradead.org,
-	Brendan Jackman <brendan.jackman@linux.dev>,
-	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
-	shakeel.butt@linux.dev, linux-efi@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	linux-cxl@vger.kernel.org, driver-core@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, rmikey@meta.com,
-	riel@surriel.com, harry@kernel.org, kernel-team@meta.com
-Subject: Re: [PATCH v6 3/7] mm/memory-failure: add hwpoison_boot_page() to
- flag an inherited frame
-Message-ID: <auovL7i1rEcXCeGS@kernel.org>
-References: <20261016-hwpoison-kho-v6-0-f304255147da@debian.org>
- <20261016-hwpoison-kho-v6-3-f304255147da@debian.org>
- <aumt-4kfGGtoXuh-@kernel.org>
- <aumvVjoHo4KeuyEp@gmail.com>
+	Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>,
+	linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 2/2] selftests/mm: test a uffd write-protect range with
+ an unregistered page
+Message-ID: <auowiuwkogQ0-g7V@kernel.org>
+References: <20261102103621.156928-1-umangpokhriyall@gmail.com>
+ <20261102103621.156928-3-umangpokhriyall@gmail.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <aumvVjoHo4KeuyEp@gmail.com>
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+In-Reply-To: <20261102103621.156928-3-umangpokhriyall@gmail.com>
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 46BFBA000E
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
-	autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 67EA3140006
-X-Stat-Signature: k5yogmjxdsus6xmomwztx9erdydoukqj
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-Stat-Signature: sor99mbcfya35monsku3qm35z97mpibu
 X-Rspam-User: 
-X-HE-Tag: 1793732420-684110
-X-HE-Meta: U2FsdGVkX18EsGk4Zr+GTtlTNFWblndClrCVQFa9S5vE/xaWI66AImtsgIsxM+UGcAaPDpPoaIZx7rXRa8ZL1/CziUOBeK7KA4o4IqpY8cLETyMpbEUzFk1ejzgQq80FA/Drez39twU5/L8V+cngT/InvzNfEGGe+3KHghbrWmLAFNy4cR0pl6WnaHQVZhSCMhfogCQpoY6Gnie6dxSQRBTC/Lz/Ie48Mb5G8hN/MXT87m/KgNMF2kV+4EKR50n8VlsnA4Jy4F7ZrlqshPl8CrCuEQtt739yPz6QoJXf/ThDO2SD48Xs3Ps9Q697kVCv9j4iWhmo+aR1fP+oRIYzKFT7P3qn+dj+jJfZQeTk8rYy3/qbWcdtGUgqK/xhBCvnJONCcL2YyLCz+DEoGGmBp9Kj5AXOB/YqRVap9LiGyBbIoTa+18hHQ3fWTuJevaztQIY/HbfG3se4TDc4tuk7rWWbbDS/I8LS5F/+5Bp5yw20afO08E4XqeQIvweYJb6Jl9flCEs6ifRMjEQ8WDb943wyQm9EZBGFKMKpjEUerxq8ZDvTm7hX0SDfBwEhys3DCPinkxG6ruRMv8TYO8DEWjp5STjxhay4hAJwO0yxRfe0Jngo6+OpIh/loeP0WWI1TsmsHcofgfmgRJQc13cYUgHZrK0IL4jcc579jLIfw0nDr+2VNsNPwsgA83bK43wozuBX9N/0v5NHigpQqvWy9yqztEVB8VSM/msGsb2WJ2apb3JzeyaDovvywitKfP26EHM/QbxMLv0TukRl9T84kUXoq3daaDJDGmH5Mmi1GRpJ/g4SA8n7qgLApMaPmXPhSdWgCMZXsYBNQ336ZDHUwk/xofTaLb9Tsgb4l/IRSb02NCITm+UF3/WJdFpC5ayPfZudMvWsW3pzuePXSXRiU+YGa/S1zS/MNBR3IvurXtnYQW6mu/LAemSJrtzxP36raZEa34fAB/2IkECuf9L
- ycF5ynt5
- QyxBVT9glv047tV5xk4LCdCJQPvGIwK3By3AhF1VqvX+7MUbcEadtzM/L4pbH2ov3R3lvIgge8b6wdkyyFsQ1j9/CkyPaWJxMVVDRDHuuD2ZmLSgM4unG1fpfYQaoF+nOCal2XUFvjDtEd2mEKT9u+BOdmC7p2/v81lFsbGAubpGv4jA4DDcbf0KKDjqYXEGuMpLls8YUPvKi2XG2Y9yXZ+xYFjFptP7Sodu4aH0SEuVouyQ96uHnGgG1a+kYEtwvBHIjfURGNR2/NRDQDP7djE0JGFQaqOoLxXAGsmGQrGus+W2tMmXM4tcCu5ZPJRbf/3Op1+YNd/JseO1oY/36x2CJAvaQyfclD3qVL2EySudq0U9fZjGQ4xCjqW2Bx2DuHF8P
+X-HE-Tag: 1793732754-49993
+X-HE-Meta: U2FsdGVkX1/s3t2nAuxjXxHoUTwawFgw4C3hzkoLuIdVLPbtWCgziczDM4VHoihNaFKHpJB2epHDGXGBDY1O4wJ70GDoUCklyHtx3t1k516A+0v/P79akQ8rrkQmqhA2PJpxTLvrvqf1vIl5m8KohLzzttU/eY4QfeIMO8TR71MfcWVZzrsWu0i47ZKhsXoEYKRkYq9dP+CqYhUXRT4GOdaXdgB4fRZhBDHvbKSjxxuwqcy8BdIJPeBqxAGdXUDR0D+oS3J2zeH9KUX3B3VAB6ojepiiXdyNy8xiJAndncNDUg9YwO0TwFKd/ldl/tIt0C0gngHeqtUQlhcFq3u2LbKcq7Hw5KWH1Bg/spM1BM5MUlgV10n1at0ezOZG2f0AM725SGrwXuBmfR2nuzAbsKHWZ5NxfKJpeYr3hM/kM9lHFlS/Q/spJotHbiLBss0AtCmuOUI+liuhnH2tjTTe4XAk7QlHSf1+JkhumLT+nXRyjnDEaW+sIK/r8Ld22XwJ/7SV6P7DQ9TevftKgYmnUYg1twtQnVXAdSkqN+84eUZULkvtF75nSQzF5Lq6aTapmtmW9OPgcZMmgpD81QYk1y0BDdgdVpxzvT3nE+5r/88TWZbrzmX9I1JJxN2ekPxFzYTlZoEFOvkEdl9oy0GwlCYudgjMR1JXXvF5P5eymFFUM1BW6+10tLwaK9AZrlcSaV3VkUtucqgaOZt2Om89ydV/CvO3k7sKfMfapwehIC4pkhJ9YcQ2HcG7UdL3GExJnb/rjce79awpilOiaG55T3RzLF3ueLD8AzcW+oMAw3zuSwOEVXQyRIUhKLz94C4tKzzhjwbNDuqCV0nc3ucg/8ghuUYembwzuHOU91M74iTgmJzTyDWF1l7r+ocM+Iffar3qLXTk2W2Sfojkauuo8amA6C1un8coPCml16NsuYvyBycGGVCD+Cam7KN3/9E1RcIydnDplX62mRU31/A
+ 7NRN877k
+ tQfg2jU+kLBnb8zBvxZ99jTthYN1W5Xb6a5eG6OSgd5FZyaEqVl4CB3ap+E36ezQDTZdWouy2wu9blx8S/2uXoKStHluw2I2qZYk4HQAUrMOKJDUxrZsdjKkB6WzcgQUoDuRy8ZGP0sRmUrvSv42KigBdUhah6gccFgVR4jBG+EjgHUmQ12KOhy2QJTU0iZG3uerRSEBBwNEJ47MMBM+V0k79Y/2K6AEkosxgsp5Dvp90l8GQ/iFEz9wcI1IJcDTMkFbapjhz00Cj+gR9yGQsH+qSvg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -123,29 +102,98 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Tue, Nov 03, 2026 at 02:06:17AM -0800, Breno Leitao wrote:
-> On Tue, Nov 03, 2026 at 11:48:43AM +0200, Mike Rapoport wrote:
-> > > --- a/mm/internal.h
-> > > +++ b/mm/internal.h
-> > 
-> > We've been splitting internal.h to smaller headers, maybe it's time to add
-> > "memory-faulure.h"?
+Hi Umang,
+
+On Mon, Nov 02, 2026 at 04:06:21PM +0530, Umang Pokhriyal wrote:
+> Register only the first of two pages and check that UFFDIO_WRITEPROTECT
+> over both pages fails with ENOENT without changing the first page, when
+> protecting and when unprotecting.
+
+I don't think it's worth keeping the test for a regression we already
+fixed.
+ 
+> Signed-off-by: Umang Pokhriyal <umangpokhriyall@gmail.com>
+> ---
+>  tools/testing/selftests/mm/uffd-unit-tests.c | 56 ++++++++++++++++++++
+>  1 file changed, 56 insertions(+)
 > 
-> Ack. I'm happy to move the "mm/memory-failure.c" section out of
-> mm/internal.h into a new mm/memory-failure.h, as preparation for this
-> patch.
+> diff --git a/tools/testing/selftests/mm/uffd-unit-tests.c b/tools/testing/selftests/mm/uffd-unit-tests.c
+> index 298609544..57e442fd2 100644
+> --- a/tools/testing/selftests/mm/uffd-unit-tests.c
+> +++ b/tools/testing/selftests/mm/uffd-unit-tests.c
+> @@ -375,6 +375,56 @@ static void uffd_wp_unpopulated_test(uffd_global_test_opts_t *gopts, uffd_test_a
+>  	uffd_test_pass();
+>  }
+>  
+> +/*
+> + * UFFDIO_WRITEPROTECT over a range whose second page is not registered must
+> + * fail without changing the first page, in both directions.
+> + */
+> +static void uffd_wp_partial_range_test(uffd_global_test_opts_t *gopts,
+> +				       uffd_test_args_t *args)
+> +{
+> +	struct uffdio_writeprotect prms = {
+> +		.range.start = (uint64_t)gopts->area_dst,
+> +		.range.len = 2 * gopts->page_size,
+> +	};
+> +	uint64_t value;
+> +	int pagemap_fd;
+> +
+> +	/* Only the first page is registered; the second is a separate VMA */
+> +	if (uffd_register(gopts->uffd, gopts->area_dst, gopts->page_size,
+> +			  false, true, false))
+> +		err("register failed");
+> +
+> +	pagemap_fd = pagemap_open();
+> +	*gopts->area_dst = 1;
+> +
+> +	prms.mode = UFFDIO_WRITEPROTECT_MODE_WP;
+> +	if (!ioctl(gopts->uffd, UFFDIO_WRITEPROTECT, &prms) || errno != ENOENT) {
+> +		uffd_test_fail("protect over an unregistered page did not fail with ENOENT");
+> +		goto out;
+> +	}
+> +	value = pagemap_get_entry(pagemap_fd, gopts->area_dst);
+> +	if (value & PM_UFFD_WP) {
+> +		uffd_test_fail("failed protect changed the first page");
+> +		goto out;
+> +	}
+> +
+> +	wp_range(gopts->uffd, (uint64_t)gopts->area_dst, gopts->page_size, true);
+> +	prms.mode = 0;
+> +	if (!ioctl(gopts->uffd, UFFDIO_WRITEPROTECT, &prms) || errno != ENOENT) {
+> +		uffd_test_fail("unprotect over an unregistered page did not fail with ENOENT");
+> +		goto out;
+> +	}
+> +	value = pagemap_get_entry(pagemap_fd, gopts->area_dst);
+> +	if (!(value & PM_UFFD_WP)) {
+> +		uffd_test_fail("failed unprotect changed the first page");
+> +		goto out;
+> +	}
+> +
+> +	uffd_test_pass();
+> +out:
+> +	close(pagemap_fd);
+> +}
+> +
+>  static void uffd_wp_fork_test_common(uffd_global_test_opts_t *gopts, uffd_test_args_t *args,
+>  				     bool with_event)
+>  {
+> @@ -2403,6 +2453,12 @@ uffd_test_case_t uffd_tests[] = {
+>  		.uffd_feature_required =
+>  		UFFD_FEATURE_PAGEFAULT_FLAG_WP | UFFD_FEATURE_WP_UNPOPULATED,
+>  	},
+> +	{
+> +		.name = "wp-partial-range",
+> +		.uffd_fn = uffd_wp_partial_range_test,
+> +		.mem_targets = MEM_ANON,
+> +		.uffd_feature_required = UFFD_FEATURE_PAGEFAULT_FLAG_WP,
+> +	},
+>  	{
+>  		.name = "minor",
+>  		.uffd_fn = uffd_minor_test,
+> -- 
+> 2.53.0
 > 
-> Since this patchset is moving slowly, I'll start the header split in
-> parallel as a separate series, and rebase this patchset on top of it
-> when I respin. Is it this ok?
-
-Sounds good to me.
-
-Just be aware that MM folks are knee deep into fixes this cycle, so both
-sets could be moving slowly :)
-
-> Thanks,
-> --breno
 
 -- 
 Sincerely yours,
