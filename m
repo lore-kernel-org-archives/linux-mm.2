@@ -1,75 +1,75 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C7BF606B27C
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 14:48:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48C3F606BA0B
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 14:48:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=O77gfe8k
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=C2dwqdtU
 Received: by kanga.kvack.org (Postfix)
-	id 8059D6B05B6; Tue,  3 Nov 2026 09:48:23 -0500 (EST)
+	id 71C7D6B05B7; Tue,  3 Nov 2026 09:48:27 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 741796B05B8; Tue,  3 Nov 2026 09:48:23 -0500 (EST)
+	id 6CBCF6B05B8; Tue,  3 Nov 2026 09:48:27 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 62C046B05B6; Tue,  3 Nov 2026 09:48:23 -0500 (EST)
+	id 56EA86B05B9; Tue,  3 Nov 2026 09:48:27 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 31B386B05B6
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 09:48:23 -0500 (EST)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id B41A74046E
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 14:48:22 +0000 (UTC)
-X-FDA: 85394088444.28.0712F07
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 0451840005
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 14:48:20 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=O77gfe8k;
-	spf=pass (imf11.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 211646B05B7
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 09:48:26 -0500 (EST)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 77C86120452
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 14:48:26 +0000 (UTC)
+X-FDA: 85394088612.03.9411C7D
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf07.hostedemail.com (Postfix) with ESMTP id CAF6D40006
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 14:48:24 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=C2dwqdtU;
+	spf=pass (imf07.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793717301;
-	b=DszSpz37VdoJnVfZWM582p0ZPmOQtIXtscHF6hk3VeKuIcXYP/aeByr9QzYHMGA3QJxdpJ
-	qus8xsIea+CWERz0xGJyMQ+hFyeAkslxpOMcX3mcXm8zlo+IkogSg0B+ZBVg+UUb2MXxDZ
-	2zDoyvLuoA0QYko/TODinHU3cOm6XgI=
+	t=1793717304;
+	b=y4TWlAr1HI1zDOvrAgvMYkj4Sf02SmPSh6NeKU7b6NttuGxQqfZ89jREp0o6Knsa78pEMP
+	F+W50UToI6f/ADosVbuFgvzlYm9tLGxt116OWirHGG7qVEk1ONKZ604cKuDDYZxqo/KcW9
+	27wl7Yy2aHlAsaeV3+NjVnXWs+2Wjdk=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=O77gfe8k;
-	spf=pass (imf11.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=C2dwqdtU;
+	spf=pass (imf07.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793717301;
+	s=arc-20220608; t=1793717304;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gD+JfyFsFqSMM5CGTKNOp21IwpvoIZuhMHjwjkhQ9Y4=;
-	b=RXlAlV1kW2EgoSb+Xk4gsydkXxyq2IxqW3c+majwFX7mlAvAjf96hj5QtgE5GeTuLBzo4h
-	8lTqeb6gJGkAJ3seGAZqCJqmwU1peG/lmiP/ZEhXSpkFEhcIbXslaJrgnZWl8Io9rkDtGQ
-	n9at/oTIuAmGkIxyVs3p3XZKY3+w9fM=
+	bh=wM4ihzCKOLfh0ZD7M58/6B4bo5IJr12GDvSCHj1N144=;
+	b=fauugp8nX6zvTq/FDxR20Y7DJgpyycLEkqKAeRzaixLoQIkqxoqv+1bM/pRtMxkaK6XYbv
+	D/k1roiIekmGywrRjGt3giyieWSCR3QEvesrsbz32gvyUDRsoH26wvDLHXm1mvVJ0agLRz
+	b+s5kgivet8gaShzXd/t+yX7fZKB328=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 9AC0B609ED;
+	by sea.source.kernel.org (Postfix) with ESMTP id 2838C4018B;
+	Tue,  3 Nov 2026 14:48:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B112A1F00A25;
 	Tue,  3 Nov 2026 14:48:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0324C1F00A02;
-	Tue,  3 Nov 2026 14:48:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793717300;
-	bh=gD+JfyFsFqSMM5CGTKNOp21IwpvoIZuhMHjwjkhQ9Y4=;
+	s=k20260515; t=1793717304;
+	bh=wM4ihzCKOLfh0ZD7M58/6B4bo5IJr12GDvSCHj1N144=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=O77gfe8kp25hNoBGGIpC6DtRiBGmJPBhWTL/hDCA5+40SPpjiLXP+1QdEzJtXYuk8
-	 PGqiTX3BM5EwlBxY4d77MPivJkSwbOK9K8gWZKUCbRLj268RO5hcZWX2HEN/rpCv8m
-	 IQZe8dH2k2nvGSXI6U7HnXrlw3KVT5+4UuwqNblGOLfjAktu2xrAejReS/e+4O76ml
-	 uLIr3xHA+hTy6w/ig2jAXuCk0KXSr1iSqFdXByf+ozWqigWRvLaIggx4fsyICZvUXv
-	 /Rpc9v4Kn8Kw3JD2ei8tFnzdFKhVulxHaMnj5Z23rw21Ynd4QIva2GCVTVPgiY2LVG
-	 jaEOxNCbwa13Q==
+	b=C2dwqdtUzJs0e/4mAoyZd9elv6kGwKzRzrkZZLnkSLPmb0EBBXF9mz5ki97+BdPpJ
+	 XR3t5RyYj6b5JGCnc4iLzpR9PSDADmGNoM5Kd3Q3Z8+mjRreHGdeq4mhUv0XwtD16Z
+	 SXlW5JSQnlmhaOFn59oW5j5O3l95kkxXNXhYvLsr1LZcKDf896lWNYyANEtDQKBG+a
+	 tv597acbLMufhvpLiQDo3PFyTTKsytOB/N0JBHE5QTcBCta9qmQDVrOlvNxpjHSu4f
+	 3PR0956zqC196DuCc1QWbJtDGLpRfklTrrMuglgZiq0FibC8MHKMBVtWmf8Qls7xfR
+	 90csUx2uFzarQ==
 From: "Harry Yoo (Meta)" <harry@kernel.org>
-Date: Tue, 03 Nov 2026 14:47:53 +0000
-Subject: [PATCH for-next-fixes v2 4/5] mm/slab: fix a deadlock in
- memcg_alloc_abort_single()
+Date: Tue, 03 Nov 2026 14:47:54 +0000
+Subject: [PATCH for-next-fixes v2 5/5] mm/slab: serialize
+ deferred_work_barrier()
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261103-kmalloc-nolock-fixes-v2-4-19167cfe4779@kernel.org>
+Message-Id: <20261103-kmalloc-nolock-fixes-v2-5-19167cfe4779@kernel.org>
 References: <20261103-kmalloc-nolock-fixes-v2-0-19167cfe4779@kernel.org>
 In-Reply-To: <20261103-kmalloc-nolock-fixes-v2-0-19167cfe4779@kernel.org>
 To: Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
@@ -85,18 +85,18 @@ Cc: kernel-team@meta.com, cgroups@vger.kernel.org, linux-mm@kvack.org,
  linux-kernel@vger.kernel.org, linux-rt-devel@lists.linux.dev, 
  Sashiko <sashiko-bot@kernel.org>
 X-Mailer: b4 0.16.0
-X-Stat-Signature: chkzmre551yjpw87fyrszscjgyhw66fk
+X-Stat-Signature: twzyx9zqhhzbc1yqyq5q7o14gttxp97a
 X-Rspam-User: 
 X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 0451840005
+X-Rspamd-Queue-Id: CAF6D40006
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1793717300-133105
-X-HE-Meta: U2FsdGVkX1/6MkGAbvDYg7Z7JIYFM1oqKorvUYjPNMASDNAKqmXh5XtXD2TCsF9rFDc9m5YUglDg4+JO+nhJ6aUTF2QRT0tNNSybVLODSdg7xQL+03eEuJvSMJGAsf0nEkzUAHhhAXFdcc0xZGyXIOJywn1oO7ftdmnUULnt5iXPxk1/FzIqsSO1rUGSGPlPOpqac7va3c2E6f5tKWlgOUfjhCExwhOhJILJhhWUrzEzbrzl1q6Vp9NYFdWqJJlDSLaQsbVfACmdE8LxDJjY85qXhkCJt8RTpFjLhw9Z8DY3kq8jSbHPd+jyAdr9uWepv/McWrvihGZrzZI/Hk51kH2iV58ieZtvjlQICWc4xHbaIFBH4no5QjOm0PNXy+Q0Hsxsp6L9TbXpaHs7AvyVYlXWwAptOYvQhODtqIThcrsEadRXop7DUjU9jWsvyVuvcX72XkwQ5TzsZ0pE9bUZeXB0UypoBepM5ei7xs2bAZa+CTcj+PYIeq8hnC9cK7kqxc2h2mlhp9B7AHyGqwZnVCVMsgY4G00dLMejrYaFITRoe3UxLBT4rOoJn7h+KlR7VZTL1hBqT1w7aG3WuiVdWC+NXAy71Pm4OhTt6DDZfSWd0HeqKoSZAJut9O1CntJYpT6Sxh9IUVnXZ9uG1yUdBkn1KJ0P8pBywZhggal+amgIxFjMKeaqPEMN6nouL9S+uIRe8CVNOklgz5OMQPx98L7DyRzIDk5qnjbB2AzLnZ9ZogOGO7EGE3ClW8m20la/kYwxrvjCuZmP6wSlShmjdHarsCsNzV1HzlXfEaN5T90WIMqc1ayLa5VdRNaSrcMRFpOf/lm09q7tnIEtvuL4xnWcgSgkMg8G56USuHfQswdMO0fJyQ/4o/NC7uoMq/Xp1TUQrOFnfN1poMCGwCbVT6rsoyAaqDCcLy7JftOUIqfuzK5GVurL9hwUBZmLsACtbZh+YSShh7yumpudhrI
- qRhT1Ps2
- r6yqL6pODu6UUeD5aQo30AKwqHqA3YfgXNTialNt69gnhdzeA2nO+cLTorqtqkXX6i5MCC6UdXOb72Y/uxTRvxNRVJvSh2ir/Dtr0YGJ+y0Y0ITA1Qn/4joUhp6FGqj4T5WfJbZpsZmV1Y4bLPfeEuMCOmw1r6A9L2HCfuxuGLIsEhC3uk/Q4AAQYWNyh918VEW3kSrbyjrknnINTx0qiIn57k2LWO+DKBGubKnytVvsTZstY+rjiHabvC21qIaham6CYSYed0i4DqTYmyImR9P/X9+qOiqCyYY7m71cGJ4rjpbZkBs0xhF1MwaZnDxQD9k5ZOc2oFYAHlg3r6AZvyVfqgrMo66fg1TR3
+X-HE-Tag: 1793717304-723105
+X-HE-Meta: U2FsdGVkX19qfRbYYVbdVYaSfh3NorVhPEfylY5Ks2Nt+AO4sIGzUxTDn3Zdmltl+TRvexqwjtfXfuDpZFaCo7Qdb8AB37ri0pmzpEGdAUcpa26abb+Wls2lgl/amzjpUq76MiclfzW5GGKMLqzufPvTc5aHlTFomGJ89PykSdL+/n2OwgKUCNCFp59/iEnp1E9s9P+BlR+2acZiQli6ygrRYU8Ng46d4FgKTb5lcnVMIpgWIoLm7W9kouCeGwSkaBOBtS1OVOl0x6Xj0Ohlw31huaIQ5xvZqqWmv1yhYwRvp+uImzOYppYgD+Gyd3o1Vw+K3FWusM1NDn5waalizrdzXjT9P+tf+5EcuHP+IXZbYO/65YM+ldOMjbq+dTQiYONmrcI6bDzxg7+i7pow66EdSpIcJkY1xwGjmbv8JFtcv7qSA0rhOPwXd9jvQy4eIABRWl11EFF0pCpdzRmvyue2qv01mv57AvryVjDmB7gsUSnBvREVBcYHucle9zdwf5bEZpGibg3R8o6DD9FIYaAaPFldIHhocjdDaeL7k28yE5dGmWmgKAvMZXP/Tcw+ZFtjeGMbozt4Tq4sbKPlkbQrGnhpMhWtsqaGPzBIP56bkwS3RmYR1tKQ/QBQoES0mwj5z50YpzylR4axt3zx/rqrqruE89PJtINiBzSL/Nfjwy/JbcPk/epSI2OPL0K23dbLXNuXlos5W1mJ7BTRKJLQYCn1emtaqD/jPU0sK3//5YcBzOIp9jExa8rSaVgIM2PEKsPZpgO/uH8wFgw2/YGyAm2Cp5VWeI4vYSUEIPxUc+tdnQuxtC3ESKsiH/Qq4cGlx91dFgPPZyZmyYxkE9TKK7oCBcDmuAHTD2G5yBnBGYgvm4920vgWXK9E/EM+6j81rfLQYxWil8sxogzKm05zOZTaSjlHGH3nyABfy+Yaqg4c1r3nYFXnnWf1r1LWF2MGwH6ryYG6tPZB7z/
+ 9aKCfC0g
+ l94b/gvNTU1rsS0drRqTOs4Yfo8qnHiPZ5TT1w06SiD48wNmWvHXOuWz4IBQ9MdZGNwaEaOSpOkIdC61X/dyGmpcA0AZikvLb4cOYkkl9Jxrxqoho4C5V3q3WrB1xUKOAUvJFdzAnjxNPQNvxSTQw2zlO89D9QHZakBqwPwqfXEDFupPTsQgjVnec+ke2t8bMyH7X8+uRNpWuStxjkMu8EuecajWMV80D/JYZl4UXHBnioywy9xz+xqVsi/3wRa05fr2Y86atq2x3j6h9qFQxCUFLt2bb8xnMzE2q9a8U2h9/+UKkn6gOMnwo6a+b4vx7421SR1tWC5raFlVH0r198zEHUI4LXJwzsnre
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,71 +105,51 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-When kmalloc_nolock() successfully grabs a slab object but memcg aborts
-the allocation, the object is freed via __slab_free(). Calling
-__slab_free() in unknown context is not allowed and can lead to a
-deadlock.
+irq_work_sync() uses rcuwait instead of busy waiting in two cases:
 
-Free the object via defer_free() when spinning is not allowed.
+  1. The kernel is using PREEMPT_RT and the irq work does not run in a
+     hardirq context.
+
+  2. The architecture cannot send inter-processor interrupts to make
+     busy waiting reasonably short.
+
+However, rcuwait.h says:
+> The caller is responsible for locking around rcuwait_wait_event(),
+> and [prepare_to/finish]_rcuwait() such that writes to @task are
+> properly serialized.
+
+Since deferred_work_barrier() calls irq_work_sync() without any locks,
+it can potentially cause a hang as writes to @task are not serialized.
+
+Fix this by serializing deferred_work_barrier() with a dedicated mutex.
+We cannot reuse slab_mutex because e.g.) some users of
+kvfree_rcu_barrier() are outside mm/.
 
 Reported-by: Sashiko <sashiko-bot@kernel.org>
-Closes: https://sashiko.dev/#/patchset/20260610-slab_alloc_flags-v2-0-7190909db118%40kernel.org?part=9
+Closes: https://sashiko.dev/#/patchset/20260615-kfree_rcu_nolock-v3-0-70a54f3775bb%40kernel.org?part=5
 Fixes: af92793e52c3 ("slab: Introduce kmalloc_nolock() and kfree_nolock().")
 Signed-off-by: Harry Yoo (Meta) <harry@kernel.org>
-Reviewed-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
 ---
- mm/slub.c | 17 ++++++++++++-----
- 1 file changed, 12 insertions(+), 5 deletions(-)
+ mm/slub.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
 diff --git a/mm/slub.c b/mm/slub.c
-index 48415f24e115..6dfa8ca3c937 100644
+index 6dfa8ca3c937..50e88edcef3a 100644
 --- a/mm/slub.c
 +++ b/mm/slub.c
-@@ -2533,7 +2533,8 @@ static inline void slab_obj_ext_has_codetag_init(void)
- 
- #ifdef CONFIG_MEMCG
- 
--static void memcg_alloc_abort_single(struct kmem_cache *s, void *object);
-+static void memcg_alloc_abort_single(struct kmem_cache *s, void *object,
-+				     bool allow_spin);
- 
- static __fastpath_inline
- bool memcg_slab_post_alloc_hook(struct kmem_cache *s, gfp_t flags,
-@@ -2551,7 +2552,9 @@ bool memcg_slab_post_alloc_hook(struct kmem_cache *s, gfp_t flags,
- 		return true;
- 
- 	if (likely(size == 1)) {
--		memcg_alloc_abort_single(s, *p);
-+		bool allow_spin = alloc_flags_allow_spinning(ac->alloc_flags);
-+
-+		memcg_alloc_abort_single(s, *p, allow_spin);
- 		*p = NULL;
- 	} else {
- 		kmem_cache_free_bulk(s, size, p);
-@@ -6663,16 +6666,20 @@ void slab_free(struct kmem_cache *s, struct slab *slab, void *object,
- #ifdef CONFIG_MEMCG
- /* Do not inline the rare memcg charging failed path into the allocation path */
- static noinline
--void memcg_alloc_abort_single(struct kmem_cache *s, void *object)
-+void memcg_alloc_abort_single(struct kmem_cache *s, void *object, bool allow_spin)
+@@ -6636,8 +6636,12 @@ void defer_kfree_rcu(struct kvfree_rcu_head *head)
+ /* Must be called before flush_rcu_sheaves_on_cache() */
+ void deferred_work_barrier(void)
  {
- 	struct slab *slab = virt_to_slab(object);
- 	bool init = slab_want_init_on_free(s);
--	bool allow_spin = true;
++	static DEFINE_MUTEX(barrier_mutex);
+ 	int cpu;
  
- 	alloc_tagging_slab_free_hook(s, slab, &object, 1);
- 
--	if (likely(slab_free_hook(s, object, init, false, allow_spin)))
-+	if (unlikely(!slab_free_hook(s, object, init, false, allow_spin)))
-+		return;
++	/* irq_work_sync() may use rcuwait that requires serialization */
++	guard(mutex)(&barrier_mutex);
 +
-+	if (likely(allow_spin))
- 		__slab_free(s, slab, object, object, 1, _RET_IP_);
-+	else
-+		defer_free(s, object);
+ 	for_each_possible_cpu(cpu)
+ 		irq_work_sync(&per_cpu_ptr(&deferred_percpu_work, cpu)->work);
  }
- #endif
- 
 
 -- 
 2.54.0
