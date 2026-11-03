@@ -1,127 +1,102 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58345606BA00
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 14:52:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 088D4606D2DF
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 14:53:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key, unprotected) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=skz89O6F
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=KYYdTd3y
 Received: by kanga.kvack.org (Postfix)
-	id 80E816B05B1; Tue,  3 Nov 2026 09:52:49 -0500 (EST)
+	id 0BDE96B05C8; Tue,  3 Nov 2026 09:53:30 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7E6996B05C7; Tue,  3 Nov 2026 09:52:49 -0500 (EST)
+	id 096406B05C9; Tue,  3 Nov 2026 09:53:30 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6DBE96B05C8; Tue,  3 Nov 2026 09:52:49 -0500 (EST)
+	id EC7D66B05CA; Tue,  3 Nov 2026 09:53:29 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 472B26B05B1
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 09:52:49 -0500 (EST)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id E3F7F14044B
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 14:52:48 +0000 (UTC)
-X-FDA: 85394099616.16.193C574
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf12.hostedemail.com (Postfix) with ESMTP id E946D40004
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 14:52:46 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=skz89O6F;
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=pass (imf12.hostedemail.com: domain of peterz@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=peterz@infradead.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id C09306B05C8
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 09:53:29 -0500 (EST)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 49B20120450
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 14:53:29 +0000 (UTC)
+X-FDA: 85394101338.03.0BBADED
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf20.hostedemail.com (Postfix) with ESMTP id ADE3E1C0005
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 14:53:27 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KYYdTd3y;
+	spf=pass (imf20.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793717567;
+	s=arc-20220608; t=1793717607;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=AZzVmOOfoRtDvZHpF7qwPdY9qMJ2XRmaKfYRT9GKTJM=;
-	b=Ph1HilNt4+POd7vslBFD10SCWX+2AVODQ15X1FzErEb1Mfl4y6HKq4O24QhfxuK5h8RrZ+
-	yfoSbacJphGglImusmVA9g9k5EhQWV49kcr9j29FuE8/HgPESG5j13e3/xH8VVPfMy5ve4
-	UiuTyX7n10G26Y0jveUvpgtHOwsbML4=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=skz89O6F;
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=pass (imf12.hostedemail.com: domain of peterz@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=peterz@infradead.org
+	bh=lN6/UyH0yVLzdc/bLBgkSFZGjwZsixPue/fM7Y5QUY0=;
+	b=D828mkd/45jORNceEFIP7aKcuzMajWLVK9olZE76aOrONwDc/GjLhOVZAs/Op5Kq1K2yZe
+	vmhG+MFRAlhZhrAY7lOGF3smUftccXLyqgqx6DLjMu7ocV4dgDgPyAlG7cS4kG9gb9DgJ1
+	ZB0dfjNcIU9u8cbySVJWL7/gMaLtBnI=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793717567;
-	b=5ds0aYLlO6lAGuakF2k/XTO+Bm5qGj9GdU4wTM1JF8ilYesAglxdLQFNWa4H2TF7xhJPhF
-	h988kXD8qiGNdgLpm5K2ZbtSx170cEl7vpEnYwWGFafwVvuhOGTKlznYS6FLIKIPYN+Mmt
-	86I5lTWn4P94VR1wAnI5KmXmgG386aM=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=AZzVmOOfoRtDvZHpF7qwPdY9qMJ2XRmaKfYRT9GKTJM=; b=skz89O6F8mEMMNAlN1u/nqq/Nd
-	Am9hqZOCT8D63YyzHpNND8SaYE7BEFaMaPgSN1SXruvzs3jWwVbmwO15MPpWrpfUvhhVI6lh8oCQg
-	vihlRywjPlCWqWXryCEux9ucABuQ3flQ4k1vEpsm19EAKcG/SD4lerWSD7aOspiW9J3PLKSqXTVQq
-	DaVcLkgntHTCpDCQUzFG6cdwMuE1hupteVUPjtcatFiMXb3p+jprlXmi33oYgyKSVwip16YVuqbxv
-	x/1UR+UqZpE0nX22ScRLXLcLFolszfJYW0mhkSyCLlm917oXRyvBenEHMqi97nC02kD7akamLQvu0
-	W/ZJbZdQ==;
-Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
-	by casper.infradead.org with esmtpsa (Exim 4.100.1 #2 (Red Hat Linux))
-	id 1xOFsD-0000000Ebhh-1pHh;
-	Tue, 03 Nov 2026 14:52:29 +0000
-Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
-	id 2505B301185; Tue, 03 Nov 2026 15:52:28 +0100 (CET)
-Date: Tue, 3 Nov 2026 15:52:28 +0100
-From: Peter Zijlstra <peterz@infradead.org>
-To: Arnd Bergmann <arnd@arndb.de>
-Cc: Sasha Levin <sashal@kernel.org>, kernel test robot <yi1.lai@intel.com>,
-	oe-lkp@lists.linux.dev, kernel test robot <lkp@intel.com>,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	Andrew Morton <akpm@linux-foundation.org>,
-	"David Hildenbrand (Red Hat)" <david@kernel.org>,
+	t=1793717607;
+	b=vz2gtSVni8P9prh0oTCE2ZZtwOy9skQpn8/kLwjUHsbt62gcMOOtQKVyxgzYK2gl4CVVbC
+	E4Fvk8X/ibHbqNTi6UngpQuHBoANIzI0Wt/YbAa+Muz0ZCnVYvH/sbbUo2iGmlPP/RzLVE
+	bp7hiibcnUnQ00FHTjLGoMGHc6lHv98=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KYYdTd3y;
+	spf=pass (imf20.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 3B9D5600D1;
+	Tue,  3 Nov 2026 14:53:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72A981F000C1;
+	Tue,  3 Nov 2026 14:53:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793717606;
+	bh=lN6/UyH0yVLzdc/bLBgkSFZGjwZsixPue/fM7Y5QUY0=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=KYYdTd3yhf0Ql88uloJlEQjPcAm7611vv1CFkAKOfqBFmbVpxeh9LsD99MWBK+VzC
+	 OTpRXC1CN6sr6UupfqPB8Dy0keYYoMs5/g26kF6OFpSZIZqFJHwm8MO9VOqRGFgDCg
+	 VVLMCUILiD+R0uZKD3Hwgs3o5X5av5i/QHt7hxHnQBzzLKlzTu84Ay+D0919U8SpMW
+	 M2K9awzSTViN8Gyyn/rFkUVHJRhLMOhsF9vGZb46MZvW0M87tljXxuJyOwxO7LL4MP
+	 yAfsdutiziA+UHsCoG/mAvMCElgOWGh8Q9yykv/lyasFQY609cIEUIHGXNLfj2A+Dt
+	 QrbTm6eiwKQjQ==
+From: SJ Park <sj@kernel.org>
+To: "Xiaolei Wang (Kaihong)" <xiaoleiwangxiaolei@gmail.com>
+Cc: SJ Park <sj@kernel.org>,
+	akpm@linux-foundation.org,
+	david@kernel.org,
+	ljs@kernel.org,
+	error27@gmail.com,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
 	"Liam R. Howlett" <liam@infradead.org>,
-	"Kirill A. Shutemov" <kas@kernel.org>,
-	Finn Thain <fthain@linux-m68k.org>,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Ard Biesheuvel <ardb@kernel.org>, "H. Peter Anvin" <hpa@zytor.com>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Dinh Nguyen <dinguyen@kernel.org>,
-	Eduard Zingerman <eddyz87@gmail.com>, Gary Guo <gary@garyguo.net>,
-	guoren <guoren@kernel.org>, Hao Luo <haoluo@google.com>,
-	Jiri Olsa <jolsa@kernel.org>,
-	John Fastabend <john.fastabend@gmail.com>,
-	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-	Jonas Bonn <jonas@southpole.se>, KP Singh <kpsingh@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Martin KaFai Lau <martin.lau@linux.dev>,
-	Rich Felker <dalias@libc.org>, Song Liu <song@kernel.org>,
-	Stafford Horne <shorne@gmail.com>,
-	Stanislav Fomichev <sdf@fomichev.me>,
-	Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
-	Will Deacon <will@kernel.org>,
-	Yonghong Song <yonghong.song@linux.dev>,
-	Yoshinori Sato <ysato@users.sourceforge.jp>
-Subject: Re: [linus:master] [atomic] 80047d84ee:
- WARNING:at_include/linux/instrumented.h:#__split_huge_pmd_locked
-Message-ID: <20261103145228.GO2668804@noisy.programming.kicks-ass.net>
-References: <202611022259.def3e086-lkp@intel.com>
- <20261103122647.GL1813469@noisy.programming.kicks-ass.net>
- <20261103123508.3910990-1-sashal@kernel.org>
- <e69e6690-cfc0-4ea8-83e1-5ad2d98b84d5@app.fastmail.com>
- <846703eb-111c-4376-a0ba-36bd3e13f632@app.fastmail.com>
+	Michal Hocko <mhocko@suse.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Vlastimil Babka <vbabka@kernel.org>
+Subject: Re: [PATCH] mm/damon/core: reject empty access pattern intervals on scheme commit
+Date: Tue,  3 Nov 2026 06:53:19 -0800
+Message-ID: <20261103145319.88120-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20261103105418.362459-1-xiaoleiwangxiaolei@gmail.com>
+References: 
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <846703eb-111c-4376-a0ba-36bd3e13f632@app.fastmail.com>
-X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: E946D40004
-X-Spam-Status: No, score=-8.6 required=3.0 tests=BAYES_00,DKIM_INVALID,
-	DKIM_SIGNED,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-8.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
 	autolearn_force=no version=4.0.1
-X-Stat-Signature: w5z5c8jtaxczordxqcswj1gp1tohzgo7
-X-HE-Tag: 1793717566-275045
-X-HE-Meta: U2FsdGVkX18TcJwc6Eq+z7Vv7J2FIRbX4BUCtugenJR1IlajZw2R2mwttGcDtyjG+A9SoeqJ8jDl89HqwjcF9LIAioyVolSMtvvuExFxnRaBPeOk1NGmOnyaBbvOpZ5gKTS2C92Iq8Fr2UwKRysbqyUQZ+lVYSykEoZdUY4G7es2FC/sIpnwqDsfwPpYlGL+9Z/cJ7eiLlEFnkfCQWWdq50Lc2qkNvO3ZGIIwllEaQIcJQw+2RbOX3FkDm29E23XxH3UmAEwA1egcAIMvfaPAWRSnrn2cPB4gu1b99h2axDfGNMUfCh293W0wPgu/obJSgsYIfgY3TInz28EnIBbdYH3x2RMfnmzvQ/20uInODnLq881j+JstF5w16sBWoAXjFJnopAcP73wY2XDGNyAcDMdy80R3zhD8//+JrW8UzkGCbZ0B2bBuSP/oj851RfNycjuyhjbCdxzqi3lCg1B8vLuidZjPrkbyrPjmNVBsgXbXBLHTt30sd6SmWptapIFyVAatsGZgNmP5xrHXGRMH6JBLXvQZ/OwygLrfeaVuwgh4CviCJeMYDeht7wqlmg4tHgAeM7/40luIbC9pb+a6T17J2+tviY70+1lZoCWryLnQbkLuh+NDla5+jTgQZg1hBPPHHSp3d/hN1YVOh/ReKNfJsZKsCBiANA0sstQ1Eqr3zlDlXqzT9FCUwfZBJs+ecZLDAN+4MhWJE5OaLOSkqDD6u4BzwkDWs4CVmkxKX9Jj3XEUOxoKDF1dIVVJppvK7lKRS/+s3FQCFz7FNEyxyMm1DS+SJKGL2uYbyxmfzBAeOsSGmbocgYnb+43quVVz9SPET2iq3PdFTCKfloOxHp8qHo5htFyw+2anqWb48L2CQHhy3bRhGXAHL+LWhcPaDyw3RikcbTOLTFNC1Z73PwKEe9rYVlyci1ZlGjpVQhkHl7vLvhHrwEWNvzoDHyeYHaeDTo+aBA6hrmpgCk
- 6SaNDR59
- 6tPXNATlUV/Bxv7oBAJg4MySRLCYqk/e97ibtDo1WytgoJL/Mwggrw+1AX+FNCGARMYr0mzcQfO+BuuUwCFWFO7kvIdbGQPyuTbP9V1zDl4MCGrWWrilcRFvXzeEC7PUvFlzRTfmxSlZ/SsIPIDsBWAf14Z+b/+nE7KpcfP418iHfWQ0ZKJyrXkaZqZ6B1ubt45ptcSyupeTfQFxZLWKAnqENgY/LPd6LQWQv6VN7KciXi2MZMOqNlgfwgRyZAD5T+EDX5PgjXP69RCTaEUyv71w6yZHk8/alsjLj0SrLTIlu2EpBPfxZXTVDR6rl/ICKIVdbFJQ/DigV1uE=
+X-Rspamd-Server: rspam09
+X-Stat-Signature: wnwq74z5w4dgedkczhznu6yp5gppko3t
+X-Rspamd-Queue-Id: ADE3E1C0005
+X-Rspam-User: 
+X-HE-Tag: 1793717607-547046
+X-HE-Meta: U2FsdGVkX1/HovenHAAEAtRGqcp2Ek2FobiO8wcN5s4ErN+gJbS0Uwu/wVp1aelHSLAdy7Beve2fblVnTlK8d+Sawv+7ZWikUxfB3QppliL6Q8B7WZ4Q4xUr99HauldAuALGhB/A0E5tQ6r06+3vGZqK7ad4AOscwUd3ORdEGf66NiJwKIk4wKc/FlPaZwPP1LgFwr31MdRikVv5aeXI2JNrevfD6KPRxbr8TYv5YEG2dlfq4+IBWdSR9wfeIPcfK8wZMdKeeEkgsDJGCDXoIIU0JYOAx+32evd8bQtCLqgl1FBSdXkrrC27gxMGI3SG+TiwKxQ0NTbI4VCJBkm7GSlp75Nj75dYkbJMsrSBZlhXjJbNijNmR85JshYdnw+FXtQmHCd1XEtSwRIkpLyVHesvJXmX8dMyQnFrYW4HEe8oHvWCIkOSwG1tcL82MhWcmT60Bobid+hJxCLWYKrPwJu/2l8OsA0QeAJr7NxXEiMCcNOtmldUf4xeIohhHxR/y0hZXeplGw4Xa2GKK81qXmnXYvpY3I/25MRKo73m2hFRoGcHPon8Up8t8yz+54Cv94FYhiyFUYIHK6tzbJryhHHe5jCZutKrJ81Nr/r1yEpw256A8J2BvfZbok/trgbrweGlWueA+n9uf0TuffI6aAqwu1x2gActJzp7y9O1UfpClGMrb90iK0sdgoH53wxjwhYxKJ/kiDG1uRc8Km759qg9m12n3UBa5pFty5z2Q7F4U+SkGg/gbjlpqn9lnxJNCVJWS4Xs/URh+Vi14RV0P5K+y2o2SRLuhMe2OHTyq6JRB2muIs/lK/BXnMWYBS9VlEvrPPXsEZLoDhEA8a0MEFznD/8HzE1xFEFCRdt5jouUQXihCNDTQ3j/wyca+ET9RvWVNjx8aX1UCA97cv6smsRJRQvOg4eYSZB7i8i0Ux4AJ8Krja+YqawRTv6JpbPmhi8xRRWgGh7lchHcPK8
+ kBBPipXu
+ yApJiVW+MU5/7AletD0RX95grq1WPlp1XyPdv+8cmb6ZRscE1IJoGpEfiYyeVoHMvqm0ZQ4ftZw7VdiVnE901Cm9RHdmgIYtVDQOyfOE/2KJZd5ewrkiGG0tW0nzFf8VyUJCHlXok1e1PdeX8nKYJ+3p1CgCwvTphnmAT7SYJMY0hDr6cMWWrptKRtwKvK1useDK9vBJpLsgD5UMDdxjs34crtoZe1vNcLvdaAH/AbBlDbWc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -130,90 +105,45 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Tue, Nov 03, 2026 at 02:41:32PM +0100, Arnd Bergmann wrote:
+On Tue,  3 Nov 2026 18:54:18 +0800 "Xiaolei Wang (Kaihong)" <xiaoleiwangxiaolei@gmail.com> wrote:
 
-> FWIW, I checked the other architectures that may be affected:
+> DAMOS schemes accept access pattern bounds with min > max (e.g.
+> min_sz_region > max_sz_region).  No input path validates the bounds:
+> damon_new_scheme() stores the pattern as is, and the sysfs ul_range
+> stores are plain kstrtoul().
 > 
-> - 32-bit arm has transparent hugepages and a 64-bit pmd_t with lpae,
->   but that type has natural alignment, and pmd_populate is a
->   simple assignment.
+> At runtime __damos_valid_target() evaluates "min <= x <= max" for each
+> of the three pattern dimensions.  A reversed interval is an empty set,
+> so every region fails the check and the scheme silently never matches
+> anything: nr_tried stays zero forever while the kdamond keeps running
+> normally.
 > 
-> - arc has transparent hugepages and a 32-bit pmd_t but a 64-bit
->   pte_t that is not naturally aligned. It probably should be
->   aligned, even though I don't see any actual bugs
+> With such a reversed interval, damo starts normally (rc=0, kdamond
+> state=on), but nr_tried and nr_applied stay zero forever and the target
+> RSS does not drop.
 > 
-> - sh has a 64-bit pmd_t on sh4a CPUs that is not naturally
->   aligned and probably should be, but there are no transparent
->   hugepages.
+> The same holds for the watermarks thresholds, which must be monotonic
+> (low <= mid <= high).
 > 
-> All other 32-bit targets don't use transparent hugepages
-> or 64-bit pmd_t. 
-> 
-> We probably only need to align p?d_t though, not p?dval_t.
-> How about the version below?
-> 
->     Arnd
-> 
-> diff --git a/arch/arc/include/asm/page.h b/arch/arc/include/asm/page.h
-> index 9720fe6b2c24..af5303459d56 100644
-> --- a/arch/arc/include/asm/page.h
-> +++ b/arch/arc/include/asm/page.h
-> @@ -65,7 +65,7 @@ typedef struct {
->  
->  typedef struct {
->  #ifdef CONFIG_ARC_HAS_PAE40
-> -	unsigned long long pte;
-> +	unsigned long long pte __aligned(8);
->  #else
->  	unsigned long pte;
->  #endif
-> diff --git a/arch/sh/include/asm/pgtable-3level.h b/arch/sh/include/asm/pgtable-3level.h
-> index d1ce73f3bd85..6d5e2e3248f2 100644
-> --- a/arch/sh/include/asm/pgtable-3level.h
-> +++ b/arch/sh/include/asm/pgtable-3level.h
-> @@ -33,7 +33,7 @@ typedef union {
->  		unsigned long pmd_low;
->  		unsigned long pmd_high;
->  	};
-> -	unsigned long long pmd;
-> +	unsigned long long pmd __aligned(8);
->  } pmd_t;
->  #define pmd_val(x)	((x).pmd)
->  #define __pmd(x)	((pmd_t) { .pmd = (x) } )
-> diff --git a/arch/x86/include/asm/pgtable-3level_types.h b/arch/x86/include/asm/pgtable-3level_types.h
-> index 580b09bf6a45..061283293341 100644
-> --- a/arch/x86/include/asm/pgtable-3level_types.h
-> +++ b/arch/x86/include/asm/pgtable-3level_types.h
-> @@ -16,14 +16,14 @@ typedef union {
->  	struct {
->  		unsigned long pte_low, pte_high;
->  	};
-> -	pteval_t pte;
-> +	pteval_t pte __aligned(8);
->  } pte_t;
->  
->  typedef union {
->  	struct {
->  		unsigned long pmd_low, pmd_high;
->  	};
-> -	pmdval_t pmd;
-> +	pmdval_t pmd __aligned(8);
->  } pmd_t;
->  #endif	/* !__ASSEMBLER__ */
->  
-> diff --git a/arch/x86/include/asm/pgtable_types.h b/arch/x86/include/asm/pgtable_types.h
-> index 2ec250ba467e..5c028b3f59c4 100644
-> --- a/arch/x86/include/asm/pgtable_types.h
-> +++ b/arch/x86/include/asm/pgtable_types.h
-> @@ -292,7 +292,7 @@ enum page_cache_mode {
->  
->  typedef struct pgprot { pgprotval_t pgprot; } pgprot_t;
->  
-> -typedef struct { pgdval_t pgd; } pgd_t;
-> +typedef struct { pgdval_t pgd __aligned(sizeof(pgdval_t)); } pgd_t;
->  
->  static inline pgprot_t pgprot_nx(pgprot_t prot)
->  {
+> Validate the access pattern and watermarks at the beginning of
+> damos_commit(), through which both new schemes (damo start) and online
+> updates (damo tune) pass.
 
-This doesn't cover all of p?d_t, does it?
+The documentation is not explicitly mentioning about the inputs (min > max and
+non-monotonic watermarks).  But I was thinking it is not really difficult to
+infer this behavior based on the existing document.
+
+If my understanding of the documentation is not wrong, I find no problem at
+accepting the inputs and just behave as documented.  It might look silly, but
+who knows the users have a creative reason to do that?  As long as it is not
+causing a harm, just supporting it is better for both users and code
+maintainability, in my humble opinion.
+
+Pleae let me know if I am missing something.
+
+
+Thanks,
+SJ
+
+[...]
 
