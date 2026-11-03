@@ -1,97 +1,92 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66157606D837
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 17:13:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D01DE606A31B
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 17:23:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=KJXS+4SZ
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=JuqPUtXY
 Received: by kanga.kvack.org (Postfix)
-	id 82B166B05B3; Tue,  3 Nov 2026 12:13:16 -0500 (EST)
+	id 002CF6B00EF; Tue,  3 Nov 2026 12:23:07 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7B51B6B05B4; Tue,  3 Nov 2026 12:13:16 -0500 (EST)
+	id F1C006B05B1; Tue,  3 Nov 2026 12:23:06 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 655A26B05B5; Tue,  3 Nov 2026 12:13:16 -0500 (EST)
+	id E31C76B05B2; Tue,  3 Nov 2026 12:23:06 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 38EE86B05B3
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 12:13:16 -0500 (EST)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id C8BCC404D1
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 17:13:15 +0000 (UTC)
-X-FDA: 85394453550.03.114A346
+	by kanga.kvack.org (Postfix) with ESMTP id BBC7C6B00EF
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 12:23:06 -0500 (EST)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id C4FB81A0306
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 17:23:04 +0000 (UTC)
+X-FDA: 85394478288.18.12856D1
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 1608412000B
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 17:13:13 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KJXS+4SZ;
-	spf=pass (imf29.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793725994;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=sLuH5QF1q2x16rx6DETeA38UkEEB7fIUOu+tH3AKEAw=;
-	b=KkRstWO0/fqWNABJVRNg1p3mesgaUfzxc5qv0e51KzHOfv3BkiD9ZogUGyXoWLeOnUxM6R
-	/f12hmFg8s3Q87gdEgfYNgse8eHwuHfA3tGzrwfXTgtVhSqEXMxmzxfOdQo6OYKq8ZTi5c
-	J+m5xmke/5WeYAEvQcqAZjE3CfdqHtE=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KJXS+4SZ;
-	spf=pass (imf29.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	by imf01.hostedemail.com (Postfix) with ESMTP id 24DF84000A
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 17:23:02 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JuqPUtXY;
+	spf=pass (imf01.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793725994;
-	b=iv+HskXLcOUhdVJyaHUNTA1kpj4tuSYX49VL7D2k32fKz97cUXky2Q6iUJjaoVhCaGJpo7
-	mpCGu/4DAOPmBHPvysa4sFOHK7qnaXjn+flFeQO4B1OjYt7RZYLd3XKWiA4TbmE7N84OSR
-	lBRkeUqYJaUURSMsKUU0Z79HhxClWAc=
+	t=1793726583;
+	b=HTd78YNw3okQCoX7qaJ7U85udN/I/ba/qvfZAqeHY6ruSnjIuPRFk29pls5JjmnkYMgImE
+	Jm0Ao2lQwUYeTRaheKN/o3+92ThhkU6N5E4NKC+hpoEM4tspbnwxt8YEx5zZ7jtbijZ8wp
+	fZ6cdm9EYr0hQs6+uQOSOobdq875fn4=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1793726583;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=QBNeyKGgsk+FmC6nEM5xjOZsGGaqbtElvO5AoS80vXU=;
+	b=zfCJVpQ5TfSgRBKkbdyYMxxdhTNiOIMoDnHYmEr5iUE7FB6FCOBuGaryKWl9AX4PHAxH8n
+	8s6wnN0r0v6CGrmK94E4XvC4Q7iMVc7Tc64xuBnynoEvaIHuPg9QpSAL2w+17nvUVDJ1LI
+	fnovYDw2z/tlOKKhjr6nEWqrUcKW0ok=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JuqPUtXY;
+	spf=pass (imf01.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 2BA5C43E3A;
-	Tue,  3 Nov 2026 17:13:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9557B1F000C1;
-	Tue,  3 Nov 2026 17:13:09 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 026454247C;
+	Tue,  3 Nov 2026 17:23:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FECC1F000C1;
+	Tue,  3 Nov 2026 17:23:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793725993;
-	bh=sLuH5QF1q2x16rx6DETeA38UkEEB7fIUOu+tH3AKEAw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=KJXS+4SZsMHevqyj/V53u+r07uc5LN5NwlmIboYWnoi9dWPvub4Tc4+Sq1MiaI/ZQ
-	 gtlW5Mia2tNdOTWc9cKH1pvKkwhmpkkcIAppcp+ITZUI62F33mhBjhJphldmAOguLo
-	 SV56BQ0kGzGR1y8OAoX6K3Nr/xB3fjsEZWzWrYbnZha0nKqD1nxUuFtfQDr++LDsrn
-	 YUeHwYypuRkUo/+BxdqwuYqeTtT/IVzuJ/qJlSTu2cori6hlKpj69pXMtlW1AlQyVd
-	 qn5unp/aOJNiB6qGtFyssM46a3Dh07x0hBZEZ2FmN2giOZeVIdKdmA4XBXqyXYe+1T
-	 l//FF8HwZOUig==
-Date: Tue, 3 Nov 2026 17:13:07 +0000
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Sasha Levin <sashal@kernel.org>
-Cc: Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>, Peter Xu <peterx@redhat.com>, 
-	linux-mm@kvack.org, linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] selftests/mm: fix pointer width warnings on 32-bit
- architectures
-Message-ID: <auoV594YOaoeo0Vz@gremlin>
-References: <20261103163907.640667-1-sashal@kernel.org>
+	s=k20260515; t=1793726581;
+	bh=QBNeyKGgsk+FmC6nEM5xjOZsGGaqbtElvO5AoS80vXU=;
+	h=From:To:Cc:Subject:Date;
+	b=JuqPUtXY3lVPSVcRFVuZA/BBRi9VAdMSiGG3EoccW24PuUNhBStcghlFoPv/6s4Cj
+	 gYVe/iHq/vcBu9u/sqoU++k46+HQKMvQc8aXh6nq2leFbBx+vUroM+Rsedf3Fx/Pvu
+	 0Ikqgtps5Ubp2z068GGtW+sagTUMCPhzsQJO4Eyd/RjE9a6KC5cfC7Cg6kw559ksw1
+	 +riXeRcidDwEzg/YGoRHLOQ/kYPjjH6PfHbSGXVHTk331C/LckAIx19SGkDkToy9CT
+	 8JnHrjbzS4APBE6am6Cwp55+4hIjDRD6VLoBG+qZcD62u+9nN+wgAYMG3Aqt3A4rx6
+	 lKDIYu/p6m+dw==
+From: Pratyush Yadav <pratyush@kernel.org>
+To: Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Pratyush Yadav <pratyush@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Cc: kexec@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: [PATCH v2] mm/memfd_luo: don't use memfd_pin_folios()
+Date: Tue,  3 Nov 2026 18:22:50 +0100
+Message-ID: <20261103172251.2348370-1-pratyush@kernel.org>
+X-Mailer: git-send-email 2.56.0.385.gac671c819a-goog
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20261103163907.640667-1-sashal@kernel.org>
-X-Stat-Signature: htj895r3c948fschgphsh6hkr49jwxh4
-X-Rspamd-Server: rspam01
-X-Rspam-User: 
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Rspamd-Server: rspam12
+X-Rspam-User:
+X-Stat-Signature: fkuoxs4gmp8ke74jhs1875xnykso41to
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: 1608412000B
-X-HE-Tag: 1793725993-598939
-X-HE-Meta: U2FsdGVkX19ir9PggzIrapBS7QdWasu19/uM6Hy6LAjjxQrdy9htDthCs1v0gRPPJV5XtE+YAWZPsI4ivyJtFp26PdB1JEnabyxccB6SbHpdtpPb1oGuE/5ay3V+AH+Zlahqz0IDFyWbmkGMjKoXuU/RJAiYFDSPiN8c8wKyVZoJlCPCroyE/obo1uM2j2UOtQNG85KE+hwT+QrJijStBYG5G8H3fO//cea1uWPgVCitk7nCsoInKuxnIpvhSQcBOTOQiGodY1pofVIiMIvSYH14250ptmhKiIRygBfDPLyZtD1e5d6oqUxman17d8jNLdnzlcRUqW38RkvyHTmg7xePAkPpSk3OW71VlpWvcZ3foVZ+FkZUh38QZ0DhdCHAyNM/cWkzLFlySgt3X1dQ12I6fIWc6v6W4cobO+Si9lxln8NFcqXmXrB82EwjugCremsmg7cxpeO5UZ4pF/ktsxhrDPFa1lz5pNOqSWnSlpy8++vh36wIGUH9QwXot1eJNP038jj3abJcWrQ+GS9bAOVARKg/I2DL4kKh7EeHKwoRYhzupKmpgKt/b/wxxXn9n3ZvWFxRO9UJfWYUgJMsVNhNMm1AlRDtQIpMOzO8dwOaiShgxywMfu5UamN+SUHPkjlaVGzz6t1kYDLxwNplxuzX3ml8BOn58u/NveJwkaqQitzp54hf92K9QJcNgQEIz2aQa/D8AobSv+J7MsNpykgsMj8jeRuke1R+zrRJrR1YurDobRVF/OmUozEP9lVj42NTCkL5jkVtKjb7QBGMIDHb4zoaP5D9F2P3MDhzXb2MUPKtq/5KTgXVNx0nDbCNIUfv4XHZclgYLWDNi8nc9hj+bC060D2EO/Npo96YIEhR7IeqJ+Eyx9ItKqzQqwhNzsiAtYLIhsr2G/YblA1crVhDeps2zExC0bmsBbHGALn0zuXpdhXvu8pfFcMHxjoUBdRtW6GgCW4Y5UbD8Y/
- w7s2Ei3L
- SwvM/aWwr4ZwU5jD2fC1gBA9toDPR3yL/XMs81EbSLFCZeXi7l1/RyCxcR+YALfiIwA0gq/F1vitHqyn59tRpB+5aWZNDh/N3vdhWtnXme0tZavhQ+XQXNCdGKqWEorgHnCJGIMJpAqYxrSIpyuJmrcrXe79OjYrk25I8H0dbVazh4Hy0YQZKCbJ+v11k0TwMl/aV0sXFGQ0DAGzDPsgzl7X479P2wAEFo7k/sB7Pyj9W/KIRZqUP5UHcpl0S2YIZH/CUK5w3YiVHHv9mo9kXpDgFG7UTjNfFuaB8NvOWyjSVjdY=
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: 24DF84000A
+X-HE-Tag: 1793726582-916296
+X-HE-Meta: U2FsdGVkX19Ekyq+EFJ0RKrhShY7WVGw144y0lfW0qLW1BIJI6Uh8AWBLWwS4LumzPjhTFVhaecUfFvz7UcRJjwiNhcL0wZvxJsF/RXbOaYyNY9UlVmZoKg1RH47HxQ8PWtcpr5CYBU4RKw8B8Yk4uRcTF46bDkdmgSR6nUahyHFP/7K8qx2DQ4wX9a5Ihl8V98n3D6a4DX4g0SWGfZ3Ev+53466T1hINVCWJcpcUR8wLc0gJaMjdnnX6IpuD7N/+WvYOEjjuLOT22+uebDi318Gl9M0nrIvx0XDKaUlrvbuYeprI0ITRSVITr6mE0z53tTvpiC1Da9JUENUz5bZNOtGQYkKcQJpJyo5RhMX3RDsIiO4+a0a6v1pssRiGnuibqk6D7/iCi5RJUFEPjU40H0VLOXysifZrr8A/8wumgMXkbzobR571czt7lh6dZDGrqr7i2cHZrISBYlQ0ddFiEwX/6XiHu4W8HUl8d6Hm4M3NzmvhBjwj8KouGvufPJGd+nifbM3o32OHM+x8byKt7w2nAd0D0O4w9nDIQ1TmN3hv3O6tKC9D2UJNlTKjnGln2l/KamMhOFhpGXS9zv+JdakQzCR9afUvRW57RVy7pbcMauVVkxk5zZb9Hknxg+/DGSWMQVWFI6C8aJnaB3lbqIhR43f0BKYOWIK6fdcDLy7JumD6NUG7oGPGkLh9MoOIvkLm7S9kX6ORY26qLH+t2iNzz3blfrOG2HarviFKleSU2lgpfMY4isCwrie2RosKRStpskiXEmzD0FOWSXF7C0fAXyg5D1xSXU+q4c3a0e2ZV7yQqt4pCKbwylS6QyS8A9Ri4k5vgPcjHih7pBQMG7ZaD91XnBU2Bvh8MWGwzG5P4K3uvQKOR8dD6e4Qm4/KUAzaUY3unLR+qbtMw/N657apt9FmEmnbO9a9Qw2cf0PnPOVIUQXMCfENnqGUDbvcF8J5Oa5qhWo367TxZZ
+ 4kk9zCay
+ 3VYZOM1KNewb56zYoU/iOxqxG4fU8w3sHvNoqWdxsoeW7poAufZrdCWCyfwMwESBcii2wcCvOOl29yaQrOLPIn4Ijotj+hN8aOVhfaoLAuOEzQJVYYVTqdZ+g9QJDInyYYu1SrTgx3OpZySeK+kph8+0baHqqDBKWZ9SIkTBbYWJ2h4yP/UcWdyXMEbu53iz4eu6K4vTT5lIX4pQUnYIBaEPpR7I2rpqMZR2RRnwUv/JhzXE54csxZGzcAoSUNNi3BdkntfFCeDE1663l3I9Pi4/BJRwUTuahMSxTNimMOwUwHu3jL6hkF9/mbBt6dXe3Fi9/vmFxZ7CMF5V16JGTIU/Npatyzixx8qV28Bm31pwEt2F7eiYzg8SBZkQCTh+xdDg3
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,396 +95,467 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Tue, Nov 03, 2026 at 11:39:07AM -0500, Sasha Levin wrote:
-> Several mm tests convert between pointers and 64-bit integers with a
-> plain cast, which warns on 32-bit architectures, and hugetlb-mremap
-> passes 47-bit mmap() hints that don't fit in an unsigned long:
->
->   uffd-unit-tests.c:344:31: warning: cast from pointer to integer of different size [-Wpointer-to-int-cast]
->
-> Cast through uintptr_t where pointers meet the 64-bit UAPI fields and
-> the 64-bit address arithmetic in mremap_test, and include stdint.h there
-> for it. The hugetlb-mremap hints don't fit in a 32-bit address space, so
-> only pass them when long is 64 bits.
->
-> Signed-off-by: Sasha Levin <sashal@kernel.org>
+From: "Pratyush Yadav (Google)" <pratyush@kernel.org>
 
-I see you add:
+memfd_luo takes a snapshot of the folios in the file's mapping. To make
+sure the snapshot does not go out of sync, it pins the folios in the
+file via memfd_pin_folios(). The pinning also migrates the folios out of
+MIGRATE_MOVABLE to make sure doesn't land in KHO boot memory or in a CMA
+region.
 
-static void *addr_hint(unsigned long long addr)
-{
-	return sizeof(long) == 8 ? (void *)(uintptr_t)addr : NULL;
-}
+memfd_pin_folios() does not lock the folios. So it can race with
+shmem_writeout(). A folio returned by memfd_pin_folios() might already
+be in swap cache. This happens to work but is fragile. memfd_luo looks
+at folio flags and index on a folio that isn't in the memfd's page
+cache.
 
-for the void * stuff, but then open-code the uint64_t parts.
+In addition, memfd_pin_folios() needs the caller to allocate an array of
+folios. memfd_luo does not really need that since it will vmalloc
+folios_ser and store the information there anyway. The folios array is
+unnecessary overhead.
 
-Could you do something similar there please?
+Finally, memfd_pin_folios() fills in holes in the memfd. This makes
+preserving sparse memfds very expensive in both compute and memory.
+While this patch doesn't yet stop filling in the holes, it sets up the
+infrastructure to make it simpler.
 
-Thanks!
+Fix all this by walking the page cache directly using shmem_get_folio()
+with SGP_CACHE. This returns a locked folio with an elevated refcount.
+memfd_luo holds that reference until the memfd is unpreserved. This
+blocks compaction, migration, etc.
 
-> ---
-> Found with 32-bit builds of the selftests (gcc 16 and clang 21 with
-> -m32, with and without -D_TIME_BITS=64 -D_FILE_OFFSET_BITS=64);
-> KernelCI's 32-bit arm builds show the same warnings. The changed files
-> build without them now, and the x86_64 builds don't change.
->
->  tools/testing/selftests/mm/hmm-tests.c       |  4 +-
->  tools/testing/selftests/mm/hugetlb-mremap.c  | 17 ++++---
->  tools/testing/selftests/mm/migration.c       |  4 +-
->  tools/testing/selftests/mm/mremap_test.c     | 13 +++---
->  tools/testing/selftests/mm/uffd-common.c     |  2 +-
->  tools/testing/selftests/mm/uffd-unit-tests.c | 48 ++++++++++----------
->  6 files changed, 47 insertions(+), 41 deletions(-)
->
-> diff --git a/tools/testing/selftests/mm/hmm-tests.c b/tools/testing/selftests/mm/hmm-tests.c
-> index e5f273ca84c10..2a8806a131a5b 100644
-> --- a/tools/testing/selftests/mm/hmm-tests.c
-> +++ b/tools/testing/selftests/mm/hmm-tests.c
-> @@ -196,8 +196,8 @@ static int hmm_dmirror_cmd(int fd,
->  	int ret;
->
->  	/* Simulate a device reading system memory. */
-> -	cmd.addr = (__u64)buffer->ptr;
-> -	cmd.ptr = (__u64)buffer->mirror;
-> +	cmd.addr = (__u64)(uintptr_t)buffer->ptr;
-> +	cmd.ptr = (__u64)(uintptr_t)buffer->mirror;
->  	cmd.npages = npages;
->
->  	for (;;) {
-> diff --git a/tools/testing/selftests/mm/hugetlb-mremap.c b/tools/testing/selftests/mm/hugetlb-mremap.c
-> index 9b724af66e938..531f270fabfb5 100644
-> --- a/tools/testing/selftests/mm/hugetlb-mremap.c
-> +++ b/tools/testing/selftests/mm/hugetlb-mremap.c
-> @@ -33,6 +33,11 @@
->  #define PROTECTION (PROT_READ | PROT_WRITE | PROT_EXEC)
->  #define FLAGS (MAP_HUGETLB | MAP_SHARED)
->
-> +static void *addr_hint(unsigned long long addr)
-> +{
-> +	return sizeof(long) == 8 ? (void *)(uintptr_t)addr : NULL;
-> +}
-> +
->  static void check_bytes(char *addr)
->  {
->  	ksft_print_msg("First hex is %x\n", *((unsigned int *)addr));
-> @@ -130,21 +135,21 @@ int main(int argc, char *argv[])
->  		ksft_exit_fail_msg("Open failed: %s\n", strerror(errno));
->
->  	/* mmap to a PUD aligned address to hopefully trigger pmd sharing. */
-> -	unsigned long suggested_addr = 0x7eaa40000000;
-> -	void *haddr = mmap((void *)suggested_addr, length, PROTECTION, FLAGS, fd, 0);
-> +	void *haddr = mmap(addr_hint(0x7eaa40000000ULL), length, PROTECTION, FLAGS,
-> +			   fd, 0);
->  	ksft_print_msg("Map haddr: Returned address is %p\n", haddr);
->  	if (haddr == MAP_FAILED)
->  		ksft_exit_fail_msg("mmap1: %s\n", strerror(errno));
->
->  	/* mmap again to a dummy address to hopefully trigger pmd sharing. */
-> -	suggested_addr = 0x7daa40000000;
-> -	void *daddr = mmap((void *)suggested_addr, length, PROTECTION, FLAGS, fd, 0);
-> +	void *daddr = mmap(addr_hint(0x7daa40000000ULL), length, PROTECTION, FLAGS,
-> +			   fd, 0);
->  	ksft_print_msg("Map daddr: Returned address is %p\n", daddr);
->  	if (daddr == MAP_FAILED)
->  		ksft_exit_fail_msg("mmap3: %s\n", strerror(errno));
->
-> -	suggested_addr = 0x7faa40000000;
-> -	void *vaddr = mmap((void *)suggested_addr, length, PROTECTION, FLAGS, fd, 0);
-> +	void *vaddr = mmap(addr_hint(0x7faa40000000ULL), length, PROTECTION, FLAGS,
-> +			   fd, 0);
->  	ksft_print_msg("Map vaddr: Returned address is %p\n", vaddr);
->  	if (vaddr == MAP_FAILED)
->  		ksft_exit_fail_msg("mmap2: %s\n", strerror(errno));
-> diff --git a/tools/testing/selftests/mm/migration.c b/tools/testing/selftests/mm/migration.c
-> index d1d0989ed2cad..1c5208ce048ee 100644
-> --- a/tools/testing/selftests/mm/migration.c
-> +++ b/tools/testing/selftests/mm/migration.c
-> @@ -236,7 +236,7 @@ TEST_F_TIMEOUT(migration, private_anon_thp, 2*RUNTIME)
->  		MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
->  	ASSERT_NE(ptr, MAP_FAILED);
->
-> -	ptr = (uint64_t *) ALIGN((uintptr_t) ptr, pmdsize);
-> +	ptr = (uint64_t *)(uintptr_t)ALIGN((uintptr_t) ptr, pmdsize);
->  	ASSERT_EQ(madvise(ptr, pmdsize, MADV_HUGEPAGE), 0);
->  	memset(ptr, 0xde, pmdsize);
->  	for (i = 0; i < self->nthreads; i++)
-> @@ -270,7 +270,7 @@ TEST_F_TIMEOUT(migration, shared_anon_thp, 2*RUNTIME)
->  		MAP_SHARED | MAP_ANONYMOUS, -1, 0);
->  	ASSERT_NE(ptr, MAP_FAILED);
->
-> -	ptr = (uint64_t *) ALIGN((uintptr_t) ptr, pmdsize);
-> +	ptr = (uint64_t *)(uintptr_t)ALIGN((uintptr_t) ptr, pmdsize);
->  	ASSERT_EQ(madvise(ptr, pmdsize, MADV_HUGEPAGE), 0);
->
->  	memset(ptr, 0xde, pmdsize);
-> diff --git a/tools/testing/selftests/mm/mremap_test.c b/tools/testing/selftests/mm/mremap_test.c
-> index 31b484517bda6..7e7ca67f7e94c 100644
-> --- a/tools/testing/selftests/mm/mremap_test.c
-> +++ b/tools/testing/selftests/mm/mremap_test.c
-> @@ -15,6 +15,7 @@
->  #include <syscall.h>
->  #include <time.h>
->  #include <stdbool.h>
-> +#include <stdint.h>
->
->  #include "kselftest.h"
->
-> @@ -190,7 +191,7 @@ static void *get_source_mapping(struct config c)
->  	if (addr < mmap_min_addr)
->  		goto retry;
->
-> -	src_addr = mmap((void *) addr, c.region_size, PROT_READ | PROT_WRITE,
-> +	src_addr = mmap((void *)(uintptr_t)addr, c.region_size, PROT_READ | PROT_WRITE,
->  					MAP_FIXED_NOREPLACE | MAP_ANONYMOUS | MAP_SHARED,
->  					-1, 0);
->  	if (src_addr == MAP_FAILED) {
-> @@ -206,8 +207,8 @@ static void *get_source_mapping(struct config c)
->  	 * requested alignment of 2MB. This is done to reduce coincidental
->  	 * alignment in the tests.
->  	 */
-> -	if (((unsigned long long) src_addr & (c.src_alignment - 1)) ||
-> -			!((unsigned long long) src_addr & c.src_alignment)) {
-> +	if (((unsigned long long)(uintptr_t)src_addr & (c.src_alignment - 1)) ||
-> +			!((unsigned long long)(uintptr_t)src_addr & c.src_alignment)) {
->  		munmap(src_addr, c.region_size);
->  		goto retry;
->  	}
-> @@ -996,15 +997,15 @@ static long long remap_region(struct config c, unsigned int threshold_mb,
->  	align_mask = ~(c.dest_alignment - 1);
->  	/* Offset of destination address from the end of the source region */
->  	offset = (c.overlapping) ? -c.dest_alignment : c.dest_alignment;
-> -	addr = (void *) (((unsigned long long) src_addr + c.region_size
-> +	addr = (void *)(uintptr_t)(((unsigned long long)(uintptr_t)src_addr + c.region_size
->  			  + offset) & align_mask);
->
->  	/* Remap after the destination block preamble. */
->  	addr += c.dest_preamble_size;
->
->  	/* See comment in get_source_mapping() */
-> -	if (!((unsigned long long) addr & c.dest_alignment))
-> -		addr = (void *) ((unsigned long long) addr | c.dest_alignment);
-> +	if (!((unsigned long long)(uintptr_t)addr & c.dest_alignment))
-> +		addr = (void *)(uintptr_t)((unsigned long long)(uintptr_t)addr | c.dest_alignment);
->
->  	/* Don't destroy existing mappings unless expected to overlap. */
->  	while (!is_remap_region_valid(addr - c.dest_preamble_size,
-> diff --git a/tools/testing/selftests/mm/uffd-common.c b/tools/testing/selftests/mm/uffd-common.c
-> index a76851aced4d0..4188991fab245 100644
-> --- a/tools/testing/selftests/mm/uffd-common.c
-> +++ b/tools/testing/selftests/mm/uffd-common.c
-> @@ -488,7 +488,7 @@ void uffd_handle_page_fault(uffd_global_test_opts_t *gopts, struct uffd_msg *msg
->  		 */
->
->  		area = (uint8_t *)(gopts->area_dst +
-> -		       ((char *)msg->arg.pagefault.address -
-> +		       ((char *)(uintptr_t)msg->arg.pagefault.address -
->  		       gopts->area_dst_alias));
->  		for (b = 0; b < gopts->page_size; ++b)
->  			area[b] = ~area[b];
-> diff --git a/tools/testing/selftests/mm/uffd-unit-tests.c b/tools/testing/selftests/mm/uffd-unit-tests.c
-> index 2a97ba1d6feb1..2e4d1742f340b 100644
-> --- a/tools/testing/selftests/mm/uffd-unit-tests.c
-> +++ b/tools/testing/selftests/mm/uffd-unit-tests.c
-> @@ -341,17 +341,17 @@ static void uffd_wp_unpopulated_test(uffd_global_test_opts_t *gopts, uffd_test_a
->  	pagemap_fd = pagemap_open();
->
->  	/* Test applying pte marker to anon unpopulated */
-> -	wp_range(gopts->uffd, (uint64_t)gopts->area_dst, gopts->page_size, true);
-> +	wp_range(gopts->uffd, (uint64_t)(uintptr_t)gopts->area_dst, gopts->page_size, true);
->  	value = pagemap_get_entry(pagemap_fd, gopts->area_dst);
->  	pagemap_check_wp(value, true);
->
->  	/* Test unprotect on anon pte marker */
-> -	wp_range(gopts->uffd, (uint64_t)gopts->area_dst, gopts->page_size, false);
-> +	wp_range(gopts->uffd, (uint64_t)(uintptr_t)gopts->area_dst, gopts->page_size, false);
->  	value = pagemap_get_entry(pagemap_fd, gopts->area_dst);
->  	pagemap_check_wp(value, false);
->
->  	/* Test zap on anon marker */
-> -	wp_range(gopts->uffd, (uint64_t)gopts->area_dst, gopts->page_size, true);
-> +	wp_range(gopts->uffd, (uint64_t)(uintptr_t)gopts->area_dst, gopts->page_size, true);
->  	if (madvise(gopts->area_dst, gopts->page_size, MADV_DONTNEED))
->  		err("madvise(MADV_DONTNEED) failed");
->  	value = pagemap_get_entry(pagemap_fd, gopts->area_dst);
-> @@ -366,7 +366,7 @@ static void uffd_wp_unpopulated_test(uffd_global_test_opts_t *gopts, uffd_test_a
->  		err("madvise(MADV_DONTNEED) failed");
->
->  	/* Test read-zero-page upon pte marker */
-> -	wp_range(gopts->uffd, (uint64_t)gopts->area_dst, gopts->page_size, true);
-> +	wp_range(gopts->uffd, (uint64_t)(uintptr_t)gopts->area_dst, gopts->page_size, true);
->  	*(volatile char *)gopts->area_dst;
->  	/* Drop it to make pte none again */
->  	if (madvise(gopts->area_dst, gopts->page_size, MADV_DONTNEED))
-> @@ -389,7 +389,7 @@ static void uffd_wp_fork_test_common(uffd_global_test_opts_t *gopts, uffd_test_a
->
->  	/* Touch the page */
->  	*gopts->area_dst = 1;
-> -	wp_range(gopts->uffd, (uint64_t)gopts->area_dst, gopts->page_size, true);
-> +	wp_range(gopts->uffd, (uint64_t)(uintptr_t)gopts->area_dst, gopts->page_size, true);
->  	value = pagemap_get_entry(pagemap_fd, gopts->area_dst);
->  	pagemap_check_wp(value, true);
->  	if (pagemap_test_fork(gopts, with_event, false)) {
-> @@ -430,7 +430,7 @@ static void uffd_wp_fork_test_common(uffd_global_test_opts_t *gopts, uffd_test_a
->  	}
->
->  	/* Unprotect; this tests swap pte modifications */
-> -	wp_range(gopts->uffd, (uint64_t)gopts->area_dst, gopts->page_size, false);
-> +	wp_range(gopts->uffd, (uint64_t)(uintptr_t)gopts->area_dst, gopts->page_size, false);
->  	value = pagemap_get_entry(pagemap_fd, gopts->area_dst);
->  	pagemap_check_wp(value, false);
->
-> @@ -469,7 +469,7 @@ static void uffd_wp_fork_pin_test_common(uffd_global_test_opts_t *gopts,
->
->  	/* Touch the page */
->  	*gopts->area_dst = 1;
-> -	wp_range(gopts->uffd, (uint64_t)gopts->area_dst, gopts->page_size, true);
-> +	wp_range(gopts->uffd, (uint64_t)(uintptr_t)gopts->area_dst, gopts->page_size, true);
->
->  	/*
->  	 * 1. First pin, then fork().  This tests fork() special path when
-> @@ -675,7 +675,7 @@ static void uffd_rwp_async_test(uffd_global_test_opts_t *gopts,
->  		err("register failure");
->
->  	/* RW-protect all pages (sets protnone) */
-> -	rwprotect_range(gopts->uffd, (uint64_t)gopts->area_dst,
-> +	rwprotect_range(gopts->uffd, (uint64_t)(uintptr_t)gopts->area_dst,
->  			 nr_pages * page_size, true);
->
->  	/* Access all pages — should auto-resolve, no faults */
-> @@ -739,7 +739,7 @@ static void uffd_rwp_sync_test(uffd_global_test_opts_t *gopts,
->  		err("register failure");
->
->  	/* RW-protect all pages */
-> -	rwprotect_range(gopts->uffd, (uint64_t)gopts->area_dst,
-> +	rwprotect_range(gopts->uffd, (uint64_t)(uintptr_t)gopts->area_dst,
->  			 nr_pages * page_size, true);
->
->  	/* Start fault handler thread */
-> @@ -816,7 +816,7 @@ static void uffd_rwp_pagemap_test(uffd_global_test_opts_t *gopts,
->  			  nr_pages * page_size))
->  		err("register failure");
->
-> -	rwprotect_range(gopts->uffd, (uint64_t)gopts->area_dst,
-> +	rwprotect_range(gopts->uffd, (uint64_t)(uintptr_t)gopts->area_dst,
->  			 nr_pages * page_size, true);
->
->  	/* Touch first half of pages to re-activate them (async auto-resolve) */
-> @@ -825,7 +825,7 @@ static void uffd_rwp_pagemap_test(uffd_global_test_opts_t *gopts,
->  		(void)*page;
->  	}
->
-> -	uint64_t start = (uint64_t)gopts->area_dst;
-> +	uint64_t start = (uint64_t)(uintptr_t)gopts->area_dst;
->  	uint64_t boundary = start + (nr_pages / 2) * page_size;
->  	uint64_t end = start + nr_pages * page_size;
->
-> @@ -844,7 +844,7 @@ static void uffd_rwp_pagemap_test(uffd_global_test_opts_t *gopts,
->  	pm_arg.size = sizeof(pm_arg);
->  	pm_arg.start = start;
->  	pm_arg.end = end;
-> -	pm_arg.vec = (uint64_t)regions;
-> +	pm_arg.vec = (uint64_t)(uintptr_t)regions;
->  	pm_arg.vec_len = ARRAY_SIZE(regions);
->  	pm_arg.category_mask = PAGE_IS_ACCESSED;
->  	pm_arg.return_mask = PAGE_IS_ACCESSED;
-> @@ -897,7 +897,7 @@ static void uffd_rwp_mprotect_test(uffd_global_test_opts_t *gopts,
->  	if (uffd_register_rwp(gopts->uffd, gopts->area_dst,
->  			      nr_pages * page_size))
->  		err("register failure");
-> -	rwprotect_range(gopts->uffd, (uint64_t)gopts->area_dst,
-> +	rwprotect_range(gopts->uffd, (uint64_t)(uintptr_t)gopts->area_dst,
->  			nr_pages * page_size, true);
->
->  	/* Round-trip mprotect(): PROT_NONE -> PROT_READ|PROT_WRITE */
-> @@ -937,9 +937,9 @@ static void uffd_rwp_mprotect_test(uffd_global_test_opts_t *gopts,
->
->  	memset(&pm_arg, 0, sizeof(pm_arg));
->  	pm_arg.size = sizeof(pm_arg);
-> -	pm_arg.start = (uint64_t)gopts->area_dst;
-> -	pm_arg.end = (uint64_t)gopts->area_dst + nr_pages * page_size;
-> -	pm_arg.vec = (uint64_t)regions;
-> +	pm_arg.start = (uint64_t)(uintptr_t)gopts->area_dst;
-> +	pm_arg.end = (uint64_t)(uintptr_t)gopts->area_dst + nr_pages * page_size;
-> +	pm_arg.vec = (uint64_t)(uintptr_t)regions;
->  	pm_arg.vec_len = ARRAY_SIZE(regions);
->  	pm_arg.category_mask = PAGE_IS_ACCESSED;
->  	pm_arg.category_inverted = PAGE_IS_ACCESSED;
-> @@ -982,7 +982,7 @@ static void uffd_rwp_gup_test(uffd_global_test_opts_t *gopts,
->  	if (uffd_register_rwp(gopts->uffd, gopts->area_dst, gopts->page_size))
->  		err("register failure");
->
-> -	rwprotect_range(gopts->uffd, (uint64_t)gopts->area_dst,
-> +	rwprotect_range(gopts->uffd, (uint64_t)(uintptr_t)gopts->area_dst,
->  			gopts->page_size, true);
->
->  	if (pipe(pipefd))
-> @@ -1045,7 +1045,7 @@ static void uffd_rwp_async_toggle_test(uffd_global_test_opts_t *gopts,
->  		err("register failure");
->
->  	/* Phase 1: async detection — RW-protect, access first half */
-> -	rwprotect_range(gopts->uffd, (uint64_t)gopts->area_dst,
-> +	rwprotect_range(gopts->uffd, (uint64_t)(uintptr_t)gopts->area_dst,
->  			 nr_pages * page_size, true);
->
->  	for (p = 0; p < nr_pages / 2; p++) {
-> @@ -1092,7 +1092,7 @@ static void uffd_rwp_async_toggle_test(uffd_global_test_opts_t *gopts,
->  	set_async_mode(gopts->uffd, true);
->
->  	/* RW-protect and access again — should auto-resolve */
-> -	rwprotect_range(gopts->uffd, (uint64_t)gopts->area_dst,
-> +	rwprotect_range(gopts->uffd, (uint64_t)(uintptr_t)gopts->area_dst,
->  			 nr_pages * page_size, true);
->
->  	for (p = 0; p < nr_pages; p++) {
-> @@ -1127,7 +1127,7 @@ static void uffd_rwp_close_test(uffd_global_test_opts_t *gopts,
->  			  nr_pages * page_size))
->  		err("register failure");
->
-> -	rwprotect_range(gopts->uffd, (uint64_t)gopts->area_dst,
-> +	rwprotect_range(gopts->uffd, (uint64_t)(uintptr_t)gopts->area_dst,
->  			 nr_pages * page_size, true);
->
->  	/* Close uffd — should restore protnone PTEs */
-> @@ -1169,7 +1169,7 @@ static void uffd_rwp_fork_test(uffd_global_test_opts_t *gopts,
->
->  	/* Populate + RWP-protect */
->  	*gopts->area_dst = 1;
-> -	rwprotect_range(gopts->uffd, (uint64_t)gopts->area_dst,
-> +	rwprotect_range(gopts->uffd, (uint64_t)(uintptr_t)gopts->area_dst,
->  			page_size, true);
->
->  	/* Parent: verify uffd-wp bit is set before fork */
-> @@ -1223,7 +1223,7 @@ static void uffd_rwp_fork_pin_test(uffd_global_test_opts_t *gopts,
->  	}
->
->  	/* RWP-protect: PTE is now PAGE_NONE + uffd bit. */
-> -	rwprotect_range(gopts->uffd, (uint64_t)gopts->area_dst, page_size, true);
-> +	rwprotect_range(gopts->uffd, (uint64_t)(uintptr_t)gopts->area_dst, page_size, true);
->
->  	pagemap_fd = pagemap_open();
->  	value = pagemap_get_entry(pagemap_fd, gopts->area_dst);
-> @@ -1332,7 +1332,7 @@ static void uffd_rwp_swap_cow_test(uffd_global_test_opts_t *gopts,
->  	*gopts->area_dst = 0x11;
->
->  	/* RWP-protect: PTE becomes PAGE_NONE + uffd bit (still exclusive). */
-> -	rwprotect_range(gopts->uffd, (uint64_t)gopts->area_dst, page_size, true);
-> +	rwprotect_range(gopts->uffd, (uint64_t)(uintptr_t)gopts->area_dst, page_size, true);
->
->  	/*
->  	 * Swap the page out while it is still exclusive: a shared (forked)
-> @@ -1498,7 +1498,7 @@ static int faulting_process(uffd_global_test_opts_t *gopts, int signal_test, boo
->  						/* This is a WP request */
->  						assert(steps == 2);
->  						wp_range(gopts->uffd,
-> -							 (__u64)gopts->area_dst +
-> +							 (__u64)(uintptr_t)gopts->area_dst +
->  							 offset,
->  							 gopts->page_size, false);
->  					}
-> --
-> 2.53.0
->
+There is still a need to migrate folios out of MIGRATE_MOVABLE page
+blocks. This is because those might be CMA or KHO scratch. memfd_luo
+will hold a longterm reference to the folios so it will block migration
+in that pageblock. Introduce memfd_luo_migrate_folio() to do this.
 
---
-Cheers, Lorenzo
+Also factor out folio unpreservation logic into memfd_luo_put_folios()
+and use it from memfd_luo_unpreserve_folios() and from error paths in
+memfd_luo_preserve_folios().
+
+Since shmem_get_folio() always returns uptodate folios, drop the folio
+zeroing logic.
+
+This change also improves preservation performance, shown in the table
+below.
+
+|------------------+----------+------------+-------|
+| memfd            | baseline | this patch | delta |
+|------------------+----------+------------+-------|
+| 4K pages, 32 GiB | 748 ms   | 600 ms     |  -20% |
+| THP, 4 GiB       | 0.59 ms  | 0.59 ms    |    0% |
+| THP, 16 GiB      | 2.99 ms  | 2.61 ms    |  -13% |
+| THP, 32 GiB      | 4.83 ms  | 5.21 ms    |   +8% |
+| sparse, 32 GiB   | 8695 ms  | 7269 ms    |  -16% |
+|------------------+----------+------------+-------|
+
+Acked-by: Pasha Tatashin <pasha.tatashin@soleen.com>
+Signed-off-by: Pratyush Yadav (Google) <pratyush@kernel.org>
+
+---
+
+The diff is unfortunately hard to read. It would be easier to review the
+patch by applying it and looking at the final code.
+
+This patch is picked from a separate series I sent [0]. It is more or
+less an independent change. It fixed a race for that series so I added
+it there, but since that series might take longer to go through, I think
+it is useful to take this patch separately.
+
+[0] https://lore.kernel.org/all/20261027173031.763213-2-pratyush@kernel.org/
+
+Changes since v1:
+
+- Add memfd_luo_get_folio() which combines shmem_get_folio() and the
+  migration logic.
+- Collect tags.
+- Rebase to v7.4-rc1.
+
+---
+ mm/memfd_luo.c | 305 ++++++++++++++++++++++++++++++-------------------
+ 1 file changed, 189 insertions(+), 116 deletions(-)
+
+diff --git a/mm/memfd_luo.c b/mm/memfd_luo.c
+index 6b68220275ebe..9fd9abf9fedf6 100644
+--- a/mm/memfd_luo.c
++++ b/mm/memfd_luo.c
+@@ -77,26 +77,160 @@
+ #include <linux/kexec_handover.h>
+ #include <linux/kho/abi/memfd.h>
+ #include <linux/liveupdate.h>
++#include <linux/migrate.h>
++#include <linux/sched/mm.h>
++#include <linux/sched/signal.h>
+ #include <linux/shmem_fs.h>
++#include <linux/swap.h>
+ #include <linux/vmalloc.h>
+ #include <linux/memfd.h>
+ #include <uapi/linux/memfd.h>
+ 
+ #include "internal.h"
+ 
++static void memfd_luo_put_folios(const struct memfd_luo_folio_ser *folios_ser,
++				 u64 nr_folios)
++{
++	u64 i;
++
++	for (i = 0; i < nr_folios; i++) {
++		const struct memfd_luo_folio_ser *pfolio = &folios_ser[i];
++		struct folio *folio;
++
++		if (!pfolio->pfn)
++			continue;
++
++		folio = pfn_folio(pfolio->pfn);
++
++		kho_unpreserve_folio(folio);
++		folio_put(folio);
++	}
++}
++
++/* How many times to retry isolating a folio someone else has isolated. */
++#define MEMFD_LUO_MIGRATE_RETRIES	3
++
++/*
++ * Move a folio out of ZONE_MOVABLE or CMA, so it can be held until the next
++ * kernel. Called with a reference on the unlocked folio, which is always
++ * dropped. The caller must look up the folio again afterwards.
++ *
++ * Returns 0 on success, -EBUSY if the folio could not be isolated (e.g.
++ * because someone else has it isolated right now), or -ENOMEM if migration
++ * failed.
++ */
++static int memfd_luo_migrate_folio(struct folio *folio)
++{
++	struct migration_target_control mtc = {
++		.nid = NUMA_NO_NODE,
++		/* Not movable, so the target is neither in ZONE_MOVABLE nor CMA. */
++		.gfp_mask = GFP_USER | __GFP_NOWARN,
++		.reason = MR_LONGTERM_PIN,
++	};
++	LIST_HEAD(source);
++	bool isolated;
++
++	/* Flush per-CPU LRU batches holding the folio so isolation works. */
++	lru_cache_drain_for_folio(folio, 1, NULL);
++	isolated = isolate_folio_to_list(folio, &source);
++	/* Isolation holds its own reference. */
++	folio_put(folio);
++	if (!isolated)
++		return -EBUSY;
++
++	if (migrate_pages(&source, alloc_migration_target, NULL,
++			  (unsigned long)&mtc, MIGRATE_SYNC, MR_LONGTERM_PIN,
++			  NULL)) {
++		putback_movable_pages(&source);
++		return -ENOMEM;
++	}
++
++	return 0;
++}
++
++/*
++ * Look up the folio at @index, allocating it if needed, and make sure it can be
++ * held until the next kernel. Folios that are not longterm pinnable are migrated
++ * out first, retrying a few times if someone else has them isolated.
++ *
++ * On success, returns 0 with *@foliop locked and holding a reference.
++ */
++static int memfd_luo_get_folio(struct inode *inode, pgoff_t index,
++			       struct folio **foliop)
++{
++	int err, busy_retries = 0;
++	struct folio *folio;
++
++	for (;;) {
++		err = shmem_get_folio(inode, index, 0, &folio, SGP_CACHE);
++		if (err)
++			return err;
++
++		if (likely(folio_is_longterm_pinnable(folio)))
++			break;
++
++		folio_unlock(folio);
++		err = memfd_luo_migrate_folio(folio);
++		/* Someone else might have it isolated, retry a bit. */
++		if (err == -EBUSY && ++busy_retries < MEMFD_LUO_MIGRATE_RETRIES)
++			continue;
++		if (err)
++			return err;
++	}
++
++	*foliop = folio;
++	return 0;
++}
++
++static int memfd_luo_preserve_folio(struct folio *folio,
++				    struct memfd_luo_folio_ser *pfolio)
++{
++	int err;
++
++	err = kho_preserve_folio(folio);
++	if (err)
++		return err;
++
++	/*
++	 * A dirty folio is one which has been written to. A clean folio
++	 * is its opposite. Since a clean folio does not carry user
++	 * data, it can be freed by page reclaim under memory pressure.
++	 *
++	 * Saving the dirty flag at prepare() time doesn't work since it
++	 * can change later. Saving it at freeze() also won't work
++	 * because the dirty bit is normally synced at unmap and there
++	 * might still be a mapping of the file at freeze().
++	 *
++	 * To see why this is a problem, say a folio is clean at
++	 * preserve, but gets dirtied later. The pfolio flags will mark
++	 * it as clean. After retrieve, the next kernel might try to
++	 * reclaim this folio under memory pressure, losing user data.
++	 *
++	 * Unconditionally mark it dirty to avoid this problem. This
++	 * comes at the cost of making clean folios un-reclaimable after
++	 * live update.
++	 */
++	folio_mark_dirty(folio);
++
++	pfolio->pfn = folio_pfn(folio);
++	pfolio->flags = MEMFD_LUO_FOLIO_DIRTY | MEMFD_LUO_FOLIO_UPTODATE;
++	pfolio->index = folio->index;
++
++	return 0;
++}
++
+ static int memfd_luo_preserve_folios(struct file *file,
+ 				     struct kho_vmalloc *kho_vmalloc,
+ 				     struct memfd_luo_folio_ser **out_folios_ser,
+ 				     u64 *nr_foliosp)
+ {
++	struct memfd_luo_folio_ser *folios_ser, *shrunk;
+ 	struct inode *inode = file_inode(file);
+-	struct memfd_luo_folio_ser *folios_ser;
+-	unsigned int max_folios;
+-	long i, size, nr_pinned;
+-	struct folio **folios;
+-	int err = -EINVAL;
+-	pgoff_t offset;
+-	u64 nr_folios;
++	u64 nr_folios = 0, max_folios;
++	unsigned int pin_flags;
++	pgoff_t index = 0, end;
++	int err;
++	loff_t size;
+ 
+ 	size = i_size_read(inode);
+ 	/*
+@@ -113,98 +247,65 @@ static int memfd_luo_preserve_folios(struct file *file,
+ 	 * Guess the number of folios based on inode size. Real number might end
+ 	 * up being smaller if there are higher order folios.
+ 	 */
+-	max_folios = PAGE_ALIGN(size) / PAGE_SIZE;
+-	folios = kvmalloc_objs(*folios, max_folios);
+-	if (!folios)
++	end = DIV_ROUND_UP_ULL(size, PAGE_SIZE);
++	max_folios = end;
++	folios_ser = vmalloc_array(max_folios, sizeof(*folios_ser));
++	if (!folios_ser)
+ 		return -ENOMEM;
+ 
+ 	/*
+-	 * Pin the folios so they don't move around behind our back. This also
+-	 * ensures none of the folios are in CMA -- which ensures they don't
+-	 * fall in KHO bootmem. It also moves swapped out folios back to memory.
++	 * The folios are held until the next kernel, so keep newly allocated
++	 * ones out of ZONE_MOVABLE and CMA -- which also ensures they don't
++	 * fall in KHO bootmem. Existing ones are migrated below.
+ 	 *
+-	 * A side effect of doing this is that it allocates a folio for all
+-	 * indices in the file. This might waste memory on sparse memfds. If
+-	 * that is really a problem in the future, we can have a
+-	 * memfd_pin_folios() variant that does not allocate a page on empty
+-	 * slots.
++	 * A side effect of this is that it allocates a folio for all indices in
++	 * the file. This might waste memory on sparse memfds. If that is really
++	 * a problem in the future, this loop can be taught to skip empty slots.
+ 	 */
+-	nr_pinned = memfd_pin_folios(file, 0, size - 1, folios, max_folios,
+-				     &offset);
+-	if (nr_pinned < 0) {
+-		err = nr_pinned;
+-		pr_err("failed to pin folios: %d\n", err);
+-		goto err_free_folios;
+-	}
+-	nr_folios = nr_pinned;
++	pin_flags = memalloc_pin_save();
++	while (index < end) {
++		struct folio *folio;
+ 
+-	folios_ser = vcalloc(nr_folios, sizeof(*folios_ser));
+-	if (!folios_ser) {
+-		err = -ENOMEM;
+-		goto err_unpin;
+-	}
++		cond_resched();
+ 
+-	for (i = 0; i < nr_folios; i++) {
+-		struct memfd_luo_folio_ser *pfolio = &folios_ser[i];
+-		struct folio *folio = folios[i];
++		if (fatal_signal_pending(current)) {
++			err = -EINTR;
++			goto err_restore;
++		}
+ 
+-		err = kho_preserve_folio(folio);
++		if (WARN_ON_ONCE(nr_folios >= max_folios)) {
++			err = -EINVAL;
++			goto err_restore;
++		}
++
++		err = memfd_luo_get_folio(inode, index, &folio);
+ 		if (err)
+-			goto err_unpreserve;
+-
+-		folio_lock(folio);
+-
+-		/*
+-		 * A dirty folio is one which has been written to. A clean folio
+-		 * is its opposite. Since a clean folio does not carry user
+-		 * data, it can be freed by page reclaim under memory pressure.
+-		 *
+-		 * Saving the dirty flag at prepare() time doesn't work since it
+-		 * can change later. Saving it at freeze() also won't work
+-		 * because the dirty bit is normally synced at unmap and there
+-		 * might still be a mapping of the file at freeze().
+-		 *
+-		 * To see why this is a problem, say a folio is clean at
+-		 * preserve, but gets dirtied later. The pfolio flags will mark
+-		 * it as clean. After retrieve, the next kernel might try to
+-		 * reclaim this folio under memory pressure, losing user data.
+-		 *
+-		 * Unconditionally mark it dirty to avoid this problem. This
+-		 * comes at the cost of making clean folios un-reclaimable after
+-		 * live update.
+-		 */
+-		folio_mark_dirty(folio);
+-
+-		/*
+-		 * If the folio is not uptodate, it was fallocated but never
+-		 * used. Saving this flag at prepare() doesn't work since it
+-		 * might change later when someone uses the folio.
+-		 *
+-		 * Since we have taken the performance penalty of allocating,
+-		 * zeroing, and pinning all the folios in the holes, take a bit
+-		 * more and zero all non-uptodate folios too.
+-		 *
+-		 * NOTE: For someone looking to improve preserve performance,
+-		 * this is a good place to look.
+-		 */
+-		if (!folio_test_uptodate(folio)) {
+-			folio_zero_range(folio, 0, folio_size(folio));
+-			flush_dcache_folio(folio);
+-			folio_mark_uptodate(folio);
+-		}
++			goto err_restore;
+ 
++		err = memfd_luo_preserve_folio(folio, &folios_ser[nr_folios]);
++		index = folio_next_index(folio);
+ 		folio_unlock(folio);
+-
+-		pfolio->pfn = folio_pfn(folio);
+-		pfolio->flags = MEMFD_LUO_FOLIO_DIRTY | MEMFD_LUO_FOLIO_UPTODATE;
+-		pfolio->index = folio->index;
++		if (err) {
++			folio_put(folio);
++			goto err_restore;
++		}
++		nr_folios++;
+ 	}
++	memalloc_pin_restore(pin_flags);
++
++	/*
++	 * Free the unused tail so it doesn't get preserved. If vrealloc fails,
++	 * the folios_ser is still valid.
++	 */
++	shrunk = vrealloc(folios_ser, array_size(nr_folios, sizeof(*folios_ser)),
++			  GFP_KERNEL);
++	if (shrunk)
++		folios_ser = shrunk;
+ 
+ 	err = kho_preserve_vmalloc(folios_ser, kho_vmalloc);
+ 	if (err)
+-		goto err_unpreserve;
++		goto err_put;
+ 
+-	kvfree(folios);
+ 	*nr_foliosp = nr_folios;
+ 	*out_folios_ser = folios_ser;
+ 
+@@ -215,15 +316,11 @@ static int memfd_luo_preserve_folios(struct file *file,
+ 	 */
+ 	return 0;
+ 
+-err_unpreserve:
+-	for (i = i - 1; i >= 0; i--)
+-		kho_unpreserve_folio(folios[i]);
++err_restore:
++	memalloc_pin_restore(pin_flags);
++err_put:
++	memfd_luo_put_folios(folios_ser, nr_folios);
+ 	vfree(folios_ser);
+-err_unpin:
+-	unpin_folios(folios, nr_folios);
+-err_free_folios:
+-	kvfree(folios);
+-
+ 	return err;
+ }
+ 
+@@ -231,26 +328,11 @@ static void memfd_luo_unpreserve_folios(struct kho_vmalloc *kho_vmalloc,
+ 					struct memfd_luo_folio_ser *folios_ser,
+ 					u64 nr_folios)
+ {
+-	long i;
+-
+ 	if (!nr_folios)
+ 		return;
+ 
+ 	kho_unpreserve_vmalloc(kho_vmalloc);
+-
+-	for (i = 0; i < nr_folios; i++) {
+-		const struct memfd_luo_folio_ser *pfolio = &folios_ser[i];
+-		struct folio *folio;
+-
+-		if (!pfolio->pfn)
+-			continue;
+-
+-		folio = pfn_folio(pfolio->pfn);
+-
+-		kho_unpreserve_folio(folio);
+-		unpin_folio(folio);
+-	}
+-
++	memfd_luo_put_folios(folios_ser, nr_folios);
+ 	vfree(folios_ser);
+ }
+ 
+@@ -287,15 +369,6 @@ static int memfd_luo_preserve(struct liveupdate_file_op_args *args)
+ 	ser->pos = args->file->f_pos;
+ 	inode_size = i_size_read(inode);
+ 
+-	/*
+-	 * memfd_pin_folios() caps at UINT_MAX folios; refuse larger
+-	 * files to avoid silently preserving only a prefix.
+-	 */
+-	if (DIV_ROUND_UP_ULL(inode_size, PAGE_SIZE) > UINT_MAX) {
+-		err = -EFBIG;
+-		goto err_free_ser;
+-	}
+-
+ 	ser->size = inode_size;
+ 	ser->seals = seals;
+ 
+
+base-commit: 6628e7d4c6b25c8d18f1345e3a20d21829aae7e4
+-- 
+2.56.0.385.gac671c819a-goog
+
 
