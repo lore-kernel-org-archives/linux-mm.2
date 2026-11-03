@@ -1,140 +1,126 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65BE1606A335
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 02:37:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 855E8606A32D
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 02:38:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=y8wd4QIg
+	dkim=pass (2048-bit key, unprotected) header.d=bytedance.com header.i=@bytedance.com header.a=rsa-sha256 header.s=google header.b=Kcm6Ujkb
 Received: by kanga.kvack.org (Postfix)
-	id 91D906B05B1; Mon,  2 Nov 2026 21:37:49 -0500 (EST)
+	id 7C0496B00EF; Mon,  2 Nov 2026 21:38:46 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8CE196B05B2; Mon,  2 Nov 2026 21:37:49 -0500 (EST)
+	id 770846B05B3; Mon,  2 Nov 2026 21:38:46 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 796126B05B3; Mon,  2 Nov 2026 21:37:49 -0500 (EST)
+	id 65FBE6B05B4; Mon,  2 Nov 2026 21:38:46 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 375106B05B1
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 21:37:49 -0500 (EST)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id EAC141401B0
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 02:37:47 +0000 (UTC)
-X-FDA: 85392247374.09.A898C54
-Received: from mail-qt1-f177.google.com (mail-qt1-f177.google.com [209.85.160.177])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 18275100006
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 02:37:45 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=y8wd4QIg;
-	spf=pass (imf14.hostedemail.com: domain of danielmaraboo@gmail.com designates 209.85.160.177 as permitted sender) smtp.mailfrom=danielmaraboo@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793673466;
+	by kanga.kvack.org (Postfix) with ESMTP id 32DFE6B00EF
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 21:38:46 -0500 (EST)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 86DAD1402E7
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 02:38:45 +0000 (UTC)
+X-FDA: 85392249810.20.E97154A
+Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 204EF40009
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 02:38:42 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=google header.b=Kcm6Ujkb;
+	spf=pass (imf04.hostedemail.com: domain of songmuchun@bytedance.com designates 209.85.214.182 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1793673523;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=aEZiUdHtVe6n866bPKhnP+/zTxBd9R2ODjgeXi2Z0Tk=;
-	b=GGEBYyNnfgmyoGfBvi2VuROoOa8Zf5kk1tOLi82Wva82ROrz8FgXUdPonJ4RUYULD1rPnD
-	KbQNi4R+6nr2ewn3GwZzprYvTfolLQOezZlGrwg9wnzqHOQir9npjWype5vf2ImO2tCXLu
-	/E/+WftjJzLC3U/lg7qtf5pCUq+jpVg=
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1793673466;
-	b=4OMDDpWufmyjF1Fa/Sk7VG5dG6HSzsn0JtYv5MLSmkFa2Wcfg1Gi+btnZtDS6KgC5tzySG
-	phnu31tPrWkMYyS9RiVCnmtLUzSh5d8INE29shVmBckhvV6JOYevt/7qSgj3NJeBpCwTJT
-	NYBnsTcO+DzLGCLbfYaZgF6GPuU5C3s=
-ARC-Authentication-Results: i=2;
-	imf14.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=y8wd4QIg;
-	spf=pass (imf14.hostedemail.com: domain of danielmaraboo@gmail.com designates 209.85.160.177 as permitted sender) smtp.mailfrom=danielmaraboo@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-Received: by mail-qt1-f177.google.com with SMTP id d75a77b69052e-53fdd2fb171so46820841cf.2
-        for <linux-mm@kvack.org>; Mon, 02 Nov 2026 18:37:45 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1793673465; cv=none;
-        d=google.com; s=arc-20260327;
-        b=n+Oee1qB5pURNDUlyEH8o4803LznBDBrZ+o5ORw0EOOsnpQSA081Nn0bp5LRriRb+G
-         OStqxmNCkg/ydGvT9A2rDJJbnnPLW2vOmsSOjJHQUlbwvRxBSFC79PEM31pTtEKLtaHN
-         yoknxUn8nbkGzvioxaIRQhlrK1ZNz2k0dK3gl58UXpqHleyhyfdGRxJ07MglqOUq6VY3
-         OpXJxzVF2murj2/OgrKks2xj3yYLlQwCim1aZcTOAdbWMorXYppJcNWCyVY9IlaXz/Kk
-         pua/sh1764f7V/rdAp0y+7kUKaE/MvBOIWk5qZNZ59wgJ/lypb/fFYKkFuLSyWN0kqE2
-         w7Tg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=aEZiUdHtVe6n866bPKhnP+/zTxBd9R2ODjgeXi2Z0Tk=;
-        fh=Udx08PamDqeoTxOjinghdu1xK8ta8AhnITKO26QnCGM=;
-        b=gwxGXvefgr+cyIHyCAUn5We1dFsMkRhqN6UsCt5k9GJnNEPv+xnUxbMQ+QWjdNKDAl
-         q0MFgoYi7NJXTi4Q+/nKgaCr3Agp4d2YwSqcrOJgXcK4CHTzdeTxpbXLI2cRzLtityqO
-         L+NAOwmXRR3wj2ySfdbVHA1g2o0XU+5CyWIBW4WgEyiQ9aEynpXFrQwoYk0QkR7beSS/
-         8gx8UCEAQPDHt9NaEZm4exUIK32snG8K91ib2TuuouuVRC5UHUiHRTAeeKYUWlqcyDS9
-         7kLFT2ly8d1cXoVyb+YouJQws+jXXkVPx6oohxf2q2t0NGpnTBxWRbJJVM8ZcnwbdIlk
-         mYVA==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=rd65ofZ2aECwr5oPP9wkqS7GgVjXVfKOSh6kNluRLhU=;
+	b=uyVKsOb4KqiGCdYXce8AsG4OsWMSBEdUaVxIu1m0IoussYcaXjFvyLJDL4TU+7ds76PPbm
+	7FnkwnOMCxUj41uxmee1Iqkves4IxDBKFqD+JL0u/ajC5EKKpM44Cc010kdfeK1F2WvS0W
+	5dFMJCeLAvUd+lYMw5onSiL+ZnH4qCI=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793673523;
+	b=CA80YI//KfRob4Gc89alnjaHx3AaYxpb1Li9Rf8XDhHwXfo4ZMkw7MgvD+4yBVAffPrrVb
+	Q/gz2Bg9AicRrcULPzLqM+PJQDD3wNCrRnJzU+U9YtmlQzwq31R1B1SPlADdBDaX2Rm0ba
+	M1xyUdj1rOS+Dr3RAsAENsbxX4JYEy4=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=google header.b=Kcm6Ujkb;
+	spf=pass (imf04.hostedemail.com: domain of songmuchun@bytedance.com designates 209.85.214.182 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
+Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-2e831e86ebfso22232505ad.1
+        for <linux-mm@kvack.org>; Mon, 02 Nov 2026 18:38:42 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793673465; x=1794278265; darn=kvack.org;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=aEZiUdHtVe6n866bPKhnP+/zTxBd9R2ODjgeXi2Z0Tk=;
-        b=y8wd4QIgxNFLk+wjXEzzwSvaxHsi6R2yzUsBfOBElET4E3ZmqKEnhG3R1JG3RVAHl9
-         kHztrXLWTtNQsaQg2YN0Prfa5asL93gpcCi2pVdrXRT4sqsXbYFs9Fvu7/j+GSW16sb4
-         MxarrGbG0To+LHRFYhOt7+mIgUVB3R/D0Ht21OwTDzfwfsCViUtKYnAjWBtZZIemQx16
-         RL95N7XLSUlMs2AMUGq3s8uTIbp4xTMd0HoYRaDr8myofZNOybhwI39DRCVr6avwvqHy
-         Gz5g2+i2+sJu8zgo21mP3xS1OpVWPtlb300dRPXfqgYf6UXc3zjXQj7BtLz3/m4AlLen
-         M1Dw==
+        d=bytedance.com; s=google; t=1793673522; x=1794278322; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=rd65ofZ2aECwr5oPP9wkqS7GgVjXVfKOSh6kNluRLhU=;
+        b=Kcm6UjkbH9LNoKX5hXYaWOfHwCcRj+iWk29iIIVyICtBlzwagRjVq/2lSk70mcnkjW
+         TaBRCeOfgc3sN0X0y4Fi60kFCdOyjQ54kcbVpO1Q2ZluY0TDPPtdi64BHsXny6aQyKwj
+         QhEgjqAUGx99swTN2bTNjFW25vO9Gw5KAt9sUwvW4ixa3pSh5Lr8SjhIqNObq+v9BPh1
+         OCjNuu7gIV9R7CyKaISLRv1G+epH9iDXFeVp/9u3TxLvpyVNcL1DkDrPshaJIMRZUyr6
+         rK7K7eqfMmDxCUWasGr1LnxWVl1/2XScbLPjt77KZOwbZ63VbebOQ4iwT6WXhCUnEAU1
+         w9ag==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793673465; x=1794278265;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=aEZiUdHtVe6n866bPKhnP+/zTxBd9R2ODjgeXi2Z0Tk=;
-        b=kQO3wffItuWzoFSxSADVLtnO/AemvIGIEM7zIjwsyXcyK2IYn3FO4GgsEYkYG6yibB
-         6X/cHRs3QGMacHp8xSemlMpa5Glf+nOADTfzyKvLh01u1UhMoXgSvPhukzhx4Y+PvEhb
-         Sv7c4n9Y+UjAwRmznYdH9lV9jiiHURKf86hVJUelt7MeHVe+yabl7QyJnE9L6XqjEMro
-         DA5LcT26cyMNIk22JE/ibf39Gu8/EdAPrTAopu+1rkI8iCoX+X15Un+LIMsasHn+ifDW
-         1K0sV4PRVha/5+ibNijW3MsJ3kYTwHLSxiq7HsqrcB926Rfd0wLc7T6BXjHT157fBDmy
-         xMDg==
-X-Forwarded-Encrypted: i=1; AKwUvBwBC8VdbX7g2EdRe1Pb/NpIksEpxejOBnDncnuohY3d3NwbLuF6lRWFheF8F2wvxH/No4QzfK0zsw==@kvack.org
-X-Gm-Message-State: APuU4Z8bMefXViAsIXe4YIhzXQ2tfSYKuML7gbk8b9E9Qh2c7xxV7dPV
-	Jni/yc4Sv3SZKB7S2IUeylq7dTs9tx9tFL+GKmgHWJCLj3KqOFufNSvwFiuCimTwiIeStWZp0HF
-	TJ4oxKmc1Q9jQnElfqSKVsZ9NpVv1sSG+Hy4pIr8EFA==
-X-Gm-Gg: AYBFou3mbfpZGP19FL05Nn7DLf7JCqqfhH+puYcSkL9P5hdcgvZva6oWi8nN1ZfLNoT
-	16SfO9tc8CEPj+0Lubs7bq/hX8TA4nACOwT9ezykLfKhla5emxHs5cuVupl+tYNstOa6JbgGLuj
-	Xs30/Eujny7eooWnPwCKAfHIfyp7a1YgyqwpnpH9/S9jfTY8/p6YBCxRsFQlMTX+0BVOEl+PceB
-	1E0CElmJWdYpN+SASSXSb684vrEjMTLDEJM0f0/FgZNaDRpYRL/5U39vOUgV+7BZbo1vzkOmtd5
-	NLTwJPzXd2fI6DAM0Z/pkw10FLasHHL1ckzZe5cSPTXl1lOE4/TnOFXDSDN6jXfRaVFYJivLvJx
-	TLofQqPuI/yb+nTntYloWwgINu9yZoU0XYZ2yXrwLkXT8yeYhmZgFIBDRtc4407nTb898gtr+pn
-	UeJ6z2kjRJfDFIw7nF7t5/rh6Gt1TPLeZpSNVKOY5vB7D+KS3Bj3OSPgejE0GQmhoGKVTihKzSD
-	kYaJYMQf6O/OYtRKHbUxcl2d2Jj0+76r0Q3nZwOu0YNbXs=
-X-Received: by 2002:a05:622a:1b09:b0:533:a8fe:e430 with SMTP id
- d75a77b69052e-542b6593777mr202082331cf.14.1793673465209; Mon, 02 Nov 2026
- 18:37:45 -0800 (PST)
+        d=1e100.net; s=20260707; t=1793673522; x=1794278322;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=rd65ofZ2aECwr5oPP9wkqS7GgVjXVfKOSh6kNluRLhU=;
+        b=vK/jcrM57Gh9vqnK9IFEui7ELhC64l6L7kRUjKIaZuLB3PSM4QVSt4saWA3+MTQT2t
+         PjDQNA9aJHAgqWGVEb26Q08GCqbvQtCwGt1umo3nfDlq/LzK3X2k2s8Z7yWqfc9geSlt
+         /Z4d9XvKYdB/qexW5tVTYaQZnTfQ1yaT6NwHHJKb98/xsIRLJ3wLaGX4o0iKgm0iz/Ei
+         UrKlUeUYRJVodrRZHak7DAzA3EtV7VPAySDIYr/6eJ2FcW2dkbQxUsRJmS5swI4y5YNs
+         tPLLBpH5bqOReZeH+DlsWYvND2W2FTklnc4h3HAGAP6DKHVRgunfqqAzDHwBpgUfrhJB
+         9MiA==
+X-Forwarded-Encrypted: i=1; AKwUvBy3RBkot1jK0TIPWfQN0IDIDyKu5bB2mBUcLwK/+dLGQGFmnwtbUf3pRQS+mCYiG76emmp8zdSKZA==@kvack.org
+X-Gm-Message-State: APuU4Z9PhrHqH1xerzljujR7wU6XWa+JM08kE48kAjPeaRl35ygrlqjd
+	p5WgJ/9hNGI9Pcl8OO/3nQMEabul3HLzTuWpk0QXgE4/bkuMYZJ/LcwNjykoF/5CpH4=
+X-Gm-Gg: AYBFou3L88VtQPqs6bZV0Hy89hM9e3RKd/LuN3hKtkUNajCJO0+gf4J6LFOKn0jA0rC
+	fqJgxRjGAXlmne2Q+iJy1NSZcQbt7IVLJ+axJG7Z9iHlvLker8wMd2i6aim+ayzFZg1RmX2ahMh
+	ogrnvRrSv0qIZPaA7AXFF2+zCFMQb7PJDGKgAxJQE6TT29CgthXGVPATS/qIuYXhZ0VpZDC+vD8
+	47lnOjJ68GESM3QdJEY2E9t7CK2reOPRdkg1Ro6QB7p0OR/obxwNp5dLapR8LNJb9Sj3z+kifTe
+	+MrkfJLgqH1+JCXfL13Pipwdzf6/Q4RrxIg+5FRTCL+RUQ/eax2e2hvBApM2+SIMqdBZHFtp933
+	0u9ZWbPoh1rqCsMVt1ffK/mANQxES6FTuBB8Lb0P49D3FsHVwEYKQNylYNHQnIZd7gbpcg/Z8Se
+	FUvVDJVzAS//6qzv8iFPdEH7cMrGX/jAX7rXxh0YC0BT0w1KU4e2OOpFjnQatJZdHfO/hzXvwZy
+	d7+KKE/Snih9RZ1v+8w4sqIn8Z0lswC3d5QSt3AUyQtZUPF8aPaRovohFZdsI7N260httj9VaEp
+	chLy0IpZCgWJrYCnHJJ8n21r0YbVsuQdj9arkmjdi0gSKlwfcw==
+X-Received: by 2002:a17:903:1cc:b0:2e5:6158:b9c1 with SMTP id d9443c01a7336-2eb364e0730mr116286165ad.47.1793673521548;
+        Mon, 02 Nov 2026 18:38:41 -0800 (PST)
+Received: from n232-176-004.byted.org ([36.110.163.98])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2eb39298329sm33194135ad.61.2026.11.02.18.38.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 02 Nov 2026 18:38:40 -0800 (PST)
+From: Muchun Song <songmuchun@bytedance.com>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	Oscar Salvador <osalvador@suse.de>
+Cc: Muchun Song <muchun.song@linux.dev>,
+	David Hildenbrand <david@kernel.org>,
+	Kiryl Shutsemau <kas@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Huacai Chen <chenhuacai@kernel.org>,
+	WANG Xuerui <kernel@xen0n.name>,
+	Sashiko <sashiko-bot@kernel.org>,
+	linux-mm@kvack.org,
+	loongarch@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	Muchun Song <songmuchun@bytedance.com>
+Subject: [PATCH] mm/hugetlb: fix validation of unsupported HugeTLB orders
+Date: Tue,  3 Nov 2026 10:38:31 +0800
+Message-ID: <20261103023831.1805473-1-songmuchun@bytedance.com>
+X-Mailer: git-send-email 2.54.0
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-References: <20261102150757.93058-1-sj@kernel.org> <20261102150757.93058-9-sj@kernel.org>
-In-Reply-To: <20261102150757.93058-9-sj@kernel.org>
-From: Daniel Pereira <danielmaraboo@gmail.com>
-Date: Mon, 2 Nov 2026 23:37:34 -0300
-X-Gm-Features: AclHuK-Jg7-xraD80qWPaNaA0iIrhVFnMpsq1hNuG58d2LObr6cS1Stfw00xqhY
-Message-ID: <CAMAsx6epLXuUjaV3J0=SWAuLvajr4h58DTM9gL+LMmaCyjcxUg@mail.gmail.com>
-Subject: Re: [PATCH 8/9] Docs/admin-guide/mm/damon/lru_sort: fix grammar and stlye
-To: manuelebnerli@mailbox.org, sj@kernel.org
-Cc: corbet@lwn.net, rdunlap@infradead.org, skhan@linuxfoundation.org, 
-	damon@lists.linux.dev, linux-doc@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 18275100006
-X-Spam-Status: No, score=-2.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=no autolearn_force=no version=4.0.1
-X-Stat-Signature: hr8jpwwfqs3r9ftnfummaau98jddxh3r
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: fb39t9cgfyafbpysbwed6xbkfbbtuarz
+X-Rspamd-Queue-Id: 204EF40009
 X-Rspam-User: 
-X-HE-Tag: 1793673465-372642
-X-HE-Meta: U2FsdGVkX1/zifbL42EKwrRpWoEli6IO69ik3BhsnyC+2b0o6EZWDAwp6wmMOusGwRn67J3mJ3zyTVOsw3SOn1qEFyyzgOcEt9yCFLBsvjNRHb/1H5Lvw+Zi6NiqHj4bJAFLftUTnxkTjAKvv3FJb/+ULTiQphcMEmvGK3C8h1wsT+D33FIq1lbr7KV42K65LMje6ksd4A/F/Vo+zZ19XEL8EoJY0W6jOK4+jVOFaPgEHxLxyghMgFofhxisD+L1qjrIxZtjOfDcvIQ3tNYvnKBc8MtpHzTBdYUYaDu3Y2gQrAqhVsIpN3SRfIA6iWtznClp4CP+dndIgRPrScEIOt/Fn39rrtDlRr9W+/pQzGUqXfKXM2C9dF/qF59ZczBIUAaczf+QxhAy5XBeLp5VHOTD/UmTtBxz8ijamSUqNV8xvIK/WjU4+Ro8zOQvb7gKGfBsRSc164+VE+B0FKcUJ/8KTDJi07MmgXNOVjYUWTL8wrTIZD7t8YuLUXVIGCLr8mCtbvdT7qa6cegAjhkjRlfPR2Wkrev21jsfqbLz9hsDxNgvvtwMKcB8KI4BkQKMYsdmvfaYQBBH8GQSTmeldvwpzRLNFdvr6uGpSRsOv4MIUHSZZVoEbWhaTzzGOuYoOYDXqy5Sn4CeqsBSgPRsdnNVZ/LLTxmzi+BjsiHTXuaDPpk3/2OlYn+o7C51ct4oqfOW0CBnlMm/4QvymYZaUvNQS6ib4PPPfwI3ojVIPR5ysKa4Ct743sjgwHpc5s/t+UsZpwUeGDv/wmR+cYyZxkidg6jE1Wpx9koVz2964QN2AOdsODvUP3Eo2vm0+O1+754pkekcGQuQD9geYzrSVOKWTChbIwaP//bSTq4bBjAVk3IjpEEQ3/TEg8CiLmWCpZlYicGGiJrk8+pM6xTGP3f9hxXZoksoDgNiyJ/AINadlaq0rCrwQUOke/Wt4pxrdGZz8gwzngPCipHXWQn
- hN3jCgrs
- TFY9VJ9AmMAyyz72P5nDpKEqh/hyeRJ6XxIQbyka3yr3gvNlk6tZFiF12FWLld5AYulpmygU4nkoSm9jtF3T2X4QC2xkxXMvDQvzQrk60g5qH8CeIW/UF9Duvi0bhw+4VaGqZCjCJ1nV1PhulIPLmlC90B+/KfeomK6VqWCDJTjiesieiwGecQMl75d+6EK18mQsukwJggMGrJ/WXisZ7a0U5kXJgttPt/zB6VHcv9Y90HX02LPxWAvA/C/Tn9jo5GUf0eA3OGH/+F+QrOEi4XLfWEP1ymgnLtMGpcZQjFI5Uf+oDinzuah6LTC9d89fU6PhR7C6tDxL38ivADExRd2/mc94+3cSt5t4cU6zE4ked2ndDiJOzoeBCLoY8Z8z18cBoWFTS+c8ysqcnce9b6APi/K+VTtbWKdYWzETM0b3XlkTEL6nwzVjh62SH5uG5J/E5Nb0dMcUJnVWRM8UJmJuRgUG5SlP96fHM
+X-Rspamd-Server: rspam08
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1793673522-330116
+X-HE-Meta: U2FsdGVkX1/M7DYht7nKKVkdWJtFqnsfFV59b6DObahipvN4+sRqEc1Fh5Ozs3WM5UwXcuRigL7uTKbWimIU8T8MRW+Hk23MNNvuRdeVKZo1uQvqZFMAZDP5XEinofKB4Uo9itIklCf6QLPfXLy2XBBJe6hrFCwcN/QOwEHtWWATqOO2QuHYdp3MhtTbSorcZDlK0SJyHFpsBfO6Aw5rG9S14W007SlKzS+3Xd511fe+rpGlQtCRA47NLUCffY1ADI//M6Ir9g6wCgFhtwDuc3q+7lVIZsID9wlpf7Sphl09zK/4WNS4q6WUnPVNnciWSIFHjxbomAsqCDG4Da73zJcIqveeFc2hc6JN4FdwSbf79odmDKDhyoYW0ec0rAoT3pdcOtInvqzqpKoWtC2Jt8ykRiVDc2E4+7jcQwCk/lATP1BBr2IgxvYcZAAwihTbLH3ZKAx3POpxsjPVMuTY/m87Z7M6jv4ihPnOOgg6W5KkeC66TzfLM8QQCcCVPBxZDVtoQbEfivfPlRQnfXCiZI+drZSrsRLoa/4YPPgnh0M48nhbXRyLZ0ng/nwIBJf6K0zcbe170FqLUz+347fTRVk/AExbID4JR+nUUdeuSeOvLIQE6OAszWLHj6VV/WGY7CpCfFdPXoLMUsxQ2apGiJ8C/6cXMwqp8F1xxUgyvAxHqR9SYb4Wi6IJXmRkXQGlKcZ2cFbuvu/WvNF1hkXxHDLzKh8W/gRf93UDzMg2ZZc5Po41gxOqNXb2vVcQlQTcg8rJZqzgM5weuVRce5qGsaR67dSVdW64wbsJuz6UGx8imI1UULB4f3gHrKGixsEZIdgDCmpWTFLLiOAI6u2ED45xNRY4xZBSzkGliLVDGPcbRLA8P885BJT8TS20deA6S3mr3tvEY+n+OupV7QsjYF4vVsSQHTds2BI5o1Fx5Z08NoQutBAjVHJshY6dPCFchdL1gFhJJb6XcSbg1QR
+ 481MpU97
+ JIAM4BCxodsdiwg2metu4tsmsQyIkQ8HqKGWQeA9T0FnqzgSMt4yTYGFI5wqXfk5EmsldDek1zRGDBbkWKSX0xs/NYWq7cBpJ2rO9jdJlOa0OJoJZD+mQXcEChNjkCa+DoyCaMp7nBIFl2ytQSsSjogE4A5Q0hwaOiZKDPidrHJWk+9eL3QsvqnIWrH15S/w3lBk2zEcyZEMu3xCG8B8C36NNy0kr9SCBZE/t/F+VPXKp5SaecQsgSo6kDqTUCQWHeD/JnljhgNxZ0t4/BjC+6PwdnlT3qrHk7uXpwS9BawJwXLxttYsEAyKk2ufAgJGOMVBvjDXWjldoIdk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,22 +129,53 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Hi Manuel,
+Commit 7ce6048d3a7d ("loongarch: drop ranges for definition of
+ARCH_FORCE_MAX_ORDER") removed the ARCH_FORCE_MAX_ORDER ranges for
+LoongArch. Besides dropping unreasonable upper limits, this allowed
+values below the architecture defaults.
 
-> Docs/admin-guide/mm/damon/lru_sort: fix grammar and stlye
+With 16KB pages, LoongArch defaults ARCH_FORCE_MAX_ORDER to 11,
+matching HUGETLB_PAGE_ORDER. Forcing it to 10 while enabling HugeTLB
+permits order-11 HugeTLB folios even though MAX_FOLIO_ORDER is 10.
+LoongArch does not select ARCH_HAS_GIGANTIC_PAGE, so this violates the
+generic MM assumption that folios cannot exceed MAX_PAGE_ORDER.
 
- "stlye" -> "style"?
+This invalid configuration is accepted by Kconfig.
+BUILD_BUG_ON_INVALID() does not reject it either because it only checks
+whether the expression is valid and never evaluates the comparison.
+Detection is left to the runtime warning in hugetlb_add_hstate(), after
+earlier boot paths may already have used the invalid configuration.
 
-> Fix tenses. Split long sentences thereby imporove readability.
+When an invalid HugeTLB order can be identified at build time, reject it
+there. Otherwise, reject it at runtime before the mismatch propagates
+further. Use MAYBE_BUILD_BUG_ON() so constant violations fail the build
+while dynamically determined orders are checked at runtime.
 
-"imporove" -> "improve"
+Fixes: 7ce6048d3a7d ("loongarch: drop ranges for definition of ARCH_FORCE_MAX_ORDER")
+Reported-by: Sashiko <sashiko-bot@kernel.org>
+Closes: https://lore.kernel.org/sashiko-outbox-192874@kernel.org/
+Suggested-by: Huacai Chen <chenhuacai@kernel.org>
+Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+---
+ mm/hugetlb.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-> +suitable to be used as a trustworthy access pattern source. These situations
-> +including reclamation target page selection under sudden memory pressure.
+diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+index ff9dbfbc7a96..e21ac667694b 100644
+--- a/mm/hugetlb.c
++++ b/mm/hugetlb.c
+@@ -4181,7 +4181,7 @@ static int __init hugetlb_init(void)
+ 
+ 	BUILD_BUG_ON(sizeof_field(struct page, private) * BITS_PER_BYTE <
+ 			__NR_HPAGEFLAGS);
+-	BUILD_BUG_ON_INVALID(HUGETLB_PAGE_ORDER > MAX_FOLIO_ORDER);
++	MAYBE_BUILD_BUG_ON(HUGETLB_PAGE_ORDER > MAX_FOLIO_ORDER);
+ 
+ 	if (!hugepages_supported()) {
+ 		if (hugetlb_max_hstate || default_hstate_max_huge_pages)
 
-Shouldn't this be "These situations include"? As written it is a
-sentence fragment.
+base-commit: d42dfde37af766d1c272467352c0a56d3169ee58
+-- 
+2.54.0
 
-Thanks,
-Daniel
 
