@@ -1,139 +1,101 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98C6F606A324
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 21:20:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78F99606A31B
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 21:28:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=GEwro61u
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=h1Wo+EHs
 Received: by kanga.kvack.org (Postfix)
-	id 825EB6B05CC; Tue,  3 Nov 2026 16:20:50 -0500 (EST)
+	id 1F1D96B05B1; Tue,  3 Nov 2026 16:28:13 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7FD456B05CD; Tue,  3 Nov 2026 16:20:50 -0500 (EST)
+	id 1A30C6B05B2; Tue,  3 Nov 2026 16:28:13 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 629766B05CE; Tue,  3 Nov 2026 16:20:50 -0500 (EST)
+	id 091286B05B3; Tue,  3 Nov 2026 16:28:12 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id E9C3A6B05CC
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 16:20:49 -0500 (EST)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 689054057B
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 21:20:49 +0000 (UTC)
-X-FDA: 85395077418.06.FFEFB26
-Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 8DED51C0005
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 21:20:47 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=GEwro61u;
-	spf=pass (imf20.hostedemail.com: domain of joannelkoong@gmail.com designates 209.85.216.52 as permitted sender) smtp.mailfrom=joannelkoong@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793740847;
-	b=q2O0t0cnAGYy01HUJrGY9WU/MpQR71RDcOYfv8SbTvGts3H1Y93OvwyJNvYMpajw/9E+pQ
-	jhDYVBlOtOqIsIYKFi/cIK9qLTs2BeLY0R6zSD2+DyRvYPhumYlf/faiaUTojcC0pl65IA
-	vaeDO2b2nWkmYeJKNlHsCRjlrcdk+M0=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=GEwro61u;
-	spf=pass (imf20.hostedemail.com: domain of joannelkoong@gmail.com designates 209.85.216.52 as permitted sender) smtp.mailfrom=joannelkoong@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id C2FCE6B05B1
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 16:28:12 -0500 (EST)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 9ADC1805A0
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 21:28:10 +0000 (UTC)
+X-FDA: 85395095940.29.6F10A2D
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 1E4D120002
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 21:28:09 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=h1Wo+EHs;
+	spf=pass (imf31.hostedemail.com: domain of sashal@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashal@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793740847;
+	s=arc-20220608; t=1793741289;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=OZ6XLqG5LRudiOsl6Zbb90YMCl32+mvVGLRJTzftgn0=;
-	b=btiBiDOx+NyqLgK8MR8LHlnfOT/hE55MESKWQuhpYtR3gaoliemCx7cVjL2dHsHA45fmF9
-	O8N9R8kX+bp9dSXZUzxZzd7FPjkZmSzb37ayhEInuN/qMt7339hwAjqtzStba8k6i292cx
-	DeEFkKjqqtF3Ts2M3WAoAa23Tqnrw+c=
-Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-3ad41b47541so73014a91.1
-        for <linux-mm@kvack.org>; Tue, 03 Nov 2026 13:20:47 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793740846; x=1794345646; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=OZ6XLqG5LRudiOsl6Zbb90YMCl32+mvVGLRJTzftgn0=;
-        b=GEwro61uy4QfgaC2PkjBQn7gEn1zt49nHHhlm1ZqGsaoe+2hMCh1iB6fXIvHksC9Gf
-         vsxZ74AOF3JFW1N8vkIvDsiZk78L5iwtmMJgXFxcD4ojOKVb2knkRzQ7PNCVEy+1S6nP
-         WovqnUayOsKS5YP9wklCTq1DEBmYsTiuKkYeZckDlhGYYQedei0ovqzqQSXvJyegQ8ER
-         HxMhrHXeOISbNyQLfr5kac/asbt2AfW3NsBs/ih0CYvqqWMGtkF/7ArOkG6V/fwqbvPd
-         GYppDaBOBMwP+YEuk5hCFpo4EtZFSAzDLB2GQeDmBz0Ki0nqamAcuJH21cDQyl2c7zta
-         v6Ow==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793740846; x=1794345646;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=OZ6XLqG5LRudiOsl6Zbb90YMCl32+mvVGLRJTzftgn0=;
-        b=uLhNfBgeYw8JNy6zOfmpEBAuhfybijOM3B4NGI3b62hkOrqL6ByStof9FmTPVVzEJX
-         DsVq+GH+8wHOEOcz9rKz5q9VsmDPKIsvzHQUR3lLF8Fp2v3n/k8K7hJ7FwjoodFpjK+U
-         icRXa3V1Zea58u1sBak3TrLpPVQNwVTToPJ+qXhEdvlKJNDKvop0066AmsyZbUCoTZ0i
-         bvbLOvNo7laCQ0fWZ1ZTMMUrkdiIm920ms8wEruddc1X3Ik9+qMKkiKnG39hV0fuX5DJ
-         yJOZLFikf03bPxrepudCwzVEG8u1rIJL6M3F3INLR796hqDgQV49VVCHSN7ihKUaJOR8
-         wscQ==
-X-Forwarded-Encrypted: i=1; AKwUvBzrS+V5oWm0857fdV4kLIiL25/GIOFZXui2VkTXD0SkYEGlXWbxWhfiejEJVfjINKQAe61O8WGPEg==@kvack.org
-X-Gm-Message-State: APuU4Z/ZarXLsQcY5D7GYSfGYC4ISIlSEMk5vfXiMFl1pOL/OTxmF+9Y
-	LZlFzmpq63nLPd6n5DS2vy8914CNkAONnuHJaQ3whuS10Iee+ghd04kf
-X-Gm-Gg: AYBFou1ZqubP4J2gHZfXFjgGGTy3f7iTRoh++ziz6Az5DE8Q1P6fAiAs2x45S4n610+
-	cJLBz/vrVtBbdt+QDPW3kehnsJCKDnxrKyUn1XhkakpOM3Rx2suDOHHvqHGfToqLsaYYjMzUZX7
-	+K2NPYrnuKX/NTPjMMISJqw6957dSqC1gpotd7nRKQATDcoezDaOJ8K5XVQRGYaz5+L7Ldhp3bI
-	8pfV8Gj1Z4dk1j0KlA3y6ddosPdob4SaHzLVG16e+DYNhjsl+zDUaUyfcnfEd+L/xW2iHO2tgkI
-	umWsC3vF7CFb6pwLWyTs1zTwNqnWmF7pZz9wSBykIoNxSZU4tKiFMXWymcyC4z2jTfWjtgpW7Bk
-	OVkvxVT8Ox/MtQtsfYOFWf6HuCYjN6y3cgFCT+NDlMyoK03S+IzXup8nLyH1vK5rRbn5y74M/A+
-	cyWJRQ5JNePs8L7isWN6oXQ1X32kTWlgdakE6EXRr9pN8w7oRWg6qEyDhKJuUkA9rWV+bFw1jVf
-	nbW4QYYrsqTEgy890lK1EalQuxN/C/DbXW4nqirYobJReeyguxoL0rFMKIDsML8cEUmU8Nrcq3s
-	EAjo/yx1GsaMUXIEJ1snpmTjtWPk1hCvZ8VQvuDyALnQXu7rOCAATQ9PfanzJK/EC0WKPtIRNdZ
-	3zPAEiQ==
-X-Received: by 2002:a17:90b:584c:b0:3ab:d26b:c2d1 with SMTP id 98e67ed59e1d1-3ae89724955mr12139638a91.11.1793740846460;
-        Tue, 03 Nov 2026 13:20:46 -0800 (PST)
-Received: from localhost ([2a03:2880:ff:45::])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b08759344dsm3888853a91.13.2026.11.03.13.20.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 03 Nov 2026 13:20:45 -0800 (PST)
-From: Joanne Koong <joannelkoong@gmail.com>
-To: akpm@linux-foundation.org,
-	david@kernel.org,
-	ljs@kernel.org
-Cc: baohua@kernel.org,
-	usama.arif@linux.dev,
-	hannes@cmpxchg.org,
-	kas@kernel.org,
-	alex@ghiti.fr,
-	ziy@nvidia.com,
-	baolin.wang@linux.alibaba.com,
-	liam@infradead.org,
-	npache@redhat.com,
-	ryan.roberts@arm.com,
-	dev.jain@arm.com,
-	lance.yang@linux.dev,
-	vbabka@kernel.org,
-	rppt@kernel.org,
-	surenb@google.com,
-	mhocko@suse.com,
-	willy@infradead.org,
-	linux-mm@kvack.org
-Subject: [PATCH v4 4/4] mm: add anonymous mTHP folios to the deferred split list
-Date: Tue,  3 Nov 2026 13:20:04 -0800
-Message-ID: <20261103212004.1356327-5-joannelkoong@gmail.com>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20261103212004.1356327-1-joannelkoong@gmail.com>
-References: <20261103212004.1356327-1-joannelkoong@gmail.com>
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=5SQtuzh3F5B6ZYWHIhQ+SnNhZsxSWtRRLkjCgwfX95o=;
+	b=CCFpAJ0Ee6ryYZzUAErtIF93mOxqUR824Akv5FKmzsOvJVlW3vFKUWJgPOvGPJBiWjX7Hu
+	H2Fysh1+2LMnUb5JgHSc3l1wK4hvf6ymRWNF1rkKYdqAW/vIgskp23haM5epWgibkxFC7Q
+	5cBBAH2oYh8TmCgLzPS/Y/1/BNH2gOA=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793741289;
+	b=3Zf9boJQLsZx5P92sTnzFzkmpObqFFl0/ZKws61Xy5wJaQxPSkt7I6YKqdt0AbR+KHKjhM
+	3/BbtjRXkSJkF6WQH6D+p1pXu/qrKIWJuTE+yWLGdda4Lr6153Z1Ikfq0nCgXY1wh4Hh90
+	gdNOhVrfjjmGsiTzR6NFKfCW8tnpKtE=
+ARC-Authentication-Results: i=1;
+	imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=h1Wo+EHs;
+	spf=pass (imf31.hostedemail.com: domain of sashal@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashal@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 2BA3A40E01;
+	Tue,  3 Nov 2026 21:28:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 793DC1F000C1;
+	Tue,  3 Nov 2026 21:28:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793741288;
+	bh=5SQtuzh3F5B6ZYWHIhQ+SnNhZsxSWtRRLkjCgwfX95o=;
+	h=From:To:Cc:Subject:Date;
+	b=h1Wo+EHsefNjiJAc82BWuGo0JYFEuInjYZrVDluR+NLnU/lyUf5e/3abdnWdT+na/
+	 gyUkeLSYQ2AeC2uwzhRHtM/E2EfLUGcyijyIP00o+YZDIajq6jS5OPEoRtERTem6gR
+	 Lc8NzwfgQ6vYaF9LyzMhzk6HLGWSrivvNtNJzYdH/NBBcYeO4vZceVvdn+YeFw4ZJK
+	 7A2ua5mYLxDSUBPVPGeU4Nd69xFYy4yiLiupbGg/GUJaP8w1nFr+kNw+x0TvL57ymv
+	 XUJ48JYt6j1v4ftkeLVmTe4zZqMhx8mWiumZjG2vLGx1GH0haHGsFhvji6WigVE2UG
+	 Xue/CeMymwzvA==
+From: Sasha Levin <sashal@kernel.org>
+To: Jason Gunthorpe <jgg@ziepe.ca>,
+	Leon Romanovsky <leon@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>
+Cc: Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Shuah Khan <shuah@kernel.org>,
+	Peter Xu <peterx@redhat.com>,
+	linux-mm@kvack.org,
+	linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v2] selftests/mm: fix pointer width warnings on 32-bit architectures
+Date: Tue,  3 Nov 2026 16:28:05 -0500
+Message-ID: <20261103212805.1537354-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.53.0
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: gkeki1nsrk9f1oskz1xsg77sj1e4rz8n
-X-Rspamd-Queue-Id: 8DED51C0005
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 1E4D120002
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-Stat-Signature: fajj7jah57nysqks964xdjc1xwqgmtmz
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
-	autolearn_force=no version=4.0.1
-X-HE-Tag: 1793740847-556643
-X-HE-Meta: U2FsdGVkX1+7CXJtXsAKw8lmZWmTkMb+kSNByuIUHfQNnesGh3JceSL05babWZsU6o5xHJgOwRjYbca/GWwNMMlkuVyy5o1+M4aiwSDSolYtqMnPFbREdiMutQ+5mbbUeV41IIw9gotEHxKKHy6qlrNRGtjnvRTAuQaVIsz+63bfJ2nkB6eYwoGSvry88lcrMyWz5bICiPN6Vr6YHv214FgKJIbu8bqAJD9xGel6m1Q7z1EQqmcnKYBAak2gIPPJScarobZtAzGcc7AEmhj4HEEQVN012Ahh0bU2pPwDjnXXxYV3VcmLbB8DBys71YEWZuzFpRQbZHNoy2VxbVhFJ6dGVb1Vi33wZAc+smzrGzzM2QJRYTApUcHS3j97i8W32SQSFXmuKcSQGiok9MCH0Io6QpKn52H1gnjSWF6oVOLK16cDuoL+JVEpFzxxnVbfZggPo0NB0E2xjtLbkJOB7NgimlDle6zSsj5UDOB1LSeVkOvWZDVBQhssS/peQKwHvWDUGzDsvdYACCNWO0X5HIwPc/JGqp01w+iriHGj7WeKp6swiwhpgn9k/Q7TsZFDlE823X530bz9Z+d2/xNwXP+RDpGMJP3lSFhsTeVypVmq4OvfcC+4UhcUqktiuIb7ahQ5XniruZlFNedTYb4ZRKCrZ4Fywbr3rEG09PXyjhY7/rHai+iVhuezaqzOczFZXXuuN4jNTAP3BtutYf+5V+ARb6A8k1XgnMx0KRj3BArpw1wiUvBxgl5+//JVwmV/D5DN20Z36TDqKuO5/Tak4KuJbIMWI63VMZ6eGJb8nN73S/nAnqd/c9hzgY/9KDk2RGB43dzCuBCfInvOH6MtHsdbyKG6KdKSMZN1XoYhjxLMXYO/xHmlBpSA+TRzZ1Bu1eCcGsZPhJ7X/oULLzi4O0NZASoksOR9okOV9T+Zy88Yy9ADfGvnaBBwUqLpqgOjlOxvx0nzI12v52QfZr8
- 1JsxlsiT
- OfYbp+qZaAcQ8yq/GiguUZok/65zjP7eqqLw229g3vMeBxK/pJcwYSSaRUMzueGsWfvjpEBVVoAYn1Vwil1ye1rd+KLYs7YBU0CTq0cHfN0eXnmS/iRM3w2lZqna4Q6kChFQoglXMQNm8s1EiRuE+1fUCDPV+J8pydeSu8TJBuO3EDYnPl+9xuqUH84+zdsBCT29uedxEm+RROJZznZzLwsq3S6vFme/x/mx4WDdvNJ5Hp0cuKnRqgBVE0ynOUEurvFT18oNrKXWGfdwQrlD70ZGrm16KEjljGIrupt5VSOUJVh212ZkG06O778jGnFW6lW141Xhfudde5ZxuaYAjtgkzx7xGR6qDKYmvgMWtNiCp3DjQOIIXdtBqqUzmfG6c4nUp8VG8hDj6AzgQ4kmGUa1X36MseHt2fR/JoblDCzbYyUN5HdPL2W0WXjdMg3aNPbXEbBMVSzQmEsc85JCwPZlw8A==
+X-HE-Tag: 1793741289-46679
+X-HE-Meta: U2FsdGVkX1+/eEoJMmoX60juii7H2lcWr4zwFoW80bLqqhTFcCq2Vto/nBLZNJbgEklH8DYGQOYSKyepkFu2fsLUomqialkrRf1JhyX9cgsw0wfDFOmUimkiglZudujETyDzrlmJi2zqarMpgEQfyq5SuG4YtkShvS6wvQst7XPjjptuiJBOGVwPMOG/eMAT7AJ5fVtClcbDoY1EsaIFay0AWSUhGT5fHSlo7oUlSoekIWfXIl8Mu2+5GIYF64UuCQo+UnXMRfHCPkxs4GHfklmNDh5hKBYTpZ17kFpM4QMx+bv0Y8+pqwecyeIKOH+rAhWhsy5iLfNO8QyuNNTzBoid1FpZ1eIhjNdmvnU1CKhXxP2nwl9Vk62HNOfR+7XowLp7XBcLznRTTeVEhwfZkfb7PUc1bTg63EphBOuV5zAycfMJDz658QtogGsuPS8FtvNMmd/YsWXVpLgLMbqmXKBhahz9XIA0r7Dyud7FEVgJXsgLji5jykEdkg1znv+Nm2o54dE6NnCStTurdfhBiJ62Qocd7sVnODd7X8SIcDRHrUFF8Uze2yLZMODZiAfzZ2Q/TuOjUbdobQJq+uyTlf1rkzNSBSgF8E8MI3yz9OF5UENzoK7aH5wtXXTvJXCnr4VnxBRqwXaVDKmTuCQXLDdYEBKkkDdI5XMNgaR5MBCg/YDpfGtVIEJSoO8peOWNL/yLetxrR3kj57Q/qe5i9Jyh6cLSiK7LNc+Am0v6SiPqopgEoahYbvo9Zphet1HmzLBD+ea66sdoyuAudfvEo5Q7/5fJbevvFq+ALNu6KURt8eYly38YZAs0vfIIu5EYFgRD8kkcGMS5Avj2NpiVHLTJSJCJ09C5Wgwj8jpF1FChD1cZtVJZIysprgTdvfxR3DDo95PmMf69JrNtcStgZOCygJ5eAjEoamS8w2HEkejWfCs2gHDwV6TgR0hGf3bBgOnMxqtrHJunJUTlMIf
+ lFE72st2
+ NCA0n5c0O6AvNOcTL/XvbN8uieUIvNKw+7xsFtQGVynaX7ULZs88hoWPx7ETrFozNu7slQ/hMvCojp41Q3Pi9wIlMetJNPjy6BCmsA1PXVqdUKMb0iZt+y4Hitx2jsDsO+ZHGOAWjLh9Oh8qexYOwjODRHPMMDUQ+YdZLAnJl/j2z+k+Ic/x8yjgDeeStaFxapRsedlneq2sON40eJHBjuaDCmfaUoPOOp98HheQ/aPTPNpTgD2X+RerAOfxpVT59Ua5TchppVoDv2YI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,98 +104,405 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Unlike for PMD-sized folios, an anonymous mTHP folio doesn't get added
-to the deferred split list at fault or collapse time. As a result, a
-fully mapped mTHP folio that is mostly zero-filled doesn't get split by
-the deferred split shrinker when the system is under memory pressure.
+Several mm tests convert between pointers and 64-bit integers with a
+plain cast, which warns on 32-bit architectures, and hugetlb-mremap
+passes 47-bit mmap() hints that don't fit in an unsigned long:
 
-At Meta we would like to deploy 2M THP=always on arm64 with 64k base
-pages, as 2M gives the contpte benefits while the PMD size (512M) is too
-big to use. Without underused splitting this causes memory regressions,
-as the unused parts of those folios can never be broken down and
-reclaimed.
+  uffd-unit-tests.c:344:31: warning: cast from pointer to integer of different size [-Wpointer-to-int-cast]
 
-Add anonymous mTHP folios to the deferred split list from
-map_anon_folio_pte_nopf(), mirroring what map_anon_folio_pmd_nopf()
-already does for PMD-sized folios. This covers both the fault path and
-the khugepaged mTHP collapse path. If there is memory pressure, a
-zero-filled mTHP can then be split with its zero pages remapped to the
-shared zero page and reclaimed.
+Add ptr_to_u64() and u64_to_ptr() to vm_util.h, which cast through
+uintptr_t, and use them where pointers meet the 64-bit UAPI fields and
+the 64-bit address arithmetic in mremap_test. The hugetlb-mremap hints
+don't fit in a 32-bit address space, so only pass them when long is 64
+bits.
 
-Only queue mTHP folios of at least 2M for underused splitting. With
-thp_underused() scaling khugepaged/max_ptes_none to the folio size, any
-folio of order 2 or above could in principle be underused, but for small
-folios it is unlikely to be worth it. An order-2 folio on 4k base pages
-can free at most four pages and on systems that only enable small mTHP
-sizes (eg Android's order-2-only configuration) zero-filled subpages
-tend to be few and short-lived.
-
-The minimum is hard-coded rather than a knob, since admins have no good
-way of choosing it, and is a size rather than an order since what a
-split recovers depends on the folio's size in bytes, and the same order
-means very different sizes across different base page sizes. It can be
-lowered later if data shows smaller sizes are worth it. PMD-sized folios
-are exempt from the minimum in order to maintain backwards compatibility
-since on some architectures (s390, with a 1M PMD) the PMD size can be
-below 2M.
-
-To minimize overhead on the common order-0 fault path, the
-deferred_split_folio() call is guarded by an inline folio_test_large()
-check.
-
-Suggested-by: Usama Arif <usama.arif@linux.dev>
-Signed-off-by: Joanne Koong <joannelkoong@gmail.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/huge_memory.c | 14 ++++++++++++++
- mm/memory.c      |  2 ++
- 2 files changed, 16 insertions(+)
+v2: add ptr_to_u64() and u64_to_ptr() to vm_util.h instead of
+open-coding the casts (Lorenzo).
+v1: https://lore.kernel.org/r/20261103163907.640667-1-sashal@kernel.org
 
-diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-index 8f90fb609e57..cda3c886ec53 100644
---- a/mm/huge_memory.c
-+++ b/mm/huge_memory.c
-@@ -4575,6 +4575,13 @@ static bool thp_underused_never(unsigned long max_ptes_none)
- 	return max_ptes_none == HPAGE_PMD_NR - 1;
- }
+Found with 32-bit builds of the selftests (gcc 16 and clang 21 with
+-m32, with and without -D_TIME_BITS=64 -D_FILE_OFFSET_BITS=64);
+KernelCI's 32-bit arm builds show the same warnings. The changed files
+build without them now, and the x86_64 builds don't change.
+
+ tools/testing/selftests/mm/hmm-tests.c       |  4 +-
+ tools/testing/selftests/mm/hugetlb-mremap.c  | 17 ++++---
+ tools/testing/selftests/mm/migration.c       |  4 +-
+ tools/testing/selftests/mm/mremap_test.c     | 13 +++---
+ tools/testing/selftests/mm/uffd-common.c     |  2 +-
+ tools/testing/selftests/mm/uffd-unit-tests.c | 48 ++++++++++----------
+ tools/testing/selftests/mm/vm_util.h         | 10 ++++
+ 7 files changed, 57 insertions(+), 41 deletions(-)
+
+diff --git a/tools/testing/selftests/mm/hmm-tests.c b/tools/testing/selftests/mm/hmm-tests.c
+index e5f273ca84c10..d4283c9c9d3ae 100644
+--- a/tools/testing/selftests/mm/hmm-tests.c
++++ b/tools/testing/selftests/mm/hmm-tests.c
+@@ -196,8 +196,8 @@ static int hmm_dmirror_cmd(int fd,
+ 	int ret;
  
-+/*
-+ * Smallest mTHP folio that is queued for underused splitting. Kept
-+ * conservative, as small folios are unlikely to free enough memory to be
-+ * worth queueing and scanning.
-+ */
-+#define THP_UNDERUSED_MIN_SIZE	SZ_2M
+ 	/* Simulate a device reading system memory. */
+-	cmd.addr = (__u64)buffer->ptr;
+-	cmd.ptr = (__u64)buffer->mirror;
++	cmd.addr = ptr_to_u64(buffer->ptr);
++	cmd.ptr = ptr_to_u64(buffer->mirror);
+ 	cmd.npages = npages;
+ 
+ 	for (;;) {
+diff --git a/tools/testing/selftests/mm/hugetlb-mremap.c b/tools/testing/selftests/mm/hugetlb-mremap.c
+index 9b724af66e938..d5a4cef51ad35 100644
+--- a/tools/testing/selftests/mm/hugetlb-mremap.c
++++ b/tools/testing/selftests/mm/hugetlb-mremap.c
+@@ -33,6 +33,11 @@
+ #define PROTECTION (PROT_READ | PROT_WRITE | PROT_EXEC)
+ #define FLAGS (MAP_HUGETLB | MAP_SHARED)
+ 
++static void *addr_hint(unsigned long long addr)
++{
++	return sizeof(long) == 8 ? u64_to_ptr(addr) : NULL;
++}
 +
- /* partially_mapped=false won't clear PG_partially_mapped folio flag */
- void deferred_split_folio(struct folio *folio, bool partially_mapped)
+ static void check_bytes(char *addr)
  {
-@@ -4600,6 +4607,13 @@ void deferred_split_folio(struct folio *folio, bool partially_mapped)
+ 	ksft_print_msg("First hex is %x\n", *((unsigned int *)addr));
+@@ -130,21 +135,21 @@ int main(int argc, char *argv[])
+ 		ksft_exit_fail_msg("Open failed: %s\n", strerror(errno));
+ 
+ 	/* mmap to a PUD aligned address to hopefully trigger pmd sharing. */
+-	unsigned long suggested_addr = 0x7eaa40000000;
+-	void *haddr = mmap((void *)suggested_addr, length, PROTECTION, FLAGS, fd, 0);
++	void *haddr = mmap(addr_hint(0x7eaa40000000ULL), length, PROTECTION, FLAGS,
++			   fd, 0);
+ 	ksft_print_msg("Map haddr: Returned address is %p\n", haddr);
+ 	if (haddr == MAP_FAILED)
+ 		ksft_exit_fail_msg("mmap1: %s\n", strerror(errno));
+ 
+ 	/* mmap again to a dummy address to hopefully trigger pmd sharing. */
+-	suggested_addr = 0x7daa40000000;
+-	void *daddr = mmap((void *)suggested_addr, length, PROTECTION, FLAGS, fd, 0);
++	void *daddr = mmap(addr_hint(0x7daa40000000ULL), length, PROTECTION, FLAGS,
++			   fd, 0);
+ 	ksft_print_msg("Map daddr: Returned address is %p\n", daddr);
+ 	if (daddr == MAP_FAILED)
+ 		ksft_exit_fail_msg("mmap3: %s\n", strerror(errno));
+ 
+-	suggested_addr = 0x7faa40000000;
+-	void *vaddr = mmap((void *)suggested_addr, length, PROTECTION, FLAGS, fd, 0);
++	void *vaddr = mmap(addr_hint(0x7faa40000000ULL), length, PROTECTION, FLAGS,
++			   fd, 0);
+ 	ksft_print_msg("Map vaddr: Returned address is %p\n", vaddr);
+ 	if (vaddr == MAP_FAILED)
+ 		ksft_exit_fail_msg("mmap2: %s\n", strerror(errno));
+diff --git a/tools/testing/selftests/mm/migration.c b/tools/testing/selftests/mm/migration.c
+index d1d0989ed2cad..b033db478b13f 100644
+--- a/tools/testing/selftests/mm/migration.c
++++ b/tools/testing/selftests/mm/migration.c
+@@ -236,7 +236,7 @@ TEST_F_TIMEOUT(migration, private_anon_thp, 2*RUNTIME)
+ 		MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
+ 	ASSERT_NE(ptr, MAP_FAILED);
+ 
+-	ptr = (uint64_t *) ALIGN((uintptr_t) ptr, pmdsize);
++	ptr = u64_to_ptr(ALIGN((uintptr_t) ptr, pmdsize));
+ 	ASSERT_EQ(madvise(ptr, pmdsize, MADV_HUGEPAGE), 0);
+ 	memset(ptr, 0xde, pmdsize);
+ 	for (i = 0; i < self->nthreads; i++)
+@@ -270,7 +270,7 @@ TEST_F_TIMEOUT(migration, shared_anon_thp, 2*RUNTIME)
+ 		MAP_SHARED | MAP_ANONYMOUS, -1, 0);
+ 	ASSERT_NE(ptr, MAP_FAILED);
+ 
+-	ptr = (uint64_t *) ALIGN((uintptr_t) ptr, pmdsize);
++	ptr = u64_to_ptr(ALIGN((uintptr_t) ptr, pmdsize));
+ 	ASSERT_EQ(madvise(ptr, pmdsize, MADV_HUGEPAGE), 0);
+ 
+ 	memset(ptr, 0xde, pmdsize);
+diff --git a/tools/testing/selftests/mm/mremap_test.c b/tools/testing/selftests/mm/mremap_test.c
+index 31b484517bda6..c6590f3384716 100644
+--- a/tools/testing/selftests/mm/mremap_test.c
++++ b/tools/testing/selftests/mm/mremap_test.c
+@@ -17,6 +17,7 @@
+ #include <stdbool.h>
+ 
+ #include "kselftest.h"
++#include "vm_util.h"
+ 
+ #define EXPECT_SUCCESS 0
+ #define EXPECT_FAILURE 1
+@@ -190,7 +191,7 @@ static void *get_source_mapping(struct config c)
+ 	if (addr < mmap_min_addr)
+ 		goto retry;
+ 
+-	src_addr = mmap((void *) addr, c.region_size, PROT_READ | PROT_WRITE,
++	src_addr = mmap(u64_to_ptr(addr), c.region_size, PROT_READ | PROT_WRITE,
+ 					MAP_FIXED_NOREPLACE | MAP_ANONYMOUS | MAP_SHARED,
+ 					-1, 0);
+ 	if (src_addr == MAP_FAILED) {
+@@ -206,8 +207,8 @@ static void *get_source_mapping(struct config c)
+ 	 * requested alignment of 2MB. This is done to reduce coincidental
+ 	 * alignment in the tests.
+ 	 */
+-	if (((unsigned long long) src_addr & (c.src_alignment - 1)) ||
+-			!((unsigned long long) src_addr & c.src_alignment)) {
++	if ((ptr_to_u64(src_addr) & (c.src_alignment - 1)) ||
++			!(ptr_to_u64(src_addr) & c.src_alignment)) {
+ 		munmap(src_addr, c.region_size);
+ 		goto retry;
+ 	}
+@@ -996,15 +997,15 @@ static long long remap_region(struct config c, unsigned int threshold_mb,
+ 	align_mask = ~(c.dest_alignment - 1);
+ 	/* Offset of destination address from the end of the source region */
+ 	offset = (c.overlapping) ? -c.dest_alignment : c.dest_alignment;
+-	addr = (void *) (((unsigned long long) src_addr + c.region_size
++	addr = u64_to_ptr((ptr_to_u64(src_addr) + c.region_size
+ 			  + offset) & align_mask);
+ 
+ 	/* Remap after the destination block preamble. */
+ 	addr += c.dest_preamble_size;
+ 
+ 	/* See comment in get_source_mapping() */
+-	if (!((unsigned long long) addr & c.dest_alignment))
+-		addr = (void *) ((unsigned long long) addr | c.dest_alignment);
++	if (!(ptr_to_u64(addr) & c.dest_alignment))
++		addr = u64_to_ptr(ptr_to_u64(addr) | c.dest_alignment);
+ 
+ 	/* Don't destroy existing mappings unless expected to overlap. */
+ 	while (!is_remap_region_valid(addr - c.dest_preamble_size,
+diff --git a/tools/testing/selftests/mm/uffd-common.c b/tools/testing/selftests/mm/uffd-common.c
+index a76851aced4d0..3db9bdeccd0df 100644
+--- a/tools/testing/selftests/mm/uffd-common.c
++++ b/tools/testing/selftests/mm/uffd-common.c
+@@ -488,7 +488,7 @@ void uffd_handle_page_fault(uffd_global_test_opts_t *gopts, struct uffd_msg *msg
  		 */
- 		if (thp_underused_never(khugepaged_max_ptes_none))
- 			return;
-+		/*
-+		 * Keep queueing PMD-sized folios as before, even where the PMD
-+		 * size is below the minimum (eg 1M on s390).
-+		 */
-+		if (folio_size(folio) < THP_UNDERUSED_MIN_SIZE &&
-+		    !is_pmd_order(folio_order(folio)))
-+			return;
+ 
+ 		area = (uint8_t *)(gopts->area_dst +
+-		       ((char *)msg->arg.pagefault.address -
++		       ((char *)u64_to_ptr(msg->arg.pagefault.address) -
+ 		       gopts->area_dst_alias));
+ 		for (b = 0; b < gopts->page_size; ++b)
+ 			area[b] = ~area[b];
+diff --git a/tools/testing/selftests/mm/uffd-unit-tests.c b/tools/testing/selftests/mm/uffd-unit-tests.c
+index 2a97ba1d6feb1..44fbad5e73e68 100644
+--- a/tools/testing/selftests/mm/uffd-unit-tests.c
++++ b/tools/testing/selftests/mm/uffd-unit-tests.c
+@@ -341,17 +341,17 @@ static void uffd_wp_unpopulated_test(uffd_global_test_opts_t *gopts, uffd_test_a
+ 	pagemap_fd = pagemap_open();
+ 
+ 	/* Test applying pte marker to anon unpopulated */
+-	wp_range(gopts->uffd, (uint64_t)gopts->area_dst, gopts->page_size, true);
++	wp_range(gopts->uffd, ptr_to_u64(gopts->area_dst), gopts->page_size, true);
+ 	value = pagemap_get_entry(pagemap_fd, gopts->area_dst);
+ 	pagemap_check_wp(value, true);
+ 
+ 	/* Test unprotect on anon pte marker */
+-	wp_range(gopts->uffd, (uint64_t)gopts->area_dst, gopts->page_size, false);
++	wp_range(gopts->uffd, ptr_to_u64(gopts->area_dst), gopts->page_size, false);
+ 	value = pagemap_get_entry(pagemap_fd, gopts->area_dst);
+ 	pagemap_check_wp(value, false);
+ 
+ 	/* Test zap on anon marker */
+-	wp_range(gopts->uffd, (uint64_t)gopts->area_dst, gopts->page_size, true);
++	wp_range(gopts->uffd, ptr_to_u64(gopts->area_dst), gopts->page_size, true);
+ 	if (madvise(gopts->area_dst, gopts->page_size, MADV_DONTNEED))
+ 		err("madvise(MADV_DONTNEED) failed");
+ 	value = pagemap_get_entry(pagemap_fd, gopts->area_dst);
+@@ -366,7 +366,7 @@ static void uffd_wp_unpopulated_test(uffd_global_test_opts_t *gopts, uffd_test_a
+ 		err("madvise(MADV_DONTNEED) failed");
+ 
+ 	/* Test read-zero-page upon pte marker */
+-	wp_range(gopts->uffd, (uint64_t)gopts->area_dst, gopts->page_size, true);
++	wp_range(gopts->uffd, ptr_to_u64(gopts->area_dst), gopts->page_size, true);
+ 	*(volatile char *)gopts->area_dst;
+ 	/* Drop it to make pte none again */
+ 	if (madvise(gopts->area_dst, gopts->page_size, MADV_DONTNEED))
+@@ -389,7 +389,7 @@ static void uffd_wp_fork_test_common(uffd_global_test_opts_t *gopts, uffd_test_a
+ 
+ 	/* Touch the page */
+ 	*gopts->area_dst = 1;
+-	wp_range(gopts->uffd, (uint64_t)gopts->area_dst, gopts->page_size, true);
++	wp_range(gopts->uffd, ptr_to_u64(gopts->area_dst), gopts->page_size, true);
+ 	value = pagemap_get_entry(pagemap_fd, gopts->area_dst);
+ 	pagemap_check_wp(value, true);
+ 	if (pagemap_test_fork(gopts, with_event, false)) {
+@@ -430,7 +430,7 @@ static void uffd_wp_fork_test_common(uffd_global_test_opts_t *gopts, uffd_test_a
  	}
  
+ 	/* Unprotect; this tests swap pte modifications */
+-	wp_range(gopts->uffd, (uint64_t)gopts->area_dst, gopts->page_size, false);
++	wp_range(gopts->uffd, ptr_to_u64(gopts->area_dst), gopts->page_size, false);
+ 	value = pagemap_get_entry(pagemap_fd, gopts->area_dst);
+ 	pagemap_check_wp(value, false);
+ 
+@@ -469,7 +469,7 @@ static void uffd_wp_fork_pin_test_common(uffd_global_test_opts_t *gopts,
+ 
+ 	/* Touch the page */
+ 	*gopts->area_dst = 1;
+-	wp_range(gopts->uffd, (uint64_t)gopts->area_dst, gopts->page_size, true);
++	wp_range(gopts->uffd, ptr_to_u64(gopts->area_dst), gopts->page_size, true);
+ 
  	/*
-diff --git a/mm/memory.c b/mm/memory.c
-index 0c9ed04528d8..44376321180b 100644
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -5477,6 +5477,8 @@ void map_anon_folio_pte_nopf(struct folio *folio, pte_t *pte,
- 	folio_add_lru_vma(folio, vma);
- 	set_ptes(vma->vm_mm, addr, pte, entry, nr_pages);
- 	update_mmu_cache_range(NULL, vma, addr, pte, nr_pages);
-+	if (folio_test_large(folio))
-+		deferred_split_folio(folio, false);
+ 	 * 1. First pin, then fork().  This tests fork() special path when
+@@ -675,7 +675,7 @@ static void uffd_rwp_async_test(uffd_global_test_opts_t *gopts,
+ 		err("register failure");
+ 
+ 	/* RW-protect all pages (sets protnone) */
+-	rwprotect_range(gopts->uffd, (uint64_t)gopts->area_dst,
++	rwprotect_range(gopts->uffd, ptr_to_u64(gopts->area_dst),
+ 			 nr_pages * page_size, true);
+ 
+ 	/* Access all pages — should auto-resolve, no faults */
+@@ -739,7 +739,7 @@ static void uffd_rwp_sync_test(uffd_global_test_opts_t *gopts,
+ 		err("register failure");
+ 
+ 	/* RW-protect all pages */
+-	rwprotect_range(gopts->uffd, (uint64_t)gopts->area_dst,
++	rwprotect_range(gopts->uffd, ptr_to_u64(gopts->area_dst),
+ 			 nr_pages * page_size, true);
+ 
+ 	/* Start fault handler thread */
+@@ -816,7 +816,7 @@ static void uffd_rwp_pagemap_test(uffd_global_test_opts_t *gopts,
+ 			  nr_pages * page_size))
+ 		err("register failure");
+ 
+-	rwprotect_range(gopts->uffd, (uint64_t)gopts->area_dst,
++	rwprotect_range(gopts->uffd, ptr_to_u64(gopts->area_dst),
+ 			 nr_pages * page_size, true);
+ 
+ 	/* Touch first half of pages to re-activate them (async auto-resolve) */
+@@ -825,7 +825,7 @@ static void uffd_rwp_pagemap_test(uffd_global_test_opts_t *gopts,
+ 		(void)*page;
+ 	}
+ 
+-	uint64_t start = (uint64_t)gopts->area_dst;
++	uint64_t start = ptr_to_u64(gopts->area_dst);
+ 	uint64_t boundary = start + (nr_pages / 2) * page_size;
+ 	uint64_t end = start + nr_pages * page_size;
+ 
+@@ -844,7 +844,7 @@ static void uffd_rwp_pagemap_test(uffd_global_test_opts_t *gopts,
+ 	pm_arg.size = sizeof(pm_arg);
+ 	pm_arg.start = start;
+ 	pm_arg.end = end;
+-	pm_arg.vec = (uint64_t)regions;
++	pm_arg.vec = ptr_to_u64(regions);
+ 	pm_arg.vec_len = ARRAY_SIZE(regions);
+ 	pm_arg.category_mask = PAGE_IS_ACCESSED;
+ 	pm_arg.return_mask = PAGE_IS_ACCESSED;
+@@ -897,7 +897,7 @@ static void uffd_rwp_mprotect_test(uffd_global_test_opts_t *gopts,
+ 	if (uffd_register_rwp(gopts->uffd, gopts->area_dst,
+ 			      nr_pages * page_size))
+ 		err("register failure");
+-	rwprotect_range(gopts->uffd, (uint64_t)gopts->area_dst,
++	rwprotect_range(gopts->uffd, ptr_to_u64(gopts->area_dst),
+ 			nr_pages * page_size, true);
+ 
+ 	/* Round-trip mprotect(): PROT_NONE -> PROT_READ|PROT_WRITE */
+@@ -937,9 +937,9 @@ static void uffd_rwp_mprotect_test(uffd_global_test_opts_t *gopts,
+ 
+ 	memset(&pm_arg, 0, sizeof(pm_arg));
+ 	pm_arg.size = sizeof(pm_arg);
+-	pm_arg.start = (uint64_t)gopts->area_dst;
+-	pm_arg.end = (uint64_t)gopts->area_dst + nr_pages * page_size;
+-	pm_arg.vec = (uint64_t)regions;
++	pm_arg.start = ptr_to_u64(gopts->area_dst);
++	pm_arg.end = ptr_to_u64(gopts->area_dst) + nr_pages * page_size;
++	pm_arg.vec = ptr_to_u64(regions);
+ 	pm_arg.vec_len = ARRAY_SIZE(regions);
+ 	pm_arg.category_mask = PAGE_IS_ACCESSED;
+ 	pm_arg.category_inverted = PAGE_IS_ACCESSED;
+@@ -982,7 +982,7 @@ static void uffd_rwp_gup_test(uffd_global_test_opts_t *gopts,
+ 	if (uffd_register_rwp(gopts->uffd, gopts->area_dst, gopts->page_size))
+ 		err("register failure");
+ 
+-	rwprotect_range(gopts->uffd, (uint64_t)gopts->area_dst,
++	rwprotect_range(gopts->uffd, ptr_to_u64(gopts->area_dst),
+ 			gopts->page_size, true);
+ 
+ 	if (pipe(pipefd))
+@@ -1045,7 +1045,7 @@ static void uffd_rwp_async_toggle_test(uffd_global_test_opts_t *gopts,
+ 		err("register failure");
+ 
+ 	/* Phase 1: async detection — RW-protect, access first half */
+-	rwprotect_range(gopts->uffd, (uint64_t)gopts->area_dst,
++	rwprotect_range(gopts->uffd, ptr_to_u64(gopts->area_dst),
+ 			 nr_pages * page_size, true);
+ 
+ 	for (p = 0; p < nr_pages / 2; p++) {
+@@ -1092,7 +1092,7 @@ static void uffd_rwp_async_toggle_test(uffd_global_test_opts_t *gopts,
+ 	set_async_mode(gopts->uffd, true);
+ 
+ 	/* RW-protect and access again — should auto-resolve */
+-	rwprotect_range(gopts->uffd, (uint64_t)gopts->area_dst,
++	rwprotect_range(gopts->uffd, ptr_to_u64(gopts->area_dst),
+ 			 nr_pages * page_size, true);
+ 
+ 	for (p = 0; p < nr_pages; p++) {
+@@ -1127,7 +1127,7 @@ static void uffd_rwp_close_test(uffd_global_test_opts_t *gopts,
+ 			  nr_pages * page_size))
+ 		err("register failure");
+ 
+-	rwprotect_range(gopts->uffd, (uint64_t)gopts->area_dst,
++	rwprotect_range(gopts->uffd, ptr_to_u64(gopts->area_dst),
+ 			 nr_pages * page_size, true);
+ 
+ 	/* Close uffd — should restore protnone PTEs */
+@@ -1169,7 +1169,7 @@ static void uffd_rwp_fork_test(uffd_global_test_opts_t *gopts,
+ 
+ 	/* Populate + RWP-protect */
+ 	*gopts->area_dst = 1;
+-	rwprotect_range(gopts->uffd, (uint64_t)gopts->area_dst,
++	rwprotect_range(gopts->uffd, ptr_to_u64(gopts->area_dst),
+ 			page_size, true);
+ 
+ 	/* Parent: verify uffd-wp bit is set before fork */
+@@ -1223,7 +1223,7 @@ static void uffd_rwp_fork_pin_test(uffd_global_test_opts_t *gopts,
+ 	}
+ 
+ 	/* RWP-protect: PTE is now PAGE_NONE + uffd bit. */
+-	rwprotect_range(gopts->uffd, (uint64_t)gopts->area_dst, page_size, true);
++	rwprotect_range(gopts->uffd, ptr_to_u64(gopts->area_dst), page_size, true);
+ 
+ 	pagemap_fd = pagemap_open();
+ 	value = pagemap_get_entry(pagemap_fd, gopts->area_dst);
+@@ -1332,7 +1332,7 @@ static void uffd_rwp_swap_cow_test(uffd_global_test_opts_t *gopts,
+ 	*gopts->area_dst = 0x11;
+ 
+ 	/* RWP-protect: PTE becomes PAGE_NONE + uffd bit (still exclusive). */
+-	rwprotect_range(gopts->uffd, (uint64_t)gopts->area_dst, page_size, true);
++	rwprotect_range(gopts->uffd, ptr_to_u64(gopts->area_dst), page_size, true);
+ 
+ 	/*
+ 	 * Swap the page out while it is still exclusive: a shared (forked)
+@@ -1498,7 +1498,7 @@ static int faulting_process(uffd_global_test_opts_t *gopts, int signal_test, boo
+ 						/* This is a WP request */
+ 						assert(steps == 2);
+ 						wp_range(gopts->uffd,
+-							 (__u64)gopts->area_dst +
++							 ptr_to_u64(gopts->area_dst) +
+ 							 offset,
+ 							 gopts->page_size, false);
+ 					}
+diff --git a/tools/testing/selftests/mm/vm_util.h b/tools/testing/selftests/mm/vm_util.h
+index b5d59729d4327..f6e82ee839283 100644
+--- a/tools/testing/selftests/mm/vm_util.h
++++ b/tools/testing/selftests/mm/vm_util.h
+@@ -59,6 +59,16 @@ static inline unsigned int pshift(void)
+ 	return __page_shift;
  }
  
- static void map_anon_folio_pte_pf(struct folio *folio, pte_t *pte,
++static inline uint64_t ptr_to_u64(const void *ptr)
++{
++	return (uintptr_t)ptr;
++}
++
++static inline void *u64_to_ptr(uint64_t val)
++{
++	return (void *)(uintptr_t)val;
++}
++
+ static inline void force_read_pages(char *addr, unsigned int nr_pages,
+ 				    size_t pagesize)
+ {
 -- 
-2.52.0
+2.53.0
 
 
