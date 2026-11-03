@@ -1,94 +1,98 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05B03606A32D
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 13:31:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE7C4608363D
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 13:33:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=P8ckjZYk
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=iGos98CD
 Received: by kanga.kvack.org (Postfix)
-	id 0C0E26B05B4; Tue,  3 Nov 2026 08:31:49 -0500 (EST)
+	id C83766B05B7; Tue,  3 Nov 2026 08:33:08 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 098B46B05B5; Tue,  3 Nov 2026 08:31:49 -0500 (EST)
+	id C59A66B05B8; Tue,  3 Nov 2026 08:33:08 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EEF666B05B6; Tue,  3 Nov 2026 08:31:48 -0500 (EST)
+	id B715D6B05B9; Tue,  3 Nov 2026 08:33:08 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C281E6B05B4
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 08:31:48 -0500 (EST)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 569B8A7786
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 13:31:48 +0000 (UTC)
-X-FDA: 85393895496.28.DD0DDD0
+	by kanga.kvack.org (Postfix) with ESMTP id 9AD136B05B7
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 08:33:08 -0500 (EST)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 30394A7F85
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 13:33:08 +0000 (UTC)
+X-FDA: 85393898856.13.174BF4A
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf13.hostedemail.com (Postfix) with ESMTP id BF65C20009
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 13:31:46 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=P8ckjZYk;
-	spf=pass (imf13.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	by imf19.hostedemail.com (Postfix) with ESMTP id 89C381A000D
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 13:33:06 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iGos98CD;
+	spf=pass (imf19.hostedemail.com: domain of leon@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=leon@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793712706;
-	b=NTmdulewizv78PhmNPCNXrjriKCUXqOw6ZspEKZp5YXoNBfSVxphvwt32+/rn2pTCxMRsC
-	/ubGYmRYvX6RMWkP+RqEpFbaQLp0k9Bj96y7i+qOjlA0p1l2mICEzwQyoNgF+fe661Kq4t
-	jtrbINbta1w7StabtOyMyPLXXPI/ENY=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=P8ckjZYk;
-	spf=pass (imf13.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	t=1793712786;
+	b=2+spBW45Ia30Y/n3YMTjnPn5oQTOqGG5wiXbwgNuyVHMMRyELf6YQ5GdS8tKlsAKsuQGpS
+	OEYhhvcnU893HYt+gKqT9jTZMpLBKGoZ4v0LFb7Ux2AEH2sGWIbfacvsrSdH/vVJgPaCkf
+	HDBSDOPLn+kpIZKClapf8TKx/sOjtCk=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793712706;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	s=arc-20220608; t=1793712786;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nQy4/KiLdZZPv+GoMlioUJJnOOIyJoyjE4A+4aiPp4o=;
-	b=FxrZIaw9GU45viiB5wxaLopHHaTuosQUoO7Ugwg0n8CEXYxWEfoswrqTbx6hSiPcFnsCIw
-	3gAgQzWfUFP9hOimDXMBDdBCLAJLvS2g+axDpPeoRdQeG4FBDLpaM3hU46AUtbZU806mFL
-	sb6OX7vlnSzjbQUJ7G9KQF8mEz2FF1A=
+	bh=22QbouE8cQ/+KqBR8JqAf++7e526LrzApHVyHj4Hi0o=;
+	b=G/MtPgzzReqAQUz10rcPCsjqjVA6NnWbOlZy1BslkyiNT4twXGAL4eP2q5qefNyucpI7+H
+	gh07+D6mMHuQXD0wZnjidEcU2oBmjtCEDDCobkdvF3+2uhTw8fEe55io1JWbzRdAFcoxaZ
+	snYg5JM4NaOhqy9eZ7RSydOzFjQrdN8=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iGos98CD;
+	spf=pass (imf19.hostedemail.com: domain of leon@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=leon@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 3226E60416;
-	Tue,  3 Nov 2026 13:31:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97F221F00A16;
-	Tue,  3 Nov 2026 13:31:43 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 1D612609EB;
+	Tue,  3 Nov 2026 13:33:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FE9F1F00A1E;
+	Tue,  3 Nov 2026 13:33:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793712705;
-	bh=nQy4/KiLdZZPv+GoMlioUJJnOOIyJoyjE4A+4aiPp4o=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=P8ckjZYk6fxnduGVkh75x/CjvcqQvKgxrG09iO0cSdqipCB/hlH17g149+BdVz4p3
-	 UlccnHSw2qO11AflRKeMQ9avaLVCL/gjf3Ax+ksRNF1aZxqDY3I+aVjSG9zLziXDlM
-	 b5K3oSq4AVSLY48ixr6kLMM4JPKPlELJWSjGH3bdWSlbKI5GHdoPuRRaW6e6QP6bLD
-	 h8soc4qmEl/ThHDVKvk8xW4D4tZAgugSOOMvlGXtvTpLqAUgx+KqnslukBCTydDwZD
-	 0dRnRUj7Uv3yU97be5yoM/yFxhWQ54OXgz7N+exEmTsGHabXFHEW/27lEkSIk6QZft
-	 GVza9d85UKI5g==
-Message-ID: <sashiko-outbox-195355@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 4/4] ksm: add find_mergeable_vma_locked() to use
- per-VMA locking
-Reply-To: sashiko-reviews@lists.linux.dev
-To: xu.xin@linux.dev
-Cc: acme@kernel.org, adrian.hunter@intel.com, "Alexander Gordeev" <agordeev@linux.ibm.com>, akpm@linux-foundation.org, alexander.shishkin@linux.intel.com, apopple@nvidia.com, baohua@kernel.org, baolin.wang@linux.alibaba.com, "Christian
- Borntraeger" <borntraeger@linux.ibm.com>, byungchul@sk.com, chengming.zhou@linux.dev, david@kernel.org, dev.jain@arm.com, gerald.schaefer@linux.ibm.com, "Vasily
- Gorbik" <gor@linux.ibm.com>, gourry@gourry.net, harry@kernel.org, "Heiko
- Carstens" <hca@linux.ibm.com>, irogers@google.com, james.clark@linaro.org, jannh@google.com, jolsa@kernel.org, joshua.hahnjy@gmail.com, kas@kernel.org, lance.yang@linux.dev, liam@infradead.org, linux-mm@kvack.org, linux-s390@vger.kernel.org, ljs@kernel.org, mark.rutland@arm.com, matthew.brost@intel.com, mhiramat@kernel.org, mhocko@suse.com, mingo@redhat.com, namhyung@kernel.org, nico.pache@linux.dev, oleg@redhat.com, peterz@infradead.org, riel@surriel.com, rppt@kernel.org, ryan.roberts@arm.com, surenb@google.com, svens@linux.ibm.com, usama.arif@linux.dev, vbabka@kernel.org, ying.huang@linux.alibaba.com, ziy@nvidia.com, xialonglong2025@163.com, "Longlong
- Xia" <xialonglong@kylinos.cn>
-In-Reply-To: <20261102133103.302832-1-xu.xin@linux.dev>
-References: <20261102132416.300084-1-xu.xin@linux.dev>
- <20261102133103.302832-1-xu.xin@linux.dev>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Tue, 03 Nov 2026 13:31:43 +0000
-X-Stat-Signature: xa1z9rbzfpj1fx1wgo61hryoj1qugqw7
-X-Rspamd-Queue-Id: BF65C20009
-X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	s=k20260515; t=1793712785;
+	bh=22QbouE8cQ/+KqBR8JqAf++7e526LrzApHVyHj4Hi0o=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=iGos98CDWJFnllXPkCf8GCsRc1D6heFPT8Ll+q6MHeLy0v8iW8HvOnABe+bnd/dY8
+	 Fj6xY0lnNvx0cLeybulsFMPH5PNYyIRtZaE/9+HQvcALFKBJF5CpZ9DqbKjMsCuEW4
+	 2TW1HpV2WXbtF9Oa7L4FtRe3U5R48bCtsBvt63QFKRjgrmkiXUi0ajC0sYkULz9nZp
+	 t/WF/tfglE4p/ZEak3bpvtrg+FjOIOPDTrQoV8xLABTyokXa+vv9dbyQZOKsn1GvnC
+	 6jTiDLxOEDzEByv212uS/1McM8X2HI0QUNmfWdbz7KAQriKAMzyv2n6EF1JN9nSZQ0
+	 GREHWwMO3yiyw==
+Date: Tue, 3 Nov 2026 14:25:42 +0200
+From: Leon Romanovsky <leon@kernel.org>
+To: Zi Yan <ziy@nvidia.com>
+Cc: "David Hildenbrand (Arm)" <david@kernel.org>,
+	Jason Gunthorpe <jgg@ziepe.ca>, linux-mm@kvack.org,
+	Lorenzo Stoakes <ljs@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+	Kiryl Shutsemau <kas@kernel.org>, linux-rdma@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] RDMA/uverbs: Don't return the shared zero page from
+ rdma_umap_fault()
+Message-ID: <20261103122542.GH264423@unreal>
+References: <20261025-fix-rdma_umap_fault-zero-page-v1-1-186255624f1f@nvidia.com>
+ <78802ed9-9cc6-41c4-b131-7c7d38f7ff39@kernel.org>
+ <DMEVZ5MU1YA9.2X3HCCHNQOIA7@nvidia.com>
+ <829c448d-e6e2-4874-a166-7624e87489ef@kernel.org>
+ <5E86E76B-F97A-4998-9EDB-8E450470FA4A@nvidia.com>
+X-Archived-By: <archiver.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <5E86E76B-F97A-4998-9EDB-8E450470FA4A@nvidia.com>
+X-Rspamd-Server: rspam12
+X-Rspam-User:
+X-Stat-Signature: ra4utzmkwjqicjfrseiccmuuxr3zf9xw
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
 	autolearn_force=no version=4.0.1
-X-HE-Tag: 1793712706-763345
-X-HE-Meta: U2FsdGVkX184KHntyG/v2QUIF/RM5J8BZ9HygebInhfqUF6n/LQ9VfCOe7EdnSd/4/6RCXC+mvuEeCtR8+rVh1+CAaxEjYKSF2kindWAJoxWTQyJAbI5ODBCroovoKJ8HppCreRGLt4S2dKg/p+ZRbWqjRQFJ3ZwnAZoHsaXbVbbHaKh8Y0Se2MAbf5rAWxPFN6rTimssKLl6VduFwaMt6PN9gt88xvNGks7vHQruwuuAttSM595JJGwHQSOhlP8ynXsuqehOQWKDjBTFVqi8MnThOFBxpRjY8s9h/ADLsK5ICF3iEaJb1lSDN1wDtOlC77bSEPidhJPF2AHtI2lSToRgUUZFc369dmcUKGgNg1EpQd2/bJ53NhBFDu7vbm3zIEvaKw2QbGjDyXZv0gfWZg9RK0nL57GlA8y5ZpRrHRbjx7+EAkd0CD4WOPjM59yezCasciEAGsKwAFKQpQGNL4bTfxQhYTUnmBaBpVHochwdaBh49vRfQPQJ9R37G1OocLygKDZiICKaKcri5GVRYI8lhyTUCPE4/yUjos4P8mFaayBnrVbCR4U+WD9MVrGuR1+ENkozsE1g9iUJHwBWONqvyfO8ox6wgZPK8ZmTkxVflbvYpD1vaH3xJvI45Lu6Vwuogs5zEioa+Vv/futaV9ZSRjNLgQqH+a29M8Phd84qId7TWDY5IU0aGTd/WzZwevw+IAsz1UcXfC3YirSxkutyekJ4jZX04EcqeTYXCfnUbzEDM8ZmxhWoPNNLz8Apj+lVuVQdTXKH9xLdyOM2weyr133elYMykbJfJuD8kRC7WdmYgIJBJsc/OpXGpng0obKrJGGBlvTU8aoMGmxtFjI1HUB52VFk7FN3WEYy5uQ7TU4oEG12OSWyYmGqAQ4UvEyyR9ft60auFarY3jdqxP9TOSxO2DpUsPmAG0GPNh5Hy41Q/jBF586GJzhqJMmqi11SpW/OScIFWrvXgw
- tOdpm4vG
- Rp4yV0KNy1p+5zagg5OyY1Os+I8SLSKzZCNBsrUdVKXN8n8CDZVFm/WaDXrbMR1fMOTIkPdxVhc4cxJwlw5inJneEObkt6BVYTFjfhYYsLyYjjfuzIwayE1BrM+6x0cKy4TNGpWDEGfURCMomkkpWvkmV7JyuIfVuW8wmeTzmh6U+9sNpE8cDHfGeAR6eHkPpCtgc/6R0tm7v1fzecY7bIiJuhwvaNZLjRfwBz6Gv/sy25pisYufgpNM55CozAes+z0eGnlOwA9KZG466Q0n4MHorknplZ0Crc+yneR8BAnP170duBcNkp54hrk79cFFyVM0Cg6T9v6Kcx9kkOVHYg85lwzFjHGP1RIcbKk18X33D/pW6PYkrmNYbii0eoWXt8LmEGCqdwze1QO2ng4NT4xSCPcYi1NLP3BfUMfPSI8neKbEOCM7EKWpGfdZR8Hud9TomvlT2pe1Ve1oQHCENcuNka6oJcQQZOlwkQJ49Y5LSQb03+luEPiAdsXfzGr24sUf08qkm6AT4QJ86Ltz2BFtEMziOOTmgEEH2PJDJAh7eZgco1/Pm/9uP7HuN06aoIATXoMRkFHvYGVIqpkF2Xv1L7klzqlcRxseONCLqXISRkqaBPvnUkry/02Brr6vAQUqLu2ZwMWaayGMuvVZJPGKaBcewMHPhneFLMkmryLEnHAxuZgnuMkQIreIN19fRprFjuNki3sqpxTFL8F7yFsstU2U4mVWxNTbl5lYi3GJWpioxJOoJhswzAsueKGToOuRReP4X8qnCbu2djXBGy5t6935iw0DlQeRq
+X-Rspamd-Queue-Id: 89C381A000D
+X-HE-Tag: 1793712786-510418
+X-HE-Meta: U2FsdGVkX1+F53mWEFB3fFCKGpjPf+PwCUdhtVoIbcrN66e1UArlfrtNmX5b266YmsXtD9UV4TPoYI6e7kj0fIzRvesmEkQNR9dxwJsMR5mE3QMeEVjg0gmtgxANtBOM86xT/m9WM4RLY1aNoaFyPv6NeGPGXCfEPQrrEx3UXjxHADVRUKqhfiPfUpJNlSsX1YLryeyoL5SEAtkr+S2I7BoJWvh3dQuElynqKL0FtA4zIU73R9G4ueYghO4NfGTxS5mZJu5A0vJYXJCYPLDjqzf0VQo1MMMDiS2NmGJ8UctiQx+EtHBasgmyTncKo51+6csileC+2F7+5hSrRX6kAaAwH5phe/1bGW8VIjB9FkOCXZXDVJ/9L0FYyt6gBdZw65Jw+bAlEkXGOZXMuFoa8/pI6ToVbKr9bPHntOgi4FDoP4PzwO3P7l9ZicIwtV4zUs8dyWDHLX+WIKvCSmkeJ6hfK3zJAWfsmBY+qaOrlreXO46xmcdHz1bzokS10hVZSOG4vUN4NS4x5cg7eAIZ9rEQPYSp8/00iNpXFgiTSHdtfbQD57mexSlgY8OPc+ULj5Fjb2g6RRFaQOmbgXBywnwIVC6DtZCZsoD/b1UkSbg3cAyuGBF9pfBH1IASftSlj1MdsKbT7RaFOJbkdhUZxaz8Q2HE0qdhRv0OHKkFvy2E56zvH3zwmuLDTZ8NF50rrH6ha95WLdEa+/lvEUY3gdS/ciRthMJ8/FI5ksc5HrzQBf44zMfnLVK22b5ZISc516NWmklprulX7uCsUegX3FyUI/oqe267zJWJoO4NzxG0AiHh/vqwO7h3FCA/4utfWd/9l+s5hEWe1EvJH+BiSTb3F8l2hCeG2vqRqEdmD2NQERJQqxBuO1339pGWwEtdMLrQEIxzht3AADDYyAtrq01eAy0mgFIfterCgxbpJ/Xl4Fw76hUFvqokA45PyVVeizMfBe88HGdSa1wC2W2
+ VB16j+bN
+ wXBmlvPs2F11iyX/H133ocnl74IXP/3DMg3r9T52dJhikkV8/Uc0eAhePJaVy8cu4wjIOFcRE8DzyfHCuSN6zk2OozyMcDdmyfNyGWSMJtycvJ4qzFtHszh9CV51UYmgQDTXcSeQSuK8qIcQ9drU+IBJe0hJBF7EVsXuxeFmMTUxtqW3mCeL6URQAD5MQe3uwts3nRRgRz0VDBeZ4PoYMAtBsjOIyFCmFnIkGBLTdQ4BFYEEIYQnDcCh3hP5CxLN8vfyjTb3pE0vdM2wW3ycbkhtSX+NHltiEAxlgt/dYFBB6OlWijdcZtc6GLLk5or+pqIL1ZP5VcNkaRFk0ieh93WDVuw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,325 +100,61 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
-X-Archived-By: <archiver.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 4 potential issue(=
-s) to consider:
-- [Critical] mm: ksm: race with exit_mmap() in find_mergeable_vma_locked() =
-and __ksm_exit()
-- [High] mm: ksm: missing FAULT_FLAG_VMA_LOCK in break_ksm() under per-VMA =
-read lock
-- [Low] mm: ksm: unmarked vma->anon_vma read in find_mergeable_vma_locked()
-- [Low] mm: ksm: missing kernel-doc params for find_mergeable_vma_locked()
---
+On Wed, Oct 28, 2026 at 01:49:23PM -0400, Zi Yan wrote:
+> On 28 Oct 2026, at 4:43, David Hildenbrand (Arm) wrote:
+> 
+> >>>> +	/*
+> >>>> +	 * VMAs that cannot become writable map the page as a raw pfn, like
+> >>>> +	 * the device memory it replaces. The page lives as long as the file.
+> >>>> +	 */
+> >>>> +	if (!(vmf->vma->vm_flags & (VM_WRITE | VM_MAYWRITE))) {
+> >>>> +		ret = vmf_insert_pfn(vmf->vma, vmf->address, page_to_pfn(page));
+> >>>> +		goto out;
+> >>>> +	}
+> >>>> +
+> >>>> +	/*
+> >>>> +	 * This VMA is forced to always be shared so this doesn't have
+> >>>> +	 * to worry about COW.
+> >>>> +	 */
+> >>>> +	vmf->page = page;
+> >>>> +	get_page(page);
+> >>>
+> >>>
+> >>> This split handling is pretty horrible TBH.
+> >>>
+> >>> In once case we take a reference in the other not?
+> >>>
+> >>> Why not perform a PFN mapping in any case?
+> >>
+> >> For writable path, a new vmf_insert_pfn_mkwrite() is needed, so it was
+> >> not fixed. I can fix that part as well.
+> >
+> > We should do that; returning kernel allocations from this function in ->fault is
+> > bad.
+> >
+> > How urgent is this fix here? (can it actually be triggered?Specific hardware?)
+> >
+> 
+> Not urgent. Like Jason said in another email, RDMA only runs on arch
+> with special PTE, so refcount, mapcount, rss are balanced. With DEBUG_VM,
+> zero_page checks in rmap will fire on the returned zero_page.
+> 
+> >>
+> >> The read-only zero page part might need more attention, since
+> >> we just prevented vmf_insert_pfn_prot() from using zero_page. Do we want
+> >> to add the support for rdma_umap_fault()?
+> >
+> > We just have to make sure that we cannot install it writable etc. But that's not
+> > a concern.
+> >
+> > Just have to be careful :)
+> 
+> There is one wrinkle, it does not work on
+> s390 + mm_forbids_zeropage() == true, where zero page is not present,
+> and a private zero page is needed.
+> 
+> Jason, is RDMA supported on s390? 
 
-commit 984120154ab3ef7af44dc3dbb32b8522a336aefe
-Author: Xu Xin <xu.xin@linux.dev>
-
-ksm: add find_mergeable_vma_locked() to use per-VMA locking
-
-This commit introduces find_mergeable_vma_locked() to look up and read-lock
-VM_MERGEABLE VMAs using per-VMA locks instead of mmap_read_lock() across KSM
-page-scanning and merging paths. It also updates __ksm_exit() to write-lock
-each VMA under mmap_write_lock() to synchronize with in-flight per-VMA read=
-ers
-when a process exits.
-
-Link: https://lore.kernel.org/all/20260909023507.1408925-1-xialonglong2025@=
-163.com/
-Link: https://lore.kernel.org/all/91cf8129-d705-4ebd-b420-129bab7ed261@kern=
-el.org/
-Link: https://lore.kernel.org/all/20260911162242418ODBbr9wspxxIXDS8uvpeZ@zt=
-e.com.cn/
-
-> diff --git a/mm/ksm.c b/mm/ksm.c
-> index 84d363dabdc8a..64f9e803b99e2 100644
-> --- a/mm/ksm.c
-> +++ b/mm/ksm.c
-> @@ -669,6 +669,8 @@ enum ksm_walk_lock {
->  	KSM_WALK_MMAP_RDLOCK,
->  	/* walk under mmap_write_lock() */
->  	KSM_WALK_MMAP_WRLOCK,
-> +	/* walk with the vma already read-locked (per-VMA locking) */
-> +	KSM_WALK_VMA_RDLOCK,
->  };
-> =20
->  static enum page_walk_lock ksm_walk_lock_to_pgwalk(enum ksm_walk_lock lo=
-ck)
-> @@ -676,6 +678,8 @@ static enum page_walk_lock ksm_walk_lock_to_pgwalk(en=
-um ksm_walk_lock lock)
->  	switch (lock) {
->  	case KSM_WALK_MMAP_WRLOCK:
->  		return PGWALK_WRLOCK;
-> +	case KSM_WALK_VMA_RDLOCK:
-> +		return PGWALK_VMA_RDLOCK_VERIFY;
->  	default:
->  		return PGWALK_RDLOCK;
->  	}
-> @@ -784,15 +788,36 @@ static bool vma_ksm_compatible(struct vm_area_struc=
-t *vma)
->  	return ksm_compatible(vma->vm_file, vma->flags);
->  }
-> =20
-> -static struct vm_area_struct *find_mergeable_vma(struct mm_struct *mm,
-> -		unsigned long addr)
-> +/**
-> + * find_mergeable_vma_locked() - Find the VMA covering 'address' which is
-> + * VM_MERGEABLE and read-lock it by per-VMA locks. Please use vma_end_re=
-ad()
-> + * to unlock vma after finishing reading the VMA (non-NULL).
-> + *
-> + * Return: If a VMA exists which spans @address, return that VMA, read-l=
-ocked.
-> + * If no VMA is mapped there or, very unlikely, a reference count overfl=
-ow
-> + * occurred, return NULL, and no read-locked.
-> + *
-> + * IMPORTANT: If a VMA exists but is not VM_MERGEABLE or has no anon_vma,
-> + * this function releases the per-VMA read lock before returning NULL.
-> + * Callers must NOT call vma_end_read() on a NULL return value.
-> + */
-> +static struct vm_area_struct *find_mergeable_vma_locked(struct mm_struct=
- *mm,
-> +		unsigned long address)
-
-[Severity: Low]
-This isn't a bug, but since this comment above find_mergeable_vma_locked() =
-in
-mm/ksm.c starts with the /** kernel-doc marker, won't scripts/kernel-doc (w=
-hen
-building with W=3D1) warn about the missing @mm and @address parameter
-descriptions?
-
->  {
->  	struct vm_area_struct *vma;
-> +
->  	if (ksm_test_exit(mm))
->  		return NULL;
-> -	vma =3D vma_lookup(mm, addr);
-> -	if (!vma || !(vma->vm_flags & VM_MERGEABLE) || !vma_has_anon_rmap(vma))
-> +
-> +	vma =3D vma_start_read_unlocked(mm, address);
-> +	if (!vma)
->  		return NULL;
-> +
-> +	if (!(vma->vm_flags & VM_MERGEABLE) || !vma->anon_vma) {
-
-[Severity: Low]
-In find_mergeable_vma_locked() in mm/ksm.c, replacing !vma_has_anon_rmap(vm=
-a)
-with a plain !vma->anon_vma read under the per-VMA read lock drops the
-data_race() annotation and vma_assert_stabilised() check from
-vma_has_anon_rmap() in mm/vma.h:
-
-mm/vma.h:vma_has_anon_rmap() {
-	if (vma_is_attached(vma))
-		vma_assert_stabilised(vma);
-	/* KCSAN gets confused about the optimistic check. Silence it. */
-	return data_race(vma->anon_vma);
-}
-
-When another thread concurrently faults in the first anonymous page on the
-same VMA and initializes vma->anon_vma in __anon_vma_prepare() under
-mm->page_table_lock, won't this trigger a KCSAN data-race warning? Should
-find_mergeable_vma_locked() continue to use !vma_has_anon_rmap(vma) here?
-
-> +		vma_end_read(vma);
-> +		return NULL;
-> +	}
-> +
->  	return vma;
->  }
-> =20
-> @@ -818,11 +843,12 @@ static void break_cow(struct ksm_rmap_item *rmap_it=
-em)
->  	 */
->  	rmap_item->linear_page_index =3D 0;
-> =20
-> -	mmap_read_lock(mm);
-> -	vma =3D find_mergeable_vma(mm, addr);
-> -	if (vma)
-> -		break_ksm(vma, addr, addr + PAGE_SIZE, KSM_WALK_MMAP_RDLOCK);
-> -	mmap_read_unlock(mm);
-> +	vma =3D find_mergeable_vma_locked(mm, addr);
-> +	if (!vma)
-> +		return;
-> +
-> +	break_ksm(vma, addr, addr + PAGE_SIZE, KSM_WALK_VMA_RDLOCK);
-> +	vma_end_read(vma);
->  }
-
-[Severity: High]
-When break_cow() in mm/ksm.c calls break_ksm() with KSM_WALK_VMA_RDLOCK, on=
-ly
-the per-VMA read lock is held, without mm->mmap_lock. However, break_ksm()
-still calls handle_mm_fault() without FAULT_FLAG_VMA_LOCK:
-
-mm/ksm.c:break_ksm() {
-	...
-	do {
-		int ksm_page;
-
-		cond_resched();
-		ksm_page =3D walk_page_range_vma(vma, addr, end, &ops, &addr);
-		if (ksm_page <=3D 0)
-			return ksm_page;
-		ret =3D handle_mm_fault(vma, addr,
-				      FAULT_FLAG_UNSHARE | FAULT_FLAG_REMOTE,
-				      NULL);
-	} while (!(ret & (VM_FAULT_SIGBUS | VM_FAULT_SIGSEGV | VM_FAULT_OOM)));
-}
-
-Because break_ksm_pmd_entry() drops the PTE lock before returning, the PTE =
-at
-addr can be modified (for example, zapped by concurrent MADV_DONTNEED or
-truncation, or turned into a device-private swap entry) before
-handle_pte_fault() inspects it.
-
-Without FAULT_FLAG_VMA_LOCK set in vmf->flags, handle_mm_fault() and its
-callees assume mm->mmap_lock is held:
-
-1. In mm/memory.c, vmf_can_call_fault() checks !(vmf->flags &
-   FAULT_FLAG_VMA_LOCK) and allows do_read_fault() to invoke
-   vma->vm_ops->fault() on a ksm_compatible() MAP_PRIVATE file-backed VMA
-   without holding mm->mmap_lock.
-
-2. In include/linux/mm.h, assert_fault_locked() checks
-   mmap_assert_locked(vmf->vma->vm_mm) when FAULT_FLAG_VMA_LOCK is not set,
-   and release_fault_lock() calls mmap_read_unlock() on the unheld
-   mm->mmap_lock (e.g. if handle_userfault() or migration entry waiting is
-   reached).
-
-3. If FAULT_FLAG_VMA_LOCK were passed, any path returning VM_FAULT_RETRY
-   would release the per-VMA read lock via vma_end_read(vma), which neither
-   the loop in break_ksm() nor the unconditional vma_end_read(vma) in
-   break_cow() accounts for.
-
-Can break_ksm() safely call handle_mm_fault() under only a per-VMA read loc=
-k?
-
-[ ... ]
-
-> @@ -3153,7 +3178,20 @@ void __ksm_exit(struct mm_struct *mm)
->  		mm_flags_clear(MMF_VM_MERGEABLE, mm);
->  		mmdrop(mm);
->  	} else if (mm_slot) {
-> +		/*
-> +		 * ksmd may be walking this mm's page tables under a per-VMA
-> +		 * read lock (see find_mergeable_vma_locked()).  A plain
-> +		 * mmap_write_lock() does not exclude such readers, so also
-> +		 * write-lock every VMA: this blocks until any in-flight ksmd
-> +		 * walk drops its per-VMA read lock, and prevents new ones
-> +		 * from starting (vma_start_read_unlocked() backs out when a
-> +		 * VMA is write-locked).  The per-VMA write locks are released
-> +		 * by mmap_write_unlock() via vma_end_write_all().
-> +		 */
->  		mmap_write_lock(mm);
-> +		VMA_ITERATOR(vmi, mm, 0);
-> +		for_each_vma(vmi, vma)
-> +			vma_start_write(vma);
->  		mmap_write_unlock(mm);
->  	}
-
-[Severity: Critical]
-Does this synchronization in __ksm_exit() in mm/ksm.c actually prevent ksmd
-from acquiring a per-VMA read lock in find_mergeable_vma_locked() and racing
-with exit_mmap()?
-
-Unlike normal callers of vma_start_read_unlocked(), ksmd only holds mm_count
-(via mmgrab()), not mm_users. Previously, callers took mmap_read_lock(mm)
-first and then checked ksm_test_exit(mm) inside find_mergeable_vma() under
-mmap_read_lock(mm), which serialized against mmap_write_lock(mm) in
-__ksm_exit().
-
-With this patch, find_mergeable_vma_locked() in mm/ksm.c checks
-ksm_test_exit(mm) locklessly before calling vma_start_read_unlocked(mm,
-address), and never re-checks ksm_test_exit(mm) after acquiring the per-VMA
-read lock:
-
-mm/ksm.c:find_mergeable_vma_locked() {
-	if (ksm_test_exit(mm))
-		return NULL;
-
-	vma =3D vma_start_read_unlocked(mm, address);
-	if (!vma)
-		return NULL;
-	...
-}
-
-Contrary to the comment in __ksm_exit(), vma_start_read_unlocked() in
-mm/mmap_lock.c does not back out when a VMA is write-locked; when
-lock_vma_under_rcu() returns NULL, it enters the slow path and blocks on
-mmap_read_lock(mm):
-
-mm/mmap_lock.c:vma_start_read_unlocked() {
-	vma =3D lock_vma_under_rcu(mm, address);
-	if (vma)
-		return vma;
-
-	/* Slow path: preclude VMA writers by temporarily getting mmap read lock. =
-*/
-	mmap_read_lock(mm);
-	vma =3D vma_lookup(mm, address);
-	if (vma && !vma_start_read_locked(vma))
-		vma =3D NULL;
-	mmap_read_unlock(mm);
-
-	return vma;
-}
-
-And in __ksm_exit(), mmap_write_unlock(mm) calls vma_end_write_all(mm), whi=
-ch
-immediately releases all of the per-VMA write locks just acquired.
-
-If mm->mm_users drops to 0 right after find_mergeable_vma_locked() passes
-ksm_test_exit(mm) (in get_mergeable_page(), try_to_merge_with_zero_page(),
-try_to_merge_with_ksm_page(), or break_cow()):
-
-1. If ksmd calls vma_start_read_unlocked() while __ksm_exit() holds
-   mmap_write_lock(mm), lock_vma_under_rcu() fails and ksmd waits on
-   mmap_read_lock(mm) in the slow path. As soon as __ksm_exit() calls
-   mmap_write_unlock(mm) (which also calls vma_end_write_all(mm)), ksmd
-   acquires mmap_read_lock(mm), looks up the VMA, and acquires the per-VMA
-   read lock via vma_start_read_locked(vma). Or if ksmd enters
-   vma_start_read_unlocked() right after __ksm_exit() calls
-   mmap_write_unlock(mm), lock_vma_under_rcu() succeeds directly because the
-   per-VMA write locks were already released.
-
-   Because find_mergeable_vma_locked() does not re-check ksm_test_exit(mm),
-   ksmd proceeds to walk and modify page tables (and invoke MMU notifiers)
-   under only the per-VMA read lock after __ksm_exit() and
-   mmu_notifier_release() have finished, racing with exit_mmap() running
-   unmap_vmas() and free_pgtables() (which frees page tables before
-   tear_down_vmas() detaches the VMAs).
-
-2. Because mm_users is not pinned across vma_start_read_unlocked(),
-   exit_mmap() in mm/mmap.c can run concurrently with
-   vma_start_read_unlocked():
-
-mm/mmap.c:exit_mmap() {
-	...
-	mmap_write_lock(mm);
-	unmap.mm_wr_locked =3D true;
-	mt_clear_in_rcu(&mm->mm_mt);
-	unmap_pgtable_init(&unmap, &vmi);
-	free_pgtables(&tlb, &unmap);
-	tlb_finish_mmu(&tlb);
-	nr_accounted =3D tear_down_vmas(mm, &vmi, vma, ULONG_MAX);
-destroy:
-	__mt_destroy(&mm->mm_mt);
-	mmap_write_unlock(mm);
-	...
-}
-
-   In exit_mmap(), mt_clear_in_rcu(&mm->mm_mt) clears MT_FLAGS_USE_RCU and
-   __mt_destroy(&mm->mm_mt) frees maple tree nodes synchronously without RCU
-   callbacks, while lock_vma_under_rcu() -> mas_walk() in ksmd may still be
-   walking mm->mm_mt under rcu_read_lock(), leading to a use-after-free on
-   maple tree nodes (or a maple tree lockdep warning in the slow path's
-   vma_lookup() after __mt_destroy() clears MT_FLAGS_LOCK_EXTERN).
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261102132416.3000=
-84-1-xu.xin@linux.dev?part=3D4
+Yes
 
