@@ -1,94 +1,94 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB84D606EE91
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 10:17:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CF60606EEAB
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 10:17:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=CvtfmLv0
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=wqHDnZkI
 Received: by kanga.kvack.org (Postfix)
-	id CD5996B05B1; Tue,  3 Nov 2026 05:17:16 -0500 (EST)
+	id 18C706B05B8; Tue,  3 Nov 2026 05:17:23 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CAE2B6B05B7; Tue,  3 Nov 2026 05:17:16 -0500 (EST)
+	id 163DD6B05B9; Tue,  3 Nov 2026 05:17:23 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BC3A66B05B8; Tue,  3 Nov 2026 05:17:16 -0500 (EST)
+	id 051E56B05BA; Tue,  3 Nov 2026 05:17:22 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 8176B6B05B1
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 05:17:16 -0500 (EST)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id ED4E416039B
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 10:17:15 +0000 (UTC)
-X-FDA: 85393405230.21.F9D000B
-Received: from mail-dy1-f174.google.com (mail-dy1-f174.google.com [74.125.82.174])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 39385140003
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 10:17:14 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=CvtfmLv0;
-	spf=pass (imf26.hostedemail.com: domain of jiangwenxiaomi@gmail.com designates 74.125.82.174 as permitted sender) smtp.mailfrom=jiangwenxiaomi@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793701034;
-	b=U3nhmXbtcu/rgHOFzN/u3EQRER4yFW//RCA2tY4hjNaX1cyoffbxrhECIq+byz5v1ClqtJ
-	uu+0LTY5fyqQWi97blyGFWTDmNqsBMYaUPku0vZlLyXbIIzUbB0jE6DmILQ3d0xmJhdV9J
-	1ABrC1I9lldbaCb6qCWl6hmfpEQn48w=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=CvtfmLv0;
-	spf=pass (imf26.hostedemail.com: domain of jiangwenxiaomi@gmail.com designates 74.125.82.174 as permitted sender) smtp.mailfrom=jiangwenxiaomi@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id CA13A6B05B8
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 05:17:22 -0500 (EST)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 563BBC037B
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 10:17:22 +0000 (UTC)
+X-FDA: 85393405524.06.018618A
+Received: from mail-dy1-f181.google.com (mail-dy1-f181.google.com [74.125.82.181])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 7ED6840004
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 10:17:20 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=wqHDnZkI;
+	spf=pass (imf17.hostedemail.com: domain of jiangwenxiaomi@gmail.com designates 74.125.82.181 as permitted sender) smtp.mailfrom=jiangwenxiaomi@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793701034;
+	s=arc-20220608; t=1793701040;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=4J8KnVur3uVZ8yVqselgUVjwiPZYC8TO76Ebys42kvc=;
-	b=IL72/Fx0Y6o7ilYvF+J6EOmOztGSEWuuCjUrTPwK9Jum5tQDVevYCXHyHsLAAvAxD0TaaY
-	KonsiwCb0x2Vvn3Ll1AvYF5qIf1HVlrNCfqtnFoayZcWCsHAHPoaIsBDf4vlloCcvBQdWf
-	5yz5R7B3SHguXIe7Uf3js1OFhKZGngs=
-Received: by mail-dy1-f174.google.com with SMTP id 5a478bee46e88-3645f0f3fcdso6687847eec.0
-        for <linux-mm@kvack.org>; Tue, 03 Nov 2026 02:17:13 -0800 (PST)
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=iIqgn31oqWqTiWXF2IW0vHwpw1vMj9WhwN7adf+gUg0=;
+	b=OiqZZqJ9qyMLtme7Bn1LsBe5ZOLjyjl/exLGc1ksL5VvK8GItyzXNd8jUPh/Z6eTPFrghE
+	1oAfMQXiKHQ0qaQbb/35D4z/3bK1PiTYGHTxOB7EqeWwvpK21qTl8DwUsz0dfhsTq9V4hu
+	r2S9RlCZxJq9umJJ+MEF46bC0fH+Clg=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793701040;
+	b=tD7lNentS4/CKvhR/qsdEg4fhSej0nG57BEFZ+Qf7bLavvOXHVXNaF8nn+gnjFy74MMKn9
+	/uBkM4ZLlqeAcsbBbMhVtaADLwIpDlRCu7Hco0Wqe3gJCIqLYqfy5fUGOXNPiGMEz7G4oQ
+	4ba2kRf171yvmOtGp7J4hPOnexDVqfk=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=wqHDnZkI;
+	spf=pass (imf17.hostedemail.com: domain of jiangwenxiaomi@gmail.com designates 74.125.82.181 as permitted sender) smtp.mailfrom=jiangwenxiaomi@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-dy1-f181.google.com with SMTP id 5a478bee46e88-36a1947498bso3892729eec.1
+        for <linux-mm@kvack.org>; Tue, 03 Nov 2026 02:17:20 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793701033; x=1794305833; darn=kvack.org;
-        h=content-transfer-encoding:content-type:mime-version:message-id:date
-         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=4J8KnVur3uVZ8yVqselgUVjwiPZYC8TO76Ebys42kvc=;
-        b=CvtfmLv0ihepCQTfrHY/Hy9wYNm4eT1f6U4dmGpeuNhliRDCPROomCIw75+Ooxmo+M
-         JY6ELpHhafhjoDVk+NrvTDjfie1dKq94f5LpoE7+rlNKnR1PGVxoxd6bVp1UVO+m1JIF
-         5fhAA5Job3ZRjZuJx35y4l9eSUDY8ECpHxrWwtdtZzcZRhdQ7v75exvp6tJmGyUMLJTg
-         nmU2J7modICuMN3zRpdUpjF+4s33bIo2XkfONmwfYSpiuJGfddvnglXAwX/p4cHJzNPf
-         3S9Wf/SK1b4pvx4Sf9VndBJo1H6F2vmBbNwoFKlbQLb4C7CA0ub/YhHM7spejcX0JmRi
-         J+RQ==
+        d=gmail.com; s=20260707; t=1793701039; x=1794305839; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=iIqgn31oqWqTiWXF2IW0vHwpw1vMj9WhwN7adf+gUg0=;
+        b=wqHDnZkIdFJdqqH1vQUXzq/0C0VCFeqZ2rtKBe1sszv9JeBx0Ebt2VDPAe+nT4OWt+
+         CH3xi0iNsBFGNvViVnuVHckej65qSB5FPYbSxL/eCKr34RMPFerZd44VJ+x9QVPGytH2
+         MXMwOkITChv5KV8wqYVypKnRHYFGn1dI80r4kTJ/U3JC24ulV++c3VV4jd6ORuN2MElv
+         XwDpU+QObCVm9x0IhlctS7Pgc9Paa0eAckP31cvR7NVkSiYKECwFkgjNPrtTeYi6aKx2
+         53j3aWa47fp74xFh9r7aEQgA7QzvoIXwWoqYV/hkfW45ryok11kPn8fKLKcYqN/PtB3v
+         bVvg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793701033; x=1794305833;
-        h=content-transfer-encoding:content-type:mime-version:message-id:date
-         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=4J8KnVur3uVZ8yVqselgUVjwiPZYC8TO76Ebys42kvc=;
-        b=I2o4nbtYufeyNHz61sUCrFlfAdA6JoUV/8+rjiwRuE8G7FyLuDoxF9hT+Ywbj9uToH
-         prVlyQOeEitr+FzeYcsQTaYv7H06ZqmuhvwhkRwtmrpukCGVipRQRYI/e0/CzhMJaqWA
-         wtuPIUDbHwCNijigiVGTZdEIMkd2P24wZWRoCphTJpsTmqKhu4qWaFUK2ivMQsixnj8c
-         H8eXwS4SdpebJT38td/6ayEde4NmzSGxayTQhsqp0b8LXlMeDvQOLpR9qX0Yw3MV80Yr
-         mjuMUdy9HUGNE+QAhngFPwh/z8yxr/xORNIZQ/RCx/nKQEcTd0IgtfaO0ut/Kilwjjh2
-         uNZQ==
-X-Forwarded-Encrypted: i=1; AKwUvBwdC4YvEzCBrLqXrzwtCARFYYggpXO/6AJ4n+YPLIEIpWyHyGXVuV+zq3r/NGhF6HCG9jQ2tb/X5g==@kvack.org
-X-Gm-Message-State: APuU4Z+6YBVf9Bs3/cJQANnkf8251MvtWz72bGGD2Nf6XrS8txTnoCCr
-	VuK/gOFmkoFS+9fIlQsLyVm6tM7E0NYIR8GRYVtYAZ0Wlj0QTJ18UbHY
-X-Gm-Gg: AYBFou2MZG++fKAHqmXQFrp1TVEUbWE3Pbfx3Q92//OCaB8wATgp0s/nkXijVLAzXYn
-	inygtxjx4huoz2pd9evqmhC8mc3zLA0Xp+MknTvFfOONaFjNvEDy3G8OvIIYP1CK/5V7M5TawFD
-	IOd1LO/c1p0M27JgDgto8ELjf0ERR3Kq6S7kG3KVCNU/ulRmSMaMw/ABXSBlgKlM8vhzAR/QwhC
-	XTmpMcYaBr5sBf4hWTRfWfk+63fbcIq8Ip5to9FoHuOtFXI3lbnQPnJGta2vI1v7iagGxUGo3lK
-	FMz8P43yofa3CLRwAoM45u5OZmC6X0A7NIgzQkLCHu2eVhQOKS+zskB15Dj8yJD/STNrmzPhD49
-	ib4m+bR67EkUR6Q1Waqmnlu3Hb+T5SxjDPNf2+v5tyIgTfq3KM7HGqR1JO0X/V6yW9OYZweW+o1
-	p7upyKeh1qK/6vp0pUltERRuzk4qxWMzOsvbTYx8T/ISyT8K172QvNTvC17GZ2Euf0rFqRFNfyi
-	drSrGjVbAMll4X9RmWttIsVSWaHf2sRZ0k9+Z1FrUfLveVwygfMycB07tvmX95UcREBlHiKrWSS
-	9uPCtIjlRS1WMR+CfZN327TBD78kjg==
-X-Received: by 2002:a05:693c:69d5:b0:369:7c:bfce with SMTP id 5a478bee46e88-36a423c6223mr19920521eec.14.1793701032723;
-        Tue, 03 Nov 2026 02:17:12 -0800 (PST)
+        d=1e100.net; s=20260707; t=1793701039; x=1794305839;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=iIqgn31oqWqTiWXF2IW0vHwpw1vMj9WhwN7adf+gUg0=;
+        b=Kx8clPuL6D0BMM6jLkaTmnLuZuZEmo+Dwqg8IbZZ8c+VqTL+mBjWMRjui85qIjW3RI
+         lphWYrA8/MKZMrRZA53mDoVm35Ddq5iKlxzglceFp90e1mFprzDQm4j5qQy9Q2oMMpgX
+         w1ihg2Ygxp8uFCYpvdJpWtID6GgjR5ny/2fAND6GA/aOu2DXW1kyfOqyAWYH6bJleAEx
+         WyeHBZwfAK9qFEBpfJUDPbEiWAob1XixIjxmPPuFiLkOhDP8+aa85ebmHyqxXcFXV9lA
+         A6k92Yw4+18xK7Zfh/ZUDZ+/h+HPoKYLTQaZ8coZ8G5+sEZIfZNOx8em9zHV/zmrtOfC
+         dL4Q==
+X-Forwarded-Encrypted: i=1; AKwUvBygGJhh+8Bopyo0upIjk5X++9SbuLaNt4I8T14GZYs/es1lEZBcjsSTwdodARClHWC2cbGKdgEunw==@kvack.org
+X-Gm-Message-State: APuU4Z/Bste6ZQggN1KcFmt4vLsqDOf3tygGFKjRtRh+s6u35+of8Cuj
+	/W5DpzzC6cHismguAFNIyf+zo3/U/hOsRG4minafmO4wm8gVgf7wvB1d
+X-Gm-Gg: AYBFou37iA1ZnktMi0Y7mSzmcSceZ1v85XPNUwRQhAcokT9QB2Fu1cf+nW5TmP5KA2Q
+	1yK9srsQOupJRGAQhTsZor55Lx4YDcJ9hlckmVMzfgOlsSF9udG5z28Ydd/2kUnAFJL+R1AGyXL
+	i2mXLDuOqePdiSEplJnoQ1zlAw85fIUWkRhIhukf13NlYLSMowR4Ffn74fJi2fHWECfNPWIjixv
+	0dsocWTrD17shhlvYtEUs8FI2ZEr8hz/qzTgiKjJziNXowveggDV8MaknRj/X8C5cykte5ugQ9p
+	mW37QS4Y4Vjl+YKBXgclkhApXtocAYVffae5xwrCs67RVGxmFzFcYA4+HN7oZnk2lY3GxGZ5+vD
+	OXNZ5WjBAw9YpXDCinCqIiBjI9ZUNbmDMtFtn5DDacG09PWM99kBcBwc6iKLrorG6KHN0NrDzgn
+	1dHy0jCuwRYxjUggO6hLPV/DicoIk6ZxezAqyvr8bCQOBp6jLjsDp/KKFErmQ+PSTsVkCIrcbkB
+	ZJO5S3EFjqYOXEB0PoxitDRGOm05/doKsCzrSuBbPgEdU23SKPn8zhm/+3jElr5ZDwgmrecj/Dt
+	C/Vzx4igWODqQWCp1aH0C5anevBOzQ==
+X-Received: by 2002:a05:7300:471a:b0:36a:2382:7dab with SMTP id 5a478bee46e88-36a4232cda7mr18277051eec.6.1793701038947;
+        Tue, 03 Nov 2026 02:17:18 -0800 (PST)
 Received: from 027.. ([2409:8a20:4a5:7150:84fc:ce3c:7b09:dbca])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-36a4291e38fsm53145387eec.15.2026.11.03.02.17.05
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-36a4291e38fsm53145387eec.15.2026.11.03.02.17.13
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 03 Nov 2026 02:17:12 -0800 (PST)
+        Tue, 03 Nov 2026 02:17:18 -0800 (PST)
 From: Wen Jiang <jiangwenxiaomi@gmail.com>
 To: akpm@linux-foundation.org,
 	catalin.marinas@arm.com,
@@ -111,29 +111,29 @@ Cc: Xueyuan.chen21@gmail.com,
 	mpe@ellerman.id.au,
 	npiggin@gmail.com,
 	rppt@kernel.org,
-	ryan.roberts@arm.com,
-	Wen Jiang <jiangwenxiaomi@gmail.com>
-Subject: [PATCH v11 00/10] mm/vmalloc: Speed up ioremap, vmalloc and vmap with contiguous memory
-Date: Tue,  3 Nov 2026 18:16:48 +0800
-Message-Id: <20261103101658.766905-1-jiangwenxiaomi@gmail.com>
+	ryan.roberts@arm.com
+Subject: [PATCH v11 01/10] arm64/mm: add vmap_pte_set_huge() and vmap_pte_clear_huge()
+Date: Tue,  3 Nov 2026 18:16:49 +0800
+Message-Id: <20261103101658.766905-2-jiangwenxiaomi@gmail.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20261103101658.766905-1-jiangwenxiaomi@gmail.com>
+References: <20261103101658.766905-1-jiangwenxiaomi@gmail.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+X-Rspamd-Server: rspam06
+X-Stat-Signature: rb8u7xia4qpi5i8t41u5r3zcs66xnykg
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,
-	SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no
-	version=4.0.1
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 39385140003
-X-Stat-Signature: kqsn9h48ipm1n8zksjkyfbh83i5y9exy
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
+	autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: 7ED6840004
 X-Rspam-User: 
-X-HE-Tag: 1793701034-93109
-X-HE-Meta: U2FsdGVkX1/hotXbBqeFajiDnBxpqn1QJ8AOwcguWJFL6ICFvRI9Vjyb0rRbJwIUdvwV3s7o2SUCz0FL2P9dqbUn8Kw6qL19Q9+EA2mC13Wkj6w1bY/PVk89lJ8P76QM6vaULI8tmWQulW9ygtFiFgGgpQsMbYdCBJ3sfsIIUdrQDbKHSzSXk+X0t0xhzAKswjAGbtPqb/WnV1/WY4T6sFNlUSBlfSgYH2JNgnFioZTfSpxytz49yAyULRhY+0ZQiksDizBSVnYktlCCfrIXBv55HPVPnPTQSHBEkmN5ApamAwh4rE0mZJADQF2Xsjp+qIF7UvGosVRKLDY52tQmF/kfamX2ihSGQXO6SGMyXJc1u5Sg1mkx6eK6kDfYekY8GsqZ9ZO+ZtlaW1ClYuXZ43daR3yTDhNSwgSdLbDac5/3FBa0jzB35iXkFFdLIOS1DlggM8CbTba+cngP0nWfIV1fZjygdW2Lkfh2vPIVtokTqZyWOmOkxuSk8IPiSb1k2y2+IldmhhjqaWaoDYYFFjqx6fHrqmGWPrCSfDTSfTDxXnETExla7M2paVLaqgk0wsOeRI1PSrWnNGGIXAzuSv+OTQ4Wx4x+/+VXb8LWS72KWA2TPL+Y5x8X0S2gWFKfFH+fXp08r4EZ5B2QG+pwbJ/igBbWmEXJ1H4B5s17RbERxiyZX9Xmhd6/0u4380JdLY39MuQyPq2TQVgZpxgcQ3iWwhhzhzYEQanx0AV/BowPlwmfnut2LLDRH6GhsS9I2efylWTf5h5ir8L8ZQ8QGC+XPe7ccj3kgj0d/lX2WPOkwvgHj4Bm+rJKw0UKtaV6joOUG7Ufj11pTH2UjEdqt4ZXk2vctUPYik3BKvRtBwJOzNGg4sWYq4gFLXaZHD8t0GDK+I6Q3BS+gpZUUOCm9YzuIntBftX3vhKRzWCYsmcavAdDzVHcq0RF0l/wLrj0irK1H9+nMxzRGxDd88Q
- ifGif90v
- q81Z4PMCfbpka3BhTWHIOuq73xIRiidaWxk7Pw6dCgopEhD5QzDlj+8n5K0wLTz6qExBYHpk8GcwVAsheM1a2byyHdI992XtG1eZXD0sy7Jm4tuwWuXg74bbDKylE+HIm2ItsVslq22M/ZqDQBcyG48xeiOfPWkfEKESLDkZyk04gqRtxRH8whL35i/L6CZw6ckf3shi0vqfh2P0mVZ41pZyTrgR100SKYYHDGno7IPB9YKQUdDy5KXRYHO7OTDcvnCf2fmnlDUlSTaDFfyFzsi6nQ8AR0AjPdyajtkvKR3e3G/4t5pwbGtNes0P//aZEHAxd3UF9CF86xzD4yvv5eF6fApe/OkTKtvP92KOZauKeqm/UVdL1ygC5uEAmASSMuBqO1j7kRujmljSwudDESf6MYyTONyIvDphV0umkrNuaWEPHCdEnewQIGd/SDHKVq5rq8up2Yt93jTY04cvwqPBbCConGXogXtSWiSCAmxw+WS3D7jDCOwA4mmSmiPGqQmj2WS6+JWHIQr4=
+X-HE-Tag: 1793701040-137753
+X-HE-Meta: U2FsdGVkX1+8TMwtu22fPIxTc+rzCIpAwywh0u+ADW47TFqeOKyYPSm70D+jFnb47rfY3xRqAtaZspTlh0046+HLx9WXmDDheUb6xK31+Jj3sG1L+msdEtdJVix5bBxMDLAjASwSlDK6+2PZ2+oxBHL8mVf4hquSuBK58w1Q869PlLaAy/B+QdcaHT8dJH9CvGzwbmhTuFJ0ePpeZTQT4xhendQPyKmc6bxBfN2IR8H1IIXDhY4neAfLt9jkriwcPDrkuIZ5F0oTyLR5mqVr3loRuL0BTVA/zlw7rZdMD8bB5+uUjl2+shEVSX9sZccrsKv98xVBGeSiDi9a06xu8o/jyV2hLI2L80lrKRM225sIXzrwrPQNU+CeqeoTj6puToNBUCQgds23HB5vG+fIrBgYDHsJ51xLVVoTeO8EG8YeF5JksAtb8b7NEPgH2gMrjBPvR8mEnNKcZyY2EVQpvCkmdmtTewMRiOQ7+Ml3ViJQbxDgzQQd5GFGB1nBWvlSewzfXc6m9ENd+gXjL6+g9KPrm5wDFGqB8Qh2KO4bhg7Pocl79iqn1WOdGHbjz4igBLyfCcfLCkHLHjJZCKdSO6782qtwZg07nUD5YW25V0g0AF782hjzeR4IaT+zPIvkvSia8x2yhKw0dndi1CJwn9s0rwHREKoRXQQTPTYCyMzivKeVcxk4LpEtBv45qcJM0TFe5Xrj+nycDd02dhdRIPt/7rGV1oiCcHWLXhvhAjsgcPyKrpyfx1QtP/7inJQpy1uTllSGfkMYHQfcXE0ppP/vuW8j7NohFuL0vPD66KUHHymAitTqYiUDltMkfqXNnabLIzoraCwNCS/0XDDKTabgRBqnRUOEZr/GTO+Q0jdhodBpvkK441bf35WoRhBOMNpXnXbDD79AzydGoFLDUQZKQq8zxJzwwH/sQx48dmDyO1wd2okNQfzBHuylHWwFWmOB+TPXk64d/sU0Mzs
+ hRAIFUSr
+ ceaWe7wbM8LqXfwspPzWBjXdEPdKA3E5YOmoXbJuoUcgvzQ9Hz7yiExBvCZUn5Bw1zMb4qsky3var5EKDRtrGGeTPziIcwwAxY80162s38VRIoaVAwkU1kguHox5j7GA4EYrfIgHq93i0Uwp1ThObNF2+wwh8YFMBiAJ/J66NvL86nH3wAtZXfdGLfDMb6OXn6CjPIb9rf+fyZDhSOXEhGerCs733HqfZUfj5Xp7KnZgj5XpLjVKTakkR+kZX6LaYDCU6L+zMOTSZ+mECSpnfZ+Zerv4vZ7Oopp/x/1ACcymcI2AYs/EahOo2Ls8jb5D8mnu4nZ/1pfOcN1pSoDl2tqpB1w5yyU7hZeRvjhKN6j+XFL1Cdb8lMveHKDm7SrpeYU0ZV6fYsmDh3GBF+6io6h05/LEajv6CrwI5GVbl9ojsqOwtDq3tcIRWHz5Jf0smDd1erizbvSDZ3SE/60Iv5BCr+dqOgt3j/4Mlg0UuOvQQ4HPvI1/qMA7YuwrghP6Z4dyzqZLVwRE8Ckt58tqmBVZ8y1k81ss/MRC0vCuycmf1M1RPit4fM1dgEVvXupp32PlPMUo+Wq/8Db/Ihd8dcczsbxTn9qu3hZTZ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,239 +142,85 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-This patchset accelerates ioremap, vmalloc, and vmap when the memory is
-physically fully or partially contiguous. Two techniques are used:
+From: Wen Jiang <jiangwen6@xiaomi.com>
 
-1. Avoid page table rewalk when setting PTEs/PMDs for multiple memory
-   segments
-2. Use batched mappings wherever possible in both vmalloc and ARM64
-   layers
-
-Besides accelerating the mapping path, this also enables large
-mappings (PMD and cont-PTE) for vmap, which are currently not
-supported.
-
-Patches 1-4 decouple the PTE-level block mapping path from HugeTLB.
-Previously vmap_pte_range() installed cont-PTE mappings by reusing
+vmap installs PTE-level block mappings (PTE_CONT on arm64) by reusing
 set_huge_pte_at() and huge_ptep_get_and_clear(), which are HugeTLB
-helpers gated by CONFIG_HUGETLB_PAGE. This made the feature silently
-unavailable on CONFIG_HUGETLB_PAGE=n kernels, and coupled mm/vmalloc.c
-to HugeTLB internals. Patches 1 and 2 add the arm64 and powerpc/8xx
-implementations of vmap_pte_set_huge()/vmap_pte_clear_huge(), which join the
-existing pmd/pud_set_huge() family. Patch 3 adds the generic fallbacks
-and converts mm/vmalloc.c over. Patch 4 then removes the now-dead
-init_mm special case from arm64's clear_flush().
+helpers gated by CONFIG_HUGETLB_PAGE. This makes the feature silently
+unavailable on CONFIG_HUGETLB_PAGE=n kernels and couples mm/vmalloc.c to
+HugeTLB internals it does not otherwise need.
 
-Patch 5 extends ARM64 arch_vmap_pte_range_map_size() to batch multiple
-CONT_PTE blocks in one call instead of one at a time.
+Add vmap_pte_set_huge()/vmap_pte_clear_huge() to arm64, joining the
+existing pmd_set_huge()/pud_set_huge() family in mm/mmu.c. They build on
+__set_ptes() and __get_and_clear_full_ptes() directly, so they do not
+depend on CONFIG_HUGETLB_PAGE.
 
-Patch 6 extracts a common helper vmap_set_ptes() that consolidates PTE
-mapping logic for the ioremap and vmalloc/vmap paths, handling both
-CONT_PTE and regular PTE mappings. This prepares for the next patch.
+There is no caller yet: mm/vmalloc.c is converted later in this series,
+once the generic fallbacks are in place.
 
-Patch 7 extends the page table walk path to support page shifts other
-than PAGE_SHIFT and eliminates the page table rewalk for huge vmalloc
-mappings. The function is renamed from vmap_small_pages_range_noflush()
-to vmap_pages_range_noflush_walk().
+Signed-off-by: Wen Jiang <jiangwen6@xiaomi.com>
+Reviewed-by: Barry Song <baohua@kernel.org>
+---
+ arch/arm64/include/asm/pgtable.h |  6 ++++++
+ arch/arm64/mm/mmu.c              | 28 ++++++++++++++++++++++++++++
+ 2 files changed, 34 insertions(+)
 
-Patch 8 extracts vm_shift() to consolidate vmalloc mapping shift
-selection for reuse in the batching path.
-
-Patches 9-10 add huge vmap support for contiguous pages, including
-support for non-compound pages with pfn alignment verification.
-
-On the RK3588 8-core ARM64 SoC, with tasks pinned to a little core and
-the performance CPUfreq policy enabled, benchmark results:
-
-* ioremap(1 MB): 1.35x faster (3407 ns -> 2526 ns)
-* vmalloc(1 MB) mapping time (excluding allocation) with
-  VM_ALLOW_HUGE_VMAP: 1.42x faster (5.00 us -> 3.53 us)
-* vmap(100MB) with order-8 pages: 8.3x faster (1235 us -> 149 us)
-
-Many thanks to Xueyuan Chen for his testing efforts on RK3588 boards.
-
-Large vmap() mappings were also tested by Leo Yan with ARM trace buffer
-units, including TRBE and SPE. These units use the CPU page tables for
-address translation when writing trace data to DRAM, so using larger
-vmap() mapping granules can reduce TLB pressure on the trace writer.
-
-The TRBE test used a 1G CoreSight ETM AUX buffer. Across five runs on an
-isolated CPU, the average results were:
-
-* dtlb_walk:       68.4 -> 59.4 (-13.16%)
-* l1d_tlb_refill: 155.8 -> 119.6 (-23.23%)
-* l2d_tlb_refill: 161435.8 -> 495.0 (-99.69%)
-
-The SPE test used a 512M ARM SPE AUX buffer. Across five runs on an
-isolated CPU, the average results were:
-
-* dtlb_walk:       1710.4 -> 1315.6 (-23.08%)
-* l1d_tlb_refill: 16000.0 -> 15950.2 (-0.31%)
-* l2d_tlb_refill: 4796.0 -> 2931.2 (-38.88%)
-
-These results show that enabling larger vmap() mappings can materially
-reduce page table walks and TLB refills for large trace buffers.
-
-Many thanks to Leo Yan for his testing efforts on ARM trace buffers.
-
-Changes since v10:
-- Rebase onto v7.4-rc1.
-- Rename pte_set_huge()/pte_clear_huge() to vmap_pte_set_huge()/
-  vmap_pte_clear_huge() to make clear they are vmap helpers rather than
-  HugeTLB helpers. (Dev Jain, Uladzislau Rezki)
-- Add "Kernel mappings only" comment and alignment VM_WARN_ON() checks
-  to vmap_pte_clear_huge(). (Dev Jain)
-- Pick up Reviewed-by tags from Uladzislau Rezki and Dev Jain.
-
-Changes since v9:
-- Add a VM_WARN_ON() for pte_valid() in pte_set_huge(). (patch 1)
-- Update the comment in arch_vmap_pte_range_map_size() to reflect
-  the new batching behavior. (patch5)
-- Drop the PMD_SIZE cap in arch_vmap_pte_range_map_size(). (patch 5)
-- Rename steps to nr_pages in vmap_pte_range() and
-  vmap_pages_pte_range(), and use 1U for the PMD page count.
-  (patches 6, 7)
-- Rename get_vmap_batch_order() to get_vmap_mapping_order(). (patch 9)
-
-Changes since v8:
-- Rebase onto v7.3-rc4.
-- Rename new_pte to pte in pte_set_huge(). Add a
-  VM_WARN_ON for addr alignment. (patch 1)
-- Use BUILD_BUG() instead of WARN_ON_ONCE in the
-  generic pte_set_huge()/pte_clear_huge() fallbacks. (patch 3)
-
-Changes since v7:
-- v7's patch 1 (which extended the hugetlb helpers in
-  arch/arm64/mm/hugetlbpage.c) is replaced by pte_set_huge()/
-  pte_clear_huge(), split across patches 1-3 so that the arm64,
-  powerpc/8xx and generic changes can be reviewed and acked
-  independently: patch 1 is arm64 only, patch 2 is powerpc/8xx only,
-  patch 3 is the generic fallbacks plus the mm/vmalloc.c conversion.
-  hugetlbpage.c no longer gains the CONT_PTE batching hooks, and patch 4
-  additionally removes its now-dead init_mm special case. mm/vmalloc.c
-  no longer includes <linux/hugetlb.h>.
-- The generic pte_set_huge()/pte_clear_huge() fallbacks WARN_ON_ONCE()
-  instead of silently doing nothing. They only exist to keep the build
-  working on architectures without PTE-level block mappings, where they
-  are unreachable (patch 3).
-- Patch 5 (v7 patch 2): use round_down(size, CONT_PTE_SIZE) instead of
-  rounddown_pow_of_two(size), since pte_set_huge() takes the size directly
-  without an ilog2() roundtrip. This lets a single call span several
-  CONT_PTE blocks: a 768K (512K + 256K) ioremap is now 1.25x faster than
-  v7.
-- Patch 6 (v7 patch 3): vmap_set_ptes() now calls pte_set_huge() instead
-  of the hugetlb path.
-- Patch 9 (v7 patch 6): get_vmap_batch_order() takes pages+i instead of a
-  separate idx argument, and applies pfn alignment limit to scan length
-  rather than to the resulting order. Renamed idx/map_addr to
-  batch_idx/batch_start. Dropped Dev's Reviewed-by.
-
-Changes since v6:
-- Add a clarifying comment about the reuse of hugetlb helpers
-  by non-hugetlbfs(vmalloc) mm code (patch 1)
-- Expand the arm64/vmalloc commit message and comment to clarify that
-  multi-CONT_PTE_SIZE values are vmalloc mapping spans, not HugeTLB
-  hstate sizes (patch 2)
-- Move the local steps variable change in vmap_pte_range() into the
-  vmap_set_ptes() extraction patch (patch 3)
-- Propagate vmap_pages_pte_range() errors through the upper
-  vmap_pages_*() levels instead of returning -ENOMEM for all failures
-  (patch 4)
-- Add a preparatory vm_shift() helper patch before the batching patch
-  (patch 5)
-- Guard the PFN alignment clamp in get_vmap_batch_order() against PFN 0
-  before calling __ffs() (patch 6)
-- Fix kmsan_vmap_pages_range_noflush() indentation in the batching path
-  (patch 6)
-
-Changes since v5:
-- No code changes.
-- Pick up Reviewed-by and Tested-by tags from Dev, Leo and Uladzislau.
-  Many thanks!
-- Add TRBE/SPE large vmap() test results from Leo Yan to the cover
-  letter.
-
-Changes since v4:
-- Move pgsize update before contig_ptes check (patch 1)
-- Use rounddown_pow_of_two instead of __fls in
-  arch_vmap_pte_range_map_size (patch 2)
-- Reword comment to avoid mentioning cont_pte and remove if in
-  vmap_set_ptes (patch 3)
-- Rename vmap_batched() to vmap_pages_range_batched() (patch 5)
-- Use batch_end as the batching cursor to avoid an unused start variable
-  (patch 5)
-- Check arch_vmap_pmd_supported before PMD mapping (patch 6)
-
-Changes since v3:
-- Squash vmap_pte_range() loop variable fix into patch 4 (patch 3, 4)
-- Use shift >= PMD_SHIFT and fix *nr increment in
-  vmap_pages_pmd_range() (patch 4)
-- Pass page_shift directly without capping at PMD_SHIFT (patch 4, 5)
-- Add vm_shift() helper and pass pgprot_t to get_vmap_batch_order()
-  (patch 5)
-- Use min(order, __ffs(pfn)) for graceful pfn alignment degradation,
-  replacing IS_ALIGNED check (patch 5)
-- Remove irrelevant ioremap_max_page_shift early-exit (patch 5)
-- Add __get_vm_area_node_aligned_caller() wrapper, rename to
-  vmap_get_aligned_vm_area() (patch 6)
-
-Changes since v2:
-- Use __fls instead of fls in arch_vmap_pte_range_map_size (patch 2)
-- Add WARN_ON checks in vmap_pages_pmd_range (patch 4)
-- Fix flush_cache_vmap to use saved start address instead of the
-  already-advanced addr (patch 5)
-- Rename __vmap_huge() to vmap_batched() (patch 5)
-- Add caller parameter and unroll while(1) loop (patch 5)
-- Squash patch 7 into patch 5 (stop scanning for compound pages after
-  encountering small pages)
-
-Changes since v1:
-- Fix condition order and use PMD_SIZE instead of CONT_PMD_SIZE in
-  patch 1 (Dev Jain)
-- Squash patch 3+4 and patch 5+7 (Dev Jain)
-- Replace "zigzag" with "page table rewalk" in commit messages
-  (Dev Jain)
-- Rename vmap_small_pages_range_noflush() to
-  vmap_pages_range_noflush_walk() (Dev Jain)
-- Extract vmap_set_ptes() as a new patch to consolidate PTE mapping
-  logic between vmap_pte_range() and vmap_pages_pte_range(), handling
-  both CONT_PTE and regular mappings (Mike Rapoport)
-- Support non-compound pages in get_vmap_batch_order() by falling
-  back to physical contiguity scanning with pfn alignment check
-  (Dev Jain, Uladzislau Rezki)
-- In get_vmap_batch_order(), filter out orders that the architecture
-  cannot batch by checking arch_vmap_pte_supported_shift() directly.
-  This avoids overhead for orders 1-3 on ARM64 CONT_PTE with 4K
-  pages. (patch 5)
-
-
-Barry Song (Xiaomi) (4):
-  arm64/vmalloc: allow arch_vmap_pte_range_map_size() to batch multiple
-    CONT_PTE
-  mm/vmalloc: extend page table walk to support larger page_shift sizes
-    and eliminate page table rewalk
-  mm/vmalloc: map contiguous pages in batches for vmap() if possible
-  mm/vmalloc: align vm_area so vmap() can batch mappings
-
-Wen Jiang (6):
-  arm64/mm: add vmap_pte_set_huge() and vmap_pte_clear_huge()
-  powerpc/8xx: add vmap_pte_set_huge()
-  mm/vmalloc: use vmap_pte_set_huge()/vmap_pte_clear_huge() for
-    PTE-level block mappings
-  arm64/hugetlb: drop the init_mm special case in clear_flush()
-  mm/vmalloc: extract vmap_set_ptes() to consolidate PTE mapping logic
-  mm/vmalloc: extract vm_shift() to consolidate mapping shift selection
-
- arch/arm64/include/asm/pgtable.h             |   6 +
- arch/arm64/include/asm/vmalloc.h             |  12 +-
- arch/arm64/mm/hugetlbpage.c                  |   5 +-
- arch/arm64/mm/mmu.c                          |  28 ++
- arch/powerpc/include/asm/nohash/32/pte-8xx.h |   4 +
- arch/powerpc/mm/nohash/8xx.c                 |  29 ++
- include/linux/pgtable.h                      |  29 ++
- mm/vmalloc.c                                 | 268 ++++++++++++++-----
- 8 files changed, 310 insertions(+), 71 deletions(-)
-
+diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pgtable.h
+index a474c9fb485a..fe138590972a 100644
+--- a/arch/arm64/include/asm/pgtable.h
++++ b/arch/arm64/include/asm/pgtable.h
+@@ -1927,6 +1927,12 @@ static inline void clear_young_dirty_ptes(struct vm_area_struct *vma,
+ 
+ #endif /* CONFIG_ARM64_CONTPTE */
+ 
++#define __HAVE_ARCH_VMAP_PTE_SET_HUGE
++void vmap_pte_set_huge(pte_t *ptep, unsigned long addr, phys_addr_t phys,
++		  pgprot_t prot, unsigned long size);
++#define __HAVE_ARCH_VMAP_PTE_CLEAR_HUGE
++pte_t vmap_pte_clear_huge(pte_t *ptep, unsigned long addr, unsigned long size);
++
+ #endif /* !__ASSEMBLER__ */
+ 
+ #endif /* __ASM_PGTABLE_H */
+diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
+index 140520b351e2..2929bec8821c 100644
+--- a/arch/arm64/mm/mmu.c
++++ b/arch/arm64/mm/mmu.c
+@@ -1912,6 +1912,34 @@ int pmd_clear_huge(pmd_t *pmdp)
+ 	return 1;
+ }
+ 
++void vmap_pte_set_huge(pte_t *ptep, unsigned long addr, phys_addr_t phys,
++		  pgprot_t prot, unsigned long size)
++{
++	unsigned long pfn = __phys_to_pfn(phys);
++	pte_t pte = pte_mkcont(pfn_pte(pfn, prot));
++	unsigned int nr = size >> PAGE_SHIFT;
++
++	VM_WARN_ON(!IS_ALIGNED(size, CONT_PTE_SIZE));
++	VM_WARN_ON(!IS_ALIGNED(addr, CONT_PTE_SIZE));
++	VM_WARN_ON(!IS_ALIGNED(pfn, CONT_PTES));
++
++	/* For vmap, there is no valid -> valid transition */
++	VM_WARN_ON(pte_valid(__ptep_get(ptep)));
++
++	__set_ptes(&init_mm, addr, ptep, pte, nr);
++}
++
++pte_t vmap_pte_clear_huge(pte_t *ptep, unsigned long addr, unsigned long size)
++{
++	/* Kernel mappings only */
++
++	VM_WARN_ON(!IS_ALIGNED(size, CONT_PTE_SIZE));
++	VM_WARN_ON(!IS_ALIGNED(addr, CONT_PTE_SIZE));
++
++	return __get_and_clear_full_ptes(&init_mm, addr, ptep,
++					 size >> PAGE_SHIFT, 0);
++}
++
+ int pmd_free_pte_page(pmd_t *pmdp, unsigned long addr)
+ {
+ 	pte_t *table;
 -- 
 2.34.1
 
