@@ -1,83 +1,79 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D3EC606A328
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 16:48:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60273606A326
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 16:50:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kKjb+uZv
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=CtNTYGWH
 Received: by kanga.kvack.org (Postfix)
-	id 9D3236B05B3; Tue,  3 Nov 2026 11:48:35 -0500 (EST)
+	id 802236B05B4; Tue,  3 Nov 2026 11:50:57 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9AA7B6B05B4; Tue,  3 Nov 2026 11:48:35 -0500 (EST)
+	id 7B3236B05B6; Tue,  3 Nov 2026 11:50:57 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8C0DC6B05B6; Tue,  3 Nov 2026 11:48:35 -0500 (EST)
+	id 6A22D6B05B8; Tue,  3 Nov 2026 11:50:57 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 6A95F6B05B3
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 11:48:35 -0500 (EST)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 0EB931C3B3F
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 16:48:35 +0000 (UTC)
-X-FDA: 85394391390.10.7F5A4FD
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 469A96B05B4
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 11:50:57 -0500 (EST)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id D1011A04BF
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 16:50:56 +0000 (UTC)
+X-FDA: 85394397312.30.192ACC0
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 3B89614000B
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 16:48:33 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kKjb+uZv;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	by imf03.hostedemail.com (Postfix) with ESMTP id 206C920003
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 16:50:54 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CtNTYGWH;
+	spf=pass (imf03.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793724655;
+	b=U/GDGHM8Un6ER07rtNCIcK8jYhbLhr5T858uBMDhts3sbBI7LvFbS1DdP2zv8ANX7JlNLn
+	QkE6a/6kfgiQN5LvXF4urVhNgIjuWc3l8sCMl4Ic1lLRJg+u/qqEvphOdohWeLEmd42kNx
+	G8RUpRFBqpkIH7pnBQErhifdDTKLqs4=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CtNTYGWH;
+	spf=pass (imf03.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793724513;
+	s=arc-20220608; t=1793724655;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fzxroPSjg7djG2/E7Jnxw7+FksX3byDhaT1k3G3X82E=;
-	b=q+YG/oC7unEAG7uOd63dKzgLK3OaruOmdITDi9JxQK0Je3pQvW6FKTYfrhwudK4ZnxLwqK
-	24Vunr67IZXkidVebwuOigu6FKki9DgxGRBNVvKVmuwz4hdLq6XiJbD3OuZvAEQ30amF8z
-	PV/jmj2PnWAS+9OXCyQl3S1rzKZgNPI=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793724513;
-	b=boOiqt2CN3VSPVPLfeTtswFRH+HcOkoJPFAPkHuFPjE30VdlzY4fwhBoLGRYgOde8b9jXR
-	lSQMoL7zkcq+YnzBDux3jbsDTtYDLQwF1AiF9qruKLPrcGxCYiWanY9fCeMv2vuRoPmi2n
-	4ZDeBUIRQoW1+oNRl68Ibfe51kQWSbU=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kKjb+uZv;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	bh=EtsuxpFaru5bCJVGsaTDOqLmkcEo7AgKuEWc5zgUH/c=;
+	b=WBHwTdH811KfNyHqJWHhzggaI4YP4tnqC6Ivly+cqv7F3faSXSKO8DnX3YdTuOBUMfehmV
+	hEghCDsDl1q1SiD3iTLaoX5pi1L8r5axjMypUSxSF6pNpN3Mh0oDW5RXkYt6SQm0nlflql
+	kHVN27hcNATqlR5QOzOb6TzA6DHH3I4=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 974FD60254;
-	Tue,  3 Nov 2026 16:48:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5847A1F00919;
-	Tue,  3 Nov 2026 16:48:28 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id A017B609F9;
+	Tue,  3 Nov 2026 16:50:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 345BB1F0093A;
+	Tue,  3 Nov 2026 16:50:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793724512;
-	bh=fzxroPSjg7djG2/E7Jnxw7+FksX3byDhaT1k3G3X82E=;
+	s=k20260515; t=1793724654;
+	bh=EtsuxpFaru5bCJVGsaTDOqLmkcEo7AgKuEWc5zgUH/c=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=kKjb+uZvI/3jfX+ELwR4splMxe7pwzFhYBfrEt9iyYiE1DL9agVZLgu3AJaB0Y0IB
-	 cApJ7w8OpkUG+ML/D8IwVmrjfyjr86K+f/UdCFMk8NKuQLpd+e8GPXslyhq/B/x+dl
-	 pj9IrnJGZQU1YkYGOwdnOwzZVlVulhz+D1rowr93yTki3O8fxTsbcjYqdVujZ2t14B
-	 dsgoqZNxFV1Ss/jx4YEbSLc2rtu03+rnhS4BrlRc1TmE9E24lj/+ALEd6WUpmcMCib
-	 MhO5IXpTxw9Z75N/06GFpCORtyDW5cF76LRcFDz193BlrU98AKGkx4OiQoSRoahLgO
-	 gpAK6EE+MzGKQ==
-Message-ID: <85bbc54e-4c77-4385-9119-590f6c97aa2e@kernel.org>
-Date: Tue, 3 Nov 2026 17:48:24 +0100
+	b=CtNTYGWHPzRk14MitXVi1MzDjUGP5Rm6vsULElGy6l1XszG9eoY0hvO0ia8qJ+ERk
+	 hSoD0pQy+xuQeJvsDmlwJYaaot8dr1g69hDk/GtieK9SrkIuy6KbRU66IWza+63otD
+	 lURNrr8tHaShaZCvhubnoBBJG65sTdXacUiePyf+KTLieywfDCUNw3Rkkrx0HgYWz1
+	 /DQmm+heyD/iiwWLhBiilBhitBm3zwfIfW0lXVd7fG+qFMw98S/CTHPmLEgNPibZTA
+	 Y5xal+/1KVYPL3unucuzubdyh6mvUQYJnXW+CnYS+CbIFUsH76brKuClXLSPxtynvK
+	 t849VHMquTSsg==
+Message-ID: <bf910739-a85e-44aa-9f13-481e5b6c3336@kernel.org>
+Date: Tue, 3 Nov 2026 17:50:48 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] mm/page_alloc: more checks for
- alloc_contig_frozen_range() with __GFP_COMP
-To: Zi Yan <ziy@nvidia.com>, Andrew Morton <akpm@linux-foundation.org>,
- Vlastimil Babka <vbabka@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Johannes Weiner <hannes@cmpxchg.org>,
- Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
- Mike Rapoport <rppt@kernel.org>, Yu Zhao <yuzhao@google.com>,
- Zhenghui Hao <zhenghui.hao@qq.com>,
- Brendan Jackman <brendan.jackman@linux.dev>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- Sashiko <sashiko-bot@kernel.org>
-References: <20261102-free-pfn-on-alloc-contig-range-error-path-v2-1-a9fe939a85c3@nvidia.com>
+Subject: Re: [PATCH v2] mm/mempolicy: recompute automatic interleave weights
+ on memory hotplug
+To: "Gregory Price (Meta)" <gourry@gourry.net>, linux-mm@kvack.org
+Cc: linux-kernel@vger.kernel.org, kernel-team@meta.com,
+ akpm@linux-foundation.org, ziy@nvidia.com, joshua.hahnjy@gmail.com,
+ rakie.kim@sk.com, ying.huang@linux.alibaba.com, harry@kernel.org,
+ stable@vger.kernel.org
+References: <20261030161234.1505367-1-gourry@gourry.net>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -124,22 +120,21 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20261102-free-pfn-on-alloc-contig-range-error-path-v2-1-a9fe939a85c3@nvidia.com>
+In-Reply-To: <20261030161234.1505367-1-gourry@gourry.net>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: mz3yrx1rrqpgdm8zith6gmyhc1ap476q
-X-Rspam-User: 
-X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
-	version=4.0.1
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 3B89614000B
-X-HE-Tag: 1793724513-754767
-X-HE-Meta: U2FsdGVkX18ha2yzQazC0lIubC658lD2LsfAZT5PlglBk9PtKrFej0Zv75j8kFkBIFEN5ruYs2qed9B2AIeijesWLKSYmAeFCBiY6ES6XeawpP9FjglST8QE741JR0Tw4qRyHAEEKBpH21kudM/8FSLFrOqy5arr8gvgfH0MrgS+gmsUXKDpZsUdqLl+IeevLDPghrAMGGg1MjJUlRxFTFFM36DBJw1mAtZHUWN8iqhfcqZWIe3DWwOK4mf4dg60YjZfm67ADXqLRiNk2QENwVulltgrghiNyLfp4OvEFr95Lod2MUxp+52I/uMFTapG8BSLTOZ4b3y36P1H3Fj45kNms/JA8eiAslrhfxFfot961NC6RBM2gf5JirCGz07Y+swbDgZ7FW+IgrE5RMQJWWKKjD9SNDL4C1d5pLTixSew1KciCyBHtVI6Bx8FduiR2ueNoaI/tVfvtCoPWKpvxQ97wJ9P95Hh9V8f7XABQL5JJ9jbLIBaldQzhs37hzhtsNuCwLcuo8vIhPCfVdmw3DMnDkCTpMHGJy/EMYCbjS1jhdZfh4CsI34Zc2aaRXXiXjo+8B96M21I4o+x9siiaM32PiAtWBBHVOy0gcygw6t/z/K8UBCKESJWznKLlQ4L1eQ2cLp3Nqs+MWJO8yHbNQ2Qy3Tk6JfKF6w0QHl/KPR64yW1fgLCc1Cy8yeEqKVawSu3KnzivQa0PwRmbBJkIxcyIXmhpNFpEhgPig4WXoibegF8zEdE1jeW8Dc0wj3VVcHBO/j9+ceXofrNrBK1QS8rwfhywZQ2dFDYjjW7he2a0Kyofm1wlhKGWyzrZQzxZfR+upIut/zOenhCx8vEjnJGYJG+nUC7TGntIH4oCoMI+xT4pFhAwibNEZ9mTTcTJADwYyF56bzJWiS0DCxA4nE8a10o0bnBG8ESHAeRQJlampyNmK4z8HISIXiJPQFeWLGFxcAh98IZMwxWqGJ
- ae1dhFwl
- CJb8cghMMpz8euJfOBvmAjiJrM5TX7GA4VrP30oM9Sd+Of/xf+0ttlQR+BXUS5hI5hAX0ywnjnLWPeGOriQ4d1yZjkkWJB0wsAjyH6yEWIHaYrfsig9HqUBahRE65LPjmdbAeE7vqL2dw7e7jHVCGJxZA15HfxebuiaxgY4viA4mzAH5e9crb9oauZZl75V+LfYUZoQvpvyMZVRN2MItAn/QEsfnPj4e2qpY9GJxoCRColZhPPqnLtfFRhWF+xGpBGe1kWHKUXGwb0fEcNrHVFvYUtGEZFumBc3MXUFMkRN5Hhi5EbOdelG2mZwSdPFT7my4kWDiPmPiy9Rte5gcygChEh/9aBr06Z56nyXgXez8mZWGphjyGTqIqRGmbDN6kRFW2g3yDhWrLxzkMNHrpFDCzZ5SHHmArXFXY
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 206C920003
+X-Stat-Signature: srh7qfqgtwhz1c1oct43bj48ss9eci7d
+X-Rspam-User: 
+X-HE-Tag: 1793724654-223364
+X-HE-Meta: U2FsdGVkX1+KSlboIbDezwhuB0SLMQYZHjggjj7INJpEZVFlI9pXyoRE7xx+8dOwGYwxz0dNgBlpO1qwXi7xJNJgynJ8wgC1CQgDvKYFuW7Vl3EQZ4qCsLL7P7fB3XmajG1N1/WsrG8LX9WTOOHcseJ4TFq2Q1KPWHIQQtVaCZNQCrZ9oh45wG2/Nrb4UAe/q/B0LCvqKqWphPHV2Z5zggdZ6J8vC3B0E8dyNQhp8EqZ2U6mGSCP61eUUuWn05Rng4l0TMLCJRYhpwL674q6r68frvDwy4MTfe0joaYE36WfEYFG/pVsel/omtdXGnttU5dHJu/BKy7Ddw+107ZRv2aonS+bZgwmIF7+Y7RZpJPhfjuIu1JMh0OqmvMmGkUBfVxqewZ8nvl9ZuEaHu3zeDhuyWo8cGCm585GSkm7GK8NrYUfc2VFAbbjA/pmG6WCREjr/FEMbU8X8bHAl0vJYdB2yhbbRY3zAKvXyqP9a3mchp6SoDwvwaMRj0ND4hqUXNfl7NRRzjCDHeHRkSuzto7icUD/SWkVS1sJ6fI8C5wx37a5CQkp7m2+KN5vqRdyaPx7G9F6TTsDjlt0qqrc6077gJUkcJVunGfsd8+GYfEuE+MaXBfV8THFEGOWg06WO0is+cvK3c1KfH/PHaaNdAxZuflW87/BlUvLcW+o2v/+p6IJja9qAMnWoQTdhGI3KF2FzNugYLuZvYqssjTttjujIZTP6XgZ0lQum7ndsOZrWL4BMjwiUyc7xy7UKymR4B8S4LIoHtU165r2C7EPKND7FthHA+SUp4uZJwcrw6tF1xKgdQsU/ytS3FulIjlQ8m1ztEXSvK3xXlF9/IvGXsDhvV0HL3XeNVFkRDtqOX9ogrEM90SCdDTEyL0bFg9Z5JczGeqpDWbz+Pd49PMlCBFQd4KRvJqoDnqcKN33onmuqxcoFI59Rt60r7/TnlfPYtNz4gFd9oN9MaS4tJF
+ VJT9T4xT
+ AaLv+7J0HnBmvdEvkH9eLb4+d3cZAzZSApSWQB430MhrO76V2p9Me0DidtgEXHyOOgIrUpuVQ7EsCbT+nlp1+cCe6azddTeJk35j/vhkxWljs7wdSdP0Pojpqns+8/x8qiYxA4aPO3NxXtaRDq1bhwdvfrcMIqMK0u+pYwsbJ3LeaETED8nBuNKMQ6rvgKJgFvPwqnFpdpebwnWnmtOPXJzMwdLLaM5itunRv60CIXOadKKvvIZXWFCkOrjlKMP1jV8Eh5bnSR/hzfeLa+ULLblXFGnCpx8WELWjfgL8EtG8LWhknyxVKWaBMbnKLxH6vB7JkC1ZbM+Ork/TQqfjQSVgyBQErTG2SbHUmZUxqFJag95yqd3yFpaoDVLNeatftvVPNlksvv5Qll6Zj6atqVcE8InQF5FxvhTCa
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -148,112 +143,49 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/2/26 17:24, Zi Yan wrote:
-> When alloc_contig_frozen_range() is called with __GFP_COMP, certain inputs
-> can cause a mismatch between a requested range and its allocated range,
-> leading to the WARN at the end of the function and page leaks. No in-tree
-> user passes such inputs. Add checks to prevent it:
+On 10/30/26 17:12, Gregory Price (Meta) wrote:
+> In auto mode, weighted interleave derives each node's weight from its
+> bandwidth, reduced over the nodes in N_MEMORY. HMAT and CXL report a
+> node's bandwidth once, when the node first gains memory, and nothing
+> else on the hotplug path recomputes the weights.
 > 
-> 1. the order is at least MAX_PAGE_ORDER: free pages during isolation can
->    merge up to MAX_PAGE_ORDER, extending the allocated range beyond the
->    requested range;
-> 2. the number of pages in the range is a power of 2: ilog2() can round
->    down, so that the compound page will not cover the requested range;
-> 3. start and end are naturally aligned to nr_pages: a compound page must be
->    naturally aligned, and the unaligned range can also lead to a mismatched
->    allocated range.
+> This can result in a major skew in distribution and overload tiers
+> with more data than their respective bandwidth can support, resulting
+> in a performance regression.
 > 
-> Because of check 2, the same power of 2 at the end is redundant and
-> removed.
+> With HMAT bandwidths of 100G for nodes 0-3, and 50G and 25G for kmem
+> nodes 4 and 5, weighted_interleave/nodeN reads:
 > 
-> Add a comment on the WARN path to clarify it should not be reachable, so no
-> one in the future will try to fix the impossible page leak.
+>   event             node 0-3   node 4   node 5
+>   node 4 online         7         3        -
+>   node 4 removed        7         -        -
+>   node 5 online         7         -        1
+>   node 4 back           7         1        1
+>   Expected:             6         3        1
 > 
-> Reported-by: Sashiko <sashiko-bot@kernel.org>
-> Closes: https://sashiko.dev/#/patchset/20260628-keep-subpage-private-zero-at-free-v1-0-f4ce3930d10f%40nvidia.com?part=1
-> Signed-off-by: Zi Yan <ziy@nvidia.com>
+> Toggling auto off and on generates the correct result, but we should
+> detect this and fix it during hotplug. Recompute the weights from the
+> recorded bandwidth whenever a node gains/loses its first/last memory.
+> 
+> The notifier cannot fail the hotplug, which has already happened, so
+> warn once if the new weights cannot be allocated. The next recompute
+> starts from the full bandwidth table and corrects them.
+> 
+> mempolicy_set_node_perf() now only records the bandwidth and calls the
+> same helper, so the bandwidth is kept even if allocating the new weights
+> fails. wi_state_lock is dropped between the two steps, which should be
+> safe because racing writer simply causes it to run with newer state.
+> 
+> Fixes: e341f9c3c841 ("mm/mempolicy: Weighted Interleave Auto-tuning")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Gregory Price (Meta) <gourry@gourry.net>
 > ---
-> Sashiko reports that if alloc_contig_frozen_range() with __GFP_COMP can
-> allocate a free page range different from the requested range, the function
-> triggers a WARN and returns EINVAL without freeing the allocated PFNs and
-> causes free memory leaks. Add checks to prevent it.
-> 
-> The is_power_of_2() check and start PFN alignment check are added with the
-> help of LLM.
-> ---
-> Changes in v2:
-> 1. added 3 checks for __GFP_COMP to prevent the allocated range from
->    mismatching the requested range, which can trigger the warning.
-> 2. removed the redundant power of 2 check at the end of the function.
-> 3. added a comment on the WARN path to clarify it becomes unreachable.
-> 4. dropped Fixes tag.
-> - Link to v1: https://lore.kernel.org/r/20260629-free-pfn-on-alloc-contig-range-error-path-v1-1-496ff9ca22db@nvidia.com
-> ---
->  mm/page_alloc.c | 25 +++++++++++++++++++------
->  1 file changed, 19 insertions(+), 6 deletions(-)
-> 
-> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-> index 15ff5c1feef4f..003911ef393be 100644
-> --- a/mm/page_alloc.c
-> +++ b/mm/page_alloc.c
-> @@ -7326,12 +7326,24 @@ int alloc_contig_frozen_range_noprof(unsigned long start, unsigned long end,
->  					    PB_ISOLATE_MODE_OTHER;
->  
->  	/*
-> -	 * In contrast to the buddy, we allow for orders here that exceed
-> -	 * MAX_PAGE_ORDER, so we must manually make sure that we are not
-> -	 * exceeding the maximum folio order.
-> +	 * The use of __GFP_COMP has the following requirements:
-> +	 * 1. the order cannot exceed MAX_FOLIO_ORDER (>MAX_PAGE_ORDER is OK);
-> +	 * 2. the order is at least MAX_PAGE_ORDER to ensure at the end
-> +	 *    outer_start and outer_end match start and end respectively;
-> +	 * 3. the number of pages in the range is a power of 2;
-> +	 * 4. start and end are naturally aligned to nr_pages.
-> +	 *
-> +	 * 3 and 4 are also the requirements for __GFP_COMP pages in general.
->  	 */
-> -	if (WARN_ON_ONCE((gfp_mask & __GFP_COMP) && order > MAX_FOLIO_ORDER))
-> -		return -EINVAL;
-> +	if (gfp_mask & __GFP_COMP) {
-> +		const unsigned long nr_pages = end - start;
-> +
-> +		if (WARN_ON_ONCE(order > MAX_FOLIO_ORDER ||
-> +				 order < MAX_PAGE_ORDER ||
-> +				 !is_power_of_2(nr_pages) ||
-> +				 !IS_ALIGNED(start, nr_pages)))
-> +			return -EINVAL;
-> +	}
->  
->  	gfp_mask = current_gfp_context(gfp_mask);
->  	if (__alloc_contig_verify_gfp_mask(gfp_mask, (gfp_t *)&cc.gfp_mask))
-> @@ -7428,12 +7440,13 @@ int alloc_contig_frozen_range_noprof(unsigned long start, unsigned long end,
->  			__free_contig_frozen_range(outer_start, start - outer_start);
->  		if (end != outer_end)
->  			__free_contig_frozen_range(end, outer_end - end);
-> -	} else if (start == outer_start && end == outer_end && is_power_of_2(end - start)) {
-> +	} else if (start == outer_start && end == outer_end) {
->  		struct page *head = pfn_to_page(start);
->  
->  		check_new_pages(head, order);
->  		prep_new_page(head, order, gfp_mask, ALLOC_DEFAULT);
->  	} else {
-> +		/* Unreachable with the __GFP_COMP checks above */
->  		ret = -EINVAL;
->  		WARN(true, "PFN range: requested [%lu, %lu), allocated [%lu, %lu)\n",
->  		     start, end, outer_start, outer_end);
-> 
-> ---
-> base-commit: afb4eea28037fa55c4560313ecbd8a1e1da8369a
-> change-id: 20260629-free-pfn-on-alloc-contig-range-error-path-acc001232468
-> 
-> Best regards,
-> --  
-> Yan, Zi
-> 
 
-Thanks!
+It's a good idea to spell out what changed (and why) to make review easier ;)
 
-Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
+@Andrew I can pick this for the next merge window, or do you want to merge this
+through your tree?
+
 
 -- 
 Cheers,
