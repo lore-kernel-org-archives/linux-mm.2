@@ -1,139 +1,150 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21866606A324
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 19:41:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAE7D606A31B
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 19:45:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=fqnNhjIl
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=TYBwJEbI
 Received: by kanga.kvack.org (Postfix)
-	id 37B656B05B4; Tue,  3 Nov 2026 14:41:55 -0500 (EST)
+	id BBA336B05B8; Tue,  3 Nov 2026 14:45:40 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2FE5E6B05B5; Tue,  3 Nov 2026 14:41:55 -0500 (EST)
+	id B6BE76B05BA; Tue,  3 Nov 2026 14:45:40 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1F1196B05B8; Tue,  3 Nov 2026 14:41:55 -0500 (EST)
+	id A34A36B05BB; Tue,  3 Nov 2026 14:45:40 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id EDF926B05B4
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 14:41:54 -0500 (EST)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 849D71C20EC
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 19:41:54 +0000 (UTC)
-X-FDA: 85394828148.20.2FE43C3
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 0435B20002
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 19:41:53 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fqnNhjIl;
-	spf=pass (imf31.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793734912;
-	b=aiVRkG6AummNPPmkjeYAAThG5X5U0+Lj7dod06ziLDNXpFDaqXGW3QNEpRZb6HQ0gVsWb/
-	BctR7UAfhOpUUbOwhygODCz/tZG1U/f+sRiyEu4tkYpFBKBXGCm2eSFPAaxCZCxWS/g7E/
-	7Bnx68HeXslSncHMWe4wI5iWutK207Y=
-ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fqnNhjIl;
-	spf=pass (imf31.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793734912;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 718636B05B8
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 14:45:40 -0500 (EST)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 4850312051E
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 19:45:39 +0000 (UTC)
+X-FDA: 85394837598.12.8F06ECB
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 48AF6A0003
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 19:45:37 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=TYBwJEbI;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf25.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.128.46 as permitted sender) smtp.mailfrom=nphamcs@gmail.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1793735137;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=d3csJOB/6AiKlnIu8Uu0qSaCtrziFydsC18XRaRRY+0=;
-	b=w7C3TXrSdZVfP7QhlXYERgQzxcbPh2KECSp6BoBcWoSYOPZa9oyKxqcuINjciL9QWXcHu3
-	gEbgXUrgr8QVDPIOY8Us0npcdkxiBY+Pmr41/hpwF1ZRCoC96CQyK1FuDXKDcRQpdlAKpv
-	nKYajvl5BIc6qNwfL8Gt6Eal6Dv8e98=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 5840560416;
-	Tue,  3 Nov 2026 19:41:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A438D1F00919;
-	Tue,  3 Nov 2026 19:41:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793734912;
-	bh=d3csJOB/6AiKlnIu8Uu0qSaCtrziFydsC18XRaRRY+0=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=fqnNhjIl+QHhpSQGtoiKuOCsFwmWqljyK/fiu98+jYoHQCgFA6Wf1kgkowKOYqelw
-	 IWS/Kh7HHCQxkDu7KjNETHD3COfL/H3v4FffD9lmzDzNqHNp90bCHB9xe0HlEDhydF
-	 Dh378NLz7REZa7avdiKT5vq5CQigYuBgcINWMAiK0Tnphd131DubBUqV4rWO7pxCtm
-	 e8kUkQcKldYLsVyvthrSH8ddbKyq5gR9Nm//3WRpuidzBgBcmGfGgkT5ZtnwvxpTWw
-	 iYhhyPZxp2w+Gaw0HfD+uvm1NrJVKitXebSOQN2udABQZR/mA2bkToLtKwD1gPWw4r
-	 5VHq90UKTGAUQ==
-Message-ID: <675cfc9a-48ab-446d-9fd0-a1937dfeb0f4@kernel.org>
-Date: Tue, 3 Nov 2026 20:41:47 +0100
+	bh=Xrzu60BVjwa7oRsGi7Rx0IiJTLDYAKItXOr1GPbw5QU=;
+	b=ty2oXbBkCx3r+g0Hs/6BA1wcECUMC9frgePX6KhB6qz76F3q10QGsVB98ywWwOrcCwhIAV
+	Qw2tXbnf9NpZctxFQpfeOFQOK2A9E+AX9IHf9kFYOH2jiyIzRuA7ddMIv1QmROXVzD7E/0
+	7VebU1+8g3IhTzIxNtcT/rQHKYma+6M=
+ARC-Authentication-Results: i=2;
+	imf25.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=TYBwJEbI;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf25.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.128.46 as permitted sender) smtp.mailfrom=nphamcs@gmail.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1793735137;
+	b=Du1AgoqrhumAqKqyAknvYIYRFjMWbvnHSU8wfeEuR4g9fWRxhCZ2gH17xdb4RQVnSkD95Q
+	uZqYWJ/ckyqS4IByXXSkg1f0px24t0XYlxjuGd0uNTJYBufsTZmtElj5ZtEIZmQj/N5pUC
+	Sk3wnQeELUGKIYJ9GCscMzgdl7Nj+ig=
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-4a4dc547987so23266015e9.0
+        for <linux-mm@kvack.org>; Tue, 03 Nov 2026 11:45:37 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1793735136; cv=none;
+        d=google.com; s=arc-20260327;
+        b=LRvzKUASDX/yeTnrw7bPGNRiyth7k4/PaZEF1KTWjx0UYlvVvkHbriQaNzuTUycALj
+         7uFM5wLmE/E4AUP59ojLolGbGb3FBjEGZvkF/SOo0XusDKPjylTly5TLgGgnLX7nF+YN
+         4XHsyJYmacGXU7tMWsr4eLUtxH/i68PxKKh5vTEaASDsbl24Lr5XuES1z4S/q9dSg0H9
+         tzBiwxy66SbkPyng7yE3uY256tjFUVfB2s/jAU2iIfwq0DieOlnzsKVeSTk2ZA9lnN5e
+         GTpRxSYFiXigt/yyX74uP4I2vkcfuUMROK6ay44LFZzSjRtslk3Pjw7EW4JBhVOAhEMy
+         LFSQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=Xrzu60BVjwa7oRsGi7Rx0IiJTLDYAKItXOr1GPbw5QU=;
+        fh=/77V2xw0QJvg8cAz1UQvhsqu10/G8W/Yy+fa1oo/k5s=;
+        b=Dxaq2aUQk9G6iqfggfVyApaqLG5fL3nVsBjvrEZdya1kuQ+yl3ZGb9O8hJ4gOgg4p1
+         JzQjBwzo9aqsig+vgv7piWJNhfH8LlLfLI8OZksDGKboxeYMC67zBzW5Koadv89VQ0WB
+         hTgmLpOcXzLU7LzaS6DGnFINn5uCmKjvz2UDN0Zeou8crFBbAQZ8et3sosWx5CexMLNk
+         Vkgs+OEKvNEUEcQSMzVMP2N/bx4pux+05si/r70W9yw6OytzG6RLvPiKbTltseT0AKQ6
+         cqwr2a75YMXapM23KPlEZ1FiyY2JiCBQdwYbYoWhhTXNpnCRxxuhTjLv87WESkYOyy1y
+         7PiQ==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1793735136; x=1794339936; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=Xrzu60BVjwa7oRsGi7Rx0IiJTLDYAKItXOr1GPbw5QU=;
+        b=TYBwJEbI1kRm9NEEESHdDOYjuTAZF6/oYnHFHCqth/uEnP4RcsRxD9q7CMBwPO7mSM
+         ejX35XhwzilcWG0tf/JxlbT+zp7oYgpHQexwg6l/iBgk93Se+idEGTIzD0V5A/FbsOgA
+         2AuROctPQoldKS86jNJYTWHG0BS7jLi+GKDe30jU7UK2npxWRbSD6TYTNFAh1nyhc1hY
+         TJNvnDI3MXWMCQVeKAsB/T6Oub0ZYaKHNKAgwEAqabJ455LPaeeAjhY/s5FuBfSzwCI1
+         dhT9lfcHizeaGJG0AjBC5k99UUu3zbq0OixtpSUi29Q0rukrq0ycb/ul0r3PHXPQjR42
+         xHBw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793735136; x=1794339936;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Xrzu60BVjwa7oRsGi7Rx0IiJTLDYAKItXOr1GPbw5QU=;
+        b=BVGNr6MRfwmK1bcYF2icC2IIeECnmpMLNQMFUQD6aUy4Ucgn+TiW8skzG6lTTCb+09
+         EQYwMRr2Hrs7GVds4+eTCL0HbU3T5FQyqU+cASYR3CGa2ZW3duDOiAz2nSxz2C4waSQC
+         mSFs/1VqSCaJ7sdX+0sZ//TRToBqTDeLqh5drgJJyRBj9QNdipB0z77jAJ6AFiohFrnJ
+         DF5KkHXctbWVkNaA45OfWqb08CCuATiHyy1iogTfZb6vokfGWP0qZVaGb5zsaXksMoT4
+         kG6LcomoBS8yPuhU2wPS1SLzPGTTWZbcEeoh/MXNDt4HNxwpKwOGAzo3kWF3pTKqXN5v
+         kABw==
+X-Gm-Message-State: APuU4Z9b/sHiRohX2/6S0Q+mjhs0dInQm/qkmeJtWo0yVDEIylpamqsG
+	HKlKSlDV3u3cifjqgFxYxvrPM8g9ew07WENHdtT6cJ8OmKSBpyAtM/fM78xd0HxLJ1q4a2Lg1Hw
+	OqmeeIZCiZXRrSILIIaoS07DVdWNENDs=
+X-Gm-Gg: AYBFou2PM5GPyWIQ+eX/qnZMOpGOKXtKMAfZok8xEuBL1c/LhvKpjAnRMMy//ih4c99
+	J40JcQEbK1kOpGEoIDpY5RrCW2JLjdjBHBJjW9EX84s1gAw8jkK4HVJncr7KoERwu88r4h+4+ch
+	mZoC/LoEnNxWBYKPMYiQT6m4TucHClaJ+apuAr+3h7vdQJCmcX+dVYkiRZ7SOvrR9zkALLO39fP
+	DhVB4AIIFuB6Izr5jVMCd4nWIG6mkSR9Ywc8g3d0/jUkMynF8qoeNG9sgI2nF350F8ZY3wMll94
+	9V1PBYm1cRSlDVMvpuo/AcVqvqkeTCd0SLItbN5Q4UgeBD0zWUgjji3HU6epN1MYLtDTXeJ0bIE
+	AfMLZ8mOINN/XbpW0DREJwtsqJsK6eL9EHg0nSr9YGghkZvn7IK3A6VNJXYNqtxOg0hTABgJYR9
+	Uyh+dcuLrI+lodw6H4q2nyLyaC73ukuhjzypt3K5l1zRE4myrvZwfG
+X-Received: by 2002:a05:600c:a41:b0:4a1:ac66:6ac6 with SMTP id
+ 5b1f17b1804b1-4ac18c73d85mr309539565e9.26.1793735135531; Tue, 03 Nov 2026
+ 11:45:35 -0800 (PST)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] shmem: skip empty unmap ranges when punching holes
-To: Hungyu Lin <dennylin0707@gmail.com>
-Cc: hughd@google.com, baolin.wang@linux.alibaba.com,
- akpm@linux-foundation.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20261027171753.1485-1-dennylin0707@gmail.com>
- <1bf7784c-49ee-4f18-b1fb-205dc064f40f@kernel.org>
- <CAGEkeHcwUEQ0tAXZ5npAhPp1OPMqkmZcNPTU1OnRuNTrwkDJMQ@mail.gmail.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <CAGEkeHcwUEQ0tAXZ5npAhPp1OPMqkmZcNPTU1OnRuNTrwkDJMQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: pjria1o4xsxcopxgjjz9qaayfpbpbs7d
-X-Rspamd-Queue-Id: 0435B20002
+References: <20261104-swap-fixes-v2-0-204be064be5b@tencent.com> <20261104-swap-fixes-v2-4-204be064be5b@tencent.com>
+In-Reply-To: <20261104-swap-fixes-v2-4-204be064be5b@tencent.com>
+From: Nhat Pham <nphamcs@gmail.com>
+Date: Tue, 3 Nov 2026 12:45:23 -0700
+X-Gm-Features: AclHuK-8sWcwe4Xln3PaMip3e8lQ125iTg227I53p4aJzPC4DtppR-OvwmegPAY
+Message-ID: <CAKEwX=O3DfyPNpujz1Uwnkaqd1yPYyv-PbwR6SZF6ABXz1X5Og@mail.gmail.com>
+Subject: Re: [PATCH v2 4/4] mm/swap: keep the swap-in pressure window open
+ across a batch
+To: kasong@tencent.com
+Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
+	Chris Li <chrisl@kernel.org>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Baoquan He <baoquan.he@linux.dev>, Barry Song <baohua@kernel.org>, 
+	Youngjun Park <youngjun.park@lge.com>, Usama Arif <usamaarif642@gmail.com>, 
+	Chengming Zhou <chengming.zhou@linux.dev>, Yosry Ahmed <yosry@kernel.org>, 
+	Johannes Weiner <hannes@cmpxchg.org>, David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Chuanhua Han <hanchuanhua@oppo.com>, 
+	Mani Tofigh <mt4022@columbia.edu>, NeilBrown <neil@brown.name>, Christoph Hellwig <hch@lst.de>, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 48AF6A0003
+X-Stat-Signature: rxa7iw1a6s54o9dmnqzrcsufdzmnj96m
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
-	autolearn=no autolearn_force=no version=4.0.1
-X-HE-Tag: 1793734913-942509
-X-HE-Meta: U2FsdGVkX19bZNtyFFMZAKWquIOKlR7XGR+F4Kcj0fM85pUq/8kgzcM5Tu1BzxxMhDZKuVS8sw3l9+v/QAd649H4fr74QDIlorLDw8FLbqKKBsdOBEvkNN4vLzK+Kd+Gqf10OWW6lEvxGxojPHEtSh4XL7tE08lHGhNwhqcHSbEGsZ2rDi7OY8VIsJWYQSV0ZVY5nezRBSn6j8fBTEj/YXbQL8hH4eljHYt8p5KEP0kZpbSzLTS+VqUcUzWuh0EaO2FOe4I3NLQajj4N4017FwfI7uSGUdWZEYwDA6aifp3Djt20ydmJulQsUslUT1T6XeoLyOU9CK25sE9kCULmHnSVApxCKW991idFchzJrBVHObd738gSsFp6Jok9DjRCZS9RxDwbIQGWaHSd1Yx6Dfc6+47gBx8d/Hf0n3bX4Qs7oZgD6KMQwJDKQ9sknAMqz06meEMIeOLcJ895i5LIQvKUcsY322zzppGEpa0W2Bgi1rONGL8THgqOBl0ROr8vHJw7AFWM0fgUwwdVL8W1YjM/mvW/cWA4IlDWvImVJNPsNB5CvdczMMUUsWkaftY3zdeLkbNJdmbyHgQcfTDP3yBl1iTOJ3U5JcQlPZEtAddw88Wh1wEaoef+iuvi5xl/TtsDZPzOLZgU87UT6skKjuOVOmBsXSaccakXRrKWBACB+NwOEsAa3lJJlIeWfpF4hIiQ0NJWInCwLWJssQgld8b6uo7pU4rFqJJGKt2dvkZG0VFrAglLHdy878mn28SLH0+0u6wwDdj9EOck5bEAFq9zImDJgW6PmU7m580bjNISZvpywynDi5v0uVGmdetZWOKUUndvZODV+31bXiqYJiVsjsRV570kja+tHQWdi0sYdUb0CSVED1XAKBtVrg5lc/RvgsFf3qDczJvioRvKjLNAa1/p1SCeD8pULdp2PswccfHdnMBxqnZrgtWHUQ3ysWxPTmOz/9AVMVdX8Fq
- xXPcJSkm
- kAYMFfgLwwGTEsTB5q8u/8EYPAKATQHxEteQzqTIUVcuKlvZPAIplt07hgv/wobNekm1+Aqrx/XIQjET+I5+dYnKypqyDDXGMUHIag+/CFMyBEsFuWZZEx794UDvfJ3Afi4DXYjgg/YjLh2LCXMt5wKOwYsyMAMF0ENSDNj7RVAiDdXO+jE3V2WL0pYRzXcIILERoHjVIWxyxrg5tm9UmSZ0HITv/sJ+bmWxrycT1Cf4WXA9RrXHaCld2EdcoRmnYH/TL
+X-Spam-Status: No, score=-12.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1793735137-999716
+X-HE-Meta: U2FsdGVkX191KrnlaSmQlgRR8mPmayrqNUXv72NDv8cdCHgvNjqqSYM3LmaEGLxPrvkGgG6CxoMws37bKtTkiPF3Yz8GALQYNg9AlWHuIvOeuJvaB3pJo+ZRNErDL9UR9X17bfOOB47nyU41uNeHs0CqJXhe71n4USaC5Boiw+F9sWLwSBX3V1Hvg1C6vkuIVSWynO3RqQkMmueghd3jn8fP8HLF84xHPPEy2MO/VM8HPVwDDJ8Vs4o31B92O5TRZou8eTjxy3Qz1GvkeaFlo2vYXeubV9Z76etsMTcJpESBopHpAbWi6Bweyf2lYjcZmAtv6SSjwSZF8DYDkYDLqBrfe226CT7nTW1C1k+GkT+vhOcOFcvdxAyYXeXeqy8L5jv+SO/D222527vY4BRk8ecbLlT09SnyAs9iBCiME7IMx6yW4oEzIWkJ4s753y9FkQoDvDz5pX3KrwIJ/+rIkIQG9tMvZfuGb4X1qr+x2kL8EDPKJbVPGbUDEa4H/6jYFE8UTy8gM3ThOvW3XTwiQztPGymbBF8bPlb7orZjdJDdU+oXRn2wCHvo1E+AUlZ4/HxHxrRl6vNhGflV+n21uyhkZNlrGUndeLlZvZkMeGGhBcNGK/u4X7pZEbm3/UK12waYKSY8mjUEvMpjZUHe7LkcKHabjDblcVGaLvTCWo3FB53N31JXDf58yr6d/8XrFSRBsXKXah4PxKucfd1ew1lB8ZttOqBX25aLxhUmHy/mk5/33uP1p+pxrNs9KJSQBhMSDuq/OqXl4eT6Q4+DDfduVMxhIgx3hVILjfB3/BfsggRcd+k7oOwF3diFRnoNnEY+yyQ3a/zCYYGxS61UuyJZia11K2TeDA1QRU5FSocWzu39waQ+nTR37T6nVHINtghJHpOn1WVUgwa72gIKDxKhblt3EDHFqG/0jcnVOuTUXC/koc82gpKqE0+wHQgx87rpRNvN2pv5KrTXN1y
+ HIO1IIY0
+ HsqnAlwDpgDFbtlAGVd5T8yIIL/ES0nlNObwhuYxB4XovxJ2P5FpKp0kTkiriPvrLRPP+NgetvclpkGUnRRMHgisJjkrU2GIvuXLdwxWuyxXKaWWt+0JosfUUsMKJOyxGrmqbHV4LgI3dFsIQEw3tTfUbKIzL5m9mDeudaqVuCRv4GoKuiPw+PMYyx24VErzNAVMFLxDbFsFrtht3FAq/b3qfIfhOXbZOsgXmqmrmxz6kTTQG0p9xAaZhzJ3T+26xmnlEtS1dLcBbBKkULtxZK9yY1qip5dSsI1Uvboc3+wjI8gCGxRemj/TDRREqgJmlwovQBGNJf/pJKxRjzVgYPn9Zg+ftjmqjr2ET7wMQhvy8Ov0JGGpbCjqwMpHY9NaxUPqMqZjZqIX1+c79UR8orKXf8LeiSbL8wgUNlh5aGqYzb22mcQYO7M3tR2UsFDDFdKfwi0jiYaAM9b3hgtjYdmIUPsaVs06ShbF4zTJDbKTxgc4v2JK/4V+aKe2AOJigBsED/WmUeIIpsbBwl4shfSMTDA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,22 +153,52 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/3/26 20:38, Hungyu Lin wrote:
->> Can this be >= ?
-> 
-> I think we should keep > here, since unmap_end + 1 is the exclusive
-> end. Equality would pass a zero length to unmap_mapping_range(),
-> which means unmap to EOF. For example, with offset = 0 and len = 1,
-> both sides are zero.
+On Tue, Nov 3, 2026 at 9:18=E2=80=AFAM Kairui Song via B4 Relay
+<devnull+kasong.tencent.com@kernel.org> wrote:
+>
+> From: Johannes Weiner <hannes@cmpxchg.org>
+>
+> For asynchronous block devices, swap reads are batched and submitted late=
+r
+> since commit dda8fb68b590 ("mm/swap: also use struct swap_iocb for block
+> I/O"), but the caller submits the batch after the pressure window in
+> swap_read_folio() has closed.  Batching is cheap, the submission is the
+> part that can block, and that is no longer counted as pressure since then=
+.
+>
+> Keep the pressure window open across the batch instead: swap_read_folio()
+> opens it on the first folio, and swap_read_submit() closes it after the
+> submission, also when the batch ends up with no folio queued.  Each batch
+> is then billed for its own read.
+>
+> A single workingset refault marks its whole batch as stalled, which is
+> fine here: the batch is submitted as a whole, so its submission holds
+> up that refault too.  Before the batching, a blocking submission was bill=
+ed
+> only to the folio that issued it, even when it also delayed the refaults
+> queued behind it in the same task, so this might be more accurate rather
+> than less.  Synchronous reads are already one folio per batch after the
+> previous patch, which keeps their attribution tight.
+>
+> The same hole has been there for a swap file on a file system that submit=
+s
+> through swap_fs_prepare_rw(), since commit 5169b844b7dd ("mm: submit
+> multipage reads for SWP_FS_OPS swap-space"), which started batching its
+> reads and deferring the submission to the caller, so this covers it there
+> as well.
+>
+> Fixes: dda8fb68b590 ("mm/swap: also use struct swap_iocb for block I/O")
+> Fixes: 5169b844b7dd ("mm: submit multipage reads for SWP_FS_OPS swap-spac=
+e")
+> Signed-off-by: Johannes Weiner <hannes@cmpxchg.org>
+> Link: https://lore.kernel.org/linux-mm/auOz00OGB_8dgniC@cmpxchg.org/
+> [kasong@tencent.com: added commit message and slight tweaks]
+> Signed-off-by: Kairui Song <kasong@tencent.com>
+> ---
+>  include/linux/swap_ops.h | 10 ++++++
+>  mm/page_io.c             | 79 ++++++++++++++++++++++++++++++------------=
+------
+>  2 files changed, 60 insertions(+), 29 deletions(-)
 
->= is much clearer than then +1 trick, no?
-
-To be clear, I was asking whether we could do
-
-	if ((u64)(unmap_end) >= (u64)unmap_start)
-
--- 
-Cheers,
-
-David
+Reviewed-by: Nhat Pham <nphamcs@gmail.com>
 
