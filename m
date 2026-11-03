@@ -1,93 +1,93 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B56E8606A32D
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 19:31:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9EE7606A324
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 19:32:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=JaKHrHNu
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=JI2+xBhs
 Received: by kanga.kvack.org (Postfix)
-	id 58CE76B05B7; Tue,  3 Nov 2026 14:31:55 -0500 (EST)
+	id B7D106B05B8; Tue,  3 Nov 2026 14:31:56 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 536C16B05B8; Tue,  3 Nov 2026 14:31:55 -0500 (EST)
+	id B50EA6B05B9; Tue,  3 Nov 2026 14:31:56 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 474016B05B9; Tue,  3 Nov 2026 14:31:55 -0500 (EST)
+	id A67376B05BA; Tue,  3 Nov 2026 14:31:56 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 0A5376B05B7
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 14:31:54 -0500 (EST)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 750208054D
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 19:31:54 +0000 (UTC)
-X-FDA: 85394802948.09.B377668
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf04.hostedemail.com (Postfix) with ESMTP id C98E84000B
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 19:31:52 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JaKHrHNu;
-	spf=pass (imf04.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 7090D6B05B8
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 14:31:56 -0500 (EST)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id C3546120532
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 19:31:55 +0000 (UTC)
+X-FDA: 85394802990.19.4885CC9
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 10609A0005
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 19:31:53 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JI2+xBhs;
+	spf=pass (imf25.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793734312;
-	b=qPXjEtKX/pVw+rOCQmf93mNIA7Jda4SZ7ShoToY31SLweLxiQv7a/RwjFW7PuIszXYWhfI
-	QRStuPCca6hm610rjhMuvhlet0C6c0oQXmoQEFZRrIJbzF1bgJO6Yx2p/Eoi6uUSikL+wP
-	G6Yz/kso52VBR+nBoVTi8ANdw5I5zo4=
+	t=1793734314;
+	b=pdlDREEf4JFR4GE7ChnLZVvnXSoHsfCceldILswGOYRncFyDo9COs32lapV5ULJzU+8TKj
+	QJUfI4dRr8pU1LjsRFPQIYrXdAiuXeR15JWeGC2ynYEBMjbCrZnOWHdzaoOkkJnmmwgnUO
+	ZpudgvIv5IizTBHG/Tf9BP/yK1pjTDQ=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JaKHrHNu;
-	spf=pass (imf04.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JI2+xBhs;
+	spf=pass (imf25.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793734312;
+	s=arc-20220608; t=1793734314;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=LvmmTpDrXCUk/NdmM0vn3azIVToLtSYVFVymXzPmYPo=;
-	b=Xr7KWzJAy0jtRKs0v/1ynUSvD53nH3J8nPEUzZ3/VzJ9CDQRGxAtkLhM1vwO8lFLGUCVAh
-	+zhVPmwTF6ZFUGf3acwLHDA2Fr2+YUBJybftEhf03Q8ukWo1UUMxGIYB0X8QmV0g1XS3iL
-	xHvW6YyabpWedVyVhHAQ6BtTwdabwGA=
+	bh=2P+aanhSIUjt/CtBwxlP0d6KuP3pv3GDanOSfY1jmtQ=;
+	b=SDhCBbOhHEWb8rjUUtJr3W+1AbwfUPv7RgnWGtfFnAc9ylKYOLAiNGqBEm1F5uYcDAAlCw
+	FAvyV51EFpw+vPW0q/KIkNUYOciPdVCeYsfe4I0EAfkl7Olns15fxh4WK/+XmGc/clbxGt
+	yA/uH/TqDbNB6gkTHJAjWwX50sXS6jg=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 3889A60416;
+	by sea.source.kernel.org (Postfix) with ESMTP id 3C46E40B36;
+	Tue,  3 Nov 2026 19:31:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6612E1F00919;
 	Tue,  3 Nov 2026 19:31:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BDF61F00919;
-	Tue,  3 Nov 2026 19:31:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793734311;
-	bh=LvmmTpDrXCUk/NdmM0vn3azIVToLtSYVFVymXzPmYPo=;
+	s=k20260515; t=1793734313;
+	bh=2P+aanhSIUjt/CtBwxlP0d6KuP3pv3GDanOSfY1jmtQ=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=JaKHrHNuCAZSOxIpnP7Zsy/j/g+pV7aDeDXAFUCTAMTXk9j7SxIRKhO03b+PUyiGD
-	 0Uf3gKPhI8eKQ7fCMxZw67UxPF7XjbX6Nd6mOV9sbBjR33ZfSPEgZubJi/IPPVbfaE
-	 XkY1bJy+PDDwP3C/yV6eHPI31U7xUcEkOdeclubPZZjyfz0Ds/tzcEoI6wbpM+HGye
-	 zBD0UbQA74rIHMz8QHmBQFTpD6YWH/ENT+zYPgW0vivQamAKpMX1YaSL+BvxeZ5f84
-	 IXkTEVmA4pvHdq73YeFU9gfori1wXYfNSDznoU80hxcex2EPDSRirRUJeswosSQTUo
-	 aQMfQWNRiCE8A==
-Message-ID: <sashiko-outbox-195925@kernel.org>
+	b=JI2+xBhsoxFWRAQz4Bp9VqTbhTodASeY0tjiCJ3N2JGDMTP28qVYZdFvkJaNEqdJS
+	 3bjo4LFJH3RhJzcOAbbs2hUSF7aR/0/du70opNrsHePmcf+PRD12q1fkBqHYVR+8wr
+	 u9eADHO8TzqeGevKcgErAzBVrOvQcJqFmk3qemdmWTBRHm5BDiZPIrAq9EiWtUpS3+
+	 S9/4feJGiFQfzRTyvcIl/Lw+VE5UxnN4Ntk2as8ScE4rKE4ZUay/aoEzWUWhF/tIK5
+	 D6FglWgeL/q93Htbl9+sPFN/+GyUQ03oYlOaNqe+KPshHDF7vZ+3FPG2wczc6bhiyS
+	 GenO30EEBmooA==
+Message-ID: <sashiko-outbox-195926@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 7/8] mm/gup: walk multiple PTEs per follow_page_pte()
- call
+Subject: Re: [PATCH 8/8] mm/gup: batch contiguous same-folio PTEs into one
+ refcount grab
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Rik van Riel" <riel@surriel.com>
 Cc: "Andrew Morton" <akpm@linux-foundation.org>, "David Hildenbrand" <david@kernel.org>, "Jason
  Gunthorpe" <jgg@ziepe.ca>, "John Hubbard" <jhubbard@nvidia.com>, "Peter Xu" <peterx@redhat.com>, "Suren
  Baghdasaryan" <surenb@google.com>, "Yuan-Hao Hsu" <aa9736195201@gmail.com>, "Christoph
  Hellwig" <hch@infradead.org>, linux-mm@kvack.org
-In-Reply-To: <20261102193026.3860700-8-riel@surriel.com>
+In-Reply-To: <20261102193026.3860700-9-riel@surriel.com>
 References: <20261102193026.3860700-1-riel@surriel.com>
- <20261102193026.3860700-8-riel@surriel.com>
+ <20261102193026.3860700-9-riel@surriel.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Tue, 03 Nov 2026 19:31:51 +0000
-X-Stat-Signature: 9ehy4txyes8x3gybn83zh3opkp96r45a
-X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: C98E84000B
+Date: Tue, 03 Nov 2026 19:31:52 +0000
 X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
 	autolearn_force=no version=4.0.1
-X-HE-Tag: 1793734312-718477
-X-HE-Meta: U2FsdGVkX19IsmTpHSQECyStxIIo5Lr85HZ3MpVfiVSY4NMSzORVbgrCiYOfCpzDw/bZt24UlzaLdX18kousOorzjJg0C5Un+ZFsYB8bbZYdp8Ziy/4bK/z52uv3wv9AsOqr192q3I9xd3FIp0S/vsyvMly4/8Kh6Tei7Mh13ghbGi3Vn9Wjt5J+/l2Dmxftd8sglAHlbr4lpnWmtjFb0wh1Ho3LZJFX6zbvG0S2Hq1O3W6awPK2QLyTzPQvQIeBnAggm9fwFhEqKxhbjKNZmYJivkP5y8/U0BG5dhUEBpf1SIcRJaFfnMjg/VHun0xv7JCV5lGLuKCYQWYtV79vsvUti0oAYVKu45g/omOlKTEQbQS7K41biiEg7GczK9KX5rXerlbK7+vwq/fuIscPEkl58I0rr+s+1boVpSTvznEiF0d4cy+jQBQK02JtwyFGTlVnwY3oT9I0UNGY/Erukbsf0D6RquuDFHkL9htA0DWmOqBYURZC+B6lFPE97qphejg/LX3BTwnAgY6+TA9K6aPIg/vPiSL0QpnTk79NPXxExRr8QKFyegCeGd6ZiGHZe4/Pjb/XxRSdyEz7ZPuPUrStG4l4OVwciQAUaBjMcBlEW0frbd4k4RrqFpE7U5EIyzBC8B04HQx5Zj+iePA9ZDan3oDlxq2gA1/TDIgA5aH9Z820N+Yz8udCtFk0wxqzuzh7ZmZ0lq1MGItyANDYnEli72aYqCRxI0h/K2boGOLLHan66hcMrqMuHiMKkbtq15aRHz6bNVWIOGHK16wIh5cGcTzJrGO8CyErRCbAEmftu3MWM0vcm79ee5bMyZqD+p7u1xA4yPtVXaZDdEGoG4NZ0lzfQTXwP6/PlD7iJ9N+O2U/R1qvBCgP8cAE0tfiCa/f8+uUzD9ioWGFG4I+gjlEzoymtLXxagQUDyO5YEFWs3jmfKWdOcrSBTWpah5so30XYqujCTVjVOD2Y6D
- a5LYj7+K
- eUsYGg3IwBTBBZ9mMV4kko0qBo/F517Zsicj6nJLDRGq39R9GCp/KWzQGdGV3onw29NCquIeHo2XOrR1OoqLfvE+T+1PbQ1G+E3++DYezVpLxchQIm2EM7W0cWa6nIxzrWmz9oDZ0eE3WVnDqt5rENboH7gYmd15C2ITDmW8NXUSQpnHP2WssoJHGQ2A2HX67K66/EZiM6l/eKu994n3t/zWB2ZsxAZLLjoLx91yNpTpqqCZIxDYA3Fe/mb13W7pjIPtibs1Bx8Ba/ZbnZ1PvauZX05Ju1plARUVgFzEsQThMv2mhG4Cvjc2yoM7JsUPvNNug7pWCvLXjxVPFh5TcyZvrtZOzBljf71YeDa8GBzYL66ZPGmq3k2B/B+nvyALC2fQ5gfLFZsVLjiw1egGokrlbZAlRt3A+RWDBBEt1UFbBB7SDAoZvya3osnHKndz7F7PI9dZ0RrUf6RhLoy4AeUr90mlJkwiN1HieN1TlqwuAduR7Kz4pW3I0g9jTcux1MzoUhiyS+CiW+6FhNiklg9K68OhDYpYHNcMj4udsr6VkahevoRLOWc9sC3rBF0nP6fMAxvenbralzn+t6HKUZqKh/g+an/gWvOkS8E+Hgj5BJXeOOhlRvF3o5uCRnxJtlFbny2TIF1uKeHvtvv4SeqPUfMD6GmfHATZVcM32B4w8ECU=
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 10609A0005
+X-Stat-Signature: 3ie7yc9umhxx4txnkamfeiadpou8xr7o
+X-Rspam-User: 
+X-HE-Tag: 1793734313-121776
+X-HE-Meta: U2FsdGVkX193cX5UOvYoWLa0JLxMz9NkF6yTyuclLBlXb7nqn2I5lnlsNc2D51XGFeihkYCOaN4MmeoQyriXL0SYf4aCOtZrWZhGtq2vM/Ur3ktObTckR7qPedKZjQ9GHYQ7SyNGM88cRI/ixNdbC4X6jgx46uc2zq62zN4u5Ub9vlE5Yq13rLwqTfRqOOy6PMmLgg0fepfpr/vl+czcxbWL14/CdHw8iNcHyZTvGRxSpS9+yweq3uQ1587nS+UIn3A6wSo9AiAl6Bl66aj3RTD91aajyjAkUDjAsGQ7FhHyAe8Gs4OwRBmc6+Ti3z3F8YHN961/43GGjhEYnJRJahn7A36wtLwOLcva+YrjdTEPvQVp6GebfHeH0YTKrpYrTLRwLUJxfRBOjUU/k5llaFin08ekAD5TRP7Z2WoaQoOXoHORSdG6+m6GJ6pCDbKwZ8kh8IbNmG15QBuy6Vob1GKehd7ymLWsLlXnaVLjFuz6HywCM7DK2/xM0ktm3Pbc5JJxQMpXvc0HkYC0Sq7XcX6+TtoqnqBDp+JXH+yZvYugaR7hZC9zxwczUqnXSjy+uA9Sf08oG1BXnk6GBw0syJRGMoHvDdA0yq9GlmthgEfn+7RZJE2zzqEdo3seMQmkP4QALCw+EEsxkaVG2f+pU2XwssvJdWM8Qfv/N64oCxphsvNc27zRse+dAiObt15aN/xAQSa5vvPAkNi1ln4zoveA+uf2Ot2AWQe/+SqV33naiMfd5hcPW7e5EXEtX7GbuxlYx8MTq7OnRzzKZijqSYBLSNnXmvsnpqLNhcG65qIbclRdjg9V73JDoZTddszoDELlDWyfTeQSGRhiG8T5B6y/++hRX6yeuMKfur4e8SaxrK4RFpJdImA1Rfc9+nQ9v7WkSaykiFrEQ4p7VaPBB8B2I/s+4pqd9Oh4f9XkkJjLhjpjPIYJKX3l8C7eSpiSI7ltJzyD1EzEz+XIqkH
+ pEZNyUkn
+ 9fXZvkcZq/fZn6l5/RxIldRGWxFoEwGJVOKgtfX0yPSxiGJM8quX88GgQEtfNMd5CwIqyJdVbg2PqrU81rvFrMQSDsQ2VaE8FHAO0fVGoE797RfdqszZy91E6jvZbf7NXP/4r4Ggvw62YUeVSzsGmmRC/B4dbxAXCSMjZ4LjZI/SxutC5VRBw96Eac6Svg//QGr3TYuOFIN3r9gdZfsvZSqJR1kbg9D/WrY/EM1wtuqnsPG4//sYkkL2xTZ3YWDzBxrccs4IGUMRf3jGbXtiCf7FDNpXiosOWsDAeL71Q+7GOtE9Tf/0AEMOZG/AHsQ2mwlIhAmJL+mV79tv0IQz7M6xqx48N1L987KQmjgesKkg+/n61Ace5nIEZ14BXU99pW0yoLkeRShgSs/rOBrCHjnl3uJnubW9Lg9PemaacDv0vpFRfURHWKunW/z6BgnC+Qn7BHH0Uu3awP++k8kAj4nXixJNCLPBf1RWicDkFbcCO8/j6xWefrVGANJPbn+VvYQ+3u+B/lPz2sR/2eqocLqGouPrNCDhA+ExABJ3yvQDJ7DInK5K2M+drx76b1BECBw46Fpj0fGsu0UdJAxUa2WDyGHFVJS6mN1dkt7fir0lQUsYWB/BRxKyrnt8FmKGm6ZR7uOiD2J4bI24=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,148 +97,146 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 X-Archived-By: <archiver.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [Critical] mm/gup: follow_page_pte() walks past PTE table end on 2-level =
-page tables
-- [Medium] mm/gup: unsigned long overflow of end in follow_page_pte() cause=
-s retry loop
+- [High] mm/gup: inverted dirty merge in gup_pte_batch_len() skips folio_ma=
+rk_dirty()
 --
 
-commit 88431cb08ef25a5abdfb0b14be61fbed0f5a8113
+commit 67f7a0d0fa0dd1ef10a67f56f3a836ca56f23a7f
 Author: Rik van Riel <riel@surriel.com>
 
-mm/gup: walk multiple PTEs per follow_page_pte() call
+mm/gup: batch contiguous same-folio PTEs into one refcount grab
 
-This commit updates follow_page_pte() to walk all PTEs from the starting
-address up to the page table, VMA, or request end boundary under a single
-PTE lock acquisition, flushing the collected pages after dropping the lock.
+This commit introduces gup_pte_batch_len() in mm/gup.c to batch contiguous
+PTEs mapping the same large folio in follow_page_pte(), committing each run
+with a single refcount grab and folio_mark_accessed() call.
 
 > diff --git a/mm/gup.c b/mm/gup.c
-> index 9e7eb8a323bbf..67e20b326be6e 100644
+> index 67e20b326be6e..47f204e21a3a7 100644
 > --- a/mm/gup.c
 > +++ b/mm/gup.c
-> @@ -937,44 +937,67 @@ static long gup_lookup_pte(struct vm_area_struct *v=
-ma, unsigned long address,
+> @@ -937,6 +937,35 @@ static long gup_lookup_pte(struct vm_area_struct *vm=
+a, unsigned long address,
 >  	return 0;
 >  }
 > =20
 > +/*
-> + * Walk the PTEs from the start address to the end of this page table or=
- VMA,
-> + * whichever comes first, and commit every page found.
+> + * Return how many PTEs map consecutive pages of the same folio and can =
+be
+> + * committed as one run. Always at least 1.
 > + *
-> + * A failure on the first PTE is returned to the caller. A failure after=
- that
-> + * is a short read; __get_user_pages() retrying the read will get the er=
-ror.
-> + *
-> + * Return: the number of pages stored in @pages, 0 when no mapping exist=
-s at
-> + * the start address, or a negative errno for a failure on the first PTE.
+> + * The write-fault and unshare checks in gup_lookup_pte() are per PTE, b=
+ut a
+> + * writable run needs no repeat: a writable anon page is exclusive. A re=
+ad-only
+> + * run under FOLL_WRITE or FOLL_PIN does need the per-page check, so it =
+stays
+> + * one page at a time.
 > + */
->  static long follow_page_pte(struct vm_area_struct *vma,
-> -		unsigned long address, pmd_t *pmd, unsigned int flags,
-> -		struct page **pages)
-> +		unsigned long address, unsigned long end, pmd_t *pmd,
-> +		unsigned int flags, struct page **pages)
->  {
->  	struct mm_struct *mm =3D vma->vm_mm;
->  	bool need_no_page_table =3D false;
-> -	struct page *page;
-> +	pte_t *ptep, *orig_ptep;
-> +	unsigned long walk_end, base;
-> +	unsigned long nr =3D 0;
->  	spinlock_t *ptl;
-> -	pte_t *ptep, pte;
-> -	long ret;
-> +	long ret =3D 0;
-> =20
-> -	ptep =3D pte_offset_map_lock(mm, pmd, address, &ptl);
-> +	orig_ptep =3D ptep =3D pte_offset_map_lock(mm, pmd, address, &ptl);
->  	if (!ptep)
->  		return no_page_table(vma, flags, address);
-> -	pte =3D ptep_get(ptep);
-> =20
-> -	ret =3D gup_lookup_pte(vma, address, ptep, pte, flags, &page);
-> -	if (!ret && page) {
-> +	base =3D address;
-> +	walk_end =3D min(pmd_addr_end(address, end), vma->vm_end);
-
-[Severity: Critical]
-Can this walk past the end of the mapped page table on 2-level page tables?
-
-In mm/gup.c, __get_user_pages() calls follow_page_mask() ->
-follow_p4d_mask() -> follow_pud_mask() -> follow_pmd_mask() ->
-follow_page_pte(), passing end down without clamping it via pgd_addr_end(),
-p4d_addr_end(), or pud_addr_end():
-
-mm/gup.c:follow_page_mask() {
-	...
-	if (pgd_none(*pgd) || unlikely(pgd_bad(*pgd)))
-		ret =3D no_page_table(vma, flags, address);
-	else
-		ret =3D follow_p4d_mask(vma, address, end, pgd, flags, pages);
-	...
-}
-
-When the pmd level is folded on 2-level page table configurations,
-include/asm-generic/pgtable-nopmd.h defines pmd_addr_end() as a no-op:
-
-#undef  pmd_addr_end
-#define pmd_addr_end(addr, end)			(end)
-
-As noted in folio_pte_range() in mm/memory.c:
-
-	/*
-	 * We cannot use pmd_addr_end(), as it does not clamp reliably. To
-	 * avoid wraparounds, compute using the inclusive end.
-	 */
-	const unsigned long upper =3D min(pmd_end - 1, vma->vm_end - 1) + 1;
-
-Because pmd_addr_end(address, end) evaluates to end on 2-level page tables,
-walk_end is only bounded by min(end, vma->vm_end). When a VMA and the
-requested range [address, end) span across a top-level page directory entry
-boundary, will the loop increment ptep past the end of the page table mapped
-by pte_offset_map_lock()?
-
+> +static unsigned long gup_pte_batch_len(struct vm_area_struct *vma,
+> +		unsigned long address, unsigned long walk_end,
+> +		struct folio *folio, pte_t *ptep, pte_t *batch_pte, unsigned int flags)
+> +{
+> +	unsigned long max;
 > +
-> +	for (; address < walk_end; address +=3D PAGE_SIZE, ptep++) {
+> +	if (!folio_test_large(folio))
+> +		return 1;
+> +	if (!pte_write(*batch_pte) && (flags & (FOLL_WRITE | FOLL_PIN)))
+> +		return 1;
+> +
+> +	max =3D (walk_end - address) >> PAGE_SHIFT;
+> +	if (max <=3D 1)
+> +		return 1;
+> +
+> +	/* Merge young/dirty across batch so folio_mark_dirty sees any dirty. */
+> +	return folio_pte_batch_flags(folio, vma, ptep, batch_pte, max,
+> +				     FPB_RESPECT_WRITE | FPB_MERGE_YOUNG_DIRTY);
+> +}
+> +
+>  /*
+>   * Walk the PTEs from the start address to the end of this page table or=
+ VMA,
+>   * whichever comes first, and commit every page found.
+> @@ -968,7 +997,10 @@ static long follow_page_pte(struct vm_area_struct *v=
+ma,
+> =20
+>  	for (; address < walk_end; address +=3D PAGE_SIZE, ptep++) {
+>  		pte_t pte =3D ptep_get(ptep);
+> +		struct folio *folio;
+>  		struct page *page;
+> +		unsigned long batch;
+> +		pte_t batch_pte;
+> =20
+>  		ret =3D gup_lookup_pte(vma, address, ptep, pte, flags, &page);
+>  		if (ret || !page) {
+> @@ -983,12 +1015,23 @@ static long follow_page_pte(struct vm_area_struct =
+*vma,
+>  				need_no_page_table =3D true;
+>  			break;
+>  		}
+> -		ret =3D gup_grab_folio_pages(page_folio(page), page,
+> -						     1, pte_dirty(pte), flags,
+> +		folio =3D page_folio(page);
+> +		batch_pte =3D pte;
+> +
+> +		batch =3D gup_pte_batch_len(vma, address, walk_end, folio,
+> +					 ptep, &batch_pte, flags);
+> +		ret =3D gup_grab_folio_pages(folio, page, batch,
+> +						     pte_dirty(batch_pte), flags,
+>  						     pages ? pages + nr : NULL);
 
-[Severity: Medium]
-What happens in follow_page_pte() if end wraps around unsigned long to 0 or
-a value less than or equal to address?
+[Severity: High]
+As reported by Sashiko on RFC v3 [1], is the dirty bit merging in
+gup_pte_batch_len() inverted relative to what gup_grab_folio_pages() expect=
+s?
 
-In mm/gup.c, __get_user_pages() computes end without clamping or saturating:
+In mm/gup.c:gup_grab_folio_pages(), the folio is marked dirty when the
+passed-in dirty argument is false:
 
-mm/gup.c:__get_user_pages() {
-		...
-		nr =3D follow_page_mask(vma, start, start + nr_pages * PAGE_SIZE,
-				      gup_flags, pages ? &pages[i] : NULL);
-		if (!nr || nr =3D=3D -EMLINK) {
-			ret =3D faultin_page(vma, start, gup_flags,
-					   nr =3D=3D -EMLINK, locked);
-			switch (ret) {
-			case 0:
-				goto retry;
-		...
-}
+	if (flags & FOLL_TOUCH) {
+		if ((flags & FOLL_WRITE) && !dirty && !folio_test_dirty(folio))
+			folio_mark_dirty(folio);
 
-Callers of the slow-path pin/get entry points, such as
-process_vm_rw_single_vec() in mm/process_vm_access.c calling
-pin_user_pages_remote(), can pass a valid start address near the top of the
-address space (for example on architectures where the user address space
-reaches the last page before wraparound) with nr_pages such that
-start + nr_pages * PAGE_SIZE overflows unsigned long.
+Because GUP does not set the dirty bit in the PTE itself, a clean PTE
+(!pte_dirty(pte)) requires calling folio_mark_dirty(folio) directly, whereas
+an already-dirty PTE only avoids that call because the page table already
+tracks its dirtiness.
 
-When end wraps around to a value <=3D address, pmd_addr_end(address, end) a=
-nd
-walk_end evaluate to end <=3D address. Doesn't the loop in follow_page_pte()
-then execute zero iterations and return 0 even when a valid present page is
-mapped at address, causing __get_user_pages() to call faultin_page() and
-spin in the goto retry loop?
+Prior to this change, follow_page_pte() called gup_grab_folio_pages() for
+each PTE individually, so folio_mark_dirty(folio) was called whenever any P=
+TE
+in the walked range was clean, and was only skipped if all PTEs in the range
+were already dirty.
+
+With FPB_MERGE_YOUNG_DIRTY in gup_pte_batch_len(), folio_pte_batch_flags()
+sets the dirty bit on batch_pte if any PTE in the batch is dirty (and even
+without FPB_MERGE_YOUNG_DIRTY, batch_pte starts with the first PTE's dirty
+bit rather than the logical AND across the batch). When a batch contains at
+least one dirty PTE alongside one or more clean PTEs, pte_dirty(batch_pte) =
+is
+true, so gup_grab_folio_pages() sees !dirty as false and skips
+folio_mark_dirty(folio).
+
+For example, if a PTE-mapped large anonymous folio has been marked MADV_FREE
+(leaving PTEs writable and clean with PG_dirty and PG_swapbacked clear), a
+CPU write to a single subpage sets pte_dirty() on that one PTE. If the range
+is then walked with FOLL_WRITE | FOLL_TOUCH (such as via MADV_POPULATE_WRIT=
+E,
+process_vm_writev(), or O_DIRECT), gup_grab_folio_pages() will skip
+folio_mark_dirty(folio) while the remaining PTEs stay clean. If the single
+dirty subpage is later unmapped via MADV_DONTNEED or munmap(), the remaining
+PTEs and the folio are still clean and lazyfree, allowing reclaim to discard
+the modified folio.
+
+Should follow_page_pte() and gup_pte_batch_len() pass dirty =3D true to
+gup_grab_folio_pages() only when all PTEs in the batch are dirty, rather th=
+an
+when any PTE in the batch is dirty?
+
+[1] https://lore.kernel.org/r/20260811025157.1632867-9-riel@surriel.com
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261102193026.3860=
-700-1-riel@surriel.com?part=3D7
+700-1-riel@surriel.com?part=3D8
 
