@@ -1,110 +1,147 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65339606A324
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 19:25:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDC0C606A32D
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 19:28:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=samsung.com header.i=@samsung.com header.a=rsa-sha256 header.s=mail20170921 header.b=sH5lu8/r
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=Ol2ycFyR
 Received: by kanga.kvack.org (Postfix)
-	id 4915F6B00EF; Tue,  3 Nov 2026 14:25:16 -0500 (EST)
+	id DD5FF6B05B2; Tue,  3 Nov 2026 14:28:53 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 440C56B05B1; Tue,  3 Nov 2026 14:25:16 -0500 (EST)
+	id D6F366B05B4; Tue,  3 Nov 2026 14:28:53 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 357B46B05B2; Tue,  3 Nov 2026 14:25:16 -0500 (EST)
+	id C37006B05B6; Tue,  3 Nov 2026 14:28:53 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 0BD0E6B00EF
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 14:25:16 -0500 (EST)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 04F334053F
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 19:25:14 +0000 (UTC)
-X-FDA: 85394786190.01.8427749
-Received: from mailout2.w1.samsung.com (mailout2.w1.samsung.com [210.118.77.12])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 3AF5E40004
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 19:25:12 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=samsung.com header.s=mail20170921 header.b="sH5lu8/r";
-	spf=pass (imf04.hostedemail.com: domain of m.szyprowski@samsung.com designates 210.118.77.12 as permitted sender) smtp.mailfrom=m.szyprowski@samsung.com;
-	dmarc=pass (policy=none) header.from=samsung.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793733913;
-	b=zXhs7sZe43niaES8s77sC26TxIIRzzLZkMqQLqPVFwoDGzyG7hKXGreaE6Hw97FCO01M9u
-	L3JGsZJ4QFn3ACzQcGOEKVrqLI3CBEnJBPAOSraA5ZxWj6onj0YV9IVAFevqxp8HnM8w2/
-	N+ddEGb07yZM+EE5wN2sqAg1RyEuplM=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793733913;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 903FC6B05B2
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 14:28:53 -0500 (EST)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 002901604DC
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 19:28:50 +0000 (UTC)
+X-FDA: 85394795262.24.0F0FC06
+Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 081E0180004
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 19:28:48 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=Ol2ycFyR;
+	spf=pass (imf24.hostedemail.com: domain of joannelkoong@gmail.com designates 209.85.221.54 as permitted sender) smtp.mailfrom=joannelkoong@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1793734129;
+	b=5O7LsLShGeLWtfB3fjeN+vz5IS2+ETPpbKjsDxeVAwbjscQnt8HwjXJXlsgRo8YLYWgoIH
+	tw1bU1rG2BrMj4E91FN7LoaToE8FmFCjB5JEHxhSFZrNnNiVm8pvczjh7Pq7aco9THGV2G
+	5FywXToR1Z6YyNv29IQBe/Am7Bq20Uo=
+ARC-Authentication-Results: i=2;
+	imf24.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=Ol2ycFyR;
+	spf=pass (imf24.hostedemail.com: domain of joannelkoong@gmail.com designates 209.85.221.54 as permitted sender) smtp.mailfrom=joannelkoong@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1793734129;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7PUwfrJVawcXLdfu41PY6uZ3y3+L4mK5joYpI+grGjw=;
-	b=G0knZK8zUoTwfCYaKs6jUwNrUmCrgLwkFPTWu+yv01NjxNc6EKurdAbRIlGhqD+w95JEro
-	Pbjf9phX33esbvl3UmiWG7+AeKtDQ8fIgsLdfBV7kzLe/yaNOiUa6sPXaBlcLrAYoDYSo2
-	WdB1TxmWgl600JMd9XXs54YT0+fqVBk=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=samsung.com header.s=mail20170921 header.b="sH5lu8/r";
-	spf=pass (imf04.hostedemail.com: domain of m.szyprowski@samsung.com designates 210.118.77.12 as permitted sender) smtp.mailfrom=m.szyprowski@samsung.com;
-	dmarc=pass (policy=none) header.from=samsung.com
-Received: from eucas1p2.samsung.com (unknown [182.198.249.207])
-	by mailout2.w1.samsung.com (KnoxPortal) with ESMTP id 20261103192509euoutp02d9e2adc354294152297538b93ddd31d0~kn3zLGMlh1817618176euoutp02H
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 19:25:09 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w1.samsung.com 20261103192509euoutp02d9e2adc354294152297538b93ddd31d0~kn3zLGMlh1817618176euoutp02H
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-	s=mail20170921; t=1793733909;
-	bh=7PUwfrJVawcXLdfu41PY6uZ3y3+L4mK5joYpI+grGjw=;
-	h=Date:Subject:To:Cc:From:In-Reply-To:References:From;
-	b=sH5lu8/rUJ8kh2OpQ2XUWcNXRPmyVlAwJrTiki7UFFRAW19QzkE8kJQ5P9ivn25ZR
-	 WwtUo/9bgQaOqPLOFvqDg0YWqANrS5NOTe0FQ+upG+8uxIllUitHQD3/w5F4tOmLDb
-	 yprHd+9El9lRX6kb2sY1MN6hCsPd8SQgEFQE7dx8=
-Received: from eusmtip2.samsung.com (unknown [203.254.199.222]) by
-	eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
-	20261103192509eucas1p1b2f9e4fdd60dc8eae89579a1440a30f6~kn3yjR5OT3099830998eucas1p1_;
-	Tue,  3 Nov 2026 19:25:09 +0000 (GMT)
-Received: from [106.210.134.192] (unknown [106.210.134.192]) by
-	eusmtip2.samsung.com (KnoxPortal) with ESMTPA id
-	20261103192508eusmtip2a833c7ccdaf7e75a797dd7005f03374d~kn3yAQfdV2937629376eusmtip29;
-	Tue,  3 Nov 2026 19:25:08 +0000 (GMT)
-Message-ID: <b71ac175-fba5-4f61-bbdb-0b98dec9ccee@samsung.com>
-Date: Tue, 3 Nov 2026 20:25:08 +0100
+	bh=t8nOrLjD6nwiDigTpfoc51j1sg2vY57/yO5mUWHgXYs=;
+	b=RwtHKzY41u4yE7S7RYB0bzr3NOR3Y7655Abz6cX1EaksxJj58EgAjeBr66M4HO8XYLe98N
+	N1uKMyUxz3XApYO/uIpXTHPc+f/HAOtAhETsKsv1b8gSWLg2jkvl9cVQZkiIYXjNiCW59+
+	dqQvgpnoeSdEImAgK1ZIxzw1i7mM7CY=
+Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-48e1d0e5dafso653564f8f.1
+        for <linux-mm@kvack.org>; Tue, 03 Nov 2026 11:28:48 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1793734127; cv=none;
+        d=google.com; s=arc-20260327;
+        b=rEUfy2XO4BvEEFSiywHdWUmh5AxOhS2wgdwz3y9TinxGZExThnuwiaa5fWloZLsqra
+         zUvVFI2KjWGrOrAu3blH0c5LIKF/zIgmm1W1CHf77bnN4RSIn/wmWYcecgLB/nrFfEY+
+         1CwaG7hxugXKAwnJKurG/yKYTk3EkvzQyqGxVFJcWPAciX8koMj5ge8Ql7rYiIsCZgW2
+         TWuiU8BSYzM28UoUHEO+mkbFeufgZx40p/5xk60fkp4uMc75gzKEJ1p6IUCH4p+Z5J2t
+         ZaR/yScTlnPnfejSu1NhzKlun89Dx9Ec67Z7oun0y1X6iomd6USINknxywck4f5mbBiS
+         u/2Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=t8nOrLjD6nwiDigTpfoc51j1sg2vY57/yO5mUWHgXYs=;
+        fh=mP6tVO4tZwcRloRxr86mHyH8AbPsGj2TYtkZb6M2NIs=;
+        b=ltg9MS8CbDP+UsjBo78XABpjcdbb/SXSMDJkjt6R5CTs/c99dvQKab80lSda2K6ops
+         dw8bV8F2dFojeOMOlcNy+RBEgzimmgep6WjIMXIYdGgRn0O+xoH+kq/+pxFa2cKE6ePC
+         cYfLZyfj3FMUu5I5THctGBJr5XJZUlPbqynvMSDvbfhpWZYM5aNkIGk+Dmz3TBzK05Hd
+         XuGCZb1qyOw8Wl8UUiumDPxCc47gCJrLNSiMWDcz1L/QbILa9UZIWy6ZxQuqQKS0vzD4
+         tmQ8FjvdyZrIcA3DDK5XbBSxoGhwJeoKRxKnXY6fBAzTtdo5IpsaXBE51K7kbDXwel9H
+         5NtQ==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1793734127; x=1794338927; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=t8nOrLjD6nwiDigTpfoc51j1sg2vY57/yO5mUWHgXYs=;
+        b=Ol2ycFyR++w3hmWBHKCuazWtHl/XQk4NpakmX7DRXgInCfyTkbjTQuhPRPOLa4OXJO
+         Z751GgJ1IVxm3193bs1M0QIzyJQLX7OzTE1qlcy/GqAqQ1MtnM/ZZga/uY1p6xOT5kXM
+         09VTmjZERmJTA33BYcwqCBHaaPTh8o+1aYVpsFjnKoL91xd1myIVkUU1G/4zCM1LPm7+
+         xiEaDkZyVbHpDogXh1sHntMB3lCaCaVoXNJyMlkty8iHbqRfvfnoLHh1inPPw2gnyN9U
+         j7AlLeKUIHXZ5Jt12AV96Whxygy5DiG656irgbUCgwALO/oGxm31QXxRKxfP7xfSQv4v
+         kD9Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793734127; x=1794338927;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=t8nOrLjD6nwiDigTpfoc51j1sg2vY57/yO5mUWHgXYs=;
+        b=oKazCiG4RSIO999iOt1PTRUxps54sbTp0I8FZ9yiHY6JLS85VE2jbysuTKNWUPVIjo
+         ECObtwNilMBnLFCmM5Chlm2Fat4Mh7AiPmbJXCsuemqo18VD15bamLT8xuKMhg0QDlm9
+         MPL5E26p2F2a66v3QM0YASFWpO4qQLmmJfcaV2Pru5weDO5jdfRp0HqE7Us1lMdjTweU
+         HezGxGsIIqOIpIwS0CCm+LDL5eZ2j34yE8lE+yPI+MW4KoB7yk8LU5aoQ8IIhc/NZbly
+         G+bSoBOT727yVnZKMEZT2Yk5o0wbr5FCfA0X4fmMVnAQCpUnj+MHNzxPRZ9lcz3gm8qr
+         rZuA==
+X-Forwarded-Encrypted: i=1; AKwUvBzMVa+lvg3IwcTabLmk4WbPHZ/8TcqrzMBsySzH/A3HDSlCjpeX+gxhw7uvD1awQ1ql0pIFq5z9rg==@kvack.org
+X-Gm-Message-State: APuU4Z+PY+bvL9kZZSnU/VfvHl7BAJmOxRPxKKnQmAswGUk97n1a56GY
+	oTYKmACoWUhD4EUDz79WAnNl22wLPB0/GzuVDJVCV3YMR/MTq8AvcvlbWa35/d2oo3KggqmaBN+
+	W/EYRSPc66BDLlGaj7ebmWotC3MQBMBc=
+X-Gm-Gg: AYBFou3jqADcJPJWDoq/wJDkJuSW8+2aADICUUmaF+iYsY7fM39f97x16C2gMN6GTA/
+	rXtr82rKQT123PtJV+bkpnx7t0VLRLPZOdC9/0nUv36hBUgddaj3bipEwb4ElqYtAg8QgxT+LF4
+	/n5QrYGc5jhlG7k7NlNbzwRusVKyXrz3LERoFgUtFHpFUmOkCrI1lr4EvD+q6SRS1SC56r1sBCn
+	4HaUBMsfIIoD1QJF6yh6EGqjfBwrX6Nyvn1Agr6Rl4MlfwbvpRVfnB51RtINMbbfrcjDosd0Gq+
+	qn9/f3Y7jDuFYYwNOkINSekXcXfwZZtMJb0GFhBBbeDHHwr8/gtDWRpQx30HU9qNARtYhEdYBL0
+	xtKNSc13FtDuIq2AmYNetVAFgaStvhxBwbI45aUSf4uQ86ZQV0CgTVTGU0TEc5qFydAdJ6znoWA
+	FvGRgg/48vr7a7NwhU0Dfipx0c0ujIfmCKUwHdcIw=
+X-Received: by 2002:a05:6000:3101:b0:48f:bbb5:61c2 with SMTP id
+ ffacd0b85a97d-48fbbb563a3mr5372701f8f.4.1793734127208; Tue, 03 Nov 2026
+ 11:28:47 -0800 (PST)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Betterbird (Windows)
-Subject: Re: [PATCH v3 2/2] of: reserved_mem: allocate and map the
- reserved_mem array early
-To: Geert Uytterhoeven <geert@linux-m68k.org>
-Cc: linux-mm@kvack.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, Mike Rapoport <rppt@kernel.org>, Rob Herring
-	<robh@kernel.org>, Saravana Kannan <saravanak@kernel.org>, Oreoluwa
-	Babatunde <oreoluwa.babatunde@oss.qualcomm.com>, Wandun
-	<chenwandun1@gmail.com>, Andrew Morton <akpm@linux-foundation.org>,
-	linux-riscv <linux-riscv@lists.infradead.org>
-Content-Language: en-US
-From: Marek Szyprowski <m.szyprowski@samsung.com>
-In-Reply-To: <CAMuHMdXcM9yvwLBSi-aYRinG3omhu5aoeNVYynfFQsnDDWR-Hw@mail.gmail.com>
-Content-Transfer-Encoding: 7bit
-X-CMS-MailID: 20261103192509eucas1p1b2f9e4fdd60dc8eae89579a1440a30f6
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-X-RootMTR: 20261015082334eucas1p2a3bbf3650f279abbd39d05d63e35aba6
-X-EPHeader: CA
-X-CMS-RootMailID: 20261015082334eucas1p2a3bbf3650f279abbd39d05d63e35aba6
-References: <CGME20261015082334eucas1p2a3bbf3650f279abbd39d05d63e35aba6@eucas1p2.samsung.com>
-	<20261015082315.56876-1-m.szyprowski@samsung.com>
-	<20261015082315.56876-3-m.szyprowski@samsung.com>
-	<CAMuHMdXcM9yvwLBSi-aYRinG3omhu5aoeNVYynfFQsnDDWR-Hw@mail.gmail.com>
-X-Rspamd-Server: rspam12
-X-Rspam-User:
-X-Stat-Signature: pf4mjuwkn6rkxnsmprdp98ru41xktykg
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
-	autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: 3AF5E40004
-X-HE-Tag: 1793733912-63792
-X-HE-Meta: U2FsdGVkX1/sBnJsMpCUHcKllN8FMC38g+a+76iV25JzidcFzdh1D8uyYgxv2/vDMS+DVMejwK9P3nZkAWJdMHiZVgmY60fCD0tXvkM9mQ7PwmhwRnUVVQvdf5vyT+gsr27HAN2REUKFjZvI4EjVIH/G188eBCAa7WTif35seZJw2FI+Vzoh+yDH4rbLXUemwiESlQuAu7XWRfNCm1srvW1bPNVRVE7b2CBtQpoK5ytzLTOIskudV/oP6LmfLK18NMu7+T9mUjx90fBlaZNxDmx0sB9ZMdZH4dAvSYSD+UpLht6cdYG9PBvj4ZmPeOeIDZkIecFp8Gy9oEThQT/8p8CdFnHuHDlyxvFVdjY9P3JZtU3H/WdnDxxwILzVlHUqanm3TJja+DFVtCSTc9N/2aVG6htWmVTxY5iWIzAjjR+bFyVaJpkY8ealhB7O0h2zCXG8mf67+Hbffh8pp+Oc+LIvHz7g6OAJr7cn2YFwXeQJ3OiWZrdgcz3NJCfmAHniJWMC/jSIsYEyLXiJlwz5HVbY3lNfNrSBUI4E1KbpYFGWmkKjtJ/AZES+eZbGHG+nF70zGuNxNevDQT+mzCEjENH6gs40clVE7lpqzsBbWvVk+gLqgb307FoxQOIpK+2dcMgD+Jok1o5RKPlkgWQW6cgPT8y+jGn6qqIUcKrVNL47l3e6VqGobwLIg1copfjIduX9w872M5HLyd9uAwIB78QIi6c1KN+9v6m/LtviAobf6+lZSuZiLAgliJbKkWwXOS6Fkb4++45oEZ3DOYJcES05Lda9j1fBcWUeiNucZVjj+PDgORwOxYWRcgYFDnJJ36hJIjH3BO2frROgYZFhoBaHCsnJkInqguXo50aOBRZl4K5u3PdMUk5qkJaVgzrzxOjjQoMyesDBYowIPW5xShzHBtasLgUbMRBBzc+eIyLNVUTM6Ie1hRms71F8HujuKLga3OIACECv+B42JGj
- mbEX/Iez
- Vr/hJNfhz0WeWkypbzcB3ZJbHQCai2ysGHaA6DYf6rrMohuUa6L5poCvrGUwkIcIa8BtsvwYsDiV74XUFC8QO+yiBAk/C6dsAxfKSNM7BFlSLVkNdwfdHL6RLkNMgTBWBItuBApALW7PpSEx4U9p+ovtaXi7NF0BuwdKMKMblj6WbBcDfUBfWbQfhbTf7qcKxFy3vvgQ0/I7hX8hA6e68In1Rwihs7LjFY9wL9ONnXYgXTVQwIw0NVmZrbmT8vTw17ny42G3Z8U6LkLI=
+References: <20261102225030.2743129-1-joannelkoong@gmail.com>
+ <20261102225030.2743129-3-joannelkoong@gmail.com> <CAO9r8zP87zRuoFqeKFcAJoCrOG8M+7HCtX6hvxwdLzuHUXD0Gw@mail.gmail.com>
+ <CAJnrk1bv-P_TQztAGiHYdfg=5hbj4GREML2M0Uxp5oC1R9J-Mw@mail.gmail.com> <CAO9r8zMvofnW-6OsiasiocOBqoRbZuD71dp3RQE5746YGzamNA@mail.gmail.com>
+In-Reply-To: <CAO9r8zMvofnW-6OsiasiocOBqoRbZuD71dp3RQE5746YGzamNA@mail.gmail.com>
+From: Joanne Koong <joannelkoong@gmail.com>
+Date: Tue, 3 Nov 2026 11:28:35 -0800
+X-Gm-Features: AclHuK_fv28I1LSA-uaRqmIKjly-WVjyuC4Z8VHCIcHxkEADag6Zx2F__lXwrn4
+Message-ID: <CAJnrk1ZAz2ro0-8CC7n8mEjpuRQ64=v0rABtygaw5e2Aohq3=w@mail.gmail.com>
+Subject: Re: [PATCH v1 2/3] mm: memcg: read root lruvec LRU stats from the
+ node counters
+To: Yosry Ahmed <yosry@kernel.org>
+Cc: akpm@linux-foundation.org, shakeel.butt@linux.dev, hannes@cmpxchg.org, 
+	mhocko@kernel.org, roman.gushchin@linux.dev, muchun.song@linux.dev, 
+	nphamcs@gmail.com, chengming.zhou@linux.dev, sj@kernel.org, david@kernel.org, 
+	ljs@kernel.org, linux-mm@kvack.org, cgroups@vger.kernel.org, 
+	damon@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: nkog6nfcrwjii4fzrrgq8ocp1dxr1m4c
+X-Rspamd-Queue-Id: 081E0180004
+X-Rspam-User: 
+X-Rspamd-Server: rspam11
+X-Spam-Status: No, score=-7.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,
+	SPF_HELO_PASS,SPF_PASS autolearn=no autolearn_force=no version=4.0.1
+X-HE-Tag: 1793734128-859910
+X-HE-Meta: U2FsdGVkX19aX/IAS6rynDmFGJRgNuD1ZFTceDN9aVoxkQRzPiZ5XvHgjejL3jqICD3w7wmbjDAJK5ef7yg3xQOdC+i8nRaBDojVTQutX5RmDRivlo+gZMJdyhh6Dq77vyvuniL88Usb1DW4NCM7OE7SL3mwubABusP4DyoO0bESLU87V+wE7aWKwyJhIESggKyYdDm4JqKEjaWJNTihXXa8ZZ3bYAXHkuGqNf3fPeIJF3yrMCtFRiKWIflgMhcCpqqHRZWyR17OiSqkMs/2lqkjQ54++WM5uFd7AUObUfy5KFhuSCvsiBkJ6hHipa1wrXL4UiJBDKVoigAGDfvuSLXMsPgGzGY9Y5NSSpxRWJufKgvWf8+th9S5D1iB3fzK/RFQorkRDwOovFULDtHC9qAWq88ogXq4XBkHOnC+j54D2OcYntRn6+qIqkt6zpY9YzM5iRGehWC+TO9ce4eenCAaBp7K+yv6BCshiddrNoLJCIizRG248FZyXe/fwbFDInJ+KYnujZ0tYM9OV3Wv8vWt6Tzy299eazXbCDpGnUxWLh+8k9Rwda5xhWQ6WfC8fepS4agetKrVscNRoFYOGD5DGwN3AyNVVufBEHYC7DbburunmUQXysmt3+ESrvejaMclVEg7ZdSSgRS9fBy6WF0acMJpd3nv0hwB1gLxqn96Z4skZQLXcDSn3fCG6Uj/7OzP0IaUmrunAN/qOGNMcUCrh56iumxh1bfkstAAgtxBWFK3SlN1sDdIFU4bvixofNIPtiSh17uWqENjQxYGBQuMf3nmOLTe6xXxwy+8hnsbeVwCSb+Bj1wDoIEhU2vdKWRrC+F2WnG6Bvwbub9EUK06pQMtvh3ZN3bJqVby5q4fcbmXEPNQ1cf/tKABtIy4Fvrvpz4D4uCMJJg4jhJKIAsvt2n9KP0KrtmBL+X+paX2aT9UDnZFRYN9ytrbY/M+urH7vqDWQlmMKU5vKuQ
+ UbSve7iN
+ E8EcTWhTVCjHvQppXDF2yc1GsBEszS2enH9LDHHh8Q8CYIidNmSc+uyrcEAiyGfheKcHdeILhTrb+I9g1xNYPpK30lWcO499eDhK6QTqh7Ah6quQmTkPN1SrCWF3Y2Ycq6MPoUjhWADyQFFCOWz6gZ83MhRqKVb7IhRdKOf9pHwjkpvRqXNHazWYvXNB9e3/Brjy/IGbt5muqzkXqL6hb7YvugYuqw2kAyGWtcc4A2HykzhEcn5lFYpqgW39r3c4cuhJisMet38yTHLGDF6tVd7A21tNqvtq26rf9JPzlVZd7PQSNs7E6YuPjgCihm9INkJy9UYOeVFimvgoV1A8Zg9RXtjvxDUJUvmHgkso+uUCRd6aDRtSHHMca31YxQ0U7nZMZpEG+G/ThtQ1/J0TODYyJStkQpJU1Q0NU0l0ry2UsJh9n05sqS4+wI5LDKHp8Hj4d6lI07CP/ZuM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -113,108 +150,119 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Hi Geert,
-
-On 03.11.2026 19:04, Geert Uytterhoeven wrote:
-> On Thu, 15 Oct 2026 at 10:29, Marek Szyprowski <m.szyprowski@samsung.com> wrote:
->> Get rid of the static, limited-size reserved_mem array and replace it
->> with array allocated by memblock_alloc_raw() and accessed directly or
->> through a temporary early_memremap() mapping (depending on the
->> architecture support). Such mapping is needed for some architectures
->> (like ARM64), where linear map is not yet available during early boot
->> scan. The array is allocated from the bottom of RAM to avoid placing it
->> in highmem area, because some architectures (e.g. Xtensa, C-SKY, MIPS32)
->> set the memblock limit to the end of lowmem only after the early scan.
->> The early mapping is not used on PPC64, where the scan is done before
->> early_ioremap_setup(), but the memory allocated by memblock is already
->> accessible at that point.
->>
->> Having a single, writeable array with all reserved regions removes the
->> need to perform two step initialization introduced by commit
->> 8a6e02d0c00e ("of: reserved_mem: Restructure how the reserved memory
->> regions are processed"), so all regions can be processed during the
->> early scan again.
->>
->> The reserved_mem array is allocated only after all static (defined by
->> the 'reg' property) regions are marked as reserved or no-map, so it
->> cannot be placed in any of them. Errors of the early reservations are
->> not recorded per region, only the fact that some of them failed is
->> stored and a message asking to fix the device-tree is printed. The
->> region specific init functions for the static regions are then called
->> in a separate pass, once the array is available. Then all dynamically
->> allocated reserved regions are processed.
->>
->> Suggested-by: Mike Rapoport <rppt@kernel.org>
->> Link: https://lore.kernel.org/all/asc6brs_g0ky0wOM@kernel.org/
->> Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
-> Thanks for your patch, which is now commit aa05faf815836c47 ("of:
-> reserved_mem: allocate and map the reserved_mem array early")
-> in dt-rh/for-next.
+On Mon, Nov 2, 2026 at 5:00=E2=80=AFPM Yosry Ahmed <yosry@kernel.org> wrote=
+:
 >
-> This causes an early crash on BeagleV Starlight Beta:
+> On Mon, Nov 2, 2026 at 4:34=E2=80=AFPM Joanne Koong <joannelkoong@gmail.c=
+om> wrote:
+> >
+> > On Mon, Nov 2, 2026 at 3:29=E2=80=AFPM Yosry Ahmed <yosry@kernel.org> w=
+rote:
+> > >
+> > > > diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+> > > > index ac6c43ea8c5a..938843346571 100644
+> > > > --- a/mm/memcontrol.c
+> > > > +++ b/mm/memcontrol.c
+> > > > @@ -587,6 +587,50 @@ unsigned long lruvec_page_state_local(const st=
+ruct lruvec *lruvec,
+> > > >         return x;
+> > > >  }
+> > > >
+> > > > +static bool lruvec_is_root(const struct lruvec *lruvec)
+> > > > +{
+> > > > +       return !mem_cgroup_disabled() && mem_cgroup_is_root(lruvec_=
+memcg(lruvec));
+> > > > +}
+> > > > +
+> > > > +/**
+> > > > + * lruvec_lru_page_state - read an LRU stat of an lruvec
+> > > > + * @lruvec: the LRU vector to read from
+> > > > + * @idx: the node_stat_item to read
+> > > > + *
+> > > > + * Like lruvec_page_state(), but for the root memcg the node count=
+er is read
+> > > > + * instead. For stats that only track memory charged to a memcg (L=
+RU sizes,
+> > > > + * workingset, rotation and reclaim writeback counts), the root me=
+mcg's
+> > > > + * hierarchical value equals the node counter. The root memcg can =
+just read the
+> > > > + * node counter directly instead of going through rstat, which req=
+uires
+> > > > + * flushing. Flushing the root memcg flushes every cgroup in the s=
+ystem.
+> > > > + *
+> > > > + * Use lruvec_page_state() for other stats (eg slab).
+> > > > + */
+> > > > +unsigned long lruvec_lru_page_state(const struct lruvec *lruvec,
+> > > > +                                   enum node_stat_item idx)
+> > > > +{
+> > > > +       if (lruvec_is_root(lruvec))
+> > > > +               return node_page_state(lruvec_pgdat(lruvec), idx);
+> > > > +
+> > > > +       return lruvec_page_state(lruvec, idx);
+> > > > +}
+> > > > +
+> > > > +/**
+> > > > + * lruvec_lru_page_state_monotonic - lruvec_lru_page_state() for d=
+elta sampling
+> > > > + * @lruvec: the LRU vector to read from
+> > > > + * @idx: the node_stat_item to read
+> > > > + *
+> > > > + * See lruvec_page_state_monotonic() and lruvec_lru_page_state().
+> > > > + */
+> > > > +unsigned long lruvec_lru_page_state_monotonic(const struct lruvec =
+*lruvec,
+> > > > +                                             enum node_stat_item i=
+dx)
+> > > > +{
+> > > > +       if (lruvec_is_root(lruvec))
+> > > > +               return node_page_state_monotonic(lruvec_pgdat(lruve=
+c), idx);
+> > > > +
+> > > > +       return lruvec_page_state_monotonic(lruvec, idx);
+> > > > +}
+> > >
+> > > Why not do this directly in lruvec_page_state() and
+> > > lruvec_page_state_monotonic()? They already fallback to node stats if
+> > > memcg is disabled, why not do the same for the root? Are there cases
+> > > where the node stats are not the right thing to do?
+> >
+> > Hi Yosry,
+> >
+> > Thanks for taking a look at this series! I don't think we're able to
+> > do this directly in lruvec_page_state()/lruvec_page_state_monotonic()
+> > because I think there's still some places where the node stat and the
+> > root memcg stat are not guaranteed to be equal.
+> >
+> > The stat I was looking at last week was slab's NR_SLAB_RECLAIMABLE_B
+> > and NR_SLAB_UNRECLAIMABLE_B where for those, the node counter value
+> > can contain memory/stats that wasn't actually charged to any memcg,
+> > which I think means for these cases, the node counter values can be
+> > larger than what reading the root memcg rstat value would give. The
+> > functions I was looking at were account_slab() and
+> > memcg_slab_post_alloc_hook() where the logic adds every new slab page
+> > to the node counter but the memcg stats only get updated if specific
+> > criteria are met (eg the cache had SLAB_ACCOUNT set or the allocation
+> > had the __GFP_ACCOUNT gfp flag set and the allocation was not from a
+> > root memcg).
 >
->  [...]
->  earlycon: uart0 MMIO32:0x0000000012440000 (options '115200n8')
->  printk: legacy bootconsole [uart0] enabled
->  printk: debug: skip boot console de-registration.
->  efi: UEFI not found.
-> -OF: reserved mem: 0x00000000fb000000..0x00000000fcffffff (32768 KiB)
-> map non-reusable framebuffer@fb000000
-> -OF: reserved mem: 0x00000000f9000000..0x00000000f9ffffff (16384 KiB)
-> map non-reusable framebuffer@f9000000
-> -OF: reserved mem: 0x00000000d0000000..0x00000000f7ffffff (655360 KiB)
-> map non-reusable framebuffer@d0000000
-> -OF: reserved mem: 0x00000000c9000000..0x00000000ccffffff (65536 KiB)
-> map non-reusable framebuffer@c9000000
-> -OF: reserved mem: 0x00000000fa000000..0x00000000faffffff (16384 KiB)
-> nomap non-reusable dma-reserved@fa000000
-> -Reserved memory: created DMA memory pool at 0x000000107a000000, size 16384 KiB
-> -OF: reserved mem: initialized node linux,dma@107a000000, compatible
-> id shared-dma-pool
-> -OF: reserved mem: 0x000000107a000000..0x000000107affffff (16384 KiB)
-> nomap non-reusable linux,dma@107a000000
-> -SBI HSM extension detected
-> -[...]
-> +Oops - store (or AMO) access fault [#1]
-> +Modules linked in:
-> +CPU: 0 UID: 0 PID: 0 Comm: swapper Not tainted
-> 7.4.0-rc1-starlight-00002-gaa05faf81583 #411 PREEMPT
-> +Hardware name: BeagleV Starlight Beta (DT)
-> +epc : __memset+0x68/0xfe
-> + ra : fdt_scan_reserved_mem+0x3a4/0x80a
-> +epc : ffffffff8087fd88 ra : ffffffff80a313c8 sp : ffffffff81403c20
-> + gp : ffffffff814dc6c0 tp : ffffffff8140cf80 t0 : ffffffc4fea38ff0
-> + t1 : 0000000080200000 t2 : ffffffc4fec03008 s0 : ffffffff81403d10
-> + s1 : ffffffffffffffff a0 : ffffffc4fea39000 a1 : 0000000000000000
-> + a2 : 00000000000000f0 a3 : ffffffc4fea390f0 a4 : 0000000000000008
-> + a5 : ffffffff8087fd88 a6 : 00000000000000f0 a7 : 0000000000001000
-> + s2 : ffffffc4fec00000 s3 : 00000000000000f0 s4 : 0000000000000000
-> + s5 : 0000000000002de0 s6 : 0000000000000006 s7 : fffffffffefefefe
-> + s8 : ffffffc4fec02fd4 s9 : ffffffff8148e318 s10: fffffffffefefeff
-> + s11: ffffffc4fea39000 t3 : ffffffff8150df00 t4 : ffffffff8150df00
-> + t5 : ffffffff8150df00 t6 : ffffffff8150df78 ssp : 0000000000000000
-> +status: 0000000200000100 badaddr: ffffffc4fea39000 cause: 0000000000000007
-> +[<ffffffff8087fd88>] __memset+0x68/0xfe
-> +[<ffffffff80a2f63a>] early_init_fdt_scan_reserved_mem+0xa4/0x110
-> +[<ffffffff80a06c8e>] paging_init+0x17c/0x46a
-> +[<ffffffff80a046dc>] setup_arch+0xdc/0x584
-> +[<ffffffff80a009b8>] start_kernel+0x98/0x940
-> +Code: 0000 8793 00e7 8305 97ba 8782 b023 00b2 b423 00b2 (b823) 00b2
-> +---[ end trace 0000000000000000 ]---
-> +Kernel panic - not syncing: Fatal exception in interrupt
-> +---[ end Kernel panic - not syncing: Fatal exception in interrupt ]---
->
-> Reverting the commit fixes the issue.
+> If it's only the slab stats, it probably makes sense to special case
+> those instead of the rest of the readers, right? It would be nice if
+> the default behavior is reading the node stats that doesn't require a
+> flush.
 
-Does moving early_init_fdt_scan_reserved_mem() to the end of setup_bootmem()
-in arch/riscv/mm/init.c change anything?
+If we were to special case it, it would need to exclude more than a
+couple, I think. I asked a LLM and it says NR_KERNEL_STACK_KB,
+NR_PAGETABLE, NR_SECONDARY_PAGETABLE, NR_VMALLOC, NR_HUGETLB,
+WORKINGSET_NODERECLAIM would also need to be excluded. We could add
+this special casing in, but we would need to make sure any new stat
+that gets added in the future that belongs on the exclusion list gets
+put on it. If it's missed, the failure would be silent whereas with a
+separate helper, callers have to explicitly opt in. I'm happy to go
+either way though, so if there's one way you prefer, I'm happy to do
+that for v2.
 
-Could You provide a full boot log from the working kernel and /proc/iomem dump?
-
-
-Best regards
--- 
-Marek Szyprowski, PhD
-Samsung R&D Institute Poland
-
+Thanks,
+Joanne
 
