@@ -1,71 +1,71 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93DEB606D80C
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 22:15:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 093C1606A31B
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 22:20:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=OHyZ8wfv
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=bhk50nlb
 Received: by kanga.kvack.org (Postfix)
-	id B8AD76B05B2; Tue,  3 Nov 2026 17:15:38 -0500 (EST)
+	id 07EBC6B00EF; Tue,  3 Nov 2026 17:20:54 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B23726B05B3; Tue,  3 Nov 2026 17:15:38 -0500 (EST)
+	id 030016B05B1; Tue,  3 Nov 2026 17:20:53 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A60C96B05B4; Tue,  3 Nov 2026 17:15:38 -0500 (EST)
+	id E87BD6B05B4; Tue,  3 Nov 2026 17:20:53 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 7A1CE6B05B2
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 17:15:38 -0500 (EST)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 17D51140559
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 22:15:38 +0000 (UTC)
-X-FDA: 85395215556.06.8BD09FB
-Received: from mta1.migadu.com (out-68.mta1.migadu.com [95.215.58.68])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 9A45320002
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 22:15:35 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=OHyZ8wfv;
-	spf=pass (imf03.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.68 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id C354C6B00EF
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 17:20:53 -0500 (EST)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 3505B1C3E1A
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 22:20:53 +0000 (UTC)
+X-FDA: 85395228786.04.F57E246
+Received: from mta1.migadu.com (out-180.mta1.migadu.com [95.215.58.180])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 5DC66A0003
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 22:20:49 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=bhk50nlb;
+	spf=pass (imf25.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.180 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793744451;
+	b=As4+GhSc+i2GLHPxo4mm7+FKhfKWes/5O0C1lyGLevc+Cme5yC4+cf4NUiemKZY+dbgAUy
+	qHUldvCRRV7shS8oAreTCs+pD1/5StQIaqpzgi6UGl6962+OmDpyOIWGBjd6xtCjj7luzK
+	ohN5VkGqF4RYTQrSpCCHRqpPhyHGM6U=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793744136;
+	s=arc-20220608; t=1793744451;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kD7/oy0hwypJ7ExrCRAHj2lx8lfZCGu4dTxOJHdadCo=;
-	b=kX6uZYCn73GmohiGT7GAHbyKIrtBMt95TOuloLw7xkWPxifgtG5drEf3jLdXKHWCv8Ljwd
-	10pn59/biZMReuBvzUBxfnCMxUWat1r2nkWeQbgLFX0Y/vD4xvPDySBZCUFmv1a/Eze9sJ
-	chwyulUsqR5rZoozvE9J1ZHuqtR2jZI=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793744136;
-	b=mUkfPqulpGQZaQlqcJSsuugLTwQh50c2aVv5FTl8tpm9ybgZzZ9iYtV8F0WoTEBfXPyPvn
-	kXEhyhESv0S3UzmQzHYV5brM96ZrL1/kRjwObVxPPNdswHKm4ybcFj/4QspNTEs10aTbx5
-	fB7v0VxWCsc3Ehsyt45RdobGsAQZvKc=
+	bh=2JcRKYYhCDyV4n2ewkF4zDB+VLlR9fSLMZCr8vYcg00=;
+	b=RyWxHzl9qutWU83H5nFddAOM/Nh/WIzr75BCcgu+3GAj4JjpnIWVKkS35WPKXc16Lx6twr
+	BdrpqlGUplzyq6fSzEKHyFmKu8U4+t1Cw7PNRCwMgAxMT12cSGpwUi6/FEvWlFsvnna33L
+	xTfkIl5g/cI9vq/bIK2T0A52hmrtVFo=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=OHyZ8wfv;
-	spf=pass (imf03.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.68 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	imf25.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=bhk50nlb;
+	spf=pass (imf25.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.180 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=ChNZRk0P4lxxnb8LDGMNOEFjpiuyh542QVx5CS9sNoE=;
+DKIM-Signature: a=rsa-sha256; bh=oRY6ZJSe9wEUPbxPKDQuBBH9NjUT7AFk9vpxsLa6GKs=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1793744134; v=1; x=1794348934;
- b=OHyZ8wfvCS0rj/TuDPJ4pJpEb5DsSryKDlOrCVxHlwF/s9cJO6p3D/+EYEsFJMd45ar+JAB9
- oI03uL3Uj6KKcH5HQ9uN6+u5pxoAYeh7GDhN3n1zSQhp2j1Jy5Y+cVPXvW8RkbX+BKVHaZ7Vcmn
- 5eNK7mCCde11A3UjEHbknMlU=
+ t=1793744448; v=1; x=1794349248;
+ b=bhk50nlbY6zDyd9K6RygscJ3Ufc348IRuhcGHJJNZoTcpqvKRyJlXXg2ufEc2K9DaZu2vmd7
+ MMmuvtNkSyywQmxQ61qKK64X+6VSmsBXqbo3yq5zrKJ9vc9sDRPTI+bxH8+GgLm7Go9/J5PI4BT
+ 9f8WvwyusZiW7t+U2iCGT+VE=
 X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id bb106b05d82ea302;
-	Tue, 03 Nov 2026 22:15:33 +0000
-X-Mizu-Trace-ID: bb106b05d82ea302
+Received: by smtp.migadu.com with ESMTPS id aaf02a928ca210b4;
+	Tue, 03 Nov 2026 22:20:47 +0000
+X-Mizu-Trace-ID: aaf02a928ca210b4
 X-Migadu-Flow: FLOW_OUT
-Message-ID: <989ed3cb-7d71-4064-bb6d-7379a926188d@linux.dev>
-Date: Tue, 3 Nov 2026 22:15:32 +0000
+Message-ID: <a16f1f8e-d3b6-4145-890b-51ce3c0a7f03@linux.dev>
+Date: Tue, 3 Nov 2026 22:20:43 +0000
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 2/4] mm/huge_memory: don't queue folios when underused
- splitting is inactive
+Subject: Re: [PATCH v4 3/4] mm/huge_memory: add a per-order counter for
+ underused splits
 To: Joanne Koong <joannelkoong@gmail.com>, akpm@linux-foundation.org,
  david@kernel.org, ljs@kernel.org
 Cc: baohua@kernel.org, hannes@cmpxchg.org, kas@kernel.org, alex@ghiti.fr,
@@ -74,25 +74,25 @@ Cc: baohua@kernel.org, hannes@cmpxchg.org, kas@kernel.org, alex@ghiti.fr,
  lance.yang@linux.dev, vbabka@kernel.org, rppt@kernel.org, surenb@google.com,
  mhocko@suse.com, willy@infradead.org, linux-mm@kvack.org
 References: <20261103212004.1356327-1-joannelkoong@gmail.com>
- <20261103212004.1356327-3-joannelkoong@gmail.com>
+ <20261103212004.1356327-4-joannelkoong@gmail.com>
 Content-Language: en-US
 From: Usama Arif <usama.arif@linux.dev>
-In-Reply-To: <20261103212004.1356327-3-joannelkoong@gmail.com>
+In-Reply-To: <20261103212004.1356327-4-joannelkoong@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam12
+X-Rspam-User:
+X-Stat-Signature: jjnwugbz9skhscb9f4soaudcrryiy1be
 X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
 	version=4.0.1
-X-Rspamd-Server: rspam09
-X-Stat-Signature: 8b1gxsmbkyd7xp37sxwrgq3g4wb73i85
-X-Rspamd-Queue-Id: 9A45320002
-X-Rspam-User: 
-X-HE-Tag: 1793744135-661037
-X-HE-Meta: U2FsdGVkX19WPbm3O5d0TFYXqRY38Cet80bfwF3Az03nERKWC4H+RQJKqD2gf+TWi8kJ4XNPLXtzq/RYliZ8EuPAaVVyGySSzu2jqVaJGzsnhJcd1hxtyW4Nn1yEVPsVt/nx606VUkJmQB2+y/E5w9GKyYMIQvRj7u3xS3dEYEW14v2dq9dAgC+1+IHsT8kT+Ov6ADT3UoXZc3LMrmNVVSDpJtOxaXzMZ8WgZwbEt8d2qOvFEWIsdQ61tKyMlgUD41rfPu0KbroLGfbE7yfFl4u4mw4JVqCc1kQ8qJR8QGw4nZbYox03rJKTeGiMtAkgzeVvDVA/4G+r3E5EXkiWF6+qm7o1q4kWy48bpct14KXNpfpt8jeacAaQ24OyfXCLP2T2iPhLGjS8MOj5gXU9XYQXx7+zYHoO2Kr5JBJd+JJf7i+b7WlsdaSDbkEuDMEGjOXipcUC1Yzp5fYA5mGx3WEhQK0B19jY9uyyMgCIZwTj2d/qDWpLxYXVDUtRLhO/6uLUHlzEhAwvtbbEYM4T8G2BOnKkxERKV13nPxZ8cUMDeZW5WrsycrXWZAWUvoQUQ2M4Oxp0crV//nMrUATYKkI9qjkx+YApU4rn6ye9R8+fGQk/20G4aQh2wXm3Bk+Gx5sjnu1+RYL2ViACmTWci9WcyEdbfJK1jd2lLUXNNpGje+VdTQLBU53k+WTVQ66+v+coUqMvqjVPd+WkKm2mT5hCl+JAA7LBK0PvP2oigLnKx834KaElFXX1V5WM8QxVAb0FluxSPkAFFOK543mdMtFDxP2VWqCo6hGvbZIbzIg1V4r350ZssabpQgtS4FdjqiPwZzIFpfFXB5XGC21l1jaF9N+jSjG/zdsppqx7it9doFW8Qo408He3ooDI7LLCdrtwimY9G6TjwyAgbTBnTqRemdZE0ZUTq4/KjDnfnTPZnKr4bmVHyhub7o3XjGlOdvNMd3i87I7YKdAStvb
- 5hRkhXC3
- b4KzylnEtW+wb7zlj6rWhVjUapACN0JDK1yG8dstPUAS3XwzYZJ1Vdqp5hIT0mlGlyGASIGp2j+bUO/KGUXw4sbWM1HAg4q/svjOmQkT6v6/x2Uq4vQbcUgOynTIvZTo9ZCjVMTUWIqdORMUSvHfG3nb80omfkpnUls1VD7pH9b25pUmrTV4gRtSmZ+QnVYoo5xWUiWw25feFZcDUT1Sz84KjKfUwRDt5ZyHbU6qKUq0JAVo48DF3xHpvHH+6HNaYEUBXr7pblcayN/Q6RfeGqQassh0glJPkH/310ckiC6m1HHZ63wbK/9Y2v3q/tWM2Rvc0NPMMh3eHUdHi8w2WOwzZ74FUOk+CuJb84+VbLnI7Tf2g/XLsKnoPI8Tm0S7WKeUtTuT26jvyKBA+htEElSvQ7Fn98Ac7K1mhrmWlBgXspTU=
+X-Rspamd-Queue-Id: 5DC66A0003
+X-HE-Tag: 1793744449-766916
+X-HE-Meta: U2FsdGVkX181Lc7xqRDrGVsa99SLgoJuFxe59FSAGEbTmLCmDyhSP4oYR9XUkjOhWoWJuqnPvqCmq78EXY0u83IXo3i2qosPEG53PUzQCHYplgXjeVJWjfWVeQW5ZfJblqFzjdGHF6Bu1J2tYsGrwa1BuAWsdhXVCRdgKam85NubY02qtVA1+oPLMLE7zVe2ShvMtPBKteDkdrHbIZIy4Iji3GvG49lHxrlUWPXyEYRr8i9tLWZkEdd/Ei2j26BRJUaiT1FLAvO+6vUM3aMrxaTu2kS+sHg2AIjJb8sfRDgV8+YapMXLYAYK2Idl2aVdjMyks144b8xE55YC8raQrGLM7rNE8AciI1X5hHPktyMArpn15pHAEJMRe7mYQc8ZOLr3rmmox6Pfcv6y/1taIDbOUK2Gn054gPBwhiVCClt7pt9zEWxztkuyiEIPyVrxkMPbbMZJsOrJFlR0sYTLar9bEsDjqXoSakFf9V/7lveCqNkLrRLLwL94UrNfNhw6hXumixKmEyaX2wQyUjFap9WMyRMPdQGIK3x15aPCZAOjB+CRf3rX8v7QrMqN8iFvbAaSyo8C2vbRXHcPbmdxQtU+s8oXVQvkNst+LzKDwxsI0LJ+DyxG2l2/SwJNFensTiaU69IXvxr7TIcxO+EIkvKrdG9TKj6jfF66TuC8t6Q9upaZv1VJZNjUFCjL0m5K5fLMBs9VOBBQhlMnGRsJW6GghTO0HQIye8/kMYyRwS3m2ikbobOhYHgL1wfsu93nOtJs/vNBznGEYn4QPoynwN7wTqwNOpeGlistT3+9SqqsZ29X20LtTwZW5MwNoM8ubCjavdB0RQ0G06fvnQIdeEZovqylNJZuySwZC/itxa/Sr8W2t7OZ3axOuK4waRvCt2/dEsBuK9Sav/47XVkKsUkO/Szn1hjcxJEJevzHuuXEbUDkgDVIeLWngrF58HSaH+KkSfB6EyarZ5qjZAx
+ yugYXk7B
+ OrfURCzOfcTVzUOeqzHmJrNH9cBkxEYi8+U10Be/7nMZuWTL/QzGDmAvAdsCPFWeXKC+ENOJ6C7HgFAXGtrsLVZzFrhtIgKkpoHR6NHwKCExbSqUfYdUOh9vTQHtsPz6cvqpIH74VJ3dIDd+D+V94hUMIThK1YiepltG4GIhVwBy57+zrFocf1OiLqEgIgmBikvqXQBYahLgTu0Y1YReEtYFbwkLih8haZsSv+Zw10hzPKCtrTu2vpAEOId30OGkNGa4Uo/edB8lk9Ujiai4vPcLtg215mzmLgs0525XUUynKD4TdxievOUKp29Uebqi9h/2TkizVZVKY04Xnm/REfB98fJ3adlZS2S4gh8zMcCn7WGXxU7w2VnLybS3Kw5r1OOwvV1s8RtrU0DXtZNe5xnJOSSdEOuHDXfKMXhsrm1yfVy6PZrIs6X7sb8geQyWAiEucsjqIIY1UBvKn5sSkQWeGaezdB/XsKalvgqvsw0dM+rEVfE78+jmh0VrM4Wb7E7HN1efblDejR+c=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,98 +104,114 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 
 
 On 03/11/2026 21:20, Joanne Koong wrote:
-> Every anonymous PMD-sized folio is put on the deferred split queue when
-> it is first mapped, so that the shrinker can find it under memory
-> pressure and split it if it turns out to be mostly zero-filled.
+> thp_underused_split_page counts every folio that the deferred split
+> shrinker splits for being underused. Today that is only ever a
+> PMD-sized folio, but a later patch queues anonymous mTHP folios for
+> underused splitting too, at which point this counter would start
+> counting mTHP splits as well.
 > 
-> With the default khugepaged/max_ptes_none this is wasted work. The
-> default is HPAGE_PMD_NR - 1, which tells thp_underused() that any number
-> of zero-filled pages is tolerable, which means the shrinker will never
-> split any of these folios for being underused. They take the list_lru
-> lock at fault time, inflate the object count the shrinker reports, and
-> are then walked and dropped when they're first scanned.
+> thp_underused_split_page could then end up larger than thp_split_page,
+> and there would be no per-order count of underused splits. That doesn't
+> match how the other THP split stats work. In /proc/vmstat,
+> thp_split_page and thp_deferred_split_page only count PMD-sized folios.
+> Splits of every size, PMD included, are counted per order in the split
+> and split_deferred stats under hugepages-<size>/stats/.
 > 
-> Skip the queueing when khugepaged/max_ptes_none is at its maximum, and
-> factor that check out into thp_underused_never() so that
-> deferred_split_folio() and thp_underused() share it. Since the default
-> is the maximum, out of the box no folio is queued for underused
-> splitting at all, PMD-sized ones included. Partially mapped folios are
-> still queued as before.
+> Do the same for underused splits. Only count PMD-sized folios in
+> thp_underused_split_page, and add a per-order split_underused stat that
+> counts underused splits of every size. The folio's order has to be read
+> before splitting it, since the folio is no longer large once the split
+> succeeds.
 > 
-> This also matters for a subsequent patch that adds anonymous mTHP folios
-> to the deferred split list, as it keeps systems running the default from
-> paying for that on every anonymous fault.
+> There is no functional change to thp_underused_split_page yet, as only
+> PMD-sized folios are split for being underused today.
 > 
-> Please note that the queue has always been best-effort. A folio that was
-> queued before khugepaged/max_ptes_none is lowered gets dropped from the
-> queue by the first scan that finds it's not underused, so changing the
-> sysctl has never retroactively applied to folios that were already
-> scanned. Requeueing eligible folios when the sysctl changes will be
-> addressed in a separate patch.
-> 
-> Suggested-by: Johannes Weiner <hannes@cmpxchg.org>
-> Suggested-by: David Hildenbrand <david@kernel.org>
+> Suggested-by: Kiryl Shutsemau <kas@kernel.org>
 > Signed-off-by: Joanne Koong <joannelkoong@gmail.com>
 > ---
+>  Documentation/admin-guide/mm/transhuge.rst |  6 ++++++
+>  include/linux/huge_mm.h                    |  1 +
+>  mm/huge_memory.c                           | 10 ++++++++--
+>  3 files changed, 15 insertions(+), 2 deletions(-)
+> 
+> diff --git a/Documentation/admin-guide/mm/transhuge.rst b/Documentation/admin-guide/mm/transhuge.rst
+> index b187d618452f..6f2d92a2a556 100644
+> --- a/Documentation/admin-guide/mm/transhuge.rst
+> +++ b/Documentation/admin-guide/mm/transhuge.rst
+> @@ -719,6 +719,12 @@ split_deferred
+>          it would free up some memory. Pages on split queue are going to
+>          be split under memory pressure, if splitting is possible.
+>  
 
-This sounds reasonable. In production, as far as I know from speaking with folks
-in conferences, no one changes the value during application runtime
-(atleast this is true in meta). Its usually only changed before the workload
-starts (or just at boot time).
+In this same commit, would you mind also doing s/THP/PMD mapped THP/ in
+thp_underused_split_page section in /proc/vmstat section?
+
+Apart from that, LGTM
 
 Acked-by: Usama Arif <usama.arif@linux.dev>
 
->  mm/huge_memory.c | 24 +++++++++++++++++++++---
->  1 file changed, 21 insertions(+), 3 deletions(-)
-> 
+> +split_underused
+> +	is incremented when a huge page on the split queue was split
+> +	because it was underused. This happens when the number of zero-filled
+> +	pages in the huge page is above a certain threshold scaled from
+> +	/sys/kernel/mm/transparent_hugepage/khugepaged/max_ptes_none.
+> +
+>  nr_anon
+>         the number of anonymous THP we have in the whole system. These THPs
+>         might be currently entirely mapped or have partially unmapped/unused
+> diff --git a/include/linux/huge_mm.h b/include/linux/huge_mm.h
+> index c745f7ad2298..421217aca4ed 100644
+> --- a/include/linux/huge_mm.h
+> +++ b/include/linux/huge_mm.h
+> @@ -142,6 +142,7 @@ enum mthp_stat_item {
+>  	MTHP_STAT_SPLIT,
+>  	MTHP_STAT_SPLIT_FAILED,
+>  	MTHP_STAT_SPLIT_DEFERRED,
+> +	MTHP_STAT_SPLIT_UNDERUSED,
+>  	MTHP_STAT_NR_ANON,
+>  	MTHP_STAT_NR_ANON_PARTIALLY_MAPPED,
+>  	MTHP_STAT_COLLAPSE_EXCEED_SWAP,
 > diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-> index 3720c12bdb0d..903bbe972011 100644
+> index 903bbe972011..8f90fb609e57 100644
 > --- a/mm/huge_memory.c
 > +++ b/mm/huge_memory.c
-> @@ -4564,6 +4564,15 @@ bool __folio_unqueue_deferred_split(struct folio *folio)
->  	return unqueued;	/* useful for debug warnings */
->  }
+> @@ -822,6 +822,7 @@ DEFINE_MTHP_STAT_ATTR(shmem_fallback_charge, MTHP_STAT_SHMEM_FALLBACK_CHARGE);
+>  DEFINE_MTHP_STAT_ATTR(split, MTHP_STAT_SPLIT);
+>  DEFINE_MTHP_STAT_ATTR(split_failed, MTHP_STAT_SPLIT_FAILED);
+>  DEFINE_MTHP_STAT_ATTR(split_deferred, MTHP_STAT_SPLIT_DEFERRED);
+> +DEFINE_MTHP_STAT_ATTR(split_underused, MTHP_STAT_SPLIT_UNDERUSED);
+>  DEFINE_MTHP_STAT_ATTR(nr_anon, MTHP_STAT_NR_ANON);
+>  DEFINE_MTHP_STAT_ATTR(nr_anon_partially_mapped, MTHP_STAT_NR_ANON_PARTIALLY_MAPPED);
+>  DEFINE_MTHP_STAT_ATTR(collapse_exceed_swap_pte, MTHP_STAT_COLLAPSE_EXCEED_SWAP);
+> @@ -842,6 +843,7 @@ static struct attribute *anon_stats_attrs[] = {
+>  	&swpout_fallback_attr.attr,
+>  #endif
+>  	&split_deferred_attr.attr,
+> +	&split_underused_attr.attr,
+>  	&nr_anon_attr.attr,
+>  	&nr_anon_partially_mapped_attr.attr,
+>  	&collapse_exceed_swap_pte_attr.attr,
+> @@ -4703,6 +4705,7 @@ static unsigned long deferred_split_scan(struct shrinker *shrink,
+>  					    deferred_split_isolate, &dispose);
 >  
-> +/*
-> + * At the sysctl maximum the user tolerates any number of zero-filled pages,
-> + * so no folio is ever underused.
-> + */
-> +static bool thp_underused_never(unsigned long max_ptes_none)
-> +{
-> +	return max_ptes_none == HPAGE_PMD_NR - 1;
-> +}
-> +
->  /* partially_mapped=false won't clear PG_partially_mapped folio flag */
->  void deferred_split_folio(struct folio *folio, bool partially_mapped)
->  {
-> @@ -4579,8 +4588,17 @@ void deferred_split_folio(struct folio *folio, bool partially_mapped)
->  	if (folio_order(folio) <= 1)
->  		return;
+>  	list_for_each_entry_safe(folio, next, &dispose, _deferred_list) {
+> +		const unsigned int order = folio_order(folio);
+>  		bool did_split = false;
+>  		bool underused = false;
 >  
-> -	if (!partially_mapped && !split_underused_thp)
-> -		return;
-> +	if (!partially_mapped) {
-> +		if (!split_underused_thp)
-> +			return;
-> +		/*
-> +		 * Nothing will ever split this folio for being underused, so
-> +		 * keep it off the queue entirely rather than paying for the
-> +		 * list_lru lock here and a shrinker scan later.
-> +		 */
-> +		if (thp_underused_never(khugepaged_max_ptes_none))
-> +			return;
-> +	}
->  
->  	/*
->  	 * Exclude swapcache: originally to avoid a corrupt deferred split
-> @@ -4630,7 +4648,7 @@ static bool thp_underused(struct folio *folio)
->  	unsigned long max_ptes_none = khugepaged_max_ptes_none;
->  	unsigned long i;
->  
-> -	if (max_ptes_none == HPAGE_PMD_NR - 1)
-> +	if (thp_underused_never(max_ptes_none))
->  		return false;
->  
->  	if (folio_contain_hwpoisoned_page(folio))
+> @@ -4724,8 +4727,11 @@ static unsigned long deferred_split_scan(struct shrinker *shrink,
+>  			goto requeue;
+>  		if (!split_folio(folio)) {
+>  			did_split = true;
+> -			if (underused)
+> -				count_vm_event(THP_UNDERUSED_SPLIT_PAGE);
+> +			if (underused) {
+> +				if (is_pmd_order(order))
+> +					count_vm_event(THP_UNDERUSED_SPLIT_PAGE);
+> +				count_mthp_stat(order, MTHP_STAT_SPLIT_UNDERUSED);
+> +			}
+>  			split++;
+>  		}
+>  		folio_unlock(folio);
 
 
