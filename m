@@ -1,98 +1,144 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 165C6606A324
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 20:27:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C8A8606A31B
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 20:35:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=RBuMa7bV
+	dkim=pass (2048-bit key, unprotected) header.d=soleen.com header.i=@soleen.com header.a=rsa-sha256 header.s=google header.b=EAGQcZQk
 Received: by kanga.kvack.org (Postfix)
-	id E4EA46B00EF; Tue,  3 Nov 2026 15:27:20 -0500 (EST)
+	id 5352D6B00EF; Tue,  3 Nov 2026 15:35:12 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DFF796B05B1; Tue,  3 Nov 2026 15:27:20 -0500 (EST)
+	id 4E56D6B05B1; Tue,  3 Nov 2026 15:35:12 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CEEC86B05B4; Tue,  3 Nov 2026 15:27:20 -0500 (EST)
+	id 3ADB46B05B2; Tue,  3 Nov 2026 15:35:12 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 9E7A26B00EF
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 15:27:20 -0500 (EST)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id D4F35C055F
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 20:27:18 +0000 (UTC)
-X-FDA: 85394942556.29.01E9790
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 43254C0002
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 20:27:17 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RBuMa7bV;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf10.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 009DC6B00EF
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 15:35:11 -0500 (EST)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 808C5A021B
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 20:35:11 +0000 (UTC)
+X-FDA: 85394962422.19.63EC31B
+Received: from mail-vs1-f43.google.com (mail-vs1-f43.google.com [209.85.217.43])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 83F34C000A
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 20:35:09 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=EAGQcZQk;
+	dmarc=pass (policy=reject) header.from=soleen.com;
+	spf=pass (imf28.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.217.43 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793737637;
+	s=arc-20220608; t=1793738109;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=oqrcEuwTdfOxKIfYEs/ydcBz2K7swqbaTmtMGonjwTg=;
-	b=No1iby2GmPZacdwJi7cwVB/F0yrfEW3uK0JDx9MRlnJQb/HeWnsHmy48Y3wjBvKX2HaICs
-	anzKgnY0xHEkqltKuWX5zGF3Ozr8dyAFc3RMp5Zwozf6z9/P4VYrzREIepZyS89TMbi3Ab
-	JRIpwa+F3Tls/sAmPwIomi3ligZwElo=
+	bh=q9fnNuB1Wct/8OEoZPHjnr7HEm078IbGQ7GxgW+ue7k=;
+	b=jNPUzbDUe7DwXmfxkTwBtqMdU2GWtOukvuzz/h4ce2Er13OVkDrShc3Ymei8EWOX8VnvFs
+	F+cNorRNrdloLEaaM7pL+IoxrhrUOVLimRQgwWUdeKig47gJJqOLmsbinG0k5V7yH1RUhc
+	ArE+plLGCA08iG32S5F31UDmLMrsPhA=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RBuMa7bV;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf10.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	imf28.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=EAGQcZQk;
+	dmarc=pass (policy=reject) header.from=soleen.com;
+	spf=pass (imf28.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.217.43 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793737637;
-	b=PcRG7g1Nysj1V1Y1LI3Pi1XPDoW4u5k5Fp2FFqd5GLrRCOqStTRxVVapu/YkYtNcg/0q+6
-	EXIN8I7yiOpk1XjLR1IPu7xlx5xfYYlkvD7DfdkUjThuzdXIJDZkRxep0xQ44lOMNfuV+1
-	yG2ytRGbMgCC5H2D35tNJ35JzfxEGmM=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 89451601FF;
-	Tue,  3 Nov 2026 20:27:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CEA01F00919;
-	Tue,  3 Nov 2026 20:27:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793737635;
-	bh=oqrcEuwTdfOxKIfYEs/ydcBz2K7swqbaTmtMGonjwTg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=RBuMa7bVjJ0UxmmAC9Gj7sJYqYOOjMltPrVTwC9E2KH9ptZ/cGgtyUnJLhymy5yx0
-	 GBnQJ+wJVvrpF/IvMdnRNVX83S2XHSH65MLEwU8kBoyjPBfR3EHEMJABWSJmNLqDEW
-	 6t5JSw70LQ9UWkw8C0nucvCTtdmTxPYDzhKEHmSWJuf3dTCgmG6F5rNWXA2k9lUFPZ
-	 OV5vJOzvtiH7jplG6HgbMspXjSDSddzx9BMwd04MZ/QDSH/PiYnge49CJrruSIaKju
-	 XctTZ6vAqKLPTopE5K/D6CisYvav8teHEc+u/or9bRfiQCqVM9ldyDkBjE91y60cTg
-	 8ldWFY/4tLiBw==
-Date: Tue, 3 Nov 2026 20:27:09 +0000
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Hui Zhu <hui.zhu@linux.dev>, Andrew Morton <akpm@linux-foundation.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	Hui Zhu <zhuhui@kylinos.cn>
-Subject: Re: [PATCH v3] mm/memory: use pmdp_get_lockless() for the pmd read
- in do_fault_around()
-Message-ID: <aupAdlzeOtc0qSsQ@gremlin>
-References: <20261103014749.96764-1-hui.zhu@linux.dev>
- <aumfvNWiemmuyooP@gremlin>
- <61f8a583-5ea5-4fcc-bf30-ea9cafe94d65@kernel.org>
- <auoXIdTpLO60mkEw@gremlin>
- <c0e648e2-aa1f-40f3-84f4-c4ca4123de9f@kernel.org>
+	t=1793738109;
+	b=dE36DCWh3TkBsDi5CC3g4fjjPuEfdeYgODKltwXqDSPWkRtWVBz3UHui16kZTQlLWwpx5r
+	xo3X1fjun7eoB4rSMhDFdTAbj7AJQiXYFh52twkc6qGgBvRIr0JvrJxjF6EwKJK6CTB2Sp
+	bGupEOAv/Eo4f8X0SZ2IgJVB4rpmvJc=
+Received: by mail-vs1-f43.google.com with SMTP id ada2fe7eead31-7cc0e865dd1so1559745137.1
+        for <linux-mm@kvack.org>; Tue, 03 Nov 2026 12:35:09 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=soleen.com; s=google; t=1793738108; x=1794342908; darn=kvack.org;
+        h=message-id:date:references:in-reply-to:cc:to:from:subject
+         :content-transfer-encoding:content-type:mime-version:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=q9fnNuB1Wct/8OEoZPHjnr7HEm078IbGQ7GxgW+ue7k=;
+        b=EAGQcZQko03wxsoZIMW8GxqnEOKILLo8GSZWKWTaaNtzvloUuJB0mP5Py98P/cogW7
+         EEK6uQsjXI6F3ax1a9e9s2v1nvpWTu+6rrgxKnOEc3qgCZSeCYNpqN9HQDsUR9t/HcAd
+         lPTe3QmmD1+fzfQcnVryFunF/+Aw37u/UvLeelMjrFjppb1C2ecvKbV6XcZO9qvqvlxa
+         VzS8V7UmD8OUeiOfe1l8kvO567RIzYoMSNM7EbCso6KYQ9SxtIjH6aZRzFOvPk9j6LTD
+         JCO9LpubVvztsornHqLWFnhb4x5X6AmR+xyDPLNoNsU6d6c5SJb7bZJAzSI6LDUsQyty
+         8diA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793738108; x=1794342908;
+        h=message-id:date:references:in-reply-to:cc:to:from:subject
+         :content-transfer-encoding:content-type:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=q9fnNuB1Wct/8OEoZPHjnr7HEm078IbGQ7GxgW+ue7k=;
+        b=cIFk6sE0xsGprX9IVrLqeJBb54/QULsxjLiEhXfAYUtGYiVIq/pPOZ+eWINVRoZJkY
+         Ny7F5xrmz5lKif+7sAf9d6Vz48L8wxFhlCtpPXHIktuN1EcK/25eyRs66OQKl9uez1X2
+         aeYrmclmQbMnHy89OSdcTDdyAdEgQvlyfgOQGaXpB/Rm5pKtmY1hnHLdyyg4efeWbILY
+         5puDwkiE/BWOwdzxjZMjTCtNW+Va78ZMpD7vSOvMs93ucVHMVPUOUEvd6mEJjhjH0s8F
+         YscyeUVbyDKrRhiz7gcLq1HpjwB0ZpTF/ovqdTuDRWPybphALl6dJ1SzhmHSi92AK0cW
+         Bh1Q==
+X-Forwarded-Encrypted: i=1; AKwUvBwtN2vICnkSA3XsbNzqYbPlw95FQewqLDiihNbkMCzm98k0BovSzxae6Y636soVNPPtwK+0TTjY5w==@kvack.org
+X-Gm-Message-State: APuU4Z+XcVMviW3Ufib96LiKhBvxNOcZzWXTMLO9OyKl1LmXb6Y0YpFg
+	HDsLTkR3YsELXngxU8e+pEc2UQdXqPsbzWjfW/KOr2nwPlkxtDskWeP2vyZ5S22iFoU=
+X-Gm-Gg: AYBFou3K7bAtCKLD1z2CSPQdBFSlrUoLSRNshtnUWNdzKtTjr0iTivnwfhg5xXLWRW5
+	dvZGpEzrQbF6c3/upv/z6YIOvo5rWNlrjHRV/74s/6wko/mwkwKmJhGu1BjOIeR6qvRyeuMZdLD
+	QN9pUqg0daVgoPdCsnKxTFpwrNj7dADErtKP7pxaoTFdAAdH6L8RyuuKgbklRlT+eGEYRqaM76R
+	XudADA9hK0wzLI26w+LStIaYY7A6YxEpx9Ihu5aoFU6RYecVhdWZpnED0Jz08TnDhOK+fWLYCjN
+	N31sJe97uJfXBN/HagBr24kvlHgF6cAdbKQgqNapLDSg+sh7aDeSSMS28cP4ZyOie91/Ku2U4IA
+	YLUIWCV6M+AxvF5ApAzu9UywhmgPvKtzNqXrjpp6tUry86l1yIdTOmg9EtUQgfKTfjM+4fYIJfp
+	9YvjAjU2rYc43s1X8ITPCWcg2SkbBIHmSK0/vKreSfSM2swt6oPtE03Rpj9RTdQt7qDgMjBceU3
+	nfLSi4I3TU8M2jT6lQ6LFc4zPxxuxEtPx5SjWPhhxzPpoSCrCaBoU9C8HFKiuO7HGpqLwnV51mI
+	A9e/0lO72b/yNct3OsCVtjZMtQniw+M1nKI3jnvXk+QsHixBReoEJvpmdmOsrdzF22xm47/RrDl
+	0O6wAr2kDcv8SCWjRIfN0/IwJ8J98V40Qm9k7jWzd8TTcUUE8hs1rFhUOku4+tIJbWjwV
+X-Received: by 2002:a05:6102:689a:b0:7c3:7286:b7ea with SMTP id ada2fe7eead31-7d072c18c5fmr5571067137.17.1793738108579;
+        Tue, 03 Nov 2026 12:35:08 -0800 (PST)
+Received: from soleen.c.googlers.com (64.167.245.35.bc.googleusercontent.com. [35.245.167.64])
+        by smtp.gmail.com with ESMTPSA id a1e0cc1a2514c-998d91d212bsm155984241.6.2026.11.03.12.35.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 03 Nov 2026 12:35:08 -0800 (PST)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <c0e648e2-aa1f-40f3-84f4-c4ca4123de9f@kernel.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH 1/2] liveupdate: luo_file: allow keeping private_data
+ from retrieve until finish
+From: Pasha Tatashin <pasha.tatashin@soleen.com>
+To: Pratyush Yadav <pratyush@kernel.org>
+Cc: Pasha Tatashin <pasha.tatashin@soleen.com>, 
+ Mike Rapoport <rppt@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+ Samiullah Khawaja <skhawaja@google.com>, kexec@lists.infradead.org, 
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org
+In-Reply-To: <20261103181916.2462825-2-pratyush@kernel.org>
+References: <20261103181916.2462825-1-pratyush@kernel.org>
+ <20261103181916.2462825-2-pratyush@kernel.org>
+Date: Tue, 03 Nov 2026 15:35:04 -0500
+Message-Id: <179373810485.663454.14095082591432581397.b4-review@b4>
+X-Mailer: b4 0.16.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2169;
+ i=pasha.tatashin@soleen.com; h=from:subject:message-id;
+ bh=tHMyOi4C3Mnre2HB0bf7Ye3Kluqt8+S+aPWfRyB5xw8=;
+ b=owEBbQKS/ZANAwAKAbt3KEzbc3reAcsmYgBq6kV7B7E4arxmHQz6//CViXirnIcDK3k6F+IF8
+ G2RMjjNCuaJAjMEAAEKAB0WIQRBMaqT7LRvGvB/NmK7dyhM23N63gUCaupFewAKCRC7dyhM23N6
+ 3mpPEADHu6Ct3CLDFw8h+kmZSVru4v6jD1/kPyqBbFgPi31cJh1bTfQMXGCjDlEzSOivapKaQN2
+ 2v/pdI2q2vwigrPI/DlXzZeWXZPTB4XeUFZNYc9LOkOHGjIgA0kqQcQe5wvgxZv93gnSG7U5MCe
+ fNeJBdLPFe4VyDYlD8PPXmI8y32szJDuil5a9xrCoUKTnT0TicuuhdzsohzBIIa82svYrXJ2jhA
+ m8xLRbNbsGzvGBH90ZRBeaAmOCpk4VPmTTDROI/y/X+fqMbWkk+niFXnHSjDgH1ulybqaNifL+s
+ e0O2oS8tujnsw0bs/Ztt2yo4EvklFYYwbAgzPtbRvmo+pk9DIpqYb5kcERbmU0rB4zZvll2ARp+
+ JgRcXoU+h2FD0f6GZACwh7yKwiffUv00MwWqxAtPRjtDhVpbeS9cXRHX3RZ9EpFeJHcXSXDCJsN
+ VTrUwITg1oTg6nnzpJPVn+bVu60UYx8kd26BJSKbfiieN3W4xaEIl6vZs+cTm9R3RO8LbBX/8kJ
+ aJaXh7hl56jKrQ1mbIEePSvABtuiPTQA2ZvFaPa086+0VDvcpIvuF8Zr5zWTG3Ps0MnuJwj5t9O
+ GGbbagRNeTMAhWqjRv4qsStCFg6gcyAMeXHrjuvJUbQTIWRNHwzM+D+zUuhkLYZV8O4gETBtydR
+ X57ZvJBdSqeDlhw==
+X-Developer-Key: i=pasha.tatashin@soleen.com; a=openpgp;
+ fpr=CAAAB722DD22A081F0D49F35633A6A993D43B569
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 83F34C000A
+X-Stat-Signature: tbgzd1i4qcdeftba59yz4embaaz75ujk
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 43254C0002
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
-	autolearn_force=no version=4.0.1
-X-Stat-Signature: mrun7xan7bensgfiujay4fnbignj1swo
-X-HE-Tag: 1793737637-768594
-X-HE-Meta: U2FsdGVkX18qOw1iTSl0tz9X0JIUC6+eZLnEAwYrBLa5YZKE8qevszOAx22+3z5N/g/uaMHDpIfH9b0UPee4rM84QS7Gb0xu9/3VSjbKCku28CDhvnHSZ1LSbjR3ct87U4/UYHFXHO6yOYBtSH9vUzs3nckL0D4dW2e1CcVpitJiJ735CJs04ubq4njZTc2blsELQBKVmI4fWwJE/2702T5fesoAVT01VdfJHVVqQ5jRGVwWt+mRYEFNoOyskYN9zeDSBC283CUjwBo23ZnONWLAg1NEBCTu03tTQ86mxTUN03uDw73LGPMMk9AsBfatMebDWV0EcvGw58fk3hhdhp3FFTVyi8u1NDxmmiCrOxm1v1NSuWTYs031P08lqYuYiV9OiDSsHZ4ohcC97vIqlniZFqX/oezYjD9cNwE4UVXUemgFdsF0osHu6QZE/5QiB9wS/qdOyd1O81EnKf30t+4SAYmZoB4vBJsJmg9yUOui0xzGQ3CY9vDgMt2YjDC6alw5njeC1Jvj7PM/NJXdEpC8sh/Q4p99XvQMKtcqKsZB4D0rM2OHZnUnOMD+qN3Un3my+AaCrG1BC3qIXyLZ/Ch3tky5bqcRb1dyKDj1vpLG100UFFDkK0y41B8ozVXQdcP4tU6clhGpEFY6hcTGPw1k9zNLw+OYLFmT4x/sU+0MnC17mHIg26bxWqwgnODl8UB/3VD0RXz3JaPOsSdBJEAD6w5NiBGuZExPegH7Z00EfI9pBTNZ97WUuOlIyl2SWiq7z27BPjV0CUOZaaMVPjIMvT9u9RyP2w0WZL2v7ymnhvnXETERz7FxtDyzGXyORgcooxlDh7ZcP66ZLT/Fb4cxIjFaLFaifAiYOO/dOVaPErs5O8WM8O4wqoipOU33X9YWu2Sg9AAW9Oq4O9PbWPn9wV4F+xjLu0ZIfFMFmUOTJzPfxECK5Hrm0l4fRGfs2B+f+ynMn9el3rV5Ot9
- O65wIzuq
- qd7E8NvaUE33TU+VmSyXDJutsCYh3Nzod9a6LMtCjvIzFJb4IZW0IYc2ELF0RK/WzFdpOFS1P00rMyzNyZPyvitOKLPi4VVP+2oRET2nQaHwI8Lu6Tstyl2HKa7gl8FHCE2f9hqBE8AS7K+7Nv9HJ7+QIwN1fq2DI8tz5Yie3SAMdw+OjxF9b2oAQI607h5/IO1FXI3/hgJgWfg1sR+WQC8nsZfOyxODaJFFRd+FgeCWFFoXzL3v4RXCeQQnuJ2c3zbg4x5e3DxgpeQZJYEcuHhjPHrSaYlUq9CSYHzgtCK1GJbE=
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1793738109-466306
+X-HE-Meta: U2FsdGVkX1+Mz6BzEVuvDjQ78psayM0W4YgPRQZX7aImFsiQiJG0z6ea+OUndVaKWrWUvCgIe2ageOV4xSe+Xv+42zPzu7dsH00wt52WqVMlbm7DrVliWSFN1nd3mf9zqEWyIaVbLqNGAQ8HT7q5gcBKPVE2ENhubLK8nKGFS+FC/mIGwzaFyFglpbnHsZow7vWtgnYFiKjB7lj6Cw7iTzbdza22ePKMf2JMPpSC1GLdAIL5ltUK1+1n8K/T2etlKfuk3dSnhv3RiAhBPfJd5ZlgiMR83JeBPwbHeuFU5U2WcRSKi2b7VDBPXDjtXbxET2yU4K6pxBzEhfysiLQr5SDgL97WAH2XEpBRXBSmYWkBQ08IKZlIRrkMBXxzlnzK2p01a+fepneLCFMJrX+bDlqa4eouWT8VUR99swwt6M8JESdXU8jTNbFAdeMKdSkeJ2qSWJ+1PNOUh3ULz/v+DMYpTMZWhTlnPe+H0G5vhMZNLZoermIv6Zx3Zugip9V4ChgxY6m+UPbH/zrzxQrxzmi2q0VCWnIEV/8AyHWCNT0xH+hyo/ugTvdWgUslBuwkQcsTNiGsJTvCzLokDmCzI4TAN409P0BtTCKhf2syihs2Qws2PoCfGay9Nv77W5wQZ0T3tqkg0g4FQ7/8Iey3PGjXUt7l77vxWS5f2WNKjikEGJfwq7ADSERQFYJEVs53pf/UZWqdUoqVp+wSgXgoTiQHdhkm7W+CLLRKq/cdj/DWcrSb0PJlqstYc8j1BpIDFw/CE68deKc/iB/LM3Kf1MzhlFtINmMsfr4DgWUPiy4p+HyxMQl3mszZoag5XmafM6A48SQwB0RVCbxFHKwgbK6S1aybsPTSHafgvKjapKaphdXUGKD5/ERqwXtHdq3W4W68Y9VL/cxolIFQKXLldxMadcwk1y9hVKEnfeX0iqIPIi70bLEbsTfCLVxcPoY68DEUN+1s0x+tQB64Sry
+ a4K1NDRW
+ VE8zoHXJeK7NcVgGlUQ8GyBqztJ+lqjr5/9ad53y1G0Q73JCQs6oz2wPyMkIE0aDCim9anfl7mHMnQX8nyVv4A/BRX+NOXBptugbVmBkPC95VtJl8aDg2uk/9Z+xkJF55BZ8vtNU8Y7lRcNevh/E5TCmz1K4s7MPWfLPrNUT005N7Y8/jMqyIl1m11vtzE8wQIwt4zywtZT4Vrlmage3m9wTiOo/rIpacjH1TRnpAmLeLeDBT8h1M2JfvXwwy5KDZYU49Cw1MEi2uCyiRWXp6dVbCpCAk2cEj8NcKmhFvvmhbxeaVi9Tcvej/1aEAAWN22lCQCRoEuUA0uemFEWK677tq0xFA/0rr1RykofYQAL2W9K9WOPIjvqvc0iHD6InBzFJyhBbQXCEJ3RgvnrgXCjcI9Eo/hFdQspr1wdriUydNPfQ2G8R3sQmfmsL4TemgRfyWYA9WsXL6LluMKeCyHu1dto/g7bNgZpqLudqz7MHA/EY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,99 +147,50 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Tue, Nov 03, 2026 at 08:51:38PM +0100, David Hildenbrand (Arm) wrote:
-> On 11/3/26 19:24, Lorenzo Stoakes (ARM) wrote:
-> > It turns out we're as wildly inconsistent on pmdp_get_lockless() as we are on
-> > pmdp_get(), so TL;DR my main concern is moot so:
+> The private_data field of struct liveupdate_file_op_args lets file
+> handlers keep runtime state that is not preserved. It is set by
+> .preserve() and passed to the later outgoing callbacks, up to
+> .unpreserve(). But in the new kernel, nothing set by .retrieve() is
+> kept, and .can_finish() and .finish() always get a NULL private_data.
+> 
+> Handlers might need to keep runtime state from retrieve until finish.
+> For example, memfd will need to remember the folios it holds on to
+> until finish so it can release them there.
+> 
+> Save the private_data set by a successful .retrieve() in the luo_file,
+> and pass it to .can_finish() and .finish(). The handler must free it in
+> .finish().
+> 
+> Signed-off-by: Pratyush Yadav (Google) <pratyush@kernel.org>
+> Link: https://patch.msgid.link/20261103181916.2462825-2-pratyush@kernel.org
 >
-> Yeah, I know that we use it in some core places already properly, like in
-> GUP-fast, __handle_mm_fault() or our complicated __pte_offset_map().
+> diff --git a/include/linux/liveupdate.h b/include/linux/liveupdate.h
+> index 63ea5417de84..21caff8a98a7 100644
+> --- a/include/linux/liveupdate.h
+> +++ b/include/linux/liveupdate.h
+> @@ -36,9 +36,11 @@ struct file;
+>   * @serialized_data:  The opaque u64 handle, preserve/prepare/freeze may update
+>   *                    this field.
+>   * @private_data:     Private data for the file used to hold runtime state that
+> - *                    is not preserved. Set by the handler's .preserve()
+> - *                    callback, and must be freed in the handler's
+> - *                    .unpreserve() callback.
+> + *                    is not preserved. For outgoing, set by the handler's
+> + *                    .preserve() callback, and must be freed in the handler's
+> + *                    .unpreserve() callback. For incoming, set by the handler's
+> + *                    .retrieve() callback on success, and must be freed in the
+> + *                    handler's .finish() callback.
+>   *
+>   * This structure bundles all parameters for the file operation callbacks.
+>   * The 'data' and 'file' fields are used for both input and output.
 
-Yup, but also inconsistently, basically mostly interchangeably with
-pmdp_get(). Rarely is this value actually used.
+Please also update the stale: 'data' argument here.
 
-> > * But it turns out it's all a giant mess (of course)... for
-> >   CONFIG_GUP_GET_PXX_LOW_HIGH arches you really actually need to also do:
-> >
-> > pmdp_get_lockless_start();
-> > pmd = pmdp_get_lockless(...);
-> > pmdp_get_lockless_end();
-> >
-> > And that's because, as Hugh points out in commit 146b42e07494 ("mm/pgtable: add
-> > PAE safety to __pte_offset_map()")), you need IRQs disabled for these arches for
-> > it to be safe.
->
-> Yes, there is this pmdp_get_lockless_start() magic ....
+With that,
 
-One of those things that, the more you look into it, the more stuff you find...
+Reviewed-by: Pasha Tatashin <pasha.tatashin@soleen.com>
 
-> It's really a mess. I wonder if we can remove that somehow completely ...
->
-> arch/mips/Kconfig:      select GUP_GET_PXX_LOW_HIGH if CPU_MIPS32 &&
-> PHYS_ADDR_T_64BIT
-> arch/sh/Kconfig:        select GUP_GET_PXX_LOW_HIGH if X2TLB
-> arch/x86/Kconfig:       select GUP_GET_PXX_LOW_HIGH             if X86_PAE
+-- 
+Pasha
 
-Yeah that'd be ideal.
-
-But actually could we not just simplify and allow these arches to be a little
-bit slower (who cares for museum pieces)?
-
-The only user of the start/end magic is __pte_offset_map(). And it does:
-
-	irqflags = pmdp_get_lockless_start();
-	pmdval = pmdp_get_lockless(pmd);
-	pmdp_get_lockless_end(irqflags);
-
-So that could just get folded into pmdp_get_lockless() for these arches.
-
-That would mean the places that don't require IRQs to be disabled (optimstic
-checks) would now be needlessly enabling/disabling, but hey - use a system that
-doesn't live in a museum :)
-
-That way we could safely convert every non-PMD lock holding caller to
-pmdp_get_lockless() without needing another pmdp_get*() variant + fix confusion
-about whether the start/end magic is required.
-
-And this would work even in places where the IRQs are already disabled as it's
-fine with nesting.
-
-So you'd just update thusly:
-
-static inline pmd_t pmdp_get_lockless(pmd_t *pmdp)
-{
-	pmd_t pmd;
-+	unsigned long flags;
-
-+	local_irq_save(flags);
-	do {
-		pmd.pmd_low = pmdp->pmd_low;
-		smp_rmb();
-		pmd.pmd_high = pmdp->pmd_high;
-		smp_rmb();
-	} while (unlikely(pmd.pmd_low != pmdp->pmd_low));
--
-+	local_irq_restore(flags);
-	return pmd;
-}
-
-...
-
-pte_t *__pte_offset_map(pmd_t *pmd, unsigned long addr, pmd_t *pmdvalp)
-{
--	unsigned long irqflags;
-	pmd_t pmdval;
-
-	rcu_read_lock();
--	irqflags = pmdp_get_lockless_start();
-	pmdval = pmdp_get_lockless(pmd);
--	pmdp_get_lockless_end(irqflags);
-
-	...
-}
-
-What do you think?
-
---
-Cheers, Lorenzo
 
