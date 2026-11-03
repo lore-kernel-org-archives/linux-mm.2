@@ -1,96 +1,97 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10193606EEA3
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 15:55:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CD08606D811
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 16:01:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=LhJtAzid
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=IMVFroQ1
 Received: by kanga.kvack.org (Postfix)
-	id 6FB866B05B6; Tue,  3 Nov 2026 10:55:03 -0500 (EST)
+	id B4DC66B05B2; Tue,  3 Nov 2026 11:01:15 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6D4A46B05B7; Tue,  3 Nov 2026 10:55:03 -0500 (EST)
+	id B262F6B05B8; Tue,  3 Nov 2026 11:01:15 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 612616B05B8; Tue,  3 Nov 2026 10:55:03 -0500 (EST)
+	id A656A6B05B9; Tue,  3 Nov 2026 11:01:15 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 3A2506B05B6
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 10:55:03 -0500 (EST)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id C85CF12048C
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 15:55:02 +0000 (UTC)
-X-FDA: 85394256444.12.9B6DF7E
+	by kanga.kvack.org (Postfix) with ESMTP id 800476B05B2
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 11:01:15 -0500 (EST)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 0867E12049F
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 16:01:15 +0000 (UTC)
+X-FDA: 85394272110.20.A0938E5
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 47DCB40006
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 15:55:01 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LhJtAzid;
-	spf=pass (imf07.hostedemail.com: domain of sashal@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashal@kernel.org;
+	by imf10.hostedemail.com (Postfix) with ESMTP id 2C438C0005
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 16:01:13 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IMVFroQ1;
+	spf=pass (imf10.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793721301;
-	b=PQpVc38odKDP1EOz+2IoLN04w5/Zgcwy104aW/qBA22N//qStSbARjC4h46zyFsYMWrNyy
-	QBHGtb1KaDKJrda6OC4LZMJipBvvE7yvZ0UPKnvpp5aH16hA9uQq3I+UpQNhOiKo+d7opV
-	nPfvGeqkTWH0E9Fqjoo7tWo4bg2Jy9k=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793721301;
+	s=arc-20220608; t=1793721673;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=O/jUknsydqahcxESJ7eAS0pyf88Dhlfftx821T6uSIU=;
-	b=cwvGvCSag/VZ0HlxvWvvGh/kdwL3j+0f4L9ozw54v6u6KN+50YoAvpO0WsOUkdB7sqLIv4
-	1q3mJjsA/BbZ4ZxEJnDOV/b4nvxTi5D9o8OYITF5RHF3W7TpNEFUIvUNE+8a6j1Jzw6o0c
-	K1B28uxbuLnEVWdViUlUg4kLgMjpvZA=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=PSyuWChpGynvLRHVjaO/iLjkmV2JYaTq3nj516QvjuM=;
+	b=H33oucygtieNnlHZ5MGn4jIYC3HT5aw+Dlhq9pU1iyL3V7ycPkceffrMOp58+mJ68ja578
+	boJI773JCLfoSQQFfRe/mife2hFKvbsP9sfZXppeuouML/g+vhRFYf18izrY7ZqQJmthnJ
+	HKID4DK1OSwwY50WPJ3PdS4HAJH7Vd8=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793721673;
+	b=M4QmUrDtAh2riArgQK1kzsMa5WYvF4D1yT+5yL7FjVLft0ChmpEuQ2ivFB9epQev6Ozzg2
+	hhMk90wWwHWFB7CEBjM5W9yCsLhBMvrS0VPNiCIdWuyZ10+D92Ygbaz52qkFKd1vVbfrYs
+	u0931Z3Fp7rYFPvxeqsJ4/BMzPO5cVE=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LhJtAzid;
-	spf=pass (imf07.hostedemail.com: domain of sashal@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashal@kernel.org;
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IMVFroQ1;
+	spf=pass (imf10.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id CF1F4429D1;
-	Tue,  3 Nov 2026 15:54:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3E061F00A1B;
-	Tue,  3 Nov 2026 15:54:57 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 4FFB141950;
+	Tue,  3 Nov 2026 16:01:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FD601F000C1;
+	Tue,  3 Nov 2026 16:01:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793721298;
-	bh=O/jUknsydqahcxESJ7eAS0pyf88Dhlfftx821T6uSIU=;
-	h=From:To:Cc:Subject:Date;
-	b=LhJtAzido5Pe5ihl8fxiEg46QKwuK908HCgwtjhnQbkDmIasZz64TkoKMXKOZc7Vn
-	 MVAK++JAzdBxFurU4SuzXMoPjb9T+tnjcwydP4JYn8gbc69NPI1RdCuf7r/ZWs0uHz
-	 XgsX9OZ31Z9J8E4ALLsUXmWaMIrkTBw63xoiL3gA4PveJp8SP/JSsJF7uQEqzXVQfb
-	 5UbMarVD9TOZumQt1rzIjkXEIRQYEjGf9mhjRddlNz2LB6wR1eOkek+74kdrmQ6m6d
-	 mftcY3B6zoyRkEQQzZ8WV5wcEmkIhUlzrCAC54SoU1wuHtc7Lfdti+mr8bAEIGhTYi
-	 EY9wt+vkIKuzQ==
-From: Sasha Levin <sashal@kernel.org>
-To: Johannes Weiner <hannes@cmpxchg.org>,
-	Yosry Ahmed <yosry@kernel.org>,
-	Nhat Pham <nphamcs@gmail.com>,
-	Tejun Heo <tj@kernel.org>,
-	=?UTF-8?q?Michal=20Koutn=C3=BD?= <mkoutny@suse.com>
-Cc: Chengming Zhou <chengming.zhou@linux.dev>,
-	Shuah Khan <shuah@kernel.org>,
-	linux-mm@kvack.org,
-	cgroups@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] selftests/cgroup: read and write size_t with %zu in test_zswap
-Date: Tue,  3 Nov 2026 10:54:56 -0500
-Message-ID: <20261103155456.534684-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.53.0
+	s=k20260515; t=1793721672;
+	bh=PSyuWChpGynvLRHVjaO/iLjkmV2JYaTq3nj516QvjuM=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=IMVFroQ1qx1z6bfBCYYz2bd8YHfKv5JB8R3RCU2WD1829BGMlrHnRpsj+rN4xW3vd
+	 ZHbnv7fZjTfyrBTs/osD2c56v7mzj5rkowlYlds9EKi9XFi9qNHQA59tC1YV+3WDX9
+	 +NBpWvuqgOcrnCNFqbYFU3q0mPYQdazovNqWNMSixO/UKk2+G5tY6j/E1YpuqVwfV9
+	 zArRzpk0pAAyrJVt5qr2GHNQqvb6FXHKeuhiM20TrQH1TprTy9ER+nGvf4xM6LtL+5
+	 wPS7M2ctjVhyFjN3Lr7BxkWryUmDi+wIBrA7mBrsP0ghIhLE8r2vVU4lGuxKfppnOx
+	 vSXb6Ati0bilA==
+From: Pratyush Yadav <pratyush@kernel.org>
+To: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+Cc: Pasha Tatashin <pasha.tatashin@soleen.com>,  Pratyush Yadav
+ <pratyush@kernel.org>,  Alexander Graf <graf@amazon.com>,  Andrew Morton
+ <akpm@linux-foundation.org>,  Chen Pei <cp0613@linux.alibaba.com>,  George
+ Guo <guodongtai@kylinos.cn>,  Kexin Liu <liukexin@kylinos.cn>,  Sourabh
+ Jain <sourabhjain@linux.ibm.com>,  kexec@lists.infradead.org,
+  linux-kernel@vger.kernel.org,  linux-mm@kvack.org
+Subject: Re: [PATCH 2/2] kho: fix bootmem sizing
+In-Reply-To: <20261103-kho-bootmem-sizing-v1-2-45aa74098f34@kernel.org> (Mike
+	Rapoport's message of "Tue, 03 Nov 2026 13:49:50 +0200")
+References: <20261103-kho-bootmem-sizing-v1-0-45aa74098f34@kernel.org>
+	<20261103-kho-bootmem-sizing-v1-2-45aa74098f34@kernel.org>
+Date: Tue, 03 Nov 2026 17:01:08 +0100
+Message-ID: <2vxz5wydnbuj.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Rspam-User:
-X-Stat-Signature: qo9b1o65qhakmwi1bn43ojq3fyntbjxs
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+Content-Type: text/plain
+X-Rspamd-Server: rspam06
+X-Stat-Signature: eix9y7s4jow1ybu68ft1p9r9fp39eek8
+X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: 47DCB40006
-X-HE-Tag: 1793721301-685860
-X-HE-Meta: U2FsdGVkX18z+RMM8bzd1xAA59lw29v78ihwUB8X8RxRNdmO6fM96EPcaaJEHhqOUl3oxel5syh2VE+xyNVJ0OQPSY+k4eAT8qVi4IIBxw0tQAVTZwtD5zbwVaCW1GQbU4j/EFDmnfZ4+35BTgH0T1t2CfeC2J9wh9llApyvlWimcFDYNgdjedlK+j8eAJR2MgppmXweSH4DSFYzDTulzpmmTqsnjmHnOCOjpmlhBCjl3QLvyYBty8ZV8lSc8VpXp2UnWHsfhQ0YCljGq8BNpxMtSN8R3hlhyVFljdDf7vtQCS7krWgtys6MGOgtHeqc4UndvxwtJegVpY0Xh42RSZP3e3glLf9jNNGAmsSHAtBFH6hlb6Vv7qU+yRTxdRWekCzbQiiaQo5Wv2gSQbyqOYAQMGR56L4bpyQPngi1AFc6vRIMpHxpwSrpgJG06zIIJcnXlDg58F9ctkFlnXJq1Fx1ebb/7bHC2sD5K9p4EfYBpGS8qyGCvI59aymoSWM/owU5pebmyK+JcmYczO7kNPvqB9wfMaRFRg0b+ld7R4stJ69rabXouuxqmWE0pGg8iqEc2XjR2Btl3RynZBN1Qjjfpq9IzFTnvSpHX3sPcXz+gu0aw1YEh/+oGHbWXED+UEkA/1xGuqpv2Y2ioMqia9841oZLJKYIGdE7nRD89yHu00YVmDVXhkl2acLrwh0shdoIxQPQmxY1sd/hIk3VfZGK3GWvPU1A0S/dE9bGwSRM7SxQ7Ops5C065Cl8J7vqUA5Ry7b4BwsxKCebDMz3ShUzAlG51m7VJbbJua1sT4fnjBAGcKzxV8NJjHcBYFnedhb/yozvsDRjUXAEb3oTvlnvDokOhYgJQpW7gxLct4IdBBBAuCKNjP5YCPxR3Rhv4jvWBVwJPI+kSSABfewwcrFCXszxqOMDJUcDEVqvRkrucsDmKUwKD4li6YY/iNgu5iELvVfmRLUnZP//DKA
- 6s/HFCs+
- RMUjcT87L7XYxaMIk5lzjP2S0/+n4pTujISseI90WwKaoCGjkQyYIvNaXye4sDq0UwA+4oH+UGEXDJkMnsK+/r2B4hjR5EBecTlx1ooQFMtES5Jp8yWaHXEJHJb6m4pX+ucMoyUn3Maj/S8buaDnISGrgWw6bZIaAfo7GAOLxExqEHbjFQI3uupta4l8gbJPITVJzlsupWMgjObRVFQvRGy/ZTo+87Zy/7LZ8Wm2iIKwrYhRA57d/NejY/pVM8UtT5jNsqVK3dbFZZfTM6a8N614Wg10oTRa+3bIG1+MbFiTSv/SU9HoullC0OBsqsR9qINAc0eqoo2SvMrU=
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
+	version=4.0.1
+X-Rspamd-Queue-Id: 2C438C0005
+X-Rspam-User: 
+X-HE-Tag: 1793721673-263874
+X-HE-Meta: U2FsdGVkX18riIoOyUlZXGZ94N4avmtVQ6OM+0OvWXwxeklGWAut20JRjHVLdNVuS+qCYiqjNro11LvFHXOdHS92oWS9h/xUCWOaaWKMnqJf0L/QPpZ8CNG+N3piQi4PMx8nte/WJBQIFwOMf1ED7trrjQNe0HUCF3Cm80mgGFhMAJXCFDYcyjsAfvi/IpiQW1ygBEFx7u0zpfmn/8BUHYu29jqht5i8sv0cdqP5CNOrOtHlN3c3vxB7WXOptCij9GRZnoqjyiqGCpHU5s21twatyJ91mrC4xYI3pN+7ZZ+FwVEBkKR9jKstBhHb+P/ceM9D+mU1wjjXQR1DflDZMy14bT2iAkJupPKrTbg3w9hKn/DcjqRTADwgsAuhJJLa3JZGQuDTq8+KLyAcgDxm1JkndkzZ/91pNpWkqO42ovbc7vk5+5qWXtvt4yMIFlQshJbW4tCbYs57JJ5Ry74bRXE6aQPTdcfHyNcC1LTkw0ikbvkGVPNIQGxrr3auTeCvX4GmFMeqcp5lAiZERqFBLKa8AmblVrRjB1wFvAG2s9FGFjVV9/uqyBXely+5pci/4gmlcl/yHgI7PrbJFpP/CKu41MwuUhwmxf0L6a+HywSYZAWgtWNXeI476L4iOiaW4Sn0AzqRDbtQmf1pPLZ0k0g5c5OSXasynrcX6oauUccxBjBfYEXfWZPb9BRiwAvDv3XVEEI5Y/SgBW3iLiOEqsSLELkLHjTFqrOf0SUFS2jCbYmeme5dFEoDfk9wml+Gzpxml1VAY5X0Gd8tFeVsOo2dTUSZXorTPQ/GwE5KHXZJ0hL2/LWc25XAV1AMEAmVBzdCRphFruS3hI89+zu11L/gaKi/gIQuR8pQA/i1+Sf9/77Wh0LCBT1TjRKbB4OXQVq4s6CdyYSPx8Fo149MvQqJ2bjreQK1RDFyfcg38zjy9k3An8GjtCg64e7LED3OGNhkWxMBIr9PzJUmeNq
+ oB9MBJ3b
+ UhoMd8JLm0OgstPrdAjSco5mm/BTC8eKrE+zT8kjS3qzqNGCcLuFD3lPlFQL25q/wNfu9pZL4nLqKOMMQM6vQTLrUBk9DCPzL0D3VS3rGGlwoezrC8uVZzm1ZGhnPxfcXkP+Zbnn5mhYnz2DzeZVrCFaUmwVK3Tz0decXPrAgEvzmAkA6QLqWQ6ijoqZRUWZPmttji4zgUK142aLnVtE/ls0MmAVkXSeW840hO2KpX+igqOa7YQUv9e3EbTvMjWauMpIu
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,48 +100,202 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 32-bit architectures size_t is an unsigned int, and reading and
-writing it with %ld warns:
+Hi Mike,
 
-  test_zswap.c:34:29: warning: format '%ld' expects argument of type 'long int *', but argument 3 has type 'size_t *' {aka 'unsigned int *'} [-Wformat=]
+On Tue, Nov 03 2026, Mike Rapoport (Microsoft) wrote:
 
-Use %zu.
+> Bootmem areas are sized from overlapping views of the memory reserved in
+> memblock:
+>
+> * the global area is sized from all reserved memory, including memory
+>   allocated on specific nodes, so on NUMA systems everything allocated
+>   on a node is accounted in both the global area and the area of that
+>   node.
+> * per-node sizes are calculated after the lowmem and the global areas
+>   are reserved. With CONFIG_NUMA=n all memblock regions belong to node 0,
+>   so the lowmem and the global areas are accounted in the size of node 0
+>   area and scaled once again.
+>
+> As a result, bootmem is about twice bigger than it should be on NUMA
+> systems and about four times bigger with CONFIG_NUMA=n. On small systems
+> reservation of the bootmem may fail and then KHO gets disabled.
+>
+> Make the areas cover separate parts of the reserved memory: the lowmem
+> area covers allocations below ARCH_LOW_ADDRESS_LIMIT, per-node areas
+> cover allocations above it on each node and the global area covers
+> allocations that are not bound to any node. Calculate all sizes before
+> reserving any of the areas.
+>
+> With CONFIG_NUMA=n the global area becomes empty and it is not reserved.
+>
+> Bootmem sizes in MiB in x86 QEMU VMs, before -> after:
+>
+>                      CONFIG_NUMA=y     CONFIG_NUMA=n
+>   1G,  1 node         176 ->   92       320 ->   80
+>   4G,  1 node         508 ->  332      1264 ->  316
+>   16G, 2 nodes       1268 ->  704      2944 ->  736
+>   32G, 4 nodes       2296 -> 1224      5196 -> 1300
+>   64G, 4 nodes       4344 -> 2248      9664 -> 2420
+>
+> Fixes: 3dc92c311498 ("kexec: add Kexec HandOver (KHO) generation helpers")
+> Reported-by: Kexin Liu <liukexin@kylinos.cn>
+> Reported-by: George Guo <guodongtai@kylinos.cn>
+> Closes: https://lore.kernel.org/all/20260904025101.9959-1-dongtai.guo@linux.dev
+> Reported-by: Sourabh Jain <sourabhjain@linux.ibm.com>
+> Closes: https://lore.kernel.org/all/20260922131217.698809-1-sourabhjain@linux.ibm.com
+> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
-Found with a 32-bit build of the selftests with a 64-bit time_t (gcc 16
-and clang 21 with -m32 -D_TIME_BITS=64 -D_FILE_OFFSET_BITS=64);
-KernelCI's 32-bit arm builds show the same warnings. The changed files
-build without format warnings there now, and the x86_64 builds don't
-change. The other selftests get the same kind of fix in separate
-patches.
+Thanks for the patch! My LLM caught an interesting problems that is
+worth considering.
 
- tools/testing/selftests/cgroup/test_zswap.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+On arm64, ARCH_LOW_ADDRESS_LIMIT is arm64_dma_phys_limit - 1, and
+dma_limits_init() sets the default value to PHYS_MASK + 1, and it can
+also be memblock_end_of_dram() in some cases. So on arm64, it is
+possible for lowmem to span the entire RAM.
 
-diff --git a/tools/testing/selftests/cgroup/test_zswap.c b/tools/testing/selftests/cgroup/test_zswap.c
-index d50acc1b83ac8..9b5769b417410 100644
---- a/tools/testing/selftests/cgroup/test_zswap.c
-+++ b/tools/testing/selftests/cgroup/test_zswap.c
-@@ -31,7 +31,7 @@ static int read_int(const char *path, size_t *value)
- 	file = fopen(path, "r");
- 	if (!file)
- 		return -1;
--	if (fscanf(file, "%ld", value) != 1)
-+	if (fscanf(file, "%zu", value) != 1)
- 		ret = -1;
- 	fclose(file);
- 	return ret;
-@@ -45,7 +45,7 @@ static int set_min_free_kb(size_t value)
- 	file = fopen("/proc/sys/vm/min_free_kbytes", "w");
- 	if (!file)
- 		return -1;
--	ret = fprintf(file, "%ld\n", value);
-+	ret = fprintf(file, "%zu\n", value);
- 	fclose(file);
- 	return ret;
- }
+Currently, that results in over-allocation of bootmem, and it ends up
+being 4x what it should be. While obviously problematic, it should still
+work. With this patch, all memory is in lowmem, and nothing ever goes to
+per-node bootmem (except for the node that hosts the lowmem area).
+
+All this is from reading the code, I haven't tried anything out yet.
+
+Not sure how to fix this though. Should we perhaps use
+min(ARCH_LOW_ADDRESS_LIMIT, U32_MAX) for the lowmem limit?
+
+Also, a couple nitpicks below.
+
+> ---
+>  kernel/liveupdate/kexec_handover.c | 83 ++++++++++++++++++++------------------
+>  1 file changed, 44 insertions(+), 39 deletions(-)
+>
+> diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
+> index f268c57413a7e..eaeb895bb7595 100644
+> --- a/kernel/liveupdate/kexec_handover.c
+> +++ b/kernel/liveupdate/kexec_handover.c
+> @@ -684,6 +684,7 @@ static unsigned int bootmem_scale __initdata = 200;
+>  static phys_addr_t bootmem_size_global __initdata;
+>  static phys_addr_t bootmem_size_pernode __initdata;
+>  static phys_addr_t bootmem_size_lowmem __initdata;
+> +static phys_addr_t bootmem_size_node[MAX_NUMNODES] __initdata;
+>  
+>  static int __init kho_parse_bootmem_size(char *p)
+>  {
+> @@ -753,29 +754,48 @@ static int __init kho_parse_bootmem_size(char *p)
+>  }
+>  early_param("kho_bootmem", kho_parse_bootmem_size);
+>  
+> +static phys_addr_t __init reserved_mem_size(phys_addr_t limit, int nid)
+> +{
+> +	return memblock_reserved_kern_size(limit, nid) -
+> +	       memblock_reserved_hugetlb_size(limit, nid);
+> +}
+> +
+> +static phys_addr_t __init bootmem_scale_size(phys_addr_t size)
+> +{
+> +	return size * bootmem_scale / 100;
+> +}
+> +
+> +/*
+> + * The lowmem area covers allocations below ARCH_LOW_ADDRESS_LIMIT, per-node
+> + * areas cover allocations above it on each node and the global area covers
+> + * allocations that are not bound to any node.
+> + *
+> + * All sizes must be calculated before any area is reserved, otherwise the
+> + * areas reserved first will be accounted in the sizes of the others.
+> + */
+>  static void __init bootmem_size_update(void)
+>  {
+> -	/*
+> -	 * If fixed sizes are not provided via command line, calculate them now.
+> -	 * Remove HugeTLB allocations from it because they never get allocated
+> -	 * from bootmem.
+> -	 */
+> +	int nid;
+> +
+>  	if (bootmem_scale) {
+> -		phys_addr_t size;
+> -
+> -		size = memblock_reserved_kern_size(ARCH_LOW_ADDRESS_LIMIT,
+> -						   NUMA_NO_NODE);
+> -		size -= memblock_reserved_hugetlb_size(ARCH_LOW_ADDRESS_LIMIT,
+> -						       NUMA_NO_NODE);
+> -		size = size * bootmem_scale / 100;
+> -		bootmem_size_lowmem = size;
+> -
+> -		size = memblock_reserved_kern_size(MEMBLOCK_ALLOC_ANYWHERE,
+> -						   NUMA_NO_NODE);
+> -		size -= memblock_reserved_hugetlb_size(MEMBLOCK_ALLOC_ANYWHERE,
+> -						       NUMA_NO_NODE);
+> -		size = size * bootmem_scale / 100 - bootmem_size_lowmem;
+> -		bootmem_size_global = size;
+> +		phys_addr_t lowmem, global, size;
+> +
+> +		lowmem = reserved_mem_size(ARCH_LOW_ADDRESS_LIMIT, NUMA_NO_NODE);
+> +		global = reserved_mem_size(MEMBLOCK_ALLOC_ANYWHERE, NUMA_NO_NODE);
+> +		global -= lowmem;
+
+Nit: Please add a short comment above this to explain why you remove
+lowmem from global.
+
+> +
+> +		for_each_node_state(nid, N_MEMORY) {
+> +			size = reserved_mem_size(MEMBLOCK_ALLOC_ANYWHERE, nid) -
+> +			       reserved_mem_size(ARCH_LOW_ADDRESS_LIMIT, nid);
+> +			bootmem_size_node[nid] = bootmem_scale_size(size);
+> +			global -= size;
+
+Nit: same here, a comment here would make it easier to understand.
+
+> +		}
+> +
+> +		bootmem_size_lowmem = bootmem_scale_size(lowmem);
+> +		bootmem_size_global = bootmem_scale_size(global);
+> +	} else {
+> +		for_each_node_state(nid, N_MEMORY)
+> +			bootmem_size_node[nid] = bootmem_size_pernode;
+>  	}
+>  
+>  	/*
+> @@ -784,24 +804,9 @@ static void __init bootmem_size_update(void)
+>  	 */
+>  	bootmem_size_lowmem = round_up(bootmem_size_lowmem, BOOTMEM_ALIGNMENT_BYTES);
+>  	bootmem_size_global = round_up(bootmem_size_global, BOOTMEM_ALIGNMENT_BYTES);
+> -}
+> -
+> -static phys_addr_t __init bootmem_size_node(int nid)
+> -{
+> -	phys_addr_t size;
+> -
+> -	if (bootmem_scale) {
+> -		size = memblock_reserved_kern_size(MEMBLOCK_ALLOC_ANYWHERE,
+> -						   nid);
+> -		/* Do not count HugeTLB pages. */
+> -		size -= memblock_reserved_hugetlb_size(MEMBLOCK_ALLOC_ANYWHERE,
+> -						       nid);
+> -		size = size * bootmem_scale / 100;
+> -	} else {
+> -		size = bootmem_size_pernode;
+> -	}
+> -
+> -	return round_up(size, BOOTMEM_ALIGNMENT_BYTES);
+> +	for_each_node_state(nid, N_MEMORY)
+> +		bootmem_size_node[nid] = round_up(bootmem_size_node[nid],
+> +						  BOOTMEM_ALIGNMENT_BYTES);
+>  }
+>  
+>  bool kho_bootmem_overlap(phys_addr_t phys, size_t size)
+> @@ -891,7 +896,7 @@ static void __init kho_reserve_bootmem(void)
+>  	 * memoryless nodes, as we can not allocate bootmem areas there.
+>  	 */
+>  	for_each_node_state(nid, N_MEMORY) {
+> -		if (kho_reserve_bootmem_area(&i, bootmem_size_node(nid),
+> +		if (kho_reserve_bootmem_area(&i, bootmem_size_node[nid],
+>  					     MEMBLOCK_ALLOC_ACCESSIBLE, nid)) {
+>  			pr_err("Failed to reserve nid %d bootmem\n", nid);
+>  			goto err_free_bootmem_areas;
+
 -- 
-2.53.0
-
+Regards,
+Pratyush Yadav
 
