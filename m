@@ -1,97 +1,97 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CD08606D811
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 16:01:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49B3E606A327
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 16:03:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=IMVFroQ1
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=NoYPn26D
 Received: by kanga.kvack.org (Postfix)
-	id B4DC66B05B2; Tue,  3 Nov 2026 11:01:15 -0500 (EST)
+	id 44D2B6B00EF; Tue,  3 Nov 2026 11:03:25 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B262F6B05B8; Tue,  3 Nov 2026 11:01:15 -0500 (EST)
+	id 3FE4C6B05B1; Tue,  3 Nov 2026 11:03:25 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A656A6B05B9; Tue,  3 Nov 2026 11:01:15 -0500 (EST)
+	id 314AC6B05B5; Tue,  3 Nov 2026 11:03:25 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 800476B05B2
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 11:01:15 -0500 (EST)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 0867E12049F
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 16:01:15 +0000 (UTC)
-X-FDA: 85394272110.20.A0938E5
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id F3C156B00EF
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 11:03:24 -0500 (EST)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 796DC80488
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 16:03:24 +0000 (UTC)
+X-FDA: 85394277528.11.953F52A
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 2C438C0005
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 16:01:13 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IMVFroQ1;
-	spf=pass (imf10.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	by imf29.hostedemail.com (Postfix) with ESMTP id ADB7E120009
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 16:03:22 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NoYPn26D;
+	spf=pass (imf29.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793721673;
+	s=arc-20220608; t=1793721802;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=PSyuWChpGynvLRHVjaO/iLjkmV2JYaTq3nj516QvjuM=;
-	b=H33oucygtieNnlHZ5MGn4jIYC3HT5aw+Dlhq9pU1iyL3V7ycPkceffrMOp58+mJ68ja578
-	boJI773JCLfoSQQFfRe/mife2hFKvbsP9sfZXppeuouML/g+vhRFYf18izrY7ZqQJmthnJ
-	HKID4DK1OSwwY50WPJ3PdS4HAJH7Vd8=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793721673;
-	b=M4QmUrDtAh2riArgQK1kzsMa5WYvF4D1yT+5yL7FjVLft0ChmpEuQ2ivFB9epQev6Ozzg2
-	hhMk90wWwHWFB7CEBjM5W9yCsLhBMvrS0VPNiCIdWuyZ10+D92Ygbaz52qkFKd1vVbfrYs
-	u0931Z3Fp7rYFPvxeqsJ4/BMzPO5cVE=
+	bh=LqiZBukabC/Spv3pdRBRSpF1gRozSstXD+PcI6qYPVQ=;
+	b=KrBYInbcACTuM5CDFHcVjGQ/kkh7JPVnG5MB6A+EYlHUF80yzh9YxHXe4vtZTPxZF06kqm
+	EsH+L2njv0/1NV11iA3dDQabhfM3tnxXguRjKawqL/v83HdUFPjYY5gJzzth9ej6sY60Xm
+	6a0iiokVvdA1uEc77PtYoszsYDDyp08=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IMVFroQ1;
-	spf=pass (imf10.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NoYPn26D;
+	spf=pass (imf29.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793721802;
+	b=cIpjjDl0okU5Jx5jBf7hJlRFOlg5JCbxbCjaDLwa4BcSlauFWM5zzw16bJzgY5UXQgT32K
+	hL5Qk7EFs0DOLLkAuIipz6NRwLqXAoXGk/3qXIyhjyXjaHAHpZavSaNpuKblik/GWq7KIO
+	7uS5Nconf0BsXGfwSfkX/2nsAVvzG0A=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 4FFB141950;
-	Tue,  3 Nov 2026 16:01:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FD601F000C1;
-	Tue,  3 Nov 2026 16:01:10 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id DFD2443290;
+	Tue,  3 Nov 2026 16:03:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5D741F000C1;
+	Tue,  3 Nov 2026 16:03:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793721672;
-	bh=PSyuWChpGynvLRHVjaO/iLjkmV2JYaTq3nj516QvjuM=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=IMVFroQ1qx1z6bfBCYYz2bd8YHfKv5JB8R3RCU2WD1829BGMlrHnRpsj+rN4xW3vd
-	 ZHbnv7fZjTfyrBTs/osD2c56v7mzj5rkowlYlds9EKi9XFi9qNHQA59tC1YV+3WDX9
-	 +NBpWvuqgOcrnCNFqbYFU3q0mPYQdazovNqWNMSixO/UKk2+G5tY6j/E1YpuqVwfV9
-	 zArRzpk0pAAyrJVt5qr2GHNQqvb6FXHKeuhiM20TrQH1TprTy9ER+nGvf4xM6LtL+5
-	 wPS7M2ctjVhyFjN3Lr7BxkWryUmDi+wIBrA7mBrsP0ghIhLE8r2vVU4lGuxKfppnOx
-	 vSXb6Ati0bilA==
-From: Pratyush Yadav <pratyush@kernel.org>
-To: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-Cc: Pasha Tatashin <pasha.tatashin@soleen.com>,  Pratyush Yadav
- <pratyush@kernel.org>,  Alexander Graf <graf@amazon.com>,  Andrew Morton
- <akpm@linux-foundation.org>,  Chen Pei <cp0613@linux.alibaba.com>,  George
- Guo <guodongtai@kylinos.cn>,  Kexin Liu <liukexin@kylinos.cn>,  Sourabh
- Jain <sourabhjain@linux.ibm.com>,  kexec@lists.infradead.org,
-  linux-kernel@vger.kernel.org,  linux-mm@kvack.org
-Subject: Re: [PATCH 2/2] kho: fix bootmem sizing
-In-Reply-To: <20261103-kho-bootmem-sizing-v1-2-45aa74098f34@kernel.org> (Mike
-	Rapoport's message of "Tue, 03 Nov 2026 13:49:50 +0200")
-References: <20261103-kho-bootmem-sizing-v1-0-45aa74098f34@kernel.org>
-	<20261103-kho-bootmem-sizing-v1-2-45aa74098f34@kernel.org>
-Date: Tue, 03 Nov 2026 17:01:08 +0100
-Message-ID: <2vxz5wydnbuj.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	s=k20260515; t=1793721801;
+	bh=LqiZBukabC/Spv3pdRBRSpF1gRozSstXD+PcI6qYPVQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=NoYPn26DtPseW3G8SiDuJRzt84DlJ541AQ36BDmBoGn6oi52A0qsrlv/JGTmb0y3L
+	 JEyR00+ZLGR96maWW/AZR/QWcqeHvu0d5qLYx9qpuwOLKUSyWq3wUkrgKAbywrpzks
+	 ZWMKNCD4TYm8ljfz27X7SjtFo32/eiWB/yoXMhWQvyThRmIwT8FV4KkdEwlMUSfDdY
+	 PJyRJFj8Gbh2BzDHU5Pnh8dO3gXC0wEbgAvcU1CtVXIHk2xMs7RTTLWn5J7XwyhwLo
+	 H4Tt0680KkZnsWdc4/xt5pbibZY+O+61OUikn5LonqLPhALYcD2hGSc92ygO5Y0bh7
+	 yrefJaaJdejnQ==
+Date: Tue, 3 Nov 2026 16:03:14 +0000
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: Sasha Levin <sashal@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>, 
+	Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
+	Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
+	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
+	Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>, linux-mm@kvack.org, 
+	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] selftests/mm: fix format warnings on 32-bit architectures
+Message-ID: <auoFpa-tuJhQMzVn@gremlin>
+References: <20261103155451.534587-1-sashal@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Rspamd-Server: rspam06
-X-Stat-Signature: eix9y7s4jow1ybu68ft1p9r9fp39eek8
-X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261103155451.534587-1-sashal@kernel.org>
+X-Stat-Signature: 7utgt8nc8xu9hq9faiut3huskztsnhnt
+X-Rspamd-Server: rspam01
+X-Rspam-User: 
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
-	version=4.0.1
-X-Rspamd-Queue-Id: 2C438C0005
-X-Rspam-User: 
-X-HE-Tag: 1793721673-263874
-X-HE-Meta: U2FsdGVkX18riIoOyUlZXGZ94N4avmtVQ6OM+0OvWXwxeklGWAut20JRjHVLdNVuS+qCYiqjNro11LvFHXOdHS92oWS9h/xUCWOaaWKMnqJf0L/QPpZ8CNG+N3piQi4PMx8nte/WJBQIFwOMf1ED7trrjQNe0HUCF3Cm80mgGFhMAJXCFDYcyjsAfvi/IpiQW1ygBEFx7u0zpfmn/8BUHYu29jqht5i8sv0cdqP5CNOrOtHlN3c3vxB7WXOptCij9GRZnoqjyiqGCpHU5s21twatyJ91mrC4xYI3pN+7ZZ+FwVEBkKR9jKstBhHb+P/ceM9D+mU1wjjXQR1DflDZMy14bT2iAkJupPKrTbg3w9hKn/DcjqRTADwgsAuhJJLa3JZGQuDTq8+KLyAcgDxm1JkndkzZ/91pNpWkqO42ovbc7vk5+5qWXtvt4yMIFlQshJbW4tCbYs57JJ5Ry74bRXE6aQPTdcfHyNcC1LTkw0ikbvkGVPNIQGxrr3auTeCvX4GmFMeqcp5lAiZERqFBLKa8AmblVrRjB1wFvAG2s9FGFjVV9/uqyBXely+5pci/4gmlcl/yHgI7PrbJFpP/CKu41MwuUhwmxf0L6a+HywSYZAWgtWNXeI476L4iOiaW4Sn0AzqRDbtQmf1pPLZ0k0g5c5OSXasynrcX6oauUccxBjBfYEXfWZPb9BRiwAvDv3XVEEI5Y/SgBW3iLiOEqsSLELkLHjTFqrOf0SUFS2jCbYmeme5dFEoDfk9wml+Gzpxml1VAY5X0Gd8tFeVsOo2dTUSZXorTPQ/GwE5KHXZJ0hL2/LWc25XAV1AMEAmVBzdCRphFruS3hI89+zu11L/gaKi/gIQuR8pQA/i1+Sf9/77Wh0LCBT1TjRKbB4OXQVq4s6CdyYSPx8Fo149MvQqJ2bjreQK1RDFyfcg38zjy9k3An8GjtCg64e7LED3OGNhkWxMBIr9PzJUmeNq
- oB9MBJ3b
- UhoMd8JLm0OgstPrdAjSco5mm/BTC8eKrE+zT8kjS3qzqNGCcLuFD3lPlFQL25q/wNfu9pZL4nLqKOMMQM6vQTLrUBk9DCPzL0D3VS3rGGlwoezrC8uVZzm1ZGhnPxfcXkP+Zbnn5mhYnz2DzeZVrCFaUmwVK3Tz0decXPrAgEvzmAkA6QLqWQ6ijoqZRUWZPmttji4zgUK142aLnVtE/ls0MmAVkXSeW840hO2KpX+igqOa7YQUv9e3EbTvMjWauMpIu
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: ADB7E120009
+X-HE-Tag: 1793721802-11550
+X-HE-Meta: U2FsdGVkX1/ZqGJDJeZWNzxQ71aBExCovAMpfD6ldZnUg1tdJp/cDaHflKtbChgQc2X0HRbxnL6HaHyiB/gl2x2/p4sLafTDfvzW/gZA5Sqqdrq1x5onKaaUHNmXYcrGQq1J/9GkzNY/RuEkqdmSZVZPVOl1M047+hJJTDreLVIqe2HrXB6RIZCyJCcismsfXmrNWjwsGw5CUYXE/RRvJTqQ2dG8MDx70V9JkhYX2y3vMcgc1Q2rZa3mw3e1SVDOdBseg0EH/khAdtY8ZtoNT76KyxwAqSO1fSec1N1Bg38SBm0DVBFdPbzds3EMOdlZdsYTdZGU0QCPJ3Y1z9Ylyi/C0j9SB0riSkbg3COwHgoWWsdsFbwRRa+f2IaNGWIJ4qzTXOSgk7X8o81AnCe/7iKUWjY9OIt2OM9keE39AopuhtwSn1bQ3z3QpvUqHyUA1Wr9kVs4zM3iyLDMB1vjaS+RL0ukXUTWH1Kn31r+cKX6e7YhrBDYEV4YE88PfivAwJxe2IyNPrzkBKSSzjF61BQU9xFvrZON6zan79DJRbotlj+MdpTPZ2WKhY/3Fs6wAZ1K3RfF5trLqIwyp7Bqy374oXAyM9vP1Z7DEIu2VSQN2CPi5IKh15uSLYDaSxp9EkHN6bYQDkbscmWxkqVG1fLEUbhdLx+cXVkAD8Ud0p9X0VbpFpbomeheudiZatE6Im0Oc1kuTpN0pAyx5O56EApbX+XMqaq/kG47TzVd4NUHuKtV9VFtb7+BHZ50KmGR2fNmzHewE9vkGmoogv/TxNV0XBN3YhWRPVGEsvjjlHTkFbnYBJbBNrHHmZ6U69ICqU4q3RRCQp4adqKVRDPSUYK5m/9jTe2sjwsiIiGdMA9+6D/eKQ4+LcR+uFGEyA48EuNKE9JJeiWY99pN3ka/By5DIOjGh0pNBNMuZGqJcBoXYd2j52zoa0VKnLqTyav8BI4grwx3y3f0s1iL4dO
+ 9TtKDpnK
+ L3wNbVDUNIMgPlyoJS6HGfMIA6ZuRRoFX+R3D4CadYiwbQa3n2NG1pKqQmq1QevcNcfncW5Pc+xDDsj/ucIrpaMaxulE/xt2SwgSgN3k/8I/AZsPOQG+GhLXsVwLxMsWGyAeFkmM9cq+la+9kiJ88gWDDQqXpmK57wwQZYZXDFDSCz2mp5PucULMBeTTRoZBXAn2m8ftPQBEMpFM6/dmrDuK/jMNxKt81Dmq5nSULSo3WBQj6Pq+gIdBiatTM4PegApqh6S0jCwqgc0Ems2aKGjHA+Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,202 +100,257 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Hi Mike,
-
-On Tue, Nov 03 2026, Mike Rapoport (Microsoft) wrote:
-
-> Bootmem areas are sized from overlapping views of the memory reserved in
-> memblock:
+On Tue, Nov 03, 2026 at 10:54:51AM -0500, Sasha Levin wrote:
+> On 32-bit architectures size_t and uintptr_t are unsigned int and
+> ssize_t is int, and with _FILE_OFFSET_BITS=64 off_t is long long, so
+> printing them with %ld, %lu or %lx, or scanning /proc/self/maps into
+> uintptr_t variables with %lx, warns:
 >
-> * the global area is sized from all reserved memory, including memory
->   allocated on specific nodes, so on NUMA systems everything allocated
->   on a node is accounted in both the global area and the area of that
->   node.
-> * per-node sizes are calculated after the lowmem and the global areas
->   are reserved. With CONFIG_NUMA=n all memblock regions belong to node 0,
->   so the lowmem and the global areas are accounted in the size of node 0
->   area and scaled once again.
+>   hugetlb-read-hwpoison.c:32:58: warning: format '%lx' expects argument of type 'long unsigned int', but argument 3 has type 'size_t' {aka 'unsigned int'} [-Wformat=]
 >
-> As a result, bootmem is about twice bigger than it should be on NUMA
-> systems and about four times bigger with CONFIG_NUMA=n. On small systems
-> reservation of the bootmem may fail and then KHO gets disabled.
+> Print size_t with %zu and %zx, casting the nonnegative ssize_t read
+> totals to size_t, print off_t as unsigned long long, and scan the
+> addresses into unsigned long variables.
 >
-> Make the areas cover separate parts of the reserved memory: the lowmem
-> area covers allocations below ARCH_LOW_ADDRESS_LIMIT, per-node areas
-> cover allocations above it on each node and the global area covers
-> allocations that are not bound to any node. Calculate all sizes before
-> reserving any of the areas.
+> split_huge_page_test also builds its debugfs commands from uint64_t
+> addresses with %lx. write_debugfs() has no format attribute, so nothing
+> warned, but on 32-bit the commands get the wrong addresses. Print them
+> with PRIx64, add the attribute, and cast the pointers through uintptr_t,
+> as casting them straight to uint64_t warns on 32-bit too.
 >
-> With CONFIG_NUMA=n the global area becomes empty and it is not reserved.
->
-> Bootmem sizes in MiB in x86 QEMU VMs, before -> after:
->
->                      CONFIG_NUMA=y     CONFIG_NUMA=n
->   1G,  1 node         176 ->   92       320 ->   80
->   4G,  1 node         508 ->  332      1264 ->  316
->   16G, 2 nodes       1268 ->  704      2944 ->  736
->   32G, 4 nodes       2296 -> 1224      5196 -> 1300
->   64G, 4 nodes       4344 -> 2248      9664 -> 2420
->
-> Fixes: 3dc92c311498 ("kexec: add Kexec HandOver (KHO) generation helpers")
-> Reported-by: Kexin Liu <liukexin@kylinos.cn>
-> Reported-by: George Guo <guodongtai@kylinos.cn>
-> Closes: https://lore.kernel.org/all/20260904025101.9959-1-dongtai.guo@linux.dev
-> Reported-by: Sourabh Jain <sourabhjain@linux.ibm.com>
-> Closes: https://lore.kernel.org/all/20260922131217.698809-1-sourabhjain@linux.ibm.com
-> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> Signed-off-by: Sasha Levin <sashal@kernel.org>
 
-Thanks for the patch! My LLM caught an interesting problems that is
-worth considering.
+All looks reasonable so:
 
-On arm64, ARCH_LOW_ADDRESS_LIMIT is arm64_dma_phys_limit - 1, and
-dma_limits_init() sets the default value to PHYS_MASK + 1, and it can
-also be memblock_end_of_dram() in some cases. So on arm64, it is
-possible for lowmem to span the entire RAM.
-
-Currently, that results in over-allocation of bootmem, and it ends up
-being 4x what it should be. While obviously problematic, it should still
-work. With this patch, all memory is in lowmem, and nothing ever goes to
-per-node bootmem (except for the node that hosts the lowmem area).
-
-All this is from reading the code, I haven't tried anything out yet.
-
-Not sure how to fix this though. Should we perhaps use
-min(ARCH_LOW_ADDRESS_LIMIT, U32_MAX) for the lowmem limit?
-
-Also, a couple nitpicks below.
+Acked-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 
 > ---
->  kernel/liveupdate/kexec_handover.c | 83 ++++++++++++++++++++------------------
->  1 file changed, 44 insertions(+), 39 deletions(-)
+> Found with a 32-bit build of the selftests with a 64-bit time_t (gcc 16
+> and clang 21 with -m32 -D_TIME_BITS=64 -D_FILE_OFFSET_BITS=64);
+> KernelCI's 32-bit arm builds show the same warnings. The changed files
+> build without format warnings there now, and the x86_64 builds don't
+> change. The other selftests get the same kind of fix in separate
+> patches.
 >
-> diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
-> index f268c57413a7e..eaeb895bb7595 100644
-> --- a/kernel/liveupdate/kexec_handover.c
-> +++ b/kernel/liveupdate/kexec_handover.c
-> @@ -684,6 +684,7 @@ static unsigned int bootmem_scale __initdata = 200;
->  static phys_addr_t bootmem_size_global __initdata;
->  static phys_addr_t bootmem_size_pernode __initdata;
->  static phys_addr_t bootmem_size_lowmem __initdata;
-> +static phys_addr_t bootmem_size_node[MAX_NUMNODES] __initdata;
->  
->  static int __init kho_parse_bootmem_size(char *p)
+>  .../selftests/mm/hugetlb-read-hwpoison.c      | 25 +++++++-------
+>  .../selftests/mm/hugetlb-soft-offline.c       |  2 +-
+>  tools/testing/selftests/mm/mseal_test.c       |  2 +-
+>  .../selftests/mm/split_huge_page_test.c       | 34 +++++++++----------
+>  4 files changed, 32 insertions(+), 31 deletions(-)
+>
+> diff --git a/tools/testing/selftests/mm/hugetlb-read-hwpoison.c b/tools/testing/selftests/mm/hugetlb-read-hwpoison.c
+> index 31748a24448f8..91b954a078483 100644
+> --- a/tools/testing/selftests/mm/hugetlb-read-hwpoison.c
+> +++ b/tools/testing/selftests/mm/hugetlb-read-hwpoison.c
+> @@ -29,15 +29,15 @@ static void report_status(enum test_status status, const char *test_name,
 >  {
-> @@ -753,29 +754,48 @@ static int __init kho_parse_bootmem_size(char *p)
->  }
->  early_param("kho_bootmem", kho_parse_bootmem_size);
->  
-> +static phys_addr_t __init reserved_mem_size(phys_addr_t limit, int nid)
-> +{
-> +	return memblock_reserved_kern_size(limit, nid) -
-> +	       memblock_reserved_hugetlb_size(limit, nid);
-> +}
-> +
-> +static phys_addr_t __init bootmem_scale_size(phys_addr_t size)
-> +{
-> +	return size * bootmem_scale / 100;
-> +}
-> +
-> +/*
-> + * The lowmem area covers allocations below ARCH_LOW_ADDRESS_LIMIT, per-node
-> + * areas cover allocations above it on each node and the global area covers
-> + * allocations that are not bound to any node.
-> + *
-> + * All sizes must be calculated before any area is reserved, otherwise the
-> + * areas reserved first will be accounted in the sizes of the others.
-> + */
->  static void __init bootmem_size_update(void)
->  {
-> -	/*
-> -	 * If fixed sizes are not provided via command line, calculate them now.
-> -	 * Remove HugeTLB allocations from it because they never get allocated
-> -	 * from bootmem.
-> -	 */
-> +	int nid;
-> +
->  	if (bootmem_scale) {
-> -		phys_addr_t size;
-> -
-> -		size = memblock_reserved_kern_size(ARCH_LOW_ADDRESS_LIMIT,
-> -						   NUMA_NO_NODE);
-> -		size -= memblock_reserved_hugetlb_size(ARCH_LOW_ADDRESS_LIMIT,
-> -						       NUMA_NO_NODE);
-> -		size = size * bootmem_scale / 100;
-> -		bootmem_size_lowmem = size;
-> -
-> -		size = memblock_reserved_kern_size(MEMBLOCK_ALLOC_ANYWHERE,
-> -						   NUMA_NO_NODE);
-> -		size -= memblock_reserved_hugetlb_size(MEMBLOCK_ALLOC_ANYWHERE,
-> -						       NUMA_NO_NODE);
-> -		size = size * bootmem_scale / 100 - bootmem_size_lowmem;
-> -		bootmem_size_global = size;
-> +		phys_addr_t lowmem, global, size;
-> +
-> +		lowmem = reserved_mem_size(ARCH_LOW_ADDRESS_LIMIT, NUMA_NO_NODE);
-> +		global = reserved_mem_size(MEMBLOCK_ALLOC_ANYWHERE, NUMA_NO_NODE);
-> +		global -= lowmem;
-
-Nit: Please add a short comment above this to explain why you remove
-lowmem from global.
-
-> +
-> +		for_each_node_state(nid, N_MEMORY) {
-> +			size = reserved_mem_size(MEMBLOCK_ALLOC_ANYWHERE, nid) -
-> +			       reserved_mem_size(ARCH_LOW_ADDRESS_LIMIT, nid);
-> +			bootmem_size_node[nid] = bootmem_scale_size(size);
-> +			global -= size;
-
-Nit: same here, a comment here would make it easier to understand.
-
-> +		}
-> +
-> +		bootmem_size_lowmem = bootmem_scale_size(lowmem);
-> +		bootmem_size_global = bootmem_scale_size(global);
-> +	} else {
-> +		for_each_node_state(nid, N_MEMORY)
-> +			bootmem_size_node[nid] = bootmem_size_pernode;
+>  	switch (status) {
+>  	case TEST_PASSED:
+> -		ksft_test_result_pass("%s chunk_size=0x%lx\n",
+> +		ksft_test_result_pass("%s chunk_size=0x%zx\n",
+>  				      test_name, chunk_size);
+>  		break;
+>  	case TEST_FAILED:
+> -		ksft_test_result_fail("%s chunk_size=0x%lx\n",
+> +		ksft_test_result_fail("%s chunk_size=0x%zx\n",
+>  				      test_name, chunk_size);
+>  		break;
+>  	case TEST_SKIPPED:
+> -		ksft_test_result_skip("%s chunk_size=0x%lx\n",
+> +		ksft_test_result_skip("%s chunk_size=0x%zx\n",
+>  				      test_name, chunk_size);
+>  		break;
 >  	}
->  
->  	/*
-> @@ -784,24 +804,9 @@ static void __init bootmem_size_update(void)
->  	 */
->  	bootmem_size_lowmem = round_up(bootmem_size_lowmem, BOOTMEM_ALIGNMENT_BYTES);
->  	bootmem_size_global = round_up(bootmem_size_global, BOOTMEM_ALIGNMENT_BYTES);
-> -}
-> -
-> -static phys_addr_t __init bootmem_size_node(int nid)
-> -{
-> -	phys_addr_t size;
-> -
-> -	if (bootmem_scale) {
-> -		size = memblock_reserved_kern_size(MEMBLOCK_ALLOC_ANYWHERE,
-> -						   nid);
-> -		/* Do not count HugeTLB pages. */
-> -		size -= memblock_reserved_hugetlb_size(MEMBLOCK_ALLOC_ANYWHERE,
-> -						       nid);
-> -		size = size * bootmem_scale / 100;
-> -	} else {
-> -		size = bootmem_size_pernode;
-> -	}
-> -
-> -	return round_up(size, BOOTMEM_ALIGNMENT_BYTES);
-> +	for_each_node_state(nid, N_MEMORY)
-> +		bootmem_size_node[nid] = round_up(bootmem_size_node[nid],
-> +						  BOOTMEM_ALIGNMENT_BYTES);
+> @@ -62,7 +62,7 @@ static bool verify_chunk(char *buf, size_t len, char val)
+>
+>  	for (i = 0; i < len; ++i) {
+>  		if (buf[i] != val) {
+> -			ksft_print_msg("check fail: buf[%lu] = %u != %u\n",
+> +			ksft_print_msg("check fail: buf[%zu] = %u != %u\n",
+>  				       i, buf[i], val);
+>  			return false;
+>  		}
+> @@ -79,8 +79,9 @@ static bool seek_read_hugepage_filemap(int fd, size_t len, size_t wr_chunk_size,
+>  	ssize_t total_ret_count = 0;
+>  	char val = offset / wr_chunk_size + offset % wr_chunk_size;
+>
+> -	ksft_print_msg("init val=%u with offset=0x%lx\n", val, offset);
+> -	ksft_print_msg("expect to read 0x%lx bytes of data in total\n",
+> +	ksft_print_msg("init val=%u with offset=0x%llx\n", val,
+> +		       (unsigned long long)offset);
+> +	ksft_print_msg("expect to read 0x%zx bytes of data in total\n",
+>  		       expected);
+>  	if (lseek(fd, offset, SEEK_SET) < 0) {
+>  		ksft_perror("seek failed");
+> @@ -102,8 +103,8 @@ static bool seek_read_hugepage_filemap(int fd, size_t len, size_t wr_chunk_size,
+>
+>  		total_ret_count += ret_count;
+>  	}
+> -	ksft_print_msg("actually read 0x%lx bytes of data in total\n",
+> -		       total_ret_count);
+> +	ksft_print_msg("actually read 0x%zx bytes of data in total\n",
+> +		       (size_t)total_ret_count);
+>
+>  	return total_ret_count == expected;
 >  }
->  
->  bool kho_bootmem_overlap(phys_addr_t phys, size_t size)
-> @@ -891,7 +896,7 @@ static void __init kho_reserve_bootmem(void)
->  	 * memoryless nodes, as we can not allocate bootmem areas there.
+> @@ -116,7 +117,7 @@ static bool read_hugepage_filemap(int fd, size_t len,
+>  	ssize_t total_ret_count = 0;
+>  	char val = 0;
+>
+> -	ksft_print_msg("expect to read 0x%lx bytes of data in total\n",
+> +	ksft_print_msg("expect to read 0x%zx bytes of data in total\n",
+>  		       expected);
+>  	while (total_ret_count < len) {
+>  		ret_count = read(fd, buf, wr_chunk_size);
+> @@ -133,8 +134,8 @@ static bool read_hugepage_filemap(int fd, size_t len,
+>
+>  		total_ret_count += ret_count;
+>  	}
+> -	ksft_print_msg("actually read 0x%lx bytes of data in total\n",
+> -		       total_ret_count);
+> +	ksft_print_msg("actually read 0x%zx bytes of data in total\n",
+> +		       (size_t)total_ret_count);
+>
+>  	return total_ret_count == expected;
+>  }
+> @@ -293,7 +294,7 @@ int main(void)
+>
+>  	signal(SIGBUS, sigbus_handler);
+>  	for (i = 0; i < ARRAY_SIZE(wr_chunk_sizes); ++i) {
+> -		ksft_print_msg("Write/read chunk size=0x%lx\n",
+> +		ksft_print_msg("Write/read chunk size=0x%zx\n",
+>  			       wr_chunk_sizes[i]);
+>
+>  		fd = create_hugetlbfs_file(&file_stat);
+> diff --git a/tools/testing/selftests/mm/hugetlb-soft-offline.c b/tools/testing/selftests/mm/hugetlb-soft-offline.c
+> index d9565219378aa..9bdd78636dc2a 100644
+> --- a/tools/testing/selftests/mm/hugetlb-soft-offline.c
+> +++ b/tools/testing/selftests/mm/hugetlb-soft-offline.c
+> @@ -56,7 +56,7 @@ static int do_soft_offline(int fd, size_t len, int expect_errno)
+>  	}
+>
+>  	memset(filemap, 0xab, len);
+> -	ksft_print_msg("Allocated %#lx bytes of hugetlb pages\n", len);
+> +	ksft_print_msg("Allocated %#zx bytes of hugetlb pages\n", len);
+>
+>  	hwp_addr = filemap + len / 2;
+>  	ret = madvise(hwp_addr, pagesize, MADV_SOFT_OFFLINE);
+> diff --git a/tools/testing/selftests/mm/mseal_test.c b/tools/testing/selftests/mm/mseal_test.c
+> index 1a05e6921fed7..cea6c47cf5091 100644
+> --- a/tools/testing/selftests/mm/mseal_test.c
+> +++ b/tools/testing/selftests/mm/mseal_test.c
+> @@ -24,7 +24,7 @@ static unsigned long get_vma_size(void *addr, int *prot)
+>  	FILE *maps;
+>  	char line[256];
+>  	int size = 0;
+> -	uintptr_t  addr_start, addr_end;
+> +	unsigned long addr_start, addr_end;
+>  	char protstr[5];
+>  	*prot = 0;
+>
+> diff --git a/tools/testing/selftests/mm/split_huge_page_test.c b/tools/testing/selftests/mm/split_huge_page_test.c
+> index 36a6719ff09a8..f8744b5dbf990 100644
+> --- a/tools/testing/selftests/mm/split_huge_page_test.c
+> +++ b/tools/testing/selftests/mm/split_huge_page_test.c
+> @@ -32,9 +32,9 @@ int *expected_orders;
+>  #define SMAP_PATH "/proc/self/smaps"
+>  #define INPUT_MAX 80
+>
+> -#define PID_FMT "%d,0x%lx,0x%lx,%d"
+> -#define PID_FMT_OFFSET "%d,0x%lx,0x%lx,%d,%d"
+> -#define PATH_FMT "%s,0x%lx,0x%lx,%d"
+> +#define PID_FMT "%d,0x%" PRIx64 ",0x%" PRIx64 ",%d"
+> +#define PID_FMT_OFFSET "%d,0x%" PRIx64 ",0x%" PRIx64 ",%d,%d"
+> +#define PATH_FMT "%s,0x%" PRIx64 ",0x%" PRIx64 ",%d"
+>
+>  const char *pagemap_proc = "/proc/self/pagemap";
+>  const char *kpageflags_proc = "/proc/kpageflags";
+> @@ -70,7 +70,7 @@ static int check_after_split_folio_orders(char *vaddr_start, size_t len,
+>  	return status;
+>  }
+>
+> -static void write_debugfs(const char *fmt, ...)
+> +static __printf(1, 2) void write_debugfs(const char *fmt, ...)
+>  {
+>  	char input[INPUT_MAX];
+>  	int ret;
+> @@ -132,12 +132,12 @@ static void verify_rss_anon_split_huge_page_all_zeroes(char *one_page, int nr_hp
+>  	disable_khugepaged(one_page, len);
+>
+>  	/* split all THPs */
+> -	write_debugfs(PID_FMT, getpid(), (uint64_t)one_page,
+> -		      (uint64_t)one_page + len, 0);
+> +	write_debugfs(PID_FMT, getpid(), (uint64_t)(uintptr_t)one_page,
+> +		      (uint64_t)(uintptr_t)one_page + len, 0);
+>
+>  	for (i = 0; i < len; i++)
+>  		if (one_page[i] != (char)0)
+> -			ksft_exit_fail_msg("%ld byte corrupted\n", i);
+> +			ksft_exit_fail_msg("%zu byte corrupted\n", i);
+>
+>  	if (!check_huge_anon(one_page, nr_hpages * pmd_pagesize, 0, pmd_pagesize))
+>  		ksft_exit_fail_msg("Still AnonHugePages not split\n");
+> @@ -181,12 +181,12 @@ static void split_pmd_thp_to_order(int order)
+>  	disable_khugepaged(one_page, len);
+>
+>  	/* split all THPs */
+> -	write_debugfs(PID_FMT, getpid(), (uint64_t)one_page,
+> -		(uint64_t)one_page + len, order);
+> +	write_debugfs(PID_FMT, getpid(), (uint64_t)(uintptr_t)one_page,
+> +		(uint64_t)(uintptr_t)one_page + len, order);
+>
+>  	for (i = 0; i < len; i++)
+>  		if (one_page[i] != (char)i)
+> -			ksft_exit_fail_msg("%ld byte corrupted\n", i);
+> +			ksft_exit_fail_msg("%zu byte corrupted\n", i);
+>
+>  	memset(expected_orders, 0, sizeof(int) * (pmd_order + 1));
+>  	expected_orders[order] = 4 << (pmd_order - order);
+> @@ -269,8 +269,8 @@ static void split_pte_mapped_thp(void)
+>  	}
+>
+>  	/* Split all THPs through the remapped pages. */
+> -	write_debugfs(PID_FMT, getpid(), (uint64_t)page_area,
+> -		      (uint64_t)page_area + page_area_size, 0);
+> +	write_debugfs(PID_FMT, getpid(), (uint64_t)(uintptr_t)page_area,
+> +		      (uint64_t)(uintptr_t)page_area + page_area_size, 0);
+>
+>  	/* Corruption during mremap or split? */
+>  	for (i = 0; i < page_area_size; i++) {
+> @@ -536,16 +536,16 @@ static void split_thp_in_pagecache_to_order_at(size_t fd_size,
 >  	 */
->  	for_each_node_state(nid, N_MEMORY) {
-> -		if (kho_reserve_bootmem_area(&i, bootmem_size_node(nid),
-> +		if (kho_reserve_bootmem_area(&i, bootmem_size_node[nid],
->  					     MEMBLOCK_ALLOC_ACCESSIBLE, nid)) {
->  			pr_err("Failed to reserve nid %d bootmem\n", nid);
->  			goto err_free_bootmem_areas;
+>  	if (offset == -1) {
+>  		for (split_addr = addr; split_addr < addr + fd_size; split_addr += pmd_pagesize)
+> -			write_debugfs(PID_FMT, getpid(), (uint64_t)split_addr,
+> -				      (uint64_t)split_addr + pagesize, order);
+> +			write_debugfs(PID_FMT, getpid(), (uint64_t)(uintptr_t)split_addr,
+> +				      (uint64_t)(uintptr_t)split_addr + pagesize, order);
+>
+>  		expected_orders[order] = fd_size / (pagesize << order);
+>  	} else {
+>  		int times = fd_size / pmd_pagesize;
+>
+>  		for (split_addr = addr; split_addr < addr + fd_size; split_addr += pmd_pagesize)
+> -			write_debugfs(PID_FMT_OFFSET, getpid(), (uint64_t)split_addr,
+> -				      (uint64_t)split_addr + pagesize, order, offset);
+> +			write_debugfs(PID_FMT_OFFSET, getpid(), (uint64_t)(uintptr_t)split_addr,
+> +				      (uint64_t)(uintptr_t)split_addr + pagesize, order, offset);
+>
+>  		for (i = order + 1; i < pmd_order; i++)
+>  			expected_orders[i] = times;
+> @@ -554,7 +554,7 @@ static void split_thp_in_pagecache_to_order_at(size_t fd_size,
+>
+>  	for (i = 0; i < fd_size; i++)
+>  		if (*(addr + i) != (char)i) {
+> -			ksft_print_msg("%lu byte corrupted in the file\n", i);
+> +			ksft_print_msg("%zu byte corrupted in the file\n", i);
+>  			err = EXIT_FAILURE;
+>  			goto out;
+>  		}
+> --
+> 2.53.0
+>
 
--- 
-Regards,
-Pratyush Yadav
+--
+Cheers, Lorenzo
 
