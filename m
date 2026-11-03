@@ -1,154 +1,112 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6147606A329
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 06:26:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7135C606A324
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 06:49:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=etSTVBVJ
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=PCXHJlLx
 Received: by kanga.kvack.org (Postfix)
-	id 304396B05B4; Tue,  3 Nov 2026 01:26:44 -0500 (EST)
+	id 702056B00EF; Tue,  3 Nov 2026 01:49:15 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2DC7D6B05C7; Tue,  3 Nov 2026 01:26:44 -0500 (EST)
+	id 6D99F6B05B1; Tue,  3 Nov 2026 01:49:15 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1CB566B05C8; Tue,  3 Nov 2026 01:26:44 -0500 (EST)
+	id 5EE7C6B05B2; Tue,  3 Nov 2026 01:49:15 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id F097D6B05B4
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 01:26:43 -0500 (EST)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 1275B4032F
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 06:26:43 +0000 (UTC)
-X-FDA: 85392824286.02.7EA2C61
-Received: from mta0.migadu.com (out-187.mta0.migadu.com [91.218.175.187])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 74F8A1C0002
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 06:26:38 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=etSTVBVJ;
-	spf=pass (imf18.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.187 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793687201;
-	b=Cx4nLegSgOL9RPM8rt346Ly7UrhO6RgzWTZIKuNU7gnUt20LyAhKSi84YKKuqxTuZ51lTk
-	d4CIgfIFFlCrFhHkPqF5ZYx2aexvc4f5ckRFZcFgc5rr+hEb0fMM+Jq75mt7owvcGDNL5d
-	5aNMy7OdFa8ELYf5u+W6Xmb/3fay9iA=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=etSTVBVJ;
-	spf=pass (imf18.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.187 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 35D1E6B00EF
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 01:49:15 -0500 (EST)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id D0EE71C35D7
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 06:48:45 +0000 (UTC)
+X-FDA: 85392879810.29.E8C1D07
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf04.hostedemail.com (Postfix) with ESMTP id CB8824000A
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 06:48:43 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PCXHJlLx;
+	spf=pass (imf04.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793687201;
+	s=arc-20220608; t=1793688523;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=89WHsBI4UooPN0e/fzWqgj/M9hLD/tFhYxvpr6aA8I0=;
-	b=AYqmm8AptAbOa094eHNKOrr0bxu9InAXRCjbCkwKttJmCOrOn5NfF39ekyivgPp3a3Sawq
-	qxxMHnaQCExHqW4eI2sDMr+1gorlhTdxRp/CWGHrktQ9Hz958ALhEfperSyQdlfQFWTYjF
-	KSkTpW1Va15Bq/TRBKnv2apcDQuQ2nA=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=R4qncA5U596ba8pavgxH4k05FBMaxgAUsAOufRDPVI0=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1793687193; v=1; x=1794291993;
- b=etSTVBVJTwib+EydsXBTcN46t5ObiEFGSGi0mA2SqS5GCUmazzVB9aqdFy7gKFGoWbosuEPb
- VBj23CX9Jcmlvez2+aLq6OO4n88LYpCbG9YCmlAAHgEOzrK0kJhm7XxGnKaxjemEXepXWm8mrsE
- I2BVPzv7cR6WQbnrY0rGwpyE=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 650e1e2cc95fd22e;
-	Tue, 03 Nov 2026 06:26:33 +0000
-X-Mizu-Trace-ID: 650e1e2cc95fd22e
-X-Migadu-Flow: FLOW_OUT
-From: Lance Yang <lance.yang@linux.dev>
-To: david@kernel.org
-Cc: akpm@linux-foundation.org,
-	hannes@cmpxchg.org,
-	mhocko@kernel.org,
-	qi.zheng@linux.dev,
-	shakeel.butt@linux.dev,
-	ljs@kernel.org,
-	kasong@tencent.com,
-	baohua@kernel.org,
-	axelrasmussen@google.com,
-	yuanchu@google.com,
-	weixugc@google.com,
-	baoquan.he@linux.dev,
-	baolin.wang@linux.alibaba.com,
-	liam@infradead.org,
-	vbabka@kernel.org,
-	rppt@kernel.org,
-	surenb@google.com,
-	mhocko@suse.com,
-	kees@kernel.org,
-	peterz@infradead.org,
-	jannh@google.com,
-	pfalcato@suse.de,
-	hughd@google.com,
-	pasha.tatashin@soleen.com,
-	pratyush@kernel.org,
-	willy@infradead.org,
-	jack@suse.cz,
-	ziy@nvidia.com,
-	lance.yang@linux.dev,
-	riel@surriel.com,
-	harry@kernel.org,
-	apopple@nvidia.com,
-	nico.pache@linux.dev,
-	ryan.roberts@arm.com,
-	dev.jain@arm.com,
-	usama.arif@linux.dev,
-	kas@kernel.org,
-	matthew.brost@intel.com,
-	jhubbard@nvidia.com,
-	peterx@redhat.com,
-	will@kernel.org,
-	aneesh.kumar@kernel.org,
-	npiggin@gmail.com,
-	osalvador@suse.de,
-	minchan@kernel.org,
-	muchun.song@linux.dev,
-	xu.xin@linux.dev,
-	chengming.zhou@linux.dev,
-	chrisl@kernel.org,
-	shikemeng@huaweicloud.com,
-	nphamcs@gmail.com,
-	youngjun.park@lge.com,
-	gourry@gourry.net,
-	joshua.hahnjy@gmail.com,
-	rakie.kim@sk.com,
-	ying.huang@linux.alibaba.com,
-	jgg@ziepe.ca,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	kexec@lists.infradead.org,
-	linux-fsdevel@vger.kernel.org,
-	linux-arch@vger.kernel.org,
-	linux-cxl@vger.kernel.org,
-	mason@kernel.org,
-	stable@vger.kernel.org,
-	usama.anjum@arm.com
-Subject: Re: [PATCH v3 38/47] mm: fix deadlock of mremap() against UFFDIO_MOVE
-Date: Tue,  3 Nov 2026 14:26:28 +0800
-Message-ID: <20261103062628.92242-1-lance.yang@linux.dev>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20261031-fixes_core-v3-38-d6437171ecc3@kernel.org>
-References: <20261031-fixes_core-v3-38-d6437171ecc3@kernel.org>
+	bh=47gVMNE2szA456na8yleBIvHosW+wgwadu3yBUGMAhw=;
+	b=oJSCRd4poluFYJSR0tpsFECQdCP/EP0kxm9x4QHBxHAfAAKNZjTP3NzFx54J+McCmG0mvJ
+	kM14dx6yB7r2ZNEpH/yeBvTt+H2vaJrRKMpHIWDXufasoLixyfZskB6zFhRdJYBKds3Rmo
+	Y9/uoLHb9nN1FRWXF09sunSjxS941OE=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793688523;
+	b=YpV2OW37OJdfzIYj5Ut4PwH6WCD3P2myZVUOiTa7Sz049yFrdLVfZNOmJ/ZHJOYDgjDJW0
+	YkJOfig51+RSVdSbCTTxgNWdz+sfH5/iL2jOob7hhEYsCoKBLf6HlTmXVJfCUfRP7uZoQc
+	ZmtWt6E/vSmcMHiuuUdWuU+pQSXITn4=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PCXHJlLx;
+	spf=pass (imf04.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 1433F43EB9
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 06:48:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0AD51F00A24
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 06:48:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793688522;
+	bh=47gVMNE2szA456na8yleBIvHosW+wgwadu3yBUGMAhw=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=PCXHJlLx5uT56I3g2/299SMhwphQgkeJYW0rwrP1IMJM6akhAulBEQfoHh3VWV4xt
+	 U0ZcdcUBR3fic8CzRDhJOCn42qoqXRkoYBFAPjvFubsywIy1mQJJYPhR+2QMWhX3H/
+	 NcT8Kn1k86ZutxegRMnWH1vTBbHmilczKGpffIL282zNGISD/Qe+Uy5f1dEoVD4oky
+	 X/kkT2+y3+vWiKRmlMJ3TE3QZ8R5gBDYl2jAh7abWtOFU1ecZkW801ThldTB8Xijze
+	 CxdEYu4adfyo+TwF3Vc5QNP4FZF/YppvW+3ZF9+SPuqdS2liHpz41EMnWURyK5t0Un
+	 EqqwDUsXvhPrQ==
+Received: by mail-qk1-f175.google.com with SMTP id af79cd13be357-9440304604aso41040485a.0
+        for <linux-mm@kvack.org>; Mon, 02 Nov 2026 22:48:42 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AKwUvBzjMvaVM594FcBXG7appdqB1yzAQcnSqV9pXV7MWsOIezFW1dFcnz5iA/5cA+Xz2WuWD6mnrGKJgw==@kvack.org
+X-Gm-Message-State: APuU4Z+dLDnap09IYjxKd5fEyWVfdOkM9vEdnRzL3S31TI48S5V2ORpA
+	+CROVs3/xmmakqkVeMu3252FHCFWvmEVpCN/JlZSA/88IzhzIV8IVXuakv27px5b/mxzyozp/g6
+	cD/hAdvXxr/vObQXzl2XNrH9vlO9PJ/s=
+X-Received: by 2002:a05:620a:6013:b0:93e:5de7:fd45 with SMTP id
+ af79cd13be357-94413382637mr2049169685a.18.1793688522192; Mon, 02 Nov 2026
+ 22:48:42 -0800 (PST)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_GIT autolearn=unavailable autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 74F8A1C0002
-X-Stat-Signature: 7krjs9xkznrfxt47xfqkapzuprpqysq6
+References: <20261103025610.3738894-1-ridong.chen@linux.dev> <20261103025610.3738894-8-ridong.chen@linux.dev>
+In-Reply-To: <20261103025610.3738894-8-ridong.chen@linux.dev>
+From: Barry Song <baohua@kernel.org>
+Date: Tue, 3 Nov 2026 14:48:30 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4xCTSctcPcC7X6Dx4zYaOycaPqs0DG7AaxB55wx1Afwpg@mail.gmail.com>
+X-Gm-Features: AclHuK9iw40Xx1JKG7xg0GhepEe64uIgtchPvP4-nxYEY5aIoWWOik_yiFOewsU
+Message-ID: <CAGsJ_4xCTSctcPcC7X6Dx4zYaOycaPqs0DG7AaxB55wx1Afwpg@mail.gmail.com>
+Subject: Re: [PATCH v6 7/7] mm/mglru: add tracepoint for inc_max_seq()
+To: Ridong Chen <ridong.chen@linux.dev>
+Cc: Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu <mhiramat@kernel.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, Johannes Weiner <hannes@cmpxchg.org>, 
+	Michal Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Dave Chinner <david@fromorbit.com>, 
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Muchun Song <muchun.song@linux.dev>, 
+	Qi Zheng <qi.zheng@linux.dev>, David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+	Kairui Song <kasong@tencent.com>, Axel Rasmussen <axelrasmussen@google.com>, 
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
+	Baoquan He <baoquan.he@linux.dev>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
+	linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, cgroups@vger.kernel.org, 
+	"open list:BPF [MISC]:Keyword:(?:b|_)bpf(?:b|_)" <bpf@vger.kernel.org>, Ridong Chen <chenridong@xiaomi.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: hitxnyw5omrgbz4he6qwbbthmiesee9x
+X-Rspamd-Queue-Id: CB8824000A
 X-Rspam-User: 
-X-HE-Tag: 1793687198-689657
-X-HE-Meta: U2FsdGVkX18MEgMoxPyzpJyq84ZwxHvcr/wbjLXMPOs9oqzJfGZPVzdUBkRLyX4rsZnCXhL4VzW02Vd4h26UY3tHMq9xEMM/tn8Qd9tRWl11oqRYM2DPFlYkx0aPOr/g1qJB0iGbcOqxPupo16BJ6b0+UbbW3o3uKhNBYA74FMHdHKwWnR5gX/9itnoWYQR0PENU4zKnbGD7Rcu88mYtkcfS+wNJFEwgE1g0r86VDicEJxxXOvDch/5bt5NO69dHpqgpY8lGsYWfeA2Mo3SpPiE3LVsHMjfa8WO6ZlK8xmGmdJdleitNCoHtKIdbnYjDga2s5V+AH7Zai7IA+qKSsWCFkns25J7+i9wupvw6hf7bYq1xsxWDbZ4AYXPRMlnHXpl+X3298dM+8sbKnwlsUVYNc6N5IOQTHlNQ1dQcj1Pzd6oiZTZ14XFbnPhbC3hldtubjD3bJeNHTXUODVIqMBJHPlNHGnNCMEIAPMpRnPHTULmNjBAd8qxPJHdGEhYE9BoAjmUn2MHdOMw17DejNDyzQTelkgOIKihtQFoi/KAmyu2qrQwYOpDLop+7+B6CNi0WMEdbKKplsug9qQBp1r9ghAtumi2IZaFVuxtOPEgabFdnayM4Y/wPxIsnx9ff6ESZcHRCI3YjEqD/EOnH2+2oTKBS04GhuVOxSne0Ss72vTNMrwvvoUTqJLTIj1UVBWZus45ZDdzgLbo4piny+n++LHm46gbkPlILgmiCpD5UWJtIKiPhmReANqfpVkgQhEbqZnWcnh6rNlQaH0GpuWbXb0fd0X1kfx+oOcpKTb2lf2VJASHkx2t4MLhKER/t6VoqTECStrYhBhqLquE4M9yb6vg6VrQP0m0mQyA5pYzmBDRbYKlvwQlTKPmJcBGSSq6PIXcnPcMqRsvcRQyf/kTDePXbzJ4dYizNs6aoNcNH/12UAcOEH1SRukVK6bH40JrTJse3p3aM0/Pi0/m
- awS1rUaQ
- bjsKRFJBFfWbU+jelssvdkYBj7HfxQc6vdlloJP0euEKPeullIPRBwVGA+IWp9utbdZDqCOKAbxnagy/aSFo45gMFtJdIq56Ru+lSYGD+PnllaQmAgHCuTc/msv8BpIdp+p5fU0vP+uYCK1nTyt9X+p9kq0rxfrnMhB2R/1z7zWV6aGceyIQ+QJ7iACMdhXTumu+P9uE9RT5cQeL9zVWdBl2Fo8E3AzQ76YAoLiSvaBanShMvsYXt1eyV/Q+wTUncJG96zh+6xUkeviAYofxsGJr7qisRnCGkqaBnVm5FC5XBUZ4NOBZQWc13b9rczNccFZKzYnu+QJlj0k06HgISQtATdq9NVAutU3CzeWRLzhDGYNJe69cFNLds96hZpJ9Zmfrob9LllzlYE/94ev4AaFIrawUdbE1WgubMNTK3uXF0fxIskwS1rOrI1O7IFwQ7OF7n
+X-Rspamd-Server: rspam08
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1793688523-461514
+X-HE-Meta: U2FsdGVkX1+4ZSetOF+t6aso1+tknfkda756TWBC54gVC5Av9QJJVL/knx0IYm+60Gz0gRe2NEhQh3reqrmPY/+9jEbejOkA92/TKjFv7XKGDTTyChjUGDX8FNlpruU8jWvyZgwzrrAtoRYgUfboEL+2ujwBNQLoVy2+PQ2jxduhvXTMXY9aRPZTiJL7iB/kX6yU1H50mp3xgL8bN2oaQgMi3YFhZwQmjXtm/R7Gxhe915+J3TlugdKHLLFFoHuaQiazr9HY4uixAWRVGTbqdJflCmT1yygYQJE69nK97fuCiKFoCPxhft12eqN9tUhdtCxaea8w+OsScP9E3Yto1fJJeqkbH/Hs2/bSa2HhDrXX12fkeQSzpW4BBUw/1iOtj1Qt1ig+7w+FR7AjGWojwILCSftduT1Uhqj8BjXhzu6JpO98PRv5SfrTSCd14MzjtyGIxltQXvnjiJkdFU5s7uhcDkAEheMveor42gd7SLtBUYKcD5Sxiz59t6wkUUGVh6eJHsDexRVfrJjV3gap/oUdeULBtTLJCKLgKWT4D4bZZ6WMOW1zOZ2cpjOzgKAEtl3hvkM6v6Lu0MIRRqyzpwg9x2yIlDNwzFwN/YNaMGnc7QSErZ0tT7j4Y0eID2cUJ63DglZ24D6eWyhYpKXl4lxlODChZ1166e2qiiwARkKCSX4hMDK/cq+1L0mIgvI1DEVW78ibOPtOBCFkTlVxcw0Vtjm15D6WRZYci1V4TfM3YLmzHveoJzYV/wN22sskxKbYSndX+VnAWJT7GthlzW5e2I7a91f7dmOgTkPrHRXTq2sYSwkVeTrV5oXV7ULE+ATyiE6dRbtAED/coSnDhXRRQI5OtCcT4kvttn6vyWsszrw1AEn611MdTo4bdysEJqRuHvDL12aInHGhbtrHPOgtDhADoHnynz4IQqQGadAgJUmwZEAh7T5zffvRaxjrYRh9T1I/MjjbIcVvaQh
+ yQaxCqrP
+ klbvSCoUtGDK1KRCAaivUvfXVbErSFYLVTg2FfkpM7Hqc2dSepnxhOKoHeU8nIPBWF71wWzZJJqXEtXdCTh6IqvE7gPfBirtUqDxoOjP7eGP4aCpE/PPcSnQk6cbmJHb9Ooaiihpb21uf5iG+zpGz9JFXojzIsLb2xddHlBsS+3COQUTvfr4PuiNPEA850VoXTdmPTS1D7M17xuGgXIZc35V62IEsrPp6fXhX4OKFrGt3Atvl50691SSVEw8bRHMXK0yRtQzOuwfGoNQFl9jU1IS+6B6OXcXqk+B+xaHox3z+olpzXD17tkBpGHNB5GLw88ks5tUkcAWxT02Hjwt9IriPunjHuSIVNy5S
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -157,41 +115,68 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
+On Tue, Nov 3, 2026 at 10:58=E2=80=AFAM Ridong Chen <ridong.chen@linux.dev>=
+ wrote:
+>
+> From: Ridong Chen <chenridong@xiaomi.com>
+>
+> Aging in MGLRU advances max_seq via inc_max_seq(), creating a new
+> youngest generation. There is currently no tracepoint on this path, so
+> the moment a new generation is created, and how the min_seq of each type
+> trails behind it, cannot be observed as it happens.
 
-On Sat, Oct 31, 2026 at 10:40:07AM +0100, David Hildenbrand (Arm) wrote:
->From: Chris Mason <mason@kernel.org>
->
->With per-VMA locks, UFFDIO_MOVE can run concurrently with mremap()
->on different VMAs in the same mm. Those VMAs can share page tables, so
->both operations can acquire the same pair of page-table locks.
->
->UFFDIO_MOVE orders the locks by address, while mremap() takes the source
->lock first. These conflicting orders can deadlock; mremap() holding
->mmap_lock for writing no longer helps.
->
->Move double_pt_lock() and double_pt_unlock() to mm/internal.h and use
->them for all page-table moves in mremap(). Preserve the source entry
->checks after acquiring both locks. Remove the comments claiming that
->exclusive mmap_lock makes lock ordering irrelevant.
->
->In move_ptes(), make sure to just recheck source and destination PMD
->after taking the locks and drop the overly-long comment.
->
->Fix generated by an LLM and sent by Chris Mason in private.
->
->[ david: use new helpers consistently; simplify description and comments;
->         move_ptes() fixup ]
->
->Fixes: 867a43a34ff8 ("userfaultfd: use per-vma locks in userfaultfd operations")
->Cc: stable@vger.kernel.org
->Signed-off-by: Chris Mason <mason@kernel.org>
->Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
->Acked-by: Muchun Song <muchun.song@linux.dev>
->Tested-by: Muhammad Usama Anjum <usama.anjum@arm.com>
->Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
->---
+We might be more interested in why aging is triggered rather
+than the exact moment when max_seq is advanced.
 
-Nothing jumped out at me, so:
+With your patch, we get:
 
-Reviewed-by: Lance Yang <lance.yang@linux.dev>
+~ # cat /sys/kernel/tracing/trace | grep mglru_inc_max_seq
+           a.out-93      [001] d..1.   278.276539:
+mm_mglru_inc_max_seq: nid=3D0 memcg_id=3D1 max_seq=3D4 anon_min_seq=3D2
+file_min_seq=3D1 nr_anon=3D{0x0,0xf016,0x12,0x0}
+nr_file=3D{0x1886,0xb,0x4c,0x0}
+         kswapd0-50      [000] d..1.   278.422400:
+mm_mglru_inc_max_seq: nid=3D0 memcg_id=3D1 max_seq=3D5 anon_min_seq=3D2
+file_min_seq=3D2 nr_anon=3D{0x5,0xccb6,0x3439,0x0}
+nr_file=3D{0x4ae,0x4f,0x55,0x0}
+         kswapd0-50      [000] d..1.   278.508003:
+mm_mglru_inc_max_seq: nid=3D0 memcg_id=3D1 max_seq=3D6 anon_min_seq=3D3
+file_min_seq=3D4 nr_anon=3D{0xccb6,0x3d29,0x1,0x0}
+nr_file=3D{0x0,0x59,0x7,0x0}
+         kswapd0-50      [000] d..1.   280.046056:
+mm_mglru_inc_max_seq: nid=3D0 memcg_id=3D1 max_seq=3D7 anon_min_seq=3D4
+file_min_seq=3D5 nr_anon=3D{0x3bf3,0xcbbd,0x23e,0x0}
+nr_file=3D{0x0,0xb,0x1,0x0}
+         kswapd0-50      [000] d..1.   280.124876:
+mm_mglru_inc_max_seq: nid=3D0 memcg_id=3D1 max_seq=3D8 anon_min_seq=3D5
+file_min_seq=3D6 nr_anon=3D{0xcafd,0x3e31,0x0,0x0}
+nr_file=3D{0x0,0x5,0x7,0x0}
+           a.out-96      [001] d..1.   290.629014:
+mm_mglru_inc_max_seq: nid=3D0 memcg_id=3D1 max_seq=3D9 anon_min_seq=3D7
+file_min_seq=3D6 nr_anon=3D{0x0,0x10615,0xb,0x0}
+nr_file=3D{0x331,0xb,0x9a,0x0}
+         kswapd0-50      [000] d..1.   290.653098:
+mm_mglru_inc_max_seq: nid=3D0 memcg_id=3D1 max_seq=3D10 anon_min_seq=3D7
+file_min_seq=3D7 nr_anon=3D{0x15,0xef23,0x18c4,0x0}
+nr_file=3D{0xb,0xb8,0x55,0x0}
+           a.out-96      [001] d..1.   290.684875:
+mm_mglru_inc_max_seq: nid=3D0 memcg_id=3D1 max_seq=3D11 anon_min_seq=3D8
+file_min_seq=3D9 nr_anon=3D{0xeee3,0x1afb,0x2,0x0}
+nr_file=3D{0x0,0x76,0x4,0x0}
+
+You can see that the youngest generation is always zero,
+because you're just getting the newly added youngest
+generation :-)
+
+This somehow suggests that the information is redundant, as
+there is always a zero there.
+
+I suspect we'll need an additional tracepoint to show why
+aging is triggered and at what sc->priority it happens.
+
+But do you know why you trace the moment just after aging
+is completed, rather than the reason why aging is needed?
+
+Best,
+Regards
 
