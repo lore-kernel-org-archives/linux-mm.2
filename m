@@ -1,65 +1,65 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAB75606A327
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 01:41:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B658A606A331
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 01:43:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=bxyWOX6X
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=F3yly/uT
 Received: by kanga.kvack.org (Postfix)
-	id C5E616B05B6; Mon,  2 Nov 2026 20:41:34 -0500 (EST)
+	id BC5A86B05B9; Mon,  2 Nov 2026 20:43:46 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C362A6B05B9; Mon,  2 Nov 2026 20:41:34 -0500 (EST)
+	id B76A06B05BA; Mon,  2 Nov 2026 20:43:46 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B73CE6B05BA; Mon,  2 Nov 2026 20:41:34 -0500 (EST)
+	id A3F556B05BB; Mon,  2 Nov 2026 20:43:46 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 967466B05B6
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 20:41:34 -0500 (EST)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 26E47120307
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 01:41:34 +0000 (UTC)
-X-FDA: 85392105708.08.9350AC0
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 8E62780003
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 01:41:32 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bxyWOX6X;
-	spf=pass (imf02.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 7E5096B05B9
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 20:43:46 -0500 (EST)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 7F5B680248
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 01:43:45 +0000 (UTC)
+X-FDA: 85392111210.16.3777224
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf16.hostedemail.com (Postfix) with ESMTP id E5EC7180003
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 01:43:43 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="F3yly/uT";
+	spf=pass (imf16.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793670092;
+	s=arc-20220608; t=1793670224;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=EFfsUw24ICsmnAL75V/w1w9LO9fCOi9ofFCSWn0tGhQ=;
-	b=aflNQE6+f0vjwDSkiL/aMicEXPycmcz3Lhor7wC6CCc5b4n5qEBARpjdud2GQwfeAeaKC5
-	BjH4saM6sSmcYRCrJ2XXdKL1ZrHrTkHA+oa5n7FFVK4Aozl5U9QT6G76xVWJwD48vRglQG
-	fyw0TSXMOILqjl4i5dOCjXnUWFoGn3s=
+	bh=4kniJNifKCcuuGOg4oonNj+llyeJgvvjLzYbyLbb6wM=;
+	b=XfKDxK1cYr1kpaOZHpAfbAdHt3Aupg0hXMTZCIYvLMlREEy6KObPr+teWyBwYtdXsQz60O
+	cvb8UtMpyJPSwJy+gSEdaiEzAn+9UKUH6LCEhi5qTETvetLXSUzav3R8DWGqIQimD61ftC
+	6wHKMbCEzbq1v9rkHoauvYtA217kVbY=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793670092;
-	b=TZ3I2J8nhy9LOJPciLzp6usVz46XuaXKpkxj+3HfyhxKwRLBQga4+9V/786raIIivRn5K6
-	QCJM37sedX1KHhBw4UC/pvUWSkHvuSzdxRPiqQwypM+PhhthLTnzwxZfJXFzS0xHI2CDe7
-	9EU10ePs01RmzSJ/D1v9WSB7qTdGSQI=
+	t=1793670224;
+	b=3pLYwsDPyTIrrR88KOM5l4R/qk0Gi4fgr1XmfXJDR/Wnjb8Ex7hvG7+LDI+XErCx6eBeDJ
+	cul7t3aRL6lj4moi8oUjitVx1hch/EqYqPhfIpFVbKNKqpagvM3OIG4srk1b6JeEH4ybKc
+	wi1jhQmMo0/Aj07LIMPU7RgeTO4IL0g=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bxyWOX6X;
-	spf=pass (imf02.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="F3yly/uT";
+	spf=pass (imf16.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 113476022B;
-	Tue,  3 Nov 2026 01:41:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06FBD1F000C1;
-	Tue,  3 Nov 2026 01:41:30 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 1CF4840769;
+	Tue,  3 Nov 2026 01:43:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AE1C1F000C1;
+	Tue,  3 Nov 2026 01:43:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793670091;
-	bh=EFfsUw24ICsmnAL75V/w1w9LO9fCOi9ofFCSWn0tGhQ=;
+	s=k20260515; t=1793670223;
+	bh=4kniJNifKCcuuGOg4oonNj+llyeJgvvjLzYbyLbb6wM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=bxyWOX6XyQ/qnDucB3bGiC6TJRCggvC87Gb8LL7HDwTOvv6P8UG84knXubYWSvcJ6
-	 d1WyQju2KmSIpkWzU1Z5tzLWP84prqOyqR5VYg9Psg19vLZGvGbRQwe3pwJtACet2u
-	 qqHgKSGkQun1iXCXQ4knBTmhpZKYp/C7NDS7PSPBtn8plsJ0/uafQJJbmXkcpQLcKT
-	 vWKYlo1JlnEUoy8aa4CLUE5BDiU98kYtNGA8hX91ZSgZUmjoiZ5XCjT1nQbD9VBEK5
-	 xnt0FrVQ72DuFhGAf0NXmq16ADHmCwJe67+SZodec020ldjJfzG0qZYZyzWK5soaXN
-	 FRV7zcEJLck5Q==
+	b=F3yly/uT4qmFRgXh1ssn5lW3nMStihnIt1vuNOiyH/h1wLmci+mZmNQPnPKu1y9ML
+	 tOlNk2GfCS7IEHxT9jmQzA0sAqBfbZEht4LYUZxABS3IkMhvqzqyAPBK3qfKT+K3iT
+	 HHrKvYbLvX+9Pv2DhN5XHkzhow6YuiMoK7FuRbn1lmyoq+czheusOll0aQXuHki13P
+	 4NwJirF2GEYOLHRALbT85GFMiTAS+0EJrfaWyZUpV7rG+VCO8m8ZXIqFoQ5ZWIwcHz
+	 rnPTDRQNHBagZhjBB6O2QGy8KJHEDyCALkex//7zVRZvykjkCpKVqaeRPUCwsOtkia
+	 ux9vyx/UbUd/Q==
 From: SJ Park <sj@kernel.org>
 To: Tal Zussman <tz2294@columbia.edu>
 Cc: SJ Park <sj@kernel.org>,
@@ -88,11 +88,11 @@ Cc: SJ Park <sj@kernel.org>,
 	linux-fsdevel@vger.kernel.org,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 5/8] mm: remove find_get_page_flags()
-Date: Mon,  2 Nov 2026 17:41:23 -0800
-Message-ID: <20261103014124.94701-1-sj@kernel.org>
+Subject: Re: [PATCH 6/8] mm: remove find_lock_page()
+Date: Mon,  2 Nov 2026 17:43:34 -0800
+Message-ID: <20261103014335.94889-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20261102-page-wrappers-v1-5-e7280bdb31f6@columbia.edu>
+In-Reply-To: <20261102-page-wrappers-v1-6-e7280bdb31f6@columbia.edu>
 References: 
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
@@ -102,13 +102,13 @@ X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
 	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
 X-Rspamd-Server: rspam09
-X-Stat-Signature: oz4q163gyq35m6bo9qbgrdwrjdj97pqo
-X-Rspamd-Queue-Id: 8E62780003
+X-Stat-Signature: 5p5yezbta99j7poy5764h5z3d5q7x5jw
+X-Rspamd-Queue-Id: E5EC7180003
 X-Rspam-User: 
-X-HE-Tag: 1793670092-561103
-X-HE-Meta: U2FsdGVkX1+52PEwrjxYOWh43GhATLd59RR1TJvWuFoMw5V8JPDHC7WX/Se6svx+jzhtPAAElW35x0BDM80ow/acrCFoA5L0p6ecUvjGdN+CsDBP8gunXD0oooJplVrc9+DcdKH+AyeTwrE0/OVPbnlXR+srVeK40AlKOXD7RfmREnzl+f1JlUZzUfmHSYAoE3XERtW92816bxtnuvse5dN6T3AguUy4fyhSq+Nk5jtsHLDAL+O5wYlsSec23sifc6tyANLXi39HV0KohOokMYuI8+WIdUYDoTGw19112mXTcwVFlWM62GPO/erZHZccDzYdyK1qB5BuOFCNneEW1DOD2YiGvezMjWaXSo99yZ1MNTJ2oUO+k7DXoGRvg2ok6D6XS/N/sp3wej6XyRemkDumTkat0aUkRHCWzcVxeqhBW70RaV/RmcgrQ2f9+9vL1giud1I/lHoXNHxtoIBidJL5oAvStB6+kL1No0D08I0ORf11u9sMYFuykxdKo1svDlhvXaYbmoYYR8Hxj+iTfiAXLRSpEbkPsHlwqxjL6fQW+4Byb3CwcRsLPLYJn7KyGTqLo3S6HYWOjcbXf9rWd/vCQ5ie79GiJKXgBD7iMIM6ZR4vaqY0pzChFGd1WJs+W6v5kqwPUy1vgdrOch+IwdcVMtfu9cWzXx+StkVUUbJGgrA/p9iJ80WhspYtTTMzZwwr/cpxSTKaUdO5WFlxFr0XBHgq9rQ8XccSmoeEuVcJlXwc0WW8XCL2V+s96m1LGiYVleehNCbEcNhxNVeBGGBpMPF7xoZM+f+wNYR7ZV7Gq3HHoRbdS58d3S7lHAoJJQ44rVMvcWkNHF3XUTe4WcXWR39nNjaASAxvWNG5EGNk6xVJqBAitSOFDlm91z9WjRjXo035MZZitctIQwmXlSoTjMSJiCgTXbTeszdkXuCWAoS4Mn30mDAemwthR1X1Wh83I+jmxP76S73prez
- mUWeDZ4z
- sEMWedp26OM2XfXREwrJ9lIW3Bp2lW0KHSeyKIz8/cQIAzx0q4sSHeMKbrYr4BjH4anUmYsCI/PsAeyCOspK2CWcF0epb8qQWVwn1SyeZdPiCpjn9R2L1jq7j8EkM+y8I9ZTncoSHGlz8Srihj9jPyJmpaJIXly6Q7PGdzUg1V59pf8ImXbWoKQd2eLeRclFqItXXCUnA2WODsoHFYCQDzEpSawNX5YyfY0IEieXyg10tFtiEjkXgqZ/+RuQiZKRAZXdY5pueo/PYBut6l7JdGVpiLWvqFHXqiQpe7zY6FrYWR96XwDzV9TDocT03d4VBp43YudICXNFxoF0O2RhVNwoR0PPWlWf8Bplo
+X-HE-Tag: 1793670223-709400
+X-HE-Meta: U2FsdGVkX1/KqGNFhWxjJ0vhMBxhQt3NBcJZVaW6wXe+SKYRzUPg79XRpYt2HLhm+EskadlqiKDHZf6+ou3cDTV1xunQjSMoHuGXjGEOySKgpDlESvHEjV49yhhoaLv1IZfVP4OjCEfeUjm/iSiVmLOMOEDlvRtHiwEdquYR6R76DxqK5XYU7JUgy+TtYO6TMF9B4n2l9F7LCxX45MKpaIbqVlkijrI4ZTzxPtjN6yzBT30t1WqzYp0xBZAk42XkiO/eeoufGraSsnM6jkrfuDGgF94vGMiM903tv7Kg/D4+kMuwx1mwAxWc3H8/kXuoLkcbkghthW4vYYWfw2lcBTzex/NS9P4fyp9PHB+D6LjRM2cUL0S8slbwH5BL7BsMALCOZ/Yva6FHvUIKramdj19cx78YE4XkjDzM6yrbV8NvNO/qXp9CjxVlir2sjvMRLmWpgW17UTL6rPjHdCZ1s+zTUw32LhIQoR6XHkhACl2tTWJdSjh6eP1vG7fx9HV72mTcvCBqmfcrJf6aLX3S7KJblpZNgb+5kJnUhk9wymsJkKTwATVvlJ5zv2+lELBjJYME+lvjGCSjPSk284Qh9phC0JbW7Cg54zTtZCePRSrosngu01ANxTgbMZVWTtTX4tmsW5yuh05zXj/BaD2/bl8dX/l4ZWWmTjrmryAmzdanR6nkNaUmhsviN2ZpmVxQvk4wp1isVsRzv/Ghq9UI+UhGrF6ut9NlInHwOnTcEw+IkOYITpMQINsuGf5J/FMXwA0OtB5EnAyVQeWgJSwHyCFuf13ztNWAk4GikOLHIYwomoL/L8nlOdfzChIN292nyCZMEKlYSxS2bU5IhVZUS41P39uO8h9kHEKSdgkOY+2wWKxYgERP/yjlVZurN5LOzYwAGfhwKFYLW0ja5GC97wGraaxdIg63F4SPhPEUfLmj4slTx4VDQiK5AFoimjmxduu83KF0pgy6hl/F3RQ
+ WQ9DFsA6
+ sl11oGse4OD9GJoSgwguKtJW1pvZ5keYAWpguezooFRkvdDSed7AFz5XuLaL1+hgl6wrmfHYgVqeC3ZTIiVnH33I9Z0GTdNKnDUMPgTkKE7KC0Qn0Vi8ptm3VpWws6PiqSMDP+yaRxUfbqrU9wWSLuRZd1YcAJS+vAxa2LwY8OoqmMvSEBJh108Y4SynTOdGYqiDOE+9u3BUp6IzLulDhjRaThXYV3Cw0YXeyIULtjNpLDqEFgc1HPVCwuXYk80pNoFcCioj02Clk5GISNxJ+SvScwIAphET60554LKR6pLB6zX646Pi0Y+94gShpwwaBmR9ilbtZdgAroM120sxe7k0n8Fa1FANHCMTkpHqMsQ1mEos=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -117,9 +117,14 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Mon, 02 Nov 2026 17:54:10 -0500 Tal Zussman <tz2294@columbia.edu> wrote:
+On Mon, 02 Nov 2026 17:54:11 -0500 Tal Zussman <tz2294@columbia.edu> wrote:
 
-> There are no callers left. Remove it.
+> There are no callers left. Remove it. The name still appears in a
+> sample function graph trace in Documentation/trace/ftrace.rst, which
+> is recorded output and is left as it is.
+
+Makes sense to me, the example could be updated later in my opinion.
+
 > 
 > Signed-off-by: Tal Zussman <tz2294@columbia.edu>
 
