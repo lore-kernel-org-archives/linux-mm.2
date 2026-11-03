@@ -1,145 +1,90 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABB3F606A330
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 09:32:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C234606A32E
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 09:44:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=google header.b=E3oQFIU2
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=ieFLPrAQ
 Received: by kanga.kvack.org (Postfix)
-	id CFAF46B05B4; Tue,  3 Nov 2026 04:32:54 -0500 (EST)
+	id 28B3A6B00EF; Tue,  3 Nov 2026 04:44:26 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CA3C86B05B5; Tue,  3 Nov 2026 04:32:54 -0500 (EST)
+	id 233E36B05B1; Tue,  3 Nov 2026 04:44:26 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B925D6B05B6; Tue,  3 Nov 2026 04:32:54 -0500 (EST)
+	id 149866B05B2; Tue,  3 Nov 2026 04:44:26 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 8F84B6B05B4
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 04:32:54 -0500 (EST)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 351F78034A
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 09:32:54 +0000 (UTC)
-X-FDA: 85393293468.28.761F18E
-Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 4117580004
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 09:32:52 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=E3oQFIU2;
-	spf=pass (imf02.hostedemail.com: domain of mhocko@suse.com designates 209.85.221.42 as permitted sender) smtp.mailfrom=mhocko@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id EE4B86B00EF
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 04:44:25 -0500 (EST)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 72C46C0376
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 09:44:25 +0000 (UTC)
+X-FDA: 85393322490.13.00F6103
+Received: from mta0.migadu.com (out-75.mta0.migadu.com [91.218.175.75])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 46D6240007
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 09:44:23 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=ieFLPrAQ;
+	spf=pass (imf27.hostedemail.com: domain of hao.li@linux.dev designates 91.218.175.75 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793699063;
+	b=7j/KyOtjtA4/AQicDBhIHs6HMrqclgL4MdRjlAfYOK5wkMY1o6ZVH/cC/Z7BhvIeNXjdca
+	IoNj++NBF77WgfeL/g9koX1Tj4hASDc2asSfU6I5vPUd3DpZPfSzem/U8Wv6ktOcaM6yfl
+	WFC5hRtLxbazTIyGQUgUmOLzNLxb4FE=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=ieFLPrAQ;
+	spf=pass (imf27.hostedemail.com: domain of hao.li@linux.dev designates 91.218.175.75 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793698372;
+	s=arc-20220608; t=1793699063;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8N0vEDOHENh5TCI6g+MQ642/w77B6Opk/aAqQYUAijY=;
-	b=FDw2hMQj0EnUKViYivcyHMv/Bwag3E5cYBL6y4dqQwC7reoNQOc8wXX+Nshc0DWxcIrmwd
-	kKCdFD+X23dsSXl5h1qI/Go5IFo3g3ld3uQ1AusDbqS0jY4AgnoXs7A6g55vEtpeSMLkSK
-	fsbdvf6X1MvwQGWJMu0TLAxINg07pJY=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793698372;
-	b=zef23uTJtyZCyNFJoAl09ZVVNgEf0LVRIT8fW6sDpkRrf6slgRW6u5cMfnbk3No+lyV1PM
-	NU1MHCaip1C8KWksRu2atWOJn0IhXDaTK5O1YVhP9eDI3EBfljouzKIUhTJqY+SrThJhFh
-	t5h+Hd2SdPyrBnn87E1jO4cUG4mOYt8=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=E3oQFIU2;
-	spf=pass (imf02.hostedemail.com: domain of mhocko@suse.com designates 209.85.221.42 as permitted sender) smtp.mailfrom=mhocko@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
-Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-48df54150dfso1920795f8f.0
-        for <linux-mm@kvack.org>; Tue, 03 Nov 2026 01:32:51 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1793698371; x=1794303171; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=8N0vEDOHENh5TCI6g+MQ642/w77B6Opk/aAqQYUAijY=;
-        b=E3oQFIU2Bdx3u8Q//xiIZzHr3QdhPrS5V0WM9DRKxKNKTCZirim/lp1QsDMxvQOUNB
-         TW9xyda7kY5H3Vrn/rXlILdhiUfwArzoqoLRYHLkG6YHsYabIPN2goHkPHvAuhuMT5/h
-         yTRwWrYUIozMeRD+E8UgOTdhpwMOwYTxfFnuRrj7EDoRwpMfVzt0yLfKlEipXFiGxPmN
-         Pw3NPQqvg6kMQOQm/nNyDqDo2YsK4xS3BNWCvhHlcHaTpniD1jZnSedOlGT3jhMKAYFd
-         uj0fvjSTois/xt6xsx3GpvSOfRQBW7eknHSUCqbfcPWYNnA5uDJ3IL4io8ciS/bleR76
-         5hvw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793698371; x=1794303171;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=8N0vEDOHENh5TCI6g+MQ642/w77B6Opk/aAqQYUAijY=;
-        b=aU8VfpiV3MzQlEtZ1onRZwAhfyun9jq1Y8VCGSVw/usFIx8cSNWxlQxmSU/kIcOo89
-         j42KodtDov/qYJbzQKonCgFKwmx3Vz4MaQ6K6fYRfn4F8wtUrGanlVPJ+h8X8/DUYSTj
-         57wILBl5AaZ0wDy5ndMl5XQvdXlYU5dM5S6YJh3bXR1eowHCm5wmEVMatBoobeyjZO/v
-         /aBJkiXuPq3GZ0L7GceFNjNY55bQUEtKQuUM+I+60S7uY7EFt6MMbGyTUcZcLlKpf+C1
-         4oXeJc15/+pgtapk2g9ThJHG2F8j4F2EKFO4WvVzO68VZ24RwWnRBbevRvUt7P1U72i5
-         HcOA==
-X-Forwarded-Encrypted: i=1; AKwUvBwwM0HR//AhSpzbD3xVQ8LDC1M5iLPXxpNtEG4cJ1oaqrhPzV6fX8KPim16fi0+SZSEawnfKyy4EA==@kvack.org
-X-Gm-Message-State: APuU4Z9saKW8dfbxGdoKMzIwcembU1gNbk2yr+K274+j/zrYmTA8IRsJ
-	tCYon8CutgrRTC7J0paoFRrstKYKEdWkVju5I3PCV3XGsMtxg50Ycvv8ICo7edfKArw=
-X-Gm-Gg: AYBFou2pHOhQBPGScorj4zvzJNvuCPZAeIZjVvEf8VXmrV55WfMkFJcVKLM5VZom77A
-	2KpIt9xxJ4AFMHEvzg+CNnWvNre+ypnWVix9tX/cuAbp4oQmrCwvk6nYza0cLORYUQPH+DMPI+5
-	8xZPvzF1aFnB8W6azzvyMbc4S9nCK2u4XAnHY+5TGCMHagtIqhWP9xCNRL66u3T7D2Df9ezVjP0
-	0WoEAM9axgh/zFxVMe8Brg3mwt2hFhjxM8RlWd7yJ5ERRQtfzZ1f43o7IwW/l1cmClz3jm8yt9y
-	FhNEAWNPioJku2LCjQ2zKBGm5+OIeZ8wam8k08iL8kxBL89AULcpX0Bqy8Ay/1dnd8uGxNFPVaA
-	4jWSTwnfcufe0bSNKIXVEyPmODDkOxb/nESuY09ESgzUc4W78l749lufDc3bw8hA2XOIYjlFhk6
-	nj1tlqJZsvou67fmBZMl703axG8aTLXVbsR3lXQ0CSW+gdEm6OJwQJs0IbtnlTlycj62/e9jJu0
-	9R5aEfurgm7IbHwFdRc9+GkiPvRHZJvGjJDwgCEWOl04JIo5z42MCAeBMcTw1/tJJtOhV9Uxo27
-	qeC7cORezW+T32+t5fsSqBPi027o/aofi1rKTlA=
-X-Received: by 2002:a05:6000:2088:b0:48d:f6d2:9c88 with SMTP id ffacd0b85a97d-48e6e4f8daamr29004855f8f.47.1793698370857;
-        Tue, 03 Nov 2026 01:32:50 -0800 (PST)
-Received: from localhost (109-81-32-81.rct.o2.cz. [109.81.32.81])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e86a06078sm7960579f8f.54.2026.11.03.01.32.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 03 Nov 2026 01:32:50 -0800 (PST)
-Date: Tue, 3 Nov 2026 10:32:49 +0100
-From: Michal Hocko <mhocko@suse.com>
-To: Matthew Ruffell <matthew.ruffell@canonical.com>
-Cc: Waiman Long <longman@redhat.com>,
-	Frederic Weisbecker <frederic@kernel.org>,
-	Tejun Heo <tj@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Caron Wills <caron.wills@pulsar.com>,
-	Ridong Chen <ridong.chen@linux.dev>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Michal =?iso-8859-1?Q?Koutn=FD?= <mkoutny@suse.com>,
-	Juri Lelli <juri.lelli@redhat.com>,
-	Vincent Guittot <vincent.guittot@linaro.org>,
-	Dietmar Eggemann <dietmar.eggemann@arm.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>,
-	Valentin Schneider <vschneid@redhat.com>,
-	K Prateek Nayak <kprateek.nayak@amd.com>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R . Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>,
-	linux-kernel@vger.kernel.org, cgroups@vger.kernel.org,
-	linux-mm@kvack.org, Jay Vosburgh <jay.vosburgh@canonical.com>
-Subject: Re: [PATCH 0/6] mm, sched, cgroup: LRU Cache never drains when
- isolcpus are used with spinning SCHED_FIFO tasks causing page migration
- stalls
-Message-ID: <aumqQX7tKHLKRQ2k@tiehlicka>
-References: <20261103075940.110308-1-matthew.ruffell@canonical.com>
+	bh=SYguy4w1YM/41pc0M9vIj3VvmIP455ki3qTLrxyk+EI=;
+	b=g7aJn1YIxbBe1o2IWdxNN125D4TEwCubaMjGjpDQsDiVGeZQE31rlxpNPH6s0Dl3LFMvym
+	uUa2KavCCtVsjFMHfobyVeJx87h1OV6zqkcdzHymbhW73wKzD3Y5jfFet1zn9KtmZJrcFB
+	HvyuO/DZ9S8o6InjZmLW26mEkuHsWSc=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=ytP1FYc4mLUgzvNlPS6MBB0Sb8vEqTbsbrXFac19CKg=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1793699061; v=1; x=1794303861;
+ b=ieFLPrAQNPYCccev6UXHzMnB/eE9I4RjivSB7cPgBCgLf1Z8p1TfRXG7rfFpnXmyGRMvcsl1
+ wsGBySrF6FiAcQiv89dASwBemAj0bwqYL7FYUJTfTHDnWlsdVoKgpiWfJybTAW6RWw5nyL+peva
+ vSSJ4ykA1PniS3QBWk7KaNO4=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id 4fced7d92f6bec66;
+	Tue, 03 Nov 2026 09:44:21 +0000
+X-Mizu-Trace-ID: 4fced7d92f6bec66
+X-Migadu-Flow: FLOW_OUT
+Date: Tue, 3 Nov 2026 17:44:13 +0800
+From: Hao Li <hao.li@linux.dev>
+To: Tiezhu Yang <yangtiezhu@loongson.cn>
+Cc: Vlastimil Babka <vbabka@kernel.org>, Harry Yoo <harry@kernel.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, Christoph Lameter <cl@gentwo.org>, 
+	David Rientjes <rientjes@google.com>, Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org, 
+	loongarch@lists.linux.dev, bpf@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v1] mm/slub: Genericize x86-specific cmpxchg16b comment
+Message-ID: <aumssHCOA4D_BFm1@fedora>
+References: <20261102082730.12430-1-yangtiezhu@loongson.cn>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261103075940.110308-1-matthew.ruffell@canonical.com>
-X-Rspamd-Server: rspam06
-X-Stat-Signature: wna7sfhenjobxskzhhhs9xmc95e3gzrs
+In-Reply-To: <20261102082730.12430-1-yangtiezhu@loongson.cn>
+X-Stat-Signature: 4r1o5rfhpksdchzr3xmf5uygeqmu5fz7
+X-Rspamd-Queue-Id: 46D6240007
+X-Rspam-User: 
+X-Rspamd-Server: rspam11
 X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
 	autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: 4117580004
-X-Rspam-User: 
-X-HE-Tag: 1793698372-559659
-X-HE-Meta: U2FsdGVkX1+CMins3dsWmQzo9iXAHe71c++lWaONyXD6QR27SxL1ZeH4HODHJfBzHGRg/EpzUKF1AAb5yaAeqvhizh1HaMta0ESH3iKK0SZ7HF7IB7HhFf0BkNglGW9MpLhgsMW2zFZmP3dy38kr9OgGIuOFB9hZtLAlbRP3oPHoOjOy67XKFLDsW4MtdqTJTic3MrJhLkxRWjey09VgEOlmzcN7hUg4pzJ8FGBxwZw2lWFuO4nMTYiHU1kNnFxfeAkx1IgN3N0qolG6DG5jhhYh+6CegdCmgaEG/RuQIGr82rFLW903P+SMO+pvSQC4spwq7u0/R7/mry+Dtx3bv1oySr3PjM8IIggLOnimybuEheFtLpvJ7iASFi5XHWy/1UNTMThTayVUlm4Xn11tmneNiFVz92xeKoYOanWjFef2oMhVo99VJ2JZ8bBNOERp+X4oaqz0cWAUqBDluIsVxnpBhFRvd6bvsH1jlH/+oKYnkdMMEOAPvxcez/obfvyG4NtxadFd0h5pLyoX/ZMAQWLY8CvqdMbfJazLZTQa77tAmQB5NhrZHuX46IjzBFfh5DMwBNYDFifjLooC+IBj0g7y5UVCnQwywrIEZOgFKr46ysSWyDUzXtqNay3+Da5R8q2RwlF5atln4EwBxu6KJBqKlHkhJT/luXGJaFVY5OOq/udkuiUNjEPAN0dkMYqSZ9dXOf9qJJz64BfGYpNU+g6bHnzEtZsBCy3C8YftcG4xGkXT6vAvtltuPD+Sxb76K5haP7wkkKUvnhCCvcI+Dm68kt0p49e2DgRXZMw5//hhF7zpqfTuswaBMZQpDF0DL1bDTuIocBOdAyKMXL0M5gTmc5vuD3U55XFuUSTlLSs0UNCv2abWMjmR+9T9uaDz5gObQL2Tv2K8rgNbmkKMgwn02xECy7FnvXmxw0NHOdNx78vabCxOMsj0S62TX1Qsm95v+BqQGkBgqz3mPmX
- 5w8AeIWN
- Ww5jDfhFpmeo8GiSr/PmhbfqDhqMSwvbuV8yDK+nbuE9e8bq22sNIWZ2vaMuEMNUr94esBJbsVUPuS4OvQY8NxUAkzE+wX9fy1Vug7K2Noa0ouRurE8XsFcuar4on1wpWETQ+CR+CiIyK78b9egxPSCCzxhSAMsbRcFKQjV7u343b9eg2QvS/boVgrDbPfW70YKYC6rZ0cZGdi9IWBX3hKTIU86Xi/KM6kg/Nt2H2FKIn+sihrZF3nxM1IMBSOgeDYsqivEyNfEUz26s2PBZFcX440IDUO7aOtiP9b24Hvd20OTCAKTKCjuKJiAPxRm+86gHIgVJNnCeJDD7hIWoZPn0PU7OiS03fYegM3VyJJgDGFG0/Vemkv0wemxwNYofMFVG91ifUoCVDsp61TNRxzV0GTQ==
+X-HE-Tag: 1793699063-961761
+X-HE-Meta: U2FsdGVkX18vheNI2hYwFD8AqSkbH2zAL1oQdtr35lGTXhJX9T62i43itsjXHkkMogiF2x5jjtEM46JydFSmESrRHKSJwA6xNu1C6AbmivQXOxmphWIRwmqw7TZzdK7uIjHGj9b0en6UHr3DNcxaVm61hI+CO4ZNGVhwOrTvtrpXmxhk4oCdW3tGNwEAFyHkmkHVyE9MzQRwNCr51jgLBTZRMqHigYiaY883HoigduzzUXAF3uOQiw+HabSiMsRvjvMtgUFHBseZxOrX2uKzcRHYMdBlfrqxXDu4DFzcpziNL4YjSFCjLe8lSV/HDi3BEM+MnAKPCeATR3VgdpPhfjCgM70LDQY1lvxLOpjyeXiA/6d5rlXe7h0MM/sRvvLsLdYKKvcZEPzhZUSKTjQ6BK3kElu0XVuReOQKBp3EegW6deU3AECxS5MNg38UjqcqbRGxgSPB2cjHpdEh2sAyr4CtU7hrxU/pJXwTaBalQIL+N014/yRlQTSMX4uVGcqedAkK1MH/YE8dQRF+UUH4B3d+zr25HpnqGkoc49t5LX79LRZ1qBRO3bUkZm1F4Hh14VjWVXQKW6hmXm0WM1OKkJJ23KrNysClyaM+BJ6IkzF9jEV0ugd2nxm9Qb6RL7xowNYVMDyfg9IEsEeG1vTWnmOi3VWR3EzQnZ9blmpXpxDO4fOeTO7CO7ycobuXIrDbqsGrOKdXGnXHn8NmySvXwHvgl6mK5DF2J+YjtFPo7omzVlH56aX53nUBTMyy+z9Gb21YBV4Le7MzmiTUupCzzllD4R+fo1RLe3iGN+W2r1ZBg8FH/pSr97CP9uZellPhD6ZGjPFKNmWB/Hl3VyVhAz2NYgRly4tBkK1cYXVkiBSRA2m9Zj0+f7R/PRhZ3bOEzwLEi9teVAg0vUNZKNizRDBlX+1HZ6FGTd/rM5l05ep3Ps9Sv5/j0XbnZM5U7VGVcIRtFwsuQqfqOfZVTkE
+ iZhbjFUc
+ P9bm1nVdfcIjPHz3XC8f0hlKw+VvGRz32YAG3S4BOmCqAsMo38Nu0Z7ka3UW8SygmXyJ8LXD/5MjfOGBUzRrvi4oLBD2Cm4kBedSsaNZ3HCbTencw2ul906GE0vMGCRFuNQneAnudtJ3atibQeQ36+KzhSVF1gwkdGycHjUeP4omOm112egVMsweo6fmX0Y0oBc12WN7azt3LTTWA6N8/q3RaTLgfrsvfbXunC07Bq2bPBPUfKEglEjv/dMuplLGcwyKdClfgX5/8t+o=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -148,28 +93,29 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Tue 03-11-26 20:59:34, Matthew Ruffell wrote:
-> What happens is that the spinning SCHED_FIFO processes running on isolcpus are
-> constantly dirtying the LRU cache, and when we attempt NUMA migration of the
-> 50GB of pages, systemd calls flush_migrate_mm_task_workfn() which creates a
-> kworker that calls cpuset_migrate_mm_workfn() then do_migrate_pages() then 
-> lru_cache_disable(), and then __lru_add_drain_all(). __lru_add_drain_all() then
-> creates a kworker on each CPU to drain the LRU cache, and systemd and the
-> initial kworker wait until this is done on all CPUs.
+On Mon, Nov 02, 2026 at 04:27:30PM +0800, Tiezhu Yang wrote:
+> The kmalloc_nolock() infrastructure relies on slab caches with double-word
+> atomic cmpxchg capabilities (__CMPXCHG_DOUBLE). The current inline comment
+> in __kmalloc_nolock_noprof() uses 'cmpxchg16b' as the prerequisite hardware
+> capability.
 > 
-> Since the isolcpus are running SCHED_FIFO tasks, they never get preempted,
-> and kworkers never get a chance to run until they get an opportunity to by
-> returning from a syscall, and it takes a very long time before all 192 CPUs
-> actually drain their LRU cache before the page migration can continue.
+> However, "cmpxchg16b" is an x86-specific instruction mnemonic (CX16). On
+> modern architectures supported by the Linux kernel, this 128-bit atomic
+> primitive is satisfied by different hardware implementations:
+>   - arm64: satisfies it via LSE atomics ('casp' instruction)
+>   - s390: satisfies it via native 'cdsg' instruction
+>   - riscv: satisfies it via ZACAS extension ('amocas.q' instruction)
+>   - loongarch: satisfies it via SCQ extension (using an 'll.d'/'sc.q' loop)
+> 
+> Update the comment to refer to "128-bit atomic cmpxchg" to accurately
+> describe the cross-platform hardware invariant needed by the lockless
+> allocator, and to avoid misleading developers of non-x86 archs.
 
-The idea is that they are running on isolated cpus should they shouldn't
-be preempted by unrelated work. But at the same time those
-isolated/cached pages shouldn't be blocking the rest of the system. IIRC
-there was a proposal to flush all pages cached on pcp on return to the
-userspace. What has happened with that work? I do not think this has
-been merged. This should deal with the underlying problem without
-introducing lock contention that might be a result dopped caching.
+Personally, I feel the commit message is a bit lengthy for a simple
+comment-only patch. It might be better to keep it concise and just directly
+state the purpose of the change.
+
 -- 
-Michal Hocko
-SUSE Labs
+Thanks,
+Hao
 
