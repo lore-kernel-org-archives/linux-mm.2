@@ -1,154 +1,152 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 002D7606D80C
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 11:46:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98695606D839
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 11:48:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=M5WQx64W
+	dkim=pass (1024-bit key, unprotected) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=Y4zBKWh3;
+	dkim=pass header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=CHDXryvq;
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=Y4zBKWh3;
+	dkim=neutral header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=CHDXryvq
 Received: by kanga.kvack.org (Postfix)
-	id 20BC36B00EF; Tue,  3 Nov 2026 06:46:37 -0500 (EST)
+	id B364F6B05B2; Tue,  3 Nov 2026 06:48:02 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1BC0B6B05B1; Tue,  3 Nov 2026 06:46:37 -0500 (EST)
+	id B0D2B6B05B4; Tue,  3 Nov 2026 06:48:02 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0AB776B05B2; Tue,  3 Nov 2026 06:46:37 -0500 (EST)
+	id 9FD736B05B6; Tue,  3 Nov 2026 06:48:02 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id DD6756B00EF
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 06:46:36 -0500 (EST)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 79434140373
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 11:46:36 +0000 (UTC)
-X-FDA: 85393630392.28.72F3A91
-Received: from mta0.migadu.com (out-224.mta0.migadu.com [91.218.175.224])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 1BF9020008
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 11:46:33 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=M5WQx64W;
-	spf=pass (imf31.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.224 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793706394;
-	b=lGF8y4rl7XAE4hj8aJH2jG4MAjPhAFgFxfLYp2j8qbC4iYaUDXzjLLV4s00jHZtgZVhHXB
-	vd2pB/kiJ8saDhbB3j7/Xm4mmD2c19HBzH/Rvlvd9+2FsgDz807QA5ZKm/SD7HV3ZKIeqI
-	bKQkSxt0AGYdt/r8SmetOfwFWV/WfTk=
-ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=M5WQx64W;
-	spf=pass (imf31.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.224 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	by kanga.kvack.org (Postfix) with ESMTP id 7CC706B05B2
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 06:48:02 -0500 (EST)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 0ED898035C
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 11:48:02 +0000 (UTC)
+X-FDA: 85393634004.16.E6FF3E0
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 80ADC40003
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 11:47:59 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=Y4zBKWh3;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=CHDXryvq;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=Y4zBKWh3;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=CHDXryvq;
+	spf=pass (imf11.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793706394;
+	s=arc-20220608; t=1793706480;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1h7SuxIdXP1BrmLiSW0TA0Y4x+A0dQHqIxOY0fZWzgw=;
-	b=hG+9+i9Lfqx2Ad7MItlpEp7jkX32LzslR4QZ75IoEasciLYfrO7c0cXHukgiNURaeRmKpr
-	TSeOaBhAPd1wJx2EBsyMzqW3MWXpQjyLzjSlEh4r8A9nOJ4kVf/8H7c+gyjdg17WlD5LzL
-	IPwy3XNDzn/llhNWNUFxrMNvYFNK1lE=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=1h7SuxIdXP1BrmLiSW0TA0Y4x+A0dQHqIxOY0fZWzgw=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1793706391; v=1; x=1794311191;
- b=M5WQx64W3OrKv3IrbfaaaUU8t9LBurF+lIi1NsZf+TH86Tb8kzcQtOfRinqCLkp6vbJeJkjn
- Wdwp+SEY7bV+SCApfixGc5g2PSWIhjsr5o8DnWz2b+eULeX3U8KrowNWRCDh9p9CW2PdjVmXutk
- fgWn2GKcQL5AnmV3qr19TWzU=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 4c5c651460189e35;
-	Tue, 03 Nov 2026 11:46:31 +0000
-X-Mizu-Trace-ID: 4c5c651460189e35
-X-Migadu-Flow: FLOW_OUT
-From: Lance Yang <lance.yang@linux.dev>
-To: david@kernel.org
-Cc: akpm@linux-foundation.org,
-	hannes@cmpxchg.org,
-	mhocko@kernel.org,
-	qi.zheng@linux.dev,
-	shakeel.butt@linux.dev,
-	ljs@kernel.org,
-	kasong@tencent.com,
-	baohua@kernel.org,
-	axelrasmussen@google.com,
-	yuanchu@google.com,
-	weixugc@google.com,
-	baoquan.he@linux.dev,
-	baolin.wang@linux.alibaba.com,
-	liam@infradead.org,
-	vbabka@kernel.org,
-	rppt@kernel.org,
-	surenb@google.com,
-	mhocko@suse.com,
-	kees@kernel.org,
-	peterz@infradead.org,
-	jannh@google.com,
-	pfalcato@suse.de,
-	hughd@google.com,
-	pasha.tatashin@soleen.com,
-	pratyush@kernel.org,
-	willy@infradead.org,
-	jack@suse.cz,
-	ziy@nvidia.com,
-	lance.yang@linux.dev,
-	riel@surriel.com,
-	harry@kernel.org,
-	apopple@nvidia.com,
-	nico.pache@linux.dev,
-	ryan.roberts@arm.com,
-	dev.jain@arm.com,
-	usama.arif@linux.dev,
-	kas@kernel.org,
-	matthew.brost@intel.com,
-	jhubbard@nvidia.com,
-	peterx@redhat.com,
-	will@kernel.org,
-	aneesh.kumar@kernel.org,
-	npiggin@gmail.com,
-	osalvador@suse.de,
-	minchan@kernel.org,
-	muchun.song@linux.dev,
-	xu.xin@linux.dev,
-	chengming.zhou@linux.dev,
-	chrisl@kernel.org,
-	shikemeng@huaweicloud.com,
-	nphamcs@gmail.com,
-	youngjun.park@lge.com,
-	gourry@gourry.net,
-	joshua.hahnjy@gmail.com,
-	rakie.kim@sk.com,
-	ying.huang@linux.alibaba.com,
-	jgg@ziepe.ca,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	kexec@lists.infradead.org,
-	linux-fsdevel@vger.kernel.org,
-	linux-arch@vger.kernel.org,
-	linux-cxl@vger.kernel.org,
-	mason@kernel.org,
-	stable@vger.kernel.org,
-	usama.anjum@arm.com
-Subject: Re: [PATCH v3 41/47] mm/ksm: check large swap-cache folios before mapping them
-Date: Tue,  3 Nov 2026 19:46:26 +0800
-Message-ID: <20261103114626.15764-1-lance.yang@linux.dev>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20261031-fixes_core-v3-41-d6437171ecc3@kernel.org>
-References: <20261031-fixes_core-v3-41-d6437171ecc3@kernel.org>
+	bh=gpNnj5q4z35v5NpxDoXWpLWIxpF/EVXKHOt/hVE3ktU=;
+	b=i9nzSQ+wIIAvZTsIa+6NN+6HttJWagkeR/6zFAYoNYd0Cc9k7PGtgbbA9abckShZoywC/1
+	aJucv2Sb2rd0g5G1Gvw/jXrLdlE3kvoDNVfInnoHUV94V5hx2PxEplAscCIwUmsJ/zBo9J
+	cwhDVeAxhFc9peUuL6Z6ZmOJnccoTPY=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793706480;
+	b=nwLuevrjVY4alE3mHgoFfXe4FT5uLC7KinABVY4UQbvjhdmw+aAWpaXalvd1InKJSHTrlG
+	zy0ahFz5JD7uMVdBTqx1eBkTVlOYxw2ZghSUrNF7Q4YKVsguKILBoGFBNvKCji4lwx4FUw
+	S+x5lg4o20PHEDh5wYWKvO49sGWfIRA=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=Y4zBKWh3;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=CHDXryvq;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=Y4zBKWh3;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=CHDXryvq;
+	spf=pass (imf11.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz;
+	dmarc=none
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 2FACE1F83B;
+	Tue,  3 Nov 2026 11:47:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1793706478; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=gpNnj5q4z35v5NpxDoXWpLWIxpF/EVXKHOt/hVE3ktU=;
+	b=Y4zBKWh3jpv6KMan74hAIoPBOSLs6tZK+6I3oXqMSfIYnA8S5ywXTaZUj3pHgSrb7VT90k
+	329ZViAKBSeKUbGb8+5mzc2frx/+GV6reJ9nXvxCL4vReDMldn3E1PoxUzI1wb8UPaR2qV
+	R/wJmcymFrxhPjRxW0H5+f3xz5M+HuQ=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1793706478;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=gpNnj5q4z35v5NpxDoXWpLWIxpF/EVXKHOt/hVE3ktU=;
+	b=CHDXryvqgLheeosXz5cGd2sibnFQ1eIqkqKPm0R0TjOV2ia+1m/8RKNtWnzplPS6lEGySx
+	jwKpi9Hus6OsYyDA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1793706478; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=gpNnj5q4z35v5NpxDoXWpLWIxpF/EVXKHOt/hVE3ktU=;
+	b=Y4zBKWh3jpv6KMan74hAIoPBOSLs6tZK+6I3oXqMSfIYnA8S5ywXTaZUj3pHgSrb7VT90k
+	329ZViAKBSeKUbGb8+5mzc2frx/+GV6reJ9nXvxCL4vReDMldn3E1PoxUzI1wb8UPaR2qV
+	R/wJmcymFrxhPjRxW0H5+f3xz5M+HuQ=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1793706478;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=gpNnj5q4z35v5NpxDoXWpLWIxpF/EVXKHOt/hVE3ktU=;
+	b=CHDXryvqgLheeosXz5cGd2sibnFQ1eIqkqKPm0R0TjOV2ia+1m/8RKNtWnzplPS6lEGySx
+	jwKpi9Hus6OsYyDA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id B3A57134B8;
+	Tue,  3 Nov 2026 11:47:57 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id LqoVIu3J6Wr7VgAAD6G6ig
+	(envelope-from <jack@suse.cz>); Tue, 03 Nov 2026 11:47:57 +0000
+Received: by quack.suse.cz (Postfix, from userid 1000)
+	id 31B58B23A; Tue, 03 Nov 2026 12:47:57 +0100 (CET)
+Date: Tue, 3 Nov 2026 12:47:57 +0100
+From: Jan Kara <jack@suse.cz>
+To: Pedro Falcato <pfalcato@suse.de>
+Cc: Salvatore Dipietro <dipiets@amazon.it>, akpm@linux-foundation.org, 
+	linux-mm@kvack.org, ryan.roberts@arm.com, abuehaze@amazon.com, alisaidi@amazon.com, 
+	blakgeof@amazon.com, dipietro.salvatore@gmail.com, rvvandan@amazon.com, 
+	viro@zeniv.linux.org.uk, brauner@kernel.org, jack@suse.cz, linkinjeon@kernel.org, 
+	sj1557.seo@samsung.com, yuezhang.mo@sony.com, miklos@szeredi.hu, agruenba@redhat.com, 
+	djwong@kernel.org, hyc.lee@gmail.com, almaz.alexandrovich@paragon-software.com, 
+	cem@kernel.org, dlemoal@kernel.org, naohiro.aota@wdc.com, jth@kernel.org, 
+	willy@infradead.org, david@kernel.org, ljs@kernel.org, liam@infradead.org, 
+	vbabka@kernel.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com, 
+	ziy@nvidia.com, matthew.brost@intel.com, joshua.hahnjy@gmail.com, 
+	rakie.kim@sk.com, byungchul@sk.com, gourry@gourry.net, 
+	ying.huang@linux.alibaba.com, apopple@nvidia.com, ritesh.list@gmail.com, 
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, exfat@lists.linux.dev, 
+	fuse-devel@lists.linux.dev, gfs2@lists.linux.dev, linux-xfs@vger.kernel.org, 
+	ntfs@lists.linux.dev, ntfs3@lists.linux.dev
+Subject: Re: [PATCH 0/2] mm, iomap: account dirty at page granularity for
+ per-block dirty folios
+Message-ID: <mcskrz2zbav5r3xtlwqytyotgjcmmi3wapeibkqornuhb3qp5y@qk22j77kvkqx>
+References: <20261027112702.3747009-1-dipiets@amazon.it>
+ <auCrqvae2tm4a8PV@pedro-suse.tail5790ac.ts.net>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <auCrqvae2tm4a8PV@pedro-suse.tail5790ac.ts.net>
+X-Spam-Level: 
+X-Rspamd-Action: no action
+X-Spam-Score: -11.51
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 1BF9020008
-X-Stat-Signature: 73c4x9fmrqtt3o6hccka8qjtaj7wiisu
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
+	autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam09
+X-Stat-Signature: 9e3q9dpf9i3onx4kwfhympg6ckaockqz
+X-Rspamd-Queue-Id: 80ADC40003
 X-Rspam-User: 
-X-HE-Tag: 1793706393-963840
-X-HE-Meta: U2FsdGVkX18cN4MXTmJO0KHkhEqnjXXI/66IbbIBAQbiqQd9lcd7ox29TkqqBgEgOcdpl0Chg8TI1LJtjWHyF2m0HiPX5AnE2duguFhmTYWm97zAUksXoASl0TvcVDxo6MEweNVUeajIfVMj19jp+8kJpnBGqdH6tw7353GgZ/cOaSnHJA0qivhf/sW9nFd/7n250qYUIYmHT/3vgr0YREHhqIk9T5m/xgYxHL1JvRorEm6c3OK8vHqUGnHzQi6KmwgDmIty5GZJt+bv37Tt4buawEiafJUiGDGTyoKgZBGIsUDRRNDPDhmZ6IhUSv2P1OzD+cb3UeJ0vOqosHCvz0+TON610FfWUzzcjfndgjx+y26XwRz82gfLHQ5RH66SP77jiGMf0N48POgb3T2qIkyWajiQWTRJzgyNeDF9xjjrjj1TS7q4RcPf1onDqH3tp7aHKL9uFlc4n4kQMo3ZB58QItBE/4b+EgoDZ11gfbBiI+xsp/x0vbHynMTtSr/fJ5VNXgUnU53MyxYUS0nc9+4t4mfajnUlpXyzPbhNOI8EZOr4ff1VfwYVCnQs2nJLRzBpDK4KIQgXIVv6TPLNKnIjG6x7ft/Ou7k009Y5lNArJHXbPvM6ZwWv5eyyccTirh002wf6U6Mi5xCUR5wtTGe6z719en96lQG0ruZwsACPfmnJJylwSNb6kIdndxP/QXFPZKhGCOdj4s3oQej9028UOR/5nIKCDWTPhTHWByb0yQInFSqQpywCYVmK4Ag/NiegMbvHy0x/AOPIHMQ7C3+8kmGLriBSeAGCVRaVPps1pXBSTddmhIQQQJeACiQO+Fub6QJo4VtIKDGU7czFCIX8BYMv+M2uL3an6Vf/8kBagOsGRgtNMIq3jhmLc9LfmoUUFVBF02cKEQP9QRIkAbwS2zSpYmCnQ1G+d9ohiiMA4kHXFBC17+av8ULzRmDDm6kQdQKVoYDnOvadkX0
- AhVvG+B6
- xzUnv5a7lLU6HmxR84f8w0d8UYSrHwAZjUzcjuu65nP5Rzc7T26w0M6eMUVlytQiTiKht1MRGDwezVVOuIwBDagZjv5wqItb+1S030wYypJ3iWeYa+oUKZcQRsRvgAqbkqGI1whJJ0Wqb/yRYQEwUutXBBCYwV75vrBSd1C9VGRPSsGF8nzL2vi3tLWPgj4uoGd6HFqwCi9AoVyrIX8mxBisKZumstDNiB0U5ArcN5JL2aGkQINTwdDirDaF4IL9du1FIABfTXfN6z0usFhLIYiImoLqSSgifiMKP9gBNB1M1LGtMCkcuAg4OEP2/s8vUn2Luxd7EkCQhfHNS8PmkXsRJ6aweo5uy87GY5Fg1qxjrFeuwjFxpF2npgKYQvriuEWbE3MvTKRv4F/g=
+X-HE-Tag: 1793706479-657052
+X-HE-Meta: U2FsdGVkX1+zRaBnmhvvcWVXxpAFWInziObw411gp66R66CexeGUXf9P1OMC0Kc4MTx0lcAYNs/E63CMc9Sy8/Vqg5Lo43thXkow6oWQ0rNakUowcWsbUyT7mdmbnNfJ5nwlTNtp4gnd4s7mSzHpx8HwWHo5kDnz7EtvUIzSp8QoUSe1TQ/tKaAbSbFcz+86FPwlElixBTwJVVH5CuqgrZLzSohZ9ZCCGv6v/MJKoiaZR6yaF3a13OBwIsa4DLHywQ2Loqini0hcU3jcGGixRxsm92AEJbqpEWJ8U3LGBTmtYAs17Sb9SE9wZSYhIud+6xb5gD9XUZ7hTGz0DLv16TeZHpszzDGJMyE64It1Jts/0oToxTRnm+oYYs4x3a7SUDivpDCcYK6MDBrbVcVPEmH1OI7wZgVCauyY4DUJ3RESbZJfMlS9OYbaX9EgXWvD/vbhoquqNFVBw7YsoMhZRLW77Wd0MH9IRjLEBqb9fUYFgjXdNynBeWdGf+3z0qGSP2hvFlGnXc7EOWnPtFl7VFXuwswePsteUHF+pgvULpSh0Rj0u+VI0w6h6Ys2FzhDXZR9wBLc0DAQYVdBJMai1ClcDwuE2iKbMUTYKwv8ux93uFVh/0YWMwrlpU/Dd8tSW+RsPcZdzds9SvsKgzyZGnC62O9Qc2t9S0s4QUvLCUH6VYRg8TW9CkpdF0Qmjp28vTJ0P4bMlGvTOhR0C6+QBVNladZGEKC5Eza4yobe8rfaH1/yLdD6G4nvZoyof8VmmI8SQK+Eb22GCDO3x1a9fC4sMYRZBMAETi0y0vyr0QnOOoPm/juv8PJsXQY09efzXucxWCm9x8hOy/dQrFHOivcSS6Jm+Rmw582R8o2HeOwY9PUNv7mFDYEPkQ4eHQR/rurQWpN0IvxdW82iEbNGnHvuk8j9Uq2nvGbqOmWbhvSSOGkUZMQeon/mjnwkrIc5o1xUkGyqzi5l9cP50pn
+ KIwfPZwe
+ Lz6i0U+bTJap1UrdT4YLc2gdh1m9w5hgvornhZbQXSaN1s4eQM5Mw/Zm11DRf2a8fslvF2ksCzLfqslTDqpS+ZLzBEy8BVUdKCWZ3Yr97+uThojhBbYSkJNUJoRgZmNmZwoi2dnbUlOcEoYazfe3PH0q/8HMXRWFKq/bQAVlJwMBZuSlJe/9k5qlK11mwUYQeY3od0YOxMnNDnAi2mlhx8bUOEHQQ1kxvRWSiOBIadXLAVanCTkGIrvYTVQZOaLteVvNoew5JmtgrKFoyyh5l36UfKTPmebdMpvbkhNk08xv4eioPAVD4By6wlxTqC02ZogxOBled9wA5Yv6eO3alhHOcG/FwUnKW6D/EietLNg21vbKZGNdYZhtp0JCvX4aEvGNEcb8NgtuvaL0IB02MHVjXf8xdrIeZYSOlc/XDKLJpPaHS8HX1vNrBs7xnlnlA73GL/LQmNKrp4wA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -157,32 +155,46 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
+On Tue 27-10-26 13:59:59, Pedro Falcato wrote:
+> On Tue, Oct 27, 2026 at 11:27:00AM +0000, Salvatore Dipietro wrote:
+> > Since iomap gained per-block dirty tracking, a large folio can be
+> > partially dirty: struct iomap_folio_state records exactly which
+> > blocks are dirty, and writeback only writes those ranges.  The mm
+> > dirty accounting, however, still charges the whole folio even if a
+> > single block is dirty (up to 512x over-accounting for a 2 MB folio
+> > over 4 KB blocks).
+> > 
+> > balance_dirty_pages() then throttles writers against a number that
+> > is unrelated to how much data actually needs writing back.  On
+> > workloads that repeatedly dirty small ranges of large folios --
+> > e.g. PostgreSQL, which writes mostly 8/16 KB pages -- dirty_thresh
+> > is crossed and writers are throttled long before the real dirty data
+> > justifies it.  On the benchmark below, run on v7.3-rc7, the
+> > unpatched kernel charges ~159 TB of dirtied pages while writing
+> > ~6 TB to the array, a factor of 27; with this series the dirtied
+> > pages charged match the data actually written.
+> > 
+> > This series makes iomap charge and discharge the mm dirty counters
+> > per dirty page for folios that carry per-block dirty state, so a
+> > partially dirty large folio is accounted for the dirty part only:
+> 
+> Why? This looks wrong. Yes, you may only have dirtied e.g 4K out of a 2MB
+> folio, but the whole 2MB folio is still effectively pinned by the VM, awaiting
+> cleaning + writeback. And that's precisely what we want to measure and
+> throttle in certain cases, so that e.g the VM system never finds itself
+> short of clean pages it can reclaim, and no easy way to start writeback
+> on them.
 
-On Sat, Oct 31, 2026 at 10:40:10AM +0100, David Hildenbrand (Arm) wrote:
->From: Chris Mason <mason@kernel.org>
->
->KSM folios are always small, but their shared swap slots can be read
->back as part of a large folio in the swap cache. ksm_might_need_to_copy()
->skips large folios, so another process can map a page with an incompatible
->anon_vma or page index. Reverse mapping then cannot find the new
->mapping, preventing migration or reclaim.
->
->Apply the same compatibility checks to large folios as to small ones.
->Pass the page corresponding to the swap entry and copy only that page
->when necessary. In do_swap_page()'s copy path, decrement only that slot's
->swap count, because the source swap-cache folio can now be large.
->
->Fix generated by an LLM and sent by Chris Mason in private.
->
->Fixes: f1879e8a0c60 ("mm, swap: never bypass the swap cache even for SWP_SYNCHRONOUS_IO")
->Cc: stable@vger.kernel.org
->Signed-off-by: Chris Mason <mason@kernel.org>
->Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
->Tested-by: Muhammad Usama Anjum <usama.anjum@arm.com>
->Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
->---
+Fully agree on that. We have already discussed this with Joanne about one
+year ago [1]. There are some aspects of dirty accounting that could be made
+more finer grained but overall the whole folio is difficult to reclaim due
+to dirtiness so accounting it all is the correct approach.
 
-LGTM1
+								Honza
 
-Reviewed-by: Lance Yang <lance.yang@linux.dev>
+[1] https://lore.kernel.org/all/20250829233942.3607248-1-joannelkoong@gmail.com
+
+-- 
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
 
