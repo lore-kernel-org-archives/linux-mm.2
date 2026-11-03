@@ -1,92 +1,136 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2774606A814
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 11:31:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAF516082BE2
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 11:37:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=m8Ga2Jwn
+	dkim=pass (2048-bit key, unprotected) header.d=ionos.com header.i=@ionos.com header.a=rsa-sha256 header.s=google header.b=KX/7Q0HA
 Received: by kanga.kvack.org (Postfix)
-	id 0B8E36B05B1; Tue,  3 Nov 2026 06:31:49 -0500 (EST)
+	id E0EB16B00EF; Tue,  3 Nov 2026 06:37:24 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 08F5C6B05B6; Tue,  3 Nov 2026 06:31:49 -0500 (EST)
+	id DB9DE6B05B7; Tue,  3 Nov 2026 06:37:24 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F0E706B05B7; Tue,  3 Nov 2026 06:31:48 -0500 (EST)
+	id CA8CE6B05B8; Tue,  3 Nov 2026 06:37:24 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id C9A796B05B1
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 06:31:48 -0500 (EST)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 7C8F91C3A86
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 11:31:47 +0000 (UTC)
-X-FDA: 85393593054.26.4E19FE3
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf18.hostedemail.com (Postfix) with ESMTP id D99D51C0005
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 11:31:45 +0000 (UTC)
+	by kanga.kvack.org (Postfix) with ESMTP id 95B7E6B00EF
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 06:37:24 -0500 (EST)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 2EFB81603CF
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 11:37:24 +0000 (UTC)
+X-FDA: 85393607208.20.B7EDAF2
+Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 275411C0005
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 11:37:22 +0000 (UTC)
 Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=m8Ga2Jwn;
-	spf=pass (imf18.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	dkim=pass header.d=ionos.com header.s=google header.b="KX/7Q0HA";
+	spf=pass (imf18.hostedemail.com: domain of max.kellermann@ionos.com designates 209.85.221.42 as permitted sender) smtp.mailfrom=max.kellermann@ionos.com;
+	dmarc=pass (policy=reject) header.from=ionos.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793705505;
-	b=67eIOiirGP1tjDm1yxQk2Owtu3rtXTLnh33u+EjtLSBxbfRKZdcxaexEmoy9nj1U9NmDFM
-	dHJLj90jS/4uXAmf3Pp5lE4p+gcZq9lYwP0Bpp81XIzAVQ7JR6hKHKvXZDwEiMXcXxygoV
-	pQvqnaIf0UBKZpdT07D1B3/0kzXpFk0=
+	t=1793705842;
+	b=1qOjjW4r7Upwg2oLR+dvMiSFOD/pV9sEJW80mTcbRtPBJkukFtN810rAnMbj2HPMruZxBo
+	64MqKMCJBfgeWbM3iF3rfnRiNxqlgSBJD7KEMMenYIavhu743mhc5VLibzyQGZNbAwaueB
+	ay/86b2KqiFSbBUq/8DEI9mT0Y2MqEk=
 ARC-Authentication-Results: i=1;
 	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=m8Ga2Jwn;
-	spf=pass (imf18.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	dkim=pass header.d=ionos.com header.s=google header.b="KX/7Q0HA";
+	spf=pass (imf18.hostedemail.com: domain of max.kellermann@ionos.com designates 209.85.221.42 as permitted sender) smtp.mailfrom=max.kellermann@ionos.com;
+	dmarc=pass (policy=reject) header.from=ionos.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793705505;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=68BubDKR1zxeKwhG2T21e3gaZzNp49Xmz5XiY4miqic=;
-	b=7rO4sF9FvIN1zKsi5NIFm1rcVcc8XKZsapMD6MtGu0yqI4PHBjWaipaJFZAw9KB987PtAA
-	TdCmaiuXQ4A/8HqQe46bbFwy4jjCDGY/BRDNcl/TyzXIz9YO3srZK8yFM4flf5NpU9j0eA
-	LcmPxJrfyvJHO4iMRLyFV+1mqEH5hxg=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 78B7C601EF;
-	Tue,  3 Nov 2026 11:31:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A17261F000C1;
-	Tue,  3 Nov 2026 11:31:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793705505;
-	bh=68BubDKR1zxeKwhG2T21e3gaZzNp49Xmz5XiY4miqic=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=m8Ga2Jwny1uhDUEZgw49tDrhqZSoWm2vovoo5CHk3r8paJlMIfDL5zjS8XmLwibbT
-	 EZvPNwdyo2Elaz878TzCfi0joN+KUEhCrvcjOFp/ya0IZrPUMe5IxXZ5HS7cf9SDLh
-	 UVvAC1DxKxHb3FCShkYoqH1gY8T1BHi1NaLoR1ZF0Pert5sK+Df0gZIfASIFhNyYu5
-	 CeDDSdC+sKn6l0HVY+yT0uerZCZWy7h+lEcbqAL7h5PCf8BDvnMlNjgdoVKuPTS08Z
-	 KWw7IONt7GehdF4pI41yCQVGJpbHLn69A9l78P8sxdxZ75k/fJFiIyviam/TWowCI0
-	 YqzixrdPNQmTg==
-Message-ID: <sashiko-outbox-195153@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH] x86/unaccepted_memory: Do not accept ranges that are no
- longer E820 RAM
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Pankaj Gupta" <pankaj.gupta@amd.com>, "Thomas Gleixner" <tglx@kernel.org>, "Ingo
- Molnar" <mingo@redhat.com>, "Borislav Petkov" <bp@alien8.de>, "Dave Hansen" <dave.hansen@linux.intel.com>, x86@kernel.org
-Cc: "H . Peter Anvin" <hpa@zytor.com>, "Tom Lendacky" <thomas.lendacky@amd.com>, "Ard
- Biesheuvel" <ardb@kernel.org>, "Kiryl Shutsemau" <kas@kernel.org>, "Mike
- Rapoport" <rppt@kernel.org>, linux-mm@kvack.org
-In-Reply-To: <20261102113127.161823-1-pankaj.gupta@amd.com>
-References: <20261102113127.161823-1-pankaj.gupta@amd.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Tue, 03 Nov 2026 11:31:44 +0000
-X-Stat-Signature: 9z9cx1kx7nkuard9cot7d3qjyuzxopi3
-X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: D99D51C0005
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	s=arc-20220608; t=1793705842;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=BHZ8wigQ+noV1zThe9Z+XoDY/JY+YdNhjpHWSzpgF40=;
+	b=ONG8km1cS9ZV3LKaoKLR1IiYaArCfPYhg+iS8xd8DO47mY0OaJp4hza7PRYyCZnsvOPpge
+	oKODhDprqtdm2R+qJUY6WDIIT0gm5hxSD/TE/FRenP4dCjezEDBQRZQu9YyVf/Kc1GEG9O
+	jM4fxLtB7aRI2QYT8estr7vehEFL9gs=
+Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-48c5358fc28so3318071f8f.0
+        for <linux-mm@kvack.org>; Tue, 03 Nov 2026 03:37:21 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ionos.com; s=google; t=1793705841; x=1794310641; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=BHZ8wigQ+noV1zThe9Z+XoDY/JY+YdNhjpHWSzpgF40=;
+        b=KX/7Q0HAEAFP3nd5buUGaySa+ETcA00EvsqdQ9ReXA0hRf0DrGtpcbli2kJR9oWVr8
+         qxDtYD39NA6IAm/j+y1ia+B0jfx923KtHdcRcvfCCeFQdXryn1UkLsln30xZJf1eVh4C
+         ZClpKkIFBGEOdmqAYfyx85B9YoAmjfZNqlfDrZPfIUxMCWEEfNiEXPTuRTBPieQ/gsQ0
+         3LHoDF3WdXmmOnVvNcu+9SHtTBynvo9y6ujsHTPrsN3LXmFuaAEqoSiBcTXdYjSdzzx+
+         +jGTRS+emc7GHPjobj3MndFPOX96R/nSBK8u8BCd6BOCGWN0VEeGwLBKLpTezEZA4Z9d
+         S2uA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793705841; x=1794310641;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=BHZ8wigQ+noV1zThe9Z+XoDY/JY+YdNhjpHWSzpgF40=;
+        b=oITI3BHNbJ+pJENXXfx9+ag0olOWr9VRh43cRr9Zs1qm3vBlH3p+7SXN03um4Z0GsD
+         wcUtbptNFimen/hPheiDMCMw2Ub5J7FyOPFCVRiMo7BAI7CXsLfjvcKRwB381V/mNYEY
+         yY8o5uv3mzAxj0s0X+OU5nUz7XYyHyzQ1dflYutwIzwj4APhB8/WuNNkV5wQ2FfwNT45
+         gT47ngWGT+JEWXwXRE7n/roMcYABReExfxzB8JNmUTr5kZ5W/J793ZgYVuLBp7futvQD
+         mAxOWduQbChGMaM1DgSiSurh/pm1+Y2VUoXv6m0i1Nkn5KWoHdkJYGP1izGLvaT22ak/
+         UcrQ==
+X-Forwarded-Encrypted: i=1; AKwUvByMFMtTYH8vYx0Mx3+eDjHcFOYb7DUEZT/g1M2YVlvPLsZz9KVyUOdOed2n0oAIyhmIgCZ+yeU5Hg==@kvack.org
+X-Gm-Message-State: APuU4Z/2KLQK2wOcwi4JxHazyOofIkhp5yTsQHQNyoR8nyu9dIQZAzet
+	0zMHDCkLUNFn8YDmSEXkCqbELVYFaiGBx8xGnkKRvJmLfU3tU4V9AbBeWTOcboNs3Y4=
+X-Gm-Gg: AYBFou1exbxasv4YnEMF4d7Sgmxo4eQEOza2zLIkGEC08URe7zz8sByO8T+B7VXupAd
+	orrHd2Fu9eg7jlzUevVma/DQaoKzShWf+2xf9+hdFkCNki/4B5D8dNXXhN4iVKS45LBJ4OLt7Mu
+	4y47EddxmqkoztaC+PkRO7VaOznCdi7feIh3x/pb6LrGC6lt4qQmsQpf07kTD7YisDWVZ2he4pW
+	GQfH4n6snkfhBc6jT1umjlUFzMlBC66NdW7QDhpD8prqLA+HUbKx72AZ6LYbdp2VViawEzOfZ+9
+	5qCcHQco9G4V3jbgbmXUqohjc2BNH1KGH/YuduLc0gIY+wAmclqCNUmyOS0NmekKDnzlbkFTtNf
+	ZA0rnOIjF4S57Unjn0hs/Xis8xvGhDmVyRHeOkRyB7nDyqAj0abWPC47NPmIn35gO4BGHp5PYKB
+	B0W4jcyE89uDdUsMHm0u83N+S0jYEsAGaaYGi8FtYBl7kq7PS/dZBaXI+UtvfG92fHLOz3uhiZE
+	u3pmT3pBsR7eyMkCSTXIpv8I/A8o8Gvz7CGutQqyN78Xe0/XECrVN7h2qr8k+DVmcrqyXZWeqEO
+	9JXqrt4qRZ2c5wjEioMZ3Nq8wR5icKaSqukgj4TkbyvSUFnIfJltpTXoY6YdaqlZbEWfJuzPcZj
+	3IRWWY338X8noykiJQOoLuBGxuNbaM2McIBTK5Bo0BHUCJIK1f3s=
+X-Received: by 2002:a05:6000:2501:b0:48d:ee35:b3fe with SMTP id ffacd0b85a97d-48e6e2b9c3emr28666535f8f.8.1793705840586;
+        Tue, 03 Nov 2026 03:37:20 -0800 (PST)
+Received: from raven.intern.cm-ag (p200300dc6f04b700023064fffe740809.dip0.t-ipconnect.de. [2003:dc:6f04:b700:230:64ff:fe74:809])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e71b78f95sm23000997f8f.28.2026.11.03.03.37.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 03 Nov 2026 03:37:20 -0800 (PST)
+From: Max Kellermann <max.kellermann@ionos.com>
+To: akpm@linux-foundation.org,
+	kasong@tencent.com,
+	qi.zheng@linux.dev,
+	shakeel.butt@linux.dev,
+	baohua@kernel.org,
+	axelrasmussen@google.com,
+	yuanchu@google.com,
+	weixugc@google.com,
+	baoquan.he@linux.dev,
+	baolin.wang@linux.alibaba.com,
+	david@kernel.org,
+	ljs@kernel.org,
+	liam@infradead.org,
+	vbabka@kernel.org,
+	rppt@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	hannes@cmpxchg.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	rcu@vger.kernel.org
+Cc: Max Kellermann <max.kellermann@ionos.com>
+Subject: [PATCH v2 0/5] mm: multi-gen LRU: reduce memcg rotation overhead
+Date: Tue,  3 Nov 2026 12:37:05 +0100
+Message-ID: <20261103113711.1832834-1-max.kellermann@ionos.com>
+X-Mailer: git-send-email 2.53.0
+X-Archived-By: <archiver.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
 	autolearn_force=no version=4.0.1
-X-HE-Tag: 1793705505-482525
-X-HE-Meta: U2FsdGVkX1+GIF1o18MX5FnjRzdDYRJwTWqciwT5+nuJHwz/Ml99GwbSNbnESBIhc+J3aco5ru/INOMiwLgnIzgkqCXLQcZnsoXvtc7rHNnq12oH7nIVvU9i7ju/duqqc6EBz7pxl739vzNFxhxB1ZyXM6aSAkB5L7WqZSVatQdsvvSxaznrNM0N6oBYigj/vb+nPfRkiN1dqeeMWDRsZ/RT6u0+ss5X1odsLAPu7p7Dc659jsUOmWJtzBH3l4eqWFpqb1djoJZtQqsOuzxbXDS/N0mCXJz0lPyp4UJqXMBjS4VT/3em3PiOZ0jB/DLgeNSRKzWTvmc5xIeRR+vXRV+Vq/yVsP5otrkFcIeUipZYOiQu9u5wx7940WxJ1MjixjjWE0wMPp/0epL5v1xXnPtu/L/bFyugDpwGPHNmDioTcOk9r7coGj0LrJkt5D85zVu8HB5s1Pr9Jj/zN0pAGCPmpUl7LCkEMsnW+5cY9ggC9q6dSW66sQxkvJ++5/vzNp9dh52Fd8q+HmpA07vumrfv7IeP604qQ+N5SjpxAOysBlnnuQT0b1wAnb+r4mkucj5a4ZQANsUDRzZ6cq9wja9TcsP4/NuzPuV3RImOOx6web6DpK35Owu/J11VI2dNuJtviVUdlAwfibZIoQ3dWzifCAQYNg3ofJg2lePKYZhdfX1OMZ42EimMldYv13bMdbKGwj07JrGYltefFplDsdgc1X05jay2HDeeNVpAzLNfye0wWxeXchsId58AlLJzRNmviaRiLmzV8S9Hzy6eMuzb7Cjsp1RkTZB4zDjg6+q2rIaCnhFX9GKkN4CsmX2r+dCsGqw/EvJfFzGnEJfaAZqWNEWhXbt+/UR+NK1A9BD3vz5CEIg8c7ZNMfZ9H+oSOasbEoGuD3Th1wG+w4nhjx0IVMhOTIK8TE38blBXIEWgOPfBOU4nOwIfatXAEEfdO9RKcbKyoWGn7y1nM8P
- foq64wOI
- c1hc/cJH5DDBUZsgkIKSX0YVa01ROaBQhLECdKTbDJJpbGIYpe+Iack4ngnf6L1MvIUSmcQzGtWMQEhcxhrtROA4pnie8KqBdD5Gj1k+PzI5/bMkpry7fmfNn01JbefbDbmQc3oGdG600FfGVk2tKR4kdPfS8fmbAVgLY8RngQtINP024V9Fl8DPyDB9CEmypVneRYaPzXI0p9NvsFrxFgRgVJjeuX5fucWlOc1gHMNqT0UvCNEZN+sth+d2bJOhS3mQHB9xmnng1DzC730oGWcEOvLdhIl77ekXHfGyYdgfWU2mHehnSUvXvwA1qOUGxlhkX6JTocTzR4Cxuww49ea9sdiGEn8GFRCAfkyOKdofLRjDrOv/t5AA5rIXmgTZofWIDqOuw3iJL4ll461IQRgQR608dgH7b9BkHMI/xQgX7/8gsrCnOQKgAzJCbGjIezT41BitQzGU8vVmO4846IEvXhAga3NzxPnt5PlmJzmX45IyFBodP7BghEmLH43ayJskLM864B4D8xVl5roOiRD1Vt50ZgNcjIqQ0s3Xr0QbT0ZhsXxAntOLJgpUbigNjS7MlN9d4fiJ9Y4kT5hZLlwk7Lw0m6h4/eXbAfCx+LfQza4d0Crhmc0jtR7Q5mHbSRficvOLrRIlmYkSwiCkcNgAGUQaod64Fnsr+
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 275411C0005
+X-Stat-Signature: nxhpjm4ghdmu6j9upzncwsh4zsgzggeb
+X-Rspam-User: 
+X-HE-Tag: 1793705842-987851
+X-HE-Meta: U2FsdGVkX1/yl34Qs54t438snWeqi20G+XsA1xKExZGzipXlfwY/KKhro+TAXVgF9Hs1S2CIszu2cftMZ7ih+7+hE6982b6E6LCYFOkDd9gNiRiz/87DMhBuQEtbcLIGqSx1M4lx2F9TCn3Uq2BGUS5sGP1tLbnQyz4Fg5bbXJWEyiPtAYzpHtYiC+vAd4WJJJ55GWgFNJzpeSfdw7tH+dIhg/9Oyyvf8iUtRmSyFalLACWOx0vcsDSXNqHYGvtpWMod0EDeEdLvP3hnLDLV9sCAwkf41YO61Wxgbw2mGYIos93SX7oQQnYu318liZNcHypTEFW4EjbcolsYVY25K+dj34325yS5Jo786FSrzsLSETpP1swJqhZaTmBNx8eTnGzo9UDBC89KiqN2jIni9WMbdhxInxzBITD3cya6Vx/YtzOjmGTNHGBp4d9ma+PfyWum3GHyd9KUsiglpsFduc/GzAMCw35Jy+/fTzKWgOle8ai6O3GPQXf02ikoNxLOkQbJqR3TQ35PC5IPHrrxi4mS4/jrc+TxU6HKmnL/DQm4O1qAQ4vUQpmUPxonVvKsN9ppQ+GCUD40i4nXXxZZ3wnG54rA9yW5uk3luL/7GvxGMHW8Rr5Ps3rq5SeZeHc+yKbS0X428OyzZZFLv4rCtVgj1bMS9ANFDjKcQQosnAlb4Vum2Vw61681WnVLFKqG4jl/JmE9ejEYEoSa1T6u+SC2qocP+bNUj/qwvsM9Bhc3KmC1ID6mlNwXs5taZM1MR3qx3DGTWb5QESwfR88iKGiuDSa8VXNzLPJHALKDcNnXpexP/lc8WDaf3irOc3zyzv41yx49ASxdLFm1oLYfnkfsvaL2AIqdTOh827v3Mx/TXBen2VmK2AU6IziPohoDnXssgiWvVObTSYWtdAZGYikshOtWTBt732baf2oxPIzjrb2eYN0VMzeN4aa5glG3rJ7k/OaZkso4CJ6Y1Yl
+ TorfYkqA
+ 1YHFvmfHWcE7whjuME+2yExk8WVEqdo9Yj5favMFZWEAXgJOWuFURf6sfTUvY2baVvmDhA7EKnzjKI8cMW7+0pOiBcyzfC/FOGRsk8/xyraA3e8eDHcN4QkFZT3zooeUplstLTKA9p69gcKiViPqBk7aIKOhSfnSIdfboKEsU2AetES14RvnqUn36F4AKMDZpJw57UhTNyR1zWNZBo3OQgpOwaum3faTG59Jqc5P0mtsZ2XRNust5K+CkyBMvP0NS4sMrrLGWbF+sjQztzenA7FvLz8NHRqWBeB3Ae0BPjK2EN5HKwciJ4KoyMA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,169 +138,126 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
-X-Archived-By: <archiver.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
-s) to consider:
-- [High] x86/unaccepted_memory: arch_accept_memory() desynchronizes unaccep=
-ted bitmap
-- [High] x86/unaccepted_memory: unaligned E820 bounds passed to __arch_acce=
-pt_memory()
---
+This series addresses excessive time spent rotating memcgs during
+MGLRU reclaim on systems with a large number of memcgs.
 
-commit f56630bdf157fa53e09d29e75f1fc454adb6cd1e
-Author: Pankaj Gupta <pankaj.gupta@amd.com>
+On some servers with tens of thousands of cgroups, we had repeated
+soft lockups and RCU stalls:
 
-x86/unaccepted_memory: Do not accept ranges that are no longer E820 RAM
+ rcu: INFO: rcu_sched self-detected stall on CPU
+ rcu:         60-...!: (1118 ticks this GP) idle=ca74/1/0x4000000000000000 softirq=140067260/140067260 fqs=10
+ rcu:         (t=2101 jiffies g=180256409 q=94266 ncpus=96)
+ rcu: rcu_sched kthread starved for 2073 jiffies! g180256409 f0x2 RCU_GP_WAIT_FQS(5) ->state=0x0 ->cpu=53
+ rcu:         Unless rcu_sched kthread gets sufficient CPU time, OOM is now expected behavior.
+ rcu: RCU grace-period kthread stack dump:
+ task:rcu_sched       state:R  running task     stack:0     pid:15    tgid:15    ppid:2      task_flags:0x208040 flags:0x00000010
+ Call trace:
+  __switch_to+0xc4/0x108 (T)
+  __schedule+0x2b4/0x978
+  schedule+0x2c/0xc0
+  schedule_timeout+0x7c/0x110
+  rcu_gp_fqs_loop+0xec/0x4e8
+  rcu_gp_kthread+0x12c/0x160
+  kthread+0x118/0x1e0
+  ret_from_fork+0x10/0x20
+ rcu: Stack dump where RCU GP kthread last ran:
+ Sending NMI from CPU 60 to CPUs 53:
+ NMI backtrace for cpu 53
+ CPU: 53 UID: 3758108211 PID: 4052395 Comm: php-cgi8.3 Tainted: G        W    L      6.18.52-i1-ampere #1203 NONE
+ Tainted: [W]=WARN, [L]=SOFTLOCKUP
+ Hardware name: Supermicro ARS-110M-NR/R12SPD-A, BIOS 1.1b 10/17/2023
+ pstate: 40400009 (nZcv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+ pc : handle_softirqs+0xa4/0x2e8
+ lr : __do_softirq+0x18/0x20
+ [...]
+ Call trace:
+  handle_softirqs+0xa4/0x2e8 (P)
+  __do_softirq+0x18/0x20
+  ____do_softirq+0x14/0x28
+  call_on_irq_stack+0x30/0x48
+  do_softirq_own_stack+0x20/0x38
+  __irq_exit_rcu+0xc0/0x100
+  irq_exit_rcu+0x14/0x28
+  el1_interrupt+0x3c/0x58
+  el1h_64_irq_handler+0x14/0x20
+  el1h_64_irq+0x6c/0x70
+  lru_gen_rotate_memcg+0x210/0x280 (P)
+  shrink_node+0xb14/0xcc8
+  do_try_to_free_pages+0xd0/0x508
+  try_to_free_pages+0x11c/0x230
+  __alloc_frozen_pages_noprof+0x4f8/0xe00
+  get_free_pages_noprof+0x20/0x60
+  ceph_alloc_readdir_reply_buffer+0xa4/0x160
+  ceph_readdir+0x248/0xeb0
+  wrap_directory_iterator+0x54/0x88
+  shared_ceph_readdir+0x1c/0x28
 
-This commit updates arch_accept_memory() on x86 to iterate over e820_table
-and only accept subranges that are marked as E820_TYPE_RAM. This avoids
-attempting to accept memory holes removed via the memmap=3D command-line
-parameter.
+The problem was lru_gen_rotate_memcg().  Its memcg tail insertion
+walked the destination bin while holding the per-node `memcg_lru.lock`
+with interrupts disabled.  With so many cgroups, the lock duration
+grew too long and thousands of concurrent reclaimers were contending
+for the spinlock all the time.
 
-> diff --git a/arch/x86/include/asm/unaccepted_memory.h b/arch/x86/include/=
-asm/unaccepted_memory.h
-> index f5937e9866ac1..744f1a993352c 100644
-> --- a/arch/x86/include/asm/unaccepted_memory.h
-> +++ b/arch/x86/include/asm/unaccepted_memory.h
-> @@ -2,10 +2,11 @@
->  #define _ASM_X86_UNACCEPTED_MEMORY_H
-> =20
->  #include <linux/efi.h>
-> +#include <asm/e820/api.h>
->  #include <asm/tdx.h>
->  #include <asm/sev.h>
-> =20
-> -static inline void arch_accept_memory(phys_addr_t start, phys_addr_t end)
-> +static inline void __arch_accept_memory(phys_addr_t start, phys_addr_t e=
-nd)
->  {
->  	/* Platform-specific memory-acceptance call goes here */
->  	if (cpu_feature_enabled(X86_FEATURE_TDX_GUEST)) {
-> @@ -18,6 +19,26 @@ static inline void arch_accept_memory(phys_addr_t star=
-t, phys_addr_t end)
->  	}
->  }
-> =20
-> +static inline void arch_accept_memory(phys_addr_t start, phys_addr_t end)
-> +{
-> +	u32 i;
-> +
-> +	for (i =3D 0; i < e820_table->nr_entries; i++) {
-> +		struct e820_entry *entry =3D &e820_table->entries[i];
-> +		phys_addr_t s, e;
-> +
-> +		if (entry->type !=3D E820_TYPE_RAM)
-> +			continue;
+Reclaim can also repeatedly promote memcgs that are already in the
+young generation, and scans of empty or protected memcgs can bypass
+the rescheduling points in page reclaim.
 
-[Severity: High]
-Does skipping non-E820_TYPE_RAM ranges here desynchronize unaccepted->bitmap
-from the actual hardware page acceptance state across kdump and kexec?
+This patch set contains three parts:
 
-In drivers/firmware/efi/unaccepted_memory.c:accept_memory(), unit_size-alig=
-ned
-range ends are extended by an extra unit_size to act as a guard page for
-load_unaligned_zeropad(), and the bits in unaccepted->bitmap are cleared
-unconditionally after arch_accept_memory() returns:
+The first 3 patches add a cache for each bin's tail to make tail
+insertion constant time.
 
-drivers/firmware/efi/unaccepted_memory.c:accept_memory() {
-	...
-	/*
-	 * load_unaligned_zeropad() can lead to unwanted loads across page
-	 * boundaries. The unwanted loads are typically harmless. Map an
-	 * extra unit if the end of the requested range is aligned to
-	 * unit_size to avoid page faults on unaccepted memory.
-	 */
-	if (!(end % unit_size))
-		end +=3D unit_size;
-	...
-		arch_accept_memory(phys_start, phys_end);
+The fourth patch skips redundant YOUNG rotations when the memcg is
+already in the default segment of the current young generation.
 
-		spin_lock(&unaccepted_memory_lock);
-		bitmap_clear(unaccepted->bitmap, range_start, len);
-	...
-}
+The last patch adds rescheduling points between memcg reclaim attempts
+and at bin/retry boundaries to avoid potential remaining soft lockups
+under extreme pressure.
 
-When arch_accept_memory() skips a range that is not E820_TYPE_RAM in
-e820_table, accept_memory() still clears its bit in unaccepted->bitmap even
-though the pages were never accepted in hardware.
+I ran a micro benchmark on branch 6.18 on a 12-core Xeon 5118: 8
+concurrent workers repeatedly write `1024M swappiness=0` to the root
+cgroup's `memory.reclaim` for 60 seconds, against a previously
+prepared set of 1500 memory cgroups.  Each worker issues its next
+request when the previous one returns. The test measures request
+throughput and latency under concurrent MGLRU reclaim.  All requests
+returned EAGAIN, indicating that the requested reclaim target was not
+met; the reported throughput counts completed reclaim attempts, not
+reclaimed bytes.
 
-In a kdump kernel, e820_table only contains the crashkernel reservation as
-E820_TYPE_RAM while the panicked kernel's remaining RAM is omitted from
-e820_table. When the crash kernel accepts memory up to the 2 MiB-aligned end
-of crashk_res, accept_memory() extends end by unit_size into the panicked
-kernel's adjacent unaccepted RAM. arch_accept_memory() skips that range, but
-accept_memory() clears its bit in unaccepted->bitmap. Later, when /proc/vmc=
-ore
-is read, unaccepted_memory_vmcore_pfn_is_ram() checks
-!pfn_is_unaccepted_memory(pfn), sees the cleared bit, and reads the
-unaccepted page via read_from_oldmem(), crashing the kdump kernel.
+Results:
 
-A similar mismatch occurs with kexec: e820__memory_setup() populates
-e820_table_kexec before parse_early_param() applies memmap=3D or mem=3D opt=
-ions
-to e820_table, andarch/x86/kernel/kexec-bzimage64.c:setup_e820_entries()
-passes e820_table_kexec to the next kernel while sharing the physical
-efi.unaccepted table. Both kernel/kexec_core.c:sanity_check_segment_list()
-(which calls accept_memory() on kexec segment destinations placed in
-e820_table_kexec RAM) and the unit_size extension at the boundary before a
-memmap=3D hole will clear bits in unaccepted->bitmap without accepting the
-memory in hardware, causing the kexec load or the next kernel to fault on
-those pages.
+                  Requests/sec  Mean latency  Maximum latency
+ Unpatched               4.56     1739.85 ms       4083.55 ms
+ Patches 1-3            43.42      183.53 ms        393.15 ms
+ Patches 1-4            59.22      134.03 ms        393.44 ms
+ Patches 1-5            57.80      137.63 ms        412.72 ms
 
-> +
-> +		s =3D max_t(phys_addr_t, start, entry->addr);
-> +		e =3D min_t(phys_addr_t, end, entry->addr + entry->size);
-> +		if (s >=3D e)
-> +			continue;
-> +
-> +		__arch_accept_memory(s, e);
+Constant-time insertion increases request throughput by 9.5x.
+Avoiding redundant YOUNG rotations adds another 36.4%.  The full patch
+series improves the unpatched throughput by a factor of 12.7.
 
-[Severity: High]
-What happens if entry->addr or entry->addr + entry->size is not aligned to
-PAGE_SIZE?
+All requests returned EAGAIN.  These results measure reclaim attempts
+that did not meet their requested target.
 
-Entries in e820_table can have byte-granular boundaries from firmware or
-command-line options such as memmap=3D and mem=3D. When memblock is set up =
-in
-arch/x86/kernel/e820.c:e820__memblock_setup(), partial pages are trimmed via
-memblock_trim_memory(PAGE_SIZE) and left unmapped in the direct map, whereas
-e820_table retains the unaligned addresses.
+I did not measure scheduling-latency improvements of the last patch.
+---
+v1->v2: rebase after MEMCG_LRU_HEAD was removed by d5d1712c5928
+  ("memcg: remove lru_gen_soft_reclaim()")
 
-Clamping s and e directly to entry->addr and entry->addr + entry->size can
-therefore pass non-page-aligned boundaries to __arch_accept_memory(s, e):
+Max Kellermann (5):
+  include/linux/rculist_nulls: add hlist_nulls_add_behind_rcu()
+  mm/vmscan: move code to lru_gen_{add,del}_memcg()
+  mm/mglru: cache the last memcg node, make tail insertion constant time
+  mm/mglru: avoid redundant rotations of young memcgs
+  mm/mglru: reschedule between memcg reclaim attempts
 
-1. On TDX, tdx_accept_memory() -> try_accept_one() requires start to be
-   aligned to at least PG_LEVEL_4K and len to be at least PAGE_SIZE:
+ include/linux/mmzone.h        |  4 ++
+ include/linux/rculist_nulls.h | 36 ++++++++++++++---
+ mm/vmscan.c                   | 76 ++++++++++++++++++++++++++++++-----
+ 3 files changed, 101 insertions(+), 15 deletions(-)
 
-   arch/x86/coco/tdx/tdx-shared.c:try_accept_one() {
-   	...
-   	if (!IS_ALIGNED(start, accept_size))
-   		return 0;
+-- 
+2.53.0
 
-   	if (len < accept_size)
-   		return 0;
-   	...
-   }
-
-   An unaligned s or a trailing sub-page remainder causes tdx_accept_memory=
-()
-   to return false and __arch_accept_memory() to call
-   panic("TDX: Failed to accept memory\n").
-
-2. On SEV-SNP, snp_accept_memory() passes vaddr =3D (unsigned long)__va(sta=
-rt)
-   and npages =3D (end - start) >> PAGE_SHIFT to set_pages_state(), which
-   masks vaddr with PAGE_MASK. If s is not page-aligned, vaddr & PAGE_MASK
-   rounds down into the unmapped partial page trimmed by
-   memblock_trim_memory(PAGE_SIZE) and faults in pvalidate_pages(), while
-   (e - s) >> PAGE_SHIFT can truncate npages and leave the last full page
-   unaccepted.
-
-Should s be rounded up with PAGE_ALIGN(s) and e rounded down with
-PAGE_ALIGN_DOWN(e) before checking s >=3D e?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261102113127.1618=
-23-1-pankaj.gupta@amd.com?part=3D1
 
