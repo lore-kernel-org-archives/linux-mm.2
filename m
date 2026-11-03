@@ -1,130 +1,146 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E5E5606B10E
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 11:08:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33B6B606B128
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 11:09:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=l+HuCZJQ
+	dkim=pass (1024-bit key, unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=Ln7e1AWP;
+	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=rhPGPUCZ;
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=wTzFlnuf;
+	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=zfj8vy6k
 Received: by kanga.kvack.org (Postfix)
-	id 8F2826B00EF; Tue,  3 Nov 2026 06:08:45 -0500 (EST)
+	id 552486B05B2; Tue,  3 Nov 2026 06:09:27 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8A3E46B05B1; Tue,  3 Nov 2026 06:08:45 -0500 (EST)
+	id 522EE6B05B3; Tue,  3 Nov 2026 06:09:27 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 792496B05B2; Tue,  3 Nov 2026 06:08:45 -0500 (EST)
+	id 438656B05B4; Tue,  3 Nov 2026 06:09:27 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 53D8E6B00EF
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 06:08:45 -0500 (EST)
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 181906B05B2
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 06:09:27 -0500 (EST)
 Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id DABA314036A
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 11:08:44 +0000 (UTC)
-X-FDA: 85393534968.15.C356E45
-Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
-	by imf18.hostedemail.com (Postfix) with ESMTP id E9A391C0002
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 11:08:42 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=l+HuCZJQ;
-	spf=pass (imf18.hostedemail.com: domain of azpijr@gmail.com designates 209.85.221.44 as permitted sender) smtp.mailfrom=azpijr@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 9FAD140396
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 11:09:26 +0000 (UTC)
+X-FDA: 85393536732.15.70BB692
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 7B92A80003
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 11:09:24 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=Ln7e1AWP;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=rhPGPUCZ;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=wTzFlnuf;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=zfj8vy6k;
+	spf=pass (imf02.hostedemail.com: domain of clopez@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=clopez@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793704122;
+	s=arc-20220608; t=1793704164;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=AloFYWUzIqAhdMvN8K6X8VlvrRNVo6qD2kbJJy05K7U=;
-	b=NplIc9MToOnosLhlhnNpT4+D7fmH56IKAMUk+OsMbJi0CS5tNy5hAYR7+HL615HAhWUegr
-	XM4feaQo3kiy47zz96ihNkUbrKs9oIxfdc3hts4X9+NiG+wPHNkpoUhirJUXw5SxlTF5Jz
-	A4MpY/oFbmw92ciKWWfTH22Ph6RX3KQ=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=l+HuCZJQ;
-	spf=pass (imf18.hostedemail.com: domain of azpijr@gmail.com designates 209.85.221.44 as permitted sender) smtp.mailfrom=azpijr@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	bh=qarcZZQ4Pvpd+Eskx/ZkJsQlIkAUMYn0G23lRSUKBm0=;
+	b=TLnxv4lqlz2lfM2ouxtN5XAd1+gg8wOaruT+TH3i90fA3QyrGHXRYOBe6fk79lpmBTfdjz
+	4mubQJHPWf/yRJolLm8smCOIZg7T7pJQ510YwYEoGEb1OLACVeAqFGEGb4SaHSmzYjUu+i
+	9JZB+0qGS0ewjRoHFC9w4HqflutW1c8=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793704122;
-	b=AtAnIioTsW9woNtlVMYB3U5YhTgCyUE/W8p7KrYXdb2giHAKfcIyykWD1d2BhRgCM6Qocx
-	VcYiuQsQxSuJT3Oos8Wcc0U2eNWgcePYU+oybNrp+H7yjIx6qBnSP/V/76LYhHJ6EKRdjj
-	+tAoFq5ekyQ4P1nCswSUeewWcEjRkk4=
-Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-48e0d1da913so450781f8f.1
-        for <linux-mm@kvack.org>; Tue, 03 Nov 2026 03:08:42 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793704121; x=1794308921; darn=kvack.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=AloFYWUzIqAhdMvN8K6X8VlvrRNVo6qD2kbJJy05K7U=;
-        b=l+HuCZJQT+KH8gDijxRwPFS+zux9yvDluWzIu8sp/P1ywr1oP5PTyqQ7y3dmqNFgvK
-         YnKm2w/+3KvtnC2nv796V26vlneLVBG0DQtcEv4I5jLRmlz5u4iT4qZenz/be5ZDFm1r
-         Bh2wO7xjt7NRwGqmTuADnG40l1qHON4iBmWRwvP4/R7o+L9WnUP6Z+KLmpsa9OE4N5FH
-         IHO/JFbPpjPV+Ldc+pMorkyyiVa+M1vUhjH3ZIm1MAAdyJ/D4eWTyEd563nW13ubWnS+
-         0kdwh3RBMnHEB0wuvBygZ6fSbRh28jS2JeTA+eg7NFO080W7q/tAPOihP9DfQ/sZfyzZ
-         HGmQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793704121; x=1794308921;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=AloFYWUzIqAhdMvN8K6X8VlvrRNVo6qD2kbJJy05K7U=;
-        b=q+KFpW3LBQC2krVf08Eh1m6nSDyMMlLw/DqJYLsNth74hs+kCwh42VzoK6Wcf4z4Er
-         YN9l+8hGpH0AEHTPrjnSHYj7HvsxiROkl0D9oYjjK3P68px+KDxs/YQs/opR0E9JMOBe
-         dF4naOFzYM+XhW4z490/FCgLYPp/tVPEshnyimX8jN2iNdTvHhEURejEg65Qzpzr9ySn
-         YVjwTpi3kuVPToWD9knU42Niv/OoH8i9MNAK7uOxXhmRJlOZVA9skXNy9bn6IyiuqTTQ
-         OYaZNtgA2a8Ljd31R4fP9c2oLNc47cRqeEIwa6zpb5DeEdI/eV1R7NqOLYhwinrfeRmx
-         8ThA==
-X-Forwarded-Encrypted: i=1; AKwUvBxbKNNbOB0ePAIspIWFsOgUgLFDMa5Gdd+B0IxhcvGJfYu7glAshnDvNgvfqjv3o/Yf5+FJyjBYXA==@kvack.org
-X-Gm-Message-State: APuU4Z/CJsdqOPQO43Y4mIsE1vRgiNWtbg/Ock1UJeqwGjy8Q6TIUGCQ
-	2GHq+h3RVYpLLsleRTYbqjm4yN0hjKhgIYBnQe+UZ8ow2BzqlyKUWVNn
-X-Gm-Gg: AYBFou27X7MwyizlvRqR+jVVmdo9WbTtTf/qxX77wRO+nRpmSDDsTC6yAVnlQW2nv5T
-	kAG5GsvbrTLw3N2VnEnArd19CVfGQvRjFax5gq8OnN2k7uFAWGkLFKfyIYYm2fhc9UF7vxluTnm
-	fJOFGC/bAbQboDe/InlfInNtKttq55JkMdJQuBBPZ7uyFde4mXNeNYTfxgSnNtDZtGqbmN5h2Dw
-	gaug7M2O4TjtaORW6WSQCg9uqNpZ5Qb8mjwYX4W7R1xiy6kENx+Wg+Lyah1SV3zh0S0KSpekc+c
-	xbZohUO/KMy+AyxUegS7FdxaY2LqKQKBNQ7rArDtPh8f5oDXEg3U67+ZBdBA2sCweXjQP2JQKhM
-	A7YtFS6mSrc1fqFu3JVMSAj95yRo9rBOgQbyBRwIq5q0d89l0o1vda6gZXEbM6mxHrQfagkloAZ
-	bjmSQ/hzY6VJEssOa5Uc29gfoVrWq8pm5dWr6IcHkuu+4C4ETVpv+QLe53pHqppp2CVO7jQwn3S
-	Jf+tmXRif10hI+UbKpk1qUWXgOD2WlvbJNAarootbMuUaxVHHMjZimc9olLFuiABrLy3Nv8I3rD
-	ITs1D1Lx+ATcLI3Ro/XyJeQunAuhlGtEKWqR3DBVO7rc
-X-Received: by 2002:a5d:584e:0:b0:48e:6669:fefb with SMTP id ffacd0b85a97d-48e6e2e2369mr30210705f8f.22.1793704121330;
-        Tue, 03 Nov 2026 03:08:41 -0800 (PST)
-Received: from [192.168.1.22] ([83.231.69.9])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e71b8011csm27509475f8f.31.2026.11.03.03.08.37
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 03 Nov 2026 03:08:38 -0800 (PST)
-Message-ID: <9ffda863-507e-4911-8d4e-dbb7f0e26544@gmail.com>
-Date: Tue, 3 Nov 2026 12:08:36 +0100
+	t=1793704164;
+	b=S9Nc4h+uSGpgH9PKwHo7p5BvWbmia919rpLRinDiN/oZz2pe7829eINNSl66RfCqm+pgJ+
+	PzpURI7byZZUlaVV+60dO6h2u1p4rWpefH30XIheiITKypF/HO1FAhAAEXobmOLO3qQCDE
+	KezUAt4ii5brUC5gQivuzvi/nDhmPm8=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=Ln7e1AWP;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=rhPGPUCZ;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=wTzFlnuf;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=zfj8vy6k;
+	spf=pass (imf02.hostedemail.com: domain of clopez@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=clopez@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id A7D801F851;
+	Tue,  3 Nov 2026 11:09:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1793704163; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=qarcZZQ4Pvpd+Eskx/ZkJsQlIkAUMYn0G23lRSUKBm0=;
+	b=Ln7e1AWPqeO8tey/St9gMxw10zhgzRhc1E0p2nvZhQtEV14ZmWpJVgF+m29cCeKL+vMeWh
+	AwxNYUaIHh8FuS4VEVaDKyYdAJIarC9nSWLtPrfutX1ksDb927/ks7ay3EOxy9Qq02+LJh
+	1er4GydxR8h3wKecEqyfOQ/nozZFjvQ=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1793704163;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=qarcZZQ4Pvpd+Eskx/ZkJsQlIkAUMYn0G23lRSUKBm0=;
+	b=rhPGPUCZar1qg51irSrmQHzi+MOh+2VhGXgHXgsGqvA7LbbTMBC/EfNjrbW398wrMLlMC2
+	jxxEwL2u6nJXhDCw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1793704162; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=qarcZZQ4Pvpd+Eskx/ZkJsQlIkAUMYn0G23lRSUKBm0=;
+	b=wTzFlnufB/O28OfM/In9u0tun+XTcYCPxKNYphDoQxX/q1Wn0QyGWGwN5TH10K+vvmZLRQ
+	9UZZrAEtROwLE/zMUGXnBzPvqru88IfWaDbjzjYe1FsRoKeFMifbNZ3XKx8oShGxAhJWKp
+	zUPqtsbpDv+D0knpvzWDGE+7xh/os5Q=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1793704162;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=qarcZZQ4Pvpd+Eskx/ZkJsQlIkAUMYn0G23lRSUKBm0=;
+	b=zfj8vy6kaGRbelluWH4W02FeRwUOKocR4zt+QWcBMhrTWP/MobG6BkLFjqU1YdkyottYX1
+	oquHdH72L94+peCg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 2DF861350A;
+	Tue,  3 Nov 2026 11:09:22 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id jOBJAOLA6WrZLgAAD6G6ig
+	(envelope-from <clopez@suse.de>); Tue, 03 Nov 2026 11:09:22 +0000
+Message-ID: <b9ed9dd4-a1d0-466b-a6cd-89a4e70abed0@suse.de>
+Date: Tue, 3 Nov 2026 12:09:17 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 4/5] mm/mremap: restore VMA_ACCOUNT_BIT if the unmap
- fails
-To: Josef Bacik <josef@toxicpanda.com>,
- Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <liam@infradead.org>, David Hildenbrand <david@kernel.org>
-Cc: Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>,
- Pedro Falcato <pfalcato@suse.de>, Muchun Song <muchun.song@linux.dev>,
- Oscar Salvador <osalvador@suse.de>, linux-mm@kvack.org
-References: <20261102-b4-mremap-pre-split-v2-0-d281dd11ad7d@toxicpanda.com>
- <20261102-b4-mremap-pre-split-v2-4-d281dd11ad7d@toxicpanda.com>
+From: =?UTF-8?Q?Carlos_L=C3=B3pez?= <clopez@suse.de>
+Subject: Re: [RFC PATCH 0/4] KVM: x86/mmu: don't zap secondary MMU on
+ permission upgrade
+To: Sean Christopherson <seanjc@google.com>,
+ Claudio Imbrenda <imbrenda@linux.ibm.com>
+Cc: kvm@vger.kernel.org, linux-mm@kvack.org, pbonzini@redhat.com,
+ linux-s390@vger.kernel.org
+References: <20261029143336.390231-3-clopez@suse.de>
+ <20261029175203.5bdd51d7@p-imbrenda>
+ <df9dc526-4275-4784-8a0c-2e4fa8e96402@suse.de>
+ <20261030133939.630e29af@p-imbrenda> <auis0SaMkRB6odsK@google.com>
 Content-Language: en-US
-From: "Jose A. Perez de Azpillaga" <azpijr@gmail.com>
-In-Reply-To: <20261102-b4-mremap-pre-split-v2-4-d281dd11ad7d@toxicpanda.com>
+In-Reply-To: <auis0SaMkRB6odsK@google.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: uceunkp14my6fdy6ps51ka5o1fubhren
-X-Rspamd-Server: rspam01
-X-Rspam-User: 
-X-Spam-Status: No, score=-8.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FORGED_GMAIL_RCVD,FREEMAIL_FORGED_FROMDOMAIN,
-	FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
+Content-Transfer-Encoding: 8bit
+X-Spam-Level: 
+X-Spam-Score: -13.29
+X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
-	autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: E9A391C0002
-X-HE-Tag: 1793704122-70366
-X-HE-Meta: U2FsdGVkX18eqE10lrAnCQu+S6OwyyoDTl5/xN8g63u/FRhH7RuL/r9YYijJ96kqfije8MHcZmH6/C7axPk+DzrFTvY4XqAM58qbjB2cA3NQdxYJAtOkebpsR3KavXRR62br46OI+eJvuO6i/tsFyWZoJMyWEg7F6QgBeaRmUXoOlkm+LkYZVHtTlrpUS8Z0bM+9hr/QAdvqy4o72deK55Tc17SrBLgi36JPTCQwUkdeFw+uPqysEYPwnKYbHz/Y7BxXdy2Ph5vA1mjNixYCDIsb1t5CySgnRTvD8uZWo5h72N96rCtDGYZRmASaex/l/jW7gBtPvWKD4wNwoEmpP48ZbJZlbi1PMtK9szfcOV38yjYQW9Zz8Vv8KLxrU/KwQEI9NADSYoKCOCgWWB/j361WlFoViB1TCaVm0csQHr5CYEtR+G8xkNMA5hFmfqd1s7n8AJgL8LLN49XtIDsqJlbZfvYi2Q5XO8L/tXkQfkwbwKcOxCbvrk50EueT2UL+KIEchS+zdrLfBve1/mwCw2BNJseIwcX9yZs8uIBYwanQYMfKSblGeTnpDoQlwDdP9FSKprbpIyXVXgAnDSbiJ/F1lRCv/el80DhUtLjNnBpG0ZeuQP6LLWyeezlYPR9TZ0Stv1owbikYre2NIofQROTU7IG8Gy6Hi8XKvJFyLAR6lcPoUCqOq3IkM1m0JhylUJrVN79CcoKhfPX67rvLWjsjKILbGaW1RCKZDfXScqywoTYEUGP3wtp4vxq4LeCTxFznx6zU8tcWVm3tUpgA5EGSyJOrCWl/VzmcvrLJqNhHLAPR20MGIB8EWUtqMjZ2LJz1bkhSNgXNP/HTWrYUAmVMozqJ41n/FWVa8xzL00Mp8s3rBKuXzI056O95jc0nMLoO7UJv+s+cMZQZFxi+tXVxZQWNYaugsxyp6zNhExv6PXM8+ea7HGS0YD++UWBB8nzzsS7sZeuC9QmpDHy
- ZLCc0hSZ
- 8NgAy6/CBE4TgkjFuMHsa6BzCVYf7pxtHGaCNi7kEvJHuibWwNx6JVsJP5cD65LELSYDO3wOztkLyBDPubRIuACDk3MgvO5rWL8yXzM8IliT3YnA7nBFGCeRQW0rIUmScfBJ6MpM/wbvfo+vpkqMq/gFRL4oS9j8sL3oZL3PIxz03LdvXO3z/4jiAIWHR/fBfpbijVzHSV51lgEZvy6sHXB3XxDGiar2jGPY9zGrNetObJGtcpv1Lh2MOImh/I/Ghz6/v/Y+Ph1xrUvKKimB8vQiDauvGh6uy1zmTrXH4elkCB1rQpwjzWuvn353Q/JGisEsGVQok7e+wBImCIMhdHqXGLi+s8m8JYGSidqT81B4CCpL5wsVX/bB3nDaOJTE/QKVGXSNxlQb5pIHVqFXjUDzbQ4ZWR31TcS5h5lGHM+DEDnzj4ExUMaH/HQ+YPNdkn+h0aATez0q1MZmH24hCsI9RFR/JCF7ZmyomyET6sJSeKBmVLjkBMNkHSVN2N4/E2pH8x/rEuOPUnjBoirK+gWYD8IeW74VVaRmTZclpil1U1NW1kS05v2cFGiQSRWfKU3wv
+	autolearn=no autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam09
+X-Stat-Signature: aw4bed9drdosockkn7torz831go5ep9a
+X-Rspamd-Queue-Id: 7B92A80003
+X-Rspam-User: 
+X-HE-Tag: 1793704164-452266
+X-HE-Meta: U2FsdGVkX18qtsBFyLIAV6II+3k3JR2EwShlJC2AYVNbpJbpZLGy9GHl971HXNhw8KYVBnfAycaFwjzJ8K36uuJ1mOXWt3+VwtjYXPkPBK1LsNwnzNlmSePpafeAZ97meuvek7Dqwq/hCLLgFcCHyA/a7G5omM3s932Ztv5cAmPNnZv0wmCf4wMh4odoZV6KE7hV8yEuo8ctGyZZGk6cj5Yzfcwz817XYPQCjZKRW0Y6k9n82iUGOnbxsvIc5EsD+e/5BOC66MXr43SWKnUFCXXGLN4Jrlz/8DqtSYRumuew/ob6fgQcWIh46AnJAEcuukDo13tGZt/ayaCfoE+zt4DcfT65B+d3isSPqmjNbSYjCiAy88FqJwvxJCTHPEAJO8w86YOOGfGHLa/8P4GA8Pqqy6LCCq/+PmuPl0/7gfFJKtBUgWUl9UIKkcmSVKhaFy9ZSRTS+l42qD23wM6T8ChNggr6RrejPpSBsFyBsZ9/vy4/L6WkBYLtLaOdHc/CSW7npYDGO4jdFnFn1tM8N0Is3WfH6FBFpmQewV2kHdhLlkQeQ6p6FuQ7B5qLswid9Tlyb7XuluCf4m5LsGnw91UlaM82KOSM6oH6BAtUAOXEPCxyvAUWUziDisTzuo/E8hQ5+Jxn3l4d+CadFn0iecQ4ulmPKplZ2Ik2ol3f95o5k74AqDJV/+UevBpUwVK844ZEO/C5u/zBd9ZBtZug/piuEuTpDgiDRcgbhrjrkINQbNLmiY3dNF6nPNkz+0bA/o/pJJAW8RVxZ3gOy5X9cXvV1prOThDsfo1ENyEla2Q9VSKuAhL29y82ipZ5if79hd4foRbsU0NcoVnotBVbcyuw3wo3tzN5CLZ/hjzoBhcmcQtDe5Qfx/0GNYkaRSOZBv6aPQLs+d/0/3qChTO2euMCwLt2l1d5ol+oQbooJ5XNziwuWXnmRswLqxdx9q5S6uV8HSiGQtJdDWQt6ng
+ SdG41unJ
+ 1iFWb417NzXoETNjly39k1NjK62q5mBSJd+21XM/jhPmI6Y0D990gMNTr2wuuL+MBTMErZLHuhtb+TO/sFdiHlbMDp3FyzUoW3UD56B2b9Bu5rJs/j/XvbEcaonLByERXDqEc7OzMkqWUKR9Rk2Itb2oD6Rc8O/PkQd0BL5KxYhFpdXOeydifH77wAgCnrs24m6lQd5Q99qE3LooOLsSfTbf0vMNMIfnj2uwXbDslcIEpdfhl7YKdKirp0rThPRYEOw4kcF2hf0YJaJCptl05GgPeoSLFvJ/scgQ/Yuc+blf3/VRn9R6St31DvaNf7Kw0hEsv25GNFaFpibf3AjslMVthSEfZWZCZ6vXzNGi1rp91Bmo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -133,32 +149,47 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/3/26 12:46 AM, Josef Bacik wrote:
-> If the unmap at the end of an mremap() move fails, the source VMA stays
-> without VMA_ACCOUNT_BIT. Neither munmap() nor exit_mmap() uncharges it
-> then, so the charge for all of its pages stays in vm_committed_as after
-> the process is gone.
+On 11/2/26 4:31 PM, Sean Christopherson wrote:
+> On Fri, Oct 30, 2026, Claudio Imbrenda wrote:
+>> On Fri, 30 Oct 2026 12:11:07 +0100
+>> Carlos López <clopez@suse.de> wrote:
+>>
+>> [...]
+>>
+>>>> regarding this series:
+>>>>
+>>>> on x86 you don't care what the new permissions are, because you're
+>>>> updating when re-faulting (if I understood correctly).  
+>>>
+>>> Correct.
+>>>
+>>>> for s390 it might be beneficial to know what the new permissions are;
+>>>> of course we could look up the vma and find out, but since you are
+>>>> already checking the permissions, maybe you can find a way to also
+>>>> convey the new permission bits?
+>>>>
+>>>> that would make our life on s390 easier :)  
+>>>
+>>> Right, getting the new bits from vma->flags should be trivially done
+>>> from the MMU_NOTIFY_PROTECTION_VMA callsites. There'd be no users in
+>>> this series though.  The rest of architectures still need the notifier to
+>>> tell them if the change is an upgrade, since they don't have an easy way
+>>> to grab the old RWX bits. Passing the old RWX bits from the MMU notifier
+>>> does not seem trivial to me either.
 > 
-> unmap_source_vma() clears the flag on the whole source VMA before the unmap
-> and sets it again on the remaining parts afterwards, but its error path
-> returns without doing so.
-> 
-> This was reproduced with fault injection: each failure on an anonymous
-> mapping left Committed_AS higher by the size of the whole VMA after
-> everything was unmapped.
-> 
-> Fix by setting the flag again on everything in the range of the original
-> VMA, on both paths, with a new helper. A failed unmap may have split the
-> VMA already, so the helper walks the range.
-> 
-> Fixes: 51df7bcb6151 ("mm/mremap: account memory on do_munmap() failure")
-> Signed-off-by: Josef Bacik <josef@toxicpanda.com>
+> But why is core MM even doing mmu_notifier_invalidate_range_{start,end}() in the
+> first place?  I.e. why add MMU_NOTIFIER_RANGE_PERM_UPGRADE?  Just skip the
+> "invalidation".
 
-nice!
+I briefly mention this in the cover letter, but in short, denying other
+users the notification seems like an overly intrusive change for KVM's
+benefit. A flag allows users to opt in instead.
 
-Reviewed-by: Jose A. Perez de Azpillaga <azpijr@gmail.com>
-
--- 
-cheers,
-jose a. p-a
+It is also not clear to me that secondary MMUs are not relying on the
+notification in some subtle way. In fact, Sashiko points out in reply to
+patch 4 that the notification lets KVM retry the APIC access page reload
+in case userspace shoots itself in the foot by calling
+mprotect(PROT_READ) on it. This would require a really weird VMM, as it
+would need to go looking for the page's address, but breaking this would
+be a "regression" nonetheless. I will address this in v2.
 
