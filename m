@@ -1,158 +1,101 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C83A606FCC7
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 15:18:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC0146082BDC
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 15:18:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=chrisdown.name header.i=@chrisdown.name header.a=rsa-sha256 header.s=google header.b=jq3Sr2Hc
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=CoJeH/FT
 Received: by kanga.kvack.org (Postfix)
-	id 4E2E96B05C8; Tue,  3 Nov 2026 10:18:47 -0500 (EST)
+	id 1FC756B05C9; Tue,  3 Nov 2026 10:18:54 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4BBDC6B05C9; Tue,  3 Nov 2026 10:18:47 -0500 (EST)
+	id 1D5886B05CA; Tue,  3 Nov 2026 10:18:54 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3D1546B05CA; Tue,  3 Nov 2026 10:18:47 -0500 (EST)
+	id 1134F6B05CB; Tue,  3 Nov 2026 10:18:54 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 1E4386B05C8
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 10:18:47 -0500 (EST)
+	by kanga.kvack.org (Postfix) with ESMTP id E65E16B05C9
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 10:18:53 -0500 (EST)
 Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id A34E2A043A
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 15:18:41 +0000 (UTC)
-X-FDA: 85394164842.17.ECD54C8
-Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
-	by imf05.hostedemail.com (Postfix) with ESMTP id B127710000F
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 15:18:39 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=chrisdown.name header.s=google header.b=jq3Sr2Hc;
-	spf=pass (imf05.hostedemail.com: domain of chris@chrisdown.name designates 209.85.210.178 as permitted sender) smtp.mailfrom=chris@chrisdown.name;
-	dmarc=pass (policy=quarantine) header.from=chrisdown.name
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 94FF9A042F
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 15:18:53 +0000 (UTC)
+X-FDA: 85394165346.17.B4E980F
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf06.hostedemail.com (Postfix) with ESMTP id CED3318000D
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 15:18:51 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="CoJeH/FT";
+	spf=pass (imf06.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793719119;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	s=arc-20220608; t=1793719131;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wslCY1XSUoR3v4P9N4tk1erDlQSR29c2WrcvV4W33z8=;
-	b=nMQQEqVik9TasAnjPxnJNsPomI35fBXbb/4jE3dA5tpMlm20E8jM0nV3eZMGny9Y/HSUTo
-	qikCNu5z6tXn/Eq/+Nv+EnqHY1sMCN7ZJI2SkUr9Myt4p05IP2uCLWhVTQfhCsF7I9mKEE
-	ZTEdIDq0nLCu+rpbN/ayug04ZM1SLiQ=
+	bh=Bc8aT4Z6get1K0vbpp5ygtanM/hIwI+PelNNb0VgB7c=;
+	b=SfgvttKAvh/lJbvWsktS4YVFl8O/r/zu2g0dKECvMicKZKmH5TddEB8/FMW/cCNfEFmCnG
+	sLaaerVfS3oDMek0C07474Ih7/fSW3O2ZuEhMB10KgrG2ZK4ka8lU598tj/yPu7jzVBqxE
+	22jkFKXeAfz2OK8mj2Ulu++CQffAzOE=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793719119;
-	b=lo81iLbRro05XfTF6sIpvMFVhempJQSRZe+BYL7P4dLngnM28aduBxOt+VrXhonibjBDjd
-	GRsnSgcP0nS5aoC6TaqXy4omPUjvYz9tYuGwLM9ZQUHlxsARJX28emun+gJQOP22IliLzb
-	2/K2flF+4MQzZ/UhZ11xWNYRmry1f7c=
+	t=1793719131;
+	b=VARadozrqoAvDZ6H4jQu7/UqKLWr4/r2ZoUrM9qCgMnOucU3YVFiROqdNydGZWvRw73SNF
+	JPMNLGqjrqq1iJf5eBWrXoE5v+rJDJzf+7Ub+QNpnTftdDPjA250QMbCK6s39S4GmTY8bQ
+	PdYAVRIBy6h8HmZ2dmEVWWyRfnzoZxA=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=chrisdown.name header.s=google header.b=jq3Sr2Hc;
-	spf=pass (imf05.hostedemail.com: domain of chris@chrisdown.name designates 209.85.210.178 as permitted sender) smtp.mailfrom=chris@chrisdown.name;
-	dmarc=pass (policy=quarantine) header.from=chrisdown.name
-Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-8a070781f63so1783682b3a.1
-        for <linux-mm@kvack.org>; Tue, 03 Nov 2026 07:18:39 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chrisdown.name; s=google; t=1793719118; x=1794323918; darn=kvack.org;
-        h=user-agent:in-reply-to:content-disposition:content-type
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to:content-type;
-        bh=wslCY1XSUoR3v4P9N4tk1erDlQSR29c2WrcvV4W33z8=;
-        b=jq3Sr2HclyNXlGvGRCzODP4h78vABcYgjniGLwEchEk4+MynPb92IbTVDPH+4AUid2
-         XpbcU0Ssy0zBX5TTNtsU9M1vHxmSNTS+ErdCf9dhFTJmokc4+vn/AlRElyeeB2hK07Ca
-         JFKl2t2x4UAI0yRHoR9Bf+OGT2mPJ006fAnek=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793719118; x=1794323918;
-        h=user-agent:in-reply-to:content-disposition:content-type
-         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=wslCY1XSUoR3v4P9N4tk1erDlQSR29c2WrcvV4W33z8=;
-        b=XisyOBJQ70xQkwHwbdxvJxT4jYPQLi0Toi0AUApvxEpUak7NPr5TRXIdgmX3jA3RyU
-         9uyuyYH0DxW0MDlomNeDjqENlkSLQQ9N9JmXTxGJ5AaKWQaaHBthoqLrk03MZcCMB6hW
-         V2oi5uGbwcYUz5q7sP4X5QioSIqQ/Lhb/WB7TcBkHXVQi689Afnu1fKFj9/6jOVpvUOS
-         J+qLDONnLd6uJa/As4E/kJeNWQ5KDK74LcZsRFeZH5X5iRpZlvMapd9k8n6acpXVN7Ed
-         v5LVeqVJZIHLuYL8Upd0GivhUQIC7JHRWZbIazo4uCAYwqy0DOYQgc3sOHOiSRWHzYbn
-         fnwA==
-X-Forwarded-Encrypted: i=1; AKwUvBzsKWKMtdfPTKYENjwuBT1i0JmCrJqLDxBMI+xSDaNIGUhRJUuN4jFYpQTlBSg8eotp8/47xUbtXw==@kvack.org
-X-Gm-Message-State: APuU4Z+jtJpvK8/p3btVhj4bM1ZDpfJSBt6uC/mV5cUvHNDvDIHvKdEU
-	DSHmmy/37HUqZEpFR50+rOhN2Kwewi1fkcyPJIvlBrD0NkrBMXrMM4lKsAYMmYr9HLc=
-X-Gm-Gg: AYBFou0PHHZaSJ0ptatOADWDKcXjotpUYwiE2gxWM4dT3SF52VFQxjuKtUkox0L72QR
-	WVo9fz87/91nNybuGp0mp9Ibffs2V9yLm8z6g5T7yqblwFyfy9aYuIWu/2yxH9eQP1luBVjSkn4
-	9NrE8vW+n0lba5J1d8HQQ67K/kvaPRuWQWMgi3+zuMQwgVXV7tRpW2K8lxyUsnpMBv+h88lAVbD
-	fAbGe9f/R5NM9eRWyj+G1jzyz6Ozex3/4MqwOscbYwYEI3bTmco1qXVyzx492nzjBOnw6M0KDSY
-	+px3edQwE94cYegm3cEBez4vOrbRMIJkX5FDBGNgq5yNLuuWVTvkSmQrDX2CHuL6Ze3WiU+PTFj
-	bFzo+DqcllM3W6OIS1JV/MTQnqE/atN0RiIwXXJPxKkwuq7mhnDZQm82cVd1Ru38d9QZxj9joHp
-	rAz81sDPjuNYxcEpZdSToohDcwrYT+oqNDDEnqYg0c1eXDly7KoSJOYYTht7LTM7bvZ0fcrWYvI
-	hpskwQwqaBMBRgrBqyt+M9QK/jCu0Otl+iRCpwNKpunWD59koZqbmUYbRDCRYewrJT7Wx2U1tNS
-	o7Mj7raVuX4lljUQPZNnl23OXk1+EQcpChOQT/T8tTcUoWq2GKRr3z4nOTNxHo6q07rHIqJag4h
-	OdNc+hK4tA6lAZBtvD/85Fp9eciz4E3sV53hOjIdaApV7AeV38xW8wLzdepkyMksQzQPaukQxNQ
-	jxgmvrNpKIo3sbo5KK3w==
-X-Received: by 2002:a05:6a20:914a:b0:3dd:a009:3182 with SMTP id adf61e73a8af0-3e928e2909amr12529216637.42.1793719118513;
-        Tue, 03 Nov 2026 07:18:38 -0800 (PST)
-Received: from localhost ([116.86.153.182])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cdb362ab313sm1592131a12.0.2026.11.03.07.18.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 03 Nov 2026 07:18:35 -0800 (PST)
-Date: Tue, 3 Nov 2026 23:18:33 +0800
-From: Chris Down <chris@chrisdown.name>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Lorenzo Stoakes <ljs@kernel.org>
-Cc: Jeff Xu <jeffxu@google.com>, David Hildenbrand <david@kernel.org>,
-	Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>,
-	Pedro Falcato <pfalcato@suse.de>, Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, Kees Cook <kees@kernel.org>,
-	Andrey Vagin <avagin@gmail.com>,
-	Alexander Mikhalitsyn <alexander@mihalicyn.com>,
-	Shuah Khan <shuah@kernel.org>, Oleg Nesterov <oleg@redhat.com>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>, Jiri Olsa <jolsa@kernel.org>,
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	"H. Peter Anvin" <hpa@zytor.com>, Andy Lutomirski <luto@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>, Mark Rutland <mark.rutland@arm.com>,
-	Huacai Chen <chenhuacai@kernel.org>,
-	WANG Xuerui <kernel@xen0n.name>, Paul Walmsley <pjw@kernel.org>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>,
-	Vincenzo Frascino <vincenzo.frascino@arm.com>,
-	Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>,
-	"Serge E. Hallyn" <serge@hallyn.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Randy Dunlap <rdunlap@infradead.org>, linux-mm@kvack.org,
-	linux-hardening@vger.kernel.org, linux-kselftest@vger.kernel.org,
-	linux-doc@vger.kernel.org, linux-security-module@vger.kernel.org,
-	linux-trace-kernel@vger.kernel.org, x86@kernel.org,
-	linux-arm-kernel@lists.infradead.org, loongarch@lists.linux.dev,
-	linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
-	linux-kernel@vger.kernel.org, kernel-team@meta.com
-Subject: [PATCH v2 5/8] uprobes/x86: Leave sealed trampolines in place on
- optimisation failure
-Message-ID: <eafd3da2cd2c3e2c4d137a46f50351dc6290c5ea.1793718940.git.chris@chrisdown.name>
-References: <cover.1793718940.git.chris@chrisdown.name>
-X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <cover.1793718940.git.chris@chrisdown.name>
-User-Agent: Mutt/2.3.3 (9073d26d) (2026-06-12)
-X-Stat-Signature: dp4qx948xxcubrp4pc688mwd3jbgxyzg
-X-Rspamd-Queue-Id: B127710000F
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="CoJeH/FT";
+	spf=pass (imf06.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id B24DC42217;
+	Tue,  3 Nov 2026 15:18:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 856681F0093A;
+	Tue,  3 Nov 2026 15:18:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793719130;
+	bh=Bc8aT4Z6get1K0vbpp5ygtanM/hIwI+PelNNb0VgB7c=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=CoJeH/FTtYurhrEu7pHCjreAy8kglbRPwM3Bp2MFbNXs5sfimskiQ6GdFaw2b46h5
+	 LFYZjIjC0HLk9VtZElPrV+LCrvrtO/TXriYCzcHxI7ww7m4DuMtGSua9gCijZ8ag5C
+	 C1QyPEjg//XpCtccxJ83qTFkU2bPqiwCZUATJ82pjvzmj0HhclIwZdtkBZ4X0D4FpB
+	 W2kjXVSW4Jh+gJKkh7n8hluL4QKxxLPc9zkayoPnR79tHeS7TL9oS5+LArhquuyOcO
+	 R0f20W9hUcQSALMEMf5u4F5ldJdbIIx8/qJHUPE3ePz+MiGIzk37ns/uj3hE88ZoNC
+	 wd/gwuy246nxg==
+Message-ID: <sashiko-outbox-195591@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH RFC 11/23] selftests/proc: check that a faulting writer
+ doesn't hold up removal
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Christian Brauner" <brauner@kernel.org>
+Cc: "Linus Torvalds" <torvalds@linux-foundation.org>, "Jann Horn" <jannh@google.com>, "Josef
+ Bacik" <josef@toxicpanda.com>, "Chris Mason" <mason@kernel.org>, "Jeff
+ Layton" <jlayton@kernel.org>, NeilBrown <neil@brown.name>, "Eric Dumazet" <edumazet@kernel.org>, "Thomas
+ Gleixner" <tglx@kernel.org>, "Al Viro" <viro@zeniv.linux.org.uk>, "Jonathan
+ Corbet" <corbet@lwn.net>, "Christoph Hellwig" <hch@lst.de>, "Greg
+ Kroah-Hartman" <gregkh@suse.de>, "Joel Granados" <joel.granados@kernel.org>, "Kees
+ Cook" <kees@kernel.org>, "Jan Kara" <jack@suse.cz>, "Jan Kara" <jack@suse.com>, linux-s390@vger.kernel.org, linux-scsi@vger.kernel.org, coreteam@netfilter.org, kexec@lists.infradead.org, linux-pci@vger.kernel.org, linux-sound@vger.kernel.org, dri-devel@lists.freedesktop.org, linux-hwmon@vger.kernel.org, linux-mm@kvack.org, linux-usb@vger.kernel.org, samba-technical@lists.samba.org, sparclinux@vger.kernel.org, linux-m68k@lists.linux-m68k.org, linux-serial@vger.kernel.org, "Takashi
+ Iwai" <tiwai@suse.de>, linux-input@vger.kernel.org, linux-raid@vger.kernel.org, linux-ext4@vger.kernel.org, linux-modules@vger.kernel.org, "Chuck
+ Lever" <cel@kernel.org>, tytso@mit.edu, dmitry.torokhov@gmail.com, "Petr
+ Pavlu" <petr.pavlu@suse.com>, "Anna Schumaker" <anna@kernel.org>, yukuai@fygo.io, "Heiko
+ Carstens" <hca@linux.ibm.com>, "Vasily Gorbik" <gor@linux.ibm.com>, "Alexander
+ Gordeev" <agordeev@linux.ibm.com>, "Christian Borntraeger" <borntraeger@linux.ibm.com>
+In-Reply-To: <20261102-work-procfs-drivers-v1-11-a994bd4d3b1a@kernel.org>
+References: <20261102-work-procfs-drivers-v1-0-a994bd4d3b1a@kernel.org>
+ <20261102-work-procfs-drivers-v1-11-a994bd4d3b1a@kernel.org>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Tue, 03 Nov 2026 15:18:48 +0000
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam09
+X-Stat-Signature: 3rctghskqwzekjsr9j3w5jui7dsbnes5
+X-Rspamd-Queue-Id: CED3318000D
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
-	version=4.0.1
-X-HE-Tag: 1793719119-418810
-X-HE-Meta: U2FsdGVkX18w4UQP62tBhHTRdJK+ZprCbcZgfb7G+CiI5d97pKGgSolI0yC9H6qisC+zZPJUwv2L8ziPc7zIKHikgXxw+w22RDWR/aG3WWnIxjlDrox41fyCEwZvrB1x2Gs7yVODBGTxRWYM7dPnCzA3BTbpXkfL61qPeLo/yuIos9T7tHG8YOF2pFP7SJM6Ewby/C7veqxgMdF+7A6T6FjwnZjip/VEjdweSGlvGmCJy75h7UJXcU3vtmuTqj99MoukPu+TLRGR/o+v4u1nehkbqM2fwJrGmBqsCYVJr+iP/q/HsqYziYbzblMoOvtptCoocpb75i5AA3nXw3+qtv58g4IKMajJAN/8q2Nor+1lCzkI7wym/eHvtUgIJ6tp3EXeO717bI4xXorYi0P40y/8GCOu2AFg0YuYGxifMTstT+A608kbN+4/Hp7/UuPPGRfVOfBZ9Z3vrKKkB6G2YfTY3TNo/xO4eU5q1FuodrHqciDyQYiEjJ85uQxo9uL8JhQpNqNmxTyoVPZI03CFItIWnz/t9P9zvdWYjTuYMMq8L3oRoxEHedMfZnNvWK3b9Gvxw6tybBPj+0th7+GRcy/GBb1VY5fzUb8yc1rowrj0G/rkcEF7H54JMlrqYYIcID5JY3RrpQ1QIi1bo+LMX/YrSrlIw29/cdsOdyzT8lsEHHDqURia5h2eKOhz4m/Ixg4TbTOVU/9e8m1RCXUJgSIIuWd61Xyruz1cC10E5kFryCQ1mnGcGq8BAp1YFHsz3gTWCHrgPHfWe32wqLdbYaxbVcLFE0CYtOfpAA14akbemgQLO3nmgIz5vl+/IRXFZGKnHmRNA2RJFTqkKuaacsgvux1f4RLfkm78QGJiH+tTBqSrywza5D/PRxbbey1zSblS9KWKoHpGO40bYK8TzPsjtkILrMt7ZEhHky2kRKlovlZtQ4dvo8I1sEqncnI/vJ8OZEgdJcl7N4W/CmD
- LlUA+mb7
- iYdcvglsk7C5qngctmSmHd2itFwi4btf3R+3xugnzdZzLUgDzslaJqnknLDbYhpDEaMK0KeHvuDV2WzLIeYQIYeyr0fhWRYJ5x2Dh1y/2xwl05+2GGBviWMsm8JC1gmWU4HRBO+6I7gi8ezOnTtxGMK4h4LmaPl6lYz24sApD5en8fBY6U5nidcss/RZDTBAUwXdxSOZ0eQVB8qwpZGqRiINJPjhvMHKYaT9W0VrBaequ5ELQEbFPLttOu3XXwXMOoxA8ZYsxw1RFfYn9ZL+XZA8RZvxtsqzqJOvH3eo9mJxh8M32NWkkP5UCK23784IG93GLBrPg0vTiV4z8HbiGsu1jwsnYqv168m+vPexvpXKFG4/oGqxpMhcgOmI4IYSaRc1F2h8uhGPr7PvTKczMCSiB1AjPyr2QCgQd6ZstPtNECtLfmOo8ajn0bU1F9iXSGXT+4TZUbqyp5Dp0ejh6NEhtiQ==
+X-HE-Tag: 1793719131-723449
+X-HE-Meta: U2FsdGVkX1+OvQeJK5LqHz3bFBlVAR/1FNG7J65stNEiICzB9olaQ1v3mNgTDo4WEPqD66JgxE7y5/tWEv95cITwXXyEnVcT8JMuWKWSSYMJv6y5ppFwwGMDhFUtZ4wFc5Wbcg+l7rmD2u6Wc+Aqjk8O9ht6+9cGD2n9MT6fQKRkOEWAiuRrTWTrywjeF3ARFFzo4RfBYVw4j6acAl37XT0aLh9cvViU6i1yYEjdmsqoRRvpFq1tLSFdtTXUdgbIYB16firL1Tx6gdYjgRTpzC79RHXEI9AIPTquhBQMfM84qT6Putl+qRoG+Paqeq7AR0WrQ/ZdTLxAu4YbXsWEbqOFHrCl/jhMkNIehWKgjQkqZ7bVU0M+fW/TrmOgLUY+nqY+UQsmZD2Jr8AnVGCxFQq1MR7e8wVMLODGX6U4DwQItervHRAGSo0whTaSBAdOomLbtIlNAoCmbVhVpOvUEsPpl/BZby6n6RAkoIWogGRJruRPEXF7CBlzUqhiy38KSNwmPQNNVZ+pRAeqnJ9SULdJijXKi+/Y4Pc8av/feXiW0+4TYJexAW7FjT0+fC79Bx47ZA5tRCW5HhX/xIa9tZTZSq2kN9AXFkpjikqDyg5qG1LM0hy3QtsJEK4v1TXwPYLxSQzYKN/xMgGYOlLxyW3Y04dEIqSer1IYofLwKSFOfsmee4Gd5v33iuC3UNoMUbmvPJhGiwPtyXWWylwDKubA9uDXzMgAbuPRsw2CTSlnsf+2RyNpsZQgnQwMyIfpaoTTyq15CFYeR2OvQ6W/K6SuMBp0Y+7XiLv7x0Qdnm5EqXopFFmfNuYLzrUbsA10hcxh0PPkO1nWtTLi2TpouND1WuZa0flJZbdPhgEyW0eHvN56MdOvfO3t6UWnNsAczxCYwLqTSLpH/5zZOazRYyKpppz8hMk0bFkj+olCYzxkCq9381pxgcJTaK2wFL0JuWdRStd+e/28OOoriei
+ m16inr0D
+ YY7ndJFjFQedw/qbVVNzZK3wRzufwMRGfUB/HON2FhBUrMB7F+kjTfBWRJB21+DlVIR/uhIGUQlDeo0GaT0vf1F+4EE9VafTsIfUimVWc/PsA1pl8gdnqws+cPPUdA3+rStuzd/Ig6Tku6uFY4w9A+FcVBSaBHwnD7SSt2+y1QDbWPw2EN1Xmzenre3uj/RM9onK8ZdavXsjcmhGIfIdAgrIwUb13PwsrFiEBsqB2hpvt/xzchD1R1jqxR4I1f+eIgL+Qt8deEZyMG71xL77GSX05BKaoHAQCTP4dhqzO579Wk0SKc32+rkGtHoo5uYBH3Drtpo/6Cxo0nmwPY2MCKzohQeHeEScLaURhmyOhVC7up9NPmr3f2hOn2WaIJkblTSByMyTU+QHEjchde1WQGqMApSd+6n6sXefrp6pQYA/waZDZzCWFGlJ4WXwy+LDHDb9sFqZQ6h3F7qlZnaEXM8DN6kJjQd13bd9s2viBUh65LbRYJWO9FKzcx9F4vUpVS9ILvENV+SQXOs64vCQw13SLD3f4XQrgEPjz2UYfSjnnaoeYplvEF7ouzkr2sw0TyyeRLHc7rgf1J7WwBbzpic+fWi0UlwtCKXKHh3ZFVFYuuG1jpvwNzn9fp/uX7wu0tkH/4lS4S1PQrS8XM0Q/9tTBWjQoOcfGDEdU
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -160,37 +103,95 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
+X-Archived-By: <archiver.kernel.org>
 
-If swbp_optimize() fails, __arch_uprobe_optimize() unmaps the
-trampoline it has just created. The next patch seals all special
-mappings when CONFIG_MSEAL_SYSTEM_MAPPINGS is enabled, which includes
-uprobe trampolines, and then this do_munmap() would fail with -EPERM
-and warn a second time.
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [Medium] selftests/proc: fail and leak scsi_debug host without CONFIG_SCS=
+I_PROC_FS
+--
 
-Nothing is really leaked if we leave the trampoline mapped in that
-case, since get_uprobe_trampoline() reuses any existing trampoline
-which is in reach of the probe. So let's just leave it in place when
-it's sealed.
+commit d0cceed0cde591b286c7977ad630183fc653ded2
+Author: Christian Brauner <brauner@kernel.org>
 
-Signed-off-by: Chris Down <chris@chrisdown.name>
----
- arch/x86/kernel/uprobes.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+selftests/proc: check that a faulting writer doesn't hold up removal
 
-diff --git a/arch/x86/kernel/uprobes.c b/arch/x86/kernel/uprobes.c
-index 0f60c0d076b6..fb895bfc09e0 100644
---- a/arch/x86/kernel/uprobes.c
-+++ b/arch/x86/kernel/uprobes.c
-@@ -1183,7 +1183,7 @@ static int __arch_uprobe_optimize(struct arch_uprobe *auprobe, struct mm_struct
- 	if (IS_ERR(tramp))
- 		return PTR_ERR(tramp);
- 	ret = swbp_optimize(auprobe, vma, vaddr, tramp->vm_start);
--	if (WARN_ON_ONCE(ret) && new_mapping)
-+	if (WARN_ON_ONCE(ret) && new_mapping && !vma_test(tramp, VMA_SEALED_BIT))
- 		WARN_ON_ONCE(do_munmap(mm, tramp->vm_start, PAGE_SIZE, NULL));
- 	return ret;
- }
--- 
-2.54.0
+This commit adds a procfs selftest that uses userfaultfd and scsi_debug to
+verify that a writer faulting during copy-in does not block removal of a
+/proc/scsi/scsi_debug/<host> entry and fails with -EIO once the fault is
+resolved.
 
+> diff --git a/tools/testing/selftests/proc/proc-remove-slow-writer.c b/too=
+ls/testing/selftests/proc/proc-remove-slow-writer.c
+> new file mode 100644
+> index 0000000000000..f69ca75ba87cb
+> --- /dev/null
+> +++ b/tools/testing/selftests/proc/proc-remove-slow-writer.c
+> @@ -0,0 +1,203 @@
+
+[ ... ]
+
+> +/* the numbers of the hosts in /proc/scsi/scsi_debug as a bitmap */
+> +static int list_hosts(unsigned long *hosts)
+> +{
+> +	struct dirent *d;
+> +	DIR *dir;
+> +
+> +	memset(hosts, 0, MAX_HOSTS / 8);
+> +	dir =3D opendir(HOST_DIR);
+> +	if (!dir)
+> +		/* the directory comes with the first host and goes with the last */
+> +		return errno =3D=3D ENOENT ? 0 : -errno;
+
+[ ... ]
+
+> +FIXTURE_SETUP(host)
+> +{
+> +	unsigned long before[MAX_HOSTS / HOST_BITS];
+> +	unsigned long after[MAX_HOSTS / HOST_BITS];
+> +
+> +	self->host =3D -1;
+> +	if (access(ADD_HOST, W_OK) && system("modprobe -q scsi_debug add_host=
+=3D0"))
+> +		SKIP(return, "no scsi_debug");
+> +	if (access(ADD_HOST, W_OK))
+> +		SKIP(return, ADD_HOST ": %s", strerror(errno));
+> +
+> +	/* host numbers are reused, so look for the one that's new */
+> +	ASSERT_EQ(list_hosts(before), 0);
+> +	ASSERT_EQ(add_host(1), 0);
+> +	ASSERT_EQ(list_hosts(after), 0);
+> +	self->host =3D new_host(before, after);
+> +	ASSERT_GE(self->host, 0);
+> +	snprintf(self->path, sizeof(self->path), HOST_DIR "/%d", self->host);
+> +}
+> +
+> +FIXTURE_TEARDOWN(host)
+> +{
+> +	if (self->host >=3D 0 && !access(self->path, F_OK))
+> +		add_host(-1);
+> +}
+
+[Severity: Medium]
+What happens if the test runs on a kernel where scsi_debug is available
+(CONFIG_SCSI_DEBUG is enabled), but CONFIG_SCSI_PROC_FS is disabled?
+
+The sysfs attribute /sys/bus/pseudo/drivers/scsi_debug/add_host is still
+present and writable without CONFIG_SCSI_PROC_FS, while /proc/scsi is never
+created. In FIXTURE_SETUP(host), list_hosts(before) sees ENOENT on
+/proc/scsi/scsi_debug and returns 0, add_host(1) creates a new scsi_debug
+host in the kernel, and list_hosts(after) still sees ENOENT and returns 0
+with an empty bitmap.
+
+As a result, new_host(before, after) returns -1 and ASSERT_GE(self->host, 0)
+fails the test instead of skipping for the missing prerequisite. Because
+FIXTURE_SETUP(host) aborts with self->host still set to -1, the newly
+created scsi_debug host is never removed by add_host(-1) and remains leaked.
+
+Should FIXTURE_SETUP(host) check that /proc/scsi exists and skip before
+calling add_host(1)?
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261102-work-procf=
+s-drivers-v1-0-a994bd4d3b1a@kernel.org?part=3D11
 
