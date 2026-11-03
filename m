@@ -1,74 +1,74 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E7EA606D812
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 16:17:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D3AF606EEB9
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 16:17:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=HmV43mOz
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=bbDjWhk/
 Received: by kanga.kvack.org (Postfix)
-	id 5568A6B05BB; Tue,  3 Nov 2026 11:17:04 -0500 (EST)
+	id 1A7636B05BD; Tue,  3 Nov 2026 11:17:08 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 529546B05BC; Tue,  3 Nov 2026 11:17:04 -0500 (EST)
+	id 15AEA6B05BE; Tue,  3 Nov 2026 11:17:08 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4677B6B05BD; Tue,  3 Nov 2026 11:17:04 -0500 (EST)
+	id 021916B05BF; Tue,  3 Nov 2026 11:17:07 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 1C76A6B05BB
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 11:17:04 -0500 (EST)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id A96891C3C9B
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 16:17:03 +0000 (UTC)
-X-FDA: 85394311926.25.F4F5C04
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 35FC22000E
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 16:17:03 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HmV43mOz;
-	spf=pass (imf31.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793722622;
-	b=j1cZWOR3jIPBO7vVSUjWxTeq3eBstjb1rCrrB4ANrDN/2/RG5yv6MRbreEPY/JEkzeQhxP
-	YURr1ZuPyH/bgyHzp0LBhci1/1UbqNUhM7hbAIHwWt8E9TOrmxsZnktnJre8FRKqktpX8q
-	zJ1LpBowxNUeCIGwq669fDrN9bXJZyw=
-ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HmV43mOz;
-	spf=pass (imf31.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id D600E6B05BD
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 11:17:07 -0500 (EST)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 704B3A04C4
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 16:17:07 +0000 (UTC)
+X-FDA: 85394312094.16.0D8D7C2
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 9D4BF160002
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 16:17:05 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="bbDjWhk/";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf08.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793722622;
+	s=arc-20220608; t=1793722625;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=30qAFA6CCzSksl7jqcRR+D8NveKerXteOKC7Yb7cCqk=;
-	b=QG+AqtPX6fzFMuYcrEA2h8fT6sTdcFh9ZIJcFWcg+jv1hkg6ycgU14Iz6pkOgdOKKHPpC+
-	gM/iARZMM8xDFuSXJvCHRFAzdnGijWrVlWtJ+xTiu8p+kfF29tc1VdPthYPTaAfPsj8kIL
-	wsVxlpc9WPAn3hKD6BiztS1NcLK3lFY=
+	bh=6XkFTBaGPcV74Hvx3Jzk/fiQfWLpE7qRTByDVFKME8E=;
+	b=Q3ttx3N+M2O4Qm7RYgSoiYcGWbTxX+r1ct0MVF8Z7Nf9LGhii+7T3MB9tIAeFw9tdAx/AE
+	nzUmHixI0dBVi0DSNO1fMA+X5TMj7IUyUtsYHdSopkv+4ziCZve282iSKHrzELTMO6j8Ej
+	lH88gF7LBjsCwHvgEVJ2VNF7cJOa6rY=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="bbDjWhk/";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf08.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793722625;
+	b=22kx0tnyBXKlguauOJmxcUIeUrfSk/EQJBVS3VMok7iVKmI9hOPoagZSNs/0JDFkUZna1+
+	wghZN/hZaXscXBBj2L9XndOkWtuypZ2+cA6xc7kaWe8uL5YMNE9E++q/CLjlDLcwLXHqn/
+	CYYzCt5wS65AFsMmdddXnXXaalRPZPg=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id A256260416;
+	by sea.source.kernel.org (Postfix) with ESMTP id E2AAF40255;
+	Tue,  3 Nov 2026 16:17:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB2311F00A16;
 	Tue,  3 Nov 2026 16:17:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FBE21F0093A;
-	Tue,  3 Nov 2026 16:16:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793722621;
-	bh=30qAFA6CCzSksl7jqcRR+D8NveKerXteOKC7Yb7cCqk=;
+	s=k20260515; t=1793722624;
+	bh=6XkFTBaGPcV74Hvx3Jzk/fiQfWLpE7qRTByDVFKME8E=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=HmV43mOzSIYW7Fqzzpqz0hvDqDm1I7mTGmAhF+mOU6G/sV9c35CEfISlK2ItOEFZd
-	 WOMktGf0v3XfLMGqV9cgWx97bu0HWn/qgbMbte2d+vi8wEeNrJpwLGYcvhmZZI3ZOf
-	 jMBZ4kISM5YzUrGPkNb8ATGwQ4Y/BDN8by9X0l+NL6XwH/rxYd3YJKsY1TVMQbAccK
-	 lgHYRTnm19YRWIRjT7g1F2nGjhvitI2NyfFXS4ZC1gehsPXJ+bC06xyR38sfKIwXNt
-	 GGZCRMa1i3FpZf9/ReFYE5Q8HrpJZ86OC/kxgaeyyDM7S+iYlmOUlkOrrqAC0TogcJ
-	 5ZTISNxEJEpPg==
+	b=bbDjWhk/HrON7r5DDzIx0zRhSP31IG/7Z9RFLl5dyFRXh/sKuD42LRnSXT45yPJHe
+	 3ZkGK/wJzIp/gz8R2jzr5SkoNMY/qbszU3v6vb3ISSiiGNtghSakPYAPDPxvw0hx2K
+	 fzendGOVPobWobrFQDpnvy9XRc3L/qAX80IYniQYVVJ7iNwIZTwgUdCfEqdIW0LAnf
+	 pe46xIVHomUN0FRTP9YpY4sAbwhZfBZVLgi+uHSmWrDLhT3TNgNMBBm91RnU196c3a
+	 yuQqyVVpUwBW4HER5FAAJjBCBZgrO0boOYDiTQ8I+kfnliJQiFzOZIwKeICoIDMNeE
+	 eMuHHGywQCavQ==
 From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Date: Tue, 03 Nov 2026 17:16:48 +0100
-Subject: [PATCH v2 2/5] mm: page_frag: refill the cache for large fragments
+Date: Tue, 03 Nov 2026 17:16:49 +0100
+Subject: [PATCH v2 3/5] mm: page_isolation: do not take slab pages for free
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261103-pgalloc-ai-hotfixes-v2-2-e0d2890ab74f@kernel.org>
+Message-Id: <20261103-pgalloc-ai-hotfixes-v2-3-e0d2890ab74f@kernel.org>
 References: <20261103-pgalloc-ai-hotfixes-v2-0-e0d2890ab74f@kernel.org>
 In-Reply-To: <20261103-pgalloc-ai-hotfixes-v2-0-e0d2890ab74f@kernel.org>
 To: Johannes Weiner <hannes@cmpxchg.org>, 
@@ -79,20 +79,20 @@ To: Johannes Weiner <hannes@cmpxchg.org>,
 Cc: Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
  Brendan Jackman <brendan.jackman@linux.dev>, linux-mm@kvack.org, 
  linux-kernel@vger.kernel.org, "Vlastimil Babka (SUSE)" <vbabka@kernel.org>, 
- Josef Bacik <josef@toxicpanda.com>, stable@vger.kernel.org
+ Josef Bacik <josef@toxicpanda.com>
 X-Mailer: b4 0.16.0
-X-Stat-Signature: k9p6y35e3nzaycusn49actb6ksgsjaf9
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 35FC22000E
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 9D4BF160002
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1793722623-891731
-X-HE-Meta: U2FsdGVkX1+l2PovltZapezcUfo8kIBuW9uVNQAAW1H7JdjxV8p4kmlhFL7NkPlyJu3qusbTxrI1c74Na7tPZ4MuOCJh5b6cpM584VW9ja1s9cbSlrDH7FHcBlwjelUuOFBgWpBBtkESdgPDTKEZmkVtZ1C4GaXmRKM4jk04FtlB4YpcyWJ5TvbIi3H0yhEwr4C6mDweMgWopRY2US23snwgROeCfF9jShC72WhhhJovNG6vJlZpif1InOOF4kBKgxrqPOPdIruwV8c0+lSIXzScTi3e/PHl+CT/TfLC0hzbCla5nnDfuZJpLAen1mFyQdIzQ6HQl9MmvScP2rBSwh06f0aqPhbKcWjyZwJHYzadctzAKN0OktKELCFTi2SJvZ+LNK1ECz1RPJQC+ad8e+5CH0OePHa9TRCLcrVP+fuSIxXlohLTFVvqPQvtzr5acWcilg1ZgZOV8+cwkN+93B+yqb4hEl0xZwakbS+Ql6CJmkTGiH8hawHFU17vCgNpTWRw72HfY+RzX58iTya4kgBmCQ0TST3JA5p7vfMLBm+iGAlbSJDYJ61W7u/5ELEExpx6V5ltnJuTHLYz6Inlz0CspBvp4DP07rG2GhKqdt+/bWbIp1oiCZ9A1n/FFWB8b6aRX0O6o1kiK6HXn+vO8tuRa9Mx84Nby+R+BFy76RGoBFpIMTH02FdDnNz4CsuTvkQVpjxr1941U+iF69MPUTgy4An23TiuE9JfP0+5C+yt4MPm2MWaGD7zJQXrU5atu0oDzLFKS58UV30FHZv5bdWuZDv5dkh/ixGqe1Bov89Aa1odI+azffhAnCxAonWNVqYG/YBMvcSFQ3OKXDGNed7iRTSBMLcg/TGmEzGDb7Ydh1uRPHqVRXzrG3mjvTnoiMpHhevkho+A3UPkVwqhgPHOBDn3+e3XhBNW9YCJlURDhqaI08eEI0aW7B6KSKxMu24bKS4QkvooqPTruhq
- a8Re/rnD
- x2XlNQsoxfNBKS3Tyz4m7W3JsC7tXzXBrSjtt4BAO2lW/lSqYGKWykmJB78QeOetoKoWJDdMc2TRTKH/Rs4fFoTDd/UiD0IJSjhXBAhD6U9X5+xoSjTtV8wZ2um7YABKk6PEUWNLoUowAKSLZmw+/iTm2rb+I3fNJ1aWwlsBTs7fZCRlRULHOjollEBzNqnTrMb9fi89l8h914BAgws02mwOuKSO20rMeDUBtsbGnivGCbikpF0h6iC65AI+VkZ7mFkdjReHg2c1aCgkk331EjCBmGHJCYY+s1dBEbuniAn9+LznNyDfG6B5Y0djiDoq+bi3rHZnUxKAiv3tI6/fojNnRPF73BTFZ1jjOF5BzmmA8soj1ypgnMyBn5cDfHvwaHda68sSgv7PY5GeANu+wXp+sx2AfRtyq2k6m
+X-Stat-Signature: is757183rcnqye6yjxdqyxrwtn63gxx5
+X-HE-Tag: 1793722625-753506
+X-HE-Meta: U2FsdGVkX1/gyCWcf6xLGWbCMd99xAmv33tTGSe2LCz9+A/hnBpwzwA/nyFFTArAs+SbjFb0rPGgroNaVbsY3vhrx7Kpi0yooBHNYTdkml6SmpYJjyTKFW4RpG9lcc+0kUSJaGyeiop1WM+bvX9UlpDt5bhPwQKduekLjdzJToA532rrd4vxyAwnXYHC2yN7mfETTp47/opnr5+0z2aYR/dpDsZ5OI+ph8JphQ33csSqfqkF6yYY3q25PSlKmSMzpPiZg0gPjkApI4nmkfptf79J9Lm2uQ9TFWCty+sKvHZ8QLFXlrFWKniubHVFlvrwVwDvu29vHFrL4Poo05qqYLaShqeEFjyGZ+6UV2FRMvIKTdZ7TGs1YAs0/yNWyTJhjRp+d3b1r8d4jgWpWy6JweIsmtwxKBxPT/pGOG9BeQaH027Heu/gJQVOajON2XR/PY07rOMIwim+hHtktjfOIPUZ7XKXeXORFsljUwOL87wVN4zr51CaEOa630pR3htCTvKbPyvQW2ZNE0zGQYyjXB4LJIYjviV32U2UMMmoqt8h2vv53exSd5GlDrJQ8N+F/5PhYi2EbwJ4c3jNaZ1W2KmWfPLCR1Ft2risCVuhZcDfDDqOBa4QzljvVlDBob9nDeGew1+dCIuiFuBvXJ1deTM+Dsubzc4shaCbzeiuJiyFXG61+d6QgSHguTBhb/RHdKYpgncA+C62naFewsL3LmB9DwPBFKFLQAxmyOZ32yt6Gw1m0PfQXkJQedNlAhR9qAtsT4jjQaVA8HknsKN/NrSVmszvOjbkOqjoBHVfiSTw4JMA0Ibbyscg1brILTsntx6kCnv9jtzwy0jKamnaKoSrozo7CJbhvT6jL6sGyyUUx7YSdR4/Fkyyq9Eekn732xGWuh3EeMApqS+cV0i17wRiv3d2sNJ5MP91ufKwTt/lRI8ITje8yTz0z0JBPGxeTaxT+YewEwle5k1Rycg
+ eOnk1u6i
+ xVZUWCvLFYzV0wJPY0aEn7XQl9W/uCHGYh/h8BhgH0mUV+aFqc68seBXpJlLDgVON6Ali+Dzya3JlBjPkYpVqHKz64hdF9IBDUyb1KnssrD1WAnhMYcuHwWOlc5nUvHHBb1htIVs0l2Etci2XQAysGJHvEIPud+9O9pXkHbQq7Mb86vwGyVWw32+AdNdvpIFtl+/F9gxP2xh3tcRDBLz/VxIdmHDwKuNN0YIciyudsxbD4U3QZchK9kAfc0WF7plPEz/eBTbW5Onr60ByG7V3ia44Ue25iCBUkWb9LdNoqcb0G8v4Xv2RWPXbZhtbs7WS0d3HT5a0UJUtDdwqOghDgfizjqqgfPlPH+AOqevIawrx1D89UErdRY/8HQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,72 +103,65 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 
 From: Josef Bacik <josef@toxicpanda.com>
 
-A fragment which is larger than PAGE_SIZE can only be served from the
-32K page of a page_frag_cache. If memory is low and the cache had to fall
-back to a single page, __page_frag_alloc_align() returns NULL and keeps
-that page.
+page_is_unmovable() regards a page with a reference count of zero as free
+or about to be freed. Since slab allocates frozen pages, they will
+be wrongly considered to be freed if order 0 (higher-order compound
+pages are caught earlier).
 
-Since the offset counts up, this check comes first and is made whenever
-the fragment does not fit behind nc->offset, no matter how big the page
-of the cache is. So the cache is never refilled on behalf of a large
-fragment: with fragsz = 10000 the first three allocations succeed, the
-fourth one and all the following ones fail although memory is plentiful.
-nc->offset does not move either, so this lasts until smaller fragments
-have used up the rest of the page, which never happens if the cache has
-no other user.
+If such slabs are the only unmovable pages of a memory block, memory
+offlining now isolates the block, this can lead to offline_pages()
+looping without progress.
 
-The nfp driver allocates its receive buffers with napi_alloc_frag() and
-netdev_alloc_frag(). They are larger than a page with a jumbo MTU.
+Thus detect the slab pages as removable to return -EBUSY, as would
+happen before commit 9aec2fb0fd5e ("slab: allocate frozen pages").
 
-Only give up if the fragment does not fit into the page at all, which is
-what the comment describes. The fourth allocation in the scenario above
-with a 32k page will thus now proceed to refill the cache.
-
-Fixes: 8218f62c9c9b ("mm: page_frag: use initial zero offset for page_frag_alloc_align()")
-Cc: <stable@vger.kernel.org>
+Fixes: 9aec2fb0fd5e ("slab: allocate frozen pages")
 Assisted-by: LLM
 Signed-off-by: Josef Bacik <josef@toxicpanda.com>
 Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
-Reviewed-by: Johannes Weiner <hannes@cmpxchg.org>
-[vbabka@kernel.org: make the comment more obvious]
+Reviewed-by: Zi Yan <ziy@nvidia.com>
 Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
 ---
- mm/page_frag_cache.c | 21 +++++++++++++--------
- 1 file changed, 13 insertions(+), 8 deletions(-)
+ mm/memory_hotplug.c | 7 +++++++
+ mm/page_isolation.c | 7 +++++++
+ 2 files changed, 14 insertions(+)
 
-diff --git a/mm/page_frag_cache.c b/mm/page_frag_cache.c
-index e63efe78b7d4..8914437ddc51 100644
---- a/mm/page_frag_cache.c
-+++ b/mm/page_frag_cache.c
-@@ -119,15 +119,20 @@ void *__page_frag_alloc_align(struct page_frag_cache *nc,
- 	size = PAGE_SIZE << encoded_page_decode_order(encoded_page);
- 	offset = __ALIGN_KERNEL_MASK(nc->offset, ~align_mask);
- 	if (unlikely(offset + fragsz > size)) {
--		if (unlikely(fragsz > PAGE_SIZE)) {
-+		if (unlikely(fragsz > size)) {
- 			/*
--			 * The caller is trying to allocate a fragment
--			 * with fragsz > PAGE_SIZE but the cache isn't big
--			 * enough to satisfy the request, this may
--			 * happen in low memory conditions.
--			 * We don't release the cache page because
--			 * it could make memory pressure worse
--			 * so we simply return NULL here.
-+			 * The caller is trying to allocate a fragment that's
-+			 * larger than the whole cache page.
-+			 *
-+			 * Either fragsz is larger than PAGE_FRAG_CACHE_MAX_SIZE
-+			 * so this cannot ever succeed.
-+			 *
-+			 * Or the refill has fallen back to order-0 due to a low
-+			 * memory condition. Then we don't want to release the
-+			 * cache page to attempt a new large-size refill because
-+			 * it could make memory pressure worse.
-+			 *
-+			 * So in both cases we simply return NULL here.
- 			 */
- 			return NULL;
- 		}
+diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
+index c9cc42e54f05..0ab9a6e09222 100644
+--- a/mm/memory_hotplug.c
++++ b/mm/memory_hotplug.c
+@@ -1832,6 +1832,13 @@ static int scan_movable_pages(unsigned long start, unsigned long end,
+ 		if (PageOffline(page) && page_count(page))
+ 			return -EBUSY;
+ 
++		/*
++		 * A page that was allocated, but was not a slab page yet, when
++		 * its pageblock was isolated.
++		 */
++		if (PageSlab(page))
++			return -EBUSY;
++
+ 		folio = page_folio(page);
+ 		if (!folio_test_hugetlb(folio))
+ 			continue;
+diff --git a/mm/page_isolation.c b/mm/page_isolation.c
+index 5aaad037384e..f4f0571607ab 100644
+--- a/mm/page_isolation.c
++++ b/mm/page_isolation.c
+@@ -74,6 +74,13 @@ bool page_is_unmovable(struct zone *zone, struct page *page,
+ 		return false;
+ 	}
+ 
++	/*
++	 * Slab pages are frozen: do not take their reference count of zero
++	 * for that of a free page.
++	 */
++	if (PageSlab(page))
++		return true;
++
+ 	/*
+ 	 * We can't use page_count without pin a page
+ 	 * because another CPU can free compound page.
 
 -- 
 2.56.0
