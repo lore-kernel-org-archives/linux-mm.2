@@ -1,129 +1,91 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D86B606C579
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 11:27:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67B09606C550
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 11:29:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=l7Z4J1qm
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=eM3VbPfa
 Received: by kanga.kvack.org (Postfix)
-	id 5E00A6B05B4; Tue,  3 Nov 2026 06:27:34 -0500 (EST)
+	id 8C9AA6B05B3; Tue,  3 Nov 2026 06:29:47 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5A8716B05B6; Tue,  3 Nov 2026 06:27:34 -0500 (EST)
+	id 87AB26B05B5; Tue,  3 Nov 2026 06:29:47 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4A5BA6B05B7; Tue,  3 Nov 2026 06:27:34 -0500 (EST)
+	id 793E26B05B6; Tue,  3 Nov 2026 06:29:47 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 280496B05B4
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 06:27:34 -0500 (EST)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 9BB20140381
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 11:27:33 +0000 (UTC)
-X-FDA: 85393582386.09.132D8FD
-Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
-	by imf10.hostedemail.com (Postfix) with ESMTP id B9743C0007
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 11:27:31 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=l7Z4J1qm;
-	spf=pass (imf10.hostedemail.com: domain of azpijr@gmail.com designates 209.85.221.50 as permitted sender) smtp.mailfrom=azpijr@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793705251;
-	b=Pr+b8pRGK2lrdR/hqpeI5tTspdnDzS02LmcngA9hacfoHrYir3yLgdmpbSbdqP0dyN5txH
-	+jR0WvIvNCmR/F0zyBbnP2xp41nx1Nhpz0odTdNJ9Bb4DsIIMZlm2bATGwVlfDIsPQIF4v
-	h6rL2RgNsn4E7QTm2JBnpJCoMeyqLXc=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=l7Z4J1qm;
-	spf=pass (imf10.hostedemail.com: domain of azpijr@gmail.com designates 209.85.221.50 as permitted sender) smtp.mailfrom=azpijr@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id 5AB9B6B05B3
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 06:29:47 -0500 (EST)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id B716D140383
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 11:29:46 +0000 (UTC)
+X-FDA: 85393587972.24.68974DC
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 348FB180003
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 11:29:45 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=eM3VbPfa;
+	spf=pass (imf06.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793705251;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
+	s=arc-20220608; t=1793705385;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=y+euFfAeQxWkS5ASGGavFVBTLjPaa5ivYg3I8FV3VAA=;
-	b=rUrfzqwG4emKw0sCu3YOGkiTyIRxirGlmqN8QUeeakMIbVXK7Hy6dL5G0VP7I5vWK60Em3
-	/LlfQ3cdn7vRuG1C2dwoT71O7SxqJYOfFsHz69bIdEgRP6AKqG+HP84UQQXtvB61or/mo2
-	K3ZZmFL1ypB6C21uTWPS1uG7rQAVKRk=
-Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-48df0fa43c5so376234f8f.0
-        for <linux-mm@kvack.org>; Tue, 03 Nov 2026 03:27:31 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793705250; x=1794310050; darn=kvack.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=y+euFfAeQxWkS5ASGGavFVBTLjPaa5ivYg3I8FV3VAA=;
-        b=l7Z4J1qmE5f6sNdCXpcsPGnszF3+nUkK1uil4HM8ZD3mz0ovDvp51vCsrGZd2er9KU
-         8U+XPgHzYzQO9E04OtosoJfj+NSV4aAj/ow+Z01eGDFCUfpbL6PL6NmSfRL1xH6F/p4h
-         L241FOO9hsEg+UYkUJ+xqXZ8aF6ZqturyaYUo8GsTQ7Hv5J+j129De4NKlq0uaXtqBXG
-         I9yG8kNemYgjArHEymNm52vGmGq5ypMiDKBZ8U8/D+DQWl5wLr2/8VSJs+TAbtoHnuNP
-         NjwSB0YBMQmPfCu8uTGsem2smrQgo3lfy5FcSH8JmR0sZJ+Ee3RJUkoj7jUSts45S8HV
-         oFCQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793705250; x=1794310050;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=y+euFfAeQxWkS5ASGGavFVBTLjPaa5ivYg3I8FV3VAA=;
-        b=blSsw1gStaWZHxR+CH5SYYwr1V0VpwZ8xtKJYyEOqBMbGQ1aVM291vT7fMKaZd9NpV
-         W9EqHSdqTOJU56ojMiN7ZDuSfvj9tQOLPd/gNBzUtSQ0eTONIj7mwUu01GXhq7kHBP5b
-         746MuQWrhvcPFbtEOyJK1Nsa1dXb4MtC88oSzlxxTQ2Q9Wy+Nu1CwQxjccllNRAKAboT
-         fTKWxfZfztzgFfnUf4mp/Z0VB441Sb62ZwnEATrHOwUIs0nQWg1lWetFQw/lGOtqMNoo
-         2jAFRm/XcMpG9nubv/CPH2Jw7Uo9wOjmDNuprv98lRs1cn3NJOo03XNiQQecapHkFo9a
-         R/tg==
-X-Forwarded-Encrypted: i=1; AKwUvBxQT3+8P8B2UY0MeuNJRtHuwm66qgFaaK7onJp2oNWeZ4recuoZadswLVw68PmMCI0Otsnu+AvJ2g==@kvack.org
-X-Gm-Message-State: APuU4Z+2LoUz0NzBCCZm5HWGPFPEa1WcwbZsBYU6ugeUekAX6lJ3Ahr4
-	ccDRcCSdU9jYxFOV6J79HjOKCaY3csY5Z3Idr3CNvbwhNTdlm74mvK3N
-X-Gm-Gg: AYBFou1s6tXoDvTOpMyd2Kzpp2hgwBe1A9GOWNQVsRqxTrsZ+lQknPpyprijltUkS91
-	OnVBa2q2IcDNP4+XdcIb5IAxFizpANM3w6HVZJs/M6Fk9SeA5Qw8VpM3w3HTDI3K1guBv2EEeyC
-	0c8gu9UfEwS/CuwkvRGOjAyZG75KGy1e+YWqBLTvaGb9FxaQDqzkAN33Tg8A1YTh8AVjPXrK76y
-	stcKpH0O1RNlJiAFFBV3j9oyEFRnjvO9eDQedpkGLmdt11DlKGtnLuKDCqVSs++V+DLPUdfeWmf
-	LOPUePVLE5M49Ib1QFVqTxZ/DPfjS4rSkSAdgyHEL9Pvl0K6dCR9ZnKP6D7iG41gkV+Rv4sEvwf
-	MsBfJagtVShK/HfoqBlCuXeMpECprbf8kP/+MxChMPgbEUfD4kFzQMYkEH8Ir4XyVsBrVBP90kz
-	CUgMo0tS5Ql4v2wWSPsr/Nwz3WciugoK1WElvkuJFGXmMMGsoX2fBV7k7jTsIugknSnovBEjkQF
-	snynLxnKILMXFUaPWA+/4I6rWT/HBBu0tHYiTZ3QPF85e4z3kQt8k1g3wGZPJnt2/wKbSbQP+uE
-	pd1ipIWxMoNAEWaiHFGc4L4=
-X-Received: by 2002:a5d:584a:0:b0:48e:7833:2e7b with SMTP id ffacd0b85a97d-48e7833329bmr23687518f8f.1.1793705250147;
-        Tue, 03 Nov 2026 03:27:30 -0800 (PST)
-Received: from [192.168.1.22] ([83.231.69.9])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e71b8a84esm26678645f8f.39.2026.11.03.03.27.28
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 03 Nov 2026 03:27:29 -0800 (PST)
-Message-ID: <b26bc0dd-43d5-433f-9ca7-2b0f550b0ca8@gmail.com>
-Date: Tue, 3 Nov 2026 12:27:28 +0100
-X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 5/5] selftests/mm: test mremap() with an old size of 0
-To: Josef Bacik <josef@toxicpanda.com>,
- Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <liam@infradead.org>, David Hildenbrand <david@kernel.org>
-Cc: Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>,
- Pedro Falcato <pfalcato@suse.de>, Muchun Song <muchun.song@linux.dev>,
- Oscar Salvador <osalvador@suse.de>, linux-mm@kvack.org
-References: <20261102-b4-mremap-pre-split-v2-0-d281dd11ad7d@toxicpanda.com>
- <20261102-b4-mremap-pre-split-v2-5-d281dd11ad7d@toxicpanda.com>
-Content-Language: en-US
-From: "Jose A. Perez de Azpillaga" <azpijr@gmail.com>
-In-Reply-To: <20261102-b4-mremap-pre-split-v2-5-d281dd11ad7d@toxicpanda.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-8.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FORGED_GMAIL_RCVD,FREEMAIL_FORGED_FROMDOMAIN,
-	FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
-	autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: B9743C0007
-X-Stat-Signature: 6a35jcoy5a7i8qe3e1x3n1uih8h6habs
+	bh=pLKPltpOKrJeivfZ4qfED8CPkzZvz3KzKJEccxtQyxE=;
+	b=xKucvrwWC5EQYx+O9Rc/FinlyO4ybEc8GSACsRwd2cw/oU50fSwKAqlTGsBKEu4b2NTvuQ
+	U9G3NzZX4++al6aPmyVIlmrSIjz8J/WJBM23sZAfktkWfBHQRnJ3u8AKA7q0u6L09aEpcu
+	nvxbBDroc5IVlOcbVmiZ0Nkl9UDHvTg=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793705385;
+	b=VTPeMydK0QgmJ44X3KIuLwhS29SeV+YiTe7uBF8MRJsO0mQb1eH0Ym7BJEvJ14qkQiq9HW
+	aLM7PTsuJZoM+VZaDDv5mnQ0guyjkLxXk0EHjyyPCfp87RduDz0Ruzidg1CR77ZKZVKd/e
+	tIx2C/rlIZYhMji1H3NPLY07O8Z4tq0=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=eM3VbPfa;
+	spf=pass (imf06.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 47CE160626;
+	Tue,  3 Nov 2026 11:29:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5504E1F00A02;
+	Tue,  3 Nov 2026 11:29:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793705384;
+	bh=pLKPltpOKrJeivfZ4qfED8CPkzZvz3KzKJEccxtQyxE=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=eM3VbPfa7wawjF5nU6A0ctvbSq1HaIv3xtC3m8UTaP+3sc7J4X6m+MLj/JKQGSQu0
+	 OiesQyiWwiKBh7oCBbcaH6/AgHm++Si8ln0YhocGDY/M6zemUy1kIEwDqbpKmRNs6m
+	 2fftZ2T7Z3A9xzMcS6AXJ23fPzULtvF8MJBBj1NOGrEJmKikk4WIVp4eBr7KyVcY5b
+	 Rc3t9oLEtEOewXvnPCM0uO6hSb18zNgjDPPWT0ZWnrkyG9Ik/0Rhhgive9Gm6m+SB1
+	 FlG+EKGkaHO7VcVPez/Ee8kweyKH/fquCZB4Eg8uumIscXyljJ1H4hBGuM6mUeI5Kc
+	 ZMkLVIMh6TlJw==
+Message-ID: <sashiko-outbox-195152@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH] mm/damon/core: reject empty access pattern intervals on
+ scheme commit
+Reply-To: sashiko-reviews@lists.linux.dev
+To: =?utf-8?b?WGlhb2xlaSBXYW5nIChLYWlob25nKQ==?= <xiaoleiwangxiaolei@gmail.com>, sj@kernel.org, akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org, error27@gmail.com
+Cc: damon@lists.linux.dev, linux-mm@kvack.org, "Liam R. Howlett" <liam@infradead.org>, "Michal
+ Hocko" <mhocko@suse.com>, "Mike Rapoport" <rppt@kernel.org>, "Suren
+ Baghdasaryan" <surenb@google.com>, "Vlastimil Babka" <vbabka@kernel.org>
+In-Reply-To: <20261103105418.362459-1-xiaoleiwangxiaolei@gmail.com>
+References: <20261103105418.362459-1-xiaoleiwangxiaolei@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Tue, 03 Nov 2026 11:29:42 +0000
+X-Stat-Signature: 7obegpzra77k9tdkxparckjcsr5kgbui
+X-Rspamd-Queue-Id: 348FB180003
 X-Rspam-User: 
-X-HE-Tag: 1793705251-169997
-X-HE-Meta: U2FsdGVkX193jbN8SNtzIvckgj48tdd4Qv34Oz6WSAUO3PXT9k9lYoRseECRWzA2L+VRXqAjeLJtg5m9N+tSmbAsDKoalDmBZtW4w8WmoH5aPUOnUmPUk4onUxH5bVfD4xY1i1ogxS3SnEZHM4Jb3PFN2hgTrCBzgHu6EEWvKwaXcjnGQM2BLZqBlVM+YeirbeRImD1OTY0Jmg6BJuOWs8xqXpPXa+kihtS1JhlGifofxEnA+fDIzG6oguNcPgUzu/0MOK/QnqELx6sM6kBGjD8aVfkA+bBNLQUj+SH7e30CWPlFEbYW20acofZ1SvL/EQiln0vCD1jO17NG/81nZCRVkSt6T1rvt+J4GJ3mjtpLVPYL2nkkVAZax5mmGNOEzMEzu2YhdEVr9liJcZCP8vTXdOaSiH/YBc2xEfsaselK47TRleUy4JocV2a8o+9IxzkX5qSKX6QteP1Ja2AUh/aAPJmtOiMnhrmAXDdrAAr9Dzfpy4UVIIcKWw91RWXNpMc1s4CyGljgFyWJSuc0nTfbmFeSaqba2lfGdUqAMjS+WmX/AHtEDb6AaLT2JA4Se72RCUebEDXbxj4FfGJvgkKHFEIQHjEWJLT0XlVOUKAL47UWITQCyGN3YAvLejgVUkpw18V+AfcJO5zlk+oAA1kogK3V9KxG8vtiJVYFk7UDlI01Nu0ihxdE17BtH9F6APoye05o1Ie4v3mC2vRA6STSB5kMe8qTLoGqA/Klt5z+JGtk/os7I6K9m0gxK1/RaBTQ04FkJ70jdwtaqE3BRgL1pzxbk0bVXlUdkxfXSxbtmR3M4BQVnbhEEjFHmP2+meeFSIoczuGxtN/nE7G0hktaVrGAVer7ELdp5ss/c53xLRGdsk60f8I6zdUIaHeBhtgDD9AVlFy7uqFW28blgli5PrX4rp+bAqvSSTCzFtj6MH9n2z2kTKJ1Jv+kV+xqrLw+dDOOEHfDbsCJmZM
- LUopbvGm
- n9ZqClWKwLSKJBZEfZSryCU5ZIszpphVN1Ct82Fe5cSjYLU/6gLGp9G4QHO/qyIivDBoNxD67zzjLCLYfm+S05J1+1fStfw/yesw631fCVJFtk7tmG6K4Es6GIUVg0y8OihpLYBsj3dq8IEexfeGD8XCIXxuUupiskNOyZg2bX07rNcTgmXkNQzCf6XsxPC9A9I1hPw1UOInSnoNmYI3eyodpbVhjwr76o8yBHRRXRYvyqFB/zjhXm9mcJxPupRZYB/NLBsHXnb/pYd/ETDYJr6/k3FnGmKahNxI96y0ByVPHuQeilxOLt2rTwhPg+5EUEDLCuxDzGyCXZMcPMdlZ7gegiyam5mr2+XYIRV2uJM1Ie+liD9chImnVXgJo4ZSDoantJwrPm8GnUbAITBginfVPt1zqveLylOOFOAKfIDy6evU3RtTUlAqtg4YjBIcSDa1h/HImNqy1BYP98Ekq+R8/9L2O3Dx4pg7ZViD3U/LLqjpV4ST02sBHkYbtHOJ3D98FHtJEsHRQzCr4l7LUrJYYvrHY4GQCm0t/r0yejqELqjs=
+X-Rspamd-Server: rspam08
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1793705385-216266
+X-HE-Meta: U2FsdGVkX1/1zjfoQDibC7lEc5uRenC6yUd97XpQb5BN0Kt8nu+K4bZl4PvzVEJ7/kTi5J9eB3iGBQKh4uHX8RviblAB7mEn8ZAYOIntQqsPYT7CgbrTiyH0aFDl31dz+2DJZ83drvDeqxnuO0TB41Akop5rsuWkF/XZJsgAMB57CNxZm7Hm0ehV3xYqSNuL3NQR3tACHpV+0Y70KlxOqUoD5FhNJE4JAXycDcfzb8Q7e3hDhrSjHGHtjj0CjrIFTVH+dEjDZqslSo7RArzQJV1i+VF2d5Uq+wrDMjyzg4E+ZD6BD0LVL7ZHRBjuMgrRryQ03j/BWEEamwYGdMr7U0xME8GWioQYIQYM637HrYVoBOxtnGegu/sVAyUK4yO1K7PtYgycD+Ww7MiOW9i0o4ycVC31oi80FPicTZE4T2QxltJE+tnPxUxNbP1ThXCl8Ok5R/QJFToPVzS+8AtZW7GIHGzv7C2au7x6DYH8jsGEIfadUfq0g7L8/yzfoyS/xuElTgLc9gjhfRbJ+TJR+xqQkJRz+TItQy6mA8iUKuta5pL9Vvl24MDuO9yuQnwh7EmO4qldNt8cu5xbvQYdr4GbOpmxkHouoRkTEfe+o5CPZ+tXUYQV/9Z+7R3JDtvB1XHxu57B4MEZb7t3duUUmEV7ZgSfGFYDo50nLHA2y4mk7CZIwhzOPJ/fdfDNeJSFDyANMHuMuhtiL7kP+gnO4qvo663wvxjEhHik+dVU5oAIeSjE5wGEgtvJd+lTwNjem2HZRgZpIBgp7O3TTL3mEo5NgrrN6g08VrkF/K8NcCEoYei+CIthFVEUcflhaxL7DfylMIxXn2FaY75mWFPE8mBRaGgWLxKKEevgtOoaKiNTlZtq46tOc7x4wQ8iFqyJKwL0GJuc15MQvDH+RlKvY0uWeq/W88pEVYmXfcaeBNNoIOlVaLjmmw4lloIIBuvhTm8HBoN7IcVz5Yrtm29
+ xbK9WXMB
+ 3sBcz0VgmgdtVDW1/JDLkX+w6Cbey1+jWRS6UNNFKRe2fKiNDgHjQhiJMfrGfSLpOcTGMYsNEMQXoA2aZ8WWHMOrcRG9KhkniHWJ2uNnEFCxjPOi6sKDkgJPqrRLPc6gB7Y+1xgpP/qXWQNVbQunBInBrA0WQh8H60NWNfxrU0Z1iLxqqrkgH2NqJOht0Cgt/z3QUunot2gEbRai1aKV0K8PTlGRoZEHYoAVyd7/h5qqLmEDHRMwJTElaoGYsgjkCPGfIa5S00SrEVjCRtaYFO0iWiC26pOvOBtBDmIky8HJJuNfmmqVhdc4B/RUtgtkyOr4sYKAnceiT7UdW+Ijwg05xWD+5pGP/aoowgOQM3KkUSLIt9PM4iyx5omCHKHV8oEpaf6ZINPLp8ba4FACn1XltFsCR6vl5s0sP+U//oKfsdgAg8og7+xQIdxsbmfcQ2QjNmF2CFydQ982wO/4k/HrDsjD2gR//jV1wiU/UC9tq9g5KKXT/D8n4ZVrEACA57/2u1Uta2TCoVSI/Fm4rt9b3YBO9i14O4t2vLhqJNxfTV8h5XguAHCXdVtHIRnF/+hr9ey+Qa9AWNNVS/qeQOcwWKwU+pG0KrKoqVpjUhKvRIV9gD1mCON4xcWTKRbHi8V5D
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -131,24 +93,88 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
+X-Archived-By: <archiver.kernel.org>
 
-On 11/3/26 12:46 AM, Josef Bacik wrote:
-> mremap() with an old size of 0 duplicates a shared mapping, and mremap_test
-> has no case for it.
-> 
-> Duplicate a shared anonymous mapping, once from its start and once from the
-> middle. Check that the source and the duplicate are mapped by one VMA each
-> and that they show the same pages.
-> 
-> Signed-off-by: Josef Bacik <josef@toxicpanda.com>
-> 
-> Acked-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [Medium] mm/damon: damos_validate_scheme() breaks DAMON sysfs.py selftest
+--
 
-LGTM:
+commit f1effb4d8401c0508f7cb04b14b9b55d0d6abd17
+Author: Xiaolei Wang (Kaihong) <xiaoleiwangxiaolei@gmail.com>
 
-Reviewed-by: Jose A. Perez de Azpillaga <azpijr@gmail.com>
+mm/damon/core: reject empty access pattern intervals on scheme commit
 
--- 
-cheers,
-jose a. p-a
+This commit introduces damos_validate_scheme() and calls it at the start of
+damos_commit() to reject DAMOS schemes with reversed access pattern bounds
+(min > max) or non-monotonic watermark thresholds with -EINVAL.
+
+> diff --git a/mm/damon/core.c b/mm/damon/core.c
+> index d36823f4d0928..9b2b2a63a2576 100644
+> --- a/mm/damon/core.c
+> +++ b/mm/damon/core.c
+> @@ -1561,10 +1561,29 @@ static struct damos *damon_nth_scheme(int n, stru=
+ct damon_ctx *ctx)
+>  	return NULL;
+>  }
+> =20
+> +static int damos_validate_scheme(struct damos *s)
+> +{
+> +	struct damos_access_pattern *p =3D &s->pattern;
+> +	struct damos_watermarks *wmarks =3D &s->wmarks;
+> +
+> +	if (p->min_sz_region > p->max_sz_region ||
+> +	    p->min_nr_accesses > p->max_nr_accesses ||
+> +	    p->min_age_region > p->max_age_region)
+> +		return -EINVAL;
+
+[Severity: Medium]
+Does this validation break the existing DAMON sysfs kselftest in
+tools/testing/selftests/damon/sysfs.py?
+
+In tools/testing/selftests/damon/sysfs.py, main() constructs a non-default
+scheme for testing online parameter commitment with min_sz_region =3D 4096 =
+and
+max_sz_region =3D 1024:
+
+tools/testing/selftests/damon/sysfs.py:main()
+            schemes=3D[_damon_sysfs.Damos(
+                action=3D'pageout',
+                access_pattern=3D_damon_sysfs.DamosAccessPattern(
+                    size=3D[4096, 2**10],
+                    nr_accesses=3D[3, 317],
+                    age=3D[5,71]),
+
+When main() subsequently calls kdamonds.kdamonds[0].commit() and
+assert_ctxs_committed(kdamonds), writing commit to the kdamond state sysfs
+file invokes:
+
+state_store()
+  -> damon_sysfs_handle_cmd()
+    -> damon_sysfs_commit_input()
+      -> damon_commit_ctx()
+        -> __damon_commit_ctx()
+          -> damon_commit_schemes()
+            -> damos_commit()
+              -> damos_validate_scheme()
+
+Because p->min_sz_region (4096) > p->max_sz_region (1024),
+damos_validate_scheme() returns -EINVAL, causing kd.commit() in
+assert_ctxs_committed() to fail and exit with status 1:
+
+tools/testing/selftests/damon/sysfs.py:assert_ctxs_committed()
+        if kd in kdamonds_paused_for_dump:
+            err =3D kd.commit()
+            if err is not None:
+                print('pause fail (%s)' % err)
+                kdamonds.stop()
+                exit(1)
+
+Should tools/testing/selftests/damon/sysfs.py also be updated to use a
+non-empty size range (for example, size=3D[4096, 2**20]) so the selftest
+continues to pass?
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261103105418.3624=
+59-1-xiaoleiwangxiaolei@gmail.com?part=3D1
 
