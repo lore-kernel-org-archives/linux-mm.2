@@ -1,127 +1,110 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D766606A31B
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 19:21:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65339606A324
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 19:25:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=soleen.com header.i=@soleen.com header.a=rsa-sha256 header.s=google header.b=kT2nuEob
+	dkim=pass (1024-bit key, unprotected) header.d=samsung.com header.i=@samsung.com header.a=rsa-sha256 header.s=mail20170921 header.b=sH5lu8/r
 Received: by kanga.kvack.org (Postfix)
-	id 488C96B05B3; Tue,  3 Nov 2026 14:21:33 -0500 (EST)
+	id 4915F6B00EF; Tue,  3 Nov 2026 14:25:16 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 43B7D6B05B5; Tue,  3 Nov 2026 14:21:33 -0500 (EST)
+	id 440C56B05B1; Tue,  3 Nov 2026 14:25:16 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3289D6B05B6; Tue,  3 Nov 2026 14:21:33 -0500 (EST)
+	id 357B46B05B2; Tue,  3 Nov 2026 14:25:16 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 065DE6B05B3
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 14:21:32 -0500 (EST)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 93207C0539
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 19:21:32 +0000 (UTC)
-X-FDA: 85394776824.19.B072CE1
-Received: from mail-vs1-f42.google.com (mail-vs1-f42.google.com [209.85.217.42])
-	by imf19.hostedemail.com (Postfix) with ESMTP id ADB221A000A
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 19:21:30 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=kT2nuEob;
-	dmarc=pass (policy=reject) header.from=soleen.com;
-	spf=pass (imf19.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.217.42 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 0BD0E6B00EF
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 14:25:16 -0500 (EST)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 04F334053F
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 19:25:14 +0000 (UTC)
+X-FDA: 85394786190.01.8427749
+Received: from mailout2.w1.samsung.com (mailout2.w1.samsung.com [210.118.77.12])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 3AF5E40004
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 19:25:12 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=samsung.com header.s=mail20170921 header.b="sH5lu8/r";
+	spf=pass (imf04.hostedemail.com: domain of m.szyprowski@samsung.com designates 210.118.77.12 as permitted sender) smtp.mailfrom=m.szyprowski@samsung.com;
+	dmarc=pass (policy=none) header.from=samsung.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793733913;
+	b=zXhs7sZe43niaES8s77sC26TxIIRzzLZkMqQLqPVFwoDGzyG7hKXGreaE6Hw97FCO01M9u
+	L3JGsZJ4QFn3ACzQcGOEKVrqLI3CBEnJBPAOSraA5ZxWj6onj0YV9IVAFevqxp8HnM8w2/
+	N+ddEGb07yZM+EE5wN2sqAg1RyEuplM=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793733690;
+	s=arc-20220608; t=1793733913;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0uILcWGxRJkmEp+n0zS/w9W2zfSCMknq4cj8Cc7NJqk=;
-	b=aNBHwtr2KJ7yyj//IWb/oSoM4ttAkc8+rnaezmwSl/T0XKSpiyYSdCM819HAflZc3bny30
-	F2+5np/7UFVTPHFs58e+itiyiVWf8eFIQSLa4ksI+jT0QN1UN153FbJFJ//Opckq4Bquwv
-	gCS4ww9r8h/CQ+cKSEedA3HO+Ybpa10=
+	bh=7PUwfrJVawcXLdfu41PY6uZ3y3+L4mK5joYpI+grGjw=;
+	b=G0knZK8zUoTwfCYaKs6jUwNrUmCrgLwkFPTWu+yv01NjxNc6EKurdAbRIlGhqD+w95JEro
+	Pbjf9phX33esbvl3UmiWG7+AeKtDQ8fIgsLdfBV7kzLe/yaNOiUa6sPXaBlcLrAYoDYSo2
+	WdB1TxmWgl600JMd9XXs54YT0+fqVBk=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=kT2nuEob;
-	dmarc=pass (policy=reject) header.from=soleen.com;
-	spf=pass (imf19.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.217.42 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793733690;
-	b=RpMNQR90F2UXEvanc7qO8CYtgnh6pLG7rF9rdjvekn+VvZSvoqULBFcJ+biupf8+Qa9p1w
-	aBPb+AQWZaTJLFCrwoiXR7Sj0CXZjsrmiINEr9yyefrJE5SZRMP/4Bz0kdwCTeSXP7UeSv
-	usI2ZCf0pW/9liaMtY3yuU3vNYn+M/Y=
-Received: by mail-vs1-f42.google.com with SMTP id ada2fe7eead31-7cc0e865dd1so1536005137.1
-        for <linux-mm@kvack.org>; Tue, 03 Nov 2026 11:21:30 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1793733690; x=1794338490; darn=kvack.org;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:date:subject:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=0uILcWGxRJkmEp+n0zS/w9W2zfSCMknq4cj8Cc7NJqk=;
-        b=kT2nuEoboAtJRtLbsS3Drs2o/LqNyEMBjlstU/ewjWt6qvIWCKYzzESyiDeb5XzgDC
-         xFoqKCe/A51FNyMeXQWfpsTCn060kK4CHitFK3+LXS04zFojCw7iuHNHeAEeTfx27bz2
-         EvTgh/9Gm5RJ4AblZGiUVUqIfbVIWrBLaaxLg91BQONDTbpOZZIAS6r2auSfPu9lUUN8
-         2uThrEvEdbtaX+iWu2iwsauYFvoXEF9+8TjnR6ciQBSrCo7ew3wJ5oEraRmEUCNPlu6l
-         Rs9Rh87+zOxo7dQSNrQgWZfFIL24iYOSd4lx9ckFfc107BkF4oT7humDoR5tuCUUUZyR
-         Rnyw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793733690; x=1794338490;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:date:subject:to:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=0uILcWGxRJkmEp+n0zS/w9W2zfSCMknq4cj8Cc7NJqk=;
-        b=J6cj8xtSALhyfFtI9sHDSUZXMS9lG4OPiKS7mPChAppz6aKiCkeYa/gh3TNijijh4q
-         7twIqli1J5KSINIrSeK/fdjoHypX6L8idpKCvYcicG4LQ0V6NT9p4rDh8VJS5wHoLSZn
-         Gsnt9DmluNBatQStiqZ/LjiNGdr8iYvraiNS7HF68527TS5DFPDNbtIR68yFI8eD9xjI
-         ixkXvRTGMCMaAFvWO8JGJg10YO0dDkdbMO7eCLMtcd2+qIsR5bD95vfak4b7iIYeUqqM
-         A4nmrwqQbDlu76oeYwA1uT27dCuRnSwhaSYQf0WbL3UqNr7He5Apa30616GvYUyH5VMx
-         HqJg==
-X-Forwarded-Encrypted: i=1; AKwUvByIBhh9F4Cw2BKvPhArvIqOOYZj27Ec6ggCHAwbvDzH09swB8o7YNP+zTO4qdOS99Qs5+Pus5mqsw==@kvack.org
-X-Gm-Message-State: APuU4Z/OSXaUktI+mWn+mWMdYmjxhn93dMujGKA7tnpe8jkPib2OddWo
-	ToxgReb4oMrcSIoUGxVMYxNh/io1ojYgfxkCh7q5pqNAxYAZD/twdtAbKzecs63mWaw=
-X-Gm-Gg: AYBFou0NlwuILdPpvU3a6Y0wWpIqsTuCrPnk8vHvet+GiB4EOuaTlQu3qthaG5bCk2a
-	wjwdbd9IwhcW+Uqd9bg5V/tSySJeZvcuHD4BI7Z7WGnW0SXt3mnR62qa2l8+Nj32jbllkmntd7r
-	gaQXeACkTGCAxGiymFcevnV7iMuNhFv4pJluxD7NAWIqA4RaaHGuSSawF8FZSJKEpNFQ708XDFn
-	TdiZIZhRu5Lylf+bXKJFq4HIHY65AT9zfjrNpHrJchFZJlJw/1OezFTgRnGxcbMId9YTOSNYquA
-	uLcOSsJvTjqhva95sykcDH+sxqblAXycM2luiNl892rF0NoAqioSLUu64WeO9UE1Ns9xq1NCkdn
-	6q0vc7RwUbUIBHdP0Lu2MdJKaYVKZ0fGPRCWB6ErmANgm3W2UCEF/UjPZXwBMKmS1QPFzepL0QL
-	Gkpz1dKfxxO7mJcpJeHVhrg7AQ2fnJyFSaiQd+9C4RcDL/9c5TKTkTNukgM1TbGurhQ7LXGUFjW
-	fgAGHdcuOQXNGXrJ/nS4/S7OSPFaQ1hoYnZ5vbxrR7qehPSMiRoAgS3cMiRM6TymE11DWbTwgtS
-	U+qLthy1g4u5YC8mHqNBqVZa8VCoiQ6NHQC+DyN46/hsid7NvtkBZ3PrFy1Duhi24VI+K9JNJo7
-	TDJwjy+k3ldo4qasWHJ252Hjm4qdAmAUO+lPsKAac414zhg3h6cm3+a4IV6jXUoAiPgBUUL9HmQ
-	==
-X-Received: by 2002:a05:6102:6c4:b0:7ce:78f9:adfe with SMTP id ada2fe7eead31-7d072c17d00mr5173411137.18.1793733689733;
-        Tue, 03 Nov 2026 11:21:29 -0800 (PST)
-Received: from soleen.c.googlers.com.com (64.167.245.35.bc.googleusercontent.com. [35.245.167.64])
-        by smtp.gmail.com with ESMTPSA id a1e0cc1a2514c-998d999c2ccsm560241.9.2026.11.03.11.21.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 03 Nov 2026 11:21:29 -0800 (PST)
-From: Pasha Tatashin <pasha.tatashin@soleen.com>
-To: kexec@lists.infradead.org,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-pci@vger.kernel.org,
-	David Matlack <dmatlack@google.com>
-Subject: Re: [PATCH v10 00/13] PCI: liveupdate: PCI core support for Live Update
-Date: Tue,  3 Nov 2026 14:21:10 -0500
-Message-ID: <179373348545.623992.16522569527665218421.b4-ty@b4>
-X-Mailer: git-send-email 2.56.0.398.g882cbad275-goog
-In-Reply-To: <20261013162529.1928093-1-dmatlack@google.com>
-References: <20261013162529.1928093-1-dmatlack@google.com>
+	imf04.hostedemail.com;
+	dkim=pass header.d=samsung.com header.s=mail20170921 header.b="sH5lu8/r";
+	spf=pass (imf04.hostedemail.com: domain of m.szyprowski@samsung.com designates 210.118.77.12 as permitted sender) smtp.mailfrom=m.szyprowski@samsung.com;
+	dmarc=pass (policy=none) header.from=samsung.com
+Received: from eucas1p2.samsung.com (unknown [182.198.249.207])
+	by mailout2.w1.samsung.com (KnoxPortal) with ESMTP id 20261103192509euoutp02d9e2adc354294152297538b93ddd31d0~kn3zLGMlh1817618176euoutp02H
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 19:25:09 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w1.samsung.com 20261103192509euoutp02d9e2adc354294152297538b93ddd31d0~kn3zLGMlh1817618176euoutp02H
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+	s=mail20170921; t=1793733909;
+	bh=7PUwfrJVawcXLdfu41PY6uZ3y3+L4mK5joYpI+grGjw=;
+	h=Date:Subject:To:Cc:From:In-Reply-To:References:From;
+	b=sH5lu8/rUJ8kh2OpQ2XUWcNXRPmyVlAwJrTiki7UFFRAW19QzkE8kJQ5P9ivn25ZR
+	 WwtUo/9bgQaOqPLOFvqDg0YWqANrS5NOTe0FQ+upG+8uxIllUitHQD3/w5F4tOmLDb
+	 yprHd+9El9lRX6kb2sY1MN6hCsPd8SQgEFQE7dx8=
+Received: from eusmtip2.samsung.com (unknown [203.254.199.222]) by
+	eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
+	20261103192509eucas1p1b2f9e4fdd60dc8eae89579a1440a30f6~kn3yjR5OT3099830998eucas1p1_;
+	Tue,  3 Nov 2026 19:25:09 +0000 (GMT)
+Received: from [106.210.134.192] (unknown [106.210.134.192]) by
+	eusmtip2.samsung.com (KnoxPortal) with ESMTPA id
+	20261103192508eusmtip2a833c7ccdaf7e75a797dd7005f03374d~kn3yAQfdV2937629376eusmtip29;
+	Tue,  3 Nov 2026 19:25:08 +0000 (GMT)
+Message-ID: <b71ac175-fba5-4f61-bbdb-0b98dec9ccee@samsung.com>
+Date: Tue, 3 Nov 2026 20:25:08 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
+User-Agent: Betterbird (Windows)
+Subject: Re: [PATCH v3 2/2] of: reserved_mem: allocate and map the
+ reserved_mem array early
+To: Geert Uytterhoeven <geert@linux-m68k.org>
+Cc: linux-mm@kvack.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Mike Rapoport <rppt@kernel.org>, Rob Herring
+	<robh@kernel.org>, Saravana Kannan <saravanak@kernel.org>, Oreoluwa
+	Babatunde <oreoluwa.babatunde@oss.qualcomm.com>, Wandun
+	<chenwandun1@gmail.com>, Andrew Morton <akpm@linux-foundation.org>,
+	linux-riscv <linux-riscv@lists.infradead.org>
+Content-Language: en-US
+From: Marek Szyprowski <m.szyprowski@samsung.com>
+In-Reply-To: <CAMuHMdXcM9yvwLBSi-aYRinG3omhu5aoeNVYynfFQsnDDWR-Hw@mail.gmail.com>
+Content-Transfer-Encoding: 7bit
+X-CMS-MailID: 20261103192509eucas1p1b2f9e4fdd60dc8eae89579a1440a30f6
+X-Msg-Generator: CA
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: ADB221A000A
-X-Stat-Signature: cb6sxi3tudeyxtq4bgt87f7e6g8dh8u5
-X-Rspam-User: 
-X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1793733690-165586
-X-HE-Meta: U2FsdGVkX1+mmeUUmHRX9bkiJGpS91Lpwm4V44Uqf95CLdIwDuA1wnxM7AhaudBosY9IApmovN1bJqV6wmWs0XsffgV0d9kj6rJag3EwHBgdY+367+Szh8HWpauxt8NwyZHtvQ2H4lzSVsV3y3cGoY4iHCnGvumV9csFxE3u/Z5G+3kzLsW3SL/fhgKqgduNWxM110U6dyRMZifJaQcpZrc+HXB5+gyBEOgaKjeHq5YLpSK/fcOCQbnbtS5p3f+Pcs/fxIjEIf3u9lWUmenpMIdF/Yju7DWW0Wl8krU7s3QV4ERqiJB7eGYqENbvFD5eA2xZHiPsDzQBOx+EOeOT+XKj61JAo55/e9twnBktPBi/6Ht7FSf7J/sBeky9LF9rUz3MxflCDS/sp1Y2wZIqh8UL3MPUug07nRLHMmg21hK8IkWkyYLXUIE5EOix7RVeaRQ6Ml6bQv2DqJQiGV8nHQY6VwqLIZvfBjas5Bs1ljgZedmPY2UoHknLZLw6qC/eBt5ziGZSDjm9R/vAwsuTufq/z2Hyipj34jDF5QtAU7In9n7Gb2uMiosMWUS+8BDuCQ9I6T97HCLR4oiq3RF4ixJCbfFB8wdNxbFDaC5y09QRSSvYew8OSgUAwH/qWrTjGS2+RU0T3ImhSumHHZCtTxNcxxTtrmp+r9L4yRaTXWVFHLxIrmuVPAJ0gNyFe+XIBNELauuUyYILFPONLjgn55QhLpi3J/bHupNMgVlVPQUIYgQ8x+Zdcm+qLc0VZPcmpYB7uM/MArtsw6sbtEm5I20Jbc/HyvZPdOdphnD7Te/RmHrNHWlMYFLt5gu9OG4bMSsmcro1sdYDO0XTYGhvvRJBmFrFk+OSYmWJq3MB81jq0UtazDkBtWzImsXp2LMzV5PWRYGjqe2SqSviltUnOcSvgXqRydjv7Vk89qEBEXCFL0MKgVL4HTYWbmQLF9b/pNNIsJahE2nHRzP+Rac
- lYX1deRi
- /06eekrVRAXpDC7mfNEiBon7/Xmz7wzKzrSTJh23nS+8BataL82mG7jqb9SkNZsUwelhgDThgXTRPSH0aNNpgm1P6YrlTL0q+/HspbhMzs0neQb2U+/3jeUcnuza8rrBPSkS0t1I7wUmdW5nWRcBV2jMEDL/xrQ+/k8jnwmki0fZDXdXKjhU1wphDQ1nSsvFVijF5Nv3+2HRrDX3iEgHhH31S+dDYXSBBz/Ayo1Q+sqUQxAK9/sMGt1xyS+X+jEDQhaJdPbMH6ps2ycucTpn+I8w9HgwGpic/A9pDgir7h/RsKjYZ5mmZRCSOrbONktqLs2RH
+X-RootMTR: 20261015082334eucas1p2a3bbf3650f279abbd39d05d63e35aba6
+X-EPHeader: CA
+X-CMS-RootMailID: 20261015082334eucas1p2a3bbf3650f279abbd39d05d63e35aba6
+References: <CGME20261015082334eucas1p2a3bbf3650f279abbd39d05d63e35aba6@eucas1p2.samsung.com>
+	<20261015082315.56876-1-m.szyprowski@samsung.com>
+	<20261015082315.56876-3-m.szyprowski@samsung.com>
+	<CAMuHMdXcM9yvwLBSi-aYRinG3omhu5aoeNVYynfFQsnDDWR-Hw@mail.gmail.com>
+X-Rspamd-Server: rspam12
+X-Rspam-User:
+X-Stat-Signature: pf4mjuwkn6rkxnsmprdp98ru41xktykg
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
+	autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: 3AF5E40004
+X-HE-Tag: 1793733912-63792
+X-HE-Meta: U2FsdGVkX1/sBnJsMpCUHcKllN8FMC38g+a+76iV25JzidcFzdh1D8uyYgxv2/vDMS+DVMejwK9P3nZkAWJdMHiZVgmY60fCD0tXvkM9mQ7PwmhwRnUVVQvdf5vyT+gsr27HAN2REUKFjZvI4EjVIH/G188eBCAa7WTif35seZJw2FI+Vzoh+yDH4rbLXUemwiESlQuAu7XWRfNCm1srvW1bPNVRVE7b2CBtQpoK5ytzLTOIskudV/oP6LmfLK18NMu7+T9mUjx90fBlaZNxDmx0sB9ZMdZH4dAvSYSD+UpLht6cdYG9PBvj4ZmPeOeIDZkIecFp8Gy9oEThQT/8p8CdFnHuHDlyxvFVdjY9P3JZtU3H/WdnDxxwILzVlHUqanm3TJja+DFVtCSTc9N/2aVG6htWmVTxY5iWIzAjjR+bFyVaJpkY8ealhB7O0h2zCXG8mf67+Hbffh8pp+Oc+LIvHz7g6OAJr7cn2YFwXeQJ3OiWZrdgcz3NJCfmAHniJWMC/jSIsYEyLXiJlwz5HVbY3lNfNrSBUI4E1KbpYFGWmkKjtJ/AZES+eZbGHG+nF70zGuNxNevDQT+mzCEjENH6gs40clVE7lpqzsBbWvVk+gLqgb307FoxQOIpK+2dcMgD+Jok1o5RKPlkgWQW6cgPT8y+jGn6qqIUcKrVNL47l3e6VqGobwLIg1copfjIduX9w872M5HLyd9uAwIB78QIi6c1KN+9v6m/LtviAobf6+lZSuZiLAgliJbKkWwXOS6Fkb4++45oEZ3DOYJcES05Lda9j1fBcWUeiNucZVjj+PDgORwOxYWRcgYFDnJJ36hJIjH3BO2frROgYZFhoBaHCsnJkInqguXo50aOBRZl4K5u3PdMUk5qkJaVgzrzxOjjQoMyesDBYowIPW5xShzHBtasLgUbMRBBzc+eIyLNVUTM6Ie1hRms71F8HujuKLga3OIACECv+B42JGj
+ mbEX/Iez
+ Vr/hJNfhz0WeWkypbzcB3ZJbHQCai2ysGHaA6DYf6rrMohuUa6L5poCvrGUwkIcIa8BtsvwYsDiV74XUFC8QO+yiBAk/C6dsAxfKSNM7BFlSLVkNdwfdHL6RLkNMgTBWBItuBApALW7PpSEx4U9p+ovtaXi7NF0BuwdKMKMblj6WbBcDfUBfWbQfhbTf7qcKxFy3vvgQ0/I7hX8hA6e68In1Rwihs7LjFY9wL9ONnXYgXTVQwIw0NVmZrbmT8vTw17ny42G3Z8U6LkLI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -130,53 +113,108 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Tue, 13 Oct 2026 16:25:16 +0000, David Matlack wrote:
-> This series can be found on GitHub:
-> 
->   https://github.com/dmatlack/linux/tree/liveupdate/pci/base/v10
-> 
-> This series introduces support in the PCI core for Live Update, enabling
-> drivers to preserve PCI devices across a kexec-based kernel update
-> without interrupting the device. This functionality is critical for
-> minimizing downtime in environments where PCI devices (e.g., those
-> assigned to VMs via VFIO) must continue operating or maintain state
-> across a host kernel upgrade.
-> 
-> [...]
+Hi Geert,
 
-Applied, thanks!
+On 03.11.2026 19:04, Geert Uytterhoeven wrote:
+> On Thu, 15 Oct 2026 at 10:29, Marek Szyprowski <m.szyprowski@samsung.com> wrote:
+>> Get rid of the static, limited-size reserved_mem array and replace it
+>> with array allocated by memblock_alloc_raw() and accessed directly or
+>> through a temporary early_memremap() mapping (depending on the
+>> architecture support). Such mapping is needed for some architectures
+>> (like ARM64), where linear map is not yet available during early boot
+>> scan. The array is allocated from the bottom of RAM to avoid placing it
+>> in highmem area, because some architectures (e.g. Xtensa, C-SKY, MIPS32)
+>> set the memblock limit to the end of lowmem only after the early scan.
+>> The early mapping is not used on PPC64, where the scan is done before
+>> early_ioremap_setup(), but the memory allocated by memblock is already
+>> accessible at that point.
+>>
+>> Having a single, writeable array with all reserved regions removes the
+>> need to perform two step initialization introduced by commit
+>> 8a6e02d0c00e ("of: reserved_mem: Restructure how the reserved memory
+>> regions are processed"), so all regions can be processed during the
+>> early scan again.
+>>
+>> The reserved_mem array is allocated only after all static (defined by
+>> the 'reg' property) regions are marked as reserved or no-map, so it
+>> cannot be placed in any of them. Errors of the early reservations are
+>> not recorded per region, only the fact that some of them failed is
+>> stored and a message asking to fix the device-tree is printed. The
+>> region specific init functions for the static regions are then called
+>> in a separate pass, once the array is available. Then all dynamically
+>> allocated reserved regions are processed.
+>>
+>> Suggested-by: Mike Rapoport <rppt@kernel.org>
+>> Link: https://lore.kernel.org/all/asc6brs_g0ky0wOM@kernel.org/
+>> Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
+> Thanks for your patch, which is now commit aa05faf815836c47 ("of:
+> reserved_mem: allocate and map the reserved_mem array early")
+> in dt-rh/for-next.
+>
+> This causes an early crash on BeagleV Starlight Beta:
+>
+>  [...]
+>  earlycon: uart0 MMIO32:0x0000000012440000 (options '115200n8')
+>  printk: legacy bootconsole [uart0] enabled
+>  printk: debug: skip boot console de-registration.
+>  efi: UEFI not found.
+> -OF: reserved mem: 0x00000000fb000000..0x00000000fcffffff (32768 KiB)
+> map non-reusable framebuffer@fb000000
+> -OF: reserved mem: 0x00000000f9000000..0x00000000f9ffffff (16384 KiB)
+> map non-reusable framebuffer@f9000000
+> -OF: reserved mem: 0x00000000d0000000..0x00000000f7ffffff (655360 KiB)
+> map non-reusable framebuffer@d0000000
+> -OF: reserved mem: 0x00000000c9000000..0x00000000ccffffff (65536 KiB)
+> map non-reusable framebuffer@c9000000
+> -OF: reserved mem: 0x00000000fa000000..0x00000000faffffff (16384 KiB)
+> nomap non-reusable dma-reserved@fa000000
+> -Reserved memory: created DMA memory pool at 0x000000107a000000, size 16384 KiB
+> -OF: reserved mem: initialized node linux,dma@107a000000, compatible
+> id shared-dma-pool
+> -OF: reserved mem: 0x000000107a000000..0x000000107affffff (16384 KiB)
+> nomap non-reusable linux,dma@107a000000
+> -SBI HSM extension detected
+> -[...]
+> +Oops - store (or AMO) access fault [#1]
+> +Modules linked in:
+> +CPU: 0 UID: 0 PID: 0 Comm: swapper Not tainted
+> 7.4.0-rc1-starlight-00002-gaa05faf81583 #411 PREEMPT
+> +Hardware name: BeagleV Starlight Beta (DT)
+> +epc : __memset+0x68/0xfe
+> + ra : fdt_scan_reserved_mem+0x3a4/0x80a
+> +epc : ffffffff8087fd88 ra : ffffffff80a313c8 sp : ffffffff81403c20
+> + gp : ffffffff814dc6c0 tp : ffffffff8140cf80 t0 : ffffffc4fea38ff0
+> + t1 : 0000000080200000 t2 : ffffffc4fec03008 s0 : ffffffff81403d10
+> + s1 : ffffffffffffffff a0 : ffffffc4fea39000 a1 : 0000000000000000
+> + a2 : 00000000000000f0 a3 : ffffffc4fea390f0 a4 : 0000000000000008
+> + a5 : ffffffff8087fd88 a6 : 00000000000000f0 a7 : 0000000000001000
+> + s2 : ffffffc4fec00000 s3 : 00000000000000f0 s4 : 0000000000000000
+> + s5 : 0000000000002de0 s6 : 0000000000000006 s7 : fffffffffefefefe
+> + s8 : ffffffc4fec02fd4 s9 : ffffffff8148e318 s10: fffffffffefefeff
+> + s11: ffffffc4fea39000 t3 : ffffffff8150df00 t4 : ffffffff8150df00
+> + t5 : ffffffff8150df00 t6 : ffffffff8150df78 ssp : 0000000000000000
+> +status: 0000000200000100 badaddr: ffffffc4fea39000 cause: 0000000000000007
+> +[<ffffffff8087fd88>] __memset+0x68/0xfe
+> +[<ffffffff80a2f63a>] early_init_fdt_scan_reserved_mem+0xa4/0x110
+> +[<ffffffff80a06c8e>] paging_init+0x17c/0x46a
+> +[<ffffffff80a046dc>] setup_arch+0xdc/0x584
+> +[<ffffffff80a009b8>] start_kernel+0x98/0x940
+> +Code: 0000 8793 00e7 8305 97ba 8782 b023 00b2 b423 00b2 (b823) 00b2
+> +---[ end trace 0000000000000000 ]---
+> +Kernel panic - not syncing: Fatal exception in interrupt
+> +---[ end Kernel panic - not syncing: Fatal exception in interrupt ]---
+>
+> Reverting the commit fixes the issue.
 
-https://git.kernel.org/pub/scm/linux/kernel/git/liveupdate/linux.git/log/?h=lu-pci-preservation
+Does moving early_init_fdt_scan_reserved_mem() to the end of setup_bootmem()
+in arch/riscv/mm/init.c change anything?
 
-[01/13] PCI: liveupdate: Set up FLB handler for the PCI core
-        commit: f874391deedec9be601bc044f2aed52a267a3671
-[02/13] PCI: liveupdate: Track outgoing preserved PCI devices
-        commit: e207461556c0d3a42fd59dc548e9e8f599aae298
-[03/13] PCI: liveupdate: Track incoming preserved PCI devices
-        commit: 42907d099a3c37f5a089d92465b3a61de9c7cbea
-[04/13] PCI: liveupdate: Document driver binding responsibilities
-        commit: 78d4d22c0d4e0830a5db9b903f1325b7fbe0eb17
-[05/13] PCI: liveupdate: Auto-preserve upstream bridges across Live Update
-        commit: 8178f14641e2d7acf648acc33a0cc070763250af
-[06/13] PCI: liveupdate: Preserve bus numbers during Live Update
-        commit: 3f832a32a1801a9e7b1dc4e88a3e1744a316b538
-[07/13] PCI: Refactor matching logic for pci_dev_acs_ops
-        commit: 966230f2ebac2013f60ba6376a6ca726f6427ecd
-[08/13] PCI: Save and restore the ACS Control register and Egress Control Vector
-        commit: 88016172c5585b1dd0d777ec529fcac577e4e94f
-[09/13] PCI: liveupdate: Adopt ACS controls in incoming preserved devices
-        commit: 1fabde9a0e4964ac43e8ef3f0c9619d8ed80cc23
-[10/13] PCI: liveupdate: Adopt ARI Forwarding Enable on preserved bridges
-        commit: 5506c59d1b844edad5cf2a704f8b87b353b3a2bc
-[11/13] PCI: liveupdate: Freeze preservation status during shutdown
-        commit: dbe2c3dfd43f9aa094b59669b81aa92b8685d23f
-[12/13] PCI: liveupdate: Do not disable bus mastering on preserved devices during kexec
-        commit: 534abf9f0870b457e1e6f4ef8267b0471e9d2c2c
-[13/13] Documentation: PCI: Add documentation for Live Update
-        commit: 5d995129832f72dc7a3870eabb216d487a145cf3
+Could You provide a full boot log from the working kernel and /proc/iomem dump?
 
-Best regards,
+
+Best regards
 -- 
-Pasha
+Marek Szyprowski, PhD
+Samsung R&D Institute Poland
 
 
