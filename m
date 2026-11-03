@@ -1,100 +1,110 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 445CB606A329
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 01:56:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E6E6606A338
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 01:56:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=sC4V93ww
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=GR3b6Ou7
 Received: by kanga.kvack.org (Postfix)
-	id 501106B05B5; Mon,  2 Nov 2026 20:56:11 -0500 (EST)
+	id 305876B05B4; Mon,  2 Nov 2026 20:56:37 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4D7556B05B7; Mon,  2 Nov 2026 20:56:11 -0500 (EST)
+	id 2B56E6B05B7; Mon,  2 Nov 2026 20:56:37 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 414C46B05B8; Mon,  2 Nov 2026 20:56:11 -0500 (EST)
+	id 1CC5E6B05B8; Mon,  2 Nov 2026 20:56:37 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 231166B05B5
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 20:56:11 -0500 (EST)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 279CAA4F63
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 01:56:10 +0000 (UTC)
-X-FDA: 85392142500.11.D9798AC
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id ED3CF6B05B4
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 20:56:36 -0500 (EST)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 6E2F81C2B4B
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 01:56:36 +0000 (UTC)
+X-FDA: 85392143592.27.A4DA123
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 6B81B80007
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 01:56:08 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=sC4V93ww;
-	spf=pass (imf02.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+	by imf03.hostedemail.com (Postfix) with ESMTP id D076720002
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 01:56:34 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GR3b6Ou7;
+	spf=pass (imf03.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793670968;
+	s=arc-20220608; t=1793670994;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/yEmlIGT8Rm47P5/YaksZujPOe2/Vjk0RWJKshG5qqM=;
-	b=unnQglt4tBzV4dFkgKNxwntnu6gn+5HZRn9sl62Si6X0NBnFaDl16Gho8Ntx1an8lno+rd
-	SXgwUa+5HKZVuxDA/WNjNz9/a6XGs8CVEkQ2mMnF8l2/fPKxyLVJUxTA6EmiWCoJwpKMHF
-	iTGw/En5eM0ZPpNTeZqUOKvwvwW8xJo=
+	bh=oG/UK1lpPVs0T+G/uex5I6y18oVty/cZKc6GhxA17CU=;
+	b=BV9lVR1SNLVyNsYwV2SGhmuQS02hCd8MEIdoovKM9Whu+7yxKkeZJsvsU8QBKiH2PoeDU1
+	M5CmZB9+BU4Ln1yij2DffzQhbrQHMPHjL9vnoydRsYp4BONHPilh14nL58+o7sRtm+IGdd
+	tf9P2Bc32pLfY61VLDBKWo9ZV2pXdtY=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793670968;
-	b=qWXvvzijNl2zYKWTVPsXzhp09LXq+Gqq+S47BmKIVA7aYA0K/5AnvZxnFbHaySIxTJOfcF
-	RRnI3Hy465Zf6Ighj3vNWGSLy/dtGYTv+v6Eeb9IEXo5FmT8T4GprHl/YW+bI9h3Cqx/PN
-	79bdm8Uo0Zu7hG+X1WYmJN8532gxl64=
+	t=1793670994;
+	b=TEnoWj4/6KELNGe1/Mxsy1fxEVYuW7MgzbqgPowkd2qoFHZXKlhDUBmZX1olH8VoawXk8J
+	WrsQQh/dflhFbRAJTk5YEpvoRozjUqYs3Q9c1a2pixwEJWBNWCDDh+nu92RyVLEH2xzZGp
+	zY/BKGNXKdqyDvcUgAGIRmNieBv8J3U=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=sC4V93ww;
-	spf=pass (imf02.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GR3b6Ou7;
+	spf=pass (imf03.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 31DFD429F2;
-	Tue,  3 Nov 2026 01:56:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 524B01F000C1;
-	Tue,  3 Nov 2026 01:56:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1793670967;
-	bh=/yEmlIGT8Rm47P5/YaksZujPOe2/Vjk0RWJKshG5qqM=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=sC4V93wwNcAEqLkI5tERpnFGjyTFE/S7+D0PuojsTyfZtKBtUMHkOnNhI598gNx9f
-	 ZNuZjjfJBBjamVORdQd4cPVcMwjB1xQRT+bRH6a6iRkbNyypZrP9Hlqg3FRTecSDXm
-	 lNzKIn8M4Nf2nS5PpDpoBb7fi0J0bjWNCvuoCMF4=
-Date: Mon, 2 Nov 2026 17:56:05 -0800
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Tal Zussman <tz2294@columbia.edu>
-Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara
- <jack@suse.cz>, David Hildenbrand <david@kernel.org>, Lorenzo Stoakes
- <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka
- <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan
- <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Zi Yan
- <ziy@nvidia.com>, Matthew Brost <matthew.brost@intel.com>, Joshua Hahn
- <joshua.hahnjy@gmail.com>, Byungchul Park <byungchul@sk.com>, Gregory Price
- <gourry@gourry.net>, Ying Huang <ying.huang@linux.alibaba.com>, Alistair
- Popple <apopple@nvidia.com>, Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard
- <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, Hugh Dickins
- <hughd@google.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
- linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 0/8] mm: remove newly-unused page wrapper APIs
-Message-Id: <20261102175605.a0d9caee8279ffb5f6fdf15f@linux-foundation.org>
-In-Reply-To: <20261102-page-wrappers-v1-0-e7280bdb31f6@columbia.edu>
-References: <20261102-page-wrappers-v1-0-e7280bdb31f6@columbia.edu>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	by sea.source.kernel.org (Postfix) with ESMTP id 2F6ED43DE9;
+	Tue,  3 Nov 2026 01:56:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54E971F00919;
+	Tue,  3 Nov 2026 01:56:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793670994;
+	bh=oG/UK1lpPVs0T+G/uex5I6y18oVty/cZKc6GhxA17CU=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=GR3b6Ou7TomFWO0koV9WkroAduiPVKsmUD6/YPTpUoTzyGLMtkji7zWzVR8FrgiHI
+	 9OHvH5s3KGh9l5yDsvxYIDlr8ZoPQROdPIVZBp4enZcR6M6Ki3yQ1PYth8jSGKc7wK
+	 1pe/wtsBYyfAlR1F3athy4ymdpghRh7mbyufTTPDeVvJkilhfLOLKbMMS9zLpZMA2Q
+	 N0+G8PV1zOzmeTqB5KcF735yHW8kb+luK6FY3SIuSXL9J4kLjUYL45zIp9Jl858QVV
+	 3RiizWoZATPLgG/cfhePSC25t26uP3Bbu/ZJVtmbSVsg5uVAn0Z4AiykwGRiImF5Hd
+	 aJryq0kKDemug==
+From: SJ Park <sj@kernel.org>
+To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Cc: SJ Park <sj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Harry Yoo <harry@kernel.org>,
+	Hao Li <hao.li@linux.dev>,
+	Christoph Lameter <cl@gentwo.org>,
+	David Rientjes <rientjes@google.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Brendan Jackman <brendan.jackman@linux.dev>,
+	Zi Yan <ziy@nvidia.com>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Jann Horn <jannh@google.com>,
+	Pedro Falcato <pfalcato@suse.de>,
+	Mike Rapoport <rppt@kernel.org>,
+	David Hildenbrand <david@kernel.org>,
+	Gregory Price <gourry@gourry.net>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org
+Subject: Re: [PATCH 0/2] MAINTAINERS updates for page and slab allocators
+Date: Mon,  2 Nov 2026 17:56:16 -0800
+Message-ID: <20261103015616.95465-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20261101-maint-page_alloc-update-v1-0-27e8c246b13d@kernel.org>
+References: 
 X-Archived-By: <archiver.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam06
-X-Stat-Signature: kwdizazya5uensrgsktk7hu7ytap953y
-X-Spam-Status: No, score=-7.5 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,NICE_REPLY_A,SPF_HELO_PASS,SPF_PASS autolearn=no
-	autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: 6B81B80007
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: gq6y3yiwozitu366mrkpzn6ghf4f4st8
+X-Rspamd-Queue-Id: D076720002
 X-Rspam-User: 
-X-HE-Tag: 1793670968-185590
-X-HE-Meta: U2FsdGVkX1/ad//1bMuJcCCRJreOwuB/kpGKoz6yadABK4rOFp9o0aAdih7wCjHgTZbQ3ARHJQ9nURxvvcJ5lDqJfQo8QWh+K1IavPnX8NOHrJmtBc6Wn6cEpLpxZ73gKuEZkiVlyBKZCQmM8Vo8/sjx53q8HK/wleXV5C51LGMZStlxuROL1qfC3oR/RFsq6vXrpCSkH/PLYRDrTtmBGxpJToDB5X4JP8MyYaZ0IGeg3HFAQgZtPrSnp4b87V4Va/ix/7ECB9l1AdwoygMQAWgixhTcMNGKzbef2aULvKYDlg+itpX38sNi7226q8015tb150xlaDe9O8r9BQUTyoB7bfIvLvfG0zlf4xyqw5TqXDbtg5Yres9czwupJWc7TtfL48/cujmJiABR5bowdUnZeSd0JCKpof5NUWefkadG7TW36MfQy6aF03zK33DGB9N04CxnKDPDADWVsYNhKivvzaSpJDf5t9ZWJBB+QzIgtVeKV3ZkBTYBoa5YwaJeuT0KUJ25CYZYN1/P5q2TP1OXB+LXdiSwQc4zkKMr2y9dTr3wrOeRubHW6/CTwczypuo4RIiYMBKgiH7JMMeGFRTAc3lCqYcmwKEb/C9kNK2sFq3gz6R9o1hX18ghYEkchphldN/v6Q7TSPbXrpcf7DLpETuvb3aX5OFfsKAbjGF0qo8+fJ51QZ+q9lef7hFE7bYSHtSKOhsZEjtqX1AIFa2OM97VK+Stk9TCOtcXlUwGZxPEiTCaxsmoHhP2gW2/4S00KLb22zu2kxeYcHSBPfd3e32uN8lJmTFNAP9leXBSfp6xNz9k4MqpnLuFO3nmadSZKVN6Jb+0L4Rlu6fXnVSbJAZCPfAi0Nhf/zrl/7eAznrEztY5dXcQ1kLBalZr4aVIQccg4HJ7aLacLv7E2QjtxfKvfmsr5T3gTgT+AMkd0ikpoYOsJYK1NxmQHQsM+uinNDseCU17oun6eau
- xT7fM86O
- Z6MQBi8US1eezLRlYRWGwzYfzq36625bMQyO5X6o9Z5xPYvh7KtrmmnlfTZ9uayqrXCt/0dPRVfoVxiDXGP5KuhxPysZTydBUU9FGQE8XJqsUHIN5W4oYPr69qRvcoWuOY4/fbpkUTZdUPBManbwRXr1ZJKAQ1EJHQDSsIJlLrOy/3o5m/jFy876ppzNS3E4QYrMnHrJ7s//UjvvTghAZOn7cg5sO3F1Lgm1sRb8+RdCcMXAH0MF1DL5s8EpBdy7WUvgJxjbw/jDCgrW2i+MlZuShUW9p+eismuJncnTUz/cb43sWP/NFyelXqoA96+3E8WX/bWcG4UWRoOk=
+X-Rspamd-Server: rspam08
+X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1793670994-479969
+X-HE-Meta: U2FsdGVkX1+YTVlApXII9TCemqe2JwFjR+QTsqmXvbDjP/a9X7uApq2OpU+IpKUCZVM9HYY+bK43zgxSjBsWxuD75x8lJI84njUVh+ZqqpXDM2fJEvl6SfTikz2cRFDF9Ucu0paeZHRkOqE9z5cYdteav+oq581TEasEeJd2NzY7ztG6tfDI7YOiw8b6M2x1lS+9AZ1ijE58Ekz0DjSvJpEqThgh4RW9yB2HzBvwwFlkcBX+wlTmpNhLpMlAoiw5U1MqqeoocZywMUka+uo/nX6AcF7tHsx7l/shap5QN8J9qzozkkjvIja949W/5m/xGp1FPfJu8g3/htljG/OFUjUI2QCLZUs5PRGqE3pEGWrLJWfLYBTo7OOidXLd+vPeVpgTCdmW3RqxrYtX+rZYPKAYeMKDbVtb32i81bo8MSlAjC5CJq26J+cjOfEQBF33omRlkHFhYfiIJMBZ1mT8h23WFOJTBZwnxZ/epfgJN+FavDoTZgXqlUE73QF3y8OWxsCQQbiyQV/j1hHFmaz/FWjmuckUp6S7UPw14Rmf5hiY0YLLz6eVgG/tasVMdckPhLlQekCTGnaGO2ebIEq9NFhcBPKXAQXevd2tR0FxsZYrAbELRFESsGHw4z8mJacJczVccWblalVkDGqr9OTxKpoZ63QGNcw77PO8zA2W+Hrw14gS4tbdDdocdc1jXq4kHUTQDc0ZleAFJa9aCJw6JvsLLqsw3FLUvL+Do2ev+GYhJ77TC0wG+vlPgcvlnJ0a42G8dXv1ZDOy50OxmWKqbEDnliVUrXk/bZXZlaeLae+YZzyItG3IIgbbG5ELa0b3Dr3mHNHzDAv4UzO4TP1rGCHS2ItqNEfv8hN7W9Phn+PxbyCJ76XswDtK2JXiRlf6rm4rirgmNnZ9pyhXLrbmbOEY3iBPBBlmZzkVkssMFvJ7c7lD6j1KUteUpQPzvD1rehtuzFIrEMsyzf4Kc7a
+ NWH/3EZA
+ Vsj3GOC+X0ep2MlIcEVwxaOghr6k7nmLojGmaEzCiacwRGxOO1b/qED23LJ95Q5csXAErvTE+eox8TqwOkF2dIftyr0k3j9Z4SeFG85JtJkFSp1+ZsCE+tZ+HgAt7EVBBbglYTkfFv5z3UaIgvqgAZgyeFy4B7HMxUv8vdjOOR+OcLpgs13UiUSND5AY57MtwqCTve6gb9a1RgWFthtu7/Gb3zda5lv7RLKKZ4cXC/mYEQFI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,22 +113,27 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Mon, 02 Nov 2026 17:54:05 -0500 Tal Zussman <tz2294@columbia.edu> wrote:
+On Sun, 01 Nov 2026 17:34:47 +0100 "Vlastimil Babka (SUSE)" <vbabka@kernel.org> wrote:
 
-> After some folio conversions done last cycle (namely ceph, f2fs, btrfs,
-> fuse, and page_io.c), there are a number of newly-unused page APIs.
-> Let's remove them and update comments as necessary.
+> Following David's updates [1], perform similar updates for page and slab
+> allocators to indicate the MM process transition for these
+> subcomponents. Importantly, add Johannes as a page allocator
+> co-maintainer.
+
+Makes perfect sense to me.  Thank you for stepping up, Johannes!
+
 > 
-> Patches 1 and 8 are taken from the ceph writeback folio series [1],
-> along with tags.
+> [1] https://lore.kernel.org/all/20261030-maintainers-v1-0-97278f8a5f54@kernel.org/
+> 
+> Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
 
-Thanks.
+For the series,
 
->  9 files changed, 8 insertions(+), 110 deletions(-)
-
-Tal, you obviously haven't been following along ;)
+Acked-by: SJ Park <sj@kernel.org>
 
 
-This development cycle is not the one for cleanups and new features,
-but this one sneaks through!
+Thanks,
+SJ
+
+[...]
 
