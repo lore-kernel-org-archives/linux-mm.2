@@ -1,97 +1,150 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E60A606D821
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 14:55:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BE2D606BA30
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 14:57:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=goodmis.org header.i=@goodmis.org header.a=rsa-sha256 header.s=dkim1 header.b=ccOpwd2t
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=iFpNS6bE
 Received: by kanga.kvack.org (Postfix)
-	id 57B766B05CB; Tue,  3 Nov 2026 09:55:30 -0500 (EST)
+	id 3F8246B05CD; Tue,  3 Nov 2026 09:57:39 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 552DE6B05CC; Tue,  3 Nov 2026 09:55:30 -0500 (EST)
+	id 3A9CB6B05CE; Tue,  3 Nov 2026 09:57:39 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 492F36B05CD; Tue,  3 Nov 2026 09:55:30 -0500 (EST)
+	id 29B2C6B05CF; Tue,  3 Nov 2026 09:57:39 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 262976B05CB
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 09:55:30 -0500 (EST)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id C0154A8001
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 14:55:29 +0000 (UTC)
-X-FDA: 85394106378.25.73EDDB6
-Received: from relay.hostedemail.com (unirelay03 [10.200.18.66])
-	by imf28.hostedemail.com (Postfix) with ESMTP id E2329C0009
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 14:55:27 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	none
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793717727;
-	b=pFBR7c7RjOnvYSNj4q7qacxaDEjq/Vs2ZRmztI8idzM46gOeT9fOkbUb6aHxulGdtkztNF
-	RMpSPXUsZiiRyyoyIxrbOfKgeY92thgC/3Yc4X17yd3HD22m4Eb2ibAjKKsbuhVMCId4Ea
-	NjYcjskuHjGu60tciqZDDtDTTNVGWLg=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	none
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id E41EA6B05CD
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 09:57:38 -0500 (EST)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 4C390C045A
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 14:57:37 +0000 (UTC)
+X-FDA: 85394111754.23.2A0048F
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 954FB1A0006
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 14:57:35 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iFpNS6bE;
+	spf=pass (imf19.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793717727;
+	s=arc-20220608; t=1793717855;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=yfddeYQH6ujsdtrqW+DK7nJG3jSGc85HvZV3WQ41HAI=;
-	b=SBwYfh49zIJR+7a55TE2dDRb3CZJPO4MAozhNq2qHo4kzZT41uFk63G5kQ074YGkzonuD/
-	507rPERbP9fbiYUCV+mdgFyg7co1cKzAoWfsXd4ZdAUJ9norh3BGwV66mNsRYCwKR+zyYU
-	bMD21rhQHm96Q2h65ZAzv4Ptc7mqF80=
-Received: from omf19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 9CF50A0427;
-	Tue,  3 Nov 2026 14:55:23 +0000 (UTC)
-Received: from [HIDDEN] (Authenticated sender: rostedt@goodmis.org) by omf19.hostedemail.com (Postfix) with ESMTPA id C284720028;
-	Tue,  3 Nov 2026 14:55:13 +0000 (UTC)
-Date: Tue, 3 Nov 2026 09:55:12 -0500
-From: Steven Rostedt <rostedt@goodmis.org>
-To: Aaron Tomlin <atomlin@atomlin.com>
-Cc: pmladek@suse.com, john.ogness@linutronix.de, senozhatsky@chromium.org,
- mingo@redhat.com, peterz@infradead.org, juri.lelli@redhat.com,
- vincent.guittot@linaro.org, dietmar.eggemann@arm.com, bsegall@google.com,
- mgorman@suse.de, vschneid@redhat.com, kprateek.nayak@amd.com,
- akpm@linux-foundation.org, baoquan.he@linux.dev, rppt@kernel.org,
- pasha.tatashin@soleen.com, pratyush@kernel.org, ruirui.yang@linux.dev,
- david@kernel.org, ljs@kernel.org, liam@infradead.org, vbabka@kernel.org,
- surenb@google.com, mhocko@suse.com, kees@kernel.org,
- anna-maria@linutronix.de, frederic@kernel.org, tglx@kernel.org,
- mhiramat@kernel.org, mathieu.desnoyers@efficios.com,
- brendan.jackman@linux.dev, hannes@cmpxchg.org, ziy@nvidia.com,
- bigeasy@linutronix.de, clrkwllms@kernel.org, linux-kernel@vger.kernel.org,
- kexec@lists.infradead.org, linux-mm@kvack.org,
- linux-trace-kernel@vger.kernel.org, linux-rt-devel@lists.linux.dev
-Subject: Re: [RFC PATCH v2 4/5] printk, tracing: Support console flush
- suppression and tail pinning
-Message-ID: <20261103095512.7b8c2d3f@gandalf.local.home>
-In-Reply-To: <20261103024453.922373-5-atomlin@atomlin.com>
-References: <20261103024453.922373-1-atomlin@atomlin.com>
-	<20261103024453.922373-5-atomlin@atomlin.com>
-X-Mailer: Claws Mail 3.20.0git84 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	bh=wVPZHBHmTVqQc0Jh1TfnVqktWkBiefvtfViUxrs9XWI=;
+	b=BrunFFFqGuROJYjR17kFRU9UPQ/qtXFUzpIdtva1cA+w0QW8rgRa0uvqE7qdpyb84vHwyO
+	7Z68ar/+gq2HEC8Zc51lVFTOffpRfaU+RCVyhZvl3jsI4Z3sbLPyDDEqsP5cVMYr6Z2jWe
+	uJJ33FpLout4sW3IiAW285HmBrL4UWc=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iFpNS6bE;
+	spf=pass (imf19.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793717855;
+	b=OVvmMtQ6GtzK4+9E/XzDnjXJi4ggh5cs6tI9AMZdE9vhZoenVEES2jc7rzMXhpbl3zXwv/
+	PNFnrs7tH/A66nBlv5Zb8TKJ32h/3xTYMchYJgW14KuTMbmfUgMuohgzmfQy7veHIMcHcQ
+	uebexjgdZ70xXPLvnU+VEBSXZXcYhks=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 2B0F3600D1;
+	Tue,  3 Nov 2026 14:57:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F7AB1F000C1;
+	Tue,  3 Nov 2026 14:57:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793717854;
+	bh=wVPZHBHmTVqQc0Jh1TfnVqktWkBiefvtfViUxrs9XWI=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=iFpNS6bEHhR8ebqCRAZfPuhOs7jQqMJg1MsO+wzz4LEUgwINXXdloo6S46CgitXEI
+	 zYonEJHRlcZqRY6aThjvqxXrj3AX8jxOjgqX3bObrW9ObuduRggGNRmmO9KFYohsRl
+	 MIc91meGUPijHpP/YqjnmEV5W7/FlzDSESbVcNFR5w4BzlHrg91Jk7W4tW4k5/eUZN
+	 /NlyXJ+CwNd8BQ7ts0WIZmAItdKpGa82Z1OBMYyBw/7+EnfNYi+M8USFOpg3o+Y8+e
+	 GE4/1hwkFqy6zr1LqI2w09Vg4hF6CilTyMvRd+OfcFrWHuSd23gfU6WTwlpTKwwRKN
+	 sdsCQNQa0h1sA==
+Message-ID: <489b668a-033c-4161-93e8-15d6b9b28b51@kernel.org>
+Date: Tue, 3 Nov 2026 15:57:24 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 02/12] mm/page_alloc: keep the pagesets of an empty
+ zone
+To: Zi Yan <ziy@nvidia.com>, "Gregory Price (Meta)" <gourry@gourry.net>,
+ linux-mm@kvack.org
+Cc: linux-trace-kernel@vger.kernel.org, linux-kernel@vger.kernel.org,
+ kernel-team@meta.com, akpm@linux-foundation.org, david@kernel.org,
+ ljs@kernel.org, liam@infradead.org, rppt@kernel.org, surenb@google.com,
+ mhocko@suse.com, kasong@tencent.com, qi.zheng@linux.dev,
+ shakeel.butt@linux.dev, baohua@kernel.org, axelrasmussen@google.com,
+ yuanchu@google.com, weixugc@google.com, baoquan.he@linux.dev,
+ baolin.wang@linux.alibaba.com, rientjes@google.com, rostedt@goodmis.org,
+ mhiramat@kernel.org, mathieu.desnoyers@efficios.com, muchun.song@linux.dev,
+ osalvador@suse.de, joshua.hahnjy@gmail.com, rakie.kim@sk.com,
+ ying.huang@linux.alibaba.com, brendan.jackman@linux.dev, hannes@cmpxchg.org,
+ bigeasy@linutronix.de, clrkwllms@kernel.org, nathan@kernel.org,
+ ndesaulniers@google.com, morbo@google.com, justinstitt@google.com,
+ Bessel.Wang@huawei.com, jiang.liu@huawei.com, mgorman@techsingularity.net,
+ anshuman.khandual@arm.com, Josef Bacik <josef@toxicpanda.com>,
+ stable@vger.kernel.org
+References: <20261101021340.2251928-1-gourry@gourry.net>
+ <20261101021340.2251928-3-gourry@gourry.net>
+ <DMK59DO8M3AP.3OTG2YR62D9WO@nvidia.com>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=vbabka@kernel.org; keydata=
+ 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
+In-Reply-To: <DMK59DO8M3AP.3OTG2YR62D9WO@nvidia.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Session-Marker: 726F737465647440676F6F646D69732E6F7267
-X-Session-ID: U2FsdGVkX18bF8bDrvU8IQ31ZfoMj2/1FBDtsGgnaNM=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=goodmis.org; h=date:from:to:cc:subject:message-id:in-reply-to:references:mime-version:content-type:content-transfer-encoding; s=dkim1; bh=yfddeYQH6ujsdtrqW+DK7nJG3jSGc85HvZV3WQ41HAI=; b=ccOpwd2tRjlDkvLbOszT0B1ym6UiYCfrRWT0qA4+g9GnoqpEdGbtdba9bNqnSGo8WEXhJAmxC0nC9r/jQRz0ydIwgnnbdbE+fkNtv7+eOe9CahVZ9Tf38wAfwDUrGkJffHQpfufHMkf6c76Qt5z5WupeU0bID+ji4KLPijQfrbw=
-X-HE-Meta: U2FsdGVkX19lBMKb7T+S15I1bJ1yR/TpScDr1lLD4QbN59L8ZM4I0NZGtNhm2A8c1bmSxupnsLnRAsBUwVGiAfWzpLEfSX3Adc9DNtb6PKQ5qJNeVEATThLVWUurVwo9CE5t/iLx93jzKYVjROq1YZpyEKFbbFeS0fkiZcRmgC2kbjBnXH6i1894/YQUb3zmpt9AzD9eP/WJIIhyybCls1BbTVchuLjJ9gzzG6y6eMRLctFBr4SOmLD53JvLUC49y8ZRAywfuklEeeyZQgz1N8jIf42a2Jf292eBO4csSC2VZy7+hRLMlrdiX2PfR5HNPn57OrUIwJiwWiRoeehnpiHDKniSg9g5+r1a5FR/JVhzWytRVeYOTvnpX6+QVIy/
+X-Stat-Signature: 8mimj6f1thmy47o1n7axrriu4w56y96d
+X-Rspamd-Server: rspam01
 X-Rspam-User: 
-X-Rspamd-Queue-Id: E2329C0009
-X-Rspamd-Server: rspam07
-X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,UNPARSEABLE_RELAY,
-	USER_AGENT_SANE_2 autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: nc4kisin8m3wyjdgtdpom7c1au41iqa3
-X-HE-Tag-Orig: 1793717713-47761
-X-HE-Tag: 1793717727-446471
-X-HE-Meta: U2FsdGVkX19CuxCBnNNQQdb7IqxFzXNLr+1iqLjYQzyNSfVWB0z/ZUhQdT9JKZLxbMZNWQcxIco+sdoEtwA109yERWbRPcz7ZJUvjq0kmjtgO3WyHukIY6a/6JW0PyX69nP2f8VVBdkbZuLRZng9DcsjBFlbzA5UyHWeFW+AjIB1WL/jQdaHpUBtHUD5lWO4gdRwODDPQ51nfwOwoFJCbuFGi1bpPDEVmcsfdvMDcQtTFeol6Fq2MBnWz6lc/m1UHhvEZq7e71kVZ2XrgoEvOYtpEaaKOAhyW+fCPL38HI5hZ1COvqX9IAEC/XYr9kFoeiZesTShL+EneE7vZiBNSNkYCL8lPDryFcLRe14LSf0OzpWTxA/8SNO5wU8Vib64dPKt5AZm8Z1BW9Z+13urhpD8UfK7I8e9ZXM8AQm+cb9o2Mu71vLVm8bVkVnSOuK4ZQPds0mQ5G7reKory5QIr24qA9aNZ7yUvNzAQy50Z8ngCjzCQsQnxJFixO+G0rwwObKwtIADAw0IhIsTEt2BNQ3XJ81T3hEccp61lS+jSvhgp75jmPI+Z4+bnfaXTQs/4s767NCK3PeRgkeMGElllZ0hBMudw1DEe1CqmUETOpyejvyEKcR9/mWeuQG+3JMMxY23xvC0S5M30xb3LMCMLDRSG1FxRRzn3LGR7yxNqBV4y6mZkaBukgVzJkhwuiIjklzOKDGGfbqbR+TZClxrupu3LWFbQ9sLIk89uddehjme8WNzg+zru1qNUUSjkAHJ4aEBfnG1aVoVfs/W9W8Q8fdxJoa1rwDKH9zA0p2C6GBUvPuBsEZ6XaZRotLvxP6n4hXNhss48Jl52+NwL0hrYdyhJ6SFjqM5kqbLiKXAW/E1P/xugnbrOj7Z5hrC1KTz3CyLv4YXOFWsIxh+Ru54TILlHCIj4a2gwklIHC70QtgJlMaNpTVLb0WaxCJlmOfPz8Xq9lwj0VHSr+Mj5Bu
- bmDT7Dc9
- mHfwd1SdkWMgnb53cKnPIuPDsqAKoRJGbDt2lheX6dqGbfj7BbSBXR1y/F55xxY27ml49MazxFiMHDTySqeiV3vd/nfKE0bWIGcEpzaX4ly3YCmU=
+X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
+	version=4.0.1
+X-Rspamd-Queue-Id: 954FB1A0006
+X-HE-Tag: 1793717855-775939
+X-HE-Meta: U2FsdGVkX1951GPcOAS2HJZSosJBY77U6ErbOCM85TVXwIWBO49iRScl/PSaah33efLw1ekDPi5ymzhEqShf36AD7MSv63/Tq6+C5FOt54bUOVv07/FZVvz6kwaNoro4UzMdyJe2ArNgd8VZ3QyshFFBQyk+UX0aH4m5mRP7H7CmKCSS15EUWzUuy/glCjrVXh/bsTuzG4FFOcLxVIcoWTEYq1n5QqsbUxgdKXvGQbL7cxy+jiAO+o41nKh7m8wRWM8X8wc+Ltkt8kAqv5MHOFLuoiC3i4halu+IjYEEURlz+bdZUy6cQAXm7N9XmQH1UWp+8C1CehS85mGNyJxr+wiIfYkgSf0t/ltMa8XFIeB7kJ3h0Nlx7g/y47I7m+LueVTmDT68V3tOtzYgGE35YZLzgAGG8xvSYcTLXJkg/tpmYBoT0pv9mPWfvrNwUr4Zs42cz2nTOs6xNVx+cAfXTxe0hwtMAwJuFh+EFKFMiqyn+oZUfZy7Ydi9qRQcYkAvx13N7A+SfVDL/VXPKNBSsqJPZFnpxrfOc90Bd/PYIgvls07BahlOM7uK3ZuC3ftfm6lcJk5z7trKhY2iIDtPMHbYWnGXvfyOQ0llt6lQNku9K0t3y9jEqm05ShGJHBVZmEqfl053Pl5VkNYLNAMRN2xUDaCIve/bBm6qRAwjJ4sN//9VyeRBFCu1Sy/1LA2zFQpCCNJ2xKblLHZ3cMPwpJHaM9eaDg0FSc5aK3ogLnry0y8XwGgP7sQd7SSuZJSovM1sni7ikrjqTq0lv+MXgZWrFoeglLNdsE9uLH+UJVtY7/9iccg6d6ZblKY7/Q921KCtNZH/r6Io4M1qLZBFYbTw6fkeZ31AtBU4E9iH44/6bwiavpsT30D+kEkTHZhvDSUml0HPT10innFJgBEbMfQ75p+9xTLsW+w1jhExV5EaEYwNmxNcPZaGc6cgD0Y8BwNWZeG5VPwNq/5ekfE
+ K7pEicOX
+ BP4HE95PHwNDfwy+Pf4BkC8Lvf4OHYDl+6UMrzbtiqNFdjNj6CKnA5k38OBD/DHLeWr3glwgHuJTJf/dhKY4r6xZNKf0xXfRubLdtIeGTFUGdoKsKxpZfkwpMGlZu88RKHpcNQ1/puOBu8InN6guUcIJFOUCmN3dB8IFzbzMnboVw5Hs1mOBm3XlAOV47e+UZqtiFn2s3S4pUVVYmEox9OCZXzW3w76g24QY29OBKXt9rG52nIK0UAmjWL8/NOkI2OqCH8/Y7K9qMYqRZEoNNSW/s9MotBNrMRyAlncmLJUNN+zF3wAXRwZJDexU00jhciAS0BDMQJwFKw/71MvFfiAk/fEOqHQvHrJHIU5/1P7r6ufD2xIfpE9HFPR/LzFcPcgH8IqB1ubBdhzqmNu1sEjURM6ymRFwOxnDdeQqjk4ndv5aQjPWOEnOwwZ6xYqwmhL8dv6Tl9iVYBNL/zYl4aoSQuPwsDQ8xc/Hk+nfWLINANGinFufBMbqf5b6uIV0X53+U+ApUQXPiL29pHj/MvJkZGEU8+Ig0dOFImSD5t4kgWSufFPJeRp2HJYBF3PLOiiiD6BQwD0EIEUwa/SiwqStqBZTx6naZhsIc
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,81 +153,98 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Mon,  2 Nov 2026 21:44:52 -0500
-Aaron Tomlin <atomlin@atomlin.com> wrote:
+On 11/1/26 21:07, Zi Yan wrote:
+> On Sat Oct 31, 2026 at 10:13 PM EDT, Gregory Price (Meta) wrote:
+>> From: Josef Bacik <josef@toxicpanda.com>
+>>
+>> When the last memory of a zone goes offline, zone_pcp_reset() frees
+>> zone->per_cpu_pageset and zone->per_cpu_zonestats. Nothing waits for those
+>> who found the zone populated and still use the two pointers. They take
+>> neither the memory hotplug lock nor any other lock which offline_pages()
+>> holds, and some of them can sleep:
+>>
+>>   CPU0 vmstat_update()                CPU1 offline_pages()
+>>   refresh_cpu_vm_stats()
+>>     for_each_populated_zone(zone)
+>>       pcp = zone->per_cpu_pageset
+>>       cond_resched()
+>>                                       adjust_present_page_count()
+>>                                       zone_pcp_reset(zone)
+>>                                         free_percpu(zone->per_cpu_pageset)
+>>       decay_pcp_high(zone, pcp)
+>>       __this_cpu_write(pcp->expire, 0)
+>>
+>> The same goes for drain_all_pages(NULL), which takes pcp->lock, for
+>> zone_pcp_update(), show_free_areas() and the readers and writers of the
+>> zonestats. If the per-cpu memory has got a new owner in the meantime, it
+>> is corrupted.
+>>
+>> The pagesets are only freed because setup_zone_pageset() would otherwise
+>> leak them when the zone gets memory again. Keep them instead and let
+>> setup_zone_pageset() and zone_pcp_init() use them again, like it is done
+>> with pgdat->per_cpu_nodestats. Their lists are empty, and their limits
+>> have been calculated for a zone without memory by the
+>> init_per_zone_wmark_min() of offline_pages(), which is what
+>> setup_zone_pageset() would come up with as well.
+>>
+>> Fixes: 340175b7d14d ("mm/hotplug: free zone->pageset when a zone becomes empty")
+>> Cc: <stable@vger.kernel.org>
+>> Assisted-by: LLM
+>> Signed-off-by: Josef Bacik <josef@toxicpanda.com>
+>> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+>> Reviewed-by: Johannes Weiner <hannes@cmpxchg.org>
+>> Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+>> Signed-off-by: Gregory Price (Meta) <gourry@gourry.net>
+>> ---
+>>  mm/page_alloc.c | 20 ++++++++++++++------
+>>  1 file changed, 14 insertions(+), 6 deletions(-)
+> 
+> LGTM. Just a nit below:
+> 
+> Reviewed-by: Zi Yan <ziy@nvidia.com>
+> 
+>>
+>> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+>> index f1048168c90c..1850a41f24f7 100644
+>> --- a/mm/page_alloc.c
+>> +++ b/mm/page_alloc.c
+>> @@ -6308,6 +6308,10 @@ void __meminit setup_zone_pageset(struct zone *zone)
+>>  {
+>>  	int cpu;
+>>  
+>> +	/* The zone has been populated before, see zone_pcp_reset(). */
+>> +	if (zone->per_cpu_pageset != &boot_pageset)
+>> +		return;
+>> +
+>>  	/* Size may be 0 on !SMP && !NUMA */
+>>  	if (sizeof(struct per_cpu_zonestat) > 0)
+>>  		zone->per_cpu_zonestats = alloc_percpu(struct per_cpu_zonestat);
+>> @@ -6400,6 +6404,10 @@ void __init setup_per_cpu_pageset(void)
+>>  
+>>  __meminit void zone_pcp_init(struct zone *zone)
+>>  {
+>> +	/* A node which is added again, see zone_pcp_reset(). */
+> 
+> it might be better to explain zone->per_cpu_pageset can only be NULL at
+> boot time and it needs an initialization.
 
-> diff --git a/kernel/trace/trace.c b/kernel/trace/trace.c
-> index e8c4efa8107b..35a56f04e9b3 100644
-> --- a/kernel/trace/trace.c
-> +++ b/kernel/trace/trace.c
-> @@ -9519,6 +9519,9 @@ static void ftrace_dump_one(struct trace_array *tr, enum ftrace_dump_mode dump_m
->  	else
->  		iter.cpu_file = RING_BUFFER_ALL_CPUS;
->  
-> +	if (printk_is_tail_full())
-> +		goto out_enable;
-> +
->  	if (tr == &global_trace)
->  		printk(KERN_TRACE "Dumping ftrace buffer:\n");
->  	else
-> @@ -9537,10 +9540,13 @@ static void ftrace_dump_one(struct trace_array *tr, enum ftrace_dump_mode dump_m
->  	 * and then release the locks again.
->  	 */
->  
-> -	while (!trace_empty(&iter)) {
-> +	while (!trace_empty(&iter) && !printk_is_tail_full()) {
+Hmm.
 
-Wait? Is this to prevent overwriting the printk ring buffer? If so, this
-is wrong here!
+>> +	if (zone->per_cpu_pageset && zone->per_cpu_pageset != &boot_pageset)
+>> +		return;
 
-In your change log, you mention not losing the initial oops or registers.
-But if someone is using ftrace_dump_on_oops, that's not what they are
-after. They want to know what happened that lead to the crash. That output
-is at the *end* of the trace.
+Shouldn't then the check be just:
 
-By stopping the output of the ftrace buffer early, you just lost the
-information you are looking for.
+if (zone->per_cpu_pageset)
+	return;
 
--- Steve
+Because if it's == &boot_pageset, we are just setting the same values that
+area already there?
 
-
->  
-> -		if (!cnt)
-> +		if (!cnt) {
->  			printk(KERN_TRACE "---------------------------------\n");
-> +			if (printk_is_tail_full())
-> +				break;
-> +		}
->  
->  		cnt++;
->  
-> @@ -9551,19 +9557,25 @@ static void ftrace_dump_one(struct trace_array *tr, enum ftrace_dump_mode dump_m
->  			int ret;
->  
->  			ret = print_trace_line(&iter);
-> +			trace_printk_seq(&iter.seq);
-> +			if (printk_is_tail_full())
-> +				break;
-> +
->  			if (ret != TRACE_TYPE_NO_CONSUME)
->  				trace_consume(&iter);
-> -
-> -			trace_printk_seq(&iter.seq);
->  		}
->  		touch_nmi_watchdog();
->  	}
->  
-> +	if (printk_is_tail_full())
-> +		goto out_enable;
-> +
->  	if (!cnt)
->  		printk(KERN_TRACE "   (ftrace buffer empty)\n");
->  	else
->  		printk(KERN_TRACE "---------------------------------\n");
->  
-> +out_enable:
->  	tr->trace_flags |= old_userobj;
->  
->  	tracer_tracing_enable(tr);
+>>  	/*
+>>  	 * per cpu subsystem is not up at this point. The following code
+>>  	 * relies on the ability of the linker to provide the
+> 
+> 
 
 
