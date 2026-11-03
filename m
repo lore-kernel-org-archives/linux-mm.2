@@ -1,118 +1,97 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C55F606A334
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 14:10:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F840606A32C
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 14:14:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=A8gG2FyS
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=aaxGzOap
 Received: by kanga.kvack.org (Postfix)
-	id 4D9A46B05B1; Tue,  3 Nov 2026 09:10:29 -0500 (EST)
+	id 15DD66B05B3; Tue,  3 Nov 2026 09:14:43 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4B0FF6B05B2; Tue,  3 Nov 2026 09:10:29 -0500 (EST)
+	id 136486B05B4; Tue,  3 Nov 2026 09:14:43 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3C6FD6B05B3; Tue,  3 Nov 2026 09:10:29 -0500 (EST)
+	id 04C856B05B5; Tue,  3 Nov 2026 09:14:42 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 178096B05B1
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 09:10:29 -0500 (EST)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 9D15DA0445
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 14:10:28 +0000 (UTC)
-X-FDA: 85393992936.09.EC6D40D
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id CE5BA6B05B3
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 09:14:42 -0500 (EST)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 613A3C042C
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 14:14:42 +0000 (UTC)
+X-FDA: 85394003604.04.C60F015
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 9F369C000C
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 14:10:26 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=A8gG2FyS;
-	spf=pass (imf28.hostedemail.com: domain of frederic@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=frederic@kernel.org;
+	by imf23.hostedemail.com (Postfix) with ESMTP id BFABF140007
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 14:14:40 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aaxGzOap;
+	spf=pass (imf23.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793715026;
+	s=arc-20220608; t=1793715280;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9hcT28SYX76z1COvWorzxu+1gkA4oj6GNwI2cd7zGC4=;
-	b=fl5X1sOrgJsMGbZ/NBM6qh8mVCCnE7ckPBqGQVMkTrPietbbqXZp9FBsIDfp0ZcQ2MEeXy
-	jWq9bhU/qLFTR+lPeVrfQbIqR0SxrBvQCVIs8z9Zh0hEEmYEwRsl4HXT62Yp968EW5EeYd
-	2I7dxCrCE/xv+Xjo70E78S16rdPvkEo=
+	bh=2V/ndYvkVxA79d43Mf+7vdJDqWuLHWGgjyn9NcOP058=;
+	b=HHFTeQVg/gsVkADHBDDEj6EVYIe64t0UmsHzdZIFDPo333tDdxtqrHr6Y5rYot1R4rLroJ
+	xS4D4Saydym9TXjwC+CZb4fla0pkfueUMUpYgx7iQyakq2b03Xqg0BEGMpI61/XJczNIiW
+	OsPeZIKSjWg6LLGk27pOkeVd9eMc+TI=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793715026;
-	b=1RU+CQliPG53m2TC+2gONdIHRKsJuOdGvDw3UDGpEz2HAD9S1AEqWcZplWh2wp1CHAhUH2
-	vBs7seCB3UHk1Gpb771VOOXI6BUruTobmIgPFtgq7Z5BfaB6S4wJtHUM/C0Us0DtveOIS2
-	8Mq6oxpcEskxVD0vQezsd2LWK9ECQvU=
+	t=1793715280;
+	b=Vzrsu9miFOc7QuwEEuMjInECsUoC/T5qgzxZGlzDPhPo+5q6YeaBMJhl3TnnkgBqyPmvvU
+	a6iOsxj5QmAD5151WFOs6PYIoXEe7dxjAEj/x+ZnQ/9vbRxnxtx3LgwO4pkbWLy9lv7OPc
+	3XkP/ZQL/5oGV+LQEHoCpJJUW87akQE=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=A8gG2FyS;
-	spf=pass (imf28.hostedemail.com: domain of frederic@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=frederic@kernel.org;
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aaxGzOap;
+	spf=pass (imf23.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 45BB56020A;
-	Tue,  3 Nov 2026 14:10:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C32D1F000C1;
-	Tue,  3 Nov 2026 14:10:24 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 39E136020A;
+	Tue,  3 Nov 2026 14:14:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0AE71F000C1;
+	Tue,  3 Nov 2026 14:14:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793715025;
-	bh=9hcT28SYX76z1COvWorzxu+1gkA4oj6GNwI2cd7zGC4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=A8gG2FySIrvGccJDt9QVUN41xO71+6Rpf7aiyxt8Vsopa/Ys8hBvt1hDZeBlS/PGw
-	 MOt8BcnF/W4r1s15z+9Q6nzud+DWuRPuIHnctKYism3LQZOnWs3vU+zGKDYcGAak9v
-	 i1JqUhBvQ5kbpMtFLU6xUwyGov9lzqLdMvTVOsorWieMgO07vFjRnAf8TphXqmT54a
-	 fGU5gWTkE4FlbUGGSThdSpyyACGOdEcur0TIARvk+d+UVbVw5+sbat1Ht0raY6TNIJ
-	 eZtyJEUng8T8aAiarrufke9huCyGceFpE9bK2kxHfRy5JVsGTTX+UrBQ3G6s7LkukY
-	 Bnv6IKVnB5Lwg==
-Date: Tue, 3 Nov 2026 15:10:22 +0100
-From: Frederic Weisbecker <frederic@kernel.org>
-To: Matthew Ruffell <matthew.ruffell@canonical.com>,
-	Leonardo Bras <leobras.c@gmail.com>
-Cc: Waiman Long <longman@redhat.com>, Tejun Heo <tj@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Caron Wills <caron.wills@pulsar.com>,
-	Ridong Chen <ridong.chen@linux.dev>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Michal =?iso-8859-1?Q?Koutn=FD?= <mkoutny@suse.com>,
-	Juri Lelli <juri.lelli@redhat.com>,
-	Vincent Guittot <vincent.guittot@linaro.org>,
-	Dietmar Eggemann <dietmar.eggemann@arm.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>,
-	Valentin Schneider <vschneid@redhat.com>,
-	K Prateek Nayak <kprateek.nayak@amd.com>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R . Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>,
-	Pedro Falcato <pfalcato@suse.de>, linux-kernel@vger.kernel.org,
-	cgroups@vger.kernel.org, linux-mm@kvack.org,
-	Jay Vosburgh <jay.vosburgh@canonical.com>
-Subject: Re: [PATCH 4/6] sched/isolation: Drain per-CPU LRU batches when CPUs
- become isolated
-Message-ID: <aunrTtH00__Xi7PW@localhost.localdomain>
-References: <20261103075940.110308-1-matthew.ruffell@canonical.com>
- <20261103075940.110308-5-matthew.ruffell@canonical.com>
+	s=k20260515; t=1793715279;
+	bh=2V/ndYvkVxA79d43Mf+7vdJDqWuLHWGgjyn9NcOP058=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=aaxGzOapyHfFlHAjXCCWCjylt3vC/AQ1UNK9BFKFXitIBtPZrbR/XMTiI3H58/9B3
+	 rm4qwhVZkPr9afPfqC+SFSfDnkPN/4pEHVC1sK4quxxp1Rc5hVPXwC3DOw6tsidh9H
+	 MFXS5kQySyEbKY0PlI8frUlR0NraysItCxrW/vRVEkyB7L9oRSQz4l6B9ikb/ZLeqH
+	 e9UYc9Xglp9TUTDi2YQU+w++JAwJxwGWJQF6La9NcirxdMEI7eyWYBWmUXQ376ZAlr
+	 nkMeyLqyu6kO0wR8Sh0e85LlWSp4vP1DPz82PnnY3yl2gSyJfBzbsZEp02Z5x51mnz
+	 3UduQA6+/qHHw==
+From: Pratyush Yadav <pratyush@kernel.org>
+To: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+Cc: Pasha Tatashin <pasha.tatashin@soleen.com>,  Pratyush Yadav
+ <pratyush@kernel.org>,  Alexander Graf <graf@amazon.com>,  Andrew Morton
+ <akpm@linux-foundation.org>,  Chen Pei <cp0613@linux.alibaba.com>,  George
+ Guo <guodongtai@kylinos.cn>,  Kexin Liu <liukexin@kylinos.cn>,  Sourabh
+ Jain <sourabhjain@linux.ibm.com>,  kexec@lists.infradead.org,
+  linux-kernel@vger.kernel.org,  linux-mm@kvack.org
+Subject: Re: [PATCH 1/2] kho: skip zero-sized lowmem and global bootmem areas
+In-Reply-To: <20261103-kho-bootmem-sizing-v1-1-45aa74098f34@kernel.org> (Mike
+	Rapoport's message of "Tue, 03 Nov 2026 13:49:49 +0200")
+References: <20261103-kho-bootmem-sizing-v1-0-45aa74098f34@kernel.org>
+	<20261103-kho-bootmem-sizing-v1-1-45aa74098f34@kernel.org>
+Date: Tue, 03 Nov 2026 15:14:36 +0100
+Message-ID: <2vxza4nqm27n.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20261103075940.110308-5-matthew.ruffell@canonical.com>
-X-Rspamd-Server: rspam06
-X-Stat-Signature: dpg9s8m5p3yc76wmn6wckwapbx6d6atz
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+Content-Type: text/plain
+X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
-	autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: 9F369C000C
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=unavailable autolearn_force=no
+	version=4.0.1
+X-Rspamd-Server: rspam09
+X-Stat-Signature: osafhtwoy9tod4wfiaz5r1srxnbnwq33
+X-Rspamd-Queue-Id: BFABF140007
 X-Rspam-User: 
-X-HE-Tag: 1793715026-874252
-X-HE-Meta: U2FsdGVkX1+vKnWXF4Tarhzqshf7rlxlOp9Gw/GhvCTowWdz0OipiRXSW0yFxVip0NZ27kFmsVJizmaOrJQUHvej7akWa33XgBStVFX6Yw0Np8Ad8bombQF3To1Qh1s7TxaJtX+k5vtkLF5UxdQIi8Jbnbx3IOsRepLrtmAcshp3u1GkIc+ZtropILRCnJs/q9/ms7kqjZU05X0+kier+oQNZPb7qyvhd6ht5M1rusKu5FkZs6Oq8oR0USBsgQMoQn572DFU6ejPv12EA8zqrdexXi/Ul9dtRA3ROk72/T/RZpd/TeJbBXX9adWYvvUxvMXD+VlAcTR2DknHVS1NYMvLTY01/1tFDJ1x0MrbLv3FpW52b6qTKlKhJqumXh1BK6CCqgwFgVMeLWr1CHjZFLVg0VtmL6aBUp0bkV0DZBMUMHZjG/eTAHvni5CqS5FGRp69dntktGp9NrgaU45hWcJGAoKwbfxZRVwB2ZOmjyL/mnsNGscgiqqg6JuH/qH/+igDA7HsqI3nkEbPbns1EKqGa9Cs5LQH6zuAsC13yQFjDdBqWmeVnfElBLVnNJQM2D9oXU6VDTxU55RQ45m1QtK6K/9azXGJIMbiNhdcjxaSvlE4ujAvHN9LOejrMK9kIBMYcr90dM4d6TZt18vAakH4RHO2WYTp9YI1SsVP6ho3JJxJCKFQfWjN7bxTOWMygFevEZ1hu6MdWqQlPROLH/e4fteEQRKk9fB1w4y0oJVgbnaCzs8yTqBY8ZtB8rfesMQ5BQn/XO4MN9gHvQAi0zUTykWAEUR/gk92a8AncvzxlHWMSfOEoXeA27pFK1+aQSZCRLmDMU9LkX8TIMzzUlLqstaQ/rSpDIXYAcFbZZhuyIIinLaszUoaF6dEs0RdhGqlxuBTm0rO9A0afpFk1gSz6So3sFbUW00ZrevuipR4O0R4azFIe0g5kknMuRfSDbRFv/6pwtgDUOZA3Z3
- T3kdUrLO
- 7yNumK2OJWRiSmHaHmwJPDM+88xN7RjLROrRJCUZleTPCOT3cM3SGgFuBJXcqO6oT/Tlt4BVxV5K0HaScdRHkqKjpDcQwEDue/R0jkAlmj7nEluSSdZ1PrKemlJvGda3Xw59dPso6t3OUUzov/fqnUXx0+LgwBp7VOpaCnFC7v7zbh4TG0+wpiGzpvFmakzTvLnXdMfEcl/+TA1nSH/7a4npRCd42Cdj+2RYaF59jbBMFurcPWQiY3DU6WonCnCeX1HG5hb/A0BK2N5GZsP6NLQeg3S1LK/pyfa7gQwuvIAfUuOpgJILKpvKl8iw2LYgzgmCiOFJe16C0DRUX8nAWfuJHgJXWmnvUH+xAH4uzDwScXnB3H8Dxa7IdEP45bPcb/ooHYsYGMrXiorNajnvRtzYOOm0APig7N1oxxj4ScRQaKmyILSN52AthY5kHnJr+O43YMoKAabftL9wS2W4ZWX1/VhtVH+GXImIJE0NxUsCiljkaYe5GuiXg1A==
+X-HE-Tag: 1793715280-459777
+X-HE-Meta: U2FsdGVkX1/tnxPR5kSbyFWVpz+VOVxHeN61posGvasDfA5BoEAxkB48E6Ami2WLsmGqUXK20+6ZfPkczA7c8hLg69kiEY9aY/+JJ70GACeCCcgaeMl8EF/tX946uZlkapmFd+TYrf9NNfwlKG3vtDI7jzx+K3l/ECs1yXLjtr333x8oVNEnYVisDBiawvLTv7kDzPDHfsOdQbUGpt5C+8YTdxOYULWLPGoiE4KAGBkilvyp5G1TlGmvOuzMpLgygnUakzg721lvtwEEX/avINZIWLnqDw8ktz2Vv8vV4ko31ja1kedTE1ESLYF002KU0rZkd2YfBvPkV1Hd5cofpB2JzH/tFKwKEHncLgwRPfalswbgupAX+SDYCYg0ZGxGj7hBJujPb0TVCHiaXO1EihgOpcPjl5uPnigDDFrkwMhmpqxDl3XQMJhu5e4p5iNm1/q2DDE8nvOnJ67AtyMmHfFY8T+/cv0TRKyBnRdPfgfyN/PUWqyK/c91lgAszELRDgdLl0WhLQ248z2Kvu/IpwsGIJmkE5Wp7STRQTVUU5LSVA59bfEcKLc5Nea+sM6Lnude/gkcKXrOKMlYRBp2FTJCjhdGYBO9T6tVZcnWTk0Ismbi50v8TCmqYYoRDzIl9rIxt1zueAHki4Pa2UJ2E1/WXrQZAVcxkJJw/5TLH3sn6xnzjhFbSbWZBVq8dOF+2SqIAz73uPxd+PknQut9soUBPRq/nQlD8dsDpBUz6Vx6GFS7EviTUXoou6GVMfs0ADaCEViEjjI0YdQBfTI+iGOVukNUTzUY6ClXibch4VvmWqVi6MOs6mrRs8xcEeYzOXfPYwO2EHu4fa0p/3VvukA6NIXd3Ye5YEHKf4w8gC2yMF30ZzWEw/8bSyrvIu0RIRkXEp2LAiNT89i/5FuYSSJ5ZCKySH9WT9MKOPtzYMxQBPAEzkP4cpTXWcYFKE0oHECMRsLRM6i+ggEVr4M
+ f7SdU2hv
+ Ui3lnQFJPQFzMtdYzkd9JKu/V4h531CtojWZAPsdIX0N6AB0ABjoBOj+w1pDuv3TxDGeIqjxfH10rRrXWbOeD1bMPKIky90kvRQKwOXUO9ArKOi/mrYhsq3m6y4EMvKhJzE0yUNvVAUEUwqLng5c40lXl0+9Lcvh6MrqgM5dq1BZSDARH5fofhLvWrbZG6zt/Bu2hueNuzYPOo8+bmoV3Vm21dLj0vvt6ZWyyD87afL9fnkY6/ugv8nw1TYCPjurp8NXo
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -121,35 +100,157 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Le Tue, Nov 03, 2026 at 08:59:38PM +1300, Matthew Ruffell a écrit :
-> From: Caron Wills <caron.wills@pulsar.com>
-> 
-> Isolated CPUs no longer batch folios in their per-CPU LRU caches, so
-> that __lru_add_drain_all() never has to queue work on them. Boot time
-> isolation (isolcpus=, nohz_full=) takes effect before any folio is
-> batched, but a cpuset isolated partition can be created at runtime and
-> the affected CPUs may still hold folios in their batches from before.
-> Those would linger until the CPU happens to drain locally, and the next
-> lru_add_drain_all() would fall back to queueing work on the now isolated
-> CPU, which is exactly what must be avoided.
-> 
-> Drain all batches once from housekeeping_update(), right after the
-> HK_TYPE_DOMAIN mask has been updated and next to the vmstat and memcg
-> workqueue flushes that exist for the same reason, so that newly isolated
-> CPUs start out with empty batches.
-> 
-> Link: https://bugs.launchpad.net/bugs/2165410
-> Signed-off-by: Caron Wills <caron.wills@pulsar.com>
-> Signed-off-by: Matthew Ruffell <matthew.ruffell@canonical.com>
+Hi Mike,
 
-There was this patchset:
-https://lore.kernel.org/lkml/20260519012754.240804-1-leobras.c@gmail.com/
+On Tue, Nov 03 2026, Mike Rapoport (Microsoft) wrote:
 
-Leonardo, do you plan a v5?
+> The lowmem and the global bootmem areas can have zero size, for example
+> when none or all of the memory is below ARCH_LOW_ADDRESS_LIMIT, or when
+> either of those areas is explicitly set to zero with kho_bootmem=.
+>
+> For a zero-sized allocation memblock returns an address without reserving
+> anything, and that empty area is recorded in kho_bootmem. If there is no
+> memory below ARCH_LOW_ADDRESS_LIMIT, allocation of the empty lowmem area
+> fails and KHO gets disabled.
+>
+> Extract a helper that checks for zero size and allocates memory from
+> memblock, and use it to skip empty areas the same way as empty per-node
+> areas are skipped.
+>
+> Fixes: 3dc92c311498 ("kexec: add Kexec HandOver (KHO) generation helpers")
+> Reported-by: Chen Pei <cp0613@linux.alibaba.com>
+> Closes: https://lore.kernel.org/all/20261026131851.9942-1-cp0613@linux.alibaba.com
+> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 
-Thanks.
+Thanks for the patch! LGTM for the most part, one minor nitpick below.
+
+> ---
+>  kernel/liveupdate/kexec_handover.c | 61 ++++++++++++++++++--------------------
+>  1 file changed, 29 insertions(+), 32 deletions(-)
+>
+> diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
+> index 6f1f55fe31819..f268c57413a7e 100644
+> --- a/kernel/liveupdate/kexec_handover.c
+> +++ b/kernel/liveupdate/kexec_handover.c
+> @@ -820,6 +820,27 @@ bool kho_bootmem_overlap(phys_addr_t phys, size_t size)
+>  	return false;
+>  }
+>  
+> +static int __init kho_reserve_bootmem_area(int *idx, phys_addr_t size,
+> +					   phys_addr_t end, int nid)
+> +{
+> +	phys_addr_t addr;
+> +	int i = *idx;
+> +
+> +	if (!size)
+> +		return 0;
+> +
+> +	addr = memblock_alloc_range_nid(size, BOOTMEM_ALIGNMENT_BYTES, 0, end,
+> +					nid, true);
+> +	if (!addr)
+> +		return -ENOMEM;
+> +
+> +	kho_bootmem[i].addr = addr;
+> +	kho_bootmem[i].size = size;
+> +	*idx = i + 1;
+> +
+> +	return 0;
+
+I reckon it will be cleaner if you update kho_bootmem_cnt here directly.
+So you directly do:
+
+	kho_bootmem[kho_bootmem_cnt].addr = addr;
+	kho_bootmem[kho_bootmem_cnt].size = size;
+	kho_bootmem_cnt++;
+
+You won't have to pass around *idx and you won't need the final
+kho_bootmem_cnt assignment.
+
+You might also want to have a kho_bootmem_max_cnt and do some bounds
+checking here.
+
+What do you think?
+
+> +}
+> +
+>  /**
+>   * kho_reserve_bootmem - Reserve a contiguous chunk of memory for kexec
+>   *
+> @@ -832,7 +853,7 @@ bool kho_bootmem_overlap(phys_addr_t phys, size_t size)
+>  static void __init kho_reserve_bootmem(void)
+>  {
+>  	int nid, i = 0, max_nr_bootmem;
+> -	phys_addr_t addr, size;
+> +	phys_addr_t size;
+>  
+>  	if (!kho_enable)
+>  		return;
+> @@ -852,56 +873,32 @@ static void __init kho_reserve_bootmem(void)
+>  	 * reserve bootmem area in low memory for lowmem allocations in the
+>  	 * next kernel
+>  	 */
+> -	size = bootmem_size_lowmem;
+> -	addr = memblock_phys_alloc_range(size, BOOTMEM_ALIGNMENT_BYTES, 0,
+> -					 ARCH_LOW_ADDRESS_LIMIT);
+> -	if (!addr) {
+> +	if (kho_reserve_bootmem_area(&i, bootmem_size_lowmem,
+> +				     ARCH_LOW_ADDRESS_LIMIT, NUMA_NO_NODE)) {
+>  		pr_err("Failed to reserve lowmem bootmem\n");
+>  		goto err_free_bootmem_desc;
+>  	}
+>  
+> -	kho_bootmem[i].addr = addr;
+> -	kho_bootmem[i].size = size;
+> -	i++;
+> -
+>  	/* reserve large contiguous area for allocations without nid */
+> -	size = bootmem_size_global;
+> -	addr = memblock_phys_alloc(size, BOOTMEM_ALIGNMENT_BYTES);
+> -	if (!addr) {
+> +	if (kho_reserve_bootmem_area(&i, bootmem_size_global,
+> +				     MEMBLOCK_ALLOC_ACCESSIBLE, NUMA_NO_NODE)) {
+>  		pr_err("Failed to reserve global bootmem\n");
+>  		goto err_free_bootmem_areas;
+>  	}
+>  
+> -	kho_bootmem[i].addr = addr;
+> -	kho_bootmem[i].size = size;
+> -	i++;
+> -
+>  	/*
+>  	 * Loop over nodes that have both memory and are online. Skip
+>  	 * memoryless nodes, as we can not allocate bootmem areas there.
+>  	 */
+>  	for_each_node_state(nid, N_MEMORY) {
+> -		size = bootmem_size_node(nid);
+> -		if (!size)
+> -			continue;
+> -
+> -		addr = memblock_alloc_range_nid(size, BOOTMEM_ALIGNMENT_BYTES,
+> -						0, MEMBLOCK_ALLOC_ACCESSIBLE,
+> -						nid, true);
+> -		if (!addr) {
+> +		if (kho_reserve_bootmem_area(&i, bootmem_size_node(nid),
+> +					     MEMBLOCK_ALLOC_ACCESSIBLE, nid)) {
+>  			pr_err("Failed to reserve nid %d bootmem\n", nid);
+>  			goto err_free_bootmem_areas;
+>  		}
+> -
+> -		kho_bootmem[i].addr = addr;
+> -		kho_bootmem[i].size = size;
+> -		i++;
+>  	}
+>  
+> -	/*
+> -	 * Nodes that needed no bootmem were skipped, so fewer areas than
+> -	 * initially estimated may have been reserved.
+> -	 */
+> +	/* Areas with zero size were skipped */
+>  	kho_bootmem_cnt = i;
+>  
+>  	return;
 
 -- 
-Frederic Weisbecker
-SUSE Labs
+Regards,
+Pratyush Yadav
 
