@@ -1,91 +1,96 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2584606D803
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 15:55:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10193606EEA3
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 15:55:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=muMo7dJ+
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=LhJtAzid
 Received: by kanga.kvack.org (Postfix)
-	id BB5F26B05B4; Tue,  3 Nov 2026 10:55:00 -0500 (EST)
+	id 6FB866B05B6; Tue,  3 Nov 2026 10:55:03 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B67F26B05B5; Tue,  3 Nov 2026 10:55:00 -0500 (EST)
+	id 6D4A46B05B7; Tue,  3 Nov 2026 10:55:03 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A7E496B05B6; Tue,  3 Nov 2026 10:55:00 -0500 (EST)
+	id 612616B05B8; Tue,  3 Nov 2026 10:55:03 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 807506B05B4
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 10:55:00 -0500 (EST)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 184701A047E
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 15:55:00 +0000 (UTC)
-X-FDA: 85394256360.26.D83C420
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 09A0E120004
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 15:54:56 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=muMo7dJ+;
-	spf=pass (imf29.hostedemail.com: domain of sashal@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashal@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 3A2506B05B6
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 10:55:03 -0500 (EST)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id C85CF12048C
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 15:55:02 +0000 (UTC)
+X-FDA: 85394256444.12.9B6DF7E
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 47DCB40006
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 15:55:01 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LhJtAzid;
+	spf=pass (imf07.hostedemail.com: domain of sashal@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashal@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793721301;
+	b=PQpVc38odKDP1EOz+2IoLN04w5/Zgcwy104aW/qBA22N//qStSbARjC4h46zyFsYMWrNyy
+	QBHGtb1KaDKJrda6OC4LZMJipBvvE7yvZ0UPKnvpp5aH16hA9uQq3I+UpQNhOiKo+d7opV
+	nPfvGeqkTWH0E9Fqjoo7tWo4bg2Jy9k=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793721298;
+	s=arc-20220608; t=1793721301;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:references:dkim-signature;
-	bh=Ck44c2UfWH+h/SZjs6hhnY4TSP8skS7HgYjW2Pc3Sw8=;
-	b=OL+aBeqVPFFtYgjmvgXJTGP17vHVLnlBDEvjdiq0jEDmiWyxvycWGriVzdxwVF7n2IvkWb
-	2LBAum7OLg7ltyHzMxzkGzDipPMxlox76lWCSsAFGiUhNEq+AkoKS0XMDTXtDAVabbk3it
-	OgYNg4sSc2+lolA1R2Tbv09ScUApPeE=
+	bh=O/jUknsydqahcxESJ7eAS0pyf88Dhlfftx821T6uSIU=;
+	b=cwvGvCSag/VZ0HlxvWvvGh/kdwL3j+0f4L9ozw54v6u6KN+50YoAvpO0WsOUkdB7sqLIv4
+	1q3mJjsA/BbZ4ZxEJnDOV/b4nvxTi5D9o8OYITF5RHF3W7TpNEFUIvUNE+8a6j1Jzw6o0c
+	K1B28uxbuLnEVWdViUlUg4kLgMjpvZA=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=muMo7dJ+;
-	spf=pass (imf29.hostedemail.com: domain of sashal@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashal@kernel.org;
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LhJtAzid;
+	spf=pass (imf07.hostedemail.com: domain of sashal@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashal@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793721298;
-	b=b92+qkp6l29h0Yp2aG0OpGvwdElIOsMTVNLGh7+qASc/NmvDsPcymUBgHOicLRbpft9t0x
-	XF8rbFPA6VC2pnXZMEt7JjMKPDirid4t72Q4PgjYXXGeMsL1C1dFG294bnDlpa81C1EJEY
-	VgJMmCcO9lEDr+u1z0uEPaV7m6Eu7Rs=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 9334960A51;
-	Tue,  3 Nov 2026 15:54:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FC571F00A1D;
-	Tue,  3 Nov 2026 15:54:55 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id CF1F4429D1;
+	Tue,  3 Nov 2026 15:54:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3E061F00A1B;
+	Tue,  3 Nov 2026 15:54:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793721296;
-	bh=Ck44c2UfWH+h/SZjs6hhnY4TSP8skS7HgYjW2Pc3Sw8=;
+	s=k20260515; t=1793721298;
+	bh=O/jUknsydqahcxESJ7eAS0pyf88Dhlfftx821T6uSIU=;
 	h=From:To:Cc:Subject:Date;
-	b=muMo7dJ+XRD3cJ3oFIwHl/jPZeP8jiC9wxWa1y734cCt4RL6GEyoT/YLz5Wp14p8H
-	 tX/Dk+tFd8w0P191zFqGB5ErDAS5dxY8hMgyuYmseMWOoV1v0Y++TgJtY7erk17Gs5
-	 w0uiiT+BIn54P4tiGOghaAasKgMYSmetD+wZGCvHGS0Nf2FEo4MwyW9P7J2XtPDG4R
-	 fEQhh4dgFN2h8WL4E6MXQC1Sf2i+JFkDn5Yd8cv7GWnaBj1a/+I5EtP9mRq9K8N7gL
-	 XbFE/pA0H7TTrmXBM5EFZpfjzIds8LFOpysf0OkaSe2Rb0YaNOkWHv7ASsIlpt8kM9
-	 xB4Awo/sGIZQg==
+	b=LhJtAzido5Pe5ihl8fxiEg46QKwuK908HCgwtjhnQbkDmIasZz64TkoKMXKOZc7Vn
+	 MVAK++JAzdBxFurU4SuzXMoPjb9T+tnjcwydP4JYn8gbc69NPI1RdCuf7r/ZWs0uHz
+	 XgsX9OZ31Z9J8E4ALLsUXmWaMIrkTBw63xoiL3gA4PveJp8SP/JSsJF7uQEqzXVQfb
+	 5UbMarVD9TOZumQt1rzIjkXEIRQYEjGf9mhjRddlNz2LB6wR1eOkek+74kdrmQ6m6d
+	 mftcY3B6zoyRkEQQzZ8WV5wcEmkIhUlzrCAC54SoU1wuHtc7Lfdti+mr8bAEIGhTYi
+	 EY9wt+vkIKuzQ==
 From: Sasha Levin <sashal@kernel.org>
-To: Suren Baghdasaryan <surenb@google.com>
-Cc: Hao Ge <hao.ge@linux.dev>,
+To: Johannes Weiner <hannes@cmpxchg.org>,
+	Yosry Ahmed <yosry@kernel.org>,
+	Nhat Pham <nphamcs@gmail.com>,
+	Tejun Heo <tj@kernel.org>,
+	=?UTF-8?q?Michal=20Koutn=C3=BD?= <mkoutny@suse.com>
+Cc: Chengming Zhou <chengming.zhou@linux.dev>,
 	Shuah Khan <shuah@kernel.org>,
 	linux-mm@kvack.org,
+	cgroups@vger.kernel.org,
 	linux-kselftest@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH] kselftest: alloc_tag: use the ll64 types on powerpc64
-Date: Tue,  3 Nov 2026 10:54:54 -0500
-Message-ID: <20261103155454.534649-1-sashal@kernel.org>
+Subject: [PATCH] selftests/cgroup: read and write size_t with %zu in test_zswap
+Date: Tue,  3 Nov 2026 10:54:56 -0500
+Message-ID: <20261103155456.534684-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: yh973w1wehqk5yzrirj7w4kk571gep1p
-X-Rspamd-Server: rspam01
-X-Rspam-User: 
+X-Rspamd-Server: rspam12
+X-Rspam-User:
+X-Stat-Signature: qo9b1o65qhakmwi1bn43ojq3fyntbjxs
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: 09A0E120004
-X-HE-Tag: 1793721296-457832
-X-HE-Meta: U2FsdGVkX1/Mg9u8vhJ0iDpyGjpMqVwW10Ks3inUPsjpFeClQUMH4MXhePGgd/eoLn/K/tk9nk+lt+dBcY2QFw2+Gv0Wy7vEvzJO+Sxej4mzZpbvtmR2H8NVIuIKl5BOSIjOrRsOf/hsDbo2qFmvNBbO9yTzSJCP78R+YB450BdiPB1E4iv2jHTYM5cXDDisTleb4dGXAc4tJOnAuh1Rxz/EFZzvGmnAN63svQMinhRNdP2PzyEsAQX1hR+EeJ2Al8YFHuOE6WGNgGLfN0Sf/oWsxovdBTO8XcqL0Lf0O+xYwt1jqYWXizrsUCSlTPFqm8k4SJb/4spNqHHPBMj0AtBfi8mHxBvqpPjBsV1x3BAMec9FbIKq7BIUveKNz7FCjEuyXoT8LkOst143seC4E9mUS0umrxfyBF0SewHAc6E8mpEl8wwY222r+nP3ijVd15RT61WJw56PR0sCPCmxuxNx8juD177OaZ7cgTC80hhow+bUKEe4crA7GrPsjdN0h23W5x/5P7B4ceeAFIEM/gedUN77n9RLirGVZ2BVW25PooYts891loLb/2Jzv6rBkjRQK+xM1SNAZsII0poNTJtx5/HfIMphqbZYhrjzvX06rj2AsFNox29vZ3dgvg1BMURM4yFISA1k/7f2Sa1cH1rVsU0hgEAO/OrKs3Rl5TFjpq1ph+oYl5uIOZEkzGTnaeuKGJSt0osx3ct95gVafvJe+XZdsZQAvY5zNXGsWJpKiPnAW0+gsJPpX+lt625DT2angMok1fYVLLySGFmjxPNk5Z213gBPw/XLTkiDm2X8lh2XzlC5nys/kmZJSIl8Rp6T4FLkxTwxCZpISvGpUILI+XDiTw+4AAY7zJcP2tqXq0MqcSnuVdB2aKqlo0ES1LWYS6wV9BACFEW6EuCOHKG/ez9WScG2fLtFZO2kikH78ve0xtfc5fSyHbS30dxKqpq8UiTuKMUAS7fBump
- 8dNwmMut
- CL72MKdSNnPTghAw9nQ+IW8BKl71zK3RLwL+ouA6vu6LvyqZvq/DLKKaaRNbha/SjW3q78M0PKkHqG5dQieKZwOyCveoRTNkwMGZsI7DRQiHckQ80tKG4kgECtJVj5o8zjwE3J1VHGVk+tDU/ZFArpTyVtvZfpppQ5myUNlopZp71MipjpI/Rf6MjtzUQ9PI5TbIWmwVOW/a1pNO2tc6M688Vo5xcuv6cdR/vkJIrvmg6G3XgRcsnY9PxYn1eDOvdTMUV/gweb67fNGyGHYkfeCCkqQ==
+X-Rspamd-Queue-Id: 47DCB40006
+X-HE-Tag: 1793721301-685860
+X-HE-Meta: U2FsdGVkX18z+RMM8bzd1xAA59lw29v78ihwUB8X8RxRNdmO6fM96EPcaaJEHhqOUl3oxel5syh2VE+xyNVJ0OQPSY+k4eAT8qVi4IIBxw0tQAVTZwtD5zbwVaCW1GQbU4j/EFDmnfZ4+35BTgH0T1t2CfeC2J9wh9llApyvlWimcFDYNgdjedlK+j8eAJR2MgppmXweSH4DSFYzDTulzpmmTqsnjmHnOCOjpmlhBCjl3QLvyYBty8ZV8lSc8VpXp2UnWHsfhQ0YCljGq8BNpxMtSN8R3hlhyVFljdDf7vtQCS7krWgtys6MGOgtHeqc4UndvxwtJegVpY0Xh42RSZP3e3glLf9jNNGAmsSHAtBFH6hlb6Vv7qU+yRTxdRWekCzbQiiaQo5Wv2gSQbyqOYAQMGR56L4bpyQPngi1AFc6vRIMpHxpwSrpgJG06zIIJcnXlDg58F9ctkFlnXJq1Fx1ebb/7bHC2sD5K9p4EfYBpGS8qyGCvI59aymoSWM/owU5pebmyK+JcmYczO7kNPvqB9wfMaRFRg0b+ld7R4stJ69rabXouuxqmWE0pGg8iqEc2XjR2Btl3RynZBN1Qjjfpq9IzFTnvSpHX3sPcXz+gu0aw1YEh/+oGHbWXED+UEkA/1xGuqpv2Y2ioMqia9841oZLJKYIGdE7nRD89yHu00YVmDVXhkl2acLrwh0shdoIxQPQmxY1sd/hIk3VfZGK3GWvPU1A0S/dE9bGwSRM7SxQ7Ops5C065Cl8J7vqUA5Ry7b4BwsxKCebDMz3ShUzAlG51m7VJbbJua1sT4fnjBAGcKzxV8NJjHcBYFnedhb/yozvsDRjUXAEb3oTvlnvDokOhYgJQpW7gxLct4IdBBBAuCKNjP5YCPxR3Rhv4jvWBVwJPI+kSSABfewwcrFCXszxqOMDJUcDEVqvRkrucsDmKUwKD4li6YY/iNgu5iELvVfmRLUnZP//DKA
+ 6s/HFCs+
+ RMUjcT87L7XYxaMIk5lzjP2S0/+n4pTujISseI90WwKaoCGjkQyYIvNaXye4sDq0UwA+4oH+UGEXDJkMnsK+/r2B4hjR5EBecTlx1ooQFMtES5Jp8yWaHXEJHJb6m4pX+ucMoyUn3Maj/S8buaDnISGrgWw6bZIaAfo7GAOLxExqEHbjFQI3uupta4l8gbJPITVJzlsupWMgjObRVFQvRGy/ZTo+87Zy/7LZ8Wm2iIKwrYhRA57d/NejY/pVM8UtT5jNsqVK3dbFZZfTM6a8N614Wg10oTRa+3bIG1+MbFiTSv/SU9HoullC0OBsqsR9qINAc0eqoo2SvMrU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,32 +99,47 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On powerpc64 __u64 is an unsigned long unless __SANE_USERSPACE_TYPES__
-is defined, so printing and scanning the __u64 fields with %llu warns:
+On 32-bit architectures size_t is an unsigned int, and reading and
+writing it with %ld warns:
 
-  allocinfo_ioctl_test.c:93:73: warning: format '%llu' expects argument of type 'long long unsigned int', but argument 2 has type '__u64' {aka 'long unsigned int'} [-Wformat=]
+  test_zswap.c:34:29: warning: format '%ld' expects argument of type 'long int *', but argument 3 has type 'size_t *' {aka 'unsigned int *'} [-Wformat=]
 
-Define __SANE_USERSPACE_TYPES__, as other selftests do.
+Use %zu.
 
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
-KernelCI's powerpc kselftest builds show this. The define makes the same
-change on alpha and mips64 and none on the other architectures; the
-x86_64 and 32-bit builds don't change.
+Found with a 32-bit build of the selftests with a 64-bit time_t (gcc 16
+and clang 21 with -m32 -D_TIME_BITS=64 -D_FILE_OFFSET_BITS=64);
+KernelCI's 32-bit arm builds show the same warnings. The changed files
+build without format warnings there now, and the x86_64 builds don't
+change. The other selftests get the same kind of fix in separate
+patches.
 
- tools/testing/selftests/alloc_tag/allocinfo_ioctl_test.c | 1 +
- 1 file changed, 1 insertion(+)
+ tools/testing/selftests/cgroup/test_zswap.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/tools/testing/selftests/alloc_tag/allocinfo_ioctl_test.c b/tools/testing/selftests/alloc_tag/allocinfo_ioctl_test.c
-index 74fd64b2370cc..18c761fecfde0 100644
---- a/tools/testing/selftests/alloc_tag/allocinfo_ioctl_test.c
-+++ b/tools/testing/selftests/alloc_tag/allocinfo_ioctl_test.c
-@@ -1,4 +1,5 @@
- // SPDX-License-Identifier: GPL-2.0-only
-+#define __SANE_USERSPACE_TYPES__
- 
- /* kselftest for allocinfo ioctl
-  * allocinfo ioctl retrieves allocinfo data through ioctl
+diff --git a/tools/testing/selftests/cgroup/test_zswap.c b/tools/testing/selftests/cgroup/test_zswap.c
+index d50acc1b83ac8..9b5769b417410 100644
+--- a/tools/testing/selftests/cgroup/test_zswap.c
++++ b/tools/testing/selftests/cgroup/test_zswap.c
+@@ -31,7 +31,7 @@ static int read_int(const char *path, size_t *value)
+ 	file = fopen(path, "r");
+ 	if (!file)
+ 		return -1;
+-	if (fscanf(file, "%ld", value) != 1)
++	if (fscanf(file, "%zu", value) != 1)
+ 		ret = -1;
+ 	fclose(file);
+ 	return ret;
+@@ -45,7 +45,7 @@ static int set_min_free_kb(size_t value)
+ 	file = fopen("/proc/sys/vm/min_free_kbytes", "w");
+ 	if (!file)
+ 		return -1;
+-	ret = fprintf(file, "%ld\n", value);
++	ret = fprintf(file, "%zu\n", value);
+ 	fclose(file);
+ 	return ret;
+ }
 -- 
 2.53.0
 
