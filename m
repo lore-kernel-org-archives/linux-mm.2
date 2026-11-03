@@ -1,117 +1,121 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19D8A606BA3E
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 15:14:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01034606D2C2
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 15:17:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=ts5HB9y2
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=ZroKgEVj
 Received: by kanga.kvack.org (Postfix)
-	id 2DF386B05BD; Tue,  3 Nov 2026 10:14:28 -0500 (EST)
+	id 2208F6B05B8; Tue,  3 Nov 2026 10:17:09 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2B6DD6B05BE; Tue,  3 Nov 2026 10:14:28 -0500 (EST)
+	id 1D1EF6B05BE; Tue,  3 Nov 2026 10:17:09 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1CE976B05BF; Tue,  3 Nov 2026 10:14:28 -0500 (EST)
+	id 0C11A6B05BF; Tue,  3 Nov 2026 10:17:09 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id EF0F46B05BD
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 10:14:27 -0500 (EST)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 80C081C3C50
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 15:14:27 +0000 (UTC)
-X-FDA: 85394154174.08.9D100C9
-Received: from mta1.migadu.com (out-84.mta1.migadu.com [95.215.58.84])
-	by imf21.hostedemail.com (Postfix) with ESMTP id EB1EE1C0005
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 15:14:23 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=ts5HB9y2;
-	spf=pass (imf21.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.84 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id E24216B05B8
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 10:17:08 -0500 (EST)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 84C0E1A0480
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 15:17:08 +0000 (UTC)
+X-FDA: 85394160936.09.D1BFA0B
+Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com [209.85.214.197])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 96EFD80015
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 15:17:06 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=ZroKgEVj;
+	spf=pass (imf30.hostedemail.com: domain of 38PrpagYKCOsfRNaWPTbbTYR.PbZYVahk-ZZXiNPX.beT@flex--seanjc.bounces.google.com designates 209.85.214.197 as permitted sender) smtp.mailfrom=38PrpagYKCOsfRNaWPTbbTYR.PbZYVahk-ZZXiNPX.beT@flex--seanjc.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793718865;
+	s=arc-20220608; t=1793719026;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=14hcT6F4fj8zJj0gPfB9WiAi+uaybopFKajULVBMQnI=;
-	b=Tkep01HayLcWTdqt/ECTaxTGJXJUszaCrM68ZHbxoGncDbD8+ZQdbW+L3C9ovFf87cYTjQ
-	1C/Wgomn9e0RVv7x0misjwefA9AhL6ioxn6RDg17Y1xw3ErC4sNisWvBMORuqjM7VW5Bc/
-	NRanIcWdEqZ08GStvWm1bE/iB9pIN+0=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793718865;
-	b=f5DPxVp6XYSoHnlbbh3/oYDWk5UBtCs3XVC3B91UlZLri7lrFu0PNknfz7/IJIhqhXivKO
-	zTMgdiukpqgsUOB7aSJCAT8b/ZxSUTKzTdI0nAVfWyYv5GTvVcTaJ9f4kaeXK12XaQHFM2
-	uTpJZv7JGFwxot0X9G4I3nUDQAGgPJU=
+	bh=gZPyGNb7zpjaaj961jv5er4Nb77WoHldzauRxys7WyE=;
+	b=3FGg7WHgNKV5Kzq/kGCxcxEosj6qxfmZNtjKlNzkjIiQdu7DuNHVZmFRXlP2SDkAy3jRMY
+	Dh1HtVjNmQajZtkbSDUwgWsuwxwKSIIL1+MmdeHjyGGgUK7RV31YtJYtSRvEeoGXCV0Ozy
+	l9KcDddhDHZxmi6yGy1/1MuC42O4paA=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=ts5HB9y2;
-	spf=pass (imf21.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.84 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=/n6q6+lIX9B5ZuliSLqd+JJa2B0QDGQRcHf36WsHI7Q=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1793718861; v=1; x=1794323661;
- b=ts5HB9y28ZzWXoUo+d+m68JgTc6d40SOeizyYnSAdoBpXnsyKf1HioVJw2sd1J/ysygB1Kx/
- e64gLcGfgRbQFzbr3FKFgzMKXjBuYVURrWLNzVd6xMUrDy71PsneXa7FBxNvenPg4GGPhTAsRVD
- 8G1VawouDX2sNWIeVN26sFcM=
-X-Envelope-To: linux-mm@kvack.org
-Received: by mta12.migadu.com with ESMTPS id 198054973b778b6a;
-	Tue, 03 Nov 2026 15:14:20 +0000
-X-Mizu-Trace-ID: 198054973b778b6a
-X-Migadu-Flow: FLOW_OUT
-From: Usama Arif <usama.arif@linux.dev>
-To: Lance Yang <lance.yang@linux.dev>
-Cc: Usama Arif <usama.arif@linux.dev>,
-	akpm@linux-foundation.org,
-	david@kernel.org,
-	chrisl@kernel.org,
-	kasong@tencent.com,
-	ljs@kernel.org,
-	ziy@nvidia.com,
-	linux-mm@kvack.org,
-	ying.huang@linux.alibaba.com,
-	baoquan.he@linux.dev,
-	willy@infradead.org,
-	youngjun.park@lge.com,
-	hannes@cmpxchg.org,
-	riel@surriel.com,
-	shakeel.butt@linux.dev,
-	alex@ghiti.fr,
-	kas@kernel.org,
-	baohua@kernel.org,
-	dev.jain@arm.com,
-	baolin.wang@linux.alibaba.com,
-	nico.pache@linux.dev,
-	liam@infradead.org,
-	ryan.roberts@arm.com,
-	vbabka@kernel.org,
-	linux-kernel@vger.kernel.org,
-	nphamcs@gmail.com,
-	shikemeng@huaweicloud.com,
-	yosry@kernel.org,
-	qi.zheng@linux.dev,
-	luizcap@redhat.com,
-	kernel-team@meta.com
-Subject: Re: [PATCH v8 00/30] mm: PMD-level swap entries for anonymous THPs
-Date: Tue,  3 Nov 2026 07:14:15 -0800
-Message-ID: <20261103151416.1720617-1-usama.arif@linux.dev>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20261004030844.90483-1-lance.yang@linux.dev>
-References: 
+	imf30.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=ZroKgEVj;
+	spf=pass (imf30.hostedemail.com: domain of 38PrpagYKCOsfRNaWPTbbTYR.PbZYVahk-ZZXiNPX.beT@flex--seanjc.bounces.google.com designates 209.85.214.197 as permitted sender) smtp.mailfrom=38PrpagYKCOsfRNaWPTbbTYR.PbZYVahk-ZZXiNPX.beT@flex--seanjc.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793719026;
+	b=Y9sxri0/qLXYGxNpn1ow1sPne/hPYbShG1+y/huQCmVvHk86FAbob4O6q8pfyLbgPrTBlf
+	z+2kTI+4je+SrfpDB2QDGDaAILfrZQKu3Apk/i/UXr95kGt/43VV4LC40tGrczWbE5VZ6s
+	KjyZo7xQ5x5PCdrUqnKMnupthlIPTbk=
+Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-2e9995cea88so42229195ad.0
+        for <linux-mm@kvack.org>; Tue, 03 Nov 2026 07:17:06 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20260707; t=1793719025; x=1794323825; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=gZPyGNb7zpjaaj961jv5er4Nb77WoHldzauRxys7WyE=;
+        b=ZroKgEVjUULdRxxyGCZkNY7964s7GPVB3l/iEOXMQuGJKp/XZywiwaScwUKI1WGHtR
+         T8vFiiQAfsBgiYYRC5E2pQ6ZoK0ZfSHb+Jfkim4acjNRZl1+fWo0MOkmggK2Ff19gy1o
+         JHloXJ1kTizmFRxu7flexS8Ll0RdyknKsFA8YO+ZOOH2eRngCNu/g6ru1D1oOwBY6D8T
+         0ZeNF95CdMdXgCPdmYD+770/aNH4vTYIQYb7YtaBs3VtWm8z+K0Rpdg1SyLsZvRvD4I/
+         1I1lxUTijcksFZIJHxcBmdlHyZcnKBMMX9eWsjHabEMSO8A6USc18yeQjN89h876JbEh
+         Kmeg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793719025; x=1794323825;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=gZPyGNb7zpjaaj961jv5er4Nb77WoHldzauRxys7WyE=;
+        b=2mgB2g847koG0q75wu+I5Gv9nHwewnQ8feac6AoQ74FJxJmJtbWSE5IQ0/LwjyGI5E
+         vEBFf8bPBY4sUd7wfl4/2Il6l+K5cjZekUdvLW9W02rWI54PA5zxt+Ra2W0aENddkRW5
+         ql/vaHSo5Zd8q7Xs+8olickXWvBVoFaikr6ZRh0aPnf8f5XtofJNsq0Nn+BfBx5AXHkU
+         uWwqmXC47IJ+Cy7svivPJ0VYsfp2xfYNc8ZNw9jjlgSyEM+2vS8HS/zqKSnSvKtVlQz1
+         Y4h8iz5de+1wzhbn2GE5312mKTShBYmiTU67zqv2d8/dl8DUeDvgw30ZMY8yDC6MW0y6
+         a7kg==
+X-Forwarded-Encrypted: i=1; AKwUvBwqatwb2VPU2Jv09vWE36F9SSEjtYCGgWIXD5zv34oY9goclNExOEypNyRManGVy8ZQvZvsr/vh8Q==@kvack.org
+X-Gm-Message-State: APuU4Z/3d7NoKfvwZ7mANOh67rq0S5sw3gOd8AHIPORNvCDnXEz1kMyW
+	IsZXnSM8O1Klde7Y2gevRaT4F8B8/8F+Lc3OHMIMkfr+N0yilap2paaqJfq+hs2+BzTGbwCPmOh
+	yRwJX8Q==
+X-Received: from plsr11.prod.google.com ([2002:a17:902:be0b:b0:2ea:d63d:f2c5])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:22c3:b0:2e5:334f:f47e
+ with SMTP id d9443c01a7336-2eb36489c9bmr122626395ad.21.1793719024883; Tue, 03
+ Nov 2026 07:17:04 -0800 (PST)
+Date: Tue, 3 Nov 2026 07:17:04 -0800
+In-Reply-To: <CABgObfZ9mHj7Fsq7Z2S5vFy8R2Gkh2tHBATGJN2BpH=6Waks9w@mail.gmail.com>
 X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: ymrqauhtug87utn5q7xif8crcyjjp698
-X-Rspamd-Queue-Id: EB1EE1C0005
+Mime-Version: 1.0
+References: <6adf2939.67317f00.38c4bc.00ae.GAE@google.com> <20261026224305.1254-1-hdanton@sina.com>
+ <auCucDdZb8mig7UZ@google.com> <auDvUyfzg6nLtVox@thinkstation>
+ <20261027163929.2bb28d5b@gandalf.local.home> <aujLx1FOc12E72rF@google.com> <CABgObfZ9mHj7Fsq7Z2S5vFy8R2Gkh2tHBATGJN2BpH=6Waks9w@mail.gmail.com>
+Message-ID: <aun68Iv_z6Xiz9mc@google.com>
+Subject: Re: [syzbot] [kvm?] WARNING: locking bug in __refill_objects_node
+From: Sean Christopherson <seanjc@google.com>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: Steven Rostedt <rostedt@goodmis.org>, Harry Yoo <harry@kernel.org>, 
+	Hillf Danton <hdanton@sina.com>, Boqun Feng <boqun@kernel.org>, 
+	syzbot <syzbot+f11512d1e5878ba5e60e@syzkaller.appspotmail.com>, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, 
+	Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>, syzkaller-bugs@googlegroups.com, 
+	Vlastimil Babka <vbabka@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, Hao Li <hao.li@linux.dev>, 
+	Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org, 
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>, Clark Williams <clrkwllms@kernel.org>, 
+	linux-rt-devel@lists.linux.dev
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: we7jixrqoknm77tyjsqgk5qxehsaarh1
+X-Rspamd-Server: rspam01
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
-	autolearn_force=no version=4.0.1
-X-HE-Tag: 1793718863-902039
-X-HE-Meta: U2FsdGVkX1/yau0CEhE1hBYV7hs5hdQejj1bUF98YPyEPERi6Gg+Dr/n7mSPtqPccTXK45FXA6Oi/0gb+YALmai5MnD12NLsV+RUsdZAOtMw3aJg5LRhR3A8fBmzj9BEKSlwXRsmlawTSJRXSmVfqGInUDH1CnizYH2/ZSOul0RrprmTOWAzDANaTa5xV+Itr7P9ezVlEPuBpnx1H/BWWTgu4v1hQMCH53a/Pay0z+VJOIeK2ciOaLoCVRHzvonqVwXjoOKbZG91xdvarthWv67PIky4FbkdeggkhScp81AEoQZb8fn2eRiREZ3/YYCzhUPIdDKgZs8ljl9uOBBzCGgvhRsfs1icpcOfH59UIJvgoGLtAqQ/FxhGq0sTGuRIZCbJuUj5nb8RiuNk0Hp3KjwyHnReKsXYo244aDH0Pmw8hQaVGhJmPJAxvnaQ/tBEuxe2sxY1XD+PF2khjzsyPhC6C99tFrsF/vBnMFD0S25WKnBEnzj+8RBH81L5yHjIyUamG4M8HdyZsWoLnNiSDV1/LvqcNITO+VB5wq9tX8ZI9FlfUZzrbobqQe7GkGLJ6tqdo5MgRrnc2sJMfq0ckHo5JxjAJK9uAax4HgRBvFuzriOQXCaeiVPvPBtCOSQpsl8xQ3xIKghjG18lsta76tiec5GgrhLhq5lkG+Ptd8YsOW/Qk4sPA7kbqpsvrh6PY/mVYRM+Jpyj23r/gW5C+xVFa5jYJu3KhWdHJ67kmuqBjG0LYMdWK5fncKTfWxvh9IXIeY3Yzf/OsJUapRurz2xcSIL4nnPDZlZEvRqip/b3Pol7sXVfwqc8N9HjOlT5O0QCKa5dzgjBPrSB7NAKyqPOmoFTskkE781200pKKlrZIpFjupkZ7OZd4dfuwanO1vHk4BisX8kr3I/MLU4zpRlHpxLtPj7fKOf/en2swwBRMGHbgpgFWqy5nH7JYB6ouQeGFGDCPOpziLX5JRF
- tX1KZOGD
- L6q3PehTNW66CNAntZ+MOcLd2okU1CNPHuIMQCXRwMh4e71FPZtl0vXw/oa9Zr/kzxKXIhFbI6BVUOPnCRcCzpgG+gb2FbrFi+GMfkVnjSf8ICi5uJRDrlDU5xp82QiwX+0PD3iQzL+QkSmQb6GHoFSWsERgJEcOUhUMisiYWCI0IyYWHtyAZxRuxpqCy7ez91Jbu9ghv9xXZuw8GYzUrwvb3wM4m/WcWQOyJbi4tyIETkQbuwcF3ggY8Qg==
+X-Spam-Status: No, score=-13.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_IN_DEF_DKIM_WL
+	autolearn=no autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: 96EFD80015
+X-HE-Tag: 1793719026-534564
+X-HE-Meta: U2FsdGVkX1+ajEOuH7WTWWrritt0e1JjQ7xq5XPcopYxHIbv4SwmXo9yCDAeukkKJiXQYGzgA00PuEirD5TdY+KP5lrwbFc2Ns3EnfOM5ncZhH8OPQ+a2z1Ody+Zen3qZuLujXGWVdMvelBhxj9srtTJikX1XhhlmvglRPNAGjSR4xIW9sEGj72DC/EuXonOoUy5Z922J4Zbt3i2lCn4G+2v7wFCfwhYB/KvLw99V2icfaUPGF39TLHYTcLY0Xdjs0tDJf32H+qtTmxyzHqauwfKL43LNxNYzt5+CkZRQQ0l4cnDuyUBe+GiLQdCk4dRoq7U9d3M5vezaChJ5R1/K20F2rr9rw2fM8ZH+2w4KBn3oThe+86VRZfyt/r2IYroPpHym6ruSdmUYFCNPD1wtUrDMxY1SSq8L/d+wqm6Dd2zt6jzljrmrskMnZo0sX6OmuZkFJ8ymnDgqE5POfOcd9PH5biKEmYEu0X7CwE7JTs2gE2UHCgyviaEKzfaMmLnfQrknAArgg+1kpcQkrhgXNF16xn3dtC9wivRVi3NkKTeEsGX7WqzaAOW6hy3Twbb3zgYRikOCXX3jpQBSVNMvdG0wcOU0YTEVNlXxVJVbv1taxlrI7HoZPrxIBfUiROIxWRJ7gnRzgiHK2v2c8fBgicD4yTJ++dTHlydcGEKoRyhJfm+0ri47uN50A10TmUi1E2VMFwuuiqnqYKO1LkiCR6WXS3R4NXID8Br+YAf7FA5nurNgIynyw7xydw4btfEEID41pI3UE39SHMsl1/A9s6K2NXoPDvQmYqfpcAQn6kowj/cq/ZFUey9zxTBiZ1rqMB3few2MmmOuOL6RTVNhFcuIhLKnPdH/hPd4/Yu/jsPWDz3BSxGhTkfckpLuCMt9m5osoJdctUDsVNcYCc3ZHryn87vPF8H+scRQiTiXHxG1VTR28zme4oOccAUgnlUU4KGAcLLcvxFpbj0vOO
+ tYaTJz0s
+ uI/m/2PqMCdY6V5WH6EjfHnvjW1OAyTo62pgsCnQlGSM+APl2W3R11GWw8FS3BAlO6gCYexBWgZXeRaqTEO9ZMzSICNHVX7qxY0ZByNDW97uxPb4r7+h4im9rqkcg0e1UVPiDNO3p+wghe6B3vzF03r5pkSotQV3D4zIlza9BStxodsC7tvQ7+Yhqw4nyPJBUoo5/z5mQ8vvCdup0Bcn0XT0a9h/zg4yExkLEMBnUXUVmMQwJGj4Aux+YRigDkZyIgxUzWbRSC5bKcOaIHI6G38fR/QXsp4Ke/lHM3xWsGmcuXJ97wLzr4wN+f8gUyj5Puu8ZAbCm5B/tkBW4pdpgbs5+YHLuyehhGp85UOYS9aMMq2fOTUqulEc5p+cQI0aR8BSNYcRyD+libvtDzptWmxKFZB7VQghN4VMKPxE+nIIp8BPAfs/oC3JgbpngXGD8lv7+gy8YbNrq+7/aUc2L2Mq5FcnL3w+ypwpV6GRUsUAalSGZta3XjUjGGtcTVHb4kc0ael5yiX99PQJsLliQZeFJjsY0Yt8Oo++SRxKBXq/AZnZiwylA78aNScru2Ua45rGJEXmqK0wv9kB5wuSXC4xKLwGgZfZ6x8g7cTSTu07oul5fEp8CYlHve16KGi1DHSIYV0SJDDXMJ1v/tZG8wytVoB5Fqv1UlOpZkdeAAX6WW3y8bc27ooEJZ9+wItZMjr+NlraG8qfMuXoyxXFLxOFg6AG9dSY4M1s/OkZsNZEMud7bS9a6SC5J+tChtbctSL/PxZFXonxnR9cL9Ko9Cbn7sbFuqIs84zxMZ9wLOX0xt54=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -120,56 +124,45 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Sun,  4 Oct 2026 11:08:44 +0800 Lance Yang <lance.yang@linux.dev> wrote:
+On Tue, Nov 03, 2026, Paolo Bonzini wrote:
+> On Mon, Nov 2, 2026 at 6:43=E2=80=AFPM Sean Christopherson <seanjc@google=
+.com> wrote:
+> > > If so, we need to make that a thread for RT kernels if you want to ca=
+ll
+> > > kzalloc_obj().
+> >
+> > Eww.  I can't imagine there's a sane usecase for memory overcommitting =
+a real-time
+> > guest.
+>=20
+> While I agree with the feeling, the dummy allocation path should be
+> mostly dead, because page fault should never (?) enable interrupts
+> before waiting:
+>=20
+> #PF interrupt gate
+>   exc_page_fault()
+>     kvm_handle_async_pf()
+>       __kvm_handle_async_pf()
+>         irqentry_enter()
+>         kvm_async_pf_task_wait_schedule()
+>           kvm_async_pf_queue_task() <- registers waiter
+>           prepare_to_swait_exclusive()
+>           local_irq_enable()
+>=20
+> The dummy allocation path is only reachable if it's an L1 hypervisor
+> that is getting an async page fault while L2 is running, because it
+> enables irq before the call to kvm_async_pf_task_wait_schedule(). I
+> think we can drop the dummy allocation for good, which would be even
+> better.
 
-> Hey Usama,
-> 
-> Staring at the swap-entry bits across architectures, and RISC-V looks a
-> bit off in that regard ...
-> 
-> With Svrsw60t59b and CONFIG_MEM_SOFT_DIRTY=y, setting swap soft-dirty also
-> sets _PAGE_EXEC. A migration PMD then looks present ... so the fault
-> handler skips the migration wait :(
-> 
-> And yeah, this is a pre-existing bug. I've sent a separate fix for it.
-> 
++1, I completely forgot what this code is doing (although that implies I ev=
+er
+knew in the first place...).
 
-Thanks for the fix! PMD swap entries also preserve soft-dirty, so the
-same encoding issue affects this series. The dependency note lists
-your separate fix for RISC-V with Svrsw60t59b and soft-dirty enabled.
-It applies cleanly and preserves the exclusive marker at bit 6.
+> Whether you would still want to disable APF for RT kernels is up to you.
 
-
-> https://lore.kernel.org/linux-mm/20261004030312.90163-1-lance.yang@linux.dev/
-> 
-> BTW, could we also add more checks to pmd_leaf_soft_dirty_tests() so we
-> catch this kind of issue early? Setting a swap flag shouldn't make a
-> non-present PMD present, IIUC.
-
-Done. The pgtable test now sets swap soft-dirty, checks that the flag
-is set, and checks that the PMD remains non-present.
-
-> 
-> ---8<---
-> diff --git a/mm/debug_vm_pgtable.c b/mm/debug_vm_pgtable.c
-> index 863111c6d4eb..80686e2baaa1 100644
-> --- a/mm/debug_vm_pgtable.c
-> +++ b/mm/debug_vm_pgtable.c
-> @@ -762,7 +762,9 @@ static void __init pmd_leaf_soft_dirty_tests(struct pgtable_debug_args *args)
->  	WARN_ON(!pmd_is_huge(pmd));
->  	WARN_ON(!pmd_is_valid_softleaf(pmd));
-> 
-> -	WARN_ON(!pmd_swp_soft_dirty(pmd_swp_mksoft_dirty(pmd)));
-> +	pmd = pmd_swp_mksoft_dirty(pmd);
-> +	WARN_ON(!pmd_swp_soft_dirty(pmd));
-> +	WARN_ON(pmd_present(pmd));
->  	WARN_ON(pmd_swp_soft_dirty(pmd_swp_clear_soft_dirty(pmd)));
->  }
->  #else  /* !CONFIG_TRANSPARENT_HUGEPAGE */
-> --
-> 
-> [...]
-> 
-> Cheers, Lance
-> 
+Nah, on second thought there are use cases for async #PF other than memory
+overcommit.  Whether or not they coincide with PREEMPT_RT is debatable, but=
+ I
+don't think it makes sense to go looking for trouble.
 
