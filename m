@@ -1,140 +1,92 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E772606A335
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 09:14:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC959606A332
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 09:25:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=KgktLcQ+
+	dkim=pass (1024-bit key, unprotected) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=fODI72Dy
 Received: by kanga.kvack.org (Postfix)
-	id 974B46B05B6; Tue,  3 Nov 2026 04:14:46 -0500 (EST)
+	id F2D5B6B00EF; Tue,  3 Nov 2026 04:25:10 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 94AB36B05B7; Tue,  3 Nov 2026 04:14:46 -0500 (EST)
+	id EDDC46B05B1; Tue,  3 Nov 2026 04:25:10 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 83AE36B05B8; Tue,  3 Nov 2026 04:14:46 -0500 (EST)
+	id DF3C26B05B2; Tue,  3 Nov 2026 04:25:10 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 573C46B05B6
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 04:14:46 -0500 (EST)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 00A25120360
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 09:14:44 +0000 (UTC)
-X-FDA: 85393247730.19.E0A6CB6
-Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 2D2D740008
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 09:14:42 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=KgktLcQ+;
-	spf=pass (imf11.hostedemail.com: domain of vishal.moola@gmail.com designates 209.85.221.47 as permitted sender) smtp.mailfrom=vishal.moola@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793697282;
-	b=tcl7Df0PhaYKHTgWGyTeFyFqBAMsc+9H4cziDuzOty+mO59mYJrn1NjbZ23lFy+TbbJVub
-	b41+UeVDzAXmnljMAWV1mgo/BoRBo640VJ599STP1gxE/FQyouV+IQKEsdqPbh2SqegKXG
-	SaKD6MtiQmDjGmjtBWsO5WT857Y8ktA=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=KgktLcQ+;
-	spf=pass (imf11.hostedemail.com: domain of vishal.moola@gmail.com designates 209.85.221.47 as permitted sender) smtp.mailfrom=vishal.moola@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id BA10A6B00EF
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 04:25:10 -0500 (EST)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 35FF61402E3
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 09:25:10 +0000 (UTC)
+X-FDA: 85393273980.08.D2140EC
+Received: from out30-97.freemail.mail.aliyun.com (out30-97.freemail.mail.aliyun.com [115.124.30.97])
+	by imf13.hostedemail.com (Postfix) with ESMTP id D446F20006
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 09:25:04 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=fODI72Dy;
+	spf=pass (imf13.hostedemail.com: domain of tongweilin@linux.alibaba.com designates 115.124.30.97 as permitted sender) smtp.mailfrom=tongweilin@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793697282;
+	s=arc-20220608; t=1793697906;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=S1WYfRKraltmcSelSSDtbEGSqHwpRq+KEHeQXK3+6sc=;
-	b=d8Pn3yHodQxb+R7WZIjDT+UTXFmFlQT1q1Rx2+dHOMRQkq+yKKKMrF7AqjZf47ILkZF+GG
-	K19xrJINa+uaFadDHCSUKKHgAE2dBhgzlQsF/Ur8z0KVjW9zbfxUZLL2pZssk2bmP5Zaa4
-	mpbQpfaWjFL2Ce9BTlhRurG2RDwUMSk=
-Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-48c4d99c32bso2671880f8f.1
-        for <linux-mm@kvack.org>; Tue, 03 Nov 2026 01:14:41 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793697281; x=1794302081; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=S1WYfRKraltmcSelSSDtbEGSqHwpRq+KEHeQXK3+6sc=;
-        b=KgktLcQ+cmL3E0JGGjcFaH2ByBFi1ZWbRnyRHxsn5itQ5b8OoiX1j7hz1y6wsoC76r
-         qq5iJyyZfzXS/dbVRgsdFHL/0POE8HghAZMq+6Yc+xQaPVVlqWPz0eZkR8kygdp/nau6
-         qOf8IqfWyGg89VwXQ3qjWDrsgjZKQiQL484Fs538+S2+VGICnqOo3Lu1vjX/YLoKVj3J
-         DnL/zk9d+nY9vbeVoZq3BiDtDaF7Kwn1eKyE/ltrs90/rXg/CZdsIQ0U2Ux8lCkcRghg
-         6gPzqnGONtO5Pe05ogzA6y6SU5n03Xvt4AHNhs7GXejolHs49/XHKtCB2GOrdzJkrQXF
-         75ZQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793697281; x=1794302081;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=S1WYfRKraltmcSelSSDtbEGSqHwpRq+KEHeQXK3+6sc=;
-        b=DTcsNbGYnui1JTmTO24M39lhRb+Mpmn3EwUe/Gi3LYLBn4FDu/dG7PaEdsxvSL5qDb
-         s2npSjMY3jXISA8fTuvtMdSXzgfpT4GAl2zin8CiRQ5qdJDELz9IZIWZTTH71Fs8xc+y
-         CIedCBwKR6ZRwfgiyqebpL8QEHXc/edB6Q59FsCNMfriZi76kSiHW3/9DXoFnnzZURFo
-         cvmTBEU79R2ZzOASOn5Xbv58RwhWGDfQPA4ZbYvdeEiqJpWDgO+YbV/hLImGkH+A2qvz
-         yGTs4Ofnwd+n2C7jEjWS5Y2V8g1DESEYPnpz4iQRjgH1j3YzkzHQz99iOEjN8L+4HNTP
-         quYw==
-X-Forwarded-Encrypted: i=1; AKwUvBz3M75+mHfdn5X5lNsoDNBn80hRLx8N8lFXvnT4x3fvE4ehEzPblQcKBRAN1mrKj2KI0ALRzb4NMg==@kvack.org
-X-Gm-Message-State: APuU4Z+zzBYv4JbordJLRtagH38Mg9cBQfipGxd5iIICQo/yqJO+PCya
-	bCrlSkddU3To4TSgeLtKF149d7qnfanABXW4Xj8lSAcMXeNJ2ei7eztp
-X-Gm-Gg: AYBFou1mQ0VSx/V21zgYQKUUUzzLe/B2VZ0SiBQpZAvs4n9BQujfG7VTt2ItKpGB5Od
-	4ej3mZKlNEmlVqP/+tSmfJ+dsYnP6XhjndRurvm2A4z+/BZJLRMzE9uqbqLIfWEh/SsTJ+sJgnj
-	JOBGPn096UkfTTPzbrz48I0KVbCsCmnKNolbkNWzFsDrYxjvAg/GMlsedEt7ho1TMXe13ospIAD
-	+K0LexHkjuO0mdVy01o6EWVpTIP7KXKifXz0q8U7cRdlNkzovrsYa6bTthvGUUKF+lX8a37EMUu
-	HLoKrTV8fU7ErSTErvg6HDWyEV5uJl9zNHywmfiDTqY3o01BDdeCDQjKVyr+qNXJqS8+d/XhHM5
-	caa70hCVjSqU5jFyutfQJNqoXwCpNRBwEobjqFoEtbrVcJGsUgvx0MHsLbzxNZV//hr8zRnYcDC
-	CYJ5vqZFRNnp5q0jq6dKVOsHWXwwXMsDn8AOV9LI/30SG8crA43JnzfX/xQcexyzOfTiuaQmOKz
-	cOjN+pcJBg2AQmZvfSB9q2kMzfGyKDV7jfDO1AT6FObMm5rCiw3XA3o4G+VTMW4gVk9Hk/q6l3s
-	WCeJLhGrCNcG66WaJKX4hq8fsqjgB4b8RBaKQbEjDAxulnbkL9kyMPwVUyj7xjudBnvOZo6wuPB
-	tqCVHiOdmMBQ=
-X-Received: by 2002:a5d:584d:0:b0:488:8525:4979 with SMTP id ffacd0b85a97d-48e6e50b5f4mr26190523f8f.45.1793697280601;
-        Tue, 03 Nov 2026 01:14:40 -0800 (PST)
-Received: from C422HJQPQG-Fractile ([150.251.170.8])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e71b9b54dsm23473758f8f.47.2026.11.03.01.14.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 03 Nov 2026 01:14:39 -0800 (PST)
-Date: Tue, 3 Nov 2026 09:14:37 +0000
-From: "Vishal Moola (Fractile)" <vishal.moola@gmail.com>
-To: Tal Zussman <tz2294@columbia.edu>
-Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Jan Kara <jack@suse.cz>, Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, Zi Yan <ziy@nvidia.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Joshua Hahn <joshua.hahnjy@gmail.com>,
-	Byungchul Park <byungchul@sk.com>,
-	Gregory Price <gourry@gourry.net>,
-	Ying Huang <ying.huang@linux.alibaba.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
-	Peter Xu <peterx@redhat.com>, Hugh Dickins <hughd@google.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 0/8] mm: remove newly-unused page wrapper APIs
-Message-ID: <auml_evm_m2C6zUM@C422HJQPQG-Fractile>
-References: <20261102-page-wrappers-v1-0-e7280bdb31f6@columbia.edu>
+	bh=znfwk2ucOi906Els7Tq5ow5yT3CmRKhld7c73Wmlhuc=;
+	b=PGfTjipe2hhU/1SX3sPeNDm9062KVkngGG5m5spYKEYAQefTDKJ0+ay8v1qjWQfKX4tkhf
+	yBV0mjsgiiYY/POt+zg8ZiV/hAR+dqLAeNlJRMBX04fK65vYsUAXXGkKZLuar5cKN7rsqe
+	T2NqayMc+VwYvrmubkW5/VpFT7alAkI=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793697906;
+	b=hXd0RxU1Q902pJ210nUmCSbwHQiyR9wl/etffPlFKyfw9Bl0MxdzLxD949NrqLCw3MCT8k
+	saF+ZJEi0orGBWYtSWo36x0t336GzEZq1aty2px3jHxN+54cNVbtR8qavE5bNEF6qjHk5A
+	9ruHWpYxQBZ+ctNEruxhU2CvuqF4edA=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=fODI72Dy;
+	spf=pass (imf13.hostedemail.com: domain of tongweilin@linux.alibaba.com designates 115.124.30.97 as permitted sender) smtp.mailfrom=tongweilin@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1793697900; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=znfwk2ucOi906Els7Tq5ow5yT3CmRKhld7c73Wmlhuc=;
+	b=fODI72DygpmSjgHBWzwp/if1nUPoZG4uIL3HWcDNEwO9NNzsNTQHAdrAJVjA4V3srsADcOrMg2YTRW9I8VksG8Ss6/q5t6Uf0ZnhLzeWSn+69oTI2LwkV625F9IozLSAmQW40Z5DBxsnHmB2PGFlNfE1QDQTF9I1C0FcCdKx9nA=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R451e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033045133197;MF=tongweilin@linux.alibaba.com;NM=1;PH=DS;RN=6;SR=0;TI=SMTPD_---0XE2Mb2w_1793697898;
+Received: from 30.74.132.52(mailfrom:tongweilin@linux.alibaba.com fp:SMTPD_---0XE2Mb2w_1793697898 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Tue, 03 Nov 2026 17:24:59 +0800
+Message-ID: <155615c2-2f2b-46e5-a3ab-a332657a4bfc@linux.alibaba.com>
+Date: Tue, 3 Nov 2026 17:24:57 +0800
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261102-page-wrappers-v1-0-e7280bdb31f6@columbia.edu>
-X-Stat-Signature: ri1zmg6wqbba86gwcq65wi6s6t9eyta5
-X-Rspamd-Queue-Id: 2D2D740008
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] tools/mm/thpmaps: handle carriage returns and non-UTF-8
+ filenames
+To: sashiko-reviews@lists.linux.dev, Andrew Morton
+ <akpm@linux-foundation.org>, Ryan Roberts <ryan.roberts@arm.com>
+Cc: David Hildenbrand <david@kernel.org>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>, linux-mm@kvack.org
+References: <20261101211644.c63a2028bbede0f763f41f80@linux-foundation.org>
+ <20261102085419.696232-1-tongweilin@linux.alibaba.com>
+ <sashiko-outbox-194896@kernel.org>
+Content-Language: en-US
+From: Weilin Tong <tongweilin@linux.alibaba.com>
+In-Reply-To: <sashiko-outbox-194896@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: D446F20006
+X-Spam-Status: No, score=-19.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,UNPARSEABLE_RELAY,
+	USER_AGENT_SANE_1,USER_IN_DEF_DKIM_WL autolearn=ham autolearn_force=no
+	version=4.0.1
+X-Stat-Signature: q34wd8y3toy9raqd5fhnancpj87n15im
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Spam-Status: No, score=-6.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FORGED_GMAIL_RCVD,FREEMAIL_FORGED_FROMDOMAIN,
-	FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
-	autolearn_force=no version=4.0.1
-X-HE-Tag: 1793697282-919087
-X-HE-Meta: U2FsdGVkX1/jsaAVd3u00ziyvXTOx+KQVVde+wpBGC6JxME0q3HgoGgtTxd04Ktks83VYOKCTYxdi8tz0tmU2ID8HGSHpS/f6m0UHuS5gZ3gxDt9FbewZOaR94KoD3ZPn+T9VvqaWtf9TcZVm5mBt12ZD/zMSuzjVhIIP2lFdOpfJUI5J7LQoFqOjL29Si0xb95rfwGbYYvINTWQyhY34yJiraCT1bC37YDdbVkBWtQVy7aoVT1DYnYKOsuHtzT/bGmNvU1OWxefpeGjK7UOxCC01sFyDtd07vZWXXK/IxuRCxlfhsfJwQt6RLlZlxKJwtvZ1/6lxd6Y5UAZLv4rSNiNX7396vewOM4+vW1Hi2N1QiJQt3kENspzZHSuQ4xCF/cnZ+2BHX9jK3jirEH1mbPtartpSsmKpu32C7s5n8UQ0ocU+pCo544JLyCW+1ErgxtbXDLcXvdaNacHNMzHxMaRoz+cHYtdzXD/M3OzuZ4QMvnejMzpengkmJUXuDQwLcx+9QQHIs633Ui8vVF/xhsN3ZwKpKlqi/Gudbty5GgSzHYRSoBtnraRjpB99WRM2Xhqwih8BcyuW1LKPw2ZLigNtiC8NBj536T5oOpftYNSf7pxImCgKWnUn6DitQIowowuA28xzJEVbatAG0MrKGfCTaZEvFPOSFU46RUWyrkzHyhdsSzwiz6shSuYLgdqViE08F7dPt4ftDWQu+ln0Oj9duElMYE4FF2TmXF06uF8wVnVT1DGb2eKfjrZH63wTgsA0Qe9Q5xRWPpDe1SaE/zcfwo0ypnI6ytA06nGhMcH1ROy7rcaC/7aMUzayfX/N+Xmh/hlhAxBxmD2w8FFZ46ReYW4cPvtWSZVSD1GsCJ/FEa4PusTOSggcoQec4cuP5mWEhOeAK0a+WA58zZBGe/OxQeMyNZzMeYxVnwKVafLG6721fUs6/BKiCp8yGX0/JjYK7fXCWQA2OObx0q
- kZO2ENwX
- o9PHth5jWEvrqdLLeo4CFIFdsKNaGXeYWH9WovJ2bjDplGK/aSIFUBKX4EhoW69lXr2LS+HbfLhYhdofWqfUdk6VUgkfgVqzue2sbnr11xOgsKJ1H0Eo46LlbRjub+conikUioMZL7Uawzfm7GB8yG3BEE0aScUcG4rkDNVZAIqpQQ52wkkERXpY811tLlMSoyv9T4loLSUSuZ2WP5j+Ajb47aiAYS15s6lL/HQUEnShEZE4rE45H7BG5mQ90wz/px49essrXkR5+uCWuV59lUG2Z8qTkLcHXUAwa2eljdR+v/sjBEdpW96W/JW+PPpzGYlJz8Mx80WRO3zYC0miz1Av48Enhb42W+0BQ2bxn/uYH4W5+xIKT6T6KMZ9BTs6DoxWDqUeKM+eRkZCNgfurUTdJR95caLzeZD7LKLLFY/QFUN5X/z8XO62EhakhvImbs18qh2y69DrHWAW9HUvn3zDrnr/ENB6PGDh4jWzwvlzfIIMhbjmWG2jUF8Mcag8vIbaFNFrhuk/tQF1VMMfGy49QRDtukIiFVH6TrauHwnkiIn8wGh89M3X2WUBa5bAOjLTcbBt5n1MO/0ELBZaIrF1Pcw==
+X-HE-Tag: 1793697904-406745
+X-HE-Meta: U2FsdGVkX1/jLa133gAiUaeJf2dNyMDQ4LhLN4zDXgb9C6dvM8mKY1ZKrXfC/1nNmVFYnirUz0eXS/+7oxJepg3FkBoWU/zMurJw6/7HIgARdebT03DNoF2O+aKRv2/jR53tZQkJQXSFFiOnfEqyicg5t1aU1pxuaNmt2YIEKwXRVIxVxy+t+hmk0HnM8mEKnzEj5li5a0Uhteqi6WqROZv9pOMlZUE5d3j9p4so7q9+Rhweon0JR9m4uCXA9yDSAZwJNZChEuKeSMvEPML1ef9eVK9mRXgx8NjEvhD+dMovzOyHOzuuZk4nrnOCG3x38OOd+mG0g6JAUt+3C8a33QxdAgTRH/EERGFZhmnC3WIrF3arfhoga2XsTxIKnbcRGtvyKqB4QnTpfMtdJn2CziFJBhq7/pbvesiLP6ZaUVt9Czjc/UH8uroeY6TR+ORR4e9vJfG6XG54A1H4WJf2ghBRHlJvfO9tl/ZWXGZJPnCtWAGU3j7/2SC8leswUEQunHmTqVlGI9ZYsQk6gNIriGTIxHxvP6iMei6wB2/Kswg0xdFMhOTj+Ii+/MAxnMWg0t2ZhglIXUPN1JffPXi7iiN9JRy1nkJbwp+0cH7datQBMOGR1C1WwQrVT6zRbcjwAT5FVtQhtdUz7iJDe3C8xGK+3GGtEXZcQLZnHyt8MH5e3OeVb8xlQA9TRWBfQz+PkvF7uyI0hUeoLKkSXrq/IJq62n2qqSv2ErGLOHvJ66mpSQL4dLjYUJ+MDm9oE/VDgYAND0ig4RO07gZj2RFxrdVR7jocQdz9CL0F/0AdYeK7SDTagxXZK1L0ZrVkZRa7YrpFYUMklegTwDZNZ4xCn+bZw+8Mt2dWc2tlFRNeZfA4sLvCCioSqPttR8qRiSqZe7oECzzw390LGsZt2qKN02QJiH8caVJIN/iWGwOiTIZh773L0BwVX+sMy1pkQuraizCJGi9uZuId5+poDAW
+ xYdTocW9
+ L85Y+V4breecjK+1wqD0aOUO4xxZC9B4ABKfynUNCrjEv96E+7Ji4Y/FeuuvaEikJ7o75k4oVI0dYFN9v3tcu3hnzbJXNKLODt+20vvI59Mc3LWW6PJfLclM+0QNvuK+czcDktyH1Yl0a83u2hVEiZQntl1k1ZRBY2S/VIDKhUCwxoaXCDWDwsrlD3PrVoZcqsWFSUeMLt/GTjgl8d2OHRsuXQTBpBSLdrFm9X+LwyKLRqhIcbacrgtep/wUJNXWp8FttEWj3hjFMEd4nmaiPDlhpmrGozxROMtF+SZvozwc8Jk/qmuaA2SEnjsWz1SedTnEwDisA0/7Ut1Z1qiI17r5aHfsOEOWMCxl1DgLejszojzvgY9/RNxvu0XHZWlqJgdfURcQkfkQRmZaMurcyT5n1EQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,17 +95,82 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Mon, Nov 02, 2026 at 05:54:05PM -0500, Tal Zussman wrote:
-> After some folio conversions done last cycle (namely ceph, f2fs, btrfs,
-> fuse, and page_io.c), there are a number of newly-unused page APIs.
-> Let's remove them and update comments as necessary.
-> 
-> Patches 1 and 8 are taken from the ceph writeback folio series [1],
-> along with tags.
-> 
-> [1] https://lore.kernel.org/r/20260810-remove-wait-on-page-writeback-v3-0-dd7531704f26@columbia.edu/
 
-For the series:
+在 2026/11/3 16:54, sashiko-bot@kernel.org 写道:
+> Thank you for your contribution! Sashiko AI review found 1 potential issue(s) to consider:
+> - [Medium] tools/mm/thpmaps: UnicodeEncodeError in vma_print() on non-UTF-8 filenames
+> --
+>
+> commit 5f793a93e6fde4bbef2fd7ad6b6bda119aa8b288
+> Author: Weilin Tong <tongweilin@linux.alibaba.com>
+>
+> tools/mm/thpmaps: handle carriage returns and non-UTF-8 filenames
+>
+> This commit updates VMAList.__init__() in tools/mm/thpmaps to open
+> /proc/<pid>/smaps with newline='\n' and errors='surrogateescape' so that
+> carriage returns in mapped filenames do not split header lines and
+> non-UTF-8 bytes do not raise UnicodeDecodeError while reading.
+>
+> Link: https://lore.kernel.org/linux-mm/20261101211644.c63a2028bbede0f763f41f80@linux-foundation.org/
+>
+>> diff --git a/tools/mm/thpmaps b/tools/mm/thpmaps
+>> index a1a9bc30514f3..f89568bd499ec 100644
+>> --- a/tools/mm/thpmaps
+>> +++ b/tools/mm/thpmaps
+>> @@ -196,7 +196,8 @@ class VMAList:
+>>       # instance to receive VMAs.
+>>       def __init__(self, pid='self', stats=[]):
+>>           self.vmas = []
+>> -        with open(f'/proc/{pid}/smaps', 'r') as file:
+>> +        with open(f'/proc/{pid}/smaps', 'r', newline='\n',
+>> +                  errors='surrogateescape') as file:
+> [Severity: Medium]
+> When VMAList.__init__() opens /proc/<pid>/smaps with
+> errors='surrogateescape', non-UTF-8 bytes in a mapped filename are decoded
+> into lone surrogate code points in vma.name.
+>
+> In default (non-rollup) mode, do_main() passes each VMA to vma_print():
+>
+> tools/mm/thpmaps:do_main() {
+>      ...
+>                          if args.rollup:
+>                              ...
+>                          else:
+>                              vma_print(vma, pid)
+>                              stats_print(stats, vma_anon, vma_file, args.inc_empty)
+>          except (FileNotFoundError, ProcessLookupError, FileIOException):
+>      ...
+> }
+>
+> And vma_print() writes vma.name directly to sys.stdout via print():
+>
+> tools/mm/thpmaps:vma_print() {
+>      print("{:010d}: {:016x}-{:016x} {}{}{}{} {:08x} {:02x}:{:02x} {:08x} {}"
+>          .format(
+>              pid, vma.start, vma.end,
+>              'r' if vma.read else '-', 'w' if vma.write else '-',
+>              'x' if vma.execute else '-', 'p' if vma.private else 's',
+>              vma.pgoff, vma.major, vma.minor, vma.inode, vma.name
+>          ))
+> }
+>
+> Under standard UTF-8 locales, sys.stdout uses errors='strict' by default,
+> which rejects lone surrogates. Doesn't printing a VMA with non-UTF-8
+> filename bytes in vma_print() still terminate the script with an uncaught
+> UnicodeEncodeError unless sys.stdout is also reconfigured (for example with
+> errors='surrogateescape' or errors='backslashreplace') or vma.name is
+> sanitized before printing?
 
-Reviewed-by: Vishal Moola (Fractile) <vishal.moola@gmail.com>
+
+Thanks for the report. I reproduced the failure under en_US.UTF-8.
+I also confirmed that valid Unicode filenames fail when stdout uses
+strict ASCII encoding.
+
+I'll address both output encoding cases in v2 alongside the smaps
+reading fixes.
+
+Thanks,
+Weilin
+
+>
 
