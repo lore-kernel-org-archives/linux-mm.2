@@ -1,83 +1,84 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93CE9606A32C
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 17:01:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 325A0606D82C
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 17:04:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=IuGtwCYS
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=VYQ/jJ6O
 Received: by kanga.kvack.org (Postfix)
-	id 99C5E6B05B9; Tue,  3 Nov 2026 12:01:08 -0500 (EST)
+	id 1633D6B00EF; Tue,  3 Nov 2026 12:04:10 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 979AE6B05BA; Tue,  3 Nov 2026 12:01:08 -0500 (EST)
+	id 13B4C6B05B1; Tue,  3 Nov 2026 12:04:10 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 889BA6B05BB; Tue,  3 Nov 2026 12:01:08 -0500 (EST)
+	id 052796B05B2; Tue,  3 Nov 2026 12:04:10 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id D6CC06B05B9
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 12:01:07 -0500 (EST)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 51DA5404CA
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 17:01:07 +0000 (UTC)
-X-FDA: 85394422974.23.26838CC
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id C7A0D6B00EF
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 12:04:09 -0500 (EST)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 60499160497
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 17:04:09 +0000 (UTC)
+X-FDA: 85394430618.24.A3B94FE
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 70F5640010
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 17:01:05 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IuGtwCYS;
-	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf01.hostedemail.com (Postfix) with ESMTP id 80F814000C
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 17:04:07 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="VYQ/jJ6O";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793725265;
+	s=arc-20220608; t=1793725447;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wqUvTXfukWXNzOCriNVHhFLZ147TTmxYwIoKaQEo0dQ=;
-	b=WM8MpxWwwjc2EACic/AQRqm1Y5v0ZuEww7F/WUcXmSid9sK7DsH5Wj11siiDwE/1/sGByH
-	UI+VUfvsRhU9MXkhz9FyXcH0r2bqftwPE5fGLhjZbJxdmpuHvC0TS2dz5cSsz8tg6Fu9gq
-	ok7votW3ZRGzpBlcx+y98Gj4iW97+dc=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793725265;
-	b=hn6KrKsAobQwuaAg4T6NH1AEwWUoeW3mkjtEszgge9w9Zmf7MLJ0ZCSQDxjYVkzeT92Hdf
-	J+fmgUNWfoqn5NS3YWv9j8xDQ03H5e15gOrvRIp0LReANFGCvdT1a8SSWUyicvLnLx2HJ+
-	4Lqfz17nz7YIySvx+EmL8a6wFadEOnE=
+	bh=bEnfqIn1d5BmxBfGTOzDtpPMnd7ZSc057uWCU5mMqxc=;
+	b=vxjpdqulNgkdxz+94pLN5JvLpgMLgFHCdx3/zT5S8qKnaYiWP4Yt6qhRe+lsj/X/LKjDtp
+	AgfqXKwB2CdpbzmwDlCD/XnwTvPgfhb9znroCQ5K0wqVgtDT7dCXONwQ14/W/0X+yV8UEy
+	f8gn46eVT8U4CtkxQwBVLBFhFSmN6Q4=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IuGtwCYS;
-	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="VYQ/jJ6O";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793725447;
+	b=8Mv1BrD+sXCjCk5xxNnZnYjfRUhMcZ+aqXvqyHMNz31oJCrsBdF+x6/ROUoy33/83Hgtox
+	oMyRATGvMfW2Noh4gnV4MNi2QXP40QwmzxcNH7RmNVuJdcSbLlm1DUklJlFFQpuprlIdps
+	Bt94SrW6nMxcuu4JdzCkRBgtQbsDZSY=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id B45BE60136;
-	Tue,  3 Nov 2026 17:01:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF1A41F000C1;
-	Tue,  3 Nov 2026 17:00:59 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id E336760416;
+	Tue,  3 Nov 2026 17:04:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C21D1F000C1;
+	Tue,  3 Nov 2026 17:04:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793725264;
-	bh=wqUvTXfukWXNzOCriNVHhFLZ147TTmxYwIoKaQEo0dQ=;
+	s=k20260515; t=1793725446;
+	bh=bEnfqIn1d5BmxBfGTOzDtpPMnd7ZSc057uWCU5mMqxc=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=IuGtwCYS8X5aygLJmD5gCSCrg4nEfgzGqpox6wW6mjjUVvWzLybK67dvHxyGOqdEH
-	 yeU5ZpJeMqVbVO03qEMAxxIOlobDgpA/jxoT4cpv1JkQPeioCLBIM43pC+Tls5I9wp
-	 v2y73whOt5ZWNRVIMFC4rbNrEfZu50SkCCKFHANhUXGWHKlLSn4/EQj4VaDavZFiPs
-	 oB8HOPcNvHfi0JokBTShLxYv8Li3O6kkPi94E2duvwn6AvmFq63TYtR0Xwap9PGWIC
-	 3Jtpp5fHN0DXSL8l1VjX+sYw43NzlHlINi2M1zH8czg55i8ahvmATgu78aZPkcZ1e7
-	 2mWeWLfA4ahuw==
-Message-ID: <0f7a599b-0b22-442b-bfb3-435a85abd550@kernel.org>
-Date: Tue, 3 Nov 2026 18:00:56 +0100
+	b=VYQ/jJ6OVQ6W1XY81dONcqltFtpUGJBaOQM0hKv7qY0ir4Sh4jNP4dSLNxeb3Bn24
+	 3Gv3g//UQ3kMbSr3HY4r+ndXng9fr0XXATyj1QaloIIbhkEzR5HTkmrP4Vcse8kpo0
+	 RTB2wy5BbMTchXYcF7zXOxaO2izeHvjallY/LhVKnRgY4MCXgiOreh4DHikVTYMIH7
+	 xIrQkanKaPV9qzCyiorwidm/pPyKmNuKQzY8w74z8WHp2+YI54x87sOYTLGwXlsu6W
+	 4akm0drymwFocuJZNvWJsm6RYg4z+p1f++nr8BKhQBJ+tBiXfTe4G0FjPzTupcUcSS
+	 h6TlpN/m9hUIg==
+Message-ID: <e610aa21-4d35-4d9d-8754-bbfdec57a9a5@kernel.org>
+Date: Tue, 3 Nov 2026 18:04:01 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 4/4] mm: gup: batch PTE-mapped large folios in
- gup_fast_pte_range()
-To: Yeoreum Yun <yeoreum.yun@arm.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-Cc: Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
- Peter Xu <peterx@redhat.com>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Andrew Morton <akpm@linux-foundation.org>,
- Rik van Riel <riel@surriel.com>, Yuan-Hao Hsu <aa9736195201@gmail.com>
-References: <20261102-refactor_gup_fast-v2-0-bc1ac018c834@arm.com>
- <20261102-refactor_gup_fast-v2-4-bc1ac018c834@arm.com>
+Subject: Re: [PATCH 1/8] mm/gup: break out gup_fill_pages() helper
+To: Rik van Riel <riel@surriel.com>, linux-kernel@vger.kernel.org
+Cc: Andrew Morton <akpm@linux-foundation.org>, Jason Gunthorpe
+ <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
+ Peter Xu <peterx@redhat.com>, Suren Baghdasaryan <surenb@google.com>,
+ Yuan-Hao Hsu <aa9736195201@gmail.com>, Christoph Hellwig
+ <hch@infradead.org>, linux-mm@kvack.org
+References: <20261102193026.3860700-1-riel@surriel.com>
+ <20261102193026.3860700-2-riel@surriel.com>
+ <df9c504e-e62a-40c0-a513-e8b8c758dd57@kernel.org>
+ <3a7d12b52a5de61277842f2cca0dd90d42728135.camel@surriel.com>
+ <856ed0da-d806-4f2e-95e7-f276f2408e8d@kernel.org>
+ <4ffa2c82c538c12447d48fee2532f67c35f7eab7.camel@surriel.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -124,22 +125,21 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20261102-refactor_gup_fast-v2-4-bc1ac018c834@arm.com>
+In-Reply-To: <4ffa2c82c538c12447d48fee2532f67c35f7eab7.camel@surriel.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 70F5640010
-X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
-	version=4.0.1
-X-Stat-Signature: zi5fhbmdtxtgere5bbsn5ccqt4ejqecx
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 80F814000C
+X-Stat-Signature: on4jw9ctc3ary5npdgpuexnerhkw5fdo
 X-Rspam-User: 
-X-HE-Tag: 1793725265-113463
-X-HE-Meta: U2FsdGVkX19UtsNnD3JRjON1Bgeao014Xv0XTjQL1kyHP9TkWLcZAwp+2IAnxcX1OcEb6s1q4g3mUoGR2RJ6SLuWDeVKMaZ1TVa98ed9cEyzEaXXx9IdsJ6hkw2LZ4KgWVKI+J2j8wT6a615ZhgCHvQ4AAtyUhGps5xbmHMTQR5CPY9/YG/gqXVcoNsZneSfueow7jOr+jnQu9JyBejS/cCI5qW5nRE7D/K/IGz5urUkA2lsJI0I8V3si+gT8JIPofAHHyIU1jDtqOei4SiRKkbSxEPQZPGKQkSSzKPBzSDKz0kd8927d+DbUiT+Tmo3T7gGjY1EMdM1fBvgIpWqAA5zJ+zM8bAxM3u11RqWimmtKDNr5XeXWThT/aEH13+KB88wL6OoGiUjbcAYmiuK7tOeGipdcixTjFonUr6sq0lWEW3SOH5XFkHuiKFH06a+f1WPW6A85f0iotL0SiCMWTprmCdk6HlX9xf8rV9pNmeR6HzNoHgEs9pgDMixwu1KxqzZD2wIC/g+Gt3PgvnkcRog3BA1Z8MoFJcR/K+NxlzyO51dCCq/ctj5HsFsZ7h6ADWslPKS0dosDmPmpmQGIEB9ZisAx1Bb3lkwdGvWYOwR+zaVMmgq3OtSnzwOrSysmTEfY2K4hGgG53yNPP1rZjqhJKLhxI0mqzgEUOwKaQJ6U/msU2fM5mqQV7wVBWnygEwS48PMCj7H/GlkxQluzjFYnz5LiN6EiFcBYNxfaWAQkNZEFjOBryrM+WmqUgtU2Odskf48C8ndg354TSLvgYkhMDYZWNUb6jt0H0UNM2c3fGNSRBO+6UPjS+HuLnmXYw4KdMxkU6rW7RA5pmZraEAqap7zedkPOrcTNOb1waEL402WFh5fbD95FVJ74ah9OJMdjYHTnSN+WsxdciHWbYV8+JCgHQYKe0orgHrmtppoDsz0LqCgGzx3p18buE2VIn8vl/sLlgnn+UgUDkk
- CckEOOZP
- 5yWNNIIaOoWmjo+hhz47vDl7ytSDDfyDh4urg4hEQIvg5ByOfNH9ZEPBjZXiNfx75p1sdBFflrLBfEIFQmlJbT84Pk/E20DP7mF39FY6nhc6tGEqD5Zonj0z9fBZxJwnnOTYze4fCIcQa59PeD87zaP/qIV0coDV0sfGbDTFOqa7JDWpr97AVf/lS/1ZZdFv+PYIgXVpN6gNZ+wjb/Z2mY5lSYIF6zIN5f6lOI6fpBAl0zZb/WAx0uFn5rGI/+8cJYqYQTdLrLug1ROXaZzxrGImJ0wk6nWxPqEfvKd/lXhHNKKMZSaHaDFTtg9ou9z1xPjEV1q3eSpnj58KujyqVUeCaTxL6gMaoIGAyUe5+xka8plqnOcrNj0bKn1A4Ng/TtP00gtJK8HBA50I=
+X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
+	autolearn=no autolearn_force=no version=4.0.1
+X-HE-Tag: 1793725447-842798
+X-HE-Meta: U2FsdGVkX18c9PMjI3LWs+HmYz+TOxpuNNU+u+YJuf1ITZUBOyMpoxYJQJOGOr0LiPE4gs88H1LqoeWhzXU3633woQ+1Z3kxsuqE+mhPvQFqiSSa3ndy5Mba+jq5AD85i8Z5GxSPG/X/kQkCYACbvJZzaeoXPuh2q+fklIh2A7WJu49r/psACBw+nQp+kae+cV05gbeEtcZKsXkf+BZTW/Bi1ggMinAwVOZ5Ixk7NAuXh/1ZLFZUYiYCZT+EZHOhuGVtsYEv/JFd1h14PM/kqdNkmkWuO+L1vsyb3aYKv4h8ACzY8mvTbI3w0+6fwzOxuw1dzb2C7Bm5HOLffPG3nLJMWMQLlnS+H0mauYrF5UtUw3BRwHNZD0ZSYYOC7dqC2jxYyLD/tq82FgPxXAAxp4o7cYZJYTu3ZWLN1lgvegZsQ7UCF7TeOWrL+R09e6v5Mnmff/7nc1NX9zQniWqIT/BIGZKB5j9mdTeCmjqn6V9wsMlUBnXVZARsMI8NE2xfEXVJzNBDtVEAbR4hragCxdueoYPYjFK7EMtl1CTDC152JfC+8Jk8Gfql3Krz3gJyhq/dFjUBnCeWOenRE0KL+NHmh5t1GjmG+IahOa17fW8hkmAaruGb4lz57m7h9Yks4DOv8BNAXQlKpU9wn5mNt7UV+1E44d9VHsRGLNTmx0pOJTS0RimOMZjS1O2KJn/d9aitMOIRes6aSbZpEgrLw6Smdn+YUftM+FCtKBG4nyG0Lb0diXyKq2Ibj5+IGgEUs99vbXa0f6esCzqqxl0AprejY7n1rtgU2auM806NS6Zw4GzQIqgwdwbhbqjDbrYYnyIWUjO05/prFJYvtA+jPbYt3FIutp4Jl79P3IgbQDmio7ptAAYiH5VlgLgPS2/HHvwxGK1QMDBhA9NDQyP9U17X0rgC/KiAA/ceXPRhx67KnVz1lkUU62vD5aAivjj0613o2qYu+iReqzBIZNb
+ d7G0n19z
+ jYPshvt9qA83xszBMgdp3SdDVVfDpiMa3k9roYODolj6ezgVaEeh7vu7Gx9PjgV5h+D+7j4sc5MS+CUDAK7yEf6wXjEaKKPNL3y/agaNjG4PqwXIYSIcJ0sOjvge/pr0VV024LajluZQxz0sudJC9tBtkfFCTJyzK7nYbZRgR7ff2aBWj7OQMe7QZZZynKy92x2VK8mz8oRG32PgQGqky/gnrwuNg3ogdrh5s5JTy8obzbPm2/N1BHGcyRquEiDKpMhpQlTN4Ho70/dGYYsEy+BS5+DGt36LjH9KfCPHfGZZ9225rayg39hgUMWoHFLmexVZFiP6DDOOXwac=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -148,182 +148,88 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/2/26 12:30, Yeoreum Yun wrote:
-> GUP-fast grabs a PTE-mapped large folio one page at a time.  Every PTE
-> costs a try_grab_folio_fast() (a refcount cmpxchg, plus the pincount
-> atomic, a full barrier and a node stat update for FOLL_PIN), a
-> gup_fast_folio_allowed() and a folio_set_referenced(), so a 64 kB mTHP
-> pays sixteen of each and a PTE-mapped 2 MB THP pays 512.
+On 11/3/26 18:00, Rik van Riel wrote:
+> On Tue, 2026-11-03 at 17:39 +0100, David Hildenbrand (Arm) wrote:
+>> On 11/3/26 17:29, Rik van Riel wrote:
+>>>
+>>> faultin_page_range() and populate_vma_page_range
+>>> both call the GUP code with a NULL pages pointer.
+>>
+>> That's not what I meant. I know that we have GUP users without
+>> pages array.
+>>
+>> In the code change you are performing the check is not required.
+>>
+>> That's why there wasn't one in the first place.
 > 
-> The users are the hot ones: iov_iter_extract_user_pages() pins every
-> O_DIRECT buffer through pin_user_pages_fast(), io_uring registers its
-> buffers through it, and so does RDMA memory registration.
-> With mTHP those buffers are PTE-mapped large folios.
+> It looks like 2 of the 3 callers of gup_fill_pages()
+> check for pages existing. The other does not.
 > 
-> After the head page has been grabbed and verified as before, extend the
-> run to the following PTEs that map the next pages of the same folio
-> with the same protection bits, take the remaining references for the
-> run with try_grab_folio(), and fill pages[] from the run.
-> The PTEs of the run are read while the reference on the folio is held,
-> so the folio can neither be collapsed, freed nor split underneath the scan.
-> A read-only run of an anonymous folio stops at the first page
-> that gup_must_unshare() rejects, so the per-page exclusivity guarantee for
-> FOLL_PIN is kept.
+> Should we just have the check in this one place, and
+> not depend on the caller?
 > 
-> folio_pte_batch_flags() does the scan.  It reads the entries with
-> ptep_get(), which is not safe without the page table lock on
-> CONFIG_GUP_GET_PXX_LOW_HIGH (x86 PAE, mips32, sh) or with arm64 contpte,
-> and GUP-fast reads every PTE with ptep_get_lockless() for that reason.
-> Add FPB_LOCKLESS to make the helper do the same; it is inlined per call
-> site, so the other callers do not change.
-> 
-> The order-0 path keeps its instruction sequence.  The folio flags are
-> tested before folio_set_referenced() on purpose: a load of the flags
-> right after that locked instruction cost about 25% on order-0 pages in
-> the gup_test benchmark below, and reading them first brings that path
-> back to the baseline.
-> 
-> gup_test ioctl over a 256 MB anonymous region, FOLL_WRITE, 65536 pages
-> per call, median of 15 runs, two baseline boots / one patched boot, on
-> an x86-64 VM:
-> 
->                        get_user_pages_fast()   pin_user_pages_fast()
->                        before       after      before       after
->   4 kB pages           849/789 us   783 us     1174/1138 us 1094 us
->   64 kB mTHP           812/811 us   126 us     1215/1113 us  188 us
->   1 MB mTHP            799/774 us    59 us     1185/1077 us   64 us
->   2 MB THP, PTE-mapped 803/786 us    57 us     1159/1120 us   58 us
->   2 MB THP, PMD-mapped  42/40 us     40 us       46/41 us     42 us
-> 
-> fio O_DIRECT randread of a null_blk device (CPU bound) with the I/O
-> buffer in 64 kB mTHP, median of 15 five-second runs:
-> 
->   bs=1M psync                 126.2/125.6 GB/s  ->  220.6 GB/s
->   bs=1M io_uring, iodepth 16   71.2/71.6 GB/s   ->  112.1 GB/s
->   bs=64k io_uring, iodepth 16  50.2/50.7 GB/s   ->   60.1 GB/s
-> 
-> IORING_REGISTER_BUFFERS of 1 GB, median of 15:
-> 
->   64 kB mTHP           6179/5998 us  ->  1599 us
->   1 MB mTHP            5790/5801 us  ->   893 us
->   4 kB pages           7173/6741 us  ->  6763 us
-> 
-> Signed-off-by: Yuan-Hao Hsu <aa9736195201@gmail.com>
-> Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
-> ---
->  mm/gup.c | 46 +++++++++++++++++++++++++++++-----------------
->  1 file changed, 29 insertions(+), 17 deletions(-)
-> 
-> diff --git a/mm/gup.c b/mm/gup.c
-> index 49681f63950ec..94a9dc45e5953 100644
-> --- a/mm/gup.c
-> +++ b/mm/gup.c
-> @@ -2901,7 +2901,8 @@ static unsigned long gup_fast_pte_range(pmd_t pmd, pmd_t *pmdp,
->  		unsigned long addr, unsigned long end,
->  		unsigned int flags, struct page **pages)
->  {
-> -	unsigned long nr_pages = 0;
-> +	unsigned long nr_pages = 0, nr_batch;
-> +	struct folio *folio = NULL;
->  	pte_t *ptep, *ptem;
->  
->  	ptem = ptep = pte_offset_map(&pmd, addr);
-> @@ -2910,7 +2911,9 @@ static unsigned long gup_fast_pte_range(pmd_t pmd, pmd_t *pmdp,
->  	do {
->  		pte_t pte = ptep_get_lockless(ptep);
->  		struct page *page;
-> -		struct folio *folio;
-> +		unsigned long i;
-> +
-> +		nr_batch = 1;
->  
->  		/*
->  		 * Always fallback to ordinary GUP on PROT_NONE-mapped pages:
-> @@ -2937,19 +2940,21 @@ static unsigned long gup_fast_pte_range(pmd_t pmd, pmd_t *pmdp,
->  			goto pte_unmap;
->  
->  		if (unlikely(pmd_val(pmd) != pmd_val(pmdp_get_lockless(pmdp))) ||
-> -		    unlikely(pte_val(pte) != pte_val(ptep_get_lockless(ptep)))) {
-> -			gup_put_folio(folio, 1, flags);
-> +		    unlikely(pte_val(pte) != pte_val(ptep_get_lockless(ptep))))
->  			goto pte_unmap;
-> -		}
 
-As discussed, we should really add some more details why each of these
-comparisons is required. Let's do that in a separate patch.
+That should be spelled out in the patch description.
 
-(I recall the pte check is required for concurrent PTE changes like
-unmap/protection etc and the pmd check is for THP collapse on architectures
-without IPI during TLB flushes)
+The change as it stands in this patch looks useless :)
 
->  
-> -		if (!gup_fast_folio_allowed(folio, flags)) {
-> -			gup_put_folio(folio, 1, flags);
-> +		if (!gup_fast_folio_allowed(folio, flags))
->  			goto pte_unmap;
-> -		}
->  
-> -		if (!pte_write(pte) && gup_must_unshare(NULL, flags, folio, page)) {
-> -			gup_put_folio(folio, 1, flags);
-> -			goto pte_unmap;
-> +		if (folio_test_large(folio))
-> +			nr_batch = folio_pte_batch_flags(folio, NULL, ptep, &pte,
-> +							 (end - addr) >> PAGE_SHIFT,
-> +							 FPB_LOCKLESS | FPB_RESPECT_WRITE);
+Although trying to fill something that doesn't exist is a bit weird.
 
-Batching after the checks above, when we already stabilized the folio by
-grabbing a reference should indeed be correct.
+But if it makes the calling code nicer, sure.
 
-Concurrent collapse should already see the raised reference and back off.
-
-> +
-> +		if (!pte_write(pte)) {
-> +			nr_batch = gup_unshared_pages(NULL, flags, folio, page, nr_batch);
-> +			if (nr_batch == 0)
-
-!nr_batch
-
-> +				goto pte_unmap;
->  		}
->  
->  		/*
-> @@ -2958,16 +2963,23 @@ static unsigned long gup_fast_pte_range(pmd_t pmd, pmd_t *pmdp,
->  		 * see Documentation/core-api/pin_user_pages.rst for
->  		 * details.
->  		 */
-> -		if ((flags & FOLL_PIN) && arch_make_folio_accessible(folio)) {
-> -			gup_put_folio(folio, 1, flags);
-> +		if ((flags & FOLL_PIN) && arch_make_folio_accessible(folio))
->  			goto pte_unmap;
-
-The label is now slightly misnamed.
-
-> -		}
-> +
-> +		if (nr_batch > 1 && try_grab_folio(folio, nr_batch - 1, flags))
-> +			nr_batch = 1;
-> +
->  		folio_set_referenced(folio);
-> -		pages[nr_pages] = page;
-> -		nr_pages++;
-> -	} while (ptep++, addr += PAGE_SIZE, addr != end);
-> +		for (i = 0; i < nr_batch; i++) {
-> +			pages[nr_pages + i] = page + i;
-> +		}
-
-No need for {}. Rik will replace that with a proper helper later.
-
-> +		nr_pages += nr_batch;
-> +		folio = NULL;
-> +	} while (ptep += nr_batch, addr += nr_batch * PAGE_SIZE, addr != end);
->  
->  pte_unmap:
-> +	if (folio)
-> +		gup_put_folio(folio, 1, flags);
->  	pte_unmap(ptem);
->  	return nr_pages;
->  }
+>>
+>>
+>>>
+>>> However, now we have a situation where:
+>>> 1) Only a few oddball callers of GUP need the dcache flush, and
+>>> 2) Those need to do their OWN flush after a write, and
+>>> 3) The dcache flush is not needed for most other GUP callers.
+>>>
+>>> We could do two different things here to solve the
+>>> asymmetry.
+>>>
+>>> Either we could add dcache flushing to 
+>>> unpin_user_pages_dirty_lock(), and make sure all
+>>> the callers that need to call that function, or
+>>> we could move the cache flushing to the GUP callers.
+>>>
+>>> Then we have KSM, which uses GUP, and which would like
+>>> to see the latest page contents...
+>>
+>> It's all very inconsistent. And undocumented. And error prone.
+>>
+>> Could we have GUP-fast also flush the dcache for consistency or
+>> must that only be called with the PT lock held?
 > 
+> I think we could, but it does not look like any of
+> them need it.
+
+Sure, but it makes the code more consistent and from a GUP PoV easier to understand.
+
+> 
+> Out of the 83 callers of gup_fast, many DMA into the
+> page, and the drivers do their own flushing. Also,
+> flushing before the DMA write doesn't help.
+> 
+> KVM, Infiniband, and others pin the pages, sometimes
+> for longer periods of time, and either flush around 
+> their reads and writes, or run only on architectures
+> where we don't need to.
+> 
+> The others access the page through the user's own
+> virtual address, which again does not require a
+> dcache flush.
+> 
+> Only a small number of slow GUP callers need dcache
+> flushes.
+> 
+> It may make more sense to move the cache flushes
+> all the way out into __get_user_pages() and away
+> from the follow_page_mask() call chain, so we can
+> maybe merge more of the helper functions between
+> slow GUP and fast GUP.
+
+That's likely more work, can you look into that?
 
 
 -- 
