@@ -1,98 +1,93 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F40C0606A334
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 18:18:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D0BF606A33F
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 18:19:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=l07Usqya
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=fq1rfYgK
 Received: by kanga.kvack.org (Postfix)
-	id 06A1F6B00EF; Tue,  3 Nov 2026 13:18:11 -0500 (EST)
+	id 2B7196B05B2; Tue,  3 Nov 2026 13:19:31 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 01B786B05B1; Tue,  3 Nov 2026 13:18:10 -0500 (EST)
+	id 28E4E6B05B3; Tue,  3 Nov 2026 13:19:31 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E4C1F6B05B2; Tue,  3 Nov 2026 13:18:10 -0500 (EST)
+	id 1A53F6B05B4; Tue,  3 Nov 2026 13:19:31 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id BFAD26B00EF
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 13:18:10 -0500 (EST)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 4F334A80F3
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 18:18:10 +0000 (UTC)
-X-FDA: 85394617140.06.03BCF8F
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf06.hostedemail.com (Postfix) with ESMTP id B2D3618000C
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 18:18:08 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=l07Usqya;
-	spf=pass (imf06.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	by kanga.kvack.org (Postfix) with ESMTP id EAA436B05B2
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 13:19:30 -0500 (EST)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 7AA7D80521
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 18:19:30 +0000 (UTC)
+X-FDA: 85394620500.04.437090C
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf02.hostedemail.com (Postfix) with ESMTP id EE1B780002
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 18:19:28 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fq1rfYgK;
+	spf=pass (imf02.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793729969;
+	b=ayiIpwFL0qTTNeonybl48MnM8ldqZuNpbop+loluP5WKdClTd5eoPjIIN26tPhI2Xbm4Sm
+	p8uWnP463iHwKpzqyKXfBVCe/Kvx/wU5iJOXW8UaakzpfMdm5g78YAx25prWOVFT6n42t5
+	xjT1b6TGTk+O1uCfPLKiy7eSGKQ8qPo=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793729888;
+	s=arc-20220608; t=1793729969;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=DSR0F9dYIX2PVgUgo+faFrW6sPidANVelznumvDC+iU=;
-	b=EAgBIApgOw0umHSDuFRTDnYplhFdZ/ZiJwyKMOJaycXc+J50usgdUKZ1px37WqlKqyK1Pm
-	aNZRppDIoCXUODSWA5r9IP8htUA1mOnBeyIleHWpmM/d6HELK1qv/cA6JjJ1btG3d+110D
-	Eo/J2Xu5WUgCbdjb1OnC3sabs8qgHA8=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793729888;
-	b=E/5JZsDWMh+ShJwq48YYFvM6Ku7KTjgNAgOJQVtjpozHVKHh3VVADbKOPFmmJodjI+7fyh
-	HZNXEYS8RgBcnu6U9TkTAETl01G6wkon/gZAUdTsx118Qn1+Ec0KWtqJYgVkLuwHbuFCsW
-	uNuhBKhthleNzS85TuENRu4Ef5ztdJg=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=311d7n2dqnSPEAnLl6q87tl5I8DFqOkQSr5KKtyq8g8=;
+	b=DVAgHFoCM9AN/zNCcfOM5xxsbANpAx/xIwlUBv4rYtiY4RPpwvGAO8PrDcTYotlklaiU08
+	8PwlMgHR0xWtWYJIySZcSZD0qlRPKyKUaTHdd3y3O2jj73kXMhNH/oNLQ/8ay8NzNBlrK1
+	E2R4a7db6y30ZZUgDcmAEJCc4z8D8Uc=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=l07Usqya;
-	spf=pass (imf06.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fq1rfYgK;
+	spf=pass (imf02.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 33BDD601FF;
-	Tue,  3 Nov 2026 18:18:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D9791F00919;
-	Tue,  3 Nov 2026 18:18:03 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id D903C41625;
+	Tue,  3 Nov 2026 18:19:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60C0E1F00A22;
+	Tue,  3 Nov 2026 18:19:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793729887;
-	bh=DSR0F9dYIX2PVgUgo+faFrW6sPidANVelznumvDC+iU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=l07UsqyaJzFG7ahJtea0kkm7vIGcocBIXoapK09NCgQVLOetoXvpcBgb3I2gf4aAJ
-	 Zz+/mrV8BT7jEJuET0svSSpZUAHTOXx8GCKqSx9MfTfhkQVuVOWsX/XvLE0J3csxpg
-	 sjX17buevItZO6odX3QytPXCFhPfBsVdygyApnYJ/ORsrQn6RVOI7GoFi9N0/7RTj/
-	 GMBa0Gqt/MiiA7O+EQNc65lhvT3i7fv7o8YIt9JSwRSNhaLsinK0HLiQbSUYCdw3zj
-	 B5gBnNjLf4+2h0Hhn7cbzg3/k4o678sGKD6KmOhYYCnExsL2jd5JAyKvx46Edht78H
-	 P9a/IFOnTLxag==
-Date: Tue, 3 Nov 2026 20:17:59 +0200
-From: Mike Rapoport <rppt@kernel.org>
-To: Sasha Levin <sashal@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Peter Xu <peterx@redhat.com>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>,
-	linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] selftests/mm: uffd-wp-mremap: keep the THP sizes in
- unsigned long
-Message-ID: <auolVwDqg2rXAGmv@kernel.org>
-References: <20261103150232.291827-1-sashal@kernel.org>
+	s=k20260515; t=1793729967;
+	bh=311d7n2dqnSPEAnLl6q87tl5I8DFqOkQSr5KKtyq8g8=;
+	h=From:To:Cc:Subject:Date;
+	b=fq1rfYgKXk42I9ToJEzH73Q9X1IWBI2kJKuMUvrEQ77nSva0xnf9nltI88RY3onHu
+	 K7iTQ/pcQotwqKX+7eB0AZvkGVaT3W0tjqSbV3FTb4Jt7iDPVp1GaHjPjOmSVXazRT
+	 C+jVBJ++MckWwU4WdjJn1dxNX8WRr7TArZ027tWwy2SsBA4oOPMKHtsOoc8D5WYUhz
+	 qHAKOWBsViGGU4HsnJKHMIyNaIlJNkLendDJJZE9U5OcNxan2CFopA3mLqgMUa7Kqz
+	 G6FVmtWAeKYlO/H6YyJYIRAwQyFMwNvn/DkYO55naShWgbwsLnbCIEB9gfPUtMaR6w
+	 g59g4NhKrEQlw==
+From: Pratyush Yadav <pratyush@kernel.org>
+To: Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Pratyush Yadav <pratyush@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Samiullah Khawaja <skhawaja@google.com>
+Cc: kexec@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: [PATCH 0/2] memfd_luo: keep memfd frozen until finish
+Date: Tue,  3 Nov 2026 19:19:12 +0100
+Message-ID: <20261103181916.2462825-1-pratyush@kernel.org>
+X-Mailer: git-send-email 2.56.0.385.gac671c819a-goog
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261103150232.291827-1-sashal@kernel.org>
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam12
+X-Rspam-User:
+X-Stat-Signature: i8thopws9ojj88sgbtgbh4on8b1rf637
+X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam09
-X-Stat-Signature: o14fxkujxcijr46mmfbwa8kq6947m7in
-X-Rspamd-Queue-Id: B2D3618000C
-X-Rspam-User: 
-X-HE-Tag: 1793729888-988802
-X-HE-Meta: U2FsdGVkX1+asGK4DaNwjmUerlnXi4VUKfCLtA13ZnfeXve7D6MD9jGECxhWHeikfxmXGguJr9y+z5PrgNAAI9KZ3ayi31OA5N4GrfhcR1IBf73Bx+u4genfKYCrNzkRgLUSp1Dxv9JsL9LgnS/43SCnE9uaTMVQjtJlTDqLahpBELCsL8i4u5ACJ9M5DSPMlw219AFAiHhkRTI4IW0soK42oQSYN0kqup0ybLIjuCl5EwstgFh009RU7TxPjVxvmCJ+PBQWso7OXCq9Jvgnd5iZF46sAWcK+OpfXeDA4dOKr8z18lBPTNfWKKcoABVOJ4WR0yP2mJi8xNzS4/Ykr1/cnnPqQ1+0KZMkmPOhvoToXZcC4Z5p2zaMC4dc7MufEdlPVXlFrdnwbb8EsEHpFer45zQaHpQPVPVT0EuEKilxm/aq5l99BKWKlTfLveKzYyQj4F7kWhnnNfRarDngZdWG7vzuPQONouIYT0dR86UDafAP/K2D2No7rQ//qFyRE8AIQZydSXqmbm1BlxBy+g5KR3DQdzR9Tq5Hulls4EOq3deVSXIC94tJi5leYmS/Q1uCy6TUoLKKjq1Y6W+tV+B1cTF+dYMyXun0I/X0Yk1n1rDSznvjW/Ya4iXXYVd+yFOyM8he8IsP6xeUBO7sF9cq8n1OL8KH+jT0Y3UmpQAeTFXBWFrS1tU5PpOXTNrVq1sHuWbeBaWel3sB6PpNjIBuOCpK2KwbuoGLKVI++qvpso2eoyzLjHRLUTFavGxj29ilKEePGAZNZauflcDX3hDgL0UHVZ9kgbyygZjmp8e+5hGoJJiOIzEhB03E+Q/5ByzRpl7jYihf3UadsNC24eq6aa9ilZGaen1K8728dZdgyS//hTBROpizXnh99FEs2cGXVR0X7G57R5h3wgZTX958gHphogsyIhoyWPppIjrIbEPa89O5mV5UW5IYjrl5bBC9gdq9DqLdDcwQCi9
- UyR57ELc
- 923VSukztW+K0kRVRzTh5aImxOlivkblbcQQ+WADojKoPrZCdltsH8bwkirfSWGglLWH+uxRB9n+U+sLbZantgJvWCZa984zo3OBUFKOc7OjrnRIBDwXBXg/dluw2O4SHJjxuSjMYe/5dft0U2Sy4PlAfB7/0y6MCGf5ajGfmfpySG3vKQfPQfIGlCJzpHv6geGXvrvg7657v0mA2cPv1JxNQ1uD5zgC8o/1RgZO1Bp0JlF11kp2IBPRp1unYJKyIU115/cXZ2uFx360U0snL15cvVQ==
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_GIT autolearn=unavailable autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: EE1B780002
+X-HE-Tag: 1793729968-530653
+X-HE-Meta: U2FsdGVkX1+gQQJD5GJNOo2Ob4LFLzzIIdeKqrXqBRHk6cK45cirWErnDpJJCetZ2A9ICqQctmQQFL2ang3KHF8SDa6apOU8xGrB3io1Ed9bnvCNXUaXhuCz6WeCtwIEPWp8OKO496f+HJI86Sq/ffm/Vq4pqH8pGuaEhDUBaer5V2iirnlLvlVEhIx1VGp8XyKV94cbcaRancy6es+p9qeq/uLUh6+g/7AFimqdFmdYhTLMP75rppzHN5ESzanl8LIEl9gmTxyFBDaQg4buu5OwLGgnJ4EZguDiIpN4hXphvCPo0hh69C9Gx8hjtzEy3kDHHzwLP3MIxNE8xR4byCjQWH++5gfEIuG193lB+xpXPo+l9kDwJWDwTWcJZ0hYE9LFyrlxXU+xKovbK2x+UyD7/vUN9metOLoR+RwYUEJwZRKqOBJqC+aBaPsqjKVM2yLAZmliuzZDqe6OooTHKuP1cNp62Hdqeerc6SNqVXMH36PbhPkgPJNLw+qEFD7d+s4U9nbEBsYQI3ljNz2/mbxjI/U19k/2ApaSnt0Y7PZQRgLxYy3M3VGhv0KkuZ5ILSpM6KVyASKK1X424nRxXG+djGoIIEt8VWZO8RMREocGZfCPKhx3GcnZAbGy6KIWfh0Yi43SlUgk71fLeWx65J/AmONmCfMVk3mHfCUMZF1H1fsxq8Bu4Wgyf4nhP7/sjbzBWcEt2a1QNymhHUeh5RlfqFs6UQJn+0nDW+qqpvppVPehep9bujx5hTz/sae8iiVBe26EVl9lYWhsN+l1uqZYv+TXsIEARCt4AYNrOOvlVmfFH8PxPDhU1Ea0EuQ6F0Xiki5N+POxRQtLUPx6MYIxLmm4+0ALI+ZlRgHeU0ShsV+GWjhYKLE6RaEVpfJgujqqFTSyie793D65pg4TtYu3Mm0nLHauUdZVvdhf9CVDZBv3vRn6Hrwf6DLJry0+P6KemYhIR9vxa3UojZt
+ Sz4uR32g
+ 7jtWwigEPjOsFOuNrxANpWQc/SjML5zFBxa2/HlVZ+i3+g4qjv/frwsoqIHxWoaQhAMEexmRo6w4LIzrfrMB6fcGGWCWFsKD3JAmsVUKYiBAQse/Gp31sFJu+anPqiDZwq8Kr3lmK1OmedimecnCgPsqafl+9oFfefFMlWAfmoW3sNHzQzQ1D3KeZHQy8EvsAw2VuO8lsieHb8lPUVZeAUUG/I8v1HyHE+NSYs4XM9d84GXc3f6iWY8HOntIFVO2FYBmF4L8KPQRq9uNfecipx5iV5ne/b9z2QHghgOnWcqbFZIQmJasWpSmXH0pLcSmxQZB9HRqVDI4Pyrk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,59 +96,38 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Tue, Nov 03, 2026 at 10:02:32AM -0500, Sasha Levin wrote:
-> Commit 0020a1f5ca36 ("selftests/mm: hugepage_settings: use unsigned long
-> in detect_hugetlb_page_size") changed the sizes of the test cases to
-> unsigned long, but left thpsizes and detect_thp_sizes() with size_t. On
-> 32-bit architectures size_t is unsigned int, and gcc 14 rejects the test
-> cases that point at thpsizes:
-> 
->   uffd-wp-mremap.c:299:26: error: initialization of 'long unsigned int *' from incompatible pointer type 'size_t *' {aka 'unsigned int *'} [-Wincompatible-pointer-types]
-> 
-> Use unsigned long for the THP sizes as well.
-> 
-> Fixes: 0020a1f5ca36 ("selftests/mm: hugepage_settings: use unsigned long in detect_hugetlb_page_size")
-> Signed-off-by: Sasha Levin <sashal@kernel.org>
+From: "Pratyush Yadav (Google)" <pratyush@kernel.org>
 
-Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+Hi,
 
-> ---
-> KernelCI's 32-bit arm kselftest builds hit this. Built the mm selftests
-> with gcc 14 and gcc 16 -m32 (four errors in this file before, none
-> after) and natively with gcc and clang (no change). An i386 build with
-> clang runs and detects the THP sizes as before, up to the point where
-> the test needs root.
-> 
->  tools/testing/selftests/mm/uffd-wp-mremap.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/tools/testing/selftests/mm/uffd-wp-mremap.c b/tools/testing/selftests/mm/uffd-wp-mremap.c
-> index c48eaab8e75cf..fb5582ec5b201 100644
-> --- a/tools/testing/selftests/mm/uffd-wp-mremap.c
-> +++ b/tools/testing/selftests/mm/uffd-wp-mremap.c
-> @@ -15,7 +15,7 @@ static int pagemap_fd;
->  static int nr_pagesizes = 1;
->  static unsigned long pagesize;
->  static int nr_thpsizes;
-> -static size_t thpsizes[20];
-> +static unsigned long thpsizes[20];
->  static int nr_hugetlbsizes;
->  static unsigned long hugetlbsizes[10];
->  
-> @@ -30,7 +30,7 @@ static void check_uffd_wp_feature_supported(void)
->  		ksft_exit_skip("uffd-wp feature not supported\n");
->  }
->  
-> -static int detect_thp_sizes(size_t sizes[], int max)
-> +static int detect_thp_sizes(unsigned long sizes[], int max)
->  {
->  	int count = 0;
->  	unsigned long orders;
-> -- 
-> 2.53.0
-> 
+This series keeps a retrieved memfd frozen until finish. The main
+motivation is to let dependents like iommufd have a chance to acquire a
+reference. It also fits conceptually: finish is the point when the file
+should be back to "normal".
+
+Patch 1 allows keeping private_data from retrieve to finish. This is
+needed by memfd to keep hold of folios_ser, which it uses to give up its
+pins.
+
+Patch 2 does the main change.
+
+The series is based on
+https://lore.kernel.org/kexec/20261103172251.2348370-1-pratyush@kernel.org/T/#u.
+
+Regards,
+Pratyush Yadav
+
+Pratyush Yadav (Google) (2):
+  liveupdate: luo_file: allow keeping private_data from retrieve until
+    finish
+  mm/memfd_luo: keep memfd frozen until finish
+
+ include/linux/liveupdate.h   |  8 ++--
+ kernel/liveupdate/luo_file.c | 11 +++--
+ mm/memfd_luo.c               | 87 ++++++++++++++++++++++++++++--------
+ 3 files changed, 81 insertions(+), 25 deletions(-)
 
 -- 
-Sincerely yours,
-Mike.
+2.56.0.385.gac671c819a-goog
+
 
