@@ -1,93 +1,99 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12F80606A329
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 08:20:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08E92606A329
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 08:20:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kwvsNrut
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=QHK18UtU
 Received: by kanga.kvack.org (Postfix)
-	id 2A22F6B05B5; Tue,  3 Nov 2026 03:19:59 -0500 (EST)
+	id 143186B05BE; Tue,  3 Nov 2026 03:20:34 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 251DF6B05BB; Tue,  3 Nov 2026 03:19:59 -0500 (EST)
+	id 11C866B05BF; Tue,  3 Nov 2026 03:20:34 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 142646B05BC; Tue,  3 Nov 2026 03:19:59 -0500 (EST)
+	id 030DE6B05CB; Tue,  3 Nov 2026 03:20:33 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id E16B16B05B5
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 03:19:58 -0500 (EST)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id E3E1E120245
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 08:19:57 +0000 (UTC)
-X-FDA: 85393109634.19.46C5E6A
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 27F01180002
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 08:19:55 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kwvsNrut;
-	spf=pass (imf06.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id CE5686B05BE
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 03:20:33 -0500 (EST)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 54CC21A0335
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 08:20:33 +0000 (UTC)
+X-FDA: 85393111146.23.87C9E41
+Received: from mta0.migadu.com (out-23.mta0.migadu.com [91.218.175.23])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 33D891C0005
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 08:20:30 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=QHK18UtU;
+	spf=pass (imf21.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.23 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793694031;
+	b=hA+Y74qkekInbafkpDOJCS/bJlDuKBcp4u59qr2cWNEPy0+Lw4md+flotJk0sIOMaf+TD7
+	RQzQAHz8L5mwp1hnivUIHZN6f0CSUlkAFjN9EeSQPwqFh17MILHPuZkNv+78udyNk6H35a
+	uqu7805dRgmC7IG9lOHf9mJ14ism7GI=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=QHK18UtU;
+	spf=pass (imf21.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.23 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793693996;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
+	s=arc-20220608; t=1793694031;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=QV8OQbqEgAbxmMI7EXk6eiYDzzCN82f0lLhovGPvCRE=;
-	b=3R4oCdIXwTgji4XHrq9aLhS0R0nPTYYTYsU9Fhfay3oJlaWq7acFpxxmG+zcXJZvwo3H3k
-	QxAIQ7DIv8hnE8AhhME/NukYhKuU3M1Q6ghV9LUqtDaSKjy8+lTRravwB1EUNpCJr+oOVs
-	5X0S7g4sYFLj0RoZSuNeQJLT9HUgi8Y=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793693996;
-	b=FRAWIs6zW9G8mqbiBifgD7MP+7emv+2uMIYXopKBwNZIQivinemWNqOB3MQFvISAGqVB5i
-	2dtxg+Gir7lxJwpGJQ1BqCnTiv+1MlGV3NcHiZIh1g9jDLy8cxWp/9VLdQ0KdRAoJ3sD5A
-	S8YcoWbD/fKhNs4Sg8TrIyP0253y5PI=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kwvsNrut;
-	spf=pass (imf06.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 460B54148C;
-	Tue,  3 Nov 2026 08:19:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A628D1F000C1;
-	Tue,  3 Nov 2026 08:19:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793693995;
-	bh=QV8OQbqEgAbxmMI7EXk6eiYDzzCN82f0lLhovGPvCRE=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=kwvsNrutpfuguMNeSWIfyUqAD6nD8ZT9TCHfXU8MutBmcDYL52Gx9TFwpiQDeupjL
-	 K0m0fV2+WdZtu9vmW3bmnlagk02Yei7S0mswVuuLWC60pb5yw36MyhFyofDH76wGxW
-	 x+uJ1t61RO8ODByH58EpcoSGcVAP005yfKsyup6lmrJlxsgfT8Ttd++O6b1K8QS/4i
-	 etvXnQfakTB4/uEf/tvpFktS2Kfk8G8bwsha9Uvf8NSX1VJp0G8lma61PJcM+KrVKk
-	 pY6IWZiBUfgt3hH1NmEP1WE7WEob2sknt0Nlq150u24xhYzstaQhkr/Dwnx/iEOone
-	 YhoJ/JH6gZvTA==
-Message-ID: <sashiko-outbox-194818@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCHv2 bpf-next 2/8] bpf: Add user memory kfuncs
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Jiri Olsa" <jolsa@kernel.org>, "Alexei Starovoitov" <ast@kernel.org>, "Daniel
- Borkmann" <daniel@iogearbox.net>
-Cc: bpf@vger.kernel.org, linux-mm@kvack.org, "Andrii Nakryiko" <andrii@kernel.org>, "Eduard
- Zingerman" <eddyz87@gmail.com>, "Kumar Kartikeya Dwivedi" <memxor@gmail.com>, "Lorenzo
- Stoakes" <ljs@kernel.org>, "John Fastabend" <john.fastabend@gmail.com>, "Federico
- Di Pierro" <nierro92@gmail.com>
-In-Reply-To: <20261103075916.100050-3-jolsa@kernel.org>
-References: <20261103075916.100050-1-jolsa@kernel.org>
- <20261103075916.100050-3-jolsa@kernel.org>
-Content-Type: text/plain; charset=utf-8
+	bh=zCkHC4ldGehHgXmc8PYBcbJF+ptQMne1mLzrRO9u6FE=;
+	b=J7TZdJ2TawRCutoGXSWMVSpJfnI2X7zR7XfoMBlVWA2tJbGL/e0ZNT3hN4TQXzbXpOox6k
+	KYRaKY2GYkkhCtIBG/UDJSKWGauNrGchUFyCgNreCD+57hZ5u3GGrO9/evE/oj9ihCnFVu
+	/znEuUxTBXgbLCBW9XJI0GmhZjcZsFU=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=7sNvMkbEx+a1OkL8MgmFgxz6woP3TroOTg1/h23FhUQ=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1793694029; v=1; x=1794298829;
+ b=QHK18UtUyFjL6+OUFWeKwTgo9ixBKwumR0nZOBLeg61m+PLeHC0kXKGBRRLnhCyNQvMRAG+f
+ 7re6sXizIs92Vv9iOs93eayGillaAvIKFPkPG3KA0xrSwGFxonC2dxwf5PdOEn1Nk8QIfuLQbWd
+ 0Jlf76yMhvljXBWEYCs6OPhU=
+X-Envelope-To: linux-mm@kvack.org
+Received: by mta12.migadu.com with ESMTPS id d5aaef5f702bfade;
+	Tue, 03 Nov 2026 08:20:26 +0000
+X-Mizu-Trace-ID: d5aaef5f702bfade
+X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain;
+	charset=utf-8
+X-Archived-By: <archiver.kernel.org>
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3901.200.71.1.16\))
+Subject: Re: [PATCH] mm/hugetlb: fix validation of unsupported HugeTLB orders
+From: Muchun Song <muchun.song@linux.dev>
+In-Reply-To: <sashiko-outbox-194806@kernel.org>
+Date: Tue, 3 Nov 2026 16:20:08 +0800
+Cc: Muchun Song <songmuchun@bytedance.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Oscar Salvador <osalvador@suse.de>,
+ David Hildenbrand <david@kernel.org>,
+ Kiryl Shutsemau <kas@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>,
+ Huacai Chen <chenhuacai@kernel.org>,
+ WANG Xuerui <kernel@xen0n.name>,
+ linux-mm@kvack.org
 Content-Transfer-Encoding: quoted-printable
-Date: Tue, 03 Nov 2026 08:19:54 +0000
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+Message-Id: <CDC3B454-CBB4-428D-A97F-B3B8414BBC07@linux.dev>
+References: <20261103023831.1805473-1-songmuchun@bytedance.com>
+ <sashiko-outbox-194806@kernel.org>
+To: sashiko-reviews@lists.linux.dev
+X-Mailer: Apple Mail (2.3901.200.71.1.16)
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
 	autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam09
-X-Stat-Signature: y35jw61beijg6hqo5k7ueoph5rkyi6kc
-X-Rspamd-Queue-Id: 27F01180002
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 33D891C0005
+X-Stat-Signature: n9drnb8csckwmwb1igkc54gdpe6mjhor
 X-Rspam-User: 
-X-HE-Tag: 1793693995-421592
-X-HE-Meta: U2FsdGVkX19Yx5XokaLllNtlNMQ0Y55VUXeD/ojQ1K09VGqx7bza1wdnnX5aFngMNNEuTcBaJjTSJ+9yWF0mc48mwrUdTxQotyc/S5yz6yQYHOdtSu45LXNla1hIxANL/pjEkSCuDq5ihzFf2Gi5bhyT1VwEG9uyKH9yFyanyD43Wc7UBJMX/IrLOk9lROIBec5WZZQEZcigK9ROgaCcLJKmv7KCRthym/H9pgMvwmv6zWNaoUDEciKtklIfgbKr9U0Fkmjzr24zxRUpluDF/K9Zr9Q2lEVbDJnkN295uUIyQWv54yAN8DjD/sCe991acXrHDfoYEb7ZsrBWYV4JnWwko8hdukc3PGTKZ3neaoJT8tkLZFweT4wmG6J2QJrpOqaSD23g5ARK23yW2ownWNmn9Bc8i4lQ2kRPdlR531ah/Q+x64fuNyXKY3V2/AjFe4pXYL6b+uu42XhuvsJ8gC7A3w4fpq3yjS02cyrLN99ul/SIMSu2zSP3rTH8EFSZXgJaX0YaE9k9YRajVAHLreXC+ochf0ahKaogxocwmvgJcyE03U6jAZ3+DXEMPXBbhhpoUgoM4cg8CNXaC7j0vswHOq2AW6EHKO7R/I8uwfkZU2OXBs/Ch3Xk28VvA00tE++LzAbg9Vlkd3qcavydmZMCfiNcXfzm6MImfcrdr8YfrbnXPynmJRktMI/Ocsni1R7YMt6GXzIyYhP4gPvVJIjGSPOWzwYJigYc20OwUTx5YW7us9dROY3ft7NXYbVUe2dkhKV7uSqsHjjOTkbZvj1XBF7T4YvGDgX34VpaYpfCOFa+7+qpkBsEgoeT9jZZ7iMeHg2pMiR8DyZYVrPGcKwOax4W+3T5z96BiWjC6v4VnuvCwU5JxeV3B37DG3oHR2yORZwvFGEn425efgdG90qth8irvySjWXfGh+6/uklYv/giu5ELxKC0q4RYJtXbRpYXKoexxzjHNfxT+qU
- oIoXGH/Y
- TVmmx7Qm/4OUQBQYa2zTY5KGl/nb1oJuyTPfY6Vo+s2ovHAPDkuo68FPpuYh4BptZTrjh5hp4480J8fXBkatrWM12tIsH+fhlu3UmR5N036nVqy2AilwYu9jqx2LnbJGpDequer7g45fY2JoselC4O5a3vKXJaQV46eBCWxo/5jkkaAG9x44P6P87K8ou06CMWtGaunAoBli4T55pCtriSq7+5CL8XDGuECZrUOPl4KZPqYkYLL02gNeJsZPHU3Yzl/sHstZu474IwLJhqhqA8BKyECbC9mRreA2dFQMzKAi+NocwxAQ0pj5/g1mIloKonJ8DIuqmi7e2FWcfSYE+EuZqHoA30UlISgH1KjcD2Cbyv9c9GX3W8rlH1RZCFNB5Z4EAMrSHjbWltwuETizi4qY2mqSI5dwsH7JRL5pEh5PGDN0HaFI7/iCpsD3Tvc3eFx0ZE3VDOShUxUdWtI53SG/ECHNZBapfQctxVlKb7FrJfGKHVysTm280iYtCxFJztdFZR3TeJRUA75A2ePMQeZKjMYItWBzcgOeriKtfwIUBrGen+ItH9E8W6vOhVEyKpV4p/fs/NXvIItSb5dpzZzWxFhZ+yyST3yoYMwFeptalaTN+8RebUJEaLFybYnvSnx/IlxOJbz3jflLV7TDYH1yVmvv7JNTSo0XN
+X-HE-Tag: 1793694030-158088
+X-HE-Meta: U2FsdGVkX1+M2hZBYKpg3kJ87sPEIcYWUJJr5t/1EObpiQ7b8bbZUDFHZbDVICR+PpIVy0Wlmpz9rBVF4/O5VVSSwZNTX2HLd9mSc+DBt0LQH9OMPQprHETl6OS/VOJcREoeJ7h+mVjgWsTk7HPb3jDsX98iKLcmvTUy8qCKoxBdLMIFSGh5A0bVALNSmNeF47Vwq/5IsPKIyTCSKQNAQ0MjNDKbxuKBoJj23YdJV+5+1t4OTGEnq/OzkQGJ/xmyeBE4UoM4z4+6gqjnIexuw9JUPz5uPHLoYbIzCAQZTy+JlXfhJBHhq5eLYelr0c68ZarqwWxfBkqJZ+g6RlJRDYtTUQb/YjE3PDjZEQ1W5YmHp/43IpeVBXDO1SrceLlxHuUaAjf230GcQL+ONi+biIjwruKVATExNFIDsh/H99Qd8t7H38xj9//MNsqffnr+qVzKqvIDsojjM8yAdJCuAk5ETyujtbcrD67kYiGDf07443Rsdwvvqyxt70dERHyzOTehm4JT/bsWo0WTTtEcrHgzhvA70KWuSwcGukb4BBYf5loMgeZB3DjeY7kYBQISgP42VZMOi2BpFuDs8/eJ7XjAh+AXNERkzheGDfK7FlOgZLpkYV/rZTwbmUbQMxD49ApmykGuY2McIzOkycppySz2Je7CCMiU7GTjMFaq8+W3sI7HeRE9AHQsasi0YNEswxmYLjp1R0woidXAtdRFBBHvkFGWnGNkMppAfwljQV7o0jNHlthyetcc0lSFrQH21F1QvwZG+f68OxVP1uk+hNe/VMrnlFwcl5DicqwpZOAXgC8oJl+t3XdnWHbcNQVX05sUze8HfXbfcKSIxzMQzJP2G3M159d6aNQkwj7eeIhZUg8ISsm+tS06JS1JyjdykZlsphIFS2bjUUEp2AsHEuf2Q7Isida/qZEZZRyy6Ajziid2kC67S27piIi3lmWaxIQFNoAgdfSOohZgBq1
+ CMukiAZ2
+ zxAitekjUdMKAdp1WowCrly4oHVySt53/yh5o6HVxjI8Np4+Nvc6xoYf2fxyXFonaWd3wCrWDGfD0i/cSRfAnOqo0bBtW1xrQGTsJE0wpLKP9RZApwSR48NVadr3HUfdc+g7taBybIJP3XxIQD5EBSo0EgwWNFmabf29/mIYcEeeZQ7y/pMbSUS166+U0RzeLZDzmadX5s3bkgIWSD9PG8YKmBeHDPNMWbmrc7G6D/LcnGanrY4Cby/W6VZEuWvo7ixtHWEWADNUUMQCZWxnW9IvmRFeivBgMa23OBCClG3QejKd7At+Hd7h6N32deAr09SrjLy/H/nzlnm9uBDmFTx7RePP9WdoaHBIKt1/130SpNYshiNjG2daoVg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,123 +101,100 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
-X-Archived-By: <archiver.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
-s) to consider:
-- [Medium] bpf: bpf_user_vm_mmap() clears active TS_COMPAT on TIF_ADDR32 ta=
-sks
-- [Medium] bpf: bpf_user_vm_mmap() triggers false in_32bit_syscall() on x86=
-_64
---
 
-commit f91c9a5c8eeb0a10c48d0c7030bd2cd248f6d3fd
-Author: Jiri Olsa <jolsa@kernel.org>
 
-bpf: Add user memory kfuncs
+> On Nov 3, 2026, at 16:13, sashiko-bot@kernel.org wrote:
+>=20
+> Thank you for your contribution! Sashiko AI review found 1 potential =
+issue(s) to consider:
+> - [High] mm/hugetlb: boot BUG_ON() in hugetlb_init() when HPAGE_SHIFT =
+is 0 on powerpc
+> --
+>=20
+> commit 83959b12982c256d20ca0de51021b3beae201569
+> Author: Muchun Song <muchun.song@linux.dev>
+>=20
+> mm/hugetlb: fix validation of unsupported HugeTLB orders
+>=20
+> This commit replaces BUILD_BUG_ON_INVALID() with MAYBE_BUILD_BUG_ON() =
+in
+> hugetlb_init() so that configurations where HUGETLB_PAGE_ORDER exceeds
+> MAX_FOLIO_ORDER are rejected at build time when constant or via =
+BUG_ON() at
+> runtime otherwise.
+>=20
+>> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+>> index ff9dbfbc7a961..e21ac667694bd 100644
+>> --- a/mm/hugetlb.c
+>> +++ b/mm/hugetlb.c
+>> @@ -4181,7 +4181,7 @@ static int __init hugetlb_init(void)
+>>=20
+>> 	BUILD_BUG_ON(sizeof_field(struct page, private) * BITS_PER_BYTE =
+<
+>> 			__NR_HPAGEFLAGS);
+>> -	BUILD_BUG_ON_INVALID(HUGETLB_PAGE_ORDER > MAX_FOLIO_ORDER);
+>> +	MAYBE_BUILD_BUG_ON(HUGETLB_PAGE_ORDER > MAX_FOLIO_ORDER);
+>=20
+> [Severity: High]
+> Will placing MAYBE_BUILD_BUG_ON() before the hugepages_supported() =
+check in
+> hugetlb_init() trigger a boot BUG_ON() on architectures like PowerPC
+> Book3S-64 when huge pages are unsupported at runtime?
 
-This commit adds the sleepable kfuncs bpf_copy_to_user(),
-bpf_user_anon_mmap(), and bpf_user_munmap() for KPROBE BPF programs to
-modify a user task's address space and manage private anonymous mappings.
+Yeah, it's easy to fix, but I'll wait another day before updating =
+it=E2=80=94just
+in case others have feedback.
 
-> diff --git a/kernel/bpf/helpers.c b/kernel/bpf/helpers.c
-> index 58e357302850e..ae7dfa58ae95c 100644
-> --- a/kernel/bpf/helpers.c
-> +++ b/kernel/bpf/helpers.c
+Thanks,
+Muchun
 
-[ ... ]
+>=20
+> On CONFIG_PPC_BOOK3S_64, arch/powerpc/include/asm/page.h defines =
+HPAGE_SHIFT
+> as a runtime unsigned int variable:
+>=20
+>    extern unsigned int hpage_shift;
+>    #define HPAGE_SHIFT hpage_shift
+>    ...
+>    #define HUGETLB_PAGE_ORDER (HPAGE_SHIFT - PAGE_SHIFT)
+>=20
+> Because hpage_shift is not a compile-time constant, =
+MAYBE_BUILD_BUG_ON()
+> expands to a runtime BUG_ON(HUGETLB_PAGE_ORDER > MAX_FOLIO_ORDER).
+>=20
+> When huge pages are not supported by the platform or are disabled at =
+boot
+> (for example, when hugetlbpage_init_defaultsize() in
+> arch/powerpc/mm/book3s64/hugetlbpage.c finds no supported huge page =
+sizes),
+> hpage_shift remains 0, which hugepages_supported() checks:
+>=20
+>    static inline bool hugepages_supported(void)
+>    {
+>            if (hugetlb_disabled)
+>                    return false;
+>=20
+>            return HPAGE_SHIFT !=3D 0;
+>    }
+>=20
+> Evaluating HUGETLB_PAGE_ORDER before checking hugepages_supported() =
+computes
+> (0U - PAGE_SHIFT) in unsigned int arithmetic, wrapping around to a =
+large
+> unsigned value that exceeds MAX_FOLIO_ORDER and hits BUG_ON().
+>=20
+> Should MAYBE_BUILD_BUG_ON(HUGETLB_PAGE_ORDER > MAX_FOLIO_ORDER) be =
+moved
+> after the if (!hugepages_supported()) block in hugetlb_init(), similar =
+to how
+> hugepage_init() in mm/huge_memory.c checks has_transparent_hugepage() =
+before
+> evaluating MAYBE_BUILD_BUG_ON(HPAGE_PMD_ORDER > MAX_PAGE_ORDER)?
+>=20
+> --=20
+> Sashiko AI review =C2=B7 =
+https://sashiko.dev/#/patchset/20261103023831.1805473-1-songmuchun@bytedan=
+ce.com?part=3D1
 
-> @@ -3741,6 +3747,110 @@ __bpf_kfunc int bpf_copy_from_user_mm(void *dst, =
-u32 dst__sz,
-
-[ ... ]
-
-> +/* bpf_wq and bpf_task_work callbacks can run without a usable mm. */
-> +static bool bpf_user_mm_ok(void)
-> +{
-> +	return current->mm && !(current->flags & (PF_KTHREAD | PF_EXITING));
-> +}
-> +
-> +#ifdef CONFIG_IA32_EMULATION
-> +static unsigned long bpf_user_vm_mmap(unsigned long len, unsigned long p=
-rot)
-> +{
-> +	struct thread_info *ti =3D current_thread_info();
-> +	bool compat =3D test_thread_flag(TIF_ADDR32);
-> +	unsigned long addr;
-> +
-> +	/*
-> +	 * We are not in a syscall, but x86 get_unmapped_area() paths
-> +	 * ignore TIF_ADDR32 and rely on in_32bit_syscall().
-> +	 */
-> +	if (compat)
-> +		ti->status |=3D TS_COMPAT;
-> +	addr =3D vm_mmap(NULL, 0, len, prot, MAP_PRIVATE | MAP_ANONYMOUS, 0);
-
-[Severity: Medium]
-As reported by bot+bpf-ci@kernel.org on v1 [1], on x86_64 kernels with
-CONFIG_X86_X32_ABI=3Dy, will calling bpf_user_anon_mmap() from a sleepable
-uprobe in a native 64-bit process falsely trigger in_32bit_syscall() and
-restrict mappings to the 32-bit compat range below 4 GiB?
-
-When a 64-bit task enters a uprobe breakpoint exception (or sys_uprobe /
-sys_uretprobe), task_pt_regs(current)->orig_ax is -1. Under
-CONFIG_X86_X32_ABI=3Dy, in_32bit_syscall() checks in_x32_syscall():
-
-arch/x86/include/asm/compat.h:in_x32_syscall() {
-#ifdef CONFIG_X86_X32_ABI
-	if (task_pt_regs(current)->orig_ax & __X32_SYSCALL_BIT)
-		return true;
-#endif
-	return false;
-}
-
-Because bpf_user_vm_mmap() passes addr =3D 0 to vm_mmap(),
-arch_get_unmapped_area_topdown() and arch_get_unmapped_area() call
-get_mmap_base() and find_start_end(), which both check in_32bit_syscall()
-and select mm->mmap_compat_base and task_size_32bit() instead of the 64-bit
-address space.
-
-> +	if (compat)
-> +		ti->status &=3D ~TS_COMPAT;
-
-[Severity: Medium]
-Could clearing TS_COMPAT unconditionally whenever TIF_ADDR32 is set clobber
-an active 32-bit syscall's TS_COMPAT state?
-
-When a 32-bit IA32 task enters a syscall via syscall_32_enter(), TS_COMPAT
-is set in current_thread_info()->status and must remain set until
-arch_exit_to_user_mode_prepare() clears it after signal handling and
-syscall restart fixups:
-
-arch/x86/include/asm/entry-common.h:arch_exit_to_user_mode_prepare() {
-	...
-	/*
-	 * Compat syscalls set TS_COMPAT.  Make sure we clear it before
-	 * returning to user mode.  We need to clear it *after* signal
-	 * handling, because syscall restart has a fixup for compat
-	 * syscalls.  The fixup is exercised by the ptrace_syscall_32
-	 * selftest.
-	...
-	 */
-	current_thread_info()->status &=3D ~(TS_COMPAT | TS_I386_REGS_POKED);
-}
-
-If a kprobe schedules a sleepable bpf_task_work callback that runs during
-syscall exit (for example via task_work_run() inside get_signal() or
-ptrace_notify()) and calls bpf_user_anon_mmap() -> bpf_user_vm_mmap(),
-ti->status &=3D ~TS_COMPAT will clear TS_COMPAT before signal handling
-finishes. Subsequent calls to syscall_get_error(), in_ia32_syscall(), and
-in_compat_syscall() will then treat the active 32-bit syscall as a 64-bit
-syscall.
-
-Should bpf_user_vm_mmap() only set and clear TS_COMPAT when
-!(ti->status & TS_COMPAT)?
-
-[1] https://lore.kernel.org/r/571f32a410a85199bc9bcecfe07a9a9b6ef425b205264=
-3e64031dd246c13691e@mail.kernel.org
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261103075916.1000=
-50-1-jolsa@kernel.org?part=3D1
 
