@@ -1,93 +1,92 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 936AA606A33B
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 13:31:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B9A5606A33C
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 13:31:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=aEjMa93p
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kCzOaLR3
 Received: by kanga.kvack.org (Postfix)
-	id 94C866B05B2; Tue,  3 Nov 2026 08:31:44 -0500 (EST)
+	id 52C506B05B3; Tue,  3 Nov 2026 08:31:46 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9222B6B05B3; Tue,  3 Nov 2026 08:31:44 -0500 (EST)
+	id 4DC8D6B05B4; Tue,  3 Nov 2026 08:31:46 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8388B6B05B4; Tue,  3 Nov 2026 08:31:44 -0500 (EST)
+	id 3CC5F6B05B5; Tue,  3 Nov 2026 08:31:46 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 5B0716B05B2
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 08:31:44 -0500 (EST)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id E642EA03AF
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 13:31:43 +0000 (UTC)
-X-FDA: 85393895286.19.82A6100
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 15DF06B05B3
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 08:31:46 -0500 (EST)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 9FD88C0423
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 13:31:45 +0000 (UTC)
+X-FDA: 85393895370.14.C8A01C3
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 136E220012
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 13:31:41 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aEjMa93p;
-	spf=pass (imf03.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	by imf04.hostedemail.com (Postfix) with ESMTP id E707340012
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 13:31:43 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kCzOaLR3;
+	spf=pass (imf04.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793712702;
+	s=arc-20220608; t=1793712704;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nDjw50u94+mGVh6M3W7bzuL30PRHoxO45FU8kEILcQE=;
-	b=OhBQ2c2bbZ8+hlgQISPfcWUIN8h/s9erFukIOXoswHvyntFHoquK3jj9tH0ycfUF60ZlnN
-	zdWOI65gCzXB6u+3nbs+xLMED/bU0HnyZ+wQaZp9apIWtIeYh9irQ7zdTxMZtm6w0c0du9
-	l3W5joUn62Wq9iQS6KjZ3huo+Yc0hps=
+	bh=RyaWAmGggQYyP6jdmvq5bvsNO1h1kkdUaWxYijyd/60=;
+	b=j1w2uDrX/5cuiWQMpxCLPNOMihbpNZtJmx3VT2zRIefPqp8Vry8XOL35msQH2sGHRj7qvW
+	z+Xj4l19v/OhEVNFXaHgt+8JjCe7Pb+nxbPyo1VjlczELzEP3/5/vZn+SpVamC4Ri+zLqM
+	bgErPtA8AkR53xgK9SuiXHQcBwRrvUI=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793712702;
-	b=3k8lFWukUYgaOaK0cF9ui4wV4d9Jezw4hP8jQBD/nYAve6nuNuSYSKTxrLuUmrv4j7QlmG
-	JM5+W3QEb+p4Gx2AH3BpVI28kHJLq9OIWwdRCO8SNxstdF+R8MVU+Lczn9CBHSukKs0x/6
-	M0OJVhB4aGx/Xdz3Fx0KyNQXf7uelto=
+	t=1793712704;
+	b=Y1P+mLMNBitlYDILOtEkLQBkO7F+miCtmKz4Xxk7/qx5Xw154Keb2fRSIgojP0+gnUsTZY
+	wPJxS8Z6QhsgWEZtRVmbHJgd+tPpSBSIWt9LFu5+tR1sRRxJWmEB1pURKU4Yz/wz0//z9K
+	c1wBzvps3J0pcoEAKZPwQMggh4eIYNc=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aEjMa93p;
-	spf=pass (imf03.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kCzOaLR3;
+	spf=pass (imf04.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 74CC3405E5;
+	by sea.source.kernel.org (Postfix) with ESMTP id 3600443620;
+	Tue,  3 Nov 2026 13:31:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF4BE1F0093A;
 	Tue,  3 Nov 2026 13:31:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E95E1F00A02;
-	Tue,  3 Nov 2026 13:31:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793712700;
-	bh=nDjw50u94+mGVh6M3W7bzuL30PRHoxO45FU8kEILcQE=;
+	s=k20260515; t=1793712703;
+	bh=RyaWAmGggQYyP6jdmvq5bvsNO1h1kkdUaWxYijyd/60=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=aEjMa93puyhLZb4b3wCZrtwb4qoJvhvVjILtYoVFDYhbbkM5Hu5ZrTHcTNZiodPEy
-	 rl1hWznJwKGGHKSP0jRdSs5tNE4t2EAsGwk2G4c01+BOjyAu8TxzV/Yu4ucgnZKev3
-	 d883cJr2PPDnGYO6Eil32d1OyED7QYCcROIO0Bu0fZlRKZ6AUeHc1fX82NuOZGnhdU
-	 4ncbdvd9XcLCQ0UjU3ipaCNlPAC38hy8whjnrOLCnEvBnqUIDPJriAM4utcrh/JF/F
-	 067yE//Z7y4HQFPOrWNp8Or4qhRXmtob1QPG67P5/5CmrCYtTnVZ5jYy1nteWXErgM
-	 m7ECWNbmOg33g==
-Message-ID: <sashiko-outbox-195353@kernel.org>
+	b=kCzOaLR3VsJGa/IDgkrfipR5m/FQ+LaefPijqlU2i3hszYY/wsbDvZLgHhDS5e4VH
+	 N3gTCGcoJcFlBuhAW1cVuOaNs6vvu+PCIXLssZYpHPlRx7FPxsQqqIgJRSMBbl7GP1
+	 7Jk1AI93xjeNmzROgT33mRvZdEmLyLCW7wpF8L3oWd9vY6/C07QQVKaJOja6HK1eDP
+	 rV8htJ2Jr9ZaxDAIK8N6yA8VwM93z+2TKwBwprGHR29GtjDlqx6p4PycU0UiZteZC5
+	 T4uudYwUVM/qMphNlbWVuDlwgBXnpmWT0Fno5TzA07Dp8JNSSWTdKY8ABrj0eTVbAw
+	 TEP4DKamIGMBw==
+Message-ID: <sashiko-outbox-195354@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 2/4] mm: make folio_walk_start()'s locking asserts
- scalable
+Subject: Re: [PATCH v2 3/4] mm/ksm: make break_ksm() more scalable
 Reply-To: sashiko-reviews@lists.linux.dev
 To: xu.xin@linux.dev
 Cc: acme@kernel.org, adrian.hunter@intel.com, "Alexander Gordeev" <agordeev@linux.ibm.com>, akpm@linux-foundation.org, alexander.shishkin@linux.intel.com, apopple@nvidia.com, baohua@kernel.org, baolin.wang@linux.alibaba.com, "Christian
  Borntraeger" <borntraeger@linux.ibm.com>, byungchul@sk.com, chengming.zhou@linux.dev, david@kernel.org, dev.jain@arm.com, gerald.schaefer@linux.ibm.com, "Vasily
  Gorbik" <gor@linux.ibm.com>, gourry@gourry.net, harry@kernel.org, "Heiko
  Carstens" <hca@linux.ibm.com>, irogers@google.com, james.clark@linaro.org, jannh@google.com, jolsa@kernel.org, joshua.hahnjy@gmail.com, kas@kernel.org, lance.yang@linux.dev, liam@infradead.org, linux-mm@kvack.org, linux-s390@vger.kernel.org, ljs@kernel.org, mark.rutland@arm.com, matthew.brost@intel.com, mhiramat@kernel.org, mhocko@suse.com, mingo@redhat.com, namhyung@kernel.org, nico.pache@linux.dev, oleg@redhat.com, peterz@infradead.org, riel@surriel.com, rppt@kernel.org, ryan.roberts@arm.com, surenb@google.com, svens@linux.ibm.com, usama.arif@linux.dev, vbabka@kernel.org, ying.huang@linux.alibaba.com, ziy@nvidia.com, xialonglong2025@163.com
-In-Reply-To: <20261102132927.301921-1-xu.xin@linux.dev>
+In-Reply-To: <20261102132956.302480-1-xu.xin@linux.dev>
 References: <20261102132416.300084-1-xu.xin@linux.dev>
- <20261102132927.301921-1-xu.xin@linux.dev>
+ <20261102132956.302480-1-xu.xin@linux.dev>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Tue, 03 Nov 2026 13:31:37 +0000
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+Date: Tue, 03 Nov 2026 13:31:40 +0000
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: E707340012
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam09
-X-Stat-Signature: y8hzs5ex4amw9dq8mi8np69jhqmhxqqm
-X-Rspamd-Queue-Id: 136E220012
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
+X-Stat-Signature: tmtcj7e39hr9a579en73q7sfw673atoz
 X-Rspam-User: 
-X-HE-Tag: 1793712701-807387
-X-HE-Meta: U2FsdGVkX18l7pQmqPunxyoOh78uT1GwTzUk+w/6zJ29PAsVNgOJ/JiXAhbOe5kL/hA1CriPFPGBE+qK1KepSzM8JWdfeewZ9W+BIftknlNXgjfAICrmscS6FKrcMdhrq6FvSgxzrCmFVo9O8dMIX/K5vZSa08ixVUhQCkgFe+vm4zN3pEpn7lTKg+q0MeQO9Ia+9IZ2Yb4VoKsvAgoOq8A2OBZoZOoALAdcKHaSxDZnXLVGSaz4ERuVj1/6mzXIxIeWbOu+JXW533yxVq53RcWQSfxiKBAQi69HsvEA7MOGyhXAS+U+k5Q1GTAkqVo84FUUvdjSdGZu99DtN0o8+ackz5Y4cSpMWCH1LoIzBDuuFZQKCWUj8bHxvB8KdqeNM1xGvyj5DYTlc1gr7+iltni83rvRx3ZfNxvpTwDGcsrsIBm2eciGGATP4R01kGhemBWe/Bfx5udsvnoSBM7Fd0E+Ce49E5SiwAcPmGhVWyziIcsLk/wAg7Az3cSRmcp8cSZdBUnJIbovqAPNBG6iK0/OW7mwLresP/QPc/zdzjHMyemcoz+6ltV7+nJ5ZcBsAjqSc7cD6749Ma8IXcZ15B+sS0Evv2JZS/JwPVPRIoMuFOEp3ZB7C6GEf8suryKBCKcoxk2GXAKHvWwwc+Nr27N5MJ5fYxz75+QQRTK/qoyX320br5s/HXAlKgk3d/8X1kquiN9/Dv38J5uAVX/njo7i3AdxSxyTIQZOyFduadsNRPD297rrGuDbfWQFt33nTmH60ZfKdyd9O0rDjuczVHduyN8uckf9OS+F9/WmTWS+hoi5R2HrIhxNo6jb6aCJnX0NIVMaQfsZnz5WMvDm+OCAdfjtKI7MN8axzcHcj1hGrwNAetiQ8JG3YGnx/KiKTvbvNWWV73zH4UNEUUliLgE39DVHXQfc0bM6CwL/iY1oakek6Pb7hkIA/mXonJem/yAjitXr5cvFdmX9gvh
- GG937iTL
- ZSvBSD73uXARtXEUa5tMliDt4nzUlywxePysvV1eMFYlwsUfEioA0CZ9tx9Y1WvXvelzP25r9AcwAOSa8LN2Y6p2mdoA46OwW1mDa1691xgY/Cd161qJurlE/Wugeaw7aYRHi3U7KpXkrnJ7VJZ573OC0vRtalpVgFv+6Un+7pNWS8QiZ59K1LqxCPNHeKOs4Lbt5oKbiHw/3r6P2cO47hokTyVcmIbYCT1plL+hQC3wGMSQQb9e8pBu3cSYbHkvgo3j23gGnHcheyztKlhJIYdmEq/CkHLSOCIgAV14SMPwTumx97qaKKZ1/RW0oqJ3lgLwpR68tBaj6s9+ODCqeW2H+uzcznIeV51Ua1AKC6Ot5zYXEVlWJnHUtQPd4i4Bx2IR+rjiVV8e6I7tEPswwe0cNUEbFXB78xeMm9Zp4r5T3ErT8JAgoha1SiRmE0EOXAK6/2anuN0SriMp5hO0D4AQZKeyI8ZeFdETi/IkyVtJRvblfitza20lU4pj5SwhenU3yfBrLGgsfXztneKEcx1S3pm1yRNI6lU+gYytD+BbEIZ7O8kS6OJQu6f60x6lGPr655anmJeW0MRQStxx4KnFT8VmCMioUwSulhh23b/5lNvA7fQltEwZ2qpcgarSIJj4PmlorCtIolttnzCfRU53wI26EsKBS74XWsX049HEf+VUdww3IRsQ5FQ==
+X-HE-Tag: 1793712703-59417
+X-HE-Meta: U2FsdGVkX1+2pgd92wOXEQjc0T9bK4xHHhy7sil2YyMPTkpTPvd3z4pdwnrR29H8mO1CMfd36SiCxYi4OJRxb+VlfocTz7gBKokqO7cvt/C36nwCNNVm0muSJOoemWvab0iO/GwqZ9M3cLSCtw8vYCkf/Vp2Y0N3/hWCChZ86oMFM8s78K8kAMsPAWn/bkiD6XgV/h480oGaIO2EKfvoaBiNu7stZCg8krVbsDSvCT5+jac9Xh8nSQ4MDv1Q9DYyi1L53wS3tXqHr4lUp9XlXCVjPhiQ1EufJIvvgr2f0+QO0kVTtEXqIGPrHD5gvHHkGjmElYjnJ8Ercrsr+i4zxbnAZ3MHsx5CR8WNMp8moSx6iEF3qH3ukYtxbWCzxa+oCyNrFBNPaGNsBUvGHh2U5ZHncTwR8tnEZBoAoILmCGNtCzmXeA9w8mTkZfVlRxETqBcvkHrJ8sUYpxQ1AvZaiwhfmeqJwkXQ0mgiu2iOVAlIKRpkf/YeggRI6TZhKd6fcPRIy00pAlVGB4hmgGoEehGCcOnHMef2itiD1BtVizNljZaykdNYZHHCouGXpoyBHxLb0EOVxMwIsdF+sVikXm6QnbNnDCEfW+YNOYRzdq7Y3tut/XASQx2eYf5sz3fU2hGGvrTQ+H+ndBjlCPSa0x0zsDfvmNav4iZZ+256cPt+6tgOB62V9vwVO8w7D3ZdsuSwOVFkbwrhU/4mj3LitkN3UQhwbC9Z3l3Wv+Sge11aErGZ38oJ9Svgqplw2+ZEukjd5wSs093SCUOpJOsS5bi4cVUXDtqy8W66VCXQcnczdsk3H7TUdsTEUboHXcWzRYyzRGT+1ve0qRdplq3RqbYVejAvU5nKDW6u7bBYiOqoFH2iZiedPptDisZvyuZe/kzkn9TPVheCjr13bmFaHTbJqADKdgBTlZT8ZiysDmmTaZYCy/2sGmWkPSEC7pnckZxq9vyWdgdu5kzA9xw
+ /V9/jUie
+ jb7ijrLWnZbzDOdiUS0L+u0eqq+kHYuKSrRVNqVb9T30efMuvN43zRseDNeuJAy+S2+pZvFuUVQg0qrqxdHgGyH51ryrbEGyQYI9nt3ytW++frIOi7SOxaYFaLN4uVQdM9YTn95iSQkni/j60v0hghaLhAHpULKqhTVLavo1qj8eB93uLTIV+YZktrUsOBv7COUbX9kZUCac2jVHw4jpuYB9DnOre74nk4/HA6sxZZ2xlzCYbwzYnEnRy8bxCKLgJVt4UFAWePvDsOjLyb+UXa6QOt6GsgbnQtyA7RsPxtCX9SP79KX0bJ42TXMnYHChwEELFtZAGBN4Fnw/oMRpJJVcpJ6yn1kYZdP1jsZzjehsUdboj6e33gUgAQod8itu9nE1EtNecNBrb94UsPqt0zEp7IfIOrMWPZf0meCk7+vu9ZxYZXNgGopSWY7p+6tJGLSYY6D/Y7A1TAYR88pVQ3b52rmBp4kIjUq5YPHpaTNbNBNnWQFWyCAJmjSCIpyFEvjNiGfyJL7T0GbAFEEcneWFBckK80o1sv5smFiqShUteggLDXBqTWpR6Dxx0a8BvBfGDRNMN4IYk3DIIFCfj/LdoJ78qq/fiLYnSuhM2PZFO9A4+QK+GwfqauxWr3APkvCehybyTt7wlrf2gFQv9CEPZN84ro/jxVzDs5chGJNxF0ALNc+S7gfjOMw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,136 +96,120 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 X-Archived-By: <archiver.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 3 potential issue(=
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
 s) to consider:
-- [Medium] mm: inaccurate commit message on write-locking in folio_walk_sta=
-rt()
-- [Low] mm: folio_walk_start() duplicates vma_assert_stabilised() via walk_=
-lock
-- [Low] mm: missing kernel-doc and private placement for folio_walk::walk_l=
-ock
+- [Low] mm/ksm: redundant ksm_walk_lock enum and helper in break_ksm()
+- [Low] mm/ksm: non-const stack mm_walk_ops in break_ksm() contradicts comm=
+it log
 --
 
-commit fbf030fed81b9a0de749bef1b3fa6307e8400b93
+commit 05d53e6a6817e77860f887304a4f4cd4936f2c61
 Author: Xu Xin <xu.xin@linux.dev>
 
-mm: make folio_walk_start()'s locking asserts scalable
+mm/ksm: make break_ksm() more scalable
 
-This commit adds a walk_lock member to struct folio_walk and updates
-folio_walk_start() and its callers to specify locking assertion modes for
-mmap_lock and per-VMA locks.
+This commit replaces the boolean lock_vma parameter of break_ksm() with a
+KSM-local enum ksm_walk_lock and constructs struct mm_walk_ops on the stack
+instead of selecting between two static const tables.
 
->     mm: make folio_walk_start()'s locking asserts scalable
->    =20
->     Add an additional member 'walk_lock' to folio_walk to indicate
->     locking requirements for the walk. Similar to commit 49b0638502da0
->     ("mm: enable page walking API to lock vmas during the walk").
->     But no change is made on any existing locking behavior,
->     all existing folio_walk_start() callers are currently still
->     under mmap_read_lock() protection.
->    =20
->     This change is prepared for the later patch to enable VMA locking
->     asserts. folio_walk_start now operate under write-locked mmap_lock.
->     With introduction of vma locks at the next patch, the vmas have to
->     be locked as well during such walks to prevent concurrent page
->     faults in these areas.
->    =20
->     No functional change intended.
->    =20
->     Signed-off-by: Xu Xin <xu.xin@linux.dev>
-
-[Severity: Medium]
-The second paragraph states that "folio_walk_start now operate under
-write-locked mmap_lock" and that VMAs have to be locked during such walks.
-Is this description accurate?
-
-In mm/pagewalk.c, folio_walk_start() only expects PGWALK_RDLOCK or
-PGWALK_VMA_RDLOCK_VERIFY and emits a warning on write-lock modes:
-
-	if (fw->walk_lock !=3D PGWALK_RDLOCK && fw->walk_lock !=3D PGWALK_VMA_RDLO=
-CK_VERIFY)
-		WARN_ONCE(1, "walk_lock is not expected!\n");
-
-Could the commit message be updated to reflect that folio_walk_start() only
-verifies read-stabilized mmap or VMA locks?
-
-[ ... ]
-
-> diff --git a/include/linux/pagewalk.h b/include/linux/pagewalk.h
-> index 1c397be0d092a..455428eaf1fc0 100644
-> --- a/include/linux/pagewalk.h
-> +++ b/include/linux/pagewalk.h
-> @@ -184,6 +184,7 @@ struct folio_walk {
->  	};
->  	/* private */
->  	spinlock_t *ptl;
-> +	enum page_walk_lock walk_lock;
->  };
-
-[Severity: Low]
-This isn't a bug, but adding walk_lock to struct folio_walk without a
-@walk_lock entry in the kernel-doc comment above struct folio_walk triggers=
- a
-scripts/kernel-doc warning ("struct member 'walk_lock' not described in
-'folio_walk'"), because the /* private */ comment does not use the
-/* private: */ syntax recognized by kernel-doc.
-
-Also, since callers of folio_walk_start() are required to initialize
-fw.walk_lock before the call, should walk_lock be placed in the public
-section of struct folio_walk rather than under /* private */, and should the
-kernel-doc for folio_walk_start() in mm/pagewalk.c (which currently states
-"@fw: filled with information on success." and "The mmap lock must be held =
-in
-read mode.") be updated to match?
-
-[ ... ]
-
-> diff --git a/mm/pagewalk.c b/mm/pagewalk.c
-> index e6493bbe6919e..7d85289fcb875 100644
-> --- a/mm/pagewalk.c
-> +++ b/mm/pagewalk.c
-> @@ -910,7 +910,15 @@ struct folio *folio_walk_start(struct folio_walk *fw,
->  	pgd_t *pgdp;
->  	p4d_t *p4dp;
+> diff --git a/mm/ksm.c b/mm/ksm.c
+> index d4fc0b0965aa1..84d363dabdc8a 100644
+> --- a/mm/ksm.c
+> +++ b/mm/ksm.c
+> @@ -661,15 +661,25 @@ static int break_ksm_pmd_entry(pmd_t *pmdp, unsigne=
+d long addr, unsigned long en
+>  	return found;
+>  }
 > =20
-> -	mmap_assert_locked(vma->vm_mm);
-> +	/*
-> +	 * Other locking modes except for mmap or vma read locking are not
-> +	 * expected.
-> +	 */
-> +	if (fw->walk_lock !=3D PGWALK_RDLOCK && fw->walk_lock !=3D PGWALK_VMA_R=
-DLOCK_VERIFY)
-> +		WARN_ONCE(1, "walk_lock is not expected!\n");
-> +	process_mm_walk_lock(vma->vm_mm, fw->walk_lock);
-> +	process_vma_walk_lock(vma, fw->walk_lock);
+> -static const struct mm_walk_ops break_ksm_ops =3D {
+> -	.pmd_entry =3D break_ksm_pmd_entry,
+> -	.walk_lock =3D PGWALK_RDLOCK,
+> +/*
+> + * Locking contexts in which break_ksm() may walk the page tables.
+> + */
+> +enum ksm_walk_lock {
+> +	/* walk under mmap_read_lock() */
+> +	KSM_WALK_MMAP_RDLOCK,
+> +	/* walk under mmap_write_lock() */
+> +	KSM_WALK_MMAP_WRLOCK,
+>  };
+> =20
+> -static const struct mm_walk_ops break_ksm_lock_vma_ops =3D {
+> -	.pmd_entry =3D break_ksm_pmd_entry,
+> -	.walk_lock =3D PGWALK_WRLOCK,
+> -};
+> +static enum page_walk_lock ksm_walk_lock_to_pgwalk(enum ksm_walk_lock lo=
+ck)
+> +{
+> +	switch (lock) {
+> +	case KSM_WALK_MMAP_WRLOCK:
+> +		return PGWALK_WRLOCK;
+> +	default:
+> +		return PGWALK_RDLOCK;
+> +	}
+> +}
 
 [Severity: Low]
-If a caller passes an unexpected walk_lock value (such as PGWALK_WRLOCK) or
-leaves struct folio_walk uninitialized, folio_walk_start() triggers
-WARN_ONCE() here, but then still calls process_mm_walk_lock() and
-process_vma_walk_lock(), which for PGWALK_WRLOCK will call
-vma_start_write(vma).
+This isn't a bug, but is enum ksm_walk_lock and ksm_walk_lock_to_pgwalk()
+needed here?
 
-More broadly, since folio_walk_start() only permits mmap or VMA read-lock
-verification, could folio_walk_start() simply call vma_assert_stabilised(vm=
-a)
-from include/linux/mmap_lock.h instead of adding walk_lock to struct
-folio_walk and requiring every caller to initialize it:
+include/linux/pagewalk.h is already included in mm/ksm.c and defines enum
+page_walk_lock (PGWALK_RDLOCK, PGWALK_WRLOCK, PGWALK_VMA_RDLOCK_VERIFY),
+which is already used directly elsewhere in mm/ksm.c. Since break_ksm() only
+uses walk_lock to populate ops.walk_lock, could break_ksm() take enum
+page_walk_lock directly instead of introducing a 1:1 wrapper enum and
+conversion helper?
 
-static inline void vma_assert_stabilised(const struct vm_area_struct *vma)
-{
-	if (IS_ENABLED(CONFIG_LOCKDEP)) {
-		if (lockdep_is_held(&vma->vm_mm->mmap_lock))
-			return;
-	} else {
-		if (rwsem_is_locked(&vma->vm_mm->mmap_lock))
-			return;
-	}
+Also, the comment on KSM_WALK_MMAP_WRLOCK says "walk under mmap_write_lock(=
+)",
+whereas mapping it to PGWALK_WRLOCK causes process_vma_walk_lock() to acqui=
+re
+the VMA write lock via vma_start_write(vma) rather than only asserting that
+mmap_write_lock() is held.
 
-	vma_assert_locked(vma);
-}
+>  /*
+>   * Though it's very tempting to unmerge rmap_items from stable tree rath=
+er
+> @@ -697,17 +707,19 @@ static const struct mm_walk_ops break_ksm_lock_vma_=
+ops =3D {
+>   * protection keys here anyway.
+>   */
+>  static int break_ksm(struct vm_area_struct *vma, unsigned long addr,
+> -		unsigned long end, bool lock_vma)
+> +		unsigned long end, enum ksm_walk_lock walk_lock)
+>  {
+>  	vm_fault_t ret =3D 0;
+> -	const struct mm_walk_ops *ops =3D lock_vma ?
+> -				&break_ksm_lock_vma_ops : &break_ksm_ops;
+> +	struct mm_walk_ops ops =3D {
+> +		.pmd_entry =3D break_ksm_pmd_entry,
+> +		.walk_lock =3D ksm_walk_lock_to_pgwalk(walk_lock),
+> +	};
+
+[Severity: Low]
+The commit message states:
+
+  break_ksm() currently takes a boolean 'lock_vma' to select between two
+  static mm_walk_ops tables.  This is fragile: the ops struct is full of
+  function pointers and making it mutable (to switch walk_lock at runtime)
+  turns it into a juicy target for attackers.
+
+  Replace the boolean with a KSM-local enum ksm_walk_lock and build the
+  mm_walk_ops on the stack, so the table stays const and there is no
+  shared mutable state.
+
+Previously, break_ksm_ops and break_ksm_lock_vma_ops were declared as static
+const struct mm_walk_ops in .rodata, whereas this change declares struct
+mm_walk_ops ops on the writable stack without const and reinitializes it on
+every break_ksm() call.
+
+Does moving the function pointer table from static const storage in .rodata
+onto the stack without const match the security rationale in the commit
+message, or should break_ksm() either keep selecting between static const
+struct mm_walk_ops tables (as done in fs/proc/task_mmu.c) or at least mark
+the stack struct const?
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261102132416.3000=
-84-1-xu.xin@linux.dev?part=3D2
+84-1-xu.xin@linux.dev?part=3D3
 
