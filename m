@@ -1,113 +1,148 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECA36606A32D
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 16:26:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A16DB606A326
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 16:29:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=HyDteQG2
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ajLm0KeB
 Received: by kanga.kvack.org (Postfix)
-	id F28206B05D4; Tue,  3 Nov 2026 11:26:38 -0500 (EST)
+	id A4C336B05C2; Tue,  3 Nov 2026 11:29:58 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EFF686B05D5; Tue,  3 Nov 2026 11:26:38 -0500 (EST)
+	id 9FCD56B05C7; Tue,  3 Nov 2026 11:29:58 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DEEF76B05D6; Tue,  3 Nov 2026 11:26:38 -0500 (EST)
+	id 915816B05C8; Tue,  3 Nov 2026 11:29:58 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id B416E6B05D4
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 11:26:38 -0500 (EST)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 4308414049B
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 16:26:38 +0000 (UTC)
-X-FDA: 85394336076.21.CC2CC07
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 8695040006
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 16:26:36 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HyDteQG2;
-	spf=pass (imf17.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	by kanga.kvack.org (Postfix) with ESMTP id 5F5D86B05C2
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 11:29:58 -0500 (EST)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id F1DE8A8028
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 16:29:57 +0000 (UTC)
+X-FDA: 85394344434.25.6F757BE
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 3A505180009
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 16:29:56 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ajLm0KeB;
+	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793723196;
-	b=Sm2CgG4Fa303ttTthodIultQdkKWblt5v8Wg5r5sLo6L5IIkZRga+crsz2PMOyzDOtwmRk
-	GMasYBxkBv5rCLScOzJmQDdb+WEYN3HvjQi8U75UkjtLR+qlBKAxS9bNFElvZw+chg1SaC
-	qRS85na5f1JmB50ID6oJJ4niFZgmyHY=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793723196;
+	s=arc-20220608; t=1793723396;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=88x5nWCU4/5DUnm5J75+/44oJREtwTCj+m3lJcaJoNE=;
-	b=BzQnl0tWZwKfonBKI9bhShA8REWkFjmr6DK0x/sY7WMhzoOAaAN2YSrjN+387BUeZKCBff
-	Ff/9mMeT6IZ7L8mqWchK3RQ664H7rR9ZcTR7ryS3zH60eStqdXYjHDQBjGJH0mxx7lyxx8
-	L2OGlI45v7+HZMtH0cqo3l0eCwbwp5Y=
+	bh=XP0ozVk9+CRaYdZkDjrlK4V/5HSBcJ6GFrBwej+PFtA=;
+	b=H7RB6252yCxMx8v6sllQhM6jJulqq2lS8O0OtphfwvcUNtC4sG4BmN7ABn9oSWM5n/SThG
+	rVPvrxs90r5RxPivHc+O1PLHtYkFprHseAp5ZLh3PaHsCxIizo19mrTce5C8RK7b5iB730
+	6/teyVIkXSJvNgTnbmHSalmDMWv9tNU=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793723396;
+	b=H4SedVid/+IHPmHoaRp0x/KVLgj4nOYiENFUVYzSU//ENH/cJBfYbQj8czyTbz2nkCI6lk
+	j3jKlNlQ02p4ng+uM+Bgmt2MKLUlg0hw4zaUbe65bANcUzA4RRpBIGMkdSYwWU1C+YlsfK
+	DDhAoEFx3MtFkw6dTc9iGKR4WcFCTl8=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HyDteQG2;
-	spf=pass (imf17.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ajLm0KeB;
+	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id CC725404E3;
-	Tue,  3 Nov 2026 16:26:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09A721F000C1;
-	Tue,  3 Nov 2026 16:26:23 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 8A58E608FA;
+	Tue,  3 Nov 2026 16:29:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 772D11F00919;
+	Tue,  3 Nov 2026 16:29:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793723195;
-	bh=88x5nWCU4/5DUnm5J75+/44oJREtwTCj+m3lJcaJoNE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=HyDteQG2VBDz2pwudxJvRFZ3NzuhMM1n/qoJyRpSIEa+4sIo8qfNjCKCMkx9fqPnu
-	 PTXEB3HB8c+csEYJbUqrD18YNji+Wb3P0nPR4rCDriU41qd0d35Q951xfxtaew6zqD
-	 xTRV7HQa/evoV4YEWVb3yEGxlVh8/pDAOnR650sPVOaA2QtXNMiUjYtFVGzVyuFmxJ
-	 cuqSFcaDMPcPNDAwdq/HarCHKLW8nQ/TcudxBJnTO/IQN1HpQ6LTm2xHx92xHn7YRV
-	 9GYQVIg2n29fkajQrtiWC1hueIuFYRrAfwMXbzDr3+UFxfeou5MMiBIFbN+ZYhp4th
-	 RFlMkVbcaKQDw==
-Date: Tue, 3 Nov 2026 17:26:21 +0100
-From: Christian Brauner <brauner@kernel.org>
-To: Chuck Lever <cel@kernel.org>
-Cc: linux-fsdevel@vger.kernel.org, 
-	Linus Torvalds <torvalds@linux-foundation.org>, Jann Horn <jannh@google.com>, Josef Bacik <josef@toxicpanda.com>, 
-	Chris Mason <mason@kernel.org>, Jeff Layton <jlayton@kernel.org>, NeilBrown <neil@brown.name>, 
-	Eric Dumazet <edumazet@kernel.org>, Thomas Gleixner <tglx@kernel.org>, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Jonathan Corbet <corbet@lwn.net>, Christoph Hellwig <hch@lst.de>, 
-	Greg Kroah-Hartman <gregkh@suse.de>, Joel Granados <joel.granados@kernel.org>, 
-	Kees Cook <kees@kernel.org>, Jan Kara <jack@suse.cz>, Jan Kara <jack@suse.com>, 
-	linux-kernel@vger.kernel.org, linux-nfs@vger.kernel.org, linux-acpi@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, linux-s390@vger.kernel.org, 
-	"linux-scsi@vger.kernel.org" <linux-scsi@vger.kernel.org>, linux-um@lists.infradead.org, linux-wireless@vger.kernel.org, 
-	Linuxppc Dev <linuxppc-dev@lists.ozlabs.org>, netdev@vger.kernel.org, ntfs3@lists.linux.dev, 
-	platform-driver-x86@vger.kernel.org, coreteam@netfilter.org, kexec@lists.infradead.org, 
-	linux-pci@vger.kernel.org, linux-sound@vger.kernel.org, netfilter-devel@vger.kernel.org, 
-	dri-devel@lists.freedesktop.org, ibm-acpi-devel@lists.sourceforge.net, 
-	jfs-discussion@lists.sourceforge.net, linux-alpha@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-cifs@vger.kernel.org, linux-fbdev@vger.kernel.org, 
-	linux-hwmon@vger.kernel.org, linux-mm@kvack.org, linux-sh@vger.kernel.org, 
-	linux-usb@vger.kernel.org, samba-technical@lists.samba.org, sparclinux@vger.kernel.org, 
-	linux-m68k@lists.linux-m68k.org, linux-doc@vger.kernel.org, linux-serial@vger.kernel.org, 
-	linux-atm-general@lists.sourceforge.net, Takashi Iwai <tiwai@suse.de>, linux-input@vger.kernel.org, 
-	linux-raid@vger.kernel.org, linux-ext4@vger.kernel.org, linux-modules@vger.kernel.org, 
-	linux-debuggers@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH RFC 27/38] sunrpc: make queue_wait a global wait queue
- again
-Message-ID: <20261103-lufttemperatur-absondern-zweifach-31d272ad55ab@brauner>
-References: <20261102-work-procfs-bugfixes-v1-0-59422ed3e465@kernel.org>
- <20261102-work-procfs-bugfixes-v1-27-59422ed3e465@kernel.org>
- <16f91f93-16b4-49b1-b7fa-cec69759c349@app.fastmail.com>
+	s=k20260515; t=1793723395;
+	bh=XP0ozVk9+CRaYdZkDjrlK4V/5HSBcJ6GFrBwej+PFtA=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=ajLm0KeBDWIea2Y0ancKBrYORerT1THMaXy4jFvdxErxcwgHfh+0oiYOveUkK9Nic
+	 XDAFGUviaQL/b0kNaroGvMJMqoLUZcayGQsdxlhhKJxTYSIUrnZsBKzGU4wv4rNf7r
+	 3CBPCl+Ey1fm96csxww1HLjXlVEsssmjSz/rMlAZZgy7+5Nhk2XccA3BneAUCBtfaf
+	 2QgZDOqG6J1xT7AHzWRKG9bzb6tKo3BhHqX7f2/GxXJ4qnCbEovQlZj91NtWbCJUGd
+	 zpk6sZlD0x7hC77KXkvSqgUw9O6xVoAVxA8jXsTPtgtNxonUYjtEccrALxOXWNnR36
+	 dBwXxiyDg6Utw==
+Message-ID: <fd6094d5-50d3-4e73-8c09-91b0769476ab@kernel.org>
+Date: Tue, 3 Nov 2026 17:29:44 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <16f91f93-16b4-49b1-b7fa-cec69759c349@app.fastmail.com>
-X-Rspamd-Server: rspam12
-X-Rspam-User:
-X-Stat-Signature: zk8u6prs6h3oy78tynfzsw6idzx619mg
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RFC 0/6] virtio-mem: support memmap_on_memory
+To: Nikolaos Karaolidis <nick@karaolidis.com>,
+ Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Jonathan Corbet <corbet@lwn.net>,
+ Shuah Khan <skhan@linuxfoundation.org>, Randy Dunlap <rdunlap@infradead.org>
+Cc: Oscar Salvador <osalvador@suse.de>, "Michael S. Tsirkin"
+ <mst@redhat.com>, Jason Wang <jasowangio@gmail.com>,
+ Xuan Zhuo <xuanzhuo@linux.alibaba.com>, =?UTF-8?Q?Eugenio_P=C3=A9rez?=
+ <eperezma@redhat.com>, Andrew Morton <akpm@linux-foundation.org>,
+ Michal Hocko <mhocko@suse.com>, Hui Zhu <teawater@gmail.com>,
+ Georgi Djakov <georgi.djakov@oss.qualcomm.com>,
+ virtualization@lists.linux.dev, linux-mm@kvack.org,
+ linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-cxl@vger.kernel.org
+References: <20261103-virtio-mem-memmap-v1-0-308ae1da6240@karaolidis.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20261103-virtio-mem-memmap-v1-0-308ae1da6240@karaolidis.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
-	autolearn=unavailable autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: 8695040006
-X-HE-Tag: 1793723196-763828
-X-HE-Meta: U2FsdGVkX1/yLcpLsh6+kBEu2o9EZK/7R8ZKfV8AkiIDMjQ2bDesJFO50eWq7Q9Ylpm6jMy8zSy1zwE3wmlUhUOxyWFjj1MwbG0Mc54BH4Ci40bvvcfA8mbp0P3TAcBuE1nJnq/nvDmX5jZM5pq8OS96lSLX48WcPAXARxTio+/BVEUR3ei5PsVJBZmh7/HBJ1rrBT2mKy2YP0elnXGDin9MY9DMmfAAD4VK8rxt3MWi8ldvfoOnfE2DDRy/2U2lg9SzjmilrUPclgV9LWUU2bfHAJx7qwyUvL4eILVHk/aKXg/e6ZWNitN6Iu2zf3o+CFYktR1nRuxaoE/ICFRIS9T+w6AcaIC9z33WMMgXBgQVg4nXi865+eVnOrCfdp/1T5kbgYcnfChT8rsKQiSWmd+sNqKObEfhZohfcUPJr+Uw1aAyytBHJIBFfqNyPwNQjV2p5GOe0j6CSYifrV6AdU2iR2voGmoPkGlJwSkgvmWOn2t+6BluzLviOx+Bay+/iQlEQso6zZcGG8Xk9dEtvJqXwiSPPMOuBfo2/4DZaSpk4VwHCGuWXbDS9CL1qQenP7b7YImCTTf5OFLTJWV2Ox4sqFqTG2r47t/ai2P4DiYfz7Jdhddp2D5bgQeDGDig78POLTeyhFZhPN7Xu0HRhWsZbR2+PRjdK/l0Jt8ctip5jPzEHcVxxj1k92Z+idfjR3ohf/5w8EekUV9BhoTxqWGsH+5AAjWfppC4OkqFCOPHLN0oTtnU4qMlRHo2I7nFI8zroPpw0SSBWlYK0NMjSAz0ALzdHahn/AV9DwNQyY4WRd/rHGEm6y6hv210uk3lFrgVQL0bDfl1BrlYjPR2V7oPq4AwrYs169soZuY7E05ZheqUvu22eEcYDw5tza2pxVJ9Go1aNcSgAD8tbGhQ1mLvD13hIMduYVoPLCjkAw8GxIowEbQ4M8m2IYFu3VyhaZVrKl2XlxK+syXcrp0
- AuXXSZbt
- /e1nDXTDMAQDbR+jymxXc/SddK0D0mL+A2qt1mebRji8fiN9kcdBvrKYzDznhmSor22koH8bpLLWZq775Q3OSZl4uVosM2JIti834fnGE9FaPd6KYCZDW50j/rMabh6Vixk1csRvmjn6zeLfmmKWtkFjaR7CJ39PXbm9Ax8SEozgjifuxPA0FVdNwSLsmF3S7tdFnN/YhRV4bt18uGoVNbpSNEx/Zb+lRmeaOK1+/Q7r39jjvUMd2aJ2+LpF/K0fK++1n6Q5T6EimMcsTLc5rM2klgAtiU65RDOG5wP4bGWeotQrSHQSWwixOCWLwwtQJ3mYqmLYGJY3a/cCQAX+pNPMr0YdHKOsLHNkZAlN6DeEpdqXVFj4w6o6QALBmdaMTdnDHbpjPvOO6LojF/X+kwdbVaER3wBHW6tEPyr4Bfa+koNXoTIs1v544Bh3HguQy/08ceoZviCVpo+8R2rUb6JbtOX+SZEHc+H3C/GZNPgYNtNBp8RT+bDwb6w==
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
+	autolearn=no autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam09
+X-Stat-Signature: ksk6z97iwci3dbzaa9jjh9gmiwow55ro
+X-Rspamd-Queue-Id: 3A505180009
+X-Rspam-User: 
+X-HE-Tag: 1793723396-487417
+X-HE-Meta: U2FsdGVkX198R5BMd0kpSYfGzh2deSEZiUEDrbctfNekkYug2DYwTlkbhzDeF/gnEguGKpcNFx404R0lknSNEI/jb7T5vlA5XvNfdLAj67Fdu22E1sEjZw/GUvCHRGDXGfIFexXu2N7RtJuBeZgrTt8iQfz+RZyYmv9PwVTlJmksJ34VtDX1uJOARkyoyIFWq6DffG6JsEoPO/i3iQ2b2+CneQojbSyKMQNNmcwW+tZ0tFJx9ZLrEfyi8qH6YXSrl9zcnyqcALrFLYZF6ZfUsuv+sKWPDf/kYUoEefbk+MhfPG6D4SK/bVDzuCrj1uYH+J8PrhSBbhEONjNbrIPJ8mr7r6aoMkudYFAEsCktH++u/Sb5A6MZHoMV80Ifx+k5qA48NFnnCtB9eoDLzRUgAjG14nPQ89FSeiQXMW6+G5M/8+jx9piU6iCqvgvLxHjjLVUtBfln8pBNog+QegO17y+re9LL1x1oUJvV72IAUJTPZgpFeryPEuhp555Ejw5qLSQPZzLOR5rYYYrKSFiKw4Iyl9z8WWL0wS+yj0Jw5hx4yOsC3pdpY11n7siK0Uy1R3KayHS5wP66dS1wCO4CtW1g5u8uYfmPpdBS7UuagxId1YRLNh+p8LoyUeCW0OkOiQwLM40FI8EwH7Gj1FCId+C0HGyOKQHXhRq9s7AYUeP/kUXjny2PDIcbHJEGrv6IrmZikXSWsu637VHeNQWQFS+GZltSXgOMZgxPcJsOIX/71MdTrIdr01F67t12KE8Bq0ZY3gk4criUr4YS5Oqrr1uvJHkyTQpXUxI88iwRZbbyvxBcsXnwYnNMwkVnFtaqbDEb/xvnEUdjNLsOcYOgSNgKl8u7zIPgI5NvmxHNV2rMKAFRfHoj71wcD7QMMwdwOWml/uJrdtxc3vDcqiy03/5ojiC3MZU19M5KUFZ4iIVszDHps4hCLVvm/RxgkUa0ij+i/Ic5A2SmAzJkjyf
+ Q+7FKLJf
+ DaxnCHE+B+Zs6/DPeI3lT8KnRdSrr4GiSoxJiy5ZeTpllyXSMOWUR7f2Cg3Hj7/Pkd3c0yKkiICptoiABc/WavSYDV4o/Q2cRzYmiYu55UD9wABZLEwikmPIZ7x/fRQb8fYHyTMdN7BF3EhZ+frLRjr8Z60a1jUYGe2hJFGOIlNQbAocJ2iJRnxycUfaDp3Fzg1nO3HLlFRuaNX8II/I+YhXwMiC0PGS2iIpueE05R6hfegqtfet4uuQC3pKeWiAXqiZwVG6Kxq88vntjMtWXBXWyImPvZvcmIMGaDx6u2Z0vAVmc2C51087oew==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -116,69 +151,25 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Mon, Nov 02, 2026 at 10:12:12AM -0500, Chuck Lever wrote:
-> 
-> 
-> On Mon, Nov 2, 2026, at 9:21 AM, Christian Brauner wrote:
-> > Since commit 552d0e17ea04 ("sunrpc: convert queue_wait from global to
-> > per-cache-detail waitqueue") poll() and epoll queue their waiters for a
-> > channel file on the queue_wait head in struct cache_detail. But the
-> > cache_detail can be freed while its channel file is still open and
-> > waited on.
-> >
-> > The procfs channel files of a network namespace are removed when the
-> > namespace goes away. Removing a procfs file waits for the callers that
-> > are in one of its methods right now and then calls ->release on every
-> > file that is still open (cf. close_pdeo()). The waiters that poll() and
-> > epoll left on the head stay queued until their file is really closed.
-> > So:
-> >
-> >   sunrpc_exit_net()
-> >   -> ip_map_cache_destroy()
-> >      -> cache_unregister_net()
-> >         -> remove_cache_proc_entries()
-> >            -> proc_remove()      // ->release, the waiters stay queued
-> >      -> cache_destroy_net()      // kfree(cd)
-> >
-> > and when poll() returns remove_wait_queue() writes to the freed
-> > cache_detail:
-> >
-> >   BUG: KASAN: slab-use-after-free in _raw_spin_lock_irqsave+0x4b/0xa0
-> >   Read of size 1 at addr ff110001131bb570 by task sunrpc-poll-uaf/242
-> >   Call Trace:
-> >    remove_wait_queue+0x22/0x1c0
-> >    poll_freewait+0xc2/0x230
-> >    do_sys_poll+0x9ba/0xd50
-> >    __x64_sys_poll+0x165/0x470
-> >   Freed by task 12:
-> >    kfree+0x267/0x620
-> >    sunrpc_exit_net+0x34/0x80
-> >    ops_undo_list+0x271/0x8d0
-> >    cleanup_net+0x3f3/0x860
-> >
-> > Closing an epoll instance that watches the file gets there through
-> > ep_unregister_pollwait() instead.
-> >
-> > The channel files of a network namespace belong to the root of its
-> > user namespace and cache_open() doesn't check for a capability. So an
-> > unprivileged user can open the channel file of a namespace of its own
-> > from the outside, poll it and let the namespace die.
-> >
-> > Go back to a single static wait queue that never goes away. A wakeup
-> > for one cache wakes the waiters of all caches again but cache_poll()
-> > reports per cache_detail so that's just a spurious wakeup. procfs
-> > should really own the wait queue of its files like kernfs does but
-> > that's nothing for stable.
-> >
-> > Reported-by: Chris Mason <mason@kernel.org>
-> > Fixes: 552d0e17ea04 ("sunrpc: convert queue_wait from global to 
-> > per-cache-detail waitqueue")
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
-> 
-> Acked-by: Chuck Lever <cel@kernel.org>
+On 11/3/26 10:50, Nikolaos Karaolidis wrote:
+> virtio-mem adds memory without MHP_MEMMAP_ON_MEMORY. With the memory
+> onlined to ZONE_MOVABLE, a VM that grows to many times its boot size
+> can run short of unmovable memory. I ran into this while working on
+> a guest-initiated memory negotiation project.
 
-Fwiw, I have a patch series on top of this that makes procfs own the
-waitqueue and then this whole UAF issues goes away structurally and you
-get to elide that global thing here.
+Care to pitch the use case to me?
+
+I'm all for making virtio-mem better suitable for some workloads, but my time is
+limited.
+
+Is this something that your use case would actually benefit from, or was that
+project already discarded?
+
+Why so much MOVABLE memory, and how do other kernel allocations (page tables
+etc) cope with that?
+
+-- 
+Cheers,
+
+David
 
