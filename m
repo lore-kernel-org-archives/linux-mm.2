@@ -1,102 +1,92 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B85B606A329
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 08:12:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19CA7606A32D
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 08:13:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=gdoP8LND
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Kg4jc1+Z
 Received: by kanga.kvack.org (Postfix)
-	id AAA3D6B05E7; Tue,  3 Nov 2026 03:12:44 -0500 (EST)
+	id 2E4346B05E9; Tue,  3 Nov 2026 03:13:52 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A81A76B05E8; Tue,  3 Nov 2026 03:12:44 -0500 (EST)
+	id 2BDAD6B05EA; Tue,  3 Nov 2026 03:13:52 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 998A26B05E9; Tue,  3 Nov 2026 03:12:44 -0500 (EST)
+	id 1FA166B05EB; Tue,  3 Nov 2026 03:13:52 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 7691C6B05E7
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 03:12:44 -0500 (EST)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 057A94035D
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 08:12:44 +0000 (UTC)
-X-FDA: 85393091448.13.9AC1580
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.3])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 68E5740003
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 08:12:39 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=163.com header.s=s110527 header.b=gdoP8LND;
-	spf=pass (imf04.hostedemail.com: domain of xiqi5703@163.com designates 220.197.31.3 as permitted sender) smtp.mailfrom=xiqi5703@163.com;
-	dmarc=pass (policy=none) header.from=163.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id EB9A66B05E9
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 03:13:51 -0500 (EST)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 66E0180340
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 08:13:51 +0000 (UTC)
+X-FDA: 85393094262.28.E04FE8B
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf06.hostedemail.com (Postfix) with ESMTP id D1380180004
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 08:13:48 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Kg4jc1+Z;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf06.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793693561;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=vJHelf8yRuovwrqUmX6IiAQ6WiqwwkheFHbp4XKwlVQ=;
-	b=iQB9jIM4kObTc4drTS4aHfToVHhItUeO2rZSeV21d5OP7ipAwiwUKEvMumWrs2cgIFXdAN
-	Uup3bIPehyLvqmt+iUX0pdLEst9OlcEXA1rBVrg5dQc4msCpTEcgnH3rip44FmrNLQ7SR5
-	R68k3NGOeij/r2TYLEiuGsdNZOAARXE=
+	s=arc-20220608; t=1793693628;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=bT3xxJ3C8hS5tPSHY4eaeuDcPDJiPh2ymq7gkl1q/OU=;
+	b=Nnny975R0qWi1X2Fl3W0B/Utejdvl7tpAZTZTlA49hGb+91ekBIxvbWMMXHIQyBa9VCa/q
+	3Jp2voV06Q2mGRVhQCpkKKDXpEfpFVvU7IEusgm/GxiLqVYClpUtXg23cMiA/PenskJYvT
+	ohnN1btrGPUiYmEAsbY0jYYtHVnl7tw=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793693561;
-	b=SP3rN9JdvP2KNAxnN9smls6+UcB+kKb4SjTLOMA7hOvaM/4dPJyPhbckDs82BrmyLQv0c9
-	GfGk3D6nqiifclDZzIs2vB/4NmaxwFqZGqGQqyNlB68IuhHFH+fA7Qb66PYuawd/xOVPUJ
-	J8eVkHVOtTtBm+riHVG9nRvUyXeotws=
+	t=1793693628;
+	b=tQAK7/oQ9LHcsNHkBZDogpAtPHua6WqbAIH7o1e6lpZ/RtSE2VAOvL8q32KPYW1QwifjQm
+	Pnmveajsk+NjllYnXrNI29cAULrUmPv5NqVjsxcWvxgNHAg+9WtZQJLohJuThyGeU9LnLs
+	5++4giVIOKLOnGBJznqrjfXBQDoBxrU=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=163.com header.s=s110527 header.b=gdoP8LND;
-	spf=pass (imf04.hostedemail.com: domain of xiqi5703@163.com designates 220.197.31.3 as permitted sender) smtp.mailfrom=xiqi5703@163.com;
-	dmarc=pass (policy=none) header.from=163.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=vJ
-	Helf8yRuovwrqUmX6IiAQ6WiqwwkheFHbp4XKwlVQ=; b=gdoP8LNDIyPJ5KMpBt
-	R5Bg1FkLSV+Wwf2FEWxVn+kfIz3YnItvgY62xltuIVNhab6zYtFBvfgIHaSFe7wd
-	/8D+VtqZhTSLLg+hTiBxEUaO7PRs3G2tUew7zc8AX+JNrX/pUUiaN4mVdMF82fL/
-	/BT/OasCbj0Rdaw3IfD1+n63A=
-Received: from mm (unknown [])
-	by gzga-smtp-mtada-g1-4 (Coremail) with SMTP id _____wDn93dYl+lqnSU_Eg--.1168S2;
-	Tue, 03 Nov 2026 16:12:10 +0800 (CST)
-From: Qi Xi <xiqi5703@163.com>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>
-Cc: linux-mm@kvack.org,
-	Zi Yan <ziy@nvidia.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Joshua Hahn <joshua.hahnjy@gmail.com>,
-	Byungchul Park <byungchul@sk.com>,
-	Gregory Price <gourry@gourry.net>,
-	Ying Huang <ying.huang@linux.alibaba.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	Qiliang Yuan <odys.yuan@gmail.com>,
-	linux-kernel@vger.kernel.org,
-	wangkefeng.wang@huawei.com,
-	sunnanyong@huawei.com,
-	xiqi2@huawei.com,
-	stable@vger.kernel.org
-Subject: [PATCH v2] mm/migrate: fix softlockup in do_pages_stat() with huge page arrays
-Date: Tue,  3 Nov 2026 16:05:57 +0800
-Message-ID: <20261103080557.1632382-1-xiqi5703@163.com>
-X-Mailer: git-send-email 2.53.0
-X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wDn93dYl+lqnSU_Eg--.1168S2
-X-Coremail-Antispam: 1Uf129KBjvJXoW7uw1UZw1DCrWDtFy3tw4fKrg_yoW8Gry5pF
-	Z3X3y8KFyrKrWxC3WavFyvkFy7Z3sxGF4SyF1kJ34Sy3ZxJF4ak34fZ34agrW5tFySyF4S
-	qr4qk34vy3yY9aUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jcXo7UUUUU=
-X-CM-SenderInfo: 50ltxkqxqtqiywtou0bp/xtbC7RsRR2rpl1t1BAAA3e
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 68E5740003
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,UNPARSEABLE_RELAY,
-	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: jrkwauscy3jmwdddpbszpxcs4ggwzw4j
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Kg4jc1+Z;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf06.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 5681D601EF;
+	Tue,  3 Nov 2026 08:13:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81A2F1F0093A;
+	Tue,  3 Nov 2026 08:13:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793693628;
+	bh=bT3xxJ3C8hS5tPSHY4eaeuDcPDJiPh2ymq7gkl1q/OU=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=Kg4jc1+ZAEAGkStGxhi1E8joz4GlyQSVmAl18OMWWQrKKRtGap9Go4kv5X482bzjJ
+	 3DNLfuYTW+d9oiNqUAaWUTS6pXtGLVtSSvBw99v95kCNrBe1QE76BFzXYyaRpWnObq
+	 6X/1LU5aAzl6wuCgtbKya9lrYrRoH7em6W1YBpl8DOdMfPwpYdZLJ//FOsDm3uWPjn
+	 s1jbHm50SN/QuJFFK6XSgco4b3/iaF0NnhS6+kCvK4JiKc7PIx6QQHVXVAFKI7bBbS
+	 F6Q5CSQuUEqKE+3rPfh1P3fFHIOztANF7VrQ0OxnPu8OXwcGJwlMjxj2Y2bIjCE5NB
+	 OtCSEVXqACneg==
+Message-ID: <sashiko-outbox-194806@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH] mm/hugetlb: fix validation of unsupported HugeTLB
+ orders
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Muchun Song" <songmuchun@bytedance.com>, "Andrew Morton" <akpm@linux-foundation.org>, "Oscar
+ Salvador" <osalvador@suse.de>
+Cc: "Muchun Song" <muchun.song@linux.dev>, "David Hildenbrand" <david@kernel.org>, "Kiryl
+ Shutsemau" <kas@kernel.org>, "Mike Rapoport" <rppt@kernel.org>, "Huacai
+ Chen" <chenhuacai@kernel.org>, "WANG Xuerui" <kernel@xen0n.name>, linux-mm@kvack.org
+In-Reply-To: <20261103023831.1805473-1-songmuchun@bytedance.com>
+References: <20261103023831.1805473-1-songmuchun@bytedance.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Tue, 03 Nov 2026 08:13:47 +0000
+X-Stat-Signature: yqj9tijph66w7sw6zyq74jici9j6s637
 X-Rspam-User: 
-X-HE-Tag: 1793693559-788032
-X-HE-Meta: U2FsdGVkX1+FRcE5cxW/rCI+nY0vD9xbdc6WLPbc/7jM79/wffmKqypKTHwbZFu60WoQjMlQzE+9GJtOkyMyjhCnHJxYClZfoofns2Vz8jCci/o3kKHOroatsIMtuHVQpfbzuSYOgimHomaqWqhL7XMPIHvUN/2YUyjcYKIvtytk4rUSlfQ9wBeCwIObq4Ft2mF40fPnJacWMBhNcLLvYrACRuybTZNQ5YYlK6UUuU8g7YIqasIpWNkLriXw9OdT58ZkaINDGxenwCbdCnFNtTST86PosR/+BLYon2asKzztXZa0m9c0EsPS2+qhqpcTplN4peYwz8wX3TfpXONvnDBU1TctF6ybIMJjSM7N0gF9zFdO+YiOJPhzxw8+VYqMadG9d7GUbNe+Ow4KTeOJdz9MCckSUwCfTKBUnOCqMYE/yAcknMqZJgR2sANMik5GwugPUGWSQqgA4cCsH4IeYn9VQEIVbpBcWMcKWjrB64Fwj/PLTzJ8X2HV3bEP44xP95gX1ofSeOyOgXyJvunHZ1N9QgH3VZjARJTlkSC3zk/0naK5Hrqkn2ZSKInPUNy7HnoJnaaqyJ1rk5VE3vlxI9CiR2jVdB1gxQphdfug9I3Zr6vVVsajor1sNFmVcbZycM9tteAtXrLRaQhRr1KiOuCRfzQEeB5ABN4WoVsm9T1Zxj8Gc74hS2KZKAnw4gC9ODKCzjp3K+DBvhZ36Xhdz22B0/1Xp4Ge2Oj7A7aspJF0B1J3mY4YW5GbXh3JTL9KR9hKCaanw+9NXZYCWlJjsLxDwsjL4Sjpf9e/xBZuZhEJbWhNYoaqOeD7LeU3d70gYVNqsHeQ6GAegCj/lfgzZkkvjD8Z9jswshwU4pProkzsagcBMiGb+6Ig1q73XcwYAC7N1g4hcb+TNPbceJjC6jnpxCx2SUS/4ViYWzYmevycWlHB29lmx+1YQMv5f19HpX+8PG7SfatMlj7/s0T
- zi+yOvmH
- MtHY4ZrlEbbVW23tcwPWMDyy3TBCUwtBNOc50BuGm7DDmjrYnqzTRUtwIAxDvp1TSmEQdjk0pVIiYDJd+JnI5r5GRTq7G7is/ibqIKd+EzXG4XUUz5evPEat/XMpnxdu3wRs+1G2ei1J6MalG0oDLqqhybIxzZLW3Z2F6NLHHglSmV7PU9OAlMqbVLkdr78gDS07ZN7Kiz7t/Kvkt4I0wiv5e3PZsS8rYPqity2HIht4yYvp9j+ra4xWuqccC0/GGmWdxOy0LJ5BvkapASYSIBlkXYt00ZKm/OMrnKIy99/HpGKSoGAHBXHKVlQMx5nuFxWeDxazT5Wy7Xn8f06lu73rxFyPbGHFwfbtgEgkf6/AypgI9mAEBriSzKtfftzXqsR/KhpUNxmeznbaT+uETxd6ye1xR3bggohJq
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: D1380180004
+X-HE-Tag: 1793693628-92335
+X-HE-Meta: U2FsdGVkX19Zy8ybUMXV3MblyZDrKTjPgRiKDl6oCOALaQLx8/37hc67m3lWoQT3ZWhOGI3b98x3QghvNbp/9dkAH/PCfiFEJ9xDOTrpqqYqC0E726niNMKllVegqg3p6QxRjmwdcbg7Q8OSRxI+wGd4aQH9eopGKn7CZfHFfM0abUkOFpkCJoMGMSXkf/9XINSBh1yVMQGO8Dpc41euZgXhytUUCcPJN6qN44YfFqELIlXCdsJC4jB0zVuC0sn3dJXN+JmtY9oi70O+9fZcZycYQjA9pqovlAcJPeu+unl57rsD//8DyT231R1+nTYjpVSlk/G/e5MICXQ7jzmHdaSjEgxEiUNvdQtsVoN/IXwHBUKrJWyObry3PTcO8SDcWpjCDJSlK2YRvGwH1lp827J74N1red1YRE8Ia040rzzKCpgkiHJPnNOqnDjrJ+cmletehgMJdy+JH6dA2QlfdREY+22FwQBeUA6UZLPdXlDuVgLiCNYVPKCTslgpy+94xQnguEXJXU+pEsvCOu6OOx6DUxcnFtKzJQG4lJs+qcxunQMNvrXokpRkhSnR8+xpuopKwfo0dzyWpQY8pr57ysLkx9KJFPtLP2W2O8iry5AJOihntYYKyVnVKObsGne4HZfZKo+I8+q0iuJlmXOhkcVs1ayCx2PitcY+pOf8BJcf1jodpYA97Y8oDgWfbEDsDMXJcabRzZnfiVmuxYQmzizutEiZWBeENpa/hphEOKXvg4HuYTlVebTBlGAm+GuayxQFXus+y9j9v7iw4dNZ6Wmsf6JZITnzRVf/r9TJLxRHyzYPH2Rawe0A4FlF7SvACUWyZRVJ8xU+qGktTaJgBYRDbAyi0XRHHlxQbTtA3PFmngrXV8ZZBVUdG7ZmjC+yN2KV7smko1qDfgvJDOR9wqn1g6qcsJ9uH5HVE3uPYCiVXRl2nE7gCPWxcmMN3ucXYXmWfvj1+QT0XLMHn+5
+ eMR42lBd
+ czFWkYZajHPmPQabY3Iz+9c227INj+MOzo1b4JW/MliA3vhFHrPA01GhKNzSuoiW98Wjyw7jVSwUXSxvQ17CblOJ9+WgOXOefH+Kq4mG9TOqvrh/9iKdBgeTqXhTmwbIFyLHO0wKCSPH1XBGiDhswA9UfpoMpDlEnT8IjMN4sY+9kd8yYU732TnAhV2VBJZwWkzf2E+uOKabI3QOsFkmOnS8p4mpRxPPrpkdlfrF/I8X12Cl5z/xw69tTXU6/nB+oHmjzcxo/tCrvd9DD0rVaxeKqGNgKx5EQ4u/LmhaAS8sJLPTrXmYvTKtHu4i/LYfkvz6VDcqog4MSdr93ywc9KAPhSkWjkFqqc/eCH7fhRYEHGzSER0Cyd58jHYep1cTHdn+wc/YJrdPA0hOMBI7Wtm+4aVVbXtPV9CCRENbtrzOK+Df0rwo4aRD8ifyf725zjmOOzXU/EnJLvqqinYFKUSFJpqVvHQMEFdhL2IRzdVgq+abraF35QaekV4pOZZvJK2F3xWl2ZTalyIvnQaj6DSCHVM0oLzKWRq6wctZIO86dbFJyYpI7F6lFWF2SKLIXSC8F6JL6LvXRgr/3nCAKUzP4SA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,45 +94,75 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
+X-Archived-By: <archiver.kernel.org>
 
-From: Qi Xi <xiqi2@huawei.com>
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [High] mm/hugetlb: boot BUG_ON() in hugetlb_init() when HPAGE_SHIFT is 0 =
+on powerpc
+--
 
-do_pages_stat() walks the user page array in 16-page chunks but never
-reschedules, so a huge nr_pages can hold a CPU past the watchdog
-threshold on non-preemptible kernels.  Add cond_resched() to the loop so
-long move_pages() node-query calls yield periodically.
+commit 83959b12982c256d20ca0de51021b3beae201569
+Author: Muchun Song <muchun.song@linux.dev>
 
-With KASAN and function tracing enabled, a move_pages() node query
-(nodes == NULL) over 10 million page entries (~40GB of mapped memory)
-reproduces the softlockup on a 6.6-based arm64 kernel with
-CONFIG_PREEMPT_NONE=y.
+mm/hugetlb: fix validation of unsupported HugeTLB orders
 
-In current mainline, only alpha, hexagon and classic m68k can still
-select PREEMPT_NONE; stable kernels older than v7.0 still allow it, so
-the fix mainly targets pre-v7.0 stable users.
+This commit replaces BUILD_BUG_ON_INVALID() with MAYBE_BUILD_BUG_ON() in
+hugetlb_init() so that configurations where HUGETLB_PAGE_ORDER exceeds
+MAX_FOLIO_ORDER are rejected at build time when constant or via BUG_ON() at
+runtime otherwise.
 
-Fixes: 80bba1290ab5 ("mm: no get_user/put_user while holding mmap_sem in do_pages_stat?")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Qi Xi <xiqi2@huawei.com>
----
-v1 -> v2: describe the repro environment; add Cc stable; no code change.
+> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+> index ff9dbfbc7a961..e21ac667694bd 100644
+> --- a/mm/hugetlb.c
+> +++ b/mm/hugetlb.c
+> @@ -4181,7 +4181,7 @@ static int __init hugetlb_init(void)
+> =20
+>  	BUILD_BUG_ON(sizeof_field(struct page, private) * BITS_PER_BYTE <
+>  			__NR_HPAGEFLAGS);
+> -	BUILD_BUG_ON_INVALID(HUGETLB_PAGE_ORDER > MAX_FOLIO_ORDER);
+> +	MAYBE_BUILD_BUG_ON(HUGETLB_PAGE_ORDER > MAX_FOLIO_ORDER);
 
- mm/migrate.c | 1 +
- 1 file changed, 1 insertion(+)
+[Severity: High]
+Will placing MAYBE_BUILD_BUG_ON() before the hugepages_supported() check in
+hugetlb_init() trigger a boot BUG_ON() on architectures like PowerPC
+Book3S-64 when huge pages are unsupported at runtime?
 
-diff --git a/mm/migrate.c b/mm/migrate.c
-index 7bdcdb57652f..6c2371020cc5 100644
---- a/mm/migrate.c
-+++ b/mm/migrate.c
-@@ -2545,6 +2545,7 @@ static int do_pages_stat(struct mm_struct *mm, unsigned long nr_pages,
- 
- 		chunk_offset += chunk_nr;
- 		nr_pages -= chunk_nr;
-+		cond_resched();
- 	}
- 	return nr_pages ? -EFAULT : 0;
- }
--- 
-2.53.0
+On CONFIG_PPC_BOOK3S_64, arch/powerpc/include/asm/page.h defines HPAGE_SHIFT
+as a runtime unsigned int variable:
 
+    extern unsigned int hpage_shift;
+    #define HPAGE_SHIFT hpage_shift
+    ...
+    #define HUGETLB_PAGE_ORDER	(HPAGE_SHIFT - PAGE_SHIFT)
+
+Because hpage_shift is not a compile-time constant, MAYBE_BUILD_BUG_ON()
+expands to a runtime BUG_ON(HUGETLB_PAGE_ORDER > MAX_FOLIO_ORDER).
+
+When huge pages are not supported by the platform or are disabled at boot
+(for example, when hugetlbpage_init_defaultsize() in
+arch/powerpc/mm/book3s64/hugetlbpage.c finds no supported huge page sizes),
+hpage_shift remains 0, which hugepages_supported() checks:
+
+    static inline bool hugepages_supported(void)
+    {
+            if (hugetlb_disabled)
+                    return false;
+
+            return HPAGE_SHIFT !=3D 0;
+    }
+
+Evaluating HUGETLB_PAGE_ORDER before checking hugepages_supported() computes
+(0U - PAGE_SHIFT) in unsigned int arithmetic, wrapping around to a large
+unsigned value that exceeds MAX_FOLIO_ORDER and hits BUG_ON().
+
+Should MAYBE_BUILD_BUG_ON(HUGETLB_PAGE_ORDER > MAX_FOLIO_ORDER) be moved
+after the if (!hugepages_supported()) block in hugetlb_init(), similar to h=
+ow
+hugepage_init() in mm/huge_memory.c checks has_transparent_hugepage() before
+evaluating MAYBE_BUILD_BUG_ON(HPAGE_PMD_ORDER > MAX_PAGE_ORDER)?
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261103023831.1805=
+473-1-songmuchun@bytedance.com?part=3D1
 
