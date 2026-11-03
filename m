@@ -1,75 +1,74 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C16D9606A324
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 08:28:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C78AE606A324
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 08:28:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=VF/MjO4V
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Lww+V+Uc
 Received: by kanga.kvack.org (Postfix)
-	id E49B86B05B9; Tue,  3 Nov 2026 03:28:22 -0500 (EST)
+	id EE7AF6B05BB; Tue,  3 Nov 2026 03:28:30 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E000B6B05BA; Tue,  3 Nov 2026 03:28:22 -0500 (EST)
+	id E96B46B05C0; Tue,  3 Nov 2026 03:28:30 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CC1896B05BB; Tue,  3 Nov 2026 03:28:22 -0500 (EST)
+	id D862B6B05C1; Tue,  3 Nov 2026 03:28:30 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id AC1926B05B9
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 03:28:22 -0500 (EST)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id C3599120335
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 08:28:21 +0000 (UTC)
-X-FDA: 85393130802.09.E622DFD
+	by kanga.kvack.org (Postfix) with ESMTP id A71A86B05BB
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 03:28:30 -0500 (EST)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id EB7FD120333
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 08:28:28 +0000 (UTC)
+X-FDA: 85393131096.14.6564794
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf04.hostedemail.com (Postfix) with ESMTP id F3E8B4000A
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 08:28:19 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="VF/MjO4V";
-	spf=pass (imf04.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf19.hostedemail.com (Postfix) with ESMTP id 30BBF1A000A
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 08:28:27 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Lww+V+Uc;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf19.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793694500;
+	s=arc-20220608; t=1793694507;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HsU7vqGV4zKcR0xzOlLwVFOnYeenz76WhiQbmAur/gw=;
-	b=5KK61O9HJ/d0BlxA1PWmXAOvZNHXf8vqPKXSsnnR+W132IL91Bx01inkqjQOkz19peDoUi
-	DaXBKUywAnNIl7D8VZmJWw/+cO+mkn78gs03ud+nWfODbXjgz4Ykbo2VDTlfHGSiM3qV8I
-	FgqDxglIc+XlLUM1iLpxZKyoLgxLpyE=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793694500;
-	b=ES995XiMC6si1ZEUMFWMFskrIzqmNeM/kVhaUnHuPrOeFeqfQUwnyrmYy1v/6O1ZGrPnMb
-	hGygYHKpAgU7FA/RUTnWbF7lcP7eehOeOyClGQea359e++6LRyccu0nmEI24W5u4TWo09M
-	Vn5U8Y88amlw7UdMZzQWo77lOQgBVUU=
+	bh=syysjtWhfrzlfEaldEsTM26pEEl0o8azDUYhhDNzYQk=;
+	b=wqOUVcaMKg2dVk+enW2UEyiLVHQjhs/I/xCZlCpBvrLQtvcarClSrb7BPJd0dWxOuMDAIJ
+	c9IeHM60nkG+UG2SvsoW5xGJIyy1c98tzEf2MQ67VH/fv6pIloVNkE/jZK//IdCeFK6gcG
+	BNjRzRMItM/QxDxyebhzU7oRG9sXH9c=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="VF/MjO4V";
-	spf=pass (imf04.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Lww+V+Uc;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf19.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793694507;
+	b=y9kM81ymwCt2nJf6tPGC47TCNFfbz6jfgo96/XanhRc55mll2J7cjgw987SCbnVFQ5+0i3
+	X70ir5g1GNu2mkJeL/1gtG9aW3xwUiJCwZrnsfKlwMehYwM739nvG3N2iMyPZU5vN4Ix8F
+	hsXdJqYkeT+CXVaA/mCJUXHcXXAPolw=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 2DC0D4036A;
+	by sea.source.kernel.org (Postfix) with ESMTP id 78B3E43EE6;
+	Tue,  3 Nov 2026 08:28:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83B2F1F00A15;
 	Tue,  3 Nov 2026 08:28:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39CFE1F000C1;
-	Tue,  3 Nov 2026 08:28:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793694499;
-	bh=HsU7vqGV4zKcR0xzOlLwVFOnYeenz76WhiQbmAur/gw=;
+	s=k20260515; t=1793694506;
+	bh=syysjtWhfrzlfEaldEsTM26pEEl0o8azDUYhhDNzYQk=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=VF/MjO4VQPvJbsTdhSxc+0MJKdEjqryzjEgdG8c2adRvAchbzj5B6ai2szK1F0ydG
-	 fSVHNNpyc2vnrnSA8VgFKqrGPdZrvDx26NdErWFk9Y6AMZuIVO1Isv//oVlnqMGOni
-	 743VRFXyiPfI2emKzuq1EembdYHF4SMK8rXNk9REST+nP7DcdN5mGn8mBSG0PXIpI7
-	 NS1QiUP6OTbLE+6hAACDbGLLh5HhBIusmIH9WEw5Y822H6nQab357khV+fFyrSZfcO
-	 Z650piC8n7ilYLr+HgcXrWTNpGftz7Q8xnXKPWXWvdeq8wOLOLQt3yetgeb0DGoa9Y
-	 +kmgG85TDbckg==
+	b=Lww+V+Uc0HnDEMnlaPNGK3FmZK2Wnvx+sTOFI0bhrUqedqS0E/A0WpmuXi/Dfb6X5
+	 bwKWFdt/R6ToGf3lwLiEyRLjZCzQcisgulT3d0c2vrmJNw7vKlhbX6QAiIIKcm6UEy
+	 Fa/xbMH2eLwCFtpeE6fDPW4ceKZeaWhv7vINA+DqB/1Gx+fTixflTB6NGWvcDWGNOB
+	 wHsTp6tH8WC46WwQ6qu+a5wSXNryqO6BX/EUINPYInua8QLpUDce6s+KNl3fnaDTOA
+	 nOBkdr4yc1IjgCHHU/FZP0CcI74qSbOppjVpZC5skjUQtdpo8rId3LS9ViUZmkR82p
+	 mV8vrx9PwAzTA==
 From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Date: Tue, 03 Nov 2026 08:27:43 +0000
-Subject: [PATCH 2/5] mm/khugepaged: scan mm's more efficiently under
- mmap_lock contention
+Date: Tue, 03 Nov 2026 08:27:44 +0000
+Subject: [PATCH 3/5] locking/rwsem: add down_read[_killable]_nosteal()
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261103-khugepaged-latency-fix-v1-2-a07ab16ac860@kernel.org>
+Message-Id: <20261103-khugepaged-latency-fix-v1-3-a07ab16ac860@kernel.org>
 References: <20261103-khugepaged-latency-fix-v1-0-a07ab16ac860@kernel.org>
 In-Reply-To: <20261103-khugepaged-latency-fix-v1-0-a07ab16ac860@kernel.org>
 To: David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>, 
@@ -93,26 +92,26 @@ To: David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>,
 Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, bpf@vger.kernel.org, 
  "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=7639; i=ljs@kernel.org;
- h=from:subject:message-id; bh=yteJ6h2vAGTeR9YuoTU+OYu1yFPwDvdCdviaFPqbXdY=;
- b=owGbwMvMwCV2fu7ZrsZH9SKMp9WSGLJezuYREzpS9OrdvJnedorlXxYEP3p7cXKavs19xgtHX
- ymbzpsY3VHKwiDGxSArpsjy/Iv4/iCRsHmdF/zdYOawMoEMYeDiFICJ+Bxh+B96YM/zujiFo7od
- s3vnZaacfMn4z3GN0JpfBystCiI/Pehj+GcWkNHOfHSKpmt4oHt2uq4Lg/2ExQWnjz9+HLHA8Wr
- GZk4A
+X-Developer-Signature: v=1; a=openpgp-sha256; l=7465; i=ljs@kernel.org;
+ h=from:subject:message-id; bh=xtvSRfFhxlbNSRroaUFE9M6KTB+D22EsX7i6cFBQZL0=;
+ b=owGbwMvMwCV2fu7ZrsZH9SKMp9WSGLJezub5/9PB9+MNEfPOmi3q32b+565bpTJjuYhysUMdp
+ +n9RX6rOkpZGMS4GGTFFFmefxHfHyQSNq/zgr8bzBxWJpAhDFycAjCRlUmMDI8POjeq85rmRQn5
+ zgz7E3Ev91+B7sPupdEH2JvUc9bt+cTwv95OP7WoI2nxt1kMizfePH/WbM3nJu32fbecG7bVfbH
+ dywwA
 X-Developer-Key: i=ljs@kernel.org; a=openpgp;
  fpr=E7F417BF5214569E89D04F46CF9DCD8A81E27F14
-X-Rspamd-Server: rspam06
-X-Stat-Signature: kpepu6fbhf9ci44zh6ng6uoibgtbjfdk
+X-Rspam-User: 
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 30BBF1A000A
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: F3E8B4000A
-X-Rspam-User: 
-X-HE-Tag: 1793694499-696600
-X-HE-Meta: U2FsdGVkX1980XuQWcOLgKh2NCqtuJf0f/GgHkvqWDVCdz5gYnGgpuuOdggTe6svKfWJdoeqUGrQXN66WV0Owu+u8K/yxI1nKCJggs++ius9QNaDdjMJ7Oi/KHzmaDePgDJjlJu+NCCBO47W+H8mjpSbp+n83u00wg9Vez4JW2KBY0HXCFeYdYMNeBfZri+P3hb8Np8IrQvmtA6TnwnIIo4BrAFCEg2AgzLYAq2PMvdJJnvUEi4JN1Y3F9UODzk9fRVLjfWtTsvtY3J/jvS3LKHqKL1K+dSJHT+IZP+C0SXyKPbmR/g777w6N0df47cq+0cwN2pKjSazfg9FLbBEe6T9B0Mv7lk2fWIAUtEZX7/XlmBYspjnQ6apf53Uy3jk73Dvlpppp2uexO8pv8DjLRa1p2ewPoxc9x7OyfJbpvfDvq0e7T8Yrc8vibf1sNwh8PtFUSiY1aAtIB7U7t7W+wp6tILq20eSJJlvb3b/LUDt46ElrTXADyxQekljU2JhZLl4VqAv/xsmWoiTgxAmn4OO2h0mbDOm/aYuBJy36M4G43QcE+yggIeu6u79Jn+HPORkqxhqngxCsKRg41gSEGB4BpSRJxSbcf/LPS0byedv5u33sIhw01teWtrHkGUrnTjNsijwzPa0+awFCVZkEhHBpV5mamkI4Wq5qNOaLEtARPrDb/3gj4pLZ3lTEcCw92ZmgNW+fF6CuHmFaKYBXb2yqv4LhXMpHg4H4PRTVJZ2CP5/ZUGv4ck6dC6sDDHWlI49TayTAbJC4+NG/fegl+M+85MVvYRIZ8oPlXuzytpCqT9yPW/4RUBJJEtfJxQhBUOy+4KkAIBZBRPhzaCjM+hivEdBULaCa/icR4V45g1JQXqY/Z6+MKcuAE8vbVCYvHbULLr3/lVRm/4AqGdlOEPg13jhk12csRuM3+Ktpnj6UE1Am9AogYrvhw7VtzhIRS6OwKbn3tO77qUQqJ9
- belHGygq
- mkylMQDjNhXEdKsO2LrvttTY8lvxwvElZzFYrScQ0XAc61OeIG4UepSSRM6o3sowYApCmXlpojqW/zll/jUqSQpWf0kHh6ib2ckXIMUiyYqHenvOgIZJZpmm3+iOJYMxDsE1jTF04r2KKo5vuT/Dei+SPI+tNEz7T4zB6SyrQyTmZag6tw10DickvG8nCnX7Hhc0KttyNsI2Hxz/Plpy1DtnvxewbqjwnakfnELZ3Yxo3jvKNsFcM1fcTNOh9oLi06Ot4xsOdwNdcjwzHX3HmvxsR82LeIOw2rU8Zli6LO1b1pf4=
+X-Stat-Signature: mhd8mjnp1i6fuhtiob7or3xbj77xnhby
+X-HE-Tag: 1793694507-655953
+X-HE-Meta: U2FsdGVkX18cTPb+SrOo6y5YmsFEAyOu//ltOC8jWSzWW3mCDuPAh617TM2KtRO3GqyxRo+IRII6VyWQAQXnlhdN6roukhNjcgk+2IcDWEjFnb8rgmC1I6v9U+iZd58tzfkHmsuXRp0j03gDP1vEBD+M4Gx/ITZmPyYyQ/FAhf+cwlqqYNOnTUlfDpsY5Lhx6IZkLxJvoKWMtR7eUonkJoNg6587jzkdQlxxIMiSfkZq0K4GCmPefkI3o6MWIV+FFK7jCIJ+I7+LAamZtY0SyzexUPLW5Yuuwn6OSjHXhL7X0vAm1PQi1GvVf060a4+y3CXQGquQVz6ZQ+AItum+ID59kAtZBfzOnsold/xPJuc8bbKJKRfoo25PWCI+wu/Lshk+QLZ5JDSctyUFFjAHoKu8DrPze8EunugjvAPOlAz64miIAFOSNT3YaV5C+8ETFKZ5ahGtJN9nigbXehfzWVDuKB13C/kfVi1LmHvPtA+m5PQvNgW+OVRrAuuLgd+kH5Ez/+BtMWq71ypZaYJCkxbReOSBSKsXy6WosHXK//VIYSrbGKWHCJ0/HjvijObXRhJB2uMj+im1ZpctHs+vftMU+GFvAVkO/TGkabVSlwmi6MO8b+Hh9cF69nxxp7Lt0Y4zMfKqcif8LguTE12Ldv3/ThEhhRnsjoMqvTSn9o/snaj8pB/7m33qHPK7Y7fAguDTVU8X1/ZN+5IqK/SN02fk4WWknvx0DQB57Vejn9WIsbi4fh+JoARuBNh9RlnuvYovo5Ekruc7bI+nvErqv9QuKIDK856bRa4hatPw4PxPZIGTtwRJFzydW8epKxoyHkDybe7u2ZvcFfdwjbKko/DKRfW/h8bMpo7TJgKz+r8np6pou/Zki86yOr52utwQt20S7F6IVB0QD9spmH/BmQ0KrEV1SJ4zdki52meVOx/Igl4s4AYuEzIYwsPg/b5j3OB8SsGN+AitxXqpl+J
+ XKnerfaa
+ mXr4Xg/8VLX1ln6bWz+d7VuRqiett2/KCtukpBRTkiNh7jtR1EXR/Cvp9Ye7z592c9cGqi/ypJ/fC0BeW8G2MNLtwYgYxdaO/+Wky+tBhWjAP16nj9041K7/T/KNWexnLdvgFx+LZOCkJUNk/2Iei8TGQc6ptUoZGNqsg3bHQHdVUJW76AWPGOG8YjdEDyDelo6VQgeSC2VcnnA9c10AmAGZYiGlYQ0yLWfTVDlNYgSxR9V/He+crJ7jzbNiPhsNeQ2o4wfXYCq2lyX/xhmwGYQj9rqgRsKsa4+wsQEberOkVhtY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -121,200 +120,210 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Ostensibly khugepaged collapse traverses eligible mm's, scanning up to
-/sys/kernel/mm/transparent_hugepage/khugepaged/pages_to_scan eligible pages
-at a time, sleeping for /sys/.../scan_sleep_millisecs between each
-traversal.
+Since commit 1a728dff855a ("locking/rwsem: Enable reader optimistic lock
+stealing") a sleeping, queued writer whose handoff timeout hasn't expired
+can have its lock stolen by a read lock issued before a woken queued writer
+was able to acquire a lock.
 
-mm's are scanned in collapse_scan_mm_slot() under the mmap read lock,
-obtained using mmap_read_trylock(), skipping the mm if there is lock
-contention, and dropping the lock before allocation.
+To avoid write lock starvation, this is only permitted if no other read
+locks are held.
 
-khugepaged will keep scanning the same mm until it is about to be torn
-down, prctl(PR_SET_THP_DISABLE) disables THP for it, mm->mmap_lock
-contention occurs, or all its VMAs have been scanned.
+However, this behaviour defeats the purpose of a reader periodically
+dropping the lock to allow writers in, as doing so only works if the write
+lock is acquired first, another read lock is held, or a queued writer's
+handoff timeout has expired.
 
-When any of these occur, khugepaged doesn't keep track of where it left
-off, as the current address is tracked in
-khugepaged_scan.address (essentially a global value), which is reset.
+Provide a means of indicating this intent via down_read_nosteal() and
+down_read_killable_nosteal().
 
-This is a problem when lock contention occurs, as when the mm is next
-scanned, it starts from address 0 again.
+Implement it by exposing a steal parameter to rwsem_down_read_slowpath(),
+update the starvation logic to modify this parameter and modify the steal
+branch to check it first.
 
-If there's a lot of mmap_lock contention this can significantly slow down
-collapse later in the mm, since the /sys/.../pages_to_scan budget can run
-out before the end of the mm is reached.
+Also drop the duplicated RWSEM_WRITER_LOCKED check and remove the
+goto as the steal condition makes this redundant.
 
-The budget is incremented (as tracked in cc->progress) at a rate of 1 page
-per ineligible VMA, but the budget is only checked once eligible VMAs are
-encountered.
-
-Then, it only takes the combined total of ineligible VMAs and eligible but
-non-collapsible pages to exceed the /sys/.../pages_to_scan budget for the
-rest of the mm to be skipped.
-
-For a system with 4 KiB page size and default sysctl settings this only
-requires 4096 ineligible VMAs/uncollapsible pages to be skipped before this
-happens.
-
-Examples of eligible but uncollapsible ranges are those containing a large
-number of forked PTE entries (more than /sys/.../max_ptes_shared), swapped
-out PTE entries (more than /sys/.../max_ptes_swap) or none or zero-page PTE
-entries (more than /sys/.../max_ptes_none).
-
-The latter might seem unlikely to happen given /sys/.../max_ptes_none
-defaults to HPAGE_PMD_NR - 1 and CONFIG_PT_RECLAIM frees PTE page tables,
-however CONFIG_PT_RECLAIM only removes the page table if the zapped range
-spans at least a PMD size (see pte_table_reclaim_possible()).
-
-Thus, userland software that applies madvise(..., MADV_DONTNEED) across
-sub-PMD ranges can thwart this, which is quite feasible for memory
-allocators and GC heaps, for instance.
-
-Resolve the issue by simply tracking the last examined address in the
-khugepaged_mm_slot object, so when the mm is resumed, the scan starts from
-where it left off.
-
-Additionally, skip to the next candidate if a VMA cannot be collapsed.
-
-This issue was noticed during some work in which an mm was instantiated
-with a large number of small VMAs under significant mmap_lock contention,
-during which collapse was observed to take 10.8s. With this patch applied
-it took 3.6s to collapse the same mm.
-
-Also, while here, update a couple VM_BUG_ON()'s to VM_WARN_ON_ONCE()'s.
-
-This patch is also a pre-requisite for a later patch in this series.
+Exposing this function is safe as it only makes the lock more pessimistic,
+so does not impact lock contention.
 
 Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 ---
- mm/khugepaged.c | 38 ++++++++++++++++++++------------------
- 1 file changed, 20 insertions(+), 18 deletions(-)
+ include/linux/rwsem.h  |  2 ++
+ kernel/locking/rwsem.c | 71 +++++++++++++++++++++++++++++++++++++++++---------
+ 2 files changed, 60 insertions(+), 13 deletions(-)
 
-diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-index aad8797f8d5a..216c4b8d28c4 100644
---- a/mm/khugepaged.c
-+++ b/mm/khugepaged.c
-@@ -69,23 +69,23 @@ static struct kmem_cache *mm_slot_cache __ro_after_init;
- /**
-  * struct khugepaged_mm_slot - khugepaged information per mm that is being scanned
-  * @slot: hash lookup from mm to mm_slot
-+ * @address: the next address inside that to be scanned
+diff --git a/include/linux/rwsem.h b/include/linux/rwsem.h
+index 6a1a7bae5f81..66ab6fad5e24 100644
+--- a/include/linux/rwsem.h
++++ b/include/linux/rwsem.h
+@@ -227,8 +227,10 @@ static inline void rwsem_assert_held_write(const struct rw_semaphore *sem)
+  * lock for reading
   */
- struct khugepaged_mm_slot {
- 	struct mm_slot slot;
-+	unsigned long address;
- };
+ extern void down_read(struct rw_semaphore *sem) __acquires_shared(sem);
++void down_read_nosteal(struct rw_semaphore *sem) __acquires_shared(sem);
+ extern int __must_check down_read_interruptible(struct rw_semaphore *sem) __cond_acquires_shared(0, sem);
+ extern int __must_check down_read_killable(struct rw_semaphore *sem) __cond_acquires_shared(0, sem);
++int __must_check down_read_killable_nosteal(struct rw_semaphore *sem) __cond_acquires_shared(0, sem);
  
- /**
-  * struct khugepaged_scan - cursor for scanning
-  * @mm_head: the head of the mm list to scan
-  * @mm_slot: the current mm_slot we are scanning
-- * @address: the next address inside that to be scanned
-  *
-  * There is only the one khugepaged_scan instance of this cursor structure.
+ /*
+  * trylock for reading -- returns 1 if successful, 0 if contention
+diff --git a/kernel/locking/rwsem.c b/kernel/locking/rwsem.c
+index b9c180ac1eee..75fa9fcdee91 100644
+--- a/kernel/locking/rwsem.c
++++ b/kernel/locking/rwsem.c
+@@ -1014,7 +1014,8 @@ static inline void rwsem_cond_wake_waiter(struct rw_semaphore *sem, long count,
+  * Wait for the read lock to be granted
   */
- struct khugepaged_scan {
- 	struct list_head mm_head;
- 	struct khugepaged_mm_slot *mm_slot;
--	unsigned long address;
- };
+ static struct rw_semaphore __sched *
+-rwsem_down_read_slowpath(struct rw_semaphore *sem, long count, unsigned int state)
++rwsem_down_read_slowpath(struct rw_semaphore *sem, long count, unsigned int state,
++			 bool steal)
+ {
+ 	long adjustment = -RWSEM_READER_BIAS;
+ 	long rcnt = (count >> RWSEM_READER_SHIFT);
+@@ -1023,17 +1024,16 @@ rwsem_down_read_slowpath(struct rw_semaphore *sem, long count, unsigned int stat
  
- static struct khugepaged_scan khugepaged_scan = {
-@@ -2921,7 +2921,6 @@ static void collapse_scan_mm_slot(unsigned int progress_max,
- 		slot = list_first_entry(&khugepaged_scan.mm_head,
- 				     struct mm_slot, mm_node);
- 		mm_slot = mm_slot_entry(slot, struct khugepaged_mm_slot, slot);
--		khugepaged_scan.address = 0;
- 		khugepaged_scan.mm_slot = mm_slot;
- 	}
- 	spin_unlock(&khugepaged_mm_lock);
-@@ -2939,7 +2938,7 @@ static void collapse_scan_mm_slot(unsigned int progress_max,
- 	if (unlikely(collapse_test_exit_or_disable(mm)))
- 		goto breakouterloop;
- 
--	vma_iter_init(&vmi, mm, khugepaged_scan.address);
-+	vma_iter_init(&vmi, mm, mm_slot->address);
- 	for_each_vma(vmi, vma) {
- 		unsigned long hstart, hend;
- 
-@@ -2948,38 +2947,38 @@ static void collapse_scan_mm_slot(unsigned int progress_max,
- 			cc->progress++;
- 			break;
- 		}
--		if (!collapse_possible_orders(vma, vma->vm_flags,
--					      TVA_KHUGEPAGED)) {
-+		if (!collapse_possible_orders(vma, vma->vm_flags, TVA_KHUGEPAGED)) {
-+			/* Unable to collapse, skip to the next candidate. */
-+			mm_slot->address = ALIGN(vma->vm_end, HPAGE_PMD_SIZE);
- 			cc->progress++;
- 			continue;
- 		}
- 		hstart = ALIGN(vma->vm_start, HPAGE_PMD_SIZE);
- 		hend = ALIGN_DOWN(vma->vm_end, HPAGE_PMD_SIZE);
--		if (khugepaged_scan.address > hend) {
-+		if (mm_slot->address > hend) {
- 			cc->progress++;
- 			continue;
- 		}
--		if (khugepaged_scan.address < hstart)
--			khugepaged_scan.address = hstart;
--		VM_BUG_ON(khugepaged_scan.address & ~HPAGE_PMD_MASK);
-+		if (mm_slot->address < hstart)
-+			mm_slot->address = hstart;
-+		VM_WARN_ON_ONCE(mm_slot->address & ~HPAGE_PMD_MASK);
- 
--		while (khugepaged_scan.address < hend) {
-+		while (mm_slot->address < hend) {
- 			bool lock_dropped = false;
- 
- 			cond_resched();
- 			if (unlikely(collapse_test_exit_or_disable(mm)))
- 				goto breakouterloop;
- 
--			VM_WARN_ON_ONCE(khugepaged_scan.address < hstart ||
--				  khugepaged_scan.address + HPAGE_PMD_SIZE >
--				  hend);
-+			VM_WARN_ON_ONCE(mm_slot->address < hstart ||
-+					mm_slot->address + HPAGE_PMD_SIZE > hend);
- 
--			*result = collapse_single_pmd(khugepaged_scan.address,
-+			*result = collapse_single_pmd(mm_slot->address,
- 						      vma, &lock_dropped, cc);
- 			if (*result == SCAN_SUCCEED)
- 				khugepaged_pages_collapsed++;
- 			/* move to next address */
--			khugepaged_scan.address += HPAGE_PMD_SIZE;
-+			mm_slot->address += HPAGE_PMD_SIZE;
- 			if (lock_dropped)
- 				/*
- 				 * We released mmap_lock so break loop.  Note
-@@ -2993,12 +2992,16 @@ static void collapse_scan_mm_slot(unsigned int progress_max,
- 				goto breakouterloop;
- 		}
- 	}
-+	/* Every VMA has been examined, so reset. */
-+	if (!vma)
-+		mm_slot->address = 0;
-+
- breakouterloop:
- 	mmap_read_unlock(mm); /* exit_mmap will destroy ptes after this */
- breakouterloop_mmap_lock:
- 
- 	spin_lock(&khugepaged_mm_lock);
--	VM_BUG_ON(khugepaged_scan.mm_slot != mm_slot);
-+	VM_WARN_ON_ONCE(khugepaged_scan.mm_slot != mm_slot);
  	/*
- 	 * Release the current mm_slot if this mm is about to die, or
- 	 * if we scanned all vmas of this mm, or THP got disabled.
-@@ -3013,7 +3016,6 @@ static void collapse_scan_mm_slot(unsigned int progress_max,
- 			slot = list_next_entry(slot, mm_node);
- 			khugepaged_scan.mm_slot =
- 				mm_slot_entry(slot, struct khugepaged_mm_slot, slot);
--			khugepaged_scan.address = 0;
- 		} else {
- 			khugepaged_scan.mm_slot = NULL;
- 			khugepaged_full_scans++;
+ 	 * To prevent a constant stream of readers from starving a sleeping
+-	 * writer, don't attempt optimistic lock stealing if the lock is
+-	 * very likely owned by readers.
++	 * writer, only attempt optimistic lock stealing if the lock is
++	 * unlikely to be owned by readers.
+ 	 */
+-	if ((atomic_long_read(&sem->owner) & RWSEM_READER_OWNED) &&
+-	    (rcnt > 1) && !(count & RWSEM_WRITER_LOCKED))
+-		goto queue;
++	steal &= !(atomic_long_read(&sem->owner) & RWSEM_READER_OWNED) ||
++		rcnt <= 1;
+ 
+ 	/*
+ 	 * Reader optimistic lock stealing.
+ 	 */
+-	if (!(count & (RWSEM_WRITER_LOCKED | RWSEM_FLAG_HANDOFF))) {
++	if (steal && !(count & (RWSEM_WRITER_LOCKED | RWSEM_FLAG_HANDOFF))) {
+ 		rwsem_set_reader_owned(sem);
+ 		lockevent_inc(rwsem_rlock_steal);
+ 
+@@ -1052,7 +1052,6 @@ rwsem_down_read_slowpath(struct rw_semaphore *sem, long count, unsigned int stat
+ 		return sem;
+ 	}
+ 
+-queue:
+ 	waiter.task = current;
+ 	waiter.type = RWSEM_WAITING_FOR_READ;
+ 	waiter.timeout = jiffies + RWSEM_WAIT_TIMEOUT;
+@@ -1281,14 +1280,15 @@ static struct rw_semaphore *rwsem_downgrade_wake(struct rw_semaphore *sem)
+ /*
+  * lock for reading
+  */
+-static __always_inline int __down_read_common(struct rw_semaphore *sem, int state)
++static __always_inline int __down_read_common(struct rw_semaphore *sem, int state,
++					      bool steal)
+ {
+ 	int ret = 0;
+ 	long count;
+ 
+ 	preempt_disable();
+ 	if (!rwsem_read_trylock(sem, &count)) {
+-		if (IS_ERR(rwsem_down_read_slowpath(sem, count, state))) {
++		if (IS_ERR(rwsem_down_read_slowpath(sem, count, state, steal))) {
+ 			ret = -EINTR;
+ 			goto out;
+ 		}
+@@ -1301,17 +1301,27 @@ static __always_inline int __down_read_common(struct rw_semaphore *sem, int stat
+ 
+ static __always_inline void __down_read(struct rw_semaphore *sem)
+ {
+-	__down_read_common(sem, TASK_UNINTERRUPTIBLE);
++	__down_read_common(sem, TASK_UNINTERRUPTIBLE, true);
++}
++
++static __always_inline void __down_read_nosteal(struct rw_semaphore *sem)
++{
++	__down_read_common(sem, TASK_UNINTERRUPTIBLE, false);
+ }
+ 
+ static __always_inline int __down_read_interruptible(struct rw_semaphore *sem)
+ {
+-	return __down_read_common(sem, TASK_INTERRUPTIBLE);
++	return __down_read_common(sem, TASK_INTERRUPTIBLE, true);
+ }
+ 
+ static __always_inline int __down_read_killable(struct rw_semaphore *sem)
+ {
+-	return __down_read_common(sem, TASK_KILLABLE);
++	return __down_read_common(sem, TASK_KILLABLE, true);
++}
++
++static __always_inline int __down_read_killable_nosteal(struct rw_semaphore *sem)
++{
++	return __down_read_common(sem, TASK_KILLABLE, false);
+ }
+ 
+ static inline int __down_read_trylock(struct rw_semaphore *sem)
+@@ -1502,6 +1512,11 @@ static inline void __down_read(struct rw_semaphore *sem)
+ 	rwbase_read_lock(&sem->rwbase, TASK_UNINTERRUPTIBLE);
+ }
+ 
++static inline void __down_read_nosteal(struct rw_semaphore *sem)
++{
++	__down_read(sem);
++}
++
+ static inline int __down_read_interruptible(struct rw_semaphore *sem)
+ {
+ 	return rwbase_read_lock(&sem->rwbase, TASK_INTERRUPTIBLE);
+@@ -1512,6 +1527,11 @@ static inline int __down_read_killable(struct rw_semaphore *sem)
+ 	return rwbase_read_lock(&sem->rwbase, TASK_KILLABLE);
+ }
+ 
++static inline int __down_read_killable_nosteal(struct rw_semaphore *sem)
++{
++	return __down_read_killable(sem);
++}
++
+ static inline int __down_read_trylock(struct rw_semaphore *sem)
+ {
+ 	return rwbase_read_trylock(&sem->rwbase);
+@@ -1577,6 +1597,16 @@ void __sched down_read(struct rw_semaphore *sem)
+ }
+ EXPORT_SYMBOL(down_read);
+ 
++void __sched down_read_nosteal(struct rw_semaphore *sem)
++	__no_context_analysis
++{
++	might_sleep();
++	rwsem_acquire_read(&sem->dep_map, 0, 0, _RET_IP_);
++
++	LOCK_CONTENDED(sem, __down_read_trylock, __down_read_nosteal);
++}
++EXPORT_SYMBOL(down_read_nosteal);
++
+ int __sched down_read_interruptible(struct rw_semaphore *sem)
+ 	__no_context_analysis
+ {
+@@ -1607,6 +1637,21 @@ int __sched down_read_killable(struct rw_semaphore *sem)
+ }
+ EXPORT_SYMBOL(down_read_killable);
+ 
++int __sched down_read_killable_nosteal(struct rw_semaphore *sem)
++	__no_context_analysis
++{
++	might_sleep();
++	rwsem_acquire_read(&sem->dep_map, 0, 0, _RET_IP_);
++
++	if (LOCK_CONTENDED_RETURN(sem, __down_read_trylock, __down_read_killable_nosteal)) {
++		rwsem_release(&sem->dep_map, _RET_IP_);
++		return -EINTR;
++	}
++
++	return 0;
++}
++EXPORT_SYMBOL(down_read_killable_nosteal);
++
+ /*
+  * trylock for reading -- returns 1 if successful, 0 if contention
+  */
 
 -- 
 2.56.0
