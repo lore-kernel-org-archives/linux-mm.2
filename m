@@ -1,125 +1,149 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67101606A33B
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 22:31:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE5D4606A31B
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 22:37:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=ZXOGSZvR
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=WOz9ef/4
 Received: by kanga.kvack.org (Postfix)
-	id 3324A6B05B1; Tue,  3 Nov 2026 17:31:55 -0500 (EST)
+	id DE4416B00EF; Tue,  3 Nov 2026 17:37:06 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2B5066B05B2; Tue,  3 Nov 2026 17:31:55 -0500 (EST)
+	id D94866B05B6; Tue,  3 Nov 2026 17:37:06 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1A4816B05B3; Tue,  3 Nov 2026 17:31:55 -0500 (EST)
+	id C84406B05B7; Tue,  3 Nov 2026 17:37:06 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C91E36B05B1
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 17:31:54 -0500 (EST)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 2C692A81FD
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 22:31:54 +0000 (UTC)
-X-FDA: 85395256548.09.64AE5EB
-Received: from mail-dy1-f197.google.com (mail-dy1-f197.google.com [74.125.82.197])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 7419140009
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 22:31:52 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b=ZXOGSZvR;
-	spf=pass (imf27.hostedemail.com: domain of 31mDqagcKCJ8MGTGT9MFNNFKD.BNLKHMTW-LLJU9BJ.NQF@flex--nhuhuan.bounces.google.com designates 74.125.82.197 as permitted sender) smtp.mailfrom=31mDqagcKCJ8MGTGT9MFNNFKD.BNLKHMTW-LLJU9BJ.NQF@flex--nhuhuan.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793745112;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 9E66B6B00EF
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 17:37:06 -0500 (EST)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 9F9011605A8
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 22:37:04 +0000 (UTC)
+X-FDA: 85395269568.27.43F82E0
+Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
+	by imf18.hostedemail.com (Postfix) with ESMTP id A8E071C0006
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 22:37:02 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b="WOz9ef/4";
+	spf=pass (imf18.hostedemail.com: domain of joannelkoong@gmail.com designates 209.85.221.48 as permitted sender) smtp.mailfrom=joannelkoong@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1793745422;
+	b=j/pfrjHIFLyRwsjZM/UA7EnwNHXcflw/55X4rR3agqMuGvBysEhjFdFRwDOQVuIWLFyG5/
+	5PaqKN8J9ibUYPHgIiezH+kNCEGeB1P5/oZno4fDoCIHYj+11cDDmwi4bKRcwWminhjru+
+	mYxoW7SHzZfBwRXd/J46h86DADjF/UI=
+ARC-Authentication-Results: i=2;
+	imf18.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b="WOz9ef/4";
+	spf=pass (imf18.hostedemail.com: domain of joannelkoong@gmail.com designates 209.85.221.48 as permitted sender) smtp.mailfrom=joannelkoong@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1793745422;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=b1QRyQDO5+0ViUOtVbl2pTjWS8q1UvDtamNlK0wDnbM=;
-	b=olvH5edKL0xN5+AMMTu+fdX97epJYaGx1OFrJaYZ6e5bnzS7dqSpo/Unb3JKrzWwLkaQUM
-	ApVvnUt2W5HEz5CQYhnJ++/lMH5iPhwp4AtHre82Ga6oWEPrOSFx2FnFKcX8b6cw6ux7vv
-	F7M2qJRCfJh1Dt98FLGYaevM3q+U5e8=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793745112;
-	b=URsi8lGrfQw00efu5/PNCeYgMIztv+kAKeMRDi8LGHpdzmyHY2b/mp2GKl1yexxDJpPRrJ
-	5/Vk7ZMO6inO49y8mUSXWsdZp2zpl8fnZk/k3m9B0fzNSr/Fj3mKK7UPj3wKejb4SbsKIc
-	ADwbugm4DjQ1rLjflY175Vi9Sk69vmg=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b=ZXOGSZvR;
-	spf=pass (imf27.hostedemail.com: domain of 31mDqagcKCJ8MGTGT9MFNNFKD.BNLKHMTW-LLJU9BJ.NQF@flex--nhuhuan.bounces.google.com designates 74.125.82.197 as permitted sender) smtp.mailfrom=31mDqagcKCJ8MGTGT9MFNNFKD.BNLKHMTW-LLJU9BJ.NQF@flex--nhuhuan.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-dy1-f197.google.com with SMTP id 5a478bee46e88-33713e5e6daso37687eec.0
-        for <linux-mm@kvack.org>; Tue, 03 Nov 2026 14:31:52 -0800 (PST)
+	bh=QVC6zXtmTlj5EAbSSjNHwPP18DR41YQR4sifDw97zsg=;
+	b=TXJjZGQRoVfBflu7l6Akj+1sArCOgxqi9ZIOcOlrJyeWc3BWtnZceTkYYR2sLebHJG5O1m
+	y6hH+enjFmnsr2r9SSK+GaQ20u2CM/5TTOWg9j28J4MqVqPLT9Ij/Ke9q/pCZgUEQz6PUw
+	nLSgeTG3CRksWlPlF3g+rIAMj7V0Wfw=
+Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-48dfdd0678dso63449f8f.0
+        for <linux-mm@kvack.org>; Tue, 03 Nov 2026 14:37:02 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1793745421; cv=none;
+        d=google.com; s=arc-20260327;
+        b=XflR3JJZ2lSlW6MCcvX1xWGeGCj+M1IxzTmmPR1OevBCzkvCdp0+03PVAjSlFD1seG
+         AVa/cWT3IQrKofm9DWScQfcTn09OmMNJKPiO00gRNR4Wrdc4/vPQvFDy0m0574HIFpiG
+         pY/ZHfdAsEbwhZ+XBGdghosH6Pp4zxG6N6oOf4KS1ZokK0B4NCW3HRcuNDLy/eu/JCZO
+         NnSlrs6zHG9Lkx926ubHtTjyFBPUvW3NZ61nfqlulKYMoPzbsJYE6kSXp8RVzukAWPzT
+         5ScUvZVVInBTODtX276585iI6BoYg72h1LhrCI0/lQiAz+TBNYH7HUBfDuoqJlIDYpIg
+         VO7g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=QVC6zXtmTlj5EAbSSjNHwPP18DR41YQR4sifDw97zsg=;
+        fh=fNivjEQRIy9LQ0D7OQOyFIxS/nJ9H6M7lse9dZcz4mo=;
+        b=QnKlSvTmxgldf6O2f6urq1JbxZB7kktrXje8NE8GgTnEF80bGnUaJGYigFU9xlMXiW
+         CPlsDd++Uz46tp/ABASInxQ+/Ec3WUYFYurYpzTzKtFIIOTXCfnxAAPS10cggd+baq0d
+         VczQzbghZ+5QxPbodjlXOgB1DK/K1+18Xw0Ai+vr1+GS/TbTI45CFm6WfIyQ2PfqCzxN
+         9xEddxENXXGAOEjxdjJxlZYqpNQvlPCECLs+aLNRs6F7u8fXetRIfDiJEyzg9wMQJE39
+         SSrC2ZhczyloCH4lkPbmxBhuMIm1rdfJH5RIGgp9U7qOZMIanO75jLN0awBF0q2OCdNt
+         rmYw==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1793745111; x=1794349911; darn=kvack.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=b1QRyQDO5+0ViUOtVbl2pTjWS8q1UvDtamNlK0wDnbM=;
-        b=ZXOGSZvRAVa7wy1Bc4h9zCeEqg5Yggel+KQyyl3nR/NS3MY24hn1mjPqEdJCGML8Ax
-         vLYYSz0IS6jecvFeMxhLMFT2e+3/pkl9vTut0iFxhhlCPnfxZ6ErQ2wxpXbJbDhdljFF
-         2iUm4R/X/lFlYm7TZ94xOx7WTHtseBc7sp0BxRmbenK346hFnsR885Pds7vxfipFSz44
-         OC2231v3lR1QSwSPeDtr/BwJ8rt6RS88XifuhbnNIehvX4Ky7Js7Rdk1CeYiVhsFt2dm
-         8t1q6BKrNPGDT3NdsfapJ6xA+l6wlEjCzpAmRjAMOuFtctowaw2w1Wa/CctvC4+Jfg2w
-         hnMg==
+        d=gmail.com; s=20260707; t=1793745421; x=1794350221; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=QVC6zXtmTlj5EAbSSjNHwPP18DR41YQR4sifDw97zsg=;
+        b=WOz9ef/4DM75DAkiaAbMl7f1+eIXZU4RkOHlm26z05LAFLmfo5iwTW3PRMocwjufbs
+         EDAA/zEftZtk/dkE/3iXIElhXjkhVCfEOBpNPkyNwCnjyJjty6MR5t8aHFlefR0aCrGK
+         q19C//uQVG2Sa6ViPhmVwczKKHwydH/vovekErbFr+s2vXbXhjQ2L0ZWh3Qhd6cEEO1O
+         8+Z+VVkLhca6UoCj+gEBOS+062XTNzHg0uKTJNlvPCs+34G4ATNSJRGH7VrCJdnzU+9n
+         IZUGE7U5wokxYuSJNpBZHIA1A1LQSfQtBa4PQr6vnxE105CT0X7Iy6ZIiGnYwaiFX4IO
+         CwoQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793745111; x=1794349911;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=b1QRyQDO5+0ViUOtVbl2pTjWS8q1UvDtamNlK0wDnbM=;
-        b=ApWNsdJVmJUPXTlyO0mnyQ/mfrvP0QKbzk8+EYIw7BP25dHn1d40IUiLiukdvDVVC+
-         RtOKJhCVRzZN0LI527S5bJJdaTAtappppU4fvUXJYDUTfn1uIy3wHnNlIwrGstwyMQnI
-         6TohGOIrnZGHBYa54o86EbIMRnWxejz6ik2J19eY/CEVjaGTCegV7W4NeoeLQRzoOLkV
-         tTOxTzBTsVmTZJ8c9/ZUzs4dZIrh5sh5/Rml8fmGdH5j4S4g/e8CNJfNmghezcJtAAfX
-         wm5crpspbOasI0mjAO+p0d0UfGYvwE6gs8aj0GRHKffgRrVSYrS1yzgQwbIGSjBBP8+A
-         5DyA==
-X-Forwarded-Encrypted: i=1; AKwUvBxYnwyVHaXFFkpmjypsyTpy/VRX02qFJPtCECUMybW9vKfCWGaiUMRh3X08Z+P552wqrWpTxeYfsQ==@kvack.org
-X-Gm-Message-State: APuU4Z/uLcpJNSBqSse6jPikcCmov+8Xv6vmzoAVXtz5RjwrBpQdxD4f
-	xt1Z6th5EWGeeCyeMFGgupc8euiqNT6JEATzBaGWduFpZMFmd87Ua+za/4MRSuMFyV0cI5eX3xm
-	olGCZwJa6EA==
-X-Received: from dlea11-n1.prod.google.com ([2002:a05:701b:420b:10b0:1a8:14f9:6e3a])
- (user=nhuhuan job=prod-delivery.src-stubby-dispatcher) by 2002:a05:7022:1711:b0:1ae:59d6:91d7
- with SMTP id a92af1059eb24-1ae59d6945fmr16251403c88.40.1793745110700; Tue, 03
- Nov 2026 14:31:50 -0800 (PST)
-Date: Tue,  3 Nov 2026 14:30:23 -0800
-In-Reply-To: <20261103223025.2482227-1-nhuhuan@google.com>
+        d=1e100.net; s=20260707; t=1793745421; x=1794350221;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=QVC6zXtmTlj5EAbSSjNHwPP18DR41YQR4sifDw97zsg=;
+        b=OzOKalcNJZ4+Z9wOm2WxbNFU5DfRYSMXkXhlk/ZrXm9IOPQ40C94dPtfOxYanWwPpR
+         oxA//+VrAGheMS3EukTJPkaZ1yq07Zm79lzbba4zgEFGehuBa9NS7oajdds906DWzplo
+         QguTo6sknKKZ1XziLnxcoDMtWkhAV2nPdNiARLT41iO/YEanenx2AiIkpclMwY10o7BP
+         tCecG0dCoDdbDBn1ZAamOtuHEGUU54Udllr1FF5PcphDQSCYI9iVJdju8K1qCDz5MlHX
+         ZL6cwS5L4AaWRXt9rpKwjjioe2De1EVusc6Pn6rCyrDGk574U5B1+nzUcmpCBQiF5bKw
+         l51g==
+X-Forwarded-Encrypted: i=1; AKwUvByElweWAVJbv+62LMQA6206faiwWh+PYIeJmAPe0bktLOq40v382Dbk3ZPceQj64cTq/+Wu4Jz6OA==@kvack.org
+X-Gm-Message-State: APuU4Z/HBCDGHJeL5svxuVjy7L82aaD8cs76oXRxUmt34fsgrcJxZjGw
+	/fgcGQaUqUYFxk2hjo7tfDyNxPCDP5WRr/aTXxO9u8WKqZmgh+YTprlIE2NIW7E0TKjysg/Ddrq
+	5g4suFJ+ee9QlFIIFWeig49xFYaiWr2A=
+X-Gm-Gg: AYBFou2gKgt0kCJ3+j1hPysZUQ/brT5JohPTTeGp2v8aegHBIE/XU51FK6WbocAELCR
+	0W4E1m6H8A3gwW24JR9meuO+gn3Gwn5tXqxEKW1vkC9O70Ov+rxPuVcoYlJLXxeFLhYQVq7RpUz
+	TOWhYV3hLJrMI2k4v9Y5TZd0UbH4Q8iAFVwANRwF9Xsc9xN84yj8AaVi88ogfdDfYvuZnafR6BU
+	UP56/vc4RWNCcwAPOjeSv5X/VS6MaID3im7CQNRaO3gaZzVEHlyGsj2zgL2dkOT5uxKaXdH7q2W
+	qaM74O1d3Eb6GZnKisNs+Re1QAbx6wyA+jLjG78yUODx9JnjLWBqyU8+yQlHVhuE/OE7Zjc/U0T
+	bHk2MbwapTXm0jGzszRFkWygvVJOTAz28xH01YWqRxQjfwPwMspJxGRL5p21VU+pwExTeYveqft
+	Gs/iNIpGRqzM+pJDT0JA==
+X-Received: by 2002:a05:6000:4027:b0:48d:f3ee:7cc with SMTP id
+ ffacd0b85a97d-48e6e4f4cc8mr30979021f8f.30.1793745420854; Tue, 03 Nov 2026
+ 14:37:00 -0800 (PST)
 X-Archived-By: <archiver.kernel.org>
-Mime-Version: 1.0
-References: <20260730-rfc-nt-demote-v2-0-452dbe3b5073@zptcorp.com> <20261103223025.2482227-1-nhuhuan@google.com>
-X-Mailer: git-send-email 2.56.0.398.g882cbad275-goog
-Message-ID: <20261103223025.2482227-2-nhuhuan@google.com>
-Subject: [RFC PATCH v3 1/3] mm, x86: support copying a folio using
- non-temporal stores
-From: Huan Nguyen <nhuhuan@google.com>
-To: tglx@kernel.org, mingo@redhat.com, bp@alien8.de, 
-	dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com, 
-	akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org, 
-	Liam.Howlett@oracle.com, vbabka@kernel.org, rppt@kernel.org, 
-	surenb@google.com, mhocko@suse.com, trondmy@kernel.org, anna@kernel.org, 
-	ziy@nvidia.com, matthew.brost@intel.com, joshua.hahnjy@gmail.com, 
-	rakie.kim@sk.com, byungchul@sk.com, gourry@gourry.net, 
-	ying.huang@linux.alibaba.com, apopple@nvidia.com, rostedt@goodmis.org, 
-	mhiramat@kernel.org, mathieu.desnoyers@efficios.com, jackmanb@google.com, 
-	hannes@cmpxchg.org, shivankg@amd.com
-Cc: rientjes@google.com, dave@stgolabs.net, nifan.cxl@gmail.com, 
-	fvdl@google.com, jic23@kernel.org, rkodsara@amd.com, bharata@amd.com, 
-	sj@kernel.org, weixugc@google.com, xuezhengchu@huawei.com, 
-	yiannis@zptcorp.com, yiannis.nikolakop@gmail.com, 
-	dimitrios.palyvos@zptcorp.com, alirad.malek@zptcorp.com, ryan.roberts@arm.com, 
-	nhuhuan@google.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	linux-nfs@vger.kernel.org, linux-trace-kernel@vger.kernel.org
+MIME-Version: 1.0
+References: <20261102225030.2743129-1-joannelkoong@gmail.com>
+ <20261102225030.2743129-3-joannelkoong@gmail.com> <CAO9r8zP87zRuoFqeKFcAJoCrOG8M+7HCtX6hvxwdLzuHUXD0Gw@mail.gmail.com>
+ <CAJnrk1bv-P_TQztAGiHYdfg=5hbj4GREML2M0Uxp5oC1R9J-Mw@mail.gmail.com>
+ <CAO9r8zMvofnW-6OsiasiocOBqoRbZuD71dp3RQE5746YGzamNA@mail.gmail.com>
+ <CAJnrk1ZAz2ro0-8CC7n8mEjpuRQ64=v0rABtygaw5e2Aohq3=w@mail.gmail.com> <CAO9r8zOa52hMRTXFQVnSWJPmijm+D-97AeZDH-MMK_-rGiSwMA@mail.gmail.com>
+In-Reply-To: <CAO9r8zOa52hMRTXFQVnSWJPmijm+D-97AeZDH-MMK_-rGiSwMA@mail.gmail.com>
+From: Joanne Koong <joannelkoong@gmail.com>
+Date: Tue, 3 Nov 2026 14:36:47 -0800
+X-Gm-Features: AclHuK-AYBaNZSpJUjEtODEKJtvEXTubSyokZTs8vMfIpK79wH5577sQO81jRN4
+Message-ID: <CAJnrk1ZZdkrz+WSOFTCmCh0dwTLXcoCOOuufrh2JZMXqGw=Xtw@mail.gmail.com>
+Subject: Re: [PATCH v1 2/3] mm: memcg: read root lruvec LRU stats from the
+ node counters
+To: Yosry Ahmed <yosry@kernel.org>
+Cc: akpm@linux-foundation.org, shakeel.butt@linux.dev, hannes@cmpxchg.org, 
+	mhocko@kernel.org, roman.gushchin@linux.dev, muchun.song@linux.dev, 
+	nphamcs@gmail.com, chengming.zhou@linux.dev, sj@kernel.org, david@kernel.org, 
+	ljs@kernel.org, linux-mm@kvack.org, cgroups@vger.kernel.org, 
+	damon@lists.linux.dev
 Content-Type: text/plain; charset="UTF-8"
-X-Stat-Signature: 6bnyk19aoa78bsk6yq8gtcp9rigeef7m
-X-Rspamd-Queue-Id: 7419140009
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-7.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,
+	SPF_HELO_PASS,SPF_PASS autolearn=no autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: A8E071C0006
+X-Stat-Signature: xesxfbb63jsde6a7wunznmx3ge14hwfw
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Spam-Status: No, score=-26.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT,USER_IN_DEF_DKIM_WL autolearn=ham
-	autolearn_force=no version=4.0.1
-X-HE-Tag: 1793745112-30100
-X-HE-Meta: U2FsdGVkX19OT/iYHxc3GYfu9hdgA64evcPX8VXaNWqRRXmpINoCKw+m7im2gcm4HmWAJeda2QNKCd6s0VrmbCu4lsHvwJC3ZOYdVn5y8velOXDvrsQYPxsk1CTV5ak5Sz+jtdxKST/9nTGMV+LVtnTbUpI/OYA6IRRA/x9idVB4yq9N4jcRK0I6YV1LiDBUPHyHcgVEjbw/29hcMYqqYLRldY7/tsEjC6jUaN6ZfamTLiQuAaEgsRbZu/+SBi54lgEsj2q2xzXPcZUFpslzA1rRngvL6ljOU0G07NSm1e82jmQDs/ASLfJPvQ01ica+riBW7XlWblk0Fukg62pzt7z4PZoxEu7+HZ1C2QdFQzIYusD9I3c/1UfsZ7IpogWROfJxyCFXAB3oxobIMaP6lzPuAzIjZYFKFOGoVReqLcXVTa9Rj8BoxQM1CRZKCp38o1WdAF/tMc1yP8v7h62lxJCuTwJZ3H0fDzKN3+c6WOo+Ykc0WYZACCmhctbGsdpaPJ5KK/R1g346Lofn+oBmhMF/HZHQUgOYpwE3w9zgmF+WjppD8Z3x98zd2wYAwESW+JG+4/FPsoLlJRkiOEpDXj2bfHI5jum4IsvBBGkgQZ9q/gJ4eUVgrjtPhW6VsR0crhIxevD18UB2RmqgwhGt/+0PY2DzEI0t47lbDkzuxt8r9djOmMgAAAJQARkFk+nxrFbwM56hm2+WOzvl0jpyr7ASvfKt+I0sKBJcuT9l7BWAQvsdTkYquhGx4lsTo+7yKgqCFBGhnflLbBrC55n+lxr5wMrgKc1GtBobwJi77ht0JNBlVmNTt3qhwy6LuvxSsjGZ6MupFd40tfKfUGl0QZ9RoU8YONlNIaMyFLvKjzfcz5W/Mlg8/3Bpyc732tHzafJx9isaYecn5kZB53iZpjKERmExpV4MZ9AMuNUR68+X128v+kN9+CIlybNkfmdzTDUZrdUA+6M6DnHhQ8v
- HB3JfweQ
- DsOMYgTzA0ZjBwJLikaRvY8oK5Y6nvlxwzkSz7hmCLx8vy0sVqpSBl1tYNl4C4hkSshUT2cAkEASOO7VSa9+bwNNC5x3JqkHKcXPAuc76/AVVH+A32xl4ynbWMPnVOLh+Xi+5gjokSaIXnf+MJDt2mEF4Z6GdWwjZ9bb6/TqsRdascm84SoA1Ki74ZbKI9O4FOLEPQc7RlOh/1yVEfa+fm2qxGi+ykcJ7CfOh3bypyvPpbkv9oloRcrPsJ/6Y0cp3Di6eRAwK3rNr2eDXpLslaymwqPJxNQsjuYD0KFbPJK+7FchLvhfV7eDv6MjlfKhS09XiySV0dSNbMoJzQe+c2Y23px3XgKRFjuwMe/osNfS0XZHzNLqIy1W23cpQIS3DxFbM57P0gduIT7d0EYjygnq6KQFUCD2Ort19I6MhJXKcW1pSy/sGi3PNKpRBBJ3pkd2UO8SCqUlwekF7Xh3DYyisyyS8hVgPmw6IvTzYrYl7L+xzEc0fp/5eET9aXeklDTaT6S2Oc2RKwpQcLa/quK2wujWJNR9gQ/BOlAkOHQAATC1kPrFXiVK4vsFGK3ZDBrOpxMLk2YPBYBKjahyTl0cxm9wnIYuAqoemFLiTt98pyQovWtffOMCkHBO81tlaiFbJFuVOnGJPIHHnRPWbjGoTAYy1Itowh7aOOx6l5R+Ihqvt8hkjc7ne8A==
+X-HE-Tag: 1793745422-973405
+X-HE-Meta: U2FsdGVkX18qC+XqxjHIy4qxROUW2WfUifQOMa5KCsFVfXkjgExsOMxO1On6JgUKNv3aiFFVBFNJWAxPs1MZVPXhgLkb9AzKMeWJakj44jgwVLI7eY28CWssLAjYbvhR5RdEO0o1LFIHK0GoNUYfhi5gwVQTi2Uj8TSBGFwS2aol0HhodYouqaLBnIIz/GXL5Nc4imdxUhweN+cpDQtg5VhDqM8HhdEaSLhcRl7b6FjWaCgsybHoS+l4oNOEh41KJZam5DQ9QNUBNLPZs1sCwHT1rwhQqlFTtp2ChaMDe2J4RH91jKh05maab+CyeosKYFgtWp72zS6+FpmwVzwbQDMXVuaawI7C8BlYrT4BGTUzzeQhuLAO4vznquWIzGSWaQrJb/aIZfrnAJE2tQTyA1rpB9Fl3QFWS+n4IjC/WWJZ1GfWl5/1uYO6YjpE+P+oZntvp6gyNKXTqtG+u8UT/YCJ+FgKxIuSD9FVOKHKUUIDNjItLcv7tsZoQQeybarLpjskHmOQd2HwXsKLr27ibMa9W/KlthHnBNZsUsSFMScPpAq/X3Oe0BpYbRyAEZRhzH1lQHA3232nc5R0LgqWeAcynObEcW6bgzWroX5OoZfLrLpHhAQoQ09LHzBp3DRRniVo1EEqGCVDt+cbEL8+9eySbI7qALXPpWVxHa9fLVodiV1rMlRIEJxrxaJsdaiJdbYtwa8cmOCmU8u7ybq0azFzAlBxWcXc+xA3cvbPQ/A4m8GKF9Tjsc+yvn4pHaFaw2/qbDLpUZOkb81JWciIV6kQD8sOKT8qVWkyrLOw/D1PpqrB1oZI6IU+isfokSVnmysZWrKQpMaYYg+B5UPA00nlr+ksqWdpSu7xqIJg6rczlU4jhKUDL3vbnwG/jH6uhVrQkNbDRtBa5fKPEgrNwrxBmN0mQRGdkBD3+Sb6SRkQdbbWS62pkRIMyNSOoSNdU1Pcl21/2+UNo8kAgN/
+ QhyQ8HWs
+ GgbQqjeiOGTIawE7I1+Zhbpq4T1ypsNB7oojCWWGowV0HJt/FSOYFF4UJnHINWogRIuwDCeiWkAilcylG5ys5ljETBLnrfMSlU5dqO25GMXO+lPFZQ4UnKm3h3ZtCFDEx1ZBrkfvybaA4f/5hUIPDYcQKpyRqVAV6JEz+Ve0ETkvqaKmD3WmD0Z41MFuen5w6MLZnT7tsGzZuvzHDzGqsyS8wMnRlcqu7xMi3ZP6iyMxwUF1xw0mE8oHifGvzI39m4RGwUDtGxaUvahdQ/6hkk2sDvc/d05AnAIUWcNiDCxZsuNPamHoLD+pMXyJoUCDx/nz8clxeG+Aqv1WD3zbcEWjmICyKEVhVBPi+bIZI8dcwwSEFjGAkLiMDuIL/CJPuxoe6HNNnVLdq+sIfqs3N7kg/EEXVRkGRuDqYH56E+7JloPpTBFu9hCxI18NF3rOVGG2HcJ/pPh5kM6Q=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -128,213 +152,181 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On x86_64 architecture, copying cold memory folios using standard store
-instructions pollutes CPU caches with cold data, increasing memory
-latency and bandwidth overhead.
+On Tue, Nov 3, 2026 at 11:33=E2=80=AFAM Yosry Ahmed <yosry@kernel.org> wrot=
+e:
+>
+> On Tue, Nov 3, 2026 at 11:28=E2=80=AFAM Joanne Koong <joannelkoong@gmail.=
+com> wrote:
+> >
+> > On Mon, Nov 2, 2026 at 5:00=E2=80=AFPM Yosry Ahmed <yosry@kernel.org> w=
+rote:
+> > >
+> > > On Mon, Nov 2, 2026 at 4:34=E2=80=AFPM Joanne Koong <joannelkoong@gma=
+il.com> wrote:
+> > > >
+> > > > On Mon, Nov 2, 2026 at 3:29=E2=80=AFPM Yosry Ahmed <yosry@kernel.or=
+g> wrote:
+> > > > >
+> > > > > > diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+> > > > > > index ac6c43ea8c5a..938843346571 100644
+> > > > > > --- a/mm/memcontrol.c
+> > > > > > +++ b/mm/memcontrol.c
+> > > > > > @@ -587,6 +587,50 @@ unsigned long lruvec_page_state_local(cons=
+t struct lruvec *lruvec,
+> > > > > >         return x;
+> > > > > >  }
+> > > > > >
+> > > > > > +static bool lruvec_is_root(const struct lruvec *lruvec)
+> > > > > > +{
+> > > > > > +       return !mem_cgroup_disabled() && mem_cgroup_is_root(lru=
+vec_memcg(lruvec));
+> > > > > > +}
+> > > > > > +
+> > > > > > +/**
+> > > > > > + * lruvec_lru_page_state - read an LRU stat of an lruvec
+> > > > > > + * @lruvec: the LRU vector to read from
+> > > > > > + * @idx: the node_stat_item to read
+> > > > > > + *
+> > > > > > + * Like lruvec_page_state(), but for the root memcg the node c=
+ounter is read
+> > > > > > + * instead. For stats that only track memory charged to a memc=
+g (LRU sizes,
+> > > > > > + * workingset, rotation and reclaim writeback counts), the roo=
+t memcg's
+> > > > > > + * hierarchical value equals the node counter. The root memcg =
+can just read the
+> > > > > > + * node counter directly instead of going through rstat, which=
+ requires
+> > > > > > + * flushing. Flushing the root memcg flushes every cgroup in t=
+he system.
+> > > > > > + *
+> > > > > > + * Use lruvec_page_state() for other stats (eg slab).
+> > > > > > + */
+> > > > > > +unsigned long lruvec_lru_page_state(const struct lruvec *lruve=
+c,
+> > > > > > +                                   enum node_stat_item idx)
+> > > > > > +{
+> > > > > > +       if (lruvec_is_root(lruvec))
+> > > > > > +               return node_page_state(lruvec_pgdat(lruvec), id=
+x);
+> > > > > > +
+> > > > > > +       return lruvec_page_state(lruvec, idx);
+> > > > > > +}
+> > > > > > +
+> > > > > > +/**
+> > > > > > + * lruvec_lru_page_state_monotonic - lruvec_lru_page_state() f=
+or delta sampling
+> > > > > > + * @lruvec: the LRU vector to read from
+> > > > > > + * @idx: the node_stat_item to read
+> > > > > > + *
+> > > > > > + * See lruvec_page_state_monotonic() and lruvec_lru_page_state=
+().
+> > > > > > + */
+> > > > > > +unsigned long lruvec_lru_page_state_monotonic(const struct lru=
+vec *lruvec,
+> > > > > > +                                             enum node_stat_it=
+em idx)
+> > > > > > +{
+> > > > > > +       if (lruvec_is_root(lruvec))
+> > > > > > +               return node_page_state_monotonic(lruvec_pgdat(l=
+ruvec), idx);
+> > > > > > +
+> > > > > > +       return lruvec_page_state_monotonic(lruvec, idx);
+> > > > > > +}
+> > > > >
+> > > > > Why not do this directly in lruvec_page_state() and
+> > > > > lruvec_page_state_monotonic()? They already fallback to node stat=
+s if
+> > > > > memcg is disabled, why not do the same for the root? Are there ca=
+ses
+> > > > > where the node stats are not the right thing to do?
+> > > >
+> > > > Hi Yosry,
+> > > >
+> > > > Thanks for taking a look at this series! I don't think we're able t=
+o
+> > > > do this directly in lruvec_page_state()/lruvec_page_state_monotonic=
+()
+> > > > because I think there's still some places where the node stat and t=
+he
+> > > > root memcg stat are not guaranteed to be equal.
+> > > >
+> > > > The stat I was looking at last week was slab's NR_SLAB_RECLAIMABLE_=
+B
+> > > > and NR_SLAB_UNRECLAIMABLE_B where for those, the node counter value
+> > > > can contain memory/stats that wasn't actually charged to any memcg,
+> > > > which I think means for these cases, the node counter values can be
+> > > > larger than what reading the root memcg rstat value would give. The
+> > > > functions I was looking at were account_slab() and
+> > > > memcg_slab_post_alloc_hook() where the logic adds every new slab pa=
+ge
+> > > > to the node counter but the memcg stats only get updated if specifi=
+c
+> > > > criteria are met (eg the cache had SLAB_ACCOUNT set or the allocati=
+on
+> > > > had the __GFP_ACCOUNT gfp flag set and the allocation was not from =
+a
+> > > > root memcg).
+> > >
+> > > If it's only the slab stats, it probably makes sense to special case
+> > > those instead of the rest of the readers, right? It would be nice if
+> > > the default behavior is reading the node stats that doesn't require a
+> > > flush.
+> >
+> > If we were to special case it, it would need to exclude more than a
+> > couple, I think. I asked a LLM and it says NR_KERNEL_STACK_KB,
+> > NR_PAGETABLE, NR_SECONDARY_PAGETABLE, NR_VMALLOC, NR_HUGETLB,
+> > WORKINGSET_NODERECLAIM would also need to be excluded.
+>
+> Interesting. So for all these stats, root memcg stats (from
+> memory.stat) is not the same as the node stat? They all draw a
+> distinction between "accounted to root" vs "not accounted"? I wonder
+> if this is intentional for all of them.
 
-Support machine-check safe non-temporal copying of folios:
-- Add copy_mc_page_nt() to copy a 4KiB page using non-temporal stores,
-  prefetching, and MCE exception handling.
-- Add copy_mc_highpage_nt() to map and copy a 4KiB page.
-- Add folio_mc_copy_nt() to copy a folio using copy_mc_highpage_nt().
+I think there's 2 categories:
+a) the allocation isn't acccounted to any memcg (eg kernel page
+tables, hugetlb when hugetlb accounting is off, unaccounted slab
+caches and kmallocs w/out __GFP_ACCOUNT, and most vmalloc). These
+values only get added to the node counter
 
-Because non-temporal stores are weakly ordered, a wmb() is issued at the
-end of folio_mc_copy_nt() before page tables are updated to ensure the
-new folio contents are globally visible. In the event of task preemption
-and CPU migration mid-folio, the scheduler's locked instructions on the
-departing CPU serialize and drain earlier stores, while the final wmb()
-covers the remainder on the new CPU.
+b) the allocation is accounted, but it comes from a task running in
+the root cgroup (eg kernel stacks, user + secondary page tables,
+accounted slab, etc)
 
-Suggested-by: Alirad Malek <alirad.malek@zptcorp.com>
-Suggested-by: Dimitrios Palyvos-Giannas <dimitrios.palyvos@zptcorp.com>
-Signed-off-by: Huan Nguyen <nhuhuan@google.com>
----
- arch/x86/include/asm/page_64.h |  2 ++
- arch/x86/lib/copy_page_64.S    | 65 ++++++++++++++++++++++++++++++++++
- include/linux/highmem.h        | 21 +++++++++++
- include/linux/mm.h             |  1 +
- mm/util.c                      | 29 +++++++++++++++
- 5 files changed, 118 insertions(+)
+I think a) has to stay as is since it's not linked to any memcg. For
+b), it seems intentional from the original commit that added kernel
+memory accounting logic (commit 7ae1e1d0f8ac ("memcg: kmem controller
+infrastructure")). The commit message for that explicitly says
+tracking kernel memory pages to a given memcg "will happen whenever
+the caller includes the flag __GFP_KMEMCG flag and the task belongs to
+a memcg other than the root". (__GFP_KMEMCG later became
+__GFP_ACCOUNT). I wonder though if this was to avoid extra overhead
+costs (eg for systems that don't use cgroups) on the hot paths, since
+it would need to do non-trivial per-object work. If root read the node
+counters for the stats that are in category b (excluding the stats
+that are in both category a and b) instead of going through rstat
+(which is what this series does for the LRU stats), there wouldn't
+need to be any extra overhead at allocation time, since nothing would
+need to be tracked.
 
-diff --git a/arch/x86/include/asm/page_64.h b/arch/x86/include/asm/page_64.h
-index 1895c207f629..f37126b56239 100644
---- a/arch/x86/include/asm/page_64.h
-+++ b/arch/x86/include/asm/page_64.h
-@@ -114,7 +114,9 @@ static inline void clear_page(void *addr)
- 	clear_pages(addr, 1);
- }
- 
-+#define __HAVE_ARCH_COPY_PAGE_NT 1
- void copy_page(void *to, void *from);
-+unsigned long copy_mc_page_nt(void *to, const void *from);
- KCFI_REFERENCE(copy_page);
- 
- /*
-diff --git a/arch/x86/lib/copy_page_64.S b/arch/x86/lib/copy_page_64.S
-index d8e87fedc20d..185fa3bc34c0 100644
---- a/arch/x86/lib/copy_page_64.S
-+++ b/arch/x86/lib/copy_page_64.S
-@@ -6,6 +6,7 @@
- #include <linux/cfi_types.h>
- #include <asm/cpufeatures.h>
- #include <asm/alternative.h>
-+#include <asm/asm.h>
- 
- /*
-  * Some CPUs run faster using the string copy instructions (sane microcode).
-@@ -88,3 +89,67 @@ SYM_FUNC_START_LOCAL(copy_page_regs)
- 	addq	$2*8, %rsp
- 	RET
- SYM_FUNC_END(copy_page_regs)
-+
-+/*
-+ * Copy an entire 4KB page using non-temporal stores (movnti).
-+ * Returns 0 on success, or number of bytes not copied on error.
-+ */
-+SYM_TYPED_FUNC_START(copy_mc_page_nt)
-+	subq	$2*8, %rsp
-+	movq	%rbx, (%rsp)
-+	movq	%r12, 1*8(%rsp)
-+
-+	xorl	%eax, %eax
-+	.p2align 4,,10
-+	.p2align 3
-+
-+.L_nt0:	movq	0x8*0(%rsi,%rax), %rdx
-+.L_nt1:	movq	0x8*1(%rsi,%rax), %rcx
-+.L_nt2:	movq	0x8*2(%rsi,%rax), %rbx
-+.L_nt3:	movq	0x8*3(%rsi,%rax), %r8
-+.L_nt4:	movq	0x8*4(%rsi,%rax), %r9
-+.L_nt5:	movq	0x8*5(%rsi,%rax), %r10
-+.L_nt6:	movq	0x8*6(%rsi,%rax), %r11
-+.L_nt7:	movq	0x8*7(%rsi,%rax), %r12
-+
-+	prefetchnta 5*64(%rsi,%rax)
-+
-+	movnti	%rdx, 0x8*0(%rdi,%rax)
-+	movnti	%rcx, 0x8*1(%rdi,%rax)
-+	movnti	%rbx, 0x8*2(%rdi,%rax)
-+	movnti	%r8,  0x8*3(%rdi,%rax)
-+	movnti	%r9,  0x8*4(%rdi,%rax)
-+	movnti	%r10, 0x8*5(%rdi,%rax)
-+	movnti	%r11, 0x8*6(%rdi,%rax)
-+	movnti	%r12, 0x8*7(%rdi,%rax)
-+
-+	addq	$64, %rax
-+	cmpq	$4096, %rax
-+	jne	.L_nt0
-+
-+	movq	(%rsp), %rbx
-+	movq	1*8(%rsp), %r12
-+	addq	$2*8, %rsp
-+	xorl	%eax, %eax
-+	RET
-+
-+.E_nt:
-+	negl	%eax
-+	addl	$4096, %eax
-+	sfence
-+	movq	(%rsp), %rbx
-+	movq	1*8(%rsp), %r12
-+	addq	$2*8, %rsp
-+	RET
-+
-+	_ASM_EXTABLE_TYPE(.L_nt0, .E_nt, EX_TYPE_DEFAULT_MCE_SAFE)
-+	_ASM_EXTABLE_TYPE(.L_nt1, .E_nt, EX_TYPE_DEFAULT_MCE_SAFE)
-+	_ASM_EXTABLE_TYPE(.L_nt2, .E_nt, EX_TYPE_DEFAULT_MCE_SAFE)
-+	_ASM_EXTABLE_TYPE(.L_nt3, .E_nt, EX_TYPE_DEFAULT_MCE_SAFE)
-+	_ASM_EXTABLE_TYPE(.L_nt4, .E_nt, EX_TYPE_DEFAULT_MCE_SAFE)
-+	_ASM_EXTABLE_TYPE(.L_nt5, .E_nt, EX_TYPE_DEFAULT_MCE_SAFE)
-+	_ASM_EXTABLE_TYPE(.L_nt6, .E_nt, EX_TYPE_DEFAULT_MCE_SAFE)
-+	_ASM_EXTABLE_TYPE(.L_nt7, .E_nt, EX_TYPE_DEFAULT_MCE_SAFE)
-+
-+SYM_FUNC_END(copy_mc_page_nt)
-+EXPORT_SYMBOL_GPL(copy_mc_page_nt)
-diff --git a/include/linux/highmem.h b/include/linux/highmem.h
-index d7aac9de1c8a..264b3f109151 100644
---- a/include/linux/highmem.h
-+++ b/include/linux/highmem.h
-@@ -484,6 +484,27 @@ static inline int copy_mc_highpage(struct page *to, struct page *from)
- }
- #endif
- 
-+#ifdef __HAVE_ARCH_COPY_PAGE_NT
-+static inline int copy_mc_highpage_nt(struct page *to, struct page *from)
-+{
-+	unsigned long ret;
-+	char *vfrom, *vto;
-+
-+	vfrom = kmap_local_page(from);
-+	vto = kmap_local_page(to);
-+	ret = copy_mc_page_nt(vto, vfrom);
-+	if (!ret)
-+		kmsan_copy_page_meta(to, from);
-+	kunmap_local(vto);
-+	kunmap_local(vfrom);
-+
-+	if (ret)
-+		memory_failure_queue(page_to_pfn(from), 0);
-+
-+	return ret;
-+}
-+#endif
-+
- static inline void memcpy_page(struct page *dst_page, size_t dst_off,
- 			       struct page *src_page, size_t src_off,
- 			       size_t len)
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index 9f167950926a..549bb21027e4 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -2127,6 +2127,7 @@ void __folio_put(struct folio *folio);
- void split_page(struct page *page, unsigned int order);
- void folio_copy(struct folio *dst, struct folio *src);
- int folio_mc_copy(struct folio *dst, struct folio *src);
-+int folio_mc_copy_nt(struct folio *dst, struct folio *src);
- 
- unsigned long nr_free_buffer_pages(void);
- 
-diff --git a/mm/util.c b/mm/util.c
-index 8acfe2148ba5..0418529264fd 100644
---- a/mm/util.c
-+++ b/mm/util.c
-@@ -778,6 +778,35 @@ int folio_mc_copy(struct folio *dst, struct folio *src)
- }
- EXPORT_SYMBOL(folio_mc_copy);
- 
-+int folio_mc_copy_nt(struct folio *dst, struct folio *src)
-+{
-+	long nr = folio_nr_pages(src);
-+	long i = 0;
-+
-+	for (;;) {
-+#ifdef __HAVE_ARCH_COPY_PAGE_NT
-+		if (copy_mc_highpage_nt(folio_page(dst, i), folio_page(src, i)))
-+			return -EHWPOISON;
-+#else
-+		if (copy_mc_highpage(folio_page(dst, i), folio_page(src, i)))
-+			return -EHWPOISON;
-+#endif
-+		if (++i == nr)
-+			break;
-+		cond_resched();
-+	}
-+
-+#ifdef __HAVE_ARCH_COPY_PAGE_NT
-+	/*
-+	 * Drain weakly ordered non-temporal stores before the folio
-+	 * is published.
-+	 */
-+	wmb();
-+#endif
-+	return 0;
-+}
-+EXPORT_SYMBOL(folio_mc_copy_nt);
-+
- int sysctl_overcommit_memory __read_mostly = OVERCOMMIT_GUESS;
- static int sysctl_overcommit_ratio __read_mostly = 50;
- static unsigned long sysctl_overcommit_kbytes __read_mostly;
--- 
-2.56.0.398.g882cbad275-goog
+>
+> > We could add
+> > this special casing in, but we would need to make sure any new stat
+> > that gets added in the future that belongs on the exclusion list gets
+> > put on it. If it's missed, the failure would be silent whereas with a
+> > separate helper, callers have to explicitly opt in. I'm happy to go
+> > either way though, so if there's one way you prefer, I'm happy to do
+> > that for v2.
+>
+> I think we probably want to first understand if these stats are
+> supposed to be different between the root memcg stats and the node
+> stats first. Personally, I think the default should be the majority
+> behavior, which I think is that node stats and root memcg stats are
+> the same, so I am leaning toward explicit opt-out. Let's also see what
+> memcg folks think.
 
+That seems reasonable to me. memcg folks, do you have any thoughts on this?
+
+Thanks,
+Joanne
 
