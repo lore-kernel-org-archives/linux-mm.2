@@ -1,98 +1,101 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F28FB606D83A
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 01:00:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C191606A33D
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 01:00:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=jazplH8Q
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ILFSQTAa
 Received: by kanga.kvack.org (Postfix)
-	id 7CD116B05B2; Mon,  2 Nov 2026 19:59:53 -0500 (EST)
+	id 9EC606B05B4; Mon,  2 Nov 2026 19:59:53 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 706786B05B5; Mon,  2 Nov 2026 19:59:53 -0500 (EST)
+	id 99DC06B05B3; Mon,  2 Nov 2026 19:59:53 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5CE1B6B05B6; Mon,  2 Nov 2026 19:59:53 -0500 (EST)
+	id 88D366B05B7; Mon,  2 Nov 2026 19:59:53 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 267716B05B2
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 4B4E16B05B3
 	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 19:59:53 -0500 (EST)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id AD121A0278
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id B182C1A02BA
 	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 00:59:52 +0000 (UTC)
-X-FDA: 85392000624.23.26BED70
+X-FDA: 85392000624.25.DF75183
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 16115120002
+	by imf27.hostedemail.com (Postfix) with ESMTP id 16C4940007
 	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 00:59:50 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jazplH8Q;
-	spf=pass (imf29.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ILFSQTAa;
+	spf=pass (imf27.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793667591;
+	b=vAvOtWK4BV0VFN7n/f4jN8xmpO/GOMLS/pYQWPma6enXKuFnZhx1eQJj7K/MXuK9zsLLxw
+	h4RLS2AZPHw3O78abQGdkSlDvlG/ItbqPZuBVVXfRU2akpg4+zQPpMRBhi3fXoCfOirPPm
+	QyQyJc8SIdmLG+SO4fIDStL+NDk1kcw=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ILFSQTAa;
+	spf=pass (imf27.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1793667591;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Z1ZlDl54vy7oXT8lslczE9b+B9mUQeT7lKAv+hG8SGg=;
-	b=G3sOALhcWhzTwGLCpK/BozjSfMnpgrqfXwtw/Tf7FbrFxlwcvEZf9vt7lBnpHnJGWHmvDJ
-	SecbFpbgmCLGrNjoBZfGY0QELRM2774VEKN7ubGzLm3tyBrvxGYxupj4Ob7ghXUu5j35sn
-	SAqlRzAX6ckK7ZNcq4dtav1zlZEuSGI=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jazplH8Q;
-	spf=pass (imf29.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793667591;
-	b=uiosZOfxbk++c6tNQq8DvOsY2SLNa4q/xlFu0wzVZPZeTpjBTtvu+ArdjodByrME2jyIG3
-	8Jysk6nX71r8ZZ302HnVwvG4IOKhUiOPPcCH6Nsgq16OarsCpjWG5gK1DrMXDLOxSw01Ud
-	3r9A910TbtyWDGmuxpFAE1h4NeksVGU=
+	bh=eAIEk27vq7SBMU3eK04a7ELsfUgkQKJdZcdW3LgEO4Y=;
+	b=0tEHMtDXFdQonFhCbGmFyQNfY0TPwg2KzYEf+ULVP0VMF6YWfwPKURQSUhjS2XWDixRXGr
+	Wuh621B8hSbnOVcfqzIqNKsv2Wkp9G0uNdX9hwxBC6bRJtnpi5DNYkviurikuNdXAgtDbF
+	S5kHgBmhsWkfx0jTQQxF0LQSgy1sius=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id A4404601EF;
+	by tor.source.kernel.org (Postfix) with ESMTP id 283776022E;
 	Tue,  3 Nov 2026 00:59:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 066621F00A18;
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E02F1F0093A;
 	Tue,  3 Nov 2026 00:59:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793667590;
-	bh=Z1ZlDl54vy7oXT8lslczE9b+B9mUQeT7lKAv+hG8SGg=;
+	s=k20260515; t=1793667589;
+	bh=eAIEk27vq7SBMU3eK04a7ELsfUgkQKJdZcdW3LgEO4Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=jazplH8Q4+HMTuyyZaVjxs1U13KiD2GjrY9G4xDQH56o3nlczZiz4JAVvot3IgDfx
-	 GCC4Btk10IWcK+3iG78kQThpETV3woyhE4z8AR5Ir+Bu/peZQjRYsMXQeWjpNaGhOe
-	 V8ApWwohjex7+gv2ecavvBmeoUPRolzmTvMj/tk2vrSK99tQMNHEGztUrpw9OYWj/N
-	 sJzk/JJw1Jc0G38kEWTzEIEhLyYuwd25038XO+LqSvLnbfpGLLmIFw3mVAv5Cbbpo/
-	 2fLZwdpN5KVpGtyZFY+WkCFggkPj9XCgsGZShw+N71ejt932frK+t4EquSnmiFv5IK
-	 6oViV6BL0d+9g==
+	b=ILFSQTAaF6kJrx/TYSoWIT/QtO9KF/QFp2Zk8INMjPaYjb2f+UqWTET9sOtVdHKdQ
+	 m8TZi2CIjLtn+FhaonI+i17T/s7K09H8tj71lT+I1Mq3hA7A692+pBT5oRytXct5YY
+	 +wZT6hXli590DAaPdla5HkprTqm1LdFV9J/4G8f/Z1Cra8pCKyh3FAy76gQiJixkTC
+	 vR7if78QAz+tbYCvCeLfpWujf713hFllfnpeAD+d2ndXzjnASNLxfqQHMkQrXGyzTz
+	 etgyoOVKLJMp/HIZnuT6wIqfKl1fpgCA/WuaZPueIUHxZdNsB5uoReJXdCKgwt+uWx
+	 6Jx/1Qz/yrgxQ==
 From: SJ Park <sj@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: Aveline Noir <jm5905938@gmail.com>,
 	Jonathan Corbet <corbet@lwn.net>,
+	Manuel Ebner <manuelebnerli@mailbox.org>,
 	Randy Dunlap <rdunlap@infradead.org>,
 	SJ Park <sj@kernel.org>,
 	Shuah Khan <skhan@linuxfoundation.org>,
 	damon@lists.linux.dev,
 	linux-doc@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	Manuel Ebner <manuelebnerli@mailbox.org>
-Subject: [PATCH v2 4/8] Docs/admin-guide/mm/damon/lru_sort: fix remaining grammar
-Date: Mon,  2 Nov 2026 16:59:34 -0800
-Message-ID: <20261103005940.91432-5-sj@kernel.org>
+	linux-mm@kvack.org
+Subject: [PATCH v2 3/8] Docs/admin-guide/mm/damon/usage: fix grammar
+Date: Mon,  2 Nov 2026 16:59:33 -0800
+Message-ID: <20261103005940.91432-4-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20261103005940.91432-1-sj@kernel.org>
 References: <20261103005940.91432-1-sj@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 4nspwnrbsfwzhkrwaki499sxqfm5twmz
-X-Rspamd-Server: rspam01
+X-Stat-Signature: dr1k3be7znhotu7qeb3whgbu5ehyz7wp
+X-Rspamd-Queue-Id: 16C4940007
 X-Rspam-User: 
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Rspamd-Server: rspam11
+X-Spam-Status: No, score=-23.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: 16115120002
-X-HE-Tag: 1793667590-509117
-X-HE-Meta: U2FsdGVkX1/ThQH78OMqXKOWmV4UPR6MftSEiZAYDykaisuZ7hlC4QEWKYwey+MkAqVIxU1HJgQAKIYLT5xm0xnSpiw0b02XqpLjSRvNxd7JHtlv6UHRuqqQ0w0QRQgsFdC4zq/RwKgeW7KQfyQJhamr+wVJtcQVR/bRdSjd6RsZHDDqqRJd/eNETxPvYt5B3/GVgxRU7yu4vNKnxEFl0gOUkxv56ElTKKkwl+xnDqM1JfIpdQHgE4Z/2CWv5UgSEvRhgyJOl3XxP3JLWbSOoaFp6b8KQqpIrRa+zu12hy53vOouoiPyBkcntnzi/yj9CSfUBYFtlL1L0YxcyyYvzBkSxDvuQyPlNIySd1IF94EBm4PxZS5CHxszfKJRM8PRsN0R2YuDyMb2UN9l5wQC5/4CROL5utWIkMjnqmmz9VQvXkZV2idNNDDE8rWy7m9/i+61iJLHnnIKjfNZkZKRbHBWOZwGC47a9PJztXbEmSegp7M0I4AIcQ96bl0y7Ehbaex0L2bHGe+F9SJRkQoMmsVrsN5A9mx2DVKSEajnXbPu2AFNvtWq+B3YnWHqoEspPiL+STtHMIlIoiBy6/eNsmytjSBNBpzYrQixOhBhc9Nm2xfqp1uYcs0Vzkv90KZTf1nOM/riUN6vLulzwwyBZEHygYl7zLfljp5+B7yRNnxGHE+irdTSfyz7UFJstLzOnMpO7Lr4dskSvUwcUoZ5ATKvGj0PG6HGPbueUkBraiLlVnptPYQl/S5n4+mk6P+n0iiS9M11n9Q4iebLb5Fx9bNzc+jG55bJmNbtH+TAxZ943Qu+RzKSlfolLKnNli8VEhliTOTQ0m2E6+6B98LvqJ6w5s1lT/CFKTm6VVauq5bCtgJRevSe+qdD5RpZQzDZYuIj/zICXYnulehveYharz+e69w62yl4cyLM7yBRz6jQIQ/nT603uQ7S2q8iDg/3EHLbT8ArCGDLhdZm6z8
- qTIVXKvb
- e/wSb6Xip0XNoYmc4eyVNU02boxHm5uNJZVxGpfnUAWJDM5NRKV2dWG0ZjSg9ictmYEWvo8+vZX5bxTNNaeL+WtQdJ3GdNuLyHih9dFIdq4ubu1lotHo0s2scikRxyZCileB0osL212peq9CytDyUMPk83fyT+28+kYma4IRc4feZNjDjUNZlBCN22lqVjQkL19If+QnGYt7ZG1d42uz7V7oJmnd00qaNafd7lzLlDmVbu0pv0yyWOkhGx7Wni2Il9LNIoOXHljkVTjY1ouFYD+NEJ/MznIqNwH8FbnLUKQszJRawpFemu3ZxAUlh3GJr/Dilm/7ofDTVtB+4EHky26doB5Fhfe7/4EAoWuT6VKtFYvpuJ2i0qeiSLbHTsDt94ny75LU/2MWjqqSPnpoI/ejHgjVDcYZnvJqp3O8nR9URRer7Gd/kKXgFJxffACMobn6dgkahWQxyA+sFS2gTzxmtIpAX8w6ymG21DU6kUSQTVD3Gn1sFm55VhcnGvLBIR49xPqIcPCJYTFUxMry/AUwAjBpnfggnofJs
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,
+	MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT
+	autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1793667590-622635
+X-HE-Meta: U2FsdGVkX19kINSK5avYijznApMvvlGUNwtYIH25H1Dl22ZgRnG4XKA8KnRgYnIKm56rhj+gPglNuHWSuX+obSFxDQxeJgIIfTlI1HGy4UQZpG7zj0jwo23fW0eqccHKxG8TW2yG0Fdlncjodzx5eKKSrAF/SK0ondGcUFl7JU0rEUOB0QbMK39SbGfQun10M1kOKbJG3fAtIAv5aw9Si0z84us2uC89YKeCaZM82JYsddVUHL3xhgJLFnZnvxz4ndTVyJkDKflLZj+3dPxnVhv01m01LGJOy1KRp27MlbFlbe1gwnh7yeYWHtEh2c8Mmn2d9LYtN+Y6+5V/d9sz0zmJejyGd4csqBg20CkvWxG0yZ320xkiKE0O5kky9C30rZ/e2qgBNqwzF8tr7vWW8jCs13S2gt2PD4c+N6gKqRNVD1IjTfZOw5vMDh65uSgiiChKSPiUKBf7JpgwCIK+oTtVQ2Zwyl/4Xni/332voUFNObxWkdC08twmP7bUAzDTcCbBnAAYAxeJDh40yJFAPG5C5ndfZHdIuKudbIsYhFlVcfrqXNvqn0iPvsIF9xfen4pJhykoG1N7f8Iz7EfjOMvppc1JJqhvzkNwHt/6QmanjWsKSdcb/VKGcKFUdfUAE6rtmHA6SQGo7VvSf0Mx7ciuMUG05JmLlEXhYolDW2njG5hLWM15cUtVJpVKJwnSFXKQy/S6jujXhL+ZVSmU9XOtiwGW8evPZH6yjN9sLlP2dXrCVNdiXB3E2mrU9YniKxJH/jxgWJHfx8u6rmY3vZx9zhekZzwE0KbxS1nVotjGIykjwyF2mOX54oH222kyugBMMJ/YMGjmaKt9r6Ne/MM4xaj5uaATUZlyoo8L8JC4byPKd44cVLOJrVE52Gfx9WH85F01Z0XJlvM40Q1isFp366yXTHZs0niRRvMzJs5YLpq8TJV2drmJ/VnZ+OhDk+Y4liyTO6Z3tik0pe2
+ nQhGE8QQ
+ WQcmDsQ08wDCD7RRwl77R3Fdtk6I8/MoTFNGY8doIkl/+mCzyZGto3Tw91MT9RXpfeFNwR8SzcPCPjjFEJcif7NoAUUTkNrnsxQArcziwkw7/s5z6WNL5nF580K6ZnGkOifNsrh5a48z35+UZ8p0vqJRhkS2npXufwyA6D1hp74luEI1UGKuUkB5R1DKScDJnkqjwgyhnnFeGcJnu9O8dxi1A4dL1QC4WkP93f9Yw/ox+C1MWHcQwsOycRfQzqUxo4PfH1cQqZh2ucjklTxFADPKGvABaZlGo9iVWChWbmr1LepH8ZbFcDh7ibwYY/OdnRUxJpz5D0GbLbriV0+OkzjCs25kyMWAKju/Zv8dyNzxCCony1TXr2xW8/OqgWh5ntMh/INRrbqQrQ5nVvGmsKG/Sd/vU4zSZbVtr/MtCF64jGZ+NMkmP4OuJ3Dwq5mg0RzT9lcEQzKq5oJHddID/XpVpklGbS18AGQfTQ4h6LLfDynzKK0PnlzBQjD/o9lpDc5usmqhwim998ijMG8MIX8PxE779n+KzKpGw58lJr+dislg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,156 +106,125 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 
 From: Aveline Noir <jm5905938@gmail.com>
 
-Manuel's recent grammar fix for this file, now in damon/next, covered a
-good part of it.  This should take care of the few mistakes that are
-left, like "should automatically activated" and "Make DAMON_LRU_SORT
-reads".  Rewrap where the lines got too long.
+Fix a handful of grammar mistakes in the usage doc, mostly
+subject-verb agreement and a missing or extra "be".  Also turn "Below
+commands applies" into "The commands below apply", which I think reads
+better.  Rewrap where the lines got too long.
 
 Cc: Jonathan Corbet <corbet@lwn.net>
 Cc: Shuah Khan <skhan@linuxfoundation.org>
 Cc: Randy Dunlap <rdunlap@infradead.org>
-Suggested-by: Manuel Ebner <manuelebnerli@mailbox.org>
+Cc: Manuel Ebner <manuelebnerli@mailbox.org>
 Signed-off-by: Aveline Noir <jm5905938@gmail.com>
-Reviewed-by: Manuel Ebner <manuelebnerli@mailbox.org>
 Reviewed-by: SJ Park <sj@kernel.org>
 Signed-off-by: SJ Park <sj@kernel.org>
 ---
- .../admin-guide/mm/damon/lru_sort.rst         | 45 ++++++++++---------
- 1 file changed, 23 insertions(+), 22 deletions(-)
+ Documentation/admin-guide/mm/damon/usage.rst | 31 ++++++++++----------
+ 1 file changed, 16 insertions(+), 15 deletions(-)
 
-diff --git a/Documentation/admin-guide/mm/damon/lru_sort.rst b/Documentation/admin-guide/mm/damon/lru_sort.rst
-index aa4cc90ca57c6..6b2cdb48fabe6 100644
---- a/Documentation/admin-guide/mm/damon/lru_sort.rst
-+++ b/Documentation/admin-guide/mm/damon/lru_sort.rst
-@@ -35,7 +35,7 @@ deprioritizing cold pages on their LRU-lists.  To avoid it consuming too much
- CPU for the prioritizations, a CPU time usage limit can be configured.  Under
- the limit, it prioritizes and deprioritizes more hot and cold pages first,
- respectively.  System administrators can also configure under what situation
--this scheme should automatically activated and deactivated with three memory
-+this scheme should be automatically activated and deactivated with three memory
- pressure watermarks.
+diff --git a/Documentation/admin-guide/mm/damon/usage.rst b/Documentation/admin-guide/mm/damon/usage.rst
+index bd687d89ea4c0..cc7465251bb6f 100644
+--- a/Documentation/admin-guide/mm/damon/usage.rst
++++ b/Documentation/admin-guide/mm/damon/usage.rst
+@@ -23,7 +23,7 @@ DAMON provides below interfaces for different users.
+   want more optimized use of DAMON.  Using this, users can use DAMON’s major
+   features by reading from and writing to special sysfs files.  Therefore,
+   you can write and use your personalized DAMON sysfs wrapper programs that
+-  reads/writes the sysfs files instead of you.  The `DAMON user space tool
++  read/write the sysfs files instead of you.  The `DAMON user space tool
+   <https://github.com/damonitor/damo>`_ is one example of such programs.
+ - *Kernel Space Programming Interface.*
+   :doc:`This </mm/damon/api>` is for kernel space programmers.  Using this,
+@@ -155,7 +155,7 @@ Users can write below commands for the kdamond to the ``state`` file.
+ - ``on``: Start running.
+ - ``off``: Stop running.
+ - ``commit``: Read the user inputs in the sysfs files except ``state`` file
+-  again.  Monitoring :ref:`target region <sysfs_regions>` inputs are also be
++  again.  Monitoring :ref:`target region <sysfs_regions>` inputs are also
+   ignored if no target region is specified.
+ - ``update_tuned_intervals``: Update the contents of ``sample_us`` and
+   ``aggr_us`` files of the kdamond with the auto-tuning applied ``sampling
+@@ -250,7 +250,7 @@ writing to and reading from the files.
  
- Its default parameters for hotness/coldness thresholds and CPU quota limit are
-@@ -55,7 +55,7 @@ DAMON_LRU_SORT utilizes module parameters.  That is, you can put
- ``damon_lru_sort.<parameter>=<value>`` on the kernel boot command line or write
- proper values to ``/sys/module/damon_lru_sort/parameters/<parameter>`` files.
+ Under ``nr_regions`` directory, two files for the lower-bound and upper-bound
+ of DAMON's monitoring regions (``min`` and ``max``, respectively), which
+-controls the monitoring overhead, exist.  You can set and get the values by
++control the monitoring overhead, exist.  You can set and get the values by
+ writing to and reading from the files.
  
--Below are the description of each parameter.
-+Below are the descriptions of each parameter.
+ For more details about the intervals and monitoring regions range, please refer
+@@ -268,7 +268,7 @@ Under the directory, four files for the auto-tuning control, namely
+ Please refer to  the :ref:`design document of the feature
+ <damon_design_monitoring_intervals_autotuning>` for the internal of the tuning
+ mechanism.  Reading and writing the four files under ``intervals_goal``
+-directory shows and updates the tuning parameters that described in the
++directory shows and updates the tuning parameters that are described in the
+ :ref:`design doc <damon_design_monitoring_intervals_autotuning>` with the same
+ names.  The tuning starts with the user-set ``sample_us`` and ``aggr_us``.  The
+ tuning-applied current values of the two intervals can be read from the
+@@ -496,8 +496,8 @@ Among the multiple feedback, the best one is used.
+ Each goal directory contains six files, namely ``target_metric``,
+ ``complement``, ``target_value``, ``current_value``, ``nid``, and ``path``.
+ Users can set and get the six parameters for the quota auto-tuning goals that
+-specified on the :ref:`design doc <damon_design_damos_quotas_auto_tuning>` by
+-writing to and reading from each of the files.  Because the kernel does not
++are specified on the :ref:`design doc <damon_design_damos_quotas_auto_tuning>`
++by writing to and reading from each of the files.  Because the kernel does not
+ update ``current_value``, reading it only makes sense when ``target_metric`` is
+ ``user_input``.  Note that users should further write
+ ``commit_schemes_quota_goals`` to the ``state`` file of the :ref:`kdamond
+@@ -535,8 +535,9 @@ DAMON-based operation scheme.
+ ``core_filters`` and ``ops_filters`` directories are for the filters handled by
+ the DAMON core layer and operations set layer, respectively.  ``filters``
+ directory can be used for installing filters regardless of their handled
+-layers.  Filters that requested by ``core_filters`` and ``ops_filters`` will be
+-installed before those of ``filters``.  All three directories have same files.
++layers.  Filters that are requested by ``core_filters`` and ``ops_filters`` will
++be installed before those of ``filters``.  All three directories have same
++files.
  
- enabled
- -------
-@@ -70,12 +70,12 @@ condition.  Refer to below descriptions of the watermarks parameter for this.
- commit_inputs
- -------------
+ Use of ``filters`` directory can make filters evaluation orders confusing to
+ expect.  For this reason, ``filters`` directory is deprecated.  It is still
+@@ -612,16 +613,16 @@ Users can write and read the identifier of the destination to ``id`` file.
+ For ``DAMOS_MIGRATE_{HOT,COLD}`` actions, the migrate destination node's node
+ id should be written to ``id`` file.  Users can write and read the weight of
+ the destination among the given destinations to the ``weight`` file.  The
+-weight can be an arbitrary integer.  When DAMOS apply the action to each entity
+-of the memory region, it will select the destination of the action based on the
+-relative weights of the destinations.
++weight can be an arbitrary integer.  When DAMOS applies the action to each
++entity of the memory region, it will select the destination of the action based
++on the relative weights of the destinations.
  
--Make DAMON_LRU_SORT reads the input parameters again, except ``enabled``.
-+Make DAMON_LRU_SORT read the input parameters again, except ``enabled``.
+ .. _sysfs_schemes_stats:
  
--Input parameters that updated while DAMON_LRU_SORT is running are not applied
--by default.  Once this parameter is set to ``Y``, DAMON_LRU_SORT reads values
--of parameters except ``enabled`` again.  Once the re-reading is done, this
--parameter is set to ``N``.  If invalid parameters are found while the
-+Input parameters that are updated while DAMON_LRU_SORT is running are not
-+applied by default.  Once this parameter is set to ``Y``, DAMON_LRU_SORT reads
-+values of parameters except ``enabled`` again.  Once the re-reading is done,
-+this parameter is set to ``N``.  If invalid parameters are found while the
- re-reading, DAMON_LRU_SORT will be disabled.
+ schemes/<N>/stats/
+ ------------------
  
- Once ``Y`` is written to this parameter, the user must not write to any
-@@ -87,10 +87,11 @@ active_mem_bp
+-DAMON counts statistics for each scheme.  This statistics can be used for
++DAMON counts statistics for each scheme.  These statistics can be used for
+ online analysis or tuning of the schemes.  Refer to :ref:`design doc
+ <damon_design_damos_stat>` for more details about the stats.
  
- Desired active to (in)active memory ratio in bp (1/10,000).
+@@ -680,15 +681,15 @@ tried_regions/<N>/probes/
+ -------------------------
  
--While keeping the caps that set by other quotas, DAMON_LRU_SORT automatically
--increases and decreases the effective level of the quota aiming the LRU
--(de)prioritizations of the hot and cold memory resulting in this active to
--(in)active memory ratio.  Value zero means disabling this auto-tuning feature.
-+While keeping the caps that are set by other quotas, DAMON_LRU_SORT
-+automatically increases and decreases the effective level of the quota aiming
-+the LRU (de)prioritizations of the hot and cold memory resulting in this active
-+to (in)active memory ratio.  Value zero means disabling this auto-tuning
-+feature.
- 
- Disabled by default.
- 
-@@ -112,8 +113,8 @@ Filter (non-)young pages accordingly for LRU (de)prioritizations.
- 
- If this is set, check page level access (youngness) once again before each
- LRU (de)prioritization operation.  LRU prioritization operation is skipped
--if the page has not accessed since the last check (not young).  LRU
--deprioritization operation is skipped if the page has accessed since the
-+if the page has not been accessed since the last check (not young).  LRU
-+deprioritization operation is skipped if the page has been accessed since the
- last check (young).  The feature is enabled or disabled if this parameter is
- set to ``Y`` or ``N``, respectively.
- 
-@@ -125,7 +126,7 @@ hot_thres_access_freq
- Access frequency threshold for hot memory regions identification in permil.
- 
- If a memory region is accessed in frequency of this or higher, DAMON_LRU_SORT
--identifies the region as hot, and mark it as accessed on the LRU list, so that
-+identifies the region as hot, and marks it as accessed on the LRU list, so that
- it could not be reclaimed under memory pressure.  50% by default.
- 
- cold_min_age
-@@ -134,7 +135,7 @@ cold_min_age
- Time threshold for cold memory regions identification in microseconds.
- 
- If a memory region is not accessed for this or longer time, DAMON_LRU_SORT
--identifies the region as cold, and mark it as unaccessed on the LRU list, so
-+identifies the region as cold, and marks it as unaccessed on the LRU list, so
- that it could be reclaimed first under memory pressure.  120 seconds by
- default.
- 
-@@ -237,7 +238,7 @@ The maximum number of monitoring regions of DAMON for the cold memory
- monitoring.  This can be used to set the upper-bound of the monitoring overhead.
- However, setting this too low could result in bad monitoring quality.  Please
- refer to the DAMON documentation (:doc:`usage`) for more detail.  1000 by
--defaults.
-+default.
- 
- monitor_region_start
- --------------------
-@@ -310,7 +311,7 @@ Total bytes of hot memory regions that were successfully LRU-sorted.
- nr_hot_quota_exceeds
- --------------------
- 
--Number of times that the time quota limit for hot regions have exceeded.
-+Number of times that the time quota limit for hot regions has been exceeded.
- 
- nr_lru_sort_tried_cold_regions
- ------------------------------
-@@ -325,24 +326,24 @@ Total bytes of cold memory regions that tried to be LRU-sorted.
- nr_lru_sorted_cold_regions
- --------------------------
- 
--Number of cold memory regions that successfully be LRU-sorted.
-+Number of cold memory regions that were successfully LRU-sorted.
- 
- bytes_lru_sorted_cold_regions
- -----------------------------
- 
--Total bytes of cold memory regions that successfully be LRU-sorted.
-+Total bytes of cold memory regions that were successfully LRU-sorted.
- 
- nr_cold_quota_exceeds
- ---------------------
- 
--Number of times that the time quota limit for cold regions have exceeded.
-+Number of times that the time quota limit for cold regions has been exceeded.
+ In each region directory, one directory (``probes``) also exists.  In the
+-directory, subdirectories named ``0`` to ``N-1`` exists.  ``N`` is the number
+-of installed probes.  In each number-named directory, a file (``hits``) exist.
++directory, subdirectories named ``0`` to ``N-1`` exist.  ``N`` is the number
++of installed probes.  In each number-named directory, a file (``hits``) exists.
+ Reading the file shows the number of data attributes monitoring probe-hit
+ positive samples of the region.
  
  Example
- =======
+ ~~~~~~~
  
--Below runtime example commands make DAMON_LRU_SORT to find memory regions
-+Below runtime example commands make DAMON_LRU_SORT find memory regions
- having >=50% access frequency and LRU-prioritize while LRU-deprioritizing
--memory regions that not accessed for 120 seconds.  The prioritization and
-+memory regions that are not accessed for 120 seconds.  The prioritization and
- deprioritization is limited to be done using only up to 1% CPU time to avoid
- DAMON_LRU_SORT consuming too much CPU time for the (de)prioritization.  It also
- asks DAMON_LRU_SORT to do nothing if the system's free memory rate is more than
+-Below commands applies a scheme saying "If a memory region of size in [4KiB,
++The commands below apply a scheme saying "If a memory region of size in [4KiB,
+ 8KiB] is showing accesses per aggregate interval in [0, 5] for aggregate
+ interval in [10, 20], page out the region.  For the paging out, use only up to
+ 10ms per second, and also don't page out more than 1GiB per second.  Under the
 -- 
 2.47.3
 
