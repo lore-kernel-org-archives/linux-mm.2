@@ -1,59 +1,59 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEEA6606D83C
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 08:09:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A726606D819
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 08:10:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=nebM7Z7o
+	dkim=pass (1024-bit key, unprotected) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=JATa7QQl
 Received: by kanga.kvack.org (Postfix)
-	id 1090D6B05DC; Tue,  3 Nov 2026 03:09:52 -0500 (EST)
+	id 43EA06B05DE; Tue,  3 Nov 2026 03:09:52 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0991A6B05DE; Tue,  3 Nov 2026 03:09:52 -0500 (EST)
+	id 413C96B05DF; Tue,  3 Nov 2026 03:09:52 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E9B716B05E0; Tue,  3 Nov 2026 03:09:51 -0500 (EST)
+	id 240996B05E1; Tue,  3 Nov 2026 03:09:52 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C0E2D6B05DC
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id E623E6B05DF
 	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 03:09:51 -0500 (EST)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 531F2A7D22
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 7925DC0330
 	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 08:09:51 +0000 (UTC)
-X-FDA: 85393084182.24.F2E51CA
-Received: from out30-133.freemail.mail.aliyun.com (out30-133.freemail.mail.aliyun.com [115.124.30.133])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 59EC720006
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 08:09:47 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=nebM7Z7o;
-	spf=pass (imf03.hostedemail.com: domain of cp0613@linux.alibaba.com designates 115.124.30.133 as permitted sender) smtp.mailfrom=cp0613@linux.alibaba.com;
+X-FDA: 85393084182.29.8C951DC
+Received: from out30-100.freemail.mail.aliyun.com (out30-100.freemail.mail.aliyun.com [115.124.30.100])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 294AB1C0005
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 08:09:48 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=JATa7QQl;
+	spf=pass (imf18.hostedemail.com: domain of cp0613@linux.alibaba.com designates 115.124.30.100 as permitted sender) smtp.mailfrom=cp0613@linux.alibaba.com;
 	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1793693389;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=hZSS8pIphBraD9CLXDgq7aSqfm0V64ZlrBCsq6wroQE=;
-	b=VX6QZ+YLuJB6h4HmyHy2cMiqZhp6fmVTsfPK/vsK2zB2dQ6CALxovRFrA8yKiaE+fob6bU
-	WcvsPh/Vhv5g2fRCxFu2xTFTDB1SNdjlWXu1Fq56mnrdRc+voRXh/DoCYkcgxFaKc8buz+
-	ICFYyIQTNWwyvDPs+NQAR3jDbTPmZO0=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=WJpxS6fBbPkCEJfRw7yC+xmbJiBPG7KHL3DiOO0TU/c=;
+	b=dRavnJjSbUXv7hJRjjC2JkijqdlYAT+LdyPs/2Y6K3ZO9HwoXSoEuc5aEC2y/Xh0wcykF8
+	jbQhcaCbq2+9WioS/001WscbQ8asDSt9jdjdLoTC7u1roGznHZIYCxtat05JaGTD2RFv74
+	RQKBu2D5ZVcO6Z49KNSA/kU9XLc6AW4=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
 	t=1793693389;
-	b=Xu2uUGLo3P08cxgTAXYVNwYXGNzQgyAQqy2bLGwf8LpDoFCVQvKbuzvi2Oi/xYWFmjIBwv
-	pnO/C+hjgfx3Kf4E56LfOgAfMFI51sly2ESF0X9LHuAjiVIxtw9r35c3tH2mJfVK2/OLMr
-	sVTqq20Y60rH9rgSW1sCFLPnnK5vA9k=
+	b=rnWXM2ohzPemNa2ocKXX0cWr7yX6WiDBzXhYrletmFHXUdVHFwuxCux0XQEZlC5QRBtNkC
+	mr0sMf84AlIjj7mat7nAoSJkq05gLdhE62qx6WTElhxSkKQET9qRMl7wKkT7tIWabM/9e+
+	eLeBN7/u3pOFwWVqHVmJalCiGc4uGs4=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=nebM7Z7o;
-	spf=pass (imf03.hostedemail.com: domain of cp0613@linux.alibaba.com designates 115.124.30.133 as permitted sender) smtp.mailfrom=cp0613@linux.alibaba.com;
+	imf18.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=JATa7QQl;
+	spf=pass (imf18.hostedemail.com: domain of cp0613@linux.alibaba.com designates 115.124.30.100 as permitted sender) smtp.mailfrom=cp0613@linux.alibaba.com;
 	dmarc=pass (policy=none) header.from=linux.alibaba.com
 DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=linux.alibaba.com; s=default;
-	t=1793693381; h=From:To:Subject:Date:Message-ID:MIME-Version;
-	bh=hZSS8pIphBraD9CLXDgq7aSqfm0V64ZlrBCsq6wroQE=;
-	b=nebM7Z7o32q1ppKJG2S5gz4nLWudpnTI4YE3RmbixGd7Hy17KAt2yJb8amgCi3ihJKxaLMNQQJwKjNFeI8WOgj+B3T51njQ15D6ZhW5sZnEXrF4PonVVIGhTi8RhH7YztP8iI0wsy1os1wuExBuOjCw1XfqBAY69BCSHHvpUdlQ=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R151e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam011083073210;MF=cp0613@linux.alibaba.com;NM=1;PH=DS;RN=14;SR=0;TI=SMTPD_---0XE27KwW_1793693367;
-Received: from DESKTOP-S9E58SO.localdomain(mailfrom:cp0613@linux.alibaba.com fp:SMTPD_---0XE27KwW_1793693367 cluster:ay36)
+	t=1793693385; h=From:To:Subject:Date:Message-ID:MIME-Version;
+	bh=WJpxS6fBbPkCEJfRw7yC+xmbJiBPG7KHL3DiOO0TU/c=;
+	b=JATa7QQllxyXirelWKr/o69Q3iMQA3lj+1AbynX+mh4AoEy9uwiSc0yVWamw3yh3zhpG2UdWnG5CdAORT/Shhi23WPKx4y2KnhLf/96JQfZN9FQ2nBrWqiJ8ehnnlzUsvEevFFzmVL9a8woSbYfi8mm4rjlEjsd4yMxVlDESx00=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R171e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037009110;MF=cp0613@linux.alibaba.com;NM=1;PH=DS;RN=14;SR=0;TI=SMTPD_---0XE27L1d_1793693383;
+Received: from DESKTOP-S9E58SO.localdomain(mailfrom:cp0613@linux.alibaba.com fp:SMTPD_---0XE27L1d_1793693383 cluster:ay36)
           by smtp.aliyun-inc.com;
-          Tue, 03 Nov 2026 16:09:39 +0800
+          Tue, 03 Nov 2026 16:09:44 +0800
 From: Chen Pei <cp0613@linux.alibaba.com>
 To: pjw@kernel.org,
 	palmer@dabbelt.com,
@@ -69,26 +69,28 @@ Cc: guoren@kernel.org,
 	linux-mm@kvack.org,
 	linux-kselftest@vger.kernel.org,
 	kexec@lists.infradead.org
-Subject: [PATCH v2 0/5] riscv: Enable kexec handover and live update
-Date: Tue,  3 Nov 2026 16:09:21 +0800
-Message-ID: <20261103080926.2079-1-cp0613@linux.alibaba.com>
+Subject: [PATCH v2 5/5] selftests: liveupdate: Add riscv support
+Date: Tue,  3 Nov 2026 16:09:26 +0800
+Message-ID: <20261103080926.2079-6-cp0613@linux.alibaba.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20261103080926.2079-1-cp0613@linux.alibaba.com>
+References: <20261103080926.2079-1-cp0613@linux.alibaba.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: aibs1x1e4uybz9g6urg633x757hgh6ct
-X-Rspamd-Queue-Id: 59EC720006
+X-Stat-Signature: t598b115zcodtpss9muzp9gy5omu7nrr
+X-Rspamd-Queue-Id: 294AB1C0005
 X-Rspam-User: 
 X-Rspamd-Server: rspam08
 X-Spam-Status: No, score=-26.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS,
-	UNPARSEABLE_RELAY,USER_AGENT_GIT,USER_IN_DEF_DKIM_WL
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,UNPARSEABLE_RELAY,USER_AGENT_GIT,USER_IN_DEF_DKIM_WL
 	autolearn=unavailable autolearn_force=no version=4.0.1
-X-HE-Tag: 1793693387-812903
-X-HE-Meta: U2FsdGVkX1/huio3oyPm0cBCh5VyznG6aWvpou+pYWzaYELU0rrdWRaVxSo/ARQ+0txtKYWR/i+mj2BOmlrQFAaABIiTgtaVv4DI9oeZ+P3hoTdbv5zwyomGnHPAgRhMU1xt7ZBqsrCoXt9d2ORX3/Gn1uVv2tH7M2lgAmake/acMkcqoQjsUTUv6aI5LnAXYhcbbsqDY/Qm6hR+SZp3hKe0u2zO1FdkQNUndYWriLKaZ1XK7uraKD9tGMJC6nzU6mbjWUpQo01c/NZaDlxQfAR24DFvH4IXU9rTm5z7kJmlddSKBPWN3nJ2vuTQh5oTmwDjTNYKhFKyUUCk3EyRg8LbJ71rPZSrilbTjs9eh6L02MbCA+247cSC5xrQLKmC/RAX4zTI+s0gvnH6m3hWhNK0nMp8gVbVNZ+kNPDObJ3FGwPN1oOH6ZpdGfaf8KDat5FHSDxzeUltx7jNdJbkxGnNCzfuyM8ANTGzsoNSVihh7sCf8CNCN7wQu0jfP9RUfP3ixIG8Nq9zLe2m8wTPkL+k1ga9zC1wQWUxOltHGJ3MM+8bZUunYFNTzVtqYoIoXmz7ipmFS3fu0iemSR0c7pPMtLOzH6VZJhL7nMds1M/PttT3KdIqomsQWjcZPoH3b8Df2IaAx2KHZanPAecRwwEmZonE4FsVVSQ8Ofqq0Mo3RvF9z7oIc+eV7pgOvqItNxdgOJ1r8A/GOb/6LaLAhbwtVyo1cgpwVyFvd2nC7ta4AtmrNsznTU/62nkWXQcVGopsT+KyDmeXf555w0X/IK4b9xxt18zb6OIFohwHwgMpGE8ux7v9Twv9AoWQaVBqA1FBuysKmTGoWIydeXr9g7PMIdCXnoIl0UBsP7m93qKbU68+otnrCf3HgPN4YLhYLZI+Ncsx51GNN3uLXby9uaugZM14WMQR+WBalW/EnNuyHdtpOvf7XmlPmlyXZKnK+lKV9XpofMbLil5RNCN
- qmb1x6p6
- N7f27QOEc2yfUaR45lGvjGvHlpXaNIX4ZU8vsSDrfKihoTojix+UJcKQLxL5znaxiPZ1oVf3FN0hy/570MnD26XZUPXV+zApoorLWVZxFS0r4TMUtg7l7k582QFaxsw/2SkFNv99OItSLkb9UfBnP4LZvM3aglKKVk2KG8LNDKcVMGZh45keqt0swgVnNE0mwfYYaFM2xM0A/EOlIVG34SoA8m8urSZWmLoI+1/WS4RGUxBTe/L0xm9hHZUxMPMYYj9BCmc4zhflRmCiVbjAmoqTDNwFvBQaAqRPySQLKm24Qi4JaUvBXyf9zUHjXi5bzbC67tunI2v9jwbs=
+X-HE-Tag: 1793693388-34936
+X-HE-Meta: U2FsdGVkX195HYFUmaC9AMFb9WQIi6P+UKMoDp7jClIBb+3lhQXO9025sKQJniBbNcu1DtcArMc2/4Awx2gmL3ss67asKKqAvzftUKJmFe1sSCjUsM2pUReQ00SilxRltOoH+E8Vqbgy8iQhPgRJQzH1lEM7emqan99EkqXf2fU9WCc3JAMDhUPRQBnUMGaFsHeYq04QWPgX0A/Y1XLF6m8w1yUAB5IypOCDsEo/34+1YJnX2g8ncFJFAhnO69Xkw47LK8AybtNKasmZmBYntNCjtpy0eCKQDmFuutmCKReGHYGaU79ypd50ScGWMFd/lEk3xBYcFI3NR78+WhqoHgYz6lN3vAHoOKp1eI8wVM0Ax90cievEEn37G5HR9uRigjTK/5dSQSZSPw5RzuhorUV2QVVCTOSt4OL/GEJ4widtWNdCrNy7zzSrtvVEUAw3MPwrvSfuPdYKERy9cKuAvWeHdTmRdx5uMXOVT6YZmpbVeXGGKixY7MZG9vz/Mv+k7Tai2dI1H2pFT9OEMmbTvMTNJqFw21wy7ErOo/DKGkiQh1ho42rnzXOiW1OCcze5Mjp4Nb9Gp8p4fe4IeHAt1+qURRvhQc+BjSPWxF0JWrmMu1KJ6hfjgK47XdxX7chnnOQBaiDF/06kH8KcV16ZBHUvJCflQQP2y1qPRAL/ApPQKohB7j5cjyHnjo8HE34jQn9DaE0swF1V9x3EONNDbburAd43/OzozGcRyGLIGg2Crazq4TDJuAGRafZRC6VEfbOEBLr2mdsnjurh3GDXKlj9nXOSUmv/s6CBp6a3SV6pb32gygv2Of5GjEMIjcXRuHpdJKQYH7RcVV3eqlStZ487cBDFEG8FOB4ppc0kuK1jIRlP7Gx/lKzjh5L4lNrewOCA/Un9ng+wvI6cc+4g99jfJkWwS1ZV9WjPEwHfNwh25o03NtNC9sjkncldbU7ReFlBxtxRUklwzdJrUZh
+ H2Oo7bPe
+ /HOI2fycjenMLf21UpnUbTCDjvKPKQnMnh1qKDlJzSRwHmmxymWh3XIfSpQrm7i0Ip2hW953CSlgv27tY3akgIvk/z/iuQIHcOb2lRZFKzS/LYKDHpdDNMGCEeFUHevBGWNPoiyogkpxP+wtwsQbL6oxcB4ep+TtdmupOiL/KcWA3BkINjU8qVBJtAh+IUSFO+JZjSkqvK1jtVb1I2EuaZqv4txmSBxHpM7w34N48jCGUER18VupavX/2dlrlT5GHEIrB
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,102 +99,107 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Host kernel updates in the cloud should not require draining the
-machine: next to live migration to another host, replacing the kernel
-in place while preserving selected workload state ("live update") is
-what KHO/LUO were built for, and LUO's documentation names hypervisor
-hosts as its primary use case. This series closes the gap for riscv64
-and validates it with both upstream test runners.
+Teach the live update vmtest runner about riscv64: map the target to ARCH
+riscv, describe the QEMU virt machine, the kernel image and its console,
+and add the arch config fragment holding the three symbols needed to get
+a console on the virt machine's 16550A port.
 
-KHO has been architecture independent since it was merged: the outgoing
-kernel publishes the handover FDT and the scratch descriptor array in
-the /chosen node of the DTB it builds for the incoming kernel, and the
-incoming kernel collects both while scanning that node -- which is why
-the arm64 integration (commit 274cdcb1c004) needed only three lines of
-arch code.
+KHO is the only dependency of LIVEUPDATE (kernel/liveupdate/Kconfig), so
+now that riscv has KHO the LUO tests only need the runner to stop
+rejecting the architecture.
 
-Patch 1 is generic and comes first because enabling KHO on riscv64 needs
-it: is_kho_boot() runs the handover FDT address through phys_to_virt()
-only to return a boolean, and on riscv64 that is a BUG() before the
-linear map offset exists. Neither caller dereferences the value, so
-testing the physical address is enough.
+Add riscv64 to the CROSS_COMPILE auto-detection list and to the target
+list of the batch runner as well, matching the existing aarch64/x86_64
+entries.
 
-RISC-V otherwise already walks the generic paths (load_extra_segments()
--> of_kexec_alloc_and_setup_fdt(), parse_dtb() ->
-early_init_dt_scan()). The remaining blocker is ordering: setup_arch()
-runs early_ioremap_setup() *after* parse_dtb(), so kho_populate()'s
-early_memremap() of the handover FDT returns "offset + 0" -- NULL for a
-page aligned address -- and the handover is dropped:
+Signed-off-by: Chen Pei <cp0613@linux.alibaba.com>
+---
 
-  KHO: setup: failed to memremap FDT (0x810bb000)
-  KHO: disabling KHO revival
+Test: qemu-system-riscv64 (virt, -cpu max, -m 1G, -smp 2, TCG), in-tree
+runner "tools/testing/selftests/liveupdate/vmtest.sh -t riscv64 -T <suite>",
+all four suites:
 
-Patch 2 fixes that ordering, matching arm64/x86 and standing on its own
-regardless of KHO. Patch 3 enables ARCH_SUPPORTS_KEXEC_HANDOVER as
-"def_bool 64BIT && MMU" rather than arm64's "def_bool y":
-ARCH_SUPPORTS_KEXEC_FILE is already 64BIT-only, and KEXEC_HANDOVER
-selects CMA, which depends on MMU. Patches 4 and 5 teach the two
-upstream vmtest runners about riscv64. LIVEUPDATE depends only on
-KEXEC_HANDOVER, so patch 3 makes it selectable on riscv as well.
+  luo_kexec_simple:    SIMPLE KEXEC TEST PASSED
+  luo_multi_session:   MULTI-SESSION KEXEC TEST PASSED
+  luo_stress_files:    MANY-FILES KEXEC TEST PASSED (500 files)
+  luo_stress_sessions: MANY-SESSIONS KEXEC TEST PASSED (2000 sessions)
 
-No DT schema changes are needed: linux,kho-fdt / linux,kho-scratch are
-the properties arm64 introduced (commit 274cdcb1c004), and their
-binding lives in the external dt-schema repository [1] rather than in
-Documentation.
+The simple suite's serial log shows the full handover round trip:
 
-[1] https://github.com/devicetree-org/dt-schema/blob/main/dtschema/schemas/chosen.yaml
+  KHO: found kexec handover data.
+  luo: Retrieved live update data, liveupdate number: 1
+  KHO: exec from: 7.4.0-rc1-next-20261102-00005-gfca49e548231 (count 1)
+  # [STAGE 2] Test data verified successfully.
+  --- SIMPLE KEXEC TEST PASSED ---
 
-Changes since v1:
- - New patch 1: kho: Do not translate the handover FDT address in
-   is_kho_boot(), a generic fix the riscv enablement needs.
- - Rebased onto linux-next-20261102 (2637bdec0535).
-
-Test
-----
-Testing on linux-next-20261102 (2637bdec0535) with qemu-system-riscv64
-(virt, -cpu max, TCG); method and logs under the --- of patches 1, 4
-and 5:
-  - patch 1, UEFI handover boot (edk2 on pflash over OpenSBI
-    fw_dynamic, DEBUG_VIRTUAL=y): a BUG_ON in the incoming kernel on the
-    first handover without the patch, 29 consecutive handovers with it
-  - the same two kernels handing over from a device tree boot instead:
-    both succeed, so what fails is the UEFI path and not the handover
-  - kho vmtest: "ok 1 KHO succeeded"
-  - liveupdate vmtest, all four suites passed one by one (simple,
-    multi-session, 500 files, 2000 sessions)
-  - riscv defconfig with and without CONFIG_KEXEC_HANDOVER both boot to
-    userspace with no oops on the console; builds: riscv defconfig
-    (+KHO), rv32_defconfig, arm64 defconfig (+KHO), x86_64 defconfig
-    (+KHO)
-
-Additionally, a workload-continuity test was run outside the selftests:
-a counter process was snapshot with criu 4.3, the dump was carried
-across the kexec in an LUO-preserved memfd, and criu restored it in the
-new kernel. The process resumed with the same PID and open log file and
-kept counting from where it was dumped (500006 -> 500007, no lost or
-duplicated ticks).
-
-Chen Pei (5):
-  kho: Do not translate the handover FDT address in is_kho_boot()
-  riscv: Call early_ioremap_setup() before parsing the DTB
-  riscv: Add support for kexec handover (KHO)
-  selftests: kho: Add riscv support
-  selftests: liveupdate: Add riscv support
-
- arch/riscv/Kconfig                                | 3 +++
- arch/riscv/kernel/setup.c                         | 2 +-
- kernel/liveupdate/kexec_handover.c                | 2 +-
- tools/testing/selftests/kho/riscv.conf            | 9 +++++++++
- tools/testing/selftests/kho/vmtest.sh             | 3 ++-
  tools/testing/selftests/liveupdate/config.riscv64 | 3 +++
  tools/testing/selftests/liveupdate/run-vmtests.sh | 2 +-
  tools/testing/selftests/liveupdate/vmtest.sh      | 8 +++++++-
- 8 files changed, 27 insertions(+), 5 deletions(-)
- create mode 100644 tools/testing/selftests/kho/riscv.conf
+ 3 files changed, 11 insertions(+), 2 deletions(-)
  create mode 100644 tools/testing/selftests/liveupdate/config.riscv64
 
-
-base-commit: 2637bdec0535a2044cd830eba9a79363651d9043
+diff --git a/tools/testing/selftests/liveupdate/config.riscv64 b/tools/testing/selftests/liveupdate/config.riscv64
+new file mode 100644
+index 000000000000..edbc551199b0
+--- /dev/null
++++ b/tools/testing/selftests/liveupdate/config.riscv64
+@@ -0,0 +1,3 @@
++CONFIG_SERIAL_8250=y
++CONFIG_SERIAL_8250_CONSOLE=y
++CONFIG_SERIAL_OF_PLATFORM=y
+diff --git a/tools/testing/selftests/liveupdate/run-vmtests.sh b/tools/testing/selftests/liveupdate/run-vmtests.sh
+index d656ce58c5a7..2e3f5f6f96b3 100755
+--- a/tools/testing/selftests/liveupdate/run-vmtests.sh
++++ b/tools/testing/selftests/liveupdate/run-vmtests.sh
+@@ -4,7 +4,7 @@
+ SCRIPT_DIR=$(dirname "$(realpath "$0")")
+ TEST_RUNNER="$SCRIPT_DIR/vmtest.sh"
+ 
+-TARGETS=("x86_64" "aarch64")
++TARGETS=("x86_64" "aarch64" "riscv64")
+ 
+ GREEN='\033[0;32m'
+ RED='\033[0;31m'
+diff --git a/tools/testing/selftests/liveupdate/vmtest.sh b/tools/testing/selftests/liveupdate/vmtest.sh
+index f3fb4142c81d..e67e4613aee8 100755
+--- a/tools/testing/selftests/liveupdate/vmtest.sh
++++ b/tools/testing/selftests/liveupdate/vmtest.sh
+@@ -25,6 +25,10 @@ function get_arch_conf() {
+ 		QEMU_CMD="qemu-system-x86_64"
+ 		KERNEL_IMAGE="bzImage"
+ 		KERNEL_CMDLINE="console=ttyS0"
++	elif [[ "$arch" == "riscv" ]]; then
++		QEMU_CMD="qemu-system-riscv64 -M virt -cpu max"
++		KERNEL_IMAGE="Image"
++		KERNEL_CMDLINE="console=ttyS0"
+ 	else
+ 		echo "Unsupported architecture: $arch"
+ 		exit 1
+@@ -37,7 +41,7 @@ $0 [-d build_dir] [-j jobs] [-t target_arch] [-T test_name] [-w workspace_dir] [
+ Options:
+ 	-d)	path to the kernel build directory (default: .luo_test_build.<arch>)
+ 	-j)	number of jobs for compilation
+-	-t)	run test for target_arch (aarch64, x86_64)
++	-t)	run test for target_arch (aarch64, x86_64, riscv64)
+ 	-T)	test name to run (default: luo_kexec_simple)
+ 	-w)	custom workspace directory (default: creates temp dir)
+ 	-k)	keep workspace directory after successful test
+@@ -87,6 +91,7 @@ function detect_cross_compile() {
+ 	case "$target" in
+ 		aarch64) candidate="aarch64-linux-gnu-" ;;
+ 		x86_64)  candidate="x86_64-linux-gnu-" ;;
++		riscv64) candidate="riscv64-linux-gnu-" ;;
+ 		*)       skip "Auto-detection for target '$target' not supported. Please set CROSS_COMPILE manually." ;;
+ 	esac
+ 
+@@ -194,6 +199,7 @@ function target_to_arch() {
+ 	case $target in
+ 	     aarch64) echo "arm64" ;;
+ 	     x86_64) echo "x86" ;;
++	     riscv64) echo "riscv" ;;
+ 	     *) skip "architecture $target is not supported"
+ 	esac
+ }
 -- 
 2.50.1
 
