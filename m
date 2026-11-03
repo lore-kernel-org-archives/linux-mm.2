@@ -1,149 +1,90 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77B50606A964
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 08:46:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAA14606A336
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 08:47:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=NRWBHAMw
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=g2fbHA7I
 Received: by kanga.kvack.org (Postfix)
-	id 961EC6B05C4; Tue,  3 Nov 2026 03:46:03 -0500 (EST)
+	id CBE526B05BF; Tue,  3 Nov 2026 03:47:16 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9128A6B05CA; Tue,  3 Nov 2026 03:46:03 -0500 (EST)
+	id C707D6B05C6; Tue,  3 Nov 2026 03:47:16 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 828646B05CB; Tue,  3 Nov 2026 03:46:03 -0500 (EST)
+	id B606C6B05BF; Tue,  3 Nov 2026 03:47:16 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 6A03C6B05C4
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 03:46:03 -0500 (EST)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 0149980352
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 08:46:02 +0000 (UTC)
-X-FDA: 85393175406.08.7DFD8B9
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 834DB6B05C5
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 03:47:16 -0500 (EST)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id B391340375
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 08:47:15 +0000 (UTC)
+X-FDA: 85393178430.27.D8323E6
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 4BE3E160003
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 08:46:01 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NRWBHAMw;
-	spf=pass (imf08.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf19.hostedemail.com (Postfix) with ESMTP id 29F341A0008
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 08:47:13 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=g2fbHA7I;
+	spf=pass (imf19.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793695561;
-	b=l0ppH48nr5cYQEyhRtSjmfAt8pxi33WgfesfooCn0Urg1ItfC1gOsNc53+KTaENTSXbmJc
-	V/wtmYh7TrWqMCKXmbBYXdnE9xnEN6DV8fF9z2dJJJK2RTJa2cBUECDOadkeghijUeTPmU
-	fnZc6NUTzwS60RlhHuwJWCY+/m4BilI=
+	t=1793695634;
+	b=RSuhErO+irEqF80Le7eTGr0EOqShJO1FoODThqMyGDuf2CL54gAYi+n8URyQMlI9QKLWeE
+	Z8ia/MBTVJwnQxF6MyihN7e+m9FSW6QiIpyI2WmP+h4iomaCW5pLULIn2MdWdFCOJMJ51z
+	h6jrr37p4fwH6KRTNI8eL2xOgzH5bCI=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NRWBHAMw;
-	spf=pass (imf08.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=g2fbHA7I;
+	spf=pass (imf19.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793695561;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
+	s=arc-20220608; t=1793695634;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=uthpy/hkvB+/WO3JI8k62Lhmq1ZdhnbKep8CtaaaC1I=;
-	b=rRLywsLhq6KmqTkZaFGpwch1X4ommt/BBm3Of8ciaWok6b7kNrMIUA0SZ8/MSq/A5lH3Kp
-	eZqbWuyp6gPQpaluMzmFszEjwew+I5TQfa6udBary7x0nmXaJ9fQ3HcKgx5O7/XOjymKKu
-	6xKsb9sc1Hl12fUvWHDK4hNt3m2MCXY=
+	bh=7svOX2+4cz3PeA+PJRZ/vKGeL98v6w/jntdXi/ANXak=;
+	b=SOI6XssIUaTqeiGm9ol+sTF6BIU4FfEqENT30gpH8FW85KKY5GdkgQiTMIom+zJjdIjiAr
+	2zJTr5q7rP7L4tqDRBSW/Pd6/WoSMZI/rJ786qJmYYNNdx15wk7HkWaa5xHxJlnBZp0WDl
+	/BeIMO/o+dgkS6eLbgvq+u5balR+vYs=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id DDA816021D;
-	Tue,  3 Nov 2026 08:46:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C4661F000C1;
-	Tue,  3 Nov 2026 08:45:51 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 9ED6160008;
+	Tue,  3 Nov 2026 08:47:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF34B1F000C1;
+	Tue,  3 Nov 2026 08:47:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793695560;
-	bh=uthpy/hkvB+/WO3JI8k62Lhmq1ZdhnbKep8CtaaaC1I=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=NRWBHAMwsb19PzRi6HMKOk5UUKd7gUz27j+h5kkmmo+BVqrta8jE2LhRWnPPEKKuo
-	 vUbwvt7PWLjvVahbmZKXoa9e4taKfUwLQIAUdzyxCsWMTfRZpaRyYbA8ErRHg4Foqn
-	 tyCLmm7Q8W5Vn5xf7mJ/F2nMZMY302o8ABOKA5agEBA+i0Q8dFMjjDAuHzZbTqQJb3
-	 ejaJAuivC8qZbvkGOAK/ojQQs49LNXMNNaThLRk3suNvTigPnY4VG0jriy+xMjefMr
-	 FRP9hYUuWI8BMwTIKM2sf7gBmt7G+WxIA70jPT0rn1egD3UMIoeHEuVWKDbig1pMzh
-	 nySi2+T6izcTQ==
-Message-ID: <3d2ab12a-741f-4b93-8f9c-e030cf9b9b90@kernel.org>
-Date: Tue, 3 Nov 2026 09:45:48 +0100
-X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/8] mm: remove newly-unused page wrapper APIs
-To: Andrew Morton <akpm@linux-foundation.org>,
- Tal Zussman <tz2294@columbia.edu>
-Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>,
- Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Zi Yan <ziy@nvidia.com>, Matthew Brost <matthew.brost@intel.com>,
- Joshua Hahn <joshua.hahnjy@gmail.com>, Byungchul Park <byungchul@sk.com>,
- Gregory Price <gourry@gourry.net>, Ying Huang
- <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>,
- Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
- Peter Xu <peterx@redhat.com>, Hugh Dickins <hughd@google.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>, linux-fsdevel@vger.kernel.org,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20261102-page-wrappers-v1-0-e7280bdb31f6@columbia.edu>
- <20261102175605.a0d9caee8279ffb5f6fdf15f@linux-foundation.org>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20261102175605.a0d9caee8279ffb5f6fdf15f@linux-foundation.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: d1nz838go8caq7zbnc6nanc6f3tjdubg
-X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 4BE3E160003
-X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	s=k20260515; t=1793695633;
+	bh=7svOX2+4cz3PeA+PJRZ/vKGeL98v6w/jntdXi/ANXak=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=g2fbHA7Izsee1eiQbdG7Hw4ljEb6KPtd2N/u6Md2HSySFLu1uRLivjzgUNvstcHrj
+	 V8C6210N264iXM/DmJhKbpPyn55ibAXxomFG9zj5esYmYxhqaqfZHZ6wP809f+kWyN
+	 oogqj3BVPFZJ+98uH/SGi5L4ITTh+HcCiqyQ3EzjHocrwncPBlUU8TVGoKUz9nP2zx
+	 enKESSKxtMlv+jaCGNFs3ADQv1XjOb0YXuPV5fRX/FZHu7vBINbLCPHggQ9xGwjHib
+	 XwNZ3pdq8zvDIxAcBSIjTXirYQPYGJIITBAtNL3ioAdDGC8fu4g2QMEKBKc+sOQsLu
+	 nemeaqQRT4Jyg==
+Message-ID: <sashiko-outbox-194875@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH 3/4] mm: hugetlb: skip CMA when direct reclaim is
+ disallowed
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Qi Zheng" <qi.zheng@linux.dev>, muchun.song@linux.dev, osalvador@suse.de, david@kernel.org, akpm@linux-foundation.org, azpijr@gmail.com
+Cc: linux-mm@kvack.org, "Qi Zheng" <zhengqi.arch@bytedance.com>
+In-Reply-To: <325d33655f29a2799a0859c788c48625feeb85f1.1793692578.git.zhengqi.arch@bytedance.com>
+References: <cover.1793692578.git.zhengqi.arch@bytedance.com>
+ <325d33655f29a2799a0859c788c48625feeb85f1.1793692578.git.zhengqi.arch@bytedance.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Tue, 03 Nov 2026 08:47:12 +0000
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
-	autolearn=no autolearn_force=no version=4.0.1
-X-HE-Tag: 1793695561-659877
-X-HE-Meta: U2FsdGVkX19RkQEl+8MSnpvycO0l2bH2WOqZpJL1KwwanDL57zgrQOuZxP0lIYUNv7rv+qPYRBr1KQt4aF1HEI3uGr/KjMXKCa0X5h5eek0/t1vafkIzsUSIF6EO+AXPrJxFjec/jkikdrsSx0OOOJ29scfhkn9WJrEVV4doDVvRE+ym8bEGsWE75qxsY82yfXM6zJXeHQ+5/fTWIy6up2aOwckSpe64mnGZAt/lydjaNEG/h49IvfPhOSUMVOcUWRzC6srmfZV2gzWV3J0hKSzJKcaf9gcMyP+/7b3NaUYysEALaudnAJNV1iVEcPQFkYCiKfNISk7GLaOGD9MWLoRW/e5CA2P7boyLmtlQvp8SnZ+1bdtmtll/T9rgd31GwvWE9YaSbx+tEtaWV3j3vXtGH7muF9rloKH2YeP3d97kG+UOM6EpK9dtFFCOh4dnJmGworTuPxF/8VHPFHdBDkmORLTiS1VV6nvkTKE2r3bKRKEpK6xU7QOBF3axgvdp9ygVK6YMtZobg7brmUT3HRxhwGKPCsg6fIClbKG5QsV5VhQHRIy1y0uXSIbS+y+eJcpgrR2zR+zRVf3An1JfacUaPMTuDyFSPIIs4Oxqpq7S8ReiEZXGpXxcr7M+gMyICy5RvS2tQbK346EH2pJufjScZK0qwSSCXxVqL/ffMMB5hf69b7rK9zccWxwABFvkLwVAJNlVfQ7vcuHVA5c7+gxEaL3J/hnbs+Q9qf8wQ4A4Xgsj4Qh+sgPHdePT6v53cLwBf3sdxlvPpwB3GbR0Xs2Jt+xYX+kA3/qQOHkNdAgicrdkSRhepwOyPqYEMSAfWfk/PnVyD3w8Laq/NKk9qFYSFnANA4KCBqlXC9/i+K3x7J7hgXRIlo6ob9GnloR8nQbMYUJIUtoEfnmyQeLOJKCRZ1kSLUmnFLxWhyZmbUf2kQidsBNXBEDUfSSeNrAzMRP/CW44lTpyYoZV/WX
- GHMpZmlm
- KvXdhtTX5mtss0ZoHfcf1kq1earGFJagCs7HLfMg7TOKe57GMrSPi3XfrDE9NaBwl8ROP/0A/A+QIGNQOCNTZteDsmo4Ixf9wgxipQascYxS/YPMructolbQBzbxBaUvOexUavwGhaQENj5g7nWfYJFBMfFCpf7FHy5D0udBup/KYNhdPdinglzv/ZVvDVBz/sB3yHych/bSoMiveu8wtk19Bu5t/3CuRoNJPmMd9fjFKzYFTFy950edu3M1EozzWjz8STw2S4pHYMDi4kHsJN860QiKrbvFYYMFoGdgBy3LXHm5/SbwKBxgl23tIBEP1IjDPHDC+yfcRyDg=
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 29F341A0008
+X-Stat-Signature: pzqj4carw4z8t4wzjwp45eb7uksijajq
+X-Rspam-User: 
+X-HE-Tag: 1793695633-760858
+X-HE-Meta: U2FsdGVkX1+eOr480I5XVpnpP+QaaPKc6FaLDbK9hfaEieZ3pDLxQwfe5WQuhbnoiXNJYqfEyHxnadrfKlJ4aK1CrnlPgfV9pnCZb2jnCE21lA7a8teYL3VC+jZPlCMsmrg3WA0jCU7vKP+SsRcdGn2bWHgSFGiWYV2CTQkY3mlk3WOCMY/thJ4J6Ip/6SaCHqhnfa6RFRPciqmh8FinvFUYHG+lz+MoHLCzXETSQKMJx+/sZRyvByt5aTUlBzNeC4iyYay/5sHDkDxj0Ov1zA7J7etOHTG7UXcTF//PHR5NIM6ItY6Q2KDw0Y3oQtc6VgH3FlUAMaKCQeyetySoqJtMJ5J8iWIEp5ZLx7TpG4v5mbwuEPJJz1jIFqX/wzVMQqWGILIPH+S/m+xW4RHC9zi6Jm1FipzgYUIknhhR5DSZwH/nDTi0hk0gkpE1OqOfgccXZ3YAC2KBrvTtUgGbzH3ecuGN/xlUaKtOxjfoJr+0+pgPA2XblAf7FlYO+RxEXH6wIgI5Z0Qwp3wvkdATICGqZGhmspOEb8fqNvjk4RcXHqJ4C7FWnhRIrzgERHDWE6FnMeTYp+cGhVnDgQuyCttyH+qe3NCvVhXH05zhCHoFDbSUZC2VnkdlMCE/jts3Isq9JWXf9Lgc5jO+hipNyOknscGESP3tSO7858jKsFgLQGQE+oibI1L5lpec0yaYUgjdXDBMKzKkbfNorLD8hkpZWJmMwhZ/n8WGclmkFx0x5Jx4L41lLrt9IjYuSSM5dnLvsFhrSZ6MtVXzFzGYKsucSPp5zSxH6ib8giu5Ht6A24UK7iuAlTTCbRTuHR7P5qTGZecqYLRKdrC+FB8E9t8awNjyrkrfUlA5MkQMFrUP3UoXfPnm95iGe9aUuInjuJlj7b3AKeVFN7Wch68NBMg4UIDzeBWR/OleqKIfHTZ3IQp8XBjL+WGx8/RK0UZx/Wxb8keuxFmn3LZQxeB
+ TYvSaUuP
+ eNK0msjA4f+eYnwBTti8wOUFlaasiiwPPjr71a2wRmCXYPqeV5wyYTjlsqsk83em4DCeg+D+4I5EZ6781wjVT/z+SFmZy1f2MZ/bwfDkgcZDMbu4TjEGllUS3nOBIYnnJCHLr+k/HdoXtd1HJiSSeho6AZGkpLcIvBep6z8OqFXZhcBMirFb1mXVMzaiR9e7kN8mwB7qgH9vKHnweTJvZkIbL6dCr20+WUBDwPqKwi+PVl0rUhtEXLbzERFObXoM2X40I228NLMbvk+E8rH7jcsmAtJeP6dwbo141SEn4HL1pIlHBI1KlFtHd6Kuapg7KIULTQh4pQU6+0bCK0PjKAcaWgZmDtf7I9jMdDH0hHgkko/TEcchkemSBukIGGOugb1lJwudfke2WgqZFmem+/8g/s0nElZJM76rblmLAqIOd7ltE6ZbVZJgWkxHgAhErRT60v7pIDoWXHA7XCFLJFeq72R8K6Cx03QX804I3Ie++xDw4OFwJ2dF1zzYiClK5qzHbZsP9RKPEVVZc75wzBAKReoawpApJDas1T/yGJWXPYxeOHGffflYEUoOopI25Gb3hm32WFY3m3sxFLgW4bIrDEg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -151,37 +92,121 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
+X-Archived-By: <archiver.kernel.org>
 
-On 11/3/26 02:56, Andrew Morton wrote:
-> On Mon, 02 Nov 2026 17:54:05 -0500 Tal Zussman <tz2294@columbia.edu> wrote:
-> 
->> After some folio conversions done last cycle (namely ceph, f2fs, btrfs,
->> fuse, and page_io.c), there are a number of newly-unused page APIs.
->> Let's remove them and update comments as necessary.
->>
->> Patches 1 and 8 are taken from the ceph writeback folio series [1],
->> along with tags.
-> 
-> Thanks.
-> 
->>  9 files changed, 8 insertions(+), 110 deletions(-)
-> 
-> Tal, you obviously haven't been following along ;)
-> 
-> 
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [Medium] mm: hugetlb: hugetlb_cma_alloc_frozen_folio() breaks MPOL_PREFER=
+RED_MANY
+--
 
-I would pick this up after giving it a little bit more time for review.
+commit c96d52d66d643a77abaa96a17e392b7ab0f36ccd
+Author: Qi Zheng <qi.zheng@linux.dev>
 
-> This development cycle is not the one for cleanups and new features,
-> but this one sneaks through!
+mm: hugetlb: skip CMA when direct reclaim is disallowed
 
-Yeah, the focus will be on fixes. But smaller stuff like this or some other
-things we wanted to get finished for a while that are easy to handle can go in.
+This commit updates hugetlb_cma_alloc_frozen_folio() to return NULL when
+gfpflags_allow_blocking(gfp_mask) is false, avoiding direct reclaim inside
+cma_alloc_frozen_compound() when __GFP_DIRECT_RECLAIM was cleared by the
+caller.
 
-All bigger work likely has to wait.
+> diff --git a/mm/hugetlb_cma.c b/mm/hugetlb_cma.c
+> index dde1c866406fb..90f8d718a1f16 100644
+> --- a/mm/hugetlb_cma.c
+> +++ b/mm/hugetlb_cma.c
+> @@ -59,7 +59,7 @@ struct folio *hugetlb_cma_alloc_frozen_folio(int order,=
+ gfp_t gfp_mask,
+>  	const nodemask_t *nmask;
+>  	unsigned int cpuset_mems_cookie;
+> =20
+> -	if (!hugetlb_cma_size)
+> +	if (!hugetlb_cma_size || !gfpflags_allow_blocking(gfp_mask))
+>  		return NULL;
 
--- 
-Cheers,
+[Severity: Medium]
+Does returning NULL from hugetlb_cma_alloc_frozen_folio() whenever
+!gfpflags_allow_blocking(gfp_mask) break MPOL_PREFERRED_MANY for gigantic
+surplus HugeTLB allocations?
 
-David
+In mm/hugetlb.c, alloc_buddy_hugetlb_folio() implements MPOL_PREFERRED_MANY
+as a two-pass allocation:
+
+mm/hugetlb.c:alloc_buddy_hugetlb_folio() {
+	if (mpoli->mode =3D=3D MPOL_PREFERRED_MANY) {
+		gfp_t gfp =3D gfp_mask & ~(__GFP_DIRECT_RECLAIM | __GFP_NOFAIL);
+
+		folio =3D alloc_surplus_hugetlb_folio(h, gfp, mpoli->nid,
+						    nodemask);
+
+		/* Fallback to all nodes if page=3D=3DNULL */
+		nodemask =3D NULL;
+	}
+
+	if (!folio) {
+		folio =3D alloc_surplus_hugetlb_folio(h, gfp_mask, mpoli->nid,
+						    nodemask);
+	}
+}
+
+This reaches hugetlb_cma_alloc_frozen_folio() via:
+
+  alloc_buddy_hugetlb_folio()
+    -> alloc_surplus_hugetlb_folio()
+      -> alloc_fresh_hugetlb_folio()
+        -> only_alloc_fresh_hugetlb_folio()
+          -> alloc_gigantic_frozen_folio()
+            -> hugetlb_cma_alloc_frozen_folio()
+
+On the first pass, __GFP_DIRECT_RECLAIM is cleared while nodemask points to
+the preferred nodes (pol->nodes), and on the second pass nodemask is cleared
+to NULL. Because hugetlb_cma_alloc_frozen_folio() now returns NULL on the
+first pass, it never sees the MPOL_PREFERRED_MANY nodemask.
+
+In mm/hugetlb.c:alloc_gigantic_frozen_folio():
+
+	folio =3D hugetlb_cma_alloc_frozen_folio(order, gfp_mask, nid, nodemask);
+	if (folio)
+		return folio;
+
+	if (hugetlb_cma_exclusive_alloc())
+		return NULL;
+
+	folio =3D (struct folio *)alloc_contig_frozen_pages(1 << order, gfp_mask,
+							  nid, nodemask);
+
+When hugetlb_cma_exclusive_alloc() is false, returning NULL from
+hugetlb_cma_alloc_frozen_folio() on the first pass falls through to
+alloc_contig_frozen_pages() on the preferred nodes, bypassing the dedicated
+hugetlb_cma pool on the preferred nodes in favor of non-CMA memory.
+
+When hugetlb_cma_exclusive_alloc() is true (or when non-CMA allocation fails
+on the preferred nodes), the first pass returns NULL and the second pass
+invokes hugetlb_cma_alloc_frozen_folio() with nodemask set to NULL. Since
+mm/mempolicy.c:policy_nodemask() leaves *nid as numa_node_id() when
+pol->home_node is NUMA_NO_NODE:
+
+mm/mempolicy.c:policy_nodemask() {
+	case MPOL_PREFERRED_MANY:
+		nodemask =3D &pol->nodes;
+		if (pol->home_node !=3D NUMA_NO_NODE)
+			*nid =3D pol->home_node;
+		break;
+}
+
+hugetlb_cma_alloc_frozen_folio() on the second pass tries
+hugetlb_cma[numa_node_id()] and then iterates cpuset_current_mems_allowed
+from node 0, allocating from non-preferred CMA nodes even when preferred
+nodes in pol->nodes have free CMA pages.
+
+Prior to commit 9bda131c6093 ("mm: cma: add cma_alloc_frozen{_compound}()"),
+cma_alloc_folio() forwarded gfp_mask down to alloc_contig_frozen_range(),
+where __alloc_contig_verify_gfp_mask() preserved the cleared
+__GFP_DIRECT_RECLAIM bit so CMA on the preferred nodemask was tried on the
+first pass without entering direct reclaim. Would forwarding gfp_mask to
+cma_alloc_frozen_compound() (in mm/cma.c) preserve both the non-reclaiming
+first pass and the MPOL_PREFERRED_MANY nodemask?
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/cover.1793692578.gi=
+t.zhengqi.arch@bytedance.com?part=3D3
 
