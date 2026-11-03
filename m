@@ -1,96 +1,109 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E444C60A3810
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 16:39:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 748EC606EEB6
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 16:39:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=l4rOQbM2
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=XQ/nNwuo
 Received: by kanga.kvack.org (Postfix)
-	id 8908D6B05B7; Tue,  3 Nov 2026 11:39:24 -0500 (EST)
+	id 7EF356B05BC; Tue,  3 Nov 2026 11:39:43 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 861BC6B05B9; Tue,  3 Nov 2026 11:39:24 -0500 (EST)
+	id 7C5406B05BD; Tue,  3 Nov 2026 11:39:43 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 74FFF6B05BA; Tue,  3 Nov 2026 11:39:24 -0500 (EST)
+	id 6DC5B6B05BE; Tue,  3 Nov 2026 11:39:43 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 36A4E6B05B7
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 11:39:24 -0500 (EST)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id B1D0A404B7
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 16:39:23 +0000 (UTC)
-X-FDA: 85394368206.23.384B3CB
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 4411A6B05BC
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 11:39:43 -0500 (EST)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id C442214047E
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 16:39:42 +0000 (UTC)
+X-FDA: 85394369004.07.DBF5D24
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 0479DC0009
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 16:39:21 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=l4rOQbM2;
-	spf=pass (imf10.hostedemail.com: domain of sashal@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashal@kernel.org;
+	by imf30.hostedemail.com (Postfix) with ESMTP id 27FB88000A
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 16:39:40 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="XQ/nNwuo";
+	spf=pass (imf30.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793723962;
+	s=arc-20220608; t=1793723981;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=fE5v4ca1Aufck5/eL12cyLA8FcbOpfZPaD75Cvy3E00=;
-	b=ul2efs2tim+dnLf7NhdIDwQGIQC90P7RgZ4zOV3/znZcYJZKGXzWCv9JGimHILI8CrDepv
-	JZFS5zFjOKUUSmBg5Tj39eJIqcaNtkzkwyfJpBVbBFqsrIP9UFr8FjXgJgLMOWJTDCo8NM
-	UmxnBtsrse0OZgKVti/e5kYR4O8cfrU=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793723962;
-	b=scRTWkWlVarihACdBNoTODiGweXo7rPkvYAT0cWZOwpqh6QxxLuN1IPB1UvUGZ82w359xS
-	k6+MocJcoS86fYq/2W05L5jlynUkHY6WALpf4h/Ef5/7qemRU26rJgy0RlW/qk77tECFlI
-	RShV6nrHmqnzi+ri9RXtFMxrbvjPE+Y=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=MRMdP7FIxigSeDqcsgSUYB9b6BNpnFg/wAimEqAPxEs=;
+	b=mCv85pn1znCDCrk3qItV+3VonpcWGzlRlt4XnHxe8ipRKy1dybLwekw3DJ5S58ys9gs83P
+	N0Ilp6D0w6OnSR7OUH5dwxC5/b+LHrAsTyotz0RL1Wbk7VQq8Etvkinpv6uOq13JXyebel
+	NHBwoYmc49rhYEtIHb3XV4wBmB1YhJ8=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=l4rOQbM2;
-	spf=pass (imf10.hostedemail.com: domain of sashal@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashal@kernel.org;
+	imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="XQ/nNwuo";
+	spf=pass (imf30.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793723981;
+	b=gdv4QwF0rkoX0n5wENsBYP/CPpa4YXgohIqoeAW+d3bYedm4DsgOhM82Dj7V38FKfrI2hb
+	hjw9foARUYgHoWrGqm6iA3SEBS0lbDv+vsFNIaLy25+gKjBC0cPHdZiJCr0tK3KL0FsYAD
+	mUiseTuQ0IODKVXjUgfESmSBYIPND8Y=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 4C8F2410C6;
-	Tue,  3 Nov 2026 16:39:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E72C1F000C1;
-	Tue,  3 Nov 2026 16:39:20 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 671AE43B17;
+	Tue,  3 Nov 2026 16:39:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DEE01F00919;
+	Tue,  3 Nov 2026 16:39:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793723961;
-	bh=fE5v4ca1Aufck5/eL12cyLA8FcbOpfZPaD75Cvy3E00=;
-	h=From:To:Cc:Subject:Date;
-	b=l4rOQbM2wW+LLPY1yUcUj6FenR+4lJF8foqE1Q3zADJxNCXVyi0Tq5CpRIh+sRhfj
-	 elM3tKwEncQRmpCFKatjsz9FXNZ6cbFPIhFnPeIoPMQuFFt/n3+zaQ/UCwKF20Odxx
-	 Uvu+DpYv2LGThG8SqR8OZG8nynvkJS+kMB4Ui/db98ca7o8Us5NVeffOeu00QSbgR5
-	 SMddDtEhGeQ9qeStps8Crh9+ktrfcdqlXnmF9eCbxmCamiwq38/jFyhjxEwUCpeIwt
-	 49br4Wy4LEXUnxrvQx63yauDEqwCZD5PFqYA+9iSMyZwhfQcnCXfpKvbhYv18jbD1M
-	 uRnenNWGr9EKw==
-From: Sasha Levin <sashal@kernel.org>
-To: Johannes Weiner <hannes@cmpxchg.org>,
-	Yosry Ahmed <yosry@kernel.org>,
-	Nhat Pham <nphamcs@gmail.com>,
-	Tejun Heo <tj@kernel.org>,
-	=?UTF-8?q?Michal=20Koutn=C3=BD?= <mkoutny@suse.com>
-Cc: Chengming Zhou <chengming.zhou@linux.dev>,
-	Shuah Khan <shuah@kernel.org>,
-	linux-mm@kvack.org,
-	cgroups@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] selftests/cgroup: test_zswap: use the total RAM in bytes
-Date: Tue,  3 Nov 2026 11:39:19 -0500
-Message-ID: <20261103163919.641249-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.53.0
+	s=k20260515; t=1793723980;
+	bh=MRMdP7FIxigSeDqcsgSUYB9b6BNpnFg/wAimEqAPxEs=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=XQ/nNwuodkCBEaeYlDPGXQ2NBVyaOu+nuL3oimLdbSA+hZnOnCMyBEv8BHrYgwk/m
+	 6VRgMfJqoFXxFR5EnYPGf1ATg09kypE1i/OaABYNEuqdO5agM7Fzz0cf/3n/BjKYZM
+	 khi+2N49jwOr20dXQgySeVZQ9Nuqnaii9228cGUqmaA9nvn0Bo2QFeSR7x+Zj7TPBN
+	 DsnqdVZFYyPlE6EQk0LhOkfKZhj3KG2NrjGmOrcKa6pa4XM1UVKP+71e961E7SnLHB
+	 vkz6atcfZ7p6OvtLIdPK+tn8iO+IrzrFsPPZ5RZWhEpbynuwXHq2NjfH4sIU6OUzUj
+	 zfP/LOwKBMdTQ==
+Date: Tue, 3 Nov 2026 17:39:28 +0100
+From: Christian Brauner <brauner@kernel.org>
+To: sashiko-reviews@lists.linux.dev
+Cc: Linus Torvalds <torvalds@linux-foundation.org>, 
+	Jann Horn <jannh@google.com>, Josef Bacik <josef@toxicpanda.com>, 
+	Chris Mason <mason@kernel.org>, Jeff Layton <jlayton@kernel.org>, NeilBrown <neil@brown.name>, 
+	Eric Dumazet <edumazet@kernel.org>, Thomas Gleixner <tglx@kernel.org>, 
+	Al Viro <viro@zeniv.linux.org.uk>, Jonathan Corbet <corbet@lwn.net>, Christoph Hellwig <hch@lst.de>, 
+	Greg Kroah-Hartman <gregkh@suse.de>, Joel Granados <joel.granados@kernel.org>, 
+	Kees Cook <kees@kernel.org>, Jan Kara <jack@suse.cz>, Jan Kara <jack@suse.com>, 
+	linux-s390@vger.kernel.org, linux-scsi@vger.kernel.org, coreteam@netfilter.org, 
+	kexec@lists.infradead.org, linux-pci@vger.kernel.org, linux-sound@vger.kernel.org, 
+	dri-devel@lists.freedesktop.org, linux-hwmon@vger.kernel.org, linux-mm@kvack.org, 
+	linux-usb@vger.kernel.org, samba-technical@lists.samba.org, sparclinux@vger.kernel.org, 
+	linux-m68k@lists.linux-m68k.org, linux-serial@vger.kernel.org, Takashi Iwai <tiwai@suse.de>, 
+	linux-input@vger.kernel.org, linux-raid@vger.kernel.org, linux-ext4@vger.kernel.org, 
+	linux-modules@vger.kernel.org, Chuck Lever <cel@kernel.org>, tytso@mit.edu, 
+	dmitry.torokhov@gmail.com, Petr Pavlu <petr.pavlu@suse.com>, 
+	Anna Schumaker <anna@kernel.org>, yukuai@fygo.io, Heiko Carstens <hca@linux.ibm.com>, 
+	Vasily Gorbik <gor@linux.ibm.com>, Alexander Gordeev <agordeev@linux.ibm.com>, 
+	Christian Borntraeger <borntraeger@linux.ibm.com>
+Subject: Re: [PATCH RFC 28/38] scsi: esas2r: bound the lengths of the HBA,
+ SMP and firmware ioctls
+Message-ID: <20261103-aufmischen-achthundert-reitschule-d97de42062c2@brauner>
+References: <20261102-work-procfs-bugfixes-v1-0-59422ed3e465@kernel.org>
+ <20261102-work-procfs-bugfixes-v1-28-59422ed3e465@kernel.org>
+ <sashiko-outbox-195500@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam09
-X-Stat-Signature: uagc4e5mhdxjp1mquxbdtxr4o8y8gm6s
-X-Rspamd-Queue-Id: 0479DC0009
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <sashiko-outbox-195500@kernel.org>
+X-Stat-Signature: dgnschcptt4q7jarjqtgxcyeai77r18t
+X-Rspamd-Server: rspam01
 X-Rspam-User: 
-X-HE-Tag: 1793723961-233557
-X-HE-Meta: U2FsdGVkX19OxyVmv6L7VyxFRhPmUwMpsWwG9AOUeD5ShYN8ivbu/kr000dl4PjTGHzyfFU8nFwf6VqmtAMsUcDFKkn/+A/iM9KjFRcTEZTy1vIMHTMgvZvj7/mPMPOJgtIdm6TP3sKzgBwVOzM73yb0kdeGSrSEcbgxaRQW9l0afb8HNlAMznQyPpQvgGv492AhbW1CaFqcCkYBIN1cEE+YtGVgmAw3k3SXa0wCu9nodTbx68FNMExNSIRerJjcTuQqYKR1922ju7KNRWjeXDJ30LeLzE5p4RiPnED+atDFqkunzZDe/rDUsP+powIN+1R73C+1t4NrGN/64UQSEHxiy3GNl2yvdj7HQgZybaBTerNhHjEPK9fsF45Tr+xNUr9ZQTwGA10P06LZ1nHT1AyfcDOOFkY8ZUOfKlPNzEupBCTjxe7CGfgGp4zbZoZUdF6nSoYIxXw6w/A1FLhkZD+rrECyeMvmZBE13LSBT7x5H6CcevZtqn+0iuIy8XyCC73OnfiqKJ9TCGuuCSZZEX9fnDHu9x8a3UxaEvdDfPBF1in1MG/h58hk00DP11oPA3/76j8LXHUHV3bp7fxSJKcXKHHqrdYJgvhycSempnhV8TS9QbE2J6bAPoCpnozzx28I6g1VsdFG67Rhnre+326Bb0tby719pSrU7r3b3vFpgwVyxGx/B/C80zNy2UC3iiXVr8J9WbG2upAHMC7Az26dWAWIdvWAskIMP0aD2a9O3eMTLK4RZXWUyHeaB8vCucTHY7y6neiK3ZbTIYX8IrLPZl3RupWZ6tbpayypKRaYjM0EaOuVweZCI9Qkhh5uaSasnqdx5CCKZecu5ds3asjpVsR6tGSmDUhr1gigA8GvLOcFUT3tB1hNFSCNwoemmM9vyVE4Uap12XZZpxwGcTzljPhpX7QLiD2T4nTgYbdEkWE8J+Rh/IdhFro8HpCGNBLVSp41j/wd/sycy61
- kFb0/0uo
- 32PMkH7VQmYWiE2/crxKsSUSgTmocyO3f7ph2I805a5cJQShuiIwGwuGSTwTNFYprSHxJQABDNTJLvgbY1EHCpeTndi6V48MceZ1Y8eyx//wDNMIPbRYFnA2mYbv1M++wByIxHHGrPrqeQLk1fVU4vCyAijFrCgvVd77EgkwED/Van4r7w7p/YivVvvDAkeABebbhg1Cc6UrxxBcwA6iItVjzlZrhyDGNLluTsupfpvoYplyqG3YGAzJgPdp2myE7/0mT86di1Qv1kUhYBN6HpNtbiw==
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
+	autolearn=unavailable autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: 27FB88000A
+X-HE-Tag: 1793723980-720308
+X-HE-Meta: U2FsdGVkX1/boJGiEVTLC3z/3bbtb+TuH99gCOE3171kyXB0gqQqZLqYoan0W7mcE9c9chjuk0nJMzWTJOkFshgiRH+TSvPVQRn96ZP3M7J4tat8c2fu8XIhTCHiSWhCO1PKbhwmo8Ae+keho4kNu4g83o5+r0AYQJ+CxPRg4qjWc6Brxov7ORniuZCkPtCPB7+0LMJCR4/KVxRa5oWOBZ+qAnuWZdp+t09LApGImwg0NEmIxDkdJY43L2u30VgJ/RZeGuriTFDLMHq3Clv+Aybsa0x8zBNPr3WoR9GT0Srwk02ae2kU1EXQcSTmDZMptDKUYLkHtXSQAsxJLLBdXrsWsWY4y06r9Y5wezN4KGDjsm/hC5Mjefz7mgaw/NB0jSZyT58dKebNESOGAmeDoQajykjTBenuI0getaovEYMds9au0f1zw/C0oWMnwVtNzAmXMEArDUv0lCJixM3Vly+P6VLfFoN4xchecdt5xb1FSbEOKmXvA7fR+Mn082YsLnTcKtbqHlAc+2A8lDs0rb7paKEDfOKRx9SHQ3xEXdTPWpZFQTFKDzLc8+KxuVJigKio1ox4gMbx6501sUweeof7D/53K3AoiQbHTVOj2YC5N2n07nMyaSSpoFWPKRBHvdtcYtMfuAeOa15cSXaB8oeBNfokPee1ltZKYQMklQb+glnqW7J+G5amPzHWjeaPGHfCyzbcGhehbWj08tTAKhCP2YS0L/EDp5uzKvGe3OKhtUyLH7NOzCjbDauYUNCr73ADsFlzKvyUDaRs3JfrFevuD2alxGEt4i6HWSWR8DwTaNkqXNjPNjvTQYNufKSw/O+AK9OxD8SL/f/YkEfbHn23pi0YFYhcMs8l01ButSoc6bYg7QRA+VzBSQYLqCF9cTEx0Di3z3HXqnfGzMJh1ElLum4pyp/B8Zrf+IAvbSUZU5E6z/BGOIi60fXCBdp/8C9GKlGDx0wcsNHNNor
+ ucr/cYFN
+ fzP4F+xw78pxChAj8ASCzG7b5bGREiYyOsIex76+ZAlWrcfqSsdG3/MyRmH1kJlkphEptiV+i7wAVTSwCqBm75vWwSvLuArnLbMxBsdvNAMx975Y1rzvcYpol9Ehf6OlwzoeyAJPLgZ0L/dVjQgrJZs+DSeRA/q1e7E3oXjStFT6SnSO3OKnIb9hYsLwUZ9sgvdrzbuQL8oSz46ko9S0zwFkXHx++xDVkv6O6yOUoa0ayOrMElql322RWGSnmkAQISVrS5QjFwrCBHsxeCrjOxnvDMXA7yjctZ2sglKzHXCmB60HHgYdS9PhfGk2/h1sWWiAW9hNFAFmcfSLgaO/RuAdON8LKs6QVdihNGhK1xzNn72+ddGN2grUhtxaIZsJeoMhUjmir/Ixs8vNRJA4U4SyUQ3yXd7x9zovgMK/ZfMDD2kz8SYbDlHBu3A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,74 +112,95 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-test_no_kmem_bypass() uses the totalram field of struct sysinfo as a
-byte count, but it is in units of mem_unit, which can be larger than 1
-on 32-bit architectures. There totalram also can't exceed GB(4), so the
-size check never triggers:
+On Tue, Nov 03, 2026 at 02:48:22PM +0000, sashiko-bot@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 1 potential issue(s) to consider:
+> - [High] scsi: esas2r: TOCTOU race on data_length in handle_hba_ioctl() via read_hw()
+> --
+> 
+> commit 8af21917bc01e9991b2ab872e7a4c38c91a6e388
+> Author: Christian Brauner <brauner@kernel.org>
+> 
+> scsi: esas2r: bound the lengths of the HBA, SMP and firmware ioctls
+> 
+> This commit adds bounds checks on user-supplied lengths for the HBA, SMP,
+> and firmware ioctls in esas2r to prevent out-of-bounds reads and writes past
+> the end of struct atto_express_ioctl and a->local_atto_ioctl.
+> 
+> > diff --git a/drivers/scsi/esas2r/esas2r_ioctl.c b/drivers/scsi/esas2r/esas2r_ioctl.c
+> > index 3f7c1d131ec34..f99318f61c934 100644
+> > --- a/drivers/scsi/esas2r/esas2r_ioctl.c
+> > +++ b/drivers/scsi/esas2r/esas2r_ioctl.c
+> 
+> [ ... ]
+> 
+> > @@ -1221,11 +1231,16 @@ static void hba_ioctl_done_callback(struct esas2r_adapter *a,
+> >  	}
+> >  }
+> >  
+> > +/* @room is the size of the buffer that starts with @ioctl_hba. */
+> >  u8 handle_hba_ioctl(struct esas2r_adapter *a,
+> > -		    struct atto_ioctl *ioctl_hba)
+> > +		    struct atto_ioctl *ioctl_hba, size_t room)
+> >  {
+> >  	struct esas2r_buffered_ioctl bi;
+> >  
+> > +	/* The data follows @ioctl_hba in the same buffer. */
+> > +	if (ioctl_hba->data_length > room - sizeof(struct atto_ioctl))
+> > +		return IOCTL_INVALID_PARAM;
+> > +
+> >  	memset(&bi, 0, sizeof(bi));
+> >  
+> >  	bi.a = a;
+> 
+> [Severity: High]
+> Can a concurrent write_hw() bypass this bounds check when handle_hba_ioctl()
+> is called from read_hw()?
 
-  test_zswap.c:609:24: warning: result of comparison of constant 4294967296 with expression of type '__kernel_ulong_t' (aka 'unsigned long') is always false [-Wtautological-constant-out-of-range-compare]
+This whole codepath as currently implemented is structurally fscked.
+So it's not something fixable in this series apart from the glaringly
+obvious.
 
-Multiply totalram by mem_unit as an unsigned long long and use that for
-the check and the values derived from it. Nothing changes on 64-bit,
-where mem_unit is 1.
+But for the record:
 
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
-Found with 32-bit builds of the selftests (gcc 16 and clang 21 with
--m32, with and without -D_TIME_BITS=64 -D_FILE_OFFSET_BITS=64);
-KernelCI's 32-bit arm builds show the same warnings. The changed files
-build without them now, and the x86_64 builds don't change.
+- The ATTONode entry thing is created as a side effect of reading
+  another file.
 
- tools/testing/selftests/cgroup/test_zswap.c | 20 +++++++++++---------
- 1 file changed, 11 insertions(+), 9 deletions(-)
+  So esas2r_info() registers a character device and creates
+  /proc/scsi/esas2r/ATTONode the first time it runs. That pins a global
+  pointer to whichever host triggered it. So the control node only
+  exists after someone looked at the host info. So it is bound to the
+  first host and not to the adapter it operates on.
 
-diff --git a/tools/testing/selftests/cgroup/test_zswap.c b/tools/testing/selftests/cgroup/test_zswap.c
-index d50acc1b83ac8..223e2eb1329ab 100644
---- a/tools/testing/selftests/cgroup/test_zswap.c
-+++ b/tools/testing/selftests/cgroup/test_zswap.c
-@@ -597,6 +597,7 @@ static int test_no_kmem_bypass(const char *root)
- 	size_t trigger_allocation_size;
- 	int wait_child_iteration = 0;
- 	long stored_pages_threshold;
-+	unsigned long long totalram;
- 	struct sysinfo sys_info;
- 	int ret = KSFT_FAIL;
- 	int child_status;
-@@ -606,10 +607,11 @@ static int test_no_kmem_bypass(const char *root)
- 	/* Read sys info and compute test values accordingly */
- 	if (sysinfo(&sys_info) != 0)
- 		return KSFT_FAIL;
--	if (sys_info.totalram > GB(4)) {
-+	totalram = (unsigned long long)sys_info.totalram * sys_info.mem_unit;
-+	if (totalram > GB(4)) {
- 		ksft_print_msg(
--			"requires less than 4GB total ram, sys_info.totalram: %.1fGB\n",
--			(double)sys_info.totalram / GB(1));
-+			"requires less than 4GB total ram, total ram: %.1fGB\n",
-+			(double)totalram / GB(1));
- 		return KSFT_SKIP;
- 	}
- 	if (access(PATH_ZSWAP_STORED_PAGES, R_OK)) {
-@@ -622,12 +624,12 @@ static int test_no_kmem_bypass(const char *root)
- 		return KSFT_FAIL;
- 	if (read_min_free_kb(&min_free_kb_original))
- 		return KSFT_FAIL;
--	min_free_kb_high = sys_info.totalram / 2000;
--	min_free_kb_low = sys_info.totalram / 500000;
--	values->target_alloc_bytes = (sys_info.totalram - min_free_kb_high * 1000) +
--		sys_info.totalram * 5 / 100;
--	stored_pages_threshold = sys_info.totalram / 5 / page_size;
--	trigger_allocation_size = sys_info.totalram / 20;
-+	min_free_kb_high = totalram / 2000;
-+	min_free_kb_low = totalram / 500000;
-+	values->target_alloc_bytes = (totalram - min_free_kb_high * 1000) +
-+		totalram * 5 / 100;
-+	stored_pages_threshold = totalram / 5 / page_size;
-+	trigger_allocation_size = totalram / 20;
- 
- 	/* Set up test memcg */
- 	test_group = cg_name(root, "kmem_bypass_test");
--- 
-2.53.0
 
+  The lifeteime is then tied to the module and not to the host.
+  The entry is removed in esas2r_exit() on module exit.
+
+  But the directory it lives in belongs to SCSI. That removes it when
+  the last host of the template goes away.
+
+  So unbind or hotunplug of the last adapter removes a non-empty
+  directory... the dir is unlinked and the ATTONode leaks and stays
+  reachable through a cached dentry.
+
+  And the global host pointer dangles.
+
+  So every ioctl on the node dereferences it.
+
+  It's like non-empty directory removal basically. Fun.
+
+
+- No privilege check anywhere. The node is created with mode 0 so 0444
+  with procfs the the driver never calls capable().
+
+  Hence, any local user can read and write firmware and NVRAM and issue
+  VDA commands.
+
+- The ioctl protocol itself (where to begin):
+  - Plain-number commands
+  - one struct copied in whole
+  - unbounded lengths taken straight from userspace (well, that's fixed here)
+
+Sorry, I'm not going to redesign esas2r.
+And from what I can tell that ATTO stuff is legacy anyway so good
+riddance as far as I'm concerned.
 
