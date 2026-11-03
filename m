@@ -1,94 +1,129 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D1FB606D80B
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 11:52:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9784D606A32C
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 11:56:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=WKoyMglv
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=cwcuZ74L
 Received: by kanga.kvack.org (Postfix)
-	id 460DD6B05BF; Tue,  3 Nov 2026 06:52:34 -0500 (EST)
+	id C5BD76B00EF; Tue,  3 Nov 2026 06:56:10 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 438926B05C0; Tue,  3 Nov 2026 06:52:34 -0500 (EST)
+	id C05BE6B05B1; Tue,  3 Nov 2026 06:56:10 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 376D16B05C1; Tue,  3 Nov 2026 06:52:34 -0500 (EST)
+	id AF4A36B05B5; Tue,  3 Nov 2026 06:56:10 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 1747F6B05BF
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 06:52:34 -0500 (EST)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 24E5B14039A
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 11:52:32 +0000 (UTC)
-X-FDA: 85393645344.20.4688941
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 6D244180004
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 11:52:30 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WKoyMglv;
-	spf=pass (imf16.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793706750;
-	b=BmWVi/zQcknVKkp0OduCC9+0waOe+uAKwUpmy5PmGg1LGJH4YzRP41VBEpB2dokQDM6fgQ
-	weBBI+2PbvYV8CH2Cg64AFVHU1s2W8XS3+FhMtPeoeJkT/iDMH+k3JjZ+g612jNMpc4+2l
-	NOLgmygSs2J4/3eia1+vzKRUTii72yQ=
+	by kanga.kvack.org (Postfix) with ESMTP id 88F0A6B00EF
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 06:56:10 -0500 (EST)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 238D8A7DAF
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 11:56:10 +0000 (UTC)
+X-FDA: 85393654500.11.5A44CE5
+Received: from mail-pj2-f2.google.com (mail-pj2-f2.google.com [74.125.227.130])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 3F0BCA0006
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 11:56:08 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=cwcuZ74L;
+	spf=pass (imf25.hostedemail.com: domain of jm5905938@gmail.com designates 74.125.227.130 as permitted sender) smtp.mailfrom=jm5905938@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793706750;
+	s=arc-20220608; t=1793706968;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=iWyW+bGyGveMgmXtKW3uGBlbS+JH67BydEPcZUH8PVc=;
-	b=lt2VxWGHmF5kWJkB0r/xPHY+BrlZRylTRjP2vro1aoP2FAlnOejDPQZGclSrtZYyjt9VfM
-	JvgT7vYZY+Ji1jmuDo3O6OqaiE9rmZ1pQzuE2bdGPdwHMtf9+J3RQBYJ91W5MloPplzsU5
-	FwrkNAg8GyxdGsfTnykIp9HBZdkCnU4=
+	bh=ONK88Mc3FVMhpnTXlcgn9JF9XGNsz0fFBW8JVFGM8tQ=;
+	b=MWSx0jdzFhySq3Jgb3Z1j7tJkFd9UzZBM6KlpR5qMd0qVWMyEvOOsGNucpSf1cqB2FJzlv
+	STM1kXuofOJpwe39pLViNtLlMGTSnca3R2Lqxt+UnTc2eXuceU7wROLIKeQ/Fp9M05oFyY
+	srmkfwq5zaV4E8johf4WGG4B+BLD79s=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793706968;
+	b=OS0nHvew6RROfh6ri5N0JVJ75U2hXJNiW1nsY47p95OBs6Q+OdlQVF9hVt/wIfJVQwkNUN
+	FUE7RGF2joAN5h/L3Su41+60Ok09lmEF4tIRGsstvDyZsOuPjjs4a3tNPBwrGYh7As9pDm
+	X565+ddKEI1Vud+INrNOCl11j+SpPb4=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WKoyMglv;
-	spf=pass (imf16.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 93B5841892;
-	Tue,  3 Nov 2026 11:52:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38D621F000C1;
-	Tue,  3 Nov 2026 11:52:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793706749;
-	bh=iWyW+bGyGveMgmXtKW3uGBlbS+JH67BydEPcZUH8PVc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=WKoyMglvOchDD2D5K5t6zuBBSTJeqjwBhmAjJHtuQuQrIMQn4TyLXg7poNkpL3+ur
-	 ANeQ6Oy1q5X7Z9Hax5cjkJLaLfVpFFW0seUViNrnZaNMjX+4SdA1y+aM0NpktUIJVD
-	 mdMxecqUxS3yjrc0yPHtRX2wlQV1cWukiFNUFHuKlPCXDKdj9TamuRJRpNAq0AcRjd
-	 89/+N2XmDgCzG6Vay9XiZ5vM5yI4hftxzxHh0I5h9obnt8hFx1cEo17X3xdgt5WGjZ
-	 7un3053U62ewJJuIWhJjsN1Or2XFE525Spv39c3D2y9uDWvxOmFvzl/AMlNW+67b8L
-	 j4JURwckfmKTA==
-Date: Tue, 3 Nov 2026 11:52:24 +0000
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: "Liam R. Howlett (Google)" <liam@infradead.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, maple-tree@lists.infradead.org, Chris Mason <mason@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Andrew Ballance <andrewjballance@gmail.com>, 
-	stable@vger.kernel.org
-Subject: Re: [PATCH v2 3/3] maple_tree: Update internal warning and bug_on
- code
-Message-ID: <aunI9hG6Qw8IQ1Uk@gremlin>
-References: <20261103020724.2614498-1-liam@infradead.org>
- <20261103020724.2614498-4-liam@infradead.org>
+	imf25.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=cwcuZ74L;
+	spf=pass (imf25.hostedemail.com: domain of jm5905938@gmail.com designates 74.125.227.130 as permitted sender) smtp.mailfrom=jm5905938@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-pj2-f2.google.com with SMTP id d9443c01a7336-2e613f813b0so13836365ad.1
+        for <linux-mm@kvack.org>; Tue, 03 Nov 2026 03:56:08 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1793706967; x=1794311767; darn=kvack.org;
+        h=references:in-reply-to:cc:to:message-id:date:from:subject
+         :content-transfer-encoding:content-type:mime-version:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=ONK88Mc3FVMhpnTXlcgn9JF9XGNsz0fFBW8JVFGM8tQ=;
+        b=cwcuZ74LrfqGqBtO7ey0VbHpatbUvGY/lrMTtZP4/AacIuQ10X20tGt1UrLptgTimo
+         K9LE/sZ/+4PqGnC8QzJARRf0LSTEuXSwgOAb9IAw2+8SmGqXy+8z/SVxTBfL2/bLYlCo
+         LolUolUjPEoloFZXFXUhYWZg8T71K1Lsm5KUhZvELLBmzcTK9MUf1pb9OJIhTT6T+xdz
+         tT51Zvi4XZAS6rnrIR2IcVSZrAtCNVc8qefx1gOfShXiHjtCK7vYKUOTRqRqEiPyMOK8
+         uKfLCYoc4nhmCHSP8ZtkSo71cmqYCp9G8OHRf/tDqA/MrOAfvJqz9CPExU/iCSasz60H
+         nLwg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793706967; x=1794311767;
+        h=references:in-reply-to:cc:to:message-id:date:from:subject
+         :content-transfer-encoding:content-type:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=ONK88Mc3FVMhpnTXlcgn9JF9XGNsz0fFBW8JVFGM8tQ=;
+        b=nPkozNLiAGvWbn84O8g+6zMMhbzzIfXH3K6BWEl3/tmPjsIpNMTjND2oQ8b7QHlfFB
+         1BObWS7g9skFhePM8u67HmqIqw/zgdZ+NGUhPHToLL8soNSwCjwmVJujQrHxdnjnBTxT
+         cOkR/QB90LdCtKOtl7XUaRUeIfOV55/to7AM14uQGN5s7qJMZEIscEjjrjv5d01g9HUp
+         VPQOsSX4KqKxGErO0JyYNcNsbUwyq1j3WPHqk5RgDU290KmKsYnTDOopynLQZS2qafAe
+         KLdJW9TTgst4SOiGiqKplCjQqEUrRDlzelZYAXvhWDVN+XnKHy26Vw76qZM1Moe7S2Qu
+         1sYQ==
+X-Forwarded-Encrypted: i=1; AKwUvBzEyMUlKJNxBvZY2iQCI0chn8pGHodkNHS5M0Ca+bWgVtiEKOAVoRHTfNjh3bxxJK54txAaacHBjQ==@kvack.org
+X-Gm-Message-State: APuU4Z9uvxRZO9PTmXvJDWI9xu1/HCSktCK3tc36RYftdj8m0krsrGOQ
+	JctAxkLCMik/dYl3CcjDzVWFBs0BJzU5JnT2GcaRy9gUmhnV3NXtuWJt
+X-Gm-Gg: AYBFou0kR1pMtx1h5R6MpGgM35tntj3u4+d3OtU/441zbI+5oWPXZxv/6PmSyX0qOU+
+	ArI6L8WOGLbolBfrjdbzkIGkkLD4VpV/7bVa7YLZ1E4b2d9qB1F9b1IGo3witi+8mzgcOzBZWdk
+	O7g1Sifufrhwb5JYj/l5s+qaquSspKgvEbyBGnIcDzYWlOJSLVAo71oGcjyNDdwOXhNepXnRMzh
+	VMwyFv+pH3r2y9rbQziMRMDs8dBc/+y9nl5naRRX+ot2655tDMl529iPjNiajR068QYpw/QGPqI
+	Bgp1v6QT3LDmIvgH7zewOgBGvqwZSGRB6NK62hhsgQl3BYmOsHbYoa9r7pFtLEmhiIbxJZn8UBD
+	mLYR2klzmleDT8dodQo0fnutd2NWQ4M93mZoUm4WLqduYmfz0OXhK+Ot5BnylvtNJ9SxeKoPa9f
+	Fh6l+EbNh9exM35yZtYWZdRurZuc5Bh6HERJpPtRR/FhRJegGOyBNhTEpk7dd3c/T4BFo47h+p5
+	M9q8tovf0hZVQZMV21K9ETZpnCuH5sGcSNqhyj8Rzs/mtrWftBGRT9EAeUgUamhbPrAar189pP6
+	GWBFaBY7C5/0JUIsF6x8rwtthFkI02yFzcWWATHmO3diDkH6xlm+RufI9V18ekO0cyNFldhKXWb
+	ccBhK0DJf9Bz0JzEDiJ6zPbqwV54=
+X-Received: by 2002:a17:90b:1b0d:b0:3ac:36c7:c144 with SMTP id 98e67ed59e1d1-3ae89776936mr6987759a91.28.1793706966861;
+        Tue, 03 Nov 2026 03:56:06 -0800 (PST)
+Received: from localhost (n106-71-19-159.sun21.vic.optusnet.com.au. [106.71.19.159])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3aebc89475asm5134252a91.0.2026.11.03.03.55.54
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 03 Nov 2026 03:56:06 -0800 (PST)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261103020724.2614498-4-liam@infradead.org>
-X-Rspamd-Server: rspam12
-X-Rspam-User:
-X-Stat-Signature: csxzcqic5p5xwc7n8ugff551i5kmc1wq
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: 6D244180004
-X-HE-Tag: 1793706750-531442
-X-HE-Meta: U2FsdGVkX18hJlFVyiXQlMtTOEVlSK+wdxSO4CAJW5ixma+kvRpz4/hC1VjpaAbBJZUKl/DPXcSZFF0ByBeCOX+nJD9KmNHrif/nImSFKL26ELcNXUf89dq7y/3w/vDfnw86OMNAiIgptrvGhj+Z/gzS3euu38jU8W+IOp1YxU5h2tT9EIaSkwMWJURn90VkRTjDsKvf5SOI4lC4Pzu9nOTRQ3ZbaamMm5BUOZMQgxQ54VARR3auuiyfKXt0nC6Cw5dapvDGjLbZu7W0KjenCBx2OAn5BjLTXSPNKVs8CYZ5hr97IEhSlsK/6x6CcEobKco3NtcIdH7Y8/9xoD0HRCv20R27C7SvZC6PXcc5kLf0N6ksHCv/FjhLWCGCtFElCgjvfDp01frmVFCfXrey8Cv3EH0u5x2HOQYJVYGtusDFv85UVOdGbgVklwokWxQJtNTJkbNhK027SiFwqqoPqiHJPHLoFXQ6ZgwnEwsKdT1+pfnKiGN3Lcn4fyOrkJu/mTpSxwWWppYR/Vszj4obDN0zUm0WRml3pwne6i1FNvRP4eyfatoimGKtjzENXeChcZD1+OHk9uAVm0uy9wLASSP2rWMiigwclQQmidnQ9MK8iMsskZbRRVaRe/vDQvsB5aXjk2VpBfwrWuuKs3++tQcM77CmMrdpf8jHefsT7bgmncRNyMKGkirlrE9JYq+TNiHvtfT2juXUDVRG02EG2TDKGQpGq7zYGuF0IMy2EFQ/vl+nruFrTHF4Z/q0Xwo35pMssyKWJej/dLK8GpO/yljEz9XoHq9xXzGbCS/RPpVfaMKjc1bVug8t4H3rKQORfk46ckCz0H3fG+qu9vTRzdUyEOEvXFOxsBv11V0obLZWPUaygsWTC7BmdW2IvSB795vCu8+qhfezIH+Z+eg36x7ccKEMhmw/sHJxhV/yDwK+LpQOkEIYWuMaftiQybR3YSQB3ezuJrRVr5D5Dok
- eVZRw2E3
- Dm7IZLEwjTtsvjqPpaYIoN/KhMB5zDiCzHSd4IIb+qwHDCnYLqL1mv5j9pSVC6wJqMwqE1G9rrSWaFFoE9m0onbjQFrFE68mCJ0WJl8mEEDL2vNXiPlKrqsmERApAW8zEa7/MZMJ9qjP/JP5nuz0MjiI8WdUjxDocJBRkLeeCYyvms09sCMo/Tg+43Qb7HTBUP6GIDQt8XlrCIH+PvqJIKTc3cOHkpDq/sQj/CV9ipMX/61U5p0kAuQwaebM9e1UjE3AssVOCpesegjy9FMQVlT+DjM520b4r32AGMmufHlaRgPsCGUtaUFTJcrDCm14I6CzT15KHEy3TKq5dnzbkMxSS3qKBy3GCZ4GV2pyN+RMpZathyScUzsJ5TPSOK8je448EMkziAfwxhkK8yBUVJTu4PoJ2+DT6DHbVx6gjchPRHXs=
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH] mm/damon/core: reject empty access pattern intervals
+ on scheme commit
+From: Aveline Noir <jm5905938@gmail.com>
+Date: Tue, 03 Nov 2026 22:44:03 +1100
+Message-Id: <179370624368.195197.14262032219867976650.b4-reply@b4>
+To: "Xiaolei Wang (Kaihong)" <xiaoleiwangxiaolei@gmail.com>
+Cc: akpm@linux-foundation.org, damon@lists.linux.dev, david@kernel.org, 
+ error27@gmail.com, "Liam R. Howlett" <liam@infradead.org>, 
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org, ljs@kernel.org, 
+ Michal Hocko <mhocko@suse.com>, Mike Rapoport <rppt@kernel.org>, 
+ sashiko-bot@kernel.org, sashiko-reviews@lists.linux.dev, sj@kernel.org, 
+ stable@vger.kernel.org, Suren Baghdasaryan <surenb@google.com>, 
+ Vlastimil Babka <vbabka@kernel.org>
+In-Reply-To: <20261103105418.362459-1-xiaoleiwangxiaolei@gmail.com>
+References: <20261103105418.362459-1-xiaoleiwangxiaolei@gmail.com>
+X-Mailer: b4 0.16.0
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 3F0BCA0006
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=no autolearn_force=no version=4.0.1
+X-Stat-Signature: re7keit36wg7u65xa9xf44rkk61an93c
+X-Rspam-User: 
+X-HE-Tag: 1793706968-898453
+X-HE-Meta: U2FsdGVkX19/+EDHrwDTHPF6niLP2Sdf3O0ygTRR2fNDp8udIy9KGrGVmVcw0oJVztdEtkYVh5H9DY+lbCBUZinDj2Ajm0o2BB0kX9eK4O7qdvB2m3pqDeCL4yIYZFDHGkxwAp3YpKqOT6eNdo6KVKDpOksnp0GeTQmVrXgVd4TTx6gJQpSIRTBBeHvOhakwNZCQxV9CXERVRgiwn3p4UsOt6LgZb+i9Yqr/BabRA170XZnWHycraxZS2Ak6gl8c+UOwZHa99FtYZPsuwZsNI6Rxjl7f22kTv2dgQEtSdUCBtYNpHwhtRS4/za+zP9AHszpMeIuZj9EPGuJFJqpqJPREC32HuBpS04nYgmZP+oDqBMadyf3gNA+6xW8AzyeBvdrl+tJcxh3NaCJx4W0hXqRqzamF/Ez74N8i6xL/m3bsrVEL+v48DLlJhFtZL04/JJfpeyCJhZnh5QwIYeno3uyGHh+vNF+sIq+/e7lCfEODWzo2BEFyBb78TNxBjYtrJmNPqh409ApDZysp23SoyoYW25WKftI/+f34Xi3MXRJdRVxb8SuDoL9z2Gs1jK3ha7nxU4y/IuM1TiilBNbasGUA2IQYOXtZcFiWNUE0KyQDnHQ5n8gDvrdBjj3UCtzNDBTDUBPvvthfd5Xum/kbDjXc5kb+HOxuiS/DbUEyL/WPhND/2wJlo6nhiADM9lfxwbLAbG+29TXjsK+Bl0vd9ZItIrBn7w7dlrL8xMq/yQSowfG86UgAL43/P+NGPjlHrPpjwqlL2WyTr4Y70XYp+5fgS5OJUVTKDB3SahIzmSCoF57GA9aiF/1/LFT6Pu/lA8ooX74nMwSkbXUb4fuMztTpXITV3ei3Nuscx0H/4INMuzOO0d6cIpqntUOYjdmHVy2HAbShXbu0ZRaWDbnRAlSppo5G3gNvNgcUnAGtdhSXYgqn18QlD2xq2Cxz7mCrAsTwjD+y2NI/PyUUn9F
+ C6uweHJe
+ oNdWn6ymuXwFog8yHnbgp4upWYCWekhMSnWv2sQW7VIFEHG2nPe315brNoem26rqn01uClo/KqP2i5QNnm4feXP4mmO0wA+BLRTNUv6IpdO1+HE+NcGBfpv/phO/JvzE1BRvJcWy8p+xQ029YZ2inWS7CnePjgn3/r2e6nOqE5AcFmi+d7mUDTBrQVFDexa61OqEn0gLMmTxU+TRwe+alZLzu7YzxTI3NiB7Tn2P9C5ybhle3NfGyo+g2Xw/bJ+fj2rrIVLcU2AtjaOjB15jr29dSaMCNDS1ZcKvIEBwFPmksraU+9Nozu9gGrL1FAlC6Wz9t4oied8G72HeMBfQP//+VnklyXAHJUXW3FabKf7KRKKo+s6ji17B6zURJs44ZLo7IZqc3ESdNV0TKcxVeZRqMyHl0nGSBkuNNsyq2Q5ABNnEVHHeNtDcekCGNX56mlJMX
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,240 +132,38 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Mon, Nov 02, 2026 at 09:07:24PM -0500, Liam R. Howlett (Google) wrote:
-> When CONFIG_DEBUG_MAPLE_TREE is set, call WARN_ON() once per site after
-> the custom information is dumped about the tree.  Without using the
-> kernel's WARN_ON calls, syzbot will not catch issues detected by this
-> code.  The BUG_ON variants now stop instead of dumping and continuing.
->
-> Update the non-debug code to call WARN_ON_ONCE() as well.
->
-> The userspace tests asserted on dump_stack() but only print on
-> WARN_ON(), so make WARN() fatal in maple-shared.h and have the maple
-> test exit with the result of maple_tree_seed().
->
-> Cc: <stable@vger.kernel.org>
-> Reported-by: Lorenzo Stoakes <ljs@kernel.org>
-> Fixes: f0a1f866aba1 ("maple_tree: add debug BUG_ON and WARN_ON variants")
-> Signed-off-by: Liam R. Howlett (Google) <liam@infradead.org>
+Hi Xiaolei,
 
-Thanks for doing this! This covers off my concerns with the userland testing
-changes so all LGTM and:
+On Tue, 03 Nov 2026 18:54:18 +0800 Xiaolei Wang (Kaihong) wrote:
 
-Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+> At runtime __damos_valid_target() evaluates "min <= x <= max" for each
+> of the three pattern dimensions.  A reversed interval is an empty set,
+> so every region fails the check and the scheme silently never matches
+> anything: nr_tried stays zero forever while the kdamond keeps running
+> normally.
 
-> ---
->  include/linux/maple_tree.h          | 48 ++++++++++++++---------------
->  tools/testing/radix-tree/maple.c    | 13 +++++---
->  tools/testing/shared/maple-shared.h | 33 ++++++++++++++++++++
->  3 files changed, 66 insertions(+), 28 deletions(-)
->
-> diff --git a/include/linux/maple_tree.h b/include/linux/maple_tree.h
-> index e30e57f5f3df9..3a9751c6689fc 100644
-> --- a/include/linux/maple_tree.h
-> +++ b/include/linux/maple_tree.h
-> @@ -680,7 +680,7 @@ void mt_cache_shrink(void);
->  		pr_info("Pass: %u Run:%u\n",				\
->  			atomic_read(&maple_tree_tests_passed),		\
->  			atomic_read(&maple_tree_tests_run));		\
-> -		dump_stack();						\
-> +		BUG_ON(1);						\
->  	} else {							\
->  		atomic_inc(&maple_tree_tests_passed);			\
->  	}								\
-> @@ -696,7 +696,7 @@ void mt_cache_shrink(void);
->  		pr_info("Pass: %u Run:%u\n",				\
->  			atomic_read(&maple_tree_tests_passed),		\
->  			atomic_read(&maple_tree_tests_run));		\
-> -		dump_stack();						\
-> +		BUG_ON(1);						\
->  	} else {							\
->  		atomic_inc(&maple_tree_tests_passed);			\
->  	}								\
-> @@ -713,7 +713,7 @@ void mt_cache_shrink(void);
->  		pr_info("Pass: %u Run:%u\n",				\
->  			atomic_read(&maple_tree_tests_passed),		\
->  			atomic_read(&maple_tree_tests_run));		\
-> -		dump_stack();						\
-> +		BUG_ON(1);						\
->  	} else {							\
->  		atomic_inc(&maple_tree_tests_passed);			\
->  	}								\
-> @@ -722,16 +722,16 @@ void mt_cache_shrink(void);
->  #define MT_WARN_ON(__tree, __x)  ({					\
->  	int ret = !!(__x);						\
->  	atomic_inc(&maple_tree_tests_run);				\
-> -	if (ret) {							\
-> -		pr_info("WARN at %s:%d (%u)\n",				\
-> -		__func__, __LINE__, __x);				\
-> +	if (!ret) {							\
-> +		atomic_inc(&maple_tree_tests_passed);			\
-> +	} else if (__ONCE_LITE_IF(ret)) {				\
-> +		pr_info("WARN at %s:%d\n",				\
-> +		__func__, __LINE__);					\
->  		mt_dump(__tree, mt_dump_hex);				\
->  		pr_info("Pass: %u Run:%u\n",				\
->  			atomic_read(&maple_tree_tests_passed),		\
->  			atomic_read(&maple_tree_tests_run));		\
-> -		dump_stack();						\
-> -	} else {							\
-> -		atomic_inc(&maple_tree_tests_passed);			\
-> +		WARN_ON(1);						\
->  	}								\
->  	unlikely(ret);							\
->  })
-> @@ -739,17 +739,17 @@ void mt_cache_shrink(void);
->  #define MAS_WARN_ON(__mas, __x) ({					\
->  	int ret = !!(__x);						\
->  	atomic_inc(&maple_tree_tests_run);				\
-> -	if (ret) {							\
-> -		pr_info("WARN at %s:%d (%u)\n",				\
-> -		__func__, __LINE__, __x);				\
-> +	if (!ret) {							\
-> +		atomic_inc(&maple_tree_tests_passed);			\
-> +	} else if (__ONCE_LITE_IF(ret)) {				\
-> +		pr_info("WARN at %s:%d\n",				\
-> +		__func__, __LINE__);					\
->  		mas_dump(__mas);					\
->  		mt_dump((__mas)->tree, mt_dump_hex);			\
->  		pr_info("Pass: %u Run:%u\n",				\
->  			atomic_read(&maple_tree_tests_passed),		\
->  			atomic_read(&maple_tree_tests_run));		\
-> -		dump_stack();						\
-> -	} else {							\
-> -		atomic_inc(&maple_tree_tests_passed);			\
-> +		WARN_ON(1);						\
->  	}								\
->  	unlikely(ret);							\
->  })
-> @@ -757,18 +757,18 @@ void mt_cache_shrink(void);
->  #define MAS_WR_WARN_ON(__wrmas, __x) ({					\
->  	int ret = !!(__x);						\
->  	atomic_inc(&maple_tree_tests_run);				\
-> -	if (ret) {							\
-> -		pr_info("WARN at %s:%d (%u)\n",				\
-> -		__func__, __LINE__, __x);				\
-> +	if (!ret) {							\
-> +		atomic_inc(&maple_tree_tests_passed);			\
-> +	} else if (__ONCE_LITE_IF(ret)) {				\
-> +		pr_info("WARN at %s:%d\n",				\
-> +		__func__, __LINE__);					\
->  		mas_wr_dump(__wrmas);					\
->  		mas_dump((__wrmas)->mas);				\
->  		mt_dump((__wrmas)->mas->tree, mt_dump_hex);		\
->  		pr_info("Pass: %u Run:%u\n",				\
->  			atomic_read(&maple_tree_tests_passed),		\
->  			atomic_read(&maple_tree_tests_run));		\
-> -		dump_stack();						\
-> -	} else {							\
-> -		atomic_inc(&maple_tree_tests_passed);			\
-> +		WARN_ON(1);						\
->  	}								\
->  	unlikely(ret);							\
->  })
-> @@ -776,9 +776,9 @@ void mt_cache_shrink(void);
->  #define MT_BUG_ON(__tree, __x)		BUG_ON(__x)
->  #define MAS_BUG_ON(__mas, __x)		BUG_ON(__x)
->  #define MAS_WR_BUG_ON(__mas, __x)	BUG_ON(__x)
-> -#define MT_WARN_ON(__tree, __x)		WARN_ON(__x)
-> -#define MAS_WARN_ON(__mas, __x)		WARN_ON(__x)
-> -#define MAS_WR_WARN_ON(__mas, __x)	WARN_ON(__x)
-> +#define MT_WARN_ON(__tree, __x)		WARN_ON_ONCE(__x)
-> +#define MAS_WARN_ON(__mas, __x)		WARN_ON_ONCE(__x)
-> +#define MAS_WR_WARN_ON(__mas, __x)	WARN_ON_ONCE(__x)
->  #endif /* CONFIG_DEBUG_MAPLE_TREE */
->
->  /**
-> diff --git a/tools/testing/radix-tree/maple.c b/tools/testing/radix-tree/maple.c
-> index bfe4b8626c429..846c67e20e82a 100644
-> --- a/tools/testing/radix-tree/maple.c
-> +++ b/tools/testing/radix-tree/maple.c
-> @@ -36502,22 +36502,27 @@ static void regression_tests(void)
->  	test_spanning_store_regression();
->  }
->
-> -void maple_tree_tests(void)
-> +int maple_tree_tests(void)
->  {
-> +	int ret;
-> +
->  #if !defined(BENCH)
->  	regression_tests();
->  	farmer_tests();
->  #endif
-> -	maple_tree_seed();
-> +	ret = maple_tree_seed();
->  	maple_tree_harvest();
-> +	return ret;
->  }
->
->  int __weak main(void)
->  {
-> +	int ret;
-> +
->  	maple_tree_init();
-> -	maple_tree_tests();
-> +	ret = maple_tree_tests();
->  	rcu_barrier();
->  	if (nr_allocated)
->  		printf("nr_allocated = %d\n", nr_allocated);
-> -	return 0;
-> +	return ret ? EXIT_FAILURE : EXIT_SUCCESS;
->  }
-> diff --git a/tools/testing/shared/maple-shared.h b/tools/testing/shared/maple-shared.h
-> index 2a1e9a8594a28..5f827709773a0 100644
-> --- a/tools/testing/shared/maple-shared.h
-> +++ b/tools/testing/shared/maple-shared.h
-> @@ -8,6 +8,7 @@
->  #include "shared.h"
->  #include <stdlib.h>
->  #include <time.h>
-> +#include <assert.h>
->  #include "linux/init.h"
->
->  void maple_rcu_cb(struct rcu_head *head);
-> @@ -20,5 +21,37 @@ do {                                            \
->      call_rcu(&((_p_struct)->_memb), rcu_cb);    \
->  } while(0);
->
-> +/* Make WARN() fatal */
-> +#undef WARN
-> +#undef WARN_ON
-> +#undef WARN_ONCE
-> +#undef WARN_ON_ONCE
-> +#define WARN(condition, format...) ({				\
-> +	int __ret_warn_on = !!(condition);			\
-> +	if (unlikely(__ret_warn_on)) {				\
-> +		__WARN_printf(format);				\
-> +		assert(0);					\
-> +	}							\
-> +	unlikely(__ret_warn_on);				\
-> +})
-> +#define WARN_ON(condition)					\
-> +	WARN(condition, "assertion failed at %s:%d\n", __FILE__, __LINE__)
-> +#define WARN_ONCE(condition, format...)	WARN(condition, format)
-> +#define WARN_ON_ONCE(condition)		WARN_ON(condition)
-> +
-> +/* Once state for the debug macros */
-> +#ifndef __ONCE_LITE_IF
-> +#define __ONCE_LITE_IF(condition)				\
-> +	({							\
-> +		static bool __already_done;			\
-> +		bool __ret_once = false;			\
-> +								\
-> +		if ((condition) && !__already_done) {		\
-> +			__already_done = true;			\
-> +			__ret_once = true;			\
-> +		}						\
-> +		__ret_once;					\
-> +	})
-> +#endif
->
->  #endif /* __MAPLE_SHARED_H__ */
-> --
-> 2.47.3
->
+My understanding is that DAMON just does what the user asked for here,
+so this looks more like an input validation improvement than a bug fix.
+Since previously accepted input would now fail with -EINVAL, maybe drop
+the Fixes: and Cc: stable tags, and mention the behavior change in the
+changelog?
 
---
-Cheers, Lorenzo
+> The same holds for the watermarks thresholds, which must be monotonic
+> (low <= mid <= high).
+
+Not for all cases, I think.  With mid > high (and low <= high), the
+scheme still works; mid just has no effect.  The subject would also
+need to mention watermarks.
+
+> +	if (p->min_sz_region > p->max_sz_region ||
+> +	    p->min_nr_accesses > p->max_nr_accesses ||
+> +	    p->min_age_region > p->max_age_region)
+> +		return -EINVAL;
+
+As Sashiko pointed out, this would break the DAMON sysfs.py selftest,
+which uses size=[4096, 2**10].  Maybe update it together, and also add
+a kunit case and a note in the DAMON usage document?
+
+Thanks,
+Aveline Noir
 
