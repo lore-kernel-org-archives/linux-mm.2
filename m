@@ -1,145 +1,95 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 325A0606D82C
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 17:04:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21D65606A32F
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 17:10:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=VYQ/jJ6O
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=VxaGgJX+
 Received: by kanga.kvack.org (Postfix)
-	id 1633D6B00EF; Tue,  3 Nov 2026 12:04:10 -0500 (EST)
+	id 407106B05B1; Tue,  3 Nov 2026 12:10:24 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 13B4C6B05B1; Tue,  3 Nov 2026 12:04:10 -0500 (EST)
+	id 3B7FE6B05B3; Tue,  3 Nov 2026 12:10:24 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 052796B05B2; Tue,  3 Nov 2026 12:04:10 -0500 (EST)
+	id 2CDEE6B05B4; Tue,  3 Nov 2026 12:10:24 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id C7A0D6B00EF
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 12:04:09 -0500 (EST)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 60499160497
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 17:04:09 +0000 (UTC)
-X-FDA: 85394430618.24.A3B94FE
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 80F814000C
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 17:04:07 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="VYQ/jJ6O";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 113DF6B05B1
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 12:10:24 -0500 (EST)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id A866F404D4
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 17:10:23 +0000 (UTC)
+X-FDA: 85394446326.01.39FA7AA
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 078478000B
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 17:10:21 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VxaGgJX+;
+	spf=pass (imf02.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793725447;
+	s=arc-20220608; t=1793725822;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=bEnfqIn1d5BmxBfGTOzDtpPMnd7ZSc057uWCU5mMqxc=;
-	b=vxjpdqulNgkdxz+94pLN5JvLpgMLgFHCdx3/zT5S8qKnaYiWP4Yt6qhRe+lsj/X/LKjDtp
-	AgfqXKwB2CdpbzmwDlCD/XnwTvPgfhb9znroCQ5K0wqVgtDT7dCXONwQ14/W/0X+yV8UEy
-	f8gn46eVT8U4CtkxQwBVLBFhFSmN6Q4=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="VYQ/jJ6O";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	bh=+TD4KfNsj3/UrFRijVzp0aBQ2ycYA4MK0lvSZb8XyWU=;
+	b=BR6LBKCljdc6UGqA3wntr8X1sUMrExiHJ2LDunkxWDBkGyJ9zocxRldiZCnZpe7h0VlOgX
+	hy8JSjdbOBNyohfoulZ6wyYbK76d5jUiGL57woS3Br4wakRfvxxTM+zdFa5JYY6TXDRmeQ
+	w45wBIL8+4FGeOjZ87GQgso/WNhqTSU=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793725447;
-	b=8Mv1BrD+sXCjCk5xxNnZnYjfRUhMcZ+aqXvqyHMNz31oJCrsBdF+x6/ROUoy33/83Hgtox
-	oMyRATGvMfW2Noh4gnV4MNi2QXP40QwmzxcNH7RmNVuJdcSbLlm1DUklJlFFQpuprlIdps
-	Bt94SrW6nMxcuu4JdzCkRBgtQbsDZSY=
+	t=1793725822;
+	b=bD8Cs6khYH/T1gMQVHWiH+HgHFIpJ4r5kI3v0h5xurJCDGisiAX/dKOTOUCFWhRt0RFPzk
+	V2P+Y70nb6OSGQ01GidMCWG7Ycul6SO07GFXfghqNUfLnN/AcieH+Smzi74CWmSrPiHaQn
+	QqVihXu8tZRW0yojdsqMP6C93ImMf0Y=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VxaGgJX+;
+	spf=pass (imf02.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id E336760416;
-	Tue,  3 Nov 2026 17:04:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C21D1F000C1;
-	Tue,  3 Nov 2026 17:04:03 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 04B2043B8A;
+	Tue,  3 Nov 2026 17:10:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D57F51F000C1;
+	Tue,  3 Nov 2026 17:10:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793725446;
-	bh=bEnfqIn1d5BmxBfGTOzDtpPMnd7ZSc057uWCU5mMqxc=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=VYQ/jJ6OVQ6W1XY81dONcqltFtpUGJBaOQM0hKv7qY0ir4Sh4jNP4dSLNxeb3Bn24
-	 3Gv3g//UQ3kMbSr3HY4r+ndXng9fr0XXATyj1QaloIIbhkEzR5HTkmrP4Vcse8kpo0
-	 RTB2wy5BbMTchXYcF7zXOxaO2izeHvjallY/LhVKnRgY4MCXgiOreh4DHikVTYMIH7
-	 xIrQkanKaPV9qzCyiorwidm/pPyKmNuKQzY8w74z8WHp2+YI54x87sOYTLGwXlsu6W
-	 4akm0drymwFocuJZNvWJsm6RYg4z+p1f++nr8BKhQBJ+tBiXfTe4G0FjPzTupcUcSS
-	 h6TlpN/m9hUIg==
-Message-ID: <e610aa21-4d35-4d9d-8754-bbfdec57a9a5@kernel.org>
-Date: Tue, 3 Nov 2026 18:04:01 +0100
+	s=k20260515; t=1793725820;
+	bh=+TD4KfNsj3/UrFRijVzp0aBQ2ycYA4MK0lvSZb8XyWU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=VxaGgJX+NhI3el1gfofJnmiTMXPVVPFAD/Zbbn2GN8+WYkhKJNmd4FtAzHHVV4bjX
+	 Se4xnfAVE52NXtS/7ybU/dgIMm29RQXtpnLk7xb4Wfh4YNy15K3ele0RnTXudceNv+
+	 rJxnEsfQRfoVJ7V42VfVH0oJrZAFvLM+x69erRZcn5skFeJFkPu3MzdUWslSQ0bT5w
+	 xy3K/kqUZBQqWMRpwPNxVZcF/ZNnQccLeVjG4Q5PTomGqFACK0aMAQBeEAEqiWcSkk
+	 pKexwSv6lzbL9OMdMnBETRwZKg5jI87wm6H67UUUxyUonhawZmkJxxnlFhpu6Dv66B
+	 v+hUzBuGNVc6A==
+Date: Tue, 3 Nov 2026 17:10:15 +0000
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: Sasha Levin <sashal@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	Mike Rapoport <rppt@kernel.org>, Peter Xu <peterx@redhat.com>, 
+	David Hildenbrand <david@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>, linux-mm@kvack.org, 
+	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] selftests/mm: uffd-wp-mremap: keep the THP sizes in
+ unsigned long
+Message-ID: <auoVbT8O10HFC2ju@gremlin>
+References: <20261103150232.291827-1-sashal@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/8] mm/gup: break out gup_fill_pages() helper
-To: Rik van Riel <riel@surriel.com>, linux-kernel@vger.kernel.org
-Cc: Andrew Morton <akpm@linux-foundation.org>, Jason Gunthorpe
- <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
- Peter Xu <peterx@redhat.com>, Suren Baghdasaryan <surenb@google.com>,
- Yuan-Hao Hsu <aa9736195201@gmail.com>, Christoph Hellwig
- <hch@infradead.org>, linux-mm@kvack.org
-References: <20261102193026.3860700-1-riel@surriel.com>
- <20261102193026.3860700-2-riel@surriel.com>
- <df9c504e-e62a-40c0-a513-e8b8c758dd57@kernel.org>
- <3a7d12b52a5de61277842f2cca0dd90d42728135.camel@surriel.com>
- <856ed0da-d806-4f2e-95e7-f276f2408e8d@kernel.org>
- <4ffa2c82c538c12447d48fee2532f67c35f7eab7.camel@surriel.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <4ffa2c82c538c12447d48fee2532f67c35f7eab7.camel@surriel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 80F814000C
-X-Stat-Signature: on4jw9ctc3ary5npdgpuexnerhkw5fdo
-X-Rspam-User: 
-X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261103150232.291827-1-sashal@kernel.org>
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 078478000B
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
-	autolearn=no autolearn_force=no version=4.0.1
-X-HE-Tag: 1793725447-842798
-X-HE-Meta: U2FsdGVkX18c9PMjI3LWs+HmYz+TOxpuNNU+u+YJuf1ITZUBOyMpoxYJQJOGOr0LiPE4gs88H1LqoeWhzXU3633woQ+1Z3kxsuqE+mhPvQFqiSSa3ndy5Mba+jq5AD85i8Z5GxSPG/X/kQkCYACbvJZzaeoXPuh2q+fklIh2A7WJu49r/psACBw+nQp+kae+cV05gbeEtcZKsXkf+BZTW/Bi1ggMinAwVOZ5Ixk7NAuXh/1ZLFZUYiYCZT+EZHOhuGVtsYEv/JFd1h14PM/kqdNkmkWuO+L1vsyb3aYKv4h8ACzY8mvTbI3w0+6fwzOxuw1dzb2C7Bm5HOLffPG3nLJMWMQLlnS+H0mauYrF5UtUw3BRwHNZD0ZSYYOC7dqC2jxYyLD/tq82FgPxXAAxp4o7cYZJYTu3ZWLN1lgvegZsQ7UCF7TeOWrL+R09e6v5Mnmff/7nc1NX9zQniWqIT/BIGZKB5j9mdTeCmjqn6V9wsMlUBnXVZARsMI8NE2xfEXVJzNBDtVEAbR4hragCxdueoYPYjFK7EMtl1CTDC152JfC+8Jk8Gfql3Krz3gJyhq/dFjUBnCeWOenRE0KL+NHmh5t1GjmG+IahOa17fW8hkmAaruGb4lz57m7h9Yks4DOv8BNAXQlKpU9wn5mNt7UV+1E44d9VHsRGLNTmx0pOJTS0RimOMZjS1O2KJn/d9aitMOIRes6aSbZpEgrLw6Smdn+YUftM+FCtKBG4nyG0Lb0diXyKq2Ibj5+IGgEUs99vbXa0f6esCzqqxl0AprejY7n1rtgU2auM806NS6Zw4GzQIqgwdwbhbqjDbrYYnyIWUjO05/prFJYvtA+jPbYt3FIutp4Jl79P3IgbQDmio7ptAAYiH5VlgLgPS2/HHvwxGK1QMDBhA9NDQyP9U17X0rgC/KiAA/ceXPRhx67KnVz1lkUU62vD5aAivjj0613o2qYu+iReqzBIZNb
- d7G0n19z
- jYPshvt9qA83xszBMgdp3SdDVVfDpiMa3k9roYODolj6ezgVaEeh7vu7Gx9PjgV5h+D+7j4sc5MS+CUDAK7yEf6wXjEaKKPNL3y/agaNjG4PqwXIYSIcJ0sOjvge/pr0VV024LajluZQxz0sudJC9tBtkfFCTJyzK7nYbZRgR7ff2aBWj7OQMe7QZZZynKy92x2VK8mz8oRG32PgQGqky/gnrwuNg3ogdrh5s5JTy8obzbPm2/N1BHGcyRquEiDKpMhpQlTN4Ho70/dGYYsEy+BS5+DGt36LjH9KfCPHfGZZ9225rayg39hgUMWoHFLmexVZFiP6DDOOXwac=
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-Stat-Signature: gzryzpkgnz9u3idfxibhgy4ywfekdhzk
+X-Rspam-User: 
+X-HE-Tag: 1793725821-36304
+X-HE-Meta: U2FsdGVkX1+kfFHaYrmWbecem8ePzHKk5P+wefeRE+IXu3yQQsjszHk/Cvj0FXkN1PkcERcaNJtPC3uFXQaoBZb+DrjJZwpTWnkljF1ZR3Z9nRFKX/uaR40utD/RtgbzE4sOECoDeeMMG/NPByQJLEsfafXyp3i6PIjiF3jWqy/DUPcP6SoEhoLMc8xthvHAsOg2ugTUmrDr5Ov8p+9Ko0O3j5X6LcD9RsyrmRN/2aqf/vYM6K8gqWlwkG67lCGtPog+h6ufnv0/HbT4ycaAkaUEjp8R0I5MSYoa3he3J1GNTkwIyqlgSSgd0HewUq4HNcP4c4cI7FojRKAGt52tqM8J836ZpMh90TlFmoJzKriDuD2Wc/yu7sBP8isL6eFSsn2ToJma42BMx7SEM8EciE5XYzOAr3p3dZ/jr4UCYt87fgPaCFNQXlgKRq16uPbz6AFx5GxrxHnqmPHmsLn2yD4Ppk1/zDfHQVvArrQjjiaoOkuRo/Z1b75aqgX6UzDyMFhSuY7DxnleFBw+bVilBKNIwIsEERYOKqai5fFXgx6v+R+/LF8YWW+ASEhVdfs9xmEVm0I8Egtuq4C514DmN9rIG5wFj09vl4NCVh/dcc0SJfTyJpJ0i0SIh0oTZTapn2xrJkiv12N52Za8SXw3bGa5VnexhSOehoFcb7a7lXhCD7SMrarVguD73eWgWlvi4AdEjEjV06jL+z6UkzaqA61NjNtlK8KEMyCqXLpMrsw0cFUzazZSb5SyjyZM0LK1EJvsXPuXTscvtGSSDIlwZ1rgF4WSGdzdoa7C9KG9YoYFbSN73XVDMDa8JD0pYfD4k8gqLCEou3/wzlByKcexbfpnHNPKFIxRmUSmELRuwducH1/NqFms83Bq5canCANMZ9+lG/RbXUNAfK1B58xSA65DNaVfZ7DWsK5k+sXSGgNGrmry61/xLBfYrvIcF9BZ9apv6jdIxb4i++/f4rf
+ osJj4Gos
+ plVrgAHxGHHmmwns/+cDxQFLbXLzmSu1NIGjlSGdmoo4XeqR8VPouuSPKeYK91NInMwxFlt1FdMIkjHPYvyU3vr1ISld4+biZFm2ptc5jW8LY3DOka1kZ6JIqvQvnUL7Zq9GYM65HWmcWyfw+4hwlrM7PcoIFs1UiSVhexpl09Umwd+TracNe5kTmiit9hUKZJWkLvjnf8Gv/QWJViWW8KUDq6iLNwL45Taq/Iihsj01ibxlZ4zVzeVPBrKRkmb9Xp8liURDmS85+EAEvMSJf0AcGCg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -148,92 +98,60 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/3/26 18:00, Rik van Riel wrote:
-> On Tue, 2026-11-03 at 17:39 +0100, David Hildenbrand (Arm) wrote:
->> On 11/3/26 17:29, Rik van Riel wrote:
->>>
->>> faultin_page_range() and populate_vma_page_range
->>> both call the GUP code with a NULL pages pointer.
->>
->> That's not what I meant. I know that we have GUP users without
->> pages array.
->>
->> In the code change you are performing the check is not required.
->>
->> That's why there wasn't one in the first place.
-> 
-> It looks like 2 of the 3 callers of gup_fill_pages()
-> check for pages existing. The other does not.
-> 
-> Should we just have the check in this one place, and
-> not depend on the caller?
-> 
+On Tue, Nov 03, 2026 at 10:02:32AM -0500, Sasha Levin wrote:
+> Commit 0020a1f5ca36 ("selftests/mm: hugepage_settings: use unsigned long
+> in detect_hugetlb_page_size") changed the sizes of the test cases to
+> unsigned long, but left thpsizes and detect_thp_sizes() with size_t. On
+> 32-bit architectures size_t is unsigned int, and gcc 14 rejects the test
+> cases that point at thpsizes:
+>
+>   uffd-wp-mremap.c:299:26: error: initialization of 'long unsigned int *' from incompatible pointer type 'size_t *' {aka 'unsigned int *'} [-Wincompatible-pointer-types]
+>
+> Use unsigned long for the THP sizes as well.
+>
+> Fixes: 0020a1f5ca36 ("selftests/mm: hugepage_settings: use unsigned long in detect_hugetlb_page_size")
+> Signed-off-by: Sasha Levin <sashal@kernel.org>
 
-That should be spelled out in the patch description.
+LGTM so:
 
-The change as it stands in this patch looks useless :)
+Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 
-Although trying to fill something that doesn't exist is a bit weird.
+> ---
+> KernelCI's 32-bit arm kselftest builds hit this. Built the mm selftests
+> with gcc 14 and gcc 16 -m32 (four errors in this file before, none
+> after) and natively with gcc and clang (no change). An i386 build with
+> clang runs and detects the THP sizes as before, up to the point where
+> the test needs root.
+>
+>  tools/testing/selftests/mm/uffd-wp-mremap.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+>
+> diff --git a/tools/testing/selftests/mm/uffd-wp-mremap.c b/tools/testing/selftests/mm/uffd-wp-mremap.c
+> index c48eaab8e75cf..fb5582ec5b201 100644
+> --- a/tools/testing/selftests/mm/uffd-wp-mremap.c
+> +++ b/tools/testing/selftests/mm/uffd-wp-mremap.c
+> @@ -15,7 +15,7 @@ static int pagemap_fd;
+>  static int nr_pagesizes = 1;
+>  static unsigned long pagesize;
+>  static int nr_thpsizes;
+> -static size_t thpsizes[20];
+> +static unsigned long thpsizes[20];
+>  static int nr_hugetlbsizes;
+>  static unsigned long hugetlbsizes[10];
+>
+> @@ -30,7 +30,7 @@ static void check_uffd_wp_feature_supported(void)
+>  		ksft_exit_skip("uffd-wp feature not supported\n");
+>  }
+>
+> -static int detect_thp_sizes(size_t sizes[], int max)
+> +static int detect_thp_sizes(unsigned long sizes[], int max)
+>  {
+>  	int count = 0;
+>  	unsigned long orders;
+> --
+> 2.53.0
+>
 
-But if it makes the calling code nicer, sure.
-
->>
->>
->>>
->>> However, now we have a situation where:
->>> 1) Only a few oddball callers of GUP need the dcache flush, and
->>> 2) Those need to do their OWN flush after a write, and
->>> 3) The dcache flush is not needed for most other GUP callers.
->>>
->>> We could do two different things here to solve the
->>> asymmetry.
->>>
->>> Either we could add dcache flushing to 
->>> unpin_user_pages_dirty_lock(), and make sure all
->>> the callers that need to call that function, or
->>> we could move the cache flushing to the GUP callers.
->>>
->>> Then we have KSM, which uses GUP, and which would like
->>> to see the latest page contents...
->>
->> It's all very inconsistent. And undocumented. And error prone.
->>
->> Could we have GUP-fast also flush the dcache for consistency or
->> must that only be called with the PT lock held?
-> 
-> I think we could, but it does not look like any of
-> them need it.
-
-Sure, but it makes the code more consistent and from a GUP PoV easier to understand.
-
-> 
-> Out of the 83 callers of gup_fast, many DMA into the
-> page, and the drivers do their own flushing. Also,
-> flushing before the DMA write doesn't help.
-> 
-> KVM, Infiniband, and others pin the pages, sometimes
-> for longer periods of time, and either flush around 
-> their reads and writes, or run only on architectures
-> where we don't need to.
-> 
-> The others access the page through the user's own
-> virtual address, which again does not require a
-> dcache flush.
-> 
-> Only a small number of slow GUP callers need dcache
-> flushes.
-> 
-> It may make more sense to move the cache flushes
-> all the way out into __get_user_pages() and away
-> from the follow_page_mask() call chain, so we can
-> maybe merge more of the helper functions between
-> slow GUP and fast GUP.
-
-That's likely more work, can you look into that?
-
-
--- 
-Cheers,
-
-David
+--
+Cheers, Lorenzo
 
