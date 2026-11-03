@@ -1,152 +1,98 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98695606D839
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 11:48:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23AE3606D803
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 11:50:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=Y4zBKWh3;
-	dkim=pass header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=CHDXryvq;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=Y4zBKWh3;
-	dkim=neutral header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=CHDXryvq
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=PyzLButy
 Received: by kanga.kvack.org (Postfix)
-	id B364F6B05B2; Tue,  3 Nov 2026 06:48:02 -0500 (EST)
+	id 3E68B6B05B6; Tue,  3 Nov 2026 06:49:59 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B0D2B6B05B4; Tue,  3 Nov 2026 06:48:02 -0500 (EST)
+	id 399696B05B7; Tue,  3 Nov 2026 06:49:59 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9FD736B05B6; Tue,  3 Nov 2026 06:48:02 -0500 (EST)
+	id 2AD846B05B8; Tue,  3 Nov 2026 06:49:59 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 7CC706B05B2
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 06:48:02 -0500 (EST)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 0ED898035C
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 11:48:02 +0000 (UTC)
-X-FDA: 85393634004.16.E6FF3E0
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 80ADC40003
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 11:47:59 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=Y4zBKWh3;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=CHDXryvq;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=Y4zBKWh3;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=CHDXryvq;
-	spf=pass (imf11.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 0BE936B05B6
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 06:49:59 -0500 (EST)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 8FB3C40243
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 11:49:58 +0000 (UTC)
+X-FDA: 85393638876.24.8DD2FAA
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf10.hostedemail.com (Postfix) with ESMTP id DC907C0004
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 11:49:56 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PyzLButy;
+	spf=pass (imf10.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793706596;
+	b=vG7k5SSIILkUPTTA2jEWqbbNuR/B1RREDgzgSmrni9NrX6mqSKmbtv2x2vt7KlnSN4Rf29
+	O6u+PVvYf/qYgX3Ah2oeO0pdVzJvlRxNgUf47MEZa0cz7NsdqC9v6JVIkLyUVdQZ4rud/O
+	HGXVgw3vSiRskug8EOWPx1WsAsupjKo=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793706480;
+	s=arc-20220608; t=1793706596;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gpNnj5q4z35v5NpxDoXWpLWIxpF/EVXKHOt/hVE3ktU=;
-	b=i9nzSQ+wIIAvZTsIa+6NN+6HttJWagkeR/6zFAYoNYd0Cc9k7PGtgbbA9abckShZoywC/1
-	aJucv2Sb2rd0g5G1Gvw/jXrLdlE3kvoDNVfInnoHUV94V5hx2PxEplAscCIwUmsJ/zBo9J
-	cwhDVeAxhFc9peUuL6Z6ZmOJnccoTPY=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793706480;
-	b=nwLuevrjVY4alE3mHgoFfXe4FT5uLC7KinABVY4UQbvjhdmw+aAWpaXalvd1InKJSHTrlG
-	zy0ahFz5JD7uMVdBTqx1eBkTVlOYxw2ZghSUrNF7Q4YKVsguKILBoGFBNvKCji4lwx4FUw
-	S+x5lg4o20PHEDh5wYWKvO49sGWfIRA=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=twt8xyp/PjuLOlMXlHAivsnx0jkVr0LdLW19Gs2AtO0=;
+	b=1PeDKrtdUpW1cDcYyysemnN6J9QxOm77k7jpEXZXbspICV53mFxyNlxT7x6KvZOmAuI8Fv
+	K7uH8sZ9Cj/SX+f+d1JOrhQVl71Kp+keFs+x8nYFl1cDGEe5GPZPbP4MSH1AqqKYRI3OAW
+	RrMwb7JtIaJL/wbUT5OSYH3jON4xwxk=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=Y4zBKWh3;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=CHDXryvq;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=Y4zBKWh3;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=CHDXryvq;
-	spf=pass (imf11.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz;
-	dmarc=none
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 2FACE1F83B;
-	Tue,  3 Nov 2026 11:47:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1793706478; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=gpNnj5q4z35v5NpxDoXWpLWIxpF/EVXKHOt/hVE3ktU=;
-	b=Y4zBKWh3jpv6KMan74hAIoPBOSLs6tZK+6I3oXqMSfIYnA8S5ywXTaZUj3pHgSrb7VT90k
-	329ZViAKBSeKUbGb8+5mzc2frx/+GV6reJ9nXvxCL4vReDMldn3E1PoxUzI1wb8UPaR2qV
-	R/wJmcymFrxhPjRxW0H5+f3xz5M+HuQ=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1793706478;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=gpNnj5q4z35v5NpxDoXWpLWIxpF/EVXKHOt/hVE3ktU=;
-	b=CHDXryvqgLheeosXz5cGd2sibnFQ1eIqkqKPm0R0TjOV2ia+1m/8RKNtWnzplPS6lEGySx
-	jwKpi9Hus6OsYyDA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1793706478; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=gpNnj5q4z35v5NpxDoXWpLWIxpF/EVXKHOt/hVE3ktU=;
-	b=Y4zBKWh3jpv6KMan74hAIoPBOSLs6tZK+6I3oXqMSfIYnA8S5ywXTaZUj3pHgSrb7VT90k
-	329ZViAKBSeKUbGb8+5mzc2frx/+GV6reJ9nXvxCL4vReDMldn3E1PoxUzI1wb8UPaR2qV
-	R/wJmcymFrxhPjRxW0H5+f3xz5M+HuQ=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1793706478;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=gpNnj5q4z35v5NpxDoXWpLWIxpF/EVXKHOt/hVE3ktU=;
-	b=CHDXryvqgLheeosXz5cGd2sibnFQ1eIqkqKPm0R0TjOV2ia+1m/8RKNtWnzplPS6lEGySx
-	jwKpi9Hus6OsYyDA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id B3A57134B8;
-	Tue,  3 Nov 2026 11:47:57 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id LqoVIu3J6Wr7VgAAD6G6ig
-	(envelope-from <jack@suse.cz>); Tue, 03 Nov 2026 11:47:57 +0000
-Received: by quack.suse.cz (Postfix, from userid 1000)
-	id 31B58B23A; Tue, 03 Nov 2026 12:47:57 +0100 (CET)
-Date: Tue, 3 Nov 2026 12:47:57 +0100
-From: Jan Kara <jack@suse.cz>
-To: Pedro Falcato <pfalcato@suse.de>
-Cc: Salvatore Dipietro <dipiets@amazon.it>, akpm@linux-foundation.org, 
-	linux-mm@kvack.org, ryan.roberts@arm.com, abuehaze@amazon.com, alisaidi@amazon.com, 
-	blakgeof@amazon.com, dipietro.salvatore@gmail.com, rvvandan@amazon.com, 
-	viro@zeniv.linux.org.uk, brauner@kernel.org, jack@suse.cz, linkinjeon@kernel.org, 
-	sj1557.seo@samsung.com, yuezhang.mo@sony.com, miklos@szeredi.hu, agruenba@redhat.com, 
-	djwong@kernel.org, hyc.lee@gmail.com, almaz.alexandrovich@paragon-software.com, 
-	cem@kernel.org, dlemoal@kernel.org, naohiro.aota@wdc.com, jth@kernel.org, 
-	willy@infradead.org, david@kernel.org, ljs@kernel.org, liam@infradead.org, 
-	vbabka@kernel.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com, 
-	ziy@nvidia.com, matthew.brost@intel.com, joshua.hahnjy@gmail.com, 
-	rakie.kim@sk.com, byungchul@sk.com, gourry@gourry.net, 
-	ying.huang@linux.alibaba.com, apopple@nvidia.com, ritesh.list@gmail.com, 
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, exfat@lists.linux.dev, 
-	fuse-devel@lists.linux.dev, gfs2@lists.linux.dev, linux-xfs@vger.kernel.org, 
-	ntfs@lists.linux.dev, ntfs3@lists.linux.dev
-Subject: Re: [PATCH 0/2] mm, iomap: account dirty at page granularity for
- per-block dirty folios
-Message-ID: <mcskrz2zbav5r3xtlwqytyotgjcmmi3wapeibkqornuhb3qp5y@qk22j77kvkqx>
-References: <20261027112702.3747009-1-dipiets@amazon.it>
- <auCrqvae2tm4a8PV@pedro-suse.tail5790ac.ts.net>
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PyzLButy;
+	spf=pass (imf10.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id CC2C643B5F;
+	Tue,  3 Nov 2026 11:49:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15A851F00919;
+	Tue,  3 Nov 2026 11:49:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793706595;
+	bh=twt8xyp/PjuLOlMXlHAivsnx0jkVr0LdLW19Gs2AtO0=;
+	h=From:Subject:Date:To:Cc;
+	b=PyzLButyVIP9s2N73x/7CD4RsthvVm0yhg9NB9mJIJEVW3AC9qYF3D/4UL63y2P5n
+	 SqKTUVJkDulKszJ1WG+cseu48umKgXQlidqY/+KJJGYHbD/d2D1jvVzDpm1Cer33CB
+	 zKqRyxEaYi1x/V8LAj5hMl0pnkvdIMaZF3nZZQLBUFsUYmsOlJYZJ0R53/gLx7AgM2
+	 V77gJB6YkslcOQtrjBZ/ow2B6qUGcS9QSgD3NAAX8KWREIOfVh+7GoiwHFF3WJUB0z
+	 yo3Jb0IJjP7nD4PF0LXi6OdCzoRjj1y3losd2DhClyZlw237SXIIcxRR5vy+bz/ZfM
+	 w1TZmK2lIDKKQ==
+From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+Subject: [PATCH 0/2] kho: fix bootmem sizing
+Date: Tue, 03 Nov 2026 13:49:48 +0200
+Message-Id: <20261103-kho-bootmem-sizing-v1-0-45aa74098f34@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <auCrqvae2tm4a8PV@pedro-suse.tail5790ac.ts.net>
-X-Spam-Level: 
-X-Rspamd-Action: no action
-X-Spam-Score: -11.51
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
-	autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam09
-X-Stat-Signature: 9e3q9dpf9i3onx4kwfhympg6ckaockqz
-X-Rspamd-Queue-Id: 80ADC40003
-X-Rspam-User: 
-X-HE-Tag: 1793706479-657052
-X-HE-Meta: U2FsdGVkX1+zRaBnmhvvcWVXxpAFWInziObw411gp66R66CexeGUXf9P1OMC0Kc4MTx0lcAYNs/E63CMc9Sy8/Vqg5Lo43thXkow6oWQ0rNakUowcWsbUyT7mdmbnNfJ5nwlTNtp4gnd4s7mSzHpx8HwWHo5kDnz7EtvUIzSp8QoUSe1TQ/tKaAbSbFcz+86FPwlElixBTwJVVH5CuqgrZLzSohZ9ZCCGv6v/MJKoiaZR6yaF3a13OBwIsa4DLHywQ2Loqini0hcU3jcGGixRxsm92AEJbqpEWJ8U3LGBTmtYAs17Sb9SE9wZSYhIud+6xb5gD9XUZ7hTGz0DLv16TeZHpszzDGJMyE64It1Jts/0oToxTRnm+oYYs4x3a7SUDivpDCcYK6MDBrbVcVPEmH1OI7wZgVCauyY4DUJ3RESbZJfMlS9OYbaX9EgXWvD/vbhoquqNFVBw7YsoMhZRLW77Wd0MH9IRjLEBqb9fUYFgjXdNynBeWdGf+3z0qGSP2hvFlGnXc7EOWnPtFl7VFXuwswePsteUHF+pgvULpSh0Rj0u+VI0w6h6Ys2FzhDXZR9wBLc0DAQYVdBJMai1ClcDwuE2iKbMUTYKwv8ux93uFVh/0YWMwrlpU/Dd8tSW+RsPcZdzds9SvsKgzyZGnC62O9Qc2t9S0s4QUvLCUH6VYRg8TW9CkpdF0Qmjp28vTJ0P4bMlGvTOhR0C6+QBVNladZGEKC5Eza4yobe8rfaH1/yLdD6G4nvZoyof8VmmI8SQK+Eb22GCDO3x1a9fC4sMYRZBMAETi0y0vyr0QnOOoPm/juv8PJsXQY09efzXucxWCm9x8hOy/dQrFHOivcSS6Jm+Rmw582R8o2HeOwY9PUNv7mFDYEPkQ4eHQR/rurQWpN0IvxdW82iEbNGnHvuk8j9Uq2nvGbqOmWbhvSSOGkUZMQeon/mjnwkrIc5o1xUkGyqzi5l9cP50pn
- KIwfPZwe
- Lz6i0U+bTJap1UrdT4YLc2gdh1m9w5hgvornhZbQXSaN1s4eQM5Mw/Zm11DRf2a8fslvF2ksCzLfqslTDqpS+ZLzBEy8BVUdKCWZ3Yr97+uThojhBbYSkJNUJoRgZmNmZwoi2dnbUlOcEoYazfe3PH0q/8HMXRWFKq/bQAVlJwMBZuSlJe/9k5qlK11mwUYQeY3od0YOxMnNDnAi2mlhx8bUOEHQQ1kxvRWSiOBIadXLAVanCTkGIrvYTVQZOaLteVvNoew5JmtgrKFoyyh5l36UfKTPmebdMpvbkhNk08xv4eioPAVD4By6wlxTqC02ZogxOBled9wA5Yv6eO3alhHOcG/FwUnKW6D/EietLNg21vbKZGNdYZhtp0JCvX4aEvGNEcb8NgtuvaL0IB02MHVjXf8xdrIeZYSOlc/XDKLJpPaHS8HX1vNrBs7xnlnlA73GL/LQmNKrp4wA=
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yWMyw7CIBBFf6WZtcRCa038FeOCxwijAQyDxtj03
+ wVdnpt7zgqMhZDhNKxQ8EVMOTWQuwFs0MmjINcY1KgWKcdJ3EMWJucaMQqmDyUvDm7R6OajVvM
+ ETXwUvNL7Fz1f/sxPc0Nbe6k/jGYUpuhkQ59yIU9pHzVXLLBtXzJtQn6WAAAA
+X-Change-ID: 20261103-kho-bootmem-sizing-5d6aed47a243
+To: Mike Rapoport <rppt@kernel.org>, 
+ Pasha Tatashin <pasha.tatashin@soleen.com>, 
+ Pratyush Yadav <pratyush@kernel.org>
+Cc: Alexander Graf <graf@amazon.com>, 
+ Andrew Morton <akpm@linux-foundation.org>, 
+ Chen Pei <cp0613@linux.alibaba.com>, George Guo <guodongtai@kylinos.cn>, 
+ Kexin Liu <liukexin@kylinos.cn>, Sourabh Jain <sourabhjain@linux.ibm.com>, 
+ kexec@lists.infradead.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org
+X-Mailer: b4 0.16.1-dev
+X-Rspamd-Server: rspam12
+X-Rspam-User:
+X-Stat-Signature: mx6ffq7uzhemcm3ww4weh19skrtdhpxy
+X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_GIT autolearn=unavailable autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: DC907C0004
+X-HE-Tag: 1793706596-537980
+X-HE-Meta: U2FsdGVkX19R7Kl/AYOuvU63XiEpgiFq62FXC5t1opfHa2e08GudrXLj71dphLRbSszETaZmMELe59yuPWyLF8tjHqP0ZkWe0KzyXBpH5UpYSN68CBMPiVP5lQAVB0dweleQB4LogMQw3MXI0R9n0Bf5eQbYOIdY+p65SKPKkU6FjHVggAPhsA6PgyAOW1nqhJytWyXkw/UDDtKc6t8UkQzHTmGKWRdPHVgNoBF/QLtzp3pqFUvEak5ZLHeIMoR7b0WfdCd0tDZzXiYcQg6vUx1bl1agtR4fP0qLckKlAuoZxgUP5tYAjfmKoTPZA2BKDWQVB4ImLPsJJRLce64pjJ2Y5v+7wYrPqges5hGcsFEKXUp36irjGsAia6tLV18nnW1EUhrKetTuHcbHXnIiTcemNcTG5dmcAceAVqu110+EsC1SvuKaR+SgkZoyxaRniuDpgo1d2o+Xdlw81IDOTXCt09Y9PMyVd2G6qXAyc12yF521Ish38i2YWEiz3ciYBXuXL1R8slKh1hZcHUDq51cPo7vVuhPuynw2tReNZV25LUw37dJFiee6KFUPgP6LOxYVCU/kMOCnfJYBtwR2zXbRQc7KUxgfgy+5/4EeHcn8wOjxfWHQun57W+kZmvIk6RW4yygMMUIgaUXRenMo6ew/5OQC6scLjMRO46dX/unQoFgGZ4BRtfMqKfV5/R/vC1HeyR1msP1Qt0WlNx1oflAoOTAT8y0GWt/nPcCqB2piQRzY9lLDxw3tPoQUQaanIE/lviphm+nsT8kgHYsCeYhu/PXfuEbNmu23Cxu2j+PYRLKkG2vZqMVaoI6AkGvUSKWXIZUTxUnR0Kl2+bHCwAPAh25tjyHjsrhUH7oaWQs+O/JaWuLXbdbigN/f5oSS9h0QT0F8z9U/rxGQ04ccY+ODzG9rvIrHKkN4WI4xODsih4T8oaTyJRDYrjGsSf9fpiWGy0u1lSyMW47enAw
+ 6LAw66Hi
+ B6FnVXFwlvcPOCdV+F8E+GdwaGuk/3DBQbgox8Xx3uicHwEoUI/5BVJGMDNnJ8nKbHWaWgt9w8SXoNCVlPU/FuMDIg+RgA672cfFwJ+GNlDiLyGpwZeoiG4Zxg5SCTfwbBmTiccu8OPWAg0ZIgvsjmJMSwUAhQNaXugLigzjAiWBI5WZ544038czGWJYKvvllELf8mY/zCJ+UEnJP9EqTlBFbznLy24KTLdY15eAclnDA+IXvzLlL6fh+bqiGgebAJ6nGJx8ddJiE2KI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -155,46 +101,31 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Tue 27-10-26 13:59:59, Pedro Falcato wrote:
-> On Tue, Oct 27, 2026 at 11:27:00AM +0000, Salvatore Dipietro wrote:
-> > Since iomap gained per-block dirty tracking, a large folio can be
-> > partially dirty: struct iomap_folio_state records exactly which
-> > blocks are dirty, and writeback only writes those ranges.  The mm
-> > dirty accounting, however, still charges the whole folio even if a
-> > single block is dirty (up to 512x over-accounting for a 2 MB folio
-> > over 4 KB blocks).
-> > 
-> > balance_dirty_pages() then throttles writers against a number that
-> > is unrelated to how much data actually needs writing back.  On
-> > workloads that repeatedly dirty small ranges of large folios --
-> > e.g. PostgreSQL, which writes mostly 8/16 KB pages -- dirty_thresh
-> > is crossed and writers are throttled long before the real dirty data
-> > justifies it.  On the benchmark below, run on v7.3-rc7, the
-> > unpatched kernel charges ~159 TB of dirtied pages while writing
-> > ~6 TB to the array, a factor of 27; with this series the dirtied
-> > pages charged match the data actually written.
-> > 
-> > This series makes iomap charge and discharge the mm dirty counters
-> > per dirty page for folios that carry per-block dirty state, so a
-> > partially dirty large folio is accounted for the dirty part only:
-> 
-> Why? This looks wrong. Yes, you may only have dirtied e.g 4K out of a 2MB
-> folio, but the whole 2MB folio is still effectively pinned by the VM, awaiting
-> cleaning + writeback. And that's precisely what we want to measure and
-> throttle in certain cases, so that e.g the VM system never finds itself
-> short of clean pages it can reclaim, and no easy way to start writeback
-> on them.
+There were several reports about issues with KHO bootmem sizing.
 
-Fully agree on that. We have already discussed this with Joanne about one
-year ago [1]. There are some aspects of dirty accounting that could be made
-more finer grained but overall the whole folio is difficult to reclaim due
-to dirtiness so accounting it all is the correct approach.
+The bootmem areas are sized from overlapping views of the memory reserved
+in memblock, so on NUMA systems memory allocated on a node is accounted
+twice and with CONFIG_NUMA=n the lowmem and the global areas are accounted
+once again in the area of node 0. Besides, the lowmem and the global areas
+are reserved even when they are empty.
 
-								Honza
+The first patch skips empty bootmem areas and the second one makes the
+lowmem, per-node and global areas cover separate parts of the reserved
+memory.
 
-[1] https://lore.kernel.org/all/20250829233942.3607248-1-joannelkoong@gmail.com
+---
+Mike Rapoport (Microsoft) (2):
+      kho: skip zero-sized lowmem and global bootmem areas
+      kho: fix bootmem sizing
 
--- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+ kernel/liveupdate/kexec_handover.c | 142 +++++++++++++++++++------------------
+ 1 file changed, 72 insertions(+), 70 deletions(-)
+---
+base-commit: 6628e7d4c6b25c8d18f1345e3a20d21829aae7e4
+change-id: 20261103-kho-bootmem-sizing-5d6aed47a243
+
+--
+Sincerely yours,
+Mike.
+
 
