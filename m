@@ -1,98 +1,97 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8018606D2DA
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 14:54:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E60A606D821
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 14:55:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=oyWNj3a1
+	dkim=pass (1024-bit key, unprotected) header.d=goodmis.org header.i=@goodmis.org header.a=rsa-sha256 header.s=dkim1 header.b=ccOpwd2t
 Received: by kanga.kvack.org (Postfix)
-	id E52FC6B05CA; Tue,  3 Nov 2026 09:54:41 -0500 (EST)
+	id 57B766B05CB; Tue,  3 Nov 2026 09:55:30 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E2B196B05CB; Tue,  3 Nov 2026 09:54:41 -0500 (EST)
+	id 552DE6B05CC; Tue,  3 Nov 2026 09:55:30 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D68936B05CC; Tue,  3 Nov 2026 09:54:41 -0500 (EST)
+	id 492F36B05CD; Tue,  3 Nov 2026 09:55:30 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id B47CD6B05CA
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 09:54:41 -0500 (EST)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 3FE6C40451
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 14:54:41 +0000 (UTC)
-X-FDA: 85394104362.06.01910D6
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 92E88A0009
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 14:54:39 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=oyWNj3a1;
-	spf=pass (imf15.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 262976B05CB
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 09:55:30 -0500 (EST)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id C0154A8001
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 14:55:29 +0000 (UTC)
+X-FDA: 85394106378.25.73EDDB6
+Received: from relay.hostedemail.com (unirelay03 [10.200.18.66])
+	by imf28.hostedemail.com (Postfix) with ESMTP id E2329C0009
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 14:55:27 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	none
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793717727;
+	b=pFBR7c7RjOnvYSNj4q7qacxaDEjq/Vs2ZRmztI8idzM46gOeT9fOkbUb6aHxulGdtkztNF
+	RMpSPXUsZiiRyyoyIxrbOfKgeY92thgC/3Yc4X17yd3HD22m4Eb2ibAjKKsbuhVMCId4Ea
+	NjYcjskuHjGu60tciqZDDtDTTNVGWLg=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793717679;
+	s=arc-20220608; t=1793717727;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qOY8crhkUmo/P2M0E7e/arrqNxJQQuOOJdNxg87jljQ=;
-	b=Pxpj9ADJKlT5/lJDZ67NzuxpvWhjA8d7KFHlnpKqLjOpXnWQhN2/2XATavG+YJsz588zvu
-	hHnfoKriwHBc+A9HwHjRTwdk3B+7FPDeWgIh7rxIMq0lP4ghQVU4utQ3lJKGuiLH6rytwU
-	n9FGfRj00wY3d+DEDOzrpprnZlQG33o=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=oyWNj3a1;
-	spf=pass (imf15.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793717679;
-	b=p92ZRh1BROLpnyERWgkbWsXdoZ0O6Gh1OBNh0OdNyfGshRlYq3z/3H7OENJPIhOdU8tzwc
-	pp7wjcMpmgfI3WDLNCCbL2W885o2Mfe8LAqaLRuLLetENzwg6Uaujz9DRqhZFigdlw9rhL
-	sXOPftpgx85DtpKkWNngJTkvbQb4J6U=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id B7A5B41650;
-	Tue,  3 Nov 2026 14:54:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D8FD1F000C1;
-	Tue,  3 Nov 2026 14:54:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793717678;
-	bh=qOY8crhkUmo/P2M0E7e/arrqNxJQQuOOJdNxg87jljQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=oyWNj3a1vVxuIaAVTUBnHRDIMKYpXa1HPYC0kYU52fKugBKYDBoEpGgu1FOg5S2nE
-	 HknINThy2NsIwEGZPkkcQaxa8AurBfZBaio4B6QqlNwqmjH6yX9jgEPE0+N6GF22I1
-	 OqQpcPNmz8/GNuFd+bwEB37DAzcA7IbFNo2r24XMQ8/ZCkeWrXUcUaiyeDAtnoKiG/
-	 vy+O0FeEBAsB3znZI35TWlV2rOmHRbhqOWgP8dKJcoEfsh10aNP2CbaR2BSz3+0pFA
-	 jN7p/RDuVIz41iQVj/ZjD0jKh4uUA5hg1ZYjK2XDuScMiXZjWzFX8Jx/QtzX/DcDK+
-	 KzrG84uQHXIrw==
-Date: Tue, 3 Nov 2026 14:54:36 +0000
-From: Harry Yoo <harry@kernel.org>
-To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Cc: Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Muchun Song <muchun.song@linux.dev>, Andrew Morton <akpm@linux-foundation.org>, 
-	Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>, 
-	David Rientjes <rientjes@google.com>, Alexei Starovoitov <ast@kernel.org>, 
-	Pedro Falcato <pfalcato@suse.de>, cgroups@vger.kernel.org, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, bpf@vger.kernel.org
-Subject: Re: [PATCH RFC 1/4] mm/memcontrol: do not drain objcg stock when
- spinning is not allowed
-Message-ID: <aun1FofGFtjPjQHy@thinkstation>
-References: <20260624-kmalloc-nolock-fixes-v1-0-fdf4d17351dd@kernel.org>
- <20260624-kmalloc-nolock-fixes-v1-1-fdf4d17351dd@kernel.org>
- <104794ff-9f04-48be-91e8-89d5d2269f95@kernel.org>
+	bh=yfddeYQH6ujsdtrqW+DK7nJG3jSGc85HvZV3WQ41HAI=;
+	b=SBwYfh49zIJR+7a55TE2dDRb3CZJPO4MAozhNq2qHo4kzZT41uFk63G5kQ074YGkzonuD/
+	507rPERbP9fbiYUCV+mdgFyg7co1cKzAoWfsXd4ZdAUJ9norh3BGwV66mNsRYCwKR+zyYU
+	bMD21rhQHm96Q2h65ZAzv4Ptc7mqF80=
+Received: from omf19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 9CF50A0427;
+	Tue,  3 Nov 2026 14:55:23 +0000 (UTC)
+Received: from [HIDDEN] (Authenticated sender: rostedt@goodmis.org) by omf19.hostedemail.com (Postfix) with ESMTPA id C284720028;
+	Tue,  3 Nov 2026 14:55:13 +0000 (UTC)
+Date: Tue, 3 Nov 2026 09:55:12 -0500
+From: Steven Rostedt <rostedt@goodmis.org>
+To: Aaron Tomlin <atomlin@atomlin.com>
+Cc: pmladek@suse.com, john.ogness@linutronix.de, senozhatsky@chromium.org,
+ mingo@redhat.com, peterz@infradead.org, juri.lelli@redhat.com,
+ vincent.guittot@linaro.org, dietmar.eggemann@arm.com, bsegall@google.com,
+ mgorman@suse.de, vschneid@redhat.com, kprateek.nayak@amd.com,
+ akpm@linux-foundation.org, baoquan.he@linux.dev, rppt@kernel.org,
+ pasha.tatashin@soleen.com, pratyush@kernel.org, ruirui.yang@linux.dev,
+ david@kernel.org, ljs@kernel.org, liam@infradead.org, vbabka@kernel.org,
+ surenb@google.com, mhocko@suse.com, kees@kernel.org,
+ anna-maria@linutronix.de, frederic@kernel.org, tglx@kernel.org,
+ mhiramat@kernel.org, mathieu.desnoyers@efficios.com,
+ brendan.jackman@linux.dev, hannes@cmpxchg.org, ziy@nvidia.com,
+ bigeasy@linutronix.de, clrkwllms@kernel.org, linux-kernel@vger.kernel.org,
+ kexec@lists.infradead.org, linux-mm@kvack.org,
+ linux-trace-kernel@vger.kernel.org, linux-rt-devel@lists.linux.dev
+Subject: Re: [RFC PATCH v2 4/5] printk, tracing: Support console flush
+ suppression and tail pinning
+Message-ID: <20261103095512.7b8c2d3f@gandalf.local.home>
+In-Reply-To: <20261103024453.922373-5-atomlin@atomlin.com>
+References: <20261103024453.922373-1-atomlin@atomlin.com>
+	<20261103024453.922373-5-atomlin@atomlin.com>
+X-Mailer: Claws Mail 3.20.0git84 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <104794ff-9f04-48be-91e8-89d5d2269f95@kernel.org>
-X-Stat-Signature: xnxwctjjupfxsfqgimeaysnky8uk6c4b
-X-Rspamd-Server: rspam01
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Session-Marker: 726F737465647440676F6F646D69732E6F7267
+X-Session-ID: U2FsdGVkX18bF8bDrvU8IQ31ZfoMj2/1FBDtsGgnaNM=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=goodmis.org; h=date:from:to:cc:subject:message-id:in-reply-to:references:mime-version:content-type:content-transfer-encoding; s=dkim1; bh=yfddeYQH6ujsdtrqW+DK7nJG3jSGc85HvZV3WQ41HAI=; b=ccOpwd2tRjlDkvLbOszT0B1ym6UiYCfrRWT0qA4+g9GnoqpEdGbtdba9bNqnSGo8WEXhJAmxC0nC9r/jQRz0ydIwgnnbdbE+fkNtv7+eOe9CahVZ9Tf38wAfwDUrGkJffHQpfufHMkf6c76Qt5z5WupeU0bID+ji4KLPijQfrbw=
+X-HE-Meta: U2FsdGVkX19lBMKb7T+S15I1bJ1yR/TpScDr1lLD4QbN59L8ZM4I0NZGtNhm2A8c1bmSxupnsLnRAsBUwVGiAfWzpLEfSX3Adc9DNtb6PKQ5qJNeVEATThLVWUurVwo9CE5t/iLx93jzKYVjROq1YZpyEKFbbFeS0fkiZcRmgC2kbjBnXH6i1894/YQUb3zmpt9AzD9eP/WJIIhyybCls1BbTVchuLjJ9gzzG6y6eMRLctFBr4SOmLD53JvLUC49y8ZRAywfuklEeeyZQgz1N8jIf42a2Jf292eBO4csSC2VZy7+hRLMlrdiX2PfR5HNPn57OrUIwJiwWiRoeehnpiHDKniSg9g5+r1a5FR/JVhzWytRVeYOTvnpX6+QVIy/
 X-Rspam-User: 
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
-	autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: 92E88A0009
-X-HE-Tag: 1793717679-627393
-X-HE-Meta: U2FsdGVkX18/ogZ+R+IBOvJSAdQaXQzdrhhH9X0pLDU5w9V0tCtse/H5F2m0mPqTcqa2ApXdO884H6GjXJhFe+L/VnXHCOyRCoEhHgncMMT/RXsJIpEU/0Iem2PEdJwQDx3Nkfm3M0vxXwHmXyQ89U1dz0HNmeC/RczM8HJa9WND6sGQGg5AqV2jUrQhFg251injODCsYkcchW3xenzqoB1wQDvxhNaxr0Lks7MVNcAt+YnZB5H6hZzL/lzrw6ukUu1CfDPg8+A63MBbP7qJkMSoLMpVY64uMy72iFStVfpdz9+o8dOoCbpGVmgjKlOXPsjmjhcmhVY6Ei2bBbNi1PghaL0ONB/Y1by+HXSR382aqcjI6/nvC1MdYni/MVCNP8QWvfZ+vYMRCdiaBX00WR9MxRa5PXxT28oRtcdqwEc5Dpm9o8cI/+McNF2rQUf53ao2ibbprdn9eM5JKaNmDfsPDpbCjf+Un9j4DRxrH7ZBOjodfNkVXaqgL9ZVV+/MlI2gV+NDR6JyG0I+gz54++kDnOitAdWvImqDTPPwhT7THNI/mVjDAXBgmgP1lbL+G2mtd4Hgb3KWRprRSfsLoPHSJ3N2BfhWHW2eYoCYlZoHT8gYjVAnATSdi54AZlrpK52mszK1rCFjvB6egMQFu8GjNuPqNhHdBg5O3j4LthlPBorFY4FV5auKUru6I0KBaX8sQYMBKSx2oKf8EbibRaxB1d3hsT/DgTKZ5MJhx4pN15oikRIUq1gmeQ0fgcj4zAto2B4KiO+FnxhMR5udHMCZct67/U7be6+Fsgt3bzJRgWYQ9W0ua8qFYvbVdcZBfOix8/lSA9zgGZ+c5c4vvoD78NQJHawsKABc/RlwV/N2ha5tryy5wdddqs3m/PC0veAJ/mJpL//qFlWDfADT9IlK+CELNitcHBjYpS6WHu+bL6VwvrovzG2oNDD24B/TaQomdahNt0KZDlm8yBE
- Dr64NSQi
- 5A5gM2hzkHnyodXh6nnatu69HSKSDhRzIHsnkUk/lb8PZp1+GhFS0UqsICog+7mqsyQDbkQQqVKhOG2YJV8vm/TRM7ofC3P93nvzDCoLn0Wb1q6khLB3vzPMKrO7D2/Skv7BW6APW4saAp0cmk5dZ6BakF88gTF5/+C7mXgKToMagBjY7Wakmgv0KoBagEgfSN+Q8BcaO1l7bVpC6HIXJqCSl+boZ1nIK7ljq53FpFduK6vx2M7QpFSbwLjK/+/Mj9YVb
+X-Rspamd-Queue-Id: E2329C0009
+X-Rspamd-Server: rspam07
+X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,UNPARSEABLE_RELAY,
+	USER_AGENT_SANE_2 autolearn=ham autolearn_force=no version=4.0.1
+X-Stat-Signature: nc4kisin8m3wyjdgtdpom7c1au41iqa3
+X-HE-Tag-Orig: 1793717713-47761
+X-HE-Tag: 1793717727-446471
+X-HE-Meta: U2FsdGVkX19CuxCBnNNQQdb7IqxFzXNLr+1iqLjYQzyNSfVWB0z/ZUhQdT9JKZLxbMZNWQcxIco+sdoEtwA109yERWbRPcz7ZJUvjq0kmjtgO3WyHukIY6a/6JW0PyX69nP2f8VVBdkbZuLRZng9DcsjBFlbzA5UyHWeFW+AjIB1WL/jQdaHpUBtHUD5lWO4gdRwODDPQ51nfwOwoFJCbuFGi1bpPDEVmcsfdvMDcQtTFeol6Fq2MBnWz6lc/m1UHhvEZq7e71kVZ2XrgoEvOYtpEaaKOAhyW+fCPL38HI5hZ1COvqX9IAEC/XYr9kFoeiZesTShL+EneE7vZiBNSNkYCL8lPDryFcLRe14LSf0OzpWTxA/8SNO5wU8Vib64dPKt5AZm8Z1BW9Z+13urhpD8UfK7I8e9ZXM8AQm+cb9o2Mu71vLVm8bVkVnSOuK4ZQPds0mQ5G7reKory5QIr24qA9aNZ7yUvNzAQy50Z8ngCjzCQsQnxJFixO+G0rwwObKwtIADAw0IhIsTEt2BNQ3XJ81T3hEccp61lS+jSvhgp75jmPI+Z4+bnfaXTQs/4s767NCK3PeRgkeMGElllZ0hBMudw1DEe1CqmUETOpyejvyEKcR9/mWeuQG+3JMMxY23xvC0S5M30xb3LMCMLDRSG1FxRRzn3LGR7yxNqBV4y6mZkaBukgVzJkhwuiIjklzOKDGGfbqbR+TZClxrupu3LWFbQ9sLIk89uddehjme8WNzg+zru1qNUUSjkAHJ4aEBfnG1aVoVfs/W9W8Q8fdxJoa1rwDKH9zA0p2C6GBUvPuBsEZ6XaZRotLvxP6n4hXNhss48Jl52+NwL0hrYdyhJ6SFjqM5kqbLiKXAW/E1P/xugnbrOj7Z5hrC1KTz3CyLv4YXOFWsIxh+Ru54TILlHCIj4a2gwklIHC70QtgJlMaNpTVLb0WaxCJlmOfPz8Xq9lwj0VHSr+Mj5Bu
+ bmDT7Dc9
+ mHfwd1SdkWMgnb53cKnPIuPDsqAKoRJGbDt2lheX6dqGbfj7BbSBXR1y/F55xxY27ml49MazxFiMHDTySqeiV3vd/nfKE0bWIGcEpzaX4ly3YCmU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,62 +100,81 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Fri, Jun 26, 2026 at 04:30:48PM +0200, Vlastimil Babka (SUSE) wrote:
-> On 6/24/26 15:11, Harry Yoo (Oracle) wrote:
-> > When kmalloc_nolock() drains objcg stock, the stock might be holding
-> > the last reference to the objcg. Since obj_cgroup_release() is a
-> > callback for percpu refcount and does not know whether spinning is
-> > allowed, it is not safe to invoke obj_cgroup_put().
-> > 
-> > This was caught by lockdep on PREEMPT_RT because acquiring
-> > a sleeping lock (objcg_lock) violates lock nesting rules:
-> > 
-> >   kernel: BUG: sleeping function called from invalid context at kernel/locking/spinlock_rt.c:48
-> >   kernel: in_atomic(): 1, irqs_disabled(): 0, non_block: 0, pid: 1267, name: systemd-resolve
-> >   preempt_count: 1, expected: 0
-> >   RCU nest depth: 3, expected: 3
-> >   6 locks held by systemd-resolve/1267:
-> >    #0: ffff888a8165fa20 ((&pcs->lock)){+.+.}-{3:3}, at: kmem_cache_alloc_noprof+0x185/0xa20
-> >    #1: ffffffff9658a4c0 (rcu_read_lock){....}-{1:3}, at: rt_spin_trylock+0x74/0x2a0
-> >    #2: ffff888a81648598 ((lock)#4){+.+.}-{3:3}, at: trylock_stock+0x118/0x380
-> >    #3: ffffffff9658a4c0 (rcu_read_lock){....}-{1:3}, at: rt_spin_trylock+0x74/0x2a0
-> >    #4: ffffffff9658a4c0 (rcu_read_lock){....}-{1:3}, at: percpu_ref_put_many.constprop.0+0x40/0x270
-> >    #5: ffffffff96af11d8 (objcg_lock){+.+.}-{3:3}, at: obj_cgroup_release+0x8a/0x410
-> >   [...]
-> >   Call Trace:
-> >    <TASK>
-> >    dump_stack_lvl+0x8a/0xe0
-> >    dump_stack+0x14/0x1c
-> >    __might_resched.cold+0x233/0x2bb
-> >    rt_spin_lock+0xd3/0x410
-> >    obj_cgroup_release+0x8a/0x410
-> >    percpu_ref_put_many.constprop.0+0x226/0x270
-> >    drain_obj_stock_slot+0x27e/0x8d0
-> >    __refill_obj_stock+0x409/0x6d0
-> >    __memcg_slab_post_alloc_hook+0xa45/0x1500
-> >    __kmalloc_nolock_noprof+0x988/0xc40
-> >    [...]
-> > 
-> > However, this is illegal in !RT kernels too because the objcg release
-> > callback acquires a spinlock even when spinning is not allowed.
-> > 
-> > To fix this issue, fall back to atomics when the cached objcg doesn't
-> > match, but it is unsafe to drain because spinning is not allowed.
-> > 
-> > This is expected to affect performance of kmalloc_nolock() since
-> > it can no longer drain and refill the stock and falls back to a
-> > per-objcg atomic counter (objcg->nr_charged_bytes).
-> 
-> Maybe it's not bad that the constrained operation will not do a drain? Could
-> we say it's likely that both _nolock() and normal operations will likely be
-> happening on the same cpu for the same memcg, so a normal one will soon
-> handle it?
+On Mon,  2 Nov 2026 21:44:52 -0500
+Aaron Tomlin <atomlin@atomlin.com> wrote:
 
-I ended up making obj_cgroup_put() and obj_cgroup_release()
-safe to call from any context as in RFC it's easy to overlook that
-obj_cgroup_put() is not allowed if !allow_spin.
+> diff --git a/kernel/trace/trace.c b/kernel/trace/trace.c
+> index e8c4efa8107b..35a56f04e9b3 100644
+> --- a/kernel/trace/trace.c
+> +++ b/kernel/trace/trace.c
+> @@ -9519,6 +9519,9 @@ static void ftrace_dump_one(struct trace_array *tr, enum ftrace_dump_mode dump_m
+>  	else
+>  		iter.cpu_file = RING_BUFFER_ALL_CPUS;
+>  
+> +	if (printk_is_tail_full())
+> +		goto out_enable;
+> +
+>  	if (tr == &global_trace)
+>  		printk(KERN_TRACE "Dumping ftrace buffer:\n");
+>  	else
+> @@ -9537,10 +9540,13 @@ static void ftrace_dump_one(struct trace_array *tr, enum ftrace_dump_mode dump_m
+>  	 * and then release the locks again.
+>  	 */
+>  
+> -	while (!trace_empty(&iter)) {
+> +	while (!trace_empty(&iter) && !printk_is_tail_full()) {
 
--- 
-Cheers,
-Harry / Hyeonggon
+Wait? Is this to prevent overwriting the printk ring buffer? If so, this
+is wrong here!
+
+In your change log, you mention not losing the initial oops or registers.
+But if someone is using ftrace_dump_on_oops, that's not what they are
+after. They want to know what happened that lead to the crash. That output
+is at the *end* of the trace.
+
+By stopping the output of the ftrace buffer early, you just lost the
+information you are looking for.
+
+-- Steve
+
+
+>  
+> -		if (!cnt)
+> +		if (!cnt) {
+>  			printk(KERN_TRACE "---------------------------------\n");
+> +			if (printk_is_tail_full())
+> +				break;
+> +		}
+>  
+>  		cnt++;
+>  
+> @@ -9551,19 +9557,25 @@ static void ftrace_dump_one(struct trace_array *tr, enum ftrace_dump_mode dump_m
+>  			int ret;
+>  
+>  			ret = print_trace_line(&iter);
+> +			trace_printk_seq(&iter.seq);
+> +			if (printk_is_tail_full())
+> +				break;
+> +
+>  			if (ret != TRACE_TYPE_NO_CONSUME)
+>  				trace_consume(&iter);
+> -
+> -			trace_printk_seq(&iter.seq);
+>  		}
+>  		touch_nmi_watchdog();
+>  	}
+>  
+> +	if (printk_is_tail_full())
+> +		goto out_enable;
+> +
+>  	if (!cnt)
+>  		printk(KERN_TRACE "   (ftrace buffer empty)\n");
+>  	else
+>  		printk(KERN_TRACE "---------------------------------\n");
+>  
+> +out_enable:
+>  	tr->trace_flags |= old_userobj;
+>  
+>  	tracer_tracing_enable(tr);
+
 
