@@ -1,100 +1,129 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF2C8606A94F
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 08:34:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF02B606B6FE
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 08:34:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=WBOLm89A
+	dkim=pass (2048-bit key, unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=google header.b=D+1MEvKh
 Received: by kanga.kvack.org (Postfix)
-	id 04AA26B05B5; Tue,  3 Nov 2026 03:34:27 -0500 (EST)
+	id D6B2B6B05BC; Tue,  3 Nov 2026 03:34:38 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F3DD86B05BC; Tue,  3 Nov 2026 03:34:26 -0500 (EST)
+	id D42576B05BD; Tue,  3 Nov 2026 03:34:38 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E53DE6B05BD; Tue,  3 Nov 2026 03:34:26 -0500 (EST)
+	id C0AA06B05BE; Tue,  3 Nov 2026 03:34:38 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C354A6B05B5
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 03:34:26 -0500 (EST)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 5266B140315
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 08:34:26 +0000 (UTC)
-X-FDA: 85393146132.25.40AB045
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf21.hostedemail.com (Postfix) with ESMTP id B798B1C0006
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 08:34:24 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WBOLm89A;
-	spf=pass (imf21.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id A18236B05BC
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 03:34:38 -0500 (EST)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 30C1D80345
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 08:34:38 +0000 (UTC)
+X-FDA: 85393146636.11.F80498E
+Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 37B5E20005
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 08:34:36 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=D+1MEvKh;
+	spf=pass (imf03.hostedemail.com: domain of mhocko@suse.com designates 209.85.221.53 as permitted sender) smtp.mailfrom=mhocko@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793694864;
-	b=c0UlTv6UMiE4nAkZKvylHAG7P/wneGsLwycXUSBlwTrxM9BvRY0hn4CAN5kBAq0ZHmT63+
-	9BdD7Srwui1EWua4tD8pJZyKdl9TswtOZLQJPgmtTfmfUwhQKOCLBDewi2ugxgyJaWzN2G
-	XgKFPyo6x7P1CcG54cz2eeY7f0rLBhU=
+	t=1793694876;
+	b=H4YtdX3lgWOeuVWplBwCHIyqr/26O7EOUu7ytePgSdiO3ZqzzIvcsY/Y/te2pSx+AxujJb
+	9YLyYtE3QT2osiMh8EmUimEzIewps/yOtG+0nPnMack1rwtxVylN529GZwiqsc8rJieZoq
+	TNqxvFH/jfWa7clQhPPIvQoj6BKo72M=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WBOLm89A;
-	spf=pass (imf21.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf03.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=D+1MEvKh;
+	spf=pass (imf03.hostedemail.com: domain of mhocko@suse.com designates 209.85.221.53 as permitted sender) smtp.mailfrom=mhocko@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793694864;
+	s=arc-20220608; t=1793694876;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=aN23VJMnhewW35EFlasRUP/lg6fg3jZoPm2+MgYcpys=;
-	b=Al0tvq14AbNFkQSV6v6G9EwDtjxS4OJIi4BEVp+qHTNDJhgZekt647pO+IzN7D+uqYvDZg
-	MLLvtCN52H0MqE5Cr0rnTuV+abXhD8IkF+AiFdIVVl6HVI3yNm14X8Om5tuHpdrKbV0Hqn
-	5KRBR5ajKnduc5QPxL+Nr69g1/hNuj0=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 5653D60628;
-	Tue,  3 Nov 2026 08:34:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AF291F00A02;
-	Tue,  3 Nov 2026 08:34:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793694864;
-	bh=aN23VJMnhewW35EFlasRUP/lg6fg3jZoPm2+MgYcpys=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=WBOLm89AFwFi8IKVAeRS7jeysXzyogNfn+p+fbL1rf1QBt3Zxg3/CWf/4PwF8AjJ5
-	 YwD6VCr9pSdjp3MvVSrREbeBsfgPF3a1RD97c3PzrlJiIzmPvPZL0WjaW3r9AdNHaa
-	 qMsQl5xEa5W1LsZfQxkqjaLzYNT8k+fX/Qskx8KMjt4KokItdq9433mvMAK3oo1IMG
-	 VfS6LfCspss/z3XnogPK2QMaRXW52/5QJXrxI7J83/zHlASPGusI2dtAjkyktWZjOV
-	 IujbpWEanzXE27yWs+vhB3zULLkKkMcVZo4XR6lnjjGAjh4BT1q7Ykt7AF3Gb9NRA2
-	 2BABiVeJtVtzw==
-Date: Tue, 3 Nov 2026 08:34:15 +0000
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Tal Zussman <tz2294@columbia.edu>
-Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
-	Jan Kara <jack@suse.cz>, Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Zi Yan <ziy@nvidia.com>, 
-	Matthew Brost <matthew.brost@intel.com>, Joshua Hahn <joshua.hahnjy@gmail.com>, 
-	Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>, 
-	Ying Huang <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>, 
-	Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, 
-	Hugh Dickins <hughd@google.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 3/8] mm: remove clear_page_dirty_for_io()
-Message-ID: <aumcgdzoPhuB6zQc@gremlin>
-References: <20261102-page-wrappers-v1-0-e7280bdb31f6@columbia.edu>
- <20261102-page-wrappers-v1-3-e7280bdb31f6@columbia.edu>
+	bh=o94uNRQqzrylUu01kiRSHaUQ5l5ZXHsTJxuqTtmUWsA=;
+	b=n85ifCQ6inAxYZY8igDa6aTnRtN9Qo1kwceofGoPZy+sy4RJBJvhM6cYMkjM/LRMK7Z1jp
+	gm0xe9l9xWMlrNbfwg23uW27KJ/RFRcP2tNib3NfTqcFx0hUyx7QsuLUm35kRA/l3/QXU6
+	hqcu4cNiQM97KC7yOyQG4Zog++qpgFo=
+Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-48afbd2c386so2221213f8f.3
+        for <linux-mm@kvack.org>; Tue, 03 Nov 2026 00:34:35 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1793694875; x=1794299675; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=o94uNRQqzrylUu01kiRSHaUQ5l5ZXHsTJxuqTtmUWsA=;
+        b=D+1MEvKh8qIlvBAoyQEDgVs6tPdKSoGvIsOQk43vm9DYCc7fYXmkczAq/u8A08CW35
+         CCqi8C6E8BLodpN5L0Uy0VS7DpY5RXN2VxotEuwlM7XKkxBhAQdFkRqfQbIiuyMiber5
+         t9CBpPMMRFwYdAxckl5qgv6KRjJVblpxnlq7+AOw3kb4NUti2paX2KEkTfBRaejaMyYG
+         RMar/Rw8EoPbdUQV8Qx3j+E2RVDytkBR31+LDTusKd43trp+9br9ZfeIuQQsMiXGmCid
+         QK+fvdHLAvXPshSs4pLzPCEKsoqRe/2XZE9Ci1PcWubrVYSGyzp6JPZqkGfVk8rn8ccK
+         ECUQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793694875; x=1794299675;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=o94uNRQqzrylUu01kiRSHaUQ5l5ZXHsTJxuqTtmUWsA=;
+        b=O43ix/cCW2dpMz2lTkhZw+SlY85kMHJKSt20lLng92e3ALC142X59qSMWMsDt+0A8Z
+         KcMoLfnThx15aR5lnt/ykNC3tAJILxBsFsrxnjADpFhWyX+CBMn27GGC8rwvnaaOdmKs
+         5ph18ORNx1jf8xWf8vAxf/ip4Y0jVho+6TjobU0eQUQHkdjCBwWxirxPlKJP3UfdFgXI
+         GaCCV1lrADrCmsZ3X0jz70jIkAJt7CrJNA+Tl5IVVD7SICxY+18zkrxrIHoJm3N0a2VY
+         V4kWZrqCod+7oKX20B0j+GHDrGxgGQVPIt3zIMQuCJRJqYiyXPJ/L3fme8PSgzCC5ZBo
+         AsVA==
+X-Forwarded-Encrypted: i=1; AKwUvBx2qB3zEB+6bhMKzjFrJ3qzd5uS0wC1aE0QnoZT+vs2bfJukiKAicOr58okJH2jvc4HlvzlYOx2jA==@kvack.org
+X-Gm-Message-State: APuU4Z9gr47KiYxttZqLEtoChrUS2RQX29aWlaf1kdUi2o1HXrlP0OXl
+	MaCI95nNF+WMKFdPkZHv0W09xl/6yDXP2N6h/0UeehRO6CagCIPrDljyEL1XDZHS8wg=
+X-Gm-Gg: AYBFou0NNZbTaEhGoaavmOEEpDaPHAs01fYFlooDuAVP5Eij1c2rj8srrsZ3YN9Buhw
+	LYnVbzI2OAOEnxGVeYJ8IZsybduZWE2K/9rewlkRPEDz0oZMlkncm7EKFGQe50E+XX16h47/y0D
+	dqK35RLj9Aj+58rMDx1OBDhlOHWJvNjUh3yuOTreuyF8Ncu8JBZruCVDMaN+zUtChRu3yvR7Fl5
+	+lp69hC514O4QAcMmmdbFEsVs12pV0YBLer786YD/NpuD+dmgLv6UT0oeAmbRalyKwXqw9avdmv
+	YM0GO+OA9Rrt9XkEUMx1dT51ivZl3UyogDS9rLuLc5pRoEE0sqkWhDeN5FmT9YfrWsz+0A/xSzG
+	gzRTPNs52RCT6JyomEivGsTnV6h4g+MFP60SuEG/szg/50mDbGhCQv55yazFxQYEzSbkhdsvQAk
+	9qGl8kMP9NOU4bZRqsSmYLZrpJA4bm+6kk+1ACnFcQqoQNSz/WvBbnUMMnPE8hJ+QCQUSI0M/JE
+	+BSwIp+9NE7EAhBhEnMchEMn7bJycV/6lBhjdL8eRS6BdXmU7I+zvG4cy0DMlv9sHfiQnNb+K7N
+	Oz8R5r55JviB+S5Z8XoFnghNGFfV7A1ooGZUhCs=
+X-Received: by 2002:a05:6000:2892:b0:48d:eb44:650c with SMTP id ffacd0b85a97d-48e6e309f40mr28006453f8f.40.1793694874669;
+        Tue, 03 Nov 2026 00:34:34 -0800 (PST)
+Received: from localhost (109-81-32-81.rct.o2.cz. [109.81.32.81])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e71b8a7d1sm23718452f8f.38.2026.11.03.00.34.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 03 Nov 2026 00:34:34 -0800 (PST)
+Date: Tue, 3 Nov 2026 09:34:33 +0100
+From: Michal Hocko <mhocko@suse.com>
+To: Shakeel Butt <shakeel.butt@linux.dev>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>, Tejun Heo <tj@kernel.org>,
+	Harry Yoo <harry@kernel.org>,
+	Meta kernel team <kernel-team@meta.com>, cgroups@vger.kernel.org,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 2/5] memcg: force charges from reclaim before trying
+ the limits
+Message-ID: <aumcmb9iBpovh97u@tiehlicka>
+References: <20261030205418.341214-1-shakeel.butt@linux.dev>
+ <20261030205418.341214-3-shakeel.butt@linux.dev>
+ <auhN7v127jwy-q-W@tiehlicka>
+ <auli2Zlf1F0tyi4X@linux.dev>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261102-page-wrappers-v1-3-e7280bdb31f6@columbia.edu>
-X-Stat-Signature: f6wtxsmnqmwt9nu3d9orgx1sjb3s83o5
-X-Rspamd-Queue-Id: B798B1C0006
+In-Reply-To: <auli2Zlf1F0tyi4X@linux.dev>
+X-Stat-Signature: zbs34578u6jx7sr1pzre834uaqta5k4z
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 37B5E20005
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1793694864-485089
-X-HE-Meta: U2FsdGVkX19YRBnndBYS0Ccq4K4OnnzF9ajtPmZTNRG8cibchkdaPY6Fd/lfoLIWy2PF0XB2eQcQeGD9k0oQvpwuoW31HbSJZ9zDxehTayTdEimUY7c/rfD3/Uu0ylfmy8tPqNPD9LbWwi8coajufhQbJ3o82CURk/44cvT53MqvVz7/LYNNCcewNJ1gGYGemel/P7ug/ZiyLBBRzEIKd6st7LESR6eoCN4yMlSTINNuX/2YM+/EpdDaiGDAYBEpbMNYTzGFsuRxCigyfaeUVUmHOv8goiTZEWpbRBgvL11YJujxQfX4SWmWCzxaQpqE3iBZUs2zt/g0Pb5bgsXK7ow0i1FNlPOf0sFYFMtblXjOyLLKEHM6vGFf5Fp/NTPVVKsICxdGiPfFdAJA4XVzKT7rZsSHWPSidIVjmySL940fmWl45zaWN4uYFnAnQmT7TSv/VRVEnvdnpKYd19lMWtXt9vsQUojEGWQoe3itRJO8rYWH03WBrwT8ePepvxJO95CKvo3xTnA1GPDE0+INNEHLi1XJkENydrGZsQNyoqmzq47y8zdGww+9YENSUVIGZBhLRuaSm9Ip3UGK131LUuS1D/l6FTlG6SOsODtE6bTsxgL8yIxAYtcsRw2VcKRNElRQU8VhktFFvBeA5DhHiA8UqJ1TxqJ8GCbZZmzUfaDzmEBURrwakHRiBQpZGRCyq6N/Hk1atnc1hw7TzUZidi+4KjAhBTowC7+uEx+Ukwwf9szyzlk3rxGgTvVtN9m5LkTt/eO2k18CWJ2swQGsbP0sTyJmNE/imANNzshF6zawYc5af7rqgNyNDSC82yh+E4gjN9ezYixndu41hWfI0KxbdFoIVXITOjVCZBchm+rX6MwmwUqGbD3nnHcTL2KBBTodrSvX6UHFu1tNdkfJgKKnqvMKLOxD0eCGLsJVGXDK9nG4qRs65StPjVlosyu2WtgtgI43LzwkcTnvGUb
- 7k7/x62S
- mJggqnX9DKAtSjED+rAThuKGQV4vfz1j5UcYaWrFcPc3lqWoHDRHRtoAaWDdt69cAbFdswYSFIc7L07dh9sJwXKV2LVVwpM2ldziX+w2yi6XROmqJ1TV2I1jSS+llnIPm0oGCH/JVwG3D85W83gXr6lC0e4vE31WVRLo9T0x/VZqW/kg0AmPaLJQ73dXNt/J9V78XXvKQSnlMGYYGpWc91GTzjJ0iS7A0LQiORVnHfxFs4wSXD+0xOyeXJTkOqnYk0PprU5R6prrpH5zraF7eSkqZ+sKBsq2sJ86nA29M5Abe2y2xix/4JntAwzxRyMING97AqdOlfC1vpeYQRFVdrmUJt+fX7I5xcfnSy+Rp0BGWr7USbXw+7rEGtpS/aUQMZqdUFHjfDLHAigiETjVMeCzr0MHoRJQLoruQivs7yXjeX2x2zoSsE26/cw==
+X-HE-Tag: 1793694876-760991
+X-HE-Meta: U2FsdGVkX183oOs6dWlq1jjtpg+qYoHmFE+GV2LtLGMcs2pjjdtvuDtTaVewjND+EsTgamZw7h6ykYDtfoQCixzK3wZNu29+eM4svztJGVYdxMuYhen4IuMnBhI1QRDilEUjNrfjS7iVs2URYm66Bq8k2eFhMs+vQhBB/AnshOVvB2VvsquZZePLZINLq3MvNuwhvpFZXSNBssV+q2cy6KjqXWbkmbHqHAZwi1EDeX0Gvx+JmIhb88M9MR2aKq/Yp03BIvS01PucHnaTh26vwcaWmcEqcUEzlwd525StwCP8atCXmJkSVrHchhV9ZvaASypRs9R/2DpUDp+/1VMi0nf+jCrXAJCvGB/eCU3w1Mv9QEq5a9ziY999ooUmrivxo76CVeQVPESaHBpN825RCVLyLoFQsbL6C+pb2Xq8FccABnP+RTibok1pdBAepOgdQeD7sgWqJ7QVK4gw4X41qjV9XXL4bBoizfJikhGq/kXmrkg7h/VVTtSCGl2a/lztML5KBXODOC3eiZY6ikWt65NEXdnZbec3dScx6SlxGr6jgfC3JhePcwPt00X/thZxlqTClg8w2ZqrFGz3EQ4x5hzrXJp2GENDa1x3kQIHRuTft774EpB6aYXsra/7c/ns167CxLVEDqzVxVjF7jvl9wpBSy7wooEjol6RHBErY9iFnQj2XPsj2XkT4rvIzTUkLVzz+To8kJ9dsJLeoqeG5gbe5u1xr5rkL2YKLCVuPBwz2thn21dR0uSiecNGSMPrbPZxzyyoM/8353X2mkLC9BSjvJIfwvXa9IZ+eMr2kStLqVFSEEQB06s8AFLq6FLDCYZhz04msvlEvS5UjpS/npIkwtBMj6f9we7Z8W8eBPct5MBBND0TPgAY2PYajncWOZEIzM6J6r1LbBKqng0anFT2WGxbwkBbOiCKJB7G4BhQsmUqbZf5UEETxIYLeo4uKLPccS3E84QnEUDSxkJ
+ 0exOxO14
+ nmSbe+VBLiaKhF9X6pE2HGeOdCjfECulMOvYGoZcOJNGGKsdwkUxGH6Uqz6b4b5aO/gSJA/sd5J/DlVOUCYA41/OLuy7vr+dygJLToycusffpiBZsMO40eW/2Fup7oIxFklLes3YEI+LReCPiQlavmMJeO+IMddICZmD68O1RAEOsUDhpar/TaluUWdCUrD00Ggw0EjfWC8xgcG+quYb/H1uI9Co24DSzykecYoUDaVc37C5uVEonphpNZtG2lvtA4hMCcqS7/glJ/yb61ajineKNR8ip8cAAyeE90J623gU2/JyKWZR7GkBvpfn5F9C1j5yqCPMbe0bw20ceHKtLqI2Xi8EH6/3xTPRDrggYVEfxdpkKsiak2ZI1tyXkW6r6xQokE7ojXvouR5SWBrs/E3OfEbWMyVX2rkXD
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,94 +132,44 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Mon, Nov 02, 2026 at 05:54:08PM -0500, Tal Zussman wrote:
-> There are no callers left. Point the comments that named it at
-> folio_clear_dirty_for_io() instead.
->
-> Signed-off-by: Tal Zussman <tz2294@columbia.edu>
+On Mon 02-11-26 20:34:40, Shakeel Butt wrote:
+> On Mon, Nov 02, 2026 at 09:46:38AM +0100, Michal Hocko wrote:
+[...]
+> > @@ -2789,6 +2779,15 @@ static int try_charge_memcg(struct mem_cgroup *memcg, gfp_t gfp_mask,
+> >  	if (do_memsw_account())
+> >  		page_counter_charge(&memcg->memsw, nr_pages);
+> >  
+> > +	/*
+> > +	 * If the allocation has to be enforced, don't forget to raise
+> > +	 * a MEMCG_MAX event.
+> > +	 */
+> > +	for (mem_over_limit = memcg; mem_over_limit;
+> > +	     mem_over_limit = parent_mem_cgroup(mem_over_limit))
+> > +		if (!mem_cgroup_margin(mem_over_limit))
+> 
+> Second, !mem_cgroup_margin() is true at usage == max, so a charge that fits
+> exactly raises an event (unlike today).
 
-LGTM!
+True
 
-Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+> 
+> > +			__memcg_memory_event(mem_over_limit, MEMCG_MAX, allow_spinning);
+> 
+> Third, we definitely need a break here otherwise every ancestor at its limit gets
+> an event which does not happen today.
 
-> ---
->  include/linux/pagemap.h | 1 -
->  mm/folio-compat.c       | 6 ------
->  mm/gup.c                | 6 +++---
->  mm/page-writeback.c     | 2 +-
->  4 files changed, 4 insertions(+), 11 deletions(-)
->
-> diff --git a/include/linux/pagemap.h b/include/linux/pagemap.h
-> index 692ce3867a1d..9adfeae2153c 100644
-> --- a/include/linux/pagemap.h
-> +++ b/include/linux/pagemap.h
-> @@ -1315,7 +1315,6 @@ static inline void folio_cancel_dirty(struct folio *folio)
->  		__folio_cancel_dirty(folio);
->  }
->  bool folio_clear_dirty_for_io(struct folio *folio);
-> -bool clear_page_dirty_for_io(struct page *page);
->  void folio_invalidate(struct folio *folio, size_t offset, size_t length);
->  bool noop_dirty_folio(struct address_space *mapping, struct folio *folio);
->
-> diff --git a/mm/folio-compat.c b/mm/folio-compat.c
-> index 9f2cd0ebfbbd..13d4d39e1896 100644
-> --- a/mm/folio-compat.c
-> +++ b/mm/folio-compat.c
-> @@ -42,12 +42,6 @@ int set_page_dirty_lock(struct page *page)
->  }
->  EXPORT_SYMBOL(set_page_dirty_lock);
->
-> -bool clear_page_dirty_for_io(struct page *page)
-> -{
-> -	return folio_clear_dirty_for_io(page_folio(page));
-> -}
-> -EXPORT_SYMBOL(clear_page_dirty_for_io);
-> -
->  bool redirty_page_for_writepage(struct writeback_control *wbc,
->  		struct page *page)
->  {
-> diff --git a/mm/gup.c b/mm/gup.c
-> index 7d43ce717b24..335dcb3a5c17 100644
-> --- a/mm/gup.c
-> +++ b/mm/gup.c
-> @@ -298,16 +298,16 @@ void unpin_user_pages_dirty_lock(struct page **pages, unsigned long npages,
->  		folio = gup_folio_next(pages, npages, i, &nr);
->  		/*
->  		 * Checking PageDirty at this point may race with
-> -		 * clear_page_dirty_for_io(), but that's OK. Two key
-> +		 * folio_clear_dirty_for_io(), but that's OK. Two key
->  		 * cases:
->  		 *
->  		 * 1) This code sees the page as already dirty, so it
->  		 * skips the call to set_page_dirty(). That could happen
-> -		 * because clear_page_dirty_for_io() called
-> +		 * because folio_clear_dirty_for_io() called
->  		 * folio_mkclean(), followed by set_page_dirty().
->  		 * However, now the page is going to get written back,
->  		 * which meets the original intention of setting it
-> -		 * dirty, so all is well: clear_page_dirty_for_io() goes
-> +		 * dirty, so all is well: folio_clear_dirty_for_io() goes
->  		 * on to call TestClearPageDirty(), and write the page
->  		 * back.
->  		 *
-> diff --git a/mm/page-writeback.c b/mm/page-writeback.c
-> index 0694ec4098f6..b56f2c91b0f2 100644
-> --- a/mm/page-writeback.c
-> +++ b/mm/page-writeback.c
-> @@ -2821,7 +2821,7 @@ EXPORT_SYMBOL(folio_mark_dirty_lock);
->   * This cancels just the dirty bit on the kernel page itself, it does NOT
->   * actually remove dirty bits on any mmap's that may be around. It also
->   * leaves the page tagged dirty, so any sync activity will still find it on
-> - * the dirty lists, and in particular, clear_page_dirty_for_io() will still
-> + * the dirty lists, and in particular, folio_clear_dirty_for_io() will still
->   * look at the dirty bits in the VM.
->   *
->   * Doing this should *normally* only ever be done when a page is truncated,
->
-> --
-> 2.39.5
->
+This is a separate thing but shouldn't we actually raise the event on
+all levels that are over?
 
---
-Cheers, Lorenzo
+> I want to keep my current version.
+
+OK, fair enough. My intention was to have those two parts closer
+together but this is not something I would insist.
+
+Acked-by: Michal Hocko <mhocko@sus.com>
+Thanks!
+
+-- 
+Michal Hocko
+SUSE Labs
 
