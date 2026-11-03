@@ -1,97 +1,158 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F1B5606A324
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 08:00:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0929A606A32C
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 08:00:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=HjciG1Gn
+	dkim=pass (4096-bit key, unprotected) header.d=canonical.com header.i=@canonical.com header.a=rsa-sha256 header.s=20251003 header.b=bVMjVqIW
 Received: by kanga.kvack.org (Postfix)
-	id 64EFF6B05BC; Tue,  3 Nov 2026 03:00:24 -0500 (EST)
+	id 6C39E6B05BD; Tue,  3 Nov 2026 03:00:27 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5FE536B05BD; Tue,  3 Nov 2026 03:00:24 -0500 (EST)
+	id 655C86B05BE; Tue,  3 Nov 2026 03:00:27 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 53C0D6B05BE; Tue,  3 Nov 2026 03:00:24 -0500 (EST)
+	id 562DE6B05BF; Tue,  3 Nov 2026 03:00:27 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 367476B05BC
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 03:00:24 -0500 (EST)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id CD0981C3310
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 08:00:23 +0000 (UTC)
-X-FDA: 85393060326.03.B431E1E
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 44F7014000E
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 08:00:22 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HjciG1Gn;
-	spf=pass (imf26.hostedemail.com: domain of jolsa@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jolsa@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 3234B6B05BD
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 03:00:27 -0500 (EST)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id AA0F2C0304
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 08:00:26 +0000 (UTC)
+X-FDA: 85393060452.26.A7B94C5
+Received: from smtp-relay-internal-1.canonical.com (smtp-relay-internal-1.canonical.com [185.125.188.123])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 4D94B40011
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 08:00:24 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=canonical.com header.s=20251003 header.b=bVMjVqIW;
+	spf=pass (imf04.hostedemail.com: domain of matthew.ruffell@canonical.com designates 185.125.188.123 as permitted sender) smtp.mailfrom=matthew.ruffell@canonical.com;
+	dmarc=pass (policy=reject) header.from=canonical.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793692822;
+	s=arc-20220608; t=1793692824;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=CkoaYsVrQw4bggIbP2eSyejf/kkcERYdrl0Rt2n0tMU=;
-	b=bp45azPzttsUyMh3UwhwCbltzl5jFu2GkJrIA2U8U4sSl2qAb4KZfbTX3TwH/qikE51Zq+
-	689SdBFwWIMeTobNH5b8RyyIqGb01ENgbyCX1owdTd0qN2aQeoecOTLGI8JZLlanoDVITD
-	xrJnczdrubGCYKtr0WGkpZlky80mgv0=
+	bh=ExWfLqTDEogJI0H6UanVTrI1P6KRZddzPRzGdDvI080=;
+	b=oV2FGVztRk5JW9W/bgBPaipAWwM2Y8MHo1alPC7aX+xMRoE5hcAX8xd2U8Xtn283ku+pta
+	EGu0gO7J40TBVbbZoHhyC0dlBJZErKBoBHGIfgLm8I/960OwVNE0GfvPiHdKg4WQjBrU/P
+	uc/GseWGnCyDedttDOy0PqaB8xxnD34=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793692822;
-	b=YqxO3GMOUmBrBlLFBVQ9x9OuuRtik1eB1ZBQk8RIG4mC8ZvxZIXk1jViqvqO2Ub9+7ZH6/
-	T8g2aUJc2X5C7aqkCS4nKMTp5YTyETLDAO8tgNQcgwJSyVbTE5fD+kBqiUTPSVQ5pmKUxj
-	OplgPVJ9yxAj/B7X3pPVWGPeP7jYn7o=
+	t=1793692824;
+	b=JWHtMrCx2rxe5JviltJ4lykgjpmHmvNScdjU+J2rDSl5OgTmI8KwIO0zuQIJ4zvtQYeFfR
+	ofBJiCC9DMKeAFaI0vHN+aWXuZADU05V8/p+xHG7pFRbAqMR8PfjqRv6cxuy/wP6TwWk4Y
+	WOMMqe6/BfQaXBiQxfC7+0UTi9GoIx8=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HjciG1Gn;
-	spf=pass (imf26.hostedemail.com: domain of jolsa@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jolsa@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id C2759600CB;
-	Tue,  3 Nov 2026 08:00:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 343241F000C1;
-	Tue,  3 Nov 2026 08:00:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793692821;
-	bh=CkoaYsVrQw4bggIbP2eSyejf/kkcERYdrl0Rt2n0tMU=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=HjciG1GnPBgvtJsnz3fQx6Lp0vwCqQTGSz4vUd5+NSYgBO4ziXZy0oMlfMcQCPX0K
-	 yWoRh9T0nDmwEZfR4iEiasjCwmWNCgR/IptMftPcdrH7j/SdAlB5g3ACZWTJOYg3i9
-	 Kehgi1OFwRwWv+CwC6SvECHhuLYXqLGWFea+ai7yI97Qer6QGEnYObK7KJOXE5dkDR
-	 d4m5wX6npylhaLzwTJzcoMWybbve0o+FS//2pQJ6WbTYL/XwHEZO/86YSlAzw8N4XN
-	 97u1U9+sT/R0xlBJ+TTYWUnWMig/4vBL8CCL25IIqeTERCYq4MszaeTphC613P6T+g
-	 9+EgjEXgFFeGQ==
-From: Jiri Olsa <jolsa@kernel.org>
-To: Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>
-Cc: bpf@vger.kernel.org,
-	linux-mm@kvack.org,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Eduard Zingerman <eddyz87@gmail.com>,
-	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
+	imf04.hostedemail.com;
+	dkim=pass header.d=canonical.com header.s=20251003 header.b=bVMjVqIW;
+	spf=pass (imf04.hostedemail.com: domain of matthew.ruffell@canonical.com designates 185.125.188.123 as permitted sender) smtp.mailfrom=matthew.ruffell@canonical.com;
+	dmarc=pass (policy=reject) header.from=canonical.com
+Received: from mail-dy1-f200.google.com (mail-dy1-f200.google.com [74.125.82.200])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-relay-internal-1.canonical.com (Postfix) with ESMTPS id EEEB73F91E
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 08:00:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
+	s=20251003; t=1793692823;
+	bh=ExWfLqTDEogJI0H6UanVTrI1P6KRZddzPRzGdDvI080=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version;
+	b=bVMjVqIWABxrR+4aYgkhHXaSCQmMUB/uTW9ysCsu9Cx5ROygs7Hd8wGlzjvvmMHtH
+	 a3oJuDnbYs1n0oSw31qooRA6P5JUWVQHGhj2LdSuRGNOegnxXcKOUF2pDEYhO9VA9+
+	 MqqXh8adNPtpFuQ9rhInCtXEzJdRiSiw3/JSrPcJA5u4xoPWQcIuHiGsqJAiqjnwBa
+	 9wGBdxHHFDr2Kr8f2ccFZs6Gcb0MSBQVZMKXYyflvrqJAYXF6SWYPwesAdS1H1GAcA
+	 mTkb9Y5zEs+HftMIJp07ry83eB3cRYDPAQK808UTQ710GCWQn8EvetdCpj1UmbqumS
+	 QpICK1ZU4JY5lm61OgUmvKweFhz+gAc/yfagl7hsezRkqy4DfzP1BtojH/wXxR9Uyt
+	 /lCnWVwHcNs7Io5XzP3KaHByUC62UTT8oeKBo7xI87nBadzJxu53xdL1LCqzxsPQqT
+	 VAkLpuXH/xt6TtSp1tpU7ondq/1If0fS4RT0cmXd67IKLzARLaUm3vnULX1jxyEXQf
+	 fDU26ks/7L0uz6Wpxz3OO0JloYnqdvh0b24v3v6qU5rsgNAXtSl5Hdy7KMGusW5Y5x
+	 0KBJ/w4iq6adlQgV7XKCn881zLwwP2rCU96jRlB36uHGP/KL4HkjM5ZQQEtNdXfC7p
+	 bu6w+/CJPTHzoWFNCy0XDe9M=
+Received: by mail-dy1-f200.google.com with SMTP id 5a478bee46e88-341eff9e381so8806787eec.1
+        for <linux-mm@kvack.org>; Tue, 03 Nov 2026 00:00:22 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793692821; x=1794297621;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=ExWfLqTDEogJI0H6UanVTrI1P6KRZddzPRzGdDvI080=;
+        b=N0TTqECrrt/p9IaP3DTD1uNBT/zoWuk9B3kh8B/uZuLixk3Wm4XXrOzSoVtScz7I6Z
+         FkG288MnDbHulI2EBJp/WyIPVycVj+c0/VA7TMQPRMOBWcRnaTu3vO8PKpXI4v8fxhLm
+         iofxBbFSe2XKVXggMpQInJ9fA5+MCILOYU+dknE2F18G+Kb4F+Fc9MBtHE4ejc0ml18V
+         lQmpB/JWgCWoC1TWbt3Bao2wxKpY0qjJh7BqMrIDcskPu8wnbpfMxuI5ermNjCfJLZIG
+         ebtAnBmKFDszKGNYSNm5y3Fd4ak+pB3NOGlVMVuw4IKoq84Ov8oHWhC+/9ciRENI+njd
+         8Sxg==
+X-Forwarded-Encrypted: i=1; AKwUvBwwe515JNehO1/KigT9vJrml6v6H4htjJMp1MCIMG+GdwxcRsh48NOccJNDcElkl1TCKirzxXenXw==@kvack.org
+X-Gm-Message-State: APuU4Z/0qcj3eaijauHDMaxP/iRuJj/lvyTQL3axGe0DLmkNxhch36e/
+	bOtA4C3AvrG3/A8IMs/Bp3kNektwlYz0mSAdSWNNDGGXKZBvcHRhLS1/oXen9bCVirZnU7vHJaz
+	EUh1WSmiDVVDLG4ykeBFVus7JG3pyHBbEuVSYdof0HstS3px/XnDVCdyiSapu9El5lMuV
+X-Gm-Gg: AYBFou00RD7Ie2VAZsrvVgPn8jAb7gxNFSy/VLolfOZQkiPB7ZHXkU1WXG+9Ta4C2BW
+	J96YxZFR23oSJrbmoUoqe5GLNcluSOOIME0l4/S7gPI46Lk1HP0Q3eaHRdyBV88HEkWa2Orm1nC
+	5f/MXSXCrtFPZpsVS2id7u6PJ7PyFhfkBWKxNE/6/GeODASBYueMmOVfe8543g2LwdKjE/fg20O
+	cVXlK8gtnTCd4ei32N+/fMPGqfBOkE+LtvSfKP20k9dXvof2Z6+wCfHwjr+39d4k+jnZyZDHofQ
+	nOXyvPqdC3AKNsVxGVfQIWueEbcGUq9Lzq9VciSl4gEMD1CQ7gH9Me+EEUMkBhYDl84Etl+ZT92
+	K2pDY2Wzzahn/uBupEZVfHGsoXomZch3M2Nvv2o2J1eAFykjXCG2maUb6t/jPi/mfCh2Ltpa+ns
+	hX/jWEQQMPWWlKCjCipg==
+X-Received: by 2002:a05:693c:8811:10b0:35e:da0a:75b0 with SMTP id 5a478bee46e88-36a423be72amr18896005eec.25.1793692820675;
+        Tue, 03 Nov 2026 00:00:20 -0800 (PST)
+X-Received: by 2002:a05:693c:8811:10b0:35e:da0a:75b0 with SMTP id 5a478bee46e88-36a423be72amr18895911eec.25.1793692819841;
+        Tue, 03 Nov 2026 00:00:19 -0800 (PST)
+Received: from Garunix (122-58-163-222-fibre.sparkbb.co.nz. [122.58.163.222])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-36a428af4e6sm37885274eec.4.2026.11.03.00.00.09
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 03 Nov 2026 00:00:19 -0800 (PST)
+From: Matthew Ruffell <matthew.ruffell@canonical.com>
+To: Waiman Long <longman@redhat.com>,
+	Frederic Weisbecker <frederic@kernel.org>,
+	Tejun Heo <tj@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>
+Cc: Caron Wills <caron.wills@pulsar.com>,
+	Ridong Chen <ridong.chen@linux.dev>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	=?UTF-8?q?Michal=20Koutn=C3=BD?= <mkoutny@suse.com>,
+	Juri Lelli <juri.lelli@redhat.com>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Dietmar Eggemann <dietmar.eggemann@arm.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Ben Segall <bsegall@google.com>,
+	Mel Gorman <mgorman@suse.de>,
+	Valentin Schneider <vschneid@redhat.com>,
+	K Prateek Nayak <kprateek.nayak@amd.com>,
 	Lorenzo Stoakes <ljs@kernel.org>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Federico Di Pierro <nierro92@gmail.com>
-Subject: [PATCHv2 bpf-next 6/8] selftests/bpf: Test user memory page exec
-Date: Tue,  3 Nov 2026 08:59:13 +0100
-Message-ID: <20261103075916.100050-7-jolsa@kernel.org>
-X-Mailer: git-send-email 2.56.0
-In-Reply-To: <20261103075916.100050-1-jolsa@kernel.org>
-References: <20261103075916.100050-1-jolsa@kernel.org>
+	"Liam R . Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Jann Horn <jannh@google.com>,
+	Pedro Falcato <pfalcato@suse.de>,
+	linux-kernel@vger.kernel.org,
+	cgroups@vger.kernel.org,
+	linux-mm@kvack.org,
+	Jay Vosburgh <jay.vosburgh@canonical.com>
+Subject: [PATCH 1/6] sched/isolation: Consider nohz_full CPUs isolated in cpu_is_isolated() again
+Date: Tue,  3 Nov 2026 20:59:35 +1300
+Message-ID: <20261103075940.110308-2-matthew.ruffell@canonical.com>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20261103075940.110308-1-matthew.ruffell@canonical.com>
+References: <20261103075940.110308-1-matthew.ruffell@canonical.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 44F7014000E
+X-Rspamd-Queue-Id: 4D94B40011
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: bpnzs5m6fb8zt9a3bc45jbkj4k9umep8
+X-Stat-Signature: ir3c1rdnady5hh53gzmt79sugu55si5k
 X-Rspam-User: 
-X-HE-Tag: 1793692822-257556
-X-HE-Meta: U2FsdGVkX1/xLM2swsDhsM+ZzKJZmJiv/kZZL23/LyZQJ2TH/RKUpb5eLyPDa1kzzoKgtC+yi6DM33V9nbLsskXPoVm86LWLf4T55p2c7Q5rxUgXWTakzR65Y17yVSrfi+Nf8UiyElRlDNCJtKF0aOfjP6TS9dO8zpc6tnFWlwZJiIM8Hx67IHe53YTr4mS0a7awqkDAGaVKBaF3swY0PajABCEoMpN97NmHYfRD9hmUGc6fWurb+xU+oEYw9zupttwSHPIE0akIOXUU83h0Tv5IF2glTmdyzqLpvu287FJtOfwJ2pt5+MaQ2soHqEPEBZa9uQtJy4h2k308BQL/M3QvTO2tGa88TzU9YTbXC0SC0D0Tths/nTObqm94R+zWG4BQ5S/ojguXfPTzPFNWz+1SxilNDBrQxinL92AdRE+2o9vKyDCQ2S4i9LcB0RKxy6dcSfcbuYnfapSP3akFGQ/cLHONds7K5iQjvFbhNvCxTjL2IqJhKeXtwnfsF1sqqqYFdlaI5pwsDPwQ9Eny0JXV/FwCQnRDWj5MHnzo8dTnWLXyD33FYQZw5Jz3ZZZFhXpLzEL0354sbYEjyJ2yfcDUU/Uy8zcLQU+4JiRElHMOag8LpU9XH1hRYb2Mtvg5ICgyUIDf/BJNF/3qJk2SVVgor9ZdXYLFiiJUqh9ndGPMjS3R2rZrzvM/ikFGZCYAUSaB4o35Dt7m4KtOKZxW/FJfSxE+9x/BSkgv0jQtJFsrwkRRheCgULMFRwWeCVMfclLMswAxZ5c0peHSkSwwDEis629pdEk4aZnnXWGSM+H4QksM5iNuxBgrv81B/Qj7xYCMbuvkDgn50Jq68tIP1oDVdfrCTGeiVN/emTN3+vHhQ85HkiJblc5S3z7CwcI93CQYwtghKQZdjs+0l5hNxV2y7mqiqDnumjoF2DjpZCSFFXeyXTPbXpO3QTq+yJTB9O5R+aLdXLFaHu8OkXG
- bBP+C88S
- zKEULTA4NlfkuwHEimO51Yv4F4OQEnLBXWRq4TDAur3emDwek2dY647h3f53JwWO88m0PenQkqnthHvC4oLLHPiqwxOEbpYqyym5dRB9edwldkyqyG7KEe59OOunyRNqGIDSJTaBv4SzmnfLVFioKCgQKvprlYztojocEzw6TLCFUlg16LeZmEDQWE9M2kbwxO8UH//4eKiWv/03HY2EHEzge/FRWJeAFaPKULPCS2gRaEcBatVir5Ud5AE05ZTU2K1Nb7XHV+2hux9xSzJ8HRbiLesACaLOENghoVOreatm3i1jfBiKEIBvnpz+aopWuXoITgL7FE8INeqc=
+X-HE-Tag: 1793692824-716443
+X-HE-Meta: U2FsdGVkX19486Tjv5H3X2Bgbf4GDRL3MNz+OnwBj6h7sgdf+2rF1mtkzxeGGD8yZxZXXlb2lXFd3Y4pALW9lzlb1ITW9rYfy+Jo7tsG0Ke7inMAP4V9IZF38hJkC0rByccPr0gwO106om+Cr4GIBkX+2L8lw6w8PHFQ+S21c8B172JuS8CyHxn3LiQa00UUyTsI9WICbgHAXtZQvIRHxmlnTQeEetCfICzAD6lSzwLY0qNFjGHOPW7syRj4727wJf8lLHkGRw0mpzGe3DZO8d/BRZ1y5VD3BGrKNMiidQBadcO78ZjwOSk0uAyHtI3CU2RhzL4+NOUifwHFfxQASQ/kjy4cLZn/Suq9Ivw0/fdccxFxHQXpqTMryDeIxxMQTCqAyrtAsqiU+AtHCaGB5f+NSwLZKF4ZD0EFFnrNr+bgWSr7nwSc902Vq3WTupziBiKzP49uKgFH/9kON2e16MMWas+6fzMlFtI84eeV3/1C7rqqqOF63ps2aJ6yTKzsus6+ef8lPI90wMl3gn49MJY3o3WURgZC9szi/1i3VVHXRULr+6h3C5RefbTicMh7oJ/Gy4XMs6phhqlTbq3m3qk6iCnzJaZEzJXVKrENmlfIqLmWledqFSy0kKHSRbOAUYqOE7izljJXHIkvOmXQLUbQVjTD4FZGCYAQRwIy2rCU0yE887Uu/Ic+TnFS2t1op+yXr/q0bhdVIdF1Losdibsdf6t7hlZt7e1UiRJBNNGgM+cW089JFzBVawd7AeVtZtsct0Mbt1jGawCNtr7HNlwo6idz35ZCiQBCCuJk2kf8yqaCGxXHyOmmikUuIjikhXH/KM1IZG+LqDDOxIebET8MOqQ2AEes28QSfWKYrtISLhnH7PmDlApXXRSrF2d3dED0dXQyej5WQoUsrhCas3wmJns3wcjZFn5qD+2uhL8HB5PUrzHArxxZkQJXt51Jr6H+T5PpJuq4xuKcUBu
+ Wk5iqVh6
+ OoUKLD39THoAsD/HhKd2MBy7P1CBk/eHGfWsXj9z0FdNC9jS4Mhgez3ToUb6cLx/eiJvWxW4FqFQxtVNCeegbqgF9s/LdMeRphAd2EgwuITnnmTnUh+HrGEO9dXJnSjgnG1eWCvySY7UXMIC+Dx1RTMGM9YBE/k8odws42fvQsyn81Nq4lxNNEtccs77dEP4fELtur6uxHIfagpgMcP6Ko6nqS6tv5r4zpyr4kL0AvVj4Y2YNAVZB5kt4E3JRLZ0krqTpBxAT7yfyoXvJYBy9WiF169hY3oFOyiYVuGpOzbCXf2CF8Beg+t12BmIecYjySNjEF5dfhfELp02au2HNPbfDN6cP81ooUwRYCFsK+kc7aWElndiPflTHLlSe0xoUtMgLfu0Hz2rJgTamJZ3sPDIItZhHsZIQBzxIz1UiCAfqQlmK7g8zJpzJFl0S+/xqKDfoqHM0fQDnpQMqKsXUkk3Ofd57bIYJTV0x
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,171 +161,77 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Use bpf_copy_to_user from a uprobe to write architecture-specific
-instructions into user memory, then execute them on x86-64 and arm64.
+From: Caron Wills <caron.wills@pulsar.com>
 
-Test execution from a mapping created with read and execute permissions,
-and from individual pages made executable with mprotect.
+Commit 1c3329df409b ("sched/isolation: Remove HK_TYPE_TICK test from
+cpu_is_isolated()") reduced cpu_is_isolated() to a HK_TYPE_DOMAIN test on
+the assumption that "it doesn't make sense to use nohz_full without also
+isolating the related CPUs from the domain topology", i.e. that every
+nohz_full CPU is also domain isolated.
 
-Assisted-by: Codex:GPT-6
-Signed-off-by: Jiri Olsa <jolsa@kernel.org>
+The kernel does not enforce that assumption. "nohz_full=<list>" and
+"isolcpus=nohz,<list>" are accepted and documented on their own, and
+deployments exist that deliberately keep the nohz_full CPUs inside the
+scheduler domains, for example the AWS c8a.metal-48xl systems of
+LP: #2165410, booted with
+
+  isolcpus=nohz,18-95,108-178 nohz_full=18-95,108-178 rcu_nocbs=18-95,108-178
+
+On such a system cpu_is_isolated() is now false for every CPU and all of
+its users silently lost their isolation awareness compared to v6.8, which
+also tested HK_TYPE_TICK:
+
+  - fs/buffer.c bh_lru_install() caches buffer_heads on the nohz_full
+    CPUs again, so has_bh_in_lru() makes __lru_add_drain_all() queue
+    drain work on them;
+  - mm/vmstat.c vmstat_shepherd() queues vmstat_update on them again;
+  - mm/memcontrol.c schedule_drain_work() queues memcg stock drains on
+    them again;
+  - block/blk-mq.c keeps them in hctx->cpumask.
+
+Per-CPU work queued on a nohz_full CPU that runs a SCHED_FIFO busy loop
+never executes, and the flush_work() callers hang behind it. This is one
+half of the PID 1 D-state stall described in LP: #2165410.
+
+Test HK_TYPE_KERNEL_NOISE (the housekeeping type set by nohz_full= and
+isolcpus=nohz, of which HK_TYPE_TICK is an alias) in addition to
+HK_TYPE_DOMAIN, and use the housekeeping_cpu() wrapper so that systems
+without any CPU isolation keep paying nothing but a patched-out static
+branch. On systems where the nohz_full CPUs are also domain isolated
+nothing changes.
+
+Fixes: 1c3329df409b ("sched/isolation: Remove HK_TYPE_TICK test from cpu_is_isolated()")
+Link: https://bugs.launchpad.net/bugs/2165410
+Signed-off-by: Caron Wills <caron.wills@pulsar.com>
+Signed-off-by: Matthew Ruffell <matthew.ruffell@canonical.com>
 ---
- .../selftests/bpf/prog_tests/user_mem.c       | 75 +++++++++++++++++++
- tools/testing/selftests/bpf/progs/user_mem.c  | 22 ++++++
- 2 files changed, 97 insertions(+)
+ include/linux/sched/isolation.h | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/bpf/prog_tests/user_mem.c b/tools/testing/selftests/bpf/prog_tests/user_mem.c
-index f301a1843706..7fa827298d24 100644
---- a/tools/testing/selftests/bpf/prog_tests/user_mem.c
-+++ b/tools/testing/selftests/bpf/prog_tests/user_mem.c
-@@ -11,6 +11,7 @@
- enum {
- 	USER_MEM_MMAP = 1,
- 	USER_MEM_UNMAP,
-+	USER_MEM_COPY_INSNS,
- };
- 
- static noinline void user_mem_trigger(void)
-@@ -92,6 +93,76 @@ static void test_mapping(struct user_mem *skel)
- 		munmap((void *)addr, len);
+diff --git a/include/linux/sched/isolation.h b/include/linux/sched/isolation.h
+index cf0fd03dd7a2..294c508b0018 100644
+--- a/include/linux/sched/isolation.h
++++ b/include/linux/sched/isolation.h
+@@ -84,9 +84,17 @@ static inline bool housekeeping_cpu(int cpu, enum hk_type type)
+ 	return true;
  }
  
-+static bool user_mem_copy_insns(struct user_mem *skel, unsigned long addr)
-+{
-+	skel->bss->user_addr = addr;
-+	skel->bss->action = USER_MEM_COPY_INSNS;
-+	user_mem_trigger();
-+
-+	return ASSERT_OK(skel->bss->ret, "user_write");
-+}
-+
-+static void test_execute_user_page(struct user_mem *skel)
-+{
-+	long page_size = sysconf(_SC_PAGESIZE);
-+	unsigned long addr = ~0UL;
-+
-+#if !defined(__x86_64__) && !defined(__aarch64__)
-+	test__skip();
-+	return;
-+#endif
-+
-+	if (!user_mem_mmap(skel, page_size, PROT_READ | PROT_EXEC, &addr))
-+		return;
-+	if (!check_user_mem_vma((void *)addr, page_size, "r-xp"))
-+		goto out;
-+	if (!user_mem_copy_insns(skel, addr))
-+		goto out;
-+
-+	/* Execute user page. */
-+	ASSERT_EQ(((int (*)(void))addr)(), 42, "execute_user_page");
-+
-+out:
-+	if (addr != ~0UL)
-+		munmap((void *)addr, page_size);
-+}
-+
-+static void test_partial_exec(struct user_mem *skel)
-+{
-+	long page_size = sysconf(_SC_PAGESIZE);
-+	unsigned long addr = ~0UL;
-+
-+#if !defined(__x86_64__) && !defined(__aarch64__)
-+	test__skip();
-+	return;
-+#endif
-+
-+	if (!user_mem_mmap(skel, page_size * 3, PROT_READ | PROT_WRITE, &addr))
-+		return;
-+
-+	/* Copy instructions to middle page. */
-+	if (!user_mem_copy_insns(skel, addr + page_size))
-+		goto out;
-+
-+	/* Set +x to middle page. */
-+	if (!ASSERT_OK(mprotect((void *)(addr + page_size), page_size,
-+				PROT_READ | PROT_EXEC), "middle_page_mprotect"))
-+		goto out;
-+
-+	if (!check_user_mem_vma((void *)addr, page_size, "rw-p") ||
-+	    !check_user_mem_vma((void *)(addr + page_size), page_size, "r-xp") ||
-+	    !check_user_mem_vma((void *)(addr + 2 * page_size), page_size, "rw-p"))
-+		goto out;
-+
-+	/* Execute middle page. */
-+	if (!ASSERT_EQ(((int (*)(void))(addr + page_size))(), 42, "execute_middle_page"))
-+		goto out;
-+
-+out:
-+	if (addr != ~0UL)
-+		munmap((void *)addr, page_size * 3);
-+}
-+
- void test_user_mem(void)
++/*
++ * A CPU is isolated if it has been taken out of the scheduler domains
++ * (isolcpus=domain or a cpuset isolated partition) or out of kernel noise
++ * (nohz_full= or isolcpus=nohz). The latter does not imply the former:
++ * the kernel accepts nohz_full CPUs that are still part of the scheduler
++ * domains, and deferred per-CPU work must not target those CPUs either.
++ */
+ static inline bool cpu_is_isolated(int cpu)
  {
- 	struct user_mem *skel;
-@@ -106,6 +177,10 @@ void test_user_mem(void)
+-	return !housekeeping_test_cpu(cpu, HK_TYPE_DOMAIN);
++	return !housekeeping_cpu(cpu, HK_TYPE_DOMAIN) ||
++	       !housekeeping_cpu(cpu, HK_TYPE_KERNEL_NOISE);
+ }
  
- 	if (test__start_subtest("mapping"))
- 		test_mapping(skel);
-+	if (test__start_subtest("execute_user_page"))
-+		test_execute_user_page(skel);
-+	if (test__start_subtest("partial_exec"))
-+		test_partial_exec(skel);
- 
- out:
- 	user_mem__destroy(skel);
-diff --git a/tools/testing/selftests/bpf/progs/user_mem.c b/tools/testing/selftests/bpf/progs/user_mem.c
-index e3b0689f5f2a..a62916ebc0b5 100644
---- a/tools/testing/selftests/bpf/progs/user_mem.c
-+++ b/tools/testing/selftests/bpf/progs/user_mem.c
-@@ -10,10 +10,13 @@ char _license[] SEC("license") = "GPL";
- 
- extern unsigned long bpf_user_anon_mmap(unsigned long len, unsigned long prot) __ksym;
- extern int bpf_user_munmap(unsigned long addr, unsigned long len) __ksym;
-+extern int bpf_copy_to_user(void *unsafe_ptr__ign, const void *src__srcptr,
-+			    u32 src__sz, u64 flags) __ksym;
- 
- enum {
- 	USER_MEM_MMAP = 1,
- 	USER_MEM_UNMAP,
-+	USER_MEM_COPY_INSNS,
- };
- 
- int monitored_pid;
-@@ -24,6 +27,22 @@ unsigned long user_addr;
- unsigned long map_len;
- unsigned long map_prot;
- 
-+#if defined(__TARGET_ARCH_x86)
-+static const unsigned char insns[] = {
-+	0xf3, 0x0f, 0x1e, 0xfa, /* endbr64 */
-+	0xb8, 42, 0, 0, 0, 0xc3, /* mov $42, %eax; ret */
-+};
-+#elif defined(__TARGET_ARCH_arm64)
-+static const unsigned char insns[] = {
-+	0x5f, 0x24, 0x03, 0xd5, /* bti c */
-+	0x40, 0x05, 0x80, 0x52, /* mov w0, #42 */
-+	0xc0, 0x03, 0x5f, 0xd6, /* ret */
-+};
-+#else
-+/* The execute tests are skipped on other architectures. */
-+static const unsigned char insns[] = { 0 };
-+#endif
-+
- SEC("uprobe.s//proc/self/exe:user_mem_trigger")
- int user_mem_test(struct pt_regs *ctx)
- {
-@@ -37,6 +56,9 @@ int user_mem_test(struct pt_regs *ctx)
- 	case USER_MEM_UNMAP:
- 		ret = bpf_user_munmap(user_addr, map_len);
- 		break;
-+	case USER_MEM_COPY_INSNS:
-+		ret = bpf_copy_to_user((void *)user_addr, insns, sizeof(insns), 0);
-+		break;
- 	}
- 
- 	return 0;
+ #endif /* _LINUX_SCHED_ISOLATION_H */
 -- 
-2.43.0
+2.55.0
 
 
