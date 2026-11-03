@@ -1,92 +1,159 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 514E8606A324
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 09:11:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E12B606A32E
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 09:14:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=ERyLxh3c
 Received: by kanga.kvack.org (Postfix)
-	id 3B9C76B05B2; Tue,  3 Nov 2026 04:11:57 -0500 (EST)
+	id 135BA6B05B1; Tue,  3 Nov 2026 04:14:37 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3789D6B05B4; Tue,  3 Nov 2026 04:11:57 -0500 (EST)
+	id 0E7926B05B5; Tue,  3 Nov 2026 04:14:37 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 28F036B05B5; Tue,  3 Nov 2026 04:11:57 -0500 (EST)
+	id EF04C6B05B6; Tue,  3 Nov 2026 04:14:36 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id D55936B05B2
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 04:11:56 -0500 (EST)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 79BDD4036A
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 09:11:55 +0000 (UTC)
-X-FDA: 85393240590.17.574358B
-Received: from mta0.migadu.com (out-89.mta0.migadu.com [91.218.175.89])
-	by imf02.hostedemail.com (Postfix) with ESMTP id C45E580006
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 09:11:51 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=hWhGAMYn;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf02.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.89 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793697113;
+	by kanga.kvack.org (Postfix) with ESMTP id B0E036B05B1
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 04:14:36 -0500 (EST)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 464091A034C
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 09:14:36 +0000 (UTC)
+X-FDA: 85393247352.18.C46A4AF
+Received: from mail-qt1-f175.google.com (mail-qt1-f175.google.com [209.85.160.175])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 5BA5A180009
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 09:14:34 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=ERyLxh3c;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf24.hostedemail.com: domain of lrizzo@google.com designates 209.85.160.175 as permitted sender) smtp.mailfrom=lrizzo@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1793697274;
+	b=CAA0ftBfp8pxSg+qz055UwSVBXRz0+z0K9iAFzNmhQ+z75CHA65r9w14GWsJQwTyONqlpk
+	vbL+dhdF1HHBIIGlYKqxADy9urM+EBzQKrRUkIa/+YKaRCeSdwg+hDTCTk0TQ+WcVdDI/7
+	tjB0v4wZMUiAMBSsSu0O7f06AdkO5JA=
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1793697274;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=L/rwbEY90TsE31orsIbmoYEBsIiiZzgORGDGsve2QT0=;
-	b=gfJrA+VdGXIMj3OQxibh1FHHcHKJMk097CZmfGRpe2AXeNkQSNObZRrStT8Pa9lL3sSatC
-	kGz3b67dRsvoo57nWDXdsQJIIXmdq8hzhRrZZAsuwcsCLl4MPPTg/JmSQV90jo9d0ci0vd
-	M8u4ME6FjOQSPz9QdT0mNDWZUxF1cqY=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=hWhGAMYn;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf02.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.89 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793697113;
-	b=Jy8ZAIEWBlKoCjdQQl5KkTWySLUxu698hlOM9M3xtuyUf0TBVrTowHGiUbbS0G97RGO10q
-	v9/wRyo33P2ZEEV6HU/1nXEuXdW5tjUaeyAU0IP3dBoF0XuBwV9wOmUK/CfkHnh/aS+MEn
-	nIo91/rPDuafqlSnD2TfJZ6hZKNvkJc=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=4izyozmbuMGIzwBXwOGfCjpLSN/9aWgvEh8DalxY9c8=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1793697108; v=1; x=1794301908;
- b=hWhGAMYnBWhe3NfVoxNafdUdTJ1qC/oGhHK7lSWu2kfOXs8GDMfIUqyVR+Zar7r+naniL2DB
- Y3XdksAVun3fVK6BXo5jmmq7slXW+o+6OuNAlthBKQlgPdr1v4kmMszOtXoaLlp1xSfQS0O/XAI
- Ph57qygITpzKfnDJXgJwcRrw=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 736b6edb0d423b19;
-	Tue, 03 Nov 2026 09:11:48 +0000
-X-Mizu-Trace-ID: 736b6edb0d423b19
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <d9ebae9f-7a3e-412f-bb1c-f753b83ede59@linux.dev>
-Date: Tue, 3 Nov 2026 17:11:39 +0800
+	bh=i14dmH5BR+9SimyzQMrEk5iidp8zGrGHl7mp1tLTg74=;
+	b=TFLwe4kvD1xftMMO7zO4mIPUIHfT9vyy7KhZSDmmEo7xNMLu4WEp5din6lNoKJU64wvxI6
+	BFIFvUMhumuV5i6wJeb5yGPCVPehSpTfn8IzHmRpy/UKSJ9tOGMAdmax7oImXjSdyHx9ag
+	mRzKMCF3Tax40X05moSvCqh8almwjTA=
+ARC-Authentication-Results: i=2;
+	imf24.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=ERyLxh3c;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf24.hostedemail.com: domain of lrizzo@google.com designates 209.85.160.175 as permitted sender) smtp.mailfrom=lrizzo@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-qt1-f175.google.com with SMTP id d75a77b69052e-5383c97c8cfso140071cf.1
+        for <linux-mm@kvack.org>; Tue, 03 Nov 2026 01:14:34 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1793697273; cv=none;
+        d=google.com; s=arc-20260327;
+        b=me0uEPfZD8b8LYgr9vJACb2HYyzv8PriTFBgSdx9Ki2vgWv3mI94qmcmiSuGFGHj1O
+         Xidxf1u5oWMatvxMCsmkNIsJ8Cbsv0KU4oczuzsoImBcZLSCS0BOznfNFXKKqZvwJ+GQ
+         aiezFZZLaeAzZYlGysakm/Wej66z/RaGTdgYrSbdjWKNYBNM9mGUR3MMsXGdh9GpqWnD
+         Gwnt0YCJujNgpqHh+092Ied8xIALpVC14ChuWGyCwiRo0cwEiQeaguATbo6BBULd9vVg
+         x++gn3aSK3H2TLhJtCq/Di14GjhXbT4FSu1Rwngcg23QJr7YsoEqwA9SNwYJ52gcc2h8
+         4rJA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=i14dmH5BR+9SimyzQMrEk5iidp8zGrGHl7mp1tLTg74=;
+        fh=mjQmbYpRPnKeTnrtyOGrvCFnAcO5soruzafwwICwoME=;
+        b=R6SR9qLTIXRJWVM7bGcHwJFmYUMCtZeVRcnsJLmvsH5KI3umhbLByUI9Dc0PBaaXup
+         TNS0vEEJrwJu6DUDZpiZtTRl/5zI2LCiuGKISmhiaImmAzG06gESgmr8CCwy/0wd/bL8
+         id1SvTWNOC9J/HdvLSuEWNLX1ew9FoGyB/CxMZDLRx9zluqqYYghIlDhyyfUwC/3WJIM
+         WV++DA0QZ+6lLx7+oTeMKPBlz7gzOCUtXwAoVCRlXMChFisOnew6cXmLo3hdzCPFm3y/
+         R7IGmVztJGb4tmZ/Lk9AX0IrnIVroSaNO4F8SqtovaqJiovjnwFVWRCsIjvu+4gyFMEm
+         AYSg==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20260707; t=1793697273; x=1794302073; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=i14dmH5BR+9SimyzQMrEk5iidp8zGrGHl7mp1tLTg74=;
+        b=ERyLxh3cqtorlRCgLIbssz3UXLqqG/w2vOWoiRnccn7B1tpobDxmWRYQDLwDHTkiWq
+         WFYoeaOPRJ5y3Ne233mzL8Y29C3gV90a/BKuMgAt7dXJoOuqCKyQ8diE4vywmRVSR1M/
+         z2bouX/+oJ4IJOtfoMcAM42zT7E/wMm0sE3qYX1AhC5c28utaM32a/8ttPLtcB3Ox4Be
+         fcy1Oho3tDvULtjGYWhx5IkCJe+2LCZx7OrURf8wytpcDy2gmeCy4URXKqTmbip/+31g
+         Hg8KxNxurfSifaVRX9mdtOIBvGBQLLJYMBlNDkIGjz142cWIynO6SlcKTec5d4TDAXI6
+         8+Hw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793697273; x=1794302073;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=i14dmH5BR+9SimyzQMrEk5iidp8zGrGHl7mp1tLTg74=;
+        b=oecKGVjse/d1SySVwtbRzXLhhuWSV6In3l9d08N/QRmVa/NJN75rRSunWpQxIzp7nH
+         8AGKrUfn6Do3++KmLc5YTghjFGhj0U8lqK6mZgUfRk1POIyDQQI4h96BIxfmFBGnWS0c
+         GzNTXEjLrVtbJm7G41AC8TOoeJFlDBJ48nwRHCEMMHIUCvoDM3o6sOXogPiPN5D0/hG1
+         FtyohLTOThltgOr4G1lfidy2RD+2QmOUZrOE3rvzEHMo8vKHImb/5CZe5SdtR23W/nuX
+         6i5m+75IXym7g/c6GEJBsg47D4FA6wbbTk9wF73kJVz2xZvdzm48r0fCrgCJRTqa7z7x
+         zfsg==
+X-Forwarded-Encrypted: i=1; AKwUvBw5K+C4fdILRqmcpkTP+TuDpn7EZh3dAPZzHzIPfpsXuR7f6VaF4vt+KqGA1TOO5elxvmsnv3YQrQ==@kvack.org
+X-Gm-Message-State: APuU4Z9P50zj637jZS0IJUdkRxBAL+E5kk2Wt/gI114QHKPRo2rDWvc2
+	EHbw8Zx9fEWDmaFzE9hfZoyU1+5MlitnCQzTIaGFyxF+2ivJk8+OgwBMZM9tcwjhfY4Wk1sNHbo
+	Vl14Vuo7GHAnTLRWUwCdIomg7VBlxx/Tb/dRtXxI2
+X-Gm-Gg: AYBFou3UOT0jts1eoiVdV96E0yIyOtS4BaJLU45R13xqq6PNDpfVMoP5fEBnyAgt1wR
+	gUcXnjtGlM66mmrdMFMjnUA+DhPXwzUAC3jk/cZ0Hx8mZkz2TDg7JBizDzgKiTujShLKey1Z5Q2
+	rY0ugLZLeticL0NnL0nay5rK6k2k4VEFwhYHc5amm7yPbIYaYwwQrvA4o9hU3M0XunV9+aNP4vQ
+	xnDGtUZeb5NM2sUGbWzxpIsz4Xunq9WREEYPiLpNHrC+lgBq8wUTRAEqI4q50XJLmnwAW/f16Ka
+	OEA9r1FiYWjBmIWmURGJPlxX3CZVjy0s/y7t5iarKl4pWJdNsXvpz8rxzCdtDWPsSqMaFHB/6YL
+	yna9+PdnbDFNlgUDmiCYubP79LSYjAWWTw856EUj73eHzqe7sD1C3mz4hAog=
+X-Received: by 2002:a05:622a:598b:b0:535:84ef:2e26 with SMTP id
+ d75a77b69052e-549dfce05fdmr11810771cf.7.1793697272817; Tue, 03 Nov 2026
+ 01:14:32 -0800 (PST)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/4] mm: hugetlb: skip CMA when direct reclaim is
- disallowed
-To: sashiko-reviews@lists.linux.dev, muchun.song@linux.dev,
- osalvador@suse.de, david@kernel.org, akpm@linux-foundation.org,
- azpijr@gmail.com
-Cc: linux-mm@kvack.org, Qi Zheng <zhengqi.arch@bytedance.com>
-References: <cover.1793692578.git.zhengqi.arch@bytedance.com>
- <325d33655f29a2799a0859c788c48625feeb85f1.1793692578.git.zhengqi.arch@bytedance.com>
- <sashiko-outbox-194875@kernel.org>
-From: Qi Zheng <qi.zheng@linux.dev>
-In-Reply-To: <sashiko-outbox-194875@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: C45E580006
-X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
-	autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: ah7qyhqz1tcoffauctty8sefwhu3s1yg
-X-HE-Tag: 1793697111-499014
-X-HE-Meta: U2FsdGVkX18NWL8xEtFy/wwKFJDtiLOMeRiKoGWRs4mwPvfNPbe2U3NFZgFOkoP/CMpsehEdyg3wG3MOFWPsOo3WakVCArjMqwAdCGmPvRR5sctpOKtAN2GrkFz2xRPQJZ4RdfO5zC2umEaLh1r1DYUrCSCvhPPG+8i04d6WQ+9RWICgDPc/inhGQUw/+c4SKwckp/sWT1UuClJ5Z2/0Z4OiX9RRIWz3ddx9fZEyTVFqkWyQbXaxja+TPZKkYJq/GjGVmUqJEbiJ6ZKCr2TKa+VEZXAukCJFw8LjS14sqf+0IFXVeZLsMoU3TRGs7NT/ffzLGORGXXEdkzIXObRqfpahc6fQffhAGBz9pGJpYoefXeeyVYeAj+Lgsk67j9G25WfhYYuEWj2D+S1Zx8evmxEEhIP/Cc+08ghJu9eIasqBU7fJPCSlPLYtBMuwAy3QimPbSfGsHfKrSWCcl47DMHOiRL9zrpAaTxfRSfNBa9HMY6AZ0x/bx5WUSgI4u+E4cLLFh1v7kApIw/TnXMu4B5ZMdQYsSWae8IMxJuXzJKwYJ6HFJM0cnZpJIfColCEKY3iEkwmWAnhSnyOa7J20luFjw8zgPihM5euQGhIxTnBIZgezANjZ62eMNGZ8AspNdVNpGAwAsC24xuSmLt7CGA8GmmjQ1IuOUKiYVy6/VW38ib3ZVxPtMSgm89AmeTI0Yj5xkc0LNEy82yHCJVUIaFkjS79ffsdy1cem41BoDrI+/IKg8sGz6iSGoXLPdnJq/k6a/MOS6uLLFYCTpRwkO5QqA4Xg7RyFRvJn5sgkxidNbN2VEOXhbrvuck5xYu8k9AgD9P/ifGQYffHtYMzsCDCrLxfMx6FHY0JWUhvtgOsIEzElhZXD4yyfnPZDfbSpOC63NsI8/wjUV7zgMHVq7TPMtubGmG9cjDMoBvksf8hWqtp6BSmac45Y8zcVETqr05WCHisqDsCAYN3KlLM
- 5+0mL3pl
- 9ENRqKo8/vhviRgUN38Ivl7354pIpq6vWkv/qkE4/hNvcmoWn/jlYy0wEP6OUok5y1nrbVgYJQqMacqc6mB/tbjcxYCDhw6+1U6R6zKVS+BxioU+Ipm/uk8GHydiM0naK5ec4Du2WiGNMqC3Zzkbn0v55CHSm3981DKUtHCjJ29yD0kmCqle0QVCr7g7I2mHvb4ym6vprSXH0+fpARng18xYl75TrP+M2pkv0nCaae+j803F/I9Yhb/Csj3H/75UKdXxST0jhv7ezFEw7BMneEdaId5xVs3PqmXg+kzjo88IoSqY=
+References: <20261003212241.3432303-1-lrizzo@google.com> <0cc1cac1-a500-489b-9c1b-b49598b5550b@kernel.org>
+ <CAMOZA0JaiKsRgDdjHkL_N+MshhcyLSv+cT9SzEbNsC_sumHvOw@mail.gmail.com>
+ <b31efcd5-149c-4edf-81a2-1744d363c390@kernel.org> <CAMOZA0+6kAbwgNwGTsCT5AqpwcZKz4pziEGC9UpHkNCVoqrF-Q@mail.gmail.com>
+ <20261022201229.GH3381610@ziepe.ca> <CAMOZA0KaanmevmvWS=M3gKfBeborzfCQTiF_xbSeYMWbozG7Mg@mail.gmail.com>
+ <20261023140107.GC3977851@ziepe.ca> <CAMOZA0J+MOLv+s4PAvsAK1jbasnbQRyHffZw1VEKutH9Vr6ODw@mail.gmail.com>
+ <20261023145023.GH3977851@ziepe.ca> <20261103080933.GA4213@lst.de>
+In-Reply-To: <20261103080933.GA4213@lst.de>
+From: Luigi Rizzo <lrizzo@google.com>
+Date: Tue, 3 Nov 2026 10:13:56 +0100
+X-Gm-Features: AclHuK_l2TEIEs7qqznKn-9_c2yONWQ9t4tXrp8CyyoGHrPwnIyHLaBfgdlxlp4
+Message-ID: <CAMOZA0+Fhq0_Pm02xGWpex06vb2y5pVzuFxOk=URZB7aq0xJ5A@mail.gmail.com>
+Subject: Re: [RFC: DMA_PMD 00/22] DMA_PMD: PMD_SIZE-backed IO buffer pools
+To: Christoph Hellwig <hch@lst.de>
+Cc: Jason Gunthorpe <jgg@ziepe.ca>, "David Hildenbrand (Arm)" <david@kernel.org>, Luigi Rizzo <rizzo.unipi@gmail.com>, 
+	Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>, 
+	Marek Szyprowski <m.szyprowski@samsung.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, "David S . Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J . Wysocki" <rafael@kernel.org>, 
+	Danilo Krummrich <dakr@kernel.org>, Jonathan Corbet <corbet@lwn.net>, 
+	Jesper Dangaard Brouer <hawk@kernel.org>, Ilias Apalodimas <ilias.apalodimas@linaro.org>, 
+	Willem de Bruijn <willemb@google.com>, Kuniyuki Iwashima <kuniyu@google.com>, 
+	Joshua Washington <joshwash@google.com>, Harshitha Ramamurthy <hramamurthy@google.com>, 
+	Saeed Mahameed <saeedm@nvidia.com>, Tariq Toukan <tariqt@nvidia.com>, 
+	Tony Nguyen <anthony.l.nguyen@intel.com>, Przemek Kitszel <przemyslaw.kitszel@intel.com>, 
+	Alexander Lobakin <aleksander.lobakin@intel.com>, Michael Chan <michael.chan@broadcom.com>, 
+	Pavan Chebbi <pavan.chebbi@broadcom.com>, iommu@lists.linux.dev, netdev@vger.kernel.org, 
+	linux-mm@kvack.org, driver-core@lists.linux.dev, linux-doc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam12
+X-Rspam-User:
+X-Stat-Signature: nc15q9sw48twefmj6ji8quam4cs9rit3
+X-Spam-Status: No, score=-13.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_IN_DEF_DKIM_WL
+	autolearn=no autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: 5BA5A180009
+X-HE-Tag: 1793697274-749732
+X-HE-Meta: U2FsdGVkX1/6y8+Ghjl/J3NF1LYGAzGwVFjy7qH/dX19C8/57yQix/lqXeVGc4nbMCet19qWRoVfR96I8eYSHGL1VHsBJ/sOffB2IaHLDgAZl+g4VNqjvRUpN1aHS21WpXTy94dgHdrNQUuQhA8ym0FLaooBhVMCFz94UNIDVdZXgOYz/ofmd50ylu7uUA/0S8Bz21j2gbyiqfq1k+Lmz2oSkFnGefJ3ZGpC0Bjfcly7CVjxVmwoAf5gydJV6uhd3g+q0By1vmmIbMAW0HGn3oMqf89V+j4kj5Pwp3zGwfIU7gJBMj1HGSpphsdi+UDJ1OAb5qqiEW2shykiZEiVr72fT3hpIVamyXZubUttbXL/aA5DC45qeiIA5i+Ubr+57Qr9uIVk0shV+RsQ6dHoD8NN9JUPt6FYHzLmtBTV+0ArW9v0sbOeEnygfv75ONfpqVglHq/+DY5IyjTrot4keCJGdrfda0ONmZ7MdF46DR+KuZTnsDK3hn8yQoNaIa0Pruik6XoIYD/2AMYSBDllmgTFG97g/lA6egCDJ+J+ceH2mLvWm6KzMayDPUyWU+Q02xg9QIlHESTzqm1PUSQme+4ROwTfN1cxQwp1+0DhfdgXKUXhXWoRXBiF6FX/P9yVXpwWALGRWkkFUfoEJ9sgpm/VpJQTRSqkx3n2inoIKh52WIb9wey2K149SyxVZcHNLm4S6SQn0CiXpRyBBYgsKLDjjY04AY2aGBgziqDg0JKocYrOEhspImyN8drsJGsSZRN0svXdt21p3nOkpP/TuMvQF6XGYEtWc3/hYN+7EHpe7HaQld5P4FY4Bi3cRisJ0r/Bu52h9l42i8NqSpVYYpC4I2tnOmeBvnePP6Q86GrEvEHZiIi5n9O2skVrFiGThGHS5RxMBSOVK04IxPTWxDe/00pqxOqvQ8bzOQbQmUyZV9B6jAFGysVAeKJm+yvo/Qk8O/jupT13GMJNWxa
+ BWCG0T2b
+ Ae/+82Fgg6Jz7+fKe2cAX1ZwL/XsyTRFTi9TV2XneZZepc3HNCrSEH7nzy3tsQF/Hmss8rxJ2eCPkq1JXNUcKiA+Ps2WFlobMrR3Lhw1XjeFC9vAm3FsiVUz6hyS7kUblM+0xdpHWT0+lwW8oIecwj44zmGJ4I6ACCiAUoyepu5zL5eyyZr6R/S++ijFOm1DD4NowLEIBCOcVowaYPajAFBfUDszX88i9rz2h7rxrlUORPEGPYpzDCNBKXbd1BhSsyCalwMf5g0G7l+GmH9gtQt67C1FSf72dA0TJ8DKnogD6kbl5NWIBitixMCEcxbMMsZ5bW15Fx9aaVq3T9q8EK5wthv/cz7VO1Hog0New/MrFXn/Q05apVzv4LMrR5Yal2USV+C8xwiS1473Lzab+vFJp2L8x/KrSJjLuaRBlqqvdQbzf1953zyqpmVvAVHFzOnMCpHz7rMQYEhI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,204 +162,45 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
+On Tue, Nov 3, 2026 at 9:09=E2=80=AFAM Christoph Hellwig <hch@lst.de> wrote=
+:
+>
+> On Fri, Oct 23, 2026 at 11:50:23AM -0300, Jason Gunthorpe wrote:
+> > > Disk I/O is still potentially affected by the same problems
+> > > (cost if io mapping/unmapping, iotlb thrashing, bounce buffers
+> > > in confidential computing...)
+> >
+> > The disk folks already have a proposal to address all of this using
+> > io_uring and preallocated buffers. I really doubt yet another version
+> > is going to be interesting there.
+>
+> Huh?  If you mean the dma-buf I/O it doesn't really have anything
+> to do with disks, except that this is the first user.  The dma-buf
+> iovec can work for every ->read_iter/->write_iter consumer, and
+> should be adopted more broadly.  Including by networking instead of
+> their own totally weird different world.
 
+Christoph, is this the dma-buf series you are referring to ?
+https://lore.kernel.org/all/cover.1791975048.git.asml.silence@gmail.com/
 
-On 11/3/26 4:47 PM, sashiko-bot@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 1 potential issue(s) to consider:
-> - [Medium] mm: hugetlb: hugetlb_cma_alloc_frozen_folio() breaks MPOL_PREFERRED_MANY
-> --
-> 
-> commit c96d52d66d643a77abaa96a17e392b7ab0f36ccd
-> Author: Qi Zheng <qi.zheng@linux.dev>
-> 
-> mm: hugetlb: skip CMA when direct reclaim is disallowed
-> 
-> This commit updates hugetlb_cma_alloc_frozen_folio() to return NULL when
-> gfpflags_allow_blocking(gfp_mask) is false, avoiding direct reclaim inside
-> cma_alloc_frozen_compound() when __GFP_DIRECT_RECLAIM was cleared by the
-> caller.
-> 
->> diff --git a/mm/hugetlb_cma.c b/mm/hugetlb_cma.c
->> index dde1c866406fb..90f8d718a1f16 100644
->> --- a/mm/hugetlb_cma.c
->> +++ b/mm/hugetlb_cma.c
->> @@ -59,7 +59,7 @@ struct folio *hugetlb_cma_alloc_frozen_folio(int order, gfp_t gfp_mask,
->>   	const nodemask_t *nmask;
->>   	unsigned int cpuset_mems_cookie;
->>   
->> -	if (!hugetlb_cma_size)
->> +	if (!hugetlb_cma_size || !gfpflags_allow_blocking(gfp_mask))
->>   		return NULL;
-> 
-> [Severity: Medium]
-> Does returning NULL from hugetlb_cma_alloc_frozen_folio() whenever
-> !gfpflags_allow_blocking(gfp_mask) break MPOL_PREFERRED_MANY for gigantic
-> surplus HugeTLB allocations?
-> 
-> In mm/hugetlb.c, alloc_buddy_hugetlb_folio() implements MPOL_PREFERRED_MANY
-> as a two-pass allocation:
-> 
-> mm/hugetlb.c:alloc_buddy_hugetlb_folio() {
-> 	if (mpoli->mode == MPOL_PREFERRED_MANY) {
-> 		gfp_t gfp = gfp_mask & ~(__GFP_DIRECT_RECLAIM | __GFP_NOFAIL);
-> 
-> 		folio = alloc_surplus_hugetlb_folio(h, gfp, mpoli->nid,
-> 						    nodemask);
-> 
-> 		/* Fallback to all nodes if page==NULL */
-> 		nodemask = NULL;
-> 	}
-> 
-> 	if (!folio) {
-> 		folio = alloc_surplus_hugetlb_folio(h, gfp_mask, mpoli->nid,
-> 						    nodemask);
-> 	}
-> }
-> 
-> This reaches hugetlb_cma_alloc_frozen_folio() via:
-> 
->    alloc_buddy_hugetlb_folio()
->      -> alloc_surplus_hugetlb_folio()
->        -> alloc_fresh_hugetlb_folio()
->          -> only_alloc_fresh_hugetlb_folio()
->            -> alloc_gigantic_frozen_folio()
->              -> hugetlb_cma_alloc_frozen_folio()
-> 
-> On the first pass, __GFP_DIRECT_RECLAIM is cleared while nodemask points to
-> the preferred nodes (pol->nodes), and on the second pass nodemask is cleared
-> to NULL. Because hugetlb_cma_alloc_frozen_folio() now returns NULL on the
-> first pass, it never sees the MPOL_PREFERRED_MANY nodemask.
-> 
-> In mm/hugetlb.c:alloc_gigantic_frozen_folio():
-> 
-> 	folio = hugetlb_cma_alloc_frozen_folio(order, gfp_mask, nid, nodemask);
-> 	if (folio)
-> 		return folio;
-> 
-> 	if (hugetlb_cma_exclusive_alloc())
-> 		return NULL;
-> 
-> 	folio = (struct folio *)alloc_contig_frozen_pages(1 << order, gfp_mask,
-> 							  nid, nodemask);
-> 
-> When hugetlb_cma_exclusive_alloc() is false, returning NULL from
-> hugetlb_cma_alloc_frozen_folio() on the first pass falls through to
-> alloc_contig_frozen_pages() on the preferred nodes, bypassing the dedicated
-> hugetlb_cma pool on the preferred nodes in favor of non-CMA memory.
-> 
-> When hugetlb_cma_exclusive_alloc() is true (or when non-CMA allocation fails
-> on the preferred nodes), the first pass returns NULL and the second pass
-> invokes hugetlb_cma_alloc_frozen_folio() with nodemask set to NULL. Since
-> mm/mempolicy.c:policy_nodemask() leaves *nid as numa_node_id() when
-> pol->home_node is NUMA_NO_NODE:
-> 
-> mm/mempolicy.c:policy_nodemask() {
-> 	case MPOL_PREFERRED_MANY:
-> 		nodemask = &pol->nodes;
-> 		if (pol->home_node != NUMA_NO_NODE)
-> 			*nid = pol->home_node;
-> 		break;
-> }
-> 
-> hugetlb_cma_alloc_frozen_folio() on the second pass tries
-> hugetlb_cma[numa_node_id()] and then iterates cpuset_current_mems_allowed
-> from node 0, allocating from non-preferred CMA nodes even when preferred
-> nodes in pol->nodes have free CMA pages.
-> 
-> Prior to commit 9bda131c6093 ("mm: cma: add cma_alloc_frozen{_compound}()"),
-> cma_alloc_folio() forwarded gfp_mask down to alloc_contig_frozen_range(),
-> where __alloc_contig_verify_gfp_mask() preserved the cleared
-> __GFP_DIRECT_RECLAIM bit so CMA on the preferred nodemask was tried on the
-> first pass without entering direct reclaim. Would forwarding gfp_mask to
+I am not claiming that my proposal is a good fit for disk or accelerator I/=
+O,
+but every subsystem has different constraints, so it is not unreasonable
+that a proposal for (N)etwork and a proposal for (D)isk focus on the
+different bottlenecks (still there can be learning from looking at the
+other solution).
 
-Thanks for catching this. You're right: in CMA-only mode, this check
-skips the preferred-node attempt entirely. The fallback can then
-allocate from a non-preferred node even when the preferred nodes have
-usable CMA memory.
+As an example, in networking we have to deal with the following:
+- typically at least two buffers per packet (header+payload)
+- often, very small fragments (1400-ish MTU plus crumbles from
+  data in different buffers
+- extremely high I/O rate with almost no spatial locality, which is an IOTL=
+B
+  killer and the main reason behind my proposal and some of its complexity.
+- on tx no good way for the application to pre-reserve buffers
+  (buffers are sliced from a 32K per-task block,
+  going to possibly different destinations)
 
-> cma_alloc_frozen_compound() (in mm/cma.c) preserve both the non-reclaiming
-> first pass and the MPOL_PREFERRED_MANY nodemask?
-
-Make sense.
-
-I'll replace the check with GFP-mask propagation through
-cma_alloc_frozen_compound(). This restores the preferred-node CMA
-attempt while preserving the caller's __GFP_DIRECT_RECLAIM setting.
-
-Like the following:
-
-diff --git a/include/linux/cma.h b/include/linux/cma.h
-index 8555d38a97b1..caedd59bde03 100644
---- a/include/linux/cma.h
-+++ b/include/linux/cma.h
-@@ -53,7 +53,8 @@ extern bool cma_release(struct cma *cma, const struct 
-page *pages, unsigned long
-
-  struct page *cma_alloc_frozen(struct cma *cma, unsigned long count,
-  		unsigned int align, bool no_warn);
--struct page *cma_alloc_frozen_compound(struct cma *cma, unsigned int 
-order);
-+struct page *cma_alloc_frozen_compound(struct cma *cma, unsigned int order,
-+				       gfp_t gfp);
-  bool cma_release_frozen(struct cma *cma, const struct page *pages,
-  		unsigned long count);
-
-diff --git a/mm/cma.c b/mm/cma.c
-index a10ea37a261d..c2605967d77a 100644
---- a/mm/cma.c
-+++ b/mm/cma.c
-@@ -929,9 +929,10 @@ struct page *cma_alloc_frozen(struct cma *cma, 
-unsigned long count,
-  	return __cma_alloc_frozen(cma, count, align, gfp);
-  }
-
--struct page *cma_alloc_frozen_compound(struct cma *cma, unsigned int order)
-+struct page *cma_alloc_frozen_compound(struct cma *cma, unsigned int order,
-+				       gfp_t gfp)
-  {
--	gfp_t gfp = GFP_KERNEL | __GFP_COMP | __GFP_NOWARN;
-+	gfp |= __GFP_COMP | __GFP_NOWARN;
-
-  	return __cma_alloc_frozen(cma, 1 << order, order, gfp);
-  }
-diff --git a/mm/hugetlb_cma.c b/mm/hugetlb_cma.c
-index 90f8d718a1f1..250b5c10d954 100644
---- a/mm/hugetlb_cma.c
-+++ b/mm/hugetlb_cma.c
-@@ -59,7 +59,7 @@ struct folio *hugetlb_cma_alloc_frozen_folio(int 
-order, gfp_t gfp_mask,
-  	const nodemask_t *nmask;
-  	unsigned int cpuset_mems_cookie;
-
--	if (!hugetlb_cma_size || !gfpflags_allow_blocking(gfp_mask))
-+	if (!hugetlb_cma_size)
-  		return NULL;
-
-  	if (current->flags & PF_MEMALLOC_PIN)
-@@ -74,14 +74,16 @@ struct folio *hugetlb_cma_alloc_frozen_folio(int 
-order, gfp_t gfp_mask,
-  	}
-
-  	if (hugetlb_cma[nid] && node_isset(nid, *nmask))
--		page = cma_alloc_frozen_compound(hugetlb_cma[nid], order);
-+		page = cma_alloc_frozen_compound(hugetlb_cma[nid], order,
-+						 gfp_mask);
-
-  	if (!page && !(gfp_mask & __GFP_THISNODE)) {
-  		for_each_node_mask(node, *nmask) {
-  			if (node == nid || !hugetlb_cma[node])
-  				continue;
-
--			page = cma_alloc_frozen_compound(hugetlb_cma[node], order);
-+			page = cma_alloc_frozen_compound(hugetlb_cma[node], order,
-+							 gfp_mask);
-  			if (page)
-  				break;
-  		}
-
-Thanks,
-Qi
-
-> 
-
+cheers
+luigi
 
