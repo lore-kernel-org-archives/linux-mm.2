@@ -1,94 +1,94 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86229606A7B3
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 15:18:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38018606B265
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 15:18:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=chrisdown.name header.i=@chrisdown.name header.a=rsa-sha256 header.s=google header.b=eI17Fu2M
+	dkim=pass (1024-bit key, unprotected) header.d=chrisdown.name header.i=@chrisdown.name header.a=rsa-sha256 header.s=google header.b=EOr21nf2
 Received: by kanga.kvack.org (Postfix)
-	id 94EA46B05C0; Tue,  3 Nov 2026 10:18:01 -0500 (EST)
+	id 139376B05C2; Tue,  3 Nov 2026 10:18:14 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 926756B05C1; Tue,  3 Nov 2026 10:18:01 -0500 (EST)
+	id 112F76B05C3; Tue,  3 Nov 2026 10:18:14 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 83D776B05C2; Tue,  3 Nov 2026 10:18:01 -0500 (EST)
+	id 027526B05C4; Tue,  3 Nov 2026 10:18:13 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 597926B05C0
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 10:18:01 -0500 (EST)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id B8E1D1C2CC7
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 15:18:00 +0000 (UTC)
-X-FDA: 85394163120.24.7061638
-Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53])
-	by imf30.hostedemail.com (Postfix) with ESMTP id C3EA980003
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 15:17:58 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=chrisdown.name header.s=google header.b=eI17Fu2M;
-	spf=pass (imf30.hostedemail.com: domain of chris@chrisdown.name designates 209.85.216.53 as permitted sender) smtp.mailfrom=chris@chrisdown.name;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id BB79B6B05C2
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 10:18:13 -0500 (EST)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 25E16C0477
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 15:18:13 +0000 (UTC)
+X-FDA: 85394163666.19.627E586
+Received: from mail-pg1-f174.google.com (mail-pg1-f174.google.com [209.85.215.174])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 2488916000C
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 15:18:10 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=chrisdown.name header.s=google header.b=EOr21nf2;
+	spf=pass (imf08.hostedemail.com: domain of chris@chrisdown.name designates 209.85.215.174 as permitted sender) smtp.mailfrom=chris@chrisdown.name;
+	dmarc=pass (policy=quarantine) header.from=chrisdown.name
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793719091;
+	b=IRvgncLqlBbbqm1SG+1dOhaIJTq40pUQj4IORz+wIkDFui1NBxcqvK1c0yfutrMc1AZDhp
+	efvqkDzACnzumhktrKzbzbR+6BNSb1t5ZGc7XbiYDWD0U4BDyBL0sloT5lc4IHRoadXW+A
+	VI4Cqdbsyo4lmjA51BBGkdihA7GYJ/Q=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=chrisdown.name header.s=google header.b=EOr21nf2;
+	spf=pass (imf08.hostedemail.com: domain of chris@chrisdown.name designates 209.85.215.174 as permitted sender) smtp.mailfrom=chris@chrisdown.name;
 	dmarc=pass (policy=quarantine) header.from=chrisdown.name
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793719078;
+	s=arc-20220608; t=1793719091;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=bbduBp3PV2PD6ZtgXv4ZkeG/rcdvbrKsRxBHo1Elyzk=;
-	b=xGrX2CEytoACnx30F87JZvxA3Da/EemPMvTsBfXwLPE2aoP2x4YP9ysHKiME/3GdWxiOWL
-	bav9l9Gmtp5BTX6N7bYXZ9pV0oImntGvTz5+rKV7fqdrk20WPUA7Ty2i7f7tbmWkIzywid
-	Cu57uaekZ37CKjTsfilf7HY0d6vdLYQ=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=chrisdown.name header.s=google header.b=eI17Fu2M;
-	spf=pass (imf30.hostedemail.com: domain of chris@chrisdown.name designates 209.85.216.53 as permitted sender) smtp.mailfrom=chris@chrisdown.name;
-	dmarc=pass (policy=quarantine) header.from=chrisdown.name
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793719078;
-	b=mmuJGlBghLGzxFw8Ck64+3y9c2V61u0ePcsqjEJat1uSDv0uFYT/Tx2c78S90pnhZ/RIiJ
-	yO1Qlb4jpSVeU3FcgHuqNzV0ZCvpCWikkwGDYTr3C2GreXi6zl4vLbce1XAQLTH9AnBytv
-	XzE6dmU78He2WGl1GPqwGnCTL4R5RhE=
-Received: by mail-pj1-f53.google.com with SMTP id 98e67ed59e1d1-3ac77270fbfso2158203a91.2
-        for <linux-mm@kvack.org>; Tue, 03 Nov 2026 07:17:58 -0800 (PST)
+	bh=qMbUoE7myG/GAn/bAOasbXOTltQ3YhdGAnoaT+YPoYA=;
+	b=tWko0u4U0PxaXZc3YXswK58vXojIzF5dTvHmG4TxH6rb7cebyc+wo3fSXKk3669dTF+VXW
+	1XfAroJyQe6rmGNOZKswxV67Cr2FSxEFsTe97moDRERT7ZnfUHyQRjnPa+TLvBdARJTW9h
+	ye67cbk4Qv9hxlVpbOoz5/PAC6nA9H4=
+Received: by mail-pg1-f174.google.com with SMTP id 41be03b00d2f7-cc147d86bebso600683a12.0
+        for <linux-mm@kvack.org>; Tue, 03 Nov 2026 07:18:10 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chrisdown.name; s=google; t=1793719078; x=1794323878; darn=kvack.org;
+        d=chrisdown.name; s=google; t=1793719090; x=1794323890; darn=kvack.org;
         h=user-agent:in-reply-to:content-disposition:content-type
          :mime-version:references:message-id:subject:cc:to:from:date:from:to
          :cc:subject:date:message-id:reply-to:content-type;
-        bh=bbduBp3PV2PD6ZtgXv4ZkeG/rcdvbrKsRxBHo1Elyzk=;
-        b=eI17Fu2MEDo5Gmzr2nbwFbEm3uX9pTS0eYsaMaSDax7iIIzW9Q1ycOhSmTrB4fXAGw
-         FM2tRzHcfy+HXlyhiBGxmAk7PAzptid3VZdQ9U4B/Qm4bj4KPL9Kx5F3OOKUzdCIFMpM
-         NWnaVDLcNuWHnsl36TrE28FkDlwoe4eog90j0=
+        bh=qMbUoE7myG/GAn/bAOasbXOTltQ3YhdGAnoaT+YPoYA=;
+        b=EOr21nf2nF8RPAyAnQE0SPlAdu5/Ni6KlX3Yv2ZgFrdjCDTzW0grdVw60BTV71Mg/Y
+         x2OpuBxynFnzoW0jhFchJNGEXJ1V5l+HAt8BNgcTauUJDXDMOQay+k9samJGF68F1oeW
+         YaDdB3Thj0EVMygsV86chS/n8IuC51gl8lv0I=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793719078; x=1794323878;
+        d=1e100.net; s=20260707; t=1793719090; x=1794323890;
         h=user-agent:in-reply-to:content-disposition:content-type
          :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=bbduBp3PV2PD6ZtgXv4ZkeG/rcdvbrKsRxBHo1Elyzk=;
-        b=ivMWw6BFHqkegql/KuuTmN8YT1N/4uGBS5gCXwAPzNkEu3T81p9FwO9LifFh1sxN/G
-         5tyPDE/A6GkHwFlJgnyIPXltVe0nvHseoqg55A8iaB2zEeLk+zg7i7D2An6JdqS4ERsq
-         ZphEAjgu/szhXvxFHsH6UwxnvMXXCG6EJ6Sp+RFnft6chk7vTmRkkFBXGj5XlokcYyO4
-         UjcOEAdp80GSkuJXPaKJ1XSLCq5nyf9PpgNofEpgPqjb9sP3Cp2FZfSpywtWBxme+SLM
-         NqzHYO97/o3+I5pyB8aUnmVABUqkQJB8bSRaCntAyXqIYUVMRrJ7akFU0l0xFnlTV0S0
-         v2yw==
-X-Forwarded-Encrypted: i=1; AKwUvBy4nb//Te+eLkhYBAtxNN7ZKvHdGTb/8anOM8+HLgl8J3M9dG09NxmzXeKLXImRDXNhZHdknPMSJQ==@kvack.org
-X-Gm-Message-State: APuU4Z+KwwgHBFvcF0do+azePDX2kMUpCIqcZMXjhuR1zP1SOceoq8jC
-	1P/Yb/be4d3zODtojepGpab/5KLolPYvBCUl3Wp4U9E21KMP+yT+WKic5fucnLcWdB0=
-X-Gm-Gg: AYBFou2oNPGmDTnebkoEQnfd7HQnTbAf7+58ZFQc0o3Tsz4UvWkh1TS1ziAJjidy/wS
-	XTw57qm2hFM/u9DV2srm0B2Eoj1zIuZxPEgUk8unZDKcPyuPRXRWvLQda9lo5WsC08nBMHMDExb
-	7payPyZ3oMl4fcHy/xtv4Rm1zepdeQ0Gne8Suo/ri6K4FfUyS06eYORsDcYM5c8noa8YHvzwTL4
-	VRI13r9wragCvqpyYrG3p3uyBDYhxXuAUZeGx8IwUmz+LE7VE182J/WUZVsGY1JxBkW0ceZKwyI
-	7S+OswhEEgfUlYqYsBcKPGH4bHwb4tSMguMHyyPeG6PIR7CzmfUdIwY9OzKKWce2j5XGxiHvsbj
-	/9vbQP3SxjJCnDo2iYYkufc5EX0PzpSCLOn/gIQs/siBiiMwWEod8VowA5xRq0ER66n8Y0Gq/9t
-	yWRNtPtQN5DMOL/XYzkfEZm7xiUmZIdlpepOkP+CXNcMF/VvWWW2StJqTwD5nAWfUCoCxmBC/22
-	B5lPnk9OssYkSQ7JR8Grpv4EI47/6KeOKzsritbN3xq3W9JqmJhBbgAWYgv6I9oxHFAqIfHCoGK
-	4hM1wry6pbakUgnlIajxNglEDb3fXmBWA+6fr2mzYAEqRgsB57Wpcr0d7hNRB5WBK6HRgvj9Xdz
-	gblqRpS8Bk8U5/a7ZKfbPo9H6YqM6E+KWmYRKAfEsyTZaKbNDXmnS4eK/Jwo5ezUP9BkN1OcL
-X-Received: by 2002:a17:90b:4e8f:b0:3ac:4e18:238c with SMTP id 98e67ed59e1d1-3ae89806287mr10222361a91.49.1793719077568;
-        Tue, 03 Nov 2026 07:17:57 -0800 (PST)
+        bh=qMbUoE7myG/GAn/bAOasbXOTltQ3YhdGAnoaT+YPoYA=;
+        b=fqKpSaH8V450SqfGSimuF4IVIjCxD/OOyr51tWYU245BQBMJDzKMAUNouqnXcKSnrg
+         dtn49X3LrNQv+L3mBoGzme07IKQA6FdeVr21DXTFFYp8kJnD6A6v0l1i5uNfw5z221CE
+         WikMBaOm1pHZ8h2gd/qEzgeEd3xyu6J2Bn/DYR74iJx4T2j8jZQxw6PCJbg1xr8PDRy7
+         fcfFMgiGcjvI05431STcOeztDi52cNVj2798MndkmCPhRC3qSKjlr3fHtOcxkB3VOywJ
+         WlN44iC8FXd3+oh7DujgW2QE9yp/+2rP070e1TsTfAOiOte9KrS5TlVxtb5mt1HB/dfh
+         CyRQ==
+X-Forwarded-Encrypted: i=1; AKwUvBwJQ85gkFPgP2nQXQCdjLog4Yz1hTqPYBKa7sDHCi1IyjhVxKh0POXh/fnfy3eYiQI0wbs2eK6dlw==@kvack.org
+X-Gm-Message-State: APuU4Z+U/AQ6/zoy+LRJtZO8oBAxEtvV/kR/rhYEJSSc9ab2jVMrSUFK
+	eiiLm8af1NPzm1InOj8EGc4BV4N+p4v5K3ns3iQzXeaVWMqiIOvLj3kfe4vxzdu0RIk=
+X-Gm-Gg: AYBFou2YvYqhfByAT88ozi4oW908fvQqZ8t7BjnS3GMiOqHNyR8OmYnH2ypFwIV/QBz
+	OrLbAGnybrUYhMEcfreqjVyhRGjwbNuKpzNjHWA4mo81V0cXW6ShY5cj6oIqLcpngWd+ZToFKq3
+	NOeWoeKrSJcp9J/m2vD6w+5FCnsgmzW1mmvfOs0jDhTp+cpTuMeeclRiL4QVuphQm/5XbKv2vA0
+	XElB6uOO1tX2bXOthQLLIaZ++A/2CY8I4IoMYRoZP5PUNO9DPIgT90nzO4cAW7a56I6U7oe/agd
+	l9gr7gFMIJGFNTvPmQDEp8EsS85Cb77kIgT4TRY0OqH4qg0O2hxTeSORiDkjj5yQzjmlePiVinL
+	uYXh1djRXom9k+axcH/q2Z/RFdpWhumqsgbTOaupGvTFjbotCsvWD11w06NVuljThG3OTep6sUx
+	YMHXfS66DovJ6yMVSt0ZAGwxscmtdug/yq2pEsQm5Z9X00SgDoqBsaIXA7E4iPpiDKGavj7LHNd
+	qgI5j1G3SCmka/vA8JxF79b/qxluLaSjIIGurlKWwFzJVZDjA238Valilba7HuGEcwMq9VStSlO
+	T7TB2fowrKWYUm++YsYu7R4Z+5VCYUKWeiWiLJbt2wpyq0L6A/EwM/sUVP8wZzykXW7leN6+t5F
+	47DpcUT96tR2JonzAbgQ51W4FyY0rjrhydz/AyOLFZhIyqGUbX3EX2iDbp2EYL1FSNq0nr1H1
+X-Received: by 2002:a17:90b:3ec7:b0:3ac:7406:b49 with SMTP id 98e67ed59e1d1-3ae896d7a1cmr6969572a91.15.1793719089722;
+        Tue, 03 Nov 2026 07:18:09 -0800 (PST)
 Received: from localhost ([116.86.153.182])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3ae87f69605sm10791677a91.2.2026.11.03.07.17.56
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b07c903d0dsm4842349a91.12.2026.11.03.07.18.06
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 03 Nov 2026 07:17:56 -0800 (PST)
-Date: Tue, 3 Nov 2026 23:17:54 +0800
+        Tue, 03 Nov 2026 07:18:07 -0800 (PST)
+Date: Tue, 3 Nov 2026 23:18:04 +0800
 From: Chris Down <chris@chrisdown.name>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	"Liam R. Howlett" <liam@infradead.org>,
@@ -129,8 +129,9 @@ Cc: Jeff Xu <jeffxu@google.com>, David Hildenbrand <david@kernel.org>,
 	linux-arm-kernel@lists.infradead.org, loongarch@lists.linux.dev,
 	linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
 	linux-kernel@vger.kernel.org, kernel-team@meta.com
-Subject: [PATCH v2 1/8] selftests/mm: Move sysmap_is_sealed into mm
-Message-ID: <1e2cfbe24810f976ee6e176346598900295adc73.1793718940.git.chris@chrisdown.name>
+Subject: [PATCH v2 2/8] selftests/mm: Skip sysmap_is_sealed when system
+ mappings aren't sealed
+Message-ID: <6b11e9f77d8ede7ef2f16fef173970a7fa1978e5.1793718940.git.chris@chrisdown.name>
 References: <cover.1793718940.git.chris@chrisdown.name>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
@@ -138,19 +139,19 @@ Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 In-Reply-To: <cover.1793718940.git.chris@chrisdown.name>
 User-Agent: Mutt/2.3.3 (9073d26d) (2026-06-12)
-X-Stat-Signature: 5kmzqyq55j3eyjnbs31z6mtsw6sf13fg
-X-Rspamd-Server: rspam01
+X-Stat-Signature: fgn9sd6sis81i7q17h3wft5b87ghh8fm
+X-Rspamd-Queue-Id: 2488916000C
 X-Rspam-User: 
+X-Rspamd-Server: rspam11
 X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
 	version=4.0.1
-X-Rspamd-Queue-Id: C3EA980003
-X-HE-Tag: 1793719078-567912
-X-HE-Meta: U2FsdGVkX1/kyzUVwWU7qzqZHtLx3U7dzXlUHW7HMUbVrG3fWg3m/JYyu2WSrR5kLi7SdIU6k11D8J1Si+qhUukJ3WADiKvRe6mMqELd6Qmz3OHzc8WT0sMC3b9NQ6Rny8ldSyYxUQA4Uqoi7tMweac6Nc1QnsMtMnsX97oc+fw13X8+x+HGTQMZTjk4OEU9BwBVVNf4sItmBGqV5eCGTng3S55DW/M+zHefhgJdOl/nk3tEvGYvRbnnWnu9y9YIJae4uvrVVfnSgob4fKcAZf7/3bT81OGVVTF5ZnR4BcYKmvh4Zn+KKK9//lYK3pPqL/GyiBnnuU95h1CvcO4RLnkQ8j34ef0t8eOlGL3vomXOxnHVL2AxY5KntcUsyipEZIWj4BqEObKoLkVV7wLVzqBCqfHRIWNmUEYilEhdIaOs6AV0nXNT1U1f7GikpeXbk3RsaEimNQct3JvGSrwOahL5PC0kaONgHO5yf31u0ODgwcO10IdyUBoaFcvvd6RfT8Zj1aI3O3mQqQDCXnL2DNCwHx90rDVotYB8bDS7E+LdpD2b+NE70Vo9zXS9xAuyUhlH3axcU7EgZCg8CFHbc8HoVZCOUXR4HprhjvEYZlf9yJKpgqzox8dmz621uCzvy/zMeVwbb+KtwdkMqzdo2fPTZzDV+XhXAd8d2XXj6ihmRuEyuprMMNJFyF6l+5zLLUSQzkJwnmzo0ExvZHmgNEp1wBM6rDz64JegYELxJB6ocOniTFUkeGMFnLvVFGj4PszJAt7yacAl5ftk72jQ1pu/BuNBwuGPqe9jWGSI7osylrIjHy3Y8doAy9F2ofAsXfnFLh3Ctxb5hLNCOWgFbFP/NbeWAu/gqLF9KX9oVb29QDy0IIX/ZL0KV5RsSDzTIcx5B/wpNzsrRJItTaB6b34mJjWdfsakAlfeb5KUjtDXBtzGWx0yvPZZwi9qcnUvF2HSrNWqO82PFCeqVip
- l3k+ft+K
- d7YVnNNf5xSYUpQpH8soTj0ZeIXtxpIXIOMipTk/KIM/oiITYtpfK4SZyoxn1LXxSuljP7JvPaoAOsXBoGZEktHkh2QsCt+QYvVr2T3uLqpGK+QfWKfSAwFwy6Mo/KReI5i6Ou/kLd0r8NKOTLgFjnNDcmef6za8hU8h+dqYCqvPibeV4XmGK7rOR9PIIXcwxxZLHpH9eVhFwHOCWNA6awNOhqk5A4r5mgV5MW2iMroSeW2tM6uju2mRqPJeNhmlIsVzr7RyNj0saQPVZYGJsy6EF/yWDJURwO1AzASdMqxX4fyhedlLMcw1BTLhzaOYovdNrAH5eTUKja7aILSMmZQAuEwkfUnHLF/NBWVf+4rNOKlTOTVuYrFirNPqrWmGzKC13nfr/RjA7XlrwaQ266uLwt7sUqlUYNMHejQbJWJ/O5mK+ZJIpe/mS4UkfW+pMy97A9GKwXM31lBsQzTKjQTc8oX8XOZUjC+Fkr6hYCjqAGw8E0lksa+S6s3k5zTBLGY8QlQZxInRYsLby5/iQWPZOUR4La5BLaCWO
+X-HE-Tag: 1793719090-603353
+X-HE-Meta: U2FsdGVkX1+SqBova6uoV+FJaWy3N73/U+s+tAQg44I+raBU3fgIbHgiaaqO+Pp5/paS/xZUvBu5q76FsuPubo196N/bmDfpVzqkspigDpLaMRVvccmjES8UvT9aHsxvCRRAPsXPly1uIZSF9ZJNLyVHnqec5saivOtvAyq126YqdaW2xXIuIi5fJA4kC9nVPOrqY+sjYPgIjkhyX/IaU7xqCX2OfQa/Bx+twSE3io62UY6Ufx3QgGFyuZyVfvyvWxDaielcrSJ0YvwYwUQ8SncpaTpcrghmG+/RFhb4i4ieNooLxGowp/9Epi8BzZmYPxu9zPLxKogVJKlTRP88oaBQCGkW5wM6gW9Og4yNHhEZ0ZaASoLUMJs9H3gvIHQ2HMI7mCE+Yp+Uq8YqdWWxAjeUOVr8foLCK8DqvXuRiEmMrERF3ZvzPiFJ+AjAb0l7ipGVfwzq6nPGDsa9Hfz17Ve052qvAuUg6AgxI3T17KJ+wdvD2zVJfjZw2j1Z0N5lmgMJyfzYK5kvaSkQkl36dHxlVGSev8oh2hGEjUOSoiqCTHZhke3JA34T7JLzWg4WwZNrKwz7dvctWvs7OIlRAhGOncGJ/YCGLcE8opBfPg/1O7edA+gr75ZPaHBcQQhuVSIpbykuUqe1Pa3hMFp1Jkp/HnlsCtjik1oNHeb/rmQIMU1oPSR+yzCXZmnAbEWRVNSl9U2kws50hK3zEMVMtGfLGPen83TXCsG5VPugGEZAUXdrE3ACOGu1B7CBEGfGZEUuObobs6pv1hix7Q3sd4n6xx16IlwgRHTWLOQteDK1RP9SJeeDtUzTa/11ELBrr45s52i5sI3oVynlzLu24RoxGQnPGpzLL0TCcB3ttElBPZHlthx+dgcY3VJJEiK5ShmRt5TVvHEmNqgn4snvRqBKdSbjsjiQuiY/qnfNCPOPTYSLIPfR2g+lPQ4ojgDscE4j3KNidm75RRGqcwt
+ Tmi3ovhE
+ LL5dyMXB7RV/EM4cXHK2Myr/olPs8AM0Au/kurLbPVs5GAICllZvByhvyGovinYfxyJgRHGaW0E1QdwZNEIbpP9GV6oopfN/1BSEH46sAPz5CE68frljAaXBcMwRfgeK5QYVFfG5mTzPai9cArqr7qGp18XcTJ3nByVKWvlqa6T6+ZwLaIWMq6SrktPg0nlPowGdRH/iDf4d7gmsH5MSgSa2oT/ONFXl6cSSKzwCcxHD3+3gE3Ho8iXMy7sKlMaRq1xCVaDnqmeyccD1gmcNOlI2ctH5pi+j4RCTUmRdRs19wm4H1IfzMhuWEFJGL7lOzZZq2V8IltPSudZ9sojc3kNqcUwJxl+Jmu/jEVbNgGA2lx+XFUcsSPJxYMjIQv+FjhFDC4BEUAtSpTNVCoGRjsnZmn7kTGknc0n8qUtB3qUdbtJYELIAPtNjLskcYLsj6pSR8fqDHOEw5uQqVDfZLSKsARAMHYXMeme1apDbvo0XgwPBNfRWAg74dy2deCYPbastf3EZ4K099Gao=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -159,107 +160,119 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-System mapping sealing is an mm feature, but its test has its own
-directory under tools/testing/selftests rather than living with the
-other mm tests.
+Now that sysmap_is_sealed runs with the other mm tests, it also runs on
+kernels built without CONFIG_MSEAL_SYSTEM_MAPPINGS, where it fails.
+Userspace can't tell whether the option is enabled, but a sealed [vdso]
+in a new process means that it is.
 
-Let's move it into tools/testing/selftests/mm and run it with the mmap
-tests. Its config now comes from mm's config fragment. The test itself
-is unchanged.
+So let's use [vdso] as the reference: skip if it isn't sealed, and
+otherwise expect the other system mappings to be sealed too, and [stack]
+not to be.
 
-Suggested-by: Lorenzo Stoakes <ljs@kernel.org>
 Signed-off-by: Chris Down <chris@chrisdown.name>
 ---
- tools/testing/selftests/Makefile                            | 1 -
- tools/testing/selftests/mm/Makefile                         | 1 +
- tools/testing/selftests/mm/config                           | 1 +
- tools/testing/selftests/mm/run_vmtests.sh                   | 1 +
- .../{mseal_system_mappings => mm}/sysmap_is_sealed.c        | 0
- tools/testing/selftests/mseal_system_mappings/.gitignore    | 2 --
- tools/testing/selftests/mseal_system_mappings/Makefile      | 6 ------
- tools/testing/selftests/mseal_system_mappings/config        | 1 -
- 8 files changed, 3 insertions(+), 10 deletions(-)
- rename tools/testing/selftests/{mseal_system_mappings => mm}/sysmap_is_sealed.c (100%)
- delete mode 100644 tools/testing/selftests/mseal_system_mappings/.gitignore
- delete mode 100644 tools/testing/selftests/mseal_system_mappings/Makefile
- delete mode 100644 tools/testing/selftests/mseal_system_mappings/config
+ tools/testing/selftests/mm/run_vmtests.sh     |  7 +++++-
+ tools/testing/selftests/mm/sysmap_is_sealed.c | 22 +++++++++++++++++++
+ tools/testing/selftests/mm/vm_util.c          |  5 +++++
+ tools/testing/selftests/mm/vm_util.h          |  1 +
+ 4 files changed, 34 insertions(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/Makefile b/tools/testing/selftests/Makefile
-index 07c3719f8b04..94276b1310de 100644
---- a/tools/testing/selftests/Makefile
-+++ b/tools/testing/selftests/Makefile
-@@ -84,7 +84,6 @@ TARGETS += mount
- TARGETS += mount_setattr
- TARGETS += move_mount_set_group
- TARGETS += mqueue
--TARGETS += mseal_system_mappings
- TARGETS += nci
- TARGETS += net
- TARGETS += net/af_unix
-diff --git a/tools/testing/selftests/mm/Makefile b/tools/testing/selftests/mm/Makefile
-index 675ec57d47de..94e305643c8d 100644
---- a/tools/testing/selftests/mm/Makefile
-+++ b/tools/testing/selftests/mm/Makefile
-@@ -110,6 +110,7 @@ TEST_GEN_FILES += folio_order_check
- TEST_GEN_FILES += khugepaged_sync_check
- TEST_GEN_FILES += khugepaged_race
- TEST_GEN_FILES += soft-dirty
-+TEST_GEN_FILES += sysmap_is_sealed
- 
- ifeq ($(ARCH),x86_64)
- CAN_BUILD_I386 := $(shell ./../x86/check_cc.sh "$(CC)" ../x86/trivial_32bit_program.c -m32)
-diff --git a/tools/testing/selftests/mm/config b/tools/testing/selftests/mm/config
-index 06f78bd232e2..b93b49cd675f 100644
---- a/tools/testing/selftests/mm/config
-+++ b/tools/testing/selftests/mm/config
-@@ -14,3 +14,4 @@ CONFIG_UPROBES=y
- CONFIG_MEMORY_FAILURE=y
- CONFIG_HWPOISON_INJECT=m
- CONFIG_PROC_MEM_ALWAYS_FORCE=y
-+CONFIG_MSEAL_SYSTEM_MAPPINGS=y
 diff --git a/tools/testing/selftests/mm/run_vmtests.sh b/tools/testing/selftests/mm/run_vmtests.sh
-index 973cb715b326..573da5006268 100755
+index 573da5006268..1134a2e82610 100755
 --- a/tools/testing/selftests/mm/run_vmtests.sh
 +++ b/tools/testing/selftests/mm/run_vmtests.sh
-@@ -307,6 +307,7 @@ fi
+@@ -307,7 +307,12 @@ fi
  
  CATEGORY="mmap" run_test ./map_populate
  CATEGORY="mmap" run_test ./droppable
-+CATEGORY="mmap" run_test ./sysmap_is_sealed
+-CATEGORY="mmap" run_test ./sysmap_is_sealed
++if gzip -dcfq /proc/config.gz "/boot/config-$(uname -r)" 2>/dev/null |
++		grep -q "^CONFIG_MSEAL_SYSTEM_MAPPINGS=y"; then
++	CATEGORY="mmap" run_test ./sysmap_is_sealed
++else
++	CATEGORY="mmap" run_test ./sysmap_is_sealed -T expect_sealed
++fi
  
  CATEGORY="mlock" run_test ./mlock-random-test
  
-diff --git a/tools/testing/selftests/mseal_system_mappings/sysmap_is_sealed.c b/tools/testing/selftests/mm/sysmap_is_sealed.c
-similarity index 100%
-rename from tools/testing/selftests/mseal_system_mappings/sysmap_is_sealed.c
-rename to tools/testing/selftests/mm/sysmap_is_sealed.c
-diff --git a/tools/testing/selftests/mseal_system_mappings/.gitignore b/tools/testing/selftests/mseal_system_mappings/.gitignore
-deleted file mode 100644
-index 319c497a595e..000000000000
---- a/tools/testing/selftests/mseal_system_mappings/.gitignore
-+++ /dev/null
-@@ -1,2 +0,0 @@
--# SPDX-License-Identifier: GPL-2.0-only
--sysmap_is_sealed
-diff --git a/tools/testing/selftests/mseal_system_mappings/Makefile b/tools/testing/selftests/mseal_system_mappings/Makefile
-deleted file mode 100644
-index 2b4504e2f52f..000000000000
---- a/tools/testing/selftests/mseal_system_mappings/Makefile
-+++ /dev/null
-@@ -1,6 +0,0 @@
--# SPDX-License-Identifier: GPL-2.0-only
--CFLAGS += -std=c99 -pthread -Wall $(KHDR_INCLUDES)
--
--TEST_GEN_PROGS := sysmap_is_sealed
--
--include ../lib.mk
-diff --git a/tools/testing/selftests/mseal_system_mappings/config b/tools/testing/selftests/mseal_system_mappings/config
-deleted file mode 100644
-index 675cb9f37b86..000000000000
---- a/tools/testing/selftests/mseal_system_mappings/config
-+++ /dev/null
-@@ -1 +0,0 @@
--CONFIG_MSEAL_SYSTEM_MAPPINGS=y
+diff --git a/tools/testing/selftests/mm/sysmap_is_sealed.c b/tools/testing/selftests/mm/sysmap_is_sealed.c
+index cb0ca6ed7ebe..d5ab2b0d8ca7 100644
+--- a/tools/testing/selftests/mm/sysmap_is_sealed.c
++++ b/tools/testing/selftests/mm/sysmap_is_sealed.c
+@@ -10,9 +10,11 @@
+ #include <unistd.h>
+ #include <string.h>
+ #include <stdbool.h>
++#include <sys/auxv.h>
+ 
+ #include "kselftest.h"
+ #include "kselftest_harness.h"
++#include "vm_util.h"
+ 
+ #define VMFLAGS "VmFlags:"
+ #define MSEAL_FLAGS "sl"
+@@ -46,6 +48,23 @@ bool mapping_is_sealed(char *name, FILE *maps)
+ 	return false;
+ }
+ 
++static bool sysmaps_sealed(void)
++{
++	void *vdso = (void *)getauxval(AT_SYSINFO_EHDR);
++
++	return vdso && check_vmflag_sealed(vdso);
++}
++
++/*
++ * Kernels built without CONFIG_MSEAL_SYSTEM_MAPPINGS don't seal system
++ * mappings either, so check_sealed skips if they aren't sealed. This fails
++ * instead, so run_vmtests.sh only runs it when that's set.
++ */
++TEST(expect_sealed)
++{
++	EXPECT_TRUE(sysmaps_sealed());
++}
++
+ FIXTURE(basic) {
+ 	FILE *maps;
+ };
+@@ -107,6 +126,9 @@ FIXTURE_VARIANT_ADD(basic, stack) {
+ 
+ TEST_F(basic, check_sealed)
+ {
++	if (!sysmaps_sealed())
++		SKIP(return, "system mappings are not sealed");
++
+ 	if (!has_mapping(variant->name, self->maps)) {
+ 		SKIP(return, "could not find the mapping, %s",
+ 			variant->name);
+diff --git a/tools/testing/selftests/mm/vm_util.c b/tools/testing/selftests/mm/vm_util.c
+index 8ef226107d78..6732f76b7e61 100644
+--- a/tools/testing/selftests/mm/vm_util.c
++++ b/tools/testing/selftests/mm/vm_util.c
+@@ -785,6 +785,11 @@ bool check_vmflag_guard(void *addr)
+ 	return check_vmflag(addr, "gu");
+ }
+ 
++bool check_vmflag_sealed(void *addr)
++{
++	return check_vmflag(addr, "sl");
++}
++
+ bool softdirty_supported(void)
+ {
+ 	char *addr;
+diff --git a/tools/testing/selftests/mm/vm_util.h b/tools/testing/selftests/mm/vm_util.h
+index d32cb79d9905..0e94793b0d21 100644
+--- a/tools/testing/selftests/mm/vm_util.h
++++ b/tools/testing/selftests/mm/vm_util.h
+@@ -117,6 +117,7 @@ int uffd_register_with_ioctls(int uffd, void *addr, uint64_t len,
+ bool check_vmflag_io(void *addr);
+ bool check_vmflag_pfnmap(void *addr);
+ bool check_vmflag_guard(void *addr);
++bool check_vmflag_sealed(void *addr);
+ int open_procmap(pid_t pid, struct procmap_fd *procmap_out);
+ int query_procmap(struct procmap_fd *procmap);
+ bool find_vma_procmap(struct procmap_fd *procmap, void *address);
 -- 
 2.54.0
 
