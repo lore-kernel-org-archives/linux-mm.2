@@ -1,114 +1,101 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C87E606A326
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 01:48:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 635C2606A329
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 01:49:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=g4Q48gX3
+	dkim=fail reason="signature verification failed" (2048-bit key, unprotected) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=HMnnSs23
 Received: by kanga.kvack.org (Postfix)
-	id 4F2AC6B05B4; Mon,  2 Nov 2026 20:48:24 -0500 (EST)
+	id 67A586B05B5; Mon,  2 Nov 2026 20:49:37 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4A22C6B05B5; Mon,  2 Nov 2026 20:48:24 -0500 (EST)
+	id 62ABF6B05B7; Mon,  2 Nov 2026 20:49:37 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 36A386B05B7; Mon,  2 Nov 2026 20:48:24 -0500 (EST)
+	id 541406B05B8; Mon,  2 Nov 2026 20:49:37 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 0CC486B05B4
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 20:48:24 -0500 (EST)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 98B0A4030C
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 01:48:23 +0000 (UTC)
-X-FDA: 85392122886.27.4712902
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 09AC280004
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 01:48:21 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=g4Q48gX3;
-	spf=pass (imf30.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 2C9ED6B05B5
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 20:49:37 -0500 (EST)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id ACCA31602BF
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 01:49:36 +0000 (UTC)
+X-FDA: 85392125952.12.ED3783E
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 98A0A40004
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 01:49:34 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=HMnnSs23;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=pass (imf12.hostedemail.com: domain of liam@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=liam@infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793670502;
+	s=arc-20220608; t=1793670575;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4J4SCqjjqhtgMVcCb5tIrEEKZXAGW5gdRwbOYNKvTbw=;
-	b=mGRIxHNfqd83hnCP40creysTxBIixzEkH/r2GwVBDdOJIS037Knd8iR2jjJx1op5DRBEKq
-	B/tBRkRU0v9pG6bu4Xu9DlPeQP/yae1nSmDE1OSYJ+96JKwtETfZfIquoEtLRVuj+ZngFx
-	NaF7cUckWFoHozP8oabGDY+Uru//aqo=
+	bh=oqD5KjVEUEOf5ZVgC/hbD2wTa3fhBUi4PPSMQExmXq4=;
+	b=dHVxagI0mU8uyq66wWFLsHSbk8hLQ5wOqtmRfXc4KsQ3kA51d6Xrs5P8xlRWKP8dq0HPU+
+	iGm+a0bBaAivGTgJIqfrdj14SZc64OIzFSNVKW7dp5Hqdla8FlhcnN9Btq2aqyaPRCeEtL
+	fdlNXJyI7im4oBHLf31X1oYTHWHZEc0=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=g4Q48gX3;
-	spf=pass (imf30.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf12.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=HMnnSs23;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=pass (imf12.hostedemail.com: domain of liam@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=liam@infradead.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793670502;
-	b=AOhD5zLXFxNlhC5+DGET3YTK+fWBr/MaodmrkFMt1b3/kQ3Kuw1Gr8DxuoN9zfuOvk4Lna
-	1b+cCGb9TR81PLfu8BzD+O7NMlsHDXqvRHrN0+1owPe2UYa5qyGK1lGdTspIquxT0/bIk6
-	rTiA7eAWPdApJ78EqCu42ZxVISx8S6w=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 3327640059;
-	Tue,  3 Nov 2026 01:48:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3353B1F00A16;
-	Tue,  3 Nov 2026 01:48:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793670501;
-	bh=4J4SCqjjqhtgMVcCb5tIrEEKZXAGW5gdRwbOYNKvTbw=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=g4Q48gX30SRkNPUGre+5dGkrJ24cinpNbozRWJmUXMl7z87k5wtfFeaH039EJxhTe
-	 aaZXJsTlcmZ0ImrFxNKCW95BLooEnLm8QV7Fyse3ZqAFmSksFHdVNMlG4slV2jAul5
-	 lfS6YfFsTAbcFRjhwWcIQE4mYcMXpcLNLeItP+4cEYup5qijComg/m3c2nxhqb1i7D
-	 9ht6ELxs+5/qYxMYLZdeIHVIEXQAG3LKGCdbLtCKuHCupm8Bb5Pw8jgdHFM00H32pW
-	 F6jqoiilzwUe+xbapP/DfZCUxG6uIBNm6hbCDQ2ETV0lVRwgR+WNo/Yj/7oblUSS1T
-	 uY46x8C+IFenQ==
-From: SJ Park <sj@kernel.org>
-To: Tal Zussman <tz2294@columbia.edu>
-Cc: SJ Park <sj@kernel.org>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Jan Kara <jack@suse.cz>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Zi Yan <ziy@nvidia.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Joshua Hahn <joshua.hahnjy@gmail.com>,
-	Byungchul Park <byungchul@sk.com>,
-	Gregory Price <gourry@gourry.net>,
-	Ying Huang <ying.huang@linux.alibaba.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	Jason Gunthorpe <jgg@ziepe.ca>,
-	John Hubbard <jhubbard@nvidia.com>,
-	Peter Xu <peterx@redhat.com>,
-	Hugh Dickins <hughd@google.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	linux-fsdevel@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 8/8] mm: remove thp_size() and thp_order()
-Date: Mon,  2 Nov 2026 17:48:07 -0800
-Message-ID: <20261103014808.95273-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20261102-page-wrappers-v1-8-e7280bdb31f6@columbia.edu>
-References: 
+	t=1793670575;
+	b=2wpCWgn7BZRvp4ymlRLZCj/939OBdcsBcNgJJnyguW5ROsK/x8QsZpSDh+AkUAqI8Id3a3
+	Li067jZ0bLsrdvg2qk1eHEgSUk2XDW1Gr6qKIqgc/nnc2tlFiOPQ7Ypemsp6neua/21tAj
+	/IhL+RzBhLgMdJ5anG4i5HAAwfuaKxQ=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
+	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=oqD5KjVEUEOf5ZVgC/hbD2wTa3fhBUi4PPSMQExmXq4=; b=HMnnSs23htRHeD+t1FXWi56qQU
+	kPaJq1I5j/zgCvQGnhWnpQywJkuRkZqvwjGZsMKrWXHfl2qdKOx1DObFxKsDHRH1vFhhs7CgyiJ1z
+	h6tspKBuh2NCHFUFtlbdZ1NDITMe8KcbwrD8rBm3MQfa2hC3aRsM2cDf1kDW8HK6HoJaFNBZxLeI8
+	FPr8ahYhpC59zyt4ZozA+Z38N+HYlvdIaFUWJGkWVOP9XYNc1xgHtjKQFZ98Zr1lnwu3eEQnSFoPZ
+	TJmLSL/MyBwVtYi84PRuIDAxZ4T2ehO+femW09MTceV3Iztu3PxigLwucGnoDjDotL1sTmlr5JJ2g
+	Ni7SNwNg==;
+Received: from [38.23.173.23] (helo=localhost)
+	by bombadil.infradead.org with esmtpsa (Exim 4.100.1 #2 (Red Hat Linux))
+	id 1xO3eT-00000000p01-3FoP;
+	Tue, 03 Nov 2026 01:49:29 +0000
+Date: Mon, 2 Nov 2026 20:49:23 -0500
+From: "Liam R. Howlett (Google)" <liam@infradead.org>
+To: Herbert Xu <herbert@gondor.apana.org.au>
+Cc: Davidlohr Bueso <dave@stgolabs.net>, 
+	Uladzislau Rezki <urezki@gmail.com>, Michal Hocko <mhocko@suse.com>, Baoquan He <bhe@redhat.com>, 
+	Alexander Potapenko <glider@google.com>, Andrey Ryabinin <ryabinin.a.a@gmail.com>, 
+	Marco Elver <elver@google.com>, Michal Hocko <mhocko@kernel.org>, 
+	Linux Crypto Mailing List <linux-crypto@vger.kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	Thomas Graf <tgraf@suug.ch>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	maple-tree@lists.infradead.org, Lorenzo Stoakes <ljs@kernel.org>, Chris Mason <mason@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Andrew Ballance <andrewjballance@gmail.com>, 
+	stable@vger.kernel.org, "David Hildenbrand (Arm)" <david@kernel.org>
+Subject: Re: [PATCH 4/4] rhashtable: fix vmalloc() deadlock in atomic rehash
+Message-ID: <xdzcyoou73blpfdlgy47i2ktrcsffnclerzojpgrxphid54gjc@nicdcvzqx447>
+References: <20261028154218.1668182-1-liam@infradead.org>
+ <20261028154218.1668182-5-liam@infradead.org>
+ <auKshDXKQXt1kvjy@gondor.apana.org.au>
+ <auMbCuecFeRmBFSK@pc636>
+ <jfvq7vkx73vzp2ukq6nwnb3v3g2ezdcyppba4oa5lpzmz6ls6t@akc46gonndgy>
+ <urkgmijyytg3rrislm5fdzmfggqavzpiry23f6lpkqonvy2tqx@d56stj3eixfa>
+ <auaFhOa5EBz4gJwK@gondor.apana.org.au>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: udhrriqmud6cfdbzd1hr87dwdnrb6c7t
-X-Rspamd-Server: rspam01
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <auaFhOa5EBz4gJwK@gondor.apana.org.au>
 X-Rspam-User: 
-X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: 09AC280004
-X-HE-Tag: 1793670501-676783
-X-HE-Meta: U2FsdGVkX1/oYFFrsSfI+hsA48CEx14Pq+z4JoNADHUMstSRuAfQF1VLkXqI+M5lzeodad/qhv7FurlmE4btvWGkWsmKLk/1Ry/qw1jNCNTDPdG02hnOU2283hTLmFzz0xZyKcQItQ9OOmkOrRGhSts+quvjloV+FN6J/oKJqS2jd7F31nRGjcM6NGvZnSJ7eSaoLiSXWZVIotlN3KMI4nFe//5qWswQqU8HlhMFOPvROeNL31S+jHo/+Hp7JZUj7bCMTXqZVqJ8zucDtUqrO6na2peVM8MkHNCGbD4cQEfGIEBAxYuevuRawEy5HpIkB6iq2asUn2WlwDLsOEZ2lx79jsEw9LdO3jWagxk7/wk+TuUkwVQFgbglp06b0F9fQeLub4PnOSyRMb5bt2XQ8nM8SSGqrjxASilvG1WjLWoaeq6+y1CU0+Fk+KZsVNWQBXXR+tBtjkfxXc4iMYvGYNF29+sDP+zeeTe1emsMCM1TdBerRcxxDtqd1jAMGvDQrG7RpepLWqZJQh/6/Q3RC910+DqAloODUt73THYeA4u7YRz2bVafeH7YfU86+xSBpmKvwlMFiUNAZGY1HCHI9pavE10XAnYiUAXSDqwBZuufvU5F/Q+VXNc8LPHj8BXzhK95HaADej2i7KwMgoPY0H1hm/1j6y+QTkwqM35fisMN5YqK2Hm+E1dwCDVlBX9wD/Cl5cu7gzWIqb8s0y6n8UOBHkkeKO723P87fyHntQtMc8+wHQ1hD3MV2DD6KED47G25Zmq77AGK69cZdh73aMhKg88jnlHs359NSDJEYMK49Yk+0CScGCNAM/eFq1t18lp/Gsy1e3/zn2c+IvmkeJ6OTf4gZ/lr6qb+isqGZx9uLvYnXFgIKUQEMtfqyLWvDK7awWZ1+rl+/BWLC9G7TqXINaoN2xIyoJixLBhjSkwr17586dvb4JyyVykEny+SBfkr2Z/NBL4452qQjyx
- ffwiV6yt
- rfqmeaOCKiRXO8jHLY6mMW7+cYvSRrGS/ptGYqesu0q6DHLUVzT83Zg+3IG08opWU3AMmeipA0B9SOj+o+btRgBzGhzJ4xp03xrdh4j4eh6oLaaimKqJPAs/nxuccqKFQceem3z8BCWc+bDha/sGN8reHgZ7gPJ3/NCC2lTb7iTrMJk6XdewKNEClebPVNQJ3kPpkp89nZc1E2pVBcyHv/ICKJQX35JYjqAJO9XH1+PwFdJkql4w+P6fLRMXIDzdL+ox9C6OEEXSmfIvf43d4goy5BOnt/a24qfelssL5zotj6GbdJ1rFJZBmx+J+MBm7AgykdMc3zZb6jX+17gowhfiAlJ6JdjHmWx8QKOX1wvpY/Eu008xKKlcVGHa4BF74yGMi99Zdti7lnP4=
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 98A0A40004
+X-Spam-Status: No, score=-3.6 required=3.0 tests=BAYES_00,DKIM_INVALID,
+	DKIM_SIGNED,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
+	SPF_HELO_PASS,SPF_PASS autolearn=no autolearn_force=no version=4.0.1
+X-Stat-Signature: nfjqs3e51z7434rgwo4bn4tth1wk8a4h
+X-HE-Tag: 1793670574-661282
+X-HE-Meta: U2FsdGVkX1+XdVxPINOPzdKZAwIvNrsd0mL3gsmd5E5LCQx+hl2mGUyL7OwnsrIfdJ5t07KHkiZ30vBu7DCExOK2ONngVcSzKXKpTg4gmk0LjHu0CuLI8LefBQTVbSyWPIrWPjaGz8qCrTjS3iqPEtA47wkBzlFDrYOg16zusBAAa5AqE2YTkA2gIlszRqntIJ2rnOBsEyVBZiM0bYOl2qav8wQL20SpPVHoB1X2Wgo2fZzhQhDBSU2TEvIh2YIOwOCuHG5+h+rwUFYB3auJKINoZ5tNcPj3TR8puCc/tbGJgiDtchS/xyiD46lm7YqlhaJ97r4HyngXPfDgZCh/mD9l7XSp6k0XdIhNsvWMoa7EmYmvBCczGbKYU5OJf+H46f18EiEyf/KFjqnJ9HTyIKsgy7YlTeGqc6ap5en05WL3Fzjn6kTpqf7gfBkhYgDTV6A4/wy57luGhPET18uO4PyaBsWXkWukqKtVvUKozQ1/cbLKmZi95T8kjAt2x2brLdu4asOmxqvX2V3JtopzJRwNh57vzEmG85QZ44gh9fJPu5Fk8qNc4ARIm8Vypiv12WjW9ItQBUj6R8LIA5f7ux88eBtl1Mx6/lNiOtM2vyDk46GxgqW/pRKA+0AP63t17rzF6/Ye4B2e9rjc0s5QOra4Pn2SK+73ZuMdbkLu2T7xSo6Gf7ucI2dExrtJ3uCXj/Ru3CvejZzyUJZqFeDSN46PG2gM0S8QWB525/Y3PwoQvfA1CvQBBwyGKZyXxmBz5aOcMnC2DoCAYzfCMp6PcLU67EMH63afAmfvr66aoIsIyPkwPeW2qRpNrhbccKDSiwW+pmLBddRa+qGI0qmLo4ir39kgd16548+NGTHqqyHXD3HRUb84hVPzzLne0axqIVlSZ1f0GTfpPj+L3RM1xnaiqZ3PidUgoyWIz0FtLASvPBz95aXWKV4SMxXB+jC9kaZY/U3+8jgylJ6cF8k
+ Nnxp/Jha
+ 1I/sW54R1UxjUL4loGULu2TGXcFrj3spQJ+Vu+QwpG/UowwOBprAClwKSRa2jHDb663w7gzEhzdatwfIiqvrs8UGp6ctxOWcDwRzrGMgwq7fGMzRcl8jGYVHOn7yhxPlOrCKxlbmxoDG7/EQy1InJp7GTgFw5dqHaZlJ75X30U84r5j//eNCcin2D7GxoDzRjbZejk/JrC4krTaBvwvoHIh/rQHKuLHQvzNKohkecVYJD2CjyukWY0PNQzdogO6geAWKCZfc1yEHC37xc0jqGdSXLrJIsTdxxZ5tIAQSIpMYsdKFg+tfJnIYHA6/62vpmjhBl2ogfnRly7+gEHPNdDwWL3HuVV1P8IBdcoKFWVCgwjNBHKkf8RDWbMTzhEC3EGuUPA1Zj0qUs6V/pJmlSI2LivyChp+rf6HUW
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -117,23 +104,57 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Mon, 02 Nov 2026 17:54:13 -0500 Tal Zussman <tz2294@columbia.edu> wrote:
+On 26/11/01 08:19AM, Herbert Xu wrote:
+> On Fri, Oct 30, 2026 at 08:56:03PM -0400, Liam R. Howlett (Google) wrote:
+> >
+> > Hubert, I have another version of this patch set to send out, but this
+> > particular patch remains the same.
+> > 
+> > Are you okay with keeping it the way it is for this release?
+> > 
+> > I don't want to force your hand but I also don't want to keep a valid
+> > deadlock scenario in-tree.
+> 
+> Instead of your patch, please revert the original change that
+> added kvmalloc to rhashtable:
+> 
+> commit 93f976b5190df32793908d49165f78e67fcb66cf
+> Author: Davidlohr Bueso <dave@stgolabs.net>
+> Date:   Tue Aug 21 22:01:45 2018 -0700
+> 
+>     lib/rhashtable: simplify bucket_table_alloc()
+> 
 
-> The last callers of thp_size() have been converted to folio_size(), and
-> thp_order()'s only remaining user was thp_size() itself, so remove
-> both.
+I don't follow.  Reverting that patch gives the same functional flow as
+the patch I already sent; kzalloc() for one branch and kvzalloc() for
+the other. 
 
-Looks clean to me.
+We will, however, restore the useless __GFP_NORETRY flag to one branch,
+and a broken check.
+
+-       if (gfp != GFP_KERNEL)
+-               tbl = kzalloc(size, gfp | __GFP_NOWARN | __GFP_NORETRY);
+
+gfp != GFP_KERNEL is supposed to just send GFP_ATOMIC in here, but
+instead you are sending GFP_KERNEL | __GFP_NOFAIL as well.
+gfpflags_allow_blocking() should be used here, right?
+
+The patch you are saying to revert was correct when it went in.
+
+> The newly added alloc_hooks_tag call should go after the if statement.
+
+You are saying to add it to both branches of the if statement, right?
 
 > 
-> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
-> Signed-off-by: Tal Zussman <tz2294@columbia.edu>
+> This patch should also be split out of your series and posted to
+> linux-crypto.
 
-Reviewed-by: SJ Park <sj@kernel.org>
+Sounds good.
 
+The fixes tag should still point to c6307674ed82, since that's when the
+issue became visible.
 
 Thanks,
-SJ
+Liam
 
-[...]
 
