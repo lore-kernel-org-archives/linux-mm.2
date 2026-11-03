@@ -1,95 +1,97 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21D65606A32F
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 17:10:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66157606D837
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 17:13:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=VxaGgJX+
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=KJXS+4SZ
 Received: by kanga.kvack.org (Postfix)
-	id 407106B05B1; Tue,  3 Nov 2026 12:10:24 -0500 (EST)
+	id 82B166B05B3; Tue,  3 Nov 2026 12:13:16 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3B7FE6B05B3; Tue,  3 Nov 2026 12:10:24 -0500 (EST)
+	id 7B51B6B05B4; Tue,  3 Nov 2026 12:13:16 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2CDEE6B05B4; Tue,  3 Nov 2026 12:10:24 -0500 (EST)
+	id 655A26B05B5; Tue,  3 Nov 2026 12:13:16 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 113DF6B05B1
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 12:10:24 -0500 (EST)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id A866F404D4
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 17:10:23 +0000 (UTC)
-X-FDA: 85394446326.01.39FA7AA
+	by kanga.kvack.org (Postfix) with ESMTP id 38EE86B05B3
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 12:13:16 -0500 (EST)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id C8BCC404D1
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 17:13:15 +0000 (UTC)
+X-FDA: 85394453550.03.114A346
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 078478000B
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 17:10:21 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VxaGgJX+;
-	spf=pass (imf02.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	by imf29.hostedemail.com (Postfix) with ESMTP id 1608412000B
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 17:13:13 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KJXS+4SZ;
+	spf=pass (imf29.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793725822;
+	s=arc-20220608; t=1793725994;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+TD4KfNsj3/UrFRijVzp0aBQ2ycYA4MK0lvSZb8XyWU=;
-	b=BR6LBKCljdc6UGqA3wntr8X1sUMrExiHJ2LDunkxWDBkGyJ9zocxRldiZCnZpe7h0VlOgX
-	hy8JSjdbOBNyohfoulZ6wyYbK76d5jUiGL57woS3Br4wakRfvxxTM+zdFa5JYY6TXDRmeQ
-	w45wBIL8+4FGeOjZ87GQgso/WNhqTSU=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793725822;
-	b=bD8Cs6khYH/T1gMQVHWiH+HgHFIpJ4r5kI3v0h5xurJCDGisiAX/dKOTOUCFWhRt0RFPzk
-	V2P+Y70nb6OSGQ01GidMCWG7Ycul6SO07GFXfghqNUfLnN/AcieH+Smzi74CWmSrPiHaQn
-	QqVihXu8tZRW0yojdsqMP6C93ImMf0Y=
+	bh=sLuH5QF1q2x16rx6DETeA38UkEEB7fIUOu+tH3AKEAw=;
+	b=KkRstWO0/fqWNABJVRNg1p3mesgaUfzxc5qv0e51KzHOfv3BkiD9ZogUGyXoWLeOnUxM6R
+	/f12hmFg8s3Q87gdEgfYNgse8eHwuHfA3tGzrwfXTgtVhSqEXMxmzxfOdQo6OYKq8ZTi5c
+	J+m5xmke/5WeYAEvQcqAZjE3CfdqHtE=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VxaGgJX+;
-	spf=pass (imf02.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KJXS+4SZ;
+	spf=pass (imf29.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793725994;
+	b=iv+HskXLcOUhdVJyaHUNTA1kpj4tuSYX49VL7D2k32fKz97cUXky2Q6iUJjaoVhCaGJpo7
+	mpCGu/4DAOPmBHPvysa4sFOHK7qnaXjn+flFeQO4B1OjYt7RZYLd3XKWiA4TbmE7N84OSR
+	lBRkeUqYJaUURSMsKUU0Z79HhxClWAc=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 04B2043B8A;
-	Tue,  3 Nov 2026 17:10:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D57F51F000C1;
-	Tue,  3 Nov 2026 17:10:17 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 2BA5C43E3A;
+	Tue,  3 Nov 2026 17:13:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9557B1F000C1;
+	Tue,  3 Nov 2026 17:13:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793725820;
-	bh=+TD4KfNsj3/UrFRijVzp0aBQ2ycYA4MK0lvSZb8XyWU=;
+	s=k20260515; t=1793725993;
+	bh=sLuH5QF1q2x16rx6DETeA38UkEEB7fIUOu+tH3AKEAw=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=VxaGgJX+NhI3el1gfofJnmiTMXPVVPFAD/Zbbn2GN8+WYkhKJNmd4FtAzHHVV4bjX
-	 Se4xnfAVE52NXtS/7ybU/dgIMm29RQXtpnLk7xb4Wfh4YNy15K3ele0RnTXudceNv+
-	 rJxnEsfQRfoVJ7V42VfVH0oJrZAFvLM+x69erRZcn5skFeJFkPu3MzdUWslSQ0bT5w
-	 xy3K/kqUZBQqWMRpwPNxVZcF/ZNnQccLeVjG4Q5PTomGqFACK0aMAQBeEAEqiWcSkk
-	 pKexwSv6lzbL9OMdMnBETRwZKg5jI87wm6H67UUUxyUonhawZmkJxxnlFhpu6Dv66B
-	 v+hUzBuGNVc6A==
-Date: Tue, 3 Nov 2026 17:10:15 +0000
+	b=KJXS+4SZsMHevqyj/V53u+r07uc5LN5NwlmIboYWnoi9dWPvub4Tc4+Sq1MiaI/ZQ
+	 gtlW5Mia2tNdOTWc9cKH1pvKkwhmpkkcIAppcp+ITZUI62F33mhBjhJphldmAOguLo
+	 SV56BQ0kGzGR1y8OAoX6K3Nr/xB3fjsEZWzWrYbnZha0nKqD1nxUuFtfQDr++LDsrn
+	 YUeHwYypuRkUo/+BxdqwuYqeTtT/IVzuJ/qJlSTu2cori6hlKpj69pXMtlW1AlQyVd
+	 qn5unp/aOJNiB6qGtFyssM46a3Dh07x0hBZEZ2FmN2giOZeVIdKdmA4XBXqyXYe+1T
+	 l//FF8HwZOUig==
+Date: Tue, 3 Nov 2026 17:13:07 +0000
 From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
 To: Sasha Levin <sashal@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Mike Rapoport <rppt@kernel.org>, Peter Xu <peterx@redhat.com>, 
-	David Hildenbrand <david@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>, linux-mm@kvack.org, 
-	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] selftests/mm: uffd-wp-mremap: keep the THP sizes in
- unsigned long
-Message-ID: <auoVbT8O10HFC2ju@gremlin>
-References: <20261103150232.291827-1-sashal@kernel.org>
+Cc: Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>, Peter Xu <peterx@redhat.com>, 
+	linux-mm@kvack.org, linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] selftests/mm: fix pointer width warnings on 32-bit
+ architectures
+Message-ID: <auoV594YOaoeo0Vz@gremlin>
+References: <20261103163907.640667-1-sashal@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20261103150232.291827-1-sashal@kernel.org>
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 078478000B
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20261103163907.640667-1-sashal@kernel.org>
+X-Stat-Signature: htj895r3c948fschgphsh6hkr49jwxh4
+X-Rspamd-Server: rspam01
+X-Rspam-User: 
 X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: gzryzpkgnz9u3idfxibhgy4ywfekdhzk
-X-Rspam-User: 
-X-HE-Tag: 1793725821-36304
-X-HE-Meta: U2FsdGVkX1+kfFHaYrmWbecem8ePzHKk5P+wefeRE+IXu3yQQsjszHk/Cvj0FXkN1PkcERcaNJtPC3uFXQaoBZb+DrjJZwpTWnkljF1ZR3Z9nRFKX/uaR40utD/RtgbzE4sOECoDeeMMG/NPByQJLEsfafXyp3i6PIjiF3jWqy/DUPcP6SoEhoLMc8xthvHAsOg2ugTUmrDr5Ov8p+9Ko0O3j5X6LcD9RsyrmRN/2aqf/vYM6K8gqWlwkG67lCGtPog+h6ufnv0/HbT4ycaAkaUEjp8R0I5MSYoa3he3J1GNTkwIyqlgSSgd0HewUq4HNcP4c4cI7FojRKAGt52tqM8J836ZpMh90TlFmoJzKriDuD2Wc/yu7sBP8isL6eFSsn2ToJma42BMx7SEM8EciE5XYzOAr3p3dZ/jr4UCYt87fgPaCFNQXlgKRq16uPbz6AFx5GxrxHnqmPHmsLn2yD4Ppk1/zDfHQVvArrQjjiaoOkuRo/Z1b75aqgX6UzDyMFhSuY7DxnleFBw+bVilBKNIwIsEERYOKqai5fFXgx6v+R+/LF8YWW+ASEhVdfs9xmEVm0I8Egtuq4C514DmN9rIG5wFj09vl4NCVh/dcc0SJfTyJpJ0i0SIh0oTZTapn2xrJkiv12N52Za8SXw3bGa5VnexhSOehoFcb7a7lXhCD7SMrarVguD73eWgWlvi4AdEjEjV06jL+z6UkzaqA61NjNtlK8KEMyCqXLpMrsw0cFUzazZSb5SyjyZM0LK1EJvsXPuXTscvtGSSDIlwZ1rgF4WSGdzdoa7C9KG9YoYFbSN73XVDMDa8JD0pYfD4k8gqLCEou3/wzlByKcexbfpnHNPKFIxRmUSmELRuwducH1/NqFms83Bq5canCANMZ9+lG/RbXUNAfK1B58xSA65DNaVfZ7DWsK5k+sXSGgNGrmry61/xLBfYrvIcF9BZ9apv6jdIxb4i++/f4rf
- osJj4Gos
- plVrgAHxGHHmmwns/+cDxQFLbXLzmSu1NIGjlSGdmoo4XeqR8VPouuSPKeYK91NInMwxFlt1FdMIkjHPYvyU3vr1ISld4+biZFm2ptc5jW8LY3DOka1kZ6JIqvQvnUL7Zq9GYM65HWmcWyfw+4hwlrM7PcoIFs1UiSVhexpl09Umwd+TracNe5kTmiit9hUKZJWkLvjnf8Gv/QWJViWW8KUDq6iLNwL45Taq/Iihsj01ibxlZ4zVzeVPBrKRkmb9Xp8liURDmS85+EAEvMSJf0AcGCg==
+X-Rspamd-Queue-Id: 1608412000B
+X-HE-Tag: 1793725993-598939
+X-HE-Meta: U2FsdGVkX19ir9PggzIrapBS7QdWasu19/uM6Hy6LAjjxQrdy9htDthCs1v0gRPPJV5XtE+YAWZPsI4ivyJtFp26PdB1JEnabyxccB6SbHpdtpPb1oGuE/5ay3V+AH+Zlahqz0IDFyWbmkGMjKoXuU/RJAiYFDSPiN8c8wKyVZoJlCPCroyE/obo1uM2j2UOtQNG85KE+hwT+QrJijStBYG5G8H3fO//cea1uWPgVCitk7nCsoInKuxnIpvhSQcBOTOQiGodY1pofVIiMIvSYH14250ptmhKiIRygBfDPLyZtD1e5d6oqUxman17d8jNLdnzlcRUqW38RkvyHTmg7xePAkPpSk3OW71VlpWvcZ3foVZ+FkZUh38QZ0DhdCHAyNM/cWkzLFlySgt3X1dQ12I6fIWc6v6W4cobO+Si9lxln8NFcqXmXrB82EwjugCremsmg7cxpeO5UZ4pF/ktsxhrDPFa1lz5pNOqSWnSlpy8++vh36wIGUH9QwXot1eJNP038jj3abJcWrQ+GS9bAOVARKg/I2DL4kKh7EeHKwoRYhzupKmpgKt/b/wxxXn9n3ZvWFxRO9UJfWYUgJMsVNhNMm1AlRDtQIpMOzO8dwOaiShgxywMfu5UamN+SUHPkjlaVGzz6t1kYDLxwNplxuzX3ml8BOn58u/NveJwkaqQitzp54hf92K9QJcNgQEIz2aQa/D8AobSv+J7MsNpykgsMj8jeRuke1R+zrRJrR1YurDobRVF/OmUozEP9lVj42NTCkL5jkVtKjb7QBGMIDHb4zoaP5D9F2P3MDhzXb2MUPKtq/5KTgXVNx0nDbCNIUfv4XHZclgYLWDNi8nc9hj+bC060D2EO/Npo96YIEhR7IeqJ+Eyx9ItKqzQqwhNzsiAtYLIhsr2G/YblA1crVhDeps2zExC0bmsBbHGALn0zuXpdhXvu8pfFcMHxjoUBdRtW6GgCW4Y5UbD8Y/
+ w7s2Ei3L
+ SwvM/aWwr4ZwU5jD2fC1gBA9toDPR3yL/XMs81EbSLFCZeXi7l1/RyCxcR+YALfiIwA0gq/F1vitHqyn59tRpB+5aWZNDh/N3vdhWtnXme0tZavhQ+XQXNCdGKqWEorgHnCJGIMJpAqYxrSIpyuJmrcrXe79OjYrk25I8H0dbVazh4Hy0YQZKCbJ+v11k0TwMl/aV0sXFGQ0DAGzDPsgzl7X479P2wAEFo7k/sB7Pyj9W/KIRZqUP5UHcpl0S2YIZH/CUK5w3YiVHHv9mo9kXpDgFG7UTjNfFuaB8NvOWyjSVjdY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,56 +100,392 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Tue, Nov 03, 2026 at 10:02:32AM -0500, Sasha Levin wrote:
-> Commit 0020a1f5ca36 ("selftests/mm: hugepage_settings: use unsigned long
-> in detect_hugetlb_page_size") changed the sizes of the test cases to
-> unsigned long, but left thpsizes and detect_thp_sizes() with size_t. On
-> 32-bit architectures size_t is unsigned int, and gcc 14 rejects the test
-> cases that point at thpsizes:
+On Tue, Nov 03, 2026 at 11:39:07AM -0500, Sasha Levin wrote:
+> Several mm tests convert between pointers and 64-bit integers with a
+> plain cast, which warns on 32-bit architectures, and hugetlb-mremap
+> passes 47-bit mmap() hints that don't fit in an unsigned long:
 >
->   uffd-wp-mremap.c:299:26: error: initialization of 'long unsigned int *' from incompatible pointer type 'size_t *' {aka 'unsigned int *'} [-Wincompatible-pointer-types]
+>   uffd-unit-tests.c:344:31: warning: cast from pointer to integer of different size [-Wpointer-to-int-cast]
 >
-> Use unsigned long for the THP sizes as well.
+> Cast through uintptr_t where pointers meet the 64-bit UAPI fields and
+> the 64-bit address arithmetic in mremap_test, and include stdint.h there
+> for it. The hugetlb-mremap hints don't fit in a 32-bit address space, so
+> only pass them when long is 64 bits.
 >
-> Fixes: 0020a1f5ca36 ("selftests/mm: hugepage_settings: use unsigned long in detect_hugetlb_page_size")
 > Signed-off-by: Sasha Levin <sashal@kernel.org>
 
-LGTM so:
+I see you add:
 
-Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+static void *addr_hint(unsigned long long addr)
+{
+	return sizeof(long) == 8 ? (void *)(uintptr_t)addr : NULL;
+}
+
+for the void * stuff, but then open-code the uint64_t parts.
+
+Could you do something similar there please?
+
+Thanks!
 
 > ---
-> KernelCI's 32-bit arm kselftest builds hit this. Built the mm selftests
-> with gcc 14 and gcc 16 -m32 (four errors in this file before, none
-> after) and natively with gcc and clang (no change). An i386 build with
-> clang runs and detects the THP sizes as before, up to the point where
-> the test needs root.
+> Found with 32-bit builds of the selftests (gcc 16 and clang 21 with
+> -m32, with and without -D_TIME_BITS=64 -D_FILE_OFFSET_BITS=64);
+> KernelCI's 32-bit arm builds show the same warnings. The changed files
+> build without them now, and the x86_64 builds don't change.
 >
->  tools/testing/selftests/mm/uffd-wp-mremap.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
+>  tools/testing/selftests/mm/hmm-tests.c       |  4 +-
+>  tools/testing/selftests/mm/hugetlb-mremap.c  | 17 ++++---
+>  tools/testing/selftests/mm/migration.c       |  4 +-
+>  tools/testing/selftests/mm/mremap_test.c     | 13 +++---
+>  tools/testing/selftests/mm/uffd-common.c     |  2 +-
+>  tools/testing/selftests/mm/uffd-unit-tests.c | 48 ++++++++++----------
+>  6 files changed, 47 insertions(+), 41 deletions(-)
 >
-> diff --git a/tools/testing/selftests/mm/uffd-wp-mremap.c b/tools/testing/selftests/mm/uffd-wp-mremap.c
-> index c48eaab8e75cf..fb5582ec5b201 100644
-> --- a/tools/testing/selftests/mm/uffd-wp-mremap.c
-> +++ b/tools/testing/selftests/mm/uffd-wp-mremap.c
-> @@ -15,7 +15,7 @@ static int pagemap_fd;
->  static int nr_pagesizes = 1;
->  static unsigned long pagesize;
->  static int nr_thpsizes;
-> -static size_t thpsizes[20];
-> +static unsigned long thpsizes[20];
->  static int nr_hugetlbsizes;
->  static unsigned long hugetlbsizes[10];
+> diff --git a/tools/testing/selftests/mm/hmm-tests.c b/tools/testing/selftests/mm/hmm-tests.c
+> index e5f273ca84c10..2a8806a131a5b 100644
+> --- a/tools/testing/selftests/mm/hmm-tests.c
+> +++ b/tools/testing/selftests/mm/hmm-tests.c
+> @@ -196,8 +196,8 @@ static int hmm_dmirror_cmd(int fd,
+>  	int ret;
 >
-> @@ -30,7 +30,7 @@ static void check_uffd_wp_feature_supported(void)
->  		ksft_exit_skip("uffd-wp feature not supported\n");
->  }
+>  	/* Simulate a device reading system memory. */
+> -	cmd.addr = (__u64)buffer->ptr;
+> -	cmd.ptr = (__u64)buffer->mirror;
+> +	cmd.addr = (__u64)(uintptr_t)buffer->ptr;
+> +	cmd.ptr = (__u64)(uintptr_t)buffer->mirror;
+>  	cmd.npages = npages;
 >
-> -static int detect_thp_sizes(size_t sizes[], int max)
-> +static int detect_thp_sizes(unsigned long sizes[], int max)
+>  	for (;;) {
+> diff --git a/tools/testing/selftests/mm/hugetlb-mremap.c b/tools/testing/selftests/mm/hugetlb-mremap.c
+> index 9b724af66e938..531f270fabfb5 100644
+> --- a/tools/testing/selftests/mm/hugetlb-mremap.c
+> +++ b/tools/testing/selftests/mm/hugetlb-mremap.c
+> @@ -33,6 +33,11 @@
+>  #define PROTECTION (PROT_READ | PROT_WRITE | PROT_EXEC)
+>  #define FLAGS (MAP_HUGETLB | MAP_SHARED)
+>
+> +static void *addr_hint(unsigned long long addr)
+> +{
+> +	return sizeof(long) == 8 ? (void *)(uintptr_t)addr : NULL;
+> +}
+> +
+>  static void check_bytes(char *addr)
 >  {
->  	int count = 0;
->  	unsigned long orders;
+>  	ksft_print_msg("First hex is %x\n", *((unsigned int *)addr));
+> @@ -130,21 +135,21 @@ int main(int argc, char *argv[])
+>  		ksft_exit_fail_msg("Open failed: %s\n", strerror(errno));
+>
+>  	/* mmap to a PUD aligned address to hopefully trigger pmd sharing. */
+> -	unsigned long suggested_addr = 0x7eaa40000000;
+> -	void *haddr = mmap((void *)suggested_addr, length, PROTECTION, FLAGS, fd, 0);
+> +	void *haddr = mmap(addr_hint(0x7eaa40000000ULL), length, PROTECTION, FLAGS,
+> +			   fd, 0);
+>  	ksft_print_msg("Map haddr: Returned address is %p\n", haddr);
+>  	if (haddr == MAP_FAILED)
+>  		ksft_exit_fail_msg("mmap1: %s\n", strerror(errno));
+>
+>  	/* mmap again to a dummy address to hopefully trigger pmd sharing. */
+> -	suggested_addr = 0x7daa40000000;
+> -	void *daddr = mmap((void *)suggested_addr, length, PROTECTION, FLAGS, fd, 0);
+> +	void *daddr = mmap(addr_hint(0x7daa40000000ULL), length, PROTECTION, FLAGS,
+> +			   fd, 0);
+>  	ksft_print_msg("Map daddr: Returned address is %p\n", daddr);
+>  	if (daddr == MAP_FAILED)
+>  		ksft_exit_fail_msg("mmap3: %s\n", strerror(errno));
+>
+> -	suggested_addr = 0x7faa40000000;
+> -	void *vaddr = mmap((void *)suggested_addr, length, PROTECTION, FLAGS, fd, 0);
+> +	void *vaddr = mmap(addr_hint(0x7faa40000000ULL), length, PROTECTION, FLAGS,
+> +			   fd, 0);
+>  	ksft_print_msg("Map vaddr: Returned address is %p\n", vaddr);
+>  	if (vaddr == MAP_FAILED)
+>  		ksft_exit_fail_msg("mmap2: %s\n", strerror(errno));
+> diff --git a/tools/testing/selftests/mm/migration.c b/tools/testing/selftests/mm/migration.c
+> index d1d0989ed2cad..1c5208ce048ee 100644
+> --- a/tools/testing/selftests/mm/migration.c
+> +++ b/tools/testing/selftests/mm/migration.c
+> @@ -236,7 +236,7 @@ TEST_F_TIMEOUT(migration, private_anon_thp, 2*RUNTIME)
+>  		MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
+>  	ASSERT_NE(ptr, MAP_FAILED);
+>
+> -	ptr = (uint64_t *) ALIGN((uintptr_t) ptr, pmdsize);
+> +	ptr = (uint64_t *)(uintptr_t)ALIGN((uintptr_t) ptr, pmdsize);
+>  	ASSERT_EQ(madvise(ptr, pmdsize, MADV_HUGEPAGE), 0);
+>  	memset(ptr, 0xde, pmdsize);
+>  	for (i = 0; i < self->nthreads; i++)
+> @@ -270,7 +270,7 @@ TEST_F_TIMEOUT(migration, shared_anon_thp, 2*RUNTIME)
+>  		MAP_SHARED | MAP_ANONYMOUS, -1, 0);
+>  	ASSERT_NE(ptr, MAP_FAILED);
+>
+> -	ptr = (uint64_t *) ALIGN((uintptr_t) ptr, pmdsize);
+> +	ptr = (uint64_t *)(uintptr_t)ALIGN((uintptr_t) ptr, pmdsize);
+>  	ASSERT_EQ(madvise(ptr, pmdsize, MADV_HUGEPAGE), 0);
+>
+>  	memset(ptr, 0xde, pmdsize);
+> diff --git a/tools/testing/selftests/mm/mremap_test.c b/tools/testing/selftests/mm/mremap_test.c
+> index 31b484517bda6..7e7ca67f7e94c 100644
+> --- a/tools/testing/selftests/mm/mremap_test.c
+> +++ b/tools/testing/selftests/mm/mremap_test.c
+> @@ -15,6 +15,7 @@
+>  #include <syscall.h>
+>  #include <time.h>
+>  #include <stdbool.h>
+> +#include <stdint.h>
+>
+>  #include "kselftest.h"
+>
+> @@ -190,7 +191,7 @@ static void *get_source_mapping(struct config c)
+>  	if (addr < mmap_min_addr)
+>  		goto retry;
+>
+> -	src_addr = mmap((void *) addr, c.region_size, PROT_READ | PROT_WRITE,
+> +	src_addr = mmap((void *)(uintptr_t)addr, c.region_size, PROT_READ | PROT_WRITE,
+>  					MAP_FIXED_NOREPLACE | MAP_ANONYMOUS | MAP_SHARED,
+>  					-1, 0);
+>  	if (src_addr == MAP_FAILED) {
+> @@ -206,8 +207,8 @@ static void *get_source_mapping(struct config c)
+>  	 * requested alignment of 2MB. This is done to reduce coincidental
+>  	 * alignment in the tests.
+>  	 */
+> -	if (((unsigned long long) src_addr & (c.src_alignment - 1)) ||
+> -			!((unsigned long long) src_addr & c.src_alignment)) {
+> +	if (((unsigned long long)(uintptr_t)src_addr & (c.src_alignment - 1)) ||
+> +			!((unsigned long long)(uintptr_t)src_addr & c.src_alignment)) {
+>  		munmap(src_addr, c.region_size);
+>  		goto retry;
+>  	}
+> @@ -996,15 +997,15 @@ static long long remap_region(struct config c, unsigned int threshold_mb,
+>  	align_mask = ~(c.dest_alignment - 1);
+>  	/* Offset of destination address from the end of the source region */
+>  	offset = (c.overlapping) ? -c.dest_alignment : c.dest_alignment;
+> -	addr = (void *) (((unsigned long long) src_addr + c.region_size
+> +	addr = (void *)(uintptr_t)(((unsigned long long)(uintptr_t)src_addr + c.region_size
+>  			  + offset) & align_mask);
+>
+>  	/* Remap after the destination block preamble. */
+>  	addr += c.dest_preamble_size;
+>
+>  	/* See comment in get_source_mapping() */
+> -	if (!((unsigned long long) addr & c.dest_alignment))
+> -		addr = (void *) ((unsigned long long) addr | c.dest_alignment);
+> +	if (!((unsigned long long)(uintptr_t)addr & c.dest_alignment))
+> +		addr = (void *)(uintptr_t)((unsigned long long)(uintptr_t)addr | c.dest_alignment);
+>
+>  	/* Don't destroy existing mappings unless expected to overlap. */
+>  	while (!is_remap_region_valid(addr - c.dest_preamble_size,
+> diff --git a/tools/testing/selftests/mm/uffd-common.c b/tools/testing/selftests/mm/uffd-common.c
+> index a76851aced4d0..4188991fab245 100644
+> --- a/tools/testing/selftests/mm/uffd-common.c
+> +++ b/tools/testing/selftests/mm/uffd-common.c
+> @@ -488,7 +488,7 @@ void uffd_handle_page_fault(uffd_global_test_opts_t *gopts, struct uffd_msg *msg
+>  		 */
+>
+>  		area = (uint8_t *)(gopts->area_dst +
+> -		       ((char *)msg->arg.pagefault.address -
+> +		       ((char *)(uintptr_t)msg->arg.pagefault.address -
+>  		       gopts->area_dst_alias));
+>  		for (b = 0; b < gopts->page_size; ++b)
+>  			area[b] = ~area[b];
+> diff --git a/tools/testing/selftests/mm/uffd-unit-tests.c b/tools/testing/selftests/mm/uffd-unit-tests.c
+> index 2a97ba1d6feb1..2e4d1742f340b 100644
+> --- a/tools/testing/selftests/mm/uffd-unit-tests.c
+> +++ b/tools/testing/selftests/mm/uffd-unit-tests.c
+> @@ -341,17 +341,17 @@ static void uffd_wp_unpopulated_test(uffd_global_test_opts_t *gopts, uffd_test_a
+>  	pagemap_fd = pagemap_open();
+>
+>  	/* Test applying pte marker to anon unpopulated */
+> -	wp_range(gopts->uffd, (uint64_t)gopts->area_dst, gopts->page_size, true);
+> +	wp_range(gopts->uffd, (uint64_t)(uintptr_t)gopts->area_dst, gopts->page_size, true);
+>  	value = pagemap_get_entry(pagemap_fd, gopts->area_dst);
+>  	pagemap_check_wp(value, true);
+>
+>  	/* Test unprotect on anon pte marker */
+> -	wp_range(gopts->uffd, (uint64_t)gopts->area_dst, gopts->page_size, false);
+> +	wp_range(gopts->uffd, (uint64_t)(uintptr_t)gopts->area_dst, gopts->page_size, false);
+>  	value = pagemap_get_entry(pagemap_fd, gopts->area_dst);
+>  	pagemap_check_wp(value, false);
+>
+>  	/* Test zap on anon marker */
+> -	wp_range(gopts->uffd, (uint64_t)gopts->area_dst, gopts->page_size, true);
+> +	wp_range(gopts->uffd, (uint64_t)(uintptr_t)gopts->area_dst, gopts->page_size, true);
+>  	if (madvise(gopts->area_dst, gopts->page_size, MADV_DONTNEED))
+>  		err("madvise(MADV_DONTNEED) failed");
+>  	value = pagemap_get_entry(pagemap_fd, gopts->area_dst);
+> @@ -366,7 +366,7 @@ static void uffd_wp_unpopulated_test(uffd_global_test_opts_t *gopts, uffd_test_a
+>  		err("madvise(MADV_DONTNEED) failed");
+>
+>  	/* Test read-zero-page upon pte marker */
+> -	wp_range(gopts->uffd, (uint64_t)gopts->area_dst, gopts->page_size, true);
+> +	wp_range(gopts->uffd, (uint64_t)(uintptr_t)gopts->area_dst, gopts->page_size, true);
+>  	*(volatile char *)gopts->area_dst;
+>  	/* Drop it to make pte none again */
+>  	if (madvise(gopts->area_dst, gopts->page_size, MADV_DONTNEED))
+> @@ -389,7 +389,7 @@ static void uffd_wp_fork_test_common(uffd_global_test_opts_t *gopts, uffd_test_a
+>
+>  	/* Touch the page */
+>  	*gopts->area_dst = 1;
+> -	wp_range(gopts->uffd, (uint64_t)gopts->area_dst, gopts->page_size, true);
+> +	wp_range(gopts->uffd, (uint64_t)(uintptr_t)gopts->area_dst, gopts->page_size, true);
+>  	value = pagemap_get_entry(pagemap_fd, gopts->area_dst);
+>  	pagemap_check_wp(value, true);
+>  	if (pagemap_test_fork(gopts, with_event, false)) {
+> @@ -430,7 +430,7 @@ static void uffd_wp_fork_test_common(uffd_global_test_opts_t *gopts, uffd_test_a
+>  	}
+>
+>  	/* Unprotect; this tests swap pte modifications */
+> -	wp_range(gopts->uffd, (uint64_t)gopts->area_dst, gopts->page_size, false);
+> +	wp_range(gopts->uffd, (uint64_t)(uintptr_t)gopts->area_dst, gopts->page_size, false);
+>  	value = pagemap_get_entry(pagemap_fd, gopts->area_dst);
+>  	pagemap_check_wp(value, false);
+>
+> @@ -469,7 +469,7 @@ static void uffd_wp_fork_pin_test_common(uffd_global_test_opts_t *gopts,
+>
+>  	/* Touch the page */
+>  	*gopts->area_dst = 1;
+> -	wp_range(gopts->uffd, (uint64_t)gopts->area_dst, gopts->page_size, true);
+> +	wp_range(gopts->uffd, (uint64_t)(uintptr_t)gopts->area_dst, gopts->page_size, true);
+>
+>  	/*
+>  	 * 1. First pin, then fork().  This tests fork() special path when
+> @@ -675,7 +675,7 @@ static void uffd_rwp_async_test(uffd_global_test_opts_t *gopts,
+>  		err("register failure");
+>
+>  	/* RW-protect all pages (sets protnone) */
+> -	rwprotect_range(gopts->uffd, (uint64_t)gopts->area_dst,
+> +	rwprotect_range(gopts->uffd, (uint64_t)(uintptr_t)gopts->area_dst,
+>  			 nr_pages * page_size, true);
+>
+>  	/* Access all pages — should auto-resolve, no faults */
+> @@ -739,7 +739,7 @@ static void uffd_rwp_sync_test(uffd_global_test_opts_t *gopts,
+>  		err("register failure");
+>
+>  	/* RW-protect all pages */
+> -	rwprotect_range(gopts->uffd, (uint64_t)gopts->area_dst,
+> +	rwprotect_range(gopts->uffd, (uint64_t)(uintptr_t)gopts->area_dst,
+>  			 nr_pages * page_size, true);
+>
+>  	/* Start fault handler thread */
+> @@ -816,7 +816,7 @@ static void uffd_rwp_pagemap_test(uffd_global_test_opts_t *gopts,
+>  			  nr_pages * page_size))
+>  		err("register failure");
+>
+> -	rwprotect_range(gopts->uffd, (uint64_t)gopts->area_dst,
+> +	rwprotect_range(gopts->uffd, (uint64_t)(uintptr_t)gopts->area_dst,
+>  			 nr_pages * page_size, true);
+>
+>  	/* Touch first half of pages to re-activate them (async auto-resolve) */
+> @@ -825,7 +825,7 @@ static void uffd_rwp_pagemap_test(uffd_global_test_opts_t *gopts,
+>  		(void)*page;
+>  	}
+>
+> -	uint64_t start = (uint64_t)gopts->area_dst;
+> +	uint64_t start = (uint64_t)(uintptr_t)gopts->area_dst;
+>  	uint64_t boundary = start + (nr_pages / 2) * page_size;
+>  	uint64_t end = start + nr_pages * page_size;
+>
+> @@ -844,7 +844,7 @@ static void uffd_rwp_pagemap_test(uffd_global_test_opts_t *gopts,
+>  	pm_arg.size = sizeof(pm_arg);
+>  	pm_arg.start = start;
+>  	pm_arg.end = end;
+> -	pm_arg.vec = (uint64_t)regions;
+> +	pm_arg.vec = (uint64_t)(uintptr_t)regions;
+>  	pm_arg.vec_len = ARRAY_SIZE(regions);
+>  	pm_arg.category_mask = PAGE_IS_ACCESSED;
+>  	pm_arg.return_mask = PAGE_IS_ACCESSED;
+> @@ -897,7 +897,7 @@ static void uffd_rwp_mprotect_test(uffd_global_test_opts_t *gopts,
+>  	if (uffd_register_rwp(gopts->uffd, gopts->area_dst,
+>  			      nr_pages * page_size))
+>  		err("register failure");
+> -	rwprotect_range(gopts->uffd, (uint64_t)gopts->area_dst,
+> +	rwprotect_range(gopts->uffd, (uint64_t)(uintptr_t)gopts->area_dst,
+>  			nr_pages * page_size, true);
+>
+>  	/* Round-trip mprotect(): PROT_NONE -> PROT_READ|PROT_WRITE */
+> @@ -937,9 +937,9 @@ static void uffd_rwp_mprotect_test(uffd_global_test_opts_t *gopts,
+>
+>  	memset(&pm_arg, 0, sizeof(pm_arg));
+>  	pm_arg.size = sizeof(pm_arg);
+> -	pm_arg.start = (uint64_t)gopts->area_dst;
+> -	pm_arg.end = (uint64_t)gopts->area_dst + nr_pages * page_size;
+> -	pm_arg.vec = (uint64_t)regions;
+> +	pm_arg.start = (uint64_t)(uintptr_t)gopts->area_dst;
+> +	pm_arg.end = (uint64_t)(uintptr_t)gopts->area_dst + nr_pages * page_size;
+> +	pm_arg.vec = (uint64_t)(uintptr_t)regions;
+>  	pm_arg.vec_len = ARRAY_SIZE(regions);
+>  	pm_arg.category_mask = PAGE_IS_ACCESSED;
+>  	pm_arg.category_inverted = PAGE_IS_ACCESSED;
+> @@ -982,7 +982,7 @@ static void uffd_rwp_gup_test(uffd_global_test_opts_t *gopts,
+>  	if (uffd_register_rwp(gopts->uffd, gopts->area_dst, gopts->page_size))
+>  		err("register failure");
+>
+> -	rwprotect_range(gopts->uffd, (uint64_t)gopts->area_dst,
+> +	rwprotect_range(gopts->uffd, (uint64_t)(uintptr_t)gopts->area_dst,
+>  			gopts->page_size, true);
+>
+>  	if (pipe(pipefd))
+> @@ -1045,7 +1045,7 @@ static void uffd_rwp_async_toggle_test(uffd_global_test_opts_t *gopts,
+>  		err("register failure");
+>
+>  	/* Phase 1: async detection — RW-protect, access first half */
+> -	rwprotect_range(gopts->uffd, (uint64_t)gopts->area_dst,
+> +	rwprotect_range(gopts->uffd, (uint64_t)(uintptr_t)gopts->area_dst,
+>  			 nr_pages * page_size, true);
+>
+>  	for (p = 0; p < nr_pages / 2; p++) {
+> @@ -1092,7 +1092,7 @@ static void uffd_rwp_async_toggle_test(uffd_global_test_opts_t *gopts,
+>  	set_async_mode(gopts->uffd, true);
+>
+>  	/* RW-protect and access again — should auto-resolve */
+> -	rwprotect_range(gopts->uffd, (uint64_t)gopts->area_dst,
+> +	rwprotect_range(gopts->uffd, (uint64_t)(uintptr_t)gopts->area_dst,
+>  			 nr_pages * page_size, true);
+>
+>  	for (p = 0; p < nr_pages; p++) {
+> @@ -1127,7 +1127,7 @@ static void uffd_rwp_close_test(uffd_global_test_opts_t *gopts,
+>  			  nr_pages * page_size))
+>  		err("register failure");
+>
+> -	rwprotect_range(gopts->uffd, (uint64_t)gopts->area_dst,
+> +	rwprotect_range(gopts->uffd, (uint64_t)(uintptr_t)gopts->area_dst,
+>  			 nr_pages * page_size, true);
+>
+>  	/* Close uffd — should restore protnone PTEs */
+> @@ -1169,7 +1169,7 @@ static void uffd_rwp_fork_test(uffd_global_test_opts_t *gopts,
+>
+>  	/* Populate + RWP-protect */
+>  	*gopts->area_dst = 1;
+> -	rwprotect_range(gopts->uffd, (uint64_t)gopts->area_dst,
+> +	rwprotect_range(gopts->uffd, (uint64_t)(uintptr_t)gopts->area_dst,
+>  			page_size, true);
+>
+>  	/* Parent: verify uffd-wp bit is set before fork */
+> @@ -1223,7 +1223,7 @@ static void uffd_rwp_fork_pin_test(uffd_global_test_opts_t *gopts,
+>  	}
+>
+>  	/* RWP-protect: PTE is now PAGE_NONE + uffd bit. */
+> -	rwprotect_range(gopts->uffd, (uint64_t)gopts->area_dst, page_size, true);
+> +	rwprotect_range(gopts->uffd, (uint64_t)(uintptr_t)gopts->area_dst, page_size, true);
+>
+>  	pagemap_fd = pagemap_open();
+>  	value = pagemap_get_entry(pagemap_fd, gopts->area_dst);
+> @@ -1332,7 +1332,7 @@ static void uffd_rwp_swap_cow_test(uffd_global_test_opts_t *gopts,
+>  	*gopts->area_dst = 0x11;
+>
+>  	/* RWP-protect: PTE becomes PAGE_NONE + uffd bit (still exclusive). */
+> -	rwprotect_range(gopts->uffd, (uint64_t)gopts->area_dst, page_size, true);
+> +	rwprotect_range(gopts->uffd, (uint64_t)(uintptr_t)gopts->area_dst, page_size, true);
+>
+>  	/*
+>  	 * Swap the page out while it is still exclusive: a shared (forked)
+> @@ -1498,7 +1498,7 @@ static int faulting_process(uffd_global_test_opts_t *gopts, int signal_test, boo
+>  						/* This is a WP request */
+>  						assert(steps == 2);
+>  						wp_range(gopts->uffd,
+> -							 (__u64)gopts->area_dst +
+> +							 (__u64)(uintptr_t)gopts->area_dst +
+>  							 offset,
+>  							 gopts->page_size, false);
+>  					}
 > --
 > 2.53.0
 >
