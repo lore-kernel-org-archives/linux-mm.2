@@ -1,129 +1,101 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF02B606B6FE
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 08:34:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5B35606C68E
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 08:35:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=google header.b=D+1MEvKh
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=P/GKaWaZ
 Received: by kanga.kvack.org (Postfix)
-	id D6B2B6B05BC; Tue,  3 Nov 2026 03:34:38 -0500 (EST)
+	id C5A206B05BE; Tue,  3 Nov 2026 03:35:02 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D42576B05BD; Tue,  3 Nov 2026 03:34:38 -0500 (EST)
+	id C0C2D6B05BF; Tue,  3 Nov 2026 03:35:02 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C0AA06B05BE; Tue,  3 Nov 2026 03:34:38 -0500 (EST)
+	id B473E6B05C5; Tue,  3 Nov 2026 03:35:02 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id A18236B05BC
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 03:34:38 -0500 (EST)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 30C1D80345
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 08:34:38 +0000 (UTC)
-X-FDA: 85393146636.11.F80498E
-Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 37B5E20005
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 08:34:36 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=D+1MEvKh;
-	spf=pass (imf03.hostedemail.com: domain of mhocko@suse.com designates 209.85.221.53 as permitted sender) smtp.mailfrom=mhocko@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 952836B05BE
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 03:35:02 -0500 (EST)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 1F36B1C37D1
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 08:35:02 +0000 (UTC)
+X-FDA: 85393147644.22.000A49E
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 7EDB0A0007
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 08:35:00 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="P/GKaWaZ";
+	spf=pass (imf15.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793694876;
-	b=H4YtdX3lgWOeuVWplBwCHIyqr/26O7EOUu7ytePgSdiO3ZqzzIvcsY/Y/te2pSx+AxujJb
-	9YLyYtE3QT2osiMh8EmUimEzIewps/yOtG+0nPnMack1rwtxVylN529GZwiqsc8rJieZoq
-	TNqxvFH/jfWa7clQhPPIvQoj6BKo72M=
+	t=1793694900;
+	b=Vo02EALqEQPe+tzGe7F6acI+JukjYSLcZxc0HKYLIfmTBSfuLo784YdMT2fitc0hsYDsZF
+	xnXL+jPngdms4yU4aP2Mdy1S5tur8/uaDE4NsGb8AuPlZvgvous6XsEj/H1CbbV6rzI+OG
+	ztacBXRXLdg8iebncKWigs7xfCDrdDQ=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=D+1MEvKh;
-	spf=pass (imf03.hostedemail.com: domain of mhocko@suse.com designates 209.85.221.53 as permitted sender) smtp.mailfrom=mhocko@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="P/GKaWaZ";
+	spf=pass (imf15.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793694876;
+	s=arc-20220608; t=1793694900;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=o94uNRQqzrylUu01kiRSHaUQ5l5ZXHsTJxuqTtmUWsA=;
-	b=n85ifCQ6inAxYZY8igDa6aTnRtN9Qo1kwceofGoPZy+sy4RJBJvhM6cYMkjM/LRMK7Z1jp
-	gm0xe9l9xWMlrNbfwg23uW27KJ/RFRcP2tNib3NfTqcFx0hUyx7QsuLUm35kRA/l3/QXU6
-	hqcu4cNiQM97KC7yOyQG4Zog++qpgFo=
-Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-48afbd2c386so2221213f8f.3
-        for <linux-mm@kvack.org>; Tue, 03 Nov 2026 00:34:35 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1793694875; x=1794299675; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=o94uNRQqzrylUu01kiRSHaUQ5l5ZXHsTJxuqTtmUWsA=;
-        b=D+1MEvKh8qIlvBAoyQEDgVs6tPdKSoGvIsOQk43vm9DYCc7fYXmkczAq/u8A08CW35
-         CCqi8C6E8BLodpN5L0Uy0VS7DpY5RXN2VxotEuwlM7XKkxBhAQdFkRqfQbIiuyMiber5
-         t9CBpPMMRFwYdAxckl5qgv6KRjJVblpxnlq7+AOw3kb4NUti2paX2KEkTfBRaejaMyYG
-         RMar/Rw8EoPbdUQV8Qx3j+E2RVDytkBR31+LDTusKd43trp+9br9ZfeIuQQsMiXGmCid
-         QK+fvdHLAvXPshSs4pLzPCEKsoqRe/2XZE9Ci1PcWubrVYSGyzp6JPZqkGfVk8rn8ccK
-         ECUQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793694875; x=1794299675;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=o94uNRQqzrylUu01kiRSHaUQ5l5ZXHsTJxuqTtmUWsA=;
-        b=O43ix/cCW2dpMz2lTkhZw+SlY85kMHJKSt20lLng92e3ALC142X59qSMWMsDt+0A8Z
-         KcMoLfnThx15aR5lnt/ykNC3tAJILxBsFsrxnjADpFhWyX+CBMn27GGC8rwvnaaOdmKs
-         5ph18ORNx1jf8xWf8vAxf/ip4Y0jVho+6TjobU0eQUQHkdjCBwWxirxPlKJP3UfdFgXI
-         GaCCV1lrADrCmsZ3X0jz70jIkAJt7CrJNA+Tl5IVVD7SICxY+18zkrxrIHoJm3N0a2VY
-         V4kWZrqCod+7oKX20B0j+GHDrGxgGQVPIt3zIMQuCJRJqYiyXPJ/L3fme8PSgzCC5ZBo
-         AsVA==
-X-Forwarded-Encrypted: i=1; AKwUvBx2qB3zEB+6bhMKzjFrJ3qzd5uS0wC1aE0QnoZT+vs2bfJukiKAicOr58okJH2jvc4HlvzlYOx2jA==@kvack.org
-X-Gm-Message-State: APuU4Z9gr47KiYxttZqLEtoChrUS2RQX29aWlaf1kdUi2o1HXrlP0OXl
-	MaCI95nNF+WMKFdPkZHv0W09xl/6yDXP2N6h/0UeehRO6CagCIPrDljyEL1XDZHS8wg=
-X-Gm-Gg: AYBFou0NNZbTaEhGoaavmOEEpDaPHAs01fYFlooDuAVP5Eij1c2rj8srrsZ3YN9Buhw
-	LYnVbzI2OAOEnxGVeYJ8IZsybduZWE2K/9rewlkRPEDz0oZMlkncm7EKFGQe50E+XX16h47/y0D
-	dqK35RLj9Aj+58rMDx1OBDhlOHWJvNjUh3yuOTreuyF8Ncu8JBZruCVDMaN+zUtChRu3yvR7Fl5
-	+lp69hC514O4QAcMmmdbFEsVs12pV0YBLer786YD/NpuD+dmgLv6UT0oeAmbRalyKwXqw9avdmv
-	YM0GO+OA9Rrt9XkEUMx1dT51ivZl3UyogDS9rLuLc5pRoEE0sqkWhDeN5FmT9YfrWsz+0A/xSzG
-	gzRTPNs52RCT6JyomEivGsTnV6h4g+MFP60SuEG/szg/50mDbGhCQv55yazFxQYEzSbkhdsvQAk
-	9qGl8kMP9NOU4bZRqsSmYLZrpJA4bm+6kk+1ACnFcQqoQNSz/WvBbnUMMnPE8hJ+QCQUSI0M/JE
-	+BSwIp+9NE7EAhBhEnMchEMn7bJycV/6lBhjdL8eRS6BdXmU7I+zvG4cy0DMlv9sHfiQnNb+K7N
-	Oz8R5r55JviB+S5Z8XoFnghNGFfV7A1ooGZUhCs=
-X-Received: by 2002:a05:6000:2892:b0:48d:eb44:650c with SMTP id ffacd0b85a97d-48e6e309f40mr28006453f8f.40.1793694874669;
-        Tue, 03 Nov 2026 00:34:34 -0800 (PST)
-Received: from localhost (109-81-32-81.rct.o2.cz. [109.81.32.81])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e71b8a7d1sm23718452f8f.38.2026.11.03.00.34.34
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 03 Nov 2026 00:34:34 -0800 (PST)
-Date: Tue, 3 Nov 2026 09:34:33 +0100
-From: Michal Hocko <mhocko@suse.com>
-To: Shakeel Butt <shakeel.butt@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>, Tejun Heo <tj@kernel.org>,
-	Harry Yoo <harry@kernel.org>,
-	Meta kernel team <kernel-team@meta.com>, cgroups@vger.kernel.org,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 2/5] memcg: force charges from reclaim before trying
- the limits
-Message-ID: <aumcmb9iBpovh97u@tiehlicka>
-References: <20261030205418.341214-1-shakeel.butt@linux.dev>
- <20261030205418.341214-3-shakeel.butt@linux.dev>
- <auhN7v127jwy-q-W@tiehlicka>
- <auli2Zlf1F0tyi4X@linux.dev>
+	bh=MbkXDHo1xuZzdIbJLfCFRMeI3qreXHQVaX0Y035ar6E=;
+	b=7LZmoZo2smmaLcjYVZliOlAYxK4hUG7UaY7lug7kRJeg5kW2UhGbHIGK1Orb8DvZRsNmOP
+	vcSLqrNMKTkDXCZWURKDE4Wy3MB0KHEwu5JvUC7rRIl6//r3muyIHU8QnqSBKsWy1Tk4wT
+	/uwk35R1uE1ATeJYZMozYT0mIaYRtm8=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id B10B540597;
+	Tue,  3 Nov 2026 08:34:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E97B01F000C1;
+	Tue,  3 Nov 2026 08:34:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793694899;
+	bh=MbkXDHo1xuZzdIbJLfCFRMeI3qreXHQVaX0Y035ar6E=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=P/GKaWaZ2XZPjdPtX0xj3DV82aPecbQdBJ09rmkt8WdtG6oEJWZfgDu4oU0v7TGQR
+	 DZ4+KCjo3a58PVlZecgdBRRUdjFxTh9NC3jnzhYKSezGnP4oaR5AT6EBUaVhiq/GHn
+	 DywN9Ru1M17Pcsw7VPrEkExKy8MY7Nya3VidCc5XAv4dgJje0bJPIvbAgVfEKPKQZO
+	 zKNaKOaUvNpkBGXEWrY4VlCBSpAzYfvCIGsfaPWFblJa1imMI0UWvm/UHPmSZ7ziE0
+	 sW4G1aSC6kh7MF9rTlMqwf0zxON36NECN9ONOcBW3Xf4XGLAEngsUVqN5dcP2EDQzN
+	 NFCacvWwboiRw==
+Date: Tue, 3 Nov 2026 08:34:51 +0000
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: Tal Zussman <tz2294@columbia.edu>
+Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
+	Jan Kara <jack@suse.cz>, Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Zi Yan <ziy@nvidia.com>, 
+	Matthew Brost <matthew.brost@intel.com>, Joshua Hahn <joshua.hahnjy@gmail.com>, 
+	Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>, 
+	Ying Huang <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>, 
+	Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, 
+	Hugh Dickins <hughd@google.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
+	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 4/8] mm: remove attach_page_private() and
+ detach_page_private()
+Message-ID: <aumcoUqORACOXqFP@gremlin>
+References: <20261102-page-wrappers-v1-0-e7280bdb31f6@columbia.edu>
+ <20261102-page-wrappers-v1-4-e7280bdb31f6@columbia.edu>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <auli2Zlf1F0tyi4X@linux.dev>
-X-Stat-Signature: zbs34578u6jx7sr1pzre834uaqta5k4z
+In-Reply-To: <20261102-page-wrappers-v1-4-e7280bdb31f6@columbia.edu>
+X-Stat-Signature: 5jrjbpo95ib6thszm99jf1h48koiidcn
+X-Rspamd-Queue-Id: 7EDB0A0007
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 37B5E20005
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+X-Rspamd-Server: rspam11
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1793694876-760991
-X-HE-Meta: U2FsdGVkX183oOs6dWlq1jjtpg+qYoHmFE+GV2LtLGMcs2pjjdtvuDtTaVewjND+EsTgamZw7h6ykYDtfoQCixzK3wZNu29+eM4svztJGVYdxMuYhen4IuMnBhI1QRDilEUjNrfjS7iVs2URYm66Bq8k2eFhMs+vQhBB/AnshOVvB2VvsquZZePLZINLq3MvNuwhvpFZXSNBssV+q2cy6KjqXWbkmbHqHAZwi1EDeX0Gvx+JmIhb88M9MR2aKq/Yp03BIvS01PucHnaTh26vwcaWmcEqcUEzlwd525StwCP8atCXmJkSVrHchhV9ZvaASypRs9R/2DpUDp+/1VMi0nf+jCrXAJCvGB/eCU3w1Mv9QEq5a9ziY999ooUmrivxo76CVeQVPESaHBpN825RCVLyLoFQsbL6C+pb2Xq8FccABnP+RTibok1pdBAepOgdQeD7sgWqJ7QVK4gw4X41qjV9XXL4bBoizfJikhGq/kXmrkg7h/VVTtSCGl2a/lztML5KBXODOC3eiZY6ikWt65NEXdnZbec3dScx6SlxGr6jgfC3JhePcwPt00X/thZxlqTClg8w2ZqrFGz3EQ4x5hzrXJp2GENDa1x3kQIHRuTft774EpB6aYXsra/7c/ns167CxLVEDqzVxVjF7jvl9wpBSy7wooEjol6RHBErY9iFnQj2XPsj2XkT4rvIzTUkLVzz+To8kJ9dsJLeoqeG5gbe5u1xr5rkL2YKLCVuPBwz2thn21dR0uSiecNGSMPrbPZxzyyoM/8353X2mkLC9BSjvJIfwvXa9IZ+eMr2kStLqVFSEEQB06s8AFLq6FLDCYZhz04msvlEvS5UjpS/npIkwtBMj6f9we7Z8W8eBPct5MBBND0TPgAY2PYajncWOZEIzM6J6r1LbBKqng0anFT2WGxbwkBbOiCKJB7G4BhQsmUqbZf5UEETxIYLeo4uKLPccS3E84QnEUDSxkJ
- 0exOxO14
- nmSbe+VBLiaKhF9X6pE2HGeOdCjfECulMOvYGoZcOJNGGKsdwkUxGH6Uqz6b4b5aO/gSJA/sd5J/DlVOUCYA41/OLuy7vr+dygJLToycusffpiBZsMO40eW/2Fup7oIxFklLes3YEI+LReCPiQlavmMJeO+IMddICZmD68O1RAEOsUDhpar/TaluUWdCUrD00Ggw0EjfWC8xgcG+quYb/H1uI9Co24DSzykecYoUDaVc37C5uVEonphpNZtG2lvtA4hMCcqS7/glJ/yb61ajineKNR8ip8cAAyeE90J623gU2/JyKWZR7GkBvpfn5F9C1j5yqCPMbe0bw20ceHKtLqI2Xi8EH6/3xTPRDrggYVEfxdpkKsiak2ZI1tyXkW6r6xQokE7ojXvouR5SWBrs/E3OfEbWMyVX2rkXD
+X-HE-Tag: 1793694900-192644
+X-HE-Meta: U2FsdGVkX18jtzHY8HM2KzVewsANSxByj6sWU8xgLjrTVhpA6QobnAAFYs5/SPbLf8U7bFF0aZTszK+V83KNKYf0QZ7qcMM3PKbsjyn262tEe5H1u8SMByjzh78ymBbkjJCuYWmbSCqPO2tto0Ic8BiVoeTp4KdMalSaRKk25jauTyV7SwppYYRP4oyv4+XgzyKuUHnQxFu8ayi4iR4HdGdGu64hYoNgIkkSEvjwYTGXUskjoQp972qI5ndtvBpgaqNOOAFS/YUZveeOZU4l+9nDXyDNU0SYW5JOYMCjZxU/ervvUZdudeNhkpu5T5XU1SpeQnXoOI3WW07CdWWshz8WgEDDUCsdcQibCSDT5i8Jq4206Bnsr1ZLYhyGr3dW8QPKiKFAeiSt7VfcYjrazfepbouraj+SvJrgrQMV5YnhEVeSUpkXjIFxiNKpyoJMWtrhQmzCPIHeF+BxnP0IZ8z7hLTVMnT5DUdhjLmG7ig/aF6UScAH7Biv9CgskFLHIsgEUNHJkXXF9Wl8Uxn7AemFJdCr/U0z2gZJIc2jVNm8et226l1Xr5ia7FjIt4FqZ+vu9nJ+vOoMh5sZ4MVxemR0RXtI6Q6tNlkOUxVWkndCsTDA94h+lmfza9vcH6TBzaQDJ1T1w74rAQ1qXmpveM2AhTKLtek8zGswz0uPZMQGtsnlSCrd8rIsVia5O4sQhmHFqXReIQs9VMhbxyXDIDGgDR6N8iU5FvKJn/Ov+7xkVNVJ3mj4UPkrMFsnvjsqFn77uJXAJOHoOidYNy4cLYF8cVAgeMrGqjybrAHEXIsO/uM+TpdQ9Er7gE0Z4jBGt+Lz5NQO0IqLehRTBzaz79ahUFMPsM9+0A1maWOdvWv+Mg7wq1eN0LGrkA9Tc9E/mUxJqlXAekS62ZnEvt0dN5flIq+F6apWQqS8sryKIt0q3NxT3jCsMDOKV81qb4n+ClHB0hiilW7DQC0W/do
+ oNe/wqGr
+ vGki4jyqc5I06bdUH+0pWEerqYrPvu9R/OWi8trfb8wHmkU0d144yQQ0kfvTFCjNQC0SYf2GlWUt6x//NNLCa00lhBertlzJa1hUwYMoylz+4kdogTsF7yDh3hj0BuU0EXcuHI/V9X2QETfhsZLgS+WSjOLTD3ifI+Wy3HlG4ZbF20x+bVUR/3/Pkl/gbN2va+9wA2GRXQVj2gGWYGKchrtnE2B4vT4sdcy68TWCY67vAV+38MemPosFgy7bpyb0iNIvqiXkQ5rmQ9wfgjfAgwTKOy6uLDWX4qoUxppHaSvW8lL/QQ7nWGW5tUeMvhDoucZmWAdzOogxFfQtM0I9hZBkXMPwS65OrI2PXDZgoEbrJeXHr4C/kuXQ0hvjcafMULBzOIu5U0I92OULaY3VEVdkm9w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -132,44 +104,45 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Mon 02-11-26 20:34:40, Shakeel Butt wrote:
-> On Mon, Nov 02, 2026 at 09:46:38AM +0100, Michal Hocko wrote:
-[...]
-> > @@ -2789,6 +2779,15 @@ static int try_charge_memcg(struct mem_cgroup *memcg, gfp_t gfp_mask,
-> >  	if (do_memsw_account())
-> >  		page_counter_charge(&memcg->memsw, nr_pages);
-> >  
-> > +	/*
-> > +	 * If the allocation has to be enforced, don't forget to raise
-> > +	 * a MEMCG_MAX event.
-> > +	 */
-> > +	for (mem_over_limit = memcg; mem_over_limit;
-> > +	     mem_over_limit = parent_mem_cgroup(mem_over_limit))
-> > +		if (!mem_cgroup_margin(mem_over_limit))
-> 
-> Second, !mem_cgroup_margin() is true at usage == max, so a charge that fits
-> exactly raises an event (unlike today).
+On Mon, Nov 02, 2026 at 05:54:09PM -0500, Tal Zussman wrote:
+> There are no callers left of either wrapper. Remove them.
+>
+> Signed-off-by: Tal Zussman <tz2294@columbia.edu>
 
-True
+LGTM!
 
-> 
-> > +			__memcg_memory_event(mem_over_limit, MEMCG_MAX, allow_spinning);
-> 
-> Third, we definitely need a break here otherwise every ancestor at its limit gets
-> an event which does not happen today.
+Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 
-This is a separate thing but shouldn't we actually raise the event on
-all levels that are over?
+> ---
+>  include/linux/pagemap.h | 10 ----------
+>  1 file changed, 10 deletions(-)
+>
+> diff --git a/include/linux/pagemap.h b/include/linux/pagemap.h
+> index 9adfeae2153c..37b7786350c5 100644
+> --- a/include/linux/pagemap.h
+> +++ b/include/linux/pagemap.h
+> @@ -635,16 +635,6 @@ static inline void *folio_detach_private(struct folio *folio)
+>  	return data;
+>  }
+>
+> -static inline void attach_page_private(struct page *page, void *data)
+> -{
+> -	folio_attach_private(page_folio(page), data);
+> -}
+> -
+> -static inline void *detach_page_private(struct page *page)
+> -{
+> -	return folio_detach_private(page_folio(page));
+> -}
+> -
+>  #ifdef CONFIG_NUMA
+>  struct folio *filemap_alloc_folio_noprof(gfp_t gfp, unsigned int order,
+>  		struct mempolicy *policy);
+>
+> --
+> 2.39.5
+>
 
-> I want to keep my current version.
-
-OK, fair enough. My intention was to have those two parts closer
-together but this is not something I would insist.
-
-Acked-by: Michal Hocko <mhocko@sus.com>
-Thanks!
-
--- 
-Michal Hocko
-SUSE Labs
+--
+Cheers, Lorenzo
 
