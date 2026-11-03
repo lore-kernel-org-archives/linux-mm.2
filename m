@@ -1,78 +1,77 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9334606A329
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 18:32:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71EBA606A32D
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 18:32:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=A4aik7Uv
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kgpkTNhB
 Received: by kanga.kvack.org (Postfix)
-	id E8DDC6B05B6; Tue,  3 Nov 2026 13:32:01 -0500 (EST)
+	id 84CD16B05B8; Tue,  3 Nov 2026 13:32:10 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E3E716B05B7; Tue,  3 Nov 2026 13:32:01 -0500 (EST)
+	id 8242F6B05B9; Tue,  3 Nov 2026 13:32:10 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D7B416B05B8; Tue,  3 Nov 2026 13:32:01 -0500 (EST)
+	id 7616D6B05BA; Tue,  3 Nov 2026 13:32:10 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id BDB276B05B6
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 13:32:01 -0500 (EST)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 5D4721C3D1B
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 18:32:01 +0000 (UTC)
-X-FDA: 85394652042.20.548C96F
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 5489E6B05B8
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 13:32:10 -0500 (EST)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id E355C40506
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 18:32:09 +0000 (UTC)
+X-FDA: 85394652378.26.BA52166
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 9C53540004
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 18:31:59 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=A4aik7Uv;
-	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf21.hostedemail.com (Postfix) with ESMTP id E0AC51C0006
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 18:32:07 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kgpkTNhB;
+	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793730728;
+	b=wmPNdUEXdvf3LLdLfRn08klHQNjU7+nFAfxUqO8rb5E+jEHZt4xn0Z7h7tUcaHfYT1ggLK
+	AlWyMn9jxinB5E1y55uI0pSbTQUT2akR854Yi6O/M21hydFV5sC1OY442uQCPhrOm0bJpp
+	vWGQWKVmSR+07MzwKVanIS8wo1c17tM=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793730719;
+	s=arc-20220608; t=1793730728;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=YL7pUVyNm44/Ihd2CJn9w6SXbjo2vEV8c+XqARMDpew=;
-	b=GEHYRhLe6JT/6CQfpBeYXuw5Q+wTOTn59aZ9NkcJYl9glr+x+191CqMVH/2hKCM55y4DJ+
-	fLKJKu7+M3gMHNy2+UPysLxsx6iTM7ZyvyI5Mtmee5YhE5DmFudFcT2kH49TyWxbUac4HV
-	zaOLhzgyfOYDVAKcwzcW2YlWLrpVHmw=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793730719;
-	b=KWSt2pEG90j92GNNlnAbwJVWXdoPc4i6AdDjJpQVvRbUr7FH7JtyTss8FAlRUps4VYfT08
-	2FEJtei2Se0rsLl45o6gtrTN0dq+YoE8EM7kAfB44VPI9bvUov8zu3ydNOfSLSsUoK6l/u
-	KHO99iBxGqaHw3vrMhb7OPxgoG4QvBY=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=4lPgWCWw5afVEOKQYPDlfBM+bkXafIhu1shhrvFW/Os=;
+	b=452/Wp4WCDm1IsxUOuzVCMJq92FbV13yrSZyi+fJohqMDjrSLr2KmQ/5eVBldMKsiW7koF
+	/gMTvM35PyD3W881ZT8m81hd+6m6hRC+BtMC3yiwHl6k8bYiWP2HblnZRCTDIW683IJgIu
+	95WUiFhLmEDHd+RzVwXcaIyY+Sv4fpc=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=A4aik7Uv;
-	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kgpkTNhB;
+	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id B266B4125F;
+	by sea.source.kernel.org (Postfix) with ESMTP id 436BB403AE;
+	Tue,  3 Nov 2026 18:32:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BF9E1F00919;
 	Tue,  3 Nov 2026 18:31:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FA3A1F000C1;
-	Tue,  3 Nov 2026 18:31:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793730718;
-	bh=YL7pUVyNm44/Ihd2CJn9w6SXbjo2vEV8c+XqARMDpew=;
-	h=From:Subject:Date:To:Cc;
-	b=A4aik7UvTF+WBnIEzANiOSGgFaXLqjJm80sWxnLlbMh4FnIt0x8C5uRcgdMKlvJKS
-	 +3D7SA68QXXmbdnQaybnbvcwtnvQ6BcikEn1lAWCt09If373L+S9PQ2j2CQfnzcLBj
-	 3TxbEz81yFpdP+/UQA/mV+0sIGjX59VF4A71jqjZ80YpmimmDR+JzxiYxlhhQtBinP
-	 DDyhfldjwHvV4Vu2cHjzNbl4Ej+UVYy5cL5ZS6SnV1RxtorKYeF8YdVGpULGZGQJLR
-	 SLgrMbLoZKZLBvL9Wx8bqpbZ8GrvpUYxSvk7m85OmBC/j93QJ1U58pQv7Kz574M4+w
-	 4xQtd7t8JUjaQ==
+	s=k20260515; t=1793730727;
+	bh=4lPgWCWw5afVEOKQYPDlfBM+bkXafIhu1shhrvFW/Os=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc;
+	b=kgpkTNhB7yGXCkKUs4H6jKAD5UBj78pCC/2XF6BjFOZtt8aJaQWLro4WgITERqSea
+	 TyXcWQBG9mkCON+8iBxqKY9eT2aC+PNu7PnRil3Ljfx3NwEGZrFqcf56Bzc9n0pyI8
+	 v4Y0SjZehNNiK3xlxdxo0YHVxys5EjJBXrmdfcQAr23ZIQ8pQ531kP3SVCl9KoBbMO
+	 P8kvxNuIkzUvuWxfWt6Ta6CNaCdwIvms1azZVe5UPBop0UMUDr6nrkSCxZw7yZIxSL
+	 lPymmtDYnrpakY2TcJiXxR0DMSdHKaJaUGCkqSm8d8Rny/vcmB9mGVPp+GD3fYD7n4
+	 fJBY0Ak91Usug==
 From: "David Hildenbrand (Arm)" <david@kernel.org>
-Subject: [PATCH 0/2] mm/memfd: handle GUP references reliably when
+Date: Tue, 03 Nov 2026 19:31:44 +0100
+Subject: [PATCH 1/2] mm/memfd: handle GUP pins more reliably when
  write-sealing
-Date: Tue, 03 Nov 2026 19:31:43 +0100
-Message-Id: <20261103-fixes_core_2-v1-0-f332954f1df4@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAI8o6moC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDIzNDQwMj3bTMitTi+OT8otR4I11jy1RTy8S0lERLQ0sloJaColSwPFBHdCy
- EX1yalJWaXAIyQ6m2FgAYc4tScAAAAA==
-X-Change-ID: 20261102-fixes_core_2-39e59afda919
+Message-Id: <20261103-fixes_core_2-v1-1-f332954f1df4@kernel.org>
+References: <20261103-fixes_core_2-v1-0-f332954f1df4@kernel.org>
+In-Reply-To: <20261103-fixes_core_2-v1-0-f332954f1df4@kernel.org>
 To: Hugh Dickins <hughd@google.com>, 
  Baolin Wang <baolin.wang@linux.alibaba.com>, 
  Andrew Morton <akpm@linux-foundation.org>, 
@@ -86,26 +85,26 @@ Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
  linux-doc@vger.kernel.org, "David Hildenbrand (Arm)" <david@kernel.org>, 
  stable@vger.kernel.org, Chris Mason <mason@kernel.org>
 X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1358; i=david@kernel.org;
- h=from:subject:message-id; bh=7nmu6fRF1UbgSM50uuDb6xwGPEFwgJ+ETyCbNbuUspQ=;
- b=owGbwMvMwCF2/OVpCdfQ3ZWMp9WSGLJeaUzXmx9/Xi7wYJ3EfcPQuq+aeyNMehVU1wQ9/ezl4
- OJpfTuwo5SFQYyDQVZMkSUo+L7By5fraqvd+Jhh5rAygQxh4OIUgImcDmD4n/DbZVlKGAOfCcdW
- z/fTtX+v0ayb//LJfp1ovtSTEz9st2NkeMW5bKX8AS2Ps6ubhFk6jXu7SpUvzNcR1Dz+6fJ00/p
- +dgA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1804; i=david@kernel.org;
+ h=from:subject:message-id; bh=Wy87zWgjvDFa6nQn3gznSv/cs+suxS5XMGobWeCkKH4=;
+ b=owGbwMvMwCF2/OVpCdfQ3ZWMp9WSGLJeacxay2Tq/jbvx5a4SpXu5FvTM5f3zpp0mGf3tISf8
+ 8orotOZO0pZGMQ4GGTFFFmCgu8bvHy5rrbajY8ZZg4rE8gQBi5OAZiIjC4jw35n6f1q96ULl63I
+ 5P10sEks7a+G2Pf/s6X9mafcXTDzji0jw6Ps/xadM04YR4VOShN4+fWJYTFnrmRs52SRBKPbM+4
+ /5wIA
 X-Developer-Key: i=david@kernel.org; a=openpgp;
  fpr=1BD9CAAD735C4C3A460DFCCA4DDE10F700FF835A
-X-Stat-Signature: j374ubocgjkgj55uyzei3te8ner4onyk
-X-Rspamd-Queue-Id: 9C53540004
-X-Rspam-User: 
-X-Rspamd-Server: rspam08
+X-Rspamd-Server: rspam12
+X-Rspam-User:
+X-Stat-Signature: tn4yr3kthftwt8hnke9ddgjrhcx8beza
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1793730719-678682
-X-HE-Meta: U2FsdGVkX1/+82qLiY31JZd8F/WwNcjDxWutvWuii9I5e7sDCg4A7Da0xzdBUMfzSOai8dywRvzOaZGsOgjzyvZQ23Jz9Ga7+g6BkPL38NRdC4nfDzkImPZo+1DMZpy/M1c3abXDMprLv24LJUMg3hz2ZksVWyTjHBcY0CCzEHBcqsJP0HT5H6HsIXoFK5OpC131BC9x7E8gohwyr56TkHfzXfNDl7v2BK5ipKIUkcT1MQ230lcgyiW6ixNoWG4Suaci+hgPl/D54RU6WFmzN5jgb1IWxnOwmI25NVza3PAN4/sDXN1I2Upqb/rtfzviuyxTwQEJzn2VyuKVUuYyWDJLzQNdYpsM1/1hqOhiDwKlasMtNPjAWtySdvlZSN5y1MatY/Wdg1HLK6DiwqXmKwFXdvaV0NDuqLWLpW17jvme0o8yRnr+QHR2NanhLmaV2lcHAqSAzfqm4yeKkZ2qTTnoPg8PosiX+qBz0GLIZcOeYVsLrcZK8Ht90XdkqSZLujIE7s31w8otaKA5dGHxQsCNJySZjwW4dObQYZMrJNctIc0Ppy4lxtqdUC5oXboI9203HwxnaQz9waNnf2EbWn17wBsOJV0HvnhSGGqhNdQIgM5kHng6DHInWYZ61S03BfmfanXSKaNudHpvS6qgiGnju9VfXmu4J6X7jy4AmFJwCcX0L8P7Y3Jjx3puX5IjoR7kQJu0l9KpyMJ1lHgMxWK4Vj8A+DPTlM9UBYBRcidEyXJU0PXVcznIgSjcB77NWWewsGAG0cVhjY6Gpo8E8GAj+p2p82RD3n8ngOZBVzDt9fnh/pWNnqdaO8+NjficYWpTq3kcY51CD0aU8/5ttv2zsWmPaBiVMBtaL7ypFvu90inRK0IMouxuOSR7cO8W9t47Gsin4hlVfyy84Y9AgrEnh+V5oEvUDC/bw6K/Xn+YwH76ZbvJgZCbitc1Mw1Z7tQ+tUYlsJaQsgAzOwc
- zKX+jfL0
- BFIsZQk+b7Blx1AW64lSlcf0QVvnSpgPg0kuoRWWabYcB4V2XbLHPsGZKed3P/EVJxHZDMmva1y6YGkAqph6Xw28l9iziamqDSrVwmAtDxxBlxgCgQkS359bdpTDa5w6jbO2HcQchWf92wxjXMquiwtN07VYyncZO7f+Ny6CUvYAN4wuFCuj9hgH/k1s4lNdRmIPRrkq4bxBF9EgyZDYEq6b13iwg90AXo79dq5XYLBDtDJli6c3ZGmCTiA==
+X-Rspamd-Queue-Id: E0AC51C0006
+X-HE-Tag: 1793730727-309406
+X-HE-Meta: U2FsdGVkX18tIkJx9CjWJNqlBUsn6WaXlPgi/teWey5i3Xt00w+7Z2OxzhXt/L+2dWi72a/MVlZhMjhlJKTSh/c7cktwP2bR7NpFHZr5UTyV9pztAD3AkDl5w2puSI/sDeMQIiq02W2F8e6uiJs/BEAvIB5JeDBBd8SSdSLBLCq1zwoA1ajaKX4HEJeLGwHfYezrePKDPrJaLwLGYLbPknQLc3bhCwFikYlfNVDWpGEKEVxLnTvZ6SWlKV/d3vf5m60wRpUKLv0i+pZofz+sPDfYu9nfnjv86OKfqypHZMHAGt6HJ5E8aJaRIq4hQTdGLuF3d2wecStkT2Z2s5GdbTbklbP2EZ7bT5Bc+EInYMIm0a10lGpNOxqCLMKp5Zl6XSurjEgkpxHGgpLxjEQTHtWK24Wlc8tGKhrV4ZdmSUJKO75KJlhPk7hSJx+DkziDbG41WlcZA+jgxepsP2CFw1i5fus8dJVOM+yGXplB8cSlDje8Awuk+OJRsQxshU/5Amb0C5biEop8JfOCZwfZoDsQEDv/J9e4+2QHjYKKY2vQtScIXCm+odJfW46JDZzYvvV/NiOsGnlasJkGJnf4lzg6fxk8GsKUk1QlLv1RqOA+CbKh7CHA7Ep/CfX6CZs0cZyETMgPZa5pVFgkUE5IJhf6A9q7ExVBeP+QvxNPHrp2FyZO0uEM1oRJKrb55ag3RzQZb1ibM6yRTYnnwSfpjJYfZs1TMrv0cve9YFc2j+Mk/tMJoRHOlaVbv589RcOm+WNuUOehcQnWdjz4vboxfbRacJaEgMiATPYoWPNwGSW8ZK7OZrC2dXQ15uBW2pqQ/s8tWZc0eFwMpN8a95ycokQhbFhWF1E9zlenksFUMutpZfVwg3dpdxYlURlHGFDKhmQZd3tKO6uCkkyI/K1nyrIvbQ0hSZmwPpSEXseXLxSw8nx8ItInRuUUA7v3PLGHSw8VZ6OXiTex/mnilK5
+ 1MNZG0DG
+ YLldMqIzpyP7VWg2FOvJg77J0SKbAnw6M6ypDMRLN+k8C6dRanxn772HYcmbzg+lkmQrtFjivIn1Ez/UUABh837tglk7KuDzNGqANwo1B4fWwflTz0hGnUkDOhOLMVX/Z1NyPOdxYrYyjUuRuf+/VsGcw7h8XFU5P+XS1hpSNIJfxy/jQNCDf/L6IVXJ1jCMzPzSgHkqR6rKauFlVT9aNQansWaux8M6kLKNJZ8Nt9ShFdYP9k77Ysl5b7GYaCD4LA4BUuJwZpOHxyI7tqSlQHq9iSna33BGyiOxR
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -114,46 +113,55 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-I spent way too much time on this, looking for better options. I think
-patch #1 fixes the most immediate issues but something like patch #2 is
-needed.
+memfd_wait_for_pins() detects GUP references by comparing a folio's
+actual refcount with its expected refcount. As spelled out by
+folio_expected_ref_count(), obtaining the expected refcount when there
+can be concurrent folio (un)mapping is racy.
 
-Long story short: someone can trigger a race such that we don't detect
-GUP references when write-sealing, allowing to modify content later.
+So it is possible that a changing folio mapcount can race with our
+check for GUP references, and F_SEAL_WRITE might succeed even if there
+are some, allowing file contents to be modified after sealing.
 
-Patch #1 handles pins reliably for folios with a pincount. Patch #2
-handles the remaining references, but can reject write-sealing with
-populated file mappings. vm.memfd_write_seal_mapped allows restoring the
-legacy behavior if needed.
+For folios with a reliable pincount, detect FOLL_PIN references using
+folio_maybe_dma_pinned() before falling back to the refcount comparison.
+For small folios without that, the 1024 pinning BIAS makes it very hard
+(although not impossible) to misguide the refcount comparison.
 
-All alternatives to patch #2 I tried ended up too complicated and nasty
-in corner cases. We should never have allowed write-sealing with
-existing file mappings.
+This improves FOLL_PIN detection for folios with a pincount. Handling
+FOLL_GET and small folios requires a more fundamental change.
 
-Plenty of details in patch #2.
+Fortunately, most interfaces that allow for GUP'ing such pages use
+FOLL_PIN, in particular interfaces using FOLL_LONGTERM. However, we
+still have some FOLL_GET leftovers ...
 
-Did some testing on x86-64 without any surprises.
-
+Fixes: 05f65b5c7090 ("shm: wait for pins to be released when sealing")
+Cc: stable@vger.kernel.org
+Cc: Chris Mason <mason@kernel.org>
 Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 ---
-David Hildenbrand (Arm) (2):
-      mm/memfd: handle GUP pins more reliably when write-sealing
-      mm/memfd: handle GUP references reliably when write-sealing
+ mm/memfd.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
- Documentation/admin-guide/sysctl/vm.rst | 21 +++++++++++++++
- mm/memfd.c                              | 45 ++++++++++++++++++++++++++++++++-
- 2 files changed, 65 insertions(+), 1 deletion(-)
+diff --git a/mm/memfd.c b/mm/memfd.c
+index 0f6fff004f5e4..9eda4c3eeaca5 100644
+--- a/mm/memfd.c
++++ b/mm/memfd.c
+@@ -32,6 +32,13 @@
+ 
+ static bool memfd_folio_has_extra_refs(struct folio *folio)
+ {
++	/*
++	 * Use the precise pincount where available to avoid racy refcount
++	 * comparisons.
++	 */
++	if (folio_has_pincount(folio) && folio_maybe_dma_pinned(folio))
++		return true;
++
+ 	return folio_ref_count(folio) != folio_expected_ref_count(folio);
+ }
+ 
 
----
-
-base-commit: 462595652740dc45f2392dc59d9609e509ee60af
-
-change-id: 20261102-fixes_core_2-39e59afda919
-
---
-
-Cheers,
-
-David
+-- 
+2.43.0
 
 
