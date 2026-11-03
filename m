@@ -1,69 +1,69 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52725606EE90
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 15:01:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03F6560A263D
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 15:01:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=VEcq0ggu
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=gpYfA8iv
 Received: by kanga.kvack.org (Postfix)
-	id 781226B05B9; Tue,  3 Nov 2026 10:01:12 -0500 (EST)
+	id 22A7D6B05D1; Tue,  3 Nov 2026 10:01:23 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 758FD6B05D0; Tue,  3 Nov 2026 10:01:12 -0500 (EST)
+	id 203756B05D2; Tue,  3 Nov 2026 10:01:23 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 696686B05D1; Tue,  3 Nov 2026 10:01:12 -0500 (EST)
+	id 1404A6B05D3; Tue,  3 Nov 2026 10:01:23 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 4607B6B05B9
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 10:01:12 -0500 (EST)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id C509CC0460
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 15:01:11 +0000 (UTC)
-X-FDA: 85394120742.03.68E7FCE
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id EFB8F6B05D1
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 10:01:22 -0500 (EST)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 725291A0484
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 15:01:22 +0000 (UTC)
+X-FDA: 85394121204.19.5505E98
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf05.hostedemail.com (Postfix) with ESMTP id D0E12100012
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 15:01:09 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VEcq0ggu;
-	spf=pass (imf05.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	by imf18.hostedemail.com (Postfix) with ESMTP id AF4941C0021
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 15:01:20 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gpYfA8iv;
+	spf=pass (imf18.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793718069;
+	s=arc-20220608; t=1793718080;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=BEajqQ35phGWaUcr3y1eTDvwsu33+Nn0Y7Ck4F/8MEY=;
-	b=7+4McUVNEvvuhhriVQ/F698Dm4yOudhMHbq5uqvPFZWuJxoGlBxNtkA2ynnk6KT6Pns3+n
-	EtMbGDIc0SfLwzMb4KBrZT23NSdVSTuf8Z2W4b7rm2qB3w9VZAtmllOdyuM6nJ50oHRxTb
-	/ytEW0PCsvwUPfz9BpJrWY6j035kYrI=
+	bh=pruwCsX2Nj8P2A3ZkDZfqhhveDP+NyBs8rSomhgGUU8=;
+	b=e0Rm4AOdJwflgXGvBdkbH2Op6ih/L7l0fJJaB9i9i69ie6TotGe6U8jtfbsimHIWja2+4M
+	ZyOmZqqzwNTR6QoXz+LmdHa145QbitRi7UDiBeoBujc8jofHLz9T3Qz6CrUnhhpKbhkmKU
+	PjHLbIfnMm/dv57H4mszkW/cbfC9SVg=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793718069;
-	b=gOC7oJxH9SWjUjJqWsdDZXJfKPoybqx41do5BxtifxaKfynmbHH5Py1AWJ9c2mLlBNGm+H
-	un5T8hzWvCbr2dlIg35mbeDmzSJgPX2feEPJO1mvMWGSSLsjl0esBtyfT7cYml6nZWpEDm
-	zxpPDio72WS6nBcrrpPcwBzr3mq9y78=
+	t=1793718080;
+	b=6c2+ePMq0YDEvQej/I52S+F/rNL0Q0dXW0Use2Hs2ITNaf9NqnAr+IL5HYKZuWeOvGOtGb
+	cGBbAecQ+AeoqCNcG+sUB7lWi6Wa9Dc75sjrvxjzPA7b7Jl/jbnAgT7U/BBDPlFwcEbanR
+	b5ayPxDvxJGoDB0Lv+C6pZhu5fPHjl0=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VEcq0ggu;
-	spf=pass (imf05.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gpYfA8iv;
+	spf=pass (imf18.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 3FCE2609FA;
-	Tue,  3 Nov 2026 15:01:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFD2F1F000C1;
-	Tue,  3 Nov 2026 15:01:06 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 19CFD609FB;
+	Tue,  3 Nov 2026 15:01:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCD2A1F000C1;
+	Tue,  3 Nov 2026 15:01:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793718068;
-	bh=BEajqQ35phGWaUcr3y1eTDvwsu33+Nn0Y7Ck4F/8MEY=;
+	s=k20260515; t=1793718079;
+	bh=pruwCsX2Nj8P2A3ZkDZfqhhveDP+NyBs8rSomhgGUU8=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=VEcq0gguO6/NoWa+wL6fwqCLqkldJUUFWXaU48FgopqIQWVInov4USQPNMlWECfku
-	 tjmmYgoSxJFwLb8AMyTRkOEe9RIAgKCTxUsnF6zQuC56KDIfRvxTZM6B4OGZ+0RxLb
-	 mh81fLroJS4nyQyOkcaBszjAOxkYEOtX3GkPZMu84uutLjUi79KxQ0Ta6LswLb4aME
-	 +9R/WJkvVhkvygnNcEPN9DxaCT6J3JtUHgSP8vKYwTs6rh6No+CNqGd39rP3s8vdpa
-	 CSPispydKapyfU9yanW1YMZNTbAP3BOy5UszvDaukMX2hst4qdOs00Vyn/j4PbSImA
-	 6uri+styQIxoQ==
-Message-ID: <sashiko-outbox-195531@kernel.org>
+	b=gpYfA8ivu0EAnWhduZFmphtcIFZSGsJJkhZlvzy5YyKRExQz2lKkkw8OFY07G7zhl
+	 QXK+/wAx2e3lUZBCumPvDuR1/CWFBc91Z6WG2Hpe/KA3keAWuqHeKEckj6rl+uRvUm
+	 0DD2mqqO1kQPWJtMH9mgPG2OwfUnYuJ9j6ikz9y+dNaFMbCTYjhiXpIP4eWCi5yjYi
+	 Hz31AyUaH/D1IdodghQ/+cQxG+cvoF7GjEMSxwIAcogBIdrkyj4oC8VJmOIa5uaDa8
+	 BqiLNz4agF5A0jKeip5ntCNO+LfhUsYbiRyktw0MpTevQA8rbeHsgsbIZcoz3mCr6C
+	 TOSw9p+fDzh/g==
+Message-ID: <sashiko-outbox-195535@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH RFC 04/16] proc: let procfs own the seq_file of seq_file
- entries
+Subject: Re: [PATCH RFC 08/16] selftests/proc: check that a faulting reader
+ doesn't hold up removal
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Christian Brauner" <brauner@kernel.org>
 Cc: "Linus Torvalds" <torvalds@linux-foundation.org>, "Jann Horn" <jannh@google.com>, "Josef
@@ -78,24 +78,24 @@ Cc: "Linus Torvalds" <torvalds@linux-foundation.org>, "Jann Horn" <jannh@google.
  Pavlu" <petr.pavlu@suse.com>, "Anna Schumaker" <anna@kernel.org>, yukuai@fygo.io, "Heiko
  Carstens" <hca@linux.ibm.com>, "Vasily Gorbik" <gor@linux.ibm.com>, "Alexander
  Gordeev" <agordeev@linux.ibm.com>, "Christian Borntraeger" <borntraeger@linux.ibm.com>
-In-Reply-To: <20261102-work-procfs-core-v1-4-75df35e4f8b8@kernel.org>
+In-Reply-To: <20261102-work-procfs-core-v1-8-75df35e4f8b8@kernel.org>
 References: <20261102-work-procfs-core-v1-0-75df35e4f8b8@kernel.org>
- <20261102-work-procfs-core-v1-4-75df35e4f8b8@kernel.org>
+ <20261102-work-procfs-core-v1-8-75df35e4f8b8@kernel.org>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Tue, 03 Nov 2026 15:01:06 +0000
+Date: Tue, 03 Nov 2026 15:01:17 +0000
+X-Stat-Signature: cmb8qc3a83f8cezatsc5j7sgn4nap6r1
+X-Rspamd-Queue-Id: AF4941C0021
+X-Rspam-User: 
+X-Rspamd-Server: rspam08
 X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
 	autolearn=unavailable autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam09
-X-Stat-Signature: dertopnzespnzwb4dexgfgy36giaghyp
-X-Rspamd-Queue-Id: D0E12100012
-X-Rspam-User: 
-X-HE-Tag: 1793718069-292473
-X-HE-Meta: U2FsdGVkX1/FtTOkgVYwlQvfJfzrj4q1rsvqudnQc9bIEnpOnLY/oDKyXV3qGoLmtr3SoE2nKvtgZi5sZdDJm1U4zyvoDks45K5wuP8cwSU6kmNbSsW61bpalhexIFP5ZhoG65ozs1X0kbawQ6RXm13TQY0QMx7nNIBEL1fvgJ5DsAPDcjkpBAkFKSZvPflLbmCfiDEwSCzA/pyLSf+ADfupvreLBKeSsn2UC3ViAf13tuftWUtoDFgA/jIyhgoeD1F2YG+xlqC+RalkdM6ACc2VcsGda9bd6QSzDKZBz8f9KGJIsOmXAU4ULBMXlEa6XlVeYQqe5iE8xsp2zM4LqoJoAFvgA03fe0k74dHSmC4tsWh53wHHS81J3svggHX5dXnTcgF/zKxpKCG8lTAzHGUGwihbfJd8mq/qkZsOfO36VpPeqvmFk7chwRDvktafeJxZWx9Nh9/QMjD+4WE4PkL8IL44rnMNGmx9gehM2jc0JkltNamGtBgGAl0TmWvIFnEvm8PvLK8P4i6FxFNgO0ZRj3e8/ysy+ibfkmvPIop7oS35Ty8OQuVEF0+HZWUrTrGCzeGV/0cZLBY7+60dt1fus5hGvB3S1keJde1zhnorVR6knPw1NL5ip/QJ4l5j9/WWVcAwN9kuiRqQDZwPjCnEX8JzxZ391TPYSrRTZGNqU9e1qmOyJsRbwlfiMzAU7ncgUEh9hWxLU+1pQbU/W+dk9ggUU+d4Hw3Wl1e62M3TnCPjEaKr+ytH7GGUnl4vBPAPj9QExtzxmUxfUioAhLCx/0bot46ZQdpgT9w+WWI4uENH7tqumcfDqnr6zyoD5SqALrzyvxaBiXeb1qgajNVN0w/3fTqeY9uWrzzGSfQ8k8V3NNni3wCQXUBrfbE+L0FbNXDmTyI9FKkppZSDEulW2Fxn0XowTKvSCltwU1oIN4WSnAWe3Ce4kyz83/X3HwVwBfQz/6AJgU6DaiF
- OW5jJLWo
- fM6YsRDUgDwpbENCdzWCiYAsdgdHIHEVth9wQrJXPiUmTBUTQ1Nw6WMqyRzfJ6Pz/3EKHh4joD3l+dvcbi1PX5UQW6Cxd7cvY+pjZY/thQjP+4HQx7RIrg7msFcJHAb0oMjmMO9WECfscbc9tys7bmc/RcfBI82BbqWU1czccfh48HWiWKFWqLopIEa4xpfx86y7tn8IHw/pv0jn81Gn8I3mvbr3WrdNUB2V1/rgtR5LkpC5OsL2m9QrTZuQwETJZIiP85pz9XcT+f1wdtKHWpsCMxsphLqJcIRqbkfV2CnuFo7nPpLUVflBSnQW0Bui5uGzjhBb+z4NfmUlwgOKOUR6tYTak0U3eArFdh4FZNJ3q4GNHKDkyB1fmOgnvUquHJD0Q4v/+E6yZRlbFVy19hQlDkDGeO66Nu+MpZFeoevK7DFbI89IhlzG5tcpjKy+jwpyqbryxd66LvForWbt4IVu+iTeNhGjapuFzSY9uxlPqEuzZB5XbP+rAuVZeksBT2l+S3SJ2BZagDNSmG6rDkihunfsheuLoC0vJ27lWqUSFY7BFOhmxrJj3TxfnyfkBkKfZ6qzyv/y36QGwU4c3X+T952InabwO8K6zK0crXFslrwhxFFK+RQjYJyF5Bgb35/ckyxqQEl/rNSMz4DviTN0S7d7gDpzG86WTWsChEBjmkILsoWPJUxQqzW4K4kG0vgxdSMjHERtQ7gQPl4g0OA2/RA==
+X-HE-Tag: 1793718080-662246
+X-HE-Meta: U2FsdGVkX1+Cf7KKhQ5PWjTpp2kPvBQ3B8Lhz0ON3vxZ3sETgbeCHrKU3iQtQJHiPYqMxi42xWIElJFzQCxihbh3gqzJWizMoCn5t5VcJUCGw5X1EUeZ6R8TFi55ePEbr3ZyPUXXapRn6T6f44gqyUTH2/t1Z96uLB/rL0TkQ6G/KXucCxD22Hp8vKdKth3FpdaBqO6j2VwUzG1UUVTuK1quR56sZxvG6AzZd+ioEbNo3DNsJOLfjH+CJdBRl3eJjkHTqahGP90PmVs0R04nILBEHsvjWMSqpZyStoby9IIruy1sSRZ8U4xjdx+E9Ko4WxIUY6sU6n9Jq091pn7jGChmBNp2IR6dEKBztjqm00yQxUkQIKJZqsCu0QRHYZaSQaiKoxufIESDRjmoXpic+a1nUEFpXpNDLEVnjwGtlFQkwdjOgrOrIZnzHDKWcs1dWZ0ycPmoGJsSX05Q0AxqruaRKWlAM30jYCWl/crU/im5VAuZsFb2akTspeu7X3Zf4tWWX2my7XEgkbd8NWhIA6fONpQ6vmWkbwJJnhqGZbh1j325BlhPHvK6poKc4SpzaYiSlo/Mr7B7Pb+/HwxOwyPWMoeHrrrYbGtu2V+S0nd8SifatXzPLVqy3o2vFkibGvgm1JmsRcj+YWtR51+JqkH7dqwqJN2CSpTVwMQl4Klyf3MNQ5U5/m0T5RoBiYRhMuUkBMPKWZaijRuLp0QrtFK8zIafiCy4XR8fPEMHEx1dWE2Zec53kR7BVcWkBFqQVa5pUjFvQvvzzy1DJfunH1bROHb+03vQjr9zPOQghOxryIDUXVDpV0bCNgBTdz2+rcZUSb4rGjfj1iWr6gPs9hxLU9j6dt+ncA65CHWVnYbW7M+249a9KxCJWOJEbi04TCVO5AvWvuCu0X2sFCh9GtBoAEUL3Qn8TtMkCj6VT9GnTg9P7clFn6I3cXk6iAK8T5qZdTs4ZSXL+wqRawr
+ QfWNtPI8
+ e0r7RekdCAA2KNTKCOfzmsQz7xhqha0XaQ88MQdVGFuZb/7cOloPmtn00xvBgdUU52JnsgFq8B2Pq1sweSM8+xmJE2RJzoXAM33hV0VtIUYTzKnkZoZzulIknVlcPyfNhZdTQFQO1wBPBu2C5zhtcfpDWvLcAoRy4cHQOg5gJ1MzF+Tc74qk+25YV/eVLqbayOf7oJ4LNibQIrp9GMd7oH4yEpNrBD7Vk4Fw+uIFCQM0ffI3Vh3ds8SWi/z1cgfS3f/aok+i07iymlr6hyrxZrFTYYHUEiqdwvYNQyRjmrtkBwO4nlg7EbH/dvRUuCjhQOng96i/m7gVm5ci6tqUP30jfZnNzHNgO1KQDcLVPhaMLzeqOCXoSpRBibbyvi8wzGZLA7hQhLeieXxY5JI/Qb8p2+7zmNv3WdsBId3HKwh3GiNlB5CMo9HMWPYFFXp7VHUmbjlu7uXFtFGcUpcjdX1K+flINwrWRrPLMKsdsRaTofkr3x0eHT1X6gbd09/q6MbWoc+RSM9qPJtexW38zQwQJxbtspXba7HsfyWrvSTXOt2jdsA2cCns/4Vy5n18x0Iqnep2F3PCrwDJzSOYJVdkXT0NMAX/8PXVI79u2Qe9hHbiIUU4lD594QD7xSsJBp6ceOPH0wN2JKVzqbIrtv4DO8Nd6bJX/mXdt
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,96 +107,55 @@ X-Archived-By: <archiver.kernel.org>
 
 Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [High] proc: unpinned dereference of pde->seq_ops->next in pde_seq_next()
+- [Low] selftests/proc: Makefile and .gitignore entries in wrong commit
 --
 
-commit ae41131fe28a1e7fcf9c3b743e2a30697e315fe9
+commit 9de4ed28fcd6656e6c6c2bb55f1514d9aa6600f6
 Author: Christian Brauner <brauner@kernel.org>
 
-proc: let procfs own the seq_file of seq_file entries
+selftests/proc: check that a faulting reader doesn't hold up removal
 
-This commit allows procfs to own the seq_file for seq_file and single-show
-entries by wrapping their seq_operations and pinning the proc_dir_entry
-only around start, next, show, and stop callbacks rather than across
-userspace copies in seq_read_iter().
+This commit adds a selftest in tools/testing/selftests/proc/proc-remove-slo=
+w-reader.c
+that verifies removing a /proc/net/dev_snmp6/<dev> entry does not block whe=
+n a
+concurrent reader faults while copying to userspace via userfaultfd.
 
-> diff --git a/fs/proc/inode.c b/fs/proc/inode.c
-> index 66a3688757dd7..8425465aae5d7 100644
-> --- a/fs/proc/inode.c
-> +++ b/fs/proc/inode.c
-> @@ -218,6 +218,110 @@ static void pde_unpin(struct proc_dir_entry *pde)
->  		unuse_pde(pde);
->  }
-> =20
-
+> diff --git a/tools/testing/selftests/proc/proc-remove-slow-reader.c b/too=
+ls/testing/selftests/proc/proc-remove-slow-reader.c
+> new file mode 100644
+> index 0000000000000..a201645beca9d
+> --- /dev/null
+> +++ b/tools/testing/selftests/proc/proc-remove-slow-reader.c
+> @@ -0,0 +1,133 @@
 [ ... ]
-
-> +static void pde_seq_stop_pinned(struct seq_file *m, void *v)
+> +TEST(remove_while_reader_faults)
 > +{
-> +	struct proc_dir_entry *pde =3D seq_pde(m);
-> +
-> +	if (pde_has_proc_seq_ops(pde))
-> +		pde->seq_ops->stop(m, v);
-> +	pde_unpin(pde);
-> +}
-> +
-> +static void *pde_seq_start(struct seq_file *m, loff_t *pos)
-> +{
-> +	struct proc_dir_entry *pde =3D seq_pde(m);
-> +	void *v;
-> +
-> +	if (!pde_pin(pde))
-> +		return ERR_PTR(-EIO);
-> +	if (!pde_has_proc_seq_ops(pde))
-> +		return single_start(m, pos);
-> +	v =3D pde->seq_ops->start(m, pos);
-> +	if (v =3D=3D ERR_PTR(-EIO))
-> +		pde_seq_stop_pinned(m, v);
-> +	return v;
-> +}
-> +
-> +static void *pde_seq_next(struct seq_file *m, void *v, loff_t *pos)
-> +{
-> +	struct proc_dir_entry *pde =3D seq_pde(m);
-> +	loff_t old =3D *pos;
-> +
-> +	if (!pde_has_proc_seq_ops(pde)) {
-> +		++*pos;
-> +		return NULL;
-> +	}
-> +	v =3D pde->seq_ops->next(m, v, pos);
-> +	if (v =3D=3D ERR_PTR(-EIO))
-> +		pde_seq_stop_pinned(m, v);
-> +	/* seq_file would blame these seq_operations, blame the entry's */
-> +	if (*pos =3D=3D old) {
-> +		pr_info_ratelimited("buggy .next function %ps did not update position =
-index\n",
-> +				    pde->seq_ops->next);
-> +		++*pos;
-> +	}
-> +	return v;
-> +}
 
-[Severity: High]
-In pde_seq_next(), if pde->seq_ops->next(m, v, pos) returns ERR_PTR(-EIO)
-without advancing *pos, pde_seq_stop_pinned(m, v) is called before the
-if (*pos =3D=3D old) check.
+[Severity: Low]
+Should this commit also include the corresponding tools/testing/selftests/p=
+roc/Makefile
+and tools/testing/selftests/proc/.gitignore entries for proc-remove-slow-re=
+ader?
 
-Since pde_seq_stop_pinned() calls pde_unpin(pde), which decrements
-pde->in_use and can complete pde->pde_unload_completion, a concurrent
-remove_proc_entry() waiting in proc_entry_rundown() can finish and allow a
-module to unload or free the memory backing pde->seq_ops before
-pr_info_ratelimited() dereferences pde->seq_ops->next and formats it with
-%ps. In addition, pde->seq_ops->stop(m, v) in pde_seq_stop_pinned() will
-observe the unincremented *pos value.
+In the current series, those entries:
 
-Could the if (*pos =3D=3D old) check be moved ahead of the
-if (v =3D=3D ERR_PTR(-EIO)) check so that pde->seq_ops->next is only access=
-ed
-while the entry is still pinned and *pos is updated before ->stop() is
-called?
+  tools/testing/selftests/proc/Makefile:
+    TEST_GEN_PROGS +=3D proc-remove-slow-reader
+
+  tools/testing/selftests/proc/.gitignore:
+    /proc-remove-slow-reader
+
+were placed in the earlier commit ("selftests/proc: check that a faulting
+readlink() doesn't hold up removal") before proc-remove-slow-reader.c exist=
+s.
+Building tools/testing/selftests/proc at that earlier commit or any interme=
+diate
+commit before this one fails due to the missing source file, breaking bisec=
+tion,
+and cherry-picking this commit on its own leaves the new test unbuilt.
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261102-work-procf=
-s-core-v1-0-75df35e4f8b8@kernel.org?part=3D4
+s-core-v1-0-75df35e4f8b8@kernel.org?part=3D8
 
