@@ -1,116 +1,140 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1ED6606A32D
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 02:33:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65BE1606A335
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 02:37:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=BgTIjVx8
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=y8wd4QIg
 Received: by kanga.kvack.org (Postfix)
-	id AEA3B6B00EF; Mon,  2 Nov 2026 21:33:29 -0500 (EST)
+	id 91D906B05B1; Mon,  2 Nov 2026 21:37:49 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A9A6B6B05B1; Mon,  2 Nov 2026 21:33:29 -0500 (EST)
+	id 8CE196B05B2; Mon,  2 Nov 2026 21:37:49 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9625D6B05B2; Mon,  2 Nov 2026 21:33:29 -0500 (EST)
+	id 796126B05B3; Mon,  2 Nov 2026 21:37:49 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 703526B00EF
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 21:33:29 -0500 (EST)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id D18D2C02E7
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 02:33:28 +0000 (UTC)
-X-FDA: 85392236496.19.B6DC1C9
-Received: from mta1.migadu.com (out-223.mta1.migadu.com [95.215.58.223])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 9414140002
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 02:33:26 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=BgTIjVx8;
-	spf=pass (imf11.hostedemail.com: domain of baoquan.he@linux.dev designates 95.215.58.223 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793673207;
-	b=0SyMY3xFRgMf40Ulhnn4z9RH1MeQjwjCUCUu4jeA7jyBEEY0j2Ei3iv8sMi87XYLire9Bd
-	ssHqd/j+KI9O6rGok4dNvGOEEslR3x897Dc4ZpGTcaDtGkgZ/PrazEO2+DbsK5pbMTsUxX
-	G1UE4zZoPJ7wcTte1nIoOG/z42swBAk=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793673207;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 375106B05B1
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 21:37:49 -0500 (EST)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id EAC141401B0
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 02:37:47 +0000 (UTC)
+X-FDA: 85392247374.09.A898C54
+Received: from mail-qt1-f177.google.com (mail-qt1-f177.google.com [209.85.160.177])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 18275100006
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 02:37:45 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=y8wd4QIg;
+	spf=pass (imf14.hostedemail.com: domain of danielmaraboo@gmail.com designates 209.85.160.177 as permitted sender) smtp.mailfrom=danielmaraboo@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1793673466;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=plPOmmg8Wbucg4dOntyZK89XdF19GIkTemSi8VnEEAM=;
-	b=ScHoh3YjfqRczn7f+8Y9ZJEFDW2hf33ZWDOcD70z3NNwP1JRyLpqq5QjL08p1MOybOw6Bz
-	mwNoZm8xwmfZW6TMHpwsDMlxM94RRu6Pve3PaR1ZEiGBE95xrzJMlhH/nKPIhxipXf5DD8
-	+6UfcSTWyTvfvZc2nEwDAB29DuBM9Ck=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=BgTIjVx8;
-	spf=pass (imf11.hostedemail.com: domain of baoquan.he@linux.dev designates 95.215.58.223 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=QEpd6a+5vyb7YKmH2HfXuDiiboBz4CjeIOL7fouBhLE=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1793673205; v=1; x=1794278005;
- b=BgTIjVx8nAsBtP3F1/GUXtMqw3pw4OJEPGpQ++uutFfQds3NbRcIfmcp3GNAGaLK7RPpjY/S
- yw/Uj5HTzpBk3eyf5tM9Jsqi8rj63sDupbOUjOGiN5/9gjgHzyT+vi9Zyr+9DoBdCp16aZJbRus
- vipK+BIW9Sgzd5Lh3Bd6yy9Q=
-X-Envelope-To: linux-mm@kvack.org
-Received: by mta11.migadu.com with ESMTPS id 09cae95fccecce83;
-	Tue, 03 Nov 2026 02:33:24 +0000
-X-Mizu-Trace-ID: 09cae95fccecce83
-X-Migadu-Flow: FLOW_OUT
-Date: Tue, 3 Nov 2026 10:33:19 +0800
-From: Baoquan He <baoquan.he@linux.dev>
-To: Barry Song <baohua@kernel.org>, kasong@tencent.com
-Cc: "David Hildenbrand (Arm)" <david@kernel.org>,
-	Lance Yang <lance.yang@linux.dev>, muchun.song@linux.dev,
-	ridong.chen@linux.dev, sj@kernel.org, hannes@cmpxchg.org,
-	mhocko@kernel.org, qi.zheng@linux.dev, shakeel.butt@linux.dev,
-	ljs@kernel.org, axelrasmussen@google.com, yuanchu@google.com,
-	weixugc@google.com, baolin.wang@linux.alibaba.com,
-	liam@infradead.org, vbabka@kernel.org, rppt@kernel.org,
-	surenb@google.com, mhocko@suse.com, kees@kernel.org,
-	peterz@infradead.org, jannh@google.com, pfalcato@suse.de,
-	hughd@google.com, pasha.tatashin@soleen.com, pratyush@kernel.org,
-	willy@infradead.org, jack@suse.cz, ziy@nvidia.com, riel@surriel.com,
-	harry@kernel.org, apopple@nvidia.com, nico.pache@linux.dev,
-	ryan.roberts@arm.com, dev.jain@arm.com, usama.arif@linux.dev,
-	kas@kernel.org, matthew.brost@intel.com, jhubbard@nvidia.com,
-	peterx@redhat.com, will@kernel.org, aneesh.kumar@kernel.org,
-	npiggin@gmail.com, osalvador@suse.de, minchan@kernel.org,
-	xu.xin@linux.dev, chengming.zhou@linux.dev, chrisl@kernel.org,
-	shikemeng@huaweicloud.com, nphamcs@gmail.com, youngjun.park@lge.com,
-	gourry@gourry.net, joshua.hahnjy@gmail.com, rakie.kim@sk.com,
-	ying.huang@linux.alibaba.com, jgg@ziepe.ca, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, kexec@lists.infradead.org,
-	linux-fsdevel@vger.kernel.org, linux-arch@vger.kernel.org,
-	linux-cxl@vger.kernel.org, josef@toxicpanda.com,
-	stable@vger.kernel.org, usama.anjum@arm.com
-Subject: Re: [PATCH v2 01/47] mm/mglru: don't use stack pointers when walking
- PUD and PMD tables
-Message-ID: <aulH7zeGrjIvF8Hs@fedora>
-References: <6FACF8FF-F943-45C8-BDFD-3AFB5C060E0A@linux.dev>
- <20261031055838.60138-1-lance.yang@linux.dev>
- <a704d458-ad60-43bf-a0ce-3b128b218d88@kernel.org>
- <CAGsJ_4wjGjDoFPz3qWHqW8WTv31AkR_zrY14ON0dLbTZNsohWQ@mail.gmail.com>
+	bh=aEZiUdHtVe6n866bPKhnP+/zTxBd9R2ODjgeXi2Z0Tk=;
+	b=GGEBYyNnfgmyoGfBvi2VuROoOa8Zf5kk1tOLi82Wva82ROrz8FgXUdPonJ4RUYULD1rPnD
+	KbQNi4R+6nr2ewn3GwZzprYvTfolLQOezZlGrwg9wnzqHOQir9npjWype5vf2ImO2tCXLu
+	/E/+WftjJzLC3U/lg7qtf5pCUq+jpVg=
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1793673466;
+	b=4OMDDpWufmyjF1Fa/Sk7VG5dG6HSzsn0JtYv5MLSmkFa2Wcfg1Gi+btnZtDS6KgC5tzySG
+	phnu31tPrWkMYyS9RiVCnmtLUzSh5d8INE29shVmBckhvV6JOYevt/7qSgj3NJeBpCwTJT
+	NYBnsTcO+DzLGCLbfYaZgF6GPuU5C3s=
+ARC-Authentication-Results: i=2;
+	imf14.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=y8wd4QIg;
+	spf=pass (imf14.hostedemail.com: domain of danielmaraboo@gmail.com designates 209.85.160.177 as permitted sender) smtp.mailfrom=danielmaraboo@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+Received: by mail-qt1-f177.google.com with SMTP id d75a77b69052e-53fdd2fb171so46820841cf.2
+        for <linux-mm@kvack.org>; Mon, 02 Nov 2026 18:37:45 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1793673465; cv=none;
+        d=google.com; s=arc-20260327;
+        b=n+Oee1qB5pURNDUlyEH8o4803LznBDBrZ+o5ORw0EOOsnpQSA081Nn0bp5LRriRb+G
+         OStqxmNCkg/ydGvT9A2rDJJbnnPLW2vOmsSOjJHQUlbwvRxBSFC79PEM31pTtEKLtaHN
+         yoknxUn8nbkGzvioxaIRQhlrK1ZNz2k0dK3gl58UXpqHleyhyfdGRxJ07MglqOUq6VY3
+         OpXJxzVF2murj2/OgrKks2xj3yYLlQwCim1aZcTOAdbWMorXYppJcNWCyVY9IlaXz/Kk
+         pua/sh1764f7V/rdAp0y+7kUKaE/MvBOIWk5qZNZ59wgJ/lypb/fFYKkFuLSyWN0kqE2
+         w7Tg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=aEZiUdHtVe6n866bPKhnP+/zTxBd9R2ODjgeXi2Z0Tk=;
+        fh=Udx08PamDqeoTxOjinghdu1xK8ta8AhnITKO26QnCGM=;
+        b=gwxGXvefgr+cyIHyCAUn5We1dFsMkRhqN6UsCt5k9GJnNEPv+xnUxbMQ+QWjdNKDAl
+         q0MFgoYi7NJXTi4Q+/nKgaCr3Agp4d2YwSqcrOJgXcK4CHTzdeTxpbXLI2cRzLtityqO
+         L+NAOwmXRR3wj2ySfdbVHA1g2o0XU+5CyWIBW4WgEyiQ9aEynpXFrQwoYk0QkR7beSS/
+         8gx8UCEAQPDHt9NaEZm4exUIK32snG8K91ib2TuuouuVRC5UHUiHRTAeeKYUWlqcyDS9
+         7kLFT2ly8d1cXoVyb+YouJQws+jXXkVPx6oohxf2q2t0NGpnTBxWRbJJVM8ZcnwbdIlk
+         mYVA==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1793673465; x=1794278265; darn=kvack.org;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=aEZiUdHtVe6n866bPKhnP+/zTxBd9R2ODjgeXi2Z0Tk=;
+        b=y8wd4QIgxNFLk+wjXEzzwSvaxHsi6R2yzUsBfOBElET4E3ZmqKEnhG3R1JG3RVAHl9
+         kHztrXLWTtNQsaQg2YN0Prfa5asL93gpcCi2pVdrXRT4sqsXbYFs9Fvu7/j+GSW16sb4
+         MxarrGbG0To+LHRFYhOt7+mIgUVB3R/D0Ht21OwTDzfwfsCViUtKYnAjWBtZZIemQx16
+         RL95N7XLSUlMs2AMUGq3s8uTIbp4xTMd0HoYRaDr8myofZNOybhwI39DRCVr6avwvqHy
+         Gz5g2+i2+sJu8zgo21mP3xS1OpVWPtlb300dRPXfqgYf6UXc3zjXQj7BtLz3/m4AlLen
+         M1Dw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793673465; x=1794278265;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=aEZiUdHtVe6n866bPKhnP+/zTxBd9R2ODjgeXi2Z0Tk=;
+        b=kQO3wffItuWzoFSxSADVLtnO/AemvIGIEM7zIjwsyXcyK2IYn3FO4GgsEYkYG6yibB
+         6X/cHRs3QGMacHp8xSemlMpa5Glf+nOADTfzyKvLh01u1UhMoXgSvPhukzhx4Y+PvEhb
+         Sv7c4n9Y+UjAwRmznYdH9lV9jiiHURKf86hVJUelt7MeHVe+yabl7QyJnE9L6XqjEMro
+         DA5LcT26cyMNIk22JE/ibf39Gu8/EdAPrTAopu+1rkI8iCoX+X15Un+LIMsasHn+ifDW
+         1K0sV4PRVha/5+ibNijW3MsJ3kYTwHLSxiq7HsqrcB926Rfd0wLc7T6BXjHT157fBDmy
+         xMDg==
+X-Forwarded-Encrypted: i=1; AKwUvBwBC8VdbX7g2EdRe1Pb/NpIksEpxejOBnDncnuohY3d3NwbLuF6lRWFheF8F2wvxH/No4QzfK0zsw==@kvack.org
+X-Gm-Message-State: APuU4Z8bMefXViAsIXe4YIhzXQ2tfSYKuML7gbk8b9E9Qh2c7xxV7dPV
+	Jni/yc4Sv3SZKB7S2IUeylq7dTs9tx9tFL+GKmgHWJCLj3KqOFufNSvwFiuCimTwiIeStWZp0HF
+	TJ4oxKmc1Q9jQnElfqSKVsZ9NpVv1sSG+Hy4pIr8EFA==
+X-Gm-Gg: AYBFou3mbfpZGP19FL05Nn7DLf7JCqqfhH+puYcSkL9P5hdcgvZva6oWi8nN1ZfLNoT
+	16SfO9tc8CEPj+0Lubs7bq/hX8TA4nACOwT9ezykLfKhla5emxHs5cuVupl+tYNstOa6JbgGLuj
+	Xs30/Eujny7eooWnPwCKAfHIfyp7a1YgyqwpnpH9/S9jfTY8/p6YBCxRsFQlMTX+0BVOEl+PceB
+	1E0CElmJWdYpN+SASSXSb684vrEjMTLDEJM0f0/FgZNaDRpYRL/5U39vOUgV+7BZbo1vzkOmtd5
+	NLTwJPzXd2fI6DAM0Z/pkw10FLasHHL1ckzZe5cSPTXl1lOE4/TnOFXDSDN6jXfRaVFYJivLvJx
+	TLofQqPuI/yb+nTntYloWwgINu9yZoU0XYZ2yXrwLkXT8yeYhmZgFIBDRtc4407nTb898gtr+pn
+	UeJ6z2kjRJfDFIw7nF7t5/rh6Gt1TPLeZpSNVKOY5vB7D+KS3Bj3OSPgejE0GQmhoGKVTihKzSD
+	kYaJYMQf6O/OYtRKHbUxcl2d2Jj0+76r0Q3nZwOu0YNbXs=
+X-Received: by 2002:a05:622a:1b09:b0:533:a8fe:e430 with SMTP id
+ d75a77b69052e-542b6593777mr202082331cf.14.1793673465209; Mon, 02 Nov 2026
+ 18:37:45 -0800 (PST)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAGsJ_4wjGjDoFPz3qWHqW8WTv31AkR_zrY14ON0dLbTZNsohWQ@mail.gmail.com>
-X-Rspamd-Server: rspam12
-X-Rspam-User:
-X-Stat-Signature: a11qb1itne4e4mbzaw7oep9k88ki3tug
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
-	autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: 9414140002
-X-HE-Tag: 1793673206-885502
-X-HE-Meta: U2FsdGVkX1+Dbj7t7v+AK8m3/L0DeIHVBntYSQYCeDP9DlQGXqahblRsljQzPd+znrgWVwXAGi4bPXYe5ngTnyFXE6S7Qr3ztky/PoxdQSLSK8dlrV+rgPTo0lpCScTXzssW/ORvDnswMrXqxYVw1UvBc7Wmw+vpWLuO1U5eLTyBFoPh6BgmJ3rxt+CjHdhNoPMjcOncBUmrXQeJ0gGECDIRfDRT3VPFbp/RoamRsOk25o2/RjYJ83ceDO83MSmFOXqB2xjcDG1BYaeV9M2CAgFI/Ucg0Umm6jSw5diFy72Ljo5XwvSOKCC4tdiTDPA5FDexACqMGddUQg2w9KmDuT6VzETizuS94XUGhx2vvi4cZCDIqTt8WtGXjlMuSWq/R7DEIyWuPoHGwI5o+1ZCzqvR2x0qiiFf3LhUYf4kg3vk/7P6qijtabDMGhBsG4dI+gMiriCOUmioAbTZyLx+LvJ/rrK8Plg1f4oGFkEqAbqpAl4vg7qzHaNwDbG61j/0aN0hYcx8//yZow/xYNS6WYxZF4W9k9dKxYm7AYk78hEvdvD4rrFsL16SfqmXGsBNhXkHEN8dT/viekBbHeNwPV9RRWEDQzIHd2oJN0Taz50wXtdW1ZRSllAUXHHGQLRv4bw70BnPFsUtj3HtA1u+AluREztm69a3JoXqIYr9kAoF2xfJKMKJ2PReA0mVKAC0qJBqQMSqELajGvtsD1FkmdRHSiNDrsiNADqRWJ+fgOTDWGFd9RwFB6rkt3/K/P9W81jHGMawU7nLGPLkBoNVXbE6eRmh8h4/LRHjIewJ6Hy9mn+srDAoZmZOcpcTdL9sAx0cVdxsZKrws2k+XOjqUonLblCTi5+4BdBMmRm8v+3KT4oVrJQdignMZvmfazYFDzCS3GVRskyUW6JFSCYa4pCAGneBjMifHIkoBBNTU/Qp+Ydd1HRLoAFurGYdYCz63Vn1OMTMFvvCHVwODtX
- vHzh8cxV
- dmg4zQXcawizzLHtIqZAcWY9SE9dXWV6J0zr2mRLCvTDUQo+qRul6M2PNXml3v+OEm+wre4meMMbM+CSG3/d/Ucff0SG1E6XAP7aMFNu8EvdJygb509p2JG7Ngqdo5nfSue2f2/TOdXkbIKeoX5vfFfHaVGiaOUXLXk6smQeTtnEkKUVcHVGT1l4jv+Z3HxfUqLGO3Xmf+JcP1RJgit8suz5KUbGcWGruwyTITkxozOC94s0hD4vISt8Fa9fs0Hg4BkXP61A9IRBLs7osojPnrRKAZY6iiRiv3hqKNCfZJBU2IkVXAoTuHcRbr57mlo2iIIptMRQl7RF5yVSUaqSV1ARbhDoQzVDCnUE9FAJYahcx0RLjvVfLnt2P1GN3i0gxuARqbCBIrZS1hhpw7SL09R83RRaCSI+6eaAMOiITFhn+BMTkb3ZsKE0ZPjOmZzKEffX5xBwSkK+WVb8TB0G2SyjGJMv4dJXSuD2I/tD81w6YkLhS1OL6FIop9w==
+References: <20261102150757.93058-1-sj@kernel.org> <20261102150757.93058-9-sj@kernel.org>
+In-Reply-To: <20261102150757.93058-9-sj@kernel.org>
+From: Daniel Pereira <danielmaraboo@gmail.com>
+Date: Mon, 2 Nov 2026 23:37:34 -0300
+X-Gm-Features: AclHuK-Jg7-xraD80qWPaNaA0iIrhVFnMpsq1hNuG58d2LObr6cS1Stfw00xqhY
+Message-ID: <CAMAsx6epLXuUjaV3J0=SWAuLvajr4h58DTM9gL+LMmaCyjcxUg@mail.gmail.com>
+Subject: Re: [PATCH 8/9] Docs/admin-guide/mm/damon/lru_sort: fix grammar and stlye
+To: manuelebnerli@mailbox.org, sj@kernel.org
+Cc: corbet@lwn.net, rdunlap@infradead.org, skhan@linuxfoundation.org, 
+	damon@lists.linux.dev, linux-doc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 18275100006
+X-Spam-Status: No, score=-2.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=no autolearn_force=no version=4.0.1
+X-Stat-Signature: hr8jpwwfqs3r9ftnfummaau98jddxh3r
+X-Rspam-User: 
+X-HE-Tag: 1793673465-372642
+X-HE-Meta: U2FsdGVkX1/zifbL42EKwrRpWoEli6IO69ik3BhsnyC+2b0o6EZWDAwp6wmMOusGwRn67J3mJ3zyTVOsw3SOn1qEFyyzgOcEt9yCFLBsvjNRHb/1H5Lvw+Zi6NiqHj4bJAFLftUTnxkTjAKvv3FJb/+ULTiQphcMEmvGK3C8h1wsT+D33FIq1lbr7KV42K65LMje6ksd4A/F/Vo+zZ19XEL8EoJY0W6jOK4+jVOFaPgEHxLxyghMgFofhxisD+L1qjrIxZtjOfDcvIQ3tNYvnKBc8MtpHzTBdYUYaDu3Y2gQrAqhVsIpN3SRfIA6iWtznClp4CP+dndIgRPrScEIOt/Fn39rrtDlRr9W+/pQzGUqXfKXM2C9dF/qF59ZczBIUAaczf+QxhAy5XBeLp5VHOTD/UmTtBxz8ijamSUqNV8xvIK/WjU4+Ro8zOQvb7gKGfBsRSc164+VE+B0FKcUJ/8KTDJi07MmgXNOVjYUWTL8wrTIZD7t8YuLUXVIGCLr8mCtbvdT7qa6cegAjhkjRlfPR2Wkrev21jsfqbLz9hsDxNgvvtwMKcB8KI4BkQKMYsdmvfaYQBBH8GQSTmeldvwpzRLNFdvr6uGpSRsOv4MIUHSZZVoEbWhaTzzGOuYoOYDXqy5Sn4CeqsBSgPRsdnNVZ/LLTxmzi+BjsiHTXuaDPpk3/2OlYn+o7C51ct4oqfOW0CBnlMm/4QvymYZaUvNQS6ib4PPPfwI3ojVIPR5ysKa4Ct743sjgwHpc5s/t+UsZpwUeGDv/wmR+cYyZxkidg6jE1Wpx9koVz2964QN2AOdsODvUP3Eo2vm0+O1+754pkekcGQuQD9geYzrSVOKWTChbIwaP//bSTq4bBjAVk3IjpEEQ3/TEg8CiLmWCpZlYicGGiJrk8+pM6xTGP3f9hxXZoksoDgNiyJ/AINadlaq0rCrwQUOke/Wt4pxrdGZz8gwzngPCipHXWQn
+ hN3jCgrs
+ TFY9VJ9AmMAyyz72P5nDpKEqh/hyeRJ6XxIQbyka3yr3gvNlk6tZFiF12FWLld5AYulpmygU4nkoSm9jtF3T2X4QC2xkxXMvDQvzQrk60g5qH8CeIW/UF9Duvi0bhw+4VaGqZCjCJ1nV1PhulIPLmlC90B+/KfeomK6VqWCDJTjiesieiwGecQMl75d+6EK18mQsukwJggMGrJ/WXisZ7a0U5kXJgttPt/zB6VHcv9Y90HX02LPxWAvA/C/Tn9jo5GUf0eA3OGH/+F+QrOEi4XLfWEP1ymgnLtMGpcZQjFI5Uf+oDinzuah6LTC9d89fU6PhR7C6tDxL38ivADExRd2/mc94+3cSt5t4cU6zE4ked2ndDiJOzoeBCLoY8Z8z18cBoWFTS+c8ysqcnce9b6APi/K+VTtbWKdYWzETM0b3XlkTEL6nwzVjh62SH5uG5J/E5Nb0dMcUJnVWRM8UJmJuRgUG5SlP96fHM
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -119,64 +143,22 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/03/26 at 04:11am, Barry Song wrote:
-> On Sat, Oct 31, 2026 at 5:42 PM David Hildenbrand (Arm)
-> <david@kernel.org> wrote:
-> >
-> > On 10/31/26 06:58, Lance Yang wrote:
-> > >
-> > > On Sat, Oct 31, 2026 at 09:46:37AM +0800, Muchun Song wrote:
-> > >>
-> > >>
-> > >>>
-> > >>>
-> > >>>
-> > >>> Agreed. FWIW, I think Barry Song and Kairui Song would be good candidates
-> > >>> for the maintainer role.
-> > >>
-> > >> +1
-> > >>
-> > >> It would be great if they could take this over.
-> > >
-> > > +1 from me too ;)
-> > >
-> > > They both have been really active on MGLRU and doing great work for quite
-> > > a while. No doubt they'll continue to do so :D
-> >
-> > Fully agreed, we really need some people familiar with this code to help
-> > maintain it, and Kairu and Barry have most experience on this.
+Hi Manuel,
 
-Agree. Kairui and Barry have done so much to review and contribute
-patches to MGLRU. The nomination is well deserved.
+> Docs/admin-guide/mm/damon/lru_sort: fix grammar and stlye
 
-> 
-> Thanks to Ridong, Muchun, Lance, and David for all the
-> kind words. Your encouragement is truly inspiring!
-> 
-> >
-> > Just a note that I also don't want to pressure into such a role (which comes
-> > with responsibility).
-> 
-> It would be a great pleasure to work for the MGLRU
-> community.
-> 
-> Over the past few months, we've seen many active
-> contributors join the MGLRU effort. It feels like MGLRU
-> has never been this popular. I'm really glad to see the
-> community growing.
-> 
-> I may have missed someone, but besides Kairui and me, I'd
-> like to mention Baoquan, Baolin, Hui Zhu, Ridong, Kunwu,
-> Maxim, T.J., Siddharth, Xiang Liu, Bingfang Guo, Shakeel,
-> Zicheng, and many others.
+ "stlye" -> "style"?
 
-Thanks for the recognition, Barry. MGLRU has always been on my to-do
-list, I will come back to catch up to review and post queued MGLRU
-patches after my xswap patches are posted.
+> Fix tenses. Split long sentences thereby imporove readability.
 
-> 
-> It's great to see so many people contributing to MGLRU!
-> 
-> Best,
-> Barry
+"imporove" -> "improve"
+
+> +suitable to be used as a trustworthy access pattern source. These situations
+> +including reclamation target page selection under sudden memory pressure.
+
+Shouldn't this be "These situations include"? As written it is a
+sentence fragment.
+
+Thanks,
+Daniel
 
