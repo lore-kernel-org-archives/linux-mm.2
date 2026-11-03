@@ -1,65 +1,65 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B4C4606A31B
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 21:18:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFAD7606A335
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 21:18:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=T0o7vKa+
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=nsBBcQZv
 Received: by kanga.kvack.org (Postfix)
-	id 44F2C6B05BE; Tue,  3 Nov 2026 16:18:01 -0500 (EST)
+	id 5AE126B05BF; Tue,  3 Nov 2026 16:18:02 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 427CE6B05BF; Tue,  3 Nov 2026 16:18:01 -0500 (EST)
+	id 55F976B05C0; Tue,  3 Nov 2026 16:18:02 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 364D76B05C0; Tue,  3 Nov 2026 16:18:01 -0500 (EST)
+	id 49C9F6B05C1; Tue,  3 Nov 2026 16:18:02 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id EB9926B05BE
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 16:18:00 -0500 (EST)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 6B509C0584
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 21:18:00 +0000 (UTC)
-X-FDA: 85395070320.03.7067ECA
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf01.hostedemail.com (Postfix) with ESMTP id D07F840005
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 21:17:58 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=T0o7vKa+;
-	spf=pass (imf01.hostedemail.com: domain of snitzer@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=snitzer@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 2332A6B05BF
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 16:18:02 -0500 (EST)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 92D6A120549
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 21:18:01 +0000 (UTC)
+X-FDA: 85395070362.20.2AC081A
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 020C320009
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 21:17:59 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nsBBcQZv;
+	spf=pass (imf13.hostedemail.com: domain of snitzer@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=snitzer@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793740680;
+	b=cDGnUQ6QSDQ/2bu5ZyRmF3MJN2RAHFg5+iTr2SaL0Eor6wuYXrBLghEQu9dNw/VsX+LP71
+	LDGod6w4XuordjUQukDQr+PgFKJ/0Me2Unx/M9rNqGUQmPPz+STHsuy1P0ZY8sZV/yCWCx
+	mulpj+d0x38JJRz7OuPGHOb7aJDiBG8=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nsBBcQZv;
+	spf=pass (imf13.hostedemail.com: domain of snitzer@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=snitzer@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793740678;
+	s=arc-20220608; t=1793740680;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gVJkWNRH/ZOu7EDyRusj1WUhQq2Egy1weSR/EP5J5Ds=;
-	b=QRHc2KUMfrbiGbLQFm2GVCWhHDR3IJZ5hXNkUeXqalMwVLildtT+Zee3ae+Dvn9Sh0Vtdm
-	7u20Lx1Qf74PUJdvume5UDsFM2ML6yWTgF+TgTjZR27EVNNWFs1Iyy0LLyPx269xLoemQd
-	kezJ2MIfZmjYPNZDOZAR16ljQbDBeYQ=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793740678;
-	b=z4lTppTGaoK/ZPGs7OUpPazv3aEgEIqcXfym5ZX6wQ38VUwz4ElQaRTY2pnl1er47px92p
-	/tv49gSY9ZC8KZKFh8ALnJvhAPFp7V0LynC9f9xNNtpQXdZzLAhIw3Uc+g6cPcoDbNAimi
-	KjHCL9KW+Nry17MLESoODTz39Mwa0/c=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=T0o7vKa+;
-	spf=pass (imf01.hostedemail.com: domain of snitzer@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=snitzer@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=1+SeaVehwt396QnIHnWRn5MKZzC9W7QYhwhH8JQg6As=;
+	b=pGDbQcZSs57YxBnKUuVEkikCs1G0Ywurffmv5DjiEIpkJ3f3pZgcZG0mkeSBCahFio7AO7
+	8d3UICPxNr3i7/hQeHltBOom4+kYeaLe1Cb2l0iFCEUlIlFk6PozEZl6cysUYxPMxk8Fjf
+	UUwIpYYdLmS1rxYuPo2kqKHUJpSFjbg=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 4E62460136;
+	by sea.source.kernel.org (Postfix) with ESMTP id 54BFA406CD;
+	Tue,  3 Nov 2026 21:17:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 066C91F000C1;
 	Tue,  3 Nov 2026 21:17:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDA2E1F000C1;
-	Tue,  3 Nov 2026 21:17:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793740678;
-	bh=gVJkWNRH/ZOu7EDyRusj1WUhQq2Egy1weSR/EP5J5Ds=;
+	s=k20260515; t=1793740679;
+	bh=1+SeaVehwt396QnIHnWRn5MKZzC9W7QYhwhH8JQg6As=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=T0o7vKa+UViT2kW4nUff14L2tAlAy17Fk4EuqAbYYcAsmVvxZLyN+Tkx2kcVu6m5G
-	 7VCiLUxxVY46mpw99qJct2peaQJ3tRJNVG/bmhc3/7y2d7/3dMxh+wR9iTyDBRe2k6
-	 /koNMdftwLAgxjQVmjsnBR/velQhVyfN94fsYFwJsq07a4zY0cYyeyhcrgB+VZcnwn
-	 AmEhTDdoajDx9TMTa1ssvcBgFCdCHSbQP4KxrrwxCTMxN11VZRH05KU58aibY4pwd/
-	 zxxfslS6AQ0mlkro4y8K5T+lUztrdHX3R9an1nLwvt0i7YnWwa1tWvV6G5HjuKkR/H
-	 5xDQEcyHtw7Uw==
+	b=nsBBcQZvBukrCr6ZOO/LZhZdwZ2UeCaaLrXBy7YduO+XZ+qdB+zZcZ+70hLRx0iym
+	 LWa4m4h/8OIpWrMCwLZLT99KQSKS9bcqDa3xmfHUb8ym5/bamOIoBCQenlGGN0pZxq
+	 uzi6woLgmZBihfj+KoQpnX5OjJ8Mflm1N6HJR/Fyfwh4N1tELoKYDuTqvaJ5Hi2xy2
+	 +4MpPG5mOginkJf5dRid4rPNyc+GBAlewpMLkGEKcBjfUxRgAFakPkadlrVoqEWY6v
+	 jsTKF7k2z1FXPHA5KwiowiwUo/Ifx4GCk1Dr5HFx9rZEgnwJZXrANlh9G7aHCwWRoV
+	 UjAC280UkaWSQ==
 From: Mike Snitzer <snitzer@kernel.org>
 To: Matthew Wilcox <willy@infradead.org>,
 	linux-mm@kvack.org,
@@ -74,27 +74,27 @@ Cc: Chuck Lever <cel@kernel.org>,
 	Christoph Hellwig <hch@lst.de>,
 	Jens Axboe <axboe@kernel.dk>,
 	Jonathan Corbet <corbet@lwn.net>
-Subject: [PATCH v10 2/7] mm: take a folio off WB_DONTCACHE_DIRTY only if it was counted there
-Date: Tue,  3 Nov 2026 16:17:49 -0500
-Message-ID: <20261103211754.35352-3-snitzer@kernel.org>
+Subject: [PATCH v10 3/7] mm: expose WB_DONTCACHE_DIRTY in bdi debugfs stats
+Date: Tue,  3 Nov 2026 16:17:50 -0500
+Message-ID: <20261103211754.35352-4-snitzer@kernel.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20261103211754.35352-1-snitzer@kernel.org>
 References: <20261103211754.35352-1-snitzer@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Stat-Signature: qqnz476scz66eymtrao5fkpwn693nidr
+X-Rspam-User: 
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 020C320009
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam09
-X-Stat-Signature: ajtwq3fo7tdfmh791cz9755yykwhbh55
-X-Rspamd-Queue-Id: D07F840005
-X-Rspam-User: 
-X-HE-Tag: 1793740678-972002
-X-HE-Meta: U2FsdGVkX185/1JFGOiOQy7KBZYOtPeCy83B7yqYcPAlMec5WmmKi+2GddYnKrm+IfZlaOgSq4RVgdRFtReGQUXAzvteUODPaUx9wpp+Cii7sZWyDyd415xj/xPKxeJYIk91wjKFNdOjmtIyd5rqOWEXo4ySgFOfW2swpG5G7Yt50SKljE8KByRr0U6t6BuLjVJqwJd5h40zZ8G+nzx27z28lYE+dS4p++peYfELmOz0iHxMGAi9lG/kXhbEVLSJrFVqr/HVz76efR/yM5GHO92EbHdJ92yVf9TIVK8e9OVvLNsf+y3KfHeWaNbvb7TSQxJDSOQcKpK/e/IhQUWlrRQwdz2lkvmDV0Mk6Gwu6Q5Sp7RUs2bqGWNOfySevMJRN8YFsjyzaEzbK7adV+Hw5Kt9R2DgoP/uwdVjhFJtrrnMpYgcsIa1g/MB2fDJ4dbybUAE/BfMGOLKEOiWSVR10GSHZeIWoOeHGUyxRAxg9f5mroC3BU4+FTIDMtuBns6m4wCdAPhB8mM0ibXN+H2HULaiDThjGQcyggDamZrFUOtoAB71T/mrT41oFXJ8FxWNC3ykoYEz0WiTFqGS8NfpXrNS2/y4kU+mUzX23HjjyAoSz7oJuKm/n4wiuYEF24CKlevj8Aa/fFoJFDfHJGlbjdDOPviFm/P4BgaTg80BJ11B7rYrGCcRbEMuaAvQKUOs682qbqkSXYokv5E6pZmTaIUZJOBJFmuzi/11fo43pJTavdn9lqljc4piW6QWt5VryFMzbbOtKPJp8o7os4Lah7zSUrAONfGwLhLj80OOd3STtPJXrs5mRpf8YNVzsEUELo6g7OnjodF3Hys1s6peB7zoneCWBxlVLRy0WEZ/gXyNpYdJuNyBBF2IVTTBiZKti+hy2ezX3jUOBzPXZ2a8WNnHiDGKj7EEwLSHBZXoEC1PY4LowbXRk/hTOiQBINEeaIHpLP9H4BRKUEHPa+P
- 9hoerFY3
- AbzfuULFjvaF9WDL82CbOuHnkt2xVTCUlbOGBTUnoHoQkqb44qLL95iMu8n4RFbwYEXtQVq/r6Kssd8brlKNuCJY2WrQOGARC3OCwLUNTTexTI2ddWPJHFfVmTbsDTIdWAqbVq3nDIEWfDxwSYEAxJKH3kUAqjMQlWMOqqW02EJTdkBEFerzyidB5SeJEp9pgRGx9Comq9io+gRxHOqU0VuP8h07w5aleJown3t4nmx9idg2CQxw7pHU+FLQL3YmHedzR+CTZ6MG9of8hKuSKeYYQ/HI4HREaGx4KcXIny0bCfJElR25VkQSzw9tVkNCHfqIHwscLWXPofuvRLnd97Hkbd9x/uKEanWGJuTnCznCBsWzDgPfE8Sj0SMllhnz7zOhr
+X-HE-Tag: 1793740679-436827
+X-HE-Meta: U2FsdGVkX191Ym3BEE8hQvJUcNvaLx74tHrax7bC/H2Tg9HkA2nfxNdvgpdtJqAqDdLbx3w745dSVZ5a4EEjTQI1BnzIsp5Iiq8vC12ttJcJ5BMRMpusqzutf3+W2lSf4ofVfj/zGNtI2WacOKH4Z8bfJ9pyJ4T90EERu8sOkHdRi2BiEOadrfG5DGD9jIXKdBT5w505FbLGHoiC1DrWmAyIafu5mKARMcSIRXkHNwn6F2kyP+XnM454f/h8jIukSjaOgKNBdWeb+dVf6hpHXBJ+b5vRAoHY7dqHIH1C+JniDtorpU5SdqIiYMvFwo+GlYIjGAiY7GKWGNjXJGBh9EzCQnHt2++xzcWpAF2KKWLxrN0t1NWRkUQAzbprhjG8vUO3YjpVjbbWI/Ndp9/f8YFs6SixUEdGBBmXK5GkwBS/apbBinfGLWr3BxpSEMPiczGip/2iaPYwfQ4EqkEf+FO4+eMeowtuKHRhp92vikv0rj2QfJWa/RXHfRDmThaaeOt3c53yvFlxgfc5KsRHiInLWsKHO6gUBgwrzZYq0TaHB+4I0UdhHoqvJi9z7HKTX0zZynpc+GCeUrg7ZxdTbnhmbMiCaBNTBv8uO0Upfq0QxAeFybnlSI1K1+Xdqpt5uZc0h1Y/rqY8Vt8bzWu7xa+2JLDtum6ehoxM7bF8g3x1/Tgmk4oVSGBe1JIjfmihCEx9sB7hEvoslsWP0NDTCDyCsTvby+7hkDk6RCtmvyKwEXcy1k89hIGKC6Ko0RoKISpOsNpZaZ2bZTE+xASL4B3ffDdS6HhNgTmwwfEOHuZAmTOrwHcKd4GU3zbh809zVRk9ItaPcyVHsY55cYANrWTx+cM0iF9tmJcgLqozKdmXzXSCt18G+TjBTqdHgXplY+JVGIk3lpVX45au0QlVha+5KS7yJVkHf/muNuaFb3Ees/tlVEI670492EL6K05VR73jp7rvlgOTFnhAV14
+ lcP5CGmO
+ l+ITlcsIza5PgxmNESwvMh47R34r+eOSOVgRwUkykMk616DXm/+xI2hqiZizbfdMm6v2BqrwaP58iL9RpfR7Uz4UiK1CJV1tJoGLvEYPtH/9qS+Yw9dO2C6iSMWt0pRRv6IRQDU0dx4AWg+8p7bvR8Fc5RfDXgYrrjp0Dok6mc7LTfN/h6WeGuvechTKw7CLUjBwTUEangximeZDiDIgAh0iRNIpaRWXAVOCX9VGXTuxLdnvNyrzQnWH+Tbz7HR6wtPf2qC1sg55L3GH6MD3TjSgwcj4Twvq2I8bphKw528+A0BVYGWbqxEkx9ewTxlMzM5ADzwp0cT+4MJBVvD4/Owj8ou4ZdPUQUa3CJIe/xDMtxgQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,122 +103,76 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-A cached lookup that finds a dropbehind folio clears the flag and
-subtracts the folio from WB_DONTCACHE_DIRTY if PG_dirty is set.  That
-test races with the dirtying of the folio.  filemap_dirty_folio() sets
-PG_dirty before folio_account_dirtied() counts the folio, so a lookup in
-between subtracts a folio that was never added.  The lookup also does
-not hold the folio lock.  Every other path that subtracts a dirty folio
-from the counter holds it, so the lookup can subtract the folio a second
-time.  Either way the counter drifts, and once it is negative the
-DONTCACHE writeback kick writes nothing.
+The per-bdi_writeback WB_DONTCACHE_DIRTY counter drives how much the
+flusher writes back in response to an IOCB_DONTCACHE kick, but it is
+not reported anywhere, so the DONTCACHE dirty backlog can only be
+inferred from MemFree/Cached movement.
 
-Fix this by having filemap_clear_dropbehind() clear the uncached flag of
-a folio that a cached lookup found, and take the folio off
-WB_DONTCACHE_DIRTY if it is counted there.  With the folio locked and
-the i_pages lock held, the folio is counted if both PG_dirty and the
-dirty tag are set.  A folio that another task has locked keeps the
-flag.
+Report it as BdiDontcacheDirty in /sys/kernel/debug/bdi/<dev>/stats
+and as WbDontcacheDirty in the per-wb stats, next to the
+Reclaimable line.  Use wb_stat_sum() rather than wb_stat() to fold in
+the per-cpu batches: the flusher targets the summed value and small
+backlogs would otherwise read as zero.
 
 Fixes: 88d6f128d06d ("mm: track DONTCACHE dirty pages per bdi_writeback")
 Reviewed-by: Jeff Layton <jlayton@kernel.org>
 Signed-off-by: Mike Snitzer <snitzer@kernel.org>
 ---
+ mm/backing-dev.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-Notes:
-    Notes on questions from earlier reviews, with the code that answers each:
-    
-    - Stale dirty tag.  __folio_cancel_dirty() clears PG_dirty and takes
-      the folio off the counter in folio_account_cleaned(), but leaves
-      PAGECACHE_TAG_DIRTY set.  filemap_clear_dropbehind() subtracts the
-      folio only when folio_test_dirty() and the tag are both true, so a
-      stale tag does not subtract it a second time.
-    - Locks.  filemap_clear_dropbehind() holds the folio lock (FGP_LOCK,
-      or folio_trylock() and a check of folio->mapping) and the i_pages
-      lock.  __folio_mark_dirty() counts the folio in
-      folio_account_dirtied() and sets the tag under the i_pages lock.
-      The paths that subtract a dirty folio (__folio_cancel_dirty(),
-      folio_clear_dirty_for_io(), filemap_unaccount_folio(), the folio
-      split) hold the folio lock.  inode_do_switch_wbs() moves the count
-      under the i_pages lock.  inode_to_wb() accepts the i_pages lock in
-      its lockdep check.
-    - Trylock failure.  The folio keeps PG_dropbehind, as if the lookup
-      did not occur.  The count does not change.
-    - Known window.  A folio can be clean with a stale tag (for example
-      after iomap_writeback_handle_eof() skips a folio beyond EOF), and
-      an unlocked dirtier can set PG_dirty before it takes the i_pages
-      lock.  A lookup between the two sees both bits and subtracts a
-      folio that is not counted yet.  The two states look the same in
-      these bits.  Only the counter, and so the size of a DONTCACHE
-      writeback kick, is affected; data and page state are not.
-
- mm/filemap.c | 42 ++++++++++++++++++++++++++++--------------
- 1 file changed, 28 insertions(+), 14 deletions(-)
-
-diff --git a/mm/filemap.c b/mm/filemap.c
-index c75f49563b74b..3a13289c07dc4 100644
---- a/mm/filemap.c
-+++ b/mm/filemap.c
-@@ -1945,22 +1945,36 @@ void *filemap_get_entry(struct address_space *mapping, pgoff_t index)
- 	return folio;
- }
+diff --git a/mm/backing-dev.c b/mm/backing-dev.c
+index fad1495d3b200..a09c21759fb9f 100644
+--- a/mm/backing-dev.c
++++ b/mm/backing-dev.c
+@@ -46,6 +46,7 @@ struct wb_stats {
+ 	unsigned long nr_dirty_time;
+ 	unsigned long nr_writeback;
+ 	unsigned long nr_reclaimable;
++	unsigned long nr_dontcache_dirty;
+ 	unsigned long nr_dirtied;
+ 	unsigned long nr_written;
+ 	unsigned long dirty_thresh;
+@@ -78,6 +79,7 @@ static void collect_wb_stats(struct wb_stats *stats,
  
--/* Clear the uncached flag of a folio that a cached lookup found. */
-+/*
-+ * Clear the uncached flag of a folio that a cached lookup found, and take the
-+ * folio off WB_DONTCACHE_DIRTY if it is counted there.  With the folio locked
-+ * and the i_pages lock held, the folio is counted if both PG_dirty and the
-+ * dirty tag are set.  A folio that another task has locked keeps the flag.
-+ */
- static void filemap_clear_dropbehind(struct address_space *mapping,
--				     struct folio *folio)
-+				     struct folio *folio, bool locked)
- {
--	if (!folio_test_clear_dropbehind(folio))
--		return;
--	if (folio_test_dirty(folio) && mapping_can_writeback(mapping)) {
--		struct inode *inode = mapping->host;
--		struct bdi_writeback *wb;
--		struct wb_lock_cookie cookie = {};
--		long nr = folio_nr_pages(folio);
-+	unsigned long flags;
- 
--		wb = unlocked_inode_to_wb_begin(inode, &cookie);
--		wb_stat_mod(wb, WB_DONTCACHE_DIRTY, -nr);
--		unlocked_inode_to_wb_end(inode, &cookie);
-+	if (!locked) {
-+		if (!folio_trylock(folio))
-+			return;
-+		if (unlikely(folio->mapping != mapping))
-+			goto out;
- 	}
-+	if (!mapping_can_writeback(mapping)) {
-+		folio_clear_dropbehind(folio);
-+		goto out;
-+	}
-+	xa_lock_irqsave(&mapping->i_pages, flags);
-+	if (folio_test_clear_dropbehind(folio) && folio_test_dirty(folio) &&
-+	    xa_get_mark(&mapping->i_pages, folio->index, PAGECACHE_TAG_DIRTY))
-+		wb_stat_mod(inode_to_wb(mapping->host), WB_DONTCACHE_DIRTY,
-+			    -folio_nr_pages(folio));
-+	xa_unlock_irqrestore(&mapping->i_pages, flags);
-+out:
-+	if (!locked)
-+		folio_unlock(folio);
- }
- 
- /**
-@@ -2094,8 +2108,8 @@ struct folio *__filemap_get_folio_mpol(struct address_space *mapping,
- 	if (!folio)
- 		return ERR_PTR(-ENOENT);
- 	/* not an uncached lookup, clear uncached if set */
--	if (!(fgp_flags & FGP_DONTCACHE))
--		filemap_clear_dropbehind(mapping, folio);
-+	if (!(fgp_flags & FGP_DONTCACHE) && folio_test_dropbehind(folio))
-+		filemap_clear_dropbehind(mapping, folio, fgp_flags & FGP_LOCK);
- 	return folio;
- }
- EXPORT_SYMBOL(__filemap_get_folio_mpol);
+ 	stats->nr_writeback += wb_stat(wb, WB_WRITEBACK);
+ 	stats->nr_reclaimable += wb_stat(wb, WB_RECLAIMABLE);
++	stats->nr_dontcache_dirty += wb_stat_sum(wb, WB_DONTCACHE_DIRTY);
+ 	stats->nr_dirtied += wb_stat(wb, WB_DIRTIED);
+ 	stats->nr_written += wb_stat(wb, WB_WRITTEN);
+ 	stats->wb_thresh += wb_calc_thresh(wb, stats->dirty_thresh);
+@@ -125,6 +127,7 @@ static int bdi_debug_stats_show(struct seq_file *m, void *v)
+ 	seq_printf(m,
+ 		   "BdiWriteback:       %10lu kB\n"
+ 		   "BdiReclaimable:     %10lu kB\n"
++		   "BdiDontcacheDirty:  %10lu kB\n"
+ 		   "BdiDirtyThresh:     %10lu kB\n"
+ 		   "DirtyThresh:        %10lu kB\n"
+ 		   "BackgroundThresh:   %10lu kB\n"
+@@ -139,6 +142,7 @@ static int bdi_debug_stats_show(struct seq_file *m, void *v)
+ 		   "state:              %10lx\n",
+ 		   K(stats.nr_writeback),
+ 		   K(stats.nr_reclaimable),
++		   K(stats.nr_dontcache_dirty),
+ 		   K(stats.wb_thresh),
+ 		   K(dirty_thresh),
+ 		   K(background_thresh),
+@@ -163,6 +167,7 @@ static void wb_stats_show(struct seq_file *m, struct bdi_writeback *wb,
+ 		   "WbCgIno:           %10lu\n"
+ 		   "WbWriteback:       %10lu kB\n"
+ 		   "WbReclaimable:     %10lu kB\n"
++		   "WbDontcacheDirty:  %10lu kB\n"
+ 		   "WbDirtyThresh:     %10lu kB\n"
+ 		   "WbDirtied:         %10lu kB\n"
+ 		   "WbWritten:         %10lu kB\n"
+@@ -179,6 +184,7 @@ static void wb_stats_show(struct seq_file *m, struct bdi_writeback *wb,
+ #endif
+ 		   K(stats->nr_writeback),
+ 		   K(stats->nr_reclaimable),
++		   K(stats->nr_dontcache_dirty),
+ 		   K(stats->wb_thresh),
+ 		   K(stats->nr_dirtied),
+ 		   K(stats->nr_written),
 -- 
 2.52.0
 
