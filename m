@@ -1,125 +1,139 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 945B7606A338
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 00:43:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81E58606A330
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 00:48:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=h9cKAkhE
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=HxhgnpKD
 Received: by kanga.kvack.org (Postfix)
-	id A425F6B00EF; Mon,  2 Nov 2026 19:43:46 -0500 (EST)
+	id 8290E6B05B1; Mon,  2 Nov 2026 19:48:23 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9F3526B05B1; Mon,  2 Nov 2026 19:43:46 -0500 (EST)
+	id 7D96D6B05B2; Mon,  2 Nov 2026 19:48:23 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8BEB46B05B2; Mon,  2 Nov 2026 19:43:46 -0500 (EST)
+	id 6C9026B05B3; Mon,  2 Nov 2026 19:48:23 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 5B3116B00EF
-	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 19:43:46 -0500 (EST)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id C7E9080255
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 00:43:45 +0000 (UTC)
-X-FDA: 85391960010.05.9AA1A00
-Received: from mail-dy1-f175.google.com (mail-dy1-f175.google.com [74.125.82.175])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 0D19A40008
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 00:43:43 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=h9cKAkhE;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf01.hostedemail.com: domain of odys.yuan@gmail.com designates 74.125.82.175 as permitted sender) smtp.mailfrom=odys.yuan@gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id 39CB86B05B1
+	for <linux-mm@kvack.org>; Mon,  2 Nov 2026 19:48:23 -0500 (EST)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 8904280233
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 00:48:22 +0000 (UTC)
+X-FDA: 85391971644.03.2B5DAD7
+Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
+	by imf22.hostedemail.com (Postfix) with ESMTP id B6A10C0004
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 00:48:20 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=HxhgnpKD;
+	spf=pass (imf22.hostedemail.com: domain of dmatlack@google.com designates 209.85.216.47 as permitted sender) smtp.mailfrom=dmatlack@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793666624;
+	s=arc-20220608; t=1793666900;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=7z1HE/KjWOtf8sdZhPk5sTCBtLjDDSjEVH4zmusVOl0=;
-	b=2E1tr6Adx+qejZ80V297laL+ClbnfJ9su39qd3ORanfAM8s30i0G752GVIYZbN3YfEPITK
-	NCtxMoP9HpPtLR22mJtdHSQLspuOQ0CEOIuNgS21j3I1uNMKNxnxhL26mBxUi+AjNmS5va
-	iKiFPgtllr0wZrJCARGtcblnMPtZRdA=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=h9cKAkhE;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf01.hostedemail.com: domain of odys.yuan@gmail.com designates 74.125.82.175 as permitted sender) smtp.mailfrom=odys.yuan@gmail.com
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=+4komcI6Fb95Hps7JFHEwewY0Kj5nDX9+u+4ZAxqqJ4=;
+	b=OS61/Ef4lvHU7iQi9+ZVnJ/8GAyXoGWX4mf2/o8EAPn1QiDLhgAO+SFT5aH5txtjRSIdUn
+	VQLYYeMWTTDcY6INs9xjFTmTbcHLMl+BD09OM/R8dO5Q5TcJOSJymhNJeRBhoXUXM80Dar
+	k+8PZrFxei7Meo6UrLMJ60KrKs9ttnY=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793666624;
-	b=E4T0Od8M2pDFn4nUodZ3SBXFGRQg9FDQVJ7XFJAI6xxXESDw62Z4dDh+VcE2PeVHK/m+PU
-	24Gc0Q1y222dk6rcdZnBR1WpttOzIzTfXv8YHz2x5lbDOV43fz7eJKwLJH80N58HBn5orP
-	oZ59cS1acjh2Hffwva5NYerkap4CQ44=
-Received: by mail-dy1-f175.google.com with SMTP id 5a478bee46e88-3550c917fd3so4989373eec.0
-        for <linux-mm@kvack.org>; Mon, 02 Nov 2026 16:43:43 -0800 (PST)
+	t=1793666900;
+	b=QJSW6VZx6qslc08rjssGrpZvk1SJi+jKnY3u/mc95nZLi5ksbSQnTv5EA4erLJBFMLp1Qo
+	9LmOWFpBmx8CVnELS0hgBNU3zb7bGAzjgAkpiYwoNhaH4Gq3n+fzL9JZaUjVRJjwF5EPFA
+	PdJNzF2s5S3Wtud99W8M6Fv2jO96Ie4=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=HxhgnpKD;
+	spf=pass (imf22.hostedemail.com: domain of dmatlack@google.com designates 209.85.216.47 as permitted sender) smtp.mailfrom=dmatlack@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-3adac5c10e3so2243602a91.0
+        for <linux-mm@kvack.org>; Mon, 02 Nov 2026 16:48:20 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793666623; x=1794271423; darn=kvack.org;
-        h=cc:to:message-id:content-transfer-encoding:content-type
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=7z1HE/KjWOtf8sdZhPk5sTCBtLjDDSjEVH4zmusVOl0=;
-        b=h9cKAkhEUiSKxE8vp2XTRn0ohhyebKRQMFPjU2uFmVupXFruW8D0498KykASzHebhh
-         AxkXmTFlXCTQkplH3ksV1GxCekdb/ncDH4/m8yytsBqkOAcDZprpWPDJYXNzMMDj1+cg
-         34F15bJ+3MmjbAY+54/SJH7yy0PjfK10wqxeG0VQmgWUBH4JJfwifWT6bk0GG836Gh+c
-         be2/tsO9/KP5Qm0V4Zh/LL38qNiXxleMjBhK2iRfOKYDqxUnTB2ng71z6YNiMZawYBqb
-         f5eSAzJkXb/hQt73bSQuTMBcIq4XPSkz1Hk29uhE8i2AyQInz+Kn3attD95ECj8GRUPQ
-         ifQQ==
+        d=google.com; s=20260707; t=1793666899; x=1794271699; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=+4komcI6Fb95Hps7JFHEwewY0Kj5nDX9+u+4ZAxqqJ4=;
+        b=HxhgnpKDDjCi/ZjXHCW4B6poh3cLfHSUNwIiYBut3e8ryCh2IfM4fNdo5cwhTaQqOR
+         jtBK2TbKweJVTOx+LNIa5jBUVQvhe4nxjapMhGNSjV/OnS3gOiMaAmCG3uWvKpRFDa/T
+         PRrHGD/dZuwK7+9xO6KX7ivOs/dbP79TTwgWa5kxRqZAQ/p0wHFhdf+o2W7/hb2g1HRO
+         GmRT6gh0yXD9rGC9mw08qZdowHD8b63ZLZdIchCHYZCbR8gC6sbjGJKZm2KYJcekm0kO
+         v+2ea40e1qd+OkdzbAspLa3boPQE1KTBQ55wnl6K+CtveyijUdaq4XBPr/MO12wp8JMR
+         edLw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793666623; x=1794271423;
-        h=cc:to:message-id:content-transfer-encoding:content-type
-         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to:content-type;
-        bh=7z1HE/KjWOtf8sdZhPk5sTCBtLjDDSjEVH4zmusVOl0=;
-        b=icKy0srUyZntxCDBbM95Uh3kYmP5lhhiYE0ddZJRCeAmDs7eEmZOGH/V0mtHBq8tT5
-         oJ+Uf9D6D8y4rJDqVAawtUNrODHXNmdy3gOrPUiLdsROv9DKTlSklVzStDZ4Wg92HTDj
-         zc7UOe3MRv95BSyIjMgk2hxJVF9rhYHI6IAvTwmdoH12e/ZvyKL3plne8TiPStcl6w2F
-         7dUE68qjxUxu3iIeQ/OgCRapBM9QstYqG/Y/rICSJo3tQS3zI5CJGr1o461IbkVsha2i
-         MTG24wCrb9svJrlLuP7UXFXd41mxcXEN9/iHcNwUC9LHHRhiLqFtoNObzZuhyqLsTfft
-         6bXQ==
-X-Forwarded-Encrypted: i=1; AKwUvBwYntcUwOksUh9DY478i4EjLPkhQn554FWqgvtI846S/mvKlfg2PWpHWstTZEeJncSSjt+GFvWzAQ==@kvack.org
-X-Gm-Message-State: AFq9FYKpwnXHCU2TmbF+qiY9y5Pi8c1pxqpKt23VMdMxX644xlvr9aFB
-	Kkl33jtfTgONOahIFhE/bFdSQjLL5+RBckOPgav+ii5TId7rPBRYdnQg
-X-Gm-Gg: AYBFou1jkIQANi/bLf0KBvZHLd9I89lP0NdozZyHb/pluhlxPra4ZzMrKXqoFtXtR0/
-	/CW0NN/bOh6zbMu/p3YqJYr/bvk3nPYo3/OCmNyK0xE4BKSZ8JNVmx6TVtSR7AaVKK8jenUkCjX
-	0o/0Cb0kigY628txSSlOpp6bwoPOflyyuhwm5OqcTYZvJ6j12fsbvHx0SMXUpuH1icqhzZrfH92
-	bpBX21+RZ1SLSNmQeF9Sybp3TuVm6G4oJa2GaVGnEYddf8MTg49FJ9LokBoBNc+UA9i6DQL6fpA
-	krPeCRIWbImuzSJQiU7p6D562zYf4v8fJ4bxeFE2pYHGmKCBl2pBcNrqXFxMzGruqZAUPpsS6/9
-	OMhPsRXO7w3bBeCnnXsWEGQnX6yiNb8LMcTun1m2TBnIAECPdZ1wg+D9cBvFl2j5ioTMW33wAIx
-	AsK8gdmuWWm2OfS4cZYprFcXjt5hSZcNYEKYEzVfIjiYx4W4M/ymAkkhdn7mGX4jg79IhJE31B9
-	hJNciZasBw1vMRormmkMU4gAUeg9VPEpEEIspIxLRgJ1P3AFTrakt92QsdwfURVC33HG5XYpn65
-	KCeqCnsKNMic9U1041H8OAfs
-X-Received: by 2002:a05:7300:fb02:b0:358:5bc0:4f08 with SMTP id 5a478bee46e88-36a425f611cmr15512454eec.37.1793666622592;
-        Mon, 02 Nov 2026 16:43:42 -0800 (PST)
-Received: from [127.0.1.1] ([23.254.208.9])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-36a428ecb61sm36846013eec.10.2026.11.02.16.43.40
+        d=1e100.net; s=20260707; t=1793666899; x=1794271699;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=+4komcI6Fb95Hps7JFHEwewY0Kj5nDX9+u+4ZAxqqJ4=;
+        b=OXJFYSKMSNUsBBd6pAsVoU7VTnhDgYHH508YgmppCYtoZ3QWVdYOE+InoDrdjYleGd
+         BIer2YFHl1LWrvSw/LMmU7jqSvUK0Y6irfHR/CjXJyT1I0+qTdW7ixboEztOPTvyd5NW
+         208leNdpErWloNrKSy04KcoXVmNDyj0DJm15LOaF+WpoeznNXgEvb6uen332UM0sGjAj
+         zmxmgovvDps634pg8jdDsJgq6bw4Cz1WLFcPk1/uOESebWZJzwn8A4PdupFItwDV9KcZ
+         054q2x99ZhKiXnljcM7Xvq9kVWBaBf/oRC/7Ny9OdTAf9NmqKLSoAZ0/Tmzf0rK743GC
+         SuGw==
+X-Forwarded-Encrypted: i=1; AKwUvBwzokunWIoDg9ebmJJE7RVU94+LKRzKtIlqH8YwAZI+CWsMQaK6/Evktttsg4JXYH/deSEJUWPzKg==@kvack.org
+X-Gm-Message-State: APuU4Z8ymTyjBQKAQUWHw6p4rhjG2jxPkr7y/hn3ze234MvZCG2I2G3e
+	2pZMRzytCnjWQsan7jIymw//3ATT2+9Oh2Qgs4FtQowRF5X58QHZYoFi2x+oNmJnig==
+X-Gm-Gg: AYBFou1CTLsNX4BmSpjnucWP1F02+LChT+flXhwgMZJquW5y3AoPky2UBLwyHQNNHsh
+	m5gwcfXGMHzWFuwDYg/4HoHr765P6JdgrdHg4gnNXciOrUNGGuU6Qg9+iL8m69FpoAmuPa7iJ0e
+	Vgry6F8bTjq+tTuQqV17aEp25g2YWEq4ZAF+DlH8Jev0p8a7mAIYcPwkOibasnSPI9iODkPSqdO
+	JATD25e0S6E+C62n3njAc3emOxk3IuP+GirlOLscQ7+7xpRZFogI1GnmIdfikMb9EUdbZPW80K7
+	+vg8qjBc97RJe0tnDO8bk84g3ShImFcslJan6UM7AD0OvCgiET0bbbyWzIZISh/fkFizjzUGgd5
+	tkA/GkehbVN7lke4+fkOzF7vweUshDqkG/XI6BeVt8MBUKeG+fFLspzEBy/R/YE0FjcHJp9AeYv
+	AlEFf9Onf8KDa3L1tdMFzNHX+/FRzFs3XJ86KH18aGP05Rrx1x9RRje8R+BL1vjtZb1qYBIN3BB
+	o6IKeGF5R1rKtrd5rnr6jApVisJfxCbQ3GDnGFC+rCdFGHwIZJa3aheoeSUCWXv7VBmUENgMczs
+	ygJW8YPOviF+OvuyjdJ7rwLxeybBqn3HoSEhLqsMkF1Gzb8h/ZmmcyjnhXwVnza9
+X-Received: by 2002:a17:90a:e7cd:b0:3a0:8050:2ec9 with SMTP id 98e67ed59e1d1-3ae897ccf9dmr9145000a91.16.1793666898905;
+        Mon, 02 Nov 2026 16:48:18 -0800 (PST)
+Received: from google.com (33.79.127.34.bc.googleusercontent.com. [34.127.79.33])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b07c6b3493sm1454586a91.13.2026.11.02.16.48.17
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 02 Nov 2026 16:43:42 -0800 (PST)
-From: Qiliang Yuan <odys.yuan@gmail.com>
-Date: Mon, 02 Nov 2026 19:43:37 -0500
-Subject: [PATCH v2] mm/filemap: clear page cache marks once when removing a
- folio
+        Mon, 02 Nov 2026 16:48:18 -0800 (PST)
+Date: Tue, 3 Nov 2026 00:48:14 +0000
+From: David Matlack <dmatlack@google.com>
+To: Bjorn Helgaas <helgaas@kernel.org>
+Cc: Vipin Sharma <vipinsh@google.com>, kexec@lists.infradead.org,
+	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
+	kvm@vger.kernel.org, linux-mm@kvack.org,
+	linux-kselftest@vger.kernel.org, linux-pci@vger.kernel.org,
+	ajayachandra@nvidia.com, alex@shazbot.org, amastro@fb.com,
+	ankita@nvidia.com, apopple@nvidia.com, bhelgaas@google.com,
+	chrisl@kernel.org, christian.koenig@amd.com, corbet@lwn.net,
+	graf@amazon.com, jacob.pan@linux.microsoft.com, jgg@nvidia.com,
+	jgg@ziepe.ca, jrhilke@google.com, julianr@linux.ibm.com,
+	kees@kernel.org, kevin.tian@intel.com, leon@kernel.org,
+	leonro@nvidia.com, lukas@wunner.de, mattev@meta.com,
+	michal.winiarski@intel.com, parav@nvidia.com,
+	pasha.tatashin@soleen.com, praan@google.com, pratyush@kernel.org,
+	rananta@google.com, rdunlap@infradead.org, rientjes@google.com,
+	rodrigo.vivi@intel.com, rppt@kernel.org, saeedm@nvidia.com,
+	schnelle@linux.ibm.com, skhan@linuxfoundation.org,
+	skhawaja@google.com, vivek.kasireddy@intel.com, witu@nvidia.com,
+	yanjun.zhu@linux.dev, yi.l.liu@intel.com
+Subject: Re: [PATCH v6 05/27] PCI: liveupdate: Add helpers to preserve struct
+ pci_saved_state
+Message-ID: <aukvTvnfyAvahb51@google.com>
+References: <20261102153656.1431701-6-vipinsh@google.com>
+ <20261102230624.GA1038787@bhelgaas>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261102-bug-mm-filemap-init-marks-once-v2-1-985753b11173@gmail.com>
-X-B4-Tracking: v=1; b=H4sIADgu6WoC/42NQQ6CMBAAv0L27JoWYgVP/MNwaOsCG2lLWiQaw
- t+tvMDjzGFmg0SRKcGt2CDSyomDz1CeCrCj9gMhPzJDKUolRSXQvAZ0DnueyOkZ2fOCTsdnwuA
- toakrq7RWV6MN5Mgcqef3Mbh3mUdOS4if47fKn/07vUqUqJqmri69VaoR7eA0T2cbHHT7vn8Bw
- qJ4xcwAAAA=
-To: "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
- Jan Kara <jack@suse.cz>, Andrew Morton <akpm@linux-foundation.org>
-Cc: linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
- linux-kernel@vger.kernel.org, Qiliang Yuan <odys.yuan@gmail.com>
-X-Mailer: b4 0.13.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261102230624.GA1038787@bhelgaas>
+X-Spam-Status: No, score=-18.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_IN_DEF_DKIM_WL autolearn=unavailable autolearn_force=no
+	version=4.0.1
+X-Rspamd-Server: rspam09
+X-Stat-Signature: o14heqbu9nztitkre76dfxmqhhgkaukq
+X-Rspamd-Queue-Id: B6A10C0004
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 0D19A40008
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
-	autolearn_force=no version=4.0.1
-X-Stat-Signature: n1xsz7u9ikf13k3d7qaxr7a57gnxznn9
-X-HE-Tag: 1793666623-585706
-X-HE-Meta: U2FsdGVkX1/oJWQw0PWgCeLslruDPtERoo/+U+L42GtD+i4ygRVMU66AbvtaVDdI3y3SU98N5xE8c5tSLJTWUCGQyO3BpSOI66cPQqNB857WUYeA5tdBfNvSxxC82mdo1Ho+um1iMzYrbTJcWlcyI7J/iVraMQz+ZMkHk5rLBH0PY8FFHn80B+neBDDNcp8vIhUcJm8tzV0ROd45TXXpfLVOLj+eZT15D27BrK8C6B70RinA7eTfU7Q8hRKnHs4YHQK2WItGp96akATLMJgLg4BxbximbiibUEGDq6h+PwmwlfVrPQ/Am9uAMGfikQgZJ9we5AkRtABe5nppvwuToH4Sr7zc4TD3cRDwmtvqPml0ORa9HQMKsGo4GE+XAJnkiO2BgeH0fRtdp09xc6QNAP09wfqSs4jYHuJ58fBPNKU+fFlEqqo2mDmVHJyALzCHTeE1azbiWnqhEdakJS4dSZ1SbsyW385beeWjq1VlnDxFOSaKSlshkiKGXNmvath6k29Tv5selw1NoZxLd759nprannQlmJll2ttNX5jdOpe9Tt4Y7bnu+iW/OO/bv/1j1XCmhqhFAa0XmCHddX4bifQAqtDt+KnFrtPfluyd6xfcvdHvwHagjkwCMQX8VcFZuNXpvK+0d4Xbnbk1oxwaxTk9K6k0ospQuqPspIay04zaDIUUOZaLtLmCoWTB3C9AkzKVZskbAc0WMZzQiuoQfjqUkyy0p7fWvmzGbquxz89YUZrezzjZWFn1N1D+6OWU0LfiBYOLPolcX7qcHekEw24MqJ5j+9XjI6/e1Ms5u2+vJQhy+YLFlqhtRqrqo5neNS/zlz6B4eEQMnhjE7pjTjrArVJ/VA6ArBJ1KJpRmCaQdG2GJ4CQ5D7WgRiqlGsano+jwKIG/r2UgoGcwJoXnClPAK++SIsTx8yk5Z2Dr9NXRtfarICW9bi4gPeTlHSJSHajceB05x0gvBEKkM8
- f84CrvtO
- dp2+M+PfgNnnOZGrgDegCxkBcHjqABVIyVzH0s4MtLHZR/DeqsiKMxrAvk5jTYi6+xdfgqsJpXPOJnpK77uWbBwB6X8x1rFZgsr8mqaUjr0U5Ui0ZmqmABnafh3l2qL3E8eRVwh+uNg4NY29Xvpm1CwPrhkdoKaRNdN4+vWdgXK3zIBpU97d+owG6l0enpOr3zbgI1WRyDLUerzn7TKon+jPwRC21YQHCCyXsbHEiAnDTEqqbfsfiBtLcof3x0zCUhHFQzB4EMDXSaFw5CHd8cCFtDK2kFMNNVC15VFt3Zs+5P+zwFQo7ngyP4450DBReLcyhGQb4UV6/y5qn9FdUR1U8h9Q07EGYkYMjUAQrrdvdmCCPGiY0wgQUtmxDmjDJb9UyB0POKM6He/lsgk2TlhyiXWBEiUXUL3mir+9KzH/D9uF3wDLj6vMJEGh9dNpC6cWgMIH8S/PjyPJWNPMLtifpcNMVKaL1fUcUkDs3ZHuTDRVW5BzcN08VrvFWtAdlGXTjCqK9gHWuk7s=
+X-HE-Tag: 1793666900-308395
+X-HE-Meta: U2FsdGVkX1/N+Me4qjsA50EJntKtXVL2xv0Wvd5jszlUwjh5C35/wv5UbTi4nEJBFETDrgDEAEoJ989Hj5cw5GBHdEbdDXYWXiipo1lQr1wKOMMsRoNj6jTayshaUnOTZRci99QHgkfCOCCXWHdiKCPMv71DMbVtmvNWsYRC7qJBBqsGZmzEU3cGDRCJLh9/6eEDU0gZ0OsaluzEwSWDHYMDcv4jyIczt6EEfawMkpnO+zDSNNp92jqh5j3O8tuZ19VQMGVB9cO1tTyES8dz2ztI25PMXRb9B9JNnaijXfNS0qqMY3LnV5jjD+tLtpmvKLQP+4zQ0FSxhStN2dFCjItTqdYAGbJa9CNCp4iqkMQye0Jt81rlsA0NoRffk8wc1Kpq5lIgI8U6XPTWdRBx1rpnWTMx6X/wkn9gIYucVfyJJf4dMmOgnPcV4aE3LU+iQZQNCdxei5DNctUKEEgBh0cim/vXNaDBvstMm0upTs33RRtM0K6jS5QBHzRgAIABM7zkgsc7PCQSWo9AQCbOUe4YhARpVy4TRi6s/fzMrd3Z6bhf8GK4arTGTwcr/5FoC/5rnjjwCTpyZLrsRxDMvnmbAWjJ1fKNQl0i1HhxS4biEkwNFunxfLkN8iQ6aJD5XcpMIlNNtqwhPClCkv9Us8/yazFKobIbjRdZQ0TDuTz9YGNTUj3Dxb05GUfY0auIB2y8Ma82tGdflxCBBSOYZsLH1opDA1u7C1buwPGbxlQxRNkf1PDgn3CflXke1eEfbwGHXi5Yqr2E0yDFfY1dBzYZQtXkx7i1xFb7WNZrCj5w5cjmsYGRc1yOJzgX6VyhZaUhEgIJGqx3XKll0ysFuVBN1ZLJAggeLn9ftwBYKu/1q6d1h0ixKSYZtXeWRFTus0HEnTh0DO1+N7jpnSOO40o5Pj7Ur0DJ7wsZXmRTqutGlaZJWuCKwiDs5RRJ7nbvv1cO2yP0VwCCAjSDOfX
+ iRxvT+Uz
+ be9IV3lSbweBgMFbLdvLzTr6Po5kWcwBZ1wPJ2o0ln0uOE9GXcWHlNZzx+mbh5SK3IZMZj+c1wY964fw8x0zJwt0gUxxJI7Cr4DuExI62WrIwCqkUTV8iCRwv/3yDYSzANkDlgUYpiKR3//qoRmV9DzRvJkkza5tfMhc/foWNNt0kWjj28ZDdXUjvFPVjUNtEQ2l4dCQ7jOA1/bgaBkd/1I4eOl5Cm7fHsJ1JTDjFXf+xKixQafLJcZ6qQHFODFPBp/ECuyI2+LUBbIRhogHIVjRcMQY/eC1Jd3k9l9SzIoFb0gyrwNoZGpLTZHcc6tjfIoja0a9ljhDKQMicUbhRIldlwfjTFq3k93TDBur0BhJ4fzFzzAJFeNTQDOx4KOSAZoYnr9D7knvvrWCIKM5ubjT7pNWggaUSllc8LoS6B/NgA04=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -128,58 +142,82 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-xas_store() clears the marks of an entry before it replaces the entry
-with NULL.
+On 2026-11-02 05:06 PM, Bjorn Helgaas wrote:
+> On Mon, Nov 02, 2026 at 07:36:34AM -0800, Vipin Sharma wrote:
+> > struct pci_saved_state is private to the PCI core and its in-memory
+> > layout is not a stable ABI. Add helpers to serialize it into a
+> > caller-provided buffer and rebuild it in the next kernel with a stable
+> > struct pci_saved_state_ser ABI. Using caller-provided buffers allows
+> > drivers to embed the serialized saved state directly in their own
+> > KHO-preserved data with a single allocation and lifetime.
+>
+> Acked-by: Bjorn Helgaas <bhelgaas@google.com>
 
-page_cache_delete() calls xas_init_marks() after xas_store() whether it
-stored a shadow entry or NULL, so a folio removed without a shadow, as
-POSIX_FADV_DONTNEED and drop_caches do, has its marks cleared twice.
-With 4K folios that is about 6% of the time it takes to drop clean page
-cache.
+We discussed this patch off-list this morning. I'll sharing the context
+here since you were not there Bjorn.
 
-Call xas_init_marks() only after storing a shadow entry, whose marks
-xas_store() leaves alone. Dropping 8 GiB of 4K folios, median of five
-runs, averaged over two boots of each kernel, in a 32 vCPU VM:
+The ABI added by this patch is not actually stable across kernel
+versions.
 
-                          before    after
-  POSIX_FADV_DONTNEED    1517 ms  1423 ms
-  drop_caches            1515 ms  1422 ms
+struct pci_saved_state_ser is stable, but the contents of each
+capability entry are not:
 
-Signed-off-by: Qiliang Yuan <odys.yuan@gmail.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
----
-V1 -> V2:
-- Explain the condition in a comment (Jan Kara)
-- Add Reviewed-by from Jan
-- Rebase on v7.4-rc1
+> > +struct pci_cap_saved_data_ser {
+> > +	u16 cap_nr;
+> > +	u16 extended;
+> > +	u32 size;
+> > +	u8 data[];
+> > +} __packed;
 
-v1: https://lore.kernel.org/r/20261030-bug-mm-filemap-init-marks-once-v1-1-699835fc6690@gmail.com
----
- mm/filemap.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+@data is a memcpy() of the per-capability save buffer, and the layout
+of that buffer is not defined by the device or the spec. It is whatever
+registers that capability's pci_save_*_state() function happens to
+read, in whatever order it reads them. 
 
-diff --git a/mm/filemap.c b/mm/filemap.c
-index b74bc1e5015c6..c2effedf975a2 100644
---- a/mm/filemap.c
-+++ b/mm/filemap.c
-@@ -140,7 +140,9 @@ static void page_cache_delete(struct address_space *mapping,
- 	VM_BUG_ON_FOLIO(!folio_test_locked(folio), folio);
- 
- 	xas_store(&xas, shadow);
--	xas_init_marks(&xas);
-+	/* If xas_store() didn't clear marks, do it now */
-+	if (shadow)
-+		xas_init_marks(&xas);
- 
- 	folio->mapping = NULL;
- 	/* Leave folio->index set: truncation lookup relies upon it */
+None of that is described in include/linux/kho/abi/pci.h, so this patch
+implicitly turns the private layout of every capability save buffer in
+drivers/pci/ into Live Update ABI. Someone changing
+pci_save_pcie_state() or pci_save_aer_state() has no way of knowing they
+just broke Live Update compatibility.
 
----
-base-commit: 6628e7d4c6b25c8d18f1345e3a20d21829aae7e4
-change-id: 20261030-bug-mm-filemap-init-marks-once-b83c6aa67bab
+And these layouts do change. Commit 898585172fa7 ("PCI: save and restore
+PCIe 2.0 registers") grew the PCIe buffer from 4 to 7 registers, and the
+AER, LTR, L1SS, PTM, TPH and DPC buffers were all added over time.
 
-Best regards,
--- 
-Qiliang Yuan <odys.yuan@gmail.com>
+This is the problem I was trying to solve with:
 
+  https://lore.kernel.org/linux-pci/20260924173501.856380-1-dmatlack@google.com/
+
+That series replaces the per-capability buffers with a single store
+indexed by config space offset.
+
+Where a saved value goes is then determined by the device's config
+space, not by the kernel that saved it, so the PCI core can change which
+registers it saves without changing what the data means. Serializing
+that for Live Update should be trivial (a size/flags header plus the
+bitmap and the values). The cross-kernel compatibility question also
+becomes explicit and per-register ("the previous kernel saved offset X
+and this kernel doesn't restore it") instead of a size mismatch on an
+opaque blob.
+
+Bjorn, this is also related to your last comment:
+
+> I think it would be helpful if the names of "config_space[]" and
+> "caps[]" hinted at the connection between them (both are in config
+> space).
+
+With the offset-indexed layout the two are no longer separate. The
+header and the capability registers are all just DWORDs in the same
+config space map in struct pci_saved_state.
+
+So I'd suggest that we land the saved state series first and then rebase
+this patch on top of it.
+
+I can send a v2 of that series this week that addresses Josh's feedback,
+rebases on top of the PCI Live Update v10 series, and includes the
+serialization helpers. We can use that as the basis for the next version
+of this series.
+
+Thanks,
+David
 
