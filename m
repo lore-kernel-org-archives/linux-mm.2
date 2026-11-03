@@ -1,99 +1,90 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13348606A32D
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 12:01:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28920606A329
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 12:04:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=mailbox.org header.i=@mailbox.org header.a=rsa-sha256 header.s=mail20150812 header.b=oCXj5qzc
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=DlEqMa82
 Received: by kanga.kvack.org (Postfix)
-	id 1DB776B05B4; Tue,  3 Nov 2026 07:01:16 -0500 (EST)
+	id 497646B05B5; Tue,  3 Nov 2026 07:04:08 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1ABE76B05B5; Tue,  3 Nov 2026 07:01:16 -0500 (EST)
+	id 46E636B05B6; Tue,  3 Nov 2026 07:04:08 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0A0F06B05B6; Tue,  3 Nov 2026 07:01:16 -0500 (EST)
+	id 3AB506B05B7; Tue,  3 Nov 2026 07:04:08 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id C60236B05B4
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 07:01:15 -0500 (EST)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 5F228403D7
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 12:01:15 +0000 (UTC)
-X-FDA: 85393667310.27.A8E4E9F
-Received: from mout-p-102.mailbox.org (mout-p-102.mailbox.org [80.241.56.152])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 7CAAF140008
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 12:01:13 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=mailbox.org header.s=mail20150812 header.b=oCXj5qzc;
-	spf=pass (imf26.hostedemail.com: domain of manuelebnerli@mailbox.org designates 80.241.56.152 as permitted sender) smtp.mailfrom=manuelebnerli@mailbox.org;
-	dmarc=pass (policy=reject) header.from=mailbox.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 172E76B05B5
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 07:04:08 -0500 (EST)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 9F8C01603DC
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 12:04:07 +0000 (UTC)
+X-FDA: 85393674534.23.CCA47EE
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf21.hostedemail.com (Postfix) with ESMTP id DE2651C0004
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 12:04:05 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DlEqMa82;
+	spf=pass (imf21.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793707273;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=O9atIHlIh/2xYLtt0bx0cLcke1aRGKizVOlpIySp6oE=;
-	b=bLNol+OfvK/HVMV2OEWlUaz7iYvKF+2G1R7mwDKwlS+OicgmY6aFU/AyXZGngV0ybpFhzH
-	p4CeqyWwMWuNpPybYtMeksmDr1WurQrIgQa/Zu22ON8NxLIhGrOF4S6H1v2kUCQx2Ey5Sy
-	Nju+BywMXSjc3HHvvWvdwOnJBUH2V00=
+	s=arc-20220608; t=1793707446;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=5WHfBAJW7tBZ/jpc0vscD0oFhU+5t1WH3jV5FJLIBPk=;
+	b=SxS/gCK555XBTvsCJkdrSw749gRmc48oSQeXC2BqV+TLifV8tzyZ931srRZq8Vdi1cfEqa
+	cnE4nBoWW7f1RbYrjnlzp+E2Okrp/d8hDacFV4v7q98faax20gcxWWlrDAZLRa/eaPlwtB
+	Yvs45RHH3x7dY+Ng9NALZXi8Q9sy6xM=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793707273;
-	b=0Yb3wa6bYmJPT1I5loP8Xdy9CpW0VSYFBf0n3MaBscs0ObzkPvliK6OkIio4VSYi7uRvMs
-	+6zW+Uo5RWahvziEgVRq/zItSc1zpBhv2sgqRDMs2+tGsHpBJdFDrxTvN7NvH9GF9wcj8L
-	NCRnom1bE+iiZOXaO4u5oj6V+ctPIC4=
+	t=1793707446;
+	b=PJlSWWR+6Gew7SKnZvJUijRi9hzI/TWhTasxJ6b0BuJTjb5+t/QQM6eRkihbE3XvRq6ZgK
+	4C6i1np6UJZnMpCIoRvIh7/8E5nZN5Gygj9YvFPXx45wZ/Go/Av7Ct6O0YPp55kN4RhOS1
+	+lgk0VjhONHLk4LLF4nNnwya8clBsGo=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=mailbox.org header.s=mail20150812 header.b=oCXj5qzc;
-	spf=pass (imf26.hostedemail.com: domain of manuelebnerli@mailbox.org designates 80.241.56.152 as permitted sender) smtp.mailfrom=manuelebnerli@mailbox.org;
-	dmarc=pass (policy=reject) header.from=mailbox.org
-Received: from smtp102.mailbox.org (smtp102.mailbox.org [IPv6:2001:67c:2050:b231:465::102])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519MLKEM768 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mout-p-102.mailbox.org (Postfix) with ESMTPS id 4jJnGY6bz6zKn9C;
-	Tue, 03 Nov 2026 13:01:09 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1793707270;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=O9atIHlIh/2xYLtt0bx0cLcke1aRGKizVOlpIySp6oE=;
-	b=oCXj5qzcbMvjvKJrNYqY/ioBLqSxBa8G++IgdAp07ig/AVYcNGqwEe4Y6mQkXYvgsKOXzJ
-	GybBTvDJS6n3WSv17sx/I5Uz8wOH9A8A2IBuUi8sAfhX2zu59xuiMdL82HRoN+Re+92qne
-	bjrHB2o1AL8uqVUQACYmtHtwZzP4pLb5Fp0+DBUy31knEtICxt+YnvkXsPoS9Q5ZizX2ee
-	ltWAOLhXw5fMVXOWuit38T+sgLCWqxhwE0ej6hVYjJY08Cwv1j6OPct5qPxeiUMItLS0FG
-	jhxCfU9CaCApLp3vMlNICA9dp6nymGO8ZJwpHQHRt4aO0WwsUZBG1HOz0vdjMQ==
-From: Manuel Ebner <manuelebnerli@mailbox.org>
-To: SJ Park <sj@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Randy Dunlap <rdunlap@infradead.org>
-Cc: Manuel Ebner <manuelebnerli@mailbox.org>,
-	Aveline Noir <jm5905938@gmail.com>,
-	damon@lists.linux.dev,
-	linux-mm@kvack.org,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v3] Docs/admin-guide/mm/damon/reclaim: improve language
-Date: Tue,  3 Nov 2026 13:00:42 +0100
-Message-ID: <20261103120043.100887-2-manuelebnerli@mailbox.org>
-X-Mailer: git-send-email 2.55.0
-X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-MBO-RS-META: gbwzquqe8o7tfnmr3pdwjcxfgqjuyrdj
-X-MBO-RS-ID: 2971e257b0a29a79e8f
-X-Rspamd-Server: rspam06
-X-Stat-Signature: r4d89f6uarpci3dmp7mhysmzhi6ifirn
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: 7CAAF140008
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DlEqMa82;
+	spf=pass (imf21.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 108F840230;
+	Tue,  3 Nov 2026 12:04:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8640E1F000C1;
+	Tue,  3 Nov 2026 12:04:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793707444;
+	bh=5WHfBAJW7tBZ/jpc0vscD0oFhU+5t1WH3jV5FJLIBPk=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=DlEqMa82fbVZ/wFQkULtTKCChAspiAFzDxCBp7GTVibIsug4Us8FezHdufB+IZahV
+	 Tpal14x6qpiFlrt+hLxWaHVZQpOAszvYFFcQsM3CFa1K4pcyTZj3fl4b16BjhbqaNy
+	 ITjHL9UNi2RUO2xMHBLyGiEnjg2aqfFTWQrI2EiYWvETHs769cBEeWrhlmpxd2TzZ1
+	 ZGs5goW1XnHJ5vWmr3s1z5+tiEmSh2M6iMr0hBfwMxH8gcwTzCGUJ5VylS1L3rj93R
+	 fEVq9wAG9Q4XoPw79lqLELrgQt57eQUo5M1lh2KM4k0XwbHcs2Y4q39NZPLbv5OXxz
+	 0J/bpmgxHeEDw==
+Message-ID: <sashiko-outbox-195212@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v3] Docs/admin-guide/mm/damon/reclaim: improve language
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Manuel Ebner" <manuelebnerli@mailbox.org>, "SJ Park" <sj@kernel.org>, "Jonathan
+ Corbet" <corbet@lwn.net>, "Shuah Khan" <skhan@linuxfoundation.org>, "Randy
+ Dunlap" <rdunlap@infradead.org>
+Cc: "Aveline Noir" <jm5905938@gmail.com>, damon@lists.linux.dev, linux-mm@kvack.org
+In-Reply-To: <20261103120043.100887-2-manuelebnerli@mailbox.org>
+References: <20261103120043.100887-2-manuelebnerli@mailbox.org>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Tue, 03 Nov 2026 12:04:04 +0000
+X-Stat-Signature: riqupk93qhictz13anyqhgbpak8izgtt
+X-Rspamd-Queue-Id: DE2651C0004
 X-Rspam-User: 
-X-HE-Tag: 1793707273-460541
-X-HE-Meta: U2FsdGVkX185VRdUAL/pFyAt4mz5SxOp2+0fC6T1HBTE9F42QAnHBw6Wm6neVO3sM7K6gdCZvj4RT9dABfVeEc1laNYsP3Dap4D+SUK1x60hP7W0u8zoX5kQyMoIrhtE75+Vyexu5+OIxLRggIrjZ4NDPxTSJY1+gKPSi+d2S9cq6a57OHg7a1PKDJ2sQzSyrrSkSjJqYcpTjQDfGKBUR6Yxf+fLDx1E/FDwytOkJfs11AkLOo0dqnYxsn1jeWOeppbeH+h6wv6sFtm+0vHRjrSHsr4iNq1imZnshC6AA6C82hbQ6ChcPvj408cTFDTu5BKrm8w+afCLPC/j5d1lqWYRKthgJsAurTuGSlkLI4WzlVsUisKzhtDKkHZ2j+tiLPt6PTC3cUETeUoc3Dt0nOp6Iu2e/YWOhaFHUVSQzuz5YjkOuUXSCeeFyrr0P+OC8QlgqnaHM+pvihg8IqLL/D2XStHICMa3qlI+qk1b2EiC5+TQGzeO2a/4NDgp47TMhumoH87u8xecGCfAPkp7VJxCJanh2K7t39QdDB3N3Kq0P2pXpjXBpKTdivMnUoc4XzUv0zQGNs/tyw1bYd2UTdhXHMWYbVKtLv5JsPjfSG/jLx/YKhS0rhUK989TVy906XWsTgPpbJP3AVDakdLfJjAdpLL0IGzuRu7WjCayPrByOI1xwbegzPyk3vn/ubueeteDTznkItA5Ao/XhgDyIbjCqQ3K1pveMDL8z+nG1LfqoX1LWVOSFMP2j6gMjkzzgTlki1umbJXWKwXbAs72eSOck11vGArdCfDQjPOjhCV1mu4FN6PzWpIyEv+QzYjew07sU6IhefrTxC9n5OPVVQdZHZHQu1sRt3BBu21SKiPDClDlG1jLEjW1JRdilJY4I8oBBjsKTYHw68Lw68X6afH3/52u0OO6KQ/o78aCqBMQlOY72t0/RqMtk52F6Gp/2R0mMmK2GXxpNGNVB2m
- 5Cev1ybB
- TTxqQnL57lnGclDmOF10dYg8HRpcBa5qybqE4RboVjHDG1n58qShhcfu925lX+0seK4lnZRniGXcGgn6XNp9KzNkKawv27C5DOA3GcY1xp1yFyrYhKns2u8f4S9Cobh7uu2qT4zmlLVtU4gAvYOgr5V9wBxOfTXb1905LkrfYJmCVbwoQyg79TZzXGa5LXsjjvXzKID4YxqVfrYoCvFP9uWVwbC0wWGvbk+c4IQuA3RjrnruTRh5pkP/yNPq6xs+ud3tP2Nt17dAAofKEce1G0ZxFjBOf9JQ9wNH8TvvhUXg+aMFRp6Aevz2IJoALu9BknCFO1v5egCp0UltjBTNXGgxjXmJf2qSr9kRqhXl0Fu2LfMKshuhL87A8aA==
+X-Rspamd-Server: rspam08
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1793707445-779147
+X-HE-Meta: U2FsdGVkX1+kj3Py0hue5zPUHoSstKxvT4us49pOGa1CZT11AGg8wCiYyGGXnkc2ynm9eIYorpNW7UcMSoiMgUBEIDYrncyY4m1YMkjW2r9ynNuD0oqUpqg0+2ltxh1mexTg3PoV3v2F6exQJATFqOiISGmg3pDYaN1Kl8kSZWZdzY83Db5U9mx8wuEmmbo+5a20qd96y1l+GTqJ1ajIZvQkCXK/kKGdUYGmax2SmThfl8kyNa6hWLoP1frNLPJkRCcOJgYCIs2F5pvJYJJyMxjWa+pvlvrk0yFPCXfxp8AvT3pTsyjN7BPrOAADumr/OjnPNh3IPtCG4rV2/iXyUVZRZ8NZbPjoDjG47KLV/z07zE04mkXn1JCEt9IJQnQVM7yI9QtqFJr5g+H8G71HUlwvcUKZX9qNKQ3kTGCt3IbZQa/AmQRAsPopNGvrlhLGyKLG+LR1k8YV3mlI5PumbCnIoj22d56As54eIxxHWKWZUFMerC24oILfkMNhyca1kqAln2gnX1bCjs2jiHEmmdMO3fGnybgoo/3o+SQxvAGM1NkWvWEmWrLuh3HYOTGTebooTNe7ImXzmQ1h81sh6K/XkSMpufuGYlEqASBR0xdUEe05Jk/WmExAE3Wd82rt2fU7SAWi5HkSagEqqK7kuwCF0h9WH6civgG+Nv2hLSrK/CKaF0MgQqNTjNcpIXDqwfLoLTrEzvogVUWTBqE2ULEi6J/8r3MwhIaBVqeFe7yY6HB0ceF6EAWk1g5egs27TSXlY6Nbuu4g1cKbDpksHtRLKr2+GxanInOf1xrf1nYxccftNGpW1z7rSTAedc+OsaNI94Vv+C4/C/izqHNIuBuBrb9E57ZaDMxtiqc1jFYydueyYGJhMSKQw6R9ZVSsYjOEO4+bcfXaWbjTK3uzchWB3GFhE2Eww37Yh9s231gMfQyOh726g4F3ZUFdnrKlwSFN/V9JEuIR4ofYPsZ
+ tfEfpl7G
+ 3gYWllKLQGaURNBgZQb71h4rb9KbUDQiCkRdG3WLg+El5rTjqRnN92u8CMBCzaKlJS/9qVAQ5wqyKjGiW10IyuE451X5gwS8oypQfgJ+xyC63iosEo3OmdQFsQB56VM+P5LOuuAucFz+Fpudc3NX9FnMEfa4kx/MI7ofRO75yaTf9HBF+6yZ2aapQnR7Z5WDvBkUbbguAJ6TKnysnTupQ7mdDOt6RWI5kAdfZ16n9KJlcq9NmkPyikcTRo+d4djFfT0XZ1OKzKu67+cOmBpwKKrb6wSBcbFCtJXRWdfQTlxM13LjMzrwJf03dBzMlLNd9iCfxUXPg3N+FjUXlQgr9qcANgeIRRZiyGu0J3aSoEvnkbEtU+vW7oRMmt91aF4nPEYpwTE2rM2pAgArJ+UXOetwTOwX7BDhhiDlhXtua4ozPzk0y6h7tRetTV+p4LNkGxvL3k3c+8/4LonPe4pG9wClzGOookeSCkUfEf2YzdBty2WG9SmYw0cX8+9hhIwaxRq88j1nZ147en735ID1Vg30na5zYPusN5fOjRa0w/7ZY8RFbjFLVejCce0mfBFZ2ILF5TiMwuBJPqw5U6BQK66eBZAVWPS6d6kKpTTuRHTrcrhQN4YhKd3tFwagF92q54cYs7B1yn5djcjs=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,153 +92,95 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
+X-Archived-By: <archiver.kernel.org>
 
-Fix upper case.  Fix tenses.  Replace 'set as' with 'set to'.  Add space after
-sentence to make it double space.  Rewrite and refine complex sentences.
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [Low] Docs/mm/damon: typo 'aimes' introduced in reclaim.rst
+--
 
-CC: Aveline Noir <jm5905938@gmail.com>
-Signed-off-by: Manuel Ebner <manuelebnerli@mailbox.org>
----
-That's the final version.
+commit 553db5dbc4617619eacc8a4470aca6b0504960ff
+Author: Manuel Ebner <manuelebnerli@mailbox.org>
 
-[v3]
- Combine both patches into one
- Incorporate SJ's feedback
+Docs/admin-guide/mm/damon/reclaim: improve language
 
-[v2]
- https://lore.kernel.org/all/20261027185938.2526259-2-manuelebnerli@mailbox.org/
- Include suggestions from SJ and Aveline
- Split [v1] into
-  [1/2 v2] Docs/admin-guide/mm/damon/reclaim: improve grammar and style
-  [2/2 v2] Docs/admin-guide/mm/damon/reclaim: rewrite complex parts
- Fixed an upper case and a missing double space -> [1/2 v2]
+This commit improves the grammar, tense consistency, and phrasing in the
+DAMON_RECLAIM administration guide documentation.
 
-[v1]
- https://lore.kernel.org/all/20261015080623.808458-2-manuelebnerli@mailbox.org/
----
- .../admin-guide/mm/damon/reclaim.rst          | 43 ++++++++++---------
- 1 file changed, 22 insertions(+), 21 deletions(-)
+> diff --git a/Documentation/admin-guide/mm/damon/reclaim.rst b/Documentati=
+on/admin-guide/mm/damon/reclaim.rst
+> index 028947f5da8ec..aeb2770f1d03e 100644
+> --- a/Documentation/admin-guide/mm/damon/reclaim.rst
+> +++ b/Documentation/admin-guide/mm/damon/reclaim.rst
+> @@ -4,7 +4,7 @@
+>  DAMON-based Reclamation
+>  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> =20
+> -DAMON-based Reclamation (DAMON_RECLAIM) is a static kernel module that a=
+imed to
+> +DAMON-based reclamation (DAMON_RECLAIM) is a static kernel module that a=
+imes to
+>  be used for proactive and lightweight reclamation under light memory pre=
+ssure.
+>  It doesn't aim to replace the LRU-list based page_granularity reclamatio=
+n, but
+>  to be selectively used for different level of memory pressure and requir=
+ements.
 
-diff --git a/Documentation/admin-guide/mm/damon/reclaim.rst b/Documentation/admin-guide/mm/damon/reclaim.rst
-index e4e2ffa52e..789db7099d 100644
---- a/Documentation/admin-guide/mm/damon/reclaim.rst
-+++ b/Documentation/admin-guide/mm/damon/reclaim.rst
-@@ -4,7 +4,7 @@
- DAMON-based Reclamation
- =======================
- 
--DAMON-based Reclamation (DAMON_RECLAIM) is a static kernel module that aimed to
-+DAMON-based reclamation (DAMON_RECLAIM) is a static kernel module that aimes to
- be used for proactive and lightweight reclamation under light memory pressure.
- It doesn't aim to replace the LRU-list based page_granularity reclamation, but
- to be selectively used for different level of memory pressure and requirements.
-@@ -30,12 +30,13 @@ guests could mitigate this problem.
- How It Works?
- =============
- 
--DAMON_RECLAIM finds memory regions that didn't accessed for specific time
--duration and page out.  To avoid it consuming too much CPU for the paging out
--operation, a speed limit can be configured.  Under the speed limit, it pages
--out memory regions that didn't accessed longer time first.  System
--administrators can also configure under what situation this scheme should
--automatically activated and deactivated with three memory pressure watermarks.
-+DAMON_RECLAIM finds memory regions that have not been accessed for a
-+specified period and attempts to page out those.  To avoid it consuming
-+too much CPU for the paging out operation, a speed limit can be configured.
-+Within the configured speed limit, it prioritizes regions that have been
-+idle longer for reclamation.  System administrators can also configure under
-+what situation this scheme should automatically be activated and deactivated
-+with three memory pressure watermarks.
- 
- Interface: Module Parameters
- ============================
-@@ -55,10 +56,10 @@ enabled
- 
- Enable or disable DAMON_RECLAIM.
- 
--You can enable DAMON_RECLAIM by setting the value of this parameter as ``Y``.
--Setting it as ``N`` disables DAMON_RECLAIM.  Note that DAMON_RECLAIM could do
-+You can enable DAMON_RECLAIM by setting the value of this parameter to ``Y``.
-+Setting it to ``N`` disables DAMON_RECLAIM.  Note that DAMON_RECLAIM could do
- no real monitoring and reclamation due to the watermarks-based activation
--condition.  Refer to below descriptions for the watermarks parameter for this.
-+condition.  Refer to below descriptions of the watermarks parameter for this.
- 
- commit_inputs
- -------------
-@@ -66,9 +67,9 @@ commit_inputs
- Make DAMON_RECLAIM reads the input parameters again, except ``enabled``.
- 
- Input parameters that updated while DAMON_RECLAIM is running are not applied
--by default.  Once this parameter is set as ``Y``, DAMON_RECLAIM reads values
-+by default.  Once this parameter is set to ``Y``, DAMON_RECLAIM reads values
- of parameters except ``enabled`` again.  Once the re-reading is done, this
--parameter is set as ``N``.  If invalid parameters are found while the
-+parameter is set to ``N``.  If invalid parameters are found while the
- re-reading, DAMON_RECLAIM will be disabled.
- 
- Once ``Y`` is written to this parameter, the user must not write to any
-@@ -88,7 +89,7 @@ identifies the region as cold, and reclaims it.
- autotune_monitoring_intervals
- -----------------------------
- 
--If this parameter is set as ``Y``, DAMON_RECLAIM automatically tunes DAMON's
-+If this parameter is set to ``Y``, DAMON_RECLAIM automatically tunes DAMON's
- sampling and aggregation intervals.  The auto-tuning aims to capture meaningful
- amount of access events in each DAMON-snapshot, while keeping the sampling
- interval 5 milliseconds in minimum, and 10 seconds in maximum.  Setting this as
-@@ -113,10 +114,10 @@ quota_sz
- 
- Limit of size of memory for the reclamation in bytes.
- 
--DAMON_RECLAIM charges amount of memory which it tried to reclaim within a time
--window (quota_reset_interval_ms) and makes no more than this limit is tried.
--This can be used for limiting consumption of CPU and IO.  If this value is
--zero, the limit is disabled.
-+DAMON_RECLAIM charges the amount of memory which it tried to reclaim within a time
-+window (quota_reset_interval_ms) and stops trying to reclaim memory when this limit
-+is reached.  This can be used for limiting consumption of CPU and IO.  If this value
-+is zero, the limit is disabled.
- 
- 128 MiB by default.
- 
-@@ -137,7 +138,7 @@ quota_mem_pressure_us
- 
- Desired level of memory pressure-stall time in microseconds.
- 
--While keeping the caps that set by other quotas, DAMON_RECLAIM automatically
-+While keeping the caps that are set by other quotas, DAMON_RECLAIM automatically
- increases and decreases the effective level of the quota aiming this level of
- memory pressure is incurred.  System-wide ``some`` memory PSI in microseconds
- per quota reset interval (``quota_reset_interval_ms``) is collected and
-@@ -219,7 +220,7 @@ monitoring.  This can be used to set lower-bound of the monitoring quality.
- But, setting this too high could result in increased monitoring overhead.
- Please refer to the DAMON documentation (:doc:`usage`) for more detail.
- 
--Note that this must be 3 or higher. Please refer to the :ref:`Monitoring
-+Note that this must be 3 or higher.  Please refer to the :ref:`Monitoring
- <damon_design_monitoring>` section of the design document for the rationale
- behind this lower bound.
- 
-@@ -263,7 +264,7 @@ This parameter is for setting and getting the :ref:`address unit
- 
- ``monitor_region_start`` and ``monitor_region_end`` should be provided in this
- unit.  For example, let's suppose ``addr_unit``, ``monitor_region_start`` and
--``monitor_region_end`` are set as ``1024``, ``0`` and ``10``, respectively.
-+``monitor_region_end`` are set to ``1024``, ``0`` and ``10``, respectively.
- Then DAMON_RECLAIM will work for 10 KiB length of physical address range that
- starts from address zero (``[0 * 1024, 10 * 1024)`` in bytes).
- 
-@@ -280,7 +281,7 @@ skip_anon
- 
- Skip anonymous pages reclamation.
- 
--If this parameter is set as ``Y``, DAMON_RECLAIM does not reclaim anonymous
-+If this parameter is set to ``Y``, DAMON_RECLAIM does not reclaim anonymous
- pages.  By default, ``N``.
- 
- 
--- 
-2.55.0
+[Severity: Low]
+In the DAMON-based Reclamation introduction in
+Documentation/admin-guide/mm/damon/reclaim.rst, "aimes" is a typo. Should
+this be "aims" instead?
 
+[ ... ]
+
+> @@ -88,7 +89,7 @@ identifies the region as cold, and reclaims it.
+>  autotune_monitoring_intervals
+>  -----------------------------
+> =20
+> -If this parameter is set as ``Y``, DAMON_RECLAIM automatically tunes DAM=
+ON's
+> +If this parameter is set to ``Y``, DAMON_RECLAIM automatically tunes DAM=
+ON's
+>  sampling and aggregation intervals.  The auto-tuning aims to capture mea=
+ningful
+>  amount of access events in each DAMON-snapshot, while keeping the sampli=
+ng
+>  interval 5 milliseconds in minimum, and 10 seconds in maximum.  Setting =
+this as
+> @@ -113,10 +114,10 @@ quota_sz
+
+[ ... ]
+
+> @@ -137,7 +138,7 @@ quota_mem_pressure_us
+> =20
+>  Desired level of memory pressure-stall time in microseconds.
+> =20
+> -While keeping the caps that set by other quotas, DAMON_RECLAIM automatic=
+ally
+> +While keeping the caps that are set by other quotas, DAMON_RECLAIM autom=
+atically
+>  increases and decreases the effective level of the quota aiming this lev=
+el of
+>  memory pressure is incurred.  System-wide ``some`` memory PSI in microse=
+conds
+>  per quota reset interval (``quota_reset_interval_ms``) is collected and
+
+Also, this isn't a bug, but in the autotune_monitoring_intervals section ju=
+st
+above:
+
+  Setting this as ``N`` disables the auto-tuning.
+
+and in the quota_autotune_feedback section just below quota_mem_pressure_us:
+
+  While keeping the caps that set by other quotas, DAMON_RECLAIM automatica=
+lly
+
+should those also be updated to "Setting this to" and "that are set by" to
+match the changes in this patch?
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261103120043.1008=
+87-2-manuelebnerli@mailbox.org?part=3D1
 
