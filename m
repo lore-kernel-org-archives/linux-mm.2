@@ -1,114 +1,97 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06EB1606BA14
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 15:03:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 398A2606D2D3
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 15:05:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=YIbN6ewn
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=i7EFxg3V
 Received: by kanga.kvack.org (Postfix)
-	id 2F2F66B05C1; Tue,  3 Nov 2026 10:03:37 -0500 (EST)
+	id 518056B05B5; Tue,  3 Nov 2026 10:05:39 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2C9ED6B05C3; Tue,  3 Nov 2026 10:03:37 -0500 (EST)
+	id 4C9A86B05C2; Tue,  3 Nov 2026 10:05:39 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1E0F86B05C4; Tue,  3 Nov 2026 10:03:37 -0500 (EST)
+	id 3B91D6B05C4; Tue,  3 Nov 2026 10:05:39 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 00AF96B05C1
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 10:03:36 -0500 (EST)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 8ECA0C048F
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 15:03:36 +0000 (UTC)
-X-FDA: 85394126832.07.53B0435
-Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com [209.85.216.69])
-	by imf06.hostedemail.com (Postfix) with ESMTP id B25FC180010
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 15:03:34 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b=YIbN6ewn;
-	spf=pass (imf06.hostedemail.com: domain of 3xffpagYKCLoxjfsohlttlqj.htrqnsz2-rrp0fhp.twl@flex--seanjc.bounces.google.com designates 209.85.216.69 as permitted sender) smtp.mailfrom=3xffpagYKCLoxjfsohlttlqj.htrqnsz2-rrp0fhp.twl@flex--seanjc.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 233886B05B5
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 10:05:39 -0500 (EST)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id B3239160201
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 15:05:38 +0000 (UTC)
+X-FDA: 85394131956.28.CFE7572
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 0F6CD140006
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 15:05:36 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=i7EFxg3V;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf26.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793718214;
+	s=arc-20220608; t=1793718337;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=U1cgiMD/xdrAAoWIqAxeQiqT29OTjecADPn89igAbnA=;
-	b=cHPg7NfntRO5RVQw1XWtQlvoDW4YnfwyICkVJLEA0ANGeyPwzW9wcC9pmhI/s1Yle8o7+0
-	YevleBPgHahHGLOf4531xzpIWbrPBi1HPjsf9SBB5hAIBokQb+d8wsz8z6ltMcUVnG+uGa
-	IDszK72qtRmdsbR39R0r6ENUNf8YKsc=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793718214;
-	b=6YXD782kGOcUbLQiqNRDY9r82gTKwb1oetcA4r8FJzQGn4vnLKDqCG81R0iu4KnTfuKzLb
-	iXClYDX+BlrztwG/+BIrkA58VX4GTRO/pTupAWwlM+C8wVVjJCHUdqMMBLELz1tgsJYldt
-	I/pE/sQM4NelwA5GOsHYC3z3dWbK1CY=
+	bh=IPfcmrcYcWX5lHrSru9Jn6n30jillltoM7EEkw0R5FY=;
+	b=M0CE+ytkpo1GoRScfeV/f05AVAVws3/6HBX4dichWWNwoqZveZTADEr0lqVGHMxArSUBEW
+	IWCN+HXDfkEOmvJUizWYptZyiJ/jUGD/JCpbUPUReNiYnG22iO4JH8cxFEs/qVWKwL+wAa
+	0SBwHNf1Eisuzw3vOa4V/fv99r/V6Js=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b=YIbN6ewn;
-	spf=pass (imf06.hostedemail.com: domain of 3xffpagYKCLoxjfsohlttlqj.htrqnsz2-rrp0fhp.twl@flex--seanjc.bounces.google.com designates 209.85.216.69 as permitted sender) smtp.mailfrom=3xffpagYKCLoxjfsohlttlqj.htrqnsz2-rrp0fhp.twl@flex--seanjc.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-pj1-f69.google.com with SMTP id 98e67ed59e1d1-3ae6fda7a00so3831824a91.2
-        for <linux-mm@kvack.org>; Tue, 03 Nov 2026 07:03:34 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1793718213; x=1794323013; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=U1cgiMD/xdrAAoWIqAxeQiqT29OTjecADPn89igAbnA=;
-        b=YIbN6ewnZ9Dj4xQt9CnwX7Suw6x9a351q2rm2y8dRvpyYUi7QPRaNIaJD2cvxEqW3V
-         FZLvjrTOeTa3O7ukqixdKBANvDihILBU8N0qmqDiFmNklj+vCGQPbz+8DY/t1oVCQB7y
-         R3Bp6h+vlt7WNbpLV7Yh31INTfeyOW4j8XOL59MwMeOiaHFIHTtYl7pFuuqVCuN13pDj
-         6cEdlr1oE9qMINx68lPFarWBVuC7IAGeEVneVK3qUpAO5vZjpROavAzZklxwu47rPrrp
-         kfvniR9rSDuM7YLN7/2mFMBlx+POLdR0Q58Rl6ab5OhhaEKrHXANkTCBUDXWrXIqmlBx
-         s+AQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793718213; x=1794323013;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=U1cgiMD/xdrAAoWIqAxeQiqT29OTjecADPn89igAbnA=;
-        b=NIzXZ3A2MMK1z023AsJbEWnvfOARzEGAqsYVlQLNRhPxa9u8CjycAfixSOEMh/Yssk
-         SqpCG1v6GaYu+PONhOy+kAxQHpSaHVvKiCWJ7LIZGoVHlnXw0fMXFMa5dBDLHraoW/q3
-         0ca0s/W5J4XPUWctgOoeX4PIgybrFZEH6fvmobnS1onw5ijmXknxDrSY88NoIT57PnUe
-         kpzBsY1WjOndq7Fe/j7LLKhe9Ao2JmTr/dsYDNEMLkbq/Tx5Xe2uXCdj9AT54coFdGzv
-         8HWRgl6Cz78he13JLUMRWSj/MifyB3z6ow8YO8sc+Ulpw/L/2TZIx+dtHo69vtPkjYrc
-         6JAw==
-X-Forwarded-Encrypted: i=1; AKwUvBwCXxamvPChj0SuTU8sxPirjK24G9Rb6Z55wv9uXDO2DFOaNOFXNkMO7FHRXSbdr/pvJfklm1p3Cw==@kvack.org
-X-Gm-Message-State: APuU4Z/TDY2nOo6aCi4NVixDa9zRndpnqW0zuPVZAmZ4pU1e9z76m9n1
-	CHiuPWUK3MckdalYz037X52xdTqAHRCLE/b3uBohBtpJBdrcJWuUtHL8rYtXaaAZlzoqfhOr5qo
-	0hj8OMw==
-X-Received: from pjdn32.prod.google.com ([2002:a17:90a:2ca3:b0:3a8:837d:95c7])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:52c5:b0:3ac:a11a:7c79
- with SMTP id 98e67ed59e1d1-3ae89776aebmr10680806a91.16.1793718213083; Tue, 03
- Nov 2026 07:03:33 -0800 (PST)
-Date: Tue, 3 Nov 2026 07:03:31 -0800
-In-Reply-To: <b9ed9dd4-a1d0-466b-a6cd-89a4e70abed0@suse.de>
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=i7EFxg3V;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf26.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793718337;
+	b=EYdxRDyVKh+J+POkmozV+kWAl5oKI00FTnZ9WHjmPpluBJ62oGvgj7dtsoZBVbSPAiUqhA
+	a7hMPNMRTYc/OL7j4o3AMMsKM6NL3BBqSVmywt0BvR61HhM07CMYxd0GwL8wzEfP+GzI7m
+	aQuelzeiZ4UMqzCzAofuS6GzIzpg+kM=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 8576060233;
+	Tue,  3 Nov 2026 15:05:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAE301F000C1;
+	Tue,  3 Nov 2026 15:05:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793718336;
+	bh=IPfcmrcYcWX5lHrSru9Jn6n30jillltoM7EEkw0R5FY=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=i7EFxg3V7LiVQlqu8g676hJBANeRvsSGORz8SVztNkzVPMstOH8WIxPuhsKQjBDCt
+	 Jmw3i2bsC8Nr9dlBur0QU12T0/idc3zOpSS4jruSjYWDlqHDfphVroG5rpf0HOkwY7
+	 d3tPTNrgnLhntZI+F9MEB3J34SQ0hvuSOqL2dIVjnS3bElYdlmrJ4GUurhiPgO7312
+	 0hdKRAcooUqT9/OF/D3wsE1mAW7cMg4am0VtyypFQDLBQDzoSCjuQZxP6EobwPLLlt
+	 JpVGZ1H8EptRPXzvCCNasSFlCEErCWvk/Cqjj0KmyQhweuHYzUpdyX3q3fjT2zYGb/
+	 OvneJ4V790e/Q==
+From: SJ Park <sj@kernel.org>
+To: Manuel Ebner <manuelebnerli@mailbox.org>
+Cc: SJ Park <sj@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Aveline Noir <jm5905938@gmail.com>,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3] Docs/admin-guide/mm/damon/reclaim: improve language
+Date: Tue,  3 Nov 2026 07:05:28 -0800
+Message-ID: <20261103150528.88546-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20261103120043.100887-2-manuelebnerli@mailbox.org>
+References: 
 X-Archived-By: <archiver.kernel.org>
-Mime-Version: 1.0
-References: <20261029143336.390231-3-clopez@suse.de> <20261029175203.5bdd51d7@p-imbrenda>
- <df9dc526-4275-4784-8a0c-2e4fa8e96402@suse.de> <20261030133939.630e29af@p-imbrenda>
- <auis0SaMkRB6odsK@google.com> <b9ed9dd4-a1d0-466b-a6cd-89a4e70abed0@suse.de>
-Message-ID: <aun3w8gxwlmRy-GW@google.com>
-Subject: Re: [RFC PATCH 0/4] KVM: x86/mmu: don't zap secondary MMU on
- permission upgrade
-From: Sean Christopherson <seanjc@google.com>
-To: "Carlos =?utf-8?B?TMOzcGV6?=" <clopez@suse.de>
-Cc: Claudio Imbrenda <imbrenda@linux.ibm.com>, kvm@vger.kernel.org, linux-mm@kvack.org, 
-	pbonzini@redhat.com, linux-s390@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: B25FC180010
-X-Spam-Status: No, score=-18.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	USER_IN_DEF_DKIM_WL autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: u5drqzujgwmz1ce777egwfbibput9p6p
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 0F6CD140006
+X-Stat-Signature: 3zsqrad71wjtnykkrdaf6gbxpf7zs4k5
 X-Rspam-User: 
-X-HE-Tag: 1793718214-423299
-X-HE-Meta: U2FsdGVkX18VCrQPSNwpFA+w+XbYz4H/lIiLV6tuPaf2anE99bkzsYhBlrPVkgLP7qz9+ZcAujgzPzHuQoOC7oudeHPRwFlP1ex+a4Tu+mz8q/CwuD8wpqoT+N3BECUK4GpHuXMIMs0qFGInx7lXFYter7ObZAJpLvtFapAwKafKsYoxVfY+v64ag8uUCDZozt7240TvzpOv56U8/5ImjUqG9xf9AoNkHOnf0t83HL12UVJS6JWUqzODF6qDnAJmHsBs7DLB6xE+Sk/lbm1VhWP4TvHoDP+ZeYxQOQGJC+Mba6tNeAxy7XrJaOhDSNg9jhyWyV5CoiCuUxYFXjQ5kYDyeBSJfprwpqrRE+C49/mM+MdkRwyFPj6QvEITMdlPDA+WWi16CspdrASyHQ2HLOFz7XJKwvhbRgOGEzkdiqbCUYnayg6sRynyyjZ+ZK3+KegLMgf2/6rQjBuIk9vfRCkKRQc7SJFw+xcxCYDGcZPndSdN+JcZZteC/ZabzzsTAirFn/QmSqpewuLnS4BlBptSSvuGbwbvZOCTfe1X+uwTfupUG5tfCGNtjdxRwPuxKuglusuWOxAQC9HF7NvAIuMcrSyojm80yGL9oktN0tZ0DCjYI1gu1X8Kn17nRD40CeR+0C5jFhVY2pM3fWT1FeYmTfdxlrevjb4k4VWdrGfuvDh5LXcA7oCpQvLC2NisNm33NcBd+VxiS94n97KMuW2qXGlA0O9Op09PaSRQ4kRBg123MY3qhOgcBDKAKKVnrfEzV4DMMoR/x0aADKUWZ8jXOZtsH8s97vTKWDiu5+M7KROQyvIn3iYnpYgVwcu4K+/wKsf7oCRLUcUi7GdjhcAy6VuEnVvNGwsF+3EGjzkj8oNbCm0HO3f5ZZf0a5ZjJOd8YWPJdm7JoYsvpJGElvumfJwgLH1q62lnZ7HZWk1Io1K9omXf1wL4m2e7ZFwFzO5WQn7XJ9rBtno0Coy
- dMVl7e1d
- TCqY8wEYhYOmK6R5ySJyQ3Odad3xUmGDQfEwX2xQJQIfncWdUjHoL1hDL1jmQgSfmp2uRvt635g+Tqfa9Ho2tqjM8bCe+e2JnuhRrFeBhp4SjcfYhvVjvnhKEEe60FStd8J0x4uQV609ZPg8okdKNn8FDF+7i1RsyWSSU283RX1oqZzTw9aG9KOA0cY8K1I2xEtuqwYzQnU+72X5nNN39brOJdn3K9BQO5XEnXe+3HJzzEoy1A0unO3ug68HoxAU0M3//B3wYYaS2wn+Ff8Omp9zTcD0pB6Oz8QAGhZHLFYIMYlWpwoY6JcstsylaMcguP/LcOc6e6VwX8s/jkG1cSLygbFgLRgoQRL3b/tjRlXkE+NqKiamgSTdtfABX5nUnWFSjfCfzVDClMcBA66Gubrnmb33ksOGAarKTz3WjFgFJ6Yxje+foaiW4Eow/gAshL6H8KudFl9LHaT4bb6iUPVlwRUZ3b1072YX5kJl9Y9k+9oTOKuFtpHIL/frxe9WnFSZqS+r9rsnogTPuvwtb+CKD4eRWbBnc2tyNjIYzpIKwDjR9SyT5IXescEfEDBKMHTO4PErpn3cEPpPU65m9D1rYTfgDbKvcVettYbf1r/IjZMTj0GrW4M4HKQ==
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1793718336-69967
+X-HE-Meta: U2FsdGVkX18sh8sBs17d9iIN+MIrlJYkB63TxnxNDYvbVGUGAA3AOR5dZWY7AZxOs+EJRZTq+ewTn5tE2nHC6RES2ohcdI+jWhCYiECRAAIZIlBM6YHZVDdfe9bNxLtUtI9rvNZ5NO3Bod1R98I7U6sSWB11N7GIQ/ETmQxHrOXxz1coiziRQy9LGoCzvy2LDqUFd7MD8TDwyvo/nlmM8EKDmb+tbk14hNeK1cikTT9KdZXyb9aCpZre0cLj3RB8s92jab9YlYXol6JL6uzh/MOp/HIQ0IuHllkNQNsjua6sVBzTSCNmg62eE4kY0d6lI1oce/UGeVZZiGsY9mDPdzTIO3xdTG8b0YIJv3H/lu+TJA6LBs2G0vvKxg9kGWAOXd46ofsYy6HVZFDAKIkKomDRl8U240wFUlY3MS8APkAncmMwR/C+actTFKCsLopCudfcT545NUAyBHHiibgdxQuNCJJc8w6qcJc98+NX3pnDglP+4zAPXwbhbPXYwvyIY0JdSVGahnMziJvC1Zy2CO648SnLMOk5AW//NZvh3uTsaIuPkfnnGP8VCYpWysBFFeZUOSyahJC3VV33l+wnXt6XhXZ0wMnRNvorRT3iTXcXKiTlM3dX3cDpRAUBe0zlwdgISjLXOrH21uCVu+bYpjZePMMtkbNAlL/13e+40isnVA61JCjjCEUdmUdFhgAO6z0+A2CQIO9i5vCMM9sJkyXi73VceHlpjs6LnMZqK8KDPEviqaKNRWZJz4zPcBJLe26ebueE2DZiiIWFChcfY+WpQ50Zdj8YT/gV2OE02Pmu7oIRwZ+rnDOQW5UL2aFgivHphTtqZdOfZrLWSVkk8y01EBJkOZLXcoKzwKTl2IdgJ9EBe4Gum9+00LHd6u8YqPqKGtKdZ8DD6ESL4MSWPr5XJWwFoyc/kF2EVBKlVkLyjp0sOFEdRUVK+nRLzns8khxHlHyn977ViIftKje
+ 7AN7Y04F
+ s1aOCQgeDdgzBNKTG2cOurOhbrKs48L5YcaAKXCT5d5zZTqbGCYXFYznV+UTXJCtKuZzccz6pL8fKsceR6I9eRdFdOOLOL/Q89W1UgAylurG/7NUGV+5fTOOLvwXvkH0A7xutBqlFQsaieP6w8G8WCubJqACLzoROIiqWb9PxX2xm+ESZYcHEZFwHkDOSbNBZ4ch0R8fsxYLBqxzBSvAfemXSQ5KSIf06tNV33xG3DmZepuQnQ70t/SCeQ61f1u08hnQcWmKzRBNut5TcU5+/1gs3L+KfoQkgat98OxglU91j+C6gEClytZsGwuIafDK1nFWD4wdF0ZJ0DORg7MF68/F0Uw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -117,122 +100,67 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Tue, Nov 03, 2026, Carlos L=C3=B3pez wrote:
-> On 11/2/26 4:31 PM, Sean Christopherson wrote:
-> > On Fri, Oct 30, 2026, Claudio Imbrenda wrote:
-> >> On Fri, 30 Oct 2026 12:11:07 +0100
-> >> Carlos L=C3=B3pez <clopez@suse.de> wrote:
-> >>
-> >> [...]
-> >>
-> >>>> regarding this series:
-> >>>>
-> >>>> on x86 you don't care what the new permissions are, because you're
-> >>>> updating when re-faulting (if I understood correctly). =20
-> >>>
-> >>> Correct.
-> >>>
-> >>>> for s390 it might be beneficial to know what the new permissions are=
-;
-> >>>> of course we could look up the vma and find out, but since you are
-> >>>> already checking the permissions, maybe you can find a way to also
-> >>>> convey the new permission bits?
-> >>>>
-> >>>> that would make our life on s390 easier :) =20
-> >>>
-> >>> Right, getting the new bits from vma->flags should be trivially done
-> >>> from the MMU_NOTIFY_PROTECTION_VMA callsites. There'd be no users in
-> >>> this series though.  The rest of architectures still need the notifie=
-r to
-> >>> tell them if the change is an upgrade, since they don't have an easy =
-way
-> >>> to grab the old RWX bits. Passing the old RWX bits from the MMU notif=
-ier
-> >>> does not seem trivial to me either.
-> >=20
-> > But why is core MM even doing mmu_notifier_invalidate_range_{start,end}=
-() in the
-> > first place?  I.e. why add MMU_NOTIFIER_RANGE_PERM_UPGRADE?  Just skip =
-the
-> > "invalidation".
->=20
-> I briefly mention this in the cover letter, but in short, denying other
-> users the notification seems like an overly intrusive change for KVM's
-> benefit.=20
+Hello Manuel,
 
-There are all of two other users:
+On Tue,  3 Nov 2026 13:00:42 +0100 Manuel Ebner <manuelebnerli@mailbox.org> wrote:
 
-  $ git grep -w "\.invalidate_range_start"
-  drivers/gpu/drm/nouveau/nouveau_svm.c:  .invalidate_range_start =3D nouve=
-au_svmm_invalidate_range_start,
-  drivers/infiniband/hw/hfi1/mmu_rb.c:    .invalidate_range_start =3D mmu_n=
-otifier_range_start,
-  virt/kvm/kvm_main.c:    .invalidate_range_start =3D kvm_mmu_notifier_inva=
-lidate_range_start,
+> Fix upper case.  Fix tenses.  Replace 'set as' with 'set to'.  Add space after
 
-and AFAICT neither of them wants an invalidation even for protection upgrad=
-es
-either.
+Please wrap lines for 75 chars per line, from the next time.  Otherwise,
+checkpatch.pl will warn like below:
 
-> A flag allows users to opt in instead.
->=20
-> It is also not clear to me that secondary MMUs are not relying on the
-> notification in some subtle way. In fact, Sashiko points out in reply to
-> patch 4 that the notification lets KVM retry the APIC access page reload
-> in case userspace shoots itself in the foot by calling
-> mprotect(PROT_READ) on it. This would require a really weird VMM,
+    WARNING: Prefer a maximum 75 chars per line (possible unwrapped commit description?)
 
-s/weird/misbehaving
+> sentence to make it double space.  Rewrite and refine complex sentences.
+> 
+> CC: Aveline Noir <jm5905938@gmail.com>
+> Signed-off-by: Manuel Ebner <manuelebnerli@mailbox.org>
+> ---
+> That's the final version.
 
-> as it would need to go looking for the page's address, but breaking this
-> would be a "regression" nonetheless. I will address this in v2.
+Thank you for revisioning.
 
-Nah, there's zero chance any real VMM is doing mprotect() on the APIC acces=
-s page.
+[...]
+> --- a/Documentation/admin-guide/mm/damon/reclaim.rst
+> +++ b/Documentation/admin-guide/mm/damon/reclaim.rst
+> @@ -4,7 +4,7 @@
+>  DAMON-based Reclamation
+>  =======================
+>  
+> -DAMON-based Reclamation (DAMON_RECLAIM) is a static kernel module that aimed to
+> +DAMON-based reclamation (DAMON_RECLAIM) is a static kernel module that aimes to
 
-More importantly, doing nothing if updating the mapping fails and APICv is =
-enabled
-is wrong.  KVM needs to ensure vmcs.APIC_ACCESS_ADDR is fresh when running =
-a vCPU
-with APICv enabled, even if that means putting the vCPU into an infinite lo=
-op.
-VMX doesn't support "inhibiting" the APIC access page, i.e. the memslot can=
-'t
-disappear while the VM is alive, and if userspace mucks with the VMA, then =
-KVM
-needs to prevent running the vCPU until the mapping is restored, irrespecti=
-ve of
-mmu_notifiers.
+Sashiko suggested [1] s/aimes/aims/ ?
 
-diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
-index 464d6ed862d5..11b24a42e482 100644
---- a/arch/x86/kvm/vmx/vmx.c
-+++ b/arch/x86/kvm/vmx/vmx.c
-@@ -6928,8 +6928,10 @@ void vmx_set_apic_access_page_addr(struct kvm_vcpu *=
-vcpu)
- 	 * APICv is enabled, but paranoia won't hurt in this case.
- 	 */
- 	slot =3D id_to_memslot(slots, APIC_ACCESS_PAGE_PRIVATE_MEMSLOT);
--	if (!slot || slot->flags & KVM_MEMSLOT_INVALID)
-+	if (WARN_ON_ONCE(!slot || slot->flags & KVM_MEMSLOT_INVALID)) {
-+		kvm_make_request(KVM_REQ_APIC_PAGE_RELOAD, vcpu);
- 		return;
-+	}
-=20
- 	/*
- 	 * Ensure that the mmu_notifier sequence count is read before KVM
-@@ -6946,8 +6948,10 @@ void vmx_set_apic_access_page_addr(struct kvm_vcpu *=
-vcpu)
- 	 * if APICv is permanently inhibited, i.e. the memslot won't reappear.
- 	 */
- 	pfn =3D __kvm_faultin_pfn(slot, gfn, FOLL_WRITE, &writable, &refcounted_p=
-age);
--	if (is_error_noslot_pfn(pfn))
-+	if (is_error_noslot_pfn(pfn)) {
-+		kvm_make_request(KVM_REQ_APIC_PAGE_RELOAD, vcpu);
- 		return;
-+	}
-=20
- 	read_lock(&vcpu->kvm->mmu_lock);
- 	if (mmu_invalidate_retry_gfn(kvm, mmu_seq, gfn))
+[...]
+> @@ -88,7 +89,7 @@ identifies the region as cold, and reclaims it.
+>  autotune_monitoring_intervals
+>  -----------------------------
+>  
+> -If this parameter is set as ``Y``, DAMON_RECLAIM automatically tunes DAMON's
+> +If this parameter is set to ``Y``, DAMON_RECLAIM automatically tunes DAMON's
+>  sampling and aggregation intervals.  The auto-tuning aims to capture meaningful
+>  amount of access events in each DAMON-snapshot, while keeping the sampling
+>  interval 5 milliseconds in minimum, and 10 seconds in maximum.  Setting this as
+
+Sashiko also suggested [1] to update above 'Setting this as' to 'Setting this
+to'.
+
+Other than above two,
+
+Reviewed-by: SJ Park <sj@kernel.org>
+
+Assuming you don't mind accepting above two Sashiko suggestions, I applied this
+patch with the suggested changes to damon/next [1] tree.  I will repost it soon
+(~1 week) as an mm.git merge request.  So, no action from your side is needed
+for now.
+
+[1] https://lore.kernel.org
+[2] https://origin.kernel.org/doc/html/latest/mm/damon/maintainer-profile.html#scm-trees
+
+
+Thanks,
+SJ
+
+[...]
 
