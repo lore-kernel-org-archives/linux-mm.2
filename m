@@ -1,222 +1,106 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 162C0606A324
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 15:50:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDDEF606D804
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 15:54:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=lWTMs9IG
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=D1sFpcEQ
 Received: by kanga.kvack.org (Postfix)
-	id 211BA6B00EF; Tue,  3 Nov 2026 10:50:14 -0500 (EST)
+	id C2C566B05B3; Tue,  3 Nov 2026 10:54:58 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 19BD66B05B1; Tue,  3 Nov 2026 10:50:14 -0500 (EST)
+	id C05226B05B4; Tue,  3 Nov 2026 10:54:58 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 03BDB6B05B3; Tue,  3 Nov 2026 10:50:13 -0500 (EST)
+	id B1ABA6B05B5; Tue,  3 Nov 2026 10:54:58 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C687F6B00EF
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 10:50:13 -0500 (EST)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 55961140482
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 15:50:13 +0000 (UTC)
-X-FDA: 85394244306.23.1F6C53C
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 081AAC0007
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 15:50:08 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=lWTMs9IG;
-	spf=pass (imf10.hostedemail.com: domain of rick.p.edgecombe@intel.com designates 198.175.65.11 as permitted sender) smtp.mailfrom=rick.p.edgecombe@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1793721009;
-	b=I/p/IQ3vnPnI1E65FgDqIwi5uMPn+XC7sdLAWuxe9sit8EkeRA+CWD7YAGVKqM4bbnYach
-	jIYWds4ou+lGbbXMk/ywZxqOuQY7SJDrCSK+egOye1VBZ/MBb95h4NOty5UNzjnWCaSEBC
-	aIcRaS7EBR+09FetUHCtKnmb5yIzyIc=
-ARC-Authentication-Results: i=2;
-	imf10.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=lWTMs9IG;
-	spf=pass (imf10.hostedemail.com: domain of rick.p.edgecombe@intel.com designates 198.175.65.11 as permitted sender) smtp.mailfrom=rick.p.edgecombe@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793721009;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 839266B05B3
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 10:54:58 -0500 (EST)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 8B53B40442
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 15:54:56 +0000 (UTC)
+X-FDA: 85394256192.11.5E8E57C
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 10A3120003
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 15:54:54 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=D1sFpcEQ;
+	spf=pass (imf13.hostedemail.com: domain of sashal@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashal@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1793721295;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8AQtpdmbC/5712jQGLkTIYzOxhRwpEl7qjbwqBOqUoY=;
-	b=KyW4ocwFREr/SgFvEhwv6nujWxWA4KW11RGHUFD7T8rAyXVV63Aa1/41KnbYgi4Oci7qIe
-	O8qzoXC6NwXfKQTgcxfG+3SYSfcow+G33dLrQFjXuTe/Y6q29a/+oz8iZffmsLkJSElcN2
-	llzLthx9bNCHzOpDhPxn1PcI5V6QU5w=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1793721009; x=1825257009;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-id:content-transfer-encoding:
-   mime-version;
-  bh=8AQtpdmbC/5712jQGLkTIYzOxhRwpEl7qjbwqBOqUoY=;
-  b=lWTMs9IG7RopNz9qly3lOPU9LEeIBAZmIS3qFL3eJAaOqSYdeGTAPYaP
-   SR+S20sODZ8YhtQelHs1ArTBUnRF/7/NDJG9xKPtMJ/9scQp5/0xtKwsj
-   F8M47TlpKIZx+Ov1gX+HUsWxoSYcSsPBULzlaaZtUhNtd/52Pgu6ZwOMY
-   F767kvmTml9SKdrRCp0B6AGbdKycxmCRPyIUGq/SWc57x1CUT2/1EMJrL
-   jdIo6cq6GDM+9A0UVWQPkD2gPvcEuiQyta9Oi+t+1/lUaidYsOOVmSlAs
-   bZ/0t+NwmUi/yBPX5v1YwJF37yZJ5vMKE69gyQ6qZ+rcAJ23/gTq14SXT
-   g==;
-X-CSE-ConnectionGUID: DWy6Zn8BSWiFfQkQa5hWeg==
-X-CSE-MsgGUID: UwfPRdfqSBmEabGHpYcYhA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11955"; a="2330386"
-X-IronPort-AV: E=Sophos;i="6.27,193,1787036400"; 
-   d="scan'208";a="2330386"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Nov 2026 07:50:08 -0800
-X-CSE-ConnectionGUID: PX0/GnnPQpePNN4LEUmiNA==
-X-CSE-MsgGUID: ULMyKlVcS7K782cRXJrY4A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,193,1787036400"; 
-   d="scan'208";a="6540527"
-Received: from fmsmsx901.amr.corp.intel.com ([10.18.126.90])
-  by orviesa009.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Nov 2026 07:50:07 -0800
-Received: from FMSMSX903.amr.corp.intel.com (10.18.126.92) by
- fmsmsx901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.56; Tue, 3 Nov 2026 07:50:06 -0800
-Received: from fmsedg903.ED.cps.intel.com (10.1.192.145) by
- FMSMSX903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.56 via Frontend Transport; Tue, 3 Nov 2026 07:50:06 -0800
-Received: from PH0PR06CU001.outbound.protection.outlook.com (40.107.208.67) by
- edgegateway.intel.com (192.55.55.83) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.56; Tue, 3 Nov 2026 07:50:06 -0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=zJ7spnxfbBS1eRYxzOOXJtLkNyL2Sz3Oj4bt5AmNf9+xXXA2vF2mlr6S8Q4Z6G+A0sbHXPz21IkCtAN1laCFgOGT3lTzXEm7qMIAsiTXA3HqOz1vM0/KG2RtMOdCoyjxETtwj8QUQ6UBcMMtLeLWAT+8KGNIRbWA4JeTrow2tRi62Pjg3WxbfUOo/TJnwimZi62GIjDd0O3brvyw5pZ7l3CSICw7HpH2/SOnCxByF4GPrW/48o/XJzIcdCeMpy7RDyi7hzKgLboV4kcBWRhGOJQyc9Ogdzr/7D6Lz11TowU6II/4QEFppj/3i09q8fFDYilf+5p4Z9iwinqt8CVZ0g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=8AQtpdmbC/5712jQGLkTIYzOxhRwpEl7qjbwqBOqUoY=;
- b=m/+A7xkGkk+j/jPx5msy31OypO7Wx5mpyxkHwEs8mPj51NwIoKZq/VtKnFrrvoJUQbnUjfKuL6JQM+vAhtco5QvY2WxNeLPCuTbJuGumiKodXghqTemu5eS3bVGtjvSH1ZOBPcjWuN42lXs5h/Ax3KFRA45UQ+trxPiZ5LF/rdEk1SC4G/ZHNn42Vl/4UNyvBopsLXGgHzJLC5pL5QeiNKr7lRKOWA5B6Fd7z6cgs4xtAVBu+CwPOTSH8GeP4YkOJhf5u55K0yxupsW2IduYKdaDAd89WLKKgBHTiERtr15xmJgg20K2gdRgAqad7m6LUkkC2Qo+Xli8m797LL/uOw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from IA3PR11MB634048.namprd11.prod.outlook.com
- (2603:10b6:208:549::23) by LV0PR11MB242363.namprd11.prod.outlook.com
- (2603:10b6:408:602::24) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.592.8; Tue, 3 Nov 2026
- 15:50:04 +0000
-Received: from IA3PR11MB634048.namprd11.prod.outlook.com
- ([fe80::760f:f0a4:7417:6e57]) by IA3PR11MB634048.namprd11.prod.outlook.com
- ([fe80::760f:f0a4:7417:6e57%5]) with mapi id 15.21.0592.007; Tue, 3 Nov 2026
- 15:50:04 +0000
-From: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
-To: "kas@kernel.org" <kas@kernel.org>, "Hansen, Dave" <dave.hansen@intel.com>
-CC: "andrew+kernel@donnellan.id.au" <andrew+kernel@donnellan.id.au>,
-	"luto@kernel.org" <luto@kernel.org>, "pasha.tatashin@soleen.com"
-	<pasha.tatashin@soleen.com>, "rppt@kernel.org" <rppt@kernel.org>,
-	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
-	"kernel-team@meta.com" <kernel-team@meta.com>, "david@kernel.org"
-	<david@kernel.org>, "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
-	"mingo@redhat.com" <mingo@redhat.com>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "peterx@redhat.com" <peterx@redhat.com>,
-	"tj@kernel.org" <tj@kernel.org>, "azpijr@gmail.com" <azpijr@gmail.com>,
-	"linux-mm@kvack.org" <linux-mm@kvack.org>, "hpa@zytor.com" <hpa@zytor.com>,
-	"tglx@kernel.org" <tglx@kernel.org>, "peterz@infradead.org"
-	<peterz@infradead.org>, "rmclure@linux.ibm.com" <rmclure@linux.ibm.com>,
-	"bp@alien8.de" <bp@alien8.de>, "baolin.wang@linux.alibaba.com"
-	<baolin.wang@linux.alibaba.com>, "x86@kernel.org" <x86@kernel.org>
-Subject: Re: [PATCH] x86/mm: Define the zapped-entry checks only with
- CONFIG_DEBUG_VM
-Thread-Topic: [PATCH] x86/mm: Define the zapped-entry checks only with
- CONFIG_DEBUG_VM
-Thread-Index: AQHdatgdOWG1gcUTjkG6z8ShoYs60bcbSCGAgADaLICAAF39gA==
-Date: Tue, 3 Nov 2026 15:50:04 +0000
-Message-ID: <b45fe4c2a730a23845a36b5beba4f434c7be7477.camel@intel.com>
-References: <20261102144001.342837-1-kas@kernel.org>
-	 <b04316eb-a2f8-4587-9392-e673c7bd2fc8@intel.com>
-	 <aumzjHyJsshPJBUI@thinkstation>
-In-Reply-To: <aumzjHyJsshPJBUI@thinkstation>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-user-agent: Evolution 3.52.3-0ubuntu1.1 
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: IA3PR11MB634048:EE_|LV0PR11MB242363:EE_
-x-ms-office365-filtering-correlation-id: e50cca75-7938-45c1-cd8d-08df39c220a3
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|376014|7416014|366016|23010399003|1800799024|261026121527099003|261102123227099003|261021121427099003|56012099006|11063799006|4143699003|6133799003|10067099003|18002099003|22082099003|38070700021;
-x-microsoft-antispam-message-info: Ssz6TOudzHql+HGFMj2K2n8+Uiws756e3AZ2eE25ARFF9e8Gyan4rWx5RyFu2h7xU03CgKP9BCH8JW6NOP46CFtIE+1TxGf7Z1QYOt26xmoqNI/9Wr+u7WWv38uLkyXxa40Z0WeeHBXkBA550oCYAqfK6AnrjuP0JGuf9Dn35PbH/R6k0t5+Y7x8CzUuMXvXeYGq/HPZnwkq+shSnk4ltu00iwZqmpk8OjZKQBqFCGNYlgPceyoebeKNGkEKur7WOaapu64OcO/CJIqcYzQt0r68/gWDtWMJAgh61UgkFA6RLVovEdABcc+QBd+H0jJw32MLb1gcwiUhuLeuGrMiyiVSbxQJKWbBeZTshMBctQG7V2b3M1f4w8U1WGx9DrchVNOaBefnZnbmwlGgrABlDM4Lx2pRwRE5W92TDW4oWUGwA80BgLI4ME/nmkLARGEdP93+O8s6JaBq5RkOnOHvxPNir22VhvoEPbRxDe+ZBFhM6G2Lm5yo6SZ0rk1kF2UmcUTLcgaw01CrZDgDPxxav73+fvGDHDf3q+mR20WBYLA6aIYanpU5sjxpQ858COtaOTh2QinFMpvF3bGeb5cEMKZC4yyOvmLmdQWgD/HeZZYmce4RYoSDdpXz/ZU7rVavBAG6piwb2jHdt+sJAsL9nMEhHYFm+VrV4M0HFgIS7oGOYeOUOFa2eqSA7N8aC8vmP4Z4Z/42l3/70NikQzTKSALU9Zd/NONFq77rBAKIhuQ=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA3PR11MB634048.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(23010399003)(1800799024)(261026121527099003)(261102123227099003)(261021121427099003)(56012099006)(11063799006)(4143699003)(6133799003)(10067099003)(18002099003)(22082099003)(38070700021);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?MEtyelgwc09hN3RIWG1tdGdJZEdTQUtSUVVHQlR2TStHTzNLUEpCdmx2elN2?=
- =?utf-8?B?R0Z1cEpwRGg0U05Wd0JVUGN2dllMNGZjUkVhTU9zRWVqOVlEbHZyVCtNZUFk?=
- =?utf-8?B?RThxdDZQSkswZ3RZL0hyNklJNFJCODZmeGMzdGp1WnpteFlhaTVZMXAvRHBx?=
- =?utf-8?B?cXBDWFNQWXhoM1M1bGRYTjdYMkRkMW5Cdm0yckk2Q1hncTFNV1Z3b1VNZmRa?=
- =?utf-8?B?TFluTGJRT1JnK3dEYTlwd3k0Z08wZTlCTTBiY0UvQitrcjYzalFjMEVaR3po?=
- =?utf-8?B?dzNKcGJuM3JORUIyVGxnUXcvalJqWjJEY3U1Njc3ZTNzNFlKcnltTXF4eVJT?=
- =?utf-8?B?d2RjZkVNQ0xUZVlaNTlLaW93YmoxenNBZi9KWUtVWklGQStQbkNKU3ozRDVr?=
- =?utf-8?B?VzFEVm1LKzJXQUhVSEVvQUF3QkRQUWZOVHhycXFjL1M5NG9pTGVudnhqTFZj?=
- =?utf-8?B?TmFNaER1OEt4MHRRS256N2ZlOWFBcUdZVlIzakxYYS9pUndnMlYwUlJDa0Rt?=
- =?utf-8?B?QjdoaEt1OGZpSWI4RnJ0ZmFMdlZZc21pRkh6MmRyaXBINVdEaVVtYTZpeEVn?=
- =?utf-8?B?cW9sYUE5U0lzQXBjak1URFhYNkFhcWxkS2xUVktOSGhRTnluSEtScy8rcmRv?=
- =?utf-8?B?aEluckc1cE9TVDJZdXRpekxVMDRQem9IcVpsUzF6R2ErOW43ZnFlclBGdzda?=
- =?utf-8?B?bGk3N29vc29RcUVOSzNYaUNQa2E5VmJ2cUJTcG9YTnZoa0Jlb3FCYWFtYUlm?=
- =?utf-8?B?TDJhZjFTNnZXMGFZM01OcExqUkVxWmNFK1pIWmQzRy80ZzlUMmJHalJ5Z003?=
- =?utf-8?B?RG81a3dUZ1dDbHEycHF4am5VMkRjSE95UlBLN2pZMjlyeEZkemZob2dGOTJU?=
- =?utf-8?B?V2wxR3owQVpFY1ZlcUZtd2tyYTJ5UEttc3pFNmpDeFlTangxS21zTjFrL3I4?=
- =?utf-8?B?VmFCdnFKQy9JaVFobDVNRkkzYzdjQkcyOHJsc0wyQzl2c0t6NVpyaXVMNTJ2?=
- =?utf-8?B?U0VVODl3bFc0WllyY3hTSGx0am5FNER1bHRtWldWQXdSZ2xBeWRVNVE0eFF5?=
- =?utf-8?B?R25iMmJ0SUdyN05PNFJWRlZnRVFvMVJUaTJyM0ZRQ3dsRmI4ek5ZUXltbWxm?=
- =?utf-8?B?QzMzQ2FqY3h2bXpLMkxDeDR0NGJ6dEhpbjhhT3plQTh4OHRrRWkrSzFwbndR?=
- =?utf-8?B?YjU4ZnhFYzlLVTFLV1F3WklaK09QbmNCc013Wlo3d2pkdWlLeWRFWGR0YjM5?=
- =?utf-8?B?dElucnZNRFlWaVdiaDU1VkpwVmdVQ0FMekY0NTB1bjhhTXE1bEVKbG9LU3hM?=
- =?utf-8?B?aEJBdUVvdEZsZDh3Tkx6WkRhMzFFYjAwMzBLeC9iZkEzdGRhNkI5cDNiSXpk?=
- =?utf-8?B?WlZ1VEtPVURwd1ZvRXlvUU5vZVhHV1cybTM2U2llWTJpeFhYU1RFVjM3cDNk?=
- =?utf-8?B?N0RUT2pWVmtMTjVKcnZ6MzZpazJhYWZJMXF0Uk9ySlIvazgraU0xU3UzTzNM?=
- =?utf-8?B?Vjg4b2VTU3h0bndoUUwyaHRtKzI0S0hJQVlKMjN0eVRoQm0rZ0dpK3hqeVRD?=
- =?utf-8?B?WUw4Z3FKMXRya1NlVEEzQXNjeVFQSUZQSFFJRURsQTMwSXM4a2kxNy9zbnla?=
- =?utf-8?B?VHFWdzZjUlpqSGV3MEh6QnlLQ01VTWtkVlpwODdtc1pXM2hrVUFOUXhYNTFk?=
- =?utf-8?B?QU1KMzhxUUp1eVBQd1FBZHlwbWN5Z2dpUk5CcG52eTZmL0xtN2ZGVGwrdktm?=
- =?utf-8?B?TUR5UGQyY3c2TXBuSTIrcXBydEJRRmthd0lxNVN2NDc3SUg4VGlDLzFReC9m?=
- =?utf-8?B?WWhPMWFpdFlWUjRWUms4ek1UTld2QlNqbytxNVRlcnZkWVFWODgxdXdTdUl1?=
- =?utf-8?B?TWZZaDBjdytKMnRvbXNFZWJ2QXRTcEkydzFxd1A3WEp0endtaFNvanJWRHRj?=
- =?utf-8?B?aFZCZFkxdk5GNy9sZ2YxaHlSNWV6R3lIQnNqR2oxUytpdnNTMjhtOFpkcEx0?=
- =?utf-8?B?QVNWV2J6NUd6WlZhODd2dU5ZRzQ0ek1hMXBGd1RjeWQvY1p1SXVSdldocGc0?=
- =?utf-8?B?QmZyVTRQa2JMZUNpYnFoejh1UzR1aGtxdFNCUDRPYVpZelhyNENYY2VvaGE0?=
- =?utf-8?B?SnZ2aXhZT3pIenE3aCs1ZCs1cDFsblcyeVhFS3JHa0FpaXBRdEI2R1lndHVH?=
- =?utf-8?B?Q1BEWi9maGRWdzZkOEZMU25LRElmU2xWTC9mNHk2MUxLR1hReWwzaStyS09p?=
- =?utf-8?B?ZDFUSGhxbDlMQnlzYjUvSzRuc3JOM2VWamlQTVdQUUExU2JpM2kyMVRtdzNh?=
- =?utf-8?B?TVNyblFyNC9RdXgzWUlwZjlkTjVXUVZaWDRCYWVNbHhHNm1vUW15UjVNZXMw?=
- =?utf-8?Q?HsCR9jPK7woH1QIA=3D?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <C5BF12A55932124D8C511F5915F5A1A4@namprd11.prod.outlook.com>
-Content-Transfer-Encoding: base64
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=BvQyqJBRMUQMmLwwXufVB9zDYnE+36YFGkL734602ns=;
+	b=IPapJ+VuNgnh5mtK1n3RZ8P7h2p9YOHV5F9A/GemOA2ntWh6stCfsVltlJz0NIRIOuL5ZD
+	oCg3hUIa+ob3Tg7g4kxw4xzrN4MzM3bHQsFcz5mPSTqbmTsfUaCvUiKCqkNQOFuGHF2HT7
+	YdYwixlf/OUd2DWDX9NpCbWPIj02zQQ=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793721295;
+	b=d7dQId50PbIfb3lvn8SrEsQ1ZOiQlHCsntI4PwMJb5qmDp+r4pgMULMhIkseD52gy9byrb
+	h57q8NRlpy5JA44t68/6aD8dKdkWv/QgwsYsHZxeKDuOh18eTDRyjZ6ZjiqdVaUZGVTq/H
+	0zsWa7ct1v8vX1PiISsclkKcGBTW2vg=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=D1sFpcEQ;
+	spf=pass (imf13.hostedemail.com: domain of sashal@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashal@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 8E24F60A59;
+	Tue,  3 Nov 2026 15:54:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 657761F00919;
+	Tue,  3 Nov 2026 15:54:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793721294;
+	bh=BvQyqJBRMUQMmLwwXufVB9zDYnE+36YFGkL734602ns=;
+	h=From:To:Cc:Subject:Date;
+	b=D1sFpcEQNhoVYWOSICT9zPzY4CoO5EedSVjXdMCH/OGTzS9hYRjJ6f2/9RpVQ+0ub
+	 v5ATp0pJcH2/kcBJlVh6f+EXp8M0z/KPl0T6sSLRt/qKCkdLCFTixxzplN6lRfzcpO
+	 vvpQFwWh1DMmDJhHRtndpzRvActs6YJ9CoS4kl3gB7au+UbLJwAnanhWLTgjFxI9qo
+	 kirnhXkUBbLgmcgtN6M60lt0bOAdolBC0ei2O58prE+waDUJjeVwQ4nWiwdV+TA7pl
+	 XBCirAzY2u5jWtcGfuBfkiiWQxlCaFWzP2zvw5riXgxMolJZUGMpQGo8Y4hVT+xJiB
+	 dm67nHrpDngdA==
+From: Sasha Levin <sashal@kernel.org>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>
+Cc: Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Shuah Khan <shuah@kernel.org>,
+	Zi Yan <ziy@nvidia.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Nico Pache <nico.pache@linux.dev>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Dev Jain <dev.jain@arm.com>,
+	Barry Song <baohua@kernel.org>,
+	Lance Yang <lance.yang@linux.dev>,
+	Usama Arif <usama.arif@linux.dev>,
+	Kiryl Shutsemau <kas@kernel.org>,
+	linux-mm@kvack.org,
+	linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] selftests/mm: fix format warnings on 32-bit architectures
+Date: Tue,  3 Nov 2026 10:54:51 -0500
+Message-ID: <20261103155451.534587-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.53.0
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-X-Exchange-RoutingPolicyChecked: oVN33P6XlYuURcHme4QESLaIFvNchNvfK/pix78JL/H32rfNQdK1OnZcahqYBYLsM6KJZmi0PMPJZamtWfwk8XgR9sJIB1ICLOHWcMJtnbrS2AJV+Zh0Ie2pfhjgQYexWvC5ggHkphOMpmBC3YvXiHDAKZdCo/8/B9Rbj8tW+ERjithinWpXWIIycWtWC5m8px+89QZ7JoBqnA9BK9CamGUwqfmhQ0lxSyGzmCXCjGLm7/GDCjJy5qxgE2KaSQWvm1kKvKFoPEZXLXWK0OwZTNiWhEXlRHxLg1IpO6jz5WcJePf9QAZhoDEePpYm9Q/l8fPil7jAiKp4V/r9x30kEg==
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: IA3PR11MB634048.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: e50cca75-7938-45c1-cd8d-08df39c220a3
-X-MS-Exchange-CrossTenant-originalarrivaltime: 03 Nov 2026 15:50:04.3867
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: NwdEREj1f6bCA+xaDHmPNzT27dWi68jYeXtVHhBmZSDTT9WQhB0IPM0SEoySS/7CY5bAIqOYanR8S6/RCo9ocXQ//nXq+wUkzJdskUXTWrE=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV0PR11MB242363
-X-OriginatorOrg: intel.com
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 10A3120003
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
-	autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 081AAC0007
-X-Stat-Signature: uyi555pwsuso5pemr3ew6tkim1opo9hf
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-Stat-Signature: 96p1c7qz8u63qf6q9zk6m6t8tkch8fey
 X-Rspam-User: 
-X-HE-Tag: 1793721008-964730
-X-HE-Meta: U2FsdGVkX1+AHRTJTb5wYvRgziIIhvDEuhB4qKkI+Z3X8aoQBL9JnKHef/2XLy4A1pbCmcUlDjQPux507qGqhbLN/qjPq6rOzbsv/suJI/UlY4P9M3hnNXmYzxF6JsBR7UG7NaVNJLP1XROtaSK0fbleE4iuXBK8jE0hDjo8qGtTExv9ryfpe61m2IW6U7yz/t2nVAxITGCtjQT0EwyWNiXNQuR5k1CJUPm/BSUvPUdQ1iEC5S6bI19ccIxeQjQieYcu2rWbfTRK8Tw+wUv3EC+pz8Xq3uKQWJqYT53U2Y0s1EhLF3WpVedpB2+e64kauiZmx9e/pWfZZBAT+zc+2iBMZgk4oYUbyxY93jw/nXWvIzNhXLySRiuBiSwQIYQ3Y/NBCS9Qw7hUmYYMDH4w/NwnKrytFJDBJtT9uKw6sR4NXmTYljSVLCJOl73AWyJoR2bFhkg0HdJfw0DxS8TAHgy7VPd9WA8sJ/SlHBgcUcvkY6sbyyc0NjK8zFzMWu4rqho81jkZZL6pQws5CSCWDsF9KcpZo+TLvqdQuojW1Wy38OeV//5bdSEHRQAWPenLWe4VkD+OJ03msFVP8FW/CqgFZe8ZWno494SPkO06laO6UqGyNHmgPBdRx4qBgNAI/HYVBCTlT7KCwVV13Jbs3lb1ICQG0aDip7junkL+eiD7WcxjnzMRQa4CdT6QJvcD5kxiFwZ2JELl5w1uAQAOgxjmHZM1ZZJFfoLrQOs6IGRF1otmITnqSqCaWMGxyg5/+XqfAEx0XTY9b+2VuQ+kvHWmJAENj9ZvJ1ZbHWHUBFeZuOASccN/KYfSZULifhTLeuqej7pQ+N2f8QBSGlEGqldjEsh0347O+xe9/a0dKuZ//VERSC6ZsmBS27ZFEC9RkvNrUKP3HIyeO7o18/cMsyn4tDM/uB8NWH/OhxojCOuoTJL1W5H3Nyo2/6UckXg1PzCKQNg0L7kQv36l7Jm
- mMVuedRV
- ICJha/suIkww1oPM4nJhhrD26aMgTGgmLhMHU3+UaggSXsBF1gVkoDeg//QYIDCD8eAP5wiXdZlrcQu+ESWbSg352vUHAZVDF0ubPFQffCZXmG62QahcFgsVLUB5SBeKbG+u7ssX7pJ4MjM2KAjz0sHe44wNticZqG8jPIze5Lz2v0KDyIyIX279llB2M1Nl2R5n7YLJpkXclFkAaO/Pt+3Uct70AxYNFbgb1GkiRG6F1rBDrr86KvbPgJi15BCk5lWLXkXr3bbvls3SFoO8xLgfkshJRclTTllmMPGiKDuwdPskv2EhmAYQo/7CSzPPh0iJirxR1/h5pqca3vfQ0bN9mJOktBqlNS0WgYrEkXQBUdJAH6L/BL0asKudap1DbUlPmu4+DjHNeS3oFhSWsQm3sfV9jk7Sl+/UHFdXkowPYZJFBIQgzexe3DASP/OYehUYy0o2FjgT7wDe5ke9IgYo0UhST9mF7aA4mESxpvXOwvEVSQaV5FtYsl0mMMYZuy4cQTKstVX6F6DL+1mPyW/aaZ2A/1YU1c9TxNoF3XwKjJgyon7M4Bh4pAN9g0ElAWGtYRHZXl1rOL8XvZU2mQBjXp7KGHxDCYRpTX+FnAjswD4YuM5fk+fJ2uNUK7/I9+tXidPmqfnLxI6c=
+X-HE-Tag: 1793721294-589273
+X-HE-Meta: U2FsdGVkX18AvnPAoRzMf4iuihPVvMAotLtB0POpx5Dcfll6eKrmLez+Fybs0SKRRFGGFWBMVzOT9b/RGQZNsPFYpxIJUCC2jAQ5orlB9+Q6LwlCeDxJeG2q4GpimEzshDP8AzBBzMKWxstVKTWa1G0h6T+jlmgDAAwYvJs3hfAMUPtI17sV1aPrGmqbXAeuN8isvC2ove+gv71Pj91FUMswHTbR3q8HZRpE5AeLWr+sidrF541ajvJPiYJzU/VooZksx1IPq4/9+VmefWUnfK3KWUM7cE/9NMAcv/mySNbPfHhcVD1vJJBoc0c2/qlarQtLForhWavxUQgW02AFBAOl7JdAQ6vj/brH0TWWfoiV9PzacyTH/6jHkC119bNLjPxbCadoJlQFJnAQ6H1WWNDxgNgJjXJ1nnrjX3lXWTSOFkQ1NdX9KQ8Acdn+hzVHsWpCX+VfRWBnxYOLsKjEr1HjsZb1RDMTRynAXDVRh4qhuUiIjAOprnn3JeBIYsk1PuTvdV967CW4ywTZXhhIhOLf4SUR79sBxeBLi93oTLrmT/Le31YHM7SaORMNYJvJ1UqH7bJNweyj8xWSuQJE7x3GAp812DaJVEkP2wTFHg2wNdG9WCUcEcQ+KZoq2y/aNdDJc3R5eBo2FOcLFyUZT6YrCpKPYysk2V6vtX9JMz31bURYHCvpkWMpLhpxHEHWbk0kqQuNmuaLeRsG/ZaS8JJ0Amdyk12Jbi5UYaR/O5VxI7d0f0kXaX1DxSJBfyxU3HfdpgYtDYZC7ehpthjEzyOjJlsRXC7hK3pH0/8uqCjdmn2y8dTCG0pAny51ErB5lO9qt2qSJOXCozgMus06LNexIUExhFW84AZUTUaHneFSsMqEHM50Si0NHXcjm1LoluaLsM7kDQE0t72GRNBYYCpbdZapdXhFnKPfuZNxcyDIZZqDkty9kJdJa3he3z01sr0Kt78PabZUZ+2K1qH
+ hJ8UARZs
+ W2C8KhlLvQc8ndv9nRpm80Zszdik5ALGEedXsprs0SeZR7FJ0W6IRiHnFCE9cVVXWN3WQrH9GnOMXMvrBM2ndoSkvhoeISEhuWlxtgm7bmyoZFqe8hjEn5u3mU+AbU7rZUz7RrnOBEoiC6Loh6KCeqTBm7lADCf7UdjSnXSs/fElGb7ll+C+sWVr0ZSJK1M7jisTsmfbpE1RZiM9U4sRFWdOhUdh98G7FTxDGnE4aoywoccU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -225,16 +109,248 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-T24gVHVlLCAyMDI2LTExLTAzIGF0IDEwOjEzICswMDAwLCBLaXJ5bCBTaHV0c2VtYXUgd3JvdGU6
-DQo+IE9uIE1vbiwgTm92IDAyLCAyMDI2IGF0IDAxOjEyOjQ3UE0gLTA4MDAsIERhdmUgSGFuc2Vu
-IHdyb3RlOg0KPiA+IE9yLCBoZWNrLCBJJ20gbm90IHRoYXQgYXR0YWNoZWQgdG8gdGhlc2UgY2hl
-Y2tzLiBMZXQncyBqdXN0IGtpbGwgdGhlbS4NCj4gDQo+IFdvcmtzIGZvciBtZS4geDg2IGlzIHRo
-ZSBvbmx5IGFyY2hpdGVjdHVyZSB3aXRoIHRoZW0sIGFsdGhvdWdoIGFybTY0IGFuZA0KPiByaXNj
-diBoYXZlIHNoYWRvdyBzdGFja3MgdG9vLCBhbmQgdGhlIHg4NiBoZWxwZXJzIGFscmVhZHkga2Vl
-cA0KPiBXcml0ZT0wLERpcnR5PTEgb3V0IG9mIG90aGVyIFZNQXMuIFBhdGNoIGJlbG93LCB3aXRo
-b3V0IHRoZSBGaXhlczogdGFnLg0KPiANCj4gUmljaywgYW55IG9iamVjdGlvbj8NCg0KRWgsIEkg
-Z3Vlc3MgSSdtIGx1a2V3YXJtIG9uIGl0LiBUaGVzZSBjaGVja3Mgb25seSBjYXRjaCB0aGUgY2Fz
-ZSBhdCB6YXAgdGltZSwgc28NCml0J3Mgbm90IGEgaHVnZSBwcm90ZWN0aW9uIHRoYXQgaXMgYmVp
-bmcgcHVsbGVkIG91dC4gSSB0aG91Z2h0IHRoZXkgd2VyZSB1c2VmdWwuDQpBdCB0aGUgc2FtZSB0
-aW1lLCB0aGV5IGhhdmUgbmV2ZXIgdHJpZ2dlcmVkLg0K
+On 32-bit architectures size_t and uintptr_t are unsigned int and
+ssize_t is int, and with _FILE_OFFSET_BITS=64 off_t is long long, so
+printing them with %ld, %lu or %lx, or scanning /proc/self/maps into
+uintptr_t variables with %lx, warns:
+
+  hugetlb-read-hwpoison.c:32:58: warning: format '%lx' expects argument of type 'long unsigned int', but argument 3 has type 'size_t' {aka 'unsigned int'} [-Wformat=]
+
+Print size_t with %zu and %zx, casting the nonnegative ssize_t read
+totals to size_t, print off_t as unsigned long long, and scan the
+addresses into unsigned long variables.
+
+split_huge_page_test also builds its debugfs commands from uint64_t
+addresses with %lx. write_debugfs() has no format attribute, so nothing
+warned, but on 32-bit the commands get the wrong addresses. Print them
+with PRIx64, add the attribute, and cast the pointers through uintptr_t,
+as casting them straight to uint64_t warns on 32-bit too.
+
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+Found with a 32-bit build of the selftests with a 64-bit time_t (gcc 16
+and clang 21 with -m32 -D_TIME_BITS=64 -D_FILE_OFFSET_BITS=64);
+KernelCI's 32-bit arm builds show the same warnings. The changed files
+build without format warnings there now, and the x86_64 builds don't
+change. The other selftests get the same kind of fix in separate
+patches.
+
+ .../selftests/mm/hugetlb-read-hwpoison.c      | 25 +++++++-------
+ .../selftests/mm/hugetlb-soft-offline.c       |  2 +-
+ tools/testing/selftests/mm/mseal_test.c       |  2 +-
+ .../selftests/mm/split_huge_page_test.c       | 34 +++++++++----------
+ 4 files changed, 32 insertions(+), 31 deletions(-)
+
+diff --git a/tools/testing/selftests/mm/hugetlb-read-hwpoison.c b/tools/testing/selftests/mm/hugetlb-read-hwpoison.c
+index 31748a24448f8..91b954a078483 100644
+--- a/tools/testing/selftests/mm/hugetlb-read-hwpoison.c
++++ b/tools/testing/selftests/mm/hugetlb-read-hwpoison.c
+@@ -29,15 +29,15 @@ static void report_status(enum test_status status, const char *test_name,
+ {
+ 	switch (status) {
+ 	case TEST_PASSED:
+-		ksft_test_result_pass("%s chunk_size=0x%lx\n",
++		ksft_test_result_pass("%s chunk_size=0x%zx\n",
+ 				      test_name, chunk_size);
+ 		break;
+ 	case TEST_FAILED:
+-		ksft_test_result_fail("%s chunk_size=0x%lx\n",
++		ksft_test_result_fail("%s chunk_size=0x%zx\n",
+ 				      test_name, chunk_size);
+ 		break;
+ 	case TEST_SKIPPED:
+-		ksft_test_result_skip("%s chunk_size=0x%lx\n",
++		ksft_test_result_skip("%s chunk_size=0x%zx\n",
+ 				      test_name, chunk_size);
+ 		break;
+ 	}
+@@ -62,7 +62,7 @@ static bool verify_chunk(char *buf, size_t len, char val)
+ 
+ 	for (i = 0; i < len; ++i) {
+ 		if (buf[i] != val) {
+-			ksft_print_msg("check fail: buf[%lu] = %u != %u\n",
++			ksft_print_msg("check fail: buf[%zu] = %u != %u\n",
+ 				       i, buf[i], val);
+ 			return false;
+ 		}
+@@ -79,8 +79,9 @@ static bool seek_read_hugepage_filemap(int fd, size_t len, size_t wr_chunk_size,
+ 	ssize_t total_ret_count = 0;
+ 	char val = offset / wr_chunk_size + offset % wr_chunk_size;
+ 
+-	ksft_print_msg("init val=%u with offset=0x%lx\n", val, offset);
+-	ksft_print_msg("expect to read 0x%lx bytes of data in total\n",
++	ksft_print_msg("init val=%u with offset=0x%llx\n", val,
++		       (unsigned long long)offset);
++	ksft_print_msg("expect to read 0x%zx bytes of data in total\n",
+ 		       expected);
+ 	if (lseek(fd, offset, SEEK_SET) < 0) {
+ 		ksft_perror("seek failed");
+@@ -102,8 +103,8 @@ static bool seek_read_hugepage_filemap(int fd, size_t len, size_t wr_chunk_size,
+ 
+ 		total_ret_count += ret_count;
+ 	}
+-	ksft_print_msg("actually read 0x%lx bytes of data in total\n",
+-		       total_ret_count);
++	ksft_print_msg("actually read 0x%zx bytes of data in total\n",
++		       (size_t)total_ret_count);
+ 
+ 	return total_ret_count == expected;
+ }
+@@ -116,7 +117,7 @@ static bool read_hugepage_filemap(int fd, size_t len,
+ 	ssize_t total_ret_count = 0;
+ 	char val = 0;
+ 
+-	ksft_print_msg("expect to read 0x%lx bytes of data in total\n",
++	ksft_print_msg("expect to read 0x%zx bytes of data in total\n",
+ 		       expected);
+ 	while (total_ret_count < len) {
+ 		ret_count = read(fd, buf, wr_chunk_size);
+@@ -133,8 +134,8 @@ static bool read_hugepage_filemap(int fd, size_t len,
+ 
+ 		total_ret_count += ret_count;
+ 	}
+-	ksft_print_msg("actually read 0x%lx bytes of data in total\n",
+-		       total_ret_count);
++	ksft_print_msg("actually read 0x%zx bytes of data in total\n",
++		       (size_t)total_ret_count);
+ 
+ 	return total_ret_count == expected;
+ }
+@@ -293,7 +294,7 @@ int main(void)
+ 
+ 	signal(SIGBUS, sigbus_handler);
+ 	for (i = 0; i < ARRAY_SIZE(wr_chunk_sizes); ++i) {
+-		ksft_print_msg("Write/read chunk size=0x%lx\n",
++		ksft_print_msg("Write/read chunk size=0x%zx\n",
+ 			       wr_chunk_sizes[i]);
+ 
+ 		fd = create_hugetlbfs_file(&file_stat);
+diff --git a/tools/testing/selftests/mm/hugetlb-soft-offline.c b/tools/testing/selftests/mm/hugetlb-soft-offline.c
+index d9565219378aa..9bdd78636dc2a 100644
+--- a/tools/testing/selftests/mm/hugetlb-soft-offline.c
++++ b/tools/testing/selftests/mm/hugetlb-soft-offline.c
+@@ -56,7 +56,7 @@ static int do_soft_offline(int fd, size_t len, int expect_errno)
+ 	}
+ 
+ 	memset(filemap, 0xab, len);
+-	ksft_print_msg("Allocated %#lx bytes of hugetlb pages\n", len);
++	ksft_print_msg("Allocated %#zx bytes of hugetlb pages\n", len);
+ 
+ 	hwp_addr = filemap + len / 2;
+ 	ret = madvise(hwp_addr, pagesize, MADV_SOFT_OFFLINE);
+diff --git a/tools/testing/selftests/mm/mseal_test.c b/tools/testing/selftests/mm/mseal_test.c
+index 1a05e6921fed7..cea6c47cf5091 100644
+--- a/tools/testing/selftests/mm/mseal_test.c
++++ b/tools/testing/selftests/mm/mseal_test.c
+@@ -24,7 +24,7 @@ static unsigned long get_vma_size(void *addr, int *prot)
+ 	FILE *maps;
+ 	char line[256];
+ 	int size = 0;
+-	uintptr_t  addr_start, addr_end;
++	unsigned long addr_start, addr_end;
+ 	char protstr[5];
+ 	*prot = 0;
+ 
+diff --git a/tools/testing/selftests/mm/split_huge_page_test.c b/tools/testing/selftests/mm/split_huge_page_test.c
+index 36a6719ff09a8..f8744b5dbf990 100644
+--- a/tools/testing/selftests/mm/split_huge_page_test.c
++++ b/tools/testing/selftests/mm/split_huge_page_test.c
+@@ -32,9 +32,9 @@ int *expected_orders;
+ #define SMAP_PATH "/proc/self/smaps"
+ #define INPUT_MAX 80
+ 
+-#define PID_FMT "%d,0x%lx,0x%lx,%d"
+-#define PID_FMT_OFFSET "%d,0x%lx,0x%lx,%d,%d"
+-#define PATH_FMT "%s,0x%lx,0x%lx,%d"
++#define PID_FMT "%d,0x%" PRIx64 ",0x%" PRIx64 ",%d"
++#define PID_FMT_OFFSET "%d,0x%" PRIx64 ",0x%" PRIx64 ",%d,%d"
++#define PATH_FMT "%s,0x%" PRIx64 ",0x%" PRIx64 ",%d"
+ 
+ const char *pagemap_proc = "/proc/self/pagemap";
+ const char *kpageflags_proc = "/proc/kpageflags";
+@@ -70,7 +70,7 @@ static int check_after_split_folio_orders(char *vaddr_start, size_t len,
+ 	return status;
+ }
+ 
+-static void write_debugfs(const char *fmt, ...)
++static __printf(1, 2) void write_debugfs(const char *fmt, ...)
+ {
+ 	char input[INPUT_MAX];
+ 	int ret;
+@@ -132,12 +132,12 @@ static void verify_rss_anon_split_huge_page_all_zeroes(char *one_page, int nr_hp
+ 	disable_khugepaged(one_page, len);
+ 
+ 	/* split all THPs */
+-	write_debugfs(PID_FMT, getpid(), (uint64_t)one_page,
+-		      (uint64_t)one_page + len, 0);
++	write_debugfs(PID_FMT, getpid(), (uint64_t)(uintptr_t)one_page,
++		      (uint64_t)(uintptr_t)one_page + len, 0);
+ 
+ 	for (i = 0; i < len; i++)
+ 		if (one_page[i] != (char)0)
+-			ksft_exit_fail_msg("%ld byte corrupted\n", i);
++			ksft_exit_fail_msg("%zu byte corrupted\n", i);
+ 
+ 	if (!check_huge_anon(one_page, nr_hpages * pmd_pagesize, 0, pmd_pagesize))
+ 		ksft_exit_fail_msg("Still AnonHugePages not split\n");
+@@ -181,12 +181,12 @@ static void split_pmd_thp_to_order(int order)
+ 	disable_khugepaged(one_page, len);
+ 
+ 	/* split all THPs */
+-	write_debugfs(PID_FMT, getpid(), (uint64_t)one_page,
+-		(uint64_t)one_page + len, order);
++	write_debugfs(PID_FMT, getpid(), (uint64_t)(uintptr_t)one_page,
++		(uint64_t)(uintptr_t)one_page + len, order);
+ 
+ 	for (i = 0; i < len; i++)
+ 		if (one_page[i] != (char)i)
+-			ksft_exit_fail_msg("%ld byte corrupted\n", i);
++			ksft_exit_fail_msg("%zu byte corrupted\n", i);
+ 
+ 	memset(expected_orders, 0, sizeof(int) * (pmd_order + 1));
+ 	expected_orders[order] = 4 << (pmd_order - order);
+@@ -269,8 +269,8 @@ static void split_pte_mapped_thp(void)
+ 	}
+ 
+ 	/* Split all THPs through the remapped pages. */
+-	write_debugfs(PID_FMT, getpid(), (uint64_t)page_area,
+-		      (uint64_t)page_area + page_area_size, 0);
++	write_debugfs(PID_FMT, getpid(), (uint64_t)(uintptr_t)page_area,
++		      (uint64_t)(uintptr_t)page_area + page_area_size, 0);
+ 
+ 	/* Corruption during mremap or split? */
+ 	for (i = 0; i < page_area_size; i++) {
+@@ -536,16 +536,16 @@ static void split_thp_in_pagecache_to_order_at(size_t fd_size,
+ 	 */
+ 	if (offset == -1) {
+ 		for (split_addr = addr; split_addr < addr + fd_size; split_addr += pmd_pagesize)
+-			write_debugfs(PID_FMT, getpid(), (uint64_t)split_addr,
+-				      (uint64_t)split_addr + pagesize, order);
++			write_debugfs(PID_FMT, getpid(), (uint64_t)(uintptr_t)split_addr,
++				      (uint64_t)(uintptr_t)split_addr + pagesize, order);
+ 
+ 		expected_orders[order] = fd_size / (pagesize << order);
+ 	} else {
+ 		int times = fd_size / pmd_pagesize;
+ 
+ 		for (split_addr = addr; split_addr < addr + fd_size; split_addr += pmd_pagesize)
+-			write_debugfs(PID_FMT_OFFSET, getpid(), (uint64_t)split_addr,
+-				      (uint64_t)split_addr + pagesize, order, offset);
++			write_debugfs(PID_FMT_OFFSET, getpid(), (uint64_t)(uintptr_t)split_addr,
++				      (uint64_t)(uintptr_t)split_addr + pagesize, order, offset);
+ 
+ 		for (i = order + 1; i < pmd_order; i++)
+ 			expected_orders[i] = times;
+@@ -554,7 +554,7 @@ static void split_thp_in_pagecache_to_order_at(size_t fd_size,
+ 
+ 	for (i = 0; i < fd_size; i++)
+ 		if (*(addr + i) != (char)i) {
+-			ksft_print_msg("%lu byte corrupted in the file\n", i);
++			ksft_print_msg("%zu byte corrupted in the file\n", i);
+ 			err = EXIT_FAILURE;
+ 			goto out;
+ 		}
+-- 
+2.53.0
+
 
