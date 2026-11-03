@@ -1,75 +1,75 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7097606A32E
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 08:28:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C01B606A329
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Nov 2026 08:28:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Z31I8IqM
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Q9Ml+7XL
 Received: by kanga.kvack.org (Postfix)
-	id 067AA6B05C1; Tue,  3 Nov 2026 03:28:37 -0500 (EST)
+	id 262BF6B05C2; Tue,  3 Nov 2026 03:28:44 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 017876B05C2; Tue,  3 Nov 2026 03:28:36 -0500 (EST)
+	id 213926B05C3; Tue,  3 Nov 2026 03:28:44 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E49826B05C3; Tue,  3 Nov 2026 03:28:36 -0500 (EST)
+	id 0DC306B05C4; Tue,  3 Nov 2026 03:28:44 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id B5C026B05C1
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 03:28:36 -0500 (EST)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 3DE1F1C1C70
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 08:28:36 +0000 (UTC)
-X-FDA: 85393131432.21.DACBB36
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 70E82A0003
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 08:28:34 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Z31I8IqM;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf25.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id D2A366B05C2
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 03:28:43 -0500 (EST)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 66068140317
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 08:28:43 +0000 (UTC)
+X-FDA: 85393131726.29.2BDF1CF
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf01.hostedemail.com (Postfix) with ESMTP id A307C4000B
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 08:28:41 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Q9Ml+7XL;
+	spf=pass (imf01.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793694521;
+	b=RmZqR2prRcdgDESVpsxtMiwKL1Q04QAaLG96dzGH2JdyDY3ht/DmJ4sYS3KunF0X4wgQOq
+	rtObs+48u7mOeDKJJ9Blpj4vfeA8YQ2U3s/IUMnuFStR4qEdhJEY2lp/X34AaraCc8IbVe
+	mN/T/SYHabZpwY1zJRU3cVL+c+l11Ys=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Q9Ml+7XL;
+	spf=pass (imf01.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793694514;
+	s=arc-20220608; t=1793694521;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lWZCpgpSE4xczAweJE+uPCbv7xVI0QoZiK1kGNr3f8c=;
-	b=k3h0m2ygDBw/WPZS3HueB2Izm3b0MbD9H+tD3T0mspgSsIQUOWATozXDwNyVuKUZ4YhQ8k
-	gEAjblMbd/qrFlgbLvoQyNmVDUiQSAkRmT83fDOQ0Ufwdq+GsOeSv5aSjp0L/MjbwTrLBO
-	c1HoWNOrogCuH3kWa37e1Zj//x+B9xw=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793694514;
-	b=pJaPsyFWXUhz3inqQ1AZL5wD2ATDVUBxuS0tPNSsykdg+gHKnosEXShb33ZFtey9t+9XJ1
-	bLvenI4Q3YqT4rKtiK57yp1cVjRjH4L19EHh6zb520ltT1sRkoRaIOHF+e4yCx/x9iMCFx
-	Llva53EGMNIuFJrCWqV2g85e8I3IluQ=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Z31I8IqM;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf25.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	bh=+r8pnwhMHB5jLX3oATZwY65Zu2eC59JDXV4HC2urFtw=;
+	b=JElY98fKT5gSiW1BgIcBlql8/VIYeiG79mBUiJsdCopjw0B9zN3TSQsT1Mi/2I7cINrZTX
+	Hz7/hMARd0Ndyv5B4fpinR6hpSs85mvemTjM8ksU/OBrEdFUOSsQk/l/kpU5d1SMPLRX52
+	2pqqCeEqf08GobobVzxRZhYjoGVMaPw=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id C2D08409EC;
+	by tor.source.kernel.org (Postfix) with ESMTP id 426C360416;
+	Tue,  3 Nov 2026 08:28:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 246291F00919;
 	Tue,  3 Nov 2026 08:28:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D095F1F000C1;
-	Tue,  3 Nov 2026 08:28:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793694513;
-	bh=lWZCpgpSE4xczAweJE+uPCbv7xVI0QoZiK1kGNr3f8c=;
+	s=k20260515; t=1793694521;
+	bh=+r8pnwhMHB5jLX3oATZwY65Zu2eC59JDXV4HC2urFtw=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=Z31I8IqMVbsI8+Br+RX+8tnZmcDMO745pd+5tnTuguMk45nAQd38B9mrIL5aqw+Xo
-	 3abS0yWUrNrIZOiOdsSyq10uxZYLtvTL2vxM72c3AvjILs7IatM/SO1nKBdOqOKWcf
-	 9uLmReebTlj9mTXY8Rv509ejntJL7zSK/nEyrPB4DmtZY/m+8AyKdIE/1bFVAfRzfl
-	 jxW9fcEXUrMSAraG4QghGpQQ5Rv4Oz9QpukNmMVruOun39vetPZVysexoHGKSd6ycS
-	 v02e2SLVBqLUHI2Stt4zfmf4A+icUlekHo+Ueh4xcBeemE6G8OCDMk6r2qPYWMyb/A
-	 xw+cCe+jf+YfA==
+	b=Q9Ml+7XL7Kuk3GUTX3YwuXtB84wQiQO212b9iapqYfTrZMxSxUD9870E4QjPxde7Z
+	 +VBXPp2BK4psoSYwtPWPFT0lNNU5ZOfRj1/xsEtAJVXdO6Yl1K8ZqHSXE9REXO8T+O
+	 flqv7GTIsCyTzpdfyOaCRz40r5ihfxv0RwZ50H/Dr/CMH0JCUEfazP8VPnRYp3xBm+
+	 uoQqlp/wXSp/ulahJmYjE4RLhwo6Nv06EtnyIcosgU8Tctx76oAEKSpZMiwvj/YQ6b
+	 rMu9iK7DbIvjNFY4qzFi0F6Abd80x9PzgoqsmkT97vq3vp+xz4K82f6T7dEWLq3cO9
+	 HteKyHxjiGzkA==
 From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Date: Tue, 03 Nov 2026 08:27:45 +0000
-Subject: [PATCH 4/5] mm: add and use mmap_read_lock[_killable]_nosteal() on
- contention
+Date: Tue, 03 Nov 2026 08:27:46 +0000
+Subject: [PATCH 5/5] mm/khugepaged: drop/reacquire mmap read lock if
+ skipped enough VMAs
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261103-khugepaged-latency-fix-v1-4-a07ab16ac860@kernel.org>
+Message-Id: <20261103-khugepaged-latency-fix-v1-5-a07ab16ac860@kernel.org>
 References: <20261103-khugepaged-latency-fix-v1-0-a07ab16ac860@kernel.org>
 In-Reply-To: <20261103-khugepaged-latency-fix-v1-0-a07ab16ac860@kernel.org>
 To: David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>, 
@@ -93,26 +93,26 @@ To: David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>,
 Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, bpf@vger.kernel.org, 
  "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4017; i=ljs@kernel.org;
- h=from:subject:message-id; bh=EoPq0IDllGnii01JUoCaBZU0cOdJF95yfNLtLlINCG4=;
- b=owGbwMvMwCV2fu7ZrsZH9SKMp9WSGLJezuZp/7ta5d2DUpN9O2IXfJ7SxFSTyR76R/zjnzeHj
- j3xtU617yhlYRDjYpAVU2R5/kV8f5BI2LzOC/5uMHNYmUCGMHBxCsBEGgIZ/kqnZN2YUfNf72AR
- u8Xyt+z9pRYHDLcKOwt+ZAjojZ+Q+Izhf2Ka5aL80pXMHxoOVE8w4uyZuPEny/wcedcbBvtSHrU
- 7MgIA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3038; i=ljs@kernel.org;
+ h=from:subject:message-id; bh=7szhW9anHqn+tjJY4eGPLfmwS6rN78UkiZRvp6JyL8E=;
+ b=owGbwMvMwCV2fu7ZrsZH9SKMp9WSGLJezub5E/2p1nzGvw2RC0/PE9vdXPljkpbzJDbPr2eLw
+ x1/n/10taOUhUGMi0FWTJHl+Rfx/UEiYfM6L/i7wcxhZQIZwsDFKQATWefPyLCsRGvj9/87Q+ON
+ +JuWvbHUvszw8+Zn+4x4771vXJxDSiYyMlw0E30iNvGZe2Vzo2Vi4cx5afFFmneO+J/RuPjGyi3
+ QigcA
 X-Developer-Key: i=ljs@kernel.org; a=openpgp;
  fpr=E7F417BF5214569E89D04F46CF9DCD8A81E27F14
-X-Stat-Signature: 71ywfyquitn1ap8zf3uyza8d7o8yhz8z
+X-Stat-Signature: 7oa6rtmoycum491zu686yeux9tar5hry
 X-Rspam-User: 
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: A307C4000B
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 70E82A0003
-X-HE-Tag: 1793694514-331680
-X-HE-Meta: U2FsdGVkX1+UHITT/BZoePWYcq4nLnb+2pejgfxdikqfvX+3ah9EuLUEW8i5JkfJ/ogojjPCUzgHAgLtDld8xkcwVSTR7cONSF5E1IRIhCh4nZYz1WB0OveA2uTEJhSHEz7pt0dTCfqa0EPVoivk1tGIKeTyBSFndqM83iVMDg4AUO/f3KPrOEilcujX99xTIejwEeTq7PuO1n2W5TfImtN80oYCifhbjumqTVTuBLMLb29zdMGeMlITcru4E8VIRsyZNUHaY/YHMk05d+ENq87gh0ClhdgzoYjisoL4YJA36M7Lf876RRASkBoe5WvlbrAs84jraeo9ihVFBK5RRDG84PVLG7bBx7rvq0X/Opbgw0bPlfkhRCdRki59SJ7l2t8zSAyXMNDVtWVAzqFuODDazGsSW+bRhlihqMCR3smHBgKoM0Xh2Kg2WBlefnHsQgH+r3KEELlm7LLSI1dcw3rxxceMQO8Meu8CfsDNeL48bk9QPc36rkxIc5L/ZftYQ5nnI2Xeutmc1Zpxst3pMf61EuIaiX96VEcvV4S7adr4tCfh3heb9zMmbExihzvhLIvdXgnKc/XHZnncfAqNuewJ1xSWHdXRiGP603zteJQIYm18rFdsoRFrPOD4X/CYfkGrKRJqb2bnRqIfZhtU963ETu20ZmLf19U//o+D6u3QQo3xzR1HfuB3ft3ZLfh/xXZKJUV5F/UQBrGYqb8O7mILAV2bkVNTRXn2IJbJgg/BjIFra58YXJxIqk1ybv73A+EkZwxlyhPvGCBRO5pN7PIjVtB5iSX+aqchZWFDT/mFtMZlcc6M4wtbJKyjmccwaaRY/XKOlwou22g+Mpd0I33YEbcOx/kAGR40nWnawRkEu+faDoCKbC+qD243cLxjQcf2vO2T+8UtEF7bxLfwecf+C+fDPXZHavMfUNR8+Fh4OwqVai0OGL+LlH7AycWPqMAL5ojwacxxuz7sbVC
- Mfl8Yie/
- ZNpBe64QKQDuPLM/IcDwSDTSHsIOgX8Qoo422GrioLTgVkGc0hhU/F/CKYji1TS6qcC4ww+uHbagjj7yq+FjrvrWEb0oMAZEtv8+bg8DiQ91fmcx+ElG4KTQHPcw5u+qwaeZ31CuuZ42NhEwlpKw8EcEbrjU94l9NrNl/+KhODcWO/Z7xoEim7D3tlblOSb4gq2z6wMM/wfsXsJ6SsrBBm/+j7zgy+n7IeyX/+LS5bMAXFNdtEnWkfrbq3KolZgHoiG7HBaK+cAngafdEvB3h9gEpRnCUj0T3yb3odIKiPmUOQwc=
+X-HE-Tag: 1793694521-728203
+X-HE-Meta: U2FsdGVkX19lH1+wgwAFrOLK+1IcZjIMAz8SfRpfXg1R6cYCjEBOrLwKWKP3pxfBjJmhwkN2H3Zf5ne6OJtG5ndrYVOTedxTJD9NILdiHdWB6Bke9+83uGQEwSW/WLPPQ8TD0FVs2t1owQ2wFf1dKpDuL/moe7nkLhCagXWVLM8OGf+HXa7xpOraogfHagV86f2eKfJGdU8QU+v3kcttrIkXLFym3W3yA1UeojHS5gFDaaAK7gUHZMkuGt4QYVFMHdmnFw+myqhc6rmkqKKif/E4rGuhg0mE6F4UBxmowDqHRyysfHVw3NfyJzlxmuNbUtnpDWayfjCf+vkGqd1Tbe2k1N3xuI0mJwLlxdn941FecblWZPcW/wRDxpcwqbYlheVjySTS8+vtiB49RfUOHBqOkeYUY2yx6OwIhxnx8LoHGd8HMGK+KYtEkQzbqXhll3Rms6Q0tMLTfGpKMgJXABZt81Gzq7yTc/DevpSYH1VWB3IMWNcnRnktPCMY6ACCM6P1SSx+tG0cXFT7Aq3ywnS9d2XrLeyHRYLDyKi/nlYwZBjtCZDb8OK5KFl6/UF5EEaLdHjjtWKthBnnB81KuEoUT7553J20dvmcW89PRq9zp77gm/JOOLQRALLrFpHJeq2Xq3iMFk102hCmVw2Fog3kLBp83CjrWV3TaHeIXeJLrqnrV9AUKCg0hXiZTk78PJ58yPN3e8TYoG8+lFbY6PENXNEp40mvMaVxM1Baunu3CI+LPHpkzA0XNZctJV3rjpkCkxadJzGjQ8bel6UWCZIWbHaWc62QeOgW7vlIvOSDEb+kgixCnv5ffmF6+7DhKDY6hjadvQLxxOmp0iMyLE9iNnHODNGICu8zqRWMAeeygwBKEm1zkeSLEcdWIOm4rZGiqIvERCpVHpX53mjIb4/aFpY+yCnnRwfUlyxJUXRoN57x8K6RY3dczJAwe3PLYa5oUEX15gOY1+2Ex8L
+ z7FtsONp
+ MC5ZJDzLONEExIqAS/NkFlJZAoIjY567wwNVElrliJ4Pm2nWGbIxMif5rpV1r8U4kHaqmPKaCEFez8eTghTv0LZNQpMTs1mfF+SewtaX7CPA12rndyCSzTPhFdjXWhkrpgNKtOuq3BbtIhrH1zAiL5HE7cOK/l5vpoRs1cHx+Hig+qI3GQbcCQro+Bhk5HsR0wql7SdHxz8O7V6MP+d9BLhHS48+PWNlZR/fRJfO2Gl9ZTkQoeKuw5bFXig==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -121,114 +121,85 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-With down_read[_killable]_nosteal() available, it becomes possible to
-release the mmap read lock in such a way that a queued write lock always
-takes precedence.
+khugepaged walks an mm's VMAs under the mmap read lock in
+collapse_scan_mm_slot(), checking for ineligible VMAs first, and skipping
+them if encountered.
 
-Expose this to mm through two new wrappers - mmap_read_lock_nosteal() and
-mmap_read_lock_killable_nosteal().
+It charges cc->progress 1 page against the 8 * HPAGE_PMD_NR budget when
+these are encountered, however only checking this budget once an eligible
+PMD-spanning VMA is encountered.
 
-Make use of this in scenarios where the mmap read lock is dropped
-explicitly for the purposes of relieving mmap_lock contention - the BPF
-task VMA iterator, and lock_next_vma_under_mmap_lock(), which is where
-/proc/$pid/smaps_rollup re-acquires the mmap lock after dropping it on
-contention and falling back from per-VMA locking.
+It can therefore hold the mmap read lock for a long time if there are a
+large number of ineligible VMAs present in an mm, over which time no mmap
+write locks (and thus no VMA write locks) can be acquired.
+
+Address this by dropping + re-acquiring the mmap read lock after
+KHUGEPAGED_MAX_SKIP_BATCH VMAs have been processed. Use the newly
+introduced mmap_read_lock_nosteal() to ensure queued writers take
+precedence when doing so.
+
+This was tested locally with ~1M ineligible VMAs mapped ahead of a
+collapsible region of memory, and resulted in a reduced mmap_lock hold time
+of 170us down from 95ms.
+
+This was also observed to reduce mmap_lock stalls in concurrent threads of
+a similar duration.
+
+KHUGEPAGED_MAX_SKIP_BATCH was derived empirically to a conservative value
+of 1024 VMAs, which should not interfere with mm's that have an ordinary
+number of VMAs.
+
+Local measurements indicated no change for ordinary use cases, so this is
+all upside.
+
+This work came out of investigations into mmap stalls when getting latency
+numbers for an unrelated patch series.
 
 Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 ---
- include/linux/mmap_lock.h | 44 ++++++++++++++++++++++++++++++++++++++++++++
- kernel/bpf/task_iter.c    |  2 +-
- mm/mmap_lock.c            |  2 +-
- 3 files changed, 46 insertions(+), 2 deletions(-)
+ mm/khugepaged.c | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
-diff --git a/include/linux/mmap_lock.h b/include/linux/mmap_lock.h
-index 9ccbbcbd7aca..88906ecd6ca3 100644
---- a/include/linux/mmap_lock.h
-+++ b/include/linux/mmap_lock.h
-@@ -627,6 +627,31 @@ static inline int __must_check mmap_read_lock_killable(struct mm_struct *mm)
- 	return ret;
- }
+diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+index 216c4b8d28c4..b9c72ee8b421 100644
+--- a/mm/khugepaged.c
++++ b/mm/khugepaged.c
+@@ -66,6 +66,12 @@ static DEFINE_READ_MOSTLY_HASHTABLE(mm_slots_hash, MM_SLOTS_HASH_BITS);
  
-+/**
-+ * mmap_read_lock_killable_nosteal() - Acquire a killable mmap read lock, but
-+ * yield to any queued write locks.
-+ * @mm: The mm whose mmap read lock is required.
-+ *
-+ * If an mmap write lock is queued behind readers, but its handoff timeout has
-+ * yet to expire, releasing then re-acquiring a read lock can steal the lock
-+ * from it.
-+ *
-+ * mmap_read_lock_killable_nosteal() will queue in this case instead, which is
-+ * useful when releasing the mmap read lock specifically to relieve lock
-+ * contention.
-+ *
-+ * Returns: 0 on success, or an error otherwise.
-+ */
-+static inline int __must_check mmap_read_lock_killable_nosteal(struct mm_struct *mm)
-+{
-+	int ret;
-+
-+	__mmap_lock_trace_start_locking(mm, false);
-+	ret = down_read_killable_nosteal(&mm->mmap_lock);
-+	__mmap_lock_trace_acquire_returned(mm, false, ret == 0);
-+	return ret;
-+}
-+
- static inline bool __must_check mmap_read_trylock(struct mm_struct *mm)
- {
- 	bool ret;
-@@ -637,6 +662,25 @@ static inline bool __must_check mmap_read_trylock(struct mm_struct *mm)
- 	return ret;
- }
+ static struct kmem_cache *mm_slot_cache __ro_after_init;
  
-+/**
-+ * mmap_read_lock_nosteal() - Acquire the mmap read lock, but yield to
-+ * any queued write locks.
-+ * @mm: The mm whose mmap read lock is required.
-+ *
-+ * If an mmap write lock is queued behind readers, but its handoff timeout has
-+ * yet to expire, releasing then re-acquiring a read lock can steal the lock
-+ * from it.
-+ *
-+ * mmap_read_lock_nosteal() will queue in this case instead, which is useful when
-+ * releasing the mmap read lock specifically to relieve lock contention.
++/*
++ * The number of VMAs with nothing to scan to walk before dropping and
++ * reacquiring the mmap_lock to relieve lock contention.
 + */
-+static inline void mmap_read_lock_nosteal(struct mm_struct *mm)
-+{
-+	__mmap_lock_trace_start_locking(mm, false);
-+	down_read_nosteal(&mm->mmap_lock);
-+	__mmap_lock_trace_acquire_returned(mm, false, true);
-+}
++#define KHUGEPAGED_MAX_SKIP_BATCH 1024
 +
- static inline void mmap_read_unlock(struct mm_struct *mm)
- {
- 	__mmap_lock_trace_released(mm, false);
-diff --git a/kernel/bpf/task_iter.c b/kernel/bpf/task_iter.c
-index 2ee7b3b3c10b..b455306a6b52 100644
---- a/kernel/bpf/task_iter.c
-+++ b/kernel/bpf/task_iter.c
-@@ -486,7 +486,7 @@ task_vma_seq_get_next(struct bpf_iter_seq_task_vma_info *info)
- 			info->prev_vm_end = curr_vma->vm_end;
- 			op = task_vma_iter_find_vma;
- 			mmap_read_unlock(curr_mm);
--			if (mmap_read_lock_killable(curr_mm)) {
-+			if (mmap_read_lock_killable_nosteal(curr_mm)) {
- 				mmput(curr_mm);
- 				goto finish;
- 			}
-diff --git a/mm/mmap_lock.c b/mm/mmap_lock.c
-index 834bbf86e004..41b11b843211 100644
---- a/mm/mmap_lock.c
-+++ b/mm/mmap_lock.c
-@@ -412,7 +412,7 @@ static struct vm_area_struct *lock_next_vma_under_mmap_lock(struct mm_struct *mm
+ /**
+  * struct khugepaged_mm_slot - khugepaged information per mm that is being scanned
+  * @slot: hash lookup from mm to mm_slot
+@@ -2910,6 +2916,7 @@ static void collapse_scan_mm_slot(unsigned int progress_max,
+ 	struct mm_struct *mm;
  	struct vm_area_struct *vma;
- 	int ret;
+ 	unsigned int progress_prev = cc->progress;
++	unsigned int skipped = 0;
  
--	ret = mmap_read_lock_killable(mm);
-+	ret = mmap_read_lock_killable_nosteal(mm);
- 	if (ret)
- 		return ERR_PTR(ret);
- 
+ 	lockdep_assert_held(&khugepaged_mm_lock);
+ 	*result = SCAN_FAIL;
+@@ -2951,6 +2958,14 @@ static void collapse_scan_mm_slot(unsigned int progress_max,
+ 			/* Unable to collapse, skip to the next candidate. */
+ 			mm_slot->address = ALIGN(vma->vm_end, HPAGE_PMD_SIZE);
+ 			cc->progress++;
++			if (++skipped >= KHUGEPAGED_MAX_SKIP_BATCH) {
++				/* Skipped a lot of VMAs, so wait for writers. */
++				mmap_read_unlock(mm);
++				cond_resched();
++				mmap_read_lock_nosteal(mm);
++				vma_iter_set(&vmi, mm_slot->address);
++				skipped = 0;
++			}
+ 			continue;
+ 		}
+ 		hstart = ALIGN(vma->vm_start, HPAGE_PMD_SIZE);
 
 -- 
 2.56.0
