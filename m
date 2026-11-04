@@ -1,186 +1,175 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8ABB1606A31B
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 11:40:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7187606A328
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 11:43:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=virtuozzo.com header.i=@virtuozzo.com header.a=rsa-sha256 header.s=selector2 header.b=VZpptrcm
+	dkim=pass (1024-bit key, unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=tM/cNcUr
 Received: by kanga.kvack.org (Postfix)
-	id A84BF6B05B2; Wed,  4 Nov 2026 06:40:31 -0500 (EST)
+	id C50F56B05B4; Wed,  4 Nov 2026 06:43:54 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A0EBF6B05B3; Wed,  4 Nov 2026 06:40:31 -0500 (EST)
+	id BE9B06B05B5; Wed,  4 Nov 2026 06:43:54 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8D6CD6B05B4; Wed,  4 Nov 2026 06:40:31 -0500 (EST)
+	id AB3C76B05B6; Wed,  4 Nov 2026 06:43:54 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 650EB6B05B2
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 06:40:31 -0500 (EST)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id ED3401406BC
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 11:40:30 +0000 (UTC)
-X-FDA: 85397243820.26.3B0E8B3
-Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11021088.outbound.protection.outlook.com [52.101.70.88])
-	by imf30.hostedemail.com (Postfix) with ESMTP id F39BA80007
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 11:40:27 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=virtuozzo.com header.s=selector2 header.b=VZpptrcm;
-	spf=pass (imf30.hostedemail.com: domain of khorenko@virtuozzo.com designates 52.101.70.88 as permitted sender) smtp.mailfrom=khorenko@virtuozzo.com;
-	dmarc=pass (policy=quarantine) header.from=virtuozzo.com;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 81A136B05B4
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 06:43:54 -0500 (EST)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 7A50C406C5
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 11:43:53 +0000 (UTC)
+X-FDA: 85397252346.01.3272225
+Received: from BN8PR05CU002.outbound.protection.outlook.com (mail-eastus2azon11011066.outbound.protection.outlook.com [52.101.57.66])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 9A0B3160002
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 11:43:50 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b="tM/cNcUr";
+	spf=pass (imf08.hostedemail.com: domain of Pankaj.Gupta@amd.com designates 52.101.57.66 as permitted sender) smtp.mailfrom=Pankaj.Gupta@amd.com;
+	dmarc=pass (policy=quarantine) header.from=amd.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1793792630;
+	b=jnGqC3bkDCU9hDhODYD2/eQIDVdquIMvhSMFc9Baj/snSbyJFHMaGHufFJrvIzO1EqgEwc
+	mxR/cfMTD23X9LNlbPkWyPQmkCviB1DTt6EucDd5ADosQVJjc5sosbv1rz3nJU0urr2bww
+	E8k7dga05w72+xkOlgDOGFcmZAur5CM=
+ARC-Authentication-Results: i=2;
+	imf08.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b="tM/cNcUr";
+	spf=pass (imf08.hostedemail.com: domain of Pankaj.Gupta@amd.com designates 52.101.57.66 as permitted sender) smtp.mailfrom=Pankaj.Gupta@amd.com;
+	dmarc=pass (policy=quarantine) header.from=amd.com;
 	arc=pass ("microsoft.com:s=arcselector10001:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793792428;
+	s=arc-20220608; t=1793792630;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tEpyqlnZnD5VvYTqFQOq2w5jDINj/Ab94LVMAq5qpNk=;
-	b=CnpYFkT8kibnWWiIB2G8tTovRLl27Km7OZUD0QM2MevJnqOjolQGKD92tXOIFw5WFLiELA
-	rcViGF9ze/fCnTjuf9YgmH3NVvObYfo4Q6yG11dzqaqE4lNUYOzMuXCAiU8+SE3OPNQ+MS
-	L/RYOh6v3r9pf8FvNZmqHcCtVvbVyXM=
-ARC-Authentication-Results: i=2;
-	imf30.hostedemail.com;
-	dkim=pass header.d=virtuozzo.com header.s=selector2 header.b=VZpptrcm;
-	spf=pass (imf30.hostedemail.com: domain of khorenko@virtuozzo.com designates 52.101.70.88 as permitted sender) smtp.mailfrom=khorenko@virtuozzo.com;
-	dmarc=pass (policy=quarantine) header.from=virtuozzo.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1793792428;
-	b=Ud1kBLLnR7FFQGIerUHhkQ2PXm6Bg6trIxmrdY0Onh9/Y8/TwIB8yGmVclZpNJbl5z7n1C
-	QYQyPFfVO7SJp1qD1FyvgU+yPKWEaLelzUgXe7Tz6IBHDAKgNqMx3GPpZYzjwyFxudePgt
-	OOOfuwl/fxXa0oe0cjgB0JQxPi0ICws=
+	bh=Pl7eYpVNCziZD2XZ6oIeaBCNINvOfK2Nc8AqEeMAmj8=;
+	b=a49wV4BE5c5NDR8+pQkJZc/uFIwmNt7cIBMgEfGySdfrmndWGOsPLUOSz0v3LWuwGTRE3a
+	KJAtrKktl5PQBA/Rbt1OZgWindqK7u/UL4QjtUGQZLwBNxN4op+J/BwGioP/4AYSD9sp3W
+	+5QO2k01nKd719GEmpIgKbhgol59cTM=
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=AhoMmdRUJj5P+qSS5cR9UvmWtU5iYiwbeXLlEYOX55c9hiZCNh8cOSflqf1Ywj5+0PzRFKAoQLEthJQwYVPXm7YYu8uxwYzTQpFLhGzUpigjwc6Vi7xE+VJdbtHTGWngGt3nv4u9VoXkw3qCJAQUDqTGfLNA6Omo8ax/2fhM0t++CJgz2LL1dh8oO3vV59+HoqOZ/My61xSWZqyLTIv4EDChg2E2J+rqC+vhZLwxkyprY1LmNKGguTr2xZw1cnBZQoBg7uK4FoSwQAVbNIYRTWcUbuSRILQKCWzuG5PDnRpGTOLVcpPRuL3hamtzHDGbR3qwhIRF3LPcSxfIK7LEug==
+ b=NjRjD08625CfreiyP4DpUtONwpAxLh66g0Tw2xKaJzi2YafYyaFtq5kgTe1eepGiTX6Kh7QWpcJsXHFbXtfwe+GURpgIxtUDoInbluPlgxb6x3iMELh+ZdZsCn3gCjn3P9hlXLAYHTcyYVu74kaEYHh3XXNfuZWY2tjolEkyPxuz8YiNVjOxFEOhQDzyMOQ2CUW1b2YbM8Y3BV8jNjNOrdYTDKwlGa4bqkurOZvde86a6+UXGxZOLm0p6Rn7cj4YvIKn2bCfw2HceCrkijJaTag5CeGmGZmHzlZ2AmPQnzexTurvamq03q9AJos2Bw5SoPkOvfbSgRgja5n55u4M9Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=tEpyqlnZnD5VvYTqFQOq2w5jDINj/Ab94LVMAq5qpNk=;
- b=IC9x1mzEFdcqMo0KwWvxRHxj5kOIiOIFrMI+Wg3o3Fu2r31wakKFHckSrB3JOLkqrtUBJokogxT6sZCcRhhPeBkvdppJyWFlmVDTnM1DkZa49CvrQoMwjKdeRZ39uYBm93EQ9VfkNRgwN3WHNxsn05HJ+WZyombsK9Fz2LKw25fir1II4XCGoJbEmug2ec7X95YZf3VQs9iML/wGlIl1LE0nEY7m7GjzL2rwtYsknbU1EaZNjvMJBLezmvN67/EqpwXjIDbdgAkgxMnW6DZ4Zw17Ik9Z+VsSeoLfCM8omB9WGZuUGUiN75L6sn7or4vv5s0Ijfx8UDxdXd3kSgeKnw==
+ bh=Pl7eYpVNCziZD2XZ6oIeaBCNINvOfK2Nc8AqEeMAmj8=;
+ b=g4bcpm9sT3YVNF0a1nDavJ/OPqmD8MGNlD8MCAhgljXcnw54WQlebO8K4Ttd+pRgaesIOz10fCIBygtGWha82aBA5LZQvFq2KcGPlXOqEgdT2PtPaZpdtkt+sBUarmxyweZzDFQfSlSFXr+QA6JNdHpggjS3Xqm3YijofHAYUlsVpDA8AbjjrsgFcmRiFOdUxkOiwa3prTXgYpQ/r9gCuDUBs+MvQa3r06qtTU/eaE16cpJWEA+cRq/zyjyqvP2GiLy5WuYN67VCQqII5jDZDeaYQNax3FJyv6iMWlmAdXpqXiMJ5hbvrhu/4V5BOWuyuaaS6+f+E8N5TPhjvkcykg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=virtuozzo.com; dmarc=pass action=none
- header.from=virtuozzo.com; dkim=pass header.d=virtuozzo.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=virtuozzo.com;
- s=selector2;
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=tEpyqlnZnD5VvYTqFQOq2w5jDINj/Ab94LVMAq5qpNk=;
- b=VZpptrcmUdbrmRO2IagexqilVSYUFvzNYNK0TFUwk3+8HOtV5sdPwr9TANwpxj3j3nl+KQVxO9OGRZh5ZSp/Eo/n8FXhZXxMfMZ0WZF/1U7WFRI7ajbj6Ut/ISg0zd6xbg5vzL8Rw0rxUtc6r8ov04vHBuF6360nwPegpBT7p4Ibq58ZZaUgwoHQ+hFKMnAOm3L10PsW2nFgmzqvHCkCFrxrJogQuO75V6bB30eP9MO55VLO2XHaow47y3VHx+sPx1yjvvRK7pV3ZCCa17l0h+bEw6wPyjVzYPJmqjDMvPlv+npAPaEthMb6P/1fOCViDQfGaXBpBI8KAXatQ6jBFA==
-Received: from AS2PR08MB9075.eurprd08.prod.outlook.com (2603:10a6:20b:5ff::9)
- by AM8PR08MB5698.eurprd08.prod.outlook.com (2603:10a6:20b:1c6::24) with
+ bh=Pl7eYpVNCziZD2XZ6oIeaBCNINvOfK2Nc8AqEeMAmj8=;
+ b=tM/cNcUrROf3Rqxwsx7mmEy5Ha4yeoRm8T4ZzRHlBHd64sW7Hjjq9qdFEoOFVcluFv4sv6KvRWrGql9tDM/FOp6S5FwTNtiWY+MiCb+sXU40JmkcwQT4tvsX343e2ekq5BTkfs1y0kFgVQKk/qG+Er/t9y1K60ToJeAgUX3iMQg=
+Received: from DS0PR12MB7771.namprd12.prod.outlook.com (2603:10b6:8:138::6) by
+ LV9PR12MB9805.namprd12.prod.outlook.com (2603:10b6:408:2ee::15) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.569.9; Wed, 4 Nov 2026
- 11:40:23 +0000
-Received: from AS2PR08MB9075.eurprd08.prod.outlook.com
- ([fe80::3f57:9ced:7a37:1bd8]) by AS2PR08MB9075.eurprd08.prod.outlook.com
- ([fe80::3f57:9ced:7a37:1bd8%4]) with mapi id 15.21.0592.007; Wed, 4 Nov 2026
- 11:40:23 +0000
-Message-ID: <dd966816-a83d-47ea-8faf-bf80d3b2642e@virtuozzo.com>
-Date: Wed, 4 Nov 2026 12:40:21 +0100
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.592.8; Wed, 4 Nov 2026
+ 11:41:40 +0000
+Received: from DS0PR12MB7771.namprd12.prod.outlook.com
+ ([fe80::9a3e:791f:33b6:3d8c]) by DS0PR12MB7771.namprd12.prod.outlook.com
+ ([fe80::9a3e:791f:33b6:3d8c%4]) with mapi id 15.21.0569.011; Wed, 4 Nov 2026
+ 11:41:40 +0000
+Message-ID: <3884e89f-9c0e-4b24-8f3d-365c0e2732eb@amd.com>
+Date: Wed, 4 Nov 2026 12:41:35 +0100
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 2/4] mm/huge_memory: copy file THPs at fork like
- copy_present_ptes() does
-To: "David Hildenbrand (Arm)" <david@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>, Zi Yan <ziy@nvidia.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Liam R. Howlett" <liam@infradead.org>, Nico Pache <nico.pache@linux.dev>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
- Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>,
- Peter Xu <peterx@redhat.com>
-Cc: Alex Williamson <alex@shazbot.org>, kvm@vger.kernel.org,
- =?UTF-8?Q?Lo=C3=AFc_Molinari?= <loic.molinari@collabora.com>,
- Lorenzo Stoakes <ljs@kernel.org>, Shuah Khan <shuah@kernel.org>,
- linux-kselftest@vger.kernel.org, dri-devel@lists.freedesktop.org,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
- "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
- linuxppc-dev@lists.ozlabs.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, Jason Gunthorpe <jgg@ziepe.ca>
-References: <20261021-b4-prep-vstor-149847-copy_huge_pmd-recheck-special-pmd-v4-0-66f00b7a564c@virtuozzo.com>
- <20261021-b4-prep-vstor-149847-copy_huge_pmd-recheck-special-pmd-v4-2-66f00b7a564c@virtuozzo.com>
- <8c164738-8025-482f-828a-3f919150a930@kernel.org>
-Content-Language: en-US, ru, sr
-From: Konstantin Khorenko <khorenko@virtuozzo.com>
-In-Reply-To: <8c164738-8025-482f-828a-3f919150a930@kernel.org>
-Content-Type: text/plain; charset=UTF-8
+Subject: Re: [PATCH] x86/unaccepted_memory: Do not accept ranges that are no
+ longer E820 RAM
+To: sashiko-reviews@lists.linux.dev, Thomas Gleixner <tglx@kernel.org>,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+ Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org
+Cc: "H . Peter Anvin" <hpa@zytor.com>, Tom Lendacky
+ <thomas.lendacky@amd.com>, Ard Biesheuvel <ardb@kernel.org>,
+ Kiryl Shutsemau <kas@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ linux-mm@kvack.org
+References: <20261102113127.161823-1-pankaj.gupta@amd.com>
+ <sashiko-outbox-195153@kernel.org>
+Content-Language: en-US
+From: "Gupta, Pankaj" <pankaj.gupta@amd.com>
+In-Reply-To: <sashiko-outbox-195153@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: AS4P251CA0020.EURP251.PROD.OUTLOOK.COM
- (2603:10a6:20b:5d3::9) To AS2PR08MB9075.eurprd08.prod.outlook.com
- (2603:10a6:20b:5ff::9)
+X-ClientProxiedBy: FR4P281CA0278.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:e6::15) To DS0PR12MB7771.namprd12.prod.outlook.com
+ (2603:10b6:8:138::6)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AS2PR08MB9075:EE_|AM8PR08MB5698:EE_
-X-MS-Office365-Filtering-Correlation-Id: 2c75a77a-1e0c-41b7-7d78-08df3a6869b2
+X-MS-TrafficTypeDiagnostic: DS0PR12MB7771:EE_|LV9PR12MB9805:EE_
+X-MS-Office365-Filtering-Correlation-Id: dd06a91d-fd39-4501-0003-08df3a689730
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|23010399003|1800799024|366016|921020|261028144727099003|261022075727099003|261026121527099003|261009223027099003|4143699003|56012099006|261022105027099003|261026140227099003|10067099003|18002099003|22082099003;
+	BCL:0;ARA:13230040|7416014|376014|366016|1800799024|23010399003|6133799003|10067099003|18002099003|22082099003|56012099006|11063799006|4143699003|261022075727099003|261022105027099003|261022115727099003|261102123227099003|261026121527099003|261028144727099003|261026140227099003|261021121427099003|261009223027099003|261021135927099003;
 X-Microsoft-Antispam-Message-Info:
-	du0WDII6tD1QtRG4Es493qUpdO0KTSKmDc83kboGkEgcTaXsuDczK5pjicAldwOk8vOIxDHCyeHcHbrQCl0LS8urebhLUuO8L5qu8+GCPmy0TMPJ4jOZZfR6ywf/7aQLofJ2OZSxqe8rg10UIeCAIoyvHhsFRZhT103KHHtYfDKK/yRl11xLpMNQIvwfdxeYBTaEfjCIpO+ksVoXUNteIuLXSIsAQ0gcA3VAx33HX7Rl4IR6mNOwbKZJ2h1LE7owuAQOR0LPMCZUUqs10of8RvQWTdOc/wsMEMCbpfZFcTaafeJzZLr7vzF4N7+pVOgPjBJwgig+9FguzuaHPX72/M+exZbswMIu2Rh4S72TXnwaGnMB8l/jLBgoL/44hxBzx3dRYjW3AZ9UdoyUYihutvwpyU6rYVMUYXpAA3x6F1OoCiwXXLnfaoL2kTV5tEnhZyjIF+WDx5WUE2eAiBwXwONzcieXOR8UquqGll0cOqB52op09OqO46JNmzSKYb6rB5RO+se4KzRkeI0nZEWXgFFA68ngaIZB7sZfjZUeBXc1C56UOl2cPHyDJmEmt+yMvxnK4jW79nQyFYlav9sZDuvPPsexKoq2KYNqRksrlbOPliDXatu3WDaCysvdiphDD+hpsjMeu6qG91s3+bk5zlJ2fXiVbkyobnjiLwMjYlSqVd0pR+khBi8dxik9TiT8t+dSAKIsyERwMlRap3RuYQ==
+	F57I8I7YarY53Dt5N2znxTS+V1YOwcjGeWy5jA7xySsg5tNsQDs3WSfpC+FmJ7E1lWTMnCZCCQE1oG0+k93Uarj6torc2NKRjh5vZN2NytL3N0Ik8mv4nHzyyfIpmwgCJcO+8s2e5ITDMAuJZbYYYR5ZUunwrdRLpuDtmbyaYqu3gH+O2W3pQ5JnUpSbyeiLTmajYD3cAWgi7EKWb1pzj1fSZzR73d03cTO8hD6IaF7vn9Z0X0otY4QFCJu1m8sfU+BPMJuZFIcS2ll9wsZQfDnVO0Nlxddaln1G2mSVPbjW1PLS1KB8dTrZLNoceCbJBwuAxylS+f0JECGuEVWn27ZBEm97BttBcYqcmdV/uuGFLqMdfRR5tR2g5RoKaa4f5asVDkthwk9TYwI5ddhOJERCWYqLDXldK1fdF1160y5X5UUdkU/kRDhVY/5sv38sbmfURo5Pj+yNTuglvYC9BC7YDf35VgZa+rx72mn/4RL9no6TwI7rM2YyfSGYnucxazOE/CeNxsVwZUhrO2Y6uW6p2Wy4wfOIzvWP9YNEbm7QpBxwqiSJvFgIkcc55FQ3Y5bBLRW539P05LVlSao1M3nUrFGY+EKXs8NTYYKJHlPWcsU2kUWL22s8+3wpezyVw/JA84w9I0VhwJOW/07omvLVUYClHo89dM5ZvO1CPgg=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS2PR08MB9075.eurprd08.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(23010399003)(1800799024)(366016)(921020)(261028144727099003)(261022075727099003)(261026121527099003)(261009223027099003)(4143699003)(56012099006)(261022105027099003)(261026140227099003)(10067099003)(18002099003)(22082099003);DIR:OUT;SFP:1102;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR12MB7771.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(366016)(1800799024)(23010399003)(6133799003)(10067099003)(18002099003)(22082099003)(56012099006)(11063799006)(4143699003)(261022075727099003)(261022105027099003)(261022115727099003)(261102123227099003)(261026121527099003)(261028144727099003)(261026140227099003)(261021121427099003)(261009223027099003)(261021135927099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?Smw5V1RNTnVUa0sxTkQ1VytJQkdtaFBpemZVOGNaemZhMEl6RjZZdTlnV1Yv?=
- =?utf-8?B?aUZyWFpYcEFqOUxtb3ZjcTc3Vkt1dHF1UENTM3JJSTNoaEg4akU0VDVpZGhY?=
- =?utf-8?B?QmxQVm5yY1ByNzkyOFNFaCtBV3Y5RytTaER1Q3VhMUhMcFV2R0ZKTjI5ZEh3?=
- =?utf-8?B?S1FLdjBxR000Z2p3NU5xd3h2cEpPUXgvc2ZWMlhRUjdEZndpU0w2Z2pRa3hn?=
- =?utf-8?B?NFYzOXF0YzRRU2VoaEZrNkFRSzVMN3JRZ1V3Z0gxdGx6dU1KKzJSYitwWmI2?=
- =?utf-8?B?eUU5SzFTcm9UbE1iOTFzODhEZThOVTBGb0hybUE4cWh4UEYzTVZlNTRiNzYr?=
- =?utf-8?B?ZGVsbGdyS2t0a1M5TjVZSHVobGRmcXFMUFBkaGJSaU1JZ3pEK3FMQnRTVnEv?=
- =?utf-8?B?RjQ4djEvRUtNZVJ2blFuUlZxVDZ6WGoxdXM4LzhVakp5RVU0MlZvaUVPbUN3?=
- =?utf-8?B?b1VYZE9BQ3RRVEZvMWlyNDYrSXIzTTA4WWxGN3hSb2p3RmZhQWZ2WkxMSlJW?=
- =?utf-8?B?SUp5NklYOXJhY0lNMVRTcUM3MXFLcVZyOGdaZzdsbFNDOVRxdkt3c0dydmlP?=
- =?utf-8?B?S3l1QVRTZW1BQnIxUENBYXA4SGsycHZpY2RBcS9WclRhcDhlbkIwS0tKVjAy?=
- =?utf-8?B?dEk5SEtxWkpScVdKanJ0V3FvWU1MNkNFenVCdzM3MUhUQThpQmZra21xQjNQ?=
- =?utf-8?B?NkRHS20wZHhuODJWZTQvaFIySDhCaWs4enQwL1U4dUdtbVpqcjNSdDdZKzVz?=
- =?utf-8?B?NmFSeEZhbHAvTTV2bER4eWgxYTVBckpyQ2xRRjBFRDh2aEREVTFQTEZkd2VT?=
- =?utf-8?B?UkhKWDRNQlFLbDU5cDRXVjg3TS9Lc2lHR0MwcVJHR3puQmlvVGQ2Q1ZKOEUv?=
- =?utf-8?B?S0l3NGZpcEh0Z1J4UlN4L0NaWGpFeGdjOUhqSUxIdlBtR1BQS1FYU1AyekdW?=
- =?utf-8?B?UWprcDRLbmYxYjhjNXlnUUEyTXMrMHlPMHgrcHkrT2lKbDhaaHc2RmNvUlFY?=
- =?utf-8?B?bVk4OG81ZTdqcFBRNytpYVUvc25ReUdOY3htMm9pTSs5SUE4RHVTMTFsNndV?=
- =?utf-8?B?TFZUdXlWTUdlWjFJQnNsSWVOZ1NPOTArOHluMndYODQrdTdZNFFzcmZtdmdR?=
- =?utf-8?B?SjlRekpCRnZOT2tucUdMMDlCYlYwV1Z3SDlYRTZHYkZtZkZyNUhZZ1RMSjEx?=
- =?utf-8?B?eXBUOEluU25YNlpVS2I5WTYxcDdORzBrWFpmZ3ZxSStpOERIOEozb29WclhN?=
- =?utf-8?B?MGg5U1VjV0lzbTk0Y3p1THNGSHMwd1hMQk9YeC91YXltd2JGaEJocXBCTFRn?=
- =?utf-8?B?RnhPaCtpMEN1WDZSUzFKSmJVdUxTOVhaNUtuWXZXUWdpYTVZVk1aYitMdW1m?=
- =?utf-8?B?c0lXQ0FuNzlzYXBpNUhuSEtJWFBObUJzNFVCU3VtRitLOXpDUTFCMzJ5Zllh?=
- =?utf-8?B?bmxNWDZxQ3pNRlo2SExKTTRkWTZJRXhlaXd3NW5WZVBsRXljMHpYVVJENlo2?=
- =?utf-8?B?OEp6M0lRak1Va2Q0dkFuTTFhMU5paUZSM2pPd09hNlFwdDFjOElpNTl0RmFq?=
- =?utf-8?B?Wm1iWjhFbkxERENTSmVRTFVxVFNFdjdwVXBSNy9TMHBkQ2szNFkyZytDNnlU?=
- =?utf-8?B?Z2xBTVhBYlIrRzZqYlIyZmhOZXRicnl6VXpXbkU5V1I1L1lFWnNaeURCQ3pv?=
- =?utf-8?B?eXhwdmk0T2gydk1PaUU4OEsydzJuY210eDBIOTdURHRCd00xaFJsMnczaFcv?=
- =?utf-8?B?eGhlcnFyQXlRWUMzVURubW94V2xDVkFNWXIwT1I5eVhRQXJJbnl0azRrNVFE?=
- =?utf-8?B?eFBNc2JkaHFaUXVPa3N1T3oyMUVKSmMxNlV4bnZwUG9WZUNDMHRvK3BMQ0ZR?=
- =?utf-8?B?Wjl1dFNzVXRiL2M1dGlVWmxJUnNxR2ZFcVdQYmM2RElJdndhZGlnTWpjLzNr?=
- =?utf-8?B?SU5zZEVOYnFmOWQ5bm1vVXMzOENSNEdYVlA0WWVBZVRzazh6SzFUWnY5Ylo3?=
- =?utf-8?B?S0Z0UW51cEs2bEx5alZuQnpDUGR0U1RiTzgxMUJtQ2JSTG1aVmtQMk9EeVF2?=
- =?utf-8?B?ZlFacXY2cDFvM2U5eTdPRkNmeHRBa09jaGpoK1lWK0taUVJyeVR2WVhvRVp0?=
- =?utf-8?B?RzJQSXpGU1RDeEsyRng1YUhRR0kvTm5rdldxbU55S3NndEp2NzlFYzA2a0ZN?=
- =?utf-8?B?RndLOHlTZUlYL3BURWhLYVJQMnBKMGNtR1p4V2I2ZlZqcWNoZ3ZoUVdSQmRJ?=
- =?utf-8?B?cXl6SzRJbmh4dTdXei8xRENnYjlmeEc0aGxTQjJNQkhyRnFOSlhoK2lhbWx0?=
- =?utf-8?B?VkFjQkh5bVpNRTVwMVpxZUhHOGdMbEtOZWVFenhMOGhhRGZHUzhxZz09?=
-X-OriginatorOrg: virtuozzo.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2c75a77a-1e0c-41b7-7d78-08df3a6869b2
-X-MS-Exchange-CrossTenant-AuthSource: AS2PR08MB9075.eurprd08.prod.outlook.com
+	=?utf-8?B?Z2o2SVViNW9KTnZRaHgzcFFiOHA3Z0EwM3hTTHlJU3Zha2hqZy9ac0ZVV0FD?=
+ =?utf-8?B?TVdiVEdlOUwwdmJsUStrV2tOdEN5NE1DeThlZTFhb3JTOXdLbTNXK3dpYWVT?=
+ =?utf-8?B?ZlRNUUxqUTlhc25wTVpoRzdoWVlOT2QrWkM3V1loSk1NZ0xTVHNkUjNGSUNB?=
+ =?utf-8?B?cm0rUmxXeGhGVjE2NU9ETG4wZlExd0xkcS9FSGJjOVhtTDFOdURzcUNDQmJL?=
+ =?utf-8?B?WTBoOFVxNnZpTGY1RVRVM2ZuenV0NWFJVHB3cjRpbGhFL25qWmNOcUMxeEg1?=
+ =?utf-8?B?Ukc2dDRlS01mY3h2L3BCU2NKb1g3RE5mTFpKQklYbEZLbmZ1bXJpZDVUeDNQ?=
+ =?utf-8?B?UlRQU0ZCVlozTjcyYmhjSzFDQ25qdXFKRlNBZW01dVYxSHpzK0xaZTFaY1FC?=
+ =?utf-8?B?YW4zbk1BdktGMHRlcm9yblZONnlpSlg1NXJGdmFzUHo3UXVMZDFmNS90eXpt?=
+ =?utf-8?B?N0R5YmRMdmp0RjlYa2ZUNmVuOXBsVEFIOEhDbVczR3lZNDFNVFlaWFVaWHVZ?=
+ =?utf-8?B?emVSbFg4VGIwTUtpMng4Um90MFkxcXQrT2JxMTVhaXFmSUxIZHdVdUVWSENa?=
+ =?utf-8?B?WktVeVRFdE5oTHQ1djl6TlJ5cTFFYmhVVVppSnY5TVBUN0cwQTloenpYSE5Q?=
+ =?utf-8?B?SEdCWGJlSktzSy9BTHFnd0sxZnZhekU4amYwNy9pd1M1bTYwK1pXSSs4bDNo?=
+ =?utf-8?B?cXk3VDhwYmFwRG9aV3Q3azRxMjQ3NS81SUh2VU1UQkxDZ2xsK1UzcGtLb2hj?=
+ =?utf-8?B?djdvVGxTejAzK1FXdzN0QjYzMU9ZUVdJb285YkJZYXhQam00UVU3OVg0Y01W?=
+ =?utf-8?B?b2VpYzVybUJONjZDYkhMZCtWRWpNRmFOZ3loMFpBeTVYaWdrUTFEN3JDYmsy?=
+ =?utf-8?B?eTFoTDBzNHBkd1ZINTRuWGVEK2IyMVN5OWhlN2Z3WG5GUnJwT01tazRVb3Rl?=
+ =?utf-8?B?aHZ3cjdMZXAvaFU0NGlxK1FESXMxZkMvRGU4bmZEZEZwSXBiYTJnVTNSdVk5?=
+ =?utf-8?B?UEhCMmpYVm5EakNKL3o1aFlsTXJUUXF0WXFyREJlc3lsR2p3L2MrQkIveld1?=
+ =?utf-8?B?NUFFYlJBMVRJM0tEVnQ3eWRQVlp2amRleGZXOC9rVUVId2VFQ0o3S3VxSG95?=
+ =?utf-8?B?Vy9pQ0JWcnNXalNFWFFCQldEVDdoQ0wxRjRDZEhlTmxvY1RkUzFiZWcwQ09a?=
+ =?utf-8?B?QlB0UnBRdEp5cjJ0ejBNOEQ4cnBWUE9wWDFQQTA2ZEZiWGdja2RvdVI3YlpC?=
+ =?utf-8?B?aWpRazlOSlBYU0tULzE5S3lpRHpHZDlUNWVJOHNuN3R1MlpieFVOSG55ZWtG?=
+ =?utf-8?B?dWdJdlhnVHRGWmpZOVFJV3pKZnBRVHhRbEpxQlZydzNKL3h6MVREQUJDUDNs?=
+ =?utf-8?B?eElFVTBTeTZ2WVFvbjFZQlJnT1Q0aGxXeWVsRDJwM1B6eW41djFQSWZpNURC?=
+ =?utf-8?B?Q3JpV1BFemtPc21pYmo2WDVDMzNtY3BscDY1YkoyWE1WcG5CTjZDSGlvQ0VP?=
+ =?utf-8?B?dlpYaExET0t3eWVCTGt5OUVEYlpZNERIUmRTRGtEVldUbmxOblNRekZUc0xB?=
+ =?utf-8?B?K3M4VjRXYlR1OEZhZnNpbzVyRlUvS1JrV3c1OHJvbDdKSU9rRmo1RnlaVVUz?=
+ =?utf-8?B?UlZxN0VDRUQzRnA1eTJsSEU1TTNTL1grbWx4N2ZCUW9iaGJ0SEdhQi9YK05M?=
+ =?utf-8?B?SmxpWldyTGFvV2ltcC9nbUlXQUM0dWtNazFPTDVLbEVSWVZQVDZFU05sT1dD?=
+ =?utf-8?B?V0JYLy92K285RWpnSEtUejRrRENPY2tEOGtRVGxPKzd0ZEU3ai9qZ25UcUdZ?=
+ =?utf-8?B?VVl2K2toaWtNeDIxRHJ1M3dzTFhuZEFpV3dNVGJVOXlaWXh6QUc0TGIwSkhU?=
+ =?utf-8?B?VE1aa01oS3FCQVhlZWlqMWRuOHA5RnpUcVVRSEMxN1ZCamZNbGQyTnV6Z1k2?=
+ =?utf-8?B?OFJ0SHY0TkJFR0RwUzVBcSt0QnM0cXlTdTc2Q0JNcjliR0djS3hlQ1RqeTln?=
+ =?utf-8?B?dmJWSWFycWovOWpvTHJFNVlmWldTb2hQQm1IYm5GTGdERWxKYnRIQzZMTGM3?=
+ =?utf-8?B?RnEwNTY0NDkxZW5CaVYrN0liV25iZSszeVdzSXdUempRRE4rV2J5SmttTmpQ?=
+ =?utf-8?B?N2paRjVMUEZkS1dReUhDTFA5NE1DVmZOb0J1cUQyRVRRSXpxTEI3WitLU3hI?=
+ =?utf-8?B?WEN0R0xaZzFjTmh6RXRKVllncTE2NWQyWDRrd1RyM2pRSjYwV3VYRVIweXMy?=
+ =?utf-8?B?UkI5bmx5RTB1eEZrZVhEQnhHUktJTTN2eUl2QzBtdGkrWnRVdG5kSzNKY3Rn?=
+ =?utf-8?Q?m+5D6athKKJFG1Q7B3?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: dd06a91d-fd39-4501-0003-08df3a689730
+X-MS-Exchange-CrossTenant-AuthSource: DS0PR12MB7771.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Nov 2026 11:40:23.5671
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Nov 2026 11:41:39.9980
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 0bc7f26d-0264-416e-a6fc-8352af79c58f
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: P3eSZaW3NPD/Cs6l241/n5QE/ciGrsPY7UyL0q7Y7hd+U4YcOmwUhdzmRxXvq+3EqPEfjCb6Wcstp1mYUw5ziQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM8PR08MB5698
-X-Stat-Signature: baxjybkod9f1ye8ud5faywa4m17ayg76
-X-Rspamd-Server: rspam01
+X-MS-Exchange-CrossTenant-UserPrincipalName: eeGGGkOc6d3krd8jMH4zZr6/6qEm2RD0u3Rt/yTs11OczELysX9vDHICbj65mxRJYPfSuSBJrf3DoftuJungcQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV9PR12MB9805
+X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 9A0B3160002
+X-Stat-Signature: h69snmxgx6u9fnw4tt7pnfbgtrouq63m
 X-Rspam-User: 
-X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
-	autolearn=no autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: F39BA80007
-X-HE-Tag: 1793792427-926081
-X-HE-Meta: U2FsdGVkX18dhjuXkitucfqFThPj5qz+dQKLxN9fNX2EHHh86neofiwYGJk6BLFuo8aI/VmlneUefWiVZRrkCLUVwokywVi5AXuahedM46zm+i6Sbk3fVHLxJO64TAdq8gZiZsDguLixrAgEX35+Kj29mifksydRVuFpG89fG16NBHW16TGWvGr7aNI0UbJbb34vCE+aagKpv/uxWnrfxGha0ax3eNbSDUrS3Vjf4UKbgKlj8rLNAh2kbwv2ZNX3vxvdGxClEc+5eUbxMUY+Bz/Rxg3TNLjJZQSS0BtkUmsSI0jf5eO/DWsQCm5CtkJzLSSHSXG8xS8ocIRv7eZ7gA9s/B9Fczpcx/t0BMOeKJfiL2eIy3rcdUxpoGFkNpKRnxlNM3NgCa61BDnPEdlSxZ/RASqP9Z3vlDkHC5/1aWmO1/AYz7WKLivdLT+Rcai8whIrbNPVfZVKfcrwLOhl9KLSG+HRxY/UXGVjpPSC03wfVNzQF9uAQuUt4fkr141bjtuqdn9onLTZ8UljABjsLnJqTogvk5ReYovPmm+nrKpCHXJLyjSznOA3T4ZaMAIsbxz5VL14vLh2DEIZv1u2tzGYgyeQtBoknB26Eq6nxww0tHGSqCs916ep5GmHkX5ayBNU7Crqg1CLtvDXSaUI9yn2hPoBhkmCa/6KjqtQs2O94sUmZPSb8hgpbq8nazfRs56AwxMZp/R1g/ayTOliTl9hNkLcF5riJ3oKJhe3v1uLOKSgTfh/z+XgC07CtRqFfyV+UrLhsS8MTdZ2xwcS9ZbiLOhw9g6tip1AHnctJdn0vwd3Yck1cbjOes8QjDzpCXXQSfOQWadALiTCnbyJ7Lt8nw+WQ0RfofRME5v1m790EoH9jqa23zYnSMn5DpS0e12xwdohGRRN8W60zDoh950pE8PztC9hMabLfIQ+E9kT8rHiOTlOfcYHl7smge4cjN1mCQj7EIOZGlvsLTW
- GlpPpjVw
- xK8kfdtegWdfsc0thIZZc+Q1iWVVl8AkY79b8fCv46SNTsr6gANcJ7nWyyjNHrqi/QH6ENeGNYjy12ZKWcixDm2a3t6DTimJJHzvYXXMMu2dznAYu1Fg8NAXGKKSXCniHibCiEe92kFZFen8v2/1Gz1p70aBueYqT8XFomo9lAn3Irlq8S88pU37yBoy8bRnxVHNvCJEytiDgzvGGnYwLX8NEB44/J2FLKZUlkHW98GH2AQuVoI8blt5QLld9V5dknKCIRMBQDfdaNdYwiZv3FnbJwGnCGmy8epqLN9SRPI22j3g7+VtOTcaipXBRuXDlWqGsKdpWRqiZk9yksjBDRSQ6ebTelbmx0DHHLxxCOMawkQF7YNGvPfXp/awtuEQf/iHD8ZDW2hfPzdrmhMrlu/2Ddqad2Q+kmwlmskoycrsnJIBM3MxxFCUdx2qLSEl9dJ8LMWeVeFF0Yqak/ZgODoZaOuTxvP5qjC/wb6fTFhkyyaGdSWIzMwz1f2VU2kQQQvVSYZlpxdTC2fik86zQzD5xdEd9P491rXUZSCxLKlYsPY8=
+X-HE-Tag: 1793792630-747146
+X-HE-Meta: U2FsdGVkX19FIi3arjQ9bTxC6B3IFjur/QUUB3U6jTRJ+N9lSnDNJo4kBqhD0LaClnwO/WGO6ESW2mgW2vIIfEE5XJy0e3ouRdQYuwdGBNUt9Lq7HCd1YWa+NFxTi4WzLHJTnA6GvWFr19J60R/TkqlDarSbHXSsWqyjQ//EXdB5qUEldodi4HWg+aPGJfiUksd+XQF6XcEkcBYstxR3p3VkyZ4gdPdtb7y9Y1yv8TPJJ+8VzR8vI9LJaZ6WXmxOdbine9mU/26qa/38RBHvAF11hzaPLlLMA2ZhSL88kETJQp3ueMvNT2x0jgN0xvuAGG+D5l9/vu3QXphn++GrjPzNtZ3SPDPBnNCUxtDOwBEZ0ITgSehN0h70/iDscjeXjWQu8EovuZF+IN9t9/4AvrGWSGECGtgCadyS3+LBdLTSQjl1PSU1c1BBLbZDFv41oRuH6dR/IRJ0d7V7JgTE/mRRlXnrFoOIv+vyx25K6hauHTNsk5EbTRxtJyWYnB2aFtxFTIahRu0JKJnFoY823B9kpROfeDRG4+SZiXQO2nDUpkQXwy5cLc5hvvuu7p7MVEDsk0rv4IIKmXeRsfaY+qOcRqQBAGX0Diu61gbW2XWrD+uQZ8vIbq12VGpj70+Opw4ELtJr/pWs0ra+bdfkoQV/xptSOBQ2OqTPfV4qyEBCVFbTFDOvgrlpTJbSSBE0A7rOQeNV280JuYrEtlJ+4OT409WzJf6VB5JYCRRXles/6kSOgV43/a789LbwEE/5jheN8URXtWUuIAUQmp3krKW2vond7ncRtWZQiHY4S0fGbd+7W6FuOek+Jsk5QAaj8ZcuOlwYk0PjCL2COoRtGv2gmKQ7MDMrX3VU7WqBFfIOv6yVIGMLkLpRrSpatR2inrINpTtdVlH+7kSy7UJNctQ9680KP9cneCdOLCPnFwtfvqSy7VWHFvhwxY/qqkplISgHSuXlLpux/Hitb1U
+ KLR/+pTe
+ Ay9xuANd7drCufDlZ/MHZ9nTx0ayUtursVA/6KjmRLO4/PPCQnRcD134W4GRgd5PuoKcXEQY7gMODCf+QfbTvD9x7s78yokY2dY/PCM5pDXDA3yXAYRMryG29Ja9YkgVo9vI8wJ0vcl2S3kPr16dsTm99aGfmAJlxeOOGtD5wbsAaRiK/dXpvE6ZfL1YnBIhhtX0wU1Ube6GPU8DdzIZv3SUKZJcM7R1lI3pVhJPVbb19uk1OiJG4U2Ib7atBC/+9zMwmezkUiOuF9UvttZB6bBW7kT1sPud9r0Sq5RDMiwR1JWMdJ7TYbRoGfZdceXi4zqNdIYFIJxJ0QcTydb0jW9QfnMVINjP2FbM2Mg2QWJ2AHK5PTcWdQQHMwPZMdulWwsdRkW0Qsvow+ZyVwsK2RpzK3idgf/t1L10n+KZ86CPIr/wbVUfwNJLIeiXgshrA6X0z46Yb1MOPNbnO7lb2X0bX/ZPtR+unyH2BzvSxKSwH1c2eX/Dn8d9FDmevUDUNU5udqINlfaBQJ15YeqtVlo1y0gHd3zFHYyAZ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -189,56 +178,163 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 10/27/26 15:39, David Hildenbrand (Arm) wrote:
-> Any reason we're not adding the vma_is_cow_mapping() check on the
-> softleaf_is_device_private_write() path as well?
+
+> Thank you for your contribution! Sashiko AI review found 2 potential issue(s) to consider:
+> - [High] x86/unaccepted_memory: arch_accept_memory() desynchronizes unaccepted bitmap
+> - [High] x86/unaccepted_memory: unaligned E820 bounds passed to __arch_accept_memory()
+> --
 >
-> (I think they are all anonymous ... just for consistency)
-
-No reason, copy_nonpresent_pte() has it there too. Will add in v5.
-
-> Is the fallthrough:
+> commit f56630bdf157fa53e09d29e75f1fc454adb6cd1e
+> Author: Pankaj Gupta <pankaj.gupta@amd.com>
 >
->       add_mm_counter(dst_mm, MM_ANONPAGES, HPAGE_PMD_NR)
+> x86/unaccepted_memory: Do not accept ranges that are no longer E820 RAM
 >
-> really expected?
-
-Yes: copy_nonpresent_pte() counts migration and device private entries
-in the child's RSS as well. File folios reach it now, so the hunk below
-switches it to mm_counter(src_folio), as the PTE path does.
-zap_huge_pmd_folio() subtracts a file folio from mm_counter_file(), so
-MM_ANONPAGES there would leave the child's counters unbalanced.
-
->> +    bool writable;
+> This commit updates arch_accept_memory() on x86 to iterate over e820_table
+> and only accept subranges that are marked as E820_TYPE_RAM. This avoids
+> attempting to accept memory holes removed via the memmap= command-line
+> parameter.
 >
-> Why do we need this variable?
-
-It copies __copy_present_ptes(), which snapshots pte_write() before
-the uffd-rwp branch. Looking at it again, that branch only rewrites an
-RWP marker, which is PAGE_NONE and never writable, and vm_page_prot of
-a CoW mapping has no write bit either. So the snapshot looks redundant
-both here and in __copy_present_ptes().
-
-I'd keep it in this series so the PMD path matches the PTE one, and
-drop it from both in the cleanup together with the gotos.
-
-Kiryl, does that match your understanding of the PTE path?
-
->> +            goto copy_pmd;
->>      }
+>> diff --git a/arch/x86/include/asm/unaccepted_memory.h b/arch/x86/include/asm/unaccepted_memory.h
+>> index f5937e9866ac1..744f1a993352c 100644
+>> --- a/arch/x86/include/asm/unaccepted_memory.h
+>> +++ b/arch/x86/include/asm/unaccepted_memory.h
+>> @@ -2,10 +2,11 @@
+>>   #define _ASM_X86_UNACCEPTED_MEMORY_H
+>>   
+>>   #include <linux/efi.h>
+>> +#include <asm/e820/api.h>
+>>   #include <asm/tdx.h>
+>>   #include <asm/sev.h>
+>>   
+>> -static inline void arch_accept_memory(phys_addr_t start, phys_addr_t end)
+>> +static inline void __arch_accept_memory(phys_addr_t start, phys_addr_t end)
+>>   {
+>>   	/* Platform-specific memory-acceptance call goes here */
+>>   	if (cpu_feature_enabled(X86_FEATURE_TDX_GUEST)) {
+>> @@ -18,6 +19,26 @@ static inline void arch_accept_memory(phys_addr_t start, phys_addr_t end)
+>>   	}
+>>   }
+>>   
+>> +static inline void arch_accept_memory(phys_addr_t start, phys_addr_t end)
+>> +{
+>> +	u32 i;
+>> +
+>> +	for (i = 0; i < e820_table->nr_entries; i++) {
+>> +		struct e820_entry *entry = &e820_table->entries[i];
+>> +		phys_addr_t s, e;
+>> +
+>> +		if (entry->type != E820_TYPE_RAM)
+>> +			continue;
+> [Severity: High]
+> Does skipping non-E820_TYPE_RAM ranges here desynchronize unaccepted->bitmap
+> from the actual hardware page acceptance state across kdump and kexec?
 >
-> Likely we should clean this up later to avoid the gotos.
+> In drivers/firmware/efi/unaccepted_memory.c:accept_memory(), unit_size-aligned
+> range ends are extended by an extra unit_size to act as a guard page for
+> load_unaligned_zeropad(), and the bits in unaccepted->bitmap are cleared
+> unconditionally after arch_accept_memory() returns:
+>
+> drivers/firmware/efi/unaccepted_memory.c:accept_memory() {
+> 	...
+> 	/*
+> 	 * load_unaligned_zeropad() can lead to unwanted loads across page
+> 	 * boundaries. The unwanted loads are typically harmless. Map an
+> 	 * extra unit if the end of the requested range is aligned to
+> 	 * unit_size to avoid page faults on unaccepted memory.
+> 	 */
+> 	if (!(end % unit_size))
+> 		end += unit_size;
+> 	...
+> 		arch_accept_memory(phys_start, phys_end);
+>
+> 		spin_lock(&unaccepted_memory_lock);
+> 		bitmap_clear(unaccepted->bitmap, range_start, len);
+> 	...
+> }
+>
+> When arch_accept_memory() skips a range that is not E820_TYPE_RAM in
+> e820_table, accept_memory() still clears its bit in unaccepted->bitmap even
+> though the pages were never accepted in hardware.
+>
+> In a kdump kernel, e820_table only contains the crashkernel reservation as
+> E820_TYPE_RAM while the panicked kernel's remaining RAM is omitted from
+> e820_table. When the crash kernel accepts memory up to the 2 MiB-aligned end
+> of crashk_res, accept_memory() extends end by unit_size into the panicked
+> kernel's adjacent unaccepted RAM. arch_accept_memory() skips that range, but
+> accept_memory() clears its bit in unaccepted->bitmap. Later, when /proc/vmcore
+> is read, unaccepted_memory_vmcore_pfn_is_ram() checks
+> !pfn_is_unaccepted_memory(pfn), sees the cleared bit, and reads the
+> unaccepted page via read_from_oldmem(), crashing the kdump kernel.
+>
+> A similar mismatch occurs with kexec: e820__memory_setup() populates
+> e820_table_kexec before parse_early_param() applies memmap= or mem= options
+> to e820_table, andarch/x86/kernel/kexec-bzimage64.c:setup_e820_entries()
+> passes e820_table_kexec to the next kernel while sharing the physical
+> efi.unaccepted table. Both kernel/kexec_core.c:sanity_check_segment_list()
+> (which calls accept_memory() on kexec segment destinations placed in
+> e820_table_kexec RAM) and the unit_size extension at the boundary before a
+> memmap= hole will clear bits in unaccepted->bitmap without accepting the
+> memory in hardware, causing the kexec load or the next kernel to fault on
+> those pages.
 
-No problem, but let's do it later, on top of this series.
+Valid bug. In v2, I will clear the bits only for the units in which 
+memory was actually accepted.
 
-And on your stable question in 3/4: v5 will carry Cc: stable on patches
-1-3.
-The backport to 6.12 won't apply as is, so I'll do the backports once we
-get a failure mail on stable re-apply attempt.
-(or I need to do backports in advance? Need an advice here.)
+>
+>> +
+>> +		s = max_t(phys_addr_t, start, entry->addr);
+>> +		e = min_t(phys_addr_t, end, entry->addr + entry->size);
+>> +		if (s >= e)
+>> +			continue;
+>> +
+>> +		__arch_accept_memory(s, e);
+> [Severity: High]
+> What happens if entry->addr or entry->addr + entry->size is not aligned to
+> PAGE_SIZE?
+>
+> Entries in e820_table can have byte-granular boundaries from firmware or
+> command-line options such as memmap= and mem=. When memblock is set up in
+> arch/x86/kernel/e820.c:e820__memblock_setup(), partial pages are trimmed via
+> memblock_trim_memory(PAGE_SIZE) and left unmapped in the direct map, whereas
+> e820_table retains the unaligned addresses.
+>
+> Clamping s and e directly to entry->addr and entry->addr + entry->size can
+> therefore pass non-page-aligned boundaries to __arch_accept_memory(s, e):
+>
+> 1. On TDX, tdx_accept_memory() -> try_accept_one() requires start to be
+>     aligned to at least PG_LEVEL_4K and len to be at least PAGE_SIZE:
+>
+>     arch/x86/coco/tdx/tdx-shared.c:try_accept_one() {
+>     	...
+>     	if (!IS_ALIGNED(start, accept_size))
+>     		return 0;
+>
+>     	if (len < accept_size)
+>     		return 0;
+>     	...
+>     }
+>
+>     An unaligned s or a trailing sub-page remainder causes tdx_accept_memory()
+>     to return false and __arch_accept_memory() to call
+>     panic("TDX: Failed to accept memory\n").
+>
+> 2. On SEV-SNP, snp_accept_memory() passes vaddr = (unsigned long)__va(start)
+>     and npages = (end - start) >> PAGE_SHIFT to set_pages_state(), which
+>     masks vaddr with PAGE_MASK. If s is not page-aligned, vaddr & PAGE_MASK
+>     rounds down into the unmapped partial page trimmed by
+>     memblock_trim_memory(PAGE_SIZE) and faults in pvalidate_pages(), while
+>     (e - s) >> PAGE_SHIFT can truncate npages and leave the last full page
+>     unaccepted.
+>
+> Should s be rounded up with PAGE_ALIGN(s) and e rounded down with
+> PAGE_ALIGN_DOWN(e) before checking s >= e?
 
-Thanks for the review!
+Also valid bug. I will address the alignment issue in v2.
 
---
-Konstantin Khorenko
+Thanks!
+
+Pankaj
+
+
+>
 
