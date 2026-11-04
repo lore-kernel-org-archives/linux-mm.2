@@ -1,66 +1,66 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 052FE606D14C
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 19:32:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 755ED6078C65
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 19:32:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=iC5qhYuC
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=cTuaWM9d
 Received: by kanga.kvack.org (Postfix)
-	id 2F5146B05CC; Wed,  4 Nov 2026 14:32:13 -0500 (EST)
+	id 874BD6B05CE; Wed,  4 Nov 2026 14:32:27 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2A5B26B05D3; Wed,  4 Nov 2026 14:32:13 -0500 (EST)
+	id 84ABC6B05D3; Wed,  4 Nov 2026 14:32:27 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 16F266B05DA; Wed,  4 Nov 2026 14:32:13 -0500 (EST)
+	id 761B46B05DA; Wed,  4 Nov 2026 14:32:27 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id EDFE06B05CC
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 14:32:12 -0500 (EST)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 9C18D1C3EAD
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 19:32:12 +0000 (UTC)
-X-FDA: 85398432504.08.999D55E
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 4AAEC6B05D3
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 14:32:27 -0500 (EST)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id A7DDB120814
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 19:32:26 +0000 (UTC)
+X-FDA: 85398433092.16.7E2CBF6
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf17.hostedemail.com (Postfix) with ESMTP id D98A640003
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 19:32:10 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iC5qhYuC;
-	spf=pass (imf17.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	by imf15.hostedemail.com (Postfix) with ESMTP id EDEBCA0005
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 19:32:24 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cTuaWM9d;
+	spf=pass (imf15.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793820744;
+	b=b5XmVOa1mRiN3JW+6uKxUnAXO6a2ahLPvOOb+WK6e/1W/eQUgZEPYCJkWwe33h2oibsp5P
+	NODm6SsTHFTRIvPHRNbBlVj/gRg+EliECdvam8polrNrgzyOamCpTHfZlppVoS6zUS65KQ
+	+u0ks0h+gdlUWju+wZabikdqDTVXIj4=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cTuaWM9d;
+	spf=pass (imf15.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793820730;
+	s=arc-20220608; t=1793820744;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=a8Eii8wlxK/U6i+WN38IP3N9K8zW9fYP0HNd0IGm1W0=;
-	b=yDDdAygn4oO0fTGsxm16uwUJPH0Z6+Hhl/snNDBdptB+Y7KSLBOL+fwPj0Q9LS68ktDIZD
-	Q1UFLUuAujLzyOGWAoKhQeRKmCkJWawwuklhZrok5Zd8X1J8SILB2wJTjiutnPzLr/LTki
-	X5ow96bIsBAANlviJdsqPVdFXqpqRKM=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793820730;
-	b=rdYvQaz2TJl/OO+S5dEwDagKOFrLd44xWofmnYitb6W6RnZAAmWLS1vpkKSAk0SQKe0DSI
-	PWJNVm/O721RN3SkqqULYn7qzMyU9Fx9xYbLcBJjHO05f11V9EW6nNWjQu5IdcTbS+rQmJ
-	t0iLcVNOB0BViS65rIOwySFtTdLRst4=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iC5qhYuC;
-	spf=pass (imf17.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=t7CXhIggcklIY3xO5IiO5lA9eZblBCQpzIpV4iqWwIs=;
+	b=0UnsQnSkXDK44jYUMHfeYtMfY9XuCD9O7O2VNPlPip3KatgzMmf4gnXEIXO2Jot6b6e7zr
+	0A/Vsa2ZTjF0b3B9pwDER8vEOwzXq/NL9XBG8vIZbaO1MjDLbKT0mbDQ66cpygTb1sckxv
+	gN9jq2KZQgUyQXS0XtWdY7DSC95cZnM=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 6CBFB60D9A;
-	Wed,  4 Nov 2026 19:32:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A4421F000C1;
-	Wed,  4 Nov 2026 19:31:58 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 8C89E60D9F;
+	Wed,  4 Nov 2026 19:32:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A89F31F00919;
+	Wed,  4 Nov 2026 19:32:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793820730;
-	bh=a8Eii8wlxK/U6i+WN38IP3N9K8zW9fYP0HNd0IGm1W0=;
+	s=k20260515; t=1793820744;
+	bh=t7CXhIggcklIY3xO5IiO5lA9eZblBCQpzIpV4iqWwIs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=iC5qhYuCRstV+TUqjEu0rWRbTttDUR0KoUFR/Nic2bFwF64VuSt1WDgXx4WbU4Et4
-	 ZNlRYe+G0MHmA1/II6uBNZBPp9Wvcvb5bBVfPJtilV3/K8lP+xGqSdbaN6ECrO9DpW
-	 du+eed3fzzQNoHO1No/AbIPvxNJkxVZOJdAGHIz/EgNENL5daivIVmmxtCp9lM8GEv
-	 tRA4UQbju+ehP2qFzuoGBNUaSD6Jp1yqYS1bSnF83Bb3YxwerAD9vI0v1JOGv4u38c
-	 FoRp/hBAQUDPq4wTOJ5N0tlVFGudcN+g6w+AJBph58Jc+dvlqzJ6WxnPYKNN9XQMYu
-	 THb00UuOGzJdA==
+	b=cTuaWM9d7bmS3BQXsgtTAPR9uVh6iO0s1VUb1qW5xthyjwQ7vxJulOEZ629mv/ktX
+	 8pc572eXrayXIbCxFRUJIEYHlf9ycJZjdr5EilMv+/yNyQNPgE7IbTr67SmbjqGKon
+	 wQxWa1oDi8Z96DmUhmEkZsLKgf7TxOqe0u+yeHEa9M+VTfdbUwRpShdZhtLt7n6wLd
+	 xG8ZPgiEEG146zAmYMMPTfNZP+A5FSPLxTvy8HupirTDlyG6AokYQO4fF7KBnvln4/
+	 BccNNTsARBWlIFPDpemmx+BLFNPVItSM8w4MnywAOEfXW90hS1vRbBdoScA6JM7MiN
+	 65ED+/q2glmuQ==
 From: Christian Brauner <brauner@kernel.org>
 To: linux-fsdevel@vger.kernel.org
 Cc: Linus Torvalds <torvalds@linux-foundation.org>,
@@ -121,31 +121,30 @@ Cc: Linus Torvalds <torvalds@linux-foundation.org>,
 	linux-debuggers@vger.kernel.org,
 	"Christian Brauner (Amutable)" <brauner@kernel.org>,
 	Chuck Lever <cel@kernel.org>
-Subject: [PATCH RESEND v2 11/23] selftests/proc: check that a faulting reader doesn't hold up removal
-Date: Wed,  4 Nov 2026 20:31:56 +0100
-Message-ID: <20261104-work-procfs-core-v2-11-76ace653a773@kernel.org>
+Subject: [PATCH RESEND v2 12/23] seq_file: add seq_preallocate()
+Date: Wed,  4 Nov 2026 20:32:10 +0100
+Message-ID: <20261104-work-procfs-core-v2-12-76ace653a773@kernel.org>
 In-Reply-To: <20261104-work-procfs-core-v2-0-76ace653a773@kernel.org>
 References: <20261104-work-procfs-core-v2-0-76ace653a773@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=5703; i=brauner@kernel.org; h=from:subject:message-id; bh=XyuYjQOPhfqL05zxspI3Sf2ZwFKZLHj6jlvlh6Bj2Lk=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS9bq97GaEjt/tSvJXDmnqfdIul4otUnkuetLcImZIuI frrsJ9sRykLgxgXg6yYIotDu0m43HKeis1GmRowc1iZQIYwcHEKwETcJjH8D3O/N+uiwGkGvqKb uoYJuYavRK3s+jeLapeqZFQ3hKf7Mfz3X/bwb8DUWRlpKSH5XPOF/65p/KKXLLfq9KTDH5ylnqz hBgA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2744; i=brauner@kernel.org; h=from:subject:message-id; bh=cArC7PPeLGnNNo4k1qcZwNiSGSA+jlDCNRnIKXcvzj8=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS9bq9fUy53Y+meKbNe5Zf78F+aKHlY58q16usqyqJv3 +V2rX5U0FHKwiDGxSArpsji0G4SLrecp2KzUaYGzBxWJpAhDFycAjAR+1yG/3HL357Tm/j6pbNY 7t1vOYdrHYtOvFVkdFthFzlPc30mlyDDP53w+qwZtmFzcn4YvJ2TMYtvgYrB74l+jyOkXn9YOXn VaS4A
 X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam06
-X-Stat-Signature: so39ao37h3txa9xb4uzenj3ja1k1ssfu
+X-Stat-Signature: z5odih85efjaq1hqqnncg8dp8zcf3ig9
+X-Rspam-User: 
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: EDEBCA0005
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
-	version=4.0.1
-X-Rspamd-Queue-Id: D98A640003
-X-Rspam-User: 
-X-HE-Tag: 1793820730-191870
-X-HE-Meta: U2FsdGVkX18c+JLhR0v7wGVQJtXOJua4peQtuFLHCyJnT+lVYzJzk6keHuKSt8qvAR6KjAxy7VtH+IppYQyzq5Y+BpL5rJASTte6KLZzWJ2f3duoe5dSAbEzmaSMDC3cKUvE2NM2CY1kcjeGeRPjnZ0Q4uwCiKB8HyvfOyyLyGxT9pqQn4WxpiGzt3aFfmWmI9FxP8bTsIZufb/rjhTD2KjwpXUAsjq3H+GzdPPbJvZu09JkHRnuHlLm0kv8ysLDUbVs4SurJA9iZ0FjQm1tl9q4RN2OapqK7i/8k8Oa0esnKgNYSOuuvFQ9lKplUdwsoaAIiMQYiuzFEcv5LG9WBViB1IubRXl3pd8l18/Yn+IAHP4L0fe3rTgcVlfcPxJ6lx5oRiXnTMWW081iH/VEzqjL4vyxP+tiabX2FGdi9nTl5t9VRaqy3wXU9ZojFouTpuuwgnp9/dZxOKxEikDBOqojOm26c/P/aCL6u6V9dk62xMtBkYtOL8y8ePJgYZIWKOvinXTSEIXYZ0Ns7kr1J387eHf1Im4uDNe8BrMlMAD27DKsje2KV/n6mVlCvzGrVtK5WscKVdUxqj4miyn7WrFuNWzGjBRV8dQnM050IS+yAdHL1AwD4CHMmF4r878lxsSjC0wun4vtZKIpEjKiySF53lPmACDYdB0GNcnSgx6QvV0VODtcFMXtGJyzhzB/9iXEFl+dfx6SaI5OYKswxI2wKM9xh+nFJl+mkY/Sqt0Pif/MRJ0dxthng21WBQQqS/86say0FCrfAUw1E/cuTHNF7ODJxNKs4J4ke6dcJAz0dz0qqAAsnmIg2JbOlqWr2a/usonPxsl4Wi+ukeifWy8SRwcKQiBpZAVYFceeAcf7hT36luvXhzwwPGOkZNDzxS95IByqP/h0irxoFd8tSIBjgeSYeNXdE44TOO2ydE0UqjeYudul1lwXVIydAcEzeTLKFk6i1wx2kyb1enl
- sP3CJPzT
- E9Fck2rf0DpFr/j9hOB0IeMoz+odM8asDQU6OBSe9/ehB5ZbitHcS6tIl4v57rQ3wPHHOg1ivyeBXHud6lXEjBkI0js+PH50j+mgvkVmMi8MgbAh0DwLovOnR95sbmWGnQFK7+DYdVzxJHaH23eIUlS7KV8mt9I8fDePL7KYmOChIax3Rya9leGcuxCZnSH+hnk8SuNH0mmy2Igz9Np9+Tg1txMPI6MMGo0OfbI0tYtunrwHZ/rVtUbRK3Dnq/5nyCdwpFc641XtFSJwBGPdReyOwnamtQudaG8h2
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1793820744-908521
+X-HE-Meta: U2FsdGVkX1+mQoaMUjJjeV6rHnUPobmp87Id6Nt8gcj5Vcu2D2OYl9KB10dnzJS+06la7CySAM6gXQJoohOLLzV6y2bsgMzytaC6XRtBZuRlQAptLlKUivLdimH+rxQk+OR2bqzZRjbzFqmtBOwanvgU3DYhN5AzZiHccT12/di+q83be33GJC87TLFcEiEbVmbV11qopfXtC8bhVI8i8pcQyuB1b53FrK2m7LGCkR+4La9ao6qmZm9E5MT/B0u8AvVPvsXwQHK0L4Eiz8xOmxu9uLSYofWyN24m4ekzXW4V/W6zsVCun/ASwHua8mBOJ87A8j1TPOtFxJInU6NI0Ln1P6gGzYUN4NFv56Mr4hgQvIzOeIW6EEIT+QC9zO4f9psPN46ZxaeEuGOumIcB/xKBCZCjaUDyrD1uppMY+qQ3m5AtgbEEPpj0d7oW+No6EvlDtq8Ki8qFCW9hIWASllEsph6I4uVG3iVdkEWbvBjoMYB/R24eh30+m2130U7RP0mPxeTtamdx10vhdArtAQkcYIz1NZp+xbYQ0Xs439KDkuXLBZt99lqzaIjvrKH0J8aYhGPeZVhg7lLp9iWn4Ng27CFE2K8oMuXXH8l6++eo36zj7nZ0xctTDmkfPBpzpN4v7UQ2sEe6xLJ9AipKvw2a8RSJje8eKRwJwWyldWY+gGEtGyx7w2bWv0YsWjm00LZlnKA66l0Wf8nUHFdiTPfQCqcVpjY8OwnlmMk1TB8Su+G+62qqH7Az8U9tvpPFyVx3sZ7yOUs6Uy5o6bwMyodUrdFbEUmzAIp+Rxy3o8MFEP/1V4jtfyIR2hW7+Z8joOSeTqbRsOTAfdU14WZBxcwMQNCoisYw46LQMEkyJansF7KCdqZc7j+dBSs1sCO0zfsbPLBYZLlF2JW5ZdyR47+mdydyKpTkiKdgI+IE4rlDgIt41R/XZFK77O1Qh+rDJD4yZZKf3JkdDqmr8IS
+ 6gNErD3B
+ O0bXBZZ30rr/9jCPia4jxQlSEBtEacafN1oUmiafXl9EHPkjC8FtQ/xn2Lmg3Eq4ISEC5U0fewYH5IlQRuZu0CdV8KktoUu8EYb5Hj7oMzcb+9sdn9mgfZOOBtCA/+OeG+u3856mEIzbX/OHQFpUflGphwninAL0SYKMnp2SRA1sMkMa5XcRmPly8nia7KAkLTH7thpXcoLJ3R1fifLW1V+SuTXT306JTXKvBmaqKhopL8E/ksndg+aii1U6/XU4RNN+AdABy26m63SI1YR37/vdSg7GjqzlMdGvI0jNB2FwgvRT8a6e+q6KruHcqP5SCYW2gMZGNM9ZiQ3DtlI8/dyhzHizvFr/gKdibbOeGjCP41+8z4hkLUYaExycQfFAQe3Q6y7pqm+m4t51XTEZEkeBJXbPEN00ORy4L9GuZx2igaLy3ZdwjBN8SRG9p7w/1G2vkXBqi2ZS54vA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -154,189 +153,85 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Read /proc/net/dev_snmp6/<dev> of a tun device into a buffer whose first
-page is backed by userfaultfd and remove the device while the reader
-sleeps in its copy to userspace:
+single_open_size() allocates the buffer itself because it does the
+single_open() too. A file whose seq_file is opened by somebody else,
+like procfs does now, needs to do that after the fact. Add
+seq_preallocate() for that and use it in single_open_size().
 
-- removing the entry doesn't wait for the reader
-
-- the reader still gets what was printed before the removal
-
-- and the next read fails with -EIO
-
-The entry is removed under RTNL, so a regression stalls the test for
-five seconds before it fails.
+No functional changes.
 
 Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 ---
- tools/testing/selftests/proc/.gitignore            |   1 +
- tools/testing/selftests/proc/Makefile              |   1 +
- .../selftests/proc/proc-remove-slow-reader.c       | 133 +++++++++++++++++++++
- 3 files changed, 135 insertions(+)
+ fs/seq_file.c            | 36 ++++++++++++++++++++++++++++--------
+ include/linux/seq_file.h |  1 +
+ 2 files changed, 29 insertions(+), 8 deletions(-)
 
-diff --git a/tools/testing/selftests/proc/.gitignore b/tools/testing/selftests/proc/.gitignore
-index 3fa89f46b9c7..e2566cc0ae07 100644
---- a/tools/testing/selftests/proc/.gitignore
-+++ b/tools/testing/selftests/proc/.gitignore
-@@ -22,6 +22,7 @@
- /proc-uptime-002
- /proc-pidns
- /proc-remove-slow-sysctl
-+/proc-remove-slow-reader
- /proc-remove-slow-readlink
- /read
- /self
-diff --git a/tools/testing/selftests/proc/Makefile b/tools/testing/selftests/proc/Makefile
-index df02699a3587..6a9bdc999f54 100644
---- a/tools/testing/selftests/proc/Makefile
-+++ b/tools/testing/selftests/proc/Makefile
-@@ -33,6 +33,7 @@ TEST_GEN_PROGS += proc-fsconfig-hidepid
- TEST_GEN_PROGS += proc-sysctl-readdir-churn
- TEST_GEN_PROGS += proc-pidns
- TEST_GEN_PROGS += proc-remove-slow-sysctl
-+TEST_GEN_PROGS += proc-remove-slow-reader
- TEST_GEN_PROGS += proc-remove-slow-readlink
+diff --git a/fs/seq_file.c b/fs/seq_file.c
+index 456c78719fd0..a4644cdda7e6 100644
+--- a/fs/seq_file.c
++++ b/fs/seq_file.c
+@@ -590,21 +590,41 @@ int single_open(struct file *file, int (*show)(struct seq_file *, void *),
+ }
+ EXPORT_SYMBOL(single_open);
  
- include ../lib.mk
-diff --git a/tools/testing/selftests/proc/proc-remove-slow-reader.c b/tools/testing/selftests/proc/proc-remove-slow-reader.c
-new file mode 100644
-index 000000000000..a201645beca9
---- /dev/null
-+++ b/tools/testing/selftests/proc/proc-remove-slow-reader.c
-@@ -0,0 +1,133 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * A read that faults while copying to userspace must not hold up removal of
-+ * the /proc entry. /proc/net/dev_snmp6/<dev> of a tun device is removed under
-+ * RTNL when the device's file is closed.
+-int single_open_size(struct file *file, int (*show)(struct seq_file *, void *),
+-		void *data, size_t size)
++/**
++ *	seq_preallocate -	start out with a buffer of @size
++ *	@m: the seq_file, before it is first read
++ *	@size: the size of the buffer
++ *
++ *	For files whose records don't fit into a page, so that the first read
++ *	doesn't have to work its way up to the right buffer size.
 + */
-+#define _GNU_SOURCE
-+#include <errno.h>
-+#include <fcntl.h>
-+#include <linux/if.h>
-+#include <linux/if_tun.h>
-+#include <linux/userfaultfd.h>
-+#include <poll.h>
-+#include <pthread.h>
-+#include <sched.h>
-+#include <string.h>
-+#include <sys/ioctl.h>
-+#include <sys/mman.h>
-+#include <sys/syscall.h>
-+#include <unistd.h>
++int seq_preallocate(struct seq_file *m, size_t size)
+ {
+ 	char *buf = seq_buf_alloc(size);
+-	int ret;
 +
-+#include "../kselftest_harness.h"
-+
-+#define TUN_NAME	"procslow0"
-+#define SNMP6_PATH	"/proc/net/dev_snmp6/" TUN_NAME
-+#define READ_PAGES	16
-+#define TIMEOUT_MS	5000
-+
-+struct reader {
-+	int fd;
-+	char *buf;
-+	size_t len;
-+	ssize_t ret;
-+};
-+
-+struct closer {
-+	int tun;
-+	int done;
-+};
-+
-+static void *read_thread(void *arg)
-+{
-+	struct reader *r = arg;
-+
-+	r->ret = read(r->fd, r->buf, r->len);
-+	return NULL;
+ 	if (!buf)
+ 		return -ENOMEM;
++	kvfree(m->buf);
++	m->buf = buf;
++	m->size = size;
++	return 0;
 +}
++EXPORT_SYMBOL(seq_preallocate);
 +
-+static void *close_thread(void *arg)
++int single_open_size(struct file *file, int (*show)(struct seq_file *, void *),
++		void *data, size_t size)
 +{
-+	struct closer *c = arg;
-+	ssize_t ret;
++	int ret;
 +
-+	close(c->tun);
-+	ret = write(c->done, "x", 1);
-+	return (void *)ret;
-+}
-+
-+TEST(remove_while_reader_faults)
-+{
-+	struct uffdio_api api = { .api = UFFD_API };
-+	struct uffdio_register reg = {};
-+	struct uffdio_zeropage zero = {};
-+	long psz = sysconf(_SC_PAGESIZE);
-+	struct ifreq ifr = {};
-+	struct reader r = {};
-+	struct closer c = {};
-+	struct uffd_msg msg;
-+	struct pollfd pfd;
-+	pthread_t rt, ct;
-+	int uffd, done[2];
-+	char *buf;
-+
-+	if (unshare(CLONE_NEWNET))
-+		SKIP(return, "unshare(CLONE_NEWNET): %s", strerror(errno));
-+
-+	c.tun = open("/dev/net/tun", O_RDWR | O_CLOEXEC);
-+	if (c.tun < 0)
-+		SKIP(return, "/dev/net/tun: %s", strerror(errno));
-+	strncpy(ifr.ifr_name, TUN_NAME, IFNAMSIZ - 1);
-+	ifr.ifr_flags = IFF_TUN | IFF_NO_PI;
-+	ASSERT_EQ(ioctl(c.tun, TUNSETIFF, &ifr), 0);
-+
-+	r.fd = open(SNMP6_PATH, O_RDONLY | O_CLOEXEC);
-+	if (r.fd < 0)
-+		SKIP(return, SNMP6_PATH ": %s", strerror(errno));
-+
-+	uffd = syscall(__NR_userfaultfd, O_CLOEXEC | O_NONBLOCK);
-+	if (uffd < 0)
-+		SKIP(return, "userfaultfd: %s", strerror(errno));
-+	ASSERT_EQ(ioctl(uffd, UFFDIO_API, &api), 0);
-+
-+	/* Only the first page of the buffer goes through userfaultfd. */
-+	buf = mmap(NULL, READ_PAGES * psz, PROT_READ | PROT_WRITE,
-+		   MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
-+	ASSERT_NE(buf, MAP_FAILED);
-+	reg.range.start = (unsigned long)buf;
-+	reg.range.len = psz;
-+	reg.mode = UFFDIO_REGISTER_MODE_MISSING;
-+	ASSERT_EQ(ioctl(uffd, UFFDIO_REGISTER, &reg), 0);
-+
-+	r.buf = buf;
-+	r.len = READ_PAGES * psz;
-+	ASSERT_EQ(pthread_create(&rt, NULL, read_thread, &r), 0);
-+
-+	/* The reader now sleeps in its copy to userspace. */
-+	pfd = (struct pollfd){ .fd = uffd, .events = POLLIN };
-+	ASSERT_EQ(poll(&pfd, 1, TIMEOUT_MS), 1);
-+	ASSERT_EQ(read(uffd, &msg, sizeof(msg)), sizeof(msg));
-+	ASSERT_EQ(msg.event, UFFD_EVENT_PAGEFAULT);
-+
-+	/* Closing the device removes the file that is being read. */
-+	ASSERT_EQ(pipe2(done, O_CLOEXEC), 0);
-+	c.done = done[1];
-+	ASSERT_EQ(pthread_create(&ct, NULL, close_thread, &c), 0);
-+	pfd = (struct pollfd){ .fd = done[0], .events = POLLIN };
-+	EXPECT_EQ(poll(&pfd, 1, TIMEOUT_MS), 1) {
-+		TH_LOG("removing " SNMP6_PATH " waited for the reader");
-+	}
-+
-+	zero.range.start = (unsigned long)buf;
-+	zero.range.len = psz;
-+	ASSERT_EQ(ioctl(uffd, UFFDIO_ZEROPAGE, &zero), 0);
-+	ASSERT_EQ(pthread_join(rt, NULL), 0);
-+	ASSERT_EQ(pthread_join(ct, NULL), 0);
-+
-+	/* What was printed before the removal still arrives, then nothing. */
-+	EXPECT_GT(r.ret, 0);
-+	EXPECT_EQ(read(r.fd, buf, psz), -1);
-+	EXPECT_EQ(errno, EIO);
-+}
-+
-+TEST_HARNESS_MAIN
+ 	ret = single_open(file, show, data);
+-	if (ret) {
+-		kvfree(buf);
++	if (ret)
+ 		return ret;
++	ret = seq_preallocate(file->private_data, size);
++	if (ret) {
++		single_release(file_inode(file), file);
++		file->private_data = NULL;
+ 	}
+-	((struct seq_file *)file->private_data)->buf = buf;
+-	((struct seq_file *)file->private_data)->size = size;
+-	return 0;
++	return ret;
+ }
+ EXPORT_SYMBOL(single_open_size);
+ 
+diff --git a/include/linux/seq_file.h b/include/linux/seq_file.h
+index b813b7e63d89..834daff48b7d 100644
+--- a/include/linux/seq_file.h
++++ b/include/linux/seq_file.h
+@@ -175,6 +175,7 @@ int seq_path_root(struct seq_file *m, const struct path *path,
+ void *single_start(struct seq_file *, loff_t *);
+ int single_open(struct file *, int (*)(struct seq_file *, void *), void *);
+ int single_open_size(struct file *, int (*)(struct seq_file *, void *), void *, size_t);
++int seq_preallocate(struct seq_file *m, size_t size);
+ int single_release(struct inode *, struct file *);
+ void *__seq_open_private(struct file *, const struct seq_operations *, int);
+ int seq_open_private(struct file *, const struct seq_operations *, int);
 
 -- 
 2.53.0
