@@ -1,147 +1,152 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA1186070775
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 21:15:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8A6E6073504
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 21:15:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=J4PDKc61
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=N4RWdVB9
 Received: by kanga.kvack.org (Postfix)
-	id B34F56B05C0; Wed,  4 Nov 2026 16:15:02 -0500 (EST)
+	id A25396B05C3; Wed,  4 Nov 2026 16:15:36 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B0BFA6B05C1; Wed,  4 Nov 2026 16:15:02 -0500 (EST)
+	id 9FD246B05C4; Wed,  4 Nov 2026 16:15:36 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9FB206B05C2; Wed,  4 Nov 2026 16:15:02 -0500 (EST)
+	id 8C5C26B05C5; Wed,  4 Nov 2026 16:15:36 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 64ABB6B05C0
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 16:15:02 -0500 (EST)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id BD9021C4247
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 21:15:01 +0000 (UTC)
-X-FDA: 85398691602.29.7EF47FD
+	by kanga.kvack.org (Postfix) with ESMTP id 4CAB56B05C3
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 16:15:36 -0500 (EST)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id CFE061C3BCD
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 21:15:35 +0000 (UTC)
+X-FDA: 85398693030.03.2BF0F94
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 19DBB12000A
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 21:14:59 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=J4PDKc61;
-	spf=pass (imf29.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	by imf02.hostedemail.com (Postfix) with ESMTP id DF7CB80002
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 21:15:32 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=N4RWdVB9;
+	spf=pass (imf02.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793826900;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
+	s=arc-20220608; t=1793826933;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ZSU3GOYdTAyJi2/mATr7CvuZmk6mn8CBculz3Nu+aGM=;
-	b=S1T2UAtkIPnJFtdMk3/JatH4WIxR9icQANxrl0SCqfeQqBxSXJ256yn1RXvXbi6mJTsb7G
-	cJDiUadEO8LUMnTOjKEEFkGaYpvfdzgGD87KtTdnRbhpV/4GmKbDkfWshFfk2wp/aE0Btf
-	Pwirf9N9Omzz4pB0N4T6W0fYDtRaQiA=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=J4PDKc61;
-	spf=pass (imf29.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=pKDbClFBSTb2iA5lmVWu3JcMB4xPc/CEhi+1bz8KTwM=;
+	b=5fAICciO+0NQh6FehCbBKMbs2Wxf5lzgLQ5iZnKqhnwhISU7uPLlNHvO38s4NOw+/NVI93
+	79+GoQo+OeNXYHNMgYEs3hDnrgmAFShvLxohjvgVPfR6/YRSNrVz1PegeL/DW6OHcQa748
+	nj0UmUa0/xmxEhXVg/0ZdFX2mGzCmUI=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793826900;
-	b=k102TfEsp5kYqFJC2CtMXss7RELA7UsfAkBc4EM15YWUsXEnSDOZEjPD9OREKh14QqkYVP
-	A+1W9omEJrAydGN03h3VanaZfArqgRSzlyZwkiE8UPCUnewcy4PQO+wZbiE/ZSr+sXKmNB
-	JDtrWtWNIO9asKUeauJyD3FtwTZonmY=
+	t=1793826933;
+	b=Ms0hZIQznl8kVNrWLXTvA2gTBoAr/CAlDgy43B8JcS0nkFanGKcs7M84ySgv2mF+k7wKjg
+	e9GO1exz+G/HlGY8mKrxc/Z46fYbdv4MSKELl8BPxQkYe6cB8tCS7UqTx9gkVXfmRgjgXs
+	3fobIcc9d9YrKtZGrkAReQL0nLYH2kQ=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=N4RWdVB9;
+	spf=pass (imf02.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 4B7FB437F8;
-	Wed,  4 Nov 2026 21:14:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6F651F00A1B;
-	Wed,  4 Nov 2026 21:14:53 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 21E21406AC;
+	Wed,  4 Nov 2026 21:15:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCB311F000C1;
+	Wed,  4 Nov 2026 21:15:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793826899;
-	bh=ZSU3GOYdTAyJi2/mATr7CvuZmk6mn8CBculz3Nu+aGM=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=J4PDKc61N4keOuWERS5aSp2N8PhMwFXfTttZoQJiP/6NFecDNKxntuxYU8KTP2IT7
-	 sQ+GOcnfzHxpPduzw8Axquz0pjikWlDPK+6jysaxaPcTRzpniWRwRSDwYgsjVZQiME
-	 hp3SeDPadj5e64beejkKHFIYy6SzK8G6J/Ivl+w7Iz9N+JKw69zq/NWwIz+1PKkFj3
-	 p2kJqCpbq5WMmk5HtP2egnpm593A8p3vnMr/TAyo/agIT9R93ZTR+grCkgKrUY7n+0
-	 n8Gt29lLuVYq4blAgu2BoulYRKgefmxLu/vNeABBXSsxdBqqzdg25OSU2PVbLwjUrf
-	 QlZgT2rzKPq2g==
-Message-ID: <sashiko-outbox-198073@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH net-next v1 4/5] net: remove skb->pp_recycle and
- consolidate netmem refcounting
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Mina Almasry" <almasrymina@google.com>, virtualization@lists.linux.dev, linux-mm@kvack.org, bpf@vger.kernel.org, bcm-kernel-feedback-list@broadcom.com, imx@lists.linux.dev, linux-rdma@vger.kernel.org, linux-hyperv@vger.kernel.org
-Cc: "David S. Miller" <davem@davemloft.net>, "Eric Dumazet" <edumazet@kernel.org>, "Jakub
- Kicinski" <kuba@kernel.org>, "Paolo Abeni" <pabeni@redhat.com>, "Simon
- Horman" <horms@kernel.org>, "Steffen Klassert" <steffen.klassert@secunet.com>, "Herbert
- Xu" <herbert@gondor.apana.org.au>, "Willem de Bruijn" <willemb@google.com>, "Stanislav
- Fomichev" <sdf@fomichev.me>, "Pavel Begunkov" <asml.silence@gmail.com>, "Bobby
- Eshleman" <bobbyeshleman@meta.com>, "Andrew Lunn" <andrew+netdev@lunn.ch>, "Michael
- S. Tsirkin" <mst@redhat.com>, "Jason Wang" <jasowangio@gmail.com>,
- =?utf-8?b?RXVnZW5pbyBQw6lyZXo=?= <eperezma@redhat.com>, "Xuan Zhuo" <xuanzhuo@linux.alibaba.com>, "Andrew
- Morton" <akpm@linux-foundation.org>, "David Hildenbrand" <david@kernel.org>, "Lorenzo
- Stoakes" <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, "Vlastimil
- Babka" <vbabka@kernel.org>, "Mike Rapoport" <rppt@kernel.org>, "Suren
- Baghdasaryan" <surenb@google.com>, "Michal Hocko" <mhocko@suse.com>, "Jesper
- Dangaard Brouer" <hawk@kernel.org>, "Ilias Apalodimas" <ilias.apalodimas@linaro.org>, "Alexei
- Starovoitov" <ast@kernel.org>, "Daniel Borkmann" <daniel@iogearbox.net>, "John
- Fastabend" <john.fastabend@gmail.com>, "Sabrina Dubroca" <sd@queasysnail.net>, "Johannes
- Berg" <johannes@sipsolutions.net>, "Byungchul Park" <byungchul@sk.com>, "Jonathan
- Corbet" <corbet@lwn.net>, "Shuah Khan" <skhan@linuxfoundation.org>, "Randy
- Dunlap" <rdunlap@infradead.org>, "Lorenzo Bianconi" <lorenzo@kernel.org>, "Wen
- Gu" <guwen@linux.alibaba.com>, "Philo Lu" <lulie@linux.alibaba.com>, "Justin
- Chen" <justin.chen@broadcom.com>, "Florian Fainelli" <florian.fainelli@broadcom.com>, "Vikas
- Gupta" <vikas.gupta@broadcom.com>, "Michael Chan" <michael.chan@broadcom.com>, "Pavan
- Chebbi" <pavan.chebbi@broadcom.com>, "Doug Berger" <opendmb@gmail.com>, "Nicolai
- Buchwitz" <nb@tipi-net.de>, "Satish Kharat" <satishkh@cisco.com>, "Wei Fang" <wei.fang@nxp.com>, "Frank
- Li" <frank.li@nxp.com>, "Shenwei Wang" <shenwei.wang@nxp.com>, "Joshua
- Washington" <joshwash@google.com>, "Harshitha Ramamurthy" <hramamurthy@google.com>, "Jijie
- Shao" <shaojijie@huawei.com>, "Jian Shen" <shenjian15@huawei.com>, "Fan
- Gong" <gongfan1@huawei.com>, "Tony Nguyen" <anthony.l.nguyen@intel.com>, "Przemek
- Kitszel" <przemyslaw.kitszel@intel.com>, "Marcin Wojtas" <marcin.s.wojtas@gmail.com>, "Russell
- King" <linux@armlinux.org.uk>, "Sunil Goutham" <sgoutham@marvell.com>, "Geetha
- sowjanya" <gakula@marvell.com>, "Ratheesh Kannoth" <rkannoth@marvell.com>, "Subbaraya
- Sundeep" <sbhatta@marvell.com>, "Bharat Bhushan" <bbhushan2@marvell.com>, "Felix
- Fietkau" <nbd@nbd.name>, "Matthias Brugger" <matthias.bgg@gmail.com>, "AngeloGioacchino
- Del Regno" <angelogioacchino.delregno@collabora.com>, "Tariq Toukan" <tariqt@nvidia.com>, "Saeed
- Mahameed" <saeedm@nvidia.com>, "Mark Bloch" <mbloch@nvidia.com>, "Leon
- Romanovsky" <leon@kernel.org>, "Ido Schimmel" <idosch@nvidia.com>, "Petr
- Machata" <petrm@nvidia.com>, "Horatiu Vultur" <horatiu.vultur@microchip.com>, UNGLinuxDriver@microchip.com, "Daniel
- Machon" <daniel.machon@microchip.com>, "Steen Hegelund" <Steen.Hegelund@microchip.com>, "Haiyang
- Zhang" <haiyangz@microsoft.com>, "Wei Liu" <wei.liu@kernel.org>, "Dexuan
- Cui" <decui@microsoft.com>, "Yibo Dong" <dong100@mucse.com>, "Brett Creeley" <brett.creeley@amd.com>, "Justin
- Lai" <justinlai0215@realtek.com>, "Larry Chiu" <larry.chiu@realtek.com>,
- =?utf-8?b?TmlrbGFzIFPDtmRlcmx1bmQ=?= <niklas.soderlund@ragnatech.se>, "Paul
- Barker" <paul@pbarker.dev>, "Masahisa Kojima" <kojima.masahisa@socionext.com>, "Maxime
- Chevallier" <maxime.chevallier@bootlin.com>, "Maxime Coquelin" <mcoquelin.stm32@gmail.com>, "Alexandre
- Torgue" <alexandre.torgue@foss.st.com>, "FUJITA Tomonori" <fujita.tomonori@gmail.com>, "Siddharth
- Vadapalli" <s-vadapalli@ti.com>, "Roger Quadros" <rogerq@kernel.org>, "MD
- Danish Anwar" <danishanwar@ti.com>, "Jiawen Wu" <jiawenwu@trustnetic.com>, "Mengyuan
- Lou" <mengyuanlou@net-swift.com>, "Ronak Doshi" <ronak.doshi@broadcom.com>, "Ryder
- Lee" <ryder.lee@mediatek.com>, "Shayne Chen" <shayne.chen@mediatek.com>, "Sean
- Wang" <sean.wang@mediatek.com>, "Juergen Gross" <jgross@suse.com>, "Stefano
- Stabellini" <sstabellini@kernel.org>, "Oleksandr Tyshchenko" <oleksandr_tyshchenko@epam.com>, "Jordan
- Rhee" <jordanrhee@google.com>, "Ankit Garg" <nktgrg@google.com>, "Tim
- Hostetler" <thostet@google.com>, "Erni Sri Satya Vennela" <ernis@linux.microsoft.com>, "Eric
- Joyner" <eric.joyner@amd.com>, "Mohammad Heib" <mheib@redhat.com>, "Prabu
- Thayalan" <prabu.ponrajthayalan@amd.com>, "Chintan Vankar" <c-vankar@ti.com>, "Nora
- Schiffer" <nora.schiffer@ew.tq-group.com>, "Alexander Sverdlin" <alex@sverdlin.org>, "Kevin
- Hao" <haokexin@gmail.com>, "Karl Mehltretter" <kmehltretter@gmail.com>, "Aleksandr
- Loktionov" <aleksandr.loktionov@intel.com>, "Meghana Malladi" <m-malladi@ti.com>, "Jacob
- Keller" <jacob.e.keller@intel.com>, "StanleyYP Wang" <StanleyYP.Wang@mediatek.com>, Frank.Li@kernel.org, wsa+renesas@sang-engineering.com
-In-Reply-To: <20261103211424.127627-5-almasrymina@google.com>
-References: <20261103211424.127627-1-almasrymina@google.com>
- <20261103211424.127627-5-almasrymina@google.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Wed, 04 Nov 2026 21:14:53 +0000
-X-Stat-Signature: 9adgiyn61ixhywknbhh8pn8i3pp9fzij
-X-Rspamd-Server: rspam01
+	s=k20260515; t=1793826932;
+	bh=pKDbClFBSTb2iA5lmVWu3JcMB4xPc/CEhi+1bz8KTwM=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=N4RWdVB9vOqSj+z3xoqK3D91W85N/5x8BUFgodhr3LnZLIbySQORxP08pdtMQvZv5
+	 1x8lIb0WwSPzFyBDxpYFXo9vPXcB7px+UK2StTIJFt7nytavLAUDilrh6newTSihD3
+	 KRKMLXLblPoDRGDnQSqCLOWHUTWisM81t9HrsNM941SyGCOmwAO+jwd3PRbW8DUMF5
+	 MISMonFFw8afaeqiqjPZqEJRn8XZHGJMgT6VJWTJ9AzSZcOeIwiDx6xHOSqp8Jyv5F
+	 HbMH4lodbULontL13ZvwSN6AuwlBe8oX65CYvif6mYtrK7bbtebY8FhAIfYOEl0R0H
+	 mEm1nMix81KPg==
+From: Christian Brauner <brauner@kernel.org>
+To: linux-fsdevel@vger.kernel.org
+Cc: Linus Torvalds <torvalds@linux-foundation.org>,
+	Jann Horn <jannh@google.com>,
+	Josef Bacik <josef@toxicpanda.com>,
+	Chris Mason <mason@kernel.org>,
+	Jeff Layton <jlayton@kernel.org>,
+	NeilBrown <neil@brown.name>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Al Viro <viro@zeniv.linux.org.uk>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Christoph Hellwig <hch@lst.de>,
+	Greg Kroah-Hartman <gregkh@suse.de>,
+	Joel Granados <joel.granados@kernel.org>,
+	Kees Cook <kees@kernel.org>,
+	Jan Kara <jack@suse.cz>,
+	Jan Kara <jack@suse.com>,
+	linux-kernel@vger.kernel.org,
+	linux-nfs@vger.kernel.org,
+	linux-acpi@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	linux-s390@vger.kernel.org,
+	linux-scsi@vger.kernel.org,
+	linux-um@lists.infradead.org,
+	linux-wireless@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org,
+	netdev@vger.kernel.org,
+	ntfs3@lists.linux.dev,
+	platform-driver-x86@vger.kernel.org,
+	coreteam@netfilter.org,
+	kexec@lists.infradead.org,
+	linux-pci@vger.kernel.org,
+	linux-sound@vger.kernel.org,
+	netfilter-devel@vger.kernel.org,
+	dri-devel@lists.freedesktop.org,
+	ibm-acpi-devel@lists.sourceforge.net,
+	jfs-discussion@lists.sourceforge.net,
+	linux-alpha@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-cifs@vger.kernel.org,
+	linux-fbdev@vger.kernel.org,
+	linux-hwmon@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-sh@vger.kernel.org,
+	linux-usb@vger.kernel.org,
+	samba-technical@lists.samba.org,
+	sparclinux@vger.kernel.org,
+	linux-m68k@lists.linux-m68k.org,
+	linux-doc@vger.kernel.org,
+	linux-serial@vger.kernel.org,
+	linux-atm-general@lists.sourceforge.net,
+	Takashi Iwai <tiwai@suse.de>,
+	linux-input@vger.kernel.org,
+	linux-raid@vger.kernel.org,
+	linux-ext4@vger.kernel.org,
+	linux-modules@vger.kernel.org,
+	linux-debuggers@vger.kernel.org,
+	"Christian Brauner (Amutable)" <brauner@kernel.org>,
+	Chuck Lever <cel@kernel.org>
+Subject: [PATCH RESEND v2 0/6] proc: drop the __user methods (Part 7/7)
+Date: Wed,  4 Nov 2026 22:15:17 +0100
+Message-ID: <20261104-work-procfs-cleanup-v2-0-1e6687e226b1@kernel.org>
+In-Reply-To: <20261104-work-procfs-v2-0-b45cd5789ac5@brauner>
+References: <20261104-work-procfs-v2-0-b45cd5789ac5@brauner>
+X-Archived-By: <archiver.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+X-Change-ID: 20261030-work-procfs-cleanup-1694f71bb156
+X-Mailer: b4 0.17-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=42733; i=brauner@kernel.org; h=from:subject:message-id; bh=HcOXoZ0wKV2a+wHtLrfT0g6KO1HDIltU2lSs53LAe8Q=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS9XhBzdKmV1Irnzb4HJxjofOWbFeLAdL9NgHV6Pjf7u VOajbNWd5SyMIhxMciKKbI4tJuEyy3nqdhslKkBM4eVCWQIAxenAEyk0Jzhf61Qz0dZ/Su2/c8v NDvF9jjNa//CWPyYy11m3lQbnl+PZjD8lS8x2ZMqsCPsdQvvpjWLn98yvcwuvux5koHd85r3k7b rcAMA
+X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: s1bchdqrfrq8proeoyc5uat3tr35njtn
+X-Rspamd-Queue-Id: DF7CB80002
 X-Rspam-User: 
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Rspamd-Server: rspam08
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: 19DBB12000A
-X-HE-Tag: 1793826899-920050
-X-HE-Meta: U2FsdGVkX19Fy2lis8MG2x/IECyGksG+NWmqNbkyr+oLNe02m7BKYPdQ7k18z4bV6/OQQi2W1grwd5usXHEUoYhLLQD75jgf8Zibd8yGVE18fWrvF3FkZ+3XpAK0N1D0unBr9dJtzbt6z+tbgZ8h+bxN37Awfnh+zj97Un+PiQNKIDFWe0Uw6sM2xGwPgtkPnIbrIyLxE9H4q8Xl+xJ2fXv64K2xPe3KDDTriLuit/Xf8dHE60hNiOiGoVEQq3pz/j1qPDU/EJ6GBth6ICjs0H3IbkHMK+sciMVjsEJX4stvW9KKYNK2eHTE0p94DpVy9EyXFDs26V0fDNRXQjfr/06X3LYELS0AdV/vt2PEKuVNlEy1fikx1pYAv+WMOR1laE+03IWU4QkMARlX9xX40v5KEb+ZHd8tdEfbpzVrnYN8B/voQFP9mvjXPJAwbsNMO8A+qlKwyaYhCSngs+b230luekijva/+RskA0gYvNldjMqI+bmotfCLacxUFWHZn5aVGwSnp74Cv3llAWLeYz+Y1sXEEhc2W4aaYK1upN1DspOG4yRywf20sD3MslCYG68VJkFxEhxP5ew/xjiyS7Ai8ZMViO6SxF5Ue/PXPRbr0XoU7G1pUupqJQwU/mD8vAnJzMv4jwBmb1ia+bpHZPmdq+Y02HepwIGQuzdJeNcuDh7QHhGiOfTyuNIT8HK18Ru/mTLH9AlgY4EOsiGX2tMBB2SXmuTgjkKrPA/MuJABoIlFrJWODWHoHMBpTALjRX6xSQEJVx+J03RwDJtRrEbpMwuaeAgP7RRWyfVL3DaEK/WUD9dYxe1ftVabg2FvZdWPPwTK8rlux/gVoJFSNy9QzpIpaGcic2DGk3o1hqSt1zP/7NI7gPGE02JLHcSjFSSawetS1HAA+hl00XkeWupQyO+LyGaInYJeMO2erzuYBp24YbOLfnFbOHPotKyJ7BTFmeTxDUpZOMesnTOF
- a3MHrkJE
- LCuVuhObwH3QrS1gNArFM+CCkSwyqoJOlkTEmKopQg0yWtcUnlMNyvtYOlCLNYES2DmExccG4gxflayD3FSGYiFoPwvNpfcXkY1AC6h2gkubz1dQK44GOzpyxqtW0Q+eC7IvKyYbFOvc4gFZIS4gljEkR40sFybkQ9RZdXahOMbZgEw8Unvg0IQwJW8PIc2pus2ZMCUWCMcmKWY4qmki3MDcSEeB5jEQ5oHorl+0vPz2lAtszpZyX5DDFnoepFw5g6ZTXHvGxFR2mXSSaR8ApN7A2idR9ohwSjEd6u0krZUbPgNL2Uljr9truI3gmTCB8EMX3+VXpMkbhUAHp8HzjTbFfq/7/IVuDPWGftOtPPfc+XQmPHBJuhCCFHR3jACvY8nIoRf6KiHh1lJwJrcJ+6vzrxY2gkiCaAXSQRtMVukKp/07asKHeVmrmbwbk8KVGSmiTuVCbKIg85eS1gQ4X9MGmR6qN6eVJR0fIGaG2T0weBtBVMRzhfRMhHADYYMhcqXm2GNoMiE0VUkzxx1G/FQ7KLhFhlf0VdyGtju/2wKZd2cYHC/74grUFvHUMY+0h3NENKTP/xKOWlwUMbxY/4ddAefe8oFQkotueM6HNkbTZ24Inn6gkT0HT1IA3EhOZ3Ijvm2zG4p1D1rqxjodUKuKY1Af5n0S8K+j7Xv3cdhb3AUbVDrH2zZDPXdINQhMbpBXjoedpC3Wm7XHYczCqrJva0wTx1lCvARoSES48V4OQU3MObh6fALIx8H61GPZObFjKFlDB015iUmU=
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
+	version=4.0.1
+X-HE-Tag: 1793826932-426626
+X-HE-Meta: U2FsdGVkX19se63Mv16l6cJZu4hLINuKzbLBy7umgfQp0EaD4OXfrchsuEbjdUA2uaz0dGm9qnn5MOQX6CMzaV1CDayGLlvTKLPZOjO5BFE+VF3wCwizGXW0vFR43Eg6BG2cUh9dyFPDTiDhqn2powpHMn/IfJjf6Pb16+oRCsQFj6vauDlu+INdQ9ytC7/QqngmwC2MmoUVX2iXhyH0so1+o3CurA6aFt3YvOx9D9NZmatGr4qQmwmnp0lhG5ihn93OB9cbc4P0snwHOpBdR+g/lXmuo5jTjv6K09JS/tyXCF4YzsypGN/r46M5BEJvNhExBXI3hsJF0bgj78oSirzJ5fiy22tQyxPsBnS/UYcYm8ftRBnEMUJNn8eah5F9KJhIauVb8oJfXLIyzSGRGeMXbU/GGruVmim6yplNQGhQy0BoqPRoboI4lpCwzQYjL+UbZFYUs9BiQsNCSTUm6+NGRb6dN5Q3KGRF94K8oh2RCTd5Kv2Fjwyqf8biPM2FMGilj2nF/fmU4wf48mOgh5ogRYNrt7SrKTtlc81Qyy+zeS48PUdXDZVn9fQIB9PP+ETzmTwjAwb2bATW5gHuoWSTGqFOPx+8VckuF6OWhOruMGcbxS4he8NGYoUsr9+E4ruRd4kLyh3W1ht9f42Ez/Zl9+By8ia/XeL4zixkw1mjHiGE6cjJVoXui98r+BbEIxbVWA3EH5+0aRqFSomgxO9RbTWw6rdC1dOTXcEUeBbzIWaezkXEMx5dtZF7esAwz0qVnKgM1lfxLJe81GWopigRV3m+HeObNOq7AP7nWnNR0dM3Q2aNW53KkuLjZg2A/O+IMvbn+2d8q9agF6FJnv7gU3eL3MgAVPTt+4voV/uYFUGGPxcbiWSNzxSOVZ/G1cIkkqoJbDiWITCkmKSlgWjYJdDxCyK4ptGi9f6EC/0kCwog8SQ8gYjmg0c75+YEGAVRYr+d1apD3ZJHNZj
+ ko+G/ldR
+ JOr6m3QNjSrJFU7fgz1mJLs7d4br3y9N8eXM/6qL0KiI65bWISVGkz3DWoTn81AZXDkKwWKEqsVvJ649k3Kq9jW+4Hx0R/F2Fc0/fUXeICnOLqV6cGUpmVbroxijGFuIjOy9LkexVq9aN2JqWas+RRnB+ZOQ/W5kzuXAtmt2xTDKw3bwSc2N8jq8zzctbwUl1RKeRezpBpeYRvWH2Icbe4HksvRT0jv0tbEktHF/5q/N7vb6bsHVjBeNjFGXtx947Risdq3oR6ruIXpLrl9CjY1IP48Q+XHb96s8uhII+BpV3Y8rKx34DiN+mMOaZc1GFCwfqQKr6b4F1zF0h32uvukv8/jpyTuXmxIQEQ0JH+ArXGbNDGA7HEIGv5/KDqruJzWYq4kzVUYbWxCxKDJgrAMz7BD5UbwVUdUsX
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -149,233 +154,683 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
-X-Archived-By: <archiver.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
-s) to consider:
-- [Critical] page_pool: TOCTOU race in page_pool_unref_netmem() non-RMW fas=
-t path
-- [High] tls: page leak between netmem kTLS records and mlx5 tx_sync_info_g=
-et()
---
+Part 7/7 of "proc: move procfs to what kernfs does", on top of parts 3
+to 6:
 
-commit 874363fccb05e0d08d430f57bfdafc048dfc73e0
-Author: Mina Almasry <almasrymina@google.com>
+  https://patch.msgid.link/20261104-work-procfs-v2-0-b45cd5789ac5@brauner
 
-net: remove skb->pp_recycle and consolidate netmem refcounting
+This is the final part of letting procfs own the data path.Every entry
+that can be removed reads, writes and handles ioctls through procfs'
+buffers now, so its code only runs with the entry pinned and never
+touches userspace memory.
 
-This commit removes the per-SKB pp_recycle bitfield and updates
-netmem_inc_ref(), netmem_dec_ref(), and skb_pp_recycle() to check page_pool
-membership directly via netmem_is_pp(). It also updates page_pool_unref_net=
-mem()
-and napi_pp_get_page() to coordinate pp_ref_count with external struct page
-references, and converts TLS and wireless fragment refcounting to netmem
-helpers.
+Drop ->proc_write(), ->proc_ioctl() and ->proc_compat_ioctl(). The
+entries that keep reading straight into userspace, kcore, kmsg and the
+kpage files, are built in and never removed, so procfs never pins them
+and nothing can wait for them. They get a file_operations of their own
+that goes into the inode as it is.
 
-> diff --git a/include/net/page_pool/helpers.h b/include/net/page_pool/help=
-ers.h
-> index 28635ce9454e8..af3cb65c30416 100644
-> --- a/include/net/page_pool/helpers.h
-> +++ b/include/net/page_pool/helpers.h
-> @@ -242,6 +242,11 @@ page_pool_get_dma_dir(const struct page_pool *pool)
->  	return pool->p.dma_dir;
->  }
-> =20
-> +static inline long page_pool_ref_count(netmem_ref netmem)
-> +{
-> +	return atomic_long_read(netmem_get_pp_ref_count_ref(netmem));
-> +}
-> +
->  static inline void page_pool_fragment_netmem(netmem_ref netmem, long nr)
->  {
->  	atomic_long_set(netmem_get_pp_ref_count_ref(netmem), nr);
-> @@ -270,13 +275,22 @@ static inline void page_pool_fragment_page(struct p=
-age *page, long nr)
->  	page_pool_fragment_netmem(page_to_netmem(page), nr);
->  }
-> =20
-> +static inline bool page_pool_netmem_is_exclusively_owned(netmem_ref netm=
-em)
-> +{
-> +	if (netmem_is_net_iov(netmem))
-> +		return true;
-> +
-> +	return page_ref_count(__netmem_to_page(netmem)) =3D=3D 1;
-> +}
-> +
->  static inline long page_pool_unref_netmem(netmem_ref netmem, long nr)
->  {
->  	atomic_long_t *pp_ref_count =3D netmem_get_pp_ref_count_ref(netmem);
->  	long ret;
-> =20
-> -	/* If nr =3D=3D pp_ref_count then we have cleared all remaining
-> -	 * references to the page:
-> +	/* If nr =3D=3D pp_ref_count and the page_pool holds the sole page
-> +	 * reference, then we have cleared all remaining references to the
-> +	 * page:
->  	 * 1. 'n =3D=3D 1': no need to actually overwrite it.
->  	 * 2. 'n !=3D 1': overwrite it with one, which is the rare case
->  	 *              for pp_ref_count draining.
-> @@ -288,8 +302,15 @@ static inline long page_pool_unref_netmem(netmem_ref=
- netmem, long nr)
->  	 * handling by ensuring all pages have partitioned into only 1 piece
->  	 * initially, and only overwrite it when the page is partitioned into
->  	 * more than one piece.
-> +	 *
-> +	 * If an external page reference exists (page_ref_count > 1), a
-> +	 * concurrent napi_pp_get_page() caller holding only a page reference
-> +	 * may attempt atomic_long_inc_not_zero(pp_ref_count), so we must
-> +	 * perform an atomic RMW subtraction to 0 and leave pp_ref_count at 0
-> +	 * while the page is released from the pool.
->  	 */
-> -	if (atomic_long_read(pp_ref_count) =3D=3D nr) {
-> +	if (atomic_long_read(pp_ref_count) =3D=3D nr &&
-> +	    likely(page_pool_netmem_is_exclusively_owned(netmem))) {
->  		/* As we have ensured nr is always one for constant case using
->  		 * the BUILD_BUG_ON(), only need to handle the non-constant case
->  		 * here for pp_ref_count draining, which is a rare case.
+Afterwards, nothing in struct proc_ops takes a __user pointer anymore,
+and one set of file_operations serves every entry that has proc_ops,
+like kernfs_file_fops does. For those five files mmap() fails with
+-ENODEV instead of -EIO now and a write() by someone who can open them
+for writing with -EINVAL instead of -EIO. Nothing else changes for them.
 
-[Severity: Critical]
-Can the non-RMW fast path in page_pool_unref_netmem() race with a caller
-that converts a struct page reference into a pp_ref_count reference, causing
-an in-use page to be recycled into the pool?
+With the old names free the _buf suffix of the new methods doesn't mean
+anything anymore, so ->proc_write_buf(), ->proc_read_buf() and
+->proc_ioctl_buf() become ->proc_write(), ->proc_read() and
+->proc_ioctl() at the end.
 
-With netmem_inc_ref() now calling napi_pp_get_page(), callers holding a
-struct page reference such as zerocopy_fill_skb_from_iter() convert their
-page_ref_count into a pp_ref_count:
+The last patch takes the poll_table away from ->proc_poll(), so that an
+entry can't hand procfs a queue that dies before its files do.
 
-net/core/datagram.c:zerocopy_fill_skb_from_iter() {
-	...
-			skb_fill_page_desc_noacc(skb, frag++, head, start, size);
-			netmem_inc_ref(page_to_netmem(head));
-			last_head =3D head;
-			refs++;
-		}
-		if (refs)
-			page_ref_sub(last_head, refs);
-}
+With the whole stack on a KASAN and lockdep kernel the removal
+selftests of all parts pass, the proc, pktgen and allocinfo selftests
+behave like without it, and kcore, kmsg, the kpage files and
+/proc/profile behave the same syscall by syscall, read, pread, seek,
+splice, poll and ioctl included, apart from the two errno changes
+above and splice() now working on /proc/profile.
 
-Consider a page_pool page with pp_ref_count =3D=3D 1 (held by an SKB being =
-freed
-on CPU 0) and page_ref_count =3D=3D 2 (1 held by the page_pool, 1 held by G=
-UP in
-zerocopy_fill_skb_from_iter() on CPU 1):
+Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
+---
+Changes in v2:
+- kcore, kmsg and the kpage files get file_operations of their own
+  instead of staying the permanent exception, and ->proc_read() and
+  ->proc_read_iter() go away with them: nothing in struct proc_ops takes
+  a __user pointer anymore; a splice() from a write-only entry fails
+  with -EIO instead of -EINVAL now that one set of file_operations
+  serves every entry
+- the poll_table is dropped from ->proc_poll()
+- rebased onto v7.4-rc1
+- Link to v1: https://patch.msgid.link/20261102-work-procfs-cleanup-v1-0-c40014bc12f5@kernel.org
 
-CPU 0                                   CPU 1
-napi_pp_put_page()
-  page_pool_put_full_netmem()
-    page_pool_unref_netmem(netmem, 1)
-      atomic_long_read(pp_ref_count) =3D=3D 1
-      (true; pp_ref_count stays 1)
-                                        zerocopy_fill_skb_from_iter()
-                                          netmem_inc_ref()
-                                            napi_pp_get_page()
-                                              atomic_long_inc_not_zero(pp_r=
-ef_count)
-                                              (pp_ref_count: 1 -> 2)
-                                          page_ref_sub(last_head, 1)
-                                            (page_ref_count: 2 -> 1)
-      page_pool_netmem_is_exclusively_owned()
-        page_ref_count(page) =3D=3D 1 (true!)
-      returns 0 (leaving pp_ref_count =3D=3D 2)
-    __page_pool_put_page()
-      __page_pool_page_can_be_recycled() (true)
-      recycles page into pool while CPU 1's TX SKB still references it!
+---
+Christian Brauner (6):
+      proc: drop ->proc_write()
+      proc: drop ->proc_ioctl() and ->proc_compat_ioctl()
+      proc: give kcore, kmsg and the kpage files their own file_operations
+      proc: drop ->proc_read() and ->proc_read_iter()
+      proc: drop the _buf suffix from the new methods
+      proc: drop the poll_table from ->proc_poll()
 
-Similarly, on weakly ordered architectures, because atomic_long_read() and
-page_ref_count() are both relaxed loads with no barrier between them, when
-pp_ref_count =3D=3D 2 and page_ref_count =3D=3D 1, CPU 0 can speculatively =
-load
-page_ref_count =3D=3D 1 before CPU 1 maps the page via tcp_zerocopy_receive=
-() ->
-vm_insert_pages() (page_ref_count: 1 -> 2) and drops its pp_ref_count
-(2 -> 1). CPU 0 then reads pp_ref_count =3D=3D 1 and returns 0 with pp_ref_=
-count
-left at 1 instead of 0 while __page_pool_put_page() ->
-page_pool_return_netmem() releases the page from the pool.
+ arch/alpha/kernel/srm_env.c                        |   2 +-
+ arch/arm/kernel/atags_proc.c                       |   2 +-
+ arch/arm/mm/alignment.c                            |   2 +-
+ arch/m68k/kernel/bootinfo_proc.c                   |   2 +-
+ arch/powerpc/kernel/proc_powerpc.c                 |   2 +-
+ arch/powerpc/kernel/rtas-proc.c                    |  10 +-
+ arch/powerpc/kernel/rtas_flash.c                   |  16 +--
+ arch/powerpc/kernel/rtasd.c                        |   4 +-
+ arch/powerpc/platforms/pseries/lpar.c              |   4 +-
+ arch/powerpc/platforms/pseries/lparcfg.c           |   2 +-
+ arch/powerpc/platforms/pseries/reconfig.c          |   2 +-
+ arch/sh/mm/alignment.c                             |   2 +-
+ arch/sparc/kernel/led.c                            |   2 +-
+ arch/um/drivers/mconsole_kern.c                    |   2 +-
+ arch/um/kernel/exitcode.c                          |   2 +-
+ arch/x86/kernel/cpu/mtrr/if.c                      |   4 +-
+ arch/xtensa/platforms/iss/simdisk.c                |   4 +-
+ drivers/acpi/proc.c                                |   2 +-
+ drivers/hwmon/dell-smm-hwmon.c                     |   2 +-
+ drivers/input/input.c                              |   2 +-
+ drivers/macintosh/via-pmu.c                        |   2 +-
+ drivers/md/md.c                                    |   2 +-
+ drivers/net/wireless/intel/ipw2x00/libipw_module.c |   2 +-
+ drivers/pci/proc.c                                 |   6 +-
+ drivers/platform/x86/lenovo/thinkpad_acpi.c        |   2 +-
+ drivers/platform/x86/toshiba_acpi.c                |   8 +-
+ drivers/pnp/isapnp/proc.c                          |   2 +-
+ drivers/pnp/pnpbios/proc.c                         |   2 +-
+ drivers/s390/block/dasd_proc.c                     |   2 +-
+ drivers/s390/cio/blacklist.c                       |   2 +-
+ drivers/s390/cio/css.c                             |   2 +-
+ drivers/scsi/esas2r/esas2r_main.c                  |   2 +-
+ drivers/scsi/scsi_devinfo.c                        |   2 +-
+ drivers/scsi/scsi_proc.c                           |   4 +-
+ drivers/scsi/sg.c                                  |   4 +-
+ drivers/tty/sysrq.c                                |   2 +-
+ drivers/usb/gadget/function/rndis.c                |   2 +-
+ drivers/video/fbdev/via/viafbdev.c                 |  14 +-
+ drivers/zorro/proc.c                               |   2 +-
+ fs/jfs/jfs_debug.c                                 |   2 +-
+ fs/lockd/procfs.c                                  |   4 +-
+ fs/ntfs3/super.c                                   |   2 +-
+ fs/proc/generic.c                                  |  60 +++++----
+ fs/proc/inode.c                                    | 146 ++++-----------------
+ fs/proc/internal.h                                 |  21 +--
+ fs/proc/kcore.c                                    |  14 +-
+ fs/proc/kmsg.c                                     |  17 +--
+ fs/proc/page.c                                     |  27 ++--
+ fs/proc/proc_net.c                                 |   4 +-
+ fs/proc/vmcore.c                                   |   2 +-
+ fs/smb/client/cifs_debug.c                         |  16 +--
+ fs/smb/client/dfs_cache.c                          |   2 +-
+ include/linux/proc_fs.h                            |  39 +++---
+ kernel/configs.c                                   |   2 +-
+ kernel/irq/proc.c                                  |   6 +-
+ kernel/latencytop.c                                |   2 +-
+ kernel/locking/lockdep_proc.c                      |   2 +-
+ kernel/profile.c                                   |   4 +-
+ kernel/sched/psi.c                                 |  12 +-
+ lib/dynamic_debug.c                                |   2 +-
+ mm/alloc_tag.c                                     |   2 +-
+ mm/swapfile.c                                      |   2 +-
+ net/atm/proc.c                                     |   2 +-
+ net/core/pktgen.c                                  |   6 +-
+ net/netfilter/xt_recent.c                          |   2 +-
+ net/sunrpc/auth_gss/svcauth_gss.c                  |   6 +-
+ net/sunrpc/cache.c                                 |  10 +-
+ samples/kfifo/bytestream-example.c                 |   4 +-
+ samples/kfifo/inttype-example.c                    |   4 +-
+ samples/kfifo/record-example.c                     |   4 +-
+ sound/core/info.c                                  |   8 +-
+ 71 files changed, 242 insertions(+), 328 deletions(-)
+---
+base-commit: 6628e7d4c6b25c8d18f1345e3a20d21829aae7e4
+change-id: 20261030-work-procfs-cleanup-1694f71bb156
+prerequisite-change-id: 20261101-work-procfs-arch-8d4ade48be31:v2
+prerequisite-patch-id: a81e8b894107e48d607f8257d2c9f56e0dd6f400
+prerequisite-patch-id: 7edf7ca7ecd32c9e09085e4b65922af10097beaa
+prerequisite-patch-id: 81f6893f79b4236637675553298a6f2892b603f3
+prerequisite-patch-id: 598c2b1a389f47adcac88ebcf1c9f74e2511fbab
+prerequisite-patch-id: 6f5a2172dacc5ff2491fa9832c48ccd0e1ce1eda
+prerequisite-patch-id: 8947af6490288e4e2a3b2bf8844a974bedb1d975
+prerequisite-patch-id: 8cbe756286fd95967d31b0c46cacfeb05f0a2c6b
+prerequisite-patch-id: 3fa159f2b6ccd0ac51a2662e4eec5587ec18de89
+prerequisite-patch-id: bfb4e4ffe9631cb58015fefe6bd3698cd53e2244
+prerequisite-patch-id: 56ff6667a57a962264c07c0227c61aa2f1f4c22c
+prerequisite-patch-id: bc506323e29944ec0c29eae84950c706a8592042
+prerequisite-patch-id: 326c0ebb5accf0f40cbee1323fb4c3378f5be154
+prerequisite-patch-id: d6eaf7690a54a0dfda7500936a048b769fa265dd
+prerequisite-patch-id: 7c7b2535642b4d388e13eab518cbe0f9550eb1e6
+prerequisite-patch-id: 0474af12959624910718795bf86684383664c685
+prerequisite-patch-id: f6d4191e23c22e2d2cc90cc5d04781f913e98a8e
+prerequisite-patch-id: b0031a7c4855b7ec38259c59f30f65101a8fc4b5
+prerequisite-patch-id: 0b7f226abf2b9ff41873a1aa55cf97747647d56b
+prerequisite-patch-id: f63e345f897619af54813958046617c655fb7daf
+prerequisite-patch-id: c0e21e762a2960e3324c5ab04634a7035e515fa6
+prerequisite-patch-id: fd59c71eadd8f39c58b3baea93567bc093bc9b0e
+prerequisite-patch-id: 5d52cc8a5c73e4c5ba16b8e24f51408c17583bf9
+prerequisite-patch-id: 1f9179284e2f3314d4b46ac5e989089a21c7576c
+prerequisite-patch-id: 10397bbf696bee16dc71eb79fff6c5e73842bcbc
+prerequisite-patch-id: 9b44279dcf08912238d2f6438a3328a778a79a0c
+prerequisite-patch-id: 16854b621a3a71dfc365aaf7abaa7f65adfe9f7e
+prerequisite-patch-id: ca42eea21fae1fd1cd3518ab057c74b61ffd68fe
+prerequisite-patch-id: 23255dc2be76b0479c083dbd4c897bfbb533aed5
+prerequisite-patch-id: 82129c687ebf0a41b369893b92f2c038420ab801
+prerequisite-patch-id: 56ad57a99a5bda075a9f4e844368974296744934
+prerequisite-patch-id: 288b3cbaa11e01a778cc3d7beb6c0549aacf59f2
+prerequisite-patch-id: a163b1549608652bfa5bd9ff93efa55b541010c4
+prerequisite-patch-id: 43b92dfc1a98fbf0d14597a3e3ae99972844773b
+prerequisite-patch-id: 19c12bc6e3fbed35acc1f657196b1a997f48cdfe
+prerequisite-patch-id: 5800c3076694bad719954b2ad4d7448c6e013bfd
+prerequisite-patch-id: 2a2f63d8843b159594b9eee6ddea028ce76a6270
+prerequisite-patch-id: 40a1951d57906c4a1b98a4bd96a814b80339b9c5
+prerequisite-patch-id: e2141077e69f20a2b27fab69c8d61d0686682f53
+prerequisite-patch-id: c4d6018c26c40dc549d88330d23ce48f872c2b7f
+prerequisite-patch-id: 6de8ec17746031bc6d1d9ac262c5be0f905fcd79
+prerequisite-patch-id: b87bcb167884605bff1fd0f2ed8a88942d07efd5
+prerequisite-patch-id: cfa9a8b4c67e20cfd22d77035bfd21ee96ab3298
+prerequisite-patch-id: abf3482ed2399b7b2e1ee72e937af05bb9200667
+prerequisite-patch-id: 02c175b2dee565a85b3308ecf2ec8e3c9a029e0f
+prerequisite-patch-id: d58c239fba616b366a725de6acba3f88734156d0
+prerequisite-patch-id: dbe02fe3f784776fda5e7ae99f077bef0cd4b48d
+prerequisite-patch-id: 53edc9a95afff57c4acba40095a8054924261ea2
+prerequisite-patch-id: 5348d8957eb7eae7430ca8b101aa84ce77d3aa4f
+prerequisite-patch-id: 36c96d781e2dd80b20932667bbe6e7fd14976069
+prerequisite-patch-id: efeb2d6f7df71d5dede2c1d12fe999a28e38aab9
+prerequisite-patch-id: 17f95c7fdf0bdc7c8aaaf7883bff1dcc19a0f529
+prerequisite-patch-id: 117db27dcdef433de7c6be5e95973cac1e373927
+prerequisite-patch-id: a0844aa26ffb65ccb362b88ef6c2f4758e15edbf
+prerequisite-patch-id: 9c64355dfde62e399f2717d9208c4607834d4650
+prerequisite-patch-id: 9644739854ddfe2876f17fda8727fd5119255957
+prerequisite-patch-id: c61bba24c035f79a2a32a80ace0924ab58e97f46
+prerequisite-patch-id: 143fb91bddf33068b6ee11e205818c4c2815e23d
+prerequisite-patch-id: 9ce9be2ff05250f92d945c0084f4bb31d3d0b27d
+prerequisite-patch-id: aee0961341523547095a43ae298cb8b551302f10
+prerequisite-patch-id: 2f0fdb970ddd760d85ff5d2caad0b96348270182
+prerequisite-patch-id: f2aa468ff5cbb1cabab3f70e1b8eeee0286cfb4a
+prerequisite-patch-id: 5555895bcbca4d7c9888ecc9e82c0e4d76da8f40
+prerequisite-patch-id: 487141c49e2548310bfb6c2a0964a78f08b285a9
+prerequisite-patch-id: c3d3008819fa5629a18142ec9ba6d7024ade7fdb
+prerequisite-patch-id: ca587c976690ac16e3d759fccab2116fef0508e8
+prerequisite-patch-id: 9423f410b99853693db06c29f12f1c08278b050d
+prerequisite-patch-id: e269815617a6324615a38916b8886f99d98c641e
+prerequisite-patch-id: 3d24be1897a624d519ef144801f76d152c7528a9
+prerequisite-patch-id: 1ea3fc8319d9012faaf3a182ac61d5da89aafdb7
+prerequisite-patch-id: 7547b4e2c1b3588acf6caf90cc01fe7884fdb6bd
+prerequisite-patch-id: 695d325349ebeb89bf0ea24bcf0c4f1c4edacab5
+prerequisite-patch-id: e33502a202979aba0d6fdaf196e8471d906992a1
+prerequisite-patch-id: 47bfe4f07677ad75fe8d9accc8923a1cbdf3afa6
+prerequisite-patch-id: 9fc0739226572203fcb36f2c271be7b27f405ef2
+prerequisite-patch-id: 504e13cb7af5da6f3c8503f9336116ddd6ee9fc0
+prerequisite-patch-id: 079f5420c7c6660679b25a93ab2912b42af19d6d
+prerequisite-patch-id: 717bfde0d4141e875562d62b0e3c22d687517462
+prerequisite-patch-id: 3e465d93cacbb875c5508b106bcaae53665de29e
+prerequisite-patch-id: daa2e27b0b2dbf5ac04776bf03b0953d9f10bcbb
+prerequisite-patch-id: a293472d78b43026dacbfe22a34ba1f8f2626e63
+prerequisite-patch-id: f0a09eebade394217c88730e272d7bd33616f982
+prerequisite-patch-id: 8471e839ad125d2f4cd9072486ae7da137619c1b
+prerequisite-patch-id: 16433e5bde53510f9e6b7e04db2279bd0a8f63f5
+prerequisite-patch-id: 03d349761a5a56d223067b051b1a38d594006ae2
+prerequisite-patch-id: ffc6f41124e66357a7872aa1553e5404a7d48a55
+prerequisite-patch-id: 901a0c1b4c2da010722471826fbfc51402ab8573
+prerequisite-patch-id: 1204b4883154dea8cb7d93efadb9f49e70ecd7a8
+prerequisite-patch-id: d2762d5dd1254bf7cf89a16b317b7b421718935f
+prerequisite-patch-id: d1337f7a08fd4758a94bc5b2faeb30cbad1fe9cf
+prerequisite-patch-id: a1d46785e75f0ec87cd12807cb57adc869a7f6a8
+prerequisite-patch-id: 44c5d2365c5237b44a0162be9e73dcb392deab2c
+prerequisite-patch-id: ad7ca39e7946dbf9e9ed4677b577bb5efad15af5
+prerequisite-patch-id: 3984bbb1dbd74d87215a789483a75e968e81b453
+prerequisite-patch-id: 48c81c042a9252249b32613e94f6bbca2fcb64b5
+prerequisite-patch-id: 4d97d31af7bca868bf68a61fe7825dcbd7cc500b
+prerequisite-patch-id: 227908b78f668bc6301cfa2217fa581471176b0f
+prerequisite-patch-id: b4cbc3d04d64c061cc9cf2d22412ab5b4b37baaa
+prerequisite-change-id: 20261101-work-procfs-drivers-58cd83649658:v2
+prerequisite-patch-id: a81e8b894107e48d607f8257d2c9f56e0dd6f400
+prerequisite-patch-id: 7edf7ca7ecd32c9e09085e4b65922af10097beaa
+prerequisite-patch-id: 81f6893f79b4236637675553298a6f2892b603f3
+prerequisite-patch-id: 598c2b1a389f47adcac88ebcf1c9f74e2511fbab
+prerequisite-patch-id: 6f5a2172dacc5ff2491fa9832c48ccd0e1ce1eda
+prerequisite-patch-id: 8947af6490288e4e2a3b2bf8844a974bedb1d975
+prerequisite-patch-id: 8cbe756286fd95967d31b0c46cacfeb05f0a2c6b
+prerequisite-patch-id: 3fa159f2b6ccd0ac51a2662e4eec5587ec18de89
+prerequisite-patch-id: bfb4e4ffe9631cb58015fefe6bd3698cd53e2244
+prerequisite-patch-id: 56ff6667a57a962264c07c0227c61aa2f1f4c22c
+prerequisite-patch-id: bc506323e29944ec0c29eae84950c706a8592042
+prerequisite-patch-id: 326c0ebb5accf0f40cbee1323fb4c3378f5be154
+prerequisite-patch-id: d6eaf7690a54a0dfda7500936a048b769fa265dd
+prerequisite-patch-id: 7c7b2535642b4d388e13eab518cbe0f9550eb1e6
+prerequisite-patch-id: 0474af12959624910718795bf86684383664c685
+prerequisite-patch-id: f6d4191e23c22e2d2cc90cc5d04781f913e98a8e
+prerequisite-patch-id: b0031a7c4855b7ec38259c59f30f65101a8fc4b5
+prerequisite-patch-id: 0b7f226abf2b9ff41873a1aa55cf97747647d56b
+prerequisite-patch-id: f63e345f897619af54813958046617c655fb7daf
+prerequisite-patch-id: c0e21e762a2960e3324c5ab04634a7035e515fa6
+prerequisite-patch-id: fd59c71eadd8f39c58b3baea93567bc093bc9b0e
+prerequisite-patch-id: 5d52cc8a5c73e4c5ba16b8e24f51408c17583bf9
+prerequisite-patch-id: 1f9179284e2f3314d4b46ac5e989089a21c7576c
+prerequisite-patch-id: 10397bbf696bee16dc71eb79fff6c5e73842bcbc
+prerequisite-patch-id: 9b44279dcf08912238d2f6438a3328a778a79a0c
+prerequisite-patch-id: 16854b621a3a71dfc365aaf7abaa7f65adfe9f7e
+prerequisite-patch-id: ca42eea21fae1fd1cd3518ab057c74b61ffd68fe
+prerequisite-patch-id: 23255dc2be76b0479c083dbd4c897bfbb533aed5
+prerequisite-patch-id: 82129c687ebf0a41b369893b92f2c038420ab801
+prerequisite-patch-id: 56ad57a99a5bda075a9f4e844368974296744934
+prerequisite-patch-id: 288b3cbaa11e01a778cc3d7beb6c0549aacf59f2
+prerequisite-patch-id: a163b1549608652bfa5bd9ff93efa55b541010c4
+prerequisite-patch-id: 43b92dfc1a98fbf0d14597a3e3ae99972844773b
+prerequisite-patch-id: 19c12bc6e3fbed35acc1f657196b1a997f48cdfe
+prerequisite-patch-id: 5800c3076694bad719954b2ad4d7448c6e013bfd
+prerequisite-patch-id: 2a2f63d8843b159594b9eee6ddea028ce76a6270
+prerequisite-patch-id: 40a1951d57906c4a1b98a4bd96a814b80339b9c5
+prerequisite-patch-id: e2141077e69f20a2b27fab69c8d61d0686682f53
+prerequisite-patch-id: c4d6018c26c40dc549d88330d23ce48f872c2b7f
+prerequisite-patch-id: 6de8ec17746031bc6d1d9ac262c5be0f905fcd79
+prerequisite-patch-id: b87bcb167884605bff1fd0f2ed8a88942d07efd5
+prerequisite-patch-id: cfa9a8b4c67e20cfd22d77035bfd21ee96ab3298
+prerequisite-patch-id: abf3482ed2399b7b2e1ee72e937af05bb9200667
+prerequisite-patch-id: 02c175b2dee565a85b3308ecf2ec8e3c9a029e0f
+prerequisite-patch-id: d58c239fba616b366a725de6acba3f88734156d0
+prerequisite-patch-id: dbe02fe3f784776fda5e7ae99f077bef0cd4b48d
+prerequisite-patch-id: 53edc9a95afff57c4acba40095a8054924261ea2
+prerequisite-patch-id: 5348d8957eb7eae7430ca8b101aa84ce77d3aa4f
+prerequisite-patch-id: 36c96d781e2dd80b20932667bbe6e7fd14976069
+prerequisite-patch-id: efeb2d6f7df71d5dede2c1d12fe999a28e38aab9
+prerequisite-patch-id: 17f95c7fdf0bdc7c8aaaf7883bff1dcc19a0f529
+prerequisite-patch-id: 117db27dcdef433de7c6be5e95973cac1e373927
+prerequisite-patch-id: a0844aa26ffb65ccb362b88ef6c2f4758e15edbf
+prerequisite-patch-id: 9c64355dfde62e399f2717d9208c4607834d4650
+prerequisite-patch-id: 9644739854ddfe2876f17fda8727fd5119255957
+prerequisite-patch-id: c61bba24c035f79a2a32a80ace0924ab58e97f46
+prerequisite-patch-id: 143fb91bddf33068b6ee11e205818c4c2815e23d
+prerequisite-patch-id: 9ce9be2ff05250f92d945c0084f4bb31d3d0b27d
+prerequisite-patch-id: aee0961341523547095a43ae298cb8b551302f10
+prerequisite-patch-id: 2f0fdb970ddd760d85ff5d2caad0b96348270182
+prerequisite-patch-id: f2aa468ff5cbb1cabab3f70e1b8eeee0286cfb4a
+prerequisite-patch-id: 5555895bcbca4d7c9888ecc9e82c0e4d76da8f40
+prerequisite-patch-id: 487141c49e2548310bfb6c2a0964a78f08b285a9
+prerequisite-patch-id: c3d3008819fa5629a18142ec9ba6d7024ade7fdb
+prerequisite-patch-id: ca587c976690ac16e3d759fccab2116fef0508e8
+prerequisite-patch-id: 9423f410b99853693db06c29f12f1c08278b050d
+prerequisite-patch-id: e269815617a6324615a38916b8886f99d98c641e
+prerequisite-patch-id: 3d24be1897a624d519ef144801f76d152c7528a9
+prerequisite-patch-id: 1ea3fc8319d9012faaf3a182ac61d5da89aafdb7
+prerequisite-patch-id: 7547b4e2c1b3588acf6caf90cc01fe7884fdb6bd
+prerequisite-patch-id: 695d325349ebeb89bf0ea24bcf0c4f1c4edacab5
+prerequisite-patch-id: e33502a202979aba0d6fdaf196e8471d906992a1
+prerequisite-patch-id: 47bfe4f07677ad75fe8d9accc8923a1cbdf3afa6
+prerequisite-patch-id: 9fc0739226572203fcb36f2c271be7b27f405ef2
+prerequisite-patch-id: 504e13cb7af5da6f3c8503f9336116ddd6ee9fc0
+prerequisite-patch-id: 079f5420c7c6660679b25a93ab2912b42af19d6d
+prerequisite-patch-id: 717bfde0d4141e875562d62b0e3c22d687517462
+prerequisite-patch-id: 3e465d93cacbb875c5508b106bcaae53665de29e
+prerequisite-patch-id: daa2e27b0b2dbf5ac04776bf03b0953d9f10bcbb
+prerequisite-patch-id: a293472d78b43026dacbfe22a34ba1f8f2626e63
+prerequisite-patch-id: f0a09eebade394217c88730e272d7bd33616f982
+prerequisite-patch-id: 8471e839ad125d2f4cd9072486ae7da137619c1b
+prerequisite-patch-id: 16433e5bde53510f9e6b7e04db2279bd0a8f63f5
+prerequisite-patch-id: 03d349761a5a56d223067b051b1a38d594006ae2
+prerequisite-patch-id: ffc6f41124e66357a7872aa1553e5404a7d48a55
+prerequisite-patch-id: 901a0c1b4c2da010722471826fbfc51402ab8573
+prerequisite-patch-id: 1204b4883154dea8cb7d93efadb9f49e70ecd7a8
+prerequisite-patch-id: d2762d5dd1254bf7cf89a16b317b7b421718935f
+prerequisite-patch-id: d1337f7a08fd4758a94bc5b2faeb30cbad1fe9cf
+prerequisite-patch-id: a1d46785e75f0ec87cd12807cb57adc869a7f6a8
+prerequisite-patch-id: 44c5d2365c5237b44a0162be9e73dcb392deab2c
+prerequisite-patch-id: ad7ca39e7946dbf9e9ed4677b577bb5efad15af5
+prerequisite-patch-id: 3984bbb1dbd74d87215a789483a75e968e81b453
+prerequisite-patch-id: 48c81c042a9252249b32613e94f6bbca2fcb64b5
+prerequisite-patch-id: 4d97d31af7bca868bf68a61fe7825dcbd7cc500b
+prerequisite-patch-id: 227908b78f668bc6301cfa2217fa581471176b0f
+prerequisite-patch-id: b4cbc3d04d64c061cc9cf2d22412ab5b4b37baaa
+prerequisite-patch-id: fd779ec9acd1cd56b7eb9176cd0a10a548133f0c
+prerequisite-patch-id: 5c61093340a745890222477d54f21e1121643c95
+prerequisite-patch-id: 1199e9ee338002117fbe257118ff264e64eec0bb
+prerequisite-patch-id: 08be0388a5aafb66919d0d678380c33f092738ce
+prerequisite-patch-id: f98799e2973376543e67ae7a93ab62a20aa29564
+prerequisite-patch-id: f670bed1eba8e1440bbfed164fb0c367f248e231
+prerequisite-patch-id: f87d26787b356816be42fe8452d0262857d347b9
+prerequisite-patch-id: 88a5543ceb70d27bd05b718480334d0a28133697
+prerequisite-patch-id: 544f65704decf1a67848c8dc68ac60c5b76cdb81
+prerequisite-patch-id: f36fad7a6eb02bf1b3c1171a61cbb854794bdf63
+prerequisite-patch-id: 03a4a6747171c25f622df537a7608a4058acfc2c
+prerequisite-patch-id: 3a87a035ec7c5f8773a6a7e5085ff19228263b2d
+prerequisite-patch-id: 8483765548e3cdbd16e0a9ef44e9c60941611b12
+prerequisite-patch-id: 6643c2dbd00ab86e742ef5a15f4d23c039575f07
+prerequisite-patch-id: 9f288cab3b89ff67865b4e20c7b7f6f3835cec6f
+prerequisite-patch-id: 6c8bae764061f224f8bf6bfb0a58b44689d1fb85
+prerequisite-patch-id: c2d5675bad1219323ceb4f7c382dea8ef654256f
+prerequisite-patch-id: f5fd02ee0a5960d146eba2f57ecf9ccb15a1b216
+prerequisite-patch-id: d12cfa9299bb33218551b98efc8d2af8bb2ef321
+prerequisite-patch-id: 889b86d3e246e3d6b4cd71e7e77571bc2bbaf45e
+prerequisite-patch-id: a0f908f1aac5152622736d7589549682aabbdc72
+prerequisite-patch-id: 92f4f7c0df22746ab9dcf4c84bc14f25f5043dc2
+prerequisite-patch-id: 172d56f9145b9ec517bb8ff3e33b33c6a2c39786
+prerequisite-patch-id: f374a92609437c1cd7bf2e247c287f126d337a02
+prerequisite-patch-id: 2d540c940f6a6e05946e9ba2ca12a3fb28135e8c
+prerequisite-patch-id: 24b5f0ec2a4f445e827caf1f4a95a80b0a9f7034
+prerequisite-change-id: 20261101-work-procfs-fs-41f9fdc489cb:v2
+prerequisite-patch-id: a81e8b894107e48d607f8257d2c9f56e0dd6f400
+prerequisite-patch-id: 7edf7ca7ecd32c9e09085e4b65922af10097beaa
+prerequisite-patch-id: 81f6893f79b4236637675553298a6f2892b603f3
+prerequisite-patch-id: 598c2b1a389f47adcac88ebcf1c9f74e2511fbab
+prerequisite-patch-id: 6f5a2172dacc5ff2491fa9832c48ccd0e1ce1eda
+prerequisite-patch-id: 8947af6490288e4e2a3b2bf8844a974bedb1d975
+prerequisite-patch-id: 8cbe756286fd95967d31b0c46cacfeb05f0a2c6b
+prerequisite-patch-id: 3fa159f2b6ccd0ac51a2662e4eec5587ec18de89
+prerequisite-patch-id: bfb4e4ffe9631cb58015fefe6bd3698cd53e2244
+prerequisite-patch-id: 56ff6667a57a962264c07c0227c61aa2f1f4c22c
+prerequisite-patch-id: bc506323e29944ec0c29eae84950c706a8592042
+prerequisite-patch-id: 326c0ebb5accf0f40cbee1323fb4c3378f5be154
+prerequisite-patch-id: d6eaf7690a54a0dfda7500936a048b769fa265dd
+prerequisite-patch-id: 7c7b2535642b4d388e13eab518cbe0f9550eb1e6
+prerequisite-patch-id: 0474af12959624910718795bf86684383664c685
+prerequisite-patch-id: f6d4191e23c22e2d2cc90cc5d04781f913e98a8e
+prerequisite-patch-id: b0031a7c4855b7ec38259c59f30f65101a8fc4b5
+prerequisite-patch-id: 0b7f226abf2b9ff41873a1aa55cf97747647d56b
+prerequisite-patch-id: f63e345f897619af54813958046617c655fb7daf
+prerequisite-patch-id: c0e21e762a2960e3324c5ab04634a7035e515fa6
+prerequisite-patch-id: fd59c71eadd8f39c58b3baea93567bc093bc9b0e
+prerequisite-patch-id: 5d52cc8a5c73e4c5ba16b8e24f51408c17583bf9
+prerequisite-patch-id: 1f9179284e2f3314d4b46ac5e989089a21c7576c
+prerequisite-patch-id: 10397bbf696bee16dc71eb79fff6c5e73842bcbc
+prerequisite-patch-id: 9b44279dcf08912238d2f6438a3328a778a79a0c
+prerequisite-patch-id: 16854b621a3a71dfc365aaf7abaa7f65adfe9f7e
+prerequisite-patch-id: ca42eea21fae1fd1cd3518ab057c74b61ffd68fe
+prerequisite-patch-id: 23255dc2be76b0479c083dbd4c897bfbb533aed5
+prerequisite-patch-id: 82129c687ebf0a41b369893b92f2c038420ab801
+prerequisite-patch-id: 56ad57a99a5bda075a9f4e844368974296744934
+prerequisite-patch-id: 288b3cbaa11e01a778cc3d7beb6c0549aacf59f2
+prerequisite-patch-id: a163b1549608652bfa5bd9ff93efa55b541010c4
+prerequisite-patch-id: 43b92dfc1a98fbf0d14597a3e3ae99972844773b
+prerequisite-patch-id: 19c12bc6e3fbed35acc1f657196b1a997f48cdfe
+prerequisite-patch-id: 5800c3076694bad719954b2ad4d7448c6e013bfd
+prerequisite-patch-id: 2a2f63d8843b159594b9eee6ddea028ce76a6270
+prerequisite-patch-id: 40a1951d57906c4a1b98a4bd96a814b80339b9c5
+prerequisite-patch-id: e2141077e69f20a2b27fab69c8d61d0686682f53
+prerequisite-patch-id: c4d6018c26c40dc549d88330d23ce48f872c2b7f
+prerequisite-patch-id: 6de8ec17746031bc6d1d9ac262c5be0f905fcd79
+prerequisite-patch-id: b87bcb167884605bff1fd0f2ed8a88942d07efd5
+prerequisite-patch-id: cfa9a8b4c67e20cfd22d77035bfd21ee96ab3298
+prerequisite-patch-id: abf3482ed2399b7b2e1ee72e937af05bb9200667
+prerequisite-patch-id: 02c175b2dee565a85b3308ecf2ec8e3c9a029e0f
+prerequisite-patch-id: d58c239fba616b366a725de6acba3f88734156d0
+prerequisite-patch-id: dbe02fe3f784776fda5e7ae99f077bef0cd4b48d
+prerequisite-patch-id: 53edc9a95afff57c4acba40095a8054924261ea2
+prerequisite-patch-id: 5348d8957eb7eae7430ca8b101aa84ce77d3aa4f
+prerequisite-patch-id: 36c96d781e2dd80b20932667bbe6e7fd14976069
+prerequisite-patch-id: efeb2d6f7df71d5dede2c1d12fe999a28e38aab9
+prerequisite-patch-id: 17f95c7fdf0bdc7c8aaaf7883bff1dcc19a0f529
+prerequisite-patch-id: 117db27dcdef433de7c6be5e95973cac1e373927
+prerequisite-patch-id: a0844aa26ffb65ccb362b88ef6c2f4758e15edbf
+prerequisite-patch-id: 9c64355dfde62e399f2717d9208c4607834d4650
+prerequisite-patch-id: 9644739854ddfe2876f17fda8727fd5119255957
+prerequisite-patch-id: c61bba24c035f79a2a32a80ace0924ab58e97f46
+prerequisite-patch-id: 143fb91bddf33068b6ee11e205818c4c2815e23d
+prerequisite-patch-id: 9ce9be2ff05250f92d945c0084f4bb31d3d0b27d
+prerequisite-patch-id: aee0961341523547095a43ae298cb8b551302f10
+prerequisite-patch-id: 2f0fdb970ddd760d85ff5d2caad0b96348270182
+prerequisite-patch-id: f2aa468ff5cbb1cabab3f70e1b8eeee0286cfb4a
+prerequisite-patch-id: 5555895bcbca4d7c9888ecc9e82c0e4d76da8f40
+prerequisite-patch-id: 487141c49e2548310bfb6c2a0964a78f08b285a9
+prerequisite-patch-id: c3d3008819fa5629a18142ec9ba6d7024ade7fdb
+prerequisite-patch-id: ca587c976690ac16e3d759fccab2116fef0508e8
+prerequisite-patch-id: 9423f410b99853693db06c29f12f1c08278b050d
+prerequisite-patch-id: e269815617a6324615a38916b8886f99d98c641e
+prerequisite-patch-id: 3d24be1897a624d519ef144801f76d152c7528a9
+prerequisite-patch-id: 1ea3fc8319d9012faaf3a182ac61d5da89aafdb7
+prerequisite-patch-id: 7547b4e2c1b3588acf6caf90cc01fe7884fdb6bd
+prerequisite-patch-id: 695d325349ebeb89bf0ea24bcf0c4f1c4edacab5
+prerequisite-patch-id: e33502a202979aba0d6fdaf196e8471d906992a1
+prerequisite-patch-id: 47bfe4f07677ad75fe8d9accc8923a1cbdf3afa6
+prerequisite-patch-id: 9fc0739226572203fcb36f2c271be7b27f405ef2
+prerequisite-patch-id: 504e13cb7af5da6f3c8503f9336116ddd6ee9fc0
+prerequisite-patch-id: 079f5420c7c6660679b25a93ab2912b42af19d6d
+prerequisite-patch-id: 717bfde0d4141e875562d62b0e3c22d687517462
+prerequisite-patch-id: 3e465d93cacbb875c5508b106bcaae53665de29e
+prerequisite-patch-id: daa2e27b0b2dbf5ac04776bf03b0953d9f10bcbb
+prerequisite-patch-id: a293472d78b43026dacbfe22a34ba1f8f2626e63
+prerequisite-patch-id: f0a09eebade394217c88730e272d7bd33616f982
+prerequisite-patch-id: 8471e839ad125d2f4cd9072486ae7da137619c1b
+prerequisite-patch-id: 16433e5bde53510f9e6b7e04db2279bd0a8f63f5
+prerequisite-patch-id: 03d349761a5a56d223067b051b1a38d594006ae2
+prerequisite-patch-id: ffc6f41124e66357a7872aa1553e5404a7d48a55
+prerequisite-patch-id: 901a0c1b4c2da010722471826fbfc51402ab8573
+prerequisite-patch-id: 1204b4883154dea8cb7d93efadb9f49e70ecd7a8
+prerequisite-patch-id: d2762d5dd1254bf7cf89a16b317b7b421718935f
+prerequisite-patch-id: d1337f7a08fd4758a94bc5b2faeb30cbad1fe9cf
+prerequisite-patch-id: a1d46785e75f0ec87cd12807cb57adc869a7f6a8
+prerequisite-patch-id: 44c5d2365c5237b44a0162be9e73dcb392deab2c
+prerequisite-patch-id: ad7ca39e7946dbf9e9ed4677b577bb5efad15af5
+prerequisite-patch-id: 3984bbb1dbd74d87215a789483a75e968e81b453
+prerequisite-patch-id: 48c81c042a9252249b32613e94f6bbca2fcb64b5
+prerequisite-patch-id: 4d97d31af7bca868bf68a61fe7825dcbd7cc500b
+prerequisite-patch-id: 227908b78f668bc6301cfa2217fa581471176b0f
+prerequisite-patch-id: b4cbc3d04d64c061cc9cf2d22412ab5b4b37baaa
+prerequisite-patch-id: fd779ec9acd1cd56b7eb9176cd0a10a548133f0c
+prerequisite-patch-id: 5c61093340a745890222477d54f21e1121643c95
+prerequisite-patch-id: 1199e9ee338002117fbe257118ff264e64eec0bb
+prerequisite-patch-id: 08be0388a5aafb66919d0d678380c33f092738ce
+prerequisite-patch-id: f98799e2973376543e67ae7a93ab62a20aa29564
+prerequisite-patch-id: f670bed1eba8e1440bbfed164fb0c367f248e231
+prerequisite-patch-id: f87d26787b356816be42fe8452d0262857d347b9
+prerequisite-patch-id: 88a5543ceb70d27bd05b718480334d0a28133697
+prerequisite-patch-id: 544f65704decf1a67848c8dc68ac60c5b76cdb81
+prerequisite-patch-id: f36fad7a6eb02bf1b3c1171a61cbb854794bdf63
+prerequisite-patch-id: 03a4a6747171c25f622df537a7608a4058acfc2c
+prerequisite-patch-id: 3a87a035ec7c5f8773a6a7e5085ff19228263b2d
+prerequisite-patch-id: 8483765548e3cdbd16e0a9ef44e9c60941611b12
+prerequisite-patch-id: 6643c2dbd00ab86e742ef5a15f4d23c039575f07
+prerequisite-patch-id: 9f288cab3b89ff67865b4e20c7b7f6f3835cec6f
+prerequisite-patch-id: 6c8bae764061f224f8bf6bfb0a58b44689d1fb85
+prerequisite-patch-id: c2d5675bad1219323ceb4f7c382dea8ef654256f
+prerequisite-patch-id: f5fd02ee0a5960d146eba2f57ecf9ccb15a1b216
+prerequisite-patch-id: d12cfa9299bb33218551b98efc8d2af8bb2ef321
+prerequisite-patch-id: 889b86d3e246e3d6b4cd71e7e77571bc2bbaf45e
+prerequisite-patch-id: a0f908f1aac5152622736d7589549682aabbdc72
+prerequisite-patch-id: 92f4f7c0df22746ab9dcf4c84bc14f25f5043dc2
+prerequisite-patch-id: 172d56f9145b9ec517bb8ff3e33b33c6a2c39786
+prerequisite-patch-id: f374a92609437c1cd7bf2e247c287f126d337a02
+prerequisite-patch-id: 2d540c940f6a6e05946e9ba2ca12a3fb28135e8c
+prerequisite-patch-id: 24b5f0ec2a4f445e827caf1f4a95a80b0a9f7034
+prerequisite-patch-id: e1136dd06b641700522373064fc4f0b8988019d2
+prerequisite-patch-id: 1f93c44de1de16d56b63f242e11c61eb99fb839e
+prerequisite-patch-id: 9e05d183b1de52caab2cfdfc3ddf204626166018
+prerequisite-patch-id: f5e3b4966dc89516136a95cd4cc112a247737306
+prerequisite-patch-id: a6e9771994c9e7839f6346ce84b88aa76b1fbb94
+prerequisite-patch-id: 5cdbf669ab8cb5aae9695872b95cedcc895e8920
+prerequisite-patch-id: 1181569f72ebcfd92fc854891a4cab295c99fd94
+prerequisite-patch-id: 51fef3e3ccf3c0de31f96ace299dc6d1960af10b
+prerequisite-patch-id: 2c3465f99c412708e4dd74d08a59c584d38cd011
+prerequisite-patch-id: 4c2dd5a6b6956f87252fa471bfbdbec2f93e261f
+prerequisite-patch-id: 637fd7a493983a181121f23dd2a9894bb941ea6e
+prerequisite-patch-id: 7922f04bbdfc10776b16363f2414a179a168842b
+prerequisite-patch-id: fbeeb1ac52cfcbd92b9670b4e69b948e80c874b6
+prerequisite-patch-id: 76ce3f750a3c747b6dbbe4fe8dfca721504ff9e7
+prerequisite-patch-id: 99e82aa0b1df251a7d4568cdfa605589cd726f02
+prerequisite-patch-id: bf20bda16cfcdadcde5c4a22b8020fa1525c206b
+prerequisite-patch-id: 7d31311fd97ddb0b2833c153f22855a39516be16
+prerequisite-patch-id: ab46e417566b7997d43cc540d670892ffa186526
+prerequisite-patch-id: a1a7ca09cabb1f3bde983a8f249865cfb33ffba9
+prerequisite-patch-id: 5d507b2ac0f54617dd7bcc0ebbe003696809cbfe
+prerequisite-patch-id: 30b8a6a426dd7b9f466bde876a813a4e27c4a284
+prerequisite-patch-id: 95ece6bf7b926859312be956bb9b0ba7bf1d274a
+prerequisite-patch-id: 4a896ec0ba4ac506b1f6a010a05f703f1bf888b8
+prerequisite-patch-id: 5914904497e4739e4e94d391968d547b375c4def
+prerequisite-patch-id: f98a02b2dae4ad56aa7d11de0361ff86b1b60846
+prerequisite-patch-id: c4ba3c61e396328d84731308a7fa49348191f2a2
+prerequisite-patch-id: 1b836097aa8c6e35ca7a9f5cbb0aafab59153720
+prerequisite-patch-id: a4ff1666fad32f9037d926cb5e37b338d2379d61
+prerequisite-patch-id: fa65e32038043b8430248870d256e3eaa47f4d34
+prerequisite-patch-id: 9a278cc30fac355264a1fd2d9739ebbfb8474b04
+prerequisite-change-id: 20261101-work-procfs-net-bc8b21e3eff0:v2
+prerequisite-patch-id: a81e8b894107e48d607f8257d2c9f56e0dd6f400
+prerequisite-patch-id: 7edf7ca7ecd32c9e09085e4b65922af10097beaa
+prerequisite-patch-id: 81f6893f79b4236637675553298a6f2892b603f3
+prerequisite-patch-id: 598c2b1a389f47adcac88ebcf1c9f74e2511fbab
+prerequisite-patch-id: 6f5a2172dacc5ff2491fa9832c48ccd0e1ce1eda
+prerequisite-patch-id: 8947af6490288e4e2a3b2bf8844a974bedb1d975
+prerequisite-patch-id: 8cbe756286fd95967d31b0c46cacfeb05f0a2c6b
+prerequisite-patch-id: 3fa159f2b6ccd0ac51a2662e4eec5587ec18de89
+prerequisite-patch-id: bfb4e4ffe9631cb58015fefe6bd3698cd53e2244
+prerequisite-patch-id: 56ff6667a57a962264c07c0227c61aa2f1f4c22c
+prerequisite-patch-id: bc506323e29944ec0c29eae84950c706a8592042
+prerequisite-patch-id: 326c0ebb5accf0f40cbee1323fb4c3378f5be154
+prerequisite-patch-id: d6eaf7690a54a0dfda7500936a048b769fa265dd
+prerequisite-patch-id: 7c7b2535642b4d388e13eab518cbe0f9550eb1e6
+prerequisite-patch-id: 0474af12959624910718795bf86684383664c685
+prerequisite-patch-id: f6d4191e23c22e2d2cc90cc5d04781f913e98a8e
+prerequisite-patch-id: b0031a7c4855b7ec38259c59f30f65101a8fc4b5
+prerequisite-patch-id: 0b7f226abf2b9ff41873a1aa55cf97747647d56b
+prerequisite-patch-id: f63e345f897619af54813958046617c655fb7daf
+prerequisite-patch-id: c0e21e762a2960e3324c5ab04634a7035e515fa6
+prerequisite-patch-id: fd59c71eadd8f39c58b3baea93567bc093bc9b0e
+prerequisite-patch-id: 5d52cc8a5c73e4c5ba16b8e24f51408c17583bf9
+prerequisite-patch-id: 1f9179284e2f3314d4b46ac5e989089a21c7576c
+prerequisite-patch-id: 10397bbf696bee16dc71eb79fff6c5e73842bcbc
+prerequisite-patch-id: 9b44279dcf08912238d2f6438a3328a778a79a0c
+prerequisite-patch-id: 16854b621a3a71dfc365aaf7abaa7f65adfe9f7e
+prerequisite-patch-id: ca42eea21fae1fd1cd3518ab057c74b61ffd68fe
+prerequisite-patch-id: 23255dc2be76b0479c083dbd4c897bfbb533aed5
+prerequisite-patch-id: 82129c687ebf0a41b369893b92f2c038420ab801
+prerequisite-patch-id: 56ad57a99a5bda075a9f4e844368974296744934
+prerequisite-patch-id: 288b3cbaa11e01a778cc3d7beb6c0549aacf59f2
+prerequisite-patch-id: a163b1549608652bfa5bd9ff93efa55b541010c4
+prerequisite-patch-id: 43b92dfc1a98fbf0d14597a3e3ae99972844773b
+prerequisite-patch-id: 19c12bc6e3fbed35acc1f657196b1a997f48cdfe
+prerequisite-patch-id: 5800c3076694bad719954b2ad4d7448c6e013bfd
+prerequisite-patch-id: 2a2f63d8843b159594b9eee6ddea028ce76a6270
+prerequisite-patch-id: 40a1951d57906c4a1b98a4bd96a814b80339b9c5
+prerequisite-patch-id: e2141077e69f20a2b27fab69c8d61d0686682f53
+prerequisite-patch-id: c4d6018c26c40dc549d88330d23ce48f872c2b7f
+prerequisite-patch-id: 6de8ec17746031bc6d1d9ac262c5be0f905fcd79
+prerequisite-patch-id: b87bcb167884605bff1fd0f2ed8a88942d07efd5
+prerequisite-patch-id: cfa9a8b4c67e20cfd22d77035bfd21ee96ab3298
+prerequisite-patch-id: abf3482ed2399b7b2e1ee72e937af05bb9200667
+prerequisite-patch-id: 02c175b2dee565a85b3308ecf2ec8e3c9a029e0f
+prerequisite-patch-id: d58c239fba616b366a725de6acba3f88734156d0
+prerequisite-patch-id: dbe02fe3f784776fda5e7ae99f077bef0cd4b48d
+prerequisite-patch-id: 53edc9a95afff57c4acba40095a8054924261ea2
+prerequisite-patch-id: 5348d8957eb7eae7430ca8b101aa84ce77d3aa4f
+prerequisite-patch-id: 36c96d781e2dd80b20932667bbe6e7fd14976069
+prerequisite-patch-id: efeb2d6f7df71d5dede2c1d12fe999a28e38aab9
+prerequisite-patch-id: 17f95c7fdf0bdc7c8aaaf7883bff1dcc19a0f529
+prerequisite-patch-id: 117db27dcdef433de7c6be5e95973cac1e373927
+prerequisite-patch-id: a0844aa26ffb65ccb362b88ef6c2f4758e15edbf
+prerequisite-patch-id: 9c64355dfde62e399f2717d9208c4607834d4650
+prerequisite-patch-id: 9644739854ddfe2876f17fda8727fd5119255957
+prerequisite-patch-id: c61bba24c035f79a2a32a80ace0924ab58e97f46
+prerequisite-patch-id: 143fb91bddf33068b6ee11e205818c4c2815e23d
+prerequisite-patch-id: 9ce9be2ff05250f92d945c0084f4bb31d3d0b27d
+prerequisite-patch-id: aee0961341523547095a43ae298cb8b551302f10
+prerequisite-patch-id: 2f0fdb970ddd760d85ff5d2caad0b96348270182
+prerequisite-patch-id: f2aa468ff5cbb1cabab3f70e1b8eeee0286cfb4a
+prerequisite-patch-id: 5555895bcbca4d7c9888ecc9e82c0e4d76da8f40
+prerequisite-patch-id: 487141c49e2548310bfb6c2a0964a78f08b285a9
+prerequisite-patch-id: c3d3008819fa5629a18142ec9ba6d7024ade7fdb
+prerequisite-patch-id: ca587c976690ac16e3d759fccab2116fef0508e8
+prerequisite-patch-id: 9423f410b99853693db06c29f12f1c08278b050d
+prerequisite-patch-id: e269815617a6324615a38916b8886f99d98c641e
+prerequisite-patch-id: 3d24be1897a624d519ef144801f76d152c7528a9
+prerequisite-patch-id: 1ea3fc8319d9012faaf3a182ac61d5da89aafdb7
+prerequisite-patch-id: 7547b4e2c1b3588acf6caf90cc01fe7884fdb6bd
+prerequisite-patch-id: 695d325349ebeb89bf0ea24bcf0c4f1c4edacab5
+prerequisite-patch-id: e33502a202979aba0d6fdaf196e8471d906992a1
+prerequisite-patch-id: 47bfe4f07677ad75fe8d9accc8923a1cbdf3afa6
+prerequisite-patch-id: 9fc0739226572203fcb36f2c271be7b27f405ef2
+prerequisite-patch-id: 504e13cb7af5da6f3c8503f9336116ddd6ee9fc0
+prerequisite-patch-id: 079f5420c7c6660679b25a93ab2912b42af19d6d
+prerequisite-patch-id: 717bfde0d4141e875562d62b0e3c22d687517462
+prerequisite-patch-id: 3e465d93cacbb875c5508b106bcaae53665de29e
+prerequisite-patch-id: daa2e27b0b2dbf5ac04776bf03b0953d9f10bcbb
+prerequisite-patch-id: a293472d78b43026dacbfe22a34ba1f8f2626e63
+prerequisite-patch-id: f0a09eebade394217c88730e272d7bd33616f982
+prerequisite-patch-id: 8471e839ad125d2f4cd9072486ae7da137619c1b
+prerequisite-patch-id: 16433e5bde53510f9e6b7e04db2279bd0a8f63f5
+prerequisite-patch-id: 03d349761a5a56d223067b051b1a38d594006ae2
+prerequisite-patch-id: ffc6f41124e66357a7872aa1553e5404a7d48a55
+prerequisite-patch-id: 901a0c1b4c2da010722471826fbfc51402ab8573
+prerequisite-patch-id: 1204b4883154dea8cb7d93efadb9f49e70ecd7a8
+prerequisite-patch-id: d2762d5dd1254bf7cf89a16b317b7b421718935f
+prerequisite-patch-id: d1337f7a08fd4758a94bc5b2faeb30cbad1fe9cf
+prerequisite-patch-id: a1d46785e75f0ec87cd12807cb57adc869a7f6a8
+prerequisite-patch-id: 44c5d2365c5237b44a0162be9e73dcb392deab2c
+prerequisite-patch-id: ad7ca39e7946dbf9e9ed4677b577bb5efad15af5
+prerequisite-patch-id: 3984bbb1dbd74d87215a789483a75e968e81b453
+prerequisite-patch-id: 48c81c042a9252249b32613e94f6bbca2fcb64b5
+prerequisite-patch-id: 4d97d31af7bca868bf68a61fe7825dcbd7cc500b
+prerequisite-patch-id: 227908b78f668bc6301cfa2217fa581471176b0f
+prerequisite-patch-id: b4cbc3d04d64c061cc9cf2d22412ab5b4b37baaa
+prerequisite-patch-id: fd779ec9acd1cd56b7eb9176cd0a10a548133f0c
+prerequisite-patch-id: 5c61093340a745890222477d54f21e1121643c95
+prerequisite-patch-id: 1199e9ee338002117fbe257118ff264e64eec0bb
+prerequisite-patch-id: 08be0388a5aafb66919d0d678380c33f092738ce
+prerequisite-patch-id: f98799e2973376543e67ae7a93ab62a20aa29564
+prerequisite-patch-id: f670bed1eba8e1440bbfed164fb0c367f248e231
+prerequisite-patch-id: f87d26787b356816be42fe8452d0262857d347b9
+prerequisite-patch-id: 88a5543ceb70d27bd05b718480334d0a28133697
+prerequisite-patch-id: 544f65704decf1a67848c8dc68ac60c5b76cdb81
+prerequisite-patch-id: f36fad7a6eb02bf1b3c1171a61cbb854794bdf63
+prerequisite-patch-id: 03a4a6747171c25f622df537a7608a4058acfc2c
+prerequisite-patch-id: 3a87a035ec7c5f8773a6a7e5085ff19228263b2d
+prerequisite-patch-id: 8483765548e3cdbd16e0a9ef44e9c60941611b12
+prerequisite-patch-id: 6643c2dbd00ab86e742ef5a15f4d23c039575f07
+prerequisite-patch-id: 9f288cab3b89ff67865b4e20c7b7f6f3835cec6f
+prerequisite-patch-id: 6c8bae764061f224f8bf6bfb0a58b44689d1fb85
+prerequisite-patch-id: c2d5675bad1219323ceb4f7c382dea8ef654256f
+prerequisite-patch-id: f5fd02ee0a5960d146eba2f57ecf9ccb15a1b216
+prerequisite-patch-id: d12cfa9299bb33218551b98efc8d2af8bb2ef321
+prerequisite-patch-id: 889b86d3e246e3d6b4cd71e7e77571bc2bbaf45e
+prerequisite-patch-id: a0f908f1aac5152622736d7589549682aabbdc72
+prerequisite-patch-id: 92f4f7c0df22746ab9dcf4c84bc14f25f5043dc2
+prerequisite-patch-id: 172d56f9145b9ec517bb8ff3e33b33c6a2c39786
+prerequisite-patch-id: f374a92609437c1cd7bf2e247c287f126d337a02
+prerequisite-patch-id: 2d540c940f6a6e05946e9ba2ca12a3fb28135e8c
+prerequisite-patch-id: 24b5f0ec2a4f445e827caf1f4a95a80b0a9f7034
+prerequisite-patch-id: e1136dd06b641700522373064fc4f0b8988019d2
+prerequisite-patch-id: 1f93c44de1de16d56b63f242e11c61eb99fb839e
+prerequisite-patch-id: 9e05d183b1de52caab2cfdfc3ddf204626166018
+prerequisite-patch-id: f5e3b4966dc89516136a95cd4cc112a247737306
+prerequisite-patch-id: a6e9771994c9e7839f6346ce84b88aa76b1fbb94
+prerequisite-patch-id: 5cdbf669ab8cb5aae9695872b95cedcc895e8920
+prerequisite-patch-id: 1181569f72ebcfd92fc854891a4cab295c99fd94
+prerequisite-patch-id: 51fef3e3ccf3c0de31f96ace299dc6d1960af10b
+prerequisite-patch-id: 2c3465f99c412708e4dd74d08a59c584d38cd011
+prerequisite-patch-id: 4c2dd5a6b6956f87252fa471bfbdbec2f93e261f
+prerequisite-patch-id: 637fd7a493983a181121f23dd2a9894bb941ea6e
+prerequisite-patch-id: 7922f04bbdfc10776b16363f2414a179a168842b
+prerequisite-patch-id: fbeeb1ac52cfcbd92b9670b4e69b948e80c874b6
+prerequisite-patch-id: 76ce3f750a3c747b6dbbe4fe8dfca721504ff9e7
+prerequisite-patch-id: 99e82aa0b1df251a7d4568cdfa605589cd726f02
+prerequisite-patch-id: bf20bda16cfcdadcde5c4a22b8020fa1525c206b
+prerequisite-patch-id: 7d31311fd97ddb0b2833c153f22855a39516be16
+prerequisite-patch-id: ab46e417566b7997d43cc540d670892ffa186526
+prerequisite-patch-id: a1a7ca09cabb1f3bde983a8f249865cfb33ffba9
+prerequisite-patch-id: 5d507b2ac0f54617dd7bcc0ebbe003696809cbfe
+prerequisite-patch-id: 30b8a6a426dd7b9f466bde876a813a4e27c4a284
+prerequisite-patch-id: 95ece6bf7b926859312be956bb9b0ba7bf1d274a
+prerequisite-patch-id: 4a896ec0ba4ac506b1f6a010a05f703f1bf888b8
+prerequisite-patch-id: 5914904497e4739e4e94d391968d547b375c4def
+prerequisite-patch-id: f98a02b2dae4ad56aa7d11de0361ff86b1b60846
+prerequisite-patch-id: c4ba3c61e396328d84731308a7fa49348191f2a2
+prerequisite-patch-id: 1b836097aa8c6e35ca7a9f5cbb0aafab59153720
+prerequisite-patch-id: a4ff1666fad32f9037d926cb5e37b338d2379d61
+prerequisite-patch-id: fa65e32038043b8430248870d256e3eaa47f4d34
+prerequisite-patch-id: 9a278cc30fac355264a1fd2d9739ebbfb8474b04
+prerequisite-patch-id: ed86b546d44c9d5612a132b8f188a1727bf20140
+prerequisite-patch-id: 3531ac7c29c6d31f5c4d7830eec493700c7817cc
+prerequisite-patch-id: d5636a3c6c5d806cac00791c49bf3703b2a61c7d
+prerequisite-patch-id: a789b6da4762c80e4e223d6f20db32a4812cd87b
+prerequisite-patch-id: 96c2d266089780f6a0b07f54da812b87b5749abd
+prerequisite-patch-id: 51e5bdc34987e2266e8801368e622566ccf20968
+prerequisite-patch-id: 48b7e3fe2d9ce6c61b8b7d34ad26ecf0bfcf53cc
+prerequisite-patch-id: f39c6af65cc5b209517939533a7cb9cc1ee03da0
+prerequisite-patch-id: 9e2cccf47b8c293ebef941d1268956901f1dd323
+prerequisite-patch-id: 3d0d826b755fabb6f5ceef6f74ca50777ae1c64c
+prerequisite-patch-id: 0126190ba10aa140572e0a652c91d1de7fae0106
+prerequisite-patch-id: c0de7f6bcf931394d46239405296ce7008f7a095
+prerequisite-patch-id: b8c2dd4243818acc67a9e3917c528a4f6decb498
 
-[ ... ]
-
-> diff --git a/net/tls/tls_device.c b/net/tls/tls_device.c
-> index 4cdfbb57ecff0..670fdeeeae567 100644
-> --- a/net/tls/tls_device.c
-> +++ b/net/tls/tls_device.c
-
-[ ... ]
-
-> @@ -269,7 +271,7 @@ static void tls_append_frag(struct tls_record_info *r=
-ecord,
->  		skb_frag_fill_page_desc(frag, pfrag->page, pfrag->offset,
->  					size);
->  		++record->num_frags;
-> -		get_page(pfrag->page);
-> +		netmem_inc_ref(page_to_netmem(pfrag->page));
->  	}
-> =20
->  	pfrag->offset +=3D size;
-> @@ -302,7 +304,7 @@ static int tls_push_record(struct sock *sk,
->  		sg_set_page(&offload_ctx->sg_tx_data[i], skb_frag_page(frag),
->  			    skb_frag_size(frag), skb_frag_off(frag));
->  		sk_mem_charge(sk, skb_frag_size(frag));
-> -		get_page(skb_frag_page(frag));
-> +		netmem_inc_ref(skb_frag_netmem(frag));
->  	}
->  	sg_mark_end(&offload_ctx->sg_tx_data[record->num_frags - 1]);
-
-[Severity: High]
-Does switching tls_append_frag() and tls_push_record() to netmem_inc_ref()
-cause a page leak during mlx5 kTLS TX resync when page_pool pages are
-spliced into a hardware-offloaded TLS socket?
-
-When a page_pool page is appended to a kTLS record (for example via
-MSG_SPLICE_PAGES in tls_device_sendmsg() -> tls_push_data()),
-tls_append_frag() and tls_push_record() now increment pp_ref_count via
-netmem_inc_ref() -> napi_pp_get_page() instead of incrementing struct page
-_refcount, leaving page_ref_count(page) =3D=3D 1.
-
-However, the mlx5 kTLS TX resync path in
-drivers/net/ethernet/mellanox/mlx5/core/en_accel/ktls_tx.c still manipulates
-raw struct page _refcount on record->frags[i]:
-
-tx_sync_info_get() {
-	...
-	while (remaining > 0) {
-		skb_frag_t *frag =3D &record->frags[i];
-
-		page_ref_inc(skb_frag_page(frag));
-		remaining -=3D skb_frag_size(frag);
-		info->frags[i++] =3D *frag;
-	}
-}
-
-and in mlx5e_ktls_tx_handle_ooo() and mlx5e_ktls_tx_handle_resync_dump_comp=
-():
-
-void mlx5e_ktls_tx_handle_resync_dump_comp(struct mlx5e_txqsq *sq,
-					   struct mlx5e_tx_wqe_info *wi,
-					   u32 *dma_fifo_cc)
-{
-	...
-	mlx5e_tx_dma_unmap(sq->pdev, dma);
-	page_ref_dec(wi->resync_dump_frag_page);
-	stats->tls_dump_packets++;
-	stats->tls_dump_bytes +=3D wi->num_bytes;
-}
-
-If the TCP ACK for the record arrives while the resync DUMP WQE is in
-flight, tls_tcp_clean_acked() -> destroy_record() -> netmem_dec_ref() ->
-napi_pp_put_page() runs while page_ref_count(page) > 1 (elevated by
-page_ref_inc() / page_ref_add() in mlx5). Because page_ref_count(page) > 1,
-__page_pool_page_can_be_recycled() returns false and __page_pool_put_page()
-calls page_pool_return_netmem(), which unmaps the page from the pool, clears
-pp_magic, and drops the page_pool's _refcount via put_page().
-
-When the DUMP WQE later completes in mlx5e_ktls_tx_handle_resync_dump_comp()
-(or unwinds at err_out in mlx5e_ktls_tx_handle_ooo()), page_ref_dec()
-decrements page->_refcount to 0 without freeing the page to the page
-allocator, leaking the page.
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261103211424.1276=
-27-1-almasrymina@google.com?part=3D4
 
