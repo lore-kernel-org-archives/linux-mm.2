@@ -1,146 +1,109 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8346606A328
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 00:38:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9D62606A31B
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 00:43:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=hMeETv55;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=RAzpJdiv;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=hMeETv55;
-	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=RAzpJdiv
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=lY9xLFc1
 Received: by kanga.kvack.org (Postfix)
-	id C52F16B00EF; Tue,  3 Nov 2026 19:38:30 -0500 (EST)
+	id 8CA316B05B2; Tue,  3 Nov 2026 19:43:28 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BDE0B6B05B1; Tue,  3 Nov 2026 19:38:30 -0500 (EST)
+	id 863ED6B05B3; Tue,  3 Nov 2026 19:43:28 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A7D546B05B2; Tue,  3 Nov 2026 19:38:30 -0500 (EST)
+	id 77BEB6B05B4; Tue,  3 Nov 2026 19:43:28 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 73B986B00EF
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 19:38:30 -0500 (EST)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id E35251405C4
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 00:38:29 +0000 (UTC)
-X-FDA: 85395575538.27.808BFED
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf09.hostedemail.com (Postfix) with ESMTP id A288B140007
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 00:38:27 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=hMeETv55;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=RAzpJdiv;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=hMeETv55;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=RAzpJdiv;
-	spf=pass (imf09.hostedemail.com: domain of clopez@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=clopez@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 478066B05B2
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 19:43:28 -0500 (EST)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id A3F75405F6
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 00:43:27 +0000 (UTC)
+X-FDA: 85395588054.18.4AAE5D1
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf16.hostedemail.com (Postfix) with ESMTP id ADC36180005
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 00:43:25 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lY9xLFc1;
+	spf=pass (imf16.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793752707;
+	s=arc-20220608; t=1793753005;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/JbHR9SIBAy4VraxiGZbUfiitTfcvjB9kaCB6rQcVIE=;
-	b=bFHRbd2zUrF2RFJ8uf0iY0nceNA3k1yL1aOkcoKZ2kUNJB6BT08bWf52gYNOUM2fWSTPWD
-	6NRZsxS72FVaX+FIUXytIx7EL6bwJKafpDFiXYVpDa4Z0gEGLjCezSjert6D+qNe5HqkVh
-	HGkkF1bj9fxEGdFYKyI0qBrTBwyrp8s=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=hMeETv55;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=RAzpJdiv;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=hMeETv55;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=RAzpJdiv;
-	spf=pass (imf09.hostedemail.com: domain of clopez@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=clopez@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
+	bh=BxN183u4KZBYO0Z1LYyG6Hk9J0ZY7HIldlj4rccCYNQ=;
+	b=KuGRPg6oXy7MWCFA7BFRFcwmNn4UaZSNqTwBZa6mjTtZnoKBFsZtA+CmHkju4eEKt6+rdT
+	/EwluUQbyewfFJ+7ZdKXZwmJvFC6aPqqSwyv4tAkJEWCo5dYefVrgs6BvEp8fk0E1f7LbA
+	0EU42cpkQXnJ/B2ASl5cXagskH4Gze0=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793752707;
-	b=RtNyYi87kesSEVRsdOf5l5VF0Ugi8HOu0wV3WgmxBXHcVghwQeRFSp1mjiOL/htma477sc
-	CYXtCBY8GoIylFHeNyvjaoQLZiu03qKKshev9pTYqaZz/lKYc2g566hlty338yz8FbDHWF
-	rLR6jDfLvDzRc61+SaMje4SzMBOYXQc=
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 48D231FBFA;
-	Wed,  4 Nov 2026 00:38:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1793752706; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=/JbHR9SIBAy4VraxiGZbUfiitTfcvjB9kaCB6rQcVIE=;
-	b=hMeETv5530ymyrmx6uaNyir9LG6FBv0uQEl0WwmKicpUSBvRCnBi/EFlzkwrOdHSffoszn
-	IZeJVADnNtfHp7lImgCYnmoFu3/kY74RyqE2giHL+KMLqzZp89a8feFt9brP76376iYif5
-	eEHqenwPS4xADyWP82Xcpyjnps0ZiOA=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1793752706;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=/JbHR9SIBAy4VraxiGZbUfiitTfcvjB9kaCB6rQcVIE=;
-	b=RAzpJdivgGshNrHzYe/w5E5DSJibua0ozUzsjj6q8zz3RRQDhKh2fMv5EBNSmaCY83ixH4
-	3wCgewfKfRUSHvCg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1793752706; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=/JbHR9SIBAy4VraxiGZbUfiitTfcvjB9kaCB6rQcVIE=;
-	b=hMeETv5530ymyrmx6uaNyir9LG6FBv0uQEl0WwmKicpUSBvRCnBi/EFlzkwrOdHSffoszn
-	IZeJVADnNtfHp7lImgCYnmoFu3/kY74RyqE2giHL+KMLqzZp89a8feFt9brP76376iYif5
-	eEHqenwPS4xADyWP82Xcpyjnps0ZiOA=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1793752706;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=/JbHR9SIBAy4VraxiGZbUfiitTfcvjB9kaCB6rQcVIE=;
-	b=RAzpJdivgGshNrHzYe/w5E5DSJibua0ozUzsjj6q8zz3RRQDhKh2fMv5EBNSmaCY83ixH4
-	3wCgewfKfRUSHvCg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id C07B9134A0;
-	Wed,  4 Nov 2026 00:38:25 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id 4fW7I4F+6mqncAAAD6G6ig
-	(envelope-from <clopez@suse.de>); Wed, 04 Nov 2026 00:38:25 +0000
-Message-ID: <7ba2ca65-1eab-40fd-ae4c-f7cd9e156d8c@suse.de>
-Date: Wed, 4 Nov 2026 01:38:21 +0100
+	t=1793753005;
+	b=XsPB1hZzQDVbdEVPZy8zsdTxWvrvif+zL/Zz1O1KSPSTASIQ+jPK00jQva/PcIorNQAayR
+	wiE7eSTdSe05NyJCTXlO8pXIaDKbwSZbKBFyv+Ioemw8DxKZ7NckuujfzwU0L1VW3/uKMe
+	6Z0nILWImG/+ayJmmwR7ROterpZFqVk=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lY9xLFc1;
+	spf=pass (imf16.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id D739543FB0
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 00:43:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BED3B1F000C1
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 00:43:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793753004;
+	bh=BxN183u4KZBYO0Z1LYyG6Hk9J0ZY7HIldlj4rccCYNQ=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=lY9xLFc1lh28lDdpeB2+pBZzt5R9gBoe6AkIqA1oRg4A9lL88Oa08cSUW4zXtlBt1
+	 OCI874pm8I8RSeP5+Il8gMjb5OxLLJTH1vmUeMTbl/4g8uKotJyNPcFbAlQn4lVsTt
+	 rDCJJrHQ2swSHBhqcLyG01hUqvWLjOfBXWzaeArrONHouxtJ3pKu++tjXrf7W+qnad
+	 skgk7aTbT11skVjQMGX2cV2GSf+E/4aK/LpM5yFsjKffsHwl1DC5LbtYlXyDFivGNV
+	 MQC9b92cClNfMOOC/sTZ3qmWiQzwgv2QyF+iB4d6ycQ6nwWMfXXdxKay/HMIEsKKdG
+	 UrPFQofWdduSg==
+Received: by mail-qk1-f169.google.com with SMTP id af79cd13be357-93e55db58cfso21639585a.1
+        for <linux-mm@kvack.org>; Tue, 03 Nov 2026 16:43:24 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AKwUvBwialDGjFaC/4zOLSxauu0ftFIYVnQGuVv+/1B2ZFOmXH+W90lh5mLthSDoKPvruA0MqsbOkBj1pQ==@kvack.org
+X-Gm-Message-State: APuU4Z8pw8pVxj6uFrBMRlDftXmRi+3h+57TBQkVa/oEyNUFqzxiIq2g
+	aWrVXx4fpt44Sb6/AHKts9RHTXrwF0g6aGVwhkXOsou6tyM8uqg7JawGkW30BjbNVaFwuWknBzT
+	LUlo+e+nwSae0BFv945EqqlUDKsWF2ZQ=
+X-Received: by 2002:a05:620a:6402:b0:93b:d7a2:83d1 with SMTP id
+ af79cd13be357-944217e5808mr2603278285a.64.1793753003736; Tue, 03 Nov 2026
+ 16:43:23 -0800 (PST)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 0/4] KVM: x86/mmu: don't zap secondary MMU on
- permission upgrade
-To: Sean Christopherson <seanjc@google.com>
-Cc: Claudio Imbrenda <imbrenda@linux.ibm.com>, kvm@vger.kernel.org,
- linux-mm@kvack.org, pbonzini@redhat.com, linux-s390@vger.kernel.org
-References: <20261029143336.390231-3-clopez@suse.de>
- <20261029175203.5bdd51d7@p-imbrenda>
- <df9dc526-4275-4784-8a0c-2e4fa8e96402@suse.de>
- <20261030133939.630e29af@p-imbrenda> <auis0SaMkRB6odsK@google.com>
- <b9ed9dd4-a1d0-466b-a6cd-89a4e70abed0@suse.de> <aun3w8gxwlmRy-GW@google.com>
-From: =?UTF-8?Q?Carlos_L=C3=B3pez?= <clopez@suse.de>
-Content-Language: en-US
-In-Reply-To: <aun3w8gxwlmRy-GW@google.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Score: -13.29
-X-Spam-Level: 
-X-Stat-Signature: n75yfdc38smt8tt1uyhyo5fqk5zdzyhi
-X-Rspamd-Server: rspam01
-X-Rspam-User: 
-X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
+References: <20261104002420.433876-1-bingjiao@google.com>
+In-Reply-To: <20261104002420.433876-1-bingjiao@google.com>
+From: Barry Song <baohua@kernel.org>
+Date: Wed, 4 Nov 2026 08:43:10 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4z5M1KiFJbC3ed_572Z22qadmgnJdO3jKnEJbvpPEykZA@mail.gmail.com>
+X-Gm-Features: AclHuK9QTXGS6QfVjUVofxOTNtsuXKl-ipR_9YuybED-4phC26SwGpv3dsR-WW8
+Message-ID: <CAGsJ_4z5M1KiFJbC3ed_572Z22qadmgnJdO3jKnEJbvpPEykZA@mail.gmail.com>
+Subject: Re: [PATCH] mm/vmscan: skip lazyfree folios when demoting in shrink_folio_list()
+To: Bing Jiao <bingjiao@google.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Kairui Song <kasong@tencent.com>, 
+	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+	Wei Xu <weixugc@google.com>, Baoquan He <baoquan.he@linux.dev>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Johannes Weiner <hannes@cmpxchg.org>, 
+	David Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, Oscar Salvador <osalvador@suse.de>, 
+	Ying Huang <ying.huang@linux.alibaba.com>, Yang Shi <shy828301@gmail.com>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: ADC36180005
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
 	autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: A288B140007
-X-HE-Tag: 1793752707-393643
-X-HE-Meta: U2FsdGVkX1+yDZC7XHlVg4MgT8bSUUPIGDKkmANPnyasU86LNfrgDWs4NTmT1hmIHgvpmh7YC1x9eYMXKzEqth+TeLHs1ONJ3hOuVAGr+CTx5yVSyEGf7660Ns6UgNvPIuOWVe+Ff2ZfiVCV1lr0fNXq8Wyv/1vYFVun2tOAuFeHgOg+EoN2Ws5vnBKnLkP3lZebgTHltupYwvE6do/cGcsi8MkA6Nr9Y6T3xknAj+Nrz6+CkSk9rJUa8NGs0KvYjWIFux5ZdKvVPRsuViBa3YsgG3N7mPljHyZShKHs+ML04lLVVf9uKswMSvDXvy6upVGSAAVQAgfr8oMkE1uy/Ztkr5AafaaPTDd9s+VmY2qJDtql9DhI4bNUi4sQJPZ+NvSeyoiG9gVFKYWMT1qsk6FyCcFHJhzUHAqRtKFu228Wa/+WyBKXLa4fgYpLBXoo7cUXQrf1gtFeyp2DSGbNXeUqLm1XKcsd0meeiarwLt8Yv3TT8yO1McG/ihC5TT97yLR3G6kw9CY1gfmG3I6pvSPtq6TwmeS4T3FZgfKgS3o6xb7v1WcGkQ/H9i/c8oOqBCrUJWH6Khs9gp9nMDct8r7jMbuI6BFeMgN3nID0MVxVod5sOKoyhKyvUcKJULMSWQGjr2avI4DsxuIm5XOCZLxzTt6AbzVXolmBiP/pirYmc+zAj6bzAfk/cN4TFDTVH/+Zsd+RMdtqrY7z2f88M1ogA+miSH6f1C+0eUVa9GsDrszZctcmYSauKbtTPH9pbzjAf/8Es2gQOJtzii1mSB82fbmU5AIbYX2xhyuRmJmrUKCe4L8n2d2agvjx6AZ1Cr0VX5MjJdKDC6brIOv8FB6oe64pQVwr2kgskRZnTgBqzTC5fOZYTu6qF3K9mrfIDgiC1BjdocFBFth6nSBJBE0Cub2oloquG2F4/3707HEFWWmlHZaQNkIfOh/hU+8kk4EsDBPT7uCstalBSs/
- 7qsOK0fg
- XNHMPqf+NKKUDYOKiTJgGFrGED8OcbDX9fQY3XYa6mEJ9ehe+PU0VTkGq4Wq4snn0bNXLexISreMpYoWm0jyRQwTEnaMGY6BebfHxSlDsqa5tPIS4I9qhiOnrcxeuF1bEwU5+oN+2lyLvHJA47gqXgL9JzEqaMU9y00GsvroF/cZjfpDP4BxDwYnzpuiA5lFBgjja9FqzwbznXkhpPn1ET8q4utNJyV2u2pKIzu4J6S9fPkRR/0JBak9+n/mv/3nUx1iNbk6joNnxKsh3ndZLgWu0ABMU9l2QIFspa0FwHnB3jSEItFrr6Q7aqt344BsSULA6p4U+lu5b14cnTHfikAkhY2By/lSQ0Ocy4QDpPubIqks=
+X-Stat-Signature: stu3gnwbc3y1dda8z4x45qz17hpqyawt
+X-Rspam-User: 
+X-HE-Tag: 1793753005-763032
+X-HE-Meta: U2FsdGVkX18Ywk0Q4ynB2frYoGUmynTlOqKdXq3DAgBqiyFBwL6S0WLOrXs+RASyL3fcewu1DU1OuSwT6Wk43q53MR+GdhGHmIxwh1KD1oEVdnhcftZWeV8BZ+oajgEbeAjG5avJduuEHHlNdXPTVQeABsShQAg/oTXKC3bRrZxppWr8xNWLADGFLdtOqX96P3wHQOBdW512vFeoCcAnGsibvyz2CUAhLeVvmIAZQn8JV6Kid0h5F3lUXBWKJeTJKjOlvYpcJFCh6cVcYwma36KKnd1PO+NRguSDStVZp3W9jltayzxVkww3en4T37TaVFe7ZKmd+vFqcQddCBL8PEYXXLpRsuc2A7e7tlrMxVFLRD36On3Asig3j3QBQtItpsJPttxgZp46TMt0wuPKXPCFyp53I1MU08WBfZAAHzE4ux4CIlC470EnNr4gc+hlQleD7v23cnmDNugQhLl2bWua49HlpPFg1Iv+/IU9zq0S+s2cTqNNhShreXfVfF/eNp7zfSLkZD851YPXUCFLb+1mx9kgOlbuunmzfliRoQAhsUOXAZ6e2bCHSS0rmp5WQUE4w+CANOE/ugY8VUToxfGs97eK55a1LP4XOF4UK9GkkdkbBiGuDq5CjV+RqqTw11hGjup3Dlr0E5wrWKLR9dqyetRZ1B3Sg3bQ8sBj+jG0KPhkpF4kX0oIJiucAjM2hmq6oZSu4kZEkbs6pxYB6YZ7g9BlQrCqZaY/CVSuNlbOqd5/pilRPYOm4P8/IhKhtC5RAarIEToPdvnMCTq3M/6GuAKNxH4KlQG+LrquVJoemcNugtQ3rUVE3SDGfr7plb9aVTtaBmu09+95m6Y4cbgLHn2CYHJy84kW9Be8ZFyZNi1yAuY3n7USON88mO43aLwsRXoMp1e3bNuTH15/8RlUDQq2AeNUdE6cIVjD0fOWHG6ZUNXlVulg3RRMTNu8kDPl3igaWgNNUB0Cg3Q
+ pSuUXChW
+ Eag0GWmqUU2bsN1dcYmhHiuc8712FWLadtK9GuoWsyfZam7s1Pvmp8XHqeHRPt1UB3YWNL2uRwO9fstD++1O9dwQrPiTZaIuTG1qbdqRB7aWPBkmly9OYahiSgYJKUmq7Vi11bTPrQjyw8foRYFRRAfsewzUbIBVFGRbvNm37v3QbhGEZv/o5nguyE79sMqW7dItcLzNzoDFtWzWKZh2wbY79KHV7prRzIOpO/3ffYgYT6nKBV4JN9DVPtC/mpfLIZx9YQYz6+jTCphnI5PtXz5LkJsxmbqOuYEySzejOiRfQgpO6zxwuLK/iJzPuEo8qkt7P/y/nQXz+5EA9W1Ct5QcHW3l7ob0A16hKIKeeSnjKc22gmoKfVVLHelEqRIaXOzz+8n+z0d7DE9yxDRrR1nC3aQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -149,126 +112,39 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/3/26 4:03 PM, Sean Christopherson wrote:
-> On Tue, Nov 03, 2026, Carlos López wrote:
->> On 11/2/26 4:31 PM, Sean Christopherson wrote:
->>> On Fri, Oct 30, 2026, Claudio Imbrenda wrote:
->>>> On Fri, 30 Oct 2026 12:11:07 +0100
->>>> Carlos López <clopez@suse.de> wrote:
->>>>
->>>> [...]
->>>>
->>>>>> regarding this series:
->>>>>>
->>>>>> on x86 you don't care what the new permissions are, because you're
->>>>>> updating when re-faulting (if I understood correctly).  
->>>>>
->>>>> Correct.
->>>>>
->>>>>> for s390 it might be beneficial to know what the new permissions are;
->>>>>> of course we could look up the vma and find out, but since you are
->>>>>> already checking the permissions, maybe you can find a way to also
->>>>>> convey the new permission bits?
->>>>>>
->>>>>> that would make our life on s390 easier :)  
->>>>>
->>>>> Right, getting the new bits from vma->flags should be trivially done
->>>>> from the MMU_NOTIFY_PROTECTION_VMA callsites. There'd be no users in
->>>>> this series though.  The rest of architectures still need the notifier to
->>>>> tell them if the change is an upgrade, since they don't have an easy way
->>>>> to grab the old RWX bits. Passing the old RWX bits from the MMU notifier
->>>>> does not seem trivial to me either.
->>>
->>> But why is core MM even doing mmu_notifier_invalidate_range_{start,end}() in the
->>> first place?  I.e. why add MMU_NOTIFIER_RANGE_PERM_UPGRADE?  Just skip the
->>> "invalidation".
->>
->> I briefly mention this in the cover letter, but in short, denying other
->> users the notification seems like an overly intrusive change for KVM's
->> benefit. 
-> 
-> There are all of two other users:
-> 
->   $ git grep -w "\.invalidate_range_start"
->   drivers/gpu/drm/nouveau/nouveau_svm.c:  .invalidate_range_start = nouveau_svmm_invalidate_range_start,
->   drivers/infiniband/hw/hfi1/mmu_rb.c:    .invalidate_range_start = mmu_notifier_range_start,
->   virt/kvm/kvm_main.c:    .invalidate_range_start = kvm_mmu_notifier_invalidate_range_start,
-> 
-> and AFAICT neither of them wants an invalidation even for protection upgrades
-> either.
+On Wed, Nov 4, 2026 at 8:24=E2=80=AFAM Bing Jiao <bingjiao@google.com> wrot=
+e:
+>
+> shrink_folio_list() currently demotes lazyfree (MADV_FREE) folios to
+> lower-tier memory instead of discarding them. In the earlier patch
+> series [1] that commit 26aa2d199d6f ("mm/migrate: demote pages during
+> reclaim") was based on, demotion was inside the PageAnon(page) &&
+> PageSwapBacked(page) block with a comment to skip MADV_FREE pages. When
+> that commit moved do_demote_pass above the block to also demote file
+> pages, the PageSwapBacked check excluding lazyfree pages was dropped.
+>
+> Demoting lazyfree folios during reclaim does not make sense. Userspace
+> already marked the contents as discardable under memory pressure. Even
+> if MADV_FREE is treated as a cache to avoid page allocation and zeroing,
+> folios in shrink_folio_list() have already aged to the tail of the
+> inactive LRU, and demoting them still allocates a new page on the lower
+> tier, copies stale data, and unmaps the PTE.
+>
+> Skip folio_test_lazyfree(folio) in the do_demote_pass check so lazyfree
+> folios proceed to the normal reclaim path in shrink_folio_list().
+>
+> Link: https://lore.kernel.org/r/1560468577-101178-6-git-send-email-yang.s=
+hi@linux.alibaba.com [1]
+> Signed-off-by: Bing Jiao <bingjiao@google.com>
+> ---
 
-There are more users that register for notifications via
-mmu_interval_notifier_insert():
+This makes sense to me. Lazyfree folios can be freed
+directly, and we're already in the reclaim path. Allocating
+and copying them seems wasteful.
 
-  $ git grep -l -e "mmu_interval_notifier_insert(" \
-          -e "mmu_interval_notifier_insert_locked(" -- drivers/ | wc -l
-  12
+It would be even better to have some real-world workload data
+to back this up?
 
-I haven't audited all of them, but I'd say that at least amdkfd relies
-on the invalidation for upgrades. Without XNACK, GPU page faults are not
-retried, so the driver maps ranges up front with the VMA permissions
-(svm_range_validate_and_map()) and relies on an invalidation to remap
-them when those change. So mprotect(PROT_READ) followed by
-mprotect(PROT_READ|PROT_WRITE) would cause the GPU mapping to stay
-read-only and the next GPU write to fault. Unlike the APIC access page,
-this is the application's own memory, mprotect() should be perfectly valid.
-
-This is the kind of subtle reliance that I mentioned before, and why I'd
-rather not open that can of worms.
-
->> A flag allows users to opt in instead.
->>
->> It is also not clear to me that secondary MMUs are not relying on the
->> notification in some subtle way. In fact, Sashiko points out in reply to
->> patch 4 that the notification lets KVM retry the APIC access page reload
->> in case userspace shoots itself in the foot by calling
->> mprotect(PROT_READ) on it. This would require a really weird VMM,
-> 
-> s/weird/misbehaving
-> 
->> as it would need to go looking for the page's address, but breaking this
->> would be a "regression" nonetheless. I will address this in v2.
-> 
-> Nah, there's zero chance any real VMM is doing mprotect() on the APIC access page.
-> 
-> More importantly, doing nothing if updating the mapping fails and APICv is enabled
-> is wrong.  KVM needs to ensure vmcs.APIC_ACCESS_ADDR is fresh when running a vCPU
-> with APICv enabled, even if that means putting the vCPU into an infinite loop.
-> VMX doesn't support "inhibiting" the APIC access page, i.e. the memslot can't
-> disappear while the VM is alive, and if userspace mucks with the VMA, then KVM
-> needs to prevent running the vCPU until the mapping is restored, irrespective of
-> mmu_notifiers.
-
-Fair point. Should I just carry the diff below in v2 with your
-Signed-off-by?
-
-> diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
-> index 464d6ed862d5..11b24a42e482 100644
-> --- a/arch/x86/kvm/vmx/vmx.c
-> +++ b/arch/x86/kvm/vmx/vmx.c
-> @@ -6928,8 +6928,10 @@ void vmx_set_apic_access_page_addr(struct kvm_vcpu *vcpu)
->  	 * APICv is enabled, but paranoia won't hurt in this case.
->  	 */
->  	slot = id_to_memslot(slots, APIC_ACCESS_PAGE_PRIVATE_MEMSLOT);
-> -	if (!slot || slot->flags & KVM_MEMSLOT_INVALID)
-> +	if (WARN_ON_ONCE(!slot || slot->flags & KVM_MEMSLOT_INVALID)) {
-> +		kvm_make_request(KVM_REQ_APIC_PAGE_RELOAD, vcpu);
->  		return;
-> +	}
->  
->  	/*
->  	 * Ensure that the mmu_notifier sequence count is read before KVM
-> @@ -6946,8 +6948,10 @@ void vmx_set_apic_access_page_addr(struct kvm_vcpu *vcpu)
->  	 * if APICv is permanently inhibited, i.e. the memslot won't reappear.
->  	 */
->  	pfn = __kvm_faultin_pfn(slot, gfn, FOLL_WRITE, &writable, &refcounted_page);
-> -	if (is_error_noslot_pfn(pfn))
-> +	if (is_error_noslot_pfn(pfn)) {
-> +		kvm_make_request(KVM_REQ_APIC_PAGE_RELOAD, vcpu);
->  		return;
-> +	}
->  
->  	read_lock(&vcpu->kvm->mmu_lock);
->  	if (mmu_invalidate_retry_gfn(kvm, mmu_seq, gfn))
-
+Best,
+Barry
 
