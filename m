@@ -1,109 +1,143 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13E2D60A2605
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 21:53:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 685C160A261E
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 21:53:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=CNrR6Ix7
+	dkim=pass (2048-bit key, unprotected) header.d=soleen.com header.i=@soleen.com header.a=rsa-sha256 header.s=google header.b=YlAYStas
 Received: by kanga.kvack.org (Postfix)
-	id 168A76B05B0; Wed,  4 Nov 2026 16:53:18 -0500 (EST)
+	id 2A18D6B05B2; Wed,  4 Nov 2026 16:53:26 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 13FED6B05B1; Wed,  4 Nov 2026 16:53:18 -0500 (EST)
+	id 252806B05B3; Wed,  4 Nov 2026 16:53:26 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 008936B05B2; Wed,  4 Nov 2026 16:53:17 -0500 (EST)
+	id 168376B05B4; Wed,  4 Nov 2026 16:53:26 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id C04C66B05B0
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 16:53:17 -0500 (EST)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 51017A0897
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 21:53:17 +0000 (UTC)
-X-FDA: 85398788034.08.A81E462
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 5B17740003
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 21:53:15 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CNrR6Ix7;
-	spf=pass (imf17.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793829195;
-	b=Hd+y8dj13T0oo7bciMPek/dK1ZnJxMbmsqgqS7Y34iBgzKqiRYVImG3IiNSCU5Sbi1tH3+
-	IuTf/xwgWLkfEe1FMDP/B2J82b8kGrsOkDG2FOj8ZFDXTys1vjyodbmlCp4mjM/a4Dv5YJ
-	Iw5cX/86v6DbZpeJMHt4nMoAZxg+uEs=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CNrR6Ix7;
-	spf=pass (imf17.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793829195;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id DA4FD6B05B2
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 16:53:25 -0500 (EST)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 6A143A84DB
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 21:53:25 +0000 (UTC)
+X-FDA: 85398788370.03.D25B801
+Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com [209.85.208.46])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 66B90A0002
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 21:53:23 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=YlAYStas;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	dmarc=pass (policy=reject) header.from=soleen.com;
+	spf=pass (imf15.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.46 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1793829203;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dXhZP77Jedhgmh+dWAEC7Sdp0jRlMNTtA9C+vIq2qKk=;
-	b=5cB4rQ+mpjQh9uA5dg7mkyJ3BWpqsGt0I4tPUlAVNlhN6XJCP3p6LX903VixuIo8avQNrC
-	cEAE7ej92lnaulO4lu4oUDATwYMBifYE8G7YxtdS0NpGzMQ+VmJTDRI9lvbHqKfIYBceue
-	cCnfSIavVw+8aUHq30QWeUxAumDAHzE=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 8634643D6B
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 21:53:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65A341F00A22
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 21:53:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793829194;
-	bh=dXhZP77Jedhgmh+dWAEC7Sdp0jRlMNTtA9C+vIq2qKk=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=CNrR6Ix7wlD5iLKxN3Z8zTQhCt9Zp8e6xd6x6nEqnwCKBg4eSnPPpx/JWe0rYD0Qw
-	 BzsY2eEaIin/b+CbeGCK9lf6QcrAn0ofCPaRHBrxkpfbvNR5kFC9JyaZr1ac2gIeoN
-	 HmpnXlTWeppbhZBIGFtntBO8as/fPBw9fQbb8MnsEaZ+H9CEoB4/mQKzvZErE8iIOV
-	 r9+jc1gNeR+TBJc79Qq0jEEuYbokzeybjh247r++eEJJvTvkkXdBaF0PVnRuvZmcVp
-	 pwqmiHyBguLONcX14bwkPGhid1pggD5il6BUQUfFwmeBOFigY65+4Mtx/U8JIvRybz
-	 4ZA97ByiiGsVw==
-Received: by mail-qk1-f173.google.com with SMTP id af79cd13be357-93efc0452b5so89485285a.0
-        for <linux-mm@kvack.org>; Wed, 04 Nov 2026 13:53:14 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AKwUvBxeMnsM57HTHDk/FrGsZZUAPLSJbjA5XJwRTTAdwdIBXnsewhXf6nXEe3tMNQ0FOiVIC4pmA5Hugw==@kvack.org
-X-Gm-Message-State: APuU4Z/7oe5+0iJxUj6XZQlznFZABhRtnHOP9HAkFIdrLTvJpdtUnGIn
-	ZFVJPhb0LScyqYqCUjYfz75Sy7o3tWvo+Hh+smjOd5W7V5dndYid03H6VHMfm/EH2RtUTCq2tjv
-	fBaKI+eygGRkcZ2oFqvI780m0lHGFssM=
-X-Received: by 2002:a05:620a:4555:b0:943:f301:49b9 with SMTP id
- af79cd13be357-94421738a60mr2860432285a.53.1793829193621; Wed, 04 Nov 2026
- 13:53:13 -0800 (PST)
+	bh=AOYXXvAeGQUSKg94QWzYjLTLmtv76jOGX9YU9MzItx4=;
+	b=bFWHTVaIU/51aYGM/ocFYYNZiMQABZg8m05AAfQghzwWWIx+EE6+gV6llsxXhkK3D03lfT
+	x74e+qwfclsxH4bFgVD/x7OGqhoaDK3TasFMzGfK3+QqNjVG5lqIh6J+pLqwUPmhDm7wp4
+	ZVqKk+b0o7rSUdk2QrReMKnLtfdwH74=
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1793829203;
+	b=VJyLEeTCiWFdzrZhMu/TgmwjqvRVU2h43DQ5uhaKhYnkxbwleDDnobp3y4oU7q0nb4bMIm
+	MserrkHWk3atUsK3NqIrEjny7fNuINuji3WGN92T603wbHGv57JxkgzJZ3L5AtlX5f+vjI
+	HnIIOJXYmrTKKgEC4SroFGm9+B32gX4=
+ARC-Authentication-Results: i=2;
+	imf15.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=YlAYStas;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	dmarc=pass (policy=reject) header.from=soleen.com;
+	spf=pass (imf15.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.46 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
+Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-6afbc363efeso1763490a12.3
+        for <linux-mm@kvack.org>; Wed, 04 Nov 2026 13:53:23 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1793829202; cv=none;
+        d=google.com; s=arc-20260327;
+        b=ORsl/ejaGRxfeoZqvQdeG6LzC9BqqSUj9xql0TJkUIzEtR6EV5PF+Sw3Y+ubiQlwE+
+         wGj2kvn7O/edBlFKev3iETeVEImUP8DRQFw2z+UzJXKxMFxX/W7IgIwMO5nPomIcAGDF
+         9bZgLC7jHmdFu8h8TfZvH3s/YMJw5v9+vWDY6Lj59Zej+Bgt7nQ+tfyS7W0z7b6Qghfj
+         volFlQBVESYQTOqiYFjMvtSvafMiIcVs/l4WP2gVB/NlRkFlbY37keEC8pDm6xzgx4gp
+         MiKz9Y7TwCz1MjomUVSJiedcuJIFR4z6Uw6mhcVJWCc94P4YbDlPWDh2x1lnYXSasqxJ
+         zcqA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=AOYXXvAeGQUSKg94QWzYjLTLmtv76jOGX9YU9MzItx4=;
+        fh=wr+K3HRLFL4URVQkqhx169+QveVqH/7QPeDUBAqWQf8=;
+        b=i+gbvIROulkFg1K1CQDlz6ouCHS6B/lu4eZ0GmQr5TBgFPobp3RVk/W4Gt/WuPvh/6
+         iGbGh109EBL5DfJen/o3tnjMXAtIi62vcB7C3GnzB8ASA/LyJIax4+wM8BQsyZCDg4j8
+         cGwejaw8SQa6G7NuZQainbD3to5Y0EoYuMPhJngZsmyGhNZ+noMbHjfP+ys5+B4fx4WA
+         L2/3eeRhsofT52qpuilmI2xL/DL6TXaluRc+3CwlPYeLGNBHguJJNMh59MbGz27DcciH
+         BeRp4lNXigU2hYeWtaWlv3OJs2n4KSjNQBF3lHjfwuWeCtC2NzFxlDYgQphqp1ft4X1X
+         UNSA==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=soleen.com; s=google; t=1793829202; x=1794434002; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=AOYXXvAeGQUSKg94QWzYjLTLmtv76jOGX9YU9MzItx4=;
+        b=YlAYStasygWNvfEiGohDbdwofuUd5yNSGu/9ZD/fG5v1waBoEPR+lQJ+T6nReU1c8z
+         YXRjHryTwyJhZishL1PxSVKR/M99bL5nHSeO8ybccsPMM61GAlVsg26DExC2ie8mYN53
+         mZvvKV5Jy2YiZm+B+VNfDBkz394urvNUadMhZcs8GR3upBYn/5PKfk3v8bEx3PQNjsVd
+         vImkbRGqTpv5gVsveaZjmqwFRdp42GktZ/sSKqv9m3bcfoSriPiFwdadOi6bODECOPmn
+         wrwBYBTeodeu62rt7JSQqO+PhfNVyccWSBtQkKdRpykKva66b/cdFnXypfrR5JHdJZzX
+         bXZA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793829202; x=1794434002;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=AOYXXvAeGQUSKg94QWzYjLTLmtv76jOGX9YU9MzItx4=;
+        b=hbRFETjKWs0K2O34mnIltEvWLvyzml8h+spfiXjWJuJ1aqNsayIDhi/ryAfMcdtVM4
+         GlbSpEjKjC3WvX6/e8cCNgBsoWgNV5MWCbPa412OfQLNwfm6m52jyysSIKJ8emLWbWYv
+         gLa451j+9qybXY7LfnIr6Py6XmsZAaZqensWKau01xkb2OlsiZBYKTwzTQQv2SG3c0u5
+         UXOZg1Xml2r6/9jBvldCuhXaJKBfHisw5RdKu8ZeRzEu6NIGJhTP5t0ncqf9waid+dDh
+         DuzDknhJN/otytFw2+oC5oEyoboFmMMCaz3sLMZ12svXUtKjv0TqyvP5a9Zcec0ShcEu
+         Pcsg==
+X-Forwarded-Encrypted: i=1; AKwUvBxpp65zRWjCcvQtXPvzNpSAQcrq17Tr6/+8HR9QNqnuOnsknWwx1KPKbgMMjkIbXNYl+rChEYxy6g==@kvack.org
+X-Gm-Message-State: APuU4Z/cRsJTpwMif+ygrlRvN2qZoW5Zhelm+XM8cmIgxPr8JVup8EBg
+	jurn8qkLFNQ60SuDw+UHHM3uk2jSfpy/4khRBY8ikXkYvQ8HJviEYAL9GakwbCvPFo7G+MXvndI
+	fMbkGcLfBkasdPRaeL2JGuG+095PwdaUTaNbPM7aSCw==
+X-Gm-Gg: AYBFou0YJ1BQxvkKWWXVSCem60w50dnEmndksTtpjPFC5S/78CRJvJhVguOkl/6oQSR
+	0unF8ljIEYF9gbRRxEqgmRj1KK/G+6FA7M7LMvhYwFbXkYjEyMJK3izAuXtjge/pIgPED+vq46s
+	yL57x52hCojHV5nI7PBmsFE9mWktYN0aFMsYoDclDBTXI5RUL5IjwCv8Dqif/TbhDDe7tuny5O1
+	E95WbRkvVNZx0mfjX02a3QI1VFY1vpkmCKfsoP/nxtGzB615U5WJT1cwMV0vuqIJ3Flp+4q1TXz
+	g2tqQhhbJO0W2PKyGAOVChig7Q0/sO34UV/X81QYaammrpQz8YT4r3slpANdgjFzMIiOYh6qt1L
+	Pdhx9b9u5LFDglZylLAWxs57Ce1fgz91dvJy9UAoaMEZk32xlvtfVjIr9hxAmAdsvuyvs
+X-Received: by 2002:a05:6402:324c:b0:6b1:c7d9:b631 with SMTP id
+ 4fb4d7f45d1cf-6b4d4877be2mr10211433a12.23.1793829201753; Wed, 04 Nov 2026
+ 13:53:21 -0800 (PST)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-References: <20261022220203.91911-1-baohua@kernel.org> <CAMgjq7C6htO2bp21Bq-dU2feN2tXuxHaqgNcG5sD=u1bwbEuYQ@mail.gmail.com>
-In-Reply-To: <CAMgjq7C6htO2bp21Bq-dU2feN2tXuxHaqgNcG5sD=u1bwbEuYQ@mail.gmail.com>
-From: Barry Song <baohua@kernel.org>
-Date: Thu, 5 Nov 2026 05:53:00 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4xp=B+oJCZCP0V=OCKhcWzru+VuL4G=rA2VnA7Ah++aVg@mail.gmail.com>
-X-Gm-Features: AclHuK_6pK_SD1WSi63iVUPMSwF_6r0P_xsPznQpqb35-KPgBQKMXG_bepb5-Dk
-Message-ID: <CAGsJ_4xp=B+oJCZCP0V=OCKhcWzru+VuL4G=rA2VnA7Ah++aVg@mail.gmail.com>
-Subject: Re: [RFC PATCH v5 00/14] mm: mglru: fix swappiness behavior
-To: Kairui Song <ryncsn@gmail.com>
-Cc: akpm@linux-foundation.org, linux-mm@kvack.org, hui.zhu@linux.dev, 
-	axelrasmussen@google.com, baolin.wang@linux.alibaba.com, david@kernel.org, 
-	hannes@cmpxchg.org, linux-kernel@vger.kernel.org, ljs@kernel.org, 
-	mhocko@kernel.org, qi.zheng@linux.dev, shakeel.butt@linux.dev, 
-	weixugc@google.com, yuanchu@google.com, zhuhui@kylinos.cn, 
-	baoquan.he@linux.dev, liuxiang.277@bytedance.com, wangzicheng@honor.com, 
-	lianux.mm@gmail.com, liam@infradead.org, surenb@google.com, mhocko@suse.com, 
-	rppt@kernel.org, zhangbo56@xiaomi.com, lyugaofei@xiaomi.com, 
-	ridong.chen@linux.dev, kunwu.chan@gmail.com
+References: <20261104162352.140836-3-blum@kernel.org> <179382570401.2089669.6201187990672133004.b4-review@b4>
+ <34a03ed8-5b75-49b5-bfd5-e5cdf48dbfd4@app.fastmail.com>
+In-Reply-To: <34a03ed8-5b75-49b5-bfd5-e5cdf48dbfd4@app.fastmail.com>
+From: Pasha Tatashin <pasha.tatashin@soleen.com>
+Date: Wed, 4 Nov 2026 16:52:44 -0500
+X-Gm-Features: AclHuK-s-sl_kRxXOrDtbT9-CufQHmeS1snyHVWmWxn4YyNWTQWbPewzEi16i1s
+Message-ID: <CA+CK2bD4s_qn7Scat_B9vya+BoqkJdNTy=iYY4JoHNAzY9YaoA@mail.gmail.com>
+Subject: Re: [PATCH v2] kho: Remove redundant 0x prefixes
+To: Arnd Bergmann <arnd@arndb.de>
+Cc: Thorsten Blum <blum@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Pratyush Yadav <pratyush@kernel.org>, Alexander Graf <graf@amazon.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Changyuan Lyu <changyuanl@google.com>, 
+	kexec@lists.infradead.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: t5hfiqoyt6r9tw69anwsa9xmw1jr5ifn
+X-Stat-Signature: ftkshg8ngg1bpgxiwt81mpbteipbyjwo
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 5B17740003
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
-	autolearn_force=no version=4.0.1
-X-HE-Tag: 1793829195-871845
-X-HE-Meta: U2FsdGVkX19nIWwm3sDLX2fsW0SHE2soB51/m92n2uKo6WE4GD304PZYNbwbg3S4/nBqc2ubE+upz4pwS9AaViqaZEsYUYEliUhjgC1S5tymR4D5IdCo7guOqnk6OOB7ccGSrMLx21yxFJwhkwzgOH9f3/gBMXDBrq4C9ynG8GyikoSYr48bgA7/4OcBEajLMu8dRVsmOUAAugwhdcSisbm4BNrhXBH3Gj/I5OLjtvp4tj4ob4hsPlNfn8ZEHPHE7oJ3Bsw6P1sa6n3HilqcUcM5nGkD/IUw0lNFFgC8MOIv7xHFX8yCkVd5vSY8D2fB8/ps/MU8iY5NBh7u914TgoLwlVVkirmdqPShETtItEl0Th2Pu8BjHLN6DDDq+50gpA5zGtY+4JghLCBZypk8UcZbN4yDb21ap3K4CjFY9mwt23aGufOABUDAUTxi22UVcWCWTHhMsQ13ykBIsyeSDp5csxaQpgc62U6tHRnWHgDzOX6USBHSDVTkYphC644joHMsH9wjmDuknNs64/0+op8KFS0k/bRmDXuGviz5zcWUfpDcvgT84KZNlU9UE+yNpDtLiqIet6xDaLWf/xOd58UblVgLp+Dm51T4Iv1qdWn4scK9+VBbz2gfN+7SNRVIXPpW9w9nGqJqoDGD2fvah5S8hBtN8NFBRb9ubg2vrcfQ1ukeha2Q4qqF244hinBT2KGvJBFGstlEq2cW94hah7Ws4rm17D1ZMXTcTvg+Bg3phiPQdbAqrzxESjlbJOSAqmYwq7Lc9GMSmoZo41BXUQ9LFfwRlQgfD/grmb2if1pGDkNzthcQ5/ri0h80TnU74b+aqWx7CeBafhCYxQWRsQVIiC5IkjedZv4lkRm5xrYVNEvY/pvQfPSQkAUVYmkfwEHlO6Gm7TAd0ORH5mEaznhAPfkV1Sn6OGoXcBNJedEMuGZ3m+ZJ0REARRj0oP34MuxikGkZml9Gx4hB0Bx
- JLaGuo4y
- 01lZ22aaz+NpX7mgTY/G56JAWJD1NV92xyfGfwrP8DGxabSNoHnjmO07H/1NnPq39sEGKa/ee0iLt38Go0kBIztZs7DT/vHIlLWuOyKPfzmEUo+qcn4tcXO6ciRbbzrI11M4Rovw53PC9LXsvijXMCRjjLAWC1Bq7XtsVXdFVfc9iCVLzrBoDepf6HxncqFkl9XHLxCpvw7fEOr+mummMVcqVOmHQmMaSpruWppqapcB0IA91gwbYdPceb2jMTTZHn3XNzCwORGm5ahzaCOI2ELVAYPIBU8cl0rszjWL824XSipt+zrowmm+cuq+S0s/c/oMq/uocNwpqs8hlJwxsvi7MZAv8KnGRkKF5Ry/ma19XktYUTNeRuHGy9mLZj/b6j9V8w5KiLiNmwOyXkyrd4l3sOLLsBzsplDazdK8/mKQNaitepY5u6oZNvQ==
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 66B90A0002
+X-HE-Tag: 1793829203-23453
+X-HE-Meta: U2FsdGVkX1/9oZf4VsPNicxWTbL9+qSvEYPOoNjl9FEk1xokox/GkHOiRkxYjgf12rXUSMKvzKCgKfVTd4pqNR/K9YhKZ5ryCSNHFHlJtyLwTW5WhSdgu7x5wUTRbJ8jKzCV9/CU0rWh96pOdggd8WyzOomFFtvJ4ZF6xCLADMfAeHED+by0evOKyRyB5VYldtt6ReqyR2WkEi/4iI7OxbMXI4qAMOHfRWGuZCtCIB5FGW7pGFhGwsTzTr2wbFequci6/9I7kO+bfwkXZvBeilmtQGVlRQB0bh5oCOaL2NFJDs/h/NO+Vw7wJk+TCOHKnWoSOh3gvqH+FkR0WZKzRhsEdeJReXIOfgDDzEACOJeBCuUDdm287ibiq39la+PFC+sdCgkl7LQJfDd+w+BiEUQ0F8W208oD6siYnvJFULgB62zHMZEvlhYy7OBeJeXGrEKRfUhXs29tvlyQPeYUEyhMWJkcIWkf8C8/hME41jb+uWEX8Sigf4/63Gtp2oozVqT2sZ7sFHHjB8qmxeQyAl+G4Dovs03aKqy89HsSfzoUaA6yBRlZGD+H5cEr+nBQZZ931pKGCOBsaySzwwgzQQ/+jZp5lmJEAQ45LlzUZ/JH61J/ls7CZbidimUytdYWB8iOUzbygTQ2UBWKF5nRRXSuRcMVI8EdxIHIyWWSLZN0t821Nt7rd+GtNXaRd6EzlX5CprmKYeE6kmb+8UkTUvnwlkavqXYkFH6//s2cp80AkzfHpvq8SF4kGdGZL+HR/3qF9smpDLllFYf9ucmaEhguUdMa6upkbL/X/R2by0KoceCaWmiT/WD8DB3AhNq8MlIMe5V0LAtTqH/887yM28fr/9LBBLMcxftgNyiQ2k0KVt4VgObShwtDdns02ad+CaR7nqZgESPM3z1l5OAFaR36l+Z+4aQMvtHjE8jT8Cmo1yOOTNpy/wVFAo51AeJ58XTSpLfULOg7sDPWoE7
+ LFQS8uZ0
+ 3rOp0YM6YD6z1nFO85sgzHlsME0z0y+eQRH2do1FAryQjZm7wBojp3i+xHQtf0vsvvYZdlN9WrqhlSyfa5jQs6TT678issi/bN6MvtT59pJtG+86IOD6kuK/9UqzKx4NsXzz72m9Qba43FWLmIUOaDauBzlyvCucrk19eUm5F+lnBAYNAMVfPwL0yQN8h6GBPRE2wfdlEbbE/f6oAJ9UvNk8rhueYpq16hHiP5UnNTvCkysTEp7GTon4KSb9zNacv7mFU
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -112,266 +146,47 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Sun, Oct 25, 2026 at 12:10=E2=80=AFAM Kairui Song <ryncsn@gmail.com> wro=
-te:
+On Wed, Nov 4, 2026 at 4:00=E2=80=AFPM Arnd Bergmann <arnd@arndb.de> wrote:
 >
-> On Fri, Oct 23, 2026 at 6:02=E2=80=AFAM Barry Song (Xiaomi) <baohua@kerne=
-l.org> wrote:
+> On Wed, Nov 4, 2026, at 21:55, Pasha Tatashin wrote:
+> >> The %pa format specifier already includes the 0x prefix. Remove the
+> >> redundant prefixes to avoid printing 0x0x.
+> >>
+> >> Use phys_addr_t for size to match the expected type.
+> >>
+> >> Fixes: c609c144b0e8 ("kexec: add KHO parsing support")
+> >> Signed-off-by: Thorsten Blum <blum@kernel.org>
+> >>
+> >> diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/ke=
+xec_handover.c
+> >> index 6f1f55fe3181..6a7600a0a7d5 100644
+> >> --- a/kernel/liveupdate/kexec_handover.c
+> >> +++ b/kernel/liveupdate/kexec_handover.c
+> >> @@ -2010,16 +2010,16 @@ void __init kho_populate(phys_addr_t fdt_phys,=
+ u64 fdt_len,
+> >>       */
+> >>      for (int i =3D 0; i < bootmem_cnt; i++) {
+> >>              struct kho_bootmem *area =3D &bootmem[i];
+> >> -            u64 size =3D area->size;
+> >> +            phys_addr_t size =3D area->size;
 > >
-> > Classic LRU respects swappiness, while MGLRU only partially honors it
-> > when selecting the scan type, resulting in a much smaller overall
-> > impact.
+> > I am not sure; having a variable size of type phys_addr_t looks strange
+> > to me. Furthermore, KHO only works on 64-bit platforms because of how
+> > our radix tree is designed, and we do not plan to add support for 32-bi=
+t
+> > systems.
 > >
-> > For example, when building the kernel in a memcg limited to 1024 MB
-> > of memory, with swappiness=3D200, CLRU barely scans or reclaims file
-> > pages, while MGLRU still reclaims a significant number of them.
-> > Similarly, with swappiness=3D1, MGLRU does not reclaim as many file
-> > pages as expected for such an extreme swappiness value:
-> >
-> > pgsteal_file
-> > swappiness   CLRU          MGLRU(no patches)
-> > 1            5,894,538     756,589
-> > 36           799,998       497,282
-> > 71           548,331       415,612
-> > 106          407,012       383,814
-> > 141          253,737       354,249
-> > 176          189,003       347,805
-> > 200          0             346,078
-> >
-> > pgsteal_anon
-> > swappiness   CLRU          MGLRU(no patches)
-> > 1            3,962,404     2,768,654
-> > 36           2,830,250     2,976,260
-> > 71           3,121,386     3,142,954
-> > 106          3,521,720     3,382,383
-> > 141          3,504,471     2,970,859
-> > 176          3,592,335     3,163,130
-> > 200          14,095,617    3,209,132
-> >
-> > pgscan_file
-> > swappiness   CLRU          MGLRU(no patches)
-> > 1            10,270,808    886,997
-> > 36           1,010,341     569,036
-> > 71           656,136       490,972
-> > 106          460,326       436,042
-> > 141          295,184       403,132
-> > 176          235,147       390,358
-> > 200          0             398,363
-> >
-> > pgscan_anon
-> > swappiness   CLRU          MGLRU(no patches)
-> > 1            19,341,957    5,960,884
-> > 36           17,530,774    6,394,951
-> > 71           18,624,264    6,673,569
-> > 106          20,088,558    6,976,364
-> > 141          19,686,813    6,206,580
-> > 176          20,936,177    6,344,854
-> > 200          45,313,873    6,295,581
-> >
-> > refault_file
-> > swappiness   CLRU          MGLRU(no patches)
-> > 1            5,795,115     678,254
-> > 36           720,877       419,659
-> > 71           469,270       338,518
-> > 106          331,584       308,983
-> > 141          174,509       277,375
-> > 176          113,352       272,390
-> > 200          0             269,349
-> >
-> > refault_anon
-> > swappiness   CLRU          MGLRU(no patches)
-> > 1            738,618       578,308
-> > 36           451,410       665,723
-> > 71           514,961       657,870
-> > 106          633,161       786,893
-> > 141          648,640       662,673
-> > 176          668,779       708,969
-> > 200          4,816,312     672,514
+> > I would keep u64, or if using %pa for u64 is still an eyesore, use
+> > 0x%llx for the size field.
 >
-> Hi Barry,
->
-> Thanks for pushing this series forward!
->
-> One nit pick so far is the test data seems redundant with the one
-> below, maybe we can just keep one of them.
+> area->size is also a phys_addr_t, so using a local variable of the
+> same type makes sense for consistency.
 
-make sense to me.
+True, that makes sense.
+
+Thanks,
+Pasha
 
 >
-> > This model also allows scanning and reclaiming from the two youngest
-> > generations, including the youngest generation itself. This can help
-> > resolve OOM situations[1] and reduce the need for aging.
->
-> Right, the OOM reproducer is demostrated here previously:
-> https://lore.kernel.org/all/20260318-mglru-reclaim-v1-0-2c46f9eb0508@tenc=
-ent.com/
->
-> That series is merged at V7:
-> https://lore.kernel.org/linux-mm/20260428-mglru-reclaim-v7-0-02fabb92dc43=
-@tencent.com/
->
-> The problem is largely eased as described, but it isn't 100% fixed at
-> that time. It will still go OOM with higher pressure. So before this
-> series, I could still see OOM after hundreds of loops. And problem is
-> gone after the fixing patch in this series. Unfortunately it's very
-> hard to reproduce and that reproducer is the best I have so far.
->
-
-thanks! I will put this into cover-letter in the new version.
-
-> >
-> > Patch 9 from Barry fixes a cold/hot inversion exacerbated by patches
-> > 1=E2=80=938 (which also exists in mainline) and improves reclaim effici=
-ency.
-> >
-> > Patches 10-13 from Gaofei and Barry optimize aging based on folio
-> > distribution imbalance and improve reclaim behavior at extreme
-> > swappiness values such as 1 and 200.
-> >
-> > Patch 14 from Bo Zhang addresses the GFP_NOIO issue in MGLRU.
-> >
-> > After the patchset, the results track CLRU across the full swappiness
-> > range (see table below), with more file scanning at low swappiness
-> > and more anon scanning at high swappiness.
-> >
-> > pgsteal_file
-> > swappiness   CLRU          MGLRU         MGLRU+patches
-> > 1            5,894,538     756,589       7,394,183
-> > 36           799,998       497,282       526,176
-> > 71           548,331       415,612       433,353
-> > 106          407,012       383,814       347,647
-> > 141          253,737       354,249       314,437
-> > 176          189,003       347,805       261,677
-> > 200          0             346,078       188
-> >
-> > pgsteal_anon
-> > swappiness   CLRU          MGLRU         MGLRU+patches
-> > 1            3,962,404     2,768,654     5,362,153
-> > 36           2,830,250     2,976,260     2,736,749
-> > 71           3,121,386     3,142,954     3,246,589
-> > 106          3,521,720     3,382,383     3,074,851
-> > 141          3,504,471     2,970,859     3,178,409
-> > 176          3,592,335     3,163,130     3,650,544
-> > 200          14,095,617    3,209,132     14,538,399
-> >
-> > pgscan_file
-> > swappiness   CLRU          MGLRU         MGLRU+patches
-> > 1            10,270,808    886,997       16,246,260
-> > 36           1,010,341     569,036       614,389
-> > 71           656,136       490,972       484,769
-> > 106          460,326       436,042       367,969
-> > 141          295,184       403,132       328,943
-> > 176          235,147       390,358       268,142
-> > 200          0             398,363       188
-> >
-> > pgscan_anon
-> > swappiness   CLRU          MGLRU         MGLRU+patches
-> > 1            19,341,957    5,960,884     7,646,122
-> > 36           17,530,774    6,394,951     5,914,405
-> > 71           18,624,264    6,673,569     7,167,762
-> > 106          20,088,558    6,976,364     7,821,921
-> > 141          19,686,813    6,206,580     8,495,970
-> > 176          20,936,177    6,344,854     10,585,375
-> > 200          45,313,873    6,295,581     30,313,342
-> >
-> > refault_file
-> > swappiness   CLRU          MGLRU         MGLRU+patches
-> > 1            5,795,115     678,254       7,315,064
-> > 36           720,877       419,659       448,199
-> > 71           469,270       338,518       355,269
-> > 106          331,584       308,983       270,736
-> > 141          174,509       277,375       237,643
-> > 176          113,352       272,390       184,908
-> > 200          0             269,349       102
-> >
-> > refault_anon
-> > swappiness   CLRU          MGLRU         MGLRU+patches
-> > 1            738,618       578,308       1,383,725
-> > 36           451,410       665,723       543,071
-> > 71           514,961       657,870       683,874
-> > 106          633,161       786,893       669,716
-> > 141          648,640       662,673       719,231
-> > 176          668,779       708,969       901,918
-> > 200          4,816,312     672,514       5,511,787
->
-> Right, that's really nice result. Do you have system time or
-> performance readings? BTW for the performance reading I think we can
-> focus on the 36 - 176 range. If a user asks for extreme bias towards
-> anon/file, they strongly favor reclaim priority over throughput, and
-> the behavior is arguable at that point.
-
-I think the changes are really minor with the default or
-moderate swappiness of around 60, probably just within
-the noise of measurement.
-
-With higher swappiness values (>140), I do see an increase
-in system time. However, I think this is expected behaviour
-as swappiness starts to take effect: we're swapping out and
-swapping in more.
-
-real (seconds)
-swappiness   MGLRU(no patches)   MGLRU(with patches)
-1            110.1               159.2
-36           108.8               109.2
-71           109.2               109.7
-106          109.4               109.2
-141          108.4               108.7
-176          109.2               109.4
-200          108.9               122.8
-
-user (seconds)
-swappiness   MGLRU(no patches)   MGLRU(with patches)
-1            1519.3              1496.0
-36           1531.4              1526.9
-71           1530.6              1532.3
-106          1533.4              1533.5
-141          1536.2              1536.1
-176          1530.9              1541.2
-200          1536.1              1563.4
-
-sys (seconds)
-swappiness   MGLRU(no patches)   MGLRU(with patches)
-1            218.3               392.7
-36           222.8               216.8
-71           221.3               225.3
-106          227.0               225.6
-141          219.8               231.1
-176          221.8               245.1
-200          221.1               496.6
-
-As for CLRU, this is also the case:
-
-*** Executing round 1 ***
-set swappiness to 36
-real 1m50.203s
-user 25m23.168s
-sys 3m38.826s
-
-*** Executing round 2 ***
-set swappiness to 71
-real 1m49.654s
-user 25m30.618s
-sys 3m38.215s
-
-*** Executing round 3 ***
-set swappiness to 106
-real 1m50.021s
-user 25m31.175s
-sys 3m51.513s
-
-*** Executing round 4 ***
-set swappiness to 141
-real 1m50.912s
-user 25m37.081s
-sys 3m51.816s
-
-*** Executing round 5 ***
-set swappiness to 176
-real 1m52.159s
-user 25m41.676s
-sys 3m56.990s
-...
-
-Best,
-Barry
+>       Arnd
 
