@@ -1,128 +1,102 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1B05606A329
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 11:13:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AF65606A329
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 11:15:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=wDEjKZZR
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=hnnV/ht7
 Received: by kanga.kvack.org (Postfix)
-	id 1A37E6B05CC; Wed,  4 Nov 2026 06:13:11 -0500 (EST)
+	id 7231E6B00EF; Wed,  4 Nov 2026 06:15:23 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 178916B05CD; Wed,  4 Nov 2026 06:13:11 -0500 (EST)
+	id 6D4706B05CD; Wed,  4 Nov 2026 06:15:23 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 08F4C6B05CE; Wed,  4 Nov 2026 06:13:11 -0500 (EST)
+	id 5C59C6B05CE; Wed,  4 Nov 2026 06:15:23 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id C8D1A6B05CC
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 06:13:10 -0500 (EST)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 4051DC06B6
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 11:13:10 +0000 (UTC)
-X-FDA: 85397174940.09.36A4B13
-Received: from mail-vk1-f172.google.com (mail-vk1-f172.google.com [209.85.221.172])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 704D04000A
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 11:13:08 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=wDEjKZZR;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf04.hostedemail.com: domain of trintaeoitogc@gmail.com designates 209.85.221.172 as permitted sender) smtp.mailfrom=trintaeoitogc@gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 333496B00EF
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 06:15:23 -0500 (EST)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id A52F4A8346
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 11:15:22 +0000 (UTC)
+X-FDA: 85397180484.05.AEEBA1F
+Received: from mta0.migadu.com (out-253.mta0.migadu.com [91.218.175.253])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 0D242C0006
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 11:15:19 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="hnnV/ht7";
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf10.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.253 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793790788;
+	s=arc-20220608; t=1793790920;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dZQH8qK67DPjzVzFRy8vpMz0SogpfmebsloyVM18dBc=;
-	b=H7JzW13chQsAjGHRaa6lTmjMss9ijoMbGuk9ZqD3rnbLNnj5lkrD556eiPn9SxrGc9yKxG
-	dmbsV34XqZCqvaoZwd5pY0ORAfZfsR3j1Lc/t/tBi8mKvUvAhzg5F1VPp0pO19yVjbbUoy
-	soLt8Wrgq05+2457jqoEeD92P3qXcqQ=
+	bh=qpEDw5hjXj7841PRbs5dGID3L5ntxvD9VVbE0nNrrAA=;
+	b=EOhL/7HGGbVEswQbLIetQPFVSz4XaUweak+gReLxe3EPgjSZ+nHAv3SPU6GR0dbB55H9kv
+	GvnvoUgQiUX6YedI4CwdEtz4sjnsu3TlYBCQAPIndxfGpw1UvC6a3JkxAJlb07sOu7GaJ8
+	JcwxtQlj7NfMeUyNnGoPZY5/rRhK5Vg=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=wDEjKZZR;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf04.hostedemail.com: domain of trintaeoitogc@gmail.com designates 209.85.221.172 as permitted sender) smtp.mailfrom=trintaeoitogc@gmail.com
+	imf10.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="hnnV/ht7";
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf10.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.253 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793790788;
-	b=wtlW7q/xVaakCPjTUp+3pwfmFZVgYgUzqW3yU0xhYP8RHdoNrUKL77pV1iN75Mr2kux0uL
-	JLn4G9ULUNRuXubnUkFdb/wHu66kJTbnwq/ZqIW6hjhxcXML4WuZ/xJAfv0/OGxDehgA3P
-	i1dA4Tjt7i/t372Xdz4vpz6A+fZsBLE=
-Received: by mail-vk1-f172.google.com with SMTP id 71dfb90a1353d-5eabf243d05so176845e0c.2
-        for <linux-mm@kvack.org>; Wed, 04 Nov 2026 03:13:08 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793790787; x=1794395587; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=dZQH8qK67DPjzVzFRy8vpMz0SogpfmebsloyVM18dBc=;
-        b=wDEjKZZR0lyersLXy2FqFpRKKiOMa+kvwxX4GZdD22HnPDDYVq4XmrzG752Mx8+0zx
-         J9d/OXV3HYzGY9K7Jv2zeY7n+NrWEmjHX5aZ8j773542CvcTr7vaHIgV+fXIy49UUjtJ
-         dpjpmEuKTE9qc932wm9D1lw40rWNL0aOcumdQb9LhVdIc6HVgt6ZygJ/t10F24HvhgT6
-         MOk4Ng9cw6Yx91VLZJYHPi+8gaeG655Vb3DNCOtYuZy99bQKroMl0Jr1Wq5JTYuwS1YS
-         e9gQgNvLuFKlHXZRRUP4X+IIUPFl0q6xDQorSLPAFux2vTipaK5YXWuZxkKxrQg4O7yM
-         /Mrw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793790787; x=1794395587;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=dZQH8qK67DPjzVzFRy8vpMz0SogpfmebsloyVM18dBc=;
-        b=ZAvdvysT85rcJYokGkFscGVrz3qmLULivoNUvggUeIg4vBV0sqk7WcBqHwVqQK+biG
-         C7TNaM+T2f/sjGU9FFKplyTt45u9tfYiZM8lNKRAyg17d/yDngAwaawY2TwFV0/bcSlK
-         lVCizokCcZEOvIR1nTqSuIpUslcK8zbJygdPP1xIioC4OPm/sSZGwm0nwdStuGNzO2SK
-         plnLnGJbnbawFEAkzG2FZT7ofSkEECOqwfO8NSt2uQXqHO+YkHNG7m0eM0+Gqs4mlCp6
-         92nafhDcqOXBQueVG1tLz+AMmJFiqZWq0eb9o/VAoJYF5Dv5oNmRCUVDeZSB3zqWGtnQ
-         J4hA==
-X-Forwarded-Encrypted: i=1; AKwUvBwOhtG3pFOu5C0zqhtO1pamgOxxn36HtVrqHRbaO/dqc4Qd23PpoN9cynf6l8f5B4PsfQcVfiqrxQ==@kvack.org
-X-Gm-Message-State: APuU4Z8g3eOCZP6qmXaicDtA2GlqnIh2xbL8ru7+H42cTJTN/nNpl+Yf
-	cfSgMssMHrsLejf/bL9dTHw8ucbueWHFkcfpG/jDrkKM6ufysLLXormo
-X-Gm-Gg: AYBFou2MiqIc39bF41vDSnfsAZ/zqbEhNGqwIf00sUwcwDjMBuLpD2WF6RV/CGYq4Zn
-	97SF/myhANAoNdT7nbeUhKVtAvFA7Us6NWVlJRKoMMMpHd5apT+HGCF91xoGKo1OTFF2p+ZJeLr
-	BISvFOXXJuElF6MgN3hE4xO31bwhaerwGoiT67OIsM9+VSMaiSuMUa+05Pni5yWmF5rFmeqUyQn
-	SaPInF4Y/MqoeIOuB6ekASxWBeaFk+vkDvi62DoSOMbDb0deLO34Qsutum8UBsD9JHqBRw8TXUw
-	CT3BiRyIr0m9dNWGbOj50DYGr/JZFu3bxcXAwXrovai90Q4UBJx+k2EcbqPO5+1aFNuvbsr/gck
-	zDHxfdlLtyNKKNFVoNZULeD4PNuc2OTI6tTe/fyuMx0wpP0ljuPnPpTtgRdWUosY1v+zWt3ScA/
-	Jp32pqtU1VFzeo+WHQJln+zqeOaywik0iBrJaTWj1HP6tDFXSNtBuxB3ciI3e9C27VR5kmEHbCa
-	eD9CfiugjQLkeHV+AotConX4cGvY2b4Heo7/my4lodWtV3vEpEt2twHBm2Rud3dbYTGXj7BzfRf
-	6YBZQ/FEvvRcHS1E7c4KQYfSQGZLoLHd8scZQ2vnIr9RNmRk/VnHy1LCw1le5dAQBF9lXaMgwxP
-	k+9FF8Qg=
-X-Received: by 2002:a05:6122:218b:b0:5ea:a0f0:192f with SMTP id 71dfb90a1353d-5ec6881c31bmr6232105e0c.10.1793790787438;
-        Wed, 04 Nov 2026 03:13:07 -0800 (PST)
-Received: from fedora ([187.120.134.44])
-        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-5eca89b6568sm1403664e0c.1.2026.11.04.03.13.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 04 Nov 2026 03:13:06 -0800 (PST)
-From: Guilherme Giacomo Simoes <trintaeoitogc@gmail.com>
-To: david@kernel.org
-Cc: akpm@linux-foundation.org,
-	liam@infradead.org,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	ljs@kernel.org,
-	mhocko@suse.com,
-	rppt@kernel.org,
-	surenb@google.com,
-	trintaeoitogc@gmail.com,
-	vbabka@kernel.org
-Subject: Re: [PATCH] mm: clear pmd in pmdp_invalidate()
-Date: Wed,  4 Nov 2026 08:12:54 -0300
-Message-ID: <20261104111254.320059-1-trintaeoitogc@gmail.com>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <f1b2ec5a-f7a7-442c-97fd-f67fe6ecb197@kernel.org>
-References: <f1b2ec5a-f7a7-442c-97fd-f67fe6ecb197@kernel.org>
+	t=1793790920;
+	b=sfU3XVZXh/EEsQvWt9eOFxvvMcyOygq389kQvSS4iBeLmcjbXYLmt0YnCB/zGn1NY4yc0e
+	Ctjkj1SIW3KpYzI7FVjIGbNxJxpZLssNfmtY/W0teQIxlC8Pq7IJpttqAVVteTqDm/QGag
+	ce+XA6cuag5SetPqUH+wncBosaoq1hg=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=sk+qxKHeyasIiOhy5LS3K94shR3FnmgUqi2mNGl6j6U=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1793790915; v=1; x=1794395715;
+ b=hnnV/ht7MPpfuPiYc5OnoYdShepbOj+OHpIWxHZNm38ZqyIjR7Y7uoRJDw2p0V1pyrYPis2U
+ sij1bZavn34aUgginERHwZr3snM7PgIfBThHazlAQ22Koa9sO3YOUcSfCWmL9FiRGHQUG0HWPQn
+ DOpWSjYWQQaS+MQXaPyFoHjg=
+X-Envelope-To: linux-mm@kvack.org
+Received: by mta10.migadu.com with ESMTPS id 170b41dc14da184d;
+	Wed, 04 Nov 2026 11:15:13 +0000
+X-Mizu-Trace-ID: 170b41dc14da184d
+X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain;
+	charset=utf-8
 X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3901.200.71.1.16\))
+Subject: Re: [PATCH v3 04/12] mm: hugetlb_vmemmap: generalize vmemmap page
+ allocation
+From: Muchun Song <muchun.song@linux.dev>
+In-Reply-To: <ausBsbaw9DNVh4KA@localhost.localdomain>
+Date: Wed, 4 Nov 2026 19:14:48 +0800
+Cc: Muchun Song <songmuchun@bytedance.com>,
+ Oscar Salvador <osalvador@suse.de>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Mike Rapoport <rppt@kernel.org>,
+ Qi Zheng <qi.zheng@linux.dev>,
+ Lance Yang <lance.yang@linux.dev>,
+ James Houghton <jthoughton@google.com>,
+ David Hildenbrand <david@kernel.org>,
+ linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <650347FF-8445-45FD-B1F8-085ED6F997B3@linux.dev>
+References: <20261104023510.260766-1-songmuchun@bytedance.com>
+ <20261104023510.260766-5-songmuchun@bytedance.com>
+ <ausBsbaw9DNVh4KA@localhost.localdomain>
+To: "Oscar Salvador (SUSE)" <osalvador@kernel.org>
+X-Mailer: Apple Mail (2.3901.200.71.1.16)
 X-Rspam-User: 
 X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 704D04000A
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=no autolearn_force=no version=4.0.1
-X-Stat-Signature: eh7thh4ry5pu7etgejfqknchukogrp16
-X-HE-Tag: 1793790788-863815
-X-HE-Meta: U2FsdGVkX18VFadBzERhxKwDXr5AfSEF25aco83nOR+51OzeJl3eLuCXAYLZnPTofBkTGBM/omexol9vGp4/o8O/m9WclW4qlAzDw5Nn5DGgtmGW9+hH4BwWsmzcU0mR801de+9b21+2FCcVgxPj2ugynYsem8G1JkTyKWNYRw6+alJ6WbfT28uQZd6R4gAF20JIXNbDemFcUgzfxfEqxPCQ0F7kFM2PU8Cw/Asmf79+6GJdHtCeK0eWvQ7c4ZW+n3YrYC/irgWL1KO55iFhWIJ3KVYf/LVAf7q8A2YB9Sn7OGetFRhzBeAp4bE4dKQMKIs0f2XW/sspBkUFH+Oq2wAVmfchLwURjKV4BS2/f+ujvofflK//tGBAPR45WwsJG/sqkVb5vAW4p8KSxQ8wZ0e41khWMmCrCao/hmUD3qG6kL9cT+0eguCRwW+op+IdhFDkYHg8g/joD3+9SXFFlBLat+9G9ZyLsYDEcuwUWdrKDMCBL+P1XrEQnOni5Mhb8QbmhuMqjw48+xvitu58rx/4oCwj32ZsDJvDjIb0O8f+6FZULqmzt2GlTb+w3r+wNnEuFwpXOQS1K/5aLa4XD8fwluHkjUH/09fS6RtrqowCXuEG4dmIcevFaHiSF+fNzcP214byIb5x6mNn9CcZwo2coo/crhLZ0yLDoKdRFyaOeXBIqRn7o2CviMw4zL67/KuCPQGZbqkhpu29E177rVw9Tf0HxKYqH9Cg3BS+WUwvwR/J88g4irToA3r2zbQ1pW1OJJpH9ruIWcWlEmWLzMGs4UDKKjHWtruapEeKc2IQLQGzfHqUcLdZWdy2TYT5ZwnCHv5JfOVC3Dq768cTBzOGEjV0HCW7wl86T51wDN3ESJUz3I7/oaNzf9UedvpAGbFZciNG6DTYLFVixiCo6VpZCeB8N4XAu1r5QFeu69OYmhe6acxSHU8Qh4NxlLuZbpJ3L+2MkYMie5X/gF/
- KCnYAHQt
- Zi0tia3duuZRrby825exrkR2mf1YqUAf/5oOyRemaIYqqX1g8cnffsQLyAxCwfMn4S5gSZaA1Gr/XfP6Z4wPGTkw6SZmlLnTmwiLGCj2PqOg48eZcMA05+gnvL4l2WaGbVo4MbQJEmBC5FurZreju/BG5KAuJSphsKeJyJO4y3SLsQWCUjxxchEw3RRXz0RBedY+pZwhm4+wP/TQ7u7VdUf9MiyO4cybxlpc3McUw1nw5ojblKlEHqhdG9gouSbt0hUnh8bWMMGKvTig3X/rgvVR9T38PLGhZcZeYmkeE7t0cUJgcai3P/RQDPeuk3g1UcN3VQhQybL03qctzdNmqiuYXPLp+JtxK7fDbTLK4myHDH9Cb5kXP+UXF/C5tVwLEuzq2hD6Wxme/1xq7GJzhqcp8kJMmFM1lwYFcBxt1DRWs0SXRBPRLkTz9ENcsVuq0jnIjLdYI8k2BzLci3agfGX3oSoilDT4HOdFVhvPM45cl8NI=
+X-Rspamd-Queue-Id: 0D242C0006
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-Stat-Signature: a1dusuf15unwt16hbxppcmw8iq1moyfp
+X-HE-Tag: 1793790919-981121
+X-HE-Meta: U2FsdGVkX19vbSvYioWju/HRRFx0T2k3OfGiQT9RGgu7ND7vm5VCV4cb9wsx9auoVllxHecPUXCLosG7BICz0jUMKb/WrLdhDjYkFWpBvi8afRTxCflF7PlPuLoB4mBXk/5qkaQZOmxox7RvL4A/ZtxQebLdoQsSda1IZtSLuKh+VZkHqgbLNLC9jPoVWPnwpXh0OhLydY9qcXLz33AKxmbNe2A0853CtOYUq846JfiuAPIQb5Fmo7weVWxfXluvUdyOyhHi8nCWaRe/6UTl3Fsj35W4DNTauc/GJqCpGnLY5VpGUMgoYonFgMxuRKKBKmnX3sLUEriNWF3gJcWrvjqBWvWCtAn8cYLdqSH045ABZhcwFbBBmvHBMwbRd/4ikMLfbxOUGkNBt4Ei3SKOUl1IoOUZDRbbXJyVwDwXIiywo/s6VPJjmRgvyFLAebuoCup6FyDY8+SU3vcMxx/FTVT2CqScxmM7PZvznNDGKDzDx43rP6tpqnjzCsTZxPFYcccgbR8j2VzSXROrKv+Zp8Asp/HgwJMMtdkmgpdkx5xs16+HRMd/pY1AXP7LL7L2aQ38XrsjlOcRtuPiLW/Aon3tZPEcA0sPwdUrfOR4ve+iTKpsk9BthKh+5XGKbvU5utQz8m7dy/VChPrL1p1kPr9jxy0tzAexmy0950gqyCuuO3uanSmNL6/O9jZK4tSS/7GlxIRHw4we8Ur0C9ZZ8rqdIi7LtIjRCazpX1VCU1h1TfcKK+YZZeh0ITA0gy9oyYvSkBsxQ74jHMlN39AlOPrgISM8C/LKG75sQu7vnM/8+4PmnTrTQtWXnEf6/SHohVqt8I4B2OkOxvYk3mPzoJ+7KB9FhhE1W0kAf3WOLQy/AkBwzVH0K1UjvP4ubJtntRpA3Q77i7XVHEX/Ohy6284zCUwa4MF0Z/xOjQNsI0Jw+LeCgZu4pw7ARBB5P2ej/qpAJQXP2n9wJZlM95g
+ gYXJSiqp
+ N51vLRf1SkHvt3fAgq3fwmQd6tm3g3Zy5xY1HPG0w6Qe2Yr6MWcsyJ1Fx3Z9Czg34WA3cHgwonW8aXGtevojbyj4u0/Ye1QZEJ1RA1Zfm2VVNJZgoIUpsrPT9GLbvKdd1b8W+L/rMrnB1LKHNKxfTdhaWmqzWl+d/4p4Lx+li/oRtvpcIOLlzsVO4pEXG+ELJ2YyTzbYDPVwxBBqY77FSrr0qlX40R9dl/QG1LjT0KNs9fA7SCxcIZwV2A2GETp5aRZq/2UP7kamxzokutXqZwO85aFM8pgW3hGCRkWwIOVVYaP1KVGGeVg64GSOjpHjNOKVJDi+Wa0B2IAGj+rE03LhDzR+NIPJBu1TFmpyZUb3FEUE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -131,85 +105,112 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-David, I haved immersed inside this problem on last days, and how sashiko-bot
-very well apointed, I'm haved doing a wrong duplicated clear on pmd's. I not
-notice that the pmd_establish() already called the page_table_check_pmd_set()
-wich in turn call __page_table_check_pmd_clear(), my bad.
 
-At first time, I thinked the problem is a duplicated
-page_table_check_pmd_set(), but with a LLM helpful I ruled out this hypothesis,
-because I not found any obvious call to page_table_check_pmd_set() before
-remove_migration_pte(). At second time, I suspicious that maybe we are haved a
-race condition, that make no sense...
 
-After a lot of debug and tests, I found a thing.. And I attempt to test this.
-If you see inside arch/riscv/include/asm/pgtable.h, the pmd_mkinvalid() do:
-```
-static inline pmd_t pmd_mkinvalid(pmd_t pmd)
-{
-	return __pmd(pmd_val(pmd) & ~(_PAGE_PRESENT|_PAGE_PROT_NONE));
-}
-```
+> On Nov 4, 2026, at 17:58, Oscar Salvador (SUSE) <osalvador@kernel.org> =
+wrote:
+>=20
+> On Wed, Nov 04, 2026 at 10:35:02AM +0800, Muchun Song wrote:
+>> Vmemmap page allocation is currently tied to restoring a virtual =
+range
+>> and assumes an empty destination list.  These constraints prevent it =
+from
+>> being reused when pages are requested independently of a vmemmap =
+range or
+>> appended to an existing list.
+>>=20
+>> Generalize the allocator and give it an all-or-nothing list contract =
+so
+>> the restore and optimization paths can share the same allocation =
+policy.
+>> This also allows HVO head-page allocation to fail gracefully under =
+memory
+>> pressure without triggering the OOM killer.
+>>=20
+>> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+>> Reviewed-by: Lance Yang <lance.yang@linux.dev>
+>> Reviewed-by: Qi Zheng <qi.zheng@linux.dev>
+>=20
+> Reviewed-by: Oscar Salvador <osalvador@suse.de>
 
-but , the pmd_user_accessible_page() check `pmd_leaf(pmd) && pmd_user(pmd);`
-and pmd_leaf():
-```
-static inline bool pmd_leaf(pmd_t pmd)
-{
-	return pmd_present(pmd) && (pmd_val(pmd) & _PAGE_LEAF);
-}
-```
+Thanks for your review.
 
-and the pmd_present():
-```
-#ifdef CONFIG_TRANSPARENT_HUGEPAGE
-static inline int pmd_present(pmd_t pmd)
-{
-	/*
-	 * Checking for _PAGE_LEAF is needed too because:
-	 * When splitting a THP, split_huge_page() will temporarily clear
-	 * the present bit, in this situation, pmd_present() and
-	 * pmd_trans_huge() still needs to return true.
-	 */
-	return (pmd_val(pmd) & (_PAGE_PRESENT | _PAGE_PROT_NONE | _PAGE_LEAF));
-}
-#else
-static inline int pmd_present(pmd_t pmd)
-{
-	return (pmd_val(pmd) & (_PAGE_PRESENT | _PAGE_PROT_NONE));
-}
-#endif
-```
+>=20
+> A small nit below:
+>=20
+>> diff --git a/mm/hugetlb_vmemmap.c b/mm/hugetlb_vmemmap.c
+>> index 0e5b2b182d1b..d3058e106795 100644
+>> --- a/mm/hugetlb_vmemmap.c
+>> +++ b/mm/hugetlb_vmemmap.c
+> ...
+>> +static int alloc_vmemmap_page_list(struct list_head *head,
+>> +		unsigned int nr_pages, int nid)
+>> {
+>> -	gfp_t gfp_mask =3D GFP_KERNEL | __GFP_RETRY_MAYFAIL;
+>> -	unsigned long nr_pages =3D (end - start) >> PAGE_SHIFT;
+>> -	int nid =3D page_to_nid((struct page *)start);
+>> +	LIST_HEAD(new_pages);
+>> 	struct page *page, *next;
+>> -	int i;
+>>=20
+>> -	for (i =3D 0; i < nr_pages; i++) {
+>> -		page =3D alloc_pages_node(nid, gfp_mask, 0);
+>> +	for (unsigned int i =3D 0; i < nr_pages; i++) {
+>> +		page =3D alloc_pages_node(nid, GFP_KERNEL | =
+__GFP_RETRY_MAYFAIL, 0);
+>> 		if (!page)
+>> -			goto out;
+>> -		list_add(&page->lru, list);
+>> +		goto free_pages;
+>> +		list_add(&page->lru, &new_pages);
+>> }
+>> +	list_splice(&new_pages, head);
+>> 	memmap_pages_add(nr_pages);
+>>=20
+>> 	return 0;
+>> -out:
+>> -	list_for_each_entry_safe(page, next, list, lru)
+>> +free_pages:
+>> +	list_for_each_entry_safe(page, next, &new_pages, lru)
+>> 		__free_page(page);
+>> 	return -ENOMEM;
+>> }
+> ...
+>> @@ -527,15 +526,13 @@ static int =
+__hugetlb_vmemmap_optimize_folio(const struct hstate *h,
+>>  */
+>> folio_set_hugetlb_vmemmap_optimized(folio);
+>>=20
+>> -	vmemmap_head =3D alloc_pages_node(nid, GFP_KERNEL, 0);
+>> -	if (!vmemmap_head) {
+>> +	if (alloc_vmemmap_page_list(vmemmap_pages, =
+VMEMMAP_OPTIMIZATION_PAGES, nid)) {
+>> 		ret =3D -ENOMEM;
+>> 		goto out;
+>=20
+> alloc_vmemmap_page_list() already gives you the error code (ENOMEM), =
+so
+> it would look more natural to me to use that already and not =
+"overwrite"
+> it.
+> e.g:=20
+>=20
+> ret =3D alloc_vmemmap_page_list
+> if (ret)
+>     goto out;
 
-And the TRANSPARENT HUGE PAGE , is exactly a page that I was allocated with
-mmap() (see my previous emails with my repro.c).
+Agreed, thanks =E2=80=94 I'll just propagate the return value next =
+version.
 
-So, I change the pmd_mkinvalid() adding PAGE_LEAF flag:
-```
-static inline pmd_t pmd_mkinvalid(pmd_t pmd)
-{
-	return __pmd(pmd_val(pmd) & ~(_PAGE_PRESENT|_PAGE_PROT_NONE|_PAGE_LEAF));
-}
-```
+Muchun
 
-And this work for my repro.c.
-The problem here is what the documentation of pmd_present() say:
-```
-	/*
-	 * Checking for _PAGE_LEAF is needed too because:
-	 * When splitting a THP, split_huge_page() will temporarily clear
-	 * the present bit, in this situation, pmd_present() and
-	 * pmd_trans_huge() still needs to return true.
-	 */
-```
+>=20
+> but as I said, just a nit :-)
+>=20
+>=20
+> --=20
+> Oscar Salvador
+> SUSE Labs
 
-So the documentation say that if a THP is splitting, this should return true
-event though PAGE_PRESENT and PAGE_PROT_NONE is cleared.
-If you think about this, maybe make sense.
 
-And after some searchs I saw that was already fixed by Yunhui Cui
-<cuiyunhui@bytedance.com>
-https://lore.kernel.org/all/20260523042052.35476-1-cuiyunhui@bytedance.com/
-
-Thanks, Guilherme
 
