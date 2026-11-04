@@ -1,73 +1,73 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 018A8606D807
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 08:17:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20FAB606A333
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 08:19:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=bXTYrDSE
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=O3/snmKj
 Received: by kanga.kvack.org (Postfix)
-	id 09BC26B00EF; Wed,  4 Nov 2026 03:17:28 -0500 (EST)
+	id 394116B05B2; Wed,  4 Nov 2026 03:19:18 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 034E96B05B1; Wed,  4 Nov 2026 03:17:27 -0500 (EST)
+	id 344FF6B05B3; Wed,  4 Nov 2026 03:19:18 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EB4166B05B2; Wed,  4 Nov 2026 03:17:27 -0500 (EST)
+	id 25B146B05B4; Wed,  4 Nov 2026 03:19:18 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id C47EF6B00EF
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 03:17:27 -0500 (EST)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 5266016067E
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 08:17:27 +0000 (UTC)
-X-FDA: 85396732134.10.9655AB0
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 9025120005
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 08:17:25 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bXTYrDSE;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf03.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 0A3916B05B2
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 03:19:18 -0500 (EST)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 9DC5E8028A
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 08:19:17 +0000 (UTC)
+X-FDA: 85396736754.16.30E6447
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf06.hostedemail.com (Postfix) with ESMTP id D4CAF180004
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 08:19:15 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="O3/snmKj";
+	spf=pass (imf06.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793780245;
+	s=arc-20220608; t=1793780356;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=sSlKHe6xc24svxDkA3PbRnbZQ2Hd6+8PIRLhRVLtkNA=;
-	b=AhPgT0WX13PHjLKHszsPJY7betlyFjMpRoaG3AOHDdZN2Ce3CC2M7eVg7t5Fsa3tE7lElO
-	dDnj5sDRjknA/mCR8PqpT75Upa6YA3CHZxZIQYyJvDy8A6tvUAhE/a8FQw8X6HvVfV67UZ
-	poxO0xg8lXseXr7OOluOBIbLkx/IKLA=
+	bh=Xc7V+QdXVVO/sqjZeREmJmMcVmU9QYnc9ONRFJK1OpE=;
+	b=pidQIABc1/O+34EnV8KW6LdQxQBAkgScSRpOH6ebzcEnue6Y6qGSurgwytJWN8nOrvQCH0
+	w2nTE+H+g7UEmob70LGajkL90kfENvg05LCivlyGkk9Yq7a2+ETU8RJRxC2S5/0TsUZlem
+	0rrQ0Xupt1h/iYF86DTsnHbWASkq678=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bXTYrDSE;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf03.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="O3/snmKj";
+	spf=pass (imf06.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793780245;
-	b=nJhatA/2CzekIv6IsqAcVYp+cgUfoq8kBCTKuSZFRxUhuR8Gko+ZqH7KqDy8EIcrql//BC
-	nftDikjrR7PWbmobDK85NEKJtHkRjdv9fktNpgBjyirIcSo1kOPN7NufhkPtHHg3bIEbko
-	Ii6VWPHZ7EdmMfmbwYQ67IS/kzSfk84=
+	t=1793780356;
+	b=hAyx84+FAS9eJ7gHdRTkp3hoJgMKMjXHFJL9YAYxldqIDYBP6bTZifwYFqYw1xJvbYDGUv
+	xboUO4u2SwdUX6wZ3V5KWXU3+CyAkS2uVRSFCdMZQZnlEt15cjYihJ/PlmYEete7TC0zrM
+	iOUQdDVcGGG9UkI3f5+DM2/jMwjSMsI=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 1CA0560611;
-	Wed,  4 Nov 2026 08:17:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D2DB1F000C1;
-	Wed,  4 Nov 2026 08:17:21 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 45DC243544;
+	Wed,  4 Nov 2026 08:19:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79D9A1F0093A;
+	Wed,  4 Nov 2026 08:19:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793780244;
-	bh=sSlKHe6xc24svxDkA3PbRnbZQ2Hd6+8PIRLhRVLtkNA=;
+	s=k20260515; t=1793780354;
+	bh=Xc7V+QdXVVO/sqjZeREmJmMcVmU9QYnc9ONRFJK1OpE=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=bXTYrDSE8v1k4UTrZsaWqhHJsS3KHpcVQ9MpNm3mcEPTD8vb2ex7rANe82ae4M8i/
-	 U+Ge7YFlUWCEP+xm3yD8oGT2QLL60w+3jeGfHcyFOzeMowbYgPtorwLeFSLQWRoFeh
-	 vKaFxSbDESgRLNr8rWHYeENa5CsIt+x0S+Hw+SDaqHy4nHKjSi9n+hqfwW6di2LYzU
-	 xbQjrqsjQGFpGz4zHt46mCInYTWrKSrUysrH238MZo9pFr/I/LN3RKu+vLVtg/E+W3
-	 mC/OYkkJrUji6ca7e4xgedrR5Lj2PqIbcDkFwq3tn2lxiWWhI7rbo/Goy/r3fDxpLJ
-	 5OQ3BzFslQzPQ==
-Message-ID: <634f37c7-6096-49db-8cfc-7c5421631322@kernel.org>
-Date: Wed, 4 Nov 2026 09:17:19 +0100
+	b=O3/snmKj+Oq77n3PttxztnuIcIFYN0EpcanrM6a2w6qax1v2/dRhnuLA3toFV34K/
+	 RNs5POBA8fBvDsg3p8XPozQad0dKkQz2UHF8RzJkXPzm6e71H/u8U+nNZtcu1dm7tw
+	 IU9xCcMQfRmxLcMHfUWkNMYcWggc+r5lj1zuBRMnIPDLukGt5tuu4+SqzzGVBxggNz
+	 SbFXmnKaF1qJeIA2lSQcrg01vtQ8uuE3mi9ypgm+zxJUWP7O5WGxetbbhSbGaj/YiA
+	 dYbkX1+We1DsmnHCKotFbMMOMMByTSVOlLGzxVykQGkoKp71qJsIS8Q5I/NyKf7Ojl
+	 cLFxy1Ooy022w==
+Message-ID: <e4951dae-e010-4d75-a4c1-397e7c5cd05e@kernel.org>
+Date: Wed, 4 Nov 2026 09:19:10 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] mm/slab: restore the rcutree. prefix of the
- kvfree_rcu parameters
+Subject: Re: [PATCH 2/2] mm/slab: don't queue the page cache work under
+ krcp->lock
 Content-Language: en-US
 To: Harry Yoo <harry@kernel.org>, Zhan Xusheng <zhanxusheng1024@gmail.com>
 Cc: urezki@gmail.com, paulmck@kernel.org, qiang.zhang@linux.dev,
@@ -75,7 +75,8 @@ Cc: urezki@gmail.com, paulmck@kernel.org, qiang.zhang@linux.dev,
  rientjes@google.com, roman.gushchin@linux.dev, linux-mm@kvack.org,
  rcu@vger.kernel.org, linux-kernel@vger.kernel.org, zhanxusheng@xiaomi.com
 References: <20261028134647.3176080-1-zhanxusheng1024@gmail.com>
- <auIRU802S4Z4yAmo@thinkstation> <auiedkWD41Ok95TT@thinkstation>
+ <20261028134647.3176080-2-zhanxusheng1024@gmail.com>
+ <auifTNDwbBTJeu81@thinkstation>
 From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
 Autocrypt: addr=vbabka@kernel.org; keydata=
  xsFNBFZdmxYBEADsw/SiUSjB0dM+vSh95UkgcHjzEVBlby/Fg+g42O7LAEkCYXi/vvq31JTB
@@ -116,22 +117,22 @@ Autocrypt: addr=vbabka@kernel.org; keydata=
  NcaZ+c6J4H+nEJGi2SkHAUJz5oBzuThvPudLvPA/SK8sKoM01IRxSihev/S/5WLazXB1PGem
  OCbvzC1IjWJJraxiDJ5IygokapUa2RP7+WBR22skQ3SSl6G107QgWKSyTOGWEaRmV53vxQLV
  jXuCmzSSasTL60zq5yGrT4/DYQVSNEUiUbG4pYekxJujNeEDkUlky0Y=
-In-Reply-To: <auiedkWD41Ok95TT@thinkstation>
+In-Reply-To: <auifTNDwbBTJeu81@thinkstation>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Stat-Signature: y4knmipyxotep36tq1zrx7efq8yfpqiy
+X-Rspamd-Server: rspam01
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 9025120005
 X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
 	version=4.0.1
-X-Stat-Signature: nxj1dba9t7h88dkghrazb5cujqk7xtkb
-X-HE-Tag: 1793780245-991975
-X-HE-Meta: U2FsdGVkX19h1sXdYSrF54/dRcM62Pa/fauGAFHfMO50KbWZuzgXCoE/MaXvd3+HndZrj7aX0hfF3JIFUXD9eHF/MPbLTyG0ooSUvm3xWiC+arg50aUAiDKPkja/xLDSFfcPa6pN1NNZ6XRwAr/ekElJpHjZ1LOWdooQMWwyh7m5fvpTG4Q6J6Zhl5W6BSTfo74frV7wAWRm9j3cou1bM4N2QpKycsiwgWwar6isysEZUPfCSJRSsuw+abENVJpeGNW9dHHpe/pxOs60/90q3q93Bx5xQGbtA3g9iTrCGDm8c1sLSM48G7QR68E+rAXzYRz1vKLFeCqu79G+zdXp8SWy4wJc0f+U+NB5/nypQi+KUSkhfuK3F7IqdIZGeUeWruhjTJPqMu1a91OIaSbyM3lEeKiI+4wshwhoeA2lC82EYTRW2bHphXzsP3h4j9xrIHqb74Kv3ptqEOhzWRg6JfgAmlCa7WkOALV0y1KDug8fRzdKHRu8L1khTJzGl1adOzJ5Du5e10Q4PpjyalUx0ksQuPHbIkNhhL7VxRczA1z4NY397iTTXQOxnYGzAJjRh5vuFdYuxumTY9dzcSd6taNW4qt32Kr1Er6J1NZPsPkvlK7nCpX4shKAWMHThGRlNZhZXe7spZpBxONOJvnutMUWzA39DpcRu3D0Ymi99l1yn9OU1M6vLREMLZn+Kk5ZWrYORfP1J6TtJxNuk4Lc6Jv7cbQEXI7YKLREVvEfsS4rfcmxSqzyVLxag1mqMfCOZGMwTW6bGgEZCauu43WrVk3DdccowaIUCxNvf6TGAZ7bQ47JfgkvB9i7CVAFp9pXmL8liQPOKENS1zZSZu6+5kg4zRe2ZaFuM5eFpTIFkXEqdhyA1Rfk/MF64gy0XKFtNYN9YPCESSjlArhWvCTnk+xkKPWZV59ZIuJMauJ5F6qpk5iOOoLcnPzgw038zPrAkJnYSFwcCPGcD869YJk
- 4nrydzma
- ojSMddJM/lnZiZyuT72/fKawbu/4iOmIcCiGts+dhHtjgCEBBKJEjzOMAbnhiKL0RZUEjunCc/q9sJnd7RGZnU1AkJEhtsnBUKryHJtDJbp6/f/QcLKxXwDv5FtGHoGZfdKupHHWC96jo++0ASrFecfgHj7SLzKF22S6sfTAgqO7+l0+poyv4uhFvPCEQJKjG+GNEyz5snpIDhyUCewQV7GgIZu/Y8ZFXrXtFMs04SECSVoFAy+sTMGM2ohGOGt2wFg9fGmZLDyRmu8wylUl392tusC4swFJTaHkNcVf5lnIjDC8+14/KB6ktj3aHqMDzbbqnx2oseBo7lLYVJ6lMZzKC1896o2+Ak0dcm3T+wvYvEjfiyDKHLRpDhv091SJ/u4IGG+tekAt9+BLZ5BBGbEBdJLPpS3tEwsmL3TuzqsXlJWr/XxEGdNh3/fJNFvE+t+vBeRb3LEYcCzU=
+X-Rspamd-Queue-Id: D4CAF180004
+X-HE-Tag: 1793780355-188576
+X-HE-Meta: U2FsdGVkX1+KgpdZA7VLamKiq+kxAG2wu+5FSmyrhAmt5AAzky1PTahMsi0k63Yy+jnyvR0Z4gg9VUBotGsWzxVWidaqWV8nEpwInKT5trth+y5/wmx5OGmcNQG4dbTkeQJ5NXzuZUC7mWUJulQgO6sfUaGBUKzwpqh91hahU3BNnJt/rahG5pPBLeke+YwsekbgLVS+f445zMKaBFuEN3Jf7ET+f0+4kFI9mshh8ySa8DY722zdtYBoyGesQ8/GoFVVvpDT5i6HyHtHDdnnZxie/TX3W+D/lsfEuNOBvTaO4nc3bZHD+zWktiR5/T1Q/RjxaJtFYmcTZsPcgIrVsLOgPWv0igbOVnnZB16WGqq7UyLg9oq+Ks31VA3zD5H9uh+CUifnxue39ULdWHK9JJH+w8vY+Z4SF5peop1pDBCJIwrzULFWAFsxe5gBdIYoB34hlZHt3hylO7UFdQeDKjmA7Q6BCb5fCyA7IB2aiC+++HYjaG96MuJlncT+LYFBv9dcqY8ci4kCsmF/LvkCFiFCHE5HUa+AE08BK6+gHZ/raGpDvEoTBoTNUOkk5VUCKbFqPaMod1DZsOHRbf/xfMHcw07DA2WQ8OoxsB75+Xlpx+950XESVADVQfS2rutlbauKh66kNQlQN1JiGzSRndflfyCHJqu20KP7qw4kBgB6N7iDbkBWurlSAh3Ewv7oJA+DBCTajDEOrg71ifN73vk2SNJIHqE5UYKsU7fQlz36oqzuXDHot4V5W17O2svGE4gJvk1n1Cl8JrMDDDHg/RY3HjEu3mdkRxDeHdbixcfnPB4xZoJOaWshmhh9CrD/LtGeNAFt53AsjltHF/Kjy0P77xK/mm9oZ9kqfXkEtUH+uN/DG4JcSpsDCfRCvY6S+vMY0fDfQuWMipCI6I/OukRP/QMm3+PCc6cX2WU4L4EnH3SJg4zyYL2OIJ19lnF+Ts5ncBGp8iyoNdWBYP9
+ /P7xFdqw
+ kJbMinecSZi9G9v2zAfLcBnD7r1ALl3wbxGS+/Mu66jmx9rv4tzvY6Y1Tmw1pynv9ySn9tmrkJaLI3mmck0V5a7dCjGpSneaCxVWsxylhcJLsi6F/1qaT31g/RqkIJ6DSQtirEi1A3+ZQBpnlwMDWUQDjR24rPVpjE6gJIKMrL5opPJVN7kxROmW+EV3qgCLl536QHiuOPPp49KLSr91w5Ug4IWSNR8ac5XUeRNo/noFCmg6DkJJ0ExLddtZzNgy31JAyaLheqnxjy8VrjsJJH7SzmWb7ByCjoY59zHRTyYOh3dbgBXwwQJAnsgftmUHhMPeqQ898rnVYIe6UP7uNJpQSUE6nuHoYfQW6OZH7JH060xcKk0JNSupBHhb9+LafcD1QepzEPybk/QmfYf0kucaXp2QWo7DS3xM5
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -140,44 +141,70 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/2/26 15:33, Harry Yoo wrote:
-> I adjusted my feedback. End result:
+On 11/2/26 15:35, Harry Yoo wrote:
+> Here I added bit more context and adjusted comment. End result:
 > 
-> mm/slab: restore the rcutree. prefix of the kvfree_rcu parameters
+> mm/slab: don't queue the page cache work under krcp->lock
 > 
-> The move of kvfree_rcu() to mm/slab_common.c dropped the "rcutree."
-> MODULE_PARAM_PREFIX, so rcu_min_cached_objs and
-> rcu_delay_page_cache_fill_msec became slab_common.* and the documented
-> rcutree.* names are silently ignored.  Restore the prefix; the
-> slab_common.* names, never documented, stop working.
+> Commit 56292e8609e3 ("rcu/tree: Defer kvfree_rcu() allocation to a
+> clean context") deferred page allocations to a workqueue. To avoid
+> deadlocks with the scheduler, it used hrtimer to queue the work instead
+> of queueing it directly.
 > 
-> Fixes: bbe658d65802 ("mm/slab: Move kvfree_rcu() into SLAB")
+> Commit d0bfa8b3c411 ("kvfree_rcu: Release a page cache under memory
+> pressure") later added a backoff mechanism under memory pressure, but
+> did not consider that queue_delayed_work() with delay = 0 immediately
+> queues the work and introduced the deadlock commit 56292e8609e3 tried to
+> avoid.
+> 
+> run_page_cache_worker() runs under krcp->lock, from kvfree_call_rcu()
+> callers that may hold more, such as set_cpus_allowed_force() under
+> pi_lock, so it kicks the refill work from an hrtimer. Under memory
+> pressure it instead queues the work with a delay of
+> rcutree.rcu_delay_page_cache_fill_msec, which may be 0, and a zero delay
+> queues it at once, taking pool->lock under krcp->lock.
+> 
+> With the delay set to 0, calling kvfree_rcu() on vmalloc memory under
+> pi_lock after a drop_caches makes lockdep report:
+> 
+>   Chain exists of:
+>     &pool->lock --> &p->pi_lock --> krc.lock
+> 
+> Use the hrtimer when the delay is 0.
+> 
+> Fixes: d0bfa8b3c411 ("kvfree_rcu: Release a page cache under memory pressure")
 > Cc: stable@vger.kernel.org
 > Signed-off-by: Zhan Xusheng <zhanxusheng@xiaomi.com>
-> Reviewed-by: Harry Yoo (Meta) <harry@kernel.org>
-> Link: https://patch.msgid.link/20261028134647.3176080-1-zhanxusheng1024@gmail.com
+> Link: https://patch.msgid.link/20261028134647.3176080-2-zhanxusheng1024@gmail.com
+> [ harry@kernel.org: add more context to changelog and adjust comment ]
 > Signed-off-by: Harry Yoo (Meta) <harry@kernel.org>
 
 Reviewed-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
 
 > ---
->  mm/slab_common.c | 4 ++++
->  1 file changed, 4 insertions(+)
+>  mm/slab_common.c | 10 +++++++++-
+>  1 file changed, 9 insertions(+), 1 deletion(-)
 > 
 > diff --git a/mm/slab_common.c b/mm/slab_common.c
-> index 01c64ef661e7..41dea01a8c1f 100644
+> index 41dea01a8c1f..051ca63c0b67 100644
 > --- a/mm/slab_common.c
 > +++ b/mm/slab_common.c
-> @@ -1367,6 +1367,10 @@ void __init kvfree_rcu_init(void)
+> @@ -1987,7 +1987,15 @@ run_page_cache_worker(struct kfree_rcu_cpu *krcp)
 >  
->  #else /* CONFIG_KVFREE_RCU_BATCHED */
->  
-> +/* Keep the prefix inherited from RCU */
-> +#undef MODULE_PARAM_PREFIX
-> +#define MODULE_PARAM_PREFIX "rcutree."
-> +
->  /*
->   * This rcu parameter is runtime-read-only. It reflects
->   * a minimum allowed number of objects which can be cached
+>  	if (rcu_scheduler_active == RCU_SCHEDULER_RUNNING &&
+>  			!atomic_xchg(&krcp->work_in_progress, 1)) {
+> -		if (atomic_read(&krcp->backoff_page_cache_fill)) {
+> +		/*
+> +		 * Use the hrtimer to avoid a deadlock with the scheduler
+> +		 * by waking up the worker directly. queue_delayed_work()
+> +		 * uses a timer to queue the work, so it's fine.
+> +		 * But with delay = 0 it queues the work immediately.
+> +		 * Fall back to the hrtimer in that case.
+> +		 */
+> +		if (atomic_read(&krcp->backoff_page_cache_fill) &&
+> +		    rcu_delay_page_cache_fill_msec) {
+>  			queue_delayed_work(rcu_reclaim_wq,
+>  				&krcp->page_cache_work,
+>  					msecs_to_jiffies(rcu_delay_page_cache_fill_msec));
 
 
