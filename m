@@ -1,106 +1,106 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE3BC606A328
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 09:59:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7605606A332
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 09:59:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=QIhLCGZt
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ftxirbjq
 Received: by kanga.kvack.org (Postfix)
-	id 24CE36B05BA; Wed,  4 Nov 2026 04:59:13 -0500 (EST)
+	id 0ED786B05BB; Wed,  4 Nov 2026 04:59:13 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1D6146B05BE; Wed,  4 Nov 2026 04:59:13 -0500 (EST)
+	id 0A0A56B05BC; Wed,  4 Nov 2026 04:59:13 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0EB406B05BA; Wed,  4 Nov 2026 04:59:13 -0500 (EST)
+	id ECECF6B05BD; Wed,  4 Nov 2026 04:59:12 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id C91736B05BB
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id C6C1B6B05BA
 	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 04:59:12 -0500 (EST)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 6B3ECA0563
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 3BEF31C3F27
 	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 09:59:12 +0000 (UTC)
-X-FDA: 85396988544.13.C7B97D1
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 64E2A14000A
+X-FDA: 85396988544.06.7CB27C6
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 3060340003
 	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 09:59:10 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QIhLCGZt;
-	arc=pass ("kernel.org:s=arc20260519:i=1");
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ftxirbjq;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf09.hostedemail.com: domain of devnull+daejun7.park.samsung.com@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+daejun7.park.samsung.com@kernel.org
+	arc=pass ("kernel.org:s=arc20260519:i=1");
+	spf=pass (imf07.hostedemail.com: domain of devnull+daejun7.park.samsung.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+daejun7.park.samsung.com@kernel.org
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1793786350;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=idiDEZyV2AKslTWp8TVyyW6q1t+3S/0RWjaWZEHTHTM=;
-	b=WQVyLLxpOR+RTphN79dReyrIRrvIwhVjVMwvn1saDzmnGbm3bHXXbKjREk3YPQ7fU76VdC
-	59+LX2DS6tWI/noPgLE66YlQGah7uIRZ74OEf2zzUIxqqupKTcNXaV2bfCl/UofOxzqJkH
-	RnULlyqY1ToduvUP7WJPH7+edpwFnWY=
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=3Sob1uMONq6SSsdxxC9IdsMSiFRpVas+YBu0+aDW3Z4=;
+	b=NOORchYLXtOh4yUNon7PQFy+Vg56TMWgzNacvAH7r4rygaWk5cezaMr7G2JYHYwRyOKtPk
+	l37qsjOo1mm0ECAXPO8wFQVIBhqlqCrhLQSRNGIeS6cOjeq+sz9fTAQ9jfd7TgiZ4gZyBG
+	16iUlfkGYla1mIkQmG7viHyzyjF36xA=
+ARC-Authentication-Results: i=2;
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ftxirbjq;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	arc=pass ("kernel.org:s=arc20260519:i=1");
+	spf=pass (imf07.hostedemail.com: domain of devnull+daejun7.park.samsung.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+daejun7.park.samsung.com@kernel.org
 ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
 	t=1793786350;
-	b=Z3osP0Hcl0s61qba/1pJKohxuF7TakNwKEKhELHVUvMFokSfOkcCx9VdswldGo33jeMA6v
-	tF9gMtA+i11heUkH+zdNU+YvcfWPDNF+2oA3s5qFG5Tj4U/0hik6YQ9Ks2g9czzhvxZR+L
-	9HueZTbVtIzY+ZI0oNXXqt9n+mFgtIY=
-ARC-Authentication-Results: i=2;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QIhLCGZt;
-	arc=pass ("kernel.org:s=arc20260519:i=1");
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf09.hostedemail.com: domain of devnull+daejun7.park.samsung.com@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+daejun7.park.samsung.com@kernel.org
+	b=ye51sDcwfe6kWkGsPkrHhDSImnwlzlUvOE82EzHubwk6qofJwVMCd3WU/u/ItqN+eSoFxV
+	RpnlXiUoyDbJzEnYGtz+MhQjn21JT/yBVww40wVUKOlgDURmjouvfvaA0fIoGd5XlV1qH/
+	Jpf+vTJDDZ7+CcbWcANrmEdAmAunntI=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id F2ECF60D79;
+	by sea.source.kernel.org (Postfix) with ESMTP id 5861F417A4;
 	Wed,  4 Nov 2026 09:59:09 +0000 (UTC)
 ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
 	t=1793786349;
-	b=ItzxnYiXt18cbh7Q1pMaBccH4dGH7YRZq0eox+GP2qXQ1gwdbeVkr1bwCZTR4OJX3VFc
-	 X2GSCfpNatJj4CW2EN1ncfc4FI2g56p9dSJnT4GRP9+7PBM1E8cARxwcoVZ7Y9KZ0J7kT
-	 SOye3OniTkwpR3CLKd7Yw7bW1id9cbbjd6EAj3XKVIITYaRG9MsMvzkYCpK5OkOOe+7PY
-	 5UwCPum8wW2y+k7iQ8a5/6QwEO/z705jBUb1mb0qQoZMCJsCwSG8gLnYLhOC/ctN3tNFi
-	 5iaS7YSJjj6o6wx06cqgKQw/caplMRN4xnni365aVEbuJjxTvZ3xUMFMiez4tnR3meg==
+	b=QbvIEBrRsN2y0APf8IQnv5jkZBZP8uHgUdqlrHmum5L9irwFiEv+s0iqvuKusyJTFFgb
+	 /0kKG59Tkdz3ezE7HK4hXSzGz+7DDc7+GEQ9o26VBSBOLvRn8TWjxroaETBj6T7wT7Wtv
+	 emHN5QjcA4R5ck3hdwc8mfQ3GAnFoPBLa/AER2s9oT2/TL0t8GpXxIz2mT0A9ljDtE+E5
+	 Uf2EbQ7kKFpJmVyRhwyt3yuV0bVAUScBlgEDZ8vTGKdu5YuQRdHlimQwbQ6OmG4avVQT3
+	 IfINuh9pC/2g3hjnv+kldo+NB35b60FwUmZLv1q1wSRR0f8iaR7j2GEzY/D8EHzYYfA==
 ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
 	c=relaxed/relaxed; t=1793786349;
-	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
-	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
+	h=DKIM-Signature:Received:From:Subject:Date:Message-Id:MIME-Version:
+	 Content-Type:Content-Transfer-Encoding:X-B4-Tracking:To:Cc:X-Mailer:
 	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
-	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=idiDEZyV2AKslTWp8TVyyW6q1t+3S/0RWjaWZEHTHTM=;
-	b=a87bdR/tMxDfOESEh099KXtq3DxQHDkMdJFV8O4Qz9WINF1DNW+4KYv9gf4td6ElgBIh
-	 CVMhVWAJU7DKccOa9FZ/Y5wVTBoilCRbGFhUF6HsPOMfZu+P74be9Zp1Tqw8Rp6vtfKRE
-	 nQpg8bqWN1l+6RBTjUiQhLviZo4i91K68swBbHX3r9yPia8PdkLFxPlMm86kuSlFWQeoC
-	 TJASsVtyzODke3xXbNXtb9KqIOllM3aCOf80LwCNxkUb49mQakIdlHvTS3Tb1ZcEXVYrK
-	 Ri/wtooKiO1jQO/jpUSmNmY8S1BqKQVaAGZ3quhQ6tM1OBK+Hbncrrl+4UjXeaEUptw==
+	 X-Original-From:Reply-To;
+	bh=3Sob1uMONq6SSsdxxC9IdsMSiFRpVas+YBu0+aDW3Z4=;
+	b=KG/NPaTXs19rpk4K+h7lxcqsAmDliyrcrBc13fH2um1wFzVLYL6yB1YiKxJ4HczTAYpZ
+	 Zx6RGqA+gg9L9DPRzEtH8K4WSvLCnQlL/qQ/j80kpmJ3c1rqxenRBYYGq24eH6VsULSbY
+	 RjlcFT1d7v0LiRazsB1K7B/Cpimad9oH3gnFbwiMd3pQfN0MjrNY1EX+eVg5FMr+4p5us
+	 fdXLIoiwcKqOnym64vNuPza3pq2sWNCDxZivanqI0QLZTgqw/239SvNwLuirRh0uvWFF7
+	 JoxdFHkAJHZBoucVeXVTlxlUPHGxPn0Lx08+THJr6vkXTIoFpSHE2JA3zyipgm+oO6g==
 ARC-Authentication-Results: i=1; smtp.kernel.org; 
 	arc=none smtp.remote-ip=100.80.115.77
 Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.kernel.org (Postfix) with ESMTPS id B71031F00A02;
+	by smtp.kernel.org (Postfix) with ESMTPS id B6CE31F00919;
 	Wed,  4 Nov 2026 09:59:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
 	s=k20260515; t=1793786349;
-	bh=idiDEZyV2AKslTWp8TVyyW6q1t+3S/0RWjaWZEHTHTM=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To;
-	b=QIhLCGZtJs6IGwSjiOefaAYyWxn2wAz34QveAFQ6O7AAHx34oWeVq1gyKG8HRVE0K
-	 rCs39YHJzMo1h4DnHmPOQ9BDnd1unn/dm6Kis6ccRHV7wnAEhDEuL9ltl3Lr2SY5ve
-	 psKClZfoHaCcaLH75D5UDDXm3HKwlfoC2wNjx1lCCCltgC3pMLCXX19Zk/97HLdoJo
-	 YukWLbe1vWbMCKlKMM0KOqwPGxUCNPPrP82xzf+IuqdOSivvaJaYPK2RJ/GKhuXKgP
-	 XueUPkbtZzrwq1yrX53dCpLnrgoz2PLhVl9MqMC5u3132XDnKDmkdf0jR/amEAEaDP
-	 oRsK1L9jkuboA==
+	bh=3Sob1uMONq6SSsdxxC9IdsMSiFRpVas+YBu0+aDW3Z4=;
+	h=From:Subject:Date:To:Cc:Reply-To;
+	b=ftxirbjqa58cGKoYms+B2+AEZvxmfkOYxeogVZSSXcP0RYRHRPMUxesvr7n4wybyh
+	 4QnHr/4yTVZH4n3qvXvkRsIPCyvGjkBqFGNZuRFbqhidPF/Vv5GuKe7bISZorErXiq
+	 OYJyYQ8MnOeh3LEbJM65/j5kCqLYHq8+w/Rm9C1utUJbnDbD56DYbPLUILs7n5jLn8
+	 Sh0P23rRZr+Riol4iQNJUEDLvNgWIxv+zBFZAHQuDwdiiyoFvfnUS0pvFBWAQOUu+N
+	 aDPudopCw0QujRlcT7khXfCAZLawyvCWOzxp2yOCletO8c0CRmhPHIHqM0sak503my
+	 JY/2exbYfF9QA==
 Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
-	by lkml.kernel.org (Postfix) with ESMTP id 37FD646D95;
+	by lkml.kernel.org (Postfix) with ESMTP id 134E746D91;
 	Wed,  4 Nov 2026 09:59:08 +0000 (UTC)
 From: Daejun Park via B4 Relay <devnull+daejun7.park.samsung.com@kernel.org>
-Date: Wed, 04 Nov 2026 18:59:09 +0900
-Subject: [PATCH 2/2] mm/page_owner: also check PageTail before reading
- memcg_data
+Subject: [PATCH 0/2] mm: fix memcg_data reads during a THP split
+Date: Wed, 04 Nov 2026 18:59:07 +0900
+Message-Id: <20261104-kpagecgroup-split-v1-0-f70e947fec85@samsung.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Message-Id: <20261104-kpagecgroup-split-v1-2-f70e947fec85@samsung.com>
-References: <20261104-kpagecgroup-split-v1-0-f70e947fec85@samsung.com>
-In-Reply-To: <20261104-kpagecgroup-split-v1-0-f70e947fec85@samsung.com>
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAOsB62oC/x3MQQqAIBRF0a3EHyeYRFlbiQZiL/sUJVoRSHtPG
+ p7BvYkiAiNSXyQKuDnysWdUZUF2MbuD4CmblFRNJZUWqzcO1oXj8iL6jU+hTVt3tgFUC8qdD5j
+ 5+Z/D+L4feHUaV2MAAAA=
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: Tao Yi <escape@deepseek.com>, Johannes Weiner <hannes@cmpxchg.org>, 
  Michal Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
@@ -115,32 +115,31 @@ Cc: Tao Yi <escape@deepseek.com>, Johannes Weiner <hannes@cmpxchg.org>,
  Vlastimil Babka <vbabka@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
  Brendan Jackman <brendan.jackman@linux.dev>, linux-mm@kvack.org, 
  cgroups@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Daejun Park <daejun7.park@samsung.com>
+ stable@vger.kernel.org, Daejun Park <daejun7.park@samsung.com>
 X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1793786347; l=1494;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1793786347; l=1142;
  i=daejun7.park@samsung.com; s=20261006; h=from:subject:message-id;
- bh=Tqm3nbQI1nWClGneJZ4Vn7FgKvDR6MGrjq0L2fxkJJg=;
- b=jF1VyraheDQeftMsTSeeShKLufOP/x6ZE8gVhGZ9J5wjIN48n1F2UD5mWKXUqYitdOutXoi71
- O73YaVFvaRmDVw6oCDkIzhWabi9SfSmF0DAaIx8yLkW/5QSQ3GX9K2Z
+ bh=y+BIdTbHzrH+8Uu1YnmKDz/Hk8zUyXmI5VDnrLuv9PY=;
+ b=0+otGc3rNezYaJu/zwXPPYuiIecNe6HZUqy7esh0CFuBqce5P1RDP0GxbRJvib69MJuiM1e+o
+ VoK4dvibbOeC6yGIvA864Y0zKn7FrlYCtd9M/sFikqiNwtBE7itbRNL
 X-Developer-Key: i=daejun7.park@samsung.com; a=ed25519;
  pk=4yUfDqGRZTIj0Ik43z1GoMZRWCNm/rgX6uJuM9dtNIg=
 X-Endpoint-Received: by B4 Relay for daejun7.park@samsung.com/20261006 with
  auth_id=1122
 X-Original-From: Daejun Park <daejun7.park@samsung.com>
 Reply-To: daejun7.park@samsung.com
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: wa5gek8ftxa878kcoid5p979n1wiwj71
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 3060340003
+X-Stat-Signature: f17gipr5atj9arm7wa6f487m87pkch8r
 X-Rspam-User: 
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 64E2A14000A
-X-HE-Tag: 1793786350-152249
-X-HE-Meta: U2FsdGVkX1/8wfDzyqMQ431Zyqhoylcdraj7wbe0Q/vjW2mAYF2Rkgz04fWbTNhT2w7/hC3eeRDRr79wWjBIrlGhMA7+qMOBmLkX6ai5CpdIcwPYbxrbdyByxugGAgWsgFBLoiWj86D4s/UGPprFvWErdI0iQNHlaSAV66lpHpYcr9SPdeijMavIi89GgW+oP9B9Bi8MVRCsQWB1ZIIPJMkFwGmUA3ugauF7UNzSRluDAZgoaZmo/R3RJXfXKNmkf83HbtTZ67GR+2AGNBs8RumuMjL+KT+HPUYblalCsmpGkQm23sLKurQ9nIrVZjIW65RLGCSK2LSwF/AimZ4gWu3G3Sy0C4mi6uefhriiVhxtxTxMB2wUUzI0cfOzaJyz6KGA+kLwHgFznisVcwy7szFyn3FDhy15EFajAbsLTFnGBfZ//xymjaT2uLphCOiilZVYtg7dShwSYwGnWrI4Mesr7E0mz/WnkUwgSeZbrAQnjydaVitDi6js80NIEG/+SBLVaHGTl9LpqBh8tspMOIrmYHM9J1QAn8CXH6/gcJncuF+JzCUHDvhyZ0WhQwjami32YF2Z+FhEgLNwrEK/Xs6GeWt4kEefIeaDrEIgl1KFJ7iJPIgG+ZBvvTFBIsW9IEZXyleiMBATnUri006/SP7vZr9PgutAqB2eHmvD2BCQq/cpFEAW1ETiNwRhBnUB4MlR+0YDPniKIC7LYefinvyCtuRQuLgsH6KEve0pTc9BkmeSdpWgDlK/3wIJ6+pqQ98gNSp4SLe4wvMeHb58pSNDvhO6O9lvJCmhOJW9V+AFn0mo6uJE8GCQlGZnWd+DSsCWangM1mXzy8l3WiE+1+mFXNt4pjuM0DvW9soMvmdg+bkIgXIbAjweWI6laBZfkPDlXYLF+CECpK56lzq2BKZRS9A+Y3j6TA/sIJEk2q2pU5YIbqC/x6dSmX8tXoqdQqGCKvw9RjSSOq/nBJX
- A0oCe9c2
- /q2K+I8v993n7gKVTtn0V7CnRZixBGYsfSVfgc+kxK0t7XbsZQYyeRo0Fcm9/87LKfGlpG9aDKSvQBvSc9ZElXBPfpe7nP8BwNmhkXVPV5HCaSuj2WZY8MG2POdWsUFLOmmZSqXrgAM1dcUNrcg8MH5NIpu4YBd/MES+LNx1M+5KiPryx06BPB+0sphUe9To4qufh2VxEKUPh+8cFLPJ7VBFXJtufqVrxv2mjYNW48Ibuxb14xi1O96Ih/yD39sgU0+nJ/hRFGhpoNwxM818F1ic5uyJl3XJmbskyOIct38MgjTvvr/KshOGJ1FyzJMzYtO7zQVRoLXuuNrpx7FZHgbqTQ/k0+CIhZGZHFyfBIDkGl1gy23rIF6in0kYbLM/fXyjbnkms6v/4PrnWBYbP+ipgSP90bxpXWHK3MgXC4/XdWZxrf0EONSlB+f8sDlE8asdToRq9fN133rrUvOCKlFa0amVw0zPTxuto3olQsbLM9WC8j5cMHm5gHyCwZ7rhqLZC775zNSQoHc+Z5NNpNBbqFA==
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1793786350-32118
+X-HE-Meta: U2FsdGVkX1/49DyD+9wrGyh0us6VB0t/yuaPMCgskP9ALbf2VxgvLTub/fQd7fqJ7T1BbwVvqEusP6KkhO3VWhlRqqOWASG8/1U0dxkZwHkSVgFEXCEI9dfRMSCQahgiiD1KsM3v4XQXjQTz39ACoFYA20Jyh8mrDH/UTl1VXxT8uGOYem8M6TjIyEjKXcB791dZ1ZQDKXvrCh1cFSAVCrweT3mNnEOJoh8lnHfzDmMW2ZlmdUh/B0i6Gul/tw86zPYDQ8wbs+8SfKSEDfZIOHJjiUVJWziSsQLhkE1XMQTpg1hE44IV75MRB7W8WEicd6lOuHR+gm3YgC9dajF952J37LhehqJAYZ4rKudAhj5hGXtRLgrHIgbnbdQtaeFeNgK1ZFZWrgbMS88LLEFxuM6aHcu0uUXcxM8DMmrI8/v98emWgYkYjOI4Ymd1VKzRjITJL1Yh2bz5iWCdS+BH/gfkZaY19kNVk8ss1mW5CGyNiKcnZdgzDFX0nngbRPl8IlS9vusBGuHv+B+qklNP9R5+l+Ln3ffY/u18uNcdddb/f4nx5FjHwsgJ95Qq/4OjJQlGJN3jQkHdf7a1TgzxBTiuMsSPD9Q85eh924vt5WDOIdrPWHTGGypkXRBbiyCQEpPaA+NPITqRix/8DoqkpIHyGCs3iu1ovT+GxIJtl9munIP1YG0Ve/vtsMDIuiZb/clFrQ3Io12yd/+YvJzZTGrBFvI1uFacLcoAnUULWCeDqsYm09j7TCUFr4hdk0ul6TOnO5kEReuxntrW23/VeSx2rB7TDmYNKQcdt02JkPHsUVBLG2tQguKWtoHKgZ1X6YetS5rpdai9CMTjD2WCkdp8No3f2zN/APASJVKkpC6KB5hGc4CHK1aewhT52Jzy0RHHgYLljKSsJbq8HnIi7zl+U0hy8W4mwBOVIa1uujoVMBiaHgwCNMfxcdXexMkp1C2pFnpdJMHaN9viav/
+ gY98Gosq
+ VOjY1pO0dS+oZcFVsnBZpkugUIF9cPHb3tKynvjH2nCX/hrd/uRE7fD5bXB/mlO6+O4iwZCeAh48xSvEhUbHEP0P/WZg0tTtSExzntjReDYXc9zz7rb1rHv2X28OjezpnesPfYWTiCGl95qE46wIV9Z+wxsvJlMDvczPUyAwI1tQsYFvDotUj1Z22YoSrXq8XUI3gNKmZqWdWSRkWNtgkrCOJ0hS9ZMTlMnefVPGqrJJy0SSifQrQkohiBZzqKmVLSpEQy4WnPu0MGBHSiVGOr2NH9Dfuqlez9e2P6zR/9YThT38wLXjIU3zUBCok42WU4ZrX0fojV/yEy4NB35qQ5ull44sqaBFGbZiB4tmIANiDZtLgSkA4mjPycmxR1mDG08zGAkLe/EpijC2u3NT9cuCfz/nrnEG0esBn0chnx1hhCN0ggYmxYEaECQAs2Qvpb32lBK74L2vRqBo5VvRDtMmrp+TpdskuItuqhQrOduU2T4w26KWnXWHYyPaPcgDzGrn5ySGLt/3S9IWI3uRYpWWdYF4gO9/cYzLEJDTMSZCb3EOwcFkv8KMlg4ReXCQgUUWDQEIE1V+kLOdqXf2Cyan8W3rF79jmENktr4T5c1Mry7I=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -149,49 +148,35 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-From: Daejun Park <daejun7.park@samsung.com>
+Tao Yi reported an oops in page_cgroup_ino() while reading
+/proc/kpagecgroup and traced it to the THP split in an RFC [1]. The
+RFC skips frozen folios in the reader. Patch 1 moves the memcg_data
+copy in the split instead. Patch 2 orders the same loads in
+page_owner and needs patch 1.
 
-print_page_owner_memcg() loads memcg_data before it tests PageTail().
-In the first tail page, memcg_data holds the folio's _nr_pages. A split
-can make the page a folio between the two loads. The stale _nr_pages
-then passes the PageTail() test and is used as an objcg pointer.
+Charged large kmalloc pages are frozen, so the RFC would report them
+as uncharged. My review of the RFC [2] got no reply. Tested on x86_64
+with KASAN, see patch 1.
 
-__split_folio_to_order() stores memcg_data before the smp_wmb() that
-precedes clear_compound_head(). Also test PageTail() before the load,
-with a paired smp_rmb(). Keep the test after the load for a page that
-becomes a tail in between.
+[1] https://lore.kernel.org/all/20260907124001.1544655-1-escape@deepseek.com/
+[2] https://lore.kernel.org/all/20261028040418epcms2p7ac0f584cdfdc6a0ea9b7f20eadeada3d@epcms2p7/
 
-Fixes: 4996fc547f5b ("mm: let _folio_nr_pages overlay memcg_data in first tail page")
-Signed-off-by: Daejun Park <daejun7.park@samsung.com>
 ---
-Needs patch 1 for the store order. Found by reading the code, not
-reproduced. The page_owner oops seen with a delay after
-clear_compound_head() is the window patch 1 closes.
+Daejun Park (2):
+      mm/huge_memory: set memcg_data before a split page leaves the folio
+      mm/page_owner: also check PageTail before reading memcg_data
+
+ mm/huge_memory.c | 17 +++++++++++++----
+ mm/memcontrol.c  |  9 ++++++++-
+ mm/page_owner.c  |  7 +++++++
+ 3 files changed, 28 insertions(+), 5 deletions(-)
 ---
- mm/page_owner.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+base-commit: a13b500946e5dc467976838572b8ddd2fd777ca7
+change-id: 20261028-kpagecgroup-split-8a749c6ee27e
 
-diff --git a/mm/page_owner.c b/mm/page_owner.c
-index cfc31c92d7..058d4dec84 100644
---- a/mm/page_owner.c
-+++ b/mm/page_owner.c
-@@ -564,6 +564,13 @@ static inline int print_page_owner_memcg(char *kbuf, size_t count, int ret,
- 	char name[80];
- 
- 	rcu_read_lock();
-+	if (PageTail(page))
-+		goto out_unlock;
-+	/*
-+	 * Order the memcg_data load after the PageTail() load. Pairs with
-+	 * smp_wmb() in __split_folio_to_order().
-+	 */
-+	smp_rmb();
- 	memcg_data = READ_ONCE(page->memcg_data);
- 	if (!memcg_data || PageTail(page))
- 		goto out_unlock;
-
+Best regards,
 -- 
-2.43.0
+Daejun Park <daejun7.park@samsung.com>
 
 
 
