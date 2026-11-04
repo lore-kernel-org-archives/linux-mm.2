@@ -1,66 +1,66 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6A3D606C92B
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 19:57:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 305E6606F286
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 19:58:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kqE7S5Xb
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Y2iTdlR0
 Received: by kanga.kvack.org (Postfix)
-	id C9A7D6B05B7; Wed,  4 Nov 2026 14:57:19 -0500 (EST)
+	id 521F66B05E7; Wed,  4 Nov 2026 14:57:59 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C4A436B05E6; Wed,  4 Nov 2026 14:57:19 -0500 (EST)
+	id 4D1B16B05E8; Wed,  4 Nov 2026 14:57:59 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B12AB6B05E7; Wed,  4 Nov 2026 14:57:19 -0500 (EST)
+	id 399B76B05E9; Wed,  4 Nov 2026 14:57:59 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 833EF6B05B7
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 14:57:19 -0500 (EST)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 202E0120817
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 19:57:19 +0000 (UTC)
-X-FDA: 85398495798.20.4847EF4
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 6E60C40009
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 19:57:17 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kqE7S5Xb;
-	spf=pass (imf04.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 0A92B6B05E7
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 14:57:59 -0500 (EST)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 16D241C3C51
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 19:57:57 +0000 (UTC)
+X-FDA: 85398497394.18.C4F62E4
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 3CEF540003
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 19:57:55 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Y2iTdlR0;
+	spf=pass (imf12.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793822275;
+	b=F2bARRzvAfpJUFL8wyLCBWomoLC5K1Wn5qPBs7HjIPSTnWoH+ArsfoWDvjaRCEz0M+vKZH
+	F3JH2pYsipetyTnSMmvgqLnPo8d/wMXHapueP5Xket0euYzw1frUxBIjLqe7KO1+2enmzj
+	KNaYQ7c+irTGJJ4pmZ3nmPLGjw/an+4=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Y2iTdlR0;
+	spf=pass (imf12.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793822237;
+	s=arc-20220608; t=1793822275;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=TlMRmMUMe8QjAR6CrqBxKOo0d6t3LuUXfgeBLoU2aVQ=;
-	b=wyRJ71qjyRRlb9b1RfrW9gx4bw7fxuX7yWox5liXWsFxxUNuEe2+ZCJp/9H5SU/fEqcTH4
-	AozaqRNkBY1PO1oeYbFQPW701+D8jjiSi+jHsPG13KSWynbHl6d9xGnncNE/TnzyQZmnUK
-	zT35xJQv0klfST9et0ZYyEJhdlzmcB4=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793822237;
-	b=MNXWDN4gxZtv3cihe/czvVYU2ZIOdNeoWpuvAS7ktykJ8DrJiwGmwPaNZh0yyJPd32WvcF
-	P1pb0x9QgtNC4xvNiftHxYuN0PiS+JiCvQ8qItSr4xnAgsF7LtJMwqcRuZzaNKrY2/z7BI
-	HupZpKgobbQ2wpqQd0Oe4b3Gy3HL60M=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kqE7S5Xb;
-	spf=pass (imf04.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=UZdOA+3CE5izmOdTTTXgHXS4uUaDstm5crcgIHLlWfk=;
+	b=vxAZwQtULr6tFb+KASqJrvDSujpixRjCYGy/drfUXL3Q78+hrkV8Cn+zhCdNOzOswp6yZ9
+	K2byIaAcygHKODOXSGqEp+jdyMIhtwRlJHbPk9b4QJboh7TzZLdM0OrFkyiKaKBaFhQ9Pc
+	I2UQCbTU8mxzPnBKIUKBjL8KeUAvtY4=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 0611160F30;
-	Wed,  4 Nov 2026 19:57:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73B4E1F0093A;
-	Wed,  4 Nov 2026 19:57:04 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 6882E40956;
+	Wed,  4 Nov 2026 19:57:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 402E61F00919;
+	Wed,  4 Nov 2026 19:57:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793822236;
-	bh=TlMRmMUMe8QjAR6CrqBxKOo0d6t3LuUXfgeBLoU2aVQ=;
+	s=k20260515; t=1793822274;
+	bh=UZdOA+3CE5izmOdTTTXgHXS4uUaDstm5crcgIHLlWfk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=kqE7S5XbuPIKNWgp4NcZtfxZcKDOczdTyfF6Lb8nBkfcnxaRlqnGD+MaRgRQBXNdL
-	 cL1adcnEzbJdtGYfAsG5VHAqA4BETjnf58PLyPmqGWnQP0rpXnLeJ/+QmKPG7qeIKA
-	 hRq+/iIxd2JbJ+p/at2OkZrx4ySzYMev1Cd2Jsd7KGS4shN4u5UzGNl2aeD7+6rjz2
-	 Jz//M8FN+MIGMB8INEniatc1xDsyIDdvQxrW6TC6MgJiqUpNa9XPgFBq7Foxi5L6ah
-	 DogTh1A4WvscXityp0tTb9b/tpjyhIQ5HDNDc9RYmgXzkAUT8tucExiczCpS3FKXuW
-	 ZizaXv/BEuT+g==
+	b=Y2iTdlR0ZfAgkuyE3kX1ZL7DWUu9wLjWmtzm5wWO2LJ9Wlxrx0hUnxPSwyc7kbmyl
+	 k9UhjT0dFpFdrjvyjgQdPZV05SCRlTxHv6E6Qd8LrPVtFVyuUFjp3ykV58pqQUVY2r
+	 MbYTcMrA/jojYxJnMk0JILT4Wml/tvL//dtLMrrmFOWrx97VHKgUE/r4LMCBXD9N/6
+	 B3ogZhx8ohIFXGNd0ROQJ9yqwQ4gpK46CpAXQ1aC4G+OxWH0q7od2mbr6hwohkJ9Kh
+	 b7fNg/ibJ5hJqXVkk1HEXMg15zZgwHjWPrl5u6yYGAlhkwkpy+2xbXW3oG0En6tIE6
+	 9v50UOUKofXLA==
 From: Christian Brauner <brauner@kernel.org>
 To: linux-fsdevel@vger.kernel.org
 Cc: Linus Torvalds <torvalds@linux-foundation.org>,
@@ -121,31 +121,32 @@ Cc: Linus Torvalds <torvalds@linux-foundation.org>,
 	linux-debuggers@vger.kernel.org,
 	"Christian Brauner (Amutable)" <brauner@kernel.org>,
 	Chuck Lever <cel@kernel.org>
-Subject: [PATCH RESEND v2 30/30] selftests/proc: check that unloading configs doesn't wait for a reader
-Date: Wed,  4 Nov 2026 20:57:02 +0100
-Message-ID: <20261104-work-procfs-fs-v2-30-319e0f9a8aae@kernel.org>
-In-Reply-To: <20261104-work-procfs-fs-v2-0-319e0f9a8aae@kernel.org>
-References: <20261104-work-procfs-fs-v2-0-319e0f9a8aae@kernel.org>
+Subject: [PATCH RESEND v2 00/13] proc: convert the net entries and the kfifo samples (Part 6/7)
+Date: Wed,  4 Nov 2026 20:57:39 +0100
+Message-ID: <20261104-work-procfs-net-v2-0-221e2437fed1@kernel.org>
+In-Reply-To: <20261104-work-procfs-v2-0-b45cd5789ac5@brauner>
+References: <20261104-work-procfs-v2-0-b45cd5789ac5@brauner>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
+X-Change-ID: 20261101-work-procfs-net-bc8b21e3eff0
 X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=6975; i=brauner@kernel.org; h=from:subject:message-id; bh=Zaf7aQXhU8HLaVPdOPllMB8eHKp+Tuk66nG4inrKqtI=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS97vHv7BDe1a4XkZsjGzjxhP5d1TaR9DwbEbXP7r+UK lx1gtQ7SlkYxLgYZMUUWRzaTcLllvNUbDbK1ICZw8oEMoSBi1MAJhIhzsjQ+O/84rDM6r9Orw9O bhF9KqEldSQrX6wjhOPqjMMJV2IaGf7XCCjtOGddIBLj/P/jR3XTdf+Epk/fMvvJmQWuDy6+if/ ODwA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=9505; i=brauner@kernel.org; h=from:subject:message-id; bh=qnhGrpRefxpjNcTTxY9kL9DyBBEWXr3edHhn8AbFjlU=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS97lNacdqwhH3X7Ha/ozMF19uciBe+oJHl+tfums/MW 89awifc7ChlYRDjYpAVU2RxaDcJl1vOU7HZKFMDZg4rE8gQBi5OAZgIQzXDP809i7pXbTyvt3PK ortr5uXvX5HwtnOD3JoPbGffa3xI5Yti+GchlNM28w3Xubd7v+mWayYavG/Rr3j2bqdullPMiWC mVdwA
 X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam06
-X-Stat-Signature: ba5ut7i4me9gio8ko49us3x6gbgsf87j
+X-Stat-Signature: 9yhqef79fi3q7oehdh81x4qwocasteud
+X-Rspamd-Queue-Id: 3CEF540003
+X-Rspam-User: 
+X-Rspamd-Server: rspam11
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
 	version=4.0.1
-X-Rspamd-Queue-Id: 6E60C40009
-X-Rspam-User: 
-X-HE-Tag: 1793822237-316225
-X-HE-Meta: U2FsdGVkX19JARDMILBwKup/dtPWkzVMSkB77+J3f5a7LEmni1xta5Cw+hGjQEeC070ST7fvDH6OT6SqYMGlN0LnZcH0yka85av6bJjWhmUaZ/ZWW95oMMH2AdF+M+S7qsgINfMdUeVzj2h8xJkemMnjK4PFy8+uW8NK5pafk0aOOl/KqjaVKQcPL/CPIyi9FAQ92pbKGwUoj/YSOUKP8UO2F7kIij6ly21O7Vf4T2NSaW39roZd17S+cusbUhVpB4Rkp7RKwwk8zEOmM0OBU5dsuLmtIT3Pn69uZ3KaI+rghRRtm/sNcMsjEw9Ptlx/3l2YMBZIxPu3Dw78tKr1VECWpFRWV8Ei36/qnepnlM0LsKehpnA4Etrr9HMrtcQQMjpR7ZiCG9XgmmXoswlp04K6BPSmVfRcO8128iTEBM5Ifjf146eIQrp+qenC33nu8wETibqg6hs1EgPsTUCnre6kp+3BxJBn+qDl0kNoswCaUixngdLL7ZsowPNV7wtQ0ZCwz+NMJN0+XA9HEg8dKP0/1nxOLesb8Waw1SVBsXupnYh9KKqgJJCZ//JemdVXWweYIdGoV3hmpzdpsJ13aeisVU7azdeMXeUOxpZRdhRi5rIDgp+yX/ybihhI3ERR+AtP32ELPRwrQ5suxGRHWPhR4J2JjBhldmcGF8FIkP+Ryy1fGKHTEX+GgmiXRnFkmHtcnIuudyEAQH6tZ/ACbUUX1qttJLbTFirdzeaz9WlmqhNS5i57wB/mfcT/d196E0gWAYmbJw08dOqblG6f2s4PmgDtj2AyBz8Ih/lUt/b2qqy/lzJer2qaE9ZcG3z9C96A/ziBnF3HiGfxK1PdrZ12+rqcst/wrmv/8xsOlcWyvG3t3BrYN/gktUtqveKTTm+2R/p442O5YuNPh4iVAiO0g/0QCV3T4UC4Amt+EO1zHrNsmaORWsRJLvkOzG4i0KPVxQyvBVpkvCBIwev
- SN7mKq71
- /w87W+hGF2tLAYE5Mmu98YcND7dbXImev6HXOBG2ktaM7bh0PPyIcmPnJ3PttsjoyL8FWsCaTj6lftiNBWH+Ioo0Sc9g/QGq6QW9fQ7OYpNPrE73ZiIivf7AmHajrNyQ5w8+LWTIW1ayo4Kgdtabx2N1Q9A0EUyCbJsrBa/s7Al9Dr/ytwxFXFy21VcXyMnx8MAQQlIODnbTT73wAZwFTAElyx1+KbFFrk4TirBFVUGh9eqKnjAlE9JHJyeNQ88iW6h6zaRqeTK4EA7t0uzUr5429YPTuLY32XNAR
+X-HE-Tag: 1793822275-171916
+X-HE-Meta: U2FsdGVkX1/EHf5f/3HegOO2s5m4cyRz2kz5xy2CY5k1wLLX7H8rlLVfTLOJU9iHmGwIflURE06PhCDe/sQj1Vsce35uyXCK+kpEwVtIHRtEloMaTTjvkQfJ/kOTJyiM5SHsRJUI0jGO5GgwL0wAbHyuFlEQrazezCiOlz67xyK+mxvwHD1Sz3YNLZNTPqdauT9lNneDujPARNVv7D6Zd5b6GOPLtvhZh/VUb6KQqk76B9g17IN+DOxZKeFLNVmC12KRwa9Q/Pz2Dbc6bFiQ1uxLyKIIiClSbKZvVMIeupbplzZ6KyJ94Mxi39nGRS/yKc42RtQFppAGSu0qSM+zJpynMGvEZt92Qhdul/pYTtf3YbD/cCb6G1enDrZf7OiLckRlkcZREH80mnhrutCle9ecJ+//SUeTJVRuUrEQotmCkScz1TbuR945E8+mllZNrcVVuJn1MQg7ig61a+8B34ePiVf1AJv13UnlAcWU5dTZYhEL9iRz24uhqVD2UD6aCLpIwpCFi3lxCUerD7fsv3EWiPfHj6AdSEV0tP1I+Fba6biWmtnuUXolER2ZtVsCCqbodwWwzFbbhYHihY+adopOqymXwpLlpjjzK6cEHuOUAG/Pf4l94ybS0Zj9+wDUYdlPrzk99ZAL4rw3MNZhi5Q13J3wxB/P1LGmr7Kpn4CL5HJJshtkbdvAwuWGu4C8k+I96jhqU6Wamiwbg0NEHCKMe3S6JkgbMsjzK5G8ypCK1UiAUOqIewJkRpFwUXKE/i9DhYEdB5Humz0KS3Y8jtYwnhIIacPyYSBMYW1Dc5WUEp8rvQQLVmqRL+3P9csKQfv93NYMKQ9zk020PGEz/Tr5ewzcBaGyHllLD8POJNcLK8j6iDaZMOQO5W1tHMkJvjPkD+aAeYBn8QKXSQxh9TlRQu7iBOh6cNsmbD+Lx5+cIeNyjG1EplcX4xrgCRTZrL7ekgSSNrWiJMgjS5F
+ qiW5sLaY
+ motYfnwRfRrKN7+AmvvAoMBqyHt8cqZU7dH4S1BNpTEjcYIoDunzUWKUvGbAfUFC5vZ1+mO7iXnzpIpSdjYOV588Dq2OEsRjP3crAKmM2y8MmQQ/MqWMvJdE2l5XtLPQmA9wNCUY2FqBoTul+/482x+38Nm5r1yvuCF4xTgHZcMsNNzuhFRvrkt1OQ8xM3gZ3cg313VnYavTnChGeu/zA3QtOPHVp4bXt8xxoR9h2WUKvUQRHEZr15TSu5C7ktz/W6HPqNBtWH2BI//eRUgXv/RkQjvYr4LcQ/IdOoW4nQgPUGxie0Ownv7WD+r/+/mA3htFARAnojWtILVn/gfoTFWt3oJFzYqWedg9oWBS+zy9fy4bj8u9fgPpvFw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -154,229 +155,166 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Read /proc/config.gz into a buffer whose first page is backed by
-userfaultfd and unload configs.ko while procfs copies what was read to
-userspace:
+Part 6/7 of "proc: move procfs to what kernfs does", on top of part 2
+and independent of parts 3 to 5:
 
-- removing the entry doesn't wait for the reader
+  https://patch.msgid.link/20261104-work-procfs-v2-0-b45cd5789ac5@brauner
 
-- the reader still gets the page that was read before the removal, and
-  nothing more
+This converts the proc entries of atm, l2tp, pktgen, xt_recent and
+sunrpc, and the kfifo samples, to what "proc: let procfs own the data
+path" set up. Afterwards the entries' code only runs with the entry
+pinned and never touches userspace memory. One patch per subsystem and
+method.
 
-- and the next read fails with -EIO
+- procfs owns the seq_file of /proc/net/pppol2tp, the xt_recent tables
+  and the sunrpc cache content files. Their open and release hooks only
+  take and drop references now, and reading an xt_recent table or a
+  cache file no longer holds up its removal.
+- procfs copies in the writes of pktgen, the xt_recent tables, the
+  sunrpc channel, flush and use-gss-proxy files and the kfifo samples.
+  The sunrpc channel files take 32k downcalls, which is what
+  ->proc_write_size is for. Where a write larger than anything the entry
+  parses now fails with -EINVAL from procfs the commit says so.
+- procfs copies out the reads of the atm device files, the sunrpc
+  channel, flush, use-gss-proxy and gss_krb5_enctypes files and the
+  kfifo samples. The sunrpc channel and the kfifo samples are streams,
+  they hand out what is read before procfs copies it out, so a reader
+  that passes a bad buffer loses that part.
+- the ioctl of the sunrpc channel files goes away, do_vfs_ioctl()
+  answers FIONREAD for regular files before the file's ioctl ever sees
+  it.
+- the sunrpc channel files move their pollers to the wait queue procfs
+  owns for the entry, which is what the static queue in the bugfix
+  series stood in for. The rpc_pipefs channel files keep their
+  queue_wait, procfs has nothing to do with them.
 
-The test loads configs.ko if it isn't there, skips if configs is built
-in or can't be unloaded, and loads it again afterwards. It needs
-CONFIG_IKCONFIG=m. kselftest-merge keeps the =y that other fragments
-ask for, so it skips there.
+The selftest polls the channel file of a sunrpc cache in a network
+namespace of its own and lets the namespace die while the poller sleeps.
+On a KASAN and lockdep kernel it fails without the series, nothing wakes
+the poller and it times out after ten seconds, and passes with it. Build
+tested per commit on x86_64 and with W=1 on the touched objects. The
+pktgen selftest behaves the same with and without the series and so do
+the entries I could get at in a VM.
 
 Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 ---
- tools/testing/selftests/proc/.gitignore            |   1 +
- tools/testing/selftests/proc/Makefile              |   1 +
- tools/testing/selftests/proc/config                |   2 +
- .../proc/proc-remove-slow-config-reader.c          | 157 +++++++++++++++++++++
- 4 files changed, 161 insertions(+)
+Changes in v2:
+- sunrpc lets procfs own the wait queue of the channel files, which is
+  what the static queue_wait in the bugfix series stood in for
+- new selftest: removing a polled entry wakes its pollers
+- Acked-by from Chuck on the seq_file and ioctl patches
+- the selftest commit applies on the core series alone
+- rebased onto v7.4-rc1
+- Link to v1: https://patch.msgid.link/20261102-work-procfs-net-v1-0-982104a4f592@kernel.org
 
-diff --git a/tools/testing/selftests/proc/.gitignore b/tools/testing/selftests/proc/.gitignore
-index a1994bda676c..ed863db1688f 100644
---- a/tools/testing/selftests/proc/.gitignore
-+++ b/tools/testing/selftests/proc/.gitignore
-@@ -21,6 +21,7 @@
- /proc-uptime-001
- /proc-uptime-002
- /proc-pidns
-+/proc-remove-slow-config-reader
- /proc-remove-slow-sysctl
- /proc-remove-slow-reader
- /proc-remove-mapped
-diff --git a/tools/testing/selftests/proc/Makefile b/tools/testing/selftests/proc/Makefile
-index 8fcab5af502b..95c9212fb670 100644
---- a/tools/testing/selftests/proc/Makefile
-+++ b/tools/testing/selftests/proc/Makefile
-@@ -33,6 +33,7 @@ TEST_GEN_PROGS += proc-fsconfig-hidepid
- TEST_GEN_PROGS += proc-sysctl-readdir-churn
- TEST_GEN_PROGS += proc-pidns
- TEST_GEN_PROGS += proc-remove-slow-sysctl
-+TEST_GEN_PROGS += proc-remove-slow-config-reader
- TEST_GEN_PROGS += proc-remove-slow-reader
- TEST_GEN_PROGS += proc-remove-mapped
- TEST_GEN_PROGS += proc-remove-slow-readlink
-diff --git a/tools/testing/selftests/proc/config b/tools/testing/selftests/proc/config
-index 992577d15295..15b307189392 100644
---- a/tools/testing/selftests/proc/config
-+++ b/tools/testing/selftests/proc/config
-@@ -11,3 +11,5 @@ CONFIG_SND=y
- CONFIG_SND_DUMMY=m
- CONFIG_MODULES=y
- CONFIG_MODULE_UNLOAD=y
-+CONFIG_IKCONFIG=m
-+CONFIG_IKCONFIG_PROC=y
-diff --git a/tools/testing/selftests/proc/proc-remove-slow-config-reader.c b/tools/testing/selftests/proc/proc-remove-slow-config-reader.c
-new file mode 100644
-index 000000000000..5f7bcb27b315
---- /dev/null
-+++ b/tools/testing/selftests/proc/proc-remove-slow-config-reader.c
-@@ -0,0 +1,157 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * A read that faults while procfs copies it to userspace must not hold up
-+ * removal of the /proc entry. Unloading configs.ko removes /proc/config.gz,
-+ * which isn't a seq_file.
-+ */
-+#define _GNU_SOURCE
-+#include <errno.h>
-+#include <fcntl.h>
-+#include <linux/userfaultfd.h>
-+#include <poll.h>
-+#include <pthread.h>
-+#include <stdlib.h>
-+#include <string.h>
-+#include <sys/ioctl.h>
-+#include <sys/mman.h>
-+#include <sys/syscall.h>
-+#include <unistd.h>
-+
-+#include "../kselftest_harness.h"
-+
-+#define CONFIG_PATH	"/proc/config.gz"
-+#define CONFIG_MODULE	"/sys/module/configs"
-+#define READ_PAGES	2
-+#define TIMEOUT_MS	5000
-+
-+struct reader {
-+	int fd;
-+	char *buf;
-+	size_t len;
-+	ssize_t ret;
-+};
-+
-+struct unloader {
-+	int done;
-+	int ret;
-+};
-+
-+static void *read_thread(void *arg)
-+{
-+	struct reader *r = arg;
-+
-+	r->ret = read(r->fd, r->buf, r->len);
-+	return NULL;
-+}
-+
-+static void *unload_thread(void *arg)
-+{
-+	struct unloader *u = arg;
-+	ssize_t ret;
-+
-+	u->ret = syscall(__NR_delete_module, "configs", O_NONBLOCK) ? -errno : 0;
-+	ret = write(u->done, "x", 1);
-+	return (void *)ret;
-+}
-+
-+FIXTURE(configs) {
-+	bool loaded;
-+};
-+
-+FIXTURE_SETUP(configs)
-+{
-+	self->loaded = false;
-+	if (access(CONFIG_PATH, R_OK) && system("modprobe -q configs"))
-+		SKIP(return, "no " CONFIG_PATH);
-+	if (access(CONFIG_PATH, R_OK))
-+		SKIP(return, CONFIG_PATH ": %s", strerror(errno));
-+	if (access(CONFIG_MODULE, F_OK))
-+		SKIP(return, "configs isn't a module");
-+	self->loaded = true;
-+}
-+
-+FIXTURE_TEARDOWN(configs)
-+{
-+	/* an ASSERT may have fired with the module unloaded */
-+	if (self->loaded && access(CONFIG_PATH, F_OK) &&
-+	    system("modprobe -q configs"))
-+		TH_LOG("couldn't load configs again");
-+}
-+
-+TEST_F(configs, remove_while_reader_faults)
-+{
-+	struct uffdio_api api = { .api = UFFD_API };
-+	struct uffdio_register reg = {};
-+	struct uffdio_zeropage zero = {};
-+	long psz = sysconf(_SC_PAGESIZE);
-+	struct unloader u = {};
-+	struct reader r = {};
-+	struct uffd_msg msg;
-+	struct pollfd pfd;
-+	pthread_t rt, ut;
-+	int uffd, done[2];
-+	char *buf, *ref;
-+	ssize_t ref_len;
-+
-+	r.fd = open(CONFIG_PATH, O_RDONLY | O_CLOEXEC);
-+	ASSERT_GE(r.fd, 0);
-+
-+	/* what the first page of a read looks like */
-+	ref = malloc(psz);
-+	ASSERT_NE(ref, NULL);
-+	ref_len = pread(r.fd, ref, psz, 0);
-+	ASSERT_GT(ref_len, 0);
-+
-+	uffd = syscall(__NR_userfaultfd, O_CLOEXEC | O_NONBLOCK);
-+	if (uffd < 0)
-+		SKIP(return, "userfaultfd: %s", strerror(errno));
-+	ASSERT_EQ(ioctl(uffd, UFFDIO_API, &api), 0);
-+
-+	/* Only the first page of the buffer goes through userfaultfd. */
-+	buf = mmap(NULL, READ_PAGES * psz, PROT_READ | PROT_WRITE,
-+		   MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
-+	ASSERT_NE(buf, MAP_FAILED);
-+	reg.range.start = (unsigned long)buf;
-+	reg.range.len = psz;
-+	reg.mode = UFFDIO_REGISTER_MODE_MISSING;
-+	ASSERT_EQ(ioctl(uffd, UFFDIO_REGISTER, &reg), 0);
-+
-+	r.buf = buf;
-+	r.len = READ_PAGES * psz;
-+	ASSERT_EQ(pthread_create(&rt, NULL, read_thread, &r), 0);
-+
-+	/* The reader now sleeps in the copy to userspace. */
-+	pfd = (struct pollfd){ .fd = uffd, .events = POLLIN };
-+	ASSERT_EQ(poll(&pfd, 1, TIMEOUT_MS), 1);
-+	ASSERT_EQ(read(uffd, &msg, sizeof(msg)), sizeof(msg));
-+	ASSERT_EQ(msg.event, UFFD_EVENT_PAGEFAULT);
-+
-+	/* Unloading configs.ko removes the file that is being read. */
-+	ASSERT_EQ(pipe2(done, O_CLOEXEC), 0);
-+	u.done = done[1];
-+	ASSERT_EQ(pthread_create(&ut, NULL, unload_thread, &u), 0);
-+	pfd = (struct pollfd){ .fd = done[0], .events = POLLIN };
-+	EXPECT_EQ(poll(&pfd, 1, TIMEOUT_MS), 1) {
-+		TH_LOG("removing " CONFIG_PATH " waited for the reader");
-+	}
-+
-+	zero.range.start = (unsigned long)buf;
-+	zero.range.len = psz;
-+	ASSERT_EQ(ioctl(uffd, UFFDIO_ZEROPAGE, &zero), 0);
-+	ASSERT_EQ(pthread_join(rt, NULL), 0);
-+	ASSERT_EQ(pthread_join(ut, NULL), 0);
-+	if (u.ret)
-+		SKIP(return, "unloading configs: %s", strerror(-u.ret));
-+
-+	/*
-+	 * The page that was read before the removal still arrives and the
-+	 * next piece isn't filled anymore, then nothing.
-+	 */
-+	EXPECT_EQ(r.ret, ref_len);
-+	EXPECT_EQ(memcmp(buf, ref, ref_len), 0);
-+	EXPECT_EQ(read(r.fd, buf, psz), -1);
-+	EXPECT_EQ(errno, EIO);
-+	free(ref);
-+}
-+
-+TEST_HARNESS_MAIN
+---
+Christian Brauner (13):
+      atm: let procfs copy out reads of the device files
+      l2tp: let procfs own the seq_file of /proc/net/pppol2tp
+      net: pktgen: let procfs copy in commands
+      netfilter: xt_recent: let procfs own the seq_file
+      netfilter: xt_recent: let procfs copy in writes
+      SUNRPC: let procfs own the seq_file of the cache content file
+      SUNRPC: let procfs copy in writes
+      SUNRPC: let procfs copy out reads
+      SUNRPC: drop the ioctl of the procfs channel files
+      SUNRPC: let procfs own the wait queue of the procfs channel files
+      samples/kfifo: let procfs copy in writes
+      samples/kfifo: let procfs copy out reads
+      selftests/proc: check that removing a polled entry wakes its pollers
 
--- 
-2.53.0
+ include/linux/sunrpc/cache.h                      |   2 +
+ net/atm/proc.c                                    |   9 +-
+ net/core/pktgen.c                                 | 128 ++++++---------
+ net/l2tp/l2tp_ppp.c                               |  20 +--
+ net/netfilter/xt_recent.c                         |  19 +--
+ net/sunrpc/auth_gss/svcauth_gss.c                 |  34 ++--
+ net/sunrpc/cache.c                                | 151 ++++++++++-------
+ samples/kfifo/bytestream-example.c                |  18 +--
+ samples/kfifo/inttype-example.c                   |  20 +--
+ samples/kfifo/record-example.c                    |  21 ++-
+ tools/testing/selftests/proc/.gitignore           |   1 +
+ tools/testing/selftests/proc/Makefile             |   1 +
+ tools/testing/selftests/proc/config               |   2 +
+ tools/testing/selftests/proc/proc-remove-polled.c | 189 ++++++++++++++++++++++
+ 14 files changed, 382 insertions(+), 233 deletions(-)
+---
+base-commit: 6628e7d4c6b25c8d18f1345e3a20d21829aae7e4
+change-id: 20261101-work-procfs-net-bc8b21e3eff0
+prerequisite-change-id: 20261101-work-procfs-core-8fa4a4f412cf:v2
+prerequisite-patch-id: a81e8b894107e48d607f8257d2c9f56e0dd6f400
+prerequisite-patch-id: 7edf7ca7ecd32c9e09085e4b65922af10097beaa
+prerequisite-patch-id: 81f6893f79b4236637675553298a6f2892b603f3
+prerequisite-patch-id: 598c2b1a389f47adcac88ebcf1c9f74e2511fbab
+prerequisite-patch-id: 6f5a2172dacc5ff2491fa9832c48ccd0e1ce1eda
+prerequisite-patch-id: 8947af6490288e4e2a3b2bf8844a974bedb1d975
+prerequisite-patch-id: 8cbe756286fd95967d31b0c46cacfeb05f0a2c6b
+prerequisite-patch-id: 3fa159f2b6ccd0ac51a2662e4eec5587ec18de89
+prerequisite-patch-id: bfb4e4ffe9631cb58015fefe6bd3698cd53e2244
+prerequisite-patch-id: 56ff6667a57a962264c07c0227c61aa2f1f4c22c
+prerequisite-patch-id: bc506323e29944ec0c29eae84950c706a8592042
+prerequisite-patch-id: 326c0ebb5accf0f40cbee1323fb4c3378f5be154
+prerequisite-patch-id: d6eaf7690a54a0dfda7500936a048b769fa265dd
+prerequisite-patch-id: 7c7b2535642b4d388e13eab518cbe0f9550eb1e6
+prerequisite-patch-id: 0474af12959624910718795bf86684383664c685
+prerequisite-patch-id: f6d4191e23c22e2d2cc90cc5d04781f913e98a8e
+prerequisite-patch-id: b0031a7c4855b7ec38259c59f30f65101a8fc4b5
+prerequisite-patch-id: 0b7f226abf2b9ff41873a1aa55cf97747647d56b
+prerequisite-patch-id: f63e345f897619af54813958046617c655fb7daf
+prerequisite-patch-id: c0e21e762a2960e3324c5ab04634a7035e515fa6
+prerequisite-patch-id: fd59c71eadd8f39c58b3baea93567bc093bc9b0e
+prerequisite-patch-id: 5d52cc8a5c73e4c5ba16b8e24f51408c17583bf9
+prerequisite-patch-id: 1f9179284e2f3314d4b46ac5e989089a21c7576c
+prerequisite-patch-id: 10397bbf696bee16dc71eb79fff6c5e73842bcbc
+prerequisite-patch-id: 9b44279dcf08912238d2f6438a3328a778a79a0c
+prerequisite-patch-id: 16854b621a3a71dfc365aaf7abaa7f65adfe9f7e
+prerequisite-patch-id: ca42eea21fae1fd1cd3518ab057c74b61ffd68fe
+prerequisite-patch-id: 23255dc2be76b0479c083dbd4c897bfbb533aed5
+prerequisite-patch-id: 82129c687ebf0a41b369893b92f2c038420ab801
+prerequisite-patch-id: 56ad57a99a5bda075a9f4e844368974296744934
+prerequisite-patch-id: 288b3cbaa11e01a778cc3d7beb6c0549aacf59f2
+prerequisite-patch-id: a163b1549608652bfa5bd9ff93efa55b541010c4
+prerequisite-patch-id: 43b92dfc1a98fbf0d14597a3e3ae99972844773b
+prerequisite-patch-id: 19c12bc6e3fbed35acc1f657196b1a997f48cdfe
+prerequisite-patch-id: 5800c3076694bad719954b2ad4d7448c6e013bfd
+prerequisite-patch-id: 2a2f63d8843b159594b9eee6ddea028ce76a6270
+prerequisite-patch-id: 40a1951d57906c4a1b98a4bd96a814b80339b9c5
+prerequisite-patch-id: e2141077e69f20a2b27fab69c8d61d0686682f53
+prerequisite-patch-id: c4d6018c26c40dc549d88330d23ce48f872c2b7f
+prerequisite-patch-id: 6de8ec17746031bc6d1d9ac262c5be0f905fcd79
+prerequisite-patch-id: b87bcb167884605bff1fd0f2ed8a88942d07efd5
+prerequisite-patch-id: cfa9a8b4c67e20cfd22d77035bfd21ee96ab3298
+prerequisite-patch-id: abf3482ed2399b7b2e1ee72e937af05bb9200667
+prerequisite-patch-id: 02c175b2dee565a85b3308ecf2ec8e3c9a029e0f
+prerequisite-patch-id: d58c239fba616b366a725de6acba3f88734156d0
+prerequisite-patch-id: dbe02fe3f784776fda5e7ae99f077bef0cd4b48d
+prerequisite-patch-id: 53edc9a95afff57c4acba40095a8054924261ea2
+prerequisite-patch-id: 5348d8957eb7eae7430ca8b101aa84ce77d3aa4f
+prerequisite-patch-id: 36c96d781e2dd80b20932667bbe6e7fd14976069
+prerequisite-patch-id: efeb2d6f7df71d5dede2c1d12fe999a28e38aab9
+prerequisite-patch-id: 17f95c7fdf0bdc7c8aaaf7883bff1dcc19a0f529
+prerequisite-patch-id: 117db27dcdef433de7c6be5e95973cac1e373927
+prerequisite-patch-id: a0844aa26ffb65ccb362b88ef6c2f4758e15edbf
+prerequisite-patch-id: 9c64355dfde62e399f2717d9208c4607834d4650
+prerequisite-patch-id: 9644739854ddfe2876f17fda8727fd5119255957
+prerequisite-patch-id: c61bba24c035f79a2a32a80ace0924ab58e97f46
+prerequisite-patch-id: 143fb91bddf33068b6ee11e205818c4c2815e23d
+prerequisite-patch-id: 9ce9be2ff05250f92d945c0084f4bb31d3d0b27d
+prerequisite-patch-id: aee0961341523547095a43ae298cb8b551302f10
+prerequisite-patch-id: 2f0fdb970ddd760d85ff5d2caad0b96348270182
+prerequisite-patch-id: f2aa468ff5cbb1cabab3f70e1b8eeee0286cfb4a
+prerequisite-patch-id: 5555895bcbca4d7c9888ecc9e82c0e4d76da8f40
+prerequisite-patch-id: 487141c49e2548310bfb6c2a0964a78f08b285a9
+prerequisite-patch-id: c3d3008819fa5629a18142ec9ba6d7024ade7fdb
+prerequisite-patch-id: ca587c976690ac16e3d759fccab2116fef0508e8
+prerequisite-patch-id: 9423f410b99853693db06c29f12f1c08278b050d
+prerequisite-patch-id: e269815617a6324615a38916b8886f99d98c641e
+prerequisite-patch-id: 3d24be1897a624d519ef144801f76d152c7528a9
+prerequisite-patch-id: 1ea3fc8319d9012faaf3a182ac61d5da89aafdb7
+prerequisite-patch-id: 7547b4e2c1b3588acf6caf90cc01fe7884fdb6bd
+prerequisite-patch-id: 695d325349ebeb89bf0ea24bcf0c4f1c4edacab5
+prerequisite-patch-id: e33502a202979aba0d6fdaf196e8471d906992a1
+prerequisite-patch-id: 47bfe4f07677ad75fe8d9accc8923a1cbdf3afa6
+prerequisite-patch-id: 9fc0739226572203fcb36f2c271be7b27f405ef2
 
 
