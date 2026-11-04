@@ -1,51 +1,51 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A725606D811
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 09:17:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD193606A31B
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 09:18:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 44F476B05C0; Wed,  4 Nov 2026 04:17:49 -0500 (EST)
+	id DEC9D6B05C2; Wed,  4 Nov 2026 04:18:06 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 400146B05C1; Wed,  4 Nov 2026 04:17:49 -0500 (EST)
+	id D9DC06B05C3; Wed,  4 Nov 2026 04:18:06 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 33CFD6B05C2; Wed,  4 Nov 2026 04:17:49 -0500 (EST)
+	id CDAF96B05C4; Wed,  4 Nov 2026 04:18:06 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 0C7E46B05C0
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 04:17:49 -0500 (EST)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 831A440697
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 09:17:48 +0000 (UTC)
-X-FDA: 85396884216.15.AD613B6
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id AE3896B05C2
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 04:18:06 -0500 (EST)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 3293E1606A2
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 09:18:06 +0000 (UTC)
+X-FDA: 85396884972.05.003F8DD
 Received: from verein.lst.de (verein.lst.de [213.95.11.211])
-	by imf21.hostedemail.com (Postfix) with ESMTP id C86011C0004
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 09:17:46 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
+	by imf12.hostedemail.com (Postfix) with ESMTP id 5D54340005
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 09:18:04 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
 	dkim=none;
 	dmarc=pass (policy=none) header.from=lst.de;
-	spf=pass (imf21.hostedemail.com: domain of hch@lst.de designates 213.95.11.211 as permitted sender) smtp.mailfrom=hch@lst.de
+	spf=pass (imf12.hostedemail.com: domain of hch@lst.de designates 213.95.11.211 as permitted sender) smtp.mailfrom=hch@lst.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793783867;
+	s=arc-20220608; t=1793783884;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=2j+fNl2kk6EUtKkWbcK+QC3SrWBZ1R/JSeRG1EGPR8o=;
-	b=lkcElL989TRCd66mWxwucmqWHM+WfkcLNYO5uZ9g/BQKwwrDC7hOOPEobC+LmBqFrEAFC7
-	RgGdzbHw2f9GHp2TVwsD8gEAThoT8RYUIhZeQH/KhzqxfcHfLklF0+Ddsg/zTYoJYS4nW1
-	2duSkxWqKWXb52Ozd2N08Ec0zS6xhno=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793783867;
-	b=5PiqSXG98vaw2ygPpJg5CM0aKwu3qRt2soEo0fFYixBe0SNzG/iQ7F6zTOM+T7+gBdw00B
-	+f1J51kFNImkSAZL2nGZjkfo0zHyZ3o6Ot5OaoGhKcuzZhNKOlK5oFGuy53ZtmbrdQjnsr
-	sTKVROGYemCv7QB7ksz58MmhzbJ5vbg=
+	bh=M+g/PqMDYZQI68tfBBcin7qYEE0xbkk7OS+btL9Bc2c=;
+	b=jbyFKobv8gCBT/wUh5TiulJF7ZlkGX54ax4V7JXBAJMrUvUsxnnXw2Flg/TFnwwyGu0FIn
+	k7CLgvwS5ejBNPGJUyz3ECRku4B04IQ3O0DloVQuexBE2koIphDDn5eFDgv90lOx9YNSm4
+	GNYMAGgl/uz1uHPEPdq48JkbFtaMpyE=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
+	imf12.hostedemail.com;
 	dkim=none;
 	dmarc=pass (policy=none) header.from=lst.de;
-	spf=pass (imf21.hostedemail.com: domain of hch@lst.de designates 213.95.11.211 as permitted sender) smtp.mailfrom=hch@lst.de
+	spf=pass (imf12.hostedemail.com: domain of hch@lst.de designates 213.95.11.211 as permitted sender) smtp.mailfrom=hch@lst.de
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793783884;
+	b=OaBGmlt/Fv0LgTb2uucRVHMrd9icwn/0mKPIJKRvUwFPijqBunZemlFCCGh8GqrWmKYhi9
+	gaOmGY7HeCE5IUgVUXvu51usiD7S9FtQ2RtfxJCCjanSSUaCQ27dzNzbKkXRvIIezZjr17
+	PoxQd09CSTLkeBteg/RHfviffBBn/Oo=
 Received: by verein.lst.de (Postfix, from userid 2407)
-	id 5149E68BFE; Wed,  4 Nov 2026 10:17:41 +0100 (CET)
-Date: Wed, 4 Nov 2026 10:17:40 +0100
+	id AF6C568BEB; Wed,  4 Nov 2026 10:17:59 +0100 (CET)
+Date: Wed, 4 Nov 2026 10:17:59 +0100
 From: Christoph Hellwig <hch@lst.de>
 To: Mike Snitzer <snitzer@kernel.org>
 Cc: Matthew Wilcox <willy@infradead.org>, linux-mm@kvack.org,
@@ -56,28 +56,28 @@ Cc: Matthew Wilcox <willy@infradead.org>, linux-mm@kvack.org,
 	Dai Ngo <Dai.Ngo@oracle.com>, Tom Talpey <tom@talpey.com>,
 	Christoph Hellwig <hch@lst.de>, Jens Axboe <axboe@kernel.dk>,
 	Jonathan Corbet <corbet@lwn.net>
-Subject: Re: [PATCH v10 0/7] mm, iomap, NFSD: stop uncached writes reading
- back shared pages
-Message-ID: <20261104091740.GB31130@lst.de>
-References: <20261103211754.35352-1-snitzer@kernel.org>
+Subject: Re: [PATCH v10 1/7] mm: move clearing the uncached flag of a found
+ folio into a helper
+Message-ID: <20261104091759.GC31130@lst.de>
+References: <20261103211754.35352-1-snitzer@kernel.org> <20261103211754.35352-2-snitzer@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261103211754.35352-1-snitzer@kernel.org>
+In-Reply-To: <20261103211754.35352-2-snitzer@kernel.org>
 User-Agent: Mutt/1.5.17 (2007-11-01)
-X-Stat-Signature: pj9ww5wqnth6ny9wogioe7qs4kzzp698
 X-Rspam-User: 
-X-Spam-Status: No, score=-5.3 required=3.0 tests=BAYES_00,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=no autolearn_force=no
-	version=4.0.1
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: C86011C0004
-X-HE-Tag: 1793783866-539369
-X-HE-Meta: U2FsdGVkX18WEGhIPvG9cba1/4NDwpRniPhYJO009ddUVPkt2Kw/eivy7CCg/4DIEtVG9HNMbXpTcwtQMKb9kvAlI+aRF9lWGrJA4heQImUxrTBW91KMlE9FzNNYjVCbfQK6YUCjhnvug6N6tIHcDZRAYIk8LxqLj7EYml75wUkz2o4UyaSYrS1Da9hj4tjAwk/tw5dy1WkesnsiNrza9PHWiZ13iSxYykKdrfHVhdxlLMG7rTQFM5LQGHPc5YFy1wDeplYHSJ/af1Wb8v3vuPAmV4G/V14ovkvYvJp59Zv7408cfH0lAEAbOHqJpXKOsSFnNoGrE2poSMhtOOHBWphLCMG57ibJCSdATDUPsqlCOF1Ur5Dn7JXmMpdQRYk1J8bBHSprscv/GBey8SznJqRShVaXcQpF3ijfk9XdCq7cYEJnDHkChRBP/okz4lmkYVY8+/pwumbCK+rpvvoe1thgl3SMZAfPZaTG/XebHECSIG+Jcr2NTgHUelxmIE5W7gmuonRu68VRkqRIjVEL/bgwDfJNrBIn8b56N20rgN69ghHPAApdSiph8BwqEjt6c58AVXoCgr0Lb7FDQc1I5mfGCF+ckexvtBuDj4J/R5fZrGPZ2ZUU3ckMG2RkY8Q15WdPnSvKeuY48OGu1eSmIknjgaJjIztTNCYQJq6FbBPVTWD8MapsEpy0tEJZl7KJAZeV9so8tEo3XhwAWA8arhCgEfmb9K4fVkm4k4LF+v1FhY3KfXgNLK46Ipn+mUtiJlAfDPA1YbCiPq2FCt7R5kUm7k+QwnJs9vWZ9K0BcCZHLjbsC6/BpHTeyEsneoKC6zkTNHMr7EjnhtJcURNeUyeUFtM4HZFnMXjLk0ERAkvXj9ZvnFDAZE+9DUAA4Ehra4xGRaeFJShCo2M+yJjvNVLX+q9YwNm91HNyu5EgSk9vOXl5mLa9imeDP8HmSP4cXJGhgDvPOmfmtXz68Ns
- 6mOMlJPU
- xyXlUkEXTqSXaKbKsNXJVcNaoavhapj2eKzv4L/fZSkw48fHslDLO4x+5EHO8wsN7Um4RHaG+vmxmpO3ujWsIW3jKKvKL3LryCvC6PUd89+SLuVWErJRQSxwyVGfNgqFWrLlm4/N1Tu8HWCUbQZriniz6hiir+JPYdbgob4qIswAoO6k=
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 5D54340005
+X-Spam-Status: No, score=-10.3 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,
+	SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1 autolearn=ham
+	autolearn_force=no version=4.0.1
+X-Stat-Signature: 9jxdxtx9b71zhwh6xggeeca1t4a5xj46
+X-HE-Tag: 1793783884-34820
+X-HE-Meta: U2FsdGVkX18fmj2HJCFmaaoNUMwshGeyAJ1N8aUZzfF4+nvX6saPIY1WrtwFV6wdwmQhNh3272956QXTol9apM+lLj47qY9GnworFXnD3WFrLHrOsqGqooQPzZf6fMPFVQBX4np/5/kvz32CMSg3U35n2BosL5B6s3WwETHmMIth/x1OR7rJtNY+rjmTd1RBkHyk5j6azvkJzO1x20JynsJshgIsdE6zPqwjvvw3IWJ+fjQX9rd+UT6s/r5razxtlN+eRKE73BDuQRg//tYR3x13rZdhQQA8FuowuXbYGpgJZarpn917zwudkouBWDpIDYPwx4h3AHfg1ZPBqOOfbgg+qi2FSWgRWBvjkYEpfwopyJpkHbGtj1rjPLqKhTodUCjjlWuBCTHauSI6KUJfSlTHIYfqZWTM2kPLv/zyOZbeOEbH+UJD8R1oWG5K+Uprru+xAbwKnDHxYLsR6mUsGLtbexqZy+vYNMtojU9Y7ARaTDpz7pqXXDjaZRKKwblS5AYYHUzdSu3E8rzFeV1BhTPaOYLHyammPudSGXgpoOjYe8rXNNyN/NQPXposz85snz1jrjd5ZUT6eruyqbxSm5+AHpbhHqSFlR+hQmdlRDgUJR/1ilWmoKVO1jSCPBKey1FRAg/w353PZYJWsxDGXTijwhkIMqvXo2cNHAXet2j/CUBT9g3tN9k6lNTTcxcPlMvbry+WtClHUM4OO8cPKQCB8+xAXiqxYxi9B5PsF/YgWuu9mnXnOUkfhYPmBgE11w6oED3Rk7Y+s9GwcDNYawQxV+ntLPqWxHHgUUBzSR36y1AIJBGGv7lS9kJeSh6d1WvfzasLRazfim33OCuEqXTHC1L9e+yyBWPd23zbwgCuv+qM+hHntKtUgCo9wVqOu7Zv/9hfUtL2ErzTr8o4Thz4n87f/ka3DvwAEcgG9Xgbe91dhWRfM1ZNpqAQFUN38m/c7ylE9ngKt4KpsAg
+ uKz79Q0L
+ O+2+IyTiGIbrGilzteZMMScNNYGBSKud2sErIvZ6u4DGwzcpSx3+rGDiF+9NBmuKhm/QjYjeJU55Xi1/yiJh89ONbxfwJFZsjdXbfMQB0QGvnujUyvLkAZxaneWHKYTiwtvPgCpmWjWTGHJJAFQHxqfz+VKaawh6/xLkaIJefamp994ZAvtLQA2UNxxp22nSctg3K7QZEnefkc0fQG/jXpl1OCcE5ZJr1pttHLdEOGKSeQ+WwkOEDgaiyX7miQmn8nsHLOfyelLClBZk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -86,21 +86,8 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Tue, Nov 03, 2026 at 04:17:47PM -0500, Mike Snitzer wrote:
-> Hi,
-> 
-> An uncached (RWF_DONTCACHE) buffered write drops each folio it writes
-> once the folio is written back.  A folio that the write covers only
-> partly is shared with the neighbouring write.  If it is dropped before
-> the neighbour writes its part, the neighbour reads it back from disk
-> first.  32 threads writing interleaved records to one XFS file, 4 KiB
-> pages, before and after 5/7:
+Looks good as a general cleanup independent of the rest:
 
-Very colourful terminology here.  Who is "the neighbour".  How do we
-know a "neighbour" exists and what it wants to do?
-
-In general if the user gave a very clear indication that the data
-should not be cached, it is a bit awkward to second uess that.
-Especially if the expectations are not very clearly documented.
+Reviewed-by: Christoph Hellwig <hch@lst.de>
 
 
