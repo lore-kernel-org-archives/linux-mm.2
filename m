@@ -1,113 +1,153 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EC2F609C05D
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 20:56:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C2626078963
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 21:00:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=KazNcZp6
+	dkim=pass (2048-bit key, unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm2 header.b=cKOYknYY;
+	dkim=pass (2048-bit key, unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=4+o1zQjd
 Received: by kanga.kvack.org (Postfix)
-	id 542816B05B3; Wed,  4 Nov 2026 15:56:33 -0500 (EST)
+	id 5714E6B00EF; Wed,  4 Nov 2026 16:00:24 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5190D6B05B4; Wed,  4 Nov 2026 15:56:33 -0500 (EST)
+	id 521666B05B0; Wed,  4 Nov 2026 16:00:24 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 455F66B05B5; Wed,  4 Nov 2026 15:56:33 -0500 (EST)
+	id 3C2496B05B2; Wed,  4 Nov 2026 16:00:24 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 2504C6B05B3
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 15:56:33 -0500 (EST)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id B4A02120817
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 20:56:32 +0000 (UTC)
-X-FDA: 85398645024.28.41FDDDA
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf29.hostedemail.com (Postfix) with ESMTP id C89EB12000C
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 20:56:30 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KazNcZp6;
-	spf=pass (imf29.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 013FE6B00EF
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 16:00:23 -0500 (EST)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id D89E4160861
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 21:00:21 +0000 (UTC)
+X-FDA: 85398654642.04.6199AC3
+Received: from fhigh-a2-smtp.messagingengine.com (fhigh-a2-smtp.messagingengine.com [103.168.172.153])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 71CCD4000D
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 21:00:19 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=arndb.de header.s=fm2 header.b=cKOYknYY;
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="4 +o1zQj";
+	spf=pass (imf17.hostedemail.com: domain of arnd@arndb.de designates 103.168.172.153 as permitted sender) smtp.mailfrom=arnd@arndb.de;
+	dmarc=pass (policy=none) header.from=arndb.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793825790;
+	s=arc-20220608; t=1793826019;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=osWOTOTQBxibmdk7vYQvxdot4PKbfhI2tgBU79UNrUk=;
-	b=cCqaOW8ZWzy8y0gCcX/VRT3XpIf49a4C+Tn7MCiM5QCKaPALGGns5WEKTD7jEPaZwXJ0gq
-	7ivdg60Yd1JZIxWEROD9ZjiH/Qns2Yc1JjxNxkYE/ldr3c76Tlce66r8/BMU2fooE2nKCf
-	G4RF9rjBIlH3v/ohZLuTtIUgTrT8Vqk=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KazNcZp6;
-	spf=pass (imf29.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=0kNaDaN7VzGkf9l540YM+342pLPmeRVN7bIHtngSK/k=;
+	b=64LemzA/tf5Xdq3BpdLMNnptvw3lNA+08aznx3+A1SnzyT//Ernn9md82Nr69ruoHUabn2
+	nNp2iE5gknjyNlx2FxPiE6GAZmxK0ClYnvARHpHvsMxFGhWn/n4wa1HVz28PuzuJYFoDse
+	VNNDeltmPRzoVtkrbSKgLqp6RYb8IXg=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793825790;
-	b=Vnc6XICLhLNRwN6FLhfbNEkjIWJaiIKcRGvPOKBGcNM0TQcQe2FmF/xDDoXk8IyUFmeAjQ
-	YWpJVxNyTVKkMxdZiBhPrUC27y1h0+4UqFklW/rJDFdfJlQ41moJ4HX1Ghf2RZJp85kjCa
-	Uk7nGJeunL6LdOioWSMWjN63V9dL/xI=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 8E7B462CC9
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 20:56:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 450871F00A1D
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 20:56:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793825789;
-	bh=osWOTOTQBxibmdk7vYQvxdot4PKbfhI2tgBU79UNrUk=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=KazNcZp6qfpRdpx0Oe5j+F8/M9LJGR2nQOeCHm5RYvPEKVOnFU9V9UfLJR1KMsW9B
-	 bJvBnjkwNdj2C8cn/tLvyj7KgG3kxBlB5vj+bmXwEQ7TrHN8Myj4tDSEODHN6kEV6z
-	 RZP1RffojHsRoeuIK4m6s85Vaw8N4qWOXCeeSBydy+CXMxnmJxxtnhokkSPrVawA0u
-	 zULvzQrlmtRimkxL4Cxcdep7XIoTUK4+YtoP/PoJX1/E/eEsnrR1VAuUL19Bz8bped
-	 Q4MiiD80HzVkRzPSl44k0WY/HWUP0E5kYcf3ARkXoastBoOSwUY0xhempTBPZstDJi
-	 NNw3Jlt/v4jyw==
-Received: by mail-vk1-f173.google.com with SMTP id 71dfb90a1353d-5eae12762c9so421926e0c.1
-        for <linux-mm@kvack.org>; Wed, 04 Nov 2026 12:56:29 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AKwUvBzzeUE/YIg3Iz7QHqxbucVh+T32c0J+z2WYIU+mfnZPync/JnnDn7flVC6e5ftx1E7r4z4l2ARWxQ==@kvack.org
-X-Gm-Message-State: APuU4Z8f2lswL1Hnd5BYegHDnXbXgD1fRLLDYhVa6Od25yOSskqmaSKk
-	VLemmqE0M+L+RCnZZWs08x6Ugv5TEVOXRT66Ug33A8NatundBZe0gaRHpCIF5/CViBSCR/9NsBK
-	JPkA7IwXu/Ez6jYHUzdc2wxwUTjQdHpE=
-X-Received: by 2002:a05:6122:32d5:b0:5e9:6d96:a910 with SMTP id
- 71dfb90a1353d-5ec6850f9a8mr7100215e0c.3.1793825788528; Wed, 04 Nov 2026
- 12:56:28 -0800 (PST)
+	t=1793826019;
+	b=LIRnSQsZ9/hJ4yvQ2i+z1vC/lEzTZAhHN00wqACcKV0GbgLjSAUmGFgspSjegdLRTdwndl
+	KD/U+2MznhOM3/Pm0EKeMa0bfZOhodJ1jxRxdj0V4Rou3avWzjx5MxFhywqBUBmCkeOuj4
+	13jUV3tmO2a8T9pQq37/YXa7/Kgs188=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=arndb.de header.s=fm2 header.b=cKOYknYY;
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="4 +o1zQj";
+	spf=pass (imf17.hostedemail.com: domain of arnd@arndb.de designates 103.168.172.153 as permitted sender) smtp.mailfrom=arnd@arndb.de;
+	dmarc=pass (policy=none) header.from=arndb.de
+Received: from ams-compute-02.internal (ams-compute-02.internal [10.64.2.62])
+	by mailfhigh.phl.internal (Postfix) with ESMTP id 4D26114001BA
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 16:00:18 -0500 (EST)
+Received: from ams-imap-03 ([10.64.2.23])
+  by ams-compute-02.internal (MEProxy); Wed, 04 Nov 2026 16:00:18 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm2; t=1793826015;
+	 x=1793912415; bh=0kNaDaN7VzGkf9l540YM+342pLPmeRVN7bIHtngSK/k=; b=
+	cKOYknYYKdTNm7gT3ervxg7QOU52Utgs5UOoxtrbubT1te5NsIbZVFPMKvQimH1F
+	Ib2iv8RWV6UqdraJhvlS5yd33G4tYwFGshUdIGAdvuU3cFdG8rbWC3+KHemVIdXr
+	NUc2JhM2u+Fuhup590pgyYcIA58JTAMOd7A5s6PKYEJ1G0nSYzo1JqwOw8UaY8u5
+	i/e5W+IkaQrQVH55p1WK2J1BV0dLB4esSzLf+T0EU8o8dUzyZbsKE9LFW1LDbbbW
+	3WekMdVJHEFYWXzfbmA+mnv9lsFDEQ8/WTpzFsEFp8PLVP/iIhwhjwYa5asbRMbg
+	mwFkIJvImo19SYtH1YbLFg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1793826015; x=
+	1793912415; bh=0kNaDaN7VzGkf9l540YM+342pLPmeRVN7bIHtngSK/k=; b=4
+	+o1zQjd3Z41zn3sTJs2UJJfBufYk9JKTqk39/upRC6nT7pcYjQfD/I3Zc3xUL5rZ
+	yuWYIf/gUkcGIG93Az/bYc/7Dc36FemWDLmMf3KdtapwF2oa2w/hKyx55r0w2YUM
+	V1EYzS32YyXpJWz9G1QAPLPbcO4Rj1H3ZHMRG+wciXebn7B5UGdXi7RurV8D/iRI
+	Mn6GcSLvThSgYji/hJ1bPQnO+PItKOtN0ZsnHfstInXC5rC1hVaZ6YaPEsEdm0yc
+	0R36LQL2uTJuSjbl9z/FM5BsolZktLXLkNXGb742PsVtn0O1xFxlsHd+7j9NJrAn
+	JhBSW6gy6x+a9LlNZnrYw==
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-08;
+	repo=github.com/dkim2wg/interop; date=2026-10-28; sw=lmtpprox;
+	action=sign d=arndb.de a=rsa-sha256;
+DKIM2-Signature: i=1; m=1; t=1793826015; d=arndb.de;
+	mf=PGFybmRAYXJuZGIuZGU+; rt=PGxpbnV4LW1tQGt2YWNrLm9yZz4=;
+	s=fm2:rsa-sha256:VQs5dxAQ3E9XuUEr1jdpwBvFIZ7AE8BMYB+IYsMQzHX6avx
+	bIKPbK8K6UMFoX+ptNeiWRy0EeVZf415PWskMe3UH1+cHXGS1jM/NdJAx8lYroPN
+	t2zfvyFJC9+Cvz0O4rF8grQ7u5yACqZR/B8V6alkHpxxCusZMBZcAG0eWOMA7Wq2
+	9QBsFFd+sQT+ufrApAfizw3iCD/qZ+1cLsFn3cDxhlJhRWqYvEqUSydhKaYuW95S
+	fJqj4k4eMfvF0S9oLKroXTi0qKYNKa32PmUU0Qby8TSySBiPUgbsezcBCh+k5Mab
+	ZtimRLhh8K1tsoyE9W3lHWMeFrB1KCthfEiXAJw==;
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-08;
+	repo=github.com/dkim2wg/interop; date=2026-10-28; sw=lmtpprox;
+	action=mi-m=1; hc=12;
+	hn=cc,content-transfer-encoding,content-type,date,feedback-id,
+	from,in-reply-to,message-id,mime-version,references,subject,to;
+Message-Instance: m=1; h=sha256:fUmINlirdU2Tk6RCoHByTkIj3YlbxSUxiZjtoAUaQGk=:tYBOb+5dGuOjuQrd6XKBAFeuLK+8HRMkrzwfvErc19o=;
+X-ME-Sender: <xms:2pzrapVO1PgXZib1J1FOBsiKZcp-1a2WMaiCzkWr12POCmkiMBllIQ>
+    <xme:2pzrakYn6jOelhw810z9h7PtEocyxoQVs5edVa43zi1qGGxRlmYuFXHNs-zWUktAf
+    1eaLGQCpfHbNQjIOw-5G3gdFqd4lzB-2-cTc4Rd0zl-ciJQRX21O57K>
+X-ME-Proxy-Cause: dmFkZTEmmuOD0DZhwLvQ1jMu+N+9f1/bshj4za9fBQJ9CLi5nyqGXS3WVLocnYlOrqOSIB
+    6FfId29nGSaJXnRDBuWEgopsKFsk9kKCdZMlOaAKHZiJOecJXJK5tvhHf4ExHC129SPRTn
+    ywDnpmZfc6lQS9TUXA9FcCx2VPLS6+9LolLspxAgWuT9gBQtAauE01L1amFsAnhggz9Thz
+    K4Y3OubtvjuJtHSnf7zo7wc1RCs2RvOov96x4Gnlg/5v1Dl92DGS7mO3qjvUBcf5+r+W1w
+    M2Ah/4lcKnXI+AD7UM9xPoqDsnA90jhXogV/fJUgnmX/RUCq0OsQxlztOfBV5r2ctGxleQ
+    P5q62C7C+Ai5m3jgBR8Ubc00tyJArfAVOnKr/LvHUrlJi8kOqvjG2g82xVHp9aqznRs3V3
+    qL03F8W2Hy1HAOhL5fLwctcAInLF+bXJ6DMyIU9W9OVVQKGXo0PkiWCRWrFzYVMWb8g6fV
+    eOAXmA93VZa4o3zcfq4qC55WNbV+Uz9zvISGAgRFmjFpNzNLlp+B8xe7yw0wZcaXUiz9CP
+    FSjGKKuU4t5zdMcRPV6nUzYzMnaxK1H39SW4qpWKaXsgxT1D4VgfsnklufIjUbsHlO2R9H
+    0wX5c25K5kQzHuWxQqT1Z6BAnytUuqd787ITw5dkM92Cg9y6+rLOuyjydRhw
+X-ME-Proxy: <xmx:3JzrangpKATqgrFY9U5FKngYXRcRvPlOj3GrvzIj0yk4F1827md9hA>
+    <xmx:3JzraqDv_f2Y3-RNnCmohuE0avDMpLZVmJc-xMja_czk7Lxx7RTNoQ>
+    <xmx:3Jzrah4wqYWgSCUZ4-OLOKBLl26x6kjGdzjCooKYvcBTxAagK-vDaw>
+    <xmx:3JzranGBXgwi1mFDP_mObr_pbEak_8hTCfhVqNcPvwprpGKJxslj8A>
+    <xmx:35zralsJWlZ9ZXZAEn7SjmPWpVp6jklZ58NKQFrEjXOYvm9PpdyfvIPu>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.ams.internal (Postfix, from userid 501)
+	id 9380F32A0099; Wed,  4 Nov 2026 16:00:10 -0500 (EST)
+X-Mailer: MessagingEngine.com Webmail Interface
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-References: <20261104130817.849089-1-ridong.chen@linux.dev> <20261104130817.849089-8-ridong.chen@linux.dev>
-In-Reply-To: <20261104130817.849089-8-ridong.chen@linux.dev>
-From: Barry Song <baohua@kernel.org>
-Date: Thu, 5 Nov 2026 04:56:17 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4y_Ay0mYO3ic72oepjtW6KYf2sKRXEHb3Ff8uwKrOJZjQ@mail.gmail.com>
-X-Gm-Features: AclHuK83pxTrPui2NSL2YizsStHa_eD5Qfiw1-w_RlgnlnIfhF0-PgLrUc5Gd7I
-Message-ID: <CAGsJ_4y_Ay0mYO3ic72oepjtW6KYf2sKRXEHb3Ff8uwKrOJZjQ@mail.gmail.com>
-Subject: Re: [PATCH v7 7/7] mm/mglru: add tracepoint for aging
-To: Ridong Chen <ridong.chen@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu <mhiramat@kernel.org>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, Dave Chinner <david@fromorbit.com>, 
-	David Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@kernel.org>, Qi Zheng <qi.zheng@linux.dev>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>, 
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Muchun Song <muchun.song@linux.dev>, 
-	Kairui Song <kasong@tencent.com>, Axel Rasmussen <axelrasmussen@google.com>, 
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
-	Baoquan He <baoquan.he@linux.dev>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	linux-trace-kernel@vger.kernel.org, 
-	"open list:CONTROL GROUP - MEMORY RESOURCE CONTROLLER (MEMCG)" <cgroups@vger.kernel.org>, 
-	"open list:BPF [MISC]:Keyword:(?:b|_)bpf(?:b|_)" <bpf@vger.kernel.org>, Ridong Chen <chenridong@xiaomi.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: ru7kdeyihcty1xkrei1pcpb1gqb3abho
-X-Rspamd-Server: rspam01
+X-ThreadId: AgP3mv5Dxly7
+Date: Wed, 04 Nov 2026 21:59:50 +0100
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: "Pasha Tatashin" <pasha.tatashin@soleen.com>,
+ "Thorsten Blum" <blum@kernel.org>
+Cc: "Mike Rapoport" <rppt@kernel.org>, "Pratyush Yadav" <pratyush@kernel.org>,
+ "Alexander Graf" <graf@amazon.com>,
+ "Andrew Morton" <akpm@linux-foundation.org>,
+ "Changyuan Lyu" <changyuanl@google.com>, kexec@lists.infradead.org,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Message-Id: <34a03ed8-5b75-49b5-bfd5-e5cdf48dbfd4@app.fastmail.com>
+In-Reply-To: <179382570401.2089669.6201187990672133004.b4-review@b4>
+References: <20261104162352.140836-3-blum@kernel.org>
+ <179382570401.2089669.6201187990672133004.b4-review@b4>
+Subject: Re: [PATCH v2] kho: Remove redundant 0x prefixes
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: 4d31ebzo1weukiihnsb8143xa37ooweh
+X-Rspamd-Queue-Id: 71CCD4000D
 X-Rspam-User: 
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
-	autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: C89EB12000C
-X-HE-Tag: 1793825790-956240
-X-HE-Meta: U2FsdGVkX1/+FIM5fE8oj4JbkY6qRrYWTGo3irmRruYBslQPHje1jOHdrV9Q5aq7m3M7gokIigvdebqPmGs46FnqVgEvfDv3XpLSDbPLh8VfrHZ9RfM+K0q5meAz1LvcyZHQqhDUztcwjTV2zWwPPrEJFo6Vl4vf2Pvjnja88Ecz1jvL2RorJ/eXqBjKjzIP27x+/dRNmj0IBNhtXndJL8RdTMu9MSj6mE5w7DCLv9u5xMIVn1lCpf1B4/InFD8JkHvauB6tidzcJekxAauRkAY9je25grBFihKEiArylWRQpTXx5jTcIgM+C3H/q5ZzzlqH/3+N1NKk5nLPxhgBtECgLZNbjuCbnWuwF/mIxMKjE3jp+oxn9r38YdpAIdDgo2Ifkk76k9iA8XnyyU+gfy+dhSUAWGjHAU7Ze4xRvXsiJaxxOBTlKsbIeFEOBnGo5VyqYFDno961PwFZRoIQ3JChG048lZDBHPFVetU3Av5v6k/6VhbV5ezGUVtf6micxyhwyHbi9cQgql8iX66s/bc/gs70tXlEpsjGQXEULwKGw45v2Sjb8H7HL168ECPjFpLwQFeZIieXOUDqHk4US2H36LD5n/Cs4mwaCr9DXYJS++s8srpkcDesMQvAAxypDRJWo0hQIrDXHqcWekiHkST1NWobmTcsxU0VvinZAu5OoRqMfiXrBDDlnYzhHfswaKEhkD5sjrDNt51PmH/GjZzFHl8+xfzWtLxFMDuX7dyoUCaWwkd0EU6JHH/Hq9a9+YZ7kt+IQqzGJ85T7keRntglyOcu0x47viG0PcNSrp75sINsRp3Bygwi5LjyZp6W8Frq39bCXG3kd/Q6JlWNwygjpG+ONVaF0WL9eEIr1CSXcbpe0CiibVkk1wG2cL6fjdhBIUjL1/PGl0gUCHFHs3XcwMdICo05ma/9G3E+qzrVO/tWfxeHzUzDmBMAB1NUfsnIedtz3bqqEv8N7Or
- TR6CV+5h
- hVc1SJVsxxK+6kJn2+DBjteWlQ1uCE/WB7Asni4G6Jn84TYPr5paza15g1FgDCgheBJE5CcauszjIhRM9JdSNM5hzkbpDbsm/O3EhwDmcNNPOCvmO8KiuCMKXAAW4RDs5JGtqWLvyk1z/66fNC2kzqRODHn0tNBZoghiCPZIPeucLieMK1q+8eAtCGA9dvwRt7e35RycuY3woTaD12u2B0wiBhGsBlvuCG/r7tvaTeFpZKUjHKMQztTyd4P+gLyD5hTSvSfsylD6N/YLqv/1tzD0LIiFMGA4nEfxT/JNt+SY8rAwJR98YGesOhM1Qbm4L2rrVdNNuVqDn2m0=
+X-Rspamd-Server: rspam08
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=unavailable autolearn_force=no version=4.0.1
+X-HE-Tag: 1793826019-745242
+X-HE-Meta: U2FsdGVkX19NXW2L/2asVk/bvm/uuw1dAAiL6Yotuf+jnuvQUhi8X36/zPmvc/M03cv+oet5lQwUJ1S7bxndn2v116MLeki2g5i86fGwL8P+gG4AKBGo5LwAbeq4gpExaOC3BD4Wn06LNIN2cs3RLHzj5VXmZ0ZDCrxYORFEjYqRvVNwZ56p1XChsNnbMza/tab2K9gEfoXdf4TdQ8sfie+Vjnsd85jO+jMaqsoQWigYCKl/vVaVHtCW3r6X5IJv/YCKftmtX2QKjTd7mQMiBckI/Ltzq6HC8W1c/6F3Sck6qiILK4YxtQu1fIfCSyWS3l///IDgzLI3qxrsMRHUWgz/Vc57YPMr8xQnSnATnwQfIO5oqrOueyhd3sTi6n1PAa8EZBFamyi8e8o2nj2OXKW0LmObSsvPlPgvqRSiuJm7GKgGv1Z3nl5y+nGe3Df84Z6ayDtOPbT7l8J7Ec410Ox2qeJwCHXN+m7pJ/AwFJX5maxDEkat21ZoGoTC27GngwcJ+EtuwNLafTqtG8QfPUhRwlvL4omAQnW4fjPZ7i5djIato9rb3bFAK/8oWSNH05KTpk8+FUIjiVgoTnVTtiG6wVmuhUOGfMf85Zep8+k+37XOYrIBFAFjxW5kz+Yw52R2xnWmTUrnasPI5Jl3HnTsmvvYjkcmP/w0Dar+8Wmurx9ZwsE51f3p0VQLtkUKz2ayLxnfxM3M8xdUq28PeNXUABSFHfdX+1jWxv9ogsNm+UEk0QGEGbU6atpsxlQJvqriqsvf1vzUxfAX4IjNXaAUh01VZSybEz0yKMr/9Z8LuXaYx4Aqmbyq/l+7Ugv5+oW1moHk7Cq1LjTRQQRAmTSNNyvQX+jxt+5efV5I5aJMQx+t8mbvL57fz+32//sm6jVpKetnWbkf2WOZozmZWnoPvlX5s8t44+ZMkkIqMuKnI0avp7ttkwvlX92PBymGGzPNhR0wb9T6fdgj+0x
+ kb5Hwjkw
+ 5MJPNC6/Pwr7QLESIfGnqHYVBKN0zgMQnyj7TQf0wADSADge/tJix7p5yuNNlgwE+rjExbmV3LHWM3S4UAfBLuOOMs6P9YbHyFnoyYJ1F7/t2AACivROhbHCWOXVqP7FnkM6B0AOiw7/oM0x1Y6paHlnztQJYBddzCi1Bk0+3YXfLp6Q0e7JLR/OP2JCoJKxHtnh5DsOclJEBpW0ZYxpxhRt2HkzATHaWPZXhGTj0UHfp9sPg3gLHxgsOhsyaHJOfLgQOy4y6UHawREVQsEB2JyuZRT+JoFR/lmCEiYNnMF0goXrUBZnTm4VRG+QBYLcsGUG7
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -116,143 +156,36 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Wed, Nov 4, 2026 at 9:10=E2=80=AFPM Ridong Chen <ridong.chen@linux.dev> =
-wrote:
+On Wed, Nov 4, 2026, at 21:55, Pasha Tatashin wrote:
+>> The %pa format specifier already includes the 0x prefix. Remove the
+>> redundant prefixes to avoid printing 0x0x.
+>> 
+>> Use phys_addr_t for size to match the expected type.
+>> 
+>> Fixes: c609c144b0e8 ("kexec: add KHO parsing support")
+>> Signed-off-by: Thorsten Blum <blum@kernel.org>
+>>
+>> diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
+>> index 6f1f55fe3181..6a7600a0a7d5 100644
+>> --- a/kernel/liveupdate/kexec_handover.c
+>> +++ b/kernel/liveupdate/kexec_handover.c
+>> @@ -2010,16 +2010,16 @@ void __init kho_populate(phys_addr_t fdt_phys, u64 fdt_len,
+>>  	 */
+>>  	for (int i = 0; i < bootmem_cnt; i++) {
+>>  		struct kho_bootmem *area = &bootmem[i];
+>> -		u64 size = area->size;
+>> +		phys_addr_t size = area->size;
 >
-> From: Ridong Chen <chenridong@xiaomi.com>
+> I am not sure; having a variable size of type phys_addr_t looks strange 
+> to me. Furthermore, KHO only works on 64-bit platforms because of how 
+> our radix tree is designed, and we do not plan to add support for 32-bit 
+> systems.
 >
-> Aging in MGLRU advances max_seq to create a new youngest generation.
-> It is triggered from try_to_shrink_lruvec() when should_run_aging()
-> finds that eviction is no longer possible, or that it would be better
-> to age first at the current priority. There is currently no tracepoint
-> on this path, so it cannot be observed when and why aging is needed.
->
-> Add mm_mglru_aging, emitted in try_to_shrink_lruvec() right before
-> try_to_inc_max_seq(), with the node id, memcg id, sc->priority,
-> swappiness, max_seq, the anon and file min_seq, and the number of pages
-> in each generation for both types, as computed by lruvec_gen_size().
->
-> The reason for aging is not reported explicitly, as the logic in
-> should_run_aging() may change, e.g. for imbalance-based aging. It can
-> be derived from the generation window and the per-generation sizes,
-> which are taken before aging, so the youngest generation is populated
-> as well.
->
-> The nr_anon/nr_file arrays are ordered by seq rather than by generation
-> slot: entry i holds the generation max_seq - MAX_NR_GENS + 1 + i, i.e.
-> they go from the oldest generation to the newest, the same order as the
-> debugfs lru_gen file, so the output can be read directly without mapping
-> slots back to seqs. The arrays are printed with __print_array(), so the
-> output is hex and its length follows MAX_NR_GENS automatically.
->
-> Only the lruvec, sc and swappiness are passed in; everything else,
-> including max_seq, is read in TP_fast_assign(), so try_to_shrink_lruvec()
-> does no extra work when the event is disabled. Reading max_seq there
-> rather than using the caller's copy keeps the window consistent with
-> the per-generation sizes read right after it, should another reclaimer
-> age the lruvec in between.
->
-> The event marks the aging decision, not its result: the following
-> try_to_inc_max_seq() may find that aging is already in progress or
-> done by another reclaimer, so concurrent reclaimers can each emit it
-> for the same max_seq. Whether max_seq was advanced can be seen from the
-> following mm_mglru_scan_folios.
->
-> Suggested-by: Barry Song <baohua@kernel.org>
-> Signed-off-by: Ridong Chen <chenridong@xiaomi.com>
-> ---
+> I would keep u64, or if using %pa for u64 is still an eyesore, use 
+> 0x%llx for the size field.
 
-Much better now:
+area->size is also a phys_addr_t, so using a local variable of the
+same type makes sense for consistency.
 
-~ # echo 1 > /sys/kernel/tracing/events/vmscan/mm_mglru_aging/enable
-~ # ./a.out
-Mapped 400 MB at 0xffff98a00000
-^C
-~ # cat /sys/kernel/tracing/trace | grep mglru_aging
-         kswapd0-49      [001] .....   104.277689: mm_mglru_aging:
-nid=3D0 memcg_id=3D1 priority=3D6 swappiness=3D60 max_seq=3D3 anon_min_seq=
-=3D2
-file_min_seq=3D1 nr_anon=3D{0x0,0x0,0xd360,0x0}
-nr_file=3D{0x0,0x23e2,0x0,0x0}
-         kswapd0-49      [001] .....   104.536448: mm_mglru_aging:
-nid=3D0 memcg_id=3D1 priority=3D3 swappiness=3D60 max_seq=3D4 anon_min_seq=
-=3D2
-file_min_seq=3D2 nr_anon=3D{0x0,0x20,0xf8bc,0x0}
-nr_file=3D{0x0,0x91a,0xbd,0x0}
-           a.out-79      [000] .....   104.689518: mm_mglru_aging:
-nid=3D0 memcg_id=3D1 priority=3D4 swappiness=3D60 max_seq=3D5 anon_min_seq=
-=3D3
-file_min_seq=3D4 nr_anon=3D{0x0,0xf8a0,0x1188,0x0}
-nr_file=3D{0x0,0x0,0x2,0x7}
-         kswapd0-49      [001] .....   107.282038: mm_mglru_aging:
-nid=3D0 memcg_id=3D1 priority=3D2 swappiness=3D60 max_seq=3D6 anon_min_seq=
-=3D4
-file_min_seq=3D5 nr_anon=3D{0x0,0x6c50,0xa168,0x605}
-nr_file=3D{0x0,0x0,0x98,0x18}
-         kswapd0-49      [001] .....   107.812598: mm_mglru_aging:
-nid=3D0 memcg_id=3D1 priority=3D1 swappiness=3D60 max_seq=3D7 anon_min_seq=
-=3D5
-file_min_seq=3D6 nr_anon=3D{0x0,0xfe10,0x1721,0x54}
-nr_file=3D{0x0,0x0,0x1a,0x3}
-           a.out-79      [000] .....   108.936872: mm_mglru_aging:
-nid=3D0 memcg_id=3D1 priority=3D2 swappiness=3D60 max_seq=3D8 anon_min_seq=
-=3D6
-file_min_seq=3D7 nr_anon=3D{0x8,0x7d29,0x8c54,0xc90}
-nr_file=3D{0x0,0x0,0x4,0x2}
-         kswapd0-49      [001] .....   108.937115: mm_mglru_aging:
-nid=3D0 memcg_id=3D1 priority=3D2 swappiness=3D60 max_seq=3D8 anon_min_seq=
-=3D6
-file_min_seq=3D7 nr_anon=3D{0x0,0x7d15,0x8c94,0xcac}
-nr_file=3D{0x0,0x0,0x4,0x2}
-         kswapd0-49      [001] .....   109.425258: mm_mglru_aging:
-nid=3D0 memcg_id=3D1 priority=3D1 swappiness=3D60 max_seq=3D9 anon_min_seq=
-=3D7
-file_min_seq=3D8 nr_anon=3D{0x0,0xed69,0x24bc,0x488}
-nr_file=3D{0x0,0x0,0x3,0x3}
-
-One thing that looks a bit weird, though. For example:
-
-max_seq=3D3 anon_min_seq=3D2
-
-We have only two generations for anon, but we print four:
-
-nr_anon=3D{0x0,0x0,0xd360,0x0}
-
-The two oldest generations don't actually exist. Ideally,
-we would print only the two existing generations:
-
-nr_anon=3D{0xd360,0x0}
-
-you should be able to fix it by:
-
-__print_array(__entry->nr_anon, __entry->max_seq -
-__entry->anon_min_seq + 1 , sizeof(unsigned long)),
-__print_array(__entry->nr_file, __entry->max_seq -
-__entry->file_min_seq + 1, sizeof(unsigned long)))
-
-But I guess it's fine, since the two extra entries are both
-zero.
-
-And, I personally prefer the youngest-to-oldest order,
-as we usually have:
-
-head ---------- tail
-
-where head is young and tail is old.
-
-Your output uses:
-
-tail ---------- head
-
-But anyway, I guess this is just a matter of whether we
-read it from left to right or right to left. Personally, I
-find it more natural to read from youngest to oldest.
-
-If you're not tired of working on this and would like to make
-a few more improvements, you could address the two issues
-above. But it is up to you.
-
-For the patch,
-
-Reviewed-by: Barry Song <baohua@kernel.org>
+      Arnd
 
