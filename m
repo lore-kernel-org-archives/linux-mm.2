@@ -1,185 +1,98 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 442B9606D808
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 12:01:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9E98606A31B
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 12:09:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=virtuozzo.com header.i=@virtuozzo.com header.a=rsa-sha256 header.s=selector2 header.b=bDt8cX+P
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=IBacwDrO
 Received: by kanga.kvack.org (Postfix)
-	id 5F9636B05B4; Wed,  4 Nov 2026 07:01:38 -0500 (EST)
+	id D33136B00EF; Wed,  4 Nov 2026 07:09:38 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5A23D6B05B5; Wed,  4 Nov 2026 07:01:38 -0500 (EST)
+	id CDD516B05B1; Wed,  4 Nov 2026 07:09:38 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 491606B05B6; Wed,  4 Nov 2026 07:01:38 -0500 (EST)
+	id C1A4A6B05B2; Wed,  4 Nov 2026 07:09:38 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 205066B05B4
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 07:01:38 -0500 (EST)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 87A0BA0725
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 12:01:35 +0000 (UTC)
-X-FDA: 85397296950.27.9C8F0C3
-Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11020088.outbound.protection.outlook.com [52.101.69.88])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 3CD122000F
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 12:01:32 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=virtuozzo.com header.s=selector2 header.b=bDt8cX+P;
-	dmarc=pass (policy=quarantine) header.from=virtuozzo.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf13.hostedemail.com: domain of khorenko@virtuozzo.com designates 52.101.69.88 as permitted sender) smtp.mailfrom=khorenko@virtuozzo.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793793692;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id A83D76B00EF
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 07:09:38 -0500 (EST)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 3F501806CA
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 12:09:38 +0000 (UTC)
+X-FDA: 85397317236.14.71F1BA9
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf03.hostedemail.com (Postfix) with ESMTP id B2A5420006
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 12:09:36 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IBacwDrO;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf03.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1793794176;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NkhsPTWded1eSTF0X+YMyw2xIxsyUU8cDM+BAy/OvQM=;
-	b=MgPy02a3cyc2nBRM+ips/22jNXcWbI9vwcui9/UdfpP38txBBGkf6BSnG0OFCnBB8fd6Cs
-	k67DOU+yJ/VgKF8ku+duV3sqCe5qpyFC4yUd52kRIySVIKcREnTq/WSk7sC3glPIOfF8vH
-	4eDSiuBhHRTv7x5fgm7pP/E853ZcxKk=
-ARC-Authentication-Results: i=2;
-	imf13.hostedemail.com;
-	dkim=pass header.d=virtuozzo.com header.s=selector2 header.b=bDt8cX+P;
-	dmarc=pass (policy=quarantine) header.from=virtuozzo.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf13.hostedemail.com: domain of khorenko@virtuozzo.com designates 52.101.69.88 as permitted sender) smtp.mailfrom=khorenko@virtuozzo.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1793793692;
-	b=TcjHEj1EyjwkW+FBd0SazaSdnnNyb4Vf70yvBbOrNdWgi1sREG16UxlbRj2YVRGCN7bHfw
-	SPtdYDHzJzkTu4ic6N622CD/2XW7b0pdXz5w2chzGZLsUURluQT2hFcprYgEvFyIdkF9Yn
-	rEgiZRng0DumB9PtoFqUjFmFA9tcAsU=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=AdK3o+pxNalZwAoxmkVnqECOccVHZ3ljqezswQVM7gTu4+hOBGIkcpKKLXqW3b27xukh8UeMQJJG1W8cnq0DsjyjK0A6v7EKNMn73lIntXCUzUbWmj9YqTyNLOJl+1X/aDD+57ElwEz4WqspQzzsM3yzvUa/G+PIdrzdsTh+p4iGDdfVrmWzTXTAPtzl287qL5Ud075K1+R75F4ubAVg+lMNPIGAowr/1KX1PIbF6U4Qc6Lz4+sp6d6Ts9qvfBpRFXRun2vHIlMJrGRsPvusV2w5OxdgstW6HXe7vHBT8RMQhwb/gLPM9dcu+GHgtoOoRBEUxv+OVv4q6vzRXyiQXg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=NkhsPTWded1eSTF0X+YMyw2xIxsyUU8cDM+BAy/OvQM=;
- b=JSjLD8I2YC1GzvIZaEgY8kGuvgogrI9cznDC6tKR2Ste6CsWYd7F/ExB2ZoBe1LOmdKIPzQNFjyhM+Z27zGqxcozS64RHiaOLKZmwyUV2OiB+lkFDQb3S5mnxcliNmcvZVwYZh28VFvc4SYDktyt8uKE+RFWh7JB7z3jVtDpyAOw3tciIz3FUBV5WAzHJJwvA7ligaHaB2pzt5hkGQ8I2v1lUhHmz2yHx+DsvsR+FtkOYcTF9H9gMojumCk7UFRsd4IS2kN7u28w8bhweWqFv5ZglanZd7x2xozomMa2UarQNP3e/xTHruPvPDBxS5jSjis3HlV8DiQwdOqMpglDpQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=virtuozzo.com; dmarc=pass action=none
- header.from=virtuozzo.com; dkim=pass header.d=virtuozzo.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=virtuozzo.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=NkhsPTWded1eSTF0X+YMyw2xIxsyUU8cDM+BAy/OvQM=;
- b=bDt8cX+PaRAb+lbAjTuVrvQoC0TxJXlPLsjA/l1gERtw3IAW3G08jIw7SfSV9e/e41twuCdX4DOjjhun2RhwKwsuF5fHBED4IYKpdt+yWCHRmcnoDtk1+fBWylGDLLHpF5MU/NsHA0Ih96JbiX43+D4JldDS02LxInUJ85RTAk7j5MIrwMd0DHHrbh7PjFQcXKsCJOzQsD11oEIfvU4ttpHgbWAQP10nIPQScIyWgDjAr6ZfqjOKWJJY5uXc1+2s/hAoxRMaBxFE/CrZBTglIpoyUbibjqclb1hCvJe8qa+KL6KVcyIJS+CHgdrs4QLc99I1R1bpGpZMXq5oBaP/BQ==
-Received: from AS2PR08MB9075.eurprd08.prod.outlook.com (2603:10a6:20b:5ff::9)
- by AS2PR08MB9871.eurprd08.prod.outlook.com (2603:10a6:20b:594::6) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.546.22; Wed, 4 Nov
- 2026 12:01:25 +0000
-Received: from AS2PR08MB9075.eurprd08.prod.outlook.com
- ([fe80::3f57:9ced:7a37:1bd8]) by AS2PR08MB9075.eurprd08.prod.outlook.com
- ([fe80::3f57:9ced:7a37:1bd8%4]) with mapi id 15.21.0592.007; Wed, 4 Nov 2026
- 12:01:25 +0000
-Message-ID: <7e5a6819-9e29-4187-96ed-f716befc2bc9@virtuozzo.com>
-Date: Wed, 4 Nov 2026 13:01:23 +0100
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 4/4] selftests/mm: test fork of PMD-mapped shmem THPs
-To: Kiryl Shutsemau <kas@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- "David Hildenbrand (Arm)" <david@kernel.org>, Zi Yan <ziy@nvidia.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Liam R. Howlett" <liam@infradead.org>, Nico Pache <nico.pache@linux.dev>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
- Usama Arif <usama.arif@linux.dev>, Peter Xu <peterx@redhat.com>,
- Alex Williamson <alex@shazbot.org>, kvm@vger.kernel.org,
- =?UTF-8?Q?Lo=C3=AFc_Molinari?= <loic.molinari@collabora.com>,
- Lorenzo Stoakes <ljs@kernel.org>, Shuah Khan <shuah@kernel.org>,
- linux-kselftest@vger.kernel.org, dri-devel@lists.freedesktop.org,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
- "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
- linuxppc-dev@lists.ozlabs.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, Jason Gunthorpe <jgg@ziepe.ca>
-References: <20261021-b4-prep-vstor-149847-copy_huge_pmd-recheck-special-pmd-v4-0-66f00b7a564c@virtuozzo.com>
- <20261021-b4-prep-vstor-149847-copy_huge_pmd-recheck-special-pmd-v4-4-66f00b7a564c@virtuozzo.com>
- <auC4eUEN52PJF1bM@thinkstation>
-Content-Language: en-US, ru, sr
-From: Konstantin Khorenko <khorenko@virtuozzo.com>
-In-Reply-To: <auC4eUEN52PJF1bM@thinkstation>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: AS4P251CA0023.EURP251.PROD.OUTLOOK.COM
- (2603:10a6:20b:5d3::20) To AS2PR08MB9075.eurprd08.prod.outlook.com
- (2603:10a6:20b:5ff::9)
+	bh=1q50kbPjm0laMW43CAFUAOZZKVJRQfTQZ2GnkZN13bI=;
+	b=dAgp1P7Y9YZmOaKKnArVNFehdmWaMld5egk2VHNtSP/2B/Rhm2xnJPcku3Ku8s3Ng0OoNF
+	Wd5Il+godsuhdRUW4ezAySkgcplIAKeNA/vLVwVN22l5mauyu2v+4Si2blkF6sOTYS1rKn
+	tjCPqaDmmke0EXA7rsoiqR2lAW2WuWQ=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IBacwDrO;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf03.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793794176;
+	b=RbVhaJHbj69TCV26KCksMtli6ksJo1Dq/FRXr/t/9SZFPDyb1U8yYV2qAeBdckHr2cvqKa
+	yQwYBOh73e8s9qFiwIYZD07/4D8qwMj6cd/QxmUuQGl8Q3ofFLI+gVA38OE11RczeVtKKV
+	FeQSm9uap9fz6pC7iHY2dzlPb51T+Rk=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 2C5DB60F1C;
+	Wed,  4 Nov 2026 12:09:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E69461F000C1;
+	Wed,  4 Nov 2026 12:09:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793794175;
+	bh=1q50kbPjm0laMW43CAFUAOZZKVJRQfTQZ2GnkZN13bI=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=IBacwDrOzTcQPD6MCzu5ag+D5mCuIXCB25VBCeCuKwjRnD/yTDiBogxZl5jYquVve
+	 N/U4Xgvva0AWTbh/czKe742mHd0uC0vYPThPEpYAb2YXeBo/pqTK+v1ukztA+/Pz9V
+	 HGxTNqvaVYGHwy/p4rTyhbTlyW9BGHVeFn07LX1lyc1fPobEvsKQcEkbo5IzuUG1tN
+	 buCEbkuRpb111d29csvEspHKSAFNA22GtU1fjipNnyVIefLnc0YZJnuaMMHlbqkqaJ
+	 GY2c7l+XEoMg8KeeS7WKj1xOWOGD2D5PSrPbF8ucj879OhUM4eGyMevn3pT8EDNefA
+	 jEdUudXx0W4Sg==
+From: Pratyush Yadav <pratyush@kernel.org>
+To: Mike Rapoport <rppt@kernel.org>
+Cc: Pratyush Yadav <pratyush@kernel.org>,  Pasha Tatashin
+ <pasha.tatashin@soleen.com>,  Alexander Graf <graf@amazon.com>,  Andrew
+ Morton <akpm@linux-foundation.org>,  Chen Pei <cp0613@linux.alibaba.com>,
+  George Guo <guodongtai@kylinos.cn>,  Kexin Liu <liukexin@kylinos.cn>,
+  Sourabh Jain <sourabhjain@linux.ibm.com>,  kexec@lists.infradead.org,
+  linux-kernel@vger.kernel.org,  linux-mm@kvack.org
+Subject: Re: [PATCH 1/2] kho: skip zero-sized lowmem and global bootmem areas
+In-Reply-To: <auoo0EOKJLn9GUIw@kernel.org> (Mike Rapoport's message of "Tue, 3
+	Nov 2026 20:32:48 +0200")
+References: <20261103-kho-bootmem-sizing-v1-0-45aa74098f34@kernel.org>
+	<20261103-kho-bootmem-sizing-v1-1-45aa74098f34@kernel.org>
+	<2vxza4nqm27n.fsf@kernel.org> <auoo0EOKJLn9GUIw@kernel.org>
+Date: Wed, 04 Nov 2026 13:09:32 +0100
+Message-ID: <2vxzwlqslrwj.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AS2PR08MB9075:EE_|AS2PR08MB9871:EE_
-X-MS-Office365-Filtering-Correlation-Id: 02b321d7-78bb-4d9b-b60d-08df3a6b59d5
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|23010399003|376014|7416014|1800799024|18002099003|22082099003|261102123227099003|4143699003|10067099003|261021121427099003|261022075727099003|56012099006|261022105027099003|261026140227099003|261028144727099003;
-X-Microsoft-Antispam-Message-Info:
-	9X6/ebo1Cyv1x5w6+PrF1KkjdYac1aMASsA6MRFeRzpRyZMBXQUmXM93wPAznWSlqePxXhqnTJ74yIiSEEgvBFbcC+a2uJGTSwYFNCwTH7J0PjVhW4nW5fwiQRyV6wn/q1EpGmTXzyORXWtcjq0XiEaLMa0xDJJdzmZvwuOaShTh5L1hXEETyF3eAQr2teeklkDmxY5CggCE6MV+onL+EBvTPE+HHwRskeisolk3gL/MjkYd/7aOrWdtGhgONHqLljcz9f8LURysAFlWclBSlC/ZJV1PaQRYlvypgQYQ+LR5zaw4qQhWVAvtfqIzwM2bgkB8rfmppe5t3JvoF5l4KwMpH2a/7psK+jHI3mNWGrrvHMMXfrQmyID+HjwG8kvzF84MncP6mKgfM5ahSUdBZn74aAEavukD/QvWzf2Fe2xvzOR3O3vqyGVIJj6qHn5HzlNm8OFsNtxxKkT+O1RZNVgjpNN5IpQaHwgGHfTbB7m2TWifCyhpe3rve10z9JmO15tN5YyspKVdx8zk9DPn8lgtSFr1TCV7RYevmQ/+DAfONqmvT8z4eB0ch5439v4mnyzIfrLgH8Km8tvJaCc/BTnx35w75QeC2ppSTCCguurvkpvjCTsDJ9Vr5gz5S5cGgPqqfB4nuXT5HccGH6BrecBpbxNWxwujpkqurlYdoeQ=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS2PR08MB9075.eurprd08.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(23010399003)(376014)(7416014)(1800799024)(18002099003)(22082099003)(261102123227099003)(4143699003)(10067099003)(261021121427099003)(261022075727099003)(56012099006)(261022105027099003)(261026140227099003)(261028144727099003);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?V2FzeEEyb0hnYUc3TExoMUJTV0dEdDRISllpY1NLNzc0b0dOUFRrSVp1TXVP?=
- =?utf-8?B?d1J3LzBadjZ2OHFnNFYrMzlteVNJd01LbmNKMVJ5eENhMXN4VXJHc3VBZE9p?=
- =?utf-8?B?V0pjK0ZrWjJPZmVhWEVtN2luT21FMEJnSEk4T1RCUmtDVXZwMUpVWTd6a3kw?=
- =?utf-8?B?NGl1aDVzT2lGOTN4cjNMQnJ5Q2o1ajV1b3NUVmVhaHBjckFGN012ZXlYRmVt?=
- =?utf-8?B?cVZVTXFLUU8vSW1MNDF5bVJtSy9CVnU0VHgyM3o1Z1V5ZWEzWWMwNGtJUXNa?=
- =?utf-8?B?YjNndE9QeWl5SG9oUmV2WjRTUzlMaDBCSjQzSVdVZThGWEt2Rm1pQXZjTDJV?=
- =?utf-8?B?VGJ0ZzhRdjNNM29yYzJzdS9WcEVXL3JjYkZlK21EUnlRdHJTdDBRamoyUzM5?=
- =?utf-8?B?ZE4wYnQ0Rm1EdGRjMUdiNWJkM0NCZUVRMXJNOTlVdC84ZHZqckl1ZlhYWGxB?=
- =?utf-8?B?TllvVXhDV3Rubi8ycUdrTkJmejI0WVBFSXlrSExXeTNac3VQZlVWNjZUTXYv?=
- =?utf-8?B?WHBSMDF4cEQyeUtKNWtKNEp2UGhsWlZIR2RhdTBHbVlCNUdjZmt6Mk9KcEVi?=
- =?utf-8?B?SGpYY252K1ZNajZVRllqazhZNUFuakNjOVdFSXk1UElncmtCekZxV0xER1pH?=
- =?utf-8?B?cXF3aGtvOVk4WWF5SHRUSFhWVTBDdnpDZU5NaXBkNnlKYmZ0bEpJelhkaVRk?=
- =?utf-8?B?MW5JcStsNnkwaHVVYWdidlpSc1FsNEg0dmx4NkNsYlRnMzlmSDV1OCtJbHlp?=
- =?utf-8?B?dWtMOEc2ak85aWJhOW8vdHdFMldwQXVleUhPalY4Ukpad0l2a3AxclM2RTdi?=
- =?utf-8?B?L2tiM2pYdTNhYTZDcmlwN1c4TTlKNkNwQXNCWDZQYlFmcWx1akIzTjNIUkhm?=
- =?utf-8?B?UTBKbzJNR1UxZnNZbGZ6KzRJRDdXK25UOEEzbWZkZjArTVEzS2x3ZzdEMzZL?=
- =?utf-8?B?WHBUQjJ0UWQ1ZnZwbEI3VEpjZlEvblhHc1ozZDdPamMrdUVITno1d3VzcFBn?=
- =?utf-8?B?bzQ4NnJZTkpXZWVyQlRISjIyZmlEZytZSmNSeVpzSTRnelRUK0dZRGRzYmlO?=
- =?utf-8?B?RlNDVWNIMzNmVTQrWS9kRnUveCszcWFCeE1BV0VTZ0RWU0ZOVHFIdjdzb3h1?=
- =?utf-8?B?U05PRHRlNWNOZVNXUVFJRUxud1FkaDV6ZlNMUTEvM05pWDRPcTNoeGVTSGI0?=
- =?utf-8?B?cDhwT3RRVnk2WnJvekdDTkJJZ2RQOUJ5NVBFZzF6U1dUU2NnWFBqVDFJcU9G?=
- =?utf-8?B?RkZuVlVVci90eUx0a2lGd2FmNldzQUtMdm50ZHBEQ3FIYkMwUlNQaUxXUEVT?=
- =?utf-8?B?LzdwMVRNOHFVUHhhMWJlZHg1RGY2Zmo1TExydlljM2lPZGZ1YlBqMEVmNC9S?=
- =?utf-8?B?WThObDBKMXVobk1YemQ2c2RCbGJOMDBwWXVXcGpDYmt3VEtFZG5WNGtQbVVp?=
- =?utf-8?B?cVJIU1dTaWprMG1aRzZtMDFjSXAxM3ZIb0trOU12OW1wRXpxNThYV2J1d3VI?=
- =?utf-8?B?NTVSVWNRSHh0Umx2QWREVHBCVElIdnNCWCtKUVNMQzBQSHNxZGRZSjhNY1oz?=
- =?utf-8?B?eGN3NGJCTnVEdVlZa1ZETlhCb3VBNm9Bc3FuVzc0U29sMElRZTNaR0FGbith?=
- =?utf-8?B?SU1hZ2svZy9TK0tJTDVmWFdwMXZaSmRYaUdOLzhaL0pGTjVlOXlBdFNzZDBT?=
- =?utf-8?B?cE5GeFlHd2R1VllEWUZQSmxxTnppdWhkTHM0MW14M1Z4djlOQ3JxNnpRaUhP?=
- =?utf-8?B?bVpOQmNYNHRLL2RMcWo4T2ZZYlQrMFRDTUhnaURJKy9ZUjlDdDhpang3VkZp?=
- =?utf-8?B?SW55L3J4STlCWFZ0NEZSc0NEdTcwZ2dYOHNoM3BSN05MQ2lDNHg2cmhzY0RU?=
- =?utf-8?B?L0h2NjRqYzRCRE45bkhHTXdhTWtLTmhpeWJQdkdFbUd0Qkh3d1RaQ1VkNlpP?=
- =?utf-8?B?aGIxcnNFd0tWTytuWDYyeFR3VFJFbzdiK0lTaGM1T2ttQlByUjdCS2hvVEYv?=
- =?utf-8?B?V0sxTDJ5T3BjRnFvTmJvRndGWHM4RVFWSjFXd2NRT0M5RFpxYThTQXhKZm5M?=
- =?utf-8?B?STFTc09hUHRabHMvRjgxc2VPdWpiTlkvZEY0VFI0SHVQcERpTUc5OHZIMkJB?=
- =?utf-8?B?UjZuSEZ1SXROa0MxM2hoTzVsSzk2Q3czcXd6OXUySGNRMTd5cGJLN3ZuU2JM?=
- =?utf-8?B?N0R1a3hHTTFXSkd3cHBaZGRkS0dEQndVcjB5c3FDeFFTSUV6elhxVnZwK0Qy?=
- =?utf-8?B?clFKajl5YUdqQmo4eW02NzZMOVRaZU5QQS8wbmp1L3lzSktnRjVMeUdSWnFv?=
- =?utf-8?B?bERqVjlxbHBhaU45TStTelh6dlJzckc4SnhvZGlxMFhPdXUyd3Mwdz09?=
-X-OriginatorOrg: virtuozzo.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 02b321d7-78bb-4d9b-b60d-08df3a6b59d5
-X-MS-Exchange-CrossTenant-AuthSource: AS2PR08MB9075.eurprd08.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Nov 2026 12:01:25.4049
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 0bc7f26d-0264-416e-a6fc-8352af79c58f
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: cjJN4N2vaHqRMIuNpuGwpTBNC3tVp1MI2lliGmq0U09d4/MtAoUx64gNYaCqRlfun+cOuofKxXtji08vMaCIrw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS2PR08MB9871
+Content-Type: text/plain
 X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 3CD122000F
-X-Stat-Signature: cciu1w98hopa6s914jh15gnywd18gntf
+X-Rspamd-Queue-Id: B2A5420006
+X-Stat-Signature: y9dgtcp6kzi8f7kt856mij11ebz8s9yz
 X-Rspam-User: 
-X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
-	autolearn=no autolearn_force=no version=4.0.1
-X-HE-Tag: 1793793692-873026
-X-HE-Meta: U2FsdGVkX18dulbsqwPL3om2S9sFXYhxcVxok++7r93tCiTN6kiukle6fATsbUO9lYrigVh1e8WIaWFEGx3fSYZlml7PqzVHu4Gf7JNnCPAnZxu4z/9CtbDIOg6ZBPGm879801RIsu1RhBI1orV5paHn0CQpanDBvXKPYOiZGb9t4/AXCKE1Hne66oLLa+nUATUnrzAXmQgx0yCXxeqMcQ7bI/AkgmaNYsgt9pbS64QuzpTKYKs4AWEu4fl1UHk04BU7VcghBITpOXwbeiYZhSqO9A3BIrx+1VKqE9AEcZrAqnyU3kednFpnTSqL9WBPNadSfkI3fm9QZY4NVq0lPWstKQhPjTry/8TLkMceFV+mJ1TzOZL2vF2MzUzTHCaSanmsWscHEO8EphQSv+Ep1qKwacQ0XGFSuomEgXMODszLQlpYlMJO9ismfgvu1TkBtfo5ii7HWWJ2pwaX6Vp2vvLV87I3zb+SG4useaB1CZWMyBqVO3AdfZaLEsNR7KN97jB0gLKG7afcnZ/xBcyh4UuIkQMyQtrme7LBK8pOmwvnz9v1JPVcEEsBUBN8bUGvpSBWocY6b3qbhWVRN7CFyT0ch1eUJ4G4ZIBx/Ss2L81Cf5j3SSaWuEAAFfn4SYLDGBaSxCf576jeQRQoj5T5TLcq8yFZ7LkfMxKoDkBDjECetFjffc+5gikEa2qo/iN1kYd3bTl9MtUQb5DPuS5cfiKfHynmJo+WrTCiROuKaC/JJSogKoy7c9+haBQdrc7fZsi8Gr0LxVHTP2p+H/80c9auJojk9vpVKUgv4J1zlT+VxDPTWATrnTQj45F0XLK2tEnX3xYcOnWe+/SZ3w3ePtOkrbAVhsBDMF67ekJQCAAVxR7LYH8rizalsisi/+LLUmMbad1DkLkd4Fm78rEBKcDgvkggQuZ9Y90El8nCzMFwZQmGo0nHEJfSiDGyRovoYpCuBJhkbo1k+dFC9C9
- ifBTHREJ
- PDXAKTEAD0x6OIQ1a0+6ihxse5zsT7v49cz7RQwK7W/kU0ZQ9EdMM2RgElypqaGjxYolFq4EyU69wmepDRKDyERAYrO/7MHeY/Afe0xAe1lE/nRsuYn9whhyildBJ680LWvBN+nEAdDEjAGWZdpIO8hdzHOxGPW4IlZgseP5F8hcuxfTuoyLCox/lDa0H17K5IHx1VvhKKTgHTUHa0maInUdyg8eemMULWXuDLJ168HFtjdj+IeaBhiuwd+yqSRT8AOoXwI0bRP3sGmxLCFnoDh1QYBOQubqOfGPs5hIuS1c1oqILOZ5w0F51E/wtLmjcZAtPWXpqYCGQosenF/sCunyeELoxH+rgdv/oEVFxMQqyUhPYW2m6M+LCISttlkC8879hGn1ny0xdI2yK10fAsJuoVPmiqgR4zmytonMqnerCd9IlohILLJgz5SnUNWfkTA54mtbNggSUTPvcxf5/nM3GLe/aZjnGKWvibR66+BCW1CjlXentpcGEdKOLj1Iry/k2
+X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=unavailable autolearn_force=no
+	version=4.0.1
+X-HE-Tag: 1793794176-181241
+X-HE-Meta: U2FsdGVkX19r+9b13B0JGCM8ozGIMSZv3GBiMFfC928XAtSK46ppFeS47KMM+gAgmgqU3dlXcGlVarGIgSd50TtR1rOrY+y+eWORugRS6n8jbg/P28+pN/UQ6NRDfhveZ1j5lPPogvLSJFB+G4nZyVAL7RMvgH0wWTEl6Yf+UzBQjXNSyQA84MqXivSFgTTaMoHXnM5RCBBU7XEBruL1HkCx3Fcu41iG751GH5FmEjU1tI28jwEhXCY9WvVWnTGS++prt/FH5WmOLs3zaTkg1Ob9nRKpQEmTFxBjsxGEhv5Zi2/uvwK8hCxY/Zm8dHzAryL4oJnQgCE6b1xcN1F48FHsXhDFJQ6veFQT0OrvccupjUydsLfU6NKrdYUe8UOfcbyt/HgNoAMmD3tCn0ifASmNrG7TwVdZNXl2sOvsWXBmwic9zBMTD4sEzACnZqaDNsLMUPYllTfv3Jc7BjS9pJ0SWEhFkg7fdHuy9yCbzBAGNpKTJ6Lxd+5eHQ+63TREF3gj7acZEnmDsEXfazgGflE6c6pAS3rpfJ7/W3ZngXZlfYX+vQxpFgTzWasz5pM7CB1Bw50ZjLLQKMC0ruf2RTIeBaVYn40Ub5tCp2yTdffBS/9M3cqd8Vyug+/mfJ+vRaYpRMbvaxNjc77xVgLYUS2UtmjZWDf47dLCCaq0rPTKnuXNo8d/PeuS4zmiLTsgHLMS+dL1+L5dkZp+2n+wBFFT5kMSCImjRpVrvmAOTNhpdddm4qWfYwchQIvXSxvlMQxsuYSRa6mVgjWiC8mVlfkHvlIdAd0BHV/56nGDYLXTSjsx28H/lqB3O0Sfxdj00XePXcg7t93IOw3LxeJySyK1PbOOnvG+FbN4HxGj/YhNyc1LAGiqMEhRi0aAtIBTAzshoQh2aOswJemFMbkuaD9/Ulpy4/BgltisRRdB1KJkD95Y7rGxs8wMvIY4mlicYObTV6+qNWjvFwUtV6U
+ klpgH+f1
+ KIPMaWNin+Cm4di90T9A/nYyf5q77b29ngVAO5PJwELd73H8GyKW3lKWvIKgN365GLv4BWyCakOciCUsExqK3ufMYHz1uT/lw+JUB72vQCgk4sJY9NvKS3NLkprhEglChxu3oFBUrOsquVLj6hXRu8lGbQy8Kfx3IuGpP3exGc/MPjLHrDbGWAey3ok/A+dEhUcFntpgoJBFr05KegsGbg5nCmskB8XMDW3ou8BsQEBl72UdFHLaJ3ylrphqO5mg3VWFc
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -188,33 +101,86 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 10/27/26 15:51, Kiryl Shutsemau wrote:
-> ShmemPmdMapped is system-wide. A drop of 'own' or more from another
-> process between the two reads fails the test instead of being retried
-> as CHANGED.
+On Tue, Nov 03 2026, Mike Rapoport wrote:
 
-Right. I'll send a new version where only a drop of exactly 'own'
-fails: that is the parent's share the bug takes off the counter when
-the child exits. Any other change will be retried.
+> On Tue, Nov 03, 2026 at 03:14:36PM +0100, Pratyush Yadav wrote:
+>> Hi Mike,
+>> 
+>> On Tue, Nov 03 2026, Mike Rapoport (Microsoft) wrote:
+>> 
+>> > The lowmem and the global bootmem areas can have zero size, for example
+>> > when none or all of the memory is below ARCH_LOW_ADDRESS_LIMIT, or when
+>> > either of those areas is explicitly set to zero with kho_bootmem=.
+>> >
+>> > For a zero-sized allocation memblock returns an address without reserving
+>> > anything, and that empty area is recorded in kho_bootmem. If there is no
+>> > memory below ARCH_LOW_ADDRESS_LIMIT, allocation of the empty lowmem area
+>> > fails and KHO gets disabled.
+>> >
+>> > Extract a helper that checks for zero size and allocates memory from
+>> > memblock, and use it to skip empty areas the same way as empty per-node
+>> > areas are skipped.
+>> >
+>> > Fixes: 3dc92c311498 ("kexec: add Kexec HandOver (KHO) generation helpers")
+>> > Reported-by: Chen Pei <cp0613@linux.alibaba.com>
+>> > Closes: https://lore.kernel.org/all/20261026131851.9942-1-cp0613@linux.alibaba.com
+>> > Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+>> 
+>> Thanks for the patch! LGTM for the most part, one minor nitpick below.
+>> 
+>> > ---
+>> >  kernel/liveupdate/kexec_handover.c | 61 ++++++++++++++++++--------------------
+>> >  1 file changed, 29 insertions(+), 32 deletions(-)
+>> >
+>> > diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
+>> > index 6f1f55fe31819..f268c57413a7e 100644
+>> > --- a/kernel/liveupdate/kexec_handover.c
+>> > +++ b/kernel/liveupdate/kexec_handover.c
+>> > @@ -820,6 +820,27 @@ bool kho_bootmem_overlap(phys_addr_t phys, size_t size)
+>> >  	return false;
+>> >  }
+>> >  
+>> > +static int __init kho_reserve_bootmem_area(int *idx, phys_addr_t size,
+>> > +					   phys_addr_t end, int nid)
+>> > +{
+>> > +	phys_addr_t addr;
+>> > +	int i = *idx;
+>> > +
+>> > +	if (!size)
+>> > +		return 0;
+>> > +
+>> > +	addr = memblock_alloc_range_nid(size, BOOTMEM_ALIGNMENT_BYTES, 0, end,
+>> > +					nid, true);
+>> > +	if (!addr)
+>> > +		return -ENOMEM;
+>> > +
+>> > +	kho_bootmem[i].addr = addr;
+>> > +	kho_bootmem[i].size = size;
+>> > +	*idx = i + 1;
+>> > +
+>> > +	return 0;
+>> 
+>> I reckon it will be cleaner if you update kho_bootmem_cnt here directly.
+>> So you directly do:
+>> 
+>> 	kho_bootmem[kho_bootmem_cnt].addr = addr;
+>> 	kho_bootmem[kho_bootmem_cnt].size = size;
+>> 	kho_bootmem_cnt++;
+>> 
+>> You won't have to pass around *idx and you won't need the final
+>> kho_bootmem_cnt assignment.
+>
+> Ack.
+>  
+>> You might also want to have a kho_bootmem_max_cnt and do some bounds
+>> checking here.
+>
+> Hmm, feels like over protecting. And if future patches will miss it AI will
+> yell anyway :)
 
-> The parent's THPs can also lose their PMDs during the test: reclaim can
-> swap one out, and NUMA balancing can migrate one, which leaves the
-> counter low while the migration entry is in place. That gives
-> FAIL_COUNTER, or FAIL_PARENT from the exact count in check_huge_shmem().
+All right, fair enough.
 
-Right as well. In the new version the parent will check its own PMDs
-before it looks at the counter, and a missing one will mean a retry,
-not a failure. The same will go for a child that finds no PMDs because
-the parent has lost them. Only wrong data in the parent will stay
-FAIL_PARENT.
-
-Each retry will start over with a fresh file and mapping, since the old
-THPs may not come back as PMDs. The test will make three attempts. If
-all three are disturbed, it will skip and say which way: the counter
-kept changing, or the parent kept losing its PMDs.
-
-Thanks for the review!
-
---
-Konstantin Khorenko
+-- 
+Regards,
+Pratyush Yadav
 
