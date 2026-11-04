@@ -1,66 +1,66 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73B316071AE9
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 19:40:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51B8B6082BCD
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 19:40:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Kq+FKfxG
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Wy0boZ5z
 Received: by kanga.kvack.org (Postfix)
-	id 749FD6B05B6; Wed,  4 Nov 2026 14:40:36 -0500 (EST)
+	id 1CD776B05CA; Wed,  4 Nov 2026 14:40:51 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 721526B05CA; Wed,  4 Nov 2026 14:40:36 -0500 (EST)
+	id 17CC06B05EE; Wed,  4 Nov 2026 14:40:51 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 610316B05EE; Wed,  4 Nov 2026 14:40:36 -0500 (EST)
+	id 06E0D6B05EF; Wed,  4 Nov 2026 14:40:51 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 3B6AD6B05B6
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 14:40:36 -0500 (EST)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id CDCDDA07FF
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 19:40:35 +0000 (UTC)
-X-FDA: 85398453630.10.8B95557
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 0D12314000C
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 19:40:33 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Kq+FKfxG;
-	spf=pass (imf09.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793821234;
-	b=XabADa/Qin9wXYS94b8xGzK4Mpm7Yk5nUXeB8cnusG5xvBDI+w4/aXZ32aFWVi1PWWZoBT
-	eFWsbEio68AyQtYpf/Y6zkb8FJB+dkWDGM+6Uf7PBzy+4+pJ5UJEVnb/B0oCNc8SM4LZmL
-	kNLGgKLeKJBd1Sl/9UnniRgX+spEsjk=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Kq+FKfxG;
-	spf=pass (imf09.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id BFA146B05CA
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 14:40:50 -0500 (EST)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 4710AA859D
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 19:40:50 +0000 (UTC)
+X-FDA: 85398454260.17.FC0D37D
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 93FDA40003
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 19:40:48 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Wy0boZ5z;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf17.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793821234;
+	s=arc-20220608; t=1793821248;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lzi0v2Iw6r5Nf2GLOsMSQBwdPNX93e2TzGzGfD3oQvk=;
-	b=rIkSa5QEUvICsTDLk7cWrXQccqY4bHWYgaXqMFNti3l91d19S6myORmoWAE9x8OZ9uP338
-	fhiD+OCmwTRIbVS1657MUwxV+8MMo/zlXufvl3gYWZ4JsgDlAlkEIicN2fPcqFSdUYFDdY
-	DTjUV1H1UQN23PRDzTFXHas7W+Oi75g=
+	bh=ljglEsXifce2qfRBf9KQz9o848Hwgwzekl8g5JPLaig=;
+	b=7EJ+X0pNnA17r7uuD+u3fQkV8KC8ENYabBM4n2+FAdgHNIWK8PDGeIx5JZzogdAHwLzUlJ
+	09AwvwpGXcmZq7o+Zjeg+1FUgnSLIMgPojo8yTDOrG9EJtNj6rZ5n2GD6onnVyIDJ4OpuI
+	zNNwjkvJFiDyoeU326KFjcNlTbuSMr4=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Wy0boZ5z;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf17.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793821248;
+	b=bsT5Axg1ooGk68rabYeljeVoZuwoFbBvdta7x9QFgSl4we02hs4S+OtotlHmA+ODUcLy3p
+	pR6sInNCaN1kAtdTYqEmUxf65hBn4FB3lwUNLVGp6MEFj/01aSPDlr2ebxrGj5+m+PRh+M
+	t49oFhmW+axqIbAintjuBlpYDFZ+msY=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 2FF5A40946;
-	Wed,  4 Nov 2026 19:40:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0DEB1F0093A;
-	Wed,  4 Nov 2026 19:40:20 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 2C73F60AA3;
+	Wed,  4 Nov 2026 19:40:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FC2E1F0093A;
+	Wed,  4 Nov 2026 19:40:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793821233;
-	bh=lzi0v2Iw6r5Nf2GLOsMSQBwdPNX93e2TzGzGfD3oQvk=;
+	s=k20260515; t=1793821247;
+	bh=ljglEsXifce2qfRBf9KQz9o848Hwgwzekl8g5JPLaig=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Kq+FKfxGol1yZkTvQK7XOf4MJYg3n2wT++qWRo+QnGi9jvJMQIfuuwXxBQd6HrxO9
-	 DzaQAB8BU2qMveOWYqXQf8uiF3jI1+TMalzy94+Rcd9plW4bEe5kD06s2YR2pJWce9
-	 B6hFJWwiorAIE62RUnEWt3yo5nQlNa9h0jz+aofQy/98+6YVivsZ0C7K1SwAby0aHP
-	 7T5oXbKe+XnQQnQPrW8rV5dPeOZRh0+N4R8p2Y7AHvXwgCCSGo3lTHp1Qs3mmTBfkR
-	 oBUp+SJ51x7+DV6W8OrsLZe3q3dTzc8ph41dFrQv8E2WNRYsf3TxqVqdtFkK0eHuLm
-	 os2hfJBqXQfoA==
+	b=Wy0boZ5zanG430YNSID9PvLo8Hz+/29VvJoJ9WySCgaVz1GS+M9Ng0mKTlmCR6Sp3
+	 Wy6SgMb3/VqyekYQ/1cR/jjtPSaurM/Udr3bvNEYMuoz7g7KxSi3hffidsqtPL6rT+
+	 kNwUs9q+tNP6NBKx59NYF9AsYxVfTGuDi6XKbhHh4hcUsnEviZrGiHrP56E4+mGRvY
+	 JVVBJqh6UNVAz2b97ZBb5pcE8f/kvEg6BQoxsArkq6nlESYRlG+raNwuWLjBL5Fegx
+	 ogU0jkHe5zezEzx7v8f9ltgbWRNKY/tsEAVwKI2tVEh2fNgrnaN9ng+jA/EICHiT9S
+	 CNdt1XlVegAtA==
 From: Christian Brauner <brauner@kernel.org>
 To: linux-fsdevel@vger.kernel.org
 Cc: Linus Torvalds <torvalds@linux-foundation.org>,
@@ -121,31 +121,31 @@ Cc: Linus Torvalds <torvalds@linux-foundation.org>,
 	linux-debuggers@vger.kernel.org,
 	"Christian Brauner (Amutable)" <brauner@kernel.org>,
 	Chuck Lever <cel@kernel.org>
-Subject: [PATCH RESEND v2 19/23] macintosh/via-pmu: let procfs copy in writes to the options file
-Date: Wed,  4 Nov 2026 20:40:18 +0100
-Message-ID: <20261104-work-procfs-arch-v2-19-2aeb952c9597@kernel.org>
+Subject: [PATCH RESEND v2 20/23] platform/x86: thinkpad_acpi: let procfs copy in writes
+Date: Wed,  4 Nov 2026 20:40:33 +0100
+Message-ID: <20261104-work-procfs-arch-v2-20-2aeb952c9597@kernel.org>
 In-Reply-To: <20261104-work-procfs-arch-v2-0-2aeb952c9597@kernel.org>
 References: <20261104-work-procfs-arch-v2-0-2aeb952c9597@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1397; i=brauner@kernel.org; h=from:subject:message-id; bh=agoZq1LJSKBxY7yRmppNE5tnXNWd/ezen+xLPyCzOnY=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS97mReIrzh9cx53/g23f7T5yBxj/3Wz2cX8wsWTF3AP 1t597qLVR2lLAxiXAyyYoosDu0m4XLLeSo2G2VqwMxhZQIZwsDFKQAT2cTOyNC6JvPZMlEVDrlF 196Vxjt56Gn83yn6YN/2thy+Tlspl+0M/+xtty1ZFrFn7v65W/6uCr1fY7JaSuT8qnn7/y2e7Ma Rt5IfAA==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1670; i=brauner@kernel.org; h=from:subject:message-id; bh=B1JM/SyKlO95qrS7p0kfKzr/VxkM25eIJbDMnht8OJo=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS97mSx1F3VulFfxXnpV5EtBz+raF7cItzSzr37e8o/J X1NniM3O0pZGMS4GGTFFFkc2k3C5ZbzVGw2ytSAmcPKBDKEgYtTACZydikjw5J2aZXovIq/n3/0 ZQtu+2Fn9/PUc5+zb7fMOXwlwMPtzzxGhsertpXcs3gT5Xh92pP36mKWQvHOiqu49M5OudX+dnL TCTYA
 X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: m87dqnkyhoaiy31rpbno9fk66h9rn5my
-X-Rspamd-Queue-Id: 0D12314000C
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 93FDA40003
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
 	version=4.0.1
-X-HE-Tag: 1793821233-624662
-X-HE-Meta: U2FsdGVkX1/JOMKPyWDWnr2JnLRUb1X7QGye4Snjg9dhg1AQY/4IxWKlMwRwlDzDmOhIOgHlpv6iSKMJkWQD1+yhUdKsPIgaTOwHh4eeurp/1TRzSStzDj0fAYrbXQp/Jd+nhhgTLNrez5QQwHlmYU9OZUN0+LvE773vvYVRP2zZn5AEV9yxGxdfsCbaXtVxYSZTVOnHhYvMfQpvgibYcIZCQfHQhF5bhB1wd3wl5pzCRJ5vXSdfDVIwiOHAzjifvrAAjutOwjvUlKAnOukR+2keuiGJi4iiY7lj9v4FupRZhCrMgA0ULsweFy8K1ZmfqoUT7pIkWwKWG9xSYS7X7ikJ61NwgK65+jMRtGDIFUFBUy5HlXb6b3zfpSISgMRsd/SpcMZQDF40bMB/XVm6yjUxqVo0eArLIaoPXpWpB6Y1RpG81KylhDfY9BOj9DxhSUK5SP9geV6Ubg35OuTKZlesn0dx0Me+0JrCmOnBsBQkuTcjUd7P6e8Y7io/sapMAg8aksI+OZSeahBqkVLTZELVfQZfdDra5jb6kkMIQ3MtXzlLkXF+Ffeb1R2WqEcREzoT7BsM1EDuR++pm1XX3ckZTrbzUoVifabuAILyc2VJ7diXE9xW4y5Xzc7MTCY090BuMKesD+14TxqRJm6q3Bb3xAKjTs/RpNUpZMRZ56W7SmFMioGbROb0WXkrW5PEKTLhMPdMK9VT/rRzEKSkxkt/T9aJ0BA6dgFqrn+0FuBhCToJx+4Dr7BDE5i2d6JS6j/7fOvTwIsgIO34PH1r5/iTV2k3Lfo2soc0nPKCRfwv3gttQVZHochpXZIVq9uRrJZJZ5M3RSm+7wGPnLsm2XIi8wm4LCpEv7EsKlF4LoiNT+Ml0EsrMhlrmSmuNxnejecJ0KUkZxs800mvXUmm3N3XnGHDx6d3GShVyqqIAss1mmRWPLHOtLIJPBrPmXG4G6req49iqf2TBPmHvPl
- FNvIgfiw
- EqPm70BQjuk2bHG8O/V8rUwZ3Qifit9PHN8bhj6Giu/UleE6wUIRwfjDi+cKKWQ/tjYTDvm3LOGkZpaD8LJiRvCp8mcOx9IFPS5k6B+ijAo99hnxh9NRhs2gFYKeLdsDoqqcnRqBAuaI/Auj4Ccg1XtYFamiXVJVmQaTn/a2K7f6BaVxfQZJxyuC6er9fcHbY/CElL+NyKbWFFuBP3/GYgSm3vJNaNG8NtkQRHj1owb9CfJR03abh2oH+el1nz+gji3ZboNiVv+EeIjFw1r8EbQFaiidu5J9LVX5VCpClmZRh9Hm6Haweaw1ecVgMDoslR5RG+lGtFa28WE9zjJRQs3kavTTErrSyEp2O4fiRSKu8mkair8CMa7LWo0W+Gwj5Snh5aMQ0QnA0jY8kC4K4EcyYiQ==
+X-Stat-Signature: recbcc578ktta75brq7ja19iuwp9o5o7
+X-HE-Tag: 1793821248-608336
+X-HE-Meta: U2FsdGVkX18pEr5u8iZ51lBuMzQVprRpz+OXlU/3Le78s7dALFGV84mlKmbYTZ0FE8J4j8ozV165Pw6HTplUK/Y0hhbQXKnl4QRLtN/r5i2SFaWEHht2PFVQsxDMm+BiFCDwGVyKJMOkm4/+ah0VIkXNW/RhhxpLVnDGGfdijSc+5yD5Af/bkESui2g8QRumKVMvYZ/efzdQOez/aHFGwtaiH6l+zB1RdPNnNLLPW3gIOMFLzpGNRrMO46uaGna+Q/qysT5P82NiNfrCV/ouFppTUkx7nbtQx/0MdVkjxTl6uxj4sL4waxMzZ0kz1UmO0sO8NKRxHjA5Vl7pd0tubGtKKjq1fZ6yTpT9cRDqmLm1N7wpOxqyaViEbkgL8LRvMqdgDjO9JG/Z2qjShwQblLHkTjeKXdRRZsGh5zUdllChCIKGBmQ48yBB507mbJMkabYeQGyd/8Vc37OGDqb+2fmYiUpQeAGPhtn1/R3f6MZ/ShJhqMLIHZ6aiuz4fEHevl/ocef4dWzsTGI8vTnd81eWuPz40k4tMcoDE4hFQ9Tv7JdT9KzxQiAs1OMKLQw8mZ2ZYfbgk9M6GbQurkpK3FCWGVhAUV/q0ClGPsbVF5hQ/5OTu73wFRfEO+p/LVq5sLp9LftsZwefN3fmznXLYTRG0vy1AZ8xYDq7C9HTflSGlhlaAYHyMiPUnbYxbfgruLdudxkVBlS/nJbS1KgIMaA1vqi78ajXIKQ1pGuq29gMh8yfT8hgPHTkYTQPfl8+yHNqZ8dHtR6XVd7zPBuHOCOnoEnRilmWqJiy5uweSakhIIKJiPXdKNabdtfKXZ76feWJuSdBVCEimPsrTHvnvURad+M73plHDzovtdvvdS/JveuIP1Z3+WAfnK5DQ02R4aNs/3nL9YscbzTPSJmkWpj6QJzYeUgDX4xjW1wgFb8wOmAZ2b2YdImt2+f62ttbY1Vo9mnBnszLbdBgvO/
+ fC1nmNsL
+ IE8dQPBiJ25OeJPaxx38R3a/gXoa23anTztnpQYVFn0MCMF/hsjoKmLZ17rAi65RFUceF2Q5aUGnX7yGN+O/7m4WN3tMHBxFX6VpJ9QyrDhHe7VnS7sE0t7V9OS/9RXXNMFSJ06H9rFrkff8RwSfk5UPVWa/5+d1OGBO+bs3ZDW/XQF+O5NH7FupwsnUQ+TpQfX4OJ8R5QOSrwsaOeK2dwsexdaobyS3MlFRDa9PAVdyANfTdLT1ZsKHiEkdyThcrxagflHgBeVp7AOM+PvsEgUx9e4ENLwjAaMfTy9xpvIJaetx3GfbHzK3cU88ybkwcBhV2YpY6yErXcS4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -154,47 +154,54 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Implement ->proc_write_buf() so procfs copies in what is written before
-it pins the entry, and parse the option from that copy. Writes larger
-than PAGE_SIZE - 1 bytes fail with -EINVAL now.
+Implement ->proc_write_buf() so procfs copies in what is written to
+/proc/acpi/ibm/* before it pins the entry, and hand that copy to
+->write(). procfs already rejects writes larger than PAGE_SIZE - 1
+bytes.
 
 Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 ---
- drivers/macintosh/via-pmu.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ drivers/platform/x86/lenovo/thinkpad_acpi.c | 12 +++---------
+ 1 file changed, 3 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/macintosh/via-pmu.c b/drivers/macintosh/via-pmu.c
-index 49f929ae10e4..079c085be5d2 100644
---- a/drivers/macintosh/via-pmu.c
-+++ b/drivers/macintosh/via-pmu.c
-@@ -913,7 +913,7 @@ static int pmu_options_proc_show(struct seq_file *m, void *v)
+diff --git a/drivers/platform/x86/lenovo/thinkpad_acpi.c b/drivers/platform/x86/lenovo/thinkpad_acpi.c
+index 2ee208c82801..8287b36bd90d 100644
+--- a/drivers/platform/x86/lenovo/thinkpad_acpi.c
++++ b/drivers/platform/x86/lenovo/thinkpad_acpi.c
+@@ -882,7 +882,7 @@ static int dispatch_proc_show(struct seq_file *m, void *v)
  }
  
- static ssize_t pmu_options_proc_write(struct file *file,
--		const char __user *buffer, size_t count, loff_t *pos)
-+		char *buffer, size_t count, loff_t *pos)
+ static ssize_t dispatch_proc_write(struct file *file,
+-			const char __user *userbuf,
++			char *buf,
+ 			size_t count, loff_t *pos)
  {
- 	char tmp[33];
- 	char *label, *val;
-@@ -923,8 +923,7 @@ static ssize_t pmu_options_proc_write(struct file *file,
+ 	struct ibm_struct *ibm = pde_data(file_inode(file));
+@@ -890,14 +890,8 @@ static ssize_t dispatch_proc_write(struct file *file,
+ 
+ 	if (!ibm || !ibm->write)
  		return -EINVAL;
- 	if (count > 32)
- 		count = 32;
--	if (copy_from_user(tmp, buffer, count))
--		return -EFAULT;
-+	memcpy(tmp, buffer, count);
- 	tmp[count] = 0;
+-	if (count > PAGE_SIZE - 1)
+-		return -EINVAL;
+-
+-	char *kernbuf __free(kfree) = memdup_user_nul(userbuf, count);
+-	if (IS_ERR(kernbuf))
+-		return PTR_ERR(kernbuf);
  
- 	label = tmp;
-@@ -958,7 +957,7 @@ static ssize_t pmu_options_proc_write(struct file *file,
+-	ret = ibm->write(kernbuf);
++	ret = ibm->write(buf);
+ 	if (ret)
+ 		return ret;
  
- static const struct proc_ops pmu_options_proc_ops = {
- 	.proc_show	= pmu_options_proc_show,
--	.proc_write	= pmu_options_proc_write,
-+	.proc_write_buf	= pmu_options_proc_write,
+@@ -906,7 +900,7 @@ static ssize_t dispatch_proc_write(struct file *file,
+ 
+ static const struct proc_ops dispatch_proc_ops = {
+ 	.proc_show	= dispatch_proc_show,
+-	.proc_write	= dispatch_proc_write,
++	.proc_write_buf	= dispatch_proc_write,
  };
- #endif
  
+ /****************************************************************************
 
 -- 
 2.53.0
