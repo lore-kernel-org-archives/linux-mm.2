@@ -1,68 +1,68 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7DD1606A32E
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 09:51:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53D84606A32C
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 09:51:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=oudw1gho
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=P8hqftHh
 Received: by kanga.kvack.org (Postfix)
-	id 992836B05B1; Wed,  4 Nov 2026 04:51:26 -0500 (EST)
+	id 635426B05B3; Wed,  4 Nov 2026 04:51:30 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 942606B05B2; Wed,  4 Nov 2026 04:51:26 -0500 (EST)
+	id 60E986B05B6; Wed,  4 Nov 2026 04:51:30 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 85A0B6B05B3; Wed,  4 Nov 2026 04:51:26 -0500 (EST)
+	id 4D5A06B05B7; Wed,  4 Nov 2026 04:51:30 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 6071D6B05B1
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 04:51:26 -0500 (EST)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id EF6F6A0557
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 09:51:25 +0000 (UTC)
-X-FDA: 85396968930.08.FABC209
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 232486B05B3
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 04:51:30 -0500 (EST)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 0C6638062D
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 09:51:28 +0000 (UTC)
+X-FDA: 85396969056.23.4C9AA9F
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 5955D160005
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 09:51:24 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=oudw1gho;
-	spf=pass (imf08.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	by imf11.hostedemail.com (Postfix) with ESMTP id 6B45A40007
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 09:51:26 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=P8hqftHh;
+	spf=pass (imf11.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793785884;
+	s=arc-20220608; t=1793785886;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nFOrB0RlUyfBaL1ZVNyfIXXD7jm51UKr3SX0ZVzaBSM=;
-	b=oBqVW1yEp9uXOPPaWJ4j2fnVSu3rAoaaNkRErj6/MR6BmS1tZxgIHvnrdsOVx65aUD3lte
-	NZEvk0DIzPdLYRSa2koH50pUwYB/0ai4Y8tolVZElaTGKv+/6ZdCQwMrXM2HMi86LPUlhR
-	WmPUlA7oonhfpT3NHYEizJ66+lwXqiM=
+	bh=GMprxfEezCoh7/h412LE6//XE/ONqR/9sL3yJ6mBKrI=;
+	b=KcYf6832PsyzmzT59Yv9R3W+jvw/QM4++rd5CrDEad8D3OxE24bpoV/PlJEiswzbSdeQB4
+	nQUZgyepzTMAt3V7nBioNJNUNjHUBM6ULe7c7+94r1QOaZ6xKTmQi1ZCVV5ussatPuME3H
+	tixYZyyXa9k9qcl6/Latg1Mow31L57w=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793785884;
-	b=384PQr1y1wx1kdmSlRQK8HGOf4vtD1U5kYavP6KqvdaTu1r2s7TvvIj6xQcIbNpknwjyEZ
-	MQqcDdahS+RpUj/j/l/tgydClyk2duIp1KtVAPX7ryI3IolDvdkPrAh8X9hRkHf2rUAvuV
-	w1w4iEXrS7a03nBh9p2Bjt2QB18TRuA=
+	t=1793785886;
+	b=4UO/SWRJOhm3/b8gWSndCo813sESgZ9o3yyWkdfdgO4cF9icZb9ufqFp1hju4W6YK3dLh2
+	UV7GQSioJzqV9MmHIe43OU4+54ZLn93bqPOS0E9Ebk+jgS1jVNU27a7yOOxw0sJmsCwMvK
+	Z40xB4OKaC8lkFwXe3c4LPD7M2j/lEw=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=oudw1gho;
-	spf=pass (imf08.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=P8hqftHh;
+	spf=pass (imf11.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id CF9AE601F0;
-	Wed,  4 Nov 2026 09:51:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92E221F00919;
-	Wed,  4 Nov 2026 09:51:22 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 0B59860D8B;
+	Wed,  4 Nov 2026 09:51:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC1851F00A16;
+	Wed,  4 Nov 2026 09:51:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793785883;
-	bh=nFOrB0RlUyfBaL1ZVNyfIXXD7jm51UKr3SX0ZVzaBSM=;
+	s=k20260515; t=1793785885;
+	bh=GMprxfEezCoh7/h412LE6//XE/ONqR/9sL3yJ6mBKrI=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=oudw1ghofc92RwmeX+P3J9uu8wG0/EGGONuNuDVEJPiJ8h1qlF6AL1v7AiGaRFIb8
-	 a6LkTbPpLJaV3Jfo86XS7xXCDZRfIlRg4cpeizPdgkXnKg8MUGzCqhosT7TDw7+cpG
-	 1UifggURqR3AtHwfwdjuMzXyMBKEGH/+CtH1GS+xeHrdqXZCHyTXS8sDv2BJy8V7WE
-	 sJvMuyl7LXooB6tyg98+03iIQdgMdeIqU6W8ldNzmvd7JW8ua+wl7EU9uBSJXjjLX2
-	 L+RnymVx7mTq6VopCnCX9ZE0smTg9GRY2jyiqeGuwbPiiOuEuhr51RkyVIX9xsXr58
-	 fovbepPsx19OA==
-Message-ID: <sashiko-outbox-197002@kernel.org>
+	b=P8hqftHhkVOdYFgFk+LjMFi1DgGSzm/wGPnzPGtCz2evBjc+XbnIjJYvNta6mB9fz
+	 jBl1KtsxNN/IMO8j7+2R7GgtKAzJPlkGLHKQLek0mFTaJOAy2eVGfhH0YeEjubfYtL
+	 fCAJczrM8FL++zqhSmtXe1dIkRIGLI0/CB2X/3lQ3j+27Cqlolay+uy7TtVW7Ienp3
+	 7R1i/VrLgcKH9VAce0UcjAUL7GFSDQ/GQc+CbP4iEe3B2BBgDXZykGcw64QpkLSO+e
+	 OegMlGrymtbwxCMdgkRZ4hKL6v+MwNFHi3QqiHT1cJjzvRaSRFa2xaBnhBHCJEvUnQ
+	 58ttHFAaG3rOA==
+Message-ID: <sashiko-outbox-197004@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH RFC 3/6] virtio-mem: support memmap_on_memory in Big
+Subject: Re: [PATCH RFC 5/6] virtio-mem: support memmap_on_memory in Sub
  Block Mode
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Nikolaos Karaolidis" <nick@karaolidis.com>, "David Hildenbrand" <david@kernel.org>, "Lorenzo
@@ -74,24 +74,24 @@ Cc: "Oscar Salvador" <osalvador@suse.de>, "Michael S. Tsirkin" <mst@redhat.com>,
  Wang" <jasowangio@gmail.com>, "Xuan Zhuo" <xuanzhuo@linux.alibaba.com>,
  =?utf-8?b?RXVnZW5pbyBQw6lyZXo=?= <eperezma@redhat.com>, "Andrew Morton" <akpm@linux-foundation.org>, "Michal
  Hocko" <mhocko@suse.com>, "Hui Zhu" <teawater@gmail.com>, "Georgi Djakov" <georgi.djakov@oss.qualcomm.com>, virtualization@lists.linux.dev, linux-mm@kvack.org, linux-cxl@vger.kernel.org
-In-Reply-To: <20261103-virtio-mem-memmap-v1-3-308ae1da6240@karaolidis.com>
+In-Reply-To: <20261103-virtio-mem-memmap-v1-5-308ae1da6240@karaolidis.com>
 References: <20261103-virtio-mem-memmap-v1-0-308ae1da6240@karaolidis.com>
- <20261103-virtio-mem-memmap-v1-3-308ae1da6240@karaolidis.com>
+ <20261103-virtio-mem-memmap-v1-5-308ae1da6240@karaolidis.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Wed, 04 Nov 2026 09:51:22 +0000
-X-Rspamd-Server: rspam06
-X-Stat-Signature: e7nfz5nie7uroiyzrgch6en7fqa8t1kw
+Date: Wed, 04 Nov 2026 09:51:24 +0000
+X-Stat-Signature: jzw56j3sexha7n6aayfr3wb3mkjfpsxd
+X-Rspamd-Queue-Id: 6B45A40007
+X-Rspam-User: 
+X-Rspamd-Server: rspam08
 X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
 	autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: 5955D160005
-X-Rspam-User: 
-X-HE-Tag: 1793785884-988607
-X-HE-Meta: U2FsdGVkX1/cjn8gqHmuKH4VBbZggOeKayXPOKmFcNJNLqU4RUcm3D9RoIVYlIGM4FO7+hSoxDHqUDqkdYgQYJ287Vla9FbidkStC2jUmtnbq+G6yGlwASxcJBrCwt0LlEah/5HW0Mu5SD3lCrbyXssH3iFWU0kiWpKlHI+obf0FJYQ6DZ138G08ztLwCsvJNA1osuG2+p2QXxMdT3q0P+HuJUlgrKJTL3mlxOZ2HxXNqx4fE2AHT1SbKnt4QeiN6Ar6rG9FD+uhTUKBOkzv0ahApv+oMIJ1ILlabrTVeMlYx/neVZuae3gOpZg97IjQNOPVYt68M/N2vIWG2pEp7HsLnaPDE2cpbQjuzDiugQwckHrhzBxdm4yjrZKJFksUWihAqArWirhONiFTc735gP4vPpzrGUMSZ9EEeDhmlqRUwU4GrWoqWiLxddv72+PQkySqo4Xr+lDeAYUDRDTGiEimG43HbATUqIRqeiuHMr/Ew4vsysfyCerU6CYyzF3LzJ+hiY6/vIJ6ym99/uiD/GuM+wPdc0D2+f6gfuEQFAa9cqsBiim6yX9PxovSC63vLs9Pn/3GdyDJH//TY20Kl7D9YUFNjd6NLbZFObo2CPrZzzVctGtYzxBkX0i+mwXsxHI/hoFFUyHnACR+Sn45YlKao4jA8I5+IFOuEfrX8G9eIh/O/Rq6wxbjru0snrwE3oqkL37T5s0hecEKdJY7MopksaRNOtPMywJJl+qHGQb1EQEXJ4FpJGPUEHiZLHO70Ua0bxeHkuQmfHbghz/O8i0G8UAfeyz+GrNK9K9VCbcMJLr8TthwNodxoM12FpP9ymPmHPR7SPCjzcKSd14u4jT4ZZ9tSQa0eVwFTreAJ9Ue9gUQ+zjgzxOMlRvhKAsjwZlyQ1Nq647sksxxRU9dtpuF8xlG4SmN3f8JowjiBvH1BlBTMKDAxFokvwJXNdgAUE4uYrdzcFR5GdDsxbQ
- 9YeOoCwi
- MgQBNBscwVSxfP6JTas2PgsDyY4Df7UbuoIBk/v+JOEA89b1w7u9yNctJ2r8hWcns2Yz4NoP97Fv8f6reQkZRfilTjtrJOcT+EetRcLD1D+3XYdwbTHGjfNeow0BOQst6F4qVD0NfOenaU3IbjVpjD2gp3zv3acQUrpQv2q/HqBxSduraktpQ7O7ipaLaMmx2MPmr8ZSfZIn/XOAIE+BEGXcZK7BPErzA98WhfNqIHaZ/iWQ9jpCYxyoOLV6WnkAjpLMBrgFGa2blHCTp3acVHIsWJkxnDFZNcnKM6EesbmelCcVuQV0gk1FXIm7drw+27nALzdvrrBJ6Ppw0o35xx4ntHSNv/SXnqzVyZqAUKbdz1QZibje4DByz+Dkj82M/z5cU2UkuyPouMxRSUjqXEJhhIva6SiGBHG955TKbKrRUQgu2gDI6JDIXKWTgHd3qh0GlIgmvN+XEhy4YhwQ/MC3ElOBbH0GmUnre+PDI5/lkoU95heHs46ICaVueS/p7q5gTXSf+zrPK6jGx4k1wxByWRWFim9ny9ogefrV9F00gBlDoQHkpIhu5VdWjjYeEesCIpSJoK1R7NML0+km110Ml1Yvgp+XyZzZd0nxTbPM/T1QXVQK459uLIS1W2A0lYJmMRqy5QINzsVnwfAP78sxEpCdD/Qb4v4fRSjXftGPqxQk=
+X-HE-Tag: 1793785886-204513
+X-HE-Meta: U2FsdGVkX1/a/fv6ZmEI1iqHJtoo/tFXJv53G7DwoR2ZpSLwmT673Nqjl/KwfxSQsE7xAqUAyjhp7QypEFwz5aNP8RZQU79UPW+Yx0xLq2tnHHpU+ikJeTYliYG33ArA88YAwasTBRtNEczqWo0IBRs1ENDu91R7+ugtuGY78G7dS/4ipnxleljP/rIoT5RqS0OrwfyUVXPephy6Sfz/et7pCplfxhQ48WvAXyBCdBIHTliNwODgzKGqnjmcsJMRl3qyuvG+2R6dyJRtDFmmUE5GlzyUNxhMQq0n+v81p0ZRrdM0Ow8qVz9nn/M0U2EkYzxU1resoUgyGeTyfQZKY+f+vOLqy2YCL25cmf2A4tGIw4mi+UnaAl/56iaKXvvI7vVsmNCKfDBm5bj0u1KGlMa4HFJ2B4apZ+keOpM30h7Lsa2Ch9B1hvmTM8AIq8F48TgXcoWTVioXW5fmqjwFBohoLhhRxWCMMIvDgJwA3A2vJxPYfCbs7Zp93l+b9RS/F95jLKk2Q0ZqwJ2+kkjMhP4syoqeY5jLJH5Fmzw1UFnwMzIfQLLpIvshQEhRwKWHo6c57+K60H2p0fSVtJC6zTllJbWikg0WZE9E9JjFqAutJDx4pakl38o4JnHks7hlx3EvDEyXc4J0DKBHibsND/ULDp2xEjeoPkTa3mDK4qvHMHqN5eVv2RGJ0Rt8c3cdfTiuW2saBSgGB/vx3y4P0UKOjsjKio4mLEbx7hzMQUpJJ173X54Zg8wxbgBCv4wtri4B5AbrjxvB7gv4TwFkKow2+MOkHr1LLva7slk8k9mpz2YOfrTxuCJ1yMCiZ/cLQHtkMMdij0wRdhMFAu1f5DCyYgenWrwbd0dZor4hMipF2kRwfJu5/8X5P4YsUlIYmN3+NOdjXUPwoSVBEl8Vm2aegNYZdVLea0Tl0pPjChnR8Vl/jXAFnuNzLQ4WmUFrE+9B74dD06w+WHCp6V9
+ LpxAsL8R
+ vb9OhTzZLdfWJxAf5sG9kLNCOs9qPQOn+Twb/Y6AnxbtcxR1zUBMBhIneRtJoruv48gFKoZtqoDl7plMbAzcC5PN/dpdhdEtMeD5u7HFbG9sjrzOORy+N4U5FgInNUo5MTJWOx5X0IIBR+a/aaKhm8w+Coco2JtcXiP8gd7kkkM0yuVmXt1C8YF0yiE7MOqBumHGU9d7lu729FWrnHZ2KnyK/8G0TN+8LABovcYjtpDlAyMocyE+PzEPkjflb/veLuqqem15fzwEFKVTBxrCaF5KtOXVCEtVkwmkTYydQhKG5rY99hRsBSv2fZUNUNISaggV6nTnvaM/xn8p+GLMoarYSAEDmiNeJMZ1S6tTWMb872x8Fp/cdRmHMJkI8DmpX+l7t4Yx60/wt2nMgFDFSV4gW7xzF8oZPiBJ7By9GT1ZTW7bD7PA8Y56fDB8udMHecRY8Gb78b5P2DqATAaNyWaP5sQnRsYAJd+RT3OGe6bd2CmHh7MVifvP3uAOTkZjdM3SPP62efZ6x+R/1BErNkDaZgXze0nEcnjeZeImicjJ6VJ3b+luoC/2rw4dGKsHuk0DznjQezJauZ8czcplVwNEdWOyDibgPWt+TLrQlmNbJrt3wbu4nQ2VZkDmjzvpy4ksoXYrwF5NIVNloglTGz8de8cupg1KJnlIfn5fDLQMTrg0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,44 +103,200 @@ X-Archived-By: <archiver.kernel.org>
 
 Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [Low] virtio-mem: missing kernel-parameters.txt entry for virtio_mem.memm=
-ap_on_memory
+- [Medium] virtio-mem: swallowed memmap unplug errors in virtio_mem_sbm_try=
+_remove_unplugged_mb()
 --
 
-commit 20926ca463fbc5ddc5964493d1dbdfa119302f38
+commit b0988c80262195af51a910d0ad85c26ee566fe77
 Author: Nikolaos Karaolidis <nick@karaolidis.com>
 
-virtio-mem: support memmap_on_memory in Big Block Mode
+virtio-mem: support memmap_on_memory in Sub Block Mode
 
-This commit adds a virtio_mem.memmap_on_memory module parameter to enable
-self-hosted memmaps via MHP_MEMMAP_ON_MEMORY when operating in Big Block Mo=
-de,
-and skips the memmap pages during fake-offlining and rollback.
+This commit adds memmap_on_memory support for Sub Block Mode in virtio-mem
+when the self-hosted memmap spans complete subblocks. It keeps the memmap
+subblocks plugged while a memory block is added to Linux, skips them when
+unplugging from an added block, and unplugs them once the block is removed.
 
 > diff --git a/drivers/virtio/virtio_mem.c b/drivers/virtio/virtio_mem.c
-> index ab06adbc0342b..034d07207e44d 100644
+> index 688c178c760f5..d6623f67b76bb 100644
 > --- a/drivers/virtio/virtio_mem.c
 > +++ b/drivers/virtio/virtio_mem.c
-> @@ -40,6 +40,11 @@ module_param(bbm_block_size, ulong, 0444);
->  MODULE_PARM_DESC(bbm_block_size,
->  		 "Big Block size in bytes. Default is 0 (auto-detection).");
+
+[ ... ]
+
+> @@ -1617,35 +1628,65 @@ static int virtio_mem_sbm_unplug_mb(struct virtio=
+_mem *vm, unsigned long mb_id)
+>  {
+>  	uint64_t nb_sb =3D vm->sbm.sbs_per_mb;
 > =20
-> +static bool memmap_on_memory;
-> +module_param(memmap_on_memory, bool, 0444);
-> +MODULE_PARM_DESC(memmap_on_memory,
-> +		 "Allocate the memmap from hotplugged memory itself if memory_hotplug.=
-memmap_on_memory is enabled. Default is 0.");
+> -	return virtio_mem_sbm_unplug_any_sb_raw(vm, mb_id, &nb_sb);
+> +	return virtio_mem_sbm_unplug_any_sb_raw(vm, mb_id, 0, &nb_sb);
+> +}
+> +
+> +/*
+> + * Unplug the memmap subblocks of a memory block removed from Linux and =
+mark it
+> + * unused. The memmap subblocks are deducted from @nb_sb (clamped), even=
+ if
+> + * unplugging them fails. On error, the memory block stays
+> + * VIRTIO_MEM_SBM_MB_PLUGGED and virtio_mem_cleanup_pending_mb() retries.
+> + *
+> + * Will modify the state of the memory block.
+> + */
+> +static int virtio_mem_sbm_finish_remove_mb(struct virtio_mem *vm,
+> +					   unsigned long mb_id, uint64_t *nb_sb)
+> +{
+> +	const int count =3D vm->sbm.memmap_sbs;
+> +	int rc;
+> +
+> +	if (count) {
+> +		if (nb_sb)
+> +			*nb_sb -=3D min_t(uint64_t, *nb_sb, count);
+> +		virtio_mem_sbm_set_mb_state(vm, mb_id,
+> +					    VIRTIO_MEM_SBM_MB_PLUGGED);
+> +		rc =3D virtio_mem_sbm_unplug_sb(vm, mb_id, 0, count);
+> +		if (rc)
+> +			return rc;
+> +	}
+> +	virtio_mem_sbm_set_mb_state(vm, mb_id, VIRTIO_MEM_SBM_MB_UNUSED);
+> +	return 0;
+>  }
+> =20
+>  /*
+> - * Try (offlining and) removing memory from Linux in case all subblocks =
+are
+> - * unplugged. Can be called on online and offline memory blocks.
+> + * Try (offlining and) removing memory from Linux in case all subblocks =
+except
+> + * the memmap subblocks are unplugged. Can be called on online and offli=
+ne
+> + * memory blocks.
+>   *
+>   * May modify the state of memory blocks in virtio-mem.
+>   */
+>  static int virtio_mem_sbm_try_remove_unplugged_mb(struct virtio_mem *vm,
+> -						  unsigned long mb_id)
+> +						  unsigned long mb_id,
+> +						  uint64_t *nb_sb)
+>  {
+> +	const int first_sb =3D vm->sbm.memmap_sbs;
+>  	int rc;
+> =20
+>  	/*
+>  	 * Once all subblocks of a memory block were unplugged, offline and
+> -	 * remove it.
+> +	 * remove it. The memmap subblocks alone provide no memory to Linux.
+>  	 */
+> -	if (!virtio_mem_sbm_test_sb_unplugged(vm, mb_id, 0, vm->sbm.sbs_per_mb))
+> +	if (!virtio_mem_sbm_test_sb_unplugged(vm, mb_id, first_sb,
+> +					      vm->sbm.sbs_per_mb - first_sb))
+>  		return 0;
+> =20
+>  	/* offline_and_remove_memory() works for online and offline memory. */
+>  	mutex_unlock(&vm->hotplug_mutex);
+>  	rc =3D virtio_mem_sbm_offline_and_remove_mb(vm, mb_id);
+>  	mutex_lock(&vm->hotplug_mutex);
+> -	if (!rc)
+> -		virtio_mem_sbm_set_mb_state(vm, mb_id,
+> -					    VIRTIO_MEM_SBM_MB_UNUSED);
+> -	return rc;
+> +	if (rc)
+> +		return rc;
+> +	return virtio_mem_sbm_finish_remove_mb(vm, mb_id, nb_sb);
+>  }
 
-[Severity: Low]
-drivers/virtio/virtio_mem.c registers the new memmap_on_memory module
-parameter with 0444 permissions, which can be passed on the kernel command
-line at boot as virtio_mem.memmap_on_memory=3D.
+[ ... ]
 
-Should Documentation/admin-guide/kernel-parameters.txt also be updated to
-document virtio_mem.memmap_on_memory, its format, what it controls, and the
-architectures it applies to?
+> @@ -2072,7 +2130,7 @@ static int virtio_mem_sbm_unplug_any_sb_online(stru=
+ct virtio_mem *vm,
+>  	}
+> =20
+>  unplugged:
+> -	rc =3D virtio_mem_sbm_try_remove_unplugged_mb(vm, mb_id);
+> +	rc =3D virtio_mem_sbm_try_remove_unplugged_mb(vm, mb_id, nb_sb);
+>  	if (rc)
+>  		vm->sbm.have_unplugged_mb =3D 1;
+>  	/* Ignore errors, this is not critical. We'll retry later. */
+> @@ -2389,11 +2447,11 @@ static int virtio_mem_cleanup_pending_mb(struct v=
+irtio_mem *vm)
+> =20
+>  	mutex_lock(&vm->hotplug_mutex);
+>  	virtio_mem_sbm_for_each_mb(vm, id, VIRTIO_MEM_SBM_MB_MOVABLE_PARTIAL)
+> -		rc |=3D virtio_mem_sbm_try_remove_unplugged_mb(vm, id);
+> +		rc |=3D virtio_mem_sbm_try_remove_unplugged_mb(vm, id, NULL);
+>  	virtio_mem_sbm_for_each_mb(vm, id, VIRTIO_MEM_SBM_MB_KERNEL_PARTIAL)
+> -		rc |=3D virtio_mem_sbm_try_remove_unplugged_mb(vm, id);
+> +		rc |=3D virtio_mem_sbm_try_remove_unplugged_mb(vm, id, NULL);
+>  	virtio_mem_sbm_for_each_mb(vm, id, VIRTIO_MEM_SBM_MB_OFFLINE_PARTIAL)
+> -		rc |=3D virtio_mem_sbm_try_remove_unplugged_mb(vm, id);
+> +		rc |=3D virtio_mem_sbm_try_remove_unplugged_mb(vm, id, NULL);
+>  	mutex_unlock(&vm->hotplug_mutex);
+> =20
+>  	if (rc)
+
+[Severity: Medium]
+When virtio_mem_sbm_offline_and_remove_mb() succeeds in
+virtio_mem_sbm_try_remove_unplugged_mb(), it calls
+virtio_mem_sbm_finish_remove_mb() to transition the memory block to
+VIRTIO_MEM_SBM_MB_PLUGGED and unplug the memmap subblocks via
+virtio_mem_sbm_unplug_sb().
+
+Before this change, virtio_mem_sbm_try_remove_unplugged_mb() only failed wh=
+en
+virtio_mem_sbm_offline_and_remove_mb() failed, leaving the block added to
+Linux in a *_PARTIAL state with all subblocks already unplugged from the
+device. Both callers (virtio_mem_sbm_unplug_any_sb_online() and
+virtio_mem_cleanup_pending_mb()) therefore set vm->sbm.have_unplugged_mb and
+return 0 to ignore the offlining failure.
+
+With this change, if virtio_mem_sbm_finish_remove_mb() fails to unplug the
+memmap subblocks (for example, returning -EAGAIN on a concurrent config
+change during offlining, -ETXTBSY on VIRTIO_MEM_RESP_BUSY, or -EINVAL on
+VIRTIO_MEM_RESP_ERROR), both callers treat that device unplug error the same
+way as an offlining failure:
+
+1. They set vm->sbm.have_unplugged_mb even though the memory block was
+   already removed from Linux and moved to VIRTIO_MEM_SBM_MB_PLUGGED rather
+   than a *_PARTIAL state.
+
+2. In virtio_mem_cleanup_pending_mb(), the VIRTIO_MEM_SBM_MB_PLUGGED loop h=
+as
+   already run earlier in the function:
+
+   virtio_mem_run_wq()
+     virtio_mem_cleanup_pending_mb()
+       virtio_mem_sbm_for_each_mb(..., VIRTIO_MEM_SBM_MB_PLUGGED)
+         ...
+       virtio_mem_sbm_for_each_mb(..., VIRTIO_MEM_SBM_MB_*_PARTIAL)
+         virtio_mem_sbm_try_remove_unplugged_mb()
+           virtio_mem_sbm_finish_remove_mb() -> fails, sets MB_PLUGGED
+       returns 0
+     virtio_mem_unplug_request() / virtio_mem_plug_request()
+
+   Because virtio_mem_cleanup_pending_mb() swallows the error and returns 0,
+   virtio_mem_run_wq() proceeds directly to virtio_mem_unplug_request() or
+   virtio_mem_plug_request() in the same workqueue run while the failed
+   block's memmap subblocks are still counted in vm->plugged_size. Doesn't
+   this cause virtio_mem_unplug_request() to unplug extra subblocks from
+   another active memory block (or virtio_mem_plug_request() to under-plug)?
+
+3. In both callers, device errors from virtio_mem_sbm_finish_remove_mb() are
+   masked instead of aborting the operation and propagating to
+   virtio_mem_run_wq() (unlike virtio_mem_sbm_unplug_any_sb_offline(), which
+   returns the error directly). For instance, in
+   virtio_mem_sbm_unplug_any_sb_online(), returning 0 allows
+   virtio_mem_sbm_unplug_request() to keep unplugging subsequent blocks on
+   the device error, and in virtio_mem_run_wq(), -EAGAIN will not jump to
+   retry and a fatal -EINVAL from VIRTIO_MEM_RESP_ERROR will be turned into
+   -EBUSY via have_unplugged_mb instead of setting vm->broken =3D true.
+
+Should virtio_mem_sbm_try_remove_unplugged_mb() distinguish an offlining
+failure in virtio_mem_sbm_offline_and_remove_mb() (setting
+vm->sbm.have_unplugged_mb and returning 0) from a device unplug failure in
+virtio_mem_sbm_finish_remove_mb() (propagating the error code to the caller=
+)?
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261103-virtio-mem=
--memmap-v1-0-308ae1da6240@karaolidis.com?part=3D3
+-memmap-v1-0-308ae1da6240@karaolidis.com?part=3D5
 
