@@ -1,66 +1,66 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CDB6606D326
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 17:50:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3DB8606A683
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 17:51:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Rs900pf/
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=dl7dlqCu
 Received: by kanga.kvack.org (Postfix)
-	id 4A6466B05C3; Wed,  4 Nov 2026 12:50:55 -0500 (EST)
+	id 013DD6B05C5; Wed,  4 Nov 2026 12:51:16 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 430146B05C4; Wed,  4 Nov 2026 12:50:55 -0500 (EST)
+	id EDF1F6B05C6; Wed,  4 Nov 2026 12:51:15 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2FB596B05C5; Wed,  4 Nov 2026 12:50:55 -0500 (EST)
+	id D803E6B05C7; Wed,  4 Nov 2026 12:51:15 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 05D306B05C3
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 12:50:54 -0500 (EST)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 919761607FB
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 17:50:54 +0000 (UTC)
-X-FDA: 85398177228.14.A5B7A10
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf27.hostedemail.com (Postfix) with ESMTP id DF84D4000B
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 17:50:52 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Rs900pf/";
-	spf=pass (imf27.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793814652;
-	b=EibMEhIID60UddpaKtPS+zJLBWvTA/9W3ExdiuGcP8fxpU8VfEgJGaqYcDiw3D/HuC8Zp5
-	4Vdqgjs3UMJBwnMcW3y2C7Yk/uROvJGfFxRmyNS3daXP9BQ1yknFCvk7idScxQuy0g/bgs
-	KMpkMXA8UhOyaBUTAv8NKv5BNS8MM+Y=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Rs900pf/";
-	spf=pass (imf27.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id AC5676B05C5
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 12:51:15 -0500 (EST)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 3AD881A07E4
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 17:51:15 +0000 (UTC)
+X-FDA: 85398178110.08.9F754D7
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 525D080005
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 17:51:13 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dl7dlqCu;
+	spf=pass (imf02.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793814652;
+	s=arc-20220608; t=1793814673;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ih8EKkL3fEFrmnOibnSg6zuDA24U9CpFmMUb1+ThTQI=;
-	b=8AD+37otmM99BAPRQGMumR9CbRxLOTdTKok7R3OyuV/0NBl2mMnYwSZPp9nYEwRibMEUJ1
-	D4y8pRz9t2Bmf2swAcwrVhbw6dsClobUuYBjz2DkpqpobulvHMda9IxqyjrHit4huNmmKL
-	ZD0F3LFBguwPysVTM6nQwR6DDDzRA8w=
+	bh=bRUY7zR2xEebSKJvbp7QJxGSJz7lwz+abCfF6bzfIu4=;
+	b=0Pf35fCdtw2nZVPUMfXrVmhSe2Is+NPEDAkhLePu75p+QNJHTaoJyzgqYlCtdsijLHJtZV
+	QgkjncrMUHrlwAub+HlI9ugO0UdGTnfaShvkKE5Fsqd2edotsz7Fb/JjSAjm3u+0IViaPl
+	g0RfTflto8HUHJ9FyRWxnfyAXg8IXPc=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793814673;
+	b=D3asnxF6+Qt1xERwhEjbfXzD30YLIyOkMAN7u4lZWTIm7C4KVVycUsCeIjBsPvaH2wBmLB
+	pFJC6tE2QCZGjYQxKpc7J1UAIlR6piPLZFx36y15EeSilnXuhKsRyMf/3Bb2AXHt0Kjl19
+	U5NyQRXvhuk13CVABHm6m/jba1FxZM8=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dl7dlqCu;
+	spf=pass (imf02.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 7977560A6B;
+	by sea.source.kernel.org (Postfix) with ESMTP id 7BDF443420;
+	Wed,  4 Nov 2026 17:51:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A87C21F0093A;
 	Wed,  4 Nov 2026 17:50:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9A5D1F00919;
-	Wed,  4 Nov 2026 17:50:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793814652;
-	bh=ih8EKkL3fEFrmnOibnSg6zuDA24U9CpFmMUb1+ThTQI=;
+	s=k20260515; t=1793814672;
+	bh=bRUY7zR2xEebSKJvbp7QJxGSJz7lwz+abCfF6bzfIu4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Rs900pf/e96en+TLGDsSEaZDMSU5oZQyH5nZF7UwPtKKPbnRGVFWZ00+YoXP6F4Is
-	 q0FuLwKaUF4nN3gz2xJIMC1lUGMhu05g4EQmKbrK+q0N8NJzLb9mePMfp7AcDBYc10
-	 x61YX33cPuH/8i8ufX0WghhS/B3zq07hwoKbuiqX72KPAMBcVqLQvk07L0+V7P/Tdr
-	 40YtyYcMx0U/wZ/Yjv8DvJGoDR8zXAMEeTQuW2MXE0nFHOsHJCtQqwc7JWZq4qZj7/
-	 4xvxSNCcWgEK4gFORKmZhaLtRdAL9biaxJIFwBQ3BbvkWhj9sqmIOkeZP6BWLhtYp2
-	 6TwkPAQH74hwA==
+	b=dl7dlqCuigVtArFtm/v13PbvgoN21cEiJmv94TSdAfPYArcKB6G/oXjD8zdO24lnJ
+	 ybF4ni0+zMxMXq66lTdyJm83mF5fI6TixB6jE4f2N9R1sc2LzqOgYA/CX08BrmhHiq
+	 h5hWq+Guf6DVaBgNQPt0j0kZIA0xF83tJU/turfMgN1hOL3RG5geYK5UPa02oN+gzo
+	 v+gW0NlE7T5ApRB2hs2V3O3dpHprLN/Sb2l6PJxOJgwtefZgJFn/HTsU9hDAnwxif0
+	 uHwP71grr1P14LWO0dSiwyCEi1kPf44CFdlCPvbOI6cPhToAbeUH93m6qN8VxQJfEn
+	 Hp/uLwaFySsTw==
 From: Christian Brauner <brauner@kernel.org>
 To: linux-fsdevel@vger.kernel.org
 Cc: Linus Torvalds <torvalds@linux-foundation.org>,
@@ -120,33 +120,32 @@ Cc: Linus Torvalds <torvalds@linux-foundation.org>,
 	linux-modules@vger.kernel.org,
 	linux-debuggers@vger.kernel.org,
 	"Christian Brauner (Amutable)" <brauner@kernel.org>,
-	Chuck Lever <cel@kernel.org>,
-	stable@vger.kernel.org
-Subject: [PATCH v2 22/51] ALSA: info: don't write past the end of a data entry
-Date: Wed,  4 Nov 2026 18:47:08 +0100
-Message-ID: <20261104-work-procfs-bugfixes-v2-22-bbf7d5546809@kernel.org>
+	Chuck Lever <cel@kernel.org>
+Subject: [PATCH v2 23/51] scsi: BusLogic: don't return 0 from writes to the proc file
+Date: Wed,  4 Nov 2026 18:47:09 +0100
+Message-ID: <20261104-work-procfs-bugfixes-v2-23-bbf7d5546809@kernel.org>
 In-Reply-To: <20261104-work-procfs-bugfixes-v2-0-bbf7d5546809@kernel.org>
 References: <20261104-work-procfs-bugfixes-v2-0-bbf7d5546809@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1329; i=brauner@kernel.org; h=from:subject:message-id; bh=/wIh+WZXKaFyyFYwMjXKmLvFs42DoCHjOzS3J0v96D0=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS9zrsptH6O04ab9YvmrtGx55O9VOyReez3z/NfPx/vP bHVeEsQV0cpC4MYF4OsmCKLQ7tJuNxynorNRpkaMHNYmUCGMHBxCsBEvhsyMqz6Zx61me86u+1+ Z73TMTGbvt9IUwoxnH1ZvumySeeKiAeMDJPbtrXoiO+Y8M60S/DOI8mwolZ5lkfT2EO5qks1+iT vcwIA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=938; i=brauner@kernel.org; h=from:subject:message-id; bh=7Bhyn2ehZ0sKrsH+Wp9jL6/kN1Jv4nVldfkK6knOcds=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS9zrudfHff/e+eJxMXl8yZKxXjd1JJhqM6dufPj3/OX 2dK7+SU7ChlYRDjYpAVU2RxaDcJl1vOU7HZKFMDZg4rE8gQBi5OAZjILROG/zVzphx+JGd7gfnE OQVeVkvb3OYYjch7EkWC4pcW3gmxTWJkmP47ztIzec7OKQ5aW8Xzd+v6Z97cqbrJUdNk4eHpdlN mMgAA
 X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 1xhbmb5t9iw5r5nijo5mtuyf3swbb51m
-X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: DF84D4000B
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 525D080005
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
 	version=4.0.1
-X-HE-Tag: 1793814652-998052
-X-HE-Meta: U2FsdGVkX18a8I7JpQ0gl4mc2WTpWS5aeXH8JR2I7Z0gi1gfA6wg2QcdI1JkNYNUKvn2Sj6x5XCIWMj2P1p92Z/PQ1+SsTC2YR7dx34TYalG9vdb3SOmo63/yLUSFymYbRS1MO4vLsoJE+oYi2gX9MosGYRuENGn3hjBhThMsAbHY823lEL4YYbAco1SrNhF2QhD80Dxsu2vwhSlwRCj6vWzFlO1eUG6a9JVCWWW8PlguQbc4PnK4K1+SAgFeAbqtGas8N6QmYFluYERVLB7wZP1aokcHpcBS6lJ6q5rASTwJe8wFVWYCaS2yZY5Jprp/bQq2uEehF2j6oGQLaBov8TK/UkoXqc9VGXKctDYaChrUvO05VjVoWgYKcFcjErDgffBtUqBhtbHypxajr9IPwPKAP/lfhZpQbqXlh0No8rB86m9STJhEOkvyY6zcMJlB0P9L/KRrjLHLGd9/26sa0lxtk+2fR/0XugjZqYY5Akd2ditylB42eqS9iKkd5SNkkiNk6aVyiUWqR7xVDKF+0Svsa/Z0Zai3F4VCWGSGgrT9UCEqBJvymPDLOqh4TYpxOjoquah/Yk31kys6JbV4qFRev0304x4lyEEMeHVcCJj5aiXyNhkRI85pEHU3LNG+QEPrIKLKL+F3esZA+NdKA34fZg7mh4GmO+VyjVjQJNxuz0uS350NrbypZuU0OiovzqZ8TnRQBNbt/dDidbLo2IJkQKyYN9CcRV20DD1Uo8TfyeT3Drmnrl6HAUfl0ZB63E0K2CBjgT5JXIDGMIK05R0ulvMWI0hDm0WFDdOxJJ1UyajCmaMvHb07eFouqbOqxVGAQNMqvSUq3vHZI1mCX3FcYVGuz+ZVMaxJtdECRoNsylZXoMzPr3H8zYBpgLmWV3cWvm6FwEhPBR+MzyqpttbiNWUSJ26WZjFdCNW4UZY1UWRklUp4MqRG6Z0dQERpr8EbwrQ8Fv1wriieeN
- TqKNuHRB
- 19L1bbej/A4yX+P3ASt6KAtimfb7yZ2I0YW/I3Cels/aFYmcpqcbiuJWhFHK3hOsBJbYc/FJE9hSLMPyp2HZ6gul4q0pjvUijODjbtMt3j2cSqM2atCfbxFpLWxep8iKkHR5JQcPKodQLhNMV8yLhp1PCuMScpWPPSQZQg9Z2czBPq0doggL2M6B/YxuhR/t2qyQ+CSRHLzO/lSQreIlrKdgJ1bor/mUPjeim+pGVOOyvp1KaSkAQSzxLOCreEo/sUiBbAWI7Xbab3rQ9WHTRrfuRbibzJmfx6/E7NnDInw9kOLg21c/0VfWjqfuREqSdUv6xmm1csENIGLmwvGCd57OLBeAjFJuF2NyiQbdtucywQO3Bwwq0AvgAXrLsCVDSDStNWt65YcoSyC0NiQ+ptcCUPZzrIZSuIE6D7BV5nn0jsHA=
+X-Stat-Signature: jw3mp3wa9yi1xwawz6ws8pxdd1pa68bs
+X-Rspam-User: 
+X-HE-Tag: 1793814673-371980
+X-HE-Meta: U2FsdGVkX1/6gHTaE3b8505ThJMXtQT+NToVxvoVB5WSAeZSXYBvLRPXHMvvSYUpG1dsydb6NYeXs7/AGLVdvFk6OVk4cCPmbWDuLt68L2ld5/6cJGCnS/0Mp26Gdb7tidsWewlIU4ag9oe6lKayj4eFQmLe5rlwrVfqUNAr173XTy21LMYnF0Bi+v2KcEJWoggZK2MkSQMHQtjVtyebNR/GYxxwe/E68Q17lCkBD+K7X32r6n0k39tlTaw0BKETlpFdPhoD14Ero46vLHHVK1JOkNzwW39iodPmSGsae1zzBdX2++cFKz1Ehy0VZuesU/QMHk/RBMWPTBnm9h93UpvmoiKWRYBbbcr9KIRal8ttaBw9myHd7WTIG5+E7bIBmkdmgV9JbHUGLivNXpl58AvMmmgv1To0wQoHq/3Hwaah2Mk+ljwnnWGp9rGC8SjpDZFgMKXc8Wgh6JVS9cZHhhZrMLiwt1YVSJmIO1D4/MFccLod5yIs/IJ7x5bA25wWroHCZKrJk1dgXCIcESyNgcafkx6ak7Za8SZA/SPtO+uiItkTz4LDYx3tE6eHULAQbaOedphqaLW8HjxEHfaPF3IGOAK+G7+LEyYTImZR0s+EHNMy1wXL49Ms46Mg/LcP5b7PhkISx8CFD+Hwe7Or2Niv7SdQcfC33DI5AIg98egj7/PpS13AJUhrm39KU5eSnS/UdZ8kuBWg9sdLRCADh5womr+vnTXsErWIOFeefR0obD0IropMe2FJd7ugoGnZgCxAuV1EYyFIJQFP+s1ByGNuOqSdqEcv0LdQc837+r4pNw8oXOkrdRTy/wwaFpkce2BQCxKHzu4Zmz5KWC4zi3vq1OhgiHPYOSYYtNuzROAUmb8uDfJuWToYrw6inrRK1r2pYso1kLelInkZ2a0PfqV7N9Y5PHiMmxeaWIqrpj+5ywHXBgL8RZCpjGPXJB/sC0Xe40VNFH4N8cUOuWA
+ OrMyHODU
+ vQNH1ooDC+sV2X+iocn5bQwoHtp++wov+Qizgm8SJ/8q5OEeWCb897xE1Cch0OcmUURncF6i8d1zjlTNicDJv4jY0DRDfD8J3L50DDIkWN0gAxUCe04AYuqY7buYJXvO0BDF53qG+vxeBt0FGETiXc/KKWBPN05AH3F237ZHSiBmOVAU5qTkaAnvMFdM3ITwyA6SMcv57XXDuS3U6xtEW3shMazGpO2Ku8R/nNrPRLgkwQhwsinOoaMOOMzzStvyTU9Ba78SrEJCa7BTNEuvzaWZgD1Nk0dCjJ3p/2GdaMqVeKGBKyfMpGBDbLxr3iHJO67+IVx6ldByELCAc0LEzKNqLDkh75E7T4mC3OmuBg59yXqwYlrVsLo20ZsMUDyWC1ABWW9sSiOHomgwdppxocDqf3Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -155,36 +154,29 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-snd_info_entry_write() clamps the count to what is left of the entry
-by computing entry->size - pos as a size_t. For a position past the end
-that wraps and the write goes to the driver unclamped, for opl4 into
-sample memory outside of what the entry covers. At the end of the entry
-the driver gets a count of 0 and vmalloc(0) warns. Before the clamp
-moved into the common code the driver ignored such writes. Fail them
-with -ENOSPC instead, like a block device does at the end of the
-device. Returning 0 would make writers that use stdio retry forever.
+A write to /proc/scsi/BusLogic/<n> resets the statistics and returns 0.
+Writers that use stdio, echo for example, take that as no progress and
+retry forever. Return the number of bytes that were written.
 
-Fixes: d97e1b78239c ("ALSA: info - Check file position validity in common layer")
-Reviewed-by: Takashi Iwai <tiwai@suse.de>
-Cc: stable@vger.kernel.org
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
 Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 ---
- sound/core/info.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/scsi/BusLogic.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/core/info.c b/sound/core/info.c
-index 023b4736aa6d..f608d335b6c9 100644
---- a/sound/core/info.c
-+++ b/sound/core/info.c
-@@ -171,6 +171,8 @@ static ssize_t snd_info_entry_write(struct file *file, const char __user *buffer
- 	pos = *offset;
- 	if (!valid_pos(pos, count))
- 		return -EIO;
-+	if (pos >= entry->size)
-+		return count ? -ENOSPC : 0;
- 	if (count > 0) {
- 		size_t maxsize = entry->size - pos;
- 		count = min(count, maxsize);
+diff --git a/drivers/scsi/BusLogic.c b/drivers/scsi/BusLogic.c
+index 27b446c0c5d0..7ad814f549ae 100644
+--- a/drivers/scsi/BusLogic.c
++++ b/drivers/scsi/BusLogic.c
+@@ -3328,7 +3328,7 @@ static int blogic_write_info(struct Scsi_Host *shost, char *procbuf,
+ 	adapter->ext_resets = 0;
+ 	adapter->adapter_intern_errors = 0;
+ 	memset(tgt_stats, 0, BLOGIC_MAXDEV * sizeof(struct blogic_tgt_stats));
+-	return 0;
++	return bytes_avail;
+ }
+ 
+ static int blogic_show_info(struct seq_file *m, struct Scsi_Host *shost)
 
 -- 
 2.53.0
