@@ -1,103 +1,103 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B496606A32F
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 00:44:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26EE8606A31B
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 00:44:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=soleen.com header.i=@soleen.com header.a=rsa-sha256 header.s=google header.b=TTSy7R0E
+	dkim=pass (2048-bit key, unprotected) header.d=soleen.com header.i=@soleen.com header.a=rsa-sha256 header.s=google header.b=R8lxcv0q
 Received: by kanga.kvack.org (Postfix)
-	id 642C06B05B5; Tue,  3 Nov 2026 19:43:59 -0500 (EST)
+	id 495676B05B7; Tue,  3 Nov 2026 19:44:01 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5FA586B05B6; Tue,  3 Nov 2026 19:43:59 -0500 (EST)
+	id 46E1E6B05B8; Tue,  3 Nov 2026 19:44:01 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4E2E96B05B7; Tue,  3 Nov 2026 19:43:59 -0500 (EST)
+	id 30DE16B05B9; Tue,  3 Nov 2026 19:44:01 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 1C2A06B05B5
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 19:43:59 -0500 (EST)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id A0A3F805E9
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id F222D6B05B7
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 19:44:00 -0500 (EST)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 90A881C3DAD
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 00:44:00 +0000 (UTC)
+X-FDA: 85395589440.20.854A498
+Received: from mail-vs1-f45.google.com (mail-vs1-f45.google.com [209.85.217.45])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 9788DC0005
 	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 00:43:58 +0000 (UTC)
-X-FDA: 85395589356.27.CCC1F4A
-Received: from mail-vs1-f51.google.com (mail-vs1-f51.google.com [209.85.217.51])
-	by imf13.hostedemail.com (Postfix) with ESMTP id B62B520003
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 00:43:56 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=TTSy7R0E;
-	spf=pass (imf13.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.217.51 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=R8lxcv0q;
+	spf=pass (imf22.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.217.45 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
 	dmarc=pass (policy=reject) header.from=soleen.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793753036;
+	s=arc-20220608; t=1793753038;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8qRp/BwQBEaKjJByyj+gyRQztnD96+imNxep8e/AfWM=;
-	b=dCT8KisDdrjwkb4OMsVjdZYJT+rH15fBhfybQYYOp1obfDBVVLoLlu/DYFQnVv9dpvZlVy
-	hVIgFGJcpx9a5Y8fmv0h4qnq+SJUfBYBSBVYOtBjhHcaBc6Ms1eWDx3MQcNANQta82GLfq
-	gQAIl7y/4EmKcyFM20mrItxy8jqH+U8=
+	bh=1jCvTwZL8MS+SjFAQ29LXN2yWrpb5Y2gngTvzYEqhZ4=;
+	b=W0jO/XSLPDClpTEeZItR82vu+j+XZjR2awVX+YIS/sghSs/RvMS5uDatpD4eQ2jQxOrKcG
+	bESs4tiYLmvSC6e1u4aQJ23HZe9wLTOtBXSo0q5ESwCRpIavieEnd2sbZYO8Kll6RDOSrD
+	0rfAfJuq3jsXyanQVRDRp9ZOj3sSDHU=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793753036;
-	b=OXBCK29rf+F5sCa5YDZEn3TNpybRFmyjkJ+64NR1wn8qn/sE7Emuh9VDHaWqW9uh0GpbES
-	t4imqFKMeRuyaOqTtOJYTtC+RfvJIm/+GmU4CLnauN5ZPyUZFcT5HQJawhve9tqjq37FVr
-	HMcPRuQPlyRil1tExCaOQ1gxI8TfEas=
+	t=1793753038;
+	b=3vttsrj+xUAc5LkQOE/cK7GtVLEPakCX6CsES60m+xoM5slZUCrTCfNcfTlnzxgZqqpsl+
+	oIQB3JTJnQhDm3nMzPKZXuick4Cw2ZDH+x4nXCRL16nsgPZlyMiYUOsQKqsE/ciNXTks+f
+	rxn+WDbqL2vju62/HOAJB738lnxHP/s=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=TTSy7R0E;
-	spf=pass (imf13.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.217.51 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	imf22.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=R8lxcv0q;
+	spf=pass (imf22.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.217.45 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
 	dmarc=pass (policy=reject) header.from=soleen.com
-Received: by mail-vs1-f51.google.com with SMTP id ada2fe7eead31-7cccb2c96d0so43105137.0
-        for <linux-mm@kvack.org>; Tue, 03 Nov 2026 16:43:56 -0800 (PST)
+Received: by mail-vs1-f45.google.com with SMTP id ada2fe7eead31-7cc1cf48a39so28009137.1
+        for <linux-mm@kvack.org>; Tue, 03 Nov 2026 16:43:58 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1793753036; x=1794357836; darn=kvack.org;
+        d=soleen.com; s=google; t=1793753038; x=1794357838; darn=kvack.org;
         h=message-id:date:references:in-reply-to:cc:to:from:subject
          :content-transfer-encoding:content-type:mime-version:from:to:cc
          :subject:date:message-id:reply-to:content-type;
-        bh=8qRp/BwQBEaKjJByyj+gyRQztnD96+imNxep8e/AfWM=;
-        b=TTSy7R0EG4/TjR6H0HaJSL9H3OBeBDzRjzDGi1eF5o3Kq+LblVCIHZkj0s5rHJJc3b
-         xN12+ebc7X64s0tGlbZ3mllWWHm02EBHI66V6Wzd2rwthPxt4PsXW1SoIegb0xrplwxu
-         2nXSY3f0Y83vQZQnXIcSKzzXBbiLXxJGnO7YH9+4iUcmbZ0UodKnoWkcIMKBTjrjjuvE
-         jAwT9CooZAQFLUp3Ly7mZGlixbOZDqfq5neE5gY7j6xSkVgpO6ABTMG9edFqtfY2T7fC
-         cqGM1Wi8LLd9YzZQDH8KgTr+7VZ83lnibsp8Lv0kXB9qVegEBb56P8XwSPCDLitqCD7/
-         mfRA==
+        bh=1jCvTwZL8MS+SjFAQ29LXN2yWrpb5Y2gngTvzYEqhZ4=;
+        b=R8lxcv0qnT5L2IWsBNGlXSPGB0NqfNUFv8Qglcr9B24q3OdFiTzYtwysiJ+LqnmmRK
+         zzDg6ar2+aecAW4km3V1CsXOss/xcZq0GCkaivxQ1CIXSCYJD1D8l1nDaCK2qurtEm7O
+         SueZ3oH84hsnoZdcWiGII+BK+/WDSURw5Tfy9WExziiKKVK5hJ/bbpIYzfISWoSMAwM8
+         Q4mmvzDOdGj0ihIGC1oyYoGhtKfqwufSqNf0C8s94Yul3gAhTznj8qsBevi7FigYfatY
+         CpTXA5qn1gk0buar6LKdlKQ8uRvGOO7rp6AkTAg9OSbH4ZALWrUHS8AF1thCHXgb/4RP
+         lY7Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793753036; x=1794357836;
+        d=1e100.net; s=20260707; t=1793753038; x=1794357838;
         h=message-id:date:references:in-reply-to:cc:to:from:subject
          :content-transfer-encoding:content-type:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=8qRp/BwQBEaKjJByyj+gyRQztnD96+imNxep8e/AfWM=;
-        b=Sj93LqrarkAlr+zNRkLPpBo9vUqWITewP0wU9UHyS/UcXdvrsWeYk5/+CGscMXtTwD
-         VQ52/cLVz7pJDenhQA04rsHxej9PqOqrxlAULHVvILcwzeg8G3osV2Yv6qtUelBka6F0
-         Ak/GJq3IQPYJBV/pi6Tuo5bFeiWOmg31WBfeqX+08S2zlV+3EF+9Rv0qdz/2akjyUq4O
-         b6lG4ke0hYRUV63SPLR0wNMo4ms+EHRjabo1kShCbPupUahoAkxqyI+tSP2+7ROP7Pzz
-         tGBqIs/2nLXbSc5VJh7Gtqss7XYsQey1W5JV5lLDjPO4w0oXq0lvorOq9UOlUojp6WnP
-         uf2Q==
-X-Forwarded-Encrypted: i=1; AKwUvBwqBIMSdS42gaBKrE/O2JHoAGRrC1Zx0mSBV+poUiJNE6hLHezNii/LBSEEOXqQ6d1a1F6JOw0/Mg==@kvack.org
-X-Gm-Message-State: APuU4Z+a6aNB/Ji0Duo+kVHAy8MZrYsJ3MVJzRD1a/0RsYl3u7oRAmvP
-	xGJJHFtkoYSkBt3mYIfy+/9PLks0bFQIosBqmP1cuQUa0jMpKUylnvQ/TS3zpk3QboY=
-X-Gm-Gg: AYBFou3Cr+/a699jfr+ge17mrhzspSwLlNvj3UtDp4tZsz7m2RCIxLuYDRj1ORGLb+t
-	wXkvtd47aBDYhU5dJIi3ZYRfniTTwWqD0fB0d05rV5+L1PTiVQ/bQdsD4l9YexSNrrMAUrY23Qy
-	7xYC7LZMOfpj4/+n/BfCQAOQU9LCU3oc6nHMAYqM/PoM3vmBXUY2HqE8FZJVDz7El15v/lX3h5p
-	tNAo3Bv1ZbeKHjCdpBLW+1GWqzr8hpbCiNneicfLVEioENPplUyvG0knExnCrlfPZF0j6bbmzOG
-	pJS1ktJql7zFWSzuJQZuUO0TTfJ6Kif3zSBKJ+0KiM38nl58+gr5hUDaYNLqd6xAL2zSdnMaWlt
-	tUUKQkibuab9Vy1N6xDwUz4E3sB33F+T/wjQquu60HFesdj3gOv8l+N0PV0AC9PKV8WM8ENOFwl
-	ywJbTBXZq9hU46zaM1O+t2m4H64DBNAORsPvaA/m0nCxufd4dBOkU+i5ksjMKUafuTBFRZ8g2c3
-	bINYiJ6fvoIjzVgoY2QYImP/LTlqR0leN30OePqk/3oySXJTwSWUALZDfahnR4p2BIoCt9GMmUA
-	Pf4pjBBSlT+IW5Gzo6L1E1dBDrnbqHSFzemZHT0Xq40/VIR0RCSMs8d3jPNeOPuRtsQeTInYyPX
-	lA+DzR0gOTv6N/30Yb/0A7iWQEd+Zza7i8xNBXEs7Fai2lrs7jWqnhkiXTYn3WHWs6A==
-X-Received: by 2002:a05:6102:5126:b0:7cc:9f01:1378 with SMTP id ada2fe7eead31-7d07227aa1bmr5468508137.1.1793753035777;
-        Tue, 03 Nov 2026 16:43:55 -0800 (PST)
+        bh=1jCvTwZL8MS+SjFAQ29LXN2yWrpb5Y2gngTvzYEqhZ4=;
+        b=M8rb1QlCaUpICsOzsgmBDKXCBix3Y3kUzn8/q40dBX2ewZ/1r2MMH49SABXX2B4y8u
+         cNqnA5CBBRjTWWUK0loG4eAgXL9m+BUiJc6JGoSXvWgQ+epO3V/m2gGCbuHvlinWxP0J
+         Mv/bUwPgqNec7vZbbzUOykIi+zzPXOOJAJO/wGRpu1LVTWFBHrYOAJybPPKb4URMeA+C
+         UlG4Muk2lrOo5ljluJhumFOCXtwoMTIu0BZW2OgP4wupjeBbr+VDywV8/tqd8dilmamG
+         68sr/5LMtisWU5wvVAx8tayaGVJ3ESKzYXam5JuFCzxMLej2ARFuoVCoV8H3SiwWggw9
+         BraA==
+X-Forwarded-Encrypted: i=1; AKwUvBxwoNyH75Y9qJ65H7Vq3IjH/O92yREJ493aQkvQ87ua3IkxZiX1nX3j1Q62hQXx8nVVVco85cGFeQ==@kvack.org
+X-Gm-Message-State: APuU4Z+90WKzEZ/JZycjokhRb+tMy0IEwNQ3xLnl/Xv3Lcut8n8gBFzb
+	LOfpEK3SBTjzUW80NMY5KHBP6dlnzxSpaFqHY3UWwicyr1z4SdmAvX2BHq28/cYtNyo=
+X-Gm-Gg: AYBFou2UT6OGAn+nAO03tv/pxbGGuYhjTNKGm5i2ayW2NY+3Po+0ecR2sjyGgdSL7Fo
+	rr85KJJxSguaZFzpauC1DClRP1gPnBzYmjEUnnxB+9YcNRacuU5n4oRdUX34bW2vU6RYE8oRilV
+	k3hBzUptlpge+wfk+CMRtIblEQbefM6jfHsct5sqBhyC4EYoauCXIntB54KvrAnofx7XT1d7Z2F
+	2U05e0Cq4bSA2iVAVzkMs3WHfdX/N1poImxSmOYL4N9x2vlmDpVdorJbgY21W3R+1b7mqBCxhT+
+	MnHLx/F/c0gKWIczCKzOTIIz2wXsL6CJCc67UDptOI1e+GIiN7h+6ogm+VveMYikCcVwkot0PPu
+	ffFhOM9deUpgNjCSCC4yi04pIandE6owbS2nNg8+R8rPGgdjwwBxUCu/SJK0GdzN0Sl/9LxGr10
+	A+cY3/QK95aQB/7ysaI8DExHIUYTvDkQ17hhb+dxfiiD6E168cnlYQ8wt5FcuczYcrmCTaPwpeB
+	QBi1ahvce58vnCuZA83ijhmnEfBVjPls2fgzIHJGZ8psb7Kb7DQ49SEo/qflgTBB2af189cEdel
+	Y9qf0PDS7MDby5dShO+xioLfdKltU++BlOL/odHCciiS8b7aS1pcWt+MNrW8B3eq5YEgrK/tpMy
+	N+bF35voPFekge2mLKXQ3E8V5BoFqnlD0sGMBvLRO7LBR
+X-Received: by 2002:a05:6102:358a:b0:7c3:a6f0:99cb with SMTP id ada2fe7eead31-7d072719913mr4878960137.33.1793753037717;
+        Tue, 03 Nov 2026 16:43:57 -0800 (PST)
 Received: from soleen.c.googlers.com (16.49.199.35.bc.googleusercontent.com. [35.199.49.16])
-        by smtp.gmail.com with ESMTPSA id ada2fe7eead31-7d26fef4ed3sm527432137.11.2026.11.03.16.43.54
+        by smtp.gmail.com with ESMTPSA id ada2fe7eead31-7d26fef4ed3sm527432137.11.2026.11.03.16.43.55
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 03 Nov 2026 16:43:54 -0800 (PST)
+        Tue, 03 Nov 2026 16:43:57 -0800 (PST)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v3 09/10] mm/shmem_luo: Allow retrieving tmpfs files
- with O_RDONLY
+Subject: Re: [PATCH v3 10/10] selftests/liveupdate: Add a test for
+ preserving tmpfs files
 From: Pasha Tatashin <pasha.tatashin@soleen.com>
 To: David Matlack <dmatlack@google.com>
 Cc: kexec@lists.infradead.org, linux-doc@vger.kernel.org, 
@@ -114,41 +114,41 @@ Cc: kexec@lists.infradead.org, linux-doc@vger.kernel.org,
  Samiullah Khawaja <skhawaja@google.com>, 
  Shuah Khan <skhan@linuxfoundation.org>, 
  Suren Baghdasaryan <surenb@google.com>, Vlastimil Babka <vbabka@kernel.org>
-In-Reply-To: <20261103010216.3447716-10-dmatlack@google.com>
+In-Reply-To: <20261103010216.3447716-11-dmatlack@google.com>
 References: <20261103010216.3447716-1-dmatlack@google.com>
- <20261103010216.3447716-10-dmatlack@google.com>
+ <20261103010216.3447716-11-dmatlack@google.com>
 Date: Tue, 03 Nov 2026 19:43:45 -0500
-Message-Id: <179375302574.727293.7162114309691231709.b4-review@b4>
+Message-Id: <179375302575.727293.18102345692701869647.b4-review@b4>
 X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1135;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3188;
  i=pasha.tatashin@soleen.com; h=from:subject:message-id;
- bh=YJNHuLpjxIokzzpeqa7IUF5TSeIz4RUMcZp7xbSVc0o=;
- b=owEBbQKS/ZANAwAKAbt3KEzbc3reAcsmYgBq6n/F6EDZbzsbaVPLjMR9sGnRAbDjC1Ciq/AWa
- k9NfuYfEceJAjMEAAEKAB0WIQRBMaqT7LRvGvB/NmK7dyhM23N63gUCaup/xQAKCRC7dyhM23N6
- 3lCsEACbXM9A4HxMiLl0Hu2iZsdE1Zmu0oXPj7p9V/8TudGtpt1T3tZNzMqRg6mcMoIdIXCEIg2
- JGGNbNtFurmX2M5+0ioNMR5zbXreBE6AuMkYyEhsz9mLhC6GBjKjgPj2jwt+KnOABcJebeqvRKd
- y4Ya+Yp8Es0cpw17FEDkCzUKbK3//D/WIsWKUn6UM7hucv2w/fAkxpXo5BN543+YBaI8xkMMVRn
- n2g2UW/55sOqpWCgyLP5hKC7O0nH80i67ccDx51adPqeWorKXdA8tAiJGEPA1HvKWrQDq1M5XiV
- TL4ToZhvaP2cDPZOzpWQ+SgM8RR5rEbNjx9HbRyEDqVkGL4ewRKR51X3p3i1MjK/Icggu6iRZCV
- pQA4W2yUN0jd8+lNPUAiYVySmSCxilvwg6NSyXvMmni81dEPk1fNTTLz0RXPakYv7ZOo3Msi6nl
- 7tFk0/DrvNUKZ0r6ofwz0pJr2y99tYr9lo1aH+1zucM2oxgldSBR4CeGzDL5Qw+ht5ewGuRtCiB
- ipQP2XasfAbUcUZS6qWGqKtqHwJTzTNR0SpjLgOb1maNy6iJzZa9Ft7S02FAM7S0MoEuYDPga+D
- 8lVnnR8pCfP6Vv6S/s9t7rUIlGpD3nal/TBbtUq5aGwpDr8N80Ks9Ddzg29Xk+EE4VtpUcJ5HMk
- PbRmcH5B06b972g==
+ bh=1Sz+eMhTI1TOTbxgSk7ZOC8CrCJdIfx3Ze9Zg3ES4c8=;
+ b=owEBbQKS/ZANAwAKAbt3KEzbc3reAcsmYgBq6n/FzIqSwYCXrxsnr7zksMS5TfAEmFOQUj9PS
+ 7XxUL7XYFyJAjMEAAEKAB0WIQRBMaqT7LRvGvB/NmK7dyhM23N63gUCaup/xQAKCRC7dyhM23N6
+ 3nTOEACAI6TfigjjQvteQKuwVbfhXqGx6bxoozDfCeoenFpsOHHU2tRSPDHrF2LinhmG2pyX3Q8
+ IdNQ59F6clZBMmDb/eOe07rYUzfUWj1TUdh5D/SLuP13olwOUmaakHONOrG2Uaporgy7rW/JvCo
+ H2L7Jk9k9ONnqREnNjgeAzTwu/zmxI3kBLYcpoEe4e/qloHN2LAqn6iVZB5b6I/duQg+0sSKEgp
+ qF4OBNh/aIA1foatwzOu597LOjO9yQGRV3iBJJYo51P6K86O3J78ymlKWGJLCLMOMPk2DZUnR8M
+ jLp931wUPz3YeNyDlYE5pYInd4W0IpRLQkJs6piLRVQ/conGIWbGkL4KSSoQd/2jep3AT+iLZxT
+ nQX3w7DUGKtNX41lNlBN5hBRLIL7IBK7aadPhrKz90SJNGH9ZPSeFVaGtwJRjGCWrPppwaO06yR
+ VysyPyy9uNhOKJSHmwBYeXEJddw81NZYJIjeslUtu59vWS+R+q3usDK/yK5jNy6E0h6vvuwyhuI
+ gmJeftNu95dEGsoOiTdU/+eZlCgissKpCpGEEx1LCEbcoV5iULkM6cczYHziRUNy4WEnse6TYs5
+ JiM5brFJchE2M/+FwTTI00ZLZVJRSQ+PZmsg6nEdtwTUZDUhsHCd0cXftsjhObL8a8SsH7szZ7X
+ ktyDeGGGs1LNQ6Q==
 X-Developer-Key: i=pasha.tatashin@soleen.com; a=openpgp;
  fpr=CAAAB722DD22A081F0D49F35633A6A993D43B569
-X-Stat-Signature: 6d94y84u8isz7puotujgwgaq7aw7pqat
-X-Rspamd-Queue-Id: B62B520003
-X-Rspam-User: 
-X-Rspamd-Server: rspam08
+X-Rspamd-Server: rspam06
+X-Stat-Signature: zy6ixw6tjd8k9os4hxbcf3midygrd8xp
 X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
 	USER_AGENT_GIT autolearn=unavailable autolearn_force=no version=4.0.1
-X-HE-Tag: 1793753036-772368
-X-HE-Meta: U2FsdGVkX1+F1fOZI7N0gKVz86Ro+BRpDHngbd1CxRPSvVDNpSCvKyYvU5o+WQ2U2c+WZODHN58gTKtUtlIejmVm7ueE0r/GZ0G9zMolZYMsuiywlYvZM6L7B25bUzGwXyXVbab7JzVxH68UcZmusvNUhWluIHSoZnEPFqjzi3mMRYOY3PTydMv5XGgPMr9fUUR9qkLrvCCEeoNpwyisA8T6MgPNvFFHZhkVeZrn/EO1ZDi5wuNcN+i1mnSiSDmaLT/vhvhd+JdqgjjuQSAjMAK3feIJhCfFCym6OJuQ0VnujT7Iwp7x3jSO6zNFH0Xo1gNqkMft1NsJS6kLzCinAUN5phbmEB3OfjtzUD+9tlZ9/x4Q/U4pys3n2BePcLGocmUz/Gws8kEpoNwIEKVwCenJW9HsNutHSG0H5KqCy58pM5MDNX5nNwzlXwHiKU3BV0mOSmCY1RYdgdNCBYTR27bphKUtdsXzWlKDVvhip0+mEakScgc9Ya4s3+mWc9vUXwrdDg2X3yvHJjrTpUXqq6lI5251uelz58KBC0ztRpYijX2gjGhx4b6sGFOUUPSZzGeh+aqG7g3YDotb/qLFMG332OP8YVzYxeA+3Ff5PVg81THexBIQj++A+jexxVTwshYYbAiOeZnU0GSCW2xAcHGOf25OSoG/ui+XzvJ2PeY3vYHphpifZ/bg2EwO0nMJ09DMekXPhyTSRdsctfyEZZF3bMP/HARQec1L/WsNAro12oz2o/jktZa9FrexoMQJ/G4T/g9O1rto3wTaSGpfLmGI02S5ewbqnYQPJEZJ+eRNi0i/X3CQ/s8aMjLtwqUKY4I6mWhG4m711MWBJXv2kbZqmZ3lXg56uKZjeYp39mTeDl2s5OTgq9vKgLoZAIT0oHG/skwYWBvgpdUpg9NomaDz+ozXmKgJqiAPdqX4gtx+EtaTtWhUROjwUMCJ6I9uy6AUxSuBN5na8ncpcCV
- 0a5uhmMl
- tcTI4G18E5MkEYlD4ZZYBco6sPSyz/fAJYqXIWU3Dx9qSSzeZT3fnTU/McLbqvUXhl24/DsbPxW3yCDajs8GjSGVLzm1Yp+ReI1VHyp9T7Y/XVY1iqGFuimUHYYNsQ9oqTvyjDEdrV3Osm3lQRlWFyf1PINccFUG5vcdkhxpL7gEuC/xGxy29QYWOhnQkVTfvskeAdr6E0YRr3M2WsEiWjqtQch5bxOVUxip7ek9RKpszW7Q8hmMt82NN7tT5wsEP7aqC8LqmgeJr9yuJdDL0kr0QLRuVrLs1kRVWa9yKsyQyJjg2yo0q8KYqO0BsoamsVU7RhOLPwcym1sdDrmgFiDSmVvXf0MgkCVaFVY6AECOPW7uaE6m7hyGt4LlGMzINeE8isEMsJ7NfnY2j8Je0JUPvNrTImT7IS3ihbGLLIMkbOnRpU83JMPGhlvhEt+sn2WdiDhn+LurxaQw3EPcwCM+nWcXFbNmN2GMcbQXTH6utmRb6eg07ZdUwfg==
+X-Rspamd-Queue-Id: 9788DC0005
+X-Rspam-User: 
+X-HE-Tag: 1793753038-412166
+X-HE-Meta: U2FsdGVkX1/7uIzd9OJFw7TsR/alaL5/IMNggmusRmy3b0KUFnnDNTzY2dQW55/9gUX70XPXH0S1rh3g07c5Q5anKGx6mz7JVPsuzTY4wBzlpnF6hV/J85IEByBaLS7uN52m8kCsJB4Mt4GXyV/JuGRBX01/CNpiDgmnaHV52OD1qmwJV6klyrDKL3hVyYY4DAiWGMD0CYVh56S4C5si3ZbCgGWFzvqVENIRAjkzphUouEodY/L1EO+EIE5tIMmCt400r4+VRQ1KoUzfrUYLi8qAXMYAufOsRPvOxgsH/62iCd9M/FZKiqMo4XQc6rcL0KEiqlK0TWH8YMXEl9SZanXL6/976UH5BwQShC83m3bTukggfCA74svYm5st2TAObN5mloRahVVy46IcCFogtraOfXTQR5KX/7u7hG94E3sJVIyCg97IqWG9xYqwGu4zRkZgV1gas0XHInom/BSXNwLa1Xr1tgP5U1LeX4nuC8OV+X9kiKz+nl7cWhK9jXMe/2XQCtqBE5effohuI44X/k7DaQJk72trJ7UXII6AD76KpEYufj33mktzWhbD6IGx9nz0dce8Ewb323/FO6qIuyKRQuGo5b5LAPGCTI2Nli1VpxbrTSwOrHDcvpXFU6iXN5BhQgUF+g6fNB/5+Xq29ergOVtcrRSHLGQ/HdM3fa1NQbKIDCqQNZDVXzYlUrUkTsqQAtaS7mPoyLcitWmRjLodGkTfKaTi9a8zQJ/wuRGir67IqhepWx/9alZWuu8xCHnFHsFOWAq2Km3+s5RjqJ3+BmL1cnOtPSBCRynf2y7mvlKp5hgcEezpYtdfrpZ1S4jO0U0hWeCFSFBZ4a6FT45jrhdkC0QZR29kLBnDlKNceJL5EQnNMNLJFFHWp8nreNK+YTpnizBtvsMnjx7islyLDlBbDia0ih9ZWH1VAWyhGMqMdaDwY5qqpB0TBgVom9xg5/qgcHXNqlBLPYL
+ j5be6pcp
+ bK0TyjZFBMDo79SLd81yUURY5XNprt4R3wzoRMXjkLGS3cOIEeJD8b30l7XS8ZAt9OMRAKklG6kWLtbHpcZMK5zPtRg7A9hGFx9o/dZy4K1NT6pq1nH1FPm6FTla44Y68ZvWEix1qH8uJ+W+ImJG5d/HWbu1ot1EoOS0aqauue7kCEYP/Twe5csHL7QP29exqT03IflzW7y2T6me/fh8bXV61beDGhBtK+jFQ3WxCP5I29caFSvm4kP3+MAPxFj36WlzJFAQOcSo36rdTjb6hoO6JnDxLcU2NrzPi7QaoiGJWn9JpUlhEJVCk3AN9ll3b38ieauj6k/Htt43S9K9p3C6R2rADvORNxMbeYOlSaIbWco1zGQq3KUzvJgu0sG5R1AYwBeDkvzFBrnnpQKFdZvq1qZnnWJs0+K3nXfZpGAn6GBU1dD474b7c/XOiP/eca1al
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -157,25 +157,68 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-> Allow userspace to pass O_RDONLY in struct liveupdate_shmem_retrieve_arg
-> to retrieve a tmpfs file read-only.
+> Add luo_tmpfs, a kexec test for preserving tmpfs files and memfds, and
+> for retrieving tmpfs files onto a tmpfs mount with struct
+> liveupdate_shmem_retrieve_arg.
 > 
-> open() requires write access for O_TMPFILE, so create the file writable
-> like before, then reopen it read-only with dentry_open() using the flags
-> of the writable file, which file_open_root() normalized, and drop the
-> writable file. Like open(), which grants the requested access to a new
-> file regardless of its mode, don't check permission for the read-only
-> open.
+> Stage 1 preserves the source files of each test case. Stage 2 runs
+> each test case in its own directory, with its own tmpfs mounts, so that
+> block usage can be checked exactly with statfs() and st_blocks. The test
+> cases cover:
 > 
-> Retrieving a file read-only allows a restored binary to be executed
-> before the session is finished. LUO keeps the retrieved file open until
-> then, and executing a binary that is open for writing fails with
-> -ETXTBSY. Being able to execute restored binaries right away matters
-> when they are needed to finish restoring the system, e.g. to bring up
-> the services that retrieve and finish the remaining sessions.
+>  - The restored file: contents, size, position, seals and holes, for
+>    linked and unlinked source files.
+> 
+>  - Creating the file: it is created like with open(O_TMPFILE), with the
+>    requested mode minus the umask, owned by the caller, and not linked
+>    until userspace links it, unless it asked for O_EXCL. Also O_RDONLY
+>    and O_WRONLY files, other open() flags such as O_APPEND, O_NONBLOCK
+>    and O_CLOEXEC, read-only mounts, and directories that the caller
+>    can't write to.
+> 
+>  - Preserving files that can't be written to: a binary while it is
+>    executed, through a read-only fd, files on read-only mounts and
+>    superblocks, and immutable files, including sparse ones, whose holes
+>    are filled. Preserving someone else's file that the caller can't
+>    write to fails, and so does preserving a file through a write-only
+>    fd or an append-only file.
+> 
+>  - Executing restored binaries: a restored binary can be executed
+>    before the session is finished if it was retrieved with O_RDONLY, but
+>    not if it was retrieved for writing, since LUO keeps the file open
+>    until then. These test cases execute copies of the test binary.
+> 
+>  - Block accounting: the file fits a mount of exactly its size, and a
+>    large folio that extends past the end of the file is charged in full.
+>    Running out of space, or hitting the memcg limit, fails permanently,
+>    and leaves nothing charged to the mount or the memcg. The session can
+>    still be finished.
+> 
+>  - memfds: they are only retrieved as memfds, with their seals, and
+>    files from tmpfs mounts only onto a tmpfs mount.
+> 
+>  - Interactions with LUO: invalid arguments, which can be retried,
+>    retrieving a token twice, and outgoing sessions.
+> 
+> Also check that the size of a preserved file is frozen, and that the
+> test doesn't trigger kernel warnings.
+> 
+> Enable CONFIG_TRANSPARENT_HUGEPAGE for the large folio test cases,
+> CONFIG_MEMCG for the memcg test case and CONFIG_TMPFS_XATTR for
+> FS_IOC_SETFLAGS. Those test cases are skipped without them.
+> 
+> tmpfs quotas are not tested, since the test runs as root, which is not
+> subject to quota limits.
 > 
 > Signed-off-by: David Matlack <dmatlack@google.com>
-> Link: https://patch.msgid.link/20261103010216.3447716-10-dmatlack@google.com
+> Link: https://patch.msgid.link/20261103010216.3447716-11-dmatlack@google.com
+
+Overall, I like the series. As a follow-up, it would also be nice to add 
+non-kexec tests to liveupdate.c covering preserve/unpreserve/freeze and 
+restrictions on various tmpfs files without rebooting. 
+While that won't test retrieval, liveupdate.c runs as part 
+of regular kselftest by pretty much everyone, unlike the much heavier 
+vmtest.sh run.
 
 Acked-by: Pasha Tatashin <pasha.tatashin@soleen.com>
 
