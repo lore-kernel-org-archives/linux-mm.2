@@ -1,92 +1,92 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D743606A32D
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 13:02:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50BC06082BE1
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 13:02:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ihIvKZ+f
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=HTQPXr4s
 Received: by kanga.kvack.org (Postfix)
-	id 7C1936B05C1; Wed,  4 Nov 2026 08:02:35 -0500 (EST)
+	id 551266B05C3; Wed,  4 Nov 2026 08:02:41 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 74BF96B05C2; Wed,  4 Nov 2026 08:02:35 -0500 (EST)
+	id 528F86B05C4; Wed,  4 Nov 2026 08:02:41 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 63A716B05C3; Wed,  4 Nov 2026 08:02:35 -0500 (EST)
+	id 417096B05C5; Wed,  4 Nov 2026 08:02:41 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 3964E6B05C1
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 08:02:35 -0500 (EST)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id C16A94071C
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 13:02:34 +0000 (UTC)
-X-FDA: 85397450628.17.399AF38
+	by kanga.kvack.org (Postfix) with ESMTP id 20EE46B05C3
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 08:02:41 -0500 (EST)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id BDB6E40726
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 13:02:40 +0000 (UTC)
+X-FDA: 85397450880.27.72E6ABE
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 9D19540007
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 13:02:32 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ihIvKZ+f;
-	spf=pass (imf07.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793797352;
-	b=4o+GDEdlI5WS/3ZOLKTNobXWSEBcKVGQKjjabYxqcsXOlAzeOwj7HWZzXYUjHYaAyLuxMH
-	VMWy6MJXqhhyNIQ7UPAk9HsiWyzcxWGF21Tt8CSUT/4hVBMRh+D5EOJd+Cg3CG1P2yj1OE
-	KjxVOxmxE0suzCb18RJLIIXCWIW+oW4=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ihIvKZ+f;
-	spf=pass (imf07.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
+	by imf29.hostedemail.com (Postfix) with ESMTP id BEBA112000E
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 13:02:38 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HTQPXr4s;
+	spf=pass (imf29.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793797352;
+	s=arc-20220608; t=1793797358;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ZeZeKqOXIg0pdVk38aCcXZjtPawAjmXXTX6c9OEoxb8=;
-	b=cheqt8yMLXqIpOPR5HpE7FzOAQvyQ+0aQ46ZPfSJ9V8ap/T/QYNEaAcrCprLuG+Trz9okp
-	qxZ6fySZkVcKU5xhY29bk6rtm8mky+/aFpKYlkqpyYguskhv6D9eJiDc018p+sfRVpUof8
-	PIc/LMJPBJtrcLz6CTnJVRqoKpWJRso=
+	bh=vv/svtPtjalr0x/FT//NZi3aKSPK9q9fUmUPJz1NOWY=;
+	b=FGZGWIy+hAqqI3qT+b8A/57Q2057ON8O8XD5Jy3DxmeSD0PjjMerov/hfd8UbOz9bhcsvK
+	Pl2YWNF0bOQB1ZzuW/0zDOQC8v8AQCHeBain6fVH7q6BiYS8tRnpIFf1AQ/WtPXYdxJB5+
+	R1Gnd4/TH9yW7UvK10LkWMow9JSSM48=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HTQPXr4s;
+	spf=pass (imf29.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793797358;
+	b=Ut4xiHt+2W6mPrgk0sQXs4Xw6KU3Qz+5zHK26giShxAYdJ0zXwhYT8U9Le+tBUnjTrObCd
+	/4KsS8qbIfaicpW3+P7HtWHITkOCPywMSWap2yBeL7DWRjwTvKcsaaWXcOQZvc4MVttRRM
+	/Mx/aPFhOqaNkM65ZWhyY2NNg0T1NLI=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id F28FB41B17;
-	Wed,  4 Nov 2026 13:02:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C04A31F00A17;
-	Wed,  4 Nov 2026 13:02:28 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 22FB04051B;
+	Wed,  4 Nov 2026 13:02:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C69BE1F00A1D;
+	Wed,  4 Nov 2026 13:02:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793797351;
-	bh=ZeZeKqOXIg0pdVk38aCcXZjtPawAjmXXTX6c9OEoxb8=;
+	s=k20260515; t=1793797358;
+	bh=vv/svtPtjalr0x/FT//NZi3aKSPK9q9fUmUPJz1NOWY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ihIvKZ+faxz+GWcGkPr7VS+TK+j0Q9bv9UwAZ57eXbpmZGfjHyIuqUrcn1bQHz1yP
-	 K9DJ4mljISfxegncBinm5OpOR2kFDP1a1HgdJAXaOYzjRamhsCVc9b3pz+Lt4Aejnx
-	 pUAZvLVKoQJ85p+9QZNKXjmCmRE8OtgGENQIhUAcW/V+RvHOI1JHFAClOMMpiAe4r1
-	 w+69J23em1ovBi11OunrHqLRj5WBkKIDb31Mx72EkeCuVvyikah68DcXt6Ukj6SevZ
-	 YKFNVNowntR8cFQEuMY2vV1r7eiKTsz7qwX8NCvp+iLlI9GvKONoRggay1GYRHi5z/
-	 e3MElHCM9PxDQ==
-Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
-	by mailfauth.ams.internal (Postfix) with ESMTP id 9134B1980052;
-	Wed,  4 Nov 2026 08:02:23 -0500 (EST)
+	b=HTQPXr4sD2/5Ui1D+Fhep6YcWFwNRN/V3imz+2TUGGT77MMVeHICrkoLK+tRSJraB
+	 7+99medGbnPsVsOLmkNwO6U4CbO1FrlCpDiz35at2/hn/Jv6/sQZ6rScrFLNnEY9Tt
+	 g6lIjgl9ZNCWVcIZm9X+riin/zRbc9GfPmjJ0mAFcpxXmPnCymTM+dqCpSdG1YKXvq
+	 4Yo2JayYCGGWyvZwFquS9yxRgo9bYbIGOJcpxQcZNfzhqMEGi35GFiMBOgJKH1/6qk
+	 paF8ABo5GuRAAeSjUDt7zykP9LZNd58FGgiYwAsX6OIBl2IMI6Rp4rNGIj1I0v790c
+	 Z/teP7dpVi76g==
+Received: from phl-compute-11.internal (phl-compute-11.internal [10.202.2.51])
+	by mailfauth.ams.internal (Postfix) with ESMTP id AD0181980054;
+	Wed,  4 Nov 2026 08:02:29 -0500 (EST)
 Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-04.internal (MEProxy); Wed, 04 Nov 2026 08:02:27 -0500
-X-ME-Sender: <xms:3yzral760PUag65_UE_5joCN5pnKCtoba4VN2oYma6jiL4zCB6vIjw>
-    <xme:3yzrap1d3-Hbj7AzFEvhniiaJBhhyUzyG90C8iEK26hqrofSFUW5EDai0sFVH237U
-    1cbnwGp8ceXLqdW-fULz6ZC_UmmU5QfIiz7bzEtKu1avKqMX3lGxvw>
-X-ME-Received: <xmr:3yzrahkGuQ5SN0G3yvIPx_DuW7fMInt95XuhJS4COrMdvS-DtxDSoExqm1Q>
-X-ME-Proxy-Cause: dmFkZTGhPc1Yg5t9Q8eRQaKCLT0heVoXQqf6h4uqMuRtXQYzheOI1jp47nBw26mcWoxz9A
-    DH10HnpPYob7RxaCTf32YkHXSpJmh1hLC1IxxzXB90aJAI2wMnFT+nxhjDMKjWZ9Ablulj
-    X6EGhbUdQWvr3vCsmIbyKlTdtYm8QJi2H9b42DzXiIRq27TGzwIAKeq7xgftm17WrW++J+
-    RK/ZhBFKi/01LbyIuttpTNhw8T5nzUYT3/gbSIkELTYoQfWYa9TU1xDsUR8Sja7r663Vhq
-    dT9Vb6Q8iqTkFCbamg7ObiOCckNJsrzr7UPmHz2jvO2iFJ92ew01ZxP0mcoMzU2JutwOha
-    B0jPeJCBnNC4bQZANG5NWvjwjnKyS/uH056P98u4op0L2e4Iord3UfH84RIfYlHaTOGsk7
-    srDkEB2m0ia7p890WwKoD1qaoP+JYmRcbTzG/b3f5CggOnhlFwvRLaWQuOvc/eq/J/4EcD
-    TIXJwSN0kv4mJ/QTWdHzD5TIm9INfuSWeMq9uVNrdKDjR+ReIFvj6K1gwxJ7CcEzha7YqT
-    FdzNyJxYTNQCD2Fz3hszaSWQ6e+HyFZj3b+FE+PZfHXyEgFJJKmAjiLvfj4MpT2MDZzugD
-    uWc36bFDX4sCm0d0dGA+kaFWELT0F2X/WBFaC8D82SbM6fvZPJxYAm2qqU9Q
-X-ME-Proxy: <xmx:3yzraiidZoKKrBGI6E7L6qynhl0Em-AezKc0MX-Tt33cE9_Iygr1QA>
-    <xmx:3yzrao3sG404ab0J5a7u8oEgC95P-wUMiKhkpSJhLmhtxzwlS5r5Rg>
-    <xmx:3yzravaf5srwmm0HropDcBxDZj19nUcmU9PIsrtixYFGWbSE3UfF0A>
-    <xmx:3yzrallljCUcEVIwimi3JoASouOX7P5PfKKRxE-5uI2nNE_MuQY9vw>
-    <xmx:3yzramUTQGT6xyYYlzoDriz2u-q_n1CNobPIdvkYJSPyer84Kxebhs7W>
+  by phl-compute-11.internal (MEProxy); Wed, 04 Nov 2026 08:02:33 -0500
+X-ME-Sender: <xms:5SzranlD4yipwHC67kSzCjVzioSdAt_fcuUh4HelGAp02GkQoL3Y2w>
+    <xme:5SzragGEy28L1f8IFaQJlveL3NzbUnlO38CjP_62tN-ZFd4nTs821CzHdsHhbhC5n
+    fPKngmn38l7BPTugr6HDYcKwPO5vc-qrnUHR0clv3cUeELR46zt9Y25>
+X-ME-Received: <xmr:5SzragRqeCVmQ5RWjKdrZaaqIIKLKEp75DJxBBjoVGJjQmoocJBUUa8G-Ok>
+X-ME-Proxy-Cause: dmFkZTGcnWxWNdwzviArTqwO8SleswujEAoF3G5cAnzgWuj9VIXYzVn8L/YtSSoCVpDQCx
+    AFAjkaMBKJDECegKseyQPi3BoJ2ULdzgEWHQh0kOOdV3qcZ96T5qYw8zvnYBduU6y+7gOl
+    ju1hRqdfaUd029Zpq0M1QKVfvNYpVJXA03mIXM/FVYF2n1TVZdGxcwDBil6kVRafbiJtv0
+    QuPNDwYksKVrYzT4QGS7HIxmz8ayVgiPQk5G9zoQji1nSBMTr/zV+0QH6w0a9BT4L54N+d
+    cRhB7KhKgiZgmWNJc1G8l9d+gvjQ75B75nEIsy2loqzEXGvtqjUcmfJ5UhZu2fDzNX4RE/
+    4NterOEAV5G9AyH78TaNMwJDSrsHkVXYhC14lVODhlcfqOzYRFLhIHdmP+oBMTDVen5okq
+    50ie1MfxvtcSQRGWnFHUt30oIHJXEv7ihBJT2RCFrpaRsO/nJ4cCDjPWp1YpK0EKxfeJZH
+    cOrAddTXddbA6c219PzWE0glXtryq6S2/RVaR71IhWHgWaBrePtyit2XicrSua4+3zBbXW
+    sA1UEghV0FqAHEvS/sJG1aiF76j/nCke6PldcAVbImCwu4MJmIVHAWs1XEbXcHSLHIAjd+
+    orvKs1f1ymhsm2t3vTqwGjhIg3jZ7XiV/v30FQITVWOyrc0vDYOTkhV5Hdfw
+X-ME-Proxy: <xmx:5SzravTX-xgqZi4zw8j46ra0sDAduHU_n6CXfzpDX_8lBRYVw64Oqg>
+    <xmx:5Szrame5SEn6fHCafDskZJyXz3Tyz-YZ3ryF8Js7XXZmaxMhLT_JkQ>
+    <xmx:5SzramCN1gxO9rz9jOzf4USeLED84Bfip6exWLGzjMaLwm9_J9EUdg>
+    <xmx:5Szras2rXhYvmOXzPA3hUAMRjZJSpy9P7a3HCffv-R8G9Z374SJ-DQ>
+    <xmx:5SzrauSZgH4kYB3T-ggHWveiZMUuVIojGPWTzg-HT_jrxHz3F-V1CLMz>
 Feedback-ID: i10464835:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 4 Nov 2026 08:02:22 -0500 (EST)
+ 4 Nov 2026 08:02:28 -0500 (EST)
 From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	Linus Torvalds <torvalds@linux-foundation.org>,
@@ -135,27 +135,27 @@ Cc: Miklos Szeredi <miklos@szeredi.hu>,
 	fuse-devel@lists.linux.dev,
 	kernel-team@meta.com,
 	"Kiryl Shutsemau (Meta)" <kas@kernel.org>
-Subject: [RFC PATCH v2 10/18] mm: have folio_mark_accessed() return whether the folio is hot
-Date: Wed,  4 Nov 2026 13:01:06 +0000
-Message-ID: <20261104130118.2507513-11-kas@kernel.org>
+Subject: [RFC PATCH v2 11/18] mm/filemap: mark a folio accessed in one place in filemap_read()
+Date: Wed,  4 Nov 2026 13:01:07 +0000
+Message-ID: <20261104130118.2507513-12-kas@kernel.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20261104130118.2507513-1-kas@kernel.org>
 References: <20261104130118.2507513-1-kas@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Stat-Signature: 8k4nkcdnynae8r88zoe91gnoq1oh581g
+X-Rspamd-Server: rspam01
+X-Rspam-User: 
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 9D19540007
-X-Stat-Signature: j7z8hnr9gnnim7nc6u83ozsojzaigrko
-X-Rspam-User: 
-X-HE-Tag: 1793797352-140569
-X-HE-Meta: U2FsdGVkX18G4rYYROfQEHy6WVe8eZXW6+6aGRAKpvgqSVTLqMCGTMOAKJfwGYYU3cdR6SiwQBdcVOSOUiCzJ26X7aHLU2zd7GFLIgHnSE32hMojbskrLqtxtKmdS6hu02+ay3ENMnhl09yOTfUsPJd91S9F0w3roN90mCzc8T4eUHRmnWuNfmqWJi3iBgoWqe5+mt8lIFYP5WObK2XWIzrFxOGCZDgcW6jWqKso/a/q7amH62MKvOcFxV6MfOFA9JMACRGAQfiC43+v/Q4kC70roJ47O1P++6DEEpKxrai0ee9UKwqWUPN+p3heIr3Cg8VMQzxs0bs2+8jdArMt12FRO/4fwF3m/KttgkNV5OSAt3GN8CRQiGz/5IeK7QzgSj3dWn1ibInCNEklu9E3f1df7DJR5qSiaCookJ8qR6u+CKRzBmCClz7J515uISmX1+GERfNkX4EdgY9dmZjFRZgD8BcOZRqhrwTifx6edPBpewkc5wAngne7cnOhjEOVNs7SZgtFunkYxJjOr2gagRa4H1npw47wV/qGR7qAAwpVyjg6lIVTTydKUNJWfCKoXiLjhIAUSPxYqMlkq2iStaQirtOACTp8GKzs1BAjm7Qur712HMsb4PmsO0ZdMCe3cY8AiVUnB6mw9B/AJDt8atX1nE+Z+JeNQKae9CEEX4QmDfxWjXIuK2DVxhrklt/ZbBNJsDDIGcr1I8vh1erpCPcr7621/ddeIvRs4DfsIDxFcvHSxmNCmYdj1E6WV5KuDqZH5FI35tPqvj3SLFYEXmwaFa5XW2gpiPyhMPfuBZeJFb1shbEcdnr2jsBT2pA8m7y1j68okgopsSn6o7sa1VukmSnuHHX7NCbjwJpVSzVVDV62gwqaHDcAnnfvj59sZZ+1I7OOpyqV23zqeMwogsgQrmLov2DfpXctWbvjiNF9fSXKvRy45ruY8IEFeXXZRfa6LSRVYZRBB+KMpN4
- ZBHEX+w+
- m6MiobBFWCcLXEaKkLmDAcoKtNGcg1qhv6tilfSnOmnEM0TAx6YhGdiUOZJMRqTaG/3EKutdKkreMN6CqEdu5X12wsqLBsMf6dsDp9jDEHQ4nS1DrzkbLKsFMOZ9K3/d6KLTIuVT6aF1hLHG+Mt0ls3e2ZdMOx/l092KDQZAwvp22oKTVwo55Hq57/weutpaWx7emEO0a8uvUQJs4aHBI+Arqogp04zO4F1v8qd3xoVeopCEovi5okwwITFbPOr1KNJ9V/rJp7imKsjbjJo0cWjM+dP5WBHKuGgktY77GyMtAsiX791qYFpLdtYhEWVPGggg9ueR/t7mOulYdiPrITptPpPuN2Zu9IjAWkesL8Ux75sjG14yqwPrTZQqCzA0A/fG4ubxyTFLeLWjDdbJA6txN0chFKpfqRIB1L5NAaOWXZZJIF24hv4MqZE4iksrhL5g1
+X-Rspamd-Queue-Id: BEBA112000E
+X-HE-Tag: 1793797358-830739
+X-HE-Meta: U2FsdGVkX1+FY8NK7RtKDJThEjUVOH2ehG+j3nEPi0ZbNbfBPI0017tWcBuAHEqusC0EWH5gLd/RItTbDM9Z4lEeuiuuWmEGdOaMLfebpwwRu8Uz+X86EGNkQXAFC9OXB5lsgh/6Ip9aH0Wl+hsO/UxAYjASy+d0wOjeNdMCyPQAr98ooVSVI2EsJ8VRgN12rO25ADjPPqSgaFiMXwVz0qC5tuGUvafbcsYRwIW19+SgV/pXs00HxYFzKBJJWrTyoh8atF3fcvzeRq9twR0cPYTHFUlRhqMpKz8aXzAYZwcE8YXxBNe7kMza3ROVi60q2rDrRmt9SY0yudy0UOvyjpDawdkbFMbpjKXt1FBPuDktvGQPu2PAht92xGi6fTz2Jo7yEjen5X7DwL0hcCKWOkpTx9tpzYyw+6uj6QevC8a8/8r7q/90l/hHkAWFYtxt+KSipfRzSTsXAYJonz/fVIZXLWi9a2/k/FNfnbHxbODEPaGDuNOOKuxObme1KdjBXXWxTh/6bpb24Qq4Xz1GF4XAZyPEFPX/huNDTlTg0h2P8nKCW/xnJ/Q/cTb98D4LPnfN8FxKLc2d63u1m8ZqqGJwuwgaqNTPkWFMMHWDt67RuwxREiysfmI0H1D40JMv3JWLidZlheY5eMNZag92Dv3PhVcRfQwbezuGjn+R1cKLepmNAMcUpDegMQtKj1k+ikKdHYqTkmrx0XRQpZ41nSJuNrjMDwq/l2sxCiyMag5K985rZvzrb0ddgZ5XpshjWSY/mz01XP93zcoZ/L6pvdoMMbf3eJ8NVZtO3vAVauKB0ZoSD8XlX0sgwdjJzpXJbmypEJkpfhP4d7XArpqt0npG2n1Jd7gvB8fLQbcqjZGe0P/vBhcjw/ZDQvJi3Tkjq2z0NmT+2mj1AnCdkYUdUR05xDZrbRs0Dvj1sqb1ZfR7GPr2RIzA5FOLQ1LHnEcuE8qxaKKqS+CPjl63SaB
+ trPiotHg
+ SugcEKBrenj/EZPPDGE19YFtGPEb8xVqKNY0OKFwDJsvv/O0GQKdI9B4pjAq+MK1BzJUOPs7CJ4lnEiSUd1+b8ssNxZ8l/XrhDz0LcY4ho3+vsIIZPOcFLbTJKz1aixpZxMnrMrpPL0lQsedIWKTRg5wKsJpXOMsK+mvpKcQ8xyXAANP/SYt0m5HmJc/D8B+k/IocDQZZxKc0lWnK3aKbphiUybW9iqpNDVjXsuRig0/JYbF2Rb+nyVizP1/5Z1Ntd7oJrfcTsejBQdFSGf5kFzHPwEL1xdqG9ZOmX0BZWTpWSjhtviyV5gKGnKKqkAga0ZGFIisR9KlIfkGa14zSVWKk+Iuu75LoNEtZ2xN47EHUZoIWAF71rdopeTy5twGFGJ3wWIMxjxD2lX0iTL0Mnw5FyNQ4F5dGPzoxy+pDoO5neReKe0TG1rGERsqprRicGUpS
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -166,150 +166,81 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 
 From: Linus Torvalds <torvalds@linux-foundation.org>
 
-Each call of folio_mark_accessed() moves a folio one step up what the
-LRU records of its accesses.  Once the folio is at the top, the call
-leaves it as it was: the folio is as hot as the LRU can tell.
+filemap_read() calls folio_mark_accessed() in two places.  Before the
+copy loop it marks the first folio of the batch, unless the previous
+read through the file ended in that folio.  In the loop it marks every
+later folio.
 
-Return whether the call found the folio there.  On the classic LRU
-that is active, referenced and not idle.  On the multi-gen LRU it is
-PG_referenced, all the refs bits and PG_workingset, which
-lru_gen_inc_refs() now reports.
+The test made for the first folio also says "mark" for every later
+one.  The loop gets to a later folio only after the folio before it was
+copied to its end, so last_pos is at the later folio's first byte and
+pos_same_folio() is false.
 
-An unevictable folio counts as hot once it is referenced, and on the
-multi-gen LRU from the first call: it stays in memory in any case.  A
-dropbehind folio is not hot: it is dropped after the read.
+Do both in one helper, filemap_read_accessed(), called for each folio
+in the loop.  For the first folio the call moves below the test of
+end_offset against the folio's start, which is false for it: the folio
+holds ki_pos, and end_offset is beyond ki_pos.
 
-No caller uses the value yet.  Preparation for reading the folios that
-it calls hot without a folio reference.
+No change in behaviour intended.  Preparation for deciding in the
+helper which folios are worth reading without a reference.
 
 Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
 [kas: shorter changelog]
 Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
 ---
- include/linux/swap.h |  2 +-
- mm/folio.c           | 46 ++++++++++++++++++++++++++++++--------------
- 2 files changed, 33 insertions(+), 15 deletions(-)
+ mm/filemap.c | 25 +++++++++++++++----------
+ 1 file changed, 15 insertions(+), 10 deletions(-)
 
-diff --git a/include/linux/swap.h b/include/linux/swap.h
-index 5658a1634b85..67aa5271ae6c 100644
---- a/include/linux/swap.h
-+++ b/include/linux/swap.h
-@@ -295,7 +295,7 @@ extern unsigned long totalreserve_pages;
+diff --git a/mm/filemap.c b/mm/filemap.c
+index 00fd89cf6f55..3508eea44ad9 100644
+--- a/mm/filemap.c
++++ b/mm/filemap.c
+@@ -2759,6 +2759,20 @@ static inline bool pos_same_folio(loff_t pos1, loff_t pos2, struct folio *folio)
+ 	return (pos1 >> shift == pos2 >> shift);
+ }
  
- /* linux/mm/folio.c */
- void folio_add_lru(struct folio *folio);
--void folio_mark_accessed(struct folio *folio);
-+bool folio_mark_accessed(struct folio *folio);
- void lru_add_drain_all(void);
- 
- enum lru_cache_drained {
-diff --git a/mm/folio.c b/mm/folio.c
-index 50a6dbe55998..6144b9cf301b 100644
---- a/mm/folio.c
-+++ b/mm/folio.c
-@@ -352,28 +352,34 @@ static void __lru_cache_activate_folio(struct folio *folio)
- 
- #ifdef CONFIG_LRU_GEN
- 
--static void lru_gen_inc_refs(struct folio *folio)
 +/*
-+ * Return true if @folio is hot: unevictable, or its flags already held as
-+ * many accesses as they can.
-+ */
-+static bool lru_gen_inc_refs(struct folio *folio)
- {
- 	unsigned long new_flags, old_flags = READ_ONCE(folio->flags.f);
- 
- 	if (folio_test_unevictable(folio))
--		return;
-+		return true;
- 
- 	/* see the comment on LRU_REFS_FLAGS */
- 	if (!folio_test_referenced(folio)) {
- 		set_mask_bits(&folio->flags.f, LRU_REFS_MASK, BIT(PG_referenced));
--		return;
-+		return false;
- 	}
- 
- 	do {
- 		if ((old_flags & LRU_REFS_MASK) == LRU_REFS_MASK) {
--			if (!folio_test_workingset(folio))
--				folio_set_workingset(folio);
--			return;
-+			if (folio_test_workingset(folio))
-+				return true;
-+			folio_set_workingset(folio);
-+			return false;
- 		}
- 
- 		new_flags = old_flags + BIT(LRU_REFS_PGOFF);
- 	} while (!try_cmpxchg(&folio->flags.f, &old_flags, new_flags));
-+	return false;
- }
- 
- static bool lru_gen_clear_refs(struct folio *folio)
-@@ -396,8 +402,9 @@ static bool lru_gen_clear_refs(struct folio *folio)
- 
- #else /* !CONFIG_LRU_GEN */
- 
--static void lru_gen_inc_refs(struct folio *folio)
-+static bool lru_gen_inc_refs(struct folio *folio)
- {
-+	return false;
- }
- 
- static bool lru_gen_clear_refs(struct folio *folio)
-@@ -419,15 +426,20 @@ static bool lru_gen_clear_refs(struct folio *folio)
-  *
-  * When a newly allocated folio is not yet visible, so safe for non-atomic ops,
-  * __folio_set_referenced() may be substituted for folio_mark_accessed().
++ * filemap_read() is about to copy from @folio at @pos.  @last_pos is where
++ * the previous read of this open file ended, or how far this one has got.
 + *
-+ * Return: true if @folio is hot: it was already as accessed as the LRU
-+ * records.  On the classic LRU that is active or unevictable, referenced
-+ * and not idle; on the multi-gen LRU, unevictable, or PG_referenced, all
-+ * the refs bits and PG_workingset set.  False for a dropbehind folio.
-  */
--void folio_mark_accessed(struct folio *folio)
-+bool folio_mark_accessed(struct folio *folio)
- {
-+	bool hot = false;
++ * Reading on in the folio that the last read ended in is not another access
++ * to it: a folio read in small pieces is marked accessed once.
++ */
++static void filemap_read_accessed(struct folio *folio, loff_t pos,
++				  loff_t last_pos)
++{
++	if (!pos_same_folio(pos, last_pos - 1, folio))
++		folio_mark_accessed(folio);
++}
 +
- 	if (folio_test_dropbehind(folio))
--		return;
--	if (lru_gen_enabled()) {
--		lru_gen_inc_refs(folio);
--		return;
--	}
-+		return false;
-+	if (lru_gen_enabled())
-+		return lru_gen_inc_refs(folio);
- 
- 	if (!folio_test_referenced(folio)) {
- 		folio_set_referenced(folio);
-@@ -437,6 +449,7 @@ void folio_mark_accessed(struct folio *folio)
- 		 * this list is never rotated or maintained, so marking an
- 		 * unevictable page accessed has no effect.
+ static void filemap_end_dropbehind_read(struct folio *folio)
+ {
+ 	if (!folio_test_dropbehind(folio))
+@@ -2844,14 +2858,6 @@ ssize_t filemap_read(struct kiocb *iocb, struct iov_iter *iter,
  		 */
-+		hot = true;
- 	} else if (!folio_test_active(folio)) {
- 		/*
- 		 * If the folio is on the LRU, queue it for activation via
-@@ -450,9 +463,14 @@ void folio_mark_accessed(struct folio *folio)
- 			__lru_cache_activate_folio(folio);
- 		folio_clear_referenced(folio);
- 		workingset_activation(folio);
-+	} else {
-+		hot = true;
- 	}
--	if (folio_test_idle(folio))
-+	if (folio_test_idle(folio)) {
- 		folio_clear_idle(folio);
-+		hot = false;
-+	}
-+	return hot;
- }
- EXPORT_SYMBOL(folio_mark_accessed);
+ 		writably_mapped = mapping_writably_mapped(mapping);
  
+-		/*
+-		 * When a read accesses the same folio several times, only
+-		 * mark it as accessed the first time.
+-		 */
+-		if (!pos_same_folio(iocb->ki_pos, last_pos - 1,
+-				    fbatch.folios[0]))
+-			folio_mark_accessed(fbatch.folios[0]);
+-
+ 		for (i = 0; i < folio_batch_count(&fbatch); i++) {
+ 			struct folio *folio = fbatch.folios[i];
+ 			size_t fsize = folio_size(folio);
+@@ -2862,8 +2868,7 @@ ssize_t filemap_read(struct kiocb *iocb, struct iov_iter *iter,
+ 
+ 			if (end_offset < folio_pos(folio))
+ 				break;
+-			if (i > 0)
+-				folio_mark_accessed(folio);
++			filemap_read_accessed(folio, iocb->ki_pos, last_pos);
+ 			/*
+ 			 * If users can be writing to this folio using arbitrary
+ 			 * virtual addresses, take care of potential aliasing
 -- 
 2.54.0
 
