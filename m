@@ -1,66 +1,66 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 281BE606A336
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 19:17:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75F7560A2633
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 19:17:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=M+37idsG
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=KpHzZpnF
 Received: by kanga.kvack.org (Postfix)
-	id 411836B05B7; Wed,  4 Nov 2026 14:17:17 -0500 (EST)
+	id 91B106B05B8; Wed,  4 Nov 2026 14:17:31 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3C1966B05B8; Wed,  4 Nov 2026 14:17:17 -0500 (EST)
+	id 8CB3C6B05B9; Wed,  4 Nov 2026 14:17:31 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 289F06B05B9; Wed,  4 Nov 2026 14:17:17 -0500 (EST)
+	id 7935B6B05BA; Wed,  4 Nov 2026 14:17:31 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id F064A6B05B7
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 14:17:16 -0500 (EST)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 70ADF40843
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 19:17:16 +0000 (UTC)
-X-FDA: 85398394872.23.68B146A
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf24.hostedemail.com (Postfix) with ESMTP id A2066180005
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 19:17:14 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=M+37idsG;
+	by kanga.kvack.org (Postfix) with ESMTP id 57DF86B05B8
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 14:17:31 -0500 (EST)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id EBD3640489
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 19:17:30 +0000 (UTC)
+X-FDA: 85398395460.24.F33CA2A
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 2857740009
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 19:17:29 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KpHzZpnF;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf24.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org
+	spf=pass (imf04.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793819834;
+	s=arc-20220608; t=1793819849;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9+yARzdOpzdllKXUJ7Oz/hxaICj5Mm35ej5JnL7jd2E=;
-	b=KuwEJDbvcNIc5MpUHN4idOJQ43WCl94eDhCHZPKIfhyF/YLpOwbTrnpn24THlUP4bBE78J
-	+FU2AvsV3E85ZalDEIJPx48nEYMbEmjCtRLWLq2/KLZPBgi3z1Bhmv5dfFR15803SgErSQ
-	13Q8Kdl0Ym9+q6xGPuDkOQWQjmCMaDc=
+	bh=jP/hayhlpAKZdjJKk3r9BHeVVOYyvJcLU3d1z3kH9u8=;
+	b=ccQ4aF18yZBWK26bXdy+icwTRrUf7WiiMG70/CYG2FT8HxiT7B+kOGN5ztTbSdoGeC4UUB
+	xcxR8VOtCw9ItZN6uIQ8Di2b9MImVWPQAkywkjGKmMKuD8wIdFpKkOSkYgI5fAg/3qC67c
+	f53WGAYjmoB5mC6s5dByK7NxuMDNPCw=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=M+37idsG;
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KpHzZpnF;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf24.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org
+	spf=pass (imf04.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793819834;
-	b=de0O1KAAZkIeGSCLoSFuCW8TnvQESDM6Fr/okpm+6kF6MLRvriuB2gXinCjrlOqSAGGoeN
-	ptcXbMfbfuFxkYUF3Pq1q4GoyNWUD8i0WD4TKYvp0rjki9PDUl/uJ47l2ewlypPDuuziKZ
-	HT1D4A8L1v2CH67EJB4eSJ3IVyEqzjM=
+	t=1793819849;
+	b=x5BmHI0KX6RnkAbttLucO+mB8VUovImuxzxkYXEQ/5xwRlfRDTU7EuqdQ6Q3sMo8J5GbwE
+	/76L3qRBeWF7EfyhGhjpV3VleTsx8SaKBO+9jttOpON5F8LpyB/DNEZqdLC+vUO/0rZQ2+
+	innL4S0Jwdg6kV7EGngka4Qx2z2gMtg=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 3281260D79;
-	Wed,  4 Nov 2026 19:17:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1CC31F00A02;
-	Wed,  4 Nov 2026 19:17:01 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 5A72041388;
+	Wed,  4 Nov 2026 19:17:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79C9F1F00A24;
+	Wed,  4 Nov 2026 19:17:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793819833;
-	bh=9+yARzdOpzdllKXUJ7Oz/hxaICj5Mm35ej5JnL7jd2E=;
+	s=k20260515; t=1793819848;
+	bh=jP/hayhlpAKZdjJKk3r9BHeVVOYyvJcLU3d1z3kH9u8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=M+37idsGrLxfFvku7zl/pBSwEmNcKERej4x0tosO6grxOviHHdjWIUdhmF1vqg/33
-	 ePdxdVUOrxZAd03o21+XtRZheQyVUQvUyzG6bID6wcddrxq3hFrluAQ9lLCdxqRzfp
-	 kt/0B12iz71I2xcJyQXTn4hjtTXM1xta/DcZkdyqFcRIjvNQqhjLQ7+o4RQS7ld9uJ
-	 RxppQtsQpkcAJfI1T2eabtz3JiLt/pD+Ac5EuC64kC1SX9FzH8iROGnJpsFF7HprX/
-	 digopjDGEPs9QYh/4IRuwVyogSNhJ6h7LRJdrzEAtQ40rWwZdXm33gXiB304dOVRmc
-	 6xBzDofOt/82g==
+	b=KpHzZpnFwT6+C0q0yRCi5k/OA66tRS7eBzT8lt1HaWQE8e8svE3VZCRBnfRHdCzx7
+	 71y/CPv6HCeTe9zbap2gT5FJuzj5hekBtO1a4cjxKuetzIxGjHALxdRgkDffBvgqoN
+	 /aj76OWmFdznND17QWfa+CPtL2LoFKokFbuci0W4IBDDUUsoZwEUSEMsIoP5ROVtaD
+	 UYsfpJY8su6lg+vsurlkAT18SVCFHIc8HLWY3wDZz/GvQ7lhgYrpLIwR5WyV8knPdX
+	 rwvwNGe1ypF9HhdxdQGkkPDxlpkOU61C82qjywHhkl5yTgB9ONziIAgGKfFuFYu0iv
+	 y/71Zwy9XejIg==
 From: Christian Brauner <brauner@kernel.org>
 To: linux-fsdevel@vger.kernel.org
 Cc: Linus Torvalds <torvalds@linux-foundation.org>,
@@ -122,31 +122,31 @@ Cc: Linus Torvalds <torvalds@linux-foundation.org>,
 	"Christian Brauner (Amutable)" <brauner@kernel.org>,
 	Chuck Lever <cel@kernel.org>,
 	stable@vger.kernel.org
-Subject: [PATCH RESEND v2 04/51] PNP: isapnp: don't go on when isapnp_cfg_begin() fails
-Date: Wed,  4 Nov 2026 20:16:59 +0100
-Message-ID: <20261104-work-procfs-bugfixes-v2-4-021c84d852e0@kernel.org>
+Subject: [PATCH RESEND v2 05/51] xtensa: simdisk: remove the proc entry before the disk
+Date: Wed,  4 Nov 2026 20:17:14 +0100
+Message-ID: <20261104-work-procfs-bugfixes-v2-5-021c84d852e0@kernel.org>
 In-Reply-To: <20261104-work-procfs-bugfixes-v2-0-021c84d852e0@kernel.org>
 References: <20261104-work-procfs-bugfixes-v2-0-021c84d852e0@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3910; i=brauner@kernel.org; h=from:subject:message-id; bh=zJWqbpFP7Eog9HhLBr1/8hQ7kUfFg3Bc340XkbmHZ+k=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS9bjwfy6albiRae1/wtUrq+c387TdzlueZHTlof0l6C 9s2jaXJHaUsDGJcDLJiiiwO7Sbhcst5KjYbZWrAzGFlAhnCwMUpABOxOMDwP/P/rHn3hBMn3dDV dmaavka+U/6WztZHr9XU+ayeBLut+8/wz/yq9VK/Qs8AXxn5YxmeOze0nVnNEjjjZ9J8gXrmcL1 FPAA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1246; i=brauner@kernel.org; h=from:subject:message-id; bh=f7Qg/00vnZM3tuJ138yAFxD6JPv6/GBN+HDx2x0z8gg=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS9brxQmmA/984KHvt9Xz1eFefxl8hqpieb9fosObahV 1Ne5l9gRwkLgxgXg6yYIotDu0m43HKeis1GmRowc1iZQIYwcHEKwERykxj+u2j/eB40M+7p2v17 /GMmXT/na+Ctz77txmH9Sb+NLH5yrWH4HpzAeT45SPnv5UMnF7jMebDmtMJKXyf/NT8uPWe+O7+ RBwA=
 X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: A2066180005
-X-Stat-Signature: gzgrymy89sm81crx8gdfsk7oyf89deew
+X-Rspamd-Queue-Id: 2857740009
+X-Stat-Signature: myp1bcdmz4sqoyxj1mo7317z3t6ph7yp
 X-Rspam-User: 
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
 	version=4.0.1
-X-HE-Tag: 1793819834-734432
-X-HE-Meta: U2FsdGVkX1+1FVclzdZrB/zwMoI11hexyBX01k8KJt+uDQEcveNhpKdOKRLbPUzpWoV/TzbPIANKut8VQ0r3WPg87LuoYbyz4RGk/cgqVB3T0om9JP23Uzxk3356FZLNbWxpeolHtmym+I506SH1VqSqFX8otaoNY3S8oj+lvEpnhvZNB86Ictn8RtzxZDiAKGu8YDlD5/SShW3/YoUpKEIQ82uaeP/yu2TJUEsiXtm51OOyNzC8a6H5ALZja+yJNVIq8i70lrPfGyl8d0S56zC2hxn4YOBZzrXR4fqOO/zlQmT9yescKKmkmmRrPF2F6QZYVNsJQ+IJMaMrd/YQxZ3+bJC59IOJUbpv2n4gHBuise3j0jMN5+8t/iFCbIqeZdFiTrsPk3q7OZBsLE8Vz+3RMFnXZT3GotCEUZnQ42CJ9EvI8eqO97VueTM7YUW9XCtsPQyJbbA5QPcQlnf8Xv0M6Gs4dFzYaQkp8kcEydOkmkYXFIvByj/cfnZ2a/LlMX4p0r2V9EgKVcnz5ZCMJQN3mk8YiwKM01Bf3nNJCYWmAYB+yqzlMKumMCxFHH6E6dH8PmnMU6edCzK+ORHs05cqXEYrndYM9hPKk7lwEptw28ix+AQZ0J60I/Vz9gUwz1JqqIsK213/rsFkBr/6LOXSSK0U81gVSGQAXA35tQWKC0KJ4WeP+O0ZdMzFYZ/Hf4NaojEuKwsiVzhIDRL5M0egu5kXHBHAvFreXHxEqdKH9TZPI2lloP53LbH+O+zCud1kPvNT1iJQiJHcVtUbU5LXF1Yzo0sN909Xh1TYeFHKJ0sMQUcNNXqff0Lq04T8b1f6oNWDZa+/u9nw8pSzbTZhi5fgoLNXe2FJ7HQN/a0VamZoEAyWfRGgobMKBfDijG75v4Qpn7QsrIEnzLmf6NnlJ8X4CFjDKXjP6iLaxgAocHlATnZ1pURq/4sgC23LVIplctGK0ywbxHxl0xH
- P+MsJsU4
- pTltVq1h+RBLd6lWNMr0OdTwr1y0GZKhNdHOJ2ITovs/U7gFdV1ks04raJth1rInCPp9JFYznvq2Vxx+WR0nypP0BIcJJP1cQIgQjdLQFWeLpS4xXmecw+OjHLkYvyTWYmgG2Y2MtST5OoYrJPKH5y9bE5cRMbQwZbqtNQXZtuxvLhYxY9ls61AnVH3ETPNi5NkzPifKpFSOE4mvkp+a+MEtn9InkK+gdzaMzkDtn11vlp6WVMW6ExSS0ty6Fkg2iifkFGtvvXY4RnAGqXvK8JPhB45w0uf7F/ubmxfkd68Yqu5Sb/rmECDka+Pfal6v5modH2145ZkHQcNGPtvz2Gwyyc+gIAlo/7pH73gWOzqmum0iuN6tfXLvTTHMwG3vwRaxPAg1se0w8ODW6X7wmBaVI0kZf3/CsrDs32VlrjHT4ZG5XoH3A9vxMFKyQ+faTTRvSvMsZ4v2lDsmRco2Yi9EfS/Hwbk6SCBzJXXIPprRWbaA=
+X-HE-Tag: 1793819849-13813
+X-HE-Meta: U2FsdGVkX18TJPEco19b1U7tYeJ4jvr3vdUI844/8LWNhqPifsssk9EbRd/BDNeyDpbamXRsUc80gbK0YAoa2jUm5g2apD6BkQdVgiDdjKScsrMzZ3llZ1CayzmgKrlHWRmvk/4Qvuyc2lC3Vr6U4IJ5KIYRaZy9dr9p+cFVsFzysgeZAYvO8OcZAxKXcyF5RLvisDHDz53pCG9O4yUwBiRMwO58K0T5/vl+zrJke+vWG3MqgZbC4YBeoolQ//hoAdZhBZxHTdAtiKQN6H8cpzkuyU06p1dTTiBR1FdZDvcCKTKMAvNcc2LSgpJ4C4f9V6fhJfU6nfDhpK7yMmJ6v0vgNL6ECXJZH5N3H9hi7QgABVZFccyaHIDmd7Ynomi2+gVIoKJTy94CTndLjsd80xkK50xBuf8ApyeSIds/agAW7ZoL4rwytb1uECKw5iF9mNZEks2MdtjM0csHj40qiBdUEQkQ384idTJyx72GVxoVJwecyy/H0RKfp0XMxJJ6MfjI4gG+9NRDwmc7DnHmwoyc0QeFDgmLp9bpfA3pC4+sOHegxsOiGHoG8bU+KjAufaCxJvzjJ2ve95GIXXz6eN9F6q7ZmjY9IG5iqaqxwp+GdSvnFzwF0v1oDX/drxffdC3OB+TIZ4FkqiEeE5VfjZDditnAqOq7pb7xaCFA2p5unIfzIj4ue5PwS6+cADEeK7RpbUomE93sIrMWhQMnD7WxeJjZVpu9tMKI60Y+7ljPIFbtN9r/buq5BWornb9SHlcafgojmHY0WOJMQRiXYJKdmvWPDlVQRcvzbQ8Jq1S6lB0aLwsZJYfu5Y6rCxVl05cgJg0pgNGOaBD2fMGaFBwTMCRTPfKQPMfdQz0afh2++Q43BzkqZwB1vuflClWQ3Ktb/S9KaUQ/P3yjgDioIZqU4ZmQORYbFq5GMMF52e3sbmkP7lM2kSrqJTkrkM7dBCqBvAe2/ZDvMyQiVl2
+ V1bnHk/j
+ v4y9xlSfxtZ3pVxs7VzStIPoCVAotIO9IGZm0XIQRQb38Az4cUQj+e1RrDWWx9tyq/6TuAp9NY1+qWKl81UUPRp13l2+fxPvxlfxU3B6Hu8VJJQh7mwjucFFMR++yAiKhcqtcj9s2YClvLU+RU4oSfo5uIWOYhGO5vzf7CxmR3TrUqQJ2iji00IYc9cecKiYbLWuntXodIXH1DyKLW+0VsoYB48Qse3Fbb8xPFFcf4fY7FjDd6LYXuGvCbhaRYnm+DskVjs3xkVu6ojxHMqRNq2YjNYyCqdb3Nvq8p4+NTlmy9L8YMhMi35sogGVWjCiFkc2paKlT111xbJYxaRhKuiQq3B6nw+akqYw/q+zEdLu37UUBTtFtzshzrbnQEWx8AZwXO1xQaCn0m44FV3P1iu/3Ea7TavqmHfSA
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -155,109 +155,38 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-isapnp_cfg_begin() refuses a logical device number above 10 and a bad
-card number with -EINVAL before it takes isapnp_cfg_mutex. The callers
-that read and write the device's configuration, the proc file included,
-don't look at that: they go on talking to whatever device the card
-currently has selected and then unlock a mutex they never took in
-isapnp_cfg_end(). isapnp_create_device() hands out logical device
-numbers without a bound, so a card with twelve or more logical devices
-gets there. Return the error instead.
+simdisk_teardown() frees the gendisk and only then removes
+/proc/simdisk/<n>. A write to that entry in between attaches the file
+that was written to the disk, and simdisk_attach() sets the capacity of
+the gendisk that is gone. Remove the entry first, remove_proc_entry()
+waits for a writer that is in the middle of that.
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Fixes: b6c7e873daf7 ("xtensa: ISS: add host file-based simulated disk")
 Cc: stable@vger.kernel.org
 Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 ---
- drivers/pnp/isapnp/core.c | 16 ++++++++++++----
- drivers/pnp/isapnp/proc.c |  5 ++++-
- sound/isa/es18xx.c        |  6 +++++-
- 3 files changed, 21 insertions(+), 6 deletions(-)
+ arch/xtensa/platforms/iss/simdisk.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/pnp/isapnp/core.c b/drivers/pnp/isapnp/core.c
-index 219f96f2aaaf..3591a2791c1a 100644
---- a/drivers/pnp/isapnp/core.c
-+++ b/drivers/pnp/isapnp/core.c
-@@ -853,7 +853,9 @@ static int isapnp_get_resources(struct pnp_dev *dev)
- 
- 	pnp_dbg(&dev->dev, "get resources\n");
- 	pnp_init_resources(dev);
--	isapnp_cfg_begin(dev->card->number, dev->number);
-+	ret = isapnp_cfg_begin(dev->card->number, dev->number);
-+	if (ret)
-+		return ret;
- 	dev->active = isapnp_read_byte(ISAPNP_CFG_ACTIVATE);
- 	if (!dev->active)
- 		goto __end;
-@@ -887,10 +889,12 @@ __end:
- static int isapnp_set_resources(struct pnp_dev *dev)
+diff --git a/arch/xtensa/platforms/iss/simdisk.c b/arch/xtensa/platforms/iss/simdisk.c
+index a2ddb49c269d..e51edb8cf872 100644
+--- a/arch/xtensa/platforms/iss/simdisk.c
++++ b/arch/xtensa/platforms/iss/simdisk.c
+@@ -379,12 +379,13 @@ static void simdisk_teardown(struct simdisk *dev, int which,
  {
- 	struct resource *res;
--	int tmp;
-+	int tmp, ret;
+ 	char tmp[2] = { '0' + which, 0 };
  
- 	pnp_dbg(&dev->dev, "set resources\n");
--	isapnp_cfg_begin(dev->card->number, dev->number);
-+	ret = isapnp_cfg_begin(dev->card->number, dev->number);
-+	if (ret)
-+		return ret;
- 	dev->active = 1;
- 	for (tmp = 0; tmp < ISAPNP_MAX_PORT; tmp++) {
- 		res = pnp_get_resource(dev, IORESOURCE_IO, tmp);
-@@ -936,9 +940,13 @@ static int isapnp_set_resources(struct pnp_dev *dev)
++	/* a write to the entry attaches a file to the disk, so it goes first */
++	remove_proc_entry(tmp, procdir);
+ 	simdisk_detach(dev);
+ 	if (dev->gd) {
+ 		del_gendisk(dev->gd);
+ 		put_disk(dev->gd);
+ 	}
+-	remove_proc_entry(tmp, procdir);
+ }
  
- static int isapnp_disable_resources(struct pnp_dev *dev)
- {
-+	int ret;
-+
- 	if (!dev->active)
- 		return -EINVAL;
--	isapnp_cfg_begin(dev->card->number, dev->number);
-+	ret = isapnp_cfg_begin(dev->card->number, dev->number);
-+	if (ret)
-+		return ret;
- 	isapnp_deactivate(dev->number);
- 	dev->active = 0;
- 	isapnp_cfg_end();
-diff --git a/drivers/pnp/isapnp/proc.c b/drivers/pnp/isapnp/proc.c
-index c1f6e6bd0eb2..b3abab24050b 100644
---- a/drivers/pnp/isapnp/proc.c
-+++ b/drivers/pnp/isapnp/proc.c
-@@ -25,6 +25,7 @@ static ssize_t isapnp_proc_bus_read(struct file *file, char __user * buf,
- 	struct pnp_dev *dev = pde_data(file_inode(file));
- 	int pos = *ppos;
- 	int cnt, size = 256;
-+	int ret;
- 
- 	if (pos >= size)
- 		return 0;
-@@ -37,7 +38,9 @@ static ssize_t isapnp_proc_bus_read(struct file *file, char __user * buf,
- 	if (!access_ok(buf, cnt))
- 		return -EINVAL;
- 
--	isapnp_cfg_begin(dev->card->number, dev->number);
-+	ret = isapnp_cfg_begin(dev->card->number, dev->number);
-+	if (ret)
-+		return ret;
- 	for (; pos < 256 && cnt > 0; pos++, buf++, cnt--) {
- 		unsigned char val;
- 		val = isapnp_read_byte(pos);
-diff --git a/sound/isa/es18xx.c b/sound/isa/es18xx.c
-index 3cadbf7cf238..de1eda5a0656 100644
---- a/sound/isa/es18xx.c
-+++ b/sound/isa/es18xx.c
-@@ -1950,7 +1950,11 @@ static int snd_audiodrive_pnp_init_main(int dev, struct pnp_dev *pdev)
- 	/* ok. hack using Vendor-Defined Card-Level registers */
- 	/* skip csn and logdev initialization - already done in isapnp_configure */
- 	if (pnp_device_is_isapnp(pdev)) {
--		isapnp_cfg_begin(isapnp_card_number(pdev), isapnp_csn_number(pdev));
-+		int ret = isapnp_cfg_begin(isapnp_card_number(pdev),
-+					   isapnp_csn_number(pdev));
-+
-+		if (ret)
-+			return ret;
- 		isapnp_write_byte(0x27, pnp_irq(pdev, 0));	/* Hardware Volume IRQ Number */
- 		if (mpu_port[dev] != SNDRV_AUTO_PORT)
- 			isapnp_write_byte(0x28, pnp_irq(pdev, 0)); /* MPU-401 IRQ Number */
+ static void __exit simdisk_exit(void)
 
 -- 
 2.53.0
