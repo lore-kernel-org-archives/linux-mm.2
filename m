@@ -1,66 +1,66 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB268607B54D
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 19:34:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E2A2607B567
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 19:35:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=bT3xqh2f
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=NdIhkmR8
 Received: by kanga.kvack.org (Postfix)
-	id BD4776B05DE; Wed,  4 Nov 2026 14:34:51 -0500 (EST)
+	id 36FF66B05E5; Wed,  4 Nov 2026 14:35:06 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BAA936B05E2; Wed,  4 Nov 2026 14:34:51 -0500 (EST)
+	id 321406B05E6; Wed,  4 Nov 2026 14:35:06 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A76126B05E5; Wed,  4 Nov 2026 14:34:51 -0500 (EST)
+	id 20EDB6B05E7; Wed,  4 Nov 2026 14:35:06 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 826DE6B05DE
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 14:34:51 -0500 (EST)
+	by kanga.kvack.org (Postfix) with ESMTP id F32256B05E5
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 14:35:05 -0500 (EST)
 Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 0F1D28085A
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 19:34:51 +0000 (UTC)
-X-FDA: 85398439182.18.D872417
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 371BDA000B
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 19:34:49 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bT3xqh2f;
-	spf=pass (imf25.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793820889;
-	b=VeVRUrbvUkBsVa2Qbzg/lt0BZBUe99UGIvlfm/9/C/YFzUIZin+5sNP2a9g9rx6CZk4RUl
-	i5QnFGtmiV5HdPhrD0QxZKUrbeL1wmymhGMYUU2OCqIZmyYofrEWhckS4073ngW4bkKqV6
-	mYGQfJUIBbp3H5n+LfB+MuvnQnhisTs=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bT3xqh2f;
-	spf=pass (imf25.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 90DB6807FC
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 19:35:05 +0000 (UTC)
+X-FDA: 85398439770.18.D8B7607
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf16.hostedemail.com (Postfix) with ESMTP id CAE28180011
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 19:35:03 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NdIhkmR8;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf16.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793820889;
+	s=arc-20220608; t=1793820903;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=G9DC8SgYv8JZwVHB1+A9JWaJc/Eq4lIEWGkaNZA+NZo=;
-	b=gFiJlXUWWzb1bGqVC1wgWkIFdvK6fziCdfcELUPz4C820Yq1yC3zJI5WD6x8jSNtTFLJNw
-	ppr09WxyLpvx2tlLuTcm0+m399sYANhWf6T03lbONa5pX8jrbJttDQQcjg41RUwN/JMaO4
-	vcZ0ciViIBxTusZufn4h/tKc5fFlw1o=
+	bh=oemelKiySoMOiwqgnAV36fuORtRsmkNeJKV1jFDEe84=;
+	b=bJ8aK8aJLXvUKHBoMIVI+T+V7J06PizHlWNojyPfglCl68MGUMorifW/g9CYFld7tHOUVY
+	YvNdQbOqxL6Ey1zRGq7ejKaP0KpNx5UvtipaqjA8VK6Ug1D9wmfOXp9GS6V2OzPDz5SLp1
+	da4hvyoWcXZKNtvWkUZxJQphfB0RhQ8=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NdIhkmR8;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf16.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793820903;
+	b=aGH8uC5N2EXfNRt2ik3fltgB5T6qVZMJDs0OhP0VZobLKcTfPO1sE+4l0qJWc7VUQW/Fqc
+	tfh4T2rE4fWA4iYke5hkADqGT+6FlHRAkEQZMNeKFTtU6qOKorigEr8pG5EMg+anQDxsfi
+	XmPdf9xJhRmOAJOq6474syjg5y2OKz4=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 8327143BD1;
-	Wed,  4 Nov 2026 19:34:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70E851F00919;
-	Wed,  4 Nov 2026 19:34:36 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 672E160F14;
+	Wed,  4 Nov 2026 19:35:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1ED851F00A02;
+	Wed,  4 Nov 2026 19:34:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793820888;
-	bh=G9DC8SgYv8JZwVHB1+A9JWaJc/Eq4lIEWGkaNZA+NZo=;
+	s=k20260515; t=1793820903;
+	bh=oemelKiySoMOiwqgnAV36fuORtRsmkNeJKV1jFDEe84=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=bT3xqh2fiiofbmQxyJSDAil8oMSPyPdR9Pknc1Ow/A0g14DNyuGJKGS2zSkiyez6r
-	 Cn6rfcvoIVqfNukawCMtK46oBLSRftmHazuw8UgESfV95zpSeehBR4G40ovtdEYgkG
-	 tDDikyyc2mjIuYMytPflhdl0H6hJwOF3Erv/hhKv19GUGdXyMuZYo0eOjO1TdZUSh1
-	 25h8ovGAtccgwzwnnEh3LOCjSML+Cd1N2fHfbAbYnxkF/+nY1QsKnLwGV0oVjfXZzV
-	 IlF0aAUYGoDzGORYf/U02Bf6eEB+GNHNu/IwNYiVkLCivWqYCFOxsroxZZwYEVl20R
-	 faA09Esmdp6qA==
+	b=NdIhkmR863LfWCMprOyQyV25PD9rqXv4D86G8KwpEpwgu1ew2ly1VSDsSi+vvNYEk
+	 pdiZGLaYCfcSpolU08dh2Ox1XpOziHjEMF9eLPIDzoTncs0uTQyA6t8IDEFXhb5uJs
+	 MRInNSukyF1lX2N30J/c9l2JglsG5ux7QFyq1uyq7vfLaPRQQlR15nRd48a3wYrcj6
+	 lZnjRRg76YYo/mMbP1lvf4rqBK45QGvet6xWqoa/QxNtd7fbtopkQWoQ70/UsVkZ5X
+	 A0w5KwPb7M+lvH7D74CrzGbvuZKc4J2ZdYCBgX0hv6j2ovnkrXSc22NLiSnmZ4i+5N
+	 tZ+4a/qMfQlag==
 From: Christian Brauner <brauner@kernel.org>
 To: linux-fsdevel@vger.kernel.org
 Cc: Linus Torvalds <torvalds@linux-foundation.org>,
@@ -121,31 +121,31 @@ Cc: Linus Torvalds <torvalds@linux-foundation.org>,
 	linux-debuggers@vger.kernel.org,
 	"Christian Brauner (Amutable)" <brauner@kernel.org>,
 	Chuck Lever <cel@kernel.org>
-Subject: [PATCH RESEND v2 22/23] proc: own the wait queue of an entry with a ->proc_poll()
-Date: Wed,  4 Nov 2026 20:34:34 +0100
-Message-ID: <20261104-work-procfs-core-v2-22-76ace653a773@kernel.org>
+Subject: [PATCH RESEND v2 23/23] Documentation: seq_file: describe how a /proc file uses seq_file
+Date: Wed,  4 Nov 2026 20:34:48 +0100
+Message-ID: <20261104-work-procfs-core-v2-23-76ace653a773@kernel.org>
 In-Reply-To: <20261104-work-procfs-core-v2-0-76ace653a773@kernel.org>
 References: <20261104-work-procfs-core-v2-0-76ace653a773@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=12427; i=brauner@kernel.org; h=from:subject:message-id; bh=vzjlvWReC1JzW9p8OtWxguJhKyglGFnLjXIhSpCi/t0=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS9bu/htNRf8LXv7Y7LfYm7JWRTF2SskzhXVsrKs1P33 gcj0W3zO0pZGMS4GGTFFFkc2k3C5ZbzVGw2ytSAmcPKBDKEgYtTACaiO4mRYbvAusx9ZZq/L37u ul9w8cGUDfVTFarqOtNCqi8evtulvYSR4bNG+Z/g2OsSqz/4rzwcsfvBGruoS8ETX/Z67TtQHDf FnhUA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4403; i=brauner@kernel.org; h=from:subject:message-id; bh=6aFABatdXquU8hYCBft2XO0RwrbgVBBoDcjFdlGJCdI=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS9bu999ubNM3NDJXcTDjvH6RMe/w9V29r24X7WXYarX YufWirLd5SyMIhxMciKKbI4tJuEyy3nqdhslKkBM4eVCWQIAxenAEzk2jSGf9YGYrvfJiTw13KH 3J79bJLsjXdRNnOFKw4/9t52hvePsgMjw7XgK04OnTPMIvIuqxf1X2w3cXUIes79qe2gRORUuY8 PuQA=
 X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
 Content-Transfer-Encoding: 8bit
+X-Rspam-User: 
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: CAE28180011
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
 	version=4.0.1
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 371BDA000B
-X-Stat-Signature: uur1q8uz369ymsj17fccoaudfwrsmsk1
-X-Rspam-User: 
-X-HE-Tag: 1793820889-295373
-X-HE-Meta: U2FsdGVkX18xzAQy0gysOo1VfKHvEGqwDy+X2Rios3T6IeQcSBICyk2VjIYsgzNf8Jinb5NP4PWRMYdGResJaTsHkzvlRJ6g47gvAAtL3tC3cVaexX4RjlogPN76mgLP7T71rCIkzBzKVUpWhAyR76wh8UzDY6mKsnwATc2V4Ubv62bUOTAIPq3dXs9p1shDJ5lGgqIacPxOX+dWxgzXdD/KMhDFNi/awEHAFxm1SpkLuaz676c39QHSIwSk4JmNocRqFjUhZ3l1sl2OOoKieSF31GC+5khiZOJbHhs53tGvCB6Ml+0cc06QgHoI1hiBNCitSYXljJJHMmYH9Z0eosZYCdd9PStUdcedpQCcIZ8fbrB0USSg+/uDYuTl4TEL2P2jB8LXrdVXdlUERWHTNxZZKoaVd/cnvB5u9Sv7gwlW8yQX4h/pqoo3pzWdvOdZWBg7dRwwgyHahCUu9HIkP34vSJBQ5UsMowwmRZqvXlj3458yDzAa9ArCA4MRdDPMOX3I09vcnK1fhrTyhKihcaBC0/B0Y46n3jP2oMzo60uvDinql3iidzQVs4Idgk62W5o256WRgHPqBsrYYfA7wM2GQwfoi//qhLjdObHmMpLcGMLPxZZfSwSWxLzSjOxPjSTKjEwr8cRBwhJpEM7bTwCGPIc3tp5np0zelakh0pvn/0Ok3YLJyVoCbq58D7FOQwKtGqT2bMt8jDEsLqdSNKySujtWBSX01x/T1xTxdUpvLnLaj8tUtQs8Lt/fHRhgPBAdCg75ImDkJ+48spQZPrQerCovafs9leDiPitNZRswRePHYVns4T0wpb5IF9RsAZvm30IJEhufQ1TnvZDMKPeTx76mRkejyJolBst1bZzYH3QwnRj3xd6U75BImI7hiIJfdd3Q/2t4/jY0lOGI0pZRmmRn2mhhEzvNLK9zwOpu78kIT8jT3zpljJfPE6C0ypOM4zt6ucUkOZHMbab
- lFOc7gYo
- XyVjS7z6LFT+qSLXzh/WnMcDphQyvtKSc2+HMWtMzScVNkPOJxtyo6Q2ROXjIlymqF1mk/IMrAJtKs6iznvGxclDjARD8kkUPYSh+NrhmSOL84/WHaSJrcbW8t9F5kd8q4saqXqzjmttApgud3K8pn4/9VofjcID6ayZyiWlgE2En48bgi/91LRg5jw9KZe2pcXvkB/u1K1TJFFTIvtW2fLk/KtCIqlF6ocO4XDjedX63MS42OBtGe/ObPKUgUIAzQDP+F6QYFvGFQUbJojgX/eWyrzLAlTbtrLv52omo+dkQ8vnOFwYF9YcVZ74oPwV+XABERkyzBMK3qgP8eC5v/dtU5vSszkFFvkItUOSUfjefKPA=
+X-Stat-Signature: 9t3ox4wfgudkrynnwceru4rxbsafo66c
+X-HE-Tag: 1793820903-761923
+X-HE-Meta: U2FsdGVkX1/8AY86ma0xgHd/SJRMm4W8cZ1l32IgvG2w/ZVJXhGhpnWxy+5GUD4A6WgPRuafiisxJ97dh9+JsbKWT5YJOo/OGXnV3cnV5oRXrYHIgw7sn0VdKE36FEL93qF5FZSWv6k936//uQd+JspKgwvpRjQVQYfu2T9CrgBNRNJXpP758HDN3N61HzyXU47kZ4eMhQX9pu5wTCXilpFOcpFKB7IF4kcMdAVbYcO43T/aaAQ2qQlK3P1eCHBVZV/RvLNqgZT2+mcMyH627HmzpZT0uLpHJ7oi5wO56RjBiLQO6iyKpWmM+fzFsoxI6isE7laDdDe3QcJAiPCiWoN2B141HorQjzv7Emod4Q7p7CxDrxNzc7ZgPlZNkoGNbfpWWgf7uxKKp4AWpc+zp1zrlHuGQMQ3IwHmp9M2Ycyso6O3voGhmu6bGEGnVDNzjCzLiKWc84oIzwkCMXZN87h2XD+DvsD12mtYPQYoz+C3wVxTfxfaujyPdJXOAlF1Ynb9RR0m3GoBbhTM7vhCf2iSHjyTx2Vgfh1/Y2Ht8xgeFUuLWjRn2SxJw+QTTldwFBRZ0Z12hMB/EQNbA/UizIYY1WQo2RhlakXPJ3JfVmZ2QexbY2dBi8x5XGk2M3pwm8/AlfmdGfQHwO1Za5FPHS2HNsDt7e8xOZFzTNZjDFG+yk9brUL0IeVRdGjRHAIb0UV0pa0dvd1ArF92GpYlA4NDb2ZdQYnXtoGL0saQQ4MRU7gV9oBKamrOw1X6N4vG/Cg2uLj2TC9sQcz0ToY3xf9V5b5fxTcUI6CHt9wA52ylvidZRmpkvUGJBvGIqHKPYY1qtZ/kqA4BRyMpVM3H8VdktE5hymw3AUI0XYpUpfq4qlwsjEfhxgJb0gJbpBk/QTaMpgM4ccHTTzCaFrDQsrqVBKlS+Yzqsb6Di6B4JTbI9q2/hvKzhJJ9fFUqHlr5ye2Y5eXAfp6yU4S2XuW
+ tTQnEKQz
+ FRZKSS4I26R5gCAbRc8z40pwOyS/xDy71KCWuD1iZcOFNv8XcRuw5elcNMj7xXl44UULAKpbZJgzFKuGBAQi8rFluOV/hGb2KxnISW6nkpWLzLb/BagjuyceIWdAxhtbzGge0DfSlm0S6G4ekaeIB/oAsP546lPl15INfsSzOf0HgdQwoWHY/R/ssqYi52OJwdHBN5yMoa8oE5QHumlZkQJLNDi59RDyDZaA19GcKmUP08G4a4wmFagUJ4OFsaXuKsjLgr5IYEGntNMOYUiboGmquo0UWbUBo86Nk/+w8y/rANGnXgOeXjg/L3SAz4ijUFvb4UiWBo1GE7CU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -154,322 +154,97 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-An entry with a ->proc_poll() calls poll_wait() on a wait queue of its
-own and procfs pins the entry around that. The pin covers the call, not
-what it leaves behind: the poller stays queued on the entry's queue
-after the call, and so after remove_proc_entry() ran ->proc_release()
-on the still open file and the entry's owner freed the queue with the
-rest. sunrpc had the queue of its channel files in the per-namespace
-cache_detail, which is freed when the namespace goes, so a poll() or
-epoll on such a file across the end of the namespace was a
-use-after-free, fixed for stable by going back to one static queue. md
-works around the same problem at module unload by waking its pollers
-in a loop until none is left.
-
-So do what kernfs does with kernfs_open_node: procfs owns the wait
-queue. Every entry with a ->proc_poll() gets an open node, which lives
-as long as the entry does, and the entry's inode holds the entry, so
-the queue outlives every open file and every poll or epoll entry on it.
-proc_reg_poll() does the poll_wait() on it before it calls the method,
-the owner wakes the pollers with proc_poll_notify(), and procfs wakes
-them when the entry is removed, after which a poll of it reports
-EPOLLERR | EPOLLPRI, like kernfs_fop_poll() does. The open node tracks
-the open files only for the entries whose release hook procfs has to
-call at removal, as before. Which methods an entry has procfs keeps in
-the entry's flags, and whether its files are tracked comes from there
-too: the last close of a file can come after the entry was removed and
-its proc_ops freed with their module.
-
-The method still gets the poll_table for now and the entries keep
-sleeping on their own queues until they are converted. The last series
-takes the poll_table away, so that an entry can't hand procfs a queue
-that dies before its files do.
+The example in seq_file.rst hands proc_create() file operations built
+from an open method that calls seq_open() and from seq_read(),
+seq_lseek() and seq_release(). procfs doesn't work that way anymore. It
+opens and releases the seq_file itself when the entry declares its
+seq_operations or its show function in struct proc_ops. Say so, and
+point the extra-simple version at ->proc_show() for /proc files.
 
 Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 ---
- fs/proc/generic.c       | 38 ++++++++++++++++++++--------------
- fs/proc/inode.c         | 55 ++++++++++++++++++++++++++++++++++++-------------
- fs/proc/internal.h      | 35 ++++++++++++++++++++++++++-----
- include/linux/proc_fs.h | 11 ++++++++++
- 4 files changed, 105 insertions(+), 34 deletions(-)
+ Documentation/filesystems/seq_file.rst | 42 ++++++++++++++++++++++++++--------
+ 1 file changed, 33 insertions(+), 9 deletions(-)
 
-diff --git a/fs/proc/generic.c b/fs/proc/generic.c
-index ca4025ee7aa8..9c073cb867e5 100644
---- a/fs/proc/generic.c
-+++ b/fs/proc/generic.c
-@@ -466,6 +466,12 @@ static int pde_set_flags(struct proc_dir_entry *pde)
- 		if (proc_ops->proc_lseek)
- 			pde->flags |= PROC_ENTRY_proc_lseek;
- 	}
-+	if (proc_ops->proc_poll)
-+		pde->flags |= PROC_ENTRY_proc_poll;
-+	if (proc_ops->proc_release)
-+		pde->flags |= PROC_ENTRY_proc_release;
-+	if (proc_ops->proc_mmap)
-+		pde->flags |= PROC_ENTRY_proc_mmap;
- 	if (proc_ops->proc_write_buf) {
- 		if (WARN_ON_ONCE(proc_ops->proc_write))
- 			return -EINVAL;
-@@ -503,16 +509,22 @@ static int pde_set_flags(struct proc_dir_entry *pde)
- 	return 0;
- }
+diff --git a/Documentation/filesystems/seq_file.rst b/Documentation/filesystems/seq_file.rst
+index d753d8177bcb..3e6ff1c1226d 100644
+--- a/Documentation/filesystems/seq_file.rst
++++ b/Documentation/filesystems/seq_file.rst
+@@ -68,7 +68,7 @@ kernel 3.10. Current versions require the following update::
+     -	entry = create_proc_entry("sequence", 0, NULL);
+     -	if (entry)
+     -		entry->proc_fops = &ct_file_ops;
+-    +	entry = proc_create("sequence", 0, NULL, &ct_file_ops);
++    +	entry = proc_create("sequence", 0, NULL, &ct_proc_ops);
  
--/*
-- * procfs has to know the open files of an entry whose ->proc_release() it
-- * calls at removal and whose mappings it undoes then. A permanent entry is
-- * never removed and skips all that, see proc_reg_open().
-- */
--static bool pde_needs_open_node(const struct proc_dir_entry *pde)
-+/* The open node, see struct pde_open_node. */
-+static int pde_init_open_node(struct proc_dir_entry *pde)
- {
--	if (!S_ISREG(pde->mode) || pde_is_permanent(pde))
--		return false;
--	return pde->proc_ops->proc_release || pde->proc_ops->proc_mmap;
-+	struct pde_open_node *on;
+ The iterator interface
+ ======================
+@@ -277,9 +277,10 @@ seq_file system, but we have not yet turned them into a file that a user
+ can see. Creating a file within the kernel requires, of course, the
+ creation of a set of file_operations which implement the operations on that
+ file. The seq_file interface provides a set of canned operations which do
+-most of the work. The virtual file author still must implement the open()
+-method, however, to hook everything up. The open function is often a single
+-line, as in the example module::
++most of the work. A file in /proc is special, procfs hooks the seq_file up
++itself, see below. Everywhere else the virtual file author still must
++implement the open() method to do that. The open function is often a
++single line::
+ 
+ 	static int ct_open(struct inode *inode, struct file *file)
+ 	{
+@@ -343,19 +344,38 @@ file_operations structure will look like::
+ There is also a seq_release_private() which passes the contents of the
+ seq_file private field to kfree() before releasing the structure.
+ 
+-The final step is the creation of the /proc file itself. In the example
+-code, that is done in the initialization code in the usual way::
++The final step is the creation of the file itself. A file in /proc is
++special here: procfs opens and releases the seq_file itself, so there is
++no open method and no file_operations for it. The entry declares its
++seq_operations in struct proc_ops instead, and the size of a private
++block in proc_state_size if it wants procfs to allocate one like
++seq_open_private() would::
 +
-+	if (!S_ISREG(pde->mode))
-+		return 0;
-+	if (!pde_has_proc_poll(pde) && !pde_tracks_files(pde))
-+		return 0;
-+	on = kzalloc(sizeof(*on), GFP_KERNEL);
-+	if (!on)
-+		return -ENOMEM;
-+	INIT_LIST_HEAD(&on->files);
-+	init_waitqueue_head(&on->poll);
-+	pde->open = on;
-+	return 0;
- }
++	static const struct proc_ops ct_proc_ops = {
++	        .proc_seq_ops = &ct_seq_ops,
++	};
  
- /*
-@@ -574,12 +586,8 @@ struct proc_dir_entry *proc_register(struct proc_dir_entry *dir,
- 
- 	if (!S_ISDIR(dp->mode) && pde_set_flags(dp))
- 		goto out_free_inum;
--	if (pde_needs_open_node(dp)) {
--		dp->open = kzalloc(sizeof(*dp->open), GFP_KERNEL);
--		if (!dp->open)
--			goto out_free_inum;
--		INIT_LIST_HEAD(&dp->open->files);
--	}
-+	if (pde_init_open_node(dp))
-+		goto out_free_inum;
- 	if (pde_init_seq_direct(dp))
- 		goto out_free_inum;
- 	pde_lockdep_init(dp, key);
-diff --git a/fs/proc/inode.c b/fs/proc/inode.c
-index 59de4681d845..ab30a58879d5 100644
---- a/fs/proc/inode.c
-+++ b/fs/proc/inode.c
-@@ -389,9 +389,15 @@ void proc_entry_rundown(struct proc_dir_entry *de)
- 		rwsem_release(&de->dep_map, _RET_IP_);
- 	}
- 
--	/* ->open->files can't grow from now on. */
- 	if (!de->open)
- 		return;
-+	/* a poll of a removed entry reports EPOLLERR, see proc_reg_poll() */
-+	if (pde_has_proc_poll(de))
-+		wake_up_interruptible_all(&de->open->poll);
-+
-+	/* ->open->files can't grow from now on. */
-+	if (!pde_tracks_files(de))
-+		return;
- 	spin_lock(&de->pde_unload_lock);
- 	while (!list_empty(&de->open->files)) {
- 		struct pde_opener *pdeo;
-@@ -555,26 +561,46 @@ static ssize_t proc_reg_write(struct file *file, const char __user *buf, size_t
- 	return rv;
- }
- 
--static __poll_t pde_poll(struct proc_dir_entry *pde, struct file *file, struct poll_table_struct *pts)
--{
--	const auto poll = pde->proc_ops->proc_poll;
--	if (poll)
--		return poll(file, pts);
--	return DEFAULT_POLLMASK;
--}
+ 	static int ct_init(void)
+ 	{
+-	        struct proc_dir_entry *entry;
 -
-+/*
-+ * The pollers of an entry sleep on a wait queue procfs owns, which is there
-+ * for as long as the entry's inode is, however the entry's owner goes away.
-+ * The owner wakes them through proc_poll_notify(), and procfs does when the
-+ * entry is removed: a poll of a removed entry reports EPOLLERR | EPOLLPRI,
-+ * like kernfs_fop_poll().
-+ */
- static __poll_t proc_reg_poll(struct file *file, struct poll_table_struct *pts)
- {
- 	struct proc_dir_entry *pde = PDE(file_inode(file));
- 	__poll_t rv;
- 
--	if (!pde_pin(pde))
-+	if (!pde_has_proc_poll(pde))
- 		return DEFAULT_POLLMASK;
--	rv = pde_poll(pde, file, pts);
-+	poll_wait(file, &pde->open->poll, pts);
-+	if (!pde_pin(pde))
-+		return DEFAULT_POLLMASK | EPOLLERR | EPOLLPRI;
-+	rv = pde->proc_ops->proc_poll(file, pts);
- 	pde_unpin(pde);
- 	return rv;
- }
- 
-+/**
-+ * proc_poll_notify - wake up the pollers of an entry
-+ * @pde: an entry with a ->proc_poll(), may be NULL
-+ *
-+ * May be called from any context, as long as the entry is still registered.
-+ * procfs doesn't pin it here, the caller keeps it alive like it does for
-+ * every other use of the pointer proc_create() returned.
-+ */
-+void proc_poll_notify(struct proc_dir_entry *pde)
-+{
-+	if (!pde)
-+		return;
-+	if (WARN_ON_ONCE(!pde_has_proc_poll(pde)))
-+		return;
-+	wake_up_interruptible_all(&pde->open->poll);
-+}
-+EXPORT_SYMBOL_GPL(proc_poll_notify);
-+
- static long pde_ioctl(struct proc_dir_entry *pde, struct file *file, unsigned int cmd, unsigned long arg)
- {
- 	const auto ioctl = pde->proc_ops->proc_ioctl;
-@@ -878,7 +904,8 @@ static int proc_reg_open(struct inode *inode, struct file *file)
- 	if (!use_pde(pde))
- 		return -ENOENT;
- 
--	if (pde->open) {
-+	const bool track = pde_tracks_files(pde);
-+	if (track) {
- 		pdeo = kmem_cache_alloc(pde_opener_cache, GFP_KERNEL);
- 		if (!pdeo) {
- 			rv = -ENOMEM;
-@@ -888,7 +915,7 @@ static int proc_reg_open(struct inode *inode, struct file *file)
- 
- 	rv = pde_open(pde, inode, file);
- 
--	if (pde->open) {
-+	if (track) {
- 		if (rv == 0) {
- 			/* To know what to release. */
- 			pdeo->file = file;
-@@ -918,7 +945,7 @@ static int proc_reg_release(struct inode *inode, struct file *file)
- 		goto out;
+-	        proc_create("sequence", 0, NULL, &ct_file_ops);
++	        proc_create("sequence", 0, NULL, &ct_proc_ops);
+ 	        return 0;
  	}
  
--	if (!pde->open)
-+	if (!pde_tracks_files(pde))
- 		goto out;
- 	spin_lock(&pde->pde_unload_lock);
- 	list_for_each_entry(pdeo, &pde->open->files, lh) {
-diff --git a/fs/proc/internal.h b/fs/proc/internal.h
-index 7a197e2920f8..d2d731706788 100644
---- a/fs/proc/internal.h
-+++ b/fs/proc/internal.h
-@@ -15,6 +15,7 @@
- #include <linux/sched/coredump.h>
- #include <linux/sched/task.h>
- #include <linux/mm.h>
-+#include <linux/wait.h>
+ 	module_init(ct_init);
  
- struct ctl_table_header;
- struct mempolicy;
-@@ -140,6 +141,26 @@ static inline bool pde_has_proc_ioctl_buf(const struct proc_dir_entry *pde)
- 	return pde->flags & PROC_ENTRY_proc_ioctl_buf;
- }
- 
-+static inline bool pde_has_proc_poll(const struct proc_dir_entry *pde)
-+{
-+	return pde->flags & PROC_ENTRY_proc_poll;
-+}
++A ->proc_open() method of such an entry finds the seq_file in
++file->private_data and may set up more state; ->proc_release() releases
++only that. It runs when the entry is removed, which can be while a reader
++is still copying out of the seq_file, so it must leave the seq_file
++alone. procfs only calls into the entry with the entry pinned, between
++start() and stop() like in its other methods, so nothing that runs there
++may wait for something a reader can hold while it copies to userspace,
++like the seq_file's lock.
++An entry that wants to start out with a larger buffer, like
++single_open_size() gives, calls seq_preallocate() from ->proc_open().
++The file_operations above are what a file elsewhere, in debugfs for
++example, uses.
 +
-+/*
-+ * procfs has to know the open files of an entry whose ->proc_release() it
-+ * calls at removal and whose mappings it undoes then. A permanent entry is
-+ * never removed and skips all that, see proc_reg_open(). This looks at the
-+ * flags and not at the proc_ops: the last close of a file can come after
-+ * the entry was removed and the proc_ops freed with their module, see
-+ * proc_reg_release().
-+ */
-+static inline bool pde_tracks_files(const struct proc_dir_entry *pde)
-+{
-+	if (pde_is_permanent(pde))
-+		return false;
-+	return pde->flags & (PROC_ENTRY_proc_release | PROC_ENTRY_proc_mmap);
-+}
+ And that is pretty much it.
+ 
+ 
+@@ -394,3 +414,7 @@ value given to single_open() can be found in the private field of the
+ seq_file structure. When using single_open(), the programmer should use
+ single_release() instead of seq_release() in the file_operations structure
+ to avoid a memory leak.
 +
- /* procfs owns the seq_file, see pde_seq_start() */
- static inline bool pde_is_seq_file(const struct proc_dir_entry *pde)
- {
-@@ -388,15 +409,19 @@ struct pde_opener {
- } __randomize_layout;
- 
- /*
-- * The open files of an entry whose ->proc_release() procfs has to call and
-- * whose mappings it has to undo when the entry is removed while they are
-- * still open, that is of an entry with a ->proc_release() or a
-- * ->proc_mmap(). Allocated with the entry, see proc_register().
-+ * What procfs keeps for the open files of an entry: the files themselves if
-+ * it has to call their ->proc_release() and undo their mappings when the
-+ * entry is removed, that is for an entry with a ->proc_release() or a
-+ * ->proc_mmap(), and the wait queue their pollers sleep on for an entry with
-+ * a ->proc_poll(). Allocated with the entry, see proc_register().
-  */
- struct pde_open_node {
--	struct list_head files;		/* who did ->open, but not ->release */
-+	/* who did ->open, but not ->release, see pde_tracks_files() */
-+	struct list_head files;
- 	/* of its mappings, the same for all of them, see pde_mmap() */
- 	const struct vm_operations_struct *vm_ops;
-+	/* what poll() and epoll wait on, see proc_poll_notify() */
-+	wait_queue_head_t poll;
- };
- extern const struct inode_operations proc_link_inode_operations;
- extern const struct inode_operations proc_pid_link_inode_operations;
-diff --git a/include/linux/proc_fs.h b/include/linux/proc_fs.h
-index feb3228cb5af..8520b18ce1f7 100644
---- a/include/linux/proc_fs.h
-+++ b/include/linux/proc_fs.h
-@@ -47,6 +47,9 @@ enum {
- 	 */
- 	PROC_ENTRY_FULL_READS		= 1U << 11,
- 	PROC_ENTRY_proc_ioctl_buf	= 1U << 12,
-+	PROC_ENTRY_proc_poll		= 1U << 13,
-+	PROC_ENTRY_proc_release		= 1U << 14,
-+	PROC_ENTRY_proc_mmap		= 1U << 15,
- };
- 
- /*
-@@ -81,6 +84,12 @@ struct proc_ops {
- 	 */
- 	loff_t	(*proc_lseek)(struct file *, loff_t, int);
- 	int	(*proc_release)(struct inode *, struct file *);
-+	/*
-+	 * procfs owns a wait queue for an entry with a ->proc_poll() and
-+	 * does the poll_wait() on it before it calls the method. The owner
-+	 * wakes the pollers with proc_poll_notify(). A poll on a removed
-+	 * entry reports EPOLLERR | EPOLLPRI.
-+	 */
- 	__poll_t (*proc_poll)(struct file *, struct poll_table_struct *);
- 	long	(*proc_ioctl)(struct file *, unsigned int, unsigned long);
- #ifdef CONFIG_COMPAT
-@@ -243,6 +252,7 @@ extern void *proc_get_parent_data(const struct inode *);
- extern void proc_remove(struct proc_dir_entry *);
- extern void remove_proc_entry(const char *, struct proc_dir_entry *);
- extern int remove_proc_subtree(const char *, struct proc_dir_entry *);
-+void proc_poll_notify(struct proc_dir_entry *pde);
- 
- struct proc_dir_entry *proc_create_net_data(const char *name, umode_t mode,
- 		struct proc_dir_entry *parent, const struct seq_operations *ops,
-@@ -341,6 +351,7 @@ static inline void *proc_get_parent_data(const struct inode *inode) { BUG(); ret
- static inline void proc_remove(struct proc_dir_entry *de) {}
- #define remove_proc_entry(name, parent) do {} while (0)
- static inline int remove_proc_subtree(const char *name, struct proc_dir_entry *parent) { return 0; }
-+static inline void proc_poll_notify(struct proc_dir_entry *pde) {}
- 
- #define proc_create_net_data(name, mode, parent, ops, state_size, data) ({NULL;})
- #define proc_create_net_data_write(name, mode, parent, ops, write, state_size, data) ({NULL;})
++A file in /proc puts the show() function into the proc_show field of its
++struct proc_ops instead and procfs does the rest, with the entry's data in
++the private field of the seq_file structure.
 
 -- 
 2.53.0
