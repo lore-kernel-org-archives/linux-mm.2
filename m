@@ -1,66 +1,66 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5244560A9D3E
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 19:34:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFABA607A7E6
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 19:34:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=UNhMpYi9
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=byDXenWy
 Received: by kanga.kvack.org (Postfix)
-	id 6537E6B05CB; Wed,  4 Nov 2026 14:34:22 -0500 (EST)
+	id 0AEF86B05DD; Wed,  4 Nov 2026 14:34:37 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 62B6F6B05DD; Wed,  4 Nov 2026 14:34:22 -0500 (EST)
+	id 086C86B05DE; Wed,  4 Nov 2026 14:34:37 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 51B8A6B05DE; Wed,  4 Nov 2026 14:34:22 -0500 (EST)
+	id EDE986B05E2; Wed,  4 Nov 2026 14:34:36 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 2B49D6B05CB
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 14:34:22 -0500 (EST)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id B70E812080B
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 19:34:21 +0000 (UTC)
-X-FDA: 85398437922.06.8940EAD
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id C3D986B05DD
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 14:34:36 -0500 (EST)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 60C40A07D9
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 19:34:36 +0000 (UTC)
+X-FDA: 85398438552.23.C550729
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 0A5D018000D
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 19:34:19 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UNhMpYi9;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf06.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org
+	by imf07.hostedemail.com (Postfix) with ESMTP id 9E8084000D
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 19:34:34 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=byDXenWy;
+	spf=pass (imf07.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793820860;
+	s=arc-20220608; t=1793820874;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XPRk8xa2iNqVsjjcUeI0mWPc+8Y/qNwvFsdP9QcHm+Y=;
-	b=nI7clW00o/a35kk0yrldCCT45tgYeie47uQWjO9DWcA3bdwQHLZjHWDsqaJ9inG+OuQMe1
-	12jaHeHAXrgBBTngX0gDaZV9Sh+t3QjqgCyN1gtoMzimmz1wziA8TA++y527cd6NpYAVwJ
-	tXCziXEQHDAKwHx8IP9VJIrnet/SdtM=
+	bh=gk/wy5ylFQ1JuEt9d/OxDdHr3ehnpzDB11cmu682ABs=;
+	b=r2Gh1Il9f+bEN6or1B56N39NjcCcktSVd8xrhbV1QyKgtQaNk6Znw+KD2rMOsTJ4QI/OfC
+	2bZ4CY7hPa/eTw5OP6Bl89fIMAdQCZONYGSxh+mW9NDJ4usAgzWHmp6ldIVpVZkxloh5KD
+	Ki/9a7XDyHF7EpCSAIMkTc6ho25NksA=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UNhMpYi9;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf06.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=byDXenWy;
+	spf=pass (imf07.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793820860;
-	b=h+Fo6+j6Bpm/Q5FhWLQaODglnBiL/9jd659kOPrKZGNbKjjxlV+UYdFA2d1XxiYjR7WcCa
-	0SD8Mu7jbTdzG0FC71wFtA0nQYG5+2HpgBiDIcisSogtNHSODPqGOecliLZFz7RwFdoq0w
-	sNM3bLvafDp6yHwaRP2SaFBgx5W8REE=
+	t=1793820874;
+	b=UeisW44CIEfawJK79HZTha78UGSiOsRL9WSwvgXVLV51QpAvDINwxulr2vo1tSkVRKIwVd
+	o9dcheODokirLARwRSLddvxxiC1c6rN2JDpd4Wu2By5lJ9vN9RhHS0ERGzYBrnBXicLjnu
+	bEbv1RSmDNS4mi1vNfVDTZRComgcM70=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 9098960DA9;
-	Wed,  4 Nov 2026 19:34:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EAED1F000C1;
-	Wed,  4 Nov 2026 19:34:07 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 3134F60D9B;
+	Wed,  4 Nov 2026 19:34:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E35101F00919;
+	Wed,  4 Nov 2026 19:34:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793820859;
-	bh=XPRk8xa2iNqVsjjcUeI0mWPc+8Y/qNwvFsdP9QcHm+Y=;
+	s=k20260515; t=1793820873;
+	bh=gk/wy5ylFQ1JuEt9d/OxDdHr3ehnpzDB11cmu682ABs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=UNhMpYi9iBi3sSb8K6vRL3AVudJYWbzQuMGR/ICND1KoaHjOskUuqvumDcfcjfd6K
-	 ijYufZXYFtMMXKypD4aHqfrjcDJ5P9E7mGA88Bbc5XKwZS4J2G6bgAUbtjzgydCj5c
-	 CMbGq978DMlUEIVBNwLUkmICilkcpIuILUWlDTO9oBqCop6Q2rT2BrBKj9tSMvpI5f
-	 mIfr0sAmHMehrxEf8R1Vxd1nxFT9mY8+v+LmVChZXn8FLaY6Ek9gVtZVyHvJ7Cd5NB
-	 lpPZDeCXrjw4w6xWu6pGAbvluUnAnWZKtALorygHi4AAnDmt2IczUeBmgec1AG7dqW
-	 U2/sWDkdd6LGA==
+	b=byDXenWydOpv22vMsC8ft/h1gD49RRIpUmsZmKSqbAltMaoSI2lmmZ/SjH7KMU5km
+	 RaCHBDmUB33DWeIHXIsvlT/C8eoj+eA5n1SwJ3dxglPGHaL3hnYyZQh+rr4cde9gOF
+	 pE/Y1B7RMAaotaITwrI9IPI6Ou/2GuUcq3OLz+s3+YHTYUs8Yg7iC76RPE3LKHBoDP
+	 iKW9/1hims3oNI6BZw6x5Va82lVKFrSsBl8VkRe6ftZzmz37C9jeZtEA13zavS6yOK
+	 4Jnpm7W/c3RNB2YVe9XNO2u3vK6DN3MUbxtJ/IE2tdASC75a8zUbEpHjrbdUp0xsOF
+	 UHLtZp3LxQZOw==
 From: Christian Brauner <brauner@kernel.org>
 To: linux-fsdevel@vger.kernel.org
 Cc: Linus Torvalds <torvalds@linux-foundation.org>,
@@ -121,31 +121,31 @@ Cc: Linus Torvalds <torvalds@linux-foundation.org>,
 	linux-debuggers@vger.kernel.org,
 	"Christian Brauner (Amutable)" <brauner@kernel.org>,
 	Chuck Lever <cel@kernel.org>
-Subject: [PATCH RESEND v2 20/23] selftests/proc: check that a mapped entry can be removed
-Date: Wed,  4 Nov 2026 20:34:05 +0100
-Message-ID: <20261104-work-procfs-core-v2-20-76ace653a773@kernel.org>
+Subject: [PATCH RESEND v2 21/23] proc: let lockdep check the pin
+Date: Wed,  4 Nov 2026 20:34:19 +0100
+Message-ID: <20261104-work-procfs-core-v2-21-76ace653a773@kernel.org>
 In-Reply-To: <20261104-work-procfs-core-v2-0-76ace653a773@kernel.org>
 References: <20261104-work-procfs-core-v2-0-76ace653a773@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=6487; i=brauner@kernel.org; h=from:subject:message-id; bh=jPDbXGY4cbCvO3GA1X2/Ctdyj/e7Mw7ZeqOfGQfxULg=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS9bu/8xLCt3Udlh9rJxEtBLOuvKWxb7B30qu+8xJIGm /Db96fUd5SyMIhxMciKKbI4tJuEyy3nqdhslKkBM4eVCWQIAxenAEwkQ4mR4fwquSyvtz3Ne746 HTn1fX1AAaOl3YVTD7n+Heo0WvX+kQPDfyf/Xm+TiXFyJoacvlEsv149+Fb4tz9xPvfn/NiLR3d aMwAA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=15886; i=brauner@kernel.org; h=from:subject:message-id; bh=MS0CHJOg8IP4+NU1GbxdRYjansEKUmXDBMZKO7P+utI=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS9bu+S7ll8zER0y4bZJxeadryI569f+DnuSH+rY/Ndj sBpr8TEO0pZGMS4GGTFFFkc2k3C5ZbzVGw2ytSAmcPKBDKEgYtTACbycBfDP10Fv1dJNgmGy+uq JIq4zytOKKzrOZM66diOZfn5kx88vM/I8Hl++s/d1s/s89IupBy5EVvUoOr9WDwxpPFbs4DXD7U VjAA=
 X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 0A5D018000D
-X-Stat-Signature: nyd7qqmzkk1wub983hc3gw5btfme8khy
+X-Stat-Signature: xfgy8gzm1wmym9irp98frux8bpf936bq
+X-Rspamd-Server: rspam01
 X-Rspam-User: 
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
 	version=4.0.1
-X-HE-Tag: 1793820859-654466
-X-HE-Meta: U2FsdGVkX1+YNRSAeMnMqnGLYdjrIjcE+F57otp5EUSC4N/NKFOdk65A09mtIJ4x3E8Nkd3np5PQSWFZHBlE2PXU+uDTeB3XiBi6qgYK4UGmK7R78uQnG3jfB74HNaE/U/kgOS/CqkoUP6mfzjMR6//0q389YSD1K50yBTRSNWSaISca6fikD6IFFHH4E8jRcu7oxg6PgdaSxzQ2M1mQLTgeMWqrOIP3yvnLECH/ljzHGDlwfzZQ5+Pqco+HBWmzWWhY+9VSulcs7gqWakFfycKU6RrQx28jjJgBGu+8zi1DR6/zkwMIjLgPOK/83ch04Oe17K0gW54+VDJ7IqbUznEeQ34tc+B5OiRNMltu9/CdGdKGphvrTs4GY5bMI0+NyxG8k/wnoHAXmDGa58NN2tH9hm/g1hde6mTZAUApJ9GqRDlGdFOhM7vJwS6pXQMso8o3oq99BuPTmAkUccY3qXQidLQf+DIUYDUjLOol35Rw7satIDWmaxjH9EcLYv1lRo3145hau8QbAkm2jCZNm2H1NDHkCmrlNmwtPWlBqquyKC/9JCwlg0AVLEHyWHR5mMZmpl6oEfKJshw3w8uUd8Oif9z7tYaImHat2GoPHIgvOfK+Bs5F5uAd9C0dtSkjOINoPXGE3eX4yxxlfmQms2WwxIQxwNBOCykZJf6FJ5gOB8wXuqFsUm9sNwJX5JQoDq0tszl/V9SIUX3AeP8k8aC4upaRIyqY2cK2a59EHrvKesDzGIOleNcWAO25AAJYOvIqb5UTqTMAbMiDr5GTeKH4THQmRes/W2xaHiwZUiBojj4j1d7EAGybJgQ7eFDgrzPTm6HimedG6VtM8RQqxvGo8P++1BFl7aF6BLnyLHu8Qbh6gTAgPNN5TT5sWMv9jOC8WT9KnVCUNi1X4bc9c5lFTKu/sgWLa3NUvD5fq1AV/QbPBBm4FjFJ5eszj6RJF99z8R+O3rGk8AAkoP2
- 7lh01lHk
- z3I+0ySLq0MuqfY8g2bLnV8rA527ySex00l7YczRiRDWYJKjTvGr63Wd6556oRcnN+PN7vLtmdjH4P2dOT/ee4Ko5N//HPs05Tdb72m+YiJmUAVcTxQUINkJ6+UAJIVnHiyBaZTe2/cQMAABkyFp7bwqw6tZruEH2lU3jUeI8sC5v0IHJFcPOfh4GXlYCsmmEOUcg+16H5k+Yl6bVkJ+w/Inunz3IX+3fKUxnGwt4LwYEAxKqCfzeOdVq7Vo2Guw096+SeBfOgAcd7wG3GvyXTwkeSpUVzwRGi1IL
+X-Rspamd-Queue-Id: 9E8084000D
+X-HE-Tag: 1793820874-835473
+X-HE-Meta: U2FsdGVkX1+3DjCfuqHTDJh0GEgXYkeZtQ4GoQxKcGGroUIw1gTx7snK1R/P7aTOufRrtkVbjbXnKYATgU3GIc9l6l4qj+eE+NOk/8X1gJGVgisaLOL3QvmsYHYLSU6pXUMkIF8nGQZhqKRHTwIRTRGZ0SaZpaDn26OgMaNv3wZGVzTnwA+cfjzSPtWb4r7C8jj4cNMHGS1mBOUTQnZoAIzHgk4Cx3U031i0fDbr0zirXAp+8pqWjsZAYOq7xXnA/SWTAphPjRL4jd8dnqOiwzqc8UeiZ+QEuM5JVNFmwuFOcWz9+CcJVqoe7G6wicPNzQ/IYDpUKwNkWRzQnQhpzAh0fUOrIrUxoYcWg8r8Cv9qcXMMm1rCyS6EARDZRwD+YGBT7cL1ylyFELXy4dHLfgHPqYKOnRFEnFWUEV48rx+aWNW/Q1TF+gnB7Jeoas3GE5I1V0OowZY2QDAGVM+AHX/nkWNCfhO1+BWjkvv7yb7HgVP6biSAcQ6MZYdGyofvQoWifvr7A8AO3xOnqfIjOwhqUsydJmA7KyeWeyBqNXiX/J/fnYcYkDlb1M3qhn/F+YI41nazX2MSKk/1jQHdhvRjYS5SDCP4VNl0vzym0L18yMs4yCXBTh3tJISC1CHsZANzZFm3VqYTs1B+JcphL5s6niv12S0ArCMt930uQZ2yBnhfm08zlTNLVB11jQxpOkfuQskRAgFY6Y8gBXhC2tKJy1WPNRa+8rY4cp8KIUGw486KjSd2w0yvkj3ZlNU0SnBljYItj0JtpmDWb9KL97KnPPcB902D0PjGHJAsEwbjyPUrw9EMxu1+LCkWj09Pr3SNiJaR2QDvuMdEcqTiIcCWO1nG2sa+KM9k/HUCCvcnMqFLL09C9/a+qH1F0/gdo4KgCJywjWRvvQLGbx5fhEywvmepeN7CirFXNEhIEUybtTEmA4hHxLALyVNPHBvzt46z7uL5FXSY7zaICDd
+ WDujHCH8
+ k9M551zYme4r6pnkVF8xwhgej/9jF1bvK41Q67PcNf9xo9GCDkaFNQqjPSb0aJmX5r4QULWK5986WQso4k1Hxe07Gopv1ahJdHaJLE11iGWMRPobhzh0xDa3Rm8TriKE7AX8thZYsFDVfhsx5c5IJM/UWHAmznYjBQeoP19p3sLvZ/M1K8kO51DyBjYLFmKS1Th9RJ4AwRcvbcynT0RCsTuU7awLWu+XEGiUNYQpvrGeGrlmlWjt/RoNRw2sEYZrW7WRgp1OHZqXtfizS+gIcUj4Q5jCoLYfirQqn
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -154,223 +154,406 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Map a memory BAR of a PCI device through /proc/bus/pci and remove the
-device through sysfs:
+remove_proc_entry() waits until every call into the entry has returned,
+and its callers like to hold locks while they wait. A method of the
+entry that takes one of those locks deadlocks with them. xt_recent
+removed its entries with a spinlock held that its seq_file took, and
+ALSA has to remove an entry before it takes info_mutex because its open
+takes it. Both of those were found by reading the code.
 
-- the removal doesn't wait for the mapped file
+kernfs lets lockdep find them. kernfs_get_active() is a read lock to
+lockdep and kernfs_drain() takes the write side around its wait. So a
+method that takes a lock L while active records class -> L, a removal
+under L records L -> class, and lockdep reports the cycle.
 
-- the entry is gone
+Do the same for the pin. use_pde() records a read lock on the entry's
+lockdep map, unuse_pde() releases it and proc_entry_rundown() takes the
+write side around waiting for the last user. The key of the class is
+what the entries of a kind already share, their seq_operations or
+their proc_ops, static objects that lockdep takes as a key. The entries
+that only share a show function, those of proc_create_single() and
+friends, get a key per registration site instead, like every sysfs
+attribute has one: a show function lives in text and lockdep doesn't
+take that as a key. So all /proc/net/dev entries are one class, which
+is right. The same code runs pinned in every network namespace and a
+removal under a lock that its reader takes is a deadlock in any of
+them.
 
-- and reading the file fails with -EIO
+Nothing in the tree removes an entry of its own kind from one of its
+methods, so there's no need for an escape hatch like
+kernfs_break_active_protection() yet.
 
-The mapping itself survives. /proc/bus/pci maps through the iomem
-address space of /dev/mem and procfs leaves that alone, like the sysfs
-resource files leave theirs, so the test doesn't touch the mapping
-after the removal. What the BAR of a removed device reads like is
-between the reader and the hardware.
-
-Nothing in the test can know which device is safe to remove, so it
-takes the device from PROC_PCI_DEV, skips without it and rescans the bus
-afterwards. It also skips where PCI files can't be mapped or that isn't
-allowed.
+The map only exists on lockdep kernels.
 
 Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 ---
- tools/testing/selftests/proc/.gitignore           |   1 +
- tools/testing/selftests/proc/Makefile             |   1 +
- tools/testing/selftests/proc/proc-remove-mapped.c | 160 ++++++++++++++++++++++
- 3 files changed, 162 insertions(+)
+ fs/proc/generic.c       | 46 ++++++++++++++++++++++++++++++++++++----------
+ fs/proc/inode.c         | 29 ++++++++++++++++++++++++++---
+ fs/proc/internal.h      | 17 ++++++++++++++++-
+ fs/proc/proc_net.c      | 28 +++++++++++++++-------------
+ include/linux/proc_fs.h | 42 +++++++++++++++++++++++++++++++++---------
+ 5 files changed, 126 insertions(+), 36 deletions(-)
 
-diff --git a/tools/testing/selftests/proc/.gitignore b/tools/testing/selftests/proc/.gitignore
-index e2566cc0ae07..cafd8c263c9a 100644
---- a/tools/testing/selftests/proc/.gitignore
-+++ b/tools/testing/selftests/proc/.gitignore
-@@ -23,6 +23,7 @@
- /proc-pidns
- /proc-remove-slow-sysctl
- /proc-remove-slow-reader
-+/proc-remove-mapped
- /proc-remove-slow-readlink
- /read
- /self
-diff --git a/tools/testing/selftests/proc/Makefile b/tools/testing/selftests/proc/Makefile
-index 6a9bdc999f54..c38297afc244 100644
---- a/tools/testing/selftests/proc/Makefile
-+++ b/tools/testing/selftests/proc/Makefile
-@@ -34,6 +34,7 @@ TEST_GEN_PROGS += proc-sysctl-readdir-churn
- TEST_GEN_PROGS += proc-pidns
- TEST_GEN_PROGS += proc-remove-slow-sysctl
- TEST_GEN_PROGS += proc-remove-slow-reader
-+TEST_GEN_PROGS += proc-remove-mapped
- TEST_GEN_PROGS += proc-remove-slow-readlink
+diff --git a/fs/proc/generic.c b/fs/proc/generic.c
+index 81a6cb560c75..ca4025ee7aa8 100644
+--- a/fs/proc/generic.c
++++ b/fs/proc/generic.c
+@@ -541,9 +541,33 @@ static int pde_init_seq_direct(struct proc_dir_entry *pde)
+ 	return 0;
+ }
  
- include ../lib.mk
-diff --git a/tools/testing/selftests/proc/proc-remove-mapped.c b/tools/testing/selftests/proc/proc-remove-mapped.c
-new file mode 100644
-index 000000000000..92860fb2a8f4
---- /dev/null
-+++ b/tools/testing/selftests/proc/proc-remove-mapped.c
-@@ -0,0 +1,160 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * Removing a /proc entry with a mapped file open must not wait for that file
-+ * and must leave the file dead. Map a memory BAR of a PCI device through
-+ * /proc/bus/pci and remove the device, which removes its entry. Nothing here
-+ * can know which device is safe to remove and rescan, so it is named in
-+ * PROC_PCI_DEV, e.g. PROC_PCI_DEV=0000:00:03.0.
-+ */
-+#define _GNU_SOURCE
-+#include <errno.h>
-+#include <fcntl.h>
-+#include <limits.h>
-+#include <linux/pci.h>
-+#include <setjmp.h>
-+#include <signal.h>
-+#include <stdio.h>
-+#include <stdlib.h>
-+#include <string.h>
-+#include <sys/ioctl.h>
-+#include <sys/mman.h>
-+#include <unistd.h>
-+
-+#include "../kselftest_harness.h"
-+
-+#define DEV_ENV		"PROC_PCI_DEV"
-+#define SYSFS_DEVICES	"/sys/bus/pci/devices/"
-+#define SYSFS_RESCAN	"/sys/bus/pci/rescan"
-+#define PROC_PCI	"/proc/bus/pci/"
-+#define IORESOURCE_MEM	0x00000200
-+
-+static sigjmp_buf fault;
-+
-+static void on_sigbus(int sig)
++static void pde_lockdep_init(struct proc_dir_entry *pde,
++			     struct lock_class_key *key)
 +{
-+	siglongjmp(fault, 1);
-+}
++#ifdef CONFIG_DEBUG_LOCK_ALLOC
++	const void *k = key;
 +
-+/* the first memory BAR of @dev */
-+static int mem_bar(const char *dev, unsigned long long *start,
-+		   unsigned long long *len)
-+{
-+	unsigned long long s, e, flags;
-+	char path[PATH_MAX];
-+	int ret = -ENODEV;
-+	FILE *f;
-+
-+	snprintf(path, sizeof(path), SYSFS_DEVICES "%s/resource", dev);
-+	f = fopen(path, "r");
-+	if (!f)
-+		return -errno;
-+	while (fscanf(f, "%llx %llx %llx", &s, &e, &flags) == 3) {
-+		if ((flags & IORESOURCE_MEM) && e >= s) {
-+			*start = s;
-+			*len = e - s + 1;
-+			ret = 0;
-+			break;
-+		}
-+	}
-+	fclose(f);
-+	return ret;
-+}
-+
-+static int write_one(const char *path)
-+{
-+	int fd, ret;
-+
-+	fd = open(path, O_WRONLY | O_CLOEXEC);
-+	if (fd < 0)
-+		return -errno;
-+	ret = write(fd, "1", 1) < 0 ? -errno : 0;
-+	close(fd);
-+	return ret;
-+}
-+
-+FIXTURE(pci) {
-+	char dev[16];
-+	char path[64];
-+	bool removed;
-+};
-+
-+FIXTURE_SETUP(pci)
-+{
-+	const char *dev = getenv(DEV_ENV);
-+
-+	self->removed = false;
-+	if (!dev)
-+		SKIP(return, DEV_ENV " isn't set");
-+	/* 0000:BB:DD.F is /proc/bus/pci/BB/DD.F */
-+	if (strlen(dev) != 12 || strncmp(dev, "0000:", 5))
-+		SKIP(return, "%s: not a device in PCI domain 0", dev);
-+	strcpy(self->dev, dev);
-+	snprintf(self->path, sizeof(self->path), PROC_PCI "%.2s/%s",
-+		 dev + 5, dev + 8);
-+	if (access(self->path, R_OK))
-+		SKIP(return, "%s: %s", self->path, strerror(errno));
-+}
-+
-+FIXTURE_TEARDOWN(pci)
-+{
-+	if (self->removed && write_one(SYSFS_RESCAN))
-+		TH_LOG("couldn't rescan the PCI bus for %s", self->dev);
-+}
-+
-+TEST_F(pci, remove_while_mapped)
-+{
-+	long psz = sysconf(_SC_PAGESIZE);
-+	unsigned long long start = 0, len = 0;
-+	char path[PATH_MAX];
-+	volatile unsigned int *p;
-+	unsigned int v;
-+	int fd;
-+
-+	if (mem_bar(self->dev, &start, &len))
-+		SKIP(return, "%s has no memory BAR", self->dev);
-+
-+	fd = open(self->path, O_RDONLY | O_CLOEXEC);
-+	ASSERT_GE(fd, 0);
-+	if (ioctl(fd, PCIIOC_MMAP_IS_MEM)) {
-+		/* no PCI mmap on this architecture, or locked down */
-+		if (errno == EINVAL || errno == EPERM) {
-+			close(fd);
-+			SKIP(return, "PCIIOC_MMAP_IS_MEM: %s", strerror(errno));
-+		}
-+		ASSERT_TRUE(false) {
-+			TH_LOG("PCIIOC_MMAP_IS_MEM: %s", strerror(errno));
-+		}
-+	}
-+	p = mmap(NULL, psz, PROT_READ, MAP_SHARED, fd, start);
-+	if (p == MAP_FAILED)
-+		SKIP(return, "mmap: %s", strerror(errno));
-+
-+	/* The BAR can be read while the device is there. */
-+	ASSERT_NE(signal(SIGBUS, on_sigbus), SIG_ERR);
-+	if (sigsetjmp(fault, 1) == 0) {
-+		v = *p;
-+	} else {
-+		ASSERT_TRUE(false) {
-+			TH_LOG("reading the mapping faulted before the removal");
-+		}
-+	}
-+
-+	/* Removing the device removes its entry. */
-+	snprintf(path, sizeof(path), SYSFS_DEVICES "%s/remove", self->dev);
-+	ASSERT_EQ(write_one(path), 0);
-+	self->removed = true;
-+	EXPECT_EQ(access(self->path, F_OK), -1);
-+
++	if (!pde_lockdep(pde))
++		return;
 +	/*
-+	 * The file is dead. The mapping isn't procfs's to unmap, it lives in
-+	 * the iomem address space of /dev/mem, see proc_bus_pci_open(), and
-+	 * is left alone like a sysfs resource file's.
++	 * To lockdep the pin is a read lock that proc_entry_rundown() takes
++	 * the write side of, see use_pde(). The entries that share
++	 * seq_operations or proc_ops run the same code pinned, so they share
++	 * a class, and those are static objects that lockdep takes as its
++	 * key. The entries that only share a show function get a key per
++	 * registration site instead, see proc_create_single_data().
 +	 */
-+	EXPECT_EQ(pread(fd, &v, sizeof(v), 0), -1);
-+	EXPECT_EQ(errno, EIO);
-+
-+	munmap((void *)p, psz);
-+	close(fd);
++	if (!k)
++		k = pde_has_proc_seq_ops(pde) ? (const void *)pde->seq_ops :
++						pde->proc_ops;
++	lockdep_init_map(&pde->dep_map, "pde->in_use",
++			 (struct lock_class_key *)k, 0);
++#endif
 +}
 +
-+TEST_HARNESS_MAIN
+ /* returns the registered entry, or frees dp and returns NULL on failure */
+ struct proc_dir_entry *proc_register(struct proc_dir_entry *dir,
+-		struct proc_dir_entry *dp)
++		struct proc_dir_entry *dp, struct lock_class_key *key)
+ {
+ 	if (proc_alloc_inum(&dp->low_ino))
+ 		goto out_free_entry;
+@@ -558,6 +582,7 @@ struct proc_dir_entry *proc_register(struct proc_dir_entry *dir,
+ 	}
+ 	if (pde_init_seq_direct(dp))
+ 		goto out_free_inum;
++	pde_lockdep_init(dp, key);
+ 
+ 	write_lock(&proc_subdir_lock);
+ 	dp->parent = dir;
+@@ -660,7 +685,7 @@ struct proc_dir_entry *proc_symlink(const char *name,
+ 		ent->data = kmemdup(dest, ent->size + 1, GFP_KERNEL);
+ 		if (ent->data) {
+ 			ent->proc_iops = &proc_link_inode_operations;
+-			ent = proc_register(parent, ent);
++			ent = proc_register(parent, ent, NULL);
+ 		} else {
+ 			pde_free(ent);
+ 			ent = NULL;
+@@ -686,7 +711,7 @@ struct proc_dir_entry *_proc_mkdir(const char *name, umode_t mode,
+ 		if (force_lookup) {
+ 			pde_force_lookup(ent);
+ 		}
+-		ent = proc_register(parent, ent);
++		ent = proc_register(parent, ent, NULL);
+ 	}
+ 	return ent;
+ }
+@@ -723,7 +748,7 @@ struct proc_dir_entry *proc_create_mount_point(const char *name)
+ 		ent->data = NULL;
+ 		ent->proc_dir_ops = NULL;
+ 		ent->proc_iops = NULL;
+-		ent = proc_register(parent, ent);
++		ent = proc_register(parent, ent, NULL);
+ 	}
+ 	return ent;
+ }
+@@ -759,7 +784,7 @@ struct proc_dir_entry *proc_create_data(const char *name, umode_t mode,
+ 	if (!p)
+ 		return NULL;
+ 	p->proc_ops = proc_ops;
+-	return proc_register(parent, p);
++	return proc_register(parent, p, NULL);
+ }
+ EXPORT_SYMBOL(proc_create_data);
+  
+@@ -789,13 +814,14 @@ struct proc_dir_entry *proc_create_seq_private(const char *name, umode_t mode,
+ 	p->seq_ops = ops;
+ 	p->state_size = state_size;
+ 	p->flags |= PROC_ENTRY_proc_seq_ops;
+-	return proc_register(parent, p);
++	return proc_register(parent, p, NULL);
+ }
+ EXPORT_SYMBOL(proc_create_seq_private);
+ 
+-struct proc_dir_entry *proc_create_single_data(const char *name, umode_t mode,
++struct proc_dir_entry *__proc_create_single_data(const char *name, umode_t mode,
+ 		struct proc_dir_entry *parent,
+-		int (*show)(struct seq_file *, void *), void *data)
++		int (*show)(struct seq_file *, void *), void *data,
++		struct lock_class_key *key)
+ {
+ 	struct proc_dir_entry *p;
+ 
+@@ -805,9 +831,9 @@ struct proc_dir_entry *proc_create_single_data(const char *name, umode_t mode,
+ 	p->proc_ops = &proc_seq_ops;
+ 	p->single_show = show;
+ 	p->flags |= PROC_ENTRY_proc_show;
+-	return proc_register(parent, p);
++	return proc_register(parent, p, key);
+ }
+-EXPORT_SYMBOL(proc_create_single_data);
++EXPORT_SYMBOL(__proc_create_single_data);
+ 
+ void proc_set_size(struct proc_dir_entry *de, loff_t size)
+ {
+diff --git a/fs/proc/inode.c b/fs/proc/inode.c
+index 5e423bcad278..59de4681d845 100644
+--- a/fs/proc/inode.c
++++ b/fs/proc/inode.c
+@@ -199,13 +199,24 @@ const struct super_operations proc_sops = {
+ 
+ enum {BIAS = -1U<<31};
+ 
++/*
++ * To lockdep the pin is a read lock and proc_entry_rundown() takes the write
++ * side, see pde_lockdep_init(). So a method that takes a lock while pinned
++ * and a removal under that lock are the deadlock lockdep knows how to report.
++ */
+ static inline int use_pde(struct proc_dir_entry *pde)
+ {
+-	return likely(atomic_inc_unless_negative(&pde->in_use));
++	if (unlikely(!atomic_inc_unless_negative(&pde->in_use)))
++		return 0;
++	if (pde_lockdep(pde))
++		rwsem_acquire_read(&pde->dep_map, 0, 1, _RET_IP_);
++	return 1;
+ }
+ 
+ static void unuse_pde(struct proc_dir_entry *pde)
+ {
++	if (pde_lockdep(pde))
++		rwsem_release(&pde->dep_map, _RET_IP_);
+ 	if (unlikely(atomic_dec_return(&pde->in_use) == BIAS))
+ 		wake_up_var(&pde->in_use);
+ }
+@@ -362,9 +373,21 @@ static void close_pdeo(struct proc_dir_entry *pde, struct pde_opener *pdeo,
+ 
+ void proc_entry_rundown(struct proc_dir_entry *de)
+ {
+-	/* Wait until all existing callers into module are done. */
+-	if (atomic_add_return(BIAS, &de->in_use) != BIAS)
++	/*
++	 * Wait until all existing callers into module are done. That's the
++	 * write side of the pin to lockdep, see use_pde().
++	 */
++	if (pde_lockdep(de))
++		rwsem_acquire(&de->dep_map, 0, 0, _RET_IP_);
++	if (atomic_add_return(BIAS, &de->in_use) != BIAS) {
++		if (pde_lockdep(de))
++			lock_contended(&de->dep_map, _RET_IP_);
+ 		wait_var_event(&de->in_use, atomic_read(&de->in_use) == BIAS);
++	}
++	if (pde_lockdep(de)) {
++		lock_acquired(&de->dep_map, _RET_IP_);
++		rwsem_release(&de->dep_map, _RET_IP_);
++	}
+ 
+ 	/* ->open->files can't grow from now on. */
+ 	if (!de->open)
+diff --git a/fs/proc/internal.h b/fs/proc/internal.h
+index 0b1c0585d6a6..7a197e2920f8 100644
+--- a/fs/proc/internal.h
++++ b/fs/proc/internal.h
+@@ -9,6 +9,7 @@
+ #include <linux/proc_ns.h>
+ #include <linux/refcount.h>
+ #include <linux/spinlock.h>
++#include <linux/lockdep.h>
+ #include <linux/atomic.h>
+ #include <linux/binfmts.h>
+ #include <linux/sched/coredump.h>
+@@ -67,6 +68,9 @@ struct proc_dir_entry {
+ 	umode_t mode;
+ 	u16 flags;
+ 	u8 namelen;
++#ifdef CONFIG_DEBUG_LOCK_ALLOC
++	struct lockdep_map dep_map;	/* the pin as a lock, see use_pde() */
++#endif
+ 	char inline_name[];
+ } __randomize_layout;
+ 
+@@ -142,6 +146,16 @@ static inline bool pde_is_seq_file(const struct proc_dir_entry *pde)
+ 	return pde_has_proc_seq_ops(pde) || pde_has_proc_show(pde);
+ }
+ 
++/* Only regular files are pinned, and only their map is initialized. */
++static inline bool pde_lockdep(const struct proc_dir_entry *pde)
++{
++#ifdef CONFIG_DEBUG_LOCK_ALLOC
++	return S_ISREG(pde->mode);
++#else
++	return false;
++#endif
++}
++
+ extern struct kmem_cache *proc_dir_entry_cache;
+ void pde_free(struct proc_dir_entry *pde);
+ 
+@@ -318,7 +332,8 @@ bool proc_fill_cache(struct file *, struct dir_context *, const char *, unsigned
+ struct proc_dir_entry *proc_create_reg(const char *name, umode_t mode,
+ 		struct proc_dir_entry **parent, void *data);
+ struct proc_dir_entry *proc_register(struct proc_dir_entry *dir,
+-		struct proc_dir_entry *dp);
++		struct proc_dir_entry *dp,
++		struct lock_class_key *key);
+ extern struct dentry *proc_lookup(struct inode *, struct dentry *, unsigned int);
+ struct dentry *proc_lookup_de(struct inode *, struct dentry *, struct proc_dir_entry *);
+ extern int proc_readdir(struct file *, struct dir_context *);
+diff --git a/fs/proc/proc_net.c b/fs/proc/proc_net.c
+index b78d627b024f..9ddd7c323dfc 100644
+--- a/fs/proc/proc_net.c
++++ b/fs/proc/proc_net.c
+@@ -115,7 +115,7 @@ struct proc_dir_entry *proc_create_net_data(const char *name, umode_t mode,
+ 	p->seq_ops = ops;
+ 	p->state_size = state_size;
+ 	p->flags |= PROC_ENTRY_proc_seq_ops;
+-	return proc_register(parent, p);
++	return proc_register(parent, p, NULL);
+ }
+ EXPORT_SYMBOL_GPL(proc_create_net_data);
+ 
+@@ -162,7 +162,7 @@ struct proc_dir_entry *proc_create_net_data_write(const char *name, umode_t mode
+ 	p->state_size = state_size;
+ 	p->flags |= PROC_ENTRY_proc_seq_ops;
+ 	p->write = write;
+-	return proc_register(parent, p);
++	return proc_register(parent, p, NULL);
+ }
+ EXPORT_SYMBOL_GPL(proc_create_net_data_write);
+ 
+@@ -190,9 +190,10 @@ static const struct proc_ops proc_net_single_ops = {
+ 	.proc_release	= single_release_net,
+ };
+ 
+-struct proc_dir_entry *proc_create_net_single(const char *name, umode_t mode,
++struct proc_dir_entry *__proc_create_net_single(const char *name, umode_t mode,
+ 		struct proc_dir_entry *parent,
+-		int (*show)(struct seq_file *, void *), void *data)
++		int (*show)(struct seq_file *, void *), void *data,
++		struct lock_class_key *key)
+ {
+ 	struct proc_dir_entry *p;
+ 
+@@ -203,9 +204,9 @@ struct proc_dir_entry *proc_create_net_single(const char *name, umode_t mode,
+ 	p->proc_ops = &proc_net_single_ops;
+ 	p->single_show = show;
+ 	p->flags |= PROC_ENTRY_proc_show;
+-	return proc_register(parent, p);
++	return proc_register(parent, p, key);
+ }
+-EXPORT_SYMBOL_GPL(proc_create_net_single);
++EXPORT_SYMBOL_GPL(__proc_create_net_single);
+ 
+ /**
+  * proc_create_net_single_write - Create a writable net_ns-specific proc file
+@@ -232,11 +233,12 @@ EXPORT_SYMBOL_GPL(proc_create_net_single);
+  * pde_data() on the file inode.  The network namespace must be accessed by
+  * calling seq_file_single_net() on the seq_file struct.
+  */
+-struct proc_dir_entry *proc_create_net_single_write(const char *name, umode_t mode,
+-						    struct proc_dir_entry *parent,
+-						    int (*show)(struct seq_file *, void *),
+-						    proc_write_t write,
+-						    void *data)
++struct proc_dir_entry *__proc_create_net_single_write(const char *name, umode_t mode,
++						      struct proc_dir_entry *parent,
++						      int (*show)(struct seq_file *, void *),
++						      proc_write_t write,
++						      void *data,
++						      struct lock_class_key *key)
+ {
+ 	struct proc_dir_entry *p;
+ 
+@@ -248,9 +250,9 @@ struct proc_dir_entry *proc_create_net_single_write(const char *name, umode_t mo
+ 	p->single_show = show;
+ 	p->flags |= PROC_ENTRY_proc_show;
+ 	p->write = write;
+-	return proc_register(parent, p);
++	return proc_register(parent, p, key);
+ }
+-EXPORT_SYMBOL_GPL(proc_create_net_single_write);
++EXPORT_SYMBOL_GPL(__proc_create_net_single_write);
+ 
+ static struct net *get_proc_task_net(struct inode *dir)
+ {
+diff --git a/include/linux/proc_fs.h b/include/linux/proc_fs.h
+index 5bf039d20990..feb3228cb5af 100644
+--- a/include/linux/proc_fs.h
++++ b/include/linux/proc_fs.h
+@@ -204,9 +204,20 @@ struct proc_dir_entry *proc_create_seq_private(const char *name, umode_t mode,
+ 	proc_create_seq_private(name, mode, parent, ops, 0, data)
+ #define proc_create_seq(name, mode, parent, ops) \
+ 	proc_create_seq_private(name, mode, parent, ops, 0, NULL)
+-struct proc_dir_entry *proc_create_single_data(const char *name, umode_t mode,
++struct proc_dir_entry *__proc_create_single_data(const char *name, umode_t mode,
+ 		struct proc_dir_entry *parent,
+-		int (*show)(struct seq_file *, void *), void *data);
++		int (*show)(struct seq_file *, void *), void *data,
++		struct lock_class_key *key);
++/*
++ * The entries a registration site creates share nothing that lockdep takes as
++ * the key of their class but the show function, which isn't a static object,
++ * so each site gets a key of its own, like every sysfs attribute has one.
++ */
++#define proc_create_single_data(name, mode, parent, show, data)		\
++({									\
++	static struct lock_class_key __key;				\
++	__proc_create_single_data(name, mode, parent, show, data, &__key); \
++})
+ #define proc_create_single(name, mode, parent, show) \
+ 	proc_create_single_data(name, mode, parent, show, NULL)
+  
+@@ -238,19 +249,32 @@ struct proc_dir_entry *proc_create_net_data(const char *name, umode_t mode,
+ 		unsigned int state_size, void *data);
+ #define proc_create_net(name, mode, parent, ops, state_size) \
+ 	proc_create_net_data(name, mode, parent, ops, state_size, NULL)
+-struct proc_dir_entry *proc_create_net_single(const char *name, umode_t mode,
++struct proc_dir_entry *__proc_create_net_single(const char *name, umode_t mode,
+ 		struct proc_dir_entry *parent,
+-		int (*show)(struct seq_file *, void *), void *data);
++		int (*show)(struct seq_file *, void *), void *data,
++		struct lock_class_key *key);
++#define proc_create_net_single(name, mode, parent, show, data)		\
++({									\
++	static struct lock_class_key __key;				\
++	__proc_create_net_single(name, mode, parent, show, data, &__key); \
++})
+ struct proc_dir_entry *proc_create_net_data_write(const char *name, umode_t mode,
+ 						  struct proc_dir_entry *parent,
+ 						  const struct seq_operations *ops,
+ 						  proc_write_t write,
+ 						  unsigned int state_size, void *data);
+-struct proc_dir_entry *proc_create_net_single_write(const char *name, umode_t mode,
+-						    struct proc_dir_entry *parent,
+-						    int (*show)(struct seq_file *, void *),
+-						    proc_write_t write,
+-						    void *data);
++struct proc_dir_entry *__proc_create_net_single_write(const char *name, umode_t mode,
++						      struct proc_dir_entry *parent,
++						      int (*show)(struct seq_file *, void *),
++						      proc_write_t write,
++						      void *data,
++						      struct lock_class_key *key);
++#define proc_create_net_single_write(name, mode, parent, show, write, data)	\
++({									\
++	static struct lock_class_key __key;				\
++	__proc_create_net_single_write(name, mode, parent, show, write, data, \
++				       &__key);				\
++})
+ extern struct pid *tgid_pidfd_to_pid(const struct file *file);
+ 
+ struct bpf_iter_aux_info;
 
 -- 
 2.53.0
