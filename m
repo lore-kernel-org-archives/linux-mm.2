@@ -1,66 +1,66 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9E17606EE9C
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 19:58:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0A9F60E8716
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 19:58:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=omYmnILU
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Gs5GVn7P
 Received: by kanga.kvack.org (Postfix)
-	id 066296B05E9; Wed,  4 Nov 2026 14:58:12 -0500 (EST)
+	id BB15F6B05EB; Wed,  4 Nov 2026 14:58:27 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 016B26B05EA; Wed,  4 Nov 2026 14:58:11 -0500 (EST)
+	id B61B96B05EC; Wed,  4 Nov 2026 14:58:27 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E22226B05EB; Wed,  4 Nov 2026 14:58:11 -0500 (EST)
+	id A2D8F6B05ED; Wed,  4 Nov 2026 14:58:27 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id BC5766B05E9
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 14:58:11 -0500 (EST)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 60C281A0866
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 19:58:11 +0000 (UTC)
-X-FDA: 85398497982.24.8747316
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 7D3A96B05EB
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 14:58:27 -0500 (EST)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 91598140841
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 19:58:25 +0000 (UTC)
+X-FDA: 85398498570.19.AD1A6FC
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 7FA4F4000A
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 19:58:09 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=omYmnILU;
-	spf=pass (imf17.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	by imf24.hostedemail.com (Postfix) with ESMTP id C5F98180004
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 19:58:23 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Gs5GVn7P;
+	spf=pass (imf24.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793822289;
+	s=arc-20220608; t=1793822303;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8JYviDqoWsEGN3uNb5Mh66eaw6snQ2TUUnHcmJoMJ80=;
-	b=5FaObvPhe1+ZZPogSOyI5I7IZNvFF8+wMPtATnQ3l4mIyj1GaNmjv476e2h9E3gqCrey6e
-	v34j2eUjEYkuy//VCzT226Rug4BACOrLlU9OkTXdteyTTE0EDNBQJzYlMK1GtPkniT9zBR
-	sCByz2yX0VJQhdIc8QLpjyaDtMRQKrM=
+	bh=vwjxO3TYvy6WGJQYdN5saH6B1iVdIocyydf/9B8LfXQ=;
+	b=0oltxbqC1IY3OZJSHt3S6dzVhh8RIJhtQRyjWMQOHZ5IO23MC6PHvdEy/h4N6wigQCmycZ
+	TxfvCaEdvo9YUwkuKVGwuG2zXgVLzOyB11bfkrH4zWAEdCBzQmWTXrCd9E/uvMqZyQx7js
+	39v0BAvfqdHMj9ospIkfAhOCmlQSB40=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793822289;
-	b=xQMcK4BLaimuFNiJNsNsdus9z4F9MqGIpRl7nFTCPB3cpi/cGwL7jy1o679t+2YHEPECeu
-	NT/UZCCFdze+LQzDwk02dLNoy43TStrWrOevM/mXnuY5LJf9uAKVWZdtV4Ri9WBPbtUyAf
-	hwqN6STWzLT/RTFhkJhvw+z4VAEQQWg=
+	t=1793822303;
+	b=xi1WNtrLJB/6SoCbpGdmRCqUW4EaOazxifSobLJ3P5r04gZKMUVLrFZV3MQfE1RCX81PvC
+	AvUX3cedQtzbxPjwH6Jpz+N+JRV2fw22S3H4dgsOHZhMDXZBa9us9+8cEGvyaCCkmSqeOC
+	rRckS5m3Sag9pN3TvUF2JBICVjLOcHs=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=omYmnILU;
-	spf=pass (imf17.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Gs5GVn7P;
+	spf=pass (imf24.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id CC4BF41AE2;
-	Wed,  4 Nov 2026 19:58:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCB771F00A1A;
-	Wed,  4 Nov 2026 19:57:56 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 2CCC341E4F;
+	Wed,  4 Nov 2026 19:58:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 443461F0093A;
+	Wed,  4 Nov 2026 19:58:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793822288;
-	bh=8JYviDqoWsEGN3uNb5Mh66eaw6snQ2TUUnHcmJoMJ80=;
+	s=k20260515; t=1793822303;
+	bh=vwjxO3TYvy6WGJQYdN5saH6B1iVdIocyydf/9B8LfXQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=omYmnILU6n/a/8ypDuatFcm5Yn1YdJM3CRKKuli7fcBySnvTgN50xiis4mVllM49v
-	 PV+Quk0y9VPAUT7onGY2p/nLF2xkGIDIWXqi4tkrhVP7JJganO4BAn8bDHMRztyoBl
-	 kDuAQDvNJ8Uuc3JHKiaYHNXgDWLaFbsRCKaJ0zpPBvI9qjf+zzVVphC8QUnWa1gAS9
-	 TqNqVumOE5u8pqbbZNrZhXFAdBkCmBN9rMMWYN4XW4rPv+P/EOoobKcvq4QxkXRKVJ
-	 s5UQbq8xS22dtefS2Q7ckkJlMa6rIUtShtzwuWqlg+ImTJMyCWJ++E2LN9ezNnICps
-	 7WSbKOm7NJ/JQ==
+	b=Gs5GVn7PVZyaHxQYP1oX1TlJKCs3atmjJ7YDkZGohYKM8gAGNVV9VT9s37IvLT63p
+	 L4L5EC1cjQvvtlvaNLN0gxqkT0/JHX+G8Jskr1+i5iT/1BEoXTgOvTBU2JoiVX9QJn
+	 SVcwPycBujDMI11yUPUBwIZob9xvtdHom3bNPfdTI6rcdnhnR9XEYbVnGufjUjHyY5
+	 XS9Zten/fLmAjd1NEGRd3O5Jj7NFk3hoVCpRY/0FlbIUHIKxjpKo/CyBBcBbqFFOah
+	 Yl3b+onZRchWRKJM5w0VJoHNNmoc2XKJUSt61/Af1LESg+Z9BzGmnqiHsRNVJ2UfrB
+	 Y73jnPC+BIspQ==
 From: Christian Brauner <brauner@kernel.org>
 To: linux-fsdevel@vger.kernel.org
 Cc: Linus Torvalds <torvalds@linux-foundation.org>,
@@ -121,20 +121,20 @@ Cc: Linus Torvalds <torvalds@linux-foundation.org>,
 	linux-debuggers@vger.kernel.org,
 	"Christian Brauner (Amutable)" <brauner@kernel.org>,
 	Chuck Lever <cel@kernel.org>
-Subject: [PATCH RESEND v2 01/13] atm: let procfs copy out reads of the device files
-Date: Wed,  4 Nov 2026 20:57:54 +0100
-Message-ID: <20261104-work-procfs-net-v2-1-221e2437fed1@kernel.org>
+Subject: [PATCH RESEND v2 02/13] l2tp: let procfs own the seq_file of /proc/net/pppol2tp
+Date: Wed,  4 Nov 2026 20:58:09 +0100
+Message-ID: <20261104-work-procfs-net-v2-2-221e2437fed1@kernel.org>
 In-Reply-To: <20261104-work-procfs-net-v2-0-221e2437fed1@kernel.org>
 References: <20261104-work-procfs-net-v2-0-221e2437fed1@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1517; i=brauner@kernel.org; h=from:subject:message-id; bh=gPjf1XFsI8l/uiq7gtBYaOS5PIZm1WCyT/xvmcgXYrk=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS97lO2Xbpnsl62nNauWplf/xdYPBNLEnswIafyCd/XX xHhEwqnd5SyMIhxMciKKbI4tJuEyy3nqdhslKkBM4eVCWQIAxenAEwkTZuR4eHSqRGfps/7dvOV 691dX8+Wbls1oSJgtmlB5Vsb0VvvEssY/hllnXhlJifSrl2270GVY8Ldju5SgRBVQfPATZXl+2b r8AIA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1918; i=brauner@kernel.org; h=from:subject:message-id; bh=/g5R4n0Ms+FYrKqMM/T6cxyrF8YI/t11/rZZuOTaMss=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS97lPdVvdYzebqhhVnXpw8xDvHsuzZ4RnqoW8ipiutf T4/NK+VsaOUhUGMi0FWTJHFod0kXG45T8Vmo0wNmDmsTCBDGLg4BWAiFR8Z/rtd/L6gwWtGUN41 FW63f2knOZOaTxXGXHuqJqJe7TlP+xMjw4k/LBOnuz10aXA54HTj1Qv+RZ4dDHz6dapLw8s5Ofu 5GAA=
 X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 91n6i14fqscf9yk8jeeaxsdsojufptr7
-X-Rspamd-Queue-Id: 7FA4F4000A
+X-Stat-Signature: mjrhnxhwaysd7ptuagitjc834reh3xen
+X-Rspamd-Queue-Id: C5F98180004
 X-Rspam-User: 
 X-Rspamd-Server: rspam08
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
@@ -142,10 +142,10 @@ X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
 	version=4.0.1
-X-HE-Tag: 1793822289-562716
-X-HE-Meta: U2FsdGVkX1+hBhDPm7oJDKkWCY8lGkDBtSkzuAXf+Rgef+3i693oVrqx+0RwWf5d6354nwqwU7TRT/QR/icDIfjL8P+2GmCpsINMy6eL3UEld2jYMtPjt9SCqBgxwsFBK3BLOmKJIOtQmShwcujod5LGV8b1wOWzvam/6n6gEjq13RSCVbyrS4+GeOfEpygDOSHjMcrHsTXSMNOcAnUAfgylOAK0bzZhMsj/DqYNXINtk8DlVELk/hWeEAQOyaZa1Y9FDk5U9GTL5KiHDGwjFxcLCz857P6Wgf56EX8kO0Ttlowcjvov9mkkrQclBxtOHh6yOYuoozp6g9BWJALSIroL6xKozIAwauSSOJpEOr8WCSo7Mdm1/H7YQKXpGtOzfQF4accKfyXNmmA3/J2x25lnDRY5WzmbLrU8bWmErTAdYgYPMVk8p72r2kjH2L4Q57GkTjcZjDBwOvmPk3XvTVwc9g6iEEAEwxsrStcYWUNlXZZpO1ey53fPs+/dYc38Zx9TnWb2JR3nh5ruNkbqEj0xL/hgOqxBSWt26XtXTyycfCDbfQJYsvLu0LFrPQut92Cb50Hl29KOb/utPIScJPlND9uW5Ja0RJXZ46G7yKGN00ogN8NVuUDr8xbeubwlN0+Zahu/kTAbtfF1Pdo5a6uNeWaz8l3byA8ic32bDIFIR1QOMEtjnd8XcYCxke26c4jaES+9V/XJMRPENV+SRunJfe9S6FoB1A4uciDJOWMglLM7mm0vnv7/1FcaukRRT8vQYypjvbutV3YI33dQxdPnCU7K38w76gE22XjgEdczAsiAd01EiEillR3t+sILNq1RPvAn38bDdNc7TZhTK5eJWhGVeyEmTl1YmQiUl2IyPNUoOtnEbMMk26yImic1WympXDQcx3yazL+IB8idlFhM+3PFBEqcaFJCfQo8SXOClEJzAZ0YbmKyhWcUejNtgx4qGPHt6vIWXArnJ1F
- m7FMxMw2
- C2zcVjqzYBafuIWzG1V5x68bxiDQQHemG62MX1rWrZ860wpchmzDjTLqevfISUdXMr/LiFrlwIrfFyODHnLil1lOoNxli8DshjrBlWdVZfBXekMFw4DkbqHYgkAl0GDbf0jLOH/FmhLJC5PNITGRJR9HN+aWHpBsyuZKmaVh+oe7QJn7wu4icOBCWKFlevaej8EqBHPwUr7IAOolAOQAwTKKlVoPXEcrEGY7M08YAS+cBrp2xdtMdVnCwbobPma1iR9G6pO2B72kFMnPddkn4zcsYHmS0kn+BFCKktYUT00d/7+rdSDMv/0+0RJ123vMzB5r040lh8RXRMCE4vAkIN2JRXE7hGxduDunaAcrGu6uIMKmMS/Zcs/8mWH+ZUzgbbMS6GGRrPBo2weadXuQrvmEhiQ==
+X-HE-Tag: 1793822303-650464
+X-HE-Meta: U2FsdGVkX1+BYVOsWvWhNNVBBYhErZdTANCjJzhAtCNbpcDWqtaRzHuP2hPUMtpxY+1XAvOgAh2G6N4LuirK3cwcFt9U72hDsLO0fnGVPP9dDAzY8ivBQTnGsS0mkFsUFqZH8Mz8YkkEWmY7xn53kWA+L33LowBfpzE9N3lFomaU1FPLUAnzQdMSOvH0AR6Aa197Cj5yAUa9jhprv3B759HujrYvR91NJRe/Y2Zzgt8B2y21e885AoUbDbUEcwL8dH2fiDU3sBiDfF2cvYZYiEabNtZhl4CTo5OIztyBm3fjK/J8E0RYru1XaigMl/CeECuCT3JnOtMfBsXtL6iwNhAt2wxXGtS1eAxOoxsaTLNHvL9b9tIBRJjuc/XoymwZuhtELJhwuMLHXNyWMWoQj8p1sWGIyznWE7AFYXfuiSQnsW2pouBXRQNWzDpVvGYKPQrrVBeqHEC6kp4f9dpkM/L2WAyVTXDMfVwCXxppsBdG3pR4r4XJfrhglElx06iIozQiBpqMxh/u7e0/evEus2+VZpdst1YwkpIgabBW6CbcKkQ40Bg1bKo4UuUEmMchGY4vhLVm30CtIetZbseYEMdr2EmTBtHBgCRZy+F+8SradldeKfen87NpRrdXVA8SmpqNfGNe5Gn6/cPXMkXo2xuFYDNKVwdCzs9QR0T4hfKDroRXjVi735YpXdrtQjynzltrzMn07AcUqRNh2OhNaksIZnlC6nE4WQMEHaxgnT+yGM9yDXCQBYs6QMf4G0/l24Dz/cQIagSUJjAVyXK/fC00vygiul1AxrRvk+1noRTT5H1pZmWlZGuIK+zbiBLKuKCIsrBJbOS5HHGKN+wH4waXzIMNgTTs870euvgb9k+vShJdWkPZfXcWuX5DlxOwC++bPP5Nx/d5vKit/ND33vLSB18qZaYKd9leYFjIdCwILtq+/5Q6efaUqPa8k4Mr5o68sAZ7TJyUzJcwvzu
+ J8S2egeD
+ 3cwUSmjxLP+YfTYEOyNEP5oGZrx6BPZlTlRLqWyzllN4HhS40TMYt9npeNBCaqmqtn5Nn62EuK2Ka/iMqDgadtHFNd7Mh61Z2yK8OXhGGE1+VOUHl6Abjte4guIZCLV1+qpv+vu5Nu68fDql+PI3rVrH3G+SzQAF4CScs6hVlZ8KMp3XYohBtzaF0vHpqYPXwIozs8prOUFJ3qe6YcWtwwRMYAgG7mH+oMfGNBHQGC3XX0Aa4TX3C1zikhAwn/MV1JILEL0hfDHvD482S3MYeM2aQB38190AqJpH8LhVk+CEC0tDvLvWb1w3QkRcR1qCpewe8y3slrTTxHLjUJBk0j3Elc6Gma8pyUcGTlSX4JTmU/mu8/AyjzlfM2qtzxrvn4Z1/He2GeExOcGCkdGyZZ0Kflo0uzndjwvQKbJQXOluRvU16nSlcPqw1WTK82L+a5Hlt3bPIqg26vISWsBuY9PR5bh6pd/05zqjtfg93qkg+xZ8ez9mC8PLYL7XYViU/bXjF
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -154,52 +154,65 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Implement ->proc_read_buf() so procfs copies what is read from
-/proc/net/atm/<dev> to userspace after it unpinned the entry. The
-drivers' ->proc_read() keep filling their page.
+Declare the seq_operations and the size of the iterator state and let
+procfs open and free the seq_file. ->proc_open() only takes the
+reference to the network namespace now and ->proc_release() drops that
+and the references the iterator holds. Reading the file then no longer
+holds up its removal.
 
 Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 ---
- net/atm/proc.c | 9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+ net/l2tp/l2tp_ppp.c | 20 ++++++++------------
+ 1 file changed, 8 insertions(+), 12 deletions(-)
 
-diff --git a/net/atm/proc.c b/net/atm/proc.c
-index ca0fc6b90998..cea930b4b840 100644
---- a/net/atm/proc.c
-+++ b/net/atm/proc.c
-@@ -30,11 +30,11 @@
- #include "resources.h"
- #include "common.h" /* atm_proc_init prototype */
- 
--static ssize_t proc_dev_atm_read(struct file *file, char __user *buf,
-+static ssize_t proc_dev_atm_read(struct file *file, char *buf,
- 				 size_t count, loff_t *pos);
- 
- static const struct proc_ops atm_dev_proc_ops = {
--	.proc_read	= proc_dev_atm_read,
-+	.proc_read_buf	= proc_dev_atm_read,
- 	.proc_lseek	= noop_llseek,
+diff --git a/net/l2tp/l2tp_ppp.c b/net/l2tp/l2tp_ppp.c
+index 4f311d473a64..499e37eb788a 100644
+--- a/net/l2tp/l2tp_ppp.c
++++ b/net/l2tp/l2tp_ppp.c
+@@ -1596,21 +1596,17 @@ static const struct seq_operations pppol2tp_seq_ops = {
+ 	.show		= pppol2tp_seq_show,
  };
  
-@@ -246,7 +246,7 @@ static const struct seq_operations vcc_seq_ops = {
- 	.show	= vcc_seq_show,
- };
- 
--static ssize_t proc_dev_atm_read(struct file *file, char __user *buf,
-+static ssize_t proc_dev_atm_read(struct file *file, char *buf,
- 				 size_t count, loff_t *pos)
++/* procfs opened the seq_file and allocated @pd */
+ static int pppol2tp_proc_open(struct inode *inode, struct file *file)
  {
- 	struct atm_dev *dev;
-@@ -267,8 +267,7 @@ static ssize_t proc_dev_atm_read(struct file *file, char __user *buf,
- 			length = -EINVAL;
- 	}
- 	if (length >= 0) {
--		if (copy_to_user(buf, (char *)page, length))
--			length = -EFAULT;
-+		memcpy(buf, (char *)page, length);
- 		(*pos)++;
- 	}
- 	free_page(page);
+-	struct net *net = pde_data(inode);
+-	struct pppol2tp_seq_data *pd;
++	struct seq_file *seq = file->private_data;
++	struct pppol2tp_seq_data *pd __maybe_unused = seq->private;
++	struct net *net;
+ 
+-	net = maybe_get_net(net);
++	net = maybe_get_net(pde_data(inode));
+ 	if (!net)
+ 		return -ENXIO;
+ 
+-	pd = __seq_open_private(file, &pppol2tp_seq_ops, sizeof(*pd));
+-	if (!pd) {
+-		put_net(net);
+-		return -ENOMEM;
+-	}
+-
+ #ifdef CONFIG_NET_NS
+ 	pd->p.net = net;
+ 	netns_tracker_alloc(net, &pd->p.ns_tracker, GFP_KERNEL);
+@@ -1633,13 +1629,13 @@ static int pppol2tp_proc_release(struct inode *inode, struct file *file)
+ #else
+ 	put_net(&init_net);
+ #endif
+-	return seq_release_private(inode, file);
++	return 0;
+ }
+ 
+ static const struct proc_ops pppol2tp_proc_ops = {
++	.proc_seq_ops	= &pppol2tp_seq_ops,
++	.proc_state_size = sizeof(struct pppol2tp_seq_data),
+ 	.proc_open	= pppol2tp_proc_open,
+-	.proc_read	= seq_read,
+-	.proc_lseek	= seq_lseek,
+ 	.proc_release	= pppol2tp_proc_release,
+ };
+ 
 
 -- 
 2.53.0
