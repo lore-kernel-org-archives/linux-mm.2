@@ -1,101 +1,125 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05F55606A329
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 07:07:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6683F606A32C
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 07:10:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=t/rnVYY3
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=plSfkN/Q
 Received: by kanga.kvack.org (Postfix)
-	id 0285C6B00EF; Wed,  4 Nov 2026 02:07:55 -0500 (EST)
+	id 81BF76B05B1; Wed,  4 Nov 2026 02:10:18 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F20856B05B1; Wed,  4 Nov 2026 02:07:54 -0500 (EST)
+	id 7CD2E6B05B2; Wed,  4 Nov 2026 02:10:18 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E31826B05B2; Wed,  4 Nov 2026 02:07:54 -0500 (EST)
+	id 6BB846B05B3; Wed,  4 Nov 2026 02:10:18 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C38E96B00EF
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 02:07:54 -0500 (EST)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 2FB24140634
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 07:07:54 +0000 (UTC)
-X-FDA: 85396556868.06.5D9838C
-Received: from mta0.migadu.com (out-176.mta0.migadu.com [91.218.175.176])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 0516B20005
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 07:07:51 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="t/rnVYY3";
-	spf=pass (imf13.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.176 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 4924E6B05B1
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 02:10:18 -0500 (EST)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 58C4B12057D
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 07:10:17 +0000 (UTC)
+X-FDA: 85396562874.08.3A8A76D
+Received: from mail-pj2-f0.google.com (mail-pj2-f0.google.com [74.125.227.128])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 99A3A40006
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 07:10:15 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b="plSfkN/Q";
+	spf=pass (imf12.hostedemail.com: domain of dennylin0707@gmail.com designates 74.125.227.128 as permitted sender) smtp.mailfrom=dennylin0707@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793776215;
+	b=X4FspV0S3AR+04OBAO+VBMdgFbzzjBy/RGizBNF3Pa7zUcMnYyEWt/lHYkaQmlkXKx7q/x
+	UTIbr4mdWPa19yOH2Hc2ANbHtnsBQlu9Bpht5X3r/hMIOwJ+7G/1pPizOeID8sm+G3Bvoz
+	31p2ipEA4xGTskK2mNMMTA5qz1vaLFA=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b="plSfkN/Q";
+	spf=pass (imf12.hostedemail.com: domain of dennylin0707@gmail.com designates 74.125.227.128 as permitted sender) smtp.mailfrom=dennylin0707@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793776072;
+	s=arc-20220608; t=1793776215;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=LgFroUGFKpdEpsdgtkKaDpgGtTJdhJhgl9e77IsbomE=;
-	b=sO9lOLORvgszB7kDYkebPbgQPqs8KIbu8GtpZiPrKFaXlqJU6qafWLvZip4cCSGXtvQUxV
-	wQiWs+id37dsfVG61ne2xEg9S733IefyZl/naLydPwOd6Nzd2OFTUdwZeW2iS5VkaW2mZ8
-	Ljh+MYtymhR64J+N99u12NtUiCUcj5E=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793776072;
-	b=ieFNsxenr40CDMgroTYbDZQaJffDM9GpRMdgTvjbevysI0t6zBx0Uc21OXnnhASH6w6rKz
-	DslGYgN5d9g9I5WB2IkRWZ6Nxy4StR8luBXWAsW2lTl4uao/y0V5VJwnLzpBy8oQPFDpat
-	EUNCMYlLL+jeBngaMENcIp2FRHHPS10=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="t/rnVYY3";
-	spf=pass (imf13.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.176 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=2flBiNkjPpyfuO38KJqLh8zZK1p8JBEOfsDzZidYjyA=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1793776070; v=1; x=1794380870;
- b=t/rnVYY3owlF9B/6NtFckGgyA19CWUTTyL3pLVIOvGqUnGJ7tCi4XaPVtlcwIyaMDW+FPOjN
- pbPizGmJMRRX7D15+nJszteY5KsCV/DKFJvFaLVh97yAEU0fAycrNFIIbq4ikhJpcNZ8CUQ93h+
- gLcCCIEDi8GKMqxs4WsHoIvk=
-X-Envelope-To: linux-mm@kvack.org
-Received: by mta11.migadu.com with ESMTPS id e13f75cac8a9b814;
-	Wed, 04 Nov 2026 07:07:50 +0000
-X-Mizu-Trace-ID: e13f75cac8a9b814
-X-Migadu-Flow: FLOW_OUT
-Content-Type: text/plain;
-	charset=us-ascii
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=JhcjK44jzqfwISimpbYLtHkEsfZ2sH/PIN1jlamuBwU=;
+	b=uPLJnrlS6dbJbYyL1dT4Hr2iMkCxcRKy2L0bMMn6ruwHOkXqqrb7HbHQIT16gR1VdE5+qO
+	zHZUzujL83mBgmz06SG8VFzoZUKKJaX1XFLilW9IYAMeHz7ucsuFG75VwSc3+EQRHS3Bxo
+	PZ8Md8mfph4R5ixDLFUvaOcYih5YG6Q=
+Received: by mail-pj2-f0.google.com with SMTP id 98e67ed59e1d1-3b094d5f1b4so155091a91.0
+        for <linux-mm@kvack.org>; Tue, 03 Nov 2026 23:10:15 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1793776214; x=1794381014; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=JhcjK44jzqfwISimpbYLtHkEsfZ2sH/PIN1jlamuBwU=;
+        b=plSfkN/QXXklAagVEmFC01oZ7yId4F+xKiRnqaEhiBlE1ZLFl1AYlO0sxxadb4QvfT
+         35jdGu4QT9EvelC+ulpz2wRhfjCBF5bC0Zkj0H71UdPxQkxTLy96RK8SrjaUTcHs65Z6
+         6aHxPkbyZ4EIJmPsd6KV9CFykJQ30TX3X+GxH3K1z7ViDEOPbQlOWk5eZHdV60q8n5h2
+         S1fbTgHVZltYAHdrPOkDAVc+0mErYTHPSMTvkNWM4FDrfm/mbH++7dcEfSeXnxxnuSC8
+         aH9SJPsxDuPrUlG70G+WBZOnOqa9XokqMLoGgIoswnKrnnTvdtViCq9ZvxPfgx3dsO/q
+         BZKw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793776214; x=1794381014;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=JhcjK44jzqfwISimpbYLtHkEsfZ2sH/PIN1jlamuBwU=;
+        b=rjne28dGU4cKujP1M/gloOcAf6LMHEeJv339cGAPIydydR6ta4FlZRF3F9O98FaMVP
+         Y2aZzA+PWh1cHaPmuDbZaIPCczSFO/BYDTbtqNu5kO78953qxwtXj/mJQPQBZAaxgF+w
+         SNXZF4IjkhTaHUJoFjWp/H+V1KwfxbmR5Uohh0RB3s0SYOY9qPb4hNYmjUkvsn5fdLil
+         28sNDIJau1ciWn50AK33oNj2B2oC8BknPGyXsqWtXMQabhsNAnSbkGkCzJifxJIt6xFq
+         aCYIZAont0xuTCNSJesq7jmoetHCiRcOUZKTThmgdK8tOA2eVPjCk+xtiPiFa8mIT18N
+         6/oA==
+X-Forwarded-Encrypted: i=1; AKwUvByK7M9zkOYU0fFOohVNcJU1dup4JuZN7UG2DB2F1MAaWsCnp+6OKXAixQwVKfQMEBJ3Mmoe66vo1Q==@kvack.org
+X-Gm-Message-State: APuU4Z/HmrnZzwxQde+QmE4my29dEzQhj3ywn6itaqCsvaVUomzn6EXA
+	WSXbNMzVYo3L1X6XCFfXzAq9UWMTEWMazCAU8HZhS30nyvTvyBYS0pCy
+X-Gm-Gg: AYBFou2SJMtSBfU2zEMrWmZsw757iqHHVVl6zR2QuVyAA04zSLBd0xQYu8qUkQkN+AE
+	gaBqk5DBWzRkR/opcK90yr2I0If3pNBSOqrdAnAEm7nx8LPJbrtByK8hGC/d5jdo/p7UC7AnP/A
+	Q22vZixGIBX/jE/MzCR1BLy/DVcSIYhSf4qttSK9p0O3igbPCsk/kE+VVar6IebAv+B6BRRcZh4
+	THyR3+OAmO3ZYUJu97Sh+p4M6AH8IyRDtTOiA5dtr0vMO3IvkLlbO33Er5TzIc9d3KvI0zxBqgd
+	xA0YH18anJHDjCJ8DUTXRyyQ57m32rXXdKZzpoSmt2rwlYLdq/hz9bF2oKA6//B8pI7GuZYMHH/
+	a3y+VMkQbZBX7TZdEGL90RzOI2fItJbHZBqz3zNCcIl4dR3sUfhc/NsY416m3dKdAcSmEA0K5TB
+	WYOqxJE4L6A8XbDwYG6FqvTlXTv4/EJSEo0+kWRm+3KCw/p/k88zVFqXbLR2S53xTkdvPKvQ3Wg
+	ARa6DXTcjZuNFF6spsaNSEqVqpI09ykKt9QMaN9qL4NgMPnMxzpXzG95V42ZmvdGlb0q30R/VUJ
+	lsZIju1Z0srPmaf5+FQD7ceioDdGYah1Mw9sF3sLn5RGEn+zoQd96MzsyAv0zTB6iWMaX6p242j
+	NynP97dybVxToqda0/m86klkXfuPEN7Eb6Vkz2Q==
+X-Received: by 2002:a17:90b:2547:b0:3ab:9c73:12e with SMTP id 98e67ed59e1d1-3ae89536c0cmr12582654a91.6.1793776214401;
+        Tue, 03 Nov 2026 23:10:14 -0800 (PST)
+Received: from localhost.localdomain ([98.148.34.5])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b093d481a3sm2651997a91.1.2026.11.03.23.10.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 03 Nov 2026 23:10:13 -0800 (PST)
+From: Hungyu Lin <dennylin0707@gmail.com>
+To: willy@infradead.org,
+	jack@suse.cz,
+	akpm@linux-foundation.org
+Cc: kas@kernel.org,
+	dave.hansen@linux.intel.com,
+	linux-mm@kvack.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	Hungyu Lin <dennylin0707@gmail.com>
+Subject: [PATCH] filemap: prefault writes starting beyond EOF
+Date: Wed,  4 Nov 2026 07:10:02 +0000
+Message-ID: <20261104071002.49693-1-dennylin0707@gmail.com>
+X-Mailer: git-send-email 2.43.0
 X-Archived-By: <archiver.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3901.200.71.1.16\))
-Subject: Re: [PATCH 2/4] mm: hugetlb: skip CMA allocations under
- PF_MEMALLOC_PIN
-From: Muchun Song <muchun.song@linux.dev>
-In-Reply-To: <8b7f6573-ed12-494f-9210-d6f6dbf01567@linux.dev>
-Date: Wed, 4 Nov 2026 15:07:23 +0800
-Cc: osalvador@suse.de,
- David Hildenbrand <david@kernel.org>,
- akpm@linux-foundation.org,
- azpijr@gmail.com,
- linux-kernel@vger.kernel.org,
- linux-mm@kvack.org,
- stable@vger.kernel.org,
- Qi Zheng <zhengqi.arch@bytedance.com>
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <2DE679F1-C87F-4222-A710-C87CDE86D333@linux.dev>
-References: <cover.1793692578.git.zhengqi.arch@bytedance.com>
- <5bc00742fe249cf09a3095abccf8889d5fa71116.1793692578.git.zhengqi.arch@bytedance.com>
- <4EC5E593-7537-4659-879C-95ECC2224D2F@linux.dev>
- <8b7f6573-ed12-494f-9210-d6f6dbf01567@linux.dev>
-To: Qi Zheng <qi.zheng@linux.dev>
-X-Mailer: Apple Mail (2.3901.200.71.1.16)
-X-Stat-Signature: 56594pectj3grr6zmkaiph1hyk1frdju
-X-Rspamd-Queue-Id: 0516B20005
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: wh8tsuan1iggyyaso3unzumr6aggd5fq
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 99A3A40006
 X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1793776071-323658
-X-HE-Meta: U2FsdGVkX1+KteXq8j0to+Z8md4sbGNlTvQuHYAtVmB0GW/mluug16hDKhzSHhHBC625Q//WyWhyf4XGlu1Th3GoGkkdLJ3f2Q1oshGHyMLyCsxh2lwhLhegBOeE1MzoXhktZ1Oo+3asS/2GoRu7wOu4r2irTBwbilJDaz6k4c11ghxTldgQLmmZOR7xvnoqEKqhWyhOPwABycgbMovG9pZLiG53qNTIYx8jfcpPaVo6YrrEQhRjBe7LHsku12WvTdkKa9HURKe1ETBAFRfSPuXy66api3qeueyAxItvgshi7OwTgZEWQW74pPj6RlK9CDyj+2Fm/96J6bbXwGi4eoKBAyFmjHmGUdpZRQ1cQSk9z6bZjOyEcO6yHWm2hZ8UUsXSL5Fb6io0dL+VsD4c1T148h88sJT6LQ8b286U2hJ7zrb0MVcrUD3LXIPzNAWAbH+1pamXgwaXYQ5tr0d+AOEcZCjyZxwLXFvpKU1X83EKSavFTXEQejHZnVWjiuB6gBXo44HU2aJksUBi35fMyXPTg1TWuqzeHFKDqSZYIqGHS8eRQYV4d/OcFJm7dktJhCUabcdvZxQ3Jl13n+0YYht82tNehQqV+7BWexI5FuCfOBit4fEEp5XE5PS+wjLXSKt2lB6AW9Fcult4yryRV7S/0ExmiAxoub/29ltEFnAhnDifqhKuYX6aILwCu/1yxO9BFT19GsAEhDL3Xdg6CDAc5PZWRcsS28F1DyZt70pKOs2Ytr6FORokQBnXOrI+sGzz727Fq3k8jzWnbrzlpfIaUTHsD26LrJcTI/w/UR9kQL4pnkkXvzkKDnaQv4uiEkcqHtNatT3f+pr+riif0p8D0H2jEkl1BHNLDZEmxsF58QwJw8QBNgPO0PTBh4XkM4aI1cwlcz1VHHMD2I/FhmbxY9BC1pjM2JDkpt43uCtncLRauWjLH6UKhvSenbILQyP9NBe5Ul4UobNiSaY
- /zYz+xR3
- fUVG3czbHHX+lc7tOdVfPH5ZqAi0jU2mkoMNkIWCN+XS7huzjVs1cVHVke0drKTb51PBYR3AXrjrrSwqIU6fysxeSE6JgiLbV6heymoXbcOB/zdVxbsXOWaSmtV3wS0pvNzyqoCa99b3RCcJyouUhLmms3kX4YU9QR36MG5jKisvUmybt+oiFAcjV5N1ITT5jPR4jlitU2plxPVmr5ytZ7WawZF2S5/D3H0yHwxTZBCOiQ1z1GyHbG9b8bE3p3QyoxJYxDqFk74k83LSpb5G3CzZOS1Rrvmfa4SYu2ZFXAT/oCFwL1xBUfrCCWQlk8qNn6pMPoECGUEyiPr1ZdUVwsBafCUQAvYHde0lTXUDqTN2kc2E=
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1793776215-58500
+X-HE-Meta: U2FsdGVkX1/NXhYTvZmdu8U79EzeZ4rY8KlaZyPBB1QoZvlTpbI9EMZRJQTJ3ZZUNPwZB4Pv744LxkEJROJGpUsfS9Vo8C56OjTUfteHgcEvmuOIE90Mvu1vZnzVEVYVzG0bgsViQSyaExRjoYkIUZ+XhEwZNJRe6t+zx8Ra1obIRk40sy9SHlBNxHcZecvNdJzb2hhSMB/K1DOpAcAOIPjzv+EDtglEFQe2oiTp9Oq8y7v7ddhS/4RHa8hkGik9FF55CMr5FYvZyHU9TibUyEsOhPn+OHr5zqAuPASw+SU32EkRSPMLTa8Cts1GXp2Z7WejD+mHeq5WTlv25DS7LpdNFbkZC2XcQm/5Akr/GAwc0J0ayw/pQvo0lEHkyzwxDcaKGWnTvMyZ5Z3LqR4OC06XzxO/ruxaDuInsqdjCt9a9iJ3cfw9oVG7pg09qtBNW65QfvxJaS1cVdIaIB7/HrW7C1prcyiTLp48dK/rXJ1C1zPIzMuYvwlaenr4tlpim0geKyxR5Y5UxkwUo8gNJNlesj7pO3cTCaaQj5l0MSvQKMqgVmoPaQtkCwEjudW0xEoOYvmO+OFYX0xXr+6NmiD6DAi7idav/580OdiAqwtGF4TtMcjsS2WyiOJLqs+VKg4UfQQizd+TynA4c5H6nXlxvYjvcFfS15L0Kq7tp1wsHSvwrCvj0EU+G6TzTrW36G767wXnXUFXH+7xqW22cWJIPbcGK0CvAF7Fosjv7ieX0OZLvBW4vvaHqLkwinU/3ymF6RtHEKHKrf3hys/m5dp23sVZcYp4RBIt3JCxJEqYxHybxbyi/c1nwapVRc+45yse9EHMYFLVjvJKP+pwuqEUyQKrJWRqsYJMZDT0QrIhb2y6p7Tq0aEs3LZa9HtS67PHlrU0wAKTZ/jRTmWLAx9liL10QQEjRyohPsLvPrKjo+0UPdT6FWEeS0aYE17YJNf67XbVTERUfPpxZ1Z
+ LVB5Mn0+
+ E6Mjl59P6V7Mkdk9EIWS6NTssshHXGwwjhwEX7fBQ9bcXAuaXtJD0JqlcK9w8uxGIeWf3FXitzwWRNa1NrVFi7RneezMSLfaJqZISffiWIQrirQc0LhouxznIjwcuqmR5hIe1kSGdOlq5LRUxw2gJ6pzPaqTIxlpQ59Z0gqT9DYgg1WpAVizn57kRgTmh0M4QeQA1xVmm2AHwDlefJu1EUbIKbiStsL7CNS29lFwit6InNeu90pSIkhj1A7aFD53Pq5xN0xonIuWFoyFd8DyFRkr/4RtVTp0QKhradf3oieOx75vAkxoZrrwhmNu/o/cK4tGKs+tZdYtTKHMnT6FEaS1NiSDp9fcQ+tGbopNRrtdpB3DqIS3nKSsHQVdgpQCoH0UF5oyc38P2hTc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,244 +128,57 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
+Since prefaulting moved to the slow write path, a buffered write can reach
+->write_begin() and ->write_end() before discovering that its source buffer
+is unreadable. Several filesystems can extend i_size in these callbacks
+even when no data was copied. For example, a one-byte pwrite() at offset
+4096 into an empty file can fail with EFAULT but leave a 4096-byte file.
 
+Prefault the source before ->write_begin() when the write position is
+beyond EOF, and return EFAULT if no source bytes can be made readable.
+Overwrites and appends continue to skip this prefault. Keep the existing
+slow-path faulting for forward progress after a failed atomic copy.
 
-> On Nov 4, 2026, at 11:27, Qi Zheng <qi.zheng@linux.dev> wrote:
->=20
-> Hi Muchun,
+This also leaves intentional zero-length ->write_end() calls used by
+generic_cont_expand_simple() unchanged. As with the previous prefaulting
+behavior, a concurrent userspace unmap can still race with the later copy.
 
-Hi,
+Fixes: 665575cff098 ("filemap: move prefaulting out of hot write path")
+Reported-by: Kiryl Shutsemau <kas@kernel.org>
+Closes: https://lore.kernel.org/linux-mm/at9xXRhD2xZhszEj@thinkstation/
+Suggested-by: Kiryl Shutsemau <kas@kernel.org>
+Link: https://lore.kernel.org/all/at-XtWBQg3jv3H8Z@thinkstation/
+Cc: stable@vger.kernel.org
+Signed-off-by: Hungyu Lin <dennylin0707@gmail.com>
+---
 
->=20
-> On 11/3/26 6:56 PM, Muchun Song wrote:
->>> On Nov 3, 2026, at 16:01, Qi Zheng <qi.zheng@linux.dev> wrote:
->>>=20
->>> From: Qi Zheng <zhengqi.arch@bytedance.com>
->>>=20
->>> With gigantic overcommit enabled, a fault during long-term pinning
->>> can allocate a fresh HugeTLB folio from CMA despite PF_MEMALLOC_PIN.
->>>=20
->>> The folio must then be migrated before it can be pinned. However,
->>> fresh gigantic migration targets are not supported, so pinning fails
->>> when the HugeTLB pool has no suitable target, even if the original
->>> fault could have allocated pinnable memory outside CMA.
->>>=20
->>> Honor PF_MEMALLOC_PIN in the HugeTLB CMA allocator so the fault can
->>> try the non-CMA fallback, or fail when allocation is restricted to =
-CMA.
->> Wait... I think my Acked-by got ahead of me here. :)
->> There seems to be a rather odd distinction that GUP is missing.
->> The usual reason long-term GUP must migrate a page out of a
->> MIGRATE_CMA pageblock is that the page was only borrowed from CMA by =
-the
->> normal page allocator.  The corresponding CMA bitmap range is still
->> available, so a future CMA allocation relies on being able to migrate
->> that page away.  A long-term pin would prevent that.
->> However, a HugeTLB folio returned by
->> hugetlb_cma_alloc_frozen_folio() is different.  It is the actual CMA
->> allocation, not merely a movable page that happens to reside in a
->> MIGRATE_CMA pageblock.  Its range has already been marked allocated =
-in
->> the hugetlb CMA bitmap.
->> Therefore, CMA cannot allocate that range again until the HugeTLB =
-folio
->> is freed anyway.  Long-term pinning the folio does not seem to make =
-the
->> CMA area any less available than keeping the HugeTLB folio mapped for
->> the same amount of time.
->> folio_is_longterm_pinnable() currently only sees MIGRATE_CMA and does
->> not distinguish these two cases.  In that light, rejecting
->> PF_MEMALLOC_PIN in hugetlb_cma_alloc_frozen_folio() looks like =
-working
->> around an overly broad GUP classification.  It also means that
->> hugetlb_cma_only users will fail the fault, while other users may =
-consume
->> a gigantic contiguous range outside the dedicated hugetlb CMA area =
-even
->> when that area has free space.
->> Would it make more sense to fix the long-term GUP check instead, so =
-that
->> an explicitly CMA-allocated HugeTLB folio is considered pinnable, =
-while
->> ordinary pages merely borrowed from MIGRATE_CMA pageblocks remain =
-unpinnable?
->=20
-> Make sense!
->=20
-> I'll replace this patch with an exception for HPG_cma folios in the
-> MIGRATE_CMA check. This also lets the HugeTLB allocator select =
-preallocated
-> CMA folios during long-term pinning. MIGRATE_ISOLATE and ZONE_MOVABLE
-> remain restricted.
->=20
-> Fresh CMA allocations under PF_MEMALLOC_PIN also need to skip ranges
-> in ZONE_MOVABLE. Returning -EBUSY here lets CMA try its remaining =
-ranges.
->=20
-> The incremental diff against this patch is below.
->=20
-> diff --git a/include/linux/cma.h b/include/linux/cma.h
-> index 8555d38a97b1..7fd1b6e65b58 100644
-> --- a/include/linux/cma.h
-> +++ b/include/linux/cma.h
-> @@ -21,11 +21,13 @@
-> #define CMA_MIN_ALIGNMENT_BYTES (PAGE_SIZE * CMA_MIN_ALIGNMENT_PAGES)
->=20
-> struct cma;
-> +struct folio;
->=20
-> extern unsigned long totalcma_pages;
-> extern phys_addr_t cma_get_base(const struct cma *cma);
-> extern unsigned long cma_get_size(const struct cma *cma);
-> extern const char *cma_get_name(const struct cma *cma);
-> +bool cma_folio_is_pinnable(struct folio *folio);
->=20
-> extern int __init cma_declare_contiguous_nid(phys_addr_t base,
-> 			phys_addr_t size, phys_addr_t limit,
-> diff --git a/include/linux/mm.h b/include/linux/mm.h
-> index cb993a1d0728..d15810be7d96 100644
-> --- a/include/linux/mm.h
-> +++ b/include/linux/mm.h
-> @@ -3,6 +3,7 @@
-> #define _LINUX_MM_H
->=20
-> #include <linux/args.h>
-> +#include <linux/cma.h>
-> #include <linux/errno.h>
-> #include <linux/mmdebug.h>
-> #include <linux/gfp.h>
-> @@ -2975,14 +2976,16 @@ static inline bool is_zero_folio(const struct =
-folio *folio)
-> 	return is_zero_page(&folio->page);
-> }
->=20
-> -/* MIGRATE_CMA and ZONE_MOVABLE do not allow pin folios */
-> +/* Borrowed CMA pages and ZONE_MOVABLE folios cannot be pinned long =
-term. */
-> #ifdef CONFIG_MIGRATION
-> static inline bool folio_is_longterm_pinnable(struct folio *folio)
-> {
-> #ifdef CONFIG_CMA
-> 	int mt =3D folio_migratetype(folio);
->=20
-> -	if (mt =3D=3D MIGRATE_CMA || mt =3D=3D MIGRATE_ISOLATE)
-> +	if (mt =3D=3D MIGRATE_ISOLATE)
-> +		return false;
-> +	if (mt =3D=3D MIGRATE_CMA && !cma_folio_is_pinnable(folio))
-> 		return false;
+ mm/filemap.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-Actually, we do not need cma_folio_is_pinnable(), does the following =
-work for you?
-
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -2982,6 +2982,9 @@ static inline bool =
-folio_is_longterm_pinnable(struct folio *folio)
- #ifdef CONFIG_CMA
-        int mt =3D folio_migratetype(folio);
-
-+       if (folio_test_hugetlb(folio) && folio_test_hugetlb_cma(folio))
-+               return true;
+diff --git a/mm/filemap.c b/mm/filemap.c
+index b74bc1e5015c6f318333427f223b9f42061a6213..30414d55412b84f11ebe98b8eea607ee8c04eef5 100644
+--- a/mm/filemap.c
++++ b/mm/filemap.c
+@@ -4389,6 +4389,16 @@ ssize_t generic_perform_write(struct kiocb *iocb, struct iov_iter *i)
+ 			break;
+ 		}
+ 
++		/*
++		 * Some filesystems can extend i_size even when nothing was copied.
++		 * Prefault writes beyond EOF to catch unreadable source buffers.
++		 */
++		if (unlikely(pos > i_size_read(mapping->host)) &&
++		    fault_in_iov_iter_readable(i, bytes) == bytes) {
++			status = -EFAULT;
++			break;
++		}
 +
-        if (mt =3D=3D MIGRATE_CMA || mt =3D=3D MIGRATE_ISOLATE)
-                return false;
- #endif
+ 		status = a_ops->write_begin(iocb, mapping, pos, bytes,
+ 						&folio, &fsdata);
+ 		if (unlikely(status < 0))
 
-> #endif
-> /* The zero page can be "pinned" but gets special handling. */
-> diff --git a/mm/cma.c b/mm/cma.c
-> index a10ea37a261d..c2814f54f86a 100644
-> --- a/mm/cma.c
-> +++ b/mm/cma.c
-> @@ -27,6 +27,7 @@
-> #include <linux/log2.h>
-> #include <linux/cma.h>
-> #include <linux/highmem.h>
-> +#include <linux/hugetlb.h>
-> #include <linux/io.h>
-> #include <linux/kmemleak.h>
-> #include <trace/events/cma.h>
-> @@ -55,6 +56,12 @@ const char *cma_get_name(const struct cma *cma)
-> }
-> EXPORT_SYMBOL_GPL(cma_get_name);
->=20
-> +bool cma_folio_is_pinnable(struct folio *folio)
-> +{
-> +	/* Explicit HugeTLB CMA allocations own their bitmap ranges. */
-> +	return folio_test_hugetlb(folio) && =
-folio_test_hugetlb_cma(folio);
-> +}
-> +
-> static unsigned long cma_bitmap_aligned_mask(const struct cma *cma,
-> 					     unsigned int align_order)
-> {
-> @@ -792,6 +799,11 @@ static int cma_range_alloc(struct cma *cma, =
-struct cma_memrange *cmr,
-> 	int ret =3D -EBUSY;
-> 	struct page *page =3D NULL;
->=20
-> + 	/* Each range lies within one zone; try other ranges if needed. =
-*/
-> +	if ((current->flags & PF_MEMALLOC_PIN) &&
-> + 	    is_zone_movable_page(pfn_to_page(cmr->base_pfn)))
-> +		return -EBUSY;
-
-I don't know why we need this.
-
-Thanks,
-Muchun
-
-> +
-> 	mask =3D cma_bitmap_aligned_mask(cma, align);
-> 	offset =3D cma_bitmap_aligned_offset(cma, cmr, align);
-> 	bitmap_maxno =3D cma_bitmap_maxno(cma, cmr);
-> diff --git a/mm/hugetlb_cma.c b/mm/hugetlb_cma.c
-> index dde1c866406f..95fd2d190f0d 100644
-> --- a/mm/hugetlb_cma.c
-> +++ b/mm/hugetlb_cma.c
-> @@ -62,9 +62,6 @@ struct folio *hugetlb_cma_alloc_frozen_folio(int =
-order, gfp_t gfp_mask,
-> 	if (!hugetlb_cma_size)
-> 		return NULL;
->=20
-> -	if (current->flags & PF_MEMALLOC_PIN)
-> -		return NULL;
-> -
-> retry_cpuset:
-> 	if (!nodemask) {
-> 		cpuset_mems_cookie =3D read_mems_allowed_begin();
->=20
-> Thanks,
-> Qi
->=20
->> Thanks,
->> Muchun
->>>=20
->>> Fixes: eb02f14c4a2b ("mm/hugetlb: allow overcommitting gigantic =
-hugepages")
->>> Cc: stable@vger.kernel.org
->>> Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
->>> ---
->>> mm/hugetlb_cma.c | 3 +++
->>> 1 file changed, 3 insertions(+)
->>>=20
->>> diff --git a/mm/hugetlb_cma.c b/mm/hugetlb_cma.c
->>> index 95fd2d190f0d2..dde1c866406fb 100644
->>> --- a/mm/hugetlb_cma.c
->>> +++ b/mm/hugetlb_cma.c
->>> @@ -62,6 +62,9 @@ struct folio *hugetlb_cma_alloc_frozen_folio(int =
-order, gfp_t gfp_mask,
->>> 	if (!hugetlb_cma_size)
->>> 		return NULL;
->>>=20
->>> +	if (current->flags & PF_MEMALLOC_PIN)
->>> +		return NULL;
->>> +
->>> retry_cpuset:
->>> 	if (!nodemask) {
->>> 		cpuset_mems_cookie =3D read_mems_allowed_begin();
->>> --=20
->>> 2.54.0
-
+base-commit: 6628e7d4c6b25c8d18f1345e3a20d21829aae7e4
+-- 
+2.43.0
 
 
