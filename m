@@ -1,66 +1,66 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 941D2606D81D
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 19:19:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51B13606A31B
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 19:20:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=hz+Hi3BA
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Gx1ml92n
 Received: by kanga.kvack.org (Postfix)
-	id 59D8A6B05C3; Wed,  4 Nov 2026 14:19:56 -0500 (EST)
+	id 798796B05C5; Wed,  4 Nov 2026 14:20:10 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 54D526B05C4; Wed,  4 Nov 2026 14:19:56 -0500 (EST)
+	id 770136B05C6; Wed,  4 Nov 2026 14:20:10 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 415F16B05C5; Wed,  4 Nov 2026 14:19:56 -0500 (EST)
+	id 65F686B05C7; Wed,  4 Nov 2026 14:20:10 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 04DF06B05C3
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 14:19:55 -0500 (EST)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 784491C40B6
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 19:19:55 +0000 (UTC)
-X-FDA: 85398401550.23.6D3F07A
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf12.hostedemail.com (Postfix) with ESMTP id AADB440006
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 19:19:53 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hz+Hi3BA;
-	spf=pass (imf12.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793819993;
-	b=1rrwjdzX6znXhDrOZZkggObp4cq/9KXTE0adNRCtQpLRK9czhGGYIfjiGxebL6Gzefw75r
-	WRPGH1IdR3nCAkNXDlEzn9ViVVFN6f3CeHodplpuyA88rOhED3RRRWvQdDpc5sgPk6Yv6v
-	7cJ3kLf9Fzunmdxy9N4fL/xLq6efELI=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hz+Hi3BA;
-	spf=pass (imf12.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 467496B05C5
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 14:20:10 -0500 (EST)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id E883B1C3CA1
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 19:20:09 +0000 (UTC)
+X-FDA: 85398402138.29.7891CE7
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 21A35100009
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 19:20:07 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Gx1ml92n;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf14.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793819993;
+	s=arc-20220608; t=1793820008;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0oFqdYtQQ93hmf66Xu9P3kJmoMCkLJeiEqd5UgVqoAA=;
-	b=QBwXpBvwoQEc0KwL0Ae+g63VouDSmImgbJ6yvnPmAeKDXTz57v8kmcE6BoJRm3cbrq3GC8
-	pUY+jC7Gfw4I04gBe5XH5a0e/o/SkdPD1GKh+RjCCgWoZEBhGRpn6QCWYke9yvn5F4zFhB
-	lbdDgzJeu25di22bonyJ2XzFKKKYYBU=
+	bh=bK3Qf/Fgrn1kHJyqbDbeKZxjvVolEa0ioklWbWt66po=;
+	b=GRA8cWYZ7u9lsbE6qoO0Jz4AdhsY9tOTDL5BUIUeUE8Ty06KDo89ZQh35kzet1r3dC1K9Z
+	SQZfDaL10oCHcK23bcVLNqb3Y0oKLwfFSJ+V9r3QzKa73qIc2Z6hGwC3nYzV2ZhTBoGeBj
+	2cqwEFJENJfaAN6XExlE4yetrHujyFc=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793820008;
+	b=ut6GP3HO0wKRrnxNE/slV9AGl1r/9Q7H1DhZs+EUlkd6PNObytsTNCKpOdbsQ6J8Qc2Wwt
+	MSwTIZfoirXZ3sIU7sy2VE/Dp+ZEYUiUwe4Lwill+0hnvCvf+xCH2/Ggl4k06pY5QEb5eR
+	n6nz7A4IqXd9vj87yqE+RWH8FxtD/ls=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Gx1ml92n;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf14.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 2A7CE60A86;
-	Wed,  4 Nov 2026 19:19:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00FB41F00A20;
-	Wed,  4 Nov 2026 19:19:40 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 711E44386D;
+	Wed,  4 Nov 2026 19:20:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FBF81F00919;
+	Wed,  4 Nov 2026 19:19:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793819992;
-	bh=0oFqdYtQQ93hmf66Xu9P3kJmoMCkLJeiEqd5UgVqoAA=;
+	s=k20260515; t=1793820007;
+	bh=bK3Qf/Fgrn1kHJyqbDbeKZxjvVolEa0ioklWbWt66po=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=hz+Hi3BAL89sr/lh4dJvgeuEtclyRy1SO0NwI+zM8ybFv2jV939+Dv5j/nFojjivC
-	 34KWZ812aeES23dMGvAnt3ycz/SqajABSGrcdN3MX9xaOrork7AxoU/7QteXfxvHfl
-	 /V4rWTo2CoC5Jzjt8ZGo2GAXtUIc69Tn9FoUURbwhYdsskX97AesbdGMm73a/kHJmu
-	 TWwsRNLr3d8FIdQP7kWnDBE0CbOSCCNE5mAI3+7DlKk2UgHvWoVbDBDqf4bqYXIQ1F
-	 1/2Tfi4Gd8xeoe7KjATEoAV/9UDvE75iATYms6WdPb3WRBuJ8ZphmbEUZbFmU49bNO
-	 mp7Eo0gjrTdqA==
+	b=Gx1ml92nagZ7BrakhHXJtPQ+gcEUXo9KcayoMJOCqeD8l4YNPDO/HrtuxrVu5D/yq
+	 AkBUy+fEu7DUS3PpJdPB8rP4qDEH7v+3NmBlnra1bCI78Eid7vxjW2+TTJjKFk1pa7
+	 AD/p7tsz2i4zyXv6Wo6PwRfTfO4UBAA/iJgcwnGbIppd57DabriHGLgMEnacFdb1iY
+	 GWlISVkMuIM9OcUzNZg45npnuMJt6k2wY5mP16R0b4wLk6SxDPuMPpdKe7JIGFtdcz
+	 NWUGr2t2OzbQHDfP3LGVAcsb0fhKK1thVAFYLu2RzFUd22BqXfCyjuiOfZQwNar7gn
+	 x0rZz3DaKTIvg==
 From: Christian Brauner <brauner@kernel.org>
 To: linux-fsdevel@vger.kernel.org
 Cc: Linus Torvalds <torvalds@linux-foundation.org>,
@@ -121,32 +121,33 @@ Cc: Linus Torvalds <torvalds@linux-foundation.org>,
 	linux-debuggers@vger.kernel.org,
 	"Christian Brauner (Amutable)" <brauner@kernel.org>,
 	Chuck Lever <cel@kernel.org>,
+	"Rafael J. Wysocki (Intel)" <rafael@kernel.org>,
 	stable@vger.kernel.org
-Subject: [PATCH RESEND v2 15/51] PCI/proc: don't truncate the position of config space accesses
-Date: Wed,  4 Nov 2026 20:19:38 +0100
-Message-ID: <20261104-work-procfs-bugfixes-v2-15-021c84d852e0@kernel.org>
+Subject: [PATCH RESEND v2 16/51] PNP: isapnp: don't read past the end of the buffer on a large pread()
+Date: Wed,  4 Nov 2026 20:19:53 +0100
+Message-ID: <20261104-work-procfs-bugfixes-v2-16-021c84d852e0@kernel.org>
 In-Reply-To: <20261104-work-procfs-bugfixes-v2-0-021c84d852e0@kernel.org>
 References: <20261104-work-procfs-bugfixes-v2-0-021c84d852e0@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2714; i=brauner@kernel.org; h=from:subject:message-id; bh=57Zv3BgjxHPYJgAYtfWWUhWCD6jzurA4v7Zp2iJg+04=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS9brzb+9rGxHjWvh7zmt3Cx6bFvVAJkBPctFNvxnKOf apBXbbyHaUsDGJcDLJiiiwO7Sbhcst5KjYbZWrAzGFlAhnCwMUpABNRf8Twz2qLtYhEpvbj94Wu aQbrKrb8tHnS1sSutCx7f+mETxuYtRn+Cnk3vJkpqGW+cuXUS7IR5159W7FMY03xNO+3W9a/8tV 5zgYA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1354; i=brauner@kernel.org; h=from:subject:message-id; bh=PRZX3tU6vm07qtbuZVgSHwh1cNhLueRVjGfMu08d6P4=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS9brwfzl4y9YPS+9UnzD/xWPz9cFZ3YUK46s/HNev+T X6yzjO1pKOUhUGMi0FWTJHFod0kXG45T8Vmo0wNmDmsTCBDGLg4BWAik/IZGTbFfnLPjP3etuFi 3uYXH/odI/9bLkx7YPeroPeyylQ3HSWGf0oRmziNpv1f8fdY/M9fuwrPnSgJELfs+hiheTJ/BWs JOxMA
 X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
 Content-Transfer-Encoding: 8bit
+X-Stat-Signature: 6dyodxmztw1a71u44risxenf4ypkze4z
+X-Rspam-User: 
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
 	version=4.0.1
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: AADB440006
-X-Stat-Signature: efryqy7cxtreozeupghjgsityws6ep4j
-X-Rspam-User: 
-X-HE-Tag: 1793819993-891804
-X-HE-Meta: U2FsdGVkX1+Bv+FvOA+md1sn4XYShYOgMKZ7RnIHSQtun9gHmKRGda/WZ0JpqQmYgHVCOixvugqocyROTPYoPfdDDPmNuS4fyGnrcTPNUEWY711XRX+6CDpjNLsKUWrmzOvfOLU4d2L9svGdSyNxsgONQIoI7p7fTGZQK/oAhkladDcpM9RGF1kQ0Yp+xLuZGLo8NhfTN+CGD8GdPyWswHKhOp6fro0hxHQPomiUXnX+cV08YHLEce9YyiQthBKI1koqSti2ije6fhtkTj3WRGKdKKf3FgkBh9ffjB4f7Hemum6wJTcnxtsBFC+nnNJkiLAIJqjYt8UQilkwcezxZLhhGQHbO/+ozwI1jGcwsl/xBGaiqL0zbhvAAa8Wws+3+Dt/jsotloC31FXwb+6VDYLJ+BWj2kCzXJYi5RAAsfrkvOE4/AUEzsvgX3jc7Ut6kPJCXZFlxqC5cqB4rYepLwZkTsYC0kEBIxEsqKhy/Opyv0OEBqN5T2o7JIbygoCIyKRNjhumg9JGr7tX9bswCConpcn8dZPnDJlHGY0lT1Ld2MDiYcq1asv/0IhHG+JB9YW/BVFh4MXzOvFs3UjdxKcNuxIywcjpnZ157DJtYkAdtirR7TgU5Y57+AJP/h4MKroFlOwiA8Ck6KDkd6D4E0ZF/azJxfZngvHmQwPkfyLjq0RhP40vdBmUEexxcE5wcyIVgSgT57oGned1coVBiW0jvva3gHjlgUo9si4BiXPGs2nr9GQtS5uuQ0kYkK7cFs9TsWnKaoIyU7iXGOUfWxxAjgDibSVi55sRG9wQUu/SHh0eDKG4zwAiI8S5eV0pwuBvN5bw89I/f8TwFLC6cX/SYxL5MJ7/melpuMxKB+GzPxh2Y4Z6XM8fWfFjfInFlnNMTiOZz95p3aBF3B8xR/bKf8TiU5emiROK/WotTMl2rRT9nMs5xrPaWMDjCRA1tApKn0T8JEIgrO9POIb
- BPX9hoNI
- 6TK4psUTvcYy2Gi8Cm9Ozl2rsZFui7dajy9ffB4KQcHj/J4zbaLJdBSsPLaoJzoXy60YyCJw/ya1EUGtaohSKBKcTf2fRpm0GD9lcpfrnk3JYqapgaPoCNFqYSE2wiwX1rqvfBn+vNgsZu+cH9ZTzndL9I1bz8lwUK76ckmr8CoohiQZjeS7o2cwtooKBopBsoVIno50gDZfZbR7Noor/vNY60EyNu82T6QaXqBIhwTRQnQCdYFxSdABmOpLz3GeEFuYmkhpCRrrf48YE9pbyn54+pTzM6NQdZR8qBDPge0c/iz+/Y0ePTuDCYYv6Ao2g8qUxmmcMZIxB7MAkbrrXI4AWt0UK5jwxVRUwBTR7bVPZ4GtDkY0B/PyF3ofGlQt5pARuhp402ACQ0+i/T0sycOR0rQ==
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 21A35100009
+X-HE-Tag: 1793820007-207436
+X-HE-Meta: U2FsdGVkX1+XdbS19/qwR81rkRW7JurJw7Ikkt7nfV/BU+qaGAs5b2/BGky5gAs/K8F8D7qhlZu17x1HvkQVdDf39srsDIeBQ29/0X0gIIPD1J9Ddc5NDVNUh3tA5v6ohICJQxdnayGukTAXR3vB87LqB/YGpm/i5DPSfi3DQ7JIBrChp3nGAM4WDXF7tyiNvaUp6BP9CDSf/dxjFbbdfi9qi7OZ4ALM+B21AdyX4iHfSKSIB5+Fjawt5nPU1Nb2XysJTXrQdN/nHBCKERHe6FQ2E9eoNMNZtmj3cGVNNI2acDSKTKxrNvGvBLA8rnMLnZyAnQMek515v+jBb9gEN7RwnAk5WQspcuAb7ZOFNWNVu2T2zHfl4p8cmlq/u3B3kAHa9zLNvPWD7sSVf7ZOlfyQ/x5HIuP7LyDMJGDVto8mXETlnhehBGbEcZg2PRq9wg0xHA7oncnUGWdGKg8v9q4BBq7UyAbRgSAdIBdx+Efe4Egfzw3e6CayWSYnEuLceZWgexTSiKwrsdLizpeOUrsix3CMnXoDgGQdftp2JR6KFuMbu+e4GU288+dJmTbh49NCIKxEwjdBYvlmfv5+tw9e5KYR3P1r6tZpwIsy3xVA3a5QaTKXaFR4PWgvg/37qIOvGt9JHjTN6BXdFAQCK3n6depmpXVs3mkXAJMQxKM7LTIPOWj/VPQqpPJYS5F7Fl5L8OYsOngu33X7QEivY1m+hrwuZgNpmjvu4SvyJ+ZSRJQKb3LiExgX/9bUk9FXYbu9UWVq5zvzda0TWU8RSEGUQdFOG3tyLcFuCDmjYmydawcwpD4eoj09/k5AC7EW6Sj5MQLszWMBKxIcmHjtvLkdDvxEhQHVXkjLL+F9e6tKdKdM4uFwDWsxybMR9jOz3LlsMLx7hYnJPnDmDber7Yo1id87n4TNasq71GqcCJ5ng1HDKZ4lP354Cyqyce7Qq0HmJ5UWU58wP+G168o
+ Q2tMrolM
+ ttRlKm3JKnF/SYmPzWJSlcTKGZQ7Y1kN30ANJMw8WrEc+MoXqE4EwPCcEIPGdoC+PbghfKUn8y1MyyB7/oi238kkdbtbzqSzmYyXJqt2MhYv55hLyjcq/rgbkDlDWnDUxhGFg0Lap5idsRa3k4ivlktdM3lzePKK5/FV8+VcU1Spl1kE3bLqBy0VEmIjOOSGguA9ZQlAO1/+/HCuHhI2/B/3Pxh89FJ8s4mqWcm5BwSSSZgQa/9UbzyWpDJ3jWUbay7rUnQ1xQhDZrJMz1W8q0X/OfEN5gYJ5ZhDPhozp2KohfWPXhzqfnpXXLBdSEB9seUIh/O/TXs6nT/YLnxyQYbYMtAhLInH2lZ7HXq5LLlGuu4W/qV+/dv+jEpmS9Yg4CVPYyczdNeEFY+0OI19y52FEsQ+/Bc/084H3I913bEHjJgULboSKjaymRw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -155,85 +156,45 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-proc_bus_pci_write() truncates the file position to an int. A pwrite()
-at an offset like 0xfffff000 turns it negative, the check against the
-size of the config space passes and the count it clamps to ends up
-larger than what was written. The loop then reads past the end of the
-caller's buffer and writes all of it into config space at negative
-offsets, which pci_user_write_config_*() pass on to the config
-accessors unchecked. The write also returns more than it was asked to
-write.
+isapnp_proc_bus_read() truncates the position to an int. A pread() at
+an offset like 0xfffffc00 turns it negative, the check against the size
+of the configuration space passes, and the loop then puts everything
+from that position up to byte 256 into the reader's buffer, no matter
+how few bytes were asked for.
 
-An offset above 4G that truncates to a small positive value writes to
-the start of config space instead. proc_bus_pci_read() keeps the
-position in an unsigned int, so a read at such an offset returns the
-start of config space instead of hitting EOF.
-
-Check the position against the size of the config space before
-narrowing it.
+Keep the position as a loff_t and clamp the count against what is left
+of the configuration space.
 
 Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Reviewed-by: Rafael J. Wysocki (Intel) <rafael@kernel.org>
 Cc: stable@vger.kernel.org
 Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 ---
- drivers/pci/proc.c | 15 ++++++++-------
- 1 file changed, 8 insertions(+), 7 deletions(-)
+ drivers/pnp/isapnp/proc.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/pci/proc.c b/drivers/pci/proc.c
-index 3d7a9ed5fc22..e0dc70123f82 100644
---- a/drivers/pci/proc.c
-+++ b/drivers/pci/proc.c
-@@ -32,8 +32,7 @@ static ssize_t proc_bus_pci_read(struct file *file, char __user *buf,
- 				 size_t nbytes, loff_t *ppos)
+diff --git a/drivers/pnp/isapnp/proc.c b/drivers/pnp/isapnp/proc.c
+index b3abab24050b..1829c20d5446 100644
+--- a/drivers/pnp/isapnp/proc.c
++++ b/drivers/pnp/isapnp/proc.c
+@@ -23,15 +23,13 @@ static ssize_t isapnp_proc_bus_read(struct file *file, char __user * buf,
+ 				    size_t nbytes, loff_t * ppos)
  {
- 	struct pci_dev *dev = pde_data(file_inode(file));
--	unsigned int pos = *ppos;
--	unsigned int cnt, size;
-+	unsigned int pos, cnt, size;
- 
- 	/*
- 	 * Normal users can read only the standardized portion of the
-@@ -51,8 +50,9 @@ static ssize_t proc_bus_pci_read(struct file *file, char __user *buf,
- 	if (!nbytes)
- 		return 0;
- 
--	if (pos >= size)
-+	if (*ppos >= size)
- 		return 0;
-+	pos = *ppos;
- 	if (nbytes >= size)
- 		nbytes = size;
- 	if (pos + nbytes > size)
-@@ -119,9 +119,8 @@ static ssize_t proc_bus_pci_write(struct file *file, const char __user *buf,
- {
- 	struct inode *ino = file_inode(file);
- 	struct pci_dev *dev = pde_data(ino);
+ 	struct pnp_dev *dev = pde_data(file_inode(file));
 -	int pos = *ppos;
- 	int size = dev->cfg_size;
--	int cnt, ret;
-+	int pos, cnt, ret;
++	loff_t pos = *ppos;
+ 	int cnt, size = 256;
+ 	int ret;
  
- 	ret = security_locked_down(LOCKDOWN_PCI_ACCESS);
- 	if (ret)
-@@ -130,14 +129,16 @@ static ssize_t proc_bus_pci_write(struct file *file, const char __user *buf,
- 	if (!nbytes)
+ 	if (pos >= size)
  		return 0;
+-	if (nbytes >= size)
+-		nbytes = size;
+-	if (pos + nbytes > size)
++	if (nbytes > size - pos)
+ 		nbytes = size - pos;
+ 	cnt = nbytes;
  
-+	if (*ppos >= size)
-+		return 0;
-+	pos = *ppos;
-+
- 	if (resource_is_exclusive(&dev->driver_exclusive_resource, pos, nbytes)) {
- 		pci_warn_once(dev, "%s: Unexpected write to kernel-exclusive config offset %x",
- 			      current->comm, pos);
- 		add_taint(TAINT_USER, LOCKDEP_STILL_OK);
- 	}
- 
--	if (pos >= size)
--		return 0;
- 	if (nbytes >= size)
- 		nbytes = size;
- 	if (pos + nbytes > size)
 
 -- 
 2.53.0
