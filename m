@@ -1,75 +1,75 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2AF92606A93D
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 17:30:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85718606B024
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 17:30:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=gfbswzaD
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=g5u712B9
 Received: by kanga.kvack.org (Postfix)
-	id 3485B6B05C2; Wed,  4 Nov 2026 12:30:06 -0500 (EST)
+	id 8C83F6B05C3; Wed,  4 Nov 2026 12:30:19 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2F8676B05C3; Wed,  4 Nov 2026 12:30:06 -0500 (EST)
+	id 8774D6B05C4; Wed,  4 Nov 2026 12:30:19 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1E7A76B05C4; Wed,  4 Nov 2026 12:30:06 -0500 (EST)
+	id 7658C6B05C5; Wed,  4 Nov 2026 12:30:19 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id E16176B05C2
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 12:30:05 -0500 (EST)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 65ED41607D1
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 17:30:05 +0000 (UTC)
-X-FDA: 85398124770.03.F49BD3E
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 4D7706B05C3
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 12:30:19 -0500 (EST)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id D64881A07E4
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 17:30:18 +0000 (UTC)
+X-FDA: 85398125316.07.E96DC7B
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf17.hostedemail.com (Postfix) with ESMTP id A984D40006
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 17:30:03 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gfbswzaD;
-	spf=pass (imf17.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	by imf16.hostedemail.com (Postfix) with ESMTP id 18046180012
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 17:30:16 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=g5u712B9;
+	spf=pass (imf16.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793813417;
+	b=uiW6iQeEmTj3LsiR40G80uzsxPQZT83tU8jPg+f8RQue+muLW0nJHUQmmqzsoeCR3CmRiK
+	0Pf80aEO5h3MaF0u2OASAaePA9pkYk6mVMX6NSmF1bMqZAa1SQJGjoMUd/Dkjc0Cj7iLVo
+	dxA5w6pBZpgc2ewjHUEkY5o5CkQWZCI=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=g5u712B9;
+	spf=pass (imf16.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793813403;
+	s=arc-20220608; t=1793813417;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7dKsu59FtDy8aNyG4WRUkN7aPYhsNBybpSNJpPGyZ1Y=;
-	b=Pk4jDYlTM4RY8sxDLKeiDlA6IaFKzH5qcRf0jddT78adYmHsCfDaODuFVbOv1/fbUvPIB8
-	kSv/BOnG+F1Gnda/i5vKsyNAZ7PyIylIKd2+Uf3oMHD+xjLm5bOvxNRzgJgq1j0BqMdYXs
-	8bgNTPBc9mVcfMDOmDls+z7JsnmaJ1k=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793813403;
-	b=fMoa4aDwmZm43W2wClbOxBnhMP56GqjrZQiIwVLmz1iDGgLSpJJHfMS+cwfhc2eIkn6RND
-	xl/NAXTvv7yuFM0GhxquTvfJXufQuhoT1l8N/DqbTv2DQbhzkB05d3W9RD7CWvFIJmoXUr
-	+OVT3VGUyaOhmpD2WKiNaqDg9qaINMo=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gfbswzaD;
-	spf=pass (imf17.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=Bp2DPgSMAVNPpocNHMMHSMxcgQhQwNKqaFQNAmEUdgU=;
+	b=3LYyQ9N3fX8Dpo9zZIDlzkZWXy1UzBE1A9zl/X+B0QpfAYZZ7M/DO2l6McEYz8sPW3Xc41
+	r+/SmlVJkAPfMDuwHd7aZk3tDy4FdT14Fny1QFBoCsOfQ5/OnLFMPjA0+J4MLIsV9U/DDw
+	1+HlJ+ij+6AYSCDZAzGZRO84EPB6Cbg=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 3BE0D60A95;
+	by tor.source.kernel.org (Postfix) with ESMTP id 9DB7E601F0;
+	Wed,  4 Nov 2026 17:30:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70FBE1F000C1;
 	Wed,  4 Nov 2026 17:30:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7E771F00919;
-	Wed,  4 Nov 2026 17:29:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793813402;
-	bh=7dKsu59FtDy8aNyG4WRUkN7aPYhsNBybpSNJpPGyZ1Y=;
+	s=k20260515; t=1793813416;
+	bh=Bp2DPgSMAVNPpocNHMMHSMxcgQhQwNKqaFQNAmEUdgU=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=gfbswzaDVBU7GKHdo96TauMKv1ceaJJyNilcKhGi1iENsVgvyZyYNALew+6JI6AWe
-	 pnCrSRXKJFZI76CSsVO2k0ZfaudiGPDz4H6nanxp+IyJlIS7zpWq7WbGYIpqXvffaY
-	 YPXkZIViE9ginAIsagyAOsm2dADTElAlSFhpb7mW7+aUif42uY6NuovJjFCkr22t+o
-	 8YZgU+wGhNeEvlg8uYowdA2V5/tkllZe4obLrFZwBz6wKkhavF4aJ1MAwudrDBYgmg
-	 iqyQouJN+3c3V4Q9h3e+svUJCBV88Hc0/UG53sSExSaEIpQZoLXQ7yhOlSnC5s6p6e
-	 /vqOf39HCSJtQ==
+	b=g5u712B9uyY/EHBMvMcIJjwX1Q9oNafVwZZdSTe+wWNmne5PBjIRnbjMdNBKEaIP4
+	 4sN1akBTM0upEXPMnrPesATu9t0mv+J9tGR4BfcCUQnJpzUcbcj+IvUqAQlpKvEFAP
+	 maIQiS285xRthBs8kUjqLULi7ZlP9EZaMs6jvYgyfDdyykDtrKuOIUKXiUE5xq8j0K
+	 rnPkE+GVlVCE8ozm0404SgO7RYqyMkzZKzwWo1p+WxGQXY8MTkERhkp4+WNxvZiOYe
+	 CguRECqkxpVtUS2A9kODUDoxnBc90vENA1/MJjeZ4tQ9xNPhj1ug3QG1Rnyknyga3s
+	 5rdxM+QnpKA9g==
 From: Christian Brauner <brauner@kernel.org>
-Date: Wed, 04 Nov 2026 18:27:23 +0100
-Subject: [PATCH v2 06/51] powerpc/pseries: put the node that the ofdt
- property commands look up
+Date: Wed, 04 Nov 2026 18:27:24 +0100
+Subject: [PATCH v2 07/51] lockd: don't hand out the terminator of
+ nlm_end_grace
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261104-work-procfs-bugfixes-v2-6-bbf7d5546809@kernel.org>
+Message-Id: <20261104-work-procfs-bugfixes-v2-7-bbf7d5546809@kernel.org>
 References: <20261104-work-procfs-bugfixes-v2-0-bbf7d5546809@kernel.org>
 In-Reply-To: <20261104-work-procfs-bugfixes-v2-0-bbf7d5546809@kernel.org>
 To: linux-fsdevel@vger.kernel.org
@@ -105,12 +105,12 @@ Cc: Linus Torvalds <torvalds@linux-foundation.org>,
  "Christian Brauner (Amutable)" <brauner@kernel.org>, 
  Chuck Lever <cel@kernel.org>
 X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1735; i=brauner@kernel.org;
- h=from:subject:message-id; bh=9GgvRCMv4/Dc1Z942cy3A7/ul6cTW5I084eAKnASIT8=;
- b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS9zmZ4quyyZkXDnPt7l06dpyFV4qG0w25zxJ4t0hO4d
- EKlP1YEd5SyMIhxMciKKbI4tJuEyy3nqdhslKkBM4eVCWQIAxenAEykTo6R4ULmC811i1exrd39
- SCDIqSZw/sIzLju3fTqjXqriV5H7NIjhf6qrTt6RLRKL95YYMKbV3Ltr0FNg0RZ8ear5gYvqs+r
- mMQEA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=879; i=brauner@kernel.org;
+ h=from:subject:message-id; bh=tKzHzMLxBoW/zY681xcBM67Jqe2y1s4JEAk9OycZ8F8=;
+ b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS9zma88mPSwzMZES8ZvfsaK7K5NIr2+azZ3b+Xc1Xpm
+ 7Wz/9nbdJSyMIhxMciKKbI4tJuEyy3nqdhslKkBM4eVCWQIAxenAExkbT3DP623G/ymh8nr95bL
+ Sj1ZqVz5I/v5xTDO2LLF07okt9w1Ws/wP0bKWD8yk0Xj8wP2OJmbXq1N7z9lRV6ZFj3BvzE/x+E
+ BNwA=
 X-Developer-Key: i=brauner@kernel.org; a=openpgp;
  fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
@@ -118,14 +118,14 @@ X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
 	version=4.0.1
-X-Rspamd-Server: rspam09
-X-Stat-Signature: us3iya3tn1nqunwch544tnaqkd5etubr
-X-Rspamd-Queue-Id: A984D40006
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 18046180012
+X-Stat-Signature: pth7zugq5w8bnrq9d1tuofk99dk3tofo
 X-Rspam-User: 
-X-HE-Tag: 1793813403-69026
-X-HE-Meta: U2FsdGVkX1/SK8SSKaLmQddSbJBhbT6z5V/hWZ6V77m6WQOnNhQV7JYUb04mIvJDc7O6OvSIwZ1PLhQDit1pP9Udowjc0v5aAnc6C6pQjhce1X/R9fVO0y6jl9cjVwgAPTkxMqIZD48k5Q4r8pgPcFHFCT/QKC7BHFhks2bKCmpN7bmvbYzA9KRZzdc0mJUd+aKbAD8IJQgZ+FBY96c341GC2E7NCBp853d/JknC2DwJSijn5klbTdB7Dj0O8SgrpG/I8MzTbHkymiPdrVe/jxm89tEuCPKpOtLZmBf7ROoH22LRov9T/CYw5KlbmxJ1SCeUKKx72DTlvRMZNPznRtuJPL9hAJFVj8hIsCK9l/OqJM+yUovQ5qqqzQNY8CyYFuZkxpXxbJCW3fvuc+2rrI73ruIrjbD8xYEiORS+cozXHhCMiskE1Jc2KaTuk8uZS37FYJrvJAX0KcKTKNRR/3Cgh4wF8Oq0KFyKdqcxNZ38VoCdQ8m6PZGwoqB4wdtNvOdDctJxtIJgRp9isfYqubFMWpN08ftc2mmFzVUXShJ6jcyYFB/ERMkWMxYAaXMgOV1nWDbdApCpYF9BptE8yGlJqK+msw3TN6ELtBZyIEPixvqJWrM817ej8P+enxdugIkx1kgLXReEbQ4b3AsQV7xhaNrDDLYCY36UNk8NthC8GTIrSXQiistW2yI71GY4iZcR2+gP/oyJms2z8Mosv+/NXlwsBPRb4iaGmicRd4o0QdyDqEWwSZS7xzC7L+NvHoxRHi/WTOjubuHR1M7R9G+LECMrgix6ED1NA0msxXNPmD85SYgZOwWhnJHDQ0OnS7pG9ixqlQxTBe+FjEsuipQEEt17p+QVd+v0Hfv2bdWLT6QKXI8kCY3YPMpH1IFliPku6UVqIb75jqhmf60sYL8jEdgvqaYIY/21Y+XpFXZp8+jaYujhXaxTTZQAoeCqKaiBo8kz1z981xdWUhp
- SGOK+noo
- JWVEfHW/9e5lp1oLQGyNKYKdy5cg/BIt8WwJ3ex14lF8yMWy9/xGWSDdCcGpo3yxYf05X28DWzCyJHL5XLrvPrFZr1WWocTDSN2uNiGVNGx76AxyRMIh6IIBQGpbnPvKFEiSfBurJlXLZcs7ohGZjFFb1xH+lExJa1l4/vOUZY/ej+LhX3M1oWzaZPD6fdQPt4o7YOHEK9q8N7JDJng3MvKW1OZlFJWI0CPNqQn1z+XT0gZXdKy2VOn9P7LufyHIR4iCTfajukuYFQtNVcmsMji3icSkpr9DE/wKsVLmRYloz1s26sweu/ceHbA==
+X-HE-Tag: 1793813416-960883
+X-HE-Meta: U2FsdGVkX19KZ/51X7FvD2oR065LphpBgjp66E12w//2XJSa6YX6RSovAzhoWhJJhWLxeXTnN76cAtM31OrE/mSAhyuQZpgZJD6NxGtJrOYyosaxel3EoPRTbkUP+DOp9p0HENpgkRyfyLflkdUBg2b41itCcqJtnalSc8dYWzJHwkOiHnHVxPAuujKekrByHffQ8sjyhlpXkxmsvpCrbLet7YyAV+sGggc7sMAsbemWAEfVUhcanfDLUPzqvuTkEkdNqzh4rFnhDmnIUYkIcZHHLDFIUeh3kXfHGYR6OM10xapdoVQroPPpfQMKAL4cadD30Rjs+mCPux7oEDR4KGCkLEwyLSmBBOEEsT2RhWCZbFeGu4YiT1cURti1W7BMgiFRdOqjvcGk9Z03JWBnGLl9GhbvGwNMjANf8/IymaT8ZoUOjcEf/UOaJDrn1NA6AONzOK0k+e6dJ/QraCi6R6URCGwq8Q/jiibWlEZpsEfUY/H72sT4jysT7mIGn3hc4YMVaKnKuivcbECeLSNsEfluS41yAo0HDUs6pycmofd3Ta6U2xsBXxd2FveOt4Yi5Pq3WxB17+0xooaESSyfPJ+/FvfpKG9TYNJPy37SwdyGqdDB7mIOGmu8VHksALZt8dhcVIm24xXtJJMnYs/Ndt7a/q38/3kwgeUoW/DXQ9rQv7GMnyuRSD7PDNtClPQ3e8JaDCmFDibQJVzwDwjhDxH4abbTQvqGTFebxTao68U9i5M3fGQo8A/EKDmQDximyTNVzmCvPp92v1zRDoQBk4Jgaekik04HeJ1FsrdYD3ADY2j8Rogugs8z61Wg9AQjKS1iYL/oHRpDlltDDzMkiRBsHnNnIEF7PetD6zGV+vOBJFZ4nICm7LRt8Qr2o8I/p25Th98gWG1aHJlJV40/hcW9pzNNg3T3VG7acfjvyq4hHszA2N7JOkM/RTIbYQT7borQh7zwUxZw8ruapTH
+ juoXfrDY
+ 45V2N5jwqfJ010YGTdV/EGGtjmJDjAkQmDG/V6xw/9RJ/SheWf+lo2wv0cZfgxwwBAUz6Dzwz1o4UyV2qg2eY6rTReZGo7zHvm8Lx6MvxniJm1VUGM4Hjsd9nMQhZ9SZxWgI4D2XTDDy4xBv4mtUAO/Now4bWIeHMmDzKjml4X3wwljEcyzjfR22j62rDVsJhvbPwQ7Ts4RuCIvQop3mnWuFF9Ke4gvXCrsw5+mSDWOaoPZwwGkDl9tXY+kQh8DMgzOPLp/QT61Ypg9SZ5OyBbTF5kauhuvTGaTflHmUVSuD7a8710/YLrOoBjG8BFJtvleH3AJTbdze6RYQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -134,50 +134,29 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-parse_node() looks the node up with of_find_node_by_phandle(), which
-returns it with a reference, and do_add_property(),
-do_remove_property() and do_update_property() never put that
-reference. Every property command written to /proc/powerpc/ofdt leaks
-one. Put it when the command is done.
+nlm_end_grace_read() answers with "Y\n" or "N\n" from a three byte
+buffer and hands out all three bytes, the terminating NUL included.
+Leave the NUL out.
 
-Fixes: 610d91511f99 ("[PATCH] powerpc: Add support for changing properties from userspace")
+Fixes: d68e3c4aa416 ("lockd: add a /proc/fs/lockd/nlm_end_grace file")
 Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 ---
- arch/powerpc/platforms/pseries/reconfig.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ fs/lockd/procfs.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/platforms/pseries/reconfig.c b/arch/powerpc/platforms/pseries/reconfig.c
-index 18e3f1a036e3..5a0c9c0b6253 100644
---- a/arch/powerpc/platforms/pseries/reconfig.c
-+++ b/arch/powerpc/platforms/pseries/reconfig.c
-@@ -271,8 +271,8 @@ static char *parse_node(char *buf, size_t bufsize, struct device_node **npp)
+diff --git a/fs/lockd/procfs.c b/fs/lockd/procfs.c
+index a01f08c8c2f3..74f7ab77535a 100644
+--- a/fs/lockd/procfs.c
++++ b/fs/lockd/procfs.c
+@@ -57,7 +57,7 @@ nlm_end_grace_read(struct file *file, char __user *buf, size_t size,
+ 	resp[1] = '\n';
+ 	resp[2] = '\0';
  
- static int do_add_property(char *buf, size_t bufsize)
- {
-+	struct device_node *np __free(device_node) = NULL;
- 	struct property *prop = NULL;
--	struct device_node *np;
- 	unsigned char *value;
- 	char *name, *end;
- 	int length;
-@@ -296,7 +296,7 @@ static int do_add_property(char *buf, size_t bufsize)
+-	return simple_read_from_buffer(buf, size, pos, resp, sizeof(resp));
++	return simple_read_from_buffer(buf, size, pos, resp, sizeof(resp) - 1);
+ }
  
- static int do_remove_property(char *buf, size_t bufsize)
- {
--	struct device_node *np;
-+	struct device_node *np __free(device_node) = NULL;
- 	char *tmp;
- 	buf = parse_node(buf, bufsize, &np);
- 
-@@ -315,7 +315,7 @@ static int do_remove_property(char *buf, size_t bufsize)
- 
- static int do_update_property(char *buf, size_t bufsize)
- {
--	struct device_node *np;
-+	struct device_node *np __free(device_node) = NULL;
- 	unsigned char *value;
- 	char *name, *end, *next_prop;
- 	int length;
+ static const struct proc_ops lockd_end_grace_proc_ops = {
 
 -- 
 2.53.0
