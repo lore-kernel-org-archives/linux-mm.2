@@ -1,100 +1,126 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3B51606A31B
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 10:14:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A9E3606A32E
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 10:18:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=btLwY/D4
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=U5OIqhcm
 Received: by kanga.kvack.org (Postfix)
-	id F11FB6B05B4; Wed,  4 Nov 2026 05:14:01 -0500 (EST)
+	id 2E6986B05B2; Wed,  4 Nov 2026 05:17:59 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EC2B06B05B5; Wed,  4 Nov 2026 05:14:01 -0500 (EST)
+	id 2BBAB6B05B3; Wed,  4 Nov 2026 05:17:59 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DD8036B05B6; Wed,  4 Nov 2026 05:14:01 -0500 (EST)
+	id 1ACBE6B05B5; Wed,  4 Nov 2026 05:17:59 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id B7B5A6B05B4
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 05:14:01 -0500 (EST)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 66FD0A831E
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 10:14:01 +0000 (UTC)
-X-FDA: 85397025882.09.24A3708
+	by kanga.kvack.org (Postfix) with ESMTP id E96BE6B05B2
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 05:17:58 -0500 (EST)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 74ED814066B
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 10:17:58 +0000 (UTC)
+X-FDA: 85397035836.23.B3E698B
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf24.hostedemail.com (Postfix) with ESMTP id CB5CD180002
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 10:13:59 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="btLwY/D4";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf24.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793787239;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4wjuPdEIW1r5lz4xv5DqdpCHSpNI3Pzvy2rxa15uD2Q=;
-	b=OKjf3SYthZX3L+Uru/DbsoWRmdMF+XVtRSrfCFF2Tuwwb5Ry9ZpkejS1zal3YB29b3cb9+
-	IdjbLS8dnnwkfl03IkM2+hKaBgotjFXah7O+StY/MNx4Bk2eLLQcDCgtrHe29ejInaQ9tJ
-	Mllksix0FAjaAGVbjeDtuC7Fr0lI0aE=
+	by imf09.hostedemail.com (Postfix) with ESMTP id 9D93714000B
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 10:17:56 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=U5OIqhcm;
+	spf=pass (imf09.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793787239;
-	b=jF6nyeDq8b5WKOzLSAqTe/4AW91mZcKbfFNUS+YdG3MrRAx27a7iSRmeAxKNelpz44erqD
-	yA9OzgEQCZ+k3xyF2XDUFaze4/3vflzcEQGyU7r/pf2ZfJ4XiZvQz7zxRGSjbqrYPYzLWc
-	yXrfHX8zqiRlgFsVoaqQWxhlkvQ5s3g=
+	t=1793787476;
+	b=43dIZBJc5d0TCyA7I/sc/zy1SXSFzVr2JGpxxOKW9NzbdJKHfibttaZ+n5Dk3ff+SwIGyP
+	dePwDzq8SXXoVy3tTwgDX70b95QFvjFeglTtg/MRexnDmXMCBJDo3bOtY6dNNkkoJ3o6ev
+	sutdjTHV1O48tZgceh9t1V+zd211vZs=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="btLwY/D4";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf24.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=U5OIqhcm;
+	spf=pass (imf09.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1793787476;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=5ut8NFXKl0VORDomAfnUZx+oz3sFVutLuYOBR9qWWWI=;
+	b=fZSqQ92EDjmGQYPwKYgLY+iWlp1WA87LxuTLQap+C96cqFcjZS+I9CZWsSMDclmz7TfaU2
+	qlkMl8coy5j810nxQOldBB3rSYkm+sDMUya0sMqUz1weBe1knUpDtTCpwU375v3wYylMij
+	4wtk5ScTstpHjRcxVfrFWpnwyQg24Ck=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 0B348609D5;
-	Wed,  4 Nov 2026 10:13:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB5911F000C1;
-	Wed,  4 Nov 2026 10:13:56 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 1AEE660DB3;
+	Wed,  4 Nov 2026 10:17:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 664131F00A18;
+	Wed,  4 Nov 2026 10:17:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793787238;
-	bh=4wjuPdEIW1r5lz4xv5DqdpCHSpNI3Pzvy2rxa15uD2Q=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=btLwY/D4lsJeFzCdcAEzD6wdjTx1dloaXX+ZKmDhCoPvHChoVNNWec7D31VYA5gSA
-	 CEcfoRM80lWwZgd5JEx5YrXUAQfGvVqpv8ClnaFi/yU5KyNsytcL2oEuDJN8M5U3hq
-	 A0zpAPALizsCrwmKAaGrBOXQ3gEzjZLL3nKahGHku/25b8SIfwmbBmWkfFCpMtf4Ju
-	 4GZ8wCVNMqM2QISUHCLaS3MUvvJYTbWbojaagUvLeZTHJV5rm0j+FGHE05jrLKCPsw
-	 SR+K+bAvmHbpjph8Tj/BXwNjLMXpJqbWzIdLraYbLhh5m9D2ohbwovruQmr2HNofI7
-	 4Hz/g9o32cnlg==
-Message-ID: <sashiko-outbox-197069@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH] x86/mm: Define the zapped-entry checks only with
- CONFIG_DEBUG_VM
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Kiryl Shutsemau" <kas@kernel.org>, "Dave Hansen" <dave.hansen@intel.com>
-Cc: "Dave Hansen" <dave.hansen@linux.intel.com>, "Andy Lutomirski" <luto@kernel.org>, "Peter
- Zijlstra" <peterz@infradead.org>, "Rick Edgecombe" <rick.p.edgecombe@intel.com>, "Thomas
- Gleixner" <tglx@kernel.org>, "Ingo Molnar" <mingo@redhat.com>, "Borislav
- Petkov" <bp@alien8.de>, x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, "Peter
- Xu" <peterx@redhat.com>, "Andrew Morton" <akpm@linux-foundation.org>,
- =?utf-8?b?RGF2aWQgSGlsZGVuYnJhbmQgKEFybSk=?= <david@kernel.org>,
- =?utf-8?b?TWlrZSBSYXBvcG9ydCAoTWljcm9zb2Z0KQ==?= <rppt@kernel.org>, "Pasha
- Tatashin" <pasha.tatashin@soleen.com>, "Andrew Donnellan" <andrew+kernel@donnellan.id.au>, "Rohan
- McLure" <rmclure@linux.ibm.com>, "Baolin Wang" <baolin.wang@linux.alibaba.com>, "Tejun
- Heo" <tj@kernel.org>, "Jose A. Perez de Azpillaga" <azpijr@gmail.com>, linux-mm@kvack.org, kernel-team@meta.com
-In-Reply-To: <aumzjHyJsshPJBUI@thinkstation>
-References: <20261102144001.342837-1-kas@kernel.org>
- <b04316eb-a2f8-4587-9392-e673c7bd2fc8@intel.com>
- <aumzjHyJsshPJBUI@thinkstation>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Wed, 04 Nov 2026 10:13:56 +0000
-X-Stat-Signature: zktesbxjpohm5mawimejaz3k7qq7bt6x
-X-Rspam-User: 
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	s=k20260515; t=1793787475;
+	bh=5ut8NFXKl0VORDomAfnUZx+oz3sFVutLuYOBR9qWWWI=;
+	h=From:To:Cc:Subject:Date;
+	b=U5OIqhcmplDBGx9vswk9PzFZlp6UpqvHgTvJJ0hm4ECIb1Q9fUkdB4qjnkZL4EOih
+	 5PtkmXx0Lbgir1/JBrQl9yP9nYEJVF0lXv3AdRCoEtg01IGbpTI/4LG4w5/pzNdUrN
+	 rlgfhZFAFkIyhnHQ4Hv6VoxgZi+72k3WEVn6rzRry8bba69gdVLaGKxmBYgDJl6RyV
+	 TNju47K6xZqj+2W3hz3NFYT1788hvLuzg7HV+sm40y20vxs8gZfeal8AdWoQQk4/VJ
+	 gSOMjtTXeRp+rSzSqeUjF1eyNt6594beL8DxkUZkcnSdKfL866CjkxZ8iOa8d0K09F
+	 ertV/j1THPnFw==
+Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
+	by mailfauth.ams.internal (Postfix) with ESMTP id BC367198003A;
+	Wed,  4 Nov 2026 05:17:51 -0500 (EST)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-04.internal (MEProxy); Wed, 04 Nov 2026 05:17:52 -0500
+X-ME-Sender: <xms:TwbrajJyc_t1RXCW76DvdHvplB0es9N7dYshaKKkqmI5svknOFwKAg>
+    <xme:Twbraq1-ngiZe6P7LsXlbe2DzUFTim9loS1jg6I3Vld4h0lIqNPJfPHeGkgARoL8H
+    -1bkzQ_uSvOrpHNZPKSerRFotCmAKmGVqVMbPGwg0SS7R8KlQkR8rY>
+X-ME-Received: <xmr:TwbrakWrPqa9fs8ZuBtdAb6dnV05Uni52dDBr8XPH6PFRBTlio8wAybRNmc>
+X-ME-Proxy-Cause: dmFkZTERwdTXLLvNujcwJRmJQoRSjUeo7y+uZlkVzWGPKNwqwPt3Do/dFsSwwEGd2cYbU3
+    ZlMRSjp6hREE5FxEap8oN12Q5oo2+mh09XFzv4qg/3iVrUoQu6ls4cVtL27Qbdv5oZsnUG
+    nrDo/2lNW4RophliGyKDS2Fivykj/V+vRC9OVFaVdaB7mipj/KWjTBuGKHKmGc/meKz+Ii
+    uZ1bqBtutznT8LjL5UsprQCTJz2CcYMKICqv6lNQenhHvANlbIXj0zvC7G0KBZ2VPerqG5
+    ASJrFYoDZP5hwVITdNAWMrO90juZA8nBdS0fdVGifTDLzcGh9eU+hOQfwDbj0iFarezsVS
+    NoL/wMGiqePSjUqwjeM4zUJdmRyj3ovSv5KV0NJ96UgaXSnI7b4fQMznc/cq7UCvim7agH
+    6ySTqS+vaAGZoWzPuBatz3eHTnpApJrZT5qXonMTYpvhYrwjv04LY3VQEFa5qraKQaRdn1
+    LDnIeHwUXRkT/hmeoytXNss8bIODaFT7k1xOub8iIhOgFi8NUHwtV7WEHSY+pXn5HFbV+f
+    jk5hCVGOgaLjET6YsKyJDj6qPbPUL2aoXnO6U0naXL9BBRf0+fleGAr3rty5Sasewuqcbc
+    gmzPdEenxf76b3QPAGEcuDvHXJ09hIargW7nFTijod8c42Ew+7xVTlgbFcxw
+X-ME-Proxy: <xmx:TwbratwxqwB5vulkh0Qk4xLFsj7KgC7HFozUsxDavWx_6nRxGbRnRA>
+    <xmx:Twbrarxq6vWDF0pQLDpi9wD7_P3cLMOmrl5pLYlrgbOMrhHWWBqHPw>
+    <xmx:Twbrai2ZIlz-AIwDuR8hp2yxi36KnAsVwDCqi5c4GGDIQZQf7maPJw>
+    <xmx:Twbrapo5UW7BvgfcvtcaG01hIbbkjf-uJ77MPw9MyDtag6nzPcbJLg>
+    <xmx:TwbraoBiLtl3o4BN_BWqL3mWKSUe3qmcKbH5AkeE7ihTAJApj2GclvsY>
+Feedback-ID: i10464835:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 4 Nov 2026 05:17:50 -0500 (EST)
+From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	David Hildenbrand <david@kernel.org>
+Cc: "Kiryl Shutsemau (Meta)" <kas@kernel.org>,
+	Mel Gorman <mgorman@techsingularity.net>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Brendan Jackman <brendan.jackman@linux.dev>,
+	Zi Yan <ziy@nvidia.com>,
+	Dev Jain <dev.jain@arm.com>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	kernel-team@meta.com
+Subject: [PATCH] mm/compaction: sample empty pageblocks again from a random offset
+Date: Wed,  4 Nov 2026 10:17:46 +0000
+Message-ID: <20261104101747.2485913-1-kas@kernel.org>
+X-Mailer: git-send-email 2.54.0
+X-Archived-By: <archiver.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
-	autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: CB5CD180002
-X-HE-Tag: 1793787239-267488
-X-HE-Meta: U2FsdGVkX18n3sDVTKR6DR6gnEZVgPiYfEQtCEpydKVpopd6bulfhCAbNwKwuS5SPRLfnxR6ADI87xKI4VGMw0OIOZGZxVt56D5M74lNW82z7agouQ3zhOysAi2PROT2IPDxKxr8VzgG2wQkudyYUcOGIJ5MXMrmiOOehhs0DBU5BD5N9ue2MAZd2cBWGa46IjDHYS79r6flW48236bg/xGjys/xN0Ww2xXXE36W4B8hy5lmGwbqkxGAAYWNRWwmoAWr+O77CaE5bhb1JawUnG1FBztYH/HDli2XpNKdo90mq3bWsdlQJ8NXD7xoKxemqiBCZLlMP03DXV2gckCrssRsIvqaCYM7KTB/gwdA9bgQ1laTSJRoRCEYHOSrWzVVQtO7A8JvWdMYKSZ4lsHaw6dpwhy1Wl8amjBEhcRHM4ZtkkuSNj3GmVW2zFGddjvO6hNe0Y1q1t6wD6pYtkGNb5SHj7T5O0zJ6hcOHq7qVAp+8F+pGmVZy2lT17Q8Y7NPpndpsIUHSyqsygCsYXZ3bGDmSJJsy1y1+XESMFFFhUhdeEwcGLYoQWB8NEUN1dt65EfXaJ7zdba3LZEwEnF2AO2+to7V+0GB+r3pwlzb7muAMji/H56odw4oq5dGteubPOlIYm84Vg+UNQVMAMesL+o3okK1N8YDQEzF4jKdeF4VNxb3qnh+Xzj/Rhd+7jvGMO0FlVDOb9+uThyDx0WQR0vMjSHIULPGS7QLXi2fNBTMW12QWXUcyqPGCCqDRg97yJ02xRs7fjVos7ilji3JSf12PlsD8isx3edkRgP1CuUHl2eBJCbBK7g2IDXJTCT281Oq/5exW3QDtvFnOuz5BthXqARe7QNxgEOcpjGV4Qa6BG7TmItHUqZRUpKcp/3rglA8akoka4brx6XT5/uDkRI0fG2WfMJVjNtoXKJesttdv2X83XaMr3n036dBygiiIZLG/tFv/uDWKXuKROu
- 73c0Ey9x
- asJxc6Mtt99iaq3MN9Lhk2gR1YVOGMUx4ULdVfmMNVHQ2VRt7+b9xcDBYsVVi+nmcPtQxSGsSfAbMSSS8J+dyb3YVWRtbu1xNKJPq7aAqRwVeNmxQ4hiCKyxCZD5AGT5LW0it1DE8sFAoOunMRN01D0XaCr1Q0s4cV+pgvYRnUnt/O/PpGHZVfcYtwryFHLtQyLdrJi2ufA1aA0lmj4LzZQLhID3654DkkHciuP5g3YWXebw2/auMdd2MsrsiGstuIQQu9Q0pUWa39QzZKyZywZSnIpHkpu8Yh7T/KtTUJSeeEKGpvDF8PqcroHYTLnKhcVGBhlTC+1eGX5EF2FJ27EGjJWu97FiZRQdum0437iT4lFwgetPpWNI8UPE/bMWeSLueYD0VeHUAjC99gblfPvo/Qss34nhw5QfMvo0Oe4kqceGGs2uB471oOXTmQw+qYRusrRuAT6FHEmxkTHDYPgXKilm05iN6KUr6mcNvN3anZ+sg4SJQjKM/Tm0hupbofJ0HoD2NGAsUqjfqgl33EqD7zWNcRwOQ5bHEngMpqV4Ec+ymuFlCuW+J4jcfO3msSRP6KJ28LAfCNz3ws+45wt9TZXI6abklxJ16V+nyj/1RhwNxoz1qCXI+VMhqQpUXz/clMbO/6+FyZ2ylm6c+/uv2r6e3MuTIIbUPmS0MXsl40voupLywpesfGrWoo0+ptRp60jlJMQo3h4TR4CJsaPrACjR/h/TLyuAdM2qjcGunybQO4GOqq+4A1efsg4nhSeCklj7iUXPyyIfPkdVd8dEr3qy5lqk8c0SPtsa6/OUxuS5yNo0RPAV4zQ==
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 9D93714000B
+X-Stat-Signature: sxrryhhirebpmg9arf1tqpodqdqz87g8
+X-Rspam-User: 
+X-HE-Tag: 1793787476-806481
+X-HE-Meta: U2FsdGVkX1+I4zhrSGSONm1SwT9T8t522HAWkEmOw71dSna3M7y9lUnkDwmyLFtY2Qa5eVQ8Irtn9cIcIlbYucWAFIC9RV+5FX0QhMlNCXSJrYLsQ1mNjlTRPSwrcZIhvlDqxEcMEFaL93n/7NMKldYzBcdB3CDvOaEqZTTJR79zWii26PsEvFXBvCORArD09dFBJNYMAmQHxpDtt6qD733eTwhb7+Gcl17F7yMOJsvDZMcRsyPg/UBUhfbTvgr12vhw8C6ZQnmOJTjiMJcceUZxpXkfL8KNBXDZul0weskvYc0fYfetd6egjVd4o67jlTHYWT2t6X+leJHOYxrNx4RfZZWMvEpWLu1NQ1vAEFwT5nJGbeOytVyLz4aKjW7INUi5sTtuAD4e8CnVGbUl1pGMJhTzENXt3iomW/aatbcw7F7qQ6hibslSJCbjiaQyLB8IyA7udwCdcQskKLJK6hFzflCo9oRQwN/4+UJF3BJYwXAUxv1CPT5OUkd+V3PExqw4zvPpa8NUaby6CsbBj7RoHYImreK/5RjIC1i2A5QD1Bwz7nq9aQk2MRoiWkdjgcxvMRsyvHvZUfcuS1HXYFgNL37WMiftwOM48uxmbwqnm/XRcgHWpYnGCv73qgJp3pKczKh5086hploq4+C3/z1Msi10G7MwJYzO9IcI8VKiA9pLbPvnEWfVYGFzvlzEPipsHwc2a1ShYLzAI5fBkHnULPaJB3T5kyYhSv0zzHYwtSwxVAvbeJYKEomLR/h9cgB7AHLswpjFyFxKyNgVchfRmapeEJvjrRJAafvzkuq4ApGdiK5DL9p5zQ1ywFy5EOl/hIkAr9eRY/TD66iB0rF9HcpWkMlU/Ps8i2F2BGp/LIevReybd3F+3s3LswqKF3Li5RfURQzR3QEFSmzycDk0fsqZQl9vjHsvitnih46xjej7pF4Up3T/I1Gl1j926PuBKxRA8fniGpzoETA
+ /Q2XVxss
+ GcCKH1OISIWkIWde3swy7BVwvhZgo4DiARhUnLdG1c9oFsaqQEEcwbd2UvWqjkFrM+rciqkdNLsQiQ2tHsLlkXUnBb3qqDbYx8hfOWq3Iqy2fyqF+OgUbbqcS9d5xxJV6yfmr175ooOrd2oq5/UY1tnpyCExgiwQNyhexe1Mi4tlaJQI1/cvwQMKVqEW58NX+l5aLlVhhutjYIXwJR6jfX9pNkSj+SBZCSTGHu25Azis8240OO9jbITM03iBphAha6uMgeRqJ6pO6yRsYIzlS3tPwosed4XDjU4cGXK01+vNCH4I=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,91 +128,102 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
-X-Archived-By: <archiver.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [Medium] x86/mm: commit title contradicts code and changelog has unstripp=
-ed scissors
---
+Once the free scanner finds pageblocks with nothing to isolate, it checks
+only every stride-th pfn of the next block.  The stride doubles with each
+empty block, up to COMPACT_CLUSTER_MAX, and async compaction starts at
+the maximum.  A block that gives nothing is marked skip, and the cached
+free pfn moves below it.
 
-commit 1651219a7e4a74c995baa4203be8528bd7cfe1d0
-Author: Kiryl Shutsemau <kas@kernel.org>
+The samples sit on a fixed power-of-two grid and alias with any layout
+that repeats at a power of two: when the free pages sit off the grid,
+every sample misses them.  With one free page in eight, all at
+pfn % 8 == 4, a stride of eight or more sees no free page at all.  The
+free scanner runs into the migrate scanner, and compaction fails with
+most of the free memory in the zone untouched.
 
-x86/mm: Define the zapped-entry checks only with CONFIG_DEBUG_VM
+Tasks then stall in direct reclaim, and huge page faults fall back to
+small pages, while gigabytes of memory are free.
 
-This commit removes the arch_check_zapped_pte(), arch_check_zapped_pmd(),
-and arch_check_zapped_pud() helpers along with their callers and
-pud_shstk() to avoid return mispredictions during page table zapping.
+Real memory is rarely this regular; the test below builds such a layout
+on purpose.  On a 32G VM it:
 
->     x86/mm: Define the zapped-entry checks only with CONFIG_DEBUG_VM
->    =20
->     On Mon, Nov 02, 2026 at 01:12:47PM -0800, Dave Hansen wrote:
->     > Or, heck, I'm not that attached to these checks. Let's just kill th=
-em.
->    =20
->     Works for me. x86 is the only architecture with them, although arm64 =
-and
->     riscv have shadow stacks too, and the x86 helpers already keep
->     Write=3D0,Dirty=3D1 out of other VMAs. Patch below, without the Fixes=
-: tag.
->    =20
->     Rick, any objection?
->    =20
->     -- >8 --
->     From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
->     Subject: [PATCH] x86/mm: Remove the zapped-entry checks
->    =20
->     Zapping a range calls arch_check_zapped_pte() for every batch of PTEs,
->     which is every page for small folios, and arch_check_zapped_pmd() or
->     arch_check_zapped_pud() for every huge leaf. Only x86 implements them=
-, as
->     out-of-line functions that warn about a shadow stack entry (Write=3D0,
->     Dirty=3D1) in a VMA without VM_SHADOW_STACK.
->    =20
->     The warning is a VM_WARN_ON_ONCE(), so without CONFIG_DEBUG_VM the
->     functions are empty, but the calls remain. With the SRSO "Safe RET"
->     mitigation the return of every such call mispredicts.
->    =20
->     The x86 helpers already keep such entries out of other VMAs.
->     pte_wrprotect(), pte_mkdirty(), pte_modify() and their PMD versions go
->     through SavedDirty, and only pte_mkwrite() and pmd_mkwrite() on a
->     VM_SHADOW_STACK VMA create the combination.
->    =20
->     Remove the checks, their callers and pud_shstk(), which has no other
->     user.
->    =20
->     In a KVM guest on Zen 4 with Safe RET, zapping 4K pages takes one bra=
-nch
->     miss per page fewer. MADV_DONTNEED of 1 GiB gets 6% faster on anonymo=
-us
->     memory and 8% on shmem, munmap() 5%. THP is unchanged. Without Safe R=
-ET
->     the difference is within noise.
->    =20
->     Suggested-by: Dave Hansen <dave.hansen@linux.intel.com>
->     Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+  1. fills memory with anonymous pages and pins one of them in every
+     pageblock;
+  2. frees one page in eight, 3.6G in total;
+  3. creates a million files on tmpfs with defrag_mode=1.
 
-[Severity: Medium]
-Was this patch applied without passing --scissors to git am?
+Direct reclaim entries (allocstall) and the time to create the files,
+10 runs each:
 
-The commit title still reads "x86/mm: Define the zapped-entry checks only
-with CONFIG_DEBUG_VM", whereas the patch unconditionally deletes
-arch_check_zapped_pte(), arch_check_zapped_pmd(), and
-arch_check_zapped_pud() in arch/x86/mm/pgtable.c, arch/x86/include/asm/pgta=
-ble.h,
-and include/linux/pgtable.h, along with pud_shstk() in
-arch/x86/include/asm/pgtable.h and the callers in zap_present_folio_ptes()
-and zap_present_ptes() in mm/memory.c and zap_huge_pmd() and zap_huge_pud()
-in mm/huge_memory.c.
+                           allocstall
+    free pages at          median    max      time, s
+    pfn % 8 == 0                0      0      4.6-4.8
+    pfn % 8 == 4               86   1544      4.8-5.6
+    pfn % 8 == 4, patched       0      1      4.6-4.8
 
-In addition, the changelog retains the mailing list reply, the "-- >8 --"
-scissors line, and the embedded From and Subject headers ("x86/mm: Remove
-the zapped-entry checks"). Should the preceding reply and scissors headers
-be stripped and the commit title updated to "x86/mm: Remove the
-zapped-entry checks"?
+Sparse layouts hit a milder form of the same miss: at async compaction's
+stride, a block with only a few scattered free pages usually yields
+nothing.
 
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/aumzjHyJsshPJBUI@th=
-inkstation?part=3D1
+Keep the aligned samples: the head of a free page of the stride's size or
+larger is visible only there.  When they find nothing, sample the block
+once more from a random offset.  A random offset is the usual cure for
+aliasing: no fixed layout lines up with it, and one free page in eight is
+found again within about eight blocks on average.
+
+The second pass at most doubles the samples taken from an empty block.
+Pages scanned by the free scanner stay within run-to-run noise, both in
+the test above and in an mTHP fault benchmark.
+
+Fixes: 4fca9730c51d ("mm, compaction: sample pageblocks for free pages")
+Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+---
+ mm/compaction.c | 21 +++++++++++++++++++++
+ 1 file changed, 21 insertions(+)
+
+diff --git a/mm/compaction.c b/mm/compaction.c
+index f1b2060eb201..475b3a645122 100644
+--- a/mm/compaction.c
++++ b/mm/compaction.c
+@@ -23,6 +23,7 @@
+ #include <linux/freezer.h>
+ #include <linux/page_owner.h>
+ #include <linux/psi.h>
++#include <linux/random.h>
+ #include <linux/cpuset.h>
+ #include "page_alloc.h"
+ #include "internal.h"
+@@ -1797,6 +1798,26 @@ static void isolate_freepages(struct compact_control *cc)
+ 		nr_isolated = isolate_freepages_block(cc, &isolate_start_pfn,
+ 					block_end_pfn, cc->freepages, stride, false);
+ 
++		/*
++		 * Free pages of the stride's size or larger start on a sample,
++		 * but order-0 free pages spaced at a power of two can all fall
++		 * between the samples. Sample a block that gave nothing again
++		 * from a random offset.
++		 */
++		if (!nr_isolated && stride > 1 &&
++		    isolate_start_pfn == block_end_pfn) {
++			unsigned long pfn = block_start_pfn + 1 +
++					    get_random_u32_below(stride - 1);
++
++			/* The block can be shorter than the stride */
++			if (pfn < block_end_pfn) {
++				nr_isolated = isolate_freepages_block(cc, &pfn,
++						block_end_pfn, cc->freepages,
++						stride, false);
++				isolate_start_pfn = pfn;
++			}
++		}
++
+ 		/* Update the skip hint if the full pageblock was scanned */
+ 		if (isolate_start_pfn == block_end_pfn)
+ 			update_pageblock_skip(cc, page, block_start_pfn -
+
+base-commit: 6628e7d4c6b25c8d18f1345e3a20d21829aae7e4
+-- 
+2.54.0
+
 
