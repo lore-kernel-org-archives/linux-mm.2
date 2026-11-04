@@ -1,66 +1,66 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F7C2606AC19
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 19:30:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABAFA6076CED
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 19:30:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=SAfHNNjx
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=erxYLb1X
 Received: by kanga.kvack.org (Postfix)
-	id 477866B05C5; Wed,  4 Nov 2026 14:30:04 -0500 (EST)
+	id C8D7D6B05B8; Wed,  4 Nov 2026 14:30:18 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4280D6B05C6; Wed,  4 Nov 2026 14:30:04 -0500 (EST)
+	id C65A66B05B9; Wed,  4 Nov 2026 14:30:18 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 33EA66B05DF; Wed,  4 Nov 2026 14:30:04 -0500 (EST)
+	id B7BA26B05BC; Wed,  4 Nov 2026 14:30:18 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 1803D6B05C5
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 14:30:04 -0500 (EST)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 952321207F5
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 19:30:03 +0000 (UTC)
-X-FDA: 85398427086.19.3E41415
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 89D356B05B8
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 14:30:18 -0500 (EST)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 178E8140673
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 19:30:18 +0000 (UTC)
+X-FDA: 85398427716.02.A38CC71
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf13.hostedemail.com (Postfix) with ESMTP id D144020005
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 19:30:01 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SAfHNNjx;
-	spf=pass (imf13.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	by imf06.hostedemail.com (Postfix) with ESMTP id 5310218000F
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 19:30:16 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=erxYLb1X;
+	spf=pass (imf06.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793820616;
+	b=brHDRB1y6xC0xSFEST3WZxKniRzWukroiXyu+4avvPX5eX3kuKiGc7w1Os5YlX5+qZSm94
+	CdJPxFQND0bMXDGv9cSty1Yv87d7v4woD1KqqMBxJ0f/v90FOR8SabBGoe2WM2dIntl0yU
+	V8Wj/q3AV/Dp0MBOTT9CYgp7j0u5GsM=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=erxYLb1X;
+	spf=pass (imf06.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793820601;
+	s=arc-20220608; t=1793820616;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KbfF7FDKuD8IgpxmK4NN79tddC7YrY9Y/+M606VrXfI=;
-	b=T5HVEaU2d+l2hc3HCGvbvZ7Ep6X2H/d+VzJYt7UzXCRp4IJE6pCAgABuuhF7TzHql0g1GE
-	6uoi+TjysDvLvhdfSAgoCA/OECwLf35/rURFYaCVgiPnXG+6BYyRnKac/dEtV3M/grjKrl
-	RtV0N9GJQgytoh8L6vP0NIfno8WeQGo=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793820601;
-	b=vviHZo8Ry8Xfua17cSUZP6iyluD5gtgEO/eMDWmegbdCAE5j94q1zxEu4kQYFhjkNHThLy
-	Aq5CykbHBQoXnQhWhbDql55GoWG2/M3Het0Jc82agsoH6CF6JL2D97VpuM8KCKw9WBaIqa
-	TQUBcyEieuZ4XarM7gP4Zc63R243SPE=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SAfHNNjx;
-	spf=pass (imf13.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=wXVlMWiDTu+69WMCdmpXWiSSm+c28yN85IUhl+IubT8=;
+	b=CBBnQVvXB4qtzSGBrx9UuxR+cis3+JDL82cKL7xkbNA31X93PIpWxTuvUbHxREaO++lqGt
+	TOrEQm5OjE2ym9jV1xFumNffzRx/uMMQ8Q+JGFj2KJDoxS0L+pi+QK5l+gJguUU5IzGuoN
+	K+YoRjkD+OMLAdCt9tDJoGYF55jvsig=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 6179F60A8D;
-	Wed,  4 Nov 2026 19:30:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36BD01F000C1;
-	Wed,  4 Nov 2026 19:29:49 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id BD42C60DB4;
+	Wed,  4 Nov 2026 19:30:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3DD31F00919;
+	Wed,  4 Nov 2026 19:30:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793820601;
-	bh=KbfF7FDKuD8IgpxmK4NN79tddC7YrY9Y/+M606VrXfI=;
+	s=k20260515; t=1793820615;
+	bh=wXVlMWiDTu+69WMCdmpXWiSSm+c28yN85IUhl+IubT8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=SAfHNNjxvTql4E+z1yQcRoEm/3CalSsruYEaDFEAwD2MR1+O3Ye99A+nthRvUfnOh
-	 sNn+nv5DU4hxg8sd8IUitV774fqcqp2VIOWX8POpirUeoVFOvqQmSu0pEFGlLAHGYD
-	 U87bWU9TJDKpUyRG2Fvt11MmjA/bvZTaV8Xtwfl1DJLnDy1EfMx2ldZqvi8wS8l7pU
-	 z8u/IwnNqmGhZUVhezOwwUvQynv27Lczh9RmSaROx62H78AJOuM6lf9qnQZTrXgOYI
-	 GjXIYIMTlREUsQuzCmK2Ia6wH6NcuAlyzHfRrgkTdGYoEXU8eOGVb8ZJpacNOliGBs
-	 x5gOzg3clGATQ==
+	b=erxYLb1X2DHiu8zWp8v0jRYZ5UGBGh+M5ta+MA4icX/zIpChkASF4X68Jon0h6gUC
+	 8nuq0rsoqvadx2nDVRRlBP2aj3ufS3vatM8TDiMeFwvrDbjUNZAnA9ofhKM5FJ6XdR
+	 sKm5V0II55oa6/vNBFqcvr+LbWPRO0kbZer+mED55WXozLJTUJG12joB4mMb5qG9J7
+	 VpqXXHbX8Uyy3Hnr9YOzD5moscAo3/2JptEeVKryH7YO1wOoswN1+5wJ5ax5tGm2mR
+	 +F9oKHdKLr81Lnpvjj/9p5jcmbN338nH1sT0ofHVHFecyj5pPtazwCt2Ap7nkxjs5Q
+	 Nyh8bzuW3jflg==
 From: Christian Brauner <brauner@kernel.org>
 To: linux-fsdevel@vger.kernel.org
 Cc: Linus Torvalds <torvalds@linux-foundation.org>,
@@ -121,31 +121,31 @@ Cc: Linus Torvalds <torvalds@linux-foundation.org>,
 	linux-debuggers@vger.kernel.org,
 	"Christian Brauner (Amutable)" <brauner@kernel.org>,
 	Chuck Lever <cel@kernel.org>
-Subject: [PATCH RESEND v2 02/23] proc: add pde_pin() and pde_unpin()
-Date: Wed,  4 Nov 2026 20:29:47 +0100
-Message-ID: <20261104-work-procfs-core-v2-2-76ace653a773@kernel.org>
+Subject: [PATCH RESEND v2 03/23] proc: share the readdir cursor with sysctl
+Date: Wed,  4 Nov 2026 20:30:01 +0100
+Message-ID: <20261104-work-procfs-core-v2-3-76ace653a773@kernel.org>
 In-Reply-To: <20261104-work-procfs-core-v2-0-76ace653a773@kernel.org>
 References: <20261104-work-procfs-core-v2-0-76ace653a773@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=6493; i=brauner@kernel.org; h=from:subject:message-id; bh=WCaLeEgGoNbtr6H3vvQuwG4filJLGelQOjwPMQ9yV2w=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS9bi/ebdDe0XTixBOHxbcsFINz3ObkSvH8+eO/6mfq0 8n+EQkaHaUsDGJcDLJiiiwO7Sbhcst5KjYbZWrAzGFlAhnCwMUpABMJCmdkmLjyc2loYnKPx58S sfPOs8+JCT3z1bl78s6yrbfys18/W8/IcOrbba3Kb0tMyr/aFPrY3mpm+ScfpZKvcvT5Zh+Tzv7 bTAA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=7727; i=brauner@kernel.org; h=from:subject:message-id; bh=T1jO1APZ3j3BQHDjVCpmuxMpr8V+h+I2OmQhvzCN9EY=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS9bi+58GPL4mlqj67P2u71ltNkzqaV66omL9vzZbrTm 6qaruBg345SFgYxLgZZMUUWh3aTcLnlPBWbjTI1YOawMoEMYeDiFICJLKxl+GfMdq5+mWH0iYYW pjurF5RIvVivMn2Ztpzp+jttleeahF4x/C9dvn1KMM+3u+sn3VvOYpmaw5XlpZepdd7umWXjkTf LRFkB
 X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam06
-X-Stat-Signature: nyr6zbfgarjdx9uf4g3qtuoa1ofipcas
+X-Stat-Signature: afrotwuxq73cowy3udogo8eaq1bycf6g
+X-Rspam-User: 
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 5310218000F
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
 	version=4.0.1
-X-Rspamd-Queue-Id: D144020005
-X-Rspam-User: 
-X-HE-Tag: 1793820601-374245
-X-HE-Meta: U2FsdGVkX1/FfwlbW62kQXcgFrK41kxdWscjkQJIW2a/bcOEAygVZV0Fx3CyN7WzoZGGRT9rXbFSmpNqVrgqYsuoaM+qrpk17xsjfEeJpkW7FKEyhjCEBdWNQj+bElJzHxMCvmfkHOrhIRr4lJg73EubFCFhvY42njX7R0TjDAp2MAIbJ3oQuxDZT916J48UwNydg8CCv40/2tcP1PI+LfAQgxlUAODxmxgXH1Jf4hfpo6FMACkteZQ1uv0zm++i70Svw34by4UMdZdYxetOfOmueSnVEqd/YbhBnvtQZZNeGqqeG4cUCe+T18fjl5J50JSaOW7q4PHikhcGmwSjxraQHFKG7DZU/xCp/ZV6dZaIM2bJeRX6490mUNwpWm0nDfZS0zit+xeBTljVMttfHUpnCJhr9lcQyBgfO4aOFxb+ysFeaSNqKylWE8nh89rUKHvpZT9ML6cIVL5QWFor5j35en+tsyADwl8Xaj2sHUfHFx6hLi+FYa6o7atsduCiUPO5JxtDBEfeEQKvVaTEgwjxVnxbSx8JAK+0R0BGcIwUxguKl4b6rTbARKY02b+HwsnDiQ6Pxnlxw81JyOCv+YzfaQepntK/+bHLhVlOyOl7kM2bKOETt1Tos1C9ohfQKhVrLNyb2bik0AMCTLQVJpO0kUeiXnHjsBXqj6twtTkKrk6Pkqk8MeEb9K95wN+GDecdDk0IxSdeVANO1eYFH6jsSUOTUUcpYrg8cBI7ktnCxTm+tDELO5hRssnt4VJTnu733E+5VEDsCUzOzTnrecjtL6wj6IV/xDc2r2lV3O2zjeoWuHH1qE04VadMwQHgHAchZsI+1CEquz82Ei2eoxIZ62ZRxBXD9cFvGQszL7TJ61ZCrZ4inS2qlHl2L18shqVBiHyHQWyu77Bgp54jQIWyTLfR0+YlMXpaMit40v0O8Q9jF1YAYId7WnZcBsZ+UMb0N+NIKAOfDeAG0TR
- g0eW/pAI
- 3ySPTRumasoLtXwaYWPqftuh6D/kWz6wVLWvtCU0zJsrY1QY3G4+V0w4Fiv3EaJEs5yy3NFPlFsXiRw/dTnccbVrjGqe8ZAO6DRv9s6hNhbDLf7nPAj+JioTP5dgsk0cWUHLClZmMBFNo1lItDwH4Pr7oBZUYPqPkrD6haxj+fMGCHSBhF0JCspJM9ldvTQYdrNeJnaCl7cSInCy26fvC+XqzfmqsjG3eJn8Fh4S0BBE8kF/KKdrlCyEI/18AQUVzaXSzhO4s05gYTwZdSDA1Il3+tv886gozotxcWrfLoYMJcSGy5vNUZURrny8cJSGrVBikd8La6rSAYPRf8U5X2+16rItYfHE3JmWt5ORgxqTUgET1lyUzCVBrEWQNVTEhCHy35DeWKZGfLivO0XohCBX66rc97rUwOz164LXfCt1YjthURUmr0CHEp382e9Q5qfuT
+X-HE-Tag: 1793820616-753606
+X-HE-Meta: U2FsdGVkX19IgJpXXhYF8XvWghGSKp69V5Ep71f+s5/WHZZa9eiAR/hZAGn8ZE2AXLtYueaqVFFn77/v8ZdSUTlx3yB8HmM1Ib0NfrNukU3qLuZcD082CaKeC+eTyDxw/vm9Kiuuz+SA/ZLH4yHJcO+rJGLCe4GImOs4fgEEGC25Ym8y1EaaZZ3zzvRsTIVie+wuD0+v+IkrIoFCBXa74J1z/hmbBBP604hJIgL/kvygIu9lcOe3byKsOlSyCqYXjfh+ss87dGsXU4KDvQpLF5GBm24WCKKRYtEHjNmDqxPBmzcDgFrp7qDD36cH/GnMiamGSYAxY0oHvr0TNUfKGRgvaKFACt8YfmIEn2LlASyDGOoN+h1hmomCVaaQiZeKWKBU2ZvQDQcX9CH4SAMcFrsYF66UBk+Z7iO73XV7d9TpwHnysSj0VYIFYooi2/kxbERQHohlGmkq/9ZhEIh2aHW704sDq6wseHLBWpebzQEEYLECCHn6KxGt6kI1RH7G8HqgK15DVaP/vMcD2MubA8YCM0AEtrMdntOgl0rplw5WZqe8U3H6zqKfRXxEFcFZLQo4qIntXDso5wRDp4OZ86xR1wa+326BT9vb9cNWGFKwcO+FuE+rPVV46t+D0LSP2XMUVLluCE2upxTTGT2yvl4Rs1oyf4ES/f+Ze/rF3GttyNDy67L4hAy1kEN27Z6QPSqRNUSzhWor9BQfcDgu0SmYG11li7hRSfE7mUDLIrYFXTRwQm3lTyLY04GM3vrvQ72BCo5s/PVlkBpGPThRqC1FIAMw88J7ZNhudbzoaBfJQzB5HxK4M8lgxBshHUkAt++6BrqoIPYN9M6AuHm8e5jnn5djbOU8+ZQ4CI0vR2z/mwTtFv5GvCzzNJ/4C+0kBWXsVRewuJp+iw+KpXzmsBKKZXHVuLAFQTUoc7Xp+v50aBuz4OLe5yBMWMNs2Da8DYvhXute3GffXmoQ0xd
+ +LGz//Em
+ oI/7GZhe2nEcjCgxK+HF+Ki9u1iThwwbWviOKmdv78iPIWpt7Rx4BSxNfE6kGBk/QJmuxcFXWVYcVFvlP70ktEYRntpM/HmXskLhFk/UjhtFHqSvFuIWIidYos56s3gUYrBeHoqFg19zkYtFow/ZeEw1niYBQNkxChLoZhSLBjuf0Vps3NNV6o0V2UoTyMV27C4eOWdQsOXhzh4LdxM8pv07NGQVrQf9BRN5dYvoimRjxEe4DovefkdZisHgOCGRjGE/R7E5460OaDn6v4f/bbAkj+FkiHrkjR8/5
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -154,218 +154,219 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Every call into an entry that can go away is wrapped in use_pde() and
-unuse_pde(), and a permanent entry is called straight away. The read,
-write, poll, ioctl, mmap and lseek methods all spell that out as the
-same if-else. The next patches add a few more callers. So put it into
-pde_pin() and pde_unpin() and use them everywhere.
+proc_readdir_de() and proc_sys_readdir() both resume a listing after
+the last entry it emitted and each remembers that entry in the open
+file with a cursor of its own: the same struct, the same way of
+setting it, the same release. Keep one in generic.c and let sysctl
+use it.
 
 No functional changes.
 
 Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 ---
- fs/proc/inode.c | 116 +++++++++++++++++++++++++++-----------------------------
- 1 file changed, 55 insertions(+), 61 deletions(-)
+ fs/proc/generic.c     | 29 ++++++++++++-----------------
+ fs/proc/internal.h    | 25 +++++++++++++++++++++++++
+ fs/proc/proc_sysctl.c | 45 +++++----------------------------------------
+ 3 files changed, 42 insertions(+), 57 deletions(-)
 
-diff --git a/fs/proc/inode.c b/fs/proc/inode.c
-index 18f6490bfe77..66a3688757dd 100644
---- a/fs/proc/inode.c
-+++ b/fs/proc/inode.c
-@@ -206,6 +206,18 @@ static void unuse_pde(struct proc_dir_entry *pde)
- 		complete(pde->pde_unload_completion);
+diff --git a/fs/proc/generic.c b/fs/proc/generic.c
+index e7264f0cf5ab..f6d620a5c3d2 100644
+--- a/fs/proc/generic.c
++++ b/fs/proc/generic.c
+@@ -301,22 +301,16 @@ struct dentry *proc_lookup(struct inode *dir, struct dentry *dentry,
  }
  
-+/* Pin an entry that can go away around a call into it, see use_pde(). */
-+static bool pde_pin(struct proc_dir_entry *pde)
-+{
-+	return pde_is_permanent(pde) || use_pde(pde);
-+}
-+
-+static void pde_unpin(struct proc_dir_entry *pde)
-+{
-+	if (!pde_is_permanent(pde))
-+		unuse_pde(pde);
-+}
-+
  /*
-  * At most 2 contexts can enter this function: the one doing the last
-  * close on the descriptor and whoever is deleting PDE itself.
-@@ -275,14 +287,12 @@ void proc_entry_rundown(struct proc_dir_entry *de)
- static loff_t proc_reg_llseek(struct file *file, loff_t offset, int whence)
+- * Where the next readdir resumes. The entries are counted, so one that is
+- * added or removed in front of the position would shift what the next call
+- * returns. The name of the last entry emitted doesn't move.
++ * Remember @name as the entry the listing is behind at @pos. If this can't
++ * the next call counts from the start.
+  */
+-struct proc_dir_cursor {
+-	loff_t pos;			/* the position behind the entry */
+-	unsigned int len;
+-	char name[NAME_MAX + 1];
+-};
+-
+-/* If this can't remember the entry the next call counts from the start. */
+-static void proc_dir_cursor_set(struct file *file, struct proc_dir_entry *de,
+-				loff_t pos)
++void proc_dir_cursor_set(struct file *file, const char *name, unsigned int len,
++			 loff_t pos)
  {
- 	struct proc_dir_entry *pde = PDE(file_inode(file));
--	loff_t rv = -EINVAL;
-+	loff_t rv;
+ 	struct proc_dir_cursor *cursor = file->private_data;
  
--	if (pde_is_permanent(pde)) {
--		return pde->proc_ops->proc_lseek(file, offset, whence);
--	} else if (use_pde(pde)) {
--		rv = pde->proc_ops->proc_lseek(file, offset, whence);
--		unuse_pde(pde);
--	}
-+	if (!pde_pin(pde))
-+		return -EINVAL;
-+	rv = pde->proc_ops->proc_lseek(file, offset, whence);
-+	pde_unpin(pde);
- 	return rv;
++	if (len > NAME_MAX)
++		return;
+ 	if (!cursor) {
+ 		cursor = kmalloc(sizeof(*cursor), GFP_KERNEL);
+ 		if (!cursor)
+@@ -324,8 +318,8 @@ static void proc_dir_cursor_set(struct file *file, struct proc_dir_entry *de,
+ 		file->private_data = cursor;
+ 	}
+ 	cursor->pos = pos;
+-	cursor->len = de->namelen;
+-	memcpy(cursor->name, de->name, de->namelen);
++	cursor->len = len;
++	memcpy(cursor->name, name, len);
  }
  
-@@ -291,13 +301,10 @@ static ssize_t proc_reg_read_iter(struct kiocb *iocb, struct iov_iter *iter)
- 	struct proc_dir_entry *pde = PDE(file_inode(iocb->ki_filp));
- 	ssize_t ret;
+ int proc_dir_release(struct inode *inode, struct file *file)
+@@ -346,7 +340,7 @@ int proc_dir_release(struct inode *inode, struct file *file)
+ int proc_readdir_de(struct file *file, struct dir_context *ctx,
+ 		    struct proc_dir_entry *de)
+ {
+-	struct proc_dir_cursor *cursor = file->private_data;
++	const struct proc_dir_cursor *cursor;
+ 	struct proc_dir_entry *dir = de;
+ 	int i;
  
--	if (pde_is_permanent(pde))
--		return pde->proc_ops->proc_read_iter(iocb, iter);
--
--	if (!use_pde(pde))
-+	if (!pde_pin(pde))
- 		return -EIO;
- 	ret = pde->proc_ops->proc_read_iter(iocb, iter);
--	unuse_pde(pde);
-+	pde_unpin(pde);
+@@ -354,7 +348,8 @@ int proc_readdir_de(struct file *file, struct dir_context *ctx,
+ 		return 0;
+ 
+ 	read_lock(&proc_subdir_lock);
+-	if (cursor && cursor->pos == ctx->pos) {
++	cursor = proc_dir_cursor_at(file, ctx->pos);
++	if (cursor) {
+ 		/* Resume after the last entry emitted, wherever it is now. */
+ 		de = pde_subdir_after(dir, cursor->name, cursor->len);
+ 	} else {
+@@ -378,7 +373,7 @@ int proc_readdir_de(struct file *file, struct dir_context *ctx,
+ 			return 0;
+ 		}
+ 		ctx->pos++;
+-		proc_dir_cursor_set(file, de, ctx->pos);
++		proc_dir_cursor_set(file, de->name, de->namelen, ctx->pos);
+ 		read_lock(&proc_subdir_lock);
+ 		/* Removed in the meantime, go on after its name. */
+ 		if (RB_EMPTY_NODE(&de->subdir_node))
+diff --git a/fs/proc/internal.h b/fs/proc/internal.h
+index 268a0523be12..6b61d09ac5e5 100644
+--- a/fs/proc/internal.h
++++ b/fs/proc/internal.h
+@@ -278,6 +278,31 @@ extern struct dentry *proc_lookup(struct inode *, struct dentry *, unsigned int)
+ struct dentry *proc_lookup_de(struct inode *, struct dentry *, struct proc_dir_entry *);
+ extern int proc_readdir(struct file *, struct dir_context *);
+ int proc_readdir_de(struct file *, struct dir_context *, struct proc_dir_entry *);
++
++/*
++ * Where the next readdir resumes. The entries are counted, so one that is
++ * added or removed in front of the position would shift what the next call
++ * returns. The name of the last entry emitted doesn't move. The directory's
++ * file keeps it, see proc_dir_release().
++ */
++struct proc_dir_cursor {
++	loff_t pos;			/* the position behind the entry */
++	unsigned int len;
++	char name[NAME_MAX + 1];
++};
++
++/* The entry to resume after, if the position is still the one behind it. */
++static inline const struct proc_dir_cursor *
++proc_dir_cursor_at(struct file *file, loff_t pos)
++{
++	const struct proc_dir_cursor *cursor = file->private_data;
++
++	if (cursor && cursor->pos == pos)
++		return cursor;
++	return NULL;
++}
++void proc_dir_cursor_set(struct file *file, const char *name, unsigned int len,
++			 loff_t pos);
+ int proc_dir_release(struct inode *, struct file *);
+ 
+ static inline void pde_get(struct proc_dir_entry *pde)
+diff --git a/fs/proc/proc_sysctl.c b/fs/proc/proc_sysctl.c
+index 6a92c33db9b5..c1e41a3f8f6b 100644
+--- a/fs/proc/proc_sysctl.c
++++ b/fs/proc/proc_sysctl.c
+@@ -787,36 +787,6 @@ out:
  	return ret;
  }
  
-@@ -312,14 +319,12 @@ static ssize_t pde_read(struct proc_dir_entry *pde, struct file *file, char __us
- static ssize_t proc_reg_read(struct file *file, char __user *buf, size_t count, loff_t *ppos)
- {
- 	struct proc_dir_entry *pde = PDE(file_inode(file));
--	ssize_t rv = -EIO;
-+	ssize_t rv;
- 
--	if (pde_is_permanent(pde)) {
--		return pde_read(pde, file, buf, count, ppos);
--	} else if (use_pde(pde)) {
--		rv = pde_read(pde, file, buf, count, ppos);
--		unuse_pde(pde);
+-/*
+- * Where the next readdir resumes. The entries are counted, so one that is
+- * registered or unregistered in front of the position would shift what
+- * the next call returns. The name of the last entry emitted doesn't move.
+- */
+-struct sysctl_cursor {
+-	loff_t pos;			/* the position behind the entry */
+-	int len;
+-	char name[NAME_MAX + 1];
+-};
+-
+-/* If this can't remember the entry the next call counts from the start. */
+-static void sysctl_cursor_set(struct file *file, const char *name, int len,
+-			      loff_t pos)
+-{
+-	struct sysctl_cursor *cursor = file->private_data;
+-
+-	if (len > NAME_MAX)
+-		return;
+-	if (!cursor) {
+-		cursor = kmalloc(sizeof(*cursor), GFP_KERNEL);
+-		if (!cursor)
+-			return;
+-		file->private_data = cursor;
 -	}
-+	if (!pde_pin(pde))
-+		return -EIO;
-+	rv = pde_read(pde, file, buf, count, ppos);
-+	pde_unpin(pde);
- 	return rv;
+-	cursor->pos = pos;
+-	cursor->len = len;
+-	memcpy(cursor->name, name, len);
+-}
+-
+ /*
+  * The inode number and type of the entry @d holds, instantiating its dentry
+  * if there is none. Needs the header pinned, proc_sys_make_inode() checks
+@@ -871,7 +841,7 @@ static int proc_sys_fill_dirent(struct file *file, struct sysctl_dirent *d)
+ static int proc_sys_readdir(struct file *file, struct dir_context *ctx)
+ {
+ 	struct ctl_table_header *head = PROC_I(file_inode(file))->sysctl;
+-	struct sysctl_cursor *cursor = file->private_data;
++	const struct proc_dir_cursor *cursor;
+ 	struct sysctl_dirent d = {};
+ 	struct ctl_dir *ctl_dir;
+ 	int err;
+@@ -888,7 +858,8 @@ static int proc_sys_readdir(struct file *file, struct dir_context *ctx)
+ 	 * that moved the position away from it counts from the start, like
+ 	 * seeking to an arbitrary position always did.
+ 	 */
+-	if (cursor && cursor->pos == ctx->pos) {
++	cursor = proc_dir_cursor_at(file, ctx->pos);
++	if (cursor) {
+ 		err = sysctl_dir_next(ctl_dir, &d, cursor->name, cursor->len);
+ 	} else {
+ 		loff_t pos = 2;
+@@ -910,19 +881,13 @@ static int proc_sys_readdir(struct file *file, struct dir_context *ctx)
+ 				break;
+ 		}
+ 		ctx->pos++;
+-		sysctl_cursor_set(file, d.name, d.len, ctx->pos);
++		proc_dir_cursor_set(file, d.name, d.len, ctx->pos);
+ 		err = sysctl_dir_next(ctl_dir, &d, d.name, d.len);
+ 	}
+ 	sysctl_dir_done(&d);
+ 	return err;
  }
  
-@@ -334,14 +339,12 @@ static ssize_t pde_write(struct proc_dir_entry *pde, struct file *file, const ch
- static ssize_t proc_reg_write(struct file *file, const char __user *buf, size_t count, loff_t *ppos)
+-static int proc_sys_dir_release(struct inode *inode, struct file *file)
+-{
+-	kfree(file->private_data);
+-	return 0;
+-}
+-
+ static int proc_sys_permission(const struct mnt_idmap *idmap,
+ 			       struct inode *inode, int mask)
  {
- 	struct proc_dir_entry *pde = PDE(file_inode(file));
--	ssize_t rv = -EIO;
-+	ssize_t rv;
+@@ -1002,7 +967,7 @@ static const struct file_operations proc_sys_dir_file_operations = {
+ 	.read		= generic_read_dir,
+ 	.iterate_shared	= proc_sys_readdir,
+ 	.llseek		= generic_file_llseek,
+-	.release	= proc_sys_dir_release,
++	.release	= proc_dir_release,
+ };
  
--	if (pde_is_permanent(pde)) {
--		return pde_write(pde, file, buf, count, ppos);
--	} else if (use_pde(pde)) {
--		rv = pde_write(pde, file, buf, count, ppos);
--		unuse_pde(pde);
--	}
-+	if (!pde_pin(pde))
-+		return -EIO;
-+	rv = pde_write(pde, file, buf, count, ppos);
-+	pde_unpin(pde);
- 	return rv;
- }
- 
-@@ -356,14 +359,12 @@ static __poll_t pde_poll(struct proc_dir_entry *pde, struct file *file, struct p
- static __poll_t proc_reg_poll(struct file *file, struct poll_table_struct *pts)
- {
- 	struct proc_dir_entry *pde = PDE(file_inode(file));
--	__poll_t rv = DEFAULT_POLLMASK;
-+	__poll_t rv;
- 
--	if (pde_is_permanent(pde)) {
--		return pde_poll(pde, file, pts);
--	} else if (use_pde(pde)) {
--		rv = pde_poll(pde, file, pts);
--		unuse_pde(pde);
--	}
-+	if (!pde_pin(pde))
-+		return DEFAULT_POLLMASK;
-+	rv = pde_poll(pde, file, pts);
-+	pde_unpin(pde);
- 	return rv;
- }
- 
-@@ -378,14 +379,12 @@ static long pde_ioctl(struct proc_dir_entry *pde, struct file *file, unsigned in
- static long proc_reg_unlocked_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
- {
- 	struct proc_dir_entry *pde = PDE(file_inode(file));
--	long rv = -ENOTTY;
-+	long rv;
- 
--	if (pde_is_permanent(pde)) {
--		return pde_ioctl(pde, file, cmd, arg);
--	} else if (use_pde(pde)) {
--		rv = pde_ioctl(pde, file, cmd, arg);
--		unuse_pde(pde);
--	}
-+	if (!pde_pin(pde))
-+		return -ENOTTY;
-+	rv = pde_ioctl(pde, file, cmd, arg);
-+	pde_unpin(pde);
- 	return rv;
- }
- 
-@@ -401,13 +400,12 @@ static long pde_compat_ioctl(struct proc_dir_entry *pde, struct file *file, unsi
- static long proc_reg_compat_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
- {
- 	struct proc_dir_entry *pde = PDE(file_inode(file));
--	long rv = -ENOTTY;
--	if (pde_is_permanent(pde)) {
--		return pde_compat_ioctl(pde, file, cmd, arg);
--	} else if (use_pde(pde)) {
--		rv = pde_compat_ioctl(pde, file, cmd, arg);
--		unuse_pde(pde);
--	}
-+	long rv;
-+
-+	if (!pde_pin(pde))
-+		return -ENOTTY;
-+	rv = pde_compat_ioctl(pde, file, cmd, arg);
-+	pde_unpin(pde);
- 	return rv;
- }
- #else
-@@ -425,14 +423,12 @@ static int pde_mmap(struct proc_dir_entry *pde, struct file *file, struct vm_are
- static int proc_reg_mmap(struct file *file, struct vm_area_struct *vma)
- {
- 	struct proc_dir_entry *pde = PDE(file_inode(file));
--	int rv = -EIO;
-+	int rv;
- 
--	if (pde_is_permanent(pde)) {
--		return pde_mmap(pde, file, vma);
--	} else if (use_pde(pde)) {
--		rv = pde_mmap(pde, file, vma);
--		unuse_pde(pde);
--	}
-+	if (!pde_pin(pde))
-+		return -EIO;
-+	rv = pde_mmap(pde, file, vma);
-+	pde_unpin(pde);
- 	return rv;
- }
- 
-@@ -457,14 +453,12 @@ proc_reg_get_unmapped_area(struct file *file, unsigned long orig_addr,
- 			   unsigned long flags)
- {
- 	struct proc_dir_entry *pde = PDE(file_inode(file));
--	unsigned long rv = -EIO;
-+	unsigned long rv;
- 
--	if (pde_is_permanent(pde)) {
--		return pde_get_unmapped_area(pde, file, orig_addr, len, pgoff, flags);
--	} else if (use_pde(pde)) {
--		rv = pde_get_unmapped_area(pde, file, orig_addr, len, pgoff, flags);
--		unuse_pde(pde);
--	}
-+	if (!pde_pin(pde))
-+		return -EIO;
-+	rv = pde_get_unmapped_area(pde, file, orig_addr, len, pgoff, flags);
-+	pde_unpin(pde);
- 	return rv;
- }
- 
+ static const struct inode_operations proc_sys_inode_operations = {
 
 -- 
 2.53.0
