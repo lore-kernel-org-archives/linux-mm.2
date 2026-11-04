@@ -1,143 +1,105 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1D4F606D80B
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 16:41:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDEA9606A326
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 16:46:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=Dc1yalhF
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=IvMQyH0f
 Received: by kanga.kvack.org (Postfix)
-	id B070B6B05B4; Wed,  4 Nov 2026 11:41:45 -0500 (EST)
+	id 149F26B00EF; Wed,  4 Nov 2026 11:46:01 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id ADF616B05BD; Wed,  4 Nov 2026 11:41:45 -0500 (EST)
+	id 0FACA6B05B3; Wed,  4 Nov 2026 11:46:01 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9F5A96B05BE; Wed,  4 Nov 2026 11:41:45 -0500 (EST)
+	id 011506B05B9; Wed,  4 Nov 2026 11:46:00 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 73DB16B05B4
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 11:41:45 -0500 (EST)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id E90CA160701
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 16:41:44 +0000 (UTC)
-X-FDA: 85398002928.29.136FBBB
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 10878100004
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 16:41:42 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=Dc1yalhF;
-	spf=pass (imf14.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.128.44 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793810503;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id D4D7A6B00EF
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 11:46:00 -0500 (EST)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 76B56A07BC
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 16:46:00 +0000 (UTC)
+X-FDA: 85398013680.04.F43C82F
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf11.hostedemail.com (Postfix) with ESMTP id D74764000D
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 16:45:58 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IvMQyH0f;
+	spf=pass (imf11.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1793810758;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ku2UnsviuHOTDYdvHM/Ud8HrJciSPINrWDXnS5vQ5OI=;
-	b=fyw6SFN3A60/E9p/eu1szxoz3rGAL0pTE+54zOwzGfm1P2BW7lLL4/OK6bo+fARDuuxUKC
-	ugBGW6QSByK6ne9nemn8lccvuyCOIrs3YmHDuVu1fZGJg7uyfDXQ9pe0QwVo60eL1Aoh1+
-	DYACvTKvhfYkeNFCjeCvMmjGeIebBYw=
-ARC-Authentication-Results: i=2;
-	imf14.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=Dc1yalhF;
-	spf=pass (imf14.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.128.44 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1793810503;
-	b=gHR05eKIJ89bNP2//78CAJeZ3FEeGSfjhX74rfrL95k9An1Oj7UfqLcIUFpDbnxOd1iNkY
-	ZSjPt+yZeUWvakHKmtF34kYgnTkm9xq3IoqDXwxwKXUeOi0sTx64FmjzlQ/oroCq+EtaXX
-	DgkWnsS5c9mHdEW5ro11tGzgZx8Awls=
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-4b467581b98so6808415e9.0
-        for <linux-mm@kvack.org>; Wed, 04 Nov 2026 08:41:42 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1793810502; cv=none;
-        d=google.com; s=arc-20260327;
-        b=dqO3B1/DcJMn8ga4H4WAQ4w2iX57FebAULnokPKPL3RvIVvYjFHi/+jB5LSJZZZ8sq
-         TxJHNkd40jgMJjs3TyVh3iimqY/63jAA7rFizAL+ajQAQRGOWoalAf5phXS7R0PU5NyP
-         ad7Brzjdk24jEcjBPiaFwiPqWWHv5DplSFK9KGDzOGmM8wIXdMaov9xxmAMRgl6qgJlq
-         KhED2Z5J7VgOyWfFvHACQk8Xc7fpzFrF5KikYMD7HcvJ4HTGQryOHRk6W44HUqwliPeq
-         A9YQLAv93YVoRk82w03v5aXcEMsyKqxYyvOFVY9D6gdkkSpUvsQ5aSJgFm1jdHxg6YfH
-         6h1w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=ku2UnsviuHOTDYdvHM/Ud8HrJciSPINrWDXnS5vQ5OI=;
-        fh=KzM5OLLOx16Xlm3RuNqoRIhIfIaVM7kEZmYhn/AhuU8=;
-        b=IH21nJ9xNqJtZoLxPj5fBpmm7rzZOEqso2yFmdIPmJkG5MU+Cctg0LJzDUU8dL2mFh
-         lST/DqHzJDmoVMpSM0yp695adEsmnf6WGYXIWyCBeMxbJcIsEBrVAvWzf9fwrLkCgpg6
-         3zMonQpjPTQpwD02oESOJwoUkosM8YyIZPLZ/KIcRaKLsnGeFOzsuIiXFjVMglLkmzG6
-         T3rcpI+kQjEuOQgYWjMpbPwpnYTiN/QjnS5lW8YMj76ByoPCixx8Wueesj5MZkTV3crI
-         AOxatqGRWmpsssrPb/X7HOGijgKzJIbCaO5rxdN63k6G47tUmpxKOa2MyAyVgIGNhjmH
-         vx8g==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793810502; x=1794415302; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=ku2UnsviuHOTDYdvHM/Ud8HrJciSPINrWDXnS5vQ5OI=;
-        b=Dc1yalhF0WuOw8r6Mt9/+Edhm0viNUkplT0BDlTyvjTHtK/tAJuWn8FkRmKqK/O8fr
-         oH68U1+33UWpQk83dpXzUe6nypw/m2W59ugmQ91/arZ8QCdiUGvBqhdTWZZCeAFahvLM
-         /kMif6skgwG3D+GgYeC6KtphkWFj81reMFWUicHCANuIjYfCiXHY4VcwfDVsRrasuCY/
-         m9MjSYvuBY2McRO8gyydaYBFiyaQ6HUOLR8BL7k+XiivZMzNtsnRuhLdW2GVs+Nl3cZY
-         Y09v9/22SNLkezn8THQfBS76p/usUtk/B13YSjBxscX9I5IUu/hF0GpqZ8/2A5W1kovh
-         7fYw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793810502; x=1794415302;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=ku2UnsviuHOTDYdvHM/Ud8HrJciSPINrWDXnS5vQ5OI=;
-        b=e84JHEeI174qWYZ7Womz2RW+riV9w1oUNfNJhW/ll1LgRh1Q78/fGIovT7vtC9g2l9
-         0v5YM70Fux8hLdjnDePPZfKiROKYF4dO3HD3iFPMDcS5AIEms0sP5H1dBC8hFpxfpcCY
-         1+3nJxfNBe2rRtyAGnJGkGBzbrtMn2YYEyAxbDzHlQn8zqXaW/mbr+/lulqWXvXmzvde
-         tNcUqbuyxjNmcVCWRXa5R6glGn1wexyDwG93jQa716rBR7Ad9eUtIdjVrqXdtIoSeJBg
-         MNKY9qIO3pw96W2w/FG5v0vAtDJgsHmULTvmpRqohnCzNtoNAdMr8l0GUbmbEYcMm0+8
-         cSaw==
-X-Gm-Message-State: APuU4Z9PrKLvR1KIRAO8T+On7eJmH6LYFjxxn85hbEKZ8WvLLC3IwZlt
-	gs4e7sChWVuwpB05xd6uUG8TVXju7xgeIb6Lze5yxaaPTGvdsWYjD1D5Xd8uIn62auLpwuJ4O5W
-	stWZjFehqGrJpnn3Qizw+VFKqh0oIOe0=
-X-Gm-Gg: AYBFou1zxt0q0eTAmbpa0V72RbLFxDobEyr8wlOLTx1EE5qyuiIjCTiCJz2qvXvoOAi
-	rBpipuhr4Yzu/JK/DqPsi5Gk9Y26fkOYI6Y+0ptOBGEdQAguj6A4aC96EiB3ahW1gyeWJ/wH1no
-	Zagex8MPw/WV9HOvG9PtVgWVZDpdpi/+pLhgXfhoGSCM1kTAs664OawvrPThqzuGE0RDzaDp7l8
-	kFLUNxQK2Y3aGVdtUB4oVyKapaWJd5kl73GLn3+FEnvxV44Ate3EPUTvtUrFbVXyc/sDgfINJrE
-	Hp1y3BGCrTXN0GQZjNhnFeli3567X+dvwHplUFAe2CNpVTzmXuuRke8YFuZxUGuwCYHTEKm1bPo
-	LbcpdSUp+/nC9KTAMxkWT5nGWWCKqBmsMHcIHtIoYcZfUNRcvO9OtKNhoWvxhD8RP6bBNZEcr2w
-	NrA/OH+RD3F1wPEHBLV9ojdmb8ZYMqva/G0dwViKlcu8VgD4TRbmhO
-X-Received: by 2002:a05:600c:64c5:b0:4a2:150f:1613 with SMTP id
- 5b1f17b1804b1-4ac17a367edmr385395375e9.7.1793810501682; Wed, 04 Nov 2026
- 08:41:41 -0800 (PST)
+	bh=dMRlEbt6cHro/1IG77teEVtLiLDMtq9tpaJD/wmZeq8=;
+	b=Xz2Cz8wSb6IRiV8xuHhE8Umd2Zgr39EHKNBqYRR8rmue+T4mdODp19yJLE7AUCVEv4eUML
+	be5cHA5sdlpzEOogv1pX8hFxYjhDC5kiZsPnln9xvKmrzuSxRqSl74tf76oOfCaL/InmRl
+	hhHmWYQ7V+2SfjudialtHhnW+l9AGyw=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793810758;
+	b=PG5ehu6fPeQsrSI57AcfKZfPSlhz3PO9ac86oKFMYCjaP6GEd3ZN2FQ72lWit0aHPQB54p
+	toRy/h5kE08aAo9GjkQiiWtyBKnja02i+CThcimaH3cEKMTr5QrQKmUGwzIOobfi8miu34
+	a3Xh4taJmfApuVPrbYl0E5OtCQVbHME=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IvMQyH0f;
+	spf=pass (imf11.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 6FAE760A6B;
+	Wed,  4 Nov 2026 16:45:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6296E1F00A16;
+	Wed,  4 Nov 2026 16:45:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793810758;
+	bh=dMRlEbt6cHro/1IG77teEVtLiLDMtq9tpaJD/wmZeq8=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=IvMQyH0fvGLwwH3rDmeWMLfCLYAGdIbnCG7AOu8FUrXpcI70IKaVwu29p1G8lxanC
+	 qUOeAK2OnjpXBnv2US7vgM90DOjtp52wtMBTd3//9mHUWaamJQGkqBwlP2RBMYmki6
+	 jf1VFR4XDyT+sYFzB9eEt1mMGb/7sXTdpPJoeALrFdo6tMxCoSpD0MGcMLBSF5Oskg
+	 12jrVbegBjbo1u0Xoaa66/zOFOLBdGhyc6qv8S7xo6wIhvUCnvw91utT46e4QcgkAE
+	 sDhLQVOM9U5RvpQ1scMUIV3w11TSDzscUg76rCdIH+1RbNg98eZkKIso3/Sw7tl5Nb
+	 kLzFUfNWcGCug==
+From: Pratyush Yadav <pratyush@kernel.org>
+To: David Matlack <dmatlack@google.com>
+Cc: kexec@lists.infradead.org,  linux-doc@vger.kernel.org,
+  linux-kernel@vger.kernel.org,  linux-kselftest@vger.kernel.org,
+  linux-mm@kvack.org,  Alexander Graf <graf@amazon.com>,  Andrew Morton
+ <akpm@linux-foundation.org>,  Baolin Wang <baolin.wang@linux.alibaba.com>,
+  Christian Brauner <brauner@kernel.org>,  David Hildenbrand
+ <david@kernel.org>,  Hugh Dickins <hughd@google.com>,  Jonathan Corbet
+ <corbet@lwn.net>,  "Liam R. Howlett" <liam@infradead.org>,  Lorenzo
+ Stoakes <ljs@kernel.org>,  Michal Hocko <mhocko@suse.com>,  Mike Rapoport
+ <rppt@kernel.org>,  Pasha Tatashin <pasha.tatashin@soleen.com>,  Pratyush
+ Yadav <pratyush@kernel.org>,  Randy Dunlap <rdunlap@infradead.org>,
+  Samiullah Khawaja <skhawaja@google.com>,  Shuah Khan
+ <skhan@linuxfoundation.org>,  Suren Baghdasaryan <surenb@google.com>,
+  Vlastimil Babka <vbabka@kernel.org>
+Subject: Re: [PATCH v3 08/10] mm/shmem_luo: Allow preserving tmpfs files
+ that are still linked
+In-Reply-To: <20261103010216.3447716-9-dmatlack@google.com> (David Matlack's
+	message of "Tue, 3 Nov 2026 01:02:14 +0000")
+References: <20261103010216.3447716-1-dmatlack@google.com>
+	<20261103010216.3447716-9-dmatlack@google.com>
+Date: Wed, 04 Nov 2026 17:45:53 +0100
+Message-ID: <2vxza4nok0ji.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-References: <20261104-swap-hibernation-slots-v4-0-0ba9393609e1@tencent.com> <20261104-swap-hibernation-slots-v4-3-0ba9393609e1@tencent.com>
-In-Reply-To: <20261104-swap-hibernation-slots-v4-3-0ba9393609e1@tencent.com>
-From: Nhat Pham <nphamcs@gmail.com>
-Date: Wed, 4 Nov 2026 09:41:29 -0700
-X-Gm-Features: AclHuK-TAkBJYjCRFl11en6u7op_vk6E20BwjEFAr3odRFFXaGm9rD6s17cs0UU
-Message-ID: <CAKEwX=PMnYYBfODbQZJCz0jSPSHy7Y3CkKeDWzxKe3VsROBDeQ@mail.gmail.com>
-Subject: Re: [PATCH v4 3/3] mm, swap: drop the swap cache guard and reclaim in swap_free_hibernation_slot()
-To: kasong@tencent.com
-Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
-	Chris Li <chrisl@kernel.org>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Baoquan He <baoquan.he@linux.dev>, Barry Song <baohua@kernel.org>, 
-	Jianyue Wu <wujianyue000@gmail.com>, Youngjun Park <youngjun.park@lge.com>, 
-	"David Hildenbrand (Arm)" <david@kernel.org>, Kairui Song <ryncsn@gmail.com>, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: h1wo63dcmn9b4ii6urqb3y1y5pymj4d9
-X-Rspamd-Server: rspam01
+Content-Type: text/plain
+X-Rspamd-Server: rspam06
+X-Stat-Signature: 7gp1nskakm46hzkiaqn5qos6dsye5u1y
+X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=unavailable autolearn_force=no
+	version=4.0.1
+X-Rspamd-Queue-Id: D74764000D
 X-Rspam-User: 
-X-Spam-Status: No, score=-7.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,
-	SPF_HELO_PASS,SPF_PASS autolearn=no autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: 10878100004
-X-HE-Tag: 1793810502-913278
-X-HE-Meta: U2FsdGVkX194E0+eFE1/iYYhgFRNR3yCLNnJAAc7PZW//LfYKPNIGn17cMo9737t7NiKLBh9FQvGeGZpMZbElwKySyqGR1kA8V5pEvIWYb24SWT/fBVKSTiahnKoR6maeXYCyp2DuC//puZ8oCaD/+oT2m46/S8iV2gagcUWs/XQntNlmQTkjzmdVGm0tPWSB1UzBu89ixJqIHgQ4s5V3DsF6JdGl9qnhAQIkZ+gXb/dsjgSBP/EAOa5B2uZiz/4TcRODswwKkD25dhsKvvIpcigsCXbD6qM/8xr18RI4m9fFhh6IaEbykRXNboQ0xdu/XxIsx7KapktVQv29Q26tQV3IWQA7mxKbpaCD+pYwyCtgRshRXc/9HrYon0sAOZMP/ztUJ0/aR+yO2++tvAvq8o1eroInnr2mTk8AU92o7z2g8hTKJy15iG+JEEA+X8xttLO1BQm2DCkgebp7TM2B6vLdIh4WAq7hDioX+pnxcSoF5mwUMC+yggp5IB6MuKrmLOU+eNRNxzeS//QXBCvU5UZf4CKuGrt345VbR0dvo53NeP6TR7Hp7vVANjXupFEtYL3Pl9Upl9x1qIJubmGnVGqmfqwDr5vssfb/mu7tolpAPtkCECZNObr+kx3wov5XYv9X9OSVWRsS8R2hJ/F0rfUJktToncvllA3fJ/BVTLwrH8SEzvpW4/jizP/U/4RBo/A4ZMICoI5KIHyJY2BsCURmfpe667AmU0esh/Bav6xRfHWKKGGPR8XnmQu9O+zxXySt6Zdostsy6jUL0OYiru3uuim9Fl0RCAZJoB0ABeMaFqvd4R5lDBSJNUnAk37zTNNsurX7FuCzPOzgYKrwjnrKdwTdiJaIaYU24VYRP5VbSQELoDYgqaCUWAfQQN+L7DCelPWKhauHIRuIrpuHZRpqqT0rWGJINt19Fsp7jU15RmkM1f43iv/eBjd5Ra2NsgkDnBdaK3FbMAQZN2
- BEzhvqp8
- gqApwafa2rfk9D4O7eT8HGz2/0AetlMJj3rI33MJBDKBB3h7UTZjc+CqkM7SjgfeY/VOxWT6ANjrd3TCxmXoJFrMCqsM2TXz98cj0Fog85yGKIM9PzEYS+Kaxf8L4p71PP9srfYK5lrLouo8KOYRC8uCtxuAiI+pVKuVgG99CqD6PiGBN4bcNPWX3nU4BsIIXVWG0m2A6kXDkpU1uwisr8JpZctS/5IlWOxzM0nnSjq3o3WRziNtgLkJN1YteZzNzI6Ntzgf4QV+dvDHwnmCn6uRJXA+IsDaETb7fd46LCqoOa4N5m/30+w//j2DoPfOUKK6mipTiQhuoPtfZy2z0hxeaomz7po2dMHundF4u7J5ZUB0cgwaSpAVaC6sOTcZjpwKpfsQOJhHXb18IMeLmXA9TkoUcw+eFWAmIBORORcEgDeKdaYih0ZJiHf3DpZj/v8jglSaCVTggHB2vAi6OpGcfhukkXNdx+ZbKtB3/e7VIZ0z6rzc2WESWQFk8ySOtmHN9s32DOYJHggdS9wDdiwwfqaifDa1PO+iA
+X-HE-Tag: 1793810758-932473
+X-HE-Meta: U2FsdGVkX1+rvddmxpxGik9wLMwdh9n+zVWDRTCYrbg0Rtaf0PYbahhEUS5Rpjxm69r0WndjdXFsa87kYLO4iy7OxPtGh64BBiUheOM1uC5kERV6tFlJtdG1VbxDZGi8qHw8i6jkkV/qjhc1YZ8E9hUcrENpaf48svVM9fMsQJhxNCfRX9U8UqY748NhdJuA/MUl2aqh3Xi6ZTkGQodKKufzKdKXChgBjl1CXHgXeylQwa8LXpLPc0x/OMM1L7uJ4QGNuZf0I3YPtuac3Gg/3JnH+2n2XMW15RUwspVTRsolY1OMbgBb35MjNpnmOa3sNxRFxq/uQMeFgxuth1Imv9yRLomkXPGk83splljPKfssWRh07O0E7wU3RO3OWERwdXcbjLotjqQLD6wAv28GJfP4r5ApoPyutbIKJsMrq/UaKuINch5ykKHMihFMoAKc7JH1P2b5t9Xd8A5xydutTRd9wQ0yLKk8RwUZ/0FtgycH3LEWikckLKKn4Eh26WqMmqiNZgwXvsdUH81ZIM4qs1mSSGjL0Vdyq5gDrHoWc9EZ7+aTfxIZAjaF1+Hn3p0sa+VRj+uyMuXaAvmsUa7tenMxnXtlPhqk4u/hangITXnwD3+IIviJfJPQMCtuBHCRROz0jXinHp2Llp5rRKCEC8K550BznKkSJe3izL6iZHbX/9+cRolAQ/ImgNmGmtwwHRhtJcx/iKgwOaUl3aBPGqJi3vt28nYi2iPhUe8bY8Vlp+ElCd/DQj6VvnhZ7sYm0mpSx/mqnq1TDnoQDeAQX9COB3G57qDt4JojX/CJ+1irODBBlRr8DgzFBoLvlWlT0zP4ukUr8xk7WnOa41oQqY2eiIt7+mUycsuQXlZx4WW3aOckabhCs68M/TTffrxT8vESgLqek4OznEnb6E8dhEa24fk1aQ8aMIOYty/efewzUkPe5TcK0aaUOflUwb44+XIMNbs546QKYyUzsHG
+ mc3gAkkP
+ Xv0/JJEqUzNSI6QcpLhrucSJ1r8ToiHoarAlkHOPY4paV+fDvwFmrB16GP2VdJNGGO8ig4ytpdvHf5eDkDSYhf6/LOi7oJz4kYA4gsbxfBClcdr+fyhy7SYidUtahLKPSvt1Jy8n88BeEjpKWl9xjoX0q+2nHb4HBEWJJBMVyKzkLybQQpNPtCNfTm9YSFlyhlQQBnLn/NkvVD6NWj/gp7A+tBOe+KqbjO0+W4uqNMCg0y3re8bNRGqOUFwKiRXHBjKx3p4X7LkmnNMyzPE+8Xv3yvVoZCkXgCsjM
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -146,19 +108,201 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Tue, Nov 3, 2026 at 9:25=E2=80=AFAM Kairui Song via B4 Relay
-<devnull+kasong.tencent.com@kernel.org> wrote:
->
-> From: Youngjun Park <youngjun.park@lge.com>
->
-> Both are there for a folio that readahead might have put on the slot.  A
-> hibernation entry is not a shadow and has no swap count, so the swap cach=
-e
-> turns it away and no such folio can exist.
->
-> Signed-off-by: Youngjun Park <youngjun.park@lge.com>
-> Acked-by: Kairui Song <kasong@tencent.com>
-> Signed-off-by: Kairui Song <kasong@tencent.com>
+Hi David,
 
-Reviewed-by: Nhat Pham <nphamcs@gmail.com>
+On Tue, Nov 03 2026, David Matlack wrote:
+
+> Allow preserving tmpfs files that are still linked. To preserve any
+> file, require permission to write to it and the file to be opened for
+> reading, and reject append-only files.
+>
+> shmem_luo already accepts any shmem file without links, which includes
+> unlinked tmpfs files and files created with O_TMPFILE. Accepting linked
+> files means that userspace doesn't have to unlink files to preserve them
+> and can keep using them by path until the live update.
+
+No, no. As I wrote in the previous patch too, this is a *bug*, and not
+"supported". Please don't treat it as such. Tell your LLM to also not
+treat it as such ;-)
+
+This patch doesn't do "Allow preserving tmpfs files that are still
+linked", it does "Allow preserving tmpfs files".
+
+>
+> The path of the file isn't preserved. Like other files from tmpfs
+> mounts, a linked file is retrieved onto a tmpfs mount chosen by
+> userspace, which can then link it at the path it wants.
+>
+> While a file is preserved, its size is frozen, so truncating it,
+> fallocate() and writes past its end fail with -EPERM. For a linked file,
+> this affects everyone who opens the file by its path, so a caller that
+> can only read the file, e.g. a world-readable file in /dev/shm, could
+> use it to break the owner of the file. So require permission to write to
+> the file to preserve it, for all files. Like FS_IOC_ENABLE_VERITY, don't
+
+That makes sense, but can you do it for memfd as well please, as a
+preparatory patch?
+
+> require a file opened for writing, so that binaries that are being
+> executed can still be preserved through read-only fds. Also don't
+> require a writable mount, since preserving a file doesn't write to the
+> filesystem. If the size of the file can't change anyway, because it is
+> immutable or on a read-only superblock, also let its owner preserve it.
+> Don't let others do that, since the size could change again once the
+> file is made writable. Like FS_IOC_ENABLE_VERITY, reject append-only
+> files, since their writers can only append to them, and freezing their
+> size would stop all appends.
+>
+> Also like FS_IOC_ENABLE_VERITY, require the file to be opened for
+> reading. The retrieved file can be read, so otherwise a caller that can
+> only write to a file could preserve it to read its contents.
+
+I've stopped reading it by this point. Sounds too LLM-ey. Please try
+to make this easier to read for humans.
+
+For example, why are we even talking about FS_IOC_ENABLE_VERITY? I
+reckon you have it in your chat as an example to draw design from, but
+then LLMs have a tendency to leak those information in patch logs. I
+usually spawn a subagent with clean context and a high level description
+of the goal to review the changes and changelogs, to clean up these
+things, and then of course review everything manually.
+
+Same thing in your comments.
+
+Please clean them up.
+
+>
+> Preserving a file also fills its holes, but don't require any permission
+> for that. Anyone who can read a tmpfs file can already fill its holes by
+> faulting them in through a read-only mapping, also on read-only mounts
+> and for immutable files.
+>
+> Document the frozen size and the permission requirements.
+>
+> Signed-off-by: David Matlack <dmatlack@google.com>
+> ---
+>  mm/shmem_luo.c | 67 +++++++++++++++++++++++++++++++++++++++++++++++---
+>  1 file changed, 64 insertions(+), 3 deletions(-)
+>
+> diff --git a/mm/shmem_luo.c b/mm/shmem_luo.c
+> index ecbeb37d33a8..0c012f242fc5 100644
+> --- a/mm/shmem_luo.c
+> +++ b/mm/shmem_luo.c
+> @@ -28,6 +28,24 @@
+>   * the file are preserved. All others are reset to default. The preserved
+>   * properties are described below.
+>   *
+> + * A tmpfs file can be preserved even if it is linked, but its path is not
+> + * preserved. Userspace chooses where to put the file when retrieving it, as
+> + * described in "Retrieving Tmpfs Files" below.
+> + *
+> + * Preserving a file requires it to be opened for reading, since the retrieved
+> + * file can be read. It also requires permission to write to the file, since
+> + * preserving it affects all of its users, as described below. But the file
+> + * doesn't need to be opened for writing. For example, a binary that is being
+> + * executed can be preserved through a read-only file descriptor. The owner of
+
+Why are you talking about preserving binaries being executed? Seems
+oddly specific. I didn't know that was a use case we cared about.
+
+> + * a file whose size can't change anyway, because it is immutable or on a
+> + * read-only superblock, may also preserve it. The file can be preserved
+> + * through a read-only mount. Append-only files can't be preserved.
+> + *
+> + * While a file is preserved, its size can't change and no holes can be punched
+> + * into it. Truncating the file, ``fallocate()`` and writes past the end of the
+> + * file fail with ``-EPERM``. This applies to all users of the file, including
+> + * users that open it by its path.
+> + *
+>   * .. note::
+>   *    The LUO API is not stabilized yet, so the preserved properties of a memfd
+>   *    or tmpfs file are also not stable and are subject to backwards
+> @@ -298,6 +316,45 @@ static void shmem_luo_unpreserve_folios(struct kho_vmalloc *kho_vmalloc,
+>  	vfree(folios_ser);
+>  }
+>  
+> +/*
+> + * Check whether the caller may preserve @file. The retrieved file can be read,
+> + * so require @file to be opened for reading, like FS_IOC_ENABLE_VERITY does.
+> + *
+> + * Preserving the file freezes its size until it is unpreserved, for all users
+> + * of the file, so require permission to write to the file. Like
+> + * FS_IOC_ENABLE_VERITY, don't require a file opened for writing, so that e.g.
+> + * a binary that is being executed can be preserved. Also don't require a
+> + * writable mount, since preserving the file doesn't write to the filesystem.
+> + * If the size of the file can't change anyway, because it is on a read-only
+> + * superblock or immutable, its owner may also preserve it. The size could only
+> + * change again after the file is made writable, which is up to the owner or
+> + * root. Reject append-only files: Their writers can only append to them, and
+> + * freezing the size would stop all appends.
+> + *
+> + * Preserving the file also fills its holes, but that doesn't need any more
+> + * permission: Anyone who can read the file can fill its holes by faulting
+> + * them in through a read-only mapping.
+
+Please rework this whole block, it's unreadable.
+
+> + */
+> +static int shmem_luo_may_preserve(struct file *file)
+> +{
+> +	struct mnt_idmap *idmap = file_mnt_idmap(file);
+> +	struct inode *inode = file_inode(file);
+> +	int err;
+> +
+> +	if (!(file->f_mode & FMODE_READ))
+> +		return -EBADF;
+> +
+> +	if (IS_APPEND(inode))
+> +		return -EPERM;
+> +
+> +	err = inode_permission(idmap, inode, MAY_WRITE);
+> +	if (err && (sb_rdonly(inode->i_sb) || IS_IMMUTABLE(inode)) &&
+> +	    inode_owner_or_capable(idmap, inode))
+
+Nit: can you move these conditions up, and directly return 0 there? Much
+more readable.
+
+> +		return 0;
+> +
+> +	return err;
+> +}
+> +
+>  static int shmem_luo_preserve(struct liveupdate_file_op_args *args)
+>  {
+>  	struct inode *inode = file_inode(args->file);
+> @@ -307,6 +364,11 @@ static int shmem_luo_preserve(struct liveupdate_file_op_args *args)
+>  	int err = 0, seals;
+>  
+>  	inode_lock(inode);
+> +
+> +	err = shmem_luo_may_preserve(args->file);
+> +	if (err)
+> +		goto err_unlock_inode;
+> +
+>  	shmem_freeze(inode, true);
+>  
+>  	/* Allocate the main serialization structure in preserved memory */
+> @@ -362,6 +424,7 @@ static int shmem_luo_preserve(struct liveupdate_file_op_args *args)
+>  	kho_unpreserve_free(ser);
+>  err_unlock:
+>  	shmem_freeze(inode, false);
+> +err_unlock_inode:
+>  	inode_unlock(inode);
+>  	return err;
+>  }
+> @@ -710,9 +773,7 @@ static int shmem_luo_retrieve(struct liveupdate_file_op_args *args)
+>  static bool shmem_luo_can_preserve(struct liveupdate_file_handler *handler,
+>  				   struct file *file)
+>  {
+> -	struct inode *inode = file_inode(file);
+> -
+> -	return shmem_file(file) && !inode->i_nlink;
+> +	return shmem_file(file);
+>  }
+>  
+>  static unsigned long shmem_luo_get_id(struct file *file)
+
+-- 
+Regards,
+Pratyush Yadav
 
