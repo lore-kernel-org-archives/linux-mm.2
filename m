@@ -1,97 +1,111 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 509AC606A326
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 09:11:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2C65606A32D
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 09:13:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=bPUGyJe8
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=dRpMfbpZ
 Received: by kanga.kvack.org (Postfix)
-	id 6B4A46B05B4; Wed,  4 Nov 2026 04:11:35 -0500 (EST)
+	id EF6D86B00EF; Wed,  4 Nov 2026 04:13:38 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 640636B05B5; Wed,  4 Nov 2026 04:11:35 -0500 (EST)
+	id EA7956B05B6; Wed,  4 Nov 2026 04:13:38 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 536586B05B6; Wed,  4 Nov 2026 04:11:35 -0500 (EST)
+	id D6F396B05B7; Wed,  4 Nov 2026 04:13:38 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 2D5666B05B4
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 04:11:35 -0500 (EST)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id C10331A0595
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 09:11:34 +0000 (UTC)
-X-FDA: 85396868508.12.D74DCC3
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf23.hostedemail.com (Postfix) with ESMTP id EE64A140005
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 09:11:32 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bPUGyJe8;
-	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id A92BC6B00EF
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 04:13:38 -0500 (EST)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 20F9216066B
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 09:13:38 +0000 (UTC)
+X-FDA: 85396873716.09.DF77A20
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 602AE1C0004
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 09:13:36 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dRpMfbpZ;
+	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793783493;
+	s=arc-20220608; t=1793783616;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+BWGMpp+CGdBx3er7fkKiPSgFKGZi9UN3j89ZX4ZK/I=;
-	b=q3aGlrvGLDT4gOT7yaK3FTB2dmGFIngVnlqiU6kMZ0WF6eB150fd4+w96x3hZxbdtzz5tW
-	743sp+DhFKJs9W7uksqlqFJMuYit7rcPYW8DxyiKp8k3+Z4X7OSo7BH0JUIGZjKckKYsoV
-	7GrNg4tWTth9kNAYKSsB6r1ACe1QJyo=
+	bh=LoVFgUlolmEAFzVK6w+JrxJ56f3iy7qOBFWwy6NZkbw=;
+	b=tQ5ial5ZUKCvE39WrMrugRlaOWr7ncGGEDUnY5cYNw82344eqGpLrRx5YmDabbJk3uO/k2
+	1O10T/yOlMyOuNR8sKAHsE9+7RFn4ESwD1VQPUxk7PC0fsauXcWSUYrOTYWTOH9bb6l/Fy
+	kT9TDkp2HkIgJR8yFkEfqrxYLAInFug=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793783493;
-	b=13dDsYRXkdv6DuyIqacGhJfYaYxZCL/tbPwBSKAKDnW5DcaJLgkjSARekYiLlD8HlkwJ6i
-	sbR/FOcPf66Qe8mrFBU0Bqbgal7Y/B3/zUyiddNA7C76bZraltVsgwa2iOTG4rWulA/43o
-	QTquJzrWEBzt14Qtx9lLCAqvYEl0f1E=
+	t=1793783616;
+	b=BKNlTv8hdIM6gv80v+gZQweD8nSvGqWIYBQZw3CwRZIad4hTBuT4q8qvsnQpYzODG2g6eb
+	v09T+kIln6FW4NqnjqHW5k5lC/TR55y8sKE4dlzNI+37TZTdbmFZmr3LhuhZ8yGs/Rlssi
+	IwLYHu8En9ZZixt4s6/b5mRD2Gz6mac=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bPUGyJe8;
-	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dRpMfbpZ;
+	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 1794D431CE;
-	Wed,  4 Nov 2026 09:11:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD4141F00A16;
-	Wed,  4 Nov 2026 09:11:16 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id D4DCE602BE;
+	Wed,  4 Nov 2026 09:13:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 943551F000C1;
+	Wed,  4 Nov 2026 09:13:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793783492;
-	bh=+BWGMpp+CGdBx3er7fkKiPSgFKGZi9UN3j89ZX4ZK/I=;
+	s=k20260515; t=1793783615;
+	bh=LoVFgUlolmEAFzVK6w+JrxJ56f3iy7qOBFWwy6NZkbw=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=bPUGyJe8jTsIlbF1xVTN5nX4l/yeQqqr6KUSLqOk5CwA8zaane6up/uXHy/A6ETFN
-	 8GMdYQkC/9pvmhBP2zcSqtRvRTHOksDMwvx7gtNR3V/dSa5XbcrFjusMb5bbHlPAqY
-	 FtbHm8MMjkmKP//Sey/LKddohMLPyRf4C7s+5IntPmGQ+G5m0rp18ZxLjCBmoTbsqX
-	 6+sBf9cofe3crMJ9E65oq/xyI3vlQ9WK8JdqiYXb7nE+wHWgrx4QfKgjh+C53e4xEw
-	 hQtZGro3VXx5kNioH4KUnh6d9IwsWjAmh0kD1m7YN8VI3LyBQcu4wnCHz5d6QOS+Jm
-	 8qsGDtkKaCKQw==
-Message-ID: <45508a75-7549-40e2-a71a-807a824ea026@kernel.org>
-Date: Wed, 4 Nov 2026 10:11:14 +0100
+	b=dRpMfbpZeYPKVhajyjXkLtGaqpGPvrZkk4yFqG2ypBe4K+tDcX4rTCHEt04jW5/KG
+	 2F+gxMEZuG9fPh97FKiWfCEdg8Jkd9hbf+LLNrRXCcKFvn8ZuFpn4P+uJKcQMwTJ09
+	 rh79VO2vtKtrO/B+TP5cbe5rQcohMc86qrFv09zuy8OQLIMUXYdZHWE6CAu6WuPmYE
+	 xfKiLlcRwOeZxwMqBPFoAG31ac8gFp6BGwX8n+2lfkFQTHQixGQd2zGd4yCTJ0vdqK
+	 iCa7zTYm1z7zGE+0f4dAUL13T6KfHHlugQYFxBLi62Qg3c5Sl/7BCdxw3EpxOPHEG6
+	 HvH2dL3dmOm7w==
+Message-ID: <979fb046-32dc-4af8-b6a3-177c78f1e557@kernel.org>
+Date: Wed, 4 Nov 2026 10:13:15 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 43/47] mm/huge_memory: split huge PUDs when adjusting
- VMA boundaries
-To: Lance Yang <lance.yang@linux.dev>
-Cc: akpm@linux-foundation.org, hannes@cmpxchg.org, mhocko@kernel.org,
- qi.zheng@linux.dev, shakeel.butt@linux.dev, ljs@kernel.org,
- kasong@tencent.com, baohua@kernel.org, axelrasmussen@google.com,
- yuanchu@google.com, weixugc@google.com, baoquan.he@linux.dev,
- baolin.wang@linux.alibaba.com, liam@infradead.org, vbabka@kernel.org,
- rppt@kernel.org, surenb@google.com, mhocko@suse.com, kees@kernel.org,
- peterz@infradead.org, jannh@google.com, pfalcato@suse.de, hughd@google.com,
- pasha.tatashin@soleen.com, pratyush@kernel.org, willy@infradead.org,
- jack@suse.cz, ziy@nvidia.com, riel@surriel.com, harry@kernel.org,
- apopple@nvidia.com, nico.pache@linux.dev, ryan.roberts@arm.com,
- dev.jain@arm.com, usama.arif@linux.dev, kas@kernel.org,
- matthew.brost@intel.com, jhubbard@nvidia.com, peterx@redhat.com,
- will@kernel.org, aneesh.kumar@kernel.org, npiggin@gmail.com,
- osalvador@suse.de, minchan@kernel.org, muchun.song@linux.dev,
- xu.xin@linux.dev, chengming.zhou@linux.dev, chrisl@kernel.org,
- shikemeng@huaweicloud.com, nphamcs@gmail.com, youngjun.park@lge.com,
- gourry@gourry.net, joshua.hahnjy@gmail.com, rakie.kim@sk.com,
- ying.huang@linux.alibaba.com, jgg@ziepe.ca, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, kexec@lists.infradead.org,
- linux-fsdevel@vger.kernel.org, linux-arch@vger.kernel.org,
- linux-cxl@vger.kernel.org, stable@vger.kernel.org, usama.anjum@arm.com
-References: <20261031-fixes_core-v3-43-d6437171ecc3@kernel.org>
- <20261104031245.9524-1-lance.yang@linux.dev>
+Subject: Re: [PATCH v3 18/47] mm/khugepaged: check if PTE table is empty in
+ try_collapse_pte_mapped_thp()
+To: Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
+ Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
+ Lorenzo Stoakes <ljs@kernel.org>, Kairui Song <kasong@tencent.com>,
+ Barry Song <baohua@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>,
+ Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
+ Baoquan He <baoquan.he@linux.dev>, "Liam R. Howlett" <liam@infradead.org>,
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Kees Cook <kees@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
+ Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>,
+ Hugh Dickins <hughd@google.com>, Pasha Tatashin <pasha.tatashin@soleen.com>,
+ Pratyush Yadav <pratyush@kernel.org>,
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>,
+ Zi Yan <ziy@nvidia.com>, Lance Yang <lance.yang@linux.dev>,
+ Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>,
+ Alistair Popple <apopple@nvidia.com>, Nico Pache <nico.pache@linux.dev>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>,
+ Matthew Brost <matthew.brost@intel.com>, John Hubbard <jhubbard@nvidia.com>,
+ Peter Xu <peterx@redhat.com>, Will Deacon <will@kernel.org>,
+ "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Nick Piggin
+ <npiggin@gmail.com>, Oscar Salvador <osalvador@suse.de>,
+ Minchan Kim <minchan@kernel.org>, Muchun Song <muchun.song@linux.dev>,
+ Xu Xin <xu.xin@linux.dev>, Chengming Zhou <chengming.zhou@linux.dev>,
+ Chris Li <chrisl@kernel.org>, Kemeng Shi <shikemeng@huaweicloud.com>,
+ Nhat Pham <nphamcs@gmail.com>, Youngjun Park <youngjun.park@lge.com>,
+ Gregory Price <gourry@gourry.net>, Joshua Hahn <joshua.hahnjy@gmail.com>,
+ Rakie Kim <rakie.kim@sk.com>, Ying Huang <ying.huang@linux.alibaba.com>,
+ Jason Gunthorpe <jgg@ziepe.ca>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ kexec@lists.infradead.org, linux-fsdevel@vger.kernel.org,
+ linux-arch@vger.kernel.org, linux-cxl@vger.kernel.org,
+ Muhammad Usama Anjum <usama.anjum@arm.com>
+References: <20261031-fixes_core-v3-0-d6437171ecc3@kernel.org>
+ <20261031-fixes_core-v3-18-d6437171ecc3@kernel.org>
+ <62268831-f6f3-4666-a32f-a77546b95432@linux.alibaba.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -138,22 +152,22 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20261104031245.9524-1-lance.yang@linux.dev>
+In-Reply-To: <62268831-f6f3-4666-a32f-a77546b95432@linux.alibaba.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: rspam06
-X-Stat-Signature: tfdjnt6a1g97ze56f71mu6o5bh3f3u76
-X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Stat-Signature: z8mk9z7wydjfzzixh6xk8s6umd7zi1w1
+X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_SANE_1 autolearn=unavailable autolearn_force=no
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=unavailable autolearn_force=no
 	version=4.0.1
-X-Rspamd-Queue-Id: EE64A140005
+X-Rspamd-Queue-Id: 602AE1C0004
 X-Rspam-User: 
-X-HE-Tag: 1793783492-137734
-X-HE-Meta: U2FsdGVkX18L79L6qSnw17etn5mGk4QDhLvurqOCED219PGV2+zcI3NqNp2jb+msnP7lVoq1YTTEakXSPk0VX1xNeclwVzo5C3Xs8y02Z0SwybmFZGZwZNmZpFj+Mfpmxz+HOUEefs7jkg7s+ILQryrN+u/v23C8uaT3RsTh7xgO894FgdPOTH2SNxL6+HsiwgWO14ivUZX9Rwbgj/cUnPBhkxEo10LCONeB/T75pemrEg8hwQj0hT/a7gxmtSufLRoNBpnjzGXWnZbRxUUNRMH0PBrOCZ4+6RLZb3Ntwren9Mbf+9ktZaDzeCsQ86tQNh6cH400gFk1rMnD5ZtuYy2i9Ij31dxJqLBP7Vgizn66q8xLE29jSi6YtlrHZOvvoX4nX/G541zT4dlkS5Fw0CQjOarre9CkkM4M9kCNN6J/T+F1VvQpKuaEF9nawhlq0t/PNdMh8YeeZAAONNqGdBYK/H/IArtOXJRnGrczi7m5lDpF312uEW4AGUVdZjTij7Duh3zbbH3EN1+ssdTxX5vIhFJMvhWXzbq6O+0JkZogTjTvY+V9345VJoWITE30coA7axjD8d0s8N/ITmaLWOVnw9674is2BYD/7Xp/KCoG5jPmbXPgIjY/Cfv9F1C3rQeNSk8E/TqYWSYR4t+IYo69udohB88XtY0gIN+lxT6fWYWarfIkLU5AOffcY+moXhpm+k2xiqt7I4g5IXDaZ7uwc2N+2ZlUP4nVIFJ47C8m+yBZixtoV34Ah97KZ9Bxte+Qhtzuxk+PGh00wwGJtbeaby70ni33wANgAJR8MeXfR6MxmPX2nJONlYs0gBgp72S0M8bKKIw57HoioRFyMIsrafgdtJ1PkM/iKIW1d+gj+NrHYETHKvz+U+l53S81BFZoj2SyhYUPSaivC+dGggFqj48fynD50BMRZGEIlmK3lR9nk/zcoYyV3z8NfKN0wY3Kb0i+Sc1Qdu4DCJE
- ltd5J8Ml
- IpcPgklm4co7zpkw/jAHEJpE2eWYheWFwqvjBEN7d8BDCruEusCQg5zW6ql7DgUu73bryt0mVCEPvaeY5W6Cyf4F16DNPodYyqfROXj/Vuvi8ePHRo8Yj0v9qtdlnWNDJPrVMM8ULSurJuHRN/7+7psU8TXjrGZlLFZKpFDZdR98ZVjG2TGKM9d/ps4vunlYH0/tk4vU2VhzsOLRkcEqnT0+r/lKhTLTgLRClFV/HFQEgYzomEluLGds9IgVOsK1gT1dSSx0QKyxhFMNMl18DlJRNpsyz3z7VoR2MbMdaip8xc1gZ81waCJbpbkCQ7BNL8Cs5ev3vXHEawfDokohGOKmadQG8SUM2M9R6vCZI4LwsWg7HiuWalls3+C2vRO4lF2nUhZeSVzdi8ROSDKW5NIdoX1r15hR3lM02LcweWAoDWB7zjc7F6DjEnBMY3n2dXlVKCci12W/13nu2PYjeabnfBQ==
+X-HE-Tag: 1793783616-240634
+X-HE-Meta: U2FsdGVkX18ao2fYgWxnHTYJOraXJdWcBk+AFXyhTwToEVdZgURg39WPwvMsVdWZyNacM13HuzDaJTFVY+bXmDWeZZMQFzPA1Zqw/Mno+NmnbZWFkLOuggNKCHJEXBXZ6+FNJa691+hjvNE7utW22ZRl4D4/fSKpKu3997/BS3teTHtJvE3392y/E2t6MkJ3GaaokmttXqHLi400uUk9KJXqlgPMicWUB+xNtZQ8yD4h/7ykqfRRifLzIgwZJ2FxinGU8LlKWwgHzO4KHpmqkVDw2XaiDqwUf4HVlzErU1/sFNzA6pP3+/Fey8ARBI2fQ7NruH2E3nwJ7eUEnlI3hu12cRAsdxRh7lDLCkiRjDJO7tOUXM0PJd9KVGz0Wpoe5teFiQYWLwGhcMpZZADNfuG/XxqXc5iHwW/Y2iVKiQhE8DXeAWZKxwlfWxsAM+oaXhZGDBpwLjA9PIf+cJ1i0QdxQPWrWceWw15SJxKVGwGK+3XPRuIbOKpAXHMCoQWeXARiqlhigEsV774epdPgzisSGGRcbuLg0hkoVHdEBLRrntwvE4rn4VsktKCl83Y8AirNux8x9pT1Ko1QVAt2ZCGrCBqdAZt/3ALjOA2VNgC7CnsFiyu0Cu9Z+JyAB9boDd/4QaK1ceXDSSX9J5DftooO1RH9zV/pPXRyo/r8/+jvDfRhJMeEeIvYiydtAjQKzSdOUsBEXGrDhZSyBex7eyzlV5Nhc06NzdT9H7nEMnvfq+ID4fQI0sePd5TjoqpHi7kzGu1QxJvyA88i6xH+T7XoQ6DmWHeUrS14sAl0TjcO9yXxynSZwfunPUQzoNNzRuK74SXG7m6OcWGEGfT9QpvlLRXR9sy2LRuOIAsviC6+cYrTxjXgUFbUEPDaTpZd1vCng1Bge4fTMgnkij/b1mzz9w5dr6ll2lK7tN5WG5g8axyfZf9c5c07TjRUiv55oNO6BibcEkPdKHV0hI0
+ JCYC90in
+ q91+aUw/08enFd7nEnL07aDVKBa7wCxiLiKv8BvJQySotLOdX/gWVfGyGgfUCJpljfjVn7yhYY3RDgT4R6Svv4u5zdYdCB7dMXqlJgLofc79rsoPafx8Nqae1Qlkhlu4YKowMdoYZ2tQ5rFEDpWGq8t3x0dfdM2HL9eIvrs4s5uoI5COumGU5PEwoI/arRa867/RTzSYOhh9SwjfacwK39r8a8RMAxE17IvxJtZP+zA9gluWr5mdOgSLTwEWewj/hu6W/wHGff04FpbSnlO3lar15yxxXaw2R0Xv7l9dNxZAFVRv0n9rLWClLLGiCloKCJwZcxqL6nthjV4GN35RJno2Vvkw0tE2W7U003OLUr1aludSQS19GhGyjByNS+7SbcKjbGvRPiHs9GH/kReiKf2JZS1tooru3zwzAHhP3ZU1SYaoZkdGuRlpw2LA/hMAq0DgRi0Pm4V/RMHqq2PTQYqBnqhQX5Rcix1Mtf+nBhqprHr2W411QwVEzAdpgZn28RgWT7cGUQr63RosouLzakB90fEHuPaH9pjohOWIDNeOmrqA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -162,36 +176,70 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/4/26 04:12, Lance Yang wrote:
+On 11/2/26 09:20, Baolin Wang wrote:
 > 
-> On Sat, Oct 31, 2026 at 10:40:12AM +0100, David Hildenbrand (Arm) wrote:
->> PFN mappings such as VFIO PCI BAR mappings can use PUD leaves while
->> allowing VMA splits at page granularity. However, vma_adjust_trans_huge()
->> only handles PMDs.
+> 
+> On 10/31/26 5:39 PM, David Hildenbrand (Arm) wrote:
+>> The existing code is rather horrible and already resulted in bugs in the
+>> past: we special-case UFFD inserting anonymous folios by grabbing the PMD
+>> lock early, but ignore any other markers (guard, poison through uffd) that
+>> could have been inserted into the page table in the meantime, effectively
+>> dropping them.
 >>
->> After faulting a writable PUD-sized VFIO BAR mapping, changing its first
->> page to read-only with mprotect() makes the PMD walk treat the PUD leaf
->> as a PMD table. Applying MADV_DONTFORK to the first PMD-sized chunk leaves
->> the PUD spanning two VMAs: the PMD-aligned boundary skips splitting.
+>> Let's just unify and simplify the locking: try to grab the PMD table
+>> lock and if that fails, flush the TLB, drop the PTE lock, take PT locks in
+>> the right order and check if the page table is still empty.
 >>
->> Walk the page tables once at each adjusted boundary and split a huge
->> PUD or PMD leaf as needed. Handle PUD leaves even when the boundary is
->> PMD-aligned.
+>> We still perform the heavy lifting (zapping the folio ptes) under PTE table
+>> lock only.
 >>
->> Fixes: f9e54c3a2f5b7 ("vfio/pci: implement huge_fault support")
->> Cc: stable@vger.kernel.org
+>> Include <linux/hugetlb.h> for now, as x86's flush_tlb_range() macro
+>> depends on hugetlb helpers. This dependency needs a separate cleanup.
+>>
+>> Both issues this fixes are rather corner cases. Let's not CC stable for
+>> now.
+>>
+>> Fixes: f807123d578d ("mm: allow guard regions in file-backed and read-only
+>> mappings")
+>> Fixes: 1043173eb5eb ("mm/khugepaged: collapse_pte_mapped_thp() with
+>> mmap_read_lock()")
+>> Tested-by: Gregory Price (Meta) <gourry@gourry.net>
+>> Reviewed-by: Gregory Price (Meta) <gourry@gourry.net>
 >> Tested-by: Muhammad Usama Anjum <usama.anjum@arm.com>
->> Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
 >> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 >> ---
+>>   mm/khugepaged.c | 64 ++++++++++++++++++++++++++++-----------------------------
+>>   1 file changed, 31 insertions(+), 33 deletions(-)
+>>
+>> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+>> index ce794d9760a87..ad07c8caa3bd9 100644
+>> --- a/mm/khugepaged.c
+>> +++ b/mm/khugepaged.c
+>> @@ -10,6 +10,7 @@
+>>   #include <linux/mm_inline.h>
+>>   #include <linux/kthread.h>
+>>   #include <linux/khugepaged.h>
+>> +#include <linux/hugetlb.h>
+>>   #include <linux/freezer.h>
+>>   #include <linux/mman.h>
+>>   #include <linux/hashtable.h>
+>> @@ -1832,6 +1833,17 @@ static enum scan_result set_huge_pmd(struct
+>> vm_area_struct *vma, unsigned long a
+>>       return SCAN_SUCCEED;
+>>   }
+>>   +static bool pte_table_empty(pte_t *pte)
+>> +{
+>> +    int i;
+>> +
+>> +    for (i = 0; i < HPAGE_PMD_NR; i++, pte++) {
 > 
-> Nice work!
-> 
-> Reviewed-by: Lance Yang <lance.yang@linux.dev>
+> Using PTRS_PER_PTE to iterate PTEs seems more straightforward? Otherwise LGTM.
 
-Thanks for the review! Please do keep reviewing, but note that more trailers
-(including this one) will likely not make it upstream as I am about to prepare
-the PR to get most of these things here upstream.
+As I pulled this patch out from the stable fixes, I fixed it up.
+
+I realized that this helper should likely move to some header later and be
+reused elsewehere (zap_pte_table_if_empty), but that's something for a later
+cleanup.
 
 -- 
 Cheers,
