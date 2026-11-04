@@ -1,154 +1,129 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26EE8606A31B
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 00:44:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FD65606A31B
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 00:49:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=soleen.com header.i=@soleen.com header.a=rsa-sha256 header.s=google header.b=R8lxcv0q
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=n5kpqQeB
 Received: by kanga.kvack.org (Postfix)
-	id 495676B05B7; Tue,  3 Nov 2026 19:44:01 -0500 (EST)
+	id 405FC6B05B2; Tue,  3 Nov 2026 19:49:55 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 46E1E6B05B8; Tue,  3 Nov 2026 19:44:01 -0500 (EST)
+	id 3B7366B05B8; Tue,  3 Nov 2026 19:49:55 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 30DE16B05B9; Tue,  3 Nov 2026 19:44:01 -0500 (EST)
+	id 2A5E06B05B9; Tue,  3 Nov 2026 19:49:55 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id F222D6B05B7
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 19:44:00 -0500 (EST)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 90A881C3DAD
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 00:44:00 +0000 (UTC)
-X-FDA: 85395589440.20.854A498
-Received: from mail-vs1-f45.google.com (mail-vs1-f45.google.com [209.85.217.45])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 9788DC0005
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 00:43:58 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=R8lxcv0q;
-	spf=pass (imf22.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.217.45 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 04F036B05B2
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 19:49:54 -0500 (EST)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 8B156A8245
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 00:49:54 +0000 (UTC)
+X-FDA: 85395604308.12.B5E17FE
+Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 0070020005
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 00:49:53 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=n5kpqQeB;
+	spf=pass (imf31.hostedemail.com: domain of hyc.lee@gmail.com designates 209.85.210.172 as permitted sender) smtp.mailfrom=hyc.lee@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793753038;
+	s=arc-20220608; t=1793753392;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1jCvTwZL8MS+SjFAQ29LXN2yWrpb5Y2gngTvzYEqhZ4=;
-	b=W0jO/XSLPDClpTEeZItR82vu+j+XZjR2awVX+YIS/sghSs/RvMS5uDatpD4eQ2jQxOrKcG
-	bESs4tiYLmvSC6e1u4aQJ23HZe9wLTOtBXSo0q5ESwCRpIavieEnd2sbZYO8Kll6RDOSrD
-	0rfAfJuq3jsXyanQVRDRp9ZOj3sSDHU=
+	bh=/bumM81nPiENiLh9PH/Fm40C+VENRMD3A/OuAfI8Z4s=;
+	b=QwjS70hWV5oZ2ez/K8K+WoCmDe058PZi9VXNJusxaDr5U+9ZcdV4+9DlzWBav6pONRxqG5
+	Y3a5SY1oQPJcN4QYymw9VuAx8s0RRVRLX7PrQRkEI1oDdsYhTolotRH2JUj0j/srbzUdOb
+	xwtpGAHmXkWtEtpqqIRhv8/S0cmAYRs=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793753038;
-	b=3vttsrj+xUAc5LkQOE/cK7GtVLEPakCX6CsES60m+xoM5slZUCrTCfNcfTlnzxgZqqpsl+
-	oIQB3JTJnQhDm3nMzPKZXuick4Cw2ZDH+x4nXCRL16nsgPZlyMiYUOsQKqsE/ciNXTks+f
-	rxn+WDbqL2vju62/HOAJB738lnxHP/s=
+	t=1793753392;
+	b=KK2cD0V7TZNOi+MBQhPD/njBAQdiKv//9aOGVevga0QA9WkLnnXBkaMezax8CMIN5igEaa
+	dQbTIDKq7Mfi/TW3WUu1dDDvt4m9By5Kco4PcMLgE4Ysi7MVONugohsPPUHIjhfys/r9x1
+	W5McdT+bG9eioIFs9BfReKBcVYwvIYA=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=R8lxcv0q;
-	spf=pass (imf22.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.217.45 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com
-Received: by mail-vs1-f45.google.com with SMTP id ada2fe7eead31-7cc1cf48a39so28009137.1
-        for <linux-mm@kvack.org>; Tue, 03 Nov 2026 16:43:58 -0800 (PST)
+	imf31.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=n5kpqQeB;
+	spf=pass (imf31.hostedemail.com: domain of hyc.lee@gmail.com designates 209.85.210.172 as permitted sender) smtp.mailfrom=hyc.lee@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-8a06e79e152so124919b3a.0
+        for <linux-mm@kvack.org>; Tue, 03 Nov 2026 16:49:52 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1793753038; x=1794357838; darn=kvack.org;
-        h=message-id:date:references:in-reply-to:cc:to:from:subject
-         :content-transfer-encoding:content-type:mime-version:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=1jCvTwZL8MS+SjFAQ29LXN2yWrpb5Y2gngTvzYEqhZ4=;
-        b=R8lxcv0qnT5L2IWsBNGlXSPGB0NqfNUFv8Qglcr9B24q3OdFiTzYtwysiJ+LqnmmRK
-         zzDg6ar2+aecAW4km3V1CsXOss/xcZq0GCkaivxQ1CIXSCYJD1D8l1nDaCK2qurtEm7O
-         SueZ3oH84hsnoZdcWiGII+BK+/WDSURw5Tfy9WExziiKKVK5hJ/bbpIYzfISWoSMAwM8
-         Q4mmvzDOdGj0ihIGC1oyYoGhtKfqwufSqNf0C8s94Yul3gAhTznj8qsBevi7FigYfatY
-         CpTXA5qn1gk0buar6LKdlKQ8uRvGOO7rp6AkTAg9OSbH4ZALWrUHS8AF1thCHXgb/4RP
-         lY7Q==
+        d=gmail.com; s=20260707; t=1793753391; x=1794358191; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=/bumM81nPiENiLh9PH/Fm40C+VENRMD3A/OuAfI8Z4s=;
+        b=n5kpqQeBdBgh8YZbIXl6V/7GrNDXd4Arj1e7n1zJA+7fmsHZIG3UNnQzH3ywdftBb4
+         ZenTFhWyo0ET99DNJ8jhhX7KSX9WGP7x/1ks5v03yMcCFO7yiKzNIOfA5CYAFnKN1gfP
+         98y8AEMpFfxqDQDK6jyzPydy0L/5vnFuNjFLr6Xhw0YjL1G3kjFvRyrRZoLVZ3hCcPkZ
+         Q86WtFWCEzjcmYKgJGt+Y6O0syjq84mWq6FT+v1co1/gq5C7eRIPBgIGO5ly9LZeOeCx
+         M92QNyaDxuu7Yl5cOCCwluy604Mg20r+Ow4rmqR/uGQwT+rcWY1yRerpUCyIJ3rVBeLJ
+         BJZA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793753038; x=1794357838;
-        h=message-id:date:references:in-reply-to:cc:to:from:subject
-         :content-transfer-encoding:content-type:mime-version:x-gm-gg
+        d=1e100.net; s=20260707; t=1793753391; x=1794358191;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=1jCvTwZL8MS+SjFAQ29LXN2yWrpb5Y2gngTvzYEqhZ4=;
-        b=M8rb1QlCaUpICsOzsgmBDKXCBix3Y3kUzn8/q40dBX2ewZ/1r2MMH49SABXX2B4y8u
-         cNqnA5CBBRjTWWUK0loG4eAgXL9m+BUiJc6JGoSXvWgQ+epO3V/m2gGCbuHvlinWxP0J
-         Mv/bUwPgqNec7vZbbzUOykIi+zzPXOOJAJO/wGRpu1LVTWFBHrYOAJybPPKb4URMeA+C
-         UlG4Muk2lrOo5ljluJhumFOCXtwoMTIu0BZW2OgP4wupjeBbr+VDywV8/tqd8dilmamG
-         68sr/5LMtisWU5wvVAx8tayaGVJ3ESKzYXam5JuFCzxMLej2ARFuoVCoV8H3SiwWggw9
-         BraA==
-X-Forwarded-Encrypted: i=1; AKwUvBxwoNyH75Y9qJ65H7Vq3IjH/O92yREJ493aQkvQ87ua3IkxZiX1nX3j1Q62hQXx8nVVVco85cGFeQ==@kvack.org
-X-Gm-Message-State: APuU4Z+90WKzEZ/JZycjokhRb+tMy0IEwNQ3xLnl/Xv3Lcut8n8gBFzb
-	LOfpEK3SBTjzUW80NMY5KHBP6dlnzxSpaFqHY3UWwicyr1z4SdmAvX2BHq28/cYtNyo=
-X-Gm-Gg: AYBFou2UT6OGAn+nAO03tv/pxbGGuYhjTNKGm5i2ayW2NY+3Po+0ecR2sjyGgdSL7Fo
-	rr85KJJxSguaZFzpauC1DClRP1gPnBzYmjEUnnxB+9YcNRacuU5n4oRdUX34bW2vU6RYE8oRilV
-	k3hBzUptlpge+wfk+CMRtIblEQbefM6jfHsct5sqBhyC4EYoauCXIntB54KvrAnofx7XT1d7Z2F
-	2U05e0Cq4bSA2iVAVzkMs3WHfdX/N1poImxSmOYL4N9x2vlmDpVdorJbgY21W3R+1b7mqBCxhT+
-	MnHLx/F/c0gKWIczCKzOTIIz2wXsL6CJCc67UDptOI1e+GIiN7h+6ogm+VveMYikCcVwkot0PPu
-	ffFhOM9deUpgNjCSCC4yi04pIandE6owbS2nNg8+R8rPGgdjwwBxUCu/SJK0GdzN0Sl/9LxGr10
-	A+cY3/QK95aQB/7ysaI8DExHIUYTvDkQ17hhb+dxfiiD6E168cnlYQ8wt5FcuczYcrmCTaPwpeB
-	QBi1ahvce58vnCuZA83ijhmnEfBVjPls2fgzIHJGZ8psb7Kb7DQ49SEo/qflgTBB2af189cEdel
-	Y9qf0PDS7MDby5dShO+xioLfdKltU++BlOL/odHCciiS8b7aS1pcWt+MNrW8B3eq5YEgrK/tpMy
-	N+bF35voPFekge2mLKXQ3E8V5BoFqnlD0sGMBvLRO7LBR
-X-Received: by 2002:a05:6102:358a:b0:7c3:a6f0:99cb with SMTP id ada2fe7eead31-7d072719913mr4878960137.33.1793753037717;
-        Tue, 03 Nov 2026 16:43:57 -0800 (PST)
-Received: from soleen.c.googlers.com (16.49.199.35.bc.googleusercontent.com. [35.199.49.16])
-        by smtp.gmail.com with ESMTPSA id ada2fe7eead31-7d26fef4ed3sm527432137.11.2026.11.03.16.43.55
+        bh=/bumM81nPiENiLh9PH/Fm40C+VENRMD3A/OuAfI8Z4s=;
+        b=W8qCgGUG77x+ARua5n++funB1oZUV7biv3RIp+hPPkUwgQw1gKpWRhR43JWkRq4bfs
+         OF+VxMVf8QVEZgvF9+S/H3HkU56HSA3BbCjgJGI/xxvKevTKEUGlb0ss0QmJ5yDoc0iV
+         VzryYdpALXjveK9ZUZUvc0pCwy6hwn8liJA+8yyP2JP2yEoIz4EK2hqEMYvwhQH2l27I
+         Hyl05FNygEEdqVD+Bfw4dQf/BOZkJ70Cs8LkmWiUf6n+5t5gSja79ggXJorO981rwu6V
+         0his/fgtoTIr+hMkp8JZq6NFX4JW83Ft/vDpmJEN85ym1IOXra1SExEN6jw0WmlGZEK4
+         QNpg==
+X-Forwarded-Encrypted: i=1; AKwUvByPYEL0oWCExz9QETvsKZ4PAbJlGXooqCbPCdTqjmRFTrXNrpSCpaFQ2e9hKCS45YyQbD1oUkyh6g==@kvack.org
+X-Gm-Message-State: APuU4Z+Jq+ax6Nxky3XxiQc626QMl824ziRxqTyRWF6lXozwOdxo1FqA
+	/2oTHVJsIEjaFWv52VskoeigeOskNwtPomiPRu4WNVwwbb5C3ICJK9b0
+X-Gm-Gg: AYBFou3Z1+6WUR6pmHk/6Sivlvy7bHTPpiHG4UiVNcJwDm3m9kFkNLkznBAPCc0jfp7
+	xC90mDvXZ9fUB+9fB5EnuZMKDE7Xhz/gH+pIqxQBcYHm18zXvJHjHKw01+ouQge8gKXQGoQ9Zaw
+	gj4/SgeoLE3ulI02KcJV/KlH+eHoUYFOWXTwfsmluGaP+MhPadhIV1iHLek/zrzgfgeUyFicBq6
+	S54ZVMNAw4oAazxvVzZNz7qAVypaTB9toKDq+g4GUvWGcLqWB+SbuEet5obg5ikOIPv9F2xbofv
+	z79mrqe1Glq1ln2yqj/xmxFAueYzRDoQnFbwtYQai89ugaxEEbgCjPeYckEc7zgU9JimBevH69z
+	0j5H6tkztafS7J+pjz3E/AnU3yKbXBCA8tBVzQn57xeB+r+PAwF/cVW6ymUIrAhlo/vG+JxQwB0
+	02SADfDBOn1YykeUQM8p+ZzW4Dy5poo4+2tY9VJqTox1WaxnFp5Cn+H3AebVAwR6sVErVjghVbF
+	77NdO5Ucd2hzMT4GqeBQP3yl+7x5E2TAPFhuva0trUa9wnkTNg5Jk4LFb3WQP1Qms1DB+Fb1z6i
+	sj21aiqMYBBdt1l3/Uy1N+Vmf5Gvge/O2RDmO5I=
+X-Received: by 2002:a05:6a20:914b:b0:3e2:9470:5303 with SMTP id adf61e73a8af0-3e928953948mr11828504637.15.1793753391239;
+        Tue, 03 Nov 2026 16:49:51 -0800 (PST)
+Received: from localhost ([27.122.242.71])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cdb46440cc7sm329325a12.3.2026.11.03.16.49.50
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 03 Nov 2026 16:43:57 -0800 (PST)
+        Tue, 03 Nov 2026 16:49:50 -0800 (PST)
+Date: Wed, 4 Nov 2026 09:49:48 +0900
+From: Hyunchul Lee <hyc.lee@gmail.com>
+To: Christian Brauner <brauner@kernel.org>
+Cc: linux-fsdevel@vger.kernel.org, Jan Kara <jack@suse.com>,
+	Al Viro <viro@zeniv.linux.org.uk>, ecryptfs@vger.kernel.org,
+	linux-ext4@vger.kernel.org, jfs-discussion@lists.sourceforge.net,
+	linux-nilfs@vger.kernel.org, exfat@lists.linux.dev,
+	linux-mm@kvack.org, ntfs@lists.linux.dev,
+	ocfs2-devel@lists.linux.dev, linux-btrfs@vger.kernel.org,
+	gfs2@lists.linux.dev, linux-efi@vger.kernel.org,
+	linux-mtd@lists.infradead.org, linux-xfs@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v2 17/34] ntfs: don't set SB_RDONLY after filesystem
+ errors
+Message-ID: <auqBLEvcurRZfGj6@hyunchul-PC02>
+References: <20261029-work-fs-sb_rdonly-v2-0-2f44f64f0b66@kernel.org>
+ <20261029-work-fs-sb_rdonly-v2-17-2f44f64f0b66@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v3 10/10] selftests/liveupdate: Add a test for
- preserving tmpfs files
-From: Pasha Tatashin <pasha.tatashin@soleen.com>
-To: David Matlack <dmatlack@google.com>
-Cc: kexec@lists.infradead.org, linux-doc@vger.kernel.org, 
- linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, 
- linux-mm@kvack.org, Alexander Graf <graf@amazon.com>, 
- Andrew Morton <akpm@linux-foundation.org>, 
- Baolin Wang <baolin.wang@linux.alibaba.com>, 
- Christian Brauner <brauner@kernel.org>, 
- David Hildenbrand <david@kernel.org>, Hugh Dickins <hughd@google.com>, 
- Jonathan Corbet <corbet@lwn.net>, "Liam R. Howlett" <liam@infradead.org>, 
- Lorenzo Stoakes <ljs@kernel.org>, Michal Hocko <mhocko@suse.com>, 
- Mike Rapoport <rppt@kernel.org>, Pasha Tatashin <pasha.tatashin@soleen.com>, 
- Pratyush Yadav <pratyush@kernel.org>, Randy Dunlap <rdunlap@infradead.org>, 
- Samiullah Khawaja <skhawaja@google.com>, 
- Shuah Khan <skhan@linuxfoundation.org>, 
- Suren Baghdasaryan <surenb@google.com>, Vlastimil Babka <vbabka@kernel.org>
-In-Reply-To: <20261103010216.3447716-11-dmatlack@google.com>
-References: <20261103010216.3447716-1-dmatlack@google.com>
- <20261103010216.3447716-11-dmatlack@google.com>
-Date: Tue, 03 Nov 2026 19:43:45 -0500
-Message-Id: <179375302575.727293.18102345692701869647.b4-review@b4>
-X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3188;
- i=pasha.tatashin@soleen.com; h=from:subject:message-id;
- bh=1Sz+eMhTI1TOTbxgSk7ZOC8CrCJdIfx3Ze9Zg3ES4c8=;
- b=owEBbQKS/ZANAwAKAbt3KEzbc3reAcsmYgBq6n/FzIqSwYCXrxsnr7zksMS5TfAEmFOQUj9PS
- 7XxUL7XYFyJAjMEAAEKAB0WIQRBMaqT7LRvGvB/NmK7dyhM23N63gUCaup/xQAKCRC7dyhM23N6
- 3nTOEACAI6TfigjjQvteQKuwVbfhXqGx6bxoozDfCeoenFpsOHHU2tRSPDHrF2LinhmG2pyX3Q8
- IdNQ59F6clZBMmDb/eOe07rYUzfUWj1TUdh5D/SLuP13olwOUmaakHONOrG2Uaporgy7rW/JvCo
- H2L7Jk9k9ONnqREnNjgeAzTwu/zmxI3kBLYcpoEe4e/qloHN2LAqn6iVZB5b6I/duQg+0sSKEgp
- qF4OBNh/aIA1foatwzOu597LOjO9yQGRV3iBJJYo51P6K86O3J78ymlKWGJLCLMOMPk2DZUnR8M
- jLp931wUPz3YeNyDlYE5pYInd4W0IpRLQkJs6piLRVQ/conGIWbGkL4KSSoQd/2jep3AT+iLZxT
- nQX3w7DUGKtNX41lNlBN5hBRLIL7IBK7aadPhrKz90SJNGH9ZPSeFVaGtwJRjGCWrPppwaO06yR
- VysyPyy9uNhOKJSHmwBYeXEJddw81NZYJIjeslUtu59vWS+R+q3usDK/yK5jNy6E0h6vvuwyhuI
- gmJeftNu95dEGsoOiTdU/+eZlCgissKpCpGEEx1LCEbcoV5iULkM6cczYHziRUNy4WEnse6TYs5
- JiM5brFJchE2M/+FwTTI00ZLZVJRSQ+PZmsg6nEdtwTUZDUhsHCd0cXftsjhObL8a8SsH7szZ7X
- ktyDeGGGs1LNQ6Q==
-X-Developer-Key: i=pasha.tatashin@soleen.com; a=openpgp;
- fpr=CAAAB722DD22A081F0D49F35633A6A993D43B569
-X-Rspamd-Server: rspam06
-X-Stat-Signature: zy6ixw6tjd8k9os4hxbcf3midygrd8xp
-X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_GIT autolearn=unavailable autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: 9788DC0005
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20261029-work-fs-sb_rdonly-v2-17-2f44f64f0b66@kernel.org>
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 0070020005
+X-Spam-Status: No, score=-7.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,
+	SPF_HELO_PASS,SPF_PASS autolearn=no autolearn_force=no version=4.0.1
+X-Stat-Signature: ob4fgukif4zof7tquwqgc1wfuph8ksko
 X-Rspam-User: 
-X-HE-Tag: 1793753038-412166
-X-HE-Meta: U2FsdGVkX1/7uIzd9OJFw7TsR/alaL5/IMNggmusRmy3b0KUFnnDNTzY2dQW55/9gUX70XPXH0S1rh3g07c5Q5anKGx6mz7JVPsuzTY4wBzlpnF6hV/J85IEByBaLS7uN52m8kCsJB4Mt4GXyV/JuGRBX01/CNpiDgmnaHV52OD1qmwJV6klyrDKL3hVyYY4DAiWGMD0CYVh56S4C5si3ZbCgGWFzvqVENIRAjkzphUouEodY/L1EO+EIE5tIMmCt400r4+VRQ1KoUzfrUYLi8qAXMYAufOsRPvOxgsH/62iCd9M/FZKiqMo4XQc6rcL0KEiqlK0TWH8YMXEl9SZanXL6/976UH5BwQShC83m3bTukggfCA74svYm5st2TAObN5mloRahVVy46IcCFogtraOfXTQR5KX/7u7hG94E3sJVIyCg97IqWG9xYqwGu4zRkZgV1gas0XHInom/BSXNwLa1Xr1tgP5U1LeX4nuC8OV+X9kiKz+nl7cWhK9jXMe/2XQCtqBE5effohuI44X/k7DaQJk72trJ7UXII6AD76KpEYufj33mktzWhbD6IGx9nz0dce8Ewb323/FO6qIuyKRQuGo5b5LAPGCTI2Nli1VpxbrTSwOrHDcvpXFU6iXN5BhQgUF+g6fNB/5+Xq29ergOVtcrRSHLGQ/HdM3fa1NQbKIDCqQNZDVXzYlUrUkTsqQAtaS7mPoyLcitWmRjLodGkTfKaTi9a8zQJ/wuRGir67IqhepWx/9alZWuu8xCHnFHsFOWAq2Km3+s5RjqJ3+BmL1cnOtPSBCRynf2y7mvlKp5hgcEezpYtdfrpZ1S4jO0U0hWeCFSFBZ4a6FT45jrhdkC0QZR29kLBnDlKNceJL5EQnNMNLJFFHWp8nreNK+YTpnizBtvsMnjx7islyLDlBbDia0ih9ZWH1VAWyhGMqMdaDwY5qqpB0TBgVom9xg5/qgcHXNqlBLPYL
- j5be6pcp
- bK0TyjZFBMDo79SLd81yUURY5XNprt4R3wzoRMXjkLGS3cOIEeJD8b30l7XS8ZAt9OMRAKklG6kWLtbHpcZMK5zPtRg7A9hGFx9o/dZy4K1NT6pq1nH1FPm6FTla44Y68ZvWEix1qH8uJ+W+ImJG5d/HWbu1ot1EoOS0aqauue7kCEYP/Twe5csHL7QP29exqT03IflzW7y2T6me/fh8bXV61beDGhBtK+jFQ3WxCP5I29caFSvm4kP3+MAPxFj36WlzJFAQOcSo36rdTjb6hoO6JnDxLcU2NrzPi7QaoiGJWn9JpUlhEJVCk3AN9ll3b38ieauj6k/Htt43S9K9p3C6R2rADvORNxMbeYOlSaIbWco1zGQq3KUzvJgu0sG5R1AYwBeDkvzFBrnnpQKFdZvq1qZnnWJs0+K3nXfZpGAn6GBU1dD474b7c/XOiP/eca1al
+X-HE-Tag: 1793753393-250231
+X-HE-Meta: U2FsdGVkX19HpuUcY+FCcunRrch5paDq0B9TyYJkzy5Ds5EO9H3FcbCQIAI0kIOHUqUXJTjUrm1o92mJRr9NGUfELowvQ7yn8fp+F3xrnJvGm9gM0sahG3ysSy+zTaiQXVajGF4TUtVwuoq7+gCylel3LwgEgkt2K0pma9Hx60dVO89lhGLpa28JrmGGokLcpE0oAkCnGT4v5S9wKm14ob9u+OIE3SoGkezC40Xjc0iQIfXr1eIZIGQpKMco/C5nSfRWe3/HayST5u6MFdLS8jTmiKMVkabIvC8hhtMSby5n8AlEdARfce/HYLq4pee+GFd+T6/dg6iWzhb3NVx7+uLmP0SiQ4xW0uByY0T8tUE1BrlZcRwMi0qmH+z4X/XLjX0S/zwuqC+NOTXdPt3KXIdBGjsfwDHPGqIl95JVhNJp5aW4sMiVUu1FpXdgLunQkpDdSvcxtgtyVcaE6jjhf45ROzStwnN6h9G9BiXH7TtABA6hYiWVOieYhECEaANA5LZU1gBcR2n4m1kxfZV9SXxwn6AkTGdS5nmbFTtQsViDYlqBSxvga9heACPCJ5G9mY481j6zsqGDoA5ioW/B1/VlizPqDTogDoArJ9ip70uvlpmoaNcJg5JYtXT+f0Iikn8P+VxHIQpE0ac/9wW4sFD/fhOuC+/TpverGB+ftChXDGGpDVort0pVAp9gnUOGrLDECXHml4i74Ngoi3zKzYrizjlyWBO3xcmn11D/34V0dcpGf26i9CzvH6/1fchvJSns/DAEja5bvHgyxj21ZWuZ8I2zf5ew54ivirqBUH6hGzGPrK75GVzGKBzJ9YWthJRs6VmXbRbcz0ftP1jz8nxpDfmrMYjlZNTZhgzXoZxzDAkOX90E8yJmMlRhn6Hs68DVTiqwmka90v3cHeOE8aGu76HBtjaeTsMK54UQZSr1rH3CoduIf+sdRa0jDi9Pi9xfDUqiyZ5TcbJfgp8
+ 8TwkiRfR
+ O+TTd/7WRtCkaM+N3Bt8TD4f4jWQoLrFEWxox+wAs9IPA347/bVLNwtJVL+wxTYsbWXDm2oW94gslG+ZNzsOKvb2owjwZ6mgNZuaFTnf/pIJ/TRMbqFIgCyNtphYRWHu4RPLUJ+NddFKyVxpnqyKNX0G4FDamP8ZQM00uOjDYb3TH89fXBPIuhPlsPmuiNMyFe8+EAgPk1p9HQe5VrYWzfF6a8C+S7OFCJRAMVtEqqtbK9bDkLPhTrcTSXFa985TyXcJhbXmqKmz3y7ZHVpXdOTjQWH4daHi00IWtaYzcOG1VVEgQCg89asLjgT1GQhdOE9byQz0AMLrK+TSl1F8YGxFW7KZ7RtHMmIMmYtRXcFtP/6PCROUnPK3rUswcoc2MzkJ4Nhl3h25FfeD8CnlYAZB5Inh6ufdSBvCKKbpfYr5HVou3qUMGusiVa09IRbzFUSqRo35CUH7vskK+4hLz4q2w51jklEagR9y0poS6aGPfR/3fMD5dPfBUufJfBNhC5RbEFgoGq6/1gRakPvRoFRbPzfUEA2AJjcxQJeKbgqiWsLtloZnuNWhZfR2ntFTP/5N8l8y6BKPBBhCaGYFpLieQQ01ar3/c9ANaGbdz15CZpKbXHSGAKb9A+ZYE7LynxBAcFX0VThbjuQP5gW6dE559kj+e9czBTyG2lid0733bh1HROXxdHGn/cQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -157,72 +132,45 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-> Add luo_tmpfs, a kexec test for preserving tmpfs files and memfds, and
-> for retrieving tmpfs files onto a tmpfs mount with struct
-> liveupdate_shmem_retrieve_arg.
+On Thu, Oct 29, 2026 at 05:07:08PM +0100, Christian Brauner wrote:
+> With errors=remount-ro every ntfs_error() ends up in ntfs_handle_error()
+> which sets SB_RDONLY without holding s_umount. If that happens while the
+> volume is frozen through bdev_freeze() thaw_super() sees a read-only
+> superblock and leaves the s_writers rwsems locked so every writer hangs.
 > 
-> Stage 1 preserves the source files of each test case. Stage 2 runs
-> each test case in its own directory, with its own tmpfs mounts, so that
-> block usage can be checked exactly with statfs() and st_blocks. The test
-> cases cover:
+> So set NV_Errors and a new NV_EmergencyRO flag instead like ext4 does.
+> ntfs_emergency_state() returns EIO after a shutdown and EROFS after an
+> error and the write side shutdown checks use it now. fallocate,
+> ->set_acl(), FS_IOC_SETFSLABEL, FITRIM and ntfs_mft_record_free() get a
+> check as well. Errors while mounting still set SB_RDONLY, nothing can
+> freeze the superblock before SB_BORN.
 > 
->  - The restored file: contents, size, position, seals and holes, for
->    linked and unlinked source files.
+> NV_Errors already refuses a remount to read-write and since
+> commit 521978c4f444 ("ntfs: sync the volume dirty bit with the recorded
+> error state") the volume stays marked dirty once errors were recorded.
+> But the dirty bit may not be on disk yet when the error hits and
+> writeback is refused from then on. So a work item writes it right away
+> because ntfs_error() can be called with mft records locked, and umount
+> lets a pending one run first.
 > 
->  - Creating the file: it is created like with open(O_TMPFILE), with the
->    requested mode minus the umask, owned by the caller, and not linked
->    until userspace links it, unless it asked for O_EXCL. Also O_RDONLY
->    and O_WRONLY files, other open() flags such as O_APPEND, O_NONBLOCK
->    and O_CLOEXEC, read-only mounts, and directories that the caller
->    can't write to.
+> Unlinked inodes are left to chkdsk in that state. Their mft records are
+> freed with direct bios while the index and bitmap updates of the
+> deletion can't be written back anymore. And writing to an encrypted file
+> only warns now. It called ntfs_error() which let anyone put the volume
+> into the emergency state.
 > 
->  - Preserving files that can't be written to: a binary while it is
->    executed, through a read-only fd, files on read-only mounts and
->    superblocks, and immutable files, including sparse ones, whose holes
->    are filled. Preserving someone else's file that the caller can't
->    write to fails, and so does preserving a file through a write-only
->    fd or an append-only file.
+> /proc/mounts keeps showing the volume read-write. Writes through file
+> descriptors opened before the error fail with EROFS.
 > 
->  - Executing restored binaries: a restored binary can be executed
->    before the session is finished if it was retrieved with O_RDONLY, but
->    not if it was retrieved for writing, since LUO keeps the file open
->    until then. These test cases execute copies of the test binary.
-> 
->  - Block accounting: the file fits a mount of exactly its size, and a
->    large folio that extends past the end of the file is charged in full.
->    Running out of space, or hitting the memcg limit, fails permanently,
->    and leaves nothing charged to the mount or the memcg. The session can
->    still be finished.
-> 
->  - memfds: they are only retrieved as memfds, with their seals, and
->    files from tmpfs mounts only onto a tmpfs mount.
-> 
->  - Interactions with LUO: invalid arguments, which can be retried,
->    retrieving a token twice, and outgoing sessions.
-> 
-> Also check that the size of a preserved file is frozen, and that the
-> test doesn't trigger kernel warnings.
-> 
-> Enable CONFIG_TRANSPARENT_HUGEPAGE for the large folio test cases,
-> CONFIG_MEMCG for the memcg test case and CONFIG_TMPFS_XATTR for
-> FS_IOC_SETFLAGS. Those test cases are skipped without them.
-> 
-> tmpfs quotas are not tested, since the test runs as root, which is not
-> subject to quota limits.
-> 
-> Signed-off-by: David Matlack <dmatlack@google.com>
-> Link: https://patch.msgid.link/20261103010216.3447716-11-dmatlack@google.com
+> Fixes: 6251f0b0de7d ("ntfs: update super block operations")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 
-Overall, I like the series. As a follow-up, it would also be nice to add 
-non-kexec tests to liveupdate.c covering preserve/unpreserve/freeze and 
-restrictions on various tmpfs files without rebooting. 
-While that won't test retrieval, liveupdate.c runs as part 
-of regular kselftest by pretty much everyone, unlike the much heavier 
-vmtest.sh run.
+Looks good to me.
 
-Acked-by: Pasha Tatashin <pasha.tatashin@soleen.com>
+Reviewed-by: Hyunchul Lee <hyc.lee@gmail.com>
 
 -- 
-Pasha
-
+Thanks,
+Hyunchul
 
