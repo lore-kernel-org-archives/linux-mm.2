@@ -1,125 +1,100 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45C89606A31B
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 10:07:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3B51606A31B
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 10:14:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=ZSsGOIum
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=btLwY/D4
 Received: by kanga.kvack.org (Postfix)
-	id 5B75C6B00EF; Wed,  4 Nov 2026 05:07:28 -0500 (EST)
+	id F11FB6B05B4; Wed,  4 Nov 2026 05:14:01 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 569FC6B05B4; Wed,  4 Nov 2026 05:07:28 -0500 (EST)
+	id EC2B06B05B5; Wed,  4 Nov 2026 05:14:01 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 457A46B05B5; Wed,  4 Nov 2026 05:07:28 -0500 (EST)
+	id DD8036B05B6; Wed,  4 Nov 2026 05:14:01 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 223416B00EF
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 05:07:28 -0500 (EST)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 9FA004069E
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 10:07:27 +0000 (UTC)
-X-FDA: 85397009334.24.91C5DB4
-Received: from mail-pj2-f9.google.com (mail-pj2-f9.google.com [74.125.227.137])
-	by imf04.hostedemail.com (Postfix) with ESMTP id E233440004
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 10:07:25 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=ZSsGOIum;
-	spf=pass (imf04.hostedemail.com: domain of wangqing7171@gmail.com designates 74.125.227.137 as permitted sender) smtp.mailfrom=wangqing7171@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id B7B5A6B05B4
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 05:14:01 -0500 (EST)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 66FD0A831E
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 10:14:01 +0000 (UTC)
+X-FDA: 85397025882.09.24A3708
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf24.hostedemail.com (Postfix) with ESMTP id CB5CD180002
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 10:13:59 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="btLwY/D4";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf24.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793786845;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	s=arc-20220608; t=1793787239;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=f6mGpkBy9RlN0FEVR7x4Php3XTrxwEWY6tQtidxcE8M=;
-	b=hkhCgSy4LHGwO/tvYER/2RfjVZZut2zz5QLDLYqCcGlfB74V9ZUZBW2Ub/AViPYHgeDo6j
-	PvHIBO9t7JCyHTgpENeHBCdfXElbjfhAR8Wnx7GFttnrrsHYFwqrb5nykAwsqsRhQAVu2F
-	CTs5exoGX2RB/zfSAkxeIn9wRCAj/fA=
+	bh=4wjuPdEIW1r5lz4xv5DqdpCHSpNI3Pzvy2rxa15uD2Q=;
+	b=OKjf3SYthZX3L+Uru/DbsoWRmdMF+XVtRSrfCFF2Tuwwb5Ry9ZpkejS1zal3YB29b3cb9+
+	IdjbLS8dnnwkfl03IkM2+hKaBgotjFXah7O+StY/MNx4Bk2eLLQcDCgtrHe29ejInaQ9tJ
+	Mllksix0FAjaAGVbjeDtuC7Fr0lI0aE=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793786845;
-	b=kGz4Nk36nAwWCi2txrikEh8JY/R9iScdBMqcnidbynjvSpC8LXFkgrcdMKMG/koMfPncZ8
-	HWpDUUIqK6DdOrfY3+utYmCBo6w13d+lu8m+JhElyq7qnuTXG1ktWxXR0uShj3up5U4bpY
-	RQ7/ewk0+/XEIbhGuhClpM7L8uv2SVc=
+	t=1793787239;
+	b=jF6nyeDq8b5WKOzLSAqTe/4AW91mZcKbfFNUS+YdG3MrRAx27a7iSRmeAxKNelpz44erqD
+	yA9OzgEQCZ+k3xyF2XDUFaze4/3vflzcEQGyU7r/pf2ZfJ4XiZvQz7zxRGSjbqrYPYzLWc
+	yXrfHX8zqiRlgFsVoaqQWxhlkvQ5s3g=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=ZSsGOIum;
-	spf=pass (imf04.hostedemail.com: domain of wangqing7171@gmail.com designates 74.125.227.137 as permitted sender) smtp.mailfrom=wangqing7171@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-pj2-f9.google.com with SMTP id d9443c01a7336-2e97ddaf3c4so2141535ad.1
-        for <linux-mm@kvack.org>; Wed, 04 Nov 2026 02:07:25 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793786845; x=1794391645; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=f6mGpkBy9RlN0FEVR7x4Php3XTrxwEWY6tQtidxcE8M=;
-        b=ZSsGOIumcgyJlAMs8D7oLAUwg2mBip67AN3dDabtqU39fsY7tdNrANEclaTq3+XwGJ
-         qMWuQa1SsdBEZdrXsl+BkS6lLoYkMsMQGCcIG497QQL/tK08uXHu/sso/kuQYJ8Vfh0P
-         flmuTPsgGXOAMDjqombPQuc6XlX+H04yDmI07TbiqM+SXMPTJtvGKEox7ny72QzrE/BU
-         u/sExB6s3EGo/unyzCpW1BM+r++dDSq0e+YgjZmYTjlu4tX76klg7sTtiVZDd2smKVjy
-         VTv7PQMSqD0MMqMF64g4GXXKLvs2iYyZo/6VGh+kFGSN4MJ9OJE+dwKy/ZRoWc4hzbqs
-         jQIA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793786845; x=1794391645;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=f6mGpkBy9RlN0FEVR7x4Php3XTrxwEWY6tQtidxcE8M=;
-        b=AtnthLwgpS0ElQjpiFK+xz5iTpJowXBtORlDJnhMpHunPqw0xMZSqaE6bhVbqM9V4i
-         HKNowWqUpsEAqa8QkqbBI9CSrsG4I9zF1vdBfuzWVGy3E9TMzwLxQi4VPA2vvem0EZeA
-         UKVpKsGpLtS4MBLnswducC0cstPERLkQmnhCps9K3ZEJpzNVkLT6zo+hNBJAw2w/vFzR
-         y/KeDGcuvOJMmdPQjeYedBR8vTfvLeP8wcgfIbpyIdQn997FZX0A766tUY2ALUdizICF
-         8wNhE2rlqOBL8QqdFrNtwx9Bvvj98kymDMDqWBUvO8QC3zbfek5pjYQwS/M93hKhVkou
-         z2+Q==
-X-Gm-Message-State: APuU4Z/VAYi/YhoXxndnx6gciIvlPPO3XfDea4mji3vEaNuKuH4/8Byg
-	5sqhKX+hcZPZNrWg/Ri1+hDkRmQxvgSH1p83AADxxz3EM9PFrvC1UPl8
-X-Gm-Gg: AYBFou2U5jVOSyVFGgMnFa15s2dh9KW0Jrpad10tgk0nmXnfDC4JU0Z39dE0ycpSyX5
-	05aXATh+NTp4pnAJaUqyP4qEtZKTiY/ZCI4d48mU7XMwTjmDdfzbpM6Fa++1jmcni+Zvyg4/Hz/
-	6CLyp5AFjg8HyYiLSxrRPWJ6hnqlb2KYd+kvgZfOPnTKP+kO5BElMOgVJL3J9+tPsmInZRxv5rZ
-	nKwZxm0w/ai4iCf6zOwX7zrgU+QM5mQIf7K2ZPKtujnY/exes44s8RjX6dKKPPRe9ML3TDEYnM/
-	IW+Yks8/K7G8/8d6XyjykbvlVLrNeNPoEEMbvqCvhI/O6YTCJwH5uOx0lL7/M1nAe+1kFovS6Tw
-	G+Z8c2jQ3JlVkhI7PfdDdGBRAmiCM7SrWjpSRd8dQnYLapktff4A8k3an1hh7IcSx1pvLbkaWBq
-	6xf/z5pAVdCGKJw77YCkE5WG/Amoeq0mYwo4FbMWyyqQGTf016UO5M3YYOvlWGzylym4ItUTbHM
-	KyU5+GGdEZAcujOK3Kc48ACxYS0o1NkfhAae6x/4PhARg2pyYN4dThwOxWSymy22jzHqhXmlbge
-	7/Mlop1Hulg6c+gXhSHj2uKW8zKUUJH3AL17b2ba7AzpFXEj9Mb2+ZSu
-X-Received: by 2002:a17:902:ec85:b0:2e8:965c:aedf with SMTP id d9443c01a7336-2eb364c5da0mr157401935ad.42.1793786844641;
-        Wed, 04 Nov 2026 02:07:24 -0800 (PST)
-Received: from lima-ubuntu.hz.ali.com ([47.246.98.214])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ed08fe55c8sm5603145ad.14.2026.11.04.02.07.20
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 04 Nov 2026 02:07:24 -0800 (PST)
-From: Qing Wang <wangqing7171@gmail.com>
-To: xuhx@hust.edu.cn,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Harry Yoo <harry@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Hao Li <hao.li@linux.dev>,
-	Christoph Lameter <cl@gentwo.org>,
-	David Rientjes <rientjes@google.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>
-Cc: linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: mm/slub: has_pcs_used() reads remote per-CPU sheaf state from flush_all_cpus_locked() without synchronization (data race; KCSAN  blind spot: slub.o is uninstrumented)
-Date: Wed,  4 Nov 2026 18:07:17 +0800
-Message-Id: <20261104100717.2666250-1-wangqing7171@gmail.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20261104094132.2665206-1-wangqing7171@gmail.com>
-References: <20261104094132.2665206-1-wangqing7171@gmail.com>
-X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=no autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam09
-X-Stat-Signature: mng4eee3qayo3t5kmkygbrdiznwgbmc8
-X-Rspamd-Queue-Id: E233440004
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="btLwY/D4";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf24.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 0B348609D5;
+	Wed,  4 Nov 2026 10:13:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB5911F000C1;
+	Wed,  4 Nov 2026 10:13:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793787238;
+	bh=4wjuPdEIW1r5lz4xv5DqdpCHSpNI3Pzvy2rxa15uD2Q=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=btLwY/D4lsJeFzCdcAEzD6wdjTx1dloaXX+ZKmDhCoPvHChoVNNWec7D31VYA5gSA
+	 CEcfoRM80lWwZgd5JEx5YrXUAQfGvVqpv8ClnaFi/yU5KyNsytcL2oEuDJN8M5U3hq
+	 A0zpAPALizsCrwmKAaGrBOXQ3gEzjZLL3nKahGHku/25b8SIfwmbBmWkfFCpMtf4Ju
+	 4GZ8wCVNMqM2QISUHCLaS3MUvvJYTbWbojaagUvLeZTHJV5rm0j+FGHE05jrLKCPsw
+	 SR+K+bAvmHbpjph8Tj/BXwNjLMXpJqbWzIdLraYbLhh5m9D2ohbwovruQmr2HNofI7
+	 4Hz/g9o32cnlg==
+Message-ID: <sashiko-outbox-197069@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH] x86/mm: Define the zapped-entry checks only with
+ CONFIG_DEBUG_VM
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Kiryl Shutsemau" <kas@kernel.org>, "Dave Hansen" <dave.hansen@intel.com>
+Cc: "Dave Hansen" <dave.hansen@linux.intel.com>, "Andy Lutomirski" <luto@kernel.org>, "Peter
+ Zijlstra" <peterz@infradead.org>, "Rick Edgecombe" <rick.p.edgecombe@intel.com>, "Thomas
+ Gleixner" <tglx@kernel.org>, "Ingo Molnar" <mingo@redhat.com>, "Borislav
+ Petkov" <bp@alien8.de>, x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, "Peter
+ Xu" <peterx@redhat.com>, "Andrew Morton" <akpm@linux-foundation.org>,
+ =?utf-8?b?RGF2aWQgSGlsZGVuYnJhbmQgKEFybSk=?= <david@kernel.org>,
+ =?utf-8?b?TWlrZSBSYXBvcG9ydCAoTWljcm9zb2Z0KQ==?= <rppt@kernel.org>, "Pasha
+ Tatashin" <pasha.tatashin@soleen.com>, "Andrew Donnellan" <andrew+kernel@donnellan.id.au>, "Rohan
+ McLure" <rmclure@linux.ibm.com>, "Baolin Wang" <baolin.wang@linux.alibaba.com>, "Tejun
+ Heo" <tj@kernel.org>, "Jose A. Perez de Azpillaga" <azpijr@gmail.com>, linux-mm@kvack.org, kernel-team@meta.com
+In-Reply-To: <aumzjHyJsshPJBUI@thinkstation>
+References: <20261102144001.342837-1-kas@kernel.org>
+ <b04316eb-a2f8-4587-9392-e673c7bd2fc8@intel.com>
+ <aumzjHyJsshPJBUI@thinkstation>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Wed, 04 Nov 2026 10:13:56 +0000
+X-Stat-Signature: zktesbxjpohm5mawimejaz3k7qq7bt6x
 X-Rspam-User: 
-X-HE-Tag: 1793786845-741637
-X-HE-Meta: U2FsdGVkX18ALCvBvw1rHJEI2uMVM9b9ck/BwOl7yJc2JUF6CX7mK9VcUsKGouQcurBH537MJ/24fkESs1AnckqoCF5E0q33xza6ga5mP+tU0sTvTjWs493dsx0YZta0YGY62k5jX11nFuaNdl1w19jfFIzBVN1htBfPS55ITYpd17e5rDSP0kA1Z1ks+qT+vxQ0RpTqHFA9aRRWWYNd/Gl8L+B7ybIuabc0TfXvdzcD22OZ38x3hi1tHo5RjXMUs8L3semeb2PMXtTP7L8LBWNbBrtweN/idRfBg56hbzvDUNVGPoqaBGlWjfSMByiiHPWUouwCLm1Q5WySQone/AOtfA0pyrJRsMnlvqEl6PWwjSvVopm4OvFNvQZGYyhVPGxlst7QGCEd+9qh1D0FRSygLrDT0NAWlfaLZyfGUabNz5QoSpmvX6Iww8tb2jgulj+cZLfcqPv6+rJ+7mXFCx+yacybwOCWs4IMjSTKnDHF+A2nYaORYzQ7MPOpoioa5Sg4vj2YYFqJZKFbbE6qVSC1Co3TfUqRf1Xgn7Wz7iYPs7tah6b1aDvknC80CSDN5KlSW5j4vIaI07zXsSMdz/FqaOA9NccQ9RWUYdQtbkAlB32Ft4/ea+Nc6fFCuTTHm1+Ts0IGkVscCGzPWu3I+L1lWp2uWupATW+h8ljwGW1SrEF2SQxe3u09j9QlgAEe462f1eW9GNz3i86NGJGU83shRd+13svDZyMyphlEZ0wS09DQykvIvlL6SMfkWqfjXsCgy66WrRzOcr+FNalf6q8z88lcCWU531IDOZVq6t9JGEGm22BUAW+qHO6Ifu7/5sBPvfemULjL7pwze7oh75mRq0Hef8KfMPZIsLczFXX9uo9ZhHkl7IkBwiochkEBAC6EPPcqGtz+CMKaA0+8uTjo5gzpiXUejVRQRX8Ku09xKGA1+lMBgrvI+UtNvLo4EY3wM/tPrhHA6BU/E80
- UOXCZ1cE
- eX4El5SZl1RAz6+/ULg3C5r/T2EVaBExv4rOTQXHOiVop0wNI2Ax5snOuRGbukn+QWd/k/DvjNzcmFSvi5GoVsBcJjWD+neYLHc4/sS0YmQsNnnEs5JHaoX/bxx5dyjSkYvyS3KCqev3GKw77kypdBb9PcuBGT1UeLs0UngoXVqaBa1u9gfkjez8G3nKUXNKUoE/LFzj3A9XFUM6h353WCC5jTfOqDrwj7RCcSsiPbEYpBGUQNJKLfJnk0JmHjZcypWb+lhc3lOyV9W8KHQvh6u2FVFr3YZiVTfSMWzEhRWv3CRpDENtYKs8QMZD9yYFdMJVXbebFuIv1naUIAITdVt3B9n0JnVuOdsZJHG854r7pbb2cHc7KtkbJxPz+EBAld6DLy59oY+jYp25UJ8T/AmE5Jo+eFz9ncBx9Irl4g6NvLjKZPU+nw6v/k37ENEZhsW78uYzyNYk65Ck=
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
+	autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: CB5CD180002
+X-HE-Tag: 1793787239-267488
+X-HE-Meta: U2FsdGVkX18n3sDVTKR6DR6gnEZVgPiYfEQtCEpydKVpopd6bulfhCAbNwKwuS5SPRLfnxR6ADI87xKI4VGMw0OIOZGZxVt56D5M74lNW82z7agouQ3zhOysAi2PROT2IPDxKxr8VzgG2wQkudyYUcOGIJ5MXMrmiOOehhs0DBU5BD5N9ue2MAZd2cBWGa46IjDHYS79r6flW48236bg/xGjys/xN0Ww2xXXE36W4B8hy5lmGwbqkxGAAYWNRWwmoAWr+O77CaE5bhb1JawUnG1FBztYH/HDli2XpNKdo90mq3bWsdlQJ8NXD7xoKxemqiBCZLlMP03DXV2gckCrssRsIvqaCYM7KTB/gwdA9bgQ1laTSJRoRCEYHOSrWzVVQtO7A8JvWdMYKSZ4lsHaw6dpwhy1Wl8amjBEhcRHM4ZtkkuSNj3GmVW2zFGddjvO6hNe0Y1q1t6wD6pYtkGNb5SHj7T5O0zJ6hcOHq7qVAp+8F+pGmVZy2lT17Q8Y7NPpndpsIUHSyqsygCsYXZ3bGDmSJJsy1y1+XESMFFFhUhdeEwcGLYoQWB8NEUN1dt65EfXaJ7zdba3LZEwEnF2AO2+to7V+0GB+r3pwlzb7muAMji/H56odw4oq5dGteubPOlIYm84Vg+UNQVMAMesL+o3okK1N8YDQEzF4jKdeF4VNxb3qnh+Xzj/Rhd+7jvGMO0FlVDOb9+uThyDx0WQR0vMjSHIULPGS7QLXi2fNBTMW12QWXUcyqPGCCqDRg97yJ02xRs7fjVos7ilji3JSf12PlsD8isx3edkRgP1CuUHl2eBJCbBK7g2IDXJTCT281Oq/5exW3QDtvFnOuz5BthXqARe7QNxgEOcpjGV4Qa6BG7TmItHUqZRUpKcp/3rglA8akoka4brx6XT5/uDkRI0fG2WfMJVjNtoXKJesttdv2X83XaMr3n036dBygiiIZLG/tFv/uDWKXuKROu
+ 73c0Ey9x
+ asJxc6Mtt99iaq3MN9Lhk2gR1YVOGMUx4ULdVfmMNVHQ2VRt7+b9xcDBYsVVi+nmcPtQxSGsSfAbMSSS8J+dyb3YVWRtbu1xNKJPq7aAqRwVeNmxQ4hiCKyxCZD5AGT5LW0it1DE8sFAoOunMRN01D0XaCr1Q0s4cV+pgvYRnUnt/O/PpGHZVfcYtwryFHLtQyLdrJi2ufA1aA0lmj4LzZQLhID3654DkkHciuP5g3YWXebw2/auMdd2MsrsiGstuIQQu9Q0pUWa39QzZKyZywZSnIpHkpu8Yh7T/KtTUJSeeEKGpvDF8PqcroHYTLnKhcVGBhlTC+1eGX5EF2FJ27EGjJWu97FiZRQdum0437iT4lFwgetPpWNI8UPE/bMWeSLueYD0VeHUAjC99gblfPvo/Qss34nhw5QfMvo0Oe4kqceGGs2uB471oOXTmQw+qYRusrRuAT6FHEmxkTHDYPgXKilm05iN6KUr6mcNvN3anZ+sg4SJQjKM/Tm0hupbofJ0HoD2NGAsUqjfqgl33EqD7zWNcRwOQ5bHEngMpqV4Ec+ymuFlCuW+J4jcfO3msSRP6KJ28LAfCNz3ws+45wt9TZXI6abklxJ16V+nyj/1RhwNxoz1qCXI+VMhqQpUXz/clMbO/6+FyZ2ylm6c+/uv2r6e3MuTIIbUPmS0MXsl40voupLywpesfGrWoo0+ptRp60jlJMQo3h4TR4CJsaPrACjR/h/TLyuAdM2qjcGunybQO4GOqq+4A1efsg4nhSeCklj7iUXPyyIfPkdVd8dEr3qy5lqk8c0SPtsa6/OUxuS5yNo0RPAV4zQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -127,21 +102,91 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
+X-Archived-By: <archiver.kernel.org>
 
-On Wed, 04 Nov 2026 at 17:41, Qing Wang <wangqing7171@gmail.com> wrote:
-> You're right, there is a data race in has_pcs_used() reading the pcs
-> fields.  The possible consequences:
-> 
-> 1. has_pcs_used() observes an empty pcs and sets sfw->skip, so the
->    flush is skipped and the memory is not freed in time.
-
-Sorry, I didn't state point 1 correctly.  It should be:
-
-has_pcs_used() reads main->size as 0 before the concurrent free
-increments it, so sfw->skip is wrongly set and the memory is not
-reclaimed in time.
-
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [Medium] x86/mm: commit title contradicts code and changelog has unstripp=
+ed scissors
 --
-Best regards,
-Qing
+
+commit 1651219a7e4a74c995baa4203be8528bd7cfe1d0
+Author: Kiryl Shutsemau <kas@kernel.org>
+
+x86/mm: Define the zapped-entry checks only with CONFIG_DEBUG_VM
+
+This commit removes the arch_check_zapped_pte(), arch_check_zapped_pmd(),
+and arch_check_zapped_pud() helpers along with their callers and
+pud_shstk() to avoid return mispredictions during page table zapping.
+
+>     x86/mm: Define the zapped-entry checks only with CONFIG_DEBUG_VM
+>    =20
+>     On Mon, Nov 02, 2026 at 01:12:47PM -0800, Dave Hansen wrote:
+>     > Or, heck, I'm not that attached to these checks. Let's just kill th=
+em.
+>    =20
+>     Works for me. x86 is the only architecture with them, although arm64 =
+and
+>     riscv have shadow stacks too, and the x86 helpers already keep
+>     Write=3D0,Dirty=3D1 out of other VMAs. Patch below, without the Fixes=
+: tag.
+>    =20
+>     Rick, any objection?
+>    =20
+>     -- >8 --
+>     From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
+>     Subject: [PATCH] x86/mm: Remove the zapped-entry checks
+>    =20
+>     Zapping a range calls arch_check_zapped_pte() for every batch of PTEs,
+>     which is every page for small folios, and arch_check_zapped_pmd() or
+>     arch_check_zapped_pud() for every huge leaf. Only x86 implements them=
+, as
+>     out-of-line functions that warn about a shadow stack entry (Write=3D0,
+>     Dirty=3D1) in a VMA without VM_SHADOW_STACK.
+>    =20
+>     The warning is a VM_WARN_ON_ONCE(), so without CONFIG_DEBUG_VM the
+>     functions are empty, but the calls remain. With the SRSO "Safe RET"
+>     mitigation the return of every such call mispredicts.
+>    =20
+>     The x86 helpers already keep such entries out of other VMAs.
+>     pte_wrprotect(), pte_mkdirty(), pte_modify() and their PMD versions go
+>     through SavedDirty, and only pte_mkwrite() and pmd_mkwrite() on a
+>     VM_SHADOW_STACK VMA create the combination.
+>    =20
+>     Remove the checks, their callers and pud_shstk(), which has no other
+>     user.
+>    =20
+>     In a KVM guest on Zen 4 with Safe RET, zapping 4K pages takes one bra=
+nch
+>     miss per page fewer. MADV_DONTNEED of 1 GiB gets 6% faster on anonymo=
+us
+>     memory and 8% on shmem, munmap() 5%. THP is unchanged. Without Safe R=
+ET
+>     the difference is within noise.
+>    =20
+>     Suggested-by: Dave Hansen <dave.hansen@linux.intel.com>
+>     Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+
+[Severity: Medium]
+Was this patch applied without passing --scissors to git am?
+
+The commit title still reads "x86/mm: Define the zapped-entry checks only
+with CONFIG_DEBUG_VM", whereas the patch unconditionally deletes
+arch_check_zapped_pte(), arch_check_zapped_pmd(), and
+arch_check_zapped_pud() in arch/x86/mm/pgtable.c, arch/x86/include/asm/pgta=
+ble.h,
+and include/linux/pgtable.h, along with pud_shstk() in
+arch/x86/include/asm/pgtable.h and the callers in zap_present_folio_ptes()
+and zap_present_ptes() in mm/memory.c and zap_huge_pmd() and zap_huge_pud()
+in mm/huge_memory.c.
+
+In addition, the changelog retains the mailing list reply, the "-- >8 --"
+scissors line, and the embedded From and Subject headers ("x86/mm: Remove
+the zapped-entry checks"). Should the preceding reply and scissors headers
+be stripped and the commit title updated to "x86/mm: Remove the
+zapped-entry checks"?
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/aumzjHyJsshPJBUI@th=
+inkstation?part=3D1
 
