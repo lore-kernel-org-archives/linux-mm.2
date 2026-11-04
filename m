@@ -1,66 +1,66 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DDB26070A9B
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 21:16:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3792C60BDA3B
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 21:16:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=VLeX/xg/
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=M5RO5Q8k
 Received: by kanga.kvack.org (Postfix)
-	id 82A196B05C8; Wed,  4 Nov 2026 16:16:19 -0500 (EST)
+	id 459586B05CA; Wed,  4 Nov 2026 16:16:34 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8018D6B05C9; Wed,  4 Nov 2026 16:16:19 -0500 (EST)
+	id 4311F6B05CB; Wed,  4 Nov 2026 16:16:34 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 717776B05CA; Wed,  4 Nov 2026 16:16:19 -0500 (EST)
+	id 3474F6B05CC; Wed,  4 Nov 2026 16:16:34 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 47C126B05C8
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 16:16:19 -0500 (EST)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id CBA694085F
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 21:16:18 +0000 (UTC)
-X-FDA: 85398694836.01.BA8EEE9
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 0D1386B05CA
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 16:16:34 -0500 (EST)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id A22F5A814F
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 21:16:33 +0000 (UTC)
+X-FDA: 85398695466.04.2ECDFAF
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 0507040004
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 21:16:16 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="VLeX/xg/";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf17.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org
+	by imf29.hostedemail.com (Postfix) with ESMTP id CCA7212000A
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 21:16:31 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=M5RO5Q8k;
+	spf=pass (imf29.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793826977;
+	s=arc-20220608; t=1793826992;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9B4pJQ/AcBjfjWtMAv0PU36WnnXrBUmg3mrzKfekPks=;
-	b=C07koYr2nv78NATaNPChanL3NyFj701mk/wgFGlQ9ps6R5dePI8vTA5o2riF88Z0eFNXjH
-	OhVkAvX3w01OvnrOtkyA9Dm8YvO2fxwAzCoON3Rs5el0dNXRgmr9+Vnv6WTTc0JppQycqn
-	FkK9JBT07kiMU77vfycOpBeDuUaMgDI=
+	bh=Z1ZOJsRk1XloR8+X/iuIjf2Funsf7/y+/bk4jcaChHA=;
+	b=Y7th1fE0C0CwuenI4bXSLdqoNTthVb4Zd0Kh6nSWZYdiVGaIARExR0LySqRGS6eyxENdaT
+	zikkfTgLx6vn1/jEOieaaoCqjeO1WsPCQy9gbFoMSgnurbLux7ijZweMK0QVWPkAiLGtyr
+	NVkFVOAfh8gjSnyWJziSTDa5DevPRds=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="VLeX/xg/";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf17.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=M5RO5Q8k;
+	spf=pass (imf29.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793826977;
-	b=p7J3hqm4eJ6a5I0Z4AhUi0hGvYFEr4NoXP9oYvziU46H8HQNWRmpZbtVmeWvW1Tu3vRvJH
-	pxMea7LaLe7usC3BAvOe+sObHqa+I0FJwUA3b1l3y5OYGrN1TnTi+iFeqTGw3952lGz51D
-	3geICwkEhPY4P1uLZZNoxyXqv26w7a4=
+	t=1793826992;
+	b=CvWaxDG2N4B/aN56uX6BRtLXv2wCFtmIRMtm/z4rTyscdqy89lbNNTTi6WXSGmwUw7xQqA
+	ON3eMLQkm48MtRkvcg6XvvJW52FnBO8EXSpiNGWupaMpw7D3Xj/in/NoPtuydht5YdUzhT
+	fco7tRyHhKufrUlYZ55jgwRNSd9qgis=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 598D641688;
-	Wed,  4 Nov 2026 21:16:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EBD51F00919;
-	Wed,  4 Nov 2026 21:16:04 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 234F143BBB;
+	Wed,  4 Nov 2026 21:16:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1C8C1F00A17;
+	Wed,  4 Nov 2026 21:16:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793826976;
-	bh=9B4pJQ/AcBjfjWtMAv0PU36WnnXrBUmg3mrzKfekPks=;
+	s=k20260515; t=1793826991;
+	bh=Z1ZOJsRk1XloR8+X/iuIjf2Funsf7/y+/bk4jcaChHA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=VLeX/xg/+ufCqyJSEzNg0i9Y9PgV0PVhviEQY10afUq60bRw+JIDQWWPaBoymh+ba
-	 ZAXcBQGX0nMnbkgNCFpmVVB/Yudt2PFU1HCSzlLR2GapkzT37J3KOKORDD8dZcbzO4
-	 h9qu9uhHStWjyWl+RJlsSMwREQivu8br44XiLYJ9ilTxGVMEUYSt5rktCa1N0nuRte
-	 M6AonJ/Qxg9V1Lpbhrd1ri28G6iq3p8yh1ykqOhpkcCy26wBGbyJ6eC7NZ7X69EiZA
-	 ackJpBV1lvPyOCBdrJEMz8p0PvlHt7Vx4OZF+oy5JgcxCiozOr/j4Q7IsKInV+brmW
-	 UiMQQwJBaqa4A==
+	b=M5RO5Q8kBtwDno+ViL1y5BXewnnzbSUiD0Ia6wQ1ZDr5urhi8E89jYOlntRIgMa6v
+	 r9RG9WmdIkXzJfLAx6IEAN4oxhymXK8NsuNUBDZD3nMRrupGitCaAlM5t0w1l3kDgL
+	 mARlOJCbNgn+LG3omXIPOAWaGFV2e55MLLVLTjfJkon0ltiDwAfT1Rt1ryiES87BRl
+	 cEGRifGzsCYmn1JslL4AfUjzCoN8zMhn9yu3J19mR1xJZ8GjCByKe2bS2hgjUJtRn4
+	 /Ud57A9OrseLYf/NwNssA42XtxJOU93lZkF6vGX3KXvmVx1xxIECpGp59Xx8FusjIn
+	 0mcxJDl2Ikwlw==
 From: Christian Brauner <brauner@kernel.org>
 To: linux-fsdevel@vger.kernel.org
 Cc: Linus Torvalds <torvalds@linux-foundation.org>,
@@ -121,31 +121,31 @@ Cc: Linus Torvalds <torvalds@linux-foundation.org>,
 	linux-debuggers@vger.kernel.org,
 	"Christian Brauner (Amutable)" <brauner@kernel.org>,
 	Chuck Lever <cel@kernel.org>
-Subject: [PATCH RESEND v2 3/6] proc: give kcore, kmsg and the kpage files their own file_operations
-Date: Wed,  4 Nov 2026 22:16:01 +0100
-Message-ID: <20261104-work-procfs-cleanup-v2-3-1e6687e226b1@kernel.org>
+Subject: [PATCH RESEND v2 4/6] proc: drop ->proc_read() and ->proc_read_iter()
+Date: Wed,  4 Nov 2026 22:16:16 +0100
+Message-ID: <20261104-work-procfs-cleanup-v2-4-1e6687e226b1@kernel.org>
 In-Reply-To: <20261104-work-procfs-cleanup-v2-0-1e6687e226b1@kernel.org>
 References: <20261104-work-procfs-cleanup-v2-0-1e6687e226b1@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=9807; i=brauner@kernel.org; h=from:subject:message-id; bh=h/jQ3dfnicQEehmjRHlUeMtUlVf2S+RL7exGtL/bdRQ=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS9XpCQwOTJoLmf/bHW61O6e344s0of1Z2wXE59Qet0x S+nN3hrd5SyMIhxMciKKbI4tJuEyy3nqdhslKkBM4eVCWQIAxenAEzkxApGhplaFyeuZ9WRX/3e JMAo6GXfxbifGXtWHt7G1RSf0vFjPT8jw8aHfipb1DpWni4TZ9nPJBopHeN6btuPFVsPPv+cHHv vHTMA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=7998; i=brauner@kernel.org; h=from:subject:message-id; bh=abGcIl8EeF+AIW6UdJlLnKo66cLyls2IFZNMcomaikg=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS9XpBYNFfA2KRJOfDTZK74ZD22FKmLHxed5Kk6wORr/ ZpL4dihjlIWBjEuBlkxRRaHdpNwueU8FZuNMjVg5rAygQxh4OIUgIvYMTIcWimfoSnAVe9ge+Os 4tXw7JYtfefvJm1XPtb7fo/MxUtiDP9MH79h+uV3N1BJ9vml5a5/Vp2Wkxe2lT1h7Fs82/qXzEd WAA==
 X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 0507040004
-X-Stat-Signature: 319br3pe9z4i4dubjfh7d4nyqa6fp71g
+X-Stat-Signature: xkjqbeuxqxe714gis6xjgo61jaghm9wk
+X-Rspamd-Server: rspam01
 X-Rspam-User: 
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
 	version=4.0.1
-X-HE-Tag: 1793826976-173911
-X-HE-Meta: U2FsdGVkX19yznRvmRLXFIXiuX+icxNrva4vApnnmOilOBWQq+fcMIyxG4QmuqQWFPrLFfpUcwZ8/0A4GyBdxcEc7gxv0lazvFbccJjyn5twpyLI/bmFX27LW2/A0FVvkMxQohEzgiZTbvdGDd5hy4g7my3TO6WJ/pPD+xDOf+MOsGHbP1mcWdwkE1qPl7C7Z+Ad1F2KGTDpmhe86d2VgkKfFF2viFFPOdc+jOvudhTupsR91j/Rc28VSNEIL04JFfkOdL7F9i64Ew1y0P+FndYgy9ESWww4chRs6G0i8qbrRTEVTuCj+qMi6tNh/uz9K30gI5rBwanEORZhjx3kuilXgYDgq8I2Mk/RD1AOMeTa72HWksaIUl0QY2OETKE8moEb1eS5QNsAO3ZI2ySWmIl6M3BE9EVhk1eu+YJdFJ8aE8HhqqBPEmJGDWuqYMsrccOQ8WhLK02tsxIMAQUcLHxQ+p711v2MKKuKKK586Vm3u/TADHTtdUuXGcQxkMWr1msRv7BDFFIN7B+/MUn/Bl5yTGzmHRePLSJU6tWYK498awBw4d/92ooVHmMfoBCbImV86v/DymY9IKYPXCvw3OQ3gPWfJR+MR4pY0NmMQTk5m5GGJuqqnoGPKgSUE8sVIX/CnZd9Qj5wUwzZZjjTkmhKMKGSFSxdTrE352Ezf5p9PSCGQC1ttzM0m3aqxMvpilKPGAnMghmvzPbzbt0rbMrNui8kFaiWCgyPfR5zrt+DOHOWPbyCyG6PB8HcdDcuKhYkY49bjt3QXaclL7w4LCbo3Y9pdIePmrzcbayn1SCJA0pijWTchSIzkfopHPTGUGY6ijNbCH5u5d55aT3+q5ixic2/ndrT9KTvM2b3kgPxze+BCx/o9bMlky/BaMY/OV1nNLk7pby3iSphr+L/Iq4S97BTa+Jry/sX2Rxog8RAwwgF4NYi0UI4HdPAHoTA86RB3ipLW9AYbKrfLwk
- w43s2Ajy
- JyZEMa+kV4fZicTewYRHnLWgqhn0gRvcQr9wFj3R60nrnp0Jm+nprm0vvK2QOiRDTfMNEDdIS//K0RX6N/+gfpNc2EJ8SfM6Tn0XoSos4OjVvJsiOXupFaZx0yugNpVw6KN6taG60DpIN7Ge/d6QZ+PhOsy2Ro2oVWbESobMMbkxrQAdWq5Qz7TlriakrZWUgLcI7JB6M2D8JfJscZ1TOjlKLuR7NHvVpwaee0APoxkASH/Xc4Xjan7Y+yi9D3oK3ySaRYv7+gRcs5ThWxEYvJPrKAB5Hu4ztk3mQsjBOx4qn/MxUHAffY8n/sHeo0AcDvEsv8WlP2rcB2hg=
+X-Rspamd-Queue-Id: CCA7212000A
+X-HE-Tag: 1793826991-905134
+X-HE-Meta: U2FsdGVkX1+WX7sRjb6jmoZG2nW+J3HW/9W3HruIPTexTRfhZzw+EtvSnXQMIoxffRISxnm/SkytmrgV+WnUbguERm2T94EINI6d3v123IhvwJDxbx7zKQfaaTvlIyLjy88hRrlrjDX+O0RQFhv0p5nUCYJelNj/rKx4t2/4hzMWulKQPYrJjb2SFcwaqEAWZBZh2Pa7v1hXMEJxDxGO96QEBoez2HMQo6QzOC+fk3HzSf2VpQrM2jNLnOb933tOp4f772Qfe4kl6wYsOcof5rYcEoQqfb8SN+S8AjoY5ZRqYROr2fAUlcQCQUjtbnEF0TpvRMagva0tXPWnQVZ2UvSkgScpgdcaovOL+luAKbFkYI29vMLqJeP6GlJ6xHunl0K7z7dHrdR/x87hPn77FvXGrrXMU/5H6Yt5YuOU9lWVo6PujHTmrZJ41gAkUGDbK+SlboVVUK/UF9abDGuEkF2JS10ad1yyXnGQWS1LvHhRY1FQKkjKidoYInhUP/cKdbvDj8GEBXF0F5FKOKIQAT84I0s1EPgMeZOOZZgkgNp5Ro0COaU5lPV1uvbgRi6if3xz/AqvUze11XYeqKHNZmooIp2LMjdo6aSRHKDtjJHcazTeuYenzvRGBayPtfQQm2RqWrEGKS00vtAItmBHb0zdBcEExw8uoA7glabtKOvjmzCr/vGV1Tj4waac1oxXRZ2qlku9pGjJyJ1KLTBgme533HWmiomBAERz4cCdpT0czXQVahZXbQoV2E9++RjmcLhETdSMWY4qK/pm4A7CNV7Kp42izcbkv+eisZjpalqa5caT34dovgEdtkqW7Y2xYXN6aexJ9inTe48D4HsZPVyE3s74/UcKlzoLVweVQZ31Y6snQd1AGGlEPXgTW85sQ0k8l9apDGyol0ohT9Cs8GaHhC7mBQ5MXTTv5+5oZloSXQtPQO287Mon1Fv8mjlh9SNMXr6SVv5rAIbhUgz
+ hEDH8gW6
+ TfD+O12W32l+1kXpZ9GYeojL3ofSkH2kEotrDlMjvj80QFroXsGStPqdPOAHeYbafvE2KbuGz9NeGVz91ArW/XWsh0R9E9pTR5PaqYJe+NmVd4e86VWgNH8h/canCQWjIiJtU2TDwZUDAgsvVHxE6sjCLy278+NUmE6W8Swt6NiNzF/K2fkyV3TmRawfWGVEKV5mDTbzQc+W6Q7Oymx6ShHba8TDJlQBxkN7p/sIGD5K7yw5VmLoDZgVPnOuJirPTOv5V/QAQ6e1OuQwe1tqPBTKKEkAG+9UOFoFXst/fHN0COnylJMVW0PoeM1/stTeWC+opNDqZhB7p1zE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -154,278 +154,223 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-kcore, kmsg, kpagecount, kpageflags and kpagecgroup are the entries
-that keep reading straight into userspace. They can, procfs never pins
-them, they're built in and never removed. They are also the only reason
-struct proc_ops still has two methods that get a __user pointer,
-->proc_read() and ->proc_read_iter(), and the only reason procfs has
-three sets of file_operations for regular files.
+Nothing implements them anymore. Every entry that can be removed fills
+procfs' buffer through ->proc_read_buf() or is a seq_file entry, and
+the permanent ones that still read straight into userspace have
+file_operations of their own now.
 
-So give them a file_operations of their own and let proc_get_inode()
-put that into the inode as it is. procfs doesn't mediate them at all
-then, which is what being permanent and copying to userspace yourself
-amounts to anyway. proc_create_fops() is internal to fs/proc, nothing
-outside of it can register such an entry, and it marks the entry
-permanent, so it can't be removed either.
+With them go the flag, the registration checks that kept them apart
+from ->proc_read_buf() and the seq_file entries, proc_reg_read(), and
+two of the three sets of file_operations for regular files:
+proc_reg_llseek() and proc_reg_read_iter() hand a seq_file entry to
+seq_lseek() and seq_read_iter() themselves now, like
+kernfs_fop_read_iter() does, so one set serves every entry that has
+proc_ops. That set has ->splice_read(), so a splice() from an entry
+that can't be read at all, a write-only one, fails with -EIO now
+instead of -EINVAL.
 
-What changes for them: mmap() fails with -ENODEV instead of -EIO, there
-is no ->mmap now where procfs used to answer for the missing
-->proc_mmap(), and a write() by someone who can open them for writing
-fails with -EINVAL instead of -EIO, for the same reason. kcore keeps
-splice_read(), the other four never had it.
+Nothing in struct proc_ops takes a __user pointer anymore.
 
 Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 ---
- fs/proc/generic.c       | 25 ++++++++++++++++++++++++-
- fs/proc/inode.c         |  4 +++-
- fs/proc/internal.h      | 10 ++++++++++
- fs/proc/kcore.c         | 14 +++++++-------
- fs/proc/kmsg.c          | 17 +++++++++--------
- fs/proc/page.c          | 27 ++++++++++++---------------
- include/linux/proc_fs.h |  1 +
- 7 files changed, 66 insertions(+), 32 deletions(-)
+ fs/proc/generic.c       | 14 ++++------
+ fs/proc/inode.c         | 69 +++++--------------------------------------------
+ fs/proc/internal.h      |  5 ----
+ include/linux/proc_fs.h |  4 +--
+ 4 files changed, 12 insertions(+), 80 deletions(-)
 
 diff --git a/fs/proc/generic.c b/fs/proc/generic.c
-index b0027400ed23..4e0142fec582 100644
+index 4e0142fec582..2515df3a0110 100644
 --- a/fs/proc/generic.c
 +++ b/fs/proc/generic.c
-@@ -436,6 +436,9 @@ static int pde_set_flags(struct proc_dir_entry *pde)
- {
- 	const struct proc_ops *proc_ops = pde->proc_ops;
- 
-+	/* nothing of this applies to these, see proc_create_fops() */
-+	if (pde_has_proc_fops(pde))
-+		return 0;
- 	if (!proc_ops)
- 		return 0;
- 
-@@ -505,7 +508,7 @@ static int pde_init_open_node(struct proc_dir_entry *pde)
- {
- 	struct pde_open_node *on;
- 
--	if (!S_ISREG(pde->mode))
-+	if (!S_ISREG(pde->mode) || pde_has_proc_fops(pde))
- 		return 0;
- 	if (!pde_has_proc_poll(pde) && !pde_tracks_files(pde))
- 		return 0;
-@@ -795,6 +798,26 @@ struct proc_dir_entry *proc_create(const char *name, umode_t mode,
- }
- EXPORT_SYMBOL(proc_create);
- 
-+/*
-+ * For the built-in entries that read straight into userspace and are never
-+ * removed, kcore, kmsg and the kpage files. procfs doesn't mediate these at
-+ * all, their file_operations go into the inode as they are. Not exported on
-+ * purpose, everything else uses struct proc_ops.
-+ */
-+struct proc_dir_entry *proc_create_fops(const char *name, umode_t mode,
-+		struct proc_dir_entry *parent, const struct file_operations *fops)
-+{
-+	struct proc_dir_entry *p;
-+
-+	p = proc_create_reg(name, mode, &parent, NULL);
-+	if (!p)
-+		return NULL;
-+	p->proc_fops = fops;
-+	p->flags |= PROC_ENTRY_proc_fops;
-+	pde_make_permanent(p);
-+	return proc_register(parent, p, NULL);
-+}
-+
- /* procfs owns the seq_file of these, see pde_seq_start() */
- static const struct proc_ops proc_seq_ops = {
- 	/* not permanent -- can call into arbitrary seq_operations */
+@@ -454,8 +454,7 @@ static int pde_set_flags(struct proc_dir_entry *pde)
+ 	}
+ 	if (pde_is_seq_file(pde)) {
+ 		/* procfs reads and seeks through the seq_file itself */
+-		if (WARN_ON_ONCE(proc_ops->proc_read || proc_ops->proc_read_iter ||
+-				 proc_ops->proc_lseek))
++		if (WARN_ON_ONCE(proc_ops->proc_lseek))
+ 			return -EINVAL;
+ 		/* and frees it, see pde_seq_release() */
+ 		if (WARN_ON_ONCE(proc_ops->proc_release == seq_release ||
+@@ -463,11 +462,8 @@ static int pde_set_flags(struct proc_dir_entry *pde)
+ 				 proc_ops->proc_release == single_release))
+ 			return -EINVAL;
+ 		pde->flags |= PROC_ENTRY_proc_lseek;
+-	} else {
+-		if (proc_ops->proc_read_iter)
+-			pde->flags |= PROC_ENTRY_proc_read_iter;
+-		if (proc_ops->proc_lseek)
+-			pde->flags |= PROC_ENTRY_proc_lseek;
++	} else if (proc_ops->proc_lseek) {
++		pde->flags |= PROC_ENTRY_proc_lseek;
+ 	}
+ 	if (proc_ops->proc_poll)
+ 		pde->flags |= PROC_ENTRY_proc_poll;
+@@ -482,8 +478,8 @@ static int pde_set_flags(struct proc_dir_entry *pde)
+ 			pde->flags |= PROC_ENTRY_SHORT_WRITES;
+ 	}
+ 	if (proc_ops->proc_read_buf) {
+-		if (WARN_ON_ONCE(pde_is_seq_file(pde) || proc_ops->proc_read ||
+-				 proc_ops->proc_read_iter))
++		/* procfs reads through the seq_file itself */
++		if (WARN_ON_ONCE(pde_is_seq_file(pde)))
+ 			return -EINVAL;
+ 		pde->flags |= PROC_ENTRY_proc_read_buf;
+ 		pde->read_size = proc_ops->proc_read_size ?: PAGE_SIZE;
 diff --git a/fs/proc/inode.c b/fs/proc/inode.c
-index 75561e3f3355..49ae30b6e515 100644
+index 49ae30b6e515..9719c1b89de3 100644
 --- a/fs/proc/inode.c
 +++ b/fs/proc/inode.c
-@@ -1024,7 +1024,9 @@ struct inode *proc_get_inode(struct super_block *sb, struct proc_dir_entry *de)
+@@ -413,6 +413,9 @@ static loff_t proc_reg_llseek(struct file *file, loff_t offset, int whence)
+ 	struct proc_dir_entry *pde = PDE(file_inode(file));
+ 	loff_t rv;
  
- 	if (S_ISREG(inode->i_mode)) {
++	/* procfs seeks through the seq_file itself, see pde_seq_start() */
++	if (pde_is_seq_file(pde))
++		return seq_lseek(file, offset, whence);
+ 	if (!pde_pin(pde))
+ 		return -EINVAL;
+ 	rv = pde->proc_ops->proc_lseek(file, offset, whence);
+@@ -477,37 +480,15 @@ static ssize_t pde_read_buf(struct proc_dir_entry *pde, struct kiocb *iocb,
+ static ssize_t proc_reg_read_iter(struct kiocb *iocb, struct iov_iter *iter)
+ {
+ 	struct proc_dir_entry *pde = PDE(file_inode(iocb->ki_filp));
+-	ssize_t ret;
+ 
++	/* procfs reads through the seq_file itself, see pde_seq_start() */
++	if (pde_is_seq_file(pde))
++		return seq_read_iter(iocb, iter);
+ 	if (pde_has_proc_read_buf(pde))
+ 		return pde_read_buf(pde, iocb, iter);
+-	if (!pde_pin(pde))
+-		return -EIO;
+-	ret = pde->proc_ops->proc_read_iter(iocb, iter);
+-	pde_unpin(pde);
+-	return ret;
+-}
+-
+-static ssize_t pde_read(struct proc_dir_entry *pde, struct file *file, char __user *buf, size_t count, loff_t *ppos)
+-{
+-	const auto read = pde->proc_ops->proc_read;
+-	if (read)
+-		return read(file, buf, count, ppos);
+ 	return -EIO;
+ }
+ 
+-static ssize_t proc_reg_read(struct file *file, char __user *buf, size_t count, loff_t *ppos)
+-{
+-	struct proc_dir_entry *pde = PDE(file_inode(file));
+-	ssize_t rv;
+-
+-	if (!pde_pin(pde))
+-		return -EIO;
+-	rv = pde_read(pde, file, buf, count, ppos);
+-	pde_unpin(pde);
+-	return rv;
+-}
+-
+ /*
+  * procfs copies in what is written before it pins the entry. A writer that
+  * faults on its buffer then doesn't hold up remove_proc_entry().
+@@ -923,41 +904,7 @@ static int proc_reg_release(struct inode *inode, struct file *file)
+ 	return 0;
+ }
+ 
+-/* For seq_file entries, see pde_seq_ops. */
+-static const struct file_operations proc_seq_file_ops = {
+-	.llseek		= seq_lseek,
+-	.read_iter	= seq_read_iter,
+-	.splice_read	= copy_splice_read,
+-	.write		= proc_reg_write,
+-	.poll		= proc_reg_poll,
+-	.unlocked_ioctl	= proc_reg_unlocked_ioctl,
+-	.compat_ioctl	= proc_reg_compat_ioctl,
+-	.mmap		= proc_reg_mmap,
+-	.get_unmapped_area = proc_reg_get_unmapped_area,
+-#ifndef CONFIG_MMU
+-	.mmap_capabilities = proc_reg_mmap_capabilities,
+-#endif
+-	.open		= proc_reg_open,
+-	.release	= proc_reg_release,
+-};
+-
+ static const struct file_operations proc_reg_file_ops = {
+-	.llseek		= proc_reg_llseek,
+-	.read		= proc_reg_read,
+-	.write		= proc_reg_write,
+-	.poll		= proc_reg_poll,
+-	.unlocked_ioctl	= proc_reg_unlocked_ioctl,
+-	.compat_ioctl	= proc_reg_compat_ioctl,
+-	.mmap		= proc_reg_mmap,
+-	.get_unmapped_area = proc_reg_get_unmapped_area,
+-#ifndef CONFIG_MMU
+-	.mmap_capabilities = proc_reg_mmap_capabilities,
+-#endif
+-	.open		= proc_reg_open,
+-	.release	= proc_reg_release,
+-};
+-
+-static const struct file_operations proc_iter_file_ops = {
+ 	.llseek		= proc_reg_llseek,
+ 	.read_iter	= proc_reg_read_iter,
+ 	.write		= proc_reg_write,
+@@ -1026,10 +973,6 @@ struct inode *proc_get_inode(struct super_block *sb, struct proc_dir_entry *de)
  		inode->i_op = de->proc_iops;
--		if (pde_is_seq_file(de))
-+		if (pde_has_proc_fops(de))
-+			inode->i_fop = de->proc_fops;
-+		else if (pde_is_seq_file(de))
- 			inode->i_fop = &proc_seq_file_ops;
- 		else if (pde_has_proc_read_iter(de) || pde_has_proc_read_buf(de))
- 			inode->i_fop = &proc_iter_file_ops;
+ 		if (pde_has_proc_fops(de))
+ 			inode->i_fop = de->proc_fops;
+-		else if (pde_is_seq_file(de))
+-			inode->i_fop = &proc_seq_file_ops;
+-		else if (pde_has_proc_read_iter(de) || pde_has_proc_read_buf(de))
+-			inode->i_fop = &proc_iter_file_ops;
+ 		else
+ 			inode->i_fop = &proc_reg_file_ops;
+ 	} else if (S_ISDIR(inode->i_mode)) {
 diff --git a/fs/proc/internal.h b/fs/proc/internal.h
-index d2d731706788..84c5c13651aa 100644
+index 84c5c13651aa..0a22237e6778 100644
 --- a/fs/proc/internal.h
 +++ b/fs/proc/internal.h
-@@ -41,6 +41,8 @@ struct proc_dir_entry {
- 	union {
- 		const struct proc_ops *proc_ops;
- 		const struct file_operations *proc_dir_ops;
-+		/* of a permanent entry procfs doesn't mediate, see proc_create_fops() */
-+		const struct file_operations *proc_fops;
- 	};
- 	union {
- 		const struct seq_operations *seq_ops;
-@@ -96,6 +98,11 @@ static inline void pde_make_permanent(struct proc_dir_entry *pde)
- 	pde->flags |= PROC_ENTRY_PERMANENT;
+@@ -103,11 +103,6 @@ static inline bool pde_has_proc_fops(const struct proc_dir_entry *pde)
+ 	return pde->flags & PROC_ENTRY_proc_fops;
  }
  
-+static inline bool pde_has_proc_fops(const struct proc_dir_entry *pde)
-+{
-+	return pde->flags & PROC_ENTRY_proc_fops;
-+}
-+
- static inline bool pde_has_proc_read_iter(const struct proc_dir_entry *pde)
+-static inline bool pde_has_proc_read_iter(const struct proc_dir_entry *pde)
+-{
+-	return pde->flags & PROC_ENTRY_proc_read_iter;
+-}
+-
+ static inline bool pde_has_proc_lseek(const struct proc_dir_entry *pde)
  {
- 	return pde->flags & PROC_ENTRY_proc_read_iter;
-@@ -352,6 +359,9 @@ bool proc_fill_cache(struct file *, struct dir_context *, const char *, unsigned
-  */
- struct proc_dir_entry *proc_create_reg(const char *name, umode_t mode,
- 		struct proc_dir_entry **parent, void *data);
-+struct proc_dir_entry *proc_create_fops(const char *name, umode_t mode,
-+		struct proc_dir_entry *parent,
-+		const struct file_operations *fops);
- struct proc_dir_entry *proc_register(struct proc_dir_entry *dir,
- 		struct proc_dir_entry *dp,
- 		struct lock_class_key *key);
-diff --git a/fs/proc/kcore.c b/fs/proc/kcore.c
-index 3264c99bd68a..ab7b74efe975 100644
---- a/fs/proc/kcore.c
-+++ b/fs/proc/kcore.c
-@@ -664,12 +664,12 @@ static int release_kcore(struct inode *inode, struct file *file)
- 	return 0;
- }
- 
--static const struct proc_ops kcore_proc_ops = {
--	.proc_flags	= PROC_ENTRY_PERMANENT,
--	.proc_read_iter	= read_kcore_iter,
--	.proc_open	= open_kcore,
--	.proc_release	= release_kcore,
--	.proc_lseek	= default_llseek,
-+static const struct file_operations kcore_fops = {
-+	.read_iter	= read_kcore_iter,
-+	.splice_read	= copy_splice_read,
-+	.open		= open_kcore,
-+	.release	= release_kcore,
-+	.llseek		= default_llseek,
- };
- 
- /* just remember that we have to update kcore */
-@@ -724,7 +724,7 @@ static void __init add_modules_range(void)
- 
- static int __init proc_kcore_init(void)
- {
--	proc_root_kcore = proc_create("kcore", S_IRUSR, NULL, &kcore_proc_ops);
-+	proc_root_kcore = proc_create_fops("kcore", S_IRUSR, NULL, &kcore_fops);
- 	if (!proc_root_kcore) {
- 		pr_err("couldn't create /proc/kcore\n");
- 		return 0; /* Always returns 0. */
-diff --git a/fs/proc/kmsg.c b/fs/proc/kmsg.c
-index 2fc92a13f9f8..fd899c8d3ba2 100644
---- a/fs/proc/kmsg.c
-+++ b/fs/proc/kmsg.c
-@@ -17,6 +17,8 @@
- 
- #include <asm/io.h>
- 
-+#include "internal.h"
-+
- static int kmsg_open(struct inode * inode, struct file * file)
- {
- 	return do_syslog(SYSLOG_ACTION_OPEN, NULL, 0, SYSLOG_FROM_PROC);
-@@ -46,18 +48,17 @@ static __poll_t kmsg_poll(struct file *file, poll_table *wait)
- }
- 
- 
--static const struct proc_ops kmsg_proc_ops = {
--	.proc_flags	= PROC_ENTRY_PERMANENT,
--	.proc_read	= kmsg_read,
--	.proc_poll	= kmsg_poll,
--	.proc_open	= kmsg_open,
--	.proc_release	= kmsg_release,
--	.proc_lseek	= generic_file_llseek,
-+static const struct file_operations proc_kmsg_fops = {
-+	.read		= kmsg_read,
-+	.poll		= kmsg_poll,
-+	.open		= kmsg_open,
-+	.release	= kmsg_release,
-+	.llseek		= generic_file_llseek,
- };
- 
- static int __init proc_kmsg_init(void)
- {
--	proc_create("kmsg", S_IRUSR, NULL, &kmsg_proc_ops);
-+	proc_create_fops("kmsg", S_IRUSR, NULL, &proc_kmsg_fops);
- 	return 0;
- }
- fs_initcall(proc_kmsg_init);
-diff --git a/fs/proc/page.c b/fs/proc/page.c
-index 6aa99e42ec22..70dbd9fe183c 100644
---- a/fs/proc/page.c
-+++ b/fs/proc/page.c
-@@ -130,10 +130,9 @@ static ssize_t kpagecount_read(struct file *file, char __user *buf,
- 	return kpage_read(file, buf, count, ppos, KPAGE_COUNT);
- }
- 
--static const struct proc_ops kpagecount_proc_ops = {
--	.proc_flags	= PROC_ENTRY_PERMANENT,
--	.proc_lseek	= mem_lseek,
--	.proc_read	= kpagecount_read,
-+static const struct file_operations kpagecount_fops = {
-+	.llseek		= mem_lseek,
-+	.read		= kpagecount_read,
- };
- 
- 
-@@ -256,10 +255,9 @@ static ssize_t kpageflags_read(struct file *file, char __user *buf,
- 	return kpage_read(file, buf, count, ppos, KPAGE_FLAGS);
- }
- 
--static const struct proc_ops kpageflags_proc_ops = {
--	.proc_flags	= PROC_ENTRY_PERMANENT,
--	.proc_lseek	= mem_lseek,
--	.proc_read	= kpageflags_read,
-+static const struct file_operations kpageflags_fops = {
-+	.llseek		= mem_lseek,
-+	.read		= kpageflags_read,
- };
- 
- #ifdef CONFIG_MEMCG
-@@ -268,19 +266,18 @@ static ssize_t kpagecgroup_read(struct file *file, char __user *buf,
- {
- 	return kpage_read(file, buf, count, ppos, KPAGE_CGROUP);
- }
--static const struct proc_ops kpagecgroup_proc_ops = {
--	.proc_flags	= PROC_ENTRY_PERMANENT,
--	.proc_lseek	= mem_lseek,
--	.proc_read	= kpagecgroup_read,
-+static const struct file_operations kpagecgroup_fops = {
-+	.llseek		= mem_lseek,
-+	.read		= kpagecgroup_read,
- };
- #endif /* CONFIG_MEMCG */
- 
- static int __init proc_page_init(void)
- {
--	proc_create("kpagecount", S_IRUSR, NULL, &kpagecount_proc_ops);
--	proc_create("kpageflags", S_IRUSR, NULL, &kpageflags_proc_ops);
-+	proc_create_fops("kpagecount", S_IRUSR, NULL, &kpagecount_fops);
-+	proc_create_fops("kpageflags", S_IRUSR, NULL, &kpageflags_fops);
- #ifdef CONFIG_MEMCG
--	proc_create("kpagecgroup", S_IRUSR, NULL, &kpagecgroup_proc_ops);
-+	proc_create_fops("kpagecgroup", S_IRUSR, NULL, &kpagecgroup_fops);
- #endif
- 	return 0;
- }
+ 	return pde->flags & PROC_ENTRY_proc_lseek;
 diff --git a/include/linux/proc_fs.h b/include/linux/proc_fs.h
-index f1ac112aa0fc..05e0d6e4f918 100644
+index 05e0d6e4f918..9c09766b8f72 100644
 --- a/include/linux/proc_fs.h
 +++ b/include/linux/proc_fs.h
-@@ -27,6 +27,7 @@ enum {
+@@ -17,6 +17,7 @@ struct seq_operations;
+ enum {
+ 	/*
+ 	 * All /proc entries using this ->proc_ops instance are never removed.
++	 * procfs calls into them without pinning them.
+ 	 *
+ 	 * If in doubt, ignore this flag.
+ 	 */
+@@ -26,7 +27,6 @@ enum {
+ 	PROC_ENTRY_PERMANENT		= 1U << 0,
  #endif
  
- 	PROC_ENTRY_proc_read_iter	= 1U << 1,
-+	PROC_ENTRY_proc_fops		= 1U << 2,
+-	PROC_ENTRY_proc_read_iter	= 1U << 1,
+ 	PROC_ENTRY_proc_fops		= 1U << 2,
  	PROC_ENTRY_proc_lseek		= 1U << 3,
  	PROC_ENTRY_proc_seq_ops		= 1U << 4,
- 	PROC_ENTRY_proc_show		= 1U << 5,
+@@ -76,8 +76,6 @@ struct proc_ioctl_arg {
+ struct proc_ops {
+ 	unsigned int proc_flags;
+ 	int	(*proc_open)(struct inode *, struct file *);
+-	ssize_t	(*proc_read)(struct file *, char __user *, size_t, loff_t *);
+-	ssize_t (*proc_read_iter)(struct kiocb *, struct iov_iter *);
+ 	/*
+ 	 * mandatory unless nonseekable_open() or equivalent is used, procfs
+ 	 * seeks seq_file entries itself
 
 -- 
 2.53.0
