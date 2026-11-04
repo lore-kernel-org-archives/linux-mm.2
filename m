@@ -1,90 +1,90 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 125B5606A31B
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 10:19:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35AF1606A31B
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 10:19:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=PDQeurKP
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=RVjLTTkH
 Received: by kanga.kvack.org (Postfix)
-	id D21396B05B7; Wed,  4 Nov 2026 05:19:06 -0500 (EST)
+	id 5580A6B05B8; Wed,  4 Nov 2026 05:19:08 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CCE1A6B05B8; Wed,  4 Nov 2026 05:19:06 -0500 (EST)
+	id 4E2976B05B9; Wed,  4 Nov 2026 05:19:08 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BBFA66B05B9; Wed,  4 Nov 2026 05:19:06 -0500 (EST)
+	id 3F7856B05BA; Wed,  4 Nov 2026 05:19:08 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 82C236B05B7
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 05:19:06 -0500 (EST)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 094831C3EFB
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 10:19:06 +0000 (UTC)
-X-FDA: 85397038692.01.0F6252A
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 6165140002
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 10:19:04 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PDQeurKP;
-	spf=pass (imf12.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793787544;
-	b=eIeYIESw3zTz1KSqnCsyvhaApra0SS6dXQYBF0u9lsH+gvbOwjEcPXJF/E8c7QZYXOaszK
-	In3EYyPKUkab8mFFheDvLQNfuv8O1PAUWaCfqTY+hn+C4NTzsMx0natYgzBrMNjgtEdpkm
-	qmU5lVU4DM0/Y+RpzvVdgQeIIWrmJHc=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PDQeurKP;
-	spf=pass (imf12.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 0AB506B05B8
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 05:19:07 -0500 (EST)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 79E1D1A065C
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 10:19:07 +0000 (UTC)
+X-FDA: 85397038734.23.F3C50C4
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf19.hostedemail.com (Postfix) with ESMTP id C4DB71A0002
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 10:19:05 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RVjLTTkH;
+	spf=pass (imf19.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793787544;
+	s=arc-20220608; t=1793787545;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fiP7fB5tjE/bGKl5f01aEj0fMlw9+KJpQqj6fqgzLPc=;
-	b=sM4HKiZ61CeduXOh41QpNK7ytBiVQhDVt72rW/rWMb9/wWIbVcK9xWRO84b/FoVTawo5Yg
-	gMifUKA+p+bFIdnCMY9BZ2K2LPGKTavH90nDDxrxn96YTy7mvE/SB3KJ0ytdJz4YWFXXQq
-	KBYZF40H6nzQFz5nKomQ3akvggI55kw=
+	bh=FI6NNzNyzqnYwtEHEWst8a+x+M7cP7h9Q4B/iWUar3Q=;
+	b=UPm4hbFWeZJAR4vv9WD5xheebVWKi7ZrKtBOqsvxEU/Y1R4cOTYTmzZyhgnw6fBRutRCdB
+	+/8/Mj2Jg5Ley8UOJkvYAZSWdB7HrI0IG3BLHAo97MeYquhdXqtQwMtsgWUkO1geehGJHp
+	qaWbR8C/Q9Gi4ByWcgGYIj+BqC9CPsY=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793787545;
+	b=JMNmpH2QkvGUAVetjcmpw4lxb06RHXx9U23cfpMXq2nXNmXS5+ANRMV6bD5mZSgObbswOZ
+	EOWUDlq23i8iHaL0ip8jG2X3F05QfDrGLCssQ52SoptHsZXmQmxE/Mk+slHLe/if1p4dAd
+	/bVOxqkZqAVzqFBNWo8MLakIq6whkMg=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RVjLTTkH;
+	spf=pass (imf19.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id AD91742489;
-	Wed,  4 Nov 2026 10:19:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B084B1F000C1;
-	Wed,  4 Nov 2026 10:19:01 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 5206860DAC;
+	Wed,  4 Nov 2026 10:19:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14BD21F000C1;
+	Wed,  4 Nov 2026 10:19:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793787543;
-	bh=fiP7fB5tjE/bGKl5f01aEj0fMlw9+KJpQqj6fqgzLPc=;
+	s=k20260515; t=1793787545;
+	bh=FI6NNzNyzqnYwtEHEWst8a+x+M7cP7h9Q4B/iWUar3Q=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=PDQeurKPFEncaZS7L+EWZ+ZejdN5Oz3Rqw8JaEYneHalY5vmCM8nBiwKZfL11kXhz
-	 74gXRwaM4EIKl0ye0XRD8Yjgedj7TZc7r8b9o2woxDgg9PDmaN3IzK/kxfPm9fax1u
-	 fV1+4b63zfuoSjTa5CChqt5UAFLnU8sph3Metnwgc5OJSTH9e/RAh/LX5+yH1eWhEx
-	 qvaJhmHacyAjOPl3Mzv0XvaF8nuizArswi8mF+LnHlvkF6H+YVzNSQavY3LNRJ+cxa
-	 DwIiWRGvcPb1e6KMSoWXlvr+A2181Of4/dZROZfdtQfh74W+24DYwgK7/8UqotVTF2
-	 /5InOZnwOMh6Q==
-Message-ID: <sashiko-outbox-197081@kernel.org>
+	b=RVjLTTkHu1zwJUMiqXLMojPM7ZA2QkqjZEeq//rOqrPuc9Uyzqlz7lXY/sVfFXYQe
+	 ZkIKR9PA4k/LybfbO5QYfto1/zmUr/dEeqiFih00lyJZiODJ8K+4apVAPauuLfy3hc
+	 YDaTKnfvW8pXxlF3rtlyln3Gy2HUuVPNPe7xQ7DwwS5PP/eL6Cdl5hNrtbxgucZn8d
+	 3vxPPXGUFFkEOZ+4ZCGi/4BCAsWMsYdIXM6mk2RcnDpmVhsCaGT4fx3MOdmHZJJrYM
+	 reoKFIGQQbcSKovhGP3mvC6wh2ltwgFQ7nKVGUvMveHHRZeLI6nA2i461CTiQulF19
+	 2TDdbyv+k3H/A==
+Message-ID: <sashiko-outbox-197082@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v11 09/10] mm/vmalloc: map contiguous pages in batches
- for vmap() if possible
+Subject: Re: [PATCH v11 10/10] mm/vmalloc: align vm_area so vmap() can batch
+ mappings
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Wen Jiang" <jiangwenxiaomi@gmail.com>, akpm@linux-foundation.org, catalin.marinas@arm.com, linux-mm@kvack.org, urezki@gmail.com, will@kernel.org
 Cc: "Xueyuan Chen" <xueyuan.chen21@gmail.com>, ajd@linux.ibm.com, anshuman.khandual@arm.com, baohua@kernel.org, chleroy@kernel.org, david@kernel.org, dev.jain@arm.com, jiangwen6@xiaomi.com, leo.yan@arm.com, maddy@linux.ibm.com, mpe@ellerman.id.au, npiggin@gmail.com, rppt@kernel.org, ryan.roberts@arm.com
-In-Reply-To: <20261103101658.766905-10-jiangwenxiaomi@gmail.com>
+In-Reply-To: <20261103101658.766905-11-jiangwenxiaomi@gmail.com>
 References: <20261103101658.766905-1-jiangwenxiaomi@gmail.com>
- <20261103101658.766905-10-jiangwenxiaomi@gmail.com>
+ <20261103101658.766905-11-jiangwenxiaomi@gmail.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Wed, 04 Nov 2026 10:19:01 +0000
+Date: Wed, 04 Nov 2026 10:19:03 +0000
+X-Rspamd-Server: rspam06
+X-Stat-Signature: 86886y8n1m99zit5z78wnnerqdwwgj6r
 X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
 	autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 6165140002
-X-Stat-Signature: 3kenwfncci88egsozfubgqmjbiiu4jib
+X-Rspamd-Queue-Id: C4DB71A0002
 X-Rspam-User: 
-X-HE-Tag: 1793787544-282413
-X-HE-Meta: U2FsdGVkX18wM3KwKPgvwbH/o/I0iRZ+RzAF5/xx8KnWXB9bIw04+DvN4aIwFqHDm3yed/oI2ebFriTevT1ooEuNYSIbfPXNWc4Y/w72eLrW2MCAAzne3RjfsdQveWV7DO5+0DBHF+UClkCGW2n3uFJxXUKTshP9Ld0tabSBzdyyhQ/N8Md6dzInKeeAMi6Oj0T5X2WOJt+U6nBSoAybH1lenEsebiKRsLzc3IsRr8qEhBIip9fLsseQZTIeB8lxDxufSXspv0LY6omavJ3nPisWPu7//olGiTX+ZOGY8UKVwiZPGn+J9mEITX+5JzIMZr6mdZ3IanyGkI2QodivQgSpPMjBBWu8hqZsaMBNLWIGB6HIw5HupYdtALEUJ/DZnIKPBnSxWaycD7gO1JaR51s8WXuUVOdgvo8mG9qckTK9BMjs5gniSg/zPlhXR0FfvOpaOLVGzJzBHi8h7Z8a3k6RSuhGQqS3eCZ5d1OmvgWfEawTwncWBQNbHwXYYGgeA7kcl+29kbksvmkV8ndrW3qb/CBPmv7ejDkGVkiQTqRYJKbe5aBHBAgKXUXrDxvO+C1Uh3JCEV/IvB/m2uiUjlzUtMDNZ6MhttlS4RVNBAixCLuvckUT4i0N7eYPnIQVojUJCxxpN/QH6iwNe4YU5vZ89kmnETZ8a+NaIzd54ZQQurPRCajrRU1qWTyaRd0c35m7Mr1CS7W9ybM37q9XXG1sRid+PrbqlXWeFbXrZY5H5FmY2xjOTc/9jZVRgBVagWw09FOC1Tt669pX4KK3ylGFlAG72XU2B4o/ns6Lkxf/sZjY26SEA7yuSWeNtQZqVWle2zR5j0l1CNemtlkyArfaTr39unpIkizbsWn3dK4Hf+hWzhVCvYH9CNa+L+dnVv/uPTyla4dpTwt+5Ld5nxh0I9yTk3xvJCysj47yHD2nzStDPsQ+O+z4b4OfW/WeJq/QDUtIMgPmOZPxNXN
- SH1G6UWS
- CymvdI+0U4Ov07ayAAYWR+5Eu7cBfF6tvifq33q3mLAdrKGf9BMFuclaZjPewl3Wehh1tk27MnvWWxucrnOrDvITHHB1SXZvG4xRrx+8BtHVJ8WgrMANR73Zw4F7vyNyk7euWG89IKxzEbcTCXawf3u7EYV2fyzymbZ1ewhikSrn9z90THh+3WzqyKR61kwhdKOetqII5jJdJynLOJi+R28jwdljMf0rmvtvpmfaLiuQ7E/Cn5YzAADGvfdv0bOBBq4zNV+/MXnykKW1Hgc7KbDCIEFinMLxMhGTqNuVlCoLxDV5Cs1rML/myARAZjvmvSAHQPnd/reIDZ0abzKdXgT5RdvMP3yjQswSTjdbkFPkE+npkDcDGRIDWEYmSTJEijibhXXb7Y5pISQZehmjGUIrpVsb945R0M3ZVb1U4A9IPN1rqll9DmkdeDhkhmXQdLDqal9W1DjhfEAG8EyMF456XG8mXqFZ/IZxXcXAQfvn5jCWmbpcJ2QZGor5+WVVc7Dgj/Z9ZOggCGnj/oSKgNb0qJz2Sd5HnExZ+LBzGeatkvtjHI7d4ZsHUSHcy02BaQLjNev456Slm8Rd917xcmkyrqLX9hW3naC22mV45/b1Y4kIe/lDd5IorOadaa/KN/ziwtBzXOVj1FNsL420GTyrUe0hNfeMah/Gsn5DbBr207asyzeCRdPjrtnOHoF4f/L+B
+X-HE-Tag: 1793787545-412131
+X-HE-Meta: U2FsdGVkX1+maedb3N4RgQN3sj8qinBXpzhOrq8NB+0UAbydP17UoYAACwC3Fjq+LTz/1/CqGRDkuEnqwFEYWzHK5LHg28z9hgkss0G6TLjt3ff/PYdOXr6vKBcoDr/CT5IWM4OO4/9U73hhgyHifoZPg+9q9rZRSXoIJ8SezAfPM2EXiU/mEeb2bgfoT8E2afCbBgzfRLlORdq0NORAz/rAhjIHHy6roP+0nuWRZMhADEnIMRsuaEjzazuHU4nr50UBykE/1dHLPuUrq3rc3m9Xsfe5Q6E27DFyGgBPI2ZkJwE/Egslo6WXXZ3/BDef+yP+bmAbVi9CxBP2gDl19ZG03IRPyYp/Fk0mA6oYPsPOTV5tnZ0gPvjqFt2bPwFSHtLY0nyUyTyJWLrBRMnlWOSL2PXsrsq23dLfyjWf2YValTkz3pQQ0buVIC7vxSxj3L6ouO3a8/H8LkNuRk3s9uCsghye6QSpfz19RQVcracxj69RjHFh7RmglP8FUozv/CC8bMlWMoA7NQe8mBt2BnL4TD7n5UYCB0oVKtQmkjxaL2IM0TnATcyWatJ9nxm99qGmCyX1WA1MblTFAbjyIxt6UQA6RtzfspGDPf+RiPTU4pcKOfdYd2tevjVFwx0sfTigeWaK+jX0hh3CFJ4wUzbTXMRqVKcZzwngU5zZrHDZ433XRvSV//xB4S2ai+98ZRbgx9H27/y9ARa+NtZv6cZ0y0Aj0gEb1nEN+f7WxPf9sUM7ZDiU+aRj8ornHRgHk7vYLx7L3RQs1QAMqI8x8axkR93k4W8zGZW494WAuBNoWD7QQrc/gp7KPh3XLsMIooqtN5FvyyvcTkeRH78NSrdEbpHVO8mA+OtJaSpuoTTXIqxWTYtxbUlSBeQo1szMAGTzP76aO50vgUr7JRZX0aEyOj7c0E+7Eu1rk08IZatBUZqDNre+/f3uHQmHeXL7k+nbEyxE8fCoETixTlZ
+ KM4B9TRz
+ s1L55Xzs4MtXJC3dqt0eU0sGUVyPaz6MZRncNnISCJAj5tFeQo2kU6dP1Nh/2VE67OEOHmAtNJKspcjfXnWfm4Bg9vmf0WWA4SoH9ED8ZZ1cPFwWblhhNnUAMA8YOryFr37fT9H+uYhZKVy0NoEkeFy/toiOMafi+tIqgNZ871IOwtcUz6aiSILnrtXMZ/gHZ/0dtEVrbHoqdlI5Ev0+DsCxv0hOHG3U346H0DTEPugSrUwWOQFw41za8K204yznq+sUGN2+UXOmK0GSrggHrQeqsV0XFdDE25Zy42QRH1xVTm+1FVH9iLxdCq6wjHADi41D/cQ1AL2yK87ybeJsSjqijUrEphHEPYcE9jeOQsGG9me2qEcFxa9DHCOtOEtJQVrc6gJaorByhSjpm+t7aljRXoL9U2KmWvdZpd7j4GL3PxKjVMNTjIz0DexslHftchcR9S4EyDINnmMLM5NwZ23IyBfwf19BpUY2WojpiTW7dqHjUA3r356hGUgFAWHXbauc30bPsGPvA1wLtQCihLxGORVVHHSTUkma2rNWMGVY/hNYVDwGbnluyFr/pdLJ49gR2InQzGmrXXKg1RZ7pkqRevFd9CdWLnfe7JlSANB2zrppp6nfLfQNkBPmpShrhMQfshbPtSZZmyUrD72T83tNag5uyxE5y/2R7UqxqelZXX3tJEsFCVaSb11Tbnh4o2OV+N292xkIVP8P9NYgV84OlAvGhFA1MGv8e41dUicGUkOM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,276 +94,140 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 X-Archived-By: <archiver.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [Critical] mm: physical memory overrun in vmap_pages_range_batched() acro=
-ss PMDs
-- [High] mm/vmalloc: missing VM_UNINITIALIZED in vmap() during huge PMD pro=
-motion
+- [Critical] mm/vmalloc: out-of-bounds physical mapping in vmap() across PM=
+D boundary
 --
 
-commit 1baf52bf8f22bab279e2ffbca6ca7296ae8e5c51
+commit bba985c9d433d420f66d2ffcfeb47090bbcf7552
 Author: Barry Song (Xiaomi) <baohua@kernel.org>
 
-mm/vmalloc: map contiguous pages in batches for vmap() if possible
+mm/vmalloc: align vm_area so vmap() can batch mappings
 
-This commit optimizes vmap() by scanning the input page array with
-num_pages_contiguous() to detect physically contiguous page ranges and
-coalescing ranges with the same mapping order into batched calls to
-vmap_pages_range_noflush_walk().
+This commit aligns the virtual address area allocated for vmap() to PMD_SIZE
+or the architecture-supported PTE batch shift so that contiguous pages can =
+be
+mapped in batches.
 
 > diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-> index ee2c1ec4ff1f3..42b3addd20f98 100644
+> index 42b3addd20f98..e15bcef804fc3 100644
 > --- a/mm/vmalloc.c
 > +++ b/mm/vmalloc.c
-> @@ -3613,6 +3613,85 @@ static inline unsigned int vm_shift(pgprot_t prot,=
- unsigned long size)
->  	return arch_vmap_pte_supported_shift(size);
->  }
-> =20
-> +static inline int get_vmap_mapping_order(struct page **pages,
-> +		pgprot_t prot, unsigned int nr_pages)
-> +{
-> +	unsigned long pfn;
-> +	unsigned int nr_contig;
-> +	int order;
-> +
-> +	if (!IS_ENABLED(CONFIG_HAVE_ARCH_HUGE_VMAP))
-> +		return 0;
-> +
-> +	/* Limit nr_pages by pfn alignment */
-> +	pfn =3D page_to_pfn(*pages);
-> +	if (pfn > 0)
-> +		nr_pages =3D min_t(size_t, nr_pages, 1UL << __ffs(pfn));
-> +
-> +	nr_contig =3D num_pages_contiguous(pages, nr_pages);
-> +	if (nr_contig < 2)
-> +		return 0;
-> +
-> +	order =3D ilog2(nr_contig);
-> +
-> +	if (vm_shift(prot, PAGE_SIZE << order) =3D=3D PAGE_SHIFT)
-> +		return 0;
-> +
-> +	return order;
-> +}
-> +
-> +static int vmap_pages_range_batched(unsigned long addr, unsigned long en=
-d,
-> +		pgprot_t prot, struct page **pages)
-> +{
-> +	const unsigned int nr_pages =3D (end - addr) >> PAGE_SHIFT;
-> +	unsigned int prev_shift =3D 0, batch_idx =3D 0;
-> +	unsigned long batch_start =3D addr, batch_end =3D addr;
-> +	int err;
-> +
-> +	err =3D kmsan_vmap_pages_range_noflush(addr, end, prot, pages,
-> +					     PAGE_SHIFT, GFP_KERNEL);
-> +
-> +	if (err)
-> +		goto out;
-> +
-> +	for (unsigned int i =3D 0; i < nr_pages; ) {
-> +		unsigned int shift =3D PAGE_SHIFT +
-> +			get_vmap_mapping_order(pages + i, prot, nr_pages - i);
-> +
-> +		if (!i)
-> +			prev_shift =3D shift;
-> +
-> +		if (shift !=3D prev_shift) {
-> +			err =3D vmap_pages_range_noflush_walk(batch_start, batch_end,
-> +					prot, pages + batch_idx, prev_shift);
-> +			if (err)
-> +				goto out;
-> +			prev_shift =3D shift;
-> +			batch_start =3D batch_end;
-> +			batch_idx =3D i;
-> +		}
-> +
-> +		/*
-> +		 * Once we fail to batch pages, we expect to fail batching
-> +		 * for all remaining pages, so just give up.
-> +		 */
-> +		if (shift =3D=3D PAGE_SHIFT)
-> +			break;
-> +
-> +		batch_end +=3D 1UL << shift;
-> +		i +=3D 1U << (shift - PAGE_SHIFT);
-> +	}
-> +
-> +	/* Remaining */
-> +	if (batch_start < end)
-> +		err =3D vmap_pages_range_noflush_walk(batch_start, end, prot,
-> +				pages + batch_idx, prev_shift);
-
-[Severity: Critical]
-Can vmap_pages_range_batched() overrun a physical chunk and map unowned
-physical memory when a coalesced batch of same-order chunks straddles a PMD
-boundary?
-
-In get_vmap_mapping_order(), nr_pages is bounded by physical PFN alignment
-and physical contiguity via num_pages_contiguous(), returning the full
-contiguity order (for example, order 8, shift 20 for 1MB chunks) without
-bounding the order by the virtual address alignment of the current mapping
-address.
-
-vmap_pages_range_batched() then coalesces consecutive physically
-discontiguous chunks that share the same shift into a single
-[batch_start, batch_end) range passed to vmap_pages_range_noflush_walk().
-
-In this commit, get_vm_area_caller() in vmap() only aligns area->addr to
-PAGE_SIZE. Even with follow-up commit bba985c9d433 ("mm/vmalloc: align
-vm_area so vmap() can batch mappings"), vmap_get_aligned_vm_area() only
-aligns area->addr to 1UL << arch_vmap_pte_supported_shift(size)
-(CONT_PTE_SIZE, 64KB on 4K-page arm64) whenever size < PMD_SIZE (or when a
-PMD_SIZE-aligned KVA allocation falls back), and any preceding smaller-order
-batch (such as an order-4 chunk before order-8 chunks) can also leave
-batch_start aligned to CONT_PTE_SIZE rather than 1UL << prev_shift.
-
-Looking at the call chain on arm64:
-
-  vmap()
-    vmap_pages_range_batched()
-      vmap_pages_range_noflush_walk()
-        vmap_pages_pmd_range()
-          vmap_pages_pte_range()
-            vmap_set_ptes()
-              arch_vmap_pte_range_map_size()
-              vmap_pte_set_huge()
-
-arch/arm64/include/asm/vmalloc.h:arch_vmap_pte_range_map_size() checks only
-CONT_PTE_SIZE alignment and then maps up to 1UL << max_page_shift:
-
-    if (!IS_ALIGNED(addr, CONT_PTE_SIZE))
-        return PAGE_SIZE;
-
-    if (!IS_ALIGNED(PFN_PHYS(pfn), CONT_PTE_SIZE))
-        return PAGE_SIZE;
-
-    size =3D min(end - addr, 1UL << max_page_shift);
-    size =3D round_down(size, CONT_PTE_SIZE);
-    return size;
-
-Consider two physically discontiguous order-8 (1MB, 256-page, prev_shift 20)
-chunks at PFNs P0..P0+255 and P1..P1+255 coalesced into a 2MB batch starting
-at a CONT_PTE_SIZE-aligned address that is 512KB (128 pages) below a PMD
-boundary (for example, batch_start =3D 0xffff800080180000,
-batch_end =3D 0xffff800080380000 across PMD boundary 0xffff800080200000):
-
-1. In the first PMD [0xffff800080180000, 0xffff800080200000),
-   vmap_pages_pmd_range() clips next to the PMD boundary (512KB).
-   arch_vmap_pte_range_map_size() returns min(512KB, 1MB) =3D 512KB, mapping
-   pages[0..127] (PFNs P0..P0+127) and advancing *nr to 128.
-
-2. At the start of the second PMD [0xffff800080200000, 0xffff800080380000),
-   *nr is 128 (pages[128], PFN P0+128), so only 128 contiguous pages (512KB,
-   PFNs P0+128..P0+255) remain in the first chunk before the physical
-   discontinuity at pages[256] (PFN P1).
-
-3. Because both addr (0xffff800080200000) and PFN_PHYS(P0+128) are aligned =
-to
-   CONT_PTE_SIZE (64KB) and end - addr is 1.5MB >=3D 1MB,
-   arch_vmap_pte_range_map_size() returns size =3D min(1.5MB, 1UL << 20) =
-=3D 1MB
-   (256 pages).
-
-4. vmap_pte_set_huge() then maps 256 contiguous physical pages starting at
-   PFN P0+128 (PFNs P0+128..P0+383), mapping 128 pages (512KB,
-   PFNs P0+256..P0+383) of unowned physical memory past the end of the first
-   chunk into the vmap() range, while advancing *nr by 256 to 384 and
-   skipping pages[256..383] of the second chunk.
-
-The same overrun also occurs for two coalesced order-9 (2MB, prev_shift 21)
-chunks when batch_start is CONT_PTE_SIZE-aligned but not PMD_SIZE-aligned,
-because vmap_try_huge_pmd() fails in both PMDs and falls back to
-vmap_pages_pte_range() with shift =3D 21.
-
-Should get_vmap_mapping_order() also bound the mapping order by the virtual
-address alignment of the current page or by the supported architectural map
-size?
 
 [ ... ]
 
-> @@ -3656,8 +3735,7 @@ void *vmap(struct page **pages, unsigned int count,
->  		return NULL;
+> @@ -3692,6 +3700,30 @@ static int vmap_pages_range_batched(unsigned long =
+addr, unsigned long end,
+>  	return err;
+>  }
 > =20
->  	addr =3D (unsigned long)area->addr;
-> -	if (vmap_pages_range(addr, addr + size, pgprot_nx(prot),
-> -				pages, PAGE_SHIFT) < 0) {
-> +	if (vmap_pages_range_batched(addr, addr + size, pgprot_nx(prot), pages)=
- < 0) {
->  		vunmap(area->addr);
->  		return NULL;
->  	}
+> +static struct vm_struct *vmap_get_aligned_vm_area(unsigned long size,
+> +		unsigned long flags, pgprot_t prot, const void *caller)
+> +{
+> +	struct vm_struct *vm_area;
+> +	unsigned int shift;
+> +
+> +	if (arch_vmap_pmd_supported(prot) && size >=3D PMD_SIZE) {
+> +		vm_area =3D __get_vm_area_node_aligned_caller(size, PMD_SIZE,
+> +				flags, caller);
+> +		if (vm_area)
+> +			return vm_area;
+> +	}
+> +
+> +	shift =3D arch_vmap_pte_supported_shift(size);
+> +	if (shift > PAGE_SHIFT) {
+> +		vm_area =3D __get_vm_area_node_aligned_caller(size, 1UL << shift,
+> +				flags, caller);
+> +		if (vm_area)
+> +			return vm_area;
+> +	}
 
-[Severity: High]
-Could switching vmap() to vmap_pages_range_batched() without setting
-VM_UNINITIALIZED on area expose a race with vread_iter() when a PMD is
-promoted to a huge page?
+[Severity: Critical]
+Can this cause vmap() to map out-of-bounds physical pages across a PMD
+boundary on arm64 when pages[] contains multiple physically discontiguous
+chunks that share a mapping shift larger than CONT_PTE_SHIFT?
 
-In vmap(), get_vm_area_caller() publishes area in vn->busy without
-VM_UNINITIALIZED before vmap_pages_range_batched() populates the page table=
-s.
-Previously, vmap() always passed PAGE_SHIFT to vmap_pages_range(), which on=
-ly
-allocated missing page tables and wrote leaf PTEs without freeing existing
-page table pages.
+In vmap_get_aligned_vm_area(), when size < PMD_SIZE (for example, a 1MB vmap
+composed of two 512KB order-7 chunks on 4K-page arm64, or an 8MB vmap compo=
+sed
+of two 4MB order-8 chunks on 16K-page arm64 where PMD_SIZE is 32MB), or when
+the PMD_SIZE-aligned allocation falls back, the virtual range is only align=
+ed
+to 1UL << arch_vmap_pte_supported_shift(size), which is CONT_PTE_SIZE on
+arm64. The same alignment also occurs for batch_start if a PMD-aligned vmap
+starts with a CONT_PTE_SIZE chunk followed by larger chunks.
 
-With vmap_pages_range_batched(), when get_vmap_mapping_order() returns an
-order >=3D PMD_SHIFT - PAGE_SHIFT over a virtual address range that previou=
-sly
-held 4KB mappings (leaving an empty present PTE table at *pmd after
-vunmap_range_noflush()), vmap_pages_pmd_range() calls vmap_try_huge_pmd():
+In vmap_pages_range_batched(), get_vmap_mapping_order() can return an order
+where shift > CONT_PTE_SHIFT, and consecutive discontiguous chunks with the
+same shift are coalesced into a single walk:
 
-mm/vmalloc.c:vmap_try_huge_pmd() {
-    ...
-    scoped_cond_guard(mmap_read_lock_try, return 0, &init_mm) {
-        if (!pmd_free_pte_page(pmd, addr))
-            return 0;
-        return pmd_set_huge(pmd, phys_addr, prot);
-    }
-    ...
+mm/vmalloc.c:vmap_pages_range_batched() {
+	for (unsigned int i =3D 0; i < nr_pages; ) {
+		unsigned int shift =3D PAGE_SHIFT +
+			get_vmap_mapping_order(pages + i, prot, nr_pages - i);
+
+		if (!i)
+			prev_shift =3D shift;
+
+		if (shift !=3D prev_shift) {
+			err =3D vmap_pages_range_noflush_walk(batch_start, batch_end,
+					prot, pages + batch_idx, prev_shift);
+			...
+		}
+		...
+		batch_end +=3D 1UL << shift;
+		i +=3D 1U << (shift - PAGE_SHIFT);
+	}
 }
 
-Concurrently, a reader of /proc/kcore executing vread_iter() checks:
+When [batch_start, batch_end) crosses a PMD boundary at an offset M into the
+first chunk (where 0 < M < (1UL << prev_shift) and M is a multiple of
+CONT_PTE_SIZE), vmap_pages_pmd_range() splits the walk at pmd_addr_end(addr,
+end). The first PMD maps the initial M bytes of chunk 0 and advances *nr to
+M >> PAGE_SHIFT.
 
-mm/vmalloc.c:vread_iter() {
-    ...
-    if (vm && (vm->flags & VM_UNINITIALIZED))
-        goto next_va;
-    ...
+At the start of the next PMD (addr =3D PMD_BOUNDARY), *nr points M bytes in=
+to
+chunk 0 (physical address PA_0 + M), leaving only (1UL << prev_shift) - M
+contiguous bytes in chunk 0 before pages[] switches to the discontiguous
+physical address of chunk 1. However, vmap_pages_pte_range() still passes t=
+he
+full shift =3D prev_shift to vmap_set_ptes():
+
+mm/vmalloc.c:vmap_pages_pte_range() {
+	do {
+		struct page *page =3D pages[*nr];
+		...
+		pfn =3D page_to_pfn(page);
+		size =3D vmap_set_ptes(pte, addr, end, pfn, prot, shift);
+		nr_pages =3D PFN_DOWN(size);
+	} while (pte +=3D nr_pages, *nr +=3D nr_pages, addr +=3D size, addr !=3D e=
+nd);
 }
 
-Because VM_UNINITIALIZED is not set by vmap() (unlike
-__vmalloc_node_range_noprof() and kho_restore_vmalloc()) and vread_iter()
-does not take init_mm.mmap_lock, vread_iter() proceeds into
-aligned_vread_iter() -> vmalloc_to_page() -> __vmalloc_to_page():
+Because addr (at PMD_BOUNDARY) and PFN_PHYS(pfn) (at PA_0 + M) are both
+aligned to CONT_PTE_SIZE, and end - addr covers the coalesced second chunk,
+arch_vmap_pte_range_map_size() returns the full 1UL << prev_shift:
 
-mm/vmalloc.c:__vmalloc_to_page() {
-    ...
-    pmd =3D pmd_offset(pud, addr);
-    if (pmd_none(*pmd))
-        return NULL;
-    if (pmd_leaf(*pmd))
-        return pmd_page(*pmd) + ((addr & ~PMD_MASK) >> PAGE_SHIFT);
-    if (WARN_ON_ONCE(pmd_bad(*pmd)))
-        return NULL;
+arch/arm64/include/asm/vmalloc.h:arch_vmap_pte_range_map_size() {
+	if (!IS_ALIGNED(addr, CONT_PTE_SIZE))
+		return PAGE_SIZE;
 
-    ptep =3D pte_offset_kernel(pmd, addr);
-    pte =3D ptep_get(ptep);
-    ...
+	if (!IS_ALIGNED(PFN_PHYS(pfn), CONT_PTE_SIZE))
+		return PAGE_SIZE;
+
+	size =3D min(end - addr, 1UL << max_page_shift);
+	size =3D round_down(size, CONT_PTE_SIZE);
+	return size;
 }
 
-If pmd_free_pte_page() and pmd_set_huge() run concurrently with
-__vmalloc_to_page(), __vmalloc_to_page() can dereference a freed PTE page
-table page, hit WARN_ON_ONCE(pmd_bad(*pmd)), or pass a newly installed huge
-leaf PMD entry to pte_offset_kernel(pmd, addr).
-
-Should vmap() set VM_UNINITIALIZED when allocating the vm_struct and clear =
-it
-via clear_vm_uninitialized_flag() after vmap_pages_range_batched() finishes?
+Doesn't vmap_pte_set_huge() then map 1UL << prev_shift contiguous physical
+bytes starting at PA_0 + M, overrunning the end of chunk 0 by M bytes into
+unowned physical memory while advancing *nr past the first M bytes of chunk=
+ 1?
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261103101658.7669=
-05-1-jiangwenxiaomi@gmail.com?part=3D9
+05-1-jiangwenxiaomi@gmail.com?part=3D10
 
