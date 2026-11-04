@@ -1,104 +1,101 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03648606A326
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 01:59:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E72C8606A31B
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 02:09:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=A2WVZoGt
+	dkim=fail reason="signature verification failed" (2048-bit key, unprotected) header.d=surriel.com header.i=@surriel.com header.a=rsa-sha256 header.s=mail header.b=VInwpyJv
 Received: by kanga.kvack.org (Postfix)
-	id 0BA4A6B00EF; Tue,  3 Nov 2026 20:59:32 -0500 (EST)
+	id 8E5496B05B2; Tue,  3 Nov 2026 21:09:22 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 06B586B05B1; Tue,  3 Nov 2026 20:59:32 -0500 (EST)
+	id 8BCF06B05B3; Tue,  3 Nov 2026 21:09:22 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E77576B05B2; Tue,  3 Nov 2026 20:59:31 -0500 (EST)
+	id 7D52B6B05B4; Tue,  3 Nov 2026 21:09:22 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C1DEB6B00EF
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 20:59:31 -0500 (EST)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id B775CA81DA
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 01:59:29 +0000 (UTC)
-X-FDA: 85395779658.03.44FAD51
-Received: from mta0.migadu.com (out-185.mta0.migadu.com [91.218.175.185])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 4589480004
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 01:59:27 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=A2WVZoGt;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf02.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.185 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
+	by kanga.kvack.org (Postfix) with ESMTP id 589556B05B2
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 21:09:22 -0500 (EST)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 6394BA8232
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 02:09:21 +0000 (UTC)
+X-FDA: 85395804522.18.BB596C6
+Received: from shelob.surriel.com (shelob.surriel.com [96.67.55.147])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 9F8EE1C0004
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 02:09:19 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=surriel.com header.s=mail header.b="VInwpy J";
+	spf=pass (imf18.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
+	dmarc=pass (policy=quarantine) header.from=surriel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793757567;
+	s=arc-20220608; t=1793758159;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vtQc/hP3UAI76zkIv9UdY4+7Ue+hQnIdUcRDPGnwDYI=;
-	b=AYXoCSX47klVRE3OW3WIVowB4tR+ehmlH4EmFusszr5qX9EHnXuSfoIqJCotFfzUA20185
-	6Gwoq1uQXju3jc++JMAjsQXAykgSXGVlzNQP6WYBHP14r3wBca2A0y9848X0sV65tKo0A5
-	rcNM0UXC1NjZ8qXJe/caV7QjIWQg07Y=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=A2WVZoGt;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf02.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.185 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
+	bh=9PvvmTIC+xa1Yy/jymB0jeQjmM6XsPcLJd3t+U1N/8A=;
+	b=2w71yzuPIoPALQVLeAb+H6O0PorGUv5hGa3WWl3+BRPTkN0ZAZL254tuZtAqKt6K1p66Wg
+	QGwNsD4UCcJWHJx5LotJiSbwRdgEfe+2BXwn22AF8GHpm0ObWIqVVgt0gKbe7uaUnqlsK2
+	DoZzpIUj9d+d4MJxVnF5Lwv88pf2WJk=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793757567;
-	b=vYLnLKyUKQhgY0pqCfeX8HOXtX4q6ALnowiUELz0tHZgav5w0OZEz0HWECV5aTwDy3E50a
-	yKdICezYDB8wXlyeNuPErDpRepG9P0n70p6Z/sQuChaJiJZiRLMRCJsf4YU2zv0bLicfDP
-	7YdGtSsM+KGC4FwHDCXLmAV2q8NqDrE=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=dEfpVcqaKwJtgCHoqizd1/ayWuwTWWIsmQKh7kUEEfQ=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1793757562; v=1; x=1794362362;
- b=A2WVZoGt2KIuU7thWtNqyKE2fIOPMC62rT+8J8Gm3hHFG3vmJoFY1YeHXImUuFBMuCtu3/D1
- EyhSjAeXA9lNiVQplWoHixIJqTmQE1ogAvL0MndHeR8MWo+bHYggWHkj/YI+Ow9rVGv4KnKuz8l
- KE8pcze3J6rMj9d/2DD4ekPQ=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 8f7e9dda1911563a;
-	Wed, 04 Nov 2026 01:59:22 +0000
-X-Mizu-Trace-ID: 8f7e9dda1911563a
-X-Migadu-Flow: FLOW_OUT
-Date: Tue, 3 Nov 2026 17:59:11 -0800
-From: Shakeel Butt <shakeel.butt@linux.dev>
-To: Dave Hansen <dave.hansen@intel.com>
-Cc: "Ababneh, Ehab" <ehab.ababneh@intel.com>, 
-	Barry Song <baohua@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>, 
-	"ziy@nvidia.com" <ziy@nvidia.com>, "linux-mm@kvack.org" <linux-mm@kvack.org>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "buddy.lumpkin@oracle.com" <buddy.lumpkin@oracle.com>, 
-	"akpm@linux-foundation.org" <akpm@linux-foundation.org>, "kasong@tencent.com" <kasong@tencent.com>, 
-	"qi.zheng@linux.dev" <qi.zheng@linux.dev>, "axelrasmussen@google.com" <axelrasmussen@google.com>, 
-	"yuanchu@google.com" <yuanchu@google.com>, "weixugc@google.com" <weixugc@google.com>, 
-	"david@kernel.org" <david@kernel.org>, "ljs@kernel.org" <ljs@kernel.org>, 
-	"liam@infradead.org" <liam@infradead.org>, "vbabka@kernel.org" <vbabka@kernel.org>, 
-	"rppt@kernel.org" <rppt@kernel.org>, "surenb@google.com" <surenb@google.com>, 
-	"mhocko@suse.com" <mhocko@suse.com>, "jackmanb@google.com" <jackmanb@google.com>, 
-	"baoquan.he@linux.dev" <baoquan.he@linux.dev>, "baolin.wang@linux.alibaba.com" <baolin.wang@linux.alibaba.com>
-Subject: Re: [RFC PATCH v2 0/5] mm/vmscan: adaptive multi-threaded kswapd for
- NUMA-aware reclaim
-Message-ID: <20261104015214.GA1088663@shakeel.butt@linux.dev>
-References: <SJ1PR11MB6105E073723CFEEE8C8EDBF48C832@SJ1PR11MB6105.namprd11.prod.outlook.com>
- <cover.1791577417.git.ehab.ababneh@intel.com>
- <CAGsJ_4wmSL7i4EPLWLKhDD6J=1TywBi5EYYDxp=SvOuXdmLGjg@mail.gmail.com>
- <SJ1PR11MB6105E839E55E9B0BDE183E9D8C9D2@SJ1PR11MB6105.namprd11.prod.outlook.com>
- <SJ1PR11MB6105A05870574FF39B449CE28C692@SJ1PR11MB6105.namprd11.prod.outlook.com>
- <ee9d317a-9829-47c1-81c7-1145304ea484@intel.com>
+	t=1793758159;
+	b=H+oTCdAxLvhYGK496UImVh6zktHrEYnDp58ENmu6MA6HcR+S4ZyDJ7Au2A+1dSGuOxvHig
+	5VYEWpQkpHMjtdyhCa0OF7AOfPMle8nu77z618lMimHHYCJ/xWn602/FppW3Pz+TPMikxz
+	wMFIc/rgxTyprARDtew/utMSeg76yig=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=surriel.com header.s=mail header.b="VInwpy J";
+	spf=pass (imf18.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
+	dmarc=pass (policy=quarantine) header.from=surriel.com
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=surriel.com
+	; s=mail; h=Content-Transfer-Encoding:Content-Type:MIME-Version:References:
+	In-Reply-To:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID; bh=9PvvmTIC+xa1Yy/jymB0jeQjmM6XsPcLJd3t+U1N/8A=; b=VInwpy
+	JvVIXCDo/LHBgZ8Kj6utwxJ8KCGXohr9RwEPTqNExSSE5IObAantbD/wwpsHxhF6nJ32pOLm6t4C7
+	hLyv6GgWDgEQtAuvnrcy+U/l/0btfVyaJArEr6Fa5L8OpiU7kYW2WPkKBYk5BDeuj4J9aS9Z02/6k
+	KESryuflPEfcTc/zAvl/cvi0m4tmc1+6WtyeQuq9NDGS17j0ZXHMztsf52X6Dbz3u1C88Gb2hOkx7
+	i1fwVfaOsdoHiDtQ5PvL4Ir1LxxWcRyH1YRkhVqudffximSsb+f8mqh93ggg8mPw0n0IxU5m/qQNn
+	BV6Zf22pb/otl7EVi1GFsESO5E6A==;
+Received: from [2601:18c:8100:a0e0:2541:b86e:2586:d219] (helo=fangorn)
+	by shelob.surriel.com with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.99.5)
+	(envelope-from <riel@surriel.com>)
+	id 1xOQQR-00000001pVT-0hEE;
+	Wed, 04 Nov 2026 02:08:31 +0000
+Date: Tue, 3 Nov 2026 21:08:30 -0500
+From: Rik van Riel <riel@surriel.com>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: linux-kernel@vger.kernel.org, Yeoreum Yun <yeoreum.yun@arm.com>, Andrew
+ Morton <akpm@linux-foundation.org>, Jason Gunthorpe <jgg@ziepe.ca>, John
+ Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, Suren
+ Baghdasaryan <surenb@google.com>, Yuan-Hao Hsu <aa9736195201@gmail.com>,
+ Christoph Hellwig <hch@infradead.org>, linux-mm@kvack.org
+Subject: Re: [PATCH 8/8] mm/gup: batch contiguous same-folio PTEs into one
+ refcount grab
+Message-ID: <20261103210830.2870eaae@fangorn>
+In-Reply-To: <1affac11-da98-40b3-8cc2-6e8374b5ab69@kernel.org>
+References: <20261102193026.3860700-1-riel@surriel.com>
+	<20261102193026.3860700-9-riel@surriel.com>
+	<fa017227-448b-468f-9797-33c02854f018@kernel.org>
+	<9d1572bd5e868d3c9d953aa5fae81967cc81ba55.camel@surriel.com>
+	<1affac11-da98-40b3-8cc2-6e8374b5ab69@kernel.org>
+X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-redhat-linux-gnu)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ee9d317a-9829-47c1-81c7-1145304ea484@intel.com>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam06
+X-Stat-Signature: mkuse3m5bmmwdss6rpc13u5aeas6k4fb
+X-Spam-Status: No, score=-10.1 required=3.0 tests=BAYES_00,DKIM_INVALID,
+	DKIM_SIGNED,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_2
+	autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: 9F8EE1C0004
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 4589480004
-X-Spam-Status: No, score=-4.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,MSGID_MULTIPLE_AT,SPF_HELO_PASS,SPF_PASS
-	autolearn=no autolearn_force=no version=4.0.1
-X-Stat-Signature: dk1ourncyabfo9q9oyespht5mij8zsmj
-X-HE-Tag: 1793757567-117272
-X-HE-Meta: U2FsdGVkX181c1aMrS+1Zm4UruE+rhHIOryyJ9A8PYyV16aQmyC5FLXMLFCVSDJO2tKOHaCKfTjQORSk5ZqCnw8Pq+Vof1ywxKWOlt06ezDp5N7QthMbiKjSx9Y53bXK4o0CXKklcgXm2oX1siTvVKXS6rrvW7Drhi88/JJv/bmNP4g4VfrTfeejYEw2aFR7ZpXDgi/nxAcrNeL0PmnDfYIPXcrF7xsx+r0zxiyMLHEwrUmPnAHR90IG17PB6+qfDAGUHUm2u6WzbYKdB+EiZtQgIhSN5k18x34iqqTVwFC1GPS//vnfX7UwAgxzrTGi1675r+7gf1lzgyyXMMy3WIBQLYDOGGIatLKSpA1XHRiFD6lbWEGdEPHVWZMSOAKbeCWL/NSmBFWHiSP1qP/aE81MEcWAt4iu8O6U5Gl1I/8UQG8CN7xPk9Q/aX9iqFfz8P46988jdTC5eaQcZmJ9/VAsfP+N4ifCPNs+vAx+d+4gKij0jhdL8HqSpluh/Z3b1v4SIkQjW4uB5PeOCkpq/GV6TVJ+HdSIBeCO3rQLmr+/XjxzIXLfGE5GXl7qmm/G3Z/7DLrVfhiPyq9gh1KQuoA3ch5ZInx+Hwa9B2O/LkxWB0T5iS8kYYVVfkjq5ytx4VbdcKSqJYLopyur5ETAIQWC3OJ34/SL+LxLF5dlOrAEJVTI83YskxiZig1MeaDn1R7eTJ3Ex89nUTfxR0inS3ni7zlcUlLoak8rXnAH+WrBMeQeeMFdWCGi3f8BB1l1kREmJzvrXXlD0ketK3a20hB3WpQLQ7recKh2n8LhmwpqjqXaFJ4BnIJdgcjf4Uy9+vVSQT9o4E25Li2ZdmnvOdddsEzVPv3tREcqZ4BVu6GDlYduK8t2KWnO9F6Cs8enGUwDjfKyDd73mNExQZb4ilA3hsybj/0ov2lBUaJBrdFporEdr5HfSgxxBG3ILZV65vPMzRVOzg/GK1031Ox
- 5MDIOkaj
- tC69HcFrgWt4Tm0oGD4hN1nxmHtOZVpzfFz0Sn9m8jE5h64UdxZuNgFOxxucR3OjAw6uZHz4sffzHSA6p4USZNSYGcOLXYpsUR066f8r7qf78nbkH/i/4VDGnsxamVTm8tezs7WxUtxflon6OttbZodce0+8SKbcKc/qBRuxQIzCwgTRhK6zGSWj+AAizdbRpm8cL3WqkQMvOwXTxXhgxvk1Dl9SsA57j1vE2q7LCIX2yoLtsf7Giu8ylgBWxH/W/m9iH1ysFXjKKcwix1vy+IOWnpuVQv2zfkI9SwAJTNgZy+GSCwqHKfT+nzg==
+X-HE-Tag: 1793758159-230513
+X-HE-Meta: U2FsdGVkX19KbpKeuSGi9PDvhzrXUAHhs9wN+dNGFlGYaT4QvV+EWW8XpJBzp18ZpWfMA52oQt5RZWeMsYxNiBT7xgurwSdSaVlixIvqeiAB+OZWssHVbKZd+wzeWaxGyZMVl6VP1hoqCq/6WpE0NSnfTDIPMzKNnwq4PVX2ivNUsL8GLEOvKOD7NUAvb4YRgsEtUgQfE2Xa/hOntcGe0KwyinvBBc+Gc7NSITo/XLxU00fdewix4DiWQ7eyHXMad/cddJKlOCdWjZUk0S8zjFNvdAsycix03LY6x+Fv5hU9gr770yEBheRKVFEOEKZ02xdW4pR25O0hTPX7wPBXeyuUWhOJ6sWRgzfgvIU3vlPpdOOqEb/VrNBbwRe0JLPXeBmxGhOYnxK4CLt/3H0v32k30ofyneeDZN2enb7lWxYuzmUgr+7MTW+6dzivVNxYqFRnvh2XZnR8TiEh12ZG/bXlsnpEy0MKlKQ1LoK4Oml6Zv0JnM+zdOy0iufjvhdr6NKjL70V/ZCYTTUwxdtrxrxYaZAznG3OmQnztuwRKKcW82OMDGFjQSNZx11ZhcphPGSKeZvmlLNgpDKvrVqXqxnjcvB93Kd0tFdysk17S/E/q/gmle9qNW3rDPiyskhP7+LSj5CfwbvQulvgdb3gCEHEem5DWTfjd29dmk4APOhEoJ1ETGm/ExLarrGmIMRNahmvS30iluIAK/gLg7JGziDInUHd8ggA4NbEZ0W4+3lCv4gqy8G1gYu1p7P66eFCgjRxM+YAYJ6CRraQag4+8FrvL6dMlKhfRu5J6MnTa5UVMpuw3VdhS2vz1GB2ePknKcGSqQYmTbfQPKG3mPMMjuEsltwAPb9UHGkzGJE+HUznJwFKD8bizZMbvjcOU7bL6ouqmN38wcCmU3dq850cxn5WM85IrmRvgID9bOJ7kTflulrYGEmUEJgciCXALSDQE4UYKnDLYHfL0Mn/88P
+ 6cmhnNwN
+ SMyGnNKYdi/BfoAPXE6AtT1zz90cJEJSVo2yZKLZb0BgIJ2RcJWpxbpULGg9uFTy3ioD8i14uCPA4UfcHvp61/8FHMtc2+bFXNcn8H3wYVWW9GyvR4HHl+NWShVhz8LYkmOgY7UAxnKQsLD2g95EaL6kozJSKc3q1xNmtNLfON3BpEExzWOQlPH8f9UtfR+rhPtKZEAMzz5eLQta3jNtBwiTniO1sUq6tQnBClPKYODj3PM7KncZ37+4py/TYRSPBUYT0YFEv0WO+bxaN3yse9WLC9VV9+HkqjIRtfp1EHtHTRqE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,33 +104,65 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Tue, Nov 03, 2026 at 04:15:44PM -0800, Dave Hansen wrote:
-> On 11/3/26 15:41, Ababneh, Ehab wrote:
-> > I would appreciate your thoughts on how we might achieve a similar
-> > performance improvement without increasing the number of kswapd
-> > threads.
+On Tue, 3 Nov 2026 17:55:31 +0100
+"David Hildenbrand (Arm)" <david@kernel.org> wrote:
+
+
+> My plan is to get the small series for gup-fast ready, stage that, and then
+> build on top of it.
 > 
-> It also just plain doesn't seem like folks are very interested in
-> optimizations in this area at the moment. Feedback that's basically, "go
-> optimize something else" would also be very welcome.
+> By then I should have been able to dig through most of your series. The cleanups
+> can stay part of this series.
+> 
+That sounds good. It looks like with this small change below,
+GUP-fast and slow GUP can share another helper.
 
-Hi Ehab and Dave,
+I can fold that into my series as well, or send the cleanups
+in a separate series, whatever works best for you.
 
-My appologies for late response. I have not gotten the chance to look
-deeper into the series as I am stuck in something else but I am very
-much interested in this (line of) work.
+The PUD and PMD paths do not look as easy to untangle, but
+maybe after some more cleanups on each end?
 
-I have discussed with Johannes about multithreaded kswapds but the
-motivation is more about scaling kswapd threads corresponding to the
-number of cores on the node. We are getting CPU with hundred of cores per
-numa code and kswapd is already too late or slow to keep up with
-allocations happening on all of those cores. So, I definitely think we
-need multiple workers doing the background reclaim.
+---8<---
 
-Please give me sometime, I will organize my thoughts on how we should
-aim to tackle this challenge. I will also ask Johannes to provide his
-take on the issue.
+diff --git a/mm/gup.c b/mm/gup.c
+--- a/mm/gup.c
++++ b/mm/gup.c
+@@ -940,14 +940,20 @@
+  * run under FOLL_WRITE or FOLL_PIN does need the per-page check, so it stays
+  * one page at a time.
++ *
++ * @fpb_flags selects the scan: slow GUP merges young/dirty so
++ * folio_mark_dirty() sees any dirty PTE in the run; fast GUP scans
++ * locklessly and revalidates the run after grabbing it. @vma is only
++ * needed for FPB_MERGE_WRITE and may be NULL otherwise.
+  */
+ static unsigned long gup_pte_batch_len(struct vm_area_struct *vma,
+ 		unsigned long address, unsigned long walk_end,
+-		struct folio *folio, pte_t *ptep, pte_t *batch_pte, unsigned int flags)
++		struct folio *folio, pte_t *ptep, pte_t *batch_pte,
++		unsigned int flags, fpb_t fpb_flags)
+ {
+ 	unsigned long max;
+@@ -961,8 +961,7 @@
+ 	max = (walk_end - address) >> PAGE_SHIFT;
+ 	if (max <= 1)
+ 		return 1;
+ 
+-	/* Merge young/dirty across batch so folio_mark_dirty sees any dirty. */
+ 	return folio_pte_batch_flags(folio, vma, ptep, batch_pte, max,
+-				     FPB_RESPECT_WRITE | FPB_MERGE_YOUNG_DIRTY);
++				     fpb_flags);
+ }
+@@ -1018,7 +1018,8 @@
+ 			folio = page_folio(page);
+ 			batch_pte = pte;
+ 
+ 			batch = gup_pte_batch_len(vma, address, walk_end, folio,
+-					 ptep, &batch_pte, flags);
++					 ptep, &batch_pte, flags,
++					 FPB_RESPECT_WRITE | FPB_MERGE_YOUNG_DIRTY);
+ 			ret = gup_grab_folio_pages(folio, page, batch,
+ 						     pte_dirty(batch_pte), flags,
 
-Thanks for pushing this work.
-Shakeel
 
