@@ -1,98 +1,113 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD165606A339
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 09:15:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1ED82606A330
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 09:15:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=UjA2xqeY
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=QF98rpjB
 Received: by kanga.kvack.org (Postfix)
-	id C61026B05B7; Wed,  4 Nov 2026 04:15:16 -0500 (EST)
+	id 44BC16B05B8; Wed,  4 Nov 2026 04:15:38 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C11656B05B8; Wed,  4 Nov 2026 04:15:16 -0500 (EST)
+	id 4243E6B05B9; Wed,  4 Nov 2026 04:15:38 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B27566B05B9; Wed,  4 Nov 2026 04:15:16 -0500 (EST)
+	id 361036B05BA; Wed,  4 Nov 2026 04:15:38 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 97AC76B05B7
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 04:15:16 -0500 (EST)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 121F91C3D2A
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 09:15:16 +0000 (UTC)
-X-FDA: 85396877832.13.9F08CF5
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 6951F100009
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 09:15:14 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UjA2xqeY;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf05.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 153C16B05B8
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 04:15:38 -0500 (EST)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 9BAE1120619
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 09:15:37 +0000 (UTC)
+X-FDA: 85396878714.19.4B6CB79
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 1008B120005
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 09:15:35 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QF98rpjB;
+	spf=pass (imf29.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793783714;
+	s=arc-20220608; t=1793783736;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wozQOH0rL+df2ESKnkoR9U756io00+MftNixJAyhy9s=;
-	b=3j0gQ1P55ErRKdhQElg690lO03szQp16ZIaYZMGRglkPoGNPrOMmcN70ZtfWEIrhgprVeO
-	H4Oau3545ThgcRmq8LfbltICC6iTccHPqg4PGWP1xGd2udFMA7DvNs+6r0vK9mChhr1jYv
-	8HLtoChihxn2RfnvgK1hmXZWs57G43U=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793783714;
-	b=0ulBOQrz1ovSZL9Luk+0HEBcADaEPc8Gmy82rC8lMaTl8Vu+kj9TdZu3v+rvPjakOAnR1W
-	tiH52yEnhq95Obbe2fEG9yif5VFpQXh+jATOCyG1MUk5HaEPwaXP5nO81u0z+qR7AFnKbV
-	6ar/YgVgZo82JCTJrhUtYHMkZ6Avdm0=
+	bh=tun3DxnivT6n8ykyvHDle1jgjloMyn9wMMyaVwUBJtE=;
+	b=QI2d6wktKIQH/gVvH3FtInzExWPu4D2rShu0TfQhklJDxpg6+UXfxXgQZRO1ptbN9sroIv
+	7QHt5nMw7FhhceW/ip0GNXC8zZa5jXzPUB+GOnLXwct0lV4Zcu5DUTM1Hgjucw8JjZKBL9
+	NJLOEQVzZakxb5zGBTLC5WlJHDaFmkg=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UjA2xqeY;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf05.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QF98rpjB;
+	spf=pass (imf29.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793783736;
+	b=1W03d2N5UwLAhxKHWYf2RqnssXIVAlcSlMxa6dwklOYrj1u198Y/AEUR/HCQlVLKAFjpnp
+	ASzXkONo5x4BG/9+Ty/fozHZKOfbbz4i/Fs4LOgm9/FRhEFaaoRIW0ie4sKLEwZI52poDs
+	N2jEy4tR/a9mOoMh2rgTr4wJcLqRmdo=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 8F3EF43490;
-	Wed,  4 Nov 2026 09:15:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E53D41F00919;
-	Wed,  4 Nov 2026 09:15:08 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id A35A0602BE;
+	Wed,  4 Nov 2026 09:15:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 786C51F000C1;
+	Wed,  4 Nov 2026 09:15:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793783713;
-	bh=wozQOH0rL+df2ESKnkoR9U756io00+MftNixJAyhy9s=;
+	s=k20260515; t=1793783735;
+	bh=tun3DxnivT6n8ykyvHDle1jgjloMyn9wMMyaVwUBJtE=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=UjA2xqeYEK80i7Ppq03lQvL9aj7w7aCpnwjVlKlY4qACwWrO1xNZH7fqcg0/XQYXd
-	 0XIL1G57zMHPcLqouikUAlFkvwGNnm8TEe+24IPTE2jQRZRI+rAZV8LmaK1RNpS6CY
-	 VgMsB/z+HEkEgNNiR4S3FJ+IcrvX5Lhj9lHuDF3O1rEdd9gcSgRk2fkShoJcQeaK1R
-	 G8h5IWb1O1KAkMem6coEO1PTX2M3tQxZGkQyvjwPTBLfv46F0G9+q8RqQrcNpjeHNM
-	 I2ikync2oN5s0Hu/SoQvjlVGu0ChAoqqCFzQdaQFzUwb8DVF/4rYw9Mm9jkHtbz6Ug
-	 g1OvXpMbmC3ow==
-Date: Wed, 4 Nov 2026 09:15:06 +0000
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Hugh Dickins <hughd@google.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	David Rheinsberg <david@readahead.eu>, "Liam R. Howlett" <liam@infradead.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Jonathan Corbet <corbet@lwn.net>, 
-	Shuah Khan <skhan@linuxfoundation.org>, Randy Dunlap <rdunlap@infradead.org>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, stable@vger.kernel.org, 
-	Chris Mason <mason@kernel.org>
-Subject: Re: [PATCH 1/2] mm/memfd: handle GUP pins more reliably when
- write-sealing
-Message-ID: <aur3R_3_oz4Isjr4@gremlin>
-References: <20261103-fixes_core_2-v1-0-f332954f1df4@kernel.org>
- <20261103-fixes_core_2-v1-1-f332954f1df4@kernel.org>
+	b=QF98rpjBzH7nX1jmz4Zo8ykeu0WPbxz0HGt6XxCXrOQ4V4PB3P/wbn5sluIzZ3bgP
+	 woOpkCVq06Ek6V7bKkHEP2phdvrGGARxXAl1OBE0IhgkRUa/IQ935AFbXxh1YUY5bJ
+	 utfjbIjp7LtybAhtZNGHqFcIoDw2mhpfxaUaUe5IHuBCvHt5tgYAPu/YfrtEAf4jWd
+	 v5zbJS1rE1Hby/io2vM2SNwmccLVR3w7pjdFYCtf7rR4Wu4skeBeZ5GH0Q1ajKmHHR
+	 yetiYqpJqieJOdcKUSYdWCjNW5p22mqd+bHsoVYbOTO4y8Ft2ybe6f5kRc5h/hiSzc
+	 /PiiXfUYZ7Gcw==
+Date: Wed, 4 Nov 2026 10:15:18 +0100
+From: Christian Brauner <brauner@kernel.org>
+To: Florian Westphal <fw@strlen.de>
+Cc: linux-fsdevel@vger.kernel.org, 
+	Linus Torvalds <torvalds@linux-foundation.org>, Jann Horn <jannh@google.com>, Josef Bacik <josef@toxicpanda.com>, 
+	Chris Mason <mason@kernel.org>, Jeff Layton <jlayton@kernel.org>, NeilBrown <neil@brown.name>, 
+	Eric Dumazet <edumazet@kernel.org>, Thomas Gleixner <tglx@kernel.org>, 
+	Al Viro <viro@zeniv.linux.org.uk>, Jonathan Corbet <corbet@lwn.net>, Christoph Hellwig <hch@lst.de>, 
+	Greg Kroah-Hartman <gregkh@suse.de>, Joel Granados <joel.granados@kernel.org>, 
+	Kees Cook <kees@kernel.org>, Jan Kara <jack@suse.cz>, Jan Kara <jack@suse.com>, 
+	linux-kernel@vger.kernel.org, linux-nfs@vger.kernel.org, linux-acpi@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-s390@vger.kernel.org, linux-scsi@vger.kernel.org, 
+	linux-um@lists.infradead.org, linux-wireless@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
+	netdev@vger.kernel.org, ntfs3@lists.linux.dev, platform-driver-x86@vger.kernel.org, 
+	coreteam@netfilter.org, kexec@lists.infradead.org, linux-pci@vger.kernel.org, 
+	linux-sound@vger.kernel.org, netfilter-devel@vger.kernel.org, dri-devel@lists.freedesktop.org, 
+	ibm-acpi-devel@lists.sourceforge.net, jfs-discussion@lists.sourceforge.net, 
+	linux-alpha@vger.kernel.org, linux-arm-kernel@lists.infradead.org, linux-cifs@vger.kernel.org, 
+	linux-fbdev@vger.kernel.org, linux-hwmon@vger.kernel.org, linux-mm@kvack.org, 
+	linux-sh@vger.kernel.org, linux-usb@vger.kernel.org, samba-technical@lists.samba.org, 
+	sparclinux@vger.kernel.org, linux-m68k@lists.linux-m68k.org, linux-doc@vger.kernel.org, 
+	linux-serial@vger.kernel.org, linux-atm-general@lists.sourceforge.net, 
+	Takashi Iwai <tiwai@suse.de>, linux-input@vger.kernel.org, linux-raid@vger.kernel.org, 
+	linux-ext4@vger.kernel.org, linux-modules@vger.kernel.org, linux-debuggers@vger.kernel.org, 
+	Chuck Lever <cel@kernel.org>, stable@vger.kernel.org
+Subject: Re: [PATCH RFC 03/38] netfilter: xt_recent: don't remove the proc
+ entries under a spinlock
+Message-ID: <20261104-entgangen-nettigkeiten-intuitiv-f39521735261@brauner>
+References: <20261102-work-procfs-bugfixes-v1-0-59422ed3e465@kernel.org>
+ <20261102-work-procfs-bugfixes-v1-3-59422ed3e465@kernel.org>
+ <auig_zhd3L0HEis3@strlen.de>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20261103-fixes_core_2-v1-1-f332954f1df4@kernel.org>
-X-Stat-Signature: 8dnaoji5mqxgtu4gx67ctafeubyz38bm
+In-Reply-To: <auig_zhd3L0HEis3@strlen.de>
+X-Stat-Signature: c8txuu7qpw388zwsbea3juwtgbdn1b8c
+X-Rspamd-Server: rspam01
 X-Rspam-User: 
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 6951F100009
-X-HE-Tag: 1793783714-989806
-X-HE-Meta: U2FsdGVkX18Sso5Ay8aRDVzH/YaJOrHfO3EjxakTrJSJBfwj+NTEiBRExLKn+8AC3CAcVIBUlLH+CmJSgobhU2mNNQNqQUDDTFPSNndi7wtZEMehej1NHJCHn4p0v/w0m3HJXm6ax1V+vgvAMZDC3mYWPY3cjx2zlFFX7Bp2WdmQl3qnY4FKwJsdK0bb4UwQoAHE26h/xhCXCsjcBGMvXSJBZAq2FNzoEhV+tix4/y0/ku9xb4FNgyi3ds9moiVcW9+JLxjOHMCTWH+3uSsJbaBG9X6Jbfmos5zh+SPpumcK8OIt2qbViBtw3Er6BlYhlPIp1pgd4LoDs4LpXl3hTnPETikO8XH1sR6bs8+O8bmyXk1Le5nanX6Mt03HfgDs8AqVUzC4rspFtP9QHKh/cr5QIe8oGILvMqtSNCzl8+jPHp6JdWgbCRyidmRgRIneuPAq9wjWETSwUg4/WxavjDdA+T2zT8pN04bwME/KxTIhGbToMbYLR5r4cI2TAUTFZsaxQZLWWl3DaVrJdTuDfcJWAbNxFS5qVpZsDShZTZF57YU204MC02ocVK7oCXLLbKv1WdyWmANFb3R5sdhfLIX6yjAe47zuQN/udIgAg0UM6jjUTG39PdJoOtoVz6ocIirZPtT6vEviQ/WbYzaHt3zv8oraJTjT/OiBhxJIgZ9Al9fKqXEX4UvC9Vdui5X0/SqJ/X2/7wMOmhdwPXgUNcvT2aej9jXeuBFa5GY9t10zmwyYOKzkDgZdraOa5a/Y901CPJQiqEeQxLFM967R+1TlKdv3WjI4HXO123JvSGpa+FN2EVcBBjrhHYhjZQoH5Kja7UlDXwmPJFq000hW/u6h2lfRjE4XW+BQ0eC/G/JuJ6HjL8qLrTwoKScASHAzzRLhL/bPXYjmGJ6htkwL9AyMG/1+3Se825cyBxSszc7wPSJpMQmmmdWnV91A5mHCbqotOIaM1hm6nUtqxRW
- eEOW/hO1
- 1yeQsDW4+0FOuEj7WKcsaFF5XYVZlQC20lEGDnJFqVVDwiDIM9RlhLLK2tD9R2SArV+AyKHJdJ73gWuHt4neKx1O/KHcD68wW5KTF6kdBesMW+mIQlrZ0cNJ/x0AeZNOI5FTxNnx0UpuB/gZutwwY4Ym3iNX5MWT5u9awghudmFII3ot6q0jm3iSrUIwPF/TDLopy4/oHIjg+2uXR3GWUCYmRHcuRVzw+mbuHDpR4lGCYKnOydw6bk55I+tezF4ow2av0QqNipVoZ+/WaglseW6nKBQ==
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
+	autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: 1008B120005
+X-HE-Tag: 1793783735-855960
+X-HE-Meta: U2FsdGVkX1+v1pKOd90KFJwHtdKi+0+WRspAMU2ubiakFTz+d++ZzmRMbiYTRLj5IdgVX/DrYPS1PRzvbuhu/Irqj5GpF/Pe9/B2e6FH9iGNlZFu4wrXmmtc3L3krDo6uOAuzfsDdAGF3G8ZJ112vp/3eIs/q4ojx8JeNsY8mithEE7Xf1nMOytqv0N+tnZibnY6PQClIgozPVE7eG+6t3Uafofn8PuGwoIJaikpo3I4Zhp0fqzHurPVem5e7QgE0vEqiJxkDYAj5E0OtP7woA0ClFoSypVyCVAxWql67LjOqZx4tyoQA0TDCbwNrl8yfPfUHgXtOtxpzA2hLlMGPDMcTr7rCmKeqN6MpniPg1LfKGuL4FuOR96r5PRvd/6cERTdsMUzt4KxMoq9VIYDrH0S179Xd0SUDRPG1U1oEDGBVL2bNAvmcON+H8M5CplPo5FRm3Xcs3Iri/R2wOQfRr/wKPkXEyNCH+stf73BmWBOiXLwzyLpzl9B6lzItnCyynF3OVOFWOyTOQDJ5pH79mMWuoO1742/a6hR+hpm0tlSatn7QysBIDW+qLUPwOGM3GYkr2JGLcgyWjcwAgNKy/KFtU1KhbTDNOxgDvI73Wd0VPjUl44RWYJ7vBq/w4r86s2ww/uieXpRprtZiVHHrgPCXOolZEI2lU/yqUeAxSZbNJskrN9gSClgu+g+WC5k2bAneUrfp6V4fOnXlgucauVBwyKonOaYO1W5UJdH7axXdxfzOatLSwWAg1+DiTyYKvfTJrmDRHbMw3hN8VClDflDUrnEZdTxcHJHiCSV08XfjhOaAnbK5fdG1W7WYjm6WolwpMU5zMWatSXoVqeCYhcnsOHPB2AjFEBmruDWdGtOs5eqdlOdzGOoUFZfB/cQRM6VOaIbJeOAwiuee0vB+Kd+qG1mvzkKG9VKsO3I2ZXd8GHGmCObvtWFdcZpZf1DoxJCy9fj3DwsWZUVt9k
+ vMhRtHRh
+ PEntRgSJgKjDNnSWxNVIeJRGcwoTKF1JKd6KjdjF0UrXbcvFOxogkRCOqyZ7JLR1Ra5L3E2b5sWcGIzwY5Y07pIqoOstgEuopWP/XFhaFqiRpq3BuFsvxjOcZUCEk7lO93dHsyFtKWMIdzMKN38JTZDU4hayGvh+k7omDvYyoujBhytRsLQJBoV90sp3xQEv0E7xaUB4fJSbO+8N8uC1PJ6QrWdRPaasII1gpM6JxEdQGe9Av7vNKp58aSChko+oymdQP4/KQ/lg1SiZfzDLWIEpBfRwyIZPiTjyUIrYk1ViI9rLNA/771q5d9IOofjUpHVxafK1oDq+1Ln8+uWx3ePNi80jKSNMG5gziIxKEuHsQ2RaioqmfFc4Xj5TuoyCBcQzv
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,67 +116,9 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Tue, Nov 03, 2026 at 07:31:44PM +0100, David Hildenbrand (Arm) wrote:
-> memfd_wait_for_pins() detects GUP references by comparing a folio's
-> actual refcount with its expected refcount. As spelled out by
-> folio_expected_ref_count(), obtaining the expected refcount when there
-> can be concurrent folio (un)mapping is racy.
->
-> So it is possible that a changing folio mapcount can race with our
-> check for GUP references, and F_SEAL_WRITE might succeed even if there
-> are some, allowing file contents to be modified after sealing.
->
-> For folios with a reliable pincount, detect FOLL_PIN references using
-> folio_maybe_dma_pinned() before falling back to the refcount comparison.
-> For small folios without that, the 1024 pinning BIAS makes it very hard
-> (although not impossible) to misguide the refcount comparison.
->
-> This improves FOLL_PIN detection for folios with a pincount. Handling
-> FOLL_GET and small folios requires a more fundamental change.
->
-> Fortunately, most interfaces that allow for GUP'ing such pages use
-> FOLL_PIN, in particular interfaces using FOLL_LONGTERM. However, we
-> still have some FOLL_GET leftovers ...
->
-> Fixes: 05f65b5c7090 ("shm: wait for pins to be released when sealing")
-> Cc: stable@vger.kernel.org
-> Cc: Chris Mason <mason@kernel.org>
-> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+On Mon, Nov 02, 2026 at 03:41:03PM +0100, Florian Westphal wrote:
+> Yes, but note that this change is already part of a pending nf -> net
+> merge request.
 
-All very delicate stuff, I wonder if we could somehow make the logic here
-generalised in a follow-up?
-
-Anyway seems reasonable to me so:
-
-Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-
-> ---
->  mm/memfd.c | 7 +++++++
->  1 file changed, 7 insertions(+)
->
-> diff --git a/mm/memfd.c b/mm/memfd.c
-> index 0f6fff004f5e4..9eda4c3eeaca5 100644
-> --- a/mm/memfd.c
-> +++ b/mm/memfd.c
-> @@ -32,6 +32,13 @@
->
->  static bool memfd_folio_has_extra_refs(struct folio *folio)
->  {
-> +	/*
-> +	 * Use the precise pincount where available to avoid racy refcount
-> +	 * comparisons.
-> +	 */
-> +	if (folio_has_pincount(folio) && folio_maybe_dma_pinned(folio))
-> +		return true;
-> +
->  	return folio_ref_count(folio) != folio_expected_ref_count(folio);
->  }
->
->
-> --
-> 2.43.0
->
-
---
-Cheers, Lorenzo
+Dropped.
 
