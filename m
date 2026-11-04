@@ -1,152 +1,90 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A324606A330
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 16:29:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BE9C606A328
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 16:29:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm2 header.b=c5jAQldw;
-	dkim=pass (2048-bit key, unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=gNw6+e49
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=b47bOC/3
 Received: by kanga.kvack.org (Postfix)
-	id 572A76B05B4; Wed,  4 Nov 2026 11:29:22 -0500 (EST)
+	id 1F0786B05B6; Wed,  4 Nov 2026 11:29:55 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 529896B05B6; Wed,  4 Nov 2026 11:29:22 -0500 (EST)
+	id 1C7FE6B05B8; Wed,  4 Nov 2026 11:29:55 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4392D6B05B8; Wed,  4 Nov 2026 11:29:22 -0500 (EST)
+	id 0DDF76B05B9; Wed,  4 Nov 2026 11:29:55 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 219996B05B4
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 11:29:22 -0500 (EST)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id A55631607A6
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 16:29:21 +0000 (UTC)
-X-FDA: 85397971722.25.5DB6D5D
-Received: from fhigh-b8-smtp.messagingengine.com (fhigh-b8-smtp.messagingengine.com [202.12.124.159])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 68B8940005
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 16:29:19 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=arndb.de header.s=fm2 header.b=c5jAQldw;
-	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="g Nw6+e4";
-	spf=pass (imf01.hostedemail.com: domain of arnd@arndb.de designates 202.12.124.159 as permitted sender) smtp.mailfrom=arnd@arndb.de;
-	dmarc=pass (policy=none) header.from=arndb.de
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id DFE806B05B6
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 11:29:54 -0500 (EST)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 62CABC07AC
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 16:29:54 +0000 (UTC)
+X-FDA: 85397973108.05.3814BAA
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf06.hostedemail.com (Postfix) with ESMTP id B49F4180006
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 16:29:52 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="b47bOC/3";
+	spf=pass (imf06.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793809792;
+	b=Ow6MJXIxGZhkSbZnmt2/TIS8qDi82kaEWFxF9pDoQO/6X45krgz+krNFld5MHvBGA0+LKX
+	S1W5RtSMqYUFhYdRWDllw5dNAYs8mrrKjDNMZJn0PEerc9F2gqRQupndC120aNoYO9SEEy
+	b4xNbRkYWVSDrsOs2o0sUVqtrFLwvVs=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="b47bOC/3";
+	spf=pass (imf06.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793809759;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
+	s=arc-20220608; t=1793809792;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=LaiQAira6LJea59JkTCLBB0qD9u3ETiU1WU+A3oJQUE=;
-	b=FoDXlSNMHEh1XmjbjGhyWJhGHvMV2EHQW1HYnChe4xhog5SGHR31iWIaRvUR9apDIOaqqn
-	qHDEhAVSNVdZmmwE7ymlK8j2UBkmam1OmkIsdnA9Yob4M/BWWQGMGR/8tBOCDWO0Bf1j0A
-	Y7ZhIDyPuQ90iLWb3dh0fGblUySacYA=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793809759;
-	b=QqsfIwyFty7YKn+uDDfbjLfZV7d1OMkITMcE9Z4s0q/3FCqLx7VK5KOnuc9tBb5HeN/1aT
-	OafQy1tA394Q68nkrVXbq92gkFsj4hiVb9SqI/yLpI7wX+2eA02lpHbn/+xBVe0tsEepA5
-	8SteMZuJV+33UtrZnTOlDdwbNq1C488=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=arndb.de header.s=fm2 header.b=c5jAQldw;
-	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="g Nw6+e4";
-	spf=pass (imf01.hostedemail.com: domain of arnd@arndb.de designates 202.12.124.159 as permitted sender) smtp.mailfrom=arnd@arndb.de;
-	dmarc=pass (policy=none) header.from=arndb.de
-Received: from ams-compute-02.internal (ams-compute-02.internal [10.64.2.62])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id 8E7707A0108
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 11:29:18 -0500 (EST)
-Received: from ams-imap-03 ([10.64.2.23])
-  by ams-compute-02.internal (MEProxy); Wed, 04 Nov 2026 11:29:18 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm2; t=1793809754;
-	 x=1793896154; bh=LaiQAira6LJea59JkTCLBB0qD9u3ETiU1WU+A3oJQUE=; b=
-	c5jAQldwwgfNnO5PGIb2SVCvwCRVrFn0AlzKunbwhvs1uypMH3RhKhsfp6lsD7vh
-	2bqcD+fRJ6Ro3ct1cv8aIHCwflXsZFuf6ieUiT03qy5NBel1NZmPUPzPK0IzAzRh
-	RiwW8q+X7tly4os1ahAaRhabUajpsrZPek80Los65hailxoxHZDO1CubmR5wOZFV
-	vdsHaH9jdnVw6SmQCiFZRsBnuJFKnnsV4/egmTrrmUJYPXp3YupKcXYdBvyDb98Z
-	n3oNyIvmA945r0eraN7VFXYuvbAwhHGwMf08fEJpOzuBSomjhk1Wd6ZzYhBuOuPA
-	Dq848O8cOxZdxov4Hx0X/w==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1793809754; x=
-	1793896154; bh=LaiQAira6LJea59JkTCLBB0qD9u3ETiU1WU+A3oJQUE=; b=g
-	Nw6+e49H9+mGLS37jkQ9yV2KqwmOO0TtosTC9yMm3VJQvCxVnyBB1P/fKSrz0S5X
-	19DAs/+K2r1is0sDqBvE7ef/xFLwloc4lJCd+mJvaG4G7bCjX808ntks3lIk6ROc
-	cJ+IlCuQd+SOZN5EyxA/thcnWtLLGPuaNmorrUUj3OTK0hWCWwexkm62WE/CZw9u
-	lI21eAp88Zd/5XWnnLV3MLHwk3QtPPEtSmRmsE+e/LmGBpgvArx1lNs1yDPBd06o
-	vUxRdl1VN2SMGnh4cChp/LFjH+B8rbgYFfWrUChSH3xou4PZ3BAtzvZBjHPZCIOn
-	NxiSAVVXwewsxMfxezD1Q==
-X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-08;
-	repo=github.com/dkim2wg/interop; date=2026-10-28; sw=lmtpprox;
-	action=sign d=arndb.de a=rsa-sha256;
-DKIM2-Signature: i=1; m=1; t=1793809754; d=arndb.de;
-	mf=PGFybmRAYXJuZGIuZGU+; rt=PGxpbnV4LW1tQGt2YWNrLm9yZz4=;
-	s=fm2:rsa-sha256:J7QRTuLdncfeiUDn6IYOEaHCpOfTpLXUHYqZGG/wWCmSnaB
-	Koon+6r/tE4PIp32TsS0b/lY+lV3QplgP9At3Gh4rU3oUXCGZMxK5XWUJj1Io9Cq
-	RsebRKdEhBUwjZp3ievCk+fZ7icgm9Q7gc61Gt2972BAr5E6CUX9Mf0LsugXcXPa
-	EeUKmboda6CZHEKzodW7X9sM9K4Xl1mSCP09nUV+/w9vEXFO0IX/QmcVJL2xtyHv
-	SH/vFA1BPKG8y4kUANJ6eCFrQYXK09dkjRD6icVw8zt51PNokgvoKowZdyqZ9kE1
-	kyYU1eRsQVxDsLb442LZcY+6IXxlZM6thNXLAGg==;
-X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-08;
-	repo=github.com/dkim2wg/interop; date=2026-10-28; sw=lmtpprox;
-	action=mi-m=1; hc=12;
-	hn=cc,content-transfer-encoding,content-type,date,feedback-id,
-	from,in-reply-to,message-id,mime-version,references,subject,to;
-Message-Instance: m=1; h=sha256:EL3Gd2i3YhMp0vFuwH/WrQYooSA5VSKcuTfRIbM04wM=:LaiQAira6LJea59JkTCLBB0qD9u3ETiU1WU+A3oJQUE=;
-X-ME-Sender: <xms:Vl3ranwSd_CykXkfKt_DisDilg4d5ENtLvR5s923aJuWzflU5eJaxA>
-    <xme:Vl3raqEaLcs3p0xIklBe_kdOatnAVtJBGfzdGDeXfP-4l2039sFGhGyJj6LSkF8Ar
-    2hbuMLLOjdHgZVIybpvYYx09UOO7Zb-Wved_JG7Sv2wsBzAtihg_es>
-X-ME-Proxy-Cause: dmFkZTFH3IypNSuXYh3Kd74bqwW9a3lD7bkOwTRBwylmNrIwAT/Vx39h5sxOyk8YBaSEZz
-    xzvHXAYiNUdZ462ifvJfTSJqf91mHwxbEpFrPXMj1SHnj4aDidHBfYvmdBRdhvh0/PF8qX
-    +FGCYX+gKEh7CGDLNwxbtVgwqJruBNp8XHMf+TMZGOQne8JrvnwZCetPfQkOD5+EGGoMVB
-    i5t9gZhjOBTBFO3jzM8Vekg6mA6KqIVFvH06ObjWAQ81Jf3Ti57IDye2cEHmj7kEXzUqyA
-    /4QFAKLHp3mu+XBx8EG5H5mAbNWXF4jgXOdqGLBP4+Wv/YNfC1572fnWbAFvBi43/YU5NM
-    7IIUxNxdMAWVIpotu+ptvwKET/+uHDJd71bv8K0TDpMF7vB/gyGDH1Rq5PKPMlYahzd6Jb
-    u0CDbP6TmvPeo92Q3pkO2fYYBFLcS69KkVaI8LXslUr+jvc+dJcvZ7P5LRrVsgrbtcNq0Y
-    700mxh+Zf7ZTNCsLuo6G5Uc5HTPFtCd24BG6Z1RMx1XI4arIvyWVRvPHj3nBjWEjgwBw7t
-    1nF1eR86yNI65ea9glVmwA+tAdRWS5n4iwRaurZurrVmqqsATLEtljzUfKkQCWuL2O8Kro
-    qef1ZgLBCxyqSnae30OfExhtiQHgC7DUjo7i8BECYPzKdp4Cfomn1bTx5hng
-X-ME-Proxy: <xmx:WF3ravNYn0pPMBtNVZ2bgjPadk6SgfgsM1kYdJ-IZ2KlPBkEu4C1QA>
-    <xmx:WF3ranWahz3oPRDUywFK761jpK9YNubOerF7kYQCFpjlvNFlXgH8eA>
-    <xmx:WF3ranzyz6N30adHDEAyUTUYxaqtaXtG_VMEf99hlyORLZgnTCmvaw>
-    <xmx:WF3rau9oMC-j4FQHSfUNHyNNuvuvWuQ11Qj3eJHgHLLBTfQVHHZo4Q>
-    <xmx:Wl3rakdMjb9ALM8TzZT31cm7vg5FWCxysTNlakVIHZfPzQ9xYXHB_LWq>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.ams.internal (Postfix, from userid 501)
-	id 848EE32A0093; Wed,  4 Nov 2026 11:29:10 -0500 (EST)
-X-Mailer: MessagingEngine.com Webmail Interface
-X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-X-ThreadId: AgP3mv5Dxly7
-Date: Wed, 04 Nov 2026 17:28:50 +0100
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "Thorsten Blum" <blum@kernel.org>, "Mike Rapoport" <rppt@kernel.org>,
- "Pasha Tatashin" <pasha.tatashin@soleen.com>,
- "Pratyush Yadav" <pratyush@kernel.org>, "Alexander Graf" <graf@amazon.com>,
- "Andrew Morton" <akpm@linux-foundation.org>,
- "Changyuan Lyu" <changyuanl@google.com>
-Cc: kexec@lists.infradead.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-Message-Id: <be6ee9f8-ae2b-437c-aa04-0390954f9adc@app.fastmail.com>
-In-Reply-To: <20261104162352.140836-3-blum@kernel.org>
-References: <20261104162352.140836-3-blum@kernel.org>
-Subject: Re: [PATCH v2] kho: Remove redundant 0x prefixes
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 68B8940005
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
-	autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: n3bn4bqiiw6ory3c44sjhhqxhs898yfg
+	bh=atDiQ1jLywCaP3AyVEImB+gZltQy0V8BagrbxL0rfyY=;
+	b=nFucP0njPyBHQ9zlmFbpL01LcTAMUFQJpPqKbd0J4clp9mpdvOiX0eqicG6zyboTT+9leA
+	yOVjArO53Y1lsllCItk8DYcb7Z9u+WUoXf2hFaIUuwIkFSTfe51gj+NxkIkh8IOhjdAmac
+	YKwr7wFT9YgFfdZXtUTrNe9kFqug27Q=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id BDA4D43B36;
+	Wed,  4 Nov 2026 16:29:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3E471F000C1;
+	Wed,  4 Nov 2026 16:29:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793809791;
+	bh=atDiQ1jLywCaP3AyVEImB+gZltQy0V8BagrbxL0rfyY=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=b47bOC/3A0RxnUdzrGef+aXOt5L92xLNPUSE5A24szrut0A3kwfnv5GWFo0Rmw85F
+	 5Tdc/bfgkA1gTlKdM81tunrILY6eokjbGK+/nznxio0+VmOHSS6yWR/K4pch4WGfao
+	 X2DC1SLRl6EPej/gADIMREih6WMk3VAUk1SsSnmcGdsSUZUeYeijaW8I5LxE64siT8
+	 WKftT+EeRQuUm7+D6LB06kaL/XBI+8Rm8ri7O6/5letBBW2NOtTNrGUsp40RnchhhW
+	 pjkd+4ixoPoxzTj4L9EZ3vouC5W4EmnsmzbuEWe1yrwmAZZnqWDTtJ310ri2gkvA1J
+	 g0SZpdQQQjhYg==
+Message-ID: <sashiko-outbox-197614@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH 3/4] mm/cma: reject CMA areas that overlap the kernel
+ image
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Radhey Shyam Pandey" <radhey.shyam.pandey@amd.com>, robh@kernel.org, saravanak@kernel.org, akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org, liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com, m.szyprowski@samsung.com, robin.murphy@arm.com, baoquan.he@linux.dev, pasha.tatashin@soleen.com, pratyush@kernel.org
+Cc: devicetree@vger.kernel.org, linux-mm@kvack.org, kexec@lists.infradead.org, conor+dt@kernel.org
+In-Reply-To: <20261103162429.2053989-4-radhey.shyam.pandey@amd.com>
+References: <20261103162429.2053989-1-radhey.shyam.pandey@amd.com>
+ <20261103162429.2053989-4-radhey.shyam.pandey@amd.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Wed, 04 Nov 2026 16:29:50 +0000
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
+	autolearn=unavailable autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: B49F4180006
+X-Stat-Signature: 4z9pw6iodp9ajyyeko9ea4iytnrgtzkf
 X-Rspam-User: 
-X-HE-Tag: 1793809759-321723
-X-HE-Meta: U2FsdGVkX18im/IhY/TxE2L4U1ZFVpEDtdU3MdE8WemO7QLW3Fz+Z7Ox+wiK4qGUUOVOzNu8pa0l2ZJyQDA+PU/X90ffMkqOOB7BXeNq6gFhv/spZpQ+7YwZc6P2wJNWg9QD8fbn/VYK3xoNlnYPW/UgkndRpQheHI50/QtKxm/uBktHLXdztOSGUZ8NW/LbDESYzu/hPcRtcK+zfeKPQfNt5FR+00i7tNW++nnzCzh5LBlZCwI/GXpFvWqyuSdOz8O1sEdWY7RZfAavLXq4vf5kN3sV5oidgCXsTlfYnKUAud49+Le00KiPHU8rxx7ptepcbIG1zUQoeaAKUOPBQJXOpTCRSzvUItWHBL68+wLhyGD1T9ZVSfAWZNi25PPgqL9FVXHMKwpq3i5aNSVNlMfmmk79ypY4/fDHar61oG9LXLY77xq1nPZqccTakm7bPCJKpkeje2T2wtTfYHG00nAU1Bkw0xmyBDQSNixPpIPCdKwVIJlJTK/6M+TFvzhmvJFoaZWkn5R3yf93BkbRiHzedQu6jvQIgprPlaW0tTVBzP8hD/MMry829v7IBnQuIlgpqQiWa3Y3WEwyRoWwL03jbt7JTxidNXywpu9x7a/L3GiovAy5FTXJk3PPaAl3yFpN6nS5IoyPIP6M2Vdzg5/ZguRa1HwM+UP38S8BOsdL52DVo/c/3XFzGhIl+gneZJYqV6I9ZaCDcb15gQpmF7CEUW9w33yjG+jXi5dhO7QX8XPUmMnN3aqqAQe4L7QhjQFC2+LP/irP/082HDwG9wv7VmpqgAp3NXohnRtr3P/cwfDDnOZnB+YJiCO2PnjxrGDpW1j+3pLzsIGvOVfumpzexIricZuQdfhKi9MzW4H7cdR8pcwi+XmzrCrjDWISQVwDlxbq6gh9GJ4FHzvJD5kNCYn+kQ4sa6obN/ssePUmVywWdEb6tmyDfpziowdGBMow3kKQjpR3lb5C5F+
- HqwdvJ2c
- stoOYx0cvoBNzgX6eTjrLKilmyO8J+WEdB8+fKpvRvEuyU3u4s4cD3E668Rz6umfW5ggFI5elJabrmLWoOgn+A4tagyMCY1C+By3P5/yJzggMCWT80yGzD1Bk7xlPz4bb5IKveiNvVD3WcTmeQmK0Hh3+E0ZTGcfUTuTYAmXY4bfOFjW6zcKXBBVjaYOQg4Ul/joC/bOTLKBMEVSEnKW+ACBDuh3f0G4ESIV0XsDgJV1litE9LKrehepiMabvIJ2z4KaCk8O4hSyE5cILDTsWDt/3VLnORqNoOgpO5PVqOzD+hdhZWIX77WHOcDcqJ8tQEVEd/Ztt6VForvWKygAcK6XfpQ==
+X-HE-Tag: 1793809792-524760
+X-HE-Meta: U2FsdGVkX1/0qh0EOwW05VCic5YFYEBCzp5ued0ZbzALwTjgC1QdR11FCgpTxeU1HX+nI7ZMNrsfBssA/BJVrdDdVZ7eF2o/sQrYBlrmyQy2pgGvbB8I34mdUVrKtkImA+3U0WpyoL2ExM20rqbQLAiJ0AAlFv8dHal0dPtDCvlLUrhbPtWAB9ONtqsLae3B2XD3bXhTEc136uQOpWm/1mkfSPLyYhLyyULV8RVYkWqT2a4A6X8NRGfrPZNjEMkMZlgh4GdedDhHGLpfTvDjFKRF4Q7zrR4pW1vcv5pcJWN090uOIZGPiSHVVFaWy1j/Id2oKuwMyj10Gu1RiTGeGeH34h1k84wwMai0lYaQ/V8ok08Z7PBWEYrC3iHIBWfduvDMWraiAF4WDbHMDYyiz/uWW1xYcAHictGq1P0rAq3bSAsd8+IJ1fUFtLBY0CufGA6nHAMGd+PF6O5XEXoT7iKXe8wlsZhPSNix2ZRIubjM6B2jpcbVL/F0ep8ZZASN8alVS/4VAmzlMuosFwBTICgnhVx+Mcm7/F7PlaNx5zhVoS3BUDyslMfueBWz1QtvmxEokdB0euOtVjRpY7Htm2KjGZTIJ2Legx9+tT/x30XHF3jdYqZ1SPlwrI8RR6fP1XpUxsqZN9Nk9DCcH82aRbMauccb786FCzNpcr0tMUTl8aBeW9ulAoAEFX0O3ssXBq+fxaltxpreCKtj1ct5nQAMj72SIYvGm1a0/tDIWPm64wqWgir7ULfxEQSFmlxmPZSzmF4Kuq2fslw1KhJnSHTeaZZZszC0XdJOhjTmaKAA3vawTpB7zOi0X+1ZJRV1MCwP7quCVLtFW1euLyIWxNaYruo03nZQIl9JzrrfuS6yXnOeYWvoORiphjUuseC8n6soXsVNzsuyLYxMG2NhVHkJ6mwnY17TdsfCGWEWY1AyYEWIoY1QXg1RO4RkDkO7/I3R5b+ItN73JSxFdtQ
+ uCxPOnTf
+ UeA+3CF0C3rTMRYX3fY1dTgEpXQOLUoPvCs07IbsTDKApj1uXEiH8bvJOZIzlrEcR921pv3VeTDLsS0a52cCSWJJIO4m/Qnp6zTHLnzn81bEBh6k/rF87ydN/skP6/Wq8ZfCBWPMOrWPX67rdjkD3YmMNc+5w2Dt/i96a6ndPnAuOzQF1RzH3hnXJ8iqW7TFGpJzlRPoOxujsg6AQBgJKlaiQ6D0cW1+2m6aEJ+svHjAWd1L8VRgT0i9g1Jo2ugF73FQc05XUcdbTcxDtDXl4uw4qyL/+rwVQ3eAw6m8zc0Hqj2OPBD34r66dr+cDyCn+kIZ38ZxVMPjUm5q2ys+OGgIw1s1ZP6TLfRyPaFpx89hK/+voPoCOFzCXdsV0iy2c05s3UimOoYDdLe/gSohYND+fH5LvshBucGdQ6TmtxdARB5F/yhfL7Pk6v5yo9ksugDQj8LKaxh8ln74QRCrLGD9aNdS3Z0bf2hJJDRZVHnJXjbFpAnOKTC1th4zbdDqMalYnB7vRvRvdljXfWEXHtPz4uWHclW28IuRYqH9S3Aao31p52HdVreMbnsNRXIRhUrq8+qOCUlX0hR7qmFtH4JPSmpbmyyhof/cLDJ7LV64U/n+PVuO97RBpmHUNOdteFsf4uzHNqP3NTI5L6kfV6q34a3lGKuFpp7yUVM/Hvrqv/gnoieMqUlSCol/u5tGG2mUm
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -154,15 +92,116 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
+X-Archived-By: <archiver.kernel.org>
 
-On Wed, Nov 4, 2026, at 17:23, Thorsten Blum wrote:
-> The %pa format specifier already includes the 0x prefix. Remove the
-> redundant prefixes to avoid printing 0x0x.
->
-> Use phys_addr_t for size to match the expected type.
->
-> Fixes: c609c144b0e8 ("kexec: add KHO parsing support")
-> Signed-off-by: Thorsten Blum <blum@kernel.org>
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [High] mm/cma: __pa_symbol(_text) triggers BUG() on arm32 DEBUG_VIRTUAL
+--
 
-Reviewed-by: Arnd Bergmann <arnd@arndb.de>
+commit efca63a89d010b4bf63ea1571c8931374f2ec14d
+Author: Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>
+
+mm/cma: reject CMA areas that overlap the kernel image
+
+This commit updates cma_init_reserved_mem() to reject CMA regions that
+overlap the kernel image range [_text, _end) so that cma_activate_area()
+cannot free kernel image pages into MIGRATE_CMA.
+
+> diff --git a/mm/cma.c b/mm/cma.c
+> index 9c53b2b70dc8f..3231a53161cda 100644
+> --- a/mm/cma.c
+> +++ b/mm/cma.c
+> @@ -31,6 +31,8 @@
+>  #include <linux/kmemleak.h>
+>  #include <trace/events/cma.h>
+> =20
+> +#include <asm/sections.h>
+> +
+>  #include "internal.h"
+>  #include "cma.h"
+>  #include "mm_init.h"
+> @@ -68,6 +70,16 @@ bool cma_has_dynamic_base(const struct cma *cma)
+>  	return test_bit(CMA_DYNAMIC_BASE, &cma->flags);
+>  }
+> =20
+> +static bool cma_overlaps_kernel_image(phys_addr_t base, phys_addr_t size)
+> +{
+> +	phys_addr_t end;
+> +
+> +	if (check_add_overflow(base, size, &end))
+> +		return true;
+> +
+> +	return base < __pa_symbol(_end) && __pa_symbol(_text) < end;
+> +}
+> +
+>  static unsigned long cma_bitmap_aligned_mask(const struct cma *cma,
+>  					     unsigned int align_order)
+>  {
+> @@ -295,6 +307,15 @@ int __init cma_init_reserved_mem(phys_addr_t base, p=
+hys_addr_t size,
+>  	if (!size || !memblock_is_region_reserved(base, size))
+>  		return -EINVAL;
+> =20
+> +	if (cma_overlaps_kernel_image(base, size)) {
+> +		phys_addr_t text =3D __pa_symbol(_text);
+> +		phys_addr_t end =3D __pa_symbol(_end);
+> +
+> +		pr_err("area %s (%pa, size %pa) overlaps kernel image [%pa-%pa]\n",
+> +		       name ?: "(unnamed)", &base, &size, &text, &end);
+> +		return -EBUSY;
+> +	}
+
+[Severity: High]
+Is __pa_symbol(_text) safe to call in architecture-independent CMA code?
+
+In include/asm-generic/sections.h, _text is noted as architecture-specific:
+
+    * _text, _data: architecture specific, don't use them in arch-independe=
+nt code
+
+On 32-bit ARM, arch/arm/kernel/vmlinux.lds.S places _text at the start of
+.head.text before _stext:
+
+    .head.text : {
+        _text =3D .;
+        HEAD_TEXT
+    }
+
+while arch/arm/include/asm/memory.h defines KERNEL_START starting at _stext
+(or _sdata on CONFIG_XIP_KERNEL):
+
+    #ifdef CONFIG_XIP_KERNEL
+    #define KERNEL_START		_sdata
+    #else
+    #define KERNEL_START		_stext
+    #endif
+    #define KERNEL_END		_end
+
+When CONFIG_DEBUG_VIRTUAL=3Dy is enabled on 32-bit ARM, __pa_symbol(_text)
+calls __phys_addr_symbol() in arch/arm/mm/physaddr.c:
+
+    phys_addr_t __phys_addr_symbol(unsigned long x)
+    {
+        /* This is bounds checking against the kernel image only.
+         * __pa_symbol should only be used on kernel symbol addresses.
+         */
+        VIRTUAL_BUG_ON(x < (unsigned long)KERNEL_START ||
+                       x > (unsigned long)KERNEL_END);
+        return __pa_symbol_nodebug(x);
+    }
+
+Because _text is below KERNEL_START on 32-bit ARM, won't calling
+cma_init_reserved_mem() -> cma_overlaps_kernel_image() with
+base < __pa_symbol(_end) trigger VIRTUAL_BUG_ON() during early boot?
+
+In addition, on 32-bit ARM with CONFIG_XIP_KERNEL=3Dy (where _text is linked
+in ROM below PAGE_OFFSET while only [_sdata, _end) is in RAM) and on sparc64
+(where [_text, _end) is linked at KERNBASE rather than in the PAGE_OFFSET
+linear map), won't __pa_symbol(_text) also compute bogus physical addresses
+for the kernel image?
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261103162429.2053=
+989-1-radhey.shyam.pandey@amd.com?part=3D3
 
