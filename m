@@ -1,135 +1,136 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43DC3606D833
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 19:02:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72E09606A329
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 19:02:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=qfyRP633
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=v4jjP53A
 Received: by kanga.kvack.org (Postfix)
-	id A84256B05B8; Wed,  4 Nov 2026 14:02:14 -0500 (EST)
+	id 4DF006B05B9; Wed,  4 Nov 2026 14:02:15 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A5B826B05B9; Wed,  4 Nov 2026 14:02:14 -0500 (EST)
+	id 48FB06B05BA; Wed,  4 Nov 2026 14:02:15 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 94B306B05BA; Wed,  4 Nov 2026 14:02:14 -0500 (EST)
+	id 330A46B05BB; Wed,  4 Nov 2026 14:02:15 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 5BCD36B05B8
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id F34E46B05B9
 	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 14:02:14 -0500 (EST)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id D69734083C
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 19:02:13 +0000 (UTC)
-X-FDA: 85398356946.30.4461093
-Received: from mail-pg1-f180.google.com (mail-pg1-f180.google.com [209.85.215.180])
-	by imf15.hostedemail.com (Postfix) with ESMTP id E8695A000F
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 19:02:11 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=qfyRP633;
-	spf=pass (imf15.hostedemail.com: domain of 2dgodoy01227@gmail.com designates 209.85.215.180 as permitted sender) smtp.mailfrom=2dgodoy01227@gmail.com;
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 6FE5C1207F5
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 19:02:14 +0000 (UTC)
+X-FDA: 85398356988.23.3E916F8
+Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 911311A000E
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 19:02:12 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=v4jjP53A;
+	spf=pass (imf19.hostedemail.com: domain of 2dgodoy01227@gmail.com designates 209.85.214.170 as permitted sender) smtp.mailfrom=2dgodoy01227@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com;
 	arc=pass ("google.com:s=arc-20260327:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793818931;
+	s=arc-20220608; t=1793818932;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=4EYm736r+cZjS/uMo0fJRYSotCwLKibNfByv7v/nf/0=;
-	b=ACbeLlfQPhEPC11457MVzp7etRRxvdM1Hz4z8dju1Yv0aGESWhlYmoQ7uwl/bVsRFHldNZ
-	/G6CvDrPCfKEMY3iuyENPpr5DN4CfByL2Rq/9U1f/tdVI8THWEO9wlNgHecA8XCflzuKTG
-	r4kZtPF4bwpKr6duGzSO17w4RrWrhc4=
+	 references:dkim-signature; bh=jgTZFnwXdV4AJUne0nV03xTEkp3bQhCd9JPNdkYZauc=;
+	b=8UlXRINx6OcugtSjlR1WDZ3nkYUx1uJTHVL/IrsJfwRpeEIa5JexVIOk/Cv41txzIMq+12
+	uby8vvdopV7b6PzqFmbdhWOKsNzD9NFV55SnuP+DTeG5/O0iKhy5gd7Kq8bU9HdjA1t9h/
+	AUWUBYCjg7vK1Jn7BMnWQiPI7EMYRR4=
 ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1793818931;
-	b=nP7qkkUW/xNaVtVu0q8Ibtddly3XqFa9fU0NGl0I2M527DrtNF8inFRgqDRQbGX7QCrDcY
-	/5rcQQzrKgtOKJa0oE1HUHtgNRdLmoEeqxuN/GrduJIXf0u4jJHF6Tk+v3fHirHHCYTnvC
-	ZbjV9bxKUb+u8PnWpTPFrUOYXgNre8U=
+	t=1793818932;
+	b=ob7nBj0Ubhrx6/DeZszOef0IgPfYF+XFgG9ttZT6CxlyvAsbI0EvNBpz5HQDjAmeBvuUKB
+	+0Zg/X4J4QgZRn8iV4PVi6BSnbI75enG/nsBGfb1wt3dynAZFoAk48o9/5aGJIT0z5MmVe
+	1LDhpGfnsRFKfDGW8ykPUSEkgKUdW7s=
 ARC-Authentication-Results: i=2;
-	imf15.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=qfyRP633;
-	spf=pass (imf15.hostedemail.com: domain of 2dgodoy01227@gmail.com designates 209.85.215.180 as permitted sender) smtp.mailfrom=2dgodoy01227@gmail.com;
+	imf19.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=v4jjP53A;
+	spf=pass (imf19.hostedemail.com: domain of 2dgodoy01227@gmail.com designates 209.85.214.170 as permitted sender) smtp.mailfrom=2dgodoy01227@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com;
 	arc=pass ("google.com:s=arc-20260327:i=1")
-Received: by mail-pg1-f180.google.com with SMTP id 41be03b00d2f7-cd67cc518a6so708801a12.1
-        for <linux-mm@kvack.org>; Wed, 04 Nov 2026 11:02:11 -0800 (PST)
+Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-2e987a2ba0cso6033325ad.3
+        for <linux-mm@kvack.org>; Wed, 04 Nov 2026 11:02:12 -0800 (PST)
 ARC-Seal: i=1; a=rsa-sha256; t=1793818931; cv=none;
         d=google.com; s=arc-20260327;
-        b=HNLOVDiyFiCFql4p0LH3WzlL+WhRQU9q2XM7PtW3y9S7s9OWnDvbPWLY566aK6n4Et
-         imwYwtbRXAAUqbnQ/u5RU6xQUVAAoo1CJTQeugie2N1439C1nEcvix2AymSnOrinA/eT
-         fDBncUHHtOyjhnDG2VbZc+MVaNpyWH29LGrY9kHC49SjJfSKB2Vcxu0OIf1WL3Uu8dIE
-         gZYRZM778Y5vmvuSTJbzMNKtAEbUYqwiuoH7Sera8mRydXx+bIpJVD/clOnl0OhwA8Lj
-         KEm/M/Xt4NhDmztRfvxkNiIs/mrCmNmoooBAM1HBrunemUlBoIPJ2L7oyovJLkpc8PKj
-         kp1g==
+        b=deM9o2e0QCqglc49X3qiU4rdHwbg9TRY7QM5yDSn6BH4ILRTHDEEI/eAx3u8hUSsH9
+         hEbxURcvZ7k5yG9OVmCTqwBdxb7kadHJWub0gJ3idCAZyaUlHdIdDQK702FZFaGXQnbX
+         iDnXypLjv6WcXBiIE3XdjARxJGpQaxyPy/11XanwSuVGaaFJNiCt4gNEvykiE1/eosdj
+         abUQjPe2D+XCopFlpDTg4/kXIgj5b8apdWNl7XhNV2ne0bN8+UC2JVrHBiANnpKE0Zym
+         1KSeVO/URA4/S+vduTtIUADe2NdQRNVFVRO3sSYCUQGvtqnrxSWO1ncOm+a7RrUtKsqO
+         Vmpg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=cc:to:subject:message-id:date:mime-version:from:dkim-signature;
-        bh=4EYm736r+cZjS/uMo0fJRYSotCwLKibNfByv7v/nf/0=;
+        bh=jgTZFnwXdV4AJUne0nV03xTEkp3bQhCd9JPNdkYZauc=;
         fh=YxaQX7GTjfBsN7A2Jl+A9yP6mmGOQanoqU6QROKhVaA=;
-        b=DicRnlnLhBsG1y495130usR9/63yb+v2krMu+apNn9Tw06QkGRj46Yr4FUU4KVjt8u
-         3n5CRZjOMzqa8j3AmhBYt4/rWeXXkOisz5oGGU6+tJc5yoEI6oIogdia8IpulaSLJtTI
-         59jhcxb1PX9yHhFIcn16G5kapgv4kTa02/sFL6RhDXdkhYFlFw+8PpZ9qwEeDzn0a8d3
-         QE4NhMvu4zBF4509tN4fgfVe/c63PUKQ9qnE6w45DWsyKBmP03GmKxSzG4L/q6SH8kyK
-         uJytMsqz+kauWY3RaeU+Gqi4B5TaYiX2rMXqQG+BKiZsJgsDe1iBUnjjp+Jvl3NNhoVg
-         2eAw==;
+        b=JyjX/Ui+yisJDjXDaYdLW3ThpeHcugV8qYfy3WLodncyKeV5Nkkp2yaahIjbOpJ7PV
+         tuvAso71fldP4gs+fsIVemAjJa+euD2u23T2t3ztYVYe+mJEvTo1Urh4ZIpg6LIfCfEf
+         tDPI/rNUJGsZ0r0patzMF2X5P1h/oNJDPRTweOPra1IK7McrA4RWqM48+4O8wpAWIlwn
+         UVpo4ES3Rzk4tu6MW4yalT5aufoyjgKQf6oQ+78ui8/ISCyEfPhS5Rk7ogoUacquCC+A
+         xPkT4c+jPH6+SEKi1wOXAomYoZeH2e9tCaBDPTea7/FWzhbcxOsYOF6eKVs5U4n/5BSH
+         uj1w==;
         darn=kvack.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20260707; t=1793818931; x=1794423731; darn=kvack.org;
         h=content-type:cc:to:subject:message-id:date:mime-version:from:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=4EYm736r+cZjS/uMo0fJRYSotCwLKibNfByv7v/nf/0=;
-        b=qfyRP633rOWhladMyWNiz3/Yqr1eyQ875rCViAKRdwDBZPSKEsTQaF4IVigb7DSgSt
-         AyYkWO287A3VarBWlewGT23oBmextbb65pNC7Aem3D4lj1ccCWiPrbx1Jqo1YlPM5Aut
-         KmPYdtH9EK8JwdK7RBDOh/j/C2n8BdJK9HAKcTFaYw0YKY7RzjKe1cBJLuhYHA54VYz7
-         Lvwu3D35CoTbfCvYcNuzC4pYR/DXxoahHG/aM4m05QN+3Kca4PJn8eOVSkb6huPRTxQt
-         evb6xatHWQ5bkJTIjL6AxMDCzwMVqwrAWgs3NXYoPnUe75D+Zh2oz1Balkp8H3AiLmnZ
-         2afQ==
+        bh=jgTZFnwXdV4AJUne0nV03xTEkp3bQhCd9JPNdkYZauc=;
+        b=v4jjP53A06N40h9riAM8THrpsYFmAOr3gMtrJW1UI+Rv7hWYLhrGmVhSBAQVepPSwH
+         2qydTJYbt/lP18gMk6Ssp8XjqIq7r9yxjqtESCErcQySyFZThDDNHKUvncxB372uiBxX
+         4ab0VZ7yi9hP6ZL2znPIn6tqnW/h6EsoRcPLo/768LY7yyp8sBtgWW75VxeVKcd2kk5u
+         x+mxOBb0Hgr83qY6j2qSEDIh1P9YrPhgobvl7/czZXdJGnuBEdP0mH+1FJ9Ih6dcILCG
+         3twsFlojZuL/pBVxWW4H8VJXijLTfaRl6bkEps63aCMV7eTeDfTFsAHRwqaOYMiOxQO+
+         Obiw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20260707; t=1793818931; x=1794423731;
         h=content-type:cc:to:subject:message-id:date:mime-version:from
          :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to:content-type;
-        bh=4EYm736r+cZjS/uMo0fJRYSotCwLKibNfByv7v/nf/0=;
-        b=2QpBdQNtvQQknwOLkW03t/EHDzax9UraHb4J6OpGQrvjmNfHokJvI7kMjpGQuyAIOb
-         cANTY2cuy5h5ORCIMXWSTov2f2xIMrGq500DVaJbBWnAOIljCMJT5wZfhn7T56lssENL
-         oSkSKRsflKaA65qPhICkg00G5Ft2VPBXTKJSS0grsaf9FcWY2vxeN8zoTEvlImGy8EAj
-         4rH3ZPNWJ0zcNHUtGx5E1nXCRtdqWQ6/Jw8VgaW05aFuV2+/lmEqsOfglFvKRLL0Y8fK
-         AUaT0D6VmB6YvNk6jWIDAMlesHssGI0lczmq6jpXHChwq1VqrSbWBOC3jJ5UvvuXatJI
-         bO6Q==
-X-Gm-Message-State: APuU4Z9/sZJNdoWKBdJpsha4Nn+B3sc6bwVcSLil0x4e3mysyWQAWUj5
-	DpgSM9GJEWbhqbRi9X8MqGcHauyoGEXj+O2/ARZqO4xPA2QnRpbOLEKL7oWncpsy52Bg52hwFaA
-	u/xKFxALM2iefkkOLoR4oQSa4xOBXkXgLO4Mv
-X-Gm-Gg: AYBFou3L0SA7FT+cHJ2FCMneKV/M6hl+5TTVzziVpW006hC61dWHSB2trNGEFd/2isI
-	TMxXcLdGfnYIZiJF9TGbIl+YeQEqydKhvDJh9llimGIjRxUm6J2Pis9XThDxUaEIZs4L51/NLpV
-	CG9k+2fmXgO1Dklxavy9AsE4tSsvTwlWqSHJ05lRDrOHJPgwgIvC3CjA4NFDIrLnGluMR5DWYgz
-	s9Ycn5FU5qsl3J87BWHPE7wJ8OmT6YQtNyrKgHPWEbpSI/0MMOE89s2h3vIj10HGoFX0SzYhrFD
-	ftLOFosjV+qFHNFT3aO1Rou9KVpSWX+vOCzqIFuijleozU/JxliBbgRRF8ua5ZEJEpVG92cOj7o
-	XRvQjvylzEsgGUwtXTXksw9OCBcL6fLqe3lwBDLbSphH2PF32bnqmL/+DPFcHlSs3TKM=
-X-Received: by 2002:a17:90a:d887:b0:3a8:6045:5a19 with SMTP id
- 98e67ed59e1d1-3ae89777139mr15621477a91.37.1793818930670; Wed, 04 Nov 2026
- 11:02:10 -0800 (PST)
+        bh=jgTZFnwXdV4AJUne0nV03xTEkp3bQhCd9JPNdkYZauc=;
+        b=oHUWotXscsllNbTHW40iai/QHHI/d7CCgclI2aQuLg0+jB+RZHevM/qS6BjO+cK50y
+         6Dgf1kUToRKUbpVX+gYjI8WVU9iaGJjHhXPSGqGL2JJ4+bXhQMgNmoJhpewOyjlYb5KJ
+         vFs8djovfpjz/eXkxlKqYy40iOsnDWwSina0n2YiGgBrK114097uYEo4IPHqhkMQUOtO
+         vi2pEcDE+QBVpVJm54kES0ZX8dDRHb6Q2jL8sl49+PrdO4XmW3ORxUEKCwX715fURus5
+         6SGgm1izgvFVcCpapLfaJdNuFkjlZx4Q7JSb1mRyCJGdRHia1veTvdR7DgC7ZNWcIBDz
+         jBMw==
+X-Gm-Message-State: APuU4Z8R9g0hdP/Mtb9j/LivCYqu25NRUAu96YSH9FlAJ0UkMa3f8iX0
+	dXoOA24gLN3gNQtUEEf46LTebXtBAnGuvHDTmy/8xFZACdhFwLd12TCPL+mkLNqEk2lMOWqUEa0
+	JeyIpE9v/YI81TmVjQMXx8GlmBPitMvXK/+DL
+X-Gm-Gg: AYBFou0bxjM4xTOIqExCS81UqpKHRtVvBiUuNy/AvjuejUeW3iWBb50eR7p6OYAWcbW
+	N5pt4heBwA5Z03p3qvAUoceiiZ88Jiewe0sXJd2g+7WVPnIUpKe6hvTpp2QIOzkiIQ4aBzne4qZ
+	DTZriuEw6MhiRd+xaP/GQl5LBQKmHrOv2L+hh+fw7N/hC6T1/XItNsXHT0PKtxpeaL/fCpG35sL
+	7xna9G8GneLkyCrz9JVL2UXUW21KqnlS8hakoKAmEOzq6nwyLUMYask6uZAxDg5E+2RSajkdvUv
+	MOdepKp/M5Oxpo3s9K1lXby/2fY+MIznMVrAbC2LQoAdOeT2qjzXm/NdeQysxAvWMB2Oli2F4gM
+	vqXab5oSsXH1LLz524+/gAp6SVIWuMyfnf3pxg47M8MGSbC3M2X2KIkI2y4Mwoq+BZQuOB5wa6e
+	8NEkJ3xiFUBhNX
+X-Received: by 2002:a17:902:ec85:b0:2e8:965c:aedf with SMTP id
+ d9443c01a7336-2eb364c5da0mr169489445ad.42.1793818931383; Wed, 04 Nov 2026
+ 11:02:11 -0800 (PST)
 Received: from 511566560828 named unknown by gmailapi.google.com with
- HTTPREST; Wed, 4 Nov 2026 11:02:09 -0800
+ HTTPREST; Wed, 4 Nov 2026 19:02:10 +0000
 Received: from 511566560828 named unknown by gmailapi.google.com with
- HTTPREST; Wed, 4 Nov 2026 11:02:09 -0800
+ HTTPREST; Wed, 4 Nov 2026 19:02:10 +0000
 From: Henrique Godoy <2dgodoy01227@gmail.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Date: Wed, 4 Nov 2026 11:02:09 -0800
-X-Gm-Features: AclHuK9dvjndj19qJaKgS5zpxYZrJsHXRwZ30MwEI0RDNBGZUI0hkPo86QxSkJw
-Message-ID: <CAL1HEBCp9VnGJRiuJ2xkFk7jgjeJpaicS8ZkxR=577U7hKt58Q@mail.gmail.com>
-Subject: [PATCH 2/3] tools/mm: do not mistake a full buffer for the end of the file
+Date: Wed, 4 Nov 2026 19:02:10 +0000
+X-Gm-Features: AclHuK_dgHL72DQqlZJrR3IOIV4yjCUzHEWofjNRaIHKPE1uV2bQfEqfrreiTvI
+Message-ID: <CAL1HEBBjmor-B9E9KjpSCh=TW_wi1AcKEwBaD69_m2UkeGWbMw@mail.gmail.com>
+Subject: [PATCH 3/3] tools/mm: grow the record list instead of guessing its size
 To: akpm@linux-foundation.org
 Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: E8695A000F
 X-Spam-Status: No, score=-12.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
 	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
 	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
 	autolearn_force=no version=4.0.1
-X-Stat-Signature: qhjxie6jnrohydgjfg5uuxnod9rbd8fx
+X-Rspamd-Server: rspam09
+X-Stat-Signature: nt7ddrquojmdezynjw5zc16ja5115rko
+X-Rspamd-Queue-Id: 911311A000E
 X-Rspam-User: 
-X-HE-Tag: 1793818931-819515
-X-HE-Meta: U2FsdGVkX1+L5IsDq1dPiKedbCcnqM+DMlcsv4hyZlUYKUghxLeyENyFr3Yw4XK0Nu5s9Et6gvBtKIlvBqzwABSvP9yyTImRUMvDBdB0h3/JSrQk9OWVOKxftPV6w6BTy4ZWU349qC6Qtb4FlAbsDBaGT2epvsOIsMcxLFJwBOPbiNPnj5hhSJIUUC5E7Z0soUEc0i0+mhjwtu/lWaJYsbLpB6VcEkF7+VYNJu2GyEEsKbUQmx+k0/nH7F34gPDUlbg1+N2EAuNmvt2z/yBfpBAtxC1aFuBPXvj8vr6E1fSgzfA5PN+ptV4Ce9pMvOWPO1aOWmkPlj2okt/kvs1XgrEpwVOEfZBf3XzL36ArlVSDCU5r6HRbBnOuAJkaqh2xnsErxTT/qLeLXc8uCqGL7ww22EQLDBppaNGj/tgFe0Uic+3MsoqR4eSdVlv+xSkI01xBr0iPqIro5AxZ0KWpDQThtt5drLP3sWTTUN+HSK05XmeGt5tbAN1QtmcdJmclWk6KJp0dLziDxu1/YleRiqpSg0KFE7irXvm1BPO+qnIGz6cLCsNmB3vQF6IOCX2aowa3eIvi44G7kslBLlSYxDFeOtESO0gKlwfCR4zqL8T2xa/AUM473qUHIqOKB/vw/cMBAh9Axr9+w31L3frhzqfBdbQsTh8XaNX3Xphdqr3/T4l5cq6IDSwSQXhKEOX9YgGZhuY2BNaIdBbmxEtl8TibrW3GQV966Px0X5rEQo1tIqcBXPCj4CC7YEZrPJaiwovj36oM6CsPxwNsu4piE7JidnRkbnThS2mwyhbc3zdW8FW7jmmWa2KH4YcpaAeTopji6f5YnTMPQcrrpMytkkGeAiSiQDviqanJ/tUUGRX9uofzEaDqyLnqONtnWd9x1TN1pVSihoQ3in2XlBLiaBAxp6mPU4NFiELLENX6WtNPpe1jC2v0eko7L+iHRiJoEkyx51soGYeZhOETdPL
- 5ces8wSM
- JxBYvvn7oubOQoGwNrJZ549ixeeu6XrHom/Zz89FcEN/QNZfLCskxA3Y7pLFo4T4pfH7nfgXc74SHsxdqRz79moAcSFJGgcwNGjnRO31nHAT+TmwCRUeyVy8mIZSKLDlZiWUoDtfc5R06Msd1zZEZ5Pq52TV4eQZDp7Q8d0HgzyZTBVpypNCVO2AUVAxjyd3iHpGLtHEFE2I9bdDrnoxXSqL9pfqmCLNu4StPr/ffTkTvFHuy7X8ryiEIKEokh2qS8ctVTiA9LT3l0Je1sqkzPsfshh21zFnpAJ592qtb0PL3K3NaU7IqVCC33efgkl/80Klr7u+mUUfmjS/ozFdRGxDLYp2EmF4MrwC4sNLqioiDsOi0D8zw70wRa3g4NVGTpyeKg1+oR9XsPwcX3OnFaQBwEbxr18IEIanOEq9oNEfnwu5rGTfsPlJgs1sdzFdGRlQPY4mtDjdKQEz8YKZNmXpaz7mECZ3NakJCIX2UQG3L86c=
+X-HE-Tag: 1793818932-958551
+X-HE-Meta: U2FsdGVkX19+iEaRnWlUYomBigOVOMUiNdkMYcd7dd49Okl7TNx8Fj+dKn5aHWPGWs8OQw/DjdNTDl1eUQ/ppxy+HSJ1F5MbHZmmVJfoidwVSCoLkeFOmYaAHPJTMIvFhrm0/+1c7sTTypjqJew9dCK3uCo8+EO9lDs8Mu5jJzGMdQhHvA+vce/cwTFRFbiWM9hL3NYCPy/DnsBDGE6v5VngFILZdY1VSfSK2ec2AmdseVUu8UJ4bFNr6qvW9mU54w2h/YRJX+Vb0/wSWpIbSFpGfjZKlOBUwxhvxrF3Em+1YMJiKURjc8xW2lF3AdIB6fE5wqrI3zag1b1OriT3msGeu2Vqsu8wrTKR7l03m37SFtkiKL4kXoOTkc9AkvjkwZHOjT1PtJzIB3V0qcD09egJ4WYkyncj8tvDdcCCqPh49k7yL7SWoGJS+iV3bKJOPNiTWykrfuzArtlWmowZsPBaAG2xSZCWKYlJQni96UeoQPv6O1xIkSmP+HRRE3ya9pg7RI5eYlKic+LxmSzjpvOsrzWYNDQT4u8gqMg0mvll+QRPZBAqEM+/ANVtmrj3ZAy/XEM2NInXdG/sMb28IJkLausWrXe2hUAmYn44+YzB8IhcGDUMlspVRH7nGjqs6fgqlL0G+k19ACdC/wHPjia8pXlXx0C4IoBqgqC3O3RCFomscpAWi7IDIW4T5E4kvqV7UOWt9ZpzfRKdVbeCI5eJL8u6OrDWaaP4t0NI7WgvhYTas9FqiR/sGcO8njE36M+hh07dbDrMo5IGF/e/+szGbx99m3r7hnu76gQPDBch8q9eSZB1M/DK1LVj9hQUY9id7meMbu6LJPEImRjExS3eLwUdyapXbOTn3DqKvi7Imo1lKHJX+qb5cbe6X+D70ZplmfnqC5o8+jxwK2dndOmMWJfkwwQwdtu7rbrIXg+YPvyMACVy/yvSxiod/9HVUUPlWlOuZ22KpUR9ar5
+ NC7WkN3J
+ q8j195IDEska+CSkLMJle08GXfyj5q57HFAGeH9sji9xZQYUVuMjFUGb6MD3TZy5M/2gCJaHj3njd+QHr7RrsQ9MEJfyvUc7csVvT0WfE8ft54hT8BZTiLxaIpZP0sVzd0PK3EfiUuVw6wkrA4v0kgr1699duC4ltlFbgkkk/I6/UOX7X/KxeRFXc8K94WLobhYKB2E2tNmqdDhL/ULR8OkI6en63A8gdVDTeZI7K4Txr+gu+YHCdJ/fWrPq331iGNgMWNkzeDyDNAEKN3EI6nwaBRZZGDmLaMVXXtRZjGfSYpXPG0wxlwKWG8EsnpPA91a11tAtwu4M/kPBHEv7dBeeDlfupXlaYAzTTQFdDWUrT7qYuMt3fYHdDo0IrfzHrD0997M5lXDIvai4MACQDnIbY4+zoi59DqO6O3/L+aaScdKti/t8/UmTM3AItgKrkPeeNTknGHjw2HplvW0DJkaIRlbibV2ikmU+lKzokllyHmOs=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -138,67 +139,56 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-read_block() returns -1 both at the end of the file and when a single
-record does not fit in BUF_SIZE.  main() reads the second case as "no more
-records", so a dump carrying a long record is sorted as if the file ended
-there and the result is empty:
+main() sizes the array of records with st.st_size / 100, and add_list()
+refuses to go past it with "max_size too small??".  A dump whose records
+are shorter than 100 bytes holds more records than that, so a valid input
+is rejected and no output is written:
 
   $ ./page_owner_sort dump.txt out.txt
-  loaded 0
+  max_size too small??
 
-Tell the two cases apart and report the record that does not fit, with the
-name of the file, instead of silently returning an empty result.
+Keep the guess as a starting point and grow the array with realloc().
 
 Co-developed-by: Pierre <pierre@cloudwalk.io>
 Signed-off-by: Pierre <pierre@cloudwalk.io>
 Signed-off-by: Henrique Godoy <henrique.godoy@cloudwalk.io>
 ---
- tools/mm/page_owner_sort.c | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+ tools/mm/page_owner_sort.c | 15 ++++++++++++---
+ 1 file changed, 12 insertions(+), 3 deletions(-)
 
 diff --git a/tools/mm/page_owner_sort.c b/tools/mm/page_owner_sort.c
-index 4c2a4e4..a042bf1 100644
+index a042bf1..5b51cff 100644
 --- a/tools/mm/page_owner_sort.c
 +++ b/tools/mm/page_owner_sort.c
-@@ -140,7 +140,7 @@ int read_block(char *buf, char *ext_buf, int
-buf_size, FILE *fin)
- 		return -1;
- 	}
+@@ -571,8 +571,16 @@ static bool add_list(char *buf, int len, char *ext_buf)
+ 	enum FILTER_RESULT filter_result;
 
--	return -1; /* no space left in buf. */
-+	return -2; /* no space left in buf */
- }
-
- static int compare_txt(const void *p1, const void *p2)
-@@ -794,7 +794,7 @@ int main(int argc, char **argv)
- {
- 	FILE *fin, *fout;
- 	char *buf, *ext_buf;
--	int i, count, compare_flag;
-+	int i, count, compare_flag, ret = 0;
- 	struct stat st;
- 	int opt;
- 	struct option longopts[] = {
-@@ -965,6 +965,12 @@ int main(int argc, char **argv)
- 	for ( ; ; ) {
- 		int buf_len = read_block(buf, ext_buf, BUF_SIZE, fin);
-
-+		if (buf_len < -1) {
-+			fprintf(stderr, "record longer than %d bytes in %s\n",
-+				BUF_SIZE, argv[optind]);
-+			ret = 1;
-+			goto out_free;
+ 	if (list_size == max_size) {
+-		fprintf(stderr, "max_size too small??\n");
+-		return false;
++		struct block_list *grown;
++		int new_size = max_size ? max_size * 2 : 64;
++
++		grown = realloc(list, new_size * sizeof(*list));
++		if (!grown) {
++			fprintf(stderr, "Out of memory\n");
++			return false;
 +		}
- 		if (buf_len < 0)
- 			break;
- 		if (!add_list(buf, buf_len, ext_buf))
-@@ -1050,5 +1056,5 @@ out_pid:
- out_order:
- 	regfree(&order_pattern);
++		list = grown;
++		max_size = new_size;
+ 	}
+ 	filter_result = filter_record(buf);
+ 	if (filter_result == FILTER_ERROR) {
+@@ -952,7 +960,8 @@ int main(int argc, char **argv)
+ 		goto out_module;
 
--	return 0;
-+	return ret;
- }
+ 	fstat(fileno(fin), &st);
+-	max_size = st.st_size / 100; /* hack ... */
++	/* the guess is only a starting point, add_list() grows the list */
++	max_size = st.st_size / 100 ?: 1;
+
+ 	list = malloc(max_size * sizeof(*list));
+ 	buf = malloc(BUF_SIZE);
 -- 
 2.39.5
 
