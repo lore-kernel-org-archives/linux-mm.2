@@ -1,69 +1,69 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 503B360B478B
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 21:14:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA1186070775
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 21:15:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=EupUpYNb
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=J4PDKc61
 Received: by kanga.kvack.org (Postfix)
-	id 47D3C6B05BF; Wed,  4 Nov 2026 16:14:56 -0500 (EST)
+	id B34F56B05C0; Wed,  4 Nov 2026 16:15:02 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 455A16B05C0; Wed,  4 Nov 2026 16:14:56 -0500 (EST)
+	id B0BFA6B05C1; Wed,  4 Nov 2026 16:15:02 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 36D296B05C1; Wed,  4 Nov 2026 16:14:56 -0500 (EST)
+	id 9FB206B05C2; Wed,  4 Nov 2026 16:15:02 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 106CF6B05BF
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 16:14:56 -0500 (EST)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 4202CC084B
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 21:14:55 +0000 (UTC)
-X-FDA: 85398691350.12.912DC7A
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 64ABB6B05C0
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 16:15:02 -0500 (EST)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id BD9021C4247
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 21:15:01 +0000 (UTC)
+X-FDA: 85398691602.29.7EF47FD
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 8D5D040008
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 21:14:53 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EupUpYNb;
-	spf=pass (imf11.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	by imf29.hostedemail.com (Postfix) with ESMTP id 19DBB12000A
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 21:14:59 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=J4PDKc61;
+	spf=pass (imf29.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793826893;
+	s=arc-20220608; t=1793826900;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wMYCt5EP/sNWDxIUvBX8we5zMZEdPqHevTqaZp/nA6U=;
-	b=N/Ej3v8Jgk+l3Wd4uP9rK2d3zCO4j7FqiNnbqyhVK7hyldPyXyuFk+VhOLQWPYyzI9TaqA
-	MW4gqUCEgxn4S3NNwkJdP0uggmJ+rQKyNAm7cU4jrve90i34p0WVTHbXvvDrpERUQLFbiN
-	lrXPZGLDQl6PagHSyErxzkVYfseip0M=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793826893;
-	b=BncnRpmZtgF3ZHw5NYojW28GjTKuquyb6muyqdGjzGX8u9gijHFZBpQD7r2Q9tv397i9Id
-	/YlXNwa80Zk7mDtu9EUkk0QO1SzhPKVm/b8Baz5g/WJEHUj486QskG4bQjjJZqFplVcqxj
-	zk4ZbuKeOErmzz3jJoq9kHYsriWwm90=
+	bh=ZSU3GOYdTAyJi2/mATr7CvuZmk6mn8CBculz3Nu+aGM=;
+	b=S1T2UAtkIPnJFtdMk3/JatH4WIxR9icQANxrl0SCqfeQqBxSXJ256yn1RXvXbi6mJTsb7G
+	cJDiUadEO8LUMnTOjKEEFkGaYpvfdzgGD87KtTdnRbhpV/4GmKbDkfWshFfk2wp/aE0Btf
+	Pwirf9N9Omzz4pB0N4T6W0fYDtRaQiA=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EupUpYNb;
-	spf=pass (imf11.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=J4PDKc61;
+	spf=pass (imf29.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793826900;
+	b=k102TfEsp5kYqFJC2CtMXss7RELA7UsfAkBc4EM15YWUsXEnSDOZEjPD9OREKh14QqkYVP
+	A+1W9omEJrAydGN03h3VanaZfArqgRSzlyZwkiE8UPCUnewcy4PQO+wZbiE/ZSr+sXKmNB
+	JDtrWtWNIO9asKUeauJyD3FtwTZonmY=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id CF77443B82;
-	Wed,  4 Nov 2026 21:14:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A46161F0093A;
-	Wed,  4 Nov 2026 21:14:45 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 4B7FB437F8;
+	Wed,  4 Nov 2026 21:14:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6F651F00A1B;
+	Wed,  4 Nov 2026 21:14:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793826892;
-	bh=wMYCt5EP/sNWDxIUvBX8we5zMZEdPqHevTqaZp/nA6U=;
+	s=k20260515; t=1793826899;
+	bh=ZSU3GOYdTAyJi2/mATr7CvuZmk6mn8CBculz3Nu+aGM=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=EupUpYNbxsz7bxH1Xzhu1FdX+NjLRR6kk4e4PfJE7IMhtjK7/HWHEMKGK108XFPhS
-	 mBwSFyjkd183mb6RqzkERIBKWvlcjGSx0uKON9JOdu0eq4hUKnCXRz669Laqlw4yVd
-	 W7nSUjz3LeWEHdPY5DLD4UanqsN3qrhBUv32Fp1qwlEKJXjg59aq/U94RtHRFKTg7D
-	 imBGe3ru67Ls+x0axIKynDMFis1BtlyEqG0fRMtPLDtffXBT4cUsviW7QYExBRkbOy
-	 s5kkuE5RxZcZs+9vddUbBdS88QI7/R2ST4LsqyQjyK1XhBYoWoOIHd6qVdMfevYpSM
-	 CIQJcp9jsMIZA==
-Message-ID: <sashiko-outbox-198071@kernel.org>
+	b=J4PDKc61N4keOuWERS5aSp2N8PhMwFXfTttZoQJiP/6NFecDNKxntuxYU8KTP2IT7
+	 sQ+GOcnfzHxpPduzw8Axquz0pjikWlDPK+6jysaxaPcTRzpniWRwRSDwYgsjVZQiME
+	 hp3SeDPadj5e64beejkKHFIYy6SzK8G6J/Ivl+w7Iz9N+JKw69zq/NWwIz+1PKkFj3
+	 p2kJqCpbq5WMmk5HtP2egnpm593A8p3vnMr/TAyo/agIT9R93ZTR+grCkgKrUY7n+0
+	 n8Gt29lLuVYq4blAgu2BoulYRKgefmxLu/vNeABBXSsxdBqqzdg25OSU2PVbLwjUrf
+	 QlZgT2rzKPq2g==
+Message-ID: <sashiko-outbox-198073@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH net-next v1 2/5] net: skbuff: refcount spliced page_pool
- frags via skb_pipe_buf_ops
+Subject: Re: [PATCH net-next v1 4/5] net: remove skb->pp_recycle and
+ consolidate netmem refcounting
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Mina Almasry" <almasrymina@google.com>, virtualization@lists.linux.dev, linux-mm@kvack.org, bpf@vger.kernel.org, bcm-kernel-feedback-list@broadcom.com, imx@lists.linux.dev, linux-rdma@vger.kernel.org, linux-hyperv@vger.kernel.org
 Cc: "David S. Miller" <davem@davemloft.net>, "Eric Dumazet" <edumazet@kernel.org>, "Jakub
@@ -124,24 +124,24 @@ Cc: "David S. Miller" <davem@davemloft.net>, "Eric Dumazet" <edumazet@kernel.org
  Hao" <haokexin@gmail.com>, "Karl Mehltretter" <kmehltretter@gmail.com>, "Aleksandr
  Loktionov" <aleksandr.loktionov@intel.com>, "Meghana Malladi" <m-malladi@ti.com>, "Jacob
  Keller" <jacob.e.keller@intel.com>, "StanleyYP Wang" <StanleyYP.Wang@mediatek.com>, Frank.Li@kernel.org, wsa+renesas@sang-engineering.com
-In-Reply-To: <20261103211424.127627-3-almasrymina@google.com>
+In-Reply-To: <20261103211424.127627-5-almasrymina@google.com>
 References: <20261103211424.127627-1-almasrymina@google.com>
- <20261103211424.127627-3-almasrymina@google.com>
+ <20261103211424.127627-5-almasrymina@google.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Wed, 04 Nov 2026 21:14:45 +0000
-X-Rspamd-Server: rspam06
-X-Stat-Signature: sccd3nm3dxr4b7bxjbm9p6dpoanqrcrm
+Date: Wed, 04 Nov 2026 21:14:53 +0000
+X-Stat-Signature: 9adgiyn61ixhywknbhh8pn8i3pp9fzij
+X-Rspamd-Server: rspam01
+X-Rspam-User: 
 X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
 	autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: 8D5D040008
-X-Rspam-User: 
-X-HE-Tag: 1793826893-663723
-X-HE-Meta: U2FsdGVkX184ouAm0XEhe07opymYwq3o6xOCy5HVrn7lcbLoA/5aFqFgPMqDHponqCln+RZ2kf49PnhuhzyRO9t74B7BhP8nHGvuKv2YtJPVIABtumiCxMu5kh2D3t264WyYkaOr/6jm/4Bg1MwFn2JEI2E4ag7K6VfH8UI6hDoxO9TNA1d58OBeXIiukOnmRxToR8pZir6lonrBLOHp5OvEXikVVZey4nOpPKhiyJVh1P2Zz9ATJUeHm2Fmg2XVWM+Gy5zb7Q6OPBAxwlg3Dszu1FT8EFxLuXvD/8OJ/c4+UdzNvRseV9vtUuxE9NgkfqfnOmvcHKYVYnsgKmqZe2SQwWAGMZGhk2yfRueQEOTYPDBJcno0tXtMYAdvNDxxvk+MZWY7FXV341qE7smG+XMPldmGsUZniHEgiFBzKcr8zxbO9+sty2CaFX6JfoO0oDpxBo6chELB8JUSptGniYS0gsN9SGJ2Vq7xOhsRF2+g4DBdAp99YG/EYxt5XGCORodDHG2OfchJ0U+g2aq7G9mcHC7c53ROL0JRdYV56lhMf4iI3PCI6si9PfkZ7yCqw4cvroUL0H5n7G0DSkKaNCEub/4uNQa67C03bSeDmd2a/vy3i1Cm5Wx8IeLJGCAvFz77+qF2nGA0KzNElxGfxU4XPqdtA4bFOeRsNV3NtPbW9UwWNjdFLOlCIZYUmIqNjwW/3wgva/7gK0tfDf0fZVKvXNpL0T/ef4dC9Hzpi8oPgNEG/i6c8RNdIP59tbn20BM5xkoiYEKhJj/Nau6Q5s3bRfE4y6IFq2gDFqSyhKnVM9CzDKw7x+gt1UWzFlx4hzj4zeE4FS2P8GVJl3d51PWwcsCpqBsfZosgWlJpH69gyrcJSDF0dZveKnXD+XwF+3eDbDgKcW2WjFYPudaFszjX/8UB3LszZlkKC0pn9Vio02sia0TTN/GvbE3j+MmwO+afa+3nzF6PD6nQnnb
- NeoXU8pQ
- tWyNi6gGc6aasPKyymTa3SrbkJkwJaXCy4M6UyD9l17hXUH9hJ8Q/N3hi8Wgm7rtRXQvc8UvU/9zfiTaKK+2BLSMWV7OhE+sRTR5rP1dKM5EiB7ZuMf4JOei3o4Ff8XiddKWBInFIeqsyT48Vh/+ViucwqU4meoB+DXDLjg0WqyQ2MIr/9LGMtnVYLD/Cys5qIcV8uWhfkCwqdKC8VjYZLWQJblFmMwnKC7zMrZQHfsCZo3x4BdgB/hdwvci56Mfv+JZNw8TzVqBddoO+j5spbraVQJLwBoRGmAl+mIxZ+w4HeEakLTEGUiDkcorsYHZrLZdSIUs9rP78cNY1l1FXt+4U6m2F8DGZcOkBZwJDqLu26IbMvKu3VHewT0wNxNezLVlmEwWCuFRhwbqwiXg35TCUlXkkd9lo6TBMEM8gXhtKteZhzTv2YtonN1efL83tf1lhp1bDULBc9idquQMAAaOjfE5SCRnrqFIC/o4FgwB9vrFPJEOHZbFygYZ7A9bNkFywSiC6GdbtInL1TspZHJsuAqeBS/cBGbPh9F8IdPpwqe4bMsYXZbu2VyoaKPV0nBWJy6h8LNFwKPuv/NX0R15b6NTMbRNYjzsVNPYClZcaL7floISgYLsg0bc+GLGDRSbeRq1+KPpLyiz4dQJwzuJcNBBbTEf7ZUKNB9xhXgSnxhAHI19fXvCPbdxeOCIoExZZrwXeT4xXR1cUVRLQxc1HvcfjR6TX7GXuJOrUF+RT1xS7AbVN8G6OAj3jEpCpKDPh
+X-Rspamd-Queue-Id: 19DBB12000A
+X-HE-Tag: 1793826899-920050
+X-HE-Meta: U2FsdGVkX19Fy2lis8MG2x/IECyGksG+NWmqNbkyr+oLNe02m7BKYPdQ7k18z4bV6/OQQi2W1grwd5usXHEUoYhLLQD75jgf8Zibd8yGVE18fWrvF3FkZ+3XpAK0N1D0unBr9dJtzbt6z+tbgZ8h+bxN37Awfnh+zj97Un+PiQNKIDFWe0Uw6sM2xGwPgtkPnIbrIyLxE9H4q8Xl+xJ2fXv64K2xPe3KDDTriLuit/Xf8dHE60hNiOiGoVEQq3pz/j1qPDU/EJ6GBth6ICjs0H3IbkHMK+sciMVjsEJX4stvW9KKYNK2eHTE0p94DpVy9EyXFDs26V0fDNRXQjfr/06X3LYELS0AdV/vt2PEKuVNlEy1fikx1pYAv+WMOR1laE+03IWU4QkMARlX9xX40v5KEb+ZHd8tdEfbpzVrnYN8B/voQFP9mvjXPJAwbsNMO8A+qlKwyaYhCSngs+b230luekijva/+RskA0gYvNldjMqI+bmotfCLacxUFWHZn5aVGwSnp74Cv3llAWLeYz+Y1sXEEhc2W4aaYK1upN1DspOG4yRywf20sD3MslCYG68VJkFxEhxP5ew/xjiyS7Ai8ZMViO6SxF5Ue/PXPRbr0XoU7G1pUupqJQwU/mD8vAnJzMv4jwBmb1ia+bpHZPmdq+Y02HepwIGQuzdJeNcuDh7QHhGiOfTyuNIT8HK18Ru/mTLH9AlgY4EOsiGX2tMBB2SXmuTgjkKrPA/MuJABoIlFrJWODWHoHMBpTALjRX6xSQEJVx+J03RwDJtRrEbpMwuaeAgP7RRWyfVL3DaEK/WUD9dYxe1ftVabg2FvZdWPPwTK8rlux/gVoJFSNy9QzpIpaGcic2DGk3o1hqSt1zP/7NI7gPGE02JLHcSjFSSawetS1HAA+hl00XkeWupQyO+LyGaInYJeMO2erzuYBp24YbOLfnFbOHPotKyJ7BTFmeTxDUpZOMesnTOF
+ a3MHrkJE
+ LCuVuhObwH3QrS1gNArFM+CCkSwyqoJOlkTEmKopQg0yWtcUnlMNyvtYOlCLNYES2DmExccG4gxflayD3FSGYiFoPwvNpfcXkY1AC6h2gkubz1dQK44GOzpyxqtW0Q+eC7IvKyYbFOvc4gFZIS4gljEkR40sFybkQ9RZdXahOMbZgEw8Unvg0IQwJW8PIc2pus2ZMCUWCMcmKWY4qmki3MDcSEeB5jEQ5oHorl+0vPz2lAtszpZyX5DDFnoepFw5g6ZTXHvGxFR2mXSSaR8ApN7A2idR9ohwSjEd6u0krZUbPgNL2Uljr9truI3gmTCB8EMX3+VXpMkbhUAHp8HzjTbFfq/7/IVuDPWGftOtPPfc+XQmPHBJuhCCFHR3jACvY8nIoRf6KiHh1lJwJrcJ+6vzrxY2gkiCaAXSQRtMVukKp/07asKHeVmrmbwbk8KVGSmiTuVCbKIg85eS1gQ4X9MGmR6qN6eVJR0fIGaG2T0weBtBVMRzhfRMhHADYYMhcqXm2GNoMiE0VUkzxx1G/FQ7KLhFhlf0VdyGtju/2wKZd2cYHC/74grUFvHUMY+0h3NENKTP/xKOWlwUMbxY/4ddAefe8oFQkotueM6HNkbTZ24Inn6gkT0HT1IA3EhOZ3Ijvm2zG4p1D1rqxjodUKuKY1Af5n0S8K+j7Xv3cdhb3AUbVDrH2zZDPXdINQhMbpBXjoedpC3Wm7XHYczCqrJva0wTx1lCvARoSES48V4OQU3MObh6fALIx8H61GPZObFjKFlDB015iUmU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -151,93 +151,231 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 X-Archived-By: <archiver.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
 s) to consider:
-- [High] net: skbuff: missing refcount overflow check in skb_pipe_buf_get()
+- [Critical] page_pool: TOCTOU race in page_pool_unref_netmem() non-RMW fas=
+t path
+- [High] tls: page leak between netmem kTLS records and mlx5 tx_sync_info_g=
+et()
 --
 
-commit 9c79ad1ae20fce07ba4bd771a989ba25467dc207
+commit 874363fccb05e0d08d430f57bfdafc048dfc73e0
 Author: Mina Almasry <almasrymina@google.com>
 
-net: skbuff: refcount spliced page_pool frags via skb_pipe_buf_ops
+net: remove skb->pp_recycle and consolidate netmem refcounting
 
-This commit updates skb_splice_bits() and skb_append_pagefrags() to acquire
-and release fragment references via netmem_inc_ref(), netmem_dec_ref(), and
-skb_frag_ref() using a new skb_pipe_buf_ops table.
+This commit removes the per-SKB pp_recycle bitfield and updates
+netmem_inc_ref(), netmem_dec_ref(), and skb_pp_recycle() to check page_pool
+membership directly via netmem_is_pp(). It also updates page_pool_unref_net=
+mem()
+and napi_pp_get_page() to coordinate pp_ref_count with external struct page
+references, and converts TLS and wireless fragment refcounting to netmem
+helpers.
 
-> diff --git a/net/core/skbuff.c b/net/core/skbuff.c
-> index 48f6764117243..32a9dcdf2cb22 100644
-> --- a/net/core/skbuff.c
-> +++ b/net/core/skbuff.c
-> @@ -3114,9 +3114,27 @@ EXPORT_SYMBOL(skb_copy_bits);
->   */
->  static void sock_spd_release(struct splice_pipe_desc *spd, unsigned int =
-i)
->  {
-> -	put_page(spd->pages[i]);
-> +	netmem_dec_ref(page_to_netmem(spd->pages[i]));
+> diff --git a/include/net/page_pool/helpers.h b/include/net/page_pool/help=
+ers.h
+> index 28635ce9454e8..af3cb65c30416 100644
+> --- a/include/net/page_pool/helpers.h
+> +++ b/include/net/page_pool/helpers.h
+> @@ -242,6 +242,11 @@ page_pool_get_dma_dir(const struct page_pool *pool)
+>  	return pool->p.dma_dir;
 >  }
 > =20
-> +static void skb_pipe_buf_release(struct pipe_inode_info *pipe,
-> +				 struct pipe_buffer *buf)
+> +static inline long page_pool_ref_count(netmem_ref netmem)
 > +{
-> +	netmem_dec_ref(page_to_netmem(buf->page));
+> +	return atomic_long_read(netmem_get_pp_ref_count_ref(netmem));
 > +}
 > +
-> +static bool skb_pipe_buf_get(struct pipe_inode_info *pipe,
-> +			     struct pipe_buffer *buf)
+>  static inline void page_pool_fragment_netmem(netmem_ref netmem, long nr)
+>  {
+>  	atomic_long_set(netmem_get_pp_ref_count_ref(netmem), nr);
+> @@ -270,13 +275,22 @@ static inline void page_pool_fragment_page(struct p=
+age *page, long nr)
+>  	page_pool_fragment_netmem(page_to_netmem(page), nr);
+>  }
+> =20
+> +static inline bool page_pool_netmem_is_exclusively_owned(netmem_ref netm=
+em)
 > +{
-> +	netmem_inc_ref(page_to_netmem(buf->page));
-> +	return true;
+> +	if (netmem_is_net_iov(netmem))
+> +		return true;
+> +
+> +	return page_ref_count(__netmem_to_page(netmem)) =3D=3D 1;
 > +}
+> +
+>  static inline long page_pool_unref_netmem(netmem_ref netmem, long nr)
+>  {
+>  	atomic_long_t *pp_ref_count =3D netmem_get_pp_ref_count_ref(netmem);
+>  	long ret;
+> =20
+> -	/* If nr =3D=3D pp_ref_count then we have cleared all remaining
+> -	 * references to the page:
+> +	/* If nr =3D=3D pp_ref_count and the page_pool holds the sole page
+> +	 * reference, then we have cleared all remaining references to the
+> +	 * page:
+>  	 * 1. 'n =3D=3D 1': no need to actually overwrite it.
+>  	 * 2. 'n !=3D 1': overwrite it with one, which is the rare case
+>  	 *              for pp_ref_count draining.
+> @@ -288,8 +302,15 @@ static inline long page_pool_unref_netmem(netmem_ref=
+ netmem, long nr)
+>  	 * handling by ensuring all pages have partitioned into only 1 piece
+>  	 * initially, and only overwrite it when the page is partitioned into
+>  	 * more than one piece.
+> +	 *
+> +	 * If an external page reference exists (page_ref_count > 1), a
+> +	 * concurrent napi_pp_get_page() caller holding only a page reference
+> +	 * may attempt atomic_long_inc_not_zero(pp_ref_count), so we must
+> +	 * perform an atomic RMW subtraction to 0 and leave pp_ref_count at 0
+> +	 * while the page is released from the pool.
+>  	 */
+> -	if (atomic_long_read(pp_ref_count) =3D=3D nr) {
+> +	if (atomic_long_read(pp_ref_count) =3D=3D nr &&
+> +	    likely(page_pool_netmem_is_exclusively_owned(netmem))) {
+>  		/* As we have ensured nr is always one for constant case using
+>  		 * the BUILD_BUG_ON(), only need to handle the non-constant case
+>  		 * here for pp_ref_count draining, which is a rare case.
+
+[Severity: Critical]
+Can the non-RMW fast path in page_pool_unref_netmem() race with a caller
+that converts a struct page reference into a pp_ref_count reference, causing
+an in-use page to be recycled into the pool?
+
+With netmem_inc_ref() now calling napi_pp_get_page(), callers holding a
+struct page reference such as zerocopy_fill_skb_from_iter() convert their
+page_ref_count into a pp_ref_count:
+
+net/core/datagram.c:zerocopy_fill_skb_from_iter() {
+	...
+			skb_fill_page_desc_noacc(skb, frag++, head, start, size);
+			netmem_inc_ref(page_to_netmem(head));
+			last_head =3D head;
+			refs++;
+		}
+		if (refs)
+			page_ref_sub(last_head, refs);
+}
+
+Consider a page_pool page with pp_ref_count =3D=3D 1 (held by an SKB being =
+freed
+on CPU 0) and page_ref_count =3D=3D 2 (1 held by the page_pool, 1 held by G=
+UP in
+zerocopy_fill_skb_from_iter() on CPU 1):
+
+CPU 0                                   CPU 1
+napi_pp_put_page()
+  page_pool_put_full_netmem()
+    page_pool_unref_netmem(netmem, 1)
+      atomic_long_read(pp_ref_count) =3D=3D 1
+      (true; pp_ref_count stays 1)
+                                        zerocopy_fill_skb_from_iter()
+                                          netmem_inc_ref()
+                                            napi_pp_get_page()
+                                              atomic_long_inc_not_zero(pp_r=
+ef_count)
+                                              (pp_ref_count: 1 -> 2)
+                                          page_ref_sub(last_head, 1)
+                                            (page_ref_count: 2 -> 1)
+      page_pool_netmem_is_exclusively_owned()
+        page_ref_count(page) =3D=3D 1 (true!)
+      returns 0 (leaving pp_ref_count =3D=3D 2)
+    __page_pool_put_page()
+      __page_pool_page_can_be_recycled() (true)
+      recycles page into pool while CPU 1's TX SKB still references it!
+
+Similarly, on weakly ordered architectures, because atomic_long_read() and
+page_ref_count() are both relaxed loads with no barrier between them, when
+pp_ref_count =3D=3D 2 and page_ref_count =3D=3D 1, CPU 0 can speculatively =
+load
+page_ref_count =3D=3D 1 before CPU 1 maps the page via tcp_zerocopy_receive=
+() ->
+vm_insert_pages() (page_ref_count: 1 -> 2) and drops its pp_ref_count
+(2 -> 1). CPU 0 then reads pp_ref_count =3D=3D 1 and returns 0 with pp_ref_=
+count
+left at 1 instead of 0 while __page_pool_put_page() ->
+page_pool_return_netmem() releases the page from the pool.
+
+[ ... ]
+
+> diff --git a/net/tls/tls_device.c b/net/tls/tls_device.c
+> index 4cdfbb57ecff0..670fdeeeae567 100644
+> --- a/net/tls/tls_device.c
+> +++ b/net/tls/tls_device.c
+
+[ ... ]
+
+> @@ -269,7 +271,7 @@ static void tls_append_frag(struct tls_record_info *r=
+ecord,
+>  		skb_frag_fill_page_desc(frag, pfrag->page, pfrag->offset,
+>  					size);
+>  		++record->num_frags;
+> -		get_page(pfrag->page);
+> +		netmem_inc_ref(page_to_netmem(pfrag->page));
+>  	}
+> =20
+>  	pfrag->offset +=3D size;
+> @@ -302,7 +304,7 @@ static int tls_push_record(struct sock *sk,
+>  		sg_set_page(&offload_ctx->sg_tx_data[i], skb_frag_page(frag),
+>  			    skb_frag_size(frag), skb_frag_off(frag));
+>  		sk_mem_charge(sk, skb_frag_size(frag));
+> -		get_page(skb_frag_page(frag));
+> +		netmem_inc_ref(skb_frag_netmem(frag));
+>  	}
+>  	sg_mark_end(&offload_ctx->sg_tx_data[record->num_frags - 1]);
 
 [Severity: High]
-Does replacing nosteal_pipe_buf_ops with skb_pipe_buf_ops in skb_splice_bit=
-s()
-drop the page reference count overflow check when pipe buffers are duplicat=
-ed?
+Does switching tls_append_frag() and tls_push_record() to netmem_inc_ref()
+cause a page leak during mlx5 kTLS TX resync when page_pool pages are
+spliced into a hardware-offloaded TLS socket?
 
-Previously, nosteal_pipe_buf_ops used generic_pipe_buf_get(), which calls
-try_get_page() and fails when the signed 32-bit page reference count is <=
-=3D 0:
+When a page_pool page is appended to a kTLS record (for example via
+MSG_SPLICE_PAGES in tls_device_sendmsg() -> tls_push_data()),
+tls_append_frag() and tls_push_record() now increment pp_ref_count via
+netmem_inc_ref() -> napi_pp_get_page() instead of incrementing struct page
+_refcount, leaving page_ref_count(page) =3D=3D 1.
 
-fs/pipe.c:generic_pipe_buf_get() {
-	return try_get_page(buf->page);
+However, the mlx5 kTLS TX resync path in
+drivers/net/ethernet/mellanox/mlx5/core/en_accel/ktls_tx.c still manipulates
+raw struct page _refcount on record->frags[i]:
+
+tx_sync_info_get() {
+	...
+	while (remaining > 0) {
+		skb_frag_t *frag =3D &record->frags[i];
+
+		page_ref_inc(skb_frag_page(frag));
+		remaining -=3D skb_frag_size(frag);
+		info->frags[i++] =3D *frag;
+	}
 }
 
-include/linux/mm.h:try_get_page() {
-	page =3D compound_head(page);
-	if (WARN_ON_ONCE(page_ref_count(page) <=3D 0))
-		return false;
-	page_ref_inc(page);
-	return true;
+and in mlx5e_ktls_tx_handle_ooo() and mlx5e_ktls_tx_handle_resync_dump_comp=
+():
+
+void mlx5e_ktls_tx_handle_resync_dump_comp(struct mlx5e_txqsq *sq,
+					   struct mlx5e_tx_wqe_info *wi,
+					   u32 *dma_fifo_cc)
+{
+	...
+	mlx5e_tx_dma_unmap(sq->pdev, dma);
+	page_ref_dec(wi->resync_dump_frag_page);
+	stats->tls_dump_packets++;
+	stats->tls_dump_bytes +=3D wi->num_bytes;
 }
 
-With skb_pipe_buf_get(), duplicating a spliced pipe buffer via tee() ->
-link_pipe(), splice() -> splice_pipe_to_pipe(), or fuse_dev_splice_write()
-invokes skb_pipe_buf_get() -> netmem_inc_ref() -> get_page() and
-unconditionally returns true:
+If the TCP ACK for the record arrives while the resync DUMP WQE is in
+flight, tls_tcp_clean_acked() -> destroy_record() -> netmem_dec_ref() ->
+napi_pp_put_page() runs while page_ref_count(page) > 1 (elevated by
+page_ref_inc() / page_ref_add() in mlx5). Because page_ref_count(page) > 1,
+__page_pool_page_can_be_recycled() returns false and __page_pool_put_page()
+calls page_pool_return_netmem(), which unmaps the page from the pool, clears
+pp_magic, and drops the page_pool's _refcount via put_page().
 
-include/net/netmem.h:netmem_inc_ref() {
-	if (netmem_is_net_iov(netmem))
-		net_iov_inc_ref(netmem_to_net_iov(netmem));
-	else
-		get_page(netmem_to_page(netmem));
-}
-
-For any struct page-backed netmem using standard page refcounting (such as
-sk_page_frag() pages from linear_to_page(), non-page_pool RX fragments, user
-pages sent over a local socket, or page_pool pages whose pp_ref_count is 0,=
- as
-well as all struct pages at this commit prior to commit "net: remove
-skb->pp_recycle and consolidate netmem refcounting"), can repeated pipe buf=
-fer
-duplications push the page reference count past INT_MAX, triggering
-VM_BUG_ON_FOLIO(folio_ref_zero_or_close_to_overflow(folio), folio) under
-CONFIG_DEBUG_VM or wrapping _refcount to 0 and causing a use-after-free when
-CONFIG_DEBUG_VM is disabled?
+When the DUMP WQE later completes in mlx5e_ktls_tx_handle_resync_dump_comp()
+(or unwinds at err_out in mlx5e_ktls_tx_handle_ooo()), page_ref_dec()
+decrements page->_refcount to 0 without freeing the page to the page
+allocator, leaking the page.
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261103211424.1276=
-27-1-almasrymina@google.com?part=3D2
+27-1-almasrymina@google.com?part=3D4
 
