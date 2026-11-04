@@ -1,152 +1,99 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57A73606A32D
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 16:15:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6649606A328
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 16:15:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm2 header.b=aj2d1zPw;
-	dkim=pass (2048-bit key, unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=v6mnL4cj
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=oO5llueb
 Received: by kanga.kvack.org (Postfix)
-	id 753266B05B5; Wed,  4 Nov 2026 11:15:55 -0500 (EST)
+	id 04EEF6B05B6; Wed,  4 Nov 2026 11:15:57 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 72B576B05B6; Wed,  4 Nov 2026 11:15:55 -0500 (EST)
+	id EF32E6B05B7; Wed,  4 Nov 2026 11:15:56 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 641626B05B7; Wed,  4 Nov 2026 11:15:55 -0500 (EST)
+	id D95216B05B8; Wed,  4 Nov 2026 11:15:56 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 3B3C66B05B5
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 11:15:55 -0500 (EST)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id D2D21A07BD
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 16:15:54 +0000 (UTC)
-X-FDA: 85397937828.16.D38B9BF
-Received: from fout-b7-smtp.messagingengine.com (fout-b7-smtp.messagingengine.com [202.12.124.150])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 8AE3040002
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 16:15:52 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=arndb.de header.s=fm2 header.b=aj2d1zPw;
-	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="v 6mnL4c";
-	dmarc=pass (policy=none) header.from=arndb.de;
-	spf=pass (imf01.hostedemail.com: domain of arnd@arndb.de designates 202.12.124.150 as permitted sender) smtp.mailfrom=arnd@arndb.de
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id B2A1A6B05B6
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 11:15:56 -0500 (EST)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 44AD61A07CD
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 16:15:56 +0000 (UTC)
+X-FDA: 85397937912.02.48C0DE4
+Received: from mta1.migadu.com (out-211.mta1.migadu.com [95.215.58.211])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 27AAAC0014
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 16:15:51 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=oO5llueb;
+	spf=pass (imf28.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.211 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793808954;
+	b=H3ejmgp0zHfs1zBDZ7Kgt6dNXWSmULwdTOSM+kUi74E8P4fzEp4/hsrKwMEYkRYkX8edMj
+	8U9LEM2er0xCplUYuZ0On4VOt0kji9ErtS9Zr4v/a1fYYgbm1h06DUZANKBaoe/D71+B9j
+	+OVDGawduI57STNctOYfON3ftsf4TWw=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=oO5llueb;
+	spf=pass (imf28.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.211 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793808952;
+	s=arc-20220608; t=1793808954;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8e/mss8HflpUPukSo1l7KMk+icGVWWwgbeYpf+2EZ0M=;
-	b=JaLKG1ltPvjCZtLGhwHRbMhwsx9mDP8OWjAO962Z+TrDvf0d7GdSLekSNabtDcHZHwJE8t
-	FdqCJPvA2N/HMmWtME8Ht3p/tiNM6Z+qIXFb4pd2XGg+E6YsWulu7UONPNhG41oz262tbP
-	F5l3TWwzsqk7fGw5WMysPd7OhaIPOSQ=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=arndb.de header.s=fm2 header.b=aj2d1zPw;
-	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="v 6mnL4c";
-	dmarc=pass (policy=none) header.from=arndb.de;
-	spf=pass (imf01.hostedemail.com: domain of arnd@arndb.de designates 202.12.124.150 as permitted sender) smtp.mailfrom=arnd@arndb.de
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793808952;
-	b=kqBqWgabKAg3+3rnDj7VxtLxQ3cLVvm2DDyxyvJD2OIHy1oMyIIkb/Rh+ycvtle12WWRr7
-	z2kNq+95u55Cd4f2ByPLSn0stJ1kIi0ZD2d0ZQM5H9k6XUHsLJFfzWBZqHJKJbGZgcK5bH
-	nF78cZRLmx0N15EHrRSvhbc4IJikRiM=
-Received: from ams-compute-02.internal (ams-compute-02.internal [10.64.2.62])
-	by mailfout.stl.internal (Postfix) with ESMTP id 7C72A1D00034
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 11:15:51 -0500 (EST)
-Received: from ams-imap-03 ([10.64.2.23])
-  by ams-compute-02.internal (MEProxy); Wed, 04 Nov 2026 11:15:51 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm2; t=1793808947;
-	 x=1793895347; bh=8e/mss8HflpUPukSo1l7KMk+icGVWWwgbeYpf+2EZ0M=; b=
-	aj2d1zPw50QYcIlxC/Bxzi2+vTfvUHUMqEboPUsUsilu739JezLAKnLkiMvxO2fR
-	sTbZEV1Z4/SC4JP7xL1iN/EpU6eWjLzTNNGAX5IlZgpQnbpj3XmJi92J/XeeIKRX
-	NWRVqO+OED9hC3e7QD6o6vVbYhhzBUPtd6Qh6UEvmiL4c4RJQXEk+U7CbC4OV/gY
-	RkhC3z9t5+jUaItWbz/G24RS7PPz3wHhLVSvfeVli4OlrTIabU0PY5SVaWu0aXa1
-	XPNZ1DyCvcPhflONNE/QLHG0+fTCr0vvkPnBlDG7dAc/jAs/fU80K4yF38SOoLds
-	QRdJL0T9Guz+R6yvhx3oZg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1793808947; x=
-	1793895347; bh=8e/mss8HflpUPukSo1l7KMk+icGVWWwgbeYpf+2EZ0M=; b=v
-	6mnL4cjqtKbQWST2Uyr6CLmgnnJXp0XPmBwOnxGlLSdFhHd247WLSSUCSJQC4d3O
-	ylEOErFz8S7enBEEiXnjN28tajihe5SuxSKjIQXzlKMS2PobeKpTKFcx9ZRTI7Dg
-	40JlkHF48F28sI8idrRf18tkTHx/AOQSXI/hmdKY8PmtSGzXjbeXpU3Yj/xLJtjN
-	Kx3o7Nmoq/9iV+6W9XnESQ3lqysJIhEdIQgYCwcPUpdDmu5DrSs+M12rYHmz40HA
-	xH5eWSDaTvYuAAtJsDfq4TEPUhA6a4oKmIODJ/sEH0ApW4y6isS28XoIvgddUPtP
-	YW5nlhsFWd7bcJdAuJpnw==
-X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-08;
-	repo=github.com/dkim2wg/interop; date=2026-10-28; sw=lmtpprox;
-	action=sign d=arndb.de a=rsa-sha256;
-DKIM2-Signature: i=1; m=1; t=1793808947; d=arndb.de;
-	mf=PGFybmRAYXJuZGIuZGU+; rt=PGxpbnV4LW1tQGt2YWNrLm9yZz4=;
-	s=fm2:rsa-sha256:iF+vRNwLsQIENYHPTCESp5SibWW4JZLjW3z85Nv0IP0Ir5z
-	CwXumeB6dYj2Vp0fNCT+jVGt/vuNFUw6B3se7tjmscCTZ61RF+yJtCgOq6xReZIo
-	eQFpBkItj0ZNZp9b8CqqIU7NvPuY1q/fs6rTHxi/npz9Ij6wsxEcYCMIctZ7rD5k
-	9RbPrIXTJ5URTxrQlzY2c0N7oeZK1qGPqxTLmRcWu9XHCs4KJWXeZaEnEfQY4v6Q
-	+xvgp3Nle2SSA4iOI8ampLrUHyzwdOZyi06+A9zAyIdJoYv9LVwG3HTNq7VsXukn
-	7QFUVjKQRD420yRMqK21jL4a0Wpaz5LtYS/8cRg==;
-X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-08;
-	repo=github.com/dkim2wg/interop; date=2026-10-28; sw=lmtpprox;
-	action=mi-m=1; hc=12;
-	hn=cc,content-transfer-encoding,content-type,date,feedback-id,
-	from,in-reply-to,message-id,mime-version,references,subject,to;
-Message-Instance: m=1; h=sha256:4kPFI1pl94svt6FcJI7GTH40I8NrmwpOCYY09r/CUgI=:XtofUmLNSAlOeC+jHYzUkvhsqx26tdVnYTmf0pcPtXo=;
-X-ME-Sender: <xms:MFrrap-1uafiamLHhvCFmcoS4CUnt4Bur8aaBT7rExtfg328FFqatw>
-    <xme:MFrraogCYm9ARQueCpMSAm5L6Q8RIRSsoE7aCr_GJnTAoGg5JUuggYEjpjpPl75SN
-    LYX6z-dG5QOhFYZngw6ymDok9GRsMc-K5FnkkT9lGFjSzDMFOxLNQg>
-X-ME-Proxy-Cause: dmFkZTF81vXp6AjtNjpU9fMobsGT/c5iTkulkiDk5XSLgAmxn4T8gi5LrjTCSom++OOSJp
-    S2tulKct1nDA+/4XskQ6V0zYzSSj4jJO9hqiWWuJfTvGas4k/fHo47PZRKoymKbR3PQgML
-    2dTuv/53dVjIAqnKBA5IkbPhcmZf/oSRTxjvhPJ2gpIxG2dOBOSW4TxQwj5cWS14Knfquj
-    K9ScKr/Bg+CXlr64X+IJQ/qM79dWbgPcAoxxCoq6KU+EVOAJ3N4tLM0yQMk9/hNa07GdMy
-    59Nhj+ZBwUTZEH10vlXr+FFQrKeV7DXhD+xT3yKq3v5vVzj0mvPVmURRtfEXBOPWMN0trS
-    ZF//I2WkPtCi3Qulh/5asCXoNTc8gRzqwkvujCOTyY4xORAFUMw9P7mPEzXCMXnkqK0Z4q
-    sMNGUvmi1qFFW2M8afJio7TiobOd5/m2b1aeUZvufIiruyVNPVhqsmgPSHrvO1HJIT46AZ
-    w8d1RK6CVYTkmH6sLW6UjCZOeuVxd9/XJpxR9NzVNguu2q8fUuTFZdL9Hm05FpqLTIJ1Y7
-    460Kp475z4B+lqotzzthqkfj1zOo5Hy1QzvhJd1iSPwX6GXApUFZB4jxMs7o/iQsxHpDgO
-    pXQ/gfnLMc3iEdzdm4nXUOTfdJNfkpc0PCQBJotvn/hoCGUO6nVGhHbTDu0Q
-X-ME-Proxy: <xmx:MlrrapJ6W8L3Jsa2QGHNLYu_3Q5gPZkIcv347ZF-LLTQXzh1U0ilIg>
-    <xmx:MlrrarLTrGTisFewbQlMo6yPl5XT83csYL-j1jODSVOOa-UmGOLy3Q>
-    <xmx:Mlrrash3oDteop0DiCdnKUwlJ5SKHiqdKA8rzfP3tjhWNB6HjrTwrw>
-    <xmx:MlrratPAwi1z_dXfsxwU0dawiR3Btr_9Hts7mrM1VN24OcWAyUHYvQ>
-    <xmx:M1rrao3geqTf4E020kt9bow0G8d85W2NCqAnl3n-W2SlxB3ti3ygPajU>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.ams.internal (Postfix, from userid 501)
-	id 5CB9832A0093; Wed,  4 Nov 2026 11:15:44 -0500 (EST)
-X-Mailer: MessagingEngine.com Webmail Interface
+	bh=8fU8AEGdDcjq9JBv57injpYEq2ySiH6tspHTe3WsEnE=;
+	b=FiIKzrYFJeXp4FsQG06zHUpX+ysP4uUcdvd9YSwhUgwssqt3dggTWB0Zcua24JS7RtnqWN
+	NQrDWFEDFxdCixwDlBnyLguB4RTna2af+DVJz+/aHERO7+Sl5DrF4E+Vz3Q5iIIC9e09oc
+	7KQ0RfltaC6dq0TKdl7FMF/QlFfYoGU=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=QhoInTD0Xt4NBSuls0AgRrgTJDXjCSOPGY4pmRsoD08=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1793808948; v=1; x=1794413748;
+ b=oO5llueb2uLLHAIztGoWQ9k0aJwHtRxomO9r6ciLu/m9aaoJCGqWBQobUJ4/gK0SNhXJ97nr
+ ElLpG14EwNXY8YlLuxiBnZE31ra/RtD3OJcdO8OVaX39YfomEKzpN1x2NQniWCLhSg/wVqkFKSJ
+ jiEDYnwTN7uWGrVGtczbdmrY=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id c6ae390f292ebaa1;
+	Wed, 04 Nov 2026 16:15:48 +0000
+X-Mizu-Trace-ID: c6ae390f292ebaa1
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <81096741-0e14-4469-bdbb-497aba541fbb@linux.dev>
+Date: Wed, 4 Nov 2026 16:15:46 +0000
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-X-ThreadId: AsZFqsyIu97-
-Date: Wed, 04 Nov 2026 17:15:00 +0100
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "Thorsten Blum" <blum@kernel.org>, "Mike Rapoport" <rppt@kernel.org>,
- "Pasha Tatashin" <pasha.tatashin@soleen.com>,
- "Pratyush Yadav" <pratyush@kernel.org>, "Alexander Graf" <graf@amazon.com>,
- "Andrew Morton" <akpm@linux-foundation.org>,
- "Changyuan Lyu" <changyuanl@google.com>
-Cc: kexec@lists.infradead.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-Message-Id: <6c67f712-fcdf-4d80-b212-5847ba57283d@app.fastmail.com>
-In-Reply-To: <20261104160931.137174-3-blum@kernel.org>
-References: <20261104160931.137174-3-blum@kernel.org>
-Subject: Re: [PATCH] kho: Remove redundant 0x prefixes
-Content-Type: text/plain
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm/hugetlb: allow crashkernel to reuse hugetlb CMA memory
+To: Kiryl Shutsemau <kas@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, baoquan.he@linux.dev,
+ rppt@kernel.org, pasha.tatashin@soleen.com, pratyush@kernel.org,
+ ruirui.yang@linux.dev, corbet@lwn.net, skhan@linuxfoundation.org,
+ rdunlap@infradead.org, muchun.song@linux.dev, osalvador@suse.de,
+ david@kernel.org, jbohac@suse.cz, sourabhjain@linux.ibm.com,
+ ruanjinjie@huawei.com, leitao@debian.org, linux-kernel@vger.kernel.org,
+ kexec@lists.infradead.org, linux-doc@vger.kernel.org, linux-mm@kvack.org,
+ hannes@cmpxchg.org, riel@surriel.com, shakeel.butt@linux.dev,
+ kernel-team@meta.com
+References: <20261104142727.2894800-1-usama.arif@linux.dev>
+ <autMHwldMudQOO3j@thinkstation>
+Content-Language: en-US
+From: Usama Arif <usama.arif@linux.dev>
+In-Reply-To: <autMHwldMudQOO3j@thinkstation>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 8AE3040002
-X-Stat-Signature: gxe4kjy7xekbij8czhtnizjaaunkysxz
-X-Rspam-User: 
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
-	autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1793808952-469554
-X-HE-Meta: U2FsdGVkX18y6LMf2SbaWK+Tj4S8cgtKHIt7trUXAFtS41VmsNQbMNLTFcebdwv7TNhhbXZ9eMGdgZBhcINS6pSKurOctDOvCItHKEzMKIX1JYh1O1BEq9c23fRwDkmlvxcjHl2I/nCiW3X5TJ2Qa3JCdpHZ7r/soTCC0umotf/xYUnlD8R+xQv4sBL6NIh98dJGyLxzxWFwu3dAMDZh83pJU0DpmayAi2xLsb2RZjnSUNdPxJH7wpaz7mUfEtQAV4XuV9ViSR3NYqUaxZP2WobtGqomHsZ8jy89K2xb7x+qzesGyjeMQPq92Y7QzzZeJWwoCQoYHFwmgUvFwA5HH0gsQXwVhqIzQjwMUlnAGG8/aQtQTTC9nnilHhQW5eWGYYbwZB0ag2VzSYen2VkfrHHcy/pj5CbgqVygmuh8Zp3OrLN/s1vSQxpvhsB6+aBNguwpYifXYku0FW09p7de/6VQU/8JmQeXk0Q7jw4nKQskWAfQhRtoW4pDm94vf55zMSpK33gfsXb4qG/Wl5wo2saWnTOUwZln9y5dmX9FVBDDiDQpMnMwf6sdzl02MhibnCkM0mz5RyQi2k5weBrEqCqjlye8JNC7g2fKh1/bgun+97KSa76Uo2bhPlaII5Ui+f9RnpGLLlHZ3qrpcCJBFYNbgmL7vq/uVJ/GGvG5lYscObwVwSzASxn5o58f2sOb8TInHAeqltYi4wTLJ1b5n9RnIRyH5ybADF787/C3SZQjZmPCw+RjIo/T1NX9MfS+QvX+zy/FZG/8UtwAFtdzH7+LmqE5wS+mgCqRletsV83FZ1HdsXDdlw2mA36pjZbMDxDx3lXtTGoA4dkIqnm/S+6L/5IcsEi0a1A9JYeeE618oimhBJUxfiW4eegZstPm0mTBP3R8puitZf8StAD253zTkz+zakVWVmCeC/tFqxK3W7wcTIljMzEnhnRRZxF6nq47knEwdTxMygjp9Qe
- Bl3PYqz7
- NAKrqv3Y/ZyOw8bHoR4frTFec/VdX2Z7ahB4HgJ7eJBweKbD/RiSAEtxfC8V+4X0Kdc70J5ImBFrJEr3oajp8dH6h5I6S8HihpSDt/ryLGhiei9i6VW3vyyLyirO6v6Bn7dz/q2irJpmt9dYq83Wdx0DLR+r3xh0YmOeIT0RF/l30qOiPB/iqt/JgIjppoi86wB9bqWEm7vQ+imX7tKNEeJitUyTbEmBlRf0Bz2jiP6Fxcv02heuSfGmrQ+7EE3JP9PyX8wy9tP9J/BiRnRkI6b3O+1OleWALmjpgHN2rJ3Ra7BclMK5Ih4xvSpusa/gwZ+U5xoN1y0NV41YSWt4LyYXRmw==
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
+	autolearn=no autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 27AAAC0014
+X-Stat-Signature: docrbca74txdfzqwsogr51be4zrh4x45
+X-Rspam-User: 
+X-HE-Tag: 1793808951-488518
+X-HE-Meta: U2FsdGVkX18M1FqBNF6HKqLDSNnDGbH41EIt/RflfvTqwhExjitUOio9dATfaNb3e3AWu76T5RYE1j4K4NO71QaM9P8zlm7UyeFXmP/92QIDBa5hIACj5S+8IXLJiTT7cVdivDHCefs44scS87M5OYBE4OkwDueu6ybBIPs0kQ9DwqF60PVCI2B7LcD4EQN+T1WDuIehfIxma/0JcwxQ3hseNnpU1kkNP+4L6odrpBgJqFPNRfe211JzWYIC6pLRpME+osr88SL53OiDRbiLlxR8yyjUER0FBN1oxUh+meb0dn0M1p/oJUtSiysKPYJaLSHHrw0IVM85nxIkuIyLB4YXEuQ/q0ahOtKmWuoRKbVdb2Ujyb3vcm52pklzIeG27Ie3oXNpvzBnWIE/vB3bvzplJOD0g7gATLdSHz4kgMFvPosuFr9f7AE+uMhzn4lVffnJEDsrwAYKA6Q2lTRaBr8cCRBRhOg4zCdM9eEhcPV1I6Scdp90D+L9Gosk5/mPEimPIWyx9YHlVoNl8wynGpN26KHBmBeMSwSm+mQwtXWIx5blCJauh0u/DUEvXeOaqzFxJF7ccWZ7hYdtUX7J8p5Cp1jYsmq+3n5bPdBoAmNDB7XOL7OPOMUXQpCuO9PDQwjUbH9dCTiZiBbxP4Egw27xwJYf+32NBqSdSg1T9CA3TrrHv99bAXReU2sXhqzF/j8XS/a9ldXsapL7tcOnA7y6pF73AgrGrbeQtnEEyc4c35X7WMsDFNA53oTVHpJY4tzWduHzqbjUlXim9hEGI9jDJSiCjQzYmCWnEMEof6nrDDbCVEYxogSPYNbQBNeR8KAUnwPxMJHCbClS4+HEwLoMq8LwyQnLVuTUro0TSM/ZN2FK7/2Atne/4HpaKByg/1XA8EkLqo8yeC/UNLwlJvJJgQCRyJOVpyF1Yc4BSDkepLXibmMgqE6wi0M2cnQ6YRqkOZVZeutHbdJzC4H
+ qtTXXQ4L
+ wsgcKoXqkBoqcTsPl4Rtr2mxW5UnAIHfJJB28dHaqTZapmKARmgT3ecAiRmRL9o7nqdalqgoLLelLm51Sx1A3BkqTQI2ANd1cj/QV0TZNFTPGVMqpKmRKnvIb7+dHvrTzQeBQpqheKFqlOfnsApoUYpM/Uwr2NCw08gjXQ12t51TkOmv5IJZFEfg7/ehqkCS6En/duX+iuIuppQk7j42hR1rAMQIWp5zDj0gcIRCXT/P1m5sGozLDror28VWI5+qSRDsl0lWpZzADw1mG8/DGP5nmCg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -155,25 +102,36 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Wed, Nov 4, 2026, at 17:09, Thorsten Blum wrote:
-> The %pa format specifier already includes the 0x prefix. Remove the
-> redundant prefixes to avoid printing 0x0x.
->
-> Fixes: c609c144b0e8 ("kexec: add KHO parsing support")
-> Signed-off-by: Thorsten Blum <blum@kernel.org>
 
-Hi Thorsten,
 
-The change looks correct, but I see another problem in the same line:
+On 04/11/2026 15:20, Kiryl Shutsemau wrote:
+> On Wed, Nov 04, 2026 at 06:27:27AM -0800, Usama Arif wrote:
+>> Use a separate suffix to make the exclusion of existing HugeTLB
+>> allocations from the vmcore an explicit choice.
+> 
+> The crashkernel=size,cma documentation already says that pages allocated
+> from the range are not in the vmcore and that it should not be used if
+> dumping of userspace memory is intended. HugeTLB pages are userspace
+> memory. I don't see what a new suffix makes explicit that ",cma" does
+> not already.
+> 
+> Why not let crashkernel=size,cma take hugetlb CMA first and reserve a
+> dedicated area only for what hugetlb CMA does not cover? With
+> hugetlb_cma=6G crashkernel=2G,cma there would be no extra CMA at all.
+> With hugetlb_cma=2G crashkernel=4G,cma the crash kernel would reuse the
+> 2G and a dedicated 2G area would be reserved for the rest. Either way,
+> nobody has to learn a new option.
+> 
+> The catch is ordering. reserve_crashkernel_cma() runs from setup_arch(),
+> but hugetlb_cma_reserve() runs later, from mm_core_init_early(). The arch
+> code could record the size and leave the reservation to generic code
+> right after hugetlb_cma_reserve(). That is still memblock time, so the
+> remainder can be declared there. An early_initcall is too late for that.
+> 
 
->  		if (err) {
-> -			pr_warn("failed to mark the bootmem region 0x%pa+0x%pa: %pe",
-> +			pr_warn("failed to mark the bootmem region %pa+%pa: %pe",
->  				&area->addr, &size, ERR_PTR(err));
+Makes sense to me, I will rewrite it in the above way and send v2.
 
-'size' is a 'u64', not a phys_addr_t, so the pr_warn will print the wrong
-on some platforms. Can you change this to use 0x%llx instead, or change
-the type of the temporary variable to phys_addr_t instead?
+Thanks for the review!
+Usama
 
-     Arnd
 
