@@ -1,133 +1,145 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 133CA606A334
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 08:24:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DC58606A32E
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 08:26:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=bp8OIvsC
+	dkim=pass (2048-bit key, unprotected) header.d=ionos.com header.i=@ionos.com header.a=rsa-sha256 header.s=google header.b=MhrkgDaA
 Received: by kanga.kvack.org (Postfix)
-	id 2B37B6B05B8; Wed,  4 Nov 2026 03:24:34 -0500 (EST)
+	id 575C36B00EF; Wed,  4 Nov 2026 03:26:57 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2644F6B05B9; Wed,  4 Nov 2026 03:24:34 -0500 (EST)
+	id 54F046B05B1; Wed,  4 Nov 2026 03:26:57 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 153766B05BA; Wed,  4 Nov 2026 03:24:34 -0500 (EST)
+	id 465006B05BA; Wed,  4 Nov 2026 03:26:57 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id D61066B05B8
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 03:24:33 -0500 (EST)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 5A0FCC01FB
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 08:24:33 +0000 (UTC)
-X-FDA: 85396750026.19.8033849
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 996B51C0005
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 08:24:31 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bp8OIvsC;
-	spf=pass (imf20.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793780671;
-	b=hB65KISBIbNjCBBDL9VWnkf9G2u6IaH126yKASi0/8JD/LRy7X0zDcnd2Z7bu8hzALZx9F
-	C+yWDjwKFL33rgTbBAz6qhnKPYDAhIIvXkkOJ7GpqMHo6U5iEnjFYqW8CtNnX+iP13gcR1
-	oy7AHIkWpejoysdlQfQagoAOQhcH8VI=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bp8OIvsC;
-	spf=pass (imf20.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793780671;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 130396B00EF
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 03:26:56 -0500 (EST)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 0B08F1C2263
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 08:26:56 +0000 (UTC)
+X-FDA: 85396756032.16.721F4F1
+Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com [209.85.208.46])
+	by imf07.hostedemail.com (Postfix) with ESMTP id BA58A40002
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 08:26:53 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=ionos.com header.s=google header.b=MhrkgDaA;
+	spf=pass (imf07.hostedemail.com: domain of max.kellermann@ionos.com designates 209.85.208.46 as permitted sender) smtp.mailfrom=max.kellermann@ionos.com;
+	dmarc=pass (policy=reject) header.from=ionos.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1793780814;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HSK8AmOx9OzK8WyqhkvENBFW7dozxPrueXvm3eaVPYY=;
-	b=6EMN7YPK/fXJW8D1YXur+094lQLdtSXfbVDu8eZ29IzoyK1xO9f9okEKtJ6OutwUU/QKTg
-	vb98ZhBWWMA5WVeE80qF4ErLk0aU0nI+ziUFmiYe8HhR8CicCSm06JSlKs6NA0B4LPrntd
-	GFx3xqKQrae1rYG5fkAek1m062YCmAg=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 1A2256022E;
-	Wed,  4 Nov 2026 08:24:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E62BC1F00919;
-	Wed,  4 Nov 2026 08:24:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793780670;
-	bh=HSK8AmOx9OzK8WyqhkvENBFW7dozxPrueXvm3eaVPYY=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=bp8OIvsC8sL//M2/yvtNnsIIaNY+RiYwUqELmJKWrNYAKGfXjz05sUs4j8dhic72A
-	 /cVdRgK6UVd7Newd8rvneFHhzlr4wJCaAZ/cBvMB4/AQlHe1bVxluO4uimtu8YrWhb
-	 L3XdAJoL8Wf0CjZjS9ynF6P/UWuL8UMRza1AQ6XUZQu1URDdF1uCTXu/5u9dls+zkr
-	 2Z95I3mZsRcXUj5IwvdjucWLlGnxlNEeiNyIKSTVnuyCmNA+vTeNbrstwEON4dKC8y
-	 mv/qZZkHXwA7mlLVj/uMqsaJOFwzkmSPXGgenbEPgJx/SgeRevp3HohwXTKhiTb9IS
-	 Dr33j1b1ly9eQ==
-Message-ID: <04807a53-8fed-46a0-b1cb-4b86d70636c5@kernel.org>
-Date: Wed, 4 Nov 2026 09:24:28 +0100
+	bh=D+vnesPE4t9lKIynjQF/EgK23seabQisbWfdICSw+rI=;
+	b=a6ebDSGWpXyVP4Fj+2h4V0mANSRNyP5x5l1TDeizmVfMhSmUS+zpgYxL4izlpbZ8jn9uni
+	zbRVv8TTI87M8JFPSjGaT+ffmdC2hyQ6PiY8DQRiBXse+tO71NPldlMgZ2jSevVOqKW+gt
+	3CRUt97IdtI+ryNXY7pQKzB7kPQSDoQ=
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1793780814;
+	b=MvwGOIAIZDyxvRun68a4uNhX6GUlBIQmvl00f4Yv6oiE2Audoth2tDz5MfaNFakGm+SpPW
+	DRQSGY3Eiwm5P8dMHtJ1Eit9VFSDXMrFYwKD/j5503dUiHIaBdEFe77zSJIeobzxNbTdpM
+	cWq47Otnj2ZPNrkFlKprXvPFSadbSIs=
+ARC-Authentication-Results: i=2;
+	imf07.hostedemail.com;
+	dkim=pass header.d=ionos.com header.s=google header.b=MhrkgDaA;
+	spf=pass (imf07.hostedemail.com: domain of max.kellermann@ionos.com designates 209.85.208.46 as permitted sender) smtp.mailfrom=max.kellermann@ionos.com;
+	dmarc=pass (policy=reject) header.from=ionos.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-6b4b7dee316so368529a12.0
+        for <linux-mm@kvack.org>; Wed, 04 Nov 2026 00:26:53 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1793780812; cv=none;
+        d=google.com; s=arc-20260327;
+        b=bfX5S12Q3HIAluv7Q6qIl0jmlB7rrRmtHmwv9KsDI/D0NvYlGJ+31HrINAscLiX/Cy
+         oZkV1GFgOVKTj/KY+zbClw0sqKsyGyg40t6mYEN12MFxwnaXNBeBozT74MORCmzr+xMQ
+         NlyoPuxMKp9vAslvGa/ZI0AxH8Kq18ssUbJLYcxTuL3caAiPBlrdAdARSN371gQ883DD
+         wytu5A7tBAPaG/71N8/0cRXMFB33NMe6y8/D9cRbtXXMeQ0eiRE4bWvmDMlBv7upw6vn
+         KkbYVGh/uORVT53FjpKMvQFOHiAQEDx9heVyq6kTviyFQLTcy5aIdMYFYpE7RMGNTOke
+         oYww==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=D+vnesPE4t9lKIynjQF/EgK23seabQisbWfdICSw+rI=;
+        fh=1I0VtgOqOEC9YfLSe5lg2FDVHALK+RFykLW1q3+zx8o=;
+        b=PspbMIf9HNItY8vqFXgqxaUpPtJFqJzCMa33Re4FueDsUDeMbdrSdDVH/JMaHfhqJx
+         GdbPXu4cv5zvunH4ynTa3SF6cRvjuEGCrj59XFwIXTZbiNB76IGvCRaizT/F1Ltmxozg
+         G454kMidQfJwJitGL+3p1xuM7F2Jv688KuAB2S1Whgb+ZhJBcJjsnopgBAuISkc9wj8W
+         O6b5VdmzP2qLPzvClWXpEvJhjo/0bzqwpEdDwyRu3sLhyT89Ms6DKzM9WMFtFvBbnX/S
+         anlUViyI+kMGwKJEdAERzeicnOaB5ef2g2t2e0VTIIpvy7juHOpjxYCBN7B5fWgR1hy0
+         UdMw==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ionos.com; s=google; t=1793780812; x=1794385612; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=D+vnesPE4t9lKIynjQF/EgK23seabQisbWfdICSw+rI=;
+        b=MhrkgDaALVjwUxtZMi7eQdORXPmxeNzwaDYzAJTh8hJfa/414qfr9Bd6mGXj/mwzgE
+         J//SRVW9DOOkUPf/pAdDggTDaZ9+Aua1yCunHDdcVZOPcEp0wF4a8ekSvEZiXWZ9nPXK
+         brjw7CfajQ/KWUWu76VO9bnonfoYHluPTPFYXUt6CpznLtnuTIDmA5CoDa5F64vrj0ci
+         1y1i3iCZrb2MeOB5mdKTv+h1mxObioHHDbx9GRj/G9eCTxn4O0I53oi8K6t7AtuAP019
+         1buVxMNTBkV9PXohCdRP4SMZtKGAgFlne+mxn1OQb1XhGVbZ5JVhoFe6JAQV2V7xqa8j
+         cBKQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793780812; x=1794385612;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=D+vnesPE4t9lKIynjQF/EgK23seabQisbWfdICSw+rI=;
+        b=UZF3UHTeUz5/kb0lamPfQ6XmiKLAGQqbBdTnzveL2TW1SAu8Ii1KfkxhlGwMeRHe93
+         rQZLBJ30DKSl1+LOKEdVeh7kJ4Eu6CinQfDEgJCeAhoXZ652H4bs17YIvbg0/YN/Mxpn
+         fC1wINT/W3g3xFEYgo1oMMrU6VFt38wbRL8qqeksyA3/6ijGIXYIEN7ASVMNs+nCqljI
+         gsT1cy18hXQSeD4lEglT4P6RMaB4CTJCNSW16WSkPKtD121iBgbWQeHYnwPhle1B32an
+         caLHNqRhfoVtejCcCsYDR+lHyLSn5iatLD5OvCPmQiMtDQYga/yFJ1LA71h07bhAStXE
+         N/FQ==
+X-Forwarded-Encrypted: i=1; AKwUvByveK9i7mw9nqm4ubAT5T4ZTfKNtyqoAPGsa9dEaxIB/GOQ5T0+CEC5pxzDXQ3kMdq5kfepNIKqww==@kvack.org
+X-Gm-Message-State: APuU4Z/Y2U3a1m9/E5LJ8NkE3RbEgBxGGjFLZo3EHTduMmpNOoA7ElXd
+	hW9I8ys2kMSyACoMaTkaOhvac0bk35RXLcCxbxNP2vjfLsSmVPV6wqzfk/rWZGBgUmyzTBwEHa/
+	6k3D648F6bTupdhFXgYoTfPwZOMl1d4DZ7ZGXFeFA3w==
+X-Gm-Gg: AYBFou3TPDftaGQFfKS8MKrnBFw/DgGuqP+4BOGefJi0BMbEYwl1lHEL9x9jGcZPSnh
+	Yzg8hSegn2wKOCm8XSbvDZWIls4o7G5KLCRjRyz6hd3h/syhglP6YpD5Gjc62LCTfrjg4gcZgy9
+	COaQTmi3zh8J7DpSCxY8crlCEw5U+XHSXtGWI0BsNC1tXfraEosMeuHnAFbrMSwqtxNDDwPtTj/
+	bzrCu1Pw4x3YxZGXzs74dLOvy/FU6qXKxCf690iZyVCj6cfSLegsy2hpJyKBsduUaWGajdnFhXr
+	lt83YQ8t68rhk3j2PqOHcX4SfYXF05dDA1r7CF5AinundkKFstFm7TqRBYzgeZvSaqFGdIwQQt3
+	A3jJV1jomlu06WaEDRSH3X9w9QgYDAA2oeKJXyxN33SwxQebK4Hvpw1K0EZ5eGuc/pQ==
+X-Received: by 2002:a17:906:9f8a:b0:c3e:4f41:e2a6 with SMTP id
+ a640c23a62f3a-c4ca7974a58mr1321997366b.6.1793780812002; Wed, 04 Nov 2026
+ 00:26:52 -0800 (PST)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/slab: Call call_rcu() directly from
- __kfree_rcu_sheaf() in any context
-Content-Language: en-US
-To: Puranjay Mohan <puranjay@kernel.org>, linux-mm@kvack.org
-Cc: Harry Yoo <harry@kernel.org>, Andrew Morton <akpm@linux-foundation.org>
-References: <20261016155340.3304319-1-puranjay@kernel.org>
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Autocrypt: addr=vbabka@kernel.org; keydata=
- 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
-In-Reply-To: <20261016155340.3304319-1-puranjay@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: dyp71j4mm7hybzeddferuxnsjoqaqsde
+References: <20261103113711.1832834-1-max.kellermann@ionos.com>
+ <20261103113711.1832834-5-max.kellermann@ionos.com> <CAGsJ_4wpd-e+xjm5KwihVziAeVnQp3XYG=+-BKmx0SVEhmyqqw@mail.gmail.com>
+In-Reply-To: <CAGsJ_4wpd-e+xjm5KwihVziAeVnQp3XYG=+-BKmx0SVEhmyqqw@mail.gmail.com>
+From: Max Kellermann <max.kellermann@ionos.com>
+Date: Wed, 4 Nov 2026 09:26:41 +0100
+X-Gm-Features: AclHuK-KpECaTGoo8CunTP9HlWbpvRsPjMgrhDBxpI0Zzac6pPc7vrwid4sHOVo
+Message-ID: <CAKPOu+9textOydxZYng=Bo9Sf91Wq_7rv5r2pBrhXOfiex=qGA@mail.gmail.com>
+Subject: Re: [PATCH v2 4/5] mm/mglru: avoid redundant rotations of young memcgs
+To: Barry Song <baohua@kernel.org>
+Cc: akpm@linux-foundation.org, kasong@tencent.com, qi.zheng@linux.dev, 
+	shakeel.butt@linux.dev, axelrasmussen@google.com, yuanchu@google.com, 
+	weixugc@google.com, baoquan.he@linux.dev, baolin.wang@linux.alibaba.com, 
+	david@kernel.org, ljs@kernel.org, liam@infradead.org, vbabka@kernel.org, 
+	rppt@kernel.org, surenb@google.com, mhocko@suse.com, hannes@cmpxchg.org, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, rcu@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
+	autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam09
+X-Stat-Signature: jjjh3epxas8w8633p15mccrcate9da6j
+X-Rspamd-Queue-Id: BA58A40002
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 996B51C0005
-X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
-	version=4.0.1
-X-HE-Tag: 1793780671-959846
-X-HE-Meta: U2FsdGVkX18b1jlzE8BgoHS1Jx6V7FPRrAKP4rwnaUcoszs6gGzD5rXrV/bLItWF/6MJkY8Zv2mwGeZPQxj2/ymcrJCWFxz6TigHqlJU3w/Remjcck+B6hWMEVyjsFqUdKXPAGQmPPjg1v2YgYSG0TA69nQ8DaLcBcxktgsL3TXOdTfLTkpsJTxl1UPiUE8tQ4sE0sVXljIy4Mjggw/lFtJlr/TSNOTJoPaDZv9rUAktivVLFdjcboIjcSnFOx7NNaP93RuhW9UbN6oQ5fFvPsMsnm7AF8xwBK+uWNH8dUjPcnX62REZf/JcB3G8FBTeeKuV7u4kJhxxYNvA20vsvPY4gdyILxu1FF9L4IIJAcdiHPf9ounjzXvdcJiCRL6nt52yAgTrA5EGSbPrcQaAncJdIsu77aESn/hZH+E3SrFqvyIYX7a1OjjOtk0FYjLgU0XX7IezZh3BQP2VdiG2A4x7g6Lf15i7lDO/p6zkXjO2BVImaCqbho0ccxx1xVKyIse3ldzO6SmKfjtT5lgCHNJXghi8z5ROKW6ySqFShe74ta3GZht/oO4V3r0z259nY9fcDbDINZQzOd3ffdHn3QIV2Q5rrdT5HN0iUA1vYIrlmpYiVk7UWt0nTo8l28mf2uF5FmnlnUdz1X3u0icJLAlvsVU5eUO2TF4rfT9TbHU2xccLSNLRzQ+9eO7vwtx+ByWpRWnFnmPCIquGeTin5P2U3lzz+I9O4a5OQDVwSJWkNRq36mmYHjiW6Thvu0WXMuuCU66JZFQG3YrYGkjb8tYf9P2ud7JEJkFPqpSICWpMCcQ+7Qc4wPYWdTpcRDLubLeL2DHjQRTisWI915zpn2OfleQBviWBsISHougkzbP8rLdQVASCIxvkY+0ODhhg20lsuan4/Mw1xGcLKr9cGFxZlVhBeqaqlNPAbiZu6uXnmsd7ZQUY2a37ByxFeGCr8sC0D1+hMLmlpcpxcAJ
- /9NqsYT6
- bht82cKsMT8tiPzOB9NExJZWTwhtO5ZhNG5HkaqF2JuPv03T6oPa4sMcdZkXx/kSJjGC3DeLMR8o37LsfUbueWtIsaM2NdqmaLna7o0kac0qG1DJEIcYOo6uO97xc4PYXhLou2AiwpALpZyLpWto9tQjrLWe32HCyuPqUsfbVcTdi5ZrYJu/lsJ6R1SGx1jdqBIFTO1pl2ouPN5FeOlzxP4fW/5CmfSnGtJUGrUKtaP41CfniDq1FjFsghNiKSsC9xgJ5yQAkZkuMNhJxrUzYPdG6ZFqSRPfgoichZIGn4zGnf2VIdOAi9/R71XqpmgbHiuABL3+BNSKL3vM=
+X-HE-Tag: 1793780813-347527
+X-HE-Meta: U2FsdGVkX1+OMnfiiGUVHSDeFOJ9f6cjDFS/lYAkVx7dv+mUeqDlYzO47U5rxh/bz04+8ei+h6F3jly7veZ/9910tjsn5B/o5eSy3MnRQED5DVg02kTLiMsT2J+cCbjtY86O+fAn7pZO5mBTNBKWuPA1iWgosSMIlMzwaWeB2BNu/BH9KSIOiravPc4waQ8lboW0ce58483Ju/KVmlVMySgx8c2xtRpkzB7q/Miz07YMSHYEAzeFyeq1yidM/anHnnyv5R1QdVBuMHxUGVugnVNK8YPDsX5hO0B6ZwjB+0YDy994kEGvPDrqBKh9iwbTcob5A5oq6FL4zyexGk+FkFM0AR/As5kuiw7y5M4TaC9o/pR0PuWaCKC7r3hV32G5p1DehT5bN3dBRN/zZEUqWysJlgwviIhDUDRIx0GLiliNPi1nOsn18cVnSDevrcTw9PJVYe+xwYjNqqZV4aSsisen2Wd497eW1ShAGL19VBM3Iy/uG6rHt0QkGVitWhbRwn9FQC3tw1w2+ZZaO3HYDhD29g+L0XSZBo7FcsvC3X0R1PEHvxYkWqy6GKcRbkt6lcwVrSzz09DzupSciBUW3As8L+LB6rXSij98RjwyquWmvTXRzOCwgsZirl9YkzQJY3sF7CnFGOPF7QgdhRHCoKB5at0b3UN+dQqIfFls5UrfyxLmN7Gbb7OIeny9HrPQ7c9eNI16/q62nFy5qZsgsWYlkMUpi2vC5b3M154JL6b1PJ93ELA6OhYA7f/2gEErl62XoT8oLP+4JbaLI2zCd/th52kRUAPw20hsjAZP7mgIEZrJPV4IRxjQ9+YgscwXNLDjc0bzH8HQTlx4XxI97AmE4zMPlFemKyHvvPJCeV/tFEYAUu+1HjOYKB086CvS9czAPLLxNu4kY6BY+/199VWiXHEbkyr1BzUGlFOmuJSaDd7+Awv1V2VOpBIy7420JlNy0nHiZCfZSJC4Qkn
+ rmOlMahE
+ HBKJfWzHiV+HwGLD/Xef006TJEOuJ3uXlQOfc120USL6abNZW3fMkW9liUtNW5a81XOaHwlytCovdMXlA3KM9+atdaOff5p0ujqPA+HygJScDcvF3AbMTXGV8tpe2Kp6YGgHZ8+76ry5/FNTCOap97bp+gEG+NMUjThCHiatpiGpFfsXa4bQAlHG1qqyxgP/7A2R+mz6hGQzDj7QMpwkUIRNMm5v9JeF3HPbkVw55eYEo8AwbvAUch1abqrjf80vXCUcYoJmwZztcV3U2PPNEzlQNq+UHxjzJ7rFZqK+Pb5TzSDWoqbxaAeRDqA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -136,99 +148,71 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 10/16/26 17:53, Puranjay Mohan wrote:
-> __kfree_rcu_sheaf() can run with allow_spin == false, e.g. from
-> kfree_rcu_nolock(), where it may interrupt call_rcu() itself on the same
-> CPU. call_rcu() was not reentrant, so commit 69abda97a09b2 ("mm/slab:
-> extend deferred free mechanism to handle rcu sheaves") added a fallback:
-> when !allow_spin and IRQs are disabled, the full rcu sheaf is put on a
-> per-CPU llist and submitted to call_rcu() later from irq_work.
-> 
-> call_rcu() now handles this itself. When it is called with IRQs disabled
-> (from NMI, or re-entered from instrumentation), it stages the callback on
-> a per-CPU list and re-issues it from irq_work. Callers no longer need to
-> guard against that, so always call call_rcu() directly and remove the
-> rcu_sheaves llist and its irq_work handling.
-> 
-> Signed-off-by: Puranjay Mohan <puranjay@kernel.org>
+On Wed, Nov 4, 2026 at 6:18=E2=80=AFAM Barry Song <baohua@kernel.org> wrote=
+:
+> > In my micro benchmark, this increases the request rate by 36% and
+> > reduces the average duration of each write request by 27%.
+>
+> Could you share your microbenchmark somewhere (or post it here
+> if it's not too lengthy), perhaps on GitHub, so others can
+> reproduce it? You could then refer to it in your changelog.
 
-Reviewed-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+Will do.  A note of warning: it's ugly LLM slop, and if I had written
+it manually, probably 99% of it could be removed because it's
+pointless garbage.  The LLM wrote it for me before I had any clue
+where the problem could be.  It helped me find the problem, but
+uploading this garbage triggers a bit of shame in me ;-)
 
-> ---
->  mm/slub.c | 28 +++-------------------------
->  1 file changed, 3 insertions(+), 25 deletions(-)
-> 
-> diff --git a/mm/slub.c b/mm/slub.c
-> index 8fbc6bf8ebc51..6c44f4495db5a 100644
-> --- a/mm/slub.c
-> +++ b/mm/slub.c
-> @@ -4145,7 +4145,6 @@ static void flush_all(struct kmem_cache *s)
->  struct deferred_percpu_work {
->  	struct llist_head objects;
->  	struct llist_head objects_by_rcu;
-> -	struct llist_head rcu_sheaves;
->  	struct irq_work work;
->  };
->  
-> @@ -4154,7 +4153,6 @@ static void deferred_percpu_work_fn(struct irq_work *work);
->  static DEFINE_PER_CPU(struct deferred_percpu_work, deferred_percpu_work) = {
->  	.objects = LLIST_HEAD_INIT(objects),
->  	.objects_by_rcu = LLIST_HEAD_INIT(objects_by_rcu),
-> -	.rcu_sheaves = LLIST_HEAD_INIT(rcu_sheaves),
->  	.work = IRQ_WORK_INIT(deferred_percpu_work_fn),
->  };
->  
-> @@ -6308,22 +6306,8 @@ bool __kfree_rcu_sheaf(struct kmem_cache *s, void *obj, unsigned int free_flags)
->  	 * we flush before local_unlock to make sure a racing
->  	 * flush_all_rcu_sheaves() doesn't miss this sheaf
->  	 */
-> -	if (rcu_sheaf) {
-> -		/*
-> -		 * With !allow_spin, we might have interrupted call_rcu()'s
-> -		 * IRQ-disabled critical section. If IRQs are not disabled,
-> -		 * we know that's not the case.
-> -		 */
-> -		if (unlikely(!allow_spin && irqs_disabled())) {
-> -			struct deferred_percpu_work *dpw;
-> -
-> -			dpw = this_cpu_ptr(&deferred_percpu_work);
-> -			if (llist_add(&rcu_sheaf->llnode, &dpw->rcu_sheaves))
-> -				irq_work_queue(&dpw->work);
-> -		} else {
-> -			call_rcu(&rcu_sheaf->rcu_head, rcu_free_sheaf);
-> -		}
-> -	}
-> +	if (rcu_sheaf)
-> +		call_rcu(&rcu_sheaf->rcu_head, rcu_free_sheaf);
->  
->  	local_unlock(&s->cpu_sheaves->lock);
->  
-> @@ -6532,12 +6516,10 @@ static void free_to_pcs_bulk(struct kmem_cache *s, size_t size, void **p)
->  static void deferred_percpu_work_fn(struct irq_work *work)
->  {
->  	struct deferred_percpu_work *dpw;
-> -	struct llist_head *objs, *objs_by_rcu, *rcu_sheaves;
-> +	struct llist_head *objs, *objs_by_rcu;
->  	struct llist_node *llnode, *pos, *t;
-> -	struct slab_sheaf *sheaf, *next;
->  
->  	dpw = container_of(work, struct deferred_percpu_work, work);
-> -	rcu_sheaves = &dpw->rcu_sheaves;
->  	objs = &dpw->objects;
->  	objs_by_rcu = &dpw->objects_by_rcu;
->  
-> @@ -6571,10 +6553,6 @@ static void deferred_percpu_work_fn(struct irq_work *work)
->  
->  		kvfree_call_rcu(head, objp);
->  	}
-> -
-> -	llnode = llist_del_all(rcu_sheaves);
-> -	llist_for_each_entry_safe(sheaf, next, llnode, llnode)
-> -		call_rcu(&sheaf->rcu_head, rcu_free_sheaf);
->  }
->  
->  static void defer_free(struct kmem_cache *s, void *head)
-> 
-> base-commit: e52c7c28dbece00f54dff26e1554df2fe59b02f3
+> I think this is a correct change. I wonder if we can
+> reproduce the issue even without concurrent reclaimers.
+> In other words, can a single thread running in a
+> memory-limited memcg trigger it as well?
 
+Your question is not really related to this [4/5] patch, is it?
+Because this one is just an incremental optimization on top of the
+real linked list scalability issue.
+
+A single thread means there is no spinlock contention and the linked
+list is only walked once.  I don't think the problem is visible then.
+
+> One thing I noticed is that you may not need to call
+> get_random_u32_below(MEMCG_NR_BINS) upfront. Could you
+> defer generating the random number until you actually need
+> to rotate the memcg? I wonder if this could further improve
+> your microbenchmark results.
+
+Good idea, optimization added for the v3 patch.  I don't think it
+makes much of a difference, but it really makes sense.
+
+(And I still hate that the Linux coding style requires having all
+variable declarations at the top.  Code would be simpler by
+declaring+initializing variables where you need them, and additionally
+it opens more opportunities for compiler optimizations, but... it's
+the way it is.)
+
+> Anyway, the compiler might be able to defer it for you.
+> I'm not sure, though. Could you take a look?
+
+The compiler is not allowed to because it is not allowed to make
+assumptions on what get_random_u8() does, therefore it must not
+reorder the call.
+
+(I wish C had a way to express a promise like "this function call
+won't modify global state reachable by the caller's pointers", there's
+just GCC's "pure" attribute which is too strong here.)
+
+Minor note: deferring the PRNG call will move it inside spinlock
+protection.  I think that's okay, but it can theoretically have a
+performance impact, and I'm not expert enough on this part of the
+kernel.
+
+--=20
+Max Kellermann
+Principal Architect
+Hosting Technology
+
+cm4all | Im Mediapark 6a | 50670 K=C3=B6ln | Germany
+General information about the company can be found here:
+https://www.cm4all.com/impressum
+A member of the IONOS Group
 
