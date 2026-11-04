@@ -1,65 +1,65 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15561608363C
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 16:50:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91A83606D824
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 16:50:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=PNHISvmm
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=BcsFgHaW
 Received: by kanga.kvack.org (Postfix)
-	id C28736B05D6; Wed,  4 Nov 2026 11:50:31 -0500 (EST)
+	id 9688A6B05D9; Wed,  4 Nov 2026 11:50:48 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B8ABC6B05D7; Wed,  4 Nov 2026 11:50:31 -0500 (EST)
+	id 919A86B05DA; Wed,  4 Nov 2026 11:50:48 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 968116B05D8; Wed,  4 Nov 2026 11:50:31 -0500 (EST)
+	id 794EF6B05DB; Wed,  4 Nov 2026 11:50:48 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 750BA6B05D6
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 11:50:31 -0500 (EST)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id F33F9C06C4
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 16:50:30 +0000 (UTC)
-X-FDA: 85398025020.01.E20D699
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 66E3840008
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 16:50:29 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PNHISvmm;
-	spf=pass (imf07.hostedemail.com: domain of aneesh.kumar@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=aneesh.kumar@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793811029;
-	b=JMMLS9BnjOB6c3OqKg9XfXWK+8E2IGTv0nH5UNeEScuuTAay8XaL6GAx5UNq80r2++khR0
-	Hvh8AYM7cLRTq5umnogQw+DmjTIstO/WdfqzE8pSE7mUzcY4hcOmfsg0yRTkdRoiV6itHF
-	x2Crl8vFbmZkDyfTX5DiiL9Jbh2cVsw=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PNHISvmm;
-	spf=pass (imf07.hostedemail.com: domain of aneesh.kumar@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=aneesh.kumar@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 475016B05D9
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 11:50:48 -0500 (EST)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id C12DEA83FB
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 16:50:47 +0000 (UTC)
+X-FDA: 85398025734.18.164C185
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 1F878C0004
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 16:50:45 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BcsFgHaW;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf22.hostedemail.com: domain of aneesh.kumar@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=aneesh.kumar@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793811029;
+	s=arc-20220608; t=1793811046;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WRcEmA8t5SF2n7O8yFpnu4RLNkBYJrrcArfzz4S7jNs=;
-	b=UCzJArt5IMUphz9bF40SVyFFm/zitHwldVF5y8yfn9MYcBwcGtO97cfatMVMH40ct1LUVO
-	R+vvsxVmuo3d4TNhUPIpUIaWfyAf5M+5IFd3inFh5l/R3xoSc8S+w8qyZ+NvOicERsHu/3
-	oZMiUF2NlZ2gtG39la/exNBQWLbaESI=
+	bh=53b3k88V+4YK0ed/aB3GyjvJWSCMRtAC7pioPudzavQ=;
+	b=kqzFaEmIhe11qHXsbyPAG71NHHuWSc3drzVzew916uZMbHWETbhLDJ5xE/kKRxaP1XZGA8
+	CtXeQ9LYy9nuwQrliQTF6JHmtGviph+Gf43kRG4xfkwV82PDHhW92hUrq7M8AC09269VKE
+	inG+EZU1d07Xj1QWPGAkbO2rhVN4IjA=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BcsFgHaW;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf22.hostedemail.com: domain of aneesh.kumar@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=aneesh.kumar@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793811046;
+	b=FC8d7+4RumTx5j0820mQQn4gXtemIQfO0WT1JEq6yNMVBSyqivKOw/VSctDvjVH//a7Qho
+	32sK1fUkk/eCKzNegNRVZ4g/JSU6rn2zKtjJhQSsSKdXPGcXKi5o1HTvR6vdeJGu61Py6L
+	VKvC0nt5DoxsOwN+OsUxkkPb+55nex8=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 05A5960A86;
+	by sea.source.kernel.org (Postfix) with ESMTP id 4ACE7403CB;
+	Wed,  4 Nov 2026 16:50:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 553961F00A18;
 	Wed,  4 Nov 2026 16:50:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBD141F000C1;
-	Wed,  4 Nov 2026 16:50:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793811028;
-	bh=WRcEmA8t5SF2n7O8yFpnu4RLNkBYJrrcArfzz4S7jNs=;
+	s=k20260515; t=1793811045;
+	bh=53b3k88V+4YK0ed/aB3GyjvJWSCMRtAC7pioPudzavQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=PNHISvmmuWjnQ+7HEMPvfWz7APstuBwKvr1lPLt9SDxVD52Vkc79+yVtOnwJmbyNC
-	 kF3VIBOQN8Tv/NCYUFGkB1Ewlk8dNuqsqTFNCvdi/M8s0mqa4qJbvFMf2QdSogLylC
-	 ThlzcIiqi5pt78dU2OO7HwbdrO2irxa0n2otgDaR2QqXqHJrXJxDl9msL9PSIy7Qwa
-	 Sf08ADUUdKytxN4QMa4AMfeT3c7TchiL7bLh4pChwjEKQv3xIwVie+GbtUsWpCCdU1
-	 DoA0s2U7su4v/sRB0t2KrIZ4x0ji+QvFqAQqB4xvWBnTdKepiQyTfwIEP0Ghi9AV1G
-	 hBXp3vzGdOQIA==
+	b=BcsFgHaW1+L6ZOqLsUsBV/0SNC6c27pt1H8wuHFTZYRwY+Npcj8vX8AHk2+RwM4he
+	 IS68mA7oiYFmU4q/jH/zlhvI6iqWncENlQm9nL+sN0Nj5miLIkzFMM+GSH6yWwyAvp
+	 P/cdQeiBvMa9awL0mUf9eWY3ht5/SijTs11Bm19gmS3WmQsE1I27NXL9nuaos1chnF
+	 gq4hzsXRHrkUo5oAaWg/7sxRvDiRI3FbSnOOGHZWFTHdrzLX9XAAMJBN6KD0GUaxnu
+	 WPlg/mBZugkZXfPbGCtgKw/PKvTYU5Q71r/NA5QJQmqVR4jH2Drepi7QLC0unyN/KD
+	 JT2knJku1Qi9w==
 From: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>
 To: linux-coco@lists.linux.dev
 Cc: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>,
@@ -123,27 +123,27 @@ Cc: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>,
 	linux-mm@kvack.org,
 	kvmarm@lists.linux.dev,
 	patches@lists.linux.dev
-Subject: [PATCH v9 13/14] mm: Assert CoCo shared allocations may sleep
-Date: Wed,  4 Nov 2026 22:15:54 +0530
-Message-ID: <20261104164555.3555725-14-aneesh.kumar@kernel.org>
+Subject: [PATCH v9 14/14] irqchip/gic-v3-its: Preallocate VPE L1 tables
+Date: Wed,  4 Nov 2026 22:15:55 +0530
+Message-ID: <20261104164555.3555725-15-aneesh.kumar@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20261104164555.3555725-1-aneesh.kumar@kernel.org>
 References: <20261104164555.3555725-1-aneesh.kumar@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: qm7qi6pxrangkx8gcab3ua8ew9dhg1wr
-X-Rspamd-Queue-Id: 66E3840008
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 1F878C0004
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1793811029-926493
-X-HE-Meta: U2FsdGVkX1/EJXlf5hicsbSe7SPZMqAameKRyGsd3JvCIscYMgkVQDebVRXTFA+NcVQ63mpCkIMqglbAAp2LBPplyPFQHuQ7jzoViYpOc+wksehBQpgIzKEJkoesdDMaQPngVnyTYPD1e9MxdFNdnHkJHxTMBHiEHWxVlfgz3Lq0KS5xQYn7PnBHtyWQc1Ru7xpuhxvmE3UF1vlF5HXr48kYl6B5oypd/H8ITuFnG9IC00MtMU2UOADwwZrm1BZERD/FJb8/EfPHyoiTIR5zH0SUISDAcv6kS0ouNRIbkKsZpPoAGAAwg/yuNc2uvXY7r0egI9tWeZQiF7uI4K2F1Ll5lBam0wbDlvmkVAPIjkxrlZLUx+VLvt91No/k1ZYacUa8jX4Vy7+jCP7ainaJdB7xE2GiVNf0M5U3+jLfkblIQwumwu+TdOqC/ivt+TQ9J8h7bl81iYM0WB1Yt7gLZehiinm6avbdhmBuIncCcxjEVWGDpAXiRigPm3UxpAYG/FTcmtTPYqRYIsYnmif5fvOnFuRu7fzNNs9rTcAHIzOhZ7K2R2xcm+p+VqznTzpwijy00eift70ucPAfA8YNMc5WGc9vVhiy0f0xugdWG17J7+EN7xBdd/pewUrlMn9qJvy4CBKssAev+xCAok+UnpaGV9/BMg1CF8YUIV1pXSugXYpigy/gULYai0VLnzoe6RS5aF162q3nFCqLfEpDWL/CIAWXbxBJitrU1dSIOv1XvfFstOgH0nUMYdBs5CU4Ldv7apAaTrEa4hNv6TxvxLIAyjgS21c3T2cKV+ixSwdv914f/6R50j+JetsGN6EYCt39uGCs6wr3uKtq5a9y+aH90ZSm7Xkmt1F8qaLKjF2/JsYfiUM8OWXhPTnpPoxZcJ3ji2UlNbEoCGYEslRhY3YPxWfTMJN0+ZBxXte8vBY7tK1w1H8jLb2q9ywDEZtyu0+WHfjAH6rAIDMUjXJ
- yq1ZL6e4
- 1xT6JNsyuLerHbAQjvGyD99LDkqz04Yz6nPgN9dPmZfbSIhizMvT14SPcC7rUMANNLA+vx5OmMp/WoIn8sLa7NkMDYeDgdzwD7XKxprqLg0L9LZOFzPzowJTnpaR1y2vSyLQzXA4qQr+MaDA4mF3zzgZ8mjxa8AmaWx7ZvYT7VijBc5lRTu4ZJBnNGXgA1wEKD7X9R2Zz0IwKCvCvsBcqUT4RavmyEbMGEgtltU/FyIGim+7OGAuKeJ1knQaKVoGYdeNQ4X+y23ULIXIOv/q7YTYFxTvu4dpnVBCgixL23vNIQUeqi9ixadyiolQRMTVQN7jwmjO5+/9++VJECO8YJWS2u3/d/NMwgoY7xwH9RwuMkxsBG4aKGeDsP7G4SBwOL967+l9LvzwL0v8=
+X-Stat-Signature: re6dursku1ka5sohgibaqtndbnb5fa94
+X-HE-Tag: 1793811045-111111
+X-HE-Meta: U2FsdGVkX19zWDXGpQ850GCdge+ft25dmvnVWiUNJ232zwhDR+VhhaApMV/4isKXZ5XvBven5yoZ0I9ll5suMVCbhEICcui1A+I/EwflBtdLcn5z5siExqOSnrTgVOr/YC+mUTSf2HICEq3RgyZ1dqGNnCAxJVRb4TI8kSDjRj99li0obGCwA518r+5dwowsv8H9n1DHQsHVtbk6afhs/2hSqQYVi2+3e5P52M7lmZZgjgYxtmKxRMvgVIzgy0XRuTLq4FrJmT2yeil83mbcEMhmErGoD+5CALyfNExgx3efhv2uqJ9aySnBGukjrC/syxScZmG79IsckBnQKVywpyIpWKM6fUIrpK5PDdHH0m5kVNiOMrqHP9uAyJ7+QmKlTbCuqoafW4yYQc1wB7jXvIEFXYikTF/Vmj52cYhwbQFYrqjTPKwoazC4/w8A6HJ/9m1n1k+2a0bXropNQO7vSpcqSDP66tKQXlzfyHzIn4BHp1ulxu/U3pGe0EU5rR/fTnJCT4BO8bnj+NRFunws45gtjhzq69volK4kUm6QI5QFEDITDiGSU3TSLdCrT7887QdZbGRZQnod1egkSvOnGfEA99KqUNdBjwZUQw8ESkb7R5y43T78KXotNa1wTdKCFt+F7XGFCfVwOmM/LRRk6RBwTd/9pQnFTLIVzXik+WgeofF6jKCi4640m1pu/tnzpOf6rvTq/Vg70TR35pfxbw2p1ZEQyYRjyHOo93sdVrB+cZP/wEN0IDLvMOP7rtVLJIFzR6Qk1KZa2BFlENnBboiRnVDH/YpxfwTwGjuQ2mL+inUc1D8ybs/HJlPYPcjc7fJ0aiSAlCtKgyog3IuOz2b8fi0jYOit3xI9PkWcA67n6BIILtdWvkVMvNrezpCMMFuJjx2eMBqYRqy9rWK2GCqTXBHNdYaMWjiGLpC+ETzAItRKDR+WSnux3jgVWjeOFYoRb8r0T/zz/IHMTkd
+ SivmNge+
+ jgJGbPI09n6ClMFW7cdpKKaasiSxWqSa0YuQnRibJPSrhJEl2vEvrnbsK0THoyJ+DENTf87yMM/fjCuyGyMnTXCvYSEqnwMp/g7gDwB14MGAXSk5LhsDSTKBjxGbbfbUF4AYQpBPULXL+SaZaMcUBfkcvn/eAZP2VZdfso/pQl+hap57jNiNDi2yh6HHbXQXfsHkxUwT/Vu8RzAbv/vzYWbofDcFsT8Te2+dWrJ78sBjYqu5BXUeSYQPKa0rtMN82IbqZeA+7DQ2RWMs2gas85AQ/6xWHrSky9yN68bA133EtWCE4nTSybrThXmVkuUXxNOR8QR6zc4/0rtrqga9f3/iRm0Ecq8w3r+MXbAM/ORJfkjBzMGPr/a+yOA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -152,38 +152,258 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On platforms with memory encryption, alloc_cc_shared_pages_node()
-transitions the allocated memory to the shared state.
-set_memory_decrypted() may sleep, so the transition must run from a
-sleepable context.
+VPE L1 tables are allocated from the CPU-starting callback, where sleeping is
+not allowed.  Remove the page allocation from this atomic path.
 
-Cc: Andrew Morton <akpm@linux-foundation.org>
+Use a blocking allocation for the boot CPU and record the resulting table
+order.  Allocate a page of that order from the sleepable CPU hotplug prepare
+stage for each secondary CPU.  Consume the preallocated page only when the CPU
+cannot inherit an existing redistributor or ITS table.
+
+Reclaim unused preallocations after the CPU reaches the online state, and from
+the prepare-state teardown when CPU bring-up aborts.
+
+Cc: Marc Zyngier <maz@kernel.org>
+Cc: Thomas Gleixner <tglx@kernel.org>
+Cc: Radu Rendec <radu@rendec.net>
 Signed-off-by: Aneesh Kumar K.V (Arm) <aneesh.kumar@kernel.org>
 ---
- mm/cc_shared.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/irqchip/irq-gic-v3-its.c   | 110 +++++++++++++++++++++++++++--
+ drivers/irqchip/irq-gic-v3.c       |   4 +-
+ include/linux/irqchip/arm-gic-v3.h |   3 +-
+ 3 files changed, 108 insertions(+), 9 deletions(-)
 
-diff --git a/mm/cc_shared.c b/mm/cc_shared.c
-index 40c130cce74b..e70c26df2d06 100644
---- a/mm/cc_shared.c
-+++ b/mm/cc_shared.c
-@@ -8,6 +8,7 @@
- #include <linux/errno.h>
- #include <linux/export.h>
- #include <linux/gfp.h>
-+#include <linux/kernel.h>
- #include <linux/log2.h>
- #include <linux/mm.h>
- #include <linux/mem_encrypt.h>
-@@ -106,6 +107,8 @@ static int __alloc_cc_shared_pages_node(int nid, gfp_t gfp,
- 	unsigned int order;
- 	int ret;
+diff --git a/drivers/irqchip/irq-gic-v3-its.c b/drivers/irqchip/irq-gic-v3-its.c
+index 9ad66253ab16..5628f497d389 100644
+--- a/drivers/irqchip/irq-gic-v3-its.c
++++ b/drivers/irqchip/irq-gic-v3-its.c
+@@ -197,6 +197,7 @@ static DEFINE_PER_CPU(struct cpu_lpi_count, cpu_lpi_count);
+ static LIST_HEAD(its_nodes);
+ static DEFINE_RAW_SPINLOCK(its_lock);
+ static struct rdists *gic_rdists;
++static unsigned int vpe_l1_prealloc_order = UINT_MAX;
+ static struct irq_domain *its_parent;
  
-+	might_sleep();
+ static unsigned long its_list_map;
+@@ -2892,12 +2893,35 @@ static bool allocate_vpe_l2_table(int cpu, u32 id)
+ 	return true;
+ }
+ 
+-static int allocate_vpe_l1_table(void)
++static unsigned int vpe_l1_table_order(u64 val)
++{
++	unsigned int psz;
++	u64 npg;
 +
- 	ret = cc_shared_calc_layout(requested, &layout);
- 	if (ret)
- 		return ret;
++	switch (FIELD_GET(GICR_VPROPBASER_4_1_PAGE_SIZE, val)) {
++	default:
++	case GIC_PAGE_SIZE_4K:
++		psz = SZ_4K;
++		break;
++	case GIC_PAGE_SIZE_16K:
++		psz = SZ_16K;
++		break;
++	case GIC_PAGE_SIZE_64K:
++		psz = SZ_64K;
++		break;
++	}
++
++	npg = FIELD_GET(GICR_VPROPBASER_4_1_SIZE, val) + 1;
++	return get_order(npg * psz);
++}
++
++static int allocate_vpe_l1_table(bool use_prealloc)
+ {
+ 	void __iomem *vlpi_base = gic_data_rdist_vlpi_base();
+ 	u64 val, gpsz, npg, pa;
+ 	unsigned int psz = SZ_64K;
+ 	unsigned int np, epp, esz;
++	unsigned int order;
+ 	struct page *page;
+ 
+ 	if (!gic_rdists->has_rvpeid)
+@@ -2990,7 +3014,16 @@ static int allocate_vpe_l1_table(void)
+ 
+ 	pr_debug("np = %d, npg = %lld, psz = %d, epp = %d, esz = %d\n",
+ 		 np, npg, psz, epp, esz);
+-	page = its_alloc_pages(GFP_ATOMIC | __GFP_ZERO, get_order(np * PAGE_SIZE));
++	order = get_order(np * PAGE_SIZE);
++	if (use_prealloc) {
++		if (WARN_ON_ONCE(order != vpe_l1_prealloc_order))
++			return -EINVAL;
++
++		page = gic_data_rdist()->vpe_l1_prealloc;
++		gic_data_rdist()->vpe_l1_prealloc = NULL;
++	} else {
++		page = its_alloc_pages(GFP_KERNEL | __GFP_ZERO, order);
++	}
+ 	if (!page)
+ 		return -ENOMEM;
+ 
+@@ -3007,6 +3040,9 @@ static int allocate_vpe_l1_table(void)
+ 	val |= GICR_VPROPBASER_4_1_VALID;
+ 
+ out:
++	if (!use_prealloc)
++		vpe_l1_prealloc_order = vpe_l1_table_order(val);
++
+ 	gicr_write_vpropbaser(val, vlpi_base + GICR_VPROPBASER);
+ 	cpumask_set_cpu(smp_processor_id(), gic_data_rdist()->vpe_table_mask);
+ 
+@@ -3146,7 +3182,7 @@ static u64 its_clear_vpend_valid(void __iomem *vlpi_base, u64 clr, u64 set)
+ 	return val;
+ }
+ 
+-static void its_cpu_init_lpis(void)
++static void its_cpu_init_lpis(bool use_prealloc)
+ {
+ 	void __iomem *rbase = gic_data_rdist_rd_base();
+ 	struct page *pend_page;
+@@ -3259,7 +3295,7 @@ static void its_cpu_init_lpis(void)
+ 		val = its_clear_vpend_valid(vlpi_base, 0, 0);
+ 	}
+ 
+-	if (allocate_vpe_l1_table()) {
++	if (allocate_vpe_l1_table(use_prealloc)) {
+ 		/*
+ 		 * If the allocation has failed, we're in massive trouble.
+ 		 * Disable direct injection, and pray that no VM was
+@@ -5436,7 +5472,7 @@ static int redist_disable_lpis(void)
+ 	return 0;
+ }
+ 
+-int its_cpu_init(void)
++int its_cpu_init(bool use_prealloc)
+ {
+ 	if (!list_empty(&its_nodes)) {
+ 		int ret;
+@@ -5445,13 +5481,66 @@ int its_cpu_init(void)
+ 		if (ret)
+ 			return ret;
+ 
+-		its_cpu_init_lpis();
++		its_cpu_init_lpis(use_prealloc);
+ 		its_cpu_init_collections();
+ 	}
+ 
+ 	return 0;
+ }
+ 
++static int its_vpe_l1_prepare(unsigned int cpu)
++{
++	struct page **prealloc;
++
++	if (!gic_rdists->has_rvpeid ||
++	    vpe_l1_prealloc_order == UINT_MAX ||
++	    (gic_data_rdist_cpu(cpu)->flags & RD_LOCAL_LPI_ENABLED))
++		return 0;
++
++	prealloc = &gic_data_rdist_cpu(cpu)->vpe_l1_prealloc;
++	if (*prealloc)
++		return 0;
++
++	*prealloc = its_alloc_pages_node(cpu_to_node(cpu),
++					 GFP_KERNEL | __GFP_ZERO,
++					 vpe_l1_prealloc_order);
++	return *prealloc ? 0 : -ENOMEM;
++}
++
++static int its_vpe_l1_cleanup(unsigned int cpu)
++{
++	struct page *page;
++
++	page = xchg(&gic_data_rdist_cpu(cpu)->vpe_l1_prealloc, NULL);
++	if (page)
++		its_free_pages(page_address(page), vpe_l1_prealloc_order);
++
++	return 0;
++}
++
++static int __init its_vpe_l1_cpuhp_init(void)
++{
++	int prepare_state, state;
++
++	state = cpuhp_setup_state_nocalls(CPUHP_BP_PREPARE_DYN,
++					  "irqchip/arm/gicv3-vpe:prepare",
++					  its_vpe_l1_prepare,
++					  its_vpe_l1_cleanup);
++	if (state < 0)
++		return state;
++	prepare_state = state;
++
++	state = cpuhp_setup_state_nocalls(CPUHP_AP_ONLINE_DYN,
++					  "irqchip/arm/gicv3-vpe:online",
++					  its_vpe_l1_cleanup, NULL);
++	if (state < 0) {
++		cpuhp_remove_state_nocalls(prepare_state);
++		return state;
++	}
++
++	return 0;
++}
++
+ static void rdist_memreserve_cpuhp_cleanup_workfn(struct work_struct *work)
+ {
+ 	cpuhp_remove_state_nocalls(gic_rdists->cpuhp_memreserve_state);
+@@ -5876,6 +5965,15 @@ int __init its_init(struct fwnode_handle *handle, struct rdists *rdists,
+ 	if (WARN_ON(!has_v4_1 && rdists->has_rvpeid))
+ 		rdists->has_rvpeid = false;
+ 
++	if (rdists->has_rvpeid) {
++		err = its_vpe_l1_cpuhp_init();
++		if (err) {
++			rdists->has_rvpeid = false;
++			rdists->has_vlpis = false;
++			pr_err("ITS: Failed to prepare VPE tables, disabling GICv4 support\n");
++		}
++	}
++
+ 	if (has_v4 & rdists->has_vlpis) {
+ 		const struct irq_domain_ops *sgi_ops;
+ 
+diff --git a/drivers/irqchip/irq-gic-v3.c b/drivers/irqchip/irq-gic-v3.c
+index 94873646d46f..361ab07d7d66 100644
+--- a/drivers/irqchip/irq-gic-v3.c
++++ b/drivers/irqchip/irq-gic-v3.c
+@@ -1322,7 +1322,7 @@ static int gic_starting_cpu(unsigned int cpu)
+ 	gic_cpu_init();
+ 
+ 	if (gic_dist_supports_lpis())
+-		its_cpu_init();
++		its_cpu_init(true);
+ 
+ 	return 0;
+ }
+@@ -2056,7 +2056,7 @@ static int __init gic_init_bases(phys_addr_t dist_phys_base,
+ 
+ 	if (gic_dist_supports_lpis()) {
+ 		its_init(handle, &gic_data.rdists, gic_data.domain, dist_prio_irq);
+-		its_cpu_init();
++		its_cpu_init(false);
+ 		its_lpi_memreserve_init();
+ 	} else {
+ 		if (IS_ENABLED(CONFIG_ARM_GIC_V2M))
+diff --git a/include/linux/irqchip/arm-gic-v3.h b/include/linux/irqchip/arm-gic-v3.h
+index ea5fd2374ebe..a5565a745100 100644
+--- a/include/linux/irqchip/arm-gic-v3.h
++++ b/include/linux/irqchip/arm-gic-v3.h
+@@ -621,6 +621,7 @@ struct rdists {
+ 		u64             flags;
+ 		cpumask_t	*vpe_table_mask;
+ 		void		*vpe_l1_base;
++		struct page	*vpe_l1_prealloc;
+ 	} __percpu		*rdist;
+ 	phys_addr_t		prop_table_pa;
+ 	void			*prop_table_va;
+@@ -637,7 +638,7 @@ struct rdists {
+ struct irq_domain;
+ struct fwnode_handle;
+ int __init its_lpi_memreserve_init(void);
+-int its_cpu_init(void);
++int its_cpu_init(bool use_prealloc);
+ int its_init(struct fwnode_handle *handle, struct rdists *rdists,
+ 	     struct irq_domain *domain, u8 irq_prio);
+ int mbi_init(struct fwnode_handle *fwnode, struct irq_domain *parent);
 -- 
 2.43.0
 
