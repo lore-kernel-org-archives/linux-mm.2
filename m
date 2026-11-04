@@ -1,133 +1,152 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77C0F606D804
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 16:15:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57A73606A32D
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 16:15:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=soleen.com header.i=@soleen.com header.a=rsa-sha256 header.s=google header.b=RyDWPagN
+	dkim=pass (2048-bit key, unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm2 header.b=aj2d1zPw;
+	dkim=pass (2048-bit key, unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=v6mnL4cj
 Received: by kanga.kvack.org (Postfix)
-	id 817196B05B2; Wed,  4 Nov 2026 11:15:50 -0500 (EST)
+	id 753266B05B5; Wed,  4 Nov 2026 11:15:55 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7C83A6B05B3; Wed,  4 Nov 2026 11:15:50 -0500 (EST)
+	id 72B576B05B6; Wed,  4 Nov 2026 11:15:55 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6B6EC6B05B5; Wed,  4 Nov 2026 11:15:50 -0500 (EST)
+	id 641626B05B7; Wed,  4 Nov 2026 11:15:55 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 40B806B05B2
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 11:15:50 -0500 (EST)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id AB7C61A0779
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 16:15:49 +0000 (UTC)
-X-FDA: 85397937618.13.1AB63F8
-Received: from mail-ua1-f44.google.com (mail-ua1-f44.google.com [209.85.222.44])
-	by imf30.hostedemail.com (Postfix) with ESMTP id C298880004
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 16:15:47 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=RyDWPagN;
-	spf=pass (imf30.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.222.44 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 3B3C66B05B5
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 11:15:55 -0500 (EST)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id D2D21A07BD
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 16:15:54 +0000 (UTC)
+X-FDA: 85397937828.16.D38B9BF
+Received: from fout-b7-smtp.messagingengine.com (fout-b7-smtp.messagingengine.com [202.12.124.150])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 8AE3040002
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 16:15:52 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=arndb.de header.s=fm2 header.b=aj2d1zPw;
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="v 6mnL4c";
+	dmarc=pass (policy=none) header.from=arndb.de;
+	spf=pass (imf01.hostedemail.com: domain of arnd@arndb.de designates 202.12.124.150 as permitted sender) smtp.mailfrom=arnd@arndb.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793808947;
+	s=arc-20220608; t=1793808952;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=OJqTJ4xyg07hJqswmJ5AikQ26UFbu12PW8dHC4PPKvs=;
-	b=kPQMkG/V70BGRSuj/GHo4JwGfbaN7H9IovcW4YAoJA/8ZEKzcmgNAJu4jHwZg186oLsO8Z
-	EV8pm8/D4zimSq35IWdpen+PQn6nbKaTqyPVjkuTtFg0My/90MmPLNpJIkMQaw3xWXdN6D
-	+cScZApwQXxZjscwKvNi//mfH+EnFq0=
+	bh=8e/mss8HflpUPukSo1l7KMk+icGVWWwgbeYpf+2EZ0M=;
+	b=JaLKG1ltPvjCZtLGhwHRbMhwsx9mDP8OWjAO962Z+TrDvf0d7GdSLekSNabtDcHZHwJE8t
+	FdqCJPvA2N/HMmWtME8Ht3p/tiNM6Z+qIXFb4pd2XGg+E6YsWulu7UONPNhG41oz262tbP
+	F5l3TWwzsqk7fGw5WMysPd7OhaIPOSQ=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=RyDWPagN;
-	spf=pass (imf30.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.222.44 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com
+	imf01.hostedemail.com;
+	dkim=pass header.d=arndb.de header.s=fm2 header.b=aj2d1zPw;
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="v 6mnL4c";
+	dmarc=pass (policy=none) header.from=arndb.de;
+	spf=pass (imf01.hostedemail.com: domain of arnd@arndb.de designates 202.12.124.150 as permitted sender) smtp.mailfrom=arnd@arndb.de
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793808947;
-	b=0JB00pmRtVStUR252Q9zY5fjomsbabD/g/wLftOjYDXOiDIzDm4wKuGs20DQ6DBiuUae5c
-	fE+Xo3+Jrcwusnhp2Akru4h3OsjsKPREl+WZN+Qqltq6ZUG3u74RHceDlLXapJyORf2cCj
-	xvVL49/rwhQz9ve0BFMz3JCCzJAWsR0=
-Received: by mail-ua1-f44.google.com with SMTP id a1e0cc1a2514c-9906034086cso231178241.1
-        for <linux-mm@kvack.org>; Wed, 04 Nov 2026 08:15:47 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1793808947; x=1794413747; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=OJqTJ4xyg07hJqswmJ5AikQ26UFbu12PW8dHC4PPKvs=;
-        b=RyDWPagNUScxHXqGIHSapUXDqBtICVVN8VsjPtgONKSFotG/HeXfx39WJbDS0xB/dm
-         ajI0c2c4wYy816VbZRtV7V7bIIhq0AFdRPf4qXiA1AKUsM4RZ4L9vPy1Cm0HVoufjdcq
-         dTKRqQhbsgntg11f3x3nGsKUvErPs4CgSCvloQtx8YNyZ7hDJ436Vs5SLYf4K9CQjF+s
-         3HoJfv42ylK4e5ZPpOLskueWKC2j6mGtxVkSmvhEbhbMDih/OsgX1dIGZu3Q/mibzkXK
-         MndQoc3rSRPIGPDcblltHqhqjLKXj/1Jlkuoa5XYcpKeY0p1uNCgYOHnT70DbzYMWftj
-         EmZA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793808947; x=1794413747;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=OJqTJ4xyg07hJqswmJ5AikQ26UFbu12PW8dHC4PPKvs=;
-        b=oWdwicLCkc3cVaHzKCS+a6TtJ6+8bvJdl3ZUY3Kvbqjt9u+jp4/fwZEmEZ4C9+t38t
-         6x2Nc8H6H3WB1qB7D3K21C50RB3IXEum9sVIf3x7hq2gRLC8yn4hQauFUFoqeQuoNn7z
-         eEz9R5TH584QXwgG9ym3n9H5T6DPUVVoVkoZmJhO4VQMyP/+pPtKZP8qx+quHJ96ZtOK
-         1iMHQ7b/CdvycUmsRDsCVUlDWhDV8pW8ukzTUzCYzsD3RzfIiTy6zzMEI82n4CBcPgBW
-         O+A3TEUC/oSeq3ExcGvlpuTnRPe9V5Us5q1WOt/oEPuUguQWLHPMJwKZwU+SbHjK7EuL
-         outw==
-X-Forwarded-Encrypted: i=1; AKwUvBzzKCRjhldC96CVR1f1SVsLZVKbxWgetHVYl4fKdV7xW/M4eJURw6TT9oLNgouKEzEV+M+MMlze0g==@kvack.org
-X-Gm-Message-State: APuU4Z/NXzeysmoL/Vn3fQlCZ09ObZwLluOqk9s+FQvxQPOifxrbEa1c
-	TheNJ4VSJnA6MuhMAq1t6K+Vbc1bzKiOMW0MFrn5JXgGUuXgdChdqiYzD4sPe/8hFs8=
-X-Gm-Gg: AYBFou1A8fR3ZyzhSzjHlGa5ZLPM2FO9Ska8PDxKFdgJ1baVhpxHFDtswBTFc0cecRa
-	hPNH6dRthvoxxXP5cJ+D+VbnZIE7f8+c1l98TNBfmKPtLwMgX644AeKSjJSpxjAhvFxxaGPZBnk
-	JuDFXwS3PbQRzmni/wlLaOHCMUoaq1n0m1KzM7bYOr/5+Cau3osrnjvWMevijs1KSSOJ4sy1q1Z
-	QDrz++OR7hrOEb26A6C4/YUyKYP2lO3q+CMxKHjwyZwh4MMYIXfX4klVHa/Tx6ghCdSMtT0MY7D
-	J7pf48/P6WU/NjwA+ybjMGXamO8y4THt40L+G7uzU9xMUPPOs/narDx7kPf0D4ATP56AwkoIERI
-	KXgmCRXTaaTKH0KpmAo6pyEUhr+KvaSJNshTdD5oyAO0tKAH8dvIGjzCx39b7HU/1LpJvy7SPjY
-	/1jjITbBsOcjf1d7EGYNnCvKIe3djp7GqoH/Qti2+0ni/SgOD/pazNF7ZmQepy0ANZ6zO8F4Ojb
-	8FjokyydIiVoI+Jr9IvMxtZt0idd6qNrPNvopnytbSpa3gEMwXpWvoTFZMh6GHRXyaj5osQXqJS
-	VE76TuWjCWeRDhryfXLomlBnlEzhV8FGtJNarjh1rsD6H8nR7aHFI09MZkUz4s65w7tCFfzvmo+
-	krT8nWQ6l8QF/9249gSjwLsPYEFN+
-X-Received: by 2002:a05:6102:8092:b0:7cc:9d82:61e2 with SMTP id ada2fe7eead31-7d0725cfd86mr6050535137.13.1793808946717;
-        Wed, 04 Nov 2026 08:15:46 -0800 (PST)
-Received: from google.com (16.49.199.35.bc.googleusercontent.com. [35.199.49.16])
-        by smtp.gmail.com with ESMTPSA id a1e0cc1a2514c-998d8afbfe6sm2262989241.3.2026.11.04.08.15.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 04 Nov 2026 08:15:46 -0800 (PST)
-Date: Wed, 4 Nov 2026 11:15:45 -0500
-From: Pasha Tatashin <pasha.tatashin@soleen.com>
-To: Pratyush Yadav <pratyush@kernel.org>
-Cc: David Matlack <dmatlack@google.com>, kexec@lists.infradead.org, 
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	linux-mm@kvack.org, Alexander Graf <graf@amazon.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	Christian Brauner <brauner@kernel.org>, David Hildenbrand <david@kernel.org>, 
-	Hugh Dickins <hughd@google.com>, Jonathan Corbet <corbet@lwn.net>, 
-	"Liam R. Howlett" <liam@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>, Michal Hocko <mhocko@suse.com>, 
-	Mike Rapoport <rppt@kernel.org>, Pasha Tatashin <pasha.tatashin@soleen.com>, 
-	Randy Dunlap <rdunlap@infradead.org>, Samiullah Khawaja <skhawaja@google.com>, 
-	Shuah Khan <skhan@linuxfoundation.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Vlastimil Babka <vbabka@kernel.org>
-Subject: Re: [PATCH v3 03/10] liveupdate: Allow file handlers to mark
- retrieve failures as retryable
-Message-ID: <autW_3fjUS_hEhZf@google.com>
-References: <20261103010216.3447716-1-dmatlack@google.com>
- <20261103010216.3447716-4-dmatlack@google.com>
- <2vxzv76ck7n9.fsf@kernel.org>
+	t=1793808952;
+	b=kqBqWgabKAg3+3rnDj7VxtLxQ3cLVvm2DDyxyvJD2OIHy1oMyIIkb/Rh+ycvtle12WWRr7
+	z2kNq+95u55Cd4f2ByPLSn0stJ1kIi0ZD2d0ZQM5H9k6XUHsLJFfzWBZqHJKJbGZgcK5bH
+	nF78cZRLmx0N15EHrRSvhbc4IJikRiM=
+Received: from ams-compute-02.internal (ams-compute-02.internal [10.64.2.62])
+	by mailfout.stl.internal (Postfix) with ESMTP id 7C72A1D00034
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 11:15:51 -0500 (EST)
+Received: from ams-imap-03 ([10.64.2.23])
+  by ams-compute-02.internal (MEProxy); Wed, 04 Nov 2026 11:15:51 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm2; t=1793808947;
+	 x=1793895347; bh=8e/mss8HflpUPukSo1l7KMk+icGVWWwgbeYpf+2EZ0M=; b=
+	aj2d1zPw50QYcIlxC/Bxzi2+vTfvUHUMqEboPUsUsilu739JezLAKnLkiMvxO2fR
+	sTbZEV1Z4/SC4JP7xL1iN/EpU6eWjLzTNNGAX5IlZgpQnbpj3XmJi92J/XeeIKRX
+	NWRVqO+OED9hC3e7QD6o6vVbYhhzBUPtd6Qh6UEvmiL4c4RJQXEk+U7CbC4OV/gY
+	RkhC3z9t5+jUaItWbz/G24RS7PPz3wHhLVSvfeVli4OlrTIabU0PY5SVaWu0aXa1
+	XPNZ1DyCvcPhflONNE/QLHG0+fTCr0vvkPnBlDG7dAc/jAs/fU80K4yF38SOoLds
+	QRdJL0T9Guz+R6yvhx3oZg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1793808947; x=
+	1793895347; bh=8e/mss8HflpUPukSo1l7KMk+icGVWWwgbeYpf+2EZ0M=; b=v
+	6mnL4cjqtKbQWST2Uyr6CLmgnnJXp0XPmBwOnxGlLSdFhHd247WLSSUCSJQC4d3O
+	ylEOErFz8S7enBEEiXnjN28tajihe5SuxSKjIQXzlKMS2PobeKpTKFcx9ZRTI7Dg
+	40JlkHF48F28sI8idrRf18tkTHx/AOQSXI/hmdKY8PmtSGzXjbeXpU3Yj/xLJtjN
+	Kx3o7Nmoq/9iV+6W9XnESQ3lqysJIhEdIQgYCwcPUpdDmu5DrSs+M12rYHmz40HA
+	xH5eWSDaTvYuAAtJsDfq4TEPUhA6a4oKmIODJ/sEH0ApW4y6isS28XoIvgddUPtP
+	YW5nlhsFWd7bcJdAuJpnw==
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-08;
+	repo=github.com/dkim2wg/interop; date=2026-10-28; sw=lmtpprox;
+	action=sign d=arndb.de a=rsa-sha256;
+DKIM2-Signature: i=1; m=1; t=1793808947; d=arndb.de;
+	mf=PGFybmRAYXJuZGIuZGU+; rt=PGxpbnV4LW1tQGt2YWNrLm9yZz4=;
+	s=fm2:rsa-sha256:iF+vRNwLsQIENYHPTCESp5SibWW4JZLjW3z85Nv0IP0Ir5z
+	CwXumeB6dYj2Vp0fNCT+jVGt/vuNFUw6B3se7tjmscCTZ61RF+yJtCgOq6xReZIo
+	eQFpBkItj0ZNZp9b8CqqIU7NvPuY1q/fs6rTHxi/npz9Ij6wsxEcYCMIctZ7rD5k
+	9RbPrIXTJ5URTxrQlzY2c0N7oeZK1qGPqxTLmRcWu9XHCs4KJWXeZaEnEfQY4v6Q
+	+xvgp3Nle2SSA4iOI8ampLrUHyzwdOZyi06+A9zAyIdJoYv9LVwG3HTNq7VsXukn
+	7QFUVjKQRD420yRMqK21jL4a0Wpaz5LtYS/8cRg==;
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-08;
+	repo=github.com/dkim2wg/interop; date=2026-10-28; sw=lmtpprox;
+	action=mi-m=1; hc=12;
+	hn=cc,content-transfer-encoding,content-type,date,feedback-id,
+	from,in-reply-to,message-id,mime-version,references,subject,to;
+Message-Instance: m=1; h=sha256:4kPFI1pl94svt6FcJI7GTH40I8NrmwpOCYY09r/CUgI=:XtofUmLNSAlOeC+jHYzUkvhsqx26tdVnYTmf0pcPtXo=;
+X-ME-Sender: <xms:MFrrap-1uafiamLHhvCFmcoS4CUnt4Bur8aaBT7rExtfg328FFqatw>
+    <xme:MFrraogCYm9ARQueCpMSAm5L6Q8RIRSsoE7aCr_GJnTAoGg5JUuggYEjpjpPl75SN
+    LYX6z-dG5QOhFYZngw6ymDok9GRsMc-K5FnkkT9lGFjSzDMFOxLNQg>
+X-ME-Proxy-Cause: dmFkZTF81vXp6AjtNjpU9fMobsGT/c5iTkulkiDk5XSLgAmxn4T8gi5LrjTCSom++OOSJp
+    S2tulKct1nDA+/4XskQ6V0zYzSSj4jJO9hqiWWuJfTvGas4k/fHo47PZRKoymKbR3PQgML
+    2dTuv/53dVjIAqnKBA5IkbPhcmZf/oSRTxjvhPJ2gpIxG2dOBOSW4TxQwj5cWS14Knfquj
+    K9ScKr/Bg+CXlr64X+IJQ/qM79dWbgPcAoxxCoq6KU+EVOAJ3N4tLM0yQMk9/hNa07GdMy
+    59Nhj+ZBwUTZEH10vlXr+FFQrKeV7DXhD+xT3yKq3v5vVzj0mvPVmURRtfEXBOPWMN0trS
+    ZF//I2WkPtCi3Qulh/5asCXoNTc8gRzqwkvujCOTyY4xORAFUMw9P7mPEzXCMXnkqK0Z4q
+    sMNGUvmi1qFFW2M8afJio7TiobOd5/m2b1aeUZvufIiruyVNPVhqsmgPSHrvO1HJIT46AZ
+    w8d1RK6CVYTkmH6sLW6UjCZOeuVxd9/XJpxR9NzVNguu2q8fUuTFZdL9Hm05FpqLTIJ1Y7
+    460Kp475z4B+lqotzzthqkfj1zOo5Hy1QzvhJd1iSPwX6GXApUFZB4jxMs7o/iQsxHpDgO
+    pXQ/gfnLMc3iEdzdm4nXUOTfdJNfkpc0PCQBJotvn/hoCGUO6nVGhHbTDu0Q
+X-ME-Proxy: <xmx:MlrrapJ6W8L3Jsa2QGHNLYu_3Q5gPZkIcv347ZF-LLTQXzh1U0ilIg>
+    <xmx:MlrrarLTrGTisFewbQlMo6yPl5XT83csYL-j1jODSVOOa-UmGOLy3Q>
+    <xmx:Mlrrash3oDteop0DiCdnKUwlJ5SKHiqdKA8rzfP3tjhWNB6HjrTwrw>
+    <xmx:MlrratPAwi1z_dXfsxwU0dawiR3Btr_9Hts7mrM1VN24OcWAyUHYvQ>
+    <xmx:M1rrao3geqTf4E020kt9bow0G8d85W2NCqAnl3n-W2SlxB3ti3ygPajU>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.ams.internal (Postfix, from userid 501)
+	id 5CB9832A0093; Wed,  4 Nov 2026 11:15:44 -0500 (EST)
+X-Mailer: MessagingEngine.com Webmail Interface
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2vxzv76ck7n9.fsf@kernel.org>
-X-Stat-Signature: y6uymf4kbp165je8fdz5g49fpw4bfm5x
-X-Rspamd-Server: rspam01
+X-ThreadId: AsZFqsyIu97-
+Date: Wed, 04 Nov 2026 17:15:00 +0100
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: "Thorsten Blum" <blum@kernel.org>, "Mike Rapoport" <rppt@kernel.org>,
+ "Pasha Tatashin" <pasha.tatashin@soleen.com>,
+ "Pratyush Yadav" <pratyush@kernel.org>, "Alexander Graf" <graf@amazon.com>,
+ "Andrew Morton" <akpm@linux-foundation.org>,
+ "Changyuan Lyu" <changyuanl@google.com>
+Cc: kexec@lists.infradead.org, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+Message-Id: <6c67f712-fcdf-4d80-b212-5847ba57283d@app.fastmail.com>
+In-Reply-To: <20261104160931.137174-3-blum@kernel.org>
+References: <20261104160931.137174-3-blum@kernel.org>
+Subject: Re: [PATCH] kho: Remove redundant 0x prefixes
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 8AE3040002
+X-Stat-Signature: gxe4kjy7xekbij8czhtnizjaaunkysxz
 X-Rspam-User: 
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
-	autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: C298880004
-X-HE-Tag: 1793808947-591948
-X-HE-Meta: U2FsdGVkX192VwVEy3m4Pq4+CWnRNGAHG16rMT6lzy78wOFjBj0ZRvZV1hhgJwNGurgtQMzESM2IW5jqZyEpHdZMWaQT0yhsMc9AKpcsRVQQW27jIvVk0RlEFDeJR+QRmEYs1O/urv7p94wCje4aLVyjwh8g0nZ05yeX+RLZzR198Hh214ixAzDpEMtQjy66F9C2gB0GdPS4fiTJnMkevStBk0U5itZhJ6B0ATp8eWi55KHWgjW37/bOUC6j/UgoX66oT/+yG++t34Uvs23BQdohLZkAE9c7o60FNkNVWz9UDjKu2CljFbaqh8LbOW15/1vmsDTNcoTRqU60tLIlvuD+WxnYir3trZxM5cSK0CLaZVx5DBVYcscUAmR7/f9RotIHK0sLyv30QSU5HhRYlCYXTiZ/2hHr9TXcBSqhCzvxJeZlyiuUJsGooLPyh0V1S+zOtUDj+oEYapR2kCZ+Vcf8cZyNS8wbLnt0kc6qeFefEjdsAxbpo3lbeJkyFTu+NFdbNQFAtDxyXyD+fsqoVFmt7sudHCA0QZA3GHbEw7ywOdVI3uuGhpLtwNTQqkzTSDxeOOM1g+0UXOIiZh5GN71Al1OVGDc6UEJcjQu/8NS+UgDKKKVsqPoyC3pY1M84vNT7WdMNUnt9EnBB8RVHsWIA2kPFHOHuWW3DCslvNP9A9lBaFvdYMDISD+icO2esDf1nJhuqT8ER7L2OSxXf/J1JszH1cs3eQv1W/zKfvm3PTum2JRlPT0hzOXBkppvMuGwEP4gKBj8FEC2B19xfQOqiKh2zeva93A3K4MKYPLNx6CGCKevv8Uvya+xnvP7gCMlGAVhy5zxs5soSWlEt1OZWjuZEw6eGBEaCEzgzmpOWwuXPXD0tXydwJkdOpqufSGFic4P70iekJ8don/dKkzX2U+4bmdNzEpT4gdS4xwrqxO6B2Ic6eaisaYseJDN1qkjHJ97OgbahvFv560b
- cMqqJcDK
- 1IUf3eGdoq6OnMnD0VimVFaHjw01H4kF2MEt3wrn5a24XR2hvH6ar0a2HRd+oTvEXlRcBB/feXBMtIbecGsvRMVIHust9lJERktGdtPceO0nyEJA/jI6hbSmcZLBnf00hb6LfEeKQ0rSBsJBX4WKyFaOqyjE9EWI1OmlCO//31dgfldkpaUnxMSEjL93Q2faeljfL5woC8S96LFswcVQ1UJn0MlCrMCVHMZyeaLv0XWr8xYEBQbUkFsn5idua2IRO7YLy25+N3uGmreN/fJfKWLjsAOSxNjnoeu3fNf2UfkxVOdTPo5FaTJVw6V+Hgre3BENkRn8QvtXXfAYs6TBpWDQo8/SLJ7cyG5gKFrjp8XI4pFXAPaX7T9e3XQ==
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
+	autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1793808952-469554
+X-HE-Meta: U2FsdGVkX18y6LMf2SbaWK+Tj4S8cgtKHIt7trUXAFtS41VmsNQbMNLTFcebdwv7TNhhbXZ9eMGdgZBhcINS6pSKurOctDOvCItHKEzMKIX1JYh1O1BEq9c23fRwDkmlvxcjHl2I/nCiW3X5TJ2Qa3JCdpHZ7r/soTCC0umotf/xYUnlD8R+xQv4sBL6NIh98dJGyLxzxWFwu3dAMDZh83pJU0DpmayAi2xLsb2RZjnSUNdPxJH7wpaz7mUfEtQAV4XuV9ViSR3NYqUaxZP2WobtGqomHsZ8jy89K2xb7x+qzesGyjeMQPq92Y7QzzZeJWwoCQoYHFwmgUvFwA5HH0gsQXwVhqIzQjwMUlnAGG8/aQtQTTC9nnilHhQW5eWGYYbwZB0ag2VzSYen2VkfrHHcy/pj5CbgqVygmuh8Zp3OrLN/s1vSQxpvhsB6+aBNguwpYifXYku0FW09p7de/6VQU/8JmQeXk0Q7jw4nKQskWAfQhRtoW4pDm94vf55zMSpK33gfsXb4qG/Wl5wo2saWnTOUwZln9y5dmX9FVBDDiDQpMnMwf6sdzl02MhibnCkM0mz5RyQi2k5weBrEqCqjlye8JNC7g2fKh1/bgun+97KSa76Uo2bhPlaII5Ui+f9RnpGLLlHZ3qrpcCJBFYNbgmL7vq/uVJ/GGvG5lYscObwVwSzASxn5o58f2sOb8TInHAeqltYi4wTLJ1b5n9RnIRyH5ybADF787/C3SZQjZmPCw+RjIo/T1NX9MfS+QvX+zy/FZG/8UtwAFtdzH7+LmqE5wS+mgCqRletsV83FZ1HdsXDdlw2mA36pjZbMDxDx3lXtTGoA4dkIqnm/S+6L/5IcsEi0a1A9JYeeE618oimhBJUxfiW4eegZstPm0mTBP3R8puitZf8StAD253zTkz+zakVWVmCeC/tFqxK3W7wcTIljMzEnhnRRZxF6nq47knEwdTxMygjp9Qe
+ Bl3PYqz7
+ NAKrqv3Y/ZyOw8bHoR4frTFec/VdX2Z7ahB4HgJ7eJBweKbD/RiSAEtxfC8V+4X0Kdc70J5ImBFrJEr3oajp8dH6h5I6S8HihpSDt/ryLGhiei9i6VW3vyyLyirO6v6Bn7dz/q2irJpmt9dYq83Wdx0DLR+r3xh0YmOeIT0RF/l30qOiPB/iqt/JgIjppoi86wB9bqWEm7vQ+imX7tKNEeJitUyTbEmBlRf0Bz2jiP6Fxcv02heuSfGmrQ+7EE3JP9PyX8wy9tP9J/BiRnRkI6b3O+1OleWALmjpgHN2rJ3Ra7BclMK5Ih4xvSpusa/gwZ+U5xoN1y0NV41YSWt4LyYXRmw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -136,39 +155,25 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11-04 15:12, Pratyush Yadav wrote:
-> On Tue, Nov 03 2026, David Matlack wrote:
-> 
-> > From: Pasha Tatashin <pasha.tatashin@soleen.com>
-> >
-> > When luo_retrieve_file() invokes a handler's .retrieve() callback and it
-> > returns an error, LUO currently records the error in
-> > luo_file->retrieve_status and blocks any subsequent retrieve attempts.
-> > This is necessary when the handler has already partially consumed or
-> > freed the preserved KHO state.
-> >
-> > However, with user arguments passed to .retrieve(), a handler may fail
-> > early while validating caller-supplied parameters (such as a missing
-> > argument, an invalid or read-only target file descriptor, or a non-empty
-> > target file) before touching any preserved KHO state. In such cases,
-> > userspace should be able to fix the argument and retry
-> > LIVEUPDATE_SESSION_RETRIEVE_FD, and if the file is never retrieved,
-> > .finish() must still run to release the preserved KHO state.
-> >
-> > Add a retryable output flag to struct liveupdate_file_op_args. When a
-> > handler sets args->retryable = true on error, luo_retrieve_file() leaves
-> > luo_file->retrieve_status at 0 so the retrieve operation can be retried
-> > and .finish() will still clean up the unconsumed preserved state if the
-> > session is finished without retrieving the file.
-> 
-> Should we give some sort of signal to userspace whether the error is
-> retriable or not? How would it know it can or should try again?
+On Wed, Nov 4, 2026, at 17:09, Thorsten Blum wrote:
+> The %pa format specifier already includes the 0x prefix. Remove the
+> redundant prefixes to avoid printing 0x0x.
+>
+> Fixes: c609c144b0e8 ("kexec: add KHO parsing support")
+> Signed-off-by: Thorsten Blum <blum@kernel.org>
 
-The goal of args->retryable is internal kernel state tracking.
+Hi Thorsten,
 
-From userspace's perspective, LUO ioctls behave like any other syscall 
-where errno is the signal: userspace decides whether and how to retry 
-based on the error code (e.g. retrying on -EAGAIN, or picking a 
-different mount on -EROFS/-EACCES, or adjusting flags/arguments on 
--EINVAL).
+The change looks correct, but I see another problem in the same line:
+
+>  		if (err) {
+> -			pr_warn("failed to mark the bootmem region 0x%pa+0x%pa: %pe",
+> +			pr_warn("failed to mark the bootmem region %pa+%pa: %pe",
+>  				&area->addr, &size, ERR_PTR(err));
+
+'size' is a 'u64', not a phys_addr_t, so the pr_warn will print the wrong
+on some platforms. Can you change this to use 0x%llx instead, or change
+the type of the temporary variable to phys_addr_t instead?
+
+     Arnd
 
