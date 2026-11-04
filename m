@@ -1,96 +1,174 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 606746075277
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 20:36:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 109D7606AC0A
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 20:39:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key, unprotected) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=vbENG5pM
+	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=U5QnF+x+
 Received: by kanga.kvack.org (Postfix)
-	id 73C566B00EF; Wed,  4 Nov 2026 15:36:29 -0500 (EST)
+	id 76B9B6B05B0; Wed,  4 Nov 2026 15:39:35 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6F3656B05B0; Wed,  4 Nov 2026 15:36:29 -0500 (EST)
+	id 6F2EB6B05B1; Wed,  4 Nov 2026 15:39:35 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6031E6B05B1; Wed,  4 Nov 2026 15:36:29 -0500 (EST)
+	id 596166B05B2; Wed,  4 Nov 2026 15:39:35 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 38E9F6B00EF
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 15:36:29 -0500 (EST)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 50C20C0868
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 20:36:28 +0000 (UTC)
-X-FDA: 85398594456.12.4226961
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf06.hostedemail.com (Postfix) with ESMTP id D868F180007
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 20:36:25 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=vbENG5pM;
-	spf=pass (imf06.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793824586;
-	b=hk9/hnxCK1h4oWQJXSAocn9zLn9sPalPuJ24nHAacsFzxdrrjcOegZH4hm2sUwtbKyFzEv
-	/BiNRYsPzite8s83icAzTPpTCGcIu7sKiXv6bmC/Bnsao3AgnHn1PU9RASIIZpht2obmAj
-	G1aKiX1lwIp8F3pK5xzRxpKRdvMI5mo=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=vbENG5pM;
-	spf=pass (imf06.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793824586;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 1F4276B05B0
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 15:39:35 -0500 (EST)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 917CB4085F
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 20:39:34 +0000 (UTC)
+X-FDA: 85398602268.04.6F67CCC
+Received: from CH4PR04CU002.outbound.protection.outlook.com (mail-northcentralusazon11013036.outbound.protection.outlook.com [40.107.201.36])
+	by imf23.hostedemail.com (Postfix) with ESMTP id B9D6E140005
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 20:39:31 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=U5QnF+x+;
+	spf=pass (imf23.hostedemail.com: domain of ziy@nvidia.com designates 40.107.201.36 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1793824771;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vCMzvSK1epGA9+lRudwHqYr59t2ZKHW6DGF2kDO70B8=;
-	b=oPPT1rbT0mu+B7iqRNe+Sggn+4xjgSl46eCgsU3h3nv63pisMkbhhZi9Js4nfS2WqCsDkm
-	osbmo1eCFwMlJzr8c7DoYovGkIcz1oav5KKMcBYa9dTJwemVb7bavU8nfnK/SoTty3UhV+
-	cyvkW3P4+pyuYCapwDahvIXnPZHywQg=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
-	Sender:Reply-To:Content-ID:Content-Description;
-	bh=vCMzvSK1epGA9+lRudwHqYr59t2ZKHW6DGF2kDO70B8=; b=vbENG5pMHkNsoywSCA4/ow+ZSS
-	+QLr6VTAT+vMrmhfBcbmtbzorx0FMM64G40PhLCLv1mO79YD/mulJzFJqh75qhCVSdcs41b9Kcy3X
-	isGkiRGDMTLfvqyeJwMi6EVEEz54nEfcskQpGFplXujV+Q4iH3apmbPmD93BXYTwceVgpjIdg/qeJ
-	4Pnd5ZrXY6kwrXqrai1YXZHOpKL55+KA36auGuXXf7y/fNYN4hD3rRIvrm9ED+4P8IYZMgcda/0m3
-	RW38iUf6/I/3BlXP/E/D96xzneTQ7Sjd48XXRDjxO9mltJSqRrSh8BQRxDW9y6SyCP86rA9Igqqsx
-	1w3yIPHw==;
-Received: from willy by casper.infradead.org with local (Exim 4.100.1 #2 (Red Hat Linux))
-	id 1xOhiZ-0000000GqWd-1flq;
-	Wed, 04 Nov 2026 20:36:23 +0000
-Date: Wed, 4 Nov 2026 20:36:23 +0000
-From: Matthew Wilcox <willy@infradead.org>
-To: =?utf-8?B?6JGj6L6J?= <donghui@xiaomi.com>
-Cc: "linux-rt-devel@lists.kernel.org" <linux-rt-devel@lists.kernel.org>,
-	"linux-mm@kvack.org" <linux-mm@kvack.org>,
-	"linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	=?utf-8?B?55Sw5a2d5paM?= <tianxiaobin@xiaomi.com>,
-	=?utf-8?B?5p2O6bmP56iL?= <xiaoyaoli@xiaomi.com>,
-	=?utf-8?B?5a6B5bem5paM?= <ningzuobin@xiaomi.com>,
-	=?utf-8?B?5a6B5Y2a?= <ningbo1@xiaomi.com>
-Subject: Re: [RFC] PREEMPT_RT: livelock between lockless page cache lookup
- and the folio freeze->removal window
-Message-ID: <auuXR0SnvTx-T2iF@casper.infradead.org>
-References: <c2ff0c66422c4e2d869499a1186ff0ae@xiaomi.com>
+	bh=DR1g0Q8bCtJw0djR3dMfoLeXmAkZYDMtyQM9I6YDmHE=;
+	b=uCUrJP0h9Cxji0d+pV4q0FxncObWDjYr3NEFGB+BclZcDz9xre1GqflakAoV13IwsWNIQk
+	qjFCLLeUatrKBmmMfdbe5pmsqXcgoEEeA+ZGyC1xJmYNEgDtHwZPLODUldoUOdRvBDFF2M
+	fsh+IMrQnwcfnIyHNt7VX+NQEHlHn0U=
+ARC-Authentication-Results: i=2;
+	imf23.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=U5QnF+x+;
+	spf=pass (imf23.hostedemail.com: domain of ziy@nvidia.com designates 40.107.201.36 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1793824771;
+	b=msQotQ8WftQaQJUr34WBJV1faM5VDRI9oMKKJxzd2cLzx1EroXQ0k/OUcJTuqenrEa6gIK
+	Xi41O8qm6+dIaFzdkqPj/1g19k7x6msmvjDU69TgDgJzLcyfip1AB+V6JmlWcfEhljjm0O
+	h/cGSSNqXYSccsRyObhhFoDKCPjZszo=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=lwxEXj6BMVLyMH99aul9fFdUy+Kj/FCDcC+pm5lfrWmHiwH/KbPa27hSy8Zue3UOpXk7GCiQ8LEF+OwLjO6WZHKu7zWxNVvxT2GRg47GXPcb+XjyoNeEfAmMqr02kojBoPAwVK8cClQi+wtImk+DfqzrxJ6ZGE8eYDG0YuWY+VzF3QRtfSfwhpf/QPhqT80e+U00CKw0VLaK+LokPQ1cRCdotP28tnZ3SxnQLEU8sbS6yVmdUyPkQ8BeOJ1PwfgG1KmZeFfA0FpUGRz1C1j/R6NXhVmTUKCg1M02nKYB64xT1yYXIHjM7dbivKzpEQr4mciOZCn7LOvga/LYs+tMHA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=DR1g0Q8bCtJw0djR3dMfoLeXmAkZYDMtyQM9I6YDmHE=;
+ b=tZhBzcMv+6M10NNwYzAa5PMCojvjffU+jxQV7VERTlyD9w8ka9X+rCvFNFLQFdkrO15mC2Jo97dn+wrWEMirh8AH5/yBL+tHfZAQlQl/5dv3LhTVjZOs1DezqD2x/7gZxYocK3uIV1ZAzs9Eu0oXxltjjAyZ0SnCe9zHrboqF3sNoAUlE1F+RYjdfWNnJ8S2oIkOcRR1EBV2NfPekPmtMIrsaANLpfKWxg2tuNxW2zTydejK/ZusX5Nxi2mnaNyX0h0I+Rxj9ne5zLTnI7PDvJBLsLRDLNSNxSXHpv0/wZZ192TC0b1EPU9l8QWRPB8dRECXNIstOFp4y5O9pzizrQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=DR1g0Q8bCtJw0djR3dMfoLeXmAkZYDMtyQM9I6YDmHE=;
+ b=U5QnF+x+1rX3X3C6GCfvqTyqOB89IdREo3ZKOc6JN40HsN7K0ngf+ihdqEYFLT9yOjJtVk6RPvBW+hSg6vjzSV5AhWYeMJQms/+9sAeeK435KG2am9MS5jMDrqTqIQACr/JXrUzXM4i2H58mqb71MfUnGG23y6KDfrJ7DJYA3tS9goRHnN5grNrqhoZ4GAt3Ljc+/RWb6PAv58G6/QTa24byovdPwVHAV/MKcTSXFA5MeLiTlZIhHVPQnIX0pXLgyCfYf1ieuJ4cCI2PBNBd+vf+8y46h1IgL9OnTc+Q/BMLPxZ9XLpm4Ugt1kmkz5B2nRQlI+PT5I0VV9P8j3OS3w==
+Received: from IA0PR12MB8374.namprd12.prod.outlook.com (2603:10b6:208:40e::7)
+ by SA0PR12MB4414.namprd12.prod.outlook.com (2603:10b6:806:9a::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.592.8; Wed, 4 Nov 2026
+ 20:39:18 +0000
+Received: from IA0PR12MB8374.namprd12.prod.outlook.com
+ ([fe80::d85f:4c87:ae84:3f16]) by IA0PR12MB8374.namprd12.prod.outlook.com
+ ([fe80::d85f:4c87:ae84:3f16%6]) with mapi id 15.21.0592.007; Wed, 4 Nov 2026
+ 20:39:17 +0000
+From: Zi Yan <ziy@nvidia.com>
+To: Breno Leitao <leitao@debian.org>
+Cc: Miaohe Lin <linmiaohe@huawei.com>,
+ Naoya Horiguchi <nao.horiguchi@gmail.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Xu Xin <xu.xin@linux.dev>,
+ Chengming Zhou <chengming.zhou@linux.dev>,
+ Oscar Salvador <osalvador@suse.de>, Johannes Weiner <hannes@cmpxchg.org>,
+ Brendan Jackman <brendan.jackman@linux.dev>, Rik van Riel <riel@surriel.com>,
+ Harry Yoo <harry@kernel.org>, Jann Horn <jannh@google.com>,
+ Lance Yang <lance.yang@linux.dev>, Qi Zheng <qi.zheng@linux.dev>,
+ Shakeel Butt <shakeel.butt@linux.dev>, Kairui Song <kasong@tencent.com>,
+ Barry Song <baohua@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>,
+ Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
+ Baoquan He <baoquan.he@linux.dev>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, linux-cxl@vger.kernel.org, kernel-team@meta.com
+Subject: Re: [PATCH] mm: split out memory-failure declarations from internal.h
+Date: Wed, 04 Nov 2026 15:39:15 -0500
+X-Mailer: MailMate (3.0r7038)
+Message-ID: <13A0BF13-BB68-48AF-87C2-6650F8426F5C@nvidia.com>
+In-Reply-To: <20261104-memory-failure-split-v1-1-3b0a85f0b7e7@debian.org>
+References: <20261104-memory-failure-split-v1-1-3b0a85f0b7e7@debian.org>
+Content-Type: text/plain
+X-MS-Reactions: disallow
+X-ClientProxiedBy: MN2PR06CA0005.namprd06.prod.outlook.com
+ (2603:10b6:208:23d::10) To IA0PR12MB8374.namprd12.prod.outlook.com
+ (2603:10b6:208:40e::7)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <c2ff0c66422c4e2d869499a1186ff0ae@xiaomi.com>
-X-Stat-Signature: or381p7njhhm16xiype4qubw9474f7iu
-X-Rspamd-Queue-Id: D868F180007
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: IA0PR12MB8374:EE_|SA0PR12MB4414:EE_
+X-MS-Office365-Filtering-Correlation-Id: 561dd2f3-8db9-4423-5439-08df3ab3b1ee
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|376014|23010399003|7416014|1800799024|10067099003|22082099003|18002099003|56012099006|11063799006|261102123227099003|261028144727099003|261026140227099003|261022105027099003|261021121427099003|261021123027099003|261009223027099003;
+X-Microsoft-Antispam-Message-Info:
+	HjY1AaufJrgDUO/CJpq5rw+wLYHnrd3RNM3qVWPuBjKY29JHXK9tvz2+RKjntwck87JztbogTRKz5J+rtz3UyIxOyf+BbCBVTWcswAW5jqE8ovE9mj38GW3Jir/z0w62rKRB7RfBDxw3GmlOUhXKlbu/oXxmZi5aJJJhS+5sSZ6T2XaACH1b0UBTV0bHC1Zz1AAWEhnghcdNINybQiQkOdb8XlTtG9F2RqcCSTFmgZSt1+9dzb1bfVJAA4diArcLP1JelkJJtv1x9QNTZHKDKtB99R7WD/YtqZNqPww+tQeB8kCODbCJ46OBNsRPcHrZ2Tf8Xq61sDzTRdkoH7VPDtS297O2awCwT7C3I+cFYI+85XlkcDWe09ECiT5ZQfFi7ZA+F1rXJfQSk/gYFs+N7NEBuXmq7v4yvqt+bUbuEKa6l5TKbVo1nyNzvcrK/60B2rVdhrSqgDgPbWNbCcMbWLKo11vBgZ4Cyv3lqCYUUDIz5mUZW5OyLKDLcHMBusP1S8U2tQW3VrTpQEU+DO7DvnHeo/J/LCPZqpcNKfSh+sa+lrBiAgaAgdMyC3Jo9G0+GU6anRAygNyG1Bi2/o5leZvUMhDkFBdA2RxBOHX4yIB7QxdkVlx8kWCB2vjGXdXh0jWCOZ/0rxEd4PTSPa2F/iiZgRQGKAFOdfIErUq2B+o=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA0PR12MB8374.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(23010399003)(7416014)(1800799024)(10067099003)(22082099003)(18002099003)(56012099006)(11063799006)(261102123227099003)(261028144727099003)(261026140227099003)(261022105027099003)(261021121427099003)(261021123027099003)(261009223027099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?cLf6zZBAtBh0ULfz0Vxbyq7vzLVRYAd3bn2CCiLNauB8Bc9jeNGefi60hDZ3?=
+ =?us-ascii?Q?92j+51QjfQbX+G5+6NICItO1F5uW95sSJ4R33bYl59fVnSiWS14UG+hYup3K?=
+ =?us-ascii?Q?gC2DPfGHvmEwVaCNA3Q/nVwgtNcwUPNonM8i7nu5VHbtihBZt1fCal7jdyh6?=
+ =?us-ascii?Q?giJnFpnwOxGdo0mlPs6ePH4yO3IdTCABpZVsLvwlfuF3j/LTwjMOBA3+iv12?=
+ =?us-ascii?Q?8SCSJYAf86xpeC5D+hx48deFNv/eHDcc9eYr/Zh1wnZd7/59Sb+Y5BrJ/uvK?=
+ =?us-ascii?Q?BvRIfZhOdgQdbVLohBmX/4P2tk1v31yktIhytduOtjt3Y+LkQnoDvsI4MfWw?=
+ =?us-ascii?Q?eeiln+fH31ccFRDhypofknWPDyxHrcUhP+4/04tTnLkapSy4Mz0Jfwowi35o?=
+ =?us-ascii?Q?1/1gxptH5wS+eptLtFQndmc9J638mbVpkIyvwiBTwhVHvqKfqY0pZDt46IE5?=
+ =?us-ascii?Q?T8yxyUdBsT0ZB3eZyUpkM1s9qyDnvjuDNcSHh6Ua9DvNHNHo4hymnI5tGyd2?=
+ =?us-ascii?Q?gCM2TQJn5SjpWaGUW6+B+GthRthZIbTtYs0Lwe4aiTbdEmtM45JnClS4zsSg?=
+ =?us-ascii?Q?/CxeHIuve0C9LFr0iikmDKmbKu9/UFtUQWRo9P3OYi4leFwWN9Mhrxicia4s?=
+ =?us-ascii?Q?g00Q1Zg2Obyhv4bJyHaRp9To0VK8yRIFF28PuaCTKwRfS9BI7kH+a/EdI4P2?=
+ =?us-ascii?Q?A0VyN+RI4915VIhRYbcqwPFEuPQAiQfCBvzzPV9Z1HKsZNOre5ClG+Xb2jtc?=
+ =?us-ascii?Q?lyPWwSKPP7b9QgNEzuk6b9OZJi6kJshPWEn/Nb2S0yw6dnNvSdv5LQkwedF5?=
+ =?us-ascii?Q?9MpVw7tmVMaQZv8LLAzgA20axXRnNcHYne03p2W9ddOjTrMX7H+5KrPjHyQZ?=
+ =?us-ascii?Q?FnGms7kfWdlRGm8TtR0ixz+gRH33Oy2Cb9Zw5mk2cFjftheYf5AgZwHiuDib?=
+ =?us-ascii?Q?D7f7sH/EC0k69+Zlg7M7ipFHaGMoho/yJ93vSX1oZ64wVXml60vH5/VXwbAM?=
+ =?us-ascii?Q?qBUSQtxGu2uT1u0n4fJrWAwOsJONYrU+Zm9cfJX0MPYVg2TXHsUdgOVt5ar5?=
+ =?us-ascii?Q?5JXyLZy+bAm9iVMDakJEmYj+x9LGLk4+Vt8ZhoxYUrgMToUTJDSSjjwNMScJ?=
+ =?us-ascii?Q?seTbM2zFJ95P81CrJ6xP3AS/m8wAiRWfv3oAGkxTeiA1Y+M2YmUD8tvJk3fp?=
+ =?us-ascii?Q?JRgmemnNqvw4q1i6duZr06Xr97VubfWaz4Ia15oaWQBqYDzzV+2CMMg0qPhX?=
+ =?us-ascii?Q?AkfqpitakCkPGeIgDjEL8rKISe5PqBE8VhXYnrJhsI2ZfjK+ztJG184+EGRQ?=
+ =?us-ascii?Q?ksoHn2lOlDV6BTWEeLFdqB1tBPStKD/jEeGxcgkjJos5GBTfOXEGK1XFESPD?=
+ =?us-ascii?Q?Ftef+kapyhpFWD8z6xLi+18huVx1ry42dn9xAbhGPB39ubIQFR8f8ttKDG3Z?=
+ =?us-ascii?Q?q3bzdUUD6XU36ZnTBXLLh3G8M5K3TYiTFXhYJaakWLBdsL/cvK1HvdMLFcm2?=
+ =?us-ascii?Q?2G4ZO7dopaewKuH+V0Bj24WS+M9TVCz8ULD/M2EgA4QTQm862wVQJbNg/KMY?=
+ =?us-ascii?Q?vgE0OcG+XMWRf2hmuKLrb66RqoXhsJeJZhHjWRmjMoCC+YfUAzdGzi37r6YB?=
+ =?us-ascii?Q?IlbfyFtOlZSAKYwUH7pfagufhV+MTGinnzSvI1VjPgtJKXBSB746zmE1VFDx?=
+ =?us-ascii?Q?AXkJYk+iTlkh3QHohhLNcjOv4huPlHl6KHfNZ3/JxiRmRUwu?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 561dd2f3-8db9-4423-5439-08df3ab3b1ee
+X-MS-Exchange-CrossTenant-AuthSource: IA0PR12MB8374.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Nov 2026 20:39:17.0099
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 29cGIbZdM0P8usie9fV7L8HhlRk2qrFXrODm0IYDO0Y9YItzvNgtVOVu5QvbVz0c
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA0PR12MB4414
+X-Stat-Signature: m6j1cpgsj3jjcaifgnqc5uiue6hk7yer
+X-Rspamd-Server: rspam01
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Spam-Status: No, score=-3.6 required=3.0 tests=BAYES_00,DKIM_INVALID,
-	DKIM_SIGNED,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
-	SPF_HELO_PASS,SPF_PASS autolearn=no autolearn_force=no version=4.0.1
-X-HE-Tag: 1793824585-589903
-X-HE-Meta: U2FsdGVkX1/tUKvWfTd1PmGasKOY6ncxUurlJyKVqdG9R9H+PzHt4guHJvT8OaixCKTPFvOIvNESUyTqOFna67PsqxqrKKpWUGxy07Y5EqXPnkDPr0B+GIOs9MSsJFhzY1YwQXkQvr27M0BlkuigQHyGk2+TvNIqMRRsRg/0Bi9umKUJW4s1tH43YshLvkji2b8iJ7vuEHWhUpSvDU30fqINb13xrVG34Ycw8n8q8lX8dGt9n6uUVz2JRuCHYRt8uU6z/CY++bmfXQjb5XcL5iz8ykTs74tLDInFQ4HuyX06Kw36SFVPjSIQxLrnZaeYUdn96VTJgKHnR0GlnyDsE4x4i5TvnvydEwaFiaGx5KT2uc8rmwpWREqyIgRAV0ujYHWF2X9xHCex8x+fy3rrUZ1HdNno6g36R+nMFsWLuoIS3Sf+b3i69hn+BTp1aiIdKrlMQU4OBp7B4caKBk/jPGbWiQngcJPkVLhomLoWNi3GYdkhQNbeUXtbnYq41jLduGiKTt2Lx1LQfXjaamqE12nE98AYN3icthkywAX43Zuqsb+ln9ezI+B6s4Vx8Z0maC5q1pRF9KV9WPJfnjGRQqQt8hX6wIh0qOsL0g4hGKOA/hVKhQr9fywjHVBiXPl6ePoxhyCeNt1j0gTVyIdRbH4q8A2qtrvFGowlM8h4VWiMYZFsoKxQb3154P1jPl7NRwbF4fAC77Gxk2pRzosONTQZbz9TWXAd7eAoErlEPWlTQkEGv7574NJthLbLLPayRqkXPuEGWstALUV8V91wEMdN7/5v59CTADgyWwSiNF2mA3RF/6M1E5yWXnB4MibGv5100CC21MmKuY0u8BDYE+3LEpBYX0C4H/Ip5Vhkk1IdUA4EDk3xibTnpPpBDuAEN1a6QOX4C2mc9NPpuUbR9DZGo5pCe/Xiw9LNF0tGu4I37DwECO+PEXOQwl6Mdok6+ItidCj6j+ZmlWFqfjb
- 9Vq63MXP
- z9Tm7F/1KJYhdcmGkDScVGQRnTC5ae7KlhTIpwBkNYgFw4HtSf1pypinDntSNGObh4VFZvybDvr8bwuNoNKSY4MpE2D1ssqz3XGsROjD9aFKATfcsWhO3ehEoXCA+Wru+sGklWOqAKb35FhPMqTmbryUh5Xjx6pACjKHxutmU2z51/iT+fbL7L+aR8LiLOXIfPABV9m8n/NFjeJ6XhWOjjXdNw8DyxGIJblmLQn4drn/MlJPQTOxOlHT6Z88E3hXKkvmowsJ1cgGK51ZE791OgQnmtXueyA4RCBd3IeZ++dYMQOsnbVtT7bZeX5tbMYHR0DXZmiicNNdOcVwZUDWy71i2l5g2vXt2+etC
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: B9D6E140005
+X-HE-Tag: 1793824771-600406
+X-HE-Meta: U2FsdGVkX19sxg5fACP6MvD9EHARhtcaPf24jnHCCQX4jHMPW/2Jt72eM1mf9AR9oeC8J9ENZPM2WVfuWB1stVo/zMz0AKgxVN+f7nY+7DCgFXrLkbu1TAastEvVOcmnPDb94W825mrIMi1mVS8wIZQ6HrVctkxCXyCttUeLrZwe7iGMwzjBPfhyW3SunnJR/vZ4xMggR3aMn7xYEDyyJi+MVgNCFg/TMaV4DxxuA/Wtb6p+mSa3Mbe7lWOACycjKUSg5/yclNxfp5exgYjW8cEbdeN/lBiiTMpktYHSFGfsLd6J+SBTXValu/rl6SS6N0UXeBUv0kkteQTNMlB2qWDaSyLtYfNd3ynvHbXIfmV3PILFRRUcD0DzHgFFgPO7yah3keKPyh32p9sccjiWGBVuElyD9A+IvbUTq7R01PTamIgoZhk+tHWG4mUm4QeB9vQT2XpSY3mpwtwk9KK7qOgKe9IqnROlqftn2qz9A9MAvKU/S+5MPahtrYb+XJ2dYSElW6GQLB/nsmiyDPmhgNjbOaoSzCPBSl6xlAEuA3HZf66lF236z2QshfPro5HFDC3uXfn7AgtxFjR9QAdJEz4d9ugk3fzBhY4tcQ6f6L8ApyEcBnxXO6use3dOYA24oJY/MkK+QFH4CVdZcpSWizkqBogIjqqFI/j46kgHxTp6xC2W2ZRGTe6EJJeqH0o+iTEc0RV0xWr2Zu6pXtPWchHp1MF/T4203I2QN3/2lG2EN4Pjnls9IZ5j4iF5Dz6X6SqFsZHcOEcKKxHBvnynEZD/I1X4jrOsMK7+ha4AHZWoGPGGpBZQnldQ47gLEvQSUJ9jKepE9nRRAKiQNYlTE5WfGIAofuz5+ltPwd4NIWv1GRa7DkcK4m5PYr8ZtXovyTA7k2oimA6LRzYVUjtW8x/sFeakXATvxHSJFHauBVlI4LZE1l8H/ApvIavX7/J1zpWCNbGG/ikblNyvW93
+ 4eG351Z+
+ ywcSRW3r2bkSI7cPZUOQnQ/9gdHwkX00m95sFmZ8GANBif7VtJTHPFo1bcdLeBkBZkRScvlHDaldIf49ZD4+19f4NfsKcfs4Srqn2bWP62X/wWbYpoPTAsaibiYSywkaY/Y61F9BqL6deiMmMSxzFUgR0+9hXMWJSiAsAvhPpyThwr7QSB3rgA7sU8B4RyCuKpgAY0HXxMeQP9jLofb57QTvWKi359TO6AMBbhaLGFM8/sgn9TZDXZMOR/B7HvnICwC97o6QFoaR7qcAjZdigmwZAzkEet36eYV/0sl3wwBpSzJqrNk9Lls33U/y+PRgrsDbE4iWf9MY64BN6h7389GskdNbp4VhfO8pkafhb6BhUvvNRra8JIqnkaLixH5jfdUr+fiBO0e/srJqWWrdyRf3Q53nDzq9bMToVDxnppufl1Bd5fPq3wQHMwIzbIb268LH52aSDegKSXiLKUisDjcUMxlrjGHrvAV4K601RoyfAK4ZSHtU5t8msaskqFLlYjp4U
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,360 +177,43 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Tue, Nov 03, 2026 at 12:46:36PM +0000, 董辉 wrote:
-> We hit a permanent livelock on a PREEMPT_RT system and traced it to an
-> interaction between the lockless page cache lookup retry loop in
-> filemap_get_entry() and the folio freeze -> xarray removal window in
-> __remove_mapping() (and the migrate equivalents). On non-RT that window
-> is atomic (IRQs disabled) and therefore bounded; on PREEMPT_RT it is
-> preemptible and can become unbounded, which turns the "refcount == 0 is
-> transient" assumption of the lookup path into a permanent spin.
-> 
-> The affected code is vanilla upstream (our mm/filemap.c, mm/vmscan.c
-> and mm/migrate.c match 6.12 exactly); nothing vendor-specific is
-> involved.
-> 
-> The obvious fix -- making the window non-preemptible on RT -- does not
-> work for the reclaim path, which is the one we hit (section 4.1). We are
-> deliberately not sending a patch yet: we would like to hear which
-> fix direction upstream prefers before going further.
+On 4 Nov 2026, at 11:45, Breno Leitao wrote:
 
-Thanks for bringing it to us early so we can discuss the right solution.
-Much easier than trying to infer from a patch what the problem was
-originally ;-)
+> mm/internal.h carries the memory failure declarations, but only seven
+> of the 81 .c files that include it use them.
+>
+> Move memory failure declarations to a new mm/memory-failure.h and
+> include that from those seven files that need them.
+>
+> Move the block as is, including take_page_off_buddy(),
+> put_page_back_buddy() and page_mapped_in_vma(): they live in
+> page_alloc.c and page_vma_mapped.c, but are built only for
+> CONFIG_MEMORY_FAILURE and called only from memory-failure.c.
+>
+> Keep the declarations private to mm/.
+>
+> No functional change.
+>
+> Suggested-by: Mike Rapoport <rppt@kernel.org>
+> Link: https://lore.kernel.org/all/aumt-4kfGGtoXuh-@kernel.org/
+> Signed-off-by: Breno Leitao <leitao@debian.org>
+> ---
+>  MAINTAINERS          |  1 +
+>  mm/hwpoison-inject.c |  1 +
+>  mm/internal.h        | 29 -----------------------------
+>  mm/ksm.c             |  1 +
+>  mm/memory-failure.c  |  1 +
+>  mm/memory-failure.h  | 36 ++++++++++++++++++++++++++++++++++++
+>  mm/memory_hotplug.c  |  1 +
+>  mm/page_alloc.c      |  1 +
+>  mm/page_vma_mapped.c |  1 +
+>  mm/vmscan.c          |  1 +
+>  10 files changed, 44 insertions(+), 29 deletions(-)
+>
+Makes sense. Thanks.
 
-> 1. Symptom
-> ----------
-> 
-> - 6.12.73-rt15 (PREEMPT_RT), arm64, 20 CPUs.
-> - A SCHED_FIFO 99 userspace workload was page-faulting on file-backed
->   code pages of a shared library (libc.so.6 in our case) while the system
->   was under memory pressure.
-> - One CPU reported rcu_preempt self-detected stall every ~63 s from then
->   on: 670+ reports over the ~12 hours covered by our captured logs.
-> - The next day, and again about two days after the first stall, we
->   inspected the machine over JTAG. It was still stuck, with the same
->   register values as in the first reports. It never recovered on its
->   own; only a reboot brought it back.
-> - On that CPU the running task was spinning in filemap_get_entry() on a
->   folio whose _refcount was 0 (frozen) while the folio was still
->   reachable from the mapping's xarray.
-> - kswapd0 was found preempted inside __remove_mapping(), its stack
->   ending in __filemap_remove_folio() -> filemap_unaccount_folio() ->
->   ... -> preempt_schedule(): the folio was already frozen (refcount 0,
->   off-LRU, unmapped) but not yet removed from the xarray, and the task
->   still held the xarray lock.
-> 
-> All 670 stall reports show the same task and the same folio. Their PC
-> samples fall inside this retry loop, mostly in xas_load(); the path
-> taken after a successful refcount increment was never sampled. A
-> second, non-RT process later hung in the same loop on the same folio,
-> showing that once such an entry exists, every reader of that page is a
-> victim.
-> 
-> 2. Root cause
-> -------------
-> 
-> 2.1 Reader: unbounded retry on refcount == 0
-> 
-> /* mm/filemap.c, filemap_get_entry() */
->        rcu_read_lock();
-> repeat:
->        xas_reset(&xas);
->        folio = xas_load(&xas);
->        if (xas_retry(&xas, folio))
->               goto repeat;
->        /*
->        * A shadow entry of a recently evicted page, or a swap entry from
->        * shmem/tmpfs.  Return it without attempting to raise page count.
->        */
->        if (!folio || xa_is_value(folio))
->               goto out;
-> 
->        if (!folio_try_get(folio))
->               goto repeat;
-> 
-> The loop treats refcount == 0 as a transient state and retries. It never
-> sleeps or yields while doing so, and there is no retry bound, no timeout
-> and no warning.
+Acked-by: Zi Yan <ziy@nvidia.com>
 
-Right.  As you suggest later, this is intended to be a transient state
-that des not need to be bounded, slept on or warned about; usually finding
-a folio with a zero refcount isn't from a freeze but a stale folio pointer.
-
-> 2.2 Writer: the window is bounded on non-RT
-> 
-> /* mm/vmscan.c, __remove_mapping() */
->        if (!folio_test_swapcache(folio))
->               spin_lock(&mapping->host->i_lock);
->        xa_lock_irq(&mapping->i_pages);
->        ...
->        refcount = 1 + folio_nr_pages(folio);
->        if (!folio_ref_freeze(folio, refcount))
->               goto cannot_free;
->        /* note: atomic_cmpxchg in folio_ref_freeze provides the smp_rmb */
->        ...
->               __filemap_remove_folio(folio, shadow);
->               xa_unlock_irq(&mapping->i_pages);
->        ...
-> cannot_free:
->        xa_unlock_irq(&mapping->i_pages);
-> 
-> Readers on other CPUs can briefly observe the frozen folio even on
-> non-RT -- that is what the retry loop is for. On non-RT, however,
-> xa_lock_irq() disables IRQs and preemption, so the interval from
-> folio_ref_freeze() to __filemap_remove_folio() cannot be preempted
-> and cannot outlive the locked code path: the window is bounded, and
-> the retry terminates after a few iterations.
-> 
-> 2.3 On PREEMPT_RT the window is unbounded -- this is the break
-> 
-> On PREEMPT_RT xa_lock_irq() maps to rt_spin_lock(): an rt_mutex
-> plus migrate_disable() and rcu_read_lock(). It does not disable
-> preemption. A task inside the freeze -> removal window can therefore be
-> preempted, and the frozen folio stays visible in the xarray with
-> refcount == 0 for as long as the holder is off-CPU -- the window is no
-> longer bounded by the locked code path, but by scheduling.
-> 
-> migrate_disable() aggravates this: the holder is pinned to the CPU it
-> was preempted on. The holder does not have to be kswapd: the same
-> shrink_folio_list() -> __remove_mapping() path is used by direct
-> reclaim, so any task allocating memory can be the victim.
-> 
-> 2.4 How it becomes permanent: priority inversion
-> 
-> In our case a SCHED_FIFO 99 task preempted the holder on the same CPU,
-> then faulted on the very page being removed and entered the
-> filemap_get_entry() spin. Two further SCHED_FIFO 99 threads of the
-> same workload blocked on the same xarray lock; through priority
-> inheritance the holder (kswapd) was boosted into the RT scheduling class
-> at the same effective priority as the spinner. SCHED_FIFO does not
-> time-slice among equal priorities, so a spinner that never blocks never
-> gives the CPU back to the holder.
-> 
-> This is where self-healing is lost. While the holder remains CFS, the
-> RT bandwidth limit (sched_rt_runtime_us, 950 ms per 1 s period by
-> default) reserves CPU time for CFS tasks exactly so that a run-away RT
-> task cannot lock up the machine (see
-> Documentation/scheduler/sched-rt-group.rst); the holder can still run
-> and close the window. Once PI pulls the holder into the RT class it is
-> throttled together with the spinner and no longer benefits from that
-> reserve. (With sched_rt_runtime_us = -1 even the CFS escape does not
-> exist.)
-> 
-> The spinner is invisible to PI: it waits on the folio, not on the lock,
-> so nothing ever boosts the holder on its behalf.
-
-I think you mean that it spins on the folio refcount, rather than it
-waiting on the folio (when people say "wait on the folio", usually
-they're talking abut folio_lock()).
-
-> The four necessary conditions:
-> 
->   (a) frozen-but-visible folio -> reader spins
->       where: filemap_get_entry() retry loop
->   (b) window unbounded (holder preemptible, pinned)
->       where: PREEMPT_RT xa_lock_irq() semantics
->   (c) unyielding spinner on the same CPU
->       where: SCHED_FIFO 99 in the retry loop
->   (d) PI removes the holder's CFS bandwidth reserve
->       where: RT waiters on the same xarray lock
-> 
-> 3. Blast radius
-> ---------------
-> 
-> We went through every folio_ref_freeze()/page_ref_freeze() user in
-> 6.12. Two of them can freeze a regular file folio and leave it
-> reachable from the page cache xarray, and on PREEMPT_RT both can be
-> preempted there:
-> 
->   - mm/vmscan.c, __remove_mapping()
->       trigger: reclaim -- kswapd or direct reclaim
->   - mm/migrate.c, __folio_migrate_mapping()
->       trigger: compaction / CMA / hotplug
-
-There's also __folio_freeze_split_file().  I know PREEMPT_RT disables
-TRANSPARENT_HUGEPAGE at the moment, but hopefully that restriction will
-be lifted.
-
-> Both hold the xarray lock from before the freeze until the folio has
-> been removed, or replaced and unfrozen.
-> 
-> The unbounded refcount == 0 spin exists in several lookup loops, not
-> just filemap_get_entry():
-> 
-> - filemap_get_entry() -- goto repeat, no bound
-> - find_get_entry() -- goto reset/goto retry, no bound
-> - filemap_get_folios_contig(), filemap_get_read_batch() -- goto retry,
->   no bound
-> - ksm_get_folio() -- while (!folio_try_get(folio)) cpu_relax() with a
->   swapcache-flag escape
-> 
-> ksm.c documents the transient state explicitly ("however, it might
-> mean that the page is under page_ref_freeze()..."), which suggests the
-> frozen-but-visible window is a known state of the design -- the filemap
-> loops simply have no bound on it.
-> 
-> 4. Fix directions we have considered
-> ------------------------------------
-> 
-> 4.1 Direction A (writer side): restore non-RT atomicity of the window
-> 
-> The idea: on PREEMPT_RT, wrap the freeze -> xarray-removal interval in
-> preempt_disable()/preempt_enable(), keeping the lock acquisition
-> itself RT-semantic (it may sleep while waiting). Readers stay untouched
-> and "refcount == 0 is transient" holds again, for every reader.
-> 
-> By inspection this works for __folio_migrate_mapping(). Its window,
-> from the freeze to the xas_store() of the new folio, contains nothing
-> that sleeps on RT: that xas_store() call is not wrapped by
-> mapping_set_update(), so no update hook fires.
-> 
-> It does not work for __remove_mapping(), the site we hit. The
-> removal itself takes a spinlock_t whenever shadow-node tracking changes:
-> 
->        __filemap_remove_folio()
->          page_cache_delete()
->            mapping_set_update()   /* xa_update = workingset_update_node */
->            xas_store(&xas, shadow)
->              update_node()
->                xas_update()
->                  workingset_update_node()
->                    list_lru_add_obj() / list_lru_del_obj()
->                      spin_lock(&nlru->lock)    /* spinlock_t */
-> 
-> __delete_from_swap_cache() installs the same hook, so the swapcache
-> branch is affected as well. This happens whenever an xa_node becomes
-> shadow-only or stops being so, which is routine when reclaim evicts a
-> run of file pages. shadow_nodes is a single list_lru whose per-node
-> lock is shared by all mappings and by the shadow-node shrinker, so it
-> can be contended. Unlike the other sleeping call we found, it cannot be
-> moved out of the window: it is taken from inside the very xas_store()
-> the window exists to cover.
-
-Is it possible / wise to convert the nlru->lock to be a raw spinlock?
-
-In the old days when the BKL was magic, we could take a mutex and choose
-to sleep.  I don't think the preempt_disable() works like that.  It's
-a bit annying because we'd be fine with being preempted after the folio
-is replaced in the XArray.  It feels unutterably ugly to insert calls to
-preempt_disable() / preempt_enable() / preempt_disable() /
-preempt_enable() around all of this though.
-
-> (The other sleeping call in this function, mem_cgroup_swapout() in the
-> swapcache branch, could be moved: with memsw accounting it takes
-> swap_cgroup's ctrl->lock in swap_cgroup_record(). It would have to
-> stay under the xarray lock though, because memcg1_swapout() relies on
-> interrupts being disabled by it on non-RT.)
-> 
-> Making direction A work for reclaim would need the shadow-node list_lru
-> update to be decoupled from xas_store(), for example deferred until
-> after xa_unlock_irq(). That is an xarray/workingset change affecting
-> every page cache and swap cache deletion, which we do not want to
-> attempt without guidance.
-
-Yeah, I don't think this is a great approach either.
-
-> 4.2 Direction B (reader side): bounded retry + blocking fallback
-> 
-> Every freezer listed in section 3 (Blast radius) holds the xarray lock until the folio
-> is no longer frozen-and-visible. So a reader that keeps failing can
-> simply wait for that lock: on PREEMPT_RT it sleeps on the rt_mutex,
-> gives the CPU back, and priority inheritance boosts the holder. Once the
-> lock has been acquired the window is closed, and the retry sees the
-> final state of the slot.
-> 
-> This is the same fallback commit 0f8821da4845 uses in
-> mnt_get_write_access() (fs/namespace.c): on PREEMPT_RT the spinner on
-> MNT_WRITE_HOLD stops spinning and takes the writer's lock instead,
-> specifically to avoid this livelock.
-> 
-> The change would be small (mm/filemap.c only, we estimate about 80 lines):
-> 
-> - Applies to the four filemap loops listed in section 3 (Blast radius).
-> - Counts failed attempts; every 64 of them the reader calls
->   rcu_read_unlock(), then xas_lock_irq() + xas_unlock_irq(), then
->   rcu_read_lock(), resets the xa_state and retries the same index.
->   Nothing is skipped and nothing is returned early, so semantics do not
->   change: callers such as truncation still see every entry.
-> - Only on PREEMPT_RT: the check compiles away otherwise, so non-RT
->   behavior is identical.
-> - Only when preemptible(): callers that cannot sleep, such as some
->   BPF/perf paths reaching build_id_parse_nofault(), keep retrying as
->   before. An outer rcu_read_lock() does not need special handling:
->   PREEMPT_RT uses preemptible RCU, which allows blocking in a
->   read-side section (at the cost of a longer grace period).
-> 
-> We have not prototyped or tested this yet; the sketch is here so the
-> trade-off can be judged before we invest in a patch series.
-> 
-> - Pros: covers the reclaim site that direction A cannot; covers every
->   freezer that follows the "hold the xarray lock" rule, including ones
->   added later; adds no non-preemptible window.
-> - Cons: the lookups can now sleep on PREEMPT_RT in preemptible context,
->   and we have not audited all of their callers. Two things need checking:
->   that no caller holds a lock which is taken inside the xarray lock
->   (we spot-checked list_lru walkers and found no such caller, but this
->   was not exhaustive), and that every caller keeps the mapping alive
->   across the rcu_read_unlock(), not just by RCU.
-> - Not covered: callers that cannot sleep can still spin, and so can
->   ksm_get_folio(), which has no mapping at hand to wait on. KSM is
->   disabled on our system, so we did not look further into it.
-> 
-> Our current view is that B addresses the path we hit, while A, at best,
-> narrows the problem to the migrate path -- but we may be missing a
-> reason why upstream would rather restructure the writer side.
-
-But I don't like this either ;-(  Hope somebody comes up with a nicer
-idea.
-
-> 5. Questions
-> ------------
-> 
-> 1. Is the "refcount == 0 is transient" assumption of the lockless
->    lookup path documented as depending on the freeze -> removal window
->    being non-preemptible? If so, PREEMPT_RT breaking it is arguably an
->    RT-side invariant break; if not, should the lookup loops grow a
->    bound?
-
-I don't think it's _documented_.  But I do think it's intentional.
-
-> 2. Given that the reclaim site cannot be made non-preemptible as long as
->    workingset_update_node() takes the list_lru spinlock_t from inside
->    xas_store(): is a reader-side fallback like direction B acceptable,
->    or would upstream rather decouple the shadow-node LRU update from
->    xas_store() and then fix the writers?
-> 3. For direction B: is it acceptable that these lookups may sleep on
->    the xarray lock on PREEMPT_RT, in preemptible context only (the
->    same fallback commit 0f8821da4845 uses in mnt_get_write_access())?
->    Is
->    "every freezer holds the xarray lock until the folio is no longer
->    frozen-and-visible" an invariant we may rely on, and should it be
->    documented next to the lockless page cache protocol comment?
-> 4. Are there other freeze sites we have missed?
-> 5. Would a WARN_ON_ONCE() on excessive retry be acceptable as a
->    diagnostic, independent of the chosen fix?
-
-No, I don't think we should do that.
-
-> 6. Reproducer sketch
-> --------------------
-> 
-> 1. Pin a SCHED_FIFO 99 task to CPU X; have it repeatedly page-fault on
->    file-backed code pages of a shared library under reclaim pressure.
-> 2. Drive reclaim (memory pressure is enough; direct reclaim works too)
->    so a task runs __remove_mapping() for one of those pages on CPU X.
-> 3. The FIFO task preempts the holder inside the freeze -> removal window
->    and faults on the frozen page -> spin.
-> 4. Two more FIFO 99 threads of the same process fault on other pages of
->    the same mapping to block on the xarray lock and trigger PI.
-> 
-> Anonymized evidence (register sampling, stack traces of the three RT
-> threads and kswapd, decoded structure dumps) is available on request.
-> If direction B is the preferred one, we will turn the sketch above into
-> a patch series and send it for review.
-> 
-> Best regards,
-> Donghui
-> #/******本邮件及其附件含有小米公司的保密信息，仅限于发送给上面地址中列出的个人或群组。禁止任何其他人以任何形式使用（包括但不限于全部或部分地泄露、复制、或散发）本邮件中的信息。如果您错收了本邮件，请您立即电话或邮件通知发件人并删除本邮件！ This e-mail and its attachments contain confidential information from XIAOMI, which is intended only for the person or entity whose address is listed above. Any use of the information contained herein in any way (including, but not limited to, total or partial disclosure, reproduction, or dissemination) by persons other than the intended recipient(s) is prohibited. If you receive this e-mail in error, please notify the sender by phone or email immediately and delete it!******/#
+Best Regards,
+Yan, Zi
 
