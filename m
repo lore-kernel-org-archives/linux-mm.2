@@ -1,65 +1,65 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DC12606A330
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 16:48:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E035C606A331
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 16:48:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Un2sRjEs
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=b/tfrxuQ
 Received: by kanga.kvack.org (Postfix)
-	id 7419A6B05C2; Wed,  4 Nov 2026 11:48:37 -0500 (EST)
+	id F328D6B05C3; Wed,  4 Nov 2026 11:48:52 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6F2526B05C3; Wed,  4 Nov 2026 11:48:37 -0500 (EST)
+	id EBB996B05C4; Wed,  4 Nov 2026 11:48:52 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5BADD6B05C4; Wed,  4 Nov 2026 11:48:37 -0500 (EST)
+	id D83946B05C5; Wed,  4 Nov 2026 11:48:52 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 36F0F6B05C2
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 11:48:37 -0500 (EST)
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id ABE0F6B05C3
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 11:48:52 -0500 (EST)
 Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id CE16D1407C6
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 16:48:36 +0000 (UTC)
-X-FDA: 85398020232.11.0E94A88
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 30E8F12074C
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 16:48:52 +0000 (UTC)
+X-FDA: 85398020904.11.095338B
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 0D5C84000F
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 16:48:33 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Un2sRjEs;
-	spf=pass (imf11.hostedemail.com: domain of aneesh.kumar@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=aneesh.kumar@kernel.org;
+	by imf29.hostedemail.com (Postfix) with ESMTP id 965C2120011
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 16:48:50 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="b/tfrxuQ";
+	spf=pass (imf29.hostedemail.com: domain of aneesh.kumar@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=aneesh.kumar@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793810914;
+	s=arc-20220608; t=1793810930;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Acdm197U0xK657CGEFs4haruK4G8I1o86W9oW5IkpgM=;
-	b=2V/SH8aRNpyYIH90R5fLHO2f2EuqefTt+GGWfqceacNndXBDnEjV/Gbn6Yb7TZzYLcbGvx
-	QYySEFXruqETO960TcCGkBHoCvUotVUfkkJe16ZJGLmKWVEiYdE1w4Tp1OFGCkQWN3yt5K
-	6Zxk3/+sqj+pP/yWERaZmGFU7Fk1b0A=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793810914;
-	b=boEqk/fQHHMpMRgBGBuzjcbBn1H2HgM9H1MhWZ33bQfUYhGNiqDwuDYNyB7POSv6eDWuFL
-	nnfraLaDoJ5ipfDmCvcPdJwtcw/WHV+MkRhDWtQ8jOy7hbt7oqkO1tvQ/ejv82L5Sl/Qi4
-	BQhrd8l+AeE+n8t4FyJUTzqHmFp4ihE=
+	bh=IUSaeFo1mvVEk8no6IM15BHOisJ9Uj3pDx22Qt7gIqY=;
+	b=R1nhGNEmldS3LtIZCcxZfypFwBIzTlDBegCbQUDK+MbIUHDUpipj1WwQBlBG2uLcGyWkiR
+	siGygXlb0ixp8oMwDElXFPjjJclq3AEdZakwJpbQm72qKj/2XNoqBycmOfYUIswOyHzDY9
+	r954EmrPYCD/X9ciA5ZZ1l+2CWzVpCk=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Un2sRjEs;
-	spf=pass (imf11.hostedemail.com: domain of aneesh.kumar@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=aneesh.kumar@kernel.org;
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="b/tfrxuQ";
+	spf=pass (imf29.hostedemail.com: domain of aneesh.kumar@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=aneesh.kumar@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793810930;
+	b=pHh4z32IaGYyv5GCsjjBNV2IHB9HJI7iOrFYz/3uz+XYvc3gU3IFxznH8cpVNtsuQ6ZOgg
+	WO70oPI5/DDMeK+IWYUmMT5J/59Ei/PphHWDqTEh6aXrRw3CxW8kYLTm/sULbDNi8D9cJl
+	iygxu/Sq+L2ImBAx0HcCoIG4yWiLf68=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id AD1696022B;
+	by tor.source.kernel.org (Postfix) with ESMTP id 22BC56022B;
+	Wed,  4 Nov 2026 16:48:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 097861F000C1;
 	Wed,  4 Nov 2026 16:48:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9280B1F00919;
-	Wed,  4 Nov 2026 16:48:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793810913;
-	bh=Acdm197U0xK657CGEFs4haruK4G8I1o86W9oW5IkpgM=;
+	s=k20260515; t=1793810929;
+	bh=IUSaeFo1mvVEk8no6IM15BHOisJ9Uj3pDx22Qt7gIqY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Un2sRjEsMx2lXPBzcH+6zTEErrf4cJx9UxUpGrHyF/cCVaGBrCmN6it9Pjy9c4BI1
-	 2YIE/I7cBTn1l5elMAHUBGh+uOBidax0JBjzhWKWD2+S0dE6UuH6kLBkkyqb64YKgl
-	 0OJj0O6ld0mGD064jP8QweFe6TJ/krU4wtYDD7XgYK+9uOKYPbAs4EqitZWJjL/OBO
-	 Jd5yag5GmvpYj0vHxRflY69KBIuZ6TaHE2ypaNFC05sQGXgdhzXTeKL/nZuzUcx/Qe
-	 /JTuGPs2gu7j29t4Eq0urOPwy24zqQ2sQJQ2q691rZEzc0cD/bJB/fH7ejY9spCqUM
-	 12HtmtSaN4GVg==
+	b=b/tfrxuQIUxCoioD2PwWww9Ln+574VOwed455Mv9HrfrGanJlx1Y6TvHWjvbOKWnV
+	 jvT7d4rTNPrjkJuvDQLyFj5/jSP/HOZoHzaeyJrKbHvzNu4L55Nsu6kfOxe/wQS5xE
+	 ClcQv6WNLXUucKAO36vkeHc+NkA3ytQtfmCJyFV1OnZRPyxi5Qh4Y4OiZt83rlCZaG
+	 2Kv5nyYhBXjKPYWTj+J4FFgq3A5stC6UrkXpWw/rXxzFn3hwpKiEA1plDXUvx/fO8X
+	 +mOIudidEOaWxfRgoCyOmmREgHYbSQQtcJbnncOn3fPtjYm9dPl+c06oqAL9s0ClsO
+	 uPAGXnsM7VctA==
 From: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>
 To: linux-coco@lists.linux.dev
 Cc: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>,
@@ -123,27 +123,27 @@ Cc: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>,
 	linux-mm@kvack.org,
 	kvmarm@lists.linux.dev,
 	patches@lists.linux.dev
-Subject: [PATCH v9 06/14] dma-pool: Allocate CoCo atomic pools using CoCo shared memory allocator
-Date: Wed,  4 Nov 2026 22:15:47 +0530
-Message-ID: <20261104164555.3555725-7-aneesh.kumar@kernel.org>
+Subject: [PATCH v9 07/14] dma-direct: Align CoCo shared DMA allocations to the shared granule size
+Date: Wed,  4 Nov 2026 22:15:48 +0530
+Message-ID: <20261104164555.3555725-8-aneesh.kumar@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20261104164555.3555725-1-aneesh.kumar@kernel.org>
 References: <20261104164555.3555725-1-aneesh.kumar@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Stat-Signature: fqy6hzi49e8pmibiex8mp7xnbqpkq4u5
+X-Rspamd-Server: rspam01
+X-Rspam-User: 
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam09
-X-Stat-Signature: hb99pc9sab7demxz8wocaqox8ek348pr
-X-Rspamd-Queue-Id: 0D5C84000F
-X-Rspam-User: 
-X-HE-Tag: 1793810913-112088
-X-HE-Meta: U2FsdGVkX19e4bRdqhFajkj7XKRWlgFvl6TQzsdq4KbCEfMTQALbZVF6V6JIEWmZGTAUdFquMT2KulrLf/bI+rycxduCHy5T197E/nI5FdxHw/PBx5iBga89NkANqvDHk/wkxpeGOO+ZP/XLVw/6pmF2fyNxjoJtFTaY4LkSARlyNFScBFnW8273N1Zml+IcKiPu+BqY9trMgWpSffVCbZbxv0f8y/rRiW5WG2BiVLt4dmOMzZmUgqv4XvwPXRxXQU3iQBopEQuCcjJt5Gz4Zh0hDyuWKynxzKGIbtyJt0qwUb1hmJ5cnVOvY661bgy8sDdn4zcloa4XTyJi+Udb/k5dqp2t/KHmsTBE73GQ16fJV9XjLgtd2DOJ9QqzlFYXD5u9l6uxZFzeSvuobzCks2kSzO3orM2k9tG+fN++zfVVLLYbi7UZmHW+nuFbDB179QHwwX2dwbyQPtErMSN10Q0FcP3q+bfnp50aU0570IwbCRudQXt8XmlZA7qqfgtRJw0IawhaUxUf6rMnThXfETefDW0DBTdusS1sG78CnRTVpxrnFhtLNK4ng7XyOsYNTnZhnyUB64OFoQoalUP1wytLT5y9bHOuYFFYpvq8PlxQ1gWqmyZiXURR7kq7Kvhe+ZmOstyZPbgBD4sD3Nf1Nmo6lGoMuWQ9i7Qfe149YVZqICqqhS7+ek82TuxKWdhTy/AHd10iYwNcPIXTKd4EWk3pj6i8XKFP83HPhm0EJgtj7bvr7dgzFl9NMw4UhaHEMlQY8xm4K6Wi61vH+GVcYgDRLjd1oT+8aS+xQ/o/s94tG8ktlg65Epz5gxO+i+c1Fh/Xo9O3KR28lEd05G30W5fyyLPgGFrdMOAL5cE/CRFTUtbtQSrd/y87/qsCMw3WPbSqY8mEjiMKkcrbosEIArSeEl/JXeUFnkDjjPYahMzFuDs89gvG6F5LrplEgc4PkqqXGceig+87FAhzlfX
- YtjE634S
- +hrc/tM7RblNwGGF7sn9x/F/ReCLBNq28P5YXxkPTFk2RB/weR7UMcGSaCpbfzZAZIQ03k9z7yXG/4A0VmaZkN/pmWSWCZlYzimEiHmmv1BcpgHl9983udO+NUcr6quwqP5UEKHyY+39MuiuUHYUzVMsNQLa21J37T+9gEPgmm1MQ7iyT6e07UEEIAFYw4w1taZVKAFGpiK4Ix00PFYdlpAdH3ERCUKss4mtKxSYQBlMYwuXrIPGwHvkY4/uAORnK4LcLmLrch0PEul5NV+/RKbb/SYn1/dxx9ReKho+GpZOJHKzaxxbqoaKTBJXpjcmGrtx6OWvWs0d5W1FVNdfhrzUYvlPqoBggf11ygwLyCXQRx4tk7wWD9GNTvJy9bmkIalnNS5qtEBdC9Ps=
+X-Rspamd-Queue-Id: 965C2120011
+X-HE-Tag: 1793810930-226135
+X-HE-Meta: U2FsdGVkX1/PlRH8qB0+zSRUy36jUxIlHefqjHk8lWnM3na+4nJw0MxP5ujVwPuo/pNsIGxZs3tdlpqP/vI5yVLtwYclX6AkhH0o4KysxlqANiMsJkCZfHWQjFTf4byhSLYWHZzxwpTy0PUBRnLZeyZHWzwzeZ2gropSOUg/Rywt7taXmtRu2115z2pz72XSa1vi2St14yX8GPC44vhcdaFvml+aH6GU69YHwu07QHaVl0v31mW/19TU9a33RqGNP406ZowQix5F+qzKROmB4venACjIZpUdBQuP2ZSJBMYEc/MSv7fYeOjHWK1Ja8ViVtrCzXV94qfASgN1NS7M7FVFuF961i/ApNK71bTGZ0sCHl/vUpTW3fTSFfxPpBqLCztFM28VV6h7OYgZFO9qr/7O8dfzQJ7F5wdkLo9yL9l5OVPqDM8n1trCKhCdhxw8Os+uPSqxLqUZEWJnT79ACVNSZk0mXYCyCax8yEBnln4HHjUPfUyi9r4KSfZinfqOPs/5B2lJl/SkNWNgWL2V5Icytr3wwy5+h8zqo1DUadVCwTPRJ9Xb21AzfiSIGTvMCyz4YbNiBk4GLcOBQ+WWN7fGgG0M/DFwqw1a5q7/TnLq4+tbUVa0PEojadXRJEcMZagZm9bxBWmVg54pc3EAc1rcS1i8KRgCw/k2yS3zKcULJFjhu0/86oRtqBTOqRCGb+IOFBqD0VhXgoQ4UVapF4+TQ0AX+mEKYOBBHp75aF6QHSJk0o2gCWhMNc2bjBge6cFYYAgq6u9CNWgqVf1iGcDxccQHwZ03uryLMcwk0RasYZsWByxW8uPBx6jayXYAlvp1QzcagwBtXHXEQptNb7n2AO4pLt8iK9kIw5lzocCQmhdqvhBJ5exA6jGSzxJo910IMd4bMfo23hqDAXTmZscvxF8ytJcRexSnPN06Y5+Dzq4F17Ug9XIELy38feFTPa/ouPaXQF9G9Bw7qne
+ QC6srWCf
+ Gpqoximani7bpHf429eHd6snpOOv+Uu7q8ZwYvcTf4axwFxsJBU4RcyIxJSiTdiwDURVW2CHfOAkl/f6LSmg835vP2+0eXW43EAn++C/aTcy8FpLIQf2pswRNTMePSJUyiRKWAfoziE5dEGuIWaEO0O9zRYS27YgD9H8+JN2jlXxNdj4Wou2MjbWuimp52E1k9c/Hd0CA8LPKwSkcxuFnkeQNWMjcUeVbsNOxhZN6ggzqEXYHFJDHQzEpMOIMYy72K2a59kjZMWdSv9b0PiRf+zOu9nuLA/WQv+p0l4RglT4YwuH9EdWWxNNgIHxB4oVQw59n/jh94bE46v8ROL077tdRdMrEtXXFnQ6uO28gxlEiKuGEEnL9/RKJN6zblCHQJanyVTGuFCZccUk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -152,117 +152,202 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Atomic DMA allocations cannot perform a potentially sleeping
-private/shared state transition at allocation time. The atomic DMA pools
-avoid this by transitioning their backing allocations in a sleepable
-context and suballocating memory that is already shared.
+Use the common CoCo shared-memory geometry helpers for allocations backed
+directly by CMA or the page allocator. Round the backing allocation to a
+whole shared granule and pass the resolved shared-allocation attribute
+through the DMA contiguous allocator so it can enforce the mandatory
+alignment. Transition the complete range through the common shared/private
+helpers.
 
-Architectures may require these transitions to use a shared granule size
-larger than PAGE_SIZE. The existing fallback loop can reduce the backing
-allocation below the order required by that size, producing a range that
-cannot be safely transitioned.
+Recompute the layout before freeing ordinary direct allocations so the
+transition back to private memory and dma_free_contiguous() cover exactly
+the range acquired by the allocation path. If restoring private state
+fails, retain the existing fail-safe behavior and leak the pages rather
+than returning potentially shared memory to the allocator.
 
-For pools marked cc_shared, round the requested pool size up to a multiple
-of the shared granule size and prevent allocation fallback below the order
-required by that size. Pass __DMA_ATTR_ALLOC_CC_SHARED to
-dma_alloc_from_contiguous() so it enforces the mandatory alignment. If CMA
-cannot satisfy it, fall back to the buddy allocator. Non-shared pools pass
-zero attributes and retain the existing CMA alignment policy.
-
-Use the cc_make_shared() and cc_make_private() helpers to transition the
-backing allocation and validate its address and size.
-
-Individual atomic allocations may remain smaller than the shared granule
-size because the backing allocation remains owned by the pool and in the
-shared state.
+This also applies the same rules to dma_direct_alloc_pages(), covering
+callers which require a struct page result rather than a CPU virtual
+address.
 
 Cc: Marek Szyprowski <m.szyprowski@samsung.com>
 Cc: Robin Murphy <robin.murphy@arm.com>
 Signed-off-by: Aneesh Kumar K.V (Arm) <aneesh.kumar@kernel.org>
 ---
- kernel/dma/pool.c | 27 +++++++++++++++++++++------
- 1 file changed, 21 insertions(+), 6 deletions(-)
+ kernel/dma/direct.c | 51 ++++++++++++++++++++++++++++++++++-----------
+ 1 file changed, 39 insertions(+), 12 deletions(-)
 
-diff --git a/kernel/dma/pool.c b/kernel/dma/pool.c
-index 70b7f64b17ab..da487c3f9dc6 100644
---- a/kernel/dma/pool.c
-+++ b/kernel/dma/pool.c
-@@ -4,12 +4,12 @@
-  * Copyright (C) 2020 Google LLC
-  */
- #include <linux/cma.h>
-+#include <linux/cc_shared.h>
- #include <linux/debugfs.h>
- #include <linux/dma-map-ops.h>
- #include <linux/dma-direct.h>
- #include <linux/init.h>
- #include <linux/genalloc.h>
+diff --git a/kernel/dma/direct.c b/kernel/dma/direct.c
+index 7e71f96b6ffd..675ed698a3ad 100644
+--- a/kernel/dma/direct.c
++++ b/kernel/dma/direct.c
+@@ -11,10 +11,10 @@
+ #include <linux/scatterlist.h>
+ #include <linux/pfn.h>
+ #include <linux/vmalloc.h>
 -#include <linux/set_memory.h>
  #include <linux/slab.h>
- #include <linux/workqueue.h>
+ #include <linux/pci-p2pdma.h>
  #include <linux/cc_platform.h>
-@@ -85,6 +85,9 @@ static bool cma_in_zone(gfp_t gfp)
- static int atomic_pool_expand(struct dma_gen_pool *dma_pool, size_t pool_size,
- 			      gfp_t gfp)
- {
-+	struct cc_shared_layout layout;
-+	unsigned long attrs = 0;
-+	unsigned int min_order = 0;
- 	unsigned int order;
- 	struct page *page = NULL;
- 	bool leak_pages = false;
-@@ -92,6 +95,19 @@ static int atomic_pool_expand(struct dma_gen_pool *dma_pool, size_t pool_size,
- 	int ret = -ENOMEM;
- 	pgprot_t prot __maybe_unused;
++#include <linux/cc_shared.h>
  
-+	if (dma_pool->cc_shared) {
-+		int err;
-+
-+		err = cc_shared_calc_layout(pool_size, &layout);
-+		if (err)
-+			return err;
-+		pool_size = layout.shared_size;
-+		min_order = get_order(layout.alignment);
-+		if (min_order > MAX_PAGE_ORDER)
-+			return -E2BIG;
-+		attrs = __DMA_ATTR_ALLOC_CC_SHARED;
+ #include "direct.h"
+ 
+@@ -85,7 +85,7 @@ static int dma_set_decrypted(struct device *dev, void *vaddr, size_t size)
+ {
+ 	int ret;
+ 
+-	ret = set_memory_decrypted((unsigned long)vaddr, PFN_UP(size));
++	ret = cc_make_shared(vaddr, size);
+ 	if (ret)
+ 		pr_warn_ratelimited("leaking DMA memory that can't be decrypted\n");
+ 	return ret;
+@@ -95,7 +95,7 @@ static int dma_set_encrypted(struct device *dev, void *vaddr, size_t size)
+ {
+ 	int ret;
+ 
+-	ret = set_memory_encrypted((unsigned long)vaddr, PFN_UP(size));
++	ret = cc_make_private(vaddr, size);
+ 	if (ret)
+ 		pr_warn_ratelimited("leaking DMA memory that can't be re-encrypted\n");
+ 	return ret;
+@@ -115,7 +115,7 @@ static struct page *dma_direct_alloc_swiotlb(struct device *dev, size_t size,
+ }
+ 
+ static struct page *__dma_direct_alloc_pages(struct device *dev, size_t size,
+-		gfp_t gfp, bool allow_highmem)
++		gfp_t gfp, bool allow_highmem, unsigned long attrs)
+ {
+ 	int node = dev_to_node(dev);
+ 	struct page *page;
+@@ -125,7 +125,7 @@ static struct page *__dma_direct_alloc_pages(struct device *dev, size_t size,
+ 	WARN_ON_ONCE(!PAGE_ALIGNED(size));
+ 
+ 	gfp |= dma_direct_optimal_gfp_mask(dev, &phys_limit);
+-	page = dma_alloc_contiguous(dev, size, gfp, 0);
++	page = dma_alloc_contiguous(dev, size, gfp, attrs);
+ 	if (page) {
+ 		if (dma_coherent_ok(dev, page_to_phys(page), size) &&
+ 		    (allow_highmem || !PageHighMem(page)))
+@@ -202,7 +202,7 @@ static void *dma_direct_alloc_no_mapping(struct device *dev, size_t size,
+ {
+ 	struct page *page;
+ 
+-	page = __dma_direct_alloc_pages(dev, size, gfp & ~__GFP_ZERO, true);
++	page = __dma_direct_alloc_pages(dev, size, gfp & ~__GFP_ZERO, true, 0);
+ 	if (!page)
+ 		return NULL;
+ 
+@@ -223,6 +223,7 @@ void *dma_direct_alloc(struct device *dev, size_t size,
+ 	bool remap = false, set_uncached = false;
+ 	bool mark_mem_decrypt = false;
+ 	bool allow_highmem = true;
++	struct cc_shared_layout layout;
+ 	struct page *page;
+ 	void *cpu_addr;
+ 
+@@ -302,8 +303,15 @@ void *dma_direct_alloc(struct device *dev, size_t size,
+ 		return NULL;
+ 	}
+ 
++	if (mark_mem_decrypt) {
++		if (cc_shared_calc_layout(size, &layout))
++			return NULL;
++		size = layout.shared_size;
 +	}
 +
- 	/* Cannot allocate larger than MAX_PAGE_ORDER */
- 	order = min(get_order(pool_size), MAX_PAGE_ORDER);
- 
-@@ -99,10 +115,10 @@ static int atomic_pool_expand(struct dma_gen_pool *dma_pool, size_t pool_size,
- 		pool_size = 1 << (PAGE_SHIFT + order);
- 		if (cma_in_zone(gfp))
- 			page = dma_alloc_from_contiguous(NULL, 1 << order,
--							 order, 0, false);
-+							 order, attrs, false);
- 		if (!page)
- 			page = alloc_pages(gfp | __GFP_NOWARN, order);
--	} while (!page && order-- > 0);
-+	} while (!page && order-- > min_order);
+ 	/* we always manually zero the memory once we are done */
+-	page = __dma_direct_alloc_pages(dev, size, gfp & ~__GFP_ZERO, allow_highmem);
++	page = __dma_direct_alloc_pages(dev, size, gfp & ~__GFP_ZERO,
++					allow_highmem, attrs);
  	if (!page)
- 		goto out;
+ 		return NULL;
  
-@@ -126,8 +142,7 @@ static int atomic_pool_expand(struct dma_gen_pool *dma_pool, size_t pool_size,
- 	 * shrink so no re-encryption occurs in dma_direct_free().
- 	 */
- 	if (dma_pool->cc_shared) {
--		ret = set_memory_decrypted((unsigned long)page_to_virt(page),
--					   1 << order);
-+		ret = cc_make_shared(page_to_virt(page), pool_size);
- 		if (ret) {
- 			leak_pages = true;
- 			goto remove_mapping;
-@@ -144,7 +159,7 @@ static int atomic_pool_expand(struct dma_gen_pool *dma_pool, size_t pool_size,
+@@ -322,7 +330,7 @@ void *dma_direct_alloc(struct device *dev, size_t size,
+ 		void *lm_addr;
  
- encrypt_mapping:
- 	if (dma_pool->cc_shared &&
--	    set_memory_encrypted((unsigned long)page_to_virt(page), 1 << order))
-+	    cc_make_private(page_to_virt(page), pool_size))
- 		leak_pages = true;
+ 		lm_addr = page_address(page);
+-		if (set_memory_decrypted((unsigned long)lm_addr, PFN_UP(size)))
++		if (dma_set_decrypted(dev, lm_addr, size))
+ 			goto out_leak_pages;
+ 	}
  
- remove_mapping:
+@@ -381,6 +389,7 @@ void dma_direct_free(struct device *dev, size_t size,
+ 	phys_addr_t phys;
+ 	bool mark_mem_encrypted = false;
+ 	struct io_tlb_pool *swiotlb_pool;
++	struct cc_shared_layout layout;
+ 	unsigned int page_order = get_order(size);
+ 
+ 	/*
+@@ -424,6 +433,12 @@ void dma_direct_free(struct device *dev, size_t size,
+ 		/* Swiotlb doesn't need a page attribute update on free */
+ 		mark_mem_encrypted = false;
+ 
++	if (mark_mem_encrypted) {
++		if (WARN_ON_ONCE(cc_shared_calc_layout(size, &layout)))
++			return;
++		size = layout.shared_size;
++	}
++
+ 	if (is_vmalloc_addr(cpu_addr)) {
+ 		vunmap(cpu_addr);
+ 	} else {
+@@ -435,10 +450,8 @@ void dma_direct_free(struct device *dev, size_t size,
+ 		void *lm_addr;
+ 
+ 		lm_addr = phys_to_virt(phys);
+-		if (set_memory_encrypted((unsigned long)lm_addr, PFN_UP(size))) {
+-			pr_warn_ratelimited("leaking DMA memory that can't be re-encrypted\n");
++		if (dma_set_encrypted(dev, lm_addr, size))
+ 			return;
+-		}
+ 	}
+ 
+ 	if (swiotlb_pool)
+@@ -451,6 +464,7 @@ struct page *dma_direct_alloc_pages(struct device *dev, size_t size,
+ 		dma_addr_t *dma_handle, enum dma_data_direction dir, gfp_t gfp)
+ {
+ 	unsigned long attrs = 0;
++	struct cc_shared_layout layout;
+ 	struct page *page;
+ 	void *cpu_addr;
+ 	bool mark_mem_decrypt;
+@@ -474,7 +488,13 @@ struct page *dma_direct_alloc_pages(struct device *dev, size_t size,
+ 		goto setup_page;
+ 	}
+ 
+-	page = __dma_direct_alloc_pages(dev, size, gfp, false);
++	if (mark_mem_decrypt) {
++		if (cc_shared_calc_layout(size, &layout))
++			return NULL;
++		size = layout.shared_size;
++	}
++
++	page = __dma_direct_alloc_pages(dev, size, gfp, false, attrs);
+ 	if (!page)
+ 		return NULL;
+ 
+@@ -500,6 +520,7 @@ void dma_direct_free_pages(struct device *dev, size_t size,
+ 	phys_addr_t phys;
+ 	void *vaddr = page_address(page);
+ 	struct io_tlb_pool *swiotlb_pool;
++	struct cc_shared_layout layout;
+ 	/*
+ 	 * if the device had requested for an unencrypted buffer,
+ 	 * convert it to encrypted on free
+@@ -516,6 +537,12 @@ void dma_direct_free_pages(struct device *dev, size_t size,
+ 	if (swiotlb_pool)
+ 		mark_mem_encrypted = false;
+ 
++	if (mark_mem_encrypted) {
++		if (WARN_ON_ONCE(cc_shared_calc_layout(size, &layout)))
++			return;
++		size = layout.shared_size;
++	}
++
+ 	if (mark_mem_encrypted && dma_set_encrypted(dev, vaddr, size))
+ 		return;
+ 
 -- 
 2.43.0
 
