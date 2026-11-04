@@ -1,111 +1,86 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79D45606A32D
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 05:58:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69AEF606A31B
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 06:17:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gondor.apana.org.au header.i=@gondor.apana.org.au header.a=rsa-sha256 header.s=h01 header.b=nKNhpjXt
+	dkim=pass (1024-bit key, unprotected) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=FBM2Voqw
 Received: by kanga.kvack.org (Postfix)
-	id 5E4E96B00EF; Wed,  4 Nov 2026 00:58:15 -0500 (EST)
+	id 7408C6B00EF; Wed,  4 Nov 2026 01:17:03 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 596686B05B1; Wed,  4 Nov 2026 00:58:15 -0500 (EST)
+	id 6F1DB6B05B1; Wed,  4 Nov 2026 01:17:03 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4AC676B05B2; Wed,  4 Nov 2026 00:58:15 -0500 (EST)
+	id 608156B05B2; Wed,  4 Nov 2026 01:17:03 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 2AA1F6B00EF
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 00:58:15 -0500 (EST)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 987F7160659
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 05:58:13 +0000 (UTC)
-X-FDA: 85396381266.22.69C216B
-Received: from abb.hmeau.com (abb.hmeau.com [180.181.231.80])
-	by imf05.hostedemail.com (Postfix) with ESMTP id C7633100009
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 05:58:11 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=gondor.apana.org.au header.s=h01 header.b=nKNhpjXt;
-	dmarc=pass (policy=quarantine) header.from=apana.org.au;
-	spf=pass (imf05.hostedemail.com: domain of herbert@gondor.apana.org.au designates 180.181.231.80 as permitted sender) smtp.mailfrom=herbert@gondor.apana.org.au
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 3E2D46B00EF
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 01:17:03 -0500 (EST)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id BA8B412057D
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 06:17:02 +0000 (UTC)
+X-FDA: 85396428684.20.7B62C65
+Received: from out30-118.freemail.mail.aliyun.com (out30-118.freemail.mail.aliyun.com [115.124.30.118])
+	by imf30.hostedemail.com (Postfix) with ESMTP id AC1E080005
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 06:16:59 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=FBM2Voqw;
+	spf=pass (imf30.hostedemail.com: domain of tongweilin@linux.alibaba.com designates 115.124.30.118 as permitted sender) smtp.mailfrom=tongweilin@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793771892;
+	s=arc-20220608; t=1793773021;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=GuMgcgXi2d8E9GAegF23L5yqInpKNepyztEiRzZzVFY=;
-	b=WCBY3qj+X5X6koxJTtL1wIGnCVq5HG3PTI8d5HL5Fi6xMjV+hLseiSf97hwRRWvxJmKdhv
-	hYNTF6IokPtBQoxIcUIq8Ny8eaPjk7ubgPU4SVY+eV6SsCWUkPSRsOBvrAaNQexKm3wL+8
-	gSlo5AyFL9vWXS69Zy18gklorbCVLmU=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=ic+f8fAiF3rnn/6l8bF3oaVZtUIPePP4Mud6dITzj/k=;
+	b=cY0i4Bb2/DAgcvLV8HV6pf5OnJaWryBJ484AV2mMJjlSeW8xoHuO3QkbCO5YxWR5f/Stii
+	1OE/JdiyoemYfarSnyUs+R94Nz7e15dtPzhcjey7WLbc4106MyINmB0d3ZCA0HtPSoJjz8
+	mPXPN1W9S4tMo7PUaEiFr4frHG7PhZc=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=gondor.apana.org.au header.s=h01 header.b=nKNhpjXt;
-	dmarc=pass (policy=quarantine) header.from=apana.org.au;
-	spf=pass (imf05.hostedemail.com: domain of herbert@gondor.apana.org.au designates 180.181.231.80 as permitted sender) smtp.mailfrom=herbert@gondor.apana.org.au
+	imf30.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=FBM2Voqw;
+	spf=pass (imf30.hostedemail.com: domain of tongweilin@linux.alibaba.com designates 115.124.30.118 as permitted sender) smtp.mailfrom=tongweilin@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793771892;
-	b=BGdiJEGqELWAnKum4j1hEruBP5GRRXhRDY3Zfwdg9shcp7VdqgqoQjCr/FbZcNgRyDFvm/
-	sLxpm1I2Wrx0/1J8XPTY3IbBWazk5SEh3oMd0mkdP3PRtdJCtJzDbHIZi/iY16wPeb7+j2
-	aAPj2WLmqMtNmIJFh90omIUS/Kmb3Go=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=gondor.apana.org.au; s=h01; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:cc:to:subject:message-id:date:
-	from:content-type:reply-to; bh=GuMgcgXi2d8E9GAegF23L5yqInpKNepyztEiRzZzVFY=; 
-	b=nKNhpjXtNFPq3RPGi6Z3gnojYnP7E9wP8YpuIKrmvFVH9l758u0Z2rhJDSDgSCm6+owCN0gKm3Q
-	wSMC9l9y9ZHRsw+HtyemNhMuTKV2aSYs8iccdsfHA4+09FuaAXGjPpmJtncoSiwlMorNl1NAO0Mol
-	WDM04nQVzydHwNsEojj9PVyNGoPhm24p4i14e9NI3qQvnvvpMU0cyHWwhj6s8MIatcCvJDPZcM/5g
-	fAqdX2giQB8BmTQoPALJXawvKupLSiQ51WcQZzIkEDNecXkW3yQ2Ob+kNh6lX73ziNnpXftTo8+NP
-	9Ds7ZSeaaTHFcLIa6C+fEFpi2IQ+kFqTi/Pw==;
-Received: from loth.rohan.me.apana.org.au ([192.168.167.2])
-	by formenos.hmeau.com with smtp (Exim 4.98.2 #2 (Debian))
-	id 1xOU0V-0000000AkBq-1V5g;
-	Wed, 04 Nov 2026 13:58:00 +0800
-Received: by loth.rohan.me.apana.org.au (sSMTP sendmail emulation); Wed, 04 Nov 2026 13:57:59 +0800
-Date: Wed, 4 Nov 2026 13:57:59 +0800
-From: Herbert Xu <herbert@gondor.apana.org.au>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: "Liam R. Howlett (Google)" <liam@infradead.org>,
-	Davidlohr Bueso <dave@stgolabs.net>,
-	Uladzislau Rezki <urezki@gmail.com>, Michal Hocko <mhocko@suse.com>,
-	Baoquan He <bhe@redhat.com>,
-	Alexander Potapenko <glider@google.com>,
-	Andrey Ryabinin <ryabinin.a.a@gmail.com>,
-	Marco Elver <elver@google.com>, Michal Hocko <mhocko@kernel.org>,
-	Linux Crypto Mailing List <linux-crypto@vger.kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Thomas Graf <tgraf@suug.ch>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, maple-tree@lists.infradead.org,
-	Lorenzo Stoakes <ljs@kernel.org>, Chris Mason <mason@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Andrew Ballance <andrewjballance@gmail.com>, stable@vger.kernel.org,
-	"David Hildenbrand (Arm)" <david@kernel.org>
-Subject: Re: [PATCH 4/4] rhashtable: fix vmalloc() deadlock in atomic rehash
-Message-ID: <aurJZ81qnbiHH_P1@gondor.apana.org.au>
-References: <auKshDXKQXt1kvjy@gondor.apana.org.au>
- <auMbCuecFeRmBFSK@pc636>
- <jfvq7vkx73vzp2ukq6nwnb3v3g2ezdcyppba4oa5lpzmz6ls6t@akc46gonndgy>
- <urkgmijyytg3rrislm5fdzmfggqavzpiry23f6lpkqonvy2tqx@d56stj3eixfa>
- <auaFhOa5EBz4gJwK@gondor.apana.org.au>
- <xdzcyoou73blpfdlgy47i2ktrcsffnclerzojpgrxphid54gjc@nicdcvzqx447>
- <auqtTjXhD8is-y9f@gondor.apana.org.au>
- <CAHk-=wiE0KG+jkhmJWifXuAVivtB63WCWtdEpGAex7-T0SHd2g@mail.gmail.com>
- <aurAxRpCwzeyXeVj@gondor.apana.org.au>
- <CAHk-=wgPvbYRcKpQ8WTH-EYZRgMG0KSH+cZxY5-Hyf+X7JjWsw@mail.gmail.com>
+	t=1793773021;
+	b=eDWLVtIWJexAbygI7Me5ji+3E30mc8hLEKExrvd2KPy03U9Hef3A8Tf1ZzSQPTiS3EhfDr
+	M5r8cyQVJ4vmj/gSTdSpuYnSOoESHjE2sCGXOaGLVByKNyiSqEKXg3Wr9W2NyQHXKurbcb
+	nE5B9pf8kdNtxWR85Tp+rW3toDJlQSU=
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1793773014; h=From:To:Subject:Date:Message-ID:MIME-Version;
+	bh=ic+f8fAiF3rnn/6l8bF3oaVZtUIPePP4Mud6dITzj/k=;
+	b=FBM2VoqwLLtVsgJEQJkRX3aAmFd7XYogA+K3zLw43y+lJu9V7iWx/wVjeZl+NhxhaC1EXUt3XtY4tqOPX0FiyM75hG04aClPxB4R6R9KkeCbNoPLOr0DvJwolUFHO8XfpRZ7p2J4/5If2aiMZHZn5vpHtJhlLRwk/a8lX2DsJsY=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R701e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033032089153;MF=tongweilin@linux.alibaba.com;NM=1;PH=DS;RN=6;SR=0;TI=SMTPD_---0XE4qK9Q_1793773004;
+Received: from x31l07246.sqa.na131.tbsite.net(mailfrom:tongweilin@linux.alibaba.com fp:SMTPD_---0XE4qK9Q_1793773004 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Wed, 04 Nov 2026 14:16:53 +0800
+From: Weilin Tong <tongweilin@linux.alibaba.com>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	Ryan Roberts <ryan.roberts@arm.com>
+Cc: David Hildenbrand <david@kernel.org>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v2] tools/mm/thpmaps: handle carriage returns and non-UTF-8 filenames
+Date: Wed,  4 Nov 2026 14:16:41 +0800
+Message-ID: <20261104061641.1115805-1-tongweilin@linux.alibaba.com>
+X-Mailer: git-send-email 2.43.7
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAHk-=wgPvbYRcKpQ8WTH-EYZRgMG0KSH+cZxY5-Hyf+X7JjWsw@mail.gmail.com>
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: C7633100009
-X-Stat-Signature: 5ufbth1ep6oobscegaaqcku83zt6mp7h
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: 37tx4ftafmkctpuroboumxmfsyxqx8cp
+X-Rspamd-Server: rspam01
 X-Rspam-User: 
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+X-Spam-Status: No, score=-26.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
-	autolearn_force=no version=4.0.1
-X-HE-Tag: 1793771891-849880
-X-HE-Meta: U2FsdGVkX1//CMVsDq6ML7RnRwN5TfjMeJLpOKapjXAKW4R1JJaglQ9dSM9hp+kUf/9Pul2md+ddHXkhfxqtka2k9Ea87RqMBlFdEZKCEg89STX1Wf1zkNCMrf5XbYBEvL3jBmyhjcdU3M6Gm3wE8BhKoGUHCt0vJN+J8+0vFTxWhTxkddEqNDmg05W7h8NYLxnjZPPrwbRXZtNx1SsJwQROuXHn7+AcZv0/oGh0GInLSOhS5zuAD6/FSFAUd0spmPiEfWIN9+k+AsU2mIF8bn9v+xyL+ChAVFnRSvBf9SLHVmvBUDzR+MPsIoMhiBxxDR2Sxg0Qk3fpsbebfua08hxy86FB1/qsizk4w4DGXltD8juiTcwdi2eLRVM8DBxeIlpE1eOl9XWlyoxPWd7whDkiKOmjc0Lv9UonYHRvW4xwAcJsRmyAFWdCmUZcbyIJ+iK1dNM/aXhT8TOP2OH/SiVE+ASdrRckqpFT3jQzHMzi2mYBQFqjwmfqwsPBVs6BNP+Oy0HrwQcXQ3k2cguIkXynkvWxBkAGZjk+KjlXYaYdLjUIApi/sfBCPOqy/TRCvkSvahkzeEnJsYfw77PDQ3B3rMfL7s5En+dKD3mH6A2l1GUfjIf6e4OCc2S1LYdwr44nH6CUNQsiZRJe4N4xJMkKuqCdsymsuPeyTods1atvWTaPny762NGZM7FEwMDDHi9/SLD5Jvab6bySKsU1+p1Tp09acVQoMABa5ZrI4iCOB0RtsvpkEB+g6uvXvsko8ub14FQTYVFCg1VWVcmvCxy+lU51XaT1cF5tUDggY+ctQN2hauf85PNNrQiK1X0CUQLzNp2tPC6FxS54I0PIWvB4k1wUX/jwQe8r5q30pllvQ9gtWZcvvS6EQEURcQXXmxrEUkDXPNAl81h+JkpXlELBKa9WDMkuzsAkIrudAgLK4OFg8NhxkS0bCD/ni39nr4vmseigC//wlSAc6M/
- m+dA5uWL
- 751X0QGZRwd6DgR2MbZQsRmNg712srBBySY6ZY+s6eCLFAJL43PX+oPWUv1pnVuyXMdF9aDa6YE72s/qs1TLjsV2qcfeocah5QejMh7327qzyKRYZuUs8fv6Y7YgkaP8+jBtmgjIDQhixnOKQqh6+AXu0tG0acMxuyFgnbF66RRbinqe1AX0GIZKNyuu/EwPEjcGanTHsWGajFYhFFYvuZekMRt5nKefLE2g9z2qEwZyHR/WSNgkQ+m4DtCCZLemnJbzouC0x9EUoQDQmydqnzdOwg4G3uEsg9V7HuLtU3JtkEMHqkUWW8S4RdC5jBmB0vLn4Od8H0VCrTO/aQqUPEA4ZV2nuk7ujRvnHcr1E2IqB5L/gkJjixF/m1uQ4WGMI7ZPzHZKYm0LQv2A=
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,UNPARSEABLE_RELAY,USER_AGENT_GIT,USER_IN_DEF_DKIM_WL
+	autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: AC1E080005
+X-HE-Tag: 1793773019-197090
+X-HE-Meta: U2FsdGVkX18V9xuMPf4wVZRd4Ai4+bGXmnrZL2kh7z2tPuk7SWGNCeYlA0HmJvcCFGnMBMGuoNhNICsCYQb4pqt2A5339emcatNDRtInqbKEEwzOXm7eH1+GJcrzibLwO66iGf1djEDz7G5QL7jOKdUOCrxnSDIwvOl1iuofRn/UY2spNibqK54e7TL4TeUyefGIZwhOkGHq0JaIR8XuKvq2p0+W6RpMh2TL0daKAMLxZH3+qA7lf/UT8hlDVzPLnc513GcdqXNhljfJEgWBe1K1jFq6ctGrjfrX5C5CvEUyRzS3EvoVPPEipRVZx4ePCkApv0ga+RrsxMRVfYQ9TQ//uQny9pna/4lzJBdBGJkp62rZXEo7S/T4XFcLzV/EipC7/EOHhKJqon+kFsinjrgg1qaJijKxD2cP0+3QjRgc66Bf/PF/GP/4FfGNEQAQzskbpjWtBLq/ac6vJbwxwFhcxmcj7TXXvN1K5Vtv28Uy6M0OnfWTFFErLdAax6cmpgaLWktg8TVgf7+DWfVas4l40JSbSLFCl6XrQkYKC8g62pYHaXa3esg2iIc4ko+v8PmgZiALOOjL5AO3pBGtQ93YnpJYzd0shDuUzwhNz4o2TmNkDwCKsQ0gpnDVddrI6ZDuEZVAMw14QjtnaYmicaLndsE5cjOfgAQhS3uWtospVvJ2vMKRhvWXVDe3ABr6pqm2HOdCe52hZD0U8nZeu3cnI79dceIjqwyr1KFOJADo3+ohf8pyPuIeTYG5o+ft6W+gAqSt6E8+MHi15i5Pvt3gjd1kuj+v+4uV8SbKZkKoAWsxBQyUzNeN0I0mB+welHaedetNqqxTtzrsqG7PuOqAVAodwipui0gX0HutU16WgrWmHUB5gOlDBrCNI9A1iy2+73aYtsbzVTkVyIKf4CAJyahDpl3667mT82ImiC43XY2UVMbPh6m5PXZiunndRKCwn4QZ8uW9jp9LS8r
+ e17dN6aH
+ P8E7bzW9LMtITJWck54SHQau6NEU8SOGCSptfbHxGRm5jGBWnLo5ML8JMrnoIFseFznfR/CUmDGAuAjwxsLKJI22Zozr2StcWIZhv0tm03HPSR8+RN1GKASew0PGiJG9yij28WwmH8QdsCYHbLLFvns4L60S56FVOU4TDgOvkIUsKYXrDvpf5QFkTT4TJeR55KD5cOOgEog//DNtCsGRZJRT5446UQUITrUxEdkf7cdK6EmTXMdNIV0hnVqt8PGEDBvTkrwcLPq9n6ouz6ONsomP8NIjObi/OuAI6FkivrlDxCTvevNVVxL8DgkmN354CDJKXSuHVbzXLtF0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -114,27 +89,58 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Tue, Nov 03, 2026 at 09:39:03PM -0800, Linus Torvalds wrote:
->
-> None of that says why.  It only repeats what I already said: it seems
-> to be due to kmsan doing bad things.
+VMAList opens smaps with universal newline handling and strict decoding.
+A carriage return in a mapped filename can split a header into multiple
+records, while non-UTF-8 bytes cause UnicodeDecodeError.
 
-Fair enough.
+Read LF-terminated records and use surrogateescape to preserve filename
+bytes. Escape filename characters that stdout cannot encode to avoid
+UnicodeEncodeError when printing mapping names.
 
-When I was told that folks needed vmalloc under GFP_ATOMIC I didn't
-question it any further:
+Fixes: 2444172cfde4 ("tools/mm: add thpmaps script to dump THP usage info")
+Suggested-by: Andrew Morton <akpm@linux-foundation.org>
+Link: https://lore.kernel.org/linux-mm/20261101211644.c63a2028bbede0f763f41f80@linux-foundation.org/
+Signed-off-by: Weilin Tong <tongweilin@linux.alibaba.com>
+---
+Changes in v2:
+- Escape unencodable mapping names in vma_print() (Sashiko).
+- Rebase onto mm-new.
 
-https://lore.kernel.org/all/aeiHkG7X_dieMdw5@milan/
+Link to v1: https://lore.kernel.org/linux-mm/20261102085419.696232-1-tongweilin@linux.alibaba.com/
 
-Looking back, it does look like it was never explained who these
-folks are.
+ tools/mm/thpmaps | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-Ulazislau, so who needs vmalloc GFP_ATOMIC support in the kernel?
-Or is it only used by out-of-kernel code?
+diff --git a/tools/mm/thpmaps b/tools/mm/thpmaps
+index a1a9bc30514f..0e17723515cd 100644
+--- a/tools/mm/thpmaps
++++ b/tools/mm/thpmaps
+@@ -196,7 +196,8 @@ class VMAList:
+     # instance to receive VMAs.
+     def __init__(self, pid='self', stats=[]):
+         self.vmas = []
+-        with open(f'/proc/{pid}/smaps', 'r') as file:
++        with open(f'/proc/{pid}/smaps', 'r', newline='\n',
++                  errors='surrogateescape') as file:
+             for line in file:
+                 elements = line.rstrip('\n').split(maxsplit=5)
+                 if '-' in elements[0]:
+@@ -363,12 +364,14 @@ def cont_parse(vma, order, ranges, anons, heads):
+ def vma_print(vma, pid):
+     # Prints a VMA instance in a format similar to smaps. The main difference is
+     # that the pid is included as the first value.
++    name = vma.name.encode(sys.stdout.encoding, errors='backslashreplace')
++    name = name.decode(sys.stdout.encoding)
+     print("{:010d}: {:016x}-{:016x} {}{}{}{} {:08x} {:02x}:{:02x} {:08x} {}"
+         .format(
+             pid, vma.start, vma.end,
+             'r' if vma.read else '-', 'w' if vma.write else '-',
+             'x' if vma.execute else '-', 'p' if vma.private else 's',
+-            vma.pgoff, vma.major, vma.minor, vma.inode, vma.name
++            vma.pgoff, vma.major, vma.minor, vma.inode, name
+         ))
+ 
+ 
 
-Thanks,
--- 
-Email: Herbert Xu <herbert@gondor.apana.org.au>
-Home Page: http://gondor.apana.org.au/~herbert/
-PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
+base-commit: 74d73ffcffe03804f97e9fb82301dadf75671282
 
