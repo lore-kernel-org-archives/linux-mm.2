@@ -1,153 +1,93 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A42AF606A32C
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 17:08:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3710B606A32C
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 17:09:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=fjeXHbcB;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=sPziOhVE;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=fjeXHbcB;
-	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=sPziOhVE
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ZO+bMQM2
 Received: by kanga.kvack.org (Postfix)
-	id BF9736B05B3; Wed,  4 Nov 2026 12:08:17 -0500 (EST)
+	id 45B4A6B05B4; Wed,  4 Nov 2026 12:09:28 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B82E36B05B4; Wed,  4 Nov 2026 12:08:17 -0500 (EST)
+	id 40AA56B05B5; Wed,  4 Nov 2026 12:09:28 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A246F6B05B5; Wed,  4 Nov 2026 12:08:17 -0500 (EST)
+	id 2D3A46B05B7; Wed,  4 Nov 2026 12:09:28 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 7357B6B05B3
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 12:08:17 -0500 (EST)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 00712407F9
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 17:08:16 +0000 (UTC)
-X-FDA: 85398069792.20.12F6D04
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf20.hostedemail.com (Postfix) with ESMTP id DCA091C0013
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 17:08:14 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=fjeXHbcB;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=sPziOhVE;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=fjeXHbcB;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=sPziOhVE;
-	dmarc=pass (policy=none) header.from=suse.de;
-	spf=pass (imf20.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id ECF996B05B4
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 12:09:27 -0500 (EST)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 712C7A0258
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 17:09:27 +0000 (UTC)
+X-FDA: 85398072774.15.E3FC7AC
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf31.hostedemail.com (Postfix) with ESMTP id DBFAC2000A
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 17:09:26 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZO+bMQM2;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf31.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793812095;
+	s=arc-20220608; t=1793812165;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KerPOCuXiJ/QZToY/uoNDeTIPUL/z8dbK1bs/3iiQhs=;
-	b=kweJsZ7FY/wOb9+ap6TTa1yuFWPq+Ob9bGICTvdy/xgkmzPSPSJpWZB4nmkUqcugrxHQtx
-	AcBXeg9Z15BJvBgAbk6DpJLNrKSm2Ajt97XPaMjZHJOlz/2JXBJ0dQpidPf1UDLxXScHRs
-	otcZO4ON+1Zn6NoYnHglZ03E+4zKUiw=
+	bh=rKSitA4GhO3iXo6/sM1DqbwM0oZP8831TgqTTx7U8Yw=;
+	b=fMvz13KbxFA6YMl6W3ReEzpTZy7G2WYJuANct0w/yrWEJ3yveAPbYWKb77jMCppKDs/ZJv
+	L5KXfN2ubHcQ94w5qDVqyK0Rk/iR7uhHu5HbuEGMweKKiL0UgAdDp4lo3tCR1EPqc614Sl
+	dBb3vO46W8JAOz3GabC+SJ+ZY9pcis8=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793812095;
-	b=EgGuYIdyVeZceT+7HdWkhAKgWh9fvJTkJZzFkX2CaJrDcXNhdF8P8Yv0U6AU4/HANMC2R7
-	k11zVi+pKQ84ti+RhIir9t9hNiEOklb6Pjk1lOG1p3MbihirlAew1esfgPMzUKEZ22MBf0
-	2i5FABZu+jQm04f4/SiSYBseVlafeOs=
+	t=1793812165;
+	b=JUTSPKd6LimqdNfsQHlga6FQQp72S/MEl/VVDVb1mMcVjIfag1EnZ178Ae3rvhb1fOxPJV
+	0aCQmNA8hNCyOvqCpFjLKKTfyF3+GqQTIc0advNxCSIAG/q5hJtN/mowNFeTtrdIdW5/8w
+	33YJbYMZlXO7pVkczFj6iSfRApvy94I=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=fjeXHbcB;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=sPziOhVE;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=fjeXHbcB;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=sPziOhVE;
-	dmarc=pass (policy=none) header.from=suse.de;
-	spf=pass (imf20.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id B404E21E87;
-	Wed,  4 Nov 2026 17:08:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1793812093; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=KerPOCuXiJ/QZToY/uoNDeTIPUL/z8dbK1bs/3iiQhs=;
-	b=fjeXHbcBmeGoOsQ66MGtk7GS97PTuZ0SEVrDEHqBxbJJLqTk7k413Q5Un5kc3kzCv9DGv1
-	svXJGNH7HfRr8rq2ydZrKOUWAS3UWNAooQXZml6mVQGtgM7NzwVVDEzRJerTeElyCC8OPv
-	o3QHY3tzXARmYC9Rw9KUCZgK7BbaYe4=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1793812093;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=KerPOCuXiJ/QZToY/uoNDeTIPUL/z8dbK1bs/3iiQhs=;
-	b=sPziOhVEQebu5+LUfB7+JL50/zHMNQZED0i4bMOiXVcQLwF+IIytgIue9+9NhG+mHS857y
-	VJ546hT6PFr1ahBA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1793812093; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=KerPOCuXiJ/QZToY/uoNDeTIPUL/z8dbK1bs/3iiQhs=;
-	b=fjeXHbcBmeGoOsQ66MGtk7GS97PTuZ0SEVrDEHqBxbJJLqTk7k413Q5Un5kc3kzCv9DGv1
-	svXJGNH7HfRr8rq2ydZrKOUWAS3UWNAooQXZml6mVQGtgM7NzwVVDEzRJerTeElyCC8OPv
-	o3QHY3tzXARmYC9Rw9KUCZgK7BbaYe4=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1793812093;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=KerPOCuXiJ/QZToY/uoNDeTIPUL/z8dbK1bs/3iiQhs=;
-	b=sPziOhVEQebu5+LUfB7+JL50/zHMNQZED0i4bMOiXVcQLwF+IIytgIue9+9NhG+mHS857y
-	VJ546hT6PFr1ahBA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 80407134A5;
-	Wed,  4 Nov 2026 17:08:12 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id wvMBFHxm62pTFgAAD6G6ig
-	(envelope-from <pfalcato@suse.de>); Wed, 04 Nov 2026 17:08:12 +0000
-Date: Wed, 4 Nov 2026 17:08:10 +0000
-From: Pedro Falcato <pfalcato@suse.de>
-To: Pranith Kumar <bobby.prani@gmail.com>
-Cc: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>, 
-	"David Hildenbrand (Arm)" <david@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>, 
-	Jann Horn <jannh@google.com>, Lance Yang <lance.yang@linux.dev>, 
-	Richard Cochran <richardcochran@gmail.com>, "open list:MEMORY MANAGEMENT - CORE" <linux-mm@kvack.org>, 
-	open list <linux-kernel@vger.kernel.org>, 
-	"open list:PTP HARDWARE CLOCK SUPPORT:Keyword:(?:b|_)ptp(?:b|_)" <netdev@vger.kernel.org>
-Subject: Re: [RFC PATCH] mm/rmap: use release ordering for small-folio
- mapcount removal
-Message-ID: <autkT1eNM7-oSM4F@pedro-suse.tail5790ac.ts.net>
-References: <20261104013139.1341582-1-bobby.prani@gmail.com>
- <750560f3-4c5a-44fe-b72a-0611be383f32@kernel.org>
- <CAJhHMCCu8ehOU37_4UpExNO3U8YPygjnht+2S+axkxTwY8bx2w@mail.gmail.com>
- <287698ab-76dc-4aee-8e6c-db1f5d18974c@kernel.org>
- <aus4ag1KxpuBNSP1@gremlin>
- <CAJhHMCChBTH3QWBFS1Hp17zj5HepN6KFucvG_5tVdpaB4fjCYg@mail.gmail.com>
+	imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZO+bMQM2;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf31.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id D785441452;
+	Wed,  4 Nov 2026 17:09:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B9DF1F000C1;
+	Wed,  4 Nov 2026 17:09:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793812164;
+	bh=rKSitA4GhO3iXo6/sM1DqbwM0oZP8831TgqTTx7U8Yw=;
+	h=Subject:From:To:Cc:In-Reply-To:References:Date;
+	b=ZO+bMQM2HPlq92f7QNDpBuxeZ+BfI0Cg9C4IcKYdsvwAtqDeicKjU0j+Ex7z2Ug2h
+	 iAcK43Oug7C/9Yhilc8KJ6DqyN0QyOdXsYtzGLcUyj4e9vkx2b/rsY1gr6+ksOMcx7
+	 R2ije2b9dYDCOqNznuUrfA0mjC5b0j5tjyS2Gg3D+DFZKV3ToMsR9Jo36cIJ/j3Vn0
+	 y3OAx6kwWKkr3as4pmXDWQTz+E6TfSb3Zu7/Um8YRfxPPXR0sQgQgnZDBiqzZwlSVX
+	 AIbFqs9vx5gIwa2J4XAesfziIs2wiZPh6lNYEmv2NcW20tLhNcdqYtNcp0BLbyJELh
+	 zBZ8xrMULVd8Q==
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAJhHMCChBTH3QWBFS1Hp17zj5HepN6KFucvG_5tVdpaB4fjCYg@mail.gmail.com>
-X-Spam-Level: 
-X-Spam-Score: -11.80
-X-Stat-Signature: 64ekpeefi334z3kjan9ati9izb8d354e
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH v2] mm/memfd_luo: don't use memfd_pin_folios()
+From: Mike Rapoport <rppt@kernel.org>
+To: Pratyush Yadav <pratyush@kernel.org>
+Cc: Pasha Tatashin <pasha.tatashin@soleen.com>, 
+ Mike Rapoport <rppt@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+ kexec@lists.infradead.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org
+In-Reply-To: <20261103172251.2348370-1-pratyush@kernel.org>
+References: <20261103172251.2348370-1-pratyush@kernel.org>
+Date: Wed, 04 Nov 2026 19:09:19 +0200
+Message-Id: <179381215936.28814.9050829645096838793.b4-review@b4>
+X-Mailer: b4 0.16.1-dev
+X-Stat-Signature: swkgqnooedy8fg5wp1i61ufwoqw9ckbe
 X-Rspam-User: 
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
-	autolearn_force=no version=4.0.1
+X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_GIT autolearn=unavailable autolearn_force=no version=4.0.1
 X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: DCA091C0013
-X-HE-Tag: 1793812094-959651
-X-HE-Meta: U2FsdGVkX1+rvFJqDks4GnejmgSy+l3e1sqSN2B3niH1keQPypVbHU9qJFhrH7rXXkbobb7MeGfR0TwUpn/wBiGvn2+BjwKdpHDzHaTDVLcRTXazlIGCdz/gezc6p8XSxYeNuyqTbt5P6xNLf8hIGn/pbyIqf/56VM8NoFhrRAH+SxM79GzgP1r4Bx7R+gdlyOHEra852GHLBcEXyFlT2NNw0k4XuMlHe65AAtrSjXC2bBK31Uspoey0OVmeFb3JHMiJnopgNyYNo7uC+uo+PCltUI593hja8q6j4QHOye6TJJ6LiW/ANUlQcvjOZC5/tCporFOzwOn0xtuQor1/mos6u9VIsqkpi1WhHACNbYPWzG8IkCdNHAa7sFtW79OLftXVDecjtPDGiX9oInBw3UIKiopao+GoNVmspciShJRij0Mi32fMo7niuUS2Ir99W4lT0I1ImXOFXuvbKe5/VCEb7xYAua7hBvBn3/NHAERql3T6VX7gSdRO9PX/odWSJpEe5UnsP6kL9QlOFIvSORL64CEhTUOLEZBnUKBObhDQQRbUGe5QC2Wr4qWmS583kxxtdbJ2SqF0wft8BWl2ms8uLN5I6CTlZ6TPJVWuV7bkCAL3H4hlzJm/7XbN/3RHxAzAaUilVzj65wM92AXUUAcjBm+tkPVxFVx1UFx1LMjdsD50DPXLUVMwms8za2o08O9nHEko4IxgsAVTrZsKXs+pE3h7YIropqvwsZo6gkoZfR+PUvX/bKYx8rYmgUfDrFcyVcE5KIY13BrHsCVUhGAOklk77BJEU9J1QWQmovmGCZOZrTluwnr8QQuyPGUELv+EEoS+QxLM/q9Nk9z9oYr6RpGHKg0PM+3DdKwMj8y8iyGEAo9H1B7VzgeKLpKokMqYLBg4zLisRAdNKi5WDmBSMQpjpiWqAWHVbwFkF+Ui03ocByvh+eIjWQ4kgkyXesX48AV99pir8iQd44e
- CeTxINCh
- bvfSiXO9W1OMU0/SjRtjjqyzh8+e94ehOGZ0qYbHR8wS157GBMVwqIyyYdBhozYaDB5LzfXk3X3498GG1QkgjHkux2IivLXezYFDV65LYOmUw3gxo5ERiZL9Qd8F3jZE7KW0XEJnIg4TA585Ysl3cVLkrv934gXy/5pvco8D5/dv1ZcoZNbv9lt2691qNAmQq3PZV3zdPGeOZIJc0+AiTWDsoLd4UUAl04nQ7jNf++SQZeJTNu6SV1HNeQ+xwoONDJDk6kQUyrec9ysLWSfSztWawICR3Jupa9q7Fdq96lyQRu3HgLrwyYK/vzm6HlcYKD0w6gS/PqK1/NawP7GbiznR4uDy1mEq7YwjMEmVxfOkF/KZ0acYfTRDa6utblnKbI0BXB/NXl7x8AOg=
+X-Rspamd-Queue-Id: DBFAC2000A
+X-HE-Tag: 1793812166-851977
+X-HE-Meta: U2FsdGVkX194+PDotC2SdoeJHgVnh9kiLm67ypxhtVN8fKEnIW9Ptha1O3IcqFQ9R9nl8WSmfPqdv1Y8Oz+todAUbNtphviEEaTg+/OQt5dV77hZg/2nWeAl8jrCszYHpHGBgofWI1V15qLgoBWx0pESN3sz3BKu8Rj3vHaDqjjQ+jA5vPVJU2vJK7AbUWWXctVd6UnSg8FF4WYElTI0fJeMBcAHZMtD0yeYS//ctIDv5AYhjptWW5WVQA2DrOFFzIgEz2+ZssxUb4vUpu3VrxyUIPSSZ79l3K8q3V7drzOG8c6lPmOLlEyuBSOMtB+E0zPqM+HQ6K6v5DBkKA7AA4OMobDmGiTG4MnauAC8bvO8UIHXVdGzyDaEy1H9td4XYjnEfoxoLm9HOg8nnt27BiYmVehHFGt898B4kF+aGOPQfPCJ4GxojcXUSyCANvf1qlBMNSqePwaCT4jscH6rPKvi6gth7F8HjijJzQpBzWcNMKLElXkg3fPsMZVWqEEsBCcwcPAtMMELufbCJ6pWFe7oNwiQjRldl57kOWAQ0bYBqfVgBPwyVn3Vs29Ua/p7W9xYk3kglBvZ25NU4MlIE0gen68RRyrf0AY0THKLoHbf+newuUa4UDJRNwPfoAscX6gsmsT1L+QsasYOOPVvySiiTaFFvhPS+HzlVRQ09c9KzDnJ5xnxIDsiVfnOsJ3qforoQSN0KYR4JhSTCArKjhrNHBm7iZpYvyJhZWs01313ztgmS2UGunAP3VmXQn4lMAsvmhw31XvLyh084HBxQ8N7DswCxo0mflH39S5FYRj5Vl+ysnoLZmM/90Gc16HjjEQDSI+TfBsZXOYXZ8JuUdM0xZb5V8s3zSg4aBm6v2AwTZ8+NTvm5lxcvjG/hBMSzJvgwLWxzyFPh969BYXM2dsL0nzur9kVtCjLrnmD4+fP8xY8mVcUNjfg8udXO6NI88ZbKnzWUxy1/rzNL/n
+ bSReLznn
+ /1s/5W1FNkRV70mU/xvXKCw8UJwcqhebsvJdejaEZ1lzJCFSMs9V8nVVgICNPV5Ea2f+aDk1L7+i9WFVH547jhQVrjJsEQv82mgl0zwiC7CGAY1JZOtObluTJcNounspL1NsXbwMOxDd1IhQvC9ohcMTv0JV39PvD2MZwDE5bMf9LjirzjHiKe19cOqbpr0YMEwK50AZCVibkgcRMkGUob+OTtKFCHRFp1TE7Z0Ngpoow3JgXDJxnp4wK6OGBVAxsMt3oDyoit3B6BGp9ruPBAmLfUkW+P0tZNNQWmaRvcu8ixb67fHb8dnWzRLsVRHJMDvlsmVWCl7IQ9OHHAhanYB8qwWQU0g8MSWB/
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -156,35 +96,120 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Wed, Nov 04, 2026 at 08:51:20AM -0800, Pranith Kumar wrote:
-> Hi Lorenzo,
+> memfd_luo takes a snapshot of the folios in the file's mapping. To make
+> sure the snapshot does not go out of sync, it pins the folios in the
+> file via memfd_pin_folios(). The pinning also migrates the folios out of
+> MIGRATE_MOVABLE to make sure doesn't land in KHO boot memory or in a CMA
+> region.
 > 
-> On Wed, Nov 4, 2026 at 5:55 AM Lorenzo Stoakes (ARM) <ljs@kernel.org> wrote:
-> >
-> > On Wed, Nov 04, 2026 at 02:37:39PM +0100, David Hildenbrand (Arm) wrote:
-> >
-> > I mean 1.54%, theoretically is even less convincing for me :)
+> memfd_pin_folios() does not lock the folios. So it can race with
+> shmem_writeout(). A folio returned by memfd_pin_folios() might already
+> be in swap cache. This happens to work but is fragile. memfd_luo looks
+> at folio flags and index on a folio that isn't in the memfd's page
+> cache.
 > 
-> With reducing the strength of one barrier, I think this is a non-trivial gain.
+> In addition, memfd_pin_folios() needs the caller to allocate an array of
+> folios. memfd_luo does not really need that since it will vmalloc
+> folios_ser and store the information there anyway. The folios array is
+> unnecessary overhead.
+> 
+> Finally, memfd_pin_folios() fills in holes in the memfd. This makes
+> preserving sparse memfds very expensive in both compute and memory.
+> While this patch doesn't yet stop filling in the holes, it sets up the
+> infrastructure to make it simpler.
+> 
+> Fix all this by walking the page cache directly using shmem_get_folio()
+> with SGP_CACHE. This returns a locked folio with an elevated refcount.
+> memfd_luo holds that reference until the memfd is unpreserved. This
+> blocks compaction, migration, etc.
+> 
+> There is still a need to migrate folios out of MIGRATE_MOVABLE page
+> blocks. This is because those might be CMA or KHO scratch. memfd_luo
+> will hold a longterm reference to the folios so it will block migration
+> in that pageblock. Introduce memfd_luo_migrate_folio() to do this.
+> 
+> Also factor out folio unpreservation logic into memfd_luo_put_folios()
+> and use it from memfd_luo_unpreserve_folios() and from error paths in
+> memfd_luo_preserve_folios().
+> 
+> Since shmem_get_folio() always returns uptodate folios, drop the folio
+> zeroing logic.
+> 
+> This change also improves preservation performance, shown in the table
+> below.
+> 
+> |------------------+----------+------------+-------|
+> | memfd            | baseline | this patch | delta |
+> |------------------+----------+------------+-------|
+> | 4K pages, 32 GiB | 748 ms   | 600 ms     |  -20% |
+> | THP, 4 GiB       | 0.59 ms  | 0.59 ms    |    0% |
+> | THP, 16 GiB      | 2.99 ms  | 2.61 ms    |  -13% |
+> | THP, 32 GiB      | 4.83 ms  | 5.21 ms    |   +8% |
+> | sparse, 32 GiB   | 8695 ms  | 7269 ms    |  -16% |
+> |------------------+----------+------------+-------|
+> 
+> Acked-by: Pasha Tatashin <pasha.tatashin@soleen.com>
+> Signed-off-by: Pratyush Yadav (Google) <pratyush@kernel.org>
 
-Counting cycles on an arm64 simulator for a microbenchmark is completely
-unconvincing.
+With a few nits below
 
-> >
-> > In any case for something touching a sensitive memory barrier operation to have
-> > a stronger argument put forward for release ordering being suitable than simply
-> > stating it's fine in the commit message and updating a comment.
-> >
-> 
-> Can you please explain what information is missing? I think the commit
-> message has all the details of why release is sufficient instead of
-> full barrier.
- 
-rmap is gnarly code and I'm not sure people have an appetite towards weakening
-random atomic ordering semantics for a virtual 1.54% cycles gain in some
-microbenchmark, without actually explaining why it is safe. __folio_remove_rmap()
-has (indirectly) a lot of callers which may subtly expect different semantics.
+Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+
+> +/*
+> + * Move a folio out of ZONE_MOVABLE or CMA, so it can be held until the next
+
+"held until next kernel" - here and below - I feel that something is off
+here, but can't pinpoint what exactly.
+
+> + * kernel. Called with a reference on the unlocked folio, which is always
+> + * dropped. The caller must look up the folio again afterwards.
+
+I'm having hard time parsing "called with a reference" sentence :)
+
+> +/*
+> + * Look up the folio at @index, allocating it if needed, and make sure it can be
+> + * held until the next kernel. Folios that are not longterm pinnable are migrated
+> + * out first, retrying a few times if someone else has them isolated.
+> + *
+> + * On success, returns 0 with *@foliop locked and holding a reference.
+> + */
+> +static int memfd_luo_get_folio(struct inode *inode, pgoff_t index,
+> +			       struct folio **foliop)
+> +{
+> +	int err, busy_retries = 0;
+> +	struct folio *folio;
+> +
+> +	for (;;) {
+
+Won't
+	for (retry = 0; retry < MEMFD_LUO_MIGRATE_RETRIES; retry++) {
+
+look better and the body simpler?
+
+> +		err = shmem_get_folio(inode, index, 0, &folio, SGP_CACHE);
+> +		if (err)
+> +			return err;
+> +
+> +		if (likely(folio_is_longterm_pinnable(folio)))
+> +			break;
+> +
+> +		folio_unlock(folio);
+> +		err = memfd_luo_migrate_folio(folio);
+> +		/* Someone else might have it isolated, retry a bit. */
+> +		if (err == -EBUSY && ++busy_retries < MEMFD_LUO_MIGRATE_RETRIES)
+> +			continue;
+> +		if (err)
+> +			return err;
+> +	}
+> +
+> +	*foliop = folio;
+> +	return 0;
+> +}
+
+.
 
 -- 
-Pedro
+Sincerely yours,
+Mike.
+
 
