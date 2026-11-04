@@ -1,66 +1,66 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BF796098F6B
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 19:54:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CB496098F5A
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 19:55:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=mJyOhlQt
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=JrdQsd6G
 Received: by kanga.kvack.org (Postfix)
-	id 9AE8C6B05C0; Wed,  4 Nov 2026 14:54:52 -0500 (EST)
+	id C475A6B05C3; Wed,  4 Nov 2026 14:55:07 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9861A6B05C3; Wed,  4 Nov 2026 14:54:52 -0500 (EST)
+	id C1EE46B05C4; Wed,  4 Nov 2026 14:55:07 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 89D886B05C4; Wed,  4 Nov 2026 14:54:52 -0500 (EST)
+	id B35536B05C5; Wed,  4 Nov 2026 14:55:07 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 68AC86B05C0
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 14:54:52 -0500 (EST)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 0464612064E
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 19:54:51 +0000 (UTC)
-X-FDA: 85398489624.20.8AA005D
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 854FA6B05C3
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 14:55:07 -0500 (EST)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id E9EB8A084C
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 19:55:06 +0000 (UTC)
+X-FDA: 85398490212.28.C9D78F9
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 3AC3C100004
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 19:54:50 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mJyOhlQt;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org
+	by imf25.hostedemail.com (Postfix) with ESMTP id 052EBA0006
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 19:55:04 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JrdQsd6G;
+	spf=pass (imf25.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793822090;
+	s=arc-20220608; t=1793822105;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=LwOyQmkvG4TrYSsjhoNvmU1CfgZA+V6RV4LLe+r+cHk=;
-	b=xtgKWEtrszOU07gWAjPanCtHJE8BpSvyvp1cLz10MewDVDZ8plLPJGcCL2WBduPxBEnoWd
-	Bqwc3GgrjIg5ogS/0RMnVDx8sWYufzy5T4J2edEz9vWieS2vYhiQucxg39W+i51Q+BSKxi
-	zGj9brRwe5Rulq/wOuEUfitZ+hq+dR8=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mJyOhlQt;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org
+	bh=R1VqjUGL5+J0t5hj5seZeRe1Maiv3S9hp7Jj5OG0/0s=;
+	b=gmZH2t7kCKYAnLMrDYMIKdWuE0aKlHB7y++wGjfVDATSMbhNyDOqtStxyGgih96MQ/l76n
+	SJctOK6e6hUueo74SsySwfuQJMIAg8DmPCdliHYlIGUkxQWyr52qJe9K7t2zM+n3NHEHOZ
+	V8LSXda4o7aedgiQHuF9IoyDNGKv+m4=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793822090;
-	b=SPdsGL7ukKr/36E6MlWq9yUv1k4xidA5euisdGXMf8aSfSywjesltyApu9Fsug5XIdGoCE
-	LFf2ISLavwMa0wmv4vterrZrlRYUEVpFgmEe1zM5i+UniNynwS496iBAA1i1E2O5HjT9p7
-	mypKK0znHfA6Z+/PKOhlxgqxCnNM780=
+	t=1793822105;
+	b=PNUMWYdLhsu0aaKjNzBE4JUQXHAGJP2npOY+K9zNJc5W92/NJn9bPT4c6daC0ydUhAjUwg
+	fu/xfUqCnAdAfWc2xb9DGP9Z7N+XH/VufakNK8ZcfyzS98NYRGthAcOACidjdrw+IsouIj
+	n/UCzwN1L0k5bqQEbU4ULJe6elCW4JA=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JrdQsd6G;
+	spf=pass (imf25.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 8517C447A9;
-	Wed,  4 Nov 2026 19:54:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D2B01F0093A;
-	Wed,  4 Nov 2026 19:54:37 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 304D741B29;
+	Wed,  4 Nov 2026 19:55:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BDF51F00A16;
+	Wed,  4 Nov 2026 19:54:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793822089;
-	bh=LwOyQmkvG4TrYSsjhoNvmU1CfgZA+V6RV4LLe+r+cHk=;
+	s=k20260515; t=1793822104;
+	bh=R1VqjUGL5+J0t5hj5seZeRe1Maiv3S9hp7Jj5OG0/0s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=mJyOhlQt7v/yUeJe2KxDzjfIgCPFjEFsKvYVx2A3N/ozpWFiPJU0KUhNdF3Wnx++v
-	 sI9BCBWIdMMiP0QcpAXFpZsOn0jW7NrHt4r2cB6NkOMsL6mxo8rFKgvE84hLglCx66
-	 OqQujMha7035TQ4ZwwiVUfu7SbYHZU96GqKi/rxAVkSUfLy231e9TMVVFOEYebJCby
-	 NOwJ0wLy1EviZyidaxTUbqL58HBSyhB/XKNBxXObC0roAJt5FLGPIUnCJuWzz6FbgG
-	 K3Yv0a5upmIEZWtQAvIYMc9ZxBopPWyj6ON1cpCflNYuRijpKAoniKAIZEUIsRrLGe
-	 wTSzOu7fuS0uw==
+	b=JrdQsd6GTay34FYuGXCa8EK220wd8dcVKmmCUL2H6AN8qybgYu3VWX8QWdUPAcmTQ
+	 k7Hh4kIxo+HBWYfqIhyCM4t5TutFpDBfRkmXCuGDnrCDs2kRigWisxosjbx2JTilsl
+	 pRLqKsHm9QtEr1md47IXW0nBzRwFYpbJ+AsEXB9Aw5/BASW5ehNYPMEN3WtGHRfiwA
+	 OzbZlgAyMFwrKZD+fvajfs9VLVkX7k/jZfqjP/IWM7eHh8GU1TOBliTxs7YYEjoU7C
+	 tTvFESzDRyM4Rii2YLzF38phnQomDRBM6gq5STKW4qtXTlnb0Rqa4901faLCQGhySy
+	 mMgweD+fFjsdQ==
 From: Christian Brauner <brauner@kernel.org>
 To: linux-fsdevel@vger.kernel.org
 Cc: Linus Torvalds <torvalds@linux-foundation.org>,
@@ -121,31 +121,31 @@ Cc: Linus Torvalds <torvalds@linux-foundation.org>,
 	linux-debuggers@vger.kernel.org,
 	"Christian Brauner (Amutable)" <brauner@kernel.org>,
 	Chuck Lever <cel@kernel.org>
-Subject: [PATCH RESEND v2 20/30] sched/psi: let procfs own the wait queue of the pressure files
-Date: Wed,  4 Nov 2026 20:54:35 +0100
-Message-ID: <20261104-work-procfs-fs-v2-20-319e0f9a8aae@kernel.org>
+Subject: [PATCH RESEND v2 21/30] kallsyms: let procfs own the seq_file of /proc/kallsyms
+Date: Wed,  4 Nov 2026 20:54:49 +0100
+Message-ID: <20261104-work-procfs-fs-v2-21-319e0f9a8aae@kernel.org>
 In-Reply-To: <20261104-work-procfs-fs-v2-0-319e0f9a8aae@kernel.org>
 References: <20261104-work-procfs-fs-v2-0-319e0f9a8aae@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=6098; i=brauner@kernel.org; h=from:subject:message-id; bh=CeHhvuLOJ2DxGx1mSjted70KaKApRIjx6GoOIAUH5Kc=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS97nEOnuN4eKv7y+UynWu9t7p/P/D2dPOuOt7MtW4RY cbN7Z4KHaUsDGJcDLJiiiwO7Sbhcst5KjYbZWrAzGFlAhnCwMUpABPZtpnhnzqLca7vmStVc8on LzvQtZvr1cV7Wl6vAr9Pan8zzeRX1XOG/zVVv26edFdZ+WTuhnfLRZpsnu+SuzP1+Nxz33L9reT Tf/MDAA==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1331; i=brauner@kernel.org; h=from:subject:message-id; bh=X1hXUo+P6dAEkQI4HVxBka/iuP3neD063cymPGxvXEU=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS97nH59Orc+7n3eLifScgo8Jj8qyzNWnT19Mol2qc4a 58vWjHboqOUhUGMi0FWTJHFod0kXG45T8Vmo0wNmDmsTCBDGLg4BWAiPWcZ/nCKtL2fd32F2F95 vx9SGZf0t36r5ma6o/N8y3elH9e2NU1l+F8fo55wKcT3fXtS7NoKxUWhugwWHOV/0+b/kah+n3N uBjcA
 X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
 Content-Transfer-Encoding: 8bit
-X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 3AC3C100004
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 052EBA0006
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
 	version=4.0.1
-X-Stat-Signature: 767wz1jof5fwtust1xqrf3g7iqk9hfdr
-X-HE-Tag: 1793822090-560995
-X-HE-Meta: U2FsdGVkX18spOcJXJKfhGOg7KCS79o2bqNFTreT38PlmscJIwiIQd4rbfqQM4ye02uekY14c6gNfDfAvXJre3nCrL1TzW/B/BKmQei5KQLb8AcnduUVmfkfuEQUuSL7wul5WwocCPOpiU1dwvM6pTPX9Aa/k6sKlD/R1WrZGR52M1GU/eRvMx39lasvsIeT8sBU1jGhb/UT8mqeM6vKwCaz4U0MCP9iWDX+YEgJpHMwl6h2FcckUfzQ4e2NI0ohk6Ot4TOEPRQW2Aa2uOzZLPneRZPgr5DDSCmhcOB7CNWOrMy9T+6IJ0+GKs1AjlS0fMU9/VWBUHeTLVh4QmjkZnnzNk1qJursIS2w3zCr1Owu0JRFDiETfcOOISmx4u4WswGvz+Te3MG4L3EU+qea3w+Y6RVzdnRGNGd4ECjQci83ZfYCSsWGiz2kHuZNIoYx99IwreYRCPRXrmACopgzXtWscaQXxrTsYPPnbWhjXbehd3t4HCjBfywnIbQ28ZV1Ipt61DCkCNB47MoF1Pw/Ve0rNJKKWzj98nh5fo74O7WlS4ISeDaT1X6pbXrOkRMt4iSvrz7XnOMmKcOZHsj10vHIHY0/noZK1wwHkDl/satNY3ktBKRf6+w9ToAN8E8XeEsIzga92MnmisjakG8ITdSMHTia5dkO9t2IAzS/qhytLMkl2TW12iCP7UGpRU+GIlkybTKFiOjg1BZsYUpGe2+f5c/nVml5yNYyt3094xgfOdkoeLfDAs9e2Q/CT3Wh3TMj3whrkRQbZ9+1T6LWoaRG0PhL2xI6A9PgI9uPXvFI8ZAZzhbjfz7Fb73ivQXiTR+M6VYWtXr+qAbvmYLFpQrrItXzwfJCOHgaoWBeHMDEGiLS4Rwig9XjVAm8j9kpp7KRcXPEoBYbWB+eN1m814HMevGRQWFaSDF4jxNLc6WpH9gg8l76jaP7pMVir2LiZug7AbKybDOpeQkW4gK
- 8uq+Looo
- 8CcvF+ky2VEOXkZiqHVxm+JvICmwcvuTFk/2xXduThVPfM3aiLtgJ1XxJA8HtSisRUrcetwnSCsj1H8enAckLA9fn4x4WjjrSi2uxcOiMruZ8PABRAAdlsv2sJVEUZRlRBiECKmmbfjDCMErWRx6Cfu8i+CfOmqIDPk6EEXPQMe/tp6nQPcTF6BWYs6N/Dnt3lclzbXuuWFFGkD3GzV5kgiK/xHIkReRTYehAMY4eEcv/8bZ/vVWBQF0tOxeUo6n0+G67t3M8Q8eZLyyMpScb5zMpis09l0AH25gy
+X-Stat-Signature: 8y4h4w5abksq5z35uorgd6m4jtqgo3yc
+X-Rspam-User: 
+X-HE-Tag: 1793822104-889302
+X-HE-Meta: U2FsdGVkX18z+AXhM+YhpnbT0k5rIM7G9hC/bTetoUkiU5CC6BjoPNf8ohLV3iHuSzuw3HkP2hyt/RnvdZeer/jBTOzOS/Bm9TldbuXKdKri+gcDh0q97zziiu6bW7huSVNoKt5h6qLBqzIqWwSDVW5QMSf2Itokkqw7qPUpx+izmBLH8Q54AyERD9bmYtzW9zjcQT9jB94iolyfMY6HMmadugto+0hRoNkG4Duf/sH0HuzaFhwlRmSEss9eJ5UU6eClA1zHEjQJL8y39nkgWPPzdtnWhBd836EQN4uc89ueOHIlb9FiGxcxIUp29X7sNaNmMRb4dvLStDGTZbCtuiJ2MSDXh3BxaePiCQyOUc5EHtL9EkSAW0HiohUlHM9Trt22+BLdYBsWIWB23SYQ4ceyC7yuovMpZziB2N3mUKi/jE73cnTGfBKfh3N9cfeasbyhu6EJTjKOrtC4DmERUVzyZu4qVEIRG+POKn8njrtiFXBPTuKTmedlztDJbYOLDC7ZBD0Fna+bEBBmu4Bad9M6OOWhGrz5/7Z/W/d8R9qp1S2M+Q8e0P6eStrajG4bqBjxtVXnHhx3gvZtni/pG0fEhdqIsDL9HPhb03O3qK053j43UIK0V4iuWq7DHgxMZY3fyzUGvxc1JGBYnWstf3Vg+R95Qgdtla+eOvDaujuNN/J1acd13QU9qDu3+9OEhrt1Gp4YfRWWMQRwaSTeDtGAJIGqeHnAXkvw+JWIHOcwJ0qQo3Lh351ua+5wq6MVUdCwRr1cbuD+YjqrCrvZsV/rbsmFpb+9gq4XS+srRr3pZIANqe9Tn8mzvVhZSlZn4OFkJE+0T7ig5XzD+Vceg2xtXNKarUTl+IpJtSEbpVFb/4z8foRL1iMuZrJyU0OKWb20fdirEuiMP21OnVHVyKwYKozxVhaZEDiXS8LfW+73KXdwdyZwHmSoXLDNPWqH+g8xq8yuLTdrKoKjF3f
+ qqAlgbLb
+ Ep1IkVDeqjCIEoZOhB5mn8XJswq01TnPbP88hLE3KkjUMhDDYqtCkYy7evmwqmxmBA4IYadNUw/J/ZncznwS/EsYeCF0ydThUMaACJrUatVbF2MGoc+ig1iMj5mFwsar9FywE2lx1u4ykSm6ChkIcDJHiuGSfRFBHMiH7REY4Tn+/oidzL7Xl5pmceV1A+Epu73kxsxvuWySse+BjYSVGbO2W+so7GN9EQgp8JMqxmYaInAk8edzaPBdQbV2YrC2PSRLuB6iwpzGCr4hg0LYmcVgqbz7YwdcouCkxuLQaG8loZ/iAyZwIBlKG6iPWdDkLmNn3c1O0ZLXDPZgG6hy+dIj3fzwdaVjOI4cuvi+I3biapdrQbnOoF+uHaC8HU3i2cBbammsuyqbQydZ+mp0W6Pc409jetH9iM2Oa9GPIqO8YaDIVyY7afvz0qMFCJ3rTj0/RYvhLPbiwh3I=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -154,173 +154,46 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-A trigger on one of the /proc/pressure files has a wait queue of its
-own for its poller, the cgroup pressure files use the queue of their
-kernfs node through kernfs_generic_poll() and kernfs_notify(). procfs
-owns the queue of its pressure files now, so use it the same way: the
-poll_wait() is procfs', and a trigger that fires wakes the pollers of
-its file with proc_poll_notify(). Like for the cgroup files every
-poller of the file is woken when any trigger on it fires, and each
-reports the state of its own trigger. psi_trigger_poll() doesn't need
-the file anymore.
+Declare the seq_operations and the size of the iterator and let procfs
+open and free the seq_file. ->proc_open() only initializes the iterator
+now.
 
 Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 ---
- include/linux/psi.h       |  3 +--
- include/linux/psi_types.h |  8 +++++---
- kernel/cgroup/cgroup.c    |  2 +-
- kernel/sched/psi.c        | 30 +++++++++++++++++-------------
- 4 files changed, 24 insertions(+), 19 deletions(-)
+ kernel/kallsyms.c | 12 +++++-------
+ 1 file changed, 5 insertions(+), 7 deletions(-)
 
-diff --git a/include/linux/psi.h b/include/linux/psi.h
-index 7966e3ac03b9..c6f536631411 100644
---- a/include/linux/psi.h
-+++ b/include/linux/psi.h
-@@ -30,8 +30,7 @@ struct psi_trigger *psi_trigger_create(struct psi_group *group, char *buf,
- int psi_trigger_create_rtpoll_worker(struct psi_group *group);
- void psi_trigger_destroy(struct psi_trigger *t);
- 
--__poll_t psi_trigger_poll(void **trigger_ptr, struct file *file,
--			poll_table *wait);
-+__poll_t psi_trigger_poll(void **trigger_ptr, poll_table *wait);
- 
- #ifdef CONFIG_CGROUPS
- static inline struct psi_group *cgroup_psi(struct cgroup *cgrp)
-diff --git a/include/linux/psi_types.h b/include/linux/psi_types.h
-index dd10c22299ab..ce772575c5da 100644
---- a/include/linux/psi_types.h
-+++ b/include/linux/psi_types.h
-@@ -8,6 +8,8 @@
- #include <linux/kref.h>
- #include <linux/wait.h>
- 
-+struct proc_dir_entry;
+diff --git a/kernel/kallsyms.c b/kernel/kallsyms.c
+index aec2f06858af..2d309fcee730 100644
+--- a/kernel/kallsyms.c
++++ b/kernel/kallsyms.c
+@@ -888,10 +888,9 @@ static int kallsyms_open(struct inode *inode, struct file *file)
+ 	 * s_start from where we left off, so we avoid doing
+ 	 * using get_symbol_offset for every symbol.
+ 	 */
+-	struct kallsym_iter *iter;
+-	iter = __seq_open_private(file, &kallsyms_op, sizeof(*iter));
+-	if (!iter)
+-		return -ENOMEM;
++	struct seq_file *m = file->private_data;
++	struct kallsym_iter *iter = m->private;
 +
- #ifdef CONFIG_PSI
+ 	reset_iter(iter, 0);
  
- /* Tracked task states */
-@@ -132,12 +134,12 @@ struct psi_trigger {
- 	/* Backpointer needed during trigger destruction */
- 	struct psi_group *group;
+ 	/*
+@@ -923,10 +922,9 @@ const char *kdb_walk_kallsyms(loff_t *pos)
+ #endif	/* CONFIG_KGDB_KDB */
  
--	/* Wait queue for polling */
--	wait_queue_head_t event_wait;
--
- 	/* Kernfs file for cgroup triggers */
- 	struct kernfs_open_file *of;
+ static const struct proc_ops kallsyms_proc_ops = {
++	.proc_seq_ops	= &kallsyms_op,
++	.proc_state_size = sizeof(struct kallsym_iter),
+ 	.proc_open	= kallsyms_open,
+-	.proc_read	= seq_read,
+-	.proc_lseek	= seq_lseek,
+-	.proc_release	= seq_release_private,
+ };
  
-+	/* /proc/pressure file for system triggers, see proc_poll_notify() */
-+	struct proc_dir_entry *pde;
-+
- 	/* Pending event flag */
- 	int event;
- 
-diff --git a/kernel/cgroup/cgroup.c b/kernel/cgroup/cgroup.c
-index a284225f8dc9..c5da33495ae3 100644
---- a/kernel/cgroup/cgroup.c
-+++ b/kernel/cgroup/cgroup.c
-@@ -4232,7 +4232,7 @@ static __poll_t cgroup_pressure_poll(struct kernfs_open_file *of,
- {
- 	struct cgroup_file_ctx *ctx = of->priv;
- 
--	return psi_trigger_poll(&ctx->psi.trigger, of->file, pt);
-+	return psi_trigger_poll(&ctx->psi.trigger, pt);
- }
- 
- static void cgroup_pressure_release(struct kernfs_open_file *of)
-diff --git a/kernel/sched/psi.c b/kernel/sched/psi.c
-index cdb7a832333a..97b5e2488106 100644
---- a/kernel/sched/psi.c
-+++ b/kernel/sched/psi.c
-@@ -514,7 +514,7 @@ static void update_triggers(struct psi_group *group, u64 now,
- 			if (t->of)
- 				kernfs_notify(t->of->kn);
- 			else
--				wake_up_interruptible(&t->event_wait);
-+				proc_poll_notify(t->pde);
- 		}
- 		t->last_event_time = now;
- 		/* Reset threshold breach flag once event got generated */
-@@ -1327,6 +1327,9 @@ int psi_trigger_create_rtpoll_worker(struct psi_group *group)
- 	return 0;
- }
- 
-+/* the /proc/pressure files, see psi_proc_init() */
-+static struct proc_dir_entry *psi_proc_entry[NR_PSI_RESOURCES];
-+
- struct psi_trigger *psi_trigger_create(struct psi_group *group, char *buf,
- 				       enum psi_res res, struct file *file,
- 				       struct kernfs_open_file *of,
-@@ -1392,8 +1395,7 @@ struct psi_trigger *psi_trigger_create(struct psi_group *group, char *buf,
- 	t->event = 0;
- 	t->last_event_time = 0;
- 	t->of = of;
--	if (!of)
--		init_waitqueue_head(&t->event_wait);
-+	t->pde = of ? NULL : psi_proc_entry[res];
- 	t->pending_event = false;
- 	t->aggregator = privileged ? PSI_POLL : PSI_AVGS;
- 
-@@ -1441,7 +1443,7 @@ void psi_trigger_destroy(struct psi_trigger *t)
- 	if (t->of)
- 		kernfs_notify(t->of->kn);
- 	else
--		wake_up_interruptible(&t->event_wait);
-+		proc_poll_notify(t->pde);
- 
- 	if (t->aggregator == PSI_AVGS) {
- 		mutex_lock(&group->avgs_lock);
-@@ -1495,8 +1497,7 @@ void psi_trigger_destroy(struct psi_trigger *t)
- 	kfree(t);
- }
- 
--__poll_t psi_trigger_poll(void **trigger_ptr,
--				struct file *file, poll_table *wait)
-+__poll_t psi_trigger_poll(void **trigger_ptr, poll_table *wait)
- {
- 	__poll_t ret = DEFAULT_POLLMASK;
- 	struct psi_trigger *t;
-@@ -1508,10 +1509,9 @@ __poll_t psi_trigger_poll(void **trigger_ptr,
- 	if (!t)
- 		return DEFAULT_POLLMASK | EPOLLERR | EPOLLPRI;
- 
-+	/* a /proc/pressure file is polled on the queue procfs owns for it */
- 	if (t->of)
- 		kernfs_generic_poll(t->of, wait);
--	else
--		poll_wait(file, &t->event_wait, wait);
- 
- 	if (cmpxchg(&t->event, 1, 0) == 1)
- 		ret |= EPOLLPRI;
-@@ -1610,7 +1610,7 @@ static __poll_t psi_fop_poll(struct file *file, poll_table *wait)
- {
- 	struct seq_file *seq = file->private_data;
- 
--	return psi_trigger_poll(&seq->private, file, wait);
-+	return psi_trigger_poll(&seq->private, wait);
- }
- 
- static int psi_fop_release(struct inode *inode, struct file *file)
-@@ -1670,11 +1670,15 @@ static int __init psi_proc_init(void)
- {
- 	if (psi_enable) {
- 		proc_mkdir("pressure", NULL);
--		proc_create("pressure/io", 0666, NULL, &psi_io_proc_ops);
--		proc_create("pressure/memory", 0666, NULL, &psi_memory_proc_ops);
--		proc_create("pressure/cpu", 0666, NULL, &psi_cpu_proc_ops);
-+		psi_proc_entry[PSI_IO] = proc_create("pressure/io", 0666, NULL,
-+						     &psi_io_proc_ops);
-+		psi_proc_entry[PSI_MEM] = proc_create("pressure/memory", 0666,
-+						      NULL, &psi_memory_proc_ops);
-+		psi_proc_entry[PSI_CPU] = proc_create("pressure/cpu", 0666, NULL,
-+						      &psi_cpu_proc_ops);
- #ifdef CONFIG_IRQ_TIME_ACCOUNTING
--		proc_create("pressure/irq", 0666, NULL, &psi_irq_proc_ops);
-+		psi_proc_entry[PSI_IRQ] = proc_create("pressure/irq", 0666, NULL,
-+						      &psi_irq_proc_ops);
- #endif
- 	}
- 	return 0;
+ static int __init kallsyms_init(void)
 
 -- 
 2.53.0
