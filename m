@@ -1,65 +1,65 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A36E606D81A
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 16:46:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8266D608361D
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 16:47:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=JiYFumdX
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ODwixlVM
 Received: by kanga.kvack.org (Postfix)
-	id 8503D6B05B5; Wed,  4 Nov 2026 11:46:58 -0500 (EST)
+	id 8C5FC6B05B8; Wed,  4 Nov 2026 11:47:14 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 802516B05B7; Wed,  4 Nov 2026 11:46:58 -0500 (EST)
+	id 876AA6B05B9; Wed,  4 Nov 2026 11:47:14 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6C8FE6B05B8; Wed,  4 Nov 2026 11:46:58 -0500 (EST)
+	id 73F136B05BA; Wed,  4 Nov 2026 11:47:14 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 346906B05B5
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 11:46:58 -0500 (EST)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 9D28E407AE
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 16:46:57 +0000 (UTC)
-X-FDA: 85398016074.15.EB16589
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 3C84E6B05B8
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 11:47:14 -0500 (EST)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id C4235807DA
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 16:47:13 +0000 (UTC)
+X-FDA: 85398016746.27.5570C0F
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 050D540005
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 16:46:55 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JiYFumdX;
-	spf=pass (imf11.hostedemail.com: domain of aneesh.kumar@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=aneesh.kumar@kernel.org;
+	by imf29.hostedemail.com (Postfix) with ESMTP id 0B3A3120004
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 16:47:11 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ODwixlVM;
+	spf=pass (imf29.hostedemail.com: domain of aneesh.kumar@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=aneesh.kumar@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793810816;
+	s=arc-20220608; t=1793810832;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=mrj1RHzBr9lFPxEPcZNWDZfBeJOGthj8B3nIsgiRgYA=;
-	b=zKlLn39h0sw8Pi7BtpCOQqkS+xTeNNj3ety1LjNFfvRIvuw4mANocnAmtT41yPQGshbJhj
-	FqxsTuaG64y5C02FKpJ7YZqaMCo3LpfbrFbpiCz+kaKJzGSHVK/IQD0p/fAYyEUboDKKxR
-	vY0vJbS7IwDgTVO9BADrW7uyAX+J6cU=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793810816;
-	b=q0FOp2T012U8vzHtFvur1OV7JTAiQ4YR/Em1fURKgmteM+F2DHisoGcGASSS6tvCnB8EV1
-	c7SclDybrCfZ4dHpVD+e4KwcHbIVPZ9aRtMSemYbx/PWIs2s9/FTsZAZeWa5LKirnGM6wj
-	B5G0WS0LH4/raq1N3V6AjiISo+L9oWE=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=JMstP/SZKyTAtGdzwkDZv+zBhTOefZsJBVO289hh0iI=;
+	b=EdEga5f/96VTuIM2/Iticat5Y/dqm+0vR3YEv1Sk+SaLKN9IbLugiWuc8yVHZ8pBdB4DUr
+	hyVwZ0YDWDcMuNrn1pRAA/as608QEc+1pMAXRSrRZ/c7YtwtMea1ksp9Jh1bDh+kDyK+dJ
+	kDuAxlmpuC4ewth55ZaYnlhX2zQWFf4=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JiYFumdX;
-	spf=pass (imf11.hostedemail.com: domain of aneesh.kumar@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=aneesh.kumar@kernel.org;
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ODwixlVM;
+	spf=pass (imf29.hostedemail.com: domain of aneesh.kumar@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=aneesh.kumar@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793810832;
+	b=BzJVjCvdCOZ2Z7CwPRBx1U1PDU44wAng34ikYFBQ8eZvQy5rCxRRvhF8UO/Qj8GgaYXxB/
+	ciwtpAffUrfNFwzkn/vdtNcHyABUG/+nzw1EqM6gDMFnVNW85cgsvS3Vla+iu+cdj+gJCm
+	BGawdsfN44mIGcZ8OwDoxWoEfVvo4gI=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id A7CB943852;
+	by sea.source.kernel.org (Postfix) with ESMTP id 59D11405F4;
+	Wed,  4 Nov 2026 16:47:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F18B1F000C1;
 	Wed,  4 Nov 2026 16:46:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0AAF1F00A16;
-	Wed,  4 Nov 2026 16:46:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793810814;
-	bh=mrj1RHzBr9lFPxEPcZNWDZfBeJOGthj8B3nIsgiRgYA=;
-	h=From:To:Cc:Subject:Date;
-	b=JiYFumdX1kW2MrKZksZooxbQY6RBIzupSHXG+La1/uDEn14++2uJp9HpNG70MMBlD
-	 h8PrFbaBOav3/rqvgLc0fc7BPqmE+v77ICnKYtkVcP4uqLqMN4xW8IAHdSFn3ws1gy
-	 e0OvsfLMh/c2+lmvyZtvI3JiIdUPmxb0wgheKaONGmNuE4ynMtUIiyEMN+FDRjEwO9
-	 R5wUcO3fEKraXYRjIEtnjGhNn3g4qOiXXHYMM/YYLMFlK02+31mt4VAX7+y080F/jb
-	 dyBxHIgATgN19yINWuhIjkzj2UooK+L6Sn8CN4bOGmVHNJTlm3xKEz6JjITGuYc7+R
-	 IgSswZF3IyLug==
+	s=k20260515; t=1793810831;
+	bh=JMstP/SZKyTAtGdzwkDZv+zBhTOefZsJBVO289hh0iI=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=ODwixlVMY/WuHSIBG9jucqNtur/74mXOfme6KyxU15JFDNXPVm+4m3B//5CLGvKpx
+	 j08EjiSi+XQprXfYLa6qC1E4xxMJv9V0s5A+XT9xy0tQc419kLYrjCAubJG2lRAeur
+	 YeyMcTLHPB+1NL6Gd6J95C6atl0fJ5EMaf6IN1pwi8Ux17257A50eYcjUdHHGCXU1b
+	 Bxy2ys/NIo4GNJBlizgc4hdV8jLv3B9JKOVfunCDC2svqT6EV/Pen7TKggPrJa3rT2
+	 FROGM7wg5rEmvF+HP0qvXfPBi1JBIuvx5HfJiHm0mcG4OAGcYvo3YXbTpUg5nK9bLh
+	 RKreURhgezLOw==
 From: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>
 To: linux-coco@lists.linux.dev
 Cc: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>,
@@ -123,28 +123,27 @@ Cc: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>,
 	linux-mm@kvack.org,
 	kvmarm@lists.linux.dev,
 	patches@lists.linux.dev
-Subject: [PATCH v9 00/14] coco: guest: Add a shared-granule allocator for host-shared memory
-Date: Wed,  4 Nov 2026 22:15:41 +0530
-Message-ID: <20261104164555.3555725-1-aneesh.kumar@kernel.org>
+Subject: [PATCH v9 01/14] mm: Add an allocator for CoCo shared memory
+Date: Wed,  4 Nov 2026 22:15:42 +0530
+Message-ID: <20261104164555.3555725-2-aneesh.kumar@kernel.org>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20261104164555.3555725-1-aneesh.kumar@kernel.org>
+References: <20261104164555.3555725-1-aneesh.kumar@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 050D540005
-X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: dc18opyty44t5k1imoqhtmbr7dtmsbhx
+X-Stat-Signature: bzseo9xpf5aisosodkw9ubsr1nfn54zh
+X-Rspamd-Server: rspam01
 X-Rspam-User: 
-X-HE-Tag: 1793810815-916403
-X-HE-Meta: U2FsdGVkX19IqE42ur6yJ804XWEpupmQLum3VjHauxVqq1XxhdwbaHPrIHC2Z1PNXaRFNn0mbpQNmhgC5GUZCklO1wd+SzCZQnI0DEhXY+e7KN3KjI09pLemeAougYl+jUe1y7icpQyFbwG9X7WnXxbdYx9ibVGYmZPyGNUVzqkD6UxBDQlI49tXT2bad2RvvPFKi9/8R22Sp6kDGKrB0TMUUZ2hEw+TWOuo0RYFJtRtuDH0D5RDu/mT5mFLbsXs0fFyWcjnDHAoI/w686voVonw+ZTk9HihGNkpB5d4ZaXZEnya8CMfL4Tj33UuEQN6ifT8isu6dYSeqK86Vpad16UuoqZ4XNLmGPfnf3JsYrW7MjiI4sldo88Dwy5WrtzTdTAL70D4DV54T+R3w3hRKOf+gGPwjfwNodydaYYi9zgj/eq/66C4QGroWdseUC3v3E7YTgZtg3e+CChVMqysP4q4XShlI1lx9IcYq4cJexdER29uuDvucqtl6jMpM65jsaJCV+Dug5SWAvYpIFb348XRa86nhoFNmVXfSgONsovalSEGVBXds5cENsATfwDARWQUd7HGqsd/NcNilDoo0hoCWCoa7dNe8Rt3HyH3OYfSePWrO/KcJTb0LeYktCM7ouZz15H+hauVKN4aRjAVC8redyXJF1mXbKnnPWLKrvT+C8Qyts87ZFf8Q/Fwwe787tlBlLhlQRjCCCsCLwpJQLoZW8IFFa8Px5xH3dKmf6EF8k/R6s93/Qg827Y62zjT9dVclDsMmm0C3AatyMX+3fAVi8/HF5eSZO7ObADB4kzQxJu+C5BVYT+5W9O4DFsBX/WBrhdQ2t3Jtsu8hIpUt/dsrS/YuLxtZvm50Q3uwrp5d5ATjjwzfyBRlqcph/qr5aXZcQVae16b6FZtK5ZhtlKZvJrtdq8syHry0mg/bJ1NP5We88r6c3K91SlRQeZo8dRPoB5fy/3bY2Mfm4Q
- bKMkk3rj
- EFUjmzhR3akSCP1x/7Yjds5X3g4eKRcKAunqsMc6ZTG1sDOJHmcV/oh21c9tDtBBmREFyfFnc9/OMzJhY/Tz+WpelVutV2M1St4JvjrqWyhwpmBbYyPVs8o54OHADoibd37AFepagudVO2DBFjDTwEZTqC/8uqJojlevAGe8Sfc7Fesl5pqH/MzEbE12PaZ2rAndCJbnhDwM8QPyq2FOa/GUdSS6CYIdGfoTue9cNrYttSlsZ/tTk7xAzDp5kKBuRPiimpXN5u5LtcOuPdNsf8eZ1y55KVEvReHp22MgvkG+GZ3VWL141GwFA1F9ad3zoTlB0GOsmWwpPaVbE52Wl+elMMg8kqJ+SAGlV+7Ewz87O5tZ+sgV1o9hO4X+RTzxIqkomF6l7K6DB9+1N7gtnyvlYQffHQU8ny5828/Bjp+Xvzddu9Gl+0bcEv2H/DL41DvzjzgoozwD4spcf2Mr00YUmep2sHHsXRDFbnzQJd+ayhlR7F/Ruqno7eJE2iwbBv3Eulxavg8EtxpU1KuMJtK717eNV+WFzWnr/LSu0zWkUncvPbtRy+bYAmu9FwzfAO0NzGhRwJd+uFzyZUnn5fYqBPisbrHxS9IEP9vUAb/7dyw5NLVqwpFaImqWhExQ+aTdgbemoKSNd9NoReLWej4bdY6GKpO5mgfRJqf3S+ub0hCmyV3/5a7n+pznbbx1VraCBJcEoBGAFjsYdkaUqdxxw5vqVvoSJQlzROXjg5u4bvG28lDB362kHVUny3JeiDtTVs+K8Bthf89veD0ZpIGcMZnctVNcBCcvPul56Dll04UJua6G0HcAfE0DTq2t2o1Lz4MJsG6Uq2IEObydHqXsYCXbEO+Ez6pIIfsuggcVLEDeEDOoaVuhzmiWcqpDeDafgu51g7PQJ1pEfO3YQHpCMt3Cf6Z8yqBlEqwi+Abz4PMsfGW+buWrHdxiDKAuQXFrkltP4KSjP67qhg9lm/PumhP+8
- DNGU3SSr
- 16sn9ZT77WF9mW5bQ6f61lWBGE6h4zxA73QKAP5e0LZYl1iPVoU0PczBr8NXYDN6SrP9AaPgaWiRHf2Pv78097Xn2a7nYk1XRB6fAFRysaQK71Dxjqd4EUs6uPGUfwW+bWTd1MzNztr9F5UuQdgpOWA18zY818+PQ5aklCRpeMdHr0MAOfa3qbJ4zeAmAMSHhmiBb1x+BkjlW521CMb2WBUoK1KpM4jaaiv0q55rpgViozo3PNI/29baM2sADpAyEKKRq1iiURxklLZ0dUkQzUMzygieQOvu
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: 0B3A3120004
+X-HE-Tag: 1793810831-258489
+X-HE-Meta: U2FsdGVkX19Hnu+Hv6LJS2p9SeeO2e/7u7KFOi2impRO33blRMYmMjqK4w1KF2rZhBCB1ELm94+tLigqEk1VysjrkJFaV+EgR3+CUjiIJTaE2GhX3WYNGk+gGwdDvUF8Jevf8huu8yZx+DbtC9+dZzrjYDvAD0dFx333wUDaIkI1KQruH5d+SVtx39BMI83QI1+QcK57W6WNlwuOGu7C2mCdqBSefkowSdDW5ggtPwGamsLu8L6vA975YCf8UErwlfZOrNbv6a7tlhoTI0kaGvN62O8Zp9XYOEvazrBZabI6G0il1n2dDnD6CV3r5dI3wVisP36vJSg/Usiux+HVxq3Z3HKx20Ewe6xgHX3TexRfDOv38m3PTR1aVJdm3lOlByQldo18JgAXqvLBaOBcP/weC8u01v0MeCAOjVmpUwXUKw5I7Uuam1SUFtMKoYBhKWrFw2h/uK4WTXsjfkQsgE4T6ao7OGR+SVCuBc0Pbao+PwHzQ4kpcyQADVrZ0G8WdpdiTCX1ygXGVVPbUA0aWXLNoVTrpE5WVezxakMtn+ks+5yk0PBpG3/v4YlVEYZ0lkH7ikq4kaf1FfEWWzQn/s0LggS5XEA5LgRLhX5zxsQGGopzwPubxaBSjP3I/MRryfOUKKmdvsJPBbRes+7/wC0D36xnx8DHV7WvmwB7TAuxLkRv0iNSW5CadXlO/zrTA08occ6MH9IgxIY6VmZ0rLDfZaOxthVxBZXSNoUT6npbtZWFfhW0lp2YNyB8hdG5lnE9kfX05FUcUcvD5iSm+r3vqEGd8F3FLJFzpmVj6Sl8c1QqAcf0um45Bnq7TlFag+TOFBo6hH91K3YE6Eu3PVQCscZaBOAXshf7sFYDvnwHECpujNoZW+u3eC1wYz7JQZ3OscEIIfxRBtea1JUkuMymSn/T8NrqgcrSCQ5IahIiXrXDgCAHk31djy0SRbOWNMNQj/gyjpHyqq4zI/e
+ bi9xhpXo
+ xu4bEpFUWQScddq5RdoQZVlFI/LEj9naBpxkbA9fVRBUqtVjju2h8mrj76cHQjqHt08zpEmAgA74PY6RgXA8Fr3GEkKebmgHji0dU+hkMiO62MoYpQtord8k3fe+m5gRMi8mjx99O3UiFhhrurAxP+n97OV7CrAO+st6GI92h++eWzxgpwgAoTWZ5EmWlxefiVVIzs3mfAhOS5or9wIVSvLRCD1eHTZr8H6gUwsnPnHUxkOiDfJ4hg9oGXN0lwyz43Eu3iixsyIeiJ3ZGluAo8TPHBsslSNMf0hSnr+YZFc9YrIErVDWAPFSxGUht/lh/tolVmhzR4JxmlUCg9LZgYiwHoByGis/lCG58Jk7UsCad0sGCoJOOgGZbng==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -153,258 +152,337 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
+Confidential-computing guests may require memory shared with the host to
+be aligned and transitioned in units larger than PAGE_SIZE. Several DMA
+users need struct page-backed allocations satisfying these requirements.
+Provide a common allocator instead of requiring each user to open-code
+this sequence.
 
-This series tightens the alignment requirements for buffers that are shared
-between confidential-computing guests and the host, and adds a common
-allocator for host-shared memory.
+Add alloc_cc_shared_pages() and its node-aware variant. The allocator
+rounds the requested size to the architecture's shared granule,
+allocates suitably aligned contiguous pages and transitions the
+complete range to shared state. It also preserves the caller's GFP
+policy.
 
-When a guest runs with private memory, buffers shared with the hypervisor
-are not only accessed by the guest. They are also accessed by the host
-kernel, and the host may manage the corresponding shared/private state at a
-granularity larger than the guest page size.
+A private-to-shared transition may alter memory contents. Mask
+__GFP_ZERO from the underlying allocation and when requested, clear the
+complete transitioned range after cc_make_shared() succeeds.
 
-Architectures such as Arm can detect incorrect accesses to Realm physical
-address space PFNs through GPC faults. However, relying on that as the only
-line of defence is fragile and can still lead to kernel crashes. The risk
-is especially visible for shared buffers that are later mmapped into
-userspace, such as guest_memfd or dma-buf backed allocations. Once
-userspace can access the mapping, the kernel cannot guarantee that
-applications will only touch the intended 4K region rather than the whole
-host page mapped into their address space. Those userspace addresses may
-also be passed back into the kernel and accessed through the linear map,
-resulting in a GPC fault.
+Return the page and transitioned size so free_cc_shared_pages() can
+restore the complete range to private state before freeing it. If
+private state cannot be established, retain the allocation instead of
+returning a possibly shared page to the buddy allocator.
 
-To avoid this, host-shared buffers must satisfy two constraints:
-
-  - the address must be aligned to the CoCo shared-granule size
-  - the size must be a multiple of that granule size
-
-The series adds a common CoCo shared-memory layer for enforcing these
-constraints. It provides shared-granule geometry and range-validation
-helpers, byte-oriented private/shared transition helpers, and
-alloc_cc_shared_pages(). The allocator rounds a request to the architecture
-shared granule, allocates suitably aligned contiguous pages, transitions
-the complete allocation to shared state, and returns the transitioned size
-alongside the page.
-
-The corresponding free helper restores the complete allocation to private
-state before returning it to the buddy allocator. If private state cannot
-be restored safely, the allocation is deliberately leaked rather than
-returning potentially shared memory for unrelated use.
-
-The series also makes zeroing part of private-to-shared transitions, with
-each architecture clearing memory at the appropriate point. Callers must
-therefore initialize shared buffers after the transition; existing contents
-are not preserved.
-
-The shared-granule size defaults to PAGE_SIZE and can be overridden by an
-architecture. The arm64 CCA changes to discover the host's IPA state change
-alignment are not included in this series.
-
-GIC ITS command queues and tables and the dma-buf system_cc_shared heap
-use the common allocator. DMA direct, atomic DMA pools and SWIOTLB retain
-their allocation paths and use the common layout or transition helpers.
-Restricted DMA pools are checked for shared-granule alignment.
-
-Hyper-V users of set_memory_encrypted() and set_memory_decrypted() are not
-changed by this series. Those paths are not currently used by the arm64 CCA
-code path, and therefore are not part of the arm64 CCA IPA state change
-alignment problem addressed here.
-
-The series also preallocates GIC ITS VPE L1 tables so shared-memory
-transitions are performed in a context that may sleep.
-
-Notes:
-* I have not added explicit MAINTAINERS entries for mm/cc_shared.c and
-  include/linux/cc_shared.h, as I am unsure whether we need a separate section
-  for common CoCo-related files. I will add the entries based on feedback.
-* Codex assisted with implementation, review and series organization.
-
-Changes from v8:
-https://lore.kernel.org/all/20260924100529.1398790-1-aneesh.kumar@kernel.org
-* Rebase onto the 7.4-rc1
-* Move TDX and AMD (including SEV-SNP) zeroing to their finish callbacks
-  so private-to-shared transitions clear the final shared mapping.
-* Clear __GFP_MOVABLE for shared allocations, which cannot be migrated.
-* Resolve NUMA_NO_NODE in the common ITS allocation helper to preserve
-  placement for all ITS callers.
-* Stop SWIOTLB allocation retries when the reduced pool would fall below
-  the shared granule size, avoiding an allocation retry loop.
-
-Changes from v7:
-https://lore.kernel.org/all/20260921144847.501151-1-aneesh.kumar@kernel.org
-* Add the following new patches:
-  * "irqchip/gic-v3-its: Preallocate VPE L1 tables"
-  * "mm: Assert CoCo shared allocations may sleep"
-  * "mm: Zero memory during shared memory transitions"
-* Drop the arm64 RHI and shared granule size patches so that the series can
-  be rebased on top of upstream to enable Shashiko review.
-
-Changes from v6:
-https://lore.kernel.org/all/20260904103452.1197239-1-aneesh.kumar@kernel.org
-* Add a common allocator and geometry/transition helpers for CoCo host-shared
-  memory.
-* Convert GIC ITS, dma-direct, atomic DMA pools, and the dma-buf
-  system_cc_shared heap to the common allocator.
-* Limit dma-buf scatterlist entries to the requested buffer size so rounded
-  backing is not exposed to importers.
-
-Changes from v5:
-https://lore.kernel.org/all/20260706060432.1375570-1-aneesh.kumar@kernel.org
-* Rebased to latest kernel
-* Drop patch arm64: realm: Move Realm memory encryption ops to RSI code
-
-Changes from v4:
-https://lore.kernel.org/all/20260427063108.909019-1-aneesh.kumar@kernel.org
-* Rename the helpers to use CoCo terminology
-  (mem_cc_shared_granule_size() / mem_cc_align_to_shared_granule() instead of
-  mem_decrypt_granule_size() / mem_decrypt_align()).
-* Use __DMA_ATTR_ALLOC_CC_SHARED to pass CoCo shared allocation requirements
-  down to CMA-based allocation helpers.
-* Add validation for restricted DMA pools to reject pools that are not aligned
-  to the shared granule size.
-* Add dma-buf system heap handling for cc-shared buffers.
-* Split the previous combined DMA/SWIOTLB/ITS change into smaller subsystem
-  patches covering ITS, DMA direct, SWIOTLB, restricted DMA pools, dma-buf
-  system heap, and arm64 Realm support.
-* Rework arm64 Realm support by moving Realm memory encryption ops into RSI
-  code and exposing the CCA shared granule size through arm64_mem_crypt_ops.
-
-Changes from v3:
-https://lore.kernel.org/all/20260309102625.2315725-1-aneesh.kumar@kernel.org
-* Fix build error reported by kernel test robot <lkp@intel.com>
-
-Changes from v2:
-https://lore.kernel.org/all/20251221160920.297689-1-aneesh.kumar@kernel.org
-* Rebase to latest kernel
-* Consider swiotlb always decrypted and don't align when allocating from swiotlb.
-
-Changes from v1:
-* Rename the helper to mem_encrypt_align
-* Improve the commit message
-* Handle DMA allocations from contiguous memory
-* Handle DMA allocations from the pool
-* swiotlb is still considered unencrypted. Support for an encrypted swiotlb pool
-  is left as TODO and is independent of this series.
+Also provide the shared-granule geometry and byte-oriented transition
+helpers used by the allocator and by callers managing their own backing
+memory.
 
 Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Baoquan He <baoquan.he@linux.dev>
-Cc: Mike Rapoport <rppt@kernel.org>
-Cc: Pasha Tatashin <pasha.tatashin@soleen.com>
-Cc: Pratyush Yadav <pratyush@kernel.org>
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: "Christian König" <christian.koenig@amd.com>
-Cc: Jason Gunthorpe <jgg@ziepe.ca>
-Cc: Joerg Roedel (AMD) <joro@8bytes.org>
-Cc: Marc Zyngier <maz@kernel.org>
-Cc: Marek Szyprowski <m.szyprowski@samsung.com>
-Cc: Robin Murphy <robin.murphy@arm.com>
-Cc: Steven Price <steven.price@arm.com>
-Cc: Sumit Semwal <sumit.semwal@linaro.org>
-Cc: Suzuki K Poulose <suzuki.poulose@arm.com>
-Cc: Thomas Gleixner <tglx@kernel.org>
-Cc: Will Deacon <will@kernel.org>
-Cc: Russell King <linux@armlinux.org.uk>
-Cc: Benjamin Gaignard <benjamin.gaignard@collabora.com>
-Cc: Brian Starkey <Brian.Starkey@arm.com>
-Cc: John Stultz <jstultz@google.com>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Radu Rendec <radu@rendec.net>
-Cc: "T.J. Mercier" <tjmercier@google.com>
-Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Nicholas Piggin <npiggin@gmail.com>
-Cc: Christophe Leroy (CS GROUP) <chleroy@kernel.org>
-Cc: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-Cc: Shrikanth Hegde <sshegde@linux.ibm.com>
-Cc: Alexander Gordeev <agordeev@linux.ibm.com>
-Cc: Gerald Schaefer <gerald.schaefer@linux.ibm.com>
-Cc: Heiko Carstens <hca@linux.ibm.com>
-Cc: Vasily Gorbik <gor@linux.ibm.com>
-Cc: Christian Borntraeger <borntraeger@linux.ibm.com>
-Cc: Sven Schnelle <svens@linux.ibm.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Borislav Petkov <bp@alien8.de>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>
-Cc: x86@kernel.org
-Cc: H. Peter Anvin <hpa@zytor.com>
-Cc: Kiryl Shutsemau <kas@kernel.org>
-Cc: Rick Edgecombe <rick.p.edgecombe@intel.com>
-Cc: K. Y. Srinivasan <kys@microsoft.com>
-Cc: Haiyang Zhang <haiyangz@microsoft.com>
-Cc: Wei Liu <wei.liu@kernel.org>
-Cc: Dexuan Cui <decui@microsoft.com>
-Cc: Long Li <longli@microsoft.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>
-Cc: Vitaly Kuznetsov <vkuznets@redhat.com>
-Cc: Andy Lutomirski <luto@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: dri-devel@lists.freedesktop.org
-Cc: iommu@lists.linux.dev
-Cc: linaro-mm-sig@lists.linaro.org
-Cc: linux-arm-kernel@lists.infradead.org
-Cc: linux-media@vger.kernel.org
-Cc: linux-mm@kvack.org
-Cc: kvmarm@lists.linux.dev
-Cc: linux-arm-kernel@lists.infradead.org
-Cc: patches@lists.linux.dev
-
-
-Aneesh Kumar K.V (Arm) (14):
-  mm: Add an allocator for CoCo shared memory
-  mm: Zero memory during shared memory transitions
-  irqchip/gic-v3-its: Resolve the default NUMA node explicitly
-  irqchip/gic-v3-its: Allocate shared tables using CoCo shared memory
-    allocator
-  dma-contiguous: Derive shared alignment from DMA attributes
-  dma-pool: Allocate CoCo atomic pools using CoCo shared memory
-    allocator
-  dma-direct: Align CoCo shared DMA allocations to the shared granule
-    size
-  swiotlb: Align shared IO TLB pools to the shared granule size
-  swiotlb: Reject misaligned restricted DMA pools for CoCo guests
-  dma-buf: system_heap: Limit scatterlist entries to the buffer size
-  dma-buf: system_heap: Allocate shared buffers using CoCo shared memory
-    allocator
-  swiotlb: Make rounded shared pool capacity allocatable
-  mm: Assert CoCo shared allocations may sleep
-  irqchip/gic-v3-its: Preallocate VPE L1 tables
-
- arch/arm/mm/dma-mapping.c                     |   5 +-
- arch/powerpc/platforms/pseries/svm.c          |   2 +
- arch/s390/mm/init.c                           |   3 +
- arch/x86/coco/tdx/tdx.c                       |   3 +
- arch/x86/hyperv/hv_init.c                     |   6 +-
- arch/x86/hyperv/ivm.c                         |   4 +
- arch/x86/kernel/kvmclock.c                    |   6 +-
- arch/x86/mm/mem_encrypt_amd.c                 |   4 +
- drivers/dma-buf/heaps/system_heap.c           | 128 +++++-----
- drivers/firmware/arm_rmm/rsi.c                |   4 +
- drivers/hv/connection.c                       |  41 ++-
- drivers/hv/hv.c                               |  11 +-
- drivers/hv/hv_common.c                        |   2 -
- drivers/iommu/dma-iommu.c                     |   2 +-
- drivers/irqchip/irq-gic-v3-its.c              | 152 +++++++++---
- drivers/irqchip/irq-gic-v3.c                  |   4 +-
- drivers/virt/coco/pkvm-guest/arm-pkvm-guest.c |   3 +
- include/linux/cc_shared.h                     |  39 +++
- include/linux/dma-map-ops.h                   |   9 +-
- include/linux/irqchip/arm-gic-v3.h            |   3 +-
- kernel/dma/contiguous.c                       |  41 ++-
- kernel/dma/direct.c                           |  73 ++++--
- kernel/dma/ops_helpers.c                      |   2 +-
- kernel/dma/pool.c                             |  27 +-
- kernel/dma/swiotlb.c                          |  87 +++++--
- kernel/kexec_file.c                           |   3 +-
- mm/Makefile                                   |   1 +
- mm/cc_shared.c                                | 233 ++++++++++++++++++
- 28 files changed, 693 insertions(+), 205 deletions(-)
+Signed-off-by: Aneesh Kumar K.V (Arm) <aneesh.kumar@kernel.org>
+---
+ include/linux/cc_shared.h |  39 +++++++
+ mm/Makefile               |   1 +
+ mm/cc_shared.c            | 233 ++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 273 insertions(+)
  create mode 100644 include/linux/cc_shared.h
  create mode 100644 mm/cc_shared.c
 
-
-base-commit: 6628e7d4c6b25c8d18f1345e3a20d21829aae7e4
-prerequisite-patch-id: 1d4a2fa9dc0f4b560e55f419d23835f0a9fbe485
+diff --git a/include/linux/cc_shared.h b/include/linux/cc_shared.h
+new file mode 100644
+index 000000000000..5f8db7c468c5
+--- /dev/null
++++ b/include/linux/cc_shared.h
+@@ -0,0 +1,39 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++#ifndef _LINUX_CC_SHARED_H
++#define _LINUX_CC_SHARED_H
++
++#include <linux/gfp_types.h>
++#include <linux/types.h>
++
++struct page;
++
++struct cc_shared_pages {
++	struct page *page;
++	size_t shared_size;
++};
++
++struct cc_shared_layout {
++	size_t requested_size;
++	size_t shared_size;
++	size_t alignment;
++};
++
++/*
++ * Architectures may override this to return the granule used for transitions
++ * between private and shared memory. The value must be a power of two and no
++ * smaller than PAGE_SIZE.
++ */
++size_t arch_cc_shared_granule_size(void);
++
++size_t cc_shared_granule_size(void);
++int cc_shared_calc_layout(size_t requested, struct cc_shared_layout *layout);
++bool cc_shared_range_valid(phys_addr_t base, size_t size);
++int cc_make_shared(void *addr, size_t size);
++int cc_make_private(void *addr, size_t size);
++int alloc_cc_shared_pages_node(int nid, gfp_t gfp,
++		size_t requested, struct cc_shared_pages *mem);
++int alloc_cc_shared_pages(gfp_t gfp,
++		size_t requested, struct cc_shared_pages *mem);
++void free_cc_shared_pages(struct cc_shared_pages *mem);
++
++#endif /* _LINUX_CC_SHARED_H */
+diff --git a/mm/Makefile b/mm/Makefile
+index 2a3ec53d62ee..a712656449d1 100644
+--- a/mm/Makefile
++++ b/mm/Makefile
+@@ -57,6 +57,7 @@ obj-y			:= filemap.o mempool.o oom_kill.o fadvise.o \
+ 			   interval_tree.o list_lru.o workingset.o \
+ 			   debug.o gup.o mmap_lock.o vma_init.o char-mem.o \
+ 			   $(mmu-y)
++obj-y			+= cc_shared.o
+ 
+ # Give 'page_alloc' its own module-parameter namespace
+ page-alloc-y := page_alloc.o
+diff --git a/mm/cc_shared.c b/mm/cc_shared.c
+new file mode 100644
+index 000000000000..5c4c971cfb7b
+--- /dev/null
++++ b/mm/cc_shared.c
+@@ -0,0 +1,233 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * Copyright (C) 2026 ARM Ltd.
++ */
++#include <linux/align.h>
++#include <linux/cc_platform.h>
++#include <linux/cc_shared.h>
++#include <linux/errno.h>
++#include <linux/export.h>
++#include <linux/gfp.h>
++#include <linux/log2.h>
++#include <linux/mm.h>
++#include <linux/mem_encrypt.h>
++#include <linux/numa.h>
++#include <linux/overflow.h>
++#include <linux/set_memory.h>
++
++size_t __weak arch_cc_shared_granule_size(void)
++{
++	return PAGE_SIZE;
++}
++
++size_t cc_shared_granule_size(void)
++{
++	size_t granule = arch_cc_shared_granule_size();
++
++	if (WARN_ON_ONCE(granule < PAGE_SIZE || !is_power_of_2(granule)))
++		return PAGE_SIZE;
++
++	return granule;
++}
++EXPORT_SYMBOL_GPL(cc_shared_granule_size);
++
++int cc_shared_calc_layout(size_t requested, struct cc_shared_layout *layout)
++{
++	size_t granule, rounded;
++
++	if (!requested || !layout)
++		return -EINVAL;
++
++	granule = cc_shared_granule_size();
++	if (check_add_overflow(requested, granule - 1, &rounded))
++		return -EOVERFLOW;
++
++	rounded = ALIGN_DOWN(rounded, granule);
++	layout->requested_size = requested;
++	layout->shared_size = rounded;
++	layout->alignment = granule;
++
++	return 0;
++}
++EXPORT_SYMBOL_GPL(cc_shared_calc_layout);
++
++bool cc_shared_range_valid(phys_addr_t base, size_t size)
++{
++	size_t granule = cc_shared_granule_size();
++
++	if (!size)
++		return false;
++
++	return IS_ALIGNED(base, granule) && IS_ALIGNED(size, granule);
++}
++EXPORT_SYMBOL_GPL(cc_shared_range_valid);
++
++static int cc_validate_transition(void *addr, size_t size)
++{
++	phys_addr_t phys;
++
++	if (!addr || !size || !PAGE_ALIGNED(addr) ||
++	    !virt_addr_valid(addr))
++		return -EINVAL;
++
++	phys = page_to_phys(virt_to_page(addr));
++	if (!cc_shared_range_valid(phys, size))
++		return -EINVAL;
++
++	return 0;
++}
++
++int cc_make_shared(void *addr, size_t size)
++{
++	int ret = cc_validate_transition(addr, size);
++
++	if (ret)
++		return ret;
++
++	return set_memory_decrypted((unsigned long)addr, size >> PAGE_SHIFT);
++}
++
++int cc_make_private(void *addr, size_t size)
++{
++	int ret = cc_validate_transition(addr, size);
++
++	if (ret)
++		return ret;
++
++	return set_memory_encrypted((unsigned long)addr, size >> PAGE_SHIFT);
++}
++
++static int __alloc_cc_shared_pages_node(int nid, gfp_t gfp,
++					size_t requested,
++					struct cc_shared_pages *mem)
++{
++	struct cc_shared_layout layout;
++	struct page *page;
++	unsigned int order;
++	bool zero = gfp & __GFP_ZERO;
++	int ret;
++
++	ret = cc_shared_calc_layout(requested, &layout);
++	if (ret)
++		return ret;
++
++	order = get_order(layout.shared_size);
++	if (order > MAX_PAGE_ORDER)
++		return -EINVAL;
++	/*
++	 * State transitions require a linear-map address and may modify memory.
++	 * Allocate from low memory and defer requested zeroing until afterwards.
++	 * Shared allocations have no migration support, so they must not
++	 * be allocated with __GFP_MOVABLE.
++	 */
++	gfp &= ~(__GFP_HIGHMEM | __GFP_ZERO | __GFP_MOVABLE);
++	if (nid == NUMA_NO_NODE)
++		page = alloc_pages(gfp, order);
++	else
++		page = alloc_pages_node(nid, gfp, order);
++	if (!page)
++		return -ENOMEM;
++
++	ret = cc_make_shared(page_address(page), layout.shared_size);
++	if (ret) {
++		if (!cc_make_private(page_address(page), layout.shared_size))
++			__free_pages(page, order);
++		else
++			pr_warn_ratelimited("leaking %zu bytes with uncertain shared state\n",
++					    layout.shared_size);
++		return ret;
++	}
++
++	if (zero)
++		memset(page_address(page), 0, layout.shared_size);
++
++	mem->page = page;
++	mem->shared_size = layout.shared_size;
++	return 0;
++}
++
++/**
++ * alloc_cc_shared_pages_node - allocate memory that can be shared
++ * @nid: NUMA node from which to allocate, or %NUMA_NO_NODE
++ * @gfp: allocation flags
++ * @requested: number of bytes requested; must be nonzero
++ * @mem: storage for the allocated page and the size of the shared range
++ *
++ * Allocate at least @requested bytes and make the allocation shared when
++ * memory encryption is active.  A memory-state transition requires a valid
++ * linear-map address, so such allocations never come from high memory
++ *
++ * The shared range may be rounded up to the architecture's transition
++ * granule.  On success, @mem->shared_size records the actual size that was
++ * made shared and must be retained unchanged for free_cc_shared_pages().
++ * @mem is not modified on failure.
++ *
++ * Return: 0 on success, or a negative error code on failure.
++ */
++int alloc_cc_shared_pages_node(int nid, gfp_t gfp,
++			       size_t requested,
++			       struct cc_shared_pages *mem)
++{
++	struct page *page;
++	unsigned int order;
++
++	if (!mem || !requested)
++		return -EINVAL;
++
++	if (cc_platform_has(CC_ATTR_MEM_ENCRYPT))
++		return __alloc_cc_shared_pages_node(nid, gfp, requested, mem);
++
++	order = get_order(requested);
++	if (order > MAX_PAGE_ORDER)
++		return -EINVAL;
++
++	if (nid == NUMA_NO_NODE)
++		page = alloc_pages(gfp, order);
++	else
++		page = alloc_pages_node(nid, gfp, order);
++	if (!page)
++		return -ENOMEM;
++
++	mem->page = page;
++	mem->shared_size = requested;
++	return 0;
++}
++EXPORT_SYMBOL_GPL(alloc_cc_shared_pages_node);
++
++/**
++ * alloc_cc_shared_pages - allocate memory that can be shared
++ * @gfp: allocation flags
++ * @requested: number of bytes requested; must be nonzero
++ * @mem: storage for the allocated page and the size of the shared range
++ *
++ * Equivalent to alloc_cc_shared_pages_node() with %NUMA_NO_NODE.
++ *
++ * Return: 0 on success, or a negative error code on failure.
++ */
++int alloc_cc_shared_pages(gfp_t gfp,
++			  size_t requested, struct cc_shared_pages *mem)
++{
++	return alloc_cc_shared_pages_node(NUMA_NO_NODE, gfp, requested, mem);
++}
++EXPORT_SYMBOL_GPL(alloc_cc_shared_pages);
++
++void free_cc_shared_pages(struct cc_shared_pages *mem)
++{
++	if (!mem || !mem->page)
++		return;
++
++	if (!cc_platform_has(CC_ATTR_MEM_ENCRYPT))
++		goto free_pages;
++
++	if (cc_make_private(page_address(mem->page), mem->shared_size)) {
++		pr_warn_ratelimited("leaking %zu bytes that cannot be made private\n",
++				    mem->shared_size);
++		return;
++	}
++
++free_pages:
++	__free_pages(mem->page, get_order(mem->shared_size));
++	mem->page = NULL;
++	mem->shared_size = 0;
++}
++EXPORT_SYMBOL_GPL(free_cc_shared_pages);
 -- 
 2.43.0
 
