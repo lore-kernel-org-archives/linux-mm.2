@@ -1,89 +1,137 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C6E3606A32D
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 08:10:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 018A8606D807
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 08:17:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=KoojDrfl
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=bXTYrDSE
 Received: by kanga.kvack.org (Postfix)
-	id 273DB6B05B1; Wed,  4 Nov 2026 03:10:29 -0500 (EST)
+	id 09BC26B00EF; Wed,  4 Nov 2026 03:17:28 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 24B3D6B05B2; Wed,  4 Nov 2026 03:10:29 -0500 (EST)
+	id 034E96B05B1; Wed,  4 Nov 2026 03:17:27 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 188E56B05B3; Wed,  4 Nov 2026 03:10:29 -0500 (EST)
+	id EB4166B05B2; Wed,  4 Nov 2026 03:17:27 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id E913F6B05B1
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 03:10:28 -0500 (EST)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 1FF75804A7
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 08:10:27 +0000 (UTC)
-X-FDA: 85396714494.19.2E21F16
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id C47EF6B00EF
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 03:17:27 -0500 (EST)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 5266016067E
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 08:17:27 +0000 (UTC)
+X-FDA: 85396732134.10.9655AB0
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 82FF4140003
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 08:10:25 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KoojDrfl;
-	spf=pass (imf23.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf03.hostedemail.com (Postfix) with ESMTP id 9025120005
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 08:17:25 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bXTYrDSE;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf03.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793779825;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
+	s=arc-20220608; t=1793780245;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Pw1RA8b/0wqWpwAG8rn8nMbI8/CS2La9EFhpCnYgEt4=;
-	b=TGvrCtaNQo3YucK9Ymc5yURpv4d5MI01gJkTygc4IzbYT69XXh5HVODpFr7iBvz7oZ9yOS
-	B4lgwsHA8n7/MmWcs1H2orZABzLd2WZo9orvemsfx3I34lfITFqB4dgwDsBYVOsmAdvszV
-	TuDhIiv4kp8NVs37d0UP4kUondHGqzk=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793779825;
-	b=60GPtK3KTlUcd0dQITJ8xD2/fNRrl5tQQyuG2cOEjrwpBqkLQLNQc4i0ykUOyTqJSbrKD7
-	PMORfgScbiRU+NVBNDErlE2xD+4Ine+B7xX84syLMqkyadS/2FEyenujAnyYFNj/FIJuag
-	Kitwtux5tviUdJSIJpO7Ble0ZNrx41A=
+	bh=sSlKHe6xc24svxDkA3PbRnbZQ2Hd6+8PIRLhRVLtkNA=;
+	b=AhPgT0WX13PHjLKHszsPJY7betlyFjMpRoaG3AOHDdZN2Ce3CC2M7eVg7t5Fsa3tE7lElO
+	dDnj5sDRjknA/mCR8PqpT75Upa6YA3CHZxZIQYyJvDy8A6tvUAhE/a8FQw8X6HvVfV67UZ
+	poxO0xg8lXseXr7OOluOBIbLkx/IKLA=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KoojDrfl;
-	spf=pass (imf23.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bXTYrDSE;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf03.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793780245;
+	b=nJhatA/2CzekIv6IsqAcVYp+cgUfoq8kBCTKuSZFRxUhuR8Gko+ZqH7KqDy8EIcrql//BC
+	nftDikjrR7PWbmobDK85NEKJtHkRjdv9fktNpgBjyirIcSo1kOPN7NufhkPtHHg3bIEbko
+	Ii6VWPHZ7EdmMfmbwYQ67IS/kzSfk84=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 008D260D9B;
-	Wed,  4 Nov 2026 08:10:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 178811F00A02;
-	Wed,  4 Nov 2026 08:10:24 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 1CA0560611;
+	Wed,  4 Nov 2026 08:17:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D2DB1F000C1;
+	Wed,  4 Nov 2026 08:17:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793779824;
-	bh=Pw1RA8b/0wqWpwAG8rn8nMbI8/CS2La9EFhpCnYgEt4=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=KoojDrflsyT352+kmH6suq8he+NSQ6/q6xmVHkGlSicSPJjOeWsqaXFoQ7hIB8OFX
-	 YVtkEK9bOARfkuo/urulh2JSAXw612CS1tUEjXQASxf4obq5lilY4IgBXG+6HiwOld
-	 scTQVVre6Gq0jzmFai+h55fzFB+XejmC5wDvDkSLWOG8m4PKVItjB5l7OVULSarR+p
-	 UeCaVPkVzinfoYpzgwd6QYJh+6wQpXEv9zRRSrZBUtzhGirQWWP4kZt8sVtKps5k/E
-	 4A41XuinKlgZwFv63c37Rml1ZcF07flt71FjoPVGLVW6u28r6GLh6x5UOvrIEy7yV2
-	 hjIViDB11k3jA==
-Message-ID: <sashiko-outbox-196857@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 3/5] riscv: Add support for kexec handover (KHO)
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Chen Pei" <cp0613@linux.alibaba.com>, pjw@kernel.org, palmer@dabbelt.com, alex@ghiti.fr, rppt@kernel.org, pasha.tatashin@soleen.com, pratyush@kernel.org, graf@amazon.com, shuah@kernel.org
-Cc: guoren@kernel.org, linux-mm@kvack.org, kexec@lists.infradead.org
-In-Reply-To: <20261103080926.2079-4-cp0613@linux.alibaba.com>
-References: <20261103080926.2079-1-cp0613@linux.alibaba.com>
- <20261103080926.2079-4-cp0613@linux.alibaba.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Wed, 04 Nov 2026 08:10:23 +0000
-X-Rspamd-Server: rspam06
-X-Stat-Signature: nyq1npsdps49tj67rqkazfacndashihm
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
-	autolearn=unavailable autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: 82FF4140003
+	s=k20260515; t=1793780244;
+	bh=sSlKHe6xc24svxDkA3PbRnbZQ2Hd6+8PIRLhRVLtkNA=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=bXTYrDSE8v1k4UTrZsaWqhHJsS3KHpcVQ9MpNm3mcEPTD8vb2ex7rANe82ae4M8i/
+	 U+Ge7YFlUWCEP+xm3yD8oGT2QLL60w+3jeGfHcyFOzeMowbYgPtorwLeFSLQWRoFeh
+	 vKaFxSbDESgRLNr8rWHYeENa5CsIt+x0S+Hw+SDaqHy4nHKjSi9n+hqfwW6di2LYzU
+	 xbQjrqsjQGFpGz4zHt46mCInYTWrKSrUysrH238MZo9pFr/I/LN3RKu+vLVtg/E+W3
+	 mC/OYkkJrUji6ca7e4xgedrR5Lj2PqIbcDkFwq3tn2lxiWWhI7rbo/Goy/r3fDxpLJ
+	 5OQ3BzFslQzPQ==
+Message-ID: <634f37c7-6096-49db-8cfc-7c5421631322@kernel.org>
+Date: Wed, 4 Nov 2026 09:17:19 +0100
+X-Archived-By: <archiver.kernel.org>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] mm/slab: restore the rcutree. prefix of the
+ kvfree_rcu parameters
+Content-Language: en-US
+To: Harry Yoo <harry@kernel.org>, Zhan Xusheng <zhanxusheng1024@gmail.com>
+Cc: urezki@gmail.com, paulmck@kernel.org, qiang.zhang@linux.dev,
+ akpm@linux-foundation.org, hao.li@linux.dev, cl@gentwo.org,
+ rientjes@google.com, roman.gushchin@linux.dev, linux-mm@kvack.org,
+ rcu@vger.kernel.org, linux-kernel@vger.kernel.org, zhanxusheng@xiaomi.com
+References: <20261028134647.3176080-1-zhanxusheng1024@gmail.com>
+ <auIRU802S4Z4yAmo@thinkstation> <auiedkWD41Ok95TT@thinkstation>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Autocrypt: addr=vbabka@kernel.org; keydata=
+ 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
+In-Reply-To: <auiedkWD41Ok95TT@thinkstation>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-HE-Tag: 1793779825-991652
-X-HE-Meta: U2FsdGVkX19w32e4ZSYzwz9oOZlsCCnObUeCnVTWUCzm2lWIw8stpfOd/oncxmy3lOeL+nFDsFqfotvNHYVR0IHJesdwG16IqrSlIbIS+AdYQT7p/IeCdvXICZ4qyeDx8nzhD/8eUtqDUGxfARLDZr/pW6xj9niRI9C0Ntm8qCGoE0CDmgqz2QJ/rDucW4qkztXNw7FEHd8g905vecJ87hJP8n2dOl7B3lWMMwAAQBW22HquouYbdVoPmlHd5rNVNQuVD5h5d14J3xea6BV2rPxh2IIgBmQ0ajGyE74vEeYgpi9TZ7Bl+8r7NX1rFjDlyPeJC9glBGXkUj/fsYtF4qDr1ynvFZH4UuZZAaN7XlotIPiRrImA1AoM0svGtEPJ6okmRH9qybQyA1FkE8ux7MO1bIj8rIiMNtjBFFMXUt99WbbxSlfzN46tpzaB2CQZOxk0PknWxJzgJLyOF0FqbtqLqwC2RXgRoVqzE5ZEyp6u3mNFuT/j5T+0adKSZS2ylfNP5Sk3yt4OufcJN+7wUg8wVMP8vaytKl9pF/d/bu/IXaziEFAoOy3gOQMGjqe3c/5Es4Nf5HWXyE2iTrHyRQs0j9oAqcLmPqx3UTYKyAue/iZTt7T9fL2+F4+1p+T3RtGPRGbr9eBRLNyunWQJFXS1nEADTC4hkaRy5GQ3nK7baxhBnrt58zUdHcW1Xps6WlSZGt/2j31Jf5TK1PTJ7djHJfhiz4gud753s++rARQn8DELdWNdfh0cr7N3+XTzG6wARikGaM6bT7BHzpPTEooaDXcEmSypMo4yArjYQV6wm4moEHijoC+HNlnouex/RKp+nwPMjEzk3qNKuQ0UCZ/6Hmup9aTe7kCs3grgi7mSCrwFPJ8odAQl4arwU6S7lJ9FpX3g2nuLOsDd1+IAS7IAsxQZYAd9fgUqxstmDkm13IP0rqQdQRRdzsaMyf66YXdLwUpt2UzPHOoqX0h
- p6T+QcC1
- Ih5bX/4LPAhMmm9M9/mIkzlo5gETHd5B1lMfcgeiDMR6/8FL4Nu3ivkAavp1SjCWQL/1MldeHwklTfFrnC70nv+si+mJgtspEc1rZ8OhFcBZN99wDXLVyrn6IR04FwqFHdgUbezfuaULDN4KVq+nREoKCqmqkng23E4xRqkWQm/OD5kZb0MBLX5TWCxSa5neFYyfwdTgZAKI/vSxicZtPdytQdnZWrnj6IS6HrGSx4h3Bfdt4DIixiTwV/j1EKcQIrCQXjkCJ79uQx2790F4SWoZg5+bS/sAwcAnAyXy2oEystfmxdoGUvQQ0MxZcDyyOThS6KVoKAOYrZ1DhP0aVAjoyoFt8mJNu0byQyVogy/4qeZG+sZcBuxjx3GvVDro9uPkb4Ue+jrjkxVACzo1Sd+gSFY1rIw91/9u8OtfqMwFhvIE9/JsZj/ywUfZbIIp+1cdHMwYm6gfEVU55K/vo1mlr/wdxey7TILZoo3gZq+EQUa8RN28mQk6s2GUdno2fvhlIqyfwbNnxkJniHhOYoJgj1ZGbTjiscGgRkf3CEc7Vmj0BuLdBFBHEDqYM0MQw18Gt0Y30X21mdfHlZoZnZRRduIOeUg9OffJQ1tvmx1tEC/Y=
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 9025120005
+X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
+	version=4.0.1
+X-Stat-Signature: nxj1dba9t7h88dkghrazb5cujqk7xtkb
+X-HE-Tag: 1793780245-991975
+X-HE-Meta: U2FsdGVkX19h1sXdYSrF54/dRcM62Pa/fauGAFHfMO50KbWZuzgXCoE/MaXvd3+HndZrj7aX0hfF3JIFUXD9eHF/MPbLTyG0ooSUvm3xWiC+arg50aUAiDKPkja/xLDSFfcPa6pN1NNZ6XRwAr/ekElJpHjZ1LOWdooQMWwyh7m5fvpTG4Q6J6Zhl5W6BSTfo74frV7wAWRm9j3cou1bM4N2QpKycsiwgWwar6isysEZUPfCSJRSsuw+abENVJpeGNW9dHHpe/pxOs60/90q3q93Bx5xQGbtA3g9iTrCGDm8c1sLSM48G7QR68E+rAXzYRz1vKLFeCqu79G+zdXp8SWy4wJc0f+U+NB5/nypQi+KUSkhfuK3F7IqdIZGeUeWruhjTJPqMu1a91OIaSbyM3lEeKiI+4wshwhoeA2lC82EYTRW2bHphXzsP3h4j9xrIHqb74Kv3ptqEOhzWRg6JfgAmlCa7WkOALV0y1KDug8fRzdKHRu8L1khTJzGl1adOzJ5Du5e10Q4PpjyalUx0ksQuPHbIkNhhL7VxRczA1z4NY397iTTXQOxnYGzAJjRh5vuFdYuxumTY9dzcSd6taNW4qt32Kr1Er6J1NZPsPkvlK7nCpX4shKAWMHThGRlNZhZXe7spZpBxONOJvnutMUWzA39DpcRu3D0Ymi99l1yn9OU1M6vLREMLZn+Kk5ZWrYORfP1J6TtJxNuk4Lc6Jv7cbQEXI7YKLREVvEfsS4rfcmxSqzyVLxag1mqMfCOZGMwTW6bGgEZCauu43WrVk3DdccowaIUCxNvf6TGAZ7bQ47JfgkvB9i7CVAFp9pXmL8liQPOKENS1zZSZu6+5kg4zRe2ZaFuM5eFpTIFkXEqdhyA1Rfk/MF64gy0XKFtNYN9YPCESSjlArhWvCTnk+xkKPWZV59ZIuJMauJ5F6qpk5iOOoLcnPzgw038zPrAkJnYSFwcCPGcD869YJk
+ 4nrydzma
+ ojSMddJM/lnZiZyuT72/fKawbu/4iOmIcCiGts+dhHtjgCEBBKJEjzOMAbnhiKL0RZUEjunCc/q9sJnd7RGZnU1AkJEhtsnBUKryHJtDJbp6/f/QcLKxXwDv5FtGHoGZfdKupHHWC96jo++0ASrFecfgHj7SLzKF22S6sfTAgqO7+l0+poyv4uhFvPCEQJKjG+GNEyz5snpIDhyUCewQV7GgIZu/Y8ZFXrXtFMs04SECSVoFAy+sTMGM2ohGOGt2wFg9fGmZLDyRmu8wylUl392tusC4swFJTaHkNcVf5lnIjDC8+14/KB6ktj3aHqMDzbbqnx2oseBo7lLYVJ6lMZzKC1896o2+Ak0dcm3T+wvYvEjfiyDKHLRpDhv091SJ/u4IGG+tekAt9+BLZ5BBGbEBdJLPpS3tEwsmL3TuzqsXlJWr/XxEGdNh3/fJNFvE+t+vBeRb3LEYcCzU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,98 +139,45 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
-X-Archived-By: <archiver.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [Medium] riscv: kho: bootmem reservation fails when DRAM starts at or abo=
-ve 4 GiB
---
+On 11/2/26 15:33, Harry Yoo wrote:
+> I adjusted my feedback. End result:
+> 
+> mm/slab: restore the rcutree. prefix of the kvfree_rcu parameters
+> 
+> The move of kvfree_rcu() to mm/slab_common.c dropped the "rcutree."
+> MODULE_PARAM_PREFIX, so rcu_min_cached_objs and
+> rcu_delay_page_cache_fill_msec became slab_common.* and the documented
+> rcutree.* names are silently ignored.  Restore the prefix; the
+> slab_common.* names, never documented, stop working.
+> 
+> Fixes: bbe658d65802 ("mm/slab: Move kvfree_rcu() into SLAB")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Zhan Xusheng <zhanxusheng@xiaomi.com>
+> Reviewed-by: Harry Yoo (Meta) <harry@kernel.org>
+> Link: https://patch.msgid.link/20261028134647.3176080-1-zhanxusheng1024@gmail.com
+> Signed-off-by: Harry Yoo (Meta) <harry@kernel.org>
 
-commit 25f3cc12aa8edcc1fbb1363f837f61e462a57ad6
-Author: Chen Pei <cp0613@linux.alibaba.com>
+Reviewed-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
 
-riscv: Add support for kexec handover (KHO)
+> ---
+>  mm/slab_common.c | 4 ++++
+>  1 file changed, 4 insertions(+)
+> 
+> diff --git a/mm/slab_common.c b/mm/slab_common.c
+> index 01c64ef661e7..41dea01a8c1f 100644
+> --- a/mm/slab_common.c
+> +++ b/mm/slab_common.c
+> @@ -1367,6 +1367,10 @@ void __init kvfree_rcu_init(void)
+>  
+>  #else /* CONFIG_KVFREE_RCU_BATCHED */
+>  
+> +/* Keep the prefix inherited from RCU */
+> +#undef MODULE_PARAM_PREFIX
+> +#define MODULE_PARAM_PREFIX "rcutree."
+> +
+>  /*
+>   * This rcu parameter is runtime-read-only. It reflects
+>   * a minimum allowed number of objects which can be cached
 
-This commit enables kexec handover (KHO) support on 64-bit RISC-V systems w=
-ith
-MMU enabled by defining ARCH_SUPPORTS_KEXEC_HANDOVER in arch/riscv/Kconfig.
-
-> diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
-> index 435da07132437..e11463a923a32 100644
-> --- a/arch/riscv/Kconfig
-> +++ b/arch/riscv/Kconfig
-> @@ -1125,6 +1125,9 @@ config ARCH_SELECTS_KEXEC_FILE
->  config ARCH_SUPPORTS_KEXEC_PURGATORY
->  	def_bool ARCH_SUPPORTS_KEXEC_FILE
-> =20
-> +config ARCH_SUPPORTS_KEXEC_HANDOVER
-> +	def_bool 64BIT && MMU
-
-[Severity: Medium]
-As reported by Sashiko on v1 [1], will kho_reserve_bootmem() fail on 64-bit
-RISC-V platforms where DRAM starts at or above 4 GiB, or record a 0-byte
-region when all DRAM lies below 4 GiB?
-
-Unlike arm64 (which defines ARCH_LOW_ADDRESS_LIMIT as arm64_dma_phys_limit =
-- 1
-and clamps it to memblock_end_of_DRAM() when DRAM starts above 4 GiB), RISC=
--V
-falls back to the default in include/linux/memblock.h:
-
-#ifndef ARCH_LOW_ADDRESS_LIMIT
-#define ARCH_LOW_ADDRESS_LIMIT  0xffffffffUL
-#endif
-
-However, 64-bit RISC-V supports platforms where all DRAM starts at or above
-4 GiB, as seen in arch/riscv/mm/init.c:arch_mm_preinit():
-
-	bool swiotlb =3D max_pfn > PFN_DOWN(dma32_phys_limit) &&
-		       memblock_start_of_DRAM() < dma32_phys_limit;
-
-When KHO is enabled at boot, mm_core_init() -> kho_memory_init() ->
-kho_reserve_bootmem() unconditionally allocates both lowmem and global boot=
-mem
-without checking whether their computed sizes in bootmem_size_update() are =
-0:
-
-kernel/liveupdate/kexec_handover.c:kho_reserve_bootmem() {
-	...
-	size =3D bootmem_size_lowmem;
-	addr =3D memblock_phys_alloc_range(size, BOOTMEM_ALIGNMENT_BYTES, 0,
-					 ARCH_LOW_ADDRESS_LIMIT);
-	if (!addr) {
-		pr_err("Failed to reserve lowmem bootmem\n");
-		goto err_free_bootmem_desc;
-	}
-
-	kho_bootmem[i].addr =3D addr;
-	kho_bootmem[i].size =3D size;
-	i++;
-
-	/* reserve large contiguous area for allocations without nid */
-	size =3D bootmem_size_global;
-	addr =3D memblock_phys_alloc(size, BOOTMEM_ALIGNMENT_BYTES);
-	if (!addr) {
-		pr_err("Failed to reserve global bootmem\n");
-		goto err_free_bootmem_areas;
-	}
-	...
-}
-
-On 64-bit RISC-V systems where DRAM starts at or above 4 GiB,
-bootmem_size_lowmem is 0 and memblock_phys_alloc_range(0, ..., 0,
-ARCH_LOW_ADDRESS_LIMIT) finds no memory below 0xffffffffUL, returning 0 and
-disabling KHO. Conversely, when all DRAM lies below 4 GiB, bootmem_size_glo=
-bal
-is 0 and kho_reserve_bootmem() records a 0-byte entry in kho_bootmem[], whi=
-ch
-later causes kho_locate_mem_hole() to construct an inverted struct resource
-with end =3D start - 1.
-
-[1] https://lore.kernel.org/r/sashiko-outbox-183678@kernel.org
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261103080926.2079=
--1-cp0613@linux.alibaba.com?part=3D3
 
