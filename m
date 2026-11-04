@@ -1,95 +1,123 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34460606A31B
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 14:46:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1806606A31B
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 14:48:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=GMZW0dBR
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=ZrxgHQRM
 Received: by kanga.kvack.org (Postfix)
-	id 414CA6B05B1; Wed,  4 Nov 2026 09:46:26 -0500 (EST)
+	id F15416B05B3; Wed,  4 Nov 2026 09:48:09 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3C5AC6B05B2; Wed,  4 Nov 2026 09:46:26 -0500 (EST)
+	id EC5416B05B4; Wed,  4 Nov 2026 09:48:09 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2DB686B05B3; Wed,  4 Nov 2026 09:46:26 -0500 (EST)
+	id DB31E6B05B5; Wed,  4 Nov 2026 09:48:09 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 092BE6B05B1
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 09:46:26 -0500 (EST)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 79C2D12071A
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 14:46:25 +0000 (UTC)
-X-FDA: 85397712330.30.99F3DAE
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf22.hostedemail.com (Postfix) with ESMTP id E03EDC0006
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 14:46:23 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GMZW0dBR;
-	spf=pass (imf22.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id BE9A96B05B3
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 09:48:09 -0500 (EST)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 47A054076C
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 14:48:09 +0000 (UTC)
+X-FDA: 85397716698.01.2C2F068
+Received: from mail-dy1-f181.google.com (mail-dy1-f181.google.com [74.125.82.181])
+	by imf31.hostedemail.com (Postfix) with ESMTP id D475920002
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 14:48:08 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=ZrxgHQRM;
+	spf=pass (imf31.hostedemail.com: domain of ekffu200098@gmail.com designates 74.125.82.181 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793803583;
+	s=arc-20220608; t=1793803687;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XvwysgLfyIs5+DpWw1HKgaTFW31+lgpV5TFO7hfqvV4=;
-	b=YXrz/CkQxKLY75QC6Cp5pDH/s9R671CxOWkB0q0Ur+PY68U4mre2XweH3vgRlB2XsIZGc4
-	ACs2pP7y5XDI1qh5kdTtyu8Btk0/yRayhaTOO6+gEc0FqdNmMaJAUgjfZtgYlPZqCDBFMO
-	UJ0EdcwvPPIuQvLiPI51n4l4m/cLJJE=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=gjoFlql1j75pc12XdJHKWu97116XlpTwWzrWzwPXnYE=;
+	b=bnj00xaec5FCoYbnYdMi8Rr5zfL2rXOnLIX4RT0IBEg8P06T4QL6dT/fgNBNEkoUNra2RC
+	D5FymJ9kIqiQXq6AP2W5aUhfcyn+ZhP0ZTYbQ6kY8bajxaFeynPzn0gl1gTaySJXx/GGeJ
+	Fo2w0sUTYF+Ba3f+xzRL6H7Q7IkSUBU=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793803583;
-	b=0U7DIgDH/q0IKEyHX2s8zpjqkybNWXO+DEO+U0s6FcJc3GJ0OMZNe0WtCoZz8iVxzJJaMl
-	me4V3mvtEAblXRT1chLk6ySZJhLZn+j3qNHeIvbVS01vnV0kY0uS9HaLgkbuxI7Oedi+Td
-	arLtLOnMUqU5Q7ME0FNDs6EHfqkH1+0=
+	t=1793803687;
+	b=1j/2oOz006kl2aEQLh2494D7r6hA5zoxfee3M13X+8BY89konMqOdRoresyUHFrNFF5d2D
+	bcEmWZ5ShPOjUladGqnMiMSA47E5yoc10/Z/i+9NlPpmTE/Y0sc2LG7l/kSQyLSS7NEojn
+	Qkv0QOA4EazKeS8O9yeJ0Mvq5VS+KYI=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GMZW0dBR;
-	spf=pass (imf22.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 22507407B0;
-	Wed,  4 Nov 2026 14:46:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E02FB1F000C1;
-	Wed,  4 Nov 2026 14:46:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793803583;
-	bh=XvwysgLfyIs5+DpWw1HKgaTFW31+lgpV5TFO7hfqvV4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=GMZW0dBRIx8mvbM2KDH5Mq/dO3W2/K2tCDu3B35/dJTuD9Z5x/7s8I3oCZQnzZz9l
-	 FhYKV8usOtxuEBFqs40vBPLEHiOPRUebcoIvqC3AbzVEC5tDV9avRLG4Mj/ddAc2fk
-	 CQzZHnMsyuJOgDBfxWUgB+Ia3D4sFJD5rmGSkFkZJGzyCKP+AuHyP+NuD5TgLLopen
-	 pnIYiBAUIsXgMOvrdcqKgb4OliCnCgRK4B2EpUpMPeV6VEwY+ASmgiunVXcDk9EYW7
-	 Jtg2C8BK1OgAntrhhbw24OjOmRpacmQBVd78pWRcxIyahSg4q9Lz9fpbc3emUnlPM1
-	 /+AgkxC2K+gcQ==
-Date: Wed, 4 Nov 2026 14:46:17 +0000
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Josef Bacik <josef@toxicpanda.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, David Hildenbrand <david@kernel.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
-	Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
-	"Jose A. Perez de Azpillaga" <azpijr@gmail.com>, linux-mm@kvack.org, stable@vger.kernel.org
-Subject: Re: [PATCH v2 0/5] mm/mremap: fix accounting on a partial move
-Message-ID: <autE7-oTy_W1WJ4V@gremlin>
-References: <20261102-b4-mremap-pre-split-v2-0-d281dd11ad7d@toxicpanda.com>
- <20261102162304.c3585fc3fb88644118c152d7@linux-foundation.org>
- <d2efe4f22fe0ed9390e4d9224b81d78f.josef@toxicpanda.com>
+	imf31.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=ZrxgHQRM;
+	spf=pass (imf31.hostedemail.com: domain of ekffu200098@gmail.com designates 74.125.82.181 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-dy1-f181.google.com with SMTP id 5a478bee46e88-36d6765756fso514049eec.1
+        for <linux-mm@kvack.org>; Wed, 04 Nov 2026 06:48:07 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1793803686; x=1794408486; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=gjoFlql1j75pc12XdJHKWu97116XlpTwWzrWzwPXnYE=;
+        b=ZrxgHQRM2+uc7b3mM0XA1SNvvV9lZ8ohDg3Jb7L7hjGI0FqFc1S6enBoip64KyJREh
+         50fVI26Ca86UsbC/u4gyOSOcG1cKxTxtSqvqfdY1OOhwc1SEaY5xOHZ1NfbLlrdoNxPt
+         8FQtfAGe/cWBGuRSG+pVyMI3ktaCgF/ICub/mVHHF0z6+0mtEoyppIpOFogEl1y7g0PA
+         Vnfz4G6dk9Mhsfdz9cTnv6lZZaPJY67DXM+P5Vh5oKCL9usEFptrcWCFHsz+FZb+bBZG
+         2kim7QnC8pY+bnH5m9doj2iZb/MJe4t3UL8edGmVHajGXc2WIF1WXMbcmwYSosiUFyxe
+         TaCA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793803686; x=1794408486;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=gjoFlql1j75pc12XdJHKWu97116XlpTwWzrWzwPXnYE=;
+        b=V0TuLmvYFWnO78rqqPGvO5BrCJ/Zieuh1DfMcxf/TXxpUXQ0TwuPf3FHpm/gVaS4eT
+         W3vtwHtVijGrt/ZoRGjFEOMhuahZKCnMPFrG4HAjNVILmuE0RhyHw39/6k4Z08IQ/+NW
+         wh7BbBMgIDdaZv61A0qJdpB586Fmx2qPNfeoa+pgS9M7yvSMMg4jM5itgjtOijq73sMu
+         ycK+w25L93f6qmlIZSumhi70CdCPBdlzZApEnwtvrYccMMBMPawrMsbUf6/6xrXHWvqO
+         rQNuzSHIStIThidXXthaaX4+H5CuyLDBjMiRZh1MDG6t/J6D6HOHMukSi7Bj7kTvn8Vi
+         awHQ==
+X-Forwarded-Encrypted: i=1; AKwUvBw0qk5ujtlBz3v0W3gXJ7ZikL0Z/YvzuFsmTbRqgDNg/IweTQdQQxVpKuiz38E3u+LHcXqI65zaaA==@kvack.org
+X-Gm-Message-State: APuU4Z8foLYZkHceaCGh/nFEDfhqazPs0u/bakvx/XaqG0ZU05rpb1io
+	p57HHrTcD/iHMf4k3eifWb5DhejGXoKYtLlFTO/QKPBiEdZr2t1Qvfq2
+X-Gm-Gg: AYBFou270nkCkiDavuVJBA4ue/bDhLCCunZ1Y8IPSB29gf6bhOFccASdmNIWrcbDnQy
+	qJ9VrXycP4xYZgq0RC6Xo1M0zFyz69miPE63+VfM6/ByeqV47va3PIFKX9pvRyRRAQKy1EwhNMu
+	OSyzBB85Ep/rlbbEPf8vROkVJBYWe+p+EtYLQZyRFovrO98eolF9Qf0Xw7FaJwHyXCdwOpq8l6z
+	mRpHkgVX+0D1cTTw7+dlaVHKBYzV3o/H88wv9TOd+jbycYenW12PcJ3zBDqd9JDPJJ5y+KJUVDV
+	8bxaIWxvrWVVHwfcGZMt5bYlip9ypqvd5KkyM+5OzHFCAw05sTiH7XP+ch9H6TGX3n4767HgFfd
+	dfnGcBtH15gX+g+r2wdzMKZCmbtncFD2qRQHZ5vY7Y+wi5232Ks9/mHNWnLbRwCKJnjbU3LJPDq
+	EXIWc8NhfoyEIIhkyfR4YDQ/pHO7SpZ19tDQypLTqBNqKy2ZGWHve1iyt+ebQSzLOTc33UuH6YY
+	rcxBVDlxzpQJly7K3vFZJPXbOTN+rPG5Xg1POouzfbeHy3H+a1BP4OF8sJCh+w/PwNDCxXcGFA/
+	RNzSwC44TXJsfBfpi+GQ1Y2RKz7B9oOclfcP2R7FE/NnEpsP7W50
+X-Received: by 2002:a05:693c:6092:b0:35e:5ca:e0df with SMTP id 5a478bee46e88-36a424609c2mr29635283eec.35.1793803686038;
+        Wed, 04 Nov 2026 06:48:06 -0800 (PST)
+Received: from ubuntu ([110.9.142.4])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-36ca39b8eb3sm10742548eec.27.2026.11.04.06.48.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 04 Nov 2026 06:48:05 -0800 (PST)
+From: Sang-Heon Jeon <ekffu200098@gmail.com>
+To: Vlastimil Babka <vbabka@kernel.org>,
+	Harry Yoo <harry@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Cc: Christoph Lameter <cl@gentwo.org>,
+	David Rientjes <rientjes@google.com>,
+	Hao Li <hao.li@linux.dev>,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	Roman Gushchin <roman.gushchin@linux.dev>
+Subject: [PATCH] mm/slab: remove outdated comment in create_kmalloc_caches()
+Date: Wed,  4 Nov 2026 23:47:51 +0900
+Message-ID: <20261104144753.2266231-1-ekffu200098@gmail.com>
+X-Mailer: git-send-email 2.53.0
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <d2efe4f22fe0ed9390e4d9224b81d78f.josef@toxicpanda.com>
-X-Stat-Signature: qho7d9dope9e3xzry41gdgxjqojbk4g6
-X-Rspamd-Queue-Id: E03EDC0006
-X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam06
+X-Stat-Signature: wbkc8ntj44ec9e5m7w5b3he34gosib1a
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
 	autolearn_force=no version=4.0.1
-X-HE-Tag: 1793803583-80371
-X-HE-Meta: U2FsdGVkX1+Z//S7DxoVSRyilNgRMzOibkzLlINZYyzPbMEr3hyZyRSHlOmFyKKwRAyeq7ulKjacNVJtHTSgKVqV5o7Gd6t72Ao2vMsuUrNrcLKeI/gr5alFiAxMSjoDpLcJ5WI75qfwQfScGa1i5XySYk7MfSTfmLksPuh3Aod9JxMyejHaIVoq002J82lT6l86XEPx+LljVO2JDZS+d5naHSIB+dO10x4cqwY0Fde/B7ZqFDmkdKi219thjPCTMsx47AN4Q86wd+XYiDTm/hh2bmY6gkfElg9gvzzlIPCnYnSNL1GvUoaK0+AXixd/qHf+/z3ZXQaI5TQqPIySBeaemH74bJlKVpoxiQQ5e9Ke5681iMdqgtWBSNfWSNb4WkKyls+Mv4fJ1MqbXV3GNkw4DdQn3tvmB6PPOrgfUz1v8kri/pdX08/3fcyLPKkI0cPlpzR1iQJUC8sBiyYU4kb3Co319jwBoxZkHR4Xm5+B7KEk9B39qy6XyTUR+tYkOe/MaQbVV4FotrsaGyc1gEhO/jRdUmx09aZYA6MmK+KNQMtbPP7xKqA5GQ8WgdsrUOP/lFqkE/RWWKNUtZb/fez02kmUevoWC3WbaC5g2AM9cW93QTXu62elYDuMsziwqYoPVdy4DiV5QELsJFjXbGz5byC9Jn/nIiy3YXS2FFyEHlcbmc43foj98O/iZXnTbTO1IpZfvxTeMcp6xqdbG0yq3WUJw45BlDn5kG8xdTucv+46o0i3kg9zr9BKQej7NgDjlWa7o7C5C+qbqqN0dLRTJbWxFHZUzORNV28s4e+RZFT19Bh86xtOa/llTCcNT7wHalbjgRDa1Ybjwou8l5V1MFzy5r4gTcqzpaZ2E8LUJGyzORqtUxoIQftHDweR1sjAfTCnCpr7o3m4YtH1T6SjMoOWGZD8GnzYElL44BcK3qcrreprN2OHLoDff5fMCNF2F+M4YP8jX8toLDP
- 3GQbaijG
- 3KEWBziA11Vp3mwcvtZznXztqOCHzZ/quXPt85x6rl/+PiJtEswQNhpNtwGQ1g/x6NCAGD1Q465SxNfBtkuai+b2+j5MDaoKfWRckCxGww6ZqvYrCCT4AcRFJ90qBjbXH8KX6FkLwoAOURGcorzfR3h2wpeCgplJXEeBCDQ+oNUmI6Ed+tgPW6tpsPFIyUJ7ipQjCJrO3GidM2PefURbaqCSFBggmcJrJM3uOfVRAuyzWmRbDH7wF3IIhFpGgMX6Z30jo
+X-Rspamd-Queue-Id: D475920002
+X-Rspam-User: 
+X-HE-Tag: 1793803688-497520
+X-HE-Meta: U2FsdGVkX19fq9Wik+CiPRXnEr9t2ASVjbdyVkOnNakas0cpXBU4fjz1dGVrxWGQMf5OxZzrnqwjJfOJSXkkPXSCq8vg1JEySPyz3Yo+KDajZURXZ6KxZv+ZoQ5mCiOWNMR382BgvzUPkv8dWDLfDEe3aHpXqNlk8MmKFA3+3UH867KVhKtTwKJIm5nhXgkMfaL6XLGZuKLpB7eBXm6HlefgXSBG2G9JKAhzxOjQT8r9xQ6Ss4hDDZwxDyFrnzXHkxE7aut58sZ/ka4T7Gw1xRD/fUTj1qXL4ndlq+eTCgrkhpESF/tWKPOL1Y816ggtDVB6Wad6FsLsJoYXCSgBAHiGNzjiE7SrrU3MfZdiMxA149K0yZDz7hYQJs2ZuLdzEBayEbc3xt1MBpHxSxGVtOBWhBu5K/CZ2WPauJAQkPpXvL9RHZysw5A0oMsMP2UI0ta89+IgmTK5XcJfTmBcPcp8Op0mqg4fl71Q7+DD+w8WL2NyUlA5cK+bUXqHmOYrgjgFhG3B//HQ4ga3sCvh1t+hxF3PtEs+JBrVdDfI1m5MYixL4p7mjFkc2eEbjfP90GRlt3PbYGmhm1C3d3eBBbn2tEv3AdqE1bzLqJPJQ54HQL2ISQMV8YBx8SKw28PbzSvW+BY9eKrj55ioHMxsORkJN3Py494DextZCElzcAX/eWPZH09cZUOgYKyDxGZkOUgRT7UUuNyoNII3+rCCQOeQTxJDcg3tpVQphCFUpTQLAiL5Trbv0j577TomPma2a19k1DSuejdIN1G9k5rfny+cm9vAhdleAfqKi+qAx7X26BbidtP4LJP/kCU5XZOHa/b/LRtzAOChfJQ65ZaSDVYc8clxVJMWXrAoaYHszCmavCoIcNulRV7xudu0UWNnjTPWK8x7hPpvL5KXGufV55Q3PqokBtnVpoTprI2eJRrMnAG732LlXqpE4GcwypsdF3ET4OwNcLo0P/vkW4J
+ ds95OiRD
+ lLi2tnC/j7yoiMTJ/MHZkPrgMOlK0IUnNeWjH0x9ZsuCXszz1l1pwwb2dg88TUkVjtEQoWQkaPBmQtX5GA3bx3Whel3lpdG9Aa7GdTzjx+lWFhKLQIJeE9KoppE1ysxfaMcka5nI6KiaaL4fDofE1j61QrKoEWH87/rDYok/UND+3hiTN67oJfdkiWncmH0kx0yyfSkMfQOT2YsFt1kGggWGhzNP9zEGtTi0CJEl200eSynzyZPB/YK1NnJd7Z0ukiJVLi0C7JsU9K9vyFDAGLKWFLpG4N5bWeTzqjiqWcxXoTJbIYZ9F+VnLFWJ5cAu4Mn3+OucQ5//+l/r/wefnxbh1bBB9ZKCtpm8B+zPCI9xpdf/1T9MM6nnUlBPxBaHYwuPDvOJy3nshAohb1Bl6FPWHb4cZ3SWmRKNKHOTl0f9J3/oF7BOC8lIbGUvjMKc1Bc99Hsc3USroVFg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,19 +126,34 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Wed, Nov 04, 2026 at 02:32:35PM +0000, Josef Bacik wrote:
-> The Committed_AS bugs need an allocation to fail during the unmap at the
-> end of the move.  mremap() checks the map count and sealing before it
-> gets there, so what's left is small GFP_KERNEL allocations, which in
-> practice means a process that is already being OOM killed.  I only hit
-> it with fault injection, so I left those with just Fixes and let the
-> stable folks decide. If you want them cc'ed it's no problem to add.
+Since commit 16a1d968358a ("mm/slab: remove mm/slab.c and slab_def.h")
+removed SLAB, no kmalloc cache is created before create_kmalloc_caches().
 
-Generally would prefer the fault-injection ones _not_ to be backported,
-they're essentially technical fixes since to actually hit them <4 KiB
-allocs would have to fail meaning OOM + fatal signal -> process dying soon
-anyway so doesn't matter.
+So remove the outdated comment.
 
---
-Cheers, Lorenzo
+Signed-off-by: Sang-Heon Jeon <ekffu200098@gmail.com>
+---
+ mm/slab_common.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
+
+diff --git a/mm/slab_common.c b/mm/slab_common.c
+index e66c0778ee98..c4a386f0dd90 100644
+--- a/mm/slab_common.c
++++ b/mm/slab_common.c
+@@ -1029,9 +1029,7 @@ new_kmalloc_cache(int idx, enum kmalloc_cache_type type)
+ }
+ 
+ /*
+- * Create the kmalloc array. Some of the regular kmalloc arrays
+- * may already have been created because they were needed to
+- * enable allocations for slab creation.
++ * Create the kmalloc array.
+  */
+ void __init create_kmalloc_caches(void)
+ {
+
+base-commit: d15d7703166daf7bd62c844a3cb1b3a6279adb4c
+-- 
+2.43.0
+
 
