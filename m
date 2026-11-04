@@ -1,153 +1,93 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C2626078963
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 21:00:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AF5960A67AC
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 21:09:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm2 header.b=cKOYknYY;
-	dkim=pass (2048-bit key, unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=4+o1zQjd
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=QsLNzWr2
 Received: by kanga.kvack.org (Postfix)
-	id 5714E6B00EF; Wed,  4 Nov 2026 16:00:24 -0500 (EST)
+	id 5AB626B00EF; Wed,  4 Nov 2026 16:09:18 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 521666B05B0; Wed,  4 Nov 2026 16:00:24 -0500 (EST)
+	id 55AEB6B05B0; Wed,  4 Nov 2026 16:09:18 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3C2496B05B2; Wed,  4 Nov 2026 16:00:24 -0500 (EST)
+	id 471966B05B1; Wed,  4 Nov 2026 16:09:18 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 013FE6B00EF
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 16:00:23 -0500 (EST)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id D89E4160861
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 21:00:21 +0000 (UTC)
-X-FDA: 85398654642.04.6199AC3
-Received: from fhigh-a2-smtp.messagingengine.com (fhigh-a2-smtp.messagingengine.com [103.168.172.153])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 71CCD4000D
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 21:00:19 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=arndb.de header.s=fm2 header.b=cKOYknYY;
-	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="4 +o1zQj";
-	spf=pass (imf17.hostedemail.com: domain of arnd@arndb.de designates 103.168.172.153 as permitted sender) smtp.mailfrom=arnd@arndb.de;
-	dmarc=pass (policy=none) header.from=arndb.de
+	by kanga.kvack.org (Postfix) with ESMTP id 1E2C36B00EF
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 16:09:18 -0500 (EST)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 9F85C1C4238
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 21:09:17 +0000 (UTC)
+X-FDA: 85398677154.08.1DD849A
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 0B7BB120004
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 21:09:15 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QsLNzWr2;
+	spf=pass (imf29.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793826019;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
+	s=arc-20220608; t=1793826556;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0kNaDaN7VzGkf9l540YM+342pLPmeRVN7bIHtngSK/k=;
-	b=64LemzA/tf5Xdq3BpdLMNnptvw3lNA+08aznx3+A1SnzyT//Ernn9md82Nr69ruoHUabn2
-	nNp2iE5gknjyNlx2FxPiE6GAZmxK0ClYnvARHpHvsMxFGhWn/n4wa1HVz28PuzuJYFoDse
-	VNNDeltmPRzoVtkrbSKgLqp6RYb8IXg=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793826019;
-	b=LIRnSQsZ9/hJ4yvQ2i+z1vC/lEzTZAhHN00wqACcKV0GbgLjSAUmGFgspSjegdLRTdwndl
-	KD/U+2MznhOM3/Pm0EKeMa0bfZOhodJ1jxRxdj0V4Rou3avWzjx5MxFhywqBUBmCkeOuj4
-	13jUV3tmO2a8T9pQq37/YXa7/Kgs188=
+	bh=wMfQpl/W2CRZOjlxwnGR40WLjCwOiUYScdBiYuAHHho=;
+	b=00HDAh1QYyi7tn6KOKTgEo1V7Zn6EI91RNNq9aPz35lh31Rupkut3f3luVs82ELyPdF7T/
+	cuYujQ/1InylPZBT8BjsF29OiJ6E1V0YDUotydXJD2B/8u1Rkr2u6DwjHo6Br2uHNBbD/y
+	kaLglrccCXAoQikm9h2akjaJSXh84As=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=arndb.de header.s=fm2 header.b=cKOYknYY;
-	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="4 +o1zQj";
-	spf=pass (imf17.hostedemail.com: domain of arnd@arndb.de designates 103.168.172.153 as permitted sender) smtp.mailfrom=arnd@arndb.de;
-	dmarc=pass (policy=none) header.from=arndb.de
-Received: from ams-compute-02.internal (ams-compute-02.internal [10.64.2.62])
-	by mailfhigh.phl.internal (Postfix) with ESMTP id 4D26114001BA
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 16:00:18 -0500 (EST)
-Received: from ams-imap-03 ([10.64.2.23])
-  by ams-compute-02.internal (MEProxy); Wed, 04 Nov 2026 16:00:18 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm2; t=1793826015;
-	 x=1793912415; bh=0kNaDaN7VzGkf9l540YM+342pLPmeRVN7bIHtngSK/k=; b=
-	cKOYknYYKdTNm7gT3ervxg7QOU52Utgs5UOoxtrbubT1te5NsIbZVFPMKvQimH1F
-	Ib2iv8RWV6UqdraJhvlS5yd33G4tYwFGshUdIGAdvuU3cFdG8rbWC3+KHemVIdXr
-	NUc2JhM2u+Fuhup590pgyYcIA58JTAMOd7A5s6PKYEJ1G0nSYzo1JqwOw8UaY8u5
-	i/e5W+IkaQrQVH55p1WK2J1BV0dLB4esSzLf+T0EU8o8dUzyZbsKE9LFW1LDbbbW
-	3WekMdVJHEFYWXzfbmA+mnv9lsFDEQ8/WTpzFsEFp8PLVP/iIhwhjwYa5asbRMbg
-	mwFkIJvImo19SYtH1YbLFg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1793826015; x=
-	1793912415; bh=0kNaDaN7VzGkf9l540YM+342pLPmeRVN7bIHtngSK/k=; b=4
-	+o1zQjd3Z41zn3sTJs2UJJfBufYk9JKTqk39/upRC6nT7pcYjQfD/I3Zc3xUL5rZ
-	yuWYIf/gUkcGIG93Az/bYc/7Dc36FemWDLmMf3KdtapwF2oa2w/hKyx55r0w2YUM
-	V1EYzS32YyXpJWz9G1QAPLPbcO4Rj1H3ZHMRG+wciXebn7B5UGdXi7RurV8D/iRI
-	Mn6GcSLvThSgYji/hJ1bPQnO+PItKOtN0ZsnHfstInXC5rC1hVaZ6YaPEsEdm0yc
-	0R36LQL2uTJuSjbl9z/FM5BsolZktLXLkNXGb742PsVtn0O1xFxlsHd+7j9NJrAn
-	JhBSW6gy6x+a9LlNZnrYw==
-X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-08;
-	repo=github.com/dkim2wg/interop; date=2026-10-28; sw=lmtpprox;
-	action=sign d=arndb.de a=rsa-sha256;
-DKIM2-Signature: i=1; m=1; t=1793826015; d=arndb.de;
-	mf=PGFybmRAYXJuZGIuZGU+; rt=PGxpbnV4LW1tQGt2YWNrLm9yZz4=;
-	s=fm2:rsa-sha256:VQs5dxAQ3E9XuUEr1jdpwBvFIZ7AE8BMYB+IYsMQzHX6avx
-	bIKPbK8K6UMFoX+ptNeiWRy0EeVZf415PWskMe3UH1+cHXGS1jM/NdJAx8lYroPN
-	t2zfvyFJC9+Cvz0O4rF8grQ7u5yACqZR/B8V6alkHpxxCusZMBZcAG0eWOMA7Wq2
-	9QBsFFd+sQT+ufrApAfizw3iCD/qZ+1cLsFn3cDxhlJhRWqYvEqUSydhKaYuW95S
-	fJqj4k4eMfvF0S9oLKroXTi0qKYNKa32PmUU0Qby8TSySBiPUgbsezcBCh+k5Mab
-	ZtimRLhh8K1tsoyE9W3lHWMeFrB1KCthfEiXAJw==;
-X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-08;
-	repo=github.com/dkim2wg/interop; date=2026-10-28; sw=lmtpprox;
-	action=mi-m=1; hc=12;
-	hn=cc,content-transfer-encoding,content-type,date,feedback-id,
-	from,in-reply-to,message-id,mime-version,references,subject,to;
-Message-Instance: m=1; h=sha256:fUmINlirdU2Tk6RCoHByTkIj3YlbxSUxiZjtoAUaQGk=:tYBOb+5dGuOjuQrd6XKBAFeuLK+8HRMkrzwfvErc19o=;
-X-ME-Sender: <xms:2pzrapVO1PgXZib1J1FOBsiKZcp-1a2WMaiCzkWr12POCmkiMBllIQ>
-    <xme:2pzrakYn6jOelhw810z9h7PtEocyxoQVs5edVa43zi1qGGxRlmYuFXHNs-zWUktAf
-    1eaLGQCpfHbNQjIOw-5G3gdFqd4lzB-2-cTc4Rd0zl-ciJQRX21O57K>
-X-ME-Proxy-Cause: dmFkZTEmmuOD0DZhwLvQ1jMu+N+9f1/bshj4za9fBQJ9CLi5nyqGXS3WVLocnYlOrqOSIB
-    6FfId29nGSaJXnRDBuWEgopsKFsk9kKCdZMlOaAKHZiJOecJXJK5tvhHf4ExHC129SPRTn
-    ywDnpmZfc6lQS9TUXA9FcCx2VPLS6+9LolLspxAgWuT9gBQtAauE01L1amFsAnhggz9Thz
-    K4Y3OubtvjuJtHSnf7zo7wc1RCs2RvOov96x4Gnlg/5v1Dl92DGS7mO3qjvUBcf5+r+W1w
-    M2Ah/4lcKnXI+AD7UM9xPoqDsnA90jhXogV/fJUgnmX/RUCq0OsQxlztOfBV5r2ctGxleQ
-    P5q62C7C+Ai5m3jgBR8Ubc00tyJArfAVOnKr/LvHUrlJi8kOqvjG2g82xVHp9aqznRs3V3
-    qL03F8W2Hy1HAOhL5fLwctcAInLF+bXJ6DMyIU9W9OVVQKGXo0PkiWCRWrFzYVMWb8g6fV
-    eOAXmA93VZa4o3zcfq4qC55WNbV+Uz9zvISGAgRFmjFpNzNLlp+B8xe7yw0wZcaXUiz9CP
-    FSjGKKuU4t5zdMcRPV6nUzYzMnaxK1H39SW4qpWKaXsgxT1D4VgfsnklufIjUbsHlO2R9H
-    0wX5c25K5kQzHuWxQqT1Z6BAnytUuqd787ITw5dkM92Cg9y6+rLOuyjydRhw
-X-ME-Proxy: <xmx:3JzrangpKATqgrFY9U5FKngYXRcRvPlOj3GrvzIj0yk4F1827md9hA>
-    <xmx:3JzraqDv_f2Y3-RNnCmohuE0avDMpLZVmJc-xMja_czk7Lxx7RTNoQ>
-    <xmx:3Jzrah4wqYWgSCUZ4-OLOKBLl26x6kjGdzjCooKYvcBTxAagK-vDaw>
-    <xmx:3JzranGBXgwi1mFDP_mObr_pbEak_8hTCfhVqNcPvwprpGKJxslj8A>
-    <xmx:35zralsJWlZ9ZXZAEn7SjmPWpVp6jklZ58NKQFrEjXOYvm9PpdyfvIPu>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.ams.internal (Postfix, from userid 501)
-	id 9380F32A0099; Wed,  4 Nov 2026 16:00:10 -0500 (EST)
-X-Mailer: MessagingEngine.com Webmail Interface
-X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-X-ThreadId: AgP3mv5Dxly7
-Date: Wed, 04 Nov 2026 21:59:50 +0100
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "Pasha Tatashin" <pasha.tatashin@soleen.com>,
- "Thorsten Blum" <blum@kernel.org>
-Cc: "Mike Rapoport" <rppt@kernel.org>, "Pratyush Yadav" <pratyush@kernel.org>,
- "Alexander Graf" <graf@amazon.com>,
- "Andrew Morton" <akpm@linux-foundation.org>,
- "Changyuan Lyu" <changyuanl@google.com>, kexec@lists.infradead.org,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Message-Id: <34a03ed8-5b75-49b5-bfd5-e5cdf48dbfd4@app.fastmail.com>
-In-Reply-To: <179382570401.2089669.6201187990672133004.b4-review@b4>
-References: <20261104162352.140836-3-blum@kernel.org>
- <179382570401.2089669.6201187990672133004.b4-review@b4>
-Subject: Re: [PATCH v2] kho: Remove redundant 0x prefixes
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: 4d31ebzo1weukiihnsb8143xa37ooweh
-X-Rspamd-Queue-Id: 71CCD4000D
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QsLNzWr2;
+	spf=pass (imf29.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793826556;
+	b=QkPOP8PTMy8sHf7Zddw0monyjn6Jb9dEjPUW0U9Q1/QJWiQay2k2Gadh8yhIBO/nBSSyWg
+	slG5+b1blHnWeJQyhSpt3Ah0YwiXUxTGUYPOa/d9+X5iRv1HEVWRh79KZlTAko6JzkEzMq
+	q0XKpgVDS/ARNF3p1gSnu+qrZ7lkSw8=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 3BA7E605FF;
+	Wed,  4 Nov 2026 21:09:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 625A61F00A2A;
+	Wed,  4 Nov 2026 21:09:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793826554;
+	bh=wMfQpl/W2CRZOjlxwnGR40WLjCwOiUYScdBiYuAHHho=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=QsLNzWr2ps8/l1TqX3V4AtZE5OBGVxh3Q7Jbz3bsmGqpL6JAmYohYaW5rZj+paA8V
+	 N0gck4OMV4y1RfTTgkCmcKA337ic913EPJWfeMKLoA8SEk4Bid1J9DXxsYRTuWwUCR
+	 JY6IyvoixFZ28CW7pvQlHtbvEaqXf6FSvwtBZ/CZGx/rlkiedX4t8gAcUHiJbwhruy
+	 W+vtljQjpbjfkJnSZHa9q3gKvpHIe1OWasForvO+kl1ZgkIl/xW1VRf+V3V4p/NkBK
+	 VyJB8j6KzLcHtQHKaZ48/c32m7/YrDjr9cZ+KozERz0FBVj9epm3coxfIQghEPuGTG
+	 GA7KihqO4VPmw==
+Message-ID: <sashiko-outbox-198049@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v2] mm/memory-failure: set PG_hwpoison of a non-hugetlb
+ page under hugetlb_lock
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Mani Tofigh" <mt4022@columbia.edu>, "Muchun Song" <muchun.song@linux.dev>, "Oscar
+ Salvador" <osalvador@suse.de>, "Miaohe Lin" <linmiaohe@huawei.com>, "Andrew
+ Morton" <akpm@linux-foundation.org>
+Cc: "David Hildenbrand" <david@kernel.org>, "Naoya Horiguchi" <nao.horiguchi@gmail.com>, "Kiryl
+ Shutsemau" <kas@kernel.org>, "Mike Rapoport" <rppt@kernel.org>, "Mike
+ Kravetz" <mike.kravetz@oracle.com>, "Matthew Wilcox" <willy@infradead.org>, linux-mm@kvack.org, tz2294@columbia.edu
+In-Reply-To: <20261103-hwpoison-hugetlb-ro-v2-1-43876fc9eef1@columbia.edu>
+References: <20261103-hwpoison-hugetlb-ro-v2-1-43876fc9eef1@columbia.edu>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Wed, 04 Nov 2026 21:09:08 +0000
+X-Stat-Signature: f8sfqnwzy7amy6nhwib6ezpchxwgm3uc
+X-Rspamd-Server: rspam01
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=unavailable autolearn_force=no version=4.0.1
-X-HE-Tag: 1793826019-745242
-X-HE-Meta: U2FsdGVkX19NXW2L/2asVk/bvm/uuw1dAAiL6Yotuf+jnuvQUhi8X36/zPmvc/M03cv+oet5lQwUJ1S7bxndn2v116MLeki2g5i86fGwL8P+gG4AKBGo5LwAbeq4gpExaOC3BD4Wn06LNIN2cs3RLHzj5VXmZ0ZDCrxYORFEjYqRvVNwZ56p1XChsNnbMza/tab2K9gEfoXdf4TdQ8sfie+Vjnsd85jO+jMaqsoQWigYCKl/vVaVHtCW3r6X5IJv/YCKftmtX2QKjTd7mQMiBckI/Ltzq6HC8W1c/6F3Sck6qiILK4YxtQu1fIfCSyWS3l///IDgzLI3qxrsMRHUWgz/Vc57YPMr8xQnSnATnwQfIO5oqrOueyhd3sTi6n1PAa8EZBFamyi8e8o2nj2OXKW0LmObSsvPlPgvqRSiuJm7GKgGv1Z3nl5y+nGe3Df84Z6ayDtOPbT7l8J7Ec410Ox2qeJwCHXN+m7pJ/AwFJX5maxDEkat21ZoGoTC27GngwcJ+EtuwNLafTqtG8QfPUhRwlvL4omAQnW4fjPZ7i5djIato9rb3bFAK/8oWSNH05KTpk8+FUIjiVgoTnVTtiG6wVmuhUOGfMf85Zep8+k+37XOYrIBFAFjxW5kz+Yw52R2xnWmTUrnasPI5Jl3HnTsmvvYjkcmP/w0Dar+8Wmurx9ZwsE51f3p0VQLtkUKz2ayLxnfxM3M8xdUq28PeNXUABSFHfdX+1jWxv9ogsNm+UEk0QGEGbU6atpsxlQJvqriqsvf1vzUxfAX4IjNXaAUh01VZSybEz0yKMr/9Z8LuXaYx4Aqmbyq/l+7Ugv5+oW1moHk7Cq1LjTRQQRAmTSNNyvQX+jxt+5efV5I5aJMQx+t8mbvL57fz+32//sm6jVpKetnWbkf2WOZozmZWnoPvlX5s8t44+ZMkkIqMuKnI0avp7ttkwvlX92PBymGGzPNhR0wb9T6fdgj+0x
- kb5Hwjkw
- 5MJPNC6/Pwr7QLESIfGnqHYVBKN0zgMQnyj7TQf0wADSADge/tJix7p5yuNNlgwE+rjExbmV3LHWM3S4UAfBLuOOMs6P9YbHyFnoyYJ1F7/t2AACivROhbHCWOXVqP7FnkM6B0AOiw7/oM0x1Y6paHlnztQJYBddzCi1Bk0+3YXfLp6Q0e7JLR/OP2JCoJKxHtnh5DsOclJEBpW0ZYxpxhRt2HkzATHaWPZXhGTj0UHfp9sPg3gLHxgsOhsyaHJOfLgQOy4y6UHawREVQsEB2JyuZRT+JoFR/lmCEiYNnMF0goXrUBZnTm4VRG+QBYLcsGUG7
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: 0B7BB120004
+X-HE-Tag: 1793826555-692503
+X-HE-Meta: U2FsdGVkX19rTPqR8Zmrqn0/AUz8iEWGe6h9QXHZGY+mLr/kDrY2z5NzuQyIWpHmiuuLTaOAskyfOg88pRcnY1BixCZCSXxQXYO40fN8hX2rA9jLk0V16XJ/OUwauuY5rSUviQNonrud+Ci/oV9Fw6NCg5Q/oLwoGRBLRrvTGlOqwE+87rozGTGq1poC++z9TSRYSHI9kci/8QkNRVOX5VTXAbjPbdPVEaGer21xQtYtFTLirulZByiD7GHB/UCDBgcE1dzusOf9iAmKiiQBlg+DJMULAuZhVclksbFXoYuCqOjQSVAl5ymdIRPdPEKnYeHv8Zw2WAgEaJm6BTkeZIOQeiuzxwlnshCLseS6stO3yuwcbJD+boGkKK3WcMIsEe67XTdovr25l50Hxb5G0BusDBcR08j8kwQhfv/bE7JQhrkrBP3yHVT4LRoMrvdEI4S1AtD7vX/q2w08pEJ2khbBOsJUMQ/PRVTEzBRxKEuJyETO19Il9fj0z8kVwzSJCVIEzj9TTl8g4fJ7h37/yO7sdB1UJzN0aTZALHGQVjuQoZC68fOGBkj1AKTgC9xhbCXJJtB0R+y+fbSbzO9Hqrb6zAqegOYxmIOExT7Ccc47ecCJlhRgjba07H3W8/xqmVTQNf8RwApf+4T9ZjTWoSDFEgAu3PKqnnqCNnY2hFbhzKNnEHBBg1dcf1j5h6iZGfhudAHbWFQ+uGi9Tsv3elX+c/YwP5tsPU2rWVvYa+Mh3rIp4NyJdaJXNoclKm5fjJo9dVmYXuvk3rnGL57mJ9AmgJh4YZhTWfucdGRByMCLalH3RMwmBJpYbzB8zBc0OMYwslc0Q9mnk8/pJb53BcuLT8I9udn5WjPBlVOjlULqm11pMcyZQ4YuAhkVR/QioAriLluIYclpBdUZZkYmOByKKnnMNZ0Rz1kJ8CmI9cbOX1P0wNRJZv2/a7FPY+dVLv+ghg37VYEEuwmF3MN
+ F9d1qxDm
+ XfRpgKEQi81aY03sekUuh7+96PWoUzvzmnfXWu7iGlzrOX/EAmtfgc7436FupejhsXdLDZCiIelNGrgrUqeaoFnkaBQhy2Rf/V5UbE8T1/N7ZSzrXH6M7pmXhAAzW526U2hHa+37d11x9W8hY0fg3Rep0DcQsK5ml+91xEf500XKTzKvbn657INfZ1mvaWHnUsynE3W2pbW83rl20VQwZ/roGOQKQ/LaH5yRB0ecSYIlvl79LgofJqfA1LSwHuAYTaher21tp/YIXy45IMp1S9+XeTJQbj2vEC6Fl05h9pewT/3ts9RO9ejWeWHRXN+6gEf+cYAhFyxQPx6bUasckcXbcTaHCaVp9NsnVuImj325UJMQAtcyWtwnwpehNlFOGlVmSU/iiyJTGdIhxsIctUmy+n7xR7Z5zmOeTZ3JhMTFU++WABClYdt02ZXwQ270dpKLHt0EgERH0FZfvp4X8Loi2gdrKtz9C+oqBN2Wn0fMWiMG5M+pvGu0FmbisowsTb38me+PBZ+XaVuckyYYFmFHTMH1rxiA/4T2tEzgSWCMXsfLSVNw7j8O78lBwQGJLNZNMOgU00eQEvT1AgI5ROFns7P24f/jvoT2PU7RQjSuYF2puMLRdB/mESnmxqDMIf+DT2LVwPrrk7zMIaTwIOV8fw/NtDrVbYY2EwPLH8nhWnKxaKL59Tc3/89rykIEiiVdnHt4cLN79PnKTevF6or/Sgw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -155,37 +95,200 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
+X-Archived-By: <archiver.kernel.org>
 
-On Wed, Nov 4, 2026, at 21:55, Pasha Tatashin wrote:
->> The %pa format specifier already includes the 0x prefix. Remove the
->> redundant prefixes to avoid printing 0x0x.
->> 
->> Use phys_addr_t for size to match the expected type.
->> 
->> Fixes: c609c144b0e8 ("kexec: add KHO parsing support")
->> Signed-off-by: Thorsten Blum <blum@kernel.org>
->>
->> diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
->> index 6f1f55fe3181..6a7600a0a7d5 100644
->> --- a/kernel/liveupdate/kexec_handover.c
->> +++ b/kernel/liveupdate/kexec_handover.c
->> @@ -2010,16 +2010,16 @@ void __init kho_populate(phys_addr_t fdt_phys, u64 fdt_len,
->>  	 */
->>  	for (int i = 0; i < bootmem_cnt; i++) {
->>  		struct kho_bootmem *area = &bootmem[i];
->> -		u64 size = area->size;
->> +		phys_addr_t size = area->size;
->
-> I am not sure; having a variable size of type phys_addr_t looks strange 
-> to me. Furthermore, KHO only works on 64-bit platforms because of how 
-> our radix tree is designed, and we do not plan to add support for 32-bit 
-> systems.
->
-> I would keep u64, or if using %pa for u64 is still an eyesore, use 
-> 0x%llx for the size field.
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+s) to consider:
+- [High] mm/memory-failure: missed retry when poisoned page becomes hugetlb=
+ folio
+- [High] mm/memory-failure: broken HVO assumptions in clear_non_hugetlb_hwp=
+oison()
+--
 
-area->size is also a phys_addr_t, so using a local variable of the
-same type makes sense for consistency.
+commit cd482078045f6c62698aca153687853e7f4a179f
+Author: Mani Tofigh <mt4022@columbia.edu>
 
-      Arnd
+mm/memory-failure: set PG_hwpoison of a non-hugetlb page under hugetlb_lock
+
+This commit sets the hugetlb flag on newly initialized hugetlb folios and
+sets PG_hwpoison on non-hugetlb pages while holding hugetlb_lock in
+get_huge_page_for_hwpoison(). The goal is to prevent memory_failure() from
+setting PG_hwpoison on the shared vmemmap tail page if the target page
+concurrently becomes part of an HVO-optimized hugetlb folio.
+
+> diff --git a/mm/memory-failure.c b/mm/memory-failure.c
+> index b215312f261b8..80bac8d544d40 100644
+> --- a/mm/memory-failure.c
+> +++ b/mm/memory-failure.c
+
+[ ... ]
+
+> @@ -2169,10 +2177,32 @@ static int try_memory_failure_hugetlb(unsigned lo=
+ng pfn, int flags)
+>  	return identify_page_state(pfn, p, page_flags);
+>  }
+> =20
+> +/*
+> + * Keep the flag if the page has become a tail page of a hugetlb folio in
+> + * the meantime, as HVO may remap its struct page.  A head page is never
+> + * remapped, and keeping the flag there would make the retry take the
+> + * folio for already poisoned.
+> + */
+> +static void clear_non_hugetlb_hwpoison(struct page *page)
+> +{
+> +	struct folio *folio;
+> +
+> +	spin_lock_irq(&hugetlb_lock);
+> +	folio =3D page_folio(page);
+> +	if (!folio_test_hugetlb(folio) || &folio->page =3D=3D page)
+> +		ClearPageHWPoison(page);
+> +	spin_unlock_irq(&hugetlb_lock);
+> +}
+
+[Severity: High]
+As reported by Sashiko on v1 [1], does clear_non_hugetlb_hwpoison() rely on
+accurate assumptions about how HVO remaps struct page entries?
+
+First, the comment states that a head page is never remapped, yet
+__hugetlb_vmemmap_optimize_folio() allocates a new vmemmap_head page, copies
+the first vmemmap page into it, and remaps &folio->page to vmemmap_head
+outside hugetlb_lock:
+
+mm/hugetlb_vmemmap.c:__hugetlb_vmemmap_optimize_folio() {
+	vmemmap_head =3D alloc_pages_node(nid, GFP_KERNEL, 0);
+	if (!vmemmap_head) {
+		ret =3D -ENOMEM;
+		goto out;
+	}
+
+	copy_page(page_to_virt(vmemmap_head), folio);
+	...
+	ret =3D vmemmap_remap_free(vmemmap_start, vmemmap_end,
+				 vmemmap_head, vmemmap_tail,
+				 vmemmap_pages, flags);
+}
+
+When page =3D=3D &folio->page, if copy_page() runs after
+get_huge_page_for_hwpoison() sets PG_hwpoison on page, and
+clear_non_hugetlb_hwpoison() runs ClearPageHWPoison(page) before the PTE for
+&folio->page is updated to vmemmap_head and TLB-flushed, ClearPageHWPoison()
+only clears the flag on the old vmemmap page being freed. vmemmap_head keeps
+PG_hwpoison set, so the retry in hugetlb_update_hwpoison() sees
+folio_test_set_hwpoison(folio) =3D=3D true and aborts with
+MF_HUGETLB_FOLIO_PRE_POISONED (-EHWPOISON), leaving the poisoned hugetlb
+folio undissolved.
+
+Second, when page is a tail page (&folio->page !=3D page) and
+folio_test_hugetlb(folio) is true, clear_non_hugetlb_hwpoison()
+unconditionally skips ClearPageHWPoison(page). However, tail pages 1..63
+reside in the first 4KB vmemmap page (HUGETLB_VMEMMAP_RESERVE_SIZE), which =
+is
+copied to vmemmap_head and is never remapped to vmemmap_tail or overwritten
+by __hugetlb_vmemmap_restore_folio(); and when HVO is disabled or fails, no
+tail pages are remapped at all.
+
+If PG_hwpoison is left set on one of those non-remapped tail struct pages,
+can this cause recovery to abort with -EEXIST if the hugetlb folio is freed
+before try_again re-acquires hugetlb_lock (such as when
+alloc_surplus_hugetlb_folio() fails its overcommit recheck), or trigger
+bad_page() upon buddy free if the hugetlb error is later filtered by
+hwpoison_filter() or cleared via unpoison_memory()?
+
+[ ... ]
+
+> @@ -2486,7 +2517,7 @@ int memory_failure(unsigned long pfn, int flags)
+>  			} else {
+>  				/* We lost the race, try again */
+>  				if (retry) {
+> -					ClearPageHWPoison(p);
+> +					clear_non_hugetlb_hwpoison(p);
+>  					retry =3D false;
+>  					goto try_again;
+>  				}
+
+[Severity: High]
+As reported by Sashiko on v1 [1], is this retry block actually reached when=
+ a
+non-hugetlb page becomes part of a new hugetlb folio after
+get_huge_page_for_hwpoison() sets PG_hwpoison and drops hugetlb_lock?
+
+In only_alloc_fresh_hugetlb_folio(), alloc_buddy_frozen_folio() and
+alloc_gigantic_frozen_folio() remove the pages from the buddy or contig
+allocator (clearing PageBuddy and preparing the compound page) before calli=
+ng
+init_new_hugetlb_folio() to take hugetlb_lock and set PG_hugetlb;
+demote_free_hugetlb_folios() similarly prepares split compound folios before
+calling init_new_hugetlb_folio(). Moreover, when check_pages_enabled is fal=
+se
+or in alloc_contig_frozen_range_noprof() (which ignores the return value of
+check_new_pages()), the page allocator does not reject a free buddy page wi=
+th
+PG_hwpoison set, and get_hwpoison_page() sleeps in zone_pcp_disable() before
+inspecting p.
+
+In memory_failure(), clear_non_hugetlb_hwpoison(p) and goto try_again are
+gated behind get_hwpoison_page(p, flags) returning 0 and
+is_free_buddy_page(p) returning true:
+
+	res =3D get_hwpoison_page(p, flags);
+	switch (res) {
+	case 0:
+		if (is_free_buddy_page(p)) {
+			if (take_page_off_buddy(p)) {
+				...
+			} else {
+				/* We lost the race, try again */
+				if (retry) {
+					clear_non_hugetlb_hwpoison(p);
+					retry =3D false;
+					goto try_again;
+				}
+				res =3D MF_FAILED;
+			}
+			res =3D action_result(pfn, MF_MSG_BUDDY, res);
+		} else {
+			res =3D action_result(pfn, MF_MSG_KERNEL_HIGH_ORDER, MF_IGNORED);
+		}
+		goto unlock_mutex;
+
+Whenever the concurrent hugetlb allocation has already removed p from the
+buddy freelist before memory_failure() reaches is_free_buddy_page(p), won't
+the retry path be bypassed in all three hugetlb states?
+
+1. If the new hugetlb folio is on the hugetlb freelist (HPG_freed set),
+   get_hwpoison_hugetlb_folio() and get_any_page() return 0,
+   is_free_buddy_page(p) is false, and memory_failure() exits via the
+   MF_MSG_KERNEL_HIGH_ORDER branch without retrying.
+
+2. If the new hugetlb folio is still in init_new_hugetlb_folio() or
+   hugetlb_vmemmap_optimize_folios() (!HPG_freed and !HPG_migratable),
+   get_hwpoison_hugetlb_folio() returns -EBUSY, get_any_page() returns -EIO
+   after exhausting its retries, and memory_failure() exits via the default
+   MF_MSG_GET_HWPOISON branch without retrying.
+
+3. If the new hugetlb folio has already become in-use (HPG_migratable set),
+   get_hwpoison_hugetlb_folio() pins the folio and returns 1, and
+   get_any_page() sees PageHuge(p) and returns 1. memory_failure() then fal=
+ls
+   through into the non-hugetlb in-use path with a hugetlb folio: if
+   hwpoison_filter(p) matches, it calls ClearPageHWPoison(p) without
+   hugetlb_lock (touching the shared vmemmap_tail page if HVO-optimized), a=
+nd
+   otherwise it calls folio_set_has_hwpoisoned(folio) and
+   split_huge_page_to_order() on the hugetlb folio.
+
+In the first two cases, if p became a remapped tail page (>=3D 64) of an
+HVO-optimized hugetlb folio, freeing the original vmemmap page discards
+PG_hwpoison and leaves the poisoned hugetlb folio in the pool; if p became
+the head page, PG_hwpoison stays set with an empty raw_hwp_page list and is
+cleared when the folio is later freed; and if p became a non-remapped tail
+page, PG_hwpoison stays on the tail struct page and triggers bad_page() when
+the folio is freed.
+
+[1] https://lore.kernel.org/r/20261101-hwpoison-hugetlb-ro-v1-1-a42d6411cb6=
+5@columbia.edu
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261103-hwpoison-h=
+ugetlb-ro-v2-1-43876fc9eef1@columbia.edu?part=3D1
 
