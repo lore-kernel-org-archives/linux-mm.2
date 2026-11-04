@@ -1,99 +1,99 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6649606A328
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 16:15:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DA2E606A336
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 16:24:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=oO5llueb
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=n//9uE/L
 Received: by kanga.kvack.org (Postfix)
-	id 04EEF6B05B6; Wed,  4 Nov 2026 11:15:57 -0500 (EST)
+	id 5B6C36B05B2; Wed,  4 Nov 2026 11:24:35 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EF32E6B05B7; Wed,  4 Nov 2026 11:15:56 -0500 (EST)
+	id 567D16B05B3; Wed,  4 Nov 2026 11:24:35 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D95216B05B8; Wed,  4 Nov 2026 11:15:56 -0500 (EST)
+	id 45CC76B05B4; Wed,  4 Nov 2026 11:24:35 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id B2A1A6B05B6
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 11:15:56 -0500 (EST)
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 281D56B05B2
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 11:24:35 -0500 (EST)
 Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 44AD61A07CD
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 16:15:56 +0000 (UTC)
-X-FDA: 85397937912.02.48C0DE4
-Received: from mta1.migadu.com (out-211.mta1.migadu.com [95.215.58.211])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 27AAAC0014
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 16:15:51 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=oO5llueb;
-	spf=pass (imf28.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.211 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793808954;
-	b=H3ejmgp0zHfs1zBDZ7Kgt6dNXWSmULwdTOSM+kUi74E8P4fzEp4/hsrKwMEYkRYkX8edMj
-	8U9LEM2er0xCplUYuZ0On4VOt0kji9ErtS9Zr4v/a1fYYgbm1h06DUZANKBaoe/D71+B9j
-	+OVDGawduI57STNctOYfON3ftsf4TWw=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=oO5llueb;
-	spf=pass (imf28.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.211 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id A5F6312076C
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 16:24:34 +0000 (UTC)
+X-FDA: 85397959668.02.9F0A18F
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 051B414000E
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 16:24:32 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="n//9uE/L";
+	spf=pass (imf26.hostedemail.com: domain of blum@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=blum@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793808954;
+	s=arc-20220608; t=1793809473;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8fU8AEGdDcjq9JBv57injpYEq2ySiH6tspHTe3WsEnE=;
-	b=FiIKzrYFJeXp4FsQG06zHUpX+ysP4uUcdvd9YSwhUgwssqt3dggTWB0Zcua24JS7RtnqWN
-	NQrDWFEDFxdCixwDlBnyLguB4RTna2af+DVJz+/aHERO7+Sl5DrF4E+Vz3Q5iIIC9e09oc
-	7KQ0RfltaC6dq0TKdl7FMF/QlFfYoGU=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=QhoInTD0Xt4NBSuls0AgRrgTJDXjCSOPGY4pmRsoD08=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1793808948; v=1; x=1794413748;
- b=oO5llueb2uLLHAIztGoWQ9k0aJwHtRxomO9r6ciLu/m9aaoJCGqWBQobUJ4/gK0SNhXJ97nr
- ElLpG14EwNXY8YlLuxiBnZE31ra/RtD3OJcdO8OVaX39YfomEKzpN1x2NQniWCLhSg/wVqkFKSJ
- jiEDYnwTN7uWGrVGtczbdmrY=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id c6ae390f292ebaa1;
-	Wed, 04 Nov 2026 16:15:48 +0000
-X-Mizu-Trace-ID: c6ae390f292ebaa1
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <81096741-0e14-4469-bdbb-497aba541fbb@linux.dev>
-Date: Wed, 4 Nov 2026 16:15:46 +0000
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=JRqUizjEpje7QENpLEZU+9mQGGXBD071wudl9Jtl/K4=;
+	b=JdMP+3h0LWdnQhdz+ArL6lPaWdVwyMZ3ZLsOueBRIpVJdwozj26ChIwc8hjsE5P8BR8pdW
+	DFHwVDJsLazlgcDhqBdgfmQmZzDfTRP+vesThAOgvU5b5OsHu7nq8B3uBCGggT+Z07Olez
+	iAgP6DqYU3slGCdC2RFV74Z8zSd7Qsk=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793809473;
+	b=RbRWcl7zqbLzTfU1v4DOaawNuqcTS90bMMZEzFUpiSoybsw8CwQDUfdeRE+b3sk4//tGeo
+	iFiwNLpJkKTX4HdwKo5rCtqk/OpoSFRalqZWbmZfxlY3Bi1HZOp1cVYlmXmGmorK78B2OH
+	4I9MspiFy2SFDqsISOUifS0g2e9vQdY=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="n//9uE/L";
+	spf=pass (imf26.hostedemail.com: domain of blum@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=blum@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 181AA4050F;
+	Wed,  4 Nov 2026 16:24:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E4F21F00919;
+	Wed,  4 Nov 2026 16:24:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793809472;
+	bh=JRqUizjEpje7QENpLEZU+9mQGGXBD071wudl9Jtl/K4=;
+	h=From:To:Cc:Subject:Date;
+	b=n//9uE/LLh/XK+fni480r6cjyWYb7TawE+lJ+nlMCdKpTyZVWsyzuyi9q4dJ3a0f+
+	 FSaZK19iz7N2ZTdqnnALa3Tq8GzwmpV9o+woIneY+hEQsVTMmNuMl2XbnDVunPV/mu
+	 QIX7XP6AKzt6uxXGaZ0+ScBNIRv6Hifni0Ty4DM3oCbzUAmipAMNoVnQ3BzgxP6YdT
+	 58oBYpOvPGVfbMePIccUJSrQ0EiCN/HAsLCtbieDkI2qhKGDq6x/j3CXxjGD+ctDCI
+	 LRMjNyXSzBceNF2jnZ5+4dPhi9kfcNpslVLBo6S9ls7wJ78JiXfzKUTZc+j/6wsKnU
+	 IIGuOjvE9TVDQ==
+From: Thorsten Blum <blum@kernel.org>
+To: Mike Rapoport <rppt@kernel.org>,
+	Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Pratyush Yadav <pratyush@kernel.org>,
+	Alexander Graf <graf@amazon.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Changyuan Lyu <changyuanl@google.com>
+Cc: Thorsten Blum <blum@kernel.org>,
+	kexec@lists.infradead.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v2] kho: Remove redundant 0x prefixes
+Date: Wed,  4 Nov 2026 17:23:53 +0100
+Message-ID: <20261104162352.140836-3-blum@kernel.org>
+X-Mailer: git-send-email 2.56.0
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/hugetlb: allow crashkernel to reuse hugetlb CMA memory
-To: Kiryl Shutsemau <kas@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, baoquan.he@linux.dev,
- rppt@kernel.org, pasha.tatashin@soleen.com, pratyush@kernel.org,
- ruirui.yang@linux.dev, corbet@lwn.net, skhan@linuxfoundation.org,
- rdunlap@infradead.org, muchun.song@linux.dev, osalvador@suse.de,
- david@kernel.org, jbohac@suse.cz, sourabhjain@linux.ibm.com,
- ruanjinjie@huawei.com, leitao@debian.org, linux-kernel@vger.kernel.org,
- kexec@lists.infradead.org, linux-doc@vger.kernel.org, linux-mm@kvack.org,
- hannes@cmpxchg.org, riel@surriel.com, shakeel.butt@linux.dev,
- kernel-team@meta.com
-References: <20261104142727.2894800-1-usama.arif@linux.dev>
- <autMHwldMudQOO3j@thinkstation>
-Content-Language: en-US
-From: Usama Arif <usama.arif@linux.dev>
-In-Reply-To: <autMHwldMudQOO3j@thinkstation>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
-	autolearn=no autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 27AAAC0014
-X-Stat-Signature: docrbca74txdfzqwsogr51be4zrh4x45
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1480; i=blum@kernel.org; h=from:subject; bh=Qk9hkzySWCprpSeEAqGuirPu9rol4ZAWn2j8lvg6CwU=; b=owGbwMvMwCUWt7pQ4caZUj3G02pJDFmvYyQeFTc565/p2DvLqztdPTfhf6XmBhsuwXN+6qsWT VPLiGXsKGVhEONikBVTZHkw68cM39Kayk0mETth5rAygQxh4OIUgImYBTH8jykpKDcz62y7q3BS Wj1pjn5WxF+GH+VRpktiF+lWsH5rYfhf/K0qlZVxe+qeGbw7fOc++HkzOmnZlg6NvitTV4ooXd/ LDQA=
+X-Developer-Key: i=blum@kernel.org; a=openpgp; fpr=1D60735E8AEF3BE473B69D84733678FD8DFEEAD4
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
+	version=4.0.1
+X-Rspamd-Server: rspam09
+X-Stat-Signature: ekf67e1cezh6jdcnz7q6br9jw186c7qa
+X-Rspamd-Queue-Id: 051B414000E
 X-Rspam-User: 
-X-HE-Tag: 1793808951-488518
-X-HE-Meta: U2FsdGVkX18M1FqBNF6HKqLDSNnDGbH41EIt/RflfvTqwhExjitUOio9dATfaNb3e3AWu76T5RYE1j4K4NO71QaM9P8zlm7UyeFXmP/92QIDBa5hIACj5S+8IXLJiTT7cVdivDHCefs44scS87M5OYBE4OkwDueu6ybBIPs0kQ9DwqF60PVCI2B7LcD4EQN+T1WDuIehfIxma/0JcwxQ3hseNnpU1kkNP+4L6odrpBgJqFPNRfe211JzWYIC6pLRpME+osr88SL53OiDRbiLlxR8yyjUER0FBN1oxUh+meb0dn0M1p/oJUtSiysKPYJaLSHHrw0IVM85nxIkuIyLB4YXEuQ/q0ahOtKmWuoRKbVdb2Ujyb3vcm52pklzIeG27Ie3oXNpvzBnWIE/vB3bvzplJOD0g7gATLdSHz4kgMFvPosuFr9f7AE+uMhzn4lVffnJEDsrwAYKA6Q2lTRaBr8cCRBRhOg4zCdM9eEhcPV1I6Scdp90D+L9Gosk5/mPEimPIWyx9YHlVoNl8wynGpN26KHBmBeMSwSm+mQwtXWIx5blCJauh0u/DUEvXeOaqzFxJF7ccWZ7hYdtUX7J8p5Cp1jYsmq+3n5bPdBoAmNDB7XOL7OPOMUXQpCuO9PDQwjUbH9dCTiZiBbxP4Egw27xwJYf+32NBqSdSg1T9CA3TrrHv99bAXReU2sXhqzF/j8XS/a9ldXsapL7tcOnA7y6pF73AgrGrbeQtnEEyc4c35X7WMsDFNA53oTVHpJY4tzWduHzqbjUlXim9hEGI9jDJSiCjQzYmCWnEMEof6nrDDbCVEYxogSPYNbQBNeR8KAUnwPxMJHCbClS4+HEwLoMq8LwyQnLVuTUro0TSM/ZN2FK7/2Atne/4HpaKByg/1XA8EkLqo8yeC/UNLwlJvJJgQCRyJOVpyF1Yc4BSDkepLXibmMgqE6wi0M2cnQ6YRqkOZVZeutHbdJzC4H
- qtTXXQ4L
- wsgcKoXqkBoqcTsPl4Rtr2mxW5UnAIHfJJB28dHaqTZapmKARmgT3ecAiRmRL9o7nqdalqgoLLelLm51Sx1A3BkqTQI2ANd1cj/QV0TZNFTPGVMqpKmRKnvIb7+dHvrTzQeBQpqheKFqlOfnsApoUYpM/Uwr2NCw08gjXQ12t51TkOmv5IJZFEfg7/ehqkCS6En/duX+iuIuppQk7j42hR1rAMQIWp5zDj0gcIRCXT/P1m5sGozLDror28VWI5+qSRDsl0lWpZzADw1mG8/DGP5nmCg==
+X-HE-Tag: 1793809472-31683
+X-HE-Meta: U2FsdGVkX18DU7fsILpRJLd2FszlRwVJ2UMrS14d/8ZMXL7d5oJDe36KX1tJsUfPP7UnVq1HUkeKDkIvZs6958zK+lyU3uEtjcajXuXGKk+S7sLEoaN6cdYYKrlujCh6Mgx3IuiT0D8IrLt4MdVbVOh0AoPUxBfVsupW9EeI4bC7rKWsiXEZnqnHJifNheTQcDxGdWB44Vh3nbVP5IGaiNx+6jS0HMSf3+LcOTMK4Z17CtHBkwO7yzBtm5gLviSCOQuaPZVDbYeUZeD0YgYxAIIBoqD5UCBUydLXcuGK6cw+4QVt53g9Js9d14wY0crY+y38IohgRora1akzvqzvi8ijj2Vcf84TXymcZACxNoJtXmpXGxyQH30xG7L2sXY6FdTp1bCyBCLn53sbPKlvfv3ByExJPq0CxFh9V85BOSyxXZrpC4BQv/CNvuTrt4mDLB0TAVEdo7gptJQXoNG0YD/xE1HMSSjhnM81hLxWzLW8q6H/uOqGufUHWMfceHQesOgMSJbSn1wwSgrAWSr+WnsIIWN+Qr+17mQ/yrkKZG5oZ9MMHekZYGnHfvpw+Aqwn267X7a9eCfL8uGWtwZPYvGPqHRTXZT0s1PLmPxxJl2ZqwJgtnVNVl/m03pkDZdnDDuA+WJtgmdZCW43TQ+2gvXGAi1qP/d027Y9KuCphRiIT0mXK8Y3o84w6fzscioLJwN+0wo1A+0mWEmelkV/V5OWaYlXD1rA251jvggkFBk0VCd3swS2LGRGO0WIth/+GA1fqrj3fuVa8kNQEPOxxnCTNvWy0MHHZ7Un3Oqnojex8sn3ZBzNE1tbgoA0Xilmol6+CBkvtDqF9P9dnEnMfpzDmfyoN4KAt7P7ro4qQsAcHM7L0BIfpZhDlT2uUomIWbYnXhfmQAZrvYggw7qv+e/vfA3YpAZt2vXNI7PhUtDyek4QTZw3NtcIXMKA7w++6p+17iR9mhjrFuRS++F
+ NvjY2BaV
+ kG0N1uAkaT6Ncq6Ux0y1RGGSxPktvlrMi1JMw/InfypQi8PCZd0b7slC1Qm3b4C1nIm6Ul4zbTuf4NIFXOSFNcQ/a/7+WPeXax5TIvJ298F9evVDPwHgKpEF+dC3q8n0yfLvX8aIODr3p87dfwYx+RwUDyJ0DPGxnUn7OfTQm93ji1E9vhHW9rV1dttOnPNg516CI/CQRNEovgrNgt0/kjQnfSmdpxRKlinE8KbFw2bmjE/5mSvDIL1q+tacMhtBoOfRbtoaupPsgTbc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,36 +102,43 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
+The %pa format specifier already includes the 0x prefix. Remove the
+redundant prefixes to avoid printing 0x0x.
 
+Use phys_addr_t for size to match the expected type.
 
-On 04/11/2026 15:20, Kiryl Shutsemau wrote:
-> On Wed, Nov 04, 2026 at 06:27:27AM -0800, Usama Arif wrote:
->> Use a separate suffix to make the exclusion of existing HugeTLB
->> allocations from the vmcore an explicit choice.
-> 
-> The crashkernel=size,cma documentation already says that pages allocated
-> from the range are not in the vmcore and that it should not be used if
-> dumping of userspace memory is intended. HugeTLB pages are userspace
-> memory. I don't see what a new suffix makes explicit that ",cma" does
-> not already.
-> 
-> Why not let crashkernel=size,cma take hugetlb CMA first and reserve a
-> dedicated area only for what hugetlb CMA does not cover? With
-> hugetlb_cma=6G crashkernel=2G,cma there would be no extra CMA at all.
-> With hugetlb_cma=2G crashkernel=4G,cma the crash kernel would reuse the
-> 2G and a dedicated 2G area would be reserved for the rest. Either way,
-> nobody has to learn a new option.
-> 
-> The catch is ordering. reserve_crashkernel_cma() runs from setup_arch(),
-> but hugetlb_cma_reserve() runs later, from mm_core_init_early(). The arch
-> code could record the size and leave the reservation to generic code
-> right after hugetlb_cma_reserve(). That is still memblock time, so the
-> remainder can be declared there. An early_initcall is too late for that.
-> 
+Fixes: c609c144b0e8 ("kexec: add KHO parsing support")
+Signed-off-by: Thorsten Blum <blum@kernel.org>
+---
+Changes in v2:
+- Use phys_addr_t for size as suggested by Arnd (thanks!)
+- v1: https://lore.kernel.org/r/20261104160931.137174-3-blum@kernel.org/
 
-Makes sense to me, I will rewrite it in the above way and send v2.
+ kernel/liveupdate/kexec_handover.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-Thanks for the review!
-Usama
-
+diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
+index 6f1f55fe3181..6a7600a0a7d5 100644
+--- a/kernel/liveupdate/kexec_handover.c
++++ b/kernel/liveupdate/kexec_handover.c
+@@ -2010,16 +2010,16 @@ void __init kho_populate(phys_addr_t fdt_phys, u64 fdt_len,
+ 	 */
+ 	for (int i = 0; i < bootmem_cnt; i++) {
+ 		struct kho_bootmem *area = &bootmem[i];
+-		u64 size = area->size;
++		phys_addr_t size = area->size;
+ 
+ 		memblock_add(area->addr, size);
+ 		err = memblock_mark_kho_noprsrv(area->addr, size);
+ 		if (err) {
+-			pr_warn("failed to mark the bootmem region 0x%pa+0x%pa: %pe",
++			pr_warn("failed to mark the bootmem region %pa+%pa: %pe",
+ 				&area->addr, &size, ERR_PTR(err));
+ 			goto unmap_bootmem;
+ 		}
+-		pr_debug("Marked 0x%pa+0x%pa as bootmem", &area->addr, &size);
++		pr_debug("Marked %pa+%pa as bootmem", &area->addr, &size);
+ 	}
+ 
+ 	memblock_reserve(bootmem_phys, bootmem_len);
 
