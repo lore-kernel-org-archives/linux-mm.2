@@ -1,127 +1,144 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD70A606C44F
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 20:42:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61A78606C91F
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 20:55:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=nwxaMTF0
+	dkim=pass (2048-bit key, unprotected) header.d=soleen.com header.i=@soleen.com header.a=rsa-sha256 header.s=google header.b=KbwKx6pQ
 Received: by kanga.kvack.org (Postfix)
-	id F37FE6B05B7; Wed,  4 Nov 2026 15:42:43 -0500 (EST)
+	id 6EBFE6B05B0; Wed,  4 Nov 2026 15:55:11 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EE8FF6B05B8; Wed,  4 Nov 2026 15:42:43 -0500 (EST)
+	id 69C5A6B05B1; Wed,  4 Nov 2026 15:55:11 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DFF0F6B05B9; Wed,  4 Nov 2026 15:42:43 -0500 (EST)
+	id 564C56B05B2; Wed,  4 Nov 2026 15:55:11 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id BF9496B05B7
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 15:42:43 -0500 (EST)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 5F4951C41F8
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 20:42:43 +0000 (UTC)
-X-FDA: 85398610206.08.3142269
-Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
-	by imf31.hostedemail.com (Postfix) with ESMTP id E4EB92000B
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 20:42:42 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=nwxaMTF0;
-	spf=pass (imf31.hostedemail.com: domain of azpijr@gmail.com designates 209.85.128.43 as permitted sender) smtp.mailfrom=azpijr@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 21A2D6B05B0
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 15:55:11 -0500 (EST)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 9F08212067A
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 20:55:10 +0000 (UTC)
+X-FDA: 85398641580.10.4326527
+Received: from mail-vs1-f41.google.com (mail-vs1-f41.google.com [209.85.217.41])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 974E7C0005
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 20:55:08 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=KbwKx6pQ;
+	spf=pass (imf10.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.217.41 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793824961;
-	b=CgQJmkcIhFv8BeWP/11J47xwPUsVhStsobdK9LHVrdLd9jVPXqMuMRV94sNOUy4bXy/UFd
-	hRvso4o52PAVQEA08FXv1dggnLLXWlgHOed9s2iI3B1U8rfFMBsevHvW2LLvhQn+U5LJzS
-	5l9VIj8VrBd3pzaY+vzipxWuU5hQHoU=
+	t=1793825708;
+	b=OBPSWvsTuSFwMjg8zH3Hx758j8yjzZ63Yef5mbrDnAF7gT89nMHNTS8W7vQJSRH/kVC9tp
+	cW3uksUZBpY9l1xWYzCqTiwftHPJjnsQ3JmuL46/ZiwoZI8Q4RBWqqPUquPFcCEDxMejqf
+	JasoU6pxAe7ELsawjE6sWvBxzonzTnY=
 ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=nwxaMTF0;
-	spf=pass (imf31.hostedemail.com: domain of azpijr@gmail.com designates 209.85.128.43 as permitted sender) smtp.mailfrom=azpijr@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	imf10.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=KbwKx6pQ;
+	spf=pass (imf10.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.217.41 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793824961;
+	s=arc-20220608; t=1793825708;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=h6dwKVBh50DCzDeIRT2L9U5TfDV06YRfq9HuX25Gdcw=;
-	b=LGUsxKYxmjLP2koFm4NSVXjFCCAVF/bsI2mwkATj5/ekOmScMoIASGfjzf9H88KhVIR5PO
-	Gul7KVAYlCycDYOvZHumGXUr6eO+iFTJgxuIv5wXugWGVBn6UsxPIClxQH7n/IRUwRRrms
-	/XIAGw2qiubTKkR4jkerwJDdOIIDGiw=
-Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-4a2069b9710so10565265e9.2
-        for <linux-mm@kvack.org>; Wed, 04 Nov 2026 12:42:41 -0800 (PST)
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=aqgdpi7gCkH60Z/isUI3USxyApBzH2FtqkjwxCL88mU=;
+	b=TlKV6aDf2PErT49yPp0nY7Xe9Eu8g2OQjeE0fOx3yusoGt9wK4+jvHZyvb3fuGNNFLSUOP
+	skQ0cR5gZ1OH+R9ijoqHQ+8tzVncNrrkCTIUJUL5GHeFrsazKp2vivud86qlzyaUQSqD/O
+	uCzjDv+1gjqa3huxyauyPdb0dVpCOfI=
+Received: by mail-vs1-f41.google.com with SMTP id ada2fe7eead31-77bf892b496so371886137.0
+        for <linux-mm@kvack.org>; Wed, 04 Nov 2026 12:55:08 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793824960; x=1794429760; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=h6dwKVBh50DCzDeIRT2L9U5TfDV06YRfq9HuX25Gdcw=;
-        b=nwxaMTF02O6WuuJq8/XRdvK/gVQ76uTT0tE1ROvILrrUGXKd77pKsJnSHiVZpum9Mi
-         Wo685ocd4MA+PUlCSSXXN1Jww3WnsWjYwkIMtsZsoUHUl9by/Nkc3MSqKOi+xJ/yADdd
-         x0JiQCw3XFxCwGlUzXIVIfaw8Ah/BQ1wIvCnYHEzHOTf8+GHEDQUnC3EZTfIw+n7koG+
-         KLlpGTH2e5OYTRhrB9/vjIGeYhBxygolz4UiDW+tW8CkyZqCAH/FvoVkNT2fe6ktu+bI
-         l91OEqgFuR8jMm+5Y8w3tGWWDeAa5/rJ2REB8mLXvBlt0Lbt2X1L7QsnsQRG1RughtE/
-         i0aw==
+        d=soleen.com; s=google; t=1793825708; x=1794430508; darn=kvack.org;
+        h=message-id:date:references:in-reply-to:cc:to:from:subject
+         :content-transfer-encoding:content-type:mime-version:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=aqgdpi7gCkH60Z/isUI3USxyApBzH2FtqkjwxCL88mU=;
+        b=KbwKx6pQgOTx1Z+jBWNKei4B9qil2NjwtdS2kXHGxxI7VJveKyYz1K6Nswdm0Bn+eu
+         7qN2/tHZZjVOenzwPKsYY8THemxWaNqIeKwb4dAx1fM6s44aW554vPeksmY4REX64AuS
+         a6WLH3bHcohcm2JD3ef7NyKXuAGd4lx5U9YNd4tQevbhQZWtc9pCzB/v67xU/FLtZQzU
+         z6knhZHsgTblGIHVTaKefQy6PGOJs3Oe/Pv0O3zNFSdoJ0eK/Emd1K7aGqNg8P0t5d2R
+         jSC+uv/PCw1YGbfIt8Zs+PfLOv+nPipk6zJYLW6vgbBNNkrddSm82DFh6FJT+Zaqa6i+
+         emmQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793824960; x=1794429760;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=h6dwKVBh50DCzDeIRT2L9U5TfDV06YRfq9HuX25Gdcw=;
-        b=QeCPBQ8G8bKAB9iiiOkGRflYpHldAoJX6fWbtvvYfc65cvmMNQRh2PzqZIs/Qh8HYf
-         kuexiInDr5Fin6pbHjlOwYtMg62IQGRFANqLMh50jeKTfyTF0VU/7CNnRKC1M4uzH4Jj
-         GbF4RJAcfU0HnNo3kavUp9sf6h+Mv0aqABAuUAbPiNuNA71aIEh8qMqhdrfZL6178vtM
-         1xLf83jnLSa0tBluIsddpLcGsEuk2NWzBFp4c6lJ1InAJ5zI+4lFPOYLAnli2QS8ohTF
-         JqWP4x2L1WIAmuRnAPngFJH+7Qim4kc8VKFTPez2BqrQ73nIjG6FheqsGjPthxi7TG5A
-         PEhw==
-X-Forwarded-Encrypted: i=1; AKwUvBx3ztaa+4Q7Tg97UCwDWl4KBaGynZDX1ryUlVERCLgfm1q83DsxHk5thQ1yMCs2ec/ST2PVGjt33A==@kvack.org
-X-Gm-Message-State: APuU4Z/Swj1QSEmP6j8EUFpMguu+IY3nMCVYf8lQXLHxRbuHxp6wkDkL
-	Udhoe2B1kcEaTwZkcv40Xv4O36WrIUWt77nCrOki5sQ42JE48mkD3/Dw
-X-Gm-Gg: AYBFou1pXIxFntJmetbi5JppU19Kybp+rWZfT4KW98TJEDd8nyKZYO/CsXsSu0CrvGH
-	UIF3vGQCaEAgasS9XhBLakVNWkw/SIkSKu9XVdrg1afdKor4ikfmzWPqnGj6vGUKNz7FxjFwWHv
-	ITPnBCIvufQWPF11AG1SNWgzwkz0/JRnSi6qgTUYF0SxSkiLvoyHDV223EGNnnKI3oRgUYLNbFs
-	6HyGNBFUifScXkUm762q+ALIrDaO9Y3LlZtrL9Fq0ChZS+4riDA2BisDIv+kYgkdXLsE9JtHxNA
-	i0taQOHWD2Jc4Zb4oRImK43G8xGBsHZDEMmt+Tt6jvZAAfnGXKnfwMF8yUTG9RPYt2mHQIvigmZ
-	j7yHKGmNTw+5G4oF2FniuRjHHX8CzcgRsImjJl8HRSvzKLS5fLrBMjlfzS02dkuirZ8qiTT0AKQ
-	OO3129ZRz0vmXOvGFcVGvnghrZwuv8byhbyXLzkn0ukyevUcNtj5yTRjKym04QNDKkl7fUQSEZI
-	UjAWUzpQZ8hK1+TH4aj1WNklBzeND0Ay2RGI+70l+vA9Enh/fMEed68v6HfuvcYZXCgV86qz7qq
-	8PIHNndFscQ1Lg==
-X-Received: by 2002:a05:600c:4f55:b0:4a3:d327:6ed with SMTP id 5b1f17b1804b1-4ac182dcba3mr424220875e9.17.1793824959945;
-        Wed, 04 Nov 2026 12:42:39 -0800 (PST)
-Received: from nobara ([83.231.69.9])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48fecac1a1csm5716451f8f.12.2026.11.04.12.42.38
+        d=1e100.net; s=20260707; t=1793825708; x=1794430508;
+        h=message-id:date:references:in-reply-to:cc:to:from:subject
+         :content-transfer-encoding:content-type:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=aqgdpi7gCkH60Z/isUI3USxyApBzH2FtqkjwxCL88mU=;
+        b=V8cP+4X6pNldcke+t7/xZfzYeTlw7PqNGV6yzI2AEnJH4L7tPlBpImqw3BaaKtS9IE
+         TmelVyWlGr3RsAEpL/pDRCNECtaLH0/VH8e1ks4hLLqgTuaZQzCri525dAtnRHI6Rslb
+         7PqBB+bZPhdNwa5Hyo+hbm3n6Diwb6sfNstVmHK6j2z2IGb4fHAvbILk8GlnRWmCNA2S
+         4ZliZgO5QnDxEBjxgt4ZBAw9UU8wPXF9oZpRHL4D9fJpm4JFDNPWappGMc2djaOlr5Mh
+         A08pRALrXhscLcNDOhel2CsSVh6Of9FhPvGEFJonlfHQNGZ2NK8LbB7yNs1+MBBiIvFb
+         uDtA==
+X-Forwarded-Encrypted: i=1; AKwUvBw4sepI0kCVsl2d0ji4tU0vgOrrwO8xOML1DM/W7CuIgdMs3imeh+mLbGAQF3orwaJDkirGaNTDlQ==@kvack.org
+X-Gm-Message-State: APuU4Z8N9o+o+vEg2V60z9+37Qe+p+ZS7jH/Dpjzyn+LMUtdoR6rJ63p
+	XZ3a+/Rh5Ntm4mzxx3OEc6ok8jumJ1yW+4actIpiq4z+Rnn6aNFcrfvguS7+cZDMB4U=
+X-Gm-Gg: AYBFou2GwCkop303vUSBumqVqEjTY9s76atKYYf4wuw3aX7WH1sf1RT8ksptcvr+eF5
+	38RQoTtHlnAhsa6L7/ufMiSas2lLeBn6Dz1GMgoTomc6edHAo0iHKScIGLe60seKMKcAQBDlbrT
+	wI7Na5lC+ieDJvj3O//0qKUaLG4jnUXN3qmikPOLrOyvrARGEalN+9644qj4WzZQNgPC5Bcanoo
+	STwoNg8GefnveXgJIoZVypnhwS35hV8pSxAAp7G177a+vsFVCzn6+biP8XBtte2kBJ2IVqrAFZp
+	WBMbo2EeaZx071uGxMa4iff2lYaTssLksj4hJ36Qdnw5hmlJHhxYKSoUWzby5pKr8SfDPG1sDFY
+	N/oVMIxdaAt9Kzol5otj8/mxp5NwXB84T/MTXIfT5pWhBDylVmr7T7rMUwIRAtl+Vf0Mwyixbbz
+	WtnF++6EKCKCVxK7G61Ys66PEvBl6dzW24r6DNiinRoS5d0VhMtSo/9LjuWd0t3m64DsOJb0mvx
+	sxqCq4BOjmNy5lMwwRJpHNA/ddQCMqeD4d/el+d6JZd8Ds8lYU+qOxujTNw3pjiI7tJ5mPFM+6U
+	NZ9bmOIyPmEnY13lYpGGpEVxzAHZap66mXS+waYVASAUzQQwGf614YUGP5rGJ0wPG6bWT9sSdQ5
+	rAcgRfpvy1uvBXToEX1xiAdzyvutJ1RvYiCuGtOAhpNxdlfY=
+X-Received: by 2002:a05:6102:1623:b0:7a6:a24e:8140 with SMTP id ada2fe7eead31-7d072c2ba18mr6112103137.14.1793825707582;
+        Wed, 04 Nov 2026 12:55:07 -0800 (PST)
+Received: from soleen.c.googlers.com (64.167.245.35.bc.googleusercontent.com. [35.245.167.64])
+        by smtp.gmail.com with ESMTPSA id a1e0cc1a2514c-998d91d212bsm2888015241.6.2026.11.04.12.55.06
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 04 Nov 2026 12:42:39 -0800 (PST)
-From: "Jose A. Perez de Azpillaga" <azpijr@gmail.com>
-To: Mike Rapoport <rppt@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Kees Cook <kees@kernel.org>,
-	Changyuan Lyu <changyuanl@google.com>,
-	Alexander Graf <graf@amazon.com>
-Cc: Tony Luck <tony.luck@intel.com>,
-	"Guilherme G. Piccoli" <gpiccoli@igalia.com>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Pratyush Yadav <pratyush@kernel.org>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	kexec@lists.infradead.org,
-	"Jose A. Perez de Azpillaga" <azpijr@gmail.com>
-Subject: [PATCH v2] memblock: don't allocate new reserve_mem regions on a KHO boot
-Date: Wed,  4 Nov 2026 21:42:17 +0100
-Message-ID: <20261104204235.9066-1-azpijr@gmail.com>
-X-Mailer: git-send-email 2.56.0
+        Wed, 04 Nov 2026 12:55:07 -0800 (PST)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: x39dnnsktbjp9whcz87m51omqzajtmn8
-X-Rspamd-Queue-Id: E4EB92000B
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH v2] kho: Remove redundant 0x prefixes
+From: Pasha Tatashin <pasha.tatashin@soleen.com>
+To: Thorsten Blum <blum@kernel.org>
+Cc: Mike Rapoport <rppt@kernel.org>, 
+ Pasha Tatashin <pasha.tatashin@soleen.com>, 
+ Pratyush Yadav <pratyush@kernel.org>, Alexander Graf <graf@amazon.com>, 
+ Arnd Bergmann <arnd@arndb.de>, Andrew Morton <akpm@linux-foundation.org>, 
+ Changyuan Lyu <changyuanl@google.com>, kexec@lists.infradead.org, 
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20261104162352.140836-3-blum@kernel.org>
+References: <20261104162352.140836-3-blum@kernel.org>
+Date: Wed, 04 Nov 2026 15:55:04 -0500
+Message-Id: <179382570401.2089669.6201187990672133004.b4-review@b4>
+X-Mailer: b4 0.16.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1110;
+ i=pasha.tatashin@soleen.com; h=from:subject:message-id;
+ bh=nf/pbrG/3HMY+E3Xb9PYIXXf5eFKpBebgul3T9w7Tns=;
+ b=owEBbQKS/ZANAwAKAbt3KEzbc3reAcsmYgBq65uqenFbBMaztBsCNPi+5jP4Gy+jdHDzzMCE0
+ AC8artOAtiJAjMEAAEKAB0WIQRBMaqT7LRvGvB/NmK7dyhM23N63gUCauubqgAKCRC7dyhM23N6
+ 3g6FEACxKJFKSeWDmcpF4MW+HdGHBych9VYleOaeLks4H5Jobe5OdO4PZ1BxPgjlf33ihIu0Cvy
+ qUJll+5ee/BP7ue8XHEoKp+bs5J7/hJbsqiU9RBst4yORNBrHOTl8M1xUhUG2mLxA8t+3Q1zQqc
+ JqLug6dfJmV22HOKmvtZZ5KnHz9hvhbXBWMpwgnBkg/9/dW/Cy7pZSeouW9JY8018P0hAAl7yET
+ Gffrvg4Q952YZhd2yBktR7RjQ7nwTM/ntrpQLek4b7CLUg8NpCezTuNXXvkpi3ijzsJyluEzX9P
+ SbLmD14CRvA8bQtgoW9rAKf+h7aRMxeemVftJ6EuV9Rr+ydhlygMqW9NTLTEHVEH+j8L8ULw9ZT
+ tYXpnXcjNN6SUxD1WAhZd3UWDlSb5i4VemuPUjoaMgTp0Pxy4gbnkg+w/KZl/ytltxii7mMBjmv
+ oaY/iz6jEO3XpHdRGNVCENGOesj1my4WTYt4aJikQngaKQyZzTdPzxjJFB0tllSy8LZ5yeojFbG
+ 1kTU5jsSvUOmJTifsIPYsrapvlZMhaLTP4t9nS5qGAGYwORWKAoHe46sW01S9FfU+PUhpjv2ZXU
+ D2jgjT+p1VLkkOI59RjeZ1Hi1YLkfqzORCz1Tgxqtk+R7Rl6ZcZ7RZxA0J/I3d4mzxn0+gtKhfS
+ 04eqDdxWL00PXFg==
+X-Developer-Key: i=pasha.tatashin@soleen.com; a=openpgp;
+ fpr=CAAAB722DD22A081F0D49F35633A6A993D43B569
+X-Stat-Signature: of5opndzrqnd3ssd7otti6qaenygkzu4
+X-Rspamd-Queue-Id: 974E7C0005
 X-Rspam-User: 
 X-Rspamd-Server: rspam11
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
-	autolearn_force=no version=4.0.1
-X-HE-Tag: 1793824962-914315
-X-HE-Meta: U2FsdGVkX1/mApdpnrbuwUKfZzf0ii4GC0NE9cmhr8ULhfB/OC0bbDTSGAbyqlTuj6G5OKwvAV+Nvx3DpnC5Oxuu8Hr4Mv/eCm+he6YzQ2VuuFwG3COgX8IDvFgFsqOwV4xWn2ipppkpVVzIOdQM/pH7suoo/pRma9mchLO5sZ0vnV4mBvz17AbPPQWeLeaQvnkxtPOYJpJop38ZoMvldrQPmD23sHTbYkHornmbdvqyVnmk82JA1Kqvf5qeJaaHD+1k4IxSEnne1Y5bKPLDVxHqyvRr076TrfeLWNXCeJ7Id/Q452d/dkKsAsQJKtB6r1XvFf89S9Q1u0wTNJVr1eFZtCx+Wwwdl9FVz8ggA2yRCX+GE+vF/rTamanLrluq8HJn9k95klqp1nyel0kwHjiuBKfGpMkOPDIbuADRppQ31b0A9cTSzLdJ3Ar3R/r1LAC+fOq9Ix/zZE3GhXwkvYaKkTDC+ioDgJem5zaMA9TiMXaeGqUQMCxcKND8uVi5+OU8bEiLScmEaFPdA4dViwZi6uRwzI+emYMRG7kuJIQrffZpQf3h/VIlFvwVG/sU0o1nwXMMSHpXCPcdydKU/OqcirUtkWprR0F0ZmDexdDeMlAVhcV5Q/pbD3UVIpUJrPagLUF9LsXfbt1kLY6rPI0n9trQB4QZgWbDGZK0Ko0TerHeGPsoyIcIpzb5owpKZAzHU9Fgv5oo8p+BhPvvSSlb249/6wSlzUu3VBhnpd8tYm5XP2iS6XO1SxYPFfwgwxrek8+5fk95qnkHU2X8Oq7il5ZQH8IsoezCTpCTsAn3E0sgVL9p+3v2cAOdobRNur/4b7e5VViermwxncsEZWMx4L9RRfVaj5+sk7cH1INbbkFoDKmOwsQIKRgmIHDxuDxq1jvzzu7loEZCsbMRZmKLHdowHso/swJfcHlyCUYZYlNrgBg3YwI/M42sAUKXssboMKzayeQ20H8DpyT
- 6T0Vez4s
- tifV4AwYo0kFdWR6iWbGOo989WLfvcuvi84F5yMXl8EX1NeWybZdzb8NmJEyrsy7ziivLCg5MQlHD+JwVrwcfeS5YWydClJ0cA3sL26y0jUtoSOGzuHtgkHbhH+gxEbaBUVTCGUCvM/tNyEjfEUSGFNKnsBEz88LGWJt8aHRVIkvPX6MBS/HZ9AI1isA4IoXk4OtbNvOKcrFHDEHCbcxNl8FuKVRgpJR3UPP1Ha+iqrlFMiUA4IMedV/V+QQtNSk9KH5r8ULKshtsQJDLshr1dpQsf2C42yKvwle1a+EGFD+LCnyhUl2S1hlVk6cK7WOC1DKWr5S6ijE6QntND2GTdZVpiOtjeKjsrBG12gJbNkOIukkal1KiowroCaeg4JnpI0kIao84VT8l53gBkBhbq2df5hEYpVtMo2tUrqFznjRVgtFZ0coDlINP/0Sp+bmL4Tr53Mz7VN5Q4y8JtvbiU1znB6joxqN6qO8egPpA5OHn0gM=
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1793825708-584458
+X-HE-Meta: U2FsdGVkX19KdNDx8i+QcX69MKGSyw7QTFGCx/Q0kv7iNcxLMAT2COYtLukwFLtEarqk/b7D4MyTwBR+VIFIND83nScKrU6fejOwREK3FPf7FibWCftbclnPLHyMsamHE9B4RG3Q+5yZdzlN2yRikrHAskar41W3ebbuLkWcpIhcSJ3a3JsP/ClFp7j4nEYy4OIJi1v1wy4Aqa7oafPskrI98ZCl921Fa5k0kk/Hd6T/EfbNnwjyM/hWQSbN1K08WAYkCSIdHMHvVcVJmgggFiQrhPS9dAGzoh+aRuSTN5DYqY9JHE7mRd7fERWaDrBPoR5iSKsHNlaTQcG9LtaYn/EV6ZhHxDtKyZtY6rCRVntYntRWkHkMF4Uv1MXhVdpAE5sLe61ZGrViXK1NUIy0H5w/gui5jN/tK9dxjzUc9ML3aKKmU8cFENdunOi+fT7tBeBlD/zCWp2WgcuKlU5a2vnUAt9nJS1b6VOZ/R6rUeqWiBzTwikVZFyvQaZgkohIUi5j3UAe9XplOtFpZLI2pbMvPFrf1viCdhYyblf6g1qpNEKQSth91IT5p5xHcb8rWBZX5vRUBCTKbo1FWERuVriFBBLWv7ZzN2ZaGkkSruAtH7QO4XJFWMwWq055FTLXi50EgWHULzkJ4lulEvG8Lur38Fy+CzzIMTtuDvvuw3JLy4QexAwh7SqoSeFF9pZDar1MJDPdLTV7NFeMFl1RPk2kHv5E25s2yLuOA0hHPb79hDLkvEEqWJQUp3JlIs3YHbmNVwprGOdU0kw1tkHBpDpT0URzoc5q8lOQT4oE/J0HWd9uGMKflPKuEtpR2yf4/7bRztJRi8tDJFntU6EaXdIbB57O1L5cxwDB3ELE4WpCxA1gBBS2gwx9tEpvR3jq99Onk8nA0rJDj4UWHaQFmYe5Rux1Ui1PvuEBduvOpaJrxhX1cOk7O6fijj6nKne/JTD8xErO3jVUNlP5hea
+ +YWu3L/q
+ 6CndGk0SP+UOcB8PnfqbnnXIV2sqONiv0icZaM2Yc1RdWouP+eqh8zwxbM8FzfUNFWj8diDcqVSqg/DgpHI2ORnPlkFqp5lgO8y+vDSg3IosEQsUottbCMJpmNxgT+kSsz+Gjy08sPXD7gAmZmBjIDHCNP4m1DCAxcbicnZ+Ught8qmm1a8ow3TAfrVonhnbddG5jc00vnH0BeLy3if41GN9pvvuwKbBDOVZCdIa9Kh8WAiRowtuY3EpUtxqCn48+FGVg1n3vSe3SMZ2Wd3+YJCQlqmne76Plvpng/Crqqvx5OZM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -130,61 +147,34 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On a KHO boot, a reserve_mem region that can't be revived is allocated
-from KHO_NOPRSRV memory, which includes the bootmem the next kernel
-boots out of. With CONFIG_KEXEC_HANDOVER_DEBUG, preserving the region
-then fails:
+> The %pa format specifier already includes the 0x prefix. Remove the
+> redundant prefixes to avoid printing 0x0x.
+> 
+> Use phys_addr_t for size to match the expected type.
+> 
+> Fixes: c609c144b0e8 ("kexec: add KHO parsing support")
+> Signed-off-by: Thorsten Blum <blum@kernel.org>
+>
+> diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
+> index 6f1f55fe3181..6a7600a0a7d5 100644
+> --- a/kernel/liveupdate/kexec_handover.c
+> +++ b/kernel/liveupdate/kexec_handover.c
+> @@ -2010,16 +2010,16 @@ void __init kho_populate(phys_addr_t fdt_phys, u64 fdt_len,
+>  	 */
+>  	for (int i = 0; i < bootmem_cnt; i++) {
+>  		struct kho_bootmem *area = &bootmem[i];
+> -		u64 size = area->size;
+> +		phys_addr_t size = area->size;
 
-  WARNING: kernel/liveupdate/kexec_handover.c:1245 at kho_preserve_pages+0x168/0x180
-  failed to prepare memblock FDT for KHO: -22
+I am not sure; having a variable size of type phys_addr_t looks strange 
+to me. Furthermore, KHO only works on 64-bit platforms because of how 
+our radix tree is designed, and we do not plan to add support for 32-bit 
+systems.
 
-Without it, the next kernel puts its memmap on top of the region and
-the ramoops records in it are lost.
+I would keep u64, or if using %pa for u64 is still an eyesore, use 
+0x%llx for the size field.
 
-There is no use case for adding regions across a live update, so fail
-instead of allocating, and drop the TODO.
-
-Fixes: f99230780211 ("memblock: add KHO support for reserve_mem")
-Signed-off-by: Jose A. Perez de Azpillaga <azpijr@gmail.com>
----
-Changes in v2:
-- fail on a KHO boot instead of allocating outside bootmem, as agreed
-  with Pratyush [1]. this drops v1's patch 1.
-- not an RFC anymore.
-- based on v7.4-rc1.
-
-v1: https://lore.kernel.org/all/20261021211058.83483-3-azpijr@gmail.com/
-
-[1] https://lore.kernel.org/all/2vxzfqxglrg6.fsf@kernel.org/
-
- mm/memblock.c | 11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
-
-diff --git a/mm/memblock.c b/mm/memblock.c
-index a450092a80fb..e325e0542c9a 100644
---- a/mm/memblock.c
-+++ b/mm/memblock.c
-@@ -2827,7 +2827,16 @@ static int __init reserve_mem(char *p)
- 	if (reserve_mem_kho_revive(name, size, align))
- 		return 1;
- 
--	/* TODO: Allocation must be outside of KHO_NOPRSRV region */
-+	/*
-+	 * On a KHO boot memblock only allocates from KHO_NOPRSRV memory here,
-+	 * which includes the bootmem the next kernel boots out of. Only regions
-+	 * handed over by the previous kernel are supported.
-+	 */
-+	if (is_kho_boot()) {
-+		pr_err("reserve_mem: can't allocate \"%s\" on a KHO boot\n", name);
-+		return -EOPNOTSUPP;
-+	}
-+
- 	start = memblock_phys_alloc(size, align);
- 	if (!start) {
- 		pr_err("reserve_mem: memblock allocation failed\n");
-
-base-commit: 6628e7d4c6b25c8d18f1345e3a20d21829aae7e4
 -- 
-2.56.0
+Pasha
 
 
