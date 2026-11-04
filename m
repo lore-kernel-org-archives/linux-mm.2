@@ -1,66 +1,66 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 792C8606AB19
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 19:46:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB91F606AB34
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 19:47:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=LVMZm0IO
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=RajwCGCh
 Received: by kanga.kvack.org (Postfix)
-	id 8B5D06B05D6; Wed,  4 Nov 2026 14:46:56 -0500 (EST)
+	id 18AFA6B05DE; Wed,  4 Nov 2026 14:47:11 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 88CC16B05DE; Wed,  4 Nov 2026 14:46:56 -0500 (EST)
+	id 1623E6B05E0; Wed,  4 Nov 2026 14:47:11 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 77CA46B05E0; Wed,  4 Nov 2026 14:46:56 -0500 (EST)
+	id 0507F6B05E1; Wed,  4 Nov 2026 14:47:11 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 567236B05D6
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 14:46:56 -0500 (EST)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id EA23A40838
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 19:46:55 +0000 (UTC)
-X-FDA: 85398469590.12.15078B7
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id DC1576B05DE
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 14:47:10 -0500 (EST)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 80025120764
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 19:47:10 +0000 (UTC)
+X-FDA: 85398470220.28.BC9D962
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 382F580006
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 19:46:54 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LVMZm0IO;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf02.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org
+	by imf31.hostedemail.com (Postfix) with ESMTP id 0595020002
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 19:47:09 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RajwCGCh;
+	spf=pass (imf31.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793821614;
+	s=arc-20220608; t=1793821628;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=goLGxFor5aDHmq+/63YZ7VsFVk0WPo8/IlwPxf0/q/E=;
-	b=ROOJEqKsg9vrCaYAb85gF6SMmEwdwGLzltemKZQcT9fS6Y86IT2F7pECMawa0o0pKtbE3s
-	f4O7UIxmHv2HxiwdDG8PWk2+d3btkFVRQQnm8NOUAKWsbAuqaDWfV38nrZsOM/eolgxIH6
-	MgTei9UL2jC7XtB7IZHdcwCriIkcx0k=
+	bh=zft31zEOyoxpoaQra2tyBUnsx6CBcNbPccBHjIcKUVg=;
+	b=jVyHfejSfC7QWxKPYoGHJH9LO9UePZYRdnqN67E3dWn+r1ghOy1x+iMNYB552pjbb2UbSh
+	4hz+ZyO1A7BlWVMTXxKeXUgN6op24X8E655SefIlmY2FcpR7++FeCwruciQxcLDy02GQbf
+	8ncDd6LmAZEazcKfdff/HP0OE4c9IcA=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793821614;
-	b=7FwiZcEV8JlNAidVN9qaWVjeN074vAbu38qcC3TgxcXLPv+vu9zG+7F9nOOUVvM0jRfwJv
-	WyvN2kbRb4sfGGP7sx9+6LY5a64GYKSELK37pytY7nQ3EcyiRbFKzMe5W1HHALNFj21CfC
-	O4pYfl+YGRcWXzD1Vmts/ebAgoObsUg=
+	t=1793821628;
+	b=Y9WTib9/otevyJJXQW7JoOWDZU3uGU9Hmp8NY/iQaOqwHAYFR7xpblrvQr3G4OvDBmZXBw
+	OevNhNxk42E/5fhIkK5zKq07oNjZUBDE+Ua4pg0U9PHhSXkLwzDwuttIOgeQePbUWhXksr
+	78ZjLoihKYtX4paSgY3LQeaz8UZ7aZ8=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LVMZm0IO;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf02.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org
+	imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RajwCGCh;
+	spf=pass (imf31.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id BCB5760D83;
-	Wed,  4 Nov 2026 19:46:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4276C1F00A02;
-	Wed,  4 Nov 2026 19:46:40 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 5CF4D60F12;
+	Wed,  4 Nov 2026 19:47:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18A421F00919;
+	Wed,  4 Nov 2026 19:46:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793821613;
-	bh=goLGxFor5aDHmq+/63YZ7VsFVk0WPo8/IlwPxf0/q/E=;
+	s=k20260515; t=1793821628;
+	bh=zft31zEOyoxpoaQra2tyBUnsx6CBcNbPccBHjIcKUVg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=LVMZm0IOAoe/DQ3iyc33C0U6vvCfuYGfRKLyvK77JIS2ad2dYfo1fr0s6jyBo2HeF
-	 /cO/gHafe4OKtglnS2gd2IbNq62I2DciBiFSQRPnWz49+1Da+Yfxn7yCQOHHdkkqhJ
-	 SyQJLxdbTjGThvJqrZ0hQlwH1BvCiRfW2DR2w48PwSAs2SGNzc8ijfGt5Ti7FX0Ma9
-	 ZALNkIaZxmt5uLaGJebUicapo3YQcj3RmKTzNB/is1bSZz6+a5/MRe1UfphuPsFeSA
-	 fMTDefO4/GNM4PXANBsPbqE3sMPNAev963B+WLNxipJzgCOoS8dQJsh8kr6gfxBiJJ
-	 8JFSzbUONxOuQ==
+	b=RajwCGChuwyoqoZXwpUtB63CnfJNCXfYV3MXWhfQVc5Ev6XMozMwlvc6X98vleQyv
+	 f9HzBE4v113NX/e1l78y5ttqcWo69gQcs6Ww+sQGKZ3cLiPEcmIedv9Dr8Fupfzesw
+	 W2qdod9xWoMSOmx1XAyg2z9rNs/8Jv2qrPox1n/Zc4FZI6mKO77lTmc1CJ+0psYuJ3
+	 GAD2h5/aLL7ToIPisurMJ320J6bxgj0LUdPq4xrjzKapKKfnTHEzSVwuWV6kBmMycE
+	 p8oPLiWRZfJASR8Mhh1/kUIyHucEcqRy1EkK1gmQTe3G+tur6Iu40MBhi/iT5cSWMY
+	 VmRs6TTIcG5Ww==
 From: Christian Brauner <brauner@kernel.org>
 To: linux-fsdevel@vger.kernel.org
 Cc: Linus Torvalds <torvalds@linux-foundation.org>,
@@ -121,31 +121,31 @@ Cc: Linus Torvalds <torvalds@linux-foundation.org>,
 	linux-debuggers@vger.kernel.org,
 	"Christian Brauner (Amutable)" <brauner@kernel.org>,
 	Chuck Lever <cel@kernel.org>
-Subject: [PATCH RESEND v2 18/26] usb: gadget: function: rndis: let procfs copy in writes
-Date: Wed,  4 Nov 2026 20:46:38 +0100
-Message-ID: <20261104-work-procfs-drivers-v2-18-245e54e87116@kernel.org>
+Subject: [PATCH RESEND v2 19/26] wifi: ipw2x00: let procfs copy in writes to the debug level
+Date: Wed,  4 Nov 2026 20:46:53 +0100
+Message-ID: <20261104-work-procfs-drivers-v2-19-245e54e87116@kernel.org>
 In-Reply-To: <20261104-work-procfs-drivers-v2-0-245e54e87116@kernel.org>
 References: <20261104-work-procfs-drivers-v2-0-245e54e87116@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1569; i=brauner@kernel.org; h=from:subject:message-id; bh=saz4p5rW2UOPmCRi+6zEslqjX7E5721ehvji7/y2TLU=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS97upctyQt79Wuds/t/D5NXqfXll7mFlqtJ78++jiLv oG1bkd2RykLgxgXg6yYIotDu0m43HKeis1GmRowc1iZQIYwcHEKwETsOxn+CmzmuTZxSeutN4J8 yYLimhPX1T2olmPLe3C06PkTyd7GfkaGX4klP1sT33A25J06fD9ObenelTMCZxUxKZStmM3E/WI 5EwA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1605; i=brauner@kernel.org; h=from:subject:message-id; bh=SZl2laNUZYNGFN2sYGUP5fs3tBGCqMuq/D28k7CZWwo=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS97up6Oev4hMLPxsZ2136FuR12SNXk+zJzkV2eLvcbC +ML1Vevd5SyMIhxMciKKbI4tJuEyy3nqdhslKkBM4eVCWQIAxenAEzkxyZGhh+zNh/MzVMol5A7 Oltna15SsRRnwKr/s7+v+ix/vNn+yDaG/x5P3yxp3xP3fKd4vL9mjb/e893xlTemrnQuFzt//Ms bC34A
 X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: j533twynhhp1cybgq9e5k1hy6ynyi74j
+X-Stat-Signature: kyi6uyf5k53sigpu7nriagdn7osjm4tc
+X-Rspamd-Queue-Id: 0595020002
 X-Rspam-User: 
+X-Rspamd-Server: rspam08
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
 	version=4.0.1
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 382F580006
-X-HE-Tag: 1793821614-279772
-X-HE-Meta: U2FsdGVkX1/Ocl3Ce/l66USlXTmxmdEnwmXYsgfG3FHmgrz3dXHbf5j9b8WPiNLBu0C3dFOpNtZgaw8116o+hBu7GM8IVu0NZL1i5P5FSbPFGLnfal5HRNQwokUDPD12AW0plurmfUyfJPS3TKNqe5cx9dLc5qj6cHBMqruFq43HNiFbmYaq5KaeUgxfSo6oThlQRnwi2yik6juqGUAot+aYaMJLZMpRsswLaW7xufGyWlout4LcYsbBi7R/6sNw7F7hv6+3vnjMsouMMe3LKaLl8KJGZHO6e+W3Wr2dvi3fOMvl4ErOV7XvztwwQxKDRVdUHo4kJf11U/fjBwwk+v1XJNW9hpkNu5v45bHioXAML/ak+JNKiABPjWYubhhO5hcgWUbYzbLB0TcI+XIkApl1lq51qS4/h+zHKjtl9lC0OrJOyVPDsiOzUzLM6y/8xG+P4Toi1qis1AdyiDkWPKg5LAGmEX3RS6lZufXqK6bPRcvOEJrtPkLWLqp298YJeOSuZhaH8Zq0uHa7AKsjI0eIbpb56MjsTXd1+RankwNY86mX8qyENKtZXxwV0xJu+Bv30ZZzIDPUz2sYbAw6PhYHi2HMBmSb0hxkwJV4jK0hYme7w6ezTx6ICFw0/OXaEsR+nTq257/r38xqVOK4qsBHtqtVtRqMQtggmU5NCAs3ZCM/poVsjXZPpJxH+WWhWznw8UADJYA4N1k+2Ek070u3Z86BwE8sWJRP2u9Ygy1XjZbsfsr+5jZj/e7JFgQ3QJBZPMCa8PdVPuOLrtaS8hHAvf9Iury9Cer5PLqQ9bIiRo0Cy7kvqlviHH+b/Xuz6qxGsHHFjgi4ZwPIcDz0HNLscR7KnNmQarpCWzOdi4PrmCoMJzW1AUp1gf59gVpTNPGxP1R0WxDGXIrdXVXIi+n4gEkDIl5P+/hCuYnK/t763vaIDd5GfkfrDNQJmQIJnqER3WgT9r/iCSHcm7i
- h7Ha6Nxw
- iJSaMp1K5SXqtWSld+yex1jnry1k7t3A/f6p8M04ZoxauIu4iAEBGHrR5oOOR/yrmPh2tezMn2RG3p4GCX5Q41Lm3GhPWWI5LCep6SpA2vNjoVa3cjlTNcwBZHX9YY69Edobx9BAL6dx1Cb0FdJzaSDR2FAg91aHDMx8xG88RxAX6nPStPTmaOgBN0oe52HRbi6agUsxyo/nPdbfWcUGmJVJMMQOas9tduex0dn8sJI+/mLTSIUTtQfvmX6Kr7bR5i4zWUqkl8+zqbjlL6ld9YnpN7InDcf0D0ErEgMcQSf/1yLv/mi1j2rSncOvmrrOg9Y6nRnYCgRLOEw5Bwo0mJjsHhEN/Fd/nzTeMZRz7ZClfMYZZim8uQ4cPTQ7X7sjU5p+454+pC6yj8xYKpSCxKk1dpA==
+X-HE-Tag: 1793821629-857654
+X-HE-Meta: U2FsdGVkX19ekWHeVipvgT8oaRuxX7McfLE2/Ny0/WqGISn3tjcNX/zM5o3kHflTY1DZsP+LROKWybaFf9VhE8C91ZY9qR351jKqSbGYe6hvmxw33PtTXW692MbOjZElbH24S+tTNIMKe9bGxZGe1x2PfTxKp9gDy9CXn7+4vk5rlhz/A6qDK+JQhc/X+buj7GZFZABQwrOdidZBl980ohZbp15ufumY9fliPYyN0Ry8lQC7D9Z3iEUw1X+Y89VEHGLPN4Qi0iy2EFYx4xe+V7SWVFKP/3G5+qNfnLATLRohQx9JKFqw7ZXAUxRKHAZdXxz86c00Pq7SBlKgECiCZuXJ6mdjDyjfonui/EBXoapaTmSWuVSw979+iKoEY4aJnxwA2yqivr0DKwa5OOHJvGKc6qOxG+v/Yb5s22M0py9cI/SXPfO4tomH8fmQiptceTYtd0BbPp02sIrQ3Dq0yAGYVqPxFDxaWH0TXSwt0dej8G5L5qQH96ixPUAZWVSllV6DUm5ypdPIOez6aW+hf2nafUS+o0FZLKQzep2mbFVzw2hq1NFuEgLP63uehu13pgCfpM/fA8STdMNV01ilfat/Jon0H13SQxTD3gZr2zCm+Jlf2Pps84kC3UEYP3hfw4dhuaXE/a+ncUGj89JxgMnYC/ro7uCRD1jwKzGmQZB9e5mJ0PWfWDUUzAFPPevVR/C7AtzB6e1JkW7RpCMzDHdjTe5audTC+THIhpmzDARHUQ6Z3qwAFTDZ/m4GkB+flSL1xwVELAFApSDpidzuXxMSyZ/y1GBYX6Zu+tdeGXStASzPjUbk30RzU6yjm06SUFTcGL22vMDzP877P1f6oW+RYB2b0WZqgRuKAHM08tdJJg9ZksL7P6tY8z4w6A582f3stZpSKhw/DzqFzkcpCqOoTksO+jFTaY/KIOmcD5zQJtoO69uWHLXPbhViVQ+VokvIP6NjbrVx/FQCHBX
+ It0Lz1zx
+ 4o7qpzYhQ1cwfL9BTY5ykSL6NMdI1A3chqsbVCy6IPAU5lstSQl0X6B2rS7/VBd04cnaySRH9DhUpeisiLycQpzzd6+Ro42/n8BppA9Z1xg695iBmJsi+2RAr/ooWjzx8T5Bvt+FDdjUCkZtQR429ESuLI1FGPbSOKWulRSYaMQqF5eJLxnthBkwRb19aEfWEzHej8DbiPSGXAcHepWET4RjnB+aA6LxIZEzLdHC9pp4ZSBrpLIFw6XAF89Z9BHsPd21wzUPk8s3iMYmYVLjLIzVZ3TEBooL25rsLj1PEkwYT72rU9U6aXtaNipEiLeKB5Czbes0w7id8ygsU1RRlQtKSLhak1rndiHceXwOxyyYeRNmW+HVsYQGnHgumWOoMXZk8nmYb3pxeTUzBbAvR+DC+aw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -154,50 +154,46 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Implement ->proc_write_buf() so procfs copies in what is written to
-/proc/driver/rndis-<n> before it pins the entry, and handle the
-commands from that copy. Writes larger than PAGE_SIZE - 1 bytes fail
-with -EINVAL now.
+Implement ->proc_write_buf() so procfs copies in what is written before
+it pins the entry, and parse the level from that copy. Writes larger
+than PAGE_SIZE - 1 bytes fail with -EINVAL now, and a buffer that can't
+be read fails with -EFAULT instead of looking like it was written.
 
 Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 ---
- drivers/usb/gadget/function/rndis.c | 9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+ drivers/net/wireless/intel/ipw2x00/libipw_module.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/usb/gadget/function/rndis.c b/drivers/usb/gadget/function/rndis.c
-index 3c7bd30b8a3a..e05e0c6ae8fb 100644
---- a/drivers/usb/gadget/function/rndis.c
-+++ b/drivers/usb/gadget/function/rndis.c
-@@ -1138,7 +1138,7 @@ static int rndis_proc_show(struct seq_file *m, void *v)
- 	return 0;
+diff --git a/drivers/net/wireless/intel/ipw2x00/libipw_module.c b/drivers/net/wireless/intel/ipw2x00/libipw_module.c
+index 15d9a5efb581..08cc0d7f57c1 100644
+--- a/drivers/net/wireless/intel/ipw2x00/libipw_module.c
++++ b/drivers/net/wireless/intel/ipw2x00/libipw_module.c
+@@ -216,14 +216,13 @@ static int debug_level_proc_show(struct seq_file *m, void *v)
  }
  
--static ssize_t rndis_proc_write(struct file *file, const char __user *buffer,
-+static ssize_t rndis_proc_write(struct file *file, char *buffer,
- 				size_t count, loff_t *ppos)
+ static ssize_t debug_level_proc_write(struct file *file,
+-		const char __user *buffer, size_t count, loff_t *pos)
++		char *buffer, size_t count, loff_t *pos)
  {
- 	rndis_params *p = pde_data(file_inode(file));
-@@ -1146,9 +1146,8 @@ static ssize_t rndis_proc_write(struct file *file, const char __user *buffer,
- 	int i, fl_speed = 0;
+ 	char buf[] = "0x00000000\n";
+ 	size_t len = min(sizeof(buf) - 1, count);
+ 	unsigned long val;
  
- 	for (i = 0; i < count; i++) {
--		char c;
--		if (get_user(c, buffer))
--			return -EFAULT;
-+		char c = *buffer;
-+
- 		switch (c) {
- 		case '0':
- 		case '1':
-@@ -1185,7 +1184,7 @@ static ssize_t rndis_proc_write(struct file *file, const char __user *buffer,
+-	if (copy_from_user(buf, buffer, len))
+-		return count;
++	memcpy(buf, buffer, len);
+ 	buf[len] = 0;
+ 	if (sscanf(buf, "%li", &val) != 1)
+ 		printk(KERN_INFO DRV_NAME
+@@ -236,7 +235,7 @@ static ssize_t debug_level_proc_write(struct file *file,
  
- static const struct proc_ops rndis_proc_ops = {
- 	.proc_show	= rndis_proc_show,
--	.proc_write	= rndis_proc_write,
-+	.proc_write_buf	= rndis_proc_write,
+ static const struct proc_ops debug_level_proc_ops = {
+ 	.proc_show	= debug_level_proc_show,
+-	.proc_write	= debug_level_proc_write,
++	.proc_write_buf	= debug_level_proc_write,
  };
+ #endif				/* CONFIG_LIBIPW_DEBUG */
  
- #define	NAME_TEMPLATE "driver/rndis-%03d"
 
 -- 
 2.53.0
