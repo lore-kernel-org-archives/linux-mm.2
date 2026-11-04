@@ -1,136 +1,143 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDA47606A85D
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 21:57:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D6C2606A33A
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 22:06:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=ngkkiGvf
+	dkim=pass (2048-bit key, unprotected) header.d=soleen.com header.i=@soleen.com header.a=rsa-sha256 header.s=google header.b=O37Mbu/G
 Received: by kanga.kvack.org (Postfix)
-	id 0852E6B05B6; Wed,  4 Nov 2026 16:57:03 -0500 (EST)
+	id 26A576B05B3; Wed,  4 Nov 2026 17:06:51 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 036146B05B7; Wed,  4 Nov 2026 16:57:02 -0500 (EST)
+	id 241FC6B05B6; Wed,  4 Nov 2026 17:06:51 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E667B6B05B8; Wed,  4 Nov 2026 16:57:02 -0500 (EST)
+	id 133D26B05B7; Wed,  4 Nov 2026 17:06:51 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id BF6786B05B6
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 16:57:02 -0500 (EST)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 5B8431605A4
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 21:57:02 +0000 (UTC)
-X-FDA: 85398797484.18.386CFDA
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 7DFEB100005
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 21:57:00 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=ngkkiGvf;
-	spf=pass (imf05.hostedemail.com: domain of azpijr@gmail.com designates 209.85.128.54 as permitted sender) smtp.mailfrom=azpijr@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793829420;
-	b=I+TQA3REwfFDVR6KV9w/94oRnULcGw1hanNccb53orpci/LNd2VrAUZ88L+WcibN9zBHaR
-	CCRmChsxrsAxWg13H9FZnC/6WaQgFXMLgkH5r8feNVBarrSXnkgRbK5BixfEKzqc4Vur9h
-	gMGtllE72D8+1WOVWkmJJaFHwETSTuk=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=ngkkiGvf;
-	spf=pass (imf05.hostedemail.com: domain of azpijr@gmail.com designates 209.85.128.54 as permitted sender) smtp.mailfrom=azpijr@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id DB0AA6B05B3
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 17:06:50 -0500 (EST)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id A2C991C4289
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 22:06:48 +0000 (UTC)
+X-FDA: 85398822096.02.3094483
+Received: from mail-vk1-f175.google.com (mail-vk1-f175.google.com [209.85.221.175])
+	by imf22.hostedemail.com (Postfix) with ESMTP id AEEF5C000A
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 22:06:46 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b="O37Mbu/G";
+	spf=pass (imf22.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.221.175 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793829420;
+	s=arc-20220608; t=1793830006;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=iieLdBkwQ6wRvtcuZtWp+Lo8dgU6lmnVCXawi7PwXUg=;
-	b=fT+Diq984MbPWxl5/MVhUM17UzVbrjWO3vc7EvcoPa9mMzRbhIH5FqRYfuA0eZp8MnHTuL
-	TgnOpLhWczKHXOPXHVUZdc0XeNvimS+5WlOsFmVV23i8fkqqw3WUxKSzc0H3+77hrR27zo
-	YYjFV+6fzZxmMDSxZXYt2t4xwNBSbac=
-Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-4a35ac4475dso8127975e9.2
-        for <linux-mm@kvack.org>; Wed, 04 Nov 2026 13:57:00 -0800 (PST)
+	bh=ufPIe0MNsaPL8q21bT+XXMgG6he7MqxkIOdgpkrKFhc=;
+	b=qyshVNWOJ9BXZcmAgTTzzGwDx4KgoxaKFmeh1rAFA3beXdueazUvyzDlHLM5N1nwbt7szs
+	J1+CbXMAYFRnp3gsD4tj3plSXQdExq1D5XuDYBAiyYAelpAexqJqhFhp379robJxHJ5ptv
+	RjDodO67FD0DSae0icmYHO0PJKDe25Y=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793830006;
+	b=nYZBhxLZ4MOu2Gb56VMo9ZxlcTpuSnmhaqP45Gfv8iecikv8rAg/wcFFSDWtJJ2EJ8Ztzf
+	DpZ6WnfJyv1A5B2AANeBwxP3X6UmhsxIWUKRGCNZ+ia147XwQ7PkuTiYWZ1C3qlNPzrN2z
+	YjDfRURqjKpyo6pIunVE+78OavfOCrM=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b="O37Mbu/G";
+	spf=pass (imf22.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.221.175 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
+Received: by mail-vk1-f175.google.com with SMTP id 71dfb90a1353d-5e948e56af3so437558e0c.2
+        for <linux-mm@kvack.org>; Wed, 04 Nov 2026 14:06:46 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793829419; x=1794434219; darn=kvack.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=iieLdBkwQ6wRvtcuZtWp+Lo8dgU6lmnVCXawi7PwXUg=;
-        b=ngkkiGvf6QrWaE5xSfBvgzrUbX836bnAfu/D8xE3bsdu4w+SbCH7l639w/ywRkzOpv
-         pX5IIMoU6ITIYiQUWtS70JZblH60IEss2B/Ks4Coe6MAwO9v0dCPa3nD2a5bq5h5ON99
-         yiUks/BP01+biL6fWsQ9y56Fb54yzuwtqvvcQUQ0vvuskVh0ng+47CIiJGNDT7t8DPpa
-         mytF/0GKKIpvmVABiavXldFdnLx/00WjcTn2eG3IBoO2KHS1/iPNwCq9KzAWiKhlQSKN
-         ZOz7vvt0vfc0Y0xW+32P47p4dzcNlnhGHqyGAXLYL3Jn7OLRHnAuqmt6ZnR0zAC5MDRn
-         Z4yw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793829419; x=1794434219;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=soleen.com; s=google; t=1793830006; x=1794434806; darn=kvack.org;
+        h=content-transfer-encoding:content-type:mime-version:date:message-id
+         :subject:references:in-reply-to:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=iieLdBkwQ6wRvtcuZtWp+Lo8dgU6lmnVCXawi7PwXUg=;
-        b=sZtMBEnNlQXHnT8J49gLKpOLmPPap4TmhAEIJN7nOCmODVckw7WYrpdw5uwjERDWvO
-         nD+nijXF0mdspZ5GhnizsjRt3o4hNxYj/CxogKOYD7DkWarVdgErgScQyo1S4mwAQI/f
-         WJvwQnvtTcvNh8NYNOdNPQf8/hoe15wdVwJwra0rJW6GHrGUrNTH4K0jd8MPA/Ks+rhn
-         XItYSrgAj1mCicS/NFKFKzIABHOB0Qb+8j+asH217CnpK+p00D2bQDhiTnacY2GSulzV
-         IWVNU3cFpbFt0+FbGmD7+XjynVG91XdrChgwIIDvElGp+Btqp5pBE0kaGzXWX+aLWAEE
-         R0eQ==
-X-Forwarded-Encrypted: i=1; AKwUvBw1gj8Ro8eUy3cVTMiljwG3GeAMjOpze8G5B68SXIdg8euPrpXePqkYIN2hM6+x2AufJGbhotJGdw==@kvack.org
-X-Gm-Message-State: APuU4Z+be4qeJzQWoEm4ZoRuHLAfGSaN9i0uoM0IHAN69l9QK1ez6e+E
-	y9yWAQyuvU6Sy7YH7d3DwdQnDO4Rc6qL2IURHzGCSwiF+wR95hfwADvx
-X-Gm-Gg: AYBFou1Y1tsALxxXGAZqXYts0ljeBXw71PD2kCWLo5lyxcuV6EMeO6c1ERM3hTzMsVs
-	UzgDwR4xtT4iz6vaZrtIfc6VPD5B0gihmG+E7/lWx3VSjHAveqbkZLYVDmEvO+Ibm+U6V5ZHB7r
-	OrjXOJc/OtZ5+VnVGZMC5xrCQFiri4LMCtsFiEukr0DTtcD3k2kZMoU0wGGJ858zoO8f4JcMxCS
-	ohUqS1blnmRx51048s/ksizUGskYog6OGMeZKx1ip9/4lo4BRzouBDv0PB+qomcBcItckE+BHhk
-	D42mejLEBVV03eEKHiYNB5p/M3hqXAD5e5HU0aFP1lGQJb/nocLrkDSAf4Ce2y2kr7ZaMXDXviI
-	R+FnToGB8gCIWELs303Lia568ZSNOTuB9vapDjqoEyNNcVSibr34NtlXLKbYLxoT+Dnv7jpPvLh
-	f3XsSDFtRx8Zju5YTaW9yx12UGsDtNW17kNf0wbTN71jkW2b2YOf1oQS3y3j/sur7IjaOx0O3TF
-	QBWNxCW3mC600fTtKZ4IebmWQXQx5da+K0zIlbA8FeTIJyWg5Pbuk/yg8eIAt70QKSUs/jnBbWr
-	qWl/XM6NH7Y2tt9H9rNqJcQ=
-X-Received: by 2002:a05:600c:83c3:b0:4a9:18f4:925e with SMTP id 5b1f17b1804b1-4ac174711afmr374011925e9.18.1793829419086;
-        Wed, 04 Nov 2026 13:56:59 -0800 (PST)
-Received: from [192.168.1.22] ([83.231.69.9])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4b57373f7f1sm15184095e9.15.2026.11.04.13.56.56
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 04 Nov 2026 13:56:57 -0800 (PST)
-Message-ID: <75540cfc-0577-4d91-9369-d1c4fe9c3096@gmail.com>
-Date: Wed, 4 Nov 2026 22:56:56 +0100
+        bh=ufPIe0MNsaPL8q21bT+XXMgG6he7MqxkIOdgpkrKFhc=;
+        b=O37Mbu/GaIRlONwCeYrZPjFO1lK4EwESoBgB1jPCi78ugpq2T4tJXfes/x02n5yN2X
+         vnqJDE++l5yE+GQwggfAffLuvGTiw4tFxs8jXYAF5+3uIdJ1LrP4k13xqfrUKEHLy4YY
+         e5DVFe+EO4A7ql+p/252YSvmPq9Y4WbYFqJyOs4LlzWn6MFkRI1kG8F/U3atF6NAY9+I
+         7oVRnAS2sBDmxEI50cpmPFV2MbFKe+/107KGa3Z2hb0Yp8z2AsghqddQ8vGtqhOG+s+Q
+         KXH+96XzEgDmGaBFo9ByHdoJghtSgnjB90YlXFfM67HDJ7OR/UOGJcd68Eh4QgQnYbBn
+         2dSg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793830006; x=1794434806;
+        h=content-transfer-encoding:content-type:mime-version:date:message-id
+         :subject:references:in-reply-to:cc:to:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=ufPIe0MNsaPL8q21bT+XXMgG6he7MqxkIOdgpkrKFhc=;
+        b=0cTRp3pxWw6i5WYCea5DxTNil3Ov3hmLzk6r2uxZXDUqEHaUmQrxL6GZYMXg+4brbC
+         uiZi7p/kyKkBdVkaFgvxgZmYMDaJa0EyOmSp3GWt5KutrzyA76XlRzVyC61e/cqGKxCx
+         M6dh+aIF2pAKdfAy5X6XHfpZkmeZX3wWQXCE06h54KEwaykKAEc+RBvQCdy8s5qo8un1
+         dreciLz1v674+pUPTbJfJRTR5Vg69mQ+d42gDB7oAG0UG/h/ZsUfpxqI79t1S2xDgYoU
+         6HR3Sjaw4BNNExRNv1k14F21kDSE6RpJw1RKDi5gawvNH8FxN6HmYeho2D2XgjyPCTZX
+         nFbg==
+X-Forwarded-Encrypted: i=1; AKwUvByug1mPqV+UmY9ZEgy3KDhpGRiDWLzgqx+m71DEVPVgfTD/ZkS1zgCvXyKfVeWyqUbTFwkoAiBA5w==@kvack.org
+X-Gm-Message-State: APuU4Z+qH1i+LYCaKHedkW68962q5YPPLAAk0VaFQRu3bJHLuQ/vURPp
+	fW+nO+3kTsYdVuPNIa+TiT+hPrYjha9ZWKCzTfSHLd3VC9gaUiDu0oFRl9xMYrZwOJs=
+X-Gm-Gg: AYBFou1c6py1lCbjjtcNcZ/kawwxUzN4n5AI+2R+YqfJDuNnoVl/OAoHDPEbj3SJUox
+	MA6bbQkHbOT07yvwULU4q7ACn4Ax3b82X3XlmW5cCjuOgXvB+mkpfKRU/oSBi1RzTEkWJZvIQvw
+	XOrbNzLjsEj/ld6eoxx4Yn1QWAT56tz/R0yYmxk+FIbf+JJ9HYGuGbAwvwVa/yZRhHTFoVZabf6
+	Q+HHNPr2tr8NXU6YT/9a3KV0N/yDNAkipofIheEYR6H5/rSAeHcIEFODyGqq0veUncEmQOkCeQU
+	8MCoeXFHsjpHuaq6w94FnpJsBihSDuWarF7bPyNWhy0sLsD+xs6zOiZ6DGBaNgS4lKdSJ73YfjI
+	JVG/UBp5nz6YA8Ofygmh+zIx0XBvAvwNC9xehE6fy6TdEJGrjX26QVyegIgUL0E7d6aFpouNaYo
+	fEOErGCMNc4z73rgd3p0sr4S0vXxiRqPMkKa1NmJUAW5MdTo9aWRpprbgzJgVOodPlNB9LGID4H
+	v0XNMTxY/GIT/xJ94ZVhsNWcrBm/g1QpkOW6/SvM9Qn9f1618Oh2Hky41qeqAPJDGU/3l5CiaAE
+	MoO33DVTEm9MzIXLJfXi1EQ2S1RoI8duwPzoxK2wr4o1VsVsUooqaWIlEU1OyOZB5YdHJA0JSQr
+	iKU6FJxzoVxkCYq7wprzuamO472L+G5UkdLwxy5K/hLo5
+X-Received: by 2002:a05:6122:310b:b0:5ea:cd4f:8494 with SMTP id 71dfb90a1353d-5ec6897bcc7mr7448416e0c.16.1793830005585;
+        Wed, 04 Nov 2026 14:06:45 -0800 (PST)
+Received: from soleen.c.googlers.com (16.49.199.35.bc.googleusercontent.com. [35.199.49.16])
+        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-5eca8d774dcsm2714498e0c.5.2026.11.04.14.06.44
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 04 Nov 2026 14:06:44 -0800 (PST)
+From: Pasha Tatashin <pasha.tatashin@soleen.com>
+To: Mike Rapoport <rppt@kernel.org>, Pratyush Yadav <pratyush@kernel.org>, 
+ Alexander Graf <graf@amazon.com>, Arnd Bergmann <arnd@arndb.de>, 
+ Andrew Morton <akpm@linux-foundation.org>, 
+ Changyuan Lyu <changyuanl@google.com>, Thorsten Blum <blum@kernel.org>
+Cc: kexec@lists.infradead.org, linux-mm@kvack.org, 
+ linux-kernel@vger.kernel.org
+In-Reply-To: <20261104162352.140836-3-blum@kernel.org>
+References: <20261104162352.140836-3-blum@kernel.org>
+Subject: Re: [PATCH v2] kho: Remove redundant 0x prefixes
+Message-Id: <179382998668.2089669.366825701461081981.b4-ty@b4>
+Date: Wed, 04 Nov 2026 17:06:26 -0500
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm, vmscan: make kswapd unreserve highatomic pageblocks
-To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>,
- Johannes Weiner <hannes@cmpxchg.org>
-Cc: Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Brendan Jackman <brendan.jackman@linux.dev>, Zi Yan <ziy@nvidia.com>,
- David Hildenbrand <david@kernel.org>, Qi Zheng <qi.zheng@linux.dev>,
- Shakeel Butt <shakeel.butt@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>,
- Kairui Song <kasong@tencent.com>, Barry Song <baohua@kernel.org>,
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
- Wei Xu <weixugc@google.com>, Baoquan He <baoquan.he@linux.dev>,
- Baolin Wang <baolin.wang@linux.alibaba.com>, JP Kobryn
- <jp.kobryn@linux.dev>, Frank van der Linden <fvdl@google.com>,
- Thadeu Lima de Souza Cascardo <cascardo@igalia.com>,
- Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-References: <20261104-kswapd-highatomic-unreserve-v1-1-38be5106adf5@kernel.org>
-Content-Language: en-US
-From: "Jose A. Perez de Azpillaga" <azpijr@gmail.com>
-In-Reply-To: <20261104-kswapd-highatomic-unreserve-v1-1-38be5106adf5@kernel.org>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=no autolearn_force=no
-	version=4.0.1
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 7DFEB100005
-X-Stat-Signature: eqwr5uyeriri4cxr7j5teu89izeeudz1
+X-Mailer: b4 0.16.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=328;
+ i=pasha.tatashin@soleen.com; h=from:subject:message-id;
+ bh=bxNUDneQzMXPopJ3U7vhIU7tZ6OZ2ltQlUaSDgbGkI4=;
+ b=owEBbQKS/ZANAwAKAbt3KEzbc3reAcsmYgBq66xzJBj4jQ6s4ffhsZHum0EOCVZkmEy4vpG9A
+ nhdhvRi5laJAjMEAAEKAB0WIQRBMaqT7LRvGvB/NmK7dyhM23N63gUCauuscwAKCRC7dyhM23N6
+ 3rRdEACF+wDzWW99SGiwMwtuFbYT4Xc8ZvesuZt8wZB/qXnZR9gyJwdjXVibGieISJj+fl6WUDX
+ UkzUEhuFemIAteJft5JUXzw5Jhe3JgGpnAFYg0SU8H0T4dPbInWmAilKZelqYn7D9BVgYBSG7GA
+ aQvPIffpelgiK7WaCG4gGC0xpfVgmXtRU9RaflFlCkz5aEI12rB0FvrBr7gvroAMK+ubgFt0iEO
+ pGIdUFoo7xToZiowASNJVpJ/KswWmLvCUVQ2XGnZWcxnh7K9dFerjGsHUFUs26hTErZkHs1QXFj
+ zEFKgGKkpNzboYk3Tw5iU4ZglLYChRoinFSHoW/bWDPRBGaoHQCy+aATI0bCZI+YxHprqo2bBO7
+ z/KwoFQkgLKzRangEXnpWYPbbKiEmgt2zCBymSqriEKoDo2QTGLQKtal4UgAaxzigcB86bXF2sz
+ qVBocvbZh2yO2ZEGxVtinU78W8oDexbm2Qfsg7/xyEmsdJZtg+6ngxT4nOApFfDxFe3SM4P5F42
+ Weyraqc+tx3+G1m+sE87IjwSdxaaFy4H7+lRgvydBx08IeYpmySIeBSZ/LhUniQK4a5EDN+B8Y9
+ DBVRDKSi47qHOkrchgjFCQfrs4o0kHLVu5NzS1dXnv74ycFcrz0ru53V5iM9nJsd/HVLzr/hfYX
+ A+FxXGiWAnGQceQ==
+X-Developer-Key: i=pasha.tatashin@soleen.com; a=openpgp;
+ fpr=CAAAB722DD22A081F0D49F35633A6A993D43B569
+X-Stat-Signature: 3af8imadmsux5kqhg39nf7fttqtxe4qt
+X-Rspamd-Queue-Id: AEEF5C000A
 X-Rspam-User: 
-X-HE-Tag: 1793829420-407762
-X-HE-Meta: U2FsdGVkX18AZI0HD581AAHwpRGjne3wXoRovC6n4I2wW/2+UxRI/H+FlboTW/pSaodZlsYv1COx1ydSBlh32qZW4WhiA0z9arPsPbNDtHxaRlmi8q2M1yHYE9hGQHwewklnHPG0YyYrxBeHsu4Pw+0uJ+2YP+65XYJ0gozJSGqGOts0MtBU148RLIYDGCbD5pzNGEEx2Po5QpJ5n0JV0YAeh84QhteqSnCIlBH0g9YDapYLa7oEgFdI9uMq8aSHtp6qHCZdFGQpONAf/2GcD17K1U21F3/VoC8Grdzh+z9+FU5J7NM1QTjJy4rDBBB8OjQgiGgFV1BjjGRHMiQ3QEoL/JwPog37TmeP0Vk9DV2i8m9TAkOP5OKiv1qYkok029oeNnhSS3kbKHllIKYQgwf5hUeJAeA0rGrM9/bsvdtrkSu2Ivm2cLZVCrKjJDzOikkazDT1Im1clbD/wgVchLA4Cl7DkbPntnmAfEOoqofJMFGajr1C3+Vxp6gUcEIhDf71Op9K7Q/e6xn8RxDG/QaNdjGtkg8rfxVsLF4mPv/3YrkmUaAsjaB2+XLMfBbmxwKRdFejBCvXs6h9Qg6KsfiX43ppScvHuW1cxRnaD038zNyu3rmLZc8/zs7ngBW9AmEy1MFN8z6blYbhlSMqYoUGKTa5wdrB2+mdwMEDabMgOrhbvh8lMtA25g+60azJ93VGx1vR2V4Lx25zo+BCg5VMvEzunBzHnHYTt2BCc6r+3++DVleMqiltzOnsl6rBVJxP76QPrY2VUJUaC+7TjqzCFVWyiPlvZKftqi0wEQ2dOojUamqyi2HCUd6z+pHq6ZqQpB/1BNPFh0bedslmNTjUezThnWbV4YWzCoUG/2+oj00RmH9Jbm7KySfCzuZonwevo6PrKNKy9W7LHlGEx2dtO8WPP78jCbGloQUSpeaG8R3sF6MVXOJrPyKjOTNCNZ40VC/Cuk2E0H7hptc
- ++hko/6i
- 3NgCZXEd2lSprOvdWsZx9pgmCbtBeaVdo7lD13Sv2+DT+pDSA2fw+92dS7/GrQG/yOZoqmj1baGq9Uk9nXTeTti+4P2OHdL/LEE1oCXS8oTJYEW7I8JZpubCbA+gbetcHF9saNeY9Uw0bo2RswZrFsqddj3j9cRqFwbigcal/5G8ypUaF2DMix69fpukN8MOrQdEXb+EwdilDF5TqpQeye8X+Dy6/beNlo0wD9+kvbdFrThVBRgGQvv1HQyVlB+ymAWj9NYgaMNM4QPqZHncFNXhd4AlhrghlsZCMmf3kW5DW5FOczsnc3lttUo5t/o/3pLf11RzmGqm7IyX5yADnML8qLWM9uKMtMBUlVhMtTeeUXHe9NI8nSrQVSOqiJGFqRaHtEfFhvKoRJ3o4R5sglJ/2OaimZLKyQBn7W8agKQdymYp1bvTaWt2pk6Juv3D252FL
+X-Rspamd-Server: rspam08
+X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_GIT autolearn=unavailable autolearn_force=no version=4.0.1
+X-HE-Tag: 1793830006-516000
+X-HE-Meta: U2FsdGVkX1+11cdimvcgNFTZupZvGrd/ynIHZWEJTBUXGrLAxqZ4tPVGggRaMb/HndoHUOciscJ0ZjBCdjOOgNaY7XMJtoWKoyDyx/LxtedGLycG/lWw/MFMNoYHJDc0kBKLeYERcbHMl+9Yp1LiiYkTlx23XqlSJvHHu91qypZwtDkOdSY410y584AZPPsSpJ5StzXJJraUyUczcZHhFrx0ahuYCv3+boFTnWVuWWJnvu0AIlDBRgMmUmnMcZiGt1IRb3I1KhuYrjdrL3EaMeNzuDyd7+viL4jvEVMevvZmhubOyNNafpl7DKhDHYZSQhVYgq0XpzYGEicCQK9XheCRxvZJrn2gCV5ZE9ZdnTKIwgSfkFi3EknHeI4azSgoFmGh/quMG4ot2/SAbwRXc1bwyrEQM/r9Z46RRu7LajmSnoCZhUvwAe7Avb823RhSqZdwHFZ5kyU9qZiFF7Q5SunTFPCzG6lMCeqYbAHXr/+m1xtAKLBcxDvaRH4T5lmD+DWPzfLGHZQ3QTrfqBJrNpiQejDlrC5dNgaftOzsQYU3afhqEt8yecoNxuVEeSHTrgMAtR/jAlOYhfYCjanG0gbFLp3/NT3Xht9ZiCBdNIHrx+1KCM9wVn5DIGgAk3GseRpmYtXfqdSF7gRG2E1dnbSnKjG9C52yYKCNeNbeAmgZ30ytBdFhoaEAakp9067fn37HIEAgpy4oEJnmuTFQW3CtM1oLrKicF4o+xnx/MnhilumoC0jSy4FJu0aCQ/TxjvRexiuifpAZzdpEE++DbEX1xYNCwOFPg/fbrnvKd5Psq/rAnE5k4i4L6N40HWo5LUZSdKQa3CyMlSI/6iIpbJwlwDmqXA43z1Hrwo5prgS6Bk/6/Y7G6CosNhjmHYD3R+zjMseVUMoBiB2s8mki6Tv6zZ3BWZpJWbAJa4tLbkIO948cRiTz8n0sF85Qayu1WUoFc4SRjDwU5Z0jopA
+ 3KDSA8pJ
+ vQlyAYapSfU3CrDj33F5hWVYyozQbWVd8RV7tIMy8lr9WNK6VCZyqncYmSyO0UmnyVEvEysggDUg49aUuHxsrmadpLy7lQRUj4052QoMuugRmSXuxFMf06gYEUM/7YO2NzYHd4VPb7V+Hiz3xAQNBr2MWdQFat4GsubmDu/waK8knXGnHz9trrraUniL+Ou6XutP0fPdF1rR7ObBARA55gysDKX52X1TwwRqTOUBXsvU3g0a4wceOqfVBUvDg8fCiQ7FHA5FCAjPVsKR/oTnUokA/bHDzjo4NGrhKQ4Rbp3zfJkQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -139,34 +146,19 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/4/26 7:38 PM, Vlastimil Babka (SUSE) wrote:
-> Hook this highatomic unreserve to the moment we are increasing kswapd
-> reclaim priority, as that is when kswapd is struggling to make progress
-> and it should roughly match the case of direct reclaim failure.
-> 
+On Wed, 04 Nov 2026 17:23:53 +0100, Thorsten Blum wrote:
+> kho: Remove redundant 0x prefixes
 
-isn't raise_priority true after almost every pass at DEF_PRIORITY, stuck
-or not?
+Applied, thanks!
 
-[snip]
+https://git.kernel.org/pub/scm/linux/kernel/git/liveupdate/linux.git/log/?h=fixes
 
-> +		if (raise_priority || !nr_reclaimed) {
-> +			/*
-> +			 * Similarly to when direct reclaim is retrying, try to
-> +			 * unreserve highatomic pageblocks on the node. Convert
-> +			 * them to movable ones as kswapd doesn't have a target
-> +			 * migratetype, and passing unmovable should lead to
-> +			 * least permanent fragmentation.
-> +			 */
-> +			for (int i = 0; i <= highest_zoneidx; i++) {
-> +				struct zone *zone = pgdat->node_zones + i;
-> +
-> +				unreserve_highatomic_pageblock_zone(zone,
-> +						MIGRATE_UNMOVABLE, false);
-> +			}
-s/movable/unmovable/ in the comment?
+[1/1] kho: Remove redundant 0x prefixes
+      commit: 3cf66b39f560257e77f422d9fc73525ee2c29275
 
+Best regards,
 -- 
-cheers,
-jose a. p-a
+Pasha
+
+
 
