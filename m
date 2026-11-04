@@ -1,97 +1,104 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9EC3606A329
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 14:59:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E46A0606A31B
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 15:01:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=frHKW37W
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=OwJnxig3
 Received: by kanga.kvack.org (Postfix)
-	id D55136B05B3; Wed,  4 Nov 2026 09:59:30 -0500 (EST)
+	id 0D5076B00EF; Wed,  4 Nov 2026 10:01:32 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D2CE36B05B4; Wed,  4 Nov 2026 09:59:30 -0500 (EST)
+	id 086766B05B5; Wed,  4 Nov 2026 10:01:32 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C43186B05BA; Wed,  4 Nov 2026 09:59:30 -0500 (EST)
+	id EB7DE6B05BA; Wed,  4 Nov 2026 10:01:31 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id A92E26B05B3
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 09:59:30 -0500 (EST)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 442C81203D2
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 14:59:30 +0000 (UTC)
-X-FDA: 85397745300.08.31C1E77
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf05.hostedemail.com (Postfix) with ESMTP id A1EFE10000E
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 14:59:28 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=frHKW37W;
-	spf=pass (imf05.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id C7DD66B00EF
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 10:01:31 -0500 (EST)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 5005FC079D
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 15:01:31 +0000 (UTC)
+X-FDA: 85397750382.24.21C1654
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 760B6100016
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 15:01:28 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OwJnxig3;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf14.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793804368;
+	s=arc-20220608; t=1793804488;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=T5ANptYopnl5748/p2sHm7qxklUriu1qCPoMwTQ9pxA=;
-	b=ZaPTRGwLlmwntCs034aoQDdNxNIvWxAQw3Yg7ISApNeT1MZyyo9X8eVkMDwP4xWhAIvXIR
-	d+PLxCM3K4EclVxCZMV48xrfNBYNlZULKaMhDsWY4lzsopmyNx8QIngkZeSl0rCnWeTN6f
-	tbr9Fa/wCsjxgTrUwm0TOt0sR9UVWo0=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793804368;
-	b=oMZzB+YhfoWRSScIhIuI8qkU4hwJjEQGYviRvHYTG83Hf6jomkxa996EnhdB91hFLz9PVp
-	ahDDSLe75tRyRRhLUDwcEOFAeIMr2C4ZwjNqEVYh6tFF0CNRpJMfyQ70i0ddkG2x44RLhX
-	y249WpSMI9VZuiHx0HIPlejderr3vNY=
+	bh=6YxOPHeBFVzKRVOWsijIHFAGxsh3bvwNNvRfegWSMFo=;
+	b=0k6BptPZsJP+tsSeL8L77CigA+iO2EQG7vezz7diEM4/naYZbkHq7HdLbvBW3R/t9aK/IC
+	gffZXbhdE9yDjCSg2lJ8oWDzAG72qUxiB3WVGPeb+hT/cxqtm22mtvggeBgjeysv2V5VPm
+	bVo0eE1yjBfgM1RLEpmlheZDEunWVjg=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=frHKW37W;
-	spf=pass (imf05.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OwJnxig3;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf14.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793804488;
+	b=rIp0nghcD0wxTDdlL9SkD68Ojgc9X2KbMqS7NjQVuqav+uepYBmkUa6SAgI1DGsfCzUYDA
+	wGIp0Ju3JmNn2F0AuRm3TjbuhtyNQOVg8Xcjdi5uQrPcqvZIsxP15nqRslLjuuXoXA2uuC
+	cwB9O8giG71OIDYbvUrig9ZayZFtJVE=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id E28B1419CD;
-	Wed,  4 Nov 2026 14:59:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 224F81F000C1;
-	Wed,  4 Nov 2026 14:59:23 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id E7AE760546;
+	Wed,  4 Nov 2026 15:01:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C76AF1F0093A;
+	Wed,  4 Nov 2026 15:01:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793804367;
-	bh=T5ANptYopnl5748/p2sHm7qxklUriu1qCPoMwTQ9pxA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=frHKW37WQrrbFlLhJok5407YPn09wzEYmhPuqaufJ7K9HzQ4BMN26qtMcMsBDoQNO
-	 fZw4tBoJFy+J8NJaMWS1hP63l3CFB7Hai9WMz3Y8wVkvSem/QN+dbCmJaex8Rf5HHZ
-	 G7p3p1z3nySVihNl3LQgcll+PCtED6bEZm9Uki1+vyseI4sxdwHKnj4MMv9CFR9Zlp
-	 JynBqV4HbA6DibQSRx5lrvt6Sl1PLGa6tgkUhliNwgD887EUxGhwUSNMI1d0O4NKBa
-	 v4jzyhFWgW3kM1FsNImRW3lM6C4+bPTav/gDr4MrSf/fC8LTj/w6KQgHj7E6XjWUil
-	 4dDTd2Fvr9XqA==
-Date: Wed, 4 Nov 2026 16:59:20 +0200
-From: Mike Rapoport <rppt@kernel.org>
-To: Umang Pokhriyal <umangpokhriyall@gmail.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Peter Xu <peterx@redhat.com>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R . Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v2] userfaultfd: validate the whole range before changing
- write protection
-Message-ID: <autISNbq0kLikxlF@kernel.org>
-References: <20261104093457.152245-1-umangpokhriyall@gmail.com>
+	s=k20260515; t=1793804487;
+	bh=6YxOPHeBFVzKRVOWsijIHFAGxsh3bvwNNvRfegWSMFo=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=OwJnxig3rfoGKDzHfgnzBO3NMi8sr2bi7nZPcIXsVfqDqD2ml4RCvESVjw64EXsZy
+	 0Iq0Rveie9/lMNePvdQHltK6+H2sKsmqZo/VM8NHEF1vn0ybRJsZeSpdeNVHnfYK9I
+	 9JSalFL53Wpknx1cYHqboIWo9jjPjXzonHiRjCgG23CusXijz7xRveiT4cnAjU9Yc6
+	 0GnKo5RyD3TENvFcCjOcQWx53fWl25tXPxDWbTew6D7VkfDMp+7jSrhY5l+qRtjJJ7
+	 eMAeeBXN2mLzMiJ8zChNdFZCpdrJH2V2dbL3LkaeTJ4ePFuK4SZctGZZtlmPPCnOTn
+	 aEEiOhq83RuYQ==
+From: Pratyush Yadav <pratyush@kernel.org>
+To: David Matlack <dmatlack@google.com>
+Cc: kexec@lists.infradead.org,  linux-doc@vger.kernel.org,
+  linux-kernel@vger.kernel.org,  linux-kselftest@vger.kernel.org,
+  linux-mm@kvack.org,  Alexander Graf <graf@amazon.com>,  Andrew Morton
+ <akpm@linux-foundation.org>,  Baolin Wang <baolin.wang@linux.alibaba.com>,
+  Christian Brauner <brauner@kernel.org>,  David Hildenbrand
+ <david@kernel.org>,  Hugh Dickins <hughd@google.com>,  Jonathan Corbet
+ <corbet@lwn.net>,  "Liam R. Howlett" <liam@infradead.org>,  Lorenzo
+ Stoakes <ljs@kernel.org>,  Michal Hocko <mhocko@suse.com>,  Mike Rapoport
+ <rppt@kernel.org>,  Pasha Tatashin <pasha.tatashin@soleen.com>,  Pratyush
+ Yadav <pratyush@kernel.org>,  Randy Dunlap <rdunlap@infradead.org>,
+  Samiullah Khawaja <skhawaja@google.com>,  Shuah Khan
+ <skhan@linuxfoundation.org>,  Suren Baghdasaryan <surenb@google.com>,
+  Vlastimil Babka <vbabka@kernel.org>
+Subject: Re: [PATCH v3 06/10] mm/shmem_luo: Don't make early retrieve
+ failures permanent
+In-Reply-To: <20261103010216.3447716-7-dmatlack@google.com> (David Matlack's
+	message of "Tue, 3 Nov 2026 01:02:12 +0000")
+References: <20261103010216.3447716-1-dmatlack@google.com>
+	<20261103010216.3447716-7-dmatlack@google.com>
+Date: Wed, 04 Nov 2026 16:01:22 +0100
+Message-ID: <2vxzik2ck5dp.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261104093457.152245-1-umangpokhriyall@gmail.com>
-X-Stat-Signature: cdjhhgddra7s9kdrt9y6hqoomdi1d7hu
-X-Rspamd-Queue-Id: A1EFE10000E
+Content-Type: text/plain
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 760B6100016
+X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1793804368-667173
-X-HE-Meta: U2FsdGVkX1+mcgeLFWupbBL6pJ0lZ0WpsLW6po52zJ7u7NNgy6LPUXaGPMNsZDW+mayfo8QDz+zqdGS55VN6snHbVA8gAM/97l6cOzUs3/mnZDndBXECtR8JizXZfFcJqAbQXBoHbNrBCeBWIOxU8P5oytR5Ic53EgmYC8UENw6WpjCkMNb3H1+z6t1hhiy5f/G+J8HmyUxnEIwMnp8OkNQrE8CcpS1CHLH+Kp3j/sfigHwnW3O3wIN02kjYNrLk271YBYj32RQrhq6Y/eFn/id4jg6eRjNZRzu6h24xm7t5y0qTtFjOxXCHLxqHAnL0c0SpI+iX9qt+/hgM62C13FNbAqGJAw//OIsjBwrvfRuaLGOHcy8j+MSLfFMe3AQXdw7okTjQkKlAo4fDVF8U4YL4+dTnEbv4tq1PsjoGjPShjhoAtq/lQQeqJ0a2d1BD00FntBBrWdGRyOGnlpXBVX/AgKr5VWO4hbLmphLpT3uDF6AL1ihCuNYpNwf0ewRN7lg7PxVt/JigBRkCNWqOJncEG0YrFbBzpTl/1eVavxguvksUCmo/7W1pGccW48WECxKF0of9e6/Tk4d6pX4LyNpnam1WjtBGwMADLubwHHsy/D0tFaMWso5JiKF45wP8qAnamKZU3Yy2pUMwTFhuziIhNhnaxyekOhH7xi20O0OzpzpG6AHP0ILTFqZUYgVLu7qW49D++puJ+M6xDrf4Np2hbEvQRfv8VoFjJY97NjHoD9R5sg3wH+iVRx0NwSa0HOiJ+Z6LHqzgk7SsLNDd0PYiIITD8Am498E/IaJz+8wnnpiO81fcJrh4apEQB3Ty5JQ3uPEJ8dOhVDkqRPIy8LayoZsWY2b8jU5Bo4wV+krluiJrI6FWiRNSWgkJ9zXLA0XNvWQRCdqzPh98xBExEbAFEuo/5diG6sKk5UfSZvM3ibVW4LvMDU8L0CKHaY+cDQSA5Kc7tsdt/HFKq+m
- i+ZEwvAu
- hU7j+Smqp2BmXMnSoKtoLHgEI7l06swGIdtUWOEMNvjOVO65z4jLLDtjVEa5Y4B+ClSnYLuMe+GCGGxJVlXFQ2o5DbB3+ijxx7GDvTaauLyKZ0DhypSEA3OXdLsZL2dvReYXBjYtOH5YyoMXQ7Id9D+lvIX5MxFWLCRtK9v0IueWWKw29D3xEDeeL3FKQZcC8MiDW6GTFc9VjCzcjQq1Lz2XhzgnnJJfAl+d705uMttTpNlYIJiBDuPEaeQq0W7wJf1WR0yBsnTXPwxxNuV9VReFX/kC+PtNuaVL7JsiaBAnEe84=
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
+	autolearn=no autolearn_force=no version=4.0.1
+X-Stat-Signature: pyr48piyt1wfur3xkfgugr89fsbcgbex
+X-HE-Tag: 1793804488-334246
+X-HE-Meta: U2FsdGVkX1/3xCUMWDFmfFz9E+uo9tZ2EVubXQuuE7RK2T/fkud3aeDmLFtpmz7lzRD89uLsKI0JfdThikgJ+oLl6HRneGSMHOuPYQiPMM59cIUqor1rYpO2DIpvxJTZsavC4od0YJXW1kBW/jfMF/2M/9PKQY86Zd1GU8KmxnnxIKasjxlFtyYjxw6J9fQtSEkEG14paLKzLCe0BT14HpWU0BFTzxl/8mo4nmrBqKCbqA1wLe8z5BViTZ9vdNDM1BGhvzU+aK0xm4fPwLYkgADmOtmN2krQPaG6exSsFN3kAw4njqgG4ZYP3+d/8QY7PvEmczLGBpy5IaaZLcyC6v5rq1fhOseGPbfj76B/8Nq+jXtEGSLCALrrKEbeX8XJGBfQHZMoxHA5TRfxxVaWj7AxeGxKofdrevWg0Mw/W1t2Z69ncDlg4GUgzKJZrJvqp/p3oMY/slb4UEfI9etSYsHQQisQxO3Q9SJuYDU9Fz0+z83kS6t8lTxw39lH6kxNX859IXpGVj3R7DCKQL8hFjdpe+B3MBVwMEUHXS/LDWqAnmSAeJfrV/aljZxrpBbXCHxjtDrVsZEtvzeqRS6a7lqkx4yKF3/4QyOBd+6T198LvsgRcXVKljONTIkK/Ll9K+3EcEA8WcMu9KJ8AJWtYJb6bOMP2KwZPbRBIaAGcXGPW6XMxqENJ8CFsc3gN48Be4UgXYOhAlxtQ58B1Z7KlbeGCn7nCcp53gvDQoYWUB39xNu2+CYdS6A49ofw1CFBgEwUhqciA9lZL/2A5EVm8EmNWf/UWdln7jGl4/AIFQ/cK36D2nvy0uuy+QL6p/2xoIhlV8XZP7vm0adBHv0nAPOEs79VRrkElAEQlkJUOe5K1fuBu4NG3JI4ugMSBHtlplT93FbGBYj+23gJEUIpadLl981YD7PDSeNxx/CYD2nRbN73aEpc8Cxd7QIrYOfoasyzMWzkEPqeR3QPbLs
+ ZfUZV173
+ Ai7XlXPTIslSJJMbEH7PZ3cHp7VTHRhZ0H4aIdSMD/OjjlBDKpXS6CsQaqgd8kQ59KysaXbr8CYVDqayDup6P+K6ByKMSxa+C0gj5ER2nn8rWvbt2Y6FABVqzT5s+HXS5iKyOi76hkQxe6vVV55nys9z8+LIEtv4HvYGeHmddMguYuHgPUmtLQdk9NtdQ5sRbtlfIyBp1vNr2GIC5DHSSsJRloSiy/E6PQ2hung+nTS/jIWJrzhcaXNmaSP+HutgkNs/c
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,37 +107,36 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Wed, Nov 04, 2026 at 03:04:57PM +0530, Umang Pokhriyal wrote:
-> mwriteprotect_range() checks each VMA as it walks the range.  When a later
-> VMA is not registered for write protection, or is a hugetlb VMA the range
-> is not aligned to, the call fails after the earlier VMAs were already
-> changed.  When unprotecting, userfaultfd_writeprotect() then skips
-> wake_userfault(), so threads blocked on those pages are not woken although
-> the pages are writable again.
-> 
-> An unprivileged process can trigger this with a range that spans an
-> unregistered VMA.  It hasn't been seen in practice; it was found while
-> reviewing the userfaultfd range ioctls with an LLM.
-> 
-> Validate the whole range first, as mrwprotect_range() already does.
-> 
-> Fixes: a1b92a3f1498 ("mm/userfaultfd: support WP on multiple VMAs")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Umang Pokhriyal <umangpokhriyall@gmail.com>
+On Tue, Nov 03 2026, David Matlack wrote:
 
-Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> Mark failures in shmem_luo_retrieve() before it starts restoring the
+> folios as retryable, and return the error without freeing the serialized
+> state. If no retrieve succeeds, finish() frees the preserved folios,
+> like it does for a file that was never retrieved.
+>
+> Nothing has consumed the preserved state before the folios are
+> restored, so the retrieve can be tried again.
+>
+> This also fixes leaking the preserved folios when one of these early
+> steps fails, e.g. because the file has seals that this kernel doesn't
+> support. The retrieve freed the serialized state but not the folios, and
+> finish() then skipped the file because its retrieve had failed. There is
+> no Fixes tag, since the fix relies on args->retryable, which was only
+> added earlier in this series.
 
-> ---
-> v2:
-> - drop the redundant error assignments in the validation loop (Mike)
-> - drop the selftest (Mike)
-> 
-> v1: https://lore.kernel.org/all/20261102103621.156928-1-umangpokhriyall@gmail.com/
-> 
->  mm/userfaultfd.c | 21 +++++++++++++--------
->  1 file changed, 13 insertions(+), 8 deletions(-)
+If the seals don't match, the retrieve is not retryable. It will always
+fail.
+
+I think the only retriable part is memfd_alloc_file(), although even
+that is quite unlikely to fail. But I think that also fits pretty well
+with the most important type of error you want to retry on, which is bad
+arguments. In later patches, you check the argument on
+shmem_luo_create_tmpfs_file() or shmem_luo_create_memfd(), so perhaps
+set retriable in those functions?
+
+[...]
 
 -- 
-Sincerely yours,
-Mike.
+Regards,
+Pratyush Yadav
 
