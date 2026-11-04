@@ -1,66 +1,66 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC648606C5B5
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 19:53:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 072DE606CA14
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 19:53:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=WlfLyMWw
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Ay5fDaWt
 Received: by kanga.kvack.org (Postfix)
-	id E19216B05DC; Wed,  4 Nov 2026 14:53:39 -0500 (EST)
+	id 3447B6B05D2; Wed,  4 Nov 2026 14:53:54 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DF1056B05DE; Wed,  4 Nov 2026 14:53:39 -0500 (EST)
+	id 31CE26B05D3; Wed,  4 Nov 2026 14:53:54 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CE00A6B05DF; Wed,  4 Nov 2026 14:53:39 -0500 (EST)
+	id 233796B05DE; Wed,  4 Nov 2026 14:53:54 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id AA28D6B05DC
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 14:53:39 -0500 (EST)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 45F2E140842
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 19:53:39 +0000 (UTC)
-X-FDA: 85398486558.21.1A79510
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 6F80910000B
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 19:53:37 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WlfLyMWw;
-	spf=pass (imf05.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 0C8206B05D2
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 14:53:54 -0500 (EST)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id A22B0C0866
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 19:53:53 +0000 (UTC)
+X-FDA: 85398487146.27.025997F
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf09.hostedemail.com (Postfix) with ESMTP id ED914140005
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 19:53:51 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ay5fDaWt;
+	spf=pass (imf09.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793822017;
+	s=arc-20220608; t=1793822031;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dsg9KbFNlQBgwAedsKmZy7BqjgWqOw9kCQlCnQdMJZA=;
-	b=LUW1M1C+GeE8g774Dg+sEX6pBdsGluoaHOFgxYjr0F62Qt9awGOe0ELrPaaTOFUPd7d//p
-	qoKUqfAewqEyroNQVBXchG7SKBK9RrLlz6FxJdi1vYqQ6Flhmflxmy3OzULPisGBIGqKMC
-	A8Q1gsr+7c+DEeH650h5HekaP/2uGKc=
+	bh=f4E5LhgvAcYWZljBgO/W1U3MMJwdn+qZCE/pQraBe8U=;
+	b=qD8nAndtyLMcy7q6nX4Z4VzitHJztS+Lzz49p7cujuhSbCWqDD9loya+CDxDWvdWZ2FIfQ
+	4YIFT8Myv9Z1nYmbv4Io6c13yeBan/foH8nSBv3rxeIaatDf+89h0m7AhRzEiovjY3iIOL
+	R6k/MPg0YG28aP1CV8xLEAg40TSkMm8=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793822017;
-	b=Dbh7aK4rExXMrnH0K8ApQNDlifhbbXy4YSaO7whNl9UU0OrK+/ZQH4gyd0i14lNGxYgNOJ
-	DdgDwmH67v6zhN8+AJAv0CDY7j1BZYWqP5YaYtPFoEMG/ZT8Ob21nXj1FENYj2QnPhbrwe
-	fB3qngbxjumyibJ2TijVa2DBN4SdEls=
+	t=1793822031;
+	b=q6afpU2LR/C2RV91jBeatvA6DO8lA39Zy4b2C8Qeszzz3liHKte/V4zv0N56oNcIet3WAX
+	dmQOkP/aRYrbSAHUPaj9znaSjyrylrmeDgNroU6eHJxBkeCH3sxOAp7DLVeaesumMFbLLF
+	jQueGLA7fES7LBrikB7EDy/QeRgHyIM=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WlfLyMWw;
-	spf=pass (imf05.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ay5fDaWt;
+	spf=pass (imf09.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id BCC9742B35;
-	Wed,  4 Nov 2026 19:53:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 665591F000C1;
-	Wed,  4 Nov 2026 19:53:24 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 7C9C660F33;
+	Wed,  4 Nov 2026 19:53:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AAC11F00919;
+	Wed,  4 Nov 2026 19:53:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793822016;
-	bh=dsg9KbFNlQBgwAedsKmZy7BqjgWqOw9kCQlCnQdMJZA=;
+	s=k20260515; t=1793822031;
+	bh=f4E5LhgvAcYWZljBgO/W1U3MMJwdn+qZCE/pQraBe8U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=WlfLyMWw9PMWft6v3dWdKtEemNCAsc/h/WCr0nG5tqlw1sEQtAckqBhAP9iFKJgWf
-	 27ncRmg1m8lM73l7BGvThX+mkSAof45Ljqmi9lCmiTMRbF9fM1X3/mBBhBzPydmlAO
-	 DeHW3949SPOMNs+43V9Xli1roY8qLNOykPE7+vV4aJTQWW190ZkX74Zo7Zh8U+HHhP
-	 d/XnnzDuQDPFQtiKceof0EppiONyIpR9s/hpjh94Xmy2AYlTdqUDnq8Cy13OVzhv5Y
-	 x7sNbPQYQHvpSi8Y3OICpdiWEC+Zjh63M8mM9daa/pACN3UkdTLxiq8kpclsKBgWoi
-	 4kSRU+9L7gicQ==
+	b=Ay5fDaWtG/yWIDOYM+DggFzTN2LWbh0BW6otP+jIWAHXSuBEsVaLRZz5ZGfpgRvCE
+	 6shldu61dY4NwBfkCYbw7q4cTqz3itoS1DSO0jJ/m80wdS5Zd4cXDBc3qovYZ0srLC
+	 U+IQP3Cf9hMAd3vazbsilUbA8DkxquoHSwEkBJ+7nEkOcCIfxO9SZLsKEJkxUQ3qC/
+	 DcxdbWZq7MCNC9JXaZdePv4FyzB69QN2POFSFhjzDTIlCOpxPJ8V89Q5VWoSMQ/EHp
+	 J1FcUjC8ycDtKpuAOuzPui/5hlEvRP7hunia1FQ4b8dx3JEke6caIeMQIFr6OP34Hm
+	 Nxddkhn+cC83A==
 From: Christian Brauner <brauner@kernel.org>
 To: linux-fsdevel@vger.kernel.org
 Cc: Linus Torvalds <torvalds@linux-foundation.org>,
@@ -121,31 +121,31 @@ Cc: Linus Torvalds <torvalds@linux-foundation.org>,
 	linux-debuggers@vger.kernel.org,
 	"Christian Brauner (Amutable)" <brauner@kernel.org>,
 	Chuck Lever <cel@kernel.org>
-Subject: [PATCH RESEND v2 15/30] profiling: let procfs copy out reads of /proc/profile
-Date: Wed,  4 Nov 2026 20:53:22 +0100
-Message-ID: <20261104-work-procfs-fs-v2-15-319e0f9a8aae@kernel.org>
+Subject: [PATCH RESEND v2 16/30] profiling: mark /proc/profile permanent
+Date: Wed,  4 Nov 2026 20:53:37 +0100
+Message-ID: <20261104-work-procfs-fs-v2-16-319e0f9a8aae@kernel.org>
 In-Reply-To: <20261104-work-procfs-fs-v2-0-319e0f9a8aae@kernel.org>
 References: <20261104-work-procfs-fs-v2-0-319e0f9a8aae@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2059; i=brauner@kernel.org; h=from:subject:message-id; bh=gnVLSy2PYfESjxmb08z8Yz7ZqLCo2VlJ7LnvjQbbWNo=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS97rF59HT+zup9O3ZGTf/0yHBfocWfFwsvSv5eJLh9v abrT7/nUzpKWRjEuBhkxRRZHNpNwuWW81RsNsrUgJnDygQyhIGLUwAmUvSD4Z/pxPOtqj0nL7pp FThnlOS/03fdYCfgm5H+M+Bo0z2DeWIM/9O8Ilp05sv4X7J9I23pz7LGW/N/3/7A04qK/L5CxZM 1uQA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=817; i=brauner@kernel.org; h=from:subject:message-id; bh=G0gwYdZ16oKFC7EZJsDlPxepqJg/P4CRWLJP6izrYeU=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS97rGrTu0wWKSzkuXO+Urv0AN64bf3zr/V5uClEO3wY I7J/p1/OkpZGMS4GGTFFFkc2k3C5ZbzVGw2ytSAmcPKBDKEgYtTACZyag7DP5V5JQ833nexiq6f s5gt0f6uqxUzZ/T9PH2FDXJ9PK+sWhkZJl1nDLj2O2fpAYUv714J5enO/mdzabLGrvDt7b2/l0U pcQAA
 X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: s91d6uz4sthchojen767eghmjoqkqaxd
-X-Rspamd-Queue-Id: 6F80910000B
-X-Rspam-User: 
-X-Rspamd-Server: rspam08
+X-Rspamd-Server: rspam06
+X-Stat-Signature: wk3o9y16z9na9y9gf3gwommufsjrzkw4
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
 	version=4.0.1
-X-HE-Tag: 1793822017-991931
-X-HE-Meta: U2FsdGVkX1+GMmB2O+chf2eUTcPK4xBGSTcI7CSQp3XucQoMdpPhqunmDgJmV3nDTn1prYK0XX0iVCRl/14SzdAAvob6z0JrFd8z4jLQANk7f0yrNQDwfUE9HukXDwo0px6BH8pueHOq7sJY9AeqBaM4g+IDb4acWQTvsiDmLpx5yaYBb/1tdZJXMKbqJG5YZpI4Ba/TmhHClo93pKhlkoAdut8VKJoQQzatL3nEfm6wIzIGXm7Xox0j39qg0AnebpZMxAq7o+Rf9K/9VAMtex2OYrQSuJ24dLYeAAN4aldtwhSx3PlrFwSczQKKJCD9YuPw1v0jN+Hhu+YK8sULMMvFkK4+Myv8ABjU9TpAg1HzC34LqA2HLXlJAhcPnvmscyqtzkFOgHmyYks2tdwPyqZGkScGJgljZftHnK5T+Cvief4qyeT3g/Je8zrSXWWAdItlKAJw/Uhk8GvTiZVXsSOnaYjSeZ0zxhiltOXLKEzpzmebgV7wvKONcBrYCVUnSKFDkVTo8Tfa6eEZjXYZSKn0xs7VgmiA9cgHc04dFFObFLOYaSFIKNAJJKZDVltMdtHZD6GIGJQwNPVjsbiGz0WjNAjpz24f0zE9HW/qrvoBvQHXjyBbDe83L9iBrx8+R4hzbgJZg5LTnJ4Pjs8rZyoodV/Fc/qT+/eGNGORXj1OJaflwEOimlbUzGlWpcW1lyeBqKIHgVaGjCCnUFd31VNaCzp4MqdDyroSX6mXSdBnh2GOf1lHYApXVdpkjH07IOMsWaE3EbwIaKRxGc/Jkub5T4eIHsy9haMVji/zeDLeOyA42rTsyqME/EitWfzGML2wdYlXEzFXwoTMUooPpOnyewTqMh24AxLTdmcJNiaM16ioBfWEZXCpA91Z8aobSuDhbJrqkpH7ljh5ow9+buZ4zjhEm9dhdPSRPl8H183skq4183N1BFRc1JgcWIlaPd4oVzwAzBy9DxMHHmy
- xBRffRV1
- yVQVpE4t6nOaJV4KIoPEmNCTUFsAA7/SvUA3a81XUVsbBLRAWv+G/9Hc7Bfzu1mgFmYwAfoU6yI+/FM3KaU2wTgn3MMHfOqg5ErEaTbgRtxWZsmrSNRvsqHZRzDihOuf42sRJdRc5qoR8lCnrLEP8oIKcLPch57oyPF5ZxnsSr809CBkoWRGAHKToXPv5IUBaXGjyAsQHkCbw5Fp4xeGhpF0vAvxAxabCDkhTUg8w3V1X8k2163m5DJ5gFcghHzpeEWJNcGvSC7Jw5nEubW0RN8R2F7HWKQpOb1aEI+WyRQOMK9J7on8YFeUHLrvtGm7D5oqS
+X-Rspamd-Queue-Id: ED914140005
+X-Rspam-User: 
+X-HE-Tag: 1793822031-438914
+X-HE-Meta: U2FsdGVkX18p0l70/EYo4DMvqHK8NlPQOsM2qNBJkoN4oryr8l3GRy8s4ki/yzzAvFV6DqIBVek7kNVT6IlO3poKSpgZzrtt3+rI1m6co9U5RPgtrVIBFgs1/lR+BEAUD6VP++zUnnf7A3x/v0rbVGGV9XrLbRqKAuH7HVStK36Yr+/WXC+ZG0ks3LcDaBZxaihhfDZ4+lVzgqlqWEwvMl9+vWgKaRaJF/C9SA1BCMXU4mDARTmA2wh7E1w/MIh/2GGnpkeGIR/Wzn10XkOxoJR3Ga3bALfAQFbpKuaIaVR4YzY0XtPFaMnebeRctF4fVgd7lHi9y1vIme6gnwMgyJ/xefh2bicT+l4Rzv6o2bbud9y4T7lLJEWnBw5bGIaaATZIFb26OTdspsOXqj7v9uTsR9WtVHxIwBPtFBs4cnl1Z4yeAX/+HFQ+XzlXgWdoh2JI5XWbRDQbDUR10XkZe3RpdmnfVhRRSiyLJliQJgbr5G/zmHCnjpGairxUnUjTfBlIKgMPUdlAvBCsPwPxt6s8bWktVeSQg9Z7y3BfqS4XbPMjxeVTzN2e2IiiNZH2Q+KdyM/sO5DSzNAcXy4/hrLTuMY6HSVOstZvzvcMoHhR6DllI74dviFbAbuisJZbmpT2VBGPa/wTjLrq9RS+EAt3j7tK3D8+ENBpvuycpBiHdLEBjWwW8qWOHc0EBv859xgazR2RjMsmmu+XHM5nEDXbe7V/1dM/W5S7oMbeCgwBMjKtDE+ozGX8qU9+a0Eu0wiRIPgGDnHv4vuz3M7UR2+9TK93PT77lN8EYvdPj5lGLQJPLyB5C4tgJc8OXSz8QOUNdPVYOpW5II2QvkxXvrRjHb81pgO156EzTV9MAovhUM7y1I7Lo7lLTEc0kaOShfAr4/Rj5tOYcPngAN+9BIZ09Rrb6ngwn+vnPxYBBtxAJv780mdwEUq4G0Zr5cBHVEIQI+D7T/THr5gpFqg
+ PvGTC3x6
+ nAVp3+XC5eK55quZBRgK+NikILD090eDoK9jwjPs47HD7t4dAlPSkJqUU/AMerb7GP5p//FF6DcKxM2A16KbXg0WV/ChnUZlH7cSno0hMG9sJcl8pFX2yndz4QHoST7dSkPsVOLJqauUtDWYi4ct8PrHZfkcRhR7GfQLR4QM8gmEkSH5hvRhGG5R0M1pLyT0dsMO/xpMVY6YL1Xpyjv15thAHJ5mdmWTIADLyI5H9+EyWIqTiKocVYEau4yJgsNgk4T3jc6qgzgtrME0khDV32Q2MsdOAYNCtEPiR
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -154,64 +154,28 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Fill the buffer procfs hands to ->proc_read_buf() instead of reading
-straight into userspace. readprofile reads the whole file in one go, so
-ask for PROC_ENTRY_FULL_READS and procfs fills such a read in pieces.
-The file is read through ->read_iter() now, so sendfile() and splice()
-work on it like on the other converted entries.
+/proc/profile is created when profiling is turned on and never removed.
+Say so with PROC_ENTRY_PERMANENT, procfs then calls into it without
+pinning it.
 
 Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 ---
- kernel/profile.c | 12 +++++-------
- 1 file changed, 5 insertions(+), 7 deletions(-)
+ kernel/profile.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/kernel/profile.c b/kernel/profile.c
-index dc2db66a77d2..64f6a45834b1 100644
+index 64f6a45834b1..0c2672adcbb5 100644
 --- a/kernel/profile.c
 +++ b/kernel/profile.c
-@@ -142,7 +142,6 @@ void profile_tick(int type)
- #ifdef CONFIG_PROC_FS
- #include <linux/proc_fs.h>
- #include <linux/seq_file.h>
--#include <linux/uaccess.h>
- 
- /*
-  * This function accesses profiling information. The returned data is
-@@ -151,7 +150,7 @@ void profile_tick(int type)
-  * get meaningful info out of these data.
-  */
- static ssize_t
--read_profile(struct file *file, char __user *buf, size_t count, loff_t *ppos)
-+read_profile(struct file *file, char *buf, size_t count, loff_t *ppos)
- {
- 	unsigned long p = *ppos;
- 	ssize_t read;
-@@ -165,13 +164,11 @@ read_profile(struct file *file, char __user *buf, size_t count, loff_t *ppos)
- 	read = 0;
- 
- 	while (p < sizeof(unsigned int) && count > 0) {
--		if (put_user(*((char *)(&sample_step)+p), buf))
--			return -EFAULT;
-+		*buf = *((char *)(&sample_step)+p);
- 		buf++; p++; count--; read++;
- 	}
- 	pnt = (char *)prof_buffer + p - sizeof(atomic_t);
--	if (copy_to_user(buf, (void *)pnt, count))
--		return -EFAULT;
-+	memcpy(buf, pnt, count);
- 	read += count;
- 	*ppos += read;
- 	return read;
-@@ -206,7 +203,8 @@ static ssize_t write_profile(struct file *file, char *buf, size_t count,
+@@ -203,7 +203,7 @@ static ssize_t write_profile(struct file *file, char *buf, size_t count,
  }
  
  static const struct proc_ops profile_proc_ops = {
--	.proc_read	= read_profile,
-+	.proc_flags	= PROC_ENTRY_FULL_READS,
-+	.proc_read_buf	= read_profile,
+-	.proc_flags	= PROC_ENTRY_FULL_READS,
++	.proc_flags	= PROC_ENTRY_PERMANENT | PROC_ENTRY_FULL_READS,
+ 	.proc_read_buf	= read_profile,
  	.proc_write_buf	= write_profile,
  	.proc_lseek	= default_llseek,
- };
 
 -- 
 2.53.0
