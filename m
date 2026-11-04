@@ -1,66 +1,66 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A53336072FA3
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 19:42:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B8FA6070423
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 19:43:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=CY3vhRi4
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=L+v8MGUB
 Received: by kanga.kvack.org (Postfix)
-	id 8FD096B05B1; Wed,  4 Nov 2026 14:42:44 -0500 (EST)
+	id AAB046B05C1; Wed,  4 Nov 2026 14:42:59 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8D4996B05B9; Wed,  4 Nov 2026 14:42:44 -0500 (EST)
+	id A5B9B6B05C3; Wed,  4 Nov 2026 14:42:59 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 79DE56B05C1; Wed,  4 Nov 2026 14:42:44 -0500 (EST)
+	id 971C16B05C4; Wed,  4 Nov 2026 14:42:59 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 48B7B6B05B1
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 14:42:44 -0500 (EST)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id BF7AAA07C5
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 19:42:43 +0000 (UTC)
-X-FDA: 85398459006.03.FA0D28B
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 716146B05C1
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 14:42:59 -0500 (EST)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id A1C9080861
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 19:42:58 +0000 (UTC)
+X-FDA: 85398459636.13.1D61D49
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 4EE3120003
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 19:42:43 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CY3vhRi4;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf31.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org
+	by imf24.hostedemail.com (Postfix) with ESMTP id D97CF180007
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 19:42:56 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=L+v8MGUB;
+	spf=pass (imf24.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793821362;
+	s=arc-20220608; t=1793821376;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=uhE82sMafPzxvfPBNz7KCycPN06o3nm9WBF7ozqhvvQ=;
-	b=0jQ6pouE2JGcYtRqi40/G7d/yf83Eu4U1D1kOwNkqHOSlQjIhAnwDRMERL0rjL9GhdjSDG
-	d1A3Wyk1EUAuMZki+axCzYfNr1J2vrK52kAAcxmtQunCH5KoCSxHAl9yVvJpb2IhuCz7G2
-	sPz1Zr1kDkV6oUprhKLmKLun60Lql0s=
-ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CY3vhRi4;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf31.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org
+	bh=rahx1hspTnUUAQKpjFRic8Zz7t4Brzv8z/TuH1t1gO8=;
+	b=smFSUWokTBDahyABBimkngHKr0XaKI6/juL7JYQE9P3yUjpTxCa3d2Ytd2MvUtKPZSOmd/
+	wOPr/noi/TuCKwRDWiC4xYZDMQKVoD9eP1F1EIL0HKraCqYkqbWTXrzdMhEN0Wo913aa+C
+	j18rf/B0BWxx2IO6H78wUSwjtuLbB/8=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793821362;
-	b=KlHhwiSZw81mwVxkS7TvczE9K5GbxI4VaZ8Qd1w5KOLMxjoZs4t6+lc7l/AawpME6Sedf+
-	6PFQ5qqwbPsSIN6ZOyxHjtZ1/8MnS5p3NTghL+bU80B+nHec3hEHreYUfzSXOvieD9Nc2r
-	Y+CBa275l211ahYMolG/4YvZQD67VpQ=
+	t=1793821376;
+	b=NUpWbsyWOSnlUTOD6kvFZFs2p090zk6jmqDa02sSkSI1K14vzkxarHIjrhqZQHzPNCcnDj
+	Gz1LEZSOaIy9UvgT7fulL7TcSDZ5NNQ2DM7hfllPgn4hXOvDvXql04zLX3Mth7mdWh8WwJ
+	ho787+aJfEHsanCVfJw3ZxEbGjaxfq8=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=L+v8MGUB;
+	spf=pass (imf24.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id A9CCE60F10;
-	Wed,  4 Nov 2026 19:42:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43B831F000C1;
-	Wed,  4 Nov 2026 19:42:29 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 686CC60F07;
+	Wed,  4 Nov 2026 19:42:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDECB1F00A1C;
+	Wed,  4 Nov 2026 19:42:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793821361;
-	bh=uhE82sMafPzxvfPBNz7KCycPN06o3nm9WBF7ozqhvvQ=;
+	s=k20260515; t=1793821376;
+	bh=rahx1hspTnUUAQKpjFRic8Zz7t4Brzv8z/TuH1t1gO8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=CY3vhRi4hQxkqcpQ1Mm/O3l6e+OzedeN/4+37SeNZjOvlqXmy34qriVvD3TH67ywH
-	 DQzl6FzuyIa5uiOv7Dc7vMjmQMkxqYHlBr0eMd+Xera9VB0QWJPHsXDK0rpkNzXBBK
-	 tX9Y7Jq5/fQhLGsvIaKNSEhYv51qK+oUfD0NCrdQZjRmHE0FizjDeNxZM3dzQpWJZy
-	 HRwBQTyj5k9AawVsBYNGBCFZHPpK+UsKw3yqcCB9jomRWBq8KMKMHMiOAFjbyWU1JH
-	 JbXTNMiiUjnz72MrV0u90yAZ2M59tRnRkIXF5dI/J/zo2XxESLkUQl4Q5E9EaHZPuO
-	 H5e07M+u+h5bw==
+	b=L+v8MGUBoH1X/DvXSD0FceOQi/7/9SNVN/Ty1A0Db3pP2tRHNvduiU+oluwXEpYIv
+	 vBloEcY3uuuLcYM/xkh9Q3Ii2iBnjyZbDio64xuo+SFrAPccC7M1STU5AfhNZaWOa5
+	 +nP2mu+sMxiVgQETEU4GnEEdQBOVRnqy1LIn5OIvtUx8y3NHNRNYHmSudIvZhlAsk3
+	 OeFfLyoqwVLhzDi55Du9gghVSwsVXKB+q9IGj4gdTIup4tw4O6Yjot81gM8SBfXGlP
+	 DerjiZ0JrNRX2zN8YxL3cqjnpijuu2TiisPtmqNQmMQzMS3akxk6dzKVcJZYEqbHRC
+	 UCnxPV/KjlSKw==
 From: Christian Brauner <brauner@kernel.org>
 To: linux-fsdevel@vger.kernel.org
 Cc: Linus Torvalds <torvalds@linux-foundation.org>,
@@ -121,31 +121,31 @@ Cc: Linus Torvalds <torvalds@linux-foundation.org>,
 	linux-debuggers@vger.kernel.org,
 	"Christian Brauner (Amutable)" <brauner@kernel.org>,
 	Chuck Lever <cel@kernel.org>
-Subject: [PATCH RESEND v2 01/26] nubus: let procfs own the seq_file of the resource files
-Date: Wed,  4 Nov 2026 20:42:27 +0100
-Message-ID: <20261104-work-procfs-drivers-v2-1-245e54e87116@kernel.org>
+Subject: [PATCH RESEND v2 02/26] zorro: let procfs copy out reads
+Date: Wed,  4 Nov 2026 20:42:41 +0100
+Message-ID: <20261104-work-procfs-drivers-v2-2-245e54e87116@kernel.org>
 In-Reply-To: <20261104-work-procfs-drivers-v2-0-245e54e87116@kernel.org>
 References: <20261104-work-procfs-drivers-v2-0-245e54e87116@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1301; i=brauner@kernel.org; h=from:subject:message-id; bh=x7z4QEHcj9RNvDtDgoKANKctl9Sfloc7qmQpa+Y73Ns=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS97ioOOa68o/Kq2fmOY5NWuTU8iP3ZEGF+bqWx4z+Wl OQWlcZPHaUsDGJcDLJiiiwO7Sbhcst5KjYbZWrAzGFlAhnCwMUpABP5yMrIcHHmjxMtv47deeBR f8hmwmHx04XBoiyTn7ROi1p5ovDEfjGGf0pS7v/tJ675tu3LE5ZOszvfVmhY9L9Rd7yQdf+7rII THxsA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1540; i=brauner@kernel.org; h=from:subject:message-id; bh=dTcni+P8tIxBcivisIxgfSpNG7N2UBKEyjWqJewPrL0=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS97iqNXrF3deYLX61HjldsFnR/fLzW4ucS7htqmRfnb lp9iV3QsKOUhUGMi0FWTJHFod0kXG45T8Vmo0wNmDmsTCBDGLg4BWAiHkkMfziO9O96MiXH7oKe 3ttd/GcsTDguvkv8x6Mk19PlFNXPtoiRYf6v1T5HznUdqLi4/U2FCv/VOxZvpb9rrKvZvX3xnf1 XX/ICAA==
 X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 4EE3120003
-X-Stat-Signature: 8mtoxdr8rr1musz48si4fmiy3qrkj9i3
-X-Rspam-User: 
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
 	version=4.0.1
-X-HE-Tag: 1793821363-304340
-X-HE-Meta: U2FsdGVkX19npo/dQEMQRnBqoYxaqY+/V3KMBmgNGtHXCjZMZew7TzsLj46adN0fOcsWbRDUvKSDTxvwY9Ahn1yM8zf1aVjHfD8Of889+c0uWTHk3kcfJYThvhrRY/XHwHhZZ88YKJNh1gQWydm7e+Sg7ce5hujVlavJjYLpf25UGQvooHz5sme6Xhzhv4Y/Vwctw5JResbs6wSYhv014J4JL3lZ+Q6d6tp3l+3zbsKnxOi0PMaIi8ajF0xObvZOvO9Z8RjYCH4ShPTmkM/etJf7V7weECalflZi8ujJKj71z2T3tP93yk0u86O50JKBuqMy2i7q1uOgIpriRxOXpVFfkPPqK+DvmQ9PdyW7P520g3A2TVTK2w8Rcv789hnvbNhfojRiTvLTqY3npjlNNplWgEJERirXsV8xurcpOpp73BpPeOsepZo3KbBwdyhNz29p4peDiHDU0A18RtSoPqKk3xs1JSyxcdTCpIXyiglgyqw5HzLfJ4hyD6KzSjKffy4u6/8B5liHELGWY2XYkBm2pI9Pppz1Px0metyUqN9iJCT89tRWLOm9Fy/YPuRSgE3bHGNdsAcrUrTtv7CQjk+LwzBDQPyFE8jo3e4bznZqym3Fj2vRnnW2DJ9CYi/zYPuuNPtyFtMEMQ+hbzJG6fPirI/yClf0xWHVLl2MlYXu+VA6wcMse5w7qvkPU/aFmzHewrpEZRYtUWu3tNQ574B1MP/mn2SnuhYhopjp6nAHgXZBLGURF1CEnKJ8XsINaeRGeiqL8yCCBi3uiujpW3rdZnO6WNqthA1x3k3LIh6tYCX2+eba5679cEIV8fYdarOsrfjVxvwXEeQnNLwcVlQdi7QXPwHDhj7eCpekJrZg3rO7hceMp7FVGWJiLCekwTA3g6Yx4HMJX3K/aCjQ0mE8Ka6M3L3WdZEfEed8r5P3ZT5+msm+RzuxMKv3iYsPdOayN0D/NWDKcOElsY6
- IEE2LkMq
- 7eUTwruHKzKzOASC33kLS+OtinRWzmXRF/txdc7dYXcDABanM65CoIPQXas6fYS+Wwrg955B0uvGZLPUoJE+DcP2Fx60uf4d9tHfvzW3E2Q8CnjHeQdzW6485q/mfapI2qcgX3K+BjZlUy9oy9Ayeo8hpvKg9mnp68ppzylFkZC/hpv4IFaKaX2S0IXHFrQBY9rof1YHxzgofS0qCc4MsZeC4fMs4YIgryMxejUYfszYcIgVNW1rYRjyKQ6+gnx+Nxu/QPsU6Wd3JQA9GER00d5nDJ+K2CsrXmTuRKz9YNl/3Vpa6d26Ag/XoDNkrZEHzT4lbBF/r19p+r0eiaLItww337yyzqutAaKBNMzznSZa/79iA/Zs5s4WHC1PBxCVki/Qt9m8E/GYGwbPaWvsUMTShv0yXc+3peHmv1Oanktwlf6HffQaIzl0rd2AUm/46J6Px
+X-Rspamd-Server: rspam09
+X-Stat-Signature: y9xmkqksakoru31redd5ckb3ti9pcuzy
+X-Rspamd-Queue-Id: D97CF180007
+X-Rspam-User: 
+X-HE-Tag: 1793821376-873058
+X-HE-Meta: U2FsdGVkX18CUu32sNjnRpxCXQTDer8u8eA8j/99Gp/SWy/02ErNz4OgZLTc0vgIZAacKBB3qC9GdCqW0bouM9O56oQVT92WluU5GTiCviFcA4Gb430r99vEJFlpqbyJhOL4xTSlD+Q/5oDa5o3Wqk/syIyqWposXOAHK3SGc8asm8Dnr/KOoXR5Zh5NFxJkXBvLlHCbXWinTRM9M+qS4gm4OkA8IxKTtW5Lsuwi/JmHqtxq6SRJ0bMRjUjST0J7S2E054RNa6pW184EOetWD1qvbp3Ay0O5J2XHWPjBjmnzsnBba7lH5XzDIpCfbbEFZFpGKIGciLFe+LDS/ir1Li7bgA7jgr+12/zPHQo07NQdTfN4UNOZg5H+elLJYJ4LXgn1VP6GpSDAvMMBNeITkCatwWlM+ugy4tqYzYv1QM/MrWix6KhvcuXazRYGuBxlio1GJOAgQ2itbaWJmHh8jPHqMZv4L/ISFt14WtKuIinhBuVKlV0t53f2hbhYIfjbT6zFlPU3ZhpTK8c3qN6BKu1pOcf7BxdlZkqw/tyf86XtFk8izqp+9dVbiPZxxoq9hNwNz1wJLOirHNhFY9EyvNhqzoB/lY0EGcyctK3GI7AxJgKCVPusT9OHPwYvqJu4QlV/ev7JPu9Rf3i7bfLF47cMo3MMrHmEswvgRGHuC9h2R6EYYdBeeGs94s7GSAm2PAVqJWetTy/c5o7U4dHew/DZff4WOSnQFSXmcbkq48wmVEEyvi+QjSJ6Y0x0XVVyKomJ2oW44ZFgrCknnzwaSNmsCKp0bnL848spLkgQkdxm39qATRU56izPsO4rbY0367t3dC3fF1rNzua3YHImt8RKEjunGJkyF328K631UIxoxZZ7iAQkUo8OdAvdM2gwHU0FXwoMcDzSfW+U3g9nQtSeg7yPqEtZ9Sy0msTCE0Q87dpNnyuEOQXGgZUEQPq5lLncKlWsFjQIQb0PQlD
+ U0CG06dw
+ zVq3WbnXzCoNs8/TV1C5PNfSwxOZ9hq+hwVcgEQIWRvwrrZzHKDowdmEYu85XEtMGegOZ7B9RM7O7bbwGsGUIZdaR4qXq6APTtYLr2ffZwtbIm0u5HJXL9ITwQ5ND9m4f6NvZ4GP6RM74qB966LOUZxLOPgDTgwvd+RG71Sfw54diDV1ZdYpUyzhBAvOxKu/W/+oIDo3hMG9r8U2mO8YvL/vQwpWLGnSDc7QXIEO1pmfumuIvQP7hvmIrAgfe1zwm0wzpfYEkgOvb5LW+4zXcI5EAbRcaji7kTzEEEEgaAjok/WrZAxsZicUwSKrD1vAhGjde8tlKeIMBpn8dKN7xHRIp4K8JlHm/dqIB10GwMUaNs/1LkcsN8ftd6/QVp/wyT2AwyvQUsPU89l6TuzKMpDnqqA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -154,45 +154,46 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Get the inode from the file instead of ->private, declare the show
-function and let procfs open and free the seq_file.
+Implement ->proc_read_buf() so procfs copies what is read from
+/proc/bus/zorro/<slot> to userspace after it unpinned the entry.
 
 Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 ---
- drivers/nubus/proc.c | 12 ++----------
- 1 file changed, 2 insertions(+), 10 deletions(-)
+ drivers/zorro/proc.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/nubus/proc.c b/drivers/nubus/proc.c
-index 3ea3d1738eae..cb21ad1d9964 100644
---- a/drivers/nubus/proc.c
-+++ b/drivers/nubus/proc.c
-@@ -107,7 +107,7 @@ nubus_proc_alloc_pde_data(unsigned char *ptr, unsigned int size)
- 
- static int nubus_proc_rsrc_show(struct seq_file *m, void *v)
- {
--	struct inode *inode = m->private;
-+	struct inode *inode = file_inode(m->file);
- 	struct nubus_proc_pde_data *pded;
- 
- 	pded = pde_data(inode);
-@@ -138,16 +138,8 @@ static int nubus_proc_rsrc_show(struct seq_file *m, void *v)
- 	return 0;
+diff --git a/drivers/zorro/proc.c b/drivers/zorro/proc.c
+index 4c6f8f1c4d71..99a8b478192d 100644
+--- a/drivers/zorro/proc.c
++++ b/drivers/zorro/proc.c
+@@ -28,7 +28,7 @@ proc_bus_zorro_lseek(struct file *file, loff_t off, int whence)
  }
  
--static int nubus_rsrc_proc_open(struct inode *inode, struct file *file)
--{
--	return single_open(file, nubus_proc_rsrc_show, inode);
--}
--
- static const struct proc_ops nubus_rsrc_proc_ops = {
--	.proc_open	= nubus_rsrc_proc_open,
--	.proc_read	= seq_read,
--	.proc_lseek	= seq_lseek,
--	.proc_release	= single_release,
-+	.proc_show	= nubus_proc_rsrc_show,
+ static ssize_t
+-proc_bus_zorro_read(struct file *file, char __user *buf, size_t nbytes, loff_t *ppos)
++proc_bus_zorro_read(struct file *file, char *buf, size_t nbytes, loff_t *ppos)
+ {
+ 	struct zorro_dev *z = pde_data(file_inode(file));
+ 	struct ConfigDev cd;
+@@ -49,8 +49,7 @@ proc_bus_zorro_read(struct file *file, char __user *buf, size_t nbytes, loff_t *
+ 	cd.cd_BoardAddr = cpu_to_be32(zorro_resource_start(z));
+ 	cd.cd_BoardSize = cpu_to_be32(zorro_resource_len(z));
+ 
+-	if (copy_to_user(buf, (void *)&cd + pos, nbytes))
+-		return -EFAULT;
++	memcpy(buf, (void *)&cd + pos, nbytes);
+ 	*ppos += nbytes;
+ 
+ 	return nbytes;
+@@ -58,7 +57,7 @@ proc_bus_zorro_read(struct file *file, char __user *buf, size_t nbytes, loff_t *
+ 
+ static const struct proc_ops bus_zorro_proc_ops = {
+ 	.proc_lseek	= proc_bus_zorro_lseek,
+-	.proc_read	= proc_bus_zorro_read,
++	.proc_read_buf	= proc_bus_zorro_read,
  };
  
- void nubus_proc_add_rsrc_mem(struct proc_dir_entry *procdir,
+ static void * zorro_seq_start(struct seq_file *m, loff_t *pos)
 
 -- 
 2.53.0
