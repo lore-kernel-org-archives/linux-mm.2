@@ -1,66 +1,66 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61389606BDFE
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 17:50:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5012C606EE9A
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 17:50:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=IGhyitu5
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=nuEE//0p
 Received: by kanga.kvack.org (Postfix)
-	id 78C476B05BF; Wed,  4 Nov 2026 12:50:19 -0500 (EST)
+	id 5B8336B05C1; Wed,  4 Nov 2026 12:50:38 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 73D326B05C0; Wed,  4 Nov 2026 12:50:19 -0500 (EST)
+	id 568696B05C2; Wed,  4 Nov 2026 12:50:38 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6047A6B05C1; Wed,  4 Nov 2026 12:50:19 -0500 (EST)
+	id 42F986B05C3; Wed,  4 Nov 2026 12:50:38 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 3AFCB6B05BF
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 12:50:19 -0500 (EST)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id D5044A8547
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 17:50:18 +0000 (UTC)
-X-FDA: 85398175716.02.13A1D10
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 1C13E4000A
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 17:50:16 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IGhyitu5;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf01.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 1C9DF6B05C1
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 12:50:38 -0500 (EST)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 98313C030A
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 17:50:37 +0000 (UTC)
+X-FDA: 85398176514.10.FB9A32A
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf10.hostedemail.com (Postfix) with ESMTP id BDC36C0005
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 17:50:35 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="nuEE//0p";
+	spf=pass (imf10.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793814617;
+	s=arc-20220608; t=1793814635;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Ayyh3GSY9IX8l/NxmtUwOJrSt8ohKQ1xsnTJeKuAZFg=;
-	b=i2nVwTgmdva3MH2TIFvERaTPMEONbg4IN2aJKHpSmYtJTXl+2gqJ98tUJIU2xP/xzLg2To
-	FUcHsAd3bl0X/CUI2scS8vkCJjtr5kRlIPdNePW3I6XhGTiZXUKGq26f5svbJjEtVVKib+
-	XIsLBmlcu1H/PWf+8C4Ro4PB2yywMgI=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IGhyitu5;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf01.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org
+	bh=p9+kMzHwjVYuWJQ2+obB/IGMwn7xV7y09JcSQ7GHv6w=;
+	b=K7BhZbOuWwRgBIzCBAoYBKZIK4GHOdQ2Gx4MbcPc2v7Gce+p8D6Xxh01NNtOnQTpWm+r80
+	i58J8mC4zFEK2CUdFW4TEhXZuqD0GNV6+Zt232Tec2fvcsmMx0VjNiTeZx94u1fwXN8gXh
+	WzG93meA17DsVfQ18c7bEfJJpMw1p60=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793814617;
-	b=b1ahv/rtKoWjF5s5KrJ/fqeQQMg3ORw1abXhJvuDYvB98JYV5n8xdMGR21johkg5AQ+Jiw
-	J9sYCeUIY/RbxcYzpcTXowAdaLA1zgXbvAl++LyW977rPFo4KpfGdBBpl9rUwgSr17v9Z5
-	UKfDdyp1Vsn2jUdalN+q6usZaaN/8RM=
+	t=1793814635;
+	b=1sYbl7QEXTrgLt7z/4Xlxd8BP7HW8n+VHftRTSebm3SrHRh+BCU876octT0Q3P654A32/R
+	ik1Z+ogXL+dQn5MNLHfMgMDdxbB+oXmCzvd5OPQcFpRrJkHj07mH2mvSytNrLzEH9ojMMm
+	/V47M9LeSV0bg2ER43m04vbfGwRoRqM=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="nuEE//0p";
+	spf=pass (imf10.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 9CC9E609EC;
+	by sea.source.kernel.org (Postfix) with ESMTP id 16565410CB;
+	Wed,  4 Nov 2026 17:50:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1105D1F000C1;
 	Wed,  4 Nov 2026 17:50:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EC531F00919;
-	Wed,  4 Nov 2026 17:49:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793814616;
-	bh=Ayyh3GSY9IX8l/NxmtUwOJrSt8ohKQ1xsnTJeKuAZFg=;
+	s=k20260515; t=1793814635;
+	bh=p9+kMzHwjVYuWJQ2+obB/IGMwn7xV7y09JcSQ7GHv6w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=IGhyitu5c+TLBGkN2ZGwDU5Rsh1w/dzPMJRviHA5R0mqU+LsoYuTVg18Jscu2+6e9
-	 Bde/aMBOPoYzdl/OGhbYhq2RMksr0qSkO6OBBKfsIB2QpTbcfD5O1d7DOOn6y0WboD
-	 luv6dPR8E2zuVmQwRu6+4E313LCJ0DI7VA+RNwygcTxJ2P+0Zxk4UQl+ViD8uLTSyj
-	 0Bj56pQlnnoENGhH5tM4j+e/k88FvtR06w4zxZ0OD2mDGN5+rEvzwyzh17+R2wIXby
-	 my99TU5Vz2jDt+TrjxUCacOsyHguhDC7NltTczyRHXx91ZO5qtVY+n6qU6a+sO5L4R
-	 ZOW5mHfdcdKFg==
+	b=nuEE//0pTMjiN4EAckF29THCaCp8OShYg92gOVf7lMyKvCn0dVCXPo4XEmIgwbvrF
+	 mgNMx/eNkGPYY7G6H0/+5Z2vYWnryKoGvrqXmpNUIJXHh7VRJoCJ9vZOSJMA/OjJoT
+	 8z6LvY6TdWjfMQKBqFRTF1g7G5I/em9dQz+ebu6Y4iFujPyG6kD5aM4cOhxD5zLdkS
+	 0mLt2so9jaXkBdOELDLBFZJsYTghdzOgcrQCBh4fJ1VVmpw1xBKRg75vKt5bYd5IUj
+	 +CjnJztBrPQd0ybc2en6qZmMR8GIuV6NMVYOONgqhfspT52PI5BFxqfGvNedHL80U/
+	 rS6/W8sLjdi2Q==
 From: Christian Brauner <brauner@kernel.org>
 To: linux-fsdevel@vger.kernel.org
 Cc: Linus Torvalds <torvalds@linux-foundation.org>,
@@ -122,31 +122,31 @@ Cc: Linus Torvalds <torvalds@linux-foundation.org>,
 	"Christian Brauner (Amutable)" <brauner@kernel.org>,
 	Chuck Lever <cel@kernel.org>,
 	stable@vger.kernel.org
-Subject: [PATCH v2 20/51] powerpc/rtas_flash: don't read past the validate message
-Date: Wed,  4 Nov 2026 18:47:06 +0100
-Message-ID: <20261104-work-procfs-bugfixes-v2-20-bbf7d5546809@kernel.org>
+Subject: [PATCH v2 21/51] powerpc/rtasd: zero the error log buffer
+Date: Wed,  4 Nov 2026 18:47:07 +0100
+Message-ID: <20261104-work-procfs-bugfixes-v2-21-bbf7d5546809@kernel.org>
 In-Reply-To: <20261104-work-procfs-bugfixes-v2-0-bbf7d5546809@kernel.org>
 References: <20261104-work-procfs-bugfixes-v2-0-bbf7d5546809@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1303; i=brauner@kernel.org; h=from:subject:message-id; bh=7JHU1Fe1PUKfNakrIeb+3f7MU5rT/9SRwlQjBFg57NM=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS9zru+45fmhHOmCTv0/xXyljhu8Ir9cn6xZ2brsiN/Z jmlm2+821HKwiDGxSArpsji0G4SLrecp2KzUaYGzBxWJpAhDFycAjCRKEaG//GPri/6rCTy5+J8 1kMXe3b3xt9+LRAy/bux8ZXk+aLWoroM//OvT312ZfeyeUVOzxsmOu8P7DVL+ub/7E+HuUjwFae yubwA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1050; i=brauner@kernel.org; h=from:subject:message-id; bh=mkSbMC6ZDV5f4P2v+qDezcMlza9tkw/MXVPMWZSeje8=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS9zrvxY+J+keMVs7edupnp1Ff4+Ah738HHuRv3nhU1l bJwbb3Q0VHKwiDGxSArpsji0G4SLrecp2KzUaYGzBxWJpAhDFycAjARpRsM/8P+v+y8bZx29NuN hw/PunmnX07Un1++7juvb051byL7qQCG/6n83y77TZpU+sZ0i3q+d/jTxn/VP3mKFCceKbEpuaT 1nAEA
 X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 1C13E4000A
-X-Stat-Signature: uy13z5yauxwp53gjp61q4eecpc3bh1bn
-X-Rspam-User: 
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: BDC36C0005
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
 	version=4.0.1
-X-HE-Tag: 1793814616-476510
-X-HE-Meta: U2FsdGVkX1+HMXOMy/4vCGH4AjTwj5kr8tW+BVWNO+LhSRBgCzcDf9MGqUUM+dmfFXzG6lKGIui1pynQVfke8KwD3JIIEOpaTCn1n46OqrP7B5JD6q0l8XuFO4GqyBhn3+dXaJzZR8zOV9ZDLmEGFdYJ4+VglvBR2PePFaQPPS9p3Rp0ChiRvPHnug2DOe9bNpI7wM+WnImYpK05UhZqOYLx6fZrASMmgz3Ehd33BOTHYiRCkIfgvIHcMSA/cpVWJS3mrFxkOKUm6UO8thYSD4LxzUb9YzNOSQIHMhNo/4L303v6Bo9Jd9KE22GEJd9Nu06xGlV1API/aa8Q12CIJVOv7oK2ip8pZopmHD6RJosXeiPNgU61pdumGGKaujiUG/jNxGZY5StqAxOb3JF+Q11BntUj4NgvjeDBefMnFNuoiiMIQL0beikldMeHDobKwzc5tB3XuskLVbMSbZZjQ5meHF/MOtGyFonX5nHfvLiVi4K+R1rJu+LfASRSTWmbD8mTLbOk7DyVNBjC4yQDUtPQSGRPogWhQEE4uHfgjSRqCp3p1vqBHM0FJHicJ/7AcN0rOHjbCxpo+6R82WDRa7QzwFqe0jKyAuGU2+moCbv8lyv3hq1E16Q8rC5rSZ/AXFkhijxWqKqOTrP1I4s/dZZ+rUxPEbguhlSMncpeROF1dLJoE0Iv7r++8pfb2wq5AUrSsz2qk68kMJYXlUO4wjwbB3wpBHmd/RV1mUMNqP1ejLuBYFEqoXNeOn/gLcYNiJejna0zNw8r8Jun8zBsp9Qz/GfhoUpEsS7Tcp+DSuWj5WbJrWplbjLjT0snE1QA9ZQzP9YVyiCcPdmHFtCNtqqeSD4oGaWzbhpUoFPo66OpDHOpxL/pRVr6VbTlcVZSnbGI7fiGlzJaHQcjEqhWbdadgM1qnhBlWYaZnNuel2ucIEgQ9p7H0eajB87xYpMJRwj3WaNJJyClzTEw6Qc
- qP/qSW0O
- M9s6sAKYSTPrMmHH1Hf/7JjW2Bu8PkQioXCvvi48HMFyb3s/ESG9SQyDujXidCCLpWZYKAeojgrz6sn63mRphbOO7qOmn9LWEZMKfXMLnXkneHxrYo6O4/JlswlP/d5V7vf/thAeYyNEP0t6oENZUUZJmw7PgLrjMeYzA4tARaZSDQNSfA6YkcwCaJvi3Un9jDN4Lvaza+yhTdkVlGKozfBzpkFpDAfXDvypctpBPuHycwMo4rlIGa5IOat+ojf8VKzD3VRTVaEuBGRI3fXVd9TLh8mdmhMj5ZENENkk3RnPCus+kSzEZn+vOg7GlAOWN5Wf7jQ4Wp3rN1aA6V2b3DN+w8+uIFJg32lAwP6a1k+7mxeGRjMGyx33hEVKoYCpjZ1FSPhr2kM/G1JfMhp9dYWrnqGiKRAvHfoAAel5da2ePx5rJyoI7E1F7JioAOaH4KB9L
+X-Stat-Signature: dhhdmd885ch8fqtma9ky97huw7aj9ikc
+X-Rspam-User: 
+X-HE-Tag: 1793814635-918358
+X-HE-Meta: U2FsdGVkX19deZH96qyLAeWEAAQmdkcDuUTJV6ab3D6KGq8TRo+Z2vp0EYRwHJdRTKuaTb4UWe4LZWawtzHv+rkyaVknCye2hEM8VfJPWKmxtby2/l3fPQ1Z5tVYKvDadYoKlWr+r6RPq0tKEp5fzIQYPqSTffBnhwH5upBciBPjSgSOETSx0QnYjj71i6EF3WqRxaSg2Fa1OsoOgQ6+TrJgVxymNslxiu7leZ3mpYmInllLnjsubird1PY9ysCQtqh7bYF7CV4Sh32iKNIO6F61NctYN4vYi0oDd0NO6/qlZdGJNdhOJugeaPZvXgBWoO5RlYL/jL/ppR7QJsIk2+TEZV1APhl9UGERFjntvf3kPzyJCM6ibC0Tilq5216zH73ScJKvUr34ITGTjQhgZKEpgfWSOGWHf5VAbJr7MXgWOrnrpfgz/k3kgI0NJwS4KFcpa0r+Pd7uWGDVyp4zGCw9L4a+nhpKHquaSdwofiNlN2Ma1v5YXjhAe5BqBvPQizI9dJAgRpCgDUq2bOZehKFrWGahrG0uEiYt4m48eeUcUjjZGGjGg1w0P1hOFLDRAtAqcXh0KXawNTPMsPn96U58yjdaJks+kVrzteLBJzFg4WV4mxHxlOBdD4olpxv5zaaRO6oDhrT+PtIrJAUzWOgf9cioyMiaJeLQ8soxW7EgXzbQx/cJ2sW/JoDWy61H/PvsqVCYw63dJsj68BL2sNWQnc+rFHrETTA4i938TFo4J/0BI9zN2eXFy1PU4ekc0mcSvnFhq0CGPOPleew4OeLwjHR+56wJwDJeNXbiwVawFZZrBIfBJ/ImBmnyocDvMqsnEgP+Ob8lKzPYZ7rJYk3mfxCsBYNndB+FFEZkxAMG4iujgyAlFz1CZ4tNFRLohKvF2ZodavG6zqRaFlcJSrmg4+UgWIQdRzTV4yWnmLoRtLGBbKMdDqUFGqdpGadghUeKFSY0e8AtBfcWiJc
+ erJ8ZSgi
+ O/z/ZFAkkUluRwpWiD9QXB9QytlspnO1pIDp1IW5sdba6gW+ia6zAWDzycZO+3ifxH8dXvujS+50rO6mh3Jxh17hUnWOuKWc2PXo181kN9TnYLCZhHCFBZHzEIlK0vPYuabXZIEqrf2dPiFcrZimAdBxsA2uP9Ore0Ws+n6dJb145cChzNjZROUWffAnU9lz4Rsq8GN9TJ8K4Y6ekImiB3wA2MpR6uvXyforac5TI3DY+/4xmwhimmgVXEj4GLwvvqBpoXT21O36TZA44krY6LP0PCfgFqpcuTaUcCadWAIkenlXZN/1Ye8sdcw8msqQ6KdQKWYI7ofchz4LyHaJ8f4sGDHdYIORglWTTSAwA/nE61fruWK+Bf1iaj3cxzrQwNops978doY8+2DRE/G7bqnsxIA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -155,32 +155,31 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-get_validate_flash_msg() adds up what snprintf() returns, which is the
-length of the whole string and not what fit into msg. If the update
-results the firmware hands back don't fit into what is left of the 256
-bytes, the length ends up larger than msg and validate_flash_read()
-copies whatever follows it on the stack to userspace. Use scnprintf().
+rtas_log_read() hands out a whole slot of the error log but
+pSeries_log_error() only fills in the sequence number and the event,
+which is usually a lot shorter. The rest of the slot is whatever
+vmalloc() left there. Use vzalloc().
 
-Fixes: a94a14720eaf ("powerpc/rtas_flash: Fix validate_flash buffer overflow issue")
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
 Cc: stable@vger.kernel.org
 Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 ---
- arch/powerpc/kernel/rtas_flash.c | 2 +-
+ arch/powerpc/kernel/rtasd.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/kernel/rtas_flash.c b/arch/powerpc/kernel/rtas_flash.c
-index 722dbfb6fbf8..f1cd105f7426 100644
---- a/arch/powerpc/kernel/rtas_flash.c
-+++ b/arch/powerpc/kernel/rtas_flash.c
-@@ -448,7 +448,7 @@ static int get_validate_flash_msg(struct rtas_validate_flash_t *args_buf,
- 		n = sprintf(msg, "%d\n", args_buf->update_results);
- 		if ((args_buf->update_results >= VALIDATE_CUR_UNKNOWN) ||
- 		    (args_buf->update_results == VALIDATE_TMP_UPDATE))
--			n += snprintf(msg + n, msglen - n, "%s\n",
-+			n += scnprintf(msg + n, msglen - n, "%s\n",
- 					args_buf->buf);
- 	} else {
- 		n = sprintf(msg, "%d\n", args_buf->status);
+diff --git a/arch/powerpc/kernel/rtasd.c b/arch/powerpc/kernel/rtasd.c
+index fd40864bdb70..dd0df5e164a3 100644
+--- a/arch/powerpc/kernel/rtasd.c
++++ b/arch/powerpc/kernel/rtasd.c
+@@ -523,7 +523,7 @@ static int __init rtas_event_scan_init(void)
+ 	rtas_error_log_max = rtas_get_error_log_max();
+ 	rtas_error_log_buffer_max = rtas_error_log_max + sizeof(int);
+ 
+-	rtas_log_buf = vmalloc(array_size(LOG_NUMBER,
++	rtas_log_buf = vzalloc(array_size(LOG_NUMBER,
+ 					  rtas_error_log_buffer_max));
+ 	if (!rtas_log_buf) {
+ 		printk(KERN_ERR "rtasd: no memory\n");
 
 -- 
 2.53.0
