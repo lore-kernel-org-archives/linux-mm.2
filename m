@@ -1,126 +1,106 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3E88606D4F0
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 21:38:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C07A86070989
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 21:52:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=yotTMath
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=OF81ZidU
 Received: by kanga.kvack.org (Postfix)
-	id B86B06B00EF; Wed,  4 Nov 2026 16:38:37 -0500 (EST)
+	id C3D0F6B00EF; Wed,  4 Nov 2026 16:52:52 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B38356B05B0; Wed,  4 Nov 2026 16:38:37 -0500 (EST)
+	id BED516B05B0; Wed,  4 Nov 2026 16:52:52 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A4D546B05B1; Wed,  4 Nov 2026 16:38:37 -0500 (EST)
+	id B06916B05B1; Wed,  4 Nov 2026 16:52:52 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 796E36B00EF
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 16:38:37 -0500 (EST)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 05ACFA0867
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 21:38:37 +0000 (UTC)
-X-FDA: 85398751074.25.13D5AA9
-Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 1E0EC40007
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 21:38:34 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=yotTMath;
-	spf=pass (imf07.hostedemail.com: domain of olsajiri@gmail.com designates 209.85.128.50 as permitted sender) smtp.mailfrom=olsajiri@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793828315;
-	b=e+aNZcR+QDzTc4L/pGRO0WRm00SsMJNXoOPN4hM4upthKVnR0W5SJ+KRGTsp2tS6L705Zw
-	Hw+WC5+/Q0V0C9Q/sY95OnDB5VyLiue5rUbBsgSUqzt3CRaWKpOLVuHY8jhsO225apfzSz
-	O7cTYiaDP5dP9LMBffA5vuhtfgPhfFQ=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=yotTMath;
-	spf=pass (imf07.hostedemail.com: domain of olsajiri@gmail.com designates 209.85.128.50 as permitted sender) smtp.mailfrom=olsajiri@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 88B886B00EF
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 16:52:52 -0500 (EST)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id EF10C12077C
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 21:52:51 +0000 (UTC)
+X-FDA: 85398786942.03.E3E3B07
+Received: from mta1.migadu.com (out-152.mta1.migadu.com [95.215.58.152])
+	by imf16.hostedemail.com (Postfix) with ESMTP id B73A918000A
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 21:52:46 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=OF81ZidU;
+	spf=pass (imf16.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.152 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793828315;
+	s=arc-20220608; t=1793829170;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=YHCMrhCX9qwCLtIcZFgPvqvF5+LnUpH344kbevzFH48=;
-	b=5CmxW1CLNEYiTqUO1WI5zZ4r55N2mwaJH7ST3F+cUZJ5pWT98C1aqVxte0QHV8iuiPQzhU
-	gXqaSRQZat07Th/JftFU1nMSxuVlat1CyBo/S+IZ1oayxIy8kpnlNTHJLq71/HJaOwv6EX
-	3LJQ+rM74+ymjIkCA98+9y/H3kJAHaI=
-Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-4a214c5c4c0so10724805e9.3
-        for <linux-mm@kvack.org>; Wed, 04 Nov 2026 13:38:34 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793828314; x=1794433114; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:date:from:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=YHCMrhCX9qwCLtIcZFgPvqvF5+LnUpH344kbevzFH48=;
-        b=yotTMathoxH6NckoAsM17loMvzdDU3NmPtESUpmUMHRAZJiW6JNzYRA05rh2XYE0WY
-         qe8tgGvUHAvUyVotpDnH8VDJj8Dq5w7xGj86CCAibyvJMB2A9d76F6Io1Us7xKFIQ1Vv
-         HmcaoOJkqQuzylM4P+Cs6W+gV3JVqMpAA+mDv/mh7U/3kZzBLTdTHK553X2x77g8wxyL
-         4B6EYRRlC/QMX6RfJUKQcnbLkvB6CsKB8RetukcyN+WQ8U07Q+9CyMRwSAzWCscrsGi7
-         C08LjRTOLyHk/g0Wq5rJ5DRfvuXpJQl6Ah9ovD0uz+nQs5IQdeM6vAsy/+jwmqSxFWmo
-         Nd6Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793828314; x=1794433114;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:date:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=YHCMrhCX9qwCLtIcZFgPvqvF5+LnUpH344kbevzFH48=;
-        b=aFatYby/n6OvIW/cQzJlnk1raivl6LP6rlHEemMvEVcejDPCBwLLAFrf+8wa0z1xaD
-         fbn9xk5AH8aS0H3Zif5aNA+NNVjirNQrBWrvnLkqbhBl+0zJkJcyDzEWXQ6Zny4IJoyJ
-         ZlsMR7y90Ho7hBwhM4fV25+eMGt+4QqiKeFvK7vMtI4l/0JgDp9PGUdnxGd0QjUOkYn/
-         3n8TxAjOQ/E/6l4RPWSTDlApsI1Rmfln4jESU8tKcx2SdqkASfcSNQw0Mo50ryeo+dqQ
-         pbFQQZ8m1c4SyudxB4ucU7+guewEDx48U/cjKyxLmFAXrs/1B4RKXzDQhgf9V/3FZY1c
-         tpPA==
-X-Forwarded-Encrypted: i=1; AKwUvBwuNOxRAzUHUw0affy4JnUigL+kPi7injAoIW7X/KQh7fqpBPYzP0IjWjmARlp7WIsotHsy+8yncg==@kvack.org
-X-Gm-Message-State: APuU4Z+RFC6pFxu4qVTPK2ev8tRhpLLhhShXD6O8KTOC/yjVqDB9a9wh
-	mtxcHquLPRbiSxXBAeHM113O7IW0xxbSfijSzpaudmAKxKNaoCFYik3w
-X-Gm-Gg: AYBFou3r9za9aYIkGXUUPvmoerNY8bpJCvr7+j9K6r+aOu8RSfpiojbM8WbC1m0aJA0
-	wYpJZHguordX//l26N4ouN5AmOA1sDkt8JAVOZs0Y1zRezDvyHB/IVTOiuxsrFwV6Yz11nbxWno
-	0aQcwzAz2UGQoi0gnenlkH0Nsu+rJ42h5p2V1vkiCL2GQfu/809H+sMNxz4GbTOVhtiqSC2pHeD
-	SaAlitgAKyA/0PdOVv/ufz+hwcvKgzoW/mUKEO5gMt00LWgX5KesVl9RYoVCLuQ5EcolCPGxQLS
-	0jhI7cZa0pF+Kg8+RxAk88eGwi/02hk66fxkiGM51K4MSXRx+F0GzHKumOmkVp6jtD1bFhSx4Pa
-	P+uZdAgcCVfJOOS/ywO/4Ygz+UcMPiLs9gZTk4XFQsOyBxC/HFT3RZfQ2dDs1GzsLeo7b8Xm0Mn
-	HJFPXLGuFon2BaCK0o0NVnNXslxsCuQ9DZmAu6YwhIv+ADMr5lIMj9FbA20js0QvLkuQRZiUT8h
-	1ytH9jVRXyzuJH6nQgZMnteF4WOWWakJJvsQNRiop9wAILcU77C4fpjHVrZjrRgN5UnDmots4NA
-	1r4CoXLfcDJaAIs=
-X-Received: by 2002:a05:600c:524b:b0:4b2:612d:908c with SMTP id 5b1f17b1804b1-4b2612d90d4mr159560295e9.34.1793828313453;
-        Wed, 04 Nov 2026 13:38:33 -0800 (PST)
-Received: from krava ([176.74.159.170])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4b56eb4da1esm23736045e9.6.2026.11.04.13.38.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 04 Nov 2026 13:38:32 -0800 (PST)
-From: Jiri Olsa <olsajiri@gmail.com>
-X-Google-Original-From: Jiri Olsa <jolsa@kernel.org>
-Date: Wed, 4 Nov 2026 22:38:31 +0100
-To: bot+bpf-ci@kernel.org
-Cc: ast@kernel.org, daniel@iogearbox.net, bpf@vger.kernel.org,
-	linux-mm@kvack.org, andrii@kernel.org, eddyz87@gmail.com,
-	memxor@gmail.com, ljs@kernel.org, john.fastabend@gmail.com,
-	nierro92@gmail.com, martin.lau@kernel.org, yonghong.song@linux.dev,
-	mason@kernel.org, ihor.solodrai@linux.dev
-Subject: Re: [PATCHv2 bpf-next 8/8] selftests/bpf: Test user memory kfunc
- errors
-Message-ID: <auul10Zrq0WmmU5K@krava>
-References: <20261103075916.100050-9-jolsa@kernel.org>
- <28b71b95a782f28f081233a18a48ab18cfb5483df6ec6980f8168cbecfd93543@mail.kernel.org>
+	bh=EOQecW951XnrbiS/Up+TYLD26Kqi5K026ERWTR9xkgQ=;
+	b=T0pKWZA25mO1NgbOY3s72ofWGYFsSZBe7qB6cqXdbMdEB3thHJ7xQ/mp7G6EA24qcP4lKm
+	7cRv9NrWC8RIL+gjUST8QqdsTi1JmghLGSt93LkQSWiFIlGke8WvbefS59sgA0VoCdd01Q
+	2inXd79ZgvnwOYakZFqX2BktVq6DQvg=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793829170;
+	b=s8hQOVJ0Zcnjx0rcm5JUoAc5dZUmLEK65fg+IFB8VJpaXHU11tfUAzymcOwSHtbAnIS1Cb
+	fWebI/U26dNOpS8WpJOe5NmfpS8pQS9TACrQApkV1mZ/c6qkoCqobc8tvTmTb3Nsa2bv8f
+	t7w11XZIf2itGfEIgO27kdMB1v+maDs=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=OF81ZidU;
+	spf=pass (imf16.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.152 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=M0FIOF1DLHsXObG+kd/KQNs8mRLPiwWKZte8OxN1x/M=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1793829165; v=1; x=1794433965;
+ b=OF81ZidU2OazYJbzq3ROQpcsIgzV2oGcgeat8EWG+HD53tZTNHiDcmJdrQUGflewUyYgRHz4
+ 1R8BabrS2n7vbRKru/nGRGVi5rptQU+plgxy2D+xfcX22cHaLBQ/szWS012nTzjQjvnqzrD7t+x
+ rQCzw3Vpuu+uz3SzRusEMJ+Q=
+X-Envelope-To: linux-mm@kvack.org
+Received: by mta11.migadu.com with ESMTPS id a0a1d10de7c52127;
+	Wed, 04 Nov 2026 21:52:44 +0000
+X-Mizu-Trace-ID: a0a1d10de7c52127
+X-Migadu-Flow: FLOW_OUT
+From: Usama Arif <usama.arif@linux.dev>
+To: Bradley Morgan <brads@mainlining.org>
+Cc: Usama Arif <usama.arif@linux.dev>,
+	akpm@linux-foundation.org,
+	baoquan.he@linux.dev,
+	david@kernel.org,
+	hannes@cmpxchg.org,
+	hbathini@linux.ibm.com,
+	jbohac@suse.cz,
+	kas@kernel.org,
+	kernel-team@meta.com,
+	kexec@lists.infradead.org,
+	leitao@debian.org,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	pasha.tatashin@soleen.com,
+	pratyush@kernel.org,
+	riel@surriel.com,
+	rppt@kernel.org,
+	ruirui.yang@linux.dev,
+	shakeel.butt@linux.dev
+Subject: Re: [PATCH] crash: keep crashkernel C =?US-ASCII?Q?MA_pages_reserved_if_activation_fails?=
+Date: Wed,  4 Nov 2026 13:52:36 -0800
+Message-ID: <20261104215237.203332-1-usama.arif@linux.dev>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <661AFDEC-B8DF-4A5B-8C58-1D39F518F068@mainlining.org>
+References: 
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <28b71b95a782f28f081233a18a48ab18cfb5483df6ec6980f8168cbecfd93543@mail.kernel.org>
-X-Stat-Signature: 5jbu36ug7nqamcdieosqxsz5a8irj8az
-X-Rspamd-Queue-Id: 1E0EC40007
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam06
+X-Stat-Signature: pgujk31btwepgy56w79gaw1untymsyan
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
+	version=4.0.1
+X-Rspamd-Queue-Id: B73A918000A
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Spam-Status: No, score=-7.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,
-	SPF_HELO_PASS,SPF_PASS autolearn=no autolearn_force=no version=4.0.1
-X-HE-Tag: 1793828314-241418
-X-HE-Meta: U2FsdGVkX192vwoV87WR1MGrMUbql8Qv074nGyrU6QslUrqCSTBZ5GMKST61P0FjhXZOGyKBLv2oO2T69KHTChT159oI9dO1MRJkSCy1xlaQPmpbqFFwVnHvy9D0UJMIh649vFpEjIrVLNixYWKCUV5eEqjq8m6nDBhiNUrFiCCLsgC8/xizcjvjbtd/0vyIca/tWRa0dx2ig/KhlfmvhwWPJLSjQvO8bmpb3r5sN8UcTBg/NMUAr2xTnVWib5avk24v+6sWr0oGz3wCzwtWmMeIkmv/meGgrNEJrK1FdpkAJpDjgqWNUcMKjCrgdSsHA1uf3g7SufDLtiHquuQWKfrHBE2EyDVZokGlbvoBMof+7gN0DECzYp0ARmBMPD44uEO4EKcr4ax7AHSZbO4OgLZcQnI2HQ1t0t5hFQkpBv2D3ysCiML4RYmzJnBb64hX4zjAs0mIUPlAYGlAmupthzTxfZdooxbPopAaUZIFg6Rn5wu4wgcaq7+Hf/7FZwx9VT1xm9A2xwwnz1QyhomKjmtAoR+fLtOiD881KFRKSbwqkgSSooOw+eaJkqSl6VOoCETe5llimit49t6f2gNf4a1R49iddcnJNtp2RU4q0zASFnwgamplzHGpxtcfKJpsHjmqUyLSc3Dm56/JI9KZFpom3GXTcmok+2B28I79k+yMpd43W8xK73lIJklCh+1KyFqUnX030rZK7WqVPwK7Zz+laZXT1SXAr8cm7923Dc1K9vI+zdFdiwyu55+/w9y6CszUY9s2b4cqWnbbuWntqjCWgALfXTdNjni6m8+M5vZYVQcrvh64suVF56echakPvKa5IvQVqgUYuEDHU/zeZKn71dZS7g4KK8xvlUVLwVgLe36Vml1B7vNMGw+QMu9qZ5ztopPfUG5P1nqcSVMbNretOMh3g7MMPpqRUNVVgevpVhHpIOG8URgTNVpwtSl6UDSsXEjsb4pYtwOFQQW
- YFhlak6v
- 2OUHC9+bbqDYQpyDcWst/1mXlTKfygxa62DEYCnKIriCIG1+Bv0vmDZXxCOtRQugfpStfscB5/BIJEpyOZWy98euY6KI+qrQtcSNzRXpMdRfRbdrSqGMoaDGVYjrQ/M4aK3jfB3GJ5440AO9rHfJ8jXXy0XcuvgYnJ0pdyE1+6oxR+gje/iCm6HnhWH3yU4hZhbGOqg8cd8AEPMBr5Ql3itML1SsmosRydhhnUjGXszarpE1bKOdgRd+SRhtjlPyMTdytNIUTAgicYY3rrbubQcfd158bZU+6QUp+fQ4P25M6n8jGl9yEeoHd6rZi6dCFkpEABS3k2LUNHrDQ9MsoK9m1MEi6n+mdnJPc0W2c9a+tcav9Ch2+462grLBSVaWxKg+qs1qYANLpXz8bgBcVaB/F7N1E79KCRDBczPBrHhYAYymE/1fyRhsBiFmiBK/3qkRUTG4Q3J4a/oreH17F7yTxXe9aCLcHL3VwRlQt3Kz7fUrvdHjuZdoc3eXHj2HtkKXQcJUrzGhLrTBcR1Fxtdp4X+7URLlpWVk131s5lrUS5skQ9HPkC8bATknwAmKJ/AH2
+X-HE-Tag: 1793829166-793750
+X-HE-Meta: U2FsdGVkX18FHJk58+Gyqc8yAuw2VgE1d9YzN+ZPUGxc8RPigz1C2E9yYSTxCoTb56rH9nSzAuBy361Hav4aqIlrf9+qQPYYXrBeTFDj9freQO3uFINWUCl6AyigUpoeCs3ibXys9LtXxsl3lv4AlNEl2SzpaRMzmz57s5m+HGEU5hinhoErA+2J6aMVN6mCo4DvAKS4WCO/ESvjIhopatDUwf7EtHpxA4KIWkROIAkIIHTOpvX9VKxbiWI7npeRAOhM1LZxuT4Xa180wL4RwKvkQwv1E0oFVW+WTvq1SkYvvLOWxYXyzWrbC05PdgQ34xwbKdSBFBUT8F0/i4/OFhq0cIVzDKpyyTHdca4QjUqIhl4vTbys9tmZt8mKT6QWL21hhzK/nbQ9QJ+y+iScP8MFhFedxLsf60nnlP5TARcZiOf6n9hwO/yjqF9ht+E1/Xg6Q+o9rKtDcb2ct9gaCAbeJzc2dljE5IJP4PKkCijrMAtn8VGo5D/rEpsEBYbFRilID6fjv85yDdHDojABZyzSNTMEDh5mosfujos7us09XiIz0fD3HonuBXNt2fp5Ejxn4s4HGT5anAt+d/mRI6ys8Ag/Dpu5iHt8TjdkrYVmIhTWXhkkI0Y1txgl3yoPJSx9KsVRWqYtValVTFnnFOkvw4TUHQJHRaFJZxfdqSEkj1s7pFC5jiDPnuGlwTZKtrXbDMGyKhq+EasPGdiSxxFow/tVhpW3ZvgfTfMGQJyA4w3i98CPdwErzaH4avAY03jIRwpnxChz22kjHnv4tLaUvKNToDF9ox0hZaqxtlyTSsAZjs1eCyd/BKoa9QJu6u2MzNoE5DadLJvdTxVBnxHIL7dhqOZ3Oy6RmG1F4ptPX0MduL/thurFLp2z4uO2Upo++vk2nopvZyCoqqmTMecIG5NuYE8vjPdWQo9cshXC0+YMjuwttGkK2z77wmyMCY523nq805AG7lkEEnX
+ 1xFqFIWL
+ kFnFRmXmel2fnz8xohQRi2cUbEn8+NS8sxqxo9L3StPGB80gbHESop+KcrURgmWYFYJP2jcri04VoL7lb9CoP/e5KBT8mpCg1Y4Xg/a8yrsLunW7crPkOLSgOr3/dSQOW/ag7fX2TvDFhCXROdtyzgP/3GIOGQrkyfkbbUZNJD3gMuIeLWdMuh8vQX+Gjl9z0R6zpkumI1H46ku8HdSriYHDuwr08ONbZbETD+DYRZE5Al3DBi8zPeZYJh2uTgWi3onhxP9hiNf9Ohr2zFhZHoX152o12wiv3armaw12M7P9Ntd+ExO5/jm1wGfDWpqz12+KqdADsimUrvkCKbKDW4GEsNm4krqDriVer
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -129,49 +109,67 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Tue, Nov 03, 2026 at 08:39:48AM +0000, bot+bpf-ci@kernel.org wrote:
-> > selftests/bpf: Test user memory kfunc errors
-> 
-> TL;DR: Test nit only: the user_mem_kprobe() selftest looks redundant with
-> user_mem_nonsleepable(), since both have the same body and expected failure
-> and load as the same program type. One may be droppable.
-> 
-> > diff --git a/tools/testing/selftests/bpf/progs/user_mem.c b/tools/testing/selftests/bpf/progs/user_mem.c
-> > --- a/tools/testing/selftests/bpf/progs/user_mem.c
-> > +++ b/tools/testing/selftests/bpf/progs/user_mem.c
-> 
-> [ ... ]
-> 
-> > @@ -80,3 +80,32 @@ int user_mem_test(struct pt_regs *ctx)
-> > +SEC("?uprobe//proc/self/exe:user_mem_trigger")
-> > +__failure
-> > +__msg("program must be sleepable to call sleepable kfunc bpf_user_anon_mmap")
-> > +__msg("cannot be used in non-sleepable program")
-> > +int user_mem_nonsleepable(struct pt_regs *ctx)
-> > +{
-> > +	bpf_user_anon_mmap(4096, 1);
-> > +	return 0;
-> > +}
-> > +
-> > +SEC("?kprobe")
-> > +__failure
-> > +__msg("program must be sleepable to call sleepable kfunc bpf_user_anon_mmap")
-> > +__msg("cannot be used in non-sleepable program")
-> > +int user_mem_kprobe(struct pt_regs *ctx)
-> > +{
-> > +	bpf_user_anon_mmap(4096, 1);
-> > +	return 0;
-> > +}
-> 
-> This isn't a bug, but user_mem_kprobe() has the same body and the same
-> __failure and __msg() annotations as user_mem_nonsleepable() above it.
-> 
-> Since SEC("kprobe") and SEC("uprobe") both load as BPF_PROG_TYPE_KPROBE
-> and the attach target is not used at load time, does user_mem_kprobe()
-> test anything that user_mem_nonsleepable() does not, or could one of the
-> two be dropped?
+On Wed, 04 Nov 2026 19:16:42 +0000 Bradley Morgan <brads@mainlining.org> wrote:
 
-yep, will drop one
+> On 4 November 2026 14:56:00 GMT, Usama Arif <usama.arif@linux.dev> wrote:
+> >reserve_crashkernel_cma() adds each crashkernel CMA area to
+> >crashk_cma_ranges[] as soon as it is declared. If the area later fails
+> >activation, e.g. because movablecore= put the ZONE_MOVABLE boundary
+> >inside it, cma_activate_area() releases the pages to the buddy allocator
+> >as ordinary memory. The range is still handed to the crash kernel and
+> >excluded from the vmcore, so kernel data that lands there is overwritten
+> >by the crash kernel and missing from the dump.
+> >
+> >Mark the areas with cma_reserve_pages_on_error(), so that a failed
+> >activation leaves the pages reserved: lost to the first kernel, but safe
+> >for the crash kernel to use.
+> >
+> >Fixes: ab475510e042 ("kdump: implement reserve_crashkernel_cma")
+> >Signed-off-by: Usama Arif <usama.arif@linux.dev>
+> >---
+> > kernel/crash_reserve.c | 1 +
+> > 1 file changed, 1 insertion(+)
+> >
+> >diff --git a/kernel/crash_reserve.c b/kernel/crash_reserve.c
+> >index a03f0a4305a4e..a4b616ed49482 100644
+> >--- a/kernel/crash_reserve.c
+> >+++ b/kernel/crash_reserve.c
+> >@@ -498,6 +498,7 @@ void __init reserve_crashkernel_cma(unsigned long long cma_size)
+> > 			continue;
+> > 		}
+> > 
+> >+		cma_reserve_pages_on_error(res);
+> 
+> You do know that this will activate under every bitmap_zalloc() failure,
+> right? Is that accounted for?
 
-jirka
+Yes, that's intended. By the time cma_activate_area() runs, the range is
+already in crashk_cma_ranges[], so the crash kernel will use it no matter
+why activation failed. Keeping the pages reserved is the only way to make
+sure the first kernel has nothing there that gets overwritten or goes
+missing from the vmcore; the area then behaves like a regular
+crashkernel= reservation of the same size.
+
+fadump made the same choice; it is what cma_reserve_pages_on_error() was
+added for in commit 27d121d0ec6d ("mm/cma: provide option to opt out
+from exposing pages on activation failure").
+
+The bitmap is one bit per page (32 KiB per GiB with 4K pages) and is
+allocated at core_initcall, so a failure there is very unlikely.
+
+The alternative is to give the memory back and to drop the
+range from crashk_cma_ranges[] when activation fails, leaving the crash
+kernel with less memory than requested. I do think that is acceptable as
+well. But we do need either whats done in this patch or give the memory
+back. Happy to send the alternative as v2 is everyone thinks that the
+better way forward.
+
+> 
+> > 		crashk_cma_ranges[crashk_cma_cnt].start = cma_get_base(res);
+> > 		crashk_cma_ranges[crashk_cma_cnt].end =
+> > 			crashk_cma_ranges[crashk_cma_cnt].start +
+> >
+> 
+> --- Thanks!
+> 
 
