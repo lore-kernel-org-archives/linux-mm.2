@@ -1,66 +1,66 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D14F6072643
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 19:26:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBA7E6070310
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 19:26:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=OZmY/n0G
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Ok0iN6uZ
 Received: by kanga.kvack.org (Postfix)
-	id 730E46B05DD; Wed,  4 Nov 2026 14:26:34 -0500 (EST)
+	id 115686B05BB; Wed,  4 Nov 2026 14:26:49 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 707386B05DE; Wed,  4 Nov 2026 14:26:34 -0500 (EST)
+	id 0ED186B05BC; Wed,  4 Nov 2026 14:26:49 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5F6BC6B05DF; Wed,  4 Nov 2026 14:26:34 -0500 (EST)
+	id 002E56B05C2; Wed,  4 Nov 2026 14:26:48 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 3BF046B05DD
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 14:26:34 -0500 (EST)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id C35BE80852
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 19:26:33 +0000 (UTC)
-X-FDA: 85398418266.18.A3F790A
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 18ECB20008
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 19:26:31 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="OZmY/n0G";
-	spf=pass (imf03.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id D24966B05BB
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 14:26:48 -0500 (EST)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 63778C077B
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 19:26:48 +0000 (UTC)
+X-FDA: 85398418896.23.9D2041C
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 9BFAF40003
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 19:26:46 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ok0iN6uZ;
+	spf=pass (imf07.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793820392;
+	s=arc-20220608; t=1793820406;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KzL9ZYHhLfhD3DOSumSkk0Gb2fITAVoHxCDSq8u5ZOY=;
-	b=yZFB/Q+dhhJMsvHGx1jGdrq0liVx6yA5iLoU5ol/3cbePE/x9sKTmQZtcDEBSZbaJRUktr
-	U7G6LrvyBmvMQMxhVBGrZCyQ+aBa6Lfu11/BAGzSabNeLJ2B8ByGWnyca8VDxRYJtZdME5
-	QrFtdKmeeUqS0dXcVyiaDvZauP0n+lk=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="OZmY/n0G";
-	spf=pass (imf03.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=cd2dCZjA0tUhyc+igqHnY6+9OAULLk3Gm7203fq742M=;
+	b=2fY/EbZerWnIwbzj75Mj7I89RZpJUHQDceZZi69r3HplAcmTPVwOWvMWI7KDTFK/ovKia5
+	kxxWxmNSsEo89dWv5lpUAstdWzSWDmwmMNLtDFPYUHPCZkEXSFNz+eU6GcGb5+PE2sYNj+
+	ioa+ZT/3ulih3mimmH1yzDRlpnVFOzI=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793820392;
-	b=XlRtDN262yZJXDJpk3nCsFc85rViSFgAJMtA3M1eUXgm4rHO6ZyXeTbkvEqVEBrGb7eMbg
-	YjPeWQN+LuTfVla1teSLdMhfxJC155JC1u5M1AMQNPSG9aLRTZA8F7BgejXPRg4QJQacu+
-	mb9T1BtZiBi2cN5qNJYXDc2tZsPDVwA=
+	t=1793820406;
+	b=wkJq2BakO4It3rdWtrptYiIhCMsAGLhIeEOpDkvIRPCrDhuO35PtzONQpLOpYr5AXOGYLn
+	WyCRoES9gux71D0YqwbB2VR0SDw0MlEdkJmUKuY1UE8FE3cVyv0cy6lGotleu9XAitrT2G
+	1FiY44F18/Y91ybtNgayXt+PCEkmsJU=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ok0iN6uZ;
+	spf=pass (imf07.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id A876A60A8A;
-	Wed,  4 Nov 2026 19:26:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A02B1F00A18;
-	Wed,  4 Nov 2026 19:26:18 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id C7E7F404B8;
+	Wed,  4 Nov 2026 19:26:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5BE81F000C1;
+	Wed,  4 Nov 2026 19:26:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793820391;
-	bh=KzL9ZYHhLfhD3DOSumSkk0Gb2fITAVoHxCDSq8u5ZOY=;
+	s=k20260515; t=1793820405;
+	bh=cd2dCZjA0tUhyc+igqHnY6+9OAULLk3Gm7203fq742M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=OZmY/n0GXXd/waY5eO8CY5Onurst3JuvNiiWNIXcNO2ZuOFKp902BomvRAZeqhqov
-	 gVBa7tGTm8eGOA6FIqPzs+gKGb0cET9WaFFoJDGhKN+qiibaBT/bgrlsrKWepwCufy
-	 7xbZtg/lGvVf2Z6lEc3/gKQcCopkPYa2/MYuxGe78rFjMFuwi6sASyH6Jok98Wg17F
-	 cJ/qQVE/skC9zQGR9GKwMIm//f3mEfB8/4bBi4VeRM6Lw8lfYzjOtO7fBSGQY1KnwG
-	 yl+O33qpdvuGjSLboBidD8ILci0GW1gs7UGQ/cvvcbiCIna8PYu+uszQ30CIehYMR+
-	 tDP/eU01ohS5g==
+	b=Ok0iN6uZQVSYaoCJ8QVSJT8l0lXYmNP35ncQljCwM9H9v59k+rKBWDwXyFuH6JO+M
+	 V+A/kQXQfWgbGohORmoO87IV8G5a3EeicQ9/77UKK7TnPSNtklntEWp/u4+8ZixD0c
+	 bRD3pYtw6zhIWR1FS+A6aVjGwZINr1WSqex7QK4NXh4aMIjo3IjIJsUG8/xkIzVtfH
+	 6o2/KO4Dtfl777uLHIT6W89DNE9MAKgRdxN0CGLmaTZrAGaPjU++EC952vB7Nwp+HX
+	 +JJQg7IqWsBi5yUZmEzjETxgVGZ58lqdaOlqsnXdyQP64dFRJssogaTbhl3zVphWpc
+	 sA8Q19qZfKV8A==
 From: Christian Brauner <brauner@kernel.org>
 To: linux-fsdevel@vger.kernel.org
 Cc: Linus Torvalds <torvalds@linux-foundation.org>,
@@ -122,31 +122,31 @@ Cc: Linus Torvalds <torvalds@linux-foundation.org>,
 	"Christian Brauner (Amutable)" <brauner@kernel.org>,
 	Chuck Lever <cel@kernel.org>,
 	stable@vger.kernel.org
-Subject: [PATCH RESEND v2 42/51] powerpc/pseries: bound the lengths in the ofdt property parser
-Date: Wed,  4 Nov 2026 20:26:17 +0100
-Message-ID: <20261104-work-procfs-bugfixes-v2-42-021c84d852e0@kernel.org>
+Subject: [PATCH RESEND v2 43/51] powerpc/pseries/lparcfg: return h_get_ppp()'s status as a long
+Date: Wed,  4 Nov 2026 20:26:31 +0100
+Message-ID: <20261104-work-procfs-bugfixes-v2-43-021c84d852e0@kernel.org>
 In-Reply-To: <20261104-work-procfs-bugfixes-v2-0-021c84d852e0@kernel.org>
 References: <20261104-work-procfs-bugfixes-v2-0-021c84d852e0@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4036; i=brauner@kernel.org; h=from:subject:message-id; bh=1x5L5ygLqoH4QYrbzxN55G88uXTL5wNw5UNSw5/l5lQ=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS9bvx/eMaUE0I+8x7uP2vLHsplqPp8Uf8cnbKLyd/ve zkpum1k6ChlYRDjYpAVU2RxaDcJl1vOU7HZKFMDZg4rE8gQBi5OAZjIciOGfwpWqRcLVdK6Yk+U 7Mjin33JpmbO+9ppHJaBzs+t3kx9ZcXwV37rzQebpE0czPNr1/Zo75BRluja0J3FW2zd03c/onQ XAwA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1751; i=brauner@kernel.org; h=from:subject:message-id; bh=sCHTY4Gek8l3mLAy0sLNwHA69+qK9OBjRO3AuZdnaeo=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS9bmJIPL5OsslnfcA9hxcbt6X7Pli9ZcIKN0trZ+9tW 8ub7XmfdpSyMIhxMciKKbI4tJuEyy3nqdhslKkBM4eVCWQIAxenAEykQojhn5Lb2YKPu5tvWS/Q sTtlvpG7vLPqxuJNXEniS7v7VbrqjRkZ/oRc3st548nj6x0rtvtHXl6Vli/7IVk4c/HNJ0nM2So V7AA=
 X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: cwkmysf8ewcqrf6bzm56qm6gnpch1uo1
-X-Rspamd-Server: rspam01
-X-Rspam-User: 
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
 	version=4.0.1
-X-Rspamd-Queue-Id: 18ECB20008
-X-HE-Tag: 1793820391-571515
-X-HE-Meta: U2FsdGVkX1+/30vKy5/BU40/SBrmUnNncrOQ6ChU1aJqhs+SNOUMJwuz81/CPb8YmoAlC5unJXdOA0iisvk6BUhk7a/J9PTcI7bThvWp8+PM7P04xHw8FBjyT365HlkYkNfQsQpGDQ0d2x3mqskDspJf++MC1eUCRdFlJXDV/xhIPTiSQ7mS1CeFjUhvBSUjrm90YQjZhvzOYg12GM7RJ1/+Lex5pcsfgFm1A4Kl4N5XrTlAvif7qW+j5+pXEWzOVIa6xa5elsR6VBykkc/dCSdGPs64XvK5GmmFwhdnlHFJHfeGfAILRRtCMlzbHq+Z1RDhF2XLhWwjSQNu8PFa0UW3gKuxlvBZuxTI/7qV+sjM37tNdt65a8A08j/kuLTKJzSscc4vXMihM7es+lKxJJOtDuqehcj9q6KakIPkoE6b0z/MJ+P0VdWRIb5cxPz+E9Q1ND27KF0IBgl2e0N91RG950RvOSuPskCNCYWQ3Aea6s0o3khWj/G9UO5xIZz1SQSGf/R1k6UOc7fpl2aJWQmLcTQu5goqx7AX4is5pv7N6hqTFspiAowzUoLosvIcojXjqrwQwxB3Z00XaNBfHo77A4xwWkoFc35iSsJTRiRfdLVdnNrEwDhzEyyvQyZ9yIqostLzsJdXP69XsSYyvqmnSE1DuE5Xil7AaLcOLLUcDlL5mnCoRtI6QqzWZY54goTnUYVQu+moNVTp7MMcWH5JhNBtF/tsTbDFDHpUG5Uz1pwraf0LszIrqfvz6icnWA6N4E1yXEu5kFXKOoLXwtmuwc4QTzV8AocBEolHLPqKTrVd3f7O/9BN+QZcVVamsl0ODjwLLSZ2aLBW/ZroqqlwXaQVdFTRChqv9ivZqMkH3r9Umf7+MabKREiRJGUvj70SdR1PAmMCIbooKRmyjK9Z8Vt1d0M8MFM8IA1yt6mZVRH/tziyAT0WG2Mo87NJIhBmFrtPVBr2sxCAilL
- hcU3Vi6u
- jJPZHtP+jVW6imj+q4tds2v8uaUwkmeTvVbU2UBHOyr4IcsY3yB6j5zz8rjnu99Ccu7fr88MfhIa0Fz5lme1iBK/4SseM+GMq8GUcTRPavfCYyWE2ext3TC81lCks5bm7rIOtxvTEsluGju7GUbHspcqrydCaKsNsUdt38lwZggqErRMX1lBANuxsrCuIr1h0v0mZR2z7/FQvHAhg8cpoor2QsTVySRpCVshiQ5TN5z8sbVbi1gbC+SUmccoSermBsxFdEHcg4LgKsEqBnJIMOCl42WRoZMQOBk0Jlfvw4JLsNmUxFVaqOggdCvuzZxISXnDupOrB8CX7VAKlPmF2N4m7i4JmlfjyufcMWdZIQKG0Gzbo4JyGULAlSHxoB4SpFPD/o2xRBkEjQOVQIVjS0QvR4Q==
+X-Rspamd-Server: rspam09
+X-Stat-Signature: nugerkehmb4znps15f4aw6x7uzzf197i
+X-Rspamd-Queue-Id: 9BFAF40003
+X-Rspam-User: 
+X-HE-Tag: 1793820406-267176
+X-HE-Meta: U2FsdGVkX1+xfk1S2VitnOuuFedUF9+OvCsSRGLDQnATkhThjkFOIf4RIr+j1VHyKSifzlhpATZTIJSi6XTN/xwrEKss0QNxSewpxxy37VoglcKQmz0oFW8Rb2i1JJxhgGPoKJohOF1QffPELkrtofgfxsm9ERoRbLKu6Auez3LSaldVDhk/jOk8faixj8jwSz5TpgY15rCYj8ni2/J8kiFTI3SuWBe0VEBXmyacwG7a0sNnRa4VdP0JfQloPER7PwRm9xZxleLdSmWjehutWGczVW6cNW2MOJui7N/Vl5ojqspUEEmDXUrdS8od9aexEG6M0vaTO7aYxcgIs2qnk19su4XFR0QnlPJ+8PfHkYkh/RjIebhCGAKsg5lnakFxwVBWMJVz9C6qsgGxaYT1OGzpx2Jpv5aE/KFQWxHJnrJkxJS7RXdFnaV6Ui+JTM0DjDD344xAigL4hF8wh0zh3vi0QCfIZ0GLIbxk4rd4VL6M2vgvD4Es5/KM2AIr6x8xA7ENpTEwTIs1NPR4GLT0jUSMiHWFfcxP953uy0qjb7bg9I6EmFHF3ukXCu6XOCEKADqaBnBaiLlM+wB6DlPpdmQu5xmaevpBM1CGCMKSI4b/HdyReihVIyB3rR0nMV9ufLGTE0qqsGaq+dV1CHSaL71F5tFqnVfqIWmn3wNb16zKrCP+kmqaPrpz9t0mjHK00lCbXCF+5C3HE2+jEferWO4PN1WhJGNoss9ROaVn2NHhoivjbPO9q0HzvZNPc/9mgNVW5+0KTyanQLleOBIzyLwhyfGjOs9ZvixwjSZvF2ks0jROvoy1AgM78MMtmID2LnluJ3yfbUd4d5cRnrBRkk6yjBMv0y+GhWdQ5cN+d03fyjpxJc3qKkPnSwYqv7S2aqIqO3hI4LGe2zHxegIsfwVWssQeTi+R1nV+U8qE+zpSgdsAAa08CszrUFu77EvzAnGfT9w1JpSCcwr3dIs
+ RMjkep4D
+ 7jSzNluZKbX4+NTeTjnasdfLS2pnpXl48vkoLKPQthuj2Mfr6DXoVQPGoAObMT+Ek6J5ygWLuer+4gsYXnC046gHnVKcjulSDDIBuTz89ufFSSlV54Yrd79oqjSBRWq8nOW2gagc7wHjAFdaOPKZWfvhhFE1kNrCVTjTHRoKs5Sym2aFoUCkbEf0DhoU7Gw4byzFByotrNlZZ2HkYK3zq8LOQHG7ND4oKwt6MdNOFmOHUHHDeCRqARsfu+9uDcHnOA817xf1ozitntkwIHJCxhYPilu3ZavfcgbAczx+udKZjnGMUU5/riTDB+mUerh/FRf3Hb4RmwOLP5qY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -155,107 +155,41 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-The commands for /proc/powerpc/ofdt that carry properties, "add_node",
-"add_property" and "update_property", can make the parser read past the
-buffer they were copied into:
+h_get_ppp() returns the status of the H_GET_PPP hcall as an unsigned
+int. update_ppp() hands it on as its ssize_t result, and
+lparcfg_write() turns the hcall statuses it knows into an errno and
+returns anything else as it is. So when H_GET_PPP fails, say with
+H_PARAMETER (-4), the status comes back as 4294967292 and a write to
+/proc/powerpc/lparcfg reports that many bytes written.
 
-(1) do_update_property() computes the end of the buffer after
-    parse_node() moved buf past the phandle. So the end is off by the
-    length of the phandle string, which can be padded with zeroes, and
-    parse_next_property() accepts a value that reaches that far past
-    the command. new_property() then copies those bytes into the
-    property, which everyone can read in /proc/device-tree.
-
-(2) parse_next_property() parses the length with simple_strtoul() into
-    an int and only rejects -1. A length above INT_MAX turns negative,
-    tmp += *length moves backwards and passes the check against the
-    end, so *tmp is read up to 2G in front of the buffer.
-
-(3) Updating "slb-size" or "ibm,slb-size" reads an int from the value
-    whatever its length.
-
-Compute the end before parsing the phandle, reject lengths that don't
-fit into an int or into what is left of the buffer, and only take the
-slb size from a value that holds one. The file is root-only and
-refused under lockdown but the parser still shouldn't read past its
-input.
+Return the status as the long it is. lparcfg_write() then treats it
+like the status of H_SET_PPP: an unknown error status is at least
+negative, and one of the positive long-busy statuses comes back as a
+byte count, as it does for H_SET_PPP already. Before commit
+11529396ea31 ("powerpc/pseries: Split processor entitlement retrieval
+and gathering to helper routines") a failed H_GET_PPP turned into -EIO.
 
 Reported-by: Chris Mason <mason@kernel.org>
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Fixes: 610d91511f99 ("[PATCH] powerpc: Add support for changing properties from userspace")
-Fixes: 46db2f86a3b2 ("powerpc/pseries: Fix to handle slb resize across migration")
+Fixes: 11529396ea31 ("powerpc/pseries: Split processor entitlement retrieval and gathering to helper routines")
 Cc: stable@vger.kernel.org
 Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 ---
- arch/powerpc/platforms/pseries/reconfig.c | 18 ++++++++++--------
- 1 file changed, 10 insertions(+), 8 deletions(-)
+ arch/powerpc/platforms/pseries/lparcfg.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/platforms/pseries/reconfig.c b/arch/powerpc/platforms/pseries/reconfig.c
-index 5a0c9c0b6253..b543afbc1efb 100644
---- a/arch/powerpc/platforms/pseries/reconfig.c
-+++ b/arch/powerpc/platforms/pseries/reconfig.c
-@@ -114,6 +114,7 @@ static void release_prop_list(const struct property *prop)
- static char * parse_next_property(char *buf, char *end, char **name, int *length,
- 				  unsigned char **value)
+diff --git a/arch/powerpc/platforms/pseries/lparcfg.c b/arch/powerpc/platforms/pseries/lparcfg.c
+index 9882f98c0efb..4f6b2975c6e9 100644
+--- a/arch/powerpc/platforms/pseries/lparcfg.c
++++ b/arch/powerpc/platforms/pseries/lparcfg.c
+@@ -113,7 +113,7 @@ struct hvcall_ppp_data {
+  *	          XXXXXX - Entitled procs capacity % available to the
+  *			   partitions pool.
+  */
+-static unsigned int h_get_ppp(struct hvcall_ppp_data *ppp_data)
++static long h_get_ppp(struct hvcall_ppp_data *ppp_data)
  {
-+	unsigned long len;
- 	char *tmp;
- 
- 	*name = buf;
-@@ -133,13 +134,13 @@ static char * parse_next_property(char *buf, char *end, char **name, int *length
- 	}
- 
- 	/* now we're on the length */
--	*length = -1;
--	*length = simple_strtoul(tmp, &tmp, 10);
--	if (*length == -1) {
-+	len = simple_strtoul(tmp, &tmp, 10);
-+	if (len > INT_MAX) {
- 		printk(KERN_ERR "property parse failed in %s at line %d\n",
- 		       __func__, __LINE__);
- 		return NULL;
- 	}
-+	*length = len;
- 	if (*tmp != ' ' || ++tmp >= end) {
- 		printk(KERN_ERR "property parse failed in %s at line %d\n",
- 		       __func__, __LINE__);
-@@ -148,13 +149,13 @@ static char * parse_next_property(char *buf, char *end, char **name, int *length
- 
- 	/* now we're on the value */
- 	*value = tmp;
--	tmp += *length;
--	if (tmp > end) {
-+	if (len > end - tmp) {
- 		printk(KERN_ERR "property parse failed in %s at line %d\n",
- 		       __func__, __LINE__);
- 		return NULL;
- 	}
--	else if (tmp < end && *tmp != ' ' && *tmp != '\0') {
-+	tmp += len;
-+	if (tmp < end && *tmp != ' ' && *tmp != '\0') {
- 		printk(KERN_ERR "property parse failed in %s at line %d\n",
- 		       __func__, __LINE__);
- 		return NULL;
-@@ -320,8 +321,8 @@ static int do_update_property(char *buf, size_t bufsize)
- 	char *name, *end, *next_prop;
- 	int length;
- 	struct property *newprop;
--	buf = parse_node(buf, bufsize, &np);
- 	end = buf + bufsize;
-+	buf = parse_node(buf, bufsize, &np);
- 
- 	if (!np)
- 		return -ENODEV;
-@@ -337,7 +338,8 @@ static int do_update_property(char *buf, size_t bufsize)
- 	if (!newprop)
- 		return -ENOMEM;
- 
--	if (!strcmp(name, "slb-size") || !strcmp(name, "ibm,slb-size"))
-+	if ((!strcmp(name, "slb-size") || !strcmp(name, "ibm,slb-size")) &&
-+	    length >= (int)sizeof(int))
- 		slb_set_size(*(int *)value);
- 
- 	return of_update_property(np, newprop);
+ 	unsigned long retbuf[PLPAR_HCALL9_BUFSIZE] = {0};
+ 	long rc;
 
 -- 
 2.53.0
