@@ -1,92 +1,92 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCB43606EE80
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 13:03:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9EE9606A337
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 13:03:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=LcdXsSLP
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=RLbBmCrt
 Received: by kanga.kvack.org (Postfix)
-	id F3CB56B05C9; Wed,  4 Nov 2026 08:03:04 -0500 (EST)
+	id CCC716B05CB; Wed,  4 Nov 2026 08:03:10 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F14186B05CA; Wed,  4 Nov 2026 08:03:04 -0500 (EST)
+	id CA37D6B05CC; Wed,  4 Nov 2026 08:03:10 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E030A6B05CB; Wed,  4 Nov 2026 08:03:04 -0500 (EST)
+	id B920D6B05CD; Wed,  4 Nov 2026 08:03:10 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id AF3386B05C9
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 08:03:04 -0500 (EST)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 3595E806F2
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 13:03:04 +0000 (UTC)
-X-FDA: 85397451888.14.6A35A71
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 160C82001A
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 13:03:01 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LcdXsSLP;
-	spf=pass (imf13.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 99E876B05CB
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 08:03:10 -0500 (EST)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 248C5120594
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 13:03:10 +0000 (UTC)
+X-FDA: 85397452140.10.1449238
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 2D49240006
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 13:03:07 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RLbBmCrt;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf07.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793797382;
+	s=arc-20220608; t=1793797388;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rz5gqclVsI7Nyi3wdIsP2V0gZuIMwOehVRh4pvFPagk=;
-	b=qzXclvavY2ptLTlygK7zJ7UC7WmJhNSPa6A2PEUUc/G5DzIQw1V1jFrnI/P61LN5aZl+wm
-	ILueQ15g0j2tJnPZTasGXIA3m0X95K6McyhYk2UnsWrguiT0IqU94RhiVPLiD0LuNqVZJJ
-	rLbGXLFIsBQbIRXre1JYKoZMVZLUKpg=
+	bh=LyJ5LhydnHWMWHiwLye8xdx6/6doxNo3rjssOxw/XEA=;
+	b=bZ1VgjGr2WzEjxQzG6C0p/p5TKsUGR2UgHtR9NpwE4zCvmhDVtsG49H1dOcfw01JVaYWh/
+	am68IPDamGwXvex4LER1M7TvLPwQGxbmG2o56PRVOGm28PWa0v7JqMS9QRnLn/e1xnlq4l
+	Vl05Wl3DBeyfjjHzJVZEMC79aQuENp0=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793797382;
-	b=bARt35trg4BcKJJ1SaFjMx4+bBSh8WNBszSEi3rX2KSYVMLSTYh11id11QOOPieC0eEh3C
-	rto8njEwKqUdYZKZG/EJ4xnJaouc9n8oAp2fjKl77lnhqqEOCBT5dkjettkNjWqvdUGjf7
-	La0qLbfuRzzIGGquHmlulDhnyRpLaag=
+	t=1793797388;
+	b=MYiPxQDVszeiOoM+ZlCunHaatIpoM2ePkGi4JnUOUSA0I0RQe4yH7VRMrHlSGoQpkneFVv
+	wf80Kv5+TPD+ySjLS78BGHs751r1ysJNhFOniL7uW7pS2u8THeCwK7zWClsum4/H8/idcE
+	qo1Hod2UA2gLsgXXxNf8u5A0d+qySCg=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LcdXsSLP;
-	spf=pass (imf13.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RLbBmCrt;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf07.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 61A36438DC;
-	Wed,  4 Nov 2026 13:03:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2F091F000C1;
-	Wed,  4 Nov 2026 13:02:58 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id B0B9F63D58;
+	Wed,  4 Nov 2026 13:03:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D06691F000C1;
+	Wed,  4 Nov 2026 13:03:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793797381;
-	bh=rz5gqclVsI7Nyi3wdIsP2V0gZuIMwOehVRh4pvFPagk=;
+	s=k20260515; t=1793797387;
+	bh=LyJ5LhydnHWMWHiwLye8xdx6/6doxNo3rjssOxw/XEA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=LcdXsSLPAg5DKaj/aTv9PSu2NP1TfKv/KnATTp80uFZvAj/RMdBW+1ZOPeFrFXIx7
-	 C8QG6ERv/NLY32h5WhymVgGeNa+YQYciUPxku0pk8GVL18LnAMrB2tjXMT35BVtc1f
-	 RKHAHigPew3UGAZSjvFYrFmd/K1cEReTLTZLPr6jKunichT+DFykWt/XzltrNGwlxj
-	 wZP27+w9nPxPszO97Il7WVkaoQE/QEWONuTFLsBkK3oKjpihaYjzEp9BjCpS5snY85
-	 FpI1lwH5PeatNZSbHRappTVAIgHvJ3XURdvAarRP31JRYg3s/AIJ3b1+rDwU6eY0Om
-	 XcDyC66dIpPig==
-Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
-	by mailfauth.ams.internal (Postfix) with ESMTP id AFE2F1980054;
-	Wed,  4 Nov 2026 08:02:53 -0500 (EST)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-04.internal (MEProxy); Wed, 04 Nov 2026 08:02:57 -0500
-X-ME-Sender: <xms:_SzrajjhOxjr2XwmQIqse1UH4LUbP5FMftC_A5W_XWSuGXPGh7Ne8Q>
-    <xme:_SzralRIVATV3PkPWnjCM5SvKMZ0McdyzgmUKTIQJtK-L_e3PbBXnMpYJOjbb0UGt
-    9u8BTkQyp3pWleC3fWEBloQXw-hlE-bVCkfIqL5wIp8dHO3NAWZouI>
-X-ME-Received: <xmr:_SzraluTmjoqOwcQy9e6ka_pj-2Ujp5hVDTOHn6Ct-5eQUDjaP9sMcvxvkM>
-X-ME-Proxy-Cause: dmFkZTFyj9iBgTb70dT7Nrskf29uuOyI8LMvpppsr+ztaR0SBDghph+zBPTBpK5ZS8w9Hs
-    ZfoFoa0Z54ye4qFPVN9z+iBcUmGJLuDx+F5E+GwM0Yai8h0Kc4rjSxG6WPfOH2iKPLuf3P
-    s2X5S/AicHnwf5qqVsIRpEEeMef/YyNBtQ+L8UUZ6s+iWkyfT6d384myBgsvxs/VTn39m/
-    MUnuiW24J8M/zjUd3ANt41C4Bw9zgbZVxkihnU4ozkl0ylLdfdgBXUdCPFEeO2l/cn91tf
-    naFqCjfGvhGtglGyOuDPbmSg5ttJSGEvGw0VM28OvYSuugU2nbyQInHmfNiv9aGwbOcLH4
-    On74nzUC3nPKqfDN/sMhYaGYO1MhljVDfGE2vC9FhLtaOGURgAAOil+k7jNMbJdmEX0NvH
-    swNaHl/JaFLs6rjXZGOyd5xvwPmbfq1hTp5NWLUbQ12f+BXP5EvzTG4tMGeerrxcrufkjh
-    EzwpMH60K5EW6Z37zOiO9WWgNGElXeReO7uYKlOLtTpSMyfzof0LBZaT33gmHu1A7UQtNY
-    npzMWa+RFPD0Yae0NV8sWf7t87X19860EPPgf/BtLIW4Vsla8t/wiVOklLjsi1yFPg05B2
-    P13+BfYZVFRbqLI4WVn7+IhSyz5k7yg8mJzNRGz+x/GOLEdoSNUNQCEsYylg
-X-ME-Proxy: <xmx:_Szrav-b31d6zMJAwAENaJdU8AZEIB2CijIOzOdlc-_ugaDjKdk7Hw>
-    <xmx:_SzrahYUifZzOGQwa65MAOu6uQsW36D4cuUMV9Bs5zReC8nLjx-3AQ>
-    <xmx:_SzrauNjCv6ipufU8vee145tFV4L_LJ8ioWtu4UN3clsM2caO2UP1w>
-    <xmx:_SzrapSz7raAMh0YiZbyG2yxTyALTmGivrf6UazVsdQ5EDkaFvVucg>
-    <xmx:_Szrap-zRACVOvdl3tdSQLZ_LHA2ubYpNiblmBUTaBM0i1IvgdP3_fM6>
+	b=RLbBmCrtUa60xuCrBC8BAWP/XK96WIAWbFKNGpsqirSqKkQUrQWxXrvksO2J16c+/
+	 0WKIE4wdeJ1xe2E59FE47afAqMbxqXhya+lnTkkPHCfH3heH1TDb81UrG7pkc0evE4
+	 wh1nYcwXRvgx0Y+1HI9FMp4QWkcEJoRTNan6hC27YLnHoSbkB1wmCVnvNXim9pVz+B
+	 qFcR9T7DTvB/kYyKng78VXIipAci6WWVCjTZsnouWFHUTBHrkbtU8AKToK3FfCdW4X
+	 /zWDp1c5UWNSftYVLo7Omq0nTpMreSHRZkSBWpgB6qehF/TfjSDntxnrgN77BZumCV
+	 MJfM0VrkjoqiQ==
+Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
+	by mailfauth.ams.internal (Postfix) with ESMTP id B995C1980052;
+	Wed,  4 Nov 2026 08:02:59 -0500 (EST)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-05.internal (MEProxy); Wed, 04 Nov 2026 08:03:03 -0500
+X-ME-Sender: <xms:Ay3ranYgkY_XrLO06Rt2zxbZ81RQuV72zKk2jsGLwvKhRYruiA7gqA>
+    <xme:Ay3ratUlCel_qAS_Di9AObYS-U98a6yBO_z3Ge9POWcq9SjHtX5KDbuAF5p4ffJ9M
+    4ezofs2lBMvbMMYjPRjfNhNrIFCC3FQpO6q4qAEgH-S1oEMX6jwB1I>
+X-ME-Received: <xmr:Ay3ravGVBcnfEuNF7sjgeA-O-pMSZkjMK3jxL6T178epMdym2fDxWgR631E>
+X-ME-Proxy-Cause: dmFkZTEkTGQme7AYtjF3GuVS96P2KQmK7WXeTlUb1QwwiuzIvAmashPSlbgOXzJn8Vwnwy
+    GtuimX8GVaozomoo/zh+dZJa/50iMsle5DQ+rz1xv6q7s8h1ROZ32xDIMTiguWiavpmC2D
+    BBwjWvlIRSWZcXI9bWu6+sLs7omuy7lLW9/gOc6hVkazqru7j3LnWdj5tmV/csyW0bsTmS
+    EsxaoHyCeNrVLjcn3op2UYLn5kjIXtndJ2M5CWyKjF23KtNnUBacMFKYutyyEO2UkxXzYe
+    RLi75JY7cBimTx0NOw8ItiGvjmUs48xoopmJA34QoNHmlECPZN6WTQStnLRujBuoPTyyqY
+    WNZVZSQNCEd6xp+B5OcigglVi/M4vyTQAOp8DAvxQ6AAu7fsihetgvFDtIIDS5ObEaNW2s
+    U6wxXPW0s9rD0+XTraAtlBvBIpvjMETR3urx6nwBgBwLzX9c7PCB1JeSjKkqKBzMFpyxyp
+    D31IEO9Hn2FTO+eQ+QIw9D38MApBAMgD+do7ngt4xMfXhbY3T7wqbAu65VS2ZUtSfwfYKq
+    kWXnicU5R9b31F5IhRxjhTGPQM0+wpZm3zSfBP56ZMPQV3QGtEnX2jeAKyTTDvPWG5w/wq
+    qPiCgH8vCH8FQifqh4DXfGoRyFm0vh6aooGv+EocCSZF8jDUXaZH8fzYqqyg
+X-ME-Proxy: <xmx:Ay3raiDsW4mhWHofLCiwXi87nnuRdmiG3xcWyAVOKXg42RDrH7lqPw>
+    <xmx:Ay3raiVcIcXJxXU8-ZuS5ACNt_e8L9f_7DVbEjG0ZnHYyEhlRpb7JQ>
+    <xmx:Ay3raq6zmTd4ddo3YhxVWmKr3TywONNuMCsLdbUiGR4WYOe9vrCMog>
+    <xmx:Ay3rarEaIw-IXBTza2AXmYn9SNvhb9NqvxYARyWegRJcmKQOBwx5Wg>
+    <xmx:Ay3rat1ZeL1JZQXP0cbJEvUpHP-6iXUb5N58dA-wUg2uhNELNoOnhxi8>
 Feedback-ID: i10464835:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 4 Nov 2026 08:02:52 -0500 (EST)
+ 4 Nov 2026 08:02:58 -0500 (EST)
 From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	Linus Torvalds <torvalds@linux-foundation.org>,
@@ -135,27 +135,27 @@ Cc: "Kiryl Shutsemau (Meta)" <kas@kernel.org>,
 	linux-fsdevel@vger.kernel.org,
 	fuse-devel@lists.linux.dev,
 	kernel-team@meta.com
-Subject: [RFC PATCH v2 15/18] mm/filemap: don't store f_ra.prev_pos for FMODE_RANDOM files
-Date: Wed,  4 Nov 2026 13:01:11 +0000
-Message-ID: <20261104130118.2507513-16-kas@kernel.org>
+Subject: [RFC PATCH v2 16/18] mm/shmem: count accesses to a folio the way filemap_read() does
+Date: Wed,  4 Nov 2026 13:01:12 +0000
+Message-ID: <20261104130118.2507513-17-kas@kernel.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20261104130118.2507513-1-kas@kernel.org>
 References: <20261104130118.2507513-1-kas@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam06
-X-Stat-Signature: g1ixtjniw48bquo5c9zommpitazmkzc5
+X-Stat-Signature: xykhirnrkthnsrnmocw473pqeu3whmtf
+X-Rspam-User: 
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: 160C82001A
-X-Rspam-User: 
-X-HE-Tag: 1793797381-121200
-X-HE-Meta: U2FsdGVkX1+uiKm6iAaYxUGtbNnxxsGyU7rH9MnzrDDwTcfgAh8eqlJ8+OfgEdjxTFjlDtwXpasYBB2SdiTPbEuGTqVOF1cT8NqFk4r3lisA5W/k1VFe/PiiV/1pF7dpLnPGvY2vXJOnDfMy7/SMvyeDzKNBIgYM/zIMXpSA/ejPfUBzareaC97KpcTiTNEOzsAFZnCABYqgk8r89qChnNhJ84Gn8K+RYTPr8YVrlVwFcjItTwfgQwwXC3+DJ1R0haT7sZjDItproTr+kXYcHFdFfK+2SaWV3qn22Zxq/k4SoeWC4mRnHjijD5fei9WHqfBRrKBqBfD0/W73w0RN0oaQIzD518g5KVyIVunYoYmlNpkpLwCEnlBssQN1pTlg11DV5hvV/hZ9W9hNx1d7mUNNeHvmowyLvvsAwYPI4h+kwEy5gtdNYSUZLvkBwndD6iNAgX9GnOz7SkKhKvVSEPfSr1hD48eFpTe8RXRpiYbH8ADiPMy8w4v/qUKv+CTi3NHS9+LHED/WSXikLBmYTHRs5MUeHIa2zxtiq7FWLeoCToPHjeIGbdAmP/WtVqyHHkzO2aZpqI4S8dmORpQxlJ2ZNia+TgMbyvSj2ne2aNzPIZrEfxCbTFsOGRxV8eZl6N9S7Scy5T3aNgVQ94fWFMMf/BLjrIpqABb+RTMyH0nC3nSHuIjxoucX7AxpiczpGYRoReMW/VkfXm6rrwYn8CIwyi/jKJvQ44WbtOWU/ECIIfnt3ukuRuvnMaIYDxiXIIafNgHbudhWGxrpSG2dcTjkhH57lfecX/jExpkXLwYfY3Ame1O+Sm3bla31qwQGijoovF1G85DQFA9HCO2cpnIfktpht9vnmZVJjeL8NUxZdglpiLqCiCDqlVxAqP8KQV50XZE/cKHhpJSbJKT0S4bCYt7keMpDwyjYfjIOyH9OFHHPLc2sYdt0A+Ur4IQHjIRT3pR0n5bAEy9waV2
- cfB3YRnV
- au+FjosGMqSfw4Wt8Wy34gEkErg00h8Q+DbH61eXfNfs4N0XfD10Yepmt9gwRuwJaBKsmJCysH9o4lIbOI713AdKo8OTFUrpSmpRFHimTpEmVma2QXNRg2voHB+DJOyOoXWGXMuQfIrNop9QbyR0fik8E35t7eD7h64i2NDCX13gHi3Xb30/oOBLzgi9T0IzjvZQIdjRf4J466cJAM8fSVdCupkobFjIQ4DNFqAe/4Sonnbj2siipnIRQ3pNsITf1TuElIgcd6RSEpUW0q5D99RkjuUNb6p7KvK39+Dvci8MU6ekUmwysInO0u/OZayvZydgcrh+uGSF16ud0DmPZXDyPx6n/GYF3zn3t0oCnmATeWjKexBMi7pl4LCUvtbiPujZj
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 2D49240006
+X-HE-Tag: 1793797387-531045
+X-HE-Meta: U2FsdGVkX1+gOfMjJX2OIvm5ye+aYQ9hmow25Ws3PusmLVFktzI+fzPw/3txjBN/cooA6TUS+EugjnKsVOr4/7wLSUhUuYUIvrwxXNmtLPuhQivOiXkcgphHpAr5oxnyQ9rVipcv+vJxb27SfJT3ay9XQ+P3yVeexREaYSmA++8Uuop3ZudgI7LKUudnc4LwT4gg2+740BtmfhSaeV0wKAswaoDNd41QX6nQUZms6vclI3h+zjnYkvXtwuuVyj6ulWbgP8797NMMB9iiGFgqq8JgdbYsmwUpUIONcOkR8oNXGEw0ffHsgqVn71j2RAMJV9szJBrolrg3ROa+VeYqdg4PpS2P+aAI/NDQwqWj2HJCM6hmOhlm99j4gFWvDdFF0G2yoDeL3v8UJem47iboq+8KKCcRfq9a+WmkNMq9SxwUQFs4ecLGYh1oXdivzYwwzjIcI15PB6pd7WsbAtYl709npyEGdW8Y/QLbqkZtnF/GZSygHpIhldR96JTms3m9L6XGnukSsb51mmEyaHA2ZOnBOPbCjx4Goqfajo0n6OBHpTgmk2YUIldrwspZPetTB3pqbHe3M31L8OI+xViXInYhKzWCtppvcwxNro12YVuDZ8Frm5PoegyQwG+/dlqG5C9TXRda6otei+QQyupsFwblAqQI4XNfelQdofa5ORB4l2JPOH8CXUT7E3nOTaGFtctXbyJMY6JTT7/CI+oB1vMHXexOrcIDZ9jDAEB67bUoywxSUtxR+Ot3uBmBbWUg4SSDT/KTeeY3E7T9Npj/lAQUuuMrVPQtMVc5wUrvXZUo2mz+YJ0uaUNPFIJk28EEytbbxWCU3lKGkm2AeY3WvRoYpO4wRDxR8OPhjb9cW9oWz9v4+8RAxyKYO/zPvtZq38/kJM+bsJUioVBZeLcHWOQ4G3yvwqeFEatzafl7/pDultSxjguks9IBV3H2YliLf3OXEuPdAxc2frXoBOO
+ pJYeBWGq
+ BWpH2GQc2b9ksKiXGPHeGPDvpDhA9VclrTuMVrtLKY7dXEmEL5LnwoHeUWVvnbaARmp/6OlzY5b9tFxbAQCLwa06B3TtYKZWgxMw74t84FYE8nbaLBskhC6/EVFNTLk2gzVP5AhJDjWpETkNgboGN87IUDhGraeufLcLlq414vm0KeYlHdZYqV228SViBHWl0JaDphIwANkbxS0Tyqan0iWWjM44O9E+F9Tl6aUWMMhHamILe81lBBoH3gQaYvhppsMLJZEBHTobvPe928ep+SdbQN8d0XBjpqmkJPMIKDKNXgkfxEzArUAL88dq/f+J4dUI4aAxTLTEY83pjdaVqqUaNYx1VTvyBlwTbwSSrx2ZRkfEXoUQO/3InGOKsJOs/+DxA
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -164,57 +164,111 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-filemap_read() writes the end of every read to file->f_ra.prev_pos, in
-the cache line that fdget() and fdput() write when threads share the
-file table.
+shmem_file_read_iter() marks a folio accessed only when a read starts at
+the beginning of the folio.  Small reads that start anywhere else never
+count, so a folio that is read over and over at one offset ages as if it
+were never read.
 
-Applications that read a file at random offsets from many threads, such
-as RocksDB, set POSIX_FADV_RANDOM on it.  Readahead then never reads
-prev_pos: page_cache_sync_ra() forces the read first.
+Count accesses with filemap_read_accessed(), as filemap_read() does: a
+read marks the folio accessed unless it goes on in the folio that the
+previous read through the file ended in.  Reading the same bytes again
+through one open file counts once, as for other files, where it used to
+count each time it started at the beginning of the folio.  The end of
+the previous read is kept in f_ra.prev_pos, as for other files.
 
-Skip the store for such files after a read that filemap_read_rcu() did
-in full: without folio references, the file's line is what the threads
-contend on.  Keep it on the slow path, which takes folio references:
-skipping it there made reads slower in my testing.
-
-filemap_read() compares the start of a read with prev_pos, to tell a
-read that goes on in the same folio from another access to it.  On an
-FMODE_RANDOM file it can now be stale; with many threads on one file it
-was another thread's read already.
+This also sets PG_rcu_free on the tmpfs folios that reads keep coming
+back to.  On a shmem folio the PG_readahead bit is PG_reclaim, and shmem
+does no readahead, so do not let that bit keep the flag off.  A write
+marks a tmpfs folio accessed too, so a folio written in several pieces
+can get the flag on its first read.
 
 Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
 ---
- mm/filemap.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ mm/filemap.c  | 9 +++++----
+ mm/internal.h | 1 +
+ mm/shmem.c    | 9 ++++-----
+ 3 files changed, 10 insertions(+), 9 deletions(-)
 
 diff --git a/mm/filemap.c b/mm/filemap.c
-index 182ae7d5db56..5998de3d6697 100644
+index 5998de3d6697..65d414ad9d85 100644
 --- a/mm/filemap.c
 +++ b/mm/filemap.c
-@@ -3078,8 +3078,13 @@ ssize_t filemap_read(struct kiocb *iocb, struct iov_iter *iter,
- 	if (fast_read) {
- 		already_read += fast_read;
- 		last_pos = iocb->ki_pos;
--		if (!iov_iter_count(iter))
--			goto out;
-+		if (!iov_iter_count(iter)) {
-+			file_accessed(filp);
-+			/* Readahead of a random file ignores it: skip the shared store */
-+			if (!(filp->f_mode & FMODE_RANDOM))
-+				ra->prev_pos = last_pos;
-+			return already_read;
-+		}
+@@ -2772,8 +2772,10 @@ static void filemap_mark_hot(struct folio *folio)
+ 	if (!IS_ENABLED(CONFIG_PAGE_RCU_FREE))
+ 		return;
+ 	if (folio_test_rcu_free(folio) || !folio_test_uptodate(folio) ||
+-	    folio_test_readahead(folio) || folio_test_dropbehind(folio) ||
+-	    folio_test_unevictable(folio))
++	    folio_test_dropbehind(folio) || folio_test_unevictable(folio))
++		return;
++	/* shmem does no readahead: there the bit is PG_reclaim */
++	if (folio_test_readahead(folio) && !folio_test_swapbacked(folio))
+ 		return;
+ 	if (folio_test_set_rcu_free(folio))
+ 		return;
+@@ -2796,8 +2798,7 @@ static void filemap_mark_hot(struct folio *folio)
+  * LRU records, or when this open file goes back to data that it has just
+  * read.
+  */
+-static void filemap_read_accessed(struct folio *folio, loff_t pos,
+-				  loff_t last_pos)
++void filemap_read_accessed(struct folio *folio, loff_t pos, loff_t last_pos)
+ {
+ 	bool hot;
+ 
+diff --git a/mm/internal.h b/mm/internal.h
+index 38b1165212c9..18391dc50418 100644
+--- a/mm/internal.h
++++ b/mm/internal.h
+@@ -1248,6 +1248,7 @@ struct migration_target_control {
+  */
+ size_t splice_folio_into_pipe(struct pipe_inode_info *pipe,
+ 			      struct folio *folio, loff_t fpos, size_t size);
++void filemap_read_accessed(struct folio *folio, loff_t pos, loff_t last_pos);
+ 
+ static inline bool vma_is_single_threaded_private(struct vm_area_struct *vma)
+ {
+diff --git a/mm/shmem.c b/mm/shmem.c
+index 848316eaa7f4..1c700fa9666d 100644
+--- a/mm/shmem.c
++++ b/mm/shmem.c
+@@ -3309,6 +3309,7 @@ static ssize_t shmem_file_read_iter(struct kiocb *iocb, struct iov_iter *to)
+ 	struct file *file = iocb->ki_filp;
+ 	struct inode *inode = file_inode(file);
+ 	struct address_space *mapping = inode->i_mapping;
++	loff_t last_pos = file->f_ra.prev_pos;
+ 	pgoff_t index;
+ 	unsigned long offset;
+ 	int error = 0;
+@@ -3378,11 +3379,7 @@ static ssize_t shmem_file_read_iter(struct kiocb *iocb, struct iov_iter *to)
+ 					flush_dcache_page(page);
+ 			}
+ 
+-			/*
+-			 * Mark the folio accessed if we read the beginning.
+-			 */
+-			if (!offset)
+-				folio_mark_accessed(folio);
++			filemap_read_accessed(folio, iocb->ki_pos, last_pos);
+ 			/*
+ 			 * Ok, we have the page, and it's up-to-date, so
+ 			 * now we can copy it to user space...
+@@ -3410,6 +3407,7 @@ static ssize_t shmem_file_read_iter(struct kiocb *iocb, struct iov_iter *to)
+ 
+ 		retval += ret;
+ 		iocb->ki_pos += ret;
++		last_pos = iocb->ki_pos;
+ 
+ 		if (!iov_iter_count(to))
+ 			break;
+@@ -3421,6 +3419,7 @@ static ssize_t shmem_file_read_iter(struct kiocb *iocb, struct iov_iter *to)
  	}
  
- 	do {
-@@ -3161,7 +3166,6 @@ ssize_t filemap_read(struct kiocb *iocb, struct iov_iter *iter,
- 		}
- 	} while (iov_iter_count(iter) && iocb->ki_pos < isize && !error);
+ 	file_accessed(file);
++	file->f_ra.prev_pos = last_pos;
+ 	return retval ? retval : error;
+ }
  
--out:
- 	file_accessed(filp);
- 	ra->prev_pos = last_pos;
- 	return already_read ? already_read : error;
 -- 
 2.54.0
 
