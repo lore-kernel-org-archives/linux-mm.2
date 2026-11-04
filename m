@@ -1,125 +1,139 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6683F606A32C
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 07:10:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87D48606A331
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 07:17:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=plSfkN/Q
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=NVo64i6H
 Received: by kanga.kvack.org (Postfix)
-	id 81BF76B05B1; Wed,  4 Nov 2026 02:10:18 -0500 (EST)
+	id 850DD6B00EF; Wed,  4 Nov 2026 02:17:30 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7CD2E6B05B2; Wed,  4 Nov 2026 02:10:18 -0500 (EST)
+	id 801D36B05B3; Wed,  4 Nov 2026 02:17:30 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6BB846B05B3; Wed,  4 Nov 2026 02:10:18 -0500 (EST)
+	id 6F1606B05B4; Wed,  4 Nov 2026 02:17:30 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 4924E6B05B1
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 02:10:18 -0500 (EST)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 58C4B12057D
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 07:10:17 +0000 (UTC)
-X-FDA: 85396562874.08.3A8A76D
-Received: from mail-pj2-f0.google.com (mail-pj2-f0.google.com [74.125.227.128])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 99A3A40006
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 07:10:15 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b="plSfkN/Q";
-	spf=pass (imf12.hostedemail.com: domain of dennylin0707@gmail.com designates 74.125.227.128 as permitted sender) smtp.mailfrom=dennylin0707@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793776215;
-	b=X4FspV0S3AR+04OBAO+VBMdgFbzzjBy/RGizBNF3Pa7zUcMnYyEWt/lHYkaQmlkXKx7q/x
-	UTIbr4mdWPa19yOH2Hc2ANbHtnsBQlu9Bpht5X3r/hMIOwJ+7G/1pPizOeID8sm+G3Bvoz
-	31p2ipEA4xGTskK2mNMMTA5qz1vaLFA=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b="plSfkN/Q";
-	spf=pass (imf12.hostedemail.com: domain of dennylin0707@gmail.com designates 74.125.227.128 as permitted sender) smtp.mailfrom=dennylin0707@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 492BA6B00EF
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 02:17:30 -0500 (EST)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 61CC640330
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 07:17:29 +0000 (UTC)
+X-FDA: 85396581018.12.E534DBA
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 81CE6160005
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 07:17:27 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NVo64i6H;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf08.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793776215;
+	s=arc-20220608; t=1793776647;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=JhcjK44jzqfwISimpbYLtHkEsfZ2sH/PIN1jlamuBwU=;
-	b=uPLJnrlS6dbJbYyL1dT4Hr2iMkCxcRKy2L0bMMn6ruwHOkXqqrb7HbHQIT16gR1VdE5+qO
-	zHZUzujL83mBgmz06SG8VFzoZUKKJaX1XFLilW9IYAMeHz7ucsuFG75VwSc3+EQRHS3Bxo
-	PZ8Md8mfph4R5ixDLFUvaOcYih5YG6Q=
-Received: by mail-pj2-f0.google.com with SMTP id 98e67ed59e1d1-3b094d5f1b4so155091a91.0
-        for <linux-mm@kvack.org>; Tue, 03 Nov 2026 23:10:15 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793776214; x=1794381014; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=JhcjK44jzqfwISimpbYLtHkEsfZ2sH/PIN1jlamuBwU=;
-        b=plSfkN/QXXklAagVEmFC01oZ7yId4F+xKiRnqaEhiBlE1ZLFl1AYlO0sxxadb4QvfT
-         35jdGu4QT9EvelC+ulpz2wRhfjCBF5bC0Zkj0H71UdPxQkxTLy96RK8SrjaUTcHs65Z6
-         6aHxPkbyZ4EIJmPsd6KV9CFykJQ30TX3X+GxH3K1z7ViDEOPbQlOWk5eZHdV60q8n5h2
-         S1fbTgHVZltYAHdrPOkDAVc+0mErYTHPSMTvkNWM4FDrfm/mbH++7dcEfSeXnxxnuSC8
-         aH9SJPsxDuPrUlG70G+WBZOnOqa9XokqMLoGgIoswnKrnnTvdtViCq9ZvxPfgx3dsO/q
-         BZKw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793776214; x=1794381014;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=JhcjK44jzqfwISimpbYLtHkEsfZ2sH/PIN1jlamuBwU=;
-        b=rjne28dGU4cKujP1M/gloOcAf6LMHEeJv339cGAPIydydR6ta4FlZRF3F9O98FaMVP
-         Y2aZzA+PWh1cHaPmuDbZaIPCczSFO/BYDTbtqNu5kO78953qxwtXj/mJQPQBZAaxgF+w
-         SNXZF4IjkhTaHUJoFjWp/H+V1KwfxbmR5Uohh0RB3s0SYOY9qPb4hNYmjUkvsn5fdLil
-         28sNDIJau1ciWn50AK33oNj2B2oC8BknPGyXsqWtXMQabhsNAnSbkGkCzJifxJIt6xFq
-         aCYIZAont0xuTCNSJesq7jmoetHCiRcOUZKTThmgdK8tOA2eVPjCk+xtiPiFa8mIT18N
-         6/oA==
-X-Forwarded-Encrypted: i=1; AKwUvByK7M9zkOYU0fFOohVNcJU1dup4JuZN7UG2DB2F1MAaWsCnp+6OKXAixQwVKfQMEBJ3Mmoe66vo1Q==@kvack.org
-X-Gm-Message-State: APuU4Z/HmrnZzwxQde+QmE4my29dEzQhj3ywn6itaqCsvaVUomzn6EXA
-	WSXbNMzVYo3L1X6XCFfXzAq9UWMTEWMazCAU8HZhS30nyvTvyBYS0pCy
-X-Gm-Gg: AYBFou2SJMtSBfU2zEMrWmZsw757iqHHVVl6zR2QuVyAA04zSLBd0xQYu8qUkQkN+AE
-	gaBqk5DBWzRkR/opcK90yr2I0If3pNBSOqrdAnAEm7nx8LPJbrtByK8hGC/d5jdo/p7UC7AnP/A
-	Q22vZixGIBX/jE/MzCR1BLy/DVcSIYhSf4qttSK9p0O3igbPCsk/kE+VVar6IebAv+B6BRRcZh4
-	THyR3+OAmO3ZYUJu97Sh+p4M6AH8IyRDtTOiA5dtr0vMO3IvkLlbO33Er5TzIc9d3KvI0zxBqgd
-	xA0YH18anJHDjCJ8DUTXRyyQ57m32rXXdKZzpoSmt2rwlYLdq/hz9bF2oKA6//B8pI7GuZYMHH/
-	a3y+VMkQbZBX7TZdEGL90RzOI2fItJbHZBqz3zNCcIl4dR3sUfhc/NsY416m3dKdAcSmEA0K5TB
-	WYOqxJE4L6A8XbDwYG6FqvTlXTv4/EJSEo0+kWRm+3KCw/p/k88zVFqXbLR2S53xTkdvPKvQ3Wg
-	ARa6DXTcjZuNFF6spsaNSEqVqpI09ykKt9QMaN9qL4NgMPnMxzpXzG95V42ZmvdGlb0q30R/VUJ
-	lsZIju1Z0srPmaf5+FQD7ceioDdGYah1Mw9sF3sLn5RGEn+zoQd96MzsyAv0zTB6iWMaX6p242j
-	NynP97dybVxToqda0/m86klkXfuPEN7Eb6Vkz2Q==
-X-Received: by 2002:a17:90b:2547:b0:3ab:9c73:12e with SMTP id 98e67ed59e1d1-3ae89536c0cmr12582654a91.6.1793776214401;
-        Tue, 03 Nov 2026 23:10:14 -0800 (PST)
-Received: from localhost.localdomain ([98.148.34.5])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b093d481a3sm2651997a91.1.2026.11.03.23.10.13
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 03 Nov 2026 23:10:13 -0800 (PST)
-From: Hungyu Lin <dennylin0707@gmail.com>
-To: willy@infradead.org,
-	jack@suse.cz,
-	akpm@linux-foundation.org
-Cc: kas@kernel.org,
-	dave.hansen@linux.intel.com,
-	linux-mm@kvack.org,
-	linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	Hungyu Lin <dennylin0707@gmail.com>
-Subject: [PATCH] filemap: prefault writes starting beyond EOF
-Date: Wed,  4 Nov 2026 07:10:02 +0000
-Message-ID: <20261104071002.49693-1-dennylin0707@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=Ktg5izJKG60I2UPIEWlV3M+KtBzsylr/JSki197Myic=;
+	b=bJsMDTPSY/QEv8CqHc5fURiBwSwAVwLCUE9L+ZnlasL4NLZJ5OqihHac+MDQqdnhSv9PUu
+	H6kkRRQBz8XUsvTCf54YMP71XDxeMZ3Y+hZa1TNQQ2sVoBjffFc0YUa5dLruWO7d9SkgGI
+	g6LeZqaK4hXpnbFF5/moZJQEMiNlKY0=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NVo64i6H;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf08.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793776647;
+	b=5WzUkHGbZcGirqqvzSNm3DcOFuFQ5987uTSn4lXFk7EOhPG83WGUnGoFgm+7MbWsl7pea6
+	kL7IT9mwfWkEHwdqlAe3ucLOoAtGVBlS019kByKvCurP2kJs51/XhkfmMoBi+8L1NDlkGP
+	mPgzWm8ySftAo70IAnb5F1u7/uPSNp0=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id B37324391C;
+	Wed,  4 Nov 2026 07:17:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D41C11F00A02;
+	Wed,  4 Nov 2026 07:17:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793776646;
+	bh=Ktg5izJKG60I2UPIEWlV3M+KtBzsylr/JSki197Myic=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=NVo64i6Hy2J2/JtCvmk7jr+3z3y7ow2D6wnKnOqR75VbQOb9ns/fhqmrpw5s7XOYO
+	 ZTaun93U9u+EennRsz2Y8jXTpQwUVEFNJNitiu/lrdfG6oB5tUfN6azMEZqBASF3x4
+	 mFQNzpy2iyhPQpr6xRHRcw+L7u4a2kqD6r7eiaH2wuwZgH8BUcSWx6Rw1T7cEwdzD6
+	 3UZE4EBgQ30QNryMbH64W+sdA1VoFuQWVHvj6re8m/2E1Htsx3rujkqFkF5WI3Wgru
+	 NjGR2wrqrbfeiV4B2GMLu/HCUi1LHyNM7CEsNxhhoX1rYOUsohwuY08qi+kjBHSPVq
+	 ZX1CgzNdOPl3A==
+Message-ID: <c714b285-4bd1-4475-880c-30aaed262fff@kernel.org>
+Date: Wed, 4 Nov 2026 08:17:21 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: wh8tsuan1iggyyaso3unzumr6aggd5fq
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 0/5] mm, page_alloc: several stable fixes
+To: Johannes Weiner <hannes@cmpxchg.org>,
+ "Gregory Price (Meta)" <gourry@gourry.net>, Zi Yan <ziy@nvidia.com>,
+ Shakeel Butt <shakeel.butt@linux.dev>, Mike Rapoport <rppt@kernel.org>,
+ David Hildenbrand <david@kernel.org>, Oscar Salvador <osalvador@suse.de>,
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>
+Cc: Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Brendan Jackman <brendan.jackman@linux.dev>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, Josef Bacik <josef@toxicpanda.com>,
+ stable@vger.kernel.org
+References: <20261103-pgalloc-ai-hotfixes-v2-0-e0d2890ab74f@kernel.org>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=vbabka@kernel.org; keydata=
+ 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
+In-Reply-To: <20261103-pgalloc-ai-hotfixes-v2-0-e0d2890ab74f@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 81CE6160005
+X-Stat-Signature: h3ys8yr4asf69fp5m69h6mb33citnttb
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 99A3A40006
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
-	autolearn_force=no version=4.0.1
-X-HE-Tag: 1793776215-58500
-X-HE-Meta: U2FsdGVkX1/NXhYTvZmdu8U79EzeZ4rY8KlaZyPBB1QoZvlTpbI9EMZRJQTJ3ZZUNPwZB4Pv744LxkEJROJGpUsfS9Vo8C56OjTUfteHgcEvmuOIE90Mvu1vZnzVEVYVzG0bgsViQSyaExRjoYkIUZ+XhEwZNJRe6t+zx8Ra1obIRk40sy9SHlBNxHcZecvNdJzb2hhSMB/K1DOpAcAOIPjzv+EDtglEFQe2oiTp9Oq8y7v7ddhS/4RHa8hkGik9FF55CMr5FYvZyHU9TibUyEsOhPn+OHr5zqAuPASw+SU32EkRSPMLTa8Cts1GXp2Z7WejD+mHeq5WTlv25DS7LpdNFbkZC2XcQm/5Akr/GAwc0J0ayw/pQvo0lEHkyzwxDcaKGWnTvMyZ5Z3LqR4OC06XzxO/ruxaDuInsqdjCt9a9iJ3cfw9oVG7pg09qtBNW65QfvxJaS1cVdIaIB7/HrW7C1prcyiTLp48dK/rXJ1C1zPIzMuYvwlaenr4tlpim0geKyxR5Y5UxkwUo8gNJNlesj7pO3cTCaaQj5l0MSvQKMqgVmoPaQtkCwEjudW0xEoOYvmO+OFYX0xXr+6NmiD6DAi7idav/580OdiAqwtGF4TtMcjsS2WyiOJLqs+VKg4UfQQizd+TynA4c5H6nXlxvYjvcFfS15L0Kq7tp1wsHSvwrCvj0EU+G6TzTrW36G767wXnXUFXH+7xqW22cWJIPbcGK0CvAF7Fosjv7ieX0OZLvBW4vvaHqLkwinU/3ymF6RtHEKHKrf3hys/m5dp23sVZcYp4RBIt3JCxJEqYxHybxbyi/c1nwapVRc+45yse9EHMYFLVjvJKP+pwuqEUyQKrJWRqsYJMZDT0QrIhb2y6p7Tq0aEs3LZa9HtS67PHlrU0wAKTZ/jRTmWLAx9liL10QQEjRyohPsLvPrKjo+0UPdT6FWEeS0aYE17YJNf67XbVTERUfPpxZ1Z
- LVB5Mn0+
- E6Mjl59P6V7Mkdk9EIWS6NTssshHXGwwjhwEX7fBQ9bcXAuaXtJD0JqlcK9w8uxGIeWf3FXitzwWRNa1NrVFi7RneezMSLfaJqZISffiWIQrirQc0LhouxznIjwcuqmR5hIe1kSGdOlq5LRUxw2gJ6pzPaqTIxlpQ59Z0gqT9DYgg1WpAVizn57kRgTmh0M4QeQA1xVmm2AHwDlefJu1EUbIKbiStsL7CNS29lFwit6InNeu90pSIkhj1A7aFD53Pq5xN0xonIuWFoyFd8DyFRkr/4RtVTp0QKhradf3oieOx75vAkxoZrrwhmNu/o/cK4tGKs+tZdYtTKHMnT6FEaS1NiSDp9fcQ+tGbopNRrtdpB3DqIS3nKSsHQVdgpQCoH0UF5oyc38P2hTc=
+X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
+	version=4.0.1
+X-HE-Tag: 1793776647-198254
+X-HE-Meta: U2FsdGVkX181M+79uT4jXKX5Hyvp+/V7Xa7O+F8sMBXQQCZMtb3tPPNCp0boZUO3XfE0cuub1zh5U8hh26DV83y9e803hrRs3jgWeQcyxOUdJK9xz32VYlCb2D0hg2ahTxMS4eH/XaIqHubwxL0+pXCFU3ApLigCE8PXDHJ4fSm5WCED4fs/sKpCZFvKbSr2ZyztKfhmWwVyuyQWdyKZ1jyBWxQmnjcXl8OwJuLfdxJCApvO7fNnxvm5OT8biCf7rIAr+uP8+EaR9QIFYagnfBpw4o2tt6vdTHd4ttMFc1vtLPeUdm7n4kkwVBbb1/BYzKz/aRKCoqrHnUm4d3xFloqkl/FVSx39KiezuHGtejY2MwkXBUSJltL2m1kYTeQX8qhX85KW1d4hLJmOY7HMn1hURMDHHfffH9wykFuTV3ojHSZJTd97hJT80IhAvHT42ZZ9Hl86Od0KLKg4EqN+C8D2Jviiu+KQvP8Ism81NBlWK47NoK3r/WZjmkSpiozQdBXVBxX/OMce2ko4RcarAjQESebNFgp2wLMxUylWmxlFjuVv5vIp6etQXtRbwq8HPqtWBeSwfn1SsEtWf7XGuAQifp6z85pCClfEnShR82o3x1KZnMAtV5VKiksp+48zhJkR+QYu04iysXEi0kqsv7o7qlEfsvOJcVdKwgG9O9Ad/hMmoy84Zgyl/AwucvL5bmwSYD+DeC3hzZRNsmS1DjK1MFq8ZJ7Ce/Z8Pm2b2hVgCxbHOF7GmQD4FHs27SwtY+L2JsIkczFYkgrhMsNMkBTtceCKfMsKnhURUhsvF4smsOemLEQ7K89u4jiaK9aZ+qefcCsGUgrCv2WLkn6fRoA/lLBIRNQfaLDIsYjBiITWDa99jRSJ7dPAqFUNimFMYBmu91IRPVWWygMTgViVUZO4FHFU7k/S4zotuPiMldFprnMz92VRtyS0w+PO37GC6auCXZglI4pBWU0qtFR
+ RKYqiH71
+ WAI4Gr1LUC7jDApeyqLWpHVABdz9fTtBbF0sOX68yDr07ZzY5Jx8ahHd/mhZKQAD8F6BlQpmhAjS6a1e/bLhw4hGiIew4KWChePADd8KE4fdu73I6I6OqgIIAr78+ZnuSiQdebRTMcBj1mudLj065L7u1ikGcKWnRRzhw8pmFGHuhfTviKK6+YJiI8cfOhpG2CZJsDOdERqeGBuBrW7Xwgugw/cpeWsavOOLG3NLEOfU/IHrN4wk/A2GGUNaWROqNcnR5TPMulaSeUth0meOhCqlEMKoNjSgOgmtW4vqm7hCDX8D3wN7lp6UNj7GrJ0Pd0whIDMHL78XISRucC0ZobJWMB1MG2J7ejZXCf+FcLfbB1zMxXHUBkTr8hNUxtn/z3GdYN0fmUzCE4HjKyQ6R/PK4HJ97DZj84t0F
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -128,57 +142,48 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Since prefaulting moved to the slow write path, a buffered write can reach
-->write_begin() and ->write_end() before discovering that its source buffer
-is unreadable. Several filesystems can extend i_size in these callbacks
-even when no data was copied. For example, a one-byte pwrite() at offset
-4096 into an empty file can fail with EFAULT but leave a 4096-byte file.
+On 11/3/26 17:16, Vlastimil Babka (SUSE) wrote:
+> A bunch of fixes from Josef, filtered for page allocator by David.
+> 
+> I have tweaked some commit logs and a comment in one case.
+> 
+> In v2 some were dropped as they were merged already, the last one was
+> changed to fix things differently. "mm/compaction: trust
+> zone->contiguous only in the span" was dropped due to lots of sashiko
+> feedback. compaction (as a pfn scanner) needs much more thought
+> 
+> Based on page_alloc/for-next-fixes, to be applied there as well.
 
-Prefault the source before ->write_begin() when the write position is
-beyond EOF, and return EFAULT if no source bytes can be made readable.
-Overwrites and appends continue to skip this prefault. Keep the existing
-slow-path faulting for forward progress after a failed atomic copy.
+Now done.
 
-This also leaves intentional zero-length ->write_end() calls used by
-generic_cont_expand_simple() unchanged. As with the previous prefaulting
-behavior, a concurrent userspace unmap can still race with the later copy.
-
-Fixes: 665575cff098 ("filemap: move prefaulting out of hot write path")
-Reported-by: Kiryl Shutsemau <kas@kernel.org>
-Closes: https://lore.kernel.org/linux-mm/at9xXRhD2xZhszEj@thinkstation/
-Suggested-by: Kiryl Shutsemau <kas@kernel.org>
-Link: https://lore.kernel.org/all/at-XtWBQg3jv3H8Z@thinkstation/
-Cc: stable@vger.kernel.org
-Signed-off-by: Hungyu Lin <dennylin0707@gmail.com>
----
-
- mm/filemap.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
-
-diff --git a/mm/filemap.c b/mm/filemap.c
-index b74bc1e5015c6f318333427f223b9f42061a6213..30414d55412b84f11ebe98b8eea607ee8c04eef5 100644
---- a/mm/filemap.c
-+++ b/mm/filemap.c
-@@ -4389,6 +4389,16 @@ ssize_t generic_perform_write(struct kiocb *iocb, struct iov_iter *i)
- 			break;
- 		}
- 
-+		/*
-+		 * Some filesystems can extend i_size even when nothing was copied.
-+		 * Prefault writes beyond EOF to catch unreadable source buffers.
-+		 */
-+		if (unlikely(pos > i_size_read(mapping->host)) &&
-+		    fault_in_iov_iter_readable(i, bytes) == bytes) {
-+			status = -EFAULT;
-+			break;
-+		}
-+
- 		status = a_ops->write_begin(iocb, mapping, pos, bytes,
- 						&folio, &fsdata);
- 		if (unlikely(status < 0))
-
-base-commit: 6628e7d4c6b25c8d18f1345e3a20d21829aae7e4
--- 
-2.43.0
+> Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+> ---
+> Changes in v2:
+> - rebased on page_alloc/for-next-fixes
+> - dropped 3 patches that were already merged from Gregory
+> - dropped "mm/compaction: trust zone->contiguous only in the span" as it
+>   needs more thougt
+> - in the last patch, remove the VM_BUG_ON_PAGE completely
+> - Link to v1: https://patch.msgid.link/20261027-pgalloc-ai-hotfixes-v1-0-9c7d1aca801e@kernel.org
+> 
+> ---
+> Josef Bacik (4):
+>       mm/page_alloc: clear ->private of deferred free pages
+>       mm: page_frag: refill the cache for large fragments
+>       mm: page_isolation: do not take slab pages for free
+>       mm/memory_hotplug: resize zones under their seqlock
+> 
+> Vlastimil Babka (SUSE) (1):
+>       mm/page_alloc: remove the zone_spans_pfn() check from get_pfnblock_bitmap_bitidx()
+> 
+>  mm/memory_hotplug.c  | 51 +++++++++++++++++++++++++++++++++++----------------
+>  mm/page_alloc.c      |  3 ++-
+>  mm/page_frag_cache.c | 21 +++++++++++++--------
+>  mm/page_isolation.c  |  7 +++++++
+>  4 files changed, 57 insertions(+), 25 deletions(-)
+> ---
+> base-commit: 743a99d7e339e81acaf76f3c902b23abb29abc15
+> change-id: 20261027-pgalloc-ai-hotfixes-59bcd873a355
+> 
 
 
