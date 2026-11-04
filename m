@@ -1,145 +1,108 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D30D606A32C
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 09:08:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C582606A329
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 09:08:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=VYe+QldW
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=lcmEB/R6
 Received: by kanga.kvack.org (Postfix)
-	id 157C96B05B1; Wed,  4 Nov 2026 04:08:33 -0500 (EST)
+	id 6D7896B05B2; Wed,  4 Nov 2026 04:08:56 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 131A36B05B2; Wed,  4 Nov 2026 04:08:33 -0500 (EST)
+	id 6B0B56B05B3; Wed,  4 Nov 2026 04:08:56 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 01F3B6B05B3; Wed,  4 Nov 2026 04:08:32 -0500 (EST)
+	id 5C64C6B05B4; Wed,  4 Nov 2026 04:08:56 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id CDBB56B05B1
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 04:08:32 -0500 (EST)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 602051A05A7
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 09:08:32 +0000 (UTC)
-X-FDA: 85396860864.22.A438294
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 2FE686B05B2
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 04:08:56 -0500 (EST)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id CDF0F160658
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 09:08:55 +0000 (UTC)
+X-FDA: 85396861830.19.D426BB7
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 8E4BF100002
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 09:08:30 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VYe+QldW;
-	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793783310;
-	b=Lveo30VHrVWJtECO1Np+f3bgbAFUQwqlEQt/f1giluBZLMjOcSLOdh/IlGGd7uBDv3SZMe
-	Fq7ZBL92CyNmy8tbYSWr2lInnn+6xBGs2p44WkwkSQeudXc47nKCGGdAV1aDukX6WDCHDy
-	w/6KmHz9sJCyIWvYPOVwNcZgXd2Odg8=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VYe+QldW;
-	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf29.hostedemail.com (Postfix) with ESMTP id D1352120004
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 09:08:53 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="lcmEB/R6";
+	spf=pass (imf29.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793783310;
+	s=arc-20220608; t=1793783334;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+NYn9Sk4oUvq/RMmR/hLYOzDbKipm49pgybfm6AGhmA=;
-	b=RFlVFlxtIPcDrtob37xDShYD9Qn9g6guifdEc5XEEBR3e6kx4ns4DzOgkMOEzuMboYf6lS
-	A0ZnswlMENPh5NSGQEmUYDHgXfMJfqLlyMxI81kfEmgIP+WsSuspezcX//oIhnnBjYn8Mn
-	YhYzYwg3tzcbJZ8EGd4vrjs+QjfxqKU=
+	bh=CwbssC3IcsbRd7BqfSzfMYQRORQNQUvKDFxxlCd3lXw=;
+	b=vCgIaFKDI6EzI6tNYIadu8RvWKTM0W9MN/FKLg8yzkX6bvIpYoGpvi812HDukl/bxTOjrN
+	UHNxtNs3M/rVuAZktrVom3pRn8dpqJg5PVXXJkBC9zHIbsy/UzgywIWyMzddNGslsHIIzF
+	f60sTt4ZGn2gZ+y6/m0fkP7uFFhkosA=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="lcmEB/R6";
+	spf=pass (imf29.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793783334;
+	b=CGEopNX8VMDEgRWsUQVXYuGKfeEwHdTnXDyxlmVzufJPA31f5+AmiEdMD/lNclSAV/X/l5
+	HTfJ8hyorqPEXFPOaDtL1Raij0hL2gaFPNYrIJNjxPREsd3R35OWAiULyeuPDOcxdva7Ct
+	1ZPqI/3IZr/AJX5pHXQXMiXtitcifec=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id AEB0E41982;
-	Wed,  4 Nov 2026 09:08:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 162751F00A2B;
-	Wed,  4 Nov 2026 09:08:26 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 353E243C52
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 09:08:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CB581F00A02
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 09:08:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793783309;
-	bh=+NYn9Sk4oUvq/RMmR/hLYOzDbKipm49pgybfm6AGhmA=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=VYe+QldWWMjvOsvqlc01rzx5B4pDG+f1Cm+nw8Pwbn8EK9cueIlJPWYrx+LxM3Gq/
-	 gnnSF1Jl69zzE4NHq7IbZ4y3DIbwnSEtYVmg7P0Wip/ZRlqnVc3CEG4do9h6Fvw0UZ
-	 Uz48wStqcn5WtkMTzyATnh9Kj300OWhh+lyS2EkrP3Js1kWclwEy5loXPoOAG5y/jn
-	 WbmGxWwZ2gbuTBltl2OzRCY5uPgxjPaQfI4pZMNkckztmGtzcgtGijITFkzjmQWPsm
-	 xujdp7OtQSL2W7n+xzvlbHYcEef6D7aBzwP5PhP+885r9+F+ajwGNhCFoHTfeytHWH
-	 osB903NfBz1pA==
-Message-ID: <52a78290-3e4a-4a87-9bb5-5b0e80cf0be7@kernel.org>
-Date: Wed, 4 Nov 2026 10:08:23 +0100
+	s=k20260515; t=1793783333;
+	bh=CwbssC3IcsbRd7BqfSzfMYQRORQNQUvKDFxxlCd3lXw=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=lcmEB/R6akcJdDRia+T5rGWp4agY6KiX6qiYpvTJ8Fi4wSGBW+ouMzIM5xhJhtIZc
+	 PQyrh00XtISp6tP5KqjmL/pDsx77Y9YjVQ0kFn7NF253J0OaGT1WoEi3v+p1ujRkn2
+	 ga4TmCjxu6LdUp3QZEVh5/CpXTzkW+bLSzcwn2XnlXUC6Kk0WEBJ48IlxV2S8q6663
+	 n0fHi8hMv9XYd7VYyaHE1tZehMNWE58GKgF4ego9G7B5eXG88JagfLL6trQlQEbiWG
+	 YQXc+0NZsUhcha6BMuUCRFC8IzICG4U0Rmr955GgZspNXBcmXauXEJ6qCHI6wCqs3v
+	 bg3pzAcT+tlxQ==
+Received: by mail-vk1-f170.google.com with SMTP id 71dfb90a1353d-5eafb65e163so311673e0c.2
+        for <linux-mm@kvack.org>; Wed, 04 Nov 2026 01:08:53 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AKwUvBy/V0dTYdJgjk/I0Ybo0zZ1TuKoB+NuE5eH1D+3CHpsZr9MTnwSKNw11vHDUzdSvfM866d0N/jSRQ==@kvack.org
+X-Gm-Message-State: APuU4Z//D7K8XjqK2e6MbVhpwmOaOgA4ub9GVvcY5ud+JV70Vbs5+Hxi
+	uHlnm20zNjNTVKWMb5hFcNjoXVzQuOHMOOJtNblW0XyLT1jlJV+lGSqVnzdmqm7rJe4DGok95z0
+	jVZiLoZY4xhGHnNFUDzakK7SKgkz+U/E=
+X-Received: by 2002:a05:6122:3108:b0:5e7:8bd1:731f with SMTP id
+ 71dfb90a1353d-5ec6897757amr6563644e0c.10.1793783332317; Wed, 04 Nov 2026
+ 01:08:52 -0800 (PST)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [BUG] mm/memory_hotplug: panic due to race between compaction and
- memory hot-unplug
-To: Ketan Kishore <ketan.kishore@oss.qualcomm.com>,
- Wei Yang <richard.weiyang@gmail.com>
-Cc: Yuan Liu <yuan1.liu@intel.com>, Oscar Salvador <osalvador@suse.de>,
- Mike Rapoport <rppt@kernel.org>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, Chen Yu <yu.c.chen@intel.com>,
- Jason Zeng <jason.zeng@intel.com>, Vlastimil Babka <vbabka@kernel.org>
-References: <20260903095543.3752338-1-yuan1.liu@intel.com>
- <1d625a60-9473-4f48-a384-7d756ccb7135@kernel.org>
- <20260910031609.qbn2qcxzbitau5xc@master>
- <12147238-575e-49ea-aa83-ea25c660ee38@kernel.org>
- <ae386ef8-324c-4704-bc0f-a1eca3280399@oss.qualcomm.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <ae386ef8-324c-4704-bc0f-a1eca3280399@oss.qualcomm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: iyq1hoppyn1b8oshs1omua4zw3utz5xg
+References: <20261103113711.1832834-1-max.kellermann@ionos.com>
+ <20261103113711.1832834-5-max.kellermann@ionos.com> <CAGsJ_4wpd-e+xjm5KwihVziAeVnQp3XYG=+-BKmx0SVEhmyqqw@mail.gmail.com>
+ <CAKPOu+9textOydxZYng=Bo9Sf91Wq_7rv5r2pBrhXOfiex=qGA@mail.gmail.com>
+In-Reply-To: <CAKPOu+9textOydxZYng=Bo9Sf91Wq_7rv5r2pBrhXOfiex=qGA@mail.gmail.com>
+From: Barry Song <baohua@kernel.org>
+Date: Wed, 4 Nov 2026 17:08:40 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4zzZZSaAwG=VLhuMvoD0YcAFdqyUr-8zRSibNw28j8wzQ@mail.gmail.com>
+X-Gm-Features: AclHuK8306bVpFSltXAI1ZXaA68bWTketiXOy1YGPxl8Unk8QhQOKTXLATnYAlc
+Message-ID: <CAGsJ_4zzZZSaAwG=VLhuMvoD0YcAFdqyUr-8zRSibNw28j8wzQ@mail.gmail.com>
+Subject: Re: [PATCH v2 4/5] mm/mglru: avoid redundant rotations of young memcgs
+To: Max Kellermann <max.kellermann@ionos.com>
+Cc: akpm@linux-foundation.org, kasong@tencent.com, qi.zheng@linux.dev, 
+	shakeel.butt@linux.dev, axelrasmussen@google.com, yuanchu@google.com, 
+	weixugc@google.com, baoquan.he@linux.dev, baolin.wang@linux.alibaba.com, 
+	david@kernel.org, ljs@kernel.org, liam@infradead.org, vbabka@kernel.org, 
+	rppt@kernel.org, surenb@google.com, mhocko@suse.com, hannes@cmpxchg.org, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, rcu@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: 95mz3cfx59kswsywfmtcycfze4rfc3pz
+X-Rspamd-Server: rspam01
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 8E4BF100002
-X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
-	autolearn=no autolearn_force=no version=4.0.1
-X-HE-Tag: 1793783310-990258
-X-HE-Meta: U2FsdGVkX18owiZWexdzRAQ88D48e83pj+q2HphcJAH8jfvNY0Kwklag9Yq/cmcFRydvjbwVPVaKan7+bYPIGX1j6Xyy8sllWxjAU5dfkJI/BFQ7oupbeofBvN2VNLHTfaISm6VdMpsJWuHLC+YLSVQ6o8h4CHjBrGExFulpbygDgZ+wyUXfQDjMqO9qiOAO9+FYIBoCdRHwV7aZlCNfU1qhVfinohvjcpfWWb6YVgO3rCx1DjaHx8/8j6hnVXrMTiVn5iD3OP/Be56L66CbBq6zGn26kFHxB/AcI544gCgs+exs/jz3oUwZK8A6f7rxoEW7d4/lGRhjh1SvVNaEnQKeGg8oRzxoldnqbweamwvEwW7mlcyRQbODWY1tnHbkI6tc8ym88/GVd+xx/W36aj6wPKSFsqc8Fq2cWaTjNNoYL9MegcJjLw3t94EL8DkID5YJCwWamy45AU71nVKuFBDwBMudGObd/VEm6phqRIPoxRRSheH5wavdziDCDkU1pSQpouSfCYXQLtzx4Pxnv+6q1R2vIo9tGNMsd3bwo60NTz2/n8LU57MXBK0+GzPiul43QAr638zKW52zo8/bPl7wj7rxCiLtS6ts0IFUNnRH1lS7z00B/wzvVNPYTuuXWD2gdOi+PfaFab7X9AyuTKRdGjE+defN8+GROh83AOKWeAFmhl3K5w2wp1wFQ0iQCNFyqwD2CKPz37LOXUx2nAxRx9BGcHWI/OlY11oQaqO8fuwJ7oS9/4xck3XV0f3Ppg978ybRu/ot7FwnAlYsB86Cv2mYPWzN1qPTlOpfB1KD+zV77Vj+nLJGYtMnnTJ0WfhKAOs2FHyaaWbUqStc8FcqfUp/c3S0k3jwpEzvj/eEeahoRyOk/eHB8oefGqhCurqCIgR/eo0m4I4Ua2zqDwcwcn+eVm0tC3TjHAGrQxpFHl268TDEA2bcBp3c2u03OQakHpcPxXUitJ4fF8A
- HavrSU7j
- FX7DgN2ZCQ9T4yUeP0hyjg/UITJ5sEVkkPoK1Mcuyumj/gNAkz2NsSrq4FU7C++1z6ccOvT+EfoxzM9gUpS+FHMFwPsYEpAwfr3uHWSa9JmCb9co9RkSHpKh9JvRvAacW9FY/2yuWlJ38PjgNcPIRfMJ46vt232dEY7wrZBOHPXH7Ux1xocd7VXPEgoFsD9RZNyRcL7BhCojnw70+lzjyqcrxag4sACcPWfbl2WknP5rw4JFWi6QNM3AqJNDiBf7h/XI7S2cs5Gq93Mh09u0/d0pGH9ojfSTeuJMf1SlVCrjOKpe8rK+0sJYNCY4oU/hHrOou7phXOx109S4+VK8Aox8cCzwXynC+LH+3w85pWDkSFuca9pqVtG+JAfqIjIMCEFsFS80e8z/MSBpsXaFYjXOYRWZWpvl99x+2BybeVg88LzVHN37cGJmO6wFBSqnG/splbPL2jzNFez1mr6ZIKtIiLSAYdwMN5yQLOIAVwAnVd8oTso+9mh5M6vo5okx50wgbaxv2vfW9fHg=
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
+	autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: D1352120004
+X-HE-Tag: 1793783333-450263
+X-HE-Meta: U2FsdGVkX1/v674gtzdmYhvlLQkpGxNWU7dcV6vP6eFb2EdzU8L2SZ6/ZqEN9DMTu+By1qKTldqvlmWlmJNszTjUq1xSIg60jsI3zH3aZxj+VkOvzzHv3Tty0/9n0UGqdYzHeP/6dPZ0qFB9PEwnOHVUcL1Vtj2GkssFJA44frFjorT6pTLPZx9z8JEZGBtJy5+Y/tFaisNH6DLLPgZl4yyONGqyhuuSv8arFatf99AjGRj08HohPGuvHy5zmhd31hZ3lgOxynE2UdX7WLC3dgKQh2rdFsCSZBXv60TkeqTETO+Orb152ATlJz3isVLAA2gcuQMiTSNXyKbdoirRPGbWvrZtLw4cEEma7i2VL3EBoJVNK9vY2HzeJWlwRN9FDCoSN04+BGgqkDaO8dBOJtBRTkg3VSpg1dHNNDlFvBQbcniU7pyMi0C52OhZZWeH1EKh3/lztVg0CT0jfR8wT5i9Sc9i7C5XkmVuAlMIpya4+K3dYpdsdMcBO7LifQhAaHqLp1Uxds0143Jmj+Z4s82oItYIzI7wFeP3ays5IsXkHQU1OztgzIoUUeEATQ93cWR/4EUcaOcpeo/Q9aui1ZMt+7pVwbgfX0oB/KDSuTCQsA3Oke+Jxm1sEB1HSUpNgx033xyN+bBbi6clRCqUNqxEgen9xokK70fxv5rPZKLGANcW42V3FZn9Aq9bG/udzcFqFBpH+xjb0qEWk8rD0jeWZvBJ0cMDvRD+Uqw2dRWxw86iVR/0U/7KVOJsn9aw6LDV1X7IG4sYVpVWM5ZJmdzHLs03c3saSTzVNw233Ck++davS79pU9ngOkWD4nxVf4aqGplB1SM3CMXHXv0wvPm+JLtKba4rtt5l0G9IJ8aaRVUWY9rodla7151wCns/djbpUwuNkbqk7778wveEqo9dcp6vql16GW9y64RwOPI4a0HYyxCPUTFUv5iPFq8f+lNm/7nwKRtPuymLIOe
+ LLiuSaox
+ fNrasHkSEKCBwACzOdvz0FPdLYrqnOfnjZjpncIGxXINoLPSxNWx3hmor7lpAGGspAQWl1mUfc80rkTEbxcP7Ckh8QFNERQAytpiG0IGpnBftz0Y6i7Or/ib98JBRPXBcNlvJJsjqWljUh5RuQd0d8bMdmxcm8O36R9+6+5hTeVxmZaWVKgDuVygBSUlhIph6Ri3mOr/1qC9dX8cY0k6zk3UTnW01mOV5AF7QqnXFj5p4/jg1bn9sZkyICRVTS4QNEXfGBt+P2Lw6orWsdlg7H7FYb7gjT6Z/y5OCx5NYXVyDJuGPKPNcOhaTRLiQ0jc1On6nHp1VijXm186YxfdIenMmC2N08okTgs/MSNL4HIXe8Ei+zt6awjs7EQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -148,57 +111,95 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/4/26 06:18, Ketan Kishore wrote:
-> 
-> 
-> On 9/10/2026 1:10 PM, David Hildenbrand (Arm) wrote:
->> On 9/10/26 05:16, Wei Yang wrote:
->>>
->>> Does it mean, the combination of pfn_to_online_page() / PageBuddy(page) is not
->>> safe, when there is hot-remove, even for other users. Not only compaction.
->>
->> There is an inherent race between any
->>
->> pfn_to_online_page() user that then takes a look at the memmap (PageBuddy,
->> whatever).
->>
->> Usually, that's not really relevant, because for things to go terrible wrong
->> (instead of only being slightly suboptimal :) )
->>
->> You have to run both, memory offlining *and* memory removal.
->>
-> 
-> Hello
-> 
-> We faced similar issue internally on one of our target's guest VM run,
-> where kcompactd de-referenced a vmemmap pointer for a PFN after the hot-unplug
-> path had already freed that vmemmap,with no lock preventing the two from running
-> simultaneously.
-> Call trace:
->   suitable_migration_target+0x0/0x8c (P)
->   migrate_pages_batch+0x1b4/0xc74
->   migrate_pages+0x150/0x654
->   compact_zone+0x5bc/0xb30
->   compact_node+0xa0/0x18c
->   kcompactd+0x228/0x4d0
-> 
-> Would it be okay to introduce something like "try_get_online_mems" as shown
-> below to try a readlock in compaction path for hot-unplug to wait
-> for kcompactd to complete before freeing the vmemmap?
+On Wed, Nov 4, 2026 at 4:27=E2=80=AFPM Max Kellermann <max.kellermann@ionos=
+.com> wrote:
+>
+> On Wed, Nov 4, 2026 at 6:18=E2=80=AFAM Barry Song <baohua@kernel.org> wro=
+te:
+> > > In my micro benchmark, this increases the request rate by 36% and
+> > > reduces the average duration of each write request by 27%.
+> >
+> > Could you share your microbenchmark somewhere (or post it here
+> > if it's not too lengthy), perhaps on GitHub, so others can
+> > reproduce it? You could then refer to it in your changelog.
+>
+> Will do.  A note of warning: it's ugly LLM slop, and if I had written
+> it manually, probably 99% of it could be removed because it's
+> pointless garbage.  The LLM wrote it for me before I had any clue
+> where the problem could be.  It helped me find the problem, but
+> uploading this garbage triggers a bit of shame in me ;-)
 
+Thanks!
 
-Likely not what we want :)
+>
+> > I think this is a correct change. I wonder if we can
+> > reproduce the issue even without concurrent reclaimers.
+> > In other words, can a single thread running in a
+> > memory-limited memcg trigger it as well?
+>
+> Your question is not really related to this [4/5] patch, is it?
+> Because this one is just an incremental optimization on top of the
+> real linked list scalability issue.
 
-Gregory started working on some fixes:
+I think it is related. Although lock contention isn't a concern
+with a single thread, the early goto unlock could still save
+some CPU cycles.
 
-https://lore.kernel.org/r/20261027042204.3741307-1-gourry@gourry.net
+I can imagine a scenario on a system with a large amount
+of memory, where a single memcg (e.g. one running a kernel
+build) is limited to 1 GB. If this is the only memcg
+constantly being aged and rotated, it should remain in
+YOUNG most of the time.
 
-They need more discussions. They are a little bit low priority as we are
-fighting bigger fires ...
+We could still skip things like:
 
+        hlist_nulls_del_rcu(&lruvec->lrugen.list);
+        hlist_nulls_add_tail_rcu(&lruvec->lrugen.list,
+&pgdat->memcg_lru.fifo[new][bin]);
 
--- 
-Cheers,
+>
+> A single thread means there is no spinlock contention and the linked
+> list is only walked once.  I don't think the problem is visible then.
+>
+> > One thing I noticed is that you may not need to call
+> > get_random_u32_below(MEMCG_NR_BINS) upfront. Could you
+> > defer generating the random number until you actually need
+> > to rotate the memcg? I wonder if this could further improve
+> > your microbenchmark results.
+>
+> Good idea, optimization added for the v3 patch.  I don't think it
+> makes much of a difference, but it really makes sense.
+>
+> (And I still hate that the Linux coding style requires having all
+> variable declarations at the top.  Code would be simpler by
+> declaring+initializing variables where you need them, and additionally
+> it opens more opportunities for compiler optimizations, but... it's
+> the way it is.)
+>
+> > Anyway, the compiler might be able to defer it for you.
+> > I'm not sure, though. Could you take a look?
+>
+> The compiler is not allowed to because it is not allowed to make
+> assumptions on what get_random_u8() does, therefore it must not
+> reorder the call.
+>
+> (I wish C had a way to express a promise like "this function call
+> won't modify global state reachable by the caller's pointers", there's
+> just GCC's "pure" attribute which is too strong here.)
+>
+> Minor note: deferring the PRNG call will move it inside spinlock
+> protection.  I think that's okay, but it can theoretically have a
+> performance impact, and I'm not expert enough on this part of the
+> kernel.
 
-David
+Thanks for pointing this out. I missed it.
+
+It might be a problem, as it could increase lock contention
+by holding the spinlock for longer.
+Only testing can tell for sure. If it does increase lock
+contention, I think we can simply keep the redundant
+random number generation.
+
+Best,
+Barry
 
