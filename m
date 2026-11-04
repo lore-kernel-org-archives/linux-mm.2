@@ -1,128 +1,146 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85446606A329
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 09:41:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83466606A329
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 09:47:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=zrynaZ1Q
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=bDR5duko
 Received: by kanga.kvack.org (Postfix)
-	id 9A90D6B05B4; Wed,  4 Nov 2026 04:41:44 -0500 (EST)
+	id A4F4D6B00EF; Wed,  4 Nov 2026 04:47:00 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 97FCE6B05B5; Wed,  4 Nov 2026 04:41:44 -0500 (EST)
+	id 9D71B6B05B1; Wed,  4 Nov 2026 04:47:00 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8BE2C6B05B6; Wed,  4 Nov 2026 04:41:44 -0500 (EST)
+	id 8766D6B05B2; Wed,  4 Nov 2026 04:47:00 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 6BA106B05B4
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 04:41:44 -0500 (EST)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id EFA3DA069C
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 09:41:43 +0000 (UTC)
-X-FDA: 85396944486.19.7A9BF6B
-Received: from mail-pj2-f3.google.com (mail-pj2-f3.google.com [74.125.227.131])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 345AFC0002
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 09:41:42 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=zrynaZ1Q;
+	by kanga.kvack.org (Postfix) with ESMTP id 57D2A6B00EF
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 04:47:00 -0500 (EST)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id CA472A069B
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 09:46:59 +0000 (UTC)
+X-FDA: 85396957758.18.004AC39
+Received: from mail-lj1-f170.google.com (mail-lj1-f170.google.com [209.85.208.170])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 222EB20002
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 09:46:58 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=bDR5duko;
 	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf10.hostedemail.com: domain of wangqing7171@gmail.com designates 74.125.227.131 as permitted sender) smtp.mailfrom=wangqing7171@gmail.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793785302;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf31.hostedemail.com: domain of bobby.prani@gmail.com designates 209.85.208.170 as permitted sender) smtp.mailfrom=bobby.prani@gmail.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1793785617;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/c8hVYKhMMh7/DfCYh54Utq4oZ1iPTgNxmSL7+jkyU4=;
-	b=GL1hdXl0jTOO+w0A5QOH75LraP8+5Fls9gKbizrhg+hFUyPNTuHUgfa19IZw5WLQW7pukO
-	1H48olk/epcn9g+gEghHvPjEee9rJRkfrHSBv7LPB0fHTw1OtWXyWy3WZk3egw1C3zsHq2
-	h+m3HXt2LAxQgZfqpvT0yuL/Jkwz4iQ=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=zrynaZ1Q;
+	bh=XN5Sh2oQBbGY7k0dXGAYdV4jnNut/n5mRreEmSnndEc=;
+	b=1d+sGXDWHXNFXGvPjJXgRkwn76H6WiCc6Gxp1wj5yCEwmpLBOkORZYWouhk6iheCWvyZVq
+	iiQUfHyRevWxeLfb1S1hvXJavrlMTQXuSKVIajnZycdLql1uceY9ZLOQXC9QaTXEOj8i8J
+	s0EvikTunDV3gKlsnyR1PNpjN4NDBo4=
+ARC-Authentication-Results: i=2;
+	imf31.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=bDR5duko;
 	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf10.hostedemail.com: domain of wangqing7171@gmail.com designates 74.125.227.131 as permitted sender) smtp.mailfrom=wangqing7171@gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793785302;
-	b=eV2tr9Gx1eHijbp1gRBlPL625mdh8CjleDI5G3OU8Kh8vJ7JnsWU/td9NNMwBz79VqIiKk
-	b1YjgT7BTOilJW58Wu8JgSRCgy6IZjq64ZPt6bi1VnBchg1FqAjqwn3cU8NzehcG1vF3ND
-	UyucVdXEjqcxZPQpWbEnlcGsJSOP+Ak=
-Received: by mail-pj2-f3.google.com with SMTP id 98e67ed59e1d1-3adc0ac3564so201017a91.1
-        for <linux-mm@kvack.org>; Wed, 04 Nov 2026 01:41:41 -0800 (PST)
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf31.hostedemail.com: domain of bobby.prani@gmail.com designates 209.85.208.170 as permitted sender) smtp.mailfrom=bobby.prani@gmail.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1793785617;
+	b=if5WRKCyhWaG+4puD6RHAUx65ugz/S9LS7Qn/LGP35WZP+BuNjeU54QQjld79zcL1plKo/
+	QT0hLipQ0LBzqd8pA8ZaYOjC6STn0YBxCaocH18Ejl0exsh0sWuEoeGmQ+uLU6luEqTxKh
+	8TQmKthvH87uAaSWwFU/yPTAqGPyNQs=
+Received: by mail-lj1-f170.google.com with SMTP id 38308e7fff4ca-3ab3b29a1d4so4036581fa.1
+        for <linux-mm@kvack.org>; Wed, 04 Nov 2026 01:46:57 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1793785616; cv=none;
+        d=google.com; s=arc-20260327;
+        b=fNPDkM/8GrDS1Evr4B7BYDUiNo4nBgnJN6p3uo3Iq1APrENoeuoBLLn7jcO2plc7Yb
+         yJWt1ohLXL9TVKjwcLty/NX30YmrkNHCG6DtRtM2uXzl7mjCczY0ZslhX7+tY4S5xnWR
+         98pYVaO9IwXkdGAPMajIZe0caZE0mvEsTAtRRYV39cna+7ejPDyBdy+mqoX9u89Kcrwo
+         pPIl5EYjCkaiOgSsgbF/2vxL2l49pmlkO/4+Whhy/hUDSPesshATO8pj5IGpvG3BuJwA
+         wIx0XuoWwPKAr4v4/ilCvSAcjk/EteZfrQQZKLn/VkntK0bi3CFelf5U+MVogVd+vTPH
+         RaGA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=XN5Sh2oQBbGY7k0dXGAYdV4jnNut/n5mRreEmSnndEc=;
+        fh=ojxrSQ3w8YdPekjXumR+/gAW26gDpia9TkLpr0GOjR8=;
+        b=XHTHXA0Yfws2OQ4jH/PVsov91B6d7nCvF+QRe9IF+3qYrbZvebhsBPUv2uYAY8lZb9
+         PsHL3vzCJ497jz6N0W0hgOFm2C/75UDvZoBqAbEfO7Mxal6AYTEL6eppcMiHWD/pLZRw
+         EZBp+j3ie5B0g+BtVzTI1rtS+fDDeQZmXcfnqZRSdCdk/jZhVGeVa5pFSDuhNjtuJz8X
+         SGUsxc0SP/OZ7QPfGtC87Q0aHQmTlhkfcrixqsSjOKRxOBq83U+JNWRBf83Dmcs8yd+G
+         cJx49gJQyafAyL0enxK8sEWvlU92Xz58cL4atDqpYknbdU7uKLfECtSoKrElMioUP4Ni
+         RD/Q==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793785301; x=1794390101; darn=kvack.org;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
+        d=gmail.com; s=20260707; t=1793785616; x=1794390416; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=/c8hVYKhMMh7/DfCYh54Utq4oZ1iPTgNxmSL7+jkyU4=;
-        b=zrynaZ1Qh7z1EukCprs7cn5ftmgg/ufIyRjZEJgNWYKKEjfuOY7gP0yXe0gyf7As9q
-         3PEJ1z/uhJpgCqcsuZeZ4l1qem9FV3z1gSUAoOCvCzy7OKY2YFx+sHO/EWaFzwjFFb6A
-         iZXV3NnsXEt1JNXfIlELu3zJemv3dF/RwIXgkItWieFrdX4yiWzpI6lN/cO+8Jg3n/TF
-         iSYY7VHWzpTqKUfqe8xOaxq6jtysxdpvDch6t4ZX4o47juH7fTI5EYQtkYsam6NKhT1A
-         V3rOsj3SbGs3yoF7X7ww4QcPE4K6Oa/1LruYqIlgDO6zo7CpUI76mt5Indfty+ofZuCc
-         Brsg==
+        bh=XN5Sh2oQBbGY7k0dXGAYdV4jnNut/n5mRreEmSnndEc=;
+        b=bDR5dukoXIFST17dTIsd4EpXiF8Jje+JbUbkhFamXSHj7Oo9Y2YcX3RgjY8AOAtbPK
+         64gwWeGzg1VsX4rk3Hol+UKEZPY2/iwbHON2ogUav5cQ9R6kdtthe2MAiEwl9dVcCKap
+         7/WuVdPoc3tIxzSa6ejl04oX1sTuWNuzxOUJuxnkXSsewAicbrVx6BG9oG/8SXqe9ExS
+         Q2lU2AP69ZwBiVU61wZ2Fq3+JGYvaW+YZMTp8lSDTUOiWW5CEZ5ADkWU8Ldhagx6I+x8
+         W6grhZPQchU+EaXR9QzKua2CVHVwk0+y3IB2IXMBZSkd6XU0z0NCxqvajek7IOWmb7gL
+         gHww==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793785301; x=1794390101;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
+        d=1e100.net; s=20260707; t=1793785616; x=1794390416;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=/c8hVYKhMMh7/DfCYh54Utq4oZ1iPTgNxmSL7+jkyU4=;
-        b=YcQ1mmUJEIw4ZMa9ONfeoVpnNbCumr7qqlTq1koXzRnS0693Mi8JLHaXqO/nR9wr48
-         /Vd3/0l99MOir4YDynZav8tKS6CJCNXJ0xu+9roMG879ivAJitTY0XtabohMF9vaLKwx
-         a9rR1wmj30n/Pr3W8LrZhd+E7oIwNoEzQXSUC3Teqod9ID7yB8texekq6nXvQD3rBUtm
-         xPKjRHqQqtlWrRb4BPe5R1ZOAWATZtjRsjWOai2Pqst+4X2lh/cIkycutamKfVFsLVGO
-         TpsUB1twn+wMk6BAaIeum3a1oAVVj71KhPq0GHCt+qLtZBokLB5RZVBxyNPPWrETjWpz
-         bPXQ==
-X-Gm-Message-State: APuU4Z8cNzeJc2OwTnkIWxcNn4z6Fy/Yig53WXwmQjdt+dwndDa7Javc
-	Bau+o51/BZfsN9Z7McNYPx7QUSBkSd4d5ogPn7Fwpc0PwAS6SfwCMhqw
-X-Gm-Gg: AYBFou17hsJc4XELx3noEJcYIB8zKahAZiQOew0FEJi/hBYZ6clqpCCdbVpI5zjr4WL
-	fUSfFZt9d2+WcIbztznTfuRZkCrXq9EPi7aqsC01viBAR9AOHQNL6aforSJOVlyyDVKnTW/Mk4z
-	mAZI87kWBh4FUJCmQxlfMElLNrrvktMPLHaMPfgj4Z7KBv3VG3MDtQpQyCcIm3lIR/5JIzshj4o
-	48527e3ew/H42sPFFsdqyEd2FDapAlCykZMMl2aAkAgMiqFe17NByf3EoVsgbBa8LQ1kUcQDVoY
-	bygY/WJCjIWMzdoISdfUe2XWrE+qqy8U4P44RUMJptu7hRQXLjzX2QG/A6JD9EGv1pBDCsrKSFI
-	tKliR5L2smaU/yvkvKbIHiPqb6xgQbIXkazT0Uns7aPgrDwH6CMs7hLRRXglLb37gQ9KJr9MrJp
-	z2b4Lw7QzsscyBgXnBHdydsj/32VHQIoU0zSvOu+Zv5MCJ667gfGCRTSQOlZuO6XCddHQ6Cq2Kf
-	8r2MxEZIR7YeB5DzXKg6ktmFfObAlVfLkss43O79q+fW6J1AyVRw0kS0vr3bnRtM3UUn+Srfd5u
-	Olikf38HqrTyG1ydkSweFw0VhcSbC9grCLW5olXEzeLzaqdw7nWkQOjK
-X-Received: by 2002:a17:90a:e7d2:b0:3ad:a270:a623 with SMTP id 98e67ed59e1d1-3ae8957452cmr13058560a91.4.1793785300942;
-        Wed, 04 Nov 2026 01:41:40 -0800 (PST)
-Received: from lima-ubuntu.hz.ali.com ([47.246.98.214])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b07c903d0dsm8661386a91.12.2026.11.04.01.41.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 04 Nov 2026 01:41:39 -0800 (PST)
-From: Qing Wang <wangqing7171@gmail.com>
-To: xuhx@hust.edu.cn,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Harry Yoo <harry@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Hao Li <hao.li@linux.dev>,
-	Christoph Lameter <cl@gentwo.org>,
-	David Rientjes <rientjes@google.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>
-Cc: linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: mm/slub: has_pcs_used() reads remote per-CPU sheaf state from flush_all_cpus_locked() without synchronization (data race; KCSAN  blind spot: slub.o is uninstrumented)
-Date: Wed,  4 Nov 2026 17:41:32 +0800
-Message-Id: <20261104094132.2665206-1-wangqing7171@gmail.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <363227fe.1d637.1a1a124c2b0.Coremail.xuhx@hust.edu.cn>
-References: <363227fe.1d637.1a1a124c2b0.Coremail.xuhx@hust.edu.cn>
+        bh=XN5Sh2oQBbGY7k0dXGAYdV4jnNut/n5mRreEmSnndEc=;
+        b=qN7xzpV+i30SZ2CwOSJcwrF2Q4z3grlCAO6ATRoG3WcuFlGZl006RKQsfvKFMB86h8
+         IlQA5RD8FeugOWppruwNsIguQk8b3k3P7vsrYXUXNPflJNU0Sq6zKRZVDEzuBu8+6TgY
+         VM99mnFpEBeDGxAUBvySMs2wTghUG1IVzpSSjPKoHMNEdKR3xggIO58cL2N/0gcOtO/+
+         xudjqDQ0SApjCbzxIe+AXVUInBoeZl31Jpea4Po7V/7Ev1NQON7j95B+xv5bz28EwNi7
+         y5ieMYIDNbEdxgHggr96LAp9gVCGwshg49twkEXj+2aIKMqA14WsdF2XsFCtVt0b2Xp8
+         Ss8A==
+X-Forwarded-Encrypted: i=1; AKwUvBxB+Cb+yHWIlnGuGpoBfn4mzaCGsrZN1cT3ehdUpytB5wvphzZ7l6b5nLWK8u6jZ7uybkUiNYZw6g==@kvack.org
+X-Gm-Message-State: APuU4Z8ibtvGlZzNUFb5gb560dSAV0rQ2xREArOWGEZaD1K09nGpPpky
+	ZxEEs+8mL6OYthIRFKTpZbtSocCSEG58HrNLXKdfiFsm5RYqkk3iEGNaP95JmUM6mXQjsRCo09N
+	ZmLoZdnUKDofEp2g98FTTnNlPEFF+b1I=
+X-Gm-Gg: AYBFou1uoMHhaVWoxM3ZtDAH3Dl+1Qhv4efOEl4+GvwYYJjQ1kCzcxJW9Atkvuj8M6a
+	VHyWexxfdz3qShgoD64pF+oIIR5/TX/q8++si4nst9REBTXshqxKH5jC8r2Flyw4FjXHYQFHsy4
+	ytnqJ+PE93gX3cNn997cUzrj9SeguS8e0ujda7EAOGhN/V7bRTrIU+gjYFCISd2Wg1mzs5/fU1E
+	s6vngLGHeXAosbHH/6UKvMBLRQiLATql+B7Vzfx42lLA7wZstn/RsXrfgRq1XxETy4p9A/JtCL3
+	2QcBpNnzjr3KRb2tdGdrqgNb3MAn0TA4UUu5JiT6ep3haDpKAEpXye53d5T7XKay5CYY7h14POc
+	IQ5XqoTWUptHZd0qZ/P9OOqkCZdrhNYgJqsg=
+X-Received: by 2002:a05:651c:554:b0:3ab:2d74:71e with SMTP id
+ 38308e7fff4ca-3acb7aa68e6mr34698191fa.10.1793785615870; Wed, 04 Nov 2026
+ 01:46:55 -0800 (PST)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+References: <20261104013139.1341582-1-bobby.prani@gmail.com> <750560f3-4c5a-44fe-b72a-0611be383f32@kernel.org>
+In-Reply-To: <750560f3-4c5a-44fe-b72a-0611be383f32@kernel.org>
+From: Pranith Kumar <bobby.prani@gmail.com>
+Date: Wed, 4 Nov 2026 01:46:29 -0800
+X-Gm-Features: AclHuK_952V20K0MdX2zFJG6-rtCJoctiobjvK9UdyxPOe36f3zxfg36adJewT0
+Message-ID: <CAJhHMCCu8ehOU37_4UpExNO3U8YPygjnht+2S+axkxTwY8bx2w@mail.gmail.com>
+Subject: Re: [RFC PATCH] mm/rmap: use release ordering for small-folio
+ mapcount removal
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Rik van Riel <riel@surriel.com>, 
+	Harry Yoo <harry@kernel.org>, Jann Horn <jannh@google.com>, Lance Yang <lance.yang@linux.dev>, 
+	Richard Cochran <richardcochran@gmail.com>, 
+	"open list:MEMORY MANAGEMENT - CORE" <linux-mm@kvack.org>, open list <linux-kernel@vger.kernel.org>, 
+	"open list:PTP HARDWARE CLOCK SUPPORT:Keyword:(?:b|_)ptp(?:b|_)" <netdev@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 345AFC0002
-X-Stat-Signature: wyypg1xixmyct7my5j8g9huet9zbszhi
+X-Rspamd-Queue-Id: 222EB20002
+X-Stat-Signature: 1rga8z4sefsrxeodznuc4dg7d9pu1tuh
 X-Rspam-User: 
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+X-Spam-Status: No, score=-2.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
 	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=no autolearn_force=no version=4.0.1
-X-HE-Tag: 1793785302-92789
-X-HE-Meta: U2FsdGVkX19lud3SyJ+K378KfwNvU4VBiTPe7F5R+vCrsL37HESwq3UHhajBet0kBuoIq4bbYwN76vei61+yjxN8TXpmQSjdVw8YRbdZIuCgs9mX6U0kJFLbLfVMXG5zbLaPZmZHWXcAbG0AuZ1EbXEVBxtLzkCDyxCBs1kIxjlvXGp9syYllfwfbVImiPkbGe0BlZxR0vQ669dhOlkUgxaikQlpoiHob9NsV9cY17TvL5ex/R8nwl1fQG6mjrRiEDDE4dgdVvgHYOn5kwTden5+bez03FXLD1Bn7cy1HSWDi6I/F9K4qk6C+4q3GKH+6KbPC/UXp65U2t/EfqjZGeTM/SyzCpHW+WvyjW5meWMs6tQzMVnhHBWHSoBX0SzqJDMDCYPqjO0q+PWzXp+z+HU8f3D9jY5PbUowlnScfOYx6EHJC9X5ycttehAV0ohS3mY9IYPnfIrDEfaVUKAzB2f8jJQZnYHM4EKGl3mPq49IDwJdWUrj4yenXKwcuZmtnIAi4PTaFLK2dIqd1MMIye0x7Rfe7rLicF94Eld8TUR4yzEw8E1A48J+YtlQdBy394JUSw14pRPL8HWj2tCXa0iRYvc70faCsxyFV41E+5UDnHVaGCGbwJnK+xu+gfC31I7FsX6W20PvAYRhDpQcw9oEChBPeq38mTzr5+uLx+vp+3cViUoc+YHgp+X3NyeL1WWGEpjldv4ekUIRJBoT/gQqKj/IHDOkywzTTUR6zqVBo4Ou2YszP4mGPR91xm3ZPeviwNOl4gtTiD7V7phAeke40Qf4jrk5ta1YDJDVQa4s0jtTn2toeam1FB4nPYam8pZuDKBGTZIQ9zBYbPWBjp9U5JVexgUf3vOqOaebpg9eE4RBAaf3UgoD+yXgIBJD6IRtscB54COEl+RHYA1Qo8ur06LWUrhK3iPm389izFVZqrY2Z9EJJuM+7Z3PKE1H0zYrZt6ktLpwSCZDFv8
- aBLGbqkz
- ptzzx/KfUgGImn/ZpsDucusa8DTl1WkrhftTRx4oNMcKxorb5qjGG2yHQY2U6NePJp/lZEF+vLUvW9L2BnPLMRNKuEBNE+hzANzXx5Z8/b+s/qQics6CJANGCaOMO7B03nfqUeuuiZ5IFhcpaMmSfjk6580GS5f7vKsDxvZeppEQS6kxgncL4RB+mCtv0/8ZGpP5ga3MGYYd6wZmxwcwVgkvm59pS5irkC+iWGNKj9+B57AT7ril0bzemXCCmgn2SeMjmDtPsvMb6yOEbKDCLJ9lqTjuF6gn9FHD/TbsMEBcS3LW+IeHqpgOeWevUmXRMKyGNCW4nn5c94onv6Pc2YzOxfPW3P09JEu9+uKULhVVLnfS4ZueEJX1h27g46DO4vMegXKf7IW6ggV2FH8Fw5O4MYgwLtftgPJpmNF75ufz9rV1VotVXvhKApe1mYfa/bLAPOukBb4WOj8TzGicXLOAMZA==
+	SPF_PASS autolearn=no autolearn_force=no version=4.0.1
+X-HE-Tag: 1793785618-407832
+X-HE-Meta: U2FsdGVkX19u843fims439dS6Ktjbz09V46iEJH52tykUsfFk2SLom4LEKDfKZpNGM+SxoWejUxVXKWKXvIEZYrqsNlFlt9x/hZ/mf+RIIGeE70gsM480urZvUG4KjQRvg+DLGfXJdA9D/25y2aRMZiEhvHwoVtu5hH4ybSq7RFtXCLxmavHVERHuAwawqir1wYMTQTsNVcgQG9A7ft+BF70PrP50XSaRK2OPSGoC15JbCZnb/CqRsBV88J1sWNdu3ED9BvjhCvGEv8mJYE+WO4+RZLoP8Fa7y2uQklhYfe2KCNI9+oS1HgPHp3MQmxC654Cn7ZzTdrHNIGOUJgQtK5Nk3DmMma+kraG+ya3+eNz06MmaNIa/aHIOidbyac7AFJetMONCLgmp/tDIcTNaSO5//xpuPvimI7/51a8YAB7c+4PxfFpN6HZeB+aSGF68YTe2mSvPazHp8dV5e8fPLGRzCy4GULo8cNMXFvK7J5+mFvpKq27dBDlwWkUmnVHqm+MQihjLPAkUNVEb+U5upGZGE6tASDDP2+FY+CjbPaLWMyYO+pgxRjqIoDRdj5mS7m9hgnhtRLkTw3SCWXuXKVfApKH7aXphH66clyPaErdymTAkz0E5UsRE/MC2TJ/yFMzvpLdT2flP5On/y/yB/z9qfV3+WZ1fpiKSIFAf887s3EU/dDwN6kWQNNnerxGRQfh0BOe4H5pWC08Vj3oacs8oCOrmgOs7eBiSGzHkL0NkVY5As1vHfFg1ihzbGQUc+mNjw+2rouT0MEp05tz79eFUKcdc/1YWuIIrVZFyDGoAppipJeC1YG/LKdGti1Px2vA/LgEyF0UN+D0+EGIyg6q3mdD48u0ZjMGMcZMwfMxY7r5+3Mu3MKiBL/krcBgfurTYwUnG1JJFXginyrtq8vr0kjG6SOV+iyw00jwGR9r7rt/S2KA29wHUNglsXHrJ3Wo49SrtJoikg2mnhp
+ rgB5ifYe
+ KA+zW5CGXFFMaxqYY35l8yzeaq5F44hDcPtPjAeOZaW8LN5vglsxss4rqrnOM5w3iDGBC3i7nMiNdnuxFt4G/ScExdQRGUdU1Fw1tanbCCFtNNc0N/+xZw0O84KWenJ/9JPtj+DTvCt9ddYAy0ymhTgrdcCurB21n6+msWWOW03b4RxsePnboBKi4icnxD1qkBIsXmsSi972VeCQyQgNmWi28zEk8yg329L6zkkRtuQ5AxOQ9RS8BFM86NLJiLo0zcIlb7kpgHJMGulNvJgZJVKAxCsJ+Y9lJ6Y0SsQXMg3895/zsqSYUuiJ8LbqNN7rD6sB1xY8XdTVko020GtWIzUU2X69Bl/eAdlranQ/WrPCS+g2RmbuvXGjhg56dOcAAMy9pPebtBeck8EmHqQ4xPP+xYMkM9d7hNy1UF1HLnPabL1eR33XqBzPfGBeZa1LdhIJ99yNnTQhZNns=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -131,48 +149,29 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Tue, 03 Nov 2026 at 19:21, 徐晗翔 <xuhx@hust.edu.cn> wrote:
-> flush_all_cpus_locked() calls has_pcs_used() for every CPU to decide
-> which flush work to skip, reading each remote CPU's pcs->spare /
-> pcs->rcu_free and dereferencing pcs->main->size -- all locklessly
-> (mm/slub.c:4041-4051, inlined into flush_all_cpus_locked) -- while
-> the owning CPU's alloc/free fast paths mutate exactly those fields
-> under only the per-CPU sheaf lock (pcs->main->size++/--, the
-> pcs->main pointer swap in __pcs_replace_empty_main, etc.).  The
-> reader runs from kmem_cache_shrink() (sysfs shrink attribute, memory
-> offline) and is, as far as I can enumerate, the only cross-CPU
-> consumer of this state outside the sysfs slabinfo walkers (excluded
-> -- they read other fields under a different protocol).  I verified
-> the race with KCSAN after discovering why nobody has ever seen it
-> reported: mm/Makefile sets KCSAN_SANITIZE_slub.o := n, so BOTH sides
-> of this race are structurally invisible to KCSAN on any stock kernel
-> (verified at the disassembly level: the four accesses in
-> flush_all_cpus_locked compile to bare cmp/mov with zero __tsan
-> calls).  On a diagnostic build that only flips that Makefile switch
-> (no source change), a shrink+churn workload on a dedicated cache
-> produces 436 reader-pair reports covering all five writer families,
-> including an 8-byte pcs->main pointer swap with an explicit "value
-> changed" line -- the snapshot prerequisite of the (extremely
-> unlikely, source-argued) use-after-free chain: a stale pcs->main can
-> outlive its sheaf's retirement (spare -> rcu_free -> call_rcu ->
-> kfree) if the reader is preempted between load and dereference.  The
-> practical impact of the race itself is a wrong skip decision in
-> sfw->skip; the fix is to move the emptiness check into the target
-> CPU's flush callback, where the state is local and locked.
+Hi David,
 
-You're right, there is a data race in has_pcs_used() reading the pcs
-fields.  The possible consequences:
+Thank you for looking at the patch.
 
-1. has_pcs_used() observes an empty pcs and sets sfw->skip, so the
-   flush is skipped and the memory is not freed in time.
-2. A very unlikely UAF: the reader loads pcs->main, and the old sheaf
-   is freed before ->size is dereferenced.
+On Wed, Nov 4, 2026 at 1:16=E2=80=AFAM David Hildenbrand (Arm) <david@kerne=
+l.org> wrote:
+>
+>
+> > In an arm64 page map/unmap microbenchmark with 20,480 minor
+> > faults, simulated cycles fell by 1.54%.
+>
+> Thanks for the patch.
+>
+> While I see value, I am not convinced this is the right time for this
+> micro-optimization while we are busy with other things.
+>
+> This needs a better evaluation: 1.54% in a micro-benchmark without knowin=
+g the
+> stddev isn't particularly helpful.
+>
 
-For the fix: could we simply drop the has_pcs_used() check?  The cost
-is some extra workqueue overhead — flush work would be queued even on
-CPUs whose sheaves are empty.
+This result is from a deterministic simulation, hence no stddev.
 
---
-Best regards,
-Qing
+--=20
+Pranith
 
