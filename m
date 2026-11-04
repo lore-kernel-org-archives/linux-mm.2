@@ -1,65 +1,65 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8266D608361D
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 16:47:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DF10606D806
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 16:47:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ODwixlVM
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=bFe5Avgb
 Received: by kanga.kvack.org (Postfix)
-	id 8C5FC6B05B8; Wed,  4 Nov 2026 11:47:14 -0500 (EST)
+	id 396476B05BA; Wed,  4 Nov 2026 11:47:31 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 876AA6B05B9; Wed,  4 Nov 2026 11:47:14 -0500 (EST)
+	id 3484D6B05BB; Wed,  4 Nov 2026 11:47:31 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 73F136B05BA; Wed,  4 Nov 2026 11:47:14 -0500 (EST)
+	id 20F796B05BE; Wed,  4 Nov 2026 11:47:31 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 3C84E6B05B8
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 11:47:14 -0500 (EST)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id C4235807DA
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 16:47:13 +0000 (UTC)
-X-FDA: 85398016746.27.5570C0F
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 0B3A3120004
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 16:47:11 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ODwixlVM;
-	spf=pass (imf29.hostedemail.com: domain of aneesh.kumar@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=aneesh.kumar@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id E74CB6B05BA
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 11:47:30 -0500 (EST)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 5557D1C407A
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 16:47:30 +0000 (UTC)
+X-FDA: 85398017460.11.E24BB74
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 9E9FA4000A
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 16:47:28 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bFe5Avgb;
+	spf=pass (imf12.hostedemail.com: domain of aneesh.kumar@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=aneesh.kumar@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793810848;
+	b=CIfxhhbp08uyrqNlEsyVQLF5RUF4OCY0u5DZVnLzqadv/eg87LuRColMlu1hDz8UeR9nLf
+	vAIvV9AkcaLjHRISdGo5OV1LUn4GPd8kG8nnJ6CCMDVdA9Eh6Gw2KURv9GsPT4O3CJj+9S
+	VZLuqSMiUOqje7qYofTlMd9NKWYtZNk=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bFe5Avgb;
+	spf=pass (imf12.hostedemail.com: domain of aneesh.kumar@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=aneesh.kumar@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793810832;
+	s=arc-20220608; t=1793810848;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JMstP/SZKyTAtGdzwkDZv+zBhTOefZsJBVO289hh0iI=;
-	b=EdEga5f/96VTuIM2/Iticat5Y/dqm+0vR3YEv1Sk+SaLKN9IbLugiWuc8yVHZ8pBdB4DUr
-	hyVwZ0YDWDcMuNrn1pRAA/as608QEc+1pMAXRSrRZ/c7YtwtMea1ksp9Jh1bDh+kDyK+dJ
-	kDuAxlmpuC4ewth55ZaYnlhX2zQWFf4=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ODwixlVM;
-	spf=pass (imf29.hostedemail.com: domain of aneesh.kumar@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=aneesh.kumar@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793810832;
-	b=BzJVjCvdCOZ2Z7CwPRBx1U1PDU44wAng34ikYFBQ8eZvQy5rCxRRvhF8UO/Qj8GgaYXxB/
-	ciwtpAffUrfNFwzkn/vdtNcHyABUG/+nzw1EqM6gDMFnVNW85cgsvS3Vla+iu+cdj+gJCm
-	BGawdsfN44mIGcZ8OwDoxWoEfVvo4gI=
+	bh=cMGj0+A3tufzvmK6r4xBew1uKsqkG3dGnoyqLpE0FO8=;
+	b=s07N838DDtFWehUYIo8kbZpSp2ayRIj5wG1cDMTBZg/NVM+AHbjP6+v/CfvpYAYAzNKOk3
+	qJV1RplLhNfUMN5f9cAh7McpJoc8vKRoGbGXcLDmtV2YkracEWCEwZqEjU35boPv/3jVRl
+	5tF7U14UySHbCLL+bqdtuobNhCiAzeI=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 59D11405F4;
+	by tor.source.kernel.org (Postfix) with ESMTP id F084960A9D;
+	Wed,  4 Nov 2026 16:47:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D45F31F01802;
 	Wed,  4 Nov 2026 16:47:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F18B1F000C1;
-	Wed,  4 Nov 2026 16:46:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793810831;
-	bh=JMstP/SZKyTAtGdzwkDZv+zBhTOefZsJBVO289hh0iI=;
+	s=k20260515; t=1793810847;
+	bh=cMGj0+A3tufzvmK6r4xBew1uKsqkG3dGnoyqLpE0FO8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ODwixlVMY/WuHSIBG9jucqNtur/74mXOfme6KyxU15JFDNXPVm+4m3B//5CLGvKpx
-	 j08EjiSi+XQprXfYLa6qC1E4xxMJv9V0s5A+XT9xy0tQc419kLYrjCAubJG2lRAeur
-	 YeyMcTLHPB+1NL6Gd6J95C6atl0fJ5EMaf6IN1pwi8Ux17257A50eYcjUdHHGCXU1b
-	 Bxy2ys/NIo4GNJBlizgc4hdV8jLv3B9JKOVfunCDC2svqT6EV/Pen7TKggPrJa3rT2
-	 FROGM7wg5rEmvF+HP0qvXfPBi1JBIuvx5HfJiHm0mcG4OAGcYvo3YXbTpUg5nK9bLh
-	 RKreURhgezLOw==
+	b=bFe5Avgb1illdcHB6vAcY3QsQJihZbQdYsYHxI4NN6JQr73MDhLvrFJVZcAbpSO6k
+	 3eJwIwozTgJJjTDJyp03ifb9O5AbU8+8cN9zj2fipCyeoeNRGFAYK/akt2IcbmhvG+
+	 J/eDdVGdJpUChP0xql1/KSqLRrEUUTzJ74+6DzCLIcyYv00UV4P8DRS7rHkkc28j7X
+	 96mLrD4RJh4rz/AcX/FwqLno05hLrN4f1R0/RIsuAW5dssL6kCOZkTtZ9LSvbp3sJt
+	 KGISz39g0V7UsNTs1utBi0qhLDt144FI2ENl3pNvUfZu6n93JQegweMqpM6SHsu0zW
+	 o4qoNeOIBZzvg==
 From: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>
 To: linux-coco@lists.linux.dev
 Cc: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>,
@@ -123,27 +123,27 @@ Cc: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>,
 	linux-mm@kvack.org,
 	kvmarm@lists.linux.dev,
 	patches@lists.linux.dev
-Subject: [PATCH v9 01/14] mm: Add an allocator for CoCo shared memory
-Date: Wed,  4 Nov 2026 22:15:42 +0530
-Message-ID: <20261104164555.3555725-2-aneesh.kumar@kernel.org>
+Subject: [PATCH v9 02/14] mm: Zero memory during shared memory transitions
+Date: Wed,  4 Nov 2026 22:15:43 +0530
+Message-ID: <20261104164555.3555725-3-aneesh.kumar@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20261104164555.3555725-1-aneesh.kumar@kernel.org>
 References: <20261104164555.3555725-1-aneesh.kumar@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: bzseo9xpf5aisosodkw9ubsr1nfn54zh
-X-Rspamd-Server: rspam01
+X-Stat-Signature: t13h53duayuaiiju1tn6wc93wh1ri3md
+X-Rspamd-Queue-Id: 9E9FA4000A
 X-Rspam-User: 
+X-Rspamd-Server: rspam11
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: 0B3A3120004
-X-HE-Tag: 1793810831-258489
-X-HE-Meta: U2FsdGVkX19Hnu+Hv6LJS2p9SeeO2e/7u7KFOi2impRO33blRMYmMjqK4w1KF2rZhBCB1ELm94+tLigqEk1VysjrkJFaV+EgR3+CUjiIJTaE2GhX3WYNGk+gGwdDvUF8Jevf8huu8yZx+DbtC9+dZzrjYDvAD0dFx333wUDaIkI1KQruH5d+SVtx39BMI83QI1+QcK57W6WNlwuOGu7C2mCdqBSefkowSdDW5ggtPwGamsLu8L6vA975YCf8UErwlfZOrNbv6a7tlhoTI0kaGvN62O8Zp9XYOEvazrBZabI6G0il1n2dDnD6CV3r5dI3wVisP36vJSg/Usiux+HVxq3Z3HKx20Ewe6xgHX3TexRfDOv38m3PTR1aVJdm3lOlByQldo18JgAXqvLBaOBcP/weC8u01v0MeCAOjVmpUwXUKw5I7Uuam1SUFtMKoYBhKWrFw2h/uK4WTXsjfkQsgE4T6ao7OGR+SVCuBc0Pbao+PwHzQ4kpcyQADVrZ0G8WdpdiTCX1ygXGVVPbUA0aWXLNoVTrpE5WVezxakMtn+ks+5yk0PBpG3/v4YlVEYZ0lkH7ikq4kaf1FfEWWzQn/s0LggS5XEA5LgRLhX5zxsQGGopzwPubxaBSjP3I/MRryfOUKKmdvsJPBbRes+7/wC0D36xnx8DHV7WvmwB7TAuxLkRv0iNSW5CadXlO/zrTA08occ6MH9IgxIY6VmZ0rLDfZaOxthVxBZXSNoUT6npbtZWFfhW0lp2YNyB8hdG5lnE9kfX05FUcUcvD5iSm+r3vqEGd8F3FLJFzpmVj6Sl8c1QqAcf0um45Bnq7TlFag+TOFBo6hH91K3YE6Eu3PVQCscZaBOAXshf7sFYDvnwHECpujNoZW+u3eC1wYz7JQZ3OscEIIfxRBtea1JUkuMymSn/T8NrqgcrSCQ5IahIiXrXDgCAHk31djy0SRbOWNMNQj/gyjpHyqq4zI/e
- bi9xhpXo
- xu4bEpFUWQScddq5RdoQZVlFI/LEj9naBpxkbA9fVRBUqtVjju2h8mrj76cHQjqHt08zpEmAgA74PY6RgXA8Fr3GEkKebmgHji0dU+hkMiO62MoYpQtord8k3fe+m5gRMi8mjx99O3UiFhhrurAxP+n97OV7CrAO+st6GI92h++eWzxgpwgAoTWZ5EmWlxefiVVIzs3mfAhOS5or9wIVSvLRCD1eHTZr8H6gUwsnPnHUxkOiDfJ4hg9oGXN0lwyz43Eu3iixsyIeiJ3ZGluAo8TPHBsslSNMf0hSnr+YZFc9YrIErVDWAPFSxGUht/lh/tolVmhzR4JxmlUCg9LZgYiwHoByGis/lCG58Jk7UsCad0sGCoJOOgGZbng==
+X-HE-Tag: 1793810848-567189
+X-HE-Meta: U2FsdGVkX1/Zk8xPSR9rs4b8pHnH2JX1BLSQZdNSiGa/N1+Puv+dJvK7yUuzmnUCX2TSZI8IjfOsv0Y1uKozbymsmew+JOBs93Q1Nsn6z7Se2FVCmf62xh4rmHQvSGcBHByXHN927tWtIRZiYgttwBDKdH9UosLk7i6MRE/ASPArJ8AGokpAAV36uoX41NcPBiv64GU9LiYH/LT/m84keFGJb1Zn3lEnWps84g9wFT6cg02DO23vS0LNd4HT1ZArC1U7Gxi4N48Zzp2cSjrPbywR4x6Vf+ZvPtDBaOMOwVKEo0WuBKwcFlyTE7GN8ehh/j6It8s1LoRY2uoF+M1niCuN8yYJR5uTr7GSIe4GAKDx1qCfK5LUG9mo5UIl/6DdH7c7fR8SL0zal1S9uTj5/z6mJduQoJ2CAPhQz9rKsxWKHzsCxv0q8kx8JBbkqa3LJlPBiPav41cljMuO3Z/ii4mRcpzEPHzpuIoziKobm6CSb5mnQ0+bS4Z8VbAvFNCksyTfGxujIj3/MnoMX7cCOtVb+tiw5TZkm894XnVpmpiDX3s6Oodf4p+QvEFJ2ysNvRXNSTWJqXrA/hKGtu5Z2xF8t7YRG58oJLkJjh5qDDR4Qx859Rv0QYc3uvabPFBXNlMbeYQaV7SDcMf7Yq0Gy5ypou5vUsOYQg6q2LEfBjTPp5LAzH9detJ8hLdNWQnm0v0aAu/awrpPZB5sjuZAqvqwOMyZlAuSl95o0aPKqkLIefEi1lVUTBUFatXqmKjcJnNg1xzFq6fbRq6gRv8qiia1iioMLalbtQfUqfE6pOACUTxQxJYifNxs8Sin6xt3UPWDv2F5mtd3QOKFxMOTMcr6vSstaotmIo8VKHCURKN6Ehzn0A1QPrKBC5bEUKPBBkBma8slJfJBgyi1T/r6cyjuawD93/Sm8c1X4pIcxQ/S2jdLCeLVju+d/hmMQuYkUwWQRSZ4BrOxZ6z36O6
+ Pu3BwM/X
+ y07tH283mH8Y/Aq/5+h6kEju2cC/dTKumeNl3zZe6N4jTe+ZND36c3RzIEUtZjw9sfzwnM6VoTHSV+DMaR+bqlin8GoMiCVnGhYd8EiYepASp/TEIaPY9U4XpYVQwycoLfGFwjO/Aam6HAxM/6K8iXcBgj+LTZyFoEPnBEsMg0XCr7CthXcTDL/c6h8mDanYZ02DYPRyk5EgCnZ4fpycSP0mMcsoKSJ7cdrcTUygHjLhXdJyL0jblNwURwv/s5l1evDwUML40Zkvc8cyNBAIUTKjeYJZ2Brtx8v+HTcdQYec79jln626wYoWUKPGcOvA9NGPjZJRWfBYsZtXWbOO7H7jvb/fyZXudmoyikIdtXp8GjFFtP/Y2yPPjOOB2jgrbaYjd6ohhUDSoFYbC952qR0V/NIC8GveUoCE4VaQFJRJMkRZT4jlxS2qtS0xgEAl3zeGQ1/xtNDYClYVG5PE03kqIW1fmQDMa4L8zfQ/pI1wd3cSjJlbLQ/6qJMlKtzl/R4ho6wlx4zlWMiRkCUhp1+tG9rsQ3bEb4RQ+gO0CH9xYQghdIyeXDT4cSX1rf0fNnHB2GGoyA5JJgqXbfT/tbF/+Gxjy+taz+scuA2ZQ3x/xgVQqKknj/7mngkXnRRojpbtTG3aNZwx+6scfMaKfFSSJwj/qCf5wFhv3nwQugctFK39CUntfNpXF3w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -152,337 +152,451 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Confidential-computing guests may require memory shared with the host to
-be aligned and transitioned in units larger than PAGE_SIZE. Several DMA
-users need struct page-backed allocations satisfying these requirements.
-Provide a common allocator instead of requiring each user to open-code
-this sequence.
+Architectures need to zero memory at different points in a private-to-shared
+transition. For example, pKVM must clear memory before sharing it, while Arm
+CCA can only clear it after the RSI transition has completed.
 
-Add alloc_cc_shared_pages() and its node-aware variant. The allocator
-rounds the requested size to the architecture's shared granule,
-allocates suitably aligned contiguous pages and transitions the
-complete range to shared state. It also preserves the caller's GFP
-policy.
+Make zeroing an implicit property of set_memory_decrypted(). Each architecture
+or platform performs the clear at the safe point in its transition. TDX
+clears memory after the private-to-shared conversion succeeds in the finish
+callback. AMD clears memory in its finish callback after the page-table
+update, TLB flush, and hypervisor notification, including for SEV-SNP. This
+zeros the final shared mapping without adding a flag to
+set_memory_decrypted() or threading it through architecture-specific callbacks.
 
-A private-to-shared transition may alter memory contents. Mask
-__GFP_ZERO from the underlying allocation and when requested, clear the
-complete transitioned range after cc_make_shared() succeeds.
+Keep allocations on platforms without memory encryption on the ordinary page
+allocator path so the original GFP constraints, including __GFP_ZERO, remain
+intact. Remove post-transition memset() calls that are now redundant and
+explicitly clear allocations on paths where no transition occurs.
 
-Return the page and transitioned size so free_cc_shared_pages() can
-restore the complete range to private state before freeing it. If
-private state cannot be established, retain the allocation instead of
-returning a possibly shared page to the buddy allocator.
+This intentionally makes every private-to-shared transition destructive;
+callers can no longer use set_memory_decrypted() to preserve existing contents.
 
-Also provide the shared-granule geometry and byte-oriented transition
-helpers used by the allocator and by callers managing their own backing
-memory.
-
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Will Deacon <will@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: Christophe Leroy (CS GROUP) <chleroy@kernel.org>
+Cc: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+Cc: Shrikanth Hegde <sshegde@linux.ibm.com>
+Cc: Alexander Gordeev <agordeev@linux.ibm.com>
+Cc: Gerald Schaefer <gerald.schaefer@linux.ibm.com>
+Cc: Heiko Carstens <hca@linux.ibm.com>
+Cc: Vasily Gorbik <gor@linux.ibm.com>
+Cc: Christian Borntraeger <borntraeger@linux.ibm.com>
+Cc: Sven Schnelle <svens@linux.ibm.com>
+Cc: Thomas Gleixner <tglx@kernel.org>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Borislav Petkov <bp@alien8.de>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>
+Cc: x86@kernel.org
+Cc: H. Peter Anvin <hpa@zytor.com>
+Cc: Kiryl Shutsemau <kas@kernel.org>
+Cc: Rick Edgecombe <rick.p.edgecombe@intel.com>
+Cc: K. Y. Srinivasan <kys@microsoft.com>
+Cc: Haiyang Zhang <haiyangz@microsoft.com>
+Cc: Wei Liu <wei.liu@kernel.org>
+Cc: Dexuan Cui <decui@microsoft.com>
+Cc: Long Li <longli@microsoft.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>
+Cc: Vitaly Kuznetsov <vkuznets@redhat.com>
+Cc: Andy Lutomirski <luto@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Marek Szyprowski <m.szyprowski@samsung.com>
+Cc: Robin Murphy <robin.murphy@arm.com>
 Cc: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Aneesh Kumar K.V (Arm) <aneesh.kumar@kernel.org>
 ---
- include/linux/cc_shared.h |  39 +++++++
- mm/Makefile               |   1 +
- mm/cc_shared.c            | 233 ++++++++++++++++++++++++++++++++++++++
- 3 files changed, 273 insertions(+)
- create mode 100644 include/linux/cc_shared.h
- create mode 100644 mm/cc_shared.c
+ arch/powerpc/platforms/pseries/svm.c          |  2 +
+ arch/s390/mm/init.c                           |  3 ++
+ arch/x86/coco/tdx/tdx.c                       |  3 ++
+ arch/x86/hyperv/hv_init.c                     |  6 ++-
+ arch/x86/hyperv/ivm.c                         |  4 ++
+ arch/x86/kernel/kvmclock.c                    |  6 +--
+ arch/x86/mm/mem_encrypt_amd.c                 |  4 ++
+ drivers/firmware/arm_rmm/rsi.c                |  4 ++
+ drivers/hv/connection.c                       | 41 +++++++++----------
+ drivers/hv/hv.c                               | 11 ++---
+ drivers/hv/hv_common.c                        |  2 -
+ drivers/virt/coco/pkvm-guest/arm-pkvm-guest.c |  3 ++
+ kernel/dma/direct.c                           | 22 ++++++----
+ mm/cc_shared.c                                |  7 +---
+ 14 files changed, 73 insertions(+), 45 deletions(-)
 
-diff --git a/include/linux/cc_shared.h b/include/linux/cc_shared.h
-new file mode 100644
-index 000000000000..5f8db7c468c5
---- /dev/null
-+++ b/include/linux/cc_shared.h
-@@ -0,0 +1,39 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+#ifndef _LINUX_CC_SHARED_H
-+#define _LINUX_CC_SHARED_H
-+
-+#include <linux/gfp_types.h>
-+#include <linux/types.h>
-+
-+struct page;
-+
-+struct cc_shared_pages {
-+	struct page *page;
-+	size_t shared_size;
-+};
-+
-+struct cc_shared_layout {
-+	size_t requested_size;
-+	size_t shared_size;
-+	size_t alignment;
-+};
-+
-+/*
-+ * Architectures may override this to return the granule used for transitions
-+ * between private and shared memory. The value must be a power of two and no
-+ * smaller than PAGE_SIZE.
-+ */
-+size_t arch_cc_shared_granule_size(void);
-+
-+size_t cc_shared_granule_size(void);
-+int cc_shared_calc_layout(size_t requested, struct cc_shared_layout *layout);
-+bool cc_shared_range_valid(phys_addr_t base, size_t size);
-+int cc_make_shared(void *addr, size_t size);
-+int cc_make_private(void *addr, size_t size);
-+int alloc_cc_shared_pages_node(int nid, gfp_t gfp,
-+		size_t requested, struct cc_shared_pages *mem);
-+int alloc_cc_shared_pages(gfp_t gfp,
-+		size_t requested, struct cc_shared_pages *mem);
-+void free_cc_shared_pages(struct cc_shared_pages *mem);
-+
-+#endif /* _LINUX_CC_SHARED_H */
-diff --git a/mm/Makefile b/mm/Makefile
-index 2a3ec53d62ee..a712656449d1 100644
---- a/mm/Makefile
-+++ b/mm/Makefile
-@@ -57,6 +57,7 @@ obj-y			:= filemap.o mempool.o oom_kill.o fadvise.o \
- 			   interval_tree.o list_lru.o workingset.o \
- 			   debug.o gup.o mmap_lock.o vma_init.o char-mem.o \
- 			   $(mmu-y)
-+obj-y			+= cc_shared.o
+diff --git a/arch/powerpc/platforms/pseries/svm.c b/arch/powerpc/platforms/pseries/svm.c
+index 7a403dbd35ee..a344e094fe1c 100644
+--- a/arch/powerpc/platforms/pseries/svm.c
++++ b/arch/powerpc/platforms/pseries/svm.c
+@@ -9,6 +9,7 @@
+ #include <linux/mm.h>
+ #include <linux/memblock.h>
+ #include <linux/mem_encrypt.h>
++#include <linux/string.h>
+ #include <linux/cc_platform.h>
+ #include <asm/machdep.h>
+ #include <asm/svm.h>
+@@ -59,6 +60,7 @@ int set_memory_decrypted(unsigned long addr, int numpages)
+ 	if (!PAGE_ALIGNED(addr))
+ 		return -EINVAL;
  
- # Give 'page_alloc' its own module-parameter namespace
- page-alloc-y := page_alloc.o
-diff --git a/mm/cc_shared.c b/mm/cc_shared.c
-new file mode 100644
-index 000000000000..5c4c971cfb7b
---- /dev/null
-+++ b/mm/cc_shared.c
-@@ -0,0 +1,233 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * Copyright (C) 2026 ARM Ltd.
-+ */
-+#include <linux/align.h>
++	memset((void *)addr, 0, (size_t)numpages << PAGE_SHIFT);
+ 	uv_share_page(PHYS_PFN(__pa(addr)), numpages);
+ 
+ 	return 0;
+diff --git a/arch/s390/mm/init.c b/arch/s390/mm/init.c
+index be7e009e7b59..f2e28a2710e0 100644
+--- a/arch/s390/mm/init.c
++++ b/arch/s390/mm/init.c
+@@ -129,6 +129,9 @@ int set_memory_encrypted(unsigned long vaddr, int numpages)
+ int set_memory_decrypted(unsigned long vaddr, int numpages)
+ {
+ 	int i;
++
++	memset((void *)vaddr, 0, (size_t)numpages << PAGE_SHIFT);
++
+ 	/* make specified pages shared (swiotlb, dma_alloca) */
+ 	for (i = 0; i < numpages; ++i) {
+ 		uv_set_shared(virt_to_phys((void *)vaddr));
+diff --git a/arch/x86/coco/tdx/tdx.c b/arch/x86/coco/tdx/tdx.c
+index 8bacbef62891..d673d23a2237 100644
+--- a/arch/x86/coco/tdx/tdx.c
++++ b/arch/x86/coco/tdx/tdx.c
+@@ -980,6 +980,9 @@ static int tdx_enc_status_change_finish(unsigned long vaddr, int numpages,
+ 	if (!enc && !tdx_enc_status_changed(vaddr, numpages, enc))
+ 		return -EIO;
+ 
++	if (!enc)
++		memset((void *)vaddr, 0, (size_t)numpages << PAGE_SHIFT);
++
+ 	if (enc)
+ 		atomic_long_sub(numpages, &nr_shared);
+ 	else
+diff --git a/arch/x86/hyperv/hv_init.c b/arch/x86/hyperv/hv_init.c
+index b90e6f487533..4356f4255ae9 100644
+--- a/arch/x86/hyperv/hv_init.c
++++ b/arch/x86/hyperv/hv_init.c
+@@ -156,8 +156,10 @@ static int hv_cpu_init(unsigned int cpu)
+ 			 * page in non-root partition here.
+ 			 */
+ 			if (*hvp && !ms_hyperv.paravisor_present && hv_isolation_type_snp()) {
+-				WARN_ON_ONCE(set_memory_decrypted((unsigned long)(*hvp), 1));
+-				memset(*hvp, 0, PAGE_SIZE);
++				int ret;
++
++				ret = set_memory_decrypted((unsigned long)*hvp, 1);
++				WARN_ON_ONCE(ret);
+ 			}
+ 		}
+ 
+diff --git a/arch/x86/hyperv/ivm.c b/arch/x86/hyperv/ivm.c
+index 2ce4dfe53472..e9c7799a0094 100644
+--- a/arch/x86/hyperv/ivm.c
++++ b/arch/x86/hyperv/ivm.c
+@@ -755,6 +755,10 @@ static int hv_mark_gpa_visibility(u16 count, const u64 pfn[],
+  */
+ static int hv_vtom_clear_present(unsigned long kbuffer, int pagecount, bool enc)
+ {
++	if (!enc)
++		memset((void *)kbuffer, 0,
++		       (size_t)pagecount << PAGE_SHIFT);
++
+ 	return set_memory_np(kbuffer, pagecount);
+ }
+ 
+diff --git a/arch/x86/kernel/kvmclock.c b/arch/x86/kernel/kvmclock.c
+index cb3d0ca1fa22..3e9b7ad3dea2 100644
+--- a/arch/x86/kernel/kvmclock.c
++++ b/arch/x86/kernel/kvmclock.c
+@@ -248,7 +248,7 @@ static void __init kvmclock_init_mem(void)
+ 	 * be mapped decrypted.
+ 	 */
+ 	if (cc_platform_has(CC_ATTR_GUEST_MEM_ENCRYPT)) {
+-		r = set_memory_decrypted((unsigned long) hvclock_mem,
++		r = set_memory_decrypted((unsigned long)hvclock_mem,
+ 					 1UL << order);
+ 		if (r) {
+ 			__free_pages(p, order);
+@@ -256,9 +256,9 @@ static void __init kvmclock_init_mem(void)
+ 			pr_warn("kvmclock: set_memory_decrypted() failed. Disabling\n");
+ 			return;
+ 		}
++	} else {
++		memset(hvclock_mem, 0, PAGE_SIZE << order);
+ 	}
+-
+-	memset(hvclock_mem, 0, PAGE_SIZE << order);
+ }
+ 
+ static int __init kvm_setup_vsyscall_timeinfo(void)
+diff --git a/arch/x86/mm/mem_encrypt_amd.c b/arch/x86/mm/mem_encrypt_amd.c
+index 2f8c32173972..a1199a74e9a3 100644
+--- a/arch/x86/mm/mem_encrypt_amd.c
++++ b/arch/x86/mm/mem_encrypt_amd.c
+@@ -13,6 +13,7 @@
+ #include <linux/dma-direct.h>
+ #include <linux/swiotlb.h>
+ #include <linux/mem_encrypt.h>
++#include <linux/string.h>
+ #include <linux/device.h>
+ #include <linux/kernel.h>
+ #include <linux/bitops.h>
+@@ -308,6 +309,9 @@ static int amd_enc_status_change_finish(unsigned long vaddr, int npages, bool en
+ 	if (!cc_platform_has(CC_ATTR_HOST_MEM_ENCRYPT))
+ 		enc_dec_hypercall(vaddr, npages << PAGE_SHIFT, enc);
+ 
++	if (!enc)
++		memset((void *)vaddr, 0, (size_t)npages << PAGE_SHIFT);
++
+ 	return 0;
+ }
+ 
+diff --git a/drivers/firmware/arm_rmm/rsi.c b/drivers/firmware/arm_rmm/rsi.c
+index 0fcc4e33bd92..fade7699ff6c 100644
+--- a/drivers/firmware/arm_rmm/rsi.c
++++ b/drivers/firmware/arm_rmm/rsi.c
+@@ -6,6 +6,7 @@
+ #include <linux/jump_label.h>
+ #include <linux/memblock.h>
+ #include <linux/psci.h>
++#include <linux/string.h>
+ #include <linux/swiotlb.h>
+ #include <linux/arm-rsi-cmds.h>
+ #include <linux/kobject.h>
+@@ -146,6 +147,9 @@ static int realm_set_memory_decrypted(unsigned long addr, int numpages)
+ {
+ 	int ret = __set_memory_enc_dec(addr, numpages, false);
+ 
++	if (!ret)
++		memset((void *)addr, 0, (size_t)numpages << PAGE_SHIFT);
++
+ 	WARN(ret, "Failed to decrypt memory, %d pages will be leaked",
+ 	     numpages);
+ 
+diff --git a/drivers/hv/connection.c b/drivers/hv/connection.c
+index 818667ef9c74..b25bfe2f8448 100644
+--- a/drivers/hv/connection.c
++++ b/drivers/hv/connection.c
+@@ -13,6 +13,7 @@
+ #include <linux/sched.h>
+ #include <linux/wait.h>
+ #include <linux/delay.h>
 +#include <linux/cc_platform.h>
-+#include <linux/cc_shared.h>
-+#include <linux/errno.h>
-+#include <linux/export.h>
-+#include <linux/gfp.h>
-+#include <linux/log2.h>
-+#include <linux/mm.h>
-+#include <linux/mem_encrypt.h>
-+#include <linux/numa.h>
-+#include <linux/overflow.h>
-+#include <linux/set_memory.h>
-+
-+size_t __weak arch_cc_shared_granule_size(void)
-+{
-+	return PAGE_SIZE;
-+}
-+
-+size_t cc_shared_granule_size(void)
-+{
-+	size_t granule = arch_cc_shared_granule_size();
-+
-+	if (WARN_ON_ONCE(granule < PAGE_SIZE || !is_power_of_2(granule)))
-+		return PAGE_SIZE;
-+
-+	return granule;
-+}
-+EXPORT_SYMBOL_GPL(cc_shared_granule_size);
-+
-+int cc_shared_calc_layout(size_t requested, struct cc_shared_layout *layout)
-+{
-+	size_t granule, rounded;
-+
-+	if (!requested || !layout)
-+		return -EINVAL;
-+
-+	granule = cc_shared_granule_size();
-+	if (check_add_overflow(requested, granule - 1, &rounded))
-+		return -EOVERFLOW;
-+
-+	rounded = ALIGN_DOWN(rounded, granule);
-+	layout->requested_size = requested;
-+	layout->shared_size = rounded;
-+	layout->alignment = granule;
-+
-+	return 0;
-+}
-+EXPORT_SYMBOL_GPL(cc_shared_calc_layout);
-+
-+bool cc_shared_range_valid(phys_addr_t base, size_t size)
-+{
-+	size_t granule = cc_shared_granule_size();
-+
-+	if (!size)
-+		return false;
-+
-+	return IS_ALIGNED(base, granule) && IS_ALIGNED(size, granule);
-+}
-+EXPORT_SYMBOL_GPL(cc_shared_range_valid);
-+
-+static int cc_validate_transition(void *addr, size_t size)
-+{
-+	phys_addr_t phys;
-+
-+	if (!addr || !size || !PAGE_ALIGNED(addr) ||
-+	    !virt_addr_valid(addr))
-+		return -EINVAL;
-+
-+	phys = page_to_phys(virt_to_page(addr));
-+	if (!cc_shared_range_valid(phys, size))
-+		return -EINVAL;
-+
-+	return 0;
-+}
-+
-+int cc_make_shared(void *addr, size_t size)
-+{
-+	int ret = cc_validate_transition(addr, size);
-+
-+	if (ret)
-+		return ret;
-+
-+	return set_memory_decrypted((unsigned long)addr, size >> PAGE_SHIFT);
-+}
-+
-+int cc_make_private(void *addr, size_t size)
-+{
-+	int ret = cc_validate_transition(addr, size);
-+
-+	if (ret)
-+		return ret;
-+
-+	return set_memory_encrypted((unsigned long)addr, size >> PAGE_SHIFT);
-+}
-+
-+static int __alloc_cc_shared_pages_node(int nid, gfp_t gfp,
-+					size_t requested,
-+					struct cc_shared_pages *mem)
-+{
-+	struct cc_shared_layout layout;
-+	struct page *page;
-+	unsigned int order;
-+	bool zero = gfp & __GFP_ZERO;
-+	int ret;
-+
-+	ret = cc_shared_calc_layout(requested, &layout);
-+	if (ret)
-+		return ret;
-+
-+	order = get_order(layout.shared_size);
-+	if (order > MAX_PAGE_ORDER)
-+		return -EINVAL;
-+	/*
-+	 * State transitions require a linear-map address and may modify memory.
-+	 * Allocate from low memory and defer requested zeroing until afterwards.
-+	 * Shared allocations have no migration support, so they must not
-+	 * be allocated with __GFP_MOVABLE.
-+	 */
-+	gfp &= ~(__GFP_HIGHMEM | __GFP_ZERO | __GFP_MOVABLE);
-+	if (nid == NUMA_NO_NODE)
-+		page = alloc_pages(gfp, order);
-+	else
-+		page = alloc_pages_node(nid, gfp, order);
-+	if (!page)
-+		return -ENOMEM;
-+
-+	ret = cc_make_shared(page_address(page), layout.shared_size);
-+	if (ret) {
-+		if (!cc_make_private(page_address(page), layout.shared_size))
-+			__free_pages(page, order);
-+		else
-+			pr_warn_ratelimited("leaking %zu bytes with uncertain shared state\n",
-+					    layout.shared_size);
-+		return ret;
+ #include <linux/mm.h>
+ #include <linux/module.h>
+ #include <linux/slab.h>
+@@ -263,29 +264,27 @@ int vmbus_connect(void)
+ 		goto cleanup;
+ 	}
+ 
+-	ret = set_memory_decrypted((unsigned long)
+-				vmbus_connection.monitor_pages[0], 1);
+-	ret |= set_memory_decrypted((unsigned long)
+-				vmbus_connection.monitor_pages[1], 1);
+-	if (ret) {
+-		/*
+-		 * If set_memory_decrypted() fails, the encryption state
+-		 * of the memory is unknown. So leak the memory instead
+-		 * of risking returning decrypted memory to the free list.
+-		 * For simplicity, always handle both pages the same.
+-		 */
+-		vmbus_connection.monitor_pages[0] = NULL;
+-		vmbus_connection.monitor_pages[1] = NULL;
+-		goto cleanup;
++	if (cc_platform_has(CC_ATTR_GUEST_MEM_ENCRYPT)) {
++		ret = set_memory_decrypted((unsigned long)vmbus_connection.monitor_pages[0],
++					   1);
++		ret |= set_memory_decrypted((unsigned long)vmbus_connection.monitor_pages[1],
++					    1);
++		if (ret) {
++			/*
++			 * If set_memory_decrypted() fails, the encryption state
++			 * of the memory is unknown. So leak the memory instead
++			 * of risking returning decrypted memory to the free list.
++			 * For simplicity, always handle both pages the same.
++			 */
++			vmbus_connection.monitor_pages[0] = NULL;
++			vmbus_connection.monitor_pages[1] = NULL;
++			goto cleanup;
++		}
++	} else {
++		memset(vmbus_connection.monitor_pages[0], 0, HV_HYP_PAGE_SIZE);
++		memset(vmbus_connection.monitor_pages[1], 0, HV_HYP_PAGE_SIZE);
+ 	}
+ 
+-	/*
+-	 * Set_memory_decrypted() will change the memory contents if
+-	 * decryption occurs, so zero monitor pages here.
+-	 */
+-	memset(vmbus_connection.monitor_pages[0], 0x00, HV_HYP_PAGE_SIZE);
+-	memset(vmbus_connection.monitor_pages[1], 0x00, HV_HYP_PAGE_SIZE);
+-
+ 	msginfo = kzalloc(sizeof(*msginfo) +
+ 			  sizeof(struct vmbus_channel_initiate_contact),
+ 			  GFP_KERNEL);
+diff --git a/drivers/hv/hv.c b/drivers/hv/hv.c
+index fe50090dcc01..6e836a02910a 100644
+--- a/drivers/hv/hv.c
++++ b/drivers/hv/hv.c
+@@ -123,12 +123,13 @@ static int hv_alloc_page(void **page, bool decrypt, const char *note)
+ 	if (!*page)
+ 		return -ENOMEM;
+ 
+-	if (decrypt)
++	if (decrypt) {
+ 		ret = set_memory_decrypted((unsigned long)*page, 1);
+-	if (ret)
+-		goto failed;
+-
+-	memset(*page, 0, PAGE_SIZE);
++		if (ret)
++			goto failed;
++	} else {
++		memset(*page, 0, PAGE_SIZE);
 +	}
+ 	return 0;
+ 
+ failed:
+diff --git a/drivers/hv/hv_common.c b/drivers/hv/hv_common.c
+index 27b9b79d4f4c..37f7eaa94551 100644
+--- a/drivers/hv/hv_common.c
++++ b/drivers/hv/hv_common.c
+@@ -535,8 +535,6 @@ int hv_common_cpu_init(unsigned int cpu)
+ 				/* It may be unsafe to free 'mem' */
+ 				return ret;
+ 			}
+-
+-			memset(mem, 0x00, pgcount * HV_HYP_PAGE_SIZE);
+ 		}
+ 
+ 		/*
+diff --git a/drivers/virt/coco/pkvm-guest/arm-pkvm-guest.c b/drivers/virt/coco/pkvm-guest/arm-pkvm-guest.c
+index 26fe9c3f22e3..7d922e0a28f9 100644
+--- a/drivers/virt/coco/pkvm-guest/arm-pkvm-guest.c
++++ b/drivers/virt/coco/pkvm-guest/arm-pkvm-guest.c
+@@ -13,6 +13,7 @@
+ #include <linux/mem_encrypt.h>
+ #include <linux/mm.h>
+ #include <linux/pgtable.h>
++#include <linux/string.h>
+ 
+ #include <asm/hypervisor.h>
+ 
+@@ -61,6 +62,8 @@ static int pkvm_set_memory_encrypted(unsigned long addr, int numpages)
+ 
+ static int pkvm_set_memory_decrypted(unsigned long addr, int numpages)
+ {
++	memset((void *)addr, 0, (size_t)numpages << PAGE_SHIFT);
 +
-+	if (zero)
-+		memset(page_address(page), 0, layout.shared_size);
+ 	return __set_memory_range(ARM_SMCCC_VENDOR_HYP_KVM_MEM_SHARE_FUNC_ID,
+ 				  addr, numpages);
+ }
+diff --git a/kernel/dma/direct.c b/kernel/dma/direct.c
+index 25e9a86835fd..596c90e8f890 100644
+--- a/kernel/dma/direct.c
++++ b/kernel/dma/direct.c
+@@ -229,7 +229,8 @@ void *dma_direct_alloc(struct device *dev, size_t size,
+ 	if (force_dma_unencrypted(dev))
+ 		attrs |= __DMA_ATTR_ALLOC_CC_SHARED;
+ 
+-	if (attrs & __DMA_ATTR_ALLOC_CC_SHARED) {
++	mark_mem_decrypt = attrs & __DMA_ATTR_ALLOC_CC_SHARED;
++	if (mark_mem_decrypt) {
+ 		/*
+ 		 * Unencrypted/shared DMA requires a linear-mapped buffer
+ 		 * address to look up the PFN and set architecture-required PFN
+@@ -237,7 +238,6 @@ void *dma_direct_alloc(struct device *dev, size_t size,
+ 		 * allocation.
+ 		 */
+ 		allow_highmem = false;
+-		mark_mem_decrypt = true;
+ 	}
+ 
+ 	size = PAGE_ALIGN(size);
+@@ -341,7 +341,9 @@ void *dma_direct_alloc(struct device *dev, size_t size,
+ 		cpu_addr = page_address(page);
+ 	}
+ 
+-	memset(cpu_addr, 0, size);
++	/* Zero after remapping because the page may be in HighMem. */
++	if (!mark_mem_decrypt)
++		memset(cpu_addr, 0, size);
+ 
+ 	if (set_uncached) {
+ 		void *uncached_cpu_addr;
+@@ -451,10 +453,13 @@ struct page *dma_direct_alloc_pages(struct device *dev, size_t size,
+ 	unsigned long attrs = 0;
+ 	struct page *page;
+ 	void *cpu_addr;
++	bool mark_mem_decrypt;
+ 
+ 	if (force_dma_unencrypted(dev))
+ 		attrs |= __DMA_ATTR_ALLOC_CC_SHARED;
+ 
++	mark_mem_decrypt = attrs & __DMA_ATTR_ALLOC_CC_SHARED;
 +
-+	mem->page = page;
-+	mem->shared_size = layout.shared_size;
-+	return 0;
-+}
-+
-+/**
-+ * alloc_cc_shared_pages_node - allocate memory that can be shared
-+ * @nid: NUMA node from which to allocate, or %NUMA_NO_NODE
-+ * @gfp: allocation flags
-+ * @requested: number of bytes requested; must be nonzero
-+ * @mem: storage for the allocated page and the size of the shared range
-+ *
-+ * Allocate at least @requested bytes and make the allocation shared when
-+ * memory encryption is active.  A memory-state transition requires a valid
-+ * linear-map address, so such allocations never come from high memory
-+ *
-+ * The shared range may be rounded up to the architecture's transition
-+ * granule.  On success, @mem->shared_size records the actual size that was
-+ * made shared and must be retained unchanged for free_cc_shared_pages().
-+ * @mem is not modified on failure.
-+ *
-+ * Return: 0 on success, or a negative error code on failure.
-+ */
-+int alloc_cc_shared_pages_node(int nid, gfp_t gfp,
-+			       size_t requested,
-+			       struct cc_shared_pages *mem)
-+{
-+	struct page *page;
-+	unsigned int order;
-+
-+	if (!mem || !requested)
-+		return -EINVAL;
-+
-+	if (cc_platform_has(CC_ATTR_MEM_ENCRYPT))
-+		return __alloc_cc_shared_pages_node(nid, gfp, requested, mem);
-+
-+	order = get_order(requested);
-+	if (order > MAX_PAGE_ORDER)
-+		return -EINVAL;
-+
-+	if (nid == NUMA_NO_NODE)
-+		page = alloc_pages(gfp, order);
-+	else
-+		page = alloc_pages_node(nid, gfp, order);
-+	if (!page)
-+		return -ENOMEM;
-+
-+	mem->page = page;
-+	mem->shared_size = requested;
-+	return 0;
-+}
-+EXPORT_SYMBOL_GPL(alloc_cc_shared_pages_node);
-+
-+/**
-+ * alloc_cc_shared_pages - allocate memory that can be shared
-+ * @gfp: allocation flags
-+ * @requested: number of bytes requested; must be nonzero
-+ * @mem: storage for the allocated page and the size of the shared range
-+ *
-+ * Equivalent to alloc_cc_shared_pages_node() with %NUMA_NO_NODE.
-+ *
-+ * Return: 0 on success, or a negative error code on failure.
-+ */
-+int alloc_cc_shared_pages(gfp_t gfp,
-+			  size_t requested, struct cc_shared_pages *mem)
-+{
-+	return alloc_cc_shared_pages_node(NUMA_NO_NODE, gfp, requested, mem);
-+}
-+EXPORT_SYMBOL_GPL(alloc_cc_shared_pages);
-+
-+void free_cc_shared_pages(struct cc_shared_pages *mem)
-+{
-+	if (!mem || !mem->page)
-+		return;
-+
-+	if (!cc_platform_has(CC_ATTR_MEM_ENCRYPT))
-+		goto free_pages;
-+
-+	if (cc_make_private(page_address(mem->page), mem->shared_size)) {
-+		pr_warn_ratelimited("leaking %zu bytes that cannot be made private\n",
-+				    mem->shared_size);
-+		return;
+ 	if ((attrs & __DMA_ATTR_ALLOC_CC_SHARED) && dma_direct_use_pool(dev, gfp))
+ 		return dma_direct_alloc_from_pool(dev, size, dma_handle,
+ 						  &cpu_addr, gfp, attrs);
+@@ -465,6 +470,7 @@ struct page *dma_direct_alloc_pages(struct device *dev, size_t size,
+ 			return NULL;
+ 
+ 		cpu_addr = page_address(page);
++		mark_mem_decrypt = false;
+ 		goto setup_page;
+ 	}
+ 
+@@ -473,11 +479,13 @@ struct page *dma_direct_alloc_pages(struct device *dev, size_t size,
+ 		return NULL;
+ 
+ 	cpu_addr = page_address(page);
+-	if ((attrs & __DMA_ATTR_ALLOC_CC_SHARED) &&
+-	    dma_set_decrypted(dev, cpu_addr, size))
+-		goto out_leak_pages;
+ setup_page:
+-	memset(cpu_addr, 0, size);
++	if (mark_mem_decrypt) {
++		if (dma_set_decrypted(dev, cpu_addr, size))
++			goto out_leak_pages;
++	} else {
++		memset(cpu_addr, 0, size);
 +	}
-+
-+free_pages:
-+	__free_pages(mem->page, get_order(mem->shared_size));
-+	mem->page = NULL;
-+	mem->shared_size = 0;
-+}
-+EXPORT_SYMBOL_GPL(free_cc_shared_pages);
+ 	*dma_handle = phys_to_dma_direct(dev, page_to_phys(page),
+ 					 attrs & __DMA_ATTR_ALLOC_CC_SHARED);
+ 	return page;
+diff --git a/mm/cc_shared.c b/mm/cc_shared.c
+index 5c4c971cfb7b..40c130cce74b 100644
+--- a/mm/cc_shared.c
++++ b/mm/cc_shared.c
+@@ -104,7 +104,6 @@ static int __alloc_cc_shared_pages_node(int nid, gfp_t gfp,
+ 	struct cc_shared_layout layout;
+ 	struct page *page;
+ 	unsigned int order;
+-	bool zero = gfp & __GFP_ZERO;
+ 	int ret;
+ 
+ 	ret = cc_shared_calc_layout(requested, &layout);
+@@ -116,7 +115,8 @@ static int __alloc_cc_shared_pages_node(int nid, gfp_t gfp,
+ 		return -EINVAL;
+ 	/*
+ 	 * State transitions require a linear-map address and may modify memory.
+-	 * Allocate from low memory and defer requested zeroing until afterwards.
++	 * Allocate from low memory and let the architecture place zeroing at the
++	 * appropriate point in the transition.
+ 	 * Shared allocations have no migration support, so they must not
+ 	 * be allocated with __GFP_MOVABLE.
+ 	 */
+@@ -138,9 +138,6 @@ static int __alloc_cc_shared_pages_node(int nid, gfp_t gfp,
+ 		return ret;
+ 	}
+ 
+-	if (zero)
+-		memset(page_address(page), 0, layout.shared_size);
+-
+ 	mem->page = page;
+ 	mem->shared_size = layout.shared_size;
+ 	return 0;
 -- 
 2.43.0
 
