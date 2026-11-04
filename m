@@ -1,98 +1,94 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B82B7606A31B
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 13:42:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80554606A31B
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 13:46:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=cBplRVlN
+	dkim=pass (1024-bit key, unprotected) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=cQg6Fz14
 Received: by kanga.kvack.org (Postfix)
-	id D62446B05BB; Wed,  4 Nov 2026 08:42:38 -0500 (EST)
+	id 997B96B05BC; Wed,  4 Nov 2026 08:46:03 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D13F26B05BC; Wed,  4 Nov 2026 08:42:38 -0500 (EST)
+	id 9482F6B05BD; Wed,  4 Nov 2026 08:46:03 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C503F6B05BD; Wed,  4 Nov 2026 08:42:38 -0500 (EST)
+	id 85E826B05BE; Wed,  4 Nov 2026 08:46:03 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id A48D06B05BB
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 08:42:38 -0500 (EST)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 3459DA0715
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 13:42:38 +0000 (UTC)
-X-FDA: 85397551596.19.3F73E21
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 9999BA000A
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 13:42:36 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cBplRVlN;
-	spf=pass (imf25.hostedemail.com: domain of osalvador@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=osalvador@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793799756;
-	b=mkCxK2CuWVqA0pehKdlfcvepqrIs+5MHpYbi9WoFEa6L69bHDvhWEEpHJX+CHbq2Rzq/s1
-	z+ePeURMKKxrU8YHMhBdUoqA+SmR5aJGppgqPU0RKA3CHxbbNsmrHowVhq4PpynUdPRgDg
-	iZPJ9HRBpoedb2f8s3H+ChE8ZaVkZuE=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cBplRVlN;
-	spf=pass (imf25.hostedemail.com: domain of osalvador@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=osalvador@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 654F06B05BC
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 08:46:03 -0500 (EST)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 0487416074D
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 13:46:02 +0000 (UTC)
+X-FDA: 85397560206.23.6CE3C26
+Received: from out30-124.freemail.mail.aliyun.com (out30-124.freemail.mail.aliyun.com [115.124.30.124])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 526202000F
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 13:45:59 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=cQg6Fz14;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf13.hostedemail.com: domain of cp0613@linux.alibaba.com designates 115.124.30.124 as permitted sender) smtp.mailfrom=cp0613@linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793799756;
+	s=arc-20220608; t=1793799961;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Esj8EGtkHfwSQcmc9iE2KqgGId8com+XiT/w2XhO/5w=;
-	b=oXG+H9V0g7PUUHfqrp/rcYTKxyDEwzGrsEkEQcmLDWL2xyvKWSTYx9vBoctVpH7WUpN/Mh
-	TIe0AYmO3TdbxFiCDeKY846IO+Lf0ER/7jt4BBH02HYtAXHFMgnG+4Jp2f1EpdeJl4v/K7
-	6r+bzz2r8z0w44X04TKzwjD6NhtZ2Nk=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id BAC5C41503;
-	Wed,  4 Nov 2026 13:42:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01C011F00A18;
-	Wed,  4 Nov 2026 13:42:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793799755;
-	bh=Esj8EGtkHfwSQcmc9iE2KqgGId8com+XiT/w2XhO/5w=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=cBplRVlNGNXLgcOgO/+NzbxXf7EoY8ccfzz17hLNIISFlErjsDDUxP0r4++GlxKZ0
-	 H2LWcO/wR6CNfnZ57fCbZiuucD+u6e3qjQjdbaMMZdgYskVj6G9DOl6VWGND9+QiEL
-	 pFnUzmZgJ2HhcuhmC0/n1pUCgQnPKTJARsJ+broVwfYvKznB380+kfP7vESDq/m7My
-	 ryQxu1NibOQv+aePOWlK0T0z+qrAITNvbGZwOeQeJms2fAvu2yfulKwl4elPSj5A77
-	 YDusCrCkH7AjPYQLm0dZU0F8U/PnKW7y/A90IQUnrKZpyk2+TbGoMMepZcTAOiDtGf
-	 IcNB86vyc/ZBw==
-Date: Wed, 4 Nov 2026 14:42:30 +0100
-From: "Oscar Salvador (SUSE)" <osalvador@kernel.org>
-To: Muchun Song <songmuchun@bytedance.com>
-Cc: Oscar Salvador <osalvador@suse.de>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Mike Rapoport <rppt@kernel.org>, Qi Zheng <qi.zheng@linux.dev>,
-	Lance Yang <lance.yang@linux.dev>,
-	James Houghton <jthoughton@google.com>,
-	David Hildenbrand <david@kernel.org>,
-	Muchun Song <muchun.song@linux.dev>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 11/12] mm: hugetlb_vmemmap: unify vmemmap range
- restoration
-Message-ID: <aus2Ro4lqS3FaPPL@localhost.localdomain>
-References: <20261104023510.260766-1-songmuchun@bytedance.com>
- <20261104023510.260766-12-songmuchun@bytedance.com>
+	bh=QGFVMoJRZR79GkB1zDENh+lvuQ8N4gNHeoEkuezJ4HQ=;
+	b=6YfN9CGxRUP1FEg4oUeQ+pNjYEYNsog7xPyvxvkqUhf9qrRuXYn6TulDdHxR0NpSL0YzLV
+	HHDokhHoL/gwrnVDI5mHJ9A/EiX5gEiRSYYL6yuD7R1STOYJQCl+VTrAlQP0y1zjPqk1aj
+	e6z47qjB9DRpUGT/knOCigmizo/rYPk=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793799961;
+	b=URTz3YfZ57bI473szowvGfJAkLgTVMKbsNrxBaG4RyyVWLcB0/DZjKZYGIukWc/jFrDWjx
+	LlPOFX51BkI9rt8D+/bjVWtcAG2SaBm7Mj10v9IWLewDiYe7I6+mNkJGxq5g0zfyqHKabf
+	zx0rU6O2vMpLWvhnzvDUQ4cU56DZFDI=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=cQg6Fz14;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf13.hostedemail.com: domain of cp0613@linux.alibaba.com designates 115.124.30.124 as permitted sender) smtp.mailfrom=cp0613@linux.alibaba.com
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1793799955; h=From:To:Subject:Date:Message-ID:MIME-Version;
+	bh=QGFVMoJRZR79GkB1zDENh+lvuQ8N4gNHeoEkuezJ4HQ=;
+	b=cQg6Fz141ge859rVLWY64KUCghhlsaItbkiCFQe6EVIflNVQlxpPjgQMulwHxXxIXqftbxwIOLwAU1osu38QwTZ1OVStPuUGAovtEsadxQm01p3GSgKBymPQtuN1TW+voyCN+Gr1lEcocPn8GUXgA4uoWCSUxL8Z6twnuz2211k=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R971e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037033178;MF=cp0613@linux.alibaba.com;NM=1;PH=DS;RN=12;SR=0;TI=SMTPD_---0XE5sgSS_1793799951;
+Received: from DESKTOP-S9E58SO.localdomain(mailfrom:cp0613@linux.alibaba.com fp:SMTPD_---0XE5sgSS_1793799951 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Wed, 04 Nov 2026 21:45:55 +0800
+From: Chen Pei <cp0613@linux.alibaba.com>
+To: sashiko-bot@kernel.org
+Cc: alex@ghiti.fr,
+	graf@amazon.com,
+	guoren@kernel.org,
+	kexec@lists.infradead.org,
+	linux-mm@kvack.org,
+	palmer@dabbelt.com,
+	pasha.tatashin@soleen.com,
+	pjw@kernel.org,
+	pratyush@kernel.org,
+	rppt@kernel.org,
+	shuah@kernel.org
+Subject: Re: [PATCH v2 3/5] riscv: Add support for kexec handover (KHO)
+Date: Wed,  4 Nov 2026 21:45:47 +0800
+Message-ID: <20261104134550.1779-1-cp0613@linux.alibaba.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <sashiko-outbox-196857@kernel.org>
+References: <20261103080926.2079-1-cp0613@linux.alibaba.com> <20261103080926.2079-4-cp0613@linux.alibaba.com> <sashiko-outbox-196857@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261104023510.260766-12-songmuchun@bytedance.com>
-X-Stat-Signature: h88xmuhbbc9onndmkm9rhers5yko5yiy
-X-Rspamd-Queue-Id: 9999BA000A
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: o3fsowzhttfbe64thchph5zns3m5uy6h
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
-	autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1793799756-850371
-X-HE-Meta: U2FsdGVkX19oqMNd36lyWd593Q2mWDsMqKWjO2h7dBa+OFLVTQuVUYz89JCNjMaXk7xLkQaIUsb8Zl2xgaLE77Dlvl2ScJE9agxZTYukb2ZGROC0eCcQh6EvQH6qL8ojSjSuPDsT0yXoO4LlbcgB7reitv99lkDMQpmMxpwyhKE/QcrvxCIN6imIBgLENzeN/7v6lOZcU1VGlW2wwDk2IKQYBtcc+RjpN/yf8jfooTSSS9OedXIY7CYObnbXT06r94o3Ej5eux0P6eXISdcGhm3UbtaoyNqgeYFcpHaMoW6k9fYgL/f578TE2AuoMHgtQWq53VIw7g6eyLoebilO1lezImOFdSApVoPMjCOCIacGia/GHdC9oUVV3okYr1pf/AmPeJnNk0SijYAMd456hNhgseQBlpUWGGjNZf1RG0jWAOChAHFxpAp14k/gVdYZ4PnKFANaDofn74AEJYqeCFnmwbEp8r0lNDqhPt+9CYzSGwxhy24EXmeKxzIGQO/SaQzk6SD7UBO5aV3hD1miQs34Ft0k1txoHMEVPhvtYaelBe9ooO7hYnE0u4W6WGGUKUDWcnxSSubxgA90oD3k7YlAyXBfsnAoYdJy2OlrYrG5gOrGCMBxOZzVuav+0UFNDoHxKkSpWIvszXq26zEQxWcPn/zzgmxfSteiiXrPjpIB8dAxteUJWkOpv/R0zK+fSant2MWOqA1LIEfM6BPhvPvzHsK8bBd8KeJkbll1ZDGS6MGIVViwt9HnUWVaKinE8vkn+czzwc41ZG+vLHHrg/nh7/vRVZFw3ITDHaKW+z/RR5416J31csSoRyP18xHIJJXqnfn+K1ciOUZK+ofR8eRILMlEqCHaDmSxZ6sFMFoxcdx16BMsRH5SdX74jIiBDbFO06YbzQelgUGcdC27o++p2SdqmnA8Nl3qioT1Bjy+g31gfhDLkxWvg1NjnKdt0Zhlscq+LGN7RrsBDzv
- rn1RpLlN
- O8H6RSwiHkvydalJt7xM/WTy1syt5JDEYPonGPwLJkKQjhFUS/jjhTHPwGZdC+9XBhCViYA9WRYMsZmSwD3938AImkqDdTOl9od1GGt9JlUTEIrxMbavhQAeaBv+VLKKeBcZhSq1ZQ0/bjjDjcQ+hnk6pb39U5ifjrNducUM2RyvTX7nX73mz9kbjPzYma+T8PhMEDeER9I9Og+9DqEL9CYw5DVoIYE2O2qcNfLQYspwMZ2nCBMDbjkUiMpFJrSEOBji35DwgeEExn5L7586cbI6LSj5MBuk+6JcXR0JoMcbMtxqNGzf+WtINKQ==
+X-Spam-Status: No, score=-16.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,UNPARSEABLE_RELAY,
+	USER_AGENT_GIT,USER_IN_DEF_DKIM_WL autolearn=unavailable
+	autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 526202000F
+X-HE-Tag: 1793799959-819205
+X-HE-Meta: U2FsdGVkX1+X/caOt3FwCg5122NR5YvPmat81ztX4lbYteH4UC3A4v+gFp4SLikEcNZSjjqiDSS2aREV70JgXVJd+bM6V/22L6C9y0YUPgU0MumEmvJwqELE9ZA2h5Lw1RIXYUw2SUlE7E79LreGec7R/tIQd/zIe0YqMozAXnJWhR0OAZAeWjFbFYpozdeZtbjnP+CczToQenCRzSrPvr+WhGipwJabH2oaJOxzMXg4wePF/p+zSLhH7nlWhYRRHISrXuXpBcTXoTtn+xQ00uikCXPY2Zqru6N5aQCokoLyzsyzh7mAL+/Qtv99vBfXWGgGcBE66xD+wiFJ5cJoiYoRyqIDaAQAP5ZMryz6Yd1Ij6Ij2pSvtc+hwcAng+JF5lRahxAdKcP5JKGhoL5hH4iE1/NXZIw6akbykIXj21frb8VDA5PlAvUNqMtRzH/FilO/qRh0MMCirc5imyq37Wlfa6ONxJNy6zinKQ/RksnRM5snedtCVFmRK4eXWB9+0uhliEEyArRkELRmvUlLbmyogwujEj9NfqYgqpJRnp3F0If7HeCSa81ewUb3u9E0+gIrVvowPM2DA2ApPIvLrhOO9Te0TH3cW9VcL1uRTfQAf2LrKidBguE0cziBrql5A5SemMYLuzV9fHUQ2U1eHLTIXLBQ5CMw28UIhxNums1Dk6z4Bs+WP7h3WswqgUFDj6+CFJ0ujGJIqXMxlgIfO+UM9ZIiT7Sn0FMlG4bwYHhnHGDNib7F891S4NbM/Iw7pGhXY+GiI/OP2ZpTxU+bM0yvmloXconv594XPkKftcGHN1aOyN3qVcoMh6Eu1CPi9OT3UdibKiWHZrHLzvkBNjiVq6H6+ZzWq+QE6jXktWNSZnz/8DflVWaeq8LdhcnU0z1MGLEAEHn3zK16fZs7SZuWiVOHeu9wBb2yI//2YJ9fblqAj+rq4r4P7MALrNOnzRcd+G2T/gDtvbjZwbO
+ pL5FhIIC
+ Uc+lG+vLU63mee+r21WkIQy7G3MU6KNo/GxUZO7UGLpeUghadsIWZlxRVPLCNaLH0rCiLqwPLiJiu/pJf27dQ4rlD6ZAnDNjOlLEuv7LJDlzn3gX7b9O2ktYNqpH8Us+YaDvQq77bM/n+/ctj4kOroB+aPgRX5QdhdFyu/uMR9W8aMJ2xND3Zjvhp1igNmmc9yYKLMdXvNV9FFXW3q0kuHKz3NtuK1rE53KZGhvy6ci4ko+mGDUmVsy5KOzda7cxaeczKRgVVMt/peeep9QC4iP1DwS8O94gOQD+x
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,24 +97,15 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Wed, Nov 04, 2026 at 10:35:09AM +0800, Muchun Song wrote:
-> Restoring an optimized folio and rolling back a partial optimization
-> both restore a vmemmap range, but the operation is currently implemented
-> separately in each path.
-> 
-> Use a single range-restoration path for both cases, making rollback an
-> explicit bounded form of normal restoration.
-> 
-> No functional change intended.
-> 
-> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
-> Reviewed-by: Lance Yang <lance.yang@linux.dev>
-> Reviewed-by: Qi Zheng <qi.zheng@linux.dev>
-> Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> As reported by Sashiko on v1 [1], will kho_reserve_bootmem() fail on 64-bit
+> RISC-V platforms where DRAM starts at or above 4 GiB, or record a 0-byte
+> region when all DRAM lies below 4 GiB?
 
-Reviewed-by: Oscar Salvador <osalvador@suse.de>
+Both, confirmed by measurement, and neither is riscv code. Mike Rapoport
+has a patch that resolves it, so this series carries nothing for it:
 
--- 
-Oscar Salvador
-SUSE Labs
+https://lore.kernel.org/kexec/20261103-kho-bootmem-sizing-v1-1-45aa74098f34@kernel.org/
+
+Best regards,
+Chen
 
