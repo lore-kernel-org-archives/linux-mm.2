@@ -1,149 +1,129 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F2BA606A328
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 16:49:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D086D6082BF6
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 16:49:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=MEcDEw27
+	dkim=pass (2048-bit key, unprotected) header.d=debian.org header.i=@debian.org header.a=rsa-sha256 header.s=smtpauto.stravinsky header.b=fda2vQl0
 Received: by kanga.kvack.org (Postfix)
-	id 526096B05C5; Wed,  4 Nov 2026 11:49:09 -0500 (EST)
+	id F0BE06B05C7; Wed,  4 Nov 2026 11:49:21 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4D0606B05C6; Wed,  4 Nov 2026 11:49:09 -0500 (EST)
+	id EBC4A6B05C8; Wed,  4 Nov 2026 11:49:21 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 371C86B05C7; Wed,  4 Nov 2026 11:49:09 -0500 (EST)
+	id D863B6B05C9; Wed,  4 Nov 2026 11:49:21 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 0920D6B05C5
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 11:49:09 -0500 (EST)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 778CB1A078A
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 16:49:08 +0000 (UTC)
-X-FDA: 85398021576.06.913E870
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf11.hostedemail.com (Postfix) with ESMTP id DD60440007
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 16:49:06 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MEcDEw27;
-	spf=pass (imf11.hostedemail.com: domain of aneesh.kumar@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=aneesh.kumar@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id B08556B05C7
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 11:49:21 -0500 (EST)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 428361407B3
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 16:49:21 +0000 (UTC)
+X-FDA: 85398022122.09.4FA6307
+Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 459951C000A
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 16:49:19 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=fda2vQl0;
+	dmarc=pass (policy=none) header.from=debian.org;
+	spf=pass (imf18.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793810946;
+	s=arc-20220608; t=1793810959;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MTuN8WVsJv1I02LCGu8efiiNsZogL+1Yfc4bQSdZvsk=;
-	b=js+kodgoGtc3ubId2d22aRYqyAW1c4D4PUSS8fGeMEoYcwAmCjl8jRva59M3IAga8gtBL9
-	ssXTHsUtqYP1uHJ+nQaWpoPoVpVKLUt5YSB+IgJMPaOomlRkGC5vFiFCLP5hVQpxTuvfn/
-	ACCo2RuqAB+2pvIzMMY1nvCT09OyCTQ=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=3t5gZnFzYyDaoysWoNJjSYJ1AOCHhlgJaCaGteCanKw=;
+	b=5NCWzbmZFlzOsGOXEynC6ik/t2NTeAfcBM9WQ6ukYODy11pzo7JgSQsgcyRoRpZvgwhDVJ
+	qh7PQkQfjufeQIMsrS0Mv7UCIArBHlBLJhZGoJA8DeCLz4v5M6NnmSxaj7pKnnzt/DZ0F+
+	3zOk8gJPsjjTYnzLLqrKpdVR0KYJs68=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793810946;
-	b=bBuj/KB9kdNWwBHc/4V03vIXnQ9HOpROkpHP3lQdWpB46z11ck+NVrgSLw/nHgn4IjHxU+
-	9WMdkCUjaxXkfbHrv5/MA93lnY4sKr5GSrfaCBHI6H3T5Gi7FZwR7xJgTGkhoPADF+Ntaa
-	fO/5Ba+wZnwFNW/ggxnIF9QRMkQbGAI=
+	t=1793810959;
+	b=kTyzSR3fgdDBL/kQiwYMUB31g3Dldx2kWLIW7aGXNeGy/QbJQ2jLM3Ojy6g1m0nqTNhDJB
+	cS2RCG4DBKvTDe5KKBXYinbxsemoKB6wcPmq5EB7iiR2ZvfOyxEpk7sxSpAMjsKb21Y4I0
+	UOTk52ywMw0tjvH+nzlq7/NBk+7FBD8=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MEcDEw27;
-	spf=pass (imf11.hostedemail.com: domain of aneesh.kumar@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=aneesh.kumar@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 8931660A9D;
-	Wed,  4 Nov 2026 16:49:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 729B31F00A16;
-	Wed,  4 Nov 2026 16:48:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793810946;
-	bh=MTuN8WVsJv1I02LCGu8efiiNsZogL+1Yfc4bQSdZvsk=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=MEcDEw27BmTAfTMR6Cs9edMuq5bUFf456+f7urheAWgzZwKe3xiSRJwKzGdjEHrql
-	 cWQChlV+swCc/ygmAzMyiRWeOKZ3Zod/MJSCs4YKVkNStHFTLRFr7XRBJ8i5AnMbKY
-	 xqA4KFGzKcLF5V5hzQC9xy1/MBVZqxg2YMICnQgWgPIDOfHqlNpTjBWubGbW90j7D3
-	 D0drESx7uAuvVDS0zy/rHr7ySr1/jyVgjdV22PcJM/OCZCQmovnK5aPzD+Cdti/yIQ
-	 lKiKVpIBLzXK2llg4QBU5uz2PV8xkxY2ReMwYaMDuEVANuLVPYjGgcEv+YGQXff5mX
-	 FO6mCsNo9+sYg==
-From: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>
-To: linux-coco@lists.linux.dev
-Cc: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Baoquan He <baoquan.he@linux.dev>,
-	Mike Rapoport <rppt@kernel.org>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Pratyush Yadav <pratyush@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Jason Gunthorpe <jgg@ziepe.ca>,
-	Joerg Roedel <joro@8bytes.org>,
-	Marc Zyngier <maz@kernel.org>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Steven Price <steven.price@arm.com>,
-	Sumit Semwal <sumit.semwal@linaro.org>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Thomas Gleixner <tglx@kernel.org>,
-	Will Deacon <will@kernel.org>,
-	Russell King <linux@armlinux.org.uk>,
-	Benjamin Gaignard <benjamin.gaignard@collabora.com>,
-	Brian Starkey <Brian.Starkey@arm.com>,
-	John Stultz <jstultz@google.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Radu Rendec <radu@rendec.net>,
-	"T.J. Mercier" <tjmercier@google.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <chleroy@kernel.org>,
-	Ritesh Harjani <ritesh.list@gmail.com>,
-	Shrikanth Hegde <sshegde@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>,
-	Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	x86@kernel.org,
-	"H . Peter Anvin" <hpa@zytor.com>,
-	Kiryl Shutsemau <kas@kernel.org>,
-	Rick Edgecombe <rick.p.edgecombe@intel.com>,
-	"K . Y . Srinivasan" <kys@microsoft.com>,
-	Haiyang Zhang <haiyangz@microsoft.com>,
-	Wei Liu <wei.liu@kernel.org>,
-	Dexuan Cui <decui@microsoft.com>,
-	Long Li <longli@microsoft.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Vitaly Kuznetsov <vkuznets@redhat.com>,
-	Andy Lutomirski <luto@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	dri-devel@lists.freedesktop.org,
-	iommu@lists.linux.dev,
-	linaro-mm-sig@lists.linaro.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-media@vger.kernel.org,
-	linux-mm@kvack.org,
-	kvmarm@lists.linux.dev,
-	patches@lists.linux.dev
-Subject: [PATCH v9 08/14] swiotlb: Align shared IO TLB pools to the shared granule size
-Date: Wed,  4 Nov 2026 22:15:49 +0530
-Message-ID: <20261104164555.3555725-9-aneesh.kumar@kernel.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20261104164555.3555725-1-aneesh.kumar@kernel.org>
-References: <20261104164555.3555725-1-aneesh.kumar@kernel.org>
+	imf18.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=fda2vQl0;
+	dmarc=pass (policy=none) header.from=debian.org;
+	spf=pass (imf18.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+	s=smtpauto.stravinsky; h=X-Debian-User:Cc:To:Message-Id:
+	Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:From:
+	Reply-To:Content-ID:Content-Description:In-Reply-To:References;
+	bh=3t5gZnFzYyDaoysWoNJjSYJ1AOCHhlgJaCaGteCanKw=; b=fda2vQl0h857qXb9fNWH5Si5t4
+	RpUTAaDbdY2GispkX1TXqZnWHns/xIs8W5tEJNccrb48oXzkJbbyO9ElZjwEP8x0KFeLE12kFSRlZ
+	kEnX36cEE2s9UZhO5TxHdmEbwtQODdEOdaTsDbQfpmlXxXT5I1OXHWMoso8qjZxax6K0q68xVjt/U
+	dmPpRLxRJA1pVsavc0QDv3AheaEBkIXAEpRJrmYodVuVkza0oFlshQsXa236sHnd3bVtnFWXR/vpp
+	nPsV4Gtnrz2csUGF1I0nJreNr2BUuRAuRTbwXoS3HppY406956CJJTlEGO56Sxz0Zjy1K+ExPHqPa
+	RmEP9m4Q==;
+Received: from authenticated-user
+	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.96)
+	(envelope-from <leitao@debian.org>)
+	id 1xOeA8-007rju-0S;
+	Wed, 04 Nov 2026 16:48:36 +0000
+From: Breno Leitao <leitao@debian.org>
+Date: Wed, 04 Nov 2026 08:45:34 -0800
+Subject: [PATCH] mm: split out memory-failure declarations from internal.h
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 8skpugrrp5oahbnjipt8zm8jpc8fet7w
-X-Rspamd-Queue-Id: DD60440007
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20261104-memory-failure-split-v1-1-3b0a85f0b7e7@debian.org>
+X-B4-Tracking: v=1; b=H4sIADNh62oC/x3MWwqDMBAF0K0M8+1AImIhWxE/YnK1A76YtKKIe
+ y/0LODcXGCKwoFuNhxadFs5kK+I0zuuE0QzB+La1a33rpEFy2aXjFHnr0HKPutHmvSKA/IAlxN
+ XxLth1PPfdv3z/AAvfczSZgAAAA==
+X-Change-ID: 20261104-memory-failure-split-4c7abedbe0dc
+To: Miaohe Lin <linmiaohe@huawei.com>, 
+ Naoya Horiguchi <nao.horiguchi@gmail.com>, 
+ Andrew Morton <akpm@linux-foundation.org>, 
+ David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+ Michal Hocko <mhocko@suse.com>, Xu Xin <xu.xin@linux.dev>, 
+ Chengming Zhou <chengming.zhou@linux.dev>, 
+ Oscar Salvador <osalvador@suse.de>, Johannes Weiner <hannes@cmpxchg.org>, 
+ Brendan Jackman <brendan.jackman@linux.dev>, Zi Yan <ziy@nvidia.com>, 
+ Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>, 
+ Jann Horn <jannh@google.com>, Lance Yang <lance.yang@linux.dev>, 
+ Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+ Kairui Song <kasong@tencent.com>, Barry Song <baohua@kernel.org>, 
+ Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+ Wei Xu <weixugc@google.com>, Baoquan He <baoquan.he@linux.dev>, 
+ Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+ linux-cxl@vger.kernel.org, kernel-team@meta.com, 
+ Breno Leitao <leitao@debian.org>
+X-Mailer: b4 0.17-dev-ce4c1
+X-Developer-Signature: v=1; a=openpgp-sha256; l=7064; i=leitao@debian.org;
+ h=from:subject:message-id; bh=97QsAhXEXasX8L5kE2woL1ZCVS1R/w1KRvEzjNHsGk0=;
+ b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBq62Hdh6XbNBL2Gt0nR7OxBlZBElTlVb5WZerUK
+ sSEEvhdfRKJAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCauth3QAKCRA1o5Of/Hh3
+ bWcYD/wPU0JCmJNtWaxHa8xKkYF5Qao3UN7r3U9phBYB8voeL5giFzNdXHw1Fg/2bv8fRNU3MPA
+ i0uKAAuZN9VvcpdomAU4pPpfO3xqXv0NkZ4Qz+qC4y08BNBQKiNbGTvGu5sv0kwyiggZ/wFD5tF
+ nLkBb1oUtbHUw37otSPvvLltT5f01nlDKVGWr4rqXNTUiJHAQ4lO4Pp49fMR/HI/bVawBNi9BN/
+ BqXAi9LL29JcIFPwSQ3tcOn9gV6HgDF5fZqgm2YoW+dpYrUSxvTZhRrWI0WJ3h0M05dwiB1xb3U
+ VMiyHa/coRZHcwFSByuznrKMfZ1IKsGjk/DqZs6mpq7wrNm2yfleH7/LaQUruBpZE+6BKMSSwS8
+ 3vXc89RUwjCGK77OCKDWjM6q2tZ06Ok7N5BNAMPHbf/LGNgZbrNOXKHJPj4rXnJetTDdx4ULU8s
+ jFaX4peLSk5M69VjECesa7bw00aXOzZ+xCD+1gGB2LCiXUwZdcIQhGaYg60ZwJJ1tc3EB45TQOU
+ 3UsPXa6gPqfDKvmzxCPVBxF2ac+O3fW9rBLXW+BIM1ILvXXA3mNUkJgvuFAHTgTodoWzuDRlAAS
+ GAPTDV/e8YgMJeL+F+unxuCwLxOzR/nuKCGF60XmdbzrNxdedbmRQU3/hc7tN5omOfd8WZb4OF2
+ +9c61wtB6BGg3Sw==
+X-Developer-Key: i=leitao@debian.org; a=openpgp;
+ fpr=AC8539A6E8F46702CA4A439B35A3939FFC78776D
+X-Debian-User: leitao
+X-Stat-Signature: b1tz4zpcpdiy3sduaz9bsz54oys7mjnf
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-23.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1793810946-684594
-X-HE-Meta: U2FsdGVkX18y2GGB7+UGuE9cfQO/hD5MW2Qa+M5S0BvtQlYm4b+z/NeQdG4gRxr3hh+JxkRrbYE/pzX44OD4/6WAqx6bW/x+9mro4lRbPfkvIEKz6/FWRxAzChcESrwd51WSmdcG0aX+bP+rEwl+ZoLud637XSfSELwWKR1U2ChDiIHp9ZyUZFM/cK8FXYkgX7i19QDjYX9EUEYkblIz6WuWdigqCLUwNiIm4Wm9jnha37eEfIcVYJB8pdkHHEqQKjdDP4ZTV8pLgT1xo+52zy2x+1ruQfoUenwFZZGyto+t8RjWV1w4Q1iersn3MCNfAvxB2wvvykAjgtDWqdzT6oxNZwXYgR1CFwtPkmxio/hiVV3i/gHWn0nMj1D7a4+I0V3ZhgEtLxrOCiimBNprDIaYT8tEcbtwA9yW/olAETvyZZZBcRd9PJw450maxSECGal65otZ+WBZ25oQ7beIjLFGXmQgQSz5UH5RGV80TNY+Y7CNxyj0cqYghpOQPhIDodeRGFNE1quUyanR9d28XZKleZgyKOv0f05kiccrIsEO3wZk+87HGYv/lU/EuQCnW9OWgc5s8wnCZr1xzJ9Lp2me37GuIsoNGX7FQQDOB5ofObqereDolq/ODJDCGMgYOJiV2udVEpY1Lu6PB/CHeL/xxXk2cFDImneRAZUxC4BpjJNBLEa/q4Nv+nHEcocUWGCIDYViCOw1zH/GEPj7Xn+B1AKGaPuZ3nmYIPCLQuAhugwCrTgO1DEIM9Yqqk325XzFSX1CkqM1ICqURaL/ICjHquKiluWxbMySErj9w0vE8YpoZ78/VteQsYNmWgL8eTgzk509CqjaNMcYVYMxWSIUfNxS/wEWrWJ07CcjKhL4gyWVuE8OxNQGjA3oVrjEt5atHGHx+Mskz1+o4vyEY7wbI++bEiI8MbhN86srO8tD12BJe79s8dW4DeeFnqjHPRA1nJ7m4oV/JgevMFH
- Csu3V3ap
- 07lkRwM1D9vYXTCXqdOSsy4V4koG11HB5rIZi84WJ/nQ+eYdStDmexG//H9CaGMlpoMkeD1R7SQgiyLAK7xmRNNICKhtTgEIQ7QN9J4Pw9fRcC7P3dhUjc14QFcXAg1z8wxw2zyI8/CLvMi30OUFAivpR5kb95wrtLPEJo/vtgDp2cxYhV1pg3vAn3joLf5SsmJesu0n3qWeB5v8pde4CzZtP6tFxV4vpzvd4n92XNMAZVIINWpKURhEP4N+6pcTadVTjvXlraY12aUBvl4RXavnd8lFxOc478OCYApGJ4UZZ5sedo8SCsJE54ndnykLvNMFr0RZ2blCngD8rd2ndDtCRulegTKLvsd0QykiGen7SPH6v6x7QkoLL+/n7ZKHo6jXXHREMPVedid8=
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,
+	MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT
+	autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 459951C000A
+X-HE-Tag: 1793810959-198614
+X-HE-Meta: U2FsdGVkX193uguRPQa2ruRuA+iZDGrWSNq/gJtlnS2URP9Yz8BPQgHl6VHq6t0vwXr6HZ4wj84i2fadZVXQYxqJgd+FVzv1ie9PUkLCUG2kq8iACMddf0YRhSIyxurseNQRglgDPoZ99G9KSa3UHC48BKWBOmxCBy734s2+QXemNL1c+/edUG7Nqq2/dQDeDlkyUCKN+mK5Y23AY1yvDYF2mq868jom+jq7VVhFPMRLSSBbSUcKpECTcHdfohsdhmh0PXlZb1pkYNUl60EtIOvw1YDEyTmD9MusmK/gqfv2+Rl20bpdsStCsxOWUfy5UM3Eo6yYMzE3dXOab3A43Om5lvtaFBbzvdk4mla9kW11z6b7azVwJ7BQv/JeoXFG+7YzCKA8QwalyAsiJnkA5q/qQLjTNuQXU6cmFtGSfaxZayNBVp0xxug7YRa043XLotcB5pQMV26efrL/YlC/E3uHYpK5rIpUcQMzOlEPoA3p/J4FiuZ2dBRQ+U0KiNocv0VJ0Er1TscA3exki51IwfZUw7sDKOPRzsx6mnair95w5cW7hobjFX7Y8UGsrigo6QO52Ua/NBfPTDd27zQcUkVhr+ShA5BF6TUWHBHZSaX6Yt8+z+TYL0mkcU+YBR80cr6dlPOjGFdvK2uDyIL9wz3AL48V+67Ot0/RHAgughagl4UQrB4WEPUJe9dEd0Ie/yeljkbhSq7sg5T3LDV713rfMb/z9lIWjcLp2MJyUR0jNWc4v4StF8ynu4xzzfKnY2R2nNYldWL/cVSgGrpj30b5QwK5kiMKbp9G8bE8k1iwgKQtti+akYqKPffb057v/hTEcJut0lOwAm/iIvJfr+7qCMehT0d5dgWsIZ/FGyZ+gp3HSZrBIinfOoMShym4LNwv0RSoFTNU5oHSQO/HFzkCB/jAZCesUMXY7AkqsZeGib+MQrFKbCnHicF9dc4V7msXkLw6jSoRR+uOz5I
+ V8+JQSUR
+ 1e2JJKd4PzEVcGofdQQkSINJUaFXrZ7uL0ZdnY5tVpO265uOKl91TeODvSn4HNOwoHgzDLaPSoA01e8rIFNM2rDIeYPSucMB2qFCItw0fwo/7UOe61pUPknApb6FCZGWsUlpVyOdwD3oUTF7/CT7QbTzsT1zohK3en8DFtoX1h0vvJjgHCF0nRTOrF5tcVwO7SKwlZiw7whqp+kvmqipRHZ+gjhnw4s79OpPtGzHv4vMhf7u15kq2TJCpJywcVbBuJrtwqeb5bqJTphnSvMJ/dqTtTM9zIaOp5ueU3ganJMrVyeeJZP/G4cqxRMZEl3AQRzRYsK5/czhlIQMMBFPcDzhq96zNWvzq30ROxFhvSJvPxwcJcZX3ryQXYEvkRudSuUla
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -152,196 +132,223 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Align and size the early memblock pool to the common CoCo shared
-granule. Use the same rounded extent when the pool is transitioned and
-when it is released. This deliberately leaves the slot count unchanged:
-any rounded tail belongs to the pool allocation but is not advertised as
-allocatable SWIOTLB space.
+mm/internal.h carries the memory failure declarations, but only seven
+of the 81 .c files that include it use them.
 
-Replace the default and dynamic pool set_memory calls with the helpers
-so alignment validation and architecture dispatch are kept in one place.
-As before, pages are intentionally leaked if their private state cannot
-be restored safely.
+Move memory failure declarations to a new mm/memory-failure.h and
+include that from those seven files that need them.
 
-Cc: Marek Szyprowski <m.szyprowski@samsung.com>
-Cc: Robin Murphy <robin.murphy@arm.com>
-Signed-off-by: Aneesh Kumar K.V (Arm) <aneesh.kumar@kernel.org>
+Move the block as is, including take_page_off_buddy(),
+put_page_back_buddy() and page_mapped_in_vma(): they live in
+page_alloc.c and page_vma_mapped.c, but are built only for
+CONFIG_MEMORY_FAILURE and called only from memory-failure.c.
+
+Keep the declarations private to mm/.
+
+No functional change.
+
+Suggested-by: Mike Rapoport <rppt@kernel.org>
+Link: https://lore.kernel.org/all/aumt-4kfGGtoXuh-@kernel.org/
+Signed-off-by: Breno Leitao <leitao@debian.org>
 ---
- kernel/dma/swiotlb.c | 47 +++++++++++++++++++++++++++-----------------
- 1 file changed, 29 insertions(+), 18 deletions(-)
+ MAINTAINERS          |  1 +
+ mm/hwpoison-inject.c |  1 +
+ mm/internal.h        | 29 -----------------------------
+ mm/ksm.c             |  1 +
+ mm/memory-failure.c  |  1 +
+ mm/memory-failure.h  | 36 ++++++++++++++++++++++++++++++++++++
+ mm/memory_hotplug.c  |  1 +
+ mm/page_alloc.c      |  1 +
+ mm/page_vma_mapped.c |  1 +
+ mm/vmscan.c          |  1 +
+ 10 files changed, 44 insertions(+), 29 deletions(-)
 
-diff --git a/kernel/dma/swiotlb.c b/kernel/dma/swiotlb.c
-index 2c57b49ac7c0..36fbec2241e4 100644
---- a/kernel/dma/swiotlb.c
-+++ b/kernel/dma/swiotlb.c
-@@ -22,6 +22,7 @@
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 27d5b599558ae7..cc973903fda09d 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -12441,6 +12441,7 @@ F:	include/linux/memory-failure.h
+ F:	include/trace/events/memory-failure.h
+ F:	mm/hwpoison-inject.c
+ F:	mm/memory-failure.c
++F:	mm/memory-failure.h
+ F:	tools/testing/selftests/mm/memory-failure.c
  
- #include <linux/cache.h>
- #include <linux/cc_platform.h>
-+#include <linux/cc_shared.h>
- #include <linux/ctype.h>
- #include <linux/debugfs.h>
- #include <linux/dma-direct.h>
-@@ -38,7 +39,6 @@
- #include <linux/pfn.h>
- #include <linux/rculist.h>
- #include <linux/scatterlist.h>
--#include <linux/set_memory.h>
- #include <linux/spinlock.h>
- #include <linux/string.h>
- #include <linux/swiotlb.h>
-@@ -367,13 +367,13 @@ void __init swiotlb_update_mem_attributes(void)
+ HYCON HY46XX TOUCHSCREEN SUPPORT
+diff --git a/mm/hwpoison-inject.c b/mm/hwpoison-inject.c
+index a11222572f9789..07032ec63080e8 100644
+--- a/mm/hwpoison-inject.c
++++ b/mm/hwpoison-inject.c
+@@ -10,6 +10,7 @@
+ #include <linux/page-flags.h>
+ #include <linux/memcontrol.h>
+ #include "internal.h"
++#include "memory-failure.h"
  
- 	if (!mem->nslabs || mem->late_alloc)
- 		return;
--	bytes = PAGE_ALIGN(mem->nslabs << IO_TLB_SHIFT);
-+
-+	bytes = ALIGN(mem->nslabs << IO_TLB_SHIFT, cc_shared_granule_size());
- 
- 	if (io_tlb_default_mem.cc_shared) {
- 		int ret;
- 
--		ret = set_memory_decrypted((unsigned long)mem->vaddr,
--					   bytes >> PAGE_SHIFT);
-+		ret = cc_make_shared(mem->vaddr, bytes);
- 		if (ret) {
- 			pr_warn("Failed to decrypt default memory pool, disabling it\n");
- 			swiotlb_mark_pool_used(mem);
-@@ -434,8 +434,8 @@ static void __init *swiotlb_memblock_alloc(unsigned long nslabs,
- 		unsigned int flags,
- 		int (*remap)(void *tlb, unsigned long nslabs))
- {
--	size_t bytes = PAGE_ALIGN(nslabs << IO_TLB_SHIFT);
- 	void *tlb;
-+	size_t bytes = ALIGN(nslabs << IO_TLB_SHIFT, cc_shared_granule_size());
- 
- 	/*
- 	 * By default allocate the bounce buffer memory from low memory, but
-@@ -443,9 +443,9 @@ static void __init *swiotlb_memblock_alloc(unsigned long nslabs,
- 	 * memory encryption.
- 	 */
- 	if (flags & SWIOTLB_ANY)
--		tlb = memblock_alloc(bytes, PAGE_SIZE);
-+		tlb = memblock_alloc(bytes, cc_shared_granule_size());
- 	else
--		tlb = memblock_alloc_low(bytes, PAGE_SIZE);
-+		tlb = memblock_alloc_low(bytes, cc_shared_granule_size());
- 
- 	if (!tlb) {
- 		pr_warn("%s: Failed to allocate %zu bytes tlb structure\n",
-@@ -454,7 +454,7 @@ static void __init *swiotlb_memblock_alloc(unsigned long nslabs,
- 	}
- 
- 	if (remap && remap(tlb, nslabs) < 0) {
--		memblock_free(tlb, PAGE_ALIGN(bytes));
-+		memblock_free(tlb, bytes);
- 		pr_warn("%s: Failed to remap %zu bytes\n", __func__, bytes);
- 		return NULL;
- 	}
-@@ -576,7 +576,7 @@ int swiotlb_init_late(size_t size, gfp_t gfp_mask,
- 		swiotlb_adjust_nareas(num_possible_cpus());
- 
- retry:
--	order = get_order(nslabs << IO_TLB_SHIFT);
-+	order = get_order(ALIGN(nslabs << IO_TLB_SHIFT, cc_shared_granule_size()));
- 	nslabs = SLABS_PER_PAGE << order;
- 
- 	while ((SLABS_PER_PAGE << order) > IO_TLB_MIN_SLABS) {
-@@ -585,6 +585,8 @@ int swiotlb_init_late(size_t size, gfp_t gfp_mask,
- 		if (vstart)
- 			break;
- 		order--;
-+		if (order < get_order(cc_shared_granule_size()))
-+			break;
- 		nslabs = SLABS_PER_PAGE << order;
- 		retried = true;
- 	}
-@@ -598,8 +600,13 @@ int swiotlb_init_late(size_t size, gfp_t gfp_mask,
- 		free_pages((unsigned long)vstart, order);
- 
- 		nslabs = ALIGN(nslabs >> 1, IO_TLB_SEGSIZE);
--		if (nslabs < IO_TLB_MIN_SLABS)
-+		if (nslabs <= IO_TLB_MIN_SLABS)
- 			return rc;
-+
-+		/* Avoid infinite loop */
-+		if (WARN_ON(nslabs < (cc_shared_granule_size() >> IO_TLB_SHIFT)))
-+			return rc;
-+
- 		retried = true;
- 		goto retry;
- 	}
-@@ -624,8 +631,7 @@ int swiotlb_init_late(size_t size, gfp_t gfp_mask,
- 		goto error_slots;
- 
- 	if (io_tlb_default_mem.cc_shared) {
--		rc = set_memory_decrypted((unsigned long)vstart,
--					  (nslabs << IO_TLB_SHIFT) >> PAGE_SHIFT);
-+		rc = cc_make_shared(vstart, nslabs << IO_TLB_SHIFT);
- 		if (rc) {
- 			leak_pages = true;
- 			goto error_decrypt;
-@@ -665,11 +671,11 @@ void __init swiotlb_exit(void)
- 
- 	pr_info("tearing down default memory pool\n");
- 	tbl_vaddr = (unsigned long)phys_to_virt(mem->start);
--	tbl_size = PAGE_ALIGN(mem->end - mem->start);
-+	tbl_size = ALIGN(mem->end - mem->start, cc_shared_granule_size());
- 	slots_size = PAGE_ALIGN(array_size(sizeof(*mem->slots), mem->nslabs));
- 
- 	if (io_tlb_default_mem.cc_shared) {
--		if (set_memory_encrypted(tbl_vaddr, tbl_size >> PAGE_SHIFT))
-+		if (cc_make_private((void *)tbl_vaddr, tbl_size))
- 			leak_pages = true;
- 	}
- 
-@@ -709,12 +715,15 @@ void __init swiotlb_exit(void)
- static struct page *alloc_dma_pages(gfp_t gfp, size_t bytes,
- 		u64 phys_limit, unsigned long attrs)
- {
--	unsigned int order = get_order(bytes);
- 	bool cc_shared = attrs & __DMA_ATTR_ALLOC_CC_SHARED;
-+	unsigned int order;
- 	struct page *page;
- 	phys_addr_t paddr;
- 	void *vaddr;
- 
-+	if (cc_shared)
-+		bytes = ALIGN(bytes, cc_shared_granule_size());
-+	order = get_order(bytes);
- 	page = alloc_pages(gfp, order);
- 	if (!page)
- 		return NULL;
-@@ -726,13 +735,13 @@ static struct page *alloc_dma_pages(gfp_t gfp, size_t bytes,
- 	}
- 
- 	vaddr = phys_to_virt(paddr);
--	if (cc_shared && set_memory_decrypted((unsigned long)vaddr, PFN_UP(bytes)))
-+	if (cc_shared && cc_make_shared(vaddr, bytes))
- 		goto error;
- 	return page;
- 
- error:
- 	/* Intentional leak if pages cannot be encrypted again. */
--	if (cc_shared && !set_memory_encrypted((unsigned long)vaddr, PFN_UP(bytes)))
-+	if (cc_shared && !cc_make_private(vaddr, bytes))
- 		__free_pages(page, order);
- 	return NULL;
- }
-@@ -805,9 +814,11 @@ static void swiotlb_free_tlb(void *vaddr, size_t bytes, bool cc_shared)
- 	    dma_free_from_pool(NULL, vaddr, bytes))
- 		return;
- 
-+	if (cc_shared)
-+		bytes = ALIGN(bytes, cc_shared_granule_size());
- 	/* Intentional leak if pages cannot be encrypted again. */
- 	if (!cc_shared ||
--	    !set_memory_encrypted((unsigned long)vaddr, PFN_UP(bytes)))
-+	    !cc_make_private(vaddr, bytes))
- 		__free_pages(virt_to_page(vaddr), get_order(bytes));
+ static u32 hwpoison_filter_enable;
+ static u32 hwpoison_filter_dev_major = ~0U;
+diff --git a/mm/internal.h b/mm/internal.h
+index 3e15dcdd8af768..b9278329f9a239 100644
+--- a/mm/internal.h
++++ b/mm/internal.h
+@@ -1196,35 +1196,6 @@ static inline bool node_reclaim_enabled(void)
+ 	return node_reclaim_mode & (RECLAIM_ZONE|RECLAIM_WRITE|RECLAIM_UNMAP);
  }
  
--- 
-2.43.0
+-/*
+- * mm/memory-failure.c
+- */
+-#ifdef CONFIG_MEMORY_FAILURE
+-int unmap_poisoned_folio(struct folio *folio, unsigned long pfn, bool must_kill);
+-void shake_folio(struct folio *folio);
+-typedef int hwpoison_filter_func_t(struct page *p);
+-void hwpoison_filter_register(hwpoison_filter_func_t *filter);
+-void hwpoison_filter_unregister(void);
+-
+-#define MAGIC_HWPOISON	0x48575053U	/* HWPS */
+-void SetPageHWPoisonTakenOff(struct page *page);
+-void ClearPageHWPoisonTakenOff(struct page *page);
+-bool take_page_off_buddy(struct page *page);
+-bool put_page_back_buddy(struct page *page);
+-struct task_struct *task_early_kill(struct task_struct *tsk, int force_early);
+-void add_to_kill_ksm(struct task_struct *tsk, const struct page *p,
+-		     struct vm_area_struct *vma, struct list_head *to_kill,
+-		     unsigned long ksm_addr);
+-unsigned long page_mapped_in_vma(const struct page *page,
+-		struct vm_area_struct *vma);
+-
+-#else
+-static inline int unmap_poisoned_folio(struct folio *folio, unsigned long pfn, bool must_kill)
+-{
+-	return -EBUSY;
+-}
+-#endif
+-
+ extern unsigned long  __must_check vm_mmap_pgoff(struct file *, unsigned long,
+         unsigned long, unsigned long,
+         unsigned long, unsigned long);
+diff --git a/mm/ksm.c b/mm/ksm.c
+index d24b129932bf79..623a2cdb392428 100644
+--- a/mm/ksm.c
++++ b/mm/ksm.c
+@@ -44,6 +44,7 @@
+ 
+ #include <asm/tlbflush.h>
+ #include "internal.h"
++#include "memory-failure.h"
+ #include "mm_slot.h"
+ 
+ #define CREATE_TRACE_POINTS
+diff --git a/mm/memory-failure.c b/mm/memory-failure.c
+index b215312f261b83..78f0a13349cb3e 100644
+--- a/mm/memory-failure.c
++++ b/mm/memory-failure.c
+@@ -68,6 +68,7 @@
+ #include "swap.h"
+ #include "page_alloc.h"
+ #include "internal.h"
++#include "memory-failure.h"
+ 
+ static int sysctl_memory_failure_early_kill __read_mostly;
+ 
+diff --git a/mm/memory-failure.h b/mm/memory-failure.h
+new file mode 100644
+index 00000000000000..153aea6c610c03
+--- /dev/null
++++ b/mm/memory-failure.h
+@@ -0,0 +1,36 @@
++/* SPDX-License-Identifier: GPL-2.0-or-later */
++/*
++ * mm/ internal memory failure declarations
++ */
++#ifndef __MM_MEMORY_FAILURE_H
++#define __MM_MEMORY_FAILURE_H
++
++#include <linux/mm.h>
++
++#ifdef CONFIG_MEMORY_FAILURE
++int unmap_poisoned_folio(struct folio *folio, unsigned long pfn, bool must_kill);
++void shake_folio(struct folio *folio);
++typedef int hwpoison_filter_func_t(struct page *p);
++void hwpoison_filter_register(hwpoison_filter_func_t *filter);
++void hwpoison_filter_unregister(void);
++
++#define MAGIC_HWPOISON	0x48575053U	/* HWPS */
++void SetPageHWPoisonTakenOff(struct page *page);
++void ClearPageHWPoisonTakenOff(struct page *page);
++bool take_page_off_buddy(struct page *page);
++bool put_page_back_buddy(struct page *page);
++struct task_struct *task_early_kill(struct task_struct *tsk, int force_early);
++void add_to_kill_ksm(struct task_struct *tsk, const struct page *p,
++		     struct vm_area_struct *vma, struct list_head *to_kill,
++		     unsigned long ksm_addr);
++unsigned long page_mapped_in_vma(const struct page *page,
++		struct vm_area_struct *vma);
++
++#else
++static inline int unmap_poisoned_folio(struct folio *folio, unsigned long pfn, bool must_kill)
++{
++	return -EBUSY;
++}
++#endif
++
++#endif /* __MM_MEMORY_FAILURE_H */
+diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
+index 41fcdc04e54042..b0971404f0ac0a 100644
+--- a/mm/memory_hotplug.c
++++ b/mm/memory_hotplug.c
+@@ -40,6 +40,7 @@
+ #include <asm/tlbflush.h>
+ 
+ #include "internal.h"
++#include "memory-failure.h"
+ #include "mm_init.h"
+ #include "page_alloc.h"
+ #include "shuffle.h"
+diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+index abebfb1f202e9b..b6d9f2c9cdef53 100644
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -57,6 +57,7 @@
+ #include <linux/pgalloc_tag.h>
+ #include <asm/div64.h>
+ #include "internal.h"
++#include "memory-failure.h"
+ #include "mm_init.h"
+ #include "page_alloc.h"
+ #include "shuffle.h"
+diff --git a/mm/page_vma_mapped.c b/mm/page_vma_mapped.c
+index e6b6170c2f4f72..d45d52436f99a0 100644
+--- a/mm/page_vma_mapped.c
++++ b/mm/page_vma_mapped.c
+@@ -6,6 +6,7 @@
+ #include <linux/leafops.h>
+ 
+ #include "internal.h"
++#include "memory-failure.h"
+ 
+ static inline bool not_found(struct page_vma_mapped_walk *pvmw)
+ {
+diff --git a/mm/vmscan.c b/mm/vmscan.c
+index 50c352e9ffefc4..3db2db65319c00 100644
+--- a/mm/vmscan.c
++++ b/mm/vmscan.c
+@@ -67,6 +67,7 @@
+ #include <linux/sched/sysctl.h>
+ 
+ #include "internal.h"
++#include "memory-failure.h"
+ #include "page_alloc.h"
+ #include "swap.h"
+ 
+
+---
+base-commit: 8b7179210b22f8e48a82c5ceacb9d56a9c4cfec4
+base-tree: git://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git master
+change-id: 20261104-memory-failure-split-4c7abedbe0dc
+
+Best regards,
+--  
+Breno Leitao <leitao@debian.org>
 
 
