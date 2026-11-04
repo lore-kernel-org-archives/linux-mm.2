@@ -1,98 +1,99 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65C0D607D664
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 21:09:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D0BE606D81F
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 21:12:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=qAu9rBJ5
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=DifijZGL
 Received: by kanga.kvack.org (Postfix)
-	id 2299D6B05B1; Wed,  4 Nov 2026 16:09:56 -0500 (EST)
+	id 5B1046B05B3; Wed,  4 Nov 2026 16:12:07 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1DAD46B05B2; Wed,  4 Nov 2026 16:09:56 -0500 (EST)
+	id 588BC6B05B4; Wed,  4 Nov 2026 16:12:07 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0A5BC6B05B3; Wed,  4 Nov 2026 16:09:56 -0500 (EST)
+	id 49D0D6B05B5; Wed,  4 Nov 2026 16:12:07 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id D58AA6B05B1
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 16:09:55 -0500 (EST)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 6B77E16086A
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 21:09:55 +0000 (UTC)
-X-FDA: 85398678750.01.DA76AE1
-Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 8E724140005
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 21:09:53 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=qAu9rBJ5;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf23.hostedemail.com: domain of olsajiri@gmail.com designates 209.85.128.45 as permitted sender) smtp.mailfrom=olsajiri@gmail.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 115BB6B05B3
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 16:12:07 -0500 (EST)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 8DD55A0879
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 21:12:06 +0000 (UTC)
+X-FDA: 85398684252.13.25235E9
+Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 9DB0EA0006
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 21:12:04 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=DifijZGL;
+	spf=pass (imf25.hostedemail.com: domain of olsajiri@gmail.com designates 209.85.221.52 as permitted sender) smtp.mailfrom=olsajiri@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793826593;
+	s=arc-20220608; t=1793826724;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=y6brttOSyQfuPbUsj1XLHAAdWANxJRJocz3zzeqBxf4=;
-	b=tRrB+8GUPzeybMjIgk/LhxuLpHZyIG+0xKfiKIi8QZJTgq0uj5/VmQWWSSYc9vaD74F4IQ
-	MR+4G/eebwb6HbHaTVQH8OT7HmwFAeFkji5OuO89KVMw5YK/IgsLMO1FCiavC0VoZppO3l
-	IxUKbfLCR0iFrbQ4s5beoN8tktEyTkg=
+	bh=d290Y88I8EA7fRNVJZziFi6nFU4gyKqFXCYOMey3i64=;
+	b=4hYGlthIt4M9+v7uPSz9FqnicfNPlf6DgUE+7auWyiVHs31xj3/9yfDXZlQbOTwRGwW5tw
+	kU/eTXpONCaG+uKM5npYM+n6qXcFTDl1gWGdhNCMDG9G5sWMtqhn54fR8gpOu5cog0da5u
+	7kSkequoskS0VE2+EqXQZqMV2gBGcpc=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793826593;
-	b=mGDYUejJkiwb80zcUo7JvvHEXVglUvpyCBbY2JnrN6Izu2AJeLdLsW6aURMNWvAtbyLOYZ
-	W11PUGbsOR3Tgu6r9xzSu6Hzvq09I4ePxQDu2UdD+RZ0OX/rn8SuD8Ytob8GYsTPzPA9wh
-	la3/BJLYiH1KvfXgZXUML9vA9kLr4RY=
+	t=1793826724;
+	b=fx6laSVFUNSR2XgRNaXAYIDhRnlI82wuhIswho1SY+JaoZTGW+ytj5ASlhp/QS/KUHtfLc
+	zmWofiL1oC+2qG2npUGf3XWKSms6ebOqzyWAWd7L0PQvmywIcSgkeMTtwteYVLsAIMeoz9
+	OEAn5ThctpNDzygx6bjpvNnl0eSyItw=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=qAu9rBJ5;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf23.hostedemail.com: domain of olsajiri@gmail.com designates 209.85.128.45 as permitted sender) smtp.mailfrom=olsajiri@gmail.com
-Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-4a35ac4475dso7923895e9.2
-        for <linux-mm@kvack.org>; Wed, 04 Nov 2026 13:09:53 -0800 (PST)
+	imf25.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=DifijZGL;
+	spf=pass (imf25.hostedemail.com: domain of olsajiri@gmail.com designates 209.85.221.52 as permitted sender) smtp.mailfrom=olsajiri@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-48c45111bebso577596f8f.0
+        for <linux-mm@kvack.org>; Wed, 04 Nov 2026 13:12:04 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793826592; x=1794431392; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:date:from:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=y6brttOSyQfuPbUsj1XLHAAdWANxJRJocz3zzeqBxf4=;
-        b=qAu9rBJ5IIZBINr2nuW7+zo9EkejU+PrM3hl+8CueNrYR5mIc0KVOO+k8Y576wM7/Z
-         PHkaF6NzSSVTYADXHSewoDhFYjkzAZhe4RB8pdW3poVZNBPVbTVOWW2zOGnjiTsBZLhk
-         Ttp/85dnrMoVahXJz2+Rva4K/lrR1n8vSOmENIMNh8bjMIAahUDcLJgfvUqd/AaO+glG
-         p7GXL5Rlf7I6PSw98T/Zw/Gq4DnnpAkoOD7pGAR1DZG4HRb606kQnGpxZWaupH5xxtE2
-         31znqvEE1cuWyvnKSGivktuZ9AlUSPbz+fwqnxYzVa0SFvIx09RqxUlUe44Vtg5JE1Xw
-         nxUA==
+        d=gmail.com; s=20260707; t=1793826723; x=1794431523; darn=kvack.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:date
+         :from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=d290Y88I8EA7fRNVJZziFi6nFU4gyKqFXCYOMey3i64=;
+        b=DifijZGLYEy/8/t6vWpQdujXL4mSbW3v97EJHtVLRRkr70sMdC/rW+9kg2CuZZ2fNF
+         nayhXNIYeyEX5hBxQKZmW0pYU7bpL15TZS/b2dTgfzg4utQXcBBrP7+ygt4CZfhSdis4
+         pHzB2Y7jz2Um+FMlnWxYVAwhPgEQHTcfQBYMdiSG2Krk9NRm+2yAO99vs9YoksxJneR5
+         O7FFfUYEPK+Q12ap/G5ILF1iiUvNufNvv89nrboyhZ5dj9m2Q6+NKe8l2C4lPPHjIdQF
+         FvHTIn9UOK10d+Xwc1194kxw46EaUyrMCNZXgr4cZj/ouzYOugl5YbOqxHUK+buzuAmX
+         40/g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793826592; x=1794431392;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:date:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=y6brttOSyQfuPbUsj1XLHAAdWANxJRJocz3zzeqBxf4=;
-        b=QKE9Eh4cuo1zqUcNp0EXtL469qwd4Hq1ovCVyXfhpRelAeqBpvg9hLW7g2fecmCwha
-         2bVK0gA4DUnJFZt9Z0JDq3EkB73wfXW6UVaU78r6d4OHPR9rpOXH3xsFg3muByz95Ihl
-         KgYjXMio5JlJ/th18E1jme1Ne7YruZIMewMTyImvjotwSeDZ30U+NkQwVg/WC5nl2P77
-         ujIrh0VofCTlCXiHoE4SfiADwUEYhf+S2rmVL9TPTmqobd0oDjXYc1XM90UHiWhlC/z7
-         M0hWihp2LlNT+koW0NbmAc5XrFFXjwpzRDGN9MSteENCjPPPrNe6QHR6lPAwV2uig68I
-         JBJg==
-X-Forwarded-Encrypted: i=1; AKwUvBzz1O5EIcaypsRqFHsUjomcGg+JK/J3xY9nNCaXlIEalCAgpgKCMmJqqKij9u9IlHDTa3f9opYk6Q==@kvack.org
-X-Gm-Message-State: APuU4Z+eH3Zw2z3AiaAhdws7QO59iKWqlN/Ty3LclBmQ2/izuqjaHZOh
-	8O6rSNufR06xRLaAXFxskZ+F8t+QZF+LPI8Tu7+ybuz4r+nLiTFqSEqm
-X-Gm-Gg: AYBFou14AtzrPHc3sR1q8vThI1KUMse9rA9Vb/4/q9RET221hkvS7vpbjm35mCuQYxM
-	kD6Xi8d1auhb1IjOIcK3h74tin3pbAJO2yRqxybQqaKlrB4Sozy2aWKOuwU2XFGjz6lVuXblgiF
-	3ssHpELpJ+PvCXQdakJw0o34JPHrV1zC2MVPTq9u6txhMRGV6TP/zXdQy2xszmK4sYiEbm7T3aj
-	gaULHdqM7B60tW/PJCjIZHvRZ0kTU5ms3FPQjGoDbO0ee7MrCd6Mx+JIN66KE2ahX50NHfhBMqM
-	Glr9W1PkXXN3KQ299ty2Bp6pGfRiqoOkt1vw4QNyLEYU/iXiHmA4YkNppOpzbK9+Dfb72W/tLqO
-	XEO81pPM83UPmJagTvQjGjcmV6wPdz5godeSllj2xuZzO6GjVFXHgoyF6mC9FA9cHO4+olv/nwO
-	AdfyIkJfQsuJ3ChH7eQ6lm1Cyst3A5qPQrUfi/ALkULkgZZ+onNGuofC6HiedCocrlPm3gLGEoY
-	e6NDD+qZgunbizp6fZBPAS8oyED7LnKxFB5tF9MGJUWXgCfxvw0mTof6g+SFRyOFVOalqIkVz9i
-	RsM557niwTswen0=
-X-Received: by 2002:a05:600c:83c3:b0:4a9:18f4:925e with SMTP id 5b1f17b1804b1-4ac174711afmr372871705e9.18.1793826591951;
-        Wed, 04 Nov 2026 13:09:51 -0800 (PST)
+        d=1e100.net; s=20260707; t=1793826723; x=1794431523;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:date
+         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=d290Y88I8EA7fRNVJZziFi6nFU4gyKqFXCYOMey3i64=;
+        b=gGQaVJG+6bl4iQ9JS8mjNrRTE29XwPYuKsZ4sItINYoB2uOjZusVWgFwouqgeB57WY
+         orJT+Naqt0aPNexb2KLepGkDMDi1MeHW49JHGZfwENhPK4bQpTP5KshnVdwEOY3PI+B0
+         KSX02BLg2IKXE3KzEJzgZk6H5MeP02fEcUsO0iifA3zZm2W+kEBqOcbPYwzPmppBCbXV
+         OOuzkiFpZtE+TJg/hIP1kg0OEZxUHU+5bxUDOFQVyZ3FtceEx/4kx7GZ/ruIFEgZjaE3
+         7Dnfm4v0XOgCGO0oCON9f+MSKwrOryjWPEWSXQl5vhNlrjBhXGcA82nP22cTy/g/2e6l
+         LAWQ==
+X-Forwarded-Encrypted: i=1; AKwUvBzF+qpCpqJ2iFAEsp3dq0p0hwjq16NpFV0ueZOsdB9ekCcv6j9mRCSLG0MWyJx+zpe7y6Ewqq04SQ==@kvack.org
+X-Gm-Message-State: APuU4Z8krT9seG+fNG/m/7smDqHzKTKGVzUF98QLn+OaTDWqv+KRenuh
+	ath/pL2e33CYFz35DlWYpYnW7QALxTHDm6Mreo0m++fGWGkT80cBvw+g
+X-Gm-Gg: AYBFou1iRZ+YyUfN7OhDf74+2v6ISQqLoBlkfeMXeEEN3MCmrQTx6zJxLCZN9GQQKfI
+	FAfjsrpnEayIW5x0rIp1e20Xn+nbvJf5ASGCiA8HbFLk6sk6SDQP8AePHpk8uqAWngnHh4nHQAj
+	00JzrRCb707UuDZRPfeePo/MZ+rGwB7naCIWPcGVhdY1rQBn3aEKpchKKiOCMdxZeHBKf9Tmp+4
+	REVCcfYqDhNmYaIDbYPtX8bu/6KOvm2nUUWUVtFjKMJBFOr36WUyzQyf3LjNMD6phshx00yLMJE
+	y2v4yLTLN3qsJkPbpEMYfAbdNIb+arP8kkqqxMBLEMrO4Jga+uG1LDxW5kK+/AMP2WtYFY1w4eV
+	JBmQDDn2BJpGQiGJK5BPoo00Pkmeyh36JfaVDr61RlHYcliHSMDDLCmx8WxjPCt8qftG3N+THcu
+	QJ49lUKp8OPBDeVn7Cy39jhyTVh70m4TRan5Q6u9hzK/gN4FLKiXh/sTBDQVgdxueIiVQ4tgbfd
+	hbrvBzGhcjWLPoeH4Sba+6KWfwlSbIuAICBe/0CZsbr9VMfTaOpXrgLUcWS0nVgzj3MClvMZgPq
+	OmjKYMFpqVFOnZk=
+X-Received: by 2002:a5d:5f07:0:b0:48c:7caa:12cd with SMTP id ffacd0b85a97d-48e6e4faddbmr37238970f8f.22.1793826723128;
+        Wed, 04 Nov 2026 13:12:03 -0800 (PST)
 Received: from krava ([176.74.159.170])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4b56ea592fbsm9904705e9.4.2026.11.04.13.09.51
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48fea180e7csm5907191f8f.5.2026.11.04.13.12.02
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 04 Nov 2026 13:09:51 -0800 (PST)
+        Wed, 04 Nov 2026 13:12:02 -0800 (PST)
 From: Jiri Olsa <olsajiri@gmail.com>
 X-Google-Original-From: Jiri Olsa <jolsa@kernel.org>
-Date: Wed, 4 Nov 2026 22:09:49 +0100
+Date: Wed, 4 Nov 2026 22:12:00 +0100
 To: sashiko-reviews@lists.linux.dev
 Cc: Alexei Starovoitov <ast@kernel.org>,
 	Daniel Borkmann <daniel@iogearbox.net>, bpf@vger.kernel.org,
@@ -102,29 +103,31 @@ Cc: Alexei Starovoitov <ast@kernel.org>,
 	Lorenzo Stoakes <ljs@kernel.org>,
 	John Fastabend <john.fastabend@gmail.com>,
 	Federico Di Pierro <nierro92@gmail.com>
-Subject: Re: [PATCHv2 bpf-next 5/8] selftests/bpf: Test user memory mmap
- kfuncs
-Message-ID: <auufHZQ_hFUvH3w0@krava>
+Subject: Re: [PATCHv2 bpf-next 4/8] selftests/bpf: Test const kfunc memory
+ arguments
+Message-ID: <auufoF_H3gau-sYx@krava>
 References: <20261103075916.100050-1-jolsa@kernel.org>
- <20261103075916.100050-6-jolsa@kernel.org>
- <sashiko-outbox-194794@kernel.org>
+ <20261103075916.100050-5-jolsa@kernel.org>
+ <sashiko-outbox-194803@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <sashiko-outbox-194794@kernel.org>
-X-Stat-Signature: kp11dgyuend971igmhhqarexq1tqf64i
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <sashiko-outbox-194803@kernel.org>
+X-Spam-Status: No, score=-6.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FORGED_GMAIL_RCVD,FREEMAIL_FORGED_FROMDOMAIN,
+	FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
+	autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam09
+X-Stat-Signature: 63a6hekkncjkdnc9aiuymchfmz8skog9
+X-Rspamd-Queue-Id: 9DB0EA0006
 X-Rspam-User: 
-X-Spam-Status: No, score=-7.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,
-	SPF_HELO_PASS,SPF_PASS autolearn=no autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 8E724140005
-X-HE-Tag: 1793826593-998521
-X-HE-Meta: U2FsdGVkX1/R1Cb/1iaNcXj+yFEOBV/9kSYyQm4dIOOJpsQTzY+EEAfVdKI3ufsda0OpAxh37Kr0hgoPTN21tIcQLyiGTHd2xsSxVee4QqzPSFeAtBh1tEEt0JnX9+ZCbuTxDWw4zk+XfVa7ycrHaAuPKJFfXGBt8QXAkI27JxJdJqHBQGyhodw7qIrM2t5612c16+54WV46BbdovGIqawR14QsH4UbMnYjDq2oAMTJpsHQyDaxCxUoARrEnIsdIP8JsI94ImPxg4C1Fl7Po/Q3arNQeMPEv51ckYGiv7IQKUFhZOTiNyfA7Vr2SSPWtV8tR81CF8bUMSRUaG0wNffSsaWIast7rcZnCgEPrixEzQvZyj/jKK2p9kVxllSz9fU8oGH9pIGLi5yLe/0vmSkebp+/QWdIIcoH+MrV8bCEikBSvvznc2iqScwiG+d0/yWZjh/Oyi1/IPpnRNLygM02820Gx/gwhDlSdrgxgnLUB1xo3LS36DMr/cq0RIG4OFlwQmDvKxS8Vcuz4c4q7e97nv0D6huWVW+QtF9hbzsw5lSfXWAX9NtBs8qOSkQsu9YO7cZz5fFxw0wrHo45jybJoI/SVD3MvMNkYcqwBd6Ypy0C4guhofI3FssrfFj4MqnptCGtVnp2in+kmfJpRxGR2YfalpGNxHpQFy6NVivpCHGrwr7kkSsYI0ojaB2aTmGeWTZcxFH/mFrh7OUIzbdqGd9TOYnWI8pO/3ONJvZxp3c9fr3tEgA8XZQ52rp9vbbmA70MSLlShq6Qw9p/zE0ccFxJnJSEx1BU79md7lytzKhHlaOLzDPK760x8MepUcRO3zbT061dCvDgL+XxODct07d6FTTz0Itp2H5Zoq/TOgzqt83OYcSEtK+F1fmpfkKP7k2zJD9uGrB+HLeoBBVY/H/0KhbU3u0dJbT3Z43vI5yvFROwa72bfMk+D0CiQ7V0skM/TF1Fe5ZDQ0x6
- syiI4fhb
- Uw/+Z4PkqOkpEsHxc3SCBykFYj0s2XGvMiFpAPoryyc2rlsnzkUgzUkro6JBeRVbcd6Hd5ziSLe5VZN8n5rLPgbTwZ5Wd7YE8U9tg/lJ2ijEWc5pqBljsT3QYe78lwHU/WIi0ADDEY3Khg6ElFL+tqksyG7u8jbjygPAmLmuL6zrAtk4+5vJpvHYCOc6LcvfAvmhvX5sGwjcJ2B9KJ6O8OqMshhd2Wv8wwTHxnNoHrtuV5LljZoPTDPtQS9Oi6zvcZTlPuTeis5kzNwQWiiAb8CXvCCTE/OS+j3VF0XalJHLqL7Rj6ia6OFZbLlzwccXekWG8cGP4Da0I8/y9h2ObdJ7zugqEWWZyyGNZQbnpYPRl1jENNKrW8tsrEWUqLTVWICFUFIsZmYOgAwSlZn1EShjtHcm/S9BXZQTr2yJdsqmxR2e+Opm6mygozGH9/mNsGXeuvPjkBXGyKFoHrZh/kZFWVUiljDvKKG+Tc1YdqGmMctC6SNM4n4+cLdr2A6wphE4k87sUvl0FXs0wnsxTNu1ZzwnOSqY0BDvTN1EAvjunKJGfIQtetvqK2sTffWekrIKX
+X-HE-Tag: 1793826724-835838
+X-HE-Meta: U2FsdGVkX18UIj79w+d4v0knpqTOcQICY0fs5a0CqAq0pB49+0Quy0AFndCKjQyMCclYIpfG+1VtPZajgeZEdWb7p/RRkoyOAQR+eWKdw+lxdb6tOO1+4OkQOHYUrNSFrwmwx7zfyg5DHJo1CnUOz+08PSyqT4NUHlA40RwDG0RdR5y80tM3BUpbe9RQ1MUzmpUgfc7q8iAcifWlw3h/PGWoWpJuVZmpq8ET+mXbeUgFItR38b6yE9vCJLU2s5scSDwk4HBpJmVU1KBzuF7PB01pP3XYTeEhmJCqqcrGzclZK38RQMNDyzBj81+CSJ9cwPK5sd3InSpSdxDCXGKXcyNZhzQnbAWAdpPWzaQgy0uOSyPGDPw4dnQhsyO/nhak+FsBMA63kfNq3l5qM+bCeYrafKKlktt99JkvK9h5pd8I1MXlNeEsAskiSOBD2ENsTq/yvHKYuGSIdcIEiBl8q/dkBOwjReuWF2m376IcNylAZBVgPCec2YV8+0Yc6k664qbZaJGjSOvx9Q4fmLimW0QiiGNasebt62VOsZbrAmOFCJYR4Q4p1I1uVEchKkNhMqeZ6fM3BW5s9mj2QCG2Sj22ykSvVvrJED1fOMO8bYeYhuUl7o16IITBtKQP9JX44m5k50+gQHgMaoHQZ4Ua5uwWlSZu08N2jBf3Zsbf67M5YlELI7+WaZVpQIhpWJplt7nftuZ59IS0fkNABzybkanMawm1YEGenpQgDDbJqONpgzEkoXy2tathGVvwFEeA9qBCxudLaj+91/a3u61Cnyno08i/pICxBs+exhewGjuRrWd6wZa6qCVbR856fo2kAPGjMzF9JpKZPbjaOoFrQeW9EFNwp6mX9A8kZw3MoNMt3ewRSI7pr3tyMxeKakEa/RjMFbQX5vSgEoVEpFBn5oEyZ1Ji3JfD7Ofo5GLbhImRwrZngot35xYQeO9Y5zhyKNhBIbXzdlIpJnSI/wM
+ m0JZIU8U
+ p3WrKKzaCoJn9zDyR6XoRAWJgFYEb4l7OSlBQn1Se401dA2muyEewr/fpnqw4zKqR+66/uLcUnQABHZFkajxHhwAvFDSqivYgvQo3RduTwOmXW7B9mutUkjFi8U4CTcXl3fPqBynqwQG2d8VHow4icS8/M7h/HbhPVeQLneLxCNcBK2laP/ID2AUmQlTOE8aocUWA/SB5sx2tctoVurZZHFSQuwIlJuh6h8ht58xdsaA9EL+0DD313NGc/Klw7cK1mlw76jc6NucoqhXXvXkBYkTVLYtMeH+bE+9pGaNtRYai5zl7FLSbfRtNqPqLLyrNuvjM2kcEOK0j67tKNzf6oDmdhygHXvh4DUpIdUtMInI/u6+anIIw8TG6vhq8ZNARHYWHOO4Wx+GyN1cx5/ylGnMXroMlUFQXprNGTZdKQ3qAUx2uSnMDsnawJ6fZ+snrxIccZ/xUe36q03VPAnlO9HNXGB/QBJl5+jE+8AxM717Y0BMjAbLYeIS0K/CWejzH1PCwjq/PfaWV+df4QPn88WhO6E41pBKxEDpCZTCJ9wttxA4JsQX5eenF9SaIxQI/VFALMqjbhyJOKgGpKyPAnoGOUzPw9Wl2fLWbE3HfQ4Taq+g=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -133,134 +136,113 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Tue, Nov 03, 2026 at 08:05:35AM +0000, sashiko-bot@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 2 potential issue(s) to consider:
-> - [Medium] selftests/bpf: call to undefined get_procmap_info() in user_mem.c
-> - [Medium] selftests/bpf: unresolved kfunc externs in progs/user_mem.c
+On Tue, Nov 03, 2026 at 08:10:24AM +0000, sashiko-bot@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 1 potential issue(s) to consider:
+> - [Medium] selftests/bpf: kfunc_call_test_const_mem() fails verifier load with MEM_WRITE
 > --
 > 
-> commit c7cc5f98b3a4b4d8d168ef0934e6c41fe197849d
+> commit d0fe747011b126dd39ad19108026e34fdd9f18ce
 > Author: Jiri Olsa <jolsa@kernel.org>
 > 
-> selftests/bpf: Test user memory mmap kfuncs
+> selftests/bpf: Test const kfunc memory arguments
 > 
-> This commit adds BPF selftests for bpf_user_anon_mmap and bpf_user_munmap
-> invoked from a sleepable uprobe, verifying mapping permissions and
-> unmapping behavior.
+> This commit adds BPF selftests and bpf_testmod kfuncs to test passing
+> read-only global data, stack data, and const scalar structs to const-qualified
+> kfunc memory arguments, as well as rejecting read-only data for writable
+> memory arguments.
 > 
-> > diff --git a/tools/testing/selftests/bpf/prog_tests/user_mem.c b/tools/testing/selftests/bpf/prog_tests/user_mem.c
-> > new file mode 100644
-> > index 0000000000000..f301a18437062
-> > --- /dev/null
-> > +++ b/tools/testing/selftests/bpf/prog_tests/user_mem.c
-> > @@ -0,0 +1,112 @@
-> > +// SPDX-License-Identifier: GPL-2.0
+> > diff --git a/tools/testing/selftests/bpf/progs/kfunc_call_test.c b/tools/testing/selftests/bpf/progs/kfunc_call_test.c
+> > index 8e6560c31e781..4f4a6713aa6e5 100644
+> > --- a/tools/testing/selftests/bpf/progs/kfunc_call_test.c
+> > +++ b/tools/testing/selftests/bpf/progs/kfunc_call_test.c
+> > @@ -5,6 +5,9 @@
+> >  #include "bpf_misc.h"
+> >  #include "../test_kmods/bpf_testmod_kfunc.h"
+> >  
+> > +static const char kfunc_const_data[] = "read-only source";
+> > +static const struct prog_test_pass1 kfunc_const_struct = { .x0 = 1 };
 > > +
-> > +#include <test_progs.h>
-> > +#include <sys/mman.h>
-> > +#include <sys/personality.h>
-> > +#include <unistd.h>
-> > +
-> > +#include "user_mem.skel.h"
-> > +#include "trace_helpers.h"
-> > +
-> > +enum {
-> > +	USER_MEM_MMAP = 1,
-> > +	USER_MEM_UNMAP,
-> > +};
-> > +
-> > +static noinline void user_mem_trigger(void)
+> >  static struct bpf_spin_lock kfunc_call_lock SEC(".data.A");
+> >  
+> >  SEC("tc")
+> > @@ -208,6 +211,17 @@ int kfunc_call_test_pass(struct __sk_buff *skb)
+> >  	return 0;
+> >  }
+> >  
+> > +SEC("tc")
+> > +int kfunc_call_test_const_mem(struct __sk_buff *skb)
 > > +{
-> > +	asm volatile ("" ::: "memory");
+> > +	char stack_data[] = "read-write";
+> > +
+> > +	bpf_kfunc_call_test_const_mem(kfunc_const_data, sizeof(kfunc_const_data));
+> > +	bpf_kfunc_call_test_const_mem(stack_data, sizeof(stack_data));
+> > +	bpf_kfunc_call_test_const_struct(&kfunc_const_struct);
+> > +	return 0;
 > > +}
-> > +
-> > +static bool check_user_mem_vma(void *addr, unsigned long size, const char *perms)
-> > +{
-> > +	size_t start, end;
-> > +	char vma_perms[5];
-> > +	int err;
-> > +
-> > +	err = get_procmap_info(addr, &start, &end, vma_perms);
-> > +	if (!ASSERT_OK(err, "user_mem_vma"))
-> > +		return false;
-> > +
-> > +	/* VMA can be merged, so ensure it covers at least the requested range. */
-> > +	if (!ASSERT_GE(end - (size_t)addr, size, "vma_size"))
-> > +		return false;
-> > +
-> > +	return !perms || ASSERT_STREQ(vma_perms, perms, "vma_perms");
-> > +}
-> > +
-> > +static bool check_user_mem_unmapped(void *addr)
-> > +{
-> > +	size_t start, end;
-> > +	int err;
-> > +
-> > +	err = get_procmap_info(addr, &start, &end, NULL);
 > 
 > [Severity: Medium]
-> Where is get_procmap_info() defined? Both check_user_mem_vma() and
-> check_user_mem_unmapped() call get_procmap_info(), and this file includes
-> trace_helpers.h, but neither tools/testing/selftests/bpf/trace_helpers.h nor
-> tools/testing/selftests/bpf/trace_helpers.c declares or defines
-> get_procmap_info().
+> Does kfunc_call_test_const_mem() pass the verifier without a corresponding
+> verifier change to preserve const qualifiers on kfunc memory arguments?
+> 
+> In kernel/bpf/verifier.c, get_kfunc_arg_type() strips all type modifiers
+> including BTF_KIND_CONST from the pointed-to type via
+> btf_type_skip_modifiers(), advances ref_id_ptr past them, and unconditionally
+> sets MEM_WRITE on sized memory arguments:
+> 
 
-in previous patch:
-  selftests/bpf: Add get_procmap_info helper
+the verifier change gets the access flag separately from the original 
+BTF parameter in args[arg]
 
+> kernel/bpf/verifier.c:get_kfunc_arg_type() {
+> 	...
+> 	ref_id_ptr = &t->type;
+> 	ref_t = btf_type_skip_modifiers(meta->btf, *ref_id_ptr, &ref_id);
+> 	while (*ref_id_ptr != ref_id)
+> 		ref_id_ptr = &btf_type_by_id(meta->btf, *ref_id_ptr)->type;
+> 	...
+> 	} else if (arg + 1 < nargs &&
+> 		 (is_kfunc_arg_mem_size(meta->btf, &args[arg + 1]) ||
+> 		  is_kfunc_arg_const_mem_size(meta->btf, &args[arg + 1]))) {
+> 		...
+> 		arg_type = ARG_PTR_TO_MEM | MEM_WRITE;
+> 	}
+> 	...
+> 	if (base_type(arg_type) == ARG_PTR_TO_BTF_ID) {
+> 		if (is_kfunc_arg_map(meta->btf, &args[arg]))
+> 			proto->arg_btf_id[arg] = reg2btf_ids[CONST_PTR_TO_MAP];
+> 		else
+> 			proto->arg_btf_id[arg] = ref_id_ptr;
+> }
 > 
-> Because test_progs objects are compiled with -Wall -Werror, won't calling an
-> undeclared and undefined get_procmap_info() cause compiling and linking
-> tools/testing/selftests/bpf to fail?
+> Similarly, for bpf_kfunc_call_test_const_struct(), when &kfunc_const_struct
+> (a PTR_TO_MAP_VALUE in .rodata) is passed, resolve_func_arg_type() converts
+> the scalar-struct pointer argument to fixed-size memory with MEM_WRITE set:
 > 
-> > diff --git a/tools/testing/selftests/bpf/progs/user_mem.c b/tools/testing/selftests/bpf/progs/user_mem.c
-> > new file mode 100644
-> > index 0000000000000..e3b0689f5f2a5
-> > --- /dev/null
-> > +++ b/tools/testing/selftests/bpf/progs/user_mem.c
-> > @@ -0,0 +1,43 @@
-> > +// SPDX-License-Identifier: GPL-2.0
-> > +
-> > +#include <vmlinux.h>
-> > +#include <bpf/bpf_helpers.h>
-> > +#include <bpf/bpf_tracing.h>
-> > +
-> > +#include "bpf_misc.h"
-> > +
-> > +char _license[] SEC("license") = "GPL";
-> > +
-> > +extern unsigned long bpf_user_anon_mmap(unsigned long len, unsigned long prot) __ksym;
-> > +extern int bpf_user_munmap(unsigned long addr, unsigned long len) __ksym;
+> kernel/bpf/verifier.c:resolve_func_arg_type() {
+> 	...
+> 	if (!btf_type_is_scalar_struct(env, btf, ref_t))
+> 		return 0;
+> 	...
+> 	*arg_type = ARG_PTR_TO_MEM | MEM_FIXED_SIZE | MEM_WRITE |
+> 		    (*arg_type & (PTR_MAYBE_NULL | MEM_UNINIT));
+> }
 > 
-> [ ... ]
+> When check_func_arg() validates kfunc_const_data and &kfunc_const_struct,
+> func_arg_access_type() returns BPF_READ | BPF_WRITE because MEM_WRITE is set,
+> causing check_helper_mem_access() -> check_map_access_type() to reject the
+> read-only .rodata map with -EACCES ("write into map forbidden").
 > 
-> > +SEC("uprobe.s//proc/self/exe:user_mem_trigger")
-> > +int user_mem_test(struct pt_regs *ctx)
-> > +{
-> > +	if ((bpf_get_current_pid_tgid() >> 32) != monitored_pid)
-> > +		return 0;
-> > +
-> > +	switch (action) {
-> > +	case USER_MEM_MMAP:
-> > +		user_addr = bpf_user_anon_mmap(map_len, map_prot);
-> > +		break;
-> > +	case USER_MEM_UNMAP:
-> > +		ret = bpf_user_munmap(user_addr, map_len);
-> > +		break;
-> > +	}
-> 
-> [Severity: Medium]
-> Can user_mem__open_and_load() in test_user_mem() succeed when loading this
-> program?
-> 
-> user_mem_test() calls bpf_user_anon_mmap() and bpf_user_munmap(), which are
-> declared as required __ksym externs, but neither symbol is defined or
-> registered as a BPF kfunc in the kernel or bpf_testmod. Won't libbpf fail to
-> resolve these kfunc BTF IDs during user_mem__open_and_load(), causing
-> test_user_mem() to fail unconditionally?
+> Because kfunc_call_test_const_mem is an autoloaded SEC("tc") program in
+> kfunc_call_test.c, wouldn't this cause kfunc_call_test__open_and_load() and
+> kfunc_call_test_lskel__open_and_load() in verify_success() to fail and break
+> the kfunc_call test suite?
 
-defined in:
-  bpf: Add user memory kfuncs
+the verifier support is added in previous:
+  bpf: Honor const on generic kfunc memory arguments
 
 jirka
+
+> 
+> -- 
+> Sashiko AI review · https://sashiko.dev/#/patchset/20261103075916.100050-5-jolsa@kernel.org?part=1
 
