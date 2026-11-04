@@ -1,66 +1,66 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEB7D606A330
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 19:25:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22F236071A36
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 19:26:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=hdJNDh6O
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=GLlT6wTh
 Received: by kanga.kvack.org (Postfix)
-	id C10286B05CA; Wed,  4 Nov 2026 14:25:49 -0500 (EST)
+	id 35E2F6B05CF; Wed,  4 Nov 2026 14:26:05 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BE79C6B05CB; Wed,  4 Nov 2026 14:25:49 -0500 (EST)
+	id 3365B6B05DD; Wed,  4 Nov 2026 14:26:05 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B00246B05CF; Wed,  4 Nov 2026 14:25:49 -0500 (EST)
+	id 2003B6B05DE; Wed,  4 Nov 2026 14:26:05 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 8C9386B05CA
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 14:25:49 -0500 (EST)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 288D680846
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 19:25:49 +0000 (UTC)
-X-FDA: 85398416418.29.12D4217
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 6DF0BC0005
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 19:25:47 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hdJNDh6O;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf10.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id F078F6B05CF
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 14:26:04 -0500 (EST)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 821651C4239
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 19:26:04 +0000 (UTC)
+X-FDA: 85398417048.23.5EF3409
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf06.hostedemail.com (Postfix) with ESMTP id A7C1118000B
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 19:26:02 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GLlT6wTh;
+	spf=pass (imf06.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793820362;
+	b=X5wEa3FrIP34tokjhjjVqUGCyGez+ayoBCi0c40vGvKjJWxZkzWpNBNmZubJ4ZXo4CDGg9
+	ozszzC3Vgv/PMjLfjIzS6aiiArbZfzJhD8Q1nZ/5OzLEpVAcSp6fJy8p78sfRksc/GD249
+	FcGTpvLikGMKc4H7mFo30SsVT0GJCnE=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GLlT6wTh;
+	spf=pass (imf06.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793820347;
+	s=arc-20220608; t=1793820362;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qeQgphPdxdiWtw36JzKqWooMSgzPZU+EeD4NlyLVhDM=;
-	b=FZNlQW/HpOq8O28d0y7jM/rhDEFFkdFv1nFMbGSTv3JgANGUZPyEKifN/cq3Ur0XZgw5Xi
-	sJ1c7K4XZJSTQPZ7gkppw8rZDYP8Ad9uHsu1vSQEQUYLPzNwsax99ZhvvtSaOharbwVfcw
-	hkdWN5h3h3XyZMaEO+dOT7XE5dc428I=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793820347;
-	b=Ol+ZqElj7JlQGCgOXyYc0tW1iok2fUaUjskVg4lXyVV+RxJRzfwStjVFONpOgMqqfMsfZF
-	eIHzh6bZus3IqVt3KW6ar/AT5f04y5wc3vwloLr3RPoZr1t9YnEB6fHjlU/GAza20ewhwE
-	hIEbCCksi8vwMkosyKRvXVWJNht3Sq8=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hdJNDh6O;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf10.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org
+	bh=RXd/jlD2fYO+IzUitqn0Yxqt//n2gto42+U+qSH6QWU=;
+	b=HWWZ86GIFGGiHV8uCiagUrjiZzUEx4hdKADa509XsI2AERo8wg++r/OD5zQxcu372jmFF0
+	cBgbPmVNdz6C8N1MBaR1HULT+u5tQgw5kJ3WifRwLy9wX+DNS5uUUchJeG2KlrB3AgS0iF
+	Id7LrZlnzJWcNbYHrbZ4gnw06ne8A+o=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 01C3560DA3;
-	Wed,  4 Nov 2026 19:25:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 752A91F00A18;
-	Wed,  4 Nov 2026 19:25:34 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 03CA343323;
+	Wed,  4 Nov 2026 19:26:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6879B1F000C1;
+	Wed,  4 Nov 2026 19:25:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793820346;
-	bh=qeQgphPdxdiWtw36JzKqWooMSgzPZU+EeD4NlyLVhDM=;
+	s=k20260515; t=1793820361;
+	bh=RXd/jlD2fYO+IzUitqn0Yxqt//n2gto42+U+qSH6QWU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=hdJNDh6OaAui4lay7OJSmMgInc6T7e+u7rQGOiRGT5ecgJvEKZTk+bvy31gj25xp5
-	 EMlVcNskaOB166UEuHcs9M+Arv+SuzxXQANcu/UbyUjMc0+sWDzpbdt76bmGDk4jwv
-	 dzXVAXuyKiSVZ4ea/xwRNPPO1mVA9tLUIKS+h63z+xkJopkB5HFxrzEYzXBr5K3/DV
-	 4tqBQSe+LfkRA0E4BHcJdz2FUN/7x+h1XEREGcZZ7zmxMVbUH/gH7DuyHZmLjtDcQc
-	 J1yVCFHrELmM7UJtS3ngB8pEivcyFDbp7nlx9CIfgNwUk9+JqlDkEZunCVDa84Tte0
-	 905iHrsfzrTdg==
+	b=GLlT6wThOUa/KfNlTWuqZPz2Ih/LW2NYnzaWY0pki30umCZLIl1MRVBbUTMv9zOzQ
+	 KUvA2Y+BaOT4XHvhY/vbdRPf/ofxl4BOA7G2Cny/691CVbfE9SzJNG0H7841ayyiPW
+	 q1QKtzy42RoQEe16QVfbQhu1Trtg8T0HfuKYvU0jeicYSNp2+ODBxjEymSq0qmh803
+	 DkvXTDiylR93zfsmnmYdfkoSjx/mzTH9XVIFaqgxigm0SGf8nQQ7zg0Th1in/5RVHH
+	 UvwoKm7/7JzOhxW7xTQaC2jHyFnfQfIuSRDNs0GpztaoEROUElyxSGVsFyKXWU+016
+	 ZqAQCUwnhlOrQ==
 From: Christian Brauner <brauner@kernel.org>
 To: linux-fsdevel@vger.kernel.org
 Cc: Linus Torvalds <torvalds@linux-foundation.org>,
@@ -122,31 +122,31 @@ Cc: Linus Torvalds <torvalds@linux-foundation.org>,
 	"Christian Brauner (Amutable)" <brauner@kernel.org>,
 	Chuck Lever <cel@kernel.org>,
 	stable@vger.kernel.org
-Subject: [PATCH RESEND v2 39/51] powerpc/crash_dump: recover from a machine check in copy_oldmem_page()
-Date: Wed,  4 Nov 2026 20:25:32 +0100
-Message-ID: <20261104-work-procfs-bugfixes-v2-39-021c84d852e0@kernel.org>
+Subject: [PATCH RESEND v2 40/51] sunrpc: make queue_wait a global wait queue again
+Date: Wed,  4 Nov 2026 20:25:47 +0100
+Message-ID: <20261104-work-procfs-bugfixes-v2-40-021c84d852e0@kernel.org>
 In-Reply-To: <20261104-work-procfs-bugfixes-v2-0-021c84d852e0@kernel.org>
 References: <20261104-work-procfs-bugfixes-v2-0-021c84d852e0@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2421; i=brauner@kernel.org; h=from:subject:message-id; bh=VIVKq8y+KdCJwnDd/z4L2OCrr1yqDfObdGoCOSjiCdM=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS9bvzdev5O1pqOqInnVq7QehNleaUr+ZQXg2RwxdMDB mu8jeRsO0pZGMS4GGTFFFkc2k3C5ZbzVGw2ytSAmcPKBDKEgYtTACby8zTDH46/Ovo1n1rt927Z GbOo3ko0bH+/ELda9QrWhpqiI0sd7zD8Fbm2sNi91NhmUkJA6g2DG31172P/sXlZMGhOKDWf+aC ZDQA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4370; i=brauner@kernel.org; h=from:subject:message-id; bh=UZe+zvZ7uAQTPHkJMC5sa/e/J7N81e8hQB7K9CX6y/s=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS9bvx78e/9TWXFnRv2n+0+Y7Bz41ZTh6+/N7u8dJn+Z vW+4nUTvnWUsjCIcTHIiimyOLSbhMst56nYbJSpATOHlQlkCAMXpwBMpO8Lw/8UM22Z1SoBq778 fmAYFTvHNOBq8s/y7Yt0nNzEbPj0c+UZGdbduHhO1LNCJf1l6qOLebn6Ed/D5rXesxVIOr3xlVR zNxcA
 X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: txdae83uctbwkt6x5jhktymrhu16ocxe
+X-Stat-Signature: ys3ktwo54xhpjce7i7gfs435es1fr56s
 X-Rspam-User: 
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: A7C1118000B
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
 	version=4.0.1
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 6DF0BC0005
-X-HE-Tag: 1793820347-46422
-X-HE-Meta: U2FsdGVkX18npSatxgz5lVWpvm6b+syGnpMpmSWgFmv6zidLPz954aDoxul1+mv82IP1nHcEYtrfEh/gYAnReoNr8yWtSJYlPnbm69uN/6JbfaDSnsnqX4oSY7dkziT7tEQYzAHgJgzKxhtWCMJBYwkhzucbxrG/myoo0emx9gaG2VUI68mClpy3ucEMBn9E0R22d7mKeBwYGEc6mF4jKFL8TrmVEzdWyKWec+Snzgno985M0NwsHKSYAfVsQ8J0V/YfJdNUmAHrJUoCAYmoT37aIo/+slwvLsS2kxjtRbV/UwaznyZAjblYxlyPu9dQRCpK8ZxFUc8mEicXIFSgI09LRsDI+JiGH2yr6kbiK1xppTt+vJuEnxEZZghNQNyMDC2XEz3Ta9YeEMPALjl04eLCNxh7wrAJ3INtaJYGn7G2ejqhz6prUgO8+Vgje6X80lYU9PLMZMdG3MSZMdXwhvPwCAF01aQ6QzuFoy0wri7lftn9Dt1WqmXXQwBwu9eJ6dPUxwYxmmlILtLkBDb+NbCo5nsOQXGwN4DpPTlu3PokzUmeECEVd6JPoYiGNBj/U4/UXHD8M8QVh/OGdh97Ux41ttx/P6V260CJCIDKM7BdbvQK/BKu67SZITaq7Bx23yEDIQ6AqlGHJwNNXsyA2fn8ArUxGL1GPwJ3kJ0n1TBZY1xt8pcMEIUS5zgiUTxJ7Azf5SRCO5Otwm8DAMC+jLYxUgUY+g2wrkf2eoU/rFZGMxnnotCSd6gakh/+r0kH9mCv95TPCvsLEsNhyKfOFgz/jaOzV+Y9WBrbve8UNxDu9ZenA5Czg8T3bJqZDujiFmdKpo4aQgWbm2hWvmsAD1HzpShDux7v2OcgQC6+bTNzZk6Al06uzghB+R1r8Y/h+195OrtUWx+Ehw69fQBhe7ExsgnmWdKYPYmpX1OHj0lbipUEqu88xARldt7+VtO53yDmHc72sKGn61n+o1a
- oVpoE0xb
- WO1ouq1y79zaB70ly46GqbUqRZn8DsP64jUSk3jh9DnwIx41VU70KQlewOyHv0QM/0W+vA3v1spiQ89NTsN3mQB52IFv11Wiv4awR99MhlWDc0TERivjwr/aHD0PV+Q9PK6d6pqdhJWq8CxHhSsN4oe6xWSou2Cguvhxf2cJEp4EOW8nwktR4Y9PgBS2ZFk/O5rNOHLgiH0BQQxSt9KR/llu0JTOXO9T1SuGUPRmz8Bl1TopoeEPWjQaALgo4htfyobUMzWjn6fDC8iaTk6V1cD52bjMlRetWndx6wwJRXujUGm5vpeLRTpipSlTI5PHtM44ptg4uZKMRGABZrzxnH9OiRBdEgRGeC/XvTxyMbgi9OM3xFFn3EO4iiy5QFtIbkpGLuhxUCpamZBWZaKu/eX8G/1f41o+H0YBKN0xP4bSPbfeACGN6lRSePhvTdM4g+IB/W7gKlpI/uFk=
+X-HE-Tag: 1793820362-784686
+X-HE-Meta: U2FsdGVkX1/HNK0HjYLVABwWiK4+DpSN68v9iw9D6VuRmZ16kbkgHq0+K7ncJT32RFjnDopeCtf7y2K/16NO6hcCr7y6iktN7ZoN/fe07OGTFn7GSWJboCsg8XON9b2ElV5NIgRpblCImj7qnsixA4BqRT01WDf3QSfsmMviK7WK71D0ijQUFAoesO3MLm2FDdxI0ExtQxe17y7tpMA04tvar80ClsogfxMymd8fGK1lAGcEeV78zhJcqQfJTpqNjvPNJBRmbgWbiCjV3wMhvxjT7D7R8mL8QOkdImhqy9AYbMBZ9VAM9P4hhi+7kPE9huREQ8KcUpZN0jm9+mehNECgGrNvf26k0TJAKW/lFOtKV5jVxAeS2yQP+8FFveA0WF/q9i9IB7bKPG7+obRjVYGW1YOrB1Sd6ZiItd1Ch6uuoHyoNp3uWbGWgBXoGsUR/S5HUfpHpl4jkzbyQYCFkH7OJLqhIvmeBzbHe2kgJsoQOEpkDLg8+nI+tOfwLz+1QOsmU7zBuT1kx8t0JZon5rVnwJzma9yV5f9CDlB4ebNirf0Wq48iGD5P9DEI8DfBVkChdWogRy0NBJucO7hL+eg+eHPzXdpQmATnTC3u9zNgrWihiV6aWl0Gc7NgsY8jIRHw5K4v/BNGhgfyNgDLBEuP2ZleotiqErnfxcJ1HN0f/43FPbblv9ObCdkL+1X+mFJtMNLkC5Q9F/3WNietm1kaZo3qN6at8uKD4zAyfT0Pn25tm7yhARBSF4jVVpEb0oBKjmwcdYKf9OnktxGORNqPz7hj9YMJFIpBeYru55VjDjuIrgJN98BAx2jGqzWTXI/iDGFvIiL21ODyouTp5zO35rScoawdpfrNajwctyDYgaWdeQjtKffaymqrR7pmne8jWj0agPbuYYXvBGvfaqXpEnnUGw/H/YgC2IaBoK/9CBrrVZQcmVhGX0gqDEY2dwSpdBriOcwUJYEAg88
+ 7lSdNSYo
+ x/vtmpio4GxMOUrAAGB6OJ9GwKK2YquanTDoWCP2a/yUvd9g7Hqp96D0q3o5wnDijgn0VEa238OGnx3jBguErvnoh3ZMfKEpiO3JHi3DaWBgj2DIoG6DfrainQ5LqeyzVdrKt86b52eqoISyBgusmGXT1RHFUHu9zDUw1gzqFVAyV0vLQA1GBZzxEl1f1xfSLsel+mXZg7qNY3LR6Utiam5P9/NiYiF1oJf8nLmbHcskW7Bnm1W6RUop5I6pm5yTorPe/AKblh7nfgWzJ0VpjviZCbkYgzHnwQwiXl/FjV8IBf+PSMqY8pk9T79n5EVyZvIg4WqxSuLbifEs=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -155,56 +155,121 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-A capture kernel reads the memory of the crashed kernel, and that memory
-may well have uncorrectable errors. On powerpc a machine check in the
-kernel is only recovered from if the instruction that took it has an
-exception table entry (cf. mce_common_process_ue()). copy_oldmem_page()
-copies with copy_to_iter(). For a read() of /proc/vmcore that is a user
-copy, all of whose loads have exception table entries, so the machine
-check turns into a short copy and read_from_oldmem() returns -EFAULT.
+Since commit 552d0e17ea04 ("sunrpc: convert queue_wait from global to
+per-cache-detail waitqueue") poll() and epoll queue their waiters for a
+channel file on the queue_wait head in struct cache_detail. But the
+cache_detail can be freed while its channel file is still open and
+waited on.
 
-But since commit 4a22fd20379c ("vmcore: convert __read_vmcore to use an
-iov_iter") /proc/vmcore can be spliced too, and splice(), sendfile()
-and copy_file_range() copy into kernel pages with memcpy(), which has
-no exception table entries. A machine check there panics the capture
-kernel. The same goes for the reads of the ELF headers and notes that
-vmcore does itself, and those have been memcpy() for as long as
-copy_oldmem_page() has had its kernel buffer branch, since commit
-54c32021eb6f ("[PATCH] powerpc: Add arch-dependent copy_oldmem_page").
+The procfs channel files of a network namespace are removed when the
+namespace goes away. Removing a procfs file waits for the callers that
+are in one of its methods right now and then calls ->release on every
+file that is still open (cf. close_pdeo()). The waiters that poll() and
+epoll left on the head stay queued until their file is really closed.
+So:
 
-Copy with _copy_mc_to_iter() instead. PPC64 selects ARCH_HAS_COPY_MC
-and there it uses copy_mc_generic() for kernel and user destinations
-alike, which has the exception table entries. Everywhere else it is
-_copy_to_iter().
+  sunrpc_exit_net()
+  -> ip_map_cache_destroy()
+     -> cache_unregister_net()
+        -> remove_cache_proc_entries()
+           -> proc_remove()      // ->release, the waiters stay queued
+     -> cache_destroy_net()      // kfree(cd)
+
+and when poll() returns remove_wait_queue() writes to the freed
+cache_detail:
+
+  BUG: KASAN: slab-use-after-free in _raw_spin_lock_irqsave+0x4b/0xa0
+  Read of size 1 at addr ff110001131bb570 by task sunrpc-poll-uaf/242
+  Call Trace:
+   remove_wait_queue+0x22/0x1c0
+   poll_freewait+0xc2/0x230
+   do_sys_poll+0x9ba/0xd50
+   __x64_sys_poll+0x165/0x470
+  Freed by task 12:
+   kfree+0x267/0x620
+   sunrpc_exit_net+0x34/0x80
+   ops_undo_list+0x271/0x8d0
+   cleanup_net+0x3f3/0x860
+
+Closing an epoll instance that watches the file gets there through
+ep_unregister_pollwait() instead.
+
+The channel files of a network namespace belong to the root of its
+user namespace and cache_open() doesn't check for a capability. So an
+unprivileged user can open the channel file of a namespace of its own
+from the outside, poll it and let the namespace die.
+
+Go back to a single static wait queue that never goes away. A wakeup
+for one cache wakes the waiters of all caches again but cache_poll()
+reports per cache_detail so that's just a spurious wakeup. procfs
+should really own the wait queue of its files like kernfs does but
+that's nothing for stable.
 
 Reported-by: Chris Mason <mason@kernel.org>
-Fixes: 54c32021eb6f ("[PATCH] powerpc: Add arch-dependent copy_oldmem_page")
-Fixes: 4a22fd20379c ("vmcore: convert __read_vmcore to use an iov_iter")
+Fixes: 552d0e17ea04 ("sunrpc: convert queue_wait from global to per-cache-detail waitqueue")
+Acked-by: Chuck Lever <cel@kernel.org>
 Cc: stable@vger.kernel.org
 Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 ---
- arch/powerpc/kernel/crash_dump.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ include/linux/sunrpc/cache.h |  1 -
+ net/sunrpc/cache.c           | 12 +++++++++---
+ 2 files changed, 9 insertions(+), 4 deletions(-)
 
-diff --git a/arch/powerpc/kernel/crash_dump.c b/arch/powerpc/kernel/crash_dump.c
-index 1543917bd3e1..ca7e019ae3e9 100644
---- a/arch/powerpc/kernel/crash_dump.c
-+++ b/arch/powerpc/kernel/crash_dump.c
-@@ -83,12 +83,12 @@ ssize_t copy_oldmem_page(struct iov_iter *iter, unsigned long pfn,
+diff --git a/include/linux/sunrpc/cache.h b/include/linux/sunrpc/cache.h
+index 2735c332ddb7..bf4fc543e1e5 100644
+--- a/include/linux/sunrpc/cache.h
++++ b/include/linux/sunrpc/cache.h
+@@ -119,7 +119,6 @@ struct cache_detail {
+ 	struct list_head	requests;
+ 	struct list_head	readers;
+ 	spinlock_t		queue_lock;
+-	wait_queue_head_t	queue_wait;
+ 	u64			next_seqno;
  
- 	if (memblock_is_region_memory(paddr, csize)) {
- 		vaddr = __va(paddr);
--		csize = copy_to_iter(vaddr + offset, csize, iter);
-+		csize = _copy_mc_to_iter(vaddr + offset, csize, iter);
- 	} else {
- 		vaddr = ioremap_cache(paddr, PAGE_SIZE);
- 		if (!vaddr)
- 			return -ENOMEM;
--		csize = copy_to_iter(vaddr + offset, csize, iter);
-+		csize = _copy_mc_to_iter(vaddr + offset, csize, iter);
- 		iounmap(vaddr);
- 	}
+ 	atomic_t		writers;		/* how many time is /channel open */
+diff --git a/net/sunrpc/cache.c b/net/sunrpc/cache.c
+index 1bc04109d213..1ceaea7e01b9 100644
+--- a/net/sunrpc/cache.c
++++ b/net/sunrpc/cache.c
+@@ -404,7 +404,6 @@ void sunrpc_init_cache_detail(struct cache_detail *cd)
+ 	INIT_LIST_HEAD(&cd->requests);
+ 	INIT_LIST_HEAD(&cd->readers);
+ 	spin_lock_init(&cd->queue_lock);
+-	init_waitqueue_head(&cd->queue_wait);
+ 	cd->next_seqno = 1;
+ 	spin_lock(&cache_list_lock);
+ 	cd->nextcheck = 0;
+@@ -965,13 +964,20 @@ out:
+ 	return ret;
+ }
  
++/*
++ * Not in struct cache_detail: poll and epoll waiters stay queued until
++ * their file is closed, but a channel file in procfs can stay open after
++ * the cache_detail of its dying network namespace has been freed.
++ */
++static DECLARE_WAIT_QUEUE_HEAD(queue_wait);
++
+ static __poll_t cache_poll(struct file *filp, poll_table *wait,
+ 			       struct cache_detail *cd)
+ {
+ 	__poll_t mask;
+ 	struct cache_reader *rp = filp->private_data;
+ 
+-	poll_wait(filp, &cd->queue_wait, wait);
++	poll_wait(filp, &queue_wait, wait);
+ 
+ 	/* alway allow write */
+ 	mask = EPOLLOUT | EPOLLWRNORM;
+@@ -1236,7 +1242,7 @@ static int cache_do_upcall(struct cache_detail *detail, struct cache_head *h)
+ 	spin_unlock(&detail->queue_lock);
+ 	if (ret != -EAGAIN && detail->cache_notify)
+ 		detail->cache_notify(detail, h);
+-	wake_up(&detail->queue_wait);
++	wake_up(&queue_wait);
+ 	if (ret == -EAGAIN) {
+ 		kfree(buf);
+ 		kfree(crq);
 
 -- 
 2.53.0
