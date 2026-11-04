@@ -1,96 +1,97 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA98A606D811
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 22:28:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24B22606B391
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 22:30:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=K45Ue0xI
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=JmxYWQTA
 Received: by kanga.kvack.org (Postfix)
-	id CA2556B05B3; Wed,  4 Nov 2026 17:28:36 -0500 (EST)
+	id 41A176B00EF; Wed,  4 Nov 2026 17:30:35 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C575E6B05B5; Wed,  4 Nov 2026 17:28:36 -0500 (EST)
+	id 3F0FE6B05B0; Wed,  4 Nov 2026 17:30:35 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B419E6B05B6; Wed,  4 Nov 2026 17:28:36 -0500 (EST)
+	id 307266B05B1; Wed,  4 Nov 2026 17:30:35 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 7F3CC6B05B3
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 17:28:36 -0500 (EST)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id D119E1C3EE3
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 22:28:35 +0000 (UTC)
-X-FDA: 85398876990.25.7B02588
-Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 0EB311C0004
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 22:28:33 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b=K45Ue0xI;
+	by kanga.kvack.org (Postfix) with ESMTP id 0F53E6B00EF
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 17:30:35 -0500 (EST)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 9EB471C429F
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 22:30:34 +0000 (UTC)
+X-FDA: 85398881988.22.37BA21B
+Received: from mail-pg1-f175.google.com (mail-pg1-f175.google.com [209.85.215.175])
+	by imf04.hostedemail.com (Postfix) with ESMTP id AA86B40009
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 22:30:32 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=JmxYWQTA;
 	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf20.hostedemail.com: domain of dmatlack@google.com designates 209.85.216.46 as permitted sender) smtp.mailfrom=dmatlack@google.com
+	spf=pass (imf04.hostedemail.com: domain of dmatlack@google.com designates 209.85.215.175 as permitted sender) smtp.mailfrom=dmatlack@google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793831314;
+	s=arc-20220608; t=1793831432;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ngSI9f0kiDWl+YO8rRXsU2IRSVNvxIMeC8SrK3o9F8Q=;
-	b=yFpurvKd/n3MiUFwWuIn/ncfzV2iEeXsK2xGz/+acSG3fVmkVJcqbFsKinJjS58Zzrb1DG
-	ADKXc+3On/I5hoGgtfmnx6yoWYOtnhBuqSG9v/262IAjglltASYFKv61XENClZKh5S/5dc
-	K2T3DWUJtkZ/60ToOoNJx5/ltewGsNo=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b=K45Ue0xI;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf20.hostedemail.com: domain of dmatlack@google.com designates 209.85.216.46 as permitted sender) smtp.mailfrom=dmatlack@google.com
+	bh=45IHMvHuNfQHmQp3e/l7ZQyBPSv/bWU1s+/SnIhe5+k=;
+	b=HiUPo8erUXfXErCqFyvEPqRR2IsqvcFd92trrYg8SgH7G9PMkm6sv1VF7bmqKsF7bXdTWk
+	EBpmqr/lijD/dCPNBpdoclddeEs8/Ml8naz5QbgR1/MuXdAvWDU8XqWIfj6FQtE1PpcQmF
+	smX9Y16BX0Fuwd29Tz3gyI5t9PvHlhs=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793831314;
-	b=VsPGWtCVa/ACgavKEoW1ZfOF75WBjjlVSIDu4aaWVgPZ7WRi8+ZiErn0G/GceBJYXJf6fM
-	80fyo73ksUAXCK9UxSWDeBfzI/OnR9LRa8rJtpBbqMHA2uxBe1cF4c7sYpvXeKGZhGPS2F
-	wgjVdoK+meA9TCf7FG3KxjBgRDj6OP0=
-Received: by mail-pj1-f46.google.com with SMTP id 98e67ed59e1d1-3acb512a7a0so844959a91.1
-        for <linux-mm@kvack.org>; Wed, 04 Nov 2026 14:28:33 -0800 (PST)
+	t=1793831432;
+	b=7ma0CJk2LhBd3dygc1uea6/sfG22PERj8ZxbmeFYko8VH3gs+wpY1bPTemeTxnKQK7tnRv
+	hJ8aLud9heiMAh6dTfnWL5UhqGwbg7vubPJn9pcd/o9Dq5hlVxm3zT09dbwoNLpMzZx969
+	nKCGzXKUN/VBWzPRJeG5wVfV3sBsBEk=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=JmxYWQTA;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf04.hostedemail.com: domain of dmatlack@google.com designates 209.85.215.175 as permitted sender) smtp.mailfrom=dmatlack@google.com
+Received: by mail-pg1-f175.google.com with SMTP id 41be03b00d2f7-cd6a7b62ce8so538418a12.0
+        for <linux-mm@kvack.org>; Wed, 04 Nov 2026 14:30:32 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1793831313; x=1794436113; darn=kvack.org;
+        d=google.com; s=20260707; t=1793831431; x=1794436231; darn=kvack.org;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=ngSI9f0kiDWl+YO8rRXsU2IRSVNvxIMeC8SrK3o9F8Q=;
-        b=K45Ue0xIc19NUalphcbzdP3QUp6yBttN6UwSu8RXWmuOd2k63iXIW2JqKFpnQ+RDrv
-         JidptiS/OOwFk8flr0Y/jUmT1k3ztjhQfnIwJ8v1UXTbXgnN59JUEi8yZ85HAzTZtdIg
-         VSYjXAr9rsBrlS/2bTtKQKaH59z1PwF6TD3eGEaD5htAHU3uuKd6Bn0o1ljHjab3WDg3
-         giJV4iEiqcHAJ9FREWUTESGv5M+JIbngB3GrFtJzW72LqARI/ir8v5EBzovlPTLrocJ3
-         aXvKN2etMxTarHio50GK5w/QB2/YI8xh2EgoJt8wOAdKUHdystsZbyHAUI2755GW3jqK
-         jOww==
+        bh=45IHMvHuNfQHmQp3e/l7ZQyBPSv/bWU1s+/SnIhe5+k=;
+        b=JmxYWQTAV41qbJzeX+s/k7NdjXYfBB74vhPZ6ENLllpD8umuKh/II6AlcoUrY1+h+5
+         eDV6hQ7ZvzPvPniuitpmWVilZU5uv5b7cWuVNi89HntD+H3Hz0bngxAG7OnJjk3esT9C
+         Oj8GOcp6zRrj4zwu3wb5HWCwi3rvlfCk+3kRSlJIfqIXSfjHzLNkQMax3ceS18sVViGS
+         pSwdpnBvlYht6vt5h+guEQyju7UL2BD6x1y4EAc7XC9EmFCEWxvYFJQAt+0GcnPr8gB7
+         SDK6W/x6Xu0jXqeKB/Pnk3IuOKqg35iAdmAp3160j66PeeppITNHXB9HIAkUCYQIn+zi
+         0j/A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793831313; x=1794436113;
+        d=1e100.net; s=20260707; t=1793831431; x=1794436231;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=ngSI9f0kiDWl+YO8rRXsU2IRSVNvxIMeC8SrK3o9F8Q=;
-        b=ieEvNus12qkicR7iVFUbj0bCySdnP3OPyZUY2/aeZUrCIN4dug+1wwyNB3vElmlOKo
-         cR9tT8P3VqbKknlkqatj71O2YxZZV8/SwFwyYEbi/iSS6kE538XHLImXuYyMfJQ3T1sr
-         /+o1aZpwQWiv2CqQL7y4PjSDwTh208AZwku2/B0P/1lt4r7yt8dSmGR3KPUMSYdjWgsN
-         77PqWnLw7ImGyL6XjUoKM/9fLv+d3Hfw6workxS0GyKPP+boE6P04CYvGviZLsoW4kiZ
-         xgEIHCHkmOVkffWHKUr4IqqhANKC94pVZQr29TSsf5NOmyQVGVkwj5a+axwMCjnAMEkb
-         rVTA==
-X-Forwarded-Encrypted: i=1; AKwUvBzVvA71UYEcOeB0EwU3SfbKybokcQ7HiRtlKwa0O/iluZPLL14mF44/3+CQar+FZezQGXhwmrYKIw==@kvack.org
-X-Gm-Message-State: APuU4Z+On3kJo4gYiDpgMwN5TVTkDhPuw3nbGTl8LI0ZtQdXAQxh9OPN
-	NBXmNu4XeDKeG0N1BB/DC2UwUIUuaudI5IxqWXvhH68XpLrZf5Iq6GeunFnyxe+0Jg==
-X-Gm-Gg: AYBFou3Xlx/ItEszsTf58rKKOWP+siVkbYXbyRvVqRTmnto/zRiVHjd1gW5FruDAs5a
-	T6ECQ5p8ucsGWaeM5KiDq5OwhOSS8XLiiGz7FLynvDp/oQVqxEubs2NV8xjQR3ddjXECY+pXmwk
-	rJaGVRqXEDyfpkIlZiPiuI6vV3yrkCfTwECn/fZuUiKGSsrZPPGs+8nXgnCiVpbrDF2Mxiba882
-	9YnZ+vJDUXpkUZ5gVyXEsi7C2g4un0TOzmW4NkhHaWFYJQcjhZi4/gcIkxlUKhn9xLS/oLo5v7S
-	8RKFhDXWsn7j1IJ9hwqnHzcZGcl/R3oU/Sr3xwm6LXJ2HqjpoF4UQC3jrI4ZKyZXJDvpcXk+AG+
-	/F8rlFZ0ZuxnRP5SGdxGuOqURQU8VT7ndnbwQWSNAqvDP6LDEEIyEgbS2XVDuU5XT/haLfDxUjL
-	DW29hbTn8Md27Omv570gxB1Q0ZINXBpC8SSu+x8t0iJxIRgxIWz6etMJ7iuBfpY+qcEuIpEIpdN
-	tnB/dF+KGVnr6CNgiOVdwwrPv0P2lMpZK8Oh1zz36Ivw7eqchpA9IotXz8toNo/1PzGB0GMYA09
-	JZ9wTyCVPjGE8NXuVTSygNscAuqbY+rUiB+tQoSfVhBGEvQ8xTvDhC5rWkX3yzS0
-X-Received: by 2002:a17:90b:4c04:b0:3ad:8a14:bc73 with SMTP id 98e67ed59e1d1-3ae897b519bmr13057533a91.50.1793831312185;
-        Wed, 04 Nov 2026 14:28:32 -0800 (PST)
+        bh=45IHMvHuNfQHmQp3e/l7ZQyBPSv/bWU1s+/SnIhe5+k=;
+        b=M5/G42BYHxD/hA74zmkRWda/JFZGkZoWEVnpr7TmCSCenff9wsFxNEliTlwasCppTs
+         h7v2iny9HKm534GEXDvwDz4imJw64tW/T7i45h9Cl+DOQzjrPFhe2xCB0d9OL5o31F7u
+         tTmE70Ng3VqW1GNG9nwvISOODXqndTrwcKs5Vt6CliRxLUZTY7OT0ZTeHPF2/D6wDmNh
+         WVoUxgcsgnbRQY76+PSobdDYcRzVY9oR+cqfPRoidMPmsJ1AHBhSS2F8Oh/odCxX5EO/
+         v2p0pnxNVdrPBxjrDGUytF+rsl3Qky2d7DymqfH4uVNbby9bnPDHwccD1OtL6iAz2A0R
+         AAaw==
+X-Forwarded-Encrypted: i=1; AKwUvBws4slzIhPwZlihigadaUf2v9u3w3Dp0mLUZLKq0B2aaMAZ00/J8rD13h0keCgEm4WKV627UgRlDg==@kvack.org
+X-Gm-Message-State: APuU4Z+kBYGJOUmHF4F+snCuZIY0iENfatJ6LqzFgP3ZdwTsY5EFOIpm
+	sJoynJ3Z4s9KMt14MYHlXAFshVU4vFwZgSTGteeuB6ngvLT5YC4Cbdi8CQU2eZ8T4DfseyEQEnf
+	kz7YyqQJ6
+X-Gm-Gg: AYBFou0tbWIP1pXMDHANt4s/GdOID1tASG+h3TTECnONEoceBy67bj1e5CzHI578t65
+	6CyBdWmAX1hszFLJL/JmVRGXGnBQPeNZUz07bErdpJGPaUq9p+mZFJfl63VBgfoqr521oVk7+Ez
+	d3Ryva1jdqbGuhqpdGuILuqxMquVWAhYWT0WGTxsggZ0xE5PHLx8KkYTzfkheOamwZ3Ei9XJTQt
+	C53yxcnF00nI29xrmp6Aa4id5+v7JLFNDC4KvK2WiGAhVnS+1p6rx3qoDgfoVHY0bjk2f15A4hJ
+	SyarV0lWWL1BxwAyI2t0auHWmWdtX+pwMHyJk8HPVGltUshK+pfOEy0wkugFUwyKyMbqxXFgUxs
+	Tz+hOkEvc+yDy9eoUvlFZxsJ0ZwN3218akCcJu+GUpGkLOEOy1ACwHh1at4erYVyPbwR2MHVQ22
+	3zlAjlq1J83Dy5Uzo/K7gsOZl2KrPPGnU2eN/DZPkM/C18o4oorYSwKBRVALq5UQwDxcc1VZON+
+	p80t6apBkrmpTwuHltBg0W6pQqPY3lJOYFqsLbY5rJrFudRVsj+OVclmKDp0mcWpVeVVrP5HQ/V
+	W8mcoDSLgdCVGk+Vaopjt38Mp7Pk1FfQSxHVGsCIe389pPQmW8xcb/MIUaNpj5iu
+X-Received: by 2002:a17:90b:3d8e:b0:3ac:8897:7baa with SMTP id 98e67ed59e1d1-3ae8979a140mr13152373a91.40.1793831430846;
+        Wed, 04 Nov 2026 14:30:30 -0800 (PST)
 Received: from google.com (33.79.127.34.bc.googleusercontent.com. [34.127.79.33])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b0b31cf4b6sm710454a91.14.2026.11.04.14.28.31
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b0b31638fdsm743618a91.8.2026.11.04.14.30.29
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 04 Nov 2026 14:28:31 -0800 (PST)
-Date: Wed, 4 Nov 2026 22:28:27 +0000
+        Wed, 04 Nov 2026 14:30:29 -0800 (PST)
+Date: Wed, 4 Nov 2026 22:30:26 +0000
 From: David Matlack <dmatlack@google.com>
 To: Pratyush Yadav <pratyush@kernel.org>
 Cc: kexec@lists.infradead.org, linux-doc@vger.kernel.org,
@@ -110,29 +111,29 @@ Cc: kexec@lists.infradead.org, linux-doc@vger.kernel.org,
 	Shuah Khan <skhan@linuxfoundation.org>,
 	Suren Baghdasaryan <surenb@google.com>,
 	Vlastimil Babka <vbabka@kernel.org>
-Subject: Re: [PATCH v3 06/10] mm/shmem_luo: Don't make early retrieve
- failures permanent
-Message-ID: <auuxi10mmCQrq-y2@google.com>
+Subject: Re: [PATCH v3 07/10] mm/shmem_luo: Retrieve tmpfs files onto a tmpfs
+ mount chosen by userspace
+Message-ID: <auuyAseOISaOWwbO@google.com>
 References: <20261103010216.3447716-1-dmatlack@google.com>
- <20261103010216.3447716-7-dmatlack@google.com>
- <2vxzik2ck5dp.fsf@kernel.org>
+ <20261103010216.3447716-8-dmatlack@google.com>
+ <2vxzecd0k1dg.fsf@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <2vxzik2ck5dp.fsf@kernel.org>
+In-Reply-To: <2vxzecd0k1dg.fsf@kernel.org>
+X-Stat-Signature: 9g61hhugehi3f4hyhzuxgoa6i1yq8ypr
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 0EB311C0004
 X-Spam-Status: No, score=-13.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_IN_DEF_DKIM_WL
 	autolearn=no autolearn_force=no version=4.0.1
-X-Stat-Signature: ityd6aq9c6319d414ahcgy744jczt9pe
-X-HE-Tag: 1793831313-811900
-X-HE-Meta: U2FsdGVkX1+87kedzRtbhMM3yclKHbtLov3a7zyX1ChofxHQXYDWHWymnyFi5z9x9/iytEQgTxBwAs5CPWGMOumje1BTS95E6Y/KfLTBPwkEnyxiu4A5lDwGnOn1ZIQZrJiAmGSYwQp885xOokt1jWpb8ftsfwhiAp4lXscM1uhh5zQVZA/1iAsUtbJrBsH3Xy4So81yF3AoeMBHA33VozgrsYNkVIjR1RQeMHqfMvCRGzT9UFBRaT1LsCk2isAghthJsd5LYGzmW0Pa7V36tkC7+tsUsmXwHlj1tQ46Idx6PyqPnMgAl63+Hd1N6p3QXXe1meotqPrC7zMaTNHKxRcTev41IlfIMQKmeyFkO4nkWeOgNFraWGMgxUC7mfEiCyVtVkr8r4pyeRpJqf43OeM62zm6S2KEGN1B3/pOI1sZFDn1HjZdQNeS8RW/OsxTN3rtLlLPKNsMTa5XUl2fqVzcjTm9KKJ3YG/HabOtNgDKR8lbCBDrPaAvNJcqk9Q9+sQlBjtUryr0KDSQt2dMvx8O5maKsVS31gaN1Iu6ETFVbV26qQWB6wmJS0JT9Diooz78Jw0IRjvd53XGcghC+azK7nU9HKMcQ2gcBqsNCPwcSH1eX/PwA2kmg9MS4a4Vl/aujyKrd9sjdt+g0KkUsfRNAcxtF+xbffX7s8urJjwu5DVdx8Q7Xk/5mYilDa/o4rualoWK5WYipf4iF3mUXqBm298merqpsKFWwLDSSAljCemy+dZATJfr0MlYx5Bw2uRidv1lT0FKDnTtUC6LCvSAoV1hh/Fl69UA3kykpPTuRf62lQNV9XWmwijXkCw5UcMq7rtRlehrVqOADJifApWgk50jQ6Pq/nXmecG9kijuMsy054Z+SpEtdXMJ7YLW1uYpxr0xo/RSO0BCQYoZQKR/jrnWZU6KKlIOcNYN0nFSgRT7gpOKN/E/UPflR3sC4BGcp8ZdIcGg3pnK1gd
- eC17ZKuS
- p99ACUFXhFcqkuZw09Hdl/DD9Ox7EnwhkWKg1q2iWWlgM5VgGrfWTBXVqIOxIcy64eLffhUJu5KsIk9hrt3wQ5eloJ4W9pRXcFzz7OkorL/07t7A9dco02jtctIJ+c+VfLE0e8pdBQojO68B7dxUnhwhZY0OZQKUw/2iRUdl9u1EsE5XPWR5luCGyBuj/GUTmavBRhFtb+mR3owexteucTLkRKGhSpz+R0PTgE0/13bVUnBLivYEFQvUx2+345ojdZV+30IcwP87qZI7OS+RcoiPmHDkk9cBhX7hFRQC2Vlj50p5D6hnMs1j9byqNDtEwivfUO6tSkuJ2b0ITwa5HjqiHvEIHNSgnSYviyPcEud6NBGWTAR9OuDeZBQdGhPVm57u9kBwYk6rXLku4ha5cU2HkU8Xx32Nqqs5f
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: AA86B40009
+X-HE-Tag: 1793831432-175313
+X-HE-Meta: U2FsdGVkX18C/xjn30eifQ9oza63j79aQ0XUWMe2xdvppqu87hatXqWS74SJjUwuqNUZUJBFh1Um1g5pEo6vpEC8evsvBxfjuYxpgudZuBBBdj58C/Pbf9W8biWIxI3nQZq3Lot9eObQ7vYie/c/HhjLh1J43hvG6/oCSwUgseenkbnMPSC5ClBXZfSGBoo+J2fXawkb9OcOF30t4Zmdfw58gIeIY/fFepLdXugFwTbs9hROl+4sNbwC5z033KEMcatf+yQNqiCvd1oJC8jHprU/159XcV6b4wdO1NztTaO6jCv1O/8HzyqR0VFPZewS2fvwfEIbizbeb2JweFTaT77vcrPt3O1K2x4EPMjYp+CXU++y2KGwNa6zkyq8eamss73ZlJI7lyD2a+6Fyj0izWlguX0dncIUHg70xiyAZVO0CWFBphkPukPaO3V4PecW+E4VRAOq3+NZiceztiSsobz73qc2l+c1t95jDo9ac+GwcctjhGhnApmux9OCIpEdApRnkEkeLi+rSvTkjTZX2N5aM2KmQYp4shu+5TslYCUdKmWlBUfcqJ18/A1+k3lyYy7iEkstKTCa1P3uzduHzSHhEXVrYZbjZEKpbso9o7n9H5hOnGi35N5e6RrMCSqV+CYwMWDfDFiFNDiOB3ZWN3tjXeGCCRIuKfEoHbbmD+WRNZ+v+UqRnhByHWLP2uoR29xwbcl+b2AETRTXvNOtyC8PvVatumPocurYzpSsglakG04Xvfoe9xoYLaXck29sjOPpiUtiLCPMqF2CfPL9ARLiu4kIDO3mBBzYPV+EuaLM2qJtr0U1E7SlvuH2HTHYAKRFNqirMxRxVIaSfkwdP6WbmLaugGqeXoGNg+QAfKivk0adnpaO2Xnwm09QTK6nUyOB9cTcPivpIurjuUJ0Bgv28lO4Ya6aGqyJ5JXypHE1Iu9i1Wc0e5HF/j57JrhIzfSPWvsZLiwnh6S0oGz
+ vM1shDmC
+ ggjsQpGTztuqHFuhuoI3wJQc4QbIP56U47XxtrpZVSYnL3YIkO251SXci/epd0mz4ry+OaRuBn6S8pUNBPFMAKvqkPSb543qvpgb7lnEco2SADeOfPMsnVvzDNPaKZwd1XUBLW3823MKc/IFkMwq9SWdLjLg+RzqI4U8qgL7c9EdZHKbHkuFN2RrNd+n979Q5syYli/sN6Xe/hnONqiUZA+C9akNK64mr1Jd2PYH/HJqRgHPfzW51kNiw97srRa6NZSMa34JnZejzKJdlyR9YrdTYcOXBGD83/sFU7QHE7dTJb7T1viH12GI848ZvvZVQ4Ojjr1JYLVtM0Aqycp7A48JMTMFxqT+ntAfHRJtIXU+g55c4EfEaQXTSTowIXUpHITEN5G4sacrjdKuPD4ZsgJDqIku2k6nzZW6Zl2YrnAwfkQMvMpV7HUzlEg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,40 +142,23 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 2026-11-04 04:01 PM, Pratyush Yadav wrote:
-> On Tue, Nov 03 2026, David Matlack wrote:
-> 
-> > Mark failures in shmem_luo_retrieve() before it starts restoring the
-> > folios as retryable, and return the error without freeing the serialized
-> > state. If no retrieve succeeds, finish() frees the preserved folios,
-> > like it does for a file that was never retrieved.
-> >
-> > Nothing has consumed the preserved state before the folios are
-> > restored, so the retrieve can be tried again.
-> >
-> > This also fixes leaking the preserved folios when one of these early
-> > steps fails, e.g. because the file has seals that this kernel doesn't
-> > support. The retrieve freed the serialized state but not the folios, and
-> > finish() then skipped the file because its retrieve had failed. There is
-> > no Fixes tag, since the fix relies on args->retryable, which was only
-> > added earlier in this series.
-> 
-> If the seals don't match, the retrieve is not retryable. It will always
-> fail.
-> 
-> I think the only retriable part is memfd_alloc_file(), although even
-> that is quite unlikely to fail. But I think that also fits pretty well
-> with the most important type of error you want to retry on, which is bad
-> arguments. In later patches, you check the argument on
-> shmem_luo_create_tmpfs_file() or shmem_luo_create_memfd(), so perhaps
-> set retriable in those functions?
+On 2026-11-04 05:27 PM, Pratyush Yadav wrote:
 
-When retryable is set, LUO leaves the file unretrieved and finish()
-frees the preserved folios. If the seal failure did not set retryable,
-finish() would skip the file and the folios would leak.
+> > + * If @flags contains unknown flags or O_PATH, if @mode contains unknown mode
+> > + * bits, or if @dirfd is not on a tmpfs mount, the retrieve fails with -EINVAL.
+> > + * If the file can't be created, the retrieve fails with the same errors as
+> > + * open(). A retrieve that fails before the preserved contents are restored can
+> > + * be retried.
+> 
+> How is userspace supposed to tell if preserved contents were restored?
 
-In v4 I can move the seal checks into shmem_luo_create_memfd() and
-shmem_luo_create_tmpfs_file(), since the valid seals differ between the
-two, and reword the commit message so it doesn't suggest that a bad seal
-can be fixed by retrying.
+Through the error code, like Pasha said on patch 3. I'll reword this in
+v4 in terms of errors instead of kernel internals: errors from checking
+the argument and creating the file, e.g. -EINVAL, -EBADF and the errors
+that open() returns, can be retried after fixing the argument. Errors
+while restoring the contents, e.g. -ENOMEM, or -ENOSPC when the contents
+don't fit on the mount, are permanent, and retrieving the token again
+returns the same error.
+
+Thanks for the review. I'll address the rest in v4.
 
