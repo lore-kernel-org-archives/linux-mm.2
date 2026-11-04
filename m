@@ -1,94 +1,116 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 742F8606A32E
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 18:41:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A932D606A326
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 18:46:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=nbQjELS8
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=NOIHB49x
 Received: by kanga.kvack.org (Postfix)
-	id 509336B05BC; Wed,  4 Nov 2026 13:41:41 -0500 (EST)
+	id A1AC86B00EF; Wed,  4 Nov 2026 13:46:46 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4E0D86B05BD; Wed,  4 Nov 2026 13:41:41 -0500 (EST)
+	id 9CB656B05B1; Wed,  4 Nov 2026 13:46:46 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 41D306B05BE; Wed,  4 Nov 2026 13:41:41 -0500 (EST)
+	id 8C3266B05B2; Wed,  4 Nov 2026 13:46:46 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 1E0196B05BC
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 13:41:41 -0500 (EST)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id B69481C4205
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 18:41:40 +0000 (UTC)
-X-FDA: 85398305160.27.534BF64
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf23.hostedemail.com (Postfix) with ESMTP id E8EB0140007
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 18:41:38 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=nbQjELS8;
-	spf=pass (imf23.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+	by kanga.kvack.org (Postfix) with ESMTP id 6E48D6B00EF
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 13:46:46 -0500 (EST)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id E3D991C4218
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 18:46:45 +0000 (UTC)
+X-FDA: 85398317970.22.46E7BE7
+Received: from mail-dy1-f199.google.com (mail-dy1-f199.google.com [74.125.82.199])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 3A3DF100003
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 18:46:44 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=NOIHB49x;
+	spf=pass (imf14.hostedemail.com: domain of 3kn3ragwKCJk5AKBLPBL7F3G9HH9E7.5HFEBGNQ-FFDO35D.HK9@flex--chriswiseman.bounces.google.com designates 74.125.82.199 as permitted sender) smtp.mailfrom=3kn3ragwKCJk5AKBLPBL7F3G9HH9E7.5HFEBGNQ-FFDO35D.HK9@flex--chriswiseman.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793817699;
+	s=arc-20220608; t=1793818004;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ofzQXuXOTQViNJOurFeSCLUNFQXJgGfKrYOJL/pV8Us=;
-	b=Li1u0vI9T3ycqqbe6pvUuCIEI2m9D1qOygx+H+UkIFjTp0SnEi34LSOsYxXOAIhQ8PcGm3
-	OObjTYI2rebove2+jLdUY2zLhRgMOeC7PXA18lloo8mbp3Rfq4e/Bi5OGduPeMYJOVv2uD
-	rkgCqn946IQ5R0pebXIhCI87RWMFN8E=
+	bh=0YhDr+3iNQXZpzi3ONHbQbAMo5PLwYKn4EglqMWvWgc=;
+	b=WWJ1mB/R1br6QhhO6STqQhjFB2a+r90HDRqEGyIloZmVod0IMx2mHWBeqDEHchD1mIpCWn
+	6BPVAtsU+tY//cdIMuEqPQOaBrWlkFiEIHcWXASu6TM8sek/FtZqdrfc9WRtWxu7XTbj4q
+	VQLleXKJFknngm7BdsUJSYruI+9yMJ0=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793817699;
-	b=LluIPXlF3a43rKB53vsvkNnAPcLiEbRUR9saYqrcj+WYhvVDCrkn2vIFSmV6SyEdyyX+H1
-	CrgUtv6wrCDlEtUL2DoPd1ylynNFY6f4oUJOETjziD9+r07tSsiaCVs3WuwBFcKsFVAHPo
-	8dTXJjbolRzGq/4kFd4hpM+3cV/CD7s=
+	t=1793818004;
+	b=cYaNPdn8pgjPUK7ES/TrMJken5ZTPyhOP4usiU/z8/gdXJyLaMjjKFb8NnIUIDIQzRLSTY
+	3hvCK0ekyXTIuW8MI8sTLcBstctlqD/RqimnKPvXxzkcHTFHEAL5hsS36gF/ZJx3ZhO3Ey
+	NzBgaHD+C0aMxWCtFYfo53KhlkA62m0=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=nbQjELS8;
-	spf=pass (imf23.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 73C06609F0;
-	Wed,  4 Nov 2026 18:41:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E35931F000C1;
-	Wed,  4 Nov 2026 18:41:37 +0000 (UTC)
+	imf14.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=NOIHB49x;
+	spf=pass (imf14.hostedemail.com: domain of 3kn3ragwKCJk5AKBLPBL7F3G9HH9E7.5HFEBGNQ-FFDO35D.HK9@flex--chriswiseman.bounces.google.com designates 74.125.82.199 as permitted sender) smtp.mailfrom=3kn3ragwKCJk5AKBLPBL7F3G9HH9E7.5HFEBGNQ-FFDO35D.HK9@flex--chriswiseman.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-dy1-f199.google.com with SMTP id 5a478bee46e88-30bcb065bfdso1809304eec.0
+        for <linux-mm@kvack.org>; Wed, 04 Nov 2026 10:46:43 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1793817698;
-	bh=ofzQXuXOTQViNJOurFeSCLUNFQXJgGfKrYOJL/pV8Us=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=nbQjELS83W3qKX43J5wf4hpDwuuzTliSbkKHJoQ+eN6FRXXH36pnKjl+1wP16Z1hy
-	 8foClGHpX8xG7k2xr3M4MJyZNkdn/s8EcM7J+ga/NymFpaON/J4cb2dcdJs6UrND9i
-	 oORabaNb9ZlID6t7WDzhI4XnHBizI3x5OzMsRFDM=
-Date: Wed, 4 Nov 2026 10:41:37 -0800
-From: Andrew Morton <akpm@linux-foundation.org>
-To: sashiko-reviews@lists.linux.dev
-Cc: sashiko-bot@kernel.org, Liam R. Howlett (Google) <liam@infradead.org>,
- linux-mm@kvack.org, "Lorenzo Stoakes" <ljs@kernel.org>, "Chris Mason"
- <mason@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>, "Andrew Ballance"
- <andrewjballance@gmail.com>
-Subject: Re: [PATCH v2 1/3] maple_tree: Fix rcu reader NULL dereference
- after the tree is emptied
-Message-Id: <20261104104137.2058705ac29734a7ab5666c1@linux-foundation.org>
-In-Reply-To: <sashiko-outbox-194509@kernel.org>
-References: <20261103020724.2614498-1-liam@infradead.org>
-	<20261103020724.2614498-2-liam@infradead.org>
-	<sashiko-outbox-194509@kernel.org>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+        d=google.com; s=20260707; t=1793818003; x=1794422803; darn=kvack.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=0YhDr+3iNQXZpzi3ONHbQbAMo5PLwYKn4EglqMWvWgc=;
+        b=NOIHB49xCBtdQCNwDyA511ImqqghnTqkqUARQarvabJOADXWM/LPtNUsJSTA6zIm5Y
+         CY+Yeu93JA867fpObkHVEtzw2F1YFU7qMytC+lpoetkR4C0PQ0ReXcqzIYzH5y1rLrv0
+         I1tigMthGUhKbAuIEH4VVtUCgydfIOzKFvWO2t46FUaF240WMCJtKO9FKDKtIbgvOc8/
+         bZrxls36HvTtF7iZlgWGlVJpU6oLXvKGa3ASqNfib1dj9LPNDu8nKLFkUhTNn45/psD/
+         FzvMQNwkTKIsNwHyDOjkarMsChAH1hlSFVsA3s2GKp6iJEBwlAkO5jMXXktvLp6LuM7a
+         rTqA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793818003; x=1794422803;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=0YhDr+3iNQXZpzi3ONHbQbAMo5PLwYKn4EglqMWvWgc=;
+        b=de4Iagocf5UImFIb5Jr8hsV4uuLcb6BtGeXmDPoV5lqT3w88A8xESz40eq8WzTKnRr
+         m5etLQrW4q0X0szAczJOrIyFf7kVEcUnONXo59IdGfvhSaBXYslC++k10tigfFUwDalC
+         njbbWZZgN8B5aFjwA4nUc6lDmPDoFPnKqFtmddjQCd3iUkxBV3OwVMdMK3p3ss7JLmJ0
+         tVg1AsCaFudRFCu6GfGGcGmFv8LqIVRPfGKNVhUTLColPYJtLf/1lpEvsYVIWNKSmIrA
+         CZhZ9c/090/BKrCspu6qg95Rj/L6VEIaCCFu/GfmYt17me58azi0mzFZwaOn/ibOhG98
+         2/og==
+X-Forwarded-Encrypted: i=1; AKwUvByOz8iGjNnR6iravCBrOV3RQYxLqzHt69hJGAxt9HTguRAmw4uOsjtIjSHWN1xeRdfyXKw1l8V9hA==@kvack.org
+X-Gm-Message-State: APuU4Z+fVyRncORzFZ8e1ywzsZ9wdrxI1yMgV76jXg2nWId5KVY3kdQW
+	6SUBv+u5RZgb/OqzNvgw2LTfh4FocwzaWda8lIHHF0TpqPW4yoeFQhOCLc+0cl3M4AWHFPnR4OL
+	doD1zEjwv7ucvM4LvXVVv1/NTvTmWnw==
+X-Received: from dycnr25-n1.prod.google.com ([2002:a05:7300:e9d9:10b0:369:f343:e68d])
+ (user=chriswiseman job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:693c:42c1:b0:36c:9bc6:3ec with SMTP id 5a478bee46e88-36c9bc60702mr6170036eec.3.1793818002106;
+ Wed, 04 Nov 2026 10:46:42 -0800 (PST)
+Date: Wed, 04 Nov 2026 18:46:41 GMT
+In-Reply-To: <CAKEwX=MV_xEUvz91pz6uc4qXWnWOUDtXZ2zASdNVOBHBLeA60w@mail.gmail.com>
 X-Archived-By: <archiver.kernel.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: qg77ozgmonp71t4ccjnye4nybyym8xca
-X-Rspamd-Queue-Id: E8EB0140007
+References: <cover.1786003779.git.xueyuan.chen@vivo.com> <anVWZVOt-xeD0dMH@google.com>
+ <47ed45b5-de67-41aa-aa21-a3ba3479a7cc@vivo.com> <anXJ-5_vO7-toSe1@google.com>
+ <CAKEwX=Mm2tXcen-quRXHf1Y2qSHYvpEUe4xiw-mHYaJnRUR-EA@mail.gmail.com>
+ <auKqt6b4AxCLziIH@google.com> <aufPMirl4cD7tz0X@google.com>
+ <18e4542967ebdd10.3137322e32332e3235332e313736.1dfc41.0000sendgmr@google.com> <CAKEwX=MV_xEUvz91pz6uc4qXWnWOUDtXZ2zASdNVOBHBLeA60w@mail.gmail.com>
+Message-ID: <18e4ebf806e937ec.3137322e32332e3235332e313736.1bf52a.0000sendgmr@google.com>
+Subject: Re: [RFC PATCH 0/2] mm: zsmalloc: make shrinker compaction budget-aware
+From: Chris Wiseman <chriswiseman@google.com>
+To: Nhat Pham <nphamcs@gmail.com>
+Cc: Sergey Senozhatsky <senozhatsky@chromium.org>, Xueyuan Chen <xueyuan.chen@vivo.com>, 
+	Barry Song <baohua@kernel.org>, Yosry Ahmed <yosry.ahmed@linux.dev>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Brian Geffon <bgeffon@google.com>, 
+	Minchan Kim <minchan@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, xueyuan.chen21@gmail.com, 
+	Chris Wiseman <chriswiseman@google.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Stat-Signature: kdcua1d9zpqmwq18ho38u9jgcdskkqpd
+X-Rspamd-Queue-Id: 3A3DF100003
 X-Rspam-User: 
 X-Rspamd-Server: rspam08
-X-Spam-Status: No, score=-17.5 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,NICE_REPLY_A,
-	SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1793817698-256516
-X-HE-Meta: U2FsdGVkX18goc3OWHOM/1NnDav/8PI5Yku6tHzayBNH45Fn2vQL2MEctboE7cPsIPEVuTAXzk9JfAjqyNY3/TSE3NcNHUqNPCpmUp8w/66wQc5oHcPDuL25dSNDiexQ3M9cFN/aS5oHU02nghLEfKZJwHfDrfxBvXOUZL6R8vHvVzuwmN248LTYo16xH3Ix5UXcZEuLZdgoPpz8uQDpgVWXQHsysTiSxHLm3i2aAWPtLcpWLSvzVr9c66XKB7iY0R/lYq+MHsMdMX2ETs5X5O23EajEmaJdnV1tngvyhto/v0QERZxNwZg9yik+F2a0uXciqwdoqyBHnYx58sCrlPj1NTnqKYOv3Pgg4c5mC/IYFzhaY/q9eLRPaAos4r6PbjgR3ZtyGkrS1AO4x1FO/vszkx7U3YP4mn/4+B8P/rQL/ic+W76pgX8RNTJI6HwIikfsBYsQNNEFp+G6X+UcRuqheOkA39+SJZLNY03U4V5uEMR9NcYhpBr4OSjb9nqYG7IJJW/nd7y0y/6kIzyoQTZRhQ5BfYgSE08AGxWek9RQuTURZ62xwAzBBOoGsN+zVaIJBEWPX0myA48hzt4BS+9QME0wweItCni35T6tzgafAul2W3+OjcFOmbYyEfXc3hof3N0vhYAXH4GFFP2cHpObVFbMlnrMKKCkC1rT14riPiH326ZrfqYbU8g6+6Q85Lv/JGV9rqyJL6vbd2tu/6d3//NUlgvLo/q8r0PTsdbo8dESxnw8ZrnEMvVVsDwZWa8ALYjngVzBrNHxloXg88+6MqEga2Oq/tqh7g+x64MLsOroAWWCDt80ncndfF8T0sAs6+bM+jaFkopMir8EsIthVzx1Bn2a00Orp44bH0p0RtVHtEEXAo5fAckDCCMfHgDBHNSQUE4SHiSIUUaImMzLGG/i9cUdJ80aV1XvYeMTUKqaWDsH/XgBFh1xRB4zCZVMzKoFA7BdJwIhMwA
- 1tOU+Mht
- /RZHejI8t6xdtnF0rOdfjdHss3vfG1MWxNNGU3xY3WPBER+9NPcf7kTFfSICzezYsQceoJJ71GkgVw5w4g/YfmX3XncT2RqfDtgArCuFdHMpy5SI1PJLWiwp6kMn8VXuTnUD/2DTmAHheCx2gy11XIK1XwZb5oFP2mNiJrU1CG+2ROkCrpp9hiIeVxj4KwZruMKttgzwzhncGstO/f++VemeH8NbcqawAXCDSvhp4x3uautDIh2g5AS5+h1zNjV0EbCuFh2Mh45T1c/a/Z0EF/9r1fyrxa0ZHRQ+qlVneT+noIcWX7JMo6i2L43xVEvqA1DoH7uUv2MF9hWtHUce//c5aJQgC9Cc+yV0EmTDSaT87scTnt01Tcw69o3G7LnAt07IOV74glBorH428645Gejeo1mCtKbxq6atYxPQxi6xXi5qH5eLVl/hzfQ==
+X-Spam-Status: No, score=-13.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_IN_DEF_DKIM_WL
+	autolearn=no autolearn_force=no version=4.0.1
+X-HE-Tag: 1793818004-799447
+X-HE-Meta: U2FsdGVkX18buIyqIPdhwLcTdDig6bLqA+BCwsMyqcOb3hMZK1BwsWSZRBfRVP5LHHVi1KoIxjdJvqs4DZG2UgaR/Lcku7JFsMeQrsZx9dpXhriW3ZGyu2Q/QSO3Eob4cBm22UnOGj1s597G6CnaJAvU+5HSQmmxwb1JtTACsTFYOiB/SCGvNRVYhDv684oRH9+adSLo8qm7r4Fv4+bm6qKtmiBN/OtFUFTZpffYjsCzeyNaLwaZDoPlHz0U2BmFrqLEKuZ7rNFHa43Bo3F2h7Iyi3KL0dxxhd3ERfkj4Tyj2wn+3oRF9efvDg9izvufu/7UHwntM+rqdzBkdGZgkrRdQi5d+FhXdPa4alM8ZqqLVaMlvugo0Pt8oY2e/1OoP82UKVSsgugei9VLTj4vI7jIbynvbSTlwcTD2tQ0WZ85PsHyxJjT0a5P/xjX+Bd0K9lk8BhxTNEI+rubUs7ygIRkF/NJpNEbtW6RLCnVMgRLhT0l2Nfh+101V1mRsXdCfHoxJVj5dX/FcumqhDT7AX/8h4g8+V/ODKIGIwxdv1OoH1A62xxEQGcuIIk7l4jPiLq1fxliBBJ0pRvekqiY+gAeJ0OqfMEUEglSEKzOmek2A7xXHKEqoaY5SFvnz53y2215v/Yqdk//xWYoLLwoxCd5dGEWWiYJayl/KfzoBsUWoG9+yBG8rNsp4bVjmYm6IDSZQLTOEUByAlDs6aSnL7ewAZ/wxodQQYqQEdnD7ckC3FgwlkoNzFVVLHrSADqRmfZxfd3NH4OsAViURu3RCgHnajQRP6s36BzEUSA98T2TARWP2bi3TuGMLBZQde3RQ1H+uLutJ0prEy5cEkdIigP7eAmnCwxMVBgepmVVytzSeHiOW/e1K7bvyY4X+fJ8ApDBvgsR5ZvMS/jyLo+v3L63ZRHmuUOWutJUjLc9EXyQPYJYenJgvSrneS2d5EQ+qfYZIFhOyexujIbOMB0
+ lacp9YN7
+ 7Qo5TQz7tPaqazXPgRiYZ513Atc+aTWaBgkhFGFQHT/l+8OMGooeCAmTGO4HsvgN3GTBUlNFlqQC6lWT3NVwXq+crSf5S9EE5Jf/EfRTdZ3m8XGMVb+wEPiUsJNgUI8BRmwzCHHw30vZyRN5TgL344JPHa0/3Y44RbFUQ6qbxG2icngddvbyxBcghn5frs5kNa2hjEZvQgLV4vBoav4QakOL31UpHAENx1LufoIwCnwfa08z4VRuqWQhcm403m9uBlV4rGCHXDa4xhPpi48U4DJn/DsWdeA1OVOltlKjl0lgPc6a9XPqetUcGkGHWcRsXOtiqIdrfylkE/lWa1mjn5sjQnjE/Gx+shcrI5tp8oCY6vq9A0caUAlQbQ6u6hmUdsYHOqz2D3n8cwYCsF1KOp6SInTohflJlhqMohvxMZy/zqlYaIWrbN16R/fzOPKaWWeY269stCUyUjQSDpsrvfDmQH03NEQ5s30Kr3bIl3OgnUusXCZ+slTxYTBCFAQ28JHIYoULpOHGhWmH6/+Ht+P/NpwOjQFiUSEx/p6kstsksqnJn1YugaFjvlCB5KMkuW1/q6AOaAHII+TzG7PbxEGTkdr8Jj1yMQBEhZLfTBM95mgEY1RYh7kNt0cfj1f+qfDrXcKQ4inyidr+IyJjhL1gXaP82MWYp/8xl1awuy/vY/IZa1LCPqsMZVFULaLsFCIOILzVcEHa66IKwNgjyMcs+DqAQcsspRxTZFdlPz6ouA2k=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,101 +119,29 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Tue, 03 Nov 2026 03:24:58 +0000 sashiko-bot@kernel.org wrote:
+On Wed, Nov 4, 2026 at 9:57 AM Nhat Pham <nphamcs@gmail.com> wrote:
+>
+> Is this precheck basically checking if we can free at least one zspage
+> of the size class before proceeding? Yeah the number looks good -
+> let's add that, in parallel!
 
-> Thank you for your contribution! Sashiko AI review found 1 potential issue(s) to consider:
-> - [Medium] maple_tree: race in mas_prev_slot() when root is emptied after mas_rewalk()
-> --
-> 
-> [Severity: Medium]
-> Can this leave mas in an inconsistent state if the root is concurrently
-> emptied between mas_rewalk() and the mas_root() read in mas_prev_no_node()?
-> 
-> When an RCU reader in mas_prev_slot() hits a dead node with save_point > 0
-> and min == 0, it jumps to dead: and runs:
-> 
->     mas_rewalk(mas, save_point)
->       -> mas_state_walk(mas)
->         -> mas_start(mas)
-> 
-> If the tree holds a single pointer at index 0 at that moment, mas_start()
-> sets mas->status = ma_root and returns NULL because mas->index > 0.
-> 
-> Back in mas_prev_slot(), mas_prev_no_node() sees mas->status == ma_root,
-> sets mas->index = 0 and mas->last = 0, and performs a second RCU read via
-> mas_root(mas).
-> 
-> If a concurrent writer finishes emptying the tree (setting ma_root to NULL)
-> before that second mas_root(mas) read, mas_prev_no_node() returns NULL.
-> Because mas_prev_slot() only checks xa_is_node(entry) to detect a concurrent
-> root change, it returns NULL with mas->status == ma_root, mas->index == 0,
-> and mas->last == 0 instead of mas->status == ma_none and
-> mas->last == ULONG_MAX.
-> 
-> Could this leave callers like mas_prev_range() or mas_find_range_rev() with
-> a bogus [0, 0] range, or cause a subsequent forward walk on the same state
-> to skip index 0?
+Yeah, it just checks if a bucket has enough wasted slots to free at
+least one full page before taking the locks.  Sergey pointed out those
+two counters aren't atomic together so an unlocked check is just a
+best-effort hint - if you and Sergey are good with that, happy to send a
+patch.
 
-I plan to squash this fix into the base patch ("maple_tree: Fix rcu
-reader NULL dereference after the tree is emptied"):
+> Ah ok hmm. Sounds like internal compaction isn't that helpful, i.e
+> zsmalloc already does a pretty decent job at packing objects that
+> there aren't a terrible amount of internal fragmentation in the first
+> place...?
+> Should we do CONFIG_ZSMALLOC_SHRINKER (default to N or to
+> CONFIG_ZSWAP) for now, and remove it in a couple of releases if users
+> in the wild do not complain?
 
-
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: maple_tree: fix reverse iterator state when the root disappears
-Date: Tue, 03 Nov 2026 04:28:56 +0000
-
-A reverse walk restarting from a dead node can observe a direct root entry
-in mas_rewalk() and then an empty root in mas_prev_no_node().  The second
-root read returns NULL, but leaves the iterator in ma_root with index and
-last both zero.
-
-Consequently, mas_prev_range() and mas_find_range_rev() can report an
-empty range of [0, 0] instead of [0, ULONG_MAX].  A subsequent forward
-range walk starts at index 1, omitting index 0 from the empty range.
-
-Set ma_none and extend last to ULONG_MAX when the second root read returns
-NULL.  Keep the existing encoded-node retry in mas_prev_slot() for a root
-that has grown into a node again.
-
-A deterministic userspace Maple test reproduces the stale state through
-both reverse range APIs before this change and checks the full empty range
-afterwards, including a subsequent forward walk.
-
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Reported-by: <sashiko-bot@kernel.org>
-Closes: https://lore.kernel.org/sashiko-outbox-194509@kernel.org
-Reviewed-by: Liam R. Howlett (Google) <liam@infradead.org>
----
-
- lib/maple_tree.c |   10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
-
---- a/lib/maple_tree.c~maple_tree-fix-reverse-iterator-state-when-the-root-disappears
-+++ a/lib/maple_tree.c
-@@ -3930,6 +3930,8 @@ static inline void *mas_next_no_node(str
- static inline void *mas_prev_no_node(struct ma_state *mas, unsigned long index,
- 		unsigned long min)
- {
-+	void *entry;
-+
- 	mas->index = 0;
- 	if (mas_is_none(mas)) {
- 		mas->last = ULONG_MAX;
-@@ -3940,7 +3942,13 @@ static inline void *mas_prev_no_node(str
- 	if (!index || min)
- 		return NULL;
- 
--	return mas_root(mas);
-+	entry = mas_root(mas);
-+	if (!entry) {
-+		mas->status = ma_none;
-+		mas->last = ULONG_MAX;
-+	}
-+
-+	return entry;
- }
- 
- /*
-_
-
+Compaction still helps when we trigger it between bursts (freed ~21 MB
+before the swap storm and ~10 MB after).  It just wastes time running
+mid-swap when new writes are filling those open slots right back up.
+Defaulting CONFIG_ZSMALLOC_SHRINKER to N (or CONFIG_ZSWAP) for a couple
+releases makes sense to me.
 
