@@ -1,66 +1,66 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22F236071A36
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 19:26:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80A826086B95
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 19:26:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=GLlT6wTh
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Fe+qeY3o
 Received: by kanga.kvack.org (Postfix)
-	id 35E2F6B05CF; Wed,  4 Nov 2026 14:26:05 -0500 (EST)
+	id B275F6B05C8; Wed,  4 Nov 2026 14:26:19 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3365B6B05DD; Wed,  4 Nov 2026 14:26:05 -0500 (EST)
+	id AFE0C6B05DD; Wed,  4 Nov 2026 14:26:19 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2003B6B05DE; Wed,  4 Nov 2026 14:26:05 -0500 (EST)
+	id A14326B05DE; Wed,  4 Nov 2026 14:26:19 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id F078F6B05CF
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 14:26:04 -0500 (EST)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 821651C4239
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 19:26:04 +0000 (UTC)
-X-FDA: 85398417048.23.5EF3409
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 7D7AE6B05C8
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 14:26:19 -0500 (EST)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 2ADDD1A0769
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 19:26:19 +0000 (UTC)
+X-FDA: 85398417678.11.783C219
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf06.hostedemail.com (Postfix) with ESMTP id A7C1118000B
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 19:26:02 +0000 (UTC)
+	by imf06.hostedemail.com (Postfix) with ESMTP id 621C5180004
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 19:26:17 +0000 (UTC)
 Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GLlT6wTh;
-	spf=pass (imf06.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793820362;
-	b=X5wEa3FrIP34tokjhjjVqUGCyGez+ayoBCi0c40vGvKjJWxZkzWpNBNmZubJ4ZXo4CDGg9
-	ozszzC3Vgv/PMjLfjIzS6aiiArbZfzJhD8Q1nZ/5OzLEpVAcSp6fJy8p78sfRksc/GD249
-	FcGTpvLikGMKc4H7mFo30SsVT0GJCnE=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GLlT6wTh;
-	spf=pass (imf06.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Fe+qeY3o;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf06.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793820362;
+	s=arc-20220608; t=1793820377;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=RXd/jlD2fYO+IzUitqn0Yxqt//n2gto42+U+qSH6QWU=;
-	b=HWWZ86GIFGGiHV8uCiagUrjiZzUEx4hdKADa509XsI2AERo8wg++r/OD5zQxcu372jmFF0
-	cBgbPmVNdz6C8N1MBaR1HULT+u5tQgw5kJ3WifRwLy9wX+DNS5uUUchJeG2KlrB3AgS0iF
-	Id7LrZlnzJWcNbYHrbZ4gnw06ne8A+o=
+	bh=XnpcpCSyDLdfO+af8k17UBoE0jHP5SM09VNPrTlP5mU=;
+	b=fQRu823+xu+mY4q6JLMjADpa0Vh3hwvzK5J/grCrt53hPU0H5D+YywxkDqs9JnNTFv2EL/
+	BmIk5CyWA1z013x6Rfx6vvJtRqVzaxoov/DEIO0EuwlTHZTIw4hdxycDN6sSONd48dNfq1
+	2g5sxHkB+h8rbrOPM6i/gNydWtecZ/U=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793820377;
+	b=FiFFjV47+TPJ8CtNeelk+NaFlkdTumHeIpSClVyllwtfV/ETkPPFyxHcY/e6lMnxqkfZZ0
+	awLvWcNEzmzFVp6dYcWXgnAQyEB0/R/cKZ0V1b+5+TxXJjTWV6S3hA06zClkFNbL+HOHAX
+	qxilLDkpAltaWf3iepUiptJuLfUH5eA=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Fe+qeY3o;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf06.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 03CA343323;
-	Wed,  4 Nov 2026 19:26:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6879B1F000C1;
-	Wed,  4 Nov 2026 19:25:49 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id B006840F5F;
+	Wed,  4 Nov 2026 19:26:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72DAD1F000C1;
+	Wed,  4 Nov 2026 19:26:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793820361;
-	bh=RXd/jlD2fYO+IzUitqn0Yxqt//n2gto42+U+qSH6QWU=;
+	s=k20260515; t=1793820376;
+	bh=XnpcpCSyDLdfO+af8k17UBoE0jHP5SM09VNPrTlP5mU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=GLlT6wThOUa/KfNlTWuqZPz2Ih/LW2NYnzaWY0pki30umCZLIl1MRVBbUTMv9zOzQ
-	 KUvA2Y+BaOT4XHvhY/vbdRPf/ofxl4BOA7G2Cny/691CVbfE9SzJNG0H7841ayyiPW
-	 q1QKtzy42RoQEe16QVfbQhu1Trtg8T0HfuKYvU0jeicYSNp2+ODBxjEymSq0qmh803
-	 DkvXTDiylR93zfsmnmYdfkoSjx/mzTH9XVIFaqgxigm0SGf8nQQ7zg0Th1in/5RVHH
-	 UvwoKm7/7JzOhxW7xTQaC2jHyFnfQfIuSRDNs0GpztaoEROUElyxSGVsFyKXWU+016
-	 ZqAQCUwnhlOrQ==
+	b=Fe+qeY3o8miJBk7XZvXWRPJiLnP1GdJPOqLtWaz6J/8VQem5/V0ND1YF0y/caRLDt
+	 DgMyPqaYb8QP/iR50E51P8bLvmgXDHfJQAP+4NJ3uCNVkwg8J4gXwnwNVy6o82qXxc
+	 G4M//wQeR0/W9Y+xsP86unflMsj2VnJzFCD6/c4qwO8PIZgOw5+bi09ifndSMUg6Pu
+	 SBcZj+IhaDAR0z3bc6SfeGcPmjQvgoRYlFKz/iKxUED/8QkGs8uB9cNmos93pL495J
+	 NXdA035THee9lHe8V5hdzJBAPFs5jWlBFKpe5bzr3vs+R1j21omP9eJIItBPXuLVUe
+	 AfP65GL9MMizQ==
 From: Christian Brauner <brauner@kernel.org>
 To: linux-fsdevel@vger.kernel.org
 Cc: Linus Torvalds <torvalds@linux-foundation.org>,
@@ -122,31 +122,31 @@ Cc: Linus Torvalds <torvalds@linux-foundation.org>,
 	"Christian Brauner (Amutable)" <brauner@kernel.org>,
 	Chuck Lever <cel@kernel.org>,
 	stable@vger.kernel.org
-Subject: [PATCH RESEND v2 40/51] sunrpc: make queue_wait a global wait queue again
-Date: Wed,  4 Nov 2026 20:25:47 +0100
-Message-ID: <20261104-work-procfs-bugfixes-v2-40-021c84d852e0@kernel.org>
+Subject: [PATCH RESEND v2 41/51] scsi: esas2r: bound the lengths of the HBA, SMP and firmware ioctls
+Date: Wed,  4 Nov 2026 20:26:02 +0100
+Message-ID: <20261104-work-procfs-bugfixes-v2-41-021c84d852e0@kernel.org>
 In-Reply-To: <20261104-work-procfs-bugfixes-v2-0-021c84d852e0@kernel.org>
 References: <20261104-work-procfs-bugfixes-v2-0-021c84d852e0@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4370; i=brauner@kernel.org; h=from:subject:message-id; bh=UZe+zvZ7uAQTPHkJMC5sa/e/J7N81e8hQB7K9CX6y/s=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS9bvx78e/9TWXFnRv2n+0+Y7Bz41ZTh6+/N7u8dJn+Z vW+4nUTvnWUsjCIcTHIiimyOLSbhMst56nYbJSpATOHlQlkCAMXpwBMpO8Lw/8UM22Z1SoBq778 fmAYFTvHNOBq8s/y7Yt0nNzEbPj0c+UZGdbduHhO1LNCJf1l6qOLebn6Ed/D5rXesxVIOr3xlVR zNxcA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=6672; i=brauner@kernel.org; h=from:subject:message-id; bh=2aMnK188zalc9NOhuhHvIjnHW4mP6VOaoGggC08Jevg=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS9bvw38ZaPqVai5VQBfePvMdFLldYLB/4OlJ7R5jbN+ cnWF7WVHaUsDGJcDLJiiiwO7Sbhcst5KjYbZWrAzGFlAhnCwMUpABNx2czIcNZ6Tv0XfyY9Wfn1 Dz4wh21XeGn22GPftdT+xljFz2cVORkZNr9fFHrlp67vsf/hjvXt0SfXTw4XF5NakZJvybXowMa J/AA=
 X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: ys3ktwo54xhpjce7i7gfs435es1fr56s
+X-Stat-Signature: 5bnmkse8n55a4xzktjw9tek8bidgm644
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: A7C1118000B
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
 	version=4.0.1
-X-HE-Tag: 1793820362-784686
-X-HE-Meta: U2FsdGVkX1/HNK0HjYLVABwWiK4+DpSN68v9iw9D6VuRmZ16kbkgHq0+K7ncJT32RFjnDopeCtf7y2K/16NO6hcCr7y6iktN7ZoN/fe07OGTFn7GSWJboCsg8XON9b2ElV5NIgRpblCImj7qnsixA4BqRT01WDf3QSfsmMviK7WK71D0ijQUFAoesO3MLm2FDdxI0ExtQxe17y7tpMA04tvar80ClsogfxMymd8fGK1lAGcEeV78zhJcqQfJTpqNjvPNJBRmbgWbiCjV3wMhvxjT7D7R8mL8QOkdImhqy9AYbMBZ9VAM9P4hhi+7kPE9huREQ8KcUpZN0jm9+mehNECgGrNvf26k0TJAKW/lFOtKV5jVxAeS2yQP+8FFveA0WF/q9i9IB7bKPG7+obRjVYGW1YOrB1Sd6ZiItd1Ch6uuoHyoNp3uWbGWgBXoGsUR/S5HUfpHpl4jkzbyQYCFkH7OJLqhIvmeBzbHe2kgJsoQOEpkDLg8+nI+tOfwLz+1QOsmU7zBuT1kx8t0JZon5rVnwJzma9yV5f9CDlB4ebNirf0Wq48iGD5P9DEI8DfBVkChdWogRy0NBJucO7hL+eg+eHPzXdpQmATnTC3u9zNgrWihiV6aWl0Gc7NgsY8jIRHw5K4v/BNGhgfyNgDLBEuP2ZleotiqErnfxcJ1HN0f/43FPbblv9ObCdkL+1X+mFJtMNLkC5Q9F/3WNietm1kaZo3qN6at8uKD4zAyfT0Pn25tm7yhARBSF4jVVpEb0oBKjmwcdYKf9OnktxGORNqPz7hj9YMJFIpBeYru55VjDjuIrgJN98BAx2jGqzWTXI/iDGFvIiL21ODyouTp5zO35rScoawdpfrNajwctyDYgaWdeQjtKffaymqrR7pmne8jWj0agPbuYYXvBGvfaqXpEnnUGw/H/YgC2IaBoK/9CBrrVZQcmVhGX0gqDEY2dwSpdBriOcwUJYEAg88
- 7lSdNSYo
- x/vtmpio4GxMOUrAAGB6OJ9GwKK2YquanTDoWCP2a/yUvd9g7Hqp96D0q3o5wnDijgn0VEa238OGnx3jBguErvnoh3ZMfKEpiO3JHi3DaWBgj2DIoG6DfrainQ5LqeyzVdrKt86b52eqoISyBgusmGXT1RHFUHu9zDUw1gzqFVAyV0vLQA1GBZzxEl1f1xfSLsel+mXZg7qNY3LR6Utiam5P9/NiYiF1oJf8nLmbHcskW7Bnm1W6RUop5I6pm5yTorPe/AKblh7nfgWzJ0VpjviZCbkYgzHnwQwiXl/FjV8IBf+PSMqY8pk9T79n5EVyZvIg4WqxSuLbifEs=
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 621C5180004
+X-HE-Tag: 1793820377-212273
+X-HE-Meta: U2FsdGVkX19GlFKKwv6Hlc9gmMdPyaJeMNuvEikb0Ebr6x8Y+lyV8KDEJm2yA+6W0K+DpoeYNfhzqsWflUhdzqJvxmZOZ1Zfy2jTlBERKJBlwV4+ekeL1d64Ni1jS+P7tID/tpAMPCILv3waJJE/lI0dCZEMHDk+4/TQiwKMVLzQcw8pYhQ0mW4TZ6WMbTYPjVz8kHDOg4xEmyr7lfG+NygabsWV5s8OXitcC578vTohuR8OVCnqkkLFM6l/16WIVpjNnNWToRDAeGz6Iq6lGH7II6IfKCv2a06zrQuJQR1HAMvquVSka0tveVeJ1dweYqzvxfOxdkqXF2rrVRMd7vYfel8+bb8D8LU6B09j7La5SLgH7qF6Ke/nuHFPeZYK7R9MhkF6rrRe4o7gygnl4c6IXquad/DQ18l8lpYiLcIWvp0Ev2RDSauBX9xe7TzMFHtMJ/NyrJgYcVNf5BkTAmg6nb1Ih+6UI2uGB9kpGtwQlUL85KlQFy015xu1qNUMQFMyOhTTr8aUARKqo3Nvf5XgjTiCYaRq2zuFdPvi5TqMvw6WqYnPHanFMkBFJIBojkIRh9p++vGMGHxdPJVSD/0P9hghG/czckFBxQesCjZU1c8JpudCv/nv5uycpZMFu8aJEsDnPRzf8bxBDSIYdHcLh8Kxn8n9Pk72JM4YGsap8EqgRfq+pms3e5WWXsrVzd7tXGeZeEiDHO5/D8H2Mn5PgGPuVq2yOF3HdJoAoWxPUufflykHRRVgvUVdZX+7oorj9ZBkVukdjesEWnAoD/4ksKzsMeTEFno4rmFXmaZMZXMzqUVledchpFNI6BByjeUVr02c+aKgMO9/KO/bypJSIaL45NCi1w+UTYUaL2HTPAZzLPvk/vuck+tZDGFDLIo8cOLWEJa9CDc1UY26msZJn30GwXnaESqV+s6vLlO95aRrfDDk5eiFzhaKknA3pRfwNGrJY6QPv7/0BdB
+ xbvc3o2N
+ k/HCS26cuZaCrxwjxVEtvpwlJBy38IWJcEY7iIBoegIU54grxzxoksDnlmMutfyuyI2n6qNRzjn+yACjkNvpjhGWmFa4GIBxsXB8dSYV082ojipHPDuUcoxuipsUWHA4bWynv2VLniZlUSv2PuLWKPgvooYHv18+at+jSbQuPCUmM5cNTznObwO+gkYkchF0DkO/XGF55msMcDQm8OnGDgoUpGwPiOWA7/a7SpxhX9EUV4rNpGhZeV8dUKVChpx3KeGID+Am0bAEVc4//U/lzetSNnMomJZSvBQFWfJkqMBjV+p5s2HOODcIpnGXL7KetYkt5LPR9sgmflo6rdCfAGlf+g1n0UaDjtFFIFmilc7Y0C66VnYZkVsZgH2QTNgQdqcz++X+LO/KkWZNMN7YASV6Mvw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -155,121 +155,177 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Since commit 552d0e17ea04 ("sunrpc: convert queue_wait from global to
-per-cache-detail waitqueue") poll() and epoll queue their waiters for a
-channel file on the queue_wait head in struct cache_detail. But the
-cache_detail can be freed while its channel file is still open and
-waited on.
+esas2r_ioctl_handler() copies in a struct atto_express_ioctl, a bit over
+512k, and hands the union member for the command to the handlers. For
+EXPRESS_IOCTL_HBA and EXPRESS_IOCTL_SMP the length of the buffered ioctl
+is the size of the member plus lengths that come straight from
+userspace:
 
-The procfs channel files of a network namespace are removed when the
-namespace goes away. Removing a procfs file waits for the callers that
-are in one of its methods right now and then calls ->release on every
-file that is still open (cf. close_pdeo()). The waiters that poll() and
-epoll left on the head stay queued until their file is really closed.
-So:
+  bi.length = sizeof(struct atto_ioctl) + ioctl_hba->data_length;
 
-  sunrpc_exit_net()
-  -> ip_map_cache_destroy()
-     -> cache_unregister_net()
-        -> remove_cache_proc_entries()
-           -> proc_remove()      // ->release, the waiters stay queued
-     -> cache_destroy_net()      // kfree(cd)
+  bi.length = sizeof(struct atto_ioctl_smp)
+	    + le32_to_cpu(si->req_length)
+	    + le32_to_cpu(si->rsp_length);
 
-and when poll() returns remove_wait_queue() writes to the freed
-cache_detail:
+handle_buffered_ioctl() copies bi.length bytes from the member into a
+DMA buffer and, once the adapter is done, copies the DMA buffer back
+over the member. Nothing checks that the lengths fit into the struct
+that was copied in. So a large data_length makes it read past the
+struct and then write the DMA buffer back over the memory behind it.
 
-  BUG: KASAN: slab-use-after-free in _raw_spin_lock_irqsave+0x4b/0xa0
-  Read of size 1 at addr ff110001131bb570 by task sunrpc-poll-uaf/242
-  Call Trace:
-   remove_wait_queue+0x22/0x1c0
-   poll_freewait+0xc2/0x230
-   do_sys_poll+0x9ba/0xd50
-   __x64_sys_poll+0x165/0x470
-  Freed by task 12:
-   kfree+0x267/0x620
-   sunrpc_exit_net+0x34/0x80
-   ops_undo_list+0x271/0x8d0
-   cleanup_net+0x3f3/0x860
+The firmware commands pass sizeof(struct atto_express_ioctl) to
+esas2r_{read,write}_{fw,fs}() as the length of data.fwrw.image, which
+starts 28 bytes into the struct. So they can read and write 28 bytes
+past it as well.
 
-Closing an epoll instance that watches the file gets there through
-ep_unregister_pollwait() instead.
+The handler is reachable through /proc/scsi/esas2r/ATTONode. It is
+created with mode 0, which procfs turns into 0444, and esas2r doesn't
+check for a capability anywhere. So any local user can do this on a
+machine with such an adapter.
 
-The channel files of a network namespace belong to the root of its
-user namespace and cache_open() doesn't check for a capability. So an
-unprivileged user can open the channel file of a namespace of its own
-from the outside, poll it and let the namespace die.
-
-Go back to a single static wait queue that never goes away. A wakeup
-for one cache wakes the waiters of all caches again but cache_poll()
-reports per cache_detail so that's just a spurious wakeup. procfs
-should really own the wait queue of its files like kernfs does but
-that's nothing for stable.
+Bound all of these by the room from the member to the end of the
+struct. read_hw() passes handle_hba_ioctl() a single struct atto_ioctl
+and only ever returns that, so there the data length has to be zero.
 
 Reported-by: Chris Mason <mason@kernel.org>
-Fixes: 552d0e17ea04 ("sunrpc: convert queue_wait from global to per-cache-detail waitqueue")
-Acked-by: Chuck Lever <cel@kernel.org>
+Fixes: 26780d9e12ed ("[SCSI] esas2r: ATTO Technology ExpressSAS 6G SAS/SATA RAID Adapter Driver")
 Cc: stable@vger.kernel.org
 Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 ---
- include/linux/sunrpc/cache.h |  1 -
- net/sunrpc/cache.c           | 12 +++++++++---
- 2 files changed, 9 insertions(+), 4 deletions(-)
+ drivers/scsi/esas2r/esas2r.h       |  2 +-
+ drivers/scsi/esas2r/esas2r_ioctl.c | 41 ++++++++++++++++++++++++--------------
+ drivers/scsi/esas2r/esas2r_main.c  |  3 ++-
+ 3 files changed, 29 insertions(+), 17 deletions(-)
 
-diff --git a/include/linux/sunrpc/cache.h b/include/linux/sunrpc/cache.h
-index 2735c332ddb7..bf4fc543e1e5 100644
---- a/include/linux/sunrpc/cache.h
-+++ b/include/linux/sunrpc/cache.h
-@@ -119,7 +119,6 @@ struct cache_detail {
- 	struct list_head	requests;
- 	struct list_head	readers;
- 	spinlock_t		queue_lock;
--	wait_queue_head_t	queue_wait;
- 	u64			next_seqno;
- 
- 	atomic_t		writers;		/* how many time is /channel open */
-diff --git a/net/sunrpc/cache.c b/net/sunrpc/cache.c
-index 1bc04109d213..1ceaea7e01b9 100644
---- a/net/sunrpc/cache.c
-+++ b/net/sunrpc/cache.c
-@@ -404,7 +404,6 @@ void sunrpc_init_cache_detail(struct cache_detail *cd)
- 	INIT_LIST_HEAD(&cd->requests);
- 	INIT_LIST_HEAD(&cd->readers);
- 	spin_lock_init(&cd->queue_lock);
--	init_waitqueue_head(&cd->queue_wait);
- 	cd->next_seqno = 1;
- 	spin_lock(&cache_list_lock);
- 	cd->nextcheck = 0;
-@@ -965,13 +964,20 @@ out:
- 	return ret;
+diff --git a/drivers/scsi/esas2r/esas2r.h b/drivers/scsi/esas2r/esas2r.h
+index a763edd05fe4..10101f50b282 100644
+--- a/drivers/scsi/esas2r/esas2r.h
++++ b/drivers/scsi/esas2r/esas2r.h
+@@ -967,7 +967,7 @@ int esas2r_write_params(struct esas2r_adapter *a, struct esas2r_request *rq,
+ int esas2r_ioctl_handler(void *hostdata, unsigned int cmd, void __user *arg);
+ int esas2r_ioctl(struct scsi_device *dev, unsigned int cmd, void __user *arg);
+ u8 handle_hba_ioctl(struct esas2r_adapter *a,
+-		    struct atto_ioctl *ioctl_hba);
++		    struct atto_ioctl *ioctl_hba, size_t room);
+ enum scsi_qc_status esas2r_queuecommand(struct Scsi_Host *host,
+ 					struct scsi_cmnd *cmd);
+ int esas2r_show_info(struct seq_file *m, struct Scsi_Host *sh);
+diff --git a/drivers/scsi/esas2r/esas2r_ioctl.c b/drivers/scsi/esas2r/esas2r_ioctl.c
+index c93d9265e100..80ae5b9d45db 100644
+--- a/drivers/scsi/esas2r/esas2r_ioctl.c
++++ b/drivers/scsi/esas2r/esas2r_ioctl.c
+@@ -311,17 +311,27 @@ static int smp_ioctl_callback(struct esas2r_adapter *a,
+ 	return true;
  }
  
-+/*
-+ * Not in struct cache_detail: poll and epoll waiters stay queued until
-+ * their file is closed, but a channel file in procfs can stay open after
-+ * the cache_detail of its dying network namespace has been freed.
-+ */
-+static DECLARE_WAIT_QUEUE_HEAD(queue_wait);
++/* The room from @member to the end of a struct atto_express_ioctl. */
++#define EXPRESS_IOCTL_ROOM(member)				\
++	(sizeof(struct atto_express_ioctl) -			\
++	 offsetof(struct atto_express_ioctl, member))
 +
- static __poll_t cache_poll(struct file *filp, poll_table *wait,
- 			       struct cache_detail *cd)
+ static u8 handle_smp_ioctl(struct esas2r_adapter *a, struct atto_ioctl_smp *si)
  {
- 	__poll_t mask;
- 	struct cache_reader *rp = filp->private_data;
+ 	struct esas2r_buffered_ioctl bi;
++	u64 length = (u64)sizeof(struct atto_ioctl_smp) +
++		     le32_to_cpu(si->req_length) +
++		     le32_to_cpu(si->rsp_length);
++
++	/* The request and the response follow @si in the same buffer. */
++	if (length > EXPRESS_IOCTL_ROOM(data.ioctl_smp))
++		return IOCTL_INVALID_PARAM;
  
--	poll_wait(filp, &cd->queue_wait, wait);
-+	poll_wait(filp, &queue_wait, wait);
+ 	memset(&bi, 0, sizeof(bi));
  
- 	/* alway allow write */
- 	mask = EPOLLOUT | EPOLLWRNORM;
-@@ -1236,7 +1242,7 @@ static int cache_do_upcall(struct cache_detail *detail, struct cache_head *h)
- 	spin_unlock(&detail->queue_lock);
- 	if (ret != -EAGAIN && detail->cache_notify)
- 		detail->cache_notify(detail, h);
--	wake_up(&detail->queue_wait);
-+	wake_up(&queue_wait);
- 	if (ret == -EAGAIN) {
- 		kfree(buf);
- 		kfree(crq);
+ 	bi.a = a;
+ 	bi.ioctl = si;
+-	bi.length = sizeof(struct atto_ioctl_smp)
+-		    + le32_to_cpu(si->req_length)
+-		    + le32_to_cpu(si->rsp_length);
++	bi.length = length;
+ 	bi.offset = 0;
+ 	bi.callback = smp_ioctl_callback;
+ 	return handle_buffered_ioctl(&bi);
+@@ -1221,11 +1231,16 @@ static void hba_ioctl_done_callback(struct esas2r_adapter *a,
+ 	}
+ }
+ 
++/* @room is the size of the buffer that starts with @ioctl_hba. */
+ u8 handle_hba_ioctl(struct esas2r_adapter *a,
+-		    struct atto_ioctl *ioctl_hba)
++		    struct atto_ioctl *ioctl_hba, size_t room)
+ {
+ 	struct esas2r_buffered_ioctl bi;
+ 
++	/* The data follows @ioctl_hba in the same buffer. */
++	if (ioctl_hba->data_length > room - sizeof(struct atto_ioctl))
++		return IOCTL_INVALID_PARAM;
++
+ 	memset(&bi, 0, sizeof(bi));
+ 
+ 	bi.a = a;
+@@ -1349,31 +1364,27 @@ int esas2r_ioctl_handler(void *hostdata, unsigned int cmd, void __user *arg)
+ 			err = esas2r_write_fw(a,
+ 					      (char *)ioctl->data.fwrw.image,
+ 					      0,
+-					      sizeof(struct
+-						     atto_express_ioctl));
++					      EXPRESS_IOCTL_ROOM(data.fwrw.image));
+ 
+ 			if (err >= 0) {
+ 				err = esas2r_read_fw(a,
+ 						     (char *)ioctl->data.fwrw.
+ 						     image,
+ 						     0,
+-						     sizeof(struct
+-							    atto_express_ioctl));
++						     EXPRESS_IOCTL_ROOM(data.fwrw.image));
+ 			}
+ 		} else if (ioctl->data.fwrw.img_type == FW_IMG_FS_API) {
+ 			err = esas2r_write_fs(a,
+ 					      (char *)ioctl->data.fwrw.image,
+ 					      0,
+-					      sizeof(struct
+-						     atto_express_ioctl));
++					      EXPRESS_IOCTL_ROOM(data.fwrw.image));
+ 
+ 			if (err >= 0) {
+ 				err = esas2r_read_fs(a,
+ 						     (char *)ioctl->data.fwrw.
+ 						     image,
+ 						     0,
+-						     sizeof(struct
+-							    atto_express_ioctl));
++						     EXPRESS_IOCTL_ROOM(data.fwrw.image));
+ 			}
+ 		} else {
+ 			ioctl->header.return_code = IOCTL_BAD_FLASH_IMGTYPE;
+@@ -1441,9 +1452,9 @@ int esas2r_ioctl_handler(void *hostdata, unsigned int cmd, void __user *arg)
+ 		break;
+ 
+ 	case EXPRESS_IOCTL_HBA:
+-		ioctl->header.return_code = handle_hba_ioctl(a,
+-							     &ioctl->data.
+-							     ioctl_hba);
++		ioctl->header.return_code =
++			handle_hba_ioctl(a, &ioctl->data.ioctl_hba,
++					 EXPRESS_IOCTL_ROOM(data.ioctl_hba));
+ 		break;
+ 
+ 	case EXPRESS_IOCTL_VDA:
+diff --git a/drivers/scsi/esas2r/esas2r_main.c b/drivers/scsi/esas2r/esas2r_main.c
+index ada278c24c51..75a70ae9441b 100644
+--- a/drivers/scsi/esas2r/esas2r_main.c
++++ b/drivers/scsi/esas2r/esas2r_main.c
+@@ -178,7 +178,8 @@ static ssize_t read_hw(struct file *file, struct kobject *kobj,
+ 	if (!a->local_atto_ioctl)
+ 		return -ENOMEM;
+ 
+-	if (handle_hba_ioctl(a, a->local_atto_ioctl) != IOCTL_SUCCESS)
++	if (handle_hba_ioctl(a, a->local_atto_ioctl,
++			     sizeof(struct atto_ioctl)) != IOCTL_SUCCESS)
+ 		return -ENOMEM;
+ 
+ 	memcpy(buf, a->local_atto_ioctl, length);
 
 -- 
 2.53.0
