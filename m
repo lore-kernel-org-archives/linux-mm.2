@@ -1,149 +1,99 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DC5B606EE94
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 16:50:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F1046082BD9
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 16:50:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=mS1RLrKi
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=R8CZWTpF
 Received: by kanga.kvack.org (Postfix)
-	id 85CB46B05CF; Wed,  4 Nov 2026 11:50:15 -0500 (EST)
+	id A522B6B05D1; Wed,  4 Nov 2026 11:50:19 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7DF586B05D0; Wed,  4 Nov 2026 11:50:15 -0500 (EST)
+	id 9DDE76B05D2; Wed,  4 Nov 2026 11:50:19 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 60D836B05D1; Wed,  4 Nov 2026 11:50:15 -0500 (EST)
+	id 856956B05D3; Wed,  4 Nov 2026 11:50:19 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 309776B05CF
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 11:50:15 -0500 (EST)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 9EAC71A07DF
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 16:50:14 +0000 (UTC)
-X-FDA: 85398024348.14.BF27558
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf04.hostedemail.com (Postfix) with ESMTP id DF5E64000D
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 16:50:12 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mS1RLrKi;
-	spf=pass (imf04.hostedemail.com: domain of aneesh.kumar@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=aneesh.kumar@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 5C8B56B05D1
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 11:50:19 -0500 (EST)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id D80A6807D9
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 16:50:18 +0000 (UTC)
+X-FDA: 85398024516.16.DD340EC
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 38BECA000E
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 16:50:17 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=R8CZWTpF;
+	spf=pass (imf25.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793811017;
+	b=PjjU8mioN2VE1KjlRJUcj8+TiNfEwD1wHVb7GzLK19eWGmNxuw60MEeAJT3riLS/tSeZyC
+	wMAHkNsm65IOTH7TbXba1HGFzRqdK8PD8vPvxk9dakr1nNJ/izRHdodfX8iEVGICu3tX2C
+	7Usmyx5ODa1vipKPLtMCTgtXo7D/tUk=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=R8CZWTpF;
+	spf=pass (imf25.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793811013;
+	s=arc-20220608; t=1793811017;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FZs/NYrhS2H+yLG3RkfZEwYZelHczFcvNccswVSGXMc=;
-	b=NdQu8Gnqm3B226KC9xHXhJltk+6EnoWOhY9VwoQBCm6Tt+0pA/29x/aK0Fb3GIX5G+PR3E
-	Gq3I9tffJYdFQLCYxmWAlwLUQ31tbm7Fp8ZKNyaPl2qiCQtU9Ac8QauSQQLm2s3akXDOOo
-	CxIOD6rNQuzqHDSyGKg8N69qKCBRWd8=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793811013;
-	b=U0EutvfvfGpeUk7hvuIyHrvGwNkN/x0voWFnobmLkorGKd92GVnk4IXWlx8Pu/xghAWtpC
-	yKvj6ZypQ/38Wf3oghsBTZoENKMfQmY8cNGUQg/lIDirJn74DclS1Vkx+/FOhClwHRzXwR
-	B5Cr1i4UhxI9ZInwZidxPGhUEM/ZLsU=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mS1RLrKi;
-	spf=pass (imf04.hostedemail.com: domain of aneesh.kumar@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=aneesh.kumar@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=ZclUos6zhiP0jw7ZtxiOvkyNi6042C1+3TQ0krAy9mA=;
+	b=VE0pCuPHUrcfMpZt4bnSVQDCdgWEuN8KMvFZzIn0NR9qjJZNHC9pPPaDPKRSlB/U50mQzV
+	E3Aj9pKdUJcw40lJlDArvABTr5n4gsyh1Lod1sf99HJw4PIQlOwOqmghJL4bst3uQd8nkt
+	2HWPNW49baG4/9WYi/EtoFpUbJChsl0=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 366DB41800;
-	Wed,  4 Nov 2026 16:50:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2608E1F00919;
-	Wed,  4 Nov 2026 16:49:55 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id BE5AF60A9B;
+	Wed,  4 Nov 2026 16:50:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF50E1F00A15;
+	Wed,  4 Nov 2026 16:50:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793811012;
-	bh=FZs/NYrhS2H+yLG3RkfZEwYZelHczFcvNccswVSGXMc=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=mS1RLrKi88p9XqzdJYEaJ5+IqT6NarwgxSiYwp5vgjahMn2aqsFuiLZvYVd6Ro6G9
-	 6da+ooRIfw5qckkt3M+gxSmTp6X3WbvycB4hcOW8RIVir58D6vlqJjx6uRxNR8We9n
-	 3cCVBT/RAsbeSdnjYXxhY96zLDzF7V8hy1zN3EoNJTlw1idqnr+La3z7UA5Tw9CgeD
-	 i0ozVGAyiaXKxpMjl/pn8Sck74RZ6ylNTTo48KTFnOowPiicz0aau2cUo/esrln4vJ
-	 YNiOuLLm6pjwHcmH/wnQn9oiSYJrnKxFAmw5WuNUIMn1DOOQPOtiFnT4YllJXT/N+u
-	 S8afOGcw5kdyA==
-From: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>
-To: linux-coco@lists.linux.dev
-Cc: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Baoquan He <baoquan.he@linux.dev>,
-	Mike Rapoport <rppt@kernel.org>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Pratyush Yadav <pratyush@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Jason Gunthorpe <jgg@ziepe.ca>,
-	Joerg Roedel <joro@8bytes.org>,
-	Marc Zyngier <maz@kernel.org>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Steven Price <steven.price@arm.com>,
-	Sumit Semwal <sumit.semwal@linaro.org>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Thomas Gleixner <tglx@kernel.org>,
-	Will Deacon <will@kernel.org>,
-	Russell King <linux@armlinux.org.uk>,
-	Benjamin Gaignard <benjamin.gaignard@collabora.com>,
-	Brian Starkey <Brian.Starkey@arm.com>,
-	John Stultz <jstultz@google.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Radu Rendec <radu@rendec.net>,
-	"T.J. Mercier" <tjmercier@google.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <chleroy@kernel.org>,
-	Ritesh Harjani <ritesh.list@gmail.com>,
-	Shrikanth Hegde <sshegde@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>,
-	Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	x86@kernel.org,
-	"H . Peter Anvin" <hpa@zytor.com>,
-	Kiryl Shutsemau <kas@kernel.org>,
-	Rick Edgecombe <rick.p.edgecombe@intel.com>,
-	"K . Y . Srinivasan" <kys@microsoft.com>,
-	Haiyang Zhang <haiyangz@microsoft.com>,
-	Wei Liu <wei.liu@kernel.org>,
-	Dexuan Cui <decui@microsoft.com>,
-	Long Li <longli@microsoft.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Vitaly Kuznetsov <vkuznets@redhat.com>,
-	Andy Lutomirski <luto@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	dri-devel@lists.freedesktop.org,
-	iommu@lists.linux.dev,
-	linaro-mm-sig@lists.linaro.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-media@vger.kernel.org,
-	linux-mm@kvack.org,
-	kvmarm@lists.linux.dev,
-	patches@lists.linux.dev
-Subject: [PATCH v9 12/14] swiotlb: Make rounded shared pool capacity allocatable
-Date: Wed,  4 Nov 2026 22:15:53 +0530
-Message-ID: <20261104164555.3555725-13-aneesh.kumar@kernel.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20261104164555.3555725-1-aneesh.kumar@kernel.org>
-References: <20261104164555.3555725-1-aneesh.kumar@kernel.org>
+	s=k20260515; t=1793811016;
+	bh=ZclUos6zhiP0jw7ZtxiOvkyNi6042C1+3TQ0krAy9mA=;
+	h=From:Subject:Date:To:Cc;
+	b=R8CZWTpFONfM8ysslHzZ230/S602fbk70oVCVRgZ/TvuOMeIQ7GI6vD87SIXI1mYQ
+	 75iazJNg8/NLR9QBUP6Gsh1zib6hm0MCVmcPWkc6vw8AN2/G/sbDJW0SiBMR1FkBUq
+	 o9ns2ushtc82dC8yPgrVyBoUTjBudAw//+BKY3NsXznyntZ/xrPyz3TYRMfLiBTuqP
+	 DCmw77YRG5DScGSdnyc4fXIyGEjj/5KxcF1lLv1FcPQIdTblIBwgTJ0vhqrALjkeZ2
+	 4UftRGr3Z5YeUBFQRB3YeSCLBIty49O0QBe5EkBpLRNKxqoHiz5VPfTvNiKdAAswH7
+	 FNtyq+p0022Qw==
+From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+Subject: [PATCH v2 0/3] kho: fix bootmem sizing
+Date: Wed, 04 Nov 2026 18:50:08 +0200
+Message-Id: <20261104-kho-bootmem-sizing-v2-0-b0d1a834780f@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 4dowqrune5e8zih9urp9iykdzi33hz6n
-X-Rspamd-Queue-Id: DF5E64000D
-X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/32OQQ6CMBBFr0K6dpSWAurKexgWBQYYkdZMkaiEu
+ 0tx7/L9P/PyZ+GRCb04R7NgnMiTsyuoXSSqztgWgeqVhYpVJmWcQN85KJ0bBxzA04dsC2mdGax
+ 1bpROxPr4YGzotUmvxY/9s7xhNQZTuCiNRyjZ2KoLkWNqyR4G40fk0HfkR8fvbdUkg+fvgElCD
+ Do1Jtfx6dgk+tIjW7zvHbeiWJblC3yt8dTnAAAA
+X-Change-ID: 20261103-kho-bootmem-sizing-5d6aed47a243
+To: Mike Rapoport <rppt@kernel.org>, 
+ Pasha Tatashin <pasha.tatashin@soleen.com>, 
+ Pratyush Yadav <pratyush@kernel.org>
+Cc: Alexander Graf <graf@amazon.com>, 
+ Andrew Morton <akpm@linux-foundation.org>, 
+ Chen Pei <cp0613@linux.alibaba.com>, George Guo <guodongtai@kylinos.cn>, 
+ Kexin Liu <liukexin@kylinos.cn>, Sourabh Jain <sourabhjain@linux.ibm.com>, 
+ kexec@lists.infradead.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org
+X-Mailer: b4 0.16.1-dev
+X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1793811012-258332
-X-HE-Meta: U2FsdGVkX1+VpJJPAW/IUnA7bJZ3B1jszEYnz86HEIiW7kKBPQh8ARjTfIl6jEWWxG3K3af8ngYLe9V/6IpjNrUy18xs/ur+whwHT2M9KcL42meSTjaDhVc7f0GdH5v5ebPIa8EhIvTHFEcVgbwuCgiaW5GzaEOlvmfgJ3gQN8xKAlfgQY/S2pHanTiPkBDGvNkD83A8ld02FPj9BNZUSYfQJzuLpPTL6ndQeNsOax30Uw0wTswcpTYUzdIF4D7iQQU2lCDgomjaxSZAKalUCIytodrDwxO2A1H/XUk34DBOLIFAq1uLOPWlRVn/ZlKYxwi2BZPxywccy2UoZGu18woDgKTP1ofi0FLI1g+qVyV4qJFBMAyoyOs4/MOvDFbBAcCjwjO828jGrDQdpp8g0GB23bOrVnHMZvyc8SCXERDel5oPk8MdCNrG1OnEH44YxoMlXqMLJRraZT5t1GAqdxJ591DDj1muzCHZU20wi7r27ScY+N3hUM9Sp2lWocXnJR0G+BZ6FEbZ4DT05zskdPtvdpeA4I3rbYqinAbicM1vlSTubUk8qk4fi6mvrdkeA5u/TwRI8q0deS+b14U6WwbBE9zJrnIJPqdP+G3MrfjBWHFlVAETPLe7n7CJU7n5NlrIX5uQVdoyz/XH7cdbD8XiyAumxsj8GgCea0dBUK6eKLDMPZ3vSFe3O8KmvNu5dxl+wiwYI//mCwBmb/y6wRladZX5pHfOBGwrW2aA9FDqQQxZyEGPFtzxFVuGOXu/dATIvPaTiGEY0eo2BS0HGZJTFj5UY2n7m7gp58bpgpa0u0bScYo1NNbqaoVxN/cGlzV5FcgSGfJE+3JfOIfPkziPJ3EJ1QqFi6hf0j/rjZ1TFH504pIQcULSSTNYIGeXsGFUWV/Pvx+Fi/S7kFL9WO6+Toz0m3fMpqowUcLVJmPFqd2aXVT3S5qjWB15TCavWSezDLfH9WrVS9pVzBc
- DjfZvwhH
- E2zc4mKPdIEy+WemSDJJ7/MKb0+OjtaUBN+oR/Rd7L1DogcW3VGmHGBlBLrQnn0i/L0ipl2kJ2jpTDVNkkB3oO+0O63YkDVMxJ7ktaEx8YLMU01fMxwL6dcXJVjSJbPYjjtTTPfRcXpSOogXBkLrK7An6NcbVx3x/F7ROUxTBaKxEVmfjLjg5oKyqwPMUJPLWZB71lDmNhDc9t5kPCf0MpNIYZIWUgrrKE0rqaks841pWaQzHwqWDDwryhu5qFlqSmNgaIkUdamG9N4+wyBFOWGnqOX+bjE1UzI76/g06P+O0ccTcTQvK0cPn6UYfLZh9SAyefT3KREc+k1dU96b1o1x02x97knt72auhV3qjtAOc4mCC5bS0dbds5byOErItJN9s6KbLZhHcc1c=
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_GIT autolearn=unavailable autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 38BECA000E
+X-Stat-Signature: xa7suerbo5edziadtohekd33fd6f856a
+X-Rspam-User: 
+X-HE-Tag: 1793811017-670594
+X-HE-Meta: U2FsdGVkX18gi+vys+LKAv5zOjLn+JzcUxRFJtGMTJgOAcgscgZ3fl53kRn9YpgfY0RjcAjCaJKpJiU6tWPYrCDyE7R5gTeRY/yypnw2ySZLE/b0U+QOJDup//nBPByEcXQE+KHSzY7oLVSsP1B0+515N5icgYhTPVqSCXIhBYBWblcPfeckwino7gzG3jj4KNJf5v9BcEpwR9uSWZn5jIOvMubbY5r6QGzDS+qZc19SVLa1M3wh1dmQCdCstUo1vUOmmkSzP7rzkV7HleWm+Zgu0kA3MLuovjUcl2Glc+QUwJSrpY21GHComasmqET5cKe5i4lsVRIY8Mi0nXhajuiqDg157T1fyaDEs2xO6g0U2/NwI2W+Am15SpX4QibWVbDot/4+tp/Lp8OTSm3xSTHYQeC7AFP+PD7s7vBi9GVWWd5Fv4lVjG8GmtFPGelpF1n1WA9hygdZQ913VHG8Z8hY7MGG8fOyuzJro3lwZS0d5mM3F/pPPn7103bExk7s5MrXgerEoOoubYDWQm4OSDgweC2RvqCG2YE5ai89oTzsI+IIOnPDdgEXLVayWCN/yT0lPG+tcodQJuNX5zddKkcvVIXTBfPhfcGaGxiql+4zaILUbo3I034Od2Rq37nSAWqWEySyvn6rRQB9spQeDjMNEI9GVjM0Uweozj8Pjbt/EeEpuYOnMxyplMIEMIUhMuLAu0nm/TQhivCZeMKuc/jIXjFzypt4hOQ1/e9Ipz6uCXKJ8TBZmDhxD7vT54Cx4nJclslvclTF76dAeawyBxsiyZecMXGaLGC5bn6VhA0owY9A8RJLWtg0K9cWfvh0Zgp1Fm6Dcq8xfpP9PQ8IGATgXKc3DhAWVIeYJn2CFQ6eqnPVPBF7U163U0TfNoHsoIZ4/LzGJ+QtuTm9xzMhTnBhoe9wUzpWB4eFRafkAHXIaHKPdaAlkF9yttXuhTrsMKf+O2UcTS0tjPlw6yE
+ aS630HdV
+ n8jc0juIOBJ1lNdQhYKp0Uqs3Qu9rrJb06COdZnCa30tz0RG6clDa/RxNOLjlU5gWd5sLIXQKF9aWu9uIvPalZ0rPhKwuRQmExwVrLwsBydPRShWYcFrMv3J70uq9Gdxi+b0ZQPvTjGXZGvflB0qLdqpaoa9hnYEAOGiR1gXTgglNLbVnFC8axDZps4zuq2/QyaILjc5bsHWk0AF2S/EhneLmy+8AkYgYS7GeLew1IqzZGIbK6YTgA0diBtBKsGsZAzaZDKNlkKKdLNWPhaWR/mAqARqkruzd90LeKQOT5rR8E9RMWYuz2uFvm6DAod41310yRlCfd1stetk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -152,141 +102,46 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-CoCo shared memory may need to be allocated and transitioned in units larger
-than the requested object. Before this change, users handled the resulting
-capacity as follows:
+There were several reports about issues with KHO bootmem sizing.
 
-  User                         Rounded capacity reused
-  dma-buf system heap          no
-  DMA-direct                   no
-  regular GIC tables           no
-  small GIC ITTs               yes, through a gen_pool
-  early SWIOTLB pool           no
-  late SWIOTLB pool            yes
-  persistent dynamic SWIOTLB   no
-  transient dynamic SWIOTLB    no, one mapping only
-  atomic DMA pools             yes, through a gen_pool
-  restricted SWIOTLB pool      no additional padding
+The bootmem areas are sized from overlapping views of the memory reserved
+in memblock, so on NUMA systems memory allocated on a node is accounted
+twice and with CONFIG_NUMA=n the lowmem and the global areas are accounted
+once again in the area of node 0. Besides, the lowmem and the global areas
+are reserved even when they are empty.
 
-Improve the early and persistent dynamic SWIOTLB pools. They already own
-and transition backing rounded to the shared granule size, and SWIOTLB
-is itself a suballocator. Advertise the rounded extent as slots, size
-the slot metadata to match. This makes the extra capacity available
-without reserving more backing memory.
+The first patch makes kexec walk the bootmem areas in address order.
+Otherwise kexec on arm64 may fail if a small area at the top of the memory
+is the first in the list, and with smaller bootmem areas this becomes more
+likely.
 
-Keep transient dynamic pools unchanged. A transient pool belongs to one
-DMA mapping and is destroyed when that mapping is unmapped, so its spare
-backing cannot satisfy a later request without changing the lifetime
-model.
+The second patch skips empty bootmem areas and the third one makes the
+lowmem, per-node and global areas cover separate parts of the reserved
+memory.
 
-Do not attempt the same optimization for dma-buf, DMA-direct or regular
-GIC objects. Those allocations have independent caller-visible sizes and
-lifetimes. Reusing their padding requires a shared-granule suballocator
-with reference counting, per-object mappings and accounting.
-
-Note:
-For the current 64 KiB CCA shared granule size, SWIOTLB pool sizes are
-already multiples of the 256 KiB IO_TLB segment size. Consequently, the
-rounding does not change any runtime values on current CCA systems. It
-instead makes the code express the intended invariant that pool metadata
-describes the complete shared-granule-aligned backing allocation.
-
-Cc: Marek Szyprowski <m.szyprowski@samsung.com>
-Cc: Robin Murphy <robin.murphy@arm.com>
-Signed-off-by: Aneesh Kumar K.V (Arm) <aneesh.kumar@kernel.org>
 ---
- kernel/dma/swiotlb.c | 30 ++++++++++++++++++++++++------
- 1 file changed, 24 insertions(+), 6 deletions(-)
+Changes in v2:
+- add a patch that walks bootmem areas in address order
+- update kho_bootmem_cnt directly in kho_reserve_bootmem_area() (Pratyush)
+- don't reserve the lowmem area if ARCH_LOW_ADDRESS_LIMIT covers all
+  memory (Pratyush)
+- extend the comment above bootmem_size_update() (Pratyush)
+- Link to v1: https://patch.msgid.link/20261103-kho-bootmem-sizing-v1-0-45aa74098f34@kernel.org
 
-diff --git a/kernel/dma/swiotlb.c b/kernel/dma/swiotlb.c
-index a3fc33c54cec..285814387148 100644
---- a/kernel/dma/swiotlb.c
-+++ b/kernel/dma/swiotlb.c
-@@ -328,6 +328,14 @@ static inline unsigned long nr_slots(u64 val)
- 	return DIV_ROUND_UP(val, IO_TLB_SIZE);
- }
- 
-+static unsigned long swiotlb_align_nslabs(unsigned long nslabs)
-+{
-+	unsigned long granule_nslabs;
-+
-+	granule_nslabs = cc_shared_granule_size() >> IO_TLB_SHIFT;
-+	return ALIGN(nslabs, granule_nslabs);
-+}
-+
- static void swiotlb_mark_pool_used(struct io_tlb_pool *pool)
- {
- 	unsigned long i;
-@@ -431,11 +439,12 @@ static void add_mem_pool(struct io_tlb_mem *mem, struct io_tlb_pool *pool)
- }
- 
- static void __init *swiotlb_memblock_alloc(unsigned long nslabs,
--		unsigned int flags,
-+		unsigned long *alloc_nslabs, unsigned int flags,
- 		int (*remap)(void *tlb, unsigned long nslabs))
- {
-+	unsigned long aligned_nslabs = swiotlb_align_nslabs(nslabs);
-+	size_t bytes = aligned_nslabs << IO_TLB_SHIFT;
- 	void *tlb;
--	size_t bytes = ALIGN(nslabs << IO_TLB_SHIFT, cc_shared_granule_size());
- 
- 	/*
- 	 * By default allocate the bounce buffer memory from low memory, but
-@@ -453,12 +462,13 @@ static void __init *swiotlb_memblock_alloc(unsigned long nslabs,
- 		return NULL;
- 	}
- 
--	if (remap && remap(tlb, nslabs) < 0) {
-+	if (remap && remap(tlb, aligned_nslabs) < 0) {
- 		memblock_free(tlb, bytes);
- 		pr_warn("%s: Failed to remap %zu bytes\n", __func__, bytes);
- 		return NULL;
- 	}
- 
-+	*alloc_nslabs = aligned_nslabs;
- 	return tlb;
- }
- 
-@@ -471,6 +481,7 @@ void __init swiotlb_init_remap(bool addressing_limit, unsigned int flags,
- {
- 	struct io_tlb_pool *mem = &io_tlb_default_mem.defpool;
- 	unsigned long nslabs;
-+	unsigned long alloc_nslabs;
- 	unsigned int nareas;
- 	size_t alloc_size;
- 	void *tlb;
-@@ -495,13 +506,14 @@ void __init swiotlb_init_remap(bool addressing_limit, unsigned int flags,
- 		swiotlb_adjust_nareas(num_possible_cpus());
- 
- 	nslabs = default_nslabs;
--	nareas = limit_nareas(default_nareas, nslabs);
--	while ((tlb = swiotlb_memblock_alloc(nslabs, flags, remap)) == NULL) {
-+	while ((tlb = swiotlb_memblock_alloc(nslabs, &alloc_nslabs, flags,
-+					     remap)) == NULL) {
- 		if (nslabs <= IO_TLB_MIN_SLABS)
- 			return;
- 		nslabs = ALIGN(nslabs >> 1, IO_TLB_SEGSIZE);
--		nareas = limit_nareas(nareas, nslabs);
- 	}
-+	nslabs = alloc_nslabs;
-+	nareas = limit_nareas(default_nareas, nslabs);
- 
- 	if (default_nslabs != nslabs) {
- 		pr_info("SWIOTLB bounce buffer size adjusted %lu -> %lu slabs",
-@@ -872,6 +884,12 @@ static struct io_tlb_pool *swiotlb_alloc_pool(struct device *dev,
- 		tlb_size = nslabs << IO_TLB_SHIFT;
- 	}
- 
-+	/* Transient pools are tied to one mapping and cannot reuse padding. */
-+	if (mem->cc_shared && !dev) {
-+		nslabs = swiotlb_align_nslabs(nslabs);
-+		tlb_size = nslabs << IO_TLB_SHIFT;
-+	}
-+
- 	slot_order = get_order(array_size(sizeof(*pool->slots), nslabs));
- 	pool->slots = (struct io_tlb_slot *)
- 		__get_free_pages(gfp, slot_order);
--- 
-2.43.0
+---
+Mike Rapoport (Microsoft) (3):
+      kho: walk bootmem areas in address order
+      kho: skip zero-sized lowmem and global bootmem areas
+      kho: fix bootmem sizing
+
+ kernel/liveupdate/kexec_handover.c | 212 ++++++++++++++++++++++---------------
+ 1 file changed, 128 insertions(+), 84 deletions(-)
+---
+base-commit: 6628e7d4c6b25c8d18f1345e3a20d21829aae7e4
+change-id: 20261103-kho-bootmem-sizing-5d6aed47a243
+
+--
+Sincerely yours,
+Mike.
 
 
