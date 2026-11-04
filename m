@@ -1,145 +1,122 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DC58606A32E
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 08:26:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F827606A33B
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 08:43:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=ionos.com header.i=@ionos.com header.a=rsa-sha256 header.s=google header.b=MhrkgDaA
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=sp83wNpG
 Received: by kanga.kvack.org (Postfix)
-	id 575C36B00EF; Wed,  4 Nov 2026 03:26:57 -0500 (EST)
+	id A578E6B00EF; Wed,  4 Nov 2026 03:43:41 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 54F046B05B1; Wed,  4 Nov 2026 03:26:57 -0500 (EST)
+	id A01D76B05B1; Wed,  4 Nov 2026 03:43:41 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 465006B05BA; Wed,  4 Nov 2026 03:26:57 -0500 (EST)
+	id 8F0696B05B2; Wed,  4 Nov 2026 03:43:41 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 130396B00EF
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 03:26:56 -0500 (EST)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 0B08F1C2263
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 08:26:56 +0000 (UTC)
-X-FDA: 85396756032.16.721F4F1
-Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com [209.85.208.46])
-	by imf07.hostedemail.com (Postfix) with ESMTP id BA58A40002
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 08:26:53 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=ionos.com header.s=google header.b=MhrkgDaA;
-	spf=pass (imf07.hostedemail.com: domain of max.kellermann@ionos.com designates 209.85.208.46 as permitted sender) smtp.mailfrom=max.kellermann@ionos.com;
-	dmarc=pass (policy=reject) header.from=ionos.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793780814;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 62E0B6B00EF
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 03:43:41 -0500 (EST)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 0247AA81B7
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 08:43:40 +0000 (UTC)
+X-FDA: 85396798242.12.3AE8D23
+Received: from mta0.migadu.com (out-98.mta0.migadu.com [91.218.175.98])
+	by imf05.hostedemail.com (Postfix) with ESMTP id A108210000E
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 08:43:38 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=sp83wNpG;
+	spf=pass (imf05.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.98 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793781819;
+	b=ARCNh9EoOp8RwWvkgexQ7A1E6GfC6tXPNX51k+BXq0ADQSR9FD6vn2F66ixfBeOL4H2VkY
+	bQR7HHDhwnoHpuFmgzzhTLh0yI8WWZmvtidTWL3lIK93+iiN4o4emfR3ZWOqKsy2IB+VnX
+	dTbbyNXRcU5BCatHFNAW19KaZCa13X0=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=sp83wNpG;
+	spf=pass (imf05.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.98 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1793781819;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=D+vnesPE4t9lKIynjQF/EgK23seabQisbWfdICSw+rI=;
-	b=a6ebDSGWpXyVP4Fj+2h4V0mANSRNyP5x5l1TDeizmVfMhSmUS+zpgYxL4izlpbZ8jn9uni
-	zbRVv8TTI87M8JFPSjGaT+ffmdC2hyQ6PiY8DQRiBXse+tO71NPldlMgZ2jSevVOqKW+gt
-	3CRUt97IdtI+ryNXY7pQKzB7kPQSDoQ=
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1793780814;
-	b=MvwGOIAIZDyxvRun68a4uNhX6GUlBIQmvl00f4Yv6oiE2Audoth2tDz5MfaNFakGm+SpPW
-	DRQSGY3Eiwm5P8dMHtJ1Eit9VFSDXMrFYwKD/j5503dUiHIaBdEFe77zSJIeobzxNbTdpM
-	cWq47Otnj2ZPNrkFlKprXvPFSadbSIs=
-ARC-Authentication-Results: i=2;
-	imf07.hostedemail.com;
-	dkim=pass header.d=ionos.com header.s=google header.b=MhrkgDaA;
-	spf=pass (imf07.hostedemail.com: domain of max.kellermann@ionos.com designates 209.85.208.46 as permitted sender) smtp.mailfrom=max.kellermann@ionos.com;
-	dmarc=pass (policy=reject) header.from=ionos.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-6b4b7dee316so368529a12.0
-        for <linux-mm@kvack.org>; Wed, 04 Nov 2026 00:26:53 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1793780812; cv=none;
-        d=google.com; s=arc-20260327;
-        b=bfX5S12Q3HIAluv7Q6qIl0jmlB7rrRmtHmwv9KsDI/D0NvYlGJ+31HrINAscLiX/Cy
-         oZkV1GFgOVKTj/KY+zbClw0sqKsyGyg40t6mYEN12MFxwnaXNBeBozT74MORCmzr+xMQ
-         NlyoPuxMKp9vAslvGa/ZI0AxH8Kq18ssUbJLYcxTuL3caAiPBlrdAdARSN371gQ883DD
-         wytu5A7tBAPaG/71N8/0cRXMFB33NMe6y8/D9cRbtXXMeQ0eiRE4bWvmDMlBv7upw6vn
-         KkbYVGh/uORVT53FjpKMvQFOHiAQEDx9heVyq6kTviyFQLTcy5aIdMYFYpE7RMGNTOke
-         oYww==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=D+vnesPE4t9lKIynjQF/EgK23seabQisbWfdICSw+rI=;
-        fh=1I0VtgOqOEC9YfLSe5lg2FDVHALK+RFykLW1q3+zx8o=;
-        b=PspbMIf9HNItY8vqFXgqxaUpPtJFqJzCMa33Re4FueDsUDeMbdrSdDVH/JMaHfhqJx
-         GdbPXu4cv5zvunH4ynTa3SF6cRvjuEGCrj59XFwIXTZbiNB76IGvCRaizT/F1Ltmxozg
-         G454kMidQfJwJitGL+3p1xuM7F2Jv688KuAB2S1Whgb+ZhJBcJjsnopgBAuISkc9wj8W
-         O6b5VdmzP2qLPzvClWXpEvJhjo/0bzqwpEdDwyRu3sLhyT89Ms6DKzM9WMFtFvBbnX/S
-         anlUViyI+kMGwKJEdAERzeicnOaB5ef2g2t2e0VTIIpvy7juHOpjxYCBN7B5fWgR1hy0
-         UdMw==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ionos.com; s=google; t=1793780812; x=1794385612; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=D+vnesPE4t9lKIynjQF/EgK23seabQisbWfdICSw+rI=;
-        b=MhrkgDaALVjwUxtZMi7eQdORXPmxeNzwaDYzAJTh8hJfa/414qfr9Bd6mGXj/mwzgE
-         J//SRVW9DOOkUPf/pAdDggTDaZ9+Aua1yCunHDdcVZOPcEp0wF4a8ekSvEZiXWZ9nPXK
-         brjw7CfajQ/KWUWu76VO9bnonfoYHluPTPFYXUt6CpznLtnuTIDmA5CoDa5F64vrj0ci
-         1y1i3iCZrb2MeOB5mdKTv+h1mxObioHHDbx9GRj/G9eCTxn4O0I53oi8K6t7AtuAP019
-         1buVxMNTBkV9PXohCdRP4SMZtKGAgFlne+mxn1OQb1XhGVbZ5JVhoFe6JAQV2V7xqa8j
-         cBKQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793780812; x=1794385612;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=D+vnesPE4t9lKIynjQF/EgK23seabQisbWfdICSw+rI=;
-        b=UZF3UHTeUz5/kb0lamPfQ6XmiKLAGQqbBdTnzveL2TW1SAu8Ii1KfkxhlGwMeRHe93
-         rQZLBJ30DKSl1+LOKEdVeh7kJ4Eu6CinQfDEgJCeAhoXZ652H4bs17YIvbg0/YN/Mxpn
-         fC1wINT/W3g3xFEYgo1oMMrU6VFt38wbRL8qqeksyA3/6ijGIXYIEN7ASVMNs+nCqljI
-         gsT1cy18hXQSeD4lEglT4P6RMaB4CTJCNSW16WSkPKtD121iBgbWQeHYnwPhle1B32an
-         caLHNqRhfoVtejCcCsYDR+lHyLSn5iatLD5OvCPmQiMtDQYga/yFJ1LA71h07bhAStXE
-         N/FQ==
-X-Forwarded-Encrypted: i=1; AKwUvByveK9i7mw9nqm4ubAT5T4ZTfKNtyqoAPGsa9dEaxIB/GOQ5T0+CEC5pxzDXQ3kMdq5kfepNIKqww==@kvack.org
-X-Gm-Message-State: APuU4Z/Y2U3a1m9/E5LJ8NkE3RbEgBxGGjFLZo3EHTduMmpNOoA7ElXd
-	hW9I8ys2kMSyACoMaTkaOhvac0bk35RXLcCxbxNP2vjfLsSmVPV6wqzfk/rWZGBgUmyzTBwEHa/
-	6k3D648F6bTupdhFXgYoTfPwZOMl1d4DZ7ZGXFeFA3w==
-X-Gm-Gg: AYBFou3TPDftaGQFfKS8MKrnBFw/DgGuqP+4BOGefJi0BMbEYwl1lHEL9x9jGcZPSnh
-	Yzg8hSegn2wKOCm8XSbvDZWIls4o7G5KLCRjRyz6hd3h/syhglP6YpD5Gjc62LCTfrjg4gcZgy9
-	COaQTmi3zh8J7DpSCxY8crlCEw5U+XHSXtGWI0BsNC1tXfraEosMeuHnAFbrMSwqtxNDDwPtTj/
-	bzrCu1Pw4x3YxZGXzs74dLOvy/FU6qXKxCf690iZyVCj6cfSLegsy2hpJyKBsduUaWGajdnFhXr
-	lt83YQ8t68rhk3j2PqOHcX4SfYXF05dDA1r7CF5AinundkKFstFm7TqRBYzgeZvSaqFGdIwQQt3
-	A3jJV1jomlu06WaEDRSH3X9w9QgYDAA2oeKJXyxN33SwxQebK4Hvpw1K0EZ5eGuc/pQ==
-X-Received: by 2002:a17:906:9f8a:b0:c3e:4f41:e2a6 with SMTP id
- a640c23a62f3a-c4ca7974a58mr1321997366b.6.1793780812002; Wed, 04 Nov 2026
- 00:26:52 -0800 (PST)
+	bh=f2hk/rNUhdh8MzoGh+JB++bhZwGGGXc0fWWdJjx7Q34=;
+	b=j6EZ+h1QhDe3u9zNFX9r+XWEmapkt2EUAnSgWHoOuMSrmtmghLNz8RYzF0NwKliOL2AMtw
+	wD3qNOPF4rBAY4fWoWuHIXmXErgpDykLNrOdAxZBng/4ss9L/te7fgqLwA1ezEqTc9wGVc
+	JI68tW90CFVn5s4dtq93tFguewRH9e8=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=f2hk/rNUhdh8MzoGh+JB++bhZwGGGXc0fWWdJjx7Q34=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1793781817; v=1; x=1794386617;
+ b=sp83wNpGcg3gaaZ8Q1xR/9GuIAN39T9nU3daATAk0D3PyazINZZkLbge+C8jvkhlT/l1yMyQ
+ z4PY8O3ch/eBLnfTIKoQOWvUBUqWReMoaFrNfi96CuAqZM2S8rXHR4UmnarPZPvmVgtfzb2K9u1
+ F4JsYvveNIOBOxe1A0qJ86Lg=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id 3c5b907775b29065;
+	Wed, 04 Nov 2026 08:43:36 +0000
+X-Mizu-Trace-ID: 3c5b907775b29065
+X-Migadu-Flow: FLOW_OUT
+From: Lance Yang <lance.yang@linux.dev>
+To: ljs@kernel.org
+Cc: david@kernel.org,
+	ziy@nvidia.com,
+	baolin.wang@linux.alibaba.com,
+	liam@infradead.org,
+	nico.pache@linux.dev,
+	ryan.roberts@arm.com,
+	dev.jain@arm.com,
+	baohua@kernel.org,
+	lance.yang@linux.dev,
+	usama.arif@linux.dev,
+	kas@kernel.org,
+	akpm@linux-foundation.org,
+	peterz@infradead.org,
+	mingo@redhat.com,
+	will@kernel.org,
+	boqun@kernel.org,
+	longman@redhat.com,
+	surenb@google.com,
+	vbabka@kernel.org,
+	shakeel.butt@linux.dev,
+	yonghong.song@linux.dev,
+	ast@kernel.org,
+	daniel@iogearbox.net,
+	andrii@kernel.org,
+	eddyz87@gmail.com,
+	memxor@gmail.com,
+	martin.lau@linux.dev,
+	song@kernel.org,
+	jolsa@kernel.org,
+	emil@etsalapatis.com,
+	ihor.solodrai@linux.dev,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	bpf@vger.kernel.org
+Subject: Re: [PATCH 2/5] mm/khugepaged: scan mm's more efficiently under mmap_lock contention
+Date: Wed,  4 Nov 2026 16:43:26 +0800
+Message-ID: <20261104084326.35457-1-lance.yang@linux.dev>
+X-Mailer: git-send-email 2.49.0
+In-Reply-To: <20261103-khugepaged-latency-fix-v1-2-a07ab16ac860@kernel.org>
+References: <20261103-khugepaged-latency-fix-v1-2-a07ab16ac860@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-References: <20261103113711.1832834-1-max.kellermann@ionos.com>
- <20261103113711.1832834-5-max.kellermann@ionos.com> <CAGsJ_4wpd-e+xjm5KwihVziAeVnQp3XYG=+-BKmx0SVEhmyqqw@mail.gmail.com>
-In-Reply-To: <CAGsJ_4wpd-e+xjm5KwihVziAeVnQp3XYG=+-BKmx0SVEhmyqqw@mail.gmail.com>
-From: Max Kellermann <max.kellermann@ionos.com>
-Date: Wed, 4 Nov 2026 09:26:41 +0100
-X-Gm-Features: AclHuK-KpECaTGoo8CunTP9HlWbpvRsPjMgrhDBxpI0Zzac6pPc7vrwid4sHOVo
-Message-ID: <CAKPOu+9textOydxZYng=Bo9Sf91Wq_7rv5r2pBrhXOfiex=qGA@mail.gmail.com>
-Subject: Re: [PATCH v2 4/5] mm/mglru: avoid redundant rotations of young memcgs
-To: Barry Song <baohua@kernel.org>
-Cc: akpm@linux-foundation.org, kasong@tencent.com, qi.zheng@linux.dev, 
-	shakeel.butt@linux.dev, axelrasmussen@google.com, yuanchu@google.com, 
-	weixugc@google.com, baoquan.he@linux.dev, baolin.wang@linux.alibaba.com, 
-	david@kernel.org, ljs@kernel.org, liam@infradead.org, vbabka@kernel.org, 
-	rppt@kernel.org, surenb@google.com, mhocko@suse.com, hannes@cmpxchg.org, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, rcu@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
-	autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam09
-X-Stat-Signature: jjjh3epxas8w8633p15mccrcate9da6j
-X-Rspamd-Queue-Id: BA58A40002
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: A108210000E
+X-Stat-Signature: m4aybmma8bsk1oxjzpxx1fxch3dwcuk1
 X-Rspam-User: 
-X-HE-Tag: 1793780813-347527
-X-HE-Meta: U2FsdGVkX1+OMnfiiGUVHSDeFOJ9f6cjDFS/lYAkVx7dv+mUeqDlYzO47U5rxh/bz04+8ei+h6F3jly7veZ/9910tjsn5B/o5eSy3MnRQED5DVg02kTLiMsT2J+cCbjtY86O+fAn7pZO5mBTNBKWuPA1iWgosSMIlMzwaWeB2BNu/BH9KSIOiravPc4waQ8lboW0ce58483Ju/KVmlVMySgx8c2xtRpkzB7q/Miz07YMSHYEAzeFyeq1yidM/anHnnyv5R1QdVBuMHxUGVugnVNK8YPDsX5hO0B6ZwjB+0YDy994kEGvPDrqBKh9iwbTcob5A5oq6FL4zyexGk+FkFM0AR/As5kuiw7y5M4TaC9o/pR0PuWaCKC7r3hV32G5p1DehT5bN3dBRN/zZEUqWysJlgwviIhDUDRIx0GLiliNPi1nOsn18cVnSDevrcTw9PJVYe+xwYjNqqZV4aSsisen2Wd497eW1ShAGL19VBM3Iy/uG6rHt0QkGVitWhbRwn9FQC3tw1w2+ZZaO3HYDhD29g+L0XSZBo7FcsvC3X0R1PEHvxYkWqy6GKcRbkt6lcwVrSzz09DzupSciBUW3As8L+LB6rXSij98RjwyquWmvTXRzOCwgsZirl9YkzQJY3sF7CnFGOPF7QgdhRHCoKB5at0b3UN+dQqIfFls5UrfyxLmN7Gbb7OIeny9HrPQ7c9eNI16/q62nFy5qZsgsWYlkMUpi2vC5b3M154JL6b1PJ93ELA6OhYA7f/2gEErl62XoT8oLP+4JbaLI2zCd/th52kRUAPw20hsjAZP7mgIEZrJPV4IRxjQ9+YgscwXNLDjc0bzH8HQTlx4XxI97AmE4zMPlFemKyHvvPJCeV/tFEYAUu+1HjOYKB086CvS9czAPLLxNu4kY6BY+/199VWiXHEbkyr1BzUGlFOmuJSaDd7+Awv1V2VOpBIy7420JlNy0nHiZCfZSJC4Qkn
- rmOlMahE
- HBKJfWzHiV+HwGLD/Xef006TJEOuJ3uXlQOfc120USL6abNZW3fMkW9liUtNW5a81XOaHwlytCovdMXlA3KM9+atdaOff5p0ujqPA+HygJScDcvF3AbMTXGV8tpe2Kp6YGgHZ8+76ry5/FNTCOap97bp+gEG+NMUjThCHiatpiGpFfsXa4bQAlHG1qqyxgP/7A2R+mz6hGQzDj7QMpwkUIRNMm5v9JeF3HPbkVw55eYEo8AwbvAUch1abqrjf80vXCUcYoJmwZztcV3U2PPNEzlQNq+UHxjzJ7rFZqK+Pb5TzSDWoqbxaAeRDqA==
+X-HE-Tag: 1793781818-481813
+X-HE-Meta: U2FsdGVkX18vUtENYDoVDGLvJSR87McKHW5Lvm1J8XJvGfFMsqybYbo64mag8dGm6VSEnHKXnbouoffGJ+ENEqgeHKRKYK279ZF0g9FSM1y1IsOUQX0N8nvKYPW8AUgsDwUTbtWhz+UYLNpCTLDKqlR0UaQdXQmd4AzKNP/rH5lWOtEz0oJOAO3w9AgedDw9Hw/OjJY4fVr575xt8gfGbLBm7zW9UUw3WIaG2qPiwfSBhADYP8hAr/gkX940R1OgKrfrlaPIAY5NiivHNFpc2cHBV8QmmdpRawn+1lREzXBQo3zslgisnN4abYdtlSawppmA5LigITFlOJUCu55Bwv2hOWURpYjAkG+hpF5vw/z06c6MQ+XOpnXHZiVVGuDKgVPRRZnW0YbszNRWXmBhjuBrR3XYi0WhkD7s3J7296PhdLOTyZVMnee2vlVx+YRiNEwnTAo2XzM6u1HhD5nz99Ao1Wbdz+/750a3nExgETtVa4xJ3CpSppr1+/4G8BQtl13iplyOrXzyyZQIbEdGR2IzsknEIiqINOEf7iOauAkl+sOE0imb40t+q8RxmzPmNpVhazWg7isy1vBpvY/Qpe3+9z0FyuZXcRZLb+qOyoeNbhVUra+Yeh2hKNsRZ7yInAHYkoqg+x4pqR+5Y9h5yPyr3XjFJFeYUQ86UDMwEKQIA5anxHpf6or/AwKs1mxr8c5GMk1XvSxSSWSLT7cfU9vD6pjs33Jz+R8AYosNLoC3lP8xrJbCCqzKwvpMtiEdrGJ1uHTBBV0YBPUXGupWmoWKPAvEjj5dbWjapCvSEF4MwXYA2fpE8idZO/xeXmjpeaie9UXTHF5ocA5YskYnVnY868qZzRMOOYXEG6aWbIBmtZSNvAmvqpEuQcrzuskiU0a3UhFpKJNTn2AT1iWIKmfQWozzAez6Jj/1Gh4kSxonxhRbJIqfgFoMwSO0lCXDwh7WvVv68TS2cy+L89q
+ L/y1xq/W
+ CLEPVC1tYZos8Xfczg/EtM9h1I9KhruzwAzvIjDtOPwPRTR134zfP/jBl1BIQog3ZiPzjERYnXqg1n1+HwSFlIACs8BKeGIqLpIqeyvOu0gDiUjnyB5gmeO2zK6BL8KwpNYZolqZ8TbKZFHfZqzRe4zSa0f7GDQn0o0cGcEOYwTjT56RpNuYHpFRrb0B18qK0SPvde+xqBaendducy/YCt18hL2yDRuIuZ0ZEh8X8YhikPW/PPZNQbiw90Z0GMaMXZN6a5Luc78UCQ6vTYhawVEfTG4sTME216SNjmEE2FaegzA5pNkYKvh/BvQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -148,71 +125,79 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Wed, Nov 4, 2026 at 6:18=E2=80=AFAM Barry Song <baohua@kernel.org> wrote=
-:
-> > In my micro benchmark, this increases the request rate by 36% and
-> > reduces the average duration of each write request by 27%.
+
+On Tue, Nov 03, 2026 at 08:27:43AM +0000, Lorenzo Stoakes (ARM) wrote:
+>Ostensibly khugepaged collapse traverses eligible mm's, scanning up to
+>/sys/kernel/mm/transparent_hugepage/khugepaged/pages_to_scan eligible pages
+>at a time, sleeping for /sys/.../scan_sleep_millisecs between each
+>traversal.
 >
-> Could you share your microbenchmark somewhere (or post it here
-> if it's not too lengthy), perhaps on GitHub, so others can
-> reproduce it? You could then refer to it in your changelog.
+>mm's are scanned in collapse_scan_mm_slot() under the mmap read lock,
+>obtained using mmap_read_trylock(), skipping the mm if there is lock
+>contention, and dropping the lock before allocation.
+>
+>khugepaged will keep scanning the same mm until it is about to be torn
+>down, prctl(PR_SET_THP_DISABLE) disables THP for it, mm->mmap_lock
+>contention occurs, or all its VMAs have been scanned.
+>
+>When any of these occur, khugepaged doesn't keep track of where it left
+>off, as the current address is tracked in
+>khugepaged_scan.address (essentially a global value), which is reset.
+>
+>This is a problem when lock contention occurs, as when the mm is next
+>scanned, it starts from address 0 again.
+>
+>If there's a lot of mmap_lock contention this can significantly slow down
+>collapse later in the mm, since the /sys/.../pages_to_scan budget can run
+>out before the end of the mm is reached.
+>
+>The budget is incremented (as tracked in cc->progress) at a rate of 1 page
+>per ineligible VMA, but the budget is only checked once eligible VMAs are
+>encountered.
+>
+>Then, it only takes the combined total of ineligible VMAs and eligible but
+>non-collapsible pages to exceed the /sys/.../pages_to_scan budget for the
+>rest of the mm to be skipped.
+>
+>For a system with 4 KiB page size and default sysctl settings this only
+>requires 4096 ineligible VMAs/uncollapsible pages to be skipped before this
+>happens.
+>
+>Examples of eligible but uncollapsible ranges are those containing a large
+>number of forked PTE entries (more than /sys/.../max_ptes_shared), swapped
+>out PTE entries (more than /sys/.../max_ptes_swap) or none or zero-page PTE
+>entries (more than /sys/.../max_ptes_none).
+>
+>The latter might seem unlikely to happen given /sys/.../max_ptes_none
+>defaults to HPAGE_PMD_NR - 1 and CONFIG_PT_RECLAIM frees PTE page tables,
+>however CONFIG_PT_RECLAIM only removes the page table if the zapped range
+>spans at least a PMD size (see pte_table_reclaim_possible()).
+>
+>Thus, userland software that applies madvise(..., MADV_DONTNEED) across
+>sub-PMD ranges can thwart this, which is quite feasible for memory
+>allocators and GC heaps, for instance.
+>
+>Resolve the issue by simply tracking the last examined address in the
+>khugepaged_mm_slot object, so when the mm is resumed, the scan starts from
+>where it left off.
+>
+>Additionally, skip to the next candidate if a VMA cannot be collapsed.
+>
+>This issue was noticed during some work in which an mm was instantiated
+>with a large number of small VMAs under significant mmap_lock contention,
+>during which collapse was observed to take 10.8s. With this patch applied
+>it took 3.6s to collapse the same mm.
+>
+>Also, while here, update a couple VM_BUG_ON()'s to VM_WARN_ON_ONCE()'s.
+>
+>This patch is also a pre-requisite for a later patch in this series.
+>
+>Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+>---
 
-Will do.  A note of warning: it's ugly LLM slop, and if I had written
-it manually, probably 99% of it could be removed because it's
-pointless garbage.  The LLM wrote it for me before I had any clue
-where the problem could be.  It helped me find the problem, but
-uploading this garbage triggers a bit of shame in me ;-)
+Looks good on its own, since vmi isn't reset inside the loop yet. Patch
+#05 will need to handle the ALIGN() overflow Sashiko reported before
+adding that reset.
 
-> I think this is a correct change. I wonder if we can
-> reproduce the issue even without concurrent reclaimers.
-> In other words, can a single thread running in a
-> memory-limited memcg trigger it as well?
-
-Your question is not really related to this [4/5] patch, is it?
-Because this one is just an incremental optimization on top of the
-real linked list scalability issue.
-
-A single thread means there is no spinlock contention and the linked
-list is only walked once.  I don't think the problem is visible then.
-
-> One thing I noticed is that you may not need to call
-> get_random_u32_below(MEMCG_NR_BINS) upfront. Could you
-> defer generating the random number until you actually need
-> to rotate the memcg? I wonder if this could further improve
-> your microbenchmark results.
-
-Good idea, optimization added for the v3 patch.  I don't think it
-makes much of a difference, but it really makes sense.
-
-(And I still hate that the Linux coding style requires having all
-variable declarations at the top.  Code would be simpler by
-declaring+initializing variables where you need them, and additionally
-it opens more opportunities for compiler optimizations, but... it's
-the way it is.)
-
-> Anyway, the compiler might be able to defer it for you.
-> I'm not sure, though. Could you take a look?
-
-The compiler is not allowed to because it is not allowed to make
-assumptions on what get_random_u8() does, therefore it must not
-reorder the call.
-
-(I wish C had a way to express a promise like "this function call
-won't modify global state reachable by the caller's pointers", there's
-just GCC's "pure" attribute which is too strong here.)
-
-Minor note: deferring the PRNG call will move it inside spinlock
-protection.  I think that's okay, but it can theoretically have a
-performance impact, and I'm not expert enough on this part of the
-kernel.
-
---=20
-Max Kellermann
-Principal Architect
-Hosting Technology
-
-cm4all | Im Mediapark 6a | 50670 K=C3=B6ln | Germany
-General information about the company can be found here:
-https://www.cm4all.com/impressum
-A member of the IONOS Group
+Reviewed-by: Lance Yang <lance.yang@linux.dev>
 
