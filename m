@@ -1,66 +1,66 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD66A606A85B
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 19:46:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A67EA606A868
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 19:46:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=WGVy0U4Z
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Vu3QmSG8
 Received: by kanga.kvack.org (Postfix)
-	id 028AA6B05BD; Wed,  4 Nov 2026 14:46:27 -0500 (EST)
+	id AB08D6B05CF; Wed,  4 Nov 2026 14:46:41 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0003A6B05CF; Wed,  4 Nov 2026 14:46:26 -0500 (EST)
+	id A88FE6B05D1; Wed,  4 Nov 2026 14:46:41 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E0B776B05D1; Wed,  4 Nov 2026 14:46:26 -0500 (EST)
+	id 99DC06B05D6; Wed,  4 Nov 2026 14:46:41 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id AB6056B05BD
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 14:46:26 -0500 (EST)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 390FAA0837
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 19:46:26 +0000 (UTC)
-X-FDA: 85398468372.07.A2D8E3C
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 725536B05CF
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 14:46:41 -0500 (EST)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 0EC294082A
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 19:46:41 +0000 (UTC)
+X-FDA: 85398469002.13.5F92760
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 588BD1A000A
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 19:46:24 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WGVy0U4Z;
-	spf=pass (imf19.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793821584;
-	b=PyFpSJb+nVuFNWylLHe7ICA66aOBpN5Vk7hnX97ABqkGb43fWNeC/2w+JXA/7FahBImEGa
-	JtzZ4Ybt78fC6XC9tsj3I7LJSl7p7JniqTFBNBSO0mHlCXDfJ/sW/m3HEuKn1suQxyV7sY
-	eWBCDOUCXTzcEwXwjMirAVWEt4B4djE=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WGVy0U4Z;
-	spf=pass (imf19.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	by imf10.hostedemail.com (Postfix) with ESMTP id 4408AC0003
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 19:46:39 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Vu3QmSG8;
+	spf=pass (imf10.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793821584;
+	s=arc-20220608; t=1793821599;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=bLxRwCxtJ/P3YNIr6jvbkvrLQvoA3ATHIuHzWzBn2J4=;
-	b=hD5UTwfAR9pwG2IMKCwe4MqkS6zUJJTJcV8km6Ch2yibNHynUsiyDn2b4eBYV2d6DFZfeL
-	IczApj8LweBFISpoa0xRPENzFS+W6y07BUO7/hYiyYwH51xWznQiAWrVU1LZB8yrqw3p62
-	wzjHvIT/St8Aw/+nnhyeDFlUGos5zkQ=
+	bh=/po/gL747wOLzB9LODGeMVhVpt9eaPUzZYdg1qfmMOQ=;
+	b=vQrj4IAHc0uqOZU5uke45J8Qy0LbG/UKLuPF7b8xg/2n0dJ4xQ83jnLfMrQkcAmc1tNGIy
+	mBaPYtoEZr0rn6sRD3p44DH9UsJ0j2rd8jm5+KGNiuPXJcrFUf+uugvP1Oka+wIywahnPY
+	5a0zlRuhAvGrB9eUQDxYw/WMWA9mlV8=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793821599;
+	b=vPSNaoz0177f3lltaKB4v8gRmSDIaLCJGKAjoODmQuHVEZTeEwwWOmZB4NIPnpGRSbwHCE
+	dpTA39bcqRrObMiyJMSKCMVPkOx/LneK9x3k2yVKhVLxd49tUYJr46vQPS560EkZZ8NLU5
+	Kk1Na5lSKvR7LMxQNNso0zd/PEccYXY=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Vu3QmSG8;
+	spf=pass (imf10.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id ADDAE4158F;
-	Wed,  4 Nov 2026 19:46:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64A131F00919;
-	Wed,  4 Nov 2026 19:46:11 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 95B854054A;
+	Wed,  4 Nov 2026 19:46:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EED91F00A02;
+	Wed,  4 Nov 2026 19:46:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793821583;
-	bh=bLxRwCxtJ/P3YNIr6jvbkvrLQvoA3ATHIuHzWzBn2J4=;
+	s=k20260515; t=1793821598;
+	bh=/po/gL747wOLzB9LODGeMVhVpt9eaPUzZYdg1qfmMOQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=WGVy0U4ZGU9MGVkN5s11MIXd6L4ZW80HabYvpXJKD2FbPo/xhXTihbhJIMMm5yjgp
-	 g4YoG2gYjBvHEd55qb/8eKrNcGJy1t5KQ1dMFb+unC9akGOcKREFdMTo+rMdiE6MjK
-	 Qwst++hGuwNHrO6Pz5Ks38sCNLj6UOvHgHDN9vlcHkhT4XUB9TDAQIPtYVe0zpxjMO
-	 fYYp180+QK9mYvyWZuTSecCl9SsUr4g9V4K9vcGIrma64ubmtN9f0W6WY/GJ07Agnn
-	 WhsV+QgTvy+81YnNiXhZ06V2DcHYqbpniOh2Uv9igjKmY8z2zlPURD68B8addMVZFO
-	 hlNvylhXD/36g==
+	b=Vu3QmSG8t+JAK9mZsZDej94V+u1yCAbvT5TbhGyZYKF4VG+tdMVlWRbHgcrC/9smt
+	 e1lmGvByLoZHLn4MRCoRqzNGL3oHKyd+755yRoujbXsxDrMJ8wTF3nq37hG84ihvIS
+	 pswAt86CUFS4xrridMDShCJi27N9VmQKynKDla/s/sQPGTk6EmYDIuo2oOz3v52WH/
+	 UsgxfKUYcEFsCIlwWXpy4/fUmvqdc7qYDBOiLL9QvZsdr5zl6DNvaVl8bOQvx4ed76
+	 V7L2KsiP6wcIAqtM7ubPlqpQeYHT2fj69s3bJLJI+BHdJxMvrKXJaZ5VqnaTDNIXRQ
+	 MdTfX8VBMSjNg==
 From: Christian Brauner <brauner@kernel.org>
 To: linux-fsdevel@vger.kernel.org
 Cc: Linus Torvalds <torvalds@linux-foundation.org>,
@@ -121,31 +121,31 @@ Cc: Linus Torvalds <torvalds@linux-foundation.org>,
 	linux-debuggers@vger.kernel.org,
 	"Christian Brauner (Amutable)" <brauner@kernel.org>,
 	Chuck Lever <cel@kernel.org>
-Subject: [PATCH RESEND v2 16/26] hwmon: (dell-smm) let procfs copy the i8k ioctl arguments
-Date: Wed,  4 Nov 2026 20:46:09 +0100
-Message-ID: <20261104-work-procfs-drivers-v2-16-245e54e87116@kernel.org>
+Subject: [PATCH RESEND v2 17/26] fbdev: viafb: let procfs copy in writes
+Date: Wed,  4 Nov 2026 20:46:24 +0100
+Message-ID: <20261104-work-procfs-drivers-v2-17-245e54e87116@kernel.org>
 In-Reply-To: <20261104-work-procfs-drivers-v2-0-245e54e87116@kernel.org>
 References: <20261104-work-procfs-drivers-v2-0-245e54e87116@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4573; i=brauner@kernel.org; h=from:subject:message-id; bh=negOiIwbpBXFbC2+4UQ2qelUCL0pz2XjdZael8czB8w=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS97mqLC7v46Tq/2OM60YXF/IwJT7t91n/WXTRlC8/Kr INzkoqfdJSyMIhxMciKKbI4tJuEyy3nqdhslKkBM4eVCWQIAxenAEykz53hf4aK+JOF56xXan+K c/qQJNoTJsxh93zLrnNOQlZHxI5n5TIyNMhMV5L+1b3683u1mdyPpT5ct+p2sVs5/2nS//WVvHM S+QE=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=7373; i=brauner@kernel.org; h=from:subject:message-id; bh=IvpcER7zxYNfDUB5gfp3pz3pT+0GSZCEEAhc7Zgpx0U=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS97mp/PeXhAuObU3aJOMp8Y7hT+qDSb6aubgz36f4Fn O4bL86x7ihlYRDjYpAVU2RxaDcJl1vOU7HZKFMDZg4rE8gQBi5OAZjIHzZGhm+b+RVrA02YJQrk FxYoR6zRVdu/O6JP8Bv3q6vmsWf+PWP4n7Xp98KNVmu2PuyuZD9zy+jdAqW5+zumO7b3fjne+G5 uBCsA
 X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 4408AC0003
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
 	version=4.0.1
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 588BD1A000A
-X-Stat-Signature: nwg9ergrttfup84of4e85pnthiswfgcw
+X-Stat-Signature: etdjfkkifgkoir8a4x4ob3x5sq77iegz
 X-Rspam-User: 
-X-HE-Tag: 1793821584-52697
-X-HE-Meta: U2FsdGVkX1+KQ/rJ8EcU/V2gCH3zVOJKU+sBpET77ZBcWpqbA/p862lSNLhKZB5V/JeusilNev8/qvV72pIcjXm4teCVev0bJVKLctTh52UH/dYWzjps7TjMXkk07BPb9Joen9zEm4rsfQGCvmjXTuZZ7KJxwWzMLJQOqekbDEasw629U7ORzz6s7eX+bEjy4R7KCuJ+/WOa8OVntcSQzH1koK7DiFvu2X79RcMm2UX7yOW1tktwkt66MJfLjh3FnQhLr8EQwTP6Ci7ONlLWB0yxTKqngHbro0k5RDp0Hujorvko67YoZfhc0xaIkgJ+srdLedzJSCT2Inp5bpfjh+x05F6v3YJg2A3P+BGn0ACnYt1V+pUtFWsYcEebj+DJ50GpNmUJUN5143nX5n5Y4W0F+v9p3+H97q4K7Nuwrp2TtkSqKUgjWRbdmWJiKmwtmCv5lsh7JNwdN8md9ozAm8/friDHfQ3MHzIkVcahyMQk3qArsGbQ6jWHDMhdOOoEAsHRQz+7EGlAEXwvFKVoCNveDDF8CmphhFMsEc6LFWhWwr+7np6MVCGo4KlS3ynmox3H91daeitCVgOXu1Axq4jY2l+fMXtd00+y84v3/pPMBjCI+SkXsW6Wvx3ZX8wJLsAwpCDPwCubc8NOkntUM2WzghKGWThTo8kg1BR5crCGE1edKVYG9TH2hzj9WKqXx7f6IX13m/ZomhrfeBU8nXXHIxNuTULsU3JLFs4nPPBFhH7WMLmnUK7AMznT/yQk7IUY5h7U1iTXVcMd4yedgLIGFoKZIhpDl7e2970gTL2yt49HWp7+LKDmfwWBawLif4X/bRNKGMtfYZUZb1jQMqYqY4dAohNXDOZhECo/RvDn60ZOXztaABDHWEmg3gqfvHaWv2+gFc+t4lYja2sdzndwkKOoB2oycFEKqz7DfRXE4POZwT0F49aQkOOpmnGArmRJuovTdlsj9vX5cpy
- TUZpdchm
- s68a6eBK9n/qIG66dDbRyVBw0j1A9HjjLXbFw8fycoXf3Dwj9JzN8uvhrkc1xGWGxUUXBqNcZYZ5Z1ZWsDlHvIyau0spGmOowtTHnuQfEOAjyCNRVQJ3NfZDdvdeVU4eXqFKsvkQ1t8qsFTfIuGhFbuAlU8vIjqhmpgq3Myqb/djsHmHIqqBeBPUncpKV+cm6OtwDP07SprP2ERF+DU7OChsnc4nS/YL1rJODDRTCsuKhl0M0AEmNPu4D3pjRLFAXZ6UNnI28cARztGQ/61svETQz7FziyL+3wFWbPGl2Cujv8GLLrJJHjNhcigaXsbaITswVlnMI0XgKj+aDdqK2qIzPD50+XZrksGBnOO7LkwNdEEC8cPj2CzVGByxPX75rnsO/W56AaZbshOjGyGlpsZ0Tdw==
+X-HE-Tag: 1793821599-321871
+X-HE-Meta: U2FsdGVkX1+UaqS0JPoIloz3zp+t66G28iEdeDPdEO8N5BssKAm3zFeoi+Wdj4sqtVI48WGpNR5VS+tHg40U2R7iIMKmuB25duyDpcT5CytoW0srpEx9FHB+4XoGswhPw9UpSAU+dOaP4u6ePtSnxozrgMQd+j2EU6LhP9LiNp/Vl0bvJHMYZ4wd8JGRdVKNtH8ZDcp76StVrYo05k99eqdOv3rCQUC3C43gyXBGOO1FTm+jLHCVuItuU3bUCsv68JLWCY9Du21GxZx4+pWfcF+LFpYpp1McZotk/YZ847ERfDJTcEL0fqFYHvghjKoUoTEfiBxN5mpSLTnYMst+59qLBRj64+VTQmXeZzk784uHFA6WOyRTe7u08J6xVPKx47bkgrtblri/R0RgMjkRZoFXJvnIEyCeEgoZcFYSl7iGbDey3+FZVHZTiSX4kFdrO+TGR4YNrmjJpZqa04lXGmu2MnVR0nlBkLPFDoIvoBLqxAidnN4z4v2C63H8ZtCv7zKrglipBGMgHsvDFaqtItfbYbVVuys3O4n3pRKLbBPNPqdeTUyfbAcX307qaH85MqSYemmyoRooFPdaiz8MRBHHuTO8jOqHJjyCYB4fzOxqZnrgYkJR0bEz3q9uKqlc7qjiZYGZhRKQL4rb44ipDAGz/shfREoHvJWtQeiC9QEJQk4yhZ7RWvja2yRkoIeQMxd1Kv1o77sVKRAt6aWsSycfZuqciFKE6naGO8nK1eGX3Dgc6hVJKDXVWv9C/lptusjW4ISbSmiiGJhIW2V78R9mF25IMTquIVpWHsoTsANPLy11ylqY+b9ZG2aBppsT4gpt98et87S5q10j9ffRbm+arGzc4UG5Mht5wNJvpL9iurRQ880z9wIu4ZTsXOXx9sxVxdlHJ18svZzIp400h0+hL82Bntmr3PNuSPxyGyskxNiNuo1vLDp+KjxkYRkqN5+eDPhpDxh6SiKVzH4
+ ok8aQi0/
+ 8yipexahvnq33iuWxmi2+kO876Kpo9fCmj5i/3/WF6su0faxdpxV5ir5NTtldo5ozWEmDPd7Hkt2hzLXfSKti7cbf5p9yKXL+ahye7/WP+l2nAVy2twIxwG7swk17U1PenB3SnGIk4vriZuBfAACtCes7vqfBeo8P9yAjxhRyzKDvkc496EzWrdY21faQwrZZcLRG4PkUWa1rFV9V15HD0UfDTsqXxaWL7m0Ph5hDiJBmraAeuZJuFv3SuTUowfAELpmUUvTdNjOxllyCzc560eJUX4annOuQBKd15C0DUEtX6z7xQ++5GEooI99IVetmlO4/yx4T3tpicfo5LSVV6K5MJilne4E1y9syPotc3hBEXhE4TpX2+TNcPXdh7Aj3/IzQQl48O1sUkir4iSn1/f0SyA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -154,140 +154,207 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Implement ->proc_ioctl_buf() so procfs copies the arguments in before
-it pins the entry and back out after unpinning it. The command numbers
-in <uapi/linux/i8k.h> encode the wrong sizes, so the table lists what
-is really copied: an int or the 16 bytes of the machine id out, and one
-or two ints in.
-
-A NULL argument fails with -EFAULT now instead of -EINVAL, and so does
-a bad pointer to SET_FAN from an unprivileged task, which got -EPERM
-before, since procfs copies the argument in before the entry's own
-checks run. 32-bit tasks can use the commands whose numbers don't
-depend on the size of size_t.
+Implement ->proc_write_buf() for the files in /proc/viafb so procfs
+copies in what is written before it pins the entry, and parse what was
+written from that copy. Writes larger than PAGE_SIZE - 1 bytes fail with
+-EINVAL now, the output device files refused anything over 63 bytes
+already. kstrtou8_from_user() looked at the first 10 bytes of what was
+written to dfph and dfpl, now the whole write is parsed.
 
 Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 ---
- drivers/hwmon/dell-smm-hwmon.c | 48 +++++++++++++++++++++---------------------
- 1 file changed, 24 insertions(+), 24 deletions(-)
+ drivers/video/fbdev/via/viafbdev.c | 46 +++++++++++++++++---------------------
+ 1 file changed, 21 insertions(+), 25 deletions(-)
 
-diff --git a/drivers/hwmon/dell-smm-hwmon.c b/drivers/hwmon/dell-smm-hwmon.c
-index 492b2b6c6d7e..67b8c6e5752f 100644
---- a/drivers/hwmon/dell-smm-hwmon.c
-+++ b/drivers/hwmon/dell-smm-hwmon.c
-@@ -549,16 +549,13 @@ static int i8k_get_power_status(const struct dell_smm_data *data)
-  * Procfs interface
-  */
+diff --git a/drivers/video/fbdev/via/viafbdev.c b/drivers/video/fbdev/via/viafbdev.c
+index 4b617e80a77c..94b303006915 100644
+--- a/drivers/video/fbdev/via/viafbdev.c
++++ b/drivers/video/fbdev/via/viafbdev.c
+@@ -1121,7 +1121,7 @@ static int viafb_dvp0_proc_show(struct seq_file *m, void *v)
+ }
  
--static long i8k_ioctl(struct file *fp, unsigned int cmd, unsigned long arg)
-+static long i8k_ioctl(struct file *fp, unsigned int cmd, void *arg)
+ static ssize_t viafb_dvp0_proc_write(struct file *file,
+-	const char __user *buffer, size_t count, loff_t *pos)
++	char *buffer, size_t count, loff_t *pos)
  {
- 	struct dell_smm_data *data = pde_data(file_inode(fp));
--	int __user *argp = (int __user *)arg;
-+	int *argp = arg;
- 	int speed, err;
- 	int val = 0;
- 
--	if (!argp)
--		return -EINVAL;
--
- 	switch (cmd) {
- 	case I8K_BIOS_VERSION:
- 		if (!isdigit(data->bios_version[0]) || !isdigit(data->bios_version[1]) ||
-@@ -568,17 +565,13 @@ static long i8k_ioctl(struct file *fp, unsigned int cmd, unsigned long arg)
- 		val = (data->bios_version[0] << 16) |
- 				(data->bios_version[1] << 8) | data->bios_version[2];
- 
--		if (copy_to_user(argp, &val, sizeof(val)))
--			return -EFAULT;
--
-+		*argp = val;
- 		return 0;
- 	case I8K_MACHINE_ID:
- 		if (restricted && !capable(CAP_SYS_ADMIN))
- 			return -EPERM;
- 
--		if (copy_to_user(argp, data->bios_machineid, sizeof(data->bios_machineid)))
--			return -EFAULT;
--
-+		memcpy(argp, data->bios_machineid, sizeof(data->bios_machineid));
- 		return 0;
- 	case I8K_FN_STATUS:
- 		val = i8k_get_fn_status(data);
-@@ -593,8 +586,7 @@ static long i8k_ioctl(struct file *fp, unsigned int cmd, unsigned long arg)
- 		break;
- 
- 	case I8K_GET_SPEED:
--		if (copy_from_user(&val, argp, sizeof(int)))
--			return -EFAULT;
-+		val = *argp;
- 
- 		if (val > U8_MAX || val < 0)
- 			return -EINVAL;
-@@ -603,8 +595,7 @@ static long i8k_ioctl(struct file *fp, unsigned int cmd, unsigned long arg)
- 		break;
- 
- 	case I8K_GET_FAN:
--		if (copy_from_user(&val, argp, sizeof(int)))
--			return -EFAULT;
-+		val = *argp;
- 
- 		if (val > U8_MAX || val < 0)
- 			return -EINVAL;
-@@ -616,14 +607,11 @@ static long i8k_ioctl(struct file *fp, unsigned int cmd, unsigned long arg)
- 		if (restricted && !capable(CAP_SYS_ADMIN))
- 			return -EPERM;
- 
--		if (copy_from_user(&val, argp, sizeof(int)))
--			return -EFAULT;
--
-+		val = argp[0];
- 		if (val > U8_MAX || val < 0)
- 			return -EINVAL;
- 
--		if (copy_from_user(&speed, argp + 1, sizeof(int)))
--			return -EFAULT;
-+		speed = argp[1];
- 
- 		speed = clamp_val(speed, 0, data->i8k_fan_max);
- 
-@@ -643,12 +631,22 @@ static long i8k_ioctl(struct file *fp, unsigned int cmd, unsigned long arg)
- 	if (val < 0)
- 		return val;
- 
--	if (copy_to_user(argp, &val, sizeof(int)))
+ 	char buf[20], *value, *pbuf;
+ 	u8 reg_val = 0;
+@@ -1129,8 +1129,7 @@ static ssize_t viafb_dvp0_proc_write(struct file *file,
+ 	if (count < 1)
+ 		return -EINVAL;
+ 	length = count > 20 ? 20 : count;
+-	if (copy_from_user(&buf[0], buffer, length))
 -		return -EFAULT;
--
-+	*argp = val;
++	memcpy(&buf[0], buffer, length);
+ 	buf[length - 1] = '\0';	/*Ensure end string */
+ 	pbuf = &buf[0];
+ 	for (i = 0; i < 3; i++) {
+@@ -1169,7 +1168,7 @@ static ssize_t viafb_dvp0_proc_write(struct file *file,
+ 
+ static const struct proc_ops viafb_dvp0_proc_ops = {
+ 	.proc_show	= viafb_dvp0_proc_show,
+-	.proc_write	= viafb_dvp0_proc_write,
++	.proc_write_buf	= viafb_dvp0_proc_write,
+ };
+ 
+ static int viafb_dvp1_proc_show(struct seq_file *m, void *v)
+@@ -1183,7 +1182,7 @@ static int viafb_dvp1_proc_show(struct seq_file *m, void *v)
+ }
+ 
+ static ssize_t viafb_dvp1_proc_write(struct file *file,
+-	const char __user *buffer, size_t count, loff_t *pos)
++	char *buffer, size_t count, loff_t *pos)
+ {
+ 	char buf[20], *value, *pbuf;
+ 	u8 reg_val = 0;
+@@ -1191,8 +1190,7 @@ static ssize_t viafb_dvp1_proc_write(struct file *file,
+ 	if (count < 1)
+ 		return -EINVAL;
+ 	length = count > 20 ? 20 : count;
+-	if (copy_from_user(&buf[0], buffer, length))
+-		return -EFAULT;
++	memcpy(&buf[0], buffer, length);
+ 	buf[length - 1] = '\0';	/*Ensure end string */
+ 	pbuf = &buf[0];
+ 	for (i = 0; i < 3; i++) {
+@@ -1225,7 +1223,7 @@ static ssize_t viafb_dvp1_proc_write(struct file *file,
+ 
+ static const struct proc_ops viafb_dvp1_proc_ops = {
+ 	.proc_show	= viafb_dvp1_proc_show,
+-	.proc_write	= viafb_dvp1_proc_write,
++	.proc_write_buf	= viafb_dvp1_proc_write,
+ };
+ 
+ static int viafb_dfph_proc_show(struct seq_file *m, void *v)
+@@ -1237,11 +1235,11 @@ static int viafb_dfph_proc_show(struct seq_file *m, void *v)
+ }
+ 
+ static ssize_t viafb_dfph_proc_write(struct file *file,
+-	const char __user *buffer, size_t count, loff_t *pos)
++	char *buffer, size_t count, loff_t *pos)
+ {
+ 	int err;
+ 	u8 reg_val;
+-	err = kstrtou8_from_user(buffer, count, 0, &reg_val);
++	err = kstrtou8(buffer, 0, &reg_val);
+ 	if (err)
+ 		return err;
+ 
+@@ -1251,7 +1249,7 @@ static ssize_t viafb_dfph_proc_write(struct file *file,
+ 
+ static const struct proc_ops viafb_dfph_proc_ops = {
+ 	.proc_show	= viafb_dfph_proc_show,
+-	.proc_write	= viafb_dfph_proc_write,
++	.proc_write_buf	= viafb_dfph_proc_write,
+ };
+ 
+ static int viafb_dfpl_proc_show(struct seq_file *m, void *v)
+@@ -1263,11 +1261,11 @@ static int viafb_dfpl_proc_show(struct seq_file *m, void *v)
+ }
+ 
+ static ssize_t viafb_dfpl_proc_write(struct file *file,
+-	const char __user *buffer, size_t count, loff_t *pos)
++	char *buffer, size_t count, loff_t *pos)
+ {
+ 	int err;
+ 	u8 reg_val;
+-	err = kstrtou8_from_user(buffer, count, 0, &reg_val);
++	err = kstrtou8(buffer, 0, &reg_val);
+ 	if (err)
+ 		return err;
+ 
+@@ -1277,7 +1275,7 @@ static ssize_t viafb_dfpl_proc_write(struct file *file,
+ 
+ static const struct proc_ops viafb_dfpl_proc_ops = {
+ 	.proc_show	= viafb_dfpl_proc_show,
+-	.proc_write	= viafb_dfpl_proc_write,
++	.proc_write_buf	= viafb_dfpl_proc_write,
+ };
+ 
+ static int viafb_vt1636_proc_show(struct seq_file *m, void *v)
+@@ -1313,7 +1311,7 @@ static int viafb_vt1636_proc_show(struct seq_file *m, void *v)
+ }
+ 
+ static ssize_t viafb_vt1636_proc_write(struct file *file,
+-	const char __user *buffer, size_t count, loff_t *pos)
++	char *buffer, size_t count, loff_t *pos)
+ {
+ 	char buf[30], *value, *pbuf;
+ 	struct IODATA reg_val;
+@@ -1321,8 +1319,7 @@ static ssize_t viafb_vt1636_proc_write(struct file *file,
+ 	if (count < 1)
+ 		return -EINVAL;
+ 	length = count > 30 ? 30 : count;
+-	if (copy_from_user(&buf[0], buffer, length))
+-		return -EFAULT;
++	memcpy(&buf[0], buffer, length);
+ 	buf[length - 1] = '\0';	/*Ensure end string */
+ 	pbuf = &buf[0];
+ 	switch (viaparinfo->chip_info->lvds_chip_info.lvds_chip_name) {
+@@ -1404,7 +1401,7 @@ static ssize_t viafb_vt1636_proc_write(struct file *file,
+ 
+ static const struct proc_ops viafb_vt1636_proc_ops = {
+ 	.proc_show	= viafb_vt1636_proc_show,
+-	.proc_write	= viafb_vt1636_proc_write,
++	.proc_write_buf	= viafb_vt1636_proc_write,
+ };
+ 
+ #endif /* CONFIG_FB_VIA_DIRECT_PROCFS */
+@@ -1416,7 +1413,7 @@ static int __maybe_unused viafb_sup_odev_proc_show(struct seq_file *m, void *v)
  	return 0;
  }
  
-+/* The command numbers don't encode what is copied, see <uapi/linux/i8k.h>. */
-+static const struct proc_ioctl_arg i8k_ioctl_args[] = {
-+	PROC_IOCTL_ARG(I8K_BIOS_VERSION, 0, sizeof(int)),
-+	PROC_IOCTL_ARG(I8K_MACHINE_ID, 0, sizeof_field(struct dell_smm_data, bios_machineid)),
-+	PROC_IOCTL_ARG(I8K_FN_STATUS, 0, sizeof(int)),
-+	PROC_IOCTL_ARG(I8K_POWER_STATUS, 0, sizeof(int)),
-+	PROC_IOCTL_ARG(I8K_GET_TEMP, 0, sizeof(int)),
-+	PROC_IOCTL_ARG(I8K_GET_SPEED, sizeof(int), sizeof(int)),
-+	PROC_IOCTL_ARG(I8K_GET_FAN, sizeof(int), sizeof(int)),
-+	PROC_IOCTL_ARG(I8K_SET_FAN, 2 * sizeof(int), sizeof(int)),
-+};
-+
- /*
-  * Print the information for /proc/i8k.
-  */
-@@ -696,7 +694,9 @@ static int i8k_proc_show(struct seq_file *seq, void *offset)
+-static ssize_t odev_update(const char __user *buffer, size_t count, u32 *odev)
++static ssize_t odev_update(const char *buffer, size_t count, u32 *odev)
+ {
+ 	char buf[64], *ptr = buf;
+ 	u32 devices;
+@@ -1424,8 +1421,7 @@ static ssize_t odev_update(const char __user *buffer, size_t count, u32 *odev)
  
- static const struct proc_ops i8k_proc_ops = {
- 	.proc_show	= i8k_proc_show,
--	.proc_ioctl	= i8k_ioctl,
-+	.proc_ioctl_buf	= i8k_ioctl,
-+	.proc_ioctl_args = i8k_ioctl_args,
-+	.proc_nr_ioctl_args = ARRAY_SIZE(i8k_ioctl_args),
+ 	if (count < 1 || count > 63)
+ 		return -EINVAL;
+-	if (copy_from_user(&buf[0], buffer, count))
+-		return -EFAULT;
++	memcpy(&buf[0], buffer, count);
+ 	buf[count] = '\0';
+ 	add = buf[0] == '+';
+ 	sub = buf[0] == '-';
+@@ -1452,7 +1448,7 @@ static int viafb_iga1_odev_proc_show(struct seq_file *m, void *v)
+ }
+ 
+ static ssize_t viafb_iga1_odev_proc_write(struct file *file,
+-	const char __user *buffer, size_t count, loff_t *pos)
++	char *buffer, size_t count, loff_t *pos)
+ {
+ 	u32 dev_on, dev_off, dev_old, dev_new;
+ 	ssize_t res;
+@@ -1473,7 +1469,7 @@ static ssize_t viafb_iga1_odev_proc_write(struct file *file,
+ 
+ static const struct proc_ops viafb_iga1_odev_proc_ops = {
+ 	.proc_show	= viafb_iga1_odev_proc_show,
+-	.proc_write	= viafb_iga1_odev_proc_write,
++	.proc_write_buf	= viafb_iga1_odev_proc_write,
  };
  
- static void i8k_exit_procfs(void *param)
+ static int viafb_iga2_odev_proc_show(struct seq_file *m, void *v)
+@@ -1483,7 +1479,7 @@ static int viafb_iga2_odev_proc_show(struct seq_file *m, void *v)
+ }
+ 
+ static ssize_t viafb_iga2_odev_proc_write(struct file *file,
+-	const char __user *buffer, size_t count, loff_t *pos)
++	char *buffer, size_t count, loff_t *pos)
+ {
+ 	u32 dev_on, dev_off, dev_old, dev_new;
+ 	ssize_t res;
+@@ -1504,7 +1500,7 @@ static ssize_t viafb_iga2_odev_proc_write(struct file *file,
+ 
+ static const struct proc_ops viafb_iga2_odev_proc_ops = {
+ 	.proc_show	= viafb_iga2_odev_proc_show,
+-	.proc_write	= viafb_iga2_odev_proc_write,
++	.proc_write_buf	= viafb_iga2_odev_proc_write,
+ };
+ 
+ #define IS_VT1636(lvds_chip)	((lvds_chip).lvds_chip_name == VT1636_LVDS)
 
 -- 
 2.53.0
