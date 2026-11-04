@@ -1,92 +1,139 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82B03606D814
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 22:32:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 154FE606E821
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 22:32:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=D6q3gpTp
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=JfHVVkt2
 Received: by kanga.kvack.org (Postfix)
-	id 8FD426B05B1; Wed,  4 Nov 2026 17:32:02 -0500 (EST)
+	id 2BDF26B05B4; Wed,  4 Nov 2026 17:32:25 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8D6186B05B2; Wed,  4 Nov 2026 17:32:02 -0500 (EST)
+	id 26E346B05B5; Wed,  4 Nov 2026 17:32:25 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 812016B05B4; Wed,  4 Nov 2026 17:32:02 -0500 (EST)
+	id 186276B05B6; Wed,  4 Nov 2026 17:32:25 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 3E1E66B05B1
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 17:32:02 -0500 (EST)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id BBBD48086B
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 22:32:01 +0000 (UTC)
-X-FDA: 85398885642.01.D0CC8F3
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 2C6C680005
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 22:32:00 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=D6q3gpTp;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf02.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id E12656B05B4
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 17:32:24 -0500 (EST)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 73D414089E
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 22:32:24 +0000 (UTC)
+X-FDA: 85398886608.05.7E1A51B
+Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 9B5C7120006
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 22:32:22 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=JfHVVkt2;
+	spf=pass (imf29.hostedemail.com: domain of dmatlack@google.com designates 209.85.214.170 as permitted sender) smtp.mailfrom=dmatlack@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793831520;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	s=arc-20220608; t=1793831542;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1pY66RTAg4gskpB0/23Dm2MncTkJlPFKDiLc2XwKGdA=;
-	b=gAdx3JiYEBXXACoPPS5XYDHEBw0JvXqFjXB2Jfyjg/GCN6Z2fNeYqVFx+gsfv8ZryTZD8s
-	qz4xgecsWJKajKYuTRh4+O6yytPDeztXSQpbf6LEBWHzap/a5C9J/uQiBBUlSQ3vzrSxrx
-	F0ucD0gNYCnK12zSwpo9exjE5/ukrko=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793831520;
-	b=7UNuTNsv5rET7jhOZK3AgxKCZ8mPLytXRuoNORWdT3aFaU26t97huQiQCdqbs3EHe45h4e
-	aZb/Qxhpp2tKI2toplPhRAgru9hszkyjTJEbqdAJUUkqE0UGDLvXcgPYTIaVvnuWxIA3Ua
-	+H9oj4a2GxWvDATumNSC/Xnj7jMCcAY=
+	bh=AqrMQTautnZWVcHeal8+VHryjxTdMHJnQLEYqFDhRfQ=;
+	b=yUXBEtC3Ndb6yJkhpIAyYq0exi0SRowDB6nUm/D8okP6bso0DW1auZFM8ptyS25g9+V/pC
+	P7ZaYCFv8xLmT5avrLi6lOuA7iBIu+61LybNSYUL/f/Vg/slYtFa6GKkulz2UfDxITM4cU
+	7ziUnPrPOLy2DLpRk8Ht91kpsCqgHxQ=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=D6q3gpTp;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf02.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id F159460207;
-	Wed,  4 Nov 2026 22:31:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8845A1F00A15;
-	Wed,  4 Nov 2026 22:31:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793831518;
-	bh=1pY66RTAg4gskpB0/23Dm2MncTkJlPFKDiLc2XwKGdA=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=D6q3gpTpKYEmJrHIaehomVhi1poKU/XVJMTpb4cma30HCgRYKwXEi0yg94psAaPV9
-	 +jfeWPrBd1TSAnMyF9xk9WcIi0wKWkhiDH8FAKfcEbx0CLASo9cMQC7p5v0MKsj+Pr
-	 qiLAT7mWhjo5FcN/Sdq6IfwKEPvwmn763Q8I3DukPb4Kxpexmxi6gJbEuDgYMpXTPg
-	 AiBno42Cq1EmQ8F0bRjOdxLrt4o+sV5AedjjqedD/VQt9n/KwEqkLF6QDV2I6+/QXM
-	 0AA88mroPgaAl7s0I53yYK/sCANQL2fpCcqCWSqvtUZjRpGZSpWlAWyg9fKJ0c0wXx
-	 cHaPLHcrGWwQA==
-Message-ID: <sashiko-outbox-198231@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [RFC PATCH v3 2/3] mm/migrate: introduce async non-temporal
- migration mode
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Huan Nguyen" <nhuhuan@google.com>, tglx@kernel.org, mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com, akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org, Liam.Howlett@oracle.com, vbabka@kernel.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com, trondmy@kernel.org, anna@kernel.org, ziy@nvidia.com, matthew.brost@intel.com, joshua.hahnjy@gmail.com, rakie.kim@sk.com, byungchul@sk.com, gourry@gourry.net, ying.huang@linux.alibaba.com, apopple@nvidia.com, rostedt@goodmis.org, mhiramat@kernel.org, mathieu.desnoyers@efficios.com, jackmanb@google.com, hannes@cmpxchg.org, shivankg@amd.com
-Cc: rientjes@google.com, dave@stgolabs.net, nifan.cxl@gmail.com, fvdl@google.com, jic23@kernel.org, rkodsara@amd.com, bharata@amd.com, sj@kernel.org, weixugc@google.com, xuezhengchu@huawei.com, yiannis@zptcorp.com, yiannis.nikolakop@gmail.com, dimitrios.palyvos@zptcorp.com, alirad.malek@zptcorp.com, ryan.roberts@arm.com, linux-mm@kvack.org, linux-trace-kernel@vger.kernel.org, "Chuck
- Lever" <cel@kernel.org>, "Jeff Layton" <jlayton@kernel.org>
-In-Reply-To: <20261103223025.2482227-3-nhuhuan@google.com>
-References: <20260730-rfc-nt-demote-v2-0-452dbe3b5073@zptcorp.com>
- <20261103223025.2482227-1-nhuhuan@google.com>
- <20261103223025.2482227-3-nhuhuan@google.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Wed, 04 Nov 2026 22:31:56 +0000
-X-Stat-Signature: iqusak79rqiz7gictoprwzitdrkry56c
+	imf29.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=JfHVVkt2;
+	spf=pass (imf29.hostedemail.com: domain of dmatlack@google.com designates 209.85.214.170 as permitted sender) smtp.mailfrom=dmatlack@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793831542;
+	b=NnoPMWem9V+lZqJJMwWYCKphN/DrfJQoLLV1rgwfxI7IUW6sH9PcwfPNm+m8CzyRbEodGC
+	p9VqsFOgNgfFpTcJLZ34KHohxzMFQN7BMlYQ+pJHR45WthtM4KDQym7JYdZduUnD7GxanU
+	aigzkXpK/95P2f9cp96yM66FCjoWhx4=
+Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-2e60f9af6e6so12126255ad.3
+        for <linux-mm@kvack.org>; Wed, 04 Nov 2026 14:32:22 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20260707; t=1793831541; x=1794436341; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=AqrMQTautnZWVcHeal8+VHryjxTdMHJnQLEYqFDhRfQ=;
+        b=JfHVVkt2wYKTJ/PhWOpLuv/6JXcYnjNiWnNV4ryGplKiM5PkI9C8ooOyI1NB+HeHOg
+         qFjsvzF7t2eXScLysLVPFVJK5Ap71gufs32pNHPlxEE8nxc4aXla3yUiTuMYpcZPrAoh
+         ABsV+UqLuS5BDVF0k5IUFZdPryoPstCYABNy6SwUB5Jb59ZLGe3lSSJyCfxRp14dMFTv
+         OM1XHpG6Tn7rPraY7+SLe2nsVNtqA3oiGrsx5Dzrggf415dUAw1MgndW5a1faHHMemoe
+         CPuek+/6AxFUW0V5K3vtFQQaCj615Us8X9ayECOsn9DxSZ4otNRE2E0OQFUkGIosET7y
+         IMEg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793831541; x=1794436341;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=AqrMQTautnZWVcHeal8+VHryjxTdMHJnQLEYqFDhRfQ=;
+        b=Rj9ZoSgp0BXe4QMnpaHj24lUp9Iqx9fO+xKYN4+nuV3hpl4PRu8kV/s4Mf295z4+fr
+         otTVuCg+CIl5VsG1BOmiZdhPRGdbW4W9Fws3k/r1c/lnMkVDSnhHW6QLXwNqt6he8lN8
+         dumQGMJIKayMGrYY4cEWdK3/vafDIgjlya3trpf8QJ9vI27AIqCT3lmQs0mPjAeyiXqg
+         EFp2J+V31DsIvfKSlogcoqNYbKATbSMRbQ6KAKJtZjrp/hNDDa1UhTBM5YZOLFBdn0G9
+         yA97OC+h+2gst2dDrj76l5vpx2eO6KY2MFsCET7mf/59GKauEzA1TNWGkGxSmaTJSuFA
+         +7gQ==
+X-Forwarded-Encrypted: i=1; AKwUvBwptMYhfDElxWYQKUgQQOK1jvW9UJ603V7DEOEcuTLh8BK3NSll2tdort0y5mvCbB11xw/hE6d1NA==@kvack.org
+X-Gm-Message-State: APuU4Z9ZhWBjmOUsnm9DeY0LMX8DuPZKcY1Z06KdfDW3fESf6loKdsht
+	7AYxkOsSUzpJbo2Yyge8PZ0E36hA/GjK5yCdNlN8++n8Kjgv5ysaC2U0fGTwJ9cZkw==
+X-Gm-Gg: AYBFou0IeeNuA8MiSiUr9ZIeaskCGn2oOauKYFPlFHif6CmPqFZqCYoeErPnnpnQVI4
+	Ey0xSM1GYc3uzV40CAdJukg9pI7RodlVgZK4rTSrIFNfJWkwKljxnPHHcW6Jo1+6HgE6uGrszNe
+	DJwZtxHvmiRIFwRemAhQiRtUKBy0fdUU3M7wMBme6WKqsG++IpMO3MHBru3d6nd/tbHFD3cKm0m
+	FJ77FlJiaZrRTB/O6gk8A++20ptWxzHnVwhPQQ0CNqsEfjV3595Kdc35KHCOd+OdJlCNCncViJi
+	piF0N0u4UBEHNAwZ7zy9Vo+UQQGis0bh4u0946eJI1XjT+9IDu44YkzjfwBEtxhijn2T8yd0wYD
+	zJdPQdKVa/D1iHdXHZ1Z7Qr5aW3ljUZ6u/d8P1Q7gtevrWY5lA7bHTh6e6pQ6qpWs2QXfzPJI9F
+	Yp8Jz/BA5n62di31ETlzHy0GbGqzC6RU6Z2ez337ZXtIOXqVDqzILDb4gLez7Qjj24rQ0cf+EBc
+	EIIXpi0xLgmPaQ0MVCN2MeG0X7iLFKhQ6qM6HcEOEcNi9TYs/XfNVTEJ2gLJd5JWVvvl4/V6UBj
+	iVGAYQJ3Thsh9hDpVUNzGsekbe4Aqmdro9GcltoVT7Xp2/GvPBwmTnaUBQslIRODiV4BdDZwl02
+	BiHwu1E4fJw==
+X-Received: by 2002:a17:902:f603:b0:2ed:130f:869d with SMTP id d9443c01a7336-2ed130fba9bmr22390155ad.43.1793831541004;
+        Wed, 04 Nov 2026 14:32:21 -0800 (PST)
+Received: from google.com (33.79.127.34.bc.googleusercontent.com. [34.127.79.33])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ed090a1475sm11919255ad.41.2026.11.04.14.32.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 04 Nov 2026 14:32:20 -0800 (PST)
+Date: Wed, 4 Nov 2026 22:32:15 +0000
+From: David Matlack <dmatlack@google.com>
+To: Pratyush Yadav <pratyush@kernel.org>
+Cc: kexec@lists.infradead.org, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+	linux-mm@kvack.org, Alexander Graf <graf@amazon.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Christian Brauner <brauner@kernel.org>,
+	David Hildenbrand <david@kernel.org>,
+	Hugh Dickins <hughd@google.com>, Jonathan Corbet <corbet@lwn.net>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Lorenzo Stoakes <ljs@kernel.org>, Michal Hocko <mhocko@suse.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Samiullah Khawaja <skhawaja@google.com>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Vlastimil Babka <vbabka@kernel.org>
+Subject: Re: [PATCH v3 08/10] mm/shmem_luo: Allow preserving tmpfs files that
+ are still linked
+Message-ID: <auuyb7FYBX7xdr5z@google.com>
+References: <20261103010216.3447716-1-dmatlack@google.com>
+ <20261103010216.3447716-9-dmatlack@google.com>
+ <2vxza4nok0ji.fsf@kernel.org>
+X-Archived-By: <archiver.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2vxza4nok0ji.fsf@kernel.org>
+X-Stat-Signature: n9wpm6thyhzsiimyyyncbro6xp493dqt
+X-Rspamd-Server: rspam01
 X-Rspam-User: 
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-13.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 2C6C680005
-X-HE-Tag: 1793831520-864580
-X-HE-Meta: U2FsdGVkX1/vw8f5OKSBlBuvSTquwESvV2h/NOw5K50hi5ia/mIjp1RNACYB8xUYAcps3Rj3BKP6hs2NZnGzNnSA/AFUNnIFSlS/cJ7VjumjgmPYMHNiHvvOfakVqxC16oBBEk7752aQaxi9aXOCqPoEEhRUYd90EEUtO4ukKtdqnLnDlypxxKkCJMA/sWwoQGHkIBCXIwuC0P/SSd7oAED5psojWIR8E5FAmoablG+gerie0MNjNkvwtNKtBcir4+HLWTyWIqwwjzosc0t6P8n9oMoOtp4HMbXWAIKrcUO7/i/P1ByapQl7Un/62FnS3CqqGQIAq12J60pnI3gAnFbrLT4J7cu+TOwJCqy61n+cc4HdrMAK82vGIJXVTd0ZW60O3hQQAbURHqD2uI507v3uL2dQ9Ijs4q2jOyCGVVVE4F9uI/GnexW50snVhRaHQF65UMe2jLszU02GcO//L11VtZj36bO1n+NDYcD0jNEarqLja0zNDeeqEbTf3uDzemrlHpKEw3dAHs9flyftMvnof89AodSheS8LAj0w2RkqaLeBXFbfPygAgd+IrN03PS8wAcNrt/shGGweq5dRSymw2nHANUHgSWwr8SXlgs5lyEGyHCzMmtGKxlF/XIHGX3XpTTXT79N0fwAeG5+5N4WGkwEaxvvbmIpBkkAmPFSPQkvOzakNyiYyCujT+njCbaY4uc2O/kQk7ndAkZ2zFS2mEA3es9VOlU2D/vcVjg06QBwqv/wZ+R0zMqlvgIu/oIOVwxc4rvgTFK4s56HwkAEiMksW+LLpipmw64eS5tk0+CCXkRzo4bv7hq2TCNgAUZOlNkNtKL3AsCd2mZzGwnzLdeHYSxwHp6cgl9qjEdlg658w/z/2/YcaM8jh/prQKIey20htrPqeUFLbt016O+lKZvL89hZ7yGzfn3qvYZna68XOIYTk+PFuRAJbXkqDNyic9+LR3TXOZmK5t5P
- 7aHBt86U
- aCpRwwzyY/t/l9oVNfinTIQBwCRyk95Fakeeu5gY+yxxK0f+FATHiMyYKg2dcBxA/ZfNYt0oPpn3defVp1eRjSxgPTRcL4PC4O83AGc+RjkWy916HuhmmFrKTaPuzMHkevHr+l88feHBjw5NxInO6O+PcixonrQboagayMzvmnw3S7qIWQQlg1EDgxFodYUO9Tg7LcGvAFass3q8691/SlJVMzuffpB1RdY270NsyjQVUPRg61mMYLn3j1C6TjvLAI9+mATiay9/dYM+poWcRnWY5yzM/bi7D7HJOGjAo5B2VlyYhaGF7xYZvNSJQfVW70S3FwnTLVYOOaNUiCTKM/ifUPRKDO1dqychhoB0N01DM0muTWicnqAoaGcjzjDLvGhxRfEGvh1wkw9nqdwG01ey5VCbq7arRpKZkaY0j5TAPamkJ8aEmC+LC/ZIAAsMn5JxqD006GWA8EpiGJ/zCBQMiRMBB4NFTxbX4mrgFLUdjW2K8MtI/L63H22OBh0kBB6l6rj87yo0Joo0HRcVl0Rc54cFLzGLJnXQg1eo+BmOgMo0N5tHOX8V527Wvgfa+KFDGEx78xAcBy0ZoyJJE9/SCrD9cP2xJu2UWyZ5j3WKL/O/XtFWAy/4Q9qWC68CLMaLZl0vGrtqEQ68mi0Gy4QLBkrhu2xqTBasN
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_IN_DEF_DKIM_WL
+	autolearn=no autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: 9B5C7120006
+X-HE-Tag: 1793831542-428974
+X-HE-Meta: U2FsdGVkX1+3KSp3dY9jY1q6kc1f2sEwcrbEZTk67BV29Objj1FpEK4jONNNJTnSaqN4mILZ0d63CNM12RDws5QC6WHORYi97m/Q9sBGGruvQwmeUQxPDQrUahIL68Vd7zdXbrGIf0AbmCtyppygMDdF4+fvFnADmmYHzw2Z5x3FUAVxV69QSuYNgF1h0BxXmIgQ6dGBmQouRPs2V2jG/9F8Hp5i4BhZumDpcS90ZZCtuUyyaSKXAsjEBNI725bmBltx08D/VNuYsV32GP1O9W1qeoHlLrm+KcRcDvzaMJVA5zXgRTX5shWcPbQjpcJxYD1Al37JCJyI5DbhRJQCfz18YNxhSLfVjOG1/H8usCOMRFnEqCbx9veddaDpZWCCP/BZNxZIliX8l54xIxM20fTg93kIeQlGyNiFpL5aIgiP4W4A1XLKWkXBeegApJZhI4HO4u9Uw7jejd3CV9le+qHQ6mvHG3y0YdhR5+vHzKtg257SXTvQzDp8bWZ4cEm16GxkAB/soDNxjWdz2sZ3WCi6/NV882RvYLO2xY0Wgwn+dgYmj4GLAVzNJQDNsmzoHVwnAYUSYHer1khZkbLmm2vXasc+3RgWyT7R3FDQ0BjcyNgOe1Mt0yq/5HuR1etGnh1HHZ5Z1CrvFOcXR85meK/cYTU+R9/Q0dW7YK697tFvUAzu8NkqD0GRbJsqw1C9Tg3GqRc0PwTNi8IEEI1pp05RNyIMbodeBHrhbTihMkCZg34zbzL3Pd+QC+g4DCm6z53vX+33aHhe3aLsZP0mywIF1ZY06VgI9wt37FKF8JANyYWncHYqSewro0ySZW5eQ/0I0Rz7IthRf2jRq0uyX1UUgYZfCGS6Q4JRSwb3FUbbkbXtRmTN7dEgTJANZmM5RSRh/Hdfjm/1BVNfvQhCbuY36HAmBt6d1AxDIFNPF8uxctIrdqCS7zFJENmIwVjevzlQWgedI8FPB3RlEgG
+ 8BmF0Aoy
+ ero7JALfYX5JDBx3/bUmVb5RnVHq2O5n0yxeCRbv94OmEmpdJBB1dB738FaKthFRYbsU3ItHBDYrBnjdKnpJOhbX4YBlncL1YmKV0ShN4po2R6R386CWHsIonYoJJrX5sY9mzZx1ykVJA3sziKle7txgz2vwirvMvJGsEi1PCL9R6a04sn6MlVgA3dmU8FXaF+E9S8l08qthIjdpnix7nJwvLA2rbnfgHkz5sCxELoFTzsoTsOVJ7kwv0wPhRC0JeaMUlITud176IIiKYyv4tdDIyYlNxGkO8fUOVi7xJoz73TiAEze/cCGnMGV2ZPTijuR/Talgw6XGzf7WdHu/MJ/BtauGiiyGGCVQmCTKRkvrFP4JIDODEjhVTsy8IIXhqJzcaNFbb617ycpcCKnTP5vBvZ9rUe7oYI4mS
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,76 +141,22 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
-X-Archived-By: <archiver.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [Medium] mm/compaction: enum migrate_mode ordering breaks compact_zone() =
-async check
---
+On 2026-11-04 05:45 PM, Pratyush Yadav wrote:
+[...]
+> > + * Preserving a file requires it to be opened for reading, since the retrieved
+> > + * file can be read. It also requires permission to write to the file, since
+> > + * preserving it affects all of its users, as described below. But the file
+> > + * doesn't need to be opened for writing. For example, a binary that is being
+> > + * executed can be preserved through a read-only file descriptor. The owner of
+> 
+> Why are you talking about preserving binaries being executed? Seems
+> oddly specific. I didn't know that was a use case we cared about.
 
-commit 047765d971a4b565eac5e2dd50bc528791c2e77e
-Author: Huan Nguyen <nhuhuan@google.com>
-
-mm/migrate: introduce async non-temporal migration mode
-
-This commit introduces MIGRATE_ASYNC_NONTEMPORAL to migrate cold folios
-using non-temporal stores via folio_mc_copy_nt() in __migrate_folio(), and
-adds migrate_is_async() to update callers across compaction, NFS, and
-migration.
-
-> diff --git a/include/linux/migrate_mode.h b/include/linux/migrate_mode.h
-> index 05102d4d2490e..fd752fddc972e 100644
-> --- a/include/linux/migrate_mode.h
-> +++ b/include/linux/migrate_mode.h
-> @@ -12,6 +12,7 @@ enum migrate_mode {
->  	MIGRATE_ASYNC,
->  	MIGRATE_SYNC_LIGHT,
->  	MIGRATE_SYNC,
-> +	MIGRATE_ASYNC_NONTEMPORAL,
->  };
-
-[Severity: Medium]
-Does placing MIGRATE_ASYNC_NONTEMPORAL after MIGRATE_SYNC in enum
-migrate_mode break the relational check in compact_zone()?
-
-In mm/compaction.c, compact_zone() checks (cc->mode < MIGRATE_SYNC) when a
-page fails to migrate within a pageblock:
-
-mm/compaction.c:compact_zone() {
-    ...
-			/*
-			 * If an ASYNC or SYNC_LIGHT fails to migrate a page
-			 * within the pageblock_order-aligned block and
-			 * fast_find_migrateblock may be used then scan the
-			 * remainder of the pageblock.
-			 * ...
-			 */
-			if (!pageblock_aligned(cc->migrate_pfn) &&
-			    !cc->ignore_skip_hint && !cc->finish_pageblock &&
-			    (cc->mode < MIGRATE_SYNC)) {
-				cc->finish_pageblock =3D true;
-    ...
-				goto rescan;
-			}
-    ...
-}
-
-Because MIGRATE_ASYNC_NONTEMPORAL has an enum value greater than
-MIGRATE_SYNC, (cc->mode < MIGRATE_SYNC) evaluates to false when compact_zon=
-e()
-runs with cc->mode =3D=3D MIGRATE_ASYNC_NONTEMPORAL and migration fails
-mid-pageblock. That causes compact_zone() to skip setting
-cc->finish_pageblock =3D true and jumping to rescan, leaving the pageblock
-partially scanned without marking it skip so fast_find_migrateblock() can
-repeatedly revisit it.
-
-Should MIGRATE_ASYNC_NONTEMPORAL be placed before MIGRATE_SYNC_LIGHT in enum
-migrate_mode (matching the ordering in include/trace/events/migrate.h), or
-should compact_zone() check cc->mode !=3D MIGRATE_SYNC like
-isolate_migratepages() does?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261103223025.2482=
-227-1-nhuhuan@google.com?part=3D2
+It's the reason the check looks at permission on the inode instead of
+requiring an fd opened for writing: a running binary can't be opened for
+writing (-ETXTBSY), so requiring a writable fd would make it impossible
+to preserve. Preserving binaries is a use case we care about, e.g. to
+carry over the binaries of services across a Live Update. I'll keep the
+comment shorter and more general in v4.
 
