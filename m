@@ -1,105 +1,99 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B7E0606A33F
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 16:59:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 741C4606A332
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 17:01:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=e1IltH/h
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=IT2x62J6
 Received: by kanga.kvack.org (Postfix)
-	id 338396B05B5; Wed,  4 Nov 2026 11:59:27 -0500 (EST)
+	id 8E17A6B00EF; Wed,  4 Nov 2026 12:01:51 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3103C6B05B7; Wed,  4 Nov 2026 11:59:27 -0500 (EST)
+	id 8B8A26B05B6; Wed,  4 Nov 2026 12:01:51 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 24B7B6B05BB; Wed,  4 Nov 2026 11:59:27 -0500 (EST)
+	id 7CEB76B05B9; Wed,  4 Nov 2026 12:01:51 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id E74836B05B5
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 11:59:26 -0500 (EST)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 71C2CC06D0
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 16:59:26 +0000 (UTC)
-X-FDA: 85398047532.08.5A47023
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf21.hostedemail.com (Postfix) with ESMTP id DEBD41C0007
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 16:59:24 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="e1IltH/h";
-	spf=pass (imf21.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 540656B00EF
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 12:01:51 -0500 (EST)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id E54091607E7
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 17:01:50 +0000 (UTC)
+X-FDA: 85398053580.28.6095E59
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 202F18000B
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 17:01:48 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IT2x62J6;
+	spf=pass (imf02.hostedemail.com: domain of snitzer@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=snitzer@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793811709;
+	b=ouLOUA50/QlgGeZFYezMFPwt+Mmqv/bk5XWfwpwsoMzh4SVO0HqqqxxQrYjuFH2mqWLhDx
+	mV73Zmt7fj/XAiPOIb0oxm/i+452yQvFlv6/YcuotJ5dmRmdFD8ML6d+l9pimrV4Ss5Bdg
+	+LWFwNMjzfXWylaNhO+6EwGX9R0Hwxw=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IT2x62J6;
+	spf=pass (imf02.hostedemail.com: domain of snitzer@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=snitzer@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793811564;
+	s=arc-20220608; t=1793811709;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4ChK0INPk67gm1yU3y9ycjg3DavhKidCa/NOKnRXt3E=;
-	b=1f96WHcY74P3YTBap0M4K3huIoyX6la3vhYUMyYGLauJKHrse6hqqcv/fzTUZSnIoImLjC
-	5AHyPmCRg6Ytk4mJNp/piZoVkFaL8XDutH2KjqgnRHB6p7X1E9fy+0Qam99VHXTRtt0Ip1
-	dOd4w74nszTYIwLo7TSLaQURTt85Wbs=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793811564;
-	b=ePoyGOom3sp0QkZgfZZWj3m+7vuDNpeE8UMmxzh4sDF5W9Aa6h/vAgq2JUwOJPlLCv2NDL
-	7WNyrDwsg67XykG+vF1Rx8cDk2/6ffV3u6t3j1VmiQ/o1XGEzSJHtrZGCecWma69ckuT9C
-	62Hr/myU33wgttpOChKtal80P0xKaYs=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="e1IltH/h";
-	spf=pass (imf21.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=jkCHVhZioJ1wdZN6npY2hfrvWb9kbC3wPalZmZ3BoVA=;
+	b=qcD6LA/QTNvIZYmyGA8o+S8HfLeBDwZrK6WhUfiW0f3UEQDZkZRxOZ9hrS1v5Ajv1LJTbo
+	xv2RDgHB6XLyiRvvrjkeUpT5WDdbQ4IRDKTxfgJWZK4uMwFWJcnJlSqO7PDkxxh4iLWrqT
+	WLRkTjyoWuy3KB8Js/6q0zHXBNNDUOI=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 5ED5B60609;
-	Wed,  4 Nov 2026 16:59:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 768EB1F000C1;
-	Wed,  4 Nov 2026 16:59:20 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 4759942A91;
+	Wed,  4 Nov 2026 17:01:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED6B91F000C1;
+	Wed,  4 Nov 2026 17:01:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793811564;
-	bh=4ChK0INPk67gm1yU3y9ycjg3DavhKidCa/NOKnRXt3E=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=e1IltH/hwj2W3cR9SklfIBuPpiVdyAm/FwepfN/AbRq+r8/IbUR3jqQcUVHkVJ80C
-	 06+cz8P8GC+/B3dQEvITq/W+IOwGtPORC1nuZoa/6OKutaQGnsh83PiXBnA9hes95x
-	 EPqBgYzbCWN4QjyuZGXgMfRbQEIim8rvmmPr5uktGj+13/5AvaJJHw4UbVjaULZ2tK
-	 pCDl6L1xa5eInJrm6UBMG3QojaQTUDyGKuWXwm1yAFbOvEUusx9/f9j6sGLzm20Ogf
-	 BAEVoJuBMkBD9xBLFsEL4PZKuRi8DEIrQC6f5DA4taC8fdjRcHOrNyLQw38Yjcy+9r
-	 5OL6kcEsw/Fyg==
-From: Pratyush Yadav <pratyush@kernel.org>
-To: David Matlack <dmatlack@google.com>
-Cc: kexec@lists.infradead.org,  linux-doc@vger.kernel.org,
-  linux-kernel@vger.kernel.org,  linux-kselftest@vger.kernel.org,
-  linux-mm@kvack.org,  Alexander Graf <graf@amazon.com>,  Andrew Morton
- <akpm@linux-foundation.org>,  Baolin Wang <baolin.wang@linux.alibaba.com>,
-  Christian Brauner <brauner@kernel.org>,  David Hildenbrand
- <david@kernel.org>,  Hugh Dickins <hughd@google.com>,  Jonathan Corbet
- <corbet@lwn.net>,  "Liam R. Howlett" <liam@infradead.org>,  Lorenzo
- Stoakes <ljs@kernel.org>,  Michal Hocko <mhocko@suse.com>,  Mike Rapoport
- <rppt@kernel.org>,  Pasha Tatashin <pasha.tatashin@soleen.com>,  Pratyush
- Yadav <pratyush@kernel.org>,  Randy Dunlap <rdunlap@infradead.org>,
-  Samiullah Khawaja <skhawaja@google.com>,  Shuah Khan
- <skhan@linuxfoundation.org>,  Suren Baghdasaryan <surenb@google.com>,
-  Vlastimil Babka <vbabka@kernel.org>
-Subject: Re: [PATCH v3 10/10] selftests/liveupdate: Add a test for
- preserving tmpfs files
-In-Reply-To: <20261103010216.3447716-11-dmatlack@google.com> (David Matlack's
-	message of "Tue, 3 Nov 2026 01:02:16 +0000")
-References: <20261103010216.3447716-1-dmatlack@google.com>
-	<20261103010216.3447716-11-dmatlack@google.com>
-Date: Wed, 04 Nov 2026 17:59:19 +0100
-Message-ID: <2vxz1p90jzx4.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	s=k20260515; t=1793811708;
+	bh=jkCHVhZioJ1wdZN6npY2hfrvWb9kbC3wPalZmZ3BoVA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=IT2x62J6jn/yfd+OqmhV0T8VN/l364Oj0rtzzElfoSBg5AlI2P5CKcGHPitytOUdB
+	 rCMPOzw6jrqFs2RRAsbUrEFz0z7dCmzAo7iAbPX7yMi76pnu0twc0lzcE00PeLaNU1
+	 7MeoRZ0ppZpFPXYztbMrcPhjKkDVFz1bx3XsDbcjpguZ59obJbd3Bh5HNxVxh7wXJj
+	 ixi0MMwXpoT534c0m/y5CKXBd64MLxm/fo6C8yso6Yih31nWU0nueRk4Gp9PCcknyW
+	 IJK4aGSV8dvWYKe0JSt/gc6eY0wF30rE0OZrCl9YV5fP6+DeU7pkN+6UV6uqrUunc9
+	 l+HHO6sjCrTxw==
+Date: Wed, 4 Nov 2026 12:01:46 -0500
+From: Mike Snitzer <snitzer@kernel.org>
+To: Christoph Hellwig <hch@lst.de>
+Cc: Matthew Wilcox <willy@infradead.org>, linux-mm@kvack.org,
+	linux-fsdevel@vger.kernel.org, Chuck Lever <cel@kernel.org>,
+	Jeff Layton <jlayton@kernel.org>, linux-nfs@vger.kernel.org,
+	NeilBrown <neil@brown.name>,
+	Olga Kornievskaia <okorniev@redhat.com>,
+	Dai Ngo <Dai.Ngo@oracle.com>, Tom Talpey <tom@talpey.com>,
+	Jens Axboe <axboe@kernel.dk>, Jonathan Corbet <corbet@lwn.net>,
+	Jonathan Flynn <jonathan.flynn@hammerspace.com>
+Subject: Re: [PATCH v10 7/7] NFSD: drop a shared boundary page only once both
+ WRITEs have written it
+Message-ID: <autk-osSQ8l2LKz1@kernel.org>
+References: <20261103211754.35352-1-snitzer@kernel.org>
+ <20261103211754.35352-8-snitzer@kernel.org>
+ <20261104091543.GA31130@lst.de>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: DEBD41C0007
-X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=unavailable autolearn_force=no
-	version=4.0.1
-X-Stat-Signature: 8ueexnfor5wtfjt61kntyapja9mtiwuo
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261104091543.GA31130@lst.de>
+X-Stat-Signature: 9dnh1d38w5pjktkfkygf78qd33bngggz
 X-Rspam-User: 
-X-HE-Tag: 1793811564-925513
-X-HE-Meta: U2FsdGVkX1/kd6OFfiDsGJ73C+RKg8HpLIN4v+nS7NjVz09XopleCH13U2EQBpSUnH4hNxGiRLqCJKX+q22f4ka/lgAyMwkmirgIRZC44WNUJSjq9ElD4ek7HSLfZhR4V+dUAZSY5TqOCmMfi1Z0Qac6ttnY7xnzkdqK14SA1OFD0WB2JhIDYmIB9lh1GXea27RnDgwEERrXDqXdimd5wddB2bvQ8g330fv/K0Z+wMzdUvJ0ddYVUwynMf9WhrN4MZmzQrjSTTePaHvLKspnprlTX96arRsXUBbKLAr/cIaJ+pYpLYHh9iPhMmrkf/mKcCQeL3uZZdf5GDElYgsWAHFlwRRC2Fc2qB73cSxlTamGeYnynp5Oht8ACSUbDdUJUH8krpbrb/5DUnmctEm3yEH0Oc3p+vld0j/ZgYB/sO9FHxAXbMiv/uYA+UC3bEHEXmhxb4epaQTwKmaABq1e4K7D5hJcVn31yL0ndlE7xMLI3T8qmKh6XBKCC9GyNBfnMFsAK37QDTLU+JMQR/GK1Da/8D+K+YJF48sZo0G5bu/F/mB2i1aAvwdH7AtkW56pINATgpKuKQjUNPvWYB2It3cn+eaW5t1Rv5wroEvc66AKGQLyXzS/IIw+6zJIBd3vwSGe+0SAw7DxMCQFn58Dd0JxuySh8soIz7l6ShvnHn5ma8X15mvYgt121bPkAx9tjrtDPLI620RMwtvyjcR7yKnQEjInu17AgmNu+VvC7GzcX2YCS/wvFKCoXI8O8pa3eQBJ9zy3ocNO4MkALFuRDDWCjMyLL+pRJj4opxCNkkEAp3ajngxNIBGsdiPAWq2ZrlMTwVehN2mDCJ8lgR4s7IPvTFoPMIpZ/HvbAHvrivJsKo71qq2rObTe1StWduDUem2kISEhOiP/zMGbKOamCPJFYaYVPrCF8E0I8psjY8BUgoCpG3yiS/xYqivcxOu/ejNQh9a5i7lNP4lCz9v
- JOX9C9kE
- 2hQjog0SzjCUjnDr/o2QZqwg/x9C1A9XmhFi7ljUIOb1JzYRPkTbIdQj+ca2/4wrRpLEHW35+miRlYrbX5cA6WOjOUgYIjYVQbTQLAStIQ4I4KtraPrGCt2/YbUGcBMcg7ruoVGVt2ET/1TIgDp8DCigS5jm4Q3nSgewzxZG0KpdRXXScnlhENGsYp2T3LjlPYTT6mV1seB4ft61wSq0bJyTrI1Lt/kbMNnQFPOtO+wsy1dg=
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 202F18000B
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1793811708-993777
+X-HE-Meta: U2FsdGVkX1+mqHvp7HOj4LAKTArZa1a4WrBLp0Atxk/7nY0c7nVkSs+AjdhvimUYAaS1WjmSSWNy7cE0r8RSiQnBwlqhZCosRDK86Aof03uzE+t0FgMWJFOC3mJvknrZ/S2e1p+HOjKZ2tTNqLiS4643AwrC0pyu86iaJmhMmjYIa3wnwIym48gyLKsFwISh2fXfPn1+LGoW+KdAYSojRezFYOyg2QK98JfLCrdOL/du41fVMrg+kZZJ1G5UySrwxrC+NYEyzB2L5cCKsnkAyBypwBxieQeOdEFSWXeahUQHASR+g8Z6aiEU+7PcNwOKzDtNSddcAqdBGgXKRZkCcnK63fQ/tQ1YAiP7rA1kF4KHoyFXIh2DdtT7g69xGyMg1uXbznmiG5MjzYzrlxaptWd/EapT/nJSXso17BnkJDyNVWLpHIc2t7C/fOFrShck6MP4g1uSGaVHIZRquiFVURhjJv33BQPA9XFS2wjsKAf/ZQ19/zfRCSZY7g4v8yVK7IUvMpYsBT3rFEqNC2ALDJZKQo1ySjKlgzjCtcZ/4lNVhiE3YAVh373sbpMUVlhICGoOaoDjbYzfhMMihcFDb9z+C0JEYkx6GGe2Xdgq9b6ZgkENCt5fYT1u381YGg4CS4yawVKphzBmbDI8ZEezMBEzvRrFeB+LoWdIr9vtcRQy90nxQ2iIY9ox1RWlTznNYb29wmU2oIbiSUDXkJmmxp34uLjgHltIrexRnMxH7KOA/Vy6XUu68wBtuTdEPOLWIYSKCgOYJwhleXlPIVuNHfp8xKDKOf7GsYNrllFjO0XhqkUMfSzXdHci3SNaDub9JhCQGrRdtG58M8Cnvx9d5ycDgTtqHBdD2pF72Cy3kYM5mt9XOQ2CysZK+ecm0ZDPIGSDlztX7waWZi5IEe4sAuSZ/vH9YRd0WKEEFnz7c7YGnOrtz0HO7g9SJ2cUcLEfENO07bsReE2Kn5Upk8N
+ FUFocd77
+ 3MW+HCHgj4728PulWdIzA4gbDg62XysTpOipy3tCBmZyh8MDvXJt6ImUSEkMT24CiAbihFwBTmOH++R8gHw4yaPTm7EAro+CZbbDZ4JEFpkcGvm0M4/UVlW9KiahnoF4oqpaLNe9JCFcHZFavxSCACgURmNNsICVTgIZK9UMZPDkddckdB6WGvajKGPxHR37Soasy9cJT9YEAU9xbcRgqFUmmXMIlIts/mHZeQ2Ndk9hmgVUplXp1z2ktdUGqbZccOuwyiPaa3hyFloYWCksvodImiqJYln/V4aap7lUdqy7RCOABlTGb31ghu9vy1qBD0Q5OiTHFo3mp8iQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,87 +102,76 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Tue, Nov 03 2026, David Matlack wrote:
+On Wed, Nov 04, 2026 at 10:15:43AM +0100, Christoph Hellwig wrote:
+> Why does the write include an fsync?  Are these STABLE writes, and
+> if yes, why?
 
-> Add luo_tmpfs, a kexec test for preserving tmpfs files and memfds, and
-> for retrieving tmpfs files onto a tmpfs mount with struct
-> liveupdate_shmem_retrieve_arg.
->
-> Stage 1 preserves the source files of each test case. Stage 2 runs
-> each test case in its own directory, with its own tmpfs mounts, so that
-> block usage can be checked exactly with statfs() and st_blocks. The test
-> cases cover:
->
->  - The restored file: contents, size, position, seals and holes, for
->    linked and unlinked source files.
->
->  - Creating the file: it is created like with open(O_TMPFILE), with the
->    requested mode minus the umask, owned by the caller, and not linked
->    until userspace links it, unless it asked for O_EXCL. Also O_RDONLY
->    and O_WRONLY files, other open() flags such as O_APPEND, O_NONBLOCK
->    and O_CLOEXEC, read-only mounts, and directories that the caller
->    can't write to.
->
->  - Preserving files that can't be written to: a binary while it is
->    executed, through a read-only fd, files on read-only mounts and
->    superblocks, and immutable files, including sparse ones, whose holes
->    are filled. Preserving someone else's file that the caller can't
->    write to fails, and so does preserving a file through a write-only
->    fd or an append-only file.
->
->  - Executing restored binaries: a restored binary can be executed
->    before the session is finished if it was retrieved with O_RDONLY, but
->    not if it was retrieved for writing, since LUO keeps the file open
->    until then. These test cases execute copies of the test binary.
->
->  - Block accounting: the file fits a mount of exactly its size, and a
->    large folio that extends past the end of the file is charged in full.
->    Running out of space, or hitting the memcg limit, fails permanently,
->    and leaves nothing charged to the mount or the memcg. The session can
->    still be finished.
->
->  - memfds: they are only retrieved as memfds, with their seals, and
->    files from tmpfs mounts only onto a tmpfs mount.
->
->  - Interactions with LUO: invalid arguments, which can be retried,
->    retrieving a token twice, and outgoing sessions.
->
-> Also check that the size of a preserved file is frozen, and that the
-> test doesn't trigger kernel warnings.
->
-> Enable CONFIG_TRANSPARENT_HUGEPAGE for the large folio test cases,
-> CONFIG_MEMCG for the memcg test case and CONFIG_TMPFS_XATTR for
-> FS_IOC_SETFLAGS. Those test cases are skipped without them.
->
-> tmpfs quotas are not tested, since the test runs as root, which is not
-> subject to quota limits.
->
-> Signed-off-by: David Matlack <dmatlack@google.com>
-> ---
->  tools/testing/selftests/liveupdate/Makefile   |    1 +
->  tools/testing/selftests/liveupdate/config     |    4 +
->  .../testing/selftests/liveupdate/luo_tmpfs.c  | 2055 +++++++++++++++++
+Only when the client asks for it.  A WRITE with stable_how FILE_SYNC or
+DATA_SYNC must be on stable storage before NFSD replies.  So NFSD runs
+one vfs_fsync_range() over the whole WRITE after all of its segments.
+An UNSTABLE WRITE has no fsync.  Its shared units are completed while
+still dirty, and the writeback that cleans them drops them, whether the
+flusher or the client's COMMIT starts it.
 
-Umm, no way I am reading all this...
+The Linux client sends an O_DIRECT write that fits in one WRITE as
+FILE_SYNC (FLUSH_COND_STABLE in nfs_pgio_rpcsetup()).  That is the
+common case for the workload below.
 
-LLMs are great at generating tests, and I'm not saying there is no value
-in this. It is just that this massive code dump is unreviewable by
-humans. It is also unfair to the human reviewer because it took many
-orders of magnitude less effort to _write_ them with an LLM.
+> Can you explain where this very odd number comes from.  Is that just a
+> worst case?  Or for some reason actually relevant?
 
-What do you all reckon we should do about this? Trust the LLM to get the
-testing right? Do we give up human maintenance of tests entirely? Do we
-do fault injection to test the tests themselves?
+It is the transfer size of IO500's ior-hard: every rank writes
+47008-byte records, interleaved with the other ranks, into one shared
+file, with O_DIRECT.  It is meant as a hard case, and it is the
+workload that showed the problem on our servers.  The same happens
+with any record size that is not a multiple of the page size.  The
+cover letter also has 6000-byte records.
 
-Or do we make the tests smaller and more human reviewable?
+> How does this compare to just not using DONTCACHE at all for unaligned
+> tails (and maybe heads, if for some reason they I/O you care about
+> reordered writes).
 
->  .../selftests/liveupdate/run-vmtests.sh       |    1 +
->  4 files changed, 2061 insertions(+)
->  create mode 100644 tools/testing/selftests/liveupdate/luo_tmpfs.c
->
-[...]
+Jon measured that on four pNFS flexfiles data servers with ior-hard
+from three clients.  In one run, cached heads and tails removed the
+reads, 0.000 per record.  But the page cache on the four servers grew
+by 622 GiB during a 318 s write phase.  In a later run of the same
+workload with this series, it grew by 2.9 GiB, at 0.003 reads per
+record.  Keeping the data out of the server's page cache is the point
+of direct mode, so cached ends are not a fix for this case.  Using
+buffered heads and tails are available (in cel/nfsd-testing): set the
+NFSD debugfs knob /sys/kernel/debug/nfsd/direct_misaligned_dontcache
+to N.
 
--- 
-Regards,
-Pratyush Yadav
+> And how does it compare to that plus manual
+> sync_file_range calls to micro-manage the I/O?
+
+Wasn't measured because sync_file_range() writes the folio back but
+leaves it cached.  To get it out of the cache, NFSD would have to drop
+it after writeback.  That is only safe once the neighbouring WRITE has
+written its part of the folio.  Otherwise the neighbour reads it back
+from disk, which is the problem in the first place. NFSD does not know
+when that is without tracking the half-written folios of every file
+itself.  An earlier version of NFSD kept one tail folio per open file
+for the next sequential WRITE.  With interleaved writers the next
+WRITE is rarely the neighbour, and it still read 0.81 blocks per
+record.  The folio's uptodate state already records whether the
+neighbour has written its part, and 5/7 uses that.
+
+> In general I'm not in favour of so many core hacks for
+> very nfsd-specific behavior.
+
+Most of the series is not NFSD-specific.  1/7 to 5/7 fix RWF_DONTCACHE
+itself, for any application.  The table in the cover letter is plain
+pwritev2() on a local XFS file, with no NFSD.  It reads 0.97 blocks per
+write at 831 MiB/s before 5/7, and 0.0005 at 2281 MiB/s after it.  2/7
+also fixes a bug in v7.3 on its own.
+
+Only 6/7 is for callers that sync once after writing several segments,
+which is what NFSD does for a stable WRITE.  The NFS client's LOCALIO
+path does the same.  Without 6/7, each stable WRITE wakes the
+DONTCACHE writeback kick once per segment, 23,000 to 65,000 times a
+run, for folios that its own fsync is about to write.
+
+Thanks,
+Mike
 
