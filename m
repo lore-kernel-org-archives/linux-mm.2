@@ -1,92 +1,92 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50D5A606D83D
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 22:32:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82B03606D814
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 22:32:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=oJ2Pr3YC
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=D6q3gpTp
 Received: by kanga.kvack.org (Postfix)
-	id 358C96B05B0; Wed,  4 Nov 2026 17:32:00 -0500 (EST)
+	id 8FD426B05B1; Wed,  4 Nov 2026 17:32:02 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 330416B05B1; Wed,  4 Nov 2026 17:32:00 -0500 (EST)
+	id 8D6186B05B2; Wed,  4 Nov 2026 17:32:02 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 249936B05B2; Wed,  4 Nov 2026 17:32:00 -0500 (EST)
+	id 812016B05B4; Wed,  4 Nov 2026 17:32:02 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 01C1D6B05B0
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 17:31:59 -0500 (EST)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 7BFF412085D
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 22:31:59 +0000 (UTC)
-X-FDA: 85398885558.20.4F78EF7
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf16.hostedemail.com (Postfix) with ESMTP id C36DC180003
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 22:31:57 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=oJ2Pr3YC;
-	spf=pass (imf16.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 3E1E66B05B1
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 17:32:02 -0500 (EST)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id BBBD48086B
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 22:32:01 +0000 (UTC)
+X-FDA: 85398885642.01.D0CC8F3
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 2C6C680005
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 22:32:00 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=D6q3gpTp;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf02.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793831517;
+	s=arc-20220608; t=1793831520;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=IZQGrkSDxvYhOH9fwbZBQNsu+CCHkAHmzOvW9coQa1A=;
-	b=xkou30q4yWKcmaFaNLp/9E6S3iWB21ozf0vWo/TfjYi4dNXVwS58COYL227C6SQY+2i4oa
-	+ENc8CkflR0NSxkQmg8J+NiXgCWnwSygGd/NPrsZ9ybe/5GKZyT9XSxuKL4mr5K/f9oplW
-	dbbbFs2vRn7zz/u7Jhs+gX0MNqhJ+tQ=
+	bh=1pY66RTAg4gskpB0/23Dm2MncTkJlPFKDiLc2XwKGdA=;
+	b=gAdx3JiYEBXXACoPPS5XYDHEBw0JvXqFjXB2Jfyjg/GCN6Z2fNeYqVFx+gsfv8ZryTZD8s
+	qz4xgecsWJKajKYuTRh4+O6yytPDeztXSQpbf6LEBWHzap/a5C9J/uQiBBUlSQ3vzrSxrx
+	F0ucD0gNYCnK12zSwpo9exjE5/ukrko=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793831517;
-	b=vSU229ZPzNcI7WeXFHYLBJCllWnODwcWJz32H3ZJNliArzA85MNX92EW94BE5UZzPpVGlx
-	VWT/d36V4cygAKwyt1OATfxZUx/61uBcmWg2ZzcQFMiQ7yZt4PpAKY0V3W0q7YOqaCKPTm
-	rYo4U6XZy8z3bDZbx4Q9C+RmgUA764Y=
+	t=1793831520;
+	b=7UNuTNsv5rET7jhOZK3AgxKCZ8mPLytXRuoNORWdT3aFaU26t97huQiQCdqbs3EHe45h4e
+	aZb/Qxhpp2tKI2toplPhRAgru9hszkyjTJEbqdAJUUkqE0UGDLvXcgPYTIaVvnuWxIA3Ua
+	+H9oj4a2GxWvDATumNSC/Xnj7jMCcAY=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=oJ2Pr3YC;
-	spf=pass (imf16.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=D6q3gpTp;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf02.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 33C2540374;
+	by tor.source.kernel.org (Postfix) with ESMTP id F159460207;
+	Wed,  4 Nov 2026 22:31:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8845A1F00A15;
 	Wed,  4 Nov 2026 22:31:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2E521F00A1A;
-	Wed,  4 Nov 2026 22:31:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793831516;
-	bh=IZQGrkSDxvYhOH9fwbZBQNsu+CCHkAHmzOvW9coQa1A=;
+	s=k20260515; t=1793831518;
+	bh=1pY66RTAg4gskpB0/23Dm2MncTkJlPFKDiLc2XwKGdA=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=oJ2Pr3YCv8dGpxd1xuaOrMwBYV5a9uJr7xhfDvM8vD7VPOlh8TaPvZKNZpepXtr1N
-	 f9aLC7HUTzzF9ZB0C/3KBjub7+Ms40UFnUqCjaL055Wwqp7XGDFW+c+sMTyZxhghO6
-	 4L8fvkKe6BUWGHiFDUK7vJR8JyvB9nEFAiFlh2fGtbAA2aQDVAGtAveu7Wq3e5+r7z
-	 g/thipPF5Vcukvu5HkKuDNwQIFqBF/HyGAe0zbFsqZJlpx6lR0WczSy9qBrZ/u6jT8
-	 35qox3c7eqNJHZ4D+YPLBmar7ocYtv4uzBvf6J6Llu/3Vam4xvYgWykqpC9dipK+ue
-	 0CFkN7/FKW7Zw==
-Message-ID: <sashiko-outbox-198230@kernel.org>
+	b=D6q3gpTpKYEmJrHIaehomVhi1poKU/XVJMTpb4cma30HCgRYKwXEi0yg94psAaPV9
+	 +jfeWPrBd1TSAnMyF9xk9WcIi0wKWkhiDH8FAKfcEbx0CLASo9cMQC7p5v0MKsj+Pr
+	 qiLAT7mWhjo5FcN/Sdq6IfwKEPvwmn763Q8I3DukPb4Kxpexmxi6gJbEuDgYMpXTPg
+	 AiBno42Cq1EmQ8F0bRjOdxLrt4o+sV5AedjjqedD/VQt9n/KwEqkLF6QDV2I6+/QXM
+	 0AA88mroPgaAl7s0I53yYK/sCANQL2fpCcqCWSqvtUZjRpGZSpWlAWyg9fKJ0c0wXx
+	 cHaPLHcrGWwQA==
+Message-ID: <sashiko-outbox-198231@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [RFC PATCH v3 1/3] mm, x86: support copying a folio using
- non-temporal stores
+Subject: Re: [RFC PATCH v3 2/3] mm/migrate: introduce async non-temporal
+ migration mode
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Huan Nguyen" <nhuhuan@google.com>, tglx@kernel.org, mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com, akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org, Liam.Howlett@oracle.com, vbabka@kernel.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com, trondmy@kernel.org, anna@kernel.org, ziy@nvidia.com, matthew.brost@intel.com, joshua.hahnjy@gmail.com, rakie.kim@sk.com, byungchul@sk.com, gourry@gourry.net, ying.huang@linux.alibaba.com, apopple@nvidia.com, rostedt@goodmis.org, mhiramat@kernel.org, mathieu.desnoyers@efficios.com, jackmanb@google.com, hannes@cmpxchg.org, shivankg@amd.com
 Cc: rientjes@google.com, dave@stgolabs.net, nifan.cxl@gmail.com, fvdl@google.com, jic23@kernel.org, rkodsara@amd.com, bharata@amd.com, sj@kernel.org, weixugc@google.com, xuezhengchu@huawei.com, yiannis@zptcorp.com, yiannis.nikolakop@gmail.com, dimitrios.palyvos@zptcorp.com, alirad.malek@zptcorp.com, ryan.roberts@arm.com, linux-mm@kvack.org, linux-trace-kernel@vger.kernel.org, "Chuck
  Lever" <cel@kernel.org>, "Jeff Layton" <jlayton@kernel.org>
-In-Reply-To: <20261103223025.2482227-2-nhuhuan@google.com>
+In-Reply-To: <20261103223025.2482227-3-nhuhuan@google.com>
 References: <20260730-rfc-nt-demote-v2-0-452dbe3b5073@zptcorp.com>
  <20261103223025.2482227-1-nhuhuan@google.com>
- <20261103223025.2482227-2-nhuhuan@google.com>
+ <20261103223025.2482227-3-nhuhuan@google.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Wed, 04 Nov 2026 22:31:53 +0000
-X-Stat-Signature: mjo1r7qw1bsu9e6b4idce6dxafg1aqif
-X-Rspamd-Queue-Id: C36DC180003
+Date: Wed, 04 Nov 2026 22:31:56 +0000
+X-Stat-Signature: iqusak79rqiz7gictoprwzitdrkry56c
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
 X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
 	autolearn_force=no version=4.0.1
-X-HE-Tag: 1793831517-949639
-X-HE-Meta: U2FsdGVkX18oiMW/pHw7dCoGXBXMdGCInlKByQyyNBPB/K/D0vhPvd11UznABUM8dPMgzkUE4f8noARuQU1PUIz+wmWtI7ynYm4L7FTrp3M5UCWN1tmrFKG0lGhRb99htr42ktBDohd2iXULaVovMYs4TRv3oLjHfm93ku1AYEotm+qBLUuzfd/xau/3S9mHgK2I4zbYJYQGk+mpeAN4M9leGdi6D2vEHps3J2/lXk8NC4EyvKY0rxX2NoLY14EtwYo/sEoev2jhSpAlrXrJcJCTtTexuevRhRkPnjaIc35aa/TIl1PSTxZDXgyCVCdS1PB4iOHyzdmPEw4MBRJeeJgZZDRNfL+n1I8btytUKeUxg1nnufjUQn5LgHmIR0cCRtzl3hxWwrM2YW68CCoaAQY0FV8sPUryMHByK6TiR6y4OqkdwA+0utCz/vlYerXnf/PoYPlaVvlyEUu33Hh4m1XhMXMKhnFAFSsAYJdC95Xkc6znNIvCLq788SL26SZ4IsVkjodJ9BHMNxeZz2ttJDWzsB+UkJ7ICD76MLodTOkaAP3w564/cndvsMfDzaHK/12UT+vCU/Fzzjnb22V7VyZ5fVJqyJPJyNQ4QejNh1vnrsdRkMZ2+etd4sH39vqo5NKOnLT10X5ZIbwZ8JsgS32FOlKQoPtN1DAhPBkCszYcMOa1YHnf4iypDqILFI/fJB6dwavE/zI5Qv7sGxuNFL2eTcEp31dp9Hc0ibfDK8aamEnySZRXnpokAhmUBqy23AwIKEWn556MD1xQxOVaAb7qD3yhNu29K4RQ7QdKT0M9ixJNHjC4de/Z9U6dSx5uTfhRZs3EuoQwpPFiN1GQd+zH4M8Ew20x8d+Wswi/JMYwMj4oHkMgeqP7mQt26wtVU8ALtmvr3E9XzO7cxIzizgGzeFxcDO+4zgxHUTurhqVq7iYdy2RXC1fwJUdJQASUg4YhgJF+2ne16yDvXrC
- lkAZmVW5
- y/YaFGj3AvFYJ6ZFXaJXpmWJIudpE6ijeEsSbLU6jIdCDcF2Nlh5OnCmt5/br/kHIHe1CkoXKbkb0W3p/WwEtvmmbotSCQCOa1NYi+8+lgl4xxD3L0Xr996GapDwFOTTMYzu52w42bjPP7kPHjAtOE9437hnX0otqFfVbpVO6pANVoiVIHTotEaEUXosPMwz+C/HVzA/BTzpCsTSZt+ImJuv1TqNZAjXITkF55ZPs07V8HLHSXGZJLMVNbNAs3oEfasPibQ3kuGVxFO1tHsowd2Lg2bZ7c/5CZesAvOzyzFtK/hZ+uz6n+BHIvzoQsSBMPnI9rePlTwM3IjBV+YusjpLY9NJO61QjFFIMXXC6fIMTl5PPmmxNlGAUeW4ZEhOUwGOKDfdDPzJME3kefhYOnjJO8Vd6hosFjAPkgv50X/db4G9B9SWhfY4k0G4fDlzl7FFhS20hFNSwoNopwtOKxkiyv+XT++UenDXdIFtJWXZd1LggfXlhTOjccnkFF01S0c4F3mbLCiuQB3FKrDcXjkLZ9cR6qykBQQ+uqdMiXQ+Vk5X5wL09GsXnp6bWd+0k4kJkgTHAt7W+Ao8COW7ROp/C1DFQeyjqjQRktyocoQTgZHdMvVeXfDNWKpluKs8AEtazJe4Thpec0poQBpZvrVvMh+oTqHvErlUN
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 2C6C680005
+X-HE-Tag: 1793831520-864580
+X-HE-Meta: U2FsdGVkX1/vw8f5OKSBlBuvSTquwESvV2h/NOw5K50hi5ia/mIjp1RNACYB8xUYAcps3Rj3BKP6hs2NZnGzNnSA/AFUNnIFSlS/cJ7VjumjgmPYMHNiHvvOfakVqxC16oBBEk7752aQaxi9aXOCqPoEEhRUYd90EEUtO4ukKtdqnLnDlypxxKkCJMA/sWwoQGHkIBCXIwuC0P/SSd7oAED5psojWIR8E5FAmoablG+gerie0MNjNkvwtNKtBcir4+HLWTyWIqwwjzosc0t6P8n9oMoOtp4HMbXWAIKrcUO7/i/P1ByapQl7Un/62FnS3CqqGQIAq12J60pnI3gAnFbrLT4J7cu+TOwJCqy61n+cc4HdrMAK82vGIJXVTd0ZW60O3hQQAbURHqD2uI507v3uL2dQ9Ijs4q2jOyCGVVVE4F9uI/GnexW50snVhRaHQF65UMe2jLszU02GcO//L11VtZj36bO1n+NDYcD0jNEarqLja0zNDeeqEbTf3uDzemrlHpKEw3dAHs9flyftMvnof89AodSheS8LAj0w2RkqaLeBXFbfPygAgd+IrN03PS8wAcNrt/shGGweq5dRSymw2nHANUHgSWwr8SXlgs5lyEGyHCzMmtGKxlF/XIHGX3XpTTXT79N0fwAeG5+5N4WGkwEaxvvbmIpBkkAmPFSPQkvOzakNyiYyCujT+njCbaY4uc2O/kQk7ndAkZ2zFS2mEA3es9VOlU2D/vcVjg06QBwqv/wZ+R0zMqlvgIu/oIOVwxc4rvgTFK4s56HwkAEiMksW+LLpipmw64eS5tk0+CCXkRzo4bv7hq2TCNgAUZOlNkNtKL3AsCd2mZzGwnzLdeHYSxwHp6cgl9qjEdlg658w/z/2/YcaM8jh/prQKIey20htrPqeUFLbt016O+lKZvL89hZ7yGzfn3qvYZna68XOIYTk+PFuRAJbXkqDNyic9+LR3TXOZmK5t5P
+ 7aHBt86U
+ aCpRwwzyY/t/l9oVNfinTIQBwCRyk95Fakeeu5gY+yxxK0f+FATHiMyYKg2dcBxA/ZfNYt0oPpn3defVp1eRjSxgPTRcL4PC4O83AGc+RjkWy916HuhmmFrKTaPuzMHkevHr+l88feHBjw5NxInO6O+PcixonrQboagayMzvmnw3S7qIWQQlg1EDgxFodYUO9Tg7LcGvAFass3q8691/SlJVMzuffpB1RdY270NsyjQVUPRg61mMYLn3j1C6TjvLAI9+mATiay9/dYM+poWcRnWY5yzM/bi7D7HJOGjAo5B2VlyYhaGF7xYZvNSJQfVW70S3FwnTLVYOOaNUiCTKM/ifUPRKDO1dqychhoB0N01DM0muTWicnqAoaGcjzjDLvGhxRfEGvh1wkw9nqdwG01ey5VCbq7arRpKZkaY0j5TAPamkJ8aEmC+LC/ZIAAsMn5JxqD006GWA8EpiGJ/zCBQMiRMBB4NFTxbX4mrgFLUdjW2K8MtI/L63H22OBh0kBB6l6rj87yo0Joo0HRcVl0Rc54cFLzGLJnXQg1eo+BmOgMo0N5tHOX8V527Wvgfa+KFDGEx78xAcBy0ZoyJJE9/SCrD9cP2xJu2UWyZ5j3WKL/O/XtFWAy/4Q9qWC68CLMaLZl0vGrtqEQ68mi0Gy4QLBkrhu2xqTBasN
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,60 +98,72 @@ X-Archived-By: <archiver.kernel.org>
 
 Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [Low] x86/mm: missing KCFI_REFERENCE() for copy_mc_page_nt()
+- [Medium] mm/compaction: enum migrate_mode ordering breaks compact_zone() =
+async check
 --
 
-commit c8614f6dfdf00a57c43828a75e8413d839e5a48b
+commit 047765d971a4b565eac5e2dd50bc528791c2e77e
 Author: Huan Nguyen <nhuhuan@google.com>
 
-mm, x86: support copying a folio using non-temporal stores
+mm/migrate: introduce async non-temporal migration mode
 
-This commit adds copy_mc_page_nt(), copy_mc_highpage_nt(), and
-folio_mc_copy_nt() to support machine-check safe copying of folios on x86_64
-using non-temporal stores.
+This commit introduces MIGRATE_ASYNC_NONTEMPORAL to migrate cold folios
+using non-temporal stores via folio_mc_copy_nt() in __migrate_folio(), and
+adds migrate_is_async() to update callers across compaction, NFS, and
+migration.
 
-> diff --git a/arch/x86/include/asm/page_64.h b/arch/x86/include/asm/page_6=
-4.h
-> index 1895c207f629a..f37126b562390 100644
-> --- a/arch/x86/include/asm/page_64.h
-> +++ b/arch/x86/include/asm/page_64.h
-> @@ -114,7 +114,9 @@ static inline void clear_page(void *addr)
->  	clear_pages(addr, 1);
->  }
-> =20
-> +#define __HAVE_ARCH_COPY_PAGE_NT 1
->  void copy_page(void *to, void *from);
-> +unsigned long copy_mc_page_nt(void *to, const void *from);
->  KCFI_REFERENCE(copy_page);
+> diff --git a/include/linux/migrate_mode.h b/include/linux/migrate_mode.h
+> index 05102d4d2490e..fd752fddc972e 100644
+> --- a/include/linux/migrate_mode.h
+> +++ b/include/linux/migrate_mode.h
+> @@ -12,6 +12,7 @@ enum migrate_mode {
+>  	MIGRATE_ASYNC,
+>  	MIGRATE_SYNC_LIGHT,
+>  	MIGRATE_SYNC,
+> +	MIGRATE_ASYNC_NONTEMPORAL,
+>  };
 
-[Severity: Low]
-In arch/x86/lib/copy_page_64.S, copy_mc_page_nt() is defined using
-SYM_TYPED_FUNC_START(copy_mc_page_nt) and exported from assembly via
-EXPORT_SYMBOL_GPL(copy_mc_page_nt):
+[Severity: Medium]
+Does placing MIGRATE_ASYNC_NONTEMPORAL after MIGRATE_SYNC in enum
+migrate_mode break the relational check in compact_zone()?
 
-arch/x86/lib/copy_page_64.S:
-    SYM_TYPED_FUNC_START(copy_mc_page_nt)
+In mm/compaction.c, compact_zone() checks (cc->mode < MIGRATE_SYNC) when a
+page fails to migrate within a pageblock:
+
+mm/compaction.c:compact_zone() {
     ...
-    SYM_FUNC_END(copy_mc_page_nt)
-    EXPORT_SYMBOL_GPL(copy_mc_page_nt)
+			/*
+			 * If an ASYNC or SYNC_LIGHT fails to migrate a page
+			 * within the pageblock_order-aligned block and
+			 * fast_find_migrateblock may be used then scan the
+			 * remainder of the pageblock.
+			 * ...
+			 */
+			if (!pageblock_aligned(cc->migrate_pfn) &&
+			    !cc->ignore_skip_hint && !cc->finish_pageblock &&
+			    (cc->mode < MIGRATE_SYNC)) {
+				cc->finish_pageblock =3D true;
+    ...
+				goto rescan;
+			}
+    ...
+}
 
-When CONFIG_CFI_CLANG is enabled, SYM_TYPED_FUNC_START(copy_mc_page_nt) emi=
-ts
-a relocation against __kcfi_typeid_copy_mc_page_nt. Because Clang only emits
-__kcfi_typeid_<func> symbols in C translation units where the function has =
-its
-address taken, and EXPORT_SYMBOL_GPL() in an assembly file does not include
-the C-only __ADDRESSABLE() annotation, nothing in C takes the address of
-copy_mc_page_nt() (which is only called directly from copy_mc_highpage_nt()=
- in
-include/linux/highmem.h).
+Because MIGRATE_ASYNC_NONTEMPORAL has an enum value greater than
+MIGRATE_SYNC, (cc->mode < MIGRATE_SYNC) evaluates to false when compact_zon=
+e()
+runs with cc->mode =3D=3D MIGRATE_ASYNC_NONTEMPORAL and migration fails
+mid-pageblock. That causes compact_zone() to skip setting
+cc->finish_pageblock =3D true and jumping to rescan, leaving the pageblock
+partially scanned without marking it skip so fast_find_migrateblock() can
+repeatedly revisit it.
 
-Will building with CONFIG_CFI_CLANG=3Dy fail at link time with an undefined
-reference to __kcfi_typeid_copy_mc_page_nt unless
-KCFI_REFERENCE(copy_mc_page_nt) is added alongside KCFI_REFERENCE(copy_page)
-in arch/x86/include/asm/page_64.h?
+Should MIGRATE_ASYNC_NONTEMPORAL be placed before MIGRATE_SYNC_LIGHT in enum
+migrate_mode (matching the ordering in include/trace/events/migrate.h), or
+should compact_zone() check cc->mode !=3D MIGRATE_SYNC like
+isolate_migratepages() does?
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261103223025.2482=
-227-1-nhuhuan@google.com?part=3D1
+227-1-nhuhuan@google.com?part=3D2
 
