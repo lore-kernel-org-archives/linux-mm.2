@@ -1,111 +1,106 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2819C606A31B
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 04:43:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1FC6606A31B
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 05:18:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ichbTzIF
 Received: by kanga.kvack.org (Postfix)
-	id 6BAD96B00EF; Tue,  3 Nov 2026 23:43:46 -0500 (EST)
+	id C02D06B00EF; Wed,  4 Nov 2026 00:18:01 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 66B316B05B1; Tue,  3 Nov 2026 23:43:46 -0500 (EST)
+	id BB2826B05B1; Wed,  4 Nov 2026 00:18:01 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 581696B05B2; Tue,  3 Nov 2026 23:43:46 -0500 (EST)
+	id AD0E16B05B2; Wed,  4 Nov 2026 00:18:01 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 1B5966B00EF
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 23:43:46 -0500 (EST)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 8EF6340652
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 04:43:43 +0000 (UTC)
-X-FDA: 85396193526.02.2661102
-Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 93CDEA0003
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 04:43:37 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	spf=pass (imf15.hostedemail.com: domain of husong@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=husong@kylinos.cn
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793767421;
-	b=ioFEcgv1ZnVKzIC2hmnRROeIwbbPIqsjcE5KKU21eb+l8hVEZNwjbniQ2IAlLhLxJT4Upc
-	ywNqGiNUHDd5BbbFV5er6f79p6BL+wPwxBEaHQ36BH95Uga647hhkNyZc4jYiLoi0/O7el
-	lKCGZiPpLSmUtlOOW7rPhjM/sbwT3j8=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=none;
-	spf=pass (imf15.hostedemail.com: domain of husong@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=husong@kylinos.cn;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 863CE6B00EF
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 00:18:01 -0500 (EST)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 149EC140625
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 05:18:01 +0000 (UTC)
+X-FDA: 85396279962.30.BF5532E
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 167F0140004
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 05:17:58 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ichbTzIF;
+	spf=pass (imf26.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793767421;
+	s=arc-20220608; t=1793769479;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references; bh=0XUH0gtcoBkKHqosi+5P+/MTmOyV/YGt88UhPIW631g=;
-	b=qvitLl1IG7r7M9VXcRYxTqV1xjB7uaQ05/wxfuy3snVJsYXaz7U/zWtk1xhQHPxb87zGru
-	IX34HBWNMptEH5bhgVZ9fhft4g2yb+TefJt/S+adBXm+slLvHEhMiLEuB5Y2ktkjGi+5OY
-	/e00XKogqGQygpN888PmNSenf5BGODQ=
-X-UUID: 458b71ced80a11f19a56ed5b684f684d-20261104
-X-CTIC-Tags:
-	HR_CC_COUNT, HR_CC_DOMAIN_COUNT, HR_CC_NAME, HR_CC_NO_NAME, HR_CTE_8B
-	HR_CTT_MISS, HR_DATE_H, HR_DATE_WKD, HR_DATE_ZONE, HR_FROM_NAME
-	HR_SJ_LANG, HR_SJ_LEN, HR_SJ_LETTER, HR_SJ_NOR_SYM, HR_SJ_PHRASE
-	HR_SJ_PHRASE_LEN, HR_SJ_WS, HR_TO_COUNT, HR_TO_DOMAIN_COUNT, HR_TO_NO_NAME
-	SA_TRUSTED, SA_EXISTED, SN_TRUSTED, SN_EXISTED, SPF_NOPASS
-	DKIM_NOPASS, DMARC_NOPASS, CIE_BAD, CIE_GOOD, CIE_GOOD_SPF
-	GTI_FG_BS, GTI_RG_INFO, GTI_C_BU, AMN_GOOD, ABX_MISS_RDNS
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.19,REQID:3bee2e0e-85ff-4d58-b4e0-87a722846bee,IP:10,
-	URL:0,TC:0,Content:0,EDM:25,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTIO
-	N:release,TS:35
-X-CID-INFO: VERSION:1.3.19,REQID:3bee2e0e-85ff-4d58-b4e0-87a722846bee,IP:10,UR
-	L:0,TC:0,Content:0,EDM:25,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
-	release,TS:35
-X-CID-META: VersionHash:7db8b62,CLOUDID:405f2c5e7313ce50f402ddafb8778941,BulkI
-	D:261104124328VBS4EI1E,BulkQuantity:0,SF:17|19|38|66|78|102|127|153|865|89
-	8,TC:nil,Content:0|15|50|99,EDM:5,IP:-2,URL:0,File:nil,RT:nil,Bulk:nil,QS:
-	nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,AR
-	C:0
-X-CID-BVR: 2,SSN|SDN
-X-CID-BAS: 2,SSN|SDN,0,_
-X-CID-FACTOR: TF_CID_SPAM_FAS,TF_CID_SPAM_FSD,TF_CID_SPAM_SNR
-X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: 458b71ced80a11f19a56ed5b684f684d-20261104
-X-User: husong@kylinos.cn
-Received: from ctao-book [(114.244.3.119)] by mailgw.kylinos.cn
-	(envelope-from <husong@kylinos.cn>)
-	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
-	with ESMTP id 1016848686; Wed, 04 Nov 2026 12:43:25 +0800
-From: Song Hu <husong@kylinos.cn>
-To: akpm@linux-foundation.org,
-	david@kernel.org
-Cc: ziy@nvidia.com,
-	matthew.brost@intel.com,
-	joshua.hahnjy@gmail.com,
-	byungchul@sk.com,
-	gourry@gourry.net,
-	ying.huang@linux.alibaba.com,
-	apopple@nvidia.com,
-	willy@infradead.org,
-	shivankg@amd.com,
-	ridong.chen@linux.dev,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Song Hu <husong@kylinos.cn>
-Subject: [PATCH] mm/migrate: don't move memcg NR_FILE_PAGES for swapcache
-Date: Wed,  4 Nov 2026 12:43:12 +0800
-Message-ID: <20261104044313.2099309-1-husong@kylinos.cn>
-X-Mailer: git-send-email 2.53.0
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=p6KEeyjyNXQU3ayuJEeECWcZazCVcQKxSt/xZY18j9s=;
+	b=kF9JoJ0vco9+0c9JEO/EZw+giqlHDiwIVv98yh1dfOteqKKwRrxRMS5vib8iK99sCS/FT1
+	Te1Ezz7jS2a52LLBpFojLGVmmXXqxgua5gi29p2ZNWroJtmQ3oOB6TMvmrrRh7xuKx2zjn
+	SBJOmB8ej9BCiPEApuxZaJXNY4Dl9qY=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793769479;
+	b=G6ky/OKIG6mbg7+ySgna5rAM3kmW4YNKmi06k/2EtgTUcVYpA5XlhRiplmUME92y5Tg/WH
+	kGrkbhMpXyk0UKbMHkZmWDfxjUFXyViM9tg0YG6zH5qKu+FpukeHGr8TH6HmN2q5sX1RIZ
+	WUdzi34VivB1UV2jFEPpsRqTdGcgH24=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ichbTzIF;
+	spf=pass (imf26.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 1274C43E42
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 05:17:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DED7C1F00A21
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 05:17:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793769477;
+	bh=p6KEeyjyNXQU3ayuJEeECWcZazCVcQKxSt/xZY18j9s=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=ichbTzIFya4W4WvNFCCv7nTsWENKpsz/V73rkUdV/LAxdcLmHpB33xGEZaX0EJ+C7
+	 fUYkpcfQqYF5+wfPoPyIOk8jbvL/1+HaOku9c0ovYoTVebuAFLP5XXggDYzfJcqaUB
+	 c0bWcmVTgsq0m6Ecl77tjDe3Ntlx2L9fudNU6uQp8LVF7ZqMTcYx7csZorF1rhWDrw
+	 sfpxfT1nsTHEBrAHDGrLHn6oa24jb0/CppzZ7NoE1p2Q6h/BX48sFUAp0dFFZRTIz2
+	 mxQf/OZ/tNTlSYu5RDJww+WcxbkSks60rmE89D5WvO2JTr6G7u53SUBebSsSlUnS8o
+	 VpayNyFYYtOCg==
+Received: by mail-qv1-f54.google.com with SMTP id 6a1803df08f44-91c75267b0fso3803216d6.3
+        for <linux-mm@kvack.org>; Tue, 03 Nov 2026 21:17:57 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AKwUvBw1787zEWn0xahDJvlC+AEypRJnny/jvt0TJDWvl7Xe3Y07eQvs1FXw91Wmm+ub5SjljWEnErqyAw==@kvack.org
+X-Gm-Message-State: APuU4Z8W+GwYuELYhcdW4OWrH2D64RvPxbTDxISNoGV0bzScyEUuQCQ2
+	BzFS+e4BA14sIKp+ZadRoVLs2MOrOSY6Smjf/cSI6a3LwcG6B8eC9vKC9xvlJvt3ovw74Ja5DwQ
+	m+7R8Lt9FRdxZqE0rit/BqbT6QVXjTLQ=
+X-Received: by 2002:a05:620a:2986:b0:93f:353c:6bee with SMTP id
+ af79cd13be357-9442179bdeemr2649014985a.41.1793769477189; Tue, 03 Nov 2026
+ 21:17:57 -0800 (PST)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: coa78fn3kdigbc5uug4jxfc6jx37765t
-X-Rspamd-Queue-Id: 93CDEA0003
+References: <20261103113711.1832834-1-max.kellermann@ionos.com> <20261103113711.1832834-5-max.kellermann@ionos.com>
+In-Reply-To: <20261103113711.1832834-5-max.kellermann@ionos.com>
+From: Barry Song <baohua@kernel.org>
+Date: Wed, 4 Nov 2026 13:17:46 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4wpd-e+xjm5KwihVziAeVnQp3XYG=+-BKmx0SVEhmyqqw@mail.gmail.com>
+X-Gm-Features: AclHuK-K3YmNyTgJ3q-8NAOMY6-mXLoQSaTkbTkKltCKCY_JfrfNuVcqZ-jSFOg
+Message-ID: <CAGsJ_4wpd-e+xjm5KwihVziAeVnQp3XYG=+-BKmx0SVEhmyqqw@mail.gmail.com>
+Subject: Re: [PATCH v2 4/5] mm/mglru: avoid redundant rotations of young memcgs
+To: Max Kellermann <max.kellermann@ionos.com>
+Cc: akpm@linux-foundation.org, kasong@tencent.com, qi.zheng@linux.dev, 
+	shakeel.butt@linux.dev, axelrasmussen@google.com, yuanchu@google.com, 
+	weixugc@google.com, baoquan.he@linux.dev, baolin.wang@linux.alibaba.com, 
+	david@kernel.org, ljs@kernel.org, liam@infradead.org, vbabka@kernel.org, 
+	rppt@kernel.org, surenb@google.com, mhocko@suse.com, hannes@cmpxchg.org, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, rcu@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam09
+X-Stat-Signature: s71ur981xbh3izia7gfjudmujirzs8k8
+X-Rspamd-Queue-Id: 167F0140004
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Spam-Status: No, score=-16.8 required=3.0 tests=BAYES_00,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,UNPARSEABLE_RELAY,
-	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1793767417-814189
-X-HE-Meta: U2FsdGVkX1/RUenGfdNhaJaIt3thP3R6ATBNKobqhA/aogSDEMSqzX0neeH/6AJT/yfcsax7/W6UHZLR9EBZUT/H1lbOrs71HN3ZQh+f4Tg/IkjmIt+X0SiK/qRsIGSpMEHBHsfleL0AXMURcMQVxWgpxROUCKdS9EEhCH+fWH1Hz/81gnOoJZj6r/vSeHqMe+zRqyRgGjrCudnu1dkFwZvGV2sLNTTZwLai2+PlfFT8nVAKJfw2qnyIjzkWIMWmgyKM4JGCtsOn1/9VrG6LVWTahWONI6v5psxNs3BoIrknqRELhEHwKiMBqvgyrglHldNGDZye5E4FXwO0Cu2ImjeyEBWhs0UJOUtsXj59FBPVuUV40cSSpXl1bFohWzSjFiJc0PkqXKw2rYop7/RJvGqbz1zFzA5JeYKRs47NN7hDniIBgSIcYa+eDzayxvcK2UIFX4Iu1+/9FGUdOK+0as7LQ4uuYNsgs+KyZq9ixRQMd0m7NYJXmrVLFZFGyfUrxV7izuJRv+qh7tApq4TRJDVdhqGYctQGyPJhIAwN+v+iKUNdy4wWk0Zip7m10WbbOYzHg0QocgROVJUbvlDhsNz3oZKolss4jsdxrSVRhysh/3AAnhlT9lTHYJWaGn9m0lofFgCSbW7bxqRvmxW6eBrAcPET+1pCxHigS3GgD8ZVvasXyU59MVNa7Lcq49R2OyvScxaXq4uJhp0NY5K9bqwPXkT3epWUVM53hXQiPxKLYqkR8GliEc0nVFxWbcpg9mG2jjtg6gtgQk1MQn1H2mQhpKc7cIeBQjRdbSfpZ9g+4ik41kK91Uw6xPVq5R4KClRBBzRAn9m5N+8k3dtkig/7J8I85070JPmpIReV1J8gVOJMyzVWsJgHJ5uICH9ovlHCPQwqX+uXGqzy5D8/3O8+Pql0WTkcbTlnqVNLWEUnp2Lf+8EFE3Vmn1NRjjOgO+hu5CmCQgA4bU1Zjy6
- ZsQlxQsx
- vRu5VC1biqrEK+dGIx2gu/MNWx6g5q3v+C80U/gEu92SubRN5aqUlu/qauBSLa68Lacco/Bp0K53WN9TzDIPoIQxePYzQWwJYxBF/9bK2eOr/Cscrge/fgfgAQCxPjP7kLZ/l
+X-HE-Tag: 1793769478-421257
+X-HE-Meta: U2FsdGVkX19bS+78xNvaFuDxgFTC/lPNjJ3AvLwtClt97fzmljHwXH/mTXxOuzrLeiSRSnFBfLo+dGD1kYq5wRF782KCsnDcxA+LVPvh6eOwyphD76tIcm5i4xm9wo33htpOg1s06Eoo3+kkTWPjcGFZBF0SGI9OTccZvzdXBc20I7Pr0pNzqGkdQYOHjBn0uWXJhvp3cGQX0P4gwkMBGV1wxKCtRJaSRKM4w5+9mQXzvggyhOdXNZ0kFDZNS94PWbqK2AHkzHESh0c+ZjnfK82zscGh8d44WW2eR4tJNBppaFLKJOXfb8BrBwU6sdq6/ytn0wGyaArYImUB2nFYm20ENOxqWqjhq1nasSk7W0Y0IKkZtjNsCxLTL5MosKz3X1PGXHgfKDeJ51HPgHlt1empB/ltpc/QFlqVDzsmdnQh3HwVtnX/k9JKIu7/T2pOyXLk8orgxa/l55uWeWSs7Axproro54e5RIZImj+ZDIWhGj0Ks79+j7Q2GJNB6QXCDDM+fHNi1IZPbK08lJmSCr4HwTdmbdpdBNZoS7pmKXiB7INhF2Dlrk+OFYjnjBYxFDDHd5gFrcuU5tzr9cejGg/r0x/9Pfb+sPYtbPhBqH0k396TItyvgwdoJZ0ni0RJ2wuyGE6C+yGLNvPlJc5p2Cj8L8lwLFBaewkWod2oIjpu0X+B9yq3C89BIs2BP/Fsa82TsLC1/Lfaf3c6YbqWkBr1brYCz7rY7yU42oWe0ee4XrqtR0wQY/yqdNC49rqbakR/cVHpT6QbERTSOscrHejJhQ60w6iawCUs8F6z9+KpLejnJBetohWZ4o2wNyxZEnx3BzGZQoNxf89OvWwj2d4+THPXH/gx06hy2mL8C5Ayt/mTy0M6GUMKz+PUIrIAHI5hBCFMMaofpAUk9w7q56u5ZFikc7yUanixNEtaUlpCjiQt0w/t5E7GNnOgP853QiK//dpIx0QjwtXeQSq
+ SEIDmJfH
+ K5OSFKSMfYpcO6AsENSgC9WXXS66WdjsTMMbzBPnclyoOzLHYnuJ07ZIAl2wHjwLUW+GQ8x2UvrhantBxebqlY6rusJ/cqpHvTaxLgAOzljFJoxaLlZ984MGWiSkXHq/qn0gMMcyhNQjau13O/HK4pOQB2lu5kl4OcZpfoscP8vb+ZGexzDt07fIsSajxODjwKFXiDOcEW7hLF/7S1zyaNGN55Yq8gd5hig4y84YXRyNTZSV8/Gd9ipySwE0CzDof0NLHHoytegTCxtAReKyAtX9GMU5SPisqHBaBDSZqu0ojmnzeObEiW47KDCb+cDQvKZrj4M2ppi35mS1ai+LHZx+zGA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -114,80 +109,77 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-NR_FILE_PAGES lives on both the node and the memcg plane for page
-cache folios: filemap_add_folio() and filemap_unaccount_folio() charge
-it to the folio's node and memcg, while __swap_cache_add_folio() and
-__swap_cache_del_folio() maintain the node plane of NR_FILE_PAGES and
-the memcg plane of NR_SWAPCACHE.  A folio in the swap cache therefore
-carries no per-memcg NR_FILE_PAGES count: shmem folios drop their
-memcg file accounting when swapped out, and anon folios never had any.
+On Tue, Nov 3, 2026 at 7:37=E2=80=AFPM Max Kellermann <max.kellermann@ionos=
+.com> wrote:
+>
+> Concurrent reclaimers can request promotion after another reclaimer
+> has already moved a memcg into the young generation.  Requeueing it
+> into a random bin again adds list mutations without advancing the
+> old-generation scan.
+>
+> Therefore, skip `MEMCG_LRU_YOUNG` when the memcg is already in the
+> default segment of the current young generation.
+>
+> In my micro benchmark, this increases the request rate by 36% and
+> reduces the average duration of each write request by 27%.
 
-The cross-zone arm of __folio_migrate_mapping() moves NR_FILE_PAGES on
-both planes unconditionally.  For swapcache folios the memcg plane is
-empty, so migrating one misaccounts it: the destination accrues
-nr_pages that were never accounted there while the source counter
-underflows.  The wrong counts persist until the memcg is destroyed,
-but the aggregate in memory.stat stays correct, so the drift is easy
-to miss.  NUMA balancing, migratepages, compaction and memory hotplug
-can all migrate such folios.
+Could you share your microbenchmark somewhere (or post it here
+if it's not too lengthy), perhaps on GitHub, so others can
+reproduce it? You could then refer to it in your changelog.
 
-Reproducer, on a 2-node QEMU guest with cgroup v2:
+>
+> Signed-off-by: Max Kellermann <max.kellermann@ionos.com>
+> ---
+>  mm/vmscan.c | 9 +++++++++
+>  1 file changed, 9 insertions(+)
+>
+> diff --git a/mm/vmscan.c b/mm/vmscan.c
+> index 3075949bf641..899f756bd15b 100644
+> --- a/mm/vmscan.c
+> +++ b/mm/vmscan.c
+> @@ -4620,6 +4620,14 @@ static void lru_gen_rotate_memcg(struct lruvec *lr=
+uvec, int op)
+>         else
+>                 VM_WARN_ON_ONCE(true);
+>
+> +       if (op =3D=3D MEMCG_LRU_YOUNG && old =3D=3D new && lruvec->lrugen=
+.seg =3D=3D seg)
+> +               /*
+> +                * This memcg is already in the young generation and
+> +                * reshuffling it again cannot help the scan of the
+> +                * old generation.
+> +                */
+> +               goto unlock;
 
-  1. create a cgroup with memory.max = 50M and swap enabled;
-  2. memset 128M of anonymous memory in it, so reclaim swaps most of
-     it out;
-  3. fork to raise the swap entry refcount, then fault the memory
-     back in, so the resident folios are swapcache ones;
-  4. migrate_pages(pid, node0 -> node1).
+I think this is a correct change. I wonder if we can
+reproduce the issue even without concurrent reclaimers.
+In other words, can a single thread running in a
+memory-limited memcg trigger it as well?
 
-"file" row of memory.numa_stat (bytes) after step 4:
+One thing I noticed is that you may not need to call
+get_random_u32_below(MEMCG_NR_BINS) upfront. Could you
+defer generating the random number until you actually need
+to rotate the memcg? I wonder if this could further improve
+your microbenchmark results.
 
-                    without this patch      with this patch
-                      N0          N1          N0          N1
-                     0 (*)  51691520         0           0
+Anyway, the compiler might be able to defer it for you.
+I'm not sure, though. Could you take a look?
 
-  (*) the source counter has gone negative; negative values read as 0.
+> +
+>         WRITE_ONCE(lruvec->lrugen.seg, seg);
+>         WRITE_ONCE(lruvec->lrugen.gen, new);
+>
+> @@ -4633,6 +4641,7 @@ static void lru_gen_rotate_memcg(struct lruvec *lru=
+vec, int op)
+>         if (!pgdat->memcg_lru.nr_memcgs[old] && old =3D=3D get_memcg_gen(=
+pgdat->memcg_lru.seq))
+>                 WRITE_ONCE(pgdat->memcg_lru.seq, pgdat->memcg_lru.seq + 1=
+);
+>
+> +unlock:
+>         spin_unlock_irqrestore(&pgdat->memcg_lru.lock, flags);
+>  }
 
-Keep moving the node plane via mod_node_page_state() and skip only
-the empty memcg plane, mirroring the swapcache exclusion the NR_SHMEM
-handling in the same block already applies.  It accompanies
-commit 4eef27af2932 ("mm/migrate: move NR_FILE_THPS on cross-node migration")
-and commit c5eef2e03618 ("mm/migrate: move NR_KERNEL_FILE_PAGES on cross-node migration").
-
-Fixes: 0d1c20722ab3 ("mm: memcontrol: switch to native NR_FILE_PAGES and NR_SHMEM counters")
-Signed-off-by: Song Hu <husong@kylinos.cn>
----
- mm/migrate.c | 16 ++++++++++++++--
- 1 file changed, 14 insertions(+), 2 deletions(-)
-
-diff --git a/mm/migrate.c b/mm/migrate.c
-index 28a8d7734735..bc60f6587d1b 100644
---- a/mm/migrate.c
-+++ b/mm/migrate.c
-@@ -690,8 +690,20 @@ static int __folio_migrate_mapping(struct address_space *mapping,
- 		old_lruvec = mem_cgroup_lruvec(memcg, oldzone->zone_pgdat);
- 		new_lruvec = mem_cgroup_lruvec(memcg, newzone->zone_pgdat);
- 
--		mod_lruvec_state(old_lruvec, NR_FILE_PAGES, -nr);
--		mod_lruvec_state(new_lruvec, NR_FILE_PAGES, nr);
-+		/*
-+		 * Swapcache folios carry NR_FILE_PAGES on the node plane
-+		 * only (their memcg footprint is NR_SWAPCACHE, see
-+		 * swap_state.c), so move only the node plane for them.
-+		 */
-+		if (folio_test_swapcache(folio)) {
-+			mod_node_page_state(oldzone->zone_pgdat, NR_FILE_PAGES,
-+					    -nr);
-+			mod_node_page_state(newzone->zone_pgdat, NR_FILE_PAGES,
-+					    nr);
-+		} else {
-+			mod_lruvec_state(old_lruvec, NR_FILE_PAGES, -nr);
-+			mod_lruvec_state(new_lruvec, NR_FILE_PAGES, nr);
-+		}
- 		if (folio_test_swapbacked(folio) && !folio_test_swapcache(folio)) {
- 			mod_lruvec_state(old_lruvec, NR_SHMEM, -nr);
- 			mod_lruvec_state(new_lruvec, NR_SHMEM, nr);
--- 
-2.53.0
-
+Best,
+Barry
 
