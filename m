@@ -1,90 +1,181 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BE9C606A328
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 16:29:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=b47bOC/3
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21D75606A329
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 16:33:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1F0786B05B6; Wed,  4 Nov 2026 11:29:55 -0500 (EST)
+	id 3F4C56B05B1; Wed,  4 Nov 2026 11:33:29 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1C7FE6B05B8; Wed,  4 Nov 2026 11:29:55 -0500 (EST)
+	id 3CBE56B05B2; Wed,  4 Nov 2026 11:33:29 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0DDF76B05B9; Wed,  4 Nov 2026 11:29:55 -0500 (EST)
+	id 2BB296B05B3; Wed,  4 Nov 2026 11:33:29 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id DFE806B05B6
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 11:29:54 -0500 (EST)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 62CABC07AC
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 16:29:54 +0000 (UTC)
-X-FDA: 85397973108.05.3814BAA
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf06.hostedemail.com (Postfix) with ESMTP id B49F4180006
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 16:29:52 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="b47bOC/3";
-	spf=pass (imf06.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793809792;
-	b=Ow6MJXIxGZhkSbZnmt2/TIS8qDi82kaEWFxF9pDoQO/6X45krgz+krNFld5MHvBGA0+LKX
-	S1W5RtSMqYUFhYdRWDllw5dNAYs8mrrKjDNMZJn0PEerc9F2gqRQupndC120aNoYO9SEEy
-	b4xNbRkYWVSDrsOs2o0sUVqtrFLwvVs=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="b47bOC/3";
-	spf=pass (imf06.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793809792;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id ED6A06B05B1
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 11:33:28 -0500 (EST)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 86F01A8403
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 16:33:28 +0000 (UTC)
+X-FDA: 85397982096.26.F53F8A7
+Received: from PH0PR06CU001.outbound.protection.outlook.com (mail-westus3azon11011021.outbound.protection.outlook.com [40.107.208.21])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 9B7EC1C0002
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 16:33:25 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=sbKjyiLg;
+	spf=pass (imf18.hostedemail.com: domain of ziy@nvidia.com designates 40.107.208.21 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1793810005;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=atDiQ1jLywCaP3AyVEImB+gZltQy0V8BagrbxL0rfyY=;
-	b=nFucP0njPyBHQ9zlmFbpL01LcTAMUFQJpPqKbd0J4clp9mpdvOiX0eqicG6zyboTT+9leA
-	yOVjArO53Y1lsllCItk8DYcb7Z9u+WUoXf2hFaIUuwIkFSTfe51gj+NxkIkh8IOhjdAmac
-	YKwr7wFT9YgFfdZXtUTrNe9kFqug27Q=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id BDA4D43B36;
-	Wed,  4 Nov 2026 16:29:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3E471F000C1;
-	Wed,  4 Nov 2026 16:29:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793809791;
-	bh=atDiQ1jLywCaP3AyVEImB+gZltQy0V8BagrbxL0rfyY=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=b47bOC/3A0RxnUdzrGef+aXOt5L92xLNPUSE5A24szrut0A3kwfnv5GWFo0Rmw85F
-	 5Tdc/bfgkA1gTlKdM81tunrILY6eokjbGK+/nznxio0+VmOHSS6yWR/K4pch4WGfao
-	 X2DC1SLRl6EPej/gADIMREih6WMk3VAUk1SsSnmcGdsSUZUeYeijaW8I5LxE64siT8
-	 WKftT+EeRQuUm7+D6LB06kaL/XBI+8Rm8ri7O6/5letBBW2NOtTNrGUsp40RnchhhW
-	 pjkd+4ixoPoxzTj4L9EZ3vouC5W4EmnsmzbuEWe1yrwmAZZnqWDTtJ310ri2gkvA1J
-	 g0SZpdQQQjhYg==
-Message-ID: <sashiko-outbox-197614@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 3/4] mm/cma: reject CMA areas that overlap the kernel
- image
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Radhey Shyam Pandey" <radhey.shyam.pandey@amd.com>, robh@kernel.org, saravanak@kernel.org, akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org, liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com, m.szyprowski@samsung.com, robin.murphy@arm.com, baoquan.he@linux.dev, pasha.tatashin@soleen.com, pratyush@kernel.org
-Cc: devicetree@vger.kernel.org, linux-mm@kvack.org, kexec@lists.infradead.org, conor+dt@kernel.org
-In-Reply-To: <20261103162429.2053989-4-radhey.shyam.pandey@amd.com>
-References: <20261103162429.2053989-1-radhey.shyam.pandey@amd.com>
- <20261103162429.2053989-4-radhey.shyam.pandey@amd.com>
-Content-Type: text/plain; charset=utf-8
+	bh=myhXyle9lO2SIRjoXQ60s9A2f4kGSdTHXzw8uuNpnb8=;
+	b=4Oq92dQeDiUM6V5dnJ63fkQvU6ZMesl/wH40qsAxpxfOip9ywlmd4moerMQc5REkrXsOsp
+	TfIgcvXK/0VF1hHlB0563sc32uqnc0WiVQz3KcRN52nP7ugqQsdd7FwQE/XzjC7pTVxXJe
+	55phguTDM4hJj2JWCEz7C5NjDutluwg=
+ARC-Authentication-Results: i=2;
+	imf18.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=sbKjyiLg;
+	spf=pass (imf18.hostedemail.com: domain of ziy@nvidia.com designates 40.107.208.21 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1793810005;
+	b=gaozbnZcq+4GaIErJpsUQdcJtpIB96JYeseZhptmE6OXv/18Hu/KESQ72iXu+aQTVttp24
+	yYHPd31bqqqvFPVTW0O2+iWwu4qWDKk//C/RKHOjSmRLnUV6M/a42caQ+ydgFWqS+WYIxT
+	nzn6e9is/hsy2z1WGNYktugOGtYzVc4=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=HAwFp2GzPsPJS8Vz+2xuiE/iGDwQbTp1wPl4r60gLxnSb+kTezq6GCg6zf7aaBvbK+JQ09WpedHAbvp+tXI+zz3EHFt2BzQKj3fCN+u1Ovh/2+/VgPKVBJ+JuCHVBzpyA3uEARJzwM/QWJNgjkWN+jSfz5E86LYtNvG9ElfGr7JTNMRZdxV/c/rIzsWzrEvk3wqDqFp2ZWOb2WOZur4tebxnrrxHCJdEETyqVbDSifRqSRJriOydBGz8lGpnfPKAS08b4SJdXLo+Rp7gFvtyHqsi+0unNkP+h+Y9gU4Gp/1j9xuw/3+x9Nw8lAmZqkMjSfl+h70lnZrLSoUdThudNQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=myhXyle9lO2SIRjoXQ60s9A2f4kGSdTHXzw8uuNpnb8=;
+ b=oRzZXD4pm+FTqv7RFaq18Glzjh10si9vZN/bsd/au259myws2ib0hjLLbEXUBAR5/lXVbt4tM0gbPPyU5+wxd2x1jEtbSg1yQuZ2CSQWJCT9nqMAaxDqABOm8RaDp6AFUQvq9Fwstisfv+ci305eWjjxCVF/bHXNoheGT0PTTMHA/DY17whlWyr+dr+S9p1019g0kY05RFfZuwAW1EGSIj3jnLjuCw03xJn5v6nSRFdo3JiEFJcBnxZP+dEeDiNFYUDEILaAl73PUU8y90Nj3OfnOkEwMR0O1XF55JFOiMG97BJTHwusUk/ebGdvygkVvUeiWTgkcKVQZwj2tSGtUQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=myhXyle9lO2SIRjoXQ60s9A2f4kGSdTHXzw8uuNpnb8=;
+ b=sbKjyiLgBVxvNXcR4Ixor8NltI1nDTiDVxTWUCHGacKKMLqs/+wEZyIglw582RXZFrALLbhN+Y7Ua1L0EftwjnfPuZRBnaOgnbA3BOUO/6Rg8NGSDwEKJfnOsBjyqKX8agFqk5qnmDVYlOLYq08LIFCAxZlcX0XJNKZ++OI8shvaZmas1o+K0wnftE8tvFZ2KUckLSd09kx8CGu8XS6fkvPNuY052QUTfZ3+dvohc2KXam9CJ3tEP4uM6njY2fZb/zCVa/+l5fRlb9+WSpWpiTHH5xThOxZZxjwpWIDH+km6WeKdXCFdmLcv1ji+tAleWzVu1JOJtGu9i75YEXfCkA==
+Received: from IA0PR12MB8374.namprd12.prod.outlook.com (2603:10b6:208:40e::7)
+ by PH7PR12MB5903.namprd12.prod.outlook.com (2603:10b6:510:1d7::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.592.9; Wed, 4 Nov 2026
+ 16:33:19 +0000
+Received: from IA0PR12MB8374.namprd12.prod.outlook.com
+ ([fe80::d85f:4c87:ae84:3f16]) by IA0PR12MB8374.namprd12.prod.outlook.com
+ ([fe80::d85f:4c87:ae84:3f16%6]) with mapi id 15.21.0592.007; Wed, 4 Nov 2026
+ 16:33:19 +0000
 Content-Transfer-Encoding: quoted-printable
-Date: Wed, 04 Nov 2026 16:29:50 +0000
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
-	autolearn=unavailable autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: B49F4180006
-X-Stat-Signature: 4z9pw6iodp9ajyyeko9ea4iytnrgtzkf
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 04 Nov 2026 11:33:17 -0500
+Message-Id: <DMMKKOIGA9UJ.353PCUUMFLCCJ@nvidia.com>
+Subject: Re: [PATCH 1/2] mm/huge_memory: set memcg_data before a split page
+ leaves the folio
+Cc: "Tao Yi" <escape@deepseek.com>, "Johannes Weiner" <hannes@cmpxchg.org>,
+ "Michal Hocko" <mhocko@kernel.org>, "Roman Gushchin"
+ <roman.gushchin@linux.dev>, "Shakeel Butt" <shakeel.butt@linux.dev>,
+ "Muchun Song" <muchun.song@linux.dev>, "David Hildenbrand"
+ <david@kernel.org>, "Matthew Wilcox" <willy@infradead.org>, "Baolin Wang"
+ <baolin.wang@linux.alibaba.com>, "Liam R. Howlett" <liam@infradead.org>,
+ "Nico Pache" <nico.pache@linux.dev>, "Ryan Roberts" <ryan.roberts@arm.com>,
+ "Dev Jain" <dev.jain@arm.com>, "Barry Song" <baohua@kernel.org>, "Lance
+ Yang" <lance.yang@linux.dev>, "Usama Arif" <usama.arif@linux.dev>, "Kiryl
+ Shutsemau" <kas@kernel.org>, "Vlastimil Babka" <vbabka@kernel.org>, "Suren
+ Baghdasaryan" <surenb@google.com>, "Brendan Jackman"
+ <brendan.jackman@linux.dev>, <linux-mm@kvack.org>,
+ <cgroups@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+ <stable@vger.kernel.org>
+To: <daejun7.park@samsung.com>, "Andrew Morton" <akpm@linux-foundation.org>
+From: "Zi Yan" <ziy@nvidia.com>
+X-Mailer: aerc 0.22.0
+References: <20261104-kpagecgroup-split-v1-0-f70e947fec85@samsung.com>
+ <20261104-kpagecgroup-split-v1-1-f70e947fec85@samsung.com>
+In-Reply-To: <20261104-kpagecgroup-split-v1-1-f70e947fec85@samsung.com>
+X-ClientProxiedBy: YQZPR01CA0047.CANPRD01.PROD.OUTLOOK.COM
+ (2603:10b6:c01:86::28) To IA0PR12MB8374.namprd12.prod.outlook.com
+ (2603:10b6:208:40e::7)
+X-Archived-By: <archiver.kernel.org>
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: IA0PR12MB8374:EE_|PH7PR12MB5903:EE_
+X-MS-Office365-Filtering-Correlation-Id: eef6f414-1eca-44da-5ac5-08df3a9155db
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|23010399003|366016|1800799024|7416014|376014|4143699003|11063799006|261021121427099003|261021123027099003|261009223027099003|56012099006|261102123227099003|261022105027099003|261028144727099003|261026140227099003|261026121527099003|10067099003|18002099003|22082099003|6133799003;
+X-Microsoft-Antispam-Message-Info:
+	n7J4XfH+96SCEvbW9g7J7yR+bZ+jkMYIDeLuuXaYWnGNN3Abp3HGl5nuYHXnRF+E/BrCPfT7+iM0HUNJhCIzP7P+MAKMXZg2iRqMW8QiTfJnPPa36BCFK83M7uFeCPpopoylFWQ43+8yRk7S2bLGDOvOoETdaju/irOkLDnqbduO4+GNS3aRpr9mafEUTEQY+mA7bhCIYL/WcU125pTNG4ZYMCmWNciVl2Pb3wmaEK7JzaZP/bzfHTJzz6e5ycOng5BuF4B/SJq6X3bl9ofGkygxmZgFwuIdfeRr2t81+i3uhJSeZnzim3Mx/ofnpgCMGTz13xR0WeXy+0m5RbDoVapyd4k5hukE/Sjv+haXpmbYh91Sy1l8si0r/P3Slpln1C4D6OZegftLa6JPo0h3//DoTNZtQoXT0g/5IkPrxDrVtIeqQH/hxharBijEvyGyANsrOG1nM3ZrCqXaKwuNlNYsol/h0mBDSndXzZLEgDzdWqcgcKgChm5cofliwOUasKR1YJYnsyrEaUCrjKJu1qmMf86OaEHffvLyzL6fbkjgNHEhLJdVBEKH4Em9Hfmk9O8dSMSmSwXESWMXR4Zh487xHZQ5VyWqU4EArJnNKJg4I340T2m+7+qvC/prUl2lCTBi1/0Y6xs7qmjt4prrgeiV5uZfGN1vX8SIawv08pA=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA0PR12MB8374.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(366016)(1800799024)(7416014)(376014)(4143699003)(11063799006)(261021121427099003)(261021123027099003)(261009223027099003)(56012099006)(261102123227099003)(261022105027099003)(261028144727099003)(261026140227099003)(261026121527099003)(10067099003)(18002099003)(22082099003)(6133799003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?eHcyd1NhaTQ3cGlyNjdHRVJydTNWZHRJbkx6RDBKY2luOWh6V0Uvak9jKzI4?=
+ =?utf-8?B?VklWYmNWVXc5NzB4dTZ3SHZ2OFRlMWZkWjlObFhXY3A1d2dOVUNoTWZjV3d1?=
+ =?utf-8?B?SVZUK0tud3JucTBzc2VQL1djc1pYT3FkWWtwbDk1OGdzMG5ILy9lVk4wM3FY?=
+ =?utf-8?B?RnU4NHNIbXpPTW9WMmdLbW8wVGQ3bHp4TGZwVVcxMDQ3a3NQSFBjdWVMNWNO?=
+ =?utf-8?B?ckhIZVZRV1NTelVxSWxYTmQ1RUs3bDVUSXdpb2NDSDB2WmdhNjlubFgwTEJM?=
+ =?utf-8?B?OGUwci9XeTJtR2ZsRHl4aXhhQWkvV0ZBbnJxdGloQkR2L1dyZTI0OFZVRXd3?=
+ =?utf-8?B?MmZ5UGk2TWU0dlUvUW1RNTdYcWlVMStweXlyUkZubEUrNzJ6bVdSMGV2WUdT?=
+ =?utf-8?B?ZWZyWE9tZW5QTDZNU0hWWGMyUDBpdFgxNXpha1VITnlHRjVWUmQvSHhBNGRi?=
+ =?utf-8?B?M0dxdXFyUDY4MTVZRElaZXR3SFhxYnBBbGRyMTZkcWdJN25OVVZTZ0JRak9r?=
+ =?utf-8?B?STZPbnQ4UnJKSUZZM3ZDUEplOGxMOTRHV1JMSmNJWGVGaFo0Ym9aUHhXdEFh?=
+ =?utf-8?B?SURTZVFKNDltVWx6LzhLWkxYd21kWkZBSGRZbHZWNmh1VkN1SGUyVFFZTEtE?=
+ =?utf-8?B?UnMybXU1RVdDVmNETUFoSnVoZHJCbTc0QVhTMDZYWmVzMVlUS0Nnc0dESWIw?=
+ =?utf-8?B?Z280TFpTSzFhd0JsblZadDZVUTdscmc0TXNVSEY4TThEZDRNSXFmdjlGb1dv?=
+ =?utf-8?B?L3kwU0JmcE9GWnUxWHVjTXVGTTlsOU5VeSs3NFNhZWgxQTBNNUZudi8yMW82?=
+ =?utf-8?B?dzNHQ2ZhTzN5THQvTFE2bVpyWTdlMUE3QlhTZTgyQTl1VDhpYlVzaVdJL3BB?=
+ =?utf-8?B?RlRRMmszK0hiNXBLNWVwSHF2ampabUViNURZaGdxSnlHK2VmMVNwclNsamo5?=
+ =?utf-8?B?Vy94bjgyemRpa0k5NXovWUJSVGQ2eTFGL0xaRHYxWG52SlJwVmd1R2hxcmZz?=
+ =?utf-8?B?VS8rVXZrdUF0ektNd0ZSQlp6ZmhWajhmV1VkRjI1RVZ5S1NYRklSNCtZSlhk?=
+ =?utf-8?B?OWxxWXlISTVVb0x3RGp0dSsyeDIrM005K01XaFFXYlQ4RjZpNnZmTlJmQWRV?=
+ =?utf-8?B?KytKYzBNZm4rbU54WVJNVm54R0VaK1paVW4xTnovcnlZYjQ0WGFEYzJaemZM?=
+ =?utf-8?B?aW9Qdlc0YUhObC8xV1d4eHQ4eVpLTGxPdDFYcWZPcmtJbkl6aXJ5Zkx2NkV0?=
+ =?utf-8?B?VGVGdTFxd0dGSkRQZXd6RTRKQkhUd1gxQTdCN25zY2VRTktLbUJkc21KVmpX?=
+ =?utf-8?B?UmFwUzFBQjhDbWc2Sm9CUFVaMFVqYnhHOTcyVUhUZWw4VE95OFdVVXp2Sm1a?=
+ =?utf-8?B?QlppbUxqd3NhbHBObXAxNEE1Nk9DMjZ4RFlFL21Vb2FoYlRndHVHbk5kMGdQ?=
+ =?utf-8?B?YXBIU1dIWldNcE9lN3U3ZW9KR2Fpa1dvSGY5OXBtdDhUZUJxTkNzdEVZd3Vz?=
+ =?utf-8?B?RzRNbDFBTFVQS2lXYUgrcjBEZUVpMU1YclY0enVOUmlja0RrS3ljQ1dYN0ZK?=
+ =?utf-8?B?ZVN4KzUxYVQ0NG5TQ0FXN3B2bGYzVENOUDJKYW1CUGdEZXM5YnhNL3M5QjYw?=
+ =?utf-8?B?ZHBwZGlhdUptUThJaFlXY3dXL0s1SHhwWU1RZUx1cXlPVVFXcGgvbmcxdmpv?=
+ =?utf-8?B?Z2htQWNlTitNSDl1R0FQMjdoRXZoeTB4Z1NZTU05ajUzOVUvVXlIdm5scWVl?=
+ =?utf-8?B?enprZFB5dk1wb3dOcFM1dzF2L24zMVR6Y0hsQytQbHFRNzNpdHMwR2M1akhL?=
+ =?utf-8?B?ZXN0Tk1LVGJabE1ZWVFZbEZ4MTNOM2lJSUJFQ1ZsaU1HRzdrZ091MnJ1bXhu?=
+ =?utf-8?B?UFNSN1BFQ1c2N04yVCtvNGVyTXJPSFlIbHZFN1hLS0Y5R1NkcHhqdXh3cy9R?=
+ =?utf-8?B?dndsOTZqNTROSkdwN3A0emdnRE9VYXRrbVJGMG5wV09oS3Rob3lLQTZjaVNK?=
+ =?utf-8?B?QWJMcWxHS2V0NTNZTGZvckRmNGNvcmxFM2E3OEhxZEdlczZjVHdMdEc1d3VR?=
+ =?utf-8?B?dlVJemdackw3MmsrQ1VJc0t0WGhOeHpIQWtqanZJMVU2djJPMXp6c2JIdmJ4?=
+ =?utf-8?B?T1JjREpUVGt6dm9nWTd0dFlvcGpPZlFUeDUvSDliRHRIWk5UNlRsK2F4bnRI?=
+ =?utf-8?B?SXE2M29uZk5jWC9vZklJVmYzazdjcFZRdHd6YmZTUjhUTmh1OGRXR1U2eHFy?=
+ =?utf-8?B?Z2ZvV2E0NEdoV20wWWpWd2M4cWtPeWgwNG9CZStPZnluWWVMZGlGemJuTHl6?=
+ =?utf-8?Q?dQwB6rOp0hUcq7pPVq?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: eef6f414-1eca-44da-5ac5-08df3a9155db
+X-MS-Exchange-CrossTenant-AuthSource: IA0PR12MB8374.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Nov 2026 16:33:19.6931
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: q0aS/bc78hBdpzengt1ATABZEeJi3E+0w7B83VB8hvLdv/IarKim2Sey5PRNv1rL
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB5903
+X-Stat-Signature: yzq1b84fsdmjuwtocrbo9htwgczuo5mt
+X-Rspamd-Server: rspam01
 X-Rspam-User: 
-X-HE-Tag: 1793809792-524760
-X-HE-Meta: U2FsdGVkX1/0qh0EOwW05VCic5YFYEBCzp5ued0ZbzALwTjgC1QdR11FCgpTxeU1HX+nI7ZMNrsfBssA/BJVrdDdVZ7eF2o/sQrYBlrmyQy2pgGvbB8I34mdUVrKtkImA+3U0WpyoL2ExM20rqbQLAiJ0AAlFv8dHal0dPtDCvlLUrhbPtWAB9ONtqsLae3B2XD3bXhTEc136uQOpWm/1mkfSPLyYhLyyULV8RVYkWqT2a4A6X8NRGfrPZNjEMkMZlgh4GdedDhHGLpfTvDjFKRF4Q7zrR4pW1vcv5pcJWN090uOIZGPiSHVVFaWy1j/Id2oKuwMyj10Gu1RiTGeGeH34h1k84wwMai0lYaQ/V8ok08Z7PBWEYrC3iHIBWfduvDMWraiAF4WDbHMDYyiz/uWW1xYcAHictGq1P0rAq3bSAsd8+IJ1fUFtLBY0CufGA6nHAMGd+PF6O5XEXoT7iKXe8wlsZhPSNix2ZRIubjM6B2jpcbVL/F0ep8ZZASN8alVS/4VAmzlMuosFwBTICgnhVx+Mcm7/F7PlaNx5zhVoS3BUDyslMfueBWz1QtvmxEokdB0euOtVjRpY7Htm2KjGZTIJ2Legx9+tT/x30XHF3jdYqZ1SPlwrI8RR6fP1XpUxsqZN9Nk9DCcH82aRbMauccb786FCzNpcr0tMUTl8aBeW9ulAoAEFX0O3ssXBq+fxaltxpreCKtj1ct5nQAMj72SIYvGm1a0/tDIWPm64wqWgir7ULfxEQSFmlxmPZSzmF4Kuq2fslw1KhJnSHTeaZZZszC0XdJOhjTmaKAA3vawTpB7zOi0X+1ZJRV1MCwP7quCVLtFW1euLyIWxNaYruo03nZQIl9JzrrfuS6yXnOeYWvoORiphjUuseC8n6soXsVNzsuyLYxMG2NhVHkJ6mwnY17TdsfCGWEWY1AyYEWIoY1QXg1RO4RkDkO7/I3R5b+ItN73JSxFdtQ
- uCxPOnTf
- UeA+3CF0C3rTMRYX3fY1dTgEpXQOLUoPvCs07IbsTDKApj1uXEiH8bvJOZIzlrEcR921pv3VeTDLsS0a52cCSWJJIO4m/Qnp6zTHLnzn81bEBh6k/rF87ydN/skP6/Wq8ZfCBWPMOrWPX67rdjkD3YmMNc+5w2Dt/i96a6ndPnAuOzQF1RzH3hnXJ8iqW7TFGpJzlRPoOxujsg6AQBgJKlaiQ6D0cW1+2m6aEJ+svHjAWd1L8VRgT0i9g1Jo2ugF73FQc05XUcdbTcxDtDXl4uw4qyL/+rwVQ3eAw6m8zc0Hqj2OPBD34r66dr+cDyCn+kIZ38ZxVMPjUm5q2ys+OGgIw1s1ZP6TLfRyPaFpx89hK/+voPoCOFzCXdsV0iy2c05s3UimOoYDdLe/gSohYND+fH5LvshBucGdQ6TmtxdARB5F/yhfL7Pk6v5yo9ksugDQj8LKaxh8ln74QRCrLGD9aNdS3Z0bf2hJJDRZVHnJXjbFpAnOKTC1th4zbdDqMalYnB7vRvRvdljXfWEXHtPz4uWHclW28IuRYqH9S3Aao31p52HdVreMbnsNRXIRhUrq8+qOCUlX0hR7qmFtH4JPSmpbmyyhof/cLDJ7LV64U/n+PVuO97RBpmHUNOdteFsf4uzHNqP3NTI5L6kfV6q34a3lGKuFpp7yUVM/Hvrqv/gnoieMqUlSCol/u5tGG2mUm
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: 9B7EC1C0002
+X-HE-Tag: 1793810005-786399
+X-HE-Meta: U2FsdGVkX1/t0VdSOImGyV0idQtOGbvl20J7LIYMqft/9jODyxqt/ORcN73ZDx1qy5wLdM458PDD5iAUabnL69HSvX+/xDbtVZC+M9AV2FAWx8FO81fe/K40axwCjE+EhLs5DtIciAl21xD3Yj6CoY20Du6N+fclGznfpjjHg/yAYAhw7MMxEbopluuO5krSlCb2yawqeSUfrxhqgYa1+SU1gljlelJswgqRl7ujg/D52pK0Aec4dvI0FFr5Ohi2SjNPNiGAg906pTAnuVbQWfhy8JZVzIFOp9cQ8WJcOXH9H9nyaiUmNGxz28x7bsopUXSk1EIOaoGXBpxanyko0p6s3degc9RD6j7x+u4NXndBtfoEJmg89gvrfm1DsRb6IOj3DnUCvMae2+RXb+Hx39LdCnQwNLGxJXpFRfbd88XEdKzaCxHjrWpBaUVbboyONHYjLemL13XAZfb2clv/N8Q0gtFkJXD4Hxfe+/veVedVFEfuEuGdpBzeFbL5kCm1P2JO76tf5blH1dOa6IQAszP2skMk1Va0/ghCNbsNDDc4RYFlInOdu5as0ZwJOvdOwFEe4+dXIEfbzRCZpJfSD5DCwubVNdlRxwxomTGgpaNHyqVTkgKjjLfczBzuz6Ucl/vpTEvuL5RpQ+ch6Rc3iOs7pkYKVTFYeh4/hj4UvKB774fHPusHAoeGQUGYOWoPRfFDJ88dFY/lo77tFZZcb1y7k0oL2UvfSmNwAjYxnx+GSVz7s9bVYmTo051/GCQPYd6HszD/TY21/Ga4CK9d5WhxqzByflKCPvFS6BtkQEYZxR628aGjdnM7W39PHJO00MZh5hkCTddaOroVudSgCSnRJcBDpBLs7x8lvegyzh+09LxoaobM9yRwtmuO11YFkz/d96/wncfOGAU4bqVoHox9sbC6q2bKGfNq1ENVwuBfhIHR+tVf1x/7N4Djj95rUuZME7FgXZAKKKRIyLO
+ Gm9yLlsF
+ vw5yZA4xswYj8odP3SGZmzlAgNIWk5WxYIuZrlkwTsjIJUTGtHmblbA1wsIINDpfJuGMNuTICI0pYhHa/LlVIjTVHBxbpbN35vd7tsMJBxXgtkBEx5QDmMCRNSCuOmdGH+tvMledmfYcA9rC34bSJ1ADqrQUSUs80wIVDj4wIXJx8plU0l4AtpmK0Xv5o0DAg9KimG2Rgx3uUh5mr58HVehyOGh5mNx/m1zbzl23vnrt+Mg0Jj8woz0rdu9tRckTk0/WARJViix+DDgsEygKZoaHValUCUk1TiCxpL2eUyzlbYu9MdCjsuKp7cCymvoW5Sjd9GYZmiqud0BfkQCMMJp4VPTZRldN8vh1okzDIer5xNiyW593BRpMIdrqkuY2+AmvMdU2+33zD7l7yXi3Vkmst8nx/o3iqUHtR3B8lGamAAfPdqaQI0T2Z6WWlWN26MvT+hZlP4VlsVtuVyy8q/7TV5+6p9sb9Hs/PL0XPVAp6vQygj6KuWYcrLoG1GXa93rAHoRg4GArxZvvjVgAsApet0EattLMlXpz0c34T5urXLBk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,116 +183,123 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
-X-Archived-By: <archiver.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [High] mm/cma: __pa_symbol(_text) triggers BUG() on arm32 DEBUG_VIRTUAL
---
-
-commit efca63a89d010b4bf63ea1571c8931374f2ec14d
-Author: Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>
-
-mm/cma: reject CMA areas that overlap the kernel image
-
-This commit updates cma_init_reserved_mem() to reject CMA regions that
-overlap the kernel image range [_text, _end) so that cma_activate_area()
-cannot free kernel image pages into MIGRATE_CMA.
-
-> diff --git a/mm/cma.c b/mm/cma.c
-> index 9c53b2b70dc8f..3231a53161cda 100644
-> --- a/mm/cma.c
-> +++ b/mm/cma.c
-> @@ -31,6 +31,8 @@
->  #include <linux/kmemleak.h>
->  #include <trace/events/cma.h>
+On Wed Nov 4, 2026 at 4:59 AM EST, Daejun Park via B4 Relay wrote:
+> From: Daejun Park <daejun7.park@samsung.com>
+>
+> __split_folio_to_order() copies memcg_data to a new folio after
+> clear_compound_head(). Until then, memcg_data of the first tail page
+> holds the folio's _nr_pages. page_cgroup_ino() can see that page as a
+> folio in the window and take _nr_pages for an objcg pointer. Reading
+> /proc/kpagecgroup as root then oopses while folios are split to
+> order 0.
+>
+> Copy memcg_data before the smp_wmb(), as before commit fa23a338de93
+> ("mm: separate folio_split_memcg_refs() from split_page_memcg()"). Add
+> the paired smp_rmb() to page_cgroup_ino().
+>
+> Fixes: fa23a338de93 ("mm: separate folio_split_memcg_refs() from split_pa=
+ge_memcg()")
+> Reported-by: Tao Yi <escape@deepseek.com>
+> Closes: https://lore.kernel.org/all/20260907124001.1544655-1-escape@deeps=
+eek.com/
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Daejun Park <daejun7.park@samsung.com>
+> ---
+> Tested on x86_64 with KASAN (7.3-rc7 and mm-hotfixes-unstable) in an
+> 8-vCPU QEMU guest: six threads read /proc/kpagecgroup for page 1 of 64
+> THPs that debugfs split_huge_pages splits to order 0. Base oopsed in 6
+> of 6 runs, 4 of them within 1.5 s. With patch 1, 8 runs of 300 s had
+> no oops.
+>
+> Before 7.4, page_cgroup_ino() and folio_memcg_check() take non-const
+> pointers, so a stable backport needs "struct folio *folio" there. The
+> hunk applies to those trees without a conflict, and the build then
+> fails with CONFIG_WERROR=3Dy (-Wdiscarded-qualifiers).
+> ---
+>  mm/huge_memory.c | 17 +++++++++++++----
+>  mm/memcontrol.c  |  9 ++++++++-
+>  2 files changed, 21 insertions(+), 5 deletions(-)
+>
+> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+> index 14599d0fff..adc5a47ee7 100644
+> --- a/mm/huge_memory.c
+> +++ b/mm/huge_memory.c
+> @@ -3768,7 +3768,19 @@ static void __split_folio_to_order(struct folio *f=
+olio, int old_order,
+>  		if (folio_test_swapcache(folio))
+>  			new_folio->swap.val =3D folio->swap.val + i;
 > =20
-> +#include <asm/sections.h>
+> -		/* Page flags must be visible before we make the page non-compound. */
+> +#ifdef CONFIG_MEMCG
+> +		/*
+> +		 * In the first tail page, memcg_data still holds
+> +		 * folio->_nr_pages. Lockless PFN walkers (page_cgroup_ino(),
+> +		 * page_owner) read memcg_data once the page is not a tail.
+> +		 */
+
+How about? Because clear_compound_head() makes the new_folio be
+recognized as a folio by reference-free readers.
+
+Assign memcg data before clear_compound_head(), so lockless,
+reference-free readers get the right value instead of bogus data from
+the overlaid ->_nr_pages in the first tail page.
+
+> +		new_folio->memcg_data =3D folio->memcg_data;
+> +#endif
 > +
->  #include "internal.h"
->  #include "cma.h"
->  #include "mm_init.h"
-> @@ -68,6 +70,16 @@ bool cma_has_dynamic_base(const struct cma *cma)
->  	return test_bit(CMA_DYNAMIC_BASE, &cma->flags);
->  }
+> +		/*
+> +		 * Page flags and memcg_data must be visible before we make the
+> +		 * page non-compound.
+> +		 */
+>  		smp_wmb();
 > =20
-> +static bool cma_overlaps_kernel_image(phys_addr_t base, phys_addr_t size)
-> +{
-> +	phys_addr_t end;
-> +
-> +	if (check_add_overflow(base, size, &end))
-> +		return true;
-> +
-> +	return base < __pa_symbol(_end) && __pa_symbol(_text) < end;
-> +}
-> +
->  static unsigned long cma_bitmap_aligned_mask(const struct cma *cma,
->  					     unsigned int align_order)
+>  		/*
+> @@ -3803,9 +3815,6 @@ static void __split_folio_to_order(struct folio *fo=
+lio, int old_order,
+>  			folio_set_young(new_folio);
+>  		if (folio_test_idle(folio))
+>  			folio_set_idle(new_folio);
+> -#ifdef CONFIG_MEMCG
+> -		new_folio->memcg_data =3D folio->memcg_data;
+> -#endif
+> =20
+>  		folio_xchg_last_cpupid(new_folio, folio_last_cpupid(folio));
+>  	}
+> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+> index 84f4a8fd4d..c244d56446 100644
+> --- a/mm/memcontrol.c
+> +++ b/mm/memcontrol.c
+> @@ -375,12 +375,19 @@ struct cgroup_subsys_state *get_mem_cgroup_css_from=
+_folio(const struct folio *fo
+>   */
+>  ino_t page_cgroup_ino(const struct page *page)
 >  {
-> @@ -295,6 +307,15 @@ int __init cma_init_reserved_mem(phys_addr_t base, p=
-hys_addr_t size,
->  	if (!size || !memblock_is_region_reserved(base, size))
->  		return -EINVAL;
+> +	const struct folio *folio;
+>  	struct mem_cgroup *memcg;
+>  	unsigned long ino =3D 0;
 > =20
-> +	if (cma_overlaps_kernel_image(base, size)) {
-> +		phys_addr_t text =3D __pa_symbol(_text);
-> +		phys_addr_t end =3D __pa_symbol(_end);
-> +
-> +		pr_err("area %s (%pa, size %pa) overlaps kernel image [%pa-%pa]\n",
-> +		       name ?: "(unnamed)", &base, &size, &text, &end);
-> +		return -EBUSY;
-> +	}
+>  	rcu_read_lock();
+>  	/* page_folio() is racy here, but the entire function is racy anyway */
+> -	memcg =3D folio_memcg_check(page_folio(page));
+> +	folio =3D page_folio(page);
+> +	/*
+> +	 * Order the memcg_data load after the compound_info load in
+> +	 * page_folio(). Pairs with smp_wmb() in __split_folio_to_order().
+> +	 */
+> +	smp_rmb();
+> +	memcg =3D folio_memcg_check(folio);
+> =20
+>  	while (memcg && !css_is_online(&memcg->css))
+>  		memcg =3D parent_mem_cgroup(memcg);
 
-[Severity: High]
-Is __pa_symbol(_text) safe to call in architecture-independent CMA code?
+Otherwise, LGTM. Thanks.
 
-In include/asm-generic/sections.h, _text is noted as architecture-specific:
+Reviewed-by: Zi Yan <ziy@nvidia.com>
 
-    * _text, _data: architecture specific, don't use them in arch-independe=
-nt code
-
-On 32-bit ARM, arch/arm/kernel/vmlinux.lds.S places _text at the start of
-.head.text before _stext:
-
-    .head.text : {
-        _text =3D .;
-        HEAD_TEXT
-    }
-
-while arch/arm/include/asm/memory.h defines KERNEL_START starting at _stext
-(or _sdata on CONFIG_XIP_KERNEL):
-
-    #ifdef CONFIG_XIP_KERNEL
-    #define KERNEL_START		_sdata
-    #else
-    #define KERNEL_START		_stext
-    #endif
-    #define KERNEL_END		_end
-
-When CONFIG_DEBUG_VIRTUAL=3Dy is enabled on 32-bit ARM, __pa_symbol(_text)
-calls __phys_addr_symbol() in arch/arm/mm/physaddr.c:
-
-    phys_addr_t __phys_addr_symbol(unsigned long x)
-    {
-        /* This is bounds checking against the kernel image only.
-         * __pa_symbol should only be used on kernel symbol addresses.
-         */
-        VIRTUAL_BUG_ON(x < (unsigned long)KERNEL_START ||
-                       x > (unsigned long)KERNEL_END);
-        return __pa_symbol_nodebug(x);
-    }
-
-Because _text is below KERNEL_START on 32-bit ARM, won't calling
-cma_init_reserved_mem() -> cma_overlaps_kernel_image() with
-base < __pa_symbol(_end) trigger VIRTUAL_BUG_ON() during early boot?
-
-In addition, on 32-bit ARM with CONFIG_XIP_KERNEL=3Dy (where _text is linked
-in ROM below PAGE_OFFSET while only [_sdata, _end) is in RAM) and on sparc64
-(where [_text, _end) is linked at KERNBASE rather than in the PAGE_OFFSET
-linear map), won't __pa_symbol(_text) also compute bogus physical addresses
-for the kernel image?
 
 --=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261103162429.2053=
-989-1-radhey.shyam.pandey@amd.com?part=3D3
+Best Regards,
+Yan, Zi
+
 
