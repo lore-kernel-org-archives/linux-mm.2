@@ -1,102 +1,89 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A781606A31B
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 08:01:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C6E3606A32D
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 08:10:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kagG1h6z
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=KoojDrfl
 Received: by kanga.kvack.org (Postfix)
-	id A04916B05B4; Wed,  4 Nov 2026 03:01:36 -0500 (EST)
+	id 273DB6B05B1; Wed,  4 Nov 2026 03:10:29 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 98F056B05B5; Wed,  4 Nov 2026 03:01:36 -0500 (EST)
+	id 24B3D6B05B2; Wed,  4 Nov 2026 03:10:29 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 855656B05B6; Wed,  4 Nov 2026 03:01:36 -0500 (EST)
+	id 188E56B05B3; Wed,  4 Nov 2026 03:10:29 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 549756B05B4
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 03:01:36 -0500 (EST)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id C7B97C067C
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 08:01:35 +0000 (UTC)
-X-FDA: 85396692150.01.FEBD395
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id E913F6B05B1
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 03:10:28 -0500 (EST)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 1FF75804A7
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 08:10:27 +0000 (UTC)
+X-FDA: 85396714494.19.2E21F16
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf23.hostedemail.com (Postfix) with ESMTP id F077A14000E
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 08:01:31 +0000 (UTC)
+	by imf23.hostedemail.com (Postfix) with ESMTP id 82FF4140003
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 08:10:25 +0000 (UTC)
 Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kagG1h6z;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KoojDrfl;
 	spf=pass (imf23.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793779292;
+	s=arc-20220608; t=1793779825;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Wa/ewEmctxMMXXGhA3e9lx/vbjeDwynsInRuu9Mp/6c=;
-	b=M9MhYhBncFBxrCJFdgOHZijYsEhJLG3FN5xhaivPVqWuby0etFrFaqmrHSavSUOagujXPQ
-	faYb9sSaIf3i5OqMa8wGP9XtoRik3HtjKOFJFauNm+OZJQCvKTIz92f1cO17kmEK/nqg6k
-	MNWnaHCqLd0nKO8/hMrttvRmAI1Z26I=
+	bh=Pw1RA8b/0wqWpwAG8rn8nMbI8/CS2La9EFhpCnYgEt4=;
+	b=TGvrCtaNQo3YucK9Ymc5yURpv4d5MI01gJkTygc4IzbYT69XXh5HVODpFr7iBvz7oZ9yOS
+	B4lgwsHA8n7/MmWcs1H2orZABzLd2WZo9orvemsfx3I34lfITFqB4dgwDsBYVOsmAdvszV
+	TuDhIiv4kp8NVs37d0UP4kUondHGqzk=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793779825;
+	b=60GPtK3KTlUcd0dQITJ8xD2/fNRrl5tQQyuG2cOEjrwpBqkLQLNQc4i0ykUOyTqJSbrKD7
+	PMORfgScbiRU+NVBNDErlE2xD+4Ine+B7xX84syLMqkyadS/2FEyenujAnyYFNj/FIJuag
+	Kitwtux5tviUdJSIJpO7Ble0ZNrx41A=
 ARC-Authentication-Results: i=1;
 	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kagG1h6z;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KoojDrfl;
 	spf=pass (imf23.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793779292;
-	b=Y3Yr3qahwVpDCb2Yv7MLPLMJNpsjJqGrDD9XOZVYI7XwHyi8aE8ZzjDEiYNYrTqasN28W+
-	Y8BxIZC09ZR2EUUz3Vj2UD92mWLt2j6Mlg0z7r02OiYVIRyQSUBQgV2d/O9wjy2XsjejzJ
-	9bCjiJ8oKnP+0fOCSkChv1ob3cy/qOI=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 6A5B960D9F;
-	Wed,  4 Nov 2026 08:01:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4DC71F000C1;
-	Wed,  4 Nov 2026 08:01:29 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 008D260D9B;
+	Wed,  4 Nov 2026 08:10:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 178811F00A02;
+	Wed,  4 Nov 2026 08:10:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793779291;
-	bh=Wa/ewEmctxMMXXGhA3e9lx/vbjeDwynsInRuu9Mp/6c=;
+	s=k20260515; t=1793779824;
+	bh=Pw1RA8b/0wqWpwAG8rn8nMbI8/CS2La9EFhpCnYgEt4=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=kagG1h6z6tj+6oKwe/08vbku+kP00JrPRr8x2BS4YBc4lA9lCPFPGOn30s4FFlGOd
-	 XnsgjFmwKoCQP9pZ5a18Jur3TtRX/+Tpk0so8yE+sLvtoywnphPweaQKmXcWNEx+Mz
-	 hB8XEMccTXNnA6dQ/GlHWEP5wwznhW+jGwVMlLJa5X+llaw8NrZh7/RSSWhtqkldEW
-	 XT06o104rAQrdhkRmmdwd3iRrdNKOymHz923ruNKSC0184TPQjOgrd7FRjYknCWmoN
-	 DYxb5uhDVwHgspyQgBQUQQTxgTzpiRJCWQwYK4l5lVYC53lOVZ5ZirELFuXf4pqjd8
-	 MO+3l/6liLaSQ==
-Message-ID: <sashiko-outbox-196846@kernel.org>
+	b=KoojDrflsyT352+kmH6suq8he+NSQ6/q6xmVHkGlSicSPJjOeWsqaXFoQ7hIB8OFX
+	 YVtkEK9bOARfkuo/urulh2JSAXw612CS1tUEjXQASxf4obq5lilY4IgBXG+6HiwOld
+	 scTQVVre6Gq0jzmFai+h55fzFB+XejmC5wDvDkSLWOG8m4PKVItjB5l7OVULSarR+p
+	 UeCaVPkVzinfoYpzgwd6QYJh+6wQpXEv9zRRSrZBUtzhGirQWWP4kZt8sVtKps5k/E
+	 4A41XuinKlgZwFv63c37Rml1ZcF07flt71FjoPVGLVW6u28r6GLh6x5UOvrIEy7yV2
+	 hjIViDB11k3jA==
+Message-ID: <sashiko-outbox-196857@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 2/6] kthread: Keep unbound kthreads off nohz_full CPUs
+Subject: Re: [PATCH v2 3/5] riscv: Add support for kexec handover (KHO)
 Reply-To: sashiko-reviews@lists.linux.dev
-To: "Matthew Ruffell" <matthew.ruffell@canonical.com>, "Waiman Long" <longman@redhat.com>, "Frederic
- Weisbecker" <frederic@kernel.org>, "Tejun Heo" <tj@kernel.org>, "Peter
- Zijlstra" <peterz@infradead.org>, "Ingo Molnar" <mingo@redhat.com>, "Andrew
- Morton" <akpm@linux-foundation.org>, "David Hildenbrand" <david@kernel.org>
-Cc: "Caron Wills" <caron.wills@pulsar.com>, "Ridong Chen" <ridong.chen@linux.dev>, "Johannes
- Weiner" <hannes@cmpxchg.org>, =?utf-8?b?TWljaGFsIEtvdXRuw70=?= <mkoutny@suse.com>, "Juri
- Lelli" <juri.lelli@redhat.com>, "Vincent Guittot" <vincent.guittot@linaro.org>, "Dietmar
- Eggemann" <dietmar.eggemann@arm.com>, "Steven Rostedt" <rostedt@goodmis.org>, "Ben
- Segall" <bsegall@google.com>, "Mel Gorman" <mgorman@suse.de>, "Valentin
- Schneider" <vschneid@redhat.com>, "K Prateek Nayak" <kprateek.nayak@amd.com>, "Lorenzo
- Stoakes" <ljs@kernel.org>, "Liam R . Howlett" <liam@infradead.org>, "Vlastimil
- Babka" <vbabka@kernel.org>, "Mike Rapoport" <rppt@kernel.org>, "Suren
- Baghdasaryan" <surenb@google.com>, "Michal Hocko" <mhocko@suse.com>, "Jann
- Horn" <jannh@google.com>, "Pedro Falcato" <pfalcato@suse.de>, linux-mm@kvack.org, "Jay
- Vosburgh" <jay.vosburgh@canonical.com>
-In-Reply-To: <20261103075940.110308-3-matthew.ruffell@canonical.com>
-References: <20261103075940.110308-1-matthew.ruffell@canonical.com>
- <20261103075940.110308-3-matthew.ruffell@canonical.com>
+To: "Chen Pei" <cp0613@linux.alibaba.com>, pjw@kernel.org, palmer@dabbelt.com, alex@ghiti.fr, rppt@kernel.org, pasha.tatashin@soleen.com, pratyush@kernel.org, graf@amazon.com, shuah@kernel.org
+Cc: guoren@kernel.org, linux-mm@kvack.org, kexec@lists.infradead.org
+In-Reply-To: <20261103080926.2079-4-cp0613@linux.alibaba.com>
+References: <20261103080926.2079-1-cp0613@linux.alibaba.com>
+ <20261103080926.2079-4-cp0613@linux.alibaba.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Wed, 04 Nov 2026 08:01:29 +0000
-X-Stat-Signature: 8tfbgxz5my9mf64dzqzanj676xiwbx7d
-X-Rspamd-Server: rspam01
-X-Rspam-User: 
+Date: Wed, 04 Nov 2026 08:10:23 +0000
+X-Rspamd-Server: rspam06
+X-Stat-Signature: nyq1npsdps49tj67rqkazfacndashihm
 X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: F077A14000E
-X-HE-Tag: 1793779291-830833
-X-HE-Meta: U2FsdGVkX19Vrbs+qWdmplpigf68JIxc1blEWBJSmOgXen5dj0yAzR0lD5C5UO2Nm5yaDvSBX3jWXf7uUmpLAYFoHveK9Nh5LQTvcqtEJ4FoB4y+hbf6rBqtb57AgvdLG8U0DJAy/cMKS3JUTZSq9Le54DS2PkcMT99BfnQEnWg3QbJqdEOl7By/fnvnnKIeJ3+LS87i5T2ST0zfEysNe7XucDS8t/SwXREWHEQkHbYPVsmZa2jpZnef8KB7QhmUcEvtTrVgDjMLzadZNzkwgCMy1Wk5S5fLUjVH9YJeUl5ovf/KAJyzZzb3rXZIS7q2u1jN9eugCSFcXx5HWeaBcP3Zu9MPwrFLKJ5CTlWRjXYNLPPtSxHnrJitdY0/CljEQXfu4/7P0JD893ZRH2zY2WVxJb9IPob1XIVvlLAg4GnNcewgoir774GlN8koMMSDKvlLj6sbdcfpdBdt78P4a0I02CguOJ+oDVkTX1KRfrLoXoRhYevt15e/1v7BWNMcGauAp5qQFIMFvEc8/KJNnhfxyv+iBzs2VDfl/v1kbZywOkWeVLesYBgGU8VZVrJN95X9YVAQs7t3uZ6I152pBKLc7c/JXMMHuXddUCsq0Xnm4i1W84NmxQaWIrPf+GwjAiwgdGoLJ4La36S3EQCmOFgp8fIHu+6i/f9FlS9cXKmBUgaLljz0ykVuGyp/JVRQsg+5zebOo7kdND1USJKRpegv2O/BcEsxsI2LbvphhY2rjXWoTUk4qCVW8pl5uGuKdDJM1wwVipL9zS093OnGPQ3cUzw2tiCtdt733qNBRrmS5R+NyKPF6r65A11RgFxaOtU6Z0ZfpEEGL2dSAOtZpulVMNNphnVCCkfnmk33ydD7IsL6WTtD1frMiW6IQshRQ1ZuDWf76Lf2J4+xlMcXbQIUqvirbP36dLS9QE/h3NDNSdZ8oW2sG7u3/8bGvu6oSvlQ0qJLK3w7Ra6+/Vk
- U7Z2X1JY
- ttk58BEr4z7l/Wr8qF0rT5Dk8hvkssp/KPh4q7qvxCtlV3tqnFQjYs6VUB4eAdYZoWkqAWv4LkOrLTKJT3tbYhhXu/WSU8zvmxVw1ZKBAy+vOuqsiRRCOHjtPW5h3N2Y0e6ofOD0vVNinmkbiYVz1oggFmZ8tOXnZT/0qobE1YqIub6jpqrmBDVpA8+LLcQfMBgtrMgcRXFYZ5x5CVNNeLVO5qL4PcO6DZ/KLXPiH7Sl8yg7EEKO2p0Z8yRyCLrgeKoipTn14E410APN7jJLpg15hIou2Evl3alg/R8yWRGycbnMz6IbLU3aqM84kPCq8jRhh/Ri7V63hmGQUfvDtZIIjMUSc7zM6WMzRzNnaQK6PF3FDEWynYMlhK2SMRiK4kEL8C8BVVH+zE+YhsqzeEMe4b7iXsG9zfjoViD+APGGcYQ2jbTbqqfeQOTSFbYyviPOB/Cq2OhFtcQLdbr3OBABdiW0ziSdinMfC+k22kz7QkLCqw8ECbtiBB/qViVK+1w6d/ShkaJykHlItAtwkWx3T5HJtY21/5juKCxyAYWaqT7pssQsUnZv7gh8R8X/mSNgZ+493W4z3yQdQvM5RPFf+QnRxPIi9lsR2w/nOiu4f17i3VCkDfLqxQUiNOMT0aowoFK9snlZWOcyafFmxYgFISEMOyCkS8K0gqj0GyOYkAz8iAtHxUr28U5kRgZQXro98LB+O2FTQlvmZX7nyoQJ1rGgofWGyPc/2ZT9v1fz7mq2P5eVrpQ5n9dB/BtBUuhoB
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
+	autolearn=unavailable autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: 82FF4140003
+X-Rspam-User: 
+X-HE-Tag: 1793779825-991652
+X-HE-Meta: U2FsdGVkX19w32e4ZSYzwz9oOZlsCCnObUeCnVTWUCzm2lWIw8stpfOd/oncxmy3lOeL+nFDsFqfotvNHYVR0IHJesdwG16IqrSlIbIS+AdYQT7p/IeCdvXICZ4qyeDx8nzhD/8eUtqDUGxfARLDZr/pW6xj9niRI9C0Ntm8qCGoE0CDmgqz2QJ/rDucW4qkztXNw7FEHd8g905vecJ87hJP8n2dOl7B3lWMMwAAQBW22HquouYbdVoPmlHd5rNVNQuVD5h5d14J3xea6BV2rPxh2IIgBmQ0ajGyE74vEeYgpi9TZ7Bl+8r7NX1rFjDlyPeJC9glBGXkUj/fsYtF4qDr1ynvFZH4UuZZAaN7XlotIPiRrImA1AoM0svGtEPJ6okmRH9qybQyA1FkE8ux7MO1bIj8rIiMNtjBFFMXUt99WbbxSlfzN46tpzaB2CQZOxk0PknWxJzgJLyOF0FqbtqLqwC2RXgRoVqzE5ZEyp6u3mNFuT/j5T+0adKSZS2ylfNP5Sk3yt4OufcJN+7wUg8wVMP8vaytKl9pF/d/bu/IXaziEFAoOy3gOQMGjqe3c/5Es4Nf5HWXyE2iTrHyRQs0j9oAqcLmPqx3UTYKyAue/iZTt7T9fL2+F4+1p+T3RtGPRGbr9eBRLNyunWQJFXS1nEADTC4hkaRy5GQ3nK7baxhBnrt58zUdHcW1Xps6WlSZGt/2j31Jf5TK1PTJ7djHJfhiz4gud753s++rARQn8DELdWNdfh0cr7N3+XTzG6wARikGaM6bT7BHzpPTEooaDXcEmSypMo4yArjYQV6wm4moEHijoC+HNlnouex/RKp+nwPMjEzk3qNKuQ0UCZ/6Hmup9aTe7kCs3grgi7mSCrwFPJ8odAQl4arwU6S7lJ9FpX3g2nuLOsDd1+IAS7IAsxQZYAd9fgUqxstmDkm13IP0rqQdQRRdzsaMyf66YXdLwUpt2UzPHOoqX0h
+ p6T+QcC1
+ Ih5bX/4LPAhMmm9M9/mIkzlo5gETHd5B1lMfcgeiDMR6/8FL4Nu3ivkAavp1SjCWQL/1MldeHwklTfFrnC70nv+si+mJgtspEc1rZ8OhFcBZN99wDXLVyrn6IR04FwqFHdgUbezfuaULDN4KVq+nREoKCqmqkng23E4xRqkWQm/OD5kZb0MBLX5TWCxSa5neFYyfwdTgZAKI/vSxicZtPdytQdnZWrnj6IS6HrGSx4h3Bfdt4DIixiTwV/j1EKcQIrCQXjkCJ79uQx2790F4SWoZg5+bS/sAwcAnAyXy2oEystfmxdoGUvQQ0MxZcDyyOThS6KVoKAOYrZ1DhP0aVAjoyoFt8mJNu0byQyVogy/4qeZG+sZcBuxjx3GvVDro9uPkb4Ue+jrjkxVACzo1Sd+gSFY1rIw91/9u8OtfqMwFhvIE9/JsZj/ywUfZbIIp+1cdHMwYm6gfEVU55K/vo1mlr/wdxey7TILZoo3gZq+EQUa8RN28mQk6s2GUdno2fvhlIqyfwbNnxkJniHhOYoJgj1ZGbTjiscGgRkf3CEc7Vmj0BuLdBFBHEDqYM0MQw18Gt0Y30X21mdfHlZoZnZRRduIOeUg9OffJQ1tvmx1tEC/Y=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,119 +95,94 @@ X-Archived-By: <archiver.kernel.org>
 
 Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [High] kthread: offline preferred CPUs bypass hk_kthread in kthread_fetch=
-_affinity()
+- [Medium] riscv: kho: bootmem reservation fails when DRAM starts at or abo=
+ve 4 GiB
 --
 
-commit e454a827bc8a9ce4259c7edb902592efbf81ab53
-Author: Caron Wills <caron.wills@pulsar.com>
+commit 25f3cc12aa8edcc1fbb1363f837f61e462a57ad6
+Author: Chen Pei <cp0613@linux.alibaba.com>
 
-kthread: Keep unbound kthreads off nohz_full CPUs
+riscv: Add support for kexec handover (KHO)
 
-This commit intersects unbound kthread affinity with both HK_TYPE_DOMAIN and
-HK_TYPE_KERNEL_NOISE in kthread_fetch_affinity() so that unbound kthreads a=
-re
-kept off nohz_full CPUs even when those CPUs remain in scheduler domains.
+This commit enables kexec handover (KHO) support on 64-bit RISC-V systems w=
+ith
+MMU enabled by defining ARCH_SUPPORTS_KEXEC_HANDOVER in arch/riscv/Kconfig.
 
-Link: https://bugs.launchpad.net/bugs/2165410
-
-> diff --git a/kernel/kthread.c b/kernel/kthread.c
-> index fdb8fb07f40bd..b9d8dfe1b6cad 100644
-> --- a/kernel/kthread.c
-> +++ b/kernel/kthread.c
-> @@ -327,24 +327,46 @@ void __noreturn kthread_complete_and_exit(struct co=
-mpletion *comp, long code)
->  }
->  EXPORT_SYMBOL(kthread_complete_and_exit);
+> diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
+> index 435da07132437..e11463a923a32 100644
+> --- a/arch/riscv/Kconfig
+> +++ b/arch/riscv/Kconfig
+> @@ -1125,6 +1125,9 @@ config ARCH_SELECTS_KEXEC_FILE
+>  config ARCH_SUPPORTS_KEXEC_PURGATORY
+>  	def_bool ARCH_SUPPORTS_KEXEC_FILE
 > =20
-> +/*
-> + * Unbound kthreads must run neither on domain isolated CPUs (isolcpus=
-=3Ddomain,
-> + * cpuset isolated partitions) nor on CPUs isolated from kernel noise
-> + * (nohz_full=3D, isolcpus=3Dnohz). The two sets usually coincide, but t=
-he kernel
-> + * accepts nohz_full CPUs that remain in the scheduler domains, so both
-> + * housekeeping types have to be honoured.
-> + */
->  static void kthread_fetch_affinity(struct kthread *kthread, struct cpuma=
-sk *cpumask)
->  {
-> -	const struct cpumask *pref;
-> +	const struct cpumask *pref, *hk_domain, *hk_kthread;
-> =20
->  	guard(rcu)();
-> =20
-> +	hk_domain =3D housekeeping_cpumask(HK_TYPE_DOMAIN);
-> +	/*
-> +	 * Deliberately not HK_TYPE_KTHREAD: since v7.1 that is an alias of
-> +	 * HK_TYPE_DOMAIN (commit 8f78b749f3da), which is the very assumption
-> +	 * being corrected here.
-> +	 */
-> +	hk_kthread =3D housekeeping_cpumask(HK_TYPE_KERNEL_NOISE);
-> +
->  	if (kthread->preferred_affinity) {
->  		pref =3D kthread->preferred_affinity;
->  	} else {
->  		if (kthread->node =3D=3D NUMA_NO_NODE)
-> -			pref =3D housekeeping_cpumask(HK_TYPE_DOMAIN);
-> +			pref =3D hk_domain;
->  		else
->  			pref =3D cpumask_of_node(kthread->node);
->  	}
-> =20
-> -	cpumask_and(cpumask, pref, housekeeping_cpumask(HK_TYPE_DOMAIN));
-> +	cpumask_and(cpumask, pref, hk_domain);
-> +	cpumask_and(cpumask, cpumask, hk_kthread);
-> +	if (cpumask_empty(cpumask))
-> +		cpumask_and(cpumask, hk_domain, hk_kthread);
-> +	/*
-> +	 * Both the boot parameters and cpuset guarantee that at least one
-> +	 * CPU stays housekeeping for every type, but don't rely on it.
-> +	 */
->  	if (!cpumask_intersects(cpumask, cpu_online_mask))
-> -		cpumask_copy(cpumask, housekeeping_cpumask(HK_TYPE_DOMAIN));
-> +		cpumask_copy(cpumask, hk_domain);
+> +config ARCH_SUPPORTS_KEXEC_HANDOVER
+> +	def_bool 64BIT && MMU
 
-[Severity: High]
-What happens in kthread_fetch_affinity() when the intersection of pref,
-hk_domain, and hk_kthread is non-empty, but contains only offline CPUs?
+[Severity: Medium]
+As reported by Sashiko on v1 [1], will kho_reserve_bootmem() fail on 64-bit
+RISC-V platforms where DRAM starts at or above 4 GiB, or record a 0-byte
+region when all DRAM lies below 4 GiB?
 
-Commit 78ff77ded78f ("kthread: Fall back when no preferred housekeeping CPU
-is online") replaced cpumask_empty(cpumask) with
-!cpumask_intersects(cpumask, cpu_online_mask) because preferred_affinity can
-contain possible CPUs that are offline. For example, rcu_thread_affine_rnp()
-populates preferred_affinity with all possible CPUs of the leaf rcu_node:
+Unlike arm64 (which defines ARCH_LOW_ADDRESS_LIMIT as arm64_dma_phys_limit =
+- 1
+and clamps it to memblock_end_of_DRAM() when DRAM starts above 4 GiB), RISC=
+-V
+falls back to the default in include/linux/memblock.h:
 
-kernel/rcu/tree.c:rcu_thread_affine_rnp() {
+#ifndef ARCH_LOW_ADDRESS_LIMIT
+#define ARCH_LOW_ADDRESS_LIMIT  0xffffffffUL
+#endif
+
+However, 64-bit RISC-V supports platforms where all DRAM starts at or above
+4 GiB, as seen in arch/riscv/mm/init.c:arch_mm_preinit():
+
+	bool swiotlb =3D max_pfn > PFN_DOWN(dma32_phys_limit) &&
+		       memblock_start_of_DRAM() < dma32_phys_limit;
+
+When KHO is enabled at boot, mm_core_init() -> kho_memory_init() ->
+kho_reserve_bootmem() unconditionally allocates both lowmem and global boot=
+mem
+without checking whether their computed sizes in bootmem_size_update() are =
+0:
+
+kernel/liveupdate/kexec_handover.c:kho_reserve_bootmem() {
 	...
-	for_each_leaf_node_possible_cpu(rnp, cpu)
-		cpumask_set_cpu(cpu, affinity);
+	size =3D bootmem_size_lowmem;
+	addr =3D memblock_phys_alloc_range(size, BOOTMEM_ALIGNMENT_BYTES, 0,
+					 ARCH_LOW_ADDRESS_LIMIT);
+	if (!addr) {
+		pr_err("Failed to reserve lowmem bootmem\n");
+		goto err_free_bootmem_desc;
+	}
 
-	kthread_affine_preferred(t, affinity);
+	kho_bootmem[i].addr =3D addr;
+	kho_bootmem[i].size =3D size;
+	i++;
+
+	/* reserve large contiguous area for allocations without nid */
+	size =3D bootmem_size_global;
+	addr =3D memblock_phys_alloc(size, BOOTMEM_ALIGNMENT_BYTES);
+	if (!addr) {
+		pr_err("Failed to reserve global bootmem\n");
+		goto err_free_bootmem_areas;
+	}
 	...
 }
 
-If a leaf rcu_node has online CPUs that are all in nohz_full, plus offline
-possible CPUs that were not listed in nohz_full=3D, or if the preferred
-housekeeping CPUs are later hot-unplugged, then pref & hk_domain & hk_kthre=
-ad
-will contain only those offline CPUs.
+On 64-bit RISC-V systems where DRAM starts at or above 4 GiB,
+bootmem_size_lowmem is 0 and memblock_phys_alloc_range(0, ..., 0,
+ARCH_LOW_ADDRESS_LIMIT) finds no memory below 0xffffffffUL, returning 0 and
+disabling KHO. Conversely, when all DRAM lies below 4 GiB, bootmem_size_glo=
+bal
+is 0 and kho_reserve_bootmem() records a 0-byte entry in kho_bootmem[], whi=
+ch
+later causes kho_locate_mem_hole() to construct an inverted struct resource
+with end =3D start - 1.
 
-In that case:
-1. cpumask_empty(cpumask) is false, so the fallback to
-   cpumask_and(cpumask, hk_domain, hk_kthread) is skipped.
-2. !cpumask_intersects(cpumask, cpu_online_mask) is true, so cpumask is
-   overwritten with hk_domain.
-
-On systems where nohz_full CPUs remain in HK_TYPE_DOMAIN, wouldn't this
-bypass hk_kthread and allow the kthread to be affined to nohz_full CPUs even
-when online CPUs in hk_domain & hk_kthread exist elsewhere on the system?
-
-Should the first fallback check !cpumask_intersects(cpumask, cpu_online_mas=
-k)
-instead of cpumask_empty(cpumask)?
+[1] https://lore.kernel.org/r/sashiko-outbox-183678@kernel.org
 
 --=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261103075940.1103=
-08-1-matthew.ruffell@canonical.com?part=3D2
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261103080926.2079=
+-1-cp0613@linux.alibaba.com?part=3D3
 
