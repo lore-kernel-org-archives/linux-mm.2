@@ -1,170 +1,113 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B511A606A324
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 00:15:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93B7E606A324
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 00:24:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=O4SH1a9V
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=MEz0+BIH
 Received: by kanga.kvack.org (Postfix)
-	id C24C96B05B4; Tue,  3 Nov 2026 19:15:54 -0500 (EST)
+	id 7EF8E6B05B1; Tue,  3 Nov 2026 19:24:36 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BAEC06B05B5; Tue,  3 Nov 2026 19:15:54 -0500 (EST)
+	id 7A1DD6B05B3; Tue,  3 Nov 2026 19:24:36 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A57656B05B6; Tue,  3 Nov 2026 19:15:54 -0500 (EST)
+	id 6B67A6B05B4; Tue,  3 Nov 2026 19:24:36 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 6C14F6B05B4
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 19:15:54 -0500 (EST)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id C2512A0593
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 00:15:52 +0000 (UTC)
-X-FDA: 85395518544.18.8D6C377
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 2632EC0008
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 00:15:49 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=O4SH1a9V;
-	spf=pass (imf28.hostedemail.com: domain of dave.hansen@intel.com designates 198.175.65.17 as permitted sender) smtp.mailfrom=dave.hansen@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 336B26B05B1
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 19:24:36 -0500 (EST)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id A9D0E12055B
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 00:24:34 +0000 (UTC)
+X-FDA: 85395540468.30.1BE0BF6
+Received: from mail-dy1-f200.google.com (mail-dy1-f200.google.com [74.125.82.200])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 0161D140008
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 00:24:32 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=MEz0+BIH;
+	spf=pass (imf23.hostedemail.com: domain of 3PnvqaggKCD0ahmfihZnfnnfkd.bnlkhmtw-lljuZbj.nqf@flex--bingjiao.bounces.google.com designates 74.125.82.200 as permitted sender) smtp.mailfrom=3PnvqaggKCD0ahmfihZnfnnfkd.bnlkhmtw-lljuZbj.nqf@flex--bingjiao.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793751350;
+	s=arc-20220608; t=1793751873;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=yupwsl26WPKHnfflgYt0LlJCyAjS9VDdHq3ty55cWYA=;
-	b=dZGJPn1frVjT0y8DhgY91Mp+D1zKlzYdNhdXVoKk9XtG5T0DTpWYc9EsgwY7YNPWlfXW3t
-	z7nT7QtupBx2MovFS0ckH567KaS7voqTgE6ScNCpRN/O0nBfEHujqnMCW2vP/N9cb0Dt1W
-	SuuLaU5+x9t7qOE2Odx/d4LQ+d9Z968=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793751350;
-	b=y60YR7pSzn2DUtNGacqcgTN6M1VWJ5WSwC8Nr1IFqacd82CsWyggNGSLkNss3CAjva9iG9
-	/iIo+FgVRQWJHkx9IYMi07d6eSqrVuxeZfTnYvwFFeczBFvj6R37sDG+YXdulQ+rjXWYtx
-	sOfHPTmx1UTRuBYdQmdn/RZFNqaTSc0=
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=twBYW96D/454ufOiYalNWpWEiQb6CO3slFCMac5mtJ4=;
+	b=Rk/toA7A+hrtL7nVfyj/lCpEPUBSc+C9eTd7xkbLs10Ni7AE2ozvGpWV+kWVpEE+I4lm6Y
+	ROOua0RLCr6uxd10T7eOju9e5LlNu5H9m0C5jrvzJT5PvOBVwIj4lY32KMmTwLZQNawlsE
+	JLhFhXbwK3unsX66rWVdE0FmUEY2C1A=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=O4SH1a9V;
-	spf=pass (imf28.hostedemail.com: domain of dave.hansen@intel.com designates 198.175.65.17 as permitted sender) smtp.mailfrom=dave.hansen@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1793751351; x=1825287351;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=yupwsl26WPKHnfflgYt0LlJCyAjS9VDdHq3ty55cWYA=;
-  b=O4SH1a9VbhO+bauJgYV0mxITvYp/ubM0yabHUZYwy6lm/fAX4u9VdLal
-   CYCBhMHLP2HBzAkqcyx9CqMgktTYNxbMV762O7++xCLyEPP8pP9fiGmhi
-   CqMI3FnEDSSOHplT1CzCL6oIhBOXKNAT1bgsYjMQqi5wU5mjtPZdJ4B9t
-   EcOvHTNnUBc1hYcz/5h8+gPt9f0Hl0a1BT1tXAQf9r4bLvr13ZJ8aGu1C
-   5xS3qvXda+6hr54+yVX/qsESgAFWoEdaguGpmYvQ4UcqqMTdbl4lUYV3Z
-   uyySQglnCYvv0URo57tJAy4Q5HeaA0lGSJC+rIU1SSvhc2IIZzcCvsTLa
-   Q==;
-X-CSE-ConnectionGUID: 2yYQDb1RTlGZzuOceSiOfQ==
-X-CSE-MsgGUID: 6q1rRMwcSlmglTCHhQah4g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11955"; a="2512050"
-X-IronPort-AV: E=Sophos;i="6.27,194,1787036400"; 
-   d="scan'208";a="2512050"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Nov 2026 16:15:49 -0800
-X-CSE-ConnectionGUID: SvpQpvFJQNS4i6TP5pDSJw==
-X-CSE-MsgGUID: ehxL3feYS5iu9ptiVVWgCw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,194,1787036400"; 
-   d="scan'208";a="6418120"
-Received: from rchatre-mobl4.amr.corp.intel.com (HELO [10.125.109.226]) ([10.125.109.226])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Nov 2026 16:15:48 -0800
-Message-ID: <ee9d317a-9829-47c1-81c7-1145304ea484@intel.com>
-Date: Tue, 3 Nov 2026 16:15:44 -0800
+	imf23.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=MEz0+BIH;
+	spf=pass (imf23.hostedemail.com: domain of 3PnvqaggKCD0ahmfihZnfnnfkd.bnlkhmtw-lljuZbj.nqf@flex--bingjiao.bounces.google.com designates 74.125.82.200 as permitted sender) smtp.mailfrom=3PnvqaggKCD0ahmfihZnfnnfkd.bnlkhmtw-lljuZbj.nqf@flex--bingjiao.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793751873;
+	b=viLbalPj405zajlvu7yj+hJ06NrhugJvcrMizC/bHXAUUSt5547jhy3xf7ZMCSzTqLHMnD
+	CrYTMsGWbl55XMwAl5q1MqZ3YYwgxjS6sALl9yKbqi2tDb7mVUULrRPH1M7LDmKyQH9P92
+	I30KPh5wi0EnmBPonz/rYgwZw94DDRM=
+Received: by mail-dy1-f200.google.com with SMTP id 5a478bee46e88-351788121cfso559801eec.0
+        for <linux-mm@kvack.org>; Tue, 03 Nov 2026 16:24:32 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20260707; t=1793751871; x=1794356671; darn=kvack.org;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=twBYW96D/454ufOiYalNWpWEiQb6CO3slFCMac5mtJ4=;
+        b=MEz0+BIH9KZjd2EKUaalc0dIyPgu4HPcGyZXhs2GTQmtBBeg+cJB8t4uF7TUQs27LF
+         cYsNfNNC9L6BV6B271Yr3+3x/uckVPfRnlTCytW+nEBz71lA6sPuLIFWl12GqMla9bsk
+         wgjCbMg97CTC18QdVt6ki1B0DJT79bSgikvwc/OhpP0iVmV+cVZuxkdNYdFK0/Pvg5SB
+         Jdd6pVj3Q5M35YfusTstR+mpL+i7yEKAQDGMCas/12U40ighpK9S6AlXDwPw97dzQJgD
+         QwG4wXoK/kA41+EMkJ1dihxrzi1Ts4dPhuUFEaSqt8eeUiH8iHWQTOSG1+FXwmDHyzcP
+         Ugsg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793751871; x=1794356671;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=twBYW96D/454ufOiYalNWpWEiQb6CO3slFCMac5mtJ4=;
+        b=yhdmx4Ap/b9RIaPV2CdLbL+kD6mUtFQ4ksEM6t+H+X4jyA18pLbxh4gLe6+vg8zP/J
+         91GARozWgMQz4CthNr5OxsSGP7sfXdT0C0U8MoFx/Sai/9LE9m+iBcEHnDPSfpDmRVIY
+         U6p6X9w9aJFSyRkCT8AqFzPhsi9UkRtjnRyasFaTNk+c0V72H+Fl+jf2pz+iIx6GXbYv
+         rtIavhXCHtPFplnRs52K5DzfzzsP83TzXHhJOBrVVvsAIDWvYC2j5rOkIWshqpg8Jvj+
+         eCf27loGBnK8h6K1AjjQWYu/9I5mtXS6CjXVTFEwW2/9adLc7Xvn68ydhdEh9J3uaN3m
+         yCBQ==
+X-Forwarded-Encrypted: i=1; AKwUvBxt/kgg/Ejl9geEzoZnwDv6qVyC1zk3ioBwStfKTvON7TxSRnZgboX/LFkso3dD964PhAT06dBgWA==@kvack.org
+X-Gm-Message-State: APuU4Z/ON6vBXKrDo5KoXPQKu83wl15rw1OqVWYY08z7UUUkPAPjLRQT
+	f3NZQcFeH/eOnBTchmWJJ+MGZ3mUq9VWyKajkrR1SuUinD62OrhccMJuKnRXhUFPxJSVVEMhAG8
+	8wPTPjncnVwlA/A==
+X-Received: from dli22-n2.prod.google.com ([2002:a05:7022:296:20b0:15e:bc16:429a])
+ (user=bingjiao job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:7022:3717:b0:166:af48:a2ba with SMTP id a92af1059eb24-1ac4fd0136dmr21174886c88.0.1793751870929;
+ Tue, 03 Nov 2026 16:24:30 -0800 (PST)
+Date: Wed,  4 Nov 2026 00:24:20 +0000
 X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v2 0/5] mm/vmscan: adaptive multi-threaded kswapd for
- NUMA-aware reclaim
-To: "Ababneh, Ehab" <ehab.ababneh@intel.com>, Barry Song <baohua@kernel.org>,
- Shakeel Butt <shakeel.butt@linux.dev>, Johannes Weiner <hannes@cmpxchg.org>
-Cc: "ziy@nvidia.com" <ziy@nvidia.com>, "linux-mm@kvack.org"
- <linux-mm@kvack.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "buddy.lumpkin@oracle.com" <buddy.lumpkin@oracle.com>,
- "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
- "kasong@tencent.com" <kasong@tencent.com>,
- "qi.zheng@linux.dev" <qi.zheng@linux.dev>,
- "axelrasmussen@google.com" <axelrasmussen@google.com>,
- "yuanchu@google.com" <yuanchu@google.com>,
- "weixugc@google.com" <weixugc@google.com>,
- "david@kernel.org" <david@kernel.org>, "ljs@kernel.org" <ljs@kernel.org>,
- "liam@infradead.org" <liam@infradead.org>,
- "vbabka@kernel.org" <vbabka@kernel.org>, "rppt@kernel.org"
- <rppt@kernel.org>, "surenb@google.com" <surenb@google.com>,
- "mhocko@suse.com" <mhocko@suse.com>,
- "jackmanb@google.com" <jackmanb@google.com>,
- "baoquan.he@linux.dev" <baoquan.he@linux.dev>,
- "baolin.wang@linux.alibaba.com" <baolin.wang@linux.alibaba.com>
-References: <SJ1PR11MB6105E073723CFEEE8C8EDBF48C832@SJ1PR11MB6105.namprd11.prod.outlook.com>
- <cover.1791577417.git.ehab.ababneh@intel.com>
- <CAGsJ_4wmSL7i4EPLWLKhDD6J=1TywBi5EYYDxp=SvOuXdmLGjg@mail.gmail.com>
- <SJ1PR11MB6105E839E55E9B0BDE183E9D8C9D2@SJ1PR11MB6105.namprd11.prod.outlook.com>
- <SJ1PR11MB6105A05870574FF39B449CE28C692@SJ1PR11MB6105.namprd11.prod.outlook.com>
-From: Dave Hansen <dave.hansen@intel.com>
-Content-Language: en-US
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
-In-Reply-To: <SJ1PR11MB6105A05870574FF39B449CE28C692@SJ1PR11MB6105.namprd11.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
-	autolearn=no autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam09
-X-Stat-Signature: c5j6xkuiippi7jfi3wwadgtx6ytsbbhg
-X-Rspamd-Queue-Id: 2632EC0008
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.56.0.455.g6c5a503b38-goog
+Message-ID: <20261104002420.433876-1-bingjiao@google.com>
+Subject: [PATCH] mm/vmscan: skip lazyfree folios when demoting in shrink_folio_list()
+From: Bing Jiao <bingjiao@google.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Bing Jiao <bingjiao@google.com>, Kairui Song <kasong@tencent.com>, 
+	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Barry Song <baohua@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>, 
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
+	Baoquan He <baoquan.he@linux.dev>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
+	Johannes Weiner <hannes@cmpxchg.org>, David Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@kernel.org>, 
+	Lorenzo Stoakes <ljs@kernel.org>, Dave Hansen <dave.hansen@linux.intel.com>, 
+	Oscar Salvador <osalvador@suse.de>, Ying Huang <ying.huang@linux.alibaba.com>, 
+	Yang Shi <shy828301@gmail.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Stat-Signature: i5sducscib4jqiht3jezffzajgptnius
+X-Rspamd-Server: rspam01
 X-Rspam-User: 
-X-HE-Tag: 1793751349-190630
-X-HE-Meta: U2FsdGVkX18uREalQ9vu6dtmZezOJN7JWMHvPHf3bq/xk9lbDpQCd9OjHjQgTeB1wLSVMu1zEgpE3/QVJS1CwhGotHt5ysWrkjiKudLVQvqn1BTP5gboxHyvConB7cVYdCuE2UvsVEhC0w7Wh29HxcSV6Bqx6obCWpiyB8Gx5+brfcDfUm161fQ7NoMgYFtShPJUDSPLi4B+PiuJ3i9xTjScpNqzU5QPGhAPhDDMr7hW8Pr1s1noAF+F+gI5JPyWJyw5TyRy0+p8R9+sZmGPKhAkMLcuAVKvgsbGY+tjBnCYj7iZttZ7z+0Iduk1wdmMG/Dk6pFBE+UHEVA1X/JPTh0jCq86qJrOSJ3ODag0WoyBfjhjOJWwZlEHkRjptC20jHYhiwzS0LvzC1X+QG4SPv+yAnZZ0ec1M5HmWdWIHWR9zQcHNMFi9NrR8bkRsMruYc46jSKHVyBF4uFZL17r2/VFLOuGIw1cBVLYlnJgeqpTkUy29XBUwzneLjvWQ7PtXHZZ6VzR6YvYwNDikqUhg38sNJ802QDyvvEraOiBMK3ZTgbpknHfkD6ecNfAOBefJROu5sSoLqxybRxWi5fZqqbHgpdbhrefhGDZbatXBqgoLGZUU2qzvvija43KsmgA8rp6SV5z7ek6nZgj8JXwIkhhePxM11TaTn/4j4Pk4fLfDoZB0fl7Tgn2r0xyA30maiGhTTnapM4QVZxqVfv0sDIRVLRbJYpYlDGYTaT1Ks4XrSbdChu98mjXp31MmtxOeE6klnBbMDehbVycye1qpmAOi1i7XmqJaXT4kbQ3sD8DRAbca4OfFIJ7Y1+WTEhfPmVkdjArGClEjfttqr7V7M7htFrwTU1fMJpF30lH9Jsq4HCzWbc9ecZMp+9jLRQQ6YF5MirseoIS/BQyQWiRqUQ3VLFXg4YJZeoKWu8dQRaSmKxk6cHm3HObD6lRUtug7V4WyCzO/sTbIleusvv
- s4RAtk+V
- UIY2XjYh9ElyvkRRdD5xxAcOTwskb5OlWlrsxbqbYUbByfLiZicGMZl3VvrgJ+wlywaPjk/Xw1jn1U2sQ+KJUW2shHuvDllg2LUjMTawicEbl0mukFoKDhXemGMIbTsZPbzzeAQKp9TAzRMTiYQbkKTxMFQqQlXAhyjd9oKoAW1Gjg9JjhY6Q2teids0J6IZI9kVpp08qXeiNM9QHs/elzunW7VTaocfXC03wj17waNk7Lxev8VlJksmIdQ==
+X-Spam-Status: No, score=-26.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT,USER_IN_DEF_DKIM_WL autolearn=ham
+	autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: 0161D140008
+X-HE-Tag: 1793751872-879904
+X-HE-Meta: U2FsdGVkX18nZx1475ojEve+DdHX8SknLI85mih63tQbAsB4U6qt89WmuAd+fdCMd5EqJ2GzbjEC6hO+U/dWLwg5hqq9q/YssGKoCe8vHrYwDdMMQXAYpHTH+AdM9kZLGJVsheplcvCy5FBHw+wFxWNJfWaEeVtljdJuBuSpsbofn+LzmB+Rx+71Y6/3vbYSOwl5WzmerYO8+59WTEnjB3GvL0DbZccqMCB1enxxSorEOmaeJUBcBTcNOw7JYE+PtMdIY4An0oOacPUTyHkh+fXAo2PxKqXEJolJlHPaSFwG8jbBOueQgwNW4UHL9+wRY/XDh4uVVglqcZK5jMG3sbDvZaSMAIoOdvjG9Hdpz2KCaxYzSnRiTrC1h0SzT9wpFGHk7K5LrsC0U5QKsCeXdLGikYNDtCFpZpUf7NDI3aSTCBtSsd5WJa0GQ4gD23h8WRbrpIExdTRqveV00hSwlJdRh6hri7GeObkBBcLZQ8DXTcJfxGZjqHahqvExZyf+EyjG7RL6U6gJwQ+KTbw0qFKR60v8Z0wgjEcvDY+EBYKLOq+ierFTzsK5T8gdb5Kj+SYjQ91MyabbeMN5Kq7bGLYL4NEDHtz8tP7ElTTxmB85Wyduhgt8k7PH/TvVvG/1yUL3u56mqfi7KJD8n0QdTtGwDkwuBnXpy+mR77gOpqV9av/5PNsu7rLTlZ6+Eu5G6U8t6+ez0SqMDA6pE9sdYG6NoVEVpM6FfOU9wir6GyvtxcbvhMOOR8Lf9iiOo6r7hs9kkJY2m9+AeFyCrTLIv2CZ2EZvvveki6/nq0g1xkqiWKGWDRZBOxtdgAhElvPcqUkDdlMp+diBLfcdp9VAt81e1nkcboB3yKTb6x9U8mARM0cbnjgQBYXOkVSj7ZEkZj/3KA6B1waMq10MKFdv8qN/l8GdjSBV6k5pCSG4k86Cv67hGOqREvQP9FLcwKxTWXwg5aETawEca9rskmW
+ TZCYNTZM
+ G2rhOjWJAlKeXw+/uaxaAYaK2cspUz5FYDTha3hnngH1IeR7rOEPxQTeKTZRz2YJkVBBzvGRL2TvkU+s92PctV69eBvyFPYntIAABVFienqoUHOYjkAuSt9aSSAl0dyQUBV6BfKmj3ijtlf8AVNsNFKf9Ke2kvlxUY0TaST3Y4l7fr/azlYHVl+rl8pK1gB4uUTGtBRJ65wxtT9xAYWwxH6ejkd/e7HCKSfAaL5UAYjCzsiKBEKVxIn8LtIiVqI5Qvg4VaUFA6ymlZWRkSdWX8wLGSc7xWBJQwZUJ8yYs0Ap1UR/OirramRG1cZNJ3bJynx3H5dsn1NTwLs1xcLBbTKf0Jic0ACLUYB43rIr9rkC9AxlMgzMDsx31lTanhX3ybCpQ1NQCqE59slFS7bnrthXsSoYMZ5PaljtbQ0Na8HQwyX+LnDuAl6CEaKozDQY7jOBU3cD2GOdrEK0pbuMAFXEPFJlKkz+KXPo+KiD6nlZJolbefrlgKMalD3r1Ul+x2RKCZ/8wjqLWH7sBC+xNncGopZ7X6U0P1+sg8yP5eyviUO5oDoMXSfAAxZZ9qH7as/Z3RwIt/8yftpjYJVcM6RPRTydo3eaOvpmBVYpWF2hqjl2PMjbV5BvvFoJrSC4luGkiOVvyk0w42ivvfi8vh4XxxgUUlirMivAcqmtt20QQro4d/NIItWO/EUmUJ4GzGis4HC6HN8YR0rs=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -173,12 +116,56 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/3/26 15:41, Ababneh, Ehab wrote:
-> I would appreciate your thoughts on how we might achieve a similar
-> performance improvement without increasing the number of kswapd
-> threads.
+shrink_folio_list() currently demotes lazyfree (MADV_FREE) folios to
+lower-tier memory instead of discarding them. In the earlier patch
+series [1] that commit 26aa2d199d6f ("mm/migrate: demote pages during
+reclaim") was based on, demotion was inside the PageAnon(page) &&
+PageSwapBacked(page) block with a comment to skip MADV_FREE pages. When
+that commit moved do_demote_pass above the block to also demote file
+pages, the PageSwapBacked check excluding lazyfree pages was dropped.
 
-It also just plain doesn't seem like folks are very interested in
-optimizations in this area at the moment. Feedback that's basically, "go
-optimize something else" would also be very welcome.
+Demoting lazyfree folios during reclaim does not make sense. Userspace
+already marked the contents as discardable under memory pressure. Even
+if MADV_FREE is treated as a cache to avoid page allocation and zeroing,
+folios in shrink_folio_list() have already aged to the tail of the
+inactive LRU, and demoting them still allocates a new page on the lower
+tier, copies stale data, and unmaps the PTE.
+
+Skip folio_test_lazyfree(folio) in the do_demote_pass check so lazyfree
+folios proceed to the normal reclaim path in shrink_folio_list().
+
+Link: https://lore.kernel.org/r/1560468577-101178-6-git-send-email-yang.shi@linux.alibaba.com [1]
+Signed-off-by: Bing Jiao <bingjiao@google.com>
+---
+Note: An earlier RFC ("mm: Discard lazily freed pages when migrating",
+https://lore.kernel.org/r/20200228033819.3857058-1-ying.huang@intel.com)
+proposed discarding clean MADV_FREE pages inside try_to_unmap_one() for
+all migrate_pages() callers. Reviewers pushed back there because
+non-reclaim migrations (compaction, move_pages(), NUMA balancing) happen
+without memory pressure, when MADV_FREE pages are expected to stay
+around for reuse. This patch leaves migrate_pages() alone and only skips
+demotion in shrink_folio_list(), where the folio is already being
+evicted.
+
+ mm/vmscan.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/mm/vmscan.c b/mm/vmscan.c
+index 7db6be53f3a9..47448c47fc04 100644
+--- a/mm/vmscan.c
++++ b/mm/vmscan.c
+@@ -1347,8 +1347,9 @@ static unsigned int shrink_folio_list(struct list_head *folio_list,
+ 		/*
+ 		 * Before reclaiming the folio, try to relocate
+ 		 * its contents to another node.
++		 * Skip lazyfree folios so they can be reclaimed directly.
+ 		 */
+-		if (do_demote_pass &&
++		if (do_demote_pass && !folio_test_lazyfree(folio) &&
+ 		    (thp_migration_supported() || !folio_test_large(folio))) {
+ 			list_add(&folio->lru, &demote_folios);
+ 			folio_unlock(folio);
+-- 
+2.56.0.455.g6c5a503b38-goog
+
 
