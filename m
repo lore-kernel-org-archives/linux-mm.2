@@ -1,151 +1,102 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84940606D4D7
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 19:59:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73915606E822
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 20:03:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=HsZHTl/C
+	dkim=pass (2048-bit key, unprotected) header.d=igalia.com header.i=@igalia.com header.a=rsa-sha256 header.s=20170329 header.b=PaTrJHI2
 Received: by kanga.kvack.org (Postfix)
-	id 91CD26B05F7; Wed,  4 Nov 2026 14:59:53 -0500 (EST)
+	id 94B3C6B05BE; Wed,  4 Nov 2026 15:03:48 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8CC506B05F8; Wed,  4 Nov 2026 14:59:53 -0500 (EST)
+	id 923646B05C0; Wed,  4 Nov 2026 15:03:48 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7949F6B05F9; Wed,  4 Nov 2026 14:59:53 -0500 (EST)
+	id 83A5E6B05C3; Wed,  4 Nov 2026 15:03:48 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 554806B05F7
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 14:59:53 -0500 (EST)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id F0AC9160812
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 19:59:52 +0000 (UTC)
-X-FDA: 85398502224.09.64EA19B
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 35155C0006
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 19:59:51 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="HsZHTl/C";
-	spf=pass (imf10.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793822391;
-	b=hPxa5zi3H9t/kmszXwPjaDH38UNL2fAlUNSe2dJj8jvv+bP9xe2K2BtfLCrTCVNPuPREAp
-	czRthUyZBFqobefjDOAN4ZkzlfV0q6NwHdqHZAt8fdyAbh9BfJYFoBmE6M81gBa3rP9ujj
-	SaZdA8o55iJBjrlFcedyTbvMBVpbk6A=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="HsZHTl/C";
-	spf=pass (imf10.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 562E36B05BE
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 15:03:48 -0500 (EST)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id DBFB680861
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 20:03:47 +0000 (UTC)
+X-FDA: 85398512094.02.EF993DA
+Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
+	by imf28.hostedemail.com (Postfix) with ESMTP id B77CDC0008
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 20:03:45 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=igalia.com header.s=20170329 header.b=PaTrJHI2;
+	spf=pass (imf28.hostedemail.com: domain of cascardo@igalia.com designates 213.97.179.56 as permitted sender) smtp.mailfrom=cascardo@igalia.com;
+	dmarc=pass (policy=none) header.from=igalia.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793822391;
+	s=arc-20220608; t=1793822626;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=TK360Q0J9loLLBJN1fCdf93Od8lfv7JQwcxqeqOSWBU=;
-	b=4z1m4jzweTWFnZ1RsrGcYZTLxQcZy/3wiu2RUDQ29OtT3b99luGjL9KMOnkrD6fglw+b5A
-	EynEEBGGWR15ApD/ViaKpWiHRDjpnsv1Z83C2+WuEKgUoKo5kSZncRd3oTbNqBukDb8cbL
-	Dwc+4NMEiRdISL7JcB/nGd9xyPc0BWY=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id C147762FFE;
-	Wed,  4 Nov 2026 19:59:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C4F11F00A1A;
-	Wed,  4 Nov 2026 19:59:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793822390;
-	bh=TK360Q0J9loLLBJN1fCdf93Od8lfv7JQwcxqeqOSWBU=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=HsZHTl/CdmWyGe8xt7+n2y+V0Zxd4BVan3QtszkbfH+aM/LFOr4MxXy9YK1/s5czs
-	 +uRkz05vFWtYUCaU7pPh8gj3GmgDMXdfISwaLxI3vX06w+My06KWNnliBRg5AsGOdX
-	 Xx125EeC0wJoETAjZn8krCURNEVFn42PtwrobiAl6l6KcP0xYnXH6wuPz+ElscfREc
-	 FdSFabwVoqWgLI+qt5Nl7K99WB8phk6fHiY1iEvhA19UVwEv2ahgR0X4myjp9uDRzY
-	 e1CPpMwajhom9FvgOXKfxujK1+HvI3Qo1ESfmOqFwvfrH+E1uuu+sdr5U3pD03FzMf
-	 h4KBsvAbrCoqw==
-From: Christian Brauner <brauner@kernel.org>
-To: linux-fsdevel@vger.kernel.org
-Cc: Linus Torvalds <torvalds@linux-foundation.org>,
-	Jann Horn <jannh@google.com>,
-	Josef Bacik <josef@toxicpanda.com>,
-	Chris Mason <mason@kernel.org>,
-	Jeff Layton <jlayton@kernel.org>,
-	NeilBrown <neil@brown.name>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Thomas Gleixner <tglx@kernel.org>,
-	Al Viro <viro@zeniv.linux.org.uk>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Christoph Hellwig <hch@lst.de>,
-	Greg Kroah-Hartman <gregkh@suse.de>,
-	Joel Granados <joel.granados@kernel.org>,
-	Kees Cook <kees@kernel.org>,
-	Jan Kara <jack@suse.cz>,
-	Jan Kara <jack@suse.com>,
-	linux-kernel@vger.kernel.org,
-	linux-nfs@vger.kernel.org,
-	linux-acpi@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	linux-s390@vger.kernel.org,
-	linux-scsi@vger.kernel.org,
-	linux-um@lists.infradead.org,
-	linux-wireless@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org,
-	netdev@vger.kernel.org,
-	ntfs3@lists.linux.dev,
-	platform-driver-x86@vger.kernel.org,
-	coreteam@netfilter.org,
-	kexec@lists.infradead.org,
-	linux-pci@vger.kernel.org,
-	linux-sound@vger.kernel.org,
-	netfilter-devel@vger.kernel.org,
-	dri-devel@lists.freedesktop.org,
-	ibm-acpi-devel@lists.sourceforge.net,
-	jfs-discussion@lists.sourceforge.net,
-	linux-alpha@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-cifs@vger.kernel.org,
-	linux-fbdev@vger.kernel.org,
-	linux-hwmon@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-sh@vger.kernel.org,
-	linux-usb@vger.kernel.org,
-	samba-technical@lists.samba.org,
-	sparclinux@vger.kernel.org,
-	linux-m68k@lists.linux-m68k.org,
-	linux-doc@vger.kernel.org,
-	linux-serial@vger.kernel.org,
-	linux-atm-general@lists.sourceforge.net,
-	Takashi Iwai <tiwai@suse.de>,
-	linux-input@vger.kernel.org,
-	linux-raid@vger.kernel.org,
-	linux-ext4@vger.kernel.org,
-	linux-modules@vger.kernel.org,
-	linux-debuggers@vger.kernel.org,
-	"Christian Brauner (Amutable)" <brauner@kernel.org>,
-	Chuck Lever <cel@kernel.org>
-Subject: [PATCH RESEND v2 08/13] SUNRPC: let procfs copy out reads
-Date: Wed,  4 Nov 2026 20:59:36 +0100
-Message-ID: <20261104-work-procfs-net-v2-8-221e2437fed1@kernel.org>
-In-Reply-To: <20261104-work-procfs-net-v2-0-221e2437fed1@kernel.org>
-References: <20261104-work-procfs-net-v2-0-221e2437fed1@kernel.org>
+	bh=6BgNivbmmhoO5tLBQFwSmEVuFg0Qcp+1r+afWMf1Jss=;
+	b=hwBRo2zms/uzXoGtZEIf0gyDMZU03X4WG88/lrc/huKBfAtHLV1k7xKGLLPeF4Kq+d+jCI
+	fbMfeQLIXY0axkFgB4XBSkLEwmPfO5I/2GxAeFWgIqm+/YxXsL0SQO02ttJDe1guGpjpo7
+	VK0dwbQjnHoThRIIMUc7qcjyVX9y2RI=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793822626;
+	b=QFfVLiPn/pqlD2l0dSqPFfDZa68CXTlnr+3B6Pmor6rU0YSclGJuXwvYnP1iDKkK1zmtq7
+	IKJjjS12gQVWnw/1JYepoZBWYXNguOW6MVDz/AzQaiWiVVbXs/J6s6p84yH6o7+yvin7Ji
+	Ngu9WnWn5ZDYsquz06Jv+rzmsC7Ahf4=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=igalia.com header.s=20170329 header.b=PaTrJHI2;
+	spf=pass (imf28.hostedemail.com: domain of cascardo@igalia.com designates 213.97.179.56 as permitted sender) smtp.mailfrom=cascardo@igalia.com;
+	dmarc=pass (policy=none) header.from=igalia.com
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
+	s=20170329; h=Content-Type:MIME-Version:Message-ID:Subject:Cc:To:From:Date:
+	From:Reply-To; bh=6BgNivbmmhoO5tLBQFwSmEVuFg0Qcp+1r+afWMf1Jss=; t=1793822625;
+	x=2109182625; b=PaTrJHI2XDUWJaPrAkMTJuGJny2KhJdIv21KyfIjatLJadUyBOWTSGQNcfYnm
+	yVcyG/TpgfR8FOpsCXxYAdyoyY6tzGxD/FTAG2qzAm/54HtErklSOimEHJC2LVkHZy0T65EdEES0u
+	xdFR7MeROBjuSIXBdTijwmSZ/G+y90jk+DAX1hLS+8pbMDYJqcQzvhKGpjynD9yhK45zRUSjL/vfX
+	CIXYm5WUKSIWWZg9fAhU7SXS8/SVV2SVnjBwXCf57dLMxeSDymLnh6D++taqKeMpCFEZ4DHbseLEg
+	Jt1qxi77aAQQKC3MqUD0N4XAvnsmozPQ/zvxSVMrqP47GQQbyA==;
+Received: from 179-125-72-1-dinamico.pombonet.net.br ([179.125.72.1] helo=quatroqueijos.cascardo.eti.br)
+	by fanzine2.igalia.com with esmtpsa 
+	(Cipher TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
+	id 1xOhCh-002cQL-Rb; Wed, 04 Nov 2026 21:03:28 +0100
+Date: Wed, 4 Nov 2026 17:03:18 -0300
+From: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Cc: Johannes Weiner <hannes@cmpxchg.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Brendan Jackman <brendan.jackman@linux.dev>,
+	Zi Yan <ziy@nvidia.com>, David Hildenbrand <david@kernel.org>,
+	Qi Zheng <qi.zheng@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Lorenzo Stoakes <ljs@kernel.org>, Kairui Song <kasong@tencent.com>,
+	Barry Song <baohua@kernel.org>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
+	Baoquan He <baoquan.he@linux.dev>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	JP Kobryn <jp.kobryn@linux.dev>,
+	Frank van der Linden <fvdl@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm, vmscan: make kswapd unreserve highatomic pageblocks
+Message-ID: <auuPhqCcgZBt_lUR@quatroqueijos.cascardo.eti.br>
+References: <20261104-kswapd-highatomic-unreserve-v1-1-38be5106adf5@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=8375; i=brauner@kernel.org; h=from:subject:message-id; bh=a9MpcCErAr+XLynuyr8Lv5es65Jw33sURzMgM9R8Toc=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS97tPZk3Bgttr+L5ZtyXFXQ5NzY40SRHlzIt1DVPuXO Jz6ypXVUcLCIMbFICumyOLQbhIut5ynYrNRpgbMHFYmkCEMXJwCMJFvzQzf1D41f32TsHX91fUG d6W//1059etk7lNBKk9Pxc1WvSstxvDP4nnhKd4PC6PMj18/vupH7+yrLDnzZaeYs2kp7Z18s2o POwA=
-X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: jt3ct98sq1fz36owhnsodngn1sureu5f
-X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 35155C0006
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261104-kswapd-highatomic-unreserve-v1-1-38be5106adf5@kernel.org>
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
-	version=4.0.1
-X-HE-Tag: 1793822391-472383
-X-HE-Meta: U2FsdGVkX1/+DkuWPuhW4Ex7Q/CciY+49rvsXipFgPVSqVUvYlcVvyhzYURQAP4+vQUEZxYb/XjDtLSRhenCwVQJmUbqo0qaPWM0WYxqzaoYkPq71x44SRYf5P6VqSk7A71H5k7p50v9Q5TeMv6uIlDxS3HCvIWZkhk0Vj1ZKQFZhV/CNb/88j76ynR0dUUvQD1pBCF74ERpN+r0Ch4akU7KXSNheckokpJhpMvS+ICeWkUrCUfagRbW2dqKhWLMdDVuI3Nnon2J7dllMEFjVxc9mzOPt3DbyfgEeS2Ub6o9origj6iy4BoIU6UpOxA4bMrmtApYDtAhZKXPhyKSC10iJgDkZzpsHK9jM+kBXsBXqYo+3AiwFUZGhvS+nM3qssINZkc6XQkGBOBIOnEur0srFTsDoBtZsejXmQwj4RBY+C4SedNt/CmNcS6zGxdd88C4prs8cdPEwdT7X3VA9/cUdna7xBwgYAzBIHm8Nijc3ozvmVr1dJAw8gkCDACdjwimrq7pmErzPtHYwu2yysyTfKONNS39KctTl6SevUuFL0hLpZruWjTogRSGNZNEf6LkMiwWwtce9ugwEjvhUyMCMvEOebZf81+BNKGZ8KpdDXA9f4kB71GCFqUlenh2K+LtqB3KlwBapbH3r+dfo5yx6iAIwrTjYrhvOGalRJWvOthYqYMnzAr98NTN0/SSgkd42Ob4NexGCWDdmtwn6WsLp1rqh85ZNp5KdwRZX+77+ATKKKTYfSdrgS7z1qvFGIx9bAt3S9EvDwwOqBISNrLf9s9+AP5HFkv0CsBk6U0ePu4O5fg4hJDSj2hnca7jz0AX1rf74dwlcKdJhilXMw99+yD75+vr1D8VQ5qFY9yhe9s6/Ee1WxtYDHbtBf4VLI+9G21ZN4bKRoSL4BBB8ejz7e+MhKT+ZNEUJoMpY39IroRshG84fpSfy9ZYnxeqX/ZwKUX03Pi3RP7XFjd
- WoxYyK71
- HYHvLgHWMLOfY8RH2yDdNN7yWSuMRxmOJ2XHjAo2E5gRSAdEv2kdxaOQd+lD+g6jlG0zRrxJ/SRJATo+7Q8LnrqFZzahmvBHa4R0Y1ahCbmzU31VI+q9lyTzQUBiX4C0jYwDzXltWUmFfOhPon+min7MmlV8rOUMRkmXkiK8BKZuNsDVnzdHNAY+NhH4/trHKPMe+y8LCY5zkcpsKpW6H5pdeAX4nQSgUu4DYPwlbpk9gBPsgQ9LG3HW6rxXKcsqTze4vgd/HZBsDiapxPbvBM+EyCz3fbsOkPTEvN8HQKxToRrT0cYL5NG84x6O++bGE6LG8+Xy3gJr3jyqtywVdSkenZvsIRwQXA1sev+NXSI0sYSC19G2Jgss8X11G8emM80GFq8MWYao9JkJHbdS1cnpCwQ==
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam09
+X-Stat-Signature: ucr5zycr57k8rcqkwxw4hzxs6fgqtseo
+X-Rspamd-Queue-Id: B77CDC0008
+X-Rspam-User: 
+X-HE-Tag: 1793822625-861866
+X-HE-Meta: U2FsdGVkX1/rhgMUVwwVbxqdqs4Ab2N3ssi2I9Z/k4ltefEQxWrMuV/2L922eRlik+tZu7U216C6rWOnD6+OdC0iH9lvWb2/AkH1fZeWbdUac9ykAks3Zi1P7n69AagGAoTO/w7bjul3pm2dPca1mdNmio7XfMBYfcdj9Vadbcu6znPx47/8KQk6luInIELlEEWIoapLIA5C4tG30SBFywRUcxZULdIBW6GS7oeSl5brqdYd2semBFuOfHAq6MHRetIU01UOZmjGUtoa+Ofo6Y2HVnviFKxhOTbkEaUCu3ni64UuYnyBxrmXOL2mKxahv8ue2e5IJIvHZQ52JvsTNxgTiiYsFJ/TQVulxgFtQT9xvHdc/7ajMmQv9z0zR6Y5i9YCsIQhVTn+m8LSJHpmzHVQHOvcGn29ohSzItogkJm23Rbusnh6Bl/nCT6PdUU9LZYoNYLVJRCmMsn2ogMZJDnMmHfPB7UotbxaZ6pCskeEnH6ume63X3/SU/qG82fHY7qbNRegN/si7XH/4dL9eR+6aRcBZnRDO8eK/wAbS2yAF7lTIzlV8aKuKjumnFNguElC8uAk7DT71s24NTxXcradEui9c1+0ZX+kUekeVpUYl/zFyODhjY4QqOzD+SQYBArZfP5R6p2VkPZbNzxMWi+oHRWugvc7/CQdWWkjQ9++hrFVB2sHP7Zm/nLtXzYaeoJI03MjuvDBpJi7RtME6m4ggqPD8AAJwPosn7zutufRKTx6hihJo59jG9XyxYI1SdaE/x0h0iw6ArffT3lSsnsf3oPvQsw0eQTDA7x6O3xUXs0PRvPO+2xrXKqAkiFwhcySjF8QlzVcWOejFJMdd2oqaNiz4LPGl1YKXOVTUoNmOXNAc2fOpcPYPLVPpmNpKM2yrgKo2Hx0gbDgiRMTp7HsDiUHzM2GSH1+rywx5MpXomkfFPn7fwMQ4q5XeG6VCUy0s3l22dD8nO9+P9o
+ xNa1Fy3y
+ lSzi8tWqMh2yCm2cU30tWbbeT29BGTj19Fw/OMge/EMtw2sfYtjz4TW9AIQ7Ou7EnKkNMqritn4MKAM6/Mo+5XQrZUXtZ3A/soRuPcFFcVF6/nvBSQ4fh7eXz+eCIsowMosGphbzv3cCuhz2+QHeWGhePOWXrv3hAa2ZSFEa9YMc4Nzq6AVh+0XF63S30G9TGowsNsMLKEudQ3flmL38RDbjoqVOYNd3/3uekYlnM1QzACj2QMPoJ8PcN2w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -154,233 +105,282 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Implement ->proc_read_buf() for the procfs channel, flush,
-use-gss-proxy and gss_krb5_enctypes files so procfs copies what is read
-to userspace after it unpinned the entry.
+On Wed, Nov 04, 2026 at 07:38:44PM +0100, Vlastimil Babka (SUSE) wrote:
+> A customer has reported excessive reclaim activity despite memory above
+> high watermarks. Analyzing support data (including sar log) revealed the
+> following scenario:
+> 
+> - the system has almost all memory reserved as 1G hugepages for kvm
+>   guests, and operates normally
+> - due to a spike of memory pressure from userspace, highatomic
+>   reservations occur (probably due to e.g. concurrent network receive
+>   activity)
 
-cache_read() takes an iov_iter now. The rpc_pipefs channel file passes
-one for the user buffer and behaves like before. The procfs one passes
-one for procfs' buffer, and a read still hands out at most one request.
-A reader of the procfs channel file whose copy out fails, a readv()
-with a bad later segment included, loses what was handed out, since the
-request moves on before procfs copies it out. If that was only part of
-a request the next read returns the rest of it. Both flush files share
-flush_time_text().
+I think you might mean 6a204d4b14c9 ("mm/page_alloc: only set
+ALLOC_HIGHATOMIC for __GPF_HIGH allocations") as one of the fixes you
+mention below.
 
-The procfs files are removed when the network namespace goes away and
-that no longer waits for a reader that faults on its buffer.
+In that case, GFP_NOWAIT (which is typical for network activity, AFAIR)
+would be one candidate that would produce such reservations. But I agree
+that if any other real highatomic allocation burst would happen, it might
+produce such reservations.
 
-Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
----
- net/sunrpc/auth_gss/svcauth_gss.c | 24 ++++++-------------
- net/sunrpc/cache.c                | 50 +++++++++++++++++++++++----------------
- 2 files changed, 36 insertions(+), 38 deletions(-)
+> - on one of the 8 NUMA nodes, this creates a situation where free pages
+>   are above high watermark, but when __zone_watermark_unusable_free()
+>   considers highatomic pageblocks, the result appears to be below the
+>   low watermark
+> - pgdat_balanced() is false, kswapd hopelessly keeps trying to balance,
+>   spending cpu time and disrupting the system. It has nothing to reclaim
+>   because the node is filled with hugetlbfs hugepages.
+> - since the overal memory pressure is under control again and there are
+>   no allocations restricted to the affected node, they are satisfied
+>   from other nodes without going through direct reclaim
+> - since direct reclaim is the only code that calls
+>   unreserve_highatomic_pageblock(), this never happens and nothing fixes
+>   the situation
+> 
 
-diff --git a/net/sunrpc/auth_gss/svcauth_gss.c b/net/sunrpc/auth_gss/svcauth_gss.c
-index 8d105cd900d4..67e086a7127c 100644
---- a/net/sunrpc/auth_gss/svcauth_gss.c
-+++ b/net/sunrpc/auth_gss/svcauth_gss.c
-@@ -1442,32 +1442,22 @@ static ssize_t write_gssp(struct file *file, char *buf, size_t count,
- 	return count;
- }
- 
--static ssize_t read_gssp(struct file *file, char __user *buf,
-+static ssize_t read_gssp(struct file *file, char *buf,
- 			 size_t count, loff_t *ppos)
- {
- 	struct net *net = pde_data(file_inode(file));
- 	struct sunrpc_net *sn = net_generic(net, sunrpc_net_id);
--	unsigned long p = *ppos;
- 	char tbuf[10];
- 	size_t len;
- 
--	snprintf(tbuf, sizeof(tbuf), "%d\n", sn->use_gss_proxy);
--	len = strlen(tbuf);
--	if (p >= len)
--		return 0;
--	len -= p;
--	if (len > count)
--		len = count;
--	if (copy_to_user(buf, (void *)(tbuf+p), len))
--		return -EFAULT;
--	*ppos += len;
--	return len;
-+	len = snprintf(tbuf, sizeof(tbuf), "%d\n", sn->use_gss_proxy);
-+	return memory_read_from_buffer(buf, count, ppos, tbuf, len);
- }
- 
- static const struct proc_ops use_gss_proxy_proc_ops = {
- 	.proc_open	= nonseekable_open,
- 	.proc_write_buf	= write_gssp,
--	.proc_read	= read_gssp,
-+	.proc_read_buf	= read_gssp,
- };
- 
- static int create_use_gss_proxy_proc_entry(struct net *net)
-@@ -1494,7 +1484,7 @@ static void destroy_use_gss_proxy_proc_entry(struct net *net)
- 	}
- }
- 
--static ssize_t read_gss_krb5_enctypes(struct file *file, char __user *buf,
-+static ssize_t read_gss_krb5_enctypes(struct file *file, char *buf,
- 				      size_t count, loff_t *ppos)
- {
- 	struct rpcsec_gss_oid oid = {
-@@ -1512,7 +1502,7 @@ static ssize_t read_gss_krb5_enctypes(struct file *file, char __user *buf,
- 		return 0;
- 	}
- 
--	ret = simple_read_from_buffer(buf, count, ppos,
-+	ret = memory_read_from_buffer(buf, count, ppos,
- 				      mech->gm_upcall_enctypes,
- 				      strlen(mech->gm_upcall_enctypes));
- 	gss_mech_put(mech);
-@@ -1521,7 +1511,7 @@ static ssize_t read_gss_krb5_enctypes(struct file *file, char __user *buf,
- 
- static const struct proc_ops gss_krb5_enctypes_proc_ops = {
- 	.proc_open	= nonseekable_open,
--	.proc_read	= read_gss_krb5_enctypes,
-+	.proc_read_buf	= read_gss_krb5_enctypes,
- };
- 
- static int create_krb5_enctypes_proc_entry(struct net *net)
-diff --git a/net/sunrpc/cache.c b/net/sunrpc/cache.c
-index a257598768fa..81a3f0068f36 100644
---- a/net/sunrpc/cache.c
-+++ b/net/sunrpc/cache.c
-@@ -28,6 +28,7 @@
- #include <linux/workqueue.h>
- #include <linux/mutex.h>
- #include <linux/pagemap.h>
-+#include <linux/uio.h>
- #include <asm/ioctls.h>
- #include <linux/sunrpc/types.h>
- #include <linux/sunrpc/cache.h>
-@@ -837,9 +838,10 @@ cache_next_request(struct cache_detail *cd, u64 seqno)
- 	return NULL;
- }
- 
--static ssize_t cache_read(struct file *filp, char __user *buf, size_t count,
--			  loff_t *ppos, struct cache_detail *cd)
-+static ssize_t cache_read(struct file *filp, struct iov_iter *to,
-+			  struct cache_detail *cd)
- {
-+	size_t count = iov_iter_count(to);
- 	struct cache_reader *rp = filp->private_data;
- 	struct cache_request *rq;
- 	struct inode *inode = file_inode(filp);
-@@ -878,7 +880,7 @@ static ssize_t cache_read(struct file *filp, char __user *buf, size_t count,
- 		if (rp->offset + count > rq->len)
- 			count = rq->len - rp->offset;
- 		err = -EFAULT;
--		if (copy_to_user(buf, rq->buf + rp->offset, count))
-+		if (copy_to_iter(rq->buf + rp->offset, count, to) != count)
- 			goto out;
- 		rp->offset += count;
- 		if (rp->offset >= rq->len) {
-@@ -1499,16 +1501,11 @@ static int release_flush(struct inode *inode, struct file *file,
- 	return 0;
- }
- 
--static ssize_t read_flush(struct file *file, char __user *buf,
--			  size_t count, loff_t *ppos,
--			  struct cache_detail *cd)
-+/* what reading the flush files returns */
-+static size_t flush_time_text(struct cache_detail *cd, char *tbuf, size_t size)
- {
--	char tbuf[22];
--	size_t len;
--
--	len = snprintf(tbuf, sizeof(tbuf), "%llu\n",
-+	return snprintf(tbuf, size, "%llu\n",
- 			convert_to_wallclock(cd->flush_time));
--	return simple_read_from_buffer(buf, count, ppos, tbuf, len);
- }
- 
- /* longest number the flush files take */
-@@ -1564,12 +1561,15 @@ static ssize_t write_flush(struct file *file, const char __user *buf,
- 	return do_write_flush(tbuf, count, ppos, cd);
- }
- 
--static ssize_t cache_read_procfs(struct file *filp, char __user *buf,
--				 size_t count, loff_t *ppos)
-+static ssize_t cache_read_procfs(struct file *filp, char *buf, size_t count,
-+				 loff_t *ppos)
- {
- 	struct cache_detail *cd = pde_data(file_inode(filp));
-+	struct kvec kvec = { .iov_base = buf, .iov_len = count };
-+	struct iov_iter to;
- 
--	return cache_read(filp, buf, count, ppos, cd);
-+	iov_iter_kvec(&to, ITER_DEST, &kvec, 1, count);
-+	return cache_read(filp, &to, cd);
- }
- 
- /* procfs copied in what was written */
-@@ -1620,7 +1620,7 @@ static int cache_release_procfs(struct inode *inode, struct file *filp)
- }
- 
- static const struct proc_ops cache_channel_proc_ops = {
--	.proc_read	= cache_read_procfs,
-+	.proc_read_buf	= cache_read_procfs,
- 	.proc_write_buf	= cache_write_procfs,
- 	.proc_write_size = CACHE_DOWNCALL_MAX,
- 	.proc_poll	= cache_poll_procfs,
-@@ -1668,12 +1668,15 @@ static int release_flush_procfs(struct inode *inode, struct file *filp)
- 	return release_flush(inode, filp, cd);
- }
- 
--static ssize_t read_flush_procfs(struct file *filp, char __user *buf,
--			    size_t count, loff_t *ppos)
-+static ssize_t read_flush_procfs(struct file *filp, char *buf, size_t count,
-+				 loff_t *ppos)
- {
- 	struct cache_detail *cd = pde_data(file_inode(filp));
-+	char tbuf[22];
-+	size_t len;
- 
--	return read_flush(filp, buf, count, ppos, cd);
-+	len = flush_time_text(cd, tbuf, sizeof(tbuf));
-+	return memory_read_from_buffer(buf, count, ppos, tbuf, len);
- }
- 
- static ssize_t write_flush_procfs(struct file *filp, char *buf, size_t count,
-@@ -1688,7 +1691,7 @@ static ssize_t write_flush_procfs(struct file *filp, char *buf, size_t count,
- 
- static const struct proc_ops cache_flush_proc_ops = {
- 	.proc_open	= open_flush_procfs,
--	.proc_read	= read_flush_procfs,
-+	.proc_read_buf	= read_flush_procfs,
- 	.proc_write_buf	= write_flush_procfs,
- 	.proc_write_size = CACHE_FLUSH_MAX,
- 	.proc_release	= release_flush_procfs,
-@@ -1795,8 +1798,10 @@ static ssize_t cache_read_pipefs(struct file *filp, char __user *buf,
- 				 size_t count, loff_t *ppos)
- {
- 	struct cache_detail *cd = RPC_I(file_inode(filp))->private;
-+	struct iov_iter to;
- 
--	return cache_read(filp, buf, count, ppos, cd);
-+	iov_iter_ubuf(&to, ITER_DEST, buf, count);
-+	return cache_read(filp, &to, cd);
- }
- 
- static ssize_t cache_write_pipefs(struct file *filp, const char __user *buf,
-@@ -1886,8 +1891,11 @@ static ssize_t read_flush_pipefs(struct file *filp, char __user *buf,
- 			    size_t count, loff_t *ppos)
- {
- 	struct cache_detail *cd = RPC_I(file_inode(filp))->private;
-+	char tbuf[22];
-+	size_t len;
- 
--	return read_flush(filp, buf, count, ppos, cd);
-+	len = flush_time_text(cd, tbuf, sizeof(tbuf));
-+	return simple_read_from_buffer(buf, count, ppos, tbuf, len);
- }
- 
- static ssize_t write_flush_pipefs(struct file *filp,
+I am trying to understand what is going on here: so allocations on that
+node are only !__GFP_DIRECT_RECLAIM? That would explain the highatomic
+reservations in the presence of the bug just mentioned.
 
--- 
-2.53.0
+> Note this was observed on a 6.4-based kernel and there have been recent
+> fixes upstream limiting the highatomic reservation side, but I don't
+> think they can prevent the same happening in mainline, only perhaps
+> lower the chances. Nothing seems to prevent the issue completely.
+> 
+> For example, while we limit the amount of highatomic pageblocks to 1% of
+> the zone, this calculation does not subtract the amount of hugepages or
+> otherwise permanent allocations, so the highatomic pageblocks can end up
+> taking much higher share of actually reclaimable memory.
+> 
+> The most targeted fix thus appears to be to allow kswapd perform the
+> highatomic pageblock unreserve to match direct reclaim. It's also
+> somewhat similar in principle to how kswapd reduces watermark boosting.
+> 
+> Hook this highatomic unreserve to the moment we are increasing kswapd
+> reclaim priority, as that is when kswapd is struggling to make progress
+> and it should roughly match the case of direct reclaim failure.
+> 
 
+I tried considering a different approach, making the allocation do the
+unreserve in the absence of __GFP_DIRECT_RECLAIM, but I don't see why not
+let kswapd do it.
+
+Regards.
+Cascardo.
+
+> The only caveat is that direct reclaim knows which migratetype it wants
+> to allocate and thus changes the highatomic pageblock to. Kswapd doesn't
+> track that, so use MIGRATE_UNMOVABLE. Highatomic allocations usually are
+> not movable, and this will avoid creating nominally movable pageblocks
+> polluted with unmovable pages, so it should be the least problematic
+> default.
+> 
+> Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+> ---
+> We interrupt the regular stream of AI fixes by something a bit
+> different. RFC to get agreement on the approach. Haven't tried
+> reproducing the issue in mainline, but it seems quite clear to me from
+> the data I've seen.
+> ---
+>  mm/page_alloc.c | 126 +++++++++++++++++++++++++++++---------------------------
+>  mm/page_alloc.h |   3 ++
+>  mm/vmscan.c     |  16 ++++++-
+>  3 files changed, 83 insertions(+), 62 deletions(-)
+> 
+> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+> index a8cac5e01066..785a13570788 100644
+> --- a/mm/page_alloc.c
+> +++ b/mm/page_alloc.c
+> @@ -3476,6 +3476,68 @@ static void reserve_highatomic_pageblock(struct page *page, int order,
+>  	}
+>  }
+>  
+> +bool unreserve_highatomic_pageblock_zone(struct zone *zone, int migratetype,
+> +					 bool force)
+> +{
+> +	/*
+> +	 * Preserve at least one pageblock unless memory pressure
+> +	 * is really high.
+> +	 */
+> +	if (!force && zone->nr_reserved_highatomic <= pageblock_nr_pages)
+> +		return false;
+> +
+> +	guard(spinlock_irqsave)(&zone->lock);
+> +	for (int order = 0; order < NR_PAGE_ORDERS; order++) {
+> +		struct free_area *area = &(zone->free_area[order]);
+> +		unsigned long size;
+> +		struct page *page;
+> +		int ret;
+> +
+> +		page = get_page_from_free_area(area, MIGRATE_HIGHATOMIC);
+> +		if (!page)
+> +			continue;
+> +
+> +		size = max(pageblock_nr_pages, 1UL << order);
+> +		/*
+> +		 * It should never happen but changes to locking could
+> +		 * inadvertently allow a per-cpu drain to add pages to
+> +		 * MIGRATE_HIGHATOMIC while unreserving so be safe and watch for
+> +		 * underflows.
+> +		 */
+> +		if (WARN_ON_ONCE(size > zone->nr_reserved_highatomic))
+> +			size = zone->nr_reserved_highatomic;
+> +		zone->nr_reserved_highatomic -= size;
+> +
+> +		/*
+> +		 * Convert to migratetype and avoid the normal pageblock
+> +		 * stealing heuristics. Minimally, the caller is doing the work
+> +		 * and needs the pages. More importantly, if the block was
+> +		 * always converted to MIGRATE_UNMOVABLE or another type then
+> +		 * the number of pageblocks that cannot be completely freed may
+> +		 * increase.
+> +		 */
+> +		if (order < pageblock_order)
+> +			ret = move_freepages_block(zone, page,
+> +					MIGRATE_HIGHATOMIC, migratetype);
+> +		else {
+> +			move_to_free_list(page, zone, order,
+> +					  MIGRATE_HIGHATOMIC,
+> +					  migratetype);
+> +			change_pageblock_range(page, order, migratetype);
+> +			ret = 1;
+> +		}
+> +		/*
+> +		 * Reserving the block(s) already succeeded,
+> +		 * so this should not fail on zone boundaries.
+> +		 */
+> +		WARN_ON_ONCE(ret == -1);
+> +		if (ret > 0)
+> +			return true;
+> +	}
+> +
+> +	return false;
+> +}
+> +
+>  /*
+>   * Used when an allocation is about to fail under memory pressure. This
+>   * potentially hurts the reliability of high-order allocations when under
+> @@ -3491,70 +3553,12 @@ static bool unreserve_highatomic_pageblock(const struct alloc_context *ac,
+>  	struct zonelist *zonelist = ac->zonelist;
+>  	struct zoneref *z;
+>  	struct zone *zone;
+> -	struct page *page;
+> -	int order;
+> -	int ret;
+>  
+>  	for_each_zone_zonelist_nodemask(zone, z, zonelist, ac->highest_zoneidx,
+>  								ac->nodemask) {
+> -		/*
+> -		 * Preserve at least one pageblock unless memory pressure
+> -		 * is really high.
+> -		 */
+> -		if (!force && zone->nr_reserved_highatomic <=
+> -					pageblock_nr_pages)
+> -			continue;
+> -
+> -		guard(spinlock_irqsave)(&zone->lock);
+> -		for (order = 0; order < NR_PAGE_ORDERS; order++) {
+> -			struct free_area *area = &(zone->free_area[order]);
+> -			unsigned long size;
+> -
+> -			page = get_page_from_free_area(area, MIGRATE_HIGHATOMIC);
+> -			if (!page)
+> -				continue;
+> -
+> -			size = max(pageblock_nr_pages, 1UL << order);
+> -			/*
+> -			 * It should never happen but changes to
+> -			 * locking could inadvertently allow a per-cpu
+> -			 * drain to add pages to MIGRATE_HIGHATOMIC
+> -			 * while unreserving so be safe and watch for
+> -			 * underflows.
+> -			 */
+> -			if (WARN_ON_ONCE(size > zone->nr_reserved_highatomic))
+> -				size = zone->nr_reserved_highatomic;
+> -			zone->nr_reserved_highatomic -= size;
+> -
+> -			/*
+> -			 * Convert to ac->migratetype and avoid the normal
+> -			 * pageblock stealing heuristics. Minimally, the caller
+> -			 * is doing the work and needs the pages. More
+> -			 * importantly, if the block was always converted to
+> -			 * MIGRATE_UNMOVABLE or another type then the number
+> -			 * of pageblocks that cannot be completely freed
+> -			 * may increase.
+> -			 */
+> -			if (order < pageblock_order)
+> -				ret = move_freepages_block(zone, page,
+> -							   MIGRATE_HIGHATOMIC,
+> -							   ac->migratetype);
+> -			else {
+> -				move_to_free_list(page, zone, order,
+> -						  MIGRATE_HIGHATOMIC,
+> -						  ac->migratetype);
+> -				change_pageblock_range(page, order,
+> -						       ac->migratetype);
+> -				ret = 1;
+> -			}
+> -			/*
+> -			 * Reserving the block(s) already succeeded,
+> -			 * so this should not fail on zone boundaries.
+> -			 */
+> -			WARN_ON_ONCE(ret == -1);
+> -			if (ret > 0)
+> -				return ret;
+> -		}
+> +		if (unreserve_highatomic_pageblock_zone(zone,
+> +							ac->migratetype, force))
+> +			return true;
+>  	}
+>  
+>  	return false;
+> diff --git a/mm/page_alloc.h b/mm/page_alloc.h
+> index e238ee91ed24..9fba6480b18d 100644
+> --- a/mm/page_alloc.h
+> +++ b/mm/page_alloc.h
+> @@ -282,6 +282,9 @@ static inline bool free_area_empty(struct free_area *area, int migratetype)
+>  	return list_empty(&area->free_list[migratetype]);
+>  }
+>  
+> +bool unreserve_highatomic_pageblock_zone(struct zone *zone, int migratetype,
+> +					 bool force);
+> +
+>  /* Convert GFP flags to their corresponding migrate type */
+>  #define GFP_MOVABLE_MASK (__GFP_RECLAIMABLE|__GFP_MOVABLE)
+>  #define GFP_MOVABLE_SHIFT 3
+> diff --git a/mm/vmscan.c b/mm/vmscan.c
+> index 9959ca158ce8..91c622068d99 100644
+> --- a/mm/vmscan.c
+> +++ b/mm/vmscan.c
+> @@ -7460,8 +7460,22 @@ static int balance_pgdat(pg_data_t *pgdat, int order, int highest_zoneidx)
+>  		if (nr_boost_reclaim && !nr_reclaimed)
+>  			break;
+>  
+> -		if (raise_priority || !nr_reclaimed)
+> +		if (raise_priority || !nr_reclaimed) {
+> +			/*
+> +			 * Similarly to when direct reclaim is retrying, try to
+> +			 * unreserve highatomic pageblocks on the node. Convert
+> +			 * them to movable ones as kswapd doesn't have a target
+> +			 * migratetype, and passing unmovable should lead to
+> +			 * least permanent fragmentation.
+> +			 */
+> +			for (int i = 0; i <= highest_zoneidx; i++) {
+> +				struct zone *zone = pgdat->node_zones + i;
+> +
+> +				unreserve_highatomic_pageblock_zone(zone,
+> +						MIGRATE_UNMOVABLE, false);
+> +			}
+>  			sc.priority--;
+> +		}
+>  	} while (sc.priority >= 1);
+>  
+>  	/*
+> 
+> ---
+> base-commit: 6628e7d4c6b25c8d18f1345e3a20d21829aae7e4
+> change-id: 20261030-kswapd-highatomic-unreserve-7e6629ec65d0
+> 
 
