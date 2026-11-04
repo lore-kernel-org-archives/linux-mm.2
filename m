@@ -1,99 +1,153 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 741C4606A332
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 17:01:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A42AF606A32C
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 17:08:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=IT2x62J6
+	dkim=pass (1024-bit key, unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=fjeXHbcB;
+	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=sPziOhVE;
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=fjeXHbcB;
+	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=sPziOhVE
 Received: by kanga.kvack.org (Postfix)
-	id 8E17A6B00EF; Wed,  4 Nov 2026 12:01:51 -0500 (EST)
+	id BF9736B05B3; Wed,  4 Nov 2026 12:08:17 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8B8A26B05B6; Wed,  4 Nov 2026 12:01:51 -0500 (EST)
+	id B82E36B05B4; Wed,  4 Nov 2026 12:08:17 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7CEB76B05B9; Wed,  4 Nov 2026 12:01:51 -0500 (EST)
+	id A246F6B05B5; Wed,  4 Nov 2026 12:08:17 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 540656B00EF
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 12:01:51 -0500 (EST)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id E54091607E7
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 17:01:50 +0000 (UTC)
-X-FDA: 85398053580.28.6095E59
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 202F18000B
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 17:01:48 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IT2x62J6;
-	spf=pass (imf02.hostedemail.com: domain of snitzer@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=snitzer@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793811709;
-	b=ouLOUA50/QlgGeZFYezMFPwt+Mmqv/bk5XWfwpwsoMzh4SVO0HqqqxxQrYjuFH2mqWLhDx
-	mV73Zmt7fj/XAiPOIb0oxm/i+452yQvFlv6/YcuotJ5dmRmdFD8ML6d+l9pimrV4Ss5Bdg
-	+LWFwNMjzfXWylaNhO+6EwGX9R0Hwxw=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IT2x62J6;
-	spf=pass (imf02.hostedemail.com: domain of snitzer@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=snitzer@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 7357B6B05B3
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 12:08:17 -0500 (EST)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 00712407F9
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 17:08:16 +0000 (UTC)
+X-FDA: 85398069792.20.12F6D04
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf20.hostedemail.com (Postfix) with ESMTP id DCA091C0013
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 17:08:14 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=fjeXHbcB;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=sPziOhVE;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=fjeXHbcB;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=sPziOhVE;
+	dmarc=pass (policy=none) header.from=suse.de;
+	spf=pass (imf20.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793811709;
+	s=arc-20220608; t=1793812095;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jkCHVhZioJ1wdZN6npY2hfrvWb9kbC3wPalZmZ3BoVA=;
-	b=qcD6LA/QTNvIZYmyGA8o+S8HfLeBDwZrK6WhUfiW0f3UEQDZkZRxOZ9hrS1v5Ajv1LJTbo
-	xv2RDgHB6XLyiRvvrjkeUpT5WDdbQ4IRDKTxfgJWZK4uMwFWJcnJlSqO7PDkxxh4iLWrqT
-	WLRkTjyoWuy3KB8Js/6q0zHXBNNDUOI=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 4759942A91;
-	Wed,  4 Nov 2026 17:01:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED6B91F000C1;
-	Wed,  4 Nov 2026 17:01:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793811708;
-	bh=jkCHVhZioJ1wdZN6npY2hfrvWb9kbC3wPalZmZ3BoVA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=IT2x62J6jn/yfd+OqmhV0T8VN/l364Oj0rtzzElfoSBg5AlI2P5CKcGHPitytOUdB
-	 rCMPOzw6jrqFs2RRAsbUrEFz0z7dCmzAo7iAbPX7yMi76pnu0twc0lzcE00PeLaNU1
-	 7MeoRZ0ppZpFPXYztbMrcPhjKkDVFz1bx3XsDbcjpguZ59obJbd3Bh5HNxVxh7wXJj
-	 ixi0MMwXpoT534c0m/y5CKXBd64MLxm/fo6C8yso6Yih31nWU0nueRk4Gp9PCcknyW
-	 IJK4aGSV8dvWYKe0JSt/gc6eY0wF30rE0OZrCl9YV5fP6+DeU7pkN+6UV6uqrUunc9
-	 l+HHO6sjCrTxw==
-Date: Wed, 4 Nov 2026 12:01:46 -0500
-From: Mike Snitzer <snitzer@kernel.org>
-To: Christoph Hellwig <hch@lst.de>
-Cc: Matthew Wilcox <willy@infradead.org>, linux-mm@kvack.org,
-	linux-fsdevel@vger.kernel.org, Chuck Lever <cel@kernel.org>,
-	Jeff Layton <jlayton@kernel.org>, linux-nfs@vger.kernel.org,
-	NeilBrown <neil@brown.name>,
-	Olga Kornievskaia <okorniev@redhat.com>,
-	Dai Ngo <Dai.Ngo@oracle.com>, Tom Talpey <tom@talpey.com>,
-	Jens Axboe <axboe@kernel.dk>, Jonathan Corbet <corbet@lwn.net>,
-	Jonathan Flynn <jonathan.flynn@hammerspace.com>
-Subject: Re: [PATCH v10 7/7] NFSD: drop a shared boundary page only once both
- WRITEs have written it
-Message-ID: <autk-osSQ8l2LKz1@kernel.org>
-References: <20261103211754.35352-1-snitzer@kernel.org>
- <20261103211754.35352-8-snitzer@kernel.org>
- <20261104091543.GA31130@lst.de>
+	bh=KerPOCuXiJ/QZToY/uoNDeTIPUL/z8dbK1bs/3iiQhs=;
+	b=kweJsZ7FY/wOb9+ap6TTa1yuFWPq+Ob9bGICTvdy/xgkmzPSPSJpWZB4nmkUqcugrxHQtx
+	AcBXeg9Z15BJvBgAbk6DpJLNrKSm2Ajt97XPaMjZHJOlz/2JXBJ0dQpidPf1UDLxXScHRs
+	otcZO4ON+1Zn6NoYnHglZ03E+4zKUiw=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793812095;
+	b=EgGuYIdyVeZceT+7HdWkhAKgWh9fvJTkJZzFkX2CaJrDcXNhdF8P8Yv0U6AU4/HANMC2R7
+	k11zVi+pKQ84ti+RhIir9t9hNiEOklb6Pjk1lOG1p3MbihirlAew1esfgPMzUKEZ22MBf0
+	2i5FABZu+jQm04f4/SiSYBseVlafeOs=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=fjeXHbcB;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=sPziOhVE;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=fjeXHbcB;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=sPziOhVE;
+	dmarc=pass (policy=none) header.from=suse.de;
+	spf=pass (imf20.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id B404E21E87;
+	Wed,  4 Nov 2026 17:08:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1793812093; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=KerPOCuXiJ/QZToY/uoNDeTIPUL/z8dbK1bs/3iiQhs=;
+	b=fjeXHbcBmeGoOsQ66MGtk7GS97PTuZ0SEVrDEHqBxbJJLqTk7k413Q5Un5kc3kzCv9DGv1
+	svXJGNH7HfRr8rq2ydZrKOUWAS3UWNAooQXZml6mVQGtgM7NzwVVDEzRJerTeElyCC8OPv
+	o3QHY3tzXARmYC9Rw9KUCZgK7BbaYe4=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1793812093;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=KerPOCuXiJ/QZToY/uoNDeTIPUL/z8dbK1bs/3iiQhs=;
+	b=sPziOhVEQebu5+LUfB7+JL50/zHMNQZED0i4bMOiXVcQLwF+IIytgIue9+9NhG+mHS857y
+	VJ546hT6PFr1ahBA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1793812093; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=KerPOCuXiJ/QZToY/uoNDeTIPUL/z8dbK1bs/3iiQhs=;
+	b=fjeXHbcBmeGoOsQ66MGtk7GS97PTuZ0SEVrDEHqBxbJJLqTk7k413Q5Un5kc3kzCv9DGv1
+	svXJGNH7HfRr8rq2ydZrKOUWAS3UWNAooQXZml6mVQGtgM7NzwVVDEzRJerTeElyCC8OPv
+	o3QHY3tzXARmYC9Rw9KUCZgK7BbaYe4=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1793812093;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=KerPOCuXiJ/QZToY/uoNDeTIPUL/z8dbK1bs/3iiQhs=;
+	b=sPziOhVEQebu5+LUfB7+JL50/zHMNQZED0i4bMOiXVcQLwF+IIytgIue9+9NhG+mHS857y
+	VJ546hT6PFr1ahBA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 80407134A5;
+	Wed,  4 Nov 2026 17:08:12 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id wvMBFHxm62pTFgAAD6G6ig
+	(envelope-from <pfalcato@suse.de>); Wed, 04 Nov 2026 17:08:12 +0000
+Date: Wed, 4 Nov 2026 17:08:10 +0000
+From: Pedro Falcato <pfalcato@suse.de>
+To: Pranith Kumar <bobby.prani@gmail.com>
+Cc: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>, 
+	"David Hildenbrand (Arm)" <david@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>, 
+	Jann Horn <jannh@google.com>, Lance Yang <lance.yang@linux.dev>, 
+	Richard Cochran <richardcochran@gmail.com>, "open list:MEMORY MANAGEMENT - CORE" <linux-mm@kvack.org>, 
+	open list <linux-kernel@vger.kernel.org>, 
+	"open list:PTP HARDWARE CLOCK SUPPORT:Keyword:(?:b|_)ptp(?:b|_)" <netdev@vger.kernel.org>
+Subject: Re: [RFC PATCH] mm/rmap: use release ordering for small-folio
+ mapcount removal
+Message-ID: <autkT1eNM7-oSM4F@pedro-suse.tail5790ac.ts.net>
+References: <20261104013139.1341582-1-bobby.prani@gmail.com>
+ <750560f3-4c5a-44fe-b72a-0611be383f32@kernel.org>
+ <CAJhHMCCu8ehOU37_4UpExNO3U8YPygjnht+2S+axkxTwY8bx2w@mail.gmail.com>
+ <287698ab-76dc-4aee-8e6c-db1f5d18974c@kernel.org>
+ <aus4ag1KxpuBNSP1@gremlin>
+ <CAJhHMCChBTH3QWBFS1Hp17zj5HepN6KFucvG_5tVdpaB4fjCYg@mail.gmail.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20261104091543.GA31130@lst.de>
-X-Stat-Signature: 9dnh1d38w5pjktkfkygf78qd33bngggz
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAJhHMCChBTH3QWBFS1Hp17zj5HepN6KFucvG_5tVdpaB4fjCYg@mail.gmail.com>
+X-Spam-Level: 
+X-Spam-Score: -11.80
+X-Stat-Signature: 64ekpeefi334z3kjan9ati9izb8d354e
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 202F18000B
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
 	autolearn_force=no version=4.0.1
-X-HE-Tag: 1793811708-993777
-X-HE-Meta: U2FsdGVkX1+mqHvp7HOj4LAKTArZa1a4WrBLp0Atxk/7nY0c7nVkSs+AjdhvimUYAaS1WjmSSWNy7cE0r8RSiQnBwlqhZCosRDK86Aof03uzE+t0FgMWJFOC3mJvknrZ/S2e1p+HOjKZ2tTNqLiS4643AwrC0pyu86iaJmhMmjYIa3wnwIym48gyLKsFwISh2fXfPn1+LGoW+KdAYSojRezFYOyg2QK98JfLCrdOL/du41fVMrg+kZZJ1G5UySrwxrC+NYEyzB2L5cCKsnkAyBypwBxieQeOdEFSWXeahUQHASR+g8Z6aiEU+7PcNwOKzDtNSddcAqdBGgXKRZkCcnK63fQ/tQ1YAiP7rA1kF4KHoyFXIh2DdtT7g69xGyMg1uXbznmiG5MjzYzrlxaptWd/EapT/nJSXso17BnkJDyNVWLpHIc2t7C/fOFrShck6MP4g1uSGaVHIZRquiFVURhjJv33BQPA9XFS2wjsKAf/ZQ19/zfRCSZY7g4v8yVK7IUvMpYsBT3rFEqNC2ALDJZKQo1ySjKlgzjCtcZ/4lNVhiE3YAVh373sbpMUVlhICGoOaoDjbYzfhMMihcFDb9z+C0JEYkx6GGe2Xdgq9b6ZgkENCt5fYT1u381YGg4CS4yawVKphzBmbDI8ZEezMBEzvRrFeB+LoWdIr9vtcRQy90nxQ2iIY9ox1RWlTznNYb29wmU2oIbiSUDXkJmmxp34uLjgHltIrexRnMxH7KOA/Vy6XUu68wBtuTdEPOLWIYSKCgOYJwhleXlPIVuNHfp8xKDKOf7GsYNrllFjO0XhqkUMfSzXdHci3SNaDub9JhCQGrRdtG58M8Cnvx9d5ycDgTtqHBdD2pF72Cy3kYM5mt9XOQ2CysZK+ecm0ZDPIGSDlztX7waWZi5IEe4sAuSZ/vH9YRd0WKEEFnz7c7YGnOrtz0HO7g9SJ2cUcLEfENO07bsReE2Kn5Upk8N
- FUFocd77
- 3MW+HCHgj4728PulWdIzA4gbDg62XysTpOipy3tCBmZyh8MDvXJt6ImUSEkMT24CiAbihFwBTmOH++R8gHw4yaPTm7EAro+CZbbDZ4JEFpkcGvm0M4/UVlW9KiahnoF4oqpaLNe9JCFcHZFavxSCACgURmNNsICVTgIZK9UMZPDkddckdB6WGvajKGPxHR37Soasy9cJT9YEAU9xbcRgqFUmmXMIlIts/mHZeQ2Ndk9hmgVUplXp1z2ktdUGqbZccOuwyiPaa3hyFloYWCksvodImiqJYln/V4aap7lUdqy7RCOABlTGb31ghu9vy1qBD0Q5OiTHFo3mp8iQ=
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: DCA091C0013
+X-HE-Tag: 1793812094-959651
+X-HE-Meta: U2FsdGVkX1+rvFJqDks4GnejmgSy+l3e1sqSN2B3niH1keQPypVbHU9qJFhrH7rXXkbobb7MeGfR0TwUpn/wBiGvn2+BjwKdpHDzHaTDVLcRTXazlIGCdz/gezc6p8XSxYeNuyqTbt5P6xNLf8hIGn/pbyIqf/56VM8NoFhrRAH+SxM79GzgP1r4Bx7R+gdlyOHEra852GHLBcEXyFlT2NNw0k4XuMlHe65AAtrSjXC2bBK31Uspoey0OVmeFb3JHMiJnopgNyYNo7uC+uo+PCltUI593hja8q6j4QHOye6TJJ6LiW/ANUlQcvjOZC5/tCporFOzwOn0xtuQor1/mos6u9VIsqkpi1WhHACNbYPWzG8IkCdNHAa7sFtW79OLftXVDecjtPDGiX9oInBw3UIKiopao+GoNVmspciShJRij0Mi32fMo7niuUS2Ir99W4lT0I1ImXOFXuvbKe5/VCEb7xYAua7hBvBn3/NHAERql3T6VX7gSdRO9PX/odWSJpEe5UnsP6kL9QlOFIvSORL64CEhTUOLEZBnUKBObhDQQRbUGe5QC2Wr4qWmS583kxxtdbJ2SqF0wft8BWl2ms8uLN5I6CTlZ6TPJVWuV7bkCAL3H4hlzJm/7XbN/3RHxAzAaUilVzj65wM92AXUUAcjBm+tkPVxFVx1UFx1LMjdsD50DPXLUVMwms8za2o08O9nHEko4IxgsAVTrZsKXs+pE3h7YIropqvwsZo6gkoZfR+PUvX/bKYx8rYmgUfDrFcyVcE5KIY13BrHsCVUhGAOklk77BJEU9J1QWQmovmGCZOZrTluwnr8QQuyPGUELv+EEoS+QxLM/q9Nk9z9oYr6RpGHKg0PM+3DdKwMj8y8iyGEAo9H1B7VzgeKLpKokMqYLBg4zLisRAdNKi5WDmBSMQpjpiWqAWHVbwFkF+Ui03ocByvh+eIjWQ4kgkyXesX48AV99pir8iQd44e
+ CeTxINCh
+ bvfSiXO9W1OMU0/SjRtjjqyzh8+e94ehOGZ0qYbHR8wS157GBMVwqIyyYdBhozYaDB5LzfXk3X3498GG1QkgjHkux2IivLXezYFDV65LYOmUw3gxo5ERiZL9Qd8F3jZE7KW0XEJnIg4TA585Ysl3cVLkrv934gXy/5pvco8D5/dv1ZcoZNbv9lt2691qNAmQq3PZV3zdPGeOZIJc0+AiTWDsoLd4UUAl04nQ7jNf++SQZeJTNu6SV1HNeQ+xwoONDJDk6kQUyrec9ysLWSfSztWawICR3Jupa9q7Fdq96lyQRu3HgLrwyYK/vzm6HlcYKD0w6gS/PqK1/NawP7GbiznR4uDy1mEq7YwjMEmVxfOkF/KZ0acYfTRDa6utblnKbI0BXB/NXl7x8AOg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,76 +156,35 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Wed, Nov 04, 2026 at 10:15:43AM +0100, Christoph Hellwig wrote:
-> Why does the write include an fsync?  Are these STABLE writes, and
-> if yes, why?
+On Wed, Nov 04, 2026 at 08:51:20AM -0800, Pranith Kumar wrote:
+> Hi Lorenzo,
+> 
+> On Wed, Nov 4, 2026 at 5:55 AM Lorenzo Stoakes (ARM) <ljs@kernel.org> wrote:
+> >
+> > On Wed, Nov 04, 2026 at 02:37:39PM +0100, David Hildenbrand (Arm) wrote:
+> >
+> > I mean 1.54%, theoretically is even less convincing for me :)
+> 
+> With reducing the strength of one barrier, I think this is a non-trivial gain.
 
-Only when the client asks for it.  A WRITE with stable_how FILE_SYNC or
-DATA_SYNC must be on stable storage before NFSD replies.  So NFSD runs
-one vfs_fsync_range() over the whole WRITE after all of its segments.
-An UNSTABLE WRITE has no fsync.  Its shared units are completed while
-still dirty, and the writeback that cleans them drops them, whether the
-flusher or the client's COMMIT starts it.
+Counting cycles on an arm64 simulator for a microbenchmark is completely
+unconvincing.
 
-The Linux client sends an O_DIRECT write that fits in one WRITE as
-FILE_SYNC (FLUSH_COND_STABLE in nfs_pgio_rpcsetup()).  That is the
-common case for the workload below.
+> >
+> > In any case for something touching a sensitive memory barrier operation to have
+> > a stronger argument put forward for release ordering being suitable than simply
+> > stating it's fine in the commit message and updating a comment.
+> >
+> 
+> Can you please explain what information is missing? I think the commit
+> message has all the details of why release is sufficient instead of
+> full barrier.
+ 
+rmap is gnarly code and I'm not sure people have an appetite towards weakening
+random atomic ordering semantics for a virtual 1.54% cycles gain in some
+microbenchmark, without actually explaining why it is safe. __folio_remove_rmap()
+has (indirectly) a lot of callers which may subtly expect different semantics.
 
-> Can you explain where this very odd number comes from.  Is that just a
-> worst case?  Or for some reason actually relevant?
-
-It is the transfer size of IO500's ior-hard: every rank writes
-47008-byte records, interleaved with the other ranks, into one shared
-file, with O_DIRECT.  It is meant as a hard case, and it is the
-workload that showed the problem on our servers.  The same happens
-with any record size that is not a multiple of the page size.  The
-cover letter also has 6000-byte records.
-
-> How does this compare to just not using DONTCACHE at all for unaligned
-> tails (and maybe heads, if for some reason they I/O you care about
-> reordered writes).
-
-Jon measured that on four pNFS flexfiles data servers with ior-hard
-from three clients.  In one run, cached heads and tails removed the
-reads, 0.000 per record.  But the page cache on the four servers grew
-by 622 GiB during a 318 s write phase.  In a later run of the same
-workload with this series, it grew by 2.9 GiB, at 0.003 reads per
-record.  Keeping the data out of the server's page cache is the point
-of direct mode, so cached ends are not a fix for this case.  Using
-buffered heads and tails are available (in cel/nfsd-testing): set the
-NFSD debugfs knob /sys/kernel/debug/nfsd/direct_misaligned_dontcache
-to N.
-
-> And how does it compare to that plus manual
-> sync_file_range calls to micro-manage the I/O?
-
-Wasn't measured because sync_file_range() writes the folio back but
-leaves it cached.  To get it out of the cache, NFSD would have to drop
-it after writeback.  That is only safe once the neighbouring WRITE has
-written its part of the folio.  Otherwise the neighbour reads it back
-from disk, which is the problem in the first place. NFSD does not know
-when that is without tracking the half-written folios of every file
-itself.  An earlier version of NFSD kept one tail folio per open file
-for the next sequential WRITE.  With interleaved writers the next
-WRITE is rarely the neighbour, and it still read 0.81 blocks per
-record.  The folio's uptodate state already records whether the
-neighbour has written its part, and 5/7 uses that.
-
-> In general I'm not in favour of so many core hacks for
-> very nfsd-specific behavior.
-
-Most of the series is not NFSD-specific.  1/7 to 5/7 fix RWF_DONTCACHE
-itself, for any application.  The table in the cover letter is plain
-pwritev2() on a local XFS file, with no NFSD.  It reads 0.97 blocks per
-write at 831 MiB/s before 5/7, and 0.0005 at 2281 MiB/s after it.  2/7
-also fixes a bug in v7.3 on its own.
-
-Only 6/7 is for callers that sync once after writing several segments,
-which is what NFSD does for a stable WRITE.  The NFS client's LOCALIO
-path does the same.  Without 6/7, each stable WRITE wakes the
-DONTCACHE writeback kick once per segment, 23,000 to 65,000 times a
-run, for folios that its own fsync is about to write.
-
-Thanks,
-Mike
+-- 
+Pedro
 
