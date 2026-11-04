@@ -1,102 +1,104 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC0F860A380F
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 18:57:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB665606D83E
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 18:57:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=soleen.com header.i=@soleen.com header.a=rsa-sha256 header.s=google header.b=Qff88+yp
+	dkim=pass (2048-bit key, unprotected) header.d=soleen.com header.i=@soleen.com header.a=rsa-sha256 header.s=google header.b=Zo2yRF+j
 Received: by kanga.kvack.org (Postfix)
-	id B655E6B05B2; Wed,  4 Nov 2026 13:57:11 -0500 (EST)
+	id 60E6B6B05B3; Wed,  4 Nov 2026 13:57:12 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B3D326B05B3; Wed,  4 Nov 2026 13:57:11 -0500 (EST)
+	id 597B06B05B4; Wed,  4 Nov 2026 13:57:12 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A52DD6B05B4; Wed,  4 Nov 2026 13:57:11 -0500 (EST)
+	id 4AD676B05B5; Wed,  4 Nov 2026 13:57:12 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 794506B05B2
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 13:57:11 -0500 (EST)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id DB6FE160777
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 164176B05B3
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 13:57:12 -0500 (EST)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 96B51C0827
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 18:57:11 +0000 (UTC)
+X-FDA: 85398344262.20.481443B
+Received: from mail-ua1-f46.google.com (mail-ua1-f46.google.com [209.85.222.46])
+	by imf31.hostedemail.com (Postfix) with ESMTP id D860420006
 	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 18:57:10 +0000 (UTC)
-X-FDA: 85398344220.02.7E28E5C
-Received: from mail-vs1-f46.google.com (mail-vs1-f46.google.com [209.85.217.46])
-	by imf17.hostedemail.com (Postfix) with ESMTP id CE34C40002
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 18:57:08 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=Qff88+yp;
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=Zo2yRF+j;
 	dmarc=pass (policy=reject) header.from=soleen.com;
-	spf=pass (imf17.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.217.46 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
+	spf=pass (imf31.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.222.46 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793818628;
+	s=arc-20220608; t=1793818629;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=IZ9VKwNlWQHUSDTdUub0LUYCE8kQAhoKBrGZa45rXWk=;
-	b=5yYQnvol0F4ZNgEhHL6mBBSoFB27GEVoOL9D9djIkcZCdXQu13oXjiei9NQLTyHbLatbWt
-	eXBdAiJTpJ6a91hEMqeZ21vSiuVuiNE9bO1oVJCvZM+xW1yDi0R47HmJATo0IrbwyLWGdx
-	EGl8T3thZT+InpgzIVq6vsUtwgLGTfk=
+	bh=9KIi3oyLyMDdsznEK7o9dw+bnJIKiQjdBXnibwTcAOc=;
+	b=umemUbMgQ3uRCbPMtjuOYn4zqwoKFg1HQjnDGFJB0KDD3j0DQWHisb9UZ3YeNmZjbXU1lM
+	h1rDAS4fG5FxtKKOB1nVTBN3cMfLLbRlNG09sDAg0Zba3BEYQqFGVyAJI5hjEzSnwiD+Nf
+	EXNNwEphSQzTXJHQjxYb6lCnbVD4f3c=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=Qff88+yp;
+	imf31.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=Zo2yRF+j;
 	dmarc=pass (policy=reject) header.from=soleen.com;
-	spf=pass (imf17.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.217.46 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
+	spf=pass (imf31.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.222.46 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793818628;
-	b=iyQq+yEmZ8q9b2I+m2MoetskCiawESiAsAaZQ6hv3Ju3jMKunh317xCLD/USzlxtx0M9tY
-	ADzGryOkSe6gA4FzIjqVUHypio6kl8UL4yK1L7qMXQ9GGnIVImYz7t1nN5YyMonaRI3Dbr
-	CdvBbsljciNv89QkifXIRykhNa2yq64=
-Received: by mail-vs1-f46.google.com with SMTP id ada2fe7eead31-7cc81984fceso327150137.0
-        for <linux-mm@kvack.org>; Wed, 04 Nov 2026 10:57:08 -0800 (PST)
+	t=1793818629;
+	b=NkiwH2xaulOkDWS9kPzMZAsCE4E7JyiYpH9JA3fLsbKLMdugRlz/5sVvtVbE50x2JvPinI
+	ug0PbIvGbP2MHWSXkn9TdvwutQl96yWQqv45985z6ixc5QOb+s2YMlScgPgs0txLzFK/gu
+	ma3GivTtBU7XYJ4sAVLbD8qUGVScwfo=
+Received: by mail-ua1-f46.google.com with SMTP id a1e0cc1a2514c-9906c85122cso357022241.0
+        for <linux-mm@kvack.org>; Wed, 04 Nov 2026 10:57:09 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1793818628; x=1794423428; darn=kvack.org;
+        d=soleen.com; s=google; t=1793818629; x=1794423429; darn=kvack.org;
         h=message-id:date:references:in-reply-to:cc:to:from:subject
          :content-transfer-encoding:content-type:mime-version:from:to:cc
          :subject:date:message-id:reply-to:content-type;
-        bh=IZ9VKwNlWQHUSDTdUub0LUYCE8kQAhoKBrGZa45rXWk=;
-        b=Qff88+yp9lkQOtEcNPGBjbrObeBlROIIbSPv7Hvc7EyS8RzLz4skz1VTIlfyCsPWF+
-         +c1Pi6ntQOtWqyEe85jJqLXJwiYkS9ogPqeBIjqSqfNv20/HPbwrtC/lYjMuF9rW9JwN
-         wwGl18nOzSGf8R+Xn0s7kW8abtsm8BBH2qSpPh/dbBiYMBZlsoFTPFdSS3az2pzU1nNr
-         XzeSSjsJWC7bEWzgu9pwWViACw3TGOmsFf2Cac8nca0p2PeYc3IbSx5lg2yHFR5xYAW2
-         9k0x/xGP0gAL6RcQtGtS0ZzihqLWVHjfzGcGe65pPvChU8MgTcH52BdW1FnvMk7yRWx0
-         Q8NQ==
+        bh=9KIi3oyLyMDdsznEK7o9dw+bnJIKiQjdBXnibwTcAOc=;
+        b=Zo2yRF+jjQr/uxqv3PxKXT1FfT1mmVK1bln2yg1x/FBciYy9VWK9VcnZttGGl/Whv1
+         XNLr9+oUFGQuxnKNZh3SNraz6/e885z/z1zBaj93+K740QhvwSA+2n/qzBFI32C1wm3y
+         gYLzJNU8yod3fkaiSVZAG+0fXW7BmgcYsepx3s2Tax4cS02lv8u5rRE4zDESysr9XP4V
+         6xISPebjQVvPyfBB7MgeiOaMhIPqLl0kAyIuSiJMlnlf1+HnyMyZyiMNG+fCEiIrEUpv
+         V40PmtwIQ9bkLvjZkKVGvekMvRudAYiVplHZBlPcsdo3LIk5k6cXqCi+q9+/stIP6MCP
+         BtYg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793818628; x=1794423428;
+        d=1e100.net; s=20260707; t=1793818629; x=1794423429;
         h=message-id:date:references:in-reply-to:cc:to:from:subject
          :content-transfer-encoding:content-type:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=IZ9VKwNlWQHUSDTdUub0LUYCE8kQAhoKBrGZa45rXWk=;
-        b=w2WLxTCuu1rUyJHFFJzNv6OYosdFG15OdxWTRwa3cBGbpbz2yknCSh3LlutpZq8UBf
-         FVrDkILyFQ8EHAgYlOoKK0pRy0O8r1NjcHIV9adrlfSiqmB7cHgf2CdS21WlwWhCRbfq
-         135SKEvNDueoTfARx75DGfbVplmaaAOeVibe9WW6qQSu9PY0zltFGeswoNaNvX8en80v
-         nqYjGcX7QkAmrhre8RBor16H0X8qFsO4ProK5ju7rVo6TRRSPH7HpSgSnUwoUXzvKKGT
-         hD0QCH/5srfWNueYGPhWbdHpLqO/8gPJ+nuSRY4Sug1+JVYKVo8pXnmtUFXm3Q60/ym7
-         u9NA==
-X-Forwarded-Encrypted: i=1; AKwUvBxHKhuTIcTZFTvo0HSRbv4QaXqZoHtGlhVGohM0b/7DDB3/AVK8W07tyTnfYGWZ6AA05jOBDH5nHQ==@kvack.org
-X-Gm-Message-State: APuU4Z/6v0qiTqvxlM4R2S7kQBcmZetqhkVI5jdghbX0uPcYgUI3vxDC
-	bj8/oWb8BLBWSt6TTxB/iaJ/TB/SNThneMQLdu05NDoreUDO7mTqzX/ZCGdAs1uWpgc=
-X-Gm-Gg: AYBFou16hkIUvbzlyheG8SArjpZiXCiB+cv7RdYEemn2OgRT30p3Fp1LmuyZnuXyjLb
-	bgriyS3CIlltUsHBkRI3VDzZSDC4J246X2+/49pvM5res0xw0LuellHCm/FT4I/v66TU0Zz2ZyX
-	Y6f8xvRq6T3AehZMVz4gmyUZQA2O7FPMaXqMVONK+ffgqoS3m6s/uKTzdNaTobDezhnwxzAXgc4
-	wK7SYMuhZ3Y0V2wKhKMrSNj1GhWYT4f5uHuyaHP7dUKq5b/fr4e2p7LA+5U1ASq3vc84JjO7e+8
-	fuZN2sObsqD+FPF5lncl6DLyGrJ61zxR/yoIVyClYjFc7ln2+nbN1I52eOCS7he9yoBmbW5HcXM
-	lE2Yg1MDrUVefTsDi8j92MXxcDE+0pNvEDtYxIHgxafPetNEAz8KqRksAPKWR4JteX3oVD/xL19
-	fKh+AHB4xmf+EcDSkQ/zuyjQHxMXKpywou6r66bhKeJHwXTAIpPyKKfEeBadu6h+19SpSfVCXZ4
-	l5zihX/U6a4VVAcL4Zzk3pLO+vV863ce7qYON0Am4H1cF0l8D+1Ol6IO8HijWLbq4y7Q4N+wpvN
-	bE1s8xIdgSvqbj4V8fT1hns3zNV0RKXMECfmJlsFwNAt0Rf3RAVe4hRI9AKDikJ6hL7lyoRR86c
-	UKNQZgPDjbMuX9UE15gHzbCZKGaH+tBQFeMzVqArEhc/5
-X-Received: by 2002:a05:6102:6cc:b0:7b5:7cd5:2a1b with SMTP id ada2fe7eead31-7d072634fbamr5914702137.10.1793818627742;
-        Wed, 04 Nov 2026 10:57:07 -0800 (PST)
+        bh=9KIi3oyLyMDdsznEK7o9dw+bnJIKiQjdBXnibwTcAOc=;
+        b=KxpN6fYrRh5LULW9eF82dbsXb91dGO7sAZHQWrSKdmkKR4dG5OtxSxUzlxfxgxOGra
+         2HK2956qW2b3Boxl0Fj5ABlLyTBUb7kIN5Q1+H3v1dGQ7862i0RWaAPufGIoHEOV5GxI
+         wuUXOPLV4+b3v45sIxp0q5SqouDDh2ysuB9nb3tV3fcUR8ZHjS+045r2kTiU8fMAfJ0q
+         yPlSHKDqZQFvMCkTWMoQoCB0ywfRDBr5m4ofAI5Wp9ZB3NMlFAsaQV5p2K4JfBi8DHnB
+         sG/0NhMMVMLQGbUC/Lj18Makv7XYVfLkZDbkYwdH3BDFqSDQVpCjDHCRZbxJZgG3ye3N
+         y1lQ==
+X-Forwarded-Encrypted: i=1; AKwUvBxepMa6LS9E5pJTPTty/LH86gJuuqFtcoN03sGERASA0OrUhv1V2UcqjoANqfnYgQvLAEod8W4R7w==@kvack.org
+X-Gm-Message-State: APuU4Z/RfwiWARTwmG9b+9digMdS5mA11jvALcMOXHBf2p9gWis/+n5V
+	SNEx9+ZrcAeFOHjVrAyl85OIl+z4A0XhxTm/BEHMSrsXRO+Y+2w0yVyiDKMJkeSXgidME1JwtJa
+	SvQc0
+X-Gm-Gg: AYBFou1h6R1HA/a9tOToPkj10kD3hTHfsDLrbsin4Ib4IT5WAepe/EPzpV7XaDNMZkn
+	bDCZvpJRwQUz4v129+7II1+kH8f/QVlvifvAB3wi5lEn1i3RKe5NffxVCzwAydIHBYRQ4WWjeO1
+	O6NY30Lp8A5PhlQMxkF3jmm5k2+nkjeMVRjCeR95Vzwuy/tzEAWdIn0evInPrbxgByB8TQq4TzV
+	ObLaO6RTof7wIqLkLGhEAXqByrtsI8Ixdn7PBWQZ/riZAth28guXZ0QuFdfwJKsjRdeFzGIH5XX
+	tC7RJ/eiMHuXYXx5UZp5+WZ2tgti5rtt78w8pugXciGgbbyxLFBMq63bQZJwUZ7n4iA76ZkLBWC
+	T8uSZJMtO8pWoiPq1mX5uPGVNm1SphB1gRetxAGXLXOrA6KkywqO2nltrxu7m4wxtNJjf0PxElZ
+	544j7Sx1W8Y0bPEQfyDvZOE+NG7GiR2Yn5mA0lvXYCnUPvLIaXorfCsDBwoObetGqIXfNaKGo42
+	eLqWkb5ZZo9eTNP2MrwUnR1v5zqAHwCvtkVzvwyu9EvyzzzakUf3b+Xix/geSeTgLO8nnhQGQle
+	2X22mSyYcSAf57QGB5/SM9m0/OdcgtMP17mCaghzr0O6Yni4O8ebzZxXEApdgT6CtNtWvdE2+UL
+	lYyGQkJRkuztl+yq/XTQi7w/CtGZvqL3sERPFV29SxWJp
+X-Received: by 2002:a05:6102:50a5:b0:7c8:4efe:5243 with SMTP id ada2fe7eead31-7d072c0ccc7mr6799566137.14.1793818628571;
+        Wed, 04 Nov 2026 10:57:08 -0800 (PST)
 Received: from soleen.c.googlers.com (16.49.199.35.bc.googleusercontent.com. [35.199.49.16])
         by smtp.gmail.com with ESMTPSA id a1e0cc1a2514c-999f3006224sm736210241.9.2026.11.04.10.57.07
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 04 Nov 2026 10:57:07 -0800 (PST)
+        Wed, 04 Nov 2026 10:57:08 -0800 (PST)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v2 1/3] kho: walk bootmem areas in address order
+Subject: Re: [PATCH v2 2/3] kho: skip zero-sized lowmem and global bootmem
+ areas
 From: Pasha Tatashin <pasha.tatashin@soleen.com>
 To: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
 Cc: Pasha Tatashin <pasha.tatashin@soleen.com>, 
@@ -105,41 +107,41 @@ Cc: Pasha Tatashin <pasha.tatashin@soleen.com>,
  Chen Pei <cp0613@linux.alibaba.com>, George Guo <guodongtai@kylinos.cn>, 
  Kexin Liu <liukexin@kylinos.cn>, Sourabh Jain <sourabhjain@linux.ibm.com>, 
  kexec@lists.infradead.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org
-In-Reply-To: <20261104-kho-bootmem-sizing-v2-1-b0d1a834780f@kernel.org>
+In-Reply-To: <20261104-kho-bootmem-sizing-v2-2-b0d1a834780f@kernel.org>
 References: <20261104-kho-bootmem-sizing-v2-0-b0d1a834780f@kernel.org>
- <20261104-kho-bootmem-sizing-v2-1-b0d1a834780f@kernel.org>
+ <20261104-kho-bootmem-sizing-v2-2-b0d1a834780f@kernel.org>
 Date: Wed, 04 Nov 2026 13:57:03 -0500
-Message-Id: <179381862319.2089669.3389816529046759968.b4-review@b4>
+Message-Id: <179381862329.2089669.1920221634983746197.b4-review@b4>
 X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=765;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=659;
  i=pasha.tatashin@soleen.com; h=from:subject:message-id;
- bh=DDkD8JSCYr5RCeQfuJIIi1Yq5YW3znOE6F47n0yvgis=;
- b=owEBbQKS/ZANAwAKAbt3KEzbc3reAcsmYgBq64ABQgh991wmWzNfvO9Qyexu0ErvASNIQxj0u
- FQn5xjnR/WJAjMEAAEKAB0WIQRBMaqT7LRvGvB/NmK7dyhM23N63gUCauuAAQAKCRC7dyhM23N6
- 3lOvD/9RGW9gp0s0uJweY/yummMqVsr2SGqZNj6EGSPHNlXQmnWsxASxm7OJ9Vse40GT49GD+Ln
- kKoDGlELs1gC/2S+p07IIGWU+YOXN3mdiJ3WDchwha8Pjbw+WkYXrVziUAniPdr2o3/g6tQ3aBO
- GeeYGRK2ZA+cMpQlrKZ8BD0sI9C4c/Ago5YACznGJWbXdrmP53hL2feaZGuP0e5ZJjL6//yUjQ7
- UNwj4WA6o/SlAsZHWhPcTCFp2hbVmQ2Jppyvbq+vN+jsCJcAm69GEnQhzNfGOmn70Gsrr0ulGWF
- Z6nnsfLjpGwca/Ni2NWsl83PcqB88BqIpx7+wTNMQZdRTT2ZFEW3DVt1rsXDqxepV67TiWnREJO
- 02GhYi3tuXCZTlgrRwyRby9wJbdILAQMEJqzT2wqeLbyRZpjdxhRJAe4srjeidOozyvFc8OGUEJ
- 9GMxnPDY4/nCZWw4UmRSk+7++9H92jrkQy9circt8AbHQEWOWtlffF/We7VZroa+b2hWnZzHY1A
- yX+EmUvHDO017w7by5v3DSX34tON7P2hxHBfIo7PeE8S/FDtrt0h3nTn8M0i3ed1yhWAHtvuGbf
- 7Zjq8sKqzVdT2BLuJiGiKxO939WgyGsZXvEIzBK3cBx0dXE5RnFI0vihWDLWgyJsdQ3+AsmXXIc
- WYdLSQfHpUQTV3Q==
+ bh=tKyyhUM8sc5ijUZp4wf8V84jsKcj0GIXLoP8Jnk85qM=;
+ b=owEBbQKS/ZANAwAKAbt3KEzbc3reAcsmYgBq64AC4+9Eu03z8RndZYwobpMiNfkTgoWl1nhsO
+ iersuVtwoCJAjMEAAEKAB0WIQRBMaqT7LRvGvB/NmK7dyhM23N63gUCauuAAgAKCRC7dyhM23N6
+ 3n+cD/9jpTwQSZe5gdGUGgfWk1XEfJgiRBBToUCD7hLIUPN0f/0cdUwMSaewgWjnIEdWwmUI3cX
+ AQ2dyOIItN7AdmFr/dPD833nnnX/GdMvITYVd0Xp9A+ElDgvYS2cRlizoNWpRZVgIW49L/KZ22x
+ Fvxr8Vctlg82aQ1rWm4Bpc14mlvduoD8+N8LVGG4wFoun/qTG4YvaV0LWvtGBLHZmFYLecwnDGJ
+ IZJ/Uz5AS7D/VdLvWF4RF+7eJl4JMt6gTQEbdeVfcZWZCX+p6vOkkyX24Iy110qrrdvVFaufjpr
+ XseoEn/cLnxiIg5Yzgun4qT+CpoEn/W8JjvwznOw06geQzUafuFQP8yHbMSdgWfOiB6HkfPfoCP
+ QIALgM4Q8u7r3PcQpJd1VnQTXuWMPCV8vEzj9tiw1TJvhkujDlbDoe1JCPlwBAQJibSRhqvfqec
+ l1dQMbzMd2oC0wRKBz0NKMkxxZdbYTt1tKClUM1hLhwEyqqi1yzARs6jOnIr1X7Ey5qOPYZ5ouj
+ KFoj7dpUPeJgE6Gk7vA7t4+VOXxl0yO09J+ST0GTgEGrSmaHibGONMY4E3yWtcEgJTz7a+koxFn
+ J8DSpcUQhLmuEq640zd8Nre2wC3ZFqAsZH556R6i1tFo/QoV0ka++Vany7L1zJajvRx9pUeiLPm
+ cZDHnRFI9/6kMmg==
 X-Developer-Key: i=pasha.tatashin@soleen.com; a=openpgp;
  fpr=CAAAB722DD22A081F0D49F35633A6A993D43B569
 X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: CE34C40002
-X-Stat-Signature: kmnp7ysx4xz65gsub9seeqrun1yrmasa
+X-Rspamd-Queue-Id: D860420006
+X-Stat-Signature: prr5oo7k581r9e8wof7c5x5ih434s3zj
 X-Rspam-User: 
 X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
 	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1793818628-677159
-X-HE-Meta: U2FsdGVkX19i8Swc63yj1woJHRLSaZM6A0fIZGMU86AdKI1NQTB4oQa34l8C/4QxB8c516+ALb3+lJ12hWIS6atpy0pGQ9dl2D8Yt7qH5W4X8KB401kjqn+N3Kv0PuRhM12oX3yHyC4la+cZ5U2QzHzax9Cy6VZQlajmDN1f4dsMSHCSYDETthFgRITJB9YsbMuA/DH0O2i+RihppxbOivjrh09UIUmY2nM1RiyJpk1JVQ+CQ50ahtbQvtfuzwaiLSUmxLdMHRL2iW8vChQEgzs/+RQzML3R68ulEzU27AWkybxbGg3Yye/cIkY9QvNY0X3FlFWKljqc3uJsvRgmycQpNsMK32n6rtA+kmIZa0gDMTNgb97R4p63G02BQtjv1lm6xIcUqXT8hL2ju6h1xbd4bNDaRtoen69lGQH7wVT/GKMDdMDRICFa1cVvA7qHprwnWNKB/HBBtYc2IoGDr6v148ZfKWTCDi/i9pTkadDmXEucQx+EhXawqyYUX0vQT+71KUdQFxabFgm9WtnMRA9C5zxQyBSW7tZJ47uW27MMtofZPy7NWXX3dQyL2TUcZ9jOHrCMlP/Sv3ah3Z08MtovxiKmtMibVH29DDG2HrwKndnNYRXmuFu3kBTws6HEBlkmRjQ4KdIIxk9wEMudNZSSiKxFKwNAB4HtnBQBL1GZhPqZp3rT+cIF7Ke+M0oIqiTkkDxZk7GKpxqhmhZRSWK87KCWJZpzbQ9bsTGmQWyb7ICMlUIT+WS3/G42yu0bVzWE8u+lbmsBy6SgP+Dm2B/NDJJTxnFnknu9lUt6gC3PSfBSXOcEdeOmLLvEEBo9U7WcXQjJErjk+ITR7X8zPQfiIdbGmOakTUZ8gz4TkGfCaRcC0t/CGef+4UP05wWqdZVI/bFAawjHORxYtf7240mk/O9pb8XF73fCNWJ9WU39DGh/Ac52z3jKy30r1S2aWJe+inQ4FetldLV3siF
- 68xCh3xV
- dh2MKU7J6oMqqr9ZuvQ0+BfOouCFcehfl0cE9l+4pcnC2mEiPmJF2Bg0kTqvfeWZZkzUPK+SZlkQZXdm4eNIJfFBbZAJjqvnpTs55CDRbSA9GDHhmA0M+2XJnJ+n6A5ZDyzNVYh/taAMGsnlvZfJJN+/Xp8xfbdSM4WHfgYBf89wfBY6MMrIgwuTzb4yRoLXTBRX8ckl70F0Qi0EeXtAeic3fqB92qk5uPOjH/MBoG1j7BLCz6cyZ3pmf+MR2jKLBIgC8Pds/PvNQdwfkEb+dx7VRyuBQJX940oAOsXPqG1IirG7VC9ERYcbARxzyhmDXK9sMW1L0n53xWpQrgwomh5F5nuwhljskYMft74T2bHduL3c=
+X-HE-Tag: 1793818630-949629
+X-HE-Meta: U2FsdGVkX19NmTW/imjMVl6RajPEijx/I54WLxGYDWeqBzpn26Lps/IIeJ9v6jyXXfpQpljCMKUV8UWIiNNYUtual9sIUvjiEZCrLpztMMirvrAMR1TazHnMOaxwit2DTg7/+PyR+VsfVw8YjcedEeYaEx/oy5DG+AD+Rk6cGDkBpgZmZEAFfeodIsXjzEUTzZIwUmCr8FHSEmuWN3KXhLKRyfFgVfb+SOll7aaD4bw4Fc0hFQJ2+3fI5RtUgdRvSqUModavpjyyDPXMN4tTx3sSJUU1uAGCRBybd86Sb+TQMMaCskgV8l47+jEdZKPJbIO5igEBtgSbnDZ0XaK0qxeV2tOmPbSLKnlcfoT5fFqZHR+UWJDI0X6U/e9MuE3XV5P0NTLeZsCtMKl10sM7zfVYdlXJgLBur7e5zqwM+SIevxIxM4GiqNFHn3mD5YQZNuIFEhqVBAGWfC3eg9gXkwlO0chaAUN9cTRrad5f0PPSRt94j2zTcS+BSNhojBU5iYF2GPJLdfmrlnyfGKsb/a+LEZDhjYlSanz2TPK+SoNdXzJHaAnOB5WpHnaD5H3fUlgII8pytgOe9AkwDGarlw1/3WOLdYiuAauuP2061nRKbEpC68JK12pv8idKygmYoc2Hoi9XrR4p5JBtlkrgUA0Luqjy1jhQKvYTfNgu6ZkKMcZBtr7FQTlEMjQr/wqsANXzhjiozkciQc0r2zQ0jc+ZTFhQjj2BPFA9ZirQU2LG9+xCExOBy+0Fh7gh6vDINqSrGot9aNBI0QTirRdAugewJH0/obxmBiUHzcxpacbu4YA2NMezW88cygqOv/2viYFLGF0nkhbdJfoA8bzLmt0D1RD16G4Yj709jl4kWQl8lmydhiWHJW1Ycv0X/2AaBeNHDRyNwwCHv3wD1ZBLnAw+hvSltM/9A4Mfzbwx2AXsMY+hwpxt37VMmMFBwepXzEAoYUk/WAogBKSPU2p
+ 1pC8AMrq
+ LstP3bqwyU4CY/eIrt05CU4W7sMT7tVKzGz/ehzlW6kO9vPmAPXyioxVRclBZyHl2WAsS++MqFaEGL+izS0nNYKmiQpLU99suODjZxqwyX73wHmBrmrKD6uyM3/OOyTPubGw+Lh3NM/4c4PLbVK6G4qzPVE97+gFkr4D2NeIVJCRk7iHVu/tZlB4qJTBTc+igEIO6cfQ4oL8BboiBHSycTpRYyzzD8k1YtAfinIjD9g5xP+otraoXlBYkU3LZ1bKnizQgH2/cWZZzu0F6M0kJaOXM+iQRLfA4GTGAiHX9VE6RxHczhexo+IV+L9hywMcZqOtEK4funJ8QKW5Mo/4XlLSr0GQ7pllijitaZd1N1dy0SGY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -148,17 +150,15 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Wed, 04 Nov 2026 18:50:09 +0200, Mike Rapoport (Microsoft) <rppt@kernel.org> wrote:
-> kexec_add_buffer() users may depend on the order in which memory holes are
-> searched. For instance, arm64 places the kernel bottom-up and then
-> requires the DTB to be above the kernel.
+On Wed, 04 Nov 2026 18:50:10 +0200, Mike Rapoport (Microsoft) <rppt@kernel.org> wrote:
+> The lowmem and the global bootmem areas can have zero size, for example
+> when none or all of the memory is below ARCH_LOW_ADDRESS_LIMIT, or when
+> either of those areas is explicitly set to zero with kho_bootmem=.
 > 
-> kho_walk_bootmem() walks the bootmem areas in the order they were
-> reserved, so if the kernel lands in a small area at the top of the memory
-> there is no room left for the DTB and kexec fails. For example, on an
-> arm64 VM with 2G of RAM and kho_bootmem=8M,64M,64M, the lowmem area is
-> reserved first at the top of the memory, the kernel image takes most of
-> it and kexec fails with
+> For a zero-sized allocation memblock returns an address without reserving
+> anything, and that empty area is recorded in kho_bootmem. If there is no
+> memory below ARCH_LOW_ADDRESS_LIMIT, allocation of the empty lowmem area
+> fails and KHO gets disabled.
 > 
 > [...]
 
